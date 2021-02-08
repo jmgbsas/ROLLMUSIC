@@ -45,6 +45,10 @@ con la opcion X de modificar se agrega el resto del acorde insertdo.
 Falta mucho por hacer..creo es el momento de grabar y cargar una secuencia..y luego
 agregarle la reproduccion por midi...
 Cuando funcione algo liberare el resto....por hro no tiene sentido es solo un front end,
+Los silencios se agregan igual que las notas pero luego de pulsar la durcion
+se pulsa "s" y la nota correspondiente.
+Tmbien se peude agregar notas o silencios con puntillo, el mismo procedimeinto pero 
+pulsando punto (.) antes del nombre de la nota,.
 
 
 
