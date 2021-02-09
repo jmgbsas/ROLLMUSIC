@@ -3,7 +3,12 @@
 '---------------debug log
 
 Open "midebug.txt" for Output As #1
-
+' secuenciador de 9 octavas estereo, modo Piano Roll,hace uso de
+'letras para las duraciones en vez de rectangulos...
+' edicion modificacion insercion,,,12 eventos c/u con
+'nota, duracion,volumen ,paneo, pitch bend e instrumento
+' version actual front end solamente 1 track...no reproduce
+' no genera midi todavia..
 '-------------
 #If Defined(__FB_WIN32__)
    #LibPath "C:\msys64\mingw64\lib"
@@ -24,11 +29,11 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include "NOTAS.bi"
 Type dat
  nota As ubyte
- dur As UByte 
- vol As UByte
- pan As UByte
- pb  As UByte
- inst As UByte
+ dur As UByte  ' duracion
+ vol As UByte  ' volumen
+ pan As UByte  ' paneo
+ pb  As UByte  ' pitch bend
+ inst As UByte ' instrumento para cada nota podra ser distinto 
 End Type
 
 Dim Shared As dat Roll  (1 To 128 , 1 To 12000) '  7,680 MBytes , 64 tracks=491,52 Mbytes
@@ -39,10 +44,8 @@ Dim Shared As dat RollAux (1 To 128 , 1 To 12000)
 ' solo resta usar copia y Redim preserve
 
  ' indice notas, fin compas, nota con puntillo o ligadura,
-Dim Shared As Integer veloc (1 To 128, 1 To 65536) 
-Dim Shared As Integer AltoYenRoll (1 To 116) ' 12 * 9 oct
 ' se almcena en el heap porque es shared
-' 64k de notas en 128 tracks...8.388.608 bytes 8 megas de datos para 128 tracks
+' 12k posiciones de 96 notas o 128 con help y espacios ...8.388.608 bytes 8 megas 
 
 Dim Shared As Integer  ANCHO 
 Dim Shared As Integer   ALTO 
@@ -60,8 +63,6 @@ ALTO = ALTO
 AnchoInicial=ANCHO
 AltoInicial=ALTO
 
-reinicio:
-'Print "ANCHO ", ANCHO
 
 screencontrol 103,"GDI" ' le da foco a la aplicacion
 ScreenControl POLL_EVENTS '200
@@ -105,7 +106,6 @@ BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio muestro octava 4 la cen
 ' inc_Penta=separacion de lineas
 '---------------------
 Dim As Integer mxold,myold, w,h
-Dim duras (1 To 7) As ZString * 1 => {"O","P","I","L","F","E","w"}
 
 GetMouse mxold,myold, , MouseButtons 
 
@@ -177,7 +177,7 @@ nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
 '  cairo_save (c)
 '  cairo_scale (c, escala, 1)
   cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT)
- ' usemos memos octavas  
+ ' usemos 8 octavas y una para pie de pagina  
    For i = 1 To 9 ' nro_penta
      creaPenta (c, i, po,InicioDeLectura )
      If *po = 99 Then
@@ -187,15 +187,15 @@ nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
      
    Next 
      
-''' cairo_restore (c) esto es solo pra translado
+''' cairo_restore (c) esto es solo para translado
  
 cairo_stroke(c) ' Escribe desde la fuente source a la mask ...(peden ser varias fuentes)
 
 Var surf2 = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, 50, stride)
 Var cm = cairo_create(surf2)
 
-
-menu(cm, posicion)
+' menuNro= 1 resize, edit y move ventana
+menu(cm, posicion,menuNro)
 cairo_stroke(cm)   
 If menuaccion=1111 Then ' no sirve las aciones perforan
  cairo_move_to(c, 9*(ANCHO/10),50)
@@ -353,13 +353,21 @@ EndIf
 ' ALTUR DE LA VENTANA ,SE PODRA? VEMOS si se pudo con movewindow
 ' https://www.freebasic.net/forum/viewtopic.php?t=15127
 
-If menuAccion=1 And MultiKey (SC_F5)  Then
-      menuAccion=0
+If  MultiKey (SC_F5)  Then
+      menuNro=menuNro+1
+      If menuNro > 2 Then
+        menuNro=2
+      EndIf
+      Sleep 300
     Exit Do  
 EndIf
 
-If menuAccion=0 And MultiKey (SC_F4)    Then
-      menuAccion=1
+If  MultiKey (SC_F4)    Then
+      menuNro=menuNro - 1
+      If menuNro < 0 Then
+        menuNro=0
+      EndIf
+      Sleep 300
       Exit Do
 EndIf
 
@@ -630,6 +638,7 @@ If comEdit = TRUE Then
   ' ojo ver q no habia  exit do antes !!!!!
 EndIf
 If comEdit = FALSE Then '''???????????????? veremos para que usarlo
+' para ubicrno enun octava dada
 
   If MultiKey(SC_1) Then 
 
@@ -908,9 +917,9 @@ If (ScreenEvent(@e)) Then
     ' solo tiene sentido insertar en lo echo y en cursor libre
      insert=1 ' comienzo hbilitotel I para insertr nota por nota 
      ind=0
-    print #1,">>>SC_INSERT choto ajust STARTINSERT ", StartInsert 
+    print #1,">>>SC_INSERT ajust STARTINSERT ", StartInsert 
     StartInsert = posicion ' guardo sin modificar el comienzo
-    print #1,">>>SC_INSERT choto despues ajuste STARTINSERT ", StartInsert 
+    print #1,">>>SC_INSERT  despues ajuste STARTINSERT ", StartInsert 
     Erase (Rollaux) ' borro lo que habia en el auxiliar
     Erase (notasInsertadas) 
     notins=0
@@ -1027,7 +1036,7 @@ EndIf
   
   GetMouse mouseX, mouseY, , MouseButtons
   If (mouseY >= edity1 ) And (mouseY <= edity2) Then
-     If (mouseX >= 36) And (mouseX <= 70)  Then
+     If menuNro=1 And (mouseX >= 36) And (mouseX <= 70)  Then
         If MouseButtons And LEFTBUTTON Then
            If s3 = 0 Then
             comEdit = TRUE : s3 = 1
@@ -1039,7 +1048,7 @@ EndIf
            EndIf
         EndIf
      EndIf
-     If (mouseX > 0) And (mouseX <= 20 ) Then
+     If menuNro=1 And (mouseX > 0) And (mouseX <= 20 ) Then
        If MouseButtons And LEFTBUTTON Then
            If s4 = 0 Then
             resize = TRUE : s4 = 1
@@ -1053,11 +1062,11 @@ EndIf
      EndIf             
   EndIf
   
-  If mouseY < 50 And s5= 0 And mouseX > 70 Then 
+  If menuNro=0 And mouseY < 50 And s5= 0 Then ''''And mouseX > 70 Then 
     x1=mouseX: y1=mouseY 
     s5=1
   EndIf
-  If MouseButtons And LEFTBUTTON And s5=1 And mouseX > 70 Then
+  If menuNro=0 And MouseButtons And LEFTBUTTON And s5=1 Then '' And mouseX > 70 Then
     x2=mouseX 
     y2=mouseY 
     x0=x0+x2-x1
