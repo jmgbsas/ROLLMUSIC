@@ -7,8 +7,8 @@ Es solo el front end...inicial,,luego por su puesto usare RTmidiC para reproduci
 Por ahora permitira 12000 duraciones o eventos secuenciales
 Duraciones "O","P","I","L","F","E","W","H" , Redonda, blanca,negra,corchea
 semicorchea,fusa y semifusa..Busque las letras mas parecidas a las figuras
-musicales L corchea tiene un palito, F semicorchea tiene 2, E tiene 3 como fusa
-y H o W segun el gusto proahro esta H seria la semifusa...
+musicales L corchea tiene un palito, F semicorchea tiene 2, E tiene 3 como fusa,
+ W 4 semifusa, H 5...
 los silencios se colocan una s delante de la nota al mostrarla, pero las duraciones
 se entran por teclado del 1 al 8. 
 Si alguien quiere colaborar lo compartire. Es un codigo  sucio no está optimizado ni 
@@ -53,5 +53,6 @@ con un + del lado de la conexion con la otra nota
 La aplicacion termina pulsando Escape....El ejecutable ha sido escaneado con Antivirus Clam..
 Tiene un menu basico cambiantecon F4/F5 (menu archivo no implementdo todaviaseagregaran muchos
 mas) Con Cairo es dificil agregar menues, y embuir la superficie en un Frame limita 
-las posibilidades de Cairo...en mi experiencia...
+las posibilidades de Cairo...en mi experiencia...se podri suar GTK pero hasta ahora no 
+concosco como GTK manejaun loop de dibujo...solo veo ejemplos sin loop...
 
