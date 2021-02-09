@@ -5,20 +5,20 @@ musicales desde C0 a B8 con sostenidos y en vez de figuras musicales o rectangul
 colocar duraciones de notas con la opcion de cambiar insertar etc...
 Es solo el front end...inicial,,luego por su puesto usare RTmidiC para reproducir
 Por ahora permitira 12000 duraciones o eventos secuenciales
-Duraciones "O","P","I","L","F","E","H" , Redonda, blanca,negra,corchea
+Duraciones "O","P","I","L","F","E","W","H" , Redonda, blanca,negra,corchea
 semicorchea,fusa y semifusa..Busque las letras mas parecidas a las figuras
 musicales L corchea tiene un palito, F semicorchea tiene 2, E tiene 3 como fusa
 y H o W segun el gusto proahro esta H seria la semifusa...
 los silencios se colocan una s delante de la nota al mostrarla, pero las duraciones
 se entran por teclado del 1 al 8. 
-El codigo de las subrutinas por ahora me los reservo...si alguien quiere colaborar
-lo compartire. Es un codigo  sucio no está optimizado ni ordenado usa muchs globals.
+Si alguien quiere colaborar lo compartire. Es un codigo  sucio no está optimizado ni 
+ordenado usa muchas globals.
 Al inicio se puede hacer scroll con flechas arriba abajo,,
 cambiar tamaño de font con F9 F10, levantar el borde inferior dela ventana como un telon
 y asi achicar la pantalla con F7, volver a agrandar con F8. 
 Clickeando <> cambia a rojo para redimensionar la pantalla mejor apuntar el mouse en la 
 zona central y dragar algo para achicar o agrandar. Volver a clickear <> para
-freezar el tamaño. Para vovler al tamaño normal pulsar F7 u F8. Para mover la ventana de
+freezar el tamaño. Para volver al tamaño normal pulsar F7 u F8. Para mover la ventana de
 lugar se clickea (insitir haste que lo tome) y draga en la cinta morada de arriba como en las
 ventanas de win 7. 
 Para editar hacer click en la palabra EDIT, la pantalla cambiara de color.
@@ -51,5 +51,7 @@ También se puede agregar notas o silencios con puntillo, el mismo procedimeinto 
 pulsando punto (.) antes del nombre de la nota,. en elfuturo las ligaduras se simbolizaran
 con un + del lado de la conexion con la otra nota
 La aplicacion termina pulsando Escape....El ejecutable ha sido escaneado con Antivirus Clam..
-
+Tiene un menu basico cambiantecon F4/F5 (menu archivo no implementdo todaviaseagregaran muchos
+mas) Con Cairo es dificil agregar menues, y embuir la superficie en un Frame limita 
+las posibilidades de Cairo...en mi experiencia...
 

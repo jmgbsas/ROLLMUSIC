@@ -1,7 +1,7 @@
 'miscroll_declare
 Declare Sub creaPenta (c AS cairo_t Ptr, nro As Integer, po as Integer Ptr, InicioDeLectura As integer)
 Declare Sub Tracks (nroTrack As UByte, nroCanal As UByte)
-Declare Sub menu (c AS cairo_t Ptr,n As integer)
+Declare Sub menu (c AS cairo_t Ptr,n As Integer,menuNro As Integer)
 Declare Sub menuAcc (c AS cairo_t Ptr) 
 Declare Sub moveresto (ByVal StartInsert As integer,ByRef ind as Integer, Byref insert As Integer,Byref nota As integer)
 Declare Sub movedato (ByVal StartInsert As Integer, ByRef ind As Integer, Byref insert As Integer,Byref nota As integer)
@@ -53,3 +53,4 @@ Type mouse
     End Union
 End Type
 Dim shared As mouse m
+Dim Shared menuNro As Integer=0
