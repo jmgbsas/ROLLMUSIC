@@ -36,7 +36,7 @@ Type dat
  inst As UByte ' instrumento para cada nota podra ser distinto 
 End Type
 
-Dim Shared As dat Roll  (1 To 128 , 1 To 12000) '  7,680 MBytes , 64 tracks=491,52 Mbytes
+Dim Shared As dat Roll  (1 To 128 , 1 To 12000) '  ' 9,216 MBytes, 32 tracks serian 295 Mbytes 
 Dim Shared As dat RollAux (1 To 128 , 1 To 12000)
 '''Dim Shared As ubyte Insercion (1 To 128, 1 To 12000)
 ' si inserto en un track o canal debo desplazar a todos!!!
@@ -64,8 +64,8 @@ AnchoInicial=ANCHO
 AltoInicial=ALTO
 
 
-screencontrol 103,"GDI" ' le da foco a la aplicacion
-ScreenControl POLL_EVENTS '200
+ScreenControl 103,"GDI" ' le da foco a la aplicacion
+'''''ScreenControl POLL_EVENTS '200
 'ScreenControl SET_WINDOW_POS ' (100) 'Sets the current program window position, in desktop coordinates.
 
 ' https://www.freebasic.net/forum/viewtopic.php?f=6&t=27555
@@ -78,6 +78,7 @@ ScreenRes ANCHO, ALTO, 32,2, GFX_NO_FRAME,GFX_HIGH_PRIORITY
 
 ' CAIRO NO SOPORTA LA �!!! ESO ERA TODO!!!!
 Dim As Integer i, octava, posmouse, posmouseOld,incWheel, altofp11,edity1,edity2
+altofp11=ALTO
 posmouseOld = 0
 posmouse = 0
 Dim Shared As BOOLEAN comEdit, resize
@@ -121,12 +122,36 @@ espacio = 0
 backspace = 0
 fijarEspacio=0
 'amedida que nos movemos ira incrementando o decrementando 
-Dim Shared surface As Any ptr
-'' ---------------  LOOP 1 ---------------
+Dim Shared surface As Any Ptr
+' ------------------------ windows controls ---------
+ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
+Dim As hWnd hwnd = Cast(hwnd,IhWnd)
+'MENU POPUP INCONTROLABLE....SE DISPSRACON CLICK DERECHO,
+' DE DESTRUYE CON CLICK IZQUIERDO PERO LUEGO SIEMREPFUNCIONA CON IZQUIERDO
+' USARE SOLO MENUES GRAFICOS !!
+'Dim Shared hmenu As HMENU 
+'Dim Shared As HWND hpopup  
+'Dim Shared as zstring * 100 buffer
+'Dim Shared exelist As HMENU
+'dim Shared as integer x,y
+'dim Shared as Point p
 
+''https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexw
+''SYTEMcLAS #32768 = https://docs.microsoft.com/en-us/windows/win32/winmsg/about-window-classes#system-classes
+
+         
+'exelist = CreatepopupMenu()
+'AppendMenu(exelist, MF_STRING,1,"Uno")
+'AppendMenu(exelist, MF_STRING,2,"Dos")
+
+
+
+'' ---------------  LOOP 1 ---------------
 Do 
+
 edity1 = 15 ' botton Edit bordeSup
 edity2 = 30 ' botton Edit bordeInf
+ 
 ScreenLock()
 
  
@@ -181,12 +206,12 @@ nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
    For i = 1 To 9 ' nro_penta
      creaPenta (c, i, po,InicioDeLectura )
      If *po = 99 Then
-      *po = 8
+        *po = 8
       Exit For
      EndIf
      
    Next 
-     
+    
 ''' cairo_restore (c) esto es solo para translado
  
 cairo_stroke(c) ' Escribe desde la fuente source a la mask ...(peden ser varias fuentes)
@@ -212,6 +237,7 @@ ScreenUnLock()
 
 '' ---------------  LOOP 2 ---------------
 Do ''While InKey =""
+
 If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then 'MOVER cursor MEJOR CON MOUSECREO
  cursorVert = 1
  cursorHori = 1
@@ -249,33 +275,6 @@ If MultiKey(SC_PAGEDOWN) Then
    Exit Do
 EndIf
 
-
-
-If MultiKey(SC_PLUS)  Then
-   cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1 'evitaelflick y fondo negro abajo
-   cairo_paint(c)
-   cairo_stroke(c)
-   cairo_destroy(c)
-
-  
-    ALTO = ALTO + inc_Penta 
-    'Print "ALTO+ ", ALTO
-    If altofp11 > 0 Then
-      If ALTO >= altofp11 Then
-         ALTO =  altofp11
-      EndIf
-    Else
-      If ALTO >= AltoInicial Then
-         ALTO =  Altoinicial
-      EndIf
-     
-    EndIf 
-    
-   cairo_set_source_surface (c, surface, ANCHO, ALTO)
-   cairo_paint(c)
-    Exit Do  
-EndIf
-
 If MultiKey(SC_PAGEUP ) Then
      'beep
    If s2=0 Then
@@ -290,9 +289,64 @@ If MultiKey(SC_PAGEUP ) Then
 
 EndIf
 
+
+If MultiKey(SC_PLUS) Or MultiKey(SC_KEYPADPLUS) Then
+
+  
+    ALTO = ALTO + 2 'inc_Penta 
+    'Print "ALTO+ ", ALTO
+'    If altofp11 > 0 Then
+'      If ALTO >= altofp11 Then
+'         ALTO =  altofp11
+'      EndIf
+'    Else
+      If ALTO >= AltoInicial Then
+         ALTO =  Altoinicial
+      EndIf
+     
+'    EndIf 
+    
+   cairo_set_source_surface (c, surface, ANCHO, ALTO)
+
+   Sleep 10
+    Exit Do  
+EndIf
+
+If MultiKey(SC_MINUS) Then
+    cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1 'evita fondo negro y flick
+    cairo_paint(c)
+'    cairo_stroke(c)
+'   cairo_destroy(c)
+
+   ALTO = AltoInicial/1.5  
+'   If ALTO <= AltoInicial/3 Then
+'     ALTO= AltoInicial/3
+'   EndIf
+'    cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1 'evita fondo negro y flick
+   cairo_set_source_surface (c, surface, ANCHO, ALTO ) ' ALTO)
+'  cairo_stroke(c)
+'   Sleep 10
+'    cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1 'evita fondo negro y flick
+'    cairo_paint(c)
+'    cairo_stroke(c)
+   Exit Do  
+' LA ZONA QUE DEJA ESTA POSICION EN LA PARTE INFERIOR SE USARA PARA
+' HACER AJUSTES DE VELOCIDAD CON CURVAS O MOSTRAR CONTROLES ADICIONALES     
+EndIf
+
+
 '   escala = escala - 0.1
 If MultiKey(SC_RIGHT)  Then ' <======== RIGHT
-      'k60 cantidadscroll de 60
+   If  mouseY < 50  Then ' seleccion de menu, mouse sobre cinta + teclas 
+      menuNro=menuNro+1
+      If menuNro > 2 Then
+        menuNro=2
+      EndIf
+      While Inkey <> "": Wend
+      Sleep 350
+    Exit Do    
+   Else
+     'k60 cantidadscroll de 60
      k60= Int(posicion/60)
      If  (k60 > 0) And (posicion > 60 * k60) And (posicion < posn)Then
       posicion = posicion + 60
@@ -300,15 +354,24 @@ If MultiKey(SC_RIGHT)  Then ' <======== RIGHT
      Else
       posicion = posicion + 1
      EndIf
-    Sleep 100
-    If posicion > posn Then
-     posicion = posn
-    EndIf
-    Exit Do 
- 
+      Sleep 100
+     If posicion > posn Then
+      posicion = posn
+     EndIf
+     Exit Do 
+   EndIf 
 EndIf
 '   escala = escala + 0.1
 If MultiKey(SC_LEFT)  Then '  <========== LEFT
+  If  mouseY < 50  Then  ' seleccion de menu
+      menuNro=menuNro - 1
+      If menuNro < 0 Then
+        menuNro=0
+      EndIf
+      While Inkey <> "": Wend
+      Sleep 350
+    Exit Do    
+   Else
       'MOVER PENTAGRAMA IZQUIERDA NO CURSOR
      Dim k60 As Integer ' cntidad de scroll de 60
      k60= Int(iniciodelectura/60)
@@ -323,7 +386,7 @@ If MultiKey(SC_LEFT)  Then '  <========== LEFT
       posicion = 1
      EndIf
      Exit Do 
-  
+  EndIf
 EndIf
 ' https://freebasic.net/forum/viewtopic.php?t=15100
 ' interfiere con ALT+ tAB del usuario apr amirar otra apliccion
@@ -333,41 +396,14 @@ EndIf
 'EndIf 
 
 
-If MultiKey(SC_MINUS) Then
-   cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1 'evita fondo negro y flick
-   cairo_paint(c)
-   cairo_stroke(c)
-   cairo_destroy(c)
-
-   ALTO = ALTO - inc_Penta 
-   If ALTO <= AltoInicial/3 Then
-     ALTO= AltoInicial/3
-   EndIf
-
-   cairo_set_source_surface (c, surface, ANCHO, ALTO ) ' ALTO)
-   cairo_paint(c)
-   
-   Exit Do  
-   
-EndIf
 ' ALTUR DE LA VENTANA ,SE PODRA? VEMOS si se pudo con movewindow
 ' https://www.freebasic.net/forum/viewtopic.php?t=15127
-
+' DISPONIBLE F4 F5
 If  MultiKey (SC_F5)  Then
-      menuNro=menuNro+1
-      If menuNro > 2 Then
-        menuNro=2
-      EndIf
-      Sleep 300
     Exit Do  
 EndIf
 
 If  MultiKey (SC_F4)    Then
-      menuNro=menuNro - 1
-      If menuNro < 0 Then
-        menuNro=0
-      EndIf
-      Sleep 300
       Exit Do
 EndIf
 
@@ -384,9 +420,9 @@ If MultiKey (SC_F8)  Then
         ALTO = altoInicial  - 1
      EndIf
       
-      ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
+'      ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
       
-      Dim As hWnd hwnd = Cast(hwnd,IhWnd)
+'      Dim As hWnd hwnd = Cast(hwnd,IhWnd)
       MoveWindow( hWnd , 10, (10+ALTO-h)\2, ANCHO,ALTO, TRUE )
       
       altofp11 = ALTO
@@ -477,10 +513,14 @@ If MultiKey (SC_F10) Then
 EndIf
 
 If MultiKey(SC_ESCAPE) Then
- cairo_destroy(c)
- Close 1
- End
-
+      '  ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
+      '  Dim As hWnd hwnd = Cast(hwnd,IhWnd)
+  
+  if MessageBox(hWnd,"ARE YOU SURE YOU WANT TO QUIT?","RollMusic End ",4 or 64) =6 then 
+     cairo_destroy(c)
+     Close 1
+     End
+  EndIf
 EndIf
 ' repetir espacios con barra+ALTGRAF..luego la nota correspondiente
 If MultiKey(SC_ALTGR) Then ' FIJA ESPACIOS REPETIDOS HASTA NUEVA PULSO
@@ -854,8 +894,8 @@ If (ScreenEvent(@e)) Then
            ALTO =  ALTO * 0.3 
         EndIf 
 '
-        ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
-        Dim As hWnd hwnd = Cast(hwnd,IhWnd)
+    '    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
+    '    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
         MoveWindow( hWnd , 10 , (10+h-ALTO)\2, ANCHO,ALTO, TRUE )
         altofp11 = ALTO 
       EndIf
@@ -873,9 +913,9 @@ If (ScreenEvent(@e)) Then
            ALTO = altoInicial  - 1
         EndIf
       
-        ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
+      '  ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
       
-        Dim As hWnd hwnd = Cast(hwnd,IhWnd)
+      '  Dim As hWnd hwnd = Cast(hwnd,IhWnd)
         MoveWindow( hWnd , 10, (10+ALTO-h)\2, ANCHO,ALTO, TRUE )
         altofp11 = ALTO
       EndIf
@@ -995,8 +1035,8 @@ If (ScreenEvent(@e)) Then
          
       EndIf 
 '
-      ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
-      Dim As hWnd hwnd = Cast(hwnd,IhWnd)
+   '   ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
+   '   Dim As hWnd hwnd = Cast(hwnd,IhWnd)
       MoveWindow( hWnd , 10 , (10+h-ALTO)\2, ANCHO,ALTO, TRUE )
       
       altofp11 = ALTO 
@@ -1018,9 +1058,9 @@ If e.scancode = &h42  Then ' <============  F8
         ALTO = altoInicial  - 1
      EndIf
       
-      ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
+   '   ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
       
-      Dim As hWnd hwnd = Cast(hwnd,IhWnd)
+   '   Dim As hWnd hwnd = Cast(hwnd,IhWnd)
       MoveWindow( hWnd , 10, (10+ALTO-h)\2, ANCHO,ALTO, TRUE )
       
       altofp11 = ALTO
@@ -1036,8 +1076,8 @@ EndIf
   
   GetMouse mouseX, mouseY, , MouseButtons
   If (mouseY >= edity1 ) And (mouseY <= edity2) Then
-     If menuNro=1 And (mouseX >= 36) And (mouseX <= 70)  Then
-        If MouseButtons And LEFTBUTTON Then
+     If (mouseX >= 36) And (mouseX <= 70)  Then
+        If MouseButtons And 1 Then
            If s3 = 0 Then
             comEdit = TRUE : s3 = 1
             font = 18
@@ -1048,8 +1088,8 @@ EndIf
            EndIf
         EndIf
      EndIf
-     If menuNro=1 And (mouseX > 0) And (mouseX <= 20 ) Then
-       If MouseButtons And LEFTBUTTON Then
+     If (mouseX > 0) And (mouseX <= 20 ) Then
+       If MouseButtons And 1 Then
            If s4 = 0 Then
             resize = TRUE : s4 = 1
             Exit Do
@@ -1062,11 +1102,11 @@ EndIf
      EndIf             
   EndIf
   
-  If menuNro=0 And mouseY < 50 And s5= 0 Then ''''And mouseX > 70 Then 
+  If mouseY < 50 And s5= 0 And mouseX > 70 Then 
     x1=mouseX: y1=mouseY 
     s5=1
   EndIf
-  If menuNro=0 And MouseButtons And LEFTBUTTON And s5=1 Then '' And mouseX > 70 Then
+  If MouseButtons And 1 And s5=1 And mouseX > 70 Then
     x2=mouseX 
     y2=mouseY 
     x0=x0+x2-x1
@@ -1095,7 +1135,7 @@ EndIf
    EndIf
    Exit Do
  Else
-   m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
+ '  m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
 '   indice = Int(((m.y - bordesuproll)/inc_Penta)) + 1
    ' DEL INDICE DEPENDE TODO EL CONTROL DE OCTAVAY DE NOTAS mentira ni se usa
   /'  
@@ -1144,7 +1184,7 @@ If s5<> 1 Then
 EndIf
 ' total 2msg, lo mas rapido posible para que no interfiera 
 ' en la entrada y salida de midi, midi reltime hasta 10 ms
-' o sea tengo 8msg para procesar se�ales dibujar notas y moverlas...
+' o sea tengo 8msg para procesar se?ales dibujar notas y moverlas...
  
 Loop
 

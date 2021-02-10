@@ -598,11 +598,12 @@ If comEdit = TRUE Then
 Else
   cairo_set_source_rgba c, 0, 0, 0, 1
 EndIf   
+   resultado = GetMouse (x, y, , buttons)
 Select Case menuNro
   Case 0
-  t=  " /F4-F5 MENU/<VENTANA>:/MOVER,DRAGAR CINTA/POSICON NORMAL F7-F8 (SUBE/BAJA BORDE INFERIOR) " 
+   t=  " <MENU>/<=|=>/<VENTANA>/MOVER=DRAGAR CINTA/POSICON NORMAL=F7-F8 (SUBE/BAJA BORDE INFERIOR) " 
   Case 1
-  t = "      EDIT" + " " + Str(mouseX) + " " + Str(mouseY) + " Octava: " + Str(oclog) + " UltimaPos: " + Str(Maxpos-1) +" Pos: " + Str(posicion)+ "posn: "+Str(posn)+" Font: " +str(font) + "dur "+ Str(vDur) +"Roll "+ Str(vRoll)
+   t = "      EDIT" + " " + Str(x) + " " + Str(y) + " Octava: " + Str(oclog) + " UltimaPos: " + Str(Maxpos-1) +" Pos: " + Str(posicion)+ " posn: "+Str(posn)+" Font: " +str(font) + "dur "+ Str(vDur) +"Roll "+ Str(vRoll)
   case 2 
   t = "<ARCHIVO>:/GRABAR/GRABAR COMO/CERRAR/SALIR <REPRODUCIR>:/INICIO/AHORA/ <VOL>/ + / - / <VEL>:/ + / - /"
   

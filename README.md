@@ -51,8 +51,10 @@ También se puede agregar notas o silencios con puntillo, el mismo procedimeinto 
 pulsando punto (.) antes del nombre de la nota,. en elfuturo las ligaduras se simbolizaran
 con un + del lado de la conexion con la otra nota
 La aplicacion termina pulsando Escape....El ejecutable ha sido escaneado con Antivirus Clam..
-Tiene un menu basico cambiantecon F4/F5 (menu archivo no implementdo todaviaseagregaran muchos
+Tiene un menu basico cambiante con Flecha Derecha Iquierda, siemrpe y cuando el mouse 
+esté posicionado enla cintasuperior (menu archivo no implementdo todavia se agregaran muchos
 mas) Con Cairo es dificil agregar menues, y embuir la superficie en un Frame limita 
-las posibilidades de Cairo...en mi experiencia...se podri suar GTK pero hasta ahora no 
-concosco como GTK manejaun loop de dibujo...solo veo ejemplos sin loop...
+las posibilidades de Cairo...en mi experiencia...se podri usar GTK pero hasta ahora no 
+concosco como GTK maneja un loop de dibujo...solo veo ejemplos sin loop...
+MenuPopup de Microsoft es incontrolble....
 

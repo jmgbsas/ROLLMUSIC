@@ -11,11 +11,7 @@ Declare Sub cursor(c AS cairo_t Ptr, n As Integer,nro As Integer)
 Dim Shared nro As Integer '''borrar despues jmg ja quedo 
 Dim Shared As Integer vroll, vdur ' borrar
 Dim  shared as ubyte  notasInsertadas (1 to 1500) 
-CONST LEFTBUTTON   = 1
-CONST MIDDLEBUTTON = 2
-CONST RIGHTBUTTON  = 4
-CONST SHOWMOUSE    = 0
-CONST HIDEMOUSE    = 1
+
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, cursormove
 Dim shared As integer Penta_y, indice, posicion, nota,espacio,posn,cursorHori  
 Dim shared as integer estoyEnOctava, backspace,fijarEspacio, offset,borrar,cambiadur
@@ -40,6 +36,7 @@ Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
 
 espacio=0:cursorVert=0:borrar=0:cambiadur=0:InicioDeLectura=0
 menuAccion=0:insert=0
+Dim Shared As Integer resultado
 Type mouse
     As Integer res
     As Integer x, y, wheel, clip
@@ -54,3 +51,5 @@ Type mouse
 End Type
 Dim shared As mouse m
 Dim Shared menuNro As Integer=0
+''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
+Dim Shared As Integer x, y, buttons, res 
