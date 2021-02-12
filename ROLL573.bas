@@ -1,8 +1,18 @@
-' VERSION 5.7.2 INSERTA NOTAS EN UNA MISMA LINEA CULQUIER NOTA PERO SIEMRPE
-' HORIZONTAL, NO INSERTA BIEN ACORDES TODAVIA
+' VERSION 5.7.3 , tODAVIA NO ES INSERCION AUTOMATICA, 
+' ES GRABACION Y CARGA DE ROLL A DISCO , CASI BIEN,PROBLEMA
+' ALCARGARNOD EJ HCER SCROLL A DERECHA SI HAY MASDE 1 PAGINA
+' NI ENUNA SEPUEDE RECORRERCON EL CURSOR LASPOSICIONES POSICION Y POS
+' ESTAN EN 1Y 0...CORREGIR,,,
+' OTRO ISSUE ES QUE SOLO PUEDO GRABREL ARRAAY ROLL ENTEROY ALFINAL
+' LA POSICION Y LA NOTAOLD ,,,PERONO CONSIGO GRABAR UN
+' ARRAY MS CHICO AL CARGARLO ENTRA BASURA,,,TAL VEZDEBERI CARGAR CON
+' UN ARRAY CHICO PERO PARAESODEBERIA LEER EN 1ERA POSICION DELARCHIVO
+' LA POSICION Y LA NOTAOLD...Y LUEGOCOPIAR TODO A ROLLL POR PROGRAMA,,,
+' ESA SERA LA PROXIMA VERSION A PROBAR 5.7.3.1 
 '---------------debug log
 
 Open "midebug.txt" for Output As #1
+
 ' secuenciador de 9 octavas estereo, modo Piano Roll,hace uso de
 'letras para las duraciones en vez de rectangulos...
 ' edicion modificacion insercion,,,12 eventos c/u con
@@ -27,7 +37,7 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include Once "cairo/cairo.bi"
 #Include "ROLLDEC.BI"
 #Include "NOTAS.bi"
-Type dat
+Type dat field=1
  nota As ubyte
  dur As UByte  ' duracion
  vol As UByte  ' volumen
@@ -63,19 +73,20 @@ ALTO = ALTO
 AnchoInicial=ANCHO
 AltoInicial=ALTO
 
-
-ScreenControl 103,"GDI" ' le da foco a la aplicacion
+'cambie a directX !!! versi anda winpopup
+ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion
+' con Directx nunca tomaelfoco se lodebe dar elusuario
+'nofuncionaningun comndo de winuser.bipara tomar el foco...
 '''''ScreenControl POLL_EVENTS '200
 'ScreenControl SET_WINDOW_POS ' (100) 'Sets the current program window position, in desktop coordinates.
 
 ' https://www.freebasic.net/forum/viewtopic.php?f=6&t=27555
 Dim As String driver
 
- 
-ScreenRes ANCHO, ALTO, 32,2, GFX_NO_FRAME,GFX_HIGH_PRIORITY
- ScreenControl GET_WINDOW_POS, x0, y0
+ScreenRes ANCHO, ALTO, 32,2, GFX_NO_FRAME Or GFX_HIGH_PRIORITY
+ScreenControl GET_WINDOW_POS, x0, y0
 ''ScreenControl SET_WINDOW_POS, 10,10
-
+'ScreenControl 103,"Directx" ' cambio ja
 ' CAIRO NO SOPORTA LA �!!! ESO ERA TODO!!!!
 Dim As Integer i, octava, posmouse, posmouseOld,incWheel, altofp11,edity1,edity2
 altofp11=ALTO
@@ -143,7 +154,7 @@ Dim As hWnd hwnd = Cast(hwnd,IhWnd)
 'exelist = CreatepopupMenu()
 'AppendMenu(exelist, MF_STRING,1,"Uno")
 'AppendMenu(exelist, MF_STRING,2,"Dos")
-
+Dim comienzo As Integer = 0
 
 
 '' ---------------  LOOP 1 ---------------
@@ -168,7 +179,7 @@ Var c = cairo_create(surface)
 
   
 
-If comEdit = TRUE Then
+If comEdit = TRUE And menuNro=2 Then
  ' cairo_set_source_rgba(c, 0.6, 0.5, 0.6, 1)
   cairo_set_source_rgba(c, 0.6, 0.6, 0.7, 1)  
 Else
@@ -219,7 +230,7 @@ cairo_stroke(c) ' Escribe desde la fuente source a la mask ...(peden ser varias 
 Var surf2 = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, 50, stride)
 Var cm = cairo_create(surf2)
 
-' menuNro= 1 resize, edit y move ventana
+
 menu(cm, posicion,menuNro)
 cairo_stroke(cm)   
 If menuaccion=1111 Then ' no sirve las aciones perforan
@@ -237,6 +248,13 @@ ScreenUnLock()
 
 '' ---------------  LOOP 2 ---------------
 Do ''While InKey =""
+'If comienzo=0 Then
+' ScreenControl  SET_DRIVER_NAME,"Directx" ' cambio ja
+' ScreenRes ANCHO, ALTO, 32,2, GFX_NO_FRAME,GFX_HIGH_PRIORITY
+' ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
+' Dim As hWnd hwnd = Cast(hwnd,IhWnd)
+' comienzo=1
+'EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then 'MOVER cursor MEJOR CON MOUSECREO
  cursorVert = 1
@@ -339,9 +357,10 @@ EndIf
 If MultiKey(SC_RIGHT)  Then ' <======== RIGHT
    If  mouseY < 50  Then ' seleccion de menu, mouse sobre cinta + teclas 
       menuNro=menuNro+1
-      If menuNro > 2 Then
-        menuNro=2
+      If menuNro > 3 Then
+        menuNro=0
       EndIf
+      menuNew=menuNro
       While Inkey <> "": Wend
       Sleep 350
     Exit Do    
@@ -365,8 +384,9 @@ EndIf
 If MultiKey(SC_LEFT)  Then '  <========== LEFT
   If  mouseY < 50  Then  ' seleccion de menu
       menuNro=menuNro - 1
+      menuNew=menuNro
       If menuNro < 0 Then
-        menuNro=0
+        menuNro=3
       EndIf
       While Inkey <> "": Wend
       Sleep 350
@@ -485,10 +505,180 @@ If MultiKey (SC_F3)  Then
   escala = escala + 0.01
   Exit Do
 EndIf
-if Multikey (SC_F12) then
+' PRUEBAS DE GRABACION DEL VECTOR ROLL es sencillo porque grabo todo
+' o cargo todo,, 
+' https://www.freebasic.net/forum/viewtopic.php?f=2&t=26636&p=246435&hilit=array+load+save#p246435
+if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco  
+ 'cada posicion tendre 48bits osea 6bytes..
+ ' luego 12000 posiicones si estuviera todo completo serian 9216000 bytes
+' y grabo..9mbytes, seria 1 Track,,295 mbytes para 32 tracks
+   Print #1, "Grabando a disco Roll F11 "
+   Open "grabaRoll.roll" For Binary access write As #2
+    Put #2, ,Roll() 
+
+    Dim grabaPos (1,1)  As dat
+   Dim as integer i1, i2
+   Dim As Integer y1,y2,y3,y4 
+   Dim As String a1,a2,a3,a4 ,x
+   x= Bin(MaxPos,16)
+   Print #1,"Posicion ",Posicion
+ 'Print "string representando ", x
+   a1=Mid(x,1,4)
+   a2=Mid(x,5,4)
+   a3=Mid(x,9,4)
+   a4=Mid(x,13,4)
+ Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
+ 
+   y1= CInt("&B"+a1)
+   y2= CInt("&B"+a2)
+   y3= CInt("&B"+a3)
+   y4= CInt("&B"+a4)
+ Print #1, "y1,y2,y3,y4", y1,y2,y3,y4  
+' grabamos maxpos en 4 ubyte   
+   grabaPos(1,1).nota = y1
+   grabaPos(1,1).dur  = y2
+   grabaPos(1,1).vol  = y3
+   grabaPos(1,1).pan  = y4
+' ------------------------------------
+' hacemoslo mismo para l ultim not que se grabo que teng el 46
+' esa es lapapa recorremos todas las dur de las notas en donde este el 46
+' endur tomamosla nota y esala grabamos en pb o ins
+' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
+' -------------------------------------
+    Dim As Integer i,j,notafinal 
+    For i = 1 To 128
+       If Roll(i,posicion+1).dur = 46 Then
+         notafinal= Roll(i,posicion).nota
+         Print #1, "ENCONTRO NOTA FINAL ", notafinal
+         Print "ENCONTRO NOTA FINAL ", notafinal
+         ' esten la posiciond ela ultimanotapero grasoerror
+         ' o seaque no tiene duracion solo el46
+         ' esta mal ...
+         Exit For
+       EndIf 
+    Next
+    grabaPos(1,1).pb = notafinal
+
+'   x= Bin(InicioDeLectura,16)
+'   Print #1,"MaxPos ",InicioDeLEctura
+' 'Print "string representando ", x
+'   a1=Mid(x,1,4)
+'   a2=Mid(x,5,4)
+'   a3=Mid(x,9,4)
+'   a4=Mid(x,13,4)
+' Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
+ 
+'   y1= CInt("&B"+a1)
+'   y2= CInt("&B"+a2)
+'   y3= CInt("&B"+a3)
+'   y4= CInt("&B"+a4)
+' Print #1, "y1,y2,y3,y4", y1,y2,y3,y4  
+' grabamos maxpos en 4 ubyte   
+'   grabaRoll(1,2).nota = y1
+'   grabaRoll(1,2).dur  = y2
+'   grabaRoll(1,2).vol  = y3
+'   grabaRoll(1,2).pan  = y4
+
+' ------------------------------------ 
+'   For i1 = 1 To 128
+'     For i2 = 2 To MaxPos + 1    
+'        grabaRoll(i1,i2)=Roll(i1,i2 -1 )
+'     Next i2
+'   Next i1 
+
+'   Print #1,"Pos grabada en grabaRoll ",Posicion
+'   Print #1,"InicioDeLectura grabada en grabaRoll ",InicioDeLectura
+   
+''   Open "grabaRoll.roll" For Binary access write As #2
+    Put #2, ,grabaPos(1,1) 
+    Close 2
+    While Inkey <> "": Wend
+ sleep 150
+     Print "ENTRO ENTRO ENTRO"
+    Print "ENTRO ENTRO ENTRO"
+    Print "ENTRO ENTRO ENTRO"
+    Print "ENTRO ENTRO ENTRO"
+    Print "ENTRO ENTRO ENTRO"
+    Print "ENTRO ENTRO ENTRO"
+
+EndIf
+' cargar Roll y MaxPos de disco 
+
+If MultiKey(SC_L)  Then ' <======== load Roll
+     Erase Roll
+'     cairo_destroy(c)
+'     cairo_paint(c)
+'     cairo_stroke(c)
+'     cairo_set_source_rgba c, 0, 1, 0, 1
+      Dim z (1,1 )  As dat
+      Dim As String x,x1,x2,x3,x4
+     open "grabaRoll.roll" for binary access read as #2
+       get #2, , Roll()
+       Get #2, , z(1,1)
+       
+       x1=Bin(z(1,1).nota,4)
+       x2=Bin(z(1,1).dur,4)
+       x3=Bin(z(1,1).vol,4)
+       x4=Bin(z(1,1).pan,4)
+       x=x1+x2+x3+x4
+       Print #1,"reconstruccion x pos bin ", x
+       Posicion=CInt("&B"+x)
+       Maxpos=posicion + 1
+       Print #1,"reconstruccion x pos int ", Posicion
+       notaold= z(1,1).pb
+ '  convertimos el 2do valor
+'       Get #2, , z(1,2)
+'       x1=Bin(z(1,2).nota,4)
+'       x2=Bin(z(1,2).dur,4)
+'       x3=Bin(z(1,2).vol,4)
+'       x4=Bin(z(1,2).pan,4)
+'       x=x1+x2+x3+x4
+'       InicioDeLectura=CInt("&B"+x)
+ ' -------------------------              
+'       Dim As Integer i,j 
+'       For i= 1 To 128
+'          For j = MaxPos+1 To 12000
+'             Roll (i,j).nota=0
+'             Roll (i,j).dur=0
+'             Roll (i,j).vol=0
+'             Roll (i,j).pan=0
+'             Roll (i,j).pb=0
+'             Roll (i,j).inst=0                 
+
+'          Next j
+'       Next i 
+'       For i= 1 To 128
+'          For j = 1 To MaxPos+1
+'            If Roll (i,j).nota >8 Then 
+'              Roll (i,j).nota=0
+'            EndIf   
+'            If Roll (i,j).dur > 46 Then
+'              Roll (i,j).dur=0
+'            EndIf   
+'            If Roll (i,j).vol > 127 Then
+'               Roll (i,j).vol=0
+'            EndIf
+'            If Roll (i,j).pan> 127 Then   
+'               Roll (i,j).pan=0
+'            EndIf
+'            If Roll (i,j).pb > 127 Then   
+'               Roll (i,j).pb=0
+'            EndIf
+'            If Roll (i,j).inst>127 Then   
+'               Roll (i,j).inst=0                 
+'            EndIf
+'          Next j
+'       Next i 
+       
+'       posn=1
+    Close 2
+
+EndIf
+
+if Multikey (SC_F12) Then
  dim as integer i1, i2
  ' testeo solo en la 1er octva por ahora
- print #1,
+ Print #1,
  for i1 = 1 to 12
      for i2= 1 to posicion
          print #1, Roll(i1, i2).nota;"-";
@@ -502,6 +692,7 @@ if Multikey (SC_F12) then
  next i1 
  While Inkey <> "": Wend
  sleep 150
+ Close 2
 endif
 If MultiKey (SC_F10) Then 
       font = font + 1
@@ -644,7 +835,7 @@ If MultiKey(SC_BACKSPACE) Then
  EndIf
 ' ----------------------FIN NOTAS-------------------------
 ' ----------INGRESO DE DURACIONES DE NOTAS -------------
-If comEdit = TRUE Then 
+If comEdit = TRUE And menuNro = 2 Then 
   If MultiKey(SC_1) Then 
     DUR = 13 :Exit Do
   EndIf
@@ -725,8 +916,11 @@ EndIf
 ' el signo + tamien significara ligdura o sea I+L = negra ligda a corchea = I+ 
 ' untresillo simplemente se coloca un 3 junto a la figura 3III = tresillo de negra.
 ' ------------DETECCION DE OCTAVA-----NUCLEO CARGA ENTRADA---
+''
+
  If comEdit = TRUE  And nota> 0 Then 
     posn=1 + InicioDeLectura
+    Print #1,"estoyEnOctava ";estoyEnOctava
     If estoyEnOctava <> 99 Then ' estoy en una octava 
      '  If indice <= 0 Then 
      '      indice = 1 
@@ -737,31 +931,37 @@ EndIf
      If nota > 0 And estoyEnOctava < 99 Then 
        ' ====>  Control PAgindo Horizontal <=======
  '      k60= Int(posicion/60)
+          Print #1, "A:Roll((nota +(estoyEnOctava -1) * 13),posn).nota ", _
+          Roll((nota +(estoyEnOctava -1) * 13),posn).nota
 
        Do 
          If Roll((nota +(estoyEnOctava -1) * 13),posn).nota = 0 OR _
-          Roll((nota +(estoyEnOctava -1) * 13),posn).nota = 46  Then
+          Roll((nota +(estoyEnOctava -1) * 13),posn).nota = 46 Then
+          Print #1, "D:Roll((nota +(estoyEnOctava -1) * 13),posn).nota ", _
+          Roll((nota +(estoyEnOctava -1) * 13),posn).nota
            posicion=posn 
+           Print #1, "ingreso a NUCLEO POSICION=POSN", posicion
            Exit Do
          EndIf
          posn = posn + 1
          If (posn > 60 + InicioDeLectura) Then 
             InicioDeLectura=InicioDeLectura+60  
          EndIf
-        
+        Print #1, "ingreso a NUCLEO posn ",posn
        Loop
        ' ESTO ME UBICA EN QUE RENGLON DE LA OCTVA ESTOY SN USAR EL MOUSE
        ' LUEGO haRE ALGO CON EL MOUSE POR AHORA TODO TECLADO
         Roll((nota +(estoyEnOctava -1) * 13),posn).nota = nota 'carga
-        If cursorVert = 0 and cursorHori = 0 Then
+'' ojo ver'  If cursorVert = 0 and cursorHori = 0 Then
          ' no actua para modificaciones o agregado en lo existente
          ' 46 o FIN indica final de TODO es la MAXPOS (+1obvio),se usara
          ' para insertar y saber hasta donde se debe mover...esta solo 
-         'en dur no afecta a notas
+         'en dur no afecta a notas pero se debe insertar siempreenedicion
+         ' con o sin cursor 
           Roll((nota +(estoyEnOctava -1) * 13),posn+1).dur = 46
-          if notaOld > 0 then
-           Roll((notaOld +(estoyEnOctava -1) * 13),posn).dur = 45
-          endif 
+          if notaOld > 0 And notaOld <> nota then
+           Roll((notaOld +(estoyEnOctava -1) * 13),posn).dur = 45 
+'''ojo probar todo inserciones x  etc    endif 
         EndIf
          
         ' cargamos Roll entonces Duracion no lo mostrara como "./."
@@ -1075,7 +1275,7 @@ EndIf
 '-------------------------------------END SCREENEVENT ----------
   
   GetMouse mouseX, mouseY, , MouseButtons
-  If (mouseY >= edity1 ) And (mouseY <= edity2) Then
+  If (mouseY >= edity1 ) And (mouseY <= edity2) And menuNro=2 Then
      If (mouseX >= 36) And (mouseX <= 70)  Then
         If MouseButtons And 1 Then
            If s3 = 0 Then
@@ -1106,7 +1306,7 @@ EndIf
     x1=mouseX: y1=mouseY 
     s5=1
   EndIf
-  If MouseButtons And 1 And s5=1 And mouseX > 70 Then
+  If MouseButtons And 1 And s5=1 And mouseX > 70 and menuNro= 1 Then
     x2=mouseX 
     y2=mouseY 
     x0=x0+x2-x1
@@ -1116,7 +1316,9 @@ EndIf
    ' la performance no es tan buena pero funciona 
    Exit Do ' probando ac creo es el poblem mmmm and ok !
   EndIf  
-  
+'  If mouseY > 50 Then ' <=== MENU DEFAULT 0 POR AHORA NO ES MOLESTO
+'         menuNew=0
+'  EndIf
  'https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-movewindow
  If resize = TRUE Then    
     m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
@@ -1136,7 +1338,7 @@ EndIf
    Exit Do
  Else
  '  m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
-'   indice = Int(((m.y - bordesuproll)/inc_Penta)) + 1
+ '  indice = Int(((m.y - bordesuproll)/inc_Penta)) + 1
    ' DEL INDICE DEPENDE TODO EL CONTROL DE OCTAVAY DE NOTAS mentira ni se usa
   /'  
      If m.buttons = 2 Then
