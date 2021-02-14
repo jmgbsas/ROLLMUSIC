@@ -7,7 +7,7 @@ dim as integer i,n
 ' v4 ponemos maslineas de separacion par q toda duricon este en espacios 
 ' hay que usar el font Goergia o culqueir con utf8 o seguir lo que dice 
 'en usge http://www.non-gnu.org/guile-cairo/docs/html/Text.html
-' sino ami me pasoque al poner una ï¿½ las lineas desaparecen!
+' sino ami me pasoque al poner una ñ las lineas desaparecen!
 '5.6-ok-encolumnado en vez de poner lso numero de las nots debo colocr las durciones
 ' ya me ubique en unaline ahoradebo recibirlso pulsos 1,2,3,4,5,6,7
 ' directmente o almcenarlos en otro vector.... 

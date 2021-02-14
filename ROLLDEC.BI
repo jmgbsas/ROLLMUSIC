@@ -20,8 +20,8 @@ dim shared as string cromatica(1 to 12)
 dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
 Dim Shared As Integer DUR, menuAccion,insert,notins 
 DIM  Shared figura (13 To 46) As String * 3 = {" O "," P "," I "," L "," F "," E "," W "," H ",_
-" O*"," P*"," I*"," L*"," F*"," E*"," W*"," H*","SO ","SP ","SI ","SL ","SF ","SE ","SW ","SH ",_
-"SO*","SP*","SI*","SL*","SF*","SE*","SW*","SH*","  ","FIN"}
+" O*"," P*"," I*"," L*"," F*"," E*"," W*"," H*","sO ","sP ","sI ","sL ","sF ","sE ","sW ","sH ",_
+"sO*","sP*","sI*","sL*","sF*","sE*","sW*","sH*","   "," ||"}
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
 Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
 '' futuro=> Dim notmus(13 To 44) As String = {} bravura fonts?? pero son glyphs
