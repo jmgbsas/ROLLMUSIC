@@ -50,6 +50,6 @@ Type mouse
     End Union
 End Type
 Dim shared As mouse m
-Dim Shared menuNro As Integer=0
+Dim Shared As Integer menuNro, menuNew
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res 

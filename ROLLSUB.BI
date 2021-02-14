@@ -435,7 +435,7 @@ cairo_show_text(c, t)
 End If
 ' si estoy en esta octava ...edicionsolo para esa octava segun posicion del mouse 
 'automaticamete
-if ( Penta_y <= m.y) and ((Penta_y + 12 * inc_Penta) >= m.y)  Then
+if ( Penta_y <= mousey) and ((Penta_y + 12 * inc_Penta) >= mousey)  Then
  ' estoy en una octava    
   estoyEnOctava = nro
 
@@ -460,15 +460,15 @@ Sub cursor(c AS cairo_t Ptr,n As Integer, nro As Integer)
 'EL CURSOR PARA UNA linea dada o nota se coloca inc_Penta mas abajo
 ' para B 38.5 27 notaold=1  <- actualizar please
 ' para C 38.5 25 notold=12
+'n esla posicion al cargar datos deberia llamar a curor creo,,,probando  
  
-  n=n -InicioDeLectura
 
 If cursorVert=1 Then  ' vertical 
     
-  cairo_move_to(c, 70 + (n-1)*20 ,  Penta_y + (notacur-1) * inc_Penta  )
-  cairo_rectangle(c,70 + (n-1)*20, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
-  cairo_move_to(c, 70 + (n-1)*20 + inc_Penta, Penta_y  )
-  cairo_line_to(c, 70 + (n-1)*20 + inc_Penta, Penta_y + (notacur-1) * inc_Penta  +inc_Penta ) 
+cairo_move_to  (c, 70 + (posicion-1-inicioDeLectura)*20, Penta_y + (notacur-1) * inc_Penta  )
+cairo_rectangle(c, 70 + (posicion-1-inicioDeLectura)*20, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
+cairo_move_to  (c, 70 + (posicion-1-inicioDeLectura)*20 + inc_Penta, Penta_y  )
+cairo_line_to  (c, 70 + (posicion-1-inicioDeLectura)*20 + inc_Penta, Penta_y + (notacur-1) * inc_Penta  +inc_Penta ) 
 
 EndIf
 If cursorVert= 0 And cursorHori=0 then
@@ -476,13 +476,13 @@ If cursorVert= 0 And cursorHori=0 then
      notaOld=notacur
      notacur=0
   EndIf
- cairo_move_to(c, 70 + (n-1)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
- cairo_rectangle(c,70 + (n-1)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
+ cairo_move_to  (c,70 + (posicion-1-inicioDeLectura)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
+ cairo_rectangle(c,70 + (posicion-1-inicioDeLectura)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
 EndIf
 If cursorHori=1 Then
- cairo_move_to(c, 70 + (posicion-1)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
- cairo_rectangle(c,70 + (posicion-1)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
+ cairo_move_to  (c,70 + (posicion-1-inicioDeLectura)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
+ cairo_rectangle(c,70 + (posicion-1-inicioDeLectura)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
 EndIf
 If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
@@ -540,7 +540,7 @@ If (cursorHori=1 Or cursorVert = 1) And insert= 2 Then
  ' param : posicion comienzo (fijo), indice incremental para el aux 
  ' ,insert comando habilitado = 1
   'luego reemplazo 
-  Print #1, "inserta DUR, en ROLL n,nota,posicion ",DUR,n,(notacur + (nro-1) * 13),posicion
+  Print #1, "inserta DUR, en ROLL n,nota,posicion ",DUR,n,(notacur + (nro-1) * 13),n
   Roll(notacur + (nro-1) * 13, n).dur = DUR 
   vdur=Roll(notacur + (nro-1) * 13, n).dur
  ' SI LA NOTA  NO EXITIA LA agrega
@@ -597,35 +597,157 @@ If comEdit = TRUE Then
   cairo_set_source_rgba c, 0, 1, 0, 1
 Else
   cairo_set_source_rgba c, 0, 0, 0, 1
-EndIf   
-   resultado = GetMouse (x, y, , buttons)
+EndIf
+   
+cairo_move_to(c, 0, 30 ) 
+If menuNew <> menuNro Then
+  menuNro=menuNew
+EndIf
+' aca hay un comportamiento raro. por mas q menunro lo ajuste a 3
+' para el caso 0, siempre queda en 0 , debí usar menunew una seguna variable
+' y asi funciona ..(en ningun lado se ajusta a cero salvo al inicio fuera del
+' loop.....
 Select Case menuNro
   Case 0
-   t=  " <MENU>/<=|=>/<VENTANA>/MOVER=DRAGAR CINTA/POSICON NORMAL=F7-F8 (SUBE/BAJA BORDE INFERIOR) " 
+   If mousex > 8 And mousex< 87 And mousey < 50 Then
+      cairo_set_source_rgba c, 0, 1, 0, 1
+      menuNew = 3  ''<--- caso raro ¿?
+   Else 
+     cairo_set_source_rgba c, 0, 0, 0, 1
+   EndIf
+   t = " [Archivo]":cairo_show_text(c, t)
+
+   If mousex > 104 And mousex< 180 And mousey < 50 Then
+     cairo_set_source_rgba c, 0, 1, 0, 1
+   Else 
+     cairo_set_source_rgba c, 0, 0, 0, 1
+   EndIf
+   t=  " [Edicion]":cairo_show_text(c, t)
+
+   If mousex > 195 And mousex< 233 And mousey < 50 Then
+      cairo_set_source_rgba c, 0, 1, 0, 1
+   Else 
+      cairo_set_source_rgba c, 0, 0, 0, 1
+   EndIf 
+   t=  " [Ver]":cairo_show_text(c, t)
+
+   If mousex > 249 And mousex< 299 And mousey < 50 Then
+      cairo_set_source_rgba c, 0, 1, 0, 1
+   Else 
+      cairo_set_source_rgba c, 0, 0, 0, 1
+   EndIf
+   t=  " [Pista]":cairo_show_text(c, t)
+   
+   If mousex > 318 And mousex< 423 And mousey < 50 Then
+      menuNew = 4
+      cairo_set_source_rgba c, 0, 1, 0, 1
+   Else 
+      cairo_set_source_rgba c, 0, 0, 0, 1
+   EndIf
+   t=  " [Reproducir]":cairo_show_text(c, t)
+
+   If mousex > 443 And mousex< 532 And mousey < 50 Then
+      cairo_set_source_rgba c, 0, 1, 0, 1
+   Else 
+      cairo_set_source_rgba c, 0, 0, 0, 1
+   EndIf
+   t=  " [Opciones]":cairo_show_text(c, t)
+
+   If mousex > 552 And mousex< 613 And mousey < 50 Then
+      cairo_set_source_rgba c, 0, 1, 0, 1
+   Else 
+      cairo_set_source_rgba c, 0, 0, 0, 1
+   EndIf
+   t=  " [Ayuda]":cairo_show_text(c, t)
+
+   cairo_stroke(c)
   Case 1
-   t = "      EDIT" + " " + Str(x) + " " + Str(y) + " Octava: " + Str(oclog) + " UltimaPos: " + Str(Maxpos-1) +" Pos: " + Str(posicion)+ " posn: "+Str(posn)+" Font: " +str(font) + "dur "+ Str(vDur) +"Roll "+ Str(vRoll)
-  case 2 
-  t = "<ARCHIVO>:/GRABAR/GRABAR COMO/CERRAR/SALIR <REPRODUCIR>:/INICIO/AHORA/ <VOL>/ + / - / <VEL>:/ + / - /"
-  
-End Select
-
-
-cairo_show_text(c, t)
-If menuNro=1 Then 
-cairo_move_to(c, 0, 30 )
-If resize = TRUE Then
-  cairo_set_source_rgba c, 1, 0, 0, 1
-   t = "<>" 
-  
-Else
-  cairo_set_source_rgba c, 0, 0, 0, 1 
-   t = "<>" 
-
-EndIf
-
+   t=  " <MENU=(<=|=>)>/<VENTANA=(MOVER=DRAGAR CINTA)(POSICON NORMAL,SUBE/BAJA BORDE INFERIOR=F7-F8)> "
  
+  Case 2
+   t = "      EDIT" + " " + Str(mousex) + " " + Str(mousey) + " Octava: " + Str(oclog) + _
+   " UltimaPos: " + Str(Maxpos) +" Pos: " + Str(posicion)+ " posn: "+Str(posn)+ _
+   " Font: " +str(font) + "dur "+ Str(vDur) +"Roll "+ Str(vRoll) + _
+   " InicioDELectura: " + Str(InicioDelectura)
+
+  case 3 
+   t = " [NUEVO] [ABRIR] [GRABAR] [GRABAR COMO] [EXPORTAR] [CERRAR] [SALIR] "
+   If mousex > 104 And mousex < 160  Then ' abrir leer grabaroll.roll
+     Erase Roll
+      Dim z (1,1 )  As dat
+      Dim As String x,x1,x2,x3,x4
+     open "Trabajo.roll" for binary access Read as #2
+       
+       Get #2, , z(1,1)
+       x1=Bin(z(1,1).nota,4)
+       x2=Bin(z(1,1).dur,4)
+       x3=Bin(z(1,1).vol,4)
+       x4=Bin(z(1,1).pan,4)
+       x=x1+x2+x3+x4
+       Print #1,"reconstruccion x pos bin ", x
+       MaxPos=CInt("&B"+x)
+       posicion = 1
+       Print #1,"reconstruccion x pos int ", Posicion
+       notaold= z(1,1).pb
+       nota=0 '''notaOld
+       inicioDeLectura=0' Int(Maxpos/NroCol) 
+       posn=Maxpos- 1
+' cargamos trabajo datos       
+   Dim Trabajo (1 To 128,1 To MaxPos) As dat   
+       Get #2, , Trabajo()
+  ' movemos los datos a Roll      
+ ' -------------------------              
+       Dim As Integer i,j 
+       For i= 1 To 128
+          For j = 1 To MaxPos
+          Roll (i,j).nota = Trabajo (i,j).nota
+          Roll (i,j).dur  = Trabajo (i,j).dur
+          Roll (i,j).vol  = Trabajo (i,j).vol
+          Roll (i,j).pan  = Trabajo (i,j).pan
+          Roll (i,j).pb   = Trabajo (i,j).pb
+          Roll (i,j).inst = Trabajo (i,j).inst                 
+
+          Next j
+       Next i 
+    Close 2
+    carga=1 ' <======= control de Carga
+    Print #1,"VEMOS QUE QUEDA ENROLL nota, dur y vol hasta 40"
+    Dim P As Integer 
+    For P = 1 To 40
+     Print #1, Roll(1,p).nota;
+    Next
+       Print #1,
+    For P = 1 To 40
+     Print #1, Roll(1,p).dur;
+     
+    Next
+      Print #1,
+    For P = 1 To 40
+     Print #1, Roll(1,p).vol;
+    Next
+                
+   Else 
+     cairo_set_source_rgba c, 0, 0, 0, 1  
+   EndIf
+  Case 4
+   t=  "[DESDE INICIO][DESDE ESTA POSICION] [VOLUMEN / + / - /]" 
+End Select
+' Si nodoy Stroke los show text van apendendo al final como un print;
 cairo_show_text(c, t)
+cairo_stroke(c)
+
+If menuNro=2 Then ' cambio de tamaño de ventana
+   cairo_move_to(c, 0, 30 )
+   If resize = TRUE Then
+     cairo_set_source_rgba c, 1, 0, 0, 1
+      t = "<>" 
+  
+   Else
+     cairo_set_source_rgba c, 0, 0, 0, 1 
+      t = "<>" 
+   EndIf
 EndIf
+cairo_show_text(c, t)
 cairo_stroke(c)
 
 End Sub
@@ -822,3 +944,21 @@ Print #1,"antes del FOR Roll,RollAux.. indpos,ind ", indpos,ind
  EndIf
 insert=0 
 End Sub
+'------------------------------------
+' https://www.freebasic.net/forum/viewtopic.php?t=10398
+Function KeyPress(Key As Integer) As Integer
+Static LastKey(255) As Integer
+
+   If MultiKey(Key) = -1 Then
+      If Key = LastKey(Key) Then
+         Return (0)
+      Else
+         LastKey(Key)=Key
+         Return (-1)
+      EndIf
+   Else
+      LastKey(Key)=0
+      Return (0)
+   End If
+
+End Function

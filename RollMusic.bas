@@ -1,17 +1,8 @@
-' VERSION 5.7.3.1 , corregido al CARGARdesde disco en modo lectura
-' ya navega se ajsutarom 'posicion, posn, iniciodelectura, nota y notaOld.  
-' tODAVIA NO ES INSERCION AUTOMATICA, 
-' ES GRABACION Y CARGA DE ROLL A DISCO , CASI BIEN,PROBLEMA
-' AL CARGARLO: AL HACER SCROLL A DERECHA SI HAY MAS DE 1 PAGINA, O EN
-' UNA SOLA NO SE PUEDE RECORRER CON EL CURSOR LAS POSICIONES. POSICION Y POS
-' ESTAN EN 1 Y 0..LA EDICION CORREGI PERO DBERIAPODER HCERSE SIN EDITR,CORREGIR,,,
-' OTRO ISSUE ES QUE SOLO PUEDO GRABAR EL ARRAAY ROLL ENTERO Y AL FINAL
-' LA POSICION Y LA NOTAOLD ,,,PERO NO CONSIGO GRABAR UN
-' ARRAY MAS CHICO AL CARGARLO ENTRA BASURA,,,TALVEZ DEBERIA CARGAR CON
-' UN ARRAY CHICO PERO PARA ESO DEBERIA LEER EN 1ERA POSICION DEL ARCHIVO
-' LA POSICION Y LA NOTAOLD...Y LUEGO COPIAR TODO A ROLLL POR PROGRAMA,,,
-' ESO QUEDARA PENDENTE PARA 5.7.4, AHORA SEGUIMOS CON PODER
-' DAR SCROLL AL CARGAR EN MODO LECTURA.....  
+
+' 5.7.3.3 VERIFICARA CAMBIADUR ACORDES E INSERCION
+' PUES EN 5.7.3.2 SE RESOLVIO NVEGACION DER IZ LUEGO DE CARGA
+' [cambiadur ya anda ok] , lo raro que me quedo es la vuelta atras
+' pero bueno anda ver si sepuede mejorar 
 '---------------debug log
 
 Open "midebug.txt" for Output As #1
@@ -104,8 +95,8 @@ po = @octava
 s1=0:s2=0:s3=0:s4=0:s5=0:s6=0 '':s7=0:s8=0:s9=0
 font=18
 Dim e As EVENT
-Dim Shared as Integer StartInsert,ind 
-ind=0
+Dim Shared as Integer StartInsert,ind,NroCol, carga
+ind=0:NroCol=66:carga=0
 ' -----------------------------------------------------------------------
 ' notas redonda (O),blanca(P),negra(I),corchea(C),semicorchea(S), Fusa(F),Semifusa(U)
 ' O P I L F E # (listo todas mis notas!!!)
@@ -373,16 +364,17 @@ If MultiKey(SC_RIGHT)  Then ' <======== RIGHT
     Exit Do    
    Else
      'k60 cantidadscroll de 60
-     k60= Int(posicion/60)
-     If  (k60 > 0) And (posicion > 60 * k60) And (posicion < posn)Then
-      posicion = posicion + 60
-      iniciodelectura = iniciodelectura + 60
-     Else
-      posicion = posicion + 1
+     posicion = posicion + 1
+     k60= Int(posicion/NroCol)
+     If  (k60 > 0) And (posicion = NroCol * k60) And (posicion < MaxPos)Then
+      iniciodelectura = iniciodelectura +  NroCol
+      If inicioDeLEctura > MaxPos Then
+         inicioDeLEctura = inicioDeLEctura -NroCol
+      EndIf
      EndIf
       Sleep 100
-     If posicion > posn Then
-      posicion = posn
+     If posicion > MaxPos -1  Then
+      posicion = MaxPos -1
      EndIf
      Exit Do 
    EndIf 
@@ -400,13 +392,17 @@ If MultiKey(SC_LEFT)  Then '  <========== LEFT
     Exit Do    
    Else
       'MOVER PENTAGRAMA IZQUIERDA NO CURSOR
-     Dim k60 As Integer ' cntidad de scroll de 60
-     k60= Int(iniciodelectura/60)
-     If  k60 > 0 And posicion = 60*k60 Then
-      posicion = posicion - 60
-      iniciodelectura = iniciodelectura - 60
-     Else
-      posicion = posicion - 1
+     Dim k60 As Integer ' cntidad de scroll de 66
+     posicion = posicion - 1
+     k60= Int(posicion/NroCol)
+     If  k60 > 0 And (posicion > NroCol*k60) And (MaxPos - Posicion  <=NroCol) Then
+      iniciodelectura = iniciodelectura - 1
+     EndIf
+     If  k60 > 0 And (posicion = NroCol*k60)  Then
+       iniciodelectura = iniciodelectura - NroCol
+     EndIf  
+     If iniciodelectura < 0 Then
+        iniciodelectura = 0
      EndIf
      Sleep 100 
      If posicion < 1 Then
@@ -515,15 +511,16 @@ EndIf
 ' PRUEBAS DE GRABACION DEL VECTOR ROLL es sencillo porque grabo todo
 ' o cargo todo,, 
 ' https://www.freebasic.net/forum/viewtopic.php?f=2&t=26636&p=246435&hilit=array+load+save#p246435
-if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco  
+' ===================================
+if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
  'cada posicion tendre 48bits osea 6bytes..
  ' luego 12000 posiicones si estuviera todo completo serian 9216000 bytes
 ' y grabo..9mbytes, seria 1 Track,,295 mbytes para 32 tracks
    Print #1, "Grabando a disco Roll F11 "
-   Open "grabaRoll.roll" For Binary access write As #2
-    Put #2, ,Roll() 
-
-    Dim grabaPos (1,1)  As dat
+   Open "Trabajo.roll" For Binary access write As #2
+   
+   Dim Trabajo (1 To 128, 1 To Maxpos) As dat
+   Dim grabaPos (1,1)  As dat
    Dim as integer i1, i2
    Dim As Integer y1,y2,y3,y4 
    Dim As String a1,a2,a3,a4 ,x
@@ -565,41 +562,20 @@ if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco
        EndIf 
     Next
     grabaPos(1,1).pb = notafinal
-
-'   x= Bin(InicioDeLectura,16)
-'   Print #1,"MaxPos ",InicioDeLEctura
-' 'Print "string representando ", x
-'   a1=Mid(x,1,4)
-'   a2=Mid(x,5,4)
-'   a3=Mid(x,9,4)
-'   a4=Mid(x,13,4)
-' Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
- 
-'   y1= CInt("&B"+a1)
-'   y2= CInt("&B"+a2)
-'   y3= CInt("&B"+a3)
-'   y4= CInt("&B"+a4)
-' Print #1, "y1,y2,y3,y4", y1,y2,y3,y4  
-' grabamos maxpos en 4 ubyte   
-'   grabaRoll(1,2).nota = y1
-'   grabaRoll(1,2).dur  = y2
-'   grabaRoll(1,2).vol  = y3
-'   grabaRoll(1,2).pan  = y4
-
+' Grabacion de Trabajo
 ' ------------------------------------ 
-'   For i1 = 1 To 128
-'     For i2 = 2 To MaxPos + 1    
-'        grabaRoll(i1,i2)=Roll(i1,i2 -1 )
-'     Next i2
-'   Next i1 
+   For i1 = 1 To 128
+     For i2 = 1 To MaxPos     
+        Trabajo(i1,i2)=Roll(i1,i2 )
+     Next i2
+   Next i1 
 
-'   Print #1,"Pos grabada en grabaRoll ",Posicion
-'   Print #1,"InicioDeLectura grabada en grabaRoll ",InicioDeLectura
-   
-''   Open "grabaRoll.roll" For Binary access write As #2
+  Print #1,"MaxPos grabada en Trabajo ",MaxPos
+    
     Put #2, ,grabaPos(1,1) 
+    Put #2, ,Trabajo()
     Close 2
-    While Inkey <> "": Wend
+    While InKey <> "": Wend
  sleep 150
      Print "ENTRO ENTRO ENTRO"
     Print "ENTRO ENTRO ENTRO"
@@ -613,78 +589,44 @@ EndIf
 
 If MultiKey(SC_L)  Then ' <======== load Roll
      Erase Roll
-'     cairo_destroy(c)
-'     cairo_paint(c)
-'     cairo_stroke(c)
-'     cairo_set_source_rgba c, 0, 1, 0, 1
       Dim z (1,1 )  As dat
       Dim As String x,x1,x2,x3,x4
-     open "grabaRoll.roll" for binary access read as #2
-       get #2, , Roll()
-       Get #2, , z(1,1)
+     open "Trabajo.roll" for binary access Read as #2
        
+       Get #2, , z(1,1)
        x1=Bin(z(1,1).nota,4)
        x2=Bin(z(1,1).dur,4)
        x3=Bin(z(1,1).vol,4)
        x4=Bin(z(1,1).pan,4)
        x=x1+x2+x3+x4
        Print #1,"reconstruccion x pos bin ", x
-       Posicion=CInt("&B"+x)
-       Maxpos=posicion + 1
+       MaxPos=CInt("&B"+x)
+       posicion = 1 
        Print #1,"reconstruccion x pos int ", Posicion
        notaold= z(1,1).pb
-       nota=0 '''notaOld
-       inicioDeLectura=Int(posicion/60)
-       posn=posicion
-       'cursor(c,posicion,4)
-       
- '  convertimos el 2do valor
-'       Get #2, , z(1,2)
-'       x1=Bin(z(1,2).nota,4)
-'       x2=Bin(z(1,2).dur,4)
-'       x3=Bin(z(1,2).vol,4)
-'       x4=Bin(z(1,2).pan,4)
-'       x=x1+x2+x3+x4
-'       InicioDeLectura=CInt("&B"+x)
+       nota=0 
+       inicioDeLectura=0 'Int(Maxpos/NroCol) 
+       posn=MaxPos - 1
+' cargamos trabajo datos       
+   Dim Trabajo (1 To 128,1 To MaxPos) As dat    
+       Get #2, , Trabajo()
+  ' movemos los datos a Roll      
  ' -------------------------              
-'       Dim As Integer i,j 
-'       For i= 1 To 128
-'          For j = MaxPos+1 To 12000
-'             Roll (i,j).nota=0
-'             Roll (i,j).dur=0
-'             Roll (i,j).vol=0
-'             Roll (i,j).pan=0
-'             Roll (i,j).pb=0
-'             Roll (i,j).inst=0                 
+       Dim As Integer i,j 
+       For i= 1 To 128
+          For j = 1 To MaxPos
+          Roll (i,j).nota = Trabajo (i,j).nota
+          Roll (i,j).dur  = Trabajo (i,j).dur
+          Roll (i,j).vol  = Trabajo (i,j).vol
+          Roll (i,j).pan  = Trabajo (i,j).pan
+          Roll (i,j).pb   = Trabajo (i,j).pb
+          Roll (i,j).inst = Trabajo (i,j).inst                 
 
-'          Next j
-'       Next i 
-'       For i= 1 To 128
-'          For j = 1 To MaxPos+1
-'            If Roll (i,j).nota >8 Then 
-'              Roll (i,j).nota=0
-'            EndIf   
-'            If Roll (i,j).dur > 46 Then
-'              Roll (i,j).dur=0
-'            EndIf   
-'            If Roll (i,j).vol > 127 Then
-'               Roll (i,j).vol=0
-'            EndIf
-'            If Roll (i,j).pan> 127 Then   
-'               Roll (i,j).pan=0
-'            EndIf
-'            If Roll (i,j).pb > 127 Then   
-'               Roll (i,j).pb=0
-'            EndIf
-'            If Roll (i,j).inst>127 Then   
-'               Roll (i,j).inst=0                 
-'            EndIf
-'          Next j
-'       Next i 
-       
-'       posn=1
+          Next j
+       Next i 
     Close 2
-
+    carga=1 ' <======= control de Carga
+ ' colocar algo visual que indique quesehizo la grabcion
 EndIf
 
 if Multikey (SC_F12) Then
@@ -956,8 +898,8 @@ EndIf
            Exit Do
          EndIf
          posn = posn + 1
-         If (posn > 60 + InicioDeLectura) Then 
-            InicioDeLectura=InicioDeLectura+60  
+         If (posn > NroCol + InicioDeLectura) Then 
+            InicioDeLectura=InicioDeLectura + NroCol  
          EndIf
         Print #1, "ingreso a NUCLEO posn ",posn
        Loop
