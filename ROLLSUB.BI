@@ -2,7 +2,7 @@ Sub creaPenta (c AS cairo_t Ptr,nro As Integer, octava As Integer Ptr,InicioDeLe
 
 Dim AS cairo_font_extents_t fe   '     font data
 Dim AS cairo_text_extents_t te  '      text size
-dim as integer i,n
+dim as integer semitono,n, ic
 ' VERSION 3 DEBO FORMAR LA OCTAVACOMPLET 12 SONIDOS 
 ' v4 ponemos maslineas de separacion par q toda duricon este en espacios 
 ' hay que usar el font Goergia o culqueir con utf8 o seguir lo que dice 
@@ -14,6 +14,9 @@ dim as integer i,n
 'if indice <= 0 then indice = 1 
 'if indice >= 128 then indice = 128
 
+
+ 
+ 
 cairo_select_font_face (c, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
 cairo_set_font_size (c, font)
 
@@ -25,390 +28,52 @@ cairo_set_source_rgba(c, 0, 0, 0, 1)
 cairo_move_to(c, 0, Penta_y )
 cairo_line_to(c, ANCHO - 1, Penta_y )
 
-''var  t = "B_" + Str(*octava) + "       " + Str(AltoYenRoll (1 + (nro -1) *13)) + " " + Str(indice)
-var  t = "B_" +  Str(*octava) + "_["
-cairo_move_to(c, 0, Penta_y + inc_Penta- 6)
-cairo_show_text(c, t)
-
- n = 1 
- ' esto se debe cmbiar todo para duraciones..!!! cambiando...
- do 
-   if Roll (1 + (nro-1) * 13, n + InicioDeLectura ).nota > 0 Or _
-      Roll (1 + (nro-1) * 13, n + InicioDeLectura ).dur > 0 Then
-      if espacio = 1 and n=posicion  Then 
-        Roll (1 + (nro-1) * 13, n+ InicioDeLectura).nota = 45
-        if fijarEspacio=0 then 
-            espacio=0
-        EndIf
-      EndIf
-        cairo_move_to(c, 70 + (n-1)*20 , Penta_y + inc_Penta- 6)
-        t= figura((Roll (1 + (nro-1) * 13, n+ InicioDeLectura).dur))
-        cairo_show_text(c, t)
-   Else      
-      Exit do 
-   EndIf
-   n= n + 1 
- loop 
- if n + InicioDeLectura > MAXPos then 
-     MaxPos = n + InicioDeLectura    
- EndIf
-
-cairo_move_to(c, 0, Penta_y + inc_Penta )
-cairo_line_to(c, ANCHO - 1, Penta_y + inc_Penta)
-
-
- t = "A#" + Str(*octava) +  "_["
- cairo_move_to(c, 0, Penta_y +  2 * inc_Penta - 6)
- cairo_show_text(c, t)
-'------------------------------------------------------
- n = 1  
- do 
-   if Roll (2 + (nro-1) * 13, n + InicioDeLectura ).nota > 0 Or _ 
-      Roll (2 + (nro-1) * 13, n + InicioDeLectura ).dur > 0 Then
-      if espacio = 2 And n=posicion  Then 
-        Roll (2 + (nro-1) * 13, n + InicioDeLectura ).nota = 45
-        if fijarEspacio=0 then 
-            espacio=0
-        EndIf
-      endif
-      cairo_move_to(c, 70 + (n-1)*20 , Penta_y + 2 * inc_Penta- 6)
-      t = figura(Roll (2 + (nro-1) * 13, n+ InicioDeLectura ).dur)
-      cairo_show_text(c, t)
-   else 
-    Exit do 
-   endif
-   n= n + 1 
- loop 
- if n + InicioDeLectura > MAXPos then 
-     MaxPos = n  + InicioDeLectura   
- EndIf
- 
-cairo_move_to(c, 0, Penta_y + 2 * inc_Penta  )
-cairo_line_to(c, ANCHO - 1, Penta_y + 2* inc_Penta )
-
-'-----------------------------------------------------------
- t = "A_" + Str(*octava) + "_["
- cairo_move_to(c, 0, Penta_y + 3 * inc_Penta -6)
- cairo_show_text(c, t)
-
- n= 1 
- do 
-   if Roll (3 + (nro-1) * 13, n + InicioDeLectura ).nota > 0 Or _ 
-      Roll (3 + (nro-1) * 13, n + InicioDeLectura ).dur > 0 Then
-      if espacio = 3 And n=posicion  Then 
-        Roll (3 + (nro-1) * 13, n + InicioDeLectura).nota = 45
-        if fijarEspacio=0 then 
-            espacio=0
-        EndIf
-      endif
-      cairo_move_to(c, 70 + (n-1)*20 , Penta_y + 3 * inc_Penta- 6)
-      t = figura(Roll (3 + (nro-1) * 13, n + InicioDeLectura ).dur)
-      cairo_show_text(c, t)
-   else     
-    Exit Do  
-   endif
-   n= n + 1
- loop 
- if n + InicioDeLectura > MAXPos then 
-     MaxPos = n  + InicioDeLectura   
- EndIf
-
- 
-cairo_move_to(c, 0, Penta_y + 3 * inc_Penta   )
-cairo_line_to(c, ANCHO - 1, Penta_y + 3 * inc_Penta )
-'--------------------------------------------------------
- t = "G#" + Str(*octava) +  "_["
- cairo_move_to(c, 0, Penta_y + 4 * inc_Penta - 6 )
- cairo_show_text(c, t)
-
- n = 1 
- do 
-   if Roll (4 + (nro-1) * 13, n + InicioDeLectura ).nota > 0 Or _ 
-      Roll (4 + (nro-1) * 13, n + InicioDeLectura ).dur > 0 Then
-      if espacio = 4 And n=posicion  Then 
-        Roll (4 + (nro-1) * 13, n + InicioDeLectura -1).nota = 45
-        if fijarEspacio=0 then 
-            espacio=0
-        EndIf
-      endif
-      cairo_move_to(c, 70 + (n-1)*20 , Penta_y + 4 * inc_Penta- 6)
-      t = figura(Roll (4 + (nro-1) * 13, n + InicioDeLectura ).dur)
-      cairo_show_text(c, t)
-   ELSE
-    Exit do  
-   endif
-   n = n + 1
- loop 
-  if n + InicioDeLectura > MAXPos then 
-     MaxPos = n + InicioDeLectura    
- EndIf
-
- 
-cairo_move_to(c, 0, Penta_y + 4 * inc_Penta  )
-cairo_line_to(c, ANCHO - 1, Penta_y + 4 * inc_Penta )
-
-'----------------------------------------
- t = "G_"  + Str(*octava) +  "_["
- cairo_move_to(c, 0,  Penta_y + 5 * inc_Penta - 6)
- cairo_show_text(c, t)
-
- n = 1 
- do 
-   if Roll (5 + (nro-1) * 13, n + InicioDeLectura ).nota > 0 Or _ 
-      Roll (5 + (nro-1) * 13, n + InicioDeLectura ).dur > 0 Then
-      if espacio = 5 And n=posicion  Then 
-        Roll (5 + (nro-1) * 13, n + InicioDeLectura ).nota = 45
-        if fijarEspacio=0 then 
-            espacio=0
-        EndIf
-      endif
-      cairo_move_to(c, 70 + (n-1)*20 , Penta_y + 5 * inc_Penta- 6)
-      t = figura(Roll(5 + (nro-1) * 13, n+ InicioDeLectura ).dur)
-      cairo_show_text(c, t)
-   ELSE
-    Exit do 
-   endif
-   n= n + 1
- loop 
- if n + InicioDeLectura > MAXPos then 
-     MaxPos = n + InicioDeLectura    
- EndIf
-
-
-cairo_move_to(c, 0, Penta_y + 5 * inc_Penta   )
-cairo_line_to(c, ANCHO - 1, Penta_y + 5 * inc_Penta )
-'----------------------------------------------------------
- t = "F#" + Str(*octava) +  "_["
- cairo_move_to(c, 0,  Penta_y + 6 * inc_Penta - 6)
- cairo_show_text(c, t)
-
- n = 1 
- do 
-   if Roll (6 + (nro-1) * 13, n+ InicioDeLectura ).nota > 0 Or _ 
-      Roll (6 + (nro-1) * 13, n + InicioDeLectura ).dur > 0 Then
-      if espacio = 6 And n=posicion  Then 
-        Roll (6 + (nro-1) * 13, n+ InicioDeLectura ).nota = 45
-        if fijarEspacio=0 then 
-            espacio=0
-        EndIf
-      endif
-      cairo_move_to(c, 70 + (n-1)*20 , Penta_y + 6 * inc_Penta- 6)
-      t = figura(Roll(6 + (nro-1) * 13, n+ InicioDeLectura ).dur)
-      cairo_show_text(c, t)
-   ELSE
-    Exit Do  
-   endif
-   n = n + 1
- loop 
- if n + InicioDeLectura > MAXPos then 
-     MaxPos = n + InicioDeLectura    
- EndIf
-
- 
-cairo_move_to(c, 0, Penta_y + 6 * inc_Penta   )
-cairo_line_to(c, ANCHO - 1, Penta_y + 6 * inc_Penta )
-'-----------------------------------------------------------
-
- t = "F_" + Str(*octava) + "_["
- cairo_move_to(c, 0, Penta_y + 7 * inc_Penta - 6)
- cairo_show_text(c, t)
-
- n=1 
- do 
-   if Roll (7 + (nro-1) * 13, n + InicioDeLectura ).nota > 0 Or _ 
-      Roll (7 + (nro-1) * 13, n + InicioDeLectura ).dur > 0 Then
-      if espacio = 7 and n=posicion  Then 
-        Roll (7 + (nro-1) * 13, n + InicioDeLectura ).nota = 45
-        if fijarEspacio=0 then 
-            espacio=0
-        EndIf
-      endif
-      cairo_move_to(c, 70 + (n-1)*20 , Penta_y + 7 * inc_Penta- 6)
-      t = figura(Roll(7 + (nro-1) * 13, n + InicioDeLectura ).dur)
-      cairo_show_text(c, t)
-   ELSE
-    Exit Do 
-   endif
-   n = n + 1
- loop 
- if n + InicioDeLectura > MAXPos then 
-     MaxPos = n + InicioDeLectura    
- EndIf
-
-  
-cairo_move_to(c, 0, Penta_y + 7 * inc_Penta  )
-cairo_line_to(c, ANCHO - 1, Penta_y + 7 * inc_Penta )
-'------------------------------------------------------------
- t = "E_" + Str(*octava) + "_["
- cairo_move_to(c, 0, Penta_y + 8 * inc_Penta - 6)
- cairo_show_text(c, t)
-
- n= 1 
- do 
-   if Roll (8 + (nro-1) * 13, n + InicioDeLectura ).nota > 0 Or _ 
-      Roll (8 + (nro-1) * 13, n + InicioDeLectura ).dur > 0 Then
-     if espacio = 8 and n=posicion  Then 
-       Roll (8 + (nro-1) * 13, n + InicioDeLectura ).nota = 45
-        if fijarEspacio=0 then 
-            espacio=0
-        EndIf
-     endif
-     cairo_move_to(c, 70 + (n-1)*20 , Penta_y + 8 * inc_Penta- 6)
-     t = figura(Roll(8 + (nro-1) * 13, n + InicioDeLectura ).dur)
-     cairo_show_text(c, t)
-   else 
-    Exit do 
-   endif
-   n = n +1
- loop 
- if n + InicioDeLectura > MAXPos then 
-     MaxPos = n + InicioDeLectura    
- EndIf
-
-
-cairo_move_to(c, 0, Penta_y + 8 * inc_Penta   )
-cairo_line_to(c, ANCHO - 1, Penta_y + 8 * inc_Penta)
-'----------------------------------------------------------
- t = "D#" + Str(*octava) + "_["
- cairo_move_to(c, 0, Penta_y + 9 * inc_Penta - 6)
- cairo_show_text(c, t)
-
- n = 1 
- do 
-   if Roll (9 + (nro-1) * 13, n + InicioDeLectura ).nota > 0 Or _ 
-      Roll (9 + (nro-1) * 13, n + InicioDeLectura ).dur > 0 Then
-     if espacio = 9 And n=posicion  Then 
-       Roll (9 + (nro-1) * 13, n + InicioDeLectura ).nota = 45
-        if fijarEspacio=0 then 
-            espacio=0
-        EndIf
-     endif
-     cairo_move_to(c, 70 + (n-1)*20 , Penta_y + 9 * inc_Penta- 6)
-     t = figura(Roll(9 + (nro-1) * 13, n + InicioDeLectura ).dur)
-     cairo_show_text(c, t)
-   else 
-    Exit Do 
-   endif
-   n = n + 1
- Loop
- if n + InicioDeLectura > MAXPos then 
-     MaxPos = n + InicioDeLectura    
- EndIf
-
-  
-cairo_move_to(c, 0, Penta_y + 9 * inc_Penta )
-cairo_line_to(c, ANCHO - 1, Penta_y + 9 * inc_Penta )
-'-----------------------------------------------------
-
- t = "D_" + Str(*octava) + "_["
-cairo_move_to(c, 0, Penta_y + 10 * inc_Penta - 6)
-cairo_show_text(c, t)
-
- n=1 
-  do
-   if Roll (10 + (nro-1) * 13, n + InicioDeLectura ).nota > 0 Or _ 
-      Roll (10 + (nro-1) * 13, n + InicioDeLectura ).dur > 0 Then
-      if espacio = 10 And n=posicion  Then 
-        Roll (10 + (nro-1) * 13, n + InicioDeLectura ).nota = 45
-        if fijarEspacio=0 then 
-            espacio=0
-        EndIf
-      EndIf
-      cairo_move_to(c, 70 + (n-1)*20 , Penta_y + 10 * inc_Penta- 6)
-      t = figura(Roll(10 + (nro-1) * 13, n + InicioDeLectura ).dur)
-      cairo_show_text(c, t)
-   ELSE
-     exit do 
-   endif
-   n = n + 1
-  loop 
-  
-   if n + InicioDeLectura > MAXPos then 
-     MaxPos = n   + InicioDeLectura  
-   EndIf
-Dim td As String = t
-
-  
-cairo_move_to(c, 0, Penta_y + 10 * inc_Penta )
-cairo_line_to(c, ANCHO - 1, Penta_y + 10 * inc_Penta)
-'--------------------------------------------------------
-
- t = "C#" + Str(*octava) + "_["
- cairo_move_to(c, 0, Penta_y + 11 * inc_Penta - 6)
- cairo_show_text(c, t)
-
- n= 1 
-  do 
-   if Roll (11 + (nro-1) * 13, n + InicioDeLectura ).nota > 0 Or _ 
-      Roll (11 + (nro-1) * 13, n + InicioDeLectura ).dur > 0 Then
-      if espacio = 11 And n=posicion  Then 
-        Roll (11 + (nro-1) * 13, n + InicioDeLectura).nota = 45
-        if fijarEspacio=0 then 
-            espacio=0
-        EndIf
-      EndIf
-      cairo_move_to(c, 70 + (n-1)*20 , Penta_y + 11 * inc_Penta- 6)
-      t = figura(Roll(11 + (nro-1) * 13, n + InicioDeLectura ).dur)
-      cairo_show_text(c, t)
-   Else 
-     Exit do 
-   endif
-   n = n + 1
-  Loop
-  if n + InicioDeLectura > MAXPos then 
-     MaxPos = n   + InicioDeLectura  
+' posicion es el indice del vector Roll
+' curpos es la posicion del cursor de 1 a NroCol 
+' cuando estoy en lectura el scroll avanza o retrocede con flechas izq der...
+' en ctrl-M modo cursor loq semueve es el cursor el vectorqueda quieto
+' la posicion del vector en donde se modifica seria en el rango 
+' posicion NroCol sumandolde eloffset del cursor de 1 a NroCol
+' o sea indice vEctor en Ctrl-M = posicion + curpos 
+Var t = " "
+For semitono = 1 To 12 
+  t = NotasGuia(semitono) + Str(*octava) + "_["
+  cairo_move_to(c, 0, Penta_y + semitono * inc_Penta- 6)
+  cairo_show_text(c, t)
+  ic=0 'indice cursor
+  For n = posicion to posicion + NroCol 
+    If Roll (semitono + (nro-1) * 13, n  ).nota > 0 Or _
+       Roll (semitono + (nro-1) * 13, n  ).dur > 0 Then
+          if espacio = semitono and ((n - inicioDeLectura)=curpos)  Then 
+             Roll (semitono + (nro-1) * 13, n ).nota = 33
+             if fijarEspacio=0 then 
+                espacio=0
+             EndIf
+          EndIf
+       cairo_move_to(c, 70 + ic * 20 , Penta_y + semitono * inc_Penta - 6)
+ 'correcion y grabcion
+' Dim correc As UByte 
+'     correc= Roll (semitono + (nro-1) * 13, n).dur    
+'     If correc >= 13 And correc <= 46 Then
+'       Roll (semitono + (nro-1) * 13, n).dur = Roll (semitono + (nro-1) * 13, n).dur - 12
+'     EndIf
+       t= figura((Roll (semitono + (nro-1) * 13, n).dur))
+       cairo_show_text(c, t)
+       ic += 1
+    Else      
+      Exit For 
+    EndIf
+    
+  Next n
+  if n  > MAXPos then 
+     MaxPos = n     
   EndIf
 
+  cairo_move_to(c, 0, Penta_y + semitono * inc_Penta )
+  cairo_line_to(c, ANCHO - 1, Penta_y + semitono * inc_Penta)
 
-cairo_move_to(c, 0, Penta_y + 11 * inc_Penta )
-cairo_line_to(c, ANCHO - 1, Penta_y + 11 * inc_Penta )
-
-' t = "C_" + Str(*octava) +"       " + Str(AltoYenRoll (12 + (nro-1) * 13)) + " " + Str(indice) + " td:" + td 
-'----------------------------------------------------------------
-
-t = "C_" + Str(*octava) + "_["
-cairo_move_to(c, 0, Penta_y + 12 * inc_Penta - 6)
-cairo_show_text(c, t)
-
- n= 1 
-  do 
-   if Roll (12 + (nro-1) * 13, n + InicioDeLectura ).nota > 0 Or _ 
-      Roll (12 + (nro-1) * 13, n + InicioDeLectura ).dur > 0 Then
-      if espacio = 12 and n=posicion  Then 
-        Roll (12 + (nro-1) * 13, n + InicioDeLectura ).nota = 45
-        if fijarEspacio=0 then 
-            espacio=0
-        EndIf
-      EndIf
-      cairo_move_to(c, 70 + (n-1)*20 , Penta_y + 12 * inc_Penta- 6)
-      t = figura(Roll(12 + (nro-1) * 13, n + InicioDeLectura ).dur)
-      cairo_show_text(c, t)
-   else 
-     exit Do 
-   endif
-   n = n + 1
-  Loop
-  if n + InicioDeLectura > MAXPos then 
-     MaxPos = n  + InicioDeLectura   
-  EndIf
-
+Next semitono
   
-cairo_move_to(c, 0, Penta_y + 12 * inc_Penta  )
-cairo_line_to(c, ANCHO - 1, Penta_y + 12 * inc_Penta )
-
-'Dim As Integer n, sinLinea ' en cada octava nose dibuja linea ergo hay menso separacion
-' sinLinea=0 
-' For n = 1 + (nro-1)*13 To 12 + (nro -1 )*13
-'    
-'    If n = indice Then
-'      t= "       " + Str(AltoYenRoll (n))
-'      cairo_move_to(c, 0,AltoYenRoll (n) + sinLinea)
-'      cairo_show_text(c,t) 
-'    EndIf
-'    If (n Mod 13) = 0 Then
-'      sinLinea = sinLinea - 1700
-'    EndIf  
-' Next
 
 If nro = 9 Then 
  cairo_set_font_size (c, 20)
@@ -433,11 +98,11 @@ cairo_show_text(c, t)
 cairo_move_to(c, 0, Penta_y + inc_Penta * 18 )
 cairo_show_text(c, t)
 End If
-' si estoy en esta octava ...edicionsolo para esa octava segun posicion del mouse 
-'automaticamete
+' si estoy en esta octava ...edicion solo para esa octava segun posicion 
+' del mouse automaticamete
 if ( Penta_y <= mousey) and ((Penta_y + 12 * inc_Penta) >= mousey)  Then
  ' estoy en una octava    
-  estoyEnOctava = nro
+  estoyEnOctava = nro '<========== DETERMINACION DE OCTAVA DE TRABAJO
 
 ' CURSOR 
  cairo_stroke(c)
@@ -463,12 +128,12 @@ Sub cursor(c AS cairo_t Ptr,n As Integer, nro As Integer)
 'n esla posicion al cargar datos deberia llamar a curor creo,,,probando  
  
 
-If cursorVert=1 Then  ' vertical 
+If cursorVert=1 Then  ' vertical comEdit=TRUE
     
-cairo_move_to  (c, 70 + (posicion-1-inicioDeLectura)*20, Penta_y + (notacur-1) * inc_Penta  )
-cairo_rectangle(c, 70 + (posicion-1-inicioDeLectura)*20, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
-cairo_move_to  (c, 70 + (posicion-1-inicioDeLectura)*20 + inc_Penta, Penta_y  )
-cairo_line_to  (c, 70 + (posicion-1-inicioDeLectura)*20 + inc_Penta, Penta_y + (notacur-1) * inc_Penta  +inc_Penta ) 
+cairo_move_to  (c, 70 + (curpos)*20, Penta_y + (notacur-1) * inc_Penta  )
+cairo_rectangle(c, 70 + (curpos)*20, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
+cairo_move_to  (c, 70 + (curpos)*20 + inc_Penta, Penta_y  )
+cairo_line_to  (c, 70 + (curpos)*20 + inc_Penta, Penta_y + (notacur-1) * inc_Penta  +inc_Penta ) 
 
 EndIf
 If cursorVert= 0 And cursorHori=0 then
@@ -476,13 +141,13 @@ If cursorVert= 0 And cursorHori=0 then
      notaOld=notacur
      notacur=0
   EndIf
- cairo_move_to  (c,70 + (posicion-1-inicioDeLectura)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
- cairo_rectangle(c,70 + (posicion-1-inicioDeLectura)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
+ cairo_move_to  (c,70 + (curpos)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
+ cairo_rectangle(c,70 + (curpos)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
 EndIf
 If cursorHori=1 Then
- cairo_move_to  (c,70 + (posicion-1-inicioDeLectura)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
- cairo_rectangle(c,70 + (posicion-1-inicioDeLectura)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
+ cairo_move_to  (c,70 + (curpos)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
+ cairo_rectangle(c,70 + (curpos)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
 EndIf
 If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
@@ -491,12 +156,12 @@ If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
    If notacur=0 Then 
       notacur=notaOld
    EndIf
-   dursaved = Roll(notacur + (nro-1) * 13, n).dur
+   dursaved = Roll(notacur + (nro-1) * 13, n + curpos).dur
 ' debo cambiar esa nota por su equivalente silencio
   
-  Roll(notacur + (nro-1) * 13, n).dur = dursaved + 16 
-  If Roll(notacur + (nro-1) * 13, n).dur > 45 Then
-     Roll(notacur + (nro-1) * 13, n).dur = 45
+  Roll(notacur + (nro-1) * 13, n + curpos).dur = dursaved + 16 
+  If Roll(notacur + (nro-1) * 13, n +curpos).dur > 33 Then
+     Roll(notacur + (nro-1) * 13, n +curpos).dur = 33
   EndIf
   borrar = 0
       
@@ -510,11 +175,11 @@ If (cursorHori=1 Or cursorVert = 1) And cambiadur= 1 Then
    If notacur=0 Then  '<- aca ingreso nota aunqne no haya?
       notacur=notaOld
    EndIf
-  Roll(notacur + (nro-1) * 13, n).dur = DUR 
-  vdur=Roll(notacur + (nro-1) * 13, n).dur
+  Roll(notacur + (nro-1) * 13, n + curpos).dur = DUR 
+  vdur=Roll(notacur + (nro-1) * 13, n +curpos).dur
   ' SI LA NOTA  NO EXITIA LA agrega
-  Roll(notacur + (nro-1) * 13, n).nota = notacur  ' 5.7.2 
-  vroll= Roll(notacur + (nro-1) * 13, n).nota
+  Roll(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
+  vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
   cambiadur = 0    
 EndIf 
 ' PROCESO INSERT 
@@ -532,22 +197,22 @@ If (cursorHori=1 Or cursorVert = 1) And insert= 2 Then
  ' StartInsert esglobal,posicion de inicio de la insercion cuando  pulsamos
  ' la tecla insert se guarda la posicion de inicio desde ahi habra reemplzos
  ' usando la posicion comun n
- ' hasta que se pulse FINose alcance el FIN (46)   
+ ' hasta que se pulse FINose alcance el FIN (34)   
   Print #1, "call a movedato con ind ",ind 
   ' n es StartInsert fijo no se modifica mas
-   movedato (n ,ind, insert,notacur + (nro-1) * 13 ) 'antes de reemplazarlo 
+   movedato (n + curpos,ind, insert,notacur + (nro-1) * 13 ) 'antes de reemplazarlo 
   Print #1, "regreso de movedato con ind ",ind
  ' param : posicion comienzo (fijo), indice incremental para el aux 
  ' ,insert comando habilitado = 1
   'luego reemplazo 
   Print #1, "inserta DUR, en ROLL n,nota,posicion ",DUR,n,(notacur + (nro-1) * 13),n
-  Roll(notacur + (nro-1) * 13, n).dur = DUR 
-  vdur=Roll(notacur + (nro-1) * 13, n).dur
+  Roll(notacur + (nro-1) * 13, n +curpos).dur = DUR 
+  vdur=Roll(notacur + (nro-1) * 13, n+curpos).dur
  ' SI LA NOTA  NO EXITIA LA agrega
 Print #1, "carga notacur en ROLL n,nota calculada ", n,(notacur + (nro-1) * 13)
   
-  Roll(notacur + (nro-1) * 13, n).nota = notacur ' 5.7.3 
-  vroll= Roll(notacur + (nro-1) * 13, n).nota
+  Roll(notacur + (nro-1) * 13, n+curpos).nota = notacur ' 5.7.3 
+  vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
   ' TODO IGUAL A cambiadur = 1 deberia andar ,,,,lunica diff es 
   ' que se crgala nota en roll
   insert=1  ' habilita de nuevo la tecla I deingreso de insercion en un lugar
@@ -700,7 +365,7 @@ Select Case menuNro
        Dim As Integer i,j 
        For i= 1 To 128
           For j = 1 To MaxPos
-          Roll (i,j).nota = Trabajo (i,j).nota
+          Roll (i,j).nota  = Trabajo (i,j).nota
           Roll (i,j).dur  = Trabajo (i,j).dur
           Roll (i,j).vol  = Trabajo (i,j).vol
           Roll (i,j).pan  = Trabajo (i,j).pan
@@ -711,20 +376,28 @@ Select Case menuNro
        Next i 
     Close 2
     carga=1 ' <======= control de Carga
-    Print #1,"VEMOS QUE QUEDA ENROLL nota, dur y vol hasta 40"
+    Print #1,"VEMOS QUE QUEDA ENROLL nota, dur hasta 40 debug" 
     Dim P As Integer 
-    For P = 1 To 40
-     Print #1, Roll(1,p).nota;
+    Print #1, "B_--------->"
+    For P = 260 To MaxPos
+     Print #1, Roll(12,p).nota;".";
     Next
        Print #1,
-    For P = 1 To 40
-     Print #1, Roll(1,p).dur;
+    For P = 260 To MaxPos
+     Print #1, Roll(12,p).dur;".";
      
     Next
-      Print #1,
-    For P = 1 To 40
-     Print #1, Roll(1,p).vol;
-    Next
+    Print #1,
+'      Print #1, "A#--------->"
+'    For P = 67 To 77
+'     Print #1, Roll(13,p).nota;".";
+'    Next
+'       Print #1,
+'    For P = 67 To 77
+'     Print #1, Roll(13,p).dur;".";
+'     
+'    Next
+'      Print #1,
                 
    Else 
      cairo_set_source_rgba c, 0, 0, 0, 1  
@@ -853,22 +526,22 @@ dim as integer cantInserciones = ind ' el ind cont� en movedata las insercione
 Print #1,"antes del FOR Roll,RollAux.. indpos,ind ", indpos,ind
 ' debemos barres solo la octava? no porque puede haber otras octavas cargadas
    For s= 1 To 128 'barremos todas las notas verticalmente para una misma posicion
-     If Roll(s,indpos).dur = 46 Then ' fin de datos de Roll
+     If Roll(s,indpos).dur = 34 Then ' fin de datos de Roll
         Rollaux(s,ind) = Roll(s,indpos)
         insert= 4 ' fin de llenado de almacenamiento auxiliar
-        Print #1,"sale moveresto encontro 46 fin, ind :" ,ind
+        Print #1,"sale moveresto encontro 34 fin, ind :" ,ind
         Exit Do 
      EndIf
      Rollaux(s,ind) = Roll(s,indpos)
      if s=1 then 
      print #1, "luego de la puta copia a AUX del resto de mierda"
      endif 
-     if (Roll(s,indpos).dur <> 45 and Roll(s,indpos).nota <> 45) _
+     if (Roll(s,indpos).dur <> 33 and Roll(s,indpos).nota <> 33) _
         and (Roll(s,indpos).dur > 0 or Roll(s,indpos).nota > 0)    Then 
       print #1, "Roll(";s,indpos;").nota ",Roll(s,indpos).nota
       print #1, "Roll(";s,indpos; ").dur ",Roll(s,indpos).dur
      endif 
-     if (Rollaux(s,ind).dur <> 45 and Rollaux(s,ind).nota <> 45) _
+     if (Rollaux(s,ind).dur <> 33 and Rollaux(s,ind).nota <> 33) _
         and (Rollaux(s,ind).dur > 0 or Rollaux(s,ind).nota > 0)    Then 
       print #1, "Rollaux(";s,ind; ").nota ",Rollaux(s,ind).nota
       print #1, "Rollaux(";s,ind; ").dur ",Rollaux(s,ind).dur
@@ -880,8 +553,8 @@ Print #1,"antes del FOR Roll,RollAux.. indpos,ind ", indpos,ind
  Loop
  'tenemso todos los datos viejos en auxiliar
  'hay que copiarlos en Roll luego del ultipo reemplazo o insercion
- ' el 46 lo muevo??? sino debo hcer ind = ind -1
- ' ind=ind - 1 no le resto 1 copio el 46...el fin se corre 
+ ' el 34 lo muevo??? sino debo hcer ind = ind -1
+ ' ind=ind - 1 no le resto 1 copio el 34...el fin se corre 
  
  Print #1, "StartInsert: " ,StartInsert
  If insert = 4 Then 'movemos de nuevo todo el aux completo a Roll desde StartInsert
@@ -895,12 +568,12 @@ Print #1,"antes del FOR Roll,RollAux.. indpos,ind ", indpos,ind
           if s=1 then 
             print #1, "luego de la puta copia A ROLL de mierda"
           EndIf
-         if (Roll(s,t).dur <> 45 and Roll(s,t).nota <> 45) _
+         if (Roll(s,t).dur <> 33 and Roll(s,t).nota <> 33) _
            and (Roll(s,t).dur > 0 or Roll(s,t).nota > 0)    Then 
            Print #1, "I) Roll(";s,t;")nota,s,t : ", Roll(s,t).nota, s, t
            Print #1, "I) Roll(";s,t;")dur, s,t : ", Roll(s,t).dur,s,t
           endif 
-         if (RollAux(s,k).dur <> 45 and RollAux(s,k).nota <> 45) _
+         if (RollAux(s,k).dur <> 33 and RollAux(s,k).nota <> 33) _
             and (RollAux(s,k).dur > 0 or RollAux(s,k).nota > 0)    Then 
             Print #1, "II) RollAux(";s,k;").dur ", RollAux(s,k).dur
             Print #1, "II) RollAux(";s,k;").nota ", RollAux(s,k).nota
@@ -918,12 +591,12 @@ Print #1,"antes del FOR Roll,RollAux.. indpos,ind ", indpos,ind
    for s = 1 to 128
       For k=  StartInsert To MaxPos ' gracias a esto anda acordes
         If Roll(s ,k).nota = 0 Then
-           Roll(s , k).nota = 45  
+           Roll(s , k).nota = 33  
         EndIf 
       Next k
    next s 
  ' ACA DEBO CORREGIR TODAS LAS LINEAS CON NOTAS DIFERENTES A LA INSERTADA DEBEN QUEDAR 
- ' nota en 45 y durciones en  0. bueno hor determinamos donde y cuanto se inserto.
+ ' nota en 33 y durciones en  0. bueno hor determinamos donde y cuanto se inserto.
  ' estos son los valores  StartInsert y cantInserciones.
  ' StartInsert es de Roll antesdela insercion 
    print #1, "==> valor de nota antes de CORRECCION: ",nota 
@@ -933,7 +606,7 @@ Print #1,"antes del FOR Roll,RollAux.. indpos,ind ", indpos,ind
      for s= 1 to 128 
        for i=1 to cantInserciones
            if s <> notasInsertadas (i) then
-              Roll(s,k).nota = 45
+              Roll(s,k).nota = 33
               Roll(s,k).dur  = 0      
            endif
        next i    

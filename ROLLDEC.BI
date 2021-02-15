@@ -15,11 +15,12 @@ Dim  shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, cursormove
 Dim shared As integer Penta_y, indice, posicion, nota,espacio,posn,cursorHori  
 Dim shared as integer estoyEnOctava, backspace,fijarEspacio, offset,borrar,cambiadur
-Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,k60 
+Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol 
 dim shared as string cromatica(1 to 12) 
 dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
-Dim Shared As Integer DUR, menuAccion,insert,notins 
-DIM  Shared figura (13 To 46) As String * 3 = {" O "," P "," I "," L "," F "," E "," W "," H ",_
+Dim Shared As Integer DUR, menuAccion,insert,notins
+Dim Shared NotasGuia (1 To 12) As String * 2 = {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"} 
+Dim  Shared figura (1 To 34) As String * 3 = {" O "," P "," I "," L "," F "," E "," W "," H ",_
 " O*"," P*"," I*"," L*"," F*"," E*"," W*"," H*","sO ","sP ","sI ","sL ","sF ","sE ","sW ","sH ",_
 "sO*","sP*","sI*","sL*","sF*","sE*","sW*","sH*","   "," ||"}
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
@@ -36,7 +37,6 @@ Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
 
 espacio=0:cursorVert=0:borrar=0:cambiadur=0:InicioDeLectura=0
 menuAccion=0:insert=0
-Dim Shared As Integer resultado
 Type mouse
     As Integer res
     As Integer x, y, wheel, clip
@@ -53,3 +53,4 @@ Dim shared As mouse m
 Dim Shared As Integer menuNro, menuNew
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res 
+Dim Shared as Integer StartInsert,ind,NroCol, carga, curpos, resultado

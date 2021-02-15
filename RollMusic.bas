@@ -66,7 +66,7 @@ ANCHO = ANCHO
 ALTO = ALTO  
 AnchoInicial=ANCHO
 AltoInicial=ALTO
-
+NroCol =  (ANCHO / 20 ) - 6 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
 'cambie a directX !!! versi anda winpopup
 ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion
 ' con Directx nunca tomaelfoco se lodebe dar elusuario
@@ -95,8 +95,8 @@ po = @octava
 s1=0:s2=0:s3=0:s4=0:s5=0:s6=0 '':s7=0:s8=0:s9=0
 font=18
 Dim e As EVENT
-Dim Shared as Integer StartInsert,ind,NroCol, carga
-ind=0:NroCol=66:carga=0
+
+ind=0:carga=0
 ' -----------------------------------------------------------------------
 ' notas redonda (O),blanca(P),negra(I),corchea(C),semicorchea(S), Fusa(F),Semifusa(U)
 ' O P I L F E # (listo todas mis notas!!!)
@@ -363,19 +363,26 @@ If MultiKey(SC_RIGHT)  Then ' <======== RIGHT
       Sleep 350
     Exit Do    
    Else
-     'k60 cantidadscroll de 60
-     posicion = posicion + 1
-     k60= Int(posicion/NroCol)
-     If  (k60 > 0) And (posicion = NroCol * k60) And (posicion < MaxPos)Then
-      iniciodelectura = iniciodelectura +  NroCol
-      If inicioDeLEctura > MaxPos Then
-         inicioDeLEctura = inicioDeLEctura -NroCol
-      EndIf
-     EndIf
-      Sleep 100
-     If posicion > MaxPos -1  Then
-      posicion = MaxPos -1
-     EndIf
+     'kNroCol cantidad scroll de NrocOL)
+     If comEdit = FALSE Then 
+       posicion = posicion + 1
+       kNroCol= Int(posicion/NroCol)
+       If  (kNroCol > 0) And (posicion = NroCol * kNroCol) And (posicion < MaxPos)Then
+          iniciodelectura = iniciodelectura +  NroCol
+          If inicioDeLEctura > MaxPos Then
+             inicioDeLEctura = inicioDeLEctura -NroCol
+          EndIf
+       EndIf
+       If posicion > MaxPos -1  Then
+          posicion = MaxPos -1
+       EndIf
+     Else 
+       curpos= curpos + 1 ' mueve cursor cuando Roll se detiene (posicion)
+       If curpos > NroCol  Then
+          curpos = 1
+       EndIf
+     EndIf 
+     Sleep 100  
      Exit Do 
    EndIf 
 EndIf
@@ -391,23 +398,30 @@ If MultiKey(SC_LEFT)  Then '  <========== LEFT
       Sleep 350
     Exit Do    
    Else
-      'MOVER PENTAGRAMA IZQUIERDA NO CURSOR
-     Dim k60 As Integer ' cntidad de scroll de 66
-     posicion = posicion - 1
-     k60= Int(posicion/NroCol)
-     If  k60 > 0 And (posicion > NroCol*k60) And (MaxPos - Posicion  <=NroCol) Then
-      iniciodelectura = iniciodelectura - 1
-     EndIf
-     If  k60 > 0 And (posicion = NroCol*k60)  Then
-       iniciodelectura = iniciodelectura - NroCol
-     EndIf  
-     If iniciodelectura < 0 Then
-        iniciodelectura = 0
-     EndIf
-     Sleep 100 
-     If posicion < 1 Then
-      posicion = 1
-     EndIf
+      'MOVER ROLL IZQUIERDA NO CURSOR
+     If comEdit = FALSE Then 
+        Dim kNroCol As Integer ' cntidad de scroll de 66
+        posicion = posicion - 1
+        kNroCol= Int(posicion/NroCol)
+        If  kNroCol > 0 And (posicion > NroCol*kNroCol) And (MaxPos - Posicion  <=NroCol) Then
+          iniciodelectura = iniciodelectura - 1
+        EndIf
+        If  kNroCol > 0 And (posicion = NroCol*kNroCol)  Then
+          iniciodelectura = iniciodelectura - NroCol
+        EndIf  
+        If iniciodelectura < 0 Then
+           iniciodelectura = 0
+        EndIf
+        If posicion < 1 Then
+           posicion = 1
+        EndIf
+     Else
+        curpos = curpos - 1 ' <=== MOVER CURSOR IZQ
+        If curpos < 0 Then
+           curpos = NroCol
+        EndIf
+     EndIf 
+     Sleep 100  
      Exit Do 
   EndIf
 EndIf
@@ -544,19 +558,19 @@ if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
    grabaPos(1,1).vol  = y3
    grabaPos(1,1).pan  = y4
 ' ------------------------------------
-' hacemoslo mismo para l ultim not que se grabo que teng el 46
-' esa es lapapa recorremos todas las dur de las notas en donde este el 46
+' hacemoslo mismo para l ultim not que se grabo que teng el 34
+' esa es lapapa recorremos todas las dur de las notas en donde este el 34
 ' endur tomamosla nota y esala grabamos en pb o ins
 ' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
 ' -------------------------------------
     Dim As Integer i,j,notafinal 
     For i = 1 To 128
-       If Roll(i,posicion+1).dur = 46 Then
+       If Roll(i,posicion+1).dur = 34 Then
          notafinal= Roll(i,posicion).nota
          Print #1, "ENCONTRO NOTA FINAL ", notafinal
          Print "ENCONTRO NOTA FINAL ", notafinal
          ' esten la posiciond ela ultimanotapero grasoerror
-         ' o seaque no tiene duracion solo el46
+         ' o seaque no tiene duracion solo el34
          ' esta mal ...
          Exit For
        EndIf 
@@ -678,7 +692,7 @@ EndIf
  If MultiKey(SC_SPACE) Then 'barra espacio  
      espacio = 1
      posicion= posicion + 1
-     DUR=45
+     DUR=33
      Exit Do
  EndIf
  If MultiKey (SC_Q) Then ' con Q se deja de repetir espacios
@@ -791,29 +805,33 @@ If MultiKey(SC_BACKSPACE) Then
 ' ----------INGRESO DE DURACIONES DE NOTAS -------------
 If comEdit = TRUE And menuNro = 2 Then 
   If MultiKey(SC_1) Then 
-    DUR = 13 :Exit Do
+    DUR = 1 :Exit Do
   EndIf
   If MultiKey(SC_2) Then 
-    DUR = 14:Exit Do
+    DUR = 2:Exit Do
   EndIf 
   If MultiKey(SC_3) Then 
-    DUR = 15:Exit Do
+    DUR = 3:Exit Do
   EndIf 
   If MultiKey(SC_4) Then 
-    DUR = 16:Exit Do
+    DUR = 4:Exit Do
   EndIf 
   If MultiKey(SC_5) Then 
-    DUR = 17:Exit Do
+    DUR = 5:Exit Do
   EndIf 
   If MultiKey(SC_6) Then 
-    DUR = 18:Exit Do
+    DUR = 6:Exit Do
   EndIf 
   If MultiKey(SC_7) Then 
-    DUR = 19:Exit Do
+    DUR = 7:Exit Do
   EndIf 
   If MultiKey(SC_8) Then 
-    DUR = 20:Exit Do
+    DUR = 8:Exit Do
   EndIf 
+  If MultiKey(SC_0) Then ' FIN 
+    DUR = 34:Exit Do
+  EndIf 
+  
   If MultiKey(SC_PERIOD) Then 
     pun = 1:Exit Do  ' puntillo
   EndIf 
@@ -884,13 +902,13 @@ EndIf
      '  EndIf
      If nota > 0 And estoyEnOctava < 99 Then 
        ' ====>  Control PAgindo Horizontal <=======
- '      k60= Int(posicion/60)
+ '      kNroCol= Int(posicion/60)
           Print #1, "A:Roll((nota +(estoyEnOctava -1) * 13),posn).nota ", _
           Roll((nota +(estoyEnOctava -1) * 13),posn).nota
 
        Do 
          If Roll((nota +(estoyEnOctava -1) * 13),posn).nota = 0 OR _
-          Roll((nota +(estoyEnOctava -1) * 13),posn).nota = 46 Then
+          Roll((nota +(estoyEnOctava -1) * 13),posn).nota = 34 Then
           Print #1, "D:Roll((nota +(estoyEnOctava -1) * 13),posn).nota ", _
           Roll((nota +(estoyEnOctava -1) * 13),posn).nota
            posicion=posn 
@@ -908,13 +926,13 @@ EndIf
         Roll((nota +(estoyEnOctava -1) * 13),posn).nota = nota 'carga
 '' ojo ver'  If cursorVert = 0 and cursorHori = 0 Then
          ' no actua para modificaciones o agregado en lo existente
-         ' 46 o FIN indica final de TODO es la MAXPOS (+1obvio),se usara
+         ' 34 o FIN indica final de TODO es la MAXPOS (+1obvio),se usara
          ' para insertar y saber hasta donde se debe mover...esta solo 
          'en dur no afecta a notas pero se debe insertar siempreenedicion
          ' con o sin cursor 
-          Roll((nota +(estoyEnOctava -1) * 13),posn+1).dur = 46
+          Roll((nota +(estoyEnOctava -1) * 13),posn+1).dur = 34
           if notaOld > 0 And notaOld <> nota then
-           Roll((notaOld +(estoyEnOctava -1) * 13),posn).dur = 45 
+           Roll((notaOld +(estoyEnOctava -1) * 13),posn).dur = 33 
 '''ojo probar todo inserciones x  etc    endif 
         EndIf
          
@@ -928,7 +946,7 @@ EndIf
         For i= 1 To 12 ' gracias a esto anda acordes
          If i<> nota Then
             If Roll((i +(estoyEnOctava -1) * 13),posn).nota = 0 Then
-               Roll((i +(estoyEnOctava-1) * 13), posn).nota = 45  
+               Roll((i +(estoyEnOctava-1) * 13), posn).nota = 33  
             EndIf 
          EndIf
         Next
@@ -950,8 +968,8 @@ EndIf
               Roll((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 24
               sil=0:pun=0
             EndIf
-            If DUR=45 Then
-               Roll((notaOld +(estoyEnOctava -1) * 13),posn).dur = 45
+            If DUR=33 Then
+               Roll((notaOld +(estoyEnOctava -1) * 13),posn).dur = 33
                DUR=0
             EndIf
           EndIf
@@ -1097,13 +1115,13 @@ If (ScreenEvent(@e)) Then
      borrar = 1 
      Exit Do
   EndIf
-  If e.scancode = SC_X Then ' 45 <==== SC_X ...fix 
+  If e.scancode = SC_X Then ' 33 <==== SC_X ...fix 
    'corrige nota cambia duracion o agrega nota nueva, acorde melodia
      cambiadur = 1    ' usando 1 a 8 para silencio esta delete
      Exit Do
   EndIf
 ' para insertar en cada iten de Roll cda vez queingreso nota al final
-' comunmente se agregara 46 para indicar fin de datos..y loindicaremos 
+' comunmente se agregara 34 para indicar fin de datos..y loindicaremos 
 'con FIN por ahora para visualizarlo  
 
   If e.scancode = SC_INSERT And insert=0  Then '82 <===== SC_INSERT
@@ -1235,9 +1253,11 @@ EndIf
            If s3 = 0 Then
             comEdit = TRUE : s3 = 1
             font = 18
+            curpos=0
             Exit Do
            Else
             comEdit = FALSE : s3 = 0
+            '''posicion= posicion + curpos
             Exit Do 
            EndIf
         EndIf
