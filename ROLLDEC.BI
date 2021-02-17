@@ -2,6 +2,7 @@
 Declare Sub creaPenta (c AS cairo_t Ptr, nro As Integer, po as Integer Ptr, InicioDeLectura As integer)
 Declare Sub Tracks (nroTrack As UByte, nroCanal As UByte)
 Declare Sub menu (c AS cairo_t Ptr,n As Integer,menuNro As Integer)
+declare Sub botones(hWnd As HWND,c As cairo_t Ptr,cm As cairo_t Ptr,x As Integer,y As integer) 
 Declare Sub menuAcc (c AS cairo_t Ptr) 
 Declare Sub moveresto (ByVal StartInsert As integer,ByRef ind as Integer, Byref insert As Integer,Byref nota As integer)
 Declare Sub movedato (ByVal StartInsert As Integer, ByRef ind As Integer, Byref insert As Integer,Byref nota As integer)
@@ -13,10 +14,10 @@ Dim Shared As Integer vroll, vdur ' borrar
 Dim  shared as ubyte  notasInsertadas (1 to 1500) 
 
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, cursormove
-Dim shared As integer Penta_y, indice, posicion, nota,espacio,posn,cursorHori  
+Dim shared As integer Penta_y, indice, posicion,posicionOld, nota,espacio,posn,cursorHori  
 Dim shared as integer estoyEnOctava, backspace,fijarEspacio, offset,borrar,cambiadur
-Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol 
-dim shared as string cromatica(1 to 12) 
+Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow 
+dim Shared as string cromatica(1 to 12) 
 dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
 Dim Shared As Integer DUR, menuAccion,insert,notins
 Dim Shared NotasGuia (1 To 12) As String * 2 = {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"} 
@@ -36,7 +37,7 @@ Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
 ' tambien en vez de estos simbolos usare los de un pentagrama comun,,,,futuro
 
 espacio=0:cursorVert=0:borrar=0:cambiadur=0:InicioDeLectura=0
-menuAccion=0:insert=0
+menuAccion=0:insert=0:agregarNota=0
 Type mouse
     As Integer res
     As Integer x, y, wheel, clip
@@ -52,5 +53,5 @@ End Type
 Dim shared As mouse m
 Dim Shared As Integer menuNro, menuNew
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
-Dim Shared As Integer x, y, buttons, res 
+Dim Shared As Integer x, y, buttons, res,xscreen 
 Dim Shared as Integer StartInsert,ind,NroCol, carga, curpos, resultado

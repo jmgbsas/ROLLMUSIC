@@ -1,10 +1,9 @@
 
 ' 5.7.3.3 VERIFICARA CAMBIADUR ACORDES E INSERCION
 ' PUES EN 5.7.3.2 SE RESOLVIO NVEGACION DER IZ LUEGO DE CARGA
-' [cambiadur ya anda ok] , lo raro que me quedo es la vuelta atras
-' pero bueno anda ver si sepuede mejorar 
-'---------------debug log
-
+' [casercion y anda ok] issue: lterminr de insertar se posiciona
+' al final de la secuecnia y muestra el ultimo tramo 1 ->NroCol
+' revisar accion detecla Fin..
 Open "midebug.txt" for Output As #1
 
 ' secuenciador de 9 octavas estereo, modo Piano Roll,hace uso de
@@ -56,14 +55,14 @@ Dim Shared As Integer   ALTO
 Dim Shared As Double BordeSupRoll, inc_Penta
 Dim Shared As Integer  AnchoInicial,AltoInicial, font
 Dim Shared q As String * 1
-Dim As UByte s1, s2, s3, s4, s5,s6 '', s7,s8,s9
+Dim Shared As UByte s1, s2, s3, s4, s5,s6 , s7 ',s8,s9
 Dim escala As float = 1.0
 Dim translado As float = 1.0 
 ''https://www.freebasic.net/forum/viewtopic.php?t=15127
 ANCHO = GetSystemMetrics(SM_CXSCREEN)
 ALTO = GetSystemMetrics(SM_CYSCREEN)
 ANCHO = ANCHO 
-ALTO = ALTO  
+ALTO = ALTO  -25  
 AnchoInicial=ANCHO
 AltoInicial=ALTO
 NroCol =  (ANCHO / 20 ) - 6 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
@@ -92,7 +91,7 @@ resize = FALSE
 Dim po As Integer Ptr
 po = @octava
 *po = 8
-s1=0:s2=0:s3=0:s4=0:s5=0:s6=0 '':s7=0:s8=0:s9=0
+s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0':s8=0:s9=0
 font=18
 Dim e As EVENT
 
@@ -230,6 +229,8 @@ Var cm = cairo_create(surf2)
 ' posicion aprentemente elcursorqueda clavado en 1 o 0 y no navega 5.7.3.1
 ' solo pasando por Edicion vuelve a navegar
 menu(cm, posicion,menuNro)
+botones(hWnd, c ,cm, ANCHO,ALTO)
+
 cairo_stroke(cm)   
 If menuaccion=1111 Then ' no sirve las aciones perforan
  cairo_move_to(c, 9*(ANCHO/10),50)
@@ -254,13 +255,22 @@ Do ''While InKey =""
 ' comienzo=1
 'EndIf
 
-If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then 'MOVER cursor MEJOR CON MOUSECREO
+If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar con Insert y I
  cursorVert = 1
  cursorHori = 1
+ agregarNota=0
 EndIf
-If MultiKey(SC_CONTROL) And MultiKey(SC_P)  Then 'PARAR cursor MEJOR CON MOUSE ?
+If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
+ cursorVert = 2
+ cursorHori = 2
+ agregarNota= 1
+EndIf
+
+If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE ?
  cursorVert = 0
  cursorHori = 0
+ agregarNota = 0
+'' notadur=0
 EndIf
 
 If MultiKey(SC_DOWN)  Then
@@ -349,7 +359,22 @@ If MultiKey(SC_MINUS) Then
 ' LA ZONA QUE DEJA ESTA POSICION EN LA PARTE INFERIOR SE USARA PARA
 ' HACER AJUSTES DE VELOCIDAD CON CURVAS O MOSTRAR CONTROLES ADICIONALES     
 EndIf
-
+If MultiKey(SC_CONTROL) And MultiKey (SC_RIGHT) Then
+   posicion=posicion + NroCol
+   If posicion > MaxPos Then
+      posicion = MaxPos
+   EndIf
+   posishow=posicion   
+   Sleep 100 
+EndIf
+If MultiKey(SC_CONTROL) And MultiKey (SC_LEFT) Then
+   posicion=posicion - NroCol
+   If posicion < 1 Then
+      posicion = 1
+   EndIf   
+   posishow=posicion
+   Sleep 100 
+EndIf
 
 '   escala = escala - 0.1
 If MultiKey(SC_RIGHT)  Then ' <======== RIGHT
@@ -379,8 +404,9 @@ If MultiKey(SC_RIGHT)  Then ' <======== RIGHT
      Else 
        curpos= curpos + 1 ' mueve cursor cuando Roll se detiene (posicion)
        If curpos > NroCol  Then
-          curpos = 1
+          curpos = NroCol
        EndIf
+       
      EndIf 
      Sleep 100  
      Exit Do 
@@ -418,8 +444,9 @@ If MultiKey(SC_LEFT)  Then '  <========== LEFT
      Else
         curpos = curpos - 1 ' <=== MOVER CURSOR IZQ
         If curpos < 0 Then
-           curpos = NroCol
+           curpos = 0
         EndIf
+        
      EndIf 
      Sleep 100  
      Exit Do 
@@ -446,27 +473,16 @@ EndIf
 
 If MultiKey (SC_F8)  Then
     If comEdit = FALSE Then
-
      ' MOVE VENTANA
       Dim As Integer w,h
-      
       w=ANCHO:h=ALTO
-'
-     ALTO = ALTO + inc_Penta
-     If ALTO >= altoInicial - 1  Then
-        ALTO = altoInicial  - 1
-     EndIf
-      
-'      ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
-      
-'      Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-      MoveWindow( hWnd , 10, (10+ALTO-h)\2, ANCHO,ALTO, TRUE )
-      
+      ALTO = ALTO + inc_Penta
+      If ALTO >= altoInicial - 1  Then
+         ALTO = altoInicial  - 1
+      EndIf
+      MoveWindow( hWnd , 0, (0+ALTO-h)\2, ANCHO,ALTO, TRUE )
       altofp11 = ALTO
-
-
     EndIf
- 
   Exit Do
 EndIf
 
@@ -675,7 +691,7 @@ If MultiKey(SC_ESCAPE) Then
       '  ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
       '  Dim As hWnd hwnd = Cast(hwnd,IhWnd)
   
-  if MessageBox(hWnd,"ARE YOU SURE YOU WANT TO QUIT?","RollMusic End ",4 or 64) =6 then 
+  if MessageBox(hWnd,"¿SEGURO FINALIZA?","RollMusic End ",4 or 64) =6 then 
      cairo_destroy(c)
      Close 1
      End
@@ -689,10 +705,11 @@ EndIf
 '--
 
 ' ============== E S P A C I O ========
- If MultiKey(SC_SPACE) Then 'barra espacio  
+ If MultiKey(SC_SPACE) And s7=0 Then 'barra espacio  
      espacio = 1
      posicion= posicion + 1
      DUR=33
+     s7=1
      Exit Do
  EndIf
  If MultiKey (SC_Q) Then ' con Q se deja de repetir espacios
@@ -718,28 +735,40 @@ EndIf
 '    if nota<> notaold THEN ' stnd by nola usare 
 '       espacio=0           
 '    EndIf
-       Exit Do
+     If cursorVert =2 Then
+        agregarNota = 1
+     EndIf
+        Exit Do
  EndIf
  
  If MultiKey(SC_CONTROL) And MultiKey(SC_C)   Then ' C#      
       nota = 11 
       If espacio = 1 Then
           espacio=11 
-      EndIf   
+      EndIf  
+      If cursorVert =2 Then
+       agregarNota = 1 
+      EndIf
     Exit Do  
  EndIf
  If MultiKey(SC_CONTROL) And MultiKey(SC_D)  Then ' D# 
       nota= 9
    If espacio = 1 Then
        espacio=9 
-   EndIf   
+   EndIf 
+   If cursorVert =2 Then
+      agregarNota = 1  
+   EndIf
   Exit Do 
  EndIf
  If MultiKey(SC_CONTROL) And MultiKey(SC_F) Then ' F#
       nota= 6
     If espacio = 1 Then
        espacio=6 
-    EndIf   
+    EndIf
+    If cursorVert =2 Then   
+       agregarNota = 1
+    EndIf
     Exit Do
  EndIf
  If  MultiKey(SC_CONTROL) And MultiKey(SC_G)  Then ' G#
@@ -747,6 +776,9 @@ EndIf
      If espacio = 1 Then
         espacio=4 
      EndIf 
+     If cursorVert =2 Then
+        agregarNota = 1
+     EndIf
      Exit Do  
  EndIf
 
@@ -755,10 +787,16 @@ EndIf
        If espacio = 1 Then
           espacio=3 
        EndIf
+       If cursorVert =2 Then
+          agregarNota = 1
+       EndIf
        Exit Do
  EndIf
  If MultiKey (SC_B) Then
        nota = 1
+       If cursorVert =2 Then
+         agregarNota = 1
+       EndIf
        Exit Do
   EndIf       
  
@@ -766,6 +804,9 @@ EndIf
        nota = 12
        If espacio = 1 Then
           espacio=12 
+       EndIf
+       If cursorVert =2 Then
+         agregarNota = 1
        EndIf
        Exit Do
  EndIf       
@@ -775,12 +816,18 @@ EndIf
       If espacio = 1 Then
           espacio=10 
       EndIf
+      If cursorVert =2 Then
+         agregarNota = 1
+      EndIf
       Exit Do
  EndIf
  If MultiKey (SC_E) Then
      nota = 8 
      If espacio = 1 Then
           espacio=8 
+     EndIf
+     If cursorVert =2 Then
+        agregarNota = 1
      EndIf
      Exit Do
  EndIf
@@ -789,6 +836,9 @@ EndIf
      If espacio = 1 Then
           espacio=7 
      EndIf
+     If cursorVert =2 Then
+        agregarNota = 1
+     EndIf
      Exit Do
  EndIf
 If MultiKey (SC_G) Then
@@ -796,6 +846,9 @@ If MultiKey (SC_G) Then
      If espacio = 1 Then
           espacio=5
      EndIf
+     If cursorVert = 2  Then
+         agregarNota=1
+     EndIf    
      Exit Do
 EndIf
 If MultiKey(SC_BACKSPACE) Then 
@@ -828,6 +881,10 @@ If comEdit = TRUE And menuNro = 2 Then
   If MultiKey(SC_8) Then 
     DUR = 8:Exit Do
   EndIf 
+  If MultiKey(SC_9) Then 
+    DUR = 33:Exit Do
+  EndIf 
+  
   If MultiKey(SC_0) Then ' FIN 
     DUR = 34:Exit Do
   EndIf 
@@ -890,7 +947,7 @@ EndIf
 ' ------------DETECCION DE OCTAVA-----NUCLEO CARGA ENTRADA---
 ''
 
- If comEdit = TRUE  And nota> 0 Then 
+ If comEdit = TRUE  And nota> 0 And agregarNota=0 Then 
     posn=1 + InicioDeLectura
     Print #1,"estoyEnOctava ";estoyEnOctava
     If estoyEnOctava <> 99 Then ' estoy en una octava 
@@ -1047,7 +1104,7 @@ If (ScreenEvent(@e)) Then
 
         Exit Do
       EndIf 
-      If cursorVert=1 Then   
+      If cursorVert=1 Or cursorVert=2 Then   
          notacur=notacur-1
          If notacur < 1 Then
            notacur=12
@@ -1068,7 +1125,7 @@ If (ScreenEvent(@e)) Then
 '
     '    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
     '    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-        MoveWindow( hWnd , 10 , (10+h-ALTO)\2, ANCHO,ALTO, TRUE )
+        MoveWindow( hWnd , 0 , (0+h-ALTO)\2, ANCHO,ALTO, TRUE )
         altofp11 = ALTO 
       EndIf
       Exit Do
@@ -1103,7 +1160,7 @@ If (ScreenEvent(@e)) Then
       Exit Do
   EndIf
   If e.scancode = 80 Then  ' <===== SC_DOWN pulso
-     If cursorVert=1 Then
+     If cursorVert=1 Or cursorVert=2 Then
         notacur = notacur + 1
         If notacur > 12 Then
            notacur=1
@@ -1111,7 +1168,7 @@ If (ScreenEvent(@e)) Then
      EndIf
      Exit Do
   EndIf
-  If e.scancode = 83 Then '<====== delete cambia a silencio o nada le suma 16+16 ver eso
+  If e.scancode = 83 Then '<====== SC_DELETE cambia a silencio o nada le suma 16+16 ver eso
      borrar = 1 
      Exit Do
   EndIf
@@ -1130,7 +1187,7 @@ If (ScreenEvent(@e)) Then
      insert=1 ' comienzo hbilitotel I para insertr nota por nota 
      ind=0
     print #1,">>>SC_INSERT ajust STARTINSERT ", StartInsert 
-    StartInsert = posicion ' guardo sin modificar el comienzo
+    StartInsert = posicion + curpos ' guardo sin modificar el comienzo
     print #1,">>>SC_INSERT  despues ajuste STARTINSERT ", StartInsert 
     Erase (Rollaux) ' borro lo que habia en el auxiliar
     Erase (notasInsertadas) 
@@ -1154,6 +1211,7 @@ If (ScreenEvent(@e)) Then
  ' insert 3 fin reemplazos comienzo de move total
     insert=0:ind=0
   EndIf
+  
 ' ------------------PULSAR MUCHO TIEMPO <====== REPEAT------
    Case EVENT_KEY_REPEAT
      If e.scancode = 72  Then ' <======= SC_UP
@@ -1276,11 +1334,11 @@ EndIf
      EndIf             
   EndIf
   
-  If mouseY < 50 And s5= 0 And mouseX > 70 Then 
+  If mouseY < 50 And s5= 0 And mouseX > 70 And mousex < (ANCHO-50) Then 
     x1=mouseX: y1=mouseY 
     s5=1
   EndIf
-  If MouseButtons And 1 And s5=1 And mouseX > 70 and menuNro= 1 Then
+  If MouseButtons And 1 And s5=1 And mouseX > 70 and menuNro= 1 And mousex < (ANCHO-50)Then
     x2=mouseX 
     y2=mouseY 
     x0=x0+x2-x1
@@ -1294,6 +1352,55 @@ EndIf
 '         menuNew=0
 '  EndIf
  'https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-movewindow
+If (mousex>=(ANCHO-40)) And (mousey <= 16) Then 
+  If  MouseButtons And 1 Then
+    if MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","RollMusic End ",4 or 64) =6 then 
+      cairo_destroy(c)
+      Close 
+      
+      End
+    EndIf
+  EndIf
+EndIf
+If (mousex>=(ANCHO-40)) And (mousey > 17) And (mousey < 32) Then 
+  If  MouseButtons And 1 Then
+''      If comEdit = FALSE Then
+      ' MOVE VENTANA
+        w=ANCHO:h=ALTO
+'
+        ALTO = ALTO - inc_Penta
+        If ALTO <= ALTO * 0.3 Then
+           ALTO =  ALTO * 0.3 
+        EndIf 
+'
+    '    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
+    '    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
+        MoveWindow( hWnd , 0 , (0+h-ALTO)\2, ANCHO,ALTO, TRUE )
+        altofp11 = ALTO 
+      EndIf
+      Exit Do
+
+''  EndIf
+EndIf
+If (mousex>=(ANCHO-40)) And (mousey > 33) And (mousey < 50) Then 
+  If  MouseButtons And 1 Then
+''    If comEdit = FALSE Then
+     ' MOVE VENTANA
+      Dim As Integer w,h
+      w=ANCHO:h=ALTO
+      ALTO = ALTO + inc_Penta
+      If ALTO >= altoInicial - 1  Then
+         ALTO = altoInicial  - 1
+      EndIf
+      MoveWindow( hWnd , 0, (0+ALTO-h)\2, ANCHO,ALTO, TRUE )
+      altofp11 = ALTO
+    EndIf
+  Exit Do
+
+''  EndIf
+EndIf
+
+
  If resize = TRUE Then    
     m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
    If m.buttons = 1 And (m.x > 5 ) And (m.y > 5 ) Then
@@ -1354,6 +1461,8 @@ If s5<> 1 Then' acelerar mover ventana con el mouse
   Sleep 1 '1000 / 1000 frames = 1 milisegundos
 End If
 Loop 
+
+While Inkey <> "": Wend
 While Inkey <> "": Wend
 If s5<> 1 Then
   Sleep 1 '1000 / 1000 frames = 1 milisegundos
@@ -1372,3 +1481,4 @@ er = Err
 Print "Error detected ", er
 Print Erl, Erfn,Ermn,Err
  
+

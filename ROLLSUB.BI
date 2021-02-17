@@ -29,19 +29,37 @@ cairo_move_to(c, 0, Penta_y )
 cairo_line_to(c, ANCHO - 1, Penta_y )
 
 ' posicion es el indice del vector Roll
-' curpos es la posicion del cursor de 1 a NroCol 
+' curpos es la posicion del cursor de 1 a NroCol que suma a posicion
+' porque posicion esta congelada pero hcemos q recorremos Roll con elcursor 
 ' cuando estoy en lectura el scroll avanza o retrocede con flechas izq der...
 ' en ctrl-M modo cursor loq semueve es el cursor el vectorqueda quieto
 ' la posicion del vector en donde se modifica seria en el rango 
 ' posicion NroCol sumandolde eloffset del cursor de 1 a NroCol
-' o sea indice vEctor en Ctrl-M = posicion + curpos 
+' o sea indice vEctor en Ctrl-M = posicion + curpos pero eso sucede
+' internanmente para mostrar congelamos posiiocn y comenzamos desde ahi
+' todo proceso de modificacion deberatener encuenta a curpos, pero no
+' la vista por pantalla
+'If comEdit= TRUE Then
+Dim As Integer delta
+
+delta=NroCol
+If ComEdit=TRUE Then
+  If posicion <= delta + inicioDeLEctura Then
+    posishow= 1 +InicioDeLectura 
+  EndIf
+Else
+  posishow=posicion
+EndIf
+' 
+
 Var t = " "
 For semitono = 1 To 12 
   t = NotasGuia(semitono) + Str(*octava) + "_["
   cairo_move_to(c, 0, Penta_y + semitono * inc_Penta- 6)
   cairo_show_text(c, t)
   ic=0 'indice cursor
-  For n = posicion to posicion + NroCol 
+  For n = posishow to posishow + NroCol 
+    
     If Roll (semitono + (nro-1) * 13, n  ).nota > 0 Or _
        Roll (semitono + (nro-1) * 13, n  ).dur > 0 Then
           if espacio = semitono and ((n - inicioDeLectura)=curpos)  Then 
@@ -49,14 +67,9 @@ For semitono = 1 To 12
              if fijarEspacio=0 then 
                 espacio=0
              EndIf
+             s7=0
           EndIf
        cairo_move_to(c, 70 + ic * 20 , Penta_y + semitono * inc_Penta - 6)
- 'correcion y grabcion
-' Dim correc As UByte 
-'     correc= Roll (semitono + (nro-1) * 13, n).dur    
-'     If correc >= 13 And correc <= 46 Then
-'       Roll (semitono + (nro-1) * 13, n).dur = Roll (semitono + (nro-1) * 13, n).dur - 12
-'     EndIf
        t= figura((Roll (semitono + (nro-1) * 13, n).dur))
        cairo_show_text(c, t)
        ic += 1
@@ -128,7 +141,7 @@ Sub cursor(c AS cairo_t Ptr,n As Integer, nro As Integer)
 'n esla posicion al cargar datos deberia llamar a curor creo,,,probando  
  
 
-If cursorVert=1 Then  ' vertical comEdit=TRUE
+If cursorVert=1 Or cursorVert= 2 Then  ' vertical comEdit=TRUE
     
 cairo_move_to  (c, 70 + (curpos)*20, Penta_y + (notacur-1) * inc_Penta  )
 cairo_rectangle(c, 70 + (curpos)*20, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
@@ -145,7 +158,7 @@ If cursorVert= 0 And cursorHori=0 then
  cairo_rectangle(c,70 + (curpos)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
 EndIf
-If cursorHori=1 Then
+If cursorHori=1 Or cursorHori = 2 Then
  cairo_move_to  (c,70 + (curpos)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
  cairo_rectangle(c,70 + (curpos)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
@@ -187,8 +200,9 @@ If (cursorHori=1 Or cursorVert = 1) And insert= 2 Then
  
 ' insertar  nota 
   'ESTANDO EN UNA NOTA ELEGIDA POR EL CURSOR 
-  '1ero se pulsa la nueva duracion y luego la INSERT  
-  '
+  '1ero se pulsa la nueva duracion y luego la Tecla INSERT  
+  ' al final de todo la tecla I (ubicrse en lnota luego 3 teclas 
+  ' Dur + insert + I) 
   'y la dUR debe tener un valor antes de esto 
    If notacur=0 Then  '<- aca ingreso nota aunqne no haya..
       notacur=notaOld  'cual toma ? es donde esta el cursor ?
@@ -220,7 +234,15 @@ Print #1, "carga notacur en ROLL n,nota calculada ", n,(notacur + (nro-1) * 13)
   Print #1, "insert 1 ",insert
    
 EndIf 
+'proceso modificar Nuevo secunci limpiaterminda en NroCol ,con
+' nombre deletra pulsada en vez de X
+If (cursorHori=2 Or cursorVert = 2) And agregarNota=1  And nota> 0 Then
 
+  Roll(nota + (nro-1) * 13, n + curpos).dur = DUR 
+  ' SI LA NOTA  NO EXITIA LA agrega
+  Roll(nota + (nro-1) * 13, n + curpos).nota = nota  ' 5.7.3.4
+  nota=0     
+EndIf
 ' VEMOS QUE HACE ESTA FUNCION SI SIRVE
 ''cairo_surface_get_device_offset
 End Sub
@@ -330,14 +352,33 @@ Select Case menuNro
    t=  " <MENU=(<=|=>)>/<VENTANA=(MOVER=DRAGAR CINTA)(POSICON NORMAL,SUBE/BAJA BORDE INFERIOR=F7-F8)> "
  
   Case 2
+   Dim posishow  As Integer 
+   If cursorHori=1 And CursorVert=1 Then
+       posishow= posicion + curpos
+   Else 
+       posishow = posicion
+   EndIf
    t = "      EDIT" + " " + Str(mousex) + " " + Str(mousey) + " Octava: " + Str(oclog) + _
-   " UltimaPos: " + Str(Maxpos) +" Pos: " + Str(posicion)+ " posn: "+Str(posn)+ _
+   " UltimaPos: " + Str(Maxpos) +" Posi: " + Str(posishow)+ " posn: "+Str(posn)+ _
    " Font: " +str(font) + "dur "+ Str(vDur) +"Roll "+ Str(vRoll) + _
    " InicioDELectura: " + Str(InicioDelectura)
 
   case 3 
    t = " [NUEVO] [ABRIR] [GRABAR] [GRABAR COMO] [EXPORTAR] [CERRAR] [SALIR] "
-   If mousex > 104 And mousex < 160  Then ' abrir leer grabaroll.roll
+   If mousex > 12 And mousex < 80  and mousey < 50 Then ' nuevo
+      Erase (Roll)
+      MaxPos = NroCol
+      posn=NroCol
+      Roll(1,NroCol).dur = 34
+      Dim As Integer mi,p
+      For p=1 To NroCol -1
+      For mi=1 To 128
+        Roll(mi,p).nota=0
+        Roll(mi,p).dur =33
+      Next mi
+      Next p
+   EndIf
+   If mousex > 104 And mousex < 160  and mousey < 50 Then ' abrir leer grabaroll.roll
      Erase Roll
       Dim z (1,1 )  As dat
       Dim As String x,x1,x2,x3,x4
@@ -492,12 +533,12 @@ Sub movedato (ByVal n As Integer, ByRef ind As Integer,ByRef  insert As Integer,
  'muevo datos remplazados al auxiliar 
   Dim as integer i1,i2 ' nomovemos solo elindice <nota> sino todas las notas!
   for i1 = 1 to 128
-    Rollaux(i1,ind)= Roll(i1,n)
+    Rollaux(i1,ind)= Roll(i1,n + curpos)
   next i1
 
   Print #1, "EN MOVEDATO carga rollaux con valores viejos de roll"
   Print #1,"Rollaux(nota,ind) nota,ind " ,nota,ind
-  Print #1,"Roll(nota,n) nota,n " ,nota,n
+  Print #1,"Roll(nota,n) nota,n " ,nota,n +curpos
   Print #1,"durcion cargda Rollaux(nota,ind).dur: ", Rollaux(nota,ind).dur
   Print #1,"nota  cargda Rollaux(nota,ind).nota : ", Rollaux(nota,ind).nota
 'vamos reemplazando los eventos y sobreescribiendo con los nuevos pero
@@ -507,8 +548,8 @@ End Sub
 '--------------------------
 Sub moveresto (ByVal StartInsert As Integer, ByRef ind As Integer, byref insert As Integer, ByRef nota As integer)
  Dim As Integer indpos,lastPosRollReemplzada,s,t,k,i
- lastPosRollReemplzada=posicion 
- indpos=posicion 'indice posicion partimos de ultima posicion global reemplazada
+ lastPosRollReemplzada=posicion + curpos
+ indpos=posicion + curpos'indice posicion partimos de ultima posicion global reemplazada
    Print #1, "EN MOVERESTO, ind,StartInsert: ",ind ,StartInsert
 ' ultima posicion movida a aux  es ind   
 Dim As Integer lastIndAuxporInsercion = ind 
@@ -582,7 +623,7 @@ Print #1,"antes del FOR Roll,RollAux.. indpos,ind ", indpos,ind
         t=t+1
     next k 
     print #1, "Valor despues de END insercion, posicion, posn "; posicion, posn
-    posicion = MaxPos 
+   '' posicion = MaxPos con posn es suficiente,sino se va al tramo final 
     posn = MaxPos  
     print #1, "usamos MxPos pra posicion, posn "; posicion, posn
    '' esto jode porque con insert=0 entra y dej aind= 0' final del ciclo
@@ -616,6 +657,62 @@ Print #1,"antes del FOR Roll,RollAux.. indpos,ind ", indpos,ind
    next k 
  EndIf
 insert=0 
+End Sub
+'------------------------------------
+Sub botones(hWnd As HWND, c As cairo_t Ptr, cm As cairo_t Ptr, x As Integer,y As integer)
+' RECTANGULO DE 40 X 40, FONDO ROJO
+Dim AS cairo_font_extents_t fe   '     font data
+Dim AS cairo_text_extents_t te  '      text size
+
+cairo_move_to  (cm, ANCHO-40, 0 )
+cairo_rectangle(cm, ANCHO-40, 0 , ANCHO,16)
+cairo_set_source_rgba cm, 0.8, 0, 0.2, 1
+cairo_move_to  (cm, ANCHO-10, 10 )
+cairo_fill (cm)
+cairo_set_source_rgba cm, 0.9, 0.9, 0.9, 1
+cairo_select_font_face (cm, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
+cairo_set_font_size (cm, 14)
+cairo_move_to (cm,ANCHO-25,14)
+cairo_font_extents (cm, @fe)
+Var t= "X"
+cairo_text_extents (cm, t, @te)
+
+cairo_show_text(cm,t)
+cairo_stroke(cm)
+'---------
+cairo_move_to  (cm, ANCHO-40, 17 )
+cairo_rectangle(cm, ANCHO-40, 17 , ANCHO,17)
+cairo_set_source_rgba cm, 0.8, 0.8, 0.2, 1
+cairo_move_to  (cm, ANCHO-10, 26 )
+cairo_fill (cm)
+cairo_set_source_rgba cm, 0, 0, 0, 1
+cairo_select_font_face (cm, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
+cairo_set_font_size (cm, 14)
+cairo_move_to (cm,ANCHO-25,31)
+cairo_font_extents (cm, @fe)
+ t= "-"
+cairo_text_extents (cm, t, @te)
+
+cairo_show_text(cm,t)
+cairo_stroke(cm)
+'---------
+cairo_move_to  (cm, ANCHO-40, 33 )
+cairo_rectangle(cm, ANCHO-40, 33 , ANCHO,33)
+cairo_set_source_rgba cm, 0, 1, 0, 1
+cairo_move_to  (cm, ANCHO-10, 30 )
+cairo_fill (cm)
+cairo_set_source_rgba cm, 0, 0, 0, 1
+cairo_select_font_face (cm, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
+cairo_set_font_size (cm, 14)
+cairo_move_to (cm,ANCHO-25,45)
+cairo_font_extents (cm, @fe)
+ t= "+"
+cairo_text_extents (cm, t, @te)
+
+cairo_show_text(cm,t)
+cairo_stroke(cm)
+
+  
 End Sub
 '------------------------------------
 ' https://www.freebasic.net/forum/viewtopic.php?t=10398
