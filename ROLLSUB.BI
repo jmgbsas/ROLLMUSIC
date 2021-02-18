@@ -40,18 +40,16 @@ cairo_line_to(c, ANCHO - 1, Penta_y )
 ' todo proceso de modificacion deberatener encuenta a curpos, pero no
 ' la vista por pantalla
 'If comEdit= TRUE Then
-Dim As Integer delta
+'Dim As Integer delta
 
-delta=NroCol
-If ComEdit=TRUE Then
-  If posicion <= delta + inicioDeLEctura Then
-    posishow= 1 +InicioDeLectura 
-  EndIf
+'delta=NroCol
+If cursorVert=0 And comEdit=TRUE  Then
+  posishow=  1 + inicioDelectura ' incAuto es negativo incrementa en  -1 
 Else
   posishow=posicion
+  
 EndIf
 ' 
-
 Var t = " "
 For semitono = 1 To 12 
   t = NotasGuia(semitono) + Str(*octava) + "_["
@@ -69,7 +67,7 @@ For semitono = 1 To 12
              EndIf
              s7=0
           EndIf
-       cairo_move_to(c, 70 + ic * 20 , Penta_y + semitono * inc_Penta - 6)
+       cairo_move_to(c, 81 + ic * 20 , Penta_y + semitono * inc_Penta - 6)
        t= figura((Roll (semitono + (nro-1) * 13, n).dur))
        cairo_show_text(c, t)
        ic += 1
@@ -143,10 +141,10 @@ Sub cursor(c AS cairo_t Ptr,n As Integer, nro As Integer)
 
 If cursorVert=1 Or cursorVert= 2 Then  ' vertical comEdit=TRUE
     
-cairo_move_to  (c, 70 + (curpos)*20, Penta_y + (notacur-1) * inc_Penta  )
-cairo_rectangle(c, 70 + (curpos)*20, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
-cairo_move_to  (c, 70 + (curpos)*20 + inc_Penta, Penta_y  )
-cairo_line_to  (c, 70 + (curpos)*20 + inc_Penta, Penta_y + (notacur-1) * inc_Penta  +inc_Penta ) 
+cairo_move_to  (c, 81 + (curpos)*20, Penta_y + (notacur-1) * inc_Penta  )
+cairo_rectangle(c, 81 + (curpos)*20, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
+cairo_move_to  (c, 81 + (curpos)*20 + inc_Penta, Penta_y  )
+cairo_line_to  (c, 81 + (curpos)*20 + inc_Penta, Penta_y + (notacur-1) * inc_Penta  +inc_Penta ) 
 
 EndIf
 If cursorVert= 0 And cursorHori=0 then
@@ -154,13 +152,13 @@ If cursorVert= 0 And cursorHori=0 then
      notaOld=notacur
      notacur=0
   EndIf
- cairo_move_to  (c,70 + (curpos)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
- cairo_rectangle(c,70 + (curpos)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
+ cairo_move_to  (c,81 + (curpos)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
+ cairo_rectangle(c,81 + (curpos)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
 EndIf
 If cursorHori=1 Or cursorHori = 2 Then
- cairo_move_to  (c,70 + (curpos)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
- cairo_rectangle(c,70 + (curpos)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
+ cairo_move_to  (c,81 + (curpos)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
+ cairo_rectangle(c,81 + (curpos)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
 EndIf
 If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
@@ -377,6 +375,9 @@ Select Case menuNro
         Roll(mi,p).dur =33
       Next mi
       Next p
+      curpos=0
+      notacur=0
+      
    EndIf
    If mousex > 104 And mousex < 160  and mousey < 50 Then ' abrir leer grabaroll.roll
      Erase Roll
@@ -416,6 +417,8 @@ Select Case menuNro
           Next j
        Next i 
     Close 2
+    curpos=0
+    
     carga=1 ' <======= control de Carga
     Print #1,"VEMOS QUE QUEDA ENROLL nota, dur hasta 40 debug" 
     Dim P As Integer 

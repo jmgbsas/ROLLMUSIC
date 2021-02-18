@@ -1,4 +1,15 @@
 
+' VERSION 0.5.7.3.5 FUNCIONLMENTE ANDA BIEN NAVEGACION MODIFICAACION EINSERCION
+' AL EMPEZAR EN BLANCO SE INGRESAN NOTAS SE DA CLICK EN EDIT, Y SE VA VIENDO LAS NOTAS
+' NUEVAS INGRESADAS..SI DESEO MODIFICAR HAY Q USAR CTRL-M PERO ESO ME LLEVA AL FINAL
+' DE LA SECUENCIA POR ESO HAY QUE VOLVER A DAR CLICK A EDIT Y DAR SCROLL PARA ATRAS
+' HORIZONTALMENTE. O HACERLO SIN PASARPOR EDIT, LUEGO DOY EDIT DE NUEVO Y LUEGO CTRL-M
+' AHORA PUEDO MODIFICAR E INSERTAR...PARA TERMINAR DOY CTRL-P Y LUEGO CLICK EN EDIT
+' PERO SI NO SE CIERRA CTRL-M CON CTRL-P Y PASAMOS A EDIT CELESTE NAVEGADOR
+' PODEMOS MODIFICAR, PERO SOLO EN POSICION 1 PORQUE AL MOVER EL CURSOR SE MUEVE 
+' EL ROLL, PROXIMO PASO ELIMINAR, BORRAR SIN ELIMINARYA EXISTE ES CON TECLA
+' SUPRLO Q PONE UN SILENCIO EQUIVALENTE SIMILAR A S..OTRO PULSO PONE EN BLNCO
+' PERONO SE SI DEJA BASURA <VERIFICAR!> ... 
 ' 5.7.3.3 VERIFICARA CAMBIADUR ACORDES E INSERCION
 ' PUES EN 5.7.3.2 SE RESOLVIO NVEGACION DER IZ LUEGO DE CARGA
 ' [casercion y anda ok] issue: lterminr de insertar se posiciona
@@ -65,7 +76,7 @@ ANCHO = ANCHO
 ALTO = ALTO  -25  
 AnchoInicial=ANCHO
 AltoInicial=ALTO
-NroCol =  (ANCHO / 20 ) - 6 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
+NroCol =  (ANCHO / 20 ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
 'cambie a directX !!! versi anda winpopup
 ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion
 ' con Directx nunca tomaelfoco se lodebe dar elusuario
@@ -429,9 +440,6 @@ If MultiKey(SC_LEFT)  Then '  <========== LEFT
         Dim kNroCol As Integer ' cntidad de scroll de 66
         posicion = posicion - 1
         kNroCol= Int(posicion/NroCol)
-        If  kNroCol > 0 And (posicion > NroCol*kNroCol) And (MaxPos - Posicion  <=NroCol) Then
-          iniciodelectura = iniciodelectura - 1
-        EndIf
         If  kNroCol > 0 And (posicion = NroCol*kNroCol)  Then
           iniciodelectura = iniciodelectura - NroCol
         EndIf  
@@ -441,6 +449,7 @@ If MultiKey(SC_LEFT)  Then '  <========== LEFT
         If posicion < 1 Then
            posicion = 1
         EndIf
+        
      Else
         curpos = curpos - 1 ' <=== MOVER CURSOR IZQ
         If curpos < 0 Then
@@ -655,6 +664,7 @@ If MultiKey(SC_L)  Then ' <======== load Roll
           Next j
        Next i 
     Close 2
+    curpos=0
     carga=1 ' <======= control de Carga
  ' colocar algo visual que indique quesehizo la grabcion
 EndIf
@@ -946,9 +956,16 @@ EndIf
 ' untresillo simplemente se coloca un 3 junto a la figura 3III = tresillo de negra.
 ' ------------DETECCION DE OCTAVA-----NUCLEO CARGA ENTRADA---
 ''
-
- If comEdit = TRUE  And nota> 0 And agregarNota=0 Then 
+' si no uso 1 + inicioDeLEctura y  uso posicion que pasa?
+' el programa no sabe donde el usuario colocara una nota nueva en la pantalla
+' pero si sabe en que posicion arranca la vista ergo ya no haria falta posn
+' que revise desde el principio SINO DESDE posicion ficticimente hacia eso
+' al usar iniciodeLectura, pero eso sí, con inicio congelaba el movimiento
+' del roll ante una entrada de nota hasta el próximo incremento de pantalla
+' SOLO SEUSAPARAINGRESO DE NOTAS NUEVAS ..VERIFICANDO JMG 
+ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 Then 
     posn=1 + InicioDeLectura
+     
     Print #1,"estoyEnOctava ";estoyEnOctava
     If estoyEnOctava <> 99 Then ' estoy en una octava 
      '  If indice <= 0 Then 
@@ -1174,7 +1191,10 @@ If (ScreenEvent(@e)) Then
   EndIf
   If e.scancode = SC_X Then ' 33 <==== SC_X ...fix 
    'corrige nota cambia duracion o agrega nota nueva, acorde melodia
-     cambiadur = 1    ' usando 1 a 8 para silencio esta delete
+   ' solo debe funcionar con CTRL-M
+     If cursorVert=1 Then ' ver cursorVert2 archivonuevocon espacios....sirve?? 
+       cambiadur = 1    ' usando 1 a 8 para silencio esta delete
+     EndIf
      Exit Do
   EndIf
 ' para insertar en cada iten de Roll cda vez queingreso nota al final
@@ -1182,6 +1202,7 @@ If (ScreenEvent(@e)) Then
 'con FIN por ahora para visualizarlo  
 
   If e.scancode = SC_INSERT And insert=0  Then '82 <===== SC_INSERT
+   ' solo valido con CTRL-M
    If cursorVert = 1 And  cursorHori = 1 And insert = 0 Then
     ' solo tiene sentido insertar en lo echo y en cursor libre
      insert=1 ' comienzo hbilitotel I para insertr nota por nota 
@@ -1196,20 +1217,22 @@ If (ScreenEvent(@e)) Then
     'sigue el proceso en RollSub->sub cursor 
    EndIf
   EndIf
-  If e.scancode = SC_I And insert=1 Then
+  If e.scancode = SC_I And insert=1 And cursorVert=1 Then
       insert= 2 ' hbilito cursor para queingrese 
      Print #1, "-----SC_I insert,ind : ",insert,ind
   EndIf
-  If e.scancode = SC_END Then 
+  If e.scancode = SC_END Then ' mueve insercion, podria usarse para ELIMINAR Probar
+    If cursorVert=1 Then ' solo vlido con Ctrl-M
      ' no mas reemplazos
      insert=3
      Print #1, "-----SC_END StartInsert,ind,insert,nota: ",StartInsert,ind,insert,nota 
      Print #1,"ind no deberia valer cero !!!! es global "
      moveresto (StartInsert,ind, insert,nota) 
- ' param : posicion comienzo (fijo), indice incremental para el aux 
+ '  param : posicion comienzo (fijo), indice incremental para el aux 
  ' ,insert comando habilitado = 1
- ' insert 3 fin reemplazos comienzo de move total
+ '  insert 3 fin reemplazos comienzo de move total
     insert=0:ind=0
+    EndIf
   EndIf
   
 ' ------------------PULSAR MUCHO TIEMPO <====== REPEAT------
@@ -1304,18 +1327,23 @@ EndIf
   End Select
 '-------------------------------------END SCREENEVENT ----------
   
-  GetMouse mouseX, mouseY, , MouseButtons
+  GetMouse mouseX, mouseY, , MouseButtons   ' <=======  CLICK EVENTOS
   If (mouseY >= edity1 ) And (mouseY <= edity2) And menuNro=2 Then
      If (mouseX >= 36) And (mouseX <= 70)  Then
-        If MouseButtons And 1 Then
+        'SI ADEMS SEUSA CTRL-M SEPUEDE modificar ,agregr acordes e insertar 
+        ' 1 o varias notas en forma horizontal siemrpe la misma nota
+        ' para acorde usar modificar SC_X 
+        If MouseButtons And 1 Then ' <========= EDICION SOLO INGRESO DE NOTAS NUEVAS
            If s3 = 0 Then
             comEdit = TRUE : s3 = 1
             font = 18
             curpos=0
+            'posicion=posicion+incFalse
             Exit Do
            Else
             comEdit = FALSE : s3 = 0
-            '''posicion= posicion + curpos
+            posicion= posicion + curPOS
+            curpos=0
             Exit Do 
            EndIf
         EndIf
@@ -1401,7 +1429,8 @@ If (mousex>=(ANCHO-40)) And (mousey > 33) And (mousey < 50) Then
 EndIf
 
 
- If resize = TRUE Then    
+ If resize = TRUE Then    ' <===== MOVER Y REDIMENSIONAR LA PANTALLA NO TAN FACIL
+   'CLICKEAR CERCA DEL CENTRO Y DRAGAR DERECHA IZQUIERDA ARRIBA ABAJO 
     m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
    If m.buttons = 1 And (m.x > 5 ) And (m.y > 5 ) Then
      'dim as integer desktopwidth,desktopheight
@@ -1481,4 +1510,5 @@ er = Err
 Print "Error detected ", er
 Print Erl, Erfn,Ermn,Err
  
+
 
