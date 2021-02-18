@@ -44,7 +44,7 @@ cairo_line_to(c, ANCHO - 1, Penta_y )
 
 'delta=NroCol
 If cursorVert=0 And comEdit=TRUE  Then
-  posishow=  1 + inicioDelectura ' incAuto es negativo incrementa en  -1 
+  posishow=  1 + inicioDelectura '  
 Else
   posishow=posicion
   
@@ -52,6 +52,7 @@ EndIf
 ' 
 Var t = " "
 For semitono = 1 To 12 
+
   t = NotasGuia(semitono) + Str(*octava) + "_["
   cairo_move_to(c, 0, Penta_y + semitono * inc_Penta- 6)
   cairo_show_text(c, t)
@@ -82,7 +83,7 @@ For semitono = 1 To 12
 
   cairo_move_to(c, 0, Penta_y + semitono * inc_Penta )
   cairo_line_to(c, ANCHO - 1, Penta_y + semitono * inc_Penta)
-
+  cairo_stroke(c)
 Next semitono
   
 
@@ -260,10 +261,11 @@ Sub menu (c AS cairo_t Ptr,n As Integer,menuNro As Integer )
  'Dim cbool as cairo_bool_t
  ' pinta celeste totodo surface 2
  ''cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1
-  cairo_set_source_rgba(c, 0.6, 0.5, 0.6, 1) ' morado
+ ' cairo_set_source_rgba(c, 0.6, 0.5, 0.6, 1) ' morado
+ cairo_set_source_rgba(c, 0.3, 0.3, 0.3, 1) 'fondo gris de la cinta
   cairo_paint(c)
  
-cairo_set_source_rgba(c, 0, 0, 0, 1)
+cairo_set_source_rgba(c, 1, 1, 1, 1) ' blanco letras
 
 cairo_select_font_face (c, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
 cairo_set_font_size (c, font)
@@ -278,13 +280,14 @@ cairo_move_to(c, 0, 30 ) ' aca esta la cosa la ubicacion del font!!!
  
 Dim oclog As Integer 
 oclog = 8 - (estoyEnOctava-1) 
-If comEdit = TRUE Then
-  cairo_set_source_rgba c, 0, 1, 0, 1
-Else
-  cairo_set_source_rgba c, 0, 0, 0, 1
-EndIf
+'If comEdit = TRUE Then
+'  cairo_set_source_rgba c, 0, 1, 0, 1
+'  menuNew=2
+'Else
+'  cairo_set_source_rgba c, 1, 1, 1, 1
+'EndIf
    
-cairo_move_to(c, 0, 30 ) 
+'cairo_move_to(c, 0, 30 ) 
 If menuNew <> menuNro Then
   menuNro=menuNew
 EndIf
@@ -292,180 +295,295 @@ EndIf
 ' para el caso 0, siempre queda en 0 , debí usar menunew una seguna variable
 ' y asi funciona ..(en ningun lado se ajusta a cero salvo al inicio fuera del
 ' loop.....
+t=" "
 Select Case menuNro
   Case 0
-   If mousex > 8 And mousex< 87 And mousey < 50 Then
+   If mousex > 38 And mousex< 117 And mousey < 50 Then
       cairo_set_source_rgba c, 0, 1, 0, 1
-      menuNew = 3  ''<--- caso raro ¿?
+      If MouseButtons And 1 Then
+        menuNew = 3  ''<--- caso raro ¿?
+      EndIf
    Else 
-     cairo_set_source_rgba c, 0, 0, 0, 1
+     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   t = " [Archivo]":cairo_show_text(c, t)
+   t = "       [Archivo]":cairo_show_text(c, t)
 
-   If mousex > 104 And mousex< 180 And mousey < 50 Then
+   If mousex > 134 And mousex< 210 And mousey < 50 Then
      cairo_set_source_rgba c, 0, 1, 0, 1
+     If MouseButtons And 1 Then
+         menuNew=2
+     EndIf 
    Else 
-     cairo_set_source_rgba c, 0, 0, 0, 1
+     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
+   Print #1, "INVESTIGO COMEDIT ENTRO X CLICK EN SUB S3, menuNro: ",S3, menuNro 
    t=  " [Edicion]":cairo_show_text(c, t)
 
-   If mousex > 195 And mousex< 233 And mousey < 50 Then
+   If mousex > 225 And mousex< 263 And mousey < 50 Then
       cairo_set_source_rgba c, 0, 1, 0, 1
    Else 
-      cairo_set_source_rgba c, 0, 0, 0, 1
+      cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf 
    t=  " [Ver]":cairo_show_text(c, t)
 
-   If mousex > 249 And mousex< 299 And mousey < 50 Then
+   If mousex > 279 And mousex< 329 And mousey < 50 Then
       cairo_set_source_rgba c, 0, 1, 0, 1
    Else 
-      cairo_set_source_rgba c, 0, 0, 0, 1
+      cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [Pista]":cairo_show_text(c, t)
    
-   If mousex > 318 And mousex< 423 And mousey < 50 Then
-      menuNew = 4
+   If mousex > 348 And mousex< 453 And mousey < 50 Then
       cairo_set_source_rgba c, 0, 1, 0, 1
+      If MouseButtons And 1 Then
+        menuNew = 4
+      EndIf
    Else 
-      cairo_set_source_rgba c, 0, 0, 0, 1
+      cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [Reproducir]":cairo_show_text(c, t)
 
-   If mousex > 443 And mousex< 532 And mousey < 50 Then
+   If mousex > 473 And mousex< 562 And mousey < 50 Then
       cairo_set_source_rgba c, 0, 1, 0, 1
    Else 
-      cairo_set_source_rgba c, 0, 0, 0, 1
+      cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [Opciones]":cairo_show_text(c, t)
 
-   If mousex > 552 And mousex< 613 And mousey < 50 Then
+   If mousex > 582 And mousex< 643 And mousey < 50 Then
       cairo_set_source_rgba c, 0, 1, 0, 1
    Else 
-      cairo_set_source_rgba c, 0, 0, 0, 1
+      cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   t=  " [Ayuda]":cairo_show_text(c, t)
+   t=  " [Ayuda] solo archivo y edicion habilitados":cairo_show_text(c, t)
 
    cairo_stroke(c)
   Case 1
-   t=  " <MENU=(<=|=>)>/<VENTANA=(MOVER=DRAGAR CINTA)(POSICON NORMAL,SUBE/BAJA BORDE INFERIOR=F7-F8)> "
+   t=  "      <MENU=(<=|=>)>/<VENTANA=(MOVER=DRAGAR CINTA)(POSICON NORMAL,SUBE/BAJA BORDE INFERIOR=F7-F8)> "
  
-  Case 2
-   Dim posishow  As Integer 
+  Case 2 ' para posicionar  en pantalla NO BORRAR. <= EDIT MENU  
+   menuNew=2 
    If cursorHori=1 And CursorVert=1 Then
        posishow= posicion + curpos
    Else 
        posishow = posicion
    EndIf
+   cairo_move_to(c, 0, 36 )
+   If comEdit= TRUE   Then
+      cairo_set_source_rgba c,0,1,0,1
+   Else
+      cairo_set_source_rgba c, 1, 1, 1, 1
+   EndIf   
+
    t = "      EDIT" + " " + Str(mousex) + " " + Str(mousey) + " Octava: " + Str(oclog) + _
    " UltimaPos: " + Str(Maxpos) +" Posi: " + Str(posishow)+ " posn: "+Str(posn)+ _
    " Font: " +str(font) + "dur "+ Str(vDur) +"Roll "+ Str(vRoll) + _
    " InicioDELectura: " + Str(InicioDelectura)
+ cairo_show_text(c,t)
 
+ cairo_stroke(c)
+  
+ menuNew=2
+
+  If mousex > 500 and mousey < 50 And mousex < ANCHO-50 Then
+     If MouseButtons And 1 Then 
+         MenuNew=0
+     EndIf   
+  EndIf
+
+ 
   case 3 
-   t = " [NUEVO] [ABRIR] [GRABAR] [GRABAR COMO] [EXPORTAR] [CERRAR] [SALIR] "
-   If mousex > 12 And mousex < 80  and mousey < 50 Then ' nuevo
-      Erase (Roll)
-      MaxPos = NroCol
-      posn=NroCol
-      Roll(1,NroCol).dur = 34
-      Dim As Integer mi,p
-      For p=1 To NroCol -1
-      For mi=1 To 128
-        Roll(mi,p).nota=0
-        Roll(mi,p).dur =33
-      Next mi
-      Next p
-      curpos=0
-      notacur=0
-      
+'   t = " [NUEVO] [ABRIR] [GRABAR] [GRABAR COMO] [EXPORTAR] [CERRAR] [SALIR] "
+' 3.1 [NUEVO]    
+   If mousex > 42 And mousex < 110  and mousey < 50 Then ' <= NUEVO
+      cairo_set_source_rgba c, 0, 1, 0, 1
+      If MouseButtons And 1 Then 
+        Erase (Roll)
+        MaxPos = NroCol
+        posn=NroCol
+        Roll(1,NroCol).dur = 34
+        Dim As Integer mi,p
+        For p=1 To NroCol -1
+          For mi=1 To 128
+            Roll(mi,p).nota=0
+            Roll(mi,p).dur =33
+          Next mi
+        Next p
+        curpos=0
+        notacur=0
+      EndIf
+   Else 
+     cairo_set_source_rgba c, 1, 1, 1, 1   
    EndIf
-   If mousex > 104 And mousex < 160  and mousey < 50 Then ' abrir leer grabaroll.roll
-     Erase Roll
-      Dim z (1,1 )  As dat
-      Dim As String x,x1,x2,x3,x4
-     open "Trabajo.roll" for binary access Read as #2
+   t = "      [NUEVO]":cairo_show_text(c,t)
+' 3.2 [ABRIR]   
+   If mousex > 134 And mousex < 190  and mousey < 50 Then ' <= ABRIR lee grabaroll.roll
+      cairo_set_source_rgba c, 0, 1, 0, 1
+      If MouseButtons And 1 Then 
+         Erase Roll
+         Dim z (1,1 )  As dat
+         Dim As String x,x1,x2,x3,x4
+         open "Trabajo.roll" for binary access Read as #2
        
-       Get #2, , z(1,1)
-       x1=Bin(z(1,1).nota,4)
-       x2=Bin(z(1,1).dur,4)
-       x3=Bin(z(1,1).vol,4)
-       x4=Bin(z(1,1).pan,4)
-       x=x1+x2+x3+x4
-       Print #1,"reconstruccion x pos bin ", x
-       MaxPos=CInt("&B"+x)
-       posicion = 1
-       Print #1,"reconstruccion x pos int ", Posicion
-       notaold= z(1,1).pb
-       nota=0 '''notaOld
-       inicioDeLectura=0' Int(Maxpos/NroCol) 
-       posn=Maxpos- 1
+         Get #2, , z(1,1)
+         x1=Bin(z(1,1).nota,4)
+         x2=Bin(z(1,1).dur,4)
+         x3=Bin(z(1,1).vol,4)
+         x4=Bin(z(1,1).pan,4)
+         x=x1+x2+x3+x4
+         Print #1,"reconstruccion x pos bin ", x
+         MaxPos=CInt("&B"+x)
+         posicion = 1
+         Print #1,"reconstruccion x pos int ", Posicion
+         notaold= z(1,1).pb
+         nota=0 '''notaOld
+         inicioDeLectura=0' Int(Maxpos/NroCol) 
+         posn=Maxpos- 1
 ' cargamos trabajo datos       
-   Dim Trabajo (1 To 128,1 To MaxPos) As dat   
-       Get #2, , Trabajo()
+         Dim Trabajo (1 To 128,1 To MaxPos) As dat   
+         Get #2, , Trabajo()
   ' movemos los datos a Roll      
  ' -------------------------              
-       Dim As Integer i,j 
-       For i= 1 To 128
-          For j = 1 To MaxPos
-          Roll (i,j).nota  = Trabajo (i,j).nota
-          Roll (i,j).dur  = Trabajo (i,j).dur
-          Roll (i,j).vol  = Trabajo (i,j).vol
-          Roll (i,j).pan  = Trabajo (i,j).pan
-          Roll (i,j).pb   = Trabajo (i,j).pb
-          Roll (i,j).inst = Trabajo (i,j).inst                 
+         Dim As Integer i,j 
+         For i= 1 To 128
+           For j = 1 To MaxPos
+             Roll (i,j).nota  = Trabajo (i,j).nota
+             Roll (i,j).dur  = Trabajo (i,j).dur
+             Roll (i,j).vol  = Trabajo (i,j).vol
+             Roll (i,j).pan  = Trabajo (i,j).pan
+             Roll (i,j).pb   = Trabajo (i,j).pb
+             Roll (i,j).inst = Trabajo (i,j).inst                 
 
-          Next j
-       Next i 
-    Close 2
-    curpos=0
+           Next j
+        Next i 
+        Close 2
+        curpos=0
     
-    carga=1 ' <======= control de Carga
-    Print #1,"VEMOS QUE QUEDA ENROLL nota, dur hasta 40 debug" 
-    Dim P As Integer 
-    Print #1, "B_--------->"
-    For P = 260 To MaxPos
-     Print #1, Roll(12,p).nota;".";
-    Next
-       Print #1,
-    For P = 260 To MaxPos
-     Print #1, Roll(12,p).dur;".";
+        carga=1 ' <======= control de Carga ¿? VER
+        Print #1,"VEMOS QUE QUEDA ENROLL nota, dur hasta 40 debug" 
+        Dim P As Integer 
+        Print #1, "B_--------->"
+        For P = 260 To MaxPos
+         Print #1, Roll(12,p).nota;".";
+        Next
+        Print #1,
+        For P = 260 To MaxPos
+          Print #1, Roll(12,p).dur;".";
      
-    Next
-    Print #1,
-'      Print #1, "A#--------->"
-'    For P = 67 To 77
-'     Print #1, Roll(13,p).nota;".";
-'    Next
-'       Print #1,
-'    For P = 67 To 77
-'     Print #1, Roll(13,p).dur;".";
-'     
-'    Next
-'      Print #1,
-                
+        Next
+        Print #1,
+      EndIf         
    Else 
-     cairo_set_source_rgba c, 0, 0, 0, 1  
+     cairo_set_source_rgba c, 1, 1, 1, 1  
    EndIf
+   t = " [ABRIR]":cairo_show_text(c,t)
+' 3.3[GRABAR] SC_F11 COPIA
+   If mousex > 223 And mousex < 296  and mousey < 50 Then ' <=
+     cairo_set_source_rgba c, 0, 1, 0, 1
+     If MouseButtons And 1 Then
+       Print #1, "Grabando a disco Roll GRABAR "
+       Open "Trabajo.roll" For Binary access write As #2
+   
+       Dim Trabajo (1 To 128, 1 To Maxpos) As dat
+       Dim grabaPos (1,1)  As dat
+       Dim as integer i1, i2
+       Dim As Integer y1,y2,y3,y4 
+       Dim As String a1,a2,a3,a4 ,x
+       x= Bin(MaxPos,16)
+       Print #1,"Posicion ",Posicion
+ 'Print "string representando ", x
+       a1=Mid(x,1,4)
+       a2=Mid(x,5,4)
+       a3=Mid(x,9,4)
+       a4=Mid(x,13,4)
+     Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
+ 
+       y1= CInt("&B"+a1)
+       y2= CInt("&B"+a2)
+       y3= CInt("&B"+a3)
+       y4= CInt("&B"+a4)
+     Print #1, "y1,y2,y3,y4", y1,y2,y3,y4  
+' grabamos maxpos en 4 ubyte   
+       grabaPos(1,1).nota = y1
+       grabaPos(1,1).dur  = y2
+       grabaPos(1,1).vol  = y3
+       grabaPos(1,1).pan  = y4
+' ------------------------------------
+' hacemoslo mismo para l ultim not que se grabo que teng el 34
+' esa es lapapa recorremos todas las dur de las notas en donde este el 34
+' endur tomamosla nota y esala grabamos en pb o ins
+' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
+' -------------------------------------
+       Dim As Integer i,j,notafinal 
+       For i = 1 To 128
+         If Roll(i,posicion+1).dur = 34 Then
+            notafinal= Roll(i,posicion).nota
+            Print #1, "ENCONTRO NOTA FINAL ", notafinal
+            Print "ENCONTRO NOTA FINAL ", notafinal
+         ' esten la posiciond ela ultimanotapero grasoerror
+         ' o seaque no tiene duracion solo el34
+         ' esta mal ...
+            Exit For
+         EndIf 
+      Next i
+      grabaPos(1,1).pb = notafinal
+' Grabacion de Trabajo
+' ------------------------------------ 
+      For i1 = 1 To 128
+        For i2 = 1 To MaxPos     
+           Trabajo(i1,i2)=Roll(i1,i2 )
+        Next i2
+      Next i1 
+
+    Print #1,"MaxPos grabada en Trabajo ",MaxPos
+    
+      Put #2, ,grabaPos(1,1) 
+      Put #2, ,Trabajo()
+      Close 2
+      While InKey <> "": Wend
+   sleep 150
+     Print "ENTRO ENTRO ENTRO"
+     Print "ENTRO ENTRO ENTRO"
+     Print "ENTRO ENTRO ENTRO"
+     Print "ENTRO ENTRO ENTRO"
+     Print "ENTRO ENTRO ENTRO"
+     Print "ENTRO ENTRO ENTRO"
+     EndIf
+   Else 
+     cairo_set_source_rgba c,1,1,1,1
+   EndIf  
+  t = " [GRABAR]": cairo_show_text(c,t) :t= ""  
+  If mousex > 330 and mousey < 50 Then
+    If MouseButtons And 1 Then 
+       MenuNew=0
+    EndIf   
+  EndIf 
   Case 4
-   t=  "[DESDE INICIO][DESDE ESTA POSICION] [VOLUMEN / + / - /]" 
+     cairo_set_source_rgba c,1,1,1,1
+   t=  "      [DESDE INICIO][DESDE ESTA POSICION] [VOLUMEN / + / - /] No habilitado"
+   If mousex > 330 and mousey < 50 And mousex < ANCHO-50 Then
+    If MouseButtons And 1 Then 
+       MenuNew=0
+    EndIf   
+   EndIf
 End Select
 ' Si nodoy Stroke los show text van apendendo al final como un print;
+
 cairo_show_text(c, t)
 cairo_stroke(c)
 
-If menuNro=2 Then ' cambio de tamaño de ventana
-   cairo_move_to(c, 0, 30 )
-   If resize = TRUE Then
+cairo_move_to(c, 0, 30 )
+  If resize = TRUE Then
      cairo_set_source_rgba c, 1, 0, 0, 1
       t = "<>" 
-  
-   Else
-     cairo_set_source_rgba c, 0, 0, 0, 1 
+  Else
+     cairo_set_source_rgba c, 1, 1, 1, 1 
       t = "<>" 
-   EndIf
-EndIf
-cairo_show_text(c, t)
-cairo_stroke(c)
+  EndIf
+
+ cairo_show_text(c, t)
+ cairo_stroke(c)
+
 
 End Sub
 '----------------------------------------------------------------------

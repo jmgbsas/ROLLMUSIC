@@ -183,7 +183,7 @@ Var c = cairo_create(surface)
 
   
 
-If comEdit = TRUE And menuNro=2 Then
+If comEdit = TRUE  Then
  ' cairo_set_source_rgba(c, 0.6, 0.5, 0.6, 1)
   cairo_set_source_rgba(c, 0.6, 0.6, 0.7, 1)  
 Else
@@ -240,9 +240,10 @@ Var cm = cairo_create(surf2)
 ' posicion aprentemente elcursorqueda clavado en 1 o 0 y no navega 5.7.3.1
 ' solo pasando por Edicion vuelve a navegar
 menu(cm, posicion,menuNro)
+cairo_stroke(cm)
 botones(hWnd, c ,cm, ANCHO,ALTO)
 
-cairo_stroke(cm)   
+   
 If menuaccion=1111 Then ' no sirve las aciones perforan
  cairo_move_to(c, 9*(ANCHO/10),50)
  Var surf3 = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO/10, ALTO, stride)
@@ -393,6 +394,7 @@ If MultiKey(SC_RIGHT)  Then ' <======== RIGHT
       menuNro=menuNro+1
       If menuNro > 3 Then
         menuNro=0
+        menuNew=0
       EndIf
       menuNew=menuNro
       While Inkey <> "": Wend
@@ -430,6 +432,7 @@ If MultiKey(SC_LEFT)  Then '  <========== LEFT
       menuNew=menuNro
       If menuNro < 0 Then
         menuNro=3
+        menuNew=3
       EndIf
       While Inkey <> "": Wend
       Sleep 350
@@ -866,7 +869,8 @@ If MultiKey(SC_BACKSPACE) Then
  EndIf
 ' ----------------------FIN NOTAS-------------------------
 ' ----------INGRESO DE DURACIONES DE NOTAS -------------
-If comEdit = TRUE And menuNro = 2 Then 
+If comEdit = TRUE Then
+ If (menuNew = 2 Or menuNro=2) Then 
   If MultiKey(SC_1) Then 
     DUR = 1 :Exit Do
   EndIf
@@ -905,6 +909,7 @@ If comEdit = TRUE And menuNro = 2 Then
   If MultiKey(SC_S) Then 
     sil = 1:Exit Do  ' silencio 
   EndIf 
+ EndIf 
   ' ojo ver q no habia  exit do antes !!!!!
 EndIf
 If comEdit = FALSE Then '''???????????????? veremos para que usarlo
@@ -965,7 +970,6 @@ EndIf
 ' SOLO SEUSAPARAINGRESO DE NOTAS NUEVAS ..VERIFICANDO JMG 
  If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 Then 
     posn=1 + InicioDeLectura
-     
     Print #1,"estoyEnOctava ";estoyEnOctava
     If estoyEnOctava <> 99 Then ' estoy en una octava 
      '  If indice <= 0 Then 
@@ -1328,20 +1332,22 @@ EndIf
 '-------------------------------------END SCREENEVENT ----------
   
   GetMouse mouseX, mouseY, , MouseButtons   ' <=======  CLICK EVENTOS
-  If (mouseY >= edity1 ) And (mouseY <= edity2) And menuNro=2 Then
-     If (mouseX >= 36) And (mouseX <= 70)  Then
+  If (mouseY >= edity1 ) And (mouseY <= edity2) Then
+     If (mouseX >= 36) And (mouseX <= 70) And (menuNew=2 Or menuNro=2)  Then
         'SI ADEMS SEUSA CTRL-M SEPUEDE modificar ,agregr acordes e insertar 
         ' 1 o varias notas en forma horizontal siemrpe la misma nota
         ' para acorde usar modificar SC_X 
         If MouseButtons And 1 Then ' <========= EDICION SOLO INGRESO DE NOTAS NUEVAS
            If s3 = 0 Then
             comEdit = TRUE : s3 = 1
+            Print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
             font = 18
             curpos=0
             'posicion=posicion+incFalse
             Exit Do
            Else
             comEdit = FALSE : s3 = 0
+            Print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
             posicion= posicion + curPOS
             curpos=0
             Exit Do 
@@ -1362,7 +1368,7 @@ EndIf
      EndIf             
   EndIf
   
-  If mouseY < 50 And s5= 0 And mouseX > 70 And mousex < (ANCHO-50) Then 
+  If mouseY < 50 And s5= 0 And mouseX > 70 And mousex < (ANCHO-70) Then 
     x1=mouseX: y1=mouseY 
     s5=1
   EndIf
@@ -1374,12 +1380,13 @@ EndIf
     ScreenControl SET_WINDOW_POS, x0, y0
    ' mientras mantengo presiondo el mouse pudo mover el mouse con la ventana
    ' la performance no es tan buena pero funciona 
-   Exit Do ' probando ac creo es el poblem mmmm and ok !
+   Exit Do 
   EndIf  
-'  If mouseY > 50 Then ' <=== MENU DEFAULT 0 POR AHORA NO ES MOLESTO
-'         menuNew=0
-'  EndIf
- 'https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-movewindow
+''  If mouseY > 50 Then ' <=== MENU DEFAULT 0 POR AHORA NO ES MOLESTO
+''         menuNew=menuNro
+''  EndIf
+''https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-movewindow
+'                           <====== [BOTONES] =======> 
 If (mousex>=(ANCHO-40)) And (mousey <= 16) Then 
   If  MouseButtons And 1 Then
     if MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","RollMusic End ",4 or 64) =6 then 
@@ -1492,7 +1499,7 @@ End If
 Loop 
 
 While Inkey <> "": Wend
-While Inkey <> "": Wend
+
 If s5<> 1 Then
   Sleep 1 '1000 / 1000 frames = 1 milisegundos
 EndIf
