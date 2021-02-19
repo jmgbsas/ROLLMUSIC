@@ -211,23 +211,24 @@ If (cursorHori=1 Or cursorVert = 1) And insert= 2 Then
  ' la tecla insert se guarda la posicion de inicio desde ahi habra reemplzos
  ' usando la posicion comun n
  ' hasta que se pulse FINose alcance el FIN (34)   
-  Print #1, "call a movedato con ind ",ind 
+  Print #1, "call a movedato con indaux ",indaux 
   ' n es StartInsert fijo no se modifica mas
-   movedato (n + curpos,ind, insert,notacur + (nro-1) * 13 ) 'antes de reemplazarlo 
-  Print #1, "regreso de movedato con ind ",ind
+   movedato (n + curpos,indaux, insert,notacur + (nro-1) * 13 ) 'antes de reemplazarlo xxx
+  Print #1, "regreso de movedato con indaux ",indaux
  ' param : posicion comienzo (fijo), indice incremental para el aux 
  ' ,insert comando habilitado = 1
   'luego reemplazo 
   Print #1, "inserta DUR, en ROLL n,nota,posicion ",DUR,n,(notacur + (nro-1) * 13),n
-  Roll(notacur + (nro-1) * 13, n +curpos).dur = DUR 
+  Roll(notacur + (nro-1) * 13, n +curpos).dur = DUR ' reemplazo con lo nuevo
   vdur=Roll(notacur + (nro-1) * 13, n+curpos).dur
- ' SI LA NOTA  NO EXITIA LA agrega
+ ' SI LA NOTA  NO EXITIA LA agrega...osea sirve para acordes tambien
 Print #1, "carga notacur en ROLL n,nota calculada ", n,(notacur + (nro-1) * 13)
   
   Roll(notacur + (nro-1) * 13, n+curpos).nota = notacur ' 5.7.3 
   vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
   ' TODO IGUAL A cambiadur = 1 deberia andar ,,,,lunica diff es 
-  ' que se crgala nota en roll
+  ' que se cargala nota en roll,<- pero 1ero debo guardar la nota de Roll en aux
+  ' antes de reemplazarla
   insert=1  ' habilita de nuevo la tecla I deingreso de insercion en un lugar
   'elegido con cursor
   Print #1, "insert 1 ",insert
@@ -316,7 +317,7 @@ Select Case menuNro
    Else 
      cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   Print #1, "INVESTIGO COMEDIT ENTRO X CLICK EN SUB S3, menuNro: ",S3, menuNro 
+  ' Print #1, "INVESTIGO COMEDIT ENTRO X CLICK EN SUB S3, menuNro: ",S3, menuNro 
    t=  " [Edicion]":cairo_show_text(c, t)
 
    If mousex > 225 And mousex< 263 And mousey < 50 Then
@@ -431,10 +432,10 @@ Select Case menuNro
          x3=Bin(z(1,1).vol,4)
          x4=Bin(z(1,1).pan,4)
          x=x1+x2+x3+x4
-         Print #1,"reconstruccion x pos bin ", x
+      '   Print #1,"reconstruccion x pos bin ", x
          MaxPos=CInt("&B"+x)
          posicion = 1
-         Print #1,"reconstruccion x pos int ", Posicion
+       '  Print #1,"reconstruccion x pos int ", Posicion
          notaold= z(1,1).pb
          nota=0 '''notaOld
          inicioDeLectura=0' Int(Maxpos/NroCol) 
@@ -447,31 +448,25 @@ Select Case menuNro
          Dim As Integer i,j 
          For i= 1 To 128
            For j = 1 To MaxPos
-             Roll (i,j).nota  = Trabajo (i,j).nota
-             Roll (i,j).dur  = Trabajo (i,j).dur
-             Roll (i,j).vol  = Trabajo (i,j).vol
-             Roll (i,j).pan  = Trabajo (i,j).pan
-             Roll (i,j).pb   = Trabajo (i,j).pb
-             Roll (i,j).inst = Trabajo (i,j).inst                 
-
+              Roll (i,j)  = Trabajo (i,j) '
            Next j
         Next i 
         Close 2
         curpos=0
     
         carga=1 ' <======= control de Carga ¿? VER
-        Print #1,"VEMOS QUE QUEDA ENROLL nota, dur hasta 40 debug" 
-        Dim P As Integer 
-        Print #1, "B_--------->"
-        For P = 260 To MaxPos
-         Print #1, Roll(12,p).nota;".";
-        Next
-        Print #1,
-        For P = 260 To MaxPos
-          Print #1, Roll(12,p).dur;".";
+     '   Print #1,"VEMOS QUE QUEDA ENROLL nota, dur hasta 40 debug" 
+     '   Dim P As Integer 
+     '   Print #1, "B_--------->"
+     '   For P = 260 To MaxPos
+    '     Print #1, Roll(12,p).nota;".";
+     '   Next
+     '   Print #1,
+     '   For P = 260 To MaxPos
+     '     Print #1, Roll(12,p).dur;".";
      
-        Next
-        Print #1,
+      '  Next
+      '  Print #1,
       EndIf         
    Else 
      cairo_set_source_rgba c, 1, 1, 1, 1  
@@ -481,7 +476,7 @@ Select Case menuNro
    If mousex > 223 And mousex < 296  and mousey < 50 Then ' <=
      cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 Then
-       Print #1, "Grabando a disco Roll GRABAR "
+'       Print #1, "Grabando a disco Roll GRABAR "
        Open "Trabajo.roll" For Binary access write As #2
    
        Dim Trabajo (1 To 128, 1 To Maxpos) As dat
@@ -490,19 +485,19 @@ Select Case menuNro
        Dim As Integer y1,y2,y3,y4 
        Dim As String a1,a2,a3,a4 ,x
        x= Bin(MaxPos,16)
-       Print #1,"Posicion ",Posicion
+   '    Print #1,"Posicion ",Posicion
  'Print "string representando ", x
        a1=Mid(x,1,4)
        a2=Mid(x,5,4)
        a3=Mid(x,9,4)
        a4=Mid(x,13,4)
-     Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
+ '    Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
  
        y1= CInt("&B"+a1)
        y2= CInt("&B"+a2)
        y3= CInt("&B"+a3)
        y4= CInt("&B"+a4)
-     Print #1, "y1,y2,y3,y4", y1,y2,y3,y4  
+ '    Print #1, "y1,y2,y3,y4", y1,y2,y3,y4  
 ' grabamos maxpos en 4 ubyte   
        grabaPos(1,1).nota = y1
        grabaPos(1,1).dur  = y2
@@ -518,8 +513,8 @@ Select Case menuNro
        For i = 1 To 128
          If Roll(i,posicion+1).dur = 34 Then
             notafinal= Roll(i,posicion).nota
-            Print #1, "ENCONTRO NOTA FINAL ", notafinal
-            Print "ENCONTRO NOTA FINAL ", notafinal
+    '        Print #1, "ENCONTRO NOTA FINAL ", notafinal
+    '        Print "ENCONTRO NOTA FINAL ", notafinal
          ' esten la posiciond ela ultimanotapero grasoerror
          ' o seaque no tiene duracion solo el34
          ' esta mal ...
@@ -535,7 +530,7 @@ Select Case menuNro
         Next i2
       Next i1 
 
-    Print #1,"MaxPos grabada en Trabajo ",MaxPos
+  '  Print #1,"MaxPos grabada en Trabajo ",MaxPos
     
       Put #2, ,grabaPos(1,1) 
       Put #2, ,Trabajo()
@@ -640,95 +635,102 @@ cairo_stroke(c)
  
 End Sub
 '--------------------------
-Sub movedato (ByVal n As Integer, ByRef ind As Integer,ByRef  insert As Integer, ByRef nota As integer)
+Sub movedato (ByVal n As Integer, ByRef indaux As Integer,ByRef  insert As Integer, ByRef nota As integer)
  
-
-' ind parte de cero es el ind para el auxxilair que se ha borrado
+' OJO n ya entra conla suma de curpos
+' indaux parte de cero es el indaux para el auxiliar que se ha borrado
 ' y por ende empieza por 1 no se guarda esun auxiliar...
 ' 
- ind = ind + 1
- Print #1, "----EN MOVEDATO ind, nota: ",ind , nota
+ indaux = indaux + 1 ' indaux auxiliar SC_INSERT INICIALIZA EN 0
+ Print #1, "----EN MOVEDATO indaux, nota: ",indaux , nota
  'notas gurdadas para luego usar en proceso CORRECCION
  notins = notins + 1
- notasInsertadas (notins) = nota 
- 'muevo datos remplazados al auxiliar 
-  Dim as integer i1,i2 ' nomovemos solo elindice <nota> sino todas las notas!
+ notasInsertadas (notins) = nota  ' ENTRADA POR TECLADO ANTES DE PULSAR INSERT
+ 'LA DURACION NO HACE FALTA PARA CONTROL,QUEDARA EN ROLL
+ 'muevo datos QUE SERAN remplazados al auxiliar PARA ESA POSICION 
+  Dim as integer i1,i2 ' no movemos solo el indice <nota> sino todas las notas!
+  ' INDAUX PARTE DE 1 Y SE Va INCREMENTANDO CON CADA PULSO SOLO DE  I...
+  
   for i1 = 1 to 128
-    Rollaux(i1,ind)= Roll(i1,n + curpos)
+    Rollaux(i1,indaux)= Roll(i1,n ) 'xxx  n ya contiene curpos
   next i1
-
+' movio la nota queestaba antes de pulsar insert
   Print #1, "EN MOVEDATO carga rollaux con valores viejos de roll"
-  Print #1,"Rollaux(nota,ind) nota,ind " ,nota,ind
-  Print #1,"Roll(nota,n) nota,n " ,nota,n +curpos
-  Print #1,"durcion cargda Rollaux(nota,ind).dur: ", Rollaux(nota,ind).dur
-  Print #1,"nota  cargda Rollaux(nota,ind).nota : ", Rollaux(nota,ind).nota
+  Print #1,"Rollaux(nota,indaux) nota,indaux " ,nota,indaux
+  Print #1,"Roll(nota,n) nota,n, curpos" ,nota,n, curpos
+  Print #1,"duracion cargda Rollaux(nota,indaux).dur: ", Rollaux(nota,indaux).dur
+  Print #1,"nota  cargda Rollaux(nota,indaux).nota : ", Rollaux(nota,indaux).nota
 'vamos reemplazando los eventos y sobreescribiendo con los nuevos pero
-'  los viejos se van guardando para desplazarlos a la derecha. 
+'  los viejos se van guardando para desplazarlos a la derecha.
+' rollaux tendra lo viejo, notas insertdas lo nuevo 
 End Sub
 
 '--------------------------
-Sub moveresto (ByVal StartInsert As Integer, ByRef ind As Integer, byref insert As Integer, ByRef nota As integer)
+Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, byref insert As Integer, ByRef nota As integer)
  Dim As Integer indpos,lastPosRollReemplzada,s,t,k,i
  lastPosRollReemplzada=posicion + curpos
  indpos=posicion + curpos'indice posicion partimos de ultima posicion global reemplazada
-   Print #1, "EN MOVERESTO, ind,StartInsert: ",ind ,StartInsert
-' ultima posicion movida a aux  es ind   
-Dim As Integer lastIndAuxporInsercion = ind 
-Print #1, "moveresto inicio: ind,indpos,posicion :", ind,indpos,posicion
-Print #1, "entra Loop, ind,StartInsert,indpos: ",ind,StartInsert ,indpos
-dim as integer cantInserciones = ind ' el ind contï¿½ en movedata las inserciones nuevas 
+   Print #1, "EN MOVERESTO, indaux,StartInsert: ",indaux ,StartInsert
+' ultima posicion movida a aux  es indaux (indaux POSICION DE AUX) JMG  
+Dim As Integer lastIndAuxporInsercion = indaux 
+Print #1, "moveresto inicio: indaux,indpos,posicion :", indaux,indpos,posicion
+Print #1, "entra Loop, indaux,StartInsert,indpos: ",indaux,StartInsert ,indpos
+dim as integer cantInserciones = indaux ' o notins el indaux continua en movedata las inserciones nuevas 
 ' durante lascuales se movio los valores viejso a aux pero quedaron 
 ' losnuevos en Roll. que no debo opisar
+'1) COPIAMOS A AUX EL RESTO DE ROLL
  Do 
    
-  
+'indpos ya se le sumo curpos... COPIAMOS A AUX EL RESTO DE ROLL NO MODIFICADO COMPLETA 
    indpos=indpos+1 ' empezamos de la siguiente no reemplazada y seguimos al final
    ''suponemos que posicion=indpos era la posicion de ultima reemplazada 
-   ind=ind+1 'nosubicamos en 1er posicon libre en aux para recibir el resto
-Print #1,"antes del FOR Roll,RollAux.. indpos,ind ", indpos,ind
-' debemos barres solo la octava? no porque puede haber otras octavas cargadas
+   indaux=indaux+1 'nosubicamos en 1er posicon libre en aux para recibir el resto
+Print #1,"antes del FOR Roll,RollAux.. indpos,indaux ", indpos,indaux
+' debemos barrer solo la octava? no porque puede haber otras octavas cargadas
    For s= 1 To 128 'barremos todas las notas verticalmente para una misma posicion
      If Roll(s,indpos).dur = 34 Then ' fin de datos de Roll
-        Rollaux(s,ind) = Roll(s,indpos)
+        Rollaux(s,indaux) = Roll(s,indpos)
         insert= 4 ' fin de llenado de almacenamiento auxiliar
-        Print #1,"sale moveresto encontro 34 fin, ind :" ,ind
+        Print #1,"sale moveresto encontro 34 fin, indaux :" ,indaux
         Exit Do 
      EndIf
-     Rollaux(s,ind) = Roll(s,indpos)
+     Rollaux(s,indaux) = Roll(s,indpos)
      if s=1 then 
-     print #1, "luego de la puta copia a AUX del resto de mierda"
+     print #1, "luego de la copia a AUX del resto "
      endif 
      if (Roll(s,indpos).dur <> 33 and Roll(s,indpos).nota <> 33) _
         and (Roll(s,indpos).dur > 0 or Roll(s,indpos).nota > 0)    Then 
       print #1, "Roll(";s,indpos;").nota ",Roll(s,indpos).nota
       print #1, "Roll(";s,indpos; ").dur ",Roll(s,indpos).dur
      endif 
-     if (Rollaux(s,ind).dur <> 33 and Rollaux(s,ind).nota <> 33) _
-        and (Rollaux(s,ind).dur > 0 or Rollaux(s,ind).nota > 0)    Then 
-      print #1, "Rollaux(";s,ind; ").nota ",Rollaux(s,ind).nota
-      print #1, "Rollaux(";s,ind; ").dur ",Rollaux(s,ind).dur
+     if (Rollaux(s,indaux).dur <> 33 and Rollaux(s,indaux).nota <> 33) _
+        and (Rollaux(s,indaux).dur > 0 or Rollaux(s,indaux).nota > 0)    Then 
+      print #1, "Rollaux(";s,indaux; ").nota ",Rollaux(s,indaux).nota
+      print #1, "Rollaux(";s,indaux; ").dur ",Rollaux(s,indaux).dur
      endif
      
    Next s
    
-   'posicion siempre tiene la ultima posicion de entrada o reemplazo
+   'posicion + curpos tiene la ultima posicion de entrada o reemplazo
  Loop
  'tenemso todos los datos viejos en auxiliar
- 'hay que copiarlos en Roll luego del ultipo reemplazo o insercion
- ' el 34 lo muevo??? sino debo hcer ind = ind -1
- ' ind=ind - 1 no le resto 1 copio el 34...el fin se corre 
+ 'hay que copiarlos en Roll luego del ultimo reemplazo o insercion
+ ' el 34 lo muevo??? sino debo hcer indaux = indaux -1
+ ' indaux=indaux - 1 no le resto 1 copio el 34...el fin se corre 
  
- Print #1, "StartInsert: " ,StartInsert
- If insert = 4 Then 'movemos de nuevo todo el aux completo a Roll desde StartInsert
-  Print #1, "insert 4 movemos Aux a ROLL ind maximos elementos en Aux: ",ind
-   t = StartInsert + cantInserciones
-   print #1, "posicion, posn "; posicion, posn
-   For k = 1 To ind ' todo el auxiliar
+ Print #1, "StartInsert: " ,StartInsert '  ya se le sumo curpos
+ If insert = 4 Then 'movemos de nuevo todo el aux completo a Roll desde 
+ ' laultimainsercion o sea Startindice + 
+  Print #1, "insert 4 movemos Aux a ROLL indaux maximos elementos en Aux: ",indaux
+   t = StartInsert + cantInserciones ' xxx  OK
+   
+   Print #1, "posicion, posn "; posicion, posn
+   For k = 1 To indaux ' todo el auxiliar SUMA ROLL REEMPLAZADO + NOREEMPLAZADO
          print #1, "k auxiliar "; k 
-        For s=1 To 128
+        For s=1 To 128  ' todos los semitonos 96
           Roll(s,t) = RollAux(s,k)
           if s=1 then 
-            print #1, "luego de la puta copia A ROLL de mierda"
+            print #1, "luego de la  copia A ROLL "
           EndIf
          if (Roll(s,t).dur <> 33 and Roll(s,t).nota <> 33) _
            and (Roll(s,t).dur > 0 or Roll(s,t).nota > 0)    Then 
@@ -763,20 +765,25 @@ Print #1,"antes del FOR Roll,RollAux.. indpos,ind ", indpos,ind
  ' StartInsert es de Roll antesdela insercion 
    print #1, "==> valor de nota antes de CORRECCION: ",nota 
    
-
-   for k= StartInsert to StartInsert + cantInserciones -1
+' aca revisamos el Roll solo la parte insertada , encada insercion en Roll
+' esa posiicon se corresponde al de notas insertadas biunivocmente,,
+' BORRAMOS LO QUE ESTABA ANTES PUES YA SEMOVIO ALFINAL
+' EN CADA POSICION SOLO DEBE QUEDAR UNA SOLA NOTA, LA INSERTADA,
+' SOLO SE PERMITE INSERTR UNA SOLA NOTA VERTICALMENTE O SEA PARA UNA MISMA POSICION
+' PERO PARA DISTINTAS POSICIONES HABRA MAS NOTAS INSERTADAS UNICAS SI SE DESEA
+' LUEGO CON PROBRSI LA NO TA EN ROLL ES IGUAL O DISTINA A LA INSERTADA SE PUEDEN
+' BORRAR LAS DISTINTAS..Y EL ORDEN ES EL MISMO...SEGUN POSICION..
+   Dim i As Integer      
+   for k= StartInsert to StartInsert + cantInserciones -1 ' OK PARA 1 INSERCION ES SOLO EN STRTINSERT
+     i = i + 1  
      for s= 1 to 128 
-       for i=1 to cantInserciones
-           if s <> notasInsertadas (i) then
-              Roll(s,k).nota = 33
-              Roll(s,k).dur  = 0      
-           endif
-       next i    
-       
-       
+        If s <> notasInsertadas (i) then
+           Roll(s,k).nota = 33
+           Roll(s,k).dur  = 0      
+        endif
      next s 
    next k 
- EndIf
+EndIf
 insert=0 
 End Sub
 '------------------------------------

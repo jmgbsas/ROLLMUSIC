@@ -1,20 +1,13 @@
 
-' VERSION 0.5.7.3.5 FUNCIONLMENTE ANDA BIEN NAVEGACION MODIFICAACION EINSERCION
-' AL EMPEZAR EN BLANCO SE INGRESAN NOTAS SE DA CLICK EN EDIT, Y SE VA VIENDO LAS NOTAS
-' NUEVAS INGRESADAS..SI DESEO MODIFICAR HAY Q USAR CTRL-M PERO ESO ME LLEVA AL FINAL
-' DE LA SECUENCIA POR ESO HAY QUE VOLVER A DAR CLICK A EDIT Y DAR SCROLL PARA ATRAS
-' HORIZONTALMENTE. O HACERLO SIN PASARPOR EDIT, LUEGO DOY EDIT DE NUEVO Y LUEGO CTRL-M
-' AHORA PUEDO MODIFICAR E INSERTAR...PARA TERMINAR DOY CTRL-P Y LUEGO CLICK EN EDIT
-' PERO SI NO SE CIERRA CTRL-M CON CTRL-P Y PASAMOS A EDIT CELESTE NAVEGADOR
-' PODEMOS MODIFICAR, PERO SOLO EN POSICION 1 PORQUE AL MOVER EL CURSOR SE MUEVE 
-' EL ROLL, PROXIMO PASO ELIMINAR, BORRAR SIN ELIMINARYA EXISTE ES CON TECLA
-' SUPRLO Q PONE UN SILENCIO EQUIVALENTE SIMILAR A S..OTRO PULSO PONE EN BLNCO
-' PERONO SE SI DEJA BASURA <VERIFICAR!> ... 
-' 5.7.3.3 VERIFICARA CAMBIADUR ACORDES E INSERCION
-' PUES EN 5.7.3.2 SE RESOLVIO NVEGACION DER IZ LUEGO DE CARGA
-' [casercion y anda ok] issue: lterminr de insertar se posiciona
-' al final de la secuecnia y muestra el ultimo tramo 1 ->NroCol
-' revisar accion detecla Fin..
+' VERSION 0.5.7.3.6 FUNCIONLMENTE ANDA BIEN NAVEGACION MODIFICA  E INSERCION
+' FALTA ELIMINAR COLUMNA O REGION MOVIENDO TODO HACIA ATRAS, PODRIA USARSE 
+'  PARTE DEL PROCESO DE LA TECLA FIN QUE ME HIZO ESOEN ALGUN MOMENTO 
+' ISSUE: CON ELCMIO DE N + CURPOS EL INSERT HACE LA INSERCION PERO
+' DESPLAZA MAL LAS NOTAS DERECHA SE OLVIDA DE LA NOTA QUE ESTABA EN STARTINSERT
+' O SEA LA REEMPLAZA EN VEZ DE MOVERLA DEBE COMENZARMOVER DESDE STARTINSERT
+' Y ANTES DE PONER ALGO NUEVO EN ROLL LO DEBE MOVER AL AUXILIAR REVISAR CORREGIR! 
+' corregido al corregir por curpos puela suma 2 veces de curpos en modedata
+' ya venia con curpos sumado en el call...ok
 Open "midebug.txt" for Output As #1
 
 ' secuenciador de 9 octavas estereo, modo Piano Roll,hace uso de
@@ -106,7 +99,7 @@ s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0':s8=0:s9=0
 font=18
 Dim e As EVENT
 
-ind=0:carga=0
+indaux=0:carga=0
 ' -----------------------------------------------------------------------
 ' notas redonda (O),blanca(P),negra(I),corchea(C),semicorchea(S), Fusa(F),Semifusa(U)
 ' O P I L F E # (listo todas mis notas!!!)
@@ -292,8 +285,8 @@ If MultiKey(SC_DOWN)  Then
    BordeSupRoll = BordeSupRoll -  inc_Penta
    EndIf
 
-   If BordeSupRoll <= - AltoInicial * 2  Then
-      BordeSupRoll =  - AltoInicial * 2
+   If BordeSupRoll <= - AltoInicial * 2.8  Then
+      BordeSupRoll =  - AltoInicial * 2.8
    EndIf
    Exit Do
   EndIf 
@@ -305,8 +298,8 @@ If MultiKey(SC_PAGEDOWN) Then
     s1=1 
    BordeSupRoll = BordeSupRoll - inc_Penta * 6
    EndIf
-   If BordeSupRoll <= - AltoInicial * 2 Then
-      BordeSupRoll =  - AltoInicial * 2
+   If BordeSupRoll <= - AltoInicial * 2.8 Then
+      BordeSupRoll =  - AltoInicial * 2.8
    EndIf
 
 
@@ -319,8 +312,8 @@ If MultiKey(SC_PAGEUP ) Then
     s2=1
     BordeSupRoll = BordeSupRoll + inc_Penta * 6
    EndIf
-   If BordeSupRoll >= AltoInicial * 0.25  Then
-      BordeSupRoll =  AltoInicial * 0.25
+   If BordeSupRoll >= AltoInicial * 0.5  Then
+      BordeSupRoll =  AltoInicial * 0.5
    EndIf
    
    Exit Do
@@ -372,7 +365,7 @@ If MultiKey(SC_MINUS) Then
 ' HACER AJUSTES DE VELOCIDAD CON CURVAS O MOSTRAR CONTROLES ADICIONALES     
 EndIf
 If MultiKey(SC_CONTROL) And MultiKey (SC_RIGHT) Then
-   posicion=posicion + NroCol
+   posicion=posicion + NroCol/2
    If posicion > MaxPos Then
       posicion = MaxPos
    EndIf
@@ -380,7 +373,7 @@ If MultiKey(SC_CONTROL) And MultiKey (SC_RIGHT) Then
    Sleep 100 
 EndIf
 If MultiKey(SC_CONTROL) And MultiKey (SC_LEFT) Then
-   posicion=posicion - NroCol
+   posicion=posicion - NroCol/2
    If posicion < 1 Then
       posicion = 1
    EndIf   
@@ -558,7 +551,7 @@ if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
  'cada posicion tendre 48bits osea 6bytes..
  ' luego 12000 posiicones si estuviera todo completo serian 9216000 bytes
 ' y grabo..9mbytes, seria 1 Track,,295 mbytes para 32 tracks
-   Print #1, "Grabando a disco Roll F11 "
+ '  Print #1, "Grabando a disco Roll F11 "
    Open "Trabajo.roll" For Binary access write As #2
    
    Dim Trabajo (1 To 128, 1 To Maxpos) As dat
@@ -567,19 +560,19 @@ if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
    Dim As Integer y1,y2,y3,y4 
    Dim As String a1,a2,a3,a4 ,x
    x= Bin(MaxPos,16)
-   Print #1,"Posicion ",Posicion
+ '  Print #1,"Posicion ",Posicion
  'Print "string representando ", x
    a1=Mid(x,1,4)
    a2=Mid(x,5,4)
    a3=Mid(x,9,4)
    a4=Mid(x,13,4)
- Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
+ 'Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
  
    y1= CInt("&B"+a1)
    y2= CInt("&B"+a2)
    y3= CInt("&B"+a3)
    y4= CInt("&B"+a4)
- Print #1, "y1,y2,y3,y4", y1,y2,y3,y4  
+' Print #1, "y1,y2,y3,y4", y1,y2,y3,y4  
 ' grabamos maxpos en 4 ubyte   
    grabaPos(1,1).nota = y1
    grabaPos(1,1).dur  = y2
@@ -595,8 +588,8 @@ if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
     For i = 1 To 128
        If Roll(i,posicion+1).dur = 34 Then
          notafinal= Roll(i,posicion).nota
-         Print #1, "ENCONTRO NOTA FINAL ", notafinal
-         Print "ENCONTRO NOTA FINAL ", notafinal
+   '      Print #1, "ENCONTRO NOTA FINAL ", notafinal
+   '      Print "ENCONTRO NOTA FINAL ", notafinal
          ' esten la posiciond ela ultimanotapero grasoerror
          ' o seaque no tiene duracion solo el34
          ' esta mal ...
@@ -612,7 +605,7 @@ if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
      Next i2
    Next i1 
 
-  Print #1,"MaxPos grabada en Trabajo ",MaxPos
+'  Print #1,"MaxPos grabada en Trabajo ",MaxPos
     
     Put #2, ,grabaPos(1,1) 
     Put #2, ,Trabajo()
@@ -641,10 +634,10 @@ If MultiKey(SC_L)  Then ' <======== load Roll
        x3=Bin(z(1,1).vol,4)
        x4=Bin(z(1,1).pan,4)
        x=x1+x2+x3+x4
-       Print #1,"reconstruccion x pos bin ", x
+ '      Print #1,"reconstruccion x pos bin ", x
        MaxPos=CInt("&B"+x)
        posicion = 1 
-       Print #1,"reconstruccion x pos int ", Posicion
+ '      Print #1,"reconstruccion x pos int ", Posicion
        notaold= z(1,1).pb
        nota=0 
        inicioDeLectura=0 'Int(Maxpos/NroCol) 
@@ -657,13 +650,8 @@ If MultiKey(SC_L)  Then ' <======== load Roll
        Dim As Integer i,j 
        For i= 1 To 128
           For j = 1 To MaxPos
-          Roll (i,j).nota = Trabajo (i,j).nota
-          Roll (i,j).dur  = Trabajo (i,j).dur
-          Roll (i,j).vol  = Trabajo (i,j).vol
-          Roll (i,j).pan  = Trabajo (i,j).pan
-          Roll (i,j).pb   = Trabajo (i,j).pb
-          Roll (i,j).inst = Trabajo (i,j).inst                 
-
+          Roll (i,j) = Trabajo (i,j)
+'se copian todoslos miembros del type automaticamente. 
           Next j
        Next i 
     Close 2
@@ -970,7 +958,7 @@ EndIf
 ' SOLO SEUSAPARAINGRESO DE NOTAS NUEVAS ..VERIFICANDO JMG 
  If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 Then 
     posn=1 + InicioDeLectura
-    Print #1,"estoyEnOctava ";estoyEnOctava
+ '   Print #1,"estoyEnOctava ";estoyEnOctava
     If estoyEnOctava <> 99 Then ' estoy en una octava 
      '  If indice <= 0 Then 
      '      indice = 1 
@@ -981,23 +969,23 @@ EndIf
      If nota > 0 And estoyEnOctava < 99 Then 
        ' ====>  Control PAgindo Horizontal <=======
  '      kNroCol= Int(posicion/60)
-          Print #1, "A:Roll((nota +(estoyEnOctava -1) * 13),posn).nota ", _
-          Roll((nota +(estoyEnOctava -1) * 13),posn).nota
+   '       Print #1, "A:Roll((nota +(estoyEnOctava -1) * 13),posn).nota ", _
+   '       Roll((nota +(estoyEnOctava -1) * 13),posn).nota
 
        Do 
          If Roll((nota +(estoyEnOctava -1) * 13),posn).nota = 0 OR _
           Roll((nota +(estoyEnOctava -1) * 13),posn).nota = 34 Then
-          Print #1, "D:Roll((nota +(estoyEnOctava -1) * 13),posn).nota ", _
-          Roll((nota +(estoyEnOctava -1) * 13),posn).nota
+     '     Print #1, "D:Roll((nota +(estoyEnOctava -1) * 13),posn).nota ", _
+     '     Roll((nota +(estoyEnOctava -1) * 13),posn).nota
            posicion=posn 
-           Print #1, "ingreso a NUCLEO POSICION=POSN", posicion
+     '      Print #1, "ingreso a NUCLEO POSICION=POSN", posicion
            Exit Do
          EndIf
          posn = posn + 1
          If (posn > NroCol + InicioDeLectura) Then 
             InicioDeLectura=InicioDeLectura + NroCol  
          EndIf
-        Print #1, "ingreso a NUCLEO posn ",posn
+     '   Print #1, "ingreso a NUCLEO posn ",posn
        Loop
        ' ESTO ME UBICA EN QUE RENGLON DE LA OCTVA ESTOY SN USAR EL MOUSE
        ' LUEGO haRE ALGO CON EL MOUSE POR AHORA TODO TECLADO
@@ -1096,8 +1084,8 @@ If (ScreenEvent(@e)) Then
             s2=1
             BordeSupRoll = BordeSupRoll + inc_Penta
           EndIf
-          If BordeSupRoll >= AltoInicial * 0.25   Then
-             BordeSupRoll =  AltoInicial * 0.25
+          If BordeSupRoll >= AltoInicial * 0.5   Then
+             BordeSupRoll =  AltoInicial * 0.5
           EndIf
 
           Exit Do
@@ -1106,8 +1094,8 @@ If (ScreenEvent(@e)) Then
             s1=1 
             BordeSupRoll = BordeSupRoll - inc_Penta 
          EndIf
-         If BordeSupRoll <= - AltoInicial * 2  Then
-            BordeSupRoll =  - AltoInicial * 2
+         If BordeSupRoll <= - AltoInicial * 2.8  Then
+            BordeSupRoll =  - AltoInicial * 2.8
          EndIf
          Exit Do
       EndIf
@@ -1119,8 +1107,8 @@ If (ScreenEvent(@e)) Then
          s2=1
          BordeSupRoll = BordeSupRoll +   inc_Penta
         EndIf
-        If BordeSupRoll >= AltoInicial * 0.25  Then
-           BordeSupRoll =  AltoInicial * 0.25
+        If BordeSupRoll >= AltoInicial * 0.5  Then
+           BordeSupRoll =  AltoInicial * 0.5
         EndIf
 
         Exit Do
@@ -1210,32 +1198,35 @@ If (ScreenEvent(@e)) Then
    If cursorVert = 1 And  cursorHori = 1 And insert = 0 Then
     ' solo tiene sentido insertar en lo echo y en cursor libre
      insert=1 ' comienzo hbilitotel I para insertr nota por nota 
-     ind=0
-    print #1,">>>SC_INSERT ajust STARTINSERT ", StartInsert 
-    StartInsert = posicion + curpos ' guardo sin modificar el comienzo
+     indaux=0
+    print #1,">>>SC_INSERT ajust STARTINSERT ", StartInsert
+    If indaux=0 Then ' no haria falta todas las demas inserciones se deben 
+    'hacer con I no volver a repetir SC_INSERT sino se pulso SC_END    
+      StartInsert = posicion + curpos  ' guardo sin modificar el comienzo xxx ok
+    EndIf
     print #1,">>>SC_INSERT  despues ajuste STARTINSERT ", StartInsert 
     Erase (Rollaux) ' borro lo que habia en el auxiliar
     Erase (notasInsertadas) 
     notins=0
-    Print #1, ">>>SC_INSERT insert ind borro RollAux: ",insert,ind
+    Print #1, ">>>SC_INSERT insert indaux borro RollAux: ",insert,indaux
     'sigue el proceso en RollSub->sub cursor 
    EndIf
   EndIf
   If e.scancode = SC_I And insert=1 And cursorVert=1 Then
-      insert= 2 ' hbilito cursor para queingrese 
-     Print #1, "-----SC_I insert,ind : ",insert,ind
+      insert= 2 ' habilito cursor para que ingrese 
+     Print #1, "-----SC_I -> insert,indaux : ",insert,indaux
   EndIf
   If e.scancode = SC_END Then ' mueve insercion, podria usarse para ELIMINAR Probar
     If cursorVert=1 Then ' solo vlido con Ctrl-M
      ' no mas reemplazos
      insert=3
-     Print #1, "-----SC_END StartInsert,ind,insert,nota: ",StartInsert,ind,insert,nota 
-     Print #1,"ind no deberia valer cero !!!! es global "
-     moveresto (StartInsert,ind, insert,nota) 
+     Print #1, "-----SC_END StartInsert,indaux,insert,nota: ",StartInsert,indaux,insert,nota 
+     Print #1,"indaux no deberia valer cero !!!! es global "
+     moveresto (StartInsert,indaux, insert,nota) 
  '  param : posicion comienzo (fijo), indice incremental para el aux 
  ' ,insert comando habilitado = 1
  '  insert 3 fin reemplazos comienzo de move total
-    insert=0:ind=0
+    insert=0:indaux=0
     EndIf
   EndIf
   
@@ -1247,8 +1238,8 @@ If (ScreenEvent(@e)) Then
             s2=1
             BordeSupRoll = BordeSupRoll +   2 * inc_Penta
           EndIf
-          If BordeSupRoll >= AltoInicial * 0.25  Then
-             BordeSupRoll =  AltoInicial * 0.25
+          If BordeSupRoll >= AltoInicial * 0.5  Then
+             BordeSupRoll =  AltoInicial * 0.5
           EndIf
           Exit Do
         EndIf
@@ -1340,14 +1331,14 @@ EndIf
         If MouseButtons And 1 Then ' <========= EDICION SOLO INGRESO DE NOTAS NUEVAS
            If s3 = 0 Then
             comEdit = TRUE : s3 = 1
-            Print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
+     '       Print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
             font = 18
             curpos=0
             'posicion=posicion+incFalse
             Exit Do
            Else
             comEdit = FALSE : s3 = 0
-            Print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
+     '       Print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
             posicion= posicion + curPOS
             curpos=0
             Exit Do 

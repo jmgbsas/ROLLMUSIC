@@ -4,8 +4,8 @@ Declare Sub Tracks (nroTrack As UByte, nroCanal As UByte)
 Declare Sub menu (c AS cairo_t Ptr,n As Integer,menuNro As Integer)
 declare Sub botones(hWnd As HWND,c As cairo_t Ptr,cm As cairo_t Ptr,x As Integer,y As integer) 
 Declare Sub menuAcc (c AS cairo_t Ptr) 
-Declare Sub moveresto (ByVal StartInsert As integer,ByRef ind as Integer, Byref insert As Integer,Byref nota As integer)
-Declare Sub movedato (ByVal StartInsert As Integer, ByRef ind As Integer, Byref insert As Integer,Byref nota As integer)
+Declare Sub moveresto (ByVal StartInsert As integer,ByRef indaux as Integer, Byref insert As Integer,Byref nota As integer)
+Declare Sub movedato (ByVal StartInsert As Integer, ByRef indaux As Integer, Byref insert As Integer,Byref nota As integer)
 ' 128 track,16 canales o sea cada canal con 8 voces
 Declare Sub cursor(c AS cairo_t Ptr, n As Integer,nro As Integer)
  
@@ -21,9 +21,13 @@ dim Shared as string cromatica(1 to 12)
 dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
 Dim Shared As Integer DUR, menuAccion,insert,notins
 Dim Shared NotasGuia (1 To 12) As String * 2 = {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"} 
-Dim  Shared figura (1 To 34) As String * 3 = {" O "," P "," I "," L "," F "," E "," W "," H ",_
+Dim  Shared figura (1 To 66) As String * 3 = {" O "," P "," I "," L "," F "," E "," W "," H ",_
 " O*"," P*"," I*"," L*"," F*"," E*"," W*"," H*","sO ","sP ","sI ","sL ","sF ","sE ","sW ","sH ",_
-"sO*","sP*","sI*","sL*","sF*","sE*","sW*","sH*","   "," ||"}
+"sO*","sP*","sI*","sL*","sF*","sE*","sW*","sH*","   "," ||",_
+" O+"," P+"," I+"," L+"," F+"," E+"," W+"," H+",_
+"+O ","+P ","+I ","+L ","+F ","+E ","+W ","+H ",_
+"sO+","sP+","sI+","sL+","sF+","sE+","sW+","sH+",_
+"+sO","+sP","+sI","+sL","+sF","+sE","+sW","+sH"}
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
 Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
 '' futuro=> Dim notmus(13 To 44) As String = {} bravura fonts?? pero son glyphs
@@ -54,4 +58,4 @@ Dim shared As mouse m
 Dim Shared As Integer menuNro, menuNew
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen 
-Dim Shared as Integer StartInsert,ind,NroCol, carga, curpos, resultado
+Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, resultado
