@@ -71,7 +71,9 @@ AnchoInicial=ANCHO
 AltoInicial=ALTO
 NroCol =  (ANCHO / 20 ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
 'cambie a directX !!! versi anda winpopup
+
 ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion
+
 ' con Directx nunca tomaelfoco se lodebe dar elusuario
 'nofuncionaningun comndo de winuser.bipara tomar el foco...
 '''''ScreenControl POLL_EVENTS '200
@@ -81,7 +83,9 @@ ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion
 Dim As String driver
 
 ScreenRes ANCHO, ALTO, 32,2, GFX_NO_FRAME Or GFX_HIGH_PRIORITY
+
 ScreenControl GET_WINDOW_POS, x0, y0
+
 ''ScreenControl SET_WINDOW_POS, 10,10
 'ScreenControl 103,"Directx" ' cambio ja
 ' CAIRO NO SOPORTA LA ï¿½!!! ESO ERA TODO!!!!
@@ -152,7 +156,16 @@ Dim As hWnd hwnd = Cast(hwnd,IhWnd)
 'AppendMenu(exelist, MF_STRING,1,"Uno")
 'AppendMenu(exelist, MF_STRING,2,"Dos")
 Dim comienzo As Integer = 0
+'--FFT FREE FONT- ...HCEDESAPRECER LA APLICCION PORQUERIA
+var Shared ft => FreeType()
 
+'' Load a font with FreeType
+Dim Shared as FT_Face ftface
+
+FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
+
+
+'----- -FIN
 
 '' ---------------  LOOP 1 ---------------
 Do 
@@ -165,19 +178,22 @@ ScreenLock()
  
 '' Create a cairo drawing context, using the FB screen as surface.
 '' l originalestba mal sizeof(integer ) es mu chico debe ser 4
-stride =cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
+stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
 
 Var surface = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, ALTO, stride)
 Var c = cairo_create(surface)
 
+
+
+'' Measure the text, used with SDL_RenderCopy() to draw it without scaling
  
 ' https://www.cairographics.org/tutorial/
 
   
 
 If comEdit = TRUE  Then
- ' cairo_set_source_rgba(c, 0.6, 0.5, 0.6, 1)
+' cairo_set_source_rgba(c, 0.6, 0.5, 0.6, 1)
   cairo_set_source_rgba(c, 0.6, 0.6, 0.7, 1)  
 Else
   cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1
@@ -694,6 +710,10 @@ If MultiKey(SC_ESCAPE) Then
   
   if MessageBox(hWnd,"¿SEGURO FINALIZA?","RollMusic End ",4 or 64) =6 then 
      cairo_destroy(c)
+  '   cairo_surface_destroy( surface )
+  '   cairo_font_face_destroy( cface )
+     FT_Done_Face( ftface )
+   
      Close 1
      End
   EndIf
@@ -900,6 +920,61 @@ If comEdit = TRUE Then
  EndIf 
   ' ojo ver q no habia  exit do antes !!!!!
 EndIf
+' ----HELP PRUEBA DE TEXT
+ If MultiKey(SC_F1) Then
+ ' estopodemos hacer ayuda contextual 
+ '' Define character range
+Const FIRSTCHAR = 32, LASTCHAR = 127
+
+Const NUMCHARS = (LASTCHAR - FIRSTCHAR) + 1
+Dim As UByte Ptr p, myFont
+Dim As Integer i
+
+
+'' Create custom font into PUT buffer
+
+myFont = ImageCreate(NUMCHARS * 32, 9)
+
+ '' Put font header at start of pixel data
+
+#ifndef ImageInfo '' older versions of FB don't have the ImageInfo feature
+p = myFont + IIf(myFont[0] = 7, 32, 4)
+#else
+ImageInfo( myFont, , , , , p )
+#endif
+
+p[0] = 0
+p[1] = FIRSTCHAR
+p[2] = LASTCHAR
+
+ '' PUT each character into the font and update width information
+For i = FIRSTCHAR To LASTCHAR
+    
+    '' Here we could define a custom width for each letter, but for simplicity we use
+    '' a fixed width of 8 since we are reusing the default font glyphs
+    p[3 + i - FIRSTCHAR] = 12
+    
+    '' Create character onto custom font buffer by drawing using default font
+    Draw String myFont, ((i - FIRSTCHAR) * 12, 1), Chr(i), 32 + (i Mod 24) + 24
+    
+Next i
+
+'' Now the font buffer is ready; we could save it using BSAVE for later use
+Rem BSave "myfont.bmp", myFont
+
+'' Here we draw a string using the custom font
+'Draw String (10, 10), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", , myFont
+'Draw String (10, 26), "abcdefghijklmnopqrstuvwxyz", , myFont
+'Draw String (66, 58), "Hello world!", , myFont
+
+'' Free the font from memory, now we are done with it
+ImageDestroy myFont
+
+
+   Draw String (MOUSEX, MOUSEY), "HOLA SOY tU AYUDA!", ,myFont
+   Draw String (MOUSEX, MOUSEY+20), "QUE QUERES SABER", ,myFont
+ EndIf 
+'
 If comEdit = FALSE Then '''???????????????? veremos para que usarlo
 ' para ubicrno enun octava dada
 
@@ -1382,6 +1457,10 @@ If (mousex>=(ANCHO-40)) And (mousey <= 16) Then
   If  MouseButtons And 1 Then
     if MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","RollMusic End ",4 or 64) =6 then 
       cairo_destroy(c)
+  '   cairo_surface_destroy( surface )
+'     cairo_font_face_destroy( cface )
+     FT_Done_Face( ftface )
+
       Close 
       
       End
@@ -1425,8 +1504,14 @@ If (mousex>=(ANCHO-40)) And (mousey > 33) And (mousey < 50) Then
 
 ''  EndIf
 EndIf
+If MouseButtons And 2 Then
+'' Width 40,43
+ayuda=TRUE
+EndIf
+If mouseButtons And 1 And ayuda=TRUE Then
+ayuda=FALSE
 
-
+EndIf
  If resize = TRUE Then    ' <===== MOVER Y REDIMENSIONAR LA PANTALLA NO TAN FACIL
    'CLICKEAR CERCA DEL CENTRO Y DRAGAR DERECHA IZQUIERDA ARRIBA ABAJO 
     m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
@@ -1479,7 +1564,6 @@ EndIf
   '' DEBE SEGUIR EJECUTNDO HACIA ABAJO Y CALCULARINDICE VAMOS A MOVER
   ''ESTEIF AL FINAL 
   EndIf
-
   Exit Do 
 
 EndIf ' end  (ScreenEvent(@e))
@@ -1505,8 +1589,9 @@ Loop
 errorhandler:
 Dim er As Integer 
 er = Err
-Print "Error detected ", er
-Print Erl, Erfn,Ermn,Err
+Print #1,"Error detected ", er
+Print #1,Erl, Erfn,Ermn,Err
+ Close 1
  
 
 

@@ -128,6 +128,21 @@ If *octava < 0 Then
    *octava = 99
    Exit Sub
 EndIf
+  If ayuda=TRUE Then
+    Var  cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
+    cairo_set_font_face( c, cface )
+    cairo_set_font_size( c, 36 )
+    dim as string  text => "HOLA SOY tU AYUDA!"
+    dim As cairo_text_extents_t extents
+    cairo_text_extents( c, text, @extents )
+    cairo_move_to( c, mousex, mousey )
+    cairo_set_source_rgba( c, 0, 0, 1, 1.0 )
+    cairo_show_text( c, text )
+
+'' Draw String (MOUSEX, MOUSEY), "HOLA SOY tU AYUDA!",8
+
+
+  EndIf
 
 End Sub 
 ''========================= C U R S O R ============
@@ -844,9 +859,17 @@ cairo_stroke(cm)
 End Sub
 '------------------------------------
 ' https://www.freebasic.net/forum/viewtopic.php?t=10398
+' Many times in my games I want to act on a single key press. 
+' Multikey returns -1 constantly if a key is down and that isn't always what I want 
+' so I created this function which uses multikey but will only return -1 once 
+' for a particular key. The user must release and press the key again for it to fire.
+' Call it just like Multikey....
+'
+' If KeyPress(SC_ESC)=-1 then .....!!! USARLO O USAR E.EVENT CREO ES SIMILAR O NO???
+
 Function KeyPress(Key As Integer) As Integer
 Static LastKey(255) As Integer
-
+' DETECTA UNA APRETDA DEL USUARIO Y SOLO UNA CREO PROBAR
    If MultiKey(Key) = -1 Then
       If Key = LastKey(Key) Then
          Return (0)
@@ -860,3 +883,4 @@ Static LastKey(255) As Integer
    End If
 
 End Function
+' -------------------------------------------------------------

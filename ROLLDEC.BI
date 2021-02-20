@@ -8,7 +8,8 @@ Declare Sub moveresto (ByVal StartInsert As integer,ByRef indaux as Integer, Byr
 Declare Sub movedato (ByVal StartInsert As Integer, ByRef indaux As Integer, Byref insert As Integer,Byref nota As integer)
 ' 128 track,16 canales o sea cada canal con 8 voces
 Declare Sub cursor(c AS cairo_t Ptr, n As Integer,nro As Integer)
- 
+'Declare Function print_text(ByVal x As Integer, ByVal y As Integer, ByRef text As String, _
+'        ByVal font As FT_Face, ByVal size As Integer, ByVal col As UInteger ) As Integer 
 Dim Shared nro As Integer '''borrar despues jmg ja quedo 
 Dim Shared As Integer vroll, vdur ' borrar
 Dim  shared as ubyte  notasInsertadas (1 to 1500) 
@@ -39,6 +40,7 @@ Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
 ' ej tecleo 1+.+A=O* en linea A dela octava que sea
 ' ej tecleo s+1+.+A =sO* en A..
 ' tambien en vez de estos simbolos usare los de un pentagrama comun,,,,futuro
+Dim Shared As BOOLEAN ayuda
 
 espacio=0:cursorVert=0:borrar=0:cambiadur=0:InicioDeLectura=0
 menuAccion=0:insert=0:agregarNota=0
@@ -59,3 +61,35 @@ Dim Shared As Integer menuNro, menuNew
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen 
 Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, resultado
+' free type
+#Include once "freetype2/freetype.bi"
+'' The FB headers don't contain this prototype
+extern "C"
+  declare function _
+    cairo_ft_font_face_create_for_ft_face ( as FT_Face, as long ) as cairo_font_face_t ptr
+end extern
+
+'' Convenience
+type FreeType
+  public:
+    declare constructor()
+    declare destructor()
+   
+    declare operator Cast() as FT_Library
+   
+  private:
+    as FT_Library _library
+end type
+
+constructor FreeType()
+  FT_Init_FreeType( @_library )
+end constructor
+
+destructor FreeType()
+  FT_Done_FreeType( _library )
+end destructor
+
+operator FreeType.cast() as FT_Library
+  return( _library )
+end Operator
+
