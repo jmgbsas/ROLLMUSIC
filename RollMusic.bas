@@ -123,8 +123,8 @@ Dim As Integer mxold,myold, w,h
 GetMouse mxold,myold, , MouseButtons 
 
 
-Dim  c As cairo_t  Ptr
-Dim  cm As cairo_t  Ptr
+Dim  Shared c As cairo_t  Ptr
+Dim  Shared cm As cairo_t  Ptr
 Dim  c3 As cairo_t  Ptr
 
 Dim As Integer stride, nro_penta,IhWnd,Style,desktopwidth,desktopheight

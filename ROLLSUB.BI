@@ -130,15 +130,17 @@ If *octava < 0 Then
 EndIf
   If ayuda=TRUE Then
     Var  cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
-    cairo_set_font_face( c, cface )
-    cairo_set_font_size( c, 36 )
     dim as string  text => "HOLA SOY tU AYUDA!"
     dim As cairo_text_extents_t extents
+
+    If mousey > 50 Then 
+    cairo_set_font_face( c, cface )
+    cairo_set_font_size( c, 36 )
     cairo_text_extents( c, text, @extents )
     cairo_move_to( c, mousex, mousey )
     cairo_set_source_rgba( c, 0, 0, 1, 1.0 )
     cairo_show_text( c, text )
-
+    EndIf 
 '' Draw String (MOUSEX, MOUSEY), "HOLA SOY tU AYUDA!",8
 
 
@@ -594,7 +596,22 @@ cairo_move_to(c, 0, 30 )
  cairo_show_text(c, t)
  cairo_stroke(c)
 
+' ayuda
+If ayuda = TRUE Then
+    Var  cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
+    dim as string  text => "HOLA SOY tU AYUDA!"
+    dim As cairo_text_extents_t extents
 
+    If mousey < 50 Then 
+    cairo_set_font_face( c, cface )
+    cairo_set_font_size( c, 36 )
+    cairo_text_extents( c, text, @extents )
+    cairo_move_to( c, mousex, mousey )
+    cairo_set_source_rgba( c, 1, 1, 1, 1.0 )
+    cairo_show_text( c, text )
+    
+    EndIf
+EndIf
 End Sub
 '----------------------------------------------------------------------
 Sub menuAcc(c As cairo_t Ptr)
