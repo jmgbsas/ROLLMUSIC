@@ -128,23 +128,135 @@ If *octava < 0 Then
    *octava = 99
    Exit Sub
 EndIf
-  If ayuda=TRUE Then
+If ayuda=TRUE  And comEdit=TRUE Then
+  Dim As Integer usamousex, usamousey
+  If savemousex > 0 Or savemousey > 0 Then
+   usamousex=savemousex
+   usamousey=savemousey
+  Else
+   usamousex=mousex
+   usamousey=mousey
+  EndIf
+  
     Var  cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
-    dim as string  text => "HOLA SOY tU AYUDA!"
-    dim As cairo_text_extents_t extents
+
+    dim as string  text0 => "BORRAR" 
+    Dim As String  text1 => "INSERT" 
+    Dim As String  text2 => "SALIR"      
+
+    Dim as string  text3 => "O" 
+    Dim As String  text4 => "P" 
+    Dim As String  text5 => "I"     
+    Dim As String  text6 => "L"     
+    Dim As String  text7 => "F"     
+    Dim As String  text8 => "E"     
+    Dim As String  text9 => "W"     
+    Dim As String  text10 => "H"    
+
+   
+    Dim As cairo_text_extents_t extents
+
 
     If mousey > 50 Then 
     cairo_set_font_face( c, cface )
-    cairo_set_font_size( c, 36 )
-    cairo_text_extents( c, text, @extents )
-    cairo_move_to( c, mousex, mousey )
-    cairo_set_source_rgba( c, 0, 0, 1, 1.0 )
-    cairo_show_text( c, text )
-    EndIf 
-'' Draw String (MOUSEX, MOUSEY), "HOLA SOY tU AYUDA!",8
+    cairo_set_font_size( c, 30 )
+    cairo_set_source_rgba( c, 1, 1, 1, 1 )
+    
+    if cursorVert = 1 or  cursorHori = 1 Then
+    If notaMouse=1 Then  
+       If menuMouse = 0 Then
+         cairo_move_to( c, usamousex, usamousey -80 )
+         cairo_text_extents( c, text0, @extents )
+         cairo_show_text( c, text0 )
+         menuMouse = 1
+         insert=1
+         Exit Sub
+       EndIf
 
-
-  EndIf
+       If menuMouse = 1 Then   
+          cairo_move_to( c, usamousex, usamousey -50 )
+          cairo_text_extents( c, text1, @extents )
+          cairo_show_text( c, text1 )
+          menuMouse = 2
+          insert=3
+          Exit Sub
+       EndIf
+       If menuMouse = 2 Then  
+          cairo_move_to( c, usamousex, usamousey -20 ) 
+          cairo_text_extents( c, text2, @extents )
+          cairo_show_text( c, text2 )
+          menuMouse = 0
+          insert=0
+          
+       EndIf
+    EndIf
+    EndIf
+        
+    If notaMouse = 0  Then 
+       If menuMouse = 0 Then  
+          cairo_move_to( c, usamousex -30, usamousey +10 ) 
+          cairo_text_extents( c, text3, @extents )
+          cairo_show_text( c, text3 )
+          menumouse = 1
+          insert=0
+       EndIf
+       If menuMouse = 1 Then  
+          cairo_move_to( c, usamousex -30, usamousey -20 ) 
+          cairo_text_extents( c, text4, @extents )
+          cairo_show_text( c, text4 )
+          menumouse = 2
+          insert=0
+       EndIf
+       If menuMouse = 2 Then  
+          cairo_move_to( c, usamousex , usamousey -20 ) 
+          cairo_text_extents( c, text5, @extents )
+          cairo_show_text( c, text5 )
+          menumouse = 3
+          insert=0
+       EndIf
+       If menuMouse = 3 Then  
+          cairo_move_to( c, usamousex +30, usamousey -20 ) 
+          cairo_text_extents( c, text6, @extents )
+          cairo_show_text( c, text6 )
+          menumouse = 4
+          insert=0
+       EndIf
+       If menuMouse = 4 Then  
+          cairo_move_to( c, usamousex +30, usamousey +10 ) 
+          cairo_text_extents( c, text7, @extents )
+          cairo_show_text( c, text7 )
+          menumouse = 5
+          insert=0
+       EndIf
+       If menuMouse = 5 Then  
+          cairo_move_to( c, usamousex +30, usamousey +40 ) 
+          cairo_text_extents( c, text8, @extents )
+          cairo_show_text( c, text8 )
+          menumouse = 6
+          insert=0
+       EndIf
+       If menuMouse = 6 Then  
+          cairo_move_to( c, usamousex , usamousey +40 ) 
+          cairo_text_extents( c, text9, @extents )
+          cairo_show_text( c, text9 )
+          menumouse = 7
+          insert=0
+       EndIf
+       If menuMouse = 7 Then  
+          cairo_move_to( c, usamousex -30, usamousey +40 ) 
+          cairo_text_extents( c, text10, @extents )
+          cairo_show_text( c, text10 )
+          menumouse = 0
+          insert=3
+       EndIf
+     EndIf
+    
+   EndIf 
+   If savemousex=0 Or savemousey=0 Then
+      savemousex=mousex
+      savemousey=mousey
+   EndIf
+EndIf
 
 End Sub 
 ''========================= C U R S O R ============
@@ -599,7 +711,8 @@ cairo_move_to(c, 0, 30 )
 ' ayuda
 If ayuda = TRUE Then
     Var  cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
-    dim as string  text => "HOLA SOY tU AYUDA!"
+    dim as string  text => "HOLA SOY TU AYUDA!"
+    
     dim As cairo_text_extents_t extents
 
     If mousey < 50 Then 
@@ -609,7 +722,6 @@ If ayuda = TRUE Then
     cairo_move_to( c, mousex, mousey )
     cairo_set_source_rgba( c, 1, 1, 1, 1.0 )
     cairo_show_text( c, text )
-    
     EndIf
 EndIf
 End Sub

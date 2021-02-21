@@ -1,13 +1,10 @@
 
-' VERSION 0.5.7.3.6 FUNCIONLMENTE ANDA BIEN NAVEGACION MODIFICA  E INSERCION
+' VERSION 0.5.7.3.8 FUNCIONLMENTE ANDA BIEN NAVEGACION MODIFICA  E INSERCION
 ' FALTA ELIMINAR COLUMNA O REGION MOVIENDO TODO HACIA ATRAS, PODRIA USARSE 
 '  PARTE DEL PROCESO DE LA TECLA FIN QUE ME HIZO ESOEN ALGUN MOMENTO 
-' ISSUE: CON ELCMIO DE N + CURPOS EL INSERT HACE LA INSERCION PERO
-' DESPLAZA MAL LAS NOTAS DERECHA SE OLVIDA DE LA NOTA QUE ESTABA EN STARTINSERT
-' O SEA LA REEMPLAZA EN VEZ DE MOVERLA DEBE COMENZARMOVER DESDE STARTINSERT
-' Y ANTES DE PONER ALGO NUEVO EN ROLL LO DEBE MOVER AL AUXILIAR REVISAR CORREGIR! 
-' corregido al corregir por curpos puela suma 2 veces de curpos en modedata
-' ya venia con curpos sumado en el call...ok
+' eliminar con Ctrl-Supr...si en Ctrl-M presiono Insert y luego Fin, elimina una columna
+' solo hay que ajsutar el fin o sea el MaxPos y borrar los 34...
+' seleccion de region.....
 Open "midebug.txt" for Output As #1
 
 ' secuenciador de 9 octavas estereo, modo Piano Roll,hace uso de
@@ -24,13 +21,13 @@ Open "midebug.txt" for Output As #1
    #EndIf
 #define EXTCHAR Chr(255)
 #Include "fbgfx.bi"
-#Include "windows.bi" ' en winuser.bi esta el mouse o usamos sdl
-#Include Once "win/mmsystem.bi" '' FUNCIONES MIDI!!!!
+#Include "windows.bi" ' en winuser.bi esta el mouse o screen event 
+#Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
 #If __FB_LANG__ = "fb"
 Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #EndIf
 
-'' Example showing cairo being used to draw into the FB graphics window
+'' 
 #Include Once "cairo/cairo.bi"
 #Include "ROLLDEC.BI"
 #Include "NOTAS.bi"
@@ -55,8 +52,8 @@ Dim Shared As dat RollAux (1 To 128 , 1 To 12000)
 ' 12k posiciones de 96 notas o 128 con help y espacios ...8.388.608 bytes 8 megas 
 
 Dim Shared As Integer  ANCHO 
-Dim Shared As Integer   ALTO 
-Dim Shared As Double BordeSupRoll, inc_Penta
+Dim Shared As Integer  ALTO 
+Dim Shared As Double   BordeSupRoll, inc_Penta
 Dim Shared As Integer  AnchoInicial,AltoInicial, font
 Dim Shared q As String * 1
 Dim Shared As UByte s1, s2, s3, s4, s5,s6 , s7 ',s8,s9
@@ -90,12 +87,9 @@ ScreenControl GET_WINDOW_POS, x0, y0
 'ScreenControl 103,"Directx" ' cambio ja
 ' CAIRO NO SOPORTA LA ï¿½!!! ESO ERA TODO!!!!
 Dim As Integer i, octava, posmouse, posmouseOld,incWheel, altofp11,edity1,edity2
-altofp11=ALTO
-posmouseOld = 0
-posmouse = 0
+altofp11=ALTO:posmouseOld = 0:posmouse = 0
 Dim Shared As BOOLEAN comEdit, resize
-comEdit = FALSE
-resize = FALSE 
+comEdit = FALSE:resize = FALSE 
 Dim po As Integer Ptr
 po = @octava
 *po = 8
@@ -138,9 +132,9 @@ Dim Shared surface As Any Ptr
 ' ------------------------ windows controls ---------
 ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
 Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-'MENU POPUP INCONTROLABLE....SE DISPSRACON CLICK DERECHO,
+'MENU POPUP INCONTROLABLE....SE DISPARA CON CLICK DERECHO,
 ' DE DESTRUYE CON CLICK IZQUIERDO PERO LUEGO SIEMREPFUNCIONA CON IZQUIERDO
-' USARE SOLO MENUES GRAFICOS !!
+' USARE SOLO MENUES GRAFICOS !! ¿?
 'Dim Shared hmenu As HMENU 
 'Dim Shared As HWND hpopup  
 'Dim Shared as zstring * 100 buffer
@@ -280,6 +274,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar co
  cursorVert = 1
  cursorHori = 1
  agregarNota=0
+ menuMouse = 0
 EndIf
 If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
  cursorVert = 2
@@ -291,6 +286,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE 
  cursorVert = 0
  cursorHori = 0
  agregarNota = 0
+ menuMouse = 0
 '' notadur=0
 EndIf
 
@@ -873,7 +869,8 @@ If MultiKey (SC_G) Then
      Exit Do
 EndIf
 If MultiKey(SC_BACKSPACE) Then 
-    backspace=1 
+    backspace=1
+     
  EndIf
 ' ----------------------FIN NOTAS-------------------------
 ' ----------INGRESO DE DURACIONES DE NOTAS -------------
@@ -1403,6 +1400,7 @@ EndIf
         'SI ADEMS SEUSA CTRL-M SEPUEDE modificar ,agregr acordes e insertar 
         ' 1 o varias notas en forma horizontal siemrpe la misma nota
         ' para acorde usar modificar SC_X 
+        menuMouse = 0
         If MouseButtons And 1 Then ' <========= EDICION SOLO INGRESO DE NOTAS NUEVAS
            If s3 = 0 Then
             comEdit = TRUE : s3 = 1
@@ -1504,14 +1502,28 @@ If (mousex>=(ANCHO-40)) And (mousey > 33) And (mousey < 50) Then
 
 ''  EndIf
 EndIf
+
+If  MultiKey(SC_CONTROL) And MouseButtons And 2 Then
+      notaMouse=1
+      ayuda=TRUE
+      menuMouse = 0
+      Exit Do
+   
+EndIf
 If MouseButtons And 2 Then
 '' Width 40,43
-ayuda=TRUE
+  ayuda=TRUE
+  menuMouse = 0
+  notaMouse=0
+  Exit Do
 EndIf
 If mouseButtons And 1 And ayuda=TRUE Then
-ayuda=FALSE
-
+   ayuda=FALSE
+   savemousex=0 : savemousey=0
+   menuMouse = 0
+   Exit Do
 EndIf
+
  If resize = TRUE Then    ' <===== MOVER Y REDIMENSIONAR LA PANTALLA NO TAN FACIL
    'CLICKEAR CERCA DEL CENTRO Y DRAGAR DERECHA IZQUIERDA ARRIBA ABAJO 
     m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
