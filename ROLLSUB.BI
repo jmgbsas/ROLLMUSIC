@@ -211,28 +211,28 @@ If ayuda=TRUE  And comEdit=TRUE Then
         
     If notaMouse = 0  Then                '<== O
        If menuMouse = 0 Then  
-          cairo_move_to( c, usamousex -30, usamousey +10 ) 
+          cairo_move_to( c, usamousex -90, usamousey +10 ) 
           cairo_text_extents( c, text3, @extents )
           cairo_show_text( c, text3 )
           menumouse = 1
           insert=0
        EndIf
        If menuMouse = 1 Then            ' <== P
-          cairo_move_to( c, usamousex -30, usamousey -20 ) 
+          cairo_move_to( c, usamousex -60, usamousey +10 ) 
           cairo_text_extents( c, text4, @extents )
           cairo_show_text( c, text4 )
           menumouse = 2
           insert=0
        EndIf
        If menuMouse = 2 Then          ' <== I
-          cairo_move_to( c, usamousex , usamousey -20 ) 
+          cairo_move_to( c, usamousex -30, usamousey +10 ) 
           cairo_text_extents( c, text5, @extents )
           cairo_show_text( c, text5 )
           menumouse = 3
           insert=0
        EndIf
        If menuMouse = 3 Then  ' <==== L
-          cairo_move_to( c, usamousex +30, usamousey -20 ) 
+          cairo_move_to( c, usamousex , usamousey +10 ) 
           cairo_text_extents( c, text6, @extents )
           cairo_show_text( c, text6 )
           menumouse = 4
@@ -246,21 +246,21 @@ If ayuda=TRUE  And comEdit=TRUE Then
           insert=0
        EndIf
        If menuMouse = 5 Then   ' <= E
-          cairo_move_to( c, usamousex +30, usamousey +40 ) 
+          cairo_move_to( c, usamousex +60, usamousey +10 ) 
           cairo_text_extents( c, text8, @extents )
           cairo_show_text( c, text8 )
           menumouse = 6
           insert=0
        EndIf
        If menuMouse = 6 Then  ' <= W
-          cairo_move_to( c, usamousex , usamousey +40 ) 
+          cairo_move_to( c, usamousex +90, usamousey +10 ) 
           cairo_text_extents( c, text9, @extents )
           cairo_show_text( c, text9 )
           menumouse = 7
           insert=0
        EndIf
        If menuMouse = 7 Then  ' <= H
-          cairo_move_to( c, usamousex -30, usamousey +40 ) 
+          cairo_move_to( c, usamousex +120, usamousey +10 ) 
           cairo_text_extents( c, text10, @extents )
           cairo_show_text( c, text10 )
           menumouse = 0

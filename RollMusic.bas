@@ -1501,42 +1501,57 @@ If MouseButtons And 2 Then
   menuMouse = 0
   notaMouse=0
   DUR=0
-  nroClick=0
+  nroClick=1
   Exit Do
 EndIf
-If mouseButtons And 1 And ayuda=TRUE Then
+If (mouseButtons And 1 ) And ayuda=TRUE And nroClick = 1 Then
    ayuda=FALSE
    savemousex=0 : savemousey=0
    menuMouse = 0
-   nroClick = 1
+
 ' ACA SERA LA ENTRADA POR MOUSE, DUR SALDRÁ DE LA ELECCION DEL MENU DE DURACION
 ' QUE APARECE CON CLICK DERCHO UBICAMOS LA POSICION RELATIVA Y OBTENEMOS LA DURACION
 ' EN EL 1ER CLICK IZQUIERDO, EN EL 2DO CLICK IZQUIERDO ENVIAMOS NOTA Y DURACION
   If DUR= 0 And nroClick =1  Then ' determinmos uracion clickeada o seleccionada graficamente
-   ' Select Case ?
-   Print #1,"=> ENTRO A MOUSE usamousex, usamouseY",usamousex,usamouseY
-   Print #1,"=> ENTRO A MOUSE mousex, mouseY",mousex,mouseY
-   Print #1,"=> ENTRO A MOUSE nE, nR ", nE , nR
-   
-   
-     If mousex >= usamousex -50 And  mousex <= usamousex -10 Then ' O en -30
-        If mousey >= usamousey -10  And mousey <= usamousey + 20    Then ' +10
+  
+     If mousex >= usamousex -100 And  mousex <= usamousex -80 Then ' O en -90
            DUR=1 ' menumouse
-           Print #1, "DUR:", DUR
-        Else 
-          Print #1, "NO ENTRO  usamousex -50 ", usamousex -50
-          Print #1, "NO ENTRO  usamousex -10 ", usamousex -10
-          Print #1, "NO ENTRO  usamousey  ", usamousey
-          Print #1, "NO ENTRO  usamousey +20 ", usamousey +20  
-       EndIf
      EndIf  
+     If mousex >= usamousex -70 And  mousex <= usamousex -50 Then ' P en -60
+           DUR=2 ' menumouse
+     EndIf  
+     If mousex >= usamousex -40 And  mousex <= usamousex -20 Then ' I en -30
+           DUR=3 ' menumouse
+     EndIf  
+     If mousex >= usamousex -10 And  mousex <= usamousex +10 Then ' L en 0
+           DUR=4 ' menumouse
+     EndIf  
+     If mousex >= usamousex +20 And  mousex <= usamousex +40 Then ' F en +30
+           DUR=5 ' menumouse
+     EndIf  
+     If mousex >= usamousex +50 And  mousex <= usamousex +70 Then ' E en +60
+           DUR=6 ' menumouse
+     EndIf  
+     If mousex >= usamousex +80 And  mousex <= usamousex +100 Then ' W en +90
+           DUR=7 ' menumouse
+     EndIf  
+     If mousex >= usamousex +110 And  mousex <= usamousex +130 Then ' H en +120
+           DUR=8 ' menumouse
+     EndIf  
+
   EndIf  
   
 EndIf   
  If DUR > 0 And nE > 0 And nroClick = 1 And ayuda=FALSE Then '  ingresamos 1o varias notas por mousedel mismo valor
     nota=nE
     Print # 1, "=> ENTRO MOUSE nota ",nota
+    nroClick=0
  EndIf 
+ If (mouseButtons And 1) And (DUR > 0) And (nE > 0) And ayuda=FALSE Then '  ingresamos 1o varias notas por mousedel mismo valor
+    nota=nE
+    Print # 1, "=> ENTRO MOUSE nota ",nota
+ EndIf 
+
   Exit Do
 
 
