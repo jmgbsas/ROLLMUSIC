@@ -92,4 +92,5 @@ end destructor
 operator FreeType.cast() as FT_Library
   return( _library )
 end Operator
-Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey,notamouse
+Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _ 
+notamouse, EnOctava,nE,nR,lugarOld, nroClick

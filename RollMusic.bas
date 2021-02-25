@@ -109,7 +109,9 @@ indaux=0:carga=0
 ' -------------------------------------------------------------------------  
 BordeSupRoll = Int((ALTO ) /18) ' (1400 )/18 integer = 77
 inc_Penta = Int((ALTO - BordeSupRoll) /(40)) ' 26 double 1330/66 para 1400 resolu
-BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio muestro octava 4 la central C3
+' *******************************************************++
+'[[[[[ VOLVER A COLOCAR COMENTADO PARA UBICACION DE NOTAS POR PIXEL BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio muestro octava 4 la central C3
+' *************************************************+
 ' inc_Penta=separacion de lineas
 '---------------------
 Dim As Integer mxold,myold, w,h
@@ -334,47 +336,29 @@ EndIf
 
 
 If MultiKey(SC_PLUS) Or MultiKey(SC_KEYPADPLUS) Then
-
-  
     ALTO = ALTO + 2 'inc_Penta 
-    'Print "ALTO+ ", ALTO
-'    If altofp11 > 0 Then
-'      If ALTO >= altofp11 Then
-'         ALTO =  altofp11
-'      EndIf
-'    Else
       If ALTO >= AltoInicial Then
          ALTO =  Altoinicial
       EndIf
      
-'    EndIf 
     
    cairo_set_source_surface (c, surface, ANCHO, ALTO)
 
    Sleep 10
     Exit Do  
+
 EndIf
 
 If MultiKey(SC_MINUS) Then
     cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1 'evita fondo negro y flick
     cairo_paint(c)
-'    cairo_stroke(c)
-'   cairo_destroy(c)
 
    ALTO = AltoInicial/1.5  
-'   If ALTO <= AltoInicial/3 Then
-'     ALTO= AltoInicial/3
-'   EndIf
-'    cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1 'evita fondo negro y flick
    cairo_set_source_surface (c, surface, ANCHO, ALTO ) ' ALTO)
-'  cairo_stroke(c)
-'   Sleep 10
-'    cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1 'evita fondo negro y flick
-'    cairo_paint(c)
-'    cairo_stroke(c)
    Exit Do  
 ' LA ZONA QUE DEJA ESTA POSICION EN LA PARTE INFERIOR SE USARA PARA
 ' HACER AJUSTES DE VELOCIDAD CON CURVAS O MOSTRAR CONTROLES ADICIONALES     
+
 EndIf
 If MultiKey(SC_CONTROL) And MultiKey (SC_RIGHT) Then
    posicion=posicion + NroCol/2
@@ -1043,7 +1027,8 @@ EndIf
  '      kNroCol= Int(posicion/60)
    '       Print #1, "A:Roll((nota +(estoyEnOctava -1) * 13),posn).nota ", _
    '       Roll((nota +(estoyEnOctava -1) * 13),posn).nota
-
+   ' PARA USAR ESTO CON ENTRADA POR MOUSE SOLO DEBO DETERMINAR EL SEMITONO...
+   ' y hacer nota=semiotono 1 a 11 con el mouse...el esto es automtico...
        Do 
          If Roll((nota +(estoyEnOctava -1) * 13),posn).nota = 0 OR _
           Roll((nota +(estoyEnOctava -1) * 13),posn).nota = 34 Then
@@ -1515,15 +1500,58 @@ If MouseButtons And 2 Then
   ayuda=TRUE
   menuMouse = 0
   notaMouse=0
+  DUR=0
+  nroClick=0
   Exit Do
 EndIf
 If mouseButtons And 1 And ayuda=TRUE Then
    ayuda=FALSE
    savemousex=0 : savemousey=0
    menuMouse = 0
-   Exit Do
-EndIf
+   nroClick = 1
+' ACA SERA LA ENTRADA POR MOUSE, DUR SALDRÁ DE LA ELECCION DEL MENU DE DURACION
+' QUE APARECE CON CLICK DERCHO UBICAMOS LA POSICION RELATIVA Y OBTENEMOS LA DURACION
+' EN EL 1ER CLICK IZQUIERDO, EN EL 2DO CLICK IZQUIERDO ENVIAMOS NOTA Y DURACION
+  If DUR= 0 And nroClick =1  Then ' determinmos uracion clickeada o seleccionada graficamente
+   ' Select Case ?
+   Print #1,"=> ENTRO A MOUSE usamousex, usamouseY",usamousex,usamouseY
+   Print #1,"=> ENTRO A MOUSE mousex, mouseY",mousex,mouseY
+   Print #1,"=> ENTRO A MOUSE nE, nR ", nE , nR
+   
+   
+     If mousex >= usamousex -50 And  mousex <= usamousex -10 Then ' O en -30
+        If mousey >= usamousey -10  And mousey <= usamousey + 20    Then ' +10
+           DUR=1 ' menumouse
+           Print #1, "DUR:", DUR
+        Else 
+          Print #1, "NO ENTRO  usamousex -50 ", usamousex -50
+          Print #1, "NO ENTRO  usamousex -10 ", usamousex -10
+          Print #1, "NO ENTRO  usamousey  ", usamousey
+          Print #1, "NO ENTRO  usamousey +20 ", usamousey +20  
+       EndIf
+     EndIf  
+  EndIf  
+  
+EndIf   
+ If DUR > 0 And nE > 0 And nroClick = 1 And ayuda=FALSE Then '  ingresamos 1o varias notas por mousedel mismo valor
+    nota=nE
+    Print # 1, "=> ENTRO MOUSE nota ",nota
+ EndIf 
+  Exit Do
 
+
+' ingreso de duraciones y de notas...deteccion por mouse 
+'  usamousex -30, usamousey +10 duracion redonda...
+' paradeterminar la nota lo mas facil es detectar la posicion del 
+' CURSORY HACER LOS CALCULOS JMG. 1ER nota entre 56 y 76 pixels 
+' BordeSupRoll es siempre la linea superior debajo de la cual esta siempre B8
+' y Penta_y coincide con el enl 1erlinea , ademasPenta_y es la ubicacion de la 
+' 1er linea de cada octava la superior noinferior....
+' todo implementado en CrearPenta linea 87 aprox....nE= semitono o nota
+' nR ubuiacon en indice de Roll 1 a 128
+If cursorVert = 0 And cursorHori=0 And ComEdit=TRUE Then
+ 
+EndIf
  If resize = TRUE Then    ' <===== MOVER Y REDIMENSIONAR LA PANTALLA NO TAN FACIL
    'CLICKEAR CERCA DEL CENTRO Y DRAGAR DERECHA IZQUIERDA ARRIBA ABAJO 
     m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )

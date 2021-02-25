@@ -49,14 +49,16 @@ Else
   posishow=posicion
   
 EndIf
-' 
+Dim As Integer lugar=0
+lugarOld=Penta_y
+ 
 Var t = " "
 For semitono = 1 To 12 
 
   t = NotasGuia(semitono) + Str(*octava) + "_["
   cairo_move_to(c, 0, Penta_y + semitono * inc_Penta- 6)
   cairo_show_text(c, t)
-  ic=0 'indice cursor
+  ic=0 'indice cursor 'donde se dibujara la duracion
   For n = posishow to posishow + NroCol 
     
     If Roll (semitono + (nro-1) * 13, n  ).nota > 0 Or _
@@ -81,13 +83,22 @@ For semitono = 1 To 12
      MaxPos = n     
   EndIf
 
-  cairo_move_to(c, 0, Penta_y + semitono * inc_Penta )
-  cairo_line_to(c, ANCHO - 1, Penta_y + semitono * inc_Penta)
-  cairo_stroke(c)
-Next semitono
-  
 
-If nro = 9 Then 
+lugar=Penta_y + semitono * inc_Penta
+  cairo_move_to(c, 0, lugar )
+  cairo_line_to(c, ANCHO - 1, lugar)
+  cairo_stroke(c)
+  If (mousey <= lugar) And (mousey >= lugarOld ) Then
+     nE=semitono  ' semitono 1 a 11 usadopor entrada de tecladoy ahroa mouse
+     nR=semitono + (nro-1) * 13  ' indice de la nota en Roll , en algo será util.
+  EndIf 
+lugarOld=lugar
+
+Next semitono
+' PARA ENTRADA POR MOUSE SOLO DEBO DETERMINAR EL SEMITONO...
+   ' y hacer nota=semiotono 1 a 11 con el mouse...el resto es automtico...  
+
+If nro = 9 Then ' es la 10 usamos 0 tmbien ose 9 octavas+ ayuda
  cairo_set_font_size (c, 20)
 'cairo_select_font_face (c, "Georgia",CAIRO_FONT_SLANT_NORMAL , CAIRO_FONT_WEIGHT_BOLD)
  t= "Flecha Abajo/Arriba scroll de las octavas en la ventana "
@@ -115,7 +126,7 @@ End If
 if ( Penta_y <= mousey) and ((Penta_y + 12 * inc_Penta) >= mousey)  Then
  ' estoy en una octava    
   estoyEnOctava = nro '<========== DETERMINACION DE OCTAVA DE TRABAJO
-
+ EnOctava=1
 ' CURSOR 
  cairo_stroke(c)
  cursor(c,posicion,nro)
@@ -123,13 +134,19 @@ if ( Penta_y <= mousey) and ((Penta_y + 12 * inc_Penta) >= mousey)  Then
  cairo_set_source_rgba c, 0, 0, 0, 1
  cairo_set_line_width(c, 3)
 EndIf
+If ((Penta_y + 12 * inc_Penta) <= mousey) And ((Penta_y + 14 * inc_Penta) >= mousey) Then 
+ EnOctava = 0
+ estoyEnOctava=90
+EndIf
 *octava = *octava -1
 If *octava < 0 Then
    *octava = 99
    Exit Sub
 EndIf
 If ayuda=TRUE  And comEdit=TRUE Then
-  Dim As Integer usamousex, usamousey
+' SI SE SELECCIONA INSERTAR O MODIFICAR Y DUR=0 THEN IMPRIMIR
+' "ELIJA ANTES UNA DURACION"
+  
   If savemousex > 0 Or savemousey > 0 Then
    usamousex=savemousex
    usamousey=savemousey
@@ -140,9 +157,9 @@ If ayuda=TRUE  And comEdit=TRUE Then
   
     Var  cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
 
-    dim as string  text0 => "BORRAR" 
-    Dim As String  text1 => "INSERT" 
-    Dim As String  text2 => "SALIR"      
+    dim as string  text0 => "BLANQUEAR" 
+    Dim As String  text1 => "INSERTAR" 
+    Dim As String  text2 => "MODIFICAR"      
 
     Dim as string  text3 => "O" 
     Dim As String  text4 => "P" 
@@ -192,7 +209,7 @@ If ayuda=TRUE  And comEdit=TRUE Then
     EndIf
     EndIf
         
-    If notaMouse = 0  Then 
+    If notaMouse = 0  Then                '<== O
        If menuMouse = 0 Then  
           cairo_move_to( c, usamousex -30, usamousey +10 ) 
           cairo_text_extents( c, text3, @extents )
@@ -200,49 +217,49 @@ If ayuda=TRUE  And comEdit=TRUE Then
           menumouse = 1
           insert=0
        EndIf
-       If menuMouse = 1 Then  
+       If menuMouse = 1 Then            ' <== P
           cairo_move_to( c, usamousex -30, usamousey -20 ) 
           cairo_text_extents( c, text4, @extents )
           cairo_show_text( c, text4 )
           menumouse = 2
           insert=0
        EndIf
-       If menuMouse = 2 Then  
+       If menuMouse = 2 Then          ' <== I
           cairo_move_to( c, usamousex , usamousey -20 ) 
           cairo_text_extents( c, text5, @extents )
           cairo_show_text( c, text5 )
           menumouse = 3
           insert=0
        EndIf
-       If menuMouse = 3 Then  
+       If menuMouse = 3 Then  ' <==== L
           cairo_move_to( c, usamousex +30, usamousey -20 ) 
           cairo_text_extents( c, text6, @extents )
           cairo_show_text( c, text6 )
           menumouse = 4
           insert=0
        EndIf
-       If menuMouse = 4 Then  
+       If menuMouse = 4 Then  ' <= F
           cairo_move_to( c, usamousex +30, usamousey +10 ) 
           cairo_text_extents( c, text7, @extents )
           cairo_show_text( c, text7 )
           menumouse = 5
           insert=0
        EndIf
-       If menuMouse = 5 Then  
+       If menuMouse = 5 Then   ' <= E
           cairo_move_to( c, usamousex +30, usamousey +40 ) 
           cairo_text_extents( c, text8, @extents )
           cairo_show_text( c, text8 )
           menumouse = 6
           insert=0
        EndIf
-       If menuMouse = 6 Then  
+       If menuMouse = 6 Then  ' <= W
           cairo_move_to( c, usamousex , usamousey +40 ) 
           cairo_text_extents( c, text9, @extents )
           cairo_show_text( c, text9 )
           menumouse = 7
           insert=0
        EndIf
-       If menuMouse = 7 Then  
+       If menuMouse = 7 Then  ' <= H
           cairo_move_to( c, usamousex -30, usamousey +40 ) 
           cairo_text_extents( c, text10, @extents )
           cairo_show_text( c, text10 )
@@ -508,7 +525,8 @@ Select Case menuNro
    t = "      EDIT" + " " + Str(mousex) + " " + Str(mousey) + " Octava: " + Str(oclog) + _
    " UltimaPos: " + Str(Maxpos) +" Posi: " + Str(posishow)+ " posn: "+Str(posn)+ _
    " Font: " +str(font) + "dur "+ Str(vDur) +"Roll "+ Str(vRoll) + _
-   " InicioDELectura: " + Str(InicioDelectura)
+   " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) + _
+   " EnOct: " + Str(EnOctava) + " nE:"+Str(nE) + " nR:"+ Str(nR) +" DUR:" +Str(DUR)
  cairo_show_text(c,t)
 
  cairo_stroke(c)
