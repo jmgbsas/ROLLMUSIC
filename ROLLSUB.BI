@@ -145,10 +145,10 @@ If *octava < 0 Then
 EndIf
 '           ================  MENUES CONTEXTUALES PARA MOUSE ==================
 If ayudaModif=TRUE  And comEdit=TRUE And (cursorVert = 1 or  cursorHori = 1 ) Then
-Print #1,".............SUBRUTINA........................................."
-Print #1,"(9) ESTADO MUESTRA MENU COMANDOS"
-Print #1,"ayudaModif=TRUE  And comEdit=TRUE And (cursorVert = 1 or  cursorHori = 1 )"
-Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+'Print #1,".............SUBRUTINA........................................."
+'Print #1,"(9) ESTADO MUESTRA MENU COMANDOS"
+'Print #1,"ayudaModif=TRUE  And comEdit=TRUE And (cursorVert = 1 or  cursorHori = 1 )"
+'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
   If savemousex > 0 Or savemousey > 0 Then
    usamousex=savemousex
    usamousey=savemousey
@@ -176,7 +176,7 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
          cairo_text_extents( c, text0, @extents )
          cairo_show_text( c, text0 )
          menuMouse = 1
-         Print #1,"BLANQUEAR"
+       '  Print #1,"BLANQUEAR"
          Exit Sub
        EndIf
 
@@ -185,7 +185,7 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
           cairo_text_extents( c, text1, @extents )
           cairo_show_text( c, text1 )
           menuMouse = 2
-          Print #1,"INSERTAR"
+       '   Print #1,"INSERTAR"
           Exit Sub
        EndIf
        If menuMouse = 2 Then  
@@ -193,7 +193,7 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
           cairo_text_extents( c, text2, @extents )
           cairo_show_text( c, text2 )
           menuMouse = 0
-          Print #1,"MODIFICAR"
+        '  Print #1,"MODIFICAR"
        EndIf
     EndIf
    If savemousex=0 Or savemousey=0 Then
@@ -206,9 +206,9 @@ EndIf
 If ayudaNuevaNota=TRUE  And comEdit=TRUE And vuelta=FALSE Then
 ' SI SE SELECCIONA INSERTAR O MODIFICAR Y DUR=0 THEN IMPRIMIR
 ' "ELIJA ANTES UNA DURACION"
-Print #1,".............SUBRUTINA........................................."
-Print #1,"(10) ESTADO SELECCIONAR DURACION O CTRL-P/cTRL-p"
-Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+'Print #1,".............SUBRUTINA........................................."
+'Print #1,"(10) ESTADO SELECCIONAR DURACION O CTRL-P/cTRL-p"
+'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
   
   If savemousex > 0 Or savemousey > 0 Then
    usamousex=savemousex
@@ -369,12 +369,59 @@ If (cursorHori=1 Or cursorVert = 1) And cambiadur= 1 Then
    If notacur=0 Then  '<- aca ingreso nota aunqne no haya?
       notacur=notaOld
    EndIf
-  Roll(notacur + (nro-1) * 13, n + curpos).dur = DUR 
-  vdur=Roll(notacur + (nro-1) * 13, n +curpos).dur
-  ' SI LA NOTA  NO EXITIA LA agrega
-  Roll(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
-  vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
-  cambiadur = 0    
+'  Roll(notacur + (nro-1) * 13, n + curpos).dur = DUR 
+'  vdur=Roll(notacur + (nro-1) * 13, n +curpos).dur
+'  ' SI LA NOTA  NO EXITIA LA agrega
+'  Roll(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
+'  vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
+'  cambiadur = 0   
+' ------------------------------------  
+' nueva verion con puntillo o silencio
+' ------------------------------------
+        If pun  = 0 And sil=0 Then ' no hay puntillo ni silencio
+           Roll(notacur + (nro-1) * 13, n + curpos).dur = DUR 
+           vdur=Roll(notacur + (nro-1) * 13, n +curpos).dur
+           Roll(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
+           vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
+           cambiadur = 0   
+
+        Else 
+          If pun = 1 And sil=0 Then
+           Roll(notacur + (nro-1) * 13, n + curpos).dur = DUR + 8 
+           vdur=Roll(notacur + (nro-1) * 13, n +curpos).dur
+           Roll(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
+           vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
+           cambiadur = 0   
+           pun=0
+          Else 
+            If sil = 1 And pun=0 Then
+           Roll(notacur + (nro-1) * 13, n + curpos).dur = DUR + 16 
+           vdur=Roll(notacur + (nro-1) * 13, n +curpos).dur
+           Roll(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
+           vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
+           cambiadur = 0   
+           sil=0
+            Else ' sil=1 and pun=1
+              Roll(notacur + (nro-1) * 13, n + curpos).dur = DUR +24 
+              vdur=Roll(notacur + (nro-1) * 13, n +curpos).dur
+              Roll(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
+              vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
+              cambiadur = 0   
+              sil=0:pun=0
+
+            EndIf
+            If DUR=33 Then
+              Roll(notacur + (nro-1) * 13, n + curpos).dur = 33 
+              vdur=Roll(notacur + (nro-1) * 13, n +curpos).dur
+              cambiadur = 0   
+              DUR=0
+            EndIf
+          EndIf
+        EndIf
+        
+        nota = 0 
+
+' fin nuevaversion   
 EndIf 
 ' PROCESO INSERT 
 If (cursorHori=1 Or cursorVert = 1) And insert= 2 Then

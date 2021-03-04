@@ -1,7 +1,6 @@
-' VERSION 0.5.7.3.9 - ENLA 8 YA TENEMOS LA ENTRADA DE DURACIONES Y NOTAS POR MOUSE
-'- PROXIMA META. MODIFICAR INSERTAR BORRAR CON MOUSE,,,
-' - BORRAR Y AFUNCION DA SILENCIO O SEGUNDO CLICK ESPACIO
-'- COPIAR ZONAS DE 1 OCTAVA O TODAS EN OTRO LADO..ESE SERA 0.5.7.4.0 
+' VERSION 0.5.7.3.9.4 modifica con puntillo y/o silencio  
+'
+'meta futura -> COPIAR ZONAS DE 1 OCTAVA O TODAS EN OTRO LADO..ESE SERA 0.5.7.4.0 
 
 Open "midebug.txt" for Output As #1
 
@@ -98,7 +97,7 @@ indaux=0:carga=0
 ' -----------------------------------------------------------------------
 ' notas redonda (O),blanca(P),negra(I),corchea(C),semicorchea(S), Fusa(F),Semifusa(U)
 ' O P I L F E # (listo todas mis notas!!!)
-' puntillo O+ P+  C+ elsigno  +
+' puntillo O* P*  C* elsigno  *
 ' -puntillo resta en vez de sumar -O -P -C ...-U
 ' O P I L F E # (redonda, blanca,corchea, semicorchea, Fusa,Semifusa) 
 ' no meconviene escribir encima de las lineas debo cmbiar todo para
