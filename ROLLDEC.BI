@@ -40,7 +40,7 @@ Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
 ' ej tecleo 1+.+A=O* en linea A dela octava que sea
 ' ej tecleo s+1+.+A =sO* en A..
 ' tambien en vez de estos simbolos usare los de un pentagrama comun,,,,futuro
-Dim Shared As BOOLEAN ayuda
+Dim Shared As BOOLEAN ayuda, ayudaNuevaNota, ayudaModif, vuelta
 
 espacio=0:cursorVert=0:borrar=0:cambiadur=0:InicioDeLectura=0
 menuAccion=0:insert=0:agregarNota=0
@@ -93,4 +93,4 @@ operator FreeType.cast() as FT_Library
   return( _library )
 end Operator
 Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _ 
-notamouse, EnOctava,nE,nR,lugarOld, nroClick
+modifmouse, EnOctava,nE,nR,lugarOld, nroClick, posinterna

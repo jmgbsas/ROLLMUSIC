@@ -143,10 +143,12 @@ If *octava < 0 Then
    *octava = 99
    Exit Sub
 EndIf
-If ayuda=TRUE  And comEdit=TRUE Then
-' SI SE SELECCIONA INSERTAR O MODIFICAR Y DUR=0 THEN IMPRIMIR
-' "ELIJA ANTES UNA DURACION"
-  
+'           ================  MENUES CONTEXTUALES PARA MOUSE ==================
+If ayudaModif=TRUE  And comEdit=TRUE And (cursorVert = 1 or  cursorHori = 1 ) Then
+Print #1,".............SUBRUTINA........................................."
+Print #1,"(9) ESTADO MUESTRA MENU COMANDOS"
+Print #1,"ayudaModif=TRUE  And comEdit=TRUE And (cursorVert = 1 or  cursorHori = 1 )"
+Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
   If savemousex > 0 Or savemousey > 0 Then
    usamousex=savemousex
    usamousey=savemousey
@@ -160,6 +162,64 @@ If ayuda=TRUE  And comEdit=TRUE Then
     dim as string  text0 => "BLANQUEAR" 
     Dim As String  text1 => "INSERTAR" 
     Dim As String  text2 => "MODIFICAR"      
+    Dim As cairo_text_extents_t extents
+
+
+    If mousey > 50 Then 
+    cairo_set_font_face( c, cface )
+    cairo_set_font_size( c, 30 )
+    cairo_set_source_rgba( c, 1, 1, 1, 1 )
+         
+ 
+       If menuMouse = 0 Then
+         cairo_move_to( c, usamousex, usamousey -80 )
+         cairo_text_extents( c, text0, @extents )
+         cairo_show_text( c, text0 )
+         menuMouse = 1
+         Print #1,"BLANQUEAR"
+         Exit Sub
+       EndIf
+
+       If menuMouse = 1 Then   
+          cairo_move_to( c, usamousex, usamousey -50 )
+          cairo_text_extents( c, text1, @extents )
+          cairo_show_text( c, text1 )
+          menuMouse = 2
+          Print #1,"INSERTAR"
+          Exit Sub
+       EndIf
+       If menuMouse = 2 Then  
+          cairo_move_to( c, usamousex, usamousey -20 ) 
+          cairo_text_extents( c, text2, @extents )
+          cairo_show_text( c, text2 )
+          menuMouse = 0
+          Print #1,"MODIFICAR"
+       EndIf
+    EndIf
+   If savemousex=0 Or savemousey=0 Then
+      savemousex=mousex
+      savemousey=mousey
+   EndIf
+
+EndIf
+
+If ayudaNuevaNota=TRUE  And comEdit=TRUE And vuelta=FALSE Then
+' SI SE SELECCIONA INSERTAR O MODIFICAR Y DUR=0 THEN IMPRIMIR
+' "ELIJA ANTES UNA DURACION"
+Print #1,".............SUBRUTINA........................................."
+Print #1,"(10) ESTADO SELECCIONAR DURACION O CTRL-P/cTRL-p"
+Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+  
+  If savemousex > 0 Or savemousey > 0 Then
+   usamousex=savemousex
+   usamousey=savemousey
+  Else
+   usamousex=mousex
+   usamousey=mousey
+  EndIf
+  
+    Var  cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
+
 
     Dim as string  text3 => "O" 
     Dim As String  text4 => "P" 
@@ -169,8 +229,8 @@ If ayuda=TRUE  And comEdit=TRUE Then
     Dim As String  text8 => "E"     
     Dim As String  text9 => "W"     
     Dim As String  text10 => "H"    
-
-   
+    Dim As String  text11 => "CURSOR (ctrl-m)"
+    Dim As String  text12 => "VOLVER (ctrl-p)"
     Dim As cairo_text_extents_t extents
 
 
@@ -179,94 +239,70 @@ If ayuda=TRUE  And comEdit=TRUE Then
     cairo_set_font_size( c, 30 )
     cairo_set_source_rgba( c, 1, 1, 1, 1 )
     
-    if cursorVert = 1 or  cursorHori = 1 Then
-    If notaMouse=1 Then  
-       If menuMouse = 0 Then
-         cairo_move_to( c, usamousex, usamousey -80 )
-         cairo_text_extents( c, text0, @extents )
-         cairo_show_text( c, text0 )
-         menuMouse = 1
-         insert=1
-         Exit Sub
-       EndIf
-
-       If menuMouse = 1 Then   
-          cairo_move_to( c, usamousex, usamousey -50 )
-          cairo_text_extents( c, text1, @extents )
-          cairo_show_text( c, text1 )
-          menuMouse = 2
-          insert=3
-          Exit Sub
-       EndIf
-       If menuMouse = 2 Then  
-          cairo_move_to( c, usamousex, usamousey -20 ) 
-          cairo_text_extents( c, text2, @extents )
-          cairo_show_text( c, text2 )
-          menuMouse = 0
-          insert=0
-          
-       EndIf
-    EndIf
-    EndIf
         
-    If notaMouse = 0  Then                '<== O
+
        If menuMouse = 0 Then  
           cairo_move_to( c, usamousex -90, usamousey +10 ) 
           cairo_text_extents( c, text3, @extents )
           cairo_show_text( c, text3 )
           menumouse = 1
-          insert=0
        EndIf
        If menuMouse = 1 Then            ' <== P
           cairo_move_to( c, usamousex -60, usamousey +10 ) 
           cairo_text_extents( c, text4, @extents )
           cairo_show_text( c, text4 )
           menumouse = 2
-          insert=0
        EndIf
        If menuMouse = 2 Then          ' <== I
           cairo_move_to( c, usamousex -30, usamousey +10 ) 
           cairo_text_extents( c, text5, @extents )
           cairo_show_text( c, text5 )
           menumouse = 3
-          insert=0
        EndIf
        If menuMouse = 3 Then  ' <==== L
           cairo_move_to( c, usamousex , usamousey +10 ) 
           cairo_text_extents( c, text6, @extents )
           cairo_show_text( c, text6 )
           menumouse = 4
-          insert=0
        EndIf
        If menuMouse = 4 Then  ' <= F
           cairo_move_to( c, usamousex +30, usamousey +10 ) 
           cairo_text_extents( c, text7, @extents )
           cairo_show_text( c, text7 )
           menumouse = 5
-          insert=0
        EndIf
        If menuMouse = 5 Then   ' <= E
           cairo_move_to( c, usamousex +60, usamousey +10 ) 
           cairo_text_extents( c, text8, @extents )
           cairo_show_text( c, text8 )
           menumouse = 6
-          insert=0
        EndIf
        If menuMouse = 6 Then  ' <= W
           cairo_move_to( c, usamousex +90, usamousey +10 ) 
           cairo_text_extents( c, text9, @extents )
           cairo_show_text( c, text9 )
           menumouse = 7
-          insert=0
        EndIf
        If menuMouse = 7 Then  ' <= H
           cairo_move_to( c, usamousex +120, usamousey +10 ) 
           cairo_text_extents( c, text10, @extents )
           cairo_show_text( c, text10 )
-          menumouse = 0
-          insert=3
+          menumouse = 8
        EndIf
-     EndIf
+       If menuMouse = 8 Then  ' <= control-m O P
+          If cursorVert=0 Or cursorHori=0 then
+             cairo_move_to( c, usamousex -60 , usamousey +50 ) 
+             cairo_text_extents( c, text11, @extents )
+             cairo_show_text( c, text11 )
+          EndIf
+          If cursorVert=1 Or cursorHori=1 then
+             cairo_move_to( c, usamousex -60 , usamousey -40 ) 
+             cairo_text_extents( c, text12, @extents )
+             cairo_show_text( c, text12 )
+          EndIf
+
+          menumouse = 0
+       EndIf
     
    EndIf 
    If savemousex=0 Or savemousey=0 Then
@@ -524,9 +560,12 @@ Select Case menuNro
 
    t = "      EDIT" + " " + Str(mousex) + " " + Str(mousey) + " Octava: " + Str(oclog) + _
    " UltimaPos: " + Str(Maxpos) +" Posi: " + Str(posishow)+ " posn: "+Str(posn)+ _
-   " Font: " +str(font) + "dur "+ Str(vDur) +"Roll "+ Str(vRoll) + _
-   " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) + _
+   " Font: " +str(font) + "dur "+ Str(Dur) +"nota "+ Str(nota) + _
+   " modifmouse " + Str(modifmouse) + "usamousey " + Str(usamousey) + "usamousex "+ Str(usamousex) + _
    " EnOct: " + Str(EnOctava) + " nE:"+Str(nE) + " nR:"+ Str(nR) +" DUR:" +Str(DUR)
+/' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +
+'/ 
+
  cairo_show_text(c,t)
 
  cairo_stroke(c)
