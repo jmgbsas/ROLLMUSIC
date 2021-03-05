@@ -43,12 +43,16 @@ cairo_line_to(c, ANCHO - 1, Penta_y )
 'Dim As Integer delta
 
 'delta=NroCol
-If cursorVert=0 And comEdit=TRUE  Then
-  posishow=  1 + inicioDelectura '  
+If cursorVert=0 And comEdit=TRUE Then
+  If posicion < 60  Then  
+    posishow=  1 
+  Else
+    posishow = posicion - 40
+  EndIf    
 Else
-  posishow=posicion
-  
-EndIf
+    posishow = posicion
+EndIf  
+
 Dim As Integer lugar=0
 lugarOld=Penta_y
  
@@ -161,7 +165,8 @@ If ayudaModif=TRUE  And comEdit=TRUE And (cursorVert = 1 or  cursorHori = 1 ) Th
 
     dim as string  text0 => "BLANQUEAR" 
     Dim As String  text1 => "INSERTAR" 
-    Dim As String  text2 => "MODIFICAR"      
+    Dim As String  text2 => "FIN INSERTAR"
+    Dim As String  text3 => "MODIFICAR"      
     Dim As cairo_text_extents_t extents
 
 
@@ -172,16 +177,16 @@ If ayudaModif=TRUE  And comEdit=TRUE And (cursorVert = 1 or  cursorHori = 1 ) Th
          
  
        If menuMouse = 0 Then
-         cairo_move_to( c, usamousex, usamousey -80 )
+         cairo_move_to( c, usamousex, usamousey -110 )
          cairo_text_extents( c, text0, @extents )
          cairo_show_text( c, text0 )
          menuMouse = 1
-       '  Print #1,"BLANQUEAR"
+       '  Print #1,"BLANQUEAR BORRAR SIN ELIMINAR"
          Exit Sub
        EndIf
 
        If menuMouse = 1 Then   
-          cairo_move_to( c, usamousex, usamousey -50 )
+          cairo_move_to( c, usamousex, usamousey -80 )
           cairo_text_extents( c, text1, @extents )
           cairo_show_text( c, text1 )
           menuMouse = 2
@@ -189,12 +194,20 @@ If ayudaModif=TRUE  And comEdit=TRUE And (cursorVert = 1 or  cursorHori = 1 ) Th
           Exit Sub
        EndIf
        If menuMouse = 2 Then  
-          cairo_move_to( c, usamousex, usamousey -20 ) 
+          cairo_move_to( c, usamousex, usamousey -50 ) 
           cairo_text_extents( c, text2, @extents )
           cairo_show_text( c, text2 )
+          menuMouse = 3
+        '  Print #1,"FIN INSERTAR"
+       EndIf
+       If menuMouse = 3 Then  
+          cairo_move_to( c, usamousex, usamousey -20 ) 
+          cairo_text_extents( c, text3, @extents )
+          cairo_show_text( c, text3 )
           menuMouse = 0
         '  Print #1,"MODIFICAR"
        EndIf
+
     EndIf
    If savemousex=0 Or savemousey=0 Then
       savemousex=mousex
@@ -562,7 +575,7 @@ Select Case menuNro
       cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [Pista]":cairo_show_text(c, t)
-   
+' ------------------------------------------   
    If mousex > 348 And mousex< 453 And mousey < 50 Then
       cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
@@ -572,7 +585,7 @@ Select Case menuNro
       cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [Reproducir]":cairo_show_text(c, t)
-
+' --------------------------
    If mousex > 473 And mousex< 562 And mousey < 50 Then
       cairo_set_source_rgba c, 0, 1, 0, 1
    Else 
@@ -593,11 +606,11 @@ Select Case menuNro
  
   Case 2 ' para posicionar  en pantalla NO BORRAR. <= EDIT MENU  
    menuNew=2 
-   If cursorHori=1 And CursorVert=1 Then
-       posishow= posicion + curpos
-   Else 
-       posishow = posicion
-   EndIf
+ '  If cursorHori=1 And CursorVert=1 Then
+ '      posishow= posicion + curpos
+ '  Else 
+ '      posishow = posicion
+ '  EndIf
    cairo_move_to(c, 0, 36 )
    If comEdit= TRUE   Then
       cairo_set_source_rgba c,0,1,0,1
@@ -770,23 +783,18 @@ Select Case menuNro
       Close 2
       While InKey <> "": Wend
    sleep 150
-     Print "ENTRO ENTRO ENTRO"
-     Print "ENTRO ENTRO ENTRO"
-     Print "ENTRO ENTRO ENTRO"
-     Print "ENTRO ENTRO ENTRO"
-     Print "ENTRO ENTRO ENTRO"
-     Print "ENTRO ENTRO ENTRO"
      EndIf
    Else 
      cairo_set_source_rgba c,1,1,1,1
    EndIf  
-  t = " [GRABAR]": cairo_show_text(c,t) :t= ""  
-  If mousex > 330 and mousey < 50 Then
+  t = " [GRABAR]": cairo_show_text(c,t) :t= "" 
+'   
+  If mousex > 350 and mousey < 50 Then
     If MouseButtons And 1 Then 
        MenuNew=0
     EndIf   
   EndIf 
-  Case 4
+  Case 4  ' <======= COMO REPRODUCUIR 
      cairo_set_source_rgba c,1,1,1,1
    t=  "      [DESDE INICIO][DESDE ESTA POSICION] [VOLUMEN / + / - /] No habilitado"
    If mousex > 330 and mousey < 50 And mousex < ANCHO-50 Then

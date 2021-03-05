@@ -1,4 +1,10 @@
-' VERSION 0.5.7.3.9.4 modifica con puntillo y/o silencio  
+' VERSION 0.5.7.3.9.5 POSISHOW MODIFICAION PARA ELINGRESO DE NOTAS NUEVAS
+' Y QUE SE VEA A La IZQUIERDA UN RANGO DADO.
+' YA FUNCIONA INSERCION CON MOUSE Y DURACIONES PORMOUSE CORRECIONES A ESTADO
+' DE LECTURA Y NUEVA NOTA CURSORvERT=0 Y OTRAS AJUSTADAS..EN CLICK AL EDIT  
+'
+'
+'4 modifica con puntillo y/o silencio  
 '
 'meta futura -> COPIAR ZONAS DE 1 OCTAVA O TODAS EN OTRO LADO..ESE SERA 0.5.7.4.0 
 
@@ -1329,6 +1335,12 @@ EndIf
         ' 1 o varias notas en forma horizontal siemrpe la misma nota
         ' para acorde usar modificar SC_X 
         menuMouse = 0
+' ------ 04-03-21 aca siempre es edicin nueva no modificcion, o solo lectura        
+ cursorVert = 0
+ cursorHori = 0
+ agregarNota = 0
+ menuMouse = 0
+'-----fin        
         If MouseButtons And 1 Then ' <========= EDICION SOLO INGRESO DE NOTAS NUEVAS
            If s3 = 0 Then
             comEdit = TRUE : s3 = 1
@@ -1338,7 +1350,7 @@ EndIf
             'posicion=posicion+incFalse
             Exit Do
            Else
-            comEdit = FALSE : s3 = 0
+            comEdit = FALSE : s3 = 0 ' solo LECTURA
      '       Print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
             'posicion= posicion + curPOS ' estaba mal no va 3-3-21 jmg
             curpos=0
@@ -1444,6 +1456,8 @@ If  MultiKey(SC_CONTROL) And (MouseButtons And 2) And comEdit=TRUE Then
       ayudaNuevaNota=FALSE
       menuMouse = 0
       nroClick=1
+      cursorVert = 1
+      cursorHori = 1
 Print #1, "------------------------------------------------------------"      
 Print  #1,"(1) MultiKey(SC_CONTROL) And (MouseButtons And 2) And comEdit=TRUE"      
    Print #1, "sc_CONTROL + MB2 + CE=TRUE <= ESTADO:CALL MENU COMANDO"
@@ -1461,6 +1475,7 @@ If (mouseButtons And 1 ) And ayudaModif=TRUE And nroClick = 1 And comedit=TRUE _
    ayudaModif=FALSE
    menumouse=0
    posinterna=0
+   cursorVert = 1:cursorHori = 1
 Print #1, "------------------------------------------------------------"   
 Print  #1,"(2) (mouseButtons And 1 ) And ayudaModif=TRUE And nroClick = 1 And comedit=TRUE "   
 Print  #1,  "And ayudaNuevaNota=FALSE "   
@@ -1473,24 +1488,37 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
  ' Necesitamos mostrar el menu todavia  savemousex=0 : savemousey=0
    If nroClick = 1 Then 'seleccionamos verticalmente ,,,,
       nroClick=2
-      If (mousey >= usamousey -100) and  (mousey <= usamousey -70) Then
+      If (mousey >= usamousey -120) and  (mousey <= usamousey -100) Then
          modifmouse=1 'borrar =1
          Exit Do
       EndIf
+      If (mousey >= usamousey -100) and  (mousey <= usamousey -70) Then
+         modifmouse=2 'INSERTAR
+         Exit Do
+      EndIf
       If (mousey >= usamousey -70) and  (mousey <= usamousey -40) Then
-          modifmouse=2 'INSERT=1 
+          modifmouse=3 'FIN INSERTAR
           Exit Do
       EndIf
       If (mousey >= usamousey -40) and  (mousey <= usamousey -10) Then
-         modifmouse=3 'CAMBIADUR=1 modificar
+         modifmouse=4 'CAMBIADUR=1 modificar
          Exit DO
       EndIf
 
    EndIf
 EndIf
+
+' <===========   MODIFICACIONES INSERCION
+' por ahor ainsercion con mouse funciona igual que con keys
+' perola duracion entrpro tecldonos e porqu enotoma l demouse.
+' luegode la 1erinsercion con solo click izquierdo repito otra insercion
+' en lineahorizontal siqueiro otraduracion debere elegirotracon teclado
+' elcursor seguira al click izq por elcalculo de cursor en este comando
+' finalmente se usalatecla END para finalizar todas las inserciones.
+' debere agregr un nuevo comando END paraahcerlo con elmouse....
 If (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And comedit=TRUE Then
-    ayudaNuevaNota=TRUE ' ESTADO: PREPARA COMANDO
     savemousex=0 : savemousey=0 ' JMG NUEVA
+    ' ESTADO: PREPARA COMANDO
 Print #1, "------------------------------------------------------------"    
 Print #1, "(3) (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And comedit=TRUE "
 Print #1, " ESTADO: PREPARA COMANDO"    
@@ -1505,6 +1533,7 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
  
          If modifmouse=1 Then  ' anda ok 27 02 2021
             BORRAR=1
+            ayudaNuevaNota=TRUE 
             Exit Do
          EndIf
          If modifmouse=2 And insert= 0 Then
@@ -1521,21 +1550,25 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
            notins=0
            Print #1, ">>>SC_INSERT insert indaux borro RollAux: ",insert,indaux
     'sigue el proceso en RollSub->sub cursor 
-
+           ' nroclick=0
             Exit Do
          EndIf 
-         If INSERT=1 Then 
-            INSERT =2
-            Exit Do
+         If modifmouse=2 And insert=1 Then
+            insert=2
          EndIf
-         If INSERT=2 Then
-            INSERT=3
-            moveresto (StartInsert,indaux, insert,nota)
-            nroclick=0
-           Exit Do    
+         If modifmouse=3  Then
+             If cursorVert=1 Then ' solo vlido con Ctrl-M
+                insert=3
+                moveresto (StartInsert,indaux, insert,nota) 
+               insert=0:indaux=0
+             EndIf
+            nroClick=0 ' no permite entrar mas por insercion
+            modifmouse=0  
+            ayudaNuevaNota=TRUE
          EndIf
-         If modifmouse=3 Then ' modificar
+         If modifmouse=4 Then ' modificar
             cambiadur=1
+            ayudaNuevaNota=TRUE 
             Exit Do
          EndIf
 EndIf
@@ -1548,7 +1581,7 @@ If (MouseButtons And 2) and comedit= TRUE Then ''<=== menu de duraciones para se
   savemousex=0 : savemousey=0 ''ACA NO ¿?
   vuelta=FALSE
   menuMouse = 0
-  DUR=0
+  'DUR=0
   nroClick=1
 Print #1, "------------------------------------------------------------"
 Print #1,"(MouseButtons And 2) and comedit= TRUE"
@@ -1567,7 +1600,7 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 EndIf
 ' YA VUELVE OK
 If (mouseButtons And 1 ) And ayudaModif=FALSE And comedit=TRUE _
-    And cursorVert = 1  Then ' ESTADO: SELECCIONA VUELTA CTRL-P
+    And cursorVert = 1  And modifmouse <> 3 Then ' ESTADO: SELECCIONA VUELTA CTRL-P
 Print #1, "------------------------------------------------------------"
 Print  #1,"(5) MB1  And AModif=FALSE And CE=TRUE  And CVert = 1 "   
 Print  #1,"5->ESTADO: SELECCIONA VUELTA CTRL-P"
@@ -1581,6 +1614,7 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
               ayudaModif=FALSE
               savemousex=0 : savemousey=0
               nroClick=0
+              modifmouse=0
               nota=0 ' jmg 03-03-21 22:28 sino le sumaba 1 a Posicion 
               ' y trataba de insertarla.....como nota nueva
 Print  #1,"5-> ctrl-p=> cursorVert = 0: cursorHori = 0: agregarNota=0:  menuMouse = 0"
@@ -1615,7 +1649,7 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
         If mousex >= usamousex -55 And mousex<= usamousex +102 Then 
 ' ESTADO:SELECCION  CTRL-M
            cursorVert = 1: cursorHori = 1: agregarNota=0:  menuMouse = 0
-           ayudaModif=TRUE
+         ''  ayudaModif=TRUE jmg elmenu no debe aparecer hasta dar ctrl-click derecho
 Print #1,"6 ctrl-M ->cursorVert = 1: cursorHori = 1: agregarNota=0:  menuMouse = 0 "
 Print #1,"6-> ayudaModif=TRUE"
            
@@ -1652,7 +1686,7 @@ Print #1,"6-> ayudaModif=TRUE"
   
 EndIf   
  If DUR > 0 And nE > 0 And nroClick = 1 And ayudaNuevaNota=FALSE and comEdit=TRUE _ 
-            And ayudaModif=FALSE Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
+            And ayudaModif=FALSE And modifmouse<> 3 Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
     nota=nE   ''<== 1er nota ingresada para la duracion y nota elegida
     nroClick=0
 Print #1, "------------------------------------------------------------"
@@ -1666,7 +1700,7 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
     
  EndIf 
  If (mouseButtons And 1) And (DUR > 0) And (nE > 0) And ayudaNuevaNota=FALSE _ 
-      And comEdit=TRUE And ayudaModif=FALSE Then
+      And comEdit=TRUE And ayudaModif=FALSE And modifmouse<> 3 Then
 Print #1, "------------------------------------------------------------"
 Print  #1,"(8) (mouseButtons And 1) And (DUR > 0) And (nE > 0) And ayudaNuevaNota=FALSE " 
 Print  #1,"(8)  And comEdit=TRUE And ayudaModif=FALSE" 
