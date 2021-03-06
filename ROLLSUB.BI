@@ -381,7 +381,7 @@ If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
      Roll(notacur + (nro-1) * 13, n +curpos).dur = 33
   EndIf
   borrar = 0
-      
+  organizaCompases()    
 EndIf 
 ' << CAMBIADUR TAMBIEN INGRESA NOTA NUEVA Y DURACION DONDE NO HABIA >>
 ' << SOBREESCRIBE >>  
@@ -629,11 +629,12 @@ Select Case menuNro
       cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf   
 
-   t = "      EDIT" + " " + Str(mousex) + " " + Str(mousey) + " Octava: " + Str(oclog) + _
-   " UltimaPos: " + Str(Maxpos) +" Posi: " + Str(posishow)+ " posn: "+Str(posn)+ _
-   " Font: " +str(font) + "dur "+ Str(Dur) +"nota "+ Str(nota) + _
-   " modifmouse " + Str(modifmouse) + "usamousey " + Str(usamousey) + "usamousex "+ Str(usamousex) + _
-   " EnOct: " + Str(EnOctava) + " nE:"+Str(nE) + " nR:"+ Str(nR) +" DUR:" +Str(DUR)
+   t = "      EDIT" + " " +  " UltimaPos: " + _
+   Str(Maxpos) +" Posi: " + Str(posishow)+ " Posn: "+Str(posn)+ _
+   " Font: " +str(font) + " DUR:"+ Str(Dur) +" Nota:"+ Str(nota) + _
+   " modifmouse:" + Str(modifmouse) + " usamousey:" + Str(usamousey) + " usamousex:"+ Str(usamousex) + _
+   " EnOct:" + Str(EnOctava) + " nE:"+Str(nE) + " nR:"+ Str(nR) + _
+   " Mx:" + Str(mousex) + " My:" + Str(mousey) 
 /' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +
 '/ 
 
@@ -657,16 +658,17 @@ Select Case menuNro
       cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then 
         Erase (Roll)
-        MaxPos = NroCol
-        posn=NroCol
-        Roll(1,NroCol).dur = 34
-        Dim As Integer mi,p
-        For p=1 To NroCol -1
-          For mi=1 To 128
-            Roll(mi,p).nota=0
-            Roll(mi,p).dur =33
-          Next mi
-        Next p
+        MaxPos = 0 'NroCol
+     '   posn=NroCol
+     '   Roll(1,NroCol).dur = 34
+     '   Dim As Integer mi,p
+     '   For p=1 To NroCol -1
+     '     For mi=1 To 128
+     '       Roll(mi,p).nota=0
+     '       Roll(mi,p).dur =33
+     '     Next mi
+     '   Next p
+     posicion=0:posn=0
         curpos=0
         notacur=0
       EndIf
@@ -1154,6 +1156,32 @@ If compas(j).suma >= d7 Then
    indCompas=indCompas + 1  
    haycompas=TRUE  
 EndIf
+
+End Sub
+Sub organizaCompases()
+Dim As Integer i,j , mayor
+          mayor=99
+           For j = 1 To MaxPos
+             For i= 1 To 128
+              DUR => Roll(i,j).dur
+              If i=1 And DUR >= 1 And DUR <=8 Then 
+                mayor=DUR
+              EndIf
+              'Print #1, "PUTO DUR mayor";DUR, mayor
+              If DUR < mayor And DUR >= 1 And DUR <= 8 Then ' las duraciones cuando mas
+                 mayor=DUR
+            ' Print #1, "PUTO DUR MAYOR";DUR,mayor
+              EndIf
+              If i=128 Then
+                DUR=mayor 
+                Print #1,"          J, DUR MAYOR: "; J, DUR
+                calcCompas(j)
+                DUR=0
+                mayor=99
+              EndIf
+             Next i
+          Next j  
+' fin compases             
 
 End Sub
 '------------------------------------

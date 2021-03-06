@@ -1,10 +1,16 @@
-' VERSION 0.5.7.3.9.6 ....
-' 0-' ergo primero debo hacer notas ligadas de 2 nuevas o 
+' VERSION 0.5.7.3.9.7 ....(test calculo compas y duplicacion ancho de items..)
+' 00-revisar calculo compas test y mas test deja espacio a derecha  a veces
+' Empesar el test con el metodo  de insercion para distinguir si es 
+' el metodo mouse el que da error o el calculo en si,, ademas
+' he duplicado el ancho entre notas ver comoincide eso o no,,,,
+' ====================================================
+' e inserta la figura mas adelane,,,,ver luego pasar a notas ligadas
+' 0- ergo primero debo hacer notas ligadas de 2 nuevas o 
 ' de una existente 
 ' =======================================
-' punto 4 basico en la carga dearchivo como en la insercion
+' listo 5.7.3.9.6 punto 4 basico en la carga dearchivo como en la insercion
 ' 1-falta eliminar revisar si andacreo algo habia empezado...  
-' 2-luego o ahora poner lgo basico de midi
+' 2-luego o ahora poner algo basico de midi
 ' 3-liga de notas 
 ' 4- calculo de cuando termina un compas y con ello si una nota
 '    sobrepasa uncompas partirla en 2 duraicones ligadas
@@ -1259,6 +1265,7 @@ If (ScreenEvent(@e)) Then
  ' ,insert comando habilitado = 1
  '  insert 3 fin reemplazos comienzo de move total
     insert=0:indaux=0
+     organizaCompases()
     EndIf
   EndIf
   
@@ -1374,6 +1381,7 @@ EndIf
             font = 18
             curpos=0
             'posicion=posicion+incFalse
+             organizaCompases()
             Exit Do
            Else
             comEdit = FALSE : s3 = 0 ' solo LECTURA
@@ -1591,29 +1599,8 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
             nroClick=0 ' no permite entrar mas por insercion
             modifmouse=0  
             ayudaNuevaNota=TRUE
-' acomoda los compases
-Dim As Integer i,j , mayor
-          mayor=99
-           For j = 1 To MaxPos
-             For i= 1 To 128
-              DUR => Roll(i,j).dur
-              If i=1 And DUR >= 1 And DUR <=8 Then 
-                mayor=DUR
-              EndIf
-              'Print #1, "PUTO DUR mayor";DUR, mayor
-              If DUR < mayor And DUR >= 1 And DUR <= 8 Then ' las duraciones cuando mas
-                 mayor=DUR
-            ' Print #1, "PUTO DUR MAYOR";DUR,mayor
-              EndIf
-              If i=128 Then
-                DUR=mayor 
-                Print #1,"          J, DUR MAYOR: "; J, DUR
-                calcCompas(j)
-                DUR=0
-                mayor=99
-              EndIf
-             Next i
-          Next j  
+' acomoda los compases  <======= organiza Compases
+           organizaCompases()
 ' fin compases             
          EndIf
          If modifmouse=4 Then ' modificar
