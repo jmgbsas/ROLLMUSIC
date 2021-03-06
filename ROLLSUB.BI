@@ -113,7 +113,7 @@ Next semitono
    ' y hacer nota=semiotono 1 a 11 con el mouse...el resto es automtico...  
 
 If nro = 9 Then ' es la 10 usamos 0 tmbien ose 9 octavas+ ayuda
- cairo_set_font_size (c, 20)
+ cairo_set_font_size (c, font)
 'cairo_select_font_face (c, "Georgia",CAIRO_FONT_SLANT_NORMAL , CAIRO_FONT_WEIGHT_BOLD)
  t= "Flecha Abajo/Arriba scroll de las octavas en la ventana "
 cairo_move_to(c, 0, Penta_y + inc_Penta * 14  )
@@ -142,9 +142,10 @@ if ( Penta_y <= mousey) and ((Penta_y + 12 * inc_Penta) >= mousey)  Then
   estoyEnOctava = nro '<========== DETERMINACION DE OCTAVA DE TRABAJO
  EnOctava=1
 ' CURSOR 
- cairo_stroke(c)
+'''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
  cursor(c,posicion,nro)
- cairo_stroke(c)
+'''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - + 
+'PERO PIERDO EL COLOR MARILLO DEL CURSOR
  cairo_set_source_rgba c, 0, 0, 0, 1
  'cairo_set_line_width(c, 3)
 EndIf
@@ -338,6 +339,7 @@ End Sub
 ''========================= C U R S O R ============
 Sub cursor(c AS cairo_t Ptr,n As Integer, nro As Integer)
  cairo_set_source_rgba c, 1, 1, 0.2, 1
+ 
  'cairo_set_line_width(c, 1)
 'EL CURSOR PARA UNA linea dada o nota se coloca inc_Penta mas abajo
 ' para B 38.5 27 notaold=1  <- actualizar please
@@ -497,6 +499,7 @@ If (cursorHori=2 Or cursorVert = 2) And agregarNota=1  And nota> 0 Then
 EndIf
 ' VEMOS QUE HACE ESTA FUNCION SI SIRVE
 ''cairo_surface_get_device_offset
+cairo_stroke(c) ' aca el stroke da el amarillo y no jode a teclas - + con saltos! 
 End Sub
 '----------------------------------------
 Sub Tracks (nroTrack As UByte, nroCanal As UByte)

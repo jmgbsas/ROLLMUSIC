@@ -1,4 +1,6 @@
 ' VERSION 0.5.7.3.9.7 ....(test calculo compas y duplicacion ancho de items..)
+' => 3-liga de notas
+'    3.1 habilitar notascon + der e iz q P+ +P. I+ +I, I+ +L, etc
 ' 00-revisar calculo compas test y mas test deja espacio a derecha  a veces
 ' Empesar el test con el metodo  de insercion para distinguir si es 
 ' el metodo mouse el que da error o el calculo en si,, ademas
@@ -19,6 +21,7 @@
 'meta futura -> COPIAR ZONAS DE 1 OCTAVA O TODAS EN OTRO LADO..ESE SERA 0.5.7.4.0 
 
 Open "midebug.txt" for Output As #1
+''Open "figuras.txt" For Output As #1
 
 ' secuenciador de 9 octavas estereo, modo Piano Roll,hace uso de
 'letras para las duraciones en vez de rectangulos...
@@ -71,7 +74,14 @@ Dim shared As cs  compas(1 To 1000) 'cada item es la posicion en donde
  ' indice notas, fin compas, nota con puntillo o ligadura,
 ' se almcena en el heap porque es shared
 ' 12k posiciones de 96 notas o 128 con help y espacios ...8.388.608 bytes 8 megas 
-
+/'
+Dim l As Integer
+For l = 1 To 82  
+Print #1, l;" ";figura(l)
+Next l
+Close 
+End
+'/
 Dim Shared As Integer  ANCHO 
 Dim Shared As Integer  ALTO 
 Dim Shared As Double   BordeSupRoll, inc_Penta
@@ -99,7 +109,7 @@ ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion
 ' https://www.freebasic.net/forum/viewtopic.php?f=6&t=27555
 Dim As String driver
 
-ScreenRes ANCHO, ALTO, 32,2, GFX_NO_FRAME Or GFX_HIGH_PRIORITY
+ScreenRes ANCHO, ALTO, 32,1, GFX_NO_FRAME Or GFX_HIGH_PRIORITY
 
 ScreenControl GET_WINDOW_POS, x0, y0
 
@@ -189,7 +199,7 @@ Do
 edity1 = 15 ' botton Edit bordeSup
 edity2 = 30 ' botton Edit bordeInf
  
-ScreenLock()
+
 
  
 '' Create a cairo drawing context, using the FB screen as surface.
@@ -200,7 +210,7 @@ stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 Var surface = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, ALTO, stride)
 Var c = cairo_create(surface)
 
-
+ScreenLock()
 
 '' Measure the text, used with SDL_RenderCopy() to draw it without scaling
  
@@ -215,11 +225,8 @@ Else
   cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1
 EndIf
 cairo_paint(c)
-cairo_stroke(c)
 cairo_set_line_cap(c, CAIRO_LINE_CAP_ROUND)
 cairo_set_line_width(c, 1)
-
-
 cairo_set_source_rgba(c, 0, 0, 0, 1)
 
 
@@ -233,7 +240,8 @@ If s6 = 1 Then
  s6=0
 EndIf
 
-
+'inc_Penta = Int((ALTO - BordeSupRoll) /(40))
+inc_Penta = Int((ALTO -1) /40)
 'llena la surface con nro_penta 
 nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
 'Print nro_penta
@@ -279,11 +287,11 @@ If menuaccion=1111 Then ' no sirve las aciones perforan
 EndIf
 
 ScreenUnLock()
-
+Sleep 20 ''' ojo con esto jmg NO LO TENIA ULTIMAMENTE 
 
 
 '' ---------------  LOOP 2 ---------------
-Do ''While InKey =""
+Do While InKey =""
 'If comienzo=0 Then
 ' ScreenControl  SET_DRIVER_NAME,"Directx" ' cambio ja
 ' ScreenRes ANCHO, ALTO, 32,2, GFX_NO_FRAME,GFX_HIGH_PRIORITY
@@ -356,29 +364,58 @@ EndIf
 
 
 If MultiKey(SC_PLUS) Or MultiKey(SC_KEYPADPLUS) Then
-    ALTO = ALTO + 2 'inc_Penta 
-      If ALTO >= AltoInicial Then
-         ALTO =  Altoinicial
-      EndIf
+'    ALTO = ALTO + 2 'inc_Penta 
+'      If ALTO >= AltoInicial Then
+'         ALTO =  Altoinicial
+'      EndIf
      
     
-   cairo_set_source_surface (c, surface, ANCHO, ALTO)
+'   cairo_set_source_surface (c, surface, ANCHO, ALTO)
 
-   Sleep 10
+'   Sleep 10
+'    Exit Do  
+'------------------------------
+   cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1
+   cairo_paint(c)
+   cairo_stroke(c)
+   cairo_destroy(c)
+
+  
+    ALTO = ALTO + inc_Penta 
+    'Print "ALTO+ ", ALTO
+    If ALTO >= AltoInicial Then
+       ALTO =  AltoInicial
+    EndIf
+    
+   cairo_set_source_surface (c, surface, ANCHO, ALTO)
+   cairo_paint(c)
     Exit Do  
 
 EndIf
 
 If MultiKey(SC_MINUS) Then
-    cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1 'evita fondo negro y flick
-    cairo_paint(c)
+'    cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1 'evita fondo negro y flick
+'    cairo_paint(c)
 
-   ALTO = AltoInicial/1.5  
-   cairo_set_source_surface (c, surface, ANCHO, ALTO ) ' ALTO)
-   Exit Do  
+'   ALTO = AltoInicial/1.5  
+'   cairo_set_source_surface (c, surface, ANCHO, ALTO ) ' ALTO)
+'   Exit Do  
 ' LA ZONA QUE DEJA ESTA POSICION EN LA PARTE INFERIOR SE USARA PARA
 ' HACER AJUSTES DE VELOCIDAD CON CURVAS O MOSTRAR CONTROLES ADICIONALES     
+   cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1
+   cairo_paint(c)
+   cairo_stroke(c)
+   cairo_destroy(c)
 
+   ALTO = ALTO - inc_Penta 
+   If ALTO <= AltoInicial/3 Then
+     ALTO= AltoInicial/3
+   EndIf
+
+   cairo_set_source_surface (c, surface, ANCHO, AltoInicial ) ' ALTO)
+   cairo_paint(c)
+   Exit Do  
+   
 EndIf
 If MultiKey(SC_CONTROL) And MultiKey (SC_RIGHT) Then
    posicion=posicion + NroCol/2

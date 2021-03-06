@@ -23,14 +23,21 @@ Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,
 dim Shared as string cromatica(1 to 12) 
 dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
 Dim Shared As Integer DUR, menuAccion,insert,notins
-Dim Shared NotasGuia (1 To 12) As String * 2 = {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"} 
-Dim  Shared figura (1 To 66) As String * 3 = {" O "," P "," I "," L "," F "," E "," W "," H ",_
-" O*"," P*"," I*"," L*"," F*"," E*"," W*"," H*","sO ","sP ","sI ","sL ","sF ","sE ","sW ","sH ",_
-"sO*","sP*","sI*","sL*","sF*","sE*","sW*","sH*","   "," ||",_
-" O+"," P+"," I+"," L+"," F+"," E+"," W+"," H+",_
-"+O ","+P ","+I ","+L ","+F ","+E ","+W ","+H ",_
-"sO+","sP+","sI+","sL+","sF+","sE+","sW+","sH+",_
-"+sO","+sP","+sI","+sL","+sF","+sE","+sW","+sH"}
+Dim Shared NotasGuia (1 To 12) As String * 2 => _
+ {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"} 
+Dim  Shared figura (1 To 82) As String * 3 => _
+{" O "," P "," I "," L "," F "," E "," W "," H ",_
+ " O*"," P*"," I*"," L*"," F*"," E*"," W*"," H*", _
+ "sO ","sP ","sI ","sL ","sF ","sE ","sW ","sH ",_
+ "sO*","sP*","sI*","sL*","sF*","sE*","sW*","sH*", "   "," ||",_
+ " O+"," P+"," I+"," L+"," F+"," E+"," W+"," H+",_
+ "-O ","-P ","-I ","-L ","-F ","-E ","-W ","-H ",_
+ "sO+","sP+","sI+","sL+","sF+","sE+","sW+","sH+",_
+ "-sO","-sP","-sI","-sL","-sF","-sE","-sW","-sH",_
+ "O*+","P*+","I*+","L*+","F*+","E*+","W*+","H*+",_ 
+ "-O*","-P*","-I*","-L*","-F*","-E*","-W*","-H*" }
+' ligaduras de notas con + que va a + o - creo qu emenso seria mejor
+' parecido a una pila polos opuestos se atraen je... 
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
 Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
 '' futuro=> Dim notmus(13 To 44) As String = {} bravura fonts?? pero son glyphs
