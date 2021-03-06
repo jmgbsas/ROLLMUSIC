@@ -6,13 +6,14 @@ declare Sub botones(hWnd As HWND,c As cairo_t Ptr,cm As cairo_t Ptr,x As Integer
 Declare Sub menuAcc (c AS cairo_t Ptr) 
 Declare Sub moveresto (ByVal StartInsert As integer,ByRef indaux as Integer, Byref insert As Integer,Byref nota As integer)
 Declare Sub movedato (ByVal StartInsert As Integer, ByRef indaux As Integer, Byref insert As Integer,Byref nota As integer)
+Declare Sub calcCompas(j As integer)
 ' 128 track,16 canales o sea cada canal con 8 voces
 Declare Sub cursor(c AS cairo_t Ptr, n As Integer,nro As Integer)
 'Declare Function print_text(ByVal x As Integer, ByVal y As Integer, ByRef text As String, _
 '        ByVal font As FT_Face, ByVal size As Integer, ByVal col As UInteger ) As Integer 
 Dim Shared nro As Integer '''borrar despues jmg ja quedo 
 Dim Shared As Integer vroll, vdur ' borrar
-Dim  shared as ubyte  notasInsertadas (1 to 1500) 
+Dim Shared as ubyte  notasInsertadas (1 to 1500) 
 
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, cursormove
 Dim shared As integer Penta_y, indice, posicion,posicionOld, nota,espacio,posn,cursorHori  
@@ -40,7 +41,8 @@ Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
 ' ej tecleo 1+.+A=O* en linea A dela octava que sea
 ' ej tecleo s+1+.+A =sO* en A..
 ' tambien en vez de estos simbolos usare los de un pentagrama comun,,,,futuro
-Dim Shared As BOOLEAN ayuda, ayudaNuevaNota, ayudaModif, vuelta
+Dim Shared As BOOLEAN ayuda, ayudaNuevaNota, ayudaModif, vuelta,haycompas
+haycompas=>FALSE
 
 espacio=0:cursorVert=0:borrar=0:cambiadur=0:InicioDeLectura=0
 menuAccion=0:insert=0:agregarNota=0
@@ -61,6 +63,9 @@ Dim Shared As Integer menuNro, menuNew
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen 
 Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, resultado
+Dim Shared As Integer pesoDur (1 To 8) => { 10000000,5000000,2500000,1250000, _ 
+ 625000,312500, 156250, 78125}
+
 ' free type
 #Include once "freetype2/freetype.bi"
 '' The FB headers don't contain this prototype
@@ -93,4 +98,4 @@ operator FreeType.cast() as FT_Library
   return( _library )
 end Operator
 Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _ 
-modifmouse, EnOctava,nE,nR,lugarOld, nroClick, posinterna
+modifmouse, EnOctava,nE,nR,lugarOld, nroClick, posinterna, indCompas

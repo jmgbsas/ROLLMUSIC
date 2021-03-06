@@ -44,16 +44,16 @@ cairo_line_to(c, ANCHO - 1, Penta_y )
 
 'delta=NroCol
 If cursorVert=0 And comEdit=TRUE Then
-  If posicion < 60  Then  
+  If posicion < 30  Then  
     posishow=  1 
   Else
-    posishow = posicion - 40
+    posishow = posicion - 20
   EndIf    
 Else
     posishow = posicion
 EndIf  
 
-Dim As Integer lugar=0
+Dim As Integer lugar=0, sitio
 lugarOld=Penta_y
  
 Var t = " "
@@ -74,9 +74,16 @@ For semitono = 1 To 12
              EndIf
              s7=0
           EndIf
-       cairo_move_to(c, 81 + ic * 20 , Penta_y + semitono * inc_Penta - 6)
+       cairo_move_to(c, 81 + ic * 40 , Penta_y + semitono * inc_Penta - 6)
        t= figura((Roll (semitono + (nro-1) * 13, n).dur))
        cairo_show_text(c, t)
+' LINEAS DE COMPAS
+       'sitio=nposishow+ ic
+       If compas(n).suma >= d7 Then ' ahi hy un corte un nuevo compas
+           cairo_move_to(c,81 + (ic ) *40 +32 , Penta_y)
+           cairo_line_to(c,81 + (ic ) *40 +32 , Penta_y + 12 * inc_Penta - 6)
+       EndIf
+       cairo_move_to(c, 81 + ic * 40 , Penta_y + semitono * inc_Penta - 6) 
        ic += 1
     Else      
       Exit For 
@@ -86,8 +93,11 @@ For semitono = 1 To 12
   if n  > MAXPos then 
      MaxPos = n     
   EndIf
-
-
+'--------TRAZADI DE LINEAS VERTICALES GUIA DE COMPAS 1ERA VERSION 
+   
+'------------------------
+' ENTRADAD DE NOTA NUEVA CONMOUSE: SE ELIGE LA DURACION CON LASTECLS 1 A 8
+'Y SE SELECCIONA CON EL MOUSE CLICKI ZQUIERDO,LA NOTA DESEADA.  
 lugar=Penta_y + semitono * inc_Penta
   cairo_move_to(c, 0, lugar )
   cairo_line_to(c, ANCHO - 1, lugar)
@@ -136,7 +146,7 @@ if ( Penta_y <= mousey) and ((Penta_y + 12 * inc_Penta) >= mousey)  Then
  cursor(c,posicion,nro)
  cairo_stroke(c)
  cairo_set_source_rgba c, 0, 0, 0, 1
- cairo_set_line_width(c, 3)
+ 'cairo_set_line_width(c, 3)
 EndIf
 If ((Penta_y + 12 * inc_Penta) <= mousey) And ((Penta_y + 14 * inc_Penta) >= mousey) Then 
  EnOctava = 0
@@ -328,7 +338,7 @@ End Sub
 ''========================= C U R S O R ============
 Sub cursor(c AS cairo_t Ptr,n As Integer, nro As Integer)
  cairo_set_source_rgba c, 1, 1, 0.2, 1
- cairo_set_line_width(c, 1)
+ 'cairo_set_line_width(c, 1)
 'EL CURSOR PARA UNA linea dada o nota se coloca inc_Penta mas abajo
 ' para B 38.5 27 notaold=1  <- actualizar please
 ' para C 38.5 25 notold=12
@@ -337,10 +347,10 @@ Sub cursor(c AS cairo_t Ptr,n As Integer, nro As Integer)
 
 If cursorVert=1 Or cursorVert= 2 Then  ' vertical comEdit=TRUE
     
-cairo_move_to  (c, 81 + (curpos)*20, Penta_y + (notacur-1) * inc_Penta  )
-cairo_rectangle(c, 81 + (curpos)*20, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
-cairo_move_to  (c, 81 + (curpos)*20 + inc_Penta, Penta_y  )
-cairo_line_to  (c, 81 + (curpos)*20 + inc_Penta, Penta_y + (notacur-1) * inc_Penta  +inc_Penta ) 
+cairo_move_to  (c, 81 + (curpos)*40, Penta_y + (notacur-1) * inc_Penta  )
+cairo_rectangle(c, 81 + (curpos)*40, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
+cairo_move_to  (c, 81 + (curpos)*40 + inc_Penta, Penta_y  )
+cairo_line_to  (c, 81 + (curpos)*40 + inc_Penta, Penta_y + (notacur-1) * inc_Penta  +inc_Penta ) 
 
 EndIf
 If cursorVert= 0 And cursorHori=0 then
@@ -348,13 +358,13 @@ If cursorVert= 0 And cursorHori=0 then
      notaOld=notacur
      notacur=0
   EndIf
- cairo_move_to  (c,81 + (curpos)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
- cairo_rectangle(c,81 + (curpos)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
+ cairo_move_to  (c,81 + (curpos)*40 ,  Penta_y + (notaOld-1) * inc_Penta  )
+ cairo_rectangle(c,81 + (curpos)*40, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
 EndIf
 If cursorHori=1 Or cursorHori = 2 Then
- cairo_move_to  (c,81 + (curpos)*20 ,  Penta_y + (notaOld-1) * inc_Penta  )
- cairo_rectangle(c,81 + (curpos)*20, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
+ cairo_move_to  (c,81 + (curpos)*40 ,  Penta_y + (notaOld-1) * inc_Penta  )
+ cairo_rectangle(c,81 + (curpos)*40, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
 EndIf
 If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
@@ -549,6 +559,7 @@ Select Case menuNro
    Else 
      cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
+   carga=0
    t = "       [Archivo]":cairo_show_text(c, t)
 
    If mousex > 134 And mousex< 210 And mousey < 50 Then
@@ -666,7 +677,7 @@ Select Case menuNro
 ' 3.2 [ABRIR]   
    If mousex > 134 And mousex < 190  and mousey < 50 Then ' <= ABRIR lee grabaroll.roll
       cairo_set_source_rgba c, 0, 1, 0, 1
-      If MouseButtons And 1 Then 
+      If MouseButtons And 1 And carga = 0 Then 
          Erase Roll
          Dim z (1,1 )  As dat
          Dim As String x,x1,x2,x3,x4
@@ -691,14 +702,32 @@ Select Case menuNro
          Get #2, , Trabajo()
   ' movemos los datos a Roll      
  ' -------------------------              
-         Dim As Integer i,j 
-         For i= 1 To 128
+         Dim As Integer i,j , mayor
+          mayor=99
            For j = 1 To MaxPos
-              Roll (i,j)  = Trabajo (i,j) '
-           Next j
-        Next i 
+             For i= 1 To 128
+              Roll (i,j)  => Trabajo (i,j) '
+              DUR => Roll(i,j).dur
+              If i=1 And DUR >= 1 And DUR <=8 Then 
+                mayor=DUR
+              EndIf
+              'Print #1, "PUTO DUR mayor";DUR, mayor
+              If DUR < mayor And DUR >= 1 And DUR <= 8 Then ' las duraciones cuando mas
+                 mayor=DUR
+            ' Print #1, "PUTO DUR MAYOR";DUR,mayor
+              EndIf
+              If i=128 Then
+                DUR=mayor 
+                Print #1,"          J, DUR MAYOR: "; J, DUR
+                calcCompas(j)
+                DUR=0
+                mayor=99
+              EndIf
+             Next i
+          Next j 
         Close 2
-        curpos=0
+        DUR => 0
+        curpos =>0
     
         carga=1 ' <======= control de Carga ¿? VER
      '   Print #1,"VEMOS QUE QUEDA ENROLL nota, dur hasta 40 debug" 
@@ -1098,6 +1127,35 @@ cairo_stroke(cm)
 
   
 End Sub
+'
+Sub calcCompas( j As integer)
+
+
+If j=1 Then
+indCompas=0
+EndIf
+ ' 1 acumulado, 2 nro compas, 3 posicion
+If haycompas=FALSE Then
+   If j=1 Then
+     COMPAS(j).suma = pesoDur(DUR)
+   Else 
+     COMPAS(j).suma = pesoDur(DUR) + COMPAS(j -1).suma
+   EndIf
+Else
+COMPAS(j).suma = pesoDur(DUR) 
+haycompas=FALSE
+EndIf
+
+ Print #1,"           indCompas: ";indCompas; " acumulado: ";compas(j).suma
+If compas(j).suma >= d7 Then
+     compas(j).nro = indCompas ' compas 1,2,3,4,5...  etc
+' asi lo diferencio de lacumulacion...
+   Print #1, "Compas Nro: ";compas(j).nro; " posicion: "; compas(j).nro
+   indCompas=indCompas + 1  
+   haycompas=TRUE  
+EndIf
+
+End Sub
 '------------------------------------
 ' https://www.freebasic.net/forum/viewtopic.php?t=10398
 ' Many times in my games I want to act on a single key press. 
@@ -1107,7 +1165,7 @@ End Sub
 ' Call it just like Multikey....
 '
 ' If KeyPress(SC_ESC)=-1 then .....!!! USARLO O USAR E.EVENT CREO ES SIMILAR O NO???
-
+'
 Function KeyPress(Key As Integer) As Integer
 Static LastKey(255) As Integer
 ' DETECTA UNA APRETDA DEL USUARIO Y SOLO UNA CREO PROBAR

@@ -1,11 +1,15 @@
-' VERSION 0.5.7.3.9.5 POSISHOW MODIFICAION PARA ELINGRESO DE NOTAS NUEVAS
-' Y QUE SE VEA A La IZQUIERDA UN RANGO DADO.
-' YA FUNCIONA INSERCION CON MOUSE Y DURACIONES PORMOUSE CORRECIONES A ESTADO
-' DE LECTURA Y NUEVA NOTA CURSORvERT=0 Y OTRAS AJUSTADAS..EN CLICK AL EDIT  
-'
-'
-'4 modifica con puntillo y/o silencio  
-'
+' VERSION 0.5.7.3.9.6 ....
+' 0-' ergo primero debo hacer notas ligadas de 2 nuevas o 
+' de una existente 
+' =======================================
+' punto 4 basico en la carga dearchivo como en la insercion
+' 1-falta eliminar revisar si andacreo algo habia empezado...  
+' 2-luego o ahora poner lgo basico de midi
+' 3-liga de notas 
+' 4- calculo de cuando termina un compas y con ello si una nota
+'    sobrepasa uncompas partirla en 2 duraicones ligadas
+' ergo primero debo hacer notas ligadas de 2 nuevas o 
+' de un existente 
 'meta futura -> COPIAR ZONAS DE 1 OCTAVA O TODAS EN OTRO LADO..ESE SERA 0.5.7.4.0 
 
 Open "midebug.txt" for Output As #1
@@ -34,7 +38,7 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include Once "cairo/cairo.bi"
 #Include "ROLLDEC.BI"
 #Include "NOTAS.bi"
-Type dat field=1
+Type dat Field=1
  nota As ubyte
  dur As UByte  ' duracion
  vol As UByte  ' volumen
@@ -42,9 +46,17 @@ Type dat field=1
  pb  As UByte  ' pitch bend
  inst As UByte ' instrumento para cada nota podra ser distinto 
 End Type
+Type cs Field=1
+  nro    As Integer    ' numero compas
+  suma   As Integer    ' suma acumulada 10 millones punto de corte
+End Type
 
+Const  d7 As Integer => 10000000
 Dim Shared As dat Roll  (1 To 128 , 1 To 12000) '  ' 9,216 MBytes, 32 tracks serian 295 Mbytes 
 Dim Shared As dat RollAux (1 To 128 , 1 To 12000)
+Dim shared As cs  compas(1 To 1000) 'cada item es la posicion en donde
+' termina el compas , se calculara dinamicamente,,,según posicion  y la historia anterior
+' del mismo array (acumulado, nro Compas, posicion)
 '''Dim Shared As ubyte Insercion (1 To 128, 1 To 12000)
 ' si inserto en un track o canal debo desplazar a todos!!!
 '  de modoque tener una insercion para c7useracrisimo...
@@ -69,7 +81,7 @@ ANCHO = ANCHO
 ALTO = ALTO  -25  
 AnchoInicial=ANCHO
 AltoInicial=ALTO
-NroCol =  (ANCHO / 20 ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
+NroCol =  (ANCHO / 40 ) - 3 ' 40 Tamaño figuras, nota guia 6 columnas "B_8_[ "
 
 ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion
 
@@ -199,7 +211,7 @@ EndIf
 cairo_paint(c)
 cairo_stroke(c)
 cairo_set_line_cap(c, CAIRO_LINE_CAP_ROUND)
-cairo_set_line_width(c, 3)
+cairo_set_line_width(c, 1)
 
 
 cairo_set_source_rgba(c, 0, 0, 0, 1)
@@ -639,13 +651,27 @@ If MultiKey(SC_L)  Then ' <======== load Roll
        Get #2, , Trabajo()
   ' movemos los datos a Roll      
  ' -------------------------              
-       Dim As Integer i,j 
-       For i= 1 To 128
-          For j = 1 To MaxPos
-          Roll (i,j) = Trabajo (i,j)
+       Dim As Integer i,j , mayor
+
+       For j = 1 To MaxPos
+          For i= 1 To 128
+          Roll (i,j) => Trabajo (i,j)
+          DUR => Roll(i,j).dur
+          If i=1 And DUR >= 1 And DUR <= 8 Then 
+            mayor=DUR
+          EndIf
+          If DUR < mayor And DUR >= 1 And DUR <= 8 Then
+             mayor=DUR
+          EndIf
+          If i=128 Then
+             DUR = mayor 
+             calcCompas(j)
+             DUR=0
+          EndIf
 'se copian todoslos miembros del type automaticamente. 
-          Next j
-       Next i 
+          Next i
+       Next j
+       DUR => 0 
     Close 2
     curpos=0
     carga=1 ' <======= control de Carga
@@ -993,7 +1019,7 @@ EndIf
          EndIf
      '   Print #1, "ingreso a NUCLEO posn ",posn
        Loop
-       ' ESTO ME UBICA EN QUE RENGLON DE LA OCTVA ESTOY SN USAR EL MOUSE
+       ' ESTO ME UBICA EN QUE RENGLON DE LA OCTaVA ESTOY SN USAR EL MOUSE
        ' LUEGO haRE ALGO CON EL MOUSE POR AHORA TODO TECLADO
         Roll((nota +(estoyEnOctava -1) * 13),posn).nota = nota 'carga
 '' ojo ver'  If cursorVert = 0 and cursorHori = 0 Then
@@ -1046,7 +1072,7 @@ EndIf
             EndIf
           EndIf
         EndIf
-        
+        ''' calcCompas(posn) hy qu ever como encuentro el mayor de cada posicion
         nota = 0 
      Else ' edicion de nota anterior retroceso, concosco la posicion la octava 
       'pero no la nota 1ero debo recuperar la nota, cursor lo sabe tomar de ahi
@@ -1523,7 +1549,7 @@ Print #1, "------------------------------------------------------------"
 Print #1, "(3) (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And comedit=TRUE "
 Print #1, " ESTADO: PREPARA COMANDO"    
             notacur=nE
-            curpos= Int((mousex - 81)/20) 
+            curpos= Int((mousex - 81)/40) 
             posishow= curpos  + 1 ' NO CAUSA EL +1 EN MODIF MOUSE 03-03-21-15:10
 Print #1, " savemousex=0 : savemousey=0 ' JMG NUEVA" 
 Print #1, " notacur=nE"
@@ -1565,6 +1591,30 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
             nroClick=0 ' no permite entrar mas por insercion
             modifmouse=0  
             ayudaNuevaNota=TRUE
+' acomoda los compases
+Dim As Integer i,j , mayor
+          mayor=99
+           For j = 1 To MaxPos
+             For i= 1 To 128
+              DUR => Roll(i,j).dur
+              If i=1 And DUR >= 1 And DUR <=8 Then 
+                mayor=DUR
+              EndIf
+              'Print #1, "PUTO DUR mayor";DUR, mayor
+              If DUR < mayor And DUR >= 1 And DUR <= 8 Then ' las duraciones cuando mas
+                 mayor=DUR
+            ' Print #1, "PUTO DUR MAYOR";DUR,mayor
+              EndIf
+              If i=128 Then
+                DUR=mayor 
+                Print #1,"          J, DUR MAYOR: "; J, DUR
+                calcCompas(j)
+                DUR=0
+                mayor=99
+              EndIf
+             Next i
+          Next j  
+' fin compases             
          EndIf
          If modifmouse=4 Then ' modificar
             cambiadur=1
