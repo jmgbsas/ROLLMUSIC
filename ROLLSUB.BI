@@ -44,10 +44,10 @@ cairo_line_to(c, ANCHO - 1, Penta_y )
 
 'delta=NroCol
 If cursorVert=0 And comEdit=TRUE Then
-  If posicion < 30  Then  
+  If posicion < 60  Then  
     posishow=  1 
   Else
-    posishow = posicion - 20
+    posishow = posicion - 40
   EndIf    
 Else
     posishow = posicion
@@ -65,30 +65,30 @@ For semitono = 1 To 12
   ic=0 'indice cursor 'donde se dibujara la duracion
   For n = posishow to posishow + NroCol 
     
-    If Roll (semitono + (nro-1) * 13, n  ).nota > 0 Or _
-       Roll (semitono + (nro-1) * 13, n  ).dur > 0 Then
+    If Roll.trk (semitono + (nro-1) * 13, n  ).nota > 0 Or _
+       Roll.trk (semitono + (nro-1) * 13, n  ).dur > 0 Then
           if espacio = semitono and ((n - inicioDeLectura)=curpos)  Then 
-             Roll (semitono + (nro-1) * 13, n ).nota = 33
+             Roll.trk (semitono + (nro-1) * 13, n ).nota = 33
              if fijarEspacio=0 then 
                 espacio=0
              EndIf
              s7=0
           EndIf
-       cairo_move_to(c, 81 + ic * 40 , Penta_y + semitono * inc_Penta - 6)
-       t= figura((Roll (semitono + (nro-1) * 13, n).dur))
+       cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 4)
+       t= figura((Roll.trk (semitono + (nro-1) * 13, n).dur))
        cairo_show_text(c, t)
 ' LINEAS DE COMPAS
        'sitio=nposishow+ ic
        If compas(n).suma >= d7 Then ' ahi hy un corte un nuevo compas
-           cairo_move_to(c,81 + (ic ) *40 +32 , Penta_y)
-           cairo_line_to(c,81 + (ic ) *40 +32 , Penta_y + 12 * inc_Penta - 6)
+           cairo_move_to(c,81 + (ic ) *anchofig +anchofig , Penta_y)
+           cairo_line_to(c,81 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta - 6)
        EndIf
-       cairo_move_to(c, 81 + ic * 40 , Penta_y + semitono * inc_Penta - 6) 
+       cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 6) 
        ic += 1
     Else      
       Exit For 
     EndIf
-    
+    'con ic * 40 es + 32 osea ic * 40 + 32
   Next n
   if n  > MAXPos then 
      MaxPos = n     
@@ -112,7 +112,7 @@ Next semitono
 ' PARA ENTRADA POR MOUSE SOLO DEBO DETERMINAR EL SEMITONO...
    ' y hacer nota=semiotono 1 a 11 con el mouse...el resto es automtico...  
 
-If nro = 9 Then ' es la 10 usamos 0 tmbien ose 9 octavas+ ayuda
+If nro = hasta Then ' es la 10 usamos 0 tmbien ose 9 octavas+ ayuda
  cairo_set_font_size (c, font)
 'cairo_select_font_face (c, "Georgia",CAIRO_FONT_SLANT_NORMAL , CAIRO_FONT_WEIGHT_BOLD)
  t= "Flecha Abajo/Arriba scroll de las octavas en la ventana "
@@ -154,7 +154,7 @@ If ((Penta_y + 12 * inc_Penta) <= mousey) And ((Penta_y + 14 * inc_Penta) >= mou
  estoyEnOctava=90
 EndIf
 *octava = *octava -1
-If *octava < 0 Then
+If *octava < desde -1 Then
    *octava = 99
    Exit Sub
 EndIf
@@ -243,18 +243,9 @@ If ayudaNuevaNota=TRUE  And comEdit=TRUE And vuelta=FALSE Then
   EndIf
   
     Var  cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
-
-
-    Dim as string  text3 => "O" 
-    Dim As String  text4 => "P" 
-    Dim As String  text5 => "I"     
-    Dim As String  text6 => "L"     
-    Dim As String  text7 => "F"     
-    Dim As String  text8 => "E"     
-    Dim As String  text9 => "W"     
-    Dim As String  text10 => "H"    
-    Dim As String  text11 => "CURSOR (ctrl-m)"
-    Dim As String  text12 => "VOLVER (ctrl-p)"
+    Dim As String text(1 To 10) =>{"O","P","I","L","F","E","W","H", _    
+           "CURSOR (ctrl-m)", "VOLVER (ctrl-p)"}
+        
     Dim As cairo_text_extents_t extents
 
 
@@ -262,71 +253,28 @@ If ayudaNuevaNota=TRUE  And comEdit=TRUE And vuelta=FALSE Then
     cairo_set_font_face( c, cface )
     cairo_set_font_size( c, 30 )
     cairo_set_source_rgba( c, 1, 1, 1, 1 )
-    
-        
+    Dim i As UByte
 
-       If menuMouse = 0 Then  
-          cairo_move_to( c, usamousex -90, usamousey +10 ) 
-          cairo_text_extents( c, text3, @extents )
-          cairo_show_text( c, text3 )
-          menumouse = 1
-       EndIf
-       If menuMouse = 1 Then            ' <== P
-          cairo_move_to( c, usamousex -60, usamousey +10 ) 
-          cairo_text_extents( c, text4, @extents )
-          cairo_show_text( c, text4 )
-          menumouse = 2
-       EndIf
-       If menuMouse = 2 Then          ' <== I
-          cairo_move_to( c, usamousex -30, usamousey +10 ) 
-          cairo_text_extents( c, text5, @extents )
-          cairo_show_text( c, text5 )
-          menumouse = 3
-       EndIf
-       If menuMouse = 3 Then  ' <==== L
-          cairo_move_to( c, usamousex , usamousey +10 ) 
-          cairo_text_extents( c, text6, @extents )
-          cairo_show_text( c, text6 )
-          menumouse = 4
-       EndIf
-       If menuMouse = 4 Then  ' <= F
-          cairo_move_to( c, usamousex +30, usamousey +10 ) 
-          cairo_text_extents( c, text7, @extents )
-          cairo_show_text( c, text7 )
-          menumouse = 5
-       EndIf
-       If menuMouse = 5 Then   ' <= E
-          cairo_move_to( c, usamousex +60, usamousey +10 ) 
-          cairo_text_extents( c, text8, @extents )
-          cairo_show_text( c, text8 )
-          menumouse = 6
-       EndIf
-       If menuMouse = 6 Then  ' <= W
-          cairo_move_to( c, usamousex +90, usamousey +10 ) 
-          cairo_text_extents( c, text9, @extents )
-          cairo_show_text( c, text9 )
-          menumouse = 7
-       EndIf
-       If menuMouse = 7 Then  ' <= H
-          cairo_move_to( c, usamousex +120, usamousey +10 ) 
-          cairo_text_extents( c, text10, @extents )
-          cairo_show_text( c, text10 )
-          menumouse = 8
-       EndIf
-       If menuMouse = 8 Then  ' <= control-m O P
+      For i= 1 To 8
+          cairo_move_to( c, usamousex -90 + (i-1)*30, usamousey +10 ) 
+          cairo_text_extents( c, text(i), @extents )
+          cairo_show_text( c, text(i) )
+      Next i
+
+' <= control-m O P
           If cursorVert=0 Or cursorHori=0 then
              cairo_move_to( c, usamousex -60 , usamousey +50 ) 
-             cairo_text_extents( c, text11, @extents )
-             cairo_show_text( c, text11 )
+             cairo_text_extents( c, text(9), @extents )
+             cairo_show_text( c, text(9) )
           EndIf
           If cursorVert=1 Or cursorHori=1 then
              cairo_move_to( c, usamousex -60 , usamousey -40 ) 
-             cairo_text_extents( c, text12, @extents )
-             cairo_show_text( c, text12 )
+             cairo_text_extents( c, text(10), @extents )
+             cairo_show_text( c, text(10) )
           EndIf
 
-          menumouse = 0
-       EndIf
+     '     menumouse = 0
+     '  EndIf
     
    EndIf 
    If savemousex=0 Or savemousey=0 Then
@@ -349,10 +297,10 @@ Sub cursor(c AS cairo_t Ptr,n As Integer, nro As Integer)
 
 If cursorVert=1 Or cursorVert= 2 Then  ' vertical comEdit=TRUE
     
-cairo_move_to  (c, 81 + (curpos)*40, Penta_y + (notacur-1) * inc_Penta  )
-cairo_rectangle(c, 81 + (curpos)*40, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
-cairo_move_to  (c, 81 + (curpos)*40 + inc_Penta, Penta_y  )
-cairo_line_to  (c, 81 + (curpos)*40 + inc_Penta, Penta_y + (notacur-1) * inc_Penta  +inc_Penta ) 
+cairo_move_to  (c, 81 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
+cairo_rectangle(c, 81 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
+cairo_move_to  (c, 81 + (curpos)*anchofig + inc_Penta, Penta_y  )
+cairo_line_to  (c, 81 + (curpos)*anchofig + inc_Penta, Penta_y + (notacur-1) * inc_Penta  +inc_Penta ) 
 
 EndIf
 If cursorVert= 0 And cursorHori=0 then
@@ -360,13 +308,13 @@ If cursorVert= 0 And cursorHori=0 then
      notaOld=notacur
      notacur=0
   EndIf
- cairo_move_to  (c,81 + (curpos)*40 ,  Penta_y + (notaOld-1) * inc_Penta  )
- cairo_rectangle(c,81 + (curpos)*40, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
+ cairo_move_to  (c,81 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
+ cairo_rectangle(c,81 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
 EndIf
 If cursorHori=1 Or cursorHori = 2 Then
- cairo_move_to  (c,81 + (curpos)*40 ,  Penta_y + (notaOld-1) * inc_Penta  )
- cairo_rectangle(c,81 + (curpos)*40, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
+ cairo_move_to  (c,81 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
+ cairo_rectangle(c,81 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
 EndIf
 If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
@@ -375,12 +323,12 @@ If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
    If notacur=0 Then 
       notacur=notaOld
    EndIf
-   dursaved = Roll(notacur + (nro-1) * 13, n + curpos).dur
+   dursaved = Roll.trk(notacur + (nro-1) * 13, n + curpos).dur
 ' debo cambiar esa nota por su equivalente silencio
   
-  Roll(notacur + (nro-1) * 13, n + curpos).dur = dursaved + 16 
-  If Roll(notacur + (nro-1) * 13, n +curpos).dur > 33 Then
-     Roll(notacur + (nro-1) * 13, n +curpos).dur = 33
+  Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = dursaved + 16 
+  If Roll.trk(notacur + (nro-1) * 13, n +curpos).dur > 33 Then
+     Roll.trk(notacur + (nro-1) * 13, n +curpos).dur = 33
   EndIf
   borrar = 0
   organizaCompases()    
@@ -394,50 +342,50 @@ If (cursorHori=1 Or cursorVert = 1) And cambiadur= 1 Then
    If notacur=0 Then  '<- aca ingreso nota aunqne no haya?
       notacur=notaOld
    EndIf
-'  Roll(notacur + (nro-1) * 13, n + curpos).dur = DUR 
-'  vdur=Roll(notacur + (nro-1) * 13, n +curpos).dur
+'  Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR 
+'  vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
 '  ' SI LA NOTA  NO EXITIA LA agrega
-'  Roll(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
-'  vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
+'  Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
+'  vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
 '  cambiadur = 0   
 ' ------------------------------------  
 ' nueva verion con puntillo o silencio
 ' ------------------------------------
         If pun  = 0 And sil=0 Then ' no hay puntillo ni silencio
-           Roll(notacur + (nro-1) * 13, n + curpos).dur = DUR 
-           vdur=Roll(notacur + (nro-1) * 13, n +curpos).dur
-           Roll(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
-           vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
+           Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR 
+           vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
+           Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
+           vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
            cambiadur = 0   
 
         Else 
           If pun = 1 And sil=0 Then
-           Roll(notacur + (nro-1) * 13, n + curpos).dur = DUR + 8 
-           vdur=Roll(notacur + (nro-1) * 13, n +curpos).dur
-           Roll(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
-           vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
+           Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 8 
+           vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
+           Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
+           vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
            cambiadur = 0   
            pun=0
           Else 
             If sil = 1 And pun=0 Then
-           Roll(notacur + (nro-1) * 13, n + curpos).dur = DUR + 16 
-           vdur=Roll(notacur + (nro-1) * 13, n +curpos).dur
-           Roll(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
-           vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
+           Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 16 
+           vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
+           Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
+           vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
            cambiadur = 0   
            sil=0
             Else ' sil=1 and pun=1
-              Roll(notacur + (nro-1) * 13, n + curpos).dur = DUR +24 
-              vdur=Roll(notacur + (nro-1) * 13, n +curpos).dur
-              Roll(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
-              vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
+              Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR +24 
+              vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
+              Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
+              vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
               cambiadur = 0   
               sil=0:pun=0
 
             EndIf
             If DUR=33 Then
-              Roll(notacur + (nro-1) * 13, n + curpos).dur = 33 
-              vdur=Roll(notacur + (nro-1) * 13, n +curpos).dur
+              Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 33 
+              vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
               cambiadur = 0   
               DUR=0
             EndIf
@@ -473,13 +421,13 @@ If (cursorHori=1 Or cursorVert = 1) And insert= 2 Then
  ' ,insert comando habilitado = 1
   'luego reemplazo 
   Print #1, "inserta DUR, en ROLL n,nota,posicion ",DUR,n,(notacur + (nro-1) * 13),n
-  Roll(notacur + (nro-1) * 13, n +curpos).dur = DUR ' reemplazo con lo nuevo
-  vdur=Roll(notacur + (nro-1) * 13, n+curpos).dur
+  Roll.trk(notacur + (nro-1) * 13, n +curpos).dur = DUR ' reemplazo con lo nuevo
+  vdur=Roll.trk(notacur + (nro-1) * 13, n+curpos).dur
  ' SI LA NOTA  NO EXITIA LA agrega...osea sirve para acordes tambien
 Print #1, "carga notacur en ROLL n,nota calculada ", n,(notacur + (nro-1) * 13)
   
-  Roll(notacur + (nro-1) * 13, n+curpos).nota = notacur ' 5.7.3 
-  vroll= Roll(notacur + (nro-1) * 13, n + curpos).nota
+  Roll.trk(notacur + (nro-1) * 13, n+curpos).nota = notacur ' 5.7.3 
+  vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
   ' TODO IGUAL A cambiadur = 1 deberia andar ,,,,lunica diff es 
   ' que se cargala nota en roll,<- pero 1ero debo guardar la nota de Roll en aux
   ' antes de reemplazarla
@@ -492,9 +440,9 @@ EndIf
 ' nombre deletra pulsada en vez de X
 If (cursorHori=2 Or cursorVert = 2) And agregarNota=1  And nota> 0 Then
 
-  Roll(nota + (nro-1) * 13, n + curpos).dur = DUR 
+  Roll.trk(nota + (nro-1) * 13, n + curpos).dur = DUR 
   ' SI LA NOTA  NO EXITIA LA agrega
-  Roll(nota + (nro-1) * 13, n + curpos).nota = nota  ' 5.7.3.4
+  Roll.trk(nota + (nro-1) * 13, n + curpos).nota = nota  ' 5.7.3.4
   nota=0     
 EndIf
 ' VEMOS QUE HACE ESTA FUNCION SI SIRVE
@@ -508,7 +456,7 @@ Sub Tracks (nroTrack As UByte, nroCanal As UByte)
 
 End Sub
 '-------------------------------MENU----------
-Sub menu (c AS cairo_t Ptr,n As Integer,menuNro As Integer )
+Sub menu (c0 AS cairo_t Ptr, c AS cairo_t Ptr,n As Integer,menuNro As Integer )
  Dim AS cairo_font_extents_t fe   '     font data
  Dim AS cairo_text_extents_t te  '      text size
  Dim  As Double Ptr xo,yo
@@ -556,6 +504,7 @@ Select Case menuNro
   Case 0
    If mousex > 38 And mousex< 117 And mousey < 50 Then
       cairo_set_source_rgba c, 0, 1, 0, 1
+      font=18 ' el menu esta diseñqdo para este tamaño
       If MouseButtons And 1 Then
         menuNew = 3  ''<--- caso raro ¿?
       EndIf
@@ -600,8 +549,12 @@ Select Case menuNro
    EndIf
    t=  " [Reproducir]":cairo_show_text(c, t)
 ' --------------------------
-   If mousex > 473 And mousex< 562 And mousey < 50 Then
+   If mousex > 473 And mousex< 562 And mousey < 50 Then  'OPCIONES
       cairo_set_source_rgba c, 0, 1, 0, 1
+      If MouseButtons And 1 Then
+         menuNew=5
+         octavas=0
+      EndIf 
    Else 
       cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
@@ -631,15 +584,17 @@ Select Case menuNro
    Else
       cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf   
-
+ Dim y1 As Integer => 1 + (desde-1) * 13
+ Dim y2 As Integer => 1 + (hasta-1) * 13
+   
    t = "      EDIT" + " " +  " UltimaPos: " + _
    Str(Maxpos) +" Posi: " + Str(posishow)+ " Posn: "+Str(posn)+ _
-   " Font: " +str(font) + " DUR:"+ Str(Dur) +" Nota:"+ Str(nota) + _
-   " modifmouse:" + Str(modifmouse) + " usamousey:" + Str(usamousey) + " usamousex:"+ Str(usamousex) + _
+   " Font: " +str(font) + " DUR:"+ Str(Dur) +" Nota:"+ Str(nota)+ _
    " EnOct:" + Str(EnOctava) + " nE:"+Str(nE) + " nR:"+ Str(nR) + _
-   " Mx:" + Str(mousex) + " My:" + Str(mousey) 
+   " Mx:" + Str(mousex) + " My:" + Str(mousey) + "Desde:" + Str(y1) + "Hasta:" +Str(y2)   
 /' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +
 '/ 
+'''   " modifmouse:" + Str(modifmouse) + " usamousey:" + Str(usamousey) + " usamousex:"+ Str(usamousex) + _
 
  cairo_show_text(c,t)
 
@@ -659,21 +614,14 @@ Select Case menuNro
 ' 3.1 [NUEVO]    
    If mousex > 42 And mousex < 110  and mousey < 50 Then ' <= NUEVO
       cairo_set_source_rgba c, 0, 1, 0, 1
-      If MouseButtons And 1 Then 
-        Erase (Roll)
-        MaxPos = 0 'NroCol
-     '   posn=NroCol
-     '   Roll(1,NroCol).dur = 34
-     '   Dim As Integer mi,p
-     '   For p=1 To NroCol -1
-     '     For mi=1 To 128
-     '       Roll(mi,p).nota=0
-     '       Roll(mi,p).dur =33
-     '     Next mi
-     '   Next p
-     posicion=0:posn=0
-        curpos=0
-        notacur=0
+    '  If MouseButtons And 1 Then
+      If dobleclick Then 
+       ' Erase (Roll.trk)
+        ReDim (Roll.trk ) (NB To NA, 1 To CantTicks)
+        MaxPos = 1 'NroCol
+        posicion=1:posn=1
+        curpos=1
+        notacur=1
       EndIf
    Else 
      cairo_set_source_rgba c, 1, 1, 1, 1   
@@ -683,10 +631,10 @@ Select Case menuNro
    If mousex > 134 And mousex < 190  and mousey < 50 Then ' <= ABRIR lee grabaroll.roll
       cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 And carga = 0 Then 
-         Erase Roll
+         ReDim (Roll.trk ) (NB To NA, 1 To CantTicks)
          Dim z (1,1 )  As dat
          Dim As String x,x1,x2,x3,x4
-         open "Trabajo.roll" for binary access Read as #2
+         open "Trabajo_01.roll" for binary access Read as #2
        
          Get #2, , z(1,1)
          x1=Bin(z(1,1).nota,4)
@@ -703,16 +651,16 @@ Select Case menuNro
          inicioDeLectura=0' Int(Maxpos/NroCol) 
          posn=Maxpos- 1
 ' cargamos trabajo datos       
-         Dim Trabajo (1 To 128,1 To MaxPos) As dat   
+         Dim Trabajo (NB To NA,1 To MaxPos) As dat   
          Get #2, , Trabajo()
   ' movemos los datos a Roll      
  ' -------------------------              
          Dim As Integer i,j , mayor
           mayor=99
            For j = 1 To MaxPos
-             For i= 1 To 128
-              Roll (i,j)  => Trabajo (i,j) '
-              DUR => Roll(i,j).dur
+             For i= NB To NA
+              Roll.TRK(i,j)  => Trabajo (i,j) '
+              DUR => Roll.trk(i,j).dur
               If i=1 And DUR >= 1 And DUR <=8 Then 
                 mayor=DUR
               EndIf
@@ -721,7 +669,7 @@ Select Case menuNro
                  mayor=DUR
             ' Print #1, "PUTO DUR MAYOR";DUR,mayor
               EndIf
-              If i=128 Then
+              If i=NA Then
                 DUR=mayor 
                 Print #1,"          J, DUR MAYOR: "; J, DUR
                 calcCompas(j)
@@ -739,11 +687,11 @@ Select Case menuNro
      '   Dim P As Integer 
      '   Print #1, "B_--------->"
      '   For P = 260 To MaxPos
-    '     Print #1, Roll(12,p).nota;".";
+    '     Print #1, Roll.trk(12,p).nota;".";
      '   Next
      '   Print #1,
      '   For P = 260 To MaxPos
-     '     Print #1, Roll(12,p).dur;".";
+     '     Print #1, Roll.trk(12,p).dur;".";
      
       '  Next
       '  Print #1,
@@ -757,9 +705,9 @@ Select Case menuNro
      cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 Then
 '       Print #1, "Grabando a disco Roll GRABAR "
-       Open "Trabajo.roll" For Binary access write As #2
+       Open "Trabajo_01.roll" For Binary access write As #2
    
-       Dim Trabajo (1 To 128, 1 To Maxpos) As dat
+       Dim Trabajo (NB To NA, 1 To Maxpos) As dat
        Dim grabaPos (1,1)  As dat
        Dim as integer i1, i2
        Dim As Integer y1,y2,y3,y4 
@@ -790,9 +738,9 @@ Select Case menuNro
 ' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
 ' -------------------------------------
        Dim As Integer i,j,notafinal 
-       For i = 1 To 128
-         If Roll(i,posicion+1).dur = 34 Then
-            notafinal= Roll(i,posicion).nota
+       For i = NB To NA
+         If Roll.trk(i,posicion+1).dur = 34 Then
+            notafinal= Roll.trk(i,posicion).nota
     '        Print #1, "ENCONTRO NOTA FINAL ", notafinal
     '        Print "ENCONTRO NOTA FINAL ", notafinal
          ' esten la posiciond ela ultimanotapero grasoerror
@@ -804,9 +752,9 @@ Select Case menuNro
       grabaPos(1,1).pb = notafinal
 ' Grabacion de Trabajo
 ' ------------------------------------ 
-      For i1 = 1 To 128
+      For i1 = NB To NA
         For i2 = 1 To MaxPos     
-           Trabajo(i1,i2)=Roll(i1,i2 )
+           Trabajo(i1,i2)=Roll.trk(i1,i2 )
         Next i2
       Next i1 
 
@@ -836,6 +784,109 @@ Select Case menuNro
        MenuNew=0
     EndIf   
    EndIf
+   Case 5 'OPCIONES => OCTAVAS
+    
+  If mousex > 38 And mousex< 123 And mousey < 50 Then ' OCTAVAS LABEL
+     cairo_set_source_rgba c, 0, 1, 0, 1
+     If MouseButtons And 1  Then
+        octavas=0
+        Dim Cantitems As Integer => 11
+        Dim As String text (1 To 11) => {"Click En Desde antes de cada click en - / + ", _
+        "Click En Hasta antes de cada click en -/+", _
+        "Esto redimensionara la capcidad de Octavas", _
+        "Cuando grave esa capcidad ira en el archivo",_
+        "Antes de cargar debe ajustar la capacidad a la misma que grabo",_
+        "en un futuro proximo se grabra ese dato", _
+        "y sera automatico","o sea ","se cargaran loa datos ", _
+        "y la capacidad de Octavas", _
+        "a mas Octavas mas memoria usada"}
+         
+        menugrafico  c0, c, CantItems, text()  
+    
+     EndIf
+     
+  EndIf 
+  
+  If mousex > 144 And mousex< 196 And mousey < 50 Then ' DESDE LABEL
+     cairo_set_source_rgba c, 0, 1, 0, 1
+     octavas=0
+   
+  EndIf  
+
+  If mousex >= 215 And mousex< 229 And mousey < 50  Then ' - LBEL
+     cairo_set_source_rgba c, 0, 1, 0, 1
+     If MouseButtons And 1 And octavas=0 Then
+        desde -= 1
+        If desde < 1 Then 'desdevector Then
+           desde = 1 'desdevector
+        EndIf
+        octavas=1
+     EndIf
+  EndIf
+    
+  If mousex >= 241 And mousex< 261 And mousey < 50   Then ' + LBEL
+     cairo_set_source_rgba c, 0, 1, 0, 1
+     If MouseButtons And 1 And octavas=0 Then
+        desde = desde + 1
+        If desde > hastavector Then
+           desde = hastavector 
+        EndIf
+        octavas =2
+     EndIf
+  
+  EndIf
+  
+ 
+   t = "      [OCTAVAS DESDE   - / + ] " + Str(desde-1): cairo_show_text(c,t)
+' ===================
+  If mousex > 308 And mousex< 363 And mousey < 50 Then ' HASTA
+     cairo_set_source_rgba c, 0, 1, 0, 1
+     If MouseButtons And 1 Then
+        octavas=0
+     EndIf 
+    
+  Else 
+     cairo_set_source_rgba c, 1, 1, 1, 1
+     If mousex >= 374 And mousex< 394 And mousey < 50  Then '-
+        cairo_set_source_rgba c, 0, 1, 0, 1
+         If MouseButtons And 1 And octavas = 0 Then
+         hasta -= 1
+           If hasta < desdevector Then
+              hasta = desdevector
+           EndIf
+         octavas=1
+         EndIf 
+     EndIf
+    
+     If mousex >= 403 And mousex< 423 And mousey < 50   Then ' +
+        cairo_set_source_rgba c, 0, 1, 0, 1
+        If MouseButtons And 1 and octavas = 0 Then
+           hasta += 1
+           If hasta > 9 Then
+              hasta = 9
+           EndIf
+         octavas=2
+       EndIf
+     EndIf
+    
+EndIf  
+ 
+   t = "  [HASTA  - / + ] " + Str(hasta-1): cairo_show_text(c,t)
+
+   If mousex >= 473 And mousex< 634 And mousey < 50   Then ' LABEL REDIMENSIONAR
+        ''cairo_set_source_rgba c, 0, 1, 0, 1
+        If dobleclick Then
+           cairo_set_source_rgba c, 1, 0, 0, 1
+           NB => 1 + (desde) * 13   ' 27 para 3
+           NA => 12 + (hasta) * 13  ' 90 para  7
+           ReDim (Roll.trk ) (NB To NA, 1 To CantTicks)
+           ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
+        EndIf
+    Else
+           cairo_set_source_rgba c, 1, 1, 1, 1
+    EndIf
+   t = "  [REDIMENSIONAR] " 
+     
 End Select
 ' Si nodoy Stroke los show text van apendendo al final como un print;
 
@@ -941,18 +992,18 @@ Sub movedato (ByVal n As Integer, ByRef indaux As Integer,ByRef  insert As Integ
   Dim as integer i1,i2 ' no movemos solo el indice <nota> sino todas las notas!
   ' INDAUX PARTE DE 1 Y SE Va INCREMENTANDO CON CADA PULSO SOLO DE  I...
   
-  for i1 = 1 to 128
-    Rollaux(i1,indaux)= Roll(i1,n ) 'xxx  n ya contiene curpos
+  for i1 = NB to NA
+    RollAux.trk(i1,indaux)= Roll.trk(i1,n ) 'xxx  n ya contiene curpos
   next i1
 ' movio la nota queestaba antes de pulsar insert
-  Print #1, "EN MOVEDATO carga rollaux con valores viejos de roll"
-  Print #1,"Rollaux(nota,indaux) nota,indaux " ,nota,indaux
-  Print #1,"Roll(nota,n) nota,n, curpos" ,nota,n, curpos
-  Print #1,"duracion cargda Rollaux(nota,indaux).dur: ", Rollaux(nota,indaux).dur
-  Print #1,"nota  cargda Rollaux(nota,indaux).nota : ", Rollaux(nota,indaux).nota
+  Print #1, "EN MOVEDATO carga RollAux.trk con valores viejos de roll"
+  Print #1,"RollAux.trk(nota,indaux) nota,indaux " ,nota,indaux
+  Print #1,"Roll.trk(nota,n) nota,n, curpos" ,nota,n, curpos
+  Print #1,"duracion cargda RollAux.trk(nota,indaux).dur: ", RollAux.trk(nota,indaux).dur
+  Print #1,"nota  cargda RollAux.trk(nota,indaux).nota : ", RollAux.trk(nota,indaux).nota
 'vamos reemplazando los eventos y sobreescribiendo con los nuevos pero
 '  los viejos se van guardando para desplazarlos a la derecha.
-' rollaux tendra lo viejo, notas insertdas lo nuevo 
+' RollAux.trk tendra lo viejo, notas insertdas lo nuevo 
 End Sub
 
 '--------------------------
@@ -975,28 +1026,28 @@ dim as integer cantInserciones = indaux ' o notins el indaux continua en movedat
    indpos=indpos+1 ' empezamos de la siguiente no reemplazada y seguimos al final
    ''suponemos que posicion=indpos era la posicion de ultima reemplazada 
    indaux=indaux+1 'nosubicamos en 1er posicon libre en aux para recibir el resto
-Print #1,"antes del FOR Roll,RollAux.. indpos,indaux ", indpos,indaux
+Print #1,"antes del FOR Roll,RollAux.trk.. indpos,indaux ", indpos,indaux
 ' debemos barrer solo la octava? no porque puede haber otras octavas cargadas
-   For s= 1 To 128 'barremos todas las notas verticalmente para una misma posicion
-     If Roll(s,indpos).dur = 34 Then ' fin de datos de Roll
-        Rollaux(s,indaux) = Roll(s,indpos)
+   For s= NB To NA 'barremos todas las notas verticalmente para una misma posicion
+     If Roll.trk(s,indpos).dur = 34 Then ' fin de datos de Roll
+        RollAux.trk(s,indaux) = Roll.trk(s,indpos)
         insert= 4 ' fin de llenado de almacenamiento auxiliar
         Print #1,"sale moveresto encontro 34 fin, indaux :" ,indaux
         Exit Do 
      EndIf
-     Rollaux(s,indaux) = Roll(s,indpos)
+     RollAux.trk(s,indaux) = Roll.trk(s,indpos)
      if s=1 then 
      print #1, "luego de la copia a AUX del resto "
      endif 
-     if (Roll(s,indpos).dur <> 33 and Roll(s,indpos).nota <> 33) _
-        and (Roll(s,indpos).dur > 0 or Roll(s,indpos).nota > 0)    Then 
-      print #1, "Roll(";s,indpos;").nota ",Roll(s,indpos).nota
-      print #1, "Roll(";s,indpos; ").dur ",Roll(s,indpos).dur
+     if (Roll.trk(s,indpos).dur <> 33 and Roll.trk(s,indpos).nota <> 33) _
+        and (Roll.trk(s,indpos).dur > 0 or Roll.trk(s,indpos).nota > 0)    Then 
+      print #1, "Roll.trk(";s,indpos;").nota ",Roll.trk(s,indpos).nota
+      print #1, "Roll.trk(";s,indpos; ").dur ",Roll.trk(s,indpos).dur
      endif 
-     if (Rollaux(s,indaux).dur <> 33 and Rollaux(s,indaux).nota <> 33) _
-        and (Rollaux(s,indaux).dur > 0 or Rollaux(s,indaux).nota > 0)    Then 
-      print #1, "Rollaux(";s,indaux; ").nota ",Rollaux(s,indaux).nota
-      print #1, "Rollaux(";s,indaux; ").dur ",Rollaux(s,indaux).dur
+     if (RollAux.trk(s,indaux).dur <> 33 and RollAux.trk(s,indaux).nota <> 33) _
+        and (RollAux.trk(s,indaux).dur > 0 or RollAux.trk(s,indaux).nota > 0)    Then 
+      print #1, "RollAux.trk(";s,indaux; ").nota ",RollAux.trk(s,indaux).nota
+      print #1, "RollAux.trk(";s,indaux; ").dur ",RollAux.trk(s,indaux).dur
      endif
      
    Next s
@@ -1017,20 +1068,20 @@ Print #1,"antes del FOR Roll,RollAux.. indpos,indaux ", indpos,indaux
    Print #1, "posicion, posn "; posicion, posn
    For k = 1 To indaux ' todo el auxiliar SUMA ROLL REEMPLAZADO + NOREEMPLAZADO
          print #1, "k auxiliar "; k 
-        For s=1 To 128  ' todos los semitonos 96
-          Roll(s,t) = RollAux(s,k)
+        For s=NB To NA  ' todos los semitonos 96
+          Roll.trk(s,t) = RollAux.trk(s,k)
           if s=1 then 
             print #1, "luego de la  copia A ROLL "
           EndIf
-         if (Roll(s,t).dur <> 33 and Roll(s,t).nota <> 33) _
-           and (Roll(s,t).dur > 0 or Roll(s,t).nota > 0)    Then 
-           Print #1, "I) Roll(";s,t;")nota,s,t : ", Roll(s,t).nota, s, t
-           Print #1, "I) Roll(";s,t;")dur, s,t : ", Roll(s,t).dur,s,t
+         if (Roll.trk(s,t).dur <> 33 and Roll.trk(s,t).nota <> 33) _
+           and (Roll.trk(s,t).dur > 0 or Roll.trk(s,t).nota > 0)    Then 
+           Print #1, "I) Roll.trk(";s,t;")nota,s,t : ", Roll.trk(s,t).nota, s, t
+           Print #1, "I) Roll.trk(";s,t;")dur, s,t : ", Roll.trk(s,t).dur,s,t
           endif 
-         if (RollAux(s,k).dur <> 33 and RollAux(s,k).nota <> 33) _
-            and (RollAux(s,k).dur > 0 or RollAux(s,k).nota > 0)    Then 
-            Print #1, "II) RollAux(";s,k;").dur ", RollAux(s,k).dur
-            Print #1, "II) RollAux(";s,k;").nota ", RollAux(s,k).nota
+         if (RollAux.trk(s,k).dur <> 33 and RollAux.trk(s,k).nota <> 33) _
+            and (RollAux.trk(s,k).dur > 0 or RollAux.trk(s,k).nota > 0)    Then 
+            Print #1, "II) RollAux.trk(";s,k;").dur ", RollAux.trk(s,k).dur
+            Print #1, "II) RollAux.trk(";s,k;").nota ", RollAux.trk(s,k).nota
           EndIf
         Next s
         t=t+1
@@ -1042,10 +1093,10 @@ Print #1,"antes del FOR Roll,RollAux.. indpos,indaux ", indpos,indaux
    '' esto jode porque con insert=0 entra y dej aind= 0' final del ciclo
    Print #1 ,"final ciclo moveresto a AUX"
    
-   for s = 1 to 128
+   for s = NB to NA
       For k=  StartInsert To MaxPos ' gracias a esto anda acordes
-        If Roll(s ,k).nota = 0 Then
-           Roll(s , k).nota = 33  
+        If Roll.trk(s ,k).nota = 0 Then
+           Roll.trk(s , k).nota = 33  
         EndIf 
       Next k
    next s 
@@ -1066,10 +1117,10 @@ Print #1,"antes del FOR Roll,RollAux.. indpos,indaux ", indpos,indaux
    Dim i As Integer      
    for k= StartInsert to StartInsert + cantInserciones -1 ' OK PARA 1 INSERCION ES SOLO EN STRTINSERT
      i = i + 1  
-     for s= 1 to 128 
+     for s= NB to NA 
         If s <> notasInsertadas (i) then
-           Roll(s,k).nota = 33
-           Roll(s,k).dur  = 0      
+           Roll.trk(s,k).nota = 33
+           Roll.trk(s,k).dur  = 0      
         endif
      next s 
    next k 
@@ -1133,11 +1184,12 @@ cairo_stroke(cm)
   
 End Sub
 '
-Sub calcCompas( j As integer)
+function calcCompas( j As integer) As Integer   
 
 
 If j=1 Then
 indCompas=0
+haycompas=FALSE
 EndIf
  ' 1 acumulado, 2 nro compas, 3 posicion
 If haycompas=FALSE Then
@@ -1152,33 +1204,79 @@ haycompas=FALSE
 EndIf
 
  Print #1,"           indCompas: ";indCompas; " acumulado: ";compas(j).suma
-If compas(j).suma >= d7 Then
+ Dim As Integer acumulado , diferencia, k, diferencia2
+ dur2=0
+ acumulado  =compas(j).suma 
+ Dim difnota As Integer 
+ difnota=pesoDur(DUR) ' por ejemplo redonda despues de1 negra, O BLANCA
+
+ If acumulado > d7 Then
+    diferencia = acumulado  -d7 ' aca me da 1 negra EN AMBOS CASOS O ó P 2500000
+    acumulado= acumulado-diferencia ' EL COMPAS EXACTO 10000000
+    diferencia2 = difnota - diferencia ' P* o I  7500000
+    For k= 1 To 16 ' hasta 15 la ultima no tiene sentido 
+  Print #1,"==> diferencia pesodur "; diferencia,pesoDur(k)
+      '  If k=8 Then
+      '    continue For 
+      '  EndIf   
+        If diferencia2 = pesoDur(k) Then ' P* o I
+          Print #1,"encontro diferencia"; diferencia2
+           DUR2=k  'P* o I  10
+           Exit For
+        EndIf
+    Next
+    
+ EndIf
+Print #1, "calcCompas acumulado DUR DUR2 ";acumulado,DUR,DUR2
+ 
+ If acumulado = d7 Then 'compas exacto 10000000
      compas(j).nro = indCompas ' compas 1,2,3,4,5...  etc
 ' asi lo diferencio de lacumulacion...
    Print #1, "Compas Nro: ";compas(j).nro; " posicion: "; compas(j).nro
    indCompas=indCompas + 1  
-   haycompas=TRUE  
+   haycompas=TRUE
+   'dur1=DUR 
+   If pesoDur(DUR2) >0  And pesoDur(dur)  = 2* pesoDur(dur2)  Then 'P I
+      Print #1, "igualo negra con blnanca DUR, DUR2, DUR2 +34,figura ";DUR, DUR2, DUR2+34,figura(DUR2+34)   
+      DUR=DUR2 +34
+    '  For k =1 To 82
+    '     Print #1, "k "; k ; " figura "; figura(k)
+    '  Next
+   Else   
+     If pesoDur(dur) = pesoDur(dur2)*4/3  Then ' O P*
+        dur=dur+67
+     EndIf
+   EndIf 
 EndIf
-
-End Sub
+ For k = 1 To 16
+    If diferencia = PesoDur(k) Then
+       DUR2 = k ' es elresto en ambos de estos 2 casos es la negra
+       'debo de alguna forma introduciro automaticamente sin que el usuario
+       'intervenga o sea no resetear la nota y cambiar a esta DUR---
+    EndIf
+ Next 
+ Print #1, "calcCompas diferencia ";diferencia
+ Print #1, "calcCompas acumulado-diferencia DUR DUR2 ";acumulado,DUR,DUR2
+Return DUR2
+End function
 Sub organizaCompases()
 Dim As Integer i,j , mayor
           mayor=99
            For j = 1 To MaxPos
-             For i= 1 To 128
-              DUR => Roll(i,j).dur
-              If i=1 And DUR >= 1 And DUR <=8 Then 
+             For i= NB To NA
+              DUR => Roll.trk(i,j).dur
+              If i=1 And DUR >= 1 And DUR <=16 Then 
                 mayor=DUR
               EndIf
               'Print #1, "PUTO DUR mayor";DUR, mayor
-              If DUR < mayor And DUR >= 1 And DUR <= 8 Then ' las duraciones cuando mas
+              If DUR < mayor And DUR >= 1 And DUR <= 16 Then ' las duraciones cuando mas
                  mayor=DUR
             ' Print #1, "PUTO DUR MAYOR";DUR,mayor
               EndIf
-              If i=128 Then
+              If i=NA Then
                 DUR=mayor 
                 Print #1,"          J, DUR MAYOR: "; J, DUR
-                calcCompas(j)
+              calcCompas(j)
                 DUR=0
                 mayor=99
               EndIf
@@ -1187,6 +1285,58 @@ Dim As Integer i,j , mayor
 ' fin compases             
 
 End Sub
+sub menugrafico(c0 As cairo_t Ptr,c AS cairo_t Ptr ,Cantitems As Integer, text() as String  )
+  If savemousex > 0 Or savemousey > 0 Then
+   usamousex=savemousex
+   usamousey=savemousey
+  Else
+   usamousex=mousex
+   usamousey=mousey
+  EndIf
+  
+    Var  cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
+        
+    Dim As cairo_text_extents_t extents
+
+ '   cairo_move_to (c0 , usamousex, usamousey + 250)
+  '  SetMouse 100,200
+'    If mousey > 50 Then 
+    cairo_set_font_face( c0, cface )
+    cairo_set_font_size( c0, 30 )
+    cairo_set_source_rgba( c0, 1, 1, 1, 1 )
+    Dim i As integer
+    usamousex = usamousex + 200 
+    usamousex = usamousey + 100 
+    
+      For i= 1 To CantItems
+         cairo_move_to( c0, 100  , 100 + (i-1)*30 ) 
+         cairo_text_extents( c0, text(i), @extents )
+         cairo_show_text( c0, text(i) )
+      Next i
+
+' <= control-m O P
+'          If cursorVert=0 Or cursorHori=0 then
+'             cairo_move_to( c, usamousex -60 , usamousey +50 ) 
+'             cairo_text_extents( c, text(9), @extents )
+'             cairo_show_text( c, text(9) )
+'          EndIf
+'          If cursorVert=1 Or cursorHori=1 then
+'             cairo_move_to( c, usamousex -60 , usamousey -40 ) 
+'             cairo_text_extents( c, text(10), @extents )
+'             cairo_show_text( c, text(10) )
+'          EndIf
+
+     '     menumouse = 0
+     '  EndIf
+    
+ ' EndIf 
+   If savemousex=0 Or savemousey=0 Then
+      savemousex=mousex
+      savemousey=mousey
+   EndIf
+
+End Sub
+
 '------------------------------------
 ' https://www.freebasic.net/forum/viewtopic.php?t=10398
 ' Many times in my games I want to act on a single key press. 
