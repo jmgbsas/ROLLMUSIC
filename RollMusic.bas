@@ -1,16 +1,9 @@
+' ultim version de Corte de notas el algoritmos es mas sencillo y eficiente 
+' anda bien falta ajustar el momento del corte para por ejemplo L I O reemplaza a O 
+' con 4 figuras L I P | L I L, pero corta antes de tiempo....estamos en eso....
+' hy que psrlo a -> L I P> L>| I>L  o al final I*    
 ' version alfa de corte de duraciones al final del compassi sobrepasan
 ' REVASADO DE COMPAS CORTE AUTOMATICO DE DURACION SEGUIDO EN EL SIGUIENTE COMPAS
-'la duracion del compas....seguir!!! O y P listas si sobrepasanse remplazan bien
-' faltaverlasdemas furas y escribiren el1er compassigiente elresto!!!
-' ROLLMUSIC SE PUEDE LLAMAR DESDE OTRO PROGRAMA Y PASARLE LAS DIMENSIONES U OTRAS
-' COSAS FALTA HACER UN PROGRAM GRAFICO QUE AJSUTE LAS OPCIONES Y LLAME
-'  ROLLMUSIC SEGUN LO QUE DESEA EL USUARIO O QUE LEA UN ARCHIVO DE TEXTO 
-' CON PARAMETROS Y LO ENVIE A ROLLMUSIC, TAMBIEN ROLLMUSIC PODRIA
-' LEER EL ARCHIVO DE CONFIGURACION....
-' LOGRE PARAMERIZAR Y REDIMENSIONAR LSO VECTORES, ERGO SE PODRA TENER
-' UN MODELO DE OCTAVAS PARA CADA INSTRUMENTO Y ESOS VVECTORES SE USARAN SEGUN
-'QUE INSTRUMENTOS SE ELIJAN O QUE LAS OCTAVAS LAS DEFINA EL USUARIO
-' HI HAY UN MONTON DE LABURO EN EL MENU DE OPCIONES,,,
 ' LOGRE AHCER ROLL SHARED Y DINAMICO...
 ' => 3-liga de notas
 '    3.1 habilitar notascon + der e iz q P+ +P. I+ +I, I+ +L, etc
@@ -34,6 +27,8 @@
 'meta futura -> COPIAR ZONAS DE 1 OCTAVA O TODAS EN OTRO LADO..ESE SERA 0.5.7.4.0 
 
 Open "midebug.txt" for Output As #1
+'Open cons  for Output As #1
+
 ''Open "figuras.txt" For Output As #1
 
 ' secuenciador de 9 octavas estereo, modo Piano Roll,hace uso de
@@ -56,7 +51,9 @@ Open "midebug.txt" for Output As #1
 Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #EndIf
 
-'' 
+''
+ 
+
 #Include Once "cairo/cairo.bi"
 #Include "ROLLDEC.BI"
 #Include "NOTAS.bi"
@@ -68,29 +65,23 @@ Type dat Field=1
  pb  As UByte  ' pitch bend
  inst As UByte ' instrumento para cada nota podra ser distinto 
 End Type
-Type cs Field=1
-  nro    As Integer    ' numero compas
-  suma   As Integer    ' suma acumulada 10 millones punto de corte
-End Type
 
-Const  d7 As Integer => 10000000
+
 ' ROLL PARAEL GRAFICO PERO LOS TRCKS PODRIAN SER DISTINTOS 
 'Dim Shared As dat Roll  (1 To 128 , 1 To 19200)
 Type inst
  As dat trk(Any, any) 
 End Type 
 ' PUEDO TENER UN SHARED DINAMICO GRACIAS A TYPE !!!
+Dim Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 
 
 Dim Shared As inst Roll
-Dim Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 'tempo I=160, seri equivalente a O=40 como l maxima cantdad de ticks de O es
 ' eldela figura mas pequeña=128 ticks...40 * 128 = 5120 por minuto.
 ' Si deseo un secuecnia de CantMin minutos
 tempo=160  ' negra=160
 CantMin=15
-CantTicks=cantMin * 128 * tempo/4  ' 76800 ticks...
-CantTicks=76800
 'NotaBaja=1 : NotaAlta=128
 
 Dim ix As Integer 
@@ -135,6 +126,9 @@ EndIf
 Dim Shared As Integer desdevector 
 Dim Shared As Integer hastavector 
 
+CantTicks=cantMin * 128 * tempo/4  ' 76800 ticks...
+CantTicks=76800
+Dim Shared As integer compas(1 To CantTicks) 'cada item es la posicion en donde
 desdevector = desde
 hastavector = hasta
 NB => 1 + (desde-1) * 13   ' 27 para 3
@@ -154,9 +148,7 @@ Dim Shared As inst RollAux
 ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
 CantCompas = 40 * CantMin
 
-Dim Shared As cs  compas(1 To 600) 'cada item es la posicion en donde
-' termina el compas , se calculara dinamicamente,,,según posicion  y la historia anterior
-' del mismo array (acumulado, nro Compas, posicion)
+
 '''Dim Shared As ubyte Insercion (1 To 128, 1 To 12000)
 ' si inserto en un track o canal debo desplazar a todos!!!
 '  de modoque tener una insercion para c7useracrisimo...
@@ -800,7 +792,7 @@ If MultiKey(SC_L)  Then ' <======== load Roll
        Get #2, , Trabajo()
   ' movemos los datos a Roll      
  ' -------------------------              
-       Dim As Integer i,j , mayor,resto
+       Dim As Integer i,j , mayor,resto,ia
 
        For j = 1 To MaxPos
           For i= NB To NA
@@ -814,7 +806,7 @@ If MultiKey(SC_L)  Then ' <======== load Roll
           EndIf
           If i=NA Then
              DUR = mayor 
-            resto= calcCompas(j)
+             calcCompas(j)
              DUR=0
           EndIf
 'se copian todoslos miembros del type automaticamente. 
@@ -1169,7 +1161,9 @@ EndIf
 ' SOLO SEUSAPARAINGRESO DE NOTAS NUEVAS ..VERIFICANDO JMG 
 
  If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 Then 
-
+ Print #1,"--------------------------------------------------------------"
+ Print #1,">>>START NUCLEO-COMPAS VECTOR nro "; posn; "suma:";acumulado  
+ Print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;" nota: ";nota 
     posn=1 + InicioDeLectura
      If DUR=0 Then
         Exit Do
@@ -1209,8 +1203,7 @@ EndIf
        Loop
        ' ESTO ME UBICA EN QUE RENGLON DE LA OCTaVA ESTOY SN USAR EL MOUSE
        ' LUEGO haRE ALGO CON EL MOUSE POR AHORA TODO TECLADO
-          durResto= calcCompas(posn)
-      
+
         Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = nota 'carga
 '' ojo ver'  If cursorVert = 0 and cursorHori = 0 Then
          ' no actua para modificaciones o agregado en lo existente
@@ -1237,16 +1230,18 @@ EndIf
             EndIf 
          EndIf
         Next
-
         notaOld = nota
-         
+
+
         If pun  = 0 And sil=0 Then ' no hay puntillo ni silencio
-           Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR 'era duracion
+          Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR 'era duracion
+          'DUR nunca se ahce cero solo para espacio ergo si pulso
+          ' la misma u otra nota sigue con la misma duracion
         Else 
-           If pun = 1 And sil=0 Then
-            Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 8 'era dur
-            pun = 0
-           Else 
+          If pun = 1 And sil=0 Then
+           Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 8 'era dur
+           pun = 0
+          Else 
             If sil = 1 And pun=0 Then
               Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 16 'era dur
                sil=0
@@ -1260,16 +1255,11 @@ EndIf
             EndIf
           EndIf
         EndIf
-      If durResto =0 Then
-         nota = 0
-  
-      Else
-         nota=notaold
-         DUR=DUR2
-         durResto=0
-         DUR2=0
-      EndIf
-  
+        calcCompas( posn )
+        nota = 0 
+
+
+                         
      Else ' edicion de nota anterior retroceso, concosco la posicion la octava 
       'pero no la nota 1ero debo recuperar la nota, cursor lo sabe tomar de ahi
       'no puedo usar notaOld porque eso seria solo en el caso de que estaba editando
@@ -1351,7 +1341,7 @@ If (ScreenEvent(@e)) Then
       EndIf 
     EndIf
     
-   If e.scancode = &h41 Then ' <======= F7
+   If e.scancode = &h41 Then ' <======= SC_F7
       If comEdit = FALSE Then
       ' MOVE VENTANA
         w=ANCHO:h=ALTO
@@ -1674,7 +1664,8 @@ EndIf
 ' IZQUIERDO (2 o 1 segun la cantidad necesaria para ejecutar el comando) 
 '  MOMENTO EN EL QUE SE EJECUTA EL COMANDO Y SE VE EL CAMBIO.
 '       ==== NOTAS O DURACIONES EXISTENTES ==== 
-If  MultiKey(SC_CONTROL) And (MouseButtons And 2) And comEdit=TRUE Then
+If  comEdit=TRUE then
+  If  MultiKey(SC_CONTROL) And (MouseButtons And 2)  Then
 ' trae un menu contextual solo con ctrl-m  previo <==== menu borrar insertar modificar
 ' ESTADO:CALL MENU COMANDO
       ayudaModif=TRUE
@@ -1683,56 +1674,58 @@ If  MultiKey(SC_CONTROL) And (MouseButtons And 2) And comEdit=TRUE Then
       nroClick=1
       cursorVert = 1
       cursorHori = 1
-Print #1, "------------------------------------------------------------"      
-Print  #1,"(1) MultiKey(SC_CONTROL) And (MouseButtons And 2) And comEdit=TRUE"      
+  Print #1, "------------------------------------------------------------"      
+  Print  #1,"(1) MultiKey(SC_CONTROL) And (MouseButtons And 2) And comEdit=TRUE"      
    Print #1, "sc_CONTROL + MB2 + CE=TRUE <= ESTADO:CALL MENU COMANDO"
    Print  #1, " ayudaModif=TRUE"
-Print  #1," ayudaNuevaNota=FALSE"
-Print  #1," menuMouse = 0"
-Print  #1," nroClick=1 "
-Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+ Print  #1," ayudaNuevaNota=FALSE"
+ Print  #1," menuMouse = 0"
+ Print  #1," nroClick=1 "
+ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
       
       Exit Do
    
+ EndIf
 EndIf
-If (mouseButtons And 1 ) And ayudaModif=TRUE And nroClick = 1 And comedit=TRUE _ 
-    And ayudaNuevaNota=FALSE Then 'ESTADO: seleccionar comando
-   ayudaModif=FALSE
-   menumouse=0
-   posinterna=0
-   cursorVert = 1:cursorHori = 1
-Print #1, "------------------------------------------------------------"   
-Print  #1,"(2) (mouseButtons And 1 ) And ayudaModif=TRUE And nroClick = 1 And comedit=TRUE "   
-Print  #1,  "And ayudaNuevaNota=FALSE "   
+If  comEdit=TRUE And ayudaNuevaNota=FALSE And ayudaModif=TRUE Then 'ESTADO: seleccionar comando 
+  If (mouseButtons And 1 )  And nroClick = 1  Then 
+    
+    ayudaModif=FALSE
+    menumouse=0
+    posinterna=0
+    cursorVert = 1:cursorHori = 1
+  Print #1, "------------------------------------------------------------"   
+  Print  #1,"(2) (mouseButtons And 1 ) And ayudaModif=TRUE And nroClick = 1 And comedit=TRUE "   
+  Print  #1,  "And ayudaNuevaNota=FALSE "   
   Print  #1,"ESTADO: seleccionar comando "
-Print  #1," ayudaModif=FALSE"
-Print  #1," menumouse=0"
-Print  #1," posinterna=0"
-Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+  Print  #1," ayudaModif=FALSE"
+  Print  #1," menumouse=0"
+  Print  #1," posinterna=0"
+  Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
      
  ' Necesitamos mostrar el menu todavia  savemousex=0 : savemousey=0
-   If nroClick = 1 Then 'seleccionamos verticalmente ,,,,
-      nroClick=2
-      If (mousey >= usamousey -120) and  (mousey <= usamousey -100) Then
-         modifmouse=1 'borrar =1
-         Exit Do
-      EndIf
-      If (mousey >= usamousey -100) and  (mousey <= usamousey -70) Then
-         modifmouse=2 'INSERTAR
-         Exit Do
-      EndIf
-      If (mousey >= usamousey -70) and  (mousey <= usamousey -40) Then
-          modifmouse=3 'FIN INSERTAR
+    If nroClick = 1 Then 'seleccionamos verticalmente ,,,,
+       nroClick=2
+       If (mousey >= usamousey -120) and  (mousey <= usamousey -100) Then
+          modifmouse=1 'borrar =1
           Exit Do
-      EndIf
-      If (mousey >= usamousey -40) and  (mousey <= usamousey -10) Then
-         modifmouse=4 'CAMBIADUR=1 modificar
-         Exit DO
-      EndIf
+       EndIf
+       If (mousey >= usamousey -100) and  (mousey <= usamousey -70) Then
+          modifmouse=2 'INSERTAR
+          Exit Do
+       EndIf
+       If (mousey >= usamousey -70) and  (mousey <= usamousey -40) Then
+           modifmouse=3 'FIN INSERTAR
+           Exit Do
+       EndIf
+       If (mousey >= usamousey -40) and  (mousey <= usamousey -10) Then
+          modifmouse=4 'CAMBIADUR=1 modificar
+          Exit DO
+       EndIf
 
-   EndIf
+    EndIf
+  EndIf
 EndIf
-
 ' <===========   MODIFICACIONES INSERCION
 ' por ahor ainsercion con mouse funciona igual que con keys
 ' perola duracion entrpro tecldonos e porqu enotoma l demouse.
@@ -1741,8 +1734,9 @@ EndIf
 ' elcursor seguira al click izq por elcalculo de cursor en este comando
 ' finalmente se usalatecla END para finalizar todas las inserciones.
 ' debere agregr un nuevo comando END paraahcerlo con elmouse....
-If (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And comedit=TRUE Then
-    savemousex=0 : savemousey=0 ' JMG NUEVA
+If   comedit=TRUE And ayudaModif=FALSE Then 
+   If (mouseButtons And 1 )  And nroClick = 2  Then
+      savemousex=0 : savemousey=0 ' JMG NUEVA
     ' ESTADO: PREPARA COMANDO
 Print #1, "------------------------------------------------------------"    
 Print #1, "(3) (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And comedit=TRUE "
@@ -1799,10 +1793,12 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
             ayudaNuevaNota=TRUE 
             Exit Do
          EndIf
+   EndIf
 EndIf
 ''
 '                     <=== INICIO  O P I L F E W H
-If (MouseButtons And 2) and comedit= TRUE Then ''<=== menu de duraciones para seleccionar con click
+If  comedit= TRUE Then 
+  If (MouseButtons And 2)  Then ''<=== menu de duraciones para seleccionar con click
 ' el resto del code en CrearPenta(), para todaedicion lasduraciones 1 a 8 en letras                                
   ayudaNuevaNota=TRUE 'ESTADO: CALL MENU DURACIONES O CTRL-M
   ayudaModif =FALSE
@@ -1825,10 +1821,11 @@ Print  #1,"comEdit=TRUE "
 Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
  
   Exit Do
-EndIf
+  EndIf
+EndIf  
 ' YA VUELVE OK
-If (mouseButtons And 1 ) And ayudaModif=FALSE And comedit=TRUE _
-    And cursorVert = 1  And modifmouse <> 3 Then ' ESTADO: SELECCIONA VUELTA CTRL-P
+if comedit= TRUE And ayudaModif=FALSE Then
+  If (mouseButtons And 1 ) And cursorVert = 1  And modifmouse <> 3 Then ' ESTADO: SELECCIONA VUELTA CTRL-P
 Print #1, "------------------------------------------------------------"
 Print  #1,"(5) MB1  And AModif=FALSE And CE=TRUE  And CVert = 1 "   
 Print  #1,"5->ESTADO: SELECCIONA VUELTA CTRL-P"
@@ -1851,14 +1848,14 @@ Print  #1,"5-> ayudaModif=FALSE    savemousex=0 : savemousey=0  nroClick=0"
            Exit Do 
         EndIf
      EndIf
-      
+  endif      
 EndIf      
-
-If (mouseButtons And 1 ) And ayudaNuevaNota=TRUE And nroClick = 1 And comedit=TRUE _
-      And ayudaModif=FALSE Then ' ESTADO : SELECCIONA DURACION O CTRL-M
-   ayudaNuevaNota=FALSE
-   savemousex=0 : savemousey=0
-   menuMouse = 0
+If comedit=TRUE And ayudaModif=FALSE And ayudaNuevaNota=TRUE Then ' ESTADO : SELECCIONA DURACION O CTRL-M
+   If (mouseButtons And 1 )  And nroClick = 1  Then
+      
+    ayudaNuevaNota=FALSE
+    savemousex=0 : savemousey=0
+    menuMouse = 0
 Print #1, "------------------------------------------------------------"
 Print  #1,"(6) (mouseButtons And 1 ) And ayudaNuevaNota=TRUE And nroClick = 1 And comedit=TRUE "
 print   #1," 6->And ayudaModif=FALSE Then ' ESTADO : SELECCIONA DURACION O CTRL-M"
@@ -1910,11 +1907,13 @@ Print #1,"6-> ayudaModif=TRUE"
            DUR=8 
      EndIf  
      
-  EndIf  
-  
+   EndIf  
+ EndIf  
 EndIf   
- If DUR > 0 And nE > 0 And nroClick = 1 And ayudaNuevaNota=FALSE and comEdit=TRUE _ 
-            And ayudaModif=FALSE And modifmouse<> 3 Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
+
+if comEdit=TRUE And ayudaNuevaNota=FALSE And ayudaModif=FALSE Then
+  If DUR > 0 And nE > 0 And nroClick = 1 _ 
+            And modifmouse<> 3 Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
     nota=nE   ''<== 1er nota ingresada para la duracion y nota elegida
     nroClick=0
 Print #1, "------------------------------------------------------------"
@@ -1926,19 +1925,20 @@ Print  #1," 7->nota=nE   ", nE
 Print  #1," 7-> nroClick=0"
 Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
     
- EndIf 
- If (mouseButtons And 1) And (DUR > 0) And (nE > 0) And ayudaNuevaNota=FALSE _ 
-      And comEdit=TRUE And ayudaModif=FALSE And modifmouse<> 3 Then
+  EndIf 
+EndIf
+If comEdit=TRUE And ayudaModif=FALSE And ayudaNuevaNota=FALSE Then
+   If (mouseButtons And 1) And (DUR > 0) And (nE > 0) And modifmouse<> 3 Then
 Print #1, "------------------------------------------------------------"
 Print  #1,"(8) (mouseButtons And 1) And (DUR > 0) And (nE > 0) And ayudaNuevaNota=FALSE " 
 Print  #1,"(8)  And comEdit=TRUE And ayudaModif=FALSE" 
 Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn       
     nota=nE ' <=== ingresamos varias notas por mouse del mismo valor
  ' hasta que si vuelva a dar click derecho y aparesca de nuevo el menu de duraciones.    
-Print  #1," nota=nE ", nE
-   Exit Do 
- EndIf 
-
+    Print  #1," nota=nE ", nE
+     Exit Do 
+   EndIf 
+EndIf
 ''
 If MouseButtons And 1 Then
    old_btn_press_time = new_btn_press_time
@@ -2028,7 +2028,7 @@ EndIf
 Loop
 
 
-#Include "ROLLSUB.BI"
+#Include "ROLLSUB.BAS"
 errorhandler:
 Dim er As Integer 
 er = Err

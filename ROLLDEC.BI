@@ -6,16 +6,17 @@ declare Sub botones(hWnd As HWND,c As cairo_t Ptr,cm As cairo_t Ptr,x As Integer
 Declare Sub menuAcc (c AS cairo_t Ptr) 
 Declare Sub moveresto (ByVal StartInsert As integer,ByRef indaux as Integer, Byref insert As Integer,Byref nota As integer)
 Declare Sub movedato (ByVal StartInsert As Integer, ByRef indaux As Integer, Byref insert As Integer,Byref nota As integer)
-Declare function calcCompas(j As integer) As Integer  
+Declare sub calcCompas(j As Integer) 
 Declare Sub organizaCompases()
 ' 128 track,16 canales o sea cada canal con 8 voces
 Declare Sub cursor(c AS cairo_t Ptr, n As Integer,nro As Integer)
 'Declare Function print_text(ByVal x As Integer, ByVal y As Integer, ByRef text As String, _
 '        ByVal font As FT_Face, ByVal size As Integer, ByVal col As UInteger ) As Integer
+Declare Sub separarDur(j As Integer,DUR As Integer, partes() As Integer,  ByRef cantPartes As Integer, falta As Integer )
 
-Declare Sub menugrafico(c0 AS cairo_t Ptr,c AS cairo_t Ptr,Cantitems As Integer, items() As String )
+Declare Sub menugrafico(c0 AS cairo_t Ptr,c AS cairo_t Ptr, Cantitems As Integer, items() As String )
  
-Dim Shared nro As Integer '''borrar despues jmg ja quedo 
+Dim Shared As Integer nro, acumulado  
 Dim Shared As Integer vroll, vdur ' borrar
 Dim Shared as ubyte  notasInsertadas (1 to 1500) 
 
@@ -23,10 +24,10 @@ Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, c
 Dim shared As integer Penta_y, indice, posicion,posicionOld, nota,espacio,posn,cursorHori  
 Dim shared as integer estoyEnOctava, backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow
-Dim Shared As Integer octavas 
+Dim Shared As Integer octavas,  jc,ic,id  
 dim Shared as string cromatica(1 to 12) 
 dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
-Dim Shared As Integer DUR, menuAccion,insert,notins,durResto,DUR2 
+Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas
 Dim Shared NotasGuia (1 To 12) As String * 2 => _
  {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"} 
 Dim  Shared figura (1 To 82) As String * 3 => _
@@ -53,9 +54,20 @@ Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
 ' ej tecleo 1+.+A=O* en linea A dela octava que sea
 ' ej tecleo s+1+.+A =sO* en A..
 ' tambien en vez de estos simbolos usare los de un pentagrama comun,,,,futuro
-Dim Shared As BOOLEAN ayuda, ayudaNuevaNota, ayudaModif, vuelta,haycompas,dobleclick
-haycompas=>FALSE
+Dim Shared As BOOLEAN ayuda, ayudaNuevaNota, ayudaModif, vuelta,dobleclick
+haycompas=0
 dobleclick=>FALSE
+
+Const  d7 As Integer => 10000000
+Type cs
+  dur As Integer
+  peso As Integer 
+End Type
+Dim Shared As cs  buffCompas_1(1 To 128) ' analisis de compas corriete
+Dim Shared As cs  buffCompas_2(1 To 128) ' analisis de compas corriete
+
+' comienza el compas , se calculara dinamicamente,,,según posicion  y la historia anterior
+' del mismo array (acumulado, nro Compas, posicion)
 
 espacio=0:cursorVert=0:borrar=0:cambiadur=0:InicioDeLectura=0
 menuAccion=0:insert=0:agregarNota=0:octavas=0
