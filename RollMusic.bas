@@ -26,8 +26,8 @@
 ' de un existente 
 'meta futura -> COPIAR ZONAS DE 1 OCTAVA O TODAS EN OTRO LADO..ESE SERA 0.5.7.4.0 
 
-'Open "midebug.txt" for Output As #1
-Open cons  for Output As #1
+Open "midebug.txt" for Output As #1
+''Open cons  for Output As #1
 
 ''Open "figuras.txt" For Output As #1
 
@@ -212,7 +212,8 @@ po = @octava
 *po = 8
 s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0':s8=0:s9=0
 font=18
-Dim e As EVENT
+Dim Shared e As EVENT
+Dim Shared rmerr As Integer 
 
 indaux=0:carga=0
 ' -----------------------------------------------------------------------
@@ -283,6 +284,7 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 '----- -FIN
 ' ancho de figura,separaciondelasmismas en pantalla anchofig
 '' ---------------  LOOP 1 ---------------
+On Error Goto errorhandler:
 Do 
 
 edity1 = 15 ' botton Edit bordeSup
@@ -1256,7 +1258,9 @@ EndIf
           EndIf
         EndIf
         mayorDurEnUnaPosicion (posn)
-        
+       '   rmerr = Err
+       '  Print #1,"Nucleo Error "; rmerr
+
         nota = 0 
 
 
@@ -2031,11 +2035,41 @@ Loop
 
 #Include "ROLLSUB.BAS"
 errorhandler:
-Dim er As Integer 
+Dim as Integer er, ErrorNumber, ErrorLine 
 er = Err
-Print #1,"Error detected ", er
+Print #1,"Error detected ", er, posicion, MaxPos
 Print #1,Erl, Erfn,Ermn,Err
- Close 1
+ 
+Print #1,"------------------------------------"
+ErrorNumber = ERR
+ErrorLine = ERL
+DIM As String ProgError(0 To 17)
+
+ProgError(0) = "No error"
+ProgError(1) = "Illegal function call"
+ProgError(2) = "File not found signal"
+ProgError(3) = "File I/O error"
+ProgError(4) = "Out of memory"
+ProgError(5) = "Illegal resume"
+ProgError(6) = "Out of bounds array access"
+ProgError(7) = "Null Pointer Access"
+ProgError(8) = "No privileges"
+ProgError(9) = "interrupted signal"
+ProgError(10) = "illegal instruction signal"
+ProgError(11) = "floating point error signal "
+ProgError(12) = "segmentation violation signal"
+ProgError(13) = "Termination request signal"
+ProgError(14) = "abnormal termination signal"
+ProgError(15) = "quit request signal"
+ProgError(16) = "return without gosub"
+ProgError(17) = "end of file"
+
+
+PRINT #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
+Print #1,"Error Function: "; *Erfn()
+CLOSE 1
+CLS
+
  
 
 

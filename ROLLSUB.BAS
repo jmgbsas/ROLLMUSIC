@@ -62,7 +62,11 @@ For semitono = 1 To 12
   t = NotasGuia(semitono) + Str(*octava) + "_["
   cairo_move_to(c, 0, Penta_y + semitono * inc_Penta- 6)
   cairo_show_text(c, t)
+  t= ""
   ic=0 'indice cursor 'donde se dibujara la duracion
+  Dim As Integer n,indf
+  
+ 
   For n = posishow To posishow + NroCol 
     
     If Roll.trk (semitono + (nro-1) * 13, n  ).nota > 0 Or _
@@ -75,18 +79,21 @@ For semitono = 1 To 12
              s7=0
           EndIf
        cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 4)
-       t= figura((Roll.trk (semitono + (nro-1) * 13, n).dur))
+       indf= Roll.trk (semitono + (nro-1) * 13, n).dur
+       If (indf >= 1 And indf <= 82) then
+         t= figura((Roll.trk (semitono + (nro-1) * 13, n).dur))
+       EndIf
        cairo_show_text(c, t)
        Print #1,t;
 ' LINEAS DE COMPAS
        'sitio=nposishow+ ic
-       
-       If Compas(n) = n  Then ' ahi hy un corte un nuevo compas
+       If n >0 And n <= CantTicks Then
+         If Compas(n) = n  Then ' ahi hy un corte un nuevo compas
            cairo_move_to(c,81 + (ic ) *anchofig +anchofig , Penta_y)
            cairo_line_to(c,81 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta - 6)
            Print #1, "|";
+         EndIf
        EndIf
-  
        cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 6) 
        ic += 1
     Else      
@@ -94,11 +101,14 @@ For semitono = 1 To 12
     EndIf
     'con ic * 40 es + 32 osea ic * 40 + 32
   Next n
-  Print #1,
+'Else
+'Print #1, " n= ";n; " posn=";posn;" MaxPos=";MaxPos;" Posishow=";Posishow  
+'EndIf  
   
   If n  > MAXPos Then 
      MaxPos = n     
   EndIf
+
 '--------TRAZADI DE LINEAS VERTICALES GUIA DE COMPAS 1ERA VERSION 
    
 '------------------------
@@ -293,6 +303,7 @@ EndIf
 End Sub 
 ''========================= C U R S O R ============
 Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
+'Print #1,"1-cursor "
  cairo_set_source_rgba c, 1, 1, 0.2, 1
  
  'cairo_set_line_width(c, 1)
@@ -464,6 +475,7 @@ Sub Tracks (nroTrack As UByte, nroCanal As UByte)
 End Sub
 '-------------------------------MENU----------
 Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
+''Print #1,"1-menu "
  Dim As cairo_font_extents_t fe   '     font data
  Dim As cairo_text_extents_t te  '      text size
  Dim  As Double Ptr xo,yo
@@ -671,10 +683,10 @@ Select Case menuNro
               If i=1 And DUR >= 1 And DUR <=8 Then 
                 mayor=DUR
               EndIf
-              'Print #1, "PUTO DUR mayor";DUR, mayor
+              'Print #1, "DUR mayor";DUR, mayor
               If DUR < mayor And DUR >= 1 And DUR <= 8 Then ' las duraciones cuando mas
                  mayor=DUR
-            ' Print #1, "PUTO DUR MAYOR";DUR,mayor
+            ' Print #1, " DUR MAYOR";DUR,mayor
               EndIf
               If i=NA Then
                 DUR=mayor 
@@ -686,6 +698,7 @@ Select Case menuNro
              Next i
           Next j 
         Close 2
+      
         DUR => 0
         curpos =>0
     
@@ -1192,6 +1205,7 @@ cairo_stroke(cm)
 End Sub
 '
 Sub calcCompas( ByRef j As Integer)
+Print #1,"1-calcCompas "
 Dim As Integer k, i,cantFalta,CantSobra, tengo, falta,sobra
     
 If j= 1 Then ' 128 es el maximo de ticks de un compas se agregan amspara terminared analizar elcompas
@@ -1200,13 +1214,13 @@ If j= 1 Then ' 128 es el maximo de ticks de un compas se agregan amspara termina
  acumulado=0
  jc=j
 EndIf
-
+Print #1,"1-calcCompas 2"
 If jc > 128 Then
  id=1
  ' procesar el resto que sobra luego de 129 en el buffer 2 
 EndIf
  Dim As Integer partes_falta (1 To 10), partes_sobra(1 To 10) 
-
+Print #1,"1-calcCompas 3"
 For k=1 To 16 
   If DUR=k  Then
    ' buffCompas_1(jc).dur=k
@@ -1217,13 +1231,15 @@ For k=1 To 16
       'Erase (buffCompas_1)
       acumulado=0
       jc=1
+      Print #1,"1-calcCompas 3.1"
       Exit Sub
     EndIf
     If acumulado < d7 Then
       Compas(j)=0
+      Print #1,"1-calcCompas 3.2"
       Exit Sub
     EndIf
-    Print #1,"acumulado ";acumulado
+    Print #1,"1-calcCompas acumulado 3.3 ";acumulado
     If acumulado > d7 Then
        ' hayCompas=TRUE stand by
        Print #1,"acumulado > d7"
@@ -1239,10 +1255,11 @@ For k=1 To 16
        separarDur(j,DUR, partes_sobra(),cantSobra,sobra)
        Print #1,"CantSobra ";CantSobra
     EndIf
+    Print #1,"1-calcCompas 3.4"
     Exit For  
   EndIf
 Next k  
-
+Print #1,"1-calcCompas 4"
 
 'acumulado=0
 ' la ultima nota a cortar se ha cargado es la quese reemplaza de este modo
@@ -1250,6 +1267,7 @@ Next k
 ' para imitar su comportamiento...el programa introduce auomaticamente las
 ' figuras de reemplazo y haria el corte ....   
 If CantFalta > 0 Then  ' empezamos el reemplazo en el vector desde posn
+  Print #1,"Cantfalta ";CantFalta
   For k=1 To CantFalta
     If partes_falta(k)>= 1 And partes_falta(k) <=8 Then
        partes_falta(k)=partes_falta(k) +34
@@ -1282,8 +1300,9 @@ If CantFalta > 0 Then  ' empezamos el reemplazo en el vector desde posn
   Next k 
 End If
 
-
+Print #1,"1-calcCompas 5"
 If cantSobra > 0 Then
+Print #1,"CantSobra ";CantSobra
 For k=1 To CantSobra
    If k < CantSobra Then
       If partes_sobra(k)>= 1 And partes_sobra(k) <=8 Then
@@ -1316,15 +1335,16 @@ posicion = posn
 MaxPos= Posicion
 
 Next k 
-
+Print #1,"1-calcCompas 6"
 acumulado=sobra
 
 EndIf
 ' fin compases             
-
+Print #1,"1-calcCompas 7"
 End Sub
 
-Sub separarDur(ByRef j As Integer, ByRef DUR As Integer,partes() As Integer, ByRef cantPArtes As Integer, ByRef falta As Integer) 
+Sub separarDur(ByRef j As Integer, ByRef DUR As Integer,partes() As Integer, ByRef cantPArtes As Integer, ByRef falta As Integer)
+Print #1,"1-Separadur " 
 Dim As Integer lb,lu,k,tengo,sobra, falta1,acumx
 Print #1,"EN SEPARADUR-------------------------------------------------"
 lb=LBound(partes)
@@ -1334,9 +1354,11 @@ falta1=falta
 Print #1,"FALTA RECIBIDO ";FALTA1
 
 For k=1 To 16
- If falta=k Then
+ If falta=pesoDur(k) Then
     partes(lb)=k
-    Compas(j)=j
+    Compas(j)=j ' hay compas 
+    Print #1,"falta encontrado hy compas";k
+    CantPartes =lb
     Exit Sub
  EndIf
 Next k
@@ -1372,6 +1394,7 @@ EndIf
 End Sub
 
 Sub mayorDurEnUnaPosicion (ByRef posn as integer)
+Print #1,"1-MayorDurEnUnaPosicion  "
 Dim As Integer i, j,mayor,ia
 'DUR mayor para una dada posicion 
           mayor=99
@@ -1399,6 +1422,7 @@ Dim As Integer i, j,mayor,ia
 
 End Sub
 Sub organizaCompases()
+Print #1,"1-organiza Compases "
 Dim j As Integer
     For j = 1 To MAxPos
       MayorDurEnUnaPosicion (j)
