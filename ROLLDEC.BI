@@ -1,18 +1,19 @@
 'miscroll_declare
-Declare Sub creaPenta (c AS cairo_t Ptr, nro As Integer, po as Integer Ptr, InicioDeLectura As integer)
+Declare Sub creaPenta (c AS cairo_t Ptr, ByRef nro As Integer, ByRef po as Integer Ptr, InicioDeLectura As integer)
 Declare Sub Tracks (nroTrack As UByte, nroCanal As UByte)
 Declare Sub menu (c0 AS cairo_t Ptr,c AS cairo_t Ptr,n As Integer,menuNro As Integer)
 declare Sub botones(hWnd As HWND,c As cairo_t Ptr,cm As cairo_t Ptr,x As Integer,y As integer) 
 Declare Sub menuAcc (c AS cairo_t Ptr) 
 Declare Sub moveresto (ByVal StartInsert As integer,ByRef indaux as Integer, Byref insert As Integer,Byref nota As integer)
 Declare Sub movedato (ByVal StartInsert As Integer, ByRef indaux As Integer, Byref insert As Integer,Byref nota As integer)
-Declare sub calcCompas(j As Integer) 
+Declare sub calcCompas(ByRef j As Integer) 
+Declare Sub mayorDurEnUnaPosicion (ByRef posn as integer)
 Declare Sub organizaCompases()
 ' 128 track,16 canales o sea cada canal con 8 voces
-Declare Sub cursor(c AS cairo_t Ptr, n As Integer,nro As Integer)
+Declare Sub cursor(c AS cairo_t Ptr, ByRef n As Integer, ByRef nro As Integer)
 'Declare Function print_text(ByVal x As Integer, ByVal y As Integer, ByRef text As String, _
 '        ByVal font As FT_Face, ByVal size As Integer, ByVal col As UInteger ) As Integer
-Declare Sub separarDur(j As Integer,DUR As Integer, partes() As Integer,  ByRef cantPartes As Integer, falta As Integer )
+Declare Sub separarDur(ByRef j As Integer,ByRef DUR As Integer,  partes() As Integer,  ByRef cantPartes As Integer, ByRef falta As Integer )
 
 Declare Sub menugrafico(c0 AS cairo_t Ptr,c AS cairo_t Ptr, Cantitems As Integer, items() As String )
  

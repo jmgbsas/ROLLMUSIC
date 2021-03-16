@@ -1,4 +1,4 @@
-Sub creaPenta (c As cairo_t Ptr,nro As Integer, octava As Integer Ptr,InicioDeLectura As Integer)
+Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer Ptr, InicioDeLectura As Integer)
 
 Dim As cairo_font_extents_t fe   '     font data
 Dim As cairo_text_extents_t te  '      text size
@@ -77,12 +77,14 @@ For semitono = 1 To 12
        cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 4)
        t= figura((Roll.trk (semitono + (nro-1) * 13, n).dur))
        cairo_show_text(c, t)
+       Print #1,t;
 ' LINEAS DE COMPAS
        'sitio=nposishow+ ic
        
        If Compas(n) = n  Then ' ahi hy un corte un nuevo compas
            cairo_move_to(c,81 + (ic ) *anchofig +anchofig , Penta_y)
            cairo_line_to(c,81 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta - 6)
+           Print #1, "|";
        EndIf
   
        cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 6) 
@@ -92,6 +94,8 @@ For semitono = 1 To 12
     EndIf
     'con ic * 40 es + 32 osea ic * 40 + 32
   Next n
+  Print #1,
+  
   If n  > MAXPos Then 
      MaxPos = n     
   EndIf
@@ -288,7 +292,7 @@ EndIf
 
 End Sub 
 ''========================= C U R S O R ============
-Sub cursor(c As cairo_t Ptr,n As Integer, nro As Integer)
+Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
  cairo_set_source_rgba c, 1, 1, 0.2, 1
  
  'cairo_set_line_width(c, 1)
@@ -334,7 +338,7 @@ If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
      Roll.trk(notacur + (nro-1) * 13, n +curpos).dur = 33
   EndIf
   borrar = 0
-  organizaCompases()    
+  mayorDurEnUnaPosicion (n)    
 EndIf 
 ' << CAMBIADUR TAMBIEN INGRESA NOTA NUEVA Y DURACION DONDE NO HABIA >>
 ' << SOBREESCRIBE >>  
@@ -356,32 +360,32 @@ If (cursorHori=1 Or cursorVert = 1) And cambiadur= 1 Then
 ' ------------------------------------
         If pun  = 0 And sil=0 Then ' no hay puntillo ni silencio
            Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR 
-           vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
+        '   vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
            Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
-           vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
+        '   vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
            cambiadur = 0   
 
         Else 
           If pun = 1 And sil=0 Then
            Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 8 
-           vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
+        '   vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
            Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
-           vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
+        '   vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
            cambiadur = 0   
            pun=0
           Else 
             If sil = 1 And pun=0 Then
            Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 16 
-           vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
+        '   vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
            Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
-           vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
+        '   vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
            cambiadur = 0   
            sil=0
             Else ' sil=1 and pun=1
               Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR +24 
               vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
               Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2 
-              vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
+        '      vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
               cambiadur = 0   
               sil=0:pun=0
 
@@ -394,7 +398,7 @@ If (cursorHori=1 Or cursorVert = 1) And cambiadur= 1 Then
             EndIf
           EndIf
         EndIf
-        
+        organizaCompases()
         nota = 0 
 
 ' fin nuevaversion   
@@ -1187,7 +1191,7 @@ cairo_stroke(cm)
   
 End Sub
 '
-Sub calcCompas( j As Integer)
+Sub calcCompas( ByRef j As Integer)
 Dim As Integer k, i,cantFalta,CantSobra, tengo, falta,sobra
     
 If j= 1 Then ' 128 es el maximo de ticks de un compas se agregan amspara terminared analizar elcompas
@@ -1312,17 +1316,15 @@ posicion = posn
 MaxPos= Posicion
 
 Next k 
-''posn = posn - CantSobra -1 'aver si asi vuelve a calculr las 2 de sobra parael prox compas¿?
-' nofunca retrocediendo ni poniendo el acummlado mmm¿? 
-DUR=0
-acumulado=0
+
+acumulado=sobra
 
 EndIf
 ' fin compases             
 
 End Sub
 
-Sub separarDur(j As Integer, DUR As Integer,partes() As Integer, ByRef cantPArtes As Integer,falta As Integer) 
+Sub separarDur(ByRef j As Integer, ByRef DUR As Integer,partes() As Integer, ByRef cantPArtes As Integer, ByRef falta As Integer) 
 Dim As Integer lb,lu,k,tengo,sobra, falta1,acumx
 Print #1,"EN SEPARADUR-------------------------------------------------"
 lb=LBound(partes)
@@ -1369,10 +1371,11 @@ EndIf
  
 End Sub
 
-Sub organizaCompases()
-Dim As Integer i,j , mayor,ia
+Sub mayorDurEnUnaPosicion (ByRef posn as integer)
+Dim As Integer i, j,mayor,ia
+'DUR mayor para una dada posicion 
           mayor=99
-           For j = 1 To MaxPos
+            j = posn 
              For i= NB To NA
               DUR => Roll.trk(i,j).dur
               If i=1 And DUR >= 1 And DUR <=16 Then 
@@ -1385,15 +1388,21 @@ Dim As Integer i,j , mayor,ia
               EndIf
               If i=NA Then
                 DUR=mayor 
-                Print #1,"          J, DUR MAYOR: "; J, DUR
+                Print #1,"       ORGANIZA COMPASES   J, DUR MAYOR: "; J, DUR
               calcCompas(j)
-                DUR=0
+                
                 mayor=99
               EndIf
              Next i
-          Next j  
+            
 ' fin compases             
 
+End Sub
+Sub organizaCompases()
+Dim j As Integer
+    For j = 1 To MAxPos
+      MayorDurEnUnaPosicion (j)
+    Next j
 End Sub
 
 Sub menugrafico(c0 As cairo_t Ptr,c As cairo_t Ptr ,Cantitems As Integer, text() As String  )

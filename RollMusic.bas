@@ -26,8 +26,8 @@
 ' de un existente 
 'meta futura -> COPIAR ZONAS DE 1 OCTAVA O TODAS EN OTRO LADO..ESE SERA 0.5.7.4.0 
 
-Open "midebug.txt" for Output As #1
-'Open cons  for Output As #1
+'Open "midebug.txt" for Output As #1
+Open cons  for Output As #1
 
 ''Open "figuras.txt" For Output As #1
 
@@ -184,7 +184,7 @@ AltoInicial=ALTO
 anchofig=35
 NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
 
-ScreenControl  SET_DRIVER_NAME,"Directx" ' le da foco a la aplicacion si uso GDI
+ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion si uso GDI
 ' pero llamando al programa con winExec con opcion SW_RESTORE no hay necesidad 
 ' y puedousar  directx!!
 
@@ -202,7 +202,7 @@ ScreenControl GET_WINDOW_POS, x0, y0
 
 ''ScreenControl SET_WINDOW_POS, 10,10
 'ScreenControl 103,"Directx" ' cambio ja
-' CAIRO NO SOPORTA LA ï¿½!!! ESO ERA TODO!!!!
+' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
 Dim As Integer i, octava, posmouse, posmouseOld,incWheel, altofp11,edity1,edity2
 altofp11=ALTO:posmouseOld = 0:posmouse = 0
 Dim Shared As BOOLEAN comEdit, resize
@@ -807,7 +807,7 @@ If MultiKey(SC_L)  Then ' <======== load Roll
           If i=NA Then
              DUR = mayor 
              calcCompas(j)
-             DUR=0
+             'DUR=0
           EndIf
 'se copian todoslos miembros del type automaticamente. 
           Next i
@@ -1255,7 +1255,8 @@ EndIf
             EndIf
           EndIf
         EndIf
-        calcCompas( posn )
+        mayorDurEnUnaPosicion (posn)
+        
         nota = 0 
 
 
@@ -1446,7 +1447,7 @@ If (ScreenEvent(@e)) Then
  ' ,insert comando habilitado = 1
  '  insert 3 fin reemplazos comienzo de move total
     insert=0:indaux=0
-     organizaCompases()
+     mayorDurEnUnaPosicion (posn)
     EndIf
   EndIf
   
@@ -1561,8 +1562,8 @@ EndIf
      '       Print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
             font = 18
             curpos=0
-            'posicion=posicion+incFalse
-             organizaCompases()
+            'mayorDurEnUnaPosicion (posn)
+             
             Exit Do
            Else
             comEdit = FALSE : s3 = 0 ' solo LECTURA
@@ -1805,7 +1806,7 @@ If  comedit= TRUE Then
   savemousex=0 : savemousey=0 ''ACA NO ¿?
   vuelta=FALSE
   menuMouse = 0
-  'DUR=0
+  
   nroClick=1
 Print #1, "------------------------------------------------------------"
 Print #1,"(MouseButtons And 2) and comedit= TRUE"
