@@ -85,8 +85,8 @@ CantMin=15
 'NotaBaja=1 : NotaAlta=128
 
 Dim ix As Integer 
-Print #1, "__FB_ARGV__ ",__FB_ARGV__
-Print #1, "__FB_ARGC__ ",__FB_ARGC__
+'Print #1, "__FB_ARGV__ ",__FB_ARGV__
+'Print #1, "__FB_ARGC__ ",__FB_ARGC__
 Dim direp As zstring  Ptr
 Dim dires As String 
 
@@ -768,7 +768,7 @@ if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
 
 EndIf
 ' cargar Roll y MaxPos de disco 
-
+/'
 If MultiKey(SC_L)  Then ' <======== load Roll
      Erase Roll.TRK
       Dim z (1,1 )  As dat
@@ -820,7 +820,7 @@ If MultiKey(SC_L)  Then ' <======== load Roll
     carga=1 ' <======= control de Carga
  ' colocar algo visual que indique quesehizo la grabcion
 EndIf
-
+'/
 if Multikey (SC_F12) Then
  dim as integer i1, i2
  ' testeo solo en la 1er octva por ahora
@@ -1257,7 +1257,8 @@ EndIf
             EndIf
           EndIf
         EndIf
-        mayorDurEnUnaPosicion (posn)
+        ' mayorDurEnUnaPosicion (posn) quedo <--defectuoso 
+          calcCompas(posn)
        '   rmerr = Err
        '  Print #1,"Nucleo Error "; rmerr
 
@@ -1451,7 +1452,7 @@ If (ScreenEvent(@e)) Then
  ' ,insert comando habilitado = 1
  '  insert 3 fin reemplazos comienzo de move total
     insert=0:indaux=0
-     mayorDurEnUnaPosicion (posn)
+    calcCompas(posn) '' mayorDurEnUnaPosicion (posn)
     EndIf
   EndIf
   
@@ -1567,7 +1568,7 @@ EndIf
             font = 18
             curpos=0
             'mayorDurEnUnaPosicion (posn)
-             
+            '' calcCompas(pos)
             Exit Do
            Else
             comEdit = FALSE : s3 = 0 ' solo LECTURA
@@ -1699,14 +1700,14 @@ If  comEdit=TRUE And ayudaNuevaNota=FALSE And ayudaModif=TRUE Then 'ESTADO: sele
     menumouse=0
     posinterna=0
     cursorVert = 1:cursorHori = 1
-  Print #1, "------------------------------------------------------------"   
-  Print  #1,"(2) (mouseButtons And 1 ) And ayudaModif=TRUE And nroClick = 1 And comedit=TRUE "   
-  Print  #1,  "And ayudaNuevaNota=FALSE "   
-  Print  #1,"ESTADO: seleccionar comando "
-  Print  #1," ayudaModif=FALSE"
-  Print  #1," menumouse=0"
-  Print  #1," posinterna=0"
-  Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+'  Print #1, "------------------------------------------------------------"   
+'  Print  #1,"(2) (mouseButtons And 1 ) And ayudaModif=TRUE And nroClick = 1 And comedit=TRUE "   
+'  Print  #1,  "And ayudaNuevaNota=FALSE "   
+'  Print  #1,"ESTADO: seleccionar comando "
+'  Print  #1," ayudaModif=FALSE"
+'  Print  #1," menumouse=0"
+'  Print  #1," posinterna=0"
+'  Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
      
  ' Necesitamos mostrar el menu todavia  savemousex=0 : savemousey=0
     If nroClick = 1 Then 'seleccionamos verticalmente ,,,,
@@ -1743,17 +1744,17 @@ If   comedit=TRUE And ayudaModif=FALSE Then
    If (mouseButtons And 1 )  And nroClick = 2  Then
       savemousex=0 : savemousey=0 ' JMG NUEVA
     ' ESTADO: PREPARA COMANDO
-Print #1, "------------------------------------------------------------"    
-Print #1, "(3) (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And comedit=TRUE "
-Print #1, " ESTADO: PREPARA COMANDO"    
+'Print #1, "------------------------------------------------------------"    
+'Print #1, "(3) (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And comedit=TRUE "
+'Print #1, " ESTADO: PREPARA COMANDO"    
             notacur=nE
             curpos= Int((mousex - 81)/20) 
             posishow= curpos  + 1 ' NO CAUSA EL +1 EN MODIF MOUSE 03-03-21-15:10
-Print #1, " savemousex=0 : savemousey=0 ' JMG NUEVA" 
-Print #1, " notacur=nE"
-Print #1,"curpos= Int((mousex - 81)/20)" 
-Print #1," posishow= curpos + 1" 
-Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+'Print #1, " savemousex=0 : savemousey=0 ' JMG NUEVA" 
+'Print #1, " notacur=nE"
+'Print #1,"curpos= Int((mousex - 81)/20)" 
+'Print #1," posishow= curpos + 1" 
+'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
  
          If modifmouse=1 Then  ' anda ok 27 02 2021
             BORRAR=1
@@ -1763,16 +1764,16 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
          If modifmouse=2 And insert= 0 Then
             INSERT=1
             indaux=0
-            print #1,">>>SC_INSERT ajust STARTINSERT ", StartInsert
+ '           print #1,">>>SC_INSERT ajust STARTINSERT ", StartInsert
            If indaux=0 Then ' no haria falta todas las demas inserciones se deben 
     'hacer con I no volver a repetir SC_INSERT sino se pulso SC_END    
               StartInsert = posicion + curpos  ' guardo sin modificar el comienzo xxx ok
            EndIf
-           print #1,">>>SC_INSERT  despues ajuste STARTINSERT ", StartInsert 
+ '          print #1,">>>SC_INSERT  despues ajuste STARTINSERT ", StartInsert 
            Erase (RollAux.trk) ' borro lo que habia en el auxiliar
            Erase (notasInsertadas) 
            notins=0
-           Print #1, ">>>SC_INSERT insert indaux borro RollAux.trk: ",insert,indaux
+ '          Print #1, ">>>SC_INSERT insert indaux borro RollAux.trk: ",insert,indaux
     'sigue el proceso en RollSub->sub cursor 
            ' nroclick=0
             Exit Do
@@ -1812,18 +1813,18 @@ If  comedit= TRUE Then
   menuMouse = 0
   
   nroClick=1
-Print #1, "------------------------------------------------------------"
-Print #1,"(MouseButtons And 2) and comedit= TRUE"
- Print  #1,"(4) ESTADO: CALL MENU DURACIONES O CTRL-M"  
-Print  #1," ayudaNuevaNota=TRUE "
-Print  #1," ayudaModif =FALSE"
-Print  #1," savemousex=0 : savemousey=0 "
-Print  #1,"  vuelta=FALSE"
-Print  #1,"  menuMouse = 0"
-Print  #1,"  DUR=0"
-Print  #1,"  nroClick=1"
-Print  #1,"comEdit=TRUE "
-Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+'Print #1, "------------------------------------------------------------"
+'Print #1,"(MouseButtons And 2) and comedit= TRUE"
+' Print  #1,"(4) ESTADO: CALL MENU DURACIONES O CTRL-M"  
+'Print  #1," ayudaNuevaNota=TRUE "
+'Print  #1," ayudaModif =FALSE"
+'Print  #1," savemousex=0 : savemousey=0 "
+'Print  #1,"  vuelta=FALSE"
+'Print  #1,"  menuMouse = 0"
+'Print  #1,"  DUR=0"
+'Print  #1,"  nroClick=1"
+'Print  #1,"comEdit=TRUE "
+'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
  
   Exit Do
   EndIf
@@ -1831,11 +1832,11 @@ EndIf
 ' YA VUELVE OK
 if comedit= TRUE And ayudaModif=FALSE Then
   If (mouseButtons And 1 ) And cursorVert = 1  And modifmouse <> 3 Then ' ESTADO: SELECCIONA VUELTA CTRL-P
-Print #1, "------------------------------------------------------------"
-Print  #1,"(5) MB1  And AModif=FALSE And CE=TRUE  And CVert = 1 "   
-Print  #1,"5->ESTADO: SELECCIONA VUELTA CTRL-P"
-Print  #1,"  vuelta=TRUE" 
-Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+'Print #1, "------------------------------------------------------------"
+'Print  #1,"(5) MB1  And AModif=FALSE And CE=TRUE  And CVert = 1 "   
+'Print  #1,"5->ESTADO: SELECCIONA VUELTA CTRL-P"
+'Print  #1,"  vuelta=TRUE" 
+'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
     
      vuelta=TRUE 
      If mousey <= usamousey -40  And mousey >= usamousey -60 Then
@@ -1847,8 +1848,8 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
               modifmouse=0
               nota=0 ' jmg 03-03-21 22:28 sino le sumaba 1 a Posicion 
               ' y trataba de insertarla.....como nota nueva
-Print  #1,"5-> ctrl-p=> cursorVert = 0: cursorHori = 0: agregarNota=0:  menuMouse = 0"
-Print  #1,"5-> ayudaModif=FALSE    savemousex=0 : savemousey=0  nroClick=0"
+'Print  #1,"5-> ctrl-p=> cursorVert = 0: cursorHori = 0: agregarNota=0:  menuMouse = 0"
+'Print  #1,"5-> ayudaModif=FALSE    savemousex=0 : savemousey=0  nroClick=0"
               
            Exit Do 
         EndIf
@@ -1861,15 +1862,15 @@ If comedit=TRUE And ayudaModif=FALSE And ayudaNuevaNota=TRUE Then ' ESTADO : SEL
     ayudaNuevaNota=FALSE
     savemousex=0 : savemousey=0
     menuMouse = 0
-Print #1, "------------------------------------------------------------"
-Print  #1,"(6) (mouseButtons And 1 ) And ayudaNuevaNota=TRUE And nroClick = 1 And comedit=TRUE "
-print   #1," 6->And ayudaModif=FALSE Then ' ESTADO : SELECCIONA DURACION O CTRL-M"
-Print  #1,"(6)MB1  +d ANN=TRUE + NClick = 1 + CE=TRUE + ayudaModif=FALSE"   
-Print  #1,"(6)ESTADO : SELECCIONA DURACION O CTRL-M , nroClick ", nroClick
-Print  #1," 6 out-> ayudaNuevaNota=FALSE"
-Print  #1,"  savemousex=0 : savemousey=0"
-print  #1,"  menuMouse = 0"
-Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+'Print #1, "------------------------------------------------------------"
+'Print  #1,"(6) (mouseButtons And 1 ) And ayudaNuevaNota=TRUE And nroClick = 1 And comedit=TRUE "
+'print   #1," 6->And ayudaModif=FALSE Then ' ESTADO : SELECCIONA DURACION O CTRL-M"
+'Print  #1,"(6)MB1  +d ANN=TRUE + NClick = 1 + CE=TRUE + ayudaModif=FALSE"   
+'Print  #1,"(6)ESTADO : SELECCIONA DURACION O CTRL-M , nroClick ", nroClick
+'Print  #1," 6 out-> ayudaNuevaNota=FALSE"
+'Print  #1,"  savemousex=0 : savemousey=0"
+'print  #1,"  menuMouse = 0"
+'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 
 ' ACA SERA LA ENTRADA POR MOUSE, DUR SALDRÁ DE LA ELECCION DEL MENU DE DURACION
 ' QUE APARECE CON CLICK DERCHO UBICAMOS LA POSICION RELATIVA Y OBTENEMOS LA DURACION
@@ -1880,8 +1881,8 @@ Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 ' ESTADO:SELECCION  CTRL-M
            cursorVert = 1: cursorHori = 1: agregarNota=0:  menuMouse = 0
          ''  ayudaModif=TRUE jmg elmenu no debe aparecer hasta dar ctrl-click derecho
-Print #1,"6 ctrl-M ->cursorVert = 1: cursorHori = 1: agregarNota=0:  menuMouse = 0 "
-Print #1,"6-> ayudaModif=TRUE"
+'Print #1,"6 ctrl-M ->cursorVert = 1: cursorHori = 1: agregarNota=0:  menuMouse = 0 "
+'Print #1,"6-> ayudaModif=TRUE"
            
            Exit Do 
         EndIf
@@ -1921,26 +1922,26 @@ if comEdit=TRUE And ayudaNuevaNota=FALSE And ayudaModif=FALSE Then
             And modifmouse<> 3 Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
     nota=nE   ''<== 1er nota ingresada para la duracion y nota elegida
     nroClick=0
-Print #1, "------------------------------------------------------------"
-Print  #1," DUR > 0 And nE > 0 And nroClick = 1 And ayudaNuevaNota=FALSE and comEdit=TRUE " 
-Print  #1," And ayudaModif=FALSE " 
-Print  #1," (7) ESTADO INGRESA O MODIFICA 1ER NOTA"
-Print  #1," 7-><== 1er nota ingresada para la duracion y nota elegida"
-Print  #1," 7->nota=nE   ", nE 
-Print  #1," 7-> nroClick=0"
-Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+'Print #1, "------------------------------------------------------------"
+'Print  #1," DUR > 0 And nE > 0 And nroClick = 1 And ayudaNuevaNota=FALSE and comEdit=TRUE " 
+'Print  #1," And ayudaModif=FALSE " 
+'Print  #1," (7) ESTADO INGRESA O MODIFICA 1ER NOTA"
+''Print  #1," 7-><== 1er nota ingresada para la duracion y nota elegida"
+'Print  #1," 7->nota=nE   ", nE 
+'Print  #1," 7-> nroClick=0"
+'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
     
   EndIf 
 EndIf
 If comEdit=TRUE And ayudaModif=FALSE And ayudaNuevaNota=FALSE Then
    If (mouseButtons And 1) And (DUR > 0) And (nE > 0) And modifmouse<> 3 Then
-Print #1, "------------------------------------------------------------"
-Print  #1,"(8) (mouseButtons And 1) And (DUR > 0) And (nE > 0) And ayudaNuevaNota=FALSE " 
-Print  #1,"(8)  And comEdit=TRUE And ayudaModif=FALSE" 
-Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn       
+'Print #1, "------------------------------------------------------------"
+'Print  #1,"(8) (mouseButtons And 1) And (DUR > 0) And (nE > 0) And ayudaNuevaNota=FALSE " 
+'Print  #1,"(8)  And comEdit=TRUE And ayudaModif=FALSE" 
+'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn       
     nota=nE ' <=== ingresamos varias notas por mouse del mismo valor
  ' hasta que si vuelva a dar click derecho y aparesca de nuevo el menu de duraciones.    
-    Print  #1," nota=nE ", nE
+ '   Print  #1," nota=nE ", nE
      Exit Do 
    EndIf 
 EndIf
@@ -2067,11 +2068,6 @@ ProgError(17) = "end of file"
 
 PRINT #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
 Print #1,"Error Function: "; *Erfn()
+Dim ers As Integer = nota +(estoyEnOctava -1) * 13
+Print #1, "nota +(estoyEnOctava -1) * 13) "; ers 
 CLOSE 1
-CLS
-
- 
-
-
-
-

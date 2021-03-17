@@ -79,19 +79,19 @@ For semitono = 1 To 12
              s7=0
           EndIf
        cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 4)
+       Dim indf As Integer 
        indf= Roll.trk (semitono + (nro-1) * 13, n).dur
-       If (indf >= 1 And indf <= 82) then
-         t= figura((Roll.trk (semitono + (nro-1) * 13, n).dur))
+       If (indf >= 1 And indf <= 82)  then
+         t= figura(indf)
        EndIf
        cairo_show_text(c, t)
-       Print #1,t;
 ' LINEAS DE COMPAS
-       'sitio=nposishow+ ic
+
        If n >0 And n <= CantTicks Then
          If Compas(n) = n  Then ' ahi hy un corte un nuevo compas
            cairo_move_to(c,81 + (ic ) *anchofig +anchofig , Penta_y)
            cairo_line_to(c,81 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta - 6)
-           Print #1, "|";
+       '    Print #1, "|";
          EndIf
        EndIf
        cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 6) 
@@ -349,7 +349,7 @@ If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
      Roll.trk(notacur + (nro-1) * 13, n +curpos).dur = 33
   EndIf
   borrar = 0
-  mayorDurEnUnaPosicion (n)    
+  calcCompas(n) ''mayorDurEnUnaPosicion (n)    
 EndIf 
 ' << CAMBIADUR TAMBIEN INGRESA NOTA NUEVA Y DURACION DONDE NO HABIA >>
 ' << SOBREESCRIBE >>  
@@ -674,28 +674,36 @@ Select Case menuNro
          Get #2, , Trabajo()
   ' movemos los datos a Roll      
  ' -------------------------              
-         Dim As Integer i,j , mayor,ia
-          mayor=99
+         Dim As Integer i,j , mayor,ia,valdur
+          
            For j = 1 To MaxPos
              For i= NB To NA
               Roll.TRK(i,j)  => Trabajo (i,j) '
-              DUR => Roll.trk(i,j).dur
-              If i=1 And DUR >= 1 And DUR <=8 Then 
-                mayor=DUR
+              valdur => Roll.trk(i,j).dur
+         If  valdur >= 1 And valdur <=16 Then   
+              If  i=1  Then 
+                mayor=pesoDur(valdur)
               EndIf
               'Print #1, "DUR mayor";DUR, mayor
-              If DUR < mayor And DUR >= 1 And DUR <= 8 Then ' las duraciones cuando mas
-                 mayor=DUR
+              If pesoDUR(valdur) > mayor  Then ' las duraciones cuando mas
+                 mayor=pesoDur(valdur)
             ' Print #1, " DUR MAYOR";DUR,mayor
               EndIf
               If i=NA Then
-                DUR=mayor 
-                Print #1,"          J, DUR MAYOR: "; J, DUR
-                calcCompas(j)
-                DUR=0
-                mayor=99
-              EndIf
+                valdur=mayor
+                For ia=1 To 16
+                 If mayor=pesoDur(ia) Then
+                    valdur=ia
+                 EndIf
+                Next ia 
+                Print #1,"          J, valdur MAYOR: "; J, valdur
+             '   calcCompas(j)
+                Print #1,"ABRIR compas(j) ";compas(j); " j :"; j
+                
+             EndIf
+         EndIf    
              Next i
+             
           Next j 
         Close 2
       
@@ -1219,45 +1227,53 @@ If jc > 128 Then
  id=1
  ' procesar el resto que sobra luego de 129 en el buffer 2 
 EndIf
- Dim As Integer partes_falta (1 To 10), partes_sobra(1 To 10) 
+ Dim As Integer partes_falta (1 To 100), partes_sobra(1 To 100) 
 Print #1,"1-calcCompas 3"
 For k=1 To 16 
   If DUR=k  Then
    ' buffCompas_1(jc).dur=k
    ' buffCompas_1(jc).peso=pesoDur(k)
-    acumulado=acumulado +pesoDur(k)
-    If acumulado = d7 Then
+     acumulado=acumulado +pesoDur(k)
+     Print #1,"acumulado k PEsoDur "; acumulado, k , pesoDur(k)
+     If acumulado = d7 Then
+     ' Compas(posn)=posn '' NO CREO Q este producia dobles NO VA PERO VEMOS JMG
       Compas(j)=j
+      Print #1,"acumulado ";acumulado
+      Print #1,"Compas(j) , j: ";Compas(j);" "; j
       'Erase (buffCompas_1)
       acumulado=0
       jc=1
-      Print #1,"1-calcCompas 3.1"
+      Print #1,"1-calcCompas 3.1 exit sub"
       Exit Sub
-    EndIf
-    If acumulado < d7 Then
+     EndIf
+
+     If acumulado < d7 Then
       Compas(j)=0
       Print #1,"1-calcCompas 3.2"
       Exit Sub
-    EndIf
-    Print #1,"1-calcCompas acumulado 3.3 ";acumulado
-    If acumulado > d7 Then
-       ' hayCompas=TRUE stand by
-       Print #1,"acumulado > d7"
-       tengo= acumulado - pesoDUR(DUR)
-       Print #1,"tengo "; tengo
-       falta=d7 - tengo
-       Print #1,"falta ";falta
-       sobra=acumulado -d7
-       Print #1,"sobra "; sobra
-       separarDur(j,DUR, partes_falta(),cantFalta,falta)
-       Print #1,"CantFalta ";CantFalta
-       
-       separarDur(j,DUR, partes_sobra(),cantSobra,sobra)
-       Print #1,"CantSobra ";CantSobra
-    EndIf
-    Print #1,"1-calcCompas 3.4"
-    Exit For  
-  EndIf
+     EndIf
+    ' If comEdit = TRUE Then
+        Print #1,"1-calcCompas acumulado 3.3 ";acumulado
+   
+        If acumulado > d7 Then
+           ' hayCompas=TRUE stand by
+           Print #1,"acumulado > d7"
+           tengo= acumulado - pesoDUR(DUR)
+           Print #1,"tengo "; tengo
+           falta=d7 - tengo
+           Print #1,"falta ";falta
+           sobra=acumulado -d7
+           Print #1,"sobra "; sobra
+   '       Dim ultimafigura As Integer=0
+           separarDur(j,DUR, partes_falta(),cantFalta,falta)
+           Print #1,"CantFalta ";CantFalta
+           separarDur(j,DUR, partes_sobra(),cantSobra,sobra)
+           Print #1,"CantSobra ";CantSobra
+       EndIf
+       Print #1,"1-calcCompas 3.4"
+   '  EndIf
+     Exit for
+  EndIf  
 Next k  
 Print #1,"1-calcCompas 4"
 
@@ -1289,16 +1305,31 @@ If CantFalta > 0 Then  ' empezamos el reemplazo en el vector desde posn
         EndIf 
       EndIf
     Next
-   If k= CantFalta Then
-     Compas(posn ) = posn 
-   EndIf      
-
     posn=Posn+1
     posicion = posn
     MaxPos= Posicion
+'   If k= CantFalta Then
+ '  EndIf      
 
   Next k 
+   If j=posn Then
+     Print #1," j y posn son iguales "; j, posn
+
+   Else
+     Print #1," j y posn no son iguales, k "; j, posn,k
+     If posn = cantFAlta + j  Then
+        Compas(posn-1) = posn-1 ' hay compas ' ok pero da 2
+        Print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k)
+        cantFalta=0
+     EndIf
+   EndIf
+        Compas(posn-1) = posn-1 ' hay compas ' ok pero da 2
+        Print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k)
+        cantFalta=0
+
+
 End If
+
 
 Print #1,"1-calcCompas 5"
 If cantSobra > 0 Then
@@ -1328,6 +1359,7 @@ Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = notaold
       Next
  ''acumulado=acumulado + partes_sobra(k) ' para el siguiente compas..¿?.
  If k= CantSobra Then
+   CantSobra=0
    Exit For
  EndIf      
 posn=Posn+1
@@ -1349,6 +1381,7 @@ Dim As Integer lb,lu,k,tengo,sobra, falta1,acumx
 Print #1,"EN SEPARADUR-------------------------------------------------"
 lb=LBound(partes)
 lu=UBound(partes)
+'dim integer ultimafigura= partes(CantPartes)
 
 falta1=falta
 Print #1,"FALTA RECIBIDO ";FALTA1
@@ -1356,38 +1389,74 @@ Print #1,"FALTA RECIBIDO ";FALTA1
 For k=1 To 16
  If falta=pesoDur(k) Then
     partes(lb)=k
-    Compas(j)=j ' hay compas 
-    Print #1,"falta encontrado hy compas";k
+   '' Compas(j)=j ' hay compas ESTE PRODUCI DOBLES !!!! JMG SI 
+    Print #1,"falta encontrado hay compas";k
     CantPartes =lb
     Exit Sub
  EndIf
 Next k
 ' si sigue es porque falló 
 lb=lb-1
+acumx=0
 Print #1,"SEGUIMOS NO SE ENCONTRO FALTA  POSN J "; J
 If k>=16 And lb=0 Then ' no se encontro
   Do
-    For k=1 To 16
-      If falta1 > pesoDur(k) Then
+    For k=9 To 16 
+      If  falta1 > pesoDur(k)  Then
          lb += 1
+         If lb > lu Then
+         Exit Do
+         EndIf
          partes(lb)=k
-         Print #1,"FALTA1 ENCONTRO 1ER PEDAZO "; K
+         Print #1,"FALTA1 ENCONTRO PEDAZO >9a16 ";lb; " figura "; K
          falta1=falta1-pesoDur(k)
          acumx=pesoDur(k)
+         Exit For
       End If
-      If falta1= pesoDur(k) Then
-      Print #1,"FALTA1 ENCONTRO OTRO PEDAZO EL 2DO  "; K
+      If falta1= pesoDur(k) Then ' si elproximo es la mitad buscodeneuvo
          lb += 1
+         If lb > lu Then
+         Exit do
+         EndIf
          partes(lb) = k
          acumx = acumx + pesoDur(k)
+         Print #1,"FALTA1 ENCONTRO PEDAZO =9a16 ";lb; " figura "; K
+         Exit For
       EndIf
-      If acumx=falta Or lb > lu Then
+      
+   Next k  
+   For k=1 To 8 
+      If  falta1 > pesoDur(k)  Then
+         lb += 1
+         If lb > lu Then
+         Exit Do
+         EndIf
+         partes(lb)=k
+         Print #1,"FALTA1 ENCONTRO PEDAZO >1A8 ";lb; " figura "; K
+         falta1=falta1-pesoDur(k)
+         acumx=pesoDur(k)
+         Exit For
+      End If
+
+      If falta1= pesoDur(k) Then ' si elproximo es la mitad buscodeneuvo
+         lb += 1
+         If lb > lu Then
+         Exit Do
+         EndIf
+         partes(lb) = k
+         acumx = acumx + pesoDur(k)
+         Print #1,"FALTA1 ENCONTRO PEDAZO = 1a8";lb; " figura "; K
+         Exit For
+      EndIf
+   Next k  
+    If acumx=falta Or lb > lu Then
+      Print #1,"FALTA1 FIN EN ";lb; " figura "; K ;" ACUMX";acumx
          Exit Do 
-      EndIf
-    Next k 
+    EndIf
   Loop  
 EndIf
  CantPartes =lb 
+
  Print #1, "CANT PARTES LB, CantPartes "; LB;" "; CantPartes
  Print #1,"ACUMX  ";ACUMX
  
@@ -1395,29 +1464,34 @@ End Sub
 
 Sub mayorDurEnUnaPosicion (ByRef posn as integer)
 Print #1,"1-MayorDurEnUnaPosicion  "
-Dim As Integer i, j,mayor,ia
-'DUR mayor para una dada posicion 
-          mayor=99
-            j = posn 
+Dim As Integer i, j,mayor,ia ,valdur
+   mayor=1    
+           j = posn
              For i= NB To NA
-              DUR => Roll.trk(i,j).dur
-              If i=1 And DUR >= 1 And DUR <=16 Then 
-                mayor=DUR
-              EndIf
-              'Print #1, " DUR mayor";DUR, mayor
-              If DUR < mayor And DUR >= 1 And DUR <= 16 Then ' las duraciones cuando mas
-                 mayor=DUR
-            ' Print #1, "DUR MAYOR";DUR,mayor
+              valdur => Roll.trk(i,j).dur
+         If  valdur >= 1 And valdur <=16 Then   
+              'Print #1, "DUR mayor";DUR, mayor
+              If pesoDUR(valdur) > mayor  Then ' las duraciones cuando mas
+                 mayor=pesoDur(valdur)
+            ' Print #1, " DUR MAYOR";DUR,mayor
               EndIf
               If i=NA Then
-                DUR=mayor 
-                Print #1,"       ORGANIZA COMPASES   J, DUR MAYOR: "; J, DUR
-              calcCompas(j)
                 
-                mayor=99
-              EndIf
+                For ia=1 To 16
+                 If mayor=pesoDur(ia) Then
+                    valdur=ia
+                 EndIf
+                Next ia 
+                Print #1,"          J, valdur Mayor: "; J, valdur
+                DUR=valdur
+                calcCompas(j)
+                Print #1,"ABRIR compas(j) ";compas(j); " j :"; j
+                
+             EndIf
+         EndIf    
              Next i
-            
+           ''  DUR=0
+          
 ' fin compases             
 
 End Sub
