@@ -128,7 +128,7 @@ Dim Shared As Integer hastavector
 
 CantTicks=cantMin * 128 * tempo/4  ' 76800 ticks...
 CantTicks=76800
-Dim Shared As integer compas(1 To CantTicks) 'cada item es la posicion en donde
+Dim Shared As integer compas (1 To CantTicks) 'cada item es la posicion en donde
 desdevector = desde
 hastavector = hasta
 NB => 1 + (desde-1) * 13   ' 27 para 3
@@ -159,7 +159,7 @@ CantCompas = 40 * CantMin
 ' 12k posiciones de 96 notas o 128 con help y espacios ...8.388.608 bytes 8 megas 
 /'
 Dim l As Integer
-For l = 1 To 82  
+For l = 1 To 65  
 Print #1, l;" ";figura(l)
 Next l
 Close 
@@ -732,14 +732,14 @@ if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
    grabaPos(1,1).vol  = y3
    grabaPos(1,1).pan  = y4
 ' ------------------------------------
-' hacemoslo mismo para l ultim not que se grabo que teng el 34
-' esa es lapapa recorremos todas las dur de las notas en donde este el 34
+' hacemoslo mismo para l ultim not que se grabo que teng el 65
+' esa es lapapa recorremos todas las dur de las notas en donde este el 65
 ' endur tomamosla nota y esala grabamos en pb o ins
 ' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
 ' -------------------------------------
     Dim As Integer i,j,notafinal 
     For i = NB To NA
-       If Roll.trk(i,posicion+1).dur = 34 Then
+       If Roll.trk(i,posicion+1).dur = 65 Then
          notafinal= Roll.trk(i,posicion).nota
    '      Print #1, "ENCONTRO NOTA FINAL ", notafinal
    '      Print "ENCONTRO NOTA FINAL ", notafinal
@@ -874,7 +874,7 @@ EndIf
  If MultiKey(SC_SPACE) And s7=0 Then 'barra espacio  
      espacio = 1
      posicion= posicion + 1
-     DUR=33
+     DUR=65
      s7=1
      Exit Do
  EndIf
@@ -1081,18 +1081,23 @@ If comEdit = TRUE Then
     DUR = 8:Exit Do
   EndIf 
   If MultiKey(SC_9) Then 
-    DUR = 33:Exit Do
+    DUR = 65:Exit Do
   EndIf 
   
   If MultiKey(SC_0) Then ' FIN 
-    DUR = 34:Exit Do
+    DUR = 66:Exit Do
   EndIf 
   
   If MultiKey(SC_PERIOD) Then 
-    pun = 1:Exit Do  ' puntillo
+    pun = 1  ' puntillo
+    durpun =1 ' indicadorde pintillo solo para calculo de compas
+    Exit Do
   EndIf 
   If MultiKey(SC_S) Then 
-    sil = 1:Exit Do  ' silencio 
+    sil = 1
+    dursil =1
+    Exit Do  ' silencio 
+     ' indicadorde silencio solo para calculo de compas
   EndIf 
  EndIf 
   ' ojo ver q no habia  exit do antes !!!!!
@@ -1180,7 +1185,7 @@ EndIf
      '      indice = 128 
      '  EndIf
 
-     If nota > 0 And estoyEnOctava < 99 Then
+     If nota > 0 And estoyEnOctava < 99 and estoyEnOctava >=1 Then
   
        ' ====>  Control PAgindo Horizontal <=======
  '      kNroCol= Int(posicion/60)
@@ -1190,7 +1195,7 @@ EndIf
    ' y hacer nota=semiotono 1 a 11 con el mouse...el esto es automtico...
        Do 
          If Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = 0 OR _
-          Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = 34 Then
+          Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = 66 Then
      '     Print #1, "D:Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota ", _
      '     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota
            posicion=posn 
@@ -1209,13 +1214,13 @@ EndIf
         Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = nota 'carga
 '' ojo ver'  If cursorVert = 0 and cursorHori = 0 Then
          ' no actua para modificaciones o agregado en lo existente
-         ' 34 o FIN indica final de TODO es la MAXPOS (+1obvio),se usara
+         ' 65 o FIN indica final de TODO es la MAXPOS (+1obvio),se usara
          ' para insertar y saber hasta donde se debe mover...esta solo 
          'en dur no afecta a notas pero se debe insertar siempreenedicion
          ' con o sin cursor 
-          Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 34
+          Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 66
           if notaOld > 0 And notaOld <> nota then
-           Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 33 
+           Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 65 
 '''ojo probar todo inserciones x  etc    endif 
           EndIf
         ' cargamos Roll entonces Duracion no lo mostrara como "./."
@@ -1228,7 +1233,7 @@ EndIf
         For i= 1 To 12 ' gracias a esto anda acordes
          If i<> nota Then
             If Roll.trk((i +(estoyEnOctava -1) * 13),posn).nota = 0 Then
-               Roll.trk((i +(estoyEnOctava-1) * 13), posn).nota = 33  
+               Roll.trk((i +(estoyEnOctava-1) * 13), posn).nota = 65  
             EndIf 
          EndIf
         Next
@@ -1239,6 +1244,7 @@ EndIf
           Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR 'era duracion
           'DUR nunca se ahce cero solo para espacio ergo si pulso
           ' la misma u otra nota sigue con la misma duracion
+          Print #1," NUCLEO GUARDO DUR EN ROLL ";DUR
         Else 
           If pun = 1 And sil=0 Then
            Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 8 'era dur
@@ -1246,19 +1252,20 @@ EndIf
           Else 
             If sil = 1 And pun=0 Then
               Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 16 'era dur
+              Print #1," NUCLEO GUARDO DUR EN ROLL CON S ";DUR
                sil=0
             Else ' sil=1 and pun=1
               Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 24
               sil=0:pun=0
             EndIf
-            If DUR=33 Then
-               Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 33
+            If DUR=64 Then
+               Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 65
                DUR=0
             EndIf
           EndIf
         EndIf
         ' mayorDurEnUnaPosicion (posn) quedo <--defectuoso 
-          calcCompas(posn)
+          calcCompas(posn) 'lrepeticion no espor calcCompas
        '   rmerr = Err
        '  Print #1,"Nucleo Error "; rmerr
 
@@ -1406,7 +1413,7 @@ If (ScreenEvent(@e)) Then
      borrar = 1 
      Exit Do
   EndIf
-  If e.scancode = SC_X Then ' 33 <==== SC_X ...fix 
+  If e.scancode = SC_X Then ' 81 <==== SC_X ...fix 
    'corrige nota cambia duracion o agrega nota nueva, acorde melodia
    ' solo debe funcionar con CTRL-M
      If cursorVert=1 Then ' ver cursorVert2 archivonuevocon espacios....sirve?? 
@@ -1415,10 +1422,10 @@ If (ScreenEvent(@e)) Then
      Exit Do
   EndIf
 ' para insertar en cada iten de Roll cda vez queingreso nota al final
-' comunmente se agregara 34 para indicar fin de datos..y loindicaremos 
+' comunmente se agregara 66 para indicar fin de datos..y loindicaremos 
 'con FIN por ahora para visualizarlo  
 
-  If e.scancode = SC_INSERT And insert=0  Then '82 <===== SC_INSERT
+  If e.scancode = SC_INSERT And insert=0  Then '34 <===== SC_INSERT
    ' solo valido con CTRL-M
    If cursorVert = 1 And  cursorHori = 1 And insert = 0 Then
     ' solo tiene sentido insertar en lo echo y en cursor libre

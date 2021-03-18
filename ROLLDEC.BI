@@ -20,7 +20,7 @@ Declare Sub menugrafico(c0 AS cairo_t Ptr,c AS cairo_t Ptr, Cantitems As Integer
 Dim Shared As Integer nro, acumulado  
 Dim Shared As Integer vroll, vdur ' borrar
 Dim Shared as ubyte  notasInsertadas (1 to 1500) 
-
+Dim Shared As String t 
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, cursormove
 Dim shared As integer Penta_y, indice, posicion,posicionOld, nota,espacio,posn,cursorHori  
 Dim shared as integer estoyEnOctava, backspace,fijarEspacio, offset,borrar,cambiadur
@@ -31,21 +31,23 @@ dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas
 Dim Shared NotasGuia (1 To 12) As String * 2 => _
  {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"} 
-Dim  Shared figura (1 To 82) As String * 3 => _
+Dim  Shared figura (1 To 66) As String  * 3 => _
 {" O "," P "," I "," L "," F "," E "," W "," H ",_
  " O*"," P*"," I*"," L*"," F*"," E*"," W*"," H*", _
  "sO ","sP ","sI ","sL ","sF ","sE ","sW ","sH ",_
- "sO*","sP*","sI*","sL*","sF*","sE*","sW*","sH*", "   "," ||",_
+ "sO*","sP*","sI*","sL*","sF*","sE*","sW*","sH*", _
  " O>"," P>"," I>"," L>"," F>"," E>"," W>"," H>",_
- "-O ","-P ","-I ","-L ","-F ","-E ","-W ","-H ",_
+ "O*>","P*>","I*>","L*>","F*>","E*>","W*>","H*>",_
  "sO>","sP>","sI>","sL>","sF>","sE>","sW>","sH>",_
- "-sO","-sP","-sI","-sL","-sF","-sE","-sW","-sH",_
- "O*>","P*>","I*>","L*>","F*>","E*>","W*>","H*>",_ 
- "-O*","-P*","-I*","-L*","-F*","-E*","-W*","-H*" }
+ "sO*","sP*","sI*","sL*","sF*","sE*","sW*","sH*", _
+ "   "," ||" } ' son 65 la continuacion de silencios no tiene sentido
 ' ligaduras de notas con + que va a + o - creo qu emenso seria mejor
 ' parecido a una pila polos opuestos se atraen je... 
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
 Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
+Dim Shared durpun As Integer = 0 'entrada con punto = 1 con puntillo calccompas
+Dim Shared dursil As Integer = 0 'silencio entrada con s = 1 con silencio calccompas
+
 '' futuro=> Dim notmus(13 To 44) As String = {} bravura fonts?? pero son glyphs
 ''los deberia cargar cairo...experimentar...tarea futura
 ' 32 tipo de duraciones basicas encendidas o apagadas y lo mismo con puntillo 
@@ -92,10 +94,17 @@ Dim Shared As Integer menuNro, menuNew, desde , hasta, rango
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen,anchofig 
 Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, resultado
-Dim Shared As Integer pesoDur (1 To 16) => { 10000000,5000000,2500000,1250000, _ 
- 625000,312500, 156250, 78125, _
- 15000000,7500000,3750000,1875000,937500,468750,234375,117187}
+Dim Shared As Integer pesoDur (1 To 64) => { _
+ 10000000,5000000,2500000,1250000,625000,312500,156250, 78125, _ '1  8
+ 15000000,7500000,3750000,1875000,937500,468750,234375,117187, _ '9  16
+ 10000000,5000000,2500000,1250000,625000,312500,156250, 78125, _ '17 24
+ 15000000,7500000,3750000,1875000,937500,468750,234375,117187, _ '25 32
+ 10000000,5000000,2500000,1250000,625000,312500,156250, 78125, _ '33 41 
+ 15000000,7500000,3750000,1875000,937500,468750,234375,117187, _ '41 48
+ 10000000,5000000,2500000,1250000,625000,312500,156250, 78125, _ '49 56 
+ 15000000,7500000,3750000,1875000,937500,468750,234375,117187 } ' 57 64
 
+' se repiten 3 veces el patron 1 a 16 por comodidad lo repetimos.
 
 ' free type
 #Include once "freetype2/freetype.bi"
