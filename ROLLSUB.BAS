@@ -651,7 +651,7 @@ Select Case menuNro
    t = "      [NUEVO]":cairo_show_text(c,t)
 ' 3.2 [ABRIR]   
 
-   If mousex > 134 And mousex < 190  And mousey < 50 Then ' <= ABRIR lee grabaroll.roll
+   If mousex > 134 And mousex < 190  And mousey < 50 And carga=0 Then ' <= ABRIR lee grabaroll.roll
       cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 And carga = 0 Then 
          ReDim (Roll.trk ) (NB To NA, 1 To CantTicks)
@@ -678,38 +678,72 @@ Select Case menuNro
          Get #2, , Trabajo()
   ' movemos los datos a Roll      
  ' -------------------------  
-             
-         Dim As Integer i,j , mayor,ia,valdur
+        carga=1 ' no es lo mismo calcCompas con cargar o procesando      
+         Dim As Integer i,j , mayor,ia,valdur,cont
+         cont=0
           Print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
+Dim As Integer lim1, lim2, grupo, mayorgrupo
            For j = 1 To MaxPos
              For i= NB To NA
               Roll.TRK(i,j)  => Trabajo (i,j) '
               valdur => Roll.trk(i,j).dur
-         If  valdur >= 1 And valdur <=16 Then   
-              If  i=NB  Then 
-                mayor=pesoDur(valdur)
-                Print #1,"1er myor "; mayor
-              EndIf
+' al cargr tenemos 4 grupos de 16 de duraciones identicas que se repiten 
+' 1-16,17-32,33-48.49-64 , el indicemeindicaa cual grupo pertenece, y
+'en que rango buscar
+
+
+If valdur > 0 And valdur < 65 Then 
+      Print #1, "LECTURA DUR: EN LA CARGA "; valdur
+ 
+            Select Case valdur
+              Case 1 To 16
+               lim1=1:lim2=16:grupo=1
+              Case 17 To 32
+               lim1=17:lim2=32:grupo=2
+              Case 33 To 48
+               lim1=33:lim2=48:grupo=3
+              Case 48 To 64
+               lim1=48:lim2=64:grupo=4
+               
+            End Select
+                           
+             If  valdur >= lim1 And valdur <=lim2 And lim1 > 0 And lim2> 0 Then
+                 Print #1, "Valdur i ";valdur ; i ; " grupo ";grupo
+                ' Print #1,"i NB ";i,NB  
+                 If  cont=0   Then 
+                     mayor=pesoDur(valdur):mayorgrupo=grupo
+             '       Print #1,"1er mayor "; mayor; " mayorgrupo";mayorgrupo
+                    cont=1
+                 EndIf
               'Print #1, "DUR mayor";DUR, mayor
-              If pesoDUR(valdur) > mayor  Then ' las duraciones cuando mas
-                 mayor=pesoDur(valdur)
-                 Print "Siguientes myor "; mayor
+                 If pesoDUR(valdur) > mayor  Then ' las duraciones cuando mas
+                    mayor=pesoDur(valdur):mayorgrupo=grupo
+            '        Print #1,"Siguientes mayor "; mayor
             ' Print #1, " DUR MAYOR";DUR,mayor
-              EndIf
-              If i=NA Then
-                valdur=mayor
-                For ia=1 To 16
+                 EndIf
+            '     Print #1,"> i= ";i; " NA= ";NA
+            EndIf
+EndIf
+            If i=NA Then
+                
+                Print #1,"i=NA i: ";i;" NA: ";NA;" Mayor ";mayor;" grupo:"; mayorgrupo
+                For ia= 1 * mayorgrupo To 16 * mayorgrupo
                  If mayor=pesoDur(ia) Then
                     valdur=ia
+              ''      Print #1, "peso de mayor encontrado valdur ";valdur; "dur ";ia; " grupo ";mayorgrupo
                  EndIf
                 Next ia 
                 DUR=valdur
-                Print #1,"          J, valdur MAYOR: "; J, valdur
-                calcCompas(j)
-                Print #1,"ABRIR compas(j) ";compas(j); " j :"; j
-                
-             EndIf
-         EndIf    
+                If DUR > 64 Then
+                  Print #1,"ERROR NO SE PUEDE PASAR DUR"
+                Else
+                  Print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo
+                  calcCompas(j)
+                  Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j)
+                EndIf
+                cont=0                  
+            EndIf
+              
              Next i
              
           Next j 
@@ -718,23 +752,10 @@ Select Case menuNro
         DUR => 0
         curpos =>0
     
-        carga=1 ' <======= control de Carga ¿? VER
-     '   Print #1,"VEMOS QUE QUEDA ENROLL nota, dur hasta 40 debug" 
-     '   Dim P As Integer 
-     '   Print #1, "B_--------->"
-     '   For P = 260 To MaxPos
-    '     Print #1, Roll.trk(12,p).nota;".";
-     '   Next
-     '   Print #1,
-     '   For P = 260 To MaxPos
-     '     Print #1, Roll.trk(12,p).dur;".";
-     
-      '  Next
-      '  Print #1,
-
       EndIf         
    Else 
      cairo_set_source_rgba c, 1, 1, 1, 1  
+     carga=0  ' <======= control de Carga   
    EndIf
    t = " [ABRIR]":cairo_show_text(c,t)
 ' 3.3[GRABAR] SC_F11 COPIA
@@ -1222,6 +1243,8 @@ cairo_stroke(cm)
 End Sub
 '
 Sub calcCompas( ByRef j As Integer)
+' nota:fijarse que pasa con el grupo..1 to 4 de las 64 duraciones
+Print #1,"========================================================="
 Print #1,"1-calcCompas "
 Dim As Integer k, i,cantFalta,CantSobra, tengo, falta,sobra
     
@@ -1230,6 +1253,7 @@ If j= 1 Then ' 128 es el maximo de ticks de un compas se agregan amspara termina
  'Erase (buffCompas_2)
  acumulado=0
  ''erase (compas) 'cada item es la posicion en donde
+ Print #1,"J=1 comienzo calcCompas "
  jc=j
 EndIf
 Print #1,"1-calcCompas 2"
@@ -1238,19 +1262,17 @@ If jc > 128 Then
  ' procesar el resto que sobra luego de 129 en el buffer 2 
 EndIf
  Dim As Integer partes_falta (1 To 100), partes_sobra(1 To 100) 
-Print #1,"1-calcCompas 3"
+Print #1,"1-calcCompas 3, DUR, j  ";DUR; " j "; j
 For k=1 To 64 
   If DUR=k  Then
-   ' buffCompas_1(jc).dur=k
-   ' buffCompas_1(jc).peso=pesoDur(k)
      acumulado=acumulado +pesoDur(k)
-     Print #1,"acumulado k PEsoDur "; acumulado, k , pesoDur(k)
+     Print #1,"acumulado / k / PEsoDur "; acumulado, k , pesoDur(k)
      If acumulado = d7 Then
      ' Compas(posn)=posn '' NO CREO Q este producia dobles NO VA PERO VEMOS JMG
       Compas (j)=j
       Print #1,"acumulado ";acumulado
       Print #1,"Compas(j) , j: ";Compas(j);" "; j
-      'Erase (buffCompas_1)
+
       acumulado=0
       jc=1
       Print #1,"1-calcCompas 3.1 exit sub"
@@ -1260,14 +1282,20 @@ For k=1 To 64
      If acumulado < d7 And j>0 Then
      Print #1, "j que hace cancelar ";j 
       Compas(j)=0
-      Print #1,"1-calcCompas 3.2"
+      Print #1,"1-calcCompas 3.2 acumulado menor sigue exit sub "
       Exit Sub
      EndIf
-    ' If comEdit = TRUE Then
-        Print #1,"1-calcCompas acumulado 3.3 ";acumulado
-   
-        If acumulado > d7 Then
-           ' hayCompas=TRUE stand by
+' cuando cargamos desde disco aca nunca es necesario pasar pues
+' ya esta todo fraccionado para tener compases completos sin notas
+'  que sobren o falten
+If carga=1 Then ' se supone que nunca carga=1 se usara en el resto 
+'posn=j 
+Exit sub
+EndIf
+
+      
+     Print #1,"1-calcCompas acumulado 3.3 >d7 ";acumulado
+     If acumulado > d7 And carga =0 Then
            Print #1,"acumulado > d7"
            tengo= acumulado - pesoDUR(DUR)
            Print #1,"tengo "; tengo
@@ -1286,22 +1314,27 @@ For k=1 To 64
      Exit for
   EndIf  
 Next k  
-Print #1,"1-calcCompas 4"
+Print #1,"1-calcCompas 4 ingreso s ROLL de las durciones y notas"
 
 'acumulado=0
 ' la ultima nota a cortar se ha cargado es la quese reemplaza de este modo
 ' el codigo nucleo no se toca para nada solo se copia las partes necesarias 
 ' para imitar su comportamiento...el programa introduce auomaticamente las
-' figuras de reemplazo y haria el corte ....   
-If CantFalta > 0 Then  ' empezamos el reemplazo en el vector desde posn
+' figuras de reemplazo y haria el corte ....  
+' valido en la carga manula pero no desde disco
+' en disco esta ya todo procesado solo debo sumarduraciones
+' aradeterminar compas.
+If CantFalta > 0 And carga= 0 Then  ' empezamos el reemplazo en el vector desde posn
   Print #1,"Cantfalta ";CantFalta
-  For k=1 To CantFalta
+  For k=1 To CantFalta '
     If partes_falta(k)>= 1 And partes_falta(k) <=64 Then
        partes_falta(k)=partes_falta(k) +32
     EndIf 
 
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = partes_falta(k)
-    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = notaold
+    If carga=0 Then ''no hce nada en la carga
+      Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = notaold
+    EndIf
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 66
     If notaOld > 0 And notaOld <> nota Then
        Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 65 
@@ -1322,25 +1355,28 @@ If CantFalta > 0 Then  ' empezamos el reemplazo en el vector desde posn
   Next k 
    If j=posn Then
      Print #1," j y posn son iguales "; j, posn
-
    Else
      Print #1," j y posn no son iguales, k "; j, posn,k
      If posn = cantFAlta + j  Then
-        Compas(posn-1) = posn-1 ' hay compas ' ok pero da 2
-        Print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k)
-        cantFalta=0
+      '  If carga=0 Then
+         Compas(posn-1) = posn-1 ' hay compas ' ok pero da 2
+         Print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k)
+         cantFalta=0
+      '  EndIf
      EndIf
    EndIf
+ '  If carga=0 Then
         Compas(posn-1) = posn-1 ' hay compas ' ok pero da 2
         Print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k)
         cantFalta=0
+ '  EndIf     
 
 
 End If
 
 
 Print #1,"1-calcCompas 5"
-If cantSobra > 0 Then
+If cantSobra > 0 And carga=0 Then
 Print #1,"CantSobra ";CantSobra
 For k=1 To CantSobra
    If k < CantSobra Then ' le agrega >, continuacion
@@ -1351,8 +1387,10 @@ For k=1 To CantSobra
       EndIf
        
    EndIf
-Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = partes_sobra(k)
-Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = notaold
+   Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = partes_sobra(k)
+   If carga=0 Then 
+     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = notaold
+   EndIf
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 66
       If notaOld > 0 And notaOld <> nota Then
          Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 65 
@@ -1396,18 +1434,19 @@ Print #1,"FALTA RECIBIDO ";FALTA1
 Dim As Integer incr=0
 Dim desde As Integer
 
-If dursil= 1 Then
+If dursil= 1 Then ' solo para carga=0 desde teclado 1 a 8 mas '.' y 's'
  incr=16 ' no sabemos todavia si sigue en otro compas
  Print #1,"dursil= 1, incr=16 ", dursil,incr
 EndIf 
-
+' cuando hago la carga los k son de 1 a 64 no son mas de 1 a 8
+' po eso no necesito dursil y esas cosas 
 desde = 1 + incr 
 
 For k=desde To 64
  If falta=pesoDur(k) Then
     partes(lb)=k
    '' Compas(j)=j ' hay compas ESTE PRODUCI DOBLES !!!! JMG SI 
-    Print #1,"falta encontrado hay compas";k
+    Print #1,"falta encontrado hay compas pero se analiza despues ";k
     CantPartes =lb
     Exit Sub
  EndIf

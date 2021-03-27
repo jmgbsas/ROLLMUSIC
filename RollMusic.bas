@@ -52,8 +52,6 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #EndIf
 
 ''
- 
-
 #Include Once "cairo/cairo.bi"
 #Include "ROLLDEC.BI"
 #Include "NOTAS.bi"
@@ -196,9 +194,12 @@ ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion si uso GDI
 ' https://www.freebasic.net/forum/viewtopic.php?f=6&t=27555
 Dim As String driver
 
-ScreenRes ANCHO, ALTO, 32,1, GFX_NO_FRAME Or GFX_HIGH_PRIORITY
+
+ScreenRes ANCHO, ALTO, 32,1,  GFX_NO_FRAME Or GFX_HIGH_PRIORITY
+
 
 ScreenControl GET_WINDOW_POS, x0, y0
+
 
 ''ScreenControl SET_WINDOW_POS, 10,10
 'ScreenControl 103,"Directx" ' cambio ja
@@ -253,23 +254,7 @@ Dim Shared surface As Any Ptr
 ' ------------------------ windows controls ---------
 ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
 Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-'MENU POPUP INCONTROLABLE....SE DISPARA CON CLICK DERECHO,
-' DE DESTRUYE CON CLICK IZQUIERDO PERO LUEGO SIEMREPFUNCIONA CON IZQUIERDO
-' USARE SOLO MENUES GRAFICOS !! ¿?
-'Dim Shared hmenu As HMENU 
-'Dim Shared As HWND hpopup  
-'Dim Shared as zstring * 100 buffer
-'Dim Shared exelist As HMENU
-'dim Shared as integer x,y
-'dim Shared as Point p
 
-''https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexw
-''SYTEMcLAS #32768 = https://docs.microsoft.com/en-us/windows/win32/winmsg/about-window-classes#system-classes
-
-         
-'exelist = CreatepopupMenu()
-'AppendMenu(exelist, MF_STRING,1,"Uno")
-'AppendMenu(exelist, MF_STRING,2,"Dos")
 Dim comienzo As Integer = 0
 '--FFT FREE FONT- 
 var Shared ft => FreeType()
@@ -285,6 +270,7 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 ' ancho de figura,separaciondelasmismas en pantalla anchofig
 '' ---------------  LOOP 1 ---------------
 On Error Goto errorhandler:
+
 Do 
 
 edity1 = 15 ' botton Edit bordeSup
@@ -307,7 +293,7 @@ ScreenLock()
  
 ' https://www.cairographics.org/tutorial/
 
-  
+''cairo_translate(c, 100, 100)
 
 If comEdit = TRUE  Then
   cairo_set_source_rgba(c, 0.6, 0.6, 0.7, 1)  
@@ -339,7 +325,7 @@ nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
  
 '  cairo_save (c)
 '  cairo_scale (c, escala, 1)
-  cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT)
+  cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nomeafecta
  ' usemos 8 octavas y una para pie de pagina
  ' podemos reducir !!! y dejar ciertas octavas por instrumento
  ' cada isntrumetnotendriaundefinicion distintde roll con redim? 
@@ -1265,7 +1251,7 @@ EndIf
           EndIf
         EndIf
         ' mayorDurEnUnaPosicion (posn) quedo <--defectuoso 
-          calcCompas(posn) 'lrepeticion no espor calcCompas
+        '  calcCompas(posn) 'lrepeticion no espor calcCompas
        '   rmerr = Err
        '  Print #1,"Nucleo Error "; rmerr
 
@@ -1289,13 +1275,14 @@ EndIf
 '''   calcCompas(posn) 
    Exit Do 'kkkk 30-01-21 probando 
  EndIf
-    
+ 'If comEdit=FALSE then
+'  calcCompas(posn)
+' EndIf    
  
-  
+ 
 '-----------------------------SCREEN EVENT-------START -----------
 ' para detectar mouse sin usar sdl
 If (ScreenEvent(@e)) Then
-  
   Select Case As Const e.type   
    Case EVENT_MOUSE_BUTTON_RELEASE ' obtengoPosicion
     If s5=2 Then
