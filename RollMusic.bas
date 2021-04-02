@@ -1,32 +1,14 @@
-' si cargo F P P /ó / sF sP sF falla no corta ver!
-' ultim version de Corte de notas el algoritmos es mas sencillo y eficiente
-' anda bien falta ajustar el momento del corte para por ejemplo L I O reemplaza a O
-' con 4 figuras L I P | L I L, pero corta antes de tiempo....estamos en eso....
-' hy que psrlo a -> L I P> L>| I>L  o al final I*
-' version alfa de corte de duraciones al final del compassi sobrepasan
-' REVASADO DE COMPAS CORTE AUTOMATICO DE DURACION SEGUIDO EN EL SIGUIENTE COMPAS
-' LOGRE AHCER ROLL SHARED Y DINAMICO...
-' => 3-liga de notas
-'    3.1 habilitar notascon + der e iz q P+ +P. I+ +I, I+ +L, etc
-' 00-revisar calculo compas test y mas test deja espacio a derecha  a veces
-' Empesar el test con el metodo  de insercion para distinguir si es
-' el metodo mouse el que da error o el calculo en si,, ademas
-' he duplicado el ancho entre notas ver comoincide eso o no,,,,
-' ====================================================
-' e inserta la figura mas adelane,,,,ver luego pasar a notas ligadas
-' 0- ergo primero debo hacer notas ligadas de 2 nuevas o
-' de una existente
-' =======================================
-' listo 5.7.3.9.6 punto 4 basico en la carga dearchivo como en la insercion
-' 1-falta eliminar revisar si andacreo algo habia empezado...
-' 2-luego o ahora poner algo basico de midi
-' 3-liga de notas
-' 4- calculo de cuando termina un compas y con ello si una nota
-'    sobrepasa uncompas partirla en 2 duraicones ligadas
-' ergo primero debo hacer notas ligadas de 2 nuevas o
-' de un existente
-'meta futura -> COPIAR ZONAS DE 1 OCTAVA O TODAS EN OTRO LADO..ESE SERA 0.5.7.4.0
-Dim As Integer f2
+'ERROR A CORREGIR:
+' TRABAJAR CON DATOS DE DISCO TRBJO_01.ROLL DE ESTE DIR
+' Y CARGAR MNUALMENTE ES LO QUE FALA EL CORTE EN EL 3ER COMPAS
+' VER PARA CARGR PAPEL O CRGA-OK-MANUAL-NO-OK.png
+' -NO SE PERMITE EDITAR EN MAS DE 1 OCTAVA A LA VEZ PARA EVITAR ERRORES
+'  POR DEFUALT,, LUEGO HAREMOS OPCION DE EDITAR EN 2 OCTAVAS A LA VEZ
+' - add recalCompas con tecla R 
+' - grabar en disco los limites NB y NA inferior y superior del array Roll.trk
+'   demodo que podemos grabar con cualqeir limite y se cargara bien con esos 
+'  limites ...queda ajustar limtes desde el call o desde el propio programa
+' -----------------------------
 
 Open "midebug.txt" for Output As #1
 
@@ -1108,6 +1090,10 @@ If MultiKey(SC_F1) Then
  ' ELIMINADO NOUSAR ESE METODO, USAREMOS CAIRO...(para todo veo ....)
 EndIf
 '
+If MultiKey(SC_R) Then ' recalculode barras compas 
+ ReCalCompas() ' jmg 01-04-21 
+EndIf
+
 If comEdit = FALSE Then '''???????????????? veremos para que usarlo
  ' para ubicrno enun octava dada
 
@@ -1164,7 +1150,6 @@ EndIf
 ' al usar iniciodeLectura, pero eso sí, con inicio congelaba el movimiento
 ' del roll ante una entrada de nota hasta el próximo incremento de pantalla
 ' SOLO SEUSAPARAINGRESO DE NOTAS NUEVAS ..VERIFICANDO JMG
-
 If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Then
  Print #1,"--------------------------------------------------------------"
  Print #1,">>>START NUCLEO-COMPAS VECTOR posn: "; posn; "suma:";acumulado
@@ -1174,16 +1159,20 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
  If DUR=0 Then
   Exit Do
  EndIf
-
+ If controlEdit=0 Then
+   controlEdit=1 
+   octavaEdicion=estoyEnOctava
+ EndIf
+ 
+ 
  '   Print #1,"estoyEnOctava ";estoyEnOctava
- If estoyEnOctava <> 99 Then ' estoy en una octava
+ If estoyEnOctava <> 99 And octavaEdicion = estoyEnOctava Then ' estoy en una octava
   '  If indice <= 0 Then
   '      indice = 1
   '  EndIf
   '  If indice >= 128 Then
   '      indice = 128
   '  EndIf
-
   If nota > 0 And estoyEnOctava < 99 and estoyEnOctava >=1 Then
 
    ' ====>  Control PAgindo Horizontal <=======
@@ -1603,6 +1592,7 @@ If (ScreenEvent(@e)) Then
      '       Print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
      'posicion= posicion + curPOS ' estaba mal no va 3-3-21 jmg
      curpos=0
+     controlEdit=0
      Exit Do
     EndIf
    EndIf
@@ -1961,7 +1951,8 @@ If (ScreenEvent(@e)) Then
 
   EndIf
  EndIf
- If comEdit=TRUE And ayudaModif=FALSE And ayudaNuevaNota=FALSE Then
+ If comEdit=TRUE And ayudaModif=FALSE And ayudaNuevaNota=FALSE _
+   And octavaEdicion = estoyEnOctava Then
   If (mouseButtons And 1) And (DUR > 0) And (nE > 0) And modifmouse<> 3 Then
    'Print #1, "------------------------------------------------------------"
    'Print  #1,"(8) (mouseButtons And 1) And (DUR > 0) And (nE > 0) And ayudaNuevaNota=FALSE "

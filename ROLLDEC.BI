@@ -16,8 +16,9 @@ Declare Sub cursor(c AS cairo_t Ptr, ByRef n As Integer, ByRef nro As Integer)
 Declare Sub separarDur(ByRef j As Integer,ByRef DUR As Integer,  partes() As Integer,  ByRef cantPartes As Integer, ByRef falta As Integer )
 
 Declare Sub menugrafico(c0 AS cairo_t Ptr,c AS cairo_t Ptr, Cantitems As Integer, items() As String )
+Declare Sub ReCalCompas()
 
-Dim Shared As Integer nro, acumulado
+Dim Shared As Integer nro, acumulado, controlEdit =0,octavaEdicion=0
 Dim Shared As Integer vroll, vdur ' borrar
 Dim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t
