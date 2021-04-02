@@ -1330,7 +1330,7 @@ Sub calcCompas( ByRef j As Integer)
    Dim z1 As Integer
    Print #1,"1-calcCompas acumulado 3.3 >d7  ";acumulado; " carga: ";carga
    If acumulado > d7 And carga =0 Then
-    Print #1,"acumulado > d7"
+    Print #1,"acumulado > d7 :";acumulado
     tengo= acumulado - pesoDUR(DUR)
     Print #1,"tengo "; tengo
     falta=d7 - tengo
@@ -1351,17 +1351,18 @@ Sub calcCompas( ByRef j As Integer)
     Next z1
     Print #1,
     Print #1,"HAGO  DUR=0 BUENO.pero el sobra va a acum.."
-    acumulado=pesoDur(partes_sobra(CantSobra))  'jmg 30-3-21
-     
+    'preparo el acumulado de Falta ntes de reemplazar
+  '  acumulado=pesoDur(partes_sobra(CantSobra))  'jmg 30-3-21
+  '  Print #1,"acumulado sobra ";acumulado 
    EndIf
    Print #1,"1-calcCompas 3.4"
    '  EndIf
    Exit for
   EndIf
  Next k
- Print #1,"1-calcCompas 4 ingreso s ROLL de las durciones y notas"
+ Print #1,"1-calcCompas 4  ingreso a REEMPLAZO EN ROLL de las durciones y notas"
 
- 'acumulado=0
+ acumulado=tengo
  ' la ultima nota a cortar se ha cargado es la quese reemplaza de este modo
  ' el codigo nucleo no se toca para nada solo se copia las partes necesarias
  ' para imitar su comportamiento...el programa introduce auomaticamente las
@@ -1380,6 +1381,7 @@ Sub calcCompas( ByRef j As Integer)
    Print #1,"k,partes_falta(k), FIGURA ", k, partes_falta(k), figura(partes_falta(k))
    Print #1,"POSICION reemplazada: ";posn
    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = partes_falta(k)
+   
    If carga=0 Then ''no hce nada en la carga
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = notaold
    EndIf
@@ -1393,40 +1395,53 @@ Sub calcCompas( ByRef j As Integer)
       Roll.trk((i +(estoyEnOctava-1) * 13), posn).nota = 65
      EndIf
     EndIf
-   Next
+   Next i
+   acumulado=acumulado+pesoDur(partes_falta(k))
+   If acumulado = d7 Then
+      compas(posn)=posn
+      Print #1, "Hay compas en posn ";posn
+      acumulado=0
+   Else
+      compas(posn)=0   
+      Print #1,"No Hay compas todavia en posn ";posn
+   EndIf
+
    posn=Posn+1
    posicion = posn
    MaxPos= Posicion
    '   If k= CantFalta Then
    '  EndIf
 
-  Next k
+   Print #1,"acumulado falta: ";acumulado; " posn: ";posn
+   Print #1,"d7 ";d7
+
+
+ Next k
   
-  If j=posn Then
-   Print #1," j y posn son iguales "; j, posn
-  Else
-   Print #1," j y posn no son iguales, k "; j, posn,k
-   If posn = cantFAlta + j  Then
-    '  If carga=0 Then
-    Compas(posn-1) = posn-1 ' hay compas ' ok pero da 2
-    Print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k);figura(partes_falta(k))
-    Print #1, "ACUMULADO = ";acumulado
-    acumulado=0
-    Print #1,"acumulado cero";acumulado
-    cantFalta=0 'jmg 30-03-21
+ ' If j=posn Then
+ '  Print #1," j y posn son iguales "; j, posn
+ ' Else
+ '  Print #1," j y posn no son iguales, k "; j, posn,k
+ '  If posn = cantFAlta + j  Then
+    ''''  If carga=0 Then
+ '   Compas(posn-1) = posn-1 ' hay compas ' ok pero da 2
+ '   Print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k);figura(partes_falta(k))
+ '   Print #1, "ACUMULADO = ";acumulado
+ '    acumulado=0 
+ '   Print #1,"acumulado cero";acumulado
+ '   cantFalta=0 'jmg 30-03-21
     '  EndIf
-   EndIf
-  EndIf
+ '  EndIf
+ ' EndIf
   '  If carga=0 Then
   'Compas(posn-1) = posn-1 ' hay compas ' ok pero da 2 jmg 30-03-21
  ' Print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k);figura(partes_falta(k))
   
   '  EndIf
+End If
 
-
- End If
 CantFalta=0
-
+acumulado=0 ' se supone termino el compas sino habra que forzarlo.... 
  Print #1,"1-calcCompas 5 carga: ";carga
  If cantSobra > 0 And carga=0 Then
   Print #1,"REEMPLAZO CantSobra ";CantSobra
@@ -1455,7 +1470,7 @@ CantFalta=0
      EndIf
     EndIf
    Next
-   ''acumulado=acumulado + partes_sobra(k) ' para el siguiente compas..¿?.
+   acumulado=acumulado + partes_sobra(k) ' para el siguiente compas..¿?.
    If k= CantSobra Then
     CantSobra=0
     

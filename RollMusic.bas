@@ -1,14 +1,21 @@
 'ERROR A CORREGIR:
-' TRABAJAR CON DATOS DE DISCO TRBJO_01.ROLL DE ESTE DIR
+' TRABAJAR CON DATOS DE DISCO TRBJO_02.ROLL DE ESTE DIR
 ' Y CARGAR MNUALMENTE ES LO QUE FALA EL CORTE EN EL 3ER COMPAS
-' VER PARA CARGR PAPEL O CRGA-OK-MANUAL-NO-OK.png
+' VER PARA CARGR PAPEL O CRGA-OK-MANUAL-NO-OK.png.aleatoraiamente
+' calculamal loscortes de compas en manual por ahora se corrige
+' con tecla R para recalcular a voluntad simulando una carga de disco
+' que parece anda mejor.....si se conform eso luego de terminar
+' l crgmanual podrimos llamar la rutina de tecla R l final de la carga
+' manual si noencontramos la falla de manual....y tal vez altocar la manual
+' afectaremos la de carga...usan subs comunes...debido a la modularizacion
+'efecto contrario al deseado ,.  
 ' -NO SE PERMITE EDITAR EN MAS DE 1 OCTAVA A LA VEZ PARA EVITAR ERRORES
 '  POR DEFUALT,, LUEGO HAREMOS OPCION DE EDITAR EN 2 OCTAVAS A LA VEZ
 ' - add recalCompas con tecla R 
 ' - grabar en disco los limites NB y NA inferior y superior del array Roll.trk
 '   demodo que podemos grabar con cualqeir limite y se cargara bien con esos 
 '  limites ...queda ajustar limtes desde el call o desde el propio programa
-' -----------------------------
+' ------------------------------
 
 Open "midebug.txt" for Output As #1
 
