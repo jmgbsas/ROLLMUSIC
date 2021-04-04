@@ -9,6 +9,7 @@ Declare Sub movedato (ByVal StartInsert As Integer, ByRef indaux As Integer, Byr
 Declare sub calcCompas(ByRef j As Integer)
 Declare Sub mayorDurEnUnaPosicion (ByRef posn as integer)
 Declare Sub organizaCompases()
+
 ' 128 track,16 canales o sea cada canal con 8 voces
 Declare Sub cursor(c AS cairo_t Ptr, ByRef n As Integer, ByRef nro As Integer)
 'Declare Function print_text(ByVal x As Integer, ByVal y As Integer, ByRef text As String, _
@@ -17,9 +18,11 @@ Declare Sub separarDur(ByRef j As Integer,ByRef DUR As Integer,  partes() As Int
 
 Declare Sub menugrafico(c0 AS cairo_t Ptr,c AS cairo_t Ptr, Cantitems As Integer, items() As String )
 Declare Sub ReCalCompas()
-
-Dim Shared As Integer nro, acumulado, controlEdit =0,octavaEdicion=0
-Dim Shared As Integer vroll, vdur ' borrar
+Declare Sub CargaArchivo()
+Declare Sub CambiarDim()
+Dim Shared RTA As String 
+Dim Shared As Integer nro=0, acumulado=0, controlEdit =0,octavaEdicion=0
+Dim Shared As Integer vroll=0, vdur=0 ' borrar
 Dim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, cursormove
@@ -32,16 +35,17 @@ dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas
 Dim Shared NotasGuia (1 To 12) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
-Dim  Shared figura (1 To 66) As String  * 4 => _
-{" O "," P "," I "," L "," F "," E "," W "," H ",_  ' 1 to 8
-" O*"," P*"," I*"," L*"," F*"," E*"," W*"," H*",_ ' 9 16
-"sO ","sP ","sI ","sL ","sF ","sE ","sW ","sH ",_  ' 17 24
-"sO*","sP*","sI*","sL*","sF*","sE*","sW*","sH*",_ ' 25 32
-" O+"," P+"," I+"," L+"," F+"," E+"," W+"," H+",_  ' 33 40
-"O*+","P*+","I*+","L*+","F*+","E*+","W*+","H*+",_  ' 41 48
-"sO+","sP+","sI+","sL+","sF+","sE+","sW+","sH+",_  ' 49 56
-"sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sW*+","sH*+", _ ' 57 64
-"   "," ||" } ' son 65 la continuacion de silencios no tiene sentido
+Dim  Shared figura (1 To 74) As String  * 4 => _
+{" O "," P "," I "," L "," F "," E "," X "," H "," W ",_ ' 1  9
+" O*"," P*"," I*"," L*"," F*"," E*"," X*"," H*"," W*",_  ' 10 18
+"sO ","sP ","sI ","sL ","sF ","sE ","sX ","sH ","sW ",_  ' 19 27
+"sO*","sP*","sI*","sL*","sF*","sE*","sX*","sH*","sW*",_  ' 28 36
+" O+"," P+"," I+"," L+"," F+"," E+"," X+"," H+"," W+",_  ' 37 45
+"O*+","P*+","I*+","L*+","F*+","E*+","X*+","H*+","W*+",_  ' 46 54
+"sO+","sP+","sI+","sL+","sF+","sE+","sX+","sH+","SW+",_  ' 55 63
+"sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sX*+","sH*+","sW*+", _ '64 72
+"   "," ||" } ' 73 74 son 72 la continuacion de silencios no tiene sentido
+' 73 ESPACIO 74 FIN 
 ' ligaduras de notas con + que va a + o - creo qu emenso seria mejor
 ' parecido a una pila polos opuestos se atraen je...
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
@@ -87,22 +91,26 @@ Type mouse
  End Union
 End Type
 Dim shared As mouse m
-Dim Shared As Double old_btn_press_time, new_btn_press_time,dbl_click_time
-dbl_click_time = 0.5
+Dim Shared As Double old_btn_press_time, new_btn_press_time,dbl_click_time,redimensionar=0
+dbl_click_time = 0.3
 
 Dim Shared As Integer menuNro, menuNew, desde , hasta, rango
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen,anchofig
 Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, resultado
-Dim Shared As Integer pesoDur (1 To 64) => { _
-10000000,5000000,2500000,1250000,625000,312500,156250, 78125, _ '1  8
-15000000,7500000,3750000,1875000,937500,468750,234375,117187, _ '9  16
-10000000,5000000,2500000,1250000,625000,312500,156250, 78125, _ '17 24
-15000000,7500000,3750000,1875000,937500,468750,234375,117187, _ '25 32
-10000000,5000000,2500000,1250000,625000,312500,156250, 78125, _ '33 41
-15000000,7500000,3750000,1875000,937500,468750,234375,117187, _ '41 48
-10000000,5000000,2500000,1250000,625000,312500,156250, 78125, _ '49 56
-15000000,7500000,3750000,1875000,937500,468750,234375,117187 } ' 57 64
+Dim Shared As Integer pesoDur (1 To 72)  => { _
+10000000,5000000,2500000,1250000,625000,312500,156250, 78125,39063, _ '1  9
+15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '10 18
+10000000,5000000,2500000,1250000,625000,312500,156250, 78125,39063, _ '19 27
+15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '28 36
+10000000,5000000,2500000,1250000,625000,312500,156250, 78125,39063, _ '37 45
+15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '46 54
+10000000,5000000,2500000,1250000,625000,312500,156250, 78125,39063, _ '55 63
+15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594  } '64 72
+
+' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido po r 8
+' tengo elindice del revsado 1,2,3,4,5,6,7,8....
+' comprobar qellimite este entre 1 a 8 
 
 ' se repiten 3 veces el patron 1 a 16 por comodidad lo repetimos.
 

@@ -1,20 +1,19 @@
-'ERROR A CORREGIR:
+' V5.7.5.0.0 72 FIGURAS SE AGREGO H/2 = W, LA w de antesse reemplazo por X
+' REDIMENSION VISUAL Y FISICA FUNCIOANA BIEN SI SE ACHICA EL VECTOR
+' PERO SI SE AGRANDA ES INESTABLE -ERGO SI CARGO UN ARCHIVO REDUCIDO
+' EN OCTAVAS NOSE PODRA EXPANDIR HAY QUE LIMITAR ESA POSIBILIDAD !!! 
+'  ERROR 1 ) A CORREGIR:
 ' TRABAJAR CON DATOS DE DISCO TRBJO_02.ROLL DE ESTE DIR
 ' Y CARGAR MNUALMENTE ES LO QUE FALA EL CORTE EN EL 3ER COMPAS
 ' VER PARA CARGR PAPEL O CRGA-OK-MANUAL-NO-OK.png.aleatoraiamente
+' verificar creo sepudohaber corregido<---
+' ERROR 2 ) al pulsar notas en teclado enuna octava que no se permite
+' editar se congela todo, solo sepuede volver dando ctrl-M seguido de
+' ctrl-P en la octava de edcicon 
 ' calculamal loscortes de compas en manual por ahora se corrige
-' con tecla R para recalcular a voluntad simulando una carga de disco
-' que parece anda mejor.....si se conform eso luego de terminar
-' l crgmanual podrimos llamar la rutina de tecla R l final de la carga
-' manual si noencontramos la falla de manual....y tal vez altocar la manual
-' afectaremos la de carga...usan subs comunes...debido a la modularizacion
-'efecto contrario al deseado ,.  
-' -NO SE PERMITE EDITAR EN MAS DE 1 OCTAVA A LA VEZ PARA EVITAR ERRORES
-'  POR DEFUALT,, LUEGO HAREMOS OPCION DE EDITAR EN 2 OCTAVAS A LA VEZ
-' - add recalCompas con tecla R 
-' - grabar en disco los limites NB y NA inferior y superior del array Roll.trk
-'   demodo que podemos grabar con cualqeir limite y se cargara bien con esos 
-'  limites ...queda ajustar limtes desde el call o desde el propio programa
+' - ok:se reemplazo organizacompases por RecalCompas
+' - ok:estando con un nro de octavas n1 y si se carga archivo con n2
+'   ajusta automticamente el editor a n2..
 ' ------------------------------
 
 Open "midebug.txt" for Output As #1
@@ -127,18 +126,14 @@ NB => 1 + (desde-1) * 13   ' 27 para 3
 NA => 12 + (hasta-1) * 13  ' 90 para  7
 
 ReDim (Roll.trk ) (NB To NA, 1 To CantTicks)
-' LAIDEA ES USARMENSO OCTAVAS Y PARA ELLO HCEMOS REDIM SEGUN
-' LA ANTIDAD DE OCTVAS, ELPROBLEMA ES AHROA AL GRABAR
-' DEO GRABAR LSO LIMITES DE LAS OCTAVAS !!!
-
+Dim Shared As inst RollAux
+ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
+CantCompas = 40 * CantMin
 ' 600 COMPASES DE 32 POSICIONES 14,74 MBYTES , 235 MBYTES 16 TRACKS
 ' si  I=160 -> O=40 , 40 compases/min en 15 min=600 compases
 ' 600 * 128ticks maximo de H = 76800 ticks
 ' 5 min seria / 3 = 200 compases, aprox 5Mbytes *16 = 80 mbytes 16 trcks
 ' maso menso funciona pero debo empezar desde cero de vuelta....
-Dim Shared As inst RollAux
-ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
-CantCompas = 40 * CantMin
 
 
 '''Dim Shared As ubyte Insercion (1 To 128, 1 To 12000)
@@ -263,7 +258,7 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 '----- -FIN
 ' ancho de figura,separaciondelasmismas en pantalla anchofig
 '' ---------------  LOOP 1 ---------------
-On Error Goto errorhandler:
+'' On Error Goto errorhandler:
 
 Do
 
@@ -289,7 +284,7 @@ ScreenLock()
 
 ''cairo_translate(c, 100, 100)
 
-If comEdit = TRUE  Then
+If comEdit = TRUE  and octavaEdicion = estoyEnOctava Then
  cairo_set_source_rgba(c, 0.6, 0.6, 0.7, 1)
 Else
  cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1
@@ -328,6 +323,7 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 ' desde=3 hasta=7
 '  rango= hasta
 For i = desde To hasta ' nro_penta
+
  creaPenta (c, i, po,InicioDeLectura )
  If *po = 99 Then
   *po = hasta - 1
@@ -756,59 +752,14 @@ if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
 
 EndIf
 ' cargar Roll y MaxPos de disco
-/'
+
 If MultiKey(SC_L)  Then ' <======== load Roll
-     Erase Roll.TRK
-      Dim z (1,1 )  As dat
-      Dim As String x,x1,x2,x3,x4
-     open "Trabajo.roll" for binary access Read as #2
-
-       Get #2, , z(1,1)
-       x1=Bin(z(1,1).nota,4)
-       x2=Bin(z(1,1).dur,4)
-       x3=Bin(z(1,1).vol,4)
-       x4=Bin(z(1,1).pan,4)
-       x=x1+x2+x3+x4
- '      Print #1,"reconstruccion x pos bin ", x
-       MaxPos=CInt("&B"+x)
-       posicion = 1
- '      Print #1,"reconstruccion x pos int ", Posicion
-       notaold= z(1,1).pb
-       nota=0
-       inicioDeLectura=0 'Int(Maxpos/NroCol)
-       posn=MaxPos - 1
-' cargamos trabajo datos
-   Dim Trabajo (NB To NA,1 To MaxPos) As dat
-       Get #2, , Trabajo()
-  ' movemos los datos a Roll
- ' -------------------------
-       Dim As Integer i,j , mayor,resto,ia
-
-       For j = 1 To MaxPos
-          For i= NB To NA
-          Roll.trk(i,j) => Trabajo (i,j)
-          DUR => Roll.trk(i,j).dur
-          If i=1 And DUR >= 1 And DUR <= 8 Then
-            mayor=DUR
-          EndIf
-          If DUR < mayor And DUR >= 1 And DUR <= 8 Then
-             mayor=DUR
-          EndIf
-          If i=NA Then
-             DUR = mayor
-             calcCompas(j)
-             'DUR=0
-          EndIf
-'se copian todoslos miembros del type automaticamente.
-          Next i
-       Next j
-       DUR => 0
-    Close 2
-    curpos=0
-    carga=1 ' <======= control de Carga
+  If carga=0 Then
+   CargaArchivo()
+  EndIf 
  ' colocar algo visual que indique quesehizo la grabcion
 EndIf
-'/
+
 if Multikey (SC_F12) Then
  dim as integer i1, i2
  ' testeo solo en la 1er octva por ahora
@@ -1070,11 +1021,11 @@ If comEdit = TRUE Then
    DUR = 8:Exit Do
   EndIf
   If MultiKey(SC_9) Then
-   DUR = 65:Exit Do
+   DUR = 73:Exit Do
   EndIf
 
   If MultiKey(SC_0) Then ' FIN
-   DUR = 66:Exit Do
+   DUR = 74:Exit Do
   EndIf
 
   If MultiKey(SC_PERIOD) Then
@@ -1097,7 +1048,8 @@ If MultiKey(SC_F1) Then
  ' ELIMINADO NOUSAR ESE METODO, USAREMOS CAIRO...(para todo veo ....)
 EndIf
 '
-If MultiKey(SC_R) Then ' recalculode barras compas 
+If MultiKey(SC_R) Then ' recalculo de barras compas a veces no anda ¿? 
+ ReDim compas(1 To CantTicks)
  ReCalCompas() ' jmg 01-04-21 
 EndIf
 
@@ -1158,10 +1110,10 @@ EndIf
 ' del roll ante una entrada de nota hasta el próximo incremento de pantalla
 ' SOLO SEUSAPARAINGRESO DE NOTAS NUEVAS ..VERIFICANDO JMG
 If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Then
- Print #1,"--------------------------------------------------------------"
- Print #1,">>>START NUCLEO-COMPAS VECTOR posn: "; posn; "suma:";acumulado
- Print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;_
-    " nota: ";nota; " figura: ";figura(DUR)
+ 'Print #1,"--------------------------------------------------------------"
+ 'Print #1,">>>START NUCLEO-COMPAS VECTOR posn: "; posn; "suma:";acumulado
+ 'Print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;_
+ '   " nota: ";nota; " figura: ";figura(DUR)
  posn=1 + InicioDeLectura
  If DUR=0 Then
   Exit Do
@@ -1190,7 +1142,10 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    ' y hacer nota=semiotono 1 a 11 con el mouse...el esto es automtico...
    Do
     If Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = 0 OR _
-     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = 66 Then
+     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = 74 Then
+     ' corregido .mota=66 decia pasado a dur...al principio
+     'elfin lo poniaen nota horaendur nose si ponerlo en todo
+     ' talvezdeberiaponerlo en amboslados nota y dur
      '     Print #1, "D:Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota ", _
      '     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota
      posicion=posn
@@ -1213,9 +1168,9 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    ' para insertar y saber hasta donde se debe mover...esta solo
    'en dur no afecta a notas pero se debe insertar siempreenedicion
    ' con o sin cursor
-   Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 66
+   Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 74
    if notaOld > 0 And notaOld <> nota then
-    Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 65
+    Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 73
     '''ojo probar todo inserciones x  etc    endif
    EndIf
    ' cargamos Roll entonces Duracion no lo mostrara como "./."
@@ -1228,7 +1183,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    For i= 1 To 12 ' gracias a esto anda acordes
     If i<> nota Then
      If Roll.trk((i +(estoyEnOctava -1) * 13),posn).nota = 0 Then
-      Roll.trk((i +(estoyEnOctava-1) * 13), posn).nota = 65
+      Roll.trk((i +(estoyEnOctava-1) * 13), posn).nota = 73
      EndIf
     EndIf
    Next
@@ -1242,40 +1197,40 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
     incr=0
    EndIf
    If pun = 1 And sil=0 And mas=0 Then
-    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 8 'era dur
+    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 9 'era dur
     incr=0
    EndIf
    If pun=0 And sil=1 And mas=0 Then
-    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 16 'era dur
+    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 18 'era dur
     Print #1," NUCLEO GUARDO EN ROLL CON S DUR: ";DUR +16;" figura:";figura(DUR+16) 
     incr=16
    EndIf
    If  pun=1 And sil=1 And mas =0 Then
-    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 24
+    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 27
     incr=16
    EndIf
    If pun=0 And sil=0 And mas=1 Then
-    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 32
+    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 36
     incr=32
    EndIf
    If pun=1 And sil=0 And mas=1 Then
-    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 40
+    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 45
     incr=32
    EndIf
    If pun=0 And sil=1 And mas=1 Then
-    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 48
+    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 54
     incr=48
    EndIf
    If pun=1 And sil=1 And mas=1 Then
-    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 56
+    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 63
     incr=48
    EndIf
-   Print #1," NUCLEO GUARDO DUR EN ROLL ";DUR;" figura ";figura(DUR)
-   Print #1," NUCLEOBUSC Y GREG EN POSIICON :" ;posn
-   If DUR=64 Then
-    Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 65
-    DUR=0
-   EndIf
+  ' Print #1," NUCLEO GUARDO DUR EN ROLL ";DUR;" figura ";figura(DUR)
+  ' Print #1," NUCLEOBUSC Y GREG EN POSIICON :" ;posn
+ '  If DUR=64 Then
+ '   Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 65
+ '   DUR=0
+ '  EndIf
    pun=0:sil=0:mas=0
    ' mayorDurEnUnaPosicion (posn) quedo <--defectuoso
    
@@ -1293,10 +1248,10 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    'no puedo usar notaOld porque eso seria solo en el caso de que estaba editando
    ' para esa nota 1ero deberia oder moverme arribay bjo con el cursor para
    ' posicionarmeen una nota....ctrl-felcahs verticales ubicaran en cursor
-
+    nota=0
   EndIf
   'print " Roll ", Roll.trk(indice, posicion)
-
+    nota=0
   ' mostrarla en la t del Roll en el indice correspondiente
   ' ocalculo elindice en cada t y meto la nota o saco en t las otas
   ' del vector Roll pra ello acaa la grabo enRoll
@@ -1465,7 +1420,25 @@ If (ScreenEvent(@e)) Then
     Print #1, "-----SC_I -> insert,indaux : ",insert,indaux
    EndIf
    If e.scancode = SC_END Then ' mueve insercion, podria usarse para ELIMINAR Probar
-    If cursorVert=1 Then ' solo vlido con Ctrl-M
+    If backspace=1 Then
+      Dim as Integer i, y
+      For y=posishow To MaxPos
+        For i=NB To NA 
+        Roll.trk(i,y).nota=0
+        Roll.trk(i,y).dur=0
+        Next i
+      Next y
+      MaxPos=posishow+1 'jmg 03-04-2021
+      posn=posishow
+      Roll.trk(nR, MaxPos).dur=66
+      Roll.trk(nR, MaxPos).nota=0
+      ReCalCompas()
+      backspace=0
+      DUR=0
+      nota=0
+      Exit Do 
+    EndIf
+    If cursorVert=1 Then ' solo válido con Ctrl-M
      ' no mas reemplazos
      insert=3
      Print #1, "-----SC_END StartInsert,indaux,insert,nota: ",StartInsert,indaux,insert,nota
@@ -1583,6 +1556,7 @@ If (ScreenEvent(@e)) Then
    cursorHori = 0
    agregarNota = 0
    menuMouse = 0
+   carga=0
    '-----fin
    If MouseButtons And 1 Then ' <========= EDICION SOLO INGRESO DE NOTAS NUEVAS
     If s3 = 0 Then
@@ -1590,7 +1564,6 @@ If (ScreenEvent(@e)) Then
      '       Print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
      font = 18
      curpos=0
-     carga=0
      'mayorDurEnUnaPosicion (posn)
      '' calcCompas(pos)
      Exit Do
@@ -1651,6 +1624,7 @@ If (ScreenEvent(@e)) Then
    EndIf
   EndIf
  EndIf
+' ======> F7  BOTON - 
  If (mousex>=(ANCHO-40)) And (mousey > 17) And (mousey < 32) Then
   If  MouseButtons And 1 Then
    ''      If comEdit = FALSE Then
@@ -1671,6 +1645,7 @@ If (ScreenEvent(@e)) Then
 
   ''  EndIf
  EndIf
+ ' BOTON + F8
  If (mousex>=(ANCHO-40)) And (mousey > 33) And (mousey < 50) Then
   If  MouseButtons And 1 Then
    ''    If comEdit = FALSE Then
@@ -1705,14 +1680,15 @@ If (ScreenEvent(@e)) Then
    nroClick=1
    cursorVert = 1
    cursorHori = 1
-   Print #1, "------------------------------------------------------------"
-   Print  #1,"(1) MultiKey(SC_CONTROL) And (MouseButtons And 2) And comEdit=TRUE"
-   Print #1, "sc_CONTROL + MB2 + CE=TRUE <= ESTADO:CALL MENU COMANDO"
-   Print  #1, " ayudaModif=TRUE"
-   Print  #1," ayudaNuevaNota=FALSE"
-   Print  #1," menuMouse = 0"
-   Print  #1," nroClick=1 "
-   Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+ '  Print #1, "------------------------------------------------------------"
+ '  Print  #1,"(1) MultiKey(SC_CONTROL) And (MouseButtons And 2) And comEdit=TRUE"
+ '  Print #1, "sc_CONTROL + MB2 + CE=TRUE <= ESTADO:CALL MENU COMANDO"
+ '  Print  #1, " ayudaModif=TRUE"
+ '  Print  #1," ayudaNuevaNota=FALSE"
+ '  Print  #1," menuMouse = 0"
+ '  Print  #1," nroClick=1 "
+ '  Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+ '  Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 
    Exit Do
 
@@ -1816,7 +1792,7 @@ If (ScreenEvent(@e)) Then
     modifmouse=0
     ayudaNuevaNota=TRUE
     ' acomoda los compases  <======= organiza Compases
-    organizaCompases()
+    ReCalCompas() ' organizaCompases()
     ' fin compases
    EndIf
    If modifmouse=4 Then ' modificar
@@ -1972,14 +1948,15 @@ If (ScreenEvent(@e)) Then
   EndIf
  EndIf
  ''
- If MouseButtons And 1 Then
-  old_btn_press_time = new_btn_press_time
-  new_btn_press_time = timer
-  If ((new_btn_press_time - old_btn_press_time) < dbl_click_time) Then
-   dobleclick=TRUE
-  Else
-   dobleclick=FALSE
-  EndIf
+
+  If MouseButtons And 1  Then
+     old_btn_press_time = new_btn_press_time
+     new_btn_press_time = timer
+    If ((new_btn_press_time - old_btn_press_time) < dbl_click_time) Then
+      dobleclick=TRUE
+    Else
+      dobleclick=FALSE
+    EndIf
  EndIf
 
 
@@ -2037,6 +2014,9 @@ If (ScreenEvent(@e)) Then
   '' ES ACA PROHIBIDO PONER EXIT DO ! NO FUNCION DETECTOR DE OCTAVAS
   '' DEBE SEGUIR EJECUTNDO HACIA ABAJO Y CALCULARINDICE VAMOS A MOVER
   ''ESTEIF AL FINAL
+  If MenuNew <> 2 Then
+     MenuNew=0
+  EndIf
  EndIf
  Exit Do
 
