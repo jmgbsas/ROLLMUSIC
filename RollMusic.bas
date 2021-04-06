@@ -46,7 +46,9 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 
 ''
 #Include Once "cairo/cairo.bi"
+'===============================
 #Include "ROLLDEC.BI"
+'==============================
 #Include "NOTAS.bi"
 Type dat Field=1
  nota As ubyte
@@ -1118,14 +1120,15 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
  If DUR=0 Then
   Exit Do
  EndIf
- If controlEdit=0 Then
-   controlEdit=1 
-   octavaEdicion=estoyEnOctava
- EndIf
+ 'If controlEdit=0 Then
+ '  controlEdit=1 
+ '  octavaEdicion=estoyEnOctava
+ 'EndIf
  
  
  '   Print #1,"estoyEnOctava ";estoyEnOctava
- If estoyEnOctava <> 99 And octavaEdicion = estoyEnOctava Then ' estoy en una octava
+ ' And octavaEdicion = estoyEnOctava
+ If estoyEnOctava <> 99  Then ' estoy en una octava
   '  If indice <= 0 Then
   '      indice = 1
   '  EndIf
@@ -1170,7 +1173,11 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    ' con o sin cursor
    Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 74
    if notaOld > 0 And notaOld <> nota then
-    Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 73
+    Roll.trk((notaOld +(estoyEnOctavaOld -1) * 13),posn).dur = 73
+    Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).dur = 73
+    Roll.trk((notaOld +(estoyEnOctavaOld -1) * 13),posn).nota = 73
+    Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota = 73
+
     '''ojo probar todo inserciones x  etc    endif
    EndIf
    ' cargamos Roll entonces Duracion no lo mostrara como "./."
@@ -1180,14 +1187,35 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    ' cargada al siruarme en lugaressin nota o sea crgr nota
    ' nuevdonde no habia paso siguinte crgral not hbilitarencursos
    ' la crg de roll
-   For i= 1 To 12 ' gracias a esto anda acordes
-    If i<> nota Then
-     If Roll.trk((i +(estoyEnOctava -1) * 13),posn).nota = 0 Then
-      Roll.trk((i +(estoyEnOctava-1) * 13), posn).nota = 73
-     EndIf
-    EndIf
-   Next
+   Print #1,"-------------------------------------------"
+   Print #1," estoyEnOctavaOld=estoyEnOctava OLD:";estoyEnOctavaOld
+   Print #1," estoyEnOctavaOld=estoyEnOctava NEW:";estoyEnOctava
+   Print #1," NOTAOLD ";notaold
+   Print #1," NOTA    ";nota
+   Print #1," dur "; DUR
+   Print #1," pesoDur "; pesoDur(DUR)
+   Print #1," figura "; figura(DUR)
+   Print #1,"-------------------------------------------"
+
+   Dim as Integer noct ''oclog = 8 - (estoyEnOctava-1)
+   For noct = desde To hasta
+     For i= 1 To 12 ' gracias a esto anda acordes
+       If i= nota And noct = estoyEnOctava Then
+         Continue For
+       Else    
+         If Roll.trk((i +(noct -1) * 13),posn).nota = 0 Then
+            Roll.trk((i +(noct -1) * 13), posn).nota = 73
+         EndIf
+         If Roll.trk((i +(noct -1) * 13),posn).nota = 74 Then
+            Roll.trk((i +(noct -1) * 13),posn).nota = 73
+         EndIf
+       EndIf
+     Next i
+   Next noct
+ 
    notaOld = nota
+   estoyEnOctavaOld=estoyEnOctava
+   
    ' un binario 000,001,010,011,100,101,111
 
    If pun  = 0 And sil=0 And mas=0 Then ' no hay puntillo ni silencio
@@ -1240,7 +1268,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    '  Print #1,"Nucleo Error "; rmerr
 
    nota = 0
-
+   
 
 
   Else ' edicion de nota anterior retroceso, concosco la posicion la octava

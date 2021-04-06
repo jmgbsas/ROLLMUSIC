@@ -27,7 +27,7 @@ Dim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, cursormove
 Dim shared As integer Penta_y, indice, posicion,posicionOld, nota,espacio,posn,cursorHori
-Dim shared as integer estoyEnOctava, backspace,fijarEspacio, offset,borrar,cambiadur
+Dim shared as integer estoyEnOctava, estoyEnOctavaOld,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow
 Dim Shared As Integer octavas,  jc,ic,id
 dim Shared as string cromatica(1 to 12)
@@ -44,7 +44,7 @@ Dim  Shared figura (1 To 74) As String  * 4 => _
 "O*+","P*+","I*+","L*+","F*+","E*+","X*+","H*+","W*+",_  ' 46 54
 "sO+","sP+","sI+","sL+","sF+","sE+","sX+","sH+","SW+",_  ' 55 63
 "sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sX*+","sH*+","sW*+", _ '64 72
-"   "," ||" } ' 73 74 son 72 la continuacion de silencios no tiene sentido
+"   ","|| " } ' 73 74 son 72 la continuacion de silencios no tiene sentido
 ' 73 ESPACIO 74 FIN 
 ' ligaduras de notas con + que va a + o - creo qu emenso seria mejor
 ' parecido a una pila polos opuestos se atraen je...

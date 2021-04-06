@@ -630,7 +630,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    t = "      EDIT" + " " +  " UltimaPos: " + _
    Str(Maxpos) +" Posi: " + Str(posishow)+ " Posn: "+Str(posn)+ _
    " Font: " +Str(font) + " DUR:"+ Str(Dur) +" Nota:"+ Str(nota)+ _
-   " EnOct:" + Str(EnOctava) + " nE:"+Str(nE) + " nR:"+ Str(nR) + _
+   " EnOct:" + Str(estoyEnOctava) + " nE:"+Str(nE) + " nR:"+ Str(nR) + _
    " Mx:" + Str(mousex) + " My:" + Str(mousey) + "Desde:" + Str(y1) + "Hasta:" +Str(y2)
    /' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +
 '/
