@@ -1,16 +1,31 @@
+' v5.7.5.0.2: con Ctrl +dobleclick en Edit lectura ok
+' BORRAR HACIA Derecha y Ajustar MaxPos a la posicion actual en Edit Lectura
+' ------------------------------------------------------------------------ 
+' v5.7.5.0.1: introduccion de notas en una octava en blanco
+' pero que respete el corte de compas existente ,creoque eso ya se da
+' con elcambio actual solo se puede poner notas nuevas en control-m
+' en un tiempo anterior al actual del curson con X modificar ...
+' probar !!-LO QUE HACE CTUALMENTE ES RESPETAR A LAS NOTAS MAS GRANDES
+' Y RECALCULAR LOS COMPASES....con insert y modificar se puede jugar y
+' lograr ampliar un compas con mcho mas figuras de menortamalo que la melodia
+' perocon mas grandes algorro puede pasar (trabajarlo en elfuturo)
+' CAMBIO,,,SE SUPONE QUE LA 1ER OCTAVA QUE SE LLENE CON DATOS ES LA MELODIA
+' PRINCIPAL, LUEGO EL LLENADO DE TODAS LAS OCTAVAS POSTERIORES, SEGUIRAN
+' LOSCORTES DE LA OCTAVAORIGINAL ERGO SI TENGO 4 I EN PRINCIPAL, Y SI OTRA
+' TIENE O, ENTONCES EN ESTA NUEVA NO SEPODRAPONER MASNOTAS Y SALTRA AL SIGUIENTE 
+' COMPAS RESPETANDO LOS COMPASES DE LA MELODIA , O SEA EL DIRECTOR DEL CORTE
+' DEL COMPAS SERA LA MELODIA, PERO SE CONTROLARA QUE LAS NOTAS NO SUMEN MAS
+' DE UN COMPAS EN EL COMPAS PRINCIPAL EN LAS NOTAS DE OTRAOCTAVA NO PRINCIPAL, 
+' v5.7.5.0.1 se amplio la edicion a todas las octavas al mismo tiempo
+' como asi tmbien el calculo de compases que ya lo hcia pero aahor se aprecia
+' mas
 ' V5.7.5.0.0 72 FIGURAS SE AGREGO H/2 = W, LA w de antesse reemplazo por X
 ' REDIMENSION VISUAL Y FISICA FUNCIOANA BIEN SI SE ACHICA EL VECTOR
 ' PERO SI SE AGRANDA ES INESTABLE -ERGO SI CARGO UN ARCHIVO REDUCIDO
-' EN OCTAVAS NOSE PODRA EXPANDIR HAY QUE LIMITAR ESA POSIBILIDAD !!! 
-'  ERROR 1 ) A CORREGIR:
-' TRABAJAR CON DATOS DE DISCO TRBJO_02.ROLL DE ESTE DIR
-' Y CARGAR MNUALMENTE ES LO QUE FALA EL CORTE EN EL 3ER COMPAS
-' VER PARA CARGR PAPEL O CRGA-OK-MANUAL-NO-OK.png.aleatoraiamente
-' verificar creo sepudohaber corregido<---
-' ERROR 2 ) al pulsar notas en teclado enuna octava que no se permite
-' editar se congela todo, solo sepuede volver dando ctrl-M seguido de
-' ctrl-P en la octava de edcicon 
-' calculamal loscortes de compas en manual por ahora se corrige
+' EN OCTAVAS NOSE PODRA EXPANDIR HAY QUE LIMITAR ESA POSIBILIDAD !!!
+' l aunicaforam serai copiar a implementar mas adelante para que sea
+' una copia automatica con redimensionamiento.... 
+' calcula mal loscortes de compas en manual por ahora se corrige
 ' - ok:se reemplazo organizacompases por RecalCompas
 ' - ok:estando con un nro de octavas n1 y si se carga archivo con n2
 '   ajusta automticamente el editor a n2..
@@ -260,7 +275,7 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 '----- -FIN
 ' ancho de figura,separaciondelasmismas en pantalla anchofig
 '' ---------------  LOOP 1 ---------------
-'' On Error Goto errorhandler:
+ On Error Goto errorhandler:
 
 Do
 
@@ -815,7 +830,7 @@ EndIf
 If MultiKey(SC_SPACE) And s7=0 Then 'barra espacio
  espacio = 1
  posicion= posicion + 1
- DUR=65
+ DUR=73
  s7=1
  Exit Do
 EndIf
@@ -1230,28 +1245,28 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    EndIf
    If pun=0 And sil=1 And mas=0 Then
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 18 'era dur
-    Print #1," NUCLEO GUARDO EN ROLL CON S DUR: ";DUR +16;" figura:";figura(DUR+16) 
-    incr=16
+    Print #1," NUCLEO GUARDO EN ROLL CON S DUR: ";DUR +18;" figura:";figura(DUR+16) 
+    incr=18
    EndIf
    If  pun=1 And sil=1 And mas =0 Then
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 27
-    incr=16
+    incr=18
    EndIf
    If pun=0 And sil=0 And mas=1 Then
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 36
-    incr=32
+    incr=36
    EndIf
    If pun=1 And sil=0 And mas=1 Then
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 45
-    incr=32
+    incr=36
    EndIf
    If pun=0 And sil=1 And mas=1 Then
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 54
-    incr=48
+    incr=54
    EndIf
    If pun=1 And sil=1 And mas=1 Then
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 63
-    incr=48
+    incr=54
    EndIf
   ' Print #1," NUCLEO GUARDO DUR EN ROLL ";DUR;" figura ";figura(DUR)
   ' Print #1," NUCLEOBUSC Y GREG EN POSIICON :" ;posn
@@ -1436,8 +1451,10 @@ If (ScreenEvent(@e)) Then
       StartInsert = posicion + curpos  ' guardo sin modificar el comienzo xxx ok
      EndIf
      print #1,">>>SC_INSERT  despues ajuste STARTINSERT ", StartInsert
-     Erase (RollAux.trk) ' borro lo que habia en el auxiliar
-     Erase (notasInsertadas)
+     '''Erase (RollAux.trk) ' borro lo que habia en el auxiliar
+     ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
+     '''Erase (notasInsertadas)
+     ReDim notasInsertadas (1 to 1500)
      notins=0
      Print #1, ">>>SC_INSERT insert indaux borro RollAux.trk: ",insert,indaux
      'sigue el proceso en RollSub->sub cursor
@@ -1799,8 +1816,10 @@ If (ScreenEvent(@e)) Then
      StartInsert = posicion + curpos  ' guardo sin modificar el comienzo xxx ok
     EndIf
     '          print #1,">>>SC_INSERT  despues ajuste STARTINSERT ", StartInsert
-    Erase (RollAux.trk) ' borro lo que habia en el auxiliar
-    Erase (notasInsertadas)
+    ''''Erase (RollAux.trk) ' borro lo que habia en el auxiliar
+    ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
+    '''Erase (notasInsertadas)
+    ReDim notasInsertadas (1 to 1500)
     notins=0
     '          Print #1, ">>>SC_INSERT insert indaux borro RollAux.trk: ",insert,indaux
     'sigue el proceso en RollSub->sub cursor

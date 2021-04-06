@@ -357,7 +357,7 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
  '  Roll.trk(notacur + (nro-1) * 13, n +curpos).dur = 65
  ' EndIf
   borrar = 0
-  calcCompas(n) ''mayorDurEnUnaPosicion (n)
+ ''pro ahroa saco calcCompas(n) ''mayorDurEnUnaPosicion (n)
  EndIf
  ' << CAMBIADUR TAMBIEN INGRESA NOTA NUEVA Y DURACION DONDE NO HABIA >>
  ' << SOBREESCRIBE >>
@@ -641,12 +641,33 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    cairo_stroke(c)
 
    menuNew=2
-
-   If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
-    If MouseButtons And 1 Then
-     MenuNew=0
-    EndIf
-   EndIf
+  ' ============================================================= 
+  ' BORRAR HACIA Derecha y Ajustar MaxPos a la posicion actual en Edit Lectura
+  '====================================================== 
+  If mousex > 91 And mousex < 174  And mousey < 50 Then ' <= MaxPos ajuste a la posicion dada
+    cairo_set_source_rgba c, 0, 1, 0, 1
+      If MultiKey(SC_CONTROL ) Then 
+         If dobleclick Then
+            MaxPos=posishow +1
+            posn=posishow        
+            Dim As Integer r1,i
+            For i=NB To NA 
+              For r1= posn+1 To CantTicks
+                 Roll.trk(i,r1).nota=0
+                 Roll.trk(i,r1).dur=0 
+              Next r1 
+            Next i 
+        EndIf
+      EndIf
+  Else
+    cairo_set_source_rgba c, 1, 1, 1, 1    
+  EndIf  
+ 
+  If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
+     If MouseButtons And 1 Then
+      MenuNew=0
+     EndIf
+  EndIf
 
 
   Case 3
@@ -657,7 +678,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     cairo_set_source_rgba c, 0, 1, 0, 1
     '  If MouseButtons And 1 Then
     If dobleclick Then
-     ' Erase (Roll.trk)
+     
      ReDim (Roll.trk ) (NB To NA, 1 To CantTicks)
      ReDim compas(1 To CantTicks)
      ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
@@ -1202,7 +1223,7 @@ Sub calcCompas( ByRef j As Integer)
  Print #1,"========================================================="
  Print #1,"1-calcCompas j o posn RECIBIDA: "; j
  Dim As Integer k, i,cantFalta,CantSobra, tengo, falta,sobra
- If DUR=0 Then
+ If DUR=0 Or DUR=73 Then
   Exit Sub
  EndIf
 ' estonunca seejecuta porque j es 4 nouncaentr con 1!!
