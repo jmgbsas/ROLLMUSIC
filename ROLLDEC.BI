@@ -9,7 +9,7 @@ Declare Sub movedato (ByVal StartInsert As Integer, ByRef indaux As Integer, Byr
 Declare sub calcCompas(ByRef j As Integer)
 Declare Sub mayorDurEnUnaPosicion (ByRef posn as integer)
 Declare Sub organizaCompases()
-
+Declare Function KeyPress(Key As Integer) As Integer
 ' 128 track,16 canales o sea cada canal con 8 voces
 Declare Sub cursor(c AS cairo_t Ptr, ByRef n As Integer, ByRef nro As Integer)
 'Declare Function print_text(ByVal x As Integer, ByVal y As Integer, ByRef text As String, _

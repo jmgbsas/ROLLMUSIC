@@ -1,6 +1,10 @@
+' v5.7.5.0.3: entrada de espcios reflotada lista ok
+' se cambio recalcomps para que se desplaze sobre noasde semitono
+' con duracion 73 blanco de modo q no cierre elcompas antes de tiempo
+' sise introducen espacios para colocr notasdicionales en ctrl-m
 ' v5.7.5.0.2: con Ctrl +dobleclick en Edit lectura ok
 ' BORRAR HACIA Derecha y Ajustar MaxPos a la posicion actual en Edit Lectura
-' ------------------------------------------------------------------------ 
+' ---------------------------------------------------------------b--------- 
 ' v5.7.5.0.1: introduccion de notas en una octava en blanco
 ' pero que respete el corte de compas existente ,creoque eso ya se da
 ' con elcambio actual solo se puede poner notas nuevas en control-m
@@ -60,6 +64,7 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #EndIf
 
 ''
+#include "string.bi"
 #Include Once "cairo/cairo.bi"
 '===============================
 #Include "ROLLDEC.BI"
@@ -175,7 +180,7 @@ Dim Shared As Double   BordeSupRoll, inc_Penta
 Dim Shared As Integer  AnchoInicial,AltoInicial
 Dim Shared As FLOAT font
 Dim Shared q As String * 1
-Dim Shared As UByte s1, s2, s3, s4, s5,s6 , s7 ',s8,s9
+Dim Shared As UByte s1, s2, s3, s4, s5,s6  's7 ,s8,s9
 Dim escala As float = 1.0
 Dim translado As float = 1.0
 ''https://www.freebasic.net/forum/viewtopic.php?t=15127
@@ -217,7 +222,7 @@ comEdit = FALSE:resize = FALSE
 Dim po As Integer Ptr
 po = @octava
 *po = 8
-s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0':s8=0:s9=0
+s1=0:s2=0:s3=0:s4=0:s5=0:s6=0':s7=0':s8=0:s9=0
 font=18
 Dim Shared e As EVENT
 Dim Shared rmerr As Integer
@@ -395,29 +400,28 @@ Do While InKey =""
 ' comienzo=1
 'EndIf
 
-If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar con Insert y I
+If MultiKey(SC_CONTROL) And KeyPress(SC_M)  Then ' modificar con X o insertar con Insert y I
  cursorVert = 1
  cursorHori = 1
  agregarNota=0
  menuMouse = 0
 EndIf
-If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
+If MultiKey(SC_CONTROL) And KeyPress(SC_N)  Then 'modificar con nombre de nota
  cursorVert = 2
  cursorHori = 2
  agregarNota= 1
 EndIf
 
-If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE ?
+If MultiKey(SC_CONTROL) And KeyPress(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE ?
  cursorVert = 0
  cursorHori = 0
  agregarNota = 0
  menuMouse = 0
  '' notadur=0
 EndIf
-
-If MultiKey(SC_DOWN)  Then
- If cursorVert=0 Then
-  If s1=0 Then
+If cursorVert=0 Then
+ If KeyPress(SC_DOWN)  Then
+   If s1=0 Then
    s1=1
    BordeSupRoll = BordeSupRoll -  inc_Penta
   EndIf
@@ -429,7 +433,7 @@ If MultiKey(SC_DOWN)  Then
  EndIf
 EndIf
 
-If MultiKey(SC_PAGEDOWN) Then
+If KeyPress(SC_PAGEDOWN) Then
 
  If s1=0 Then
   s1=1
@@ -443,7 +447,7 @@ If MultiKey(SC_PAGEDOWN) Then
  Exit Do
 EndIf
 
-If MultiKey(SC_PAGEUP ) Then
+If KeyPress(SC_PAGEUP ) Then
  'beep
  If s2=0 Then
   s2=1
@@ -457,12 +461,12 @@ If MultiKey(SC_PAGEUP ) Then
 
 EndIf
 
-If MultiKey(SC_PLUS) Then  '13 , ligadura
+If KeyPress(SC_PLUS) Then  '13 , ligadura
  mas=1
  Exit Do
 EndIf
 
-If  MultiKey(SC_KEYPADPLUS) Then '78
+If  KeyPress(SC_KEYPADPLUS) Then '78
  '    ALTO = ALTO + 2 'inc_Penta
  '      If ALTO >= AltoInicial Then
  '         ALTO =  Altoinicial
@@ -493,7 +497,7 @@ If  MultiKey(SC_KEYPADPLUS) Then '78
 
 EndIf
 
-If MultiKey(SC_MINUS) Then
+If KeyPress(SC_MINUS) Then
  '    cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1 'evita fondo negro y flick
  '    cairo_paint(c)
 
@@ -518,25 +522,30 @@ If MultiKey(SC_MINUS) Then
  Exit Do
 
 EndIf
-If MultiKey(SC_CONTROL) And MultiKey (SC_RIGHT) Then
- posicion=posicion + NroCol/2
- If posicion > MaxPos Then
-  posicion = MaxPos
- EndIf
- posishow=posicion
- Sleep 100
+If MultiKey(SC_CONTROL) Then 
+ if KeyPress (SC_RIGHT) Then
+    posicion=posicion + NroCol/2
+    If posicion > MaxPos Then
+      posicion = MaxPos
+    EndIf
+    posishow=posicion
+   
+ EndIf    
 EndIf
-If MultiKey(SC_CONTROL) And MultiKey (SC_LEFT) Then
- posicion=posicion - NroCol/2
- If posicion < 1 Then
-  posicion = 1
- EndIf
- posishow=posicion
- Sleep 100
+
+If MultiKey(SC_CONTROL) Then 
+  If  KeyPress (SC_LEFT) Then
+   posicion=posicion - NroCol/2
+   If posicion < 1 Then
+      posicion = 1
+   EndIf
+   posishow=posicion
+  
+  EndIf
 EndIf
 
 '   escala = escala - 0.1
-If MultiKey(SC_RIGHT)  Then ' <======== RIGHT
+If KeyPress(SC_RIGHT)  Then ' <======== RIGHT
  If  mouseY < 50  Then ' seleccion de menu, mouse sobre cinta + teclas
   menuNro=menuNro+1
   If menuNro > 3 Then
@@ -544,8 +553,6 @@ If MultiKey(SC_RIGHT)  Then ' <======== RIGHT
    menuNew=0
   EndIf
   menuNew=menuNro
-  While Inkey <> "": Wend
-  Sleep 350
   Exit Do
  Else
   'kNroCol cantidad scroll de NrocOL)
@@ -568,12 +575,12 @@ If MultiKey(SC_RIGHT)  Then ' <======== RIGHT
    EndIf
 
   EndIf
-  Sleep 100
+
   Exit Do
  EndIf
 EndIf
 '   escala = escala + 0.1
-If MultiKey(SC_LEFT)  Then '  <========== LEFT
+If KeyPress(SC_LEFT)  Then '  <========== LEFT
  If  mouseY < 50  Then  ' seleccion de menu
   menuNro=menuNro - 1
   menuNew=menuNro
@@ -582,7 +589,7 @@ If MultiKey(SC_LEFT)  Then '  <========== LEFT
    menuNew=3
   EndIf
   While Inkey <> "": Wend
-  Sleep 350
+ 
   Exit Do
  Else
   'MOVER ROLL IZQUIERDA NO CURSOR
@@ -607,7 +614,7 @@ If MultiKey(SC_LEFT)  Then '  <========== LEFT
    EndIf
 
   EndIf
-  Sleep 100
+ 
   Exit Do
  EndIf
 EndIf
@@ -630,7 +637,7 @@ If  MultiKey (SC_F4)    Then
  Exit Do
 EndIf
 
-If MultiKey (SC_F8)  Then
+If KeyPress (SC_F8)  Then
  If comEdit = FALSE Then
   ' MOVE VENTANA
   Dim As Integer w,h
@@ -648,7 +655,7 @@ EndIf
 '----------
 ' SIZE ANCHO F5
 ' F5 SCANCODE 63 , F6 64
-If MultiKey(SC_CONTROL) And MultiKey (SC_F5)   Then
+If MultiKey(SC_CONTROL) And KeyPress (SC_F5)   Then
  If comEdit = FALSE Then
 
   translado = translado - 2
@@ -667,13 +674,13 @@ If MultiKey(SC_CONTROL) And MultiKey (SC_F5)   Then
  Exit Do
 
 EndIf
-If MultiKey (SC_F2)  Then
+If KeyPress (SC_F2)  Then
 
  escala = escala - 0.01
  Exit Do
 EndIf
 
-If MultiKey(SC_CONTROL) And MultiKey (SC_F6)  Then
+If MultiKey(SC_CONTROL) And KeyPress (SC_F6)  Then
  If comEdit = FALSE Then
 
   translado = translado + 2
@@ -692,7 +699,7 @@ If MultiKey(SC_CONTROL) And MultiKey (SC_F6)  Then
 
  Exit Do
 EndIf
-If MultiKey (SC_F3)  Then
+If KeyPress (SC_F3)  Then
 
  escala = escala + 0.01
  Exit Do
@@ -701,7 +708,7 @@ EndIf
 ' o cargo todo,,
 ' https://www.freebasic.net/forum/viewtopic.php?f=2&t=26636&p=246435&hilit=array+load+save#p246435
 ' ===================================
-if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
+if keyPress (SC_F11) Then '  <========= Grabar  Roll Disco  F11
  'cada posicion tendre 48bits osea 6bytes..
  ' luego 12000 posiicones si estuviera todo completo serian 9216000 bytes
  ' y grabo..9mbytes, seria 1 Track,,295 mbytes para 32 tracks
@@ -740,13 +747,10 @@ if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
  ' -------------------------------------
  Dim As Integer i,j,notafinal
  For i = NB To NA
-  If Roll.trk(i,posicion+1).dur = 65 Then
+  If Roll.trk(i,posicion+1).dur = 74 Then 
    notafinal= Roll.trk(i,posicion).nota
    '      Print #1, "ENCONTRO NOTA FINAL ", notafinal
    '      Print "ENCONTRO NOTA FINAL ", notafinal
-   ' esten la posiciond ela ultimanotapero grasoerror
-   ' o seaque no tiene duracion solo el34
-   ' esta mal ...
    Exit For
   EndIf
  Next
@@ -770,24 +774,27 @@ if Multikey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
 EndIf
 ' cargar Roll y MaxPos de disco
 
-If MultiKey(SC_L)  Then ' <======== load Roll
+If KeyPress(SC_L)  Then ' <======== load Roll
   If carga=0 Then
    CargaArchivo()
   EndIf 
  ' colocar algo visual que indique quesehizo la grabcion
 EndIf
 
-if Multikey (SC_F12) Then
+if keyPress (SC_F12) Then
  dim as integer i1, i2
+ Dim As String result 
  ' testeo solo en la 1er octva por ahora
  Print #1,
  for i1 = 1 to 12
-  for i2= 1 to posicion
-   print #1, Roll.trk(i1, i2).nota;"-";
+  for i2= 1 to Maxpos
+   result = Format (Roll.trk(i1, i2).nota,"00")
+   print #1,  result;"-";
   next i2
   print #1,
-  for i2= 1 to posicion
-   print #1, Roll.trk(i1, i2).dur;"-";
+  for i2= 1 to Maxpos
+   result = Format (Roll.trk(i1, i2).dur,"00")
+   Print #1, result;"-";
   next i2
   print #1,
   print #1,"------------------------"
@@ -795,17 +802,17 @@ if Multikey (SC_F12) Then
  While Inkey <> "": Wend
  sleep 150
  Close 2
-endif
-If MultiKey (SC_F10) Then
+EndIf
+
+If KeyPress (SC_F10) Then
  font = font + 1
- Sleep 150
  If font > 24 Then
   font=24 ' pisa la 1er duracion mas de ahi....
  EndIf
  Exit Do
 EndIf
 
-If MultiKey(SC_ESCAPE) Then
+If KeyPress(SC_ESCAPE) Then
  '  ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
  '  Dim As hWnd hwnd = Cast(hwnd,IhWnd)
 
@@ -819,22 +826,23 @@ If MultiKey(SC_ESCAPE) Then
   End
  EndIf
 EndIf
+' AYUDA =============ESPACIOS MANEJO ===================================
 ' repetir espacios con barra+ALTGRAF..luego la nota correspondiente
-If MultiKey(SC_ALTGR) Then ' FIJA ESPACIOS REPETIDOS HASTA NUEVA PULSO
+'================================================================
+If KeyPress(SC_ALTGR) Then ' FIJA ESPACIOS REPETIDOS HASTA NUEVA PULSO
  fijarEspacio = 99
  ' fijar para muchso espacios
 EndIf
 '--
 
 ' ============== E S P A C I O ========
-If MultiKey(SC_SPACE) And s7=0 Then 'barra espacio
+If KeyPress(SC_SPACE)  Then 'barra espacio
  espacio = 1
- posicion= posicion + 1
  DUR=73
- s7=1
  Exit Do
 EndIf
-If MultiKey (SC_Q) Then ' con Q se deja de repetir espacios
+
+If KeyPress (SC_Q) Then ' con Q se deja de repetir espacios
  If fijarEspacio=99 Then
   fijarEspacio=0
  EndIf
@@ -848,7 +856,7 @@ EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_A)  Then ' A#
  nota= 2
- If espacio = 1 Then
+ If espacio > 0 Then
   espacio=2
  EndIf   ' hasta aca logica nueva
  ' si estoy escribiendo espacio pero salto a otra nota, algo ilogico...
@@ -865,7 +873,7 @@ EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_C)   Then ' C#
  nota = 11
- If espacio = 1 Then
+ If espacio > 0 Then
   espacio=11
  EndIf
  If cursorVert =2 Then
@@ -875,7 +883,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_C)   Then ' C#
 EndIf
 If MultiKey(SC_CONTROL) And MultiKey(SC_D)  Then ' D#
  nota= 9
- If espacio = 1 Then
+ If espacio > 0 Then
   espacio=9
  EndIf
  If cursorVert =2 Then
@@ -885,7 +893,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_D)  Then ' D#
 EndIf
 If MultiKey(SC_CONTROL) And MultiKey(SC_F) Then ' F#
  nota= 6
- If espacio = 1 Then
+ If espacio > 0 Then
   espacio=6
  EndIf
  If cursorVert =2 Then
@@ -895,7 +903,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_F) Then ' F#
 EndIf
 If  MultiKey(SC_CONTROL) And MultiKey(SC_G)  Then ' G#
  nota= 4
- If espacio = 1 Then
+ If espacio > 0 Then
   espacio=4
  EndIf
  If cursorVert =2 Then
@@ -904,9 +912,9 @@ If  MultiKey(SC_CONTROL) And MultiKey(SC_G)  Then ' G#
  Exit Do
 EndIf
 
-If MultiKey (SC_A) Then
+If KeyPress (SC_A) Then
  nota= 3
- If espacio = 1 Then
+ If espacio > 0 Then
   espacio=3
  EndIf
  If cursorVert =2 Then
@@ -914,7 +922,8 @@ If MultiKey (SC_A) Then
  EndIf
  Exit Do
 EndIf
-If MultiKey (SC_B) Then
+
+If KeyPress (SC_B) Then
  nota = 1
  If cursorVert =2 Then
   agregarNota = 1
@@ -922,9 +931,9 @@ If MultiKey (SC_B) Then
  Exit Do
 EndIf
 
-If MultiKey (SC_C) Then
+If KeyPress (SC_C) Then
  nota = 12
- If espacio = 1 Then
+ If espacio > 0  Then
   espacio=12
  EndIf
  If cursorVert =2 Then
@@ -933,9 +942,9 @@ If MultiKey (SC_C) Then
  Exit Do
 EndIf
 
-If MultiKey (SC_D) Then
+If KeyPress (SC_D) Then
  nota= 10
- If espacio = 1 Then
+ If espacio > 0 Then
   espacio=10
  EndIf
  If cursorVert =2 Then
@@ -943,9 +952,9 @@ If MultiKey (SC_D) Then
  EndIf
  Exit Do
 EndIf
-If MultiKey (SC_E) Then
+If KeyPress (SC_E) Then
  nota = 8
- If espacio = 1 Then
+ If espacio > 0 Then
   espacio=8
  EndIf
  If cursorVert =2 Then
@@ -953,9 +962,9 @@ If MultiKey (SC_E) Then
  EndIf
  Exit Do
 EndIf
-If MultiKey (SC_F) Then
+If KeyPress (SC_F) Then
  nota= 7
- If espacio = 1 Then
+ If espacio >  0 Then
   espacio=7
  EndIf
  If cursorVert =2 Then
@@ -963,9 +972,9 @@ If MultiKey (SC_F) Then
  EndIf
  Exit Do
 EndIf
-If MultiKey (SC_G) Then
+If KeyPress (SC_G) Then
  nota= 5
- If espacio = 1 Then
+ If espacio >  0 Then
   espacio=5
  EndIf
  If cursorVert = 2  Then
@@ -973,7 +982,8 @@ If MultiKey (SC_G) Then
  EndIf
  Exit Do
 EndIf
-If MultiKey(SC_BACKSPACE) Then
+
+If KeyPress(SC_BACKSPACE) Then
  backspace=1
 
 EndIf
@@ -1065,7 +1075,7 @@ If MultiKey(SC_F1) Then
  ' ELIMINADO NOUSAR ESE METODO, USAREMOS CAIRO...(para todo veo ....)
 EndIf
 '
-If MultiKey(SC_R) Then ' recalculo de barras compas a veces no anda ¿? 
+If KeyPress(SC_R) Then ' recalculo de barras compas a veces no anda ¿? 
  ReDim compas(1 To CantTicks)
  ReCalCompas() ' jmg 01-04-21 
 EndIf
@@ -1133,17 +1143,16 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
  '   " nota: ";nota; " figura: ";figura(DUR)
  posn=1 + InicioDeLectura
  If DUR=0 Then
+  nota=0
   Exit Do
  EndIf
- 'If controlEdit=0 Then
- '  controlEdit=1 
- '  octavaEdicion=estoyEnOctava
- 'EndIf
- 
- 
- '   Print #1,"estoyEnOctava ";estoyEnOctava
+ If controlEdit=0 Then
+   controlEdit=1 
+   octavaEdicion=estoyEnOctava
+ EndIf
+  '   Print #1,"estoyEnOctava ";estoyEnOctava
  ' And octavaEdicion = estoyEnOctava
- If estoyEnOctava <> 99  Then ' estoy en una octava
+ If estoyEnOctava <> 99  And octavaEdicion = estoyEnOctava Then ' estoy en una octava
   '  If indice <= 0 Then
   '      indice = 1
   '  EndIf
@@ -1161,11 +1170,6 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    Do
     If Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = 0 OR _
      Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = 74 Then
-     ' corregido .mota=66 decia pasado a dur...al principio
-     'elfin lo poniaen nota horaendur nose si ponerlo en todo
-     ' talvezdeberiaponerlo en amboslados nota y dur
-     '     Print #1, "D:Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota ", _
-     '     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota
      posicion=posn
      '      Print #1, "ingreso a NUCLEO POSICION=POSN", posicion
      Exit Do
@@ -1178,8 +1182,11 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    Loop
    ' ESTO ME UBICA EN QUE RENGLON DE LA OCTaVA ESTOY SN USAR EL MOUSE
    ' LUEGO haRE ALGO CON EL MOUSE POR AHORA TODO TECLADO
-
    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = nota 'carga
+   If espacio > 0 Then
+     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = 73
+     
+   EndIf
    '' ojo ver'  If cursorVert = 0 and cursorHori = 0 Then
    ' no actua para modificaciones o agregado en lo existente
    ' 65 o FIN indica final de TODO es la MAXPOS (+1obvio),se usara
@@ -1227,8 +1234,8 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
        EndIf
      Next i
    Next noct
- 
-   notaOld = nota
+
+   notaOld=nota
    estoyEnOctavaOld=estoyEnOctava
    
    ' un binario 000,001,010,011,100,101,111
@@ -1276,30 +1283,30 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
  '  EndIf
    pun=0:sil=0:mas=0
    ' mayorDurEnUnaPosicion (posn) quedo <--defectuoso
-   
-     calcCompas(posn) 'lrepeticion no espor calcCompas
-   
+     'If DUR >=1 And DUR <= 72 Then
+      calcCompas(posn) 'lrepeticion no espor calcCompas
+     'EndIf
    '   rmerr = Err
    '  Print #1,"Nucleo Error "; rmerr
 
    nota = 0
    
 
-
   Else ' edicion de nota anterior retroceso, concosco la posicion la octava
    'pero no la nota 1ero debo recuperar la nota, cursor lo sabe tomar de ahi
    'no puedo usar notaOld porque eso seria solo en el caso de que estaba editando
    ' para esa nota 1ero deberia oder moverme arribay bjo con el cursor para
    ' posicionarmeen una nota....ctrl-felcahs verticales ubicaran en cursor
-    nota=0
+    
   EndIf
   'print " Roll ", Roll.trk(indice, posicion)
-    nota=0
+    
   ' mostrarla en la t del Roll en el indice correspondiente
   ' ocalculo elindice en cada t y meto la nota o saco en t las otas
   ' del vector Roll pra ello acaa la grabo enRoll
  EndIf
  '''   calcCompas(posn)
+  
  Exit Do 'kkkk 30-01-21 probando
 EndIf
 'If comEdit=FALSE then
@@ -1406,7 +1413,7 @@ If (ScreenEvent(@e)) Then
     Exit Do
    EndIf
 
-   If e.scancode = 67 Then ' <===== F9
+   If e.scancode = 67 Then ' <===== SC_F9
     font = font - 1
     Exit Do
    EndIf
@@ -1424,9 +1431,16 @@ If (ScreenEvent(@e)) Then
     Exit Do
    EndIf
    If e.scancode = 83 Then '<====== SC_DELETE cambia a silencio o nada le suma 16+16 ver eso
-    borrar = 1
-    Exit Do
-   EndIf
+      Print "PULSADO BORRAR ..·.."
+       If borrar=1 Then
+          borrar=0
+          Exit Do
+       EndIf   
+       If borrar=0 Then
+          borrar=1
+          Exit Do
+       EndIf  
+   EndIf 
    If e.scancode = SC_X Then ' 81 <==== SC_X ...fix
     'corrige nota cambia duracion o agrega nota nueva, acorde melodia
     ' solo debe funcionar con CTRL-M
@@ -1526,6 +1540,16 @@ If (ScreenEvent(@e)) Then
       notacur=1
      EndIf
     EndIf
+    If cursorVert=0 Then
+       If s1=0 Then
+         s1=1
+         BordeSupRoll = BordeSupRoll -  inc_Penta
+       EndIf
+       If BordeSupRoll <= - AltoInicial * 2.8  Then
+          BordeSupRoll =  - AltoInicial * 2.8
+       EndIf
+    EndIf
+    
     Exit Do
    EndIf
    ' If e.scancode = 75 Then ' <=====  LEFT repeat
@@ -1538,7 +1562,7 @@ If (ScreenEvent(@e)) Then
    '
    ' EndIf
 
-   If e.scancode = &h41 Then ' <============ F7
+   If e.scancode = &h41 Then ' <============ SC_F7
 
     If comEdit = FALSE Then
      ' MOVE VENTANA
@@ -1584,6 +1608,79 @@ If (ScreenEvent(@e)) Then
 
     Exit Do
    EndIf
+If e.scancode = 77  Then ' <======== RIGHT REPEAT
+ If  mouseY < 50  Then ' seleccion de menu, mouse sobre cinta + teclas
+  menuNro=menuNro+1
+  If menuNro > 3 Then
+   menuNro=0
+   menuNew=0
+  EndIf
+  menuNew=menuNro
+  Exit Do
+ Else
+  'kNroCol cantidad scroll de NrocOL)
+  If comEdit = FALSE Then
+   posicion = posicion + 1
+   kNroCol= Int(posicion/NroCol)
+   If  (kNroCol > 0) And (posicion = NroCol * kNroCol) And (posicion < MaxPos)Then
+    iniciodelectura = iniciodelectura +  NroCol
+    If inicioDeLEctura > MaxPos Then
+     inicioDeLEctura = inicioDeLEctura -NroCol
+    EndIf
+   EndIf
+   If posicion > MaxPos -1  Then
+    posicion = MaxPos -1
+   EndIf
+  Else
+   curpos= curpos + 1 ' mueve cursor cuando Roll se detiene (posicion)
+   If curpos > NroCol  Then
+    curpos = NroCol
+   EndIf
+
+  EndIf
+
+  Exit Do
+ EndIf
+EndIf
+'   escala = escala + 0.1
+If e.scancode = 75  Then '  <========== LEFT REPEAT
+ If  mouseY < 50  Then  ' seleccion de menu
+  menuNro=menuNro - 1
+  menuNew=menuNro
+  If menuNro < 0 Then
+   menuNro=3
+   menuNew=3
+  EndIf
+  While Inkey <> "": Wend
+ 
+  Exit Do
+ Else
+  'MOVER ROLL IZQUIERDA NO CURSOR
+  If comEdit = FALSE Then
+   Dim kNroCol As Integer ' cntidad de scroll de 66
+   posicion = posicion - 1
+   kNroCol= Int(posicion/NroCol)
+   If  kNroCol > 0 And (posicion = NroCol*kNroCol)  Then
+    iniciodelectura = iniciodelectura - NroCol
+   EndIf
+   If iniciodelectura < 0 Then
+    iniciodelectura = 0
+   EndIf
+   If posicion < 1 Then
+    posicion = 1
+   EndIf
+
+  Else
+   curpos = curpos - 1 ' <=== MOVER CURSOR IZQ
+   If curpos < 0 Then
+    curpos = 0
+   EndIf
+
+  EndIf
+ 
+  Exit Do
+ EndIf
+EndIf
 
 
  End Select
@@ -1592,6 +1689,7 @@ If (ScreenEvent(@e)) Then
  GetMouse mouseX, mouseY, , MouseButtons   ' <=======  CLICK EVENTOS
  If (mouseY >= edity1 ) And (mouseY <= edity2) Then
   If (mouseX >= 36) And (mouseX <= 70) And (menuNew=2 Or menuNro=2)  Then
+  ' =====> EDIT <===
    'SI ADEMS SEUSA CTRL-M SEPUEDE modificar ,agregr acordes e insertar
    ' 1 o varias notas en forma horizontal siemrpe la misma nota
    ' para acorde usar modificar SC_X
@@ -1618,6 +1716,13 @@ If (ScreenEvent(@e)) Then
      'posicion= posicion + curPOS ' estaba mal no va 3-3-21 jmg
      curpos=0
      controlEdit=0
+     nota=0
+     posicion=posicion - NroCol/2
+     If posicion < 1 Then
+        posicion = 1
+     EndIf
+     posishow=posicion
+
      Exit Do
     EndIf
    EndIf
@@ -2070,16 +2175,16 @@ If (ScreenEvent(@e)) Then
 EndIf ' end  (ScreenEvent(@e)) EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 ' PODRIA SACARSE LOS MULTIKEY DE SCREEN EVENT PERO NO SE SI ANDAN MEJOR DEBO VERIFICAR
 
-If s5<> 1 Then' acelerar mover ventana con el mouse
- Sleep 1 '1000 / 1000 frames = 1 milisegundos
-End If
+'If s5<> 1 Then' acelerar mover ventana con el mouse
+' Sleep 1 '1000 / 1000 frames = 1 milisegundos
+'End If
 Loop
 
 While Inkey <> "": Wend
 
-If s5<> 1 Then
- Sleep 1 '1000 / 1000 frames = 1 milisegundos
-EndIf
+'If s5<> 1 Then
+' Sleep 1 '1000 / 1000 frames = 1 milisegundos
+'EndIf
 ' total 2msg, lo mas rapido posible para que no interfiera
 ' en la entrada y salida de midi, midi reltime hasta 10 ms
 ' o sea tengo 8msg para procesar se?ales dibujar notas y moverlas...

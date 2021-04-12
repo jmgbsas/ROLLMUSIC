@@ -29,14 +29,14 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
 
  ' posicion es el indice del vector Roll
  ' curpos es la posicion del cursor de 1 a NroCol que suma a posicion
- ' porque posicion esta congelada pero hcemos q recorremos Roll con elcursor
+ ' porque posicion esta congelada pero hacemos q recorremos Roll con el cursor,
  ' cuando estoy en lectura el scroll avanza o retrocede con flechas izq der...
- ' en ctrl-M modo cursor loq semueve es el cursor el vectorqueda quieto
+ ' en ctrl-M modo cursor lo q se mueve es el cursor solo, el vector queda quieto
  ' la posicion del vector en donde se modifica seria en el rango
- ' posicion NroCol sumandolde eloffset del cursor de 1 a NroCol
+ ' posicion NroCol sumandole el offset del cursor de 1 a NroCol
  ' o sea indice vEctor en Ctrl-M = posicion + curpos pero eso sucede
- ' internanmente para mostrar congelamos posiiocn y comenzamos desde ahi
- ' todo proceso de modificacion deberatener encuenta a curpos, pero no
+ ' internanmente para mostrar congelamos posicion y comenzamos desde ahi
+ ' todo proceso de modificacion debera tener en cuenta a curpos, pero no
  ' la vista por pantalla
  'If comEdit= TRUE Then
  'Dim As Integer delta
@@ -70,13 +70,37 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
 
    If Roll.trk (semitono + (nro-1) * 13, n  ).nota > 0 Or _
       Roll.trk (semitono + (nro-1) * 13, n  ).dur > 0 Then
-    If espacio = semitono And ((n - inicioDeLectura)=curpos)  Then
-     Roll.trk (semitono + (nro-1) * 13, n ).nota = 73
-     If fijarEspacio=0 Then
-      espacio=0
-     EndIf
-     s7=0
-    EndIf
+      If comEdit=TRUE Then 
+         If cursorVert=0 Then  
+            If espacio = semitono Then
+               Roll.trk (semitono + (nro-1) * 13, n ).dur = 73
+               If fijarEspacio=0 Then
+                 espacio=0
+               EndIf
+            EndIf
+         EndIf   
+' un buen forma de borrar facil y rpido seria usando
+' ((n - inicioDeLectura)=curpos) y moviendoelcursor derecha izquierda
+' en ctrl-m borra todo de una!! implementarlo...        
+         If cursorVert=1 Then  
+            If espacio = semitono And ((n - inicioDeLectura)=curpos)  Then
+               Roll.trk (semitono + (nro-1) * 13, n ).dur = 73
+               If fijarEspacio=0 Then
+                  espacio=0
+               EndIf
+            EndIf   
+         EndIf
+         If cursorVert=1 And Borrar=1 Then  ' BORRADO LIBRE
+            If ((n - inicioDeLectura)=curpos)  Then
+               Roll.trk (semitono + (nro-1) * 13, n ).dur = 73
+               If fijarEspacio=0 Then
+                  Borrar=0
+               EndIf
+            EndIf   
+         EndIf
+      EndIf    
+   
+        
     cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 4)
     Dim As Integer indf
     indf= Roll.trk (semitono + (nro-1) * 13, n).dur
@@ -89,7 +113,7 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
 
     cairo_show_text(c, t)
     ' LINEAS DE COMPAS
-    'If indf> 0 And indf< 65 Then
+    'If indf> 0 And indf< 73 Then
     '  Print #1," CREAPENTA t  DUR: ";indf;" figura ";figura(indf); " semitono: "; semitono
     'EndIf
     If n >0 And n <= CantTicks Then
@@ -349,12 +373,12 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
   EndIf
   'dursaved = Roll.trk(notacur + (nro-1) * 13, n + curpos).dur
   ' debo cambiar esa nota por (equivalente en silencio no va mas
-  'para eso entra un silencio) se pone nota cero y dur 65
+  'para eso entra un silencio) se pone nota cero y dur 73
   Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 0
   Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = 0
   'Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = dursaved + 16
- ' If Roll.trk(notacur + (nro-1) * 13, n +curpos).dur > 65 Then
- '  Roll.trk(notacur + (nro-1) * 13, n +curpos).dur = 65
+ ' If Roll.trk(notacur + (nro-1) * 13, n +curpos).dur > 73 Then
+ '  Roll.trk(notacur + (nro-1) * 13, n +curpos).dur = 73
  ' EndIf
   borrar = 0
  ''pro ahroa saco calcCompas(n) ''mayorDurEnUnaPosicion (n)
@@ -630,8 +654,9 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    t = "      EDIT" + " " +  " UltimaPos: " + _
    Str(Maxpos) +" Posi: " + Str(posishow)+ " Posn: "+Str(posn)+ _
    " Font: " +Str(font) + " DUR:"+ Str(Dur) +" Nota:"+ Str(nota)+ _
-   " EnOct:" + Str(estoyEnOctava) + " nE:"+Str(nE) + " nR:"+ Str(nR) + _
-   " Mx:" + Str(mousex) + " My:" + Str(mousey) + "Desde:" + Str(y1) + "Hasta:" +Str(y2)
+   " EnOct:" + Str(estoyEnOctava) + " nE:"+Str(nE) + " nR:"+ Str(nR) + "Curpos: " +Str(curpos) + _
+   "RollDur :" +Str(Roll.trk(nR,posishow+curpos).dur)+ "Rollnota: " + Str(Roll.trk(nR,posishow+curpos).nota) 
+'   " Mx:" + Str(mousex) + " My:" + Str(mousey) + "Desde:" + Str(y1) + "Hasta:" +Str(y2)
    /' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +
 '/
    '''   " modifmouse:" + Str(modifmouse) + " usamousey:" + Str(usamousey) + " usamousex:"+ Str(usamousex) + _
@@ -677,16 +702,17 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    If mousex > 42 And mousex < 110  And mousey < 50 Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
     '  If MouseButtons And 1 Then
-    If dobleclick Then
-     
-     ReDim (Roll.trk ) (NB To NA, 1 To CantTicks)
-     ReDim compas(1 To CantTicks)
-     ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
-     MaxPos = 1 'NroCol
-     posicion=1:posn=1
-     curpos=1
-     notacur=1
-    EndIf
+      If MultiKey(sc_control) Then
+       If dobleclick Then
+          ReDim (Roll.trk ) (NB To NA, 1 To CantTicks)
+          ReDim compas(1 To CantTicks)
+          ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
+          MaxPos = 1 'NroCol
+          posicion=1:posn=1
+          curpos=1
+          notacur=1
+       EndIf
+      EndIf 
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
@@ -745,7 +771,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
      
      ' ------------------------------------
      ' hacemoslo mismo para l ultim not que se grabo que teng el 66
-     ' esa es lapapa recorremos todas las dur de las notas en donde este el 65
+     ' esa es lapapa recorremos todas las dur de las notas en donde este el 73
      ' endur tomamosla nota y esala grabamos en pb o ins
      ' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
      ' -------------------------------------
@@ -1063,10 +1089,10 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
   'Print #1,"antes del FOR Roll,RollAux.trk.. indpos,indaux ", indpos,indaux
   ' debemos barrer solo la octava? no porque puede haber otras octavas cargadas
   For s= NB To NA 'barremos todas las notas verticalmente para una misma posicion
-   If Roll.trk(s,indpos).dur = 73 Then ' fin de datos de Roll
+   If Roll.trk(s,indpos).dur = 74 Then ' fin de datos de Roll
     RollAux.trk(s,indaux) = Roll.trk(s,indpos)
     insert= 4 ' fin de llenado de almacenamiento auxiliar
-    '    Print #1,"sale moveresto encontro 65 fin, indaux :" ,indaux
+    '    Print #1,"sale moveresto encontro 74 fin, indaux :" ,indaux
     Exit Do
    EndIf
    RollAux.trk(s,indaux) = Roll.trk(s,indpos)
@@ -1135,7 +1161,7 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
    Next k
   Next s
   ' ACA DEBO CORREGIR TODAS LAS LINEAS CON NOTAS DIFERENTES A LA INSERTADA DEBEN QUEDAR
-  ' nota en 65 y durciones en  0. bueno hor determinamos donde y cuanto se inserto.
+  ' nota en 73 y durciones en  0. bueno hor determinamos donde y cuanto se inserto.
   ' estos son los valores  StartInsert y cantInserciones.
   ' StartInsert es de Roll antesdela insercion
   Print #1, "==> valor de nota antes de CORRECCION: ",nota
@@ -1223,9 +1249,17 @@ Sub calcCompas( ByRef j As Integer)
  Print #1,"========================================================="
  Print #1,"1-calcCompas j o posn RECIBIDA: "; j
  Dim As Integer k, i,cantFalta,CantSobra, tengo, falta,sobra
- If DUR=0 Or DUR=73 Then
+ If DUR=0 Then
+  Compas(j)=0
+  Print #1,"CALCOMPAS-0 DUR=0 COMPAS(J)=0 "
   Exit Sub
  EndIf
+ If DUR=73 Then
+  Compas(j)=0
+  Print #1,"CALCOMPAS-0 DUR=73 COMPAS(J)=0 "
+  Exit Sub
+ EndIf
+
 ' estonunca seejecuta porque j es 4 nouncaentr con 1!!
  If j= 1 Then ' 128 es el maximo de ticks de un compas se agregan amspara terminared analizar elcompas
   'Erase (buffCompas_1) no usados pro ahor no son necesarios....
@@ -1373,7 +1407,7 @@ Sub calcCompas( ByRef j As Integer)
    Print #1,"d7 ";d7
 
 
- Next k
+  Next k
   
  ' If j=posn Then
  '  Print #1," j y posn son iguales "; j, posn
@@ -1395,7 +1429,7 @@ Sub calcCompas( ByRef j As Integer)
  ' Print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k);figura(partes_falta(k))
   
   '  EndIf
-End If
+ End If
 
 CantFalta=0
 acumulado=0 ' se supone termino el compas sino habra que forzarlo.... 
@@ -1699,7 +1733,7 @@ End Function
 ' -------------------------------------------------------------
 Sub ReCalCompas()
      carga=1 ' no es lo mismo calcCompas con cargar o procesando
-     Dim As Integer i,j , mayor,ia,valdur,cont
+     Dim As Integer i,j , mayor,ia,valdur,cont, semi
      cont=0
      Print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
      Dim As Integer lim1, lim2, grupo, mayorgrupo
@@ -1711,10 +1745,11 @@ Sub ReCalCompas()
        ' al cargr tenemos 4 grupos de 16 de duraciones identicas que se repiten
        ' 1-16,17-32,33-48.49-64 , el indicemeindicaa cual grupo pertenece, y
        'en que rango buscar
-
+  '     mayorgrupo=0
 ''DE LO QUE SIGUE DEBO EXTRCTAR MAYOR ENUNA POSCION Y COPIARLO
-'' A ESA SUBRUTINA Y PONERLA EN NUCLEO  
-       If valdur > 0 And valdur < 73 Then
+'' A ESA SUBRUTINA Y PONERLA EN NUCLEO
+       semi => Roll.trk(i,j).nota  
+       If valdur > 0 And valdur < 74 And semi >=1 And semi <=12 Then
         Print #1, "LECTURA DUR: ";valdur;" EN LA CARGA j: ";j;" i: "; i;" figura ";figura(valdur)
         Print #3, "nota: "; i; " posi: "; j; " dur: ";valdur
         Select Case valdur
@@ -1726,7 +1761,13 @@ Sub ReCalCompas()
           lim1=37:lim2=54:grupo=3
          Case  55  To  72
           lim1=55:lim2=72:grupo=4
-
+         Case 73
+          compas(j)=0
+        '  lim1=0:lim2=0
+        '  valdur=73
+        '  mayorgrupo=0
+        '  mayor=73:grupo=0
+          Continue For,For
         End Select
 
         If  valdur >= lim1 And valdur <=lim2 And lim1 > 0 And lim2> 0 Then
@@ -1745,7 +1786,8 @@ Sub ReCalCompas()
          EndIf
          '     Print #1,"> i= ";i; " NA= ";NA
         EndIf
-       EndIf
+      EndIf
+       
        If i=NA Then
 
         Print #1,"i=NA i: ";i;" NA: ";NA;" Mayor ";mayor;" grupo:"; mayorgrupo
@@ -1756,16 +1798,16 @@ Sub ReCalCompas()
          EndIf
         Next ia
         DUR=valdur
-        If DUR > 64 Then
-         Print #1,"ERROR NO SE PUEDE PASAR DUR"
+        If DUR >72  Then ' <- esto nunca se ejecuta creo se filtra antes...
+          Print #1,"ERROR NO SE PUEDE PASAR DUR"
+          compas(j)=0
         Else
-         Print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo;" figura ";figura(DUR)
-         calcCompas(j)
-         Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j);" figura ";figura(DUR)
-        valdur=0
-        cont=0
-        DUR=0
-        
+          Print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo;" figura ";figura(DUR)
+          calcCompas(j)
+          Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j);" figura ";figura(DUR)
+          valdur=0
+          cont=0
+          DUR=0
         EndIf
         Print #3,"==============fin posicion nro: "; j
        EndIf
@@ -1815,8 +1857,9 @@ Sub CargaArchivo()
      Get #2, , Trabajo()
      ' movemos los datos a Roll
      ' -------------------------
+     ReDim compas(1 To CantTicks)
      carga=1 ' no es lo mismo calcCompas con cargar o procesando
-     Dim As Integer i,j , mayor,ia,valdur,cont
+     Dim As Integer i,j , mayor,ia,valdur,cont, semi
      cont=0
      Print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
      Dim As Integer lim1, lim2, grupo, mayorgrupo
@@ -1825,70 +1868,6 @@ Sub CargaArchivo()
       Print #3,"POSICION :";J
       For i= NB To NA
        Roll.TRK(i,j)  => Trabajo (i,j) '
-       valdur => Roll.trk(i,j).dur
-       ' al cargr tenemos 4 grupos de 16 de duraciones identicas que se repiten
-       ' 1-16,17-32,33-48.49-64 , el indicemeindicaa cual grupo pertenece, y
-       'en que rango buscar
-
-''DE LO QUE SIGUE DEBO EXTRCTAR MAYOR ENUNA POSCION Y COPIARLO
-'' A ESA SUBRUTINA Y PONERLA EN NUCLEO  
-       If valdur > 0 And valdur < 73 Then
-        Print #1, "LECTURA DUR: ";valdur;" EN LA CARGA j: ";j;" i: "; i;" figura ";figura(valdur)
-        Print #3, "nota: "; i; " posi: "; j; " dur: ";valdur
-        Select Case valdur
-         Case  1   To 18
-          lim1=1:lim2=18:grupo=1
-         Case  19  To  36
-          lim1=19:lim2=36:grupo=2
-         Case  37  To  54
-          lim1=37:lim2=54:grupo=3
-         Case  55  To  72
-          lim1=55:lim2=72:grupo=4
-
-        End Select
-
-        If  valdur >= lim1 And valdur <=lim2 And lim1 > 0 And lim2> 0 Then
-         Print #1, "Valdur i ";valdur ; i ; " grupo ";grupo;" figura ";figura(valdur)
-         ' Print #1,"i NB ";i,NB
-         If  cont=0   Then
-          mayor=pesoDur(valdur):mayorgrupo=grupo
-          '       Print #1,"1er mayor "; mayor; " mayorgrupo";mayorgrupo
-          cont=1
-         EndIf
-         'Print #1, "DUR mayor";DUR, mayor
-         If pesoDUR(valdur) > mayor  Then ' las duraciones cuando mas
-          mayor=pesoDur(valdur):mayorgrupo=grupo
-          '        Print #1,"Siguientes mayor "; mayor
-          ' Print #1, " DUR MAYOR";DUR,mayor
-         EndIf
-         '     Print #1,"> i= ";i; " NA= ";NA
-        EndIf
-       EndIf
-       If i=NA Then
-
-        Print #1,"i=NA i: ";i;" NA: ";NA;" Mayor ";mayor;" grupo:"; mayorgrupo
-        For ia= 1 * mayorgrupo To 18 * mayorgrupo
-         If mayor=pesoDur(ia) Then
-          valdur=ia
-          ''      Print #1, "peso de mayor encontrado valdur ";valdur; "dur ";ia; " grupo ";mayorgrupo
-         EndIf
-        Next ia
-        DUR=valdur
-        If DUR > 72 Then
-         Print #1,"ERROR NO SE PUEDE PASAR DUR"
-        Else
-         Print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo;" figura ";figura(DUR)
-         calcCompas(j)
-         Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j);" figura ";figura(DUR)
-        valdur=0
-        cont=0
-        DUR=0
-        
-        EndIf
-        Print #3,"==============fin posicion nro: "; j
-       EndIf
-       valdur=0:DUR=0:cont=0
-       
       Next i
 
      Next j
@@ -1896,8 +1875,8 @@ Sub CargaArchivo()
 
      DUR => 0
      curpos =>0
-
-
+     carga=0
+     ReCalCompas()
 End Sub
 
 Sub CambiarDim()
@@ -1905,5 +1884,11 @@ Sub CambiarDim()
      NA => 12 + (hasta-1) * 13  ' 90 para  7
 
      ReDim (Roll.trk ) (NB To NA, 1 To CantTicks)     
+'no se puede reemplaar en el main del programa por cuestion de scope
+' o sea la definicion debe hcerse en el scope del main para que funcione
+' Esta redefinicion funciona y es necesaria  donde se use cairo
+' sino parece que hay un choque entre cairo y redim y hace crash
+' la redimension, sacandola del scope de cairo funciona 
 
 End Sub
+
