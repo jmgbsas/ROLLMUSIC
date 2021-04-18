@@ -27,12 +27,12 @@ Dim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, cursormove
 Dim shared As integer Penta_y, indice, posicion,posicionOld, nota,espacio,posn,cursorHori
-Dim shared as integer estoyEnOctava, estoyEnOctavaOld,backspace,fijarEspacio, offset,borrar,cambiadur
+Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow
 Dim Shared As Integer octavas,  jc,ic,id
 dim Shared as string cromatica(1 to 12)
 dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
-Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas
+Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas
 Dim Shared NotasGuia (1 To 12) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
 Dim  Shared figura (1 To 74) As String  * 4 => _
@@ -66,12 +66,6 @@ haycompas=0
 dobleclick=>FALSE
 
 Const  d7 As Integer => 10000000
-Type cs
- dur As Integer
- peso As Integer
-End Type
-Dim Shared As cs  buffCompas_1(1 To 128) ' analisis de compas corriete
-Dim Shared As cs  buffCompas_2(1 To 128) ' analisis de compas corriete
 
 ' comienza el compas , se calculara dinamicamente,,,según posicion  y la historia anterior
 ' del mismo array (acumulado, nro Compas, posicion)

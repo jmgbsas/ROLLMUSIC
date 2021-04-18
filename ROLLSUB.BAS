@@ -14,14 +14,19 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
  'if indice <= 0 then indice = 1
  'if indice >= 128 then indice = 128
 
-
-
  cairo_select_font_face (c, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
  cairo_set_font_size (c, font)
 
  ' ======== NOTAS  =========
  ' cuando hago click en Edit el fondo cambia en main para edicion
- cairo_set_source_rgba(c, 0, 0, 0, 1)
+If comEdit = TRUE  and estoyEnOctava = nro  Then
+ cairo_set_source_rgba(c, 0, 1, 0.5, 1)
+Else
+ 
+ cairo_set_source_rgba(c, 1, 1, 1, 1)
+EndIf
+
+
 
  Penta_y = BordeSupRoll + 14 * ( inc_Penta ) *( nro -1)
  cairo_move_to(c, 0, Penta_y )
@@ -45,6 +50,7 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
  If cursorVert=0 And comEdit=TRUE Then
   If posicion < 30  Then
    posishow=  1
+   nroCompas = 0
   Else
    posishow = posicion - 20
   EndIf
@@ -117,10 +123,13 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
     '  Print #1," CREAPENTA t  DUR: ";indf;" figura ";figura(indf); " semitono: "; semitono
     'EndIf
     If n >0 And n <= CantTicks Then
-     If Compas(n) = n  Then ' ahi hy un corte un nuevo compas
+     If Compas(n).Posi = n  Then ' ahi hay un corte un nuevo compas
       cairo_move_to(c,81 + (ic ) *anchofig +anchofig , Penta_y)
       cairo_line_to(c,81 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta )
       '    Print #1, "|";
+      cairo_move_to(c,74 + (ic ) *anchofig +anchofig, Penta_y + 12.5 * inc_Penta )
+      t=Str(Compas(n).nro)
+      cairo_show_text(c,t)
      EndIf
     EndIf
     cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 6)
@@ -148,7 +157,7 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
   cairo_line_to(c, ANCHO - 1, lugar)
   cairo_stroke(c)
   If (mousey <= lugar) And (mousey >= lugarOld ) Then
-   nE=13-semitono  ' semitono 1 a 11 usadopor entrada de tecladoy ahroa mouse
+   nE=semitono  ' semitono 1 a 11 usadopor entrada de tecladoy ahroa mouse
    nR=(13-semitono) + (hasta-nro) * 13  ' indice de la nota en Roll , en algo será util.
   EndIf
   lugarOld=lugar
@@ -509,6 +518,8 @@ End Sub
 '-------------------------------MENU----------
 Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
  ''Print #1,"1-menu "
+ Dim As Integer fontOld = font
+ font=18
  Dim As cairo_font_extents_t fe   '     font data
  Dim As cairo_text_extents_t te  '      text size
  Dim  As Double Ptr xo,yo
@@ -987,6 +998,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    cairo_show_text( c, text )
   EndIf
  EndIf
+ font=fontOld
 End Sub
 '----------------------------------------------------------------------
 Sub menuAcc(c As cairo_t Ptr)
@@ -1255,13 +1267,18 @@ Sub calcCompas( ByRef j As Integer)
  Print #1,"========================================================="
  Print #1,"1-calcCompas j o posn RECIBIDA: "; j
  Dim As Integer k, i,cantFalta,CantSobra, tengo, falta,sobra
+ 
  If DUR=0 Then
-  Compas(j)=0
+  Compas(j).Posi=0
+  Compas(j).nro = 0
+
   Print #1,"CALCOMPAS-0 DUR=0 COMPAS(J)=0 "
   Exit Sub
  EndIf
  If DUR=73 Then
-  Compas(j)=0
+  Compas(j).Posi=0
+  Compas(j).nro = 0
+
   Print #1,"CALCOMPAS-0 DUR=73 COMPAS(J)=0 "
   Exit Sub
  EndIf
@@ -1288,10 +1305,11 @@ Sub calcCompas( ByRef j As Integer)
    acumulado =acumulado +pesoDur(k)
    Print #1,"acumulado / k / PEsoDur "; acumulado, k , pesoDur(k);" figura ";figura(DUR)
    If acumulado = d7 Then
-    ' Compas(posn)=posn '' NO CREO Q este producia dobles NO VA PERO VEMOS JMG
-    Compas (j)=j
+    Compas(j).Posi = j
+    nroCompas = nroCompas+1
+    Compas(j).nro = nroCompas
     Print #1,"acumulado ";acumulado
-    Print #1,"Compas(j) , j: ";Compas(j);" "; j
+    Print #1,"Compas(j) , j: ";Compas(j).Posi;" "; j
 
     acumulado=0
     jc=1
@@ -1301,7 +1319,9 @@ Sub calcCompas( ByRef j As Integer)
 
    If acumulado < d7  And j > 0 Then
     Print #1, "j que hace cancelar ";j
-    Compas(j)=0
+    Compas(j).Posi =0
+    Compas(j).nro = 0
+
     Print #1,"1-calcCompas 3.2 acumulado menor sigue exit sub, carga: ";carga
     Exit Sub
    EndIf
@@ -1384,7 +1404,10 @@ Sub calcCompas( ByRef j As Integer)
    Next i
    acumulado=acumulado+pesoDur(partes_falta(k))
    If acumulado = d7 Then
-      compas(posn)=posn
+      compas(posn).Posi = posn
+      nroCompas=nroCompas+1
+      Compas(posn).nro = nroCompas
+
       Print #1, "Hay compas en posn ";posn
       acumulado=0
    posn=Posn+1
@@ -1399,7 +1422,9 @@ Sub calcCompas( ByRef j As Integer)
 
       Exit For 
    Else
-      compas(posn)=0   
+      compas(posn).Posi=0
+      Compas(posn).nro = 0
+   
       Print #1,"No Hay compas todavia en posn ";posn
    EndIf
 
@@ -1516,7 +1541,10 @@ Sub separarDur(ByRef j As Integer, ByRef DUR As Integer,partes() As Integer, ByR
  For k=desde To hasta
   If falta=pesoDur(K) Then
    partes(lb)=k
-   Compas(j)=j ' hay compas ESTE PRODUCI DOBLES !!!! JMG SI
+   Compas(j).Posi=j ' hay compas ESTE PRODUCI DOBLES !!!! JMG SI
+   nroCompas = nroCompas+1
+   Compas(j).nro = nroCompas
+
    Print #1,"falta encontrado DUR ";k;" figura:";figura(k); " parte:";lb
    CantPartes =lb
    acumulado=0
@@ -1640,7 +1668,7 @@ Sub mayorDurEnUnaPosicion (ByRef posn as integer)
     Print #1,"          J, valdur Mayor: "; J, valdur
     DUR=valdur
     calcCompas(j)
-    Print #1,"ABRIR compas(j) ";compas(j); " j :"; j
+    Print #1,"ABRIR compas(j) ";compas(j).Posi; " j :"; j
 
    EndIf
   EndIf
@@ -1738,6 +1766,8 @@ Function KeyPress(Key As Integer) As Integer
 End Function
 ' -------------------------------------------------------------
 Sub ReCalCompas()
+   nroCompas = 0
+
      carga=1 ' no es lo mismo calcCompas con cargar o procesando
      Dim As Integer i,j , mayor,ia,valdur,cont, semi
      cont=0
@@ -1768,7 +1798,9 @@ Sub ReCalCompas()
          Case  55  To  72
           lim1=55:lim2=72:grupo=4
          Case 73
-          compas(j)=0
+          compas(j).Posi= 0
+          Compas(j).nro = 0
+ 
         '  lim1=0:lim2=0
         '  valdur=73
         '  mayorgrupo=0
@@ -1806,11 +1838,13 @@ Sub ReCalCompas()
         DUR=valdur
         If DUR >72  Then ' <- esto nunca se ejecuta creo se filtra antes...
           Print #1,"ERROR NO SE PUEDE PASAR DUR"
-          compas(j)=0
+          compas(j).Posi=0
+          Compas(j).nro = 0
+
         Else
           Print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo;" figura ";figura(DUR)
           calcCompas(j)
-          Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j);" figura ";figura(DUR)
+          Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j).Posi;" figura ";figura(DUR)
           valdur=0
           cont=0
           DUR=0

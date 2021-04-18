@@ -143,7 +143,12 @@ Dim Shared As Integer hastavector
 
 CantTicks=cantMin * 128 * tempo/4  ' 76800 ticks...
 CantTicks=76800
-Dim Shared As integer compas (1 To CantTicks) 'cada item es la posicion en donde
+Type paso Field=1
+ Posi As Integer
+ nro  As Integer 
+End type
+Dim Shared As paso compas (1 To CantTicks) 'cada item es la posicion en donde
+
 desdevector = desde
 hastavector = hasta
 NB => 1 + (desde-1) * 13   ' 27 para 3
@@ -221,7 +226,7 @@ Dim As Integer i, octava, posmouse, posmouseOld,incWheel, altofp11,edity1,edity2
 altofp11=ALTO:posmouseOld = 0:posmouse = 0
 Dim Shared As BOOLEAN comEdit, resize
 comEdit = FALSE:resize = FALSE
-Dim po As Integer Ptr
+Dim Shared po As Integer Ptr
 po = @octava
 *po = 8
 s1=0:s2=0:s3=0:s4=0:s5=0:s6=0':s7=0':s8=0:s9=0
@@ -315,15 +320,16 @@ ScreenLock()
 
 ''cairo_translate(c, 100, 100)
 
-If comEdit = TRUE  and octavaEdicion = estoyEnOctava Then
- cairo_set_source_rgba(c, 0.6, 0.6, 0.7, 1)
-Else
- cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1
-EndIf
+'If comEdit = TRUE  and octavaEdicion = estoyEnOctava Then
+' cairo_set_source_rgba(c, 0.6, 0.6, 0.7, 1)
+'Else
+' cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1
+ cairo_set_source_rgba c, 0, 0, 0, 1
+'EndIf
 cairo_paint(c)
 cairo_set_line_cap(c, CAIRO_LINE_CAP_ROUND)
 cairo_set_line_width(c, 1)
-cairo_set_source_rgba(c, 0, 0, 0, 1)
+'cairo_set_source_rgba(c, 0, 0, 0, 1)
 
 
 If s1 = 1 Then
@@ -1157,6 +1163,9 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
  'Print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;_
  '   " nota: ";nota; " figura: ";figura(DUR)
  posn=1 + InicioDeLectura
+ If posn=1 Then
+    nroCompas = 0
+ EndIf
  If DUR=0 Then
   nota=0
   Exit Do
@@ -1208,8 +1217,10 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    ' para insertar y saber hasta donde se debe mover...esta solo
    'en dur no afecta a notas pero se debe insertar siempreenedicion
    ' con o sin cursor
+   
    Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 74
-   if notaOld > 0 And notaOld <> nota then
+   
+   If notaOld > 0 And notaOld <> nota  then
     Roll.trk((notaOld +(estoyEnOctavaOld -1) * 13),posn).dur = 73
     Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).dur = 73
     Roll.trk((notaOld +(estoyEnOctavaOld -1) * 13),posn).nota = 73
@@ -2092,14 +2103,14 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
   And modifmouse<> 3 Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
   nota=nE   ''<== 1er nota ingresada para la duracion y nota elegida
   nroClick=0
-  'Print #1, "------------------------------------------------------------"
-  'Print  #1," DUR > 0 And nE > 0 And nroClick = 1 And ayudaNuevaNota=FALSE and comEdit=TRUE "
-  'Print  #1," And ayudaModif=FALSE "
-  'Print  #1," (7) ESTADO INGRESA O MODIFICA 1ER NOTA"
-  ''Print  #1," 7-><== 1er nota ingresada para la duracion y nota elegida"
-  'Print  #1," 7->nota=nE   ", nE
-  'Print  #1," 7-> nroClick=0"
-  'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+  Print #1, "------------------------------------------------------------"
+  Print  #1," DUR > 0 And nE > 0 And nroClick = 1 And ayudaNuevaNota=FALSE and comEdit=TRUE "
+  Print  #1," And ayudaModif=FALSE "
+  Print  #1," (7) ESTADO INGRESA O MODIFICA 1ER NOTA"
+  Print  #1," 7-><== 1er nota ingresada para la duracion y nota elegida"
+  Print  #1," 7->nota=nE   ", nE
+  Print  #1," 7-> nroClick=0"
+  Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 
   EndIf
  EndIf

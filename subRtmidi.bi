@@ -170,7 +170,7 @@ Dim As Integer non(1 To 108), liga=0,x=0
 ' el timer que se dejara transcurrir para envier el off
 ' dependera de la duracion de cada nota,,,
 Print #1,"comienzo play ==========> "
-For j=comienzo To final     
+For j=comienzo To final 
   For i=NA To NB Step -1 
    If (Roll.trk(i,j).nota >= 1) And Roll.trk(i,j).nota <= 12 _
       And Roll.trk(i,j).dur >=1 And Roll.trk(i,j).dur <= 73 Then ' es semitono 
@@ -231,20 +231,16 @@ For j=comienzo To final
      Print #1,"pasó for de off .."
      Print #1," =============================> fin paso...j"   
    EndIf 
-  ' If durb=0 Then
-   'Print #1,"reseteo de variables"
-  '   maxdur=0
-  '   con=0
-  '   cx=0 
-  ' EndIf  
   Next i
+
   Print #1,"COMIENZA OTRA  POSICION O J ================="
   If durb=0 Then
    cx=0
   EndIf
   con=0 
 Next j
-'Sleep 10   
+
+Sleep 1000  
 close_port(midiout)
 out_free(midiout) 
 
