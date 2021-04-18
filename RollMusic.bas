@@ -69,7 +69,9 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 '===============================
 #Include "ROLLDEC.BI"
 '==============================
-#Include "NOTAS.bi"
+'#Include "NOTAS.bi"
+#Include "declareRtmidi.bi"
+
 Type dat Field=1
  nota As ubyte
  dur As UByte  ' duracion
@@ -278,6 +280,13 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 ' VER SI SE PUEDE USAR ARRAYS PORPROCIONES
 
 '----- -FIN
+'----- MIDI MICROSOFT
+'https://docs.microsoft.com/en-us/windows/win32/multimedia/midi-functions
+'DIM CAN As UINT
+'CAN= midiOutGetNumDevs()
+'Print #1, "MIDI NUM DEVS ";CAN
+ 
+'-----
 ' ancho de figura,separaciondelasmismas en pantalla anchofig
 '' ---------------  LOOP 1 ---------------
  On Error Goto errorhandler:
@@ -366,14 +375,13 @@ Var cm = cairo_create(surf2)
 ' y sea enmenu o con SC_L puedo cargar desde disco,...sepierdela
 ' posicion aprentemente elcursorqueda clavado en 1 o 0 y no navega 5.7.3.1
 ' solo pasando por Edicion vuelve a navegar
+If mousey > 50 Then
+   play=0
+EndIf
 
 menu(c,cm, posicion,menuNro)
-
 cairo_stroke(cm)
-
 cairo_stroke(c)
-
-
 botones(hWnd, c ,cm, ANCHO,ALTO)
 
 
@@ -400,19 +408,19 @@ Do While InKey =""
 ' comienzo=1
 'EndIf
 
-If MultiKey(SC_CONTROL) And KeyPress(SC_M)  Then ' modificar con X o insertar con Insert y I
+If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar con Insert y I
  cursorVert = 1
  cursorHori = 1
  agregarNota=0
  menuMouse = 0
 EndIf
-If MultiKey(SC_CONTROL) And KeyPress(SC_N)  Then 'modificar con nombre de nota
+If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
  cursorVert = 2
  cursorHori = 2
  agregarNota= 1
 EndIf
 
-If MultiKey(SC_CONTROL) And KeyPress(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE ?
+If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE ?
  cursorVert = 0
  cursorHori = 0
  agregarNota = 0
@@ -420,7 +428,7 @@ If MultiKey(SC_CONTROL) And KeyPress(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE 
  '' notadur=0
 EndIf
 If cursorVert=0 Then
- If KeyPress(SC_DOWN)  Then
+ If MultiKey(SC_DOWN)  Then
    If s1=0 Then
    s1=1
    BordeSupRoll = BordeSupRoll -  inc_Penta
@@ -433,7 +441,7 @@ If cursorVert=0 Then
  EndIf
 EndIf
 
-If KeyPress(SC_PAGEDOWN) Then
+If multikey(SC_PAGEDOWN) Then
 
  If s1=0 Then
   s1=1
@@ -447,7 +455,7 @@ If KeyPress(SC_PAGEDOWN) Then
  Exit Do
 EndIf
 
-If KeyPress(SC_PAGEUP ) Then
+If MultiKey(SC_PAGEUP ) Then
  'beep
  If s2=0 Then
   s2=1
@@ -461,12 +469,12 @@ If KeyPress(SC_PAGEUP ) Then
 
 EndIf
 
-If KeyPress(SC_PLUS) Then  '13 , ligadura
+If multikey(SC_PLUS) Then  '13 , ligadura
  mas=1
  Exit Do
 EndIf
 
-If  KeyPress(SC_KEYPADPLUS) Then '78
+If  MultiKey(SC_KEYPADPLUS) Then '78
  '    ALTO = ALTO + 2 'inc_Penta
  '      If ALTO >= AltoInicial Then
  '         ALTO =  Altoinicial
@@ -497,7 +505,7 @@ If  KeyPress(SC_KEYPADPLUS) Then '78
 
 EndIf
 
-If KeyPress(SC_MINUS) Then
+If MultiKey(SC_MINUS) Then
  '    cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1 'evita fondo negro y flick
  '    cairo_paint(c)
 
@@ -523,7 +531,7 @@ If KeyPress(SC_MINUS) Then
 
 EndIf
 If MultiKey(SC_CONTROL) Then 
- if KeyPress (SC_RIGHT) Then
+ if MultiKey (SC_RIGHT) Then
     posicion=posicion + NroCol/2
     If posicion > MaxPos Then
       posicion = MaxPos
@@ -637,20 +645,20 @@ If  MultiKey (SC_F4)    Then
  Exit Do
 EndIf
 
-If KeyPress (SC_F8)  Then
- If comEdit = FALSE Then
-  ' MOVE VENTANA
-  Dim As Integer w,h
-  w=ANCHO:h=ALTO
-  ALTO = ALTO + inc_Penta
-  If ALTO >= altoInicial - 1  Then
-   ALTO = altoInicial  - 1
-  EndIf
-  MoveWindow( hWnd , 0, (0+ALTO-h)\2, ANCHO,ALTO, TRUE )
-  altofp11 = ALTO
- EndIf
- Exit Do
-EndIf
+'If MultiKey (SC_F8)  Then
+' If comEdit = FALSE Then
+'  ' MOVE VENTANA
+'  Dim As Integer w,h
+'  w=ANCHO:h=ALTO
+'  ALTO = ALTO + inc_Penta
+'  If ALTO >= altoInicial - 1  Then
+'   ALTO = altoInicial  - 1
+'  EndIf
+'  MoveWindow( hWnd , 0, (0+ALTO-h)\2, ANCHO,ALTO, TRUE )
+'  altofp11 = ALTO
+' EndIf
+' Exit Do
+'EndIf
 
 '----------
 ' SIZE ANCHO F5
@@ -674,7 +682,7 @@ If MultiKey(SC_CONTROL) And KeyPress (SC_F5)   Then
  Exit Do
 
 EndIf
-If KeyPress (SC_F2)  Then
+If MultiKey (SC_F2)  Then
 
  escala = escala - 0.01
  Exit Do
@@ -699,7 +707,7 @@ If MultiKey(SC_CONTROL) And KeyPress (SC_F6)  Then
 
  Exit Do
 EndIf
-If KeyPress (SC_F3)  Then
+If MultiKey (SC_F3)  Then
 
  escala = escala + 0.01
  Exit Do
@@ -708,7 +716,7 @@ EndIf
 ' o cargo todo,,
 ' https://www.freebasic.net/forum/viewtopic.php?f=2&t=26636&p=246435&hilit=array+load+save#p246435
 ' ===================================
-if keyPress (SC_F11) Then '  <========= Grabar  Roll Disco  F11
+if MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
  'cada posicion tendre 48bits osea 6bytes..
  ' luego 12000 posiicones si estuviera todo completo serian 9216000 bytes
  ' y grabo..9mbytes, seria 1 Track,,295 mbytes para 32 tracks
@@ -774,14 +782,14 @@ if keyPress (SC_F11) Then '  <========= Grabar  Roll Disco  F11
 EndIf
 ' cargar Roll y MaxPos de disco
 
-If KeyPress(SC_L)  Then ' <======== load Roll
+If MultiKey(SC_L)  Then ' <======== load Roll
   If carga=0 Then
    CargaArchivo()
   EndIf 
  ' colocar algo visual que indique quesehizo la grabcion
 EndIf
 
-if keyPress (SC_F12) Then
+if MultiKey (SC_F12) Then
  dim as integer i1, i2
  Dim As String result 
  ' testeo solo en la 1er octva por ahora
@@ -804,7 +812,7 @@ if keyPress (SC_F12) Then
  Close 2
 EndIf
 
-If KeyPress (SC_F10) Then
+If MultiKey (SC_F10) Then
  font = font + 1
  If font > 24 Then
   font=24 ' pisa la 1er duracion mas de ahi....
@@ -812,7 +820,7 @@ If KeyPress (SC_F10) Then
  Exit Do
 EndIf
 
-If KeyPress(SC_ESCAPE) Then
+If MultiKey(SC_ESCAPE) Then
  '  ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
  '  Dim As hWnd hwnd = Cast(hwnd,IhWnd)
 
@@ -829,20 +837,24 @@ EndIf
 ' AYUDA =============ESPACIOS MANEJO ===================================
 ' repetir espacios con barra+ALTGRAF..luego la nota correspondiente
 '================================================================
-If KeyPress(SC_ALTGR) Then ' FIJA ESPACIOS REPETIDOS HASTA NUEVA PULSO
+If MultiKey(SC_ALTGR) Then ' FIJA ESPACIOS REPETIDOS HASTA NUEVA PULSO
  fijarEspacio = 99
  ' fijar para muchso espacios
 EndIf
 '--
 
 ' ============== E S P A C I O ========
-If KeyPress(SC_SPACE)  Then 'barra espacio
- espacio = 1
- DUR=73
+If MultiKey(SC_SPACE)  Then 'barra espacio
+ If comEdit=TRUE then
+  espacio = 1
+  DUR=73
+ Else
+  PlayRoll()
+ EndIf  
  Exit Do
 EndIf
 
-If KeyPress (SC_Q) Then ' con Q se deja de repetir espacios
+If MultiKey (SC_Q) Then ' con Q se deja de repetir espacios
  If fijarEspacio=99 Then
   fijarEspacio=0
  EndIf
@@ -854,7 +866,7 @@ EndIf
 ' ergo por hhora las durciones empien con 13 al 20
 ' 13 = O, 14=P, 15=I, 16=L,17=F,18=E,19=W,20=H
 
-If MultiKey(SC_CONTROL) And MultiKey(SC_A)  Then ' A#
+If MultiKey(SC_CONTROL) And KeyPress(SC_A)  Then ' A#
  nota= 2
  If espacio > 0 Then
   espacio=2
@@ -871,7 +883,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_A)  Then ' A#
  Exit Do
 EndIf
 
-If MultiKey(SC_CONTROL) And MultiKey(SC_C)   Then ' C#
+If MultiKey(SC_CONTROL) And KeyPress(SC_C)   Then ' C#
  nota = 11
  If espacio > 0 Then
   espacio=11
@@ -881,7 +893,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_C)   Then ' C#
  EndIf
  Exit Do
 EndIf
-If MultiKey(SC_CONTROL) And MultiKey(SC_D)  Then ' D#
+If MultiKey(SC_CONTROL) And KeyPress(SC_D)  Then ' D#
  nota= 9
  If espacio > 0 Then
   espacio=9
@@ -891,7 +903,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_D)  Then ' D#
  EndIf
  Exit Do
 EndIf
-If MultiKey(SC_CONTROL) And MultiKey(SC_F) Then ' F#
+If MultiKey(SC_CONTROL) And KeyPress(SC_F) Then ' F#
  nota= 6
  If espacio > 0 Then
   espacio=6
@@ -901,7 +913,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_F) Then ' F#
  EndIf
  Exit Do
 EndIf
-If  MultiKey(SC_CONTROL) And MultiKey(SC_G)  Then ' G#
+If  MultiKey(SC_CONTROL) And KeyPress(SC_G)  Then ' G#
  nota= 4
  If espacio > 0 Then
   espacio=4
@@ -912,7 +924,7 @@ If  MultiKey(SC_CONTROL) And MultiKey(SC_G)  Then ' G#
  Exit Do
 EndIf
 
-If KeyPress (SC_A) Then
+If MultiKey (SC_A) Then
  nota= 3
  If espacio > 0 Then
   espacio=3
@@ -923,7 +935,7 @@ If KeyPress (SC_A) Then
  Exit Do
 EndIf
 
-If KeyPress (SC_B) Then
+If MultiKey (SC_B) Then
  nota = 1
  If cursorVert =2 Then
   agregarNota = 1
@@ -931,7 +943,7 @@ If KeyPress (SC_B) Then
  Exit Do
 EndIf
 
-If KeyPress (SC_C) Then
+If MultiKey (SC_C) Then
  nota = 12
  If espacio > 0  Then
   espacio=12
@@ -942,7 +954,7 @@ If KeyPress (SC_C) Then
  Exit Do
 EndIf
 
-If KeyPress (SC_D) Then
+If MultiKey (SC_D) Then
  nota= 10
  If espacio > 0 Then
   espacio=10
@@ -952,7 +964,7 @@ If KeyPress (SC_D) Then
  EndIf
  Exit Do
 EndIf
-If KeyPress (SC_E) Then
+If MultiKey (SC_E) Then
  nota = 8
  If espacio > 0 Then
   espacio=8
@@ -962,7 +974,7 @@ If KeyPress (SC_E) Then
  EndIf
  Exit Do
 EndIf
-If KeyPress (SC_F) Then
+If MultiKey (SC_F) Then
  nota= 7
  If espacio >  0 Then
   espacio=7
@@ -972,7 +984,7 @@ If KeyPress (SC_F) Then
  EndIf
  Exit Do
 EndIf
-If KeyPress (SC_G) Then
+If MultiKey (SC_G) Then
  nota= 5
  If espacio >  0 Then
   espacio=5
@@ -983,7 +995,7 @@ If KeyPress (SC_G) Then
  Exit Do
 EndIf
 
-If KeyPress(SC_BACKSPACE) Then
+If MultiKey(SC_BACKSPACE) Then
  backspace=1
 
 EndIf
@@ -1023,7 +1035,7 @@ EndIf
 
 If comEdit = TRUE Then
  If (menuNew = 2 Or menuNro=2) Then
-  If MultiKey(SC_1) Then
+  If KeyPress(SC_1) Then
    DUR = 1 :Exit Do
   EndIf
   If MultiKey(SC_2) Then
@@ -1069,13 +1081,16 @@ If comEdit = TRUE Then
 EndIf
 ' ----HELP PRUEBA DE TEXT
 If MultiKey(SC_F1) Then
+' por ahora solo traeremos un texto, luego usaremos llamar
+' a un archivo de help chm..
+ Shell ("start notepad ayuda.txt")
  ' estopodemos hacer ayuda contextual
  '' Define character range
  '.DRAWASTRING CON FONT DEUSUARIO A VECES SEGUN COMO SE COMPILE HACE CERRAR LA APLICACION
  ' ELIMINADO NOUSAR ESE METODO, USAREMOS CAIRO...(para todo veo ....)
 EndIf
 '
-If KeyPress(SC_R) Then ' recalculo de barras compas a veces no anda ¿? 
+If MultiKey(SC_R) Then ' recalculo de barras compas a veces no anda ¿? 
  ReDim compas(1 To CantTicks)
  ReCalCompas() ' jmg 01-04-21 
 EndIf
@@ -1407,7 +1422,7 @@ If (ScreenEvent(@e)) Then
      '  ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
 
      '  Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-     MoveWindow( hWnd , 10, (10+ALTO-h)\2, ANCHO,ALTO, TRUE )
+     MoveWindow( hWnd , 0, (0+ALTO-h)\2, ANCHO,ALTO, TRUE )
      altofp11 = ALTO
     EndIf
     Exit Do
@@ -1576,7 +1591,7 @@ If (ScreenEvent(@e)) Then
      '
      '   ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
      '   Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-     MoveWindow( hWnd , 10 , (10+h-ALTO)\2, ANCHO,ALTO, TRUE )
+     MoveWindow( hWnd , 0 , (0+h-ALTO)\2, ANCHO,ALTO, TRUE )
 
      altofp11 = ALTO
     EndIf
@@ -1600,7 +1615,7 @@ If (ScreenEvent(@e)) Then
      '   ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
 
      '   Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-     MoveWindow( hWnd , 10, (10+ALTO-h)\2, ANCHO,ALTO, TRUE )
+     MoveWindow( hWnd , 0, (0+ALTO-h)\2, ANCHO,ALTO, TRUE )
 
      altofp11 = ALTO
 
@@ -1745,6 +1760,7 @@ EndIf
   x1=mouseX: y1=mouseY
   s5=1
  EndIf
+ ' =========> MOVER VENTANA DRAGNDO L CINTA SUPERIOR EN OPCION <MENU> 
  If MouseButtons And 1 And s5=1 And mouseX > 70 and menuNro= 1 And mousex < (ANCHO-50)Then
   x2=mouseX
   y2=mouseY
@@ -1820,7 +1836,8 @@ EndIf
  ' IZQUIERDO (2 o 1 segun la cantidad necesaria para ejecutar el comando)
  '  MOMENTO EN EL QUE SE EJECUTA EL COMANDO Y SE VE EL CAMBIO.
  '       ==== NOTAS O DURACIONES EXISTENTES ====
- If  comEdit=TRUE then
+If  mouseY > 50 Then '<=== delimitacion de area de trabajo
+ If  comEdit=TRUE  then
   If  MultiKey(SC_CONTROL) And (MouseButtons And 2)  Then
    ' trae un menu contextual solo con ctrl-m  previo <==== menu borrar insertar modificar
    ' ESTADO:CALL MENU COMANDO
@@ -2100,7 +2117,8 @@ EndIf
   EndIf
  EndIf
  ''
-
+EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
+' ------------------------------------------------------------------
   If MouseButtons And 1  Then
      old_btn_press_time = new_btn_press_time
      new_btn_press_time = timer
@@ -2111,8 +2129,7 @@ EndIf
     EndIf
  EndIf
 
-
- '                     <===  FIN    O P I L F E W H
+'                     <===  FIN    O P I L F E W H
 
 
  If resize = TRUE Then    ' <===== MOVER Y REDIMENSIONAR LA PANTALLA NO TAN FACIL
@@ -2175,16 +2192,16 @@ EndIf
 EndIf ' end  (ScreenEvent(@e)) EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 ' PODRIA SACARSE LOS MULTIKEY DE SCREEN EVENT PERO NO SE SI ANDAN MEJOR DEBO VERIFICAR
 
-'If s5<> 1 Then' acelerar mover ventana con el mouse
-' Sleep 1 '1000 / 1000 frames = 1 milisegundos
-'End If
+If s5<> 1 Then' acelerar mover ventana con el mouse
+ Sleep 1 '1000 / 1000 frames = 1 milisegundos
+End If
 Loop
 
 While Inkey <> "": Wend
 
-'If s5<> 1 Then
-' Sleep 1 '1000 / 1000 frames = 1 milisegundos
-'EndIf
+If s5<> 1 Then
+ Sleep 1 '1000 / 1000 frames = 1 milisegundos
+EndIf
 ' total 2msg, lo mas rapido posible para que no interfiera
 ' en la entrada y salida de midi, midi reltime hasta 10 ms
 ' o sea tengo 8msg para procesar se?ales dibujar notas y moverlas...
@@ -2193,6 +2210,7 @@ Loop
 
 
 #Include "ROLLSUB.BAS"
+#Include "subRtmidi.bi"
 errorhandler:
 Dim as Integer er, ErrorNumber, ErrorLine
 er = Err

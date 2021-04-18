@@ -1,0 +1,29 @@
+Ayuda Básica RollMusic
+======================
+
+1) Modo Lectura
+2) Modos de Edicion 
+  2.1) Entrada manual
+  2.2) Entrada con ayuda de mouse
+  2.3) Modificacion.
+3) Recalcular Compas <R>
+4) Grabar Archivo [Archivo]->[Grabar] 
+5) Cargar Archivo [Archivo]->[Abrir] 
+6) Tamaño Font  F9 disminuye <-> F10 aumenta
+   La edicion siempre se hará en font=18, pues la misma depende del tamaño
+   del mismo y está diseñado para ese tamaño.
+
+
+1) Modo Lectura se inicia en color Celeste.
+   -Recorrer las octavas se usa flecha arriba o abajo, Retroceso-Pagina , Avance Pagina.
+   -Achicar la pantlla en modo Telón F7 / F8. O usando click en los botones amarillo(-)
+    verde(+) dela esquina superior derecha, que equivalen a F7/F8 , levanta bajar Telón
+    o achicar agrandar la pantalla respectivamente.
+   - Mover pantalla, enla cinta gris del menu lado derecho se hace click 2 o 3 veces
+   y se comienza a dragar suavemnte,no responde a dragados veloces.Para poder 
+   efectuarlo se ubica el mouse sobre lacinta superior del menu, y se busca <MENU>    desplazando flecha derecha -izquierda,sin salir dela zona de la cinta, tratar
+   de dragar la ventana.
+
+
+    
+   

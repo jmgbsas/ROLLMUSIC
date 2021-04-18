@@ -148,8 +148,8 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
   cairo_line_to(c, ANCHO - 1, lugar)
   cairo_stroke(c)
   If (mousey <= lugar) And (mousey >= lugarOld ) Then
-   nE=semitono  ' semitono 1 a 11 usadopor entrada de tecladoy ahroa mouse
-   nR=semitono + (nro-1) * 13  ' indice de la nota en Roll , en algo será util.
+   nE=13-semitono  ' semitono 1 a 11 usadopor entrada de tecladoy ahroa mouse
+   nR=(13-semitono) + (hasta-nro) * 13  ' indice de la nota en Roll , en algo será util.
   EndIf
   lugarOld=lugar
 
@@ -597,10 +597,15 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    t=  " [Pista]":cairo_show_text(c, t)
    ' ------------------------------------------
 ' 0.5 ===> [Reproducir]
-   If mousex > 348 And mousex< 453 And mousey < 50 Then
+   If mousex > 348 And mousex< 453 And mousey < 50  And play=0 Then
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
-     menuNew = 4
+        tiempoPatron=60 'negras por minuto
+          PlayRoll()
+          play=1
+        menuNew =0 
+        
+    ''    menuNew = 4 por hora sin elecciones
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -818,9 +823,10 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
   Case 4  ' <======= COMO REPRODUCUIR
    cairo_set_source_rgba c,1,1,1,1
    t=  "      [DESDE INICIO][DESDE ESTA POSICION] [VOLUMEN / + / - /] No habilitado"
+'----
    If mousex > 330 And mousey < 50 And mousex < ANCHO-50 Then
     If MouseButtons And 1 Then
-     MenuNew=0
+       MenuNew=0
     EndIf
    EndIf
   Case 5 'OPCIONES => OCTAVAS
@@ -1891,4 +1897,3 @@ Sub CambiarDim()
 ' la redimension, sacandola del scope de cairo funciona 
 
 End Sub
-
