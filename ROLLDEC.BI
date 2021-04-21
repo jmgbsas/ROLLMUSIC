@@ -32,26 +32,34 @@ Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,
 Dim Shared As Integer octavas,  jc,ic,id
 dim Shared as string cromatica(1 to 12)
 dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
-Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas
+Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0
 Dim Shared NotasGuia (1 To 12) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
-Dim  Shared figura (1 To 74) As String  * 4 => _
-{" O "," P "," I "," L "," F "," E "," X "," H "," W ",_ ' 1  9
-" O*"," P*"," I*"," L*"," F*"," E*"," X*"," H*"," W*",_  ' 10 18
-"sO ","sP ","sI ","sL ","sF ","sE ","sX ","sH ","sW ",_  ' 19 27
-"sO*","sP*","sI*","sL*","sF*","sE*","sX*","sH*","sW*",_  ' 28 36
-" O+"," P+"," I+"," L+"," F+"," E+"," X+"," H+"," W+",_  ' 37 45
-"O*+","P*+","I*+","L*+","F*+","E*+","X*+","H*+","W*+",_  ' 46 54
-"sO+","sP+","sI+","sL+","sF+","sE+","sX+","sH+","SW+",_  ' 55 63
-"sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sX*+","sH*+","sW*+", _ '64 72
-"   ","|| " } ' 73 74 son 72 la continuacion de silencios no tiene sentido
-' 73 ESPACIO 74 FIN 
+' 5.7.6.00 tresillos
+Dim  Shared figura (1 To 110) As String  * 4 => _
+{" O "," P "," I "," L "," F "," E "," X "," H "," W ",_ '  1  9
+ " O*"," P*"," I*"," L*"," F*"," E*"," X*"," H*"," W*",_  ' 10 18
+ "3O ","3P ","3I ","3L ","3F ","3E ","3X ","3H ","3W ", _ ' 19 27 
+ "sO ","sP ","sI ","sL ","sF ","sE ","sX ","sH ","sW ",_  ' 28 36 
+ "sO*","sP*","sI*","sL*","sF*","sE*","sX*","sH*","sW*",_  ' 37 45 
+ "s3O","s3P","s3I","s3L","s3F","s3E","s3X","s3H","s3W", _ ' 46 54 
+ " O+"," P+"," I+"," L+"," F+"," E+"," X+"," H+"," W+",_  ' 55 63 
+ "O*+","P*+","I*+","L*+","F*+","E*+","X*+","H*+","W*+",_  ' 64 72 
+ "3O+","3P+","3I+","3L+","3F+","3E+","3X+","3H+","3W+", _ ' 73 81 
+ "sO+","sP+","sI+","sL+","sF+","sE+","sX+","sH+","SW+",_  ' 82 90 
+ "sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sX*+","sH*+","sW*+", _ '91 99 
+ "s3O+","s3P+","s3I+","s3L+","s3F+","s3E+","s3X+","s3H+","s3W+", _ ' 100 108
+ "   ","|| " } '109 110, son 108 (old 73 74 son 72) lospuntillos de tresillos coinciden con elvalor superior
+'ej 3I*=I=1.. 
+' 73 ESPACIO 74 FIN....109 espacio 110 FIN 
+'cambiar 107 por 108, 109 por 110,  109 por 110.
 ' ligaduras de notas con + que va a + o - creo qu emenso seria mejor
 ' parecido a una pila polos opuestos se atraen je...
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
 Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
 Dim Shared mas As Integer = 0 ' + continuacion o ligadura
 Dim Shared incr As Integer =0
+Dim Shared tres As Integer = 0
 '' futuro=> Dim notmus(13 To 44) As String = {} bravura fonts?? pero son glyphs
 ''los deberia cargar cairo...experimentar...tarea futura
 ' 32 tipo de duraciones basicas encendidas o apagadas y lo mismo con puntillo
@@ -92,15 +100,20 @@ Dim Shared As Integer menuNro, menuNew, desde , hasta, rango
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen,anchofig
 Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, resultado
-Dim Shared As Integer pesoDur (1 To 72)  => { _
+Dim Shared As Integer pesoDur (1 To 108)  => { _
 10000000,5000000,2500000,1250000,625000,312500,156250, 78125,39063, _ '1  9
 15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '10 18
-10000000,5000000,2500000,1250000,625000,312500,156250, 78125,39063, _ '19 27
-15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '28 36
-10000000,5000000,2500000,1250000,625000,312500,156250, 78125,39063, _ '37 45
-15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '46 54
+ 6666666,3333333,1666666, 833333,416666,208333,104166, 52083,26042, _ '19 27
+10000000,5000000,2500000,1250000,625000,312500,156250, 78125,39063, _ '28 36 
+15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '37 45
+ 6666666,3333333,1666666, 833333,416666,208333,104166, 52083,26042, _ '46 54
 10000000,5000000,2500000,1250000,625000,312500,156250, 78125,39063, _ '55 63
-15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594  } '64 72
+15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '64 72
+ 6666666,3333333,1666666, 833333,416666,208333,104166, 52083,26042, _ '73 81
+10000000,5000000,2500000,1250000,625000,312500,156250, 78125,39063, _ '82 90
+15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '91 99
+ 6666666,3333333,1666666, 833333,416666,208333,104166, 52083,26042 }  '100 108 
+
 
 ' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido po r 8
 ' tengo elindice del revsado 1,2,3,4,5,6,7,8....

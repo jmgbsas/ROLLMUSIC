@@ -173,14 +173,14 @@ Print #1,"comienzo play ==========> "
 For j=comienzo To final 
   For i=NA To NB Step -1 
    If (Roll.trk(i,j).nota >= 1) And Roll.trk(i,j).nota <= 12 _
-      And Roll.trk(i,j).dur >=1 And Roll.trk(i,j).dur <= 73 Then ' es semitono 
+      And Roll.trk(i,j).dur >=1 And Roll.trk(i,j).dur <= 109 Then ' es semitono 
       Notapiano= 117-i 
       Notapiano= Notapiano - restar (Notapiano)
       dura=Roll.trk(i,j).dur '1) I 2) I
       If durb > 0 Then 
       Print #1,"durb> 0, i, j ";durb,i,j
          dura=relDur(durb)+relDur(dura)  '2) P
-         For x= 1 To 72
+         For x= 1 To 108
            If dura=reldur(x) Then
               dura=x
               exit For
@@ -191,7 +191,7 @@ For j=comienzo To final
          liga=1
          durb=0
       EndIf   
-      If dura >= 37 And dura <=72 Then ' se suma la duración al siguiente
+      If dura >= 37 And dura <=108 Then ' se suma la duración al siguiente
          durb=dura  ' 1) I+, 2) no entra
          Print #1,"entro nota ligada "; dura, figura(dura)
       EndIf   

@@ -1,6 +1,8 @@
+' V5.7.6.0.0. ALGO IMPORTANTE AGREGAR TRESILLOS!
 ' v5.7.5.0.3: entrada de espcios reflotada lista ok
+' OJO, L TECL 9 Y NOES PESPCIO ES W semigarrapatea, H es garrapatea
 ' se cambio recalcomps para que se desplaze sobre noasde semitono
-' con duracion 73 blanco de modo q no cierre elcompas antes de tiempo
+' con duracion 109 blanco de modo q no cierre elcompas antes de tiempo
 ' sise introducen espacios para colocr notasdicionales en ctrl-m
 ' v5.7.5.0.2: con Ctrl +dobleclick en Edit lectura ok
 ' BORRAR HACIA Derecha y Ajustar MaxPos a la posicion actual en Edit Lectura
@@ -15,7 +17,7 @@
 ' perocon mas grandes algorro puede pasar (trabajarlo en elfuturo)
 ' CAMBIO,,,SE SUPONE QUE LA 1ER OCTAVA QUE SE LLENE CON DATOS ES LA MELODIA
 ' PRINCIPAL, LUEGO EL LLENADO DE TODAS LAS OCTAVAS POSTERIORES, SEGUIRAN
-' LOSCORTES DE LA OCTAVAORIGINAL ERGO SI TENGO 4 I EN PRINCIPAL, Y SI OTRA
+' LOSCORTES DE LA OCTAVA ORIGINAL ERGO SI TENGO 4 I EN PRINCIPAL, Y SI OTRA
 ' TIENE O, ENTONCES EN ESTA NUEVA NO SEPODRAPONER MASNOTAS Y SALTRA AL SIGUIENTE 
 ' COMPAS RESPETANDO LOS COMPASES DE LA MELODIA , O SEA EL DIRECTOR DEL CORTE
 ' DEL COMPAS SERA LA MELODIA, PERO SE CONTROLARA QUE LAS NOTAS NO SUMEN MAS
@@ -761,7 +763,7 @@ if MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
  ' -------------------------------------
  Dim As Integer i,j,notafinal
  For i = NB To NA
-  If Roll.trk(i,posicion+1).dur = 74 Then 
+  If Roll.trk(i,posicion+1).dur = 110 Then 
    notafinal= Roll.trk(i,posicion).nota
    '      Print #1, "ENCONTRO NOTA FINAL ", notafinal
    '      Print "ENCONTRO NOTA FINAL ", notafinal
@@ -853,17 +855,18 @@ EndIf
 If MultiKey(SC_SPACE)  Then 'barra espacio
  If comEdit=TRUE then
   espacio = 1
-  DUR=73
+  DUR=109
  Else
   PlayRoll()
  EndIf  
  Exit Do
 EndIf
 
-If MultiKey (SC_Q) Then ' con Q se deja de repetir espacios
+If MultiKey (SC_Q) Then ' con Q se deja de repetir espacios tmbien resetea todo ls banderas de notas
  If fijarEspacio=99 Then
   fijarEspacio=0
  EndIf
+pun=0:sil=0:tres=0:mas=0
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
 ' MAYUSCULAS PARA SOSTENIDOS
@@ -1066,11 +1069,11 @@ If comEdit = TRUE Then
    DUR = 8:Exit Do
   EndIf
   If MultiKey(SC_9) Then
-   DUR = 73:Exit Do
+   DUR = 109:Exit Do
   EndIf
 
   If MultiKey(SC_0) Then ' FIN
-   DUR = 74:Exit Do
+   DUR = 110:Exit Do
   EndIf
 
   If MultiKey(SC_PERIOD) Then
@@ -1082,6 +1085,14 @@ If comEdit = TRUE Then
    Exit Do  ' silencio
    ' indicadorde silencio solo para calculo de compas
   EndIf
+  If MultiKey(SC_t) Then
+   tres = 1
+   Exit Do  ' silencio
+   ' indicadorde silencio solo para calculo de compas
+  EndIf
+
+
+
  EndIf
  ' ojo ver q no habia  exit do antes !!!!!
 EndIf
@@ -1163,7 +1174,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
  'Print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;_
  '   " nota: ";nota; " figura: ";figura(DUR)
  posn=1 + InicioDeLectura
- If posn=1 Then
+ If posicion=1 Then
     nroCompas = 0
  EndIf
  If DUR=0 Then
@@ -1193,7 +1204,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    ' y hacer nota=semiotono 1 a 11 con el mouse...el esto es automtico...
    Do
     If Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = 0 OR _
-     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = 74 Then
+     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = 110 Then
      posicion=posn
      '      Print #1, "ingreso a NUCLEO POSICION=POSN", posicion
      Exit Do
@@ -1208,7 +1219,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    ' LUEGO haRE ALGO CON EL MOUSE POR AHORA TODO TECLADO
    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = nota 'carga
    If espacio > 0 Then
-     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = 73
+     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = 109
      
    EndIf
    '' ojo ver'  If cursorVert = 0 and cursorHori = 0 Then
@@ -1218,13 +1229,13 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    'en dur no afecta a notas pero se debe insertar siempreenedicion
    ' con o sin cursor
    
-   Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 74
+   Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 110
    
    If notaOld > 0 And notaOld <> nota  then
-    Roll.trk((notaOld +(estoyEnOctavaOld -1) * 13),posn).dur = 73
-    Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).dur = 73
-    Roll.trk((notaOld +(estoyEnOctavaOld -1) * 13),posn).nota = 73
-    Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota = 73
+    Roll.trk((notaOld +(estoyEnOctavaOld -1) * 13),posn).dur = 109
+    Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).dur = 109
+    Roll.trk((notaOld +(estoyEnOctavaOld -1) * 13),posn).nota = 109
+    Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota = 109
 
     '''ojo probar todo inserciones x  etc    endif
    EndIf
@@ -1235,15 +1246,15 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    ' cargada al siruarme en lugaressin nota o sea crgr nota
    ' nuevdonde no habia paso siguinte crgral not hbilitarencursos
    ' la crg de roll
-   Print #1,"-------------------------------------------"
-   Print #1," estoyEnOctavaOld=estoyEnOctava OLD:";estoyEnOctavaOld
-   Print #1," estoyEnOctavaOld=estoyEnOctava NEW:";estoyEnOctava
-   Print #1," NOTAOLD ";notaold
-   Print #1," NOTA    ";nota
-   Print #1," dur "; DUR
-   Print #1," pesoDur "; pesoDur(DUR)
-   Print #1," figura "; figura(DUR)
-   Print #1,"-------------------------------------------"
+   'Print #1,"-------------------------------------------"
+   'Print #1," estoyEnOctavaOld=estoyEnOctava OLD:";estoyEnOctavaOld
+   'Print #1," estoyEnOctavaOld=estoyEnOctava NEW:";estoyEnOctava
+   'Print #1," NOTAOLD ";notaold
+   'Print #1," NOTA    ";nota
+   'Print #1," dur "; DUR
+   'Print #1," pesoDur "; pesoDur(DUR)
+   'Print #1," figura "; figura(DUR)
+   'Print #1,"-------------------------------------------"
 
    Dim as Integer noct ''oclog = 8 - (estoyEnOctava-1)
    For noct = desde To hasta
@@ -1252,10 +1263,10 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
          Continue For
        Else    
          If Roll.trk((i +(noct -1) * 13),posn).nota = 0 Then
-            Roll.trk((i +(noct -1) * 13), posn).nota = 73
+            Roll.trk((i +(noct -1) * 13), posn).nota = 109
          EndIf
-         If Roll.trk((i +(noct -1) * 13),posn).nota = 74 Then
-            Roll.trk((i +(noct -1) * 13),posn).nota = 73
+         If Roll.trk((i +(noct -1) * 13),posn).nota = 110 Then
+            Roll.trk((i +(noct -1) * 13),posn).nota = 109
          EndIf
        EndIf
      Next i
@@ -1264,52 +1275,83 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    notaOld=nota
    estoyEnOctavaOld=estoyEnOctava
    
-   ' un binario 000,001,010,011,100,101,111
-
-   If pun  = 0 And sil=0 And mas=0 Then ' no hay puntillo ni silencio
+   ' 
+' los bloques de durcion se repiten de a 3, el incr es por bloque
+' si voy al 2do bloque de 3 el incrdeja de ser 0 y pasa a 27 respectro de la
+' 1er linea 
+   If pun  = 0 And sil=0 And mas=0 And tres=0 Then ' no hay puntillo ni silencio
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR 'era duracion
     'DUR nunca se ahce cero solo para espacio ergo si pulso
     ' la misma u otra nota sigue con la misma duracion
     incr=0
    EndIf
-   If pun = 1 And sil=0 And mas=0 Then
+   If pun = 1 And sil=0 And mas=0 And tres=0 Then
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 9 'era dur
     incr=0
    EndIf
-   If pun=0 And sil=1 And mas=0 Then
-    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 18 'era dur
-    Print #1," NUCLEO GUARDO EN ROLL CON S DUR: ";DUR +18;" figura:";figura(DUR+16) 
-    incr=18
+   If pun=0  And sil=0  And mas=0 And tres=1 Then 
+      Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 18
+      incr=0
+   EndIf   
+' -----fin 1er bloque ------------------------
+   If pun=0 And sil=1 And mas=0 And tres=0 Then
+    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 27 'era dur
+    Print #1," NUCLEO GUARDO EN ROLL CON S DUR: ";DUR +27;" figura:";figura(DUR+27) 
+    incr=27
    EndIf
-   If  pun=1 And sil=1 And mas =0 Then
-    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 27
-    incr=18
-   EndIf
-   If pun=0 And sil=0 And mas=1 Then
+   If  pun=1 And sil=1 And mas =0 And tres=0 Then
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 36
-    incr=36
+    incr=27
    EndIf
-   If pun=1 And sil=0 And mas=1 Then
+   If pun=0 And sil=1 And mas=0 and tres=1 Then
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 45
-    incr=36
+    incr=27
    EndIf
-   If pun=0 And sil=1 And mas=1 Then
+' -- fin 2do bloque   
+   If pun=0 And sil=0 And mas=1 And tres=0 Then
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 54
     incr=54
    EndIf
-   If pun=1 And sil=1 And mas=1 Then
+   If pun=1 And sil=0 And mas=1 And tres=0 Then
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 63
     incr=54
    EndIf
+   If pun=0 And sil=0 And mas=1 And tres=1 Then
+    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 72
+    incr=54
+   EndIf
+'----- fin 3er bloque   
+   If pun=0 And sil=1 And mas=1 And tres=0 Then 
+      Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 81
+      incr=81
+   EndIf   
+   If pun=1 And sil=1 And mas=1 And tres=0 Then 
+      Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 90
+      incr=81
+   EndIf   
+   If pun=0 And sil=1 And mas=1 And tres=1 Then 
+      Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 99
+      incr=81
+   EndIf   
+' ---fin 4to bloque -
+' 3I* = I = 1 , el puntillo a un 3 suma dando la figura de la q proviene.   
+   If tres=1 And pun=1 And mas=0 And sil=0 Then 
+      Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR 
+      incr=0
+   EndIf   
+   
+   
+   
   ' Print #1," NUCLEO GUARDO DUR EN ROLL ";DUR;" figura ";figura(DUR)
   ' Print #1," NUCLEOBUSC Y GREG EN POSIICON :" ;posn
  '  If DUR=64 Then
  '   Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 65
  '   DUR=0
  '  EndIf
-   pun=0:sil=0:mas=0
+   pun=0:sil=0:mas=0:tres=0
    ' mayorDurEnUnaPosicion (posn) quedo <--defectuoso
      'If DUR >=1 And DUR <= 72 Then
+      DUR = Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur
       calcCompas(posn) 'lrepeticion no espor calcCompas
      'EndIf
    '   rmerr = Err
@@ -1457,7 +1499,7 @@ If (ScreenEvent(@e)) Then
     Exit Do
    EndIf
    If e.scancode = 83 Then '<====== SC_DELETE cambia a silencio o nada le suma 16+16 ver eso
-      Print "PULSADO BORRAR ..·.."
+      Print #1, "PULSADO BORRAR ..·.."
        If borrar=1 Then
           borrar=0
           Exit Do
@@ -2127,6 +2169,9 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    Exit Do
   EndIf
  EndIf
+ If mousex >=0 And mousex <= 50 Then
+       octavaEdicion=estoyEnOctava
+ EndIf 
  ''
 EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 ' ------------------------------------------------------------------
