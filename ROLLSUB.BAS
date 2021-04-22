@@ -646,7 +646,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   t=  " [Ayuda] solo archivo y edicion habilitados":cairo_show_text(c, t)
+   t=  " [Ayuda] archivo, ayuda, edicion y Reproducir habilitados,version alpha":cairo_show_text(c, t)
 
    cairo_stroke(c)
   Case 1
@@ -1966,14 +1966,14 @@ Sub CargaArchivo()
      curpos =>0
      carga=0
      ReCalCompas()
-     Dim cmax As Integer
-     For j = 1 To MaxPos -2
-       nroCompas = compas(j).nro
-       If nroCompas > cmax Then
-          cmax=nroCompas
-       EndIf   
-     Next j
-     nroCompas=cmax     
+ '    Dim cmax As Integer
+ '    For j = 1 To MaxPos -2
+ '      nroCompas = compas(j).nro
+ '      If nroCompas > cmax Then
+ '         cmax=nroCompas
+ '      EndIf   
+ '    Next j
+ '    nroCompas=cmax     
 End Sub
 
 Sub CambiarDim()

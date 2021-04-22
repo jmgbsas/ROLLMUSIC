@@ -206,6 +206,11 @@ For j=comienzo To final
       EndIf 
       If liga=0 Then  
         Print #1,"liga=0 "
+        If (maxdur >=28 And maxdur <= 54 ) Or (maxdur >=82 And maxdur <= 108 ) Then
+          vel =0
+        Else
+          vel=100
+        EndIf
         noteon notapiano, vel, canal ' 1) G
         cx = cx + 1   ' 1) 1
         non (cx) = notapiano '1) G

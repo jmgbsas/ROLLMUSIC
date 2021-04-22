@@ -1174,9 +1174,6 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
  'Print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;_
  '   " nota: ";nota; " figura: ";figura(DUR)
  posn=1 + InicioDeLectura
- If posicion=1 Then
-    nroCompas = 0
- EndIf
  If DUR=0 Then
   nota=0
   Exit Do
