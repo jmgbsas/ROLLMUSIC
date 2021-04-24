@@ -169,8 +169,36 @@ Dim As Integer non(1 To 108), liga=0,x=0
 ' envian menso off ver esa tecnica...yo enviare todos por ahora
 ' el timer que se dejara transcurrir para envier el off
 ' dependera de la duracion de cada nota,,,
+Dim As Integer jcompas = 0, velpos =0   
+
 Print #1,"comienzo play ==========> "
+' FUTURO: JMG EN CALCOMPAS EN EL VECTOR Compas debere marcar 
+' en el con numeros lso tiempos feurtes semifertes y debiles
+' ej:partodo el tiempo de negra=1 en 4/4 todas esas figuras son fuertes
+' valor en compas(n)= -1
+' en negra=2 todas las iguras q lo componenen son debiles compas(n)= -2
+' en negra=3 todas son semifuertes compas(n)=-3
+' en negra=4 todas son debiles. -2
+'luego segun el valor de compas voy cambiando
+' si compas(n) = posn es debil -2
 For j=comienzo To final 
+ 'jcompas = jcompas + 1
+ If Compas(j).nro = -1 Then
+    velpos=vfuerte
+ EndIf
+ If Compas(j).nro = -2 Then
+    velpos=vdebil
+ EndIf
+ If Compas(j).nro = -3 Then
+    velpos=vsemifuerte
+ EndIf
+ If Compas(j).nro = -4 Then
+    velpos=vdebil
+ EndIf
+ If Compas(j).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
+    velpos=vdebil
+ EndIf
+ 
   For i=NA To NB Step -1 
    If (Roll.trk(i,j).nota >= 1) And Roll.trk(i,j).nota <= 12 _
       And Roll.trk(i,j).dur >=1 And Roll.trk(i,j).dur <= 109 Then ' es semitono 
@@ -200,8 +228,9 @@ For j=comienzo To final
          con = 1
       EndIf
       'vel=Roll.trk(i,j).vel
-      ' etc... 
-      If dura > maxdur Then
+      ' etc...
+' SACAR ESTO TOCAR ACORDE CADA ELEMENTO CON SU DURACION        
+      If dura > maxdur Then ' esto lo debo sacar y tocar todas las notas con su duracion
          maxdur= dura ' 1) I, 2) P
       EndIf 
       If liga=0 Then  
@@ -209,8 +238,10 @@ For j=comienzo To final
         If (maxdur >=28 And maxdur <= 54 ) Or (maxdur >=82 And maxdur <= 108 ) Then
           vel =0
         Else
-          vel=100
+          vel= velpos
         EndIf
+ ' SI ELUSUARIO GRABA VELOCIDADES DEBO USARESA NO LA DEFAULT !!! JMG
+ ' Y NO SACRLA MAAX DURACION TOCAR TODAS CON SU DURCION Y VELOCIDAD!!!       
         noteon notapiano, vel, canal ' 1) G
         cx = cx + 1   ' 1) 1
         non (cx) = notapiano '1) G

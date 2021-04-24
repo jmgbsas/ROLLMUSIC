@@ -1,3 +1,10 @@
+' V5.7.6.0.2: agregar velocidades de pulso ej: 4/4 1erpulso fuerte
+' el 2do debil 3ero medio, 4to debil, ponerlas en %del velocidad
+' ej:V1=100 V2=70% V1, v3=50% V1, V4=V2 , necesito 3 velocidades 
+' distintas para 4/4. etc agregar mas tiposdecompases o poder fabricarlos
+' con numerdor denominador y % de fuerza o debilidad 
+' https://escuelademusicalasala.com/ritmo-pulso-compas
+' V5.7.6.0.1: se agreg menu compas en opciones 4/4, 12/8, 2/4
 ' V5.7.6.0.0. SE AGREGO TRESILLOS Y SE TOCA TAMBIEN ok 
 ' v5.7.5.0.3: entrada de espcios reflotada lista ok
 ' OJO, L TECL 9 Y NOES PESPCIO ES W semigarrapatea, H es garrapatea

@@ -1010,6 +1010,8 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
      d7=10000000
      menuNew= 7
      ReCalCompas()
+     TCompas="4/4"
+    
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -1020,6 +1022,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     If MouseButtons And 1 Then
      d7=15000000
      menuNew=7
+     TCompas="12/8"
      ReCalCompas()
     EndIf
    Else
@@ -1032,6 +1035,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
      d7=5000000
      menuNew=7
      ReCalCompas()
+     TCompas="2/4"
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -1398,9 +1402,9 @@ Sub calcCompas( ByRef j As Integer)
 
    If acumulado < d7  And j > 0 Then
     Print #1, "j que hace cancelar ";j
-    Compas(j).Posi =0
-    Compas(j).nro = 0
-
+    Compas(j).Posi = 0   
+    Compas(j).nro = 0 ' reseteo
+    velocidades(j)
     Print #1,"1-calcCompas 3.2 acumulado menor sigue exit sub, carga: ";carga
     Exit Sub
    EndIf
@@ -1513,8 +1517,8 @@ Sub calcCompas( ByRef j As Integer)
 
       Exit For 
    Else
-      compas(posn).Posi=0
-      Compas(posn).nro = 0
+      compas(posn).Posi= 0
+      Compas(posn).nro = -2
    
       Print #1,"No Hay compas todavia en posn ";posn
    EndIf
@@ -1642,6 +1646,9 @@ Sub separarDur(ByRef j As Integer, ByRef DUR As Integer,partes() As Integer, ByR
    falta=0
    falta1=0
    Exit Sub
+  Else
+   Compas(j).nro = 0 ' reseteo
+   velocidades(j)
   EndIf
  Next k
  ' si sigue es porque falló no hay ninguna figura con esa duracion
@@ -2145,4 +2152,38 @@ IupClose()
 
 
 End Sub
+
+Sub velocidades(j As integer)
+    If TCompas="4/4" Then
+      If acumulado <= 2500000 Then 'nollego a negra
+       compas(j).nro = -1 ' fuerte
+      EndIf
+      If acumulado > 2500000 And acumulado <= 5000000 Then 'nollego a 2 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+      If acumulado > 5000000 And acumulado <= 7500000 Then 'nollego a 2 negra
+       compas(j).nro = -3 ' semifuerte
+      EndIf
+      If acumulado > 7500000 And acumulado <= 10000000 Then 'nollego a 2 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+      
+    EndIf
+    If TCompas="12/8" Then
+      If acumulado <= 3750000 Then 'nollego a I*
+       compas(j).nro = -1 ' fuerte
+      EndIf
+      If acumulado > 3750000 And acumulado <= 7500000 Then 'nollego a 2 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+      If acumulado > 7500000 And acumulado <= 11250000 Then 'nollego a 2 negra
+       compas(j).nro = -3 ' semifuerte
+      EndIf
+      If acumulado > 11250000 And acumulado <= 15000000 Then 'nollego a 2 negra
+       compas(j).nro = -2 ' semifuerte
+      EndIf
+     
+    EndIf
+
+End Sub 
 
