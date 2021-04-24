@@ -1,4 +1,4 @@
-' V5.7.6.0.0. ALGO IMPORTANTE AGREGAR TRESILLOS!
+' V5.7.6.0.0. SE AGREGO TRESILLOS Y SE TOCA TAMBIEN ok 
 ' v5.7.5.0.3: entrada de espcios reflotada lista ok
 ' OJO, L TECL 9 Y NOES PESPCIO ES W semigarrapatea, H es garrapatea
 ' se cambio recalcomps para que se desplaze sobre noasde semitono
@@ -36,6 +36,48 @@
 ' - ok:estando con un nro de octavas n1 y si se carga archivo con n2
 '   ajusta automticamente el editor a n2..
 ' ------------------------------
+#define WIN_INCLUDEALL
+#Include Once "windows.bi"
+#Include once "/win/commctrl.bi"
+#include "file.bi"
+
+Sub getfiles(Byref File As OpenFileName,flag As String, accion As string)
+    Dim As zstring * 2048 SELFILE
+    Dim As String MYFILTER=flag+Chr(0)
+    With File
+  .lStructSize = sizeof(OpenFileName)
+  .hwndOwner = null
+  .hInstance = null
+  .lpstrFilter = strptr(MYFILTER)
+  .nFilterIndex = 0
+  .lpstrFile = @SELFILE
+  .nMaxFile = 2048
+  .lpstrFileTitle = null
+  .nMaxFileTitle = 0
+  .lpstrInitialDir = @"nosuch:\"
+  .lpstrTitle = @"Open"
+  .Flags = 4096
+  .nFileOffset = 0
+  .nFileExtension = 0
+  .lpstrDefExt = null
+    End With
+    If accion="open" Then
+    GetOpenFileName(@File)
+    EndIf
+    If accion="save" Then
+    GetSaveFileName(@File)
+    EndIf
+
+End Sub
+' FILE DIALOG adicionales 
+
+dim Shared file As OpenFileName
+dim Shared As string myfilter
+myfilter = "All Files"+chr(0)         +"*.*"+chr(0)
+myfilter += "Roll Files"+chr(0)  +"*.roll;*.mp3"+chr(0)
+myfilter+="Ini files"+chr(0)    +"*.ini;*.txt;*.cfg"+chr(0)
+
+' end file dialog  
 
 Open "midebug.txt" for Output As #1
 
@@ -73,7 +115,11 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 '==============================
 '#Include "NOTAS.bi"
 #Include "declareRtmidi.bi"
-
+' iup start
+#include once "IUP/iup.bi"
+const NULL = 0
+const NEWLINE = !"\n"
+' iup fin
 Type dat Field=1
  nota As ubyte
  dur As UByte  ' duracion
@@ -564,7 +610,7 @@ EndIf
 If KeyPress(SC_RIGHT)  Then ' <======== RIGHT
  If  mouseY < 50  Then ' seleccion de menu, mouse sobre cinta + teclas
   menuNro=menuNro+1
-  If menuNro > 3 Then
+  If menuNro > 6 Then
    menuNro=0
    menuNew=0
   EndIf

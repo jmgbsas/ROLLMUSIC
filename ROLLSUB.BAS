@@ -633,7 +633,6 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      menuNew=5
-     octavas=0
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -758,8 +757,16 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      '       Print #1, "Grabando a disco Roll GRABAR "
-     Open "Trabajo_03.roll" For Binary Access write As #2
-
+    ' dialogoText("Grabar Archivo")
+       Dim As String nombre = ""
+       getfiles(file,myfilter,"save")
+       nombre=*file.lpstrFile
+       If nombre = "" Then
+          Exit Sub
+       EndIf
+     ''Open "Trabajo_03.roll" For Binary Access write As #2
+     ''Open nombreArchivo +".roll" For Binary Access write As #2
+     Open nombre  For Binary Access write As #2
      Dim Trabajo (NB To NA, 1 To Maxpos) As dat
      Dim grabaPos (1,1)  As dat
      Dim grabaLim (1,1)  As dat 
@@ -846,23 +853,50 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
        MenuNew=0
     EndIf
    EndIf
-  Case 5 'OPCIONES => OCTAVAS
+  Case 5 ' OPCIONES MENU, [COMPAS] [OCTAVAS]
    
-' ===> 5.1 [OCTAVAS DESDE   - / + ] 
+  If mousex > 38 And mousex < 120 And mousey < 50 Then  'OPCIONES
+    cairo_set_source_rgba c, 0, 1, 0, 1
+    If MouseButtons And 1 Then
+     menuNew= 7
+    EndIf
+   Else
+    cairo_set_source_rgba c, 1, 1, 1, 1
+   EndIf
+   t=  "       [COMPAS]":cairo_show_text(c, t)
+  If mousex > 130 And mousex < 235 And mousey < 50 Then  'OPCIONES
+    cairo_set_source_rgba c, 0, 1, 0, 1
+    If MouseButtons And 1 Then
+     menuNew=6
+    EndIf
+   Else
+    cairo_set_source_rgba c, 1, 1, 1, 1
+   EndIf
+   t=  " [OCTAVAS]":cairo_show_text(c, t)
+ 
+ cairo_stroke(c)
+ 
+  Case 6 'OPCIONES => OCTAVAS
+   
+' ===> 6.1 [OCTAVAS DESDE   - / + ] 
    If mousex > 38 And mousex< 123 And mousey < 50 Then ' OCTAVAS LABEL
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1  Then
      octavas=0
-     Dim Cantitems As Integer => 11
-     Dim As String text (1 To 11) => {"Click En Desde antes de cada click en - / + ", _
-     "Click En Hasta antes de cada click en -/+", _
-     "Esto redimensionara la capcidad de Octavas", _
-     "Cuando grave esa capcidad ira en el archivo",_
-     "Antes de cargar debe ajustar la capacidad a la misma que grabo",_
-     "en un futuro proximo se grabra ese dato", _
-     "y sera automatico","o sea ","se cargaran loa datos ", _
-     "y la capacidad de Octavas", _
-     "a mas Octavas mas memoria usada"}
+     Dim Cantitems As Integer => 12
+     Dim As String text (1 To 12) => { _
+     "Click En 'Desde' antes de cada click en - / + ", _
+     "Click En 'Hasta' antes de cada click en -/+", _
+     "Esto redimensionara la capacidad de Octavas", _
+     "Cuando grave, esa capacidad se graba en el archivo",_
+     "y es automatico, o sea, se cargaran los datos ", _
+     "y la capacidad de Octavas. A mas Octavas mas memoria usada", _
+     "El numero de octavas puede achicarse respecto del inicio",_
+     "pero agrandar puede destruir la memoria, si la cantidad de",_
+     "octavas al inicio es menor al proyectado, por ello para incrementar",_
+     "las octavas conviene iniciar siempre con el maximo de octavas y luego",_
+     "cargar el archivo de octavas reducido, si en la misma sesion se desea",_
+     "incrementar se lo podra hacer sin fallos"}
 
      menugrafico  c0, c, CantItems, text()
 
@@ -901,7 +935,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    EndIf
    t = "      [OCTAVAS DESDE   - / + ] " + Str(desde-1): cairo_show_text(c,t)
    ' --------------------------------
-' ===> 5.2 [HASTA  - / + ]
+' ===> 6.2 [HASTA  - / + ]
    If mousex > 308 And mousex< 363 And mousey < 50 Then ' HASTA
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
@@ -969,7 +1003,43 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    
    EndIf
    t = "  [REDIMENSIONAR]<-Borra Datos " + RTA
-
+   Case 7
+   If mousex > 38 And mousex < 90 And mousey < 50 Then  'OPCIONES
+    cairo_set_source_rgba c, 0, 1, 0, 1
+    If MouseButtons And 1 Then
+     d7=10000000
+     menuNew= 7
+     ReCalCompas()
+    EndIf
+   Else
+    cairo_set_source_rgba c, 1, 1, 1, 1
+   EndIf
+   t=  "       [4/4]":cairo_show_text(c, t)
+  If mousex > 100 And mousex < 150 And mousey < 50 Then  'OPCIONES
+    cairo_set_source_rgba c, 0, 1, 0, 1
+    If MouseButtons And 1 Then
+     d7=15000000
+     menuNew=7
+     ReCalCompas()
+    EndIf
+   Else
+    cairo_set_source_rgba c, 1, 1, 1, 1
+   EndIf
+   t=  " [12/8]":cairo_show_text(c, t)
+  If mousex > 160 And mousex < 210 And mousey < 50 Then  'OPCIONES
+    cairo_set_source_rgba c, 0, 1, 0, 1
+    If MouseButtons And 1 Then
+     d7=5000000
+     menuNew=7
+     ReCalCompas()
+    EndIf
+   Else
+    cairo_set_source_rgba c, 1, 1, 1, 1
+   EndIf
+   t=  " [2/4]":cairo_show_text(c, t)
+ 
+ cairo_stroke(c)
+  
  End Select
  ' Si nodoy Stroke los show text van apendendo al final como un print;
 
@@ -1750,14 +1820,14 @@ Sub menugrafico(c0 As cairo_t Ptr,c As cairo_t Ptr ,Cantitems As Integer, text()
  '  SetMouse 100,200
  '    If mousey > 50 Then
  cairo_set_font_face( c0, cface )
- cairo_set_font_size( c0, 30 )
+ cairo_set_font_size( c0, 24 )
  cairo_set_source_rgba( c0, 1, 1, 1, 1 )
  Dim i As Integer
  usamousex = usamousex + 200
  usamousex = usamousey + 100
 
  For i= 1 To CantItems
-  cairo_move_to( c0, 100  , 100 + (i-1)*30 )
+  cairo_move_to( c0, 100  , 100 + (i-1)*24 )
   cairo_text_extents( c0, text(i), @extents )
   cairo_show_text( c0, text(i) )
  Next i
@@ -1916,9 +1986,18 @@ Sub CargaArchivo()
      Dim z (1,1 )  As dat
      Dim zLim (1,1) As dat
      
-     Dim As String x,x1,x2,x3,x4
-     Open "Trabajo_03.roll" For Binary Access Read As #2
- 
+     Dim As String x,x1,x2,x3,x4, nombre = ""
+      '''dialogoText("Cargar Archivo")
+       getfiles(file,myfilter,"open")
+       nombre=*file.lpstrFile
+  
+       If nombre = "" Then
+          Exit Sub
+       EndIf
+   
+     'Open "Trabajo_03.roll" For Binary Access Read As #2
+    ' Open nombreArchivo +".roll" For Binary Access Read As #2
+      Open nombre  For Binary Access Read As #2
      Get #2, , z(1,1)
      x1=Bin(z(1,1).nota,4)
      x2=Bin(z(1,1).dur,4)
@@ -1988,3 +2067,82 @@ Sub CambiarDim()
 ' la redimension, sacandola del scope de cairo funciona 
 
 End Sub
+
+Function on_click_ok cdecl(byval handler as Ihandle ptr) as Long
+	var dialog = IupGetHandle("dialog")
+	var textbox = IupGetHandle("textbox")
+	var label = IupGetHandle("label")
+
+	nombreArchivo = *IupGetAttribute(textbox, IUP_VALUE)
+
+'	Print "OK clicked! content of textbox: <" + nombreArchivo + ">"
+
+	'IupSetStrAttribute(label, IUP_TITLE, _
+'		"Thanks. You entered <" + nombreArchivo + ">." + NEWLINE + _
+'		"val() result: " & val(nombreArchivo) & ". " + NEWLINE + _
+'		"IupGetInt() result: " & IupGetInt(textbox, IUP_VALUE) & "." + NEWLINE + _
+'		"IupGetFloat() result: " & IupGetFloat(textbox, IUP_VALUE) & "." _
+'	)
+
+	'' Recalculate the window layout. Since we changed the label text, it
+	'' may require more space. This may require us to even increase the
+	'' entire dialog's size to make room for the bigger label. According to
+	'' IUP documentation doing this requires setting the SIZE attribute of
+	'' the dialog, then call IupRefresh() on it. I'm not 100% sure whether
+	'' this is the right/best way to do it.
+	IupSetAttribute(dialog, IUP_SIZE, NULL)
+	IupRefresh(dialog)
+ Function = IUP_DEFAULT
+''''movido
+ IupClose() '<== movido aca asi al dar ok cierra el dialago
+''''
+end function
+Sub dialogoText(cadena As string)
+
+IupOpen(NULL, NULL)
+
+'' Create a window with a text box, ok button, and a label
+var textbox = IupText(NULL)
+var okbutton = IupButton("OK", "on_click_ok")
+var label = IupLabel("Nombre del archivo a grabar.")
+var vbox = IupVbox(textbox, okbutton, label, NULL)
+var dialog = IupDialog(vbox)
+
+'' Window title
+IupSetAttribute(dialog, IUP_TITLE, cadena )
+
+'' Make text box accept numbers only (instead of arbitrary text)
+'' According to the IUP documentation, the IupText() control accepts a FILTER
+'' attribute on Windows, which can have the values LOWERCASE, UPPERCASE or NUMBER.
+'' Thus FLOAT does not seem to be valid!?
+'IupSetAttribute(textbox, IUP_FILTER, "FLOAT")
+'' However, NUMBER does not disallow letters to be entered on Windows XP either...
+'IupSetAttribute(textbox, IUP_FILTER, "NUMBER")
+
+'' Adjust layout a little bit
+IupSetAttribute(textbox, IUP_EXPAND, "YES")
+IupSetAttribute(okbutton, IUP_EXPAND, "YES")
+IupSetAttribute(label, IUP_EXPAND, "YES")
+IupSetAttribute(vbox, IUP_GAP, "4")
+IupSetAttribute(vbox, IUP_ALIGNMENT, "ACENTER")
+IupSetAttribute(vbox, IUP_MARGIN, "4x4")
+
+'' Set callbacks and handles
+IupSetFunction("on_click_ok", @on_click_ok)
+IupSetHandle("dialog", dialog)
+IupSetHandle("textbox", textbox)
+IupSetHandle("label", label)
+
+'' Show window and run main loop
+IupShow(dialog)
+' gregue pra dar el foco una funcion de win api
+SetForegroundWindow(FindWindow(NULL, cadena))
+
+IupMainLoop()
+
+
+IupClose()
+
+
+End Sub
+

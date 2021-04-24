@@ -20,6 +20,12 @@ Declare Sub menugrafico(c0 AS cairo_t Ptr,c AS cairo_t Ptr, Cantitems As Integer
 Declare Sub ReCalCompas()
 Declare Sub CargaArchivo()
 Declare Sub CambiarDim()
+' para IUP textbox 
+Declare Sub dialogoText(cadena As string)
+'Declare Sub getfiles(Byref File As OpenFileName,flag As String)
+
+
+
 Dim Shared RTA As String 
 Dim Shared As Integer nro=0, acumulado=0, controlEdit =0,octavaEdicion=0
 Dim Shared As Integer vroll=0, vdur=0 ' borrar
@@ -73,7 +79,7 @@ Dim Shared As BOOLEAN ayuda, ayudaNuevaNota, ayudaModif, vuelta,dobleclick
 haycompas=0
 dobleclick=>FALSE
 
-Const  d7 As Integer => 10000000
+Dim Shared d7 As Integer => 10000000 ' PROBAREMOS CON 12/8 O 6 NEGRAS,,,15 MILL
 
 ' comienza el compas , se calculara dinamicamente,,,según posicion  y la historia anterior
 ' del mismo array (acumulado, nro Compas, posicion)
@@ -114,7 +120,7 @@ Dim Shared As Integer pesoDur (1 To 108)  => { _
 15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '91 99
  6666666,3333333,1666666, 833333,416666,208333,104166, 52083,26042 }  '100 108 
 
-
+Dim Shared nombreArchivo As String 
 ' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido po r 8
 ' tengo elindice del revsado 1,2,3,4,5,6,7,8....
 ' comprobar qellimite este entre 1 a 8 
