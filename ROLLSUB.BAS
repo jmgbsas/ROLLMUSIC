@@ -531,6 +531,29 @@ EndIf
  ''cairo_surface_get_device_offset
  cairo_stroke(c) ' aca el stroke da el amarillo y no jode a teclas - + con saltos!
 
+If Roll.trk(notacur + (nro-1) * 13, n+curpos).dur >= 1 And _ 
+   Roll.trk(notacur + (nro-1) * 13, n+curpos).dur <= 108 Then
+   If cursorHori=1 And vdur=0 And vnota=0 And copiar=1 Then
+      vnota=notacur 
+      vdur =Roll.trk(notacur + (nro-1) * 13, n+curpos).dur  ' 5.7.3
+       copiar=2
+   EndIf
+EndIf
+
+'If Roll.trk(notacur + (nro-1) * 13, n+curpos).dur  < 1  And _  
+'   Roll.trk(notacur + (nro-1) * 13, n+curpos).dur   > 108 Then
+If cursorHori=1 And vdur>0 And copiar=3 Then
+   If notacur<> vnota And MultiKey (SC_ENTER) Then 
+      Roll.trk(notacur + (nro-1) * 13, n+curpos).nota = notacur 
+      Roll.trk(notacur + (nro-1) * 13, n+curpos).dur = vdur
+      copiar=0
+      vdur=0:vnota=0
+   EndIf 
+EndIf
+If copiar=3 And Roll.trk(notacur + (nro-1) * 13, n+curpos).dur = vdur _
+   And notacur=vnota Then
+   copiar=0:vdur=0:vnota=0   
+EndIf
   
 End Sub
 '----------------------------------------

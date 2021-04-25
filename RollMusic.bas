@@ -920,7 +920,7 @@ If MultiKey (SC_Q) Then ' con Q se deja de repetir espacios tmbien resetea todo 
  If fijarEspacio=99 Then
   fijarEspacio=0
  EndIf
-pun=0:sil=0:tres=0:mas=0
+pun=0:sil=0:tres=0:mas=0:vdur=0:vnota=0
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
 ' MAYUSCULAS PARA SOSTENIDOS
@@ -1997,6 +1997,8 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
           EndIf
          If (mousey >= usamousey -40) and  (mousey <= usamousey -10) Then
             modifmouse=4 'CAMBIADUR=1 modificar
+            notacur=nE
+            curpos=(mousex- 81 )/35
             Exit DO
          EndIf
 
@@ -2069,6 +2071,8 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
        EndIf
        If modifmouse=4 Then ' modificar
          cambiadur=1
+         curpos=(mousex- 81 )/35
+         notacur=nE
          ayudaNuevaNota=TRUE
          Exit Do
        EndIf
@@ -2238,7 +2242,14 @@ If MouseButtons And 1  Then
    EndIf
 EndIf
 
- 
+
+If MultiKey (SC_ENTER) and copiar=0 Then
+   copiar=1
+EndIf 
+
+If MultiKey (SC_ENTER) and copiar=2 Then
+   copiar=3
+EndIf 
 
 '                     <===  FIN    O P I L F E W H
 
