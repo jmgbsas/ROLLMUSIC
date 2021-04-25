@@ -31,7 +31,7 @@ Dim Shared p as UBYTE Ptr = @message(1)
 Dim size As UInteger<64> 
 Dim sizeptr As UInteger<64> Ptr = @size
 Dim Shared As UInteger portsin, portsout 
-Dim Shared As Double tiempoPatron=60 ' cuantas negras enun minuto
+Dim Shared As Double tiempoPatron=60 ' cuantas negras enun minuto default
 Dim Shared As Double old_time=0
 'elpatron esla negra ej I=60ergo todo sera relativo  la negra
 Dim Shared As float relDur (1 To 108) => { _ 

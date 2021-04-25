@@ -25,12 +25,12 @@ Declare Sub dialogoText(cadena As string)
 Declare Sub velocidades(j as integer)
 
 'Declare Sub getfiles(Byref File As OpenFileName,flag As String)
-
-
+' mover nota 
+Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE ' etc
 
 Dim Shared RTA As String 
 Dim Shared As Integer nro=0, acumulado=0, controlEdit =0,octavaEdicion=0
-Dim Shared As Integer vroll=0, vdur=0 ' borrar
+Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0
 Dim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, cursormove
@@ -40,7 +40,7 @@ Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,
 Dim Shared As Integer octavas,  jc,ic,id
 dim Shared as string cromatica(1 to 12)
 dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
-Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0
+Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0
 Dim Shared NotasGuia (1 To 12) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
 ' 5.7.6.00 tresillos

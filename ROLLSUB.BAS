@@ -414,46 +414,64 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
   ' ------------------------------------
   ' nueva verion con puntillo o silencio
   ' ------------------------------------
-  If pun  = 0 And sil=0 Then ' no hay puntillo ni silencio
-   Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR
-   '   vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
-   Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2
-   '   vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
-   cambiadur = 0
-
-  Else
-   If pun = 1 And sil=0 Then
-    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 9
-    '   vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
-    Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2
-    '   vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
-    cambiadur = 0
-    pun=0
-   Else
-    If sil = 1 And pun=0 Then
-     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 18
-     '   vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
-     Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2
-     '   vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
-     cambiadur = 0
-     sil=0
-    Else ' sil=1 and pun=1
-     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR +27
-     vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
-     Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2
-     '      vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
-     cambiadur = 0
-     sil=0:pun=0
-
-    EndIf
-    If DUR=109 Then
+ If DUR=109 Then
      Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 109
-     vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
+  '   vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
      cambiadur = 0
      DUR=0
-    EndIf
-   EndIf
+ Else
+
+  If pun  = 0 And sil=0 And mas=0 And tres=0 Then ' no hay puntillo ni silencio
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR
   EndIf
+ 
+  If pun = 1 And sil=0 And mas=0 And tres=0 Then
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 9
+  EndIf
+ 
+  If pun=0  And sil=0  And mas=0 And tres=1 Then
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 18
+  EndIf
+ 
+  If sil = 1 And pun=0 And mas=0 And tres=0 Then
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 27
+  EndIf 
+ 
+  If  sil=1 and pun=1 And mas=0 And tres=0 Then
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 36
+  EndIf
+ 
+  If pun=0 And sil=1 And mas=0 And tres=1 Then
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 45
+  EndIf
+   
+  If pun=0 And sil=0 And mas=1 And tres=0 Then
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 54
+  EndIf
+  If pun=1 And sil=0 And mas=1 And tres=0 Then
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 63
+  EndIf
+  If pun=0 And sil=0 And mas=1 And tres=1 Then
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 72
+  EndIf
+   
+  If pun=0 And sil=1 And mas=1 And tres=0 Then 
+    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 81
+  EndIf   
+ 
+  If pun=1 And sil=1 And mas=1 And tres=0 Then 
+    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 90
+  EndIf   
+ 
+  If pun=0 And sil=1 And mas=1 And tres=1 Then 
+    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 99
+  EndIf   
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2
+   '   vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
+    cambiadur = 0
+    pun=0:sil=0:mas=0:tres=0
+EndIf
+ 
   ReCalCompas() 'organizaCompases()
   nota = 0
 
@@ -485,12 +503,12 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
   'luego reemplazo
   ' Print #1, "inserta DUR, en ROLL n,nota,posicion ",DUR,n,(notacur + (nro-1) * 13),n
   Roll.trk(notacur + (nro-1) * 13, n +curpos).dur = DUR ' reemplazo con lo nuevo
-  vdur=Roll.trk(notacur + (nro-1) * 13, n+curpos).dur
+  'vdur=Roll.trk(notacur + (nro-1) * 13, n+curpos).dur
   ' SI LA NOTA  NO EXITIA LA agrega...osea sirve para acordes tambien
   'Print #1, "carga notacur en ROLL n,nota calculada ", n,(notacur + (nro-1) * 13)
 
   Roll.trk(notacur + (nro-1) * 13, n+curpos).nota = notacur ' 5.7.3
-  vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
+  'vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
   ' TODO IGUAL A cambiadur = 1 deberia andar ,,,,lunica diff es
   ' que se cargala nota en roll,<- pero 1ero debo guardar la nota de Roll en aux
   ' antes de reemplazarla
@@ -499,8 +517,8 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
   Print #1, "insert 1 ",insert
 
  EndIf
- 'proceso modificar Nuevo secunci limpiaterminda en NroCol ,con
- ' nombre deletra pulsada en vez de X
+ 'proceso modificar Nuevo secunci limpia terminda en NroCol ,con
+ ' nombre de letra pulsada en vez de X
  ' ====> MODIFICAR
  If (cursorHori=2 Or cursorVert = 2) And agregarNota=1  And nota> 0 Then
 
@@ -512,6 +530,8 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
  ' VEMOS QUE HACE ESTA FUNCION SI SIRVE
  ''cairo_surface_get_device_offset
  cairo_stroke(c) ' aca el stroke da el amarillo y no jode a teclas - + con saltos!
+
+  
 End Sub
 '----------------------------------------
 Sub Tracks (nroTrack As UByte, nroCanal As UByte)
@@ -615,7 +635,10 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    If mousex > 348 And mousex< 453 And mousey < 50  And play=0 Then
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
-        tiempoPatron=60 'negras por minuto
+'       If tiempoPatron = 0 Then
+'          dialogoText("AJUSTE TEMPO")  
+'          tiempoPatron= Cdbl(nombreArchivo)
+'       EndIf 
           PlayRoll()
           play=1
         menuNew =0 
@@ -675,7 +698,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    " Font: " +Str(font) + " DUR:"+ Str(Dur) +" Nota:"+ Str(nota)+ _
    " EnOct:" + Str(estoyEnOctava) + " nE:"+Str(nE) + " nR:"+ Str(nR) + "Curpos: " +Str(curpos) + _
    "RollDur :" +Str(Roll.trk(nR,posishow+curpos).dur)+ "Rollnota: " + Str(Roll.trk(nR,posishow+curpos).nota) + _ 
-   " Mx:" + Str(mousex) + " My:" + Str(mousey) '+ "Desde:" + Str(y1) + "Hasta:" +Str(y2)
+   " Mx:" + Str(mousex) + " My:" + Str(mousey) + "Copiar:" + Str(copiar) ' + "Desde:" + Str(y1) + "Hasta:" +Str(y2)
    /' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +
 '/
    '''   " modifmouse:" + Str(modifmouse) + " usamousey:" + Str(usamousey) + " usamousex:"+ Str(usamousex) + _
@@ -853,9 +876,9 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
        MenuNew=0
     EndIf
    EndIf
-  Case 5 ' OPCIONES MENU, [COMPAS] [OCTAVAS]
+  Case 5 ' OPCIONES MENU, [COMPAS] [OCTAVAS] [TEMPO]
    
-  If mousex > 38 And mousex < 120 And mousey < 50 Then  'OPCIONES
+  If mousex > 38 And mousex < 120 And mousey < 50 Then  'COMPAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      menuNew= 7
@@ -864,7 +887,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  "       [COMPAS]":cairo_show_text(c, t)
-  If mousex > 130 And mousex < 235 And mousey < 50 Then  'OPCIONES
+  If mousex > 130 And mousex < 235 And mousey < 50 Then  'OCTAVAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      menuNew=6
@@ -873,6 +896,15 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [OCTAVAS]":cairo_show_text(c, t)
+  If mousex > 245 And mousex < 330 And mousey < 50 Then  'OCTAVAS
+    cairo_set_source_rgba c, 0, 1, 0, 1
+    If MouseButtons And 1 Then
+     menuNew=8
+    EndIf
+   Else
+    cairo_set_source_rgba c, 1, 1, 1, 1
+   EndIf
+   t=  " [TEMPO]":cairo_show_text(c, t)
  
  cairo_stroke(c)
  
@@ -1043,7 +1075,11 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    t=  " [2/4]":cairo_show_text(c, t)
  
  cairo_stroke(c)
-  
+  Case 8
+ ' USAR LA ENTRADA DE TEXTO DE IUP
+    dialogoText("AJUSTE TEMPO")  
+    tiempoPatron= Cdbl(nombreArchivo)
+    
  End Select
  ' Si nodoy Stroke los show text van apendendo al final como un print;
 
@@ -2111,7 +2147,7 @@ IupOpen(NULL, NULL)
 '' Create a window with a text box, ok button, and a label
 var textbox = IupText(NULL)
 var okbutton = IupButton("OK", "on_click_ok")
-var label = IupLabel("Nombre del archivo a grabar.")
+var label = IupLabel("Tempo: Negras en 1 minuto.")
 var vbox = IupVbox(textbox, okbutton, label, NULL)
 var dialog = IupDialog(vbox)
 

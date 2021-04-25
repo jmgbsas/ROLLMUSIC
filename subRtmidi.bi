@@ -201,7 +201,7 @@ For j=comienzo To final
  
   For i=NA To NB Step -1 
    If (Roll.trk(i,j).nota >= 1) And Roll.trk(i,j).nota <= 12 _
-      And Roll.trk(i,j).dur >=1 And Roll.trk(i,j).dur <= 109 Then ' es semitono 
+      And Roll.trk(i,j).dur >=1 And Roll.trk(i,j).dur <= 108 Then ' es semitono 
       Notapiano= 117-i 
       Notapiano= Notapiano - restar (Notapiano)
       dura=Roll.trk(i,j).dur '1) I 2) I
@@ -257,7 +257,7 @@ For j=comienzo To final
  ''Sleep segun duracion o Timer de la q mas dura o para cada uno
   '   Print #1,"i=NB maxdur: ";maxdur
       ' tiempoPatron input al redimsub
-      Print #1,"i=NB and durb=0 , maxdur ";maxdur, figura(maxdur)
+      Print #1,"i=";i," maxdur=";maxdur; " figura=";figura(maxdur)
      duracion (maxdur)
      Print #1," cantidad cx de off ";cx
      For ioff=1 To cx
@@ -265,11 +265,11 @@ For j=comienzo To final
       Print #1, "OFF==>   non(ioff),  canal "; non(ioff),canal
      Next ioff
      Print #1,"pasó for de off .."
-     Print #1," =============================> fin paso...j"   
-   EndIf 
+     Print #1," ==============> fin paso...j"; j   
+  EndIf 
   Next i
 
-  Print #1,"COMIENZA OTRA  POSICION O J ================="
+  Print #1,"COMIENZA OTRA  POSICION O J ======"; j
   If durb=0 Then
    cx=0
   EndIf
@@ -311,7 +311,6 @@ End Function
 Sub duracion (dura As Integer)
  ' la duracion dependera del tiempo elegido I=60 o I=160 etc
 Dim As Double tiempo, tiempoFigura=0
- 
 tiempo=60/tiempoPatron '60 seg/ cuantas negras enun minuto
 ' ej si tiempoPatron = 120=> tiempo=1/2
 

@@ -481,6 +481,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
  agregarNota= 1
 EndIf
 
+
 If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE ?
  cursorVert = 0
  cursorHori = 0
@@ -1441,7 +1442,9 @@ If (ScreenEvent(@e)) Then
     ScreenControl GET_WINDOW_POS, x0, y0
     s5=0
    EndIf
+  
    Exit Do
+ 
   Case EVENT_MOUSE_WHEEL      ' <<<=== MOUSE WHEEL
    ' new position & e.z
 
@@ -1800,7 +1803,6 @@ If e.scancode = 75  Then '  <========== LEFT REPEAT
  EndIf
 EndIf
 
-
  End Select
  '-------------------------------------END SCREENEVENT ----------
 
@@ -1941,15 +1943,15 @@ EndIf
  '       ==== NOTAS O DURACIONES EXISTENTES ====
 If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  If  comEdit=TRUE  then
-  If  MultiKey(SC_CONTROL) And (MouseButtons And 2)  Then
+    If  MultiKey(SC_CONTROL) And (MouseButtons And 2)  Then
    ' trae un menu contextual solo con ctrl-m  previo <==== menu borrar insertar modificar
    ' ESTADO:CALL MENU COMANDO
-   ayudaModif=TRUE
-   ayudaNuevaNota=FALSE
-   menuMouse = 0
-   nroClick=1
-   cursorVert = 1
-   cursorHori = 1
+     ayudaModif=TRUE
+     ayudaNuevaNota=FALSE
+     menuMouse = 0
+     nroClick=1
+     cursorVert = 1
+     cursorHori = 1
  '  Print #1, "------------------------------------------------------------"
  '  Print  #1,"(1) MultiKey(SC_CONTROL) And (MouseButtons And 2) And comEdit=TRUE"
  '  Print #1, "sc_CONTROL + MB2 + CE=TRUE <= ESTADO:CALL MENU COMANDO"
@@ -1960,17 +1962,15 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  '  Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
  '  Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 
-   Exit Do
-
-  EndIf
- EndIf
- If  comEdit=TRUE And ayudaNuevaNota=FALSE And ayudaModif=TRUE Then 'ESTADO: seleccionar comando
-  If (mouseButtons And 1 )  And nroClick = 1  Then
-
-   ayudaModif=FALSE
-   menumouse=0
-   posinterna=0
-   cursorVert = 1:cursorHori = 1
+     Exit Do
+    EndIf
+ 
+    If  ayudaNuevaNota=FALSE And ayudaModif=TRUE Then 'ESTADO: seleccionar comando
+     If (mouseButtons And 1 )  And nroClick = 1  Then
+        ayudaModif=FALSE
+        menumouse=0
+        posinterna=0
+        cursorVert = 1:cursorHori = 1
    '  Print #1, "------------------------------------------------------------"
    '  Print  #1,"(2) (mouseButtons And 1 ) And ayudaModif=TRUE And nroClick = 1 And comedit=TRUE "
    '  Print  #1,  "And ayudaNuevaNota=FALSE "
@@ -1981,28 +1981,28 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    '  Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 
    ' Necesitamos mostrar el menu todavia  savemousex=0 : savemousey=0
-   If nroClick = 1 Then 'seleccionamos verticalmente ,,,,
-    nroClick=2
-    If (mousey >= usamousey -120) and  (mousey <= usamousey -100) Then
-     modifmouse=1 'borrar =1
-     Exit Do
-    EndIf
-    If (mousey >= usamousey -100) and  (mousey <= usamousey -70) Then
-     modifmouse=2 'INSERTAR
-     Exit Do
-    EndIf
-    If (mousey >= usamousey -70) and  (mousey <= usamousey -40) Then
-     modifmouse=3 'FIN INSERTAR
-     Exit Do
-    EndIf
-    If (mousey >= usamousey -40) and  (mousey <= usamousey -10) Then
-     modifmouse=4 'CAMBIADUR=1 modificar
-     Exit DO
-    EndIf
+       If nroClick = 1 Then 'seleccionamos verticalmente ,,,,
+          nroClick=2
+          If (mousey >= usamousey -120) and  (mousey <= usamousey -100) Then
+            modifmouse=1 'borrar =1
+            Exit Do
+          EndIf
+          If (mousey >= usamousey -100) and  (mousey <= usamousey -70) Then
+            modifmouse=2 'INSERTAR
+            Exit Do
+          EndIf
+          If (mousey >= usamousey -70) and  (mousey <= usamousey -40) Then
+            modifmouse=3 'FIN INSERTAR
+            Exit Do
+          EndIf
+         If (mousey >= usamousey -40) and  (mousey <= usamousey -10) Then
+            modifmouse=4 'CAMBIADUR=1 modificar
+            Exit DO
+         EndIf
 
-   EndIf
-  EndIf
- EndIf
+       EndIf
+     EndIf
+    EndIf
  ' <===========   MODIFICACIONES INSERCION
  ' por ahor ainsercion con mouse funciona igual que con keys
  ' perola duracion entrpro tecldonos e porqu enotoma l demouse.
@@ -2011,81 +2011,81 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  ' elcursor seguira al click izq por elcalculo de cursor en este comando
  ' finalmente se usalatecla END para finalizar todas las inserciones.
  ' debere agregr un nuevo comando END paraahcerlo con elmouse....
- If   comedit=TRUE And ayudaModif=FALSE Then
-  If (mouseButtons And 1 )  And nroClick = 2  Then
-   savemousex=0 : savemousey=0 ' JMG NUEVA
+   If   ayudaModif=FALSE Then
+     If (mouseButtons And 1 )  And nroClick = 2  Then
+       savemousex=0 : savemousey=0 ' JMG NUEVA
    ' ESTADO: PREPARA COMANDO
    'Print #1, "------------------------------------------------------------"
    'Print #1, "(3) (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And comedit=TRUE "
    'Print #1, " ESTADO: PREPARA COMANDO"
-   notacur=nE
-   curpos= Int((mousex - 81)/20)
-   posishow= curpos  + 1 ' NO CAUSA EL +1 EN MODIF MOUSE 03-03-21-15:10
+       notacur=nE
+       curpos= Int((mousex - 81)/20)
+       posishow= curpos  + 1 ' NO CAUSA EL +1 EN MODIF MOUSE 03-03-21-15:10
    'Print #1, " savemousex=0 : savemousey=0 ' JMG NUEVA"
    'Print #1, " notacur=nE"
    'Print #1,"curpos= Int((mousex - 81)/20)"
    'Print #1," posishow= curpos + 1"
    'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 
-   If modifmouse=1 Then  ' anda ok 27 02 2021
-    BORRAR=1
-    ayudaNuevaNota=TRUE
-    Exit Do
-   EndIf
-   If modifmouse=2 And insert= 0 Then
-    INSERT=1
-    indaux=0
+       If modifmouse=1 Then  ' anda ok 27 02 2021
+          BORRAR=1
+          ayudaNuevaNota=TRUE
+          Exit Do
+       EndIf
+       If modifmouse=2 And insert= 0 Then
+          INSERT=1
+          indaux=0
     '           print #1,">>>SC_INSERT ajust STARTINSERT ", StartInsert
-    If indaux=0 Then ' no haria falta todas las demas inserciones se deben
+         If indaux=0 Then ' no haria falta todas las demas inserciones se deben
      'hacer con I no volver a repetir SC_INSERT sino se pulso SC_END
-     StartInsert = posicion + curpos  ' guardo sin modificar el comienzo xxx ok
-    EndIf
+           StartInsert = posicion + curpos  ' guardo sin modificar el comienzo xxx ok
+         EndIf
     '          print #1,">>>SC_INSERT  despues ajuste STARTINSERT ", StartInsert
     ''''Erase (RollAux.trk) ' borro lo que habia en el auxiliar
-    ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
+         ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
     '''Erase (notasInsertadas)
-    ReDim notasInsertadas (1 to 1500)
-    notins=0
+         ReDim notasInsertadas (1 to 1500)
+         notins=0
     '          Print #1, ">>>SC_INSERT insert indaux borro RollAux.trk: ",insert,indaux
     'sigue el proceso en RollSub->sub cursor
     ' nroclick=0
-    Exit Do
-   EndIf
-   If modifmouse=2 And insert=1 Then
-    insert=2
-   EndIf
-   If modifmouse=3  Then
-    If cursorVert=1 Then ' solo vlido con Ctrl-M
-     insert=3
-     moveresto (StartInsert,indaux, insert,nota)
-     insert=0:indaux=0
-    EndIf
-    nroClick=0 ' no permite entrar mas por insercion
-    modifmouse=0
-    ayudaNuevaNota=TRUE
+         Exit Do
+       EndIf
+       If modifmouse=2 And insert=1 Then
+          insert=2
+       EndIf
+       If modifmouse=3  Then
+          If cursorVert=1 Then ' solo vlido con Ctrl-M
+             insert=3
+             moveresto (StartInsert,indaux, insert,nota)
+             insert=0:indaux=0
+          EndIf
+          nroClick=0 ' no permite entrar mas por insercion
+          modifmouse=0
+          ayudaNuevaNota=TRUE
     ' acomoda los compases  <======= organiza Compases
-    ReCalCompas() ' organizaCompases()
+          ReCalCompas() ' organizaCompases()
     ' fin compases
+       EndIf
+       If modifmouse=4 Then ' modificar
+         cambiadur=1
+         ayudaNuevaNota=TRUE
+         Exit Do
+       EndIf
+     EndIf
    EndIf
-   If modifmouse=4 Then ' modificar
-    cambiadur=1
-    ayudaNuevaNota=TRUE
-    Exit Do
-   EndIf
-  EndIf
- EndIf
  ''
  '                     <=== INICIO  O P I L F E W H
- If  comedit= TRUE Then
-  If (MouseButtons And 2)  Then ''<=== menu de duraciones para seleccionar con click
-   ' el resto del code en CrearPenta(), para todaedicion lasduraciones 1 a 8 en letras
-   ayudaNuevaNota=TRUE 'ESTADO: CALL MENU DURACIONES O CTRL-M
-   ayudaModif =FALSE
-   savemousex=0 : savemousey=0 ''ACA NO ¿?
-   vuelta=FALSE
-   menuMouse = 0
 
-   nroClick=1
+   If (MouseButtons And 2)  Then ''<=== menu de duraciones para seleccionar con click
+   ' el resto del code en CrearPenta(), para todaedicion lasduraciones 1 a 8 en letras
+     ayudaNuevaNota=TRUE 'ESTADO: CALL MENU DURACIONES O CTRL-M
+     ayudaModif =FALSE
+     savemousex=0 : savemousey=0 ''ACA NO ¿?
+     vuelta=FALSE
+     menuMouse = 0
+
+     nroClick=1
    'Print #1, "------------------------------------------------------------"
    'Print #1,"(MouseButtons And 2) and comedit= TRUE"
    ' Print  #1,"(4) ESTADO: CALL MENU DURACIONES O CTRL-M"
@@ -2099,11 +2099,11 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    'Print  #1,"comEdit=TRUE "
    'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 
-   Exit Do
-  EndIf
- EndIf
+    Exit Do
+   EndIf
+ 
  ' YA VUELVE OK
- if comedit= TRUE And ayudaModif=FALSE Then
+   if  ayudaModif=FALSE Then
   If (mouseButtons And 1 ) And cursorVert = 1  And modifmouse <> 3 Then ' ESTADO: SELECCIONA VUELTA CTRL-P
    'Print #1, "------------------------------------------------------------"
    'Print  #1,"(5) MB1  And AModif=FALSE And CE=TRUE  And CVert = 1 "
@@ -2128,8 +2128,8 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
     EndIf
    EndIf
   endif
- EndIf
- If comedit=TRUE And ayudaModif=FALSE And ayudaNuevaNota=TRUE Then ' ESTADO : SELECCIONA DURACION O CTRL-M
+   EndIf
+   If ayudaModif=FALSE And ayudaNuevaNota=TRUE Then ' ESTADO : SELECCIONA DURACION O CTRL-M
   If (mouseButtons And 1 )  And nroClick = 1  Then
 
    ayudaNuevaNota=FALSE
@@ -2188,9 +2188,9 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
 
    EndIf
   EndIf
- EndIf
+   EndIf
 
- if comEdit=TRUE And ayudaNuevaNota=FALSE And ayudaModif=FALSE Then
+   if ayudaNuevaNota=FALSE And ayudaModif=FALSE Then
   If DUR > 0 And nE > 0 And nroClick = 1 _
   And modifmouse<> 3 Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
   nota=nE   ''<== 1er nota ingresada para la duracion y nota elegida
@@ -2205,8 +2205,8 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
   Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 
   EndIf
- EndIf
- If comEdit=TRUE And ayudaModif=FALSE And ayudaNuevaNota=FALSE _
+   EndIf
+   If ayudaModif=FALSE And ayudaNuevaNota=FALSE _
    And octavaEdicion = estoyEnOctava Then
   If (mouseButtons And 1) And (DUR > 0) And (nE > 0) And modifmouse<> 3 Then
    'Print #1, "------------------------------------------------------------"
@@ -2218,22 +2218,27 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    '   Print  #1," nota=nE ", nE
    Exit Do
   EndIf
- EndIf
+   EndIf
+  
+ EndIf 
+
  If mousex >=0 And mousex <= 50 Then
        octavaEdicion=estoyEnOctava
  EndIf 
  ''
 EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 ' ------------------------------------------------------------------
-  If MouseButtons And 1  Then
-     old_btn_press_time = new_btn_press_time
-     new_btn_press_time = timer
-    If ((new_btn_press_time - old_btn_press_time) < dbl_click_time) Then
+If MouseButtons And 1  Then
+   old_btn_press_time = new_btn_press_time
+   new_btn_press_time = timer
+   If ((new_btn_press_time - old_btn_press_time) < dbl_click_time) Then
       dobleclick=TRUE
-    Else
+   Else
       dobleclick=FALSE
-    EndIf
- EndIf
+   EndIf
+EndIf
+
+ 
 
 '                     <===  FIN    O P I L F E W H
 
