@@ -662,7 +662,9 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
 '          dialogoText("AJUSTE TEMPO")  
 '          tiempoPatron= Cdbl(nombreArchivo)
 '       EndIf 
-          PlayRoll()
+        'playthread() 
+        thread1 = ThreadCreate(@PlayRoll)
+          '''DeAllocate thread1
           play=1
         menuNew =0 
         
@@ -691,7 +693,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   t=  " [Ayuda] archivo, ayuda, edicion y Reproducir habilitados,version alpha":cairo_show_text(c, t)
+   t=  " [Ayuda] "+ nombre :cairo_show_text(c, t)
 
    cairo_stroke(c)
   Case 1
@@ -804,11 +806,13 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     If MouseButtons And 1 Then
      '       Print #1, "Grabando a disco Roll GRABAR "
     ' dialogoText("Grabar Archivo")
-       Dim As String nombre = ""
+       Dim As String nombreg
        getfiles(file,myfilter,"save")
-       nombre=*file.lpstrFile
-       If nombre = "" Then
+       nombreg=*file.lpstrFile
+       If nombreg = "" Then
           Exit Sub
+       Else
+         nombre=nombreg   
        EndIf
      ''Open "Trabajo_03.roll" For Binary Access write As #2
      ''Open nombreArchivo +".roll" For Binary Access write As #2
@@ -1960,7 +1964,7 @@ Sub ReCalCompas()
       Print #2,"POSICION :";J
       Print #3,"POSICION :";J
       For i= NB To NA
-       valdur => Roll.trk(i,j).dur
+       valdur => Roll.trk(i,j).dur ' de 1 a 108
        ' al cargr tenemos 4 grupos de 16 de duraciones identicas que se repiten
        ' 1-16,17-32,33-48.49-64 , el indicemeindicaa cual grupo pertenece, y
        'en que rango buscar
@@ -1994,7 +1998,7 @@ Sub ReCalCompas()
         If  valdur >= lim1 And valdur <=lim2 And lim1 > 0 And lim2> 0 Then
          Print #1, "Valdur i ";valdur ; i ; " grupo ";grupo;" figura ";figura(valdur)
          ' Print #1,"i NB ";i,NB
-         If  cont=0   Then
+         If  cont=0   Then 'mira duraciones
           mayor=pesoDur(valdur):mayorgrupo=grupo
           '       Print #1,"1er mayor "; mayor; " mayorgrupo";mayorgrupo
           cont=1
@@ -2052,13 +2056,15 @@ Sub CargaArchivo()
      Dim z (1,1 )  As dat
      Dim zLim (1,1) As dat
      
-     Dim As String x,x1,x2,x3,x4, nombre = ""
+     Dim As String x,x1,x2,x3,x4,nombrea
       '''dialogoText("Cargar Archivo")
        getfiles(file,myfilter,"open")
-       nombre=*file.lpstrFile
+       nombrea=*file.lpstrFile
   
-       If nombre = "" Then
+       If nombrea = "" Then
           Exit Sub
+       Else
+          nombre=nombrea   
        EndIf
    
      'Open "Trabajo_03.roll" For Binary Access Read As #2
@@ -2245,4 +2251,7 @@ Sub velocidades(j As integer)
     EndIf
 
 End Sub 
+Sub playthread() 
+  thread1 = ThreadCreate(@PlayRoll)
 
+End Sub

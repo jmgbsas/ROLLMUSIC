@@ -1,3 +1,26 @@
+'https://www.freebasic.net/forum/viewtopic.php?t=25312
+' agregar detener play con barra espaciadora y comenzar desde 
+' agregar detener play con barra espaciadora y comenzar desde 
+' la ultima posicion...por ahora solo detener 
+'Wrap aplaymidi into a script that checks the exit status to detect Ctrl+C:
+' https://awesomeopensource.com/project/atsushieno/managed-midi
+'https://github.com/atsushieno/managed-midi
+'#!/bin/bash
+'aplaymidi "$*"
+'test $? == 130 && aplaymidi .../AllNotesOff.mid
+'The "all notes off" message is controller 123; just send it on all channels at the same time.
+'Alternatively, use amidi to send a reset message:
+'... && amidi -p hw:X -S F07E7F0901F7
+'where X is the card number; see amidi -l for a list of ports.
+
+' agregar guardar automatico y guardar como 
+' siconosco elnombre saltearla llamada de getfiles esoseria autmatico
+' solo queda usar getfiles para guardar como ,,,,debere poner otro item
+' en el menu
+' agregar? una lieadetexto en menu cm parponer el archivo aviertocon su 
+' path completo hare la cintmasgruesaen vez de 50 75 ¿? veremos.,...
+' v5.7.6.0.4: fix borrar o blanquear en ctrl-m
+' v5.7.6.0.3: fix modificar en ctrl-m
 ' V5.7.6.0.2: agregar velocidades de pulso ej: 4/4 1erpulso fuerte
 ' el 2do debil 3ero medio, 4to debil, ponerlas en %del velocidad
 ' ej:V1=100 V2=70% V1, v3=50% V1, V4=V2 , necesito 3 velocidades 
@@ -124,6 +147,7 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include "declareRtmidi.bi"
 ' iup start
 #include once "IUP/iup.bi"
+#Include once "foro/fmidi.bi"
 const NULL = 0
 const NEWLINE = !"\n"
 ' iup fin
@@ -136,7 +160,7 @@ Type dat Field=1
  inst As UByte ' instrumento para cada nota podra ser distinto
 End Type
 
-
+dim shared as long CONTROL1 = 0
 ' ROLL PARAEL GRAFICO PERO LOS TRCKS PODRIAN SER DISTINTOS
 'Dim Shared As dat Roll  (1 To 128 , 1 To 19200)
 Type inst
@@ -530,7 +554,9 @@ If MultiKey(SC_PAGEUP ) Then
  Exit Do
 
 EndIf
-
+If KeyPress (sc_P) Then
+  CONTROL1=1 ' DETIENE EL PLAY VEREMOS
+EndIf
 If multikey(SC_PLUS) Then  '13 , ligadura
  mas=1
  Exit Do
@@ -910,8 +936,12 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
  If comEdit=TRUE then
   espacio = 1
   DUR=109
- Else
-  PlayRoll()
+' Else
+ ' PlayRoll()
+'   If playb=0 Then
+'     dim as Any ptr thread1 = ThreadCreate(@PlayRoll)
+'      playb=1
+'   EndIf
  EndIf  
  Exit Do
 EndIf
@@ -1985,6 +2015,8 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
           nroClick=2
           If (mousey >= usamousey -120) and  (mousey <= usamousey -100) Then
             modifmouse=1 'borrar =1
+            notacur=nE
+            curpos=(mousex- 81 )/35
             Exit Do
           EndIf
           If (mousey >= usamousey -100) and  (mousey <= usamousey -70) Then
@@ -2021,7 +2053,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    'Print #1, "(3) (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And comedit=TRUE "
    'Print #1, " ESTADO: PREPARA COMANDO"
        notacur=nE
-       curpos= Int((mousex - 81)/20)
+       curpos= Int((mousex - 81)/35)
        posishow= curpos  + 1 ' NO CAUSA EL +1 EN MODIF MOUSE 03-03-21-15:10
    'Print #1, " savemousex=0 : savemousey=0 ' JMG NUEVA"
    'Print #1, " notacur=nE"
@@ -2369,4 +2401,5 @@ Print #1,"Error Function: "; *Erfn()
 Dim ers As Integer = nota +(estoyEnOctava -1) * 13
 Print #1, "nota +(estoyEnOctava -1) * 13) "; ers
 CLOSE
+
 

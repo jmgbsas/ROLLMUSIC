@@ -16,9 +16,11 @@ Declare Sub note4off	( note1 As UByte, note2 As UByte, note3 As UByte, note4 As 
 Declare Sub note5on	( note1 As UByte, note2 As UByte, note3 As UByte, note4 As UByte, note5 As UByte, vel As UByte, canal As integer)
 Declare Sub note5off	( note1 As UByte, note2 As UByte, note3 As UByte, note4 As UByte,note5 As UByte, canal As integer)
 Declare Function restar (notaRoll As Integer) As Integer
-Declare Sub PlayRoll ()
+Declare Sub PlayRoll (param As any ptr)
 Declare Sub duracion (dura As Integer)
-
+Declare Sub pedaloff()
+Declare Sub allSoundoff(canal As Integer)
+Declare Sub alloff(canal As Integer )
 Dim Shared message(1 To 21) As UByte ' message output 
 ' maximo seria para un acorde de 5 por ejemplo
 ' 5 notas + velocidad y canal = 7 bytes...para note on
@@ -48,5 +50,5 @@ Dim Shared As float relDur (1 To 108) => { _
 6 ,3 , 1.5, 0.75,0.375,0.1875 ,0.09375,0.046875,0.0234375, _ ' 64 72
 2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,0.208333,0.01041666} '82 90
 
-Dim Shared As Integer play =0 
+Dim Shared As Integer play =0,playb=0 
 ''On Error Goto errorhandler

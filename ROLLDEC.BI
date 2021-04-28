@@ -23,6 +23,7 @@ Declare Sub CambiarDim()
 ' para IUP textbox 
 Declare Sub dialogoText(cadena As string)
 Declare Sub velocidades(j as integer)
+Declare Sub playthread()
 
 'Declare Sub getfiles(Byref File As OpenFileName,flag As String)
 ' mover nota 
@@ -63,6 +64,12 @@ Dim  Shared figura (1 To 110) As String  * 4 => _
 'cambiar 107 por 108, 109 por 110,  109 por 110.
 ' ligaduras de notas con + que va a + o - creo qu emenso seria mejor
 ' parecido a una pila polos opuestos se atraen je...
+Dim Shared As Integer comienzo1, fin1, comienzo2,fin2 
+'comienzo1=28:fin1=54
+'comienzo2=82:fin2=108
+
+Dim Shared as any ptr thread1 ' PARA PLAY
+
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
 Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
 Dim Shared mas As Integer = 0 ' + continuacion o ligadura
@@ -122,7 +129,8 @@ Dim Shared As Integer pesoDur (1 To 108)  => { _
 15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '91 99
  6666666,3333333,1666666, 833333,416666,208333,104166, 52083,26042 }  '100 108 
 
-Dim Shared As String nombreArchivo, TCompas
+Dim Shared As String nombreArchivo, TCompas,nombre
+nombre=""
 Dim Shared As UByte Vfuerte=120,Vsemifuerte=110,Vdebil=90
 TCompas ="4/4"
 ' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido po r 8

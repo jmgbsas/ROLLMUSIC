@@ -66,11 +66,20 @@ II) MODO CURSOR
      dar Ctrl+click derecho del mouse,aprece un menu click en Modificar, luego
      dar click en la posicion elegida y modificara la duracion de la posicion. 
 
-     Modificar por tecldo
+     Modificar por teclado
+
      Elegir por teclado la duracion pulsando 1 a 9 (0 fin archivo)
      posiiconar el cursor con teclas < arriba abajo derecha izquierda>
      sobre la nota deseada en la octava elegida, pulsar X, se cambiara la duracion
      a la deseaada
+     
+     Entrar o Modificar por teclado 2d opsion Ctrl-N
+     Elegir por teclado duracion 1 a 9 o por click derecho aparece el menu contextual de duraciones. Posicionarse en una posicion con las teclaas de flechas, y luego pulsar
+     l nota en teclado. O dar click  con el mouse en cualqueir lado que se desee, sin
+     importar usar las flechas de teclado.
+
+     
+     Dar Ctrl-N (se salecon ctrl-p tambien)
 2.4) Copiar
    - En EDIT Cursor= Edit +Ctrl_M = Edit + Ctrl + clcil derecho   
      Movemos el cursor grafico (cuadrado) con teclas izq der hasta posicionarse en
