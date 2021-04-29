@@ -66,9 +66,11 @@
 ' - ok:estando con un nro de octavas n1 y si se carga archivo con n2
 '   ajusta automticamente el editor a n2..
 ' ------------------------------
+
+
 #define WIN_INCLUDEALL
 #Include Once "windows.bi"
-#Include once "/win/commctrl.bi"
+#Include Once "/win/commctrl.bi"
 #include "file.bi"
 
 Sub getfiles(Byref File As OpenFileName,flag As String, accion As string)
@@ -108,6 +110,20 @@ myfilter += "Roll Files"+chr(0)  +"*.roll;*.mp3"+chr(0)
 myfilter+="Ini files"+chr(0)    +"*.ini;*.txt;*.cfg"+chr(0)
 
 ' end file dialog  
+#Define __FB_WIN64__
+#If Defined (__FB_WIN64__) 
+#LibPath "C:\msys64\mingw64\lib"
+#Else
+#LibPath "/usr/lib"
+#EndIf
+#Define EXTCHAR Chr(255)
+#Include "fbgfx.bi"
+'#Include once "windows.bi" ' en winuser.bi esta el mouse o screen event
+''KILOMBO #Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
+#If __FB_LANG__ = "fb"
+Using FB '' Scan code constants are stored in the FB namespace in lang FB
+#EndIf
+ScreenControl  SET_DRIVER_NAME,"GDI"
 
 Open "midebug.txt" for Output As #1
 
@@ -124,19 +140,6 @@ Open "mivector.txt" for Output As #3
 ' version actual front end solamente 1 track...no reproduce
 ' no genera midi todavia..
 '-------------
-#If Defined(__FB_WIN32__)
-#LibPath "C:\msys64\mingw64\lib"
-#Else
-#LibPath "/usr/lib"
-#EndIf
-#define EXTCHAR Chr(255)
-#Include "fbgfx.bi"
-#Include "windows.bi" ' en winuser.bi esta el mouse o screen event
-#Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
-#If __FB_LANG__ = "fb"
-Using FB '' Scan code constants are stored in the FB namespace in lang FB
-#EndIf
-
 ''
 #include "string.bi"
 #Include Once "cairo/cairo.bi"
@@ -281,7 +284,7 @@ AltoInicial=ALTO
 anchofig=35
 NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
 
-ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion si uso GDI
+''ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion si uso GDI
 ' pero llamando al programa con winExec con opcion SW_RESTORE no hay necesidad
 ' y puedousar  directx!!
 

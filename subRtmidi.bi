@@ -380,7 +380,7 @@ For j=comienzo To final
   con=0 
 Next j
 
-Sleep 1000  
+Sleep 50 
 close_port(midiout)
 out_free(midiout) 
 play=0
