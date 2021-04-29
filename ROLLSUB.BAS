@@ -655,21 +655,17 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    t=  " [Pista]":cairo_show_text(c, t)
    ' ------------------------------------------
 ' 0.5 ===> [Reproducir]
-   If mousex > 348 And mousex< 453 And mousey < 50  And play=0 Then
+   If (mousex > 348 And mousex< 453 And mousey < 50  And play=0) Then
     cairo_set_source_rgba c, 0, 1, 0, 1
-    If MouseButtons And 1 Then
-'       If tiempoPatron = 0 Then
-'          dialogoText("AJUSTE TEMPO")  
-'          tiempoPatron= Cdbl(nombreArchivo)
-'       EndIf 
-        'playthread() 
+
+    If (MouseButtons And 1) Then
+        play=1
         thread1 = ThreadCreate(@PlayRoll)
-          '''DeAllocate thread1
-          play=1
         menuNew =0 
-        
+      
     ''    menuNew = 4 por hora sin elecciones
     EndIf
+
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf

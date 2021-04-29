@@ -383,6 +383,8 @@ Next j
 Sleep 1000  
 close_port(midiout)
 out_free(midiout) 
+play=0
+playb=0
 
 ' velocidades a incorporar
 'pppp   8

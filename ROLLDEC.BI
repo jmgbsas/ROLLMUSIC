@@ -68,7 +68,7 @@ Dim Shared As Integer comienzo1, fin1, comienzo2,fin2
 'comienzo1=28:fin1=54
 'comienzo2=82:fin2=108
 
-Dim Shared as any ptr thread1 ' PARA PLAY
+Dim Shared as any ptr thread1, thread2 ' PARA PLAY
 
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
 Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio

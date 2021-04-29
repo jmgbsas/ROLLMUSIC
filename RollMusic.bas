@@ -148,6 +148,8 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 ' iup start
 #include once "IUP/iup.bi"
 #Include once "foro/fmidi.bi"
+#include "fbthread.bi"
+
 const NULL = 0
 const NEWLINE = !"\n"
 ' iup fin
@@ -460,9 +462,9 @@ Var cm = cairo_create(surf2)
 ' y sea enmenu o con SC_L puedo cargar desde disco,...sepierdela
 ' posicion aprentemente elcursorqueda clavado en 1 o 0 y no navega 5.7.3.1
 ' solo pasando por Edicion vuelve a navegar
-If mousey > 50 Then
-   play=0
-EndIf
+'If mousey > 50 Then
+'   play=0
+'EndIf
 
 menu(c,cm, posicion,menuNro)
 cairo_stroke(cm)
@@ -554,7 +556,7 @@ If MultiKey(SC_PAGEUP ) Then
  Exit Do
 
 EndIf
-If KeyPress (sc_P) Then
+If MultiKey (sc_P) And play=1 Then
   CONTROL1=1 ' DETIENE EL PLAY VEREMOS
 EndIf
 If multikey(SC_PLUS) Then  '13 , ligadura
@@ -641,79 +643,75 @@ If MultiKey(SC_CONTROL) Then
 EndIf
 
 '   escala = escala - 0.1
-If KeyPress(SC_RIGHT)  Then ' <======== RIGHT
- If  mouseY < 50  Then ' seleccion de menu, mouse sobre cinta + teclas
-  menuNro=menuNro+1
-  If menuNro > 6 Then
-   menuNro=0
-   menuNew=0
-  EndIf
-  menuNew=menuNro
-  Exit Do
- Else
-  'kNroCol cantidad scroll de NrocOL)
-  If comEdit = FALSE Then
-   posicion = posicion + 1
-   kNroCol= Int(posicion/NroCol)
-   If  (kNroCol > 0) And (posicion = NroCol * kNroCol) And (posicion < MaxPos)Then
-    iniciodelectura = iniciodelectura +  NroCol
-    If inicioDeLEctura > MaxPos Then
-     inicioDeLEctura = inicioDeLEctura -NroCol
-    EndIf
-   EndIf
-   If posicion > MaxPos -1  Then
-    posicion = MaxPos -1
-   EndIf
-  Else
-   curpos= curpos + 1 ' mueve cursor cuando Roll se detiene (posicion)
-   If curpos > NroCol  Then
-    curpos = NroCol
-   EndIf
 
-  EndIf
-
-  Exit Do
+ If  mouseY < 50  And KeyPress(SC_RIGHT)  Then ' <======== RIGHT
+ ' seleccion de menu, mouse sobre cinta + teclas
+      menuNro=menuNro+1
+     If menuNro > 6 Then
+       menuNro=0
+       menuNew=0
+     EndIf
+     menuNew=menuNro
+     Exit Do
  EndIf
+  'kNroCol cantidad scroll de NrocOL)
+ If  mouseY > 50  And KeyPress(SC_RIGHT)  Then ' <======== RIGHT 
+     If comEdit = FALSE Then
+        posicion = posicion + 1
+        kNroCol= Int(posicion/NroCol)
+        If  (kNroCol > 0) And (posicion = NroCol * kNroCol) And (posicion < MaxPos)Then
+           iniciodelectura = iniciodelectura +  NroCol
+           If inicioDeLEctura > MaxPos Then
+              inicioDeLEctura = inicioDeLEctura -NroCol
+           EndIf
+        EndIf
+        If posicion > MaxPos -1  Then
+           posicion = MaxPos -1
+        EndIf
+     Else
+        curpos= curpos + 1 ' mueve cursor cuando Roll se detiene (posicion)
+        If curpos > NroCol  Then
+          curpos = NroCol
+        EndIf
+     EndIf
+      Exit Do
 EndIf
 '   escala = escala + 0.1
-If KeyPress(SC_LEFT)  Then '  <========== LEFT
- If  mouseY < 50  Then  ' seleccion de menu
+                '  <========== LEFT
+ If  mouseY < 50 And KeyPress(SC_LEFT) Then  ' seleccion de menu
   menuNro=menuNro - 1
   menuNew=menuNro
   If menuNro < 0 Then
    menuNro=3
    menuNew=3
   EndIf
-  While Inkey <> "": Wend
- 
-  Exit Do
- Else
-  'MOVER ROLL IZQUIERDA NO CURSOR
-  If comEdit = FALSE Then
-   Dim kNroCol As Integer ' cntidad de scroll de 66
-   posicion = posicion - 1
-   kNroCol= Int(posicion/NroCol)
-   If  kNroCol > 0 And (posicion = NroCol*kNroCol)  Then
-    iniciodelectura = iniciodelectura - NroCol
-   EndIf
-   If iniciodelectura < 0 Then
-    iniciodelectura = 0
-   EndIf
-   If posicion < 1 Then
-    posicion = 1
-   EndIf
-
-  Else
-   curpos = curpos - 1 ' <=== MOVER CURSOR IZQ
-   If curpos < 0 Then
-    curpos = 0
-   EndIf
-
-  EndIf
  
   Exit Do
  EndIf
-EndIf
+ If  mouseY > 50 And KeyPress(SC_LEFT) Then
+  'MOVER ROLL IZQUIERDA NO CURSOR
+  If comEdit = FALSE Then
+     Dim kNroCol As Integer ' cntidad de scroll de 66
+     posicion = posicion - 1
+     kNroCol= Int(posicion/NroCol)
+     If  kNroCol > 0 And (posicion = NroCol*kNroCol)  Then
+         iniciodelectura = iniciodelectura - NroCol
+     EndIf
+     If iniciodelectura < 0 Then
+        iniciodelectura = 0
+     EndIf
+     If posicion < 1 Then
+        posicion = 1
+     EndIf
+  Else
+     curpos = curpos - 1 ' <=== MOVER CURSOR IZQ
+     If curpos < 0 Then
+        curpos = 0
+     EndIf
+  EndIf
+     Exit Do
+ EndIf
+
 ' https://freebasic.net/forum/viewtopic.php?t=15100
 ' interfiere con ALT+ tAB del usuario apr amirar otra apliccion
 ' no va
@@ -936,12 +934,14 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
  If comEdit=TRUE then
   espacio = 1
   DUR=109
-' Else
+ Else
  ' PlayRoll()
-'   If playb=0 Then
-'     dim as Any ptr thread1 = ThreadCreate(@PlayRoll)
-'      playb=1
-'   EndIf
+ 
+   If playb = 0 Then
+      playb=1
+      thread1 = ThreadCreate(@PlayRoll)
+  
+   EndIf
  EndIf  
  Exit Do
 EndIf
