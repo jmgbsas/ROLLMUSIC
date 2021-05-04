@@ -24,6 +24,15 @@ Declare Sub CambiarDim()
 Declare Sub dialogoText(cadena As string)
 Declare Sub velocidades(j as integer)
 Declare Sub playthread()
+Declare Sub GrabarArchivo (nombre As String)
+' gtk
+Declare Sub GtkListBox()
+Declare Sub sigh_button_event Cdecl ( Byval gtklist As GtkWidget Ptr, Byval event As GdkEventButton Ptr, Byval frame As GtkWidget Ptr )
+Declare Sub sigh_print_selection Cdecl ( Byval gtklist As GtkWidget Ptr, Byval func_data As gpointer )
+' end gtk
+Declare sub selportout() 
+Declare Sub ComboBox()
+
 
 'Declare Sub getfiles(Byref File As OpenFileName,flag As String)
 ' mover nota 
@@ -38,7 +47,7 @@ Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, c
 Dim shared As integer Penta_y, indice, posicion,posicionOld, nota,espacio,posn,cursorHori
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow
-Dim Shared As Integer octavas,  jc,ic,id
+Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0
 dim Shared as string cromatica(1 to 12)
 dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0

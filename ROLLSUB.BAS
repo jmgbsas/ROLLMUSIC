@@ -17,6 +17,7 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
  cairo_select_font_face (c, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
  cairo_set_font_size (c, font)
 
+
  ' ======== NOTAS  =========
  ' cuando hago click en Edit el fondo cambia en main para edicion
 If comEdit = TRUE  and estoyEnOctava = nro  Then
@@ -686,6 +687,9 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
 ' 0.8 ===> [Ayuda]
    If mousex > 582 And mousex< 643 And mousey < 50 Then
     cairo_set_source_rgba c, 0, 1, 0, 1
+    If MouseButtons And 1 Then
+      Shell ("start notepad ayuda.txt")
+    End If
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
@@ -803,6 +807,30 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
      '       Print #1, "Grabando a disco Roll GRABAR "
     ' dialogoText("Grabar Archivo")
        Dim As String nombreg
+       If nombre = "" Then
+          getfiles(file,myfilter,"save")
+          nombreg=*file.lpstrFile
+          If nombreg = "" Then
+             Exit Sub
+          Else
+             nombre=nombreg   
+          EndIf
+       EndIf
+
+       GrabarArchivo (nombre)
+    EndIf
+   Else
+    cairo_set_source_rgba c,1,1,1,1
+   EndIf
+   t = " [GRABAR]": cairo_show_text(c,t) :t= ""
+   '
+  '===> 3.3[GRABAR COMO] SC_F11 COPIA 
+   If mousex > 320 And mousex < 440  And mousey < 50 Then ' <=
+    cairo_set_source_rgba c, 0, 1, 0, 1
+    If MouseButtons And 1 Then
+     '       Print #1, "Grabando a disco Roll GRABAR "
+    ' dialogoText("Grabar Archivo")
+       Dim As String nombreg
        getfiles(file,myfilter,"save")
        nombreg=*file.lpstrFile
        If nombreg = "" Then
@@ -812,79 +840,14 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
        EndIf
      ''Open "Trabajo_03.roll" For Binary Access write As #2
      ''Open nombreArchivo +".roll" For Binary Access write As #2
-     Open nombre  For Binary Access write As #2
-     Dim Trabajo (NB To NA, 1 To Maxpos) As dat
-     Dim grabaPos (1,1)  As dat
-     Dim grabaLim (1,1)  As dat 
-     Dim As Integer i1, i2
-     Dim As Integer y1,y2,y3,y4, y5,y6 ' y5 e y6 son los limites NB y NA
-     Dim As String a1,a2,a3,a4 ,x
-     x= Bin(MaxPos,16)
-     '    Print #1,"Posicion ",Posicion
-     'Print "string representando ", x
-     a1=Mid(x,1,4)
-     a2=Mid(x,5,4)
-     a3=Mid(x,9,4)
-     a4=Mid(x,13,4)
-     '    Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
-
-     y1= CInt("&B"+a1)
-     y2= CInt("&B"+a2)
-     y3= CInt("&B"+a3)
-     y4= CInt("&B"+a4)
-     '    Print #1, "y1,y2,y3,y4", y1,y2,y3,y4
-     ' grabamos maxpos en 4 ubyte
-     grabaPos(1,1).nota = y1
-     grabaPos(1,1).dur  = y2
-     grabaPos(1,1).vol  = y3
-     grabaPos(1,1).pan  = y4
-     '-----------------------
-     grabaLim(1,1).nota = desde
-     grabaLim(1,1).dur  = hasta
-     
-     
-     
-     ' ------------------------------------
-     ' hacemoslo mismo para l ultim not que se grabo que teng el 66
-     ' esa es lapapa recorremos todas las dur de las notas en donde este el 109
-     ' endur tomamosla nota y esala grabamos en pb o ins
-     ' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
-     ' -------------------------------------
-     Dim As Integer i,j,notafinal
-     For i = NB To NA
-      If Roll.trk(i,posicion+1).dur = 110 Then
-       notafinal= Roll.trk(i,posicion).nota
-       '        Print #1, "ENCONTRO NOTA FINAL ", notafinal
-       '        Print "ENCONTRO NOTA FINAL ", notafinal
-       ' esten la posiciond ela ultimanotapero grasoerror
-       ' o seaque no tiene duracion solo el34
-       ' esta mal ...
-       Exit For
-      EndIf
-     Next i
-     grabaPos(1,1).pb = notafinal
-     ' Grabacion de Trabajo
-     ' ------------------------------------
-     For i1 = NB To NA
-      For i2 = 1 To MaxPos
-       Trabajo(i1,i2)=Roll.trk(i1,i2 )
-      Next i2
-     Next i1
-
-     '  Print #1,"MaxPos grabada en Trabajo ",MaxPos
-
-     Put #2, ,grabaPos(1,1)
-     Put #2, ,grabaLim(1,1)
-     Put #2, ,Trabajo()
-     Close 2
-     While InKey <> "": Wend
-     Sleep 150
+       GrabarArchivo(nombre)
     EndIf
    Else
     cairo_set_source_rgba c,1,1,1,1
    EndIf
-   t = " [GRABAR]": cairo_show_text(c,t) :t= ""
-   '
+
+
+   t = " [GRABAR COMO]" : cairo_show_text(c,t) :t= ""
    If mousex > 350 And mousey < 50 Then
     If MouseButtons And 1 Then
      MenuNew=0
@@ -899,7 +862,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
        MenuNew=0
     EndIf
    EndIf
-  Case 5 ' OPCIONES MENU, [COMPAS] [OCTAVAS] [TEMPO]
+  Case 5 ' OPCIONES MENU, [COMPAS] [OCTAVAS] [TEMPO] [CONFIGURACION]
    
   If mousex > 38 And mousex < 120 And mousey < 50 Then  'COMPAS
     cairo_set_source_rgba c, 0, 1, 0, 1
@@ -928,7 +891,17 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [TEMPO]":cairo_show_text(c, t)
- 
+ '
+  If mousex > 354 And mousex < 514 And mousey < 50 Then  'OCTAVAS
+    cairo_set_source_rgba c, 0, 1, 0, 1
+    If MouseButtons And 1 Then
+     menuNew=9
+    EndIf
+   Else
+    cairo_set_source_rgba c, 1, 1, 1, 1
+   EndIf
+
+   t=  " [CONFIGURACION]": cairo_show_text(c, t)
  cairo_stroke(c)
  
   Case 6 'OPCIONES => OCTAVAS
@@ -1102,7 +1075,21 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
  ' USAR LA ENTRADA DE TEXTO DE IUP
     dialogoText("AJUSTE TEMPO")  
     tiempoPatron= Cdbl(nombreArchivo)
-    
+  Case 9
+  ' [MIDI] 
+    If mousex > 42 And mousex < 90  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
+    cairo_set_source_rgba c, 0, 1, 0, 1
+      If MouseButtons And 1 Then
+        ''thread2 = ThreadCreate(@ComboBox)
+        thread2 = ThreadCreate(@selportout)  '' 'GtkListBox()
+
+      EndIf ' mousebuttons
+ 'listaMIDI=1     
+    Else
+      cairo_set_source_rgba c, 1, 1, 1, 1
+    EndIf
+    t = "      [MIDI]":cairo_show_text(c,t):t=""
+  
  End Select
  ' Si nodoy Stroke los show text van apendendo al final como un print;
 
@@ -2203,7 +2190,7 @@ IupSetHandle("label", label)
 
 '' Show window and run main loop
 IupShow(dialog)
-' gregue pra dar el foco una funcion de win api
+' agregue pra dar el foco una funcion de win api
 SetForegroundWindow(FindWindow(NULL, cadena))
 
 IupMainLoop()
@@ -2247,7 +2234,399 @@ Sub velocidades(j As integer)
     EndIf
 
 End Sub 
-Sub playthread() 
-  thread1 = ThreadCreate(@PlayRoll)
+Sub GrabarArchivo (nombre As String)
+     ''Open "Trabajo_03.roll" For Binary Access write As #2
+     ''Open nombreArchivo +".roll" For Binary Access write As #2
+     Open nombre  For Binary Access write As #2
+     Dim Trabajo (NB To NA, 1 To Maxpos) As dat
+     Dim grabaPos (1,1)  As dat
+     Dim grabaLim (1,1)  As dat 
+     Dim As Integer i1, i2
+     Dim As Integer y1,y2,y3,y4, y5,y6 ' y5 e y6 son los limites NB y NA
+     Dim As String a1,a2,a3,a4 ,x
+     x= Bin(MaxPos,16)
+     '    Print #1,"Posicion ",Posicion
+     'Print "string representando ", x
+     a1=Mid(x,1,4)
+     a2=Mid(x,5,4)
+     a3=Mid(x,9,4)
+     a4=Mid(x,13,4)
+     '    Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
+
+     y1= CInt("&B"+a1)
+     y2= CInt("&B"+a2)
+     y3= CInt("&B"+a3)
+     y4= CInt("&B"+a4)
+     '    Print #1, "y1,y2,y3,y4", y1,y2,y3,y4
+     ' grabamos maxpos en 4 ubyte
+     grabaPos(1,1).nota = y1
+     grabaPos(1,1).dur  = y2
+     grabaPos(1,1).vol  = y3
+     grabaPos(1,1).pan  = y4
+     '-----------------------
+     grabaLim(1,1).nota = desde
+     grabaLim(1,1).dur  = hasta
+     
+     
+     
+     ' ------------------------------------
+     ' hacemoslo mismo para l ultim not que se grabo que teng el 66
+     ' esa es lapapa recorremos todas las dur de las notas en donde este el 109
+     ' endur tomamosla nota y esala grabamos en pb o ins
+     ' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
+     ' -------------------------------------
+     Dim As Integer i,j,notafinal
+     For i = NB To NA
+      If Roll.trk(i,posicion+1).dur = 110 Then
+       notafinal= Roll.trk(i,posicion).nota
+       '        Print #1, "ENCONTRO NOTA FINAL ", notafinal
+       '        Print "ENCONTRO NOTA FINAL ", notafinal
+       ' esten la posiciond ela ultimanotapero grasoerror
+       ' o seaque no tiene duracion solo el34
+       ' esta mal ...
+       Exit For
+      EndIf
+     Next i
+     grabaPos(1,1).pb = notafinal
+     ' Grabacion de Trabajo
+     ' ------------------------------------
+     For i1 = NB To NA
+      For i2 = 1 To MaxPos
+       Trabajo(i1,i2)=Roll.trk(i1,i2 )
+      Next i2
+     Next i1
+
+     '  Print #1,"MaxPos grabada en Trabajo ",MaxPos
+
+     Put #2, ,grabaPos(1,1)
+     Put #2, ,grabaLim(1,1)
+     Put #2, ,Trabajo()
+     Close 2
+     While InKey <> "": Wend
+     Sleep 150
 
 End Sub
+
+Sub GtkListBox()
+' ==============================================
+' Main GTK Sub
+' ==============================================
+
+	Dim As GtkWidget Ptr separator
+	Dim As GtkWidget Ptr win
+	Dim As GtkWidget Ptr vbox
+	Dim As GtkWidget Ptr scrolled_window
+	Dim As GtkWidget Ptr frame
+	Dim As GtkWidget Ptr gtklist
+	Dim As GtkWidget Ptr button
+	Dim As GtkWidget Ptr list_item
+	Dim As GList Ptr dlist 
+	Dim As Integer i
+	Dim As Zstring * 64 buffer
+	
+	' Initialize GTK (and subsequently GDK) 
+	
+	gtk_init (NULL, NULL)
+	
+	' Create a window to put all the widgets in
+	' connect gtk_main_quit() to the "destroy" event of
+	' the window to handle window manager close-window-events
+	
+	win = gtk_window_new (GTK_WINDOW_POPUP) '(GTK_WINDOW_TOPLEVEL)
+	gtk_window_set_title (GTK_WINDOW (win), "GtkList Example")
+	g_signal_connect (G_OBJECT (win), "destroy", G_CALLBACK (@gtk_main_quit), NULL)
+	
+	' Inside the window we need a box to arrange the widgets vertically 
+	vbox=gtk_vbox_new (FALSE, 5)
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), 5)
+	gtk_container_add (GTK_CONTAINER (win), vbox)
+	gtk_widget_show (vbox)
+	
+	' This is the scrolled window to put the List widget inside 
+	scrolled_window = gtk_scrolled_window_new (NULL, NULL)
+	gtk_widget_set_size_request (scrolled_window, 250, 150)
+	gtk_container_add (GTK_CONTAINER (vbox), scrolled_window)
+	gtk_widget_show (scrolled_window)
+	
+	' Create thekList widget.
+	' Connect the sigh_print_selection() signal handler
+	' function to the "selection_changed" signal of the List
+	' to print out the selected items each time the selection
+	' has changed */
+	gtklist=gtk_list_new ()
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_window), gtklist)
+	gtk_widget_show (gtklist)
+	g_signal_connect (G_OBJECT (gtklist), "selection_changed", G_CALLBACK (@sigh_print_selection), NULL)
+	
+	' We create a "Prison" to put a list item in ;) 
+	frame=gtk_frame_new ("Prison")
+	gtk_widget_set_size_request (frame, 200, 50)
+	gtk_container_set_border_width (GTK_CONTAINER (frame), 5)
+	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT)
+	gtk_container_add (GTK_CONTAINER (vbox), frame)
+	gtk_widget_show (frame)
+	
+	' Connect the sigh_button_event() signal handler to the List
+	' which will handle the "arresting" of list items
+	g_signal_connect (G_OBJECT (gtklist), "button_release_event", G_CALLBACK (@sigh_button_event), frame)
+	
+	' Create a separator 
+	separator=gtk_hseparator_new ()
+	gtk_container_add (GTK_CONTAINER (vbox), separator)
+	gtk_widget_show (separator)
+	
+	' Finally create a button and connect its "clicked" signal
+	' to the destruction of the window 
+	button=gtk_button_new_with_label ("Close")
+	gtk_container_add (GTK_CONTAINER (vbox), button)
+	gtk_widget_show (button)
+	g_signal_connect_swapped (G_OBJECT (button), "clicked", G_CALLBACK (@gtk_widget_destroy), win)
+	
+	'* Now we create 5 list items, each having its own
+	' label and add them to the List using gtk_container_add()
+	' Also we query the text string from the label and
+	' associate it with the list_item_data_key for each list item
+	Dim As Zstring Ptr tmp
+	For i = 0 To 4
+		Dim As GtkWidget Ptr label
+		Dim As Zstring Ptr m_string
+	
+		sprintf(buffer, "ListItemContainer with Label #%d", i)
+		label=gtk_label_new (buffer)
+		list_item=gtk_list_item_new ()
+		gtk_container_add (GTK_CONTAINER (list_item), label)
+		gtk_widget_show (label)
+		gtk_container_add (GTK_CONTAINER (gtklist), list_item)
+		gtk_widget_show (list_item)
+		gtk_label_get (GTK_LABEL (label), @m_string)
+		g_object_set_data (G_OBJECT (list_item), @list_item_data_key, m_string)
+	Next
+	
+	' Here, we are creating another 5 labels, this time
+	' we use gtk_list_item_new_with_label() for the creation
+	' we can't query the text string from the label because
+	' we don't have the labels pointer and therefore
+	' we just associate the list_item_data_key of each
+	' list item with the same text string.
+	' For adding of the list items we put them all into a doubly
+	' linked list (GList), and then add them by a single call to
+	' gtk_list_append_items().
+	' Because we use g_list_prepend() to put the items into the
+	' doubly linked list, their order will be descending (instead
+	' of ascending when using g_list_append())
+	
+	dlist = NULL
+	For  i = 5 To 9
+		sprintf(buffer, "List Item with Label %d", i)
+		list_item = gtk_list_item_new_with_label (buffer)
+		dlist = g_list_prepend (dlist, list_item)
+		gtk_widget_show (list_item)
+		tmp = @"ListItem with integrated Label"
+		g_object_set_data (G_OBJECT (list_item), @list_item_data_key, tmp)
+	Next
+	gtk_list_append_items (GTK_LIST (gtklist), dlist)
+	
+	' Finally we want to see the window, don't we? ;) 
+	''gtk_window_set_position(window as GtkWindow Ptr, GTK_WIN_POS_CENTER_ON_PARENT ) 'byval position as GtkWindowPosition)
+	gtk_window_set_position (win, GTK_WIN_POS_CENTER)
+	gtk_widget_show (win)
+	
+	' Fire up the main event loop of gtk 
+	gtk_main ()
+	
+	' We get here after gtk_main_quit() has been called which
+	' happens if the main window gets destroyed
+
+End Sub
+
+' This is the signal handler that got connected to button
+' press/release events of the List
+
+Sub sigh_button_event Cdecl ( Byval gtklist As GtkWidget Ptr, Byval event As GdkEventButton Ptr, Byval frame As GtkWidget Ptr )
+
+	' We only do something if the third (rightmost mouse button was released
+
+	If event->Type = GDK_BUTTON_RELEASE And event->button = 3 Then
+		Dim As GList Ptr dlist, free_list
+		Dim As GtkWidget Ptr new_prisoner
+
+		' Fetch the currently selected list item which
+		' will be our next prisoner ;)
+		dlist = GTK_LIST (gtklist)->selection
+		If dlist Then
+			new_prisoner = GTK_WIDGET (dlist->Data)
+		Else
+			new_prisoner = NULL
+		End If
+
+		' Look for already imprisoned list items, we
+		' will put them back into the list.
+		' Remember to free the doubly linked list that
+		' gtk_container_children() returns
+		dlist = gtk_container_children (GTK_CONTAINER (frame))
+		free_list = dlist
+		Do While (dlist) 
+			Dim As GtkWidget Ptr list_item
+
+			list_item = dlist->Data
+
+			gtk_widget_reparent (list_item, gtklist)
+
+			dlist = dlist->Next
+		Loop
+	
+		g_list_free (free_list)
+	
+		' If we have a new prisoner, remove him from the
+		' List and put him into the frame "Prison".
+		' We need to unselect the item first.
+		If (new_prisoner) Then
+			Dim As GList static_dlist
+	    
+			static_dlist.data = new_prisoner
+			static_dlist.next = NULL
+			static_dlist.prev = NULL
+	    
+			gtk_list_unselect_child (GTK_LIST (gtklist), new_prisoner)
+			gtk_widget_reparent (new_prisoner, frame)
+		End If
+	End If
+End Sub
+
+
+' This is the signal handler that gets called if List
+' emits the "selection_changed" signal
+
+Sub sigh_print_selection Cdecl ( Byval gtklist As GtkWidget Ptr, Byval func_data As gpointer )
+
+	Dim As GList Ptr dlist
+
+	' Fetch the doubly linked list of selected items
+	' of the List, remember to treat this as read-only!
+
+	dlist = GTK_LIST (gtklist)->selection
+	
+	' If there are no selected items there is nothing more
+	' to do than just telling the user so
+
+	If  dlist = NULL Then
+		g_print (!"Selection cleared\n")
+		Return
+	End If
+	
+	' Ok, we got a selection and so we print it
+	g_print ("The selection is a ")
+    
+	' Get the list item from the doubly linked list
+	' and then query the data associated with list_item_data_key.
+	' We then just print it */
+	Do While (dlist) 
+		Dim As Zstring Ptr  item_data_string
+
+		item_data_string = g_object_get_data (G_OBJECT (dlist->Data), list_item_data_key)
+		g_print("%s ", *item_data_string)
+ 	
+		dlist = dlist->Next
+	Loop
+	g_print (!"\n")
+	
+End Sub
+Sub  selportout ()  ' list de ruso
+Dim As hwnd haw,hwl
+'' => desde acaecho con tool del ruso no anda muy bien
+' como mierda selecciono???
+     haw=OpenWindow("MIDI",100,50,400,500,WS_VISIBLE, WS_EX_TOPMOST)
+'       WindowBounds(haw,100,50,300,400) para no redimensioonar
+ '    CenterWindow(haw) 
+'         ''UpdateInfoXserver()
+     hwl=  ListViewGadget(1,10,10,330,300,,,,32,LVS_SINGLESEL )
+       
+     AddListViewColumn(1, "Salidas MIDI",0,0,250)
+       listports()
+       For aa As Integer=0 To UBound (listout) 
+           AddListViewItem(1, listout(aa) +Str(aa),0,aa,0)
+       Next
+       ButtonGadget(2,340,30,50,40," OK ")
+         #Ifdef __FB_WIN64__
+           SetFocus (hwl) 
+  '''''    SetForegroundWindow(FindWindow(NULL, "MIDI"))
+           SetForegroundWindow(haw)
+          #Else
+           gtk_widget_grab_focus(GadgetID(1))
+         #EndIf
+         'SetSelectListViewItem(1,3)
+         menunew=0
+         Do
+'         MoveWindow(haw,100,50,300,400,TRUE)
+
+         Var event= waitEvent
+          
+          If event=eventgadget Then
+            If eventnumber()=2 Then
+              menunew=0
+             ''  Print GetItemListView()
+              MessBox("","This is a TextGadget " + Str( GetItemListView()))
+              portout = GetItemListView()
+              Close_Window(haw)
+              Exit Do 
+'            Case 2
+'               MessBox("","This is a TextGadget")
+            End If
+          EndIf 
+          Sleep 5  
+          
+         Loop 
+' SendMessage(GadgetID(1), EM_UNDO, 0, 0) 'undo the last edit
+
+'SendMessage(GadgetID(1), EM_REDO, 0, 0) 'redo
+
+'SendMessage(GadgetID(1), EM_GETSEL, @Min,@Max) 'COPY
+
+'SendMessage(GadgetID(1), EM_SETSEL, @Min,@Max ) 'select
+
+'SendMessage(GadgetID(1), EM_SETSEL, 0,-1) 'select all
+
+'SendMessage(GadgetID(1), EM_REPLACESEL, 0,@TEXT) 'PASTE
+
+                   
+  
+'' fin ruso
+
+End Sub
+
+Sub ComboBox()
+
+#Ifdef __FB_WIN32__
+Var h = 80
+#Else
+Var h = 30
+#EndIf
+Dim As hwnd haw,hwl
+haw= OpenWindow("",10,10,400,150, WS_VISIBLE,WS_EX_TOPMOST)
+hwl=ComboBoxGadget(1,10,10,100,h)
+AddComboBoxItem(1,"Hola cero",-1)
+AddComboBoxItem(1,"Hola uno ",-1)
+AddComboBoxItem(1,"Hola dos",-1)
+ButtonGadget(2,150,10,220,20,"Select an item and click here")
+ SetForegroundWindow(haw)
+menunew=0
+Do
+   var event=WaitEvent()
+   If event=eventclose Then End
+   If event=eventgadget Then
+      If eventnumber()=2 Then
+         Print GetItemComboBox(1)
+         MessBox("","This is a TextGadget " + Str( GetItemComboBox(1)))
+         Close_Window(haw)
+         Exit Do
+      EndIf
+   EndIf
+   Sleep 5
+Loop
+
+
+End Sub
+ 
+
+
+

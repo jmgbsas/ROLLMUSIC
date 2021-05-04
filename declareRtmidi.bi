@@ -21,7 +21,10 @@ Declare Sub duracion (dura As Integer)
 Declare Sub pedaloff()
 Declare Sub allSoundoff(canal As Integer)
 Declare Sub alloff(canal As Integer )
+Declare Sub listports( )
+
 Dim Shared message(1 To 21) As UByte ' message output 
+
 ' maximo seria para un acorde de 5 por ejemplo
 ' 5 notas + velocidad y canal = 7 bytes...para note on
 ' si tomamos 10 dedos de las 2 manos serian 10 notas+ vel + canal = 12
@@ -50,5 +53,8 @@ Dim Shared As float relDur (1 To 108) => { _
 6 ,3 , 1.5, 0.75,0.375,0.1875 ,0.09375,0.046875,0.0234375, _ ' 64 72
 2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,0.208333,0.01041666} '82 90
 
-Dim Shared As Integer play =0,playb=0 
+Dim Shared As Integer play =0,playb=0, portout, portin 
+ReDim Shared As string listout(1 ), listin (1 ) 
+
+
 ''On Error Goto errorhandler

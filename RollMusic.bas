@@ -1,4 +1,4 @@
-'https://www.freebasic.net/forum/viewtopic.php?t=25312
+''https://www.freebasic.net/forum/viewtopic.php?t=25312
 ' agregar detener play con barra espaciadora y comenzar desde 
 ' agregar detener play con barra espaciadora y comenzar desde 
 ' la ultima posicion...por ahora solo detener 
@@ -67,7 +67,6 @@
 '   ajusta automticamente el editor a n2..
 ' ------------------------------
 
-
 #define WIN_INCLUDEALL
 #Include Once "windows.bi"
 #Include Once "/win/commctrl.bi"
@@ -105,10 +104,12 @@ End Sub
 
 dim Shared file As OpenFileName
 dim Shared As string myfilter
-myfilter = "All Files"+chr(0)         +"*.*"+chr(0)
-myfilter += "Roll Files"+chr(0)  +"*.roll;*.mp3"+chr(0)
-myfilter+="Ini files"+chr(0)    +"*.ini;*.txt;*.cfg"+chr(0)
+myfilter  = "Roll Files"+chr(0)  +"*.roll;*.mp3"+Chr(0)
+myfilter += "Ini files"+chr(0)   +"*.ini;*.txt;*.cfg"+chr(0)
+myfilter += "All Files"+chr(0)   +"*.*"+chr(0)
 
+
+common shared  mensaje As integer 
 ' end file dialog  
 #Define __FB_WIN64__
 #If Defined (__FB_WIN64__) 
@@ -118,11 +119,17 @@ myfilter+="Ini files"+chr(0)    +"*.ini;*.txt;*.cfg"+chr(0)
 #EndIf
 #Define EXTCHAR Chr(255)
 #Include "fbgfx.bi"
-'#Include once "windows.bi" ' en winuser.bi esta el mouse o screen event
-''KILOMBO #Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
+#Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
 #If __FB_LANG__ = "fb"
 Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #EndIf
+' para GTK Gtk:list()
+#include once "crt.bi"
+#include once "gtk/gtk.bi"
+' This is our data identification string to store data in list items
+Const list_item_data_key ="list_item_data"
+' fin GTK
+
 ScreenControl  SET_DRIVER_NAME,"GDI"
 
 Open "midebug.txt" for Output As #1
@@ -151,7 +158,9 @@ Open "mivector.txt" for Output As #3
 ' iup start
 #include once "IUP/iup.bi"
 #Include once "foro/fmidi.bi"
-#include "fbthread.bi"
+'#include "fbthread.bi"
+#Include "foro/window9.bi"
+''#Include "Afx/windowsxx.bi"
 
 const NULL = 0
 const NEWLINE = !"\n"
@@ -165,7 +174,7 @@ Type dat Field=1
  inst As UByte ' instrumento para cada nota podra ser distinto
 End Type
 
-dim shared as long CONTROL1 = 0
+Dim shared as long CONTROL1 = 0
 ' ROLL PARAEL GRAFICO PERO LOS TRCKS PODRIAN SER DISTINTOS
 'Dim Shared As dat Roll  (1 To 128 , 1 To 19200)
 Type inst
@@ -205,7 +214,7 @@ For ix = 0 To __FB_ARGC__
 
 
 Next ix
-Common Shared mensaje As String
+
 
 Dim diren As Integer
 diren = Cint(dires)
@@ -810,64 +819,18 @@ if MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
  ' luego 12000 posiicones si estuviera todo completo serian 9216000 bytes
  ' y grabo..9mbytes, seria 1 Track,,295 mbytes para 32 tracks
  '  Print #1, "Grabando a disco Roll F11 "
- Open "Trabajo.roll" For Binary access write As #2
-
- Dim Trabajo (NB To NA, 1 To Maxpos) As dat
- Dim grabaPos (1,1)  As dat
- Dim as integer i1, i2
- Dim As Integer y1,y2,y3,y4
- Dim As String a1,a2,a3,a4 ,x
- x= Bin(MaxPos,16)
- '  Print #1,"Posicion ",Posicion
- 'Print "string representando ", x
- a1=Mid(x,1,4)
- a2=Mid(x,5,4)
- a3=Mid(x,9,4)
- a4=Mid(x,13,4)
- 'Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
-
- y1= CInt("&B"+a1)
- y2= CInt("&B"+a2)
- y3= CInt("&B"+a3)
- y4= CInt("&B"+a4)
- ' Print #1, "y1,y2,y3,y4", y1,y2,y3,y4
- ' grabamos maxpos en 4 ubyte
- grabaPos(1,1).nota = y1
- grabaPos(1,1).dur  = y2
- grabaPos(1,1).vol  = y3
- grabaPos(1,1).pan  = y4
- ' ------------------------------------
- ' hacemoslo mismo para l ultim not que se grabo que teng el 65
- ' esa es lapapa recorremos todas las dur de las notas en donde este el 65
- ' endur tomamosla nota y esala grabamos en pb o ins
- ' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
- ' -------------------------------------
- Dim As Integer i,j,notafinal
- For i = NB To NA
-  If Roll.trk(i,posicion+1).dur = 110 Then 
-   notafinal= Roll.trk(i,posicion).nota
-   '      Print #1, "ENCONTRO NOTA FINAL ", notafinal
-   '      Print "ENCONTRO NOTA FINAL ", notafinal
-   Exit For
-  EndIf
- Next
- grabaPos(1,1).pb = notafinal
- ' Grabacion de Trabajo
- ' ------------------------------------
- For i1 = NB To NA
-  For i2 = 1 To MaxPos
-   Trabajo(i1,i2)=Roll.trk(i1,i2 )
-  Next i2
- Next i1
-
- '  Print #1,"MaxPos grabada en Trabajo ",MaxPos
-
- Put #2, ,grabaPos(1,1)
- Put #2, ,Trabajo()
- Close 2
- While InKey <> "": Wend
- sleep 150
-
+   Dim As String nombreg
+   If nombre = "" Then
+      getfiles(file,myfilter,"save")
+      nombreg=*file.lpstrFile
+      If nombreg = "" Then
+         Exit Do
+      Else
+         nombre=nombreg   
+      EndIf
+   EndIf
+   GrabarArchivo(nombre)
+   
 EndIf
 ' cargar Roll y MaxPos de disco
 
