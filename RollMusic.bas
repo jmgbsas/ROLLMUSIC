@@ -1,3 +1,4 @@
+' configuracion MIDI seleccion de port de entrada o de salida
 ''https://www.freebasic.net/forum/viewtopic.php?t=25312
 ' agregar detener play con barra espaciadora y comenzar desde 
 ' agregar detener play con barra espaciadora y comenzar desde 

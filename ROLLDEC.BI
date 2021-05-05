@@ -30,7 +30,7 @@ Declare Sub GtkListBox()
 Declare Sub sigh_button_event Cdecl ( Byval gtklist As GtkWidget Ptr, Byval event As GdkEventButton Ptr, Byval frame As GtkWidget Ptr )
 Declare Sub sigh_print_selection Cdecl ( Byval gtklist As GtkWidget Ptr, Byval func_data As gpointer )
 ' end gtk
-Declare sub selportout() 
+Declare sub selport(ByVal tipo As any ptr) 
 Declare Sub ComboBox()
 
 

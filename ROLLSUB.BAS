@@ -1080,16 +1080,45 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     If mousex > 42 And mousex < 90  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
+         menunew=10 
+         
+      EndIf ' mousebuttons
+ '     
+    Else
+      cairo_set_source_rgba c, 1, 1, 1, 1
+    EndIf
+    t = "      [MIDI]":cairo_show_text(c,t):t=""
+ Case 10
+
+    If mousex > 90 And mousex < 190  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
+    cairo_set_source_rgba c, 0, 1, 0, 1
+      If MouseButtons And 1 Then
         ''thread2 = ThreadCreate(@ComboBox)
-        thread2 = ThreadCreate(@selportout)  '' 'GtkListBox()
+       Dim miport As Integer=1
+       thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))  '' 'GtkListBox()
 
       EndIf ' mousebuttons
  'listaMIDI=1     
     Else
       cairo_set_source_rgba c, 1, 1, 1, 1
     EndIf
-    t = "      [MIDI]":cairo_show_text(c,t):t=""
-  
+
+    t = "             [MIDI-OUT]":cairo_show_text(c,t):t=""
+    If mousex > 200 And mousex < 300  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
+    cairo_set_source_rgba c, 0, 1, 0, 1
+      If MouseButtons And 1 Then
+        ''thread2 = ThreadCreate(@ComboBox)
+       Dim miport As Integer=2
+       thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))  '' 'GtkListBox()
+
+      EndIf ' mousebuttons
+ 'listaMIDI=1     
+    Else
+      cairo_set_source_rgba c, 1, 1, 1, 1
+    EndIf
+
+    t = " [MIDI-IN]":cairo_show_text(c,t):t=""
+      
  End Select
  ' Si nodoy Stroke los show text van apendendo al final como un print;
 
@@ -2531,22 +2560,37 @@ Sub sigh_print_selection Cdecl ( Byval gtklist As GtkWidget Ptr, Byval func_data
 	g_print (!"\n")
 	
 End Sub
-Sub  selportout ()  ' list de ruso
+Sub  selport (ByVal tipo As Any Ptr)  ' list de ruso
 Dim As hwnd haw,hwl
+Dim mitipo As Integer 
+mitipo=  CInt(tipo)
 '' => desde acaecho con tool del ruso no anda muy bien
 ' como mierda selecciono???
-     haw=OpenWindow("MIDI",100,50,400,500,WS_VISIBLE, WS_EX_TOPMOST)
+     haw=OpenWindow("MIDI",100,50,400,400,WS_VISIBLE, WS_EX_TOPMOST )
 '       WindowBounds(haw,100,50,300,400) para no redimensioonar
  '    CenterWindow(haw) 
 '         ''UpdateInfoXserver()
-     hwl=  ListViewGadget(1,10,10,330,300,,,,32,LVS_SINGLESEL )
-       
-     AddListViewColumn(1, "Salidas MIDI",0,0,250)
-       listports()
+''Var style = LVS_EX_FULLROWSELECT   
+     hwl=  ListViewGadget(1,10,10,300,400,,,,32,LVS_SINGLESEL  )
+     listports()
+
+     If mitipo = 1 Then ' out  
+       AddListViewColumn(1, "Salidas  MIDI",0,0,250)
        For aa As Integer=0 To UBound (listout) 
            AddListViewItem(1, listout(aa) +Str(aa),0,aa,0)
        Next
-       ButtonGadget(2,340,30,50,40," OK ")
+
+     EndIf
+     If mitipo = 2 Then ' in entradas
+       AddListViewColumn(1, "Entradas MIDI",0,0,250)
+       For aa As Integer=0 To UBound (listin) 
+           AddListViewItem(1, listin(aa) +Str(aa),0,aa,0)
+       Next
+
+     EndIf
+
+
+       ButtonGadget(2,330,30,50,40," OK ")
          #Ifdef __FB_WIN64__
            SetFocus (hwl) 
   '''''    SetForegroundWindow(FindWindow(NULL, "MIDI"))
@@ -2560,7 +2604,7 @@ Dim As hwnd haw,hwl
 '         MoveWindow(haw,100,50,300,400,TRUE)
 
          Var event= waitEvent
-          
+
           If event=eventgadget Then
             If eventnumber()=2 Then
               menunew=0

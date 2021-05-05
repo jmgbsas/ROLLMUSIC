@@ -149,31 +149,31 @@ Sub PlayRoll (param as any Ptr)
 Dim As UInteger eventCode, runningStatus
 
 
-'midiin  = rtmidi_in_create_default()
+midiin  = rtmidi_in_create_default()
 midiout = rtmidi_out_create_default()
 
 
-'portsin  =  port_count (midiin)
+portsin  =  port_count (midiin)
 portsout =  port_count (midiout)
-'Print #1, "portsin  "; portsin
+Print #1, "portsin  "; portsin
 Print #1, "portsout "; portsout
 Dim nombre As ZString ptr
 
-'Print #1,""
-'Print #1, "Output port"
+Print #1,""
+Print #1, "Output port"
 
 Dim i As INTeger
 for i = 0 to portsout -1 
     nombre = port_name(midiout, i)
     Print #1, *nombre
 Next   
-'Print #1, ""
-'print #1, "Input port "
+Print #1, ""
+Print #1, "Input port "
 
-'for i = 0 to  portsin -1  
-'    nombre = port_name(midiin, i)
-'    print #1, *nombre
-'Next
+For i = 0 to  portsin -1  
+    nombre = port_name(midiin, i)
+    print #1, *nombre
+Next
 
 Dim leng As UInteger <8>
 Dim result As Integer
