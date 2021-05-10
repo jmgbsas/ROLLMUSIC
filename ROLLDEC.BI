@@ -54,28 +54,44 @@ Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar
 Dim Shared NotasGuia (1 To 12) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
 ' 5.7.6.00 tresillos
-Dim  Shared figura (1 To 110) As String  * 4 => _
-{" O "," P "," I "," L "," F "," E "," X "," H "," W ",_ '  1  9
- " O*"," P*"," I*"," L*"," F*"," E*"," X*"," H*"," W*",_  ' 10 18
- "3O ","3P ","3I ","3L ","3F ","3E ","3X ","3H ","3W ", _ ' 19 27 
- "sO ","sP ","sI ","sL ","sF ","sE ","sX ","sH ","sW ",_  ' 28 36 
- "sO*","sP*","sI*","sL*","sF*","sE*","sX*","sH*","sW*",_  ' 37 45 
- "s3O","s3P","s3I","s3L","s3F","s3E","s3X","s3H","s3W", _ ' 46 54 
- " O+"," P+"," I+"," L+"," F+"," E+"," X+"," H+"," W+",_  ' 55 63 
- "O*+","P*+","I*+","L*+","F*+","E*+","X*+","H*+","W*+",_  ' 64 72 
- "3O+","3P+","3I+","3L+","3F+","3E+","3X+","3H+","3W+", _ ' 73 81 
- "sO+","sP+","sI+","sL+","sF+","sE+","sX+","sH+","SW+",_  ' 82 90 
- "sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sX*+","sH*+","sW*+", _ '91 99 
- "s3O+","s3P+","s3I+","s3L+","s3F+","s3E+","s3X+","s3H+","s3W+", _ ' 100 108
- "   ","|| " } '109 110, son 108 (old 73 74 son 72) lospuntillos de tresillos coinciden con elvalor superior
-'ej 3I*=I=1.. 
-' 73 ESPACIO 74 FIN....109 espacio 110 FIN 
+Dim  Shared figura (1 To 182) As String  * 4 => _
+{" O "," P "," I "," L "," F "," E "," X "," H "," W ",_  '  1  9
+ " O."," P."," I."," L."," F."," E."," X."," H."," W.",_  ' 10 18
+ " O*"," P*"," I*"," L*"," F*"," E*"," X*"," H*"," W*",_  ' 19 27
+ " O:"," P:"," I:"," L:"," F:"," E:"," X:"," H:"," W:",_  ' 28 36
+ "3O ","3P ","3I ","3L ","3F ","3E ","3X ","3H ","3W ", _ ' 37 45 
+ "sO ","sP ","sI ","sL ","sF ","sE ","sX ","sH ","sW ",_  ' 46 54 
+ "SO.","SP.","SI.","SL.","SF.","SE.","SX.","SH.","SW.",_  ' 55 63
+ "sO*","sP*","sI*","sL*","sF*","sE*","sX*","sH*","sW*",_  ' 64 72 
+ "SO:","SP:","SI:","SL:","SF:","SE:","SX:","SH:","SW:",_  ' 73 81
+ "s3O","s3P","s3I","s3L","s3F","s3E","s3X","s3H","s3W", _ ' 82 90 
+ " O+"," P+"," I+"," L+"," F+"," E+"," X+"," H+"," W+",_  ' 91 99 
+ "O.+","P.+","I.+","L.+","F.+","E.+","X.+","H.+","W.+",_  ' 100 108
+ "O*+","P*+","I*+","L*+","F*+","E*+","X*+","H*+","W*+",_  ' 109 117 
+ "O:+","P:+","I:+","L:+","F:+","E:+","X:+","H:+","W:+",_  ' 118 126
+ "3O+","3P+","3I+","3L+","3F+","3E+","3X+","3H+","3W+", _ ' 127 135 
+ "sO+","sP+","sI+","sL+","sF+","sE+","sX+","sH+","SW+",_  ' 136 144 
+ "SO.+","SP.+","SI.+","SL.+","SF.+","SE.+","SX.+","SH.+","SW.+",_  '145 153
+ "sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sX*+","sH*+","sW*+", _ '154 162
+ "SO:+","SP:+","SI:+","SL:+","SF:+","SE:+","SX:+","SH:+","SW:+",_  '163 171 
+ "s3O+","s3P+","s3I+","s3L+","s3F+","s3E+","s3X+","s3H+","s3W+", _ '172 180
+ "   ","|| " } ' 181 182 - 109 110, son 108 (old 73 74 son 72)
+   
+ 'los puntillos de tresillos coinciden con elvalor superior
+'ej (3I)*=I=1.. 1/3 tresillo de negra con puntillo = negra
+' (3L)* = L ..1/3 tresillo de corchea con puntillo = corchea
+' ergo no hace falta simbolos adicionales para tresillos con puntillo
+' elprogram debe reemplazar si se entra tresillo con puntillo por
+'la figura sin puntillo...
+' 4/3 4 fig en espaciode 3 ya lo tenemos por ejemplo 
+' L*L*L*L*=III 
+' 73 ESPACIO 74 FIN....181 espacio 182 FIN 
 'cambiar 107 por 108, 109 por 110,  109 por 110.
 ' ligaduras de notas con + que va a + o - creo qu emenso seria mejor
 ' parecido a una pila polos opuestos se atraen je...
 Dim Shared As Integer comienzo1, fin1, comienzo2,fin2 
 'comienzo1=28:fin1=54
-'comienzo2=82:fin2=108
+'comienzo2=82:fin2=180
 
 Dim Shared as any ptr thread1, thread2 ' PARA PLAY
 
@@ -84,6 +100,8 @@ Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
 Dim Shared mas As Integer = 0 ' + continuacion o ligadura
 Dim Shared incr As Integer =0
 Dim Shared tres As Integer = 0
+Dim shared doblepun As Integer =0
+Dim Shared cuart As Integer=0 'nro q indica sumarle 1/4 de su valor 
 '' futuro=> Dim notmus(13 To 44) As String = {} bravura fonts?? pero son glyphs
 ''los deberia cargar cairo...experimentar...tarea futura
 ' 32 tipo de duraciones basicas encendidas o apagadas y lo mismo con puntillo
@@ -124,19 +142,27 @@ Dim Shared As Integer menuNro, menuNew, desde , hasta, rango
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen,anchofig
 Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, resultado
-Dim Shared As Integer pesoDur (1 To 108)  => { _
-10000000,5000000,2500000,1250000,625000,312500,156250, 78125,39063, _ '1  9
-15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '10 18
- 6666666,3333333,1666666, 833333,416666,208333,104166, 52083,26042, _ '19 27
-10000000,5000000,2500000,1250000,625000,312500,156250, 78125,39063, _ '28 36 
-15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '37 45
- 6666666,3333333,1666666, 833333,416666,208333,104166, 52083,26042, _ '46 54
-10000000,5000000,2500000,1250000,625000,312500,156250, 78125,39063, _ '55 63
-15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '64 72
- 6666666,3333333,1666666, 833333,416666,208333,104166, 52083,26042, _ '73 81
-10000000,5000000,2500000,1250000,625000,312500,156250, 78125,39063, _ '82 90
-15000000,7500000,3750000,1875000,937500,468750,234375,117187,58594, _ '91 99
- 6666666,3333333,1666666, 833333,416666,208333,104166, 52083,26042 }  '100 108 
+Dim Shared As Integer pesoDur (1 To 182)  => { _ 'era 108
+10000000,5000000,2500000,1250000, 625000,312500,156250, 78125,39063, _ '1  9
+12500000,6250000,3125000,1562500, 781250,390625,195313, 97656,48828, _ '10 18
+15000000,7500000,3750000,1875000, 937500,468750,234375,117187,58594, _ '19 27
+17500000,8750000,4375000,2187500,1093750,546875,273438,136719,68360, _ '28 36
+ 6666666,3333333,1666666, 833333, 416666,208333,104166, 52083,26042, _ '37 45
+10000000,5000000,2500000,1250000, 625000,312500,156250, 78125,39063, _ '46 54 
+12500000,6250000,3125000,1562500, 781250,390625,195313, 97656,48828, _ '55 63
+15000000,7500000,3750000,1875000, 937500,468750,234375,117187,58594, _ '64 72
+17500000,8750000,4375000,2187500,1093750,546875,273438,136719,68360, _ '73 81
+ 6666666,3333333,1666666, 833333, 416666,208333,104166, 52083,26042, _ '82 90
+10000000,5000000,2500000,1250000, 625000,312500,156250, 78125,39063, _ '91 99
+12500000,6250000,3125000,1562500, 781250,390625,195313, 97656,48828, _ '100 108
+15000000,7500000,3750000,1875000, 937500,468750,234375,117187,58594, _ '109 117
+17500000,8750000,4375000,2187500,1093750,546875,273438,136719,68360, _ '118 126
+ 6666666,3333333,1666666, 833333, 416666,208333,104166, 52083,26042, _ '127 135
+10000000,5000000,2500000,1250000, 625000,312500,156250, 78125,39063, _ '136 144
+12500000,6250000,3125000,1562500, 781250,390625,195313, 97656,48828, _ '145 153
+15000000,7500000,3750000,1875000, 937500,468750,234375,117187,58594, _ '154 162
+17500000,8750000,4375000,2187500,1093750,546875,273438,136719,68360, _ '163 171
+ 6666666,3333333,1666666, 833333, 416666,208333,104166, 52083,26042,0,0 }  '172 180 
 
 Dim Shared As String nombreArchivo, TCompas,nombre
 nombre=""
@@ -147,9 +173,23 @@ TCompas ="4/4"
 ' comprobar qellimite este entre 1 a 8 
 
 ' se repiten 3 veces el patron 1 a 16 por comodidad lo repetimos.
+' equivalencias L+F=4 notas en 5=4:5, 4 figuras en 5 negras.
+' 5I=12500000,5I/4=3125000=I+F o sea I+F I+F I+F I+F = 4 en 5
+' podria ponerlo asi IF IF IF IF. IF=3125000 NUEVO VALOR A AGREGAR?
+' VALORES LIGADOS EN UNA SOLA FIGURA FACIL PARA CARGAARLO PONGO
+' I-F O SEA PULSO 3 LUEGO PULSO - Y LUEGO PULSO F = 3-5 = IF
+'  ASI PUEDO LIGAR LAS NOTAS QUE QUIERO...LAS NOTAS LIGADAS
+'LA SPONDRE AL FINAL DEL VECTOR...! CUANTAS TENGO?
+'
+' - 4 figuras en 3 negras. si tomamos como base el 4/4
+' 3 negras=7500000 / 4 = 1875000=L*
+' o sea 4 L* =4/3=>L*L*L*L*=III (4/3 lo tengo)
+' DOBLE PUNTILLO : ó ** formula x,x+1,x+2 unidos
+'Ctrl nro 1,2,3,4,5,6,7,8 9 notiene sentido
+' 123 234 345 456 567 678 789 son7 doblepuntilo simple
 
 ' free type
-#Include once "freetype2/freetype.bi"
+#Include Once "freetype2/freetype.bi"
 '' The FB headers don't contain this prototype
 extern "C"
 declare function _

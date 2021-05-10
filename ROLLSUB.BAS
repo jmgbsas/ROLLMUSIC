@@ -84,7 +84,7 @@ EndIf
       If comEdit=TRUE Then 
          If cursorVert=0 Then  
             If espacio = semitono Then
-               Roll.trk (semitono + (nro-1) * 13, n ).dur = 109
+               Roll.trk (semitono + (nro-1) * 13, n ).dur = 181
                If fijarEspacio=0 Then
                  espacio=0
                EndIf
@@ -95,7 +95,7 @@ EndIf
 ' en ctrl-m borra todo de una!! implementarlo...        
          If cursorVert=1 Then  
             If espacio = semitono And ((n - inicioDeLectura)=curpos)  Then
-               Roll.trk (semitono + (nro-1) * 13, n ).dur = 109
+               Roll.trk (semitono + (nro-1) * 13, n ).dur = 181
                If fijarEspacio=0 Then
                   espacio=0
                EndIf
@@ -103,7 +103,7 @@ EndIf
          EndIf
          If cursorVert=1 And Borrar=1 Then  ' BORRADO LIBRE
             If ((n - inicioDeLectura)=curpos)  Then
-               Roll.trk (semitono + (nro-1) * 13, n ).dur = 109
+               Roll.trk (semitono + (nro-1) * 13, n ).dur = 181
                If fijarEspacio=0 Then
                   Borrar=0
                EndIf
@@ -115,16 +115,15 @@ EndIf
     cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 4)
     Dim As Integer indf
     indf= Roll.trk (semitono + (nro-1) * 13, n).dur
-    If (indf >= 1 And indf <= 110)  Then
+    If (indf >= 1 And indf <= 182)  Then
     Else
-       indf=109
-    EndIf ' t no puede quedar en un scope dsitinto se hce shared    
-
+       indf=181
+    EndIf ' t no puede quedar en un scope dsitinto se hace shared    
      t= figura(indf)
 
     cairo_show_text(c, t)
     ' LINEAS DE COMPAS
-    'If indf> 0 And indf< 109 Then
+    'If indf> 0 And indf< 181 Then
     '  Print #1," CREAPENTA t  DUR: ";indf;" figura ";figura(indf); " semitono: "; semitono
     'EndIf
     If n >0 And n <= CantTicks Then
@@ -387,15 +386,15 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
   EndIf
   'dursaved = Roll.trk(notacur + (nro-1) * 13, n + curpos).dur
   ' debo cambiar esa nota por (equivalente en silencio no va mas
-  'para eso entra un silencio) se pone nota cero y dur 109
+  'para eso entra un silencio) se pone nota cero y dur 181
   Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 0
   Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = 0
   'Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = dursaved + 16
- ' If Roll.trk(notacur + (nro-1) * 13, n +curpos).dur > 109 Then
- '  Roll.trk(notacur + (nro-1) * 13, n +curpos).dur = 109
+ ' If Roll.trk(notacur + (nro-1) * 13, n +curpos).dur > 181 Then
+ '  Roll.trk(notacur + (nro-1) * 13, n +curpos).dur = 181
  ' EndIf
   borrar = 0
- ''pro ahroa saco calcCompas(n) ''mayorDurEnUnaPosicion (n)
+  ''calcCompas(n) ''mayorDurEnUnaPosicion (n)
  EndIf
  ' << CAMBIADUR TAMBIEN INGRESA NOTA NUEVA Y DURACION DONDE NO HABIA >>
  ' << SOBREESCRIBE >>
@@ -415,62 +414,94 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
   ' ------------------------------------
   ' nueva verion con puntillo o silencio
   ' ------------------------------------
- If DUR=109 Then
-     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 109
+ If DUR=181 Then
+     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 181
   '   vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
      cambiadur = 0
      DUR=0
  Else
-
-  If pun  = 0 And sil=0 And mas=0 And tres=0 Then ' no hay puntillo ni silencio
+  If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR
   EndIf
  
-  If pun = 1 And sil=0 And mas=0 And tres=0 Then
+  If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 9
   EndIf
  
-  If pun=0  And sil=0  And mas=0 And tres=1 Then
+  If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=0 Then
     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 18
   EndIf
  
-  If sil = 1 And pun=0 And mas=0 And tres=0 Then
+  If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=0 Then
     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 27
   EndIf 
  
-  If  sil=1 and pun=1 And mas=0 And tres=0 Then
+  If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=0 Then
     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 36
   EndIf
  
-  If pun=0 And sil=1 And mas=0 And tres=1 Then
+  If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 45
   EndIf
    
-  If pun=0 And sil=0 And mas=1 And tres=0 Then
+  If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 54
   EndIf
-  If pun=1 And sil=0 And mas=1 And tres=0 Then
+  If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 63
   EndIf
-  If pun=0 And sil=0 And mas=1 And tres=1 Then
+  If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=0 Then
     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 72
   EndIf
    
-  If pun=0 And sil=1 And mas=1 And tres=0 Then 
-    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 81
+  If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=0 Then 
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 81
   EndIf   
  
-  If pun=1 And sil=1 And mas=1 And tres=0 Then 
-    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 90
+  If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 90
   EndIf   
  
-  If pun=0 And sil=1 And mas=1 And tres=1 Then 
-    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = DUR + 99
+  If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 99
+  EndIf 
+
+  If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 108
+  EndIf
+
+  If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=1 Then 
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 117
+  EndIf
+
+  If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=1 Then 
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 126
+  EndIf
+'----- fin 3er bloque   
+  If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 135
   EndIf   
+
+  If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 144
+  EndIf   
+
+  If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 153
+  EndIf   
+
+  If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=1 Then 
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 162
+  EndIf   
+
+  If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=1 Then 
+    Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 171
+  EndIf   
+    
     Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2
    '   vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
     cambiadur = 0
-    pun=0:sil=0:mas=0:tres=0
+    cuart=0:pun=0:doblepun=0:tres=0:sil=0:mas=0
 EndIf
  
   ReCalCompas() 'organizaCompases()
@@ -519,41 +550,44 @@ EndIf
 
  EndIf
  'proceso modificar Nuevo secunci limpia terminda en NroCol ,con
- ' nombre de letra pulsada en vez de X
- ' ====> MODIFICAR
+ ' nombre de letra pulsada en vez de X CTRL-N
+ ' ====> MODIFICAR con ctrl-n
  If (cursorHori=2 Or cursorVert = 2) And agregarNota=1  And nota> 0 Then
-
+ 
   Roll.trk(nota + (nro-1) * 13, n + curpos).dur = DUR
   ' SI LA NOTA  NO EXITIA LA agrega
   Roll.trk(nota + (nro-1) * 13, n + curpos).nota = nota  ' 5.7.3.4
-  nota=0
+   ReCalCompas() 
+   nota=0
  EndIf
  ' VEMOS QUE HACE ESTA FUNCION SI SIRVE
  ''cairo_surface_get_device_offset
  cairo_stroke(c) ' aca el stroke da el amarillo y no jode a teclas - + con saltos!
 
-If Roll.trk(notacur + (nro-1) * 13, n+curpos).dur >= 1 And _ 
-   Roll.trk(notacur + (nro-1) * 13, n+curpos).dur <= 108 Then
+'If Roll.trk(notacur + (nro-1) * 13, n+curpos).dur >= 1 And _ 
+'   Roll.trk(notacur + (nro-1) * 13, n+curpos).dur <= 181 Then
    If cursorHori=1 And vdur=0 And vnota=0 And copiar=1 Then
       vnota=notacur 
       vdur =Roll.trk(notacur + (nro-1) * 13, n+curpos).dur  ' 5.7.3
        copiar=2
    EndIf
-EndIf
+'EndIf
 
 'If Roll.trk(notacur + (nro-1) * 13, n+curpos).dur  < 1  And _  
-'   Roll.trk(notacur + (nro-1) * 13, n+curpos).dur   > 108 Then
+'   Roll.trk(notacur + (nro-1) * 13, n+curpos).dur   > 180 Then
 If cursorHori=1 And vdur>0 And copiar=3 Then
    If notacur<> vnota And MultiKey (SC_ENTER) Then 
       Roll.trk(notacur + (nro-1) * 13, n+curpos).nota = notacur 
       Roll.trk(notacur + (nro-1) * 13, n+curpos).dur = vdur
       copiar=0
       vdur=0:vnota=0
+      ReCalCompas()
    EndIf 
 EndIf
 If copiar=3 And Roll.trk(notacur + (nro-1) * 13, n+curpos).dur = vdur _
    And notacur=vnota Then
-   copiar=0:vdur=0:vnota=0   
+   copiar=0:vdur=0:vnota=0  
+
 EndIf
   
 End Sub
@@ -779,7 +813,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
           curpos=1
           notacur=1
           nroCompas=0
-          tres=0:pun=0:sil=0:mas=0
+          tres=0:pun=0:sil=0:mas=0:doblepun=0:cuart=0
        EndIf
       EndIf 
    Else
@@ -1262,22 +1296,22 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
   'Print #1,"antes del FOR Roll,RollAux.trk.. indpos,indaux ", indpos,indaux
   ' debemos barrer solo la octava? no porque puede haber otras octavas cargadas
   For s= NB To NA 'barremos todas las notas verticalmente para una misma posicion
-   If Roll.trk(s,indpos).dur = 110 Then ' fin de datos de Roll
+   If Roll.trk(s,indpos).dur = 182 Then ' fin de datos de Roll
     RollAux.trk(s,indaux) = Roll.trk(s,indpos)
     insert= 4 ' fin de llenado de almacenamiento auxiliar
-    '    Print #1,"sale moveresto encontro 110 fin, indaux :" ,indaux
+    '    Print #1,"sale moveresto encontro 182 fin, indaux :" ,indaux
     Exit Do
    EndIf
    RollAux.trk(s,indaux) = Roll.trk(s,indpos)
    If s=1 Then
     '  print #1, "luego de la copia a AUX del resto "
    EndIf
-   If (Roll.trk(s,indpos).dur <>109  And Roll.trk(s,indpos).nota <> 109) _
+   If (Roll.trk(s,indpos).dur <>181  And Roll.trk(s,indpos).nota <> 181) _
     And (Roll.trk(s,indpos).dur > 0 Or Roll.trk(s,indpos).nota > 0)    Then
     '   print #1, "Roll.trk(";s,indpos;").nota ",Roll.trk(s,indpos).nota
     '   print #1, "Roll.trk(";s,indpos; ").dur ",Roll.trk(s,indpos).dur
    EndIf
-   If (RollAux.trk(s,indaux).dur <> 109 And RollAux.trk(s,indaux).nota <> 109) _
+   If (RollAux.trk(s,indaux).dur <> 181 And RollAux.trk(s,indaux).nota <> 181) _
     And (RollAux.trk(s,indaux).dur > 0 Or RollAux.trk(s,indaux).nota > 0)    Then
     '   print #1, "RollAux.trk(";s,indaux; ").nota ",RollAux.trk(s,indaux).nota
     '   print #1, "RollAux.trk(";s,indaux; ").dur ",RollAux.trk(s,indaux).dur
@@ -1306,12 +1340,12 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
     If s=1 Then
      Print #1, "luego de la  copia A ROLL "
     EndIf
-    If (Roll.trk(s,t).dur <> 109 And Roll.trk(s,t).nota <> 109) _
+    If (Roll.trk(s,t).dur <> 181 And Roll.trk(s,t).nota <> 181) _
      And (Roll.trk(s,t).dur > 0 Or Roll.trk(s,t).nota > 0)    Then
      '  Print #1, "I) Roll.trk(";s,t;")nota,s,t : ", Roll.trk(s,t).nota, s, t
      '  Print #1, "I) Roll.trk(";s,t;")dur, s,t : ", Roll.trk(s,t).dur,s,t
     EndIf
-    If (RollAux.trk(s,k).dur <> 109 And RollAux.trk(s,k).nota <> 109) _
+    If (RollAux.trk(s,k).dur <> 181 And RollAux.trk(s,k).nota <> 181) _
      And (RollAux.trk(s,k).dur > 0 Or RollAux.trk(s,k).nota > 0)    Then
      '  Print #1, "II) RollAux.trk(";s,k;").dur ", RollAux.trk(s,k).dur
      '  Print #1, "II) RollAux.trk(";s,k;").nota ", RollAux.trk(s,k).nota
@@ -1329,12 +1363,12 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
   For s = NB To NA
    For k=  StartInsert To MaxPos ' gracias a esto anda acordes
     If Roll.trk(s ,k).nota = 0 Then
-     Roll.trk(s , k).nota = 109
+     Roll.trk(s , k).nota = 181
     EndIf
    Next k
   Next s
   ' ACA DEBO CORREGIR TODAS LAS LINEAS CON NOTAS DIFERENTES A LA INSERTADA DEBEN QUEDAR
-  ' nota en 109 y durciones en  0. bueno hor determinamos donde y cuanto se inserto.
+  ' nota en 181 y durciones en  0. bueno hor determinamos donde y cuanto se inserto.
   ' estos son los valores  StartInsert y cantInserciones.
   ' StartInsert es de Roll antesdela insercion
   Print #1, "==> valor de nota antes de CORRECCION: ",nota
@@ -1352,13 +1386,14 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
    i = i + 1
    For s= NB To NA
     If s <> notasInsertadas (i) Then
-     Roll.trk(s,k).nota = 109
+     Roll.trk(s,k).nota = 181
      Roll.trk(s,k).dur  = 0
     EndIf
    Next s
   Next k
  EndIf
  insert=0
+ ReCalCompas() ' 09-05-2021
 End Sub
 '------------------------------------
 Sub botones(hWnd As HWND, c As cairo_t Ptr, cm As cairo_t Ptr, x As Integer,y As Integer)
@@ -1430,11 +1465,11 @@ Sub calcCompas( ByRef j As Integer)
   Print #1,"CALCOMPAS-0 DUR=0 COMPAS(J)=0 "
   Exit Sub
  EndIf
- If DUR=109 Then
+ If DUR=181 Then
   Compas(j).Posi=0
   Compas(j).nro = 0
 
-  Print #1,"CALCOMPAS-0 DUR=109 COMPAS(J)=0 "
+  Print #1,"CALCOMPAS-0 DUR=181 COMPAS(J)=0 "
   Exit Sub
  EndIf
 
@@ -1455,7 +1490,7 @@ Sub calcCompas( ByRef j As Integer)
  Dim As Integer partes_falta (1 To 100), partes_sobra(1 To 100)
  Print #1,"1-calcCompas 3, DUR: ";DUR; " j: "; j; " figura: ";figura(DUR)
   
- For k=1 To 108
+ For k=1 To 180
   If DUR=k   Then
    acumulado =acumulado +pesoDur(k)
    Print #1,"acumulado / k / PEsoDur "; acumulado, k , pesoDur(k);" figura ";figura(DUR)
@@ -1548,8 +1583,8 @@ Sub calcCompas( ByRef j As Integer)
   Print #1,"Recordar posn empieza en 0 "
   Print #1,"REEMPLAZO Cantfalta ";CantFalta
   For k=1 To CantFalta '
-   If partes_falta(k)>= 1 And partes_falta(k) <=108 Then
-    partes_falta(k)=partes_falta(k) + 54
+   If partes_falta(k)>= 1 And partes_falta(k) <=90 Then
+    partes_falta(k)=partes_falta(k) + 90 ' comienzan los + ligados
    EndIf
    Print #1,"k,partes_falta(k), FIGURA ", k, partes_falta(k), figura(partes_falta(k))
    Print #1,"POSICION reemplazada: ";posn
@@ -1558,14 +1593,14 @@ Sub calcCompas( ByRef j As Integer)
    If carga=0 Then ''no hce nada en la carga
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = notaold
    EndIf
-   Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 110
+   Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 182
    If notaOld > 0 And notaOld <> nota Then
-    Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 109
+    Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 181
    EndIf
    For i= 1 To 12 ' gracias a esto anda acordes
     If i<> nota Then
      If Roll.trk((i +(estoyEnOctava -1) * 13),posn).nota = 0 Then
-      Roll.trk((i +(estoyEnOctava-1) * 13), posn).nota = 109
+      Roll.trk((i +(estoyEnOctava-1) * 13), posn).nota = 181
      EndIf
     EndIf
    Next i
@@ -1641,23 +1676,23 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
    If k < CantSobra Then ' le agrega >, continuacion
       Print #1,"k ,partes_sobra(k),figura ";k;" ";partes_sobra(k),figura(partes_sobra(k))
       Print #1,"posicion reemplazada: ";posn
-      If partes_sobra(k)>= 1 And partes_sobra(k) <=108 Then
-         partes_sobra(k)=partes_sobra(k) + 54
+      If partes_sobra(k)>= 1 And partes_sobra(k) <=90 Then
+         partes_sobra(k)=partes_sobra(k) + 90 ' empieza ligados +
       EndIf
    EndIf
    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = partes_sobra(k)
    If carga=0 Then
     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = notaold
    EndIf
-   Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 110
+   Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 182
    If notaOld > 0 And notaOld <> nota Then
-    Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 109
+    Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 181
 
    EndIf
    For i= 1 To 12 ' gracias a esto anda acordes
     If i<> nota Then
      If Roll.trk((i +(estoyEnOctava -1) * 13),posn).nota = 0 Then
-      Roll.trk((i +(estoyEnOctava-1) * 13), posn).nota = 109
+      Roll.trk((i +(estoyEnOctava-1) * 13), posn).nota = 181
      EndIf
     EndIf
    Next
@@ -1740,10 +1775,10 @@ Sub separarDur(ByRef j As Integer, ByRef DUR As Integer,partes() As Integer, ByR
 
  'Else
 Dim CUENTA As INTEGER 
- If k<=108 And lb=0  Then ' no se encontro
+ If k<=180 And lb=0  Then ' no se encontro
   Do
   CUENTA += 1
-   For k=10+incr To 18+incr
+   For k=10+incr To 36+incr
     If  falta1 > pesoDur(k)  Then
      lb += 1
      Print #1,"dur k incr";k,incr
@@ -1792,7 +1827,7 @@ Dim CUENTA As INTEGER
      Exit For
     EndIf
    Next k
-   For k=19+incr To 27+incr
+   For k=37+incr To 45+incr ' tresillos
     If  falta1 > pesoDur(k)  Then
      lb += 1
      Print #1,"dur k incr";k,incr
@@ -1851,7 +1886,7 @@ Sub mayorDurEnUnaPosicion (ByRef posn as integer)
  j = posn
  For i= NB To NA
   valdur => Roll.trk(i,j).dur
-  If  valdur >= 1 And valdur <=109 Then
+  If  valdur >= 1 And valdur <=181 Then
    'Print #1, "DUR mayor";DUR, mayor
    If pesoDUR(valdur) > mayor  Then ' las duraciones cuando mas
     mayor=pesoDur(valdur)
@@ -1859,7 +1894,7 @@ Sub mayorDurEnUnaPosicion (ByRef posn as integer)
    EndIf
    If i=NA Then
 
-    For ia=1 To 109
+    For ia=1 To 181
      If mayor=pesoDur(ia) Then
       valdur=ia
      EndIf
@@ -1975,8 +2010,9 @@ Sub ReCalCompas()
      For j = 1 To MaxPos -2
       Print #2,"POSICION :";J
       Print #3,"POSICION :";J
+      cont=0
       For i= NB To NA
-       valdur => Roll.trk(i,j).dur ' de 1 a 108
+       valdur => Roll.trk(i,j).dur ' de 1 a 180
        ' al cargr tenemos 4 grupos de 16 de duraciones identicas que se repiten
        ' 1-16,17-32,33-48.49-64 , el indicemeindicaa cual grupo pertenece, y
        'en que rango buscar
@@ -1984,26 +2020,26 @@ Sub ReCalCompas()
 ''DE LO QUE SIGUE DEBO EXTRCTAR MAYOR ENUNA POSCION Y COPIARLO
 '' A ESA SUBRUTINA Y PONERLA EN NUCLEO
        semi => Roll.trk(i,j).nota  
-       If valdur > 0 And valdur < 110 And semi >=1 And semi <=12 Then
+       If valdur > 0 And valdur < 181 And semi >=1 And semi <=12 Then
         Print #1, "LECTURA DUR: ";valdur;" EN LA CARGA j: ";j;" i: "; i;" figura ";figura(valdur)
         Print #3, "nota: "; i; " posi: "; j; " dur: ";valdur
         Select Case valdur
-         Case  1   To 27
-          lim1=1:lim2=27:grupo=1
-         Case  28  To  54
-          lim1=28:lim2=54:grupo=2
-         Case  55  To  81
-          lim1=55:lim2=81:grupo=3
-         Case  82  To  108
-          lim1=82:lim2=108:grupo=4
-         Case 109
-          compas(j).Posi= 0
-          Compas(j).nro = 0
+         Case  1   To 45
+          lim1=1:lim2=45:grupo=1
+         Case  46  To  90
+          lim1=46:lim2=90:grupo=2
+         Case  91  To  135
+          lim1=91:lim2=135:grupo=3
+         Case  136  To  180
+          lim1=136:lim2=180:grupo=4
+'         Case 181
+'          compas(j).Posi= 0
+'          Compas(j).nro = 0
  
         '  lim1=0:lim2=0
-        '  valdur=108
+        '  valdur=180
         '  mayorgrupo=0
-        '  mayor=108:grupo=0
+        '  mayor=180:grupo=0
           Continue For,For
         End Select
 
@@ -2024,12 +2060,12 @@ Sub ReCalCompas()
          '     Print #1,"> i= ";i; " NA= ";NA
         EndIf
       EndIf
-      Dim As Integer iades =(mayorgrupo -1)*27 + 1
-      Dim As Integer iahas = mayorgrupo * 27 
+      Dim As Integer iades =(mayorgrupo -1)*45 + 1
+      Dim As Integer iahas = mayorgrupo * 45 
        If i=NA Then
 
         Print #1,"i=NA i: ";i;" NA: ";NA;" Mayor ";mayor;" grupo:"; mayorgrupo
-        For ia= iades To iahas ' tresillos es grupo 36
+        For ia= iades To iahas ' tresillos es grupo 
          If mayor=pesoDur(ia) Then
           valdur=ia
              Print #1, "peso de mayor encontrado valdur ";valdur; "dur ";ia; " grupo ";mayorgrupo
@@ -2037,28 +2073,27 @@ Sub ReCalCompas()
          EndIf
         Next ia
         DUR=valdur
-        If DUR >108  Then ' <- esto nunca se ejecuta creo se filtra antes...
-          Print #1,"ERROR NO SE PUEDE PASAR DUR"
-          compas(j).Posi=0
-          Compas(j).nro = 0
-
-        Else
+      '  If DUR >180  Then ' <- esto nunca se ejecuta creo se filtra antes...
+      '    Print #1,"ERROR NO SE PUEDE PASAR DUR"
+      '    compas(j).Posi=0
+      '    Compas(j).nro = 0
+'
+ '       Else
           Print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo;" figura ";figura(DUR)
           calcCompas(j)
           Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j).Posi;" figura ";figura(DUR)
           valdur=0
-          cont=0
           DUR=0
-        EndIf
+    ''    EndIf
         Print #3,"==============fin posicion nro: "; j
        EndIf
-       valdur=0:DUR=0:cont=0
+       valdur=0:DUR=0
        
       Next i
-
+      
      Next j
      DUR => 0
-     curpos =>0
+    '' curpos =>0
      carga=0  ' <======= control de Carga
 
 End Sub
@@ -2300,13 +2335,13 @@ Sub GrabarArchivo (nombre As String)
      
      ' ------------------------------------
      ' hacemoslo mismo para l ultim not que se grabo que teng el 66
-     ' esa es lapapa recorremos todas las dur de las notas en donde este el 109
+     ' esa es lapapa recorremos todas las dur de las notas en donde este el 181
      ' endur tomamosla nota y esala grabamos en pb o ins
      ' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
      ' -------------------------------------
      Dim As Integer i,j,notafinal
      For i = NB To NA
-      If Roll.trk(i,posicion+1).dur = 110 Then
+      If Roll.trk(i,posicion+1).dur = 182 Then
        notafinal= Roll.trk(i,posicion).nota
        '        Print #1, "ENCONTRO NOTA FINAL ", notafinal
        '        Print "ENCONTRO NOTA FINAL ", notafinal

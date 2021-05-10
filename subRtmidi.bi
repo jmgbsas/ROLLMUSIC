@@ -211,9 +211,9 @@ open_port (midiout,portsout, nombre)
 ' buenoenrealidad laspongojuntas en el buffer y luego lasseparo en
 ' el menssage para send_message....peroel tiempo q tardo enponerlo es
 ' masqu eenviarlo diretamente
-Dim As Integer final=MaxPos  , comienzo, notapiano, canal=1,vel=100,j
+Dim As Integer final=MaxPos  , comienzo=1, notapiano, canal=1,vel=100,j
 Dim As Integer dura=0, maxdur=0,con=0,tiempo,ioff,cx=0,durb=0
-Dim As Integer non(1 To 108), liga=0,x=0, durval (1 To 27), silencio, fin, inicio
+Dim As Integer non(1 To 108), liga=0,x=0, durval (1 To 45), silencio, fin, inicio
 Dim As Integer durl
 ' la velocidad por ahor l ponemos fija = 100, el canaltmbien 1
    '   noteon 64, vel, canal
@@ -274,7 +274,7 @@ For j=comienzo To final
   For i=NA To NB Step -1 
 
    If (Roll.trk(i,j).nota >= 1) And Roll.trk(i,j).nota <= 12 _
-      And Roll.trk(i,j).dur >=1 And Roll.trk(i,j).dur <= 108 Then ' es semitono 
+      And Roll.trk(i,j).dur >=1 And Roll.trk(i,j).dur <= 180 Then ' es semitono 
       Notapiano= 117-i 
       Notapiano= Notapiano - restar (Notapiano)
       dura=Roll.trk(i,j).dur '1) I 2) I dur x 1 to 108
@@ -286,19 +286,19 @@ For j=comienzo To final
 ' la suma nunca caera en otro grupo silencio nosera, y '+' tampoco si era
 ' el1er grupo por ejemplo 1 a 27       
 
-         Select Case durb
-            Case  1 To  27 
+         Select Case durl
+            Case  1 To  45 
            '  silencio=0
-             inicio=1:fin=27
-            Case  55 To 81
+             inicio=1:fin=45
+            Case  91 To 135
            '  silencio=0
-             inicio=55:fin=81
-            Case  28 To  54 
+             inicio=91:fin=135
+            Case  37 To  90 
            '  silencio=1
-             inicio=28:fin=54
-            Case  82 To 108 
+             inicio=37:fin=90
+            Case  136 To 180 
            '  silencio=1
-             inicio=82:fin=108
+             inicio=136:fin=180
 
          End Select          
          For x= inicio To fin  ' el resto de durciones se repiten   
@@ -311,8 +311,9 @@ For j=comienzo To final
          
          liga=1
          durb=0
+         durl=0
       EndIf   
-      If dura >= 55 And dura <=108 Then ' se suma la duración al siguiente
+      If dura >= 91 And dura <=180 Then ' se suma la duración al siguiente
          durb=dura  ' 1) I+, 2) no entra
          Print #1,"entro nota ligada "; dura, figura(dura)
       EndIf   
@@ -328,7 +329,7 @@ For j=comienzo To final
       EndIf 
       If liga=0 Then  
         Print #1,"liga=0 "
-        If (maxdur >=28 And maxdur <= 54 ) Or (maxdur >=82 And maxdur <= 108 ) Then
+        If (maxdur >=46 And maxdur <= 90 ) Or (maxdur >=136 And maxdur <= 180 ) Then
           vel =0
         Else
           vel= velpos
@@ -380,7 +381,7 @@ For j=comienzo To final
   con=0 
 Next j
 
-Sleep 50 
+Sleep 1000 
 close_port(midiout)
 out_free(midiout) 
 play=0
@@ -443,7 +444,8 @@ Dim As String cr
 cr=""
 Do
 
-Sleep 1,1
+''Sleep 1,1
+sleep5dm()
 Loop Until (Timer - old_time) >= tiempoFigura   
  
 'If cr<>"" Then
@@ -456,6 +458,18 @@ Loop Until (Timer - old_time) >= tiempoFigura
 'EndIf
  
 End Sub
+Sub sleep5dm() '0,5 milesimo 1/5 parte de1 mseg 5dm 5 diez milesima 
+Dim As Double start,final
+start=Timer
+
+Do
+
+  If (Timer-start) > 0.0005 Then
+   Exit Do
+  EndIf
+Loop
+
+End sub
 
 Sub listports( )
 
