@@ -1109,6 +1109,10 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
  ' USAR LA ENTRADA DE TEXTO DE IUP
     dialogoText("AJUSTE TEMPO")  
     tiempoPatron= Cdbl(nombreArchivo)
+    If tiempoPatron = 0 Then
+       tiempoPatron=60
+    EndIf
+    menunew=0
   Case 9
   ' [MIDI] 
     If mousex > 42 And mousex < 90  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO

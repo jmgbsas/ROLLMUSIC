@@ -1,39 +1,62 @@
-Ayuda Básica RollMusic
-======================
+    Ayuda Básica RollMusic
+    ======================
+    I) INSTALACION:
+       Crear un directorio de cualquier nombre y colocar en él 
+       RollMusic.exe y todas los archivos *.dll. 
+    II) Configuracion
+        PUERTOS MIDI A USAR.
+        Desde el Menu Principal -> Opciones->MIDI->MIDI-OUT
+        o MIDI-IN, en la lista de dispositivos de salida o de Entrada
+        clickear la deseada y dar Ok.
+ 
+    III) USO:
+ 
+    1) Modo Lectura
 
-1) Modo Lectura
-2) Modos de Edicion
- I)  MODO EDIT (click en menu EDICION luego en EDIT cambiara a color verde y la 
-     octava seleccionada tambien)
-  2.1) Entrada manual 
-  2.2) Entrada por mouse
- II)  MODO EDIT CURSOR ( En MODO EDIT pulsar CTRL+M O dar CTRL+click derecho)
-  2.3) Modificacion.
-  2.4) Copiar
-3) Recalcular Compas <R>
-4) Grabar Archivo [Archivo]->[Grabar] 
-5) Cargar Archivo [Archivo]->[Abrir] 
-6) Tamaño Font  F9 disminuye <-> F10 aumenta
-   La edicion siempre se hará en font=18, pues la misma depende del tamaño
-   del mismo y está diseñado para ese tamaño.(se cambira en elfuturo a proporcionlidad)
+    2.0) Modos de Edicion
+    2.1) MODO EDIT (click en menu EDICION luego en EDIT cambiara a color 
+          verde y la octava seleccionada tambien)
+    2.1.1) Entrada por teclado
+    2.1.2) Entrada por mouse y teclado
+    
+    2.2) MODO EDIT CURSOR ( En MODO EDIT pulsar CTRL+M O dar CTRL+click            derecho)
+    2.3) Modificacion.
+    2.4) Copiar
+    2.5) Borrar 1 Nota.
+
+    3) Recalcular Compas <R>
+    4) Grabar Archivo [Archivo]->[Grabar] 
+    5) Cargar Archivo [Archivo]->[Abrir] 
+    6) Tamaño Font  F9 disminuye <-> F10 aumenta
+       La edicion siempre se hará en font=18, pues la misma depende del tamaño
+       del mismo y está diseñado para ese tamaño.(se cambira en el futuro a 
+       proporcionlidad)
 
 
-1) Modo Lectura se inicia en color de fondo Negro (ultimo cambio).
-   - Recorrer las octavas se usa flecha arriba o abajo, Retroceso-Pagina , Avance Pagina.
-   - Achicar la pantalla en modo Telón F7 / F8. O usando click en los botones amarillo(-)
-     verde(+) dela esquina superior derecha, que equivalen a F7/F8 , levanta bajar Telón
-     o achicar agrandar la pantalla respectivamente.
-   - Mover pantalla, enla cinta gris del menu lado derecho se hace click 2 o 3 veces y 
-     se comienza a dragar suavemnte,no responde a dragados veloces.Para poder efectuarlo
-     se ubica el mouse sobre la cinta superior del menu, y se busca <MENU> desplazando
-     flecha derecha -izquierda,sin salir dela zona de la cinta, tratar de dragar la ventana.
-   - Teclas -/+ keyboard, achica o agranda la altura de las octavas,desplazando la zona de
-     edicion para arriba, deja parte libre inferior para otras cosas.
-   - redimensio de la pantalla tantoenncho como en altura sin tocar la altura de las octvas.
-     Para ello sepulsa el simbolo <> el cual se pondra rojo,y dragando la ventanadesde el centro
-     dela misma sepuede cambiar anchoy altura. Para terminar volver a pulsar el simbolo <>.
-I) MODO EDIT
- 2.1) Entrada manual: MODO EDIT
+   1) Modo Lectura se inicia en color de fondo Negro y texto blanco (ultimo 
+      cambio).
+      - Para recorrer las octavas se usa flecha arriba o abajo, Retroceso-Pagina, 
+        Avance Pagina ó la rueda del mouse y luego se da click en cualquier parte
+        la octava deseada.
+      - la secuencia cargada puede recorrersecon teclas derecha izquierda o en 
+        forma más rápida con Ctrl-derecha Ctrl-Izquierda.
+      - Achicar la pantalla en modo Telón F7 / F8. O usando click en los botones 
+        amarillo(-) verde(+) de la esquina superior derecha, que equivalen a 
+        F7/F8, levanta bajar Telón o achicar agrandar la pantalla respectivamente.
+      - Mover pantalla, en la cinta gris del menu lado derecho se hace click 2 o 3
+        veces y se  draga suavemnte, no responde a dragados muy veloces.Para poder
+        efectuarlo se ubica el mouse sobre la cinta superior del menu, y se busca 
+        <MENU> desplazando flecha derecha -izquierda, sin salir dela zona de la 
+        cinta, tratar de dragar la ventana.
+      - Teclas -/+ keyboard, achica o agranda la altura de las octavas, desplazando
+        la zona de edición para arriba, deja parte libre inferior para otras cosas.
+      - redimensio de la pantalla tantoenncho como en altura sin tocar la altura 
+        de las octvas. Para ello se pulsa el simbolo <> el cual se pondrá rojo, y
+        dragando la ventanadesde el centro  de la misma se puede cambiar ancho y 
+        altura. Para terminar volver a pulsar el simbolo <>.
+   2.0) Modos de Edición.
+   2.1) MODO EDIT 
+   2.1.1) Entrada por Teclado
    - Pasar a Edicion clickendo [Edicion], aparecera la cinta Edit.
    - Dar click a Edit. Segun se mueva el cursor el texto ira cambiando a color verde
      indicando la octava elegida.
@@ -53,13 +76,13 @@ I) MODO EDIT
      Notas Guia por ejemplo sobre  ' C_3_[ ' y se estara editando esa nueva octava
      no pudiendo hacerlo en la de antes eso evita errores de entrada.
 
-2.2) Entrada Por mouse MODO EDIT
+2.1.2) Entrada Por mouse y Teclado 
    - estando habilitada una octava como en 2) se hace click derecho aparece un menu de
      notas contextual se da click a la deseada y se da click sobre la nota deseada, se puede
      seguir dando click a otras notas con la misma duracion sin neceidad de traer el menu
      contextual de notas.
 
-II) MODO CURSOR
+II) MODO CURSOR O MODIFICACION.
 2.3) Modificar Con Mouse
      Entrar en Modo Cursor. con CLick Derecho aparece un menu de duracion de notas, dar 
      click en la deseada, luego posicionar el mouse sobre la posicion a modificar
@@ -69,25 +92,32 @@ II) MODO CURSOR
      Modificar por teclado
 
      Elegir por teclado la duracion pulsando 1 a 9 (0 fin archivo)
-     posiiconar el cursor con teclas < arriba abajo derecha izquierda>
+     posicionar el cursor con teclas ( arriba abajo derecha izquierda)
      sobre la nota deseada en la octava elegida, pulsar X, se cambiara la duracion
      a la deseaada
      
-     Entrar o Modificar por teclado 2d opsion Ctrl-N
-     Elegir por teclado duracion 1 a 9 o por click derecho aparece el menu contextual de duraciones. Posicionarse en una posicion con las teclaas de flechas, y luego pulsar
-     l nota en teclado. O dar click  con el mouse en cualqueir lado que se desee, sin
-     importar usar las flechas de teclado.
+     Entrar o Modificar por teclado 2da opción Ctrl-N
+     Elegir por teclado duracion 1 a 9 o por click derecho aparece el menu contextual de duraciones. Posicionarse en una posicion con las teclas de flechas, y luego pulsar
+     la nota en teclado. O dar click  con el mouse en cualqueir lado que se desee, sin
+     usar las flechas de teclado.
+     De Ctrl-N (se sale con ctrl-p tambien)
 
-     
-     Dar Ctrl-N (se salecon ctrl-p tambien)
 2.4) Copiar
-   - En EDIT Cursor= Edit +Ctrl_M = Edit + Ctrl + clcil derecho   
+   - En EDIT Cursor [ Edit + Ctrl_M] ó [Edit + Ctrl + clicK derecho + seleccion
+     gráfica de ctrl-M]   
      Movemos el cursor grafico (cuadrado) con teclas izq der hasta posicionarse en
-     la nota a copiar ,se da ENTER eso copia la durcion de la nota, luegomovemos el
-     cursor sobre elsitio donde queremos copiar y pulsamos ENTER de nuevo
-     Sepuede seguir a otros sitios y dando ENTER seguira copiando.
+     la nota a copiar ,se da ENTER eso copia la duracion de la nota, luego 
+     movemos el cursor sobre el sitio donde queremos copiar y pulsamos ENTER de 
+     nuevo. Se puede seguir a otras posiciones, dando ENTER seguirá copiando.
    
 
+2.5) Borrar 1 Nota:
+2.5.1) BORRAR NOTA EN CTRL-N ANDA BIEN UBICANDO EL CURSOR SOBRE LA NOTA
+Y LUEGO PULSAR ESPACIO.PARA CADA NOTA SE DEBE HACER LO MISMO
+UBICAR CURSOR PULSAR ESPACIO.
+2.5.2) BORRAR EN CTRL-M O CURSOR UBICAR EL CURSOR SOBRE LA NOTA PULSAR ESPACIO
+Y LUEGO X PARA MODIFICAR..SE PUEDE SEGUIR BORRARNDO OTRAS NOTAS
+UBICANDO EL CURSOR Y SOLO CON X REPITE LA ULTIMA NOTA EN ESTE CASO ESPACIO.
 
 
     

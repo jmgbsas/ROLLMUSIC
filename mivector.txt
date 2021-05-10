@@ -11,6 +11,11 @@ POSICION : 10
 POSICION : 11
 POSICION : 12
 POSICION : 13
+POSICION : 14
+POSICION : 15
+POSICION : 16
+POSICION : 17
+POSICION : 18
 POSICION : 1
 nota:  77 posi:  1 dur:  12
 ==============fin posicion nro:  1
@@ -50,3 +55,18 @@ nota:  72 posi:  12 dur:  94
 POSICION : 13
 nota:  72 posi:  13 dur:  4
 ==============fin posicion nro:  13
+POSICION : 14
+nota:  75 posi:  14 dur:  3
+==============fin posicion nro:  14
+POSICION : 15
+nota:  77 posi:  15 dur:  3
+==============fin posicion nro:  15
+POSICION : 16
+nota:  73 posi:  16 dur:  3
+==============fin posicion nro:  16
+POSICION : 17
+nota:  70 posi:  17 dur:  94
+==============fin posicion nro:  17
+POSICION : 18
+nota:  70 posi:  18 dur:  4
+==============fin posicion nro:  18
