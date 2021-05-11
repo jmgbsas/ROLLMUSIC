@@ -917,7 +917,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
    If playb = 0 Then
       playb=1
       thread1 = ThreadCreate(@PlayRoll)
-  
+      menunew=0
    EndIf
  EndIf  
  Exit Do
@@ -1138,15 +1138,19 @@ If comEdit = TRUE Then
   EndIf
 
   If MultiKey(SC_PERIOD) Then
-     cuart=1
+     pun = 1  ' puntillo      
   EndIf
-  If MultiKey(SC_ASTERISCO) Then
-   pun = 1  ' puntillo
-   Exit Do
+'  If MultiKey(SC_MULTIPLY) Then ' KEYPAD *
+'     cuart=1
+'   Exit Do
+'  EndIf
+  If MultiKey(SC_LSHIFT) Then ' :
+      cuart=1 
+      Exit Do
   EndIf
-  If MultiKey(SC_LSHIFT) And MultiKey(SC_SEMICOLON) Then ' :
-   doblepun = 1  ' doble puntillo
-   Exit Do
+  If MultiKey(SC_RSHIFT) Then ' :
+      doblepun = 1  ' doble puntillo
+      Exit Do
   EndIf
 
   If MultiKey(SC_S) Then

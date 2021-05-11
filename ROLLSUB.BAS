@@ -1745,7 +1745,7 @@ Sub separarDur(ByRef j As Integer, ByRef DUR As Integer,partes() As Integer, ByR
  ' cuando hago la carga los k son de 1 a 64 no son mas de 1 a 8
 
  desde =  1 + incr
- hasta = 27 + incr
+ hasta = 45 + incr
 
  For k=desde To hasta
   If (falta >= pesoDur(K) - 10) And  (falta <= pesoDur(K) +10)    Then
@@ -1782,7 +1782,7 @@ Dim CUENTA As INTEGER
  If k<=180 And lb=0  Then ' no se encontro
   Do
   CUENTA += 1
-   For k=10+incr To 36+incr
+   For k=10+incr To 18+incr
     If  falta1 > pesoDur(k)  Then
      lb += 1
      Print #1,"dur k incr";k,incr
@@ -1807,6 +1807,59 @@ Dim CUENTA As INTEGER
     EndIf
 
    Next k
+
+   For k=19+incr To 27+incr
+    If  falta1 > pesoDur(k)  Then
+     lb += 1
+     Print #1,"dur k incr";k,incr
+     If lb > lu Then
+      Exit Do
+     EndIf
+     partes(lb)=k
+     Print #1,"FALTA1 ENCONTRO PEDAZO >9a16 PArte;";lb; " figura:";figura(k); " parte:";lb
+     falta1=falta1-pesoDur(k)
+     acumx=pesoDur(k)
+     Exit For
+    End If
+    If (falta1 >= pesoDur(k) -10 ) And (falta1 <= pesoDur(k) + 10) Then ' si elproximo es la mitad buscodeneuvo
+     lb += 1
+     If lb > lu Then
+      Exit do
+     EndIf
+     partes(lb) = k
+     acumx = acumx + pesoDur(k)
+     Print #1,"FALTA1 ENCONTRO PEDAZO =9a16 ";lb; " figura:";figura(k); " parte:";lb
+     Exit For
+    EndIf
+
+   Next k
+  
+   For k=28+incr To 36+incr 
+    If  falta1 > pesoDur(k)  Then
+     lb += 1
+     Print #1,"dur k incr";k,incr
+     If lb > lu Then
+      Exit Do
+     EndIf
+     partes(lb)=k
+     Print #1,"FALTA1 ENCONTRO PEDAZO >9a16 PArte;";lb; " figura:";figura(k); " parte:";lb
+     falta1=falta1-pesoDur(k)
+     acumx=pesoDur(k)
+     Exit For
+    End If
+    If (falta1 >= pesoDur(k) -10 ) And (falta1 <= pesoDur(k) + 10) Then ' si elproximo es la mitad buscodeneuvo
+     lb += 1
+     If lb > lu Then
+      Exit do
+     EndIf
+     partes(lb) = k
+     acumx = acumx + pesoDur(k)
+     Print #1,"FALTA1 ENCONTRO PEDAZO =9a16 ";lb; " figura:";figura(k); " parte:";lb
+     Exit For
+    EndIf
+
+   Next k
+   
    For k=1+incr To 9+incr
     If  falta1 > pesoDur(k)  Then
      lb += 1
@@ -1831,6 +1884,7 @@ Dim CUENTA As INTEGER
      Exit For
     EndIf
    Next k
+   
    For k=37+incr To 45+incr ' tresillos
     If  falta1 > pesoDur(k)  Then
      lb += 1
