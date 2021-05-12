@@ -16,20 +16,21 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
 
  cairo_select_font_face (c, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
  cairo_set_font_size (c, font)
-
+ 
 
  ' ======== NOTAS  =========
  ' cuando hago click en Edit el fondo cambia en main para edicion
-If comEdit = TRUE  and estoyEnOctava = nro  Then
- If octavaEdicion=estoyEnOctava Then 
-    cairo_set_source_rgba(c, 0, 1, 0.5, 1)
- Else 
-    cairo_set_source_rgba(c, 1, 1, 1, 1)   
- EndIf   
-Else
- 
- cairo_set_source_rgba(c, 1, 1, 1, 1)
-EndIf
+ ' movidol loopde semitonos 11-05-2021
+'If comEdit = TRUE  and estoyEnOctava = nro  Then
+' If octavaEdicion=estoyEnOctava Then 
+'    cairo_set_source_rgba(c, 0, 1, 0.5, 1)
+' Else 
+'    cairo_set_source_rgba(c, 1, 1, 1, 1)   
+' EndIf   
+'Else
+' 
+' cairo_set_source_rgba(c, 1, 1, 1, 1)
+'EndIf
 
 
 
@@ -68,7 +69,17 @@ EndIf
 
  ''' Var t = " " reempladapor sharedaprapoder poner if
  For semitono = 1 To 12
-
+   If comEdit = TRUE  and estoyEnOctava = nro  Then
+     If octavaEdicion=estoyEnOctava Then 
+        cairo_set_source_rgba(c, 0, 1, 0.5, 1)
+     Else 
+        cairo_set_source_rgba(c, 1, 1, 1, 1)   
+     EndIf   
+   Else
+ 
+       cairo_set_source_rgba(c, 1, 1, 1, 1)
+   EndIf
+   
   t = NotasGuia(semitono) + Str(*octava) + "_["
   cairo_move_to(c, 0, Penta_y + semitono * inc_Penta- 6)
   cairo_show_text(c, t)
@@ -120,8 +131,20 @@ EndIf
        indf=181
     EndIf ' t no puede quedar en un scope dsitinto se hace shared    
      t= figura(indf)
-
+' ////////dar color al font en una determinada posicion     
+    If n=jply Then 
+       cairo_set_source_rgba(c,1,0,1,1)
+    EndIf
     cairo_show_text(c, t)
+ ' ' jmg 11-05-2021 1839 start
+    If  n=jply Then
+    curpos=n 
+       cursor(c,n,nro)
+   ''   cairo_stroke(c) nohcefalta
+      cairo_set_source_rgba(c, 1, 1, 1, 1)
+    EndIf
+    
+' jmg 11-05-2021 1839 end 
     ' LINEAS DE COMPAS
     'If indf> 0 And indf< 181 Then
     '  Print #1," CREAPENTA t  DUR: ";indf;" figura ";figura(indf); " semitono: "; semitono
@@ -498,12 +521,12 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 171
   EndIf   
     
-    Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2
-   '   vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
-    cambiadur = 0
-    cuart=0:pun=0:doblepun=0:tres=0:sil=0:mas=0
-EndIf
- 
+ EndIf
+  Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2
+ '   vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
+  cambiadur = 0
+  cuart=0:pun=0:doblepun=0:tres=0:sil=0:mas=0
+
   ReCalCompas() 'organizaCompases()
   nota = 0
 
@@ -692,11 +715,13 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
 ' 0.5 ===> [Reproducir]
    If (mousex > 348 And mousex< 453 And mousey < 50  And play=0) Then
     cairo_set_source_rgba c, 0, 1, 0, 1
-
+      
+     While InKey<>"" :Wend
+              
     If (MouseButtons And 1) Then
-        play=1
+        menuNew =0
         thread1 = ThreadCreate(@PlayRoll)
-        menuNew =0 
+        play=1
       
     ''    menuNew = 4 por hora sin elecciones
     EndIf
@@ -1469,13 +1494,13 @@ Sub calcCompas( ByRef j As Integer)
   Print #1,"CALCOMPAS-0 DUR=0 COMPAS(J)=0 "
   Exit Sub
  EndIf
- If DUR=181 Then
-  Compas(j).Posi=0
-  Compas(j).nro = 0
+ 'If DUR=181 Then
+ ' Compas(j).Posi=0
+ ' Compas(j).nro = 0
 
-  Print #1,"CALCOMPAS-0 DUR=181 COMPAS(J)=0 "
-  Exit Sub
- EndIf
+ ' Print #1,"CALCOMPAS-0 DUR=181 COMPAS(J)=0 "
+ ' Exit Sub
+ 'EndIf
 
 ' estonunca seejecuta porque j es 4 nouncaentr con 1!!
  If j= 1 Then ' 128 es el maximo de ticks de un compas se agregan amspara terminared analizar elcompas
@@ -1952,7 +1977,7 @@ Sub mayorDurEnUnaPosicion (ByRef posn as integer)
    EndIf
    If i=NA Then
 
-    For ia=1 To 181
+    For ia=1 To 180
      If mayor=pesoDur(ia) Then
       valdur=ia
      EndIf
@@ -2163,9 +2188,9 @@ Sub CargaArchivo()
      
      Dim As String x,x1,x2,x3,x4,nombrea
       '''dialogoText("Cargar Archivo")
-       getfiles(file,myfilter,"open")
-       nombrea=*file.lpstrFile
-  
+     ''  getfiles(file,myfilter,"open")
+     ''  nombrea=*file.lpstrFile
+    nombrea="test-FXXXIIII.roll" ' para debug sino no funciona
        If nombrea = "" Then
           Exit Sub
        Else

@@ -142,38 +142,41 @@ noteoff note4,canal
 noteoff note5,canal
  
 End Sub
-Sub PlayRoll (param as any Ptr)
+'------------------
+
+Sub PlayRoll ( )
 ' tiempo es cuantas negras en un minuto tiempoPAtron
 
 ' Dim dur, nota
 Dim As UInteger eventCode, runningStatus
+Dim As Double tiempoDUR, tiempoFigura=0
+tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
 
-
-midiin  = rtmidi_in_create_default()
+'''midiin  = rtmidi_in_create_default()
 midiout = rtmidi_out_create_default()
 
 
-portsin  =  port_count (midiin)
+'''portsin  =  port_count (midiin)
 portsout =  port_count (midiout)
 Print #1, "portsin  "; portsin
 Print #1, "portsout "; portsout
 Dim nombre As ZString ptr
 
-Print #1,""
-Print #1, "Output port"
+'Print #1,""
+'Print #1, "Output port"
 
 Dim i As INTeger
 for i = 0 to portsout -1 
     nombre = port_name(midiout, i)
-    Print #1, *nombre
+'    Print #1, *nombre
 Next   
-Print #1, ""
-Print #1, "Input port "
+'Print #1, ""
+'Print #1, "Input port "
 
-For i = 0 to  portsin -1  
-    nombre = port_name(midiin, i)
-    print #1, *nombre
-Next
+'For i = 0 to  portsin -1  
+'    nombre = port_name(midiin, i)
+'    print #1, *nombre
+'Next
 
 Dim leng As UInteger <8>
 Dim result As Integer
@@ -213,7 +216,7 @@ open_port (midiout,portsout, nombre)
 ' masqu eenviarlo diretamente
 Dim As Integer final=MaxPos  , comienzo=1, notapiano, canal=1,vel=100,j
 Dim As Integer dura=0, maxdur=0,con=0,tiempo,ioff,cx=0,durb=0
-Dim As Integer non(1 To 108), liga=0,x=0, durval (1 To 45), silencio, fin, inicio
+Dim As Integer non(1 To 180), liga=0,x=0, durval (1 To 45), silencio, fin, inicio
 Dim As Integer durl
 ' la velocidad por ahor l ponemos fija = 100, el canaltmbien 1
    '   noteon 64, vel, canal
@@ -229,7 +232,7 @@ Dim As Integer durl
 Dim As Integer jcompas = 0, velpos =0
 Dim As Double tinicio   
 
-Print #1,"comienzo play ==========> "
+'Print #1,"comienzo play ==========> "
 ' FUTURO: JMG EN CALCOMPAS EN EL VECTOR Compas debere marcar 
 ' en el con numeros lso tiempos feurtes semifertes y debiles
 ' ej:partodo el tiempo de negra=1 en 4/4 todas esas figuras son fuertes
@@ -240,46 +243,78 @@ Print #1,"comienzo play ==========> "
 'luego segun el valor de compas voy cambiando
 ' si compas(n) = posn es debil -2
 'Shell "sendmidi.exe ch 1"
+ 'cursorVert = 1
+ 'cursorHori = 1
+ 'agregarNota=0
+ 'menuMouse = 0
+ 'comedit=TRUE
 Dim As tEvent Ptr newEvent
-For j=comienzo To final
+jply=0:curpos=0
+mousex=0
+For jply=comienzo To final
+ 'curpos=jply
+ 'curpos= curpos + 1
+ posishow=posishow + 1
+ If curpos > NroCol  Then
+    curpos = NroCol
+    posishow=0
+ EndIf
 
+ mousex=jply
+ ''posishow=jply
  If CONTROL1 = 1 Then
    allSoundoff( 1 )
    alloff( 1 )
    CONTROL1=0
  '  close_port(midiout)
  '  out_free(midiout)
+'  cursorVert = 0
+' cursorHori = 0
+' agregarNota=0
+' menuMouse = 0
+' comedit=FALSE
+
    Exit For
  EndIf  
-  
+ 'posishow=jply 
 
  'jcompas = jcompas + 1
- If Compas(j).nro = -1 Then
+ If Compas(jply).nro = -1 Then
     velpos=vfuerte
  EndIf
- If Compas(j).nro = -2 Then
+ If Compas(jply).nro = -2 Then
     velpos=vdebil
  EndIf
- If Compas(j).nro = -3 Then
+ If Compas(jply).nro = -3 Then
     velpos=vsemifuerte
  EndIf
- If Compas(j).nro = -4 Then
+ If Compas(jply).nro = -4 Then
     velpos=vdebil
  EndIf
- If Compas(j).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
+ If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
     velpos=vdebil
  EndIf
 ' ojo con silencios ligados !!!
-
+ '''posishow=jply
+ 
   For i=NA To NB Step -1 
-
-   If (Roll.trk(i,j).nota >= 1) And Roll.trk(i,j).nota <= 12 _
-      And Roll.trk(i,j).dur >=1 And Roll.trk(i,j).dur <= 180 Then ' es semitono 
+   
+   If (Roll.trk(i,jply).nota >= 1) And Roll.trk(i,jply).nota <= 12 _
+      And Roll.trk(i,jply).dur >=1 And Roll.trk(i,jply).dur <= 180 Then ' es semitono 
       Notapiano= 117-i 
       Notapiano= Notapiano - restar (Notapiano)
-      dura=Roll.trk(i,j).dur '1) I 2) I dur x 1 to 108
+      dura=Roll.trk(i,jply).dur '1) I 2) I dur x 1 to 108
+
+'   If (*mivec(i,j).nota >= 1) And *mivec(i,j).nota <= 12 _
+'      And *mivec(i,j).dur >=1 And *mivec(i,j).dur <= 180 Then ' es semitono 
+'      Notapiano= 117-i 
+'      Notapiano= Notapiano - restar (Notapiano)
+'      dura=*mivec(i,j).dur '1) I 2) I dur x 1 to 108
+
+'posishow=jply
+
       If durb > 0 Then ' 1 to 108
-      Print #1,"durb> 0, i, j ";durb,i,j
+'      Print #1,"durb> 0, i, j ";durb,i,j
          durl=relDur(durb)+relDur(dura)  '2) P
 ' si durb ya era silencio su continuacion sera silencio tambien solo
 ' hace falta analizar la 1era parte para saber si suena o en que grupo caera
@@ -307,8 +342,8 @@ For j=comienzo To final
               exit For
            EndIf 
          Next x
-      Print #1,"dura + durb "; dura   
-         
+'      Print #1,"dura + durb "; dura   
+'     posishow=jply    
          liga=1
          durb=0
          durl=0
@@ -326,9 +361,10 @@ For j=comienzo To final
 ' SACAR ESTO TOCAR ACORDE CADA ELEMENTO CON SU DURACION        
       If dura < maxdur Then ' esto lo debo sacar y tocar todas las notas con su duracion
          maxdur= dura ' 1) I, 2) P cuantoms chica dur es mas grnde en relidd
+        '' notacur=i
       EndIf 
       If liga=0 Then  
-        Print #1,"liga=0 "
+ '       Print #1,"liga=0 "
         If (maxdur >=46 And maxdur <= 90 ) Or (maxdur >=136 And maxdur <= 180 ) Then
           vel =0
         Else
@@ -341,11 +377,12 @@ For j=comienzo To final
  
         cx = cx + 1   ' 1) 1
         non (cx) = notapiano '1) G
-        Print #1, "ON==>  notapiano, vel, canal ";notapiano, vel, canal
-        Print #1,"cx ";cx 
+ '       Print #1, "ON==>  notapiano, vel, canal ";notapiano, vel, canal
+ '       Print #1,"cx ";cx 
+        Sleep 1,1
         old_time=Timer
       Else
-        Print #1,"liga=1 no se envia noteon " 
+ '       Print #1,"liga=1 no se envia noteon " 
         liga=0 
       EndIf 
    EndIf
@@ -354,8 +391,28 @@ For j=comienzo To final
  ''Sleep segun duracion o Timer de la q mas dura o para cada uno
   '   Print #1,"i=NB maxdur: ";maxdur
       ' tiempoPatron input al redimsub
-      Print #1,"i=";i," maxdur=";maxdur; " figura=";figura(maxdur)
-     duracion (maxdur)
+ '     Print #1,"i=";i," maxdur=";maxdur; " figura=";figura(maxdur)
+  ''''   duracion (maxdur)
+'''' DURACION  
+
+ 
+ tiempoFigura = relDur(dura)*tiempoDUR  
+  Do
+
+ ' Sleep 1,1
+ ' sleep5dm()
+' -------------sleep5fm 
+  Dim As Double start,final
+   start=Timer
+    Do
+     If (Timer-start) > 0.0005 Then
+       Exit Do
+    EndIf
+  Loop
+
+  Loop Until (Timer - old_time) >= tiempoFigura
+' ---------------     
+' FIN DURACION 
 ' ACA ODRIA ORDENAR LAS DURACIONE DE MENORA MAYOR CALCULARLSO INCREMENTOS
 ' DAR EL OFF SECUENCIALMENTE SEPARADOS POR DURACIONES INCREMENTALES IGAUL
 'A A LDIFERENCIA DE TAMALÑO EJ SI ELACRODE ES DE NEGRAY BLNCA, 1ERO
@@ -366,27 +423,36 @@ For j=comienzo To final
      
      For ioff=1 To cx
      noteoff non(ioff),canal
+  '   posishow=jply
   'Shell "sendmidi.exe off " +Str(non(ioff)) + " 0 "
       Print #1, "OFF==>   non(ioff),  canal "; non(ioff),canal
      Next ioff
-     Print #1,"pasó for de off .."
-     Print #1," ==============> fin paso...j"; j   
+ '    Print #1,"pasó for de off .."
+ '    Print #1," ==============> fin paso...j"; j   
   EndIf 
   Next i
 
-  Print #1,"COMIENZA OTRA  POSICION O J ======"; j
+'  Print #1,"COMIENZA OTRA  POSICION O J ======"; j
   If durb=0 Then
    cx=0
   EndIf
   con=0 
-Next j
-
-Sleep 1000 
+'https://www.freebasic.net/forum/viewtopic.php?t=19174  
+  mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
+Next jply
+jply=0:curpos=0
+Sleep 1,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
 close_port(midiout)
 out_free(midiout) 
-play=0
+play=0 
 playb=0
-
+mousey=100 'otra mas para evitar rentrar a play en menu
+' cursorVert = 0
+' cursorHori = 0
+' agregarNota=0
+' menuMouse = 0
+' comedit=FALSE
+' curpos=0
 ' velocidades a incorporar
 'pppp   8
 'ppp   20

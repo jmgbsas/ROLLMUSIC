@@ -453,19 +453,19 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 '
 ' desde=3 hasta=7
 '  rango= hasta
-For i = desde To hasta ' nro_penta
 
+For i = desde To hasta ' nro_penta
  creaPenta (c, i, po,InicioDeLectura )
  If *po = 99 Then
   *po = hasta - 1
   Exit For
  EndIf
-
+cairo_stroke(c)
 Next
 
 ''' cairo_restore (c) esto es solo para translado
 
-cairo_stroke(c) ' Escribe desde la fuente source a la mask ...(peden ser varias fuentes)
+'cairo_stroke(c) ' Escribe desde la fuente source a la mask ...(peden ser varias fuentes)
 
 Var surf2 = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, 50, stride)
 Var cm = cairo_create(surf2)
@@ -912,7 +912,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
   EndIf
 
  Else
- ' PlayRoll()
+  '' PlayRoll()
  
    If playb = 0 Then
       playb=1
@@ -1736,8 +1736,8 @@ If (ScreenEvent(@e)) Then
     
     Exit Do
    EndIf
-   ' If e.scancode = 75 Then ' <=====  LEFT repeat
-   '       posicion= posicion -1
+  ' If e.scancode = 75 Then ' <=====  LEFT repeat
+  '       posicion= posicion -1
    '     Exit Do
    ' EndIf
 
@@ -1897,15 +1897,16 @@ If (ScreenEvent(@e)) Then
      comEdit = FALSE : s3 = 0 ' solo LECTURA
      '       Print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
      'posicion= posicion + curPOS ' estaba mal no va 3-3-21 jmg
-     curpos=0
-     controlEdit=0
-     nota=0
-     posicion=posicion - NroCol/2
-     If posicion < 1 Then
-        posicion = 1
+     If play=0 Then 
+       curpos=0
+       controlEdit=0
+       nota=0
+       posicion=posicion - NroCol/2
+       If posicion < 1 Then
+         posicion = 1
+       EndIf
+       posishow=posicion
      EndIf
-     posishow=posicion
-
      Exit Do
     EndIf
    EndIf
@@ -2291,7 +2292,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
   
  EndIf 
  
- If mousex >=0 And mousex <= 50 Then
+ If mousex >=0 And mousex <= 50  Then
        octavaEdicion=estoyEnOctava
  EndIf
  If comedit=TRUE Then

@@ -2,6 +2,7 @@
 #Include once  "file.bi"
 #include "mod_rtmidi_c.bi"
 #Inclib  "rtmidi.dll"
+#include "fbthread.bi"
 
 dim Shared midiin As   RtMidiInPtr 
 dim Shared midiout As  RtMidiOutPtr
@@ -16,7 +17,7 @@ Declare Sub note4off	( note1 As UByte, note2 As UByte, note3 As UByte, note4 As 
 Declare Sub note5on	( note1 As UByte, note2 As UByte, note3 As UByte, note4 As UByte, note5 As UByte, vel As UByte, canal As integer)
 Declare Sub note5off	( note1 As UByte, note2 As UByte, note3 As UByte, note4 As UByte,note5 As UByte, canal As integer)
 Declare Function restar (notaRoll As Integer) As Integer
-Declare Sub PlayRoll (param As any ptr)
+Declare Sub PlayRoll ( )
 Declare Sub duracion (dura As Integer)
 Declare Sub pedaloff()
 Declare Sub allSoundoff(canal As Integer)
@@ -39,8 +40,9 @@ Dim sizeptr As UInteger<64> Ptr = @size
 Dim Shared As UInteger portsin, portsout 
 Dim Shared As Double tiempoPatron=60 ' cuantas negras enun minuto default
 Dim Shared As Double old_time=0
+Dim Shared As Integer jply=0
 'elpatron esla negra ej I=60ergo todo sera relativo  la negra
-Dim Shared As float relDur (1 To 180) => { _ 
+Dim Shared As float relDur (1 To 181) => { _ 
 4 ,2 , 1.0, 0.50,0.250,0.1250 ,0.06250,0.031250,0.0156250, _ ' 1 9 
 5 ,2.5,1.25,0.625,0.3125,0.15625,0.078125,0.0390625,0.01953125,_ ' 10 18
 6 ,3 , 1.5, 0.75,0.375,0.1875 ,0.09375,0.046875,0.0234375, _ ' 19 27
@@ -60,7 +62,7 @@ Dim Shared As float relDur (1 To 180) => { _
 5 ,2.5,1.25,0.625,0.3125,0.15625,0.078125,0.0390625,0.01953125,_ ' 145 153
 6 ,3 , 1.5, 0.75,0.375,0.1875 ,0.09375,0.046875,0.0234375, _ ' 154 162
 7 ,3.5,1.75,0.875,0.4375,0.21875,0.109375,0.0546875,0.02734375, _ '163 171
-2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,0.208333,0.01041666} '172 180
+2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,0.208333,0.01041666,0} '172 181
 
 Dim Shared As Integer play =0,playb=0, portout, portin 
 ReDim Shared As string listout(1 ), listin (1 ) 
