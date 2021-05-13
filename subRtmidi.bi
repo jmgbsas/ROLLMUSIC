@@ -248,37 +248,23 @@ Dim As Double tinicio
  'agregarNota=0
  'menuMouse = 0
  'comedit=TRUE
-Dim As tEvent Ptr newEvent
+'Dim As tEvent Ptr newEvent
 jply=0:curpos=0
 mousex=0
 For jply=comienzo To final
- 'curpos=jply
- 'curpos= curpos + 1
- posishow=posishow + 1
  If curpos > NroCol  Then
     curpos = NroCol
     posishow=0
  EndIf
 
  mousex=jply
- ''posishow=jply
  If CONTROL1 = 1 Then
-   allSoundoff( 1 )
+  ' allSoundoff( 1 )
    alloff( 1 )
    CONTROL1=0
- '  close_port(midiout)
- '  out_free(midiout)
-'  cursorVert = 0
-' cursorHori = 0
-' agregarNota=0
-' menuMouse = 0
-' comedit=FALSE
-
    Exit For
  EndIf  
- 'posishow=jply 
 
- 'jcompas = jcompas + 1
  If Compas(jply).nro = -1 Then
     velpos=vfuerte
  EndIf
@@ -295,7 +281,6 @@ For jply=comienzo To final
     velpos=vdebil
  EndIf
 ' ojo con silencios ligados !!!
- '''posishow=jply
  
   For i=NA To NB Step -1 
    
@@ -305,13 +290,7 @@ For jply=comienzo To final
       Notapiano= Notapiano - restar (Notapiano)
       dura=Roll.trk(i,jply).dur '1) I 2) I dur x 1 to 108
 
-'   If (*mivec(i,j).nota >= 1) And *mivec(i,j).nota <= 12 _
-'      And *mivec(i,j).dur >=1 And *mivec(i,j).dur <= 180 Then ' es semitono 
-'      Notapiano= 117-i 
-'      Notapiano= Notapiano - restar (Notapiano)
-'      dura=*mivec(i,j).dur '1) I 2) I dur x 1 to 108
 
-'posishow=jply
 
       If durb > 0 Then ' 1 to 108
 '      Print #1,"durb> 0, i, j ";durb,i,j
@@ -343,7 +322,6 @@ For jply=comienzo To final
            EndIf 
          Next x
 '      Print #1,"dura + durb "; dura   
-'     posishow=jply    
          liga=1
          durb=0
          durl=0
@@ -405,7 +383,7 @@ For jply=comienzo To final
   Dim As Double start,final
    start=Timer
     Do
-     If (Timer-start) > 0.0005 Then
+     If (Timer-start) > 0.0001 Then ' 0.1 MILESIMA DE PRESICION DE DURACION
        Exit Do
     EndIf
   Loop
@@ -423,9 +401,8 @@ For jply=comienzo To final
      
      For ioff=1 To cx
      noteoff non(ioff),canal
-  '   posishow=jply
-  'Shell "sendmidi.exe off " +Str(non(ioff)) + " 0 "
-      Print #1, "OFF==>   non(ioff),  canal "; non(ioff),canal
+
+'     Print #1, "OFF==>   non(ioff),  canal "; non(ioff),canal
      Next ioff
  '    Print #1,"pasó for de off .."
  '    Print #1," ==============> fin paso...j"; j   
@@ -438,7 +415,8 @@ For jply=comienzo To final
   EndIf
   con=0 
 'https://www.freebasic.net/forum/viewtopic.php?t=19174  
-  mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
+  'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
+  mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 Next jply
 jply=0:curpos=0
 Sleep 1,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
@@ -447,12 +425,6 @@ out_free(midiout)
 play=0 
 playb=0
 mousey=100 'otra mas para evitar rentrar a play en menu
-' cursorVert = 0
-' cursorHori = 0
-' agregarNota=0
-' menuMouse = 0
-' comedit=FALSE
-' curpos=0
 ' velocidades a incorporar
 'pppp   8
 'ppp   20

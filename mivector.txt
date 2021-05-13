@@ -8,6 +8,8 @@ POSICION : 7
 POSICION : 8
 POSICION : 9
 POSICION : 10
+POSICION : 11
+POSICION : 12
 POSICION : 1
 nota:  77 posi:  1 dur:  5
 ==============fin posicion nro:  1
@@ -36,6 +38,10 @@ nota:  68 posi:  9 dur:  94
 POSICION : 10
 nota:  68 posi:  10 dur:  4
 ==============fin posicion nro:  10
+POSICION : 11
+==============fin posicion nro:  11
+POSICION : 12
+==============fin posicion nro:  12
 POSICION : 1
 POSICION : 2
 POSICION : 3
@@ -46,6 +52,8 @@ POSICION : 7
 POSICION : 8
 POSICION : 9
 POSICION : 10
+POSICION : 11
+POSICION : 12
 POSICION : 1
 nota:  77 posi:  1 dur:  5
 ==============fin posicion nro:  1
@@ -74,3 +82,7 @@ nota:  68 posi:  9 dur:  94
 POSICION : 10
 nota:  68 posi:  10 dur:  4
 ==============fin posicion nro:  10
+POSICION : 11
+==============fin posicion nro:  11
+POSICION : 12
+==============fin posicion nro:  12

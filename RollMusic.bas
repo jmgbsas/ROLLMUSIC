@@ -157,7 +157,7 @@ Open "mivector.txt" for Output As #3
 #Include "declareRtmidi.bi"
 ' iup start
 #include once "IUP/iup.bi"
-#Include once "foro/fmidi.bi"
+'#Include once "foro/fmidi.bi"
 '#include "fbthread.bi"
 #Include "foro/window9.bi"
 ''#Include "Afx/windowsxx.bi"
@@ -480,9 +480,10 @@ Var cm = cairo_create(surf2)
 'EndIf
 
 menu(c,cm, posicion,menuNro)
-cairo_stroke(cm)
+botones(hWnd, c ,cm, ANCHO,ALTO) ' este despues sinocrash
 cairo_stroke(c)
-botones(hWnd, c ,cm, ANCHO,ALTO)
+cairo_stroke(cm) ' cm despues de c sino crash
+
 
 
 If menuaccion=1111 Then ' no sirve las aciones perforan

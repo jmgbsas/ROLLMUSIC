@@ -126,7 +126,7 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
     cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 4)
     Dim As Integer indf
     indf= Roll.trk (semitono + (nro-1) * 13, n).dur
-    If (indf >= 1 And indf <= 182)  Then
+    If (indf >= 1 And indf <= 180)  Then
     Else
        indf=181
     EndIf ' t no puede quedar en un scope dsitinto se hace shared    
@@ -140,7 +140,7 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
     If  n=jply Then
     curpos=n 
        cursor(c,n,nro)
-   ''   cairo_stroke(c) nohcefalta
+   ''   cairo_stroke(c) ''nohcefalta
       cairo_set_source_rgba(c, 1, 1, 1, 1)
     EndIf
     
@@ -384,7 +384,8 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
   cairo_rectangle(c, 81 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
   cairo_move_to  (c, 81 + (curpos)*anchofig + inc_Penta, Penta_y  )
   cairo_line_to  (c, 81 + (curpos)*anchofig + inc_Penta, Penta_y + (notacur-1) * inc_Penta  +inc_Penta )
-
+  RollDur=Roll.trk(notacur + (nro-1) * 13, n + curpos).dur
+  RollNota=Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
  EndIf
  If cursorVert= 0 And cursorHori=0 Then
   If notacur=1 Then
@@ -437,9 +438,11 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
   ' ------------------------------------
   ' nueva verion con puntillo o silencio
   ' ------------------------------------
+  'si en una columna todas las notas son 0,181 y sihay un 777 en dur
+  ' y nota esa columna se elimina,,,,,implementar 12-05-2021
  If DUR=181 Then
-     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 181
-  '   vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
+     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 255
+     Roll.trk(notacur + (nro-1) * 13, n + curpos).nota =255   ' 5.7.2
      cambiadur = 0
      DUR=0
  Else
@@ -520,9 +523,9 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
   If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=1 Then 
     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR + 171
   EndIf   
-    
+  Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2    
  EndIf
-  Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2
+
  '   vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
   cambiadur = 0
   cuart=0:pun=0:doblepun=0:tres=0:sil=0:mas=0
@@ -781,7 +784,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    Str(Maxpos) +" Posi: " + Str(posishow)+ " Posn: "+Str(posn)+ _
    " Font: " +Str(font) + " DUR:"+ Str(Dur) +" Nota:"+ Str(nota)+ _
    " EnOct:" + Str(estoyEnOctava) + " nE:"+Str(nE) + " nR:"+ Str(nR) + "Curpos: " +Str(curpos) + _
-   "RollDur :" +Str(Roll.trk(nR,posishow+curpos).dur)+ "Rollnota: " + Str(Roll.trk(nR,posishow+curpos).nota) + _ 
+   " RollDur :"+ Str(RollDur) + " Rollnota: " + Str(RollNota) + _ 
    " Mx:" + Str(mousex) + " My:" + Str(mousey) + "Copiar:" + Str(copiar) ' + "Desde:" + Str(y1) + "Hasta:" +Str(y2)
    /' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +
 '/
@@ -1487,7 +1490,7 @@ Sub calcCompas( ByRef j As Integer)
  Print #1,"1-calcCompas j o posn RECIBIDA: "; j
  Dim As Integer k, i,cantFalta,CantSobra, tengo, falta,sobra
  
- If DUR=0 Then
+ If DUR=0  Then
   Compas(j).Posi=0
   Compas(j).nro = 0
 
@@ -2103,7 +2106,7 @@ Sub ReCalCompas()
 ''DE LO QUE SIGUE DEBO EXTRCTAR MAYOR ENUNA POSCION Y COPIARLO
 '' A ESA SUBRUTINA Y PONERLA EN NUCLEO
        semi => Roll.trk(i,j).nota  
-       If valdur > 0 And valdur < 181 And semi >=1 And semi <=12 Then
+      If valdur > 0 And valdur < 181 And semi >=1 And semi <=12 Then
         Print #1, "LECTURA DUR: ";valdur;" EN LA CARGA j: ";j;" i: "; i;" figura ";figura(valdur)
         Print #3, "nota: "; i; " posi: "; j; " dur: ";valdur
         Select Case valdur
@@ -2142,7 +2145,7 @@ Sub ReCalCompas()
          EndIf
          '     Print #1,"> i= ";i; " NA= ";NA
         EndIf
-      EndIf
+      EndIf 'jmg OJO OJO
       Dim As Integer iades =(mayorgrupo -1)*45 + 1
       Dim As Integer iahas = mayorgrupo * 45 
        If i=NA Then
@@ -2167,11 +2170,12 @@ Sub ReCalCompas()
           Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j).Posi;" figura ";figura(DUR)
           valdur=0
           DUR=0
+          mayor=0
     ''    EndIf
         Print #3,"==============fin posicion nro: "; j
        EndIf
        valdur=0:DUR=0
-       
+    
       Next i
       
      Next j
@@ -2789,6 +2793,7 @@ Loop
 
 End Sub
  
+
 
 
 
