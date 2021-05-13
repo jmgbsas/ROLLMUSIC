@@ -425,6 +425,12 @@ out_free(midiout)
 play=0 
 playb=0
 mousey=100 'otra mas para evitar rentrar a play en menu
+finplay=1
+'if finplay=1 Then
+ ThreadDetach(thread1)
+'  finplay=0
+'   Endif   
+
 ' velocidades a incorporar
 'pppp   8
 'ppp   20
