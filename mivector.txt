@@ -10,18 +10,157 @@ POSICION : 9
 POSICION : 10
 POSICION : 11
 POSICION : 12
+POSICION : 13
+POSICION : 1
+nota:  77 posi:  1 dur:  3
+==============fin posicion nro:  1
+POSICION : 2
+nota:  75 posi:  2 dur:  3
+==============fin posicion nro:  2
+POSICION : 3
+nota:  73 posi:  3 dur:  3
+==============fin posicion nro:  3
+POSICION : 4
+nota:  72 posi:  4 dur:  3
+==============fin posicion nro:  4
+POSICION : 5
+nota:  70 posi:  5 dur:  3
+==============fin posicion nro:  5
+POSICION : 6
+nota:  66 posi:  6 dur:  3
+==============fin posicion nro:  6
+POSICION : 7
+nota:  66 posi:  7 dur:  3
+==============fin posicion nro:  7
+POSICION : 8
+nota:  66 posi:  8 dur:  3
+==============fin posicion nro:  8
+POSICION : 9
+nota:  66 posi:  9 dur:  3
+==============fin posicion nro:  9
+POSICION : 10
+nota:  66 posi:  10 dur:  3
+==============fin posicion nro:  10
+POSICION : 11
+nota:  66 posi:  11 dur:  3
+==============fin posicion nro:  11
+POSICION : 12
+nota:  66 posi:  12 dur:  3
+==============fin posicion nro:  12
+POSICION : 13
+nota:  66 posi:  13 dur:  3
+==============fin posicion nro:  13
+POSICION : 1
+POSICION : 2
+POSICION : 3
+POSICION : 4
+POSICION : 5
+POSICION : 6
+POSICION : 7
+POSICION : 8
+POSICION : 9
+POSICION : 10
+POSICION : 11
+POSICION : 1
+nota:  12 posi:  1 dur:  5
+==============fin posicion nro:  1
+POSICION : 2
+nota:  10 posi:  2 dur:  6
+==============fin posicion nro:  2
+POSICION : 3
+nota:  10 posi:  3 dur:  6
+==============fin posicion nro:  3
+POSICION : 4
+nota:  8 posi:  4 dur:  3
+==============fin posicion nro:  4
+POSICION : 5
+nota:  7 posi:  5 dur:  3
+==============fin posicion nro:  5
+POSICION : 6
+nota:  5 posi:  6 dur:  3
+==============fin posicion nro:  6
+POSICION : 7
+nota:  3 posi:  7 dur:  94
+==============fin posicion nro:  7
+POSICION : 8
+nota:  3 posi:  8 dur:  4
+==============fin posicion nro:  8
+POSICION : 9
+nota:  6 posi:  9 dur:  3
+==============fin posicion nro:  9
+POSICION : 10
+==============fin posicion nro:  10
+POSICION : 11
+==============fin posicion nro:  11
+POSICION : 1
+POSICION : 2
+POSICION : 3
+POSICION : 4
+POSICION : 5
+POSICION : 6
+POSICION : 7
+POSICION : 8
+POSICION : 9
+POSICION : 10
+POSICION : 11
+POSICION : 1
+nota:  12 posi:  1 dur:  5
+==============fin posicion nro:  1
+POSICION : 2
+nota:  10 posi:  2 dur:  7
+==============fin posicion nro:  2
+POSICION : 3
+nota:  10 posi:  3 dur:  7
+==============fin posicion nro:  3
+POSICION : 4
+nota:  10 posi:  4 dur:  7
+==============fin posicion nro:  4
+POSICION : 5
+nota:  10 posi:  5 dur:  7
+==============fin posicion nro:  5
+POSICION : 6
+nota:  8 posi:  6 dur:  3
+==============fin posicion nro:  6
+POSICION : 7
+nota:  7 posi:  7 dur:  3
+==============fin posicion nro:  7
+POSICION : 8
+nota:  5 posi:  8 dur:  3
+==============fin posicion nro:  8
+POSICION : 9
+nota:  3 posi:  9 dur:  94
+==============fin posicion nro:  9
+POSICION : 10
+nota:  3 posi:  10 dur:  4
+==============fin posicion nro:  10
+POSICION : 11
+nota:  6 posi:  11 dur:  3
+==============fin posicion nro:  11
+POSICION : 1
+POSICION : 2
+POSICION : 3
+POSICION : 4
+POSICION : 5
+POSICION : 6
+POSICION : 7
+POSICION : 8
+POSICION : 9
+POSICION : 10
+POSICION : 11
 POSICION : 1
 nota:  77 posi:  1 dur:  5
 ==============fin posicion nro:  1
 POSICION : 2
-nota:  75 posi:  2 dur:  6
+nota:  75 posi:  2 dur:  7
 ==============fin posicion nro:  2
 POSICION : 3
-nota:  75 posi:  3 dur:  6
+nota:  75 posi:  3 dur:  7
 ==============fin posicion nro:  3
 POSICION : 4
+nota:  75 posi:  4 dur:  7
 ==============fin posicion nro:  4
 POSICION : 5
+nota:  75 posi:  5 dur:  7
 ==============fin posicion nro:  5
 POSICION : 6
 nota:  73 posi:  6 dur:  3
@@ -39,50 +178,5 @@ POSICION : 10
 nota:  68 posi:  10 dur:  4
 ==============fin posicion nro:  10
 POSICION : 11
+nota:  77 posi:  11 dur:  3
 ==============fin posicion nro:  11
-POSICION : 12
-==============fin posicion nro:  12
-POSICION : 1
-POSICION : 2
-POSICION : 3
-POSICION : 4
-POSICION : 5
-POSICION : 6
-POSICION : 7
-POSICION : 8
-POSICION : 9
-POSICION : 10
-POSICION : 11
-POSICION : 12
-POSICION : 1
-nota:  77 posi:  1 dur:  5
-==============fin posicion nro:  1
-POSICION : 2
-nota:  75 posi:  2 dur:  6
-==============fin posicion nro:  2
-POSICION : 3
-nota:  75 posi:  3 dur:  6
-==============fin posicion nro:  3
-POSICION : 4
-==============fin posicion nro:  4
-POSICION : 5
-==============fin posicion nro:  5
-POSICION : 6
-nota:  73 posi:  6 dur:  3
-==============fin posicion nro:  6
-POSICION : 7
-nota:  72 posi:  7 dur:  3
-==============fin posicion nro:  7
-POSICION : 8
-nota:  70 posi:  8 dur:  3
-==============fin posicion nro:  8
-POSICION : 9
-nota:  68 posi:  9 dur:  94
-==============fin posicion nro:  9
-POSICION : 10
-nota:  68 posi:  10 dur:  4
-==============fin posicion nro:  10
-POSICION : 11
-==============fin posicion nro:  11
-POSICION : 12
-==============fin posicion nro:  12

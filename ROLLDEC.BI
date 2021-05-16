@@ -32,7 +32,7 @@ Declare Sub sigh_print_selection Cdecl ( Byval gtklist As GtkWidget Ptr, Byval f
 ' end gtk
 Declare sub selport(ByVal tipo As any ptr) 
 Declare Sub ComboBox()
-
+Declare Sub grabaprueba()
 
 'Declare Sub getfiles(Byref File As OpenFileName,flag As String)
 ' mover nota 
@@ -54,6 +54,7 @@ Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar
 Dim Shared NotasGuia (1 To 12) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
 ' 5.7.6.00 tresillos
+espacio=0:notacur=1 '16-05-2021 jmg
 Dim  Shared figura (1 To 182) As String  * 4 => _
 {" O "," P "," I "," L "," F "," E "," X "," H "," W ",_  '  1  9
  " O4"," P4"," I4"," L4"," F4"," E4"," X4"," H4"," W4",_  ' 10 18

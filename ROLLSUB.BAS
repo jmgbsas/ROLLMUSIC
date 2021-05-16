@@ -114,7 +114,8 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
          EndIf
          If cursorVert=1 And Borrar=1 Then  ' BORRADO LIBRE
             If ((n - inicioDeLectura)=curpos)  Then
-               Roll.trk (semitono + (nro-1) * 13, n ).dur = 181
+               Roll.trk (semitono + (nro-1) * 13, n ).dur = 190
+               Roll.trk (semitono + (nro-1) * 13, n ).nota = 190
                If fijarEspacio=0 Then
                   Borrar=0
                EndIf
@@ -126,7 +127,7 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
     cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 4)
     Dim As Integer indf
     indf= Roll.trk (semitono + (nro-1) * 13, n).dur
-    If (indf >= 1 And indf <= 180)  Then
+    If (indf >= 1 And indf <= 180)  Then ' 13-05-2021 11
     Else
        indf=181
     EndIf ' t no puede quedar en un scope dsitinto se hace shared    
@@ -438,14 +439,30 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
   ' ------------------------------------
   ' nueva verion con puntillo o silencio
   ' ------------------------------------
-  'si en una columna todas las notas son 0,181 y sihay un 777 en dur
+  'si en una columna todas las notas son 0,181 y sihay un 254 en dur
   ' y nota esa columna se elimina,,,,,implementar 12-05-2021
+  ' la forma facil de borrar seria grabar a disco cuando se está
+  ' en posicion con 254 saltar esa posicion y restar 1 a la posicion final.
+
+
+  
  If DUR=181 Then
-     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 255
-     Roll.trk(notacur + (nro-1) * 13, n + curpos).nota =255   ' 5.7.2
+     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 0
+     Roll.trk(notacur + (nro-1) * 13, n + curpos).nota =181   ' 5.7.2
+     cambiadur = 0
+     DUR=0
+ ElseIf DUR=182 Then ' borrado
+     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 0
+     Roll.trk(notacur + (nro-1) * 13, n + curpos).nota =182   ' 5.7.2
+     cambiadur = 0
+     DUR=0
+ ElseIf DUR=0 Then ' borrado
+     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 190
+     Roll.trk(notacur + (nro-1) * 13, n + curpos).nota =190   ' 5.7.2
      cambiadur = 0
      DUR=0
  Else
+'desde aca lasnotas se colocan con notacur siemrpe tienen valorde 1 a 12
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR
   EndIf
@@ -610,6 +627,12 @@ If cursorHori=1 And vdur>0 And copiar=3 Then
       ReCalCompas()
    EndIf 
 EndIf
+If nro=0 Then ' error al subir mucho mira despues del and el estupido 
+nro=1 'jmg 16-05-2021 notcur nodeberi empezar desde 0
+EndIf
+If notacur=0 Then
+  notacur=1
+EndIf
 If copiar=3 And Roll.trk(notacur + (nro-1) * 13, n+curpos).dur = vdur _
    And notacur=vnota Then
    copiar=0:vdur=0:vnota=0  
@@ -716,18 +739,19 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    t=  " [Pista]":cairo_show_text(c, t)
    ' ------------------------------------------
 ' 0.5 ===> [Reproducir]
-   If (mousex > 348 And mousex< 453 And mousey < 50  And play=0) Then
+   If (mousex > 348 And mousex< 453 And mousey < 50  And dobleclick And play=0) Then
     cairo_set_source_rgba c, 0, 1, 0, 1
       
      While InKey<>"" :Wend
-              
-    If (MouseButtons And 1) Then
+      Print #1,"--->entra a reproducir thread1 "
+              play=1        
+'    If (MouseButtons And 1) Then
         menuNew =0
         thread1 = ThreadCreate(@PlayRoll)
-        play=1
-      
+
+        Print #1,"--->paso llamada a thread1 "
     ''    menuNew = 4 por hora sin elecciones
-    EndIf
+ '   EndIf
 
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -755,7 +779,11 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   t=  " [Ayuda] "+ nombre :cairo_show_text(c, t)
+   Dim muestra As String=nombre
+   If Len(muestra) > 63 Then
+     muestra="C:\..\"+Mid(muestra,30)
+   EndIf
+   t=  " [Ayuda] "+ muestra :cairo_show_text(c, t)
 
    cairo_stroke(c)
   Case 1
@@ -867,7 +895,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      '       Print #1, "Grabando a disco Roll GRABAR "
-    ' dialogoText("Grabar Archivo")
+      '''' dialogoText("Grabar Archivo")
        Dim As String nombreg
        If nombre = "" Then
           getfiles(file,myfilter,"save")
@@ -878,7 +906,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
              nombre=nombreg   
           EndIf
        EndIf
-
+''''       grabaprueba()
        GrabarArchivo (nombre)
     EndIf
    Else
@@ -891,7 +919,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      '       Print #1, "Grabando a disco Roll GRABAR "
-    ' dialogoText("Grabar Archivo")
+       '''''no usar dialogoText("Grabar Archivo")
        Dim As String nombreg
        getfiles(file,myfilter,"save")
        nombreg=*file.lpstrFile
@@ -2165,13 +2193,21 @@ Sub ReCalCompas()
       '    Compas(j).nro = 0
 '
  '       Else
-          Print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo;" figura ";figura(DUR)
+        Dim durm As Integer
+         If DUR >181 or DUR=0 Then
+            durm=181
+         Else
+            durm=DUR   
+         EndIf
+         
+         if DUR<=180 Then
+          Print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo;" figura ";figura(durm)
           calcCompas(j)
-          Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j).Posi;" figura ";figura(DUR)
+          Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j).Posi;" figura ";figura(durm)
           valdur=0
           DUR=0
           mayor=0
-    ''    EndIf
+         EndIf
         Print #3,"==============fin posicion nro: "; j
        EndIf
        valdur=0:DUR=0
@@ -2191,10 +2227,10 @@ Sub CargaArchivo()
      Dim zLim (1,1) As dat
      
      Dim As String x,x1,x2,x3,x4,nombrea
-      '''dialogoText("Cargar Archivo")
-     ''  getfiles(file,myfilter,"open")
-     ''  nombrea=*file.lpstrFile
-    nombrea="test-FXXXIIII.roll" ' para debug sino no funciona
+     ''' no usar mas  dialogoText("Cargar Archivo")
+      getfiles(file,myfilter,"open")
+      nombrea=*file.lpstrFile
+    ''''nombrea="test-FXXXIIII.roll" ' para debug sino no funciona
        If nombrea = "" Then
           Exit Sub
        Else
@@ -2241,6 +2277,32 @@ Sub CargaArchivo()
       Print #2,"POSICION :";J
       Print #3,"POSICION :";J
       For i= NB To NA
+/'      
+       If Trabajo(i,j).nota=255 Then
+          Trabajo(i,j).nota=181
+          Trabajo(i,j).dur=0
+       EndIf
+       If Trabajo(i,j).dur=255 Then
+          Trabajo(i,j).dur=0
+          Trabajo(i,j).nota=181
+       EndIf   
+       If Trabajo(i,j).nota=254 Then
+          Trabajo(i,j).nota=181
+          Trabajo(i,j).dur=0
+       EndIf
+       If Trabajo(i,j).dur=254 Then
+          Trabajo(i,j).dur=0
+          Trabajo(i,j).nota=181
+       EndIf   
+       If Trabajo(i,j).nota=253 Then
+          Trabajo(i,j).nota=181
+          Trabajo(i,j).dur=0
+       EndIf
+       If Trabajo(i,j).dur=253 Then
+          Trabajo(i,j).dur=0
+          Trabajo(i,j).nota=181
+       EndIf   
+'/   
        Roll.TRK(i,j)  => Trabajo (i,j) '
       Next i
 
@@ -2388,13 +2450,62 @@ End Sub
 Sub GrabarArchivo (nombre As String)
      ''Open "Trabajo_03.roll" For Binary Access write As #2
      ''Open nombreArchivo +".roll" For Binary Access write As #2
-     Open nombre  For Binary Access write As #2
+    Open nombre  For Binary Access write As #2
+  ''''  Open "test-AAAAA.TXT" For Output    As #2
      Dim Trabajo (NB To NA, 1 To Maxpos) As dat
      Dim grabaPos (1,1)  As dat
      Dim grabaLim (1,1)  As dat 
-     Dim As Integer i1, i2
+     Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0
+'eliminar columnas marcadas al grabar disco, 0 + X
+Print #1, "inicio MaxPos "; MaxPos
+ For i2 = 1 To MaxPos
+     For i1 = NB To NA
+       If Roll.trk(i1,i2 ).nota=190 And Roll.trk(i1,i2 ).dur=190 Then
+          borrocol= 1 'Atrapa al menso un caso
+       EndIf
+       If Roll.trk(i1,i2 ).nota >=1 And Roll.trk(i1,i2 ).nota<=12 Then
+          haynota=1 ' atrapa al menso 1 caso
+       EndIf
+       
+       If i1= NA And haynota=1 Then ' sihay unasola notaen la columna no borro
+         res=0 ' no borrar
+       Else
+          If borrocol = 1 Then
+             res=1  
+          EndIf  
+       EndIf            
+    Next i1
+    i1=0  
+    If borrocol = 0 Or res=0 Then 'copio columna no borro
+       k=k+1
+      For i1 = NB To NA
+          Trabajo(i1,k)=Roll.trk(i1,i2 )
+      Next i1
+    EndIf
+      
+    borrocol=0:res=0:haynota=0
+ Next i2
+' MaxPos = k JMG 16-05-2021 TODAVIA NO SE COMO SE ACHICA LA SECUENCIA 
+' AL GRABAR NO SOLO CON MAXPOS PARECE,,,ANDA BIEN PERO SI CONSERVO MAXPOS
+' DEL MISMO VALOR EN VEZ DE K     
+
+Print #1, "final MaxPos "; MaxPos
+Print "---------------------------------------- K= "; K
+  For i1 = NB To NA
+  Print #1,i1;"|";
+    For i2 = 1 To MaxPos
+       Print #1,Trabajo(i1,i2).nota;"*";Trabajo(i1,i2).dur;"|";
+    Next i2
+    Print #1,
+   Print #1,"------------------------------------------" 
+  Next i1
+  
+ '''Shell "NOTEPAD test-AAAAA.TXT" 
+''''Exit sub
      Dim As Integer y1,y2,y3,y4, y5,y6 ' y5 e y6 son los limites NB y NA
      Dim As String a1,a2,a3,a4 ,x
+     
+     
      x= Bin(MaxPos,16)
      '    Print #1,"Posicion ",Posicion
      'Print "string representando ", x
@@ -2421,31 +2532,32 @@ Sub GrabarArchivo (nombre As String)
      
      
      ' ------------------------------------
-     ' hacemoslo mismo para l ultim not que se grabo que teng el 66
-     ' esa es lapapa recorremos todas las dur de las notas en donde este el 181
-     ' endur tomamosla nota y esala grabamos en pb o ins
+     ' para seguir poniendo notas nuevas
+     ' hacemoslo mismo para l ultima not que se grabo que teng el 182
+     ' esa es lapapa recorremos todas las dur de las notas en donde este el 182
+     ' en dur tomamosla nota y esala grabamos en pb o ins
      ' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
      ' -------------------------------------
-     Dim As Integer i,j,notafinal
-     For i = NB To NA
-      If Roll.trk(i,posicion+1).dur = 182 Then
-       notafinal= Roll.trk(i,posicion).nota
+    Dim As Integer i,j,notafinal
+'    For j = 1 To MaxPos
+'     For i = NB To NA
+'      If Roll.trk(i,posicion+1).dur = 182 Then
+'       notafinal= Roll.trk(i,posicion).nota
        '        Print #1, "ENCONTRO NOTA FINAL ", notafinal
        '        Print "ENCONTRO NOTA FINAL ", notafinal
        ' esten la posiciond ela ultimanotapero grasoerror
-       ' o seaque no tiene duracion solo el34
+       ' o seaque no tiene duracion solo el 182
        ' esta mal ...
-       Exit For
-      EndIf
-     Next i
+'       Exit For
+'      EndIf
+'     Next i
+'    Next j
      grabaPos(1,1).pb = notafinal
+ '    Print #1,"****))) nota final y dur final "; notafinal,Roll.trk(i,posicion+1).dur
+     '****))) nota final y dur final  0   0
+     ' no existe mas 182 no se graba enningun lado q raro
      ' Grabacion de Trabajo
      ' ------------------------------------
-     For i1 = NB To NA
-      For i2 = 1 To MaxPos
-       Trabajo(i1,i2)=Roll.trk(i1,i2 )
-      Next i2
-     Next i1
 
      '  Print #1,"MaxPos grabada en Trabajo ",MaxPos
 
@@ -2754,7 +2866,6 @@ mitipo=  CInt(tipo)
 
 'SendMessage(GadgetID(1), EM_REPLACESEL, 0,@TEXT) 'PASTE
 
-                   
   
 '' fin ruso
 
@@ -2793,7 +2904,77 @@ Loop
 
 End Sub
  
+Sub grabaprueba()
+Print #1,"MAxPos inicio ", MAxPos
+     Dim Trabajo (NB To NA, 1 To Maxpos) As dat
+     Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0
+'eliminar columnas marcadas al grabar disco
+ For i2 = 1 To MaxPos
+     For i1 = NB To NA
+       If Roll.trk(i1,i2 ).nota=254 And Roll.trk(i1,i2 ).dur=254 Then
+          borrocol= 1 'Atrapa al menso un caso
+          
+       EndIf
+       If Roll.trk(i1,i2 ).nota >=1 And Roll.trk(i1,i2 ).nota<=12 Then
+          haynota=1 ' atrapa al menso 1 caso
+          Print #1, Roll.trk(i1,i2 ).nota;"*";Roll.trk(i1,i2 ).dur;"|";
+       EndIf
+       
+       If i1= NA And haynota=1 Then ' sihay unasola notaen la columna no borro
+         res=0 ' no borrar IMPRIME
+       Else
+          If borrocol = 1 Then
+             res=1  
+          EndIf  
+       EndIf            
+    Next i1
+      
+      If borrocol = 0 Or res=0 Then 'copio columna no borro
+        k=k+1
+        For i1 = NB To NA
+          Trabajo(i1,k)=Roll.trk(i1,i2 )
+          If Trabajo(i1,k).nota >=1 And Trabajo(i1,k).nota<=12 Then
+          Print #1,"C:"; Trabajo(i1,k).nota;"*";Trabajo(i1,k).dur;"|";
+          EndIf  
+        Next i1
+      
+      Else
+       MaxPos=MaxPos -1  
+      EndIf
+      
+      borrocol=0:res=0:haynota=0
+      Print #1,
+ Next i2
+'-------------------------
+ Print #1,"MAxPos Final ", MAxPos
+Print #1,"------------------------------------------"
+For i1 = NB To NA
+    For i2 = 1 To MaxPos
+     If Trabajo(i1,i2).nota = 181 Then 
+        Trabajo(i1,i2).nota = 0
+     EndIf
+     If Trabajo(i1,i2).dur = 181 Then 
+        Trabajo(i1,i2).dur = 0
+     EndIf
+     If Trabajo(i1,i2).nota = 254 Then 
+        Trabajo(i1,i2).nota = 0
+     EndIf
+     If Trabajo(i1,i2).dur = 254 Then 
+        Trabajo(i1,i2).dur = 0
+     EndIf
+'     If Trabajo(i1,i2).nota >=1 And Trabajo(i1,i2).nota<=12 Then  
+'       Print #1, Trabajo(i1,i2).nota;"*";Trabajo(i1,i2).dur;"|";
+'     EndIf  
+     Print #1, Trabajo(i1,i2).nota;"*";Trabajo(i1,i2).dur;"|";
+    Next i2
+    Print #1,
+   Print #1, "------------------------------------------" 
+Next i1
+'shell"notepad midebug.txt"
+Exit Sub 
+'-------------------------
 
+End Sub
 
 
 

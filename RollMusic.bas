@@ -1,3 +1,7 @@
+' la forma facil de borrar seria grabar a disco cuando se está
+' en posicion con 254 saltar esa posicion y restar 1 a la posicion final.
+
+' - se puede dar play detener y las notas se ilumina de color fuccia..
 ' configuracion MIDI seleccion de port de entrada o de salida
 ''https://www.freebasic.net/forum/viewtopic.php?t=25312
 ' agregar detener play con barra espaciadora y comenzar desde 
@@ -135,6 +139,7 @@ ScreenControl  SET_DRIVER_NAME,"GDI"
 Open "midebug.txt" for Output As #1
 
 Open "mivector.txt" for Output As #3
+Print #1, Date ; " ";Time
 
 ''Open cons  for Output As #1
 
@@ -913,10 +918,9 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
   EndIf
 
  Else
-  '' PlayRoll()
- 
    If playb = 0 Then
       playb=1
+      Print #1,"SPACE call play"
       thread1 = ThreadCreate(@PlayRoll)
       menunew=0
    EndIf
@@ -1130,13 +1134,20 @@ If comEdit = TRUE Then
   If MultiKey(SC_8) Then
    DUR = 8:Exit Do
   EndIf
-  If MultiKey(SC_9) Then
+  If MultiKey(SC_9) Then 'espacio en edit sin cursor
    DUR = 181:Exit Do
   EndIf
 
-  If MultiKey(SC_0) Then ' FIN
-   DUR = 182:Exit Do
+
+  If MultiKey(SC_CONTROL) And MultiKey(SC_0) Then ' fin seq en edit sin cursor
+       DUR = 182:Exit Do
+       nota=0
   EndIf
+  If  MultiKey(SC_0) Then ' fin seq en edit sin cursor
+       nota=0
+       DUR = 0:Exit Do
+  EndIf
+
 
   If MultiKey(SC_PERIOD) Then
      pun = 1  ' puntillo      
@@ -1242,7 +1253,8 @@ EndIf
 ' al usar iniciodeLectura, pero eso sí, con inicio congelaba el movimiento
 ' del roll ante una entrada de nota hasta el próximo incremento de pantalla
 ' SOLO SEUSAPARAINGRESO DE NOTAS NUEVAS ..VERIFICANDO JMG
-If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Then
+If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
+   And carga=0 And nota <=182 Then
  'Print #1,"--------------------------------------------------------------"
  'Print #1,">>>START NUCLEO-COMPAS VECTOR posn: "; posn; "suma:";acumulado
  'Print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;_
@@ -1305,8 +1317,8 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
    If notaOld > 0 And notaOld <> nota  then
     Roll.trk((notaOld +(estoyEnOctavaOld -1) * 13),posn).dur = 181
     Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).dur = 181
-    Roll.trk((notaOld +(estoyEnOctavaOld -1) * 13),posn).nota = 181
-    Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota = 181
+    Roll.trk((notaOld +(estoyEnOctavaOld -1) * 13),posn).nota = 0
+    Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota = 0
 
     '''ojo probar todo inserciones x  etc    endif
    EndIf
@@ -1329,14 +1341,14 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 Th
 
    Dim as Integer noct ''oclog = 8 - (estoyEnOctava-1)
    For noct = desde To hasta
-     For i= 1 To 12 ' gracias a esto anda acordes
+     For i= 1 To 12 ' gracias a esto anda acordes¿?
        If i= nota And noct = estoyEnOctava Then
          Continue For
        Else    
          If Roll.trk((i +(noct -1) * 13),posn).nota = 0 Then
             Roll.trk((i +(noct -1) * 13), posn).nota = 181
          EndIf
-         If Roll.trk((i +(noct -1) * 13),posn).nota = 182 Then
+         If Roll.trk((i +(noct -1) * 13),posn).nota = 182 and posn<>MaxPos Then
             Roll.trk((i +(noct -1) * 13),posn).nota = 181
          EndIf
        EndIf

@@ -146,7 +146,6 @@ End Sub
 
 Sub PlayRoll ( )
 ' tiempo es cuantas negras en un minuto tiempoPAtron
-
 ' Dim dur, nota
 Dim As UInteger eventCode, runningStatus
 Dim As Double tiempoDUR, tiempoFigura=0
@@ -252,6 +251,7 @@ Dim As Double tinicio
 jply=0:curpos=0
 mousex=0
 For jply=comienzo To final
+Print #1,"-----------------------------------------"
  If curpos > NroCol  Then
     curpos = NroCol
     posishow=0
@@ -321,7 +321,7 @@ For jply=comienzo To final
               exit For
            EndIf 
          Next x
-'      Print #1,"dura + durb "; dura   
+      Print #1,"dura + durb "; dura   
          liga=1
          durb=0
          durl=0
@@ -342,7 +342,7 @@ For jply=comienzo To final
         '' notacur=i
       EndIf 
       If liga=0 Then  
- '       Print #1,"liga=0 "
+        Print #1,"liga=0 "
         If (maxdur >=46 And maxdur <= 90 ) Or (maxdur >=136 And maxdur <= 180 ) Then
           vel =0
         Else
@@ -355,21 +355,26 @@ For jply=comienzo To final
  
         cx = cx + 1   ' 1) 1
         non (cx) = notapiano '1) G
- '       Print #1, "ON==>  notapiano, vel, canal ";notapiano, vel, canal
- '       Print #1,"cx ";cx 
-        Sleep 1,1
+        Print #1, "ON==>  notapiano, vel, canal ";notapiano, vel, canal
+        Print #1,"cx ";cx 
+      ''''''  Sleep 1,1
         old_time=Timer
       Else
- '       Print #1,"liga=1 no se envia noteon " 
+        Print #1,"liga=1 no se envia noteon " 
         liga=0 
       EndIf 
    EndIf
 
    If i=NB And durb = 0 Then ' envio noteoff 1) no entra
  ''Sleep segun duracion o Timer de la q mas dura o para cada uno
-  '   Print #1,"i=NB maxdur: ";maxdur
       ' tiempoPatron input al redimsub
- '     Print #1,"i=";i," maxdur=";maxdur; " figura=";figura(maxdur)
+    Print #1,"i=NB=";i," maxdur=";maxdur;  
+    If maxdur > 0 And maxdur <= 182 Then
+       Print #1, figura(maxdur)
+    Else 
+       Print #1, "No se puede mostrar"  
+    EndIf   
+    
   ''''   duracion (maxdur)
 '''' DURACION  
 
@@ -402,11 +407,11 @@ For jply=comienzo To final
      For ioff=1 To cx
      noteoff non(ioff),canal
 
-'     Print #1, "OFF==>   non(ioff),  canal "; non(ioff),canal
+     Print #1, "OFF==>   non(ioff),  canal "; non(ioff),canal
      Next ioff
  '    Print #1,"pasó for de off .."
  '    Print #1," ==============> fin paso...j"; j   
-  EndIf 
+   EndIf 
   Next i
 
 '  Print #1,"COMIENZA OTRA  POSICION O J ======"; j
@@ -414,6 +419,7 @@ For jply=comienzo To final
    cx=0
   EndIf
   con=0 
+  maxdur=0 '13-05-2021 16:08
 'https://www.freebasic.net/forum/viewtopic.php?t=19174  
   'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
   mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
