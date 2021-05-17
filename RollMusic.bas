@@ -1176,7 +1176,10 @@ If comEdit = TRUE Then
    ' indicadorde silencio solo para calculo de compas
   EndIf
 
-
+  If MultiKey(SC_CONTROL) And MultiKey(SC_DELETE) Then
+  ' BORRAR COLUMNA UTOMATICO LUEGO DE BORRAR NOTAS CON 0 Y X
+     borrarColumnasMarcadas()
+  EndIf
 
  EndIf
  ' ojo ver q no habia  exit do antes !!!!!

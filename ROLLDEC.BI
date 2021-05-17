@@ -33,6 +33,7 @@ Declare Sub sigh_print_selection Cdecl ( Byval gtklist As GtkWidget Ptr, Byval f
 Declare sub selport(ByVal tipo As any ptr) 
 Declare Sub ComboBox()
 Declare Sub grabaprueba()
+Declare Sub borrarColumnasMarcadas()
 
 'Declare Sub getfiles(Byref File As OpenFileName,flag As String)
 ' mover nota 

@@ -2490,6 +2490,19 @@ Print #1, "inicio MaxPos "; MaxPos
 ' AL GRABAR NO SOLO CON MAXPOS PARECE,,,ANDA BIEN PERO SI CONSERVO MAXPOS
 ' DEL MISMO VALOR EN VEZ DE K     
 
+
+posn=k        
+Dim As Integer r1
+For i1=NB To NA 
+  For r1= posn+1 To MaxPos
+    Trabajo(i1,r1).nota=0
+    Trabajo(i1,r1).dur=0 
+  Next r1 
+Next i1  
+
+
+
+
 Print #1, "final MaxPos "; MaxPos
 Print #1,"---------------------------------------- K= "; K
   For i1 = NB To NA
@@ -2976,6 +2989,59 @@ Exit Sub
 '-------------------------
 
 End Sub
-
+Sub borrarColumnasMarcadas()
+' toda columna en una posicion que tengasolo 190 en su nota y durcion
+' seraeliminada y todaslas demas desplazadas a izquierda,.
+Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0
+    For i2 = 1 To MaxPos
+     For i1 = NB To NA
+       If Roll.trk(i1,i2 ).nota=190 And Roll.trk(i1,i2 ).dur=190 Then
+          borrocol= 1 'Atrapa al menso un caso
+       EndIf
+       If Roll.trk(i1,i2 ).nota >=1 And Roll.trk(i1,i2 ).nota<=12 Then
+          haynota=1 ' atrapa al menso 1 caso
+       EndIf
+       
+       If i1= NA And haynota=1 Then ' sihay unasola notaen la columna no borro
+         res=0 ' no borrar
+       Else
+          If borrocol = 1 Then
+             res=1  
+          EndIf  
+       EndIf            
+    Next i1
+    i1=0  
+    If borrocol = 0 Or res=0 Then 'copio columna no borro
+       k=k+1
+      For i1 = NB To NA
+          Roll.trk(i1,k)=Roll.trk(i1,i2 )
+      Next i1
+    EndIf
+      
+    borrocol=0:res=0:haynota=0
+ Next i2
+' Dim k1 As Integer
+' dejo el mismo largo o achico??? --achico
+' For i2 = k+1 To MaxPos
+'     For i1 = NB To NA
+'     Roll.trk(i1,i2 ).nota=0
+'     Roll.trk(i1,i2 ).dur=0
+'     Roll.trk(i1,i2 ).vol=0
+'     Roll.trk(i1,i2 ).pan=0
+'     Roll.trk(i1,i2 ).inst=0
+'     Next i1
+' Next i2
+ 
+'MaxPos=k+1
+        
+'Dim As Integer r1,i
+'For i=NB To NA 
+'  For r1= k+1 To MaxPos
+'    Roll.trk(i,r1).nota=0
+'    Roll.trk(i,r1).dur=0 
+'  Next r1 
+'Next i  
+ 
+End SUB
 
 

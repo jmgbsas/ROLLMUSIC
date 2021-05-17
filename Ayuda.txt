@@ -123,9 +123,14 @@ UBICAR CURSOR PULSAR ESPACIO.
 Y LUEGO X PARA MODIFICAR..SE PUEDE SEGUIR BORRARNDO OTRAS NOTAS
 UBICANDO EL CURSOR Y SOLO CON X REPITE LA ULTIMA NOTA EN ESTE CASO ESPACIO.
 
+2.5.3) Borrado de columna o posicion, en Cursor modificar cada nota en cualquier
+       columna pulsando 0 y luego X para modificar no dejando ninguna nota visible 
+       enla posicion elegida,luego de terminado deborrar las posiciones
+       ahi mismo sin salir de Cursor pulsando Ctrl-Delete o Ctrl-Supr.
+       Se borrarran las posiciones marcadas,
 III) En esta version alfa en un acorde la nota mas larga marca la duracion si hay
      duraciones diferentes en un mismo acorde..
-     el metodo de play y elvector que tenga los datos se cambiará,por ahora solo es de prueba.
+     el metodo de play y el vector que tenga los datos se cambiará,por ahora solo es de prueba.
      y se usa el mismo vector de visualizacion para el play, para hacer los tracks no se usará
      el vector de visualiacion se hará nuevos que solo sea un secuencia 
      sin datos paralelos...los paralelos solo se usarán en la visualizacion.
