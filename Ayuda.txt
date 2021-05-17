@@ -19,7 +19,8 @@
     2.1.1) Entrada por teclado
     2.1.2) Entrada por mouse y teclado
     
-    2.2) MODO EDIT CURSOR ( En MODO EDIT pulsar CTRL+M O dar CTRL+click            derecho)
+    2.2) MODO EDIT CURSOR ( En MODO EDIT pulsar CTRL+M O dar CTRL+click derecho
+         en modo mouse)
     2.3) Modificacion.
     2.4) Copiar
     2.5) Borrar 1 Nota.
@@ -60,9 +61,11 @@
    - Pasar a Edicion clickendo [Edicion], aparecera la cinta Edit.
    - Dar click a Edit. Segun se mueva el cursor el texto ira cambiando a color verde
      indicando la octava elegida.
-   - Estando sobre una octava elegida con el mouse, pulsar una duracion de 0 a 9
+   - Estando sobre una octava elegida con el mouse, pulsar una duracion de 1 a 8
      1=O redonda, 2=P blanca, 3=I negra, 4=L corchea, 5=F semicorchea, 6=E fusa,
-     7=X semifusa, 8=H garrapatea, 9=W semigarrapatea, 0=Fin Secuencia.
+     7=X semifusa, 8=H garrapatea, 9=W semigarrapatea, 9=espacio,ctrl-0=Fin Secuencia.
+     En modo Cursor: 0=marcar borrar columna seguidode X.(por ahora el borado se ejecuta al guardar
+     el archivo al cargarlo de nuevo se ve el efecto del borrado).
      Luego pulsar una nota en alfabeto americano C,D,E,F,G,A,B, o las mimsas notas
      pero sostenido usando Ctrl-C, ctrl-D ..etc.
      Si repetimos la misma duracion en diferentes nota subsiguientes, basta pulsar las 
@@ -76,7 +79,7 @@
      Notas Guia por ejemplo sobre  ' C_3_[ ' y se estara editando esa nueva octava
      no pudiendo hacerlo en la de antes eso evita errores de entrada.
 
-2.1.2) Entrada Por mouse y Teclado 
+   2.1.2) Entrada Por mouse y Teclado 
    - estando habilitada una octava como en 2) se hace click derecho aparece un menu de
      notas contextual se da click a la deseada y se da click sobre la nota deseada, se puede
      seguir dando click a otras notas con la misma duracion sin neceidad de traer el menu
@@ -91,13 +94,14 @@ II) MODO CURSOR O MODIFICACION.
 
      Modificar por teclado
 
-     Elegir por teclado la duracion pulsando 1 a 9 (0 fin archivo)
+     Elegir por teclado la duracion pulsando 1 a 8 (9, espacio, 0 fin secuencia )
      posicionar el cursor con teclas ( arriba abajo derecha izquierda)
      sobre la nota deseada en la octava elegida, pulsar X, se cambiara la duracion
      a la deseaada
      
      Entrar o Modificar por teclado 2da opción Ctrl-N
-     Elegir por teclado duracion 1 a 9 o por click derecho aparece el menu contextual de duraciones. Posicionarse en una posicion con las teclas de flechas, y luego pulsar
+     Elegir por teclado duracion 1 a 9 o por click derecho aparece el menu contextual 
+     de duraciones. Posicionarse en una posicion con las teclas de flechas, y luego pulsar
      la nota en teclado. O dar click  con el mouse en cualqueir lado que se desee, sin
      usar las flechas de teclado.
      De Ctrl-N (se sale con ctrl-p tambien)
@@ -118,6 +122,14 @@ UBICAR CURSOR PULSAR ESPACIO.
 2.5.2) BORRAR EN CTRL-M O CURSOR UBICAR EL CURSOR SOBRE LA NOTA PULSAR ESPACIO
 Y LUEGO X PARA MODIFICAR..SE PUEDE SEGUIR BORRARNDO OTRAS NOTAS
 UBICANDO EL CURSOR Y SOLO CON X REPITE LA ULTIMA NOTA EN ESTE CASO ESPACIO.
+
+III) En esta version alfa en un acorde la nota mas larga marca la duracion si hay
+     duraciones diferentes en un mismo acorde..
+     el metodo de play y elvector que tenga los datos se cambiará,por ahora solo es de prueba.
+     y se usa el mismo vector de visualizacion para el play, para hacer los tracks no se usará
+     el vector de visualiacion se hará nuevos que solo sea un secuencia 
+     sin datos paralelos...los paralelos solo se usarán en la visualizacion.
+
 
 
     

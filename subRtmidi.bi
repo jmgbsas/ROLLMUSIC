@@ -283,7 +283,7 @@ Print #1,"-----------------------------------------"
 ' ojo con silencios ligados !!!
  
   For i=NA To NB Step -1 
-   
+    
    If (Roll.trk(i,jply).nota >= 1) And Roll.trk(i,jply).nota <= 12 _
       And Roll.trk(i,jply).dur >=1 And Roll.trk(i,jply).dur <= 180 Then ' es semitono 
       Notapiano= 117-i 
@@ -300,24 +300,24 @@ Print #1,"-----------------------------------------"
 ' la suma nunca caera en otro grupo silencio nosera, y '+' tampoco si era
 ' el1er grupo por ejemplo 1 a 27       
 
-         Select Case durl
-            Case  1 To  45 
-           '  silencio=0
-             inicio=1:fin=45
-            Case  91 To 135
-           '  silencio=0
-             inicio=91:fin=135
-            Case  37 To  90 
-           '  silencio=1
-             inicio=37:fin=90
-            Case  136 To 180 
-           '  silencio=1
-             inicio=136:fin=180
-
-         End Select          
-         For x= inicio To fin  ' el resto de durciones se repiten   
+    '     Select Case durb
+    '        Case  1 To  45 
+    '       '  silencio=0
+    '         inicio=1:fin=45
+    '        Case  91 To 135
+    '       '  silencio=0
+    '         inicio=91:fin=135
+    '        Case  37 To  90 
+    '       '  silencio=1
+    '         inicio=37:fin=90
+    '        Case  136 To 180 
+    '       '  silencio=1
+    '         inicio=136:fin=180
+'
+ '        End Select          
+         For x= 1 To 45  ' el resto de durciones se repiten   
            If durl=reldur(x) Then
-              dura=x ' determino x 1 to 108 en su grupo original
+              dura=x ' válido hasta duraciones de 7 negras relativas
               exit For
            EndIf 
          Next x
@@ -332,14 +332,21 @@ Print #1,"-----------------------------------------"
       EndIf   
       If con=0 Then
         maxdur=dura  ' 1) I, 2) P
+        Print #1, jply; " con=0 atrapa dura maxdura ";dura, maxdur
          con = 1
       EndIf
       'vel=Roll.trk(i,j).vel
       ' etc...
 ' SACAR ESTO TOCAR ACORDE CADA ELEMENTO CON SU DURACION        
-      If dura < maxdur Then ' esto lo debo sacar y tocar todas las notas con su duracion
+      If relDur(dura) > relDur(maxdur) Then ' esto lo debo sacar y tocar todas las notas con su duracion
          maxdur= dura ' 1) I, 2) P cuantoms chica dur es mas grnde en relidd
+      Print #1,jply;"if dura-figura "; dura, figura(dura)
+      Print #1,jply;"if cambio Maxdur-figura "; Maxdur, figura(Maxdur)
+      Else    
         '' notacur=i
+      Print #1,jply;"else dura-figura "; dura, figura(dura)
+      Print #1,jply;"sigue igual else Maxdur-figura "; Maxdur, figura(Maxdur)
+
       EndIf 
       If liga=0 Then  
         Print #1,"liga=0 "
@@ -379,7 +386,8 @@ Print #1,"-----------------------------------------"
 '''' DURACION  
 
  
- tiempoFigura = relDur(dura)*tiempoDUR  
+ tiempoFigura = relDur(maxdur)*tiempoDUR
+ Print #1, "tiempoFigura ";tiempoFigura  
   Do
 
  ' Sleep 1,1

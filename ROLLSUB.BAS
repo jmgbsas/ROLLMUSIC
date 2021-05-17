@@ -139,7 +139,7 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
     cairo_show_text(c, t)
  ' ' jmg 11-05-2021 1839 start
     If  n=jply Then
-    curpos=n 
+    curpos= n - 1 
        cursor(c,n,nro)
    ''   cairo_stroke(c) ''nohcefalta
       cairo_set_source_rgba(c, 1, 1, 1, 1)
@@ -633,6 +633,7 @@ EndIf
 If notacur=0 Then
   notacur=1
 EndIf
+
 If copiar=3 And Roll.trk(notacur + (nro-1) * 13, n+curpos).dur = vdur _
    And notacur=vnota Then
    copiar=0:vdur=0:vnota=0  
@@ -2490,7 +2491,7 @@ Print #1, "inicio MaxPos "; MaxPos
 ' DEL MISMO VALOR EN VEZ DE K     
 
 Print #1, "final MaxPos "; MaxPos
-Print "---------------------------------------- K= "; K
+Print #1,"---------------------------------------- K= "; K
   For i1 = NB To NA
   Print #1,i1;"|";
     For i2 = 1 To MaxPos
