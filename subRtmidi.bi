@@ -385,23 +385,25 @@ Print #1,"-----------------------------------------"
   ''''   duracion (maxdur)
 '''' DURACION  
 
+ If maxdur >= 1 And maxdur<= 180 Then 
+    tiempoFigura = relDur(maxdur)*tiempoDUR
  
- tiempoFigura = relDur(maxdur)*tiempoDUR
- Print #1, "tiempoFigura ";tiempoFigura  
-  Do
+   Print #1, "tiempoFigura ";tiempoFigura  
+   Do
 
  ' Sleep 1,1
  ' sleep5dm()
 ' -------------sleep5fm 
-  Dim As Double start,final
-   start=Timer
+    Dim As Double start,final
+    start=Timer
     Do
-     If (Timer-start) > 0.0001 Then ' 0.1 MILESIMA DE PRESICION DE DURACION
-       Exit Do
-    EndIf
-  Loop
+      If (Timer-start) > 0.0001 Then ' 0.1 MILESIMA DE PRESICION DE DURACION
+        Exit Do
+      EndIf
+    Loop
 
-  Loop Until (Timer - old_time) >= tiempoFigura
+   Loop Until (Timer - old_time) >= tiempoFigura
+ EndIf 
 ' ---------------     
 ' FIN DURACION 
 ' ACA ODRIA ORDENAR LAS DURACIONE DE MENORA MAYOR CALCULARLSO INCREMENTOS

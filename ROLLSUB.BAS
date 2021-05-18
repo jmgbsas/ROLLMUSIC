@@ -112,22 +112,23 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
                EndIf
             EndIf   
          EndIf
-         If cursorVert=1 And Borrar=1 Then  ' BORRADO LIBRE
-            If ((n - inicioDeLectura)=curpos)  Then
-               Roll.trk (semitono + (nro-1) * 13, n ).dur = 190
-               Roll.trk (semitono + (nro-1) * 13, n ).nota = 190
-               If fijarEspacio=0 Then
-                  Borrar=0
-               EndIf
-            EndIf   
-         EndIf
+     ' BORRADO LIBRE NO MARCA SOLO BLANCO habilita para usar nota=0    
+    '     If cursorVert=1 And Borrar=1 Then  
+    '        If ((n - inicioDeLectura)=curpos)  Then
+    '           Roll.trk (semitono + (nro-1) * 13, n ).dur = 0
+    '           Roll.trk (semitono + (nro-1) * 13, n ).nota = 0
+    '           If fijarEspacio=0 Then
+    '              Borrar=0
+    '           EndIf
+    '        EndIf   
+    '     EndIf
       EndIf    
    
         
     cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 4)
     Dim As Integer indf
     indf= Roll.trk (semitono + (nro-1) * 13, n).dur
-    If (indf >= 1 And indf <= 180)  Then ' 13-05-2021 11
+    If (indf >= 1 And indf <= 182)  Then ' 13-05-2021 11
     Else
        indf=181
     EndIf ' t no puede quedar en un scope dsitinto se hace shared    
@@ -225,7 +226,9 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
   EnOctava=1
   ' CURSOR
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
-  cursor(c,posicion,nro)
+  If cursorHori=1 And cursorVert=1 Or play=1 Or playb=1 Then
+    cursor(c,posicion,nro)
+  EndIf
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
   'PERO PIERDO EL COLOR MARILLO DEL CURSOR
   cairo_set_source_rgba c, 0, 0, 0, 1
@@ -390,7 +393,9 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
  EndIf
  If cursorVert= 0 And cursorHori=0 Then
   If notacur=1 Then
+   Print #1,"notaold en cursor ";notaold
    notaOld=notacur
+   Print #1,"notaold en cursor laigualo a 1 ";notaold
    notacur=0
   EndIf
   cairo_move_to  (c,81 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
@@ -402,16 +407,18 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
   cairo_rectangle(c,81 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
  EndIf
-' If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
- If  borrar= 1 Then
+ If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
+' HABILITAR NOTA AL PONER EN CERO SE PUEDE USAR EN EDIT COMUN
+''' If  borrar= 1 Then ' 
   cairo_set_source_rgba c, 1, 0, 0.2, 1
   Dim dursaved As Integer
   If notacur=0 Then
-   notacur=notaOld
+   notacur=notaOld 
   EndIf
   'dursaved = Roll.trk(notacur + (nro-1) * 13, n + curpos).dur
   ' debo cambiar esa nota por (equivalente en silencio no va mas
-  'para eso entra un silencio) se pone nota cero y dur 181
+  'para eso entra un silencio) se pone nota cero y dur 0
+  
   Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 0
   Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = 0
   'Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = dursaved + 16
@@ -447,13 +454,13 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
 
   
  If DUR=181 Then
-     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 0
+     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 181
      Roll.trk(notacur + (nro-1) * 13, n + curpos).nota =181   ' 5.7.2
      cambiadur = 0
      DUR=0
  ElseIf DUR=182 Then ' borrado
-     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 0
-     Roll.trk(notacur + (nro-1) * 13, n + curpos).nota =182   ' 5.7.2
+     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 182
+     Roll.trk(notacur + (nro-1) * 13, n + curpos).nota =0   ' 5.7.2
      cambiadur = 0
      DUR=0
  ElseIf DUR=0 Then ' borrado
@@ -748,8 +755,9 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
               play=1        
 '    If (MouseButtons And 1) Then
         menuNew =0
+        If  MaxPos > 1 Then
         thread1 = ThreadCreate(@PlayRoll)
-
+        EndIf 
         Print #1,"--->paso llamada a thread1 "
     ''    menuNew = 4 por hora sin elecciones
  '   EndIf

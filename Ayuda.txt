@@ -135,6 +135,19 @@ III) En esta version alfa en un acorde la nota mas larga marca la duracion si ha
      el vector de visualiacion se hará nuevos que solo sea un secuencia 
      sin datos paralelos...los paralelos solo se usarán en la visualizacion.
 
+TECLAS RAPIDAS
+(DUR,NOTA) 0,181
+ CTRL-M SPACE +X= 0,181 
+ CTRL-N SPACE 
+------------
+(DUR,NOTA) 190,190 MARCAR DUR,NOTA se obtiene con
+en   CTRL-M  pulsar 0 y luego X
+o en ctrl-m  pulsar DEL yluego  X
+----------------------
+(DUR,NOTA)  0,0 se obtiene con
+en  CTRL-M pulsar solo DEL, borra la nota pero la habilita a ser escrita en EDIT simple o sea ingreso de NOTA nueva.
+---------------
+       
 
 
     
