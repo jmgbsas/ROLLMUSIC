@@ -142,12 +142,287 @@ noteoff note4,canal
 noteoff note5,canal
  
 End Sub
-'------------------
-
-Sub PlayRoll ( )
+'-------------playAll-----21-05-2021-------
+Sub playAll() ' play version 2
 ' tiempo es cuantas negras en un minuto tiempoPAtron
-' Dim dur, nota
-Dim As UInteger eventCode, runningStatus
+' PLAY masavanzado en un mismo acorde si son de distinta duracion
+' sus notas se toca cada una con su propia duracion,el corde no termina
+' hasta queterminede tocar la nota mas larga.
+Dim As Double tiempoDUR, tiempoFigura=0
+tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
+
+midiout = rtmidi_out_create_default()
+'Print #1,"PLAYALL---------->>>>>>>"
+portsout =  port_count (midiout)
+'Print #1, "portsin  "; portsin
+Print #1, "portsout "; portsout
+Dim nombre As ZString ptr
+Dim  As Integer i1,i2,i3,i4,i5,j
+for i1 = 0 to portsout -1 
+    nombre = port_name(midiout, i1)
+ '   Print #1, *nombre
+Next i1  
+
+Dim leng As UInteger <8>
+Dim result As Integer
+
+portsout = portout
+*nombre = ""
+
+open_port (midiout,portsout, nombre)
+
+Dim As Integer final=MaxPos  , comienzo=1, notapiano, canal=1,vel=100
+Dim As Integer dura=0, maxdur=0,con=0,tiempo,ioff,cx=0,durb=0
+Dim As Integer non(1 To 180), liga=0,x=0, durval (1 To 45), silencio, fin, inicio
+Dim As Integer durl,indiceSimple=0
+Dim As Integer jcompas = 0, velpos =0
+Dim As Double tinicio   
+Dim pasoCol (NB To NA) As vec  ' entrada de durciones a medida que barro una columna
+Dim As Double start,finiche
+Dim cnt As Integer=0
+Print #1,"comienzo playaLL ==========> "
+jply=0:curpos=0
+mousex=0
+ Print #1,"-----------------------------------------"
+
+For jply=comienzo To final
+
+ If curpos > NroCol  Then
+    curpos = NroCol
+    posishow=0
+ EndIf
+
+ mousex=jply
+ If CONTROL1 = 1 Then
+   alloff( 1 )
+   CONTROL1=0
+   Exit For
+ EndIf  
+
+ If Compas(jply).nro = -1 Then
+    velpos=vfuerte
+ EndIf
+ If Compas(jply).nro = -2 Then
+    velpos=vdebil
+ EndIf
+ If Compas(jply).nro = -3 Then
+    velpos=vsemifuerte
+ EndIf
+ If Compas(jply).nro = -4 Then
+    velpos=vdebil
+ EndIf
+ If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
+    velpos=vdebil
+ EndIf
+' ojo con silencios ligados !!!
+ ' For i1=NA To NB
+ '  pasoCol(i1).dur=0
+ ' Next i1
+  cnt=0
+  
+  Print #1,"---START-----paso:";jply;" --------------------------------"
+  For i1=NA To NB Step -1 
+   ' cnt=0
+   If (Roll.trk(i1,jply).nota >= 1) And Roll.trk(i1,jply).nota <= 12 _
+      And Roll.trk(i1,jply).dur >=1 And Roll.trk(i1,jply).dur <= 180 Then ' es semitono 
+      Notapiano= 117-i1 
+      Notapiano= Notapiano - restar (Notapiano)
+      dura=Roll.trk(i1,jply).dur '1) I 2) I dur x 1 to 108
+      cnt=cnt+1
+      pasoCol(cnt).DUR =dura 
+      pasoCol(cnt).notapiano=Notapiano
+      indiceSimple=cnt
+'======procesa  secuencia
+      If durb > 0 Then ' 1 to 108
+       Print #1,"durb> 0, i1, jply ";durb,i1,jply
+         durl=relDur(durb)+relDur(dura)  '2) P
+         For x= 1 To 45  ' el resto de durciones se repiten   
+           If durl=reldur(x) Then
+              dura=x ' válido hasta duraciones de 7 negras relativas
+              exit For
+           EndIf 
+         Next x
+       Print #1,"dura + durb "; dura   
+         
+         Print #1,"liga=1 en cnt ";cnt
+         pasoCol(cnt).liga=1
+         durb=0
+         durl=0
+      EndIf   
+      If dura >= 91 And dura <=180 Then ' se suma la duración al siguiente
+         durb=dura  ' 1) I+, 2) no entra
+         Print #1,"entro nota ligada "; dura, figura(dura)
+         liga=1
+      EndIf   
+' SACAR ESTO TOCAR ACORDE CADA ELEMENTO CON SU DURACION        
+      If liga=0 Then  
+      '  Print #1,"liga=0 "
+        If (dura >=46 And dura <= 90 ) Or (dura >=136 And dura <= 180 ) Then
+          vel =0
+        Else
+          vel= velpos
+        EndIf
+      EndIf 
+     pasoCol(cnt).DUR =dura ' cargamos denuevoelvalorpor sihay liga 
+   EndIf
+' llegamos al final de la Columna
+   If i1=NB  Then 'And cnt >= 1 Then ' envio noteoff 1) no entra
+   
+       
+    If cnt > 1 Then  ' Acorde
+    Print #1,"i1=NB=";i1 ; " ACORDE cnt= ";cnt
+      For i2=1 To cnt 'Step -1 ' cargamos pasoCol ordReglDur de datos1 segun la DUR 
+           pasoCol(i2).ordRelDur=datos1(pasoCol(i2).DUR)
+           Print #1, "DUR,ordRelDur ";pasoCol(i2).DUR; " ";pasoCol(i2).ordRelDur
+      Next i2
+     'sort delvector pasoCol segun el ordRelDur y asirecuperamos el orden Asc de los relDur
+      qsort(@pasoCol(1).ordRelDur, cnt, SizeOf(vec), @QCompare )
+     ' Print #1,"-----------------------------------"
+      
+      old_time=Timer
+      Print #1,"old_time en ON ";old_time
+Print #1,"lectura de pasoCol acumulado y play acorde"
+Print #1," play acorde--ENVIO DE ONS --------------"
+      For i3=1 To cnt '  ON  
+
+Print #1,"datos4(pasoCol(i3).ordRelDur).Dur ";datos4(pasoCol(i3).ordRelDur).Dur
+Print #1,"pasoCol(i3).notapiano ";pasoCol(i3).notapiano
+          If pasoCol(cnt).liga=0 Then
+          Print #1,"NOTEON NOTAPIANO ";pasoCol(i3).notapiano; " ";figura(datos4(pasoCol(i3).ordRelDur).Dur)
+          noteon pasoCol(i3).notapiano, velpos, canal 
+          Print #1, "i3, DUR=> ";datos4(pasoCol(i3).ordRelDur).Dur 
+          Else
+             Print #1,"liga=1 no se envia noteon " 
+            pasoCol(cnt).liga=0 
+          EndIf 
+       Next i3   
+      Print #1,"ENVIO DE OFFSSS"
+      For i3=1 To cnt 'Step -1' OFF
+   
+           tiempoFigura = datos4(pasoCol(i3).ordRelDur).relDur * tiempoDUR
+           Print #1,"tiempofigura => ";tiempoFigura
+' en un acorde:
+' las nota off siempre deben enviarse en orden ASC, 1ero la mas corta y luego 
+' las mas largas pero el tiempode figura rtmidi lo calcula desde el old_time 
+ 
+
+           Print #1,"COMIENZA RETARDO En  old_time on :"; old_time
+           Do
+             start=Timer
+             Do
+               If (Timer-start) > 0.0001 Then ' 0.1 MILESIMA DE PRESICION DE DURACION
+                 Exit Do
+               EndIf
+             Loop
+           Loop Until (Timer - old_time) >= tiempoFigura
+           Print #1, "OFF==>  fin  canal "; canal
+           Print #1," noteoff notapiano "; pasoCol(i3).notapiano
+           noteoff pasoCol(i3).notapiano,canal
+
+           pasoCol(i3).dur=0
+           pasoCol(i3).notapiano=0
+
+     
+      Next i3
+ 
+    Else ' <==== SIMPLE secuencia melodica comun no acorde, borro elvectorde acorde
+    Print #1,"i1=NB=";i1 ; " SIMPLE cnt= ";cnt;" liga=";liga
+     If CNT= 0 Then
+       EXIT FOR
+     EndIf
+       pasoCol(indiceSimple).dur=0
+       pasoCol(indiceSimple).notapiano=0
+       tiempoFigura=0
+       
+     ' Print #1,"i=NB=";i," dura=";dura;
+      old_time=Timer
+      Print #1,"old_time SIMPLLE ";old_time
+      If liga=0 Then
+          Print #1,"SIMPLE notapiano: ";notapiano 
+          noteon notapiano, vel, canal ' 1) G
+      Else
+       
+       Print #1,"SIMPLE liga=1 no se envia noteon de la 2da nota despues de  +"
+        
+      EndIf
+      '  Print #1, "ON==>  notapiano, vel, canal ";notapiano, vel, canal
+      ' old_time=Timer
+  
+      If dura > 0 And dura <= 180 Then
+         Print #1, "SIMPLE FIGURA "; figura(dura)
+      Else 
+         Print #1, "SIMPLE No se puede mostrar"  
+      EndIf   
+      If liga=0 Then  
+        tiempoFigura = relDur(dura)*tiempoDUR
+        Print #1,"SIMPLE tiempoFigura: ";tiempoFigura
+  
+         Do
+           start=Timer
+           Do
+             If (Timer-start) > 0.0001 Then ' 0.1 MILESIMA DE PRESICION DE DURACION
+               Exit Do
+             EndIf
+           Loop
+
+         Loop Until (Timer - old_time) >= tiempoFigura
+         noteoff notapiano,canal
+      
+      Print #1, "OFF simple ==>   dura,  canal "; dura,canal
+      Else 
+         Print #1,"no se envia off de la 1er nota ligda +"
+         liga=0
+      EndIf
+    EndIf ' end else cnt > 1 
+    cnt=0
+   EndIf
+   
+  Next i1
+  Print #1,"---FIN -----paso:"; jply;" --------------------------------" 
+  
+  cnt=0
+'  Print #1,"COMIENZA OTRA  POSICION O J ======"; j
+ mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
+Next jply
+
+jply=0:curpos=0
+Sleep 1,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
+close_port(midiout)
+out_free(midiout) 
+play=0 
+playb=0
+mousey=100 'otra mas para evitar rentrar a play en menu
+finplay=1
+ ThreadDetach(thread1)
+' ================================FIN PLAYALL <<=================
+End Sub 
+' ---------------
+'' Comparison function for qsort
+Function QCompare Cdecl (Byval e1 As Any Ptr, _
+                         Byval e2 As Any Ptr) As Integer
+        Dim As Integer el1, el2
+        Static cnt As Integer
+        
+        'Get the call count and items passed
+        cnt += 1
+        'Get the values, must cast to integer ptr
+        el1 = *(Cptr(Integer Ptr, e1))
+        el2 = *(Cptr(Integer Ptr, e2))
+        'Print #1,"Qsort called";cnt;" time(s) with";el1;" and";el2;"."
+        'Compare the values
+        If el1 < el2 Then
+           return( -1 )
+        Elseif el1 > el2 Then
+           Return( 1 )
+        Else
+         return( 0 )
+        End If
+End Function
+
+' ----------------------
+ Sub PlayRoll ( ) ' 1er play version 0 
+' tiempo es cuantas negras en un minuto tiempoPAtron
+' los acrodes se tocan con la duracion de la nota mas larga que lo compone 
 Dim As Double tiempoDUR, tiempoFigura=0
 tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
 
@@ -492,7 +767,7 @@ Select Case notaroll
 End Select
 
 End Function
-Sub duracion (dura As Integer)
+ Sub duracion (dura As Integer)
  ' la duracion dependera del tiempo elegido I=60 o I=160 etc
 Dim As Double tiempo, tiempoFigura=0
 tiempo=60/tiempoPatron '60 seg/ cuantas negras enun minuto
@@ -518,7 +793,7 @@ Loop Until (Timer - old_time) >= tiempoFigura
 'EndIf
  
 End Sub
-Sub sleep5dm() '0,5 milesimo 1/5 parte de1 mseg 5dm 5 diez milesima 
+ Sub sleep5dm() '0,5 milesimo 1/5 parte de1 mseg 5dm 5 diez milesima 
 Dim As Double start,final
 start=Timer
 
@@ -529,11 +804,9 @@ Do
   EndIf
 Loop
 
-End sub
-
+End Sub
 Sub listports( )
 
-Dim As UInteger eventCode, runningStatus
 
 midiin  = rtmidi_in_create_default()
 midiout = rtmidi_out_create_default()

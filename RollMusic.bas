@@ -895,6 +895,12 @@ If MultiKey(SC_ESCAPE) Then
   FT_Done_Face( ftface )
 
   Close
+If play=1 Or playb=1 Then
+  alloff (1)
+  close_port(midiout)
+  out_free(midiout) 
+  ThreadDetach(thread1)
+EndIf
   End
  EndIf
 EndIf
@@ -921,7 +927,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
    If playb = 0 And MaxPos > 1 Then
       playb=1
       Print #1,"SPACE call play"
-      thread1 = ThreadCreate(@PlayRoll)
+      thread1 = ThreadCreate(@PlayAll)
       menunew=0
    EndIf
  EndIf  

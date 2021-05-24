@@ -138,7 +138,7 @@ Type mouse
 End Type
 Dim shared As mouse m
 Dim Shared As Double old_btn_press_time, new_btn_press_time,dbl_click_time,redimensionar=0
-dbl_click_time = 0.5
+dbl_click_time = 0.18
 
 Dim Shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1

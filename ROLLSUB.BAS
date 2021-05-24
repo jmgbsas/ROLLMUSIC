@@ -393,9 +393,9 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
  EndIf
  If cursorVert= 0 And cursorHori=0 Then
   If notacur=1 Then
-   Print #1,"notaold en cursor ";notaold
+   'Print #1,"notaold en cursor ";notaold
    notaOld=notacur
-   Print #1,"notaold en cursor laigualo a 1 ";notaold
+   'Print #1,"notaold en cursor laigualo a 1 ";notaold
    notacur=0
   EndIf
   cairo_move_to  (c,81 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
@@ -705,7 +705,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
  Select Case menuNro
   Case 0
   ' 0.1 ==> [Archivo]
-   If mousex > 38 And mousex< 117 And mousey < 50 Then
+   If mousex > 38 And mousex< 117 And mousey < 50  Then
     cairo_set_source_rgba c, 0, 1, 0, 1
     font=18 ' el menu esta diseñqdo para este tamaño
     If MouseButtons And 1 Then
@@ -738,7 +738,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    
    t=  " [Ver]":cairo_show_text(c, t)
 ' 0.4 ====> [Pista]
-   If mousex > 279 And mousex< 329 And mousey < 50 Then
+   If mousex > 279 And mousex< 329 And mousey < 50  Then
     cairo_set_source_rgba c, 0, 1, 0, 1
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -747,7 +747,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    t=  " [Pista]":cairo_show_text(c, t)
    ' ------------------------------------------
 ' 0.5 ===> [Reproducir]
-   If (mousex > 348 And mousex< 453 And mousey < 50  And dobleclick And play=0) Then
+   If MultiKey(sc_Control) AND (mousex > 348 And mousex< 453 And mousey < 50   And play=0) Then
     cairo_set_source_rgba c, 0, 1, 0, 1
       
      While InKey<>"" :Wend
@@ -756,7 +756,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
 '    If (MouseButtons And 1) Then
         menuNew =0
         If  MaxPos > 1 Then
-        thread1 = ThreadCreate(@PlayRoll)
+        thread1 = ThreadCreate(@PlayAll)
         EndIf 
         Print #1,"--->paso llamada a thread1 "
     ''    menuNew = 4 por hora sin elecciones
@@ -769,7 +769,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    t=  " [Reproducir]":cairo_show_text(c, t)
    ' --------------------------
  '0.7  ===> [Opciones]  
-   If mousex > 473 And mousex< 562 And mousey < 50 Then  'OPCIONES
+   If MultiKey(sc_Control) And mousex > 473 And mousex< 562 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      menuNew=5
@@ -780,7 +780,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    t=  " [Opciones]":cairo_show_text(c, t)
 
 ' 0.8 ===> [Ayuda]
-   If mousex > 582 And mousex< 643 And mousey < 50 Then
+   If MultiKey(sc_Control) And mousex > 582 And mousex< 643 And mousey < 50  Then
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
       Shell ("start notepad ayuda.txt")
@@ -865,7 +865,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    '   t = " [NUEVO] [ABRIR] [GRABAR] [GRABAR COMO] [EXPORTAR] [CERRAR] [SALIR] "
 
    '===> 3.1 [NUEVO]
-   If mousex > 42 And mousex < 110  And mousey < 50 Then ' <= NUEVO
+   If MultiKey(sc_Control) And mousex > 42 And mousex < 110  And mousey < 50  Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
     '  If MouseButtons And 1 Then
       If MultiKey(sc_control) Then
@@ -888,7 +888,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
 
    '===> 3.2 [ABRIR]
 
-   If mousex > 134 And mousex < 190  And mousey < 50 And carga=0 Then ' <= ABRIR lee grabaroll.roll
+   If mousex > 134 And mousex < 190  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And carga = 0 Then
      CargaArchivo()
@@ -900,7 +900,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    t = " [ABRIR]":cairo_show_text(c,t)
    
   '===> 3.3[GRABAR] SC_F11 COPIA
-   If mousex > 223 And mousex < 296  And mousey < 50 Then ' <=
+   If MultiKey(sc_Control) And mousex > 223 And mousex < 296  And mousey < 50  Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      '       Print #1, "Grabando a disco Roll GRABAR "
@@ -924,7 +924,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    t = " [GRABAR]": cairo_show_text(c,t) :t= ""
    '
   '===> 3.3[GRABAR COMO] SC_F11 COPIA 
-   If mousex > 320 And mousex < 440  And mousey < 50 Then ' <=
+   If MultiKey(sc_Control) And mousex > 320 And mousex < 440  And mousey < 50  Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      '       Print #1, "Grabando a disco Roll GRABAR "
@@ -963,7 +963,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    EndIf
   Case 5 ' OPCIONES MENU, [COMPAS] [OCTAVAS] [TEMPO] [CONFIGURACION]
    
-  If mousex > 38 And mousex < 120 And mousey < 50 Then  'COMPAS
+  If mousex > 38 And mousex < 120 And mousey < 50  Then  'COMPAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      menuNew= 7
@@ -972,7 +972,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  "       [COMPAS]":cairo_show_text(c, t)
-  If mousex > 130 And mousex < 235 And mousey < 50 Then  'OCTAVAS
+  If mousex > 130 And mousex < 235 And mousey < 50  Then  'OCTAVAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      menuNew=6
@@ -981,7 +981,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [OCTAVAS]":cairo_show_text(c, t)
-  If mousex > 245 And mousex < 330 And mousey < 50 Then  'OCTAVAS
+  If mousex > 245 And mousex < 330 And mousey < 50  Then  'OCTAVAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      menuNew=8
@@ -991,7 +991,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    EndIf
    t=  " [TEMPO]":cairo_show_text(c, t)
  '
-  If mousex > 354 And mousex < 514 And mousey < 50 Then  'OCTAVAS
+  If MultiKey(sc_Control) And mousex > 354 And mousex < 514 And mousey < 50  Then  'OCTAVAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      menuNew=9
@@ -1006,7 +1006,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
   Case 6 'OPCIONES => OCTAVAS
    
 ' ===> 6.1 [OCTAVAS DESDE   - / + ] 
-   If mousex > 38 And mousex< 123 And mousey < 50 Then ' OCTAVAS LABEL
+   If mousex > 38 And mousex< 123 And mousey < 50  Then ' OCTAVAS LABEL
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1  Then
      octavas=0
@@ -1031,13 +1031,13 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
 
    EndIf
 '  ----> DESDE
-   If mousex > 144 And mousex< 196 And mousey < 50 Then ' DESDE LABEL
+   If mousex > 144 And mousex< 196 And mousey < 50 And MultiKey(sc_Control) Then ' DESDE LABEL
     cairo_set_source_rgba c, 0, 1, 0, 1
     octavas=0
     redimensionar=0
    EndIf
 ' ---->  -
-   If mousex >= 215 And mousex< 229 And mousey < 50  Then ' - LBEL
+   If mousex >= 215 And mousex< 229 And mousey < 50   Then ' - LBEL
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And octavas=0 Then
      desde -= 1
@@ -1063,7 +1063,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    t = "      [OCTAVAS DESDE   - / + ] " + Str(desde-1): cairo_show_text(c,t)
    ' --------------------------------
 ' ===> 6.2 [HASTA  - / + ]
-   If mousex > 308 And mousex< 363 And mousey < 50 Then ' HASTA
+   If mousex > 308 And mousex< 363 And mousey < 50  Then ' HASTA
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      octavas=0
@@ -1131,7 +1131,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    EndIf
    t = "  [REDIMENSIONAR]<-Borra Datos " + RTA
    Case 7
-   If mousex > 38 And mousex < 90 And mousey < 50 Then  'OPCIONES
+   If mousex > 38 And mousex < 90 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=10000000
@@ -1144,7 +1144,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  "       [4/4]":cairo_show_text(c, t)
-  If mousex > 100 And mousex < 150 And mousey < 50 Then  'OPCIONES
+  If mousex > 100 And mousex < 150 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=15000000
@@ -1156,7 +1156,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [12/8]":cairo_show_text(c, t)
-  If mousex > 160 And mousex < 210 And mousey < 50 Then  'OPCIONES
+  If mousex > 160 And mousex < 210 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=5000000
@@ -1180,7 +1180,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     menunew=0
   Case 9
   ' [MIDI] 
-    If mousex > 42 And mousex < 90  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
+    If mousex > 42 And mousex < 90  And mousey < 50 And listaMIDI = 0  Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
          menunew=10 
