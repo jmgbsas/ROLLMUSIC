@@ -56,7 +56,7 @@ Dim Shared NotasGuia (1 To 12) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
 ' 5.7.6.00 tresillos
 espacio=0:notacur=1 '16-05-2021 jmg
-Dim  Shared figura (1 To 182) As String  * 4 => _
+Dim  Shared figura (1 To 182) As ZString  * 4 => _
 {" O "," P "," I "," L "," F "," E "," X "," H "," W ",_  '  1  9
  " O4"," P4"," I4"," L4"," F4"," E4"," X4"," H4"," W4",_  ' 10 18
  " O*"," P*"," I*"," L*"," F*"," E*"," X*"," H*"," W*",_  ' 19 27
@@ -91,7 +91,7 @@ Dim  Shared figura (1 To 182) As String  * 4 => _
 'cambiar 107 por 108, 109 por 110,  109 por 110.
 ' ligaduras de notas con + que va a + o - creo qu emenso seria mejor
 ' parecido a una pila polos opuestos se atraen je...
-Dim Shared As Integer comienzo1, fin1, comienzo2,fin2 
+Dim Shared As Integer comienzo1, fin1, comienzo2,fin2,PianoNota 
 'comienzo1=28:fin1=54
 'comienzo2=82:fin2=180
 

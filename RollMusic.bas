@@ -1,3 +1,11 @@
+' DESAFIO ; TOCAR 2 ACORDES LIGADOS EN UNA SOLA NOTA POR EJEMPLO
+' LA NOTA SUPERIOR COMO EN EL EJEMPLO CREO DEBOUSAR SI LAS NOTAS 
+' SON IGULAS Y LAANTECESORA ERA LIGADA+ NO TOCR ELOFF DE LA 1ERA
+' NOTOCARELON DE LA SEGUNDA Y SUMAR LA DURACION A LA 1ERA
+' ESTAN LSO 2 ARCHIVOS DESAFIO Y XXX-MODI SIN ACORDE LIGADO
+' SEGUIROBSERVANDO EN UN ACORDE QUE SUENE MAS TIEMPO LA NOTA MAS LARGA...
+'SEGUIR PROBANDO...
+'------------------------ 
 ' la forma facil de borrar seria grabar a disco cuando se está
 ' en posicion con 254 saltar esa posicion y restar 1 a la posicion final.
 
@@ -74,27 +82,27 @@
 #define WIN_INCLUDEALL
 #Include Once "windows.bi"
 #Include Once "/win/commctrl.bi"
-#include "file.bi"
+#Include "file.bi"
 
-Sub getfiles(Byref File As OpenFileName,flag As String, accion As string)
-    Dim As zstring * 2048 SELFILE
+Sub getfiles(ByRef File As OpenFileName,flag As String, accion As String)
+    Dim As ZString * 2048 SELFILE
     Dim As String MYFILTER=flag+Chr(0)
     With File
-  .lStructSize = sizeof(OpenFileName)
-  .hwndOwner = null
-  .hInstance = null
-  .lpstrFilter = strptr(MYFILTER)
+  .lStructSize = SizeOf(OpenFileName)
+  .hwndOwner = NULL
+  .hInstance = NULL
+  .lpstrFilter = StrPtr(MYFILTER)
   .nFilterIndex = 0
   .lpstrFile = @SELFILE
   .nMaxFile = 2048
-  .lpstrFileTitle = null
+  .lpstrFileTitle = NULL
   .nMaxFileTitle = 0
   .lpstrInitialDir = @"nosuch:\"
   .lpstrTitle = @"Open"
   .Flags = 4096
   .nFileOffset = 0
   .nFileExtension = 0
-  .lpstrDefExt = null
+  .lpstrDefExt = NULL
     End With
     If accion="open" Then
     GetOpenFileName(@File)
@@ -106,14 +114,14 @@ Sub getfiles(Byref File As OpenFileName,flag As String, accion As string)
 End Sub
 ' FILE DIALOG adicionales 
 
-dim Shared file As OpenFileName
-dim Shared As string myfilter
-myfilter  = "Roll Files"+chr(0)  +"*.roll;*.mp3"+Chr(0)
-myfilter += "Ini files"+chr(0)   +"*.ini;*.txt;*.cfg"+chr(0)
-myfilter += "All Files"+chr(0)   +"*.*"+chr(0)
+Dim Shared file As OpenFileName
+Dim Shared As String myfilter
+myfilter  = "Roll Files"+Chr(0)  +"*.roll;*.mp3"+Chr(0)
+myfilter += "Ini files"+Chr(0)   +"*.ini;*.txt;*.cfg"+Chr(0)
+myfilter += "All Files"+Chr(0)   +"*.*"+Chr(0)
 
 
-common shared  mensaje As integer 
+Common Shared  mensaje As Integer 
 ' end file dialog  
 #Define __FB_WIN64__
 #If Defined (__FB_WIN64__) 
@@ -128,17 +136,19 @@ common shared  mensaje As integer
 Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #EndIf
 ' para GTK Gtk:list()
-#include once "crt.bi"
-#include once "gtk/gtk.bi"
+#Include Once "crt.bi"
+#Include Once "gtk/gtk.bi"
 ' This is our data identification string to store data in list items
 Const list_item_data_key ="list_item_data"
 ' fin GTK
 
 ScreenControl  SET_DRIVER_NAME,"GDI"
 
-Open "midebug.txt" for Output As #1
+Open "midebug.txt" For Output As #1
 
-Open "mivector.txt" for Output As #3
+'Open "mivector.txt" For Output As #3
+Open "miplayall.txt" For Output As #4
+
 Print #1, "version para ceros!!!!!! "
 
 ''Open cons  for Output As #1
@@ -153,7 +163,7 @@ Print #1,Date;Time
 ' no genera midi todavia..
 '-------------
 ''
-#include "string.bi"
+#Include "string.bi"
 #Include Once "cairo/cairo.bi"
 '===============================
 #Include "ROLLDEC.BI"
@@ -161,17 +171,17 @@ Print #1,Date;Time
 '#Include "NOTAS.bi"
 #Include "declareRtmidi.bi"
 ' iup start
-#include once "IUP/iup.bi"
+#Include Once "IUP/iup.bi"
 '#Include once "foro/fmidi.bi"
 '#include "fbthread.bi"
 #Include "foro/window9.bi"
 ''#Include "Afx/windowsxx.bi"
 
-const NULL = 0
-const NEWLINE = !"\n"
+Const NULL = 0
+Const NEWLINE = !"\n"
 ' iup fin
 Type dat Field=1
- nota As ubyte
+ nota As UByte
  dur As UByte  ' duracion
  vol As UByte  ' volumen
  pan As UByte  ' paneo
@@ -179,11 +189,11 @@ Type dat Field=1
  inst As UByte ' instrumento para cada nota podra ser distinto
 End Type
 
-Dim shared as long CONTROL1 = 0
+Dim Shared As Long CONTROL1 = 0
 ' ROLL PARAEL GRAFICO PERO LOS TRCKS PODRIAN SER DISTINTOS
 'Dim Shared As dat Roll  (1 To 128 , 1 To 19200)
 Type inst
- As dat trk(Any, any)
+ As dat trk(Any, Any)
 End Type
 ' PUEDO TENER UN SHARED DINAMICO GRACIAS A TYPE !!!
 Dim Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
@@ -200,7 +210,7 @@ CantMin=15
 Dim ix As Integer
 'Print #1, "__FB_ARGV__ ",__FB_ARGV__
 'Print #1, "__FB_ARGC__ ",__FB_ARGC__
-Dim direp As zstring  Ptr
+Dim direp As ZString  Ptr
 Dim dires As String
 
 For ix = 0 To __FB_ARGC__
@@ -222,7 +232,7 @@ Next ix
 
 
 Dim diren As Integer
-diren = Cint(dires)
+diren = CInt(dires)
 direp = @diren
 Print #1, "arg desde "; desde
 Print #1, "arg hasta "; hasta
@@ -244,7 +254,7 @@ CantTicks=76800
 Type paso Field=1
  Posi As Integer
  nro  As Integer 
-End type
+End Type
 Dim Shared As paso compas (1 To CantTicks) 'cada item es la posicion en donde
 
 desdevector = desde
@@ -373,10 +383,10 @@ Dim As hWnd hwnd = Cast(hwnd,IhWnd)
 
 Dim comienzo As Integer = 0
 '--FFT FREE FONT-
-var Shared ft => FreeType()
+Var Shared ft => FreeType()
 
 '' Load a font with FreeType
-Dim Shared as FT_Face ftface
+Dim Shared As FT_Face ftface
 
 FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 ' ========== CONTROL DEL NRO DEOCTAVASMOSTRADO SEPODRAPONER PARA EL USUARIO
@@ -392,7 +402,7 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 '-----
 ' ancho de figura,separaciondelasmismas en pantalla anchofig
 '' ---------------  LOOP 1 ---------------
- On Error Goto errorhandler:
+ On Error GoTo errorhandler
  
 Do
 
@@ -549,7 +559,7 @@ If cursorVert=0 Then
  EndIf
 EndIf
 
-If multikey(SC_PAGEDOWN) Then
+If MultiKey(SC_PAGEDOWN) Then
 
  If s1=0 Then
   s1=1
@@ -579,7 +589,7 @@ EndIf
 If MultiKey (sc_P) And play=1 Then
   CONTROL1=1 ' DETIENE EL PLAY VEREMOS
 EndIf
-If multikey(SC_PLUS) Then  '13 , ligadura
+If MultiKey(SC_PLUS) Then  '13 , ligadura
  mas=1
  Exit Do
 EndIf
@@ -641,7 +651,7 @@ If MultiKey(SC_MINUS) Then
 
 EndIf
 If MultiKey(SC_CONTROL) Then 
- if MultiKey (SC_RIGHT) Then
+ If MultiKey (SC_RIGHT) Then
     posicion=posicion + NroCol/2
     If posicion > MaxPos Then
       posicion = MaxPos
@@ -826,7 +836,7 @@ EndIf
 ' o cargo todo,,
 ' https://www.freebasic.net/forum/viewtopic.php?f=2&t=26636&p=246435&hilit=array+load+save#p246435
 ' ===================================
-if MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
+If MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
  'cada posicion tendre 48bits osea 6bytes..
  ' luego 12000 posiicones si estuviera todo completo serian 9216000 bytes
  ' y grabo..9mbytes, seria 1 Track,,295 mbytes para 32 tracks
@@ -853,26 +863,26 @@ If MultiKey(SC_L)  Then ' <======== load Roll
  ' colocar algo visual que indique quesehizo la grabcion
 EndIf
 
-if MultiKey (SC_F12) Then
- dim as integer i1, i2
+If MultiKey (SC_F12) Then
+ Dim As Integer i1, i2
  Dim As String result 
  ' testeo solo en la 1er octva por ahora
  Print #1,
- for i1 = 1 to 12
-  for i2= 1 to Maxpos
+ For i1 = 1 To 12
+  For i2= 1 To Maxpos
    result = Format (Roll.trk(i1, i2).nota,"00")
-   print #1,  result;"-";
-  next i2
-  print #1,
-  for i2= 1 to Maxpos
+   Print #1,  result;"-";
+  Next i2
+  Print #1,
+  For i2= 1 To Maxpos
    result = Format (Roll.trk(i1, i2).dur,"00")
    Print #1, result;"-";
-  next i2
-  print #1,
-  print #1,"------------------------"
- next i1
+  Next i2
+  Print #1,
+  Print #1,"------------------------"
+ Next i1
  While Inkey <> "": Wend
- sleep 150
+ Sleep 150
  Close 2
 EndIf
 
@@ -888,7 +898,7 @@ If MultiKey(SC_ESCAPE) Then
  '  ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
  '  Dim As hWnd hwnd = Cast(hwnd,IhWnd)
 
- if MessageBox(hWnd,"¿SEGURO FINALIZA?","RollMusic End ",4 or 64) =6 then
+ If MessageBox(hWnd,"¿SEGURO FINALIZA?","RollMusic End ",4 Or 64) =6 Then
   cairo_destroy(c)
   '   cairo_surface_destroy( surface )
   '   cairo_font_face_destroy( cface )
@@ -915,7 +925,7 @@ EndIf
 
 ' ============== E S P A C I O ========
 If MultiKey(SC_SPACE)  Then 'barra espacio
- If comEdit=TRUE then
+ If comEdit=TRUE Then
   espacio = 1
   DUR=181
   nota=notacur ''nE 10-05-2021 00:06 probar de nuevo 
@@ -927,7 +937,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
    If playb = 0 And MaxPos > 1 Then
       playb=1
       Print #1,"SPACE call play"
-      thread1 = ThreadCreate(@PlayAll)
+      thread1 = ThreadCreate(@playAll)
       menunew=0
    EndIf
  EndIf  
@@ -1288,7 +1298,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
   '  If indice >= 128 Then
   '      indice = 128
   '  EndIf
-  If nota > 0 And estoyEnOctava < 99 and estoyEnOctava >=1 Then
+  If nota > 0 And estoyEnOctava < 99 And estoyEnOctava >=1 Then
 
    ' ====>  Control PAgindo Horizontal <=======
    '      kNroCol= Int(posicion/60)
@@ -1297,7 +1307,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    ' PARA USAR ESTO CON ENTRADA POR MOUSE SOLO DEBO DETERMINAR EL SEMITONO...
    ' y hacer nota=semiotono 1 a 11 con el mouse...el esto es automtico...
    Do
-    If Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = 0 OR _
+    If Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = 0 Or _
      Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = 182 Then
      posicion=posn
      '      Print #1, "ingreso a NUCLEO POSICION=POSN", posicion
@@ -1355,7 +1365,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    'Print #1," figura "; figura(DUR)
    'Print #1,"-------------------------------------------"
 
-   Dim as Integer noct ''oclog = 8 - (estoyEnOctava-1)
+   Dim As Integer noct ''oclog = 8 - (estoyEnOctava-1)
    For noct = desde To hasta
      For i= 1 To 12 ' gracias a esto anda acordes¿?
        If i= nota And noct = estoyEnOctava Then
@@ -1366,7 +1376,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
             Print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
             Roll.trk((i +(noct -1) * 13),posn).nota = 181
          EndIf
-         If Roll.trk((i +(noct -1) * 13),posn).nota = 182 and posn<>MaxPos Then
+         If Roll.trk((i +(noct -1) * 13),posn).nota = 182 And posn<>MaxPos Then
          Print #1,"^^^^ cambia 182 en i";i ; "octava "; noct
             Roll.trk((i +(noct -1) * 13),posn).nota = 181
          EndIf
@@ -1676,16 +1686,16 @@ If (ScreenEvent(@e)) Then
      ' solo tiene sentido insertar en lo echo y en cursor libre
      insert=1 ' comienzo hbilitotel I para insertr nota por nota
      indaux=0
-     print #1,">>>SC_INSERT ajust STARTINSERT ", StartInsert
+     Print #1,">>>SC_INSERT ajust STARTINSERT ", StartInsert
      If indaux=0 Then ' no haria falta todas las demas inserciones se deben
       'hacer con I no volver a repetir SC_INSERT sino se pulso SC_END
       StartInsert = posicion + curpos  ' guardo sin modificar el comienzo xxx ok
      EndIf
-     print #1,">>>SC_INSERT  despues ajuste STARTINSERT ", StartInsert
+     Print #1,">>>SC_INSERT  despues ajuste STARTINSERT ", StartInsert
      '''Erase (RollAux.trk) ' borro lo que habia en el auxiliar
      ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
      '''Erase (notasInsertadas)
-     ReDim notasInsertadas (1 to 1500)
+     ReDim notasInsertadas (1 To 1500)
      notins=0
      Print #1, ">>>SC_INSERT insert indaux borro RollAux.trk: ",insert,indaux
      'sigue el proceso en RollSub->sub cursor
@@ -1697,7 +1707,7 @@ If (ScreenEvent(@e)) Then
    EndIf
    If e.scancode = SC_END Then ' mueve insercion, podria usarse para ELIMINAR Probar
     If backspace=1 Then
-      Dim as Integer i, y
+      Dim As Integer i, y
       For y=posishow To MaxPos
         For i=NB To NA 
         Roll.trk(i,y).nota=0
@@ -1963,7 +1973,7 @@ If (ScreenEvent(@e)) Then
   s5=1
  EndIf
  ' =========> MOVER VENTANA DRAGNDO L CINTA SUPERIOR EN OPCION <MENU> 
- If MouseButtons And 1 And s5=1 And mouseX > 70 and menuNro= 1 And mousex < (ANCHO-50)Then
+ If MouseButtons And 1 And s5=1 And mouseX > 70 And menuNro= 1 And mousex < (ANCHO-50)Then
   x2=mouseX
   y2=mouseY
   x0=x0+x2-x1
@@ -1980,7 +1990,7 @@ If (ScreenEvent(@e)) Then
  '                           <====== [BOTONES] =======>
  If (mousex>=(ANCHO-40)) And (mousey <= 16) Then
   If  MouseButtons And 1 Then
-   if MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","RollMusic End ",4 or 64) =6 then
+   If MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","RollMusic End ",4 Or 64) =6 Then
     cairo_destroy(c)
     '   cairo_surface_destroy( surface )
     '     cairo_font_face_destroy( cface )
@@ -2039,7 +2049,7 @@ If (ScreenEvent(@e)) Then
  '  MOMENTO EN EL QUE SE EJECUTA EL COMANDO Y SE VE EL CAMBIO.
  '       ==== NOTAS O DURACIONES EXISTENTES ====
 If  mouseY > 50 Then '<=== delimitacion de area de trabajo
- If  comEdit=TRUE  then
+ If  comEdit=TRUE  Then
     If  MultiKey(SC_CONTROL) And (MouseButtons And 2)  Then
    ' trae un menu contextual solo con ctrl-m  previo <==== menu borrar insertar modificar
    ' ESTADO:CALL MENU COMANDO
@@ -2080,25 +2090,25 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    ' Necesitamos mostrar el menu todavia  savemousex=0 : savemousey=0
        If nroClick = 1 Then 'seleccionamos verticalmente ,,,,
           nroClick=2
-          If (mousey >= usamousey -120) and  (mousey <= usamousey -100) Then
+          If (mousey >= usamousey -120) And  (mousey <= usamousey -100) Then
             modifmouse=1 'borrar =1
             notacur=nE
             curpos=(mousex- 81 )/35
             Exit Do
           EndIf
-          If (mousey >= usamousey -100) and  (mousey <= usamousey -70) Then
+          If (mousey >= usamousey -100) And  (mousey <= usamousey -70) Then
             modifmouse=2 'INSERTAR
             Exit Do
           EndIf
-          If (mousey >= usamousey -70) and  (mousey <= usamousey -40) Then
+          If (mousey >= usamousey -70) And  (mousey <= usamousey -40) Then
             modifmouse=3 'FIN INSERTAR
             Exit Do
           EndIf
-         If (mousey >= usamousey -40) and  (mousey <= usamousey -10) Then
+         If (mousey >= usamousey -40) And  (mousey <= usamousey -10) Then
             modifmouse=4 'CAMBIADUR=1 modificar
             notacur=nE
             curpos=(mousex- 81 )/35
-            Exit DO
+            Exit Do
          EndIf
 
        EndIf
@@ -2145,7 +2155,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
     ''''Erase (RollAux.trk) ' borro lo que habia en el auxiliar
          ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
     '''Erase (notasInsertadas)
-         ReDim notasInsertadas (1 to 1500)
+         ReDim notasInsertadas (1 To 1500)
          notins=0
     '          Print #1, ">>>SC_INSERT insert indaux borro RollAux.trk: ",insert,indaux
     'sigue el proceso en RollSub->sub cursor
@@ -2206,7 +2216,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    EndIf
  
  ' YA VUELVE OK
-   if  ayudaModif=FALSE Then
+   If  ayudaModif=FALSE Then
   If (mouseButtons And 1 ) And cursorVert = 1  And modifmouse <> 3 Then ' ESTADO: SELECCIONA VUELTA CTRL-P
    'Print #1, "------------------------------------------------------------"
    'Print  #1,"(5) MB1  And AModif=FALSE And CE=TRUE  And CVert = 1 "
@@ -2230,7 +2240,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
      Exit Do
     EndIf
    EndIf
-  endif
+  EndIf
    EndIf
    If ayudaModif=FALSE And ayudaNuevaNota=TRUE Then ' ESTADO : SELECCIONA DURACION O CTRL-M
   If (mouseButtons And 1 )  And nroClick = 1  Then
@@ -2293,7 +2303,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
   EndIf
    EndIf
 
-   if ayudaNuevaNota=FALSE And ayudaModif=FALSE Then
+   If ayudaNuevaNota=FALSE And ayudaModif=FALSE Then
   If DUR > 0 And nE > 0 And nroClick = 1 _
   And modifmouse<> 3 Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
   nota=nE   ''<== 1er nota ingresada para la duracion y nota elegida
@@ -2329,11 +2339,11 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
        octavaEdicion=estoyEnOctava
  EndIf
  If comedit=TRUE Then
-   If MultiKey (SC_ENTER) and copiar=0 Then
+   If MultiKey (SC_ENTER) And copiar=0 Then
       copiar=1
    EndIf 
 
-   If MultiKey (SC_ENTER) and copiar=2 Then
+   If MultiKey (SC_ENTER) And copiar=2 Then
       copiar=3
    EndIf 
  EndIf 
@@ -2342,7 +2352,7 @@ EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 ' ------------------------------------------------------------------
 If MouseButtons And 1  Then
    old_btn_press_time = new_btn_press_time
-   new_btn_press_time = timer
+   new_btn_press_time = Timer
    If ((new_btn_press_time - old_btn_press_time) < dbl_click_time) Then
       dobleclick=TRUE
    Else
@@ -2420,7 +2430,7 @@ If s5<> 1 Then' acelerar mover ventana con el mouse
 End If
 Loop
 
-While InKey <> "": Wend
+While Inkey <> "": Wend
 
 If s5<> 1 Then
  Sleep 1 '1000 / 1000 frames = 1 milisegundos
@@ -2431,19 +2441,20 @@ EndIf
 
 Loop
 
-
 #Include "ROLLSUB.BAS"
 #Include "subRtmidi.bi"
+
+
 errorhandler:
-Dim as Integer er, ErrorNumber, ErrorLine
+Dim As Integer er, ErrorNumber, ErrorLine
 er = Err
 Print #1,"Error detected ", er, posicion, MaxPos
 Print #1,Erl, Erfn,Ermn,Err
 
 Print #1,"------------------------------------"
-ErrorNumber = ERR
-ErrorLine = ERL
-DIM As String ProgError(0 To 17)
+ErrorNumber = Err
+ErrorLine = Erl
+Dim As String ProgError(0 To 17)
 
 ProgError(0) = "No error"
 ProgError(1) = "Illegal function call"
@@ -2465,10 +2476,10 @@ ProgError(16) = "return without gosub"
 ProgError(17) = "end of file"
 
 
-PRINT #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
+Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
 Print #1,"Error Function: "; *Erfn()
 Dim ers As Integer = nota +(estoyEnOctava -1) * 13
 Print #1, "nota +(estoyEnOctava -1) * 13) "; ers
-CLOSE
+Close
 
 

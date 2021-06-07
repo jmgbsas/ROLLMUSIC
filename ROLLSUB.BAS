@@ -188,6 +188,9 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
   If (mousey <= lugar) And (mousey >= lugarOld ) Then
    nE=semitono  ' semitono 1 a 11 usadopor entrada de tecladoy ahroa mouse
    nR=(13-semitono) + (hasta-nro) * 13  ' indice de la nota en Roll , en algo será util.
+   PianoNota= nR 
+   PianoNota= PianoNota - restar (PianoNota)
+
   EndIf
   lugarOld=lugar
 
@@ -789,10 +792,14 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    Dim muestra As String=nombre
-   If Len(muestra) > 63 Then
-     muestra="C:\..\"+Mid(muestra,30)
+   If Len(muestra) > 60  Then
+     muestra=" C:\..\"+Mid(muestra,30)
    EndIf
+   muestra=Str(PianoNota) + muestra   
+
    t=  " [Ayuda] "+ muestra :cairo_show_text(c, t)
+
+
 
    cairo_stroke(c)
   Case 1
@@ -816,11 +823,14 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    EndIf
    Dim y1 As Integer => 1 + (desde-1) * 13
    Dim y2 As Integer => 1 + (hasta-1) * 13
-
+   
+'   If COMEDIT=TRUE Then ' jmg 02-06-2021 ver porque difieren
+'     nR=nR-3
+'   End If
    t = "      EDIT" + " " +  " UltimaPos: " + _
    Str(Maxpos) +" Posi: " + Str(posishow)+ " Posn: "+Str(posn)+ _
    " Font: " +Str(font) + " DUR:"+ Str(Dur) +" Nota:"+ Str(nota)+ _
-   " EnOct:" + Str(estoyEnOctava) + " nE:"+Str(nE) + " nR:"+ Str(nR) + "Curpos: " +Str(curpos) + _
+   " EnOct:" + Str(estoyEnOctava) + " nE:"+Str(nE) + " nR:"+ Str(PianoNota) + "Curpos: " +Str(curpos) + _
    " RollDur :"+ Str(RollDur) + " Rollnota: " + Str(RollNota) + _ 
    " Mx:" + Str(mousex) + " My:" + Str(mousey) + "Copiar:" + Str(copiar) ' + "Desde:" + Str(y1) + "Hasta:" +Str(y2)
    /' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +
@@ -2132,7 +2142,7 @@ Sub ReCalCompas()
      Dim As Integer lim1, lim2, grupo, mayorgrupo
      For j = 1 To MaxPos -2
       Print #2,"POSICION :";J
-      Print #3,"POSICION :";J
+      'Print #3,"POSICION :";J
       cont=0
       For i= NB To NA
        valdur => Roll.trk(i,j).dur ' de 1 a 180
@@ -2145,7 +2155,7 @@ Sub ReCalCompas()
        semi => Roll.trk(i,j).nota  
       If valdur > 0 And valdur < 181 And semi >=1 And semi <=12 Then
         Print #1, "LECTURA DUR: ";valdur;" EN LA CARGA j: ";j;" i: "; i;" figura ";figura(valdur)
-        Print #3, "nota: "; i; " posi: "; j; " dur: ";valdur
+       ' Print #3, "nota: "; i; " posi: "; j; " dur: ";valdur
         Select Case valdur
          Case  1   To 45
           lim1=1:lim2=45:grupo=1
@@ -2217,7 +2227,7 @@ Sub ReCalCompas()
           DUR=0
           mayor=0
          EndIf
-        Print #3,"==============fin posicion nro: "; j
+        'Print #3,"==============fin posicion nro: "; j
        EndIf
        valdur=0:DUR=0
     
@@ -2284,7 +2294,7 @@ Sub CargaArchivo()
      Dim As Integer lim1, lim2, grupo, mayorgrupo
      For j = 1 To MaxPos -2
       Print #2,"POSICION :";J
-      Print #3,"POSICION :";J
+      'Print #3,"POSICION :";J
       For i= NB To NA
 /'      
        If Trabajo(i,j).nota=255 Then
