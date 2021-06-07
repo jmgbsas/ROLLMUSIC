@@ -457,7 +457,7 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
 
   
  If DUR=181 Then
-     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 181
+     Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 0
      Roll.trk(notacur + (nro-1) * 13, n + curpos).nota =181   ' 5.7.2
      cambiadur = 0
      DUR=0
@@ -2247,9 +2247,9 @@ Sub CargaArchivo()
      
      Dim As String x,x1,x2,x3,x4,nombrea
      ''' no usar mas  dialogoText("Cargar Archivo")
-      getfiles(file,myfilter,"open")
-      nombrea=*file.lpstrFile
-    ''''nombrea="test-FXXXIIII.roll" ' para debug sino no funciona
+'      getfiles(file,myfilter,"open")
+'      nombrea=*file.lpstrFile
+  nombrea="DESAFIO-LIGA-ACORDES-EN-1-NOTA.ROLL" ' para debug sino no funciona
        If nombrea = "" Then
           Exit Sub
        Else
@@ -3061,5 +3061,6 @@ Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0
 'Next i  
  
 End SUB
+
 
 

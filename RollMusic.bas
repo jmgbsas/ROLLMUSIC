@@ -927,7 +927,7 @@ EndIf
 If MultiKey(SC_SPACE)  Then 'barra espacio
  If comEdit=TRUE Then
   espacio = 1
-  DUR=181
+  DUR=0
   nota=notacur ''nE 10-05-2021 00:06 probar de nuevo 
   If cursorVert =2 Then
     agregarNota = 1
@@ -937,7 +937,8 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
    If playb = 0 And MaxPos > 1 Then
       playb=1
       Print #1,"SPACE call play"
-      thread1 = ThreadCreate(@playAll)
+      'thread1 = ThreadCreate(@playAll)
+      playAll()
       menunew=0
    EndIf
  EndIf  
@@ -1281,10 +1282,10 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
  'Print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;_
  '   " nota: ";nota; " figura: ";figura(DUR)
  posn=1 + InicioDeLectura
- If DUR=0 Then
-  nota=0
-  Exit Do
- EndIf
+ 'If DUR=0 Then
+ ' nota=0
+ ' 
+ 'EndIf
  If controlEdit=0 Then
    controlEdit=1 
    octavaEdicion=estoyEnOctava
@@ -1322,10 +1323,10 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    ' ESTO ME UBICA EN QUE RENGLON DE LA OCTaVA ESTOY SN USAR EL MOUSE
    ' LUEGO haRE ALGO CON EL MOUSE POR AHORA TODO TECLADO
    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota = nota 'carga
-   If espacio > 0 Then
-     Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = 181
-     
-   EndIf
+   'If espacio > 0 Then
+   '  Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = 181
+   '  espacio=0
+   'EndIf
    '' ojo ver'  If cursorVert = 0 and cursorHori = 0 Then
    ' no actua para modificaciones o agregado en lo existente
    ' 65 o FIN indica final de TODO es la MAXPOS (+1obvio),se usara
@@ -1375,11 +1376,12 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
          If Roll.trk((i +(noct -1) * 13),posn).nota = 0 Then
             Print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
             Roll.trk((i +(noct -1) * 13),posn).nota = 181
+            Roll.trk((i +(noct -1) * 13),posn).dur  = 0
          EndIf
-         If Roll.trk((i +(noct -1) * 13),posn).nota = 182 And posn<>MaxPos Then
-         Print #1,"^^^^ cambia 182 en i";i ; "octava "; noct
-            Roll.trk((i +(noct -1) * 13),posn).nota = 181
-         EndIf
+        ' If Roll.trk((i +(noct -1) * 13),posn).nota = 182 And posn<>MaxPos Then
+        ' Print #1,"^^^^ cambia 182 en i";i ; "octava "; noct
+        '    Roll.trk((i +(noct -1) * 13),posn).nota = 181
+        ' EndIf
        EndIf
      Next i
    Next noct
@@ -1515,7 +1517,9 @@ EndIf
    '  Print #1,"Nucleo Error "; rmerr
 
    nota = 0
-   
+   If DUR= 181 Then
+      DUR=0
+   EndIf
 
   Else ' edicion de nota anterior retroceso, concosco la posicion la octava
    'pero no la nota 1ero debo recuperar la nota, cursor lo sabe tomar de ahi
@@ -2440,9 +2444,10 @@ EndIf
 ' o sea tengo 8msg para procesar se?ales dibujar notas y moverlas...
 
 Loop
-
+ 
 #Include "ROLLSUB.BAS"
-#Include "subRtmidi.bi"
+ 
+#Include "subRtmidi.bas"
 
 
 errorhandler:
