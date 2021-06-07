@@ -58,4 +58,10 @@ Con Cairo es dificil agregar menues, y embuir la superficie en un Frame limita
 las posibilidades de Cairo...en mi experiencia...se podria usar GTK pero hasta ahora no 
 concosco como GTK maneja un loop de dibujo...solo veo ejemplos sin loop...
 MenuPopup de Microsoft es incontrolable....
-
+Probando distintas formas de play, pero algun dia usaré ticks al estilo de archivos midi. 
+Estoy viendo la dificultad del play sin usar ticks, solo las duraciones de las notas, 
+a puro codigo sin clases. Despues agregare tracks, la opcion de poner instrumentos
+distintos, el vector esta rpeparado para poner instrumentos a nivel nota como el 
+volumen y pitch bend tambien. Los tracks seran tal vez en el formato de midi
+de modo que habrá que pasar del modo midi al del Vector Roll para mostrar  los 
+datos en edicion,,que mucho trabajo esto es apenas el 10%... 
