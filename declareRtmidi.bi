@@ -34,7 +34,11 @@ Dim Shared As Double tiempoPatron=60 ' cuantas negras enun minuto default
 Dim Shared As Double old_time=0
 Dim Shared As Integer jply=0, finplay=0
 'elpatron esla negra ej I=60ergo todo sera relativo  la negra
-Dim Shared As float relDur (1 To 182) => { _ 
+' 09-06-2021 agregue 0 en relDur para evitar cancelaciones pero ojo puede 
+' tapar otros errores qu el tiempo se calcule com ocero y siga y 
+'se pierda el tiemp anterior supongamso enun espacio en blanco agregado 
+' en una ligadura pero eso lo prohibimos por ahroa como uso y listo
+Dim Shared As float relDur (0 To 182) => {0, _  
 4 ,2 , 1.0, 0.50,0.250,0.1250 ,0.06250,0.031250,0.0156250, _ ' 1 9 
 5 ,2.5,1.25,0.625,0.3125,0.15625,0.078125,0.0390625,0.01953125,_ ' 10 18
 6 ,3 , 1.5, 0.75,0.375,0.1875 ,0.09375,0.046875,0.0234375, _ ' 19 27
@@ -85,8 +89,8 @@ Declare Sub AcordeIguales ( pasoCol() As vec,cnt As UByte, vel As UByte,canal As
 Declare Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte, canal As UByte)
 Declare Sub AcordeDistintos ( pasoCol() As vec,cnt As UByte, vel As UByte, canal As UByte,tiempoDur As double) 
 Declare Sub AcordeOffDistintos	( pasoCol() As vec , cnt As UByte,canal As UByte,tiempoDur As Double)
-Declare Sub AcordeOn	( pasoCol() As vec , cnt As UByte, vel As UByte,canal As UByte,tiempoDUR As Double)
-
+Declare Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, vel As UByte,canal As UByte,tiempoDUR As Double)
+Declare Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, vel As UByte,canal As UByte,tiempoDUR As double)
 Declare Function vol (dura As UByte, vel As UByte) As ubyte
 Declare sub noteoff( note As UByte, canal As UByte)
 Dim Shared ligaglobal  as Integer=0

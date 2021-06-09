@@ -144,7 +144,7 @@ Dim Shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen,anchofig
 Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, resultado
-Dim Shared As Integer pesoDur (1 To 182)  => { _ 'era 108
+Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 10000000,5000000,2500000,1250000, 625000,312500,156250, 78125,39063, _ '1  9
 12500000,6250000,3125000,1562500, 781250,390625,195313, 97656,48828, _ '10 18
 15000000,7500000,3750000,1875000, 937500,468750,234375,117187,58594, _ '19 27

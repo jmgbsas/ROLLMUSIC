@@ -330,7 +330,7 @@ ScreenControl GET_WINDOW_POS, x0, y0
 ''ScreenControl SET_WINDOW_POS, 10,10
 'ScreenControl 103,"Directx" ' cambio ja
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
-Dim As Integer i, octava, posmouse, posmouseOld,incWheel, altofp11,edity1,edity2
+Dim As Integer i, octava, posmouse, posmouseOld,incWheel, altofp11,edity1,edity2,octavaloop
 altofp11=ALTO:posmouseOld = 0:posmouse = 0
 Dim Shared As BOOLEAN comEdit, resize
 comEdit = FALSE:resize = FALSE
@@ -407,8 +407,8 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 Do
 
 
-edity1 = 15 ' botton Edit bordeSup
-edity2 = 30 ' botton Edit bordeInf
+edity1 = 10 ' botton Edit bordeSup
+edity2 = 40 ' botton Edit bordeInf
 
 
 
@@ -937,8 +937,8 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
    If playb = 0 And MaxPos > 1 Then
       playb=1
       Print #1,"SPACE call play"
-      'thread1 = ThreadCreate(@playAll)
-      playAll()
+      thread1 = ThreadCreate(@playAll)
+      'playAll()
       menunew=0
    EndIf
  EndIf  
@@ -1374,7 +1374,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
        Else    
        
          If Roll.trk((i +(noct -1) * 13),posn).nota = 0 Then
-            Print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
+         '   Print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
             Roll.trk((i +(noct -1) * 13),posn).nota = 181
             Roll.trk((i +(noct -1) * 13),posn).dur  = 0
          EndIf
@@ -1535,9 +1535,19 @@ EndIf
   ' del vector Roll pra ello acaa la grabo enRoll
  EndIf
  '''   calcCompas(posn)
-  
+ ' correccion de loop octava jmg09-06-2021 , por ahora hasta encontar 
+ ' la causa real preparado el corrector,pero encontre una causa veremos
+ 'If estoyEnOctava <>octavaEdicion Then
+ '   octavaloop=octavaloop +1
+ 'EndIf 
+ 'If octavaloop > 1000 Then
+ '   octavaEdicion=estoyEnOctava
+ 'EndIf
+
  Exit Do 'kkkk 30-01-21 probando
 EndIf
+' fin correccion loop
+
 'If comEdit=FALSE then
 '  calcCompas(posn)
 ' EndIf
@@ -1939,6 +1949,7 @@ If (ScreenEvent(@e)) Then
      curpos=0
      'mayorDurEnUnaPosicion (posn)
      '' calcCompas(pos)
+     controlEdit=0
      Exit Do
     Else
      comEdit = FALSE : s3 = 0 ' solo LECTURA
@@ -1946,7 +1957,7 @@ If (ScreenEvent(@e)) Then
      'posicion= posicion + curPOS ' estaba mal no va 3-3-21 jmg
      If play=0 Then 
        curpos=0
-       controlEdit=0
+       controlEdit=0 'jmg 09-06-2021
        nota=0
        posicion=posicion - NroCol/2
        If posicion < 1 Then
@@ -2338,8 +2349,8 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    EndIf
   
  EndIf 
- 
- If mousex >=0 And mousex <= 50  Then
+ ' habilitar una octava para edicion con el mouse
+ If mousex >=0 And mousex <= 5  Then ' 09-06-2021 para que nochoque con boton EDIT
        octavaEdicion=estoyEnOctava
  EndIf
  If comedit=TRUE Then

@@ -1,533 +1,3857 @@
 version para ceros!!!!!! 
-06-06-202121:01:16
+06-09-202120:25:37
 arg desde  0
 arg hasta  0
 dires   
 recibi 
 common  0
-ABRIR MAXPOS ,NB,NA  18      1             116
-ABRIR MAXPOS ,NB,NA  18      1             116
-LECTURA DUR:  5 EN LA CARGA j:  1 i:  77 figura  F 
-Valdur i  5 77 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  1 DUR:  5 GRUPO:  1 figura  F 
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 12
 =========================================================
 1-calcCompas j o posn RECIBIDA:  1
 J=1 comienzo calcCompas 
 1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  1 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
+1-calcCompas 3, DUR:  3 j:  1 figura:  I 
+acumulado / k / PEsoDur  2500000           3             2500000 figura  I 
 j que hace cancelar  1
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  1 compas(j):  0 figura  F 
-LECTURA DUR:  6 EN LA CARGA j:  2 i:  75 figura  E 
-Valdur i  6 75 grupo  1 figura  E 
-i=NA i:  116 NA:  116 Mayor  312500 grupo: 1
-peso de mayor encontrado valdur  6dur  6 grupo  1
-ABRIR IN:  J:  2 DUR:  6 GRUPO:  1 figura  E 
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 51
+posn  2
+notaold 12
+nota 10
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 10
 =========================================================
 1-calcCompas j o posn RECIBIDA:  2
 1-calcCompas 2
-1-calcCompas 3, DUR:  6 j:  2 figura:  E 
-acumulado / k / PEsoDur  937500            6             312500 figura  E 
+1-calcCompas 3, DUR:  3 j:  2 figura:  I 
+acumulado / k / PEsoDur  5000000           3             2500000 figura  I 
 j que hace cancelar  2
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  2 compas(j):  0 figura  E 
-LECTURA DUR:  6 EN LA CARGA j:  3 i:  75 figura  E 
-Valdur i  6 75 grupo  1 figura  E 
-i=NA i:  116 NA:  116 Mayor  312500 grupo: 1
-peso de mayor encontrado valdur  6dur  6 grupo  1
-ABRIR IN:  J:  3 DUR:  6 GRUPO:  1 figura  E 
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 49
+posn  3
+notaold 10
+nota 8
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 8
 =========================================================
 1-calcCompas j o posn RECIBIDA:  3
 1-calcCompas 2
-1-calcCompas 3, DUR:  6 j:  3 figura:  E 
-acumulado / k / PEsoDur  1250000           6             312500 figura  E 
+1-calcCompas 3, DUR:  3 j:  3 figura:  I 
+acumulado / k / PEsoDur  7500000           3             2500000 figura  I 
 j que hace cancelar  3
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  3 compas(j):  0 figura  E 
-LECTURA DUR:  4 EN LA CARGA j:  4 i:  66 figura  L 
-Valdur i  4 66 grupo  1 figura  L 
-LECTURA DUR:  3 EN LA CARGA j:  4 i:  73 figura  I 
-Valdur i  3 73 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  4 DUR:  3 GRUPO:  1 figura  I 
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 47
+posn  4
+notaold 8
+nota 7
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 7
 =========================================================
 1-calcCompas j o posn RECIBIDA:  4
 1-calcCompas 2
 1-calcCompas 3, DUR:  3 j:  4 figura:  I 
-acumulado / k / PEsoDur  3750000           3             2500000 figura  I 
-j que hace cancelar  4
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  4 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  5 i:  72 figura  I 
-Valdur i  3 72 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  5 DUR:  3 GRUPO:  1 figura  I 
+acumulado / k / PEsoDur  10000000          3             2500000 figura  I 
+acumulado  10000000
+Compas(j) , j:  4  4
+1-calcCompas 3.1 exit sub acumulado=0  0
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 7
 =========================================================
 1-calcCompas j o posn RECIBIDA:  5
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  5 figura:  I 
-acumulado / k / PEsoDur  6250000           3             2500000 figura  I 
+1-calcCompas 3, DUR:  5 j:  5 figura:  F 
+acumulado / k / PEsoDur  625000            5             625000 figura  F 
 j que hace cancelar  5
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  5 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  6 i:  70 figura  I 
-Valdur i  3 70 grupo  1 figura  I 
-LECTURA DUR:  4 EN LA CARGA j:  6 i:  73 figura  L 
-Valdur i  4 73 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  6 DUR:  3 GRUPO:  1 figura  I 
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 46
+posn  6
+notaold 7
+nota 5
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 5
 =========================================================
 1-calcCompas j o posn RECIBIDA:  6
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  6 figura:  I 
-acumulado / k / PEsoDur  8750000           3             2500000 figura  I 
+1-calcCompas 3, DUR:  5 j:  6 figura:  F 
+acumulado / k / PEsoDur  1250000           5             625000 figura  F 
 j que hace cancelar  6
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  6 compas(j):  0 figura  I 
-LECTURA DUR:  94 EN LA CARGA j:  7 i:  68 figura  L+
-Valdur i  94 68 grupo  3 figura  L+
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 3
-peso de mayor encontrado valdur  94dur  94 grupo  3
-ABRIR IN:  J:  7 DUR:  94 GRUPO:  3 figura  L+
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 44
+posn  7
+notaold 5
+nota 1
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 1
 =========================================================
 1-calcCompas j o posn RECIBIDA:  7
 1-calcCompas 2
-1-calcCompas 3, DUR:  94 j:  7 figura:  L+
-acumulado / k / PEsoDur  10000000          94            1250000 figura  L+
-acumulado  10000000
-Compas(j) , j:  7  7
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  7 compas(j):  7 figura  L+
-LECTURA DUR:  4 EN LA CARGA j:  8 i:  68 figura  L 
-Valdur i  4 68 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  8 DUR:  4 GRUPO:  1 figura  L 
+1-calcCompas 3, DUR:  5 j:  7 figura:  F 
+acumulado / k / PEsoDur  1875000           5             625000 figura  F 
+j que hace cancelar  7
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 40
+posn  8
+notaold 1
+nota 8
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 8
 =========================================================
 1-calcCompas j o posn RECIBIDA:  8
 1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  8 figura:  L 
-acumulado / k / PEsoDur  1250000           4             1250000 figura  L 
+1-calcCompas 3, DUR:  5 j:  8 figura:  F 
+acumulado / k / PEsoDur  2500000           5             625000 figura  F 
 j que hace cancelar  8
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  8 compas(j):  0 figura  L 
-LECTURA DUR:  3 EN LA CARGA j:  9 i:  77 figura  I 
-Valdur i  3 77 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  9 DUR:  3 GRUPO:  1 figura  I 
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 47
+posn  9
+notaold 8
+nota 7
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 7
 =========================================================
 1-calcCompas j o posn RECIBIDA:  9
 1-calcCompas 2
 1-calcCompas 3, DUR:  3 j:  9 figura:  I 
-acumulado / k / PEsoDur  3750000           3             2500000 figura  I 
+acumulado / k / PEsoDur  5000000           3             2500000 figura  I 
 j que hace cancelar  9
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  9 compas(j):  0 figura  I 
-LECTURA DUR:  94 EN LA CARGA j:  10 i:  70 figura  L+
-Valdur i  94 70 grupo  3 figura  L+
-LECTURA DUR:  2 EN LA CARGA j:  10 i:  75 figura  P 
-Valdur i  2 75 grupo  1 figura  P 
-i=NA i:  116 NA:  116 Mayor  5000000 grupo: 1
-peso de mayor encontrado valdur  2dur  2 grupo  1
-ABRIR IN:  J:  10 DUR:  2 GRUPO:  1 figura  P 
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 46
+posn  10
+notaold 7
+nota 5
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 5
 =========================================================
 1-calcCompas j o posn RECIBIDA:  10
 1-calcCompas 2
-1-calcCompas 3, DUR:  2 j:  10 figura:  P 
-acumulado / k / PEsoDur  8750000           2             5000000 figura  P 
+1-calcCompas 3, DUR:  3 j:  10 figura:  I 
+acumulado / k / PEsoDur  7500000           3             2500000 figura  I 
 j que hace cancelar  10
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  10 compas(j):  0 figura  P 
-LECTURA DUR:  92 EN LA CARGA j:  11 i:  70 figura  P+
-Valdur i  92 70 grupo  3 figura  P+
-LECTURA DUR:  3 EN LA CARGA j:  11 i:  73 figura  I 
-Valdur i  3 73 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  5000000 grupo: 3
-peso de mayor encontrado valdur  92dur  92 grupo  3
-ABRIR IN:  J:  11 DUR:  92 GRUPO:  3 figura  P+
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 44
+posn  11
+notaold 5
+nota 8
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 8
 =========================================================
 1-calcCompas j o posn RECIBIDA:  11
 1-calcCompas 2
-1-calcCompas 3, DUR:  92 j:  11 figura:  P+
-acumulado / k / PEsoDur  13750000          92            5000000 figura  P+
-ABRIR OUT: J:  11 compas(j):  0 figura  P+
-LECTURA DUR:  1 EN LA CARGA j:  12 i:  70 figura  O 
-Valdur i  1 70 grupo  1 figura  O 
-i=NA i:  116 NA:  116 Mayor  10000000 grupo: 1
-peso de mayor encontrado valdur  1dur  1 grupo  1
-ABRIR IN:  J:  12 DUR:  1 GRUPO:  1 figura  O 
+1-calcCompas 3, DUR:  3 j:  11 figura:  I 
+acumulado / k / PEsoDur  10000000          3             2500000 figura  I 
+acumulado  10000000
+Compas(j) , j:  11  11
+1-calcCompas 3.1 exit sub acumulado=0  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 47
+posn  12
+notaold 8
+nota 10
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 10
 =========================================================
 1-calcCompas j o posn RECIBIDA:  12
 1-calcCompas 2
-1-calcCompas 3, DUR:  1 j:  12 figura:  O 
-acumulado / k / PEsoDur  23750000          1             10000000 figura  O 
-ABRIR OUT: J:  12 compas(j):  0 figura  O 
-i=NA i:  116 NA:  116 Mayor  0 grupo: 1
-ABRIR IN:  J:  13 DUR:  0 GRUPO:  1 figura    
+1-calcCompas 3, DUR:  3 j:  12 figura:  I 
+acumulado / k / PEsoDur  2500000           3             2500000 figura  I 
+j que hace cancelar  12
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 49
+posn  13
+notaold 10
+nota 12
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 12
 =========================================================
 1-calcCompas j o posn RECIBIDA:  13
-CALCOMPAS-0 DUR=0 COMPAS(J)=0 
-ABRIR OUT: J:  13 compas(j):  0 figura    
-i=NA i:  116 NA:  116 Mayor  0 grupo: 1
-ABRIR IN:  J:  14 DUR:  0 GRUPO:  1 figura    
+1-calcCompas 2
+1-calcCompas 3, DUR:  3 j:  13 figura:  I 
+acumulado / k / PEsoDur  5000000           3             2500000 figura  I 
+j que hace cancelar  13
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 51
+posn  14
+notaold 12
+nota 5
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 5
 =========================================================
 1-calcCompas j o posn RECIBIDA:  14
-CALCOMPAS-0 DUR=0 COMPAS(J)=0 
-ABRIR OUT: J:  14 compas(j):  0 figura    
-i=NA i:  116 NA:  116 Mayor  0 grupo: 1
-ABRIR IN:  J:  15 DUR:  0 GRUPO:  1 figura    
+1-calcCompas 2
+1-calcCompas 3, DUR:  3 j:  14 figura:  I 
+acumulado / k / PEsoDur  7500000           3             2500000 figura  I 
+j que hace cancelar  14
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 5
 =========================================================
 1-calcCompas j o posn RECIBIDA:  15
-CALCOMPAS-0 DUR=0 COMPAS(J)=0 
-ABRIR OUT: J:  15 compas(j):  0 figura    
-i=NA i:  116 NA:  116 Mayor  0 grupo: 1
-ABRIR IN:  J:  16 DUR:  0 GRUPO:  1 figura    
+1-calcCompas 2
+1-calcCompas 3, DUR:  3 j:  15 figura:  I 
+acumulado / k / PEsoDur  10000000          3             2500000 figura  I 
+acumulado  10000000
+Compas(j) , j:  15  15
+1-calcCompas 3.1 exit sub acumulado=0  0
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 5
 =========================================================
 1-calcCompas j o posn RECIBIDA:  16
-CALCOMPAS-0 DUR=0 COMPAS(J)=0 
-ABRIR OUT: J:  16 compas(j):  0 figura    
-SPACE call play
-portsout 4
-  
-comienzo playaLL ==========> 
------------------------------------------
----START-----paso: 1 --------------------------------
-jply  1dura  5
-paso  1 cnt  1 notapiano  37
-cnt  1 iguales  1
-pasoCol(cnt).DUR  5
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       37  F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.25
-COMIENZA RETARDO En  old_time on : 32630.53213358001
-noteSimple: liga:            0
----FIN -----paso: 1 --------------------------------
----START-----paso: 2 --------------------------------
-jply  2dura  6
-paso  2 cnt  1 notapiano  39
-cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       39  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 32630.78220450851
-noteSimple: liga:            0
----FIN -----paso: 2 --------------------------------
----START-----paso: 3 --------------------------------
-jply  3dura  6
-paso  3 cnt  1 notapiano  39
-cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       39  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 32630.90729722521
-noteSimple: liga:            0
----FIN -----paso: 3 --------------------------------
----START-----paso: 4 --------------------------------
-jply  4dura  3
-paso  4 cnt  1 notapiano  41
-cnt  1 iguales  1
-pasoCol(cnt).DUR  3
-jply  4dura  4
-paso  4 cnt  2 notapiano  48
-cnt  2 distintos  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 ACORDE cnt=  2
-cnt  2 AcordeDistintos
-DUR notapiano  3  41 I 
-DUR notapiano  4  48 L 
-DUR cnt=1: 3
-1)DUR cnt=1: 3
-CNT CNT CNT 2 dur 3
-pasoCol(i1).Dur  3 pasoCol(i1).liga  0
-4) LIGA=1 ==========> 0
-|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
-|||SIN LIGA pasoCol(i1).tiempoFigura  100000000000
-|||SIN LIGA DUR  3
-5) LIGA=1 ==========> 0
-1)DUR cnt=2: 4
-CNT CNT CNT 2 dur 4
-pasoCol(i1).Dur  4 pasoCol(i1).liga  0
-4) LIGA=1 ==========> 0
-|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
-|||SIN LIGA pasoCol(i1).tiempoFigura  50000000000
-|||SIN LIGA DUR  4
-5) LIGA=1 ==========> 0
-SIN LIGAR Noteon de notepiano  41
-SIN LIGAR Noteon de notepiano  48
--------------------------------------
-start AcordeOffDistintos
-old_time off inicial  32631.03241134788
-no ligados calculo tiempo Figura y off:
-i1 1 tiempoFigura  1
-COMIENZA RETARDO En  old_time on : 32631.03241134788
-SIN LIGAR OFF==>; 
-i1 1 AcordeOffDistintos: notapiano:        41  I 
-i1 2 tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 32631.03241134788
-SIN LIGAR OFF==>; 
-i1 2 AcordeOffDistintos: notapiano:        48  L 
-tiempoFigMayorNoligado  50000000000
-start OFF de ligados ---------
----FIN -----paso: 4 --------------------------------
----START-----paso: 5 --------------------------------
-jply  5dura  3
-paso  5 cnt  1 notapiano  42
-cnt  1 iguales  1
-pasoCol(cnt).DUR  3
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    100000000000
-noteSimple: notapiano:       42  I 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  1
-COMIENZA RETARDO En  old_time on : 32632.03268894586
-noteSimple: liga:            0
----FIN -----paso: 5 --------------------------------
----START-----paso: 6 --------------------------------
-jply  6dura  4
-paso  6 cnt  1 notapiano  41
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-jply  6dura  3
-paso  6 cnt  2 notapiano  44
-cnt  2 distintos  1
-pasoCol(cnt).DUR  3
-i1=NB= 1 ACORDE cnt=  2
-cnt  2 AcordeDistintos
-DUR notapiano  4  41 L 
-DUR notapiano  3  44 I 
-DUR cnt=1: 4
-1)DUR cnt=1: 4
-CNT CNT CNT 2 dur 4
-pasoCol(i1).Dur  4 pasoCol(i1).liga  0
-4) LIGA=1 ==========> 0
-|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
-|||SIN LIGA pasoCol(i1).tiempoFigura  50000000000
-|||SIN LIGA DUR  4
-5) LIGA=1 ==========> 0
-1)DUR cnt=2: 3
-CNT CNT CNT 2 dur 3
-pasoCol(i1).Dur  3 pasoCol(i1).liga  0
-4) LIGA=1 ==========> 0
-|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
-|||SIN LIGA pasoCol(i1).tiempoFigura  100000000000
-|||SIN LIGA DUR  3
-5) LIGA=1 ==========> 0
-SIN LIGAR Noteon de notepiano  41
-SIN LIGAR Noteon de notepiano  44
--------------------------------------
-start AcordeOffDistintos
-old_time off inicial  32633.03278034593
-no ligados calculo tiempo Figura y off:
-i1 1 tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 32633.03278034593
-SIN LIGAR OFF==>; 
-i1 1 AcordeOffDistintos: notapiano:        41  L 
-i1 2 tiempoFigura  1
-COMIENZA RETARDO En  old_time on : 32633.03278034593
-SIN LIGAR OFF==>; 
-i1 2 AcordeOffDistintos: notapiano:        44  I 
-tiempoFigMayorNoligado  100000000000
-start OFF de ligados ---------
----FIN -----paso: 6 --------------------------------
----START-----paso: 7 --------------------------------
-jply  7dura  94
-paso  7 cnt  1 notapiano  46
-cnt  1 iguales  1
-pasoCol(cnt).DUR  94
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       46  L+
-no se envia noteon de 1er nota +, se suma su tiempo a la siguiente
-NoteSimple acum pasoCol(1).tiempoFiguraOld  50000000000
-noteSimple: liga:            1
----FIN -----paso: 7 --------------------------------
----START-----paso: 8 --------------------------------
-jply  8dura  4
-paso  8 cnt  1 notapiano  46
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-tempofigura + old 100000000000
-ESTOS EN NOTEsIMPLE!
-noteSimple: tiempoFigura:    100000000000
-noteSimple: notapiano:       46  L 
-pasoCol(1).liga              1
-envio on 
-noteSimple tiempoFigura  1
-COMIENZA RETARDO En  old_time on : 32634.03295838919
-noteSimple: liga:            0
----FIN -----paso: 8 --------------------------------
----START-----paso: 9 --------------------------------
-jply  9dura  3
-paso  9 cnt  1 notapiano  37
-cnt  1 iguales  1
-pasoCol(cnt).DUR  3
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    100000000000
-noteSimple: notapiano:       37  I 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  1
-COMIENZA RETARDO En  old_time on : 32635.03302124797
-noteSimple: liga:            0
----FIN -----paso: 9 --------------------------------
----START-----paso: 10 --------------------------------
-jply  10dura  2
-paso  10 cnt  1 notapiano  39
-cnt  1 iguales  1
-pasoCol(cnt).DUR  2
-jply  10dura  94
-paso  10 cnt  2 notapiano  44
-cnt  2 distintos  1
-pasoCol(cnt).DUR  94
-i1=NB= 1 ACORDE cnt=  2
-cnt  2 AcordeDistintos
-DUR notapiano  2  39 P 
-DUR notapiano  94  44 L+
-DUR cnt=1: 2
-1)DUR cnt=1: 2
-CNT CNT CNT 2 dur 2
-pasoCol(i1).Dur  2 pasoCol(i1).liga  0
-4) LIGA=1 ==========> 0
-|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
-|||SIN LIGA pasoCol(i1).tiempoFigura  200000000000
-|||SIN LIGA DUR  2
-5) LIGA=1 ==========> 0
-1)DUR cnt=2: 94
-CNT CNT CNT 2 dur 94
-ANALIZO LIGADURAS SUbSIGUIENTES si hay y toda la columna
-DUR  94
-LIGA=1 ==========> 1
-LIGA nj, durj  11  92
-LIGA nj reldur  11  2
-LIGA paso nj tiempoFiguraSig  11  200000000000
-LIGA pasoCol(i1).tiempoFigura+sig  250000000000
-LIGA nj, durj  12  1
-LIGA nj reldur  12  4
-LIGA paso nj tiempoFiguraSig  12  400000000000
-LIGA pasoCol(i1).tiempoFigura+sig  650000000000
-2) LIGA=1 ==========> 1
-numero de ligados: 2
-Noteon ligado notepiano  44
-3) LIGA=1 ==========> 1
-pasoCol(i1).Dur  94 pasoCol(i1).liga  2
-SIN LIGAR Noteon de notepiano  39
--------------------------------------
-start AcordeOffDistintos
-old_time off inicial  32636.0331727886
-no ligados calculo tiempo Figura y off:
-i1 1 tiempoFigura  2
-COMIENZA RETARDO En  old_time on : 32636.0331727886
-SIN LIGAR OFF==>; 
-i1 1 AcordeOffDistintos: notapiano:        39  P 
-tiempoFigMayorNoligado  200000000000
-start OFF de ligados ---------
-HAY LIGADOS!
-pasoCol(i1).tiempoFiguraOld                650000000000
-tiempoFigMayorNoligado  200000000000
-old_time  32636.0331727886
-pasoCol(i1).tiempoFigura  650000000000
-pasoCol(i1).tiempoFiguraOld  650000000000
-retardo tf  0
-NO SE ENVIA OFF TF=0
-pasoCol(i1).liga             2
-<<<<<<<<<<FIN ELSE>>>>>>> CUANTAS VECES PASA?
----FIN -----paso: 10 --------------------------------
----START-----paso: 11 --------------------------------
-jply  11dura  3
-paso  11 cnt  1 notapiano  41
-cnt  1 iguales  1
-pasoCol(cnt).DUR  3
-jply  11dura  92
-paso  11 cnt  2 notapiano  44
-cnt  2 distintos  1
-pasoCol(cnt).DUR  92
-i1=NB= 1 ACORDE cnt=  2
-cnt  2 AcordeDistintos
-DUR notapiano  3  41 I 
-DUR notapiano  92  44 P+
-DUR cnt=1: 3
-1)DUR cnt=1: 3
-CNT CNT CNT 2 dur 3
-pasoCol(i1).Dur  3 pasoCol(i1).liga  0
-4) LIGA=1 ==========> 0
-|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
-|||SIN LIGA pasoCol(i1).tiempoFigura  100000000000
-|||SIN LIGA DUR  3
-5) LIGA=1 ==========> 0
-1)DUR cnt=2: 92
-CNT CNT CNT 2 dur 92
-pasoCol(i1).Dur  92 pasoCol(i1).liga  2
-SIN LIGAR Noteon de notepiano  41
--------------------------------------
-start AcordeOffDistintos
-old_time off inicial  32638.0333919449
-no ligados calculo tiempo Figura y off:
-i1 1 tiempoFigura  1
-COMIENZA RETARDO En  old_time on : 32638.0333919449
-SIN LIGAR OFF==>; 
-i1 1 AcordeOffDistintos: notapiano:        41  I 
-tiempoFigMayorNoligado  100000000000
-start OFF de ligados ---------
-HAY LIGADOS!
-pasoCol(i1).tiempoFiguraOld                650000000000
-tiempoFigMayorNoligado  100000000000
-old_time  32638.0333919449
-pasoCol(i1).tiempoFigura  200000000000
-pasoCol(i1).tiempoFiguraOld  650000000000
-retardo tf  4.5
-COMIENZA RETARDO En  old_time on : 32638.0333919449
- ligado OFF==> i1 2 AcordeOffDistintos: notapiano:       44  O 
-pasoCol(i1).liga             2
-<<<<<<<<<<FIN ELSE>>>>>>> CUANTAS VECES PASA?
----FIN -----paso: 11 --------------------------------
----START-----paso: 12 --------------------------------
-jply  12dura  1
-paso  12 cnt  1 notapiano  44
-cnt  1 iguales  1
-pasoCol(cnt).DUR  1
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    400000000000
-noteSimple: notapiano:       44  O 
-pasoCol(1).liga              0
-noteSimple tiempoFigura  4
-COMIENZA RETARDO En  old_time on : 0
-noteSimple: liga:            0
----FIN -----paso: 12 --------------------------------
----START-----paso: 13 --------------------------------
-i1=NB= 1 SIMPLE cnt=  0
----FIN -----paso: 13 --------------------------------
----START-----paso: 14 --------------------------------
-i1=NB= 1 SIMPLE cnt=  0
----FIN -----paso: 14 --------------------------------
----START-----paso: 15 --------------------------------
-i1=NB= 1 SIMPLE cnt=  0
----FIN -----paso: 15 --------------------------------
----START-----paso: 16 --------------------------------
-i1=NB= 1 SIMPLE cnt=  0
----FIN -----paso: 16 --------------------------------
----START-----paso: 17 --------------------------------
-i1=NB= 1 SIMPLE cnt=  0
----FIN -----paso: 17 --------------------------------
----START-----paso: 18 --------------------------------
-i1=NB= 1 SIMPLE cnt=  0
----FIN -----paso: 18 --------------------------------
+1-calcCompas 2
+1-calcCompas 3, DUR:  3 j:  16 figura:  I 
+acumulado / k / PEsoDur  2500000           3             2500000 figura  I 
+j que hace cancelar  16
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 5
+=========================================================
+1-calcCompas j o posn RECIBIDA:  17
+1-calcCompas 2
+1-calcCompas 3, DUR:  6 j:  17 figura:  E 
+acumulado / k / PEsoDur  2812500           6             312500 figura  E 
+j que hace cancelar  17
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 44
+posn  18
+notaold 5
+nota 7
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 7
+=========================================================
+1-calcCompas j o posn RECIBIDA:  18
+1-calcCompas 2
+1-calcCompas 3, DUR:  6 j:  18 figura:  E 
+acumulado / k / PEsoDur  3125000           6             312500 figura  E 
+j que hace cancelar  18
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 46
+posn  19
+notaold 7
+nota 8
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 8
+=========================================================
+1-calcCompas j o posn RECIBIDA:  19
+1-calcCompas 2
+1-calcCompas 3, DUR:  6 j:  19 figura:  E 
+acumulado / k / PEsoDur  3437500           6             312500 figura  E 
+j que hace cancelar  19
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 47
+posn  20
+notaold 8
+nota 10
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 10
+=========================================================
+1-calcCompas j o posn RECIBIDA:  20
+1-calcCompas 2
+1-calcCompas 3, DUR:  6 j:  20 figura:  E 
+acumulado / k / PEsoDur  3750000           6             312500 figura  E 
+j que hace cancelar  20
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 49
+posn  21
+notaold 10
+nota 12
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 12
+=========================================================
+1-calcCompas j o posn RECIBIDA:  21
+1-calcCompas 2
+1-calcCompas 3, DUR:  6 j:  21 figura:  E 
+acumulado / k / PEsoDur  4062500           6             312500 figura  E 
+j que hace cancelar  21
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 51
+posn  22
+notaold 12
+nota 8
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 8
+=========================================================
+1-calcCompas j o posn RECIBIDA:  22
+1-calcCompas 2
+1-calcCompas 3, DUR:  3 j:  22 figura:  I 
+acumulado / k / PEsoDur  6562500           3             2500000 figura  I 
+j que hace cancelar  22
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 47
+posn  23
+notaold 8
+nota 10
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 10
+=========================================================
+1-calcCompas j o posn RECIBIDA:  23
+1-calcCompas 2
+1-calcCompas 3, DUR:  3 j:  23 figura:  I 
+acumulado / k / PEsoDur  9062500           3             2500000 figura  I 
+j que hace cancelar  23
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 49
+posn  24
+notaold 10
+nota 12
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 12
+=========================================================
+1-calcCompas j o posn RECIBIDA:  24
+1-calcCompas 2
+1-calcCompas 3, DUR:  3 j:  24 figura:  I 
+acumulado / k / PEsoDur  11562500          3             2500000 figura  I 
+1-calcCompas acumulado 3.3 >d7   11562500 carga:  0
+acumulado > d7 : 11562500
+tengo  9062500
+falta  937500
+sobra  1562500
+1-Separadur 
+EN SEPARADUR-------------------------------------------------
+FALTA RECIBIDO:  937500
+ DUR recibido:  3pun:  0 sil:  0 mas:  0 tres:  0
+incr:  0
+falta encontrado DUR  23 figura: F* parte: 1
+||||| CantFalta  1
+  23  F*
+1-Separadur 
+EN SEPARADUR-------------------------------------------------
+FALTA RECIBIDO:  1562500
+ DUR recibido:  3pun:  0 sil:  0 mas:  0 tres:  0
+incr:  0
+falta encontrado DUR  13 figura: L4 parte: 1
+||||| CantSobra  1
+  13  L4
+HAGO  DUR=0 BUENO.pero el sobra va a acum..
+1-calcCompas 3.4
+1-calcCompas 4  ingreso a REEMPLAZO EN ROLL de las durciones y notas
+Recordar posn empieza en 0 
+REEMPLAZO Cantfalta  1
+k,partes_falta(k), FIGURA    1             113          F*+
+POSICION reemplazada:  24
+Hay compas en posn  24
+acumulado falta:  0 posn:  25
+d7  10000000
+1-calcCompas 5 carga:  0
+REEMPLAZO CantSobra  1
+ERROR==> ACUMULADO:  0
+vlor buscdo de k:  1
+partes_sobra(k)  13
+ERROR==> ACUMULADO:  1562500
+1-calcCompas 6
+1-calcCompas 7 carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 51
+posn  26
+notaold 12
+nota 10
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 10
+=========================================================
+1-calcCompas j o posn RECIBIDA:  26
+1-calcCompas 2
+1-calcCompas 3, DUR:  4 j:  26 figura:  L 
+acumulado / k / PEsoDur  2812500           4             1250000 figura  L 
+j que hace cancelar  26
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 10
+=========================================================
+1-calcCompas j o posn RECIBIDA:  27
+1-calcCompas 2
+1-calcCompas 3, DUR:  4 j:  27 figura:  L 
+acumulado / k / PEsoDur  4062500           4             1250000 figura  L 
+j que hace cancelar  27
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 10
+=========================================================
+1-calcCompas j o posn RECIBIDA:  28
+1-calcCompas 2
+1-calcCompas 3, DUR:  4 j:  28 figura:  L 
+acumulado / k / PEsoDur  5312500           4             1250000 figura  L 
+j que hace cancelar  28
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 49
+posn  29
+notaold 10
+nota 5
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 5
+=========================================================
+1-calcCompas j o posn RECIBIDA:  29
+1-calcCompas 2
+1-calcCompas 3, DUR:  4 j:  29 figura:  L 
+acumulado / k / PEsoDur  6562500           4             1250000 figura  L 
+j que hace cancelar  29
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 44
+posn  30
+notaold 5
+nota 8
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 3octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 8
+=========================================================
+1-calcCompas j o posn RECIBIDA:  30
+1-calcCompas 2
+1-calcCompas 3, DUR:  4 j:  30 figura:  L 
+acumulado / k / PEsoDur  7812500           4             1250000 figura  L 
+j que hace cancelar  30
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota0
+(notaOld +(estoyEnOctava  -1) * 13) 47
+posn  31
+notaold 8
+nota 3
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 3
+=========================================================
+1-calcCompas j o posn RECIBIDA:  31
+1-calcCompas 2
+1-calcCompas 3, DUR:  4 j:  31 figura:  L 
+acumulado / k / PEsoDur  9062500           4             1250000 figura  L 
+j que hace cancelar  31
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 3
+=========================================================
+1-calcCompas j o posn RECIBIDA:  32
+1-calcCompas 2
+1-calcCompas 3, DUR:  4 j:  32 figura:  L 
+acumulado / k / PEsoDur  10312500          4             1250000 figura  L 
+1-calcCompas acumulado 3.3 >d7   10312500 carga:  0
+acumulado > d7 : 10312500
+tengo  9062500
+falta  937500
+sobra  312500
+1-Separadur 
+EN SEPARADUR-------------------------------------------------
+FALTA RECIBIDO:  937500
+ DUR recibido:  4pun:  0 sil:  0 mas:  0 tres:  0
+incr:  0
+falta encontrado DUR  23 figura: F* parte: 1
+||||| CantFalta  1
+  23  F*
+1-Separadur 
+EN SEPARADUR-------------------------------------------------
+FALTA RECIBIDO:  312500
+ DUR recibido:  4pun:  0 sil:  0 mas:  0 tres:  0
+incr:  0
+falta encontrado DUR  6 figura: E  parte: 1
+||||| CantSobra  1
+  6  E 
+HAGO  DUR=0 BUENO.pero el sobra va a acum..
+1-calcCompas 3.4
+1-calcCompas 4  ingreso a REEMPLAZO EN ROLL de las durciones y notas
+Recordar posn empieza en 0 
+REEMPLAZO Cantfalta  1
+k,partes_falta(k), FIGURA    1             113          F*+
+POSICION reemplazada:  32
+Hay compas en posn  32
+acumulado falta:  0 posn:  33
+d7  10000000
+1-calcCompas 5 carga:  0
+REEMPLAZO CantSobra  1
+ERROR==> ACUMULADO:  0
+vlor buscdo de k:  1
+partes_sobra(k)  6
+ERROR==> ACUMULADO:  312500
+1-calcCompas 6
+1-calcCompas 7 carga:  0
+^^^^ cambia 0 en i 1octava  1
+^^^^ cambia 0 en i 2octava  1
+^^^^ cambia 0 en i 3octava  1
+^^^^ cambia 0 en i 4octava  1
+^^^^ cambia 0 en i 5octava  1
+^^^^ cambia 0 en i 6octava  1
+^^^^ cambia 0 en i 7octava  1
+^^^^ cambia 0 en i 8octava  1
+^^^^ cambia 0 en i 9octava  1
+^^^^ cambia 0 en i 10octava  1
+^^^^ cambia 0 en i 11octava  1
+^^^^ cambia 0 en i 12octava  1
+^^^^ cambia 0 en i 1octava  2
+^^^^ cambia 0 en i 2octava  2
+^^^^ cambia 0 en i 3octava  2
+^^^^ cambia 0 en i 4octava  2
+^^^^ cambia 0 en i 5octava  2
+^^^^ cambia 0 en i 6octava  2
+^^^^ cambia 0 en i 7octava  2
+^^^^ cambia 0 en i 8octava  2
+^^^^ cambia 0 en i 9octava  2
+^^^^ cambia 0 en i 10octava  2
+^^^^ cambia 0 en i 11octava  2
+^^^^ cambia 0 en i 12octava  2
+^^^^ cambia 0 en i 1octava  3
+^^^^ cambia 0 en i 2octava  3
+^^^^ cambia 0 en i 3octava  3
+^^^^ cambia 0 en i 4octava  3
+^^^^ cambia 0 en i 5octava  3
+^^^^ cambia 0 en i 6octava  3
+^^^^ cambia 0 en i 7octava  3
+^^^^ cambia 0 en i 8octava  3
+^^^^ cambia 0 en i 9octava  3
+^^^^ cambia 0 en i 10octava  3
+^^^^ cambia 0 en i 11octava  3
+^^^^ cambia 0 en i 12octava  3
+^^^^ cambia 0 en i 1octava  4
+^^^^ cambia 0 en i 2octava  4
+^^^^ cambia 0 en i 4octava  4
+^^^^ cambia 0 en i 5octava  4
+^^^^ cambia 0 en i 6octava  4
+^^^^ cambia 0 en i 7octava  4
+^^^^ cambia 0 en i 8octava  4
+^^^^ cambia 0 en i 9octava  4
+^^^^ cambia 0 en i 10octava  4
+^^^^ cambia 0 en i 11octava  4
+^^^^ cambia 0 en i 12octava  4
+^^^^ cambia 0 en i 1octava  5
+^^^^ cambia 0 en i 2octava  5
+^^^^ cambia 0 en i 3octava  5
+^^^^ cambia 0 en i 4octava  5
+^^^^ cambia 0 en i 5octava  5
+^^^^ cambia 0 en i 6octava  5
+^^^^ cambia 0 en i 7octava  5
+^^^^ cambia 0 en i 8octava  5
+^^^^ cambia 0 en i 9octava  5
+^^^^ cambia 0 en i 10octava  5
+^^^^ cambia 0 en i 11octava  5
+^^^^ cambia 0 en i 12octava  5
+^^^^ cambia 0 en i 1octava  6
+^^^^ cambia 0 en i 2octava  6
+^^^^ cambia 0 en i 3octava  6
+^^^^ cambia 0 en i 4octava  6
+^^^^ cambia 0 en i 5octava  6
+^^^^ cambia 0 en i 6octava  6
+^^^^ cambia 0 en i 7octava  6
+^^^^ cambia 0 en i 8octava  6
+^^^^ cambia 0 en i 9octava  6
+^^^^ cambia 0 en i 10octava  6
+^^^^ cambia 0 en i 11octava  6
+^^^^ cambia 0 en i 12octava  6
+^^^^ cambia 0 en i 1octava  7
+^^^^ cambia 0 en i 2octava  7
+^^^^ cambia 0 en i 3octava  7
+^^^^ cambia 0 en i 4octava  7
+^^^^ cambia 0 en i 5octava  7
+^^^^ cambia 0 en i 6octava  7
+^^^^ cambia 0 en i 7octava  7
+^^^^ cambia 0 en i 8octava  7
+^^^^ cambia 0 en i 9octava  7
+^^^^ cambia 0 en i 10octava  7
+^^^^ cambia 0 en i 11octava  7
+^^^^ cambia 0 en i 12octava  7
+^^^^ cambia 0 en i 1octava  8
+^^^^ cambia 0 en i 2octava  8
+^^^^ cambia 0 en i 3octava  8
+^^^^ cambia 0 en i 4octava  8
+^^^^ cambia 0 en i 5octava  8
+^^^^ cambia 0 en i 6octava  8
+^^^^ cambia 0 en i 7octava  8
+^^^^ cambia 0 en i 8octava  8
+^^^^ cambia 0 en i 9octava  8
+^^^^ cambia 0 en i 10octava  8
+^^^^ cambia 0 en i 11octava  8
+^^^^ cambia 0 en i 12octava  8
+^^^^ cambia 0 en i 1octava  9
+^^^^ cambia 0 en i 2octava  9
+^^^^ cambia 0 en i 3octava  9
+^^^^ cambia 0 en i 4octava  9
+^^^^ cambia 0 en i 5octava  9
+^^^^ cambia 0 en i 6octava  9
+^^^^ cambia 0 en i 7octava  9
+^^^^ cambia 0 en i 8octava  9
+^^^^ cambia 0 en i 9octava  9
+^^^^ cambia 0 en i 10octava  9
+^^^^ cambia 0 en i 11octava  9
+^^^^ cambia 0 en i 12octava  9
+carga notaold 3
+=========================================================
+1-calcCompas j o posn RECIBIDA:  34
+1-calcCompas 2
+1-calcCompas 3, DUR:  4 j:  34 figura:  L 
+acumulado / k / PEsoDur  1562500           4             1250000 figura  L 
+j que hace cancelar  34
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  0

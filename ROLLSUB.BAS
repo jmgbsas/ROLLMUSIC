@@ -2249,7 +2249,9 @@ Sub CargaArchivo()
      ''' no usar mas  dialogoText("Cargar Archivo")
 '      getfiles(file,myfilter,"open")
 '      nombrea=*file.lpstrFile
-  nombrea="DESAFIO-LIGA-ACORDES-EN-1-NOTA.ROLL" ' para debug sino no funciona
+'  nombrea="DESAFIO-LIGA-ACORDES-EN-1-NOTA.ROLL" ' para debug sino no funciona
+'  nombrea="test-acordes-iguales01.roll"
+   nombrea="DESAFIO-LIGA-ACORDE-3-O.roll"
        If nombrea = "" Then
           Exit Sub
        Else
