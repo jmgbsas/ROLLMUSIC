@@ -53,7 +53,7 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
  'Dim As Integer delta
 
  'delta=NroCol
- If cursorVert=0 And comEdit=TRUE Then
+ If cursorVert=0 And comEdit=TRUE Or play=1 Then
   If posicion < 30  Then
    posishow=  1
   
@@ -759,7 +759,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
 '    If (MouseButtons And 1) Then
         menuNew =0
         If  MaxPos > 1 Then
-        thread1 = ThreadCreate(@PlayAll)
+         thread1 = ThreadCreate(@PlayAll)
         EndIf 
         Print #1,"--->paso llamada a thread1 "
     ''    menuNew = 4 por hora sin elecciones
@@ -889,6 +889,13 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
           notacur=1
           nroCompas=0
           tres=0:pun=0:sil=0:mas=0:doblepun=0:cuart=0
+          Dim As Integer r1,i
+          For i=NB To NA 
+            For r1= posn+1 To CantTicks
+                Roll.trk(i,r1).nota=0
+                Roll.trk(i,r1).dur=0 
+             Next r1 
+         Next i           
        EndIf
       EndIf 
    Else
@@ -2247,11 +2254,11 @@ Sub CargaArchivo()
      
      Dim As String x,x1,x2,x3,x4,nombrea
      ''' no usar mas  dialogoText("Cargar Archivo")
-'      getfiles(file,myfilter,"open")
-'      nombrea=*file.lpstrFile
+      getfiles(file,myfilter,"open")
+      nombrea=*file.lpstrFile
 '  nombrea="DESAFIO-LIGA-ACORDES-EN-1-NOTA.ROLL" ' para debug sino no funciona
 '  nombrea="test-acordes-iguales01.roll"
-   nombrea="DESAFIO-LIGA-ACORDE-3-O.roll"
+'  nombrea="DESAFIO-LIGA-ACORDE-3-O.roll"
        If nombrea = "" Then
           Exit Sub
        Else

@@ -573,7 +573,7 @@ mousex=0
  Print #1,"-----------------------------------------"
 
 For jply=comienzo To final
-
+posicion=jply
  If curpos > NroCol  Then
     curpos = NroCol
     posishow=0
@@ -708,6 +708,7 @@ For jply=comienzo To final
    
    ' i1=1
    If i1=NB  Then 'And cnt >= 1 Then ' envio noteoff 1) no entra
+   
          If cnt > 1 Then' Acorde
            Print #1,"i1=NB=";i1 ; " ACORDE cnt= ";cnt
          Else    
@@ -729,17 +730,17 @@ For jply=comienzo To final
 
                 Print #1,"cnt ";cnt;" Acordeiguales "
                 AcordeIguales pasoCol(),cnt,vel,canal,tiempoDur
-
+                
             EndIf
             If  distintos=1 Then
                Print #1,"cnt ";cnt;" AcordeDistintos"
                 AcordeDistintos pasoCol(),cnt, vel,canal,tiempoDur
-
+                
             EndIf
             
          End Select  
 
-
+         
    End if 
      
   Next i1
@@ -749,16 +750,24 @@ For jply=comienzo To final
  
 Next jply
 
-
+posishow=posicion - 20
+posicion=posicion -20
+ 
 jply=0:curpos=0
-Sleep 1,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
-close_port(midiout)
-out_free(midiout) 
+' 11-06-2021 se volvio a colocar 1 seg retardo para no escuchar un corte abrubto
+' al final, por ahroa no parpadea mas veremos.... 
 play=0 
 playb=0
 mousey=100 'otra mas para evitar rentrar a play en menu
 finplay=1
+
+mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
+Sleep 1000,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
+close_port(midiout)
+out_free(midiout) 
+
 ThreadDetach(thread1) 'JMG REPONER !!!!
+
 ' ================================FIN PLAYALL <<=================
 End Sub 
 ' ---------------

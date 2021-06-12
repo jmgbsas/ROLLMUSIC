@@ -1,82 +1,9 @@
-' DESAFIO ; TOCAR 2 ACORDES LIGADOS EN UNA SOLA NOTA POR EJEMPLO
-' LA NOTA SUPERIOR COMO EN EL EJEMPLO CREO DEBOUSAR SI LAS NOTAS 
-' SON IGULAS Y LAANTECESORA ERA LIGADA+ NO TOCR ELOFF DE LA 1ERA
-' NOTOCARELON DE LA SEGUNDA Y SUMAR LA DURACION A LA 1ERA
-' ESTAN LSO 2 ARCHIVOS DESAFIO Y XXX-MODI SIN ACORDE LIGADO
-' SEGUIROBSERVANDO EN UN ACORDE QUE SUENE MAS TIEMPO LA NOTA MAS LARGA...
-'SEGUIR PROBANDO...
-'------------------------ 
-' la forma facil de borrar seria grabar a disco cuando se está
-' en posicion con 254 saltar esa posicion y restar 1 a la posicion final.
-
-' - se puede dar play detener y las notas se ilumina de color fuccia..
-' configuracion MIDI seleccion de port de entrada o de salida
-''https://www.freebasic.net/forum/viewtopic.php?t=25312
-' agregar detener play con barra espaciadora y comenzar desde 
-' la ultima posicion...por ahora solo detener 
-'Wrap aplaymidi into a script that checks the exit status to detect Ctrl+C:
-' https://awesomeopensource.com/project/atsushieno/managed-midi
-'https://github.com/atsushieno/managed-midi
-'#!/bin/bash
-'aplaymidi "$*"
-'test $? == 130 && aplaymidi .../AllNotesOff.mid
-'The "all notes off" message is controller 123; just send it on all channels at the same time.
-'Alternatively, use amidi to send a reset message:
-'... && amidi -p hw:X -S F07E7F0901F7
-'where X is the card number; see amidi -l for a list of ports.
-
-' agregar guardar automatico y guardar como 
-' siconosco elnombre saltearla llamada de getfiles esoseria autmatico
-' solo queda usar getfiles para guardar como ,,,,debere poner otro item
-' en el menu
-' agregar? una lieadetexto en menu cm parponer el archivo aviertocon su 
-' path completo hare la cintmasgruesaen vez de 50 75 ¿? veremos.,...
-' v5.7.6.0.4: fix borrar o blanquear en ctrl-m
-' v5.7.6.0.3: fix modificar en ctrl-m
-' V5.7.6.0.2: agregar velocidades de pulso ej: 4/4 1erpulso fuerte
-' el 2do debil 3ero medio, 4to debil, ponerlas en %del velocidad
-' ej:V1=100 V2=70% V1, v3=50% V1, V4=V2 , necesito 3 velocidades 
-' distintas para 4/4. etc agregar mas tiposdecompases o poder fabricarlos
-' con numerdor denominador y % de fuerza o debilidad 
-' https://escuelademusicalasala.com/ritmo-pulso-compas
-' V5.7.6.0.1: se agreg menu compas en opciones 4/4, 12/8, 2/4
-' V5.7.6.0.0. SE AGREGO TRESILLOS Y SE TOCA TAMBIEN ok 
-' v5.7.5.0.3: entrada de espcios reflotada lista ok
-' OJO, L TECL 9 Y NOES PESPCIO ES W semigarrapatea, H es garrapatea
-' se cambio recalcomps para que se desplaze sobre noasde semitono
-' con duracion 181 blanco de modo q no cierre elcompas antes de tiempo
-' sise introducen espacios para colocr notasdicionales en ctrl-m
-' v5.7.5.0.2: con Ctrl +dobleclick en Edit lectura ok
-' BORRAR HACIA Derecha y Ajustar MaxPos a la posicion actual en Edit Lectura
-' ---------------------------------------------------------------b--------- 
-' v5.7.5.0.1: introduccion de notas en una octava en blanco
-' pero que respete el corte de compas existente ,creoque eso ya se da
-' con elcambio actual solo se puede poner notas nuevas en control-m
-' en un tiempo anterior al actual del curson con X modificar ...
-' probar !!-LO QUE HACE CTUALMENTE ES RESPETAR A LAS NOTAS MAS GRANDES
-' Y RECALCULAR LOS COMPASES....con insert y modificar se puede jugar y
-' lograr ampliar un compas con mcho mas figuras de menortamalo que la melodia
-' perocon mas grandes algorro puede pasar (trabajarlo en elfuturo)
-' CAMBIO,,,SE SUPONE QUE LA 1ER OCTAVA QUE SE LLENE CON DATOS ES LA MELODIA
-' PRINCIPAL, LUEGO EL LLENADO DE TODAS LAS OCTAVAS POSTERIORES, SEGUIRAN
-' LOSCORTES DE LA OCTAVA ORIGINAL ERGO SI TENGO 4 I EN PRINCIPAL, Y SI OTRA
-' TIENE O, ENTONCES EN ESTA NUEVA NO SEPODRAPONER MASNOTAS Y SALTRA AL SIGUIENTE 
-' COMPAS RESPETANDO LOS COMPASES DE LA MELODIA , O SEA EL DIRECTOR DEL CORTE
-' DEL COMPAS SERA LA MELODIA, PERO SE CONTROLARA QUE LAS NOTAS NO SUMEN MAS
-' DE UN COMPAS EN EL COMPAS PRINCIPAL EN LAS NOTAS DE OTRAOCTAVA NO PRINCIPAL, 
-' v5.7.5.0.1 se amplio la edicion a todas las octavas al mismo tiempo
-' como asi tmbien el calculo de compases que ya lo hcia pero aahor se aprecia
-' mas
-' V5.7.5.0.0 72 FIGURAS SE AGREGO H/2 = W, LA w de antesse reemplazo por X
-' REDIMENSION VISUAL Y FISICA FUNCIOANA BIEN SI SE ACHICA EL VECTOR
-' PERO SI SE AGRANDA ES INESTABLE -ERGO SI CARGO UN ARCHIVO REDUCIDO
-' EN OCTAVAS NOSE PODRA EXPANDIR HAY QUE LIMITAR ESA POSIBILIDAD !!!
-' l aunicaforam serai copiar a implementar mas adelante para que sea
-' una copia automatica con redimensionamiento.... 
-' calcula mal loscortes de compas en manual por ahora se corrige
-' - ok:se reemplazo organizacompases por RecalCompas
-' - ok:estando con un nro de octavas n1 y si se carga archivo con n2
-'   ajusta automticamente el editor a n2..
+' 11-06-2021: scroll horizontal durante play
+' 11-06-2021:[NUEVO] fix se agrego que limpie toda la secuecnia hasta el final.
+' 11-06-2021 posible desarrollo: usar teclado para entrada de notas al estilo
+' de entrada por teclado de la PC..los numeros 1 al 0 de duraciones seran
+' cdefgabcde = 1,2,3,4,5,6,7,8,9,0...otra octava cualqueira seran los semitonos
+'
 ' ------------------------------
 
 #define WIN_INCLUDEALL
@@ -117,7 +44,7 @@ End Sub
 Dim Shared file As OpenFileName
 Dim Shared As String myfilter
 myfilter  = "Roll Files"+Chr(0)  +"*.roll;*.mp3"+Chr(0)
-myfilter += "Ini files"+Chr(0)   +"*.ini;*.txt;*.cfg"+Chr(0)
+'myfilter += "Ini files"+Chr(0)   +"*.ini;*.txt;*.cfg"+Chr(0)
 myfilter += "All Files"+Chr(0)   +"*.*"+Chr(0)
 
 
@@ -169,7 +96,8 @@ Print #1,Date;Time
 #Include "ROLLDEC.BI"
 '==============================
 '#Include "NOTAS.bi"
-#Include "declareRtmidi.bi"
+#Include "RTMIDIDEC.bi"
+'==============================
 ' iup start
 #Include Once "IUP/iup.bi"
 '#Include once "foro/fmidi.bi"
@@ -937,8 +865,8 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
    If playb = 0 And MaxPos > 1 Then
       playb=1
       Print #1,"SPACE call play"
-      thread1 = ThreadCreate(@playAll)
-      'playAll()
+      'thread1 = ThreadCreate(@playAll)
+      playAll()
       menunew=0
    EndIf
  EndIf  
@@ -2455,11 +2383,11 @@ EndIf
 ' o sea tengo 8msg para procesar se?ales dibujar notas y moverlas...
 
 Loop
- 
+'========================== 
 #Include "ROLLSUB.BAS"
  
-#Include "subRtmidi.bas"
-
+#Include "RTMIDISUB.bas"
+'===========================
 
 errorhandler:
 Dim As Integer er, ErrorNumber, ErrorLine

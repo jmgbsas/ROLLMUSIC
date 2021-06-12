@@ -128,14 +128,8 @@ UBICANDO EL CURSOR Y SOLO CON X REPITE LA ULTIMA NOTA EN ESTE CASO ESPACIO.
        enla posicion elegida,luego de terminado deborrar las posiciones
        ahi mismo sin salir de Cursor pulsando Ctrl-Delete o Ctrl-Supr.
        Se borrarran las posiciones marcadas,
-III) En esta version alfa en un acorde la nota mas larga marca la duracion si hay
-     duraciones diferentes en un mismo acorde..
-     el metodo de play y el vector que tenga los datos se cambiará,por ahora solo es de prueba.
-     y se usa el mismo vector de visualizacion para el play, para hacer los tracks no se usará
-     el vector de visualiacion se hará nuevos que solo sea un secuencia 
-     sin datos paralelos...los paralelos solo se usarán en la visualizacion.
 
-TECLAS RAPIDAS
+TECLAS RAPIDAS borrado
 (DUR,NOTA) 0,181
  CTRL-M SPACE +X= 0,181 
  CTRL-N SPACE 
@@ -147,6 +141,33 @@ o en ctrl-m  pulsar DEL yluego  X
 (DUR,NOTA)  0,0 se obtiene con
 en  CTRL-M pulsar solo DEL, borra la nota pero la habilita a ser escrita en EDIT simple o sea ingreso de NOTA nueva.
 ---------------
+
+
+
+III) 
+
+1) Play o Ejecutar: Ultima versión en un acorde cada nota se ejecuta con su correspondiente 
+     duracion si hay diferentes duraciones en un mismo acorde..
+    Se ha probado 
+      - ligadura unica entre 3 notas seguidas.
+      - ligadura de 2 acordes en todas las notas o alguna/s sean estos
+        con todas sus duraciones iguales o diferentes.
+    para dar play se puede usar la barra espaciadora o Ctrl click en [Reproducir], 
+    para detener el play pulsar P (solo funciona si se usó el play con Ctrl Click 
+    que será la version definitiva, en debug se usa play con la barra espaciadora con la cual 
+    no funciona la telca P ni tampoco la iluminaicon de notas al ejecutar.
+    Con Ctrl Click en Reproducir tambien se puede hacer otras actividades en el programa
+    ya que el play se ejecuta en un proceos independiente. en el futuro se podra modificar volumen.
+    Paneo instrumentos etc...para probar la ejecucion.
+     el metodo de play y el vector que tenga los datos se cambiará,por ahora solo es de prueba.
+     y se usa el mismo vector de visualizacion para el play, para hacer los tracks no se usará
+     el vector de visualiacion se hará nuevos que solo sea un secuencia 
+     sin datos paralelos...los paralelos solo se usarán en la visualizacion.
+2)   Borrar desde una posicion hasta el final.
+     Estando en modo lectura posicionar el borde izquierdo en la posicion deseada de corte
+     dar Ctrl doble clik en [Edicion] y en esa posicion se cortara la secuencia borrando todo
+     lo que este a la derecha de la posicion.
+ 
        
 
 
