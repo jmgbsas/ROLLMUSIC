@@ -1,3 +1,5 @@
+' 12-06-2021: fix cursor durante play
+' 12-06-2021: CAMBIO DEL ORDEN EN SEPARADUR DE LSO RANGOS DE BUSQUEDA
 ' 11-06-2021: scroll horizontal durante play
 ' 11-06-2021:[NUEVO] fix se agrego que limpie toda la secuecnia hasta el final.
 ' 11-06-2021 posible desarrollo: usar teclado para entrada de notas al estilo

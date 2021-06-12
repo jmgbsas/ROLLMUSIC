@@ -48,7 +48,7 @@ Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, c
 Dim shared As integer Penta_y, indice, posicion,posicionOld, nota,espacio,posn,cursorHori
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow
-Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0
+Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0
 dim Shared as string cromatica(1 to 12)
 dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0

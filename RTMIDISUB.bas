@@ -571,13 +571,19 @@ Print #1,"comienzo playaLL ==========> "
 jply=0:curpos=0
 mousex=0
  Print #1,"-----------------------------------------"
-
+comienzo=posicion
 For jply=comienzo To final
-posicion=jply
- If curpos > NroCol  Then
-    curpos = NroCol
-    posishow=0
- EndIf
+'posicion=jply
+
+kNroCol= Int(jply/NroCol)
+If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < MaxPos)Then
+  ' iniciodelectura = iniciodelectura +  NroCol
+ '  If inicioDeLEctura > MaxPos Then
+ '     inicioDeLEctura = inicioDeLEctura -NroCol
+ '  EndIf
+   posicion=jply
+   curpos=0
+EndIf
 
  mousex=jply
  If CONTROL1 = 1 Then
@@ -749,9 +755,10 @@ posicion=jply
  mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
  
 Next jply
-
-posishow=posicion - 20
-posicion=posicion -20
+posicion=comienzo
+'posishow=posicion + 20
+'posishow=posicion - 20
+'posicion=posicion -20
  
 jply=0:curpos=0
 ' 11-06-2021 se volvio a colocar 1 seg retardo para no escuchar un corte abrubto
@@ -899,10 +906,11 @@ Dim As Double tinicio
 'Dim As tEvent Ptr newEvent
 jply=0:curpos=0
 mousex=0
+
 For jply=comienzo To final
 Print #1,"-----------------------------------------"
  If curpos > NroCol  Then
-    curpos = NroCol
+    curpos = 1
     posishow=0
  EndIf
 

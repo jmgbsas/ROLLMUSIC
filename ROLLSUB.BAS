@@ -53,7 +53,7 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
  'Dim As Integer delta
 
  'delta=NroCol
- If cursorVert=0 And comEdit=TRUE Or play=1 Then
+ If cursorVert=0 And comEdit=TRUE  Then
   If posicion < 30  Then
    posishow=  1
   
@@ -140,9 +140,18 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
     cairo_show_text(c, t)
  ' ' jmg 11-05-2021 1839 start
     If  n=jply Then
-    curpos= n - 1 
-       cursor(c,n,nro)
-   ''   cairo_stroke(c) ''nohcefalta
+        
+      ShowNroCol= Int(n/posishow)
+      If ShowNroCol = 0 Then
+         curpos= n  - 1 
+      Else
+         curpos= n  - posishow
+      EndIf   
+   '   If (kNroCol > 0) And (posicion = NroCol * kNroCol) And (posicion < MaxPos) Then
+   '      curpos=curpos - kNroCol * NroCol
+   '   EndIf
+
+      cursor(c,n,nro)
       cairo_set_source_rgba(c, 1, 1, 1, 1)
     EndIf
     
@@ -1860,11 +1869,12 @@ Sub separarDur(ByRef j As Integer, ByRef DUR As Integer,partes() As Integer, ByR
  ' Exit Sub
 
  'Else
+ 'CAMBIO DE ORDEN TENIA 10 A 18, 19 A 27, 28 A 36, 1 A 9
 Dim CUENTA As INTEGER 
  If k<=180 And lb=0  Then ' no se encontro
   Do
   CUENTA += 1
-   For k=10+incr To 18+incr
+   For k=28+incr To 36+incr 
     If  falta1 > pesoDur(k)  Then
      lb += 1
      Print #1,"dur k incr";k,incr
@@ -1915,8 +1925,9 @@ Dim CUENTA As INTEGER
     EndIf
 
    Next k
-  
-   For k=28+incr To 36+incr 
+
+
+   For k=10+incr To 18+incr
     If  falta1 > pesoDur(k)  Then
      lb += 1
      Print #1,"dur k incr";k,incr
@@ -1941,6 +1952,8 @@ Dim CUENTA As INTEGER
     EndIf
 
    Next k
+
+  
    
    For k=1+incr To 9+incr
     If  falta1 > pesoDur(k)  Then

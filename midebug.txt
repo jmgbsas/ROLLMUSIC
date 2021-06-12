@@ -1,5 +1,5 @@
 version para ceros!!!!!! 
-06-12-202101:20:13
+06-12-202118:32:13
 arg desde  0
 arg hasta  0
 dires   
@@ -548,7 +548,7 @@ noteSimple: notapiano:       56  F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.25
-COMIENZA RETARDO En  old_time on : 14749.83402737336
+COMIENZA RETARDO En  old_time on : 18048.83163835473
 noteSimple: liga:            0
 ---FIN -----paso: 1 --------------------------------
 ---START-----paso: 2 --------------------------------
@@ -562,7 +562,7 @@ noteSimple: notapiano:       54  F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.25
-COMIENZA RETARDO En  old_time on : 14750.08410976796
+COMIENZA RETARDO En  old_time on : 18049.08365858507
 noteSimple: liga:            0
 ---FIN -----paso: 2 --------------------------------
 ---START-----paso: 3 --------------------------------
@@ -576,7 +576,7 @@ noteSimple: notapiano:       51  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14750.33419827845
+COMIENZA RETARDO En  old_time on : 18049.33369689495
 noteSimple: liga:            0
 ---FIN -----paso: 3 --------------------------------
 ---START-----paso: 4 --------------------------------
@@ -590,7 +590,7 @@ noteSimple: notapiano:       56  F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.25
-COMIENZA RETARDO En  old_time on : 14750.83423769195
+COMIENZA RETARDO En  old_time on : 18049.83375754518
 noteSimple: liga:            0
 ---FIN -----paso: 4 --------------------------------
 ---START-----paso: 5 --------------------------------
@@ -604,7 +604,7 @@ noteSimple: notapiano:       51  E
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 14751.08427149922
+COMIENZA RETARDO En  old_time on : 18050.08379993239
 noteSimple: liga:            0
 ---FIN -----paso: 5 --------------------------------
 ---START-----paso: 6 --------------------------------
@@ -618,7 +618,7 @@ noteSimple: notapiano:       51  E
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 14751.20930471189
+COMIENZA RETARDO En  old_time on : 18050.20883896429
 noteSimple: liga:            0
 ---FIN -----paso: 6 --------------------------------
 ---START-----paso: 7 --------------------------------
@@ -632,7 +632,7 @@ noteSimple: notapiano:       56  E
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 14751.33433826433
+COMIENZA RETARDO En  old_time on : 18050.33388037464
 noteSimple: liga:            0
 ---FIN -----paso: 7 --------------------------------
 ---START-----paso: 8 --------------------------------
@@ -646,7 +646,7 @@ noteSimple: notapiano:       53  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14751.45937045768
+COMIENZA RETARDO En  old_time on : 18050.45890717457
 noteSimple: liga:            0
 ---FIN -----paso: 8 --------------------------------
 ---START-----paso: 9 --------------------------------
@@ -660,7 +660,7 @@ noteSimple: notapiano:       51  I
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  1
-COMIENZA RETARDO En  old_time on : 14751.95941360867
+COMIENZA RETARDO En  old_time on : 18050.96062050114
 noteSimple: liga:            0
 ---FIN -----paso: 9 --------------------------------
 ---START-----paso: 10 --------------------------------
@@ -674,7 +674,7 @@ noteSimple: notapiano:       49  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14752.95946389486
+COMIENZA RETARDO En  old_time on : 18051.9607105421
 noteSimple: liga:            0
 ---FIN -----paso: 10 --------------------------------
 ---START-----paso: 11 --------------------------------
@@ -703,7 +703,7 @@ noteSimple: notapiano:       53  E
 pasoCol(1).liga              1
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14753.45953898437
+COMIENZA RETARDO En  old_time on : 18052.46078886075
 noteSimple: liga:            0
 ---FIN -----paso: 12 --------------------------------
 ---START-----paso: 13 --------------------------------
@@ -717,7 +717,7 @@ noteSimple: notapiano:       53  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14753.95958451376
+COMIENZA RETARDO En  old_time on : 18052.96083795855
 noteSimple: liga:            0
 ---FIN -----paso: 13 --------------------------------
 ---START-----paso: 14 --------------------------------
@@ -731,7 +731,7 @@ noteSimple: notapiano:       58  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14754.45963004314
+COMIENZA RETARDO En  old_time on : 18053.46088807569
 noteSimple: liga:            0
 ---FIN -----paso: 14 --------------------------------
 ---START-----paso: 15 --------------------------------
@@ -745,7 +745,7 @@ noteSimple: notapiano:       49  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14754.95967761116
+COMIENZA RETARDO En  old_time on : 18053.96093139728
 noteSimple: liga:            0
 ---FIN -----paso: 15 --------------------------------
 ---START-----paso: 16 --------------------------------
@@ -759,7 +759,7 @@ noteSimple: notapiano:       56  F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.25
-COMIENZA RETARDO En  old_time on : 14755.45971838375
+COMIENZA RETARDO En  old_time on : 18054.46098083487
 noteSimple: liga:            0
 ---FIN -----paso: 16 --------------------------------
 ---START-----paso: 17 --------------------------------
@@ -773,7 +773,7 @@ noteSimple: notapiano:       60  E
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 14755.70975321033
+COMIENZA RETARDO En  old_time on : 18054.71102390163
 noteSimple: liga:            0
 ---FIN -----paso: 17 --------------------------------
 ---START-----paso: 18 --------------------------------
@@ -787,7 +787,7 @@ noteSimple: notapiano:       51  E
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 14755.8347959366
+COMIENZA RETARDO En  old_time on : 18054.83606972908
 noteSimple: liga:            0
 ---FIN -----paso: 18 --------------------------------
 ---START-----paso: 19 --------------------------------
@@ -801,7 +801,7 @@ noteSimple: notapiano:       58  E
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 14755.95989268655
+COMIENZA RETARDO En  old_time on : 18054.96117909487
 noteSimple: liga:            0
 ---FIN -----paso: 19 --------------------------------
 ---START-----paso: 20 --------------------------------
@@ -815,7 +815,7 @@ noteSimple: notapiano:       54  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14756.08492487991
+COMIENZA RETARDO En  old_time on : 18055.08622356321
 noteSimple: liga:            0
 ---FIN -----paso: 20 --------------------------------
 ---START-----paso: 21 --------------------------------
@@ -829,7 +829,7 @@ noteSimple: notapiano:       58  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14756.58497108884
+COMIENZA RETARDO En  old_time on : 18055.58627198146
 noteSimple: liga:            0
 ---FIN -----paso: 21 --------------------------------
 ---START-----paso: 22 --------------------------------
@@ -843,7 +843,7 @@ noteSimple: notapiano:       49  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14757.08503904315
+COMIENZA RETARDO En  old_time on : 18056.08631802127
 noteSimple: liga:            0
 ---FIN -----paso: 22 --------------------------------
 ---START-----paso: 23 --------------------------------
@@ -872,7 +872,7 @@ noteSimple: notapiano:       53  F
 pasoCol(1).liga              1
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14757.58515796319
+COMIENZA RETARDO En  old_time on : 18056.58640279569
 noteSimple: liga:            0
 ---FIN -----paso: 24 --------------------------------
 ---START-----paso: 25 --------------------------------
@@ -886,7 +886,7 @@ noteSimple: notapiano:       54 3F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 14758.0853023661
+COMIENZA RETARDO En  old_time on : 18057.08644509795
 noteSimple: liga:            0
 ---FIN -----paso: 25 --------------------------------
 ---START-----paso: 26 --------------------------------
@@ -900,7 +900,7 @@ noteSimple: notapiano:       54 3F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 14758.25204015828
+COMIENZA RETARDO En  old_time on : 18057.25317853084
 noteSimple: liga:            0
 ---FIN -----paso: 26 --------------------------------
 ---START-----paso: 27 --------------------------------
@@ -914,7 +914,7 @@ noteSimple: notapiano:       54 3F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 14758.41877896977
+COMIENZA RETARDO En  old_time on : 18057.41992045816
 noteSimple: liga:            0
 ---FIN -----paso: 27 --------------------------------
 ---START-----paso: 28 --------------------------------
@@ -928,7 +928,7 @@ noteSimple: notapiano:       56 3F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 14758.58551268469
+COMIENZA RETARDO En  old_time on : 18057.58666408436
 noteSimple: liga:            0
 ---FIN -----paso: 28 --------------------------------
 ---START-----paso: 29 --------------------------------
@@ -942,7 +942,7 @@ noteSimple: notapiano:       56 3F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 14758.75225693253
+COMIENZA RETARDO En  old_time on : 18057.75339853658
 noteSimple: liga:            0
 ---FIN -----paso: 29 --------------------------------
 ---START-----paso: 30 --------------------------------
@@ -956,7 +956,7 @@ noteSimple: notapiano:       56 3F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 14758.91901613032
+COMIENZA RETARDO En  old_time on : 18057.92013162969
 noteSimple: liga:            0
 ---FIN -----paso: 30 --------------------------------
 ---START-----paso: 31 --------------------------------
@@ -970,7 +970,7 @@ noteSimple: notapiano:       51 3L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 14759.08575222364
+COMIENZA RETARDO En  old_time on : 18058.08687049901
 noteSimple: liga:            0
 ---FIN -----paso: 31 --------------------------------
 ---START-----paso: 32 --------------------------------
@@ -984,7 +984,7 @@ noteSimple: notapiano:       51 3L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 14759.41919315129
+COMIENZA RETARDO En  old_time on : 18058.42030984284
 noteSimple: liga:            0
 ---FIN -----paso: 32 --------------------------------
 ---START-----paso: 33 --------------------------------
@@ -998,7 +998,7 @@ noteSimple: notapiano:       51 3L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 14759.75263747667
+COMIENZA RETARDO En  old_time on : 18058.75376583574
 noteSimple: liga:            0
 ---FIN -----paso: 33 --------------------------------
 ---START-----paso: 34 --------------------------------
@@ -1012,7 +1012,7 @@ noteSimple: notapiano:       58  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14760.08609233496
+COMIENZA RETARDO En  old_time on : 18059.08720993645
 noteSimple: liga:            0
 ---FIN -----paso: 34 --------------------------------
 ---START-----paso: 35 --------------------------------
@@ -1026,7 +1026,7 @@ noteSimple: notapiano:       58  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14760.58613548594
+COMIENZA RETARDO En  old_time on : 18059.58725937403
 noteSimple: liga:            0
 ---FIN -----paso: 35 --------------------------------
 ---START-----paso: 36 --------------------------------
@@ -1040,7 +1040,7 @@ noteSimple: notapiano:       58  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14761.08620955614
+COMIENZA RETARDO En  old_time on : 18060.08731934471
 noteSimple: liga:            0
 ---FIN -----paso: 36 --------------------------------
 ---START-----paso: 37 --------------------------------
@@ -1069,7 +1069,7 @@ noteSimple: notapiano:       56 3E
 pasoCol(1).liga              1
 envio on 
 noteSimple tiempoFigura  0.33333300054
-COMIENZA RETARDO En  old_time on : 14761.5862758116
+COMIENZA RETARDO En  old_time on : 18060.58739562469
 noteSimple: liga:            0
 ---FIN -----paso: 38 --------------------------------
 ---START-----paso: 39 --------------------------------
@@ -1083,7 +1083,7 @@ noteSimple: notapiano:       56 3L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 14761.91972081651
+COMIENZA RETARDO En  old_time on : 18060.92082001832
 noteSimple: liga:            0
 ---FIN -----paso: 39 --------------------------------
 ---START-----paso: 40 --------------------------------
@@ -1097,7 +1097,7 @@ noteSimple: notapiano:       56 3L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 14762.25315732714
+COMIENZA RETARDO En  old_time on : 18061.25421247288
 noteSimple: liga:            0
 ---FIN -----paso: 40 --------------------------------
 ---START-----paso: 41 --------------------------------
@@ -1112,173 +1112,18 @@ portsout 4
   
 comienzo playaLL ==========> 
 -----------------------------------------
----START-----paso: 1 --------------------------------
-jply  1dura  5
-paso  1 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  5
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       56  F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.25
-COMIENZA RETARDO En  old_time on : 14778.80129582074
-noteSimple: liga:            0
----FIN -----paso: 1 --------------------------------
----START-----paso: 2 --------------------------------
-jply  2dura  5
-paso  2 cnt  1 notapiano  54
-cnt  1 iguales  1
-pasoCol(cnt).DUR  5
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       54  F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.25
-COMIENZA RETARDO En  old_time on : 14779.05391053272
-noteSimple: liga:            0
----FIN -----paso: 2 --------------------------------
----START-----paso: 3 --------------------------------
-jply  3dura  4
-paso  3 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       51  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14779.30398749097
-noteSimple: liga:            0
----FIN -----paso: 3 --------------------------------
----START-----paso: 4 --------------------------------
-jply  4dura  5
-paso  4 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  5
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       56  F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.25
-COMIENZA RETARDO En  old_time on : 14779.8040360783
-noteSimple: liga:            0
----FIN -----paso: 4 --------------------------------
----START-----paso: 5 --------------------------------
-jply  5dura  6
-paso  5 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       51  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 14780.05491727582
-noteSimple: liga:            0
----FIN -----paso: 5 --------------------------------
----START-----paso: 6 --------------------------------
-jply  6dura  6
-paso  6 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       51  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 14780.18155862724
-noteSimple: liga:            0
----FIN -----paso: 6 --------------------------------
----START-----paso: 7 --------------------------------
-jply  7dura  6
-paso  7 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       56  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 14780.30907624949
-noteSimple: liga:            0
----FIN -----paso: 7 --------------------------------
----START-----paso: 8 --------------------------------
-jply  8dura  4
-paso  8 cnt  1 notapiano  53
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       53  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14780.43411863599
-noteSimple: liga:            0
----FIN -----paso: 8 --------------------------------
----START-----paso: 9 --------------------------------
-jply  9dura  3
-paso  9 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  3
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    100000000000
-noteSimple: notapiano:       51  I 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  1
-COMIENZA RETARDO En  old_time on : 14780.93416042789
-noteSimple: liga:            0
----FIN -----paso: 9 --------------------------------
----START-----paso: 10 --------------------------------
-jply  10dura  4
-paso  10 cnt  1 notapiano  49
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       49  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14781.93425964119
-noteSimple: liga:            0
----FIN -----paso: 10 --------------------------------
----START-----paso: 11 --------------------------------
-jply  11dura  113
-paso  11 cnt  1 notapiano  53
-cnt  1 iguales  1
-pasoCol(cnt).DUR  113
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    37500000000
-noteSimple: notapiano:       53 F*+
-no se envia noteon de 1er nota +, se suma su tiempo a la siguiente
-NoteSimple acum pasoCol(1).tiempoFiguraOld  37500000000
-noteSimple: liga:            1
----FIN -----paso: 11 --------------------------------
 ---START-----paso: 12 --------------------------------
 jply  12dura  6
 paso  12 cnt  1 notapiano  53
 cnt  1 iguales  1
 pasoCol(cnt).DUR  6
 i1=NB= 1 SIMPLE cnt=  1
-NoteSimple old > 0 pasoCol(1).tiempoFiguraOld  37500000000
-tempofigura + old 50000000000
-ESTOS EN NOTEsIMPLE!
-noteSimple: tiempoFigura:    50000000000
+noteSimple: tiempoFigura:    12500000000
 noteSimple: notapiano:       53  E 
-pasoCol(1).liga              1
+pasoCol(1).liga              0
 envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14782.43433405116
+noteSimple tiempoFigura  0.125
+COMIENZA RETARDO En  old_time on : 18073.06261652235
 noteSimple: liga:            0
 ---FIN -----paso: 12 --------------------------------
 ---START-----paso: 13 --------------------------------
@@ -1292,7 +1137,7 @@ noteSimple: notapiano:       53  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14782.93440200547
+COMIENZA RETARDO En  old_time on : 18073.18995652551
 noteSimple: liga:            0
 ---FIN -----paso: 13 --------------------------------
 ---START-----paso: 14 --------------------------------
@@ -1306,7 +1151,7 @@ noteSimple: notapiano:       58  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14783.43444209851
+COMIENZA RETARDO En  old_time on : 18073.69001275863
 noteSimple: liga:            0
 ---FIN -----paso: 14 --------------------------------
 ---START-----paso: 15 --------------------------------
@@ -1320,7 +1165,7 @@ noteSimple: notapiano:       49  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14783.93448423018
+COMIENZA RETARDO En  old_time on : 18074.1900669531
 noteSimple: liga:            0
 ---FIN -----paso: 15 --------------------------------
 ---START-----paso: 16 --------------------------------
@@ -1334,7 +1179,7 @@ noteSimple: notapiano:       56  F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.25
-COMIENZA RETARDO En  old_time on : 14784.43452058574
+COMIENZA RETARDO En  old_time on : 18074.69011673046
 noteSimple: liga:            0
 ---FIN -----paso: 16 --------------------------------
 ---START-----paso: 17 --------------------------------
@@ -1348,7 +1193,7 @@ noteSimple: notapiano:       60  E
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 14784.68455099529
+COMIENZA RETARDO En  old_time on : 18074.94016625299
 noteSimple: liga:            0
 ---FIN -----paso: 17 --------------------------------
 ---START-----paso: 18 --------------------------------
@@ -1362,7 +1207,7 @@ noteSimple: notapiano:       51  E
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 14784.8097211359
+COMIENZA RETARDO En  old_time on : 18075.06520664401
 noteSimple: liga:            0
 ---FIN -----paso: 18 --------------------------------
 ---START-----paso: 19 --------------------------------
@@ -1376,7 +1221,7 @@ noteSimple: notapiano:       58  E
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 14784.93475944514
+COMIENZA RETARDO En  old_time on : 18075.19026912054
 noteSimple: liga:            0
 ---FIN -----paso: 19 --------------------------------
 ---START-----paso: 20 --------------------------------
@@ -1390,7 +1235,7 @@ noteSimple: notapiano:       54  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14785.05979027941
+COMIENZA RETARDO En  old_time on : 18075.31531222977
 noteSimple: liga:            0
 ---FIN -----paso: 20 --------------------------------
 ---START-----paso: 21 --------------------------------
@@ -1404,7 +1249,7 @@ noteSimple: notapiano:       58  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14785.55988541544
+COMIENZA RETARDO En  old_time on : 18075.81537220045
 noteSimple: liga:            0
 ---FIN -----paso: 21 --------------------------------
 ---START-----paso: 22 --------------------------------
@@ -1418,7 +1263,7 @@ noteSimple: notapiano:       49  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14786.059933663
+COMIENZA RETARDO En  old_time on : 18076.31542979269
 noteSimple: liga:            0
 ---FIN -----paso: 22 --------------------------------
 ---START-----paso: 23 --------------------------------
@@ -1447,7 +1292,7 @@ noteSimple: notapiano:       53  F
 pasoCol(1).liga              1
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14786.56001282977
+COMIENZA RETARDO En  old_time on : 18076.81555126304
 noteSimple: liga:            0
 ---FIN -----paso: 24 --------------------------------
 ---START-----paso: 25 --------------------------------
@@ -1461,7 +1306,7 @@ noteSimple: notapiano:       54 3F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 14787.06005258305
+COMIENZA RETARDO En  old_time on : 18077.31560375862
 noteSimple: liga:            0
 ---FIN -----paso: 25 --------------------------------
 ---START-----paso: 26 --------------------------------
@@ -1475,7 +1320,7 @@ noteSimple: notapiano:       54 3F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 14787.22679581157
+COMIENZA RETARDO En  old_time on : 18077.48234568593
 noteSimple: liga:            0
 ---FIN -----paso: 26 --------------------------------
 ---START-----paso: 27 --------------------------------
@@ -1489,7 +1334,7 @@ noteSimple: notapiano:       54 3F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 14787.39353258443
+COMIENZA RETARDO En  old_time on : 18077.64908285637
 noteSimple: liga:            0
 ---FIN -----paso: 27 --------------------------------
 ---START-----paso: 28 --------------------------------
@@ -1503,7 +1348,7 @@ noteSimple: notapiano:       56 3F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 14787.56026460049
+COMIENZA RETARDO En  old_time on : 18077.81581832792
 noteSimple: liga:            0
 ---FIN -----paso: 28 --------------------------------
 ---START-----paso: 29 --------------------------------
@@ -1517,7 +1362,7 @@ noteSimple: notapiano:       56 3F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 14787.72699763587
+COMIENZA RETARDO En  old_time on : 18077.98255923591
 noteSimple: liga:            0
 ---FIN -----paso: 29 --------------------------------
 ---START-----paso: 30 --------------------------------
@@ -1531,7 +1376,7 @@ noteSimple: notapiano:       56 3F
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 14787.89378571424
+COMIENZA RETARDO En  old_time on : 18078.14929402791
 noteSimple: liga:            0
 ---FIN -----paso: 30 --------------------------------
 ---START-----paso: 31 --------------------------------
@@ -1545,7 +1390,7 @@ noteSimple: notapiano:       51 3L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 14788.0605272439
+COMIENZA RETARDO En  old_time on : 18078.31603119835
 noteSimple: liga:            0
 ---FIN -----paso: 31 --------------------------------
 ---START-----paso: 32 --------------------------------
@@ -1559,7 +1404,7 @@ noteSimple: notapiano:       51 3L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 14788.39397326813
+COMIENZA RETARDO En  old_time on : 18078.64951165521
 noteSimple: liga:            0
 ---FIN -----paso: 32 --------------------------------
 ---START-----paso: 33 --------------------------------
@@ -1573,7 +1418,7 @@ noteSimple: notapiano:       51 3L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 14788.72741283671
+COMIENZA RETARDO En  old_time on : 18078.98291056554
 noteSimple: liga:            0
 ---FIN -----paso: 33 --------------------------------
 ---START-----paso: 34 --------------------------------
@@ -1587,7 +1432,7 @@ noteSimple: notapiano:       58  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14789.06085614276
+COMIENZA RETARDO En  old_time on : 18079.31634243427
 noteSimple: liga:            0
 ---FIN -----paso: 34 --------------------------------
 ---START-----paso: 35 --------------------------------
@@ -1601,7 +1446,7 @@ noteSimple: notapiano:       58  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14789.56089589604
+COMIENZA RETARDO En  old_time on : 18079.81644997375
 noteSimple: liga:            0
 ---FIN -----paso: 35 --------------------------------
 ---START-----paso: 36 --------------------------------
@@ -1615,7 +1460,7 @@ noteSimple: notapiano:       58  L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 14790.06093496976
+COMIENZA RETARDO En  old_time on : 18080.31656227012
 noteSimple: liga:            0
 ---FIN -----paso: 36 --------------------------------
 ---START-----paso: 37 --------------------------------
@@ -1644,7 +1489,7 @@ noteSimple: notapiano:       56 3E
 pasoCol(1).liga              1
 envio on 
 noteSimple tiempoFigura  0.33333300054
-COMIENZA RETARDO En  old_time on : 14790.56099850704
+COMIENZA RETARDO En  old_time on : 18080.81669053602
 noteSimple: liga:            0
 ---FIN -----paso: 38 --------------------------------
 ---START-----paso: 39 --------------------------------
@@ -1658,7 +1503,7 @@ noteSimple: notapiano:       56 3L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 14790.89443399836
+COMIENZA RETARDO En  old_time on : 18081.15012784117
 noteSimple: liga:            0
 ---FIN -----paso: 39 --------------------------------
 ---START-----paso: 40 --------------------------------
@@ -1672,7 +1517,315 @@ noteSimple: notapiano:       56 3L
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 14791.22786847036
+COMIENZA RETARDO En  old_time on : 18081.4835746601
+noteSimple: liga:            0
+---FIN -----paso: 40 --------------------------------
+---START-----paso: 41 --------------------------------
+i1=NB= 1 SIMPLE cnt=  0
+---FIN -----paso: 41 --------------------------------
+---START-----paso: 42 --------------------------------
+i1=NB= 1 SIMPLE cnt=  0
+---FIN -----paso: 42 --------------------------------
+--->entra a reproducir thread1 
+--->paso llamada a thread1 
+portsout 4
+  
+comienzo playaLL ==========> 
+-----------------------------------------
+---START-----paso: 20 --------------------------------
+jply  20dura  4
+paso  20 cnt  1 notapiano  54
+cnt  1 iguales  1
+pasoCol(cnt).DUR  4
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    50000000000
+noteSimple: notapiano:       54  L 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.5
+COMIENZA RETARDO En  old_time on : 18091.95458673748
+noteSimple: liga:            0
+---FIN -----paso: 20 --------------------------------
+---START-----paso: 21 --------------------------------
+jply  21dura  4
+paso  21 cnt  1 notapiano  58
+cnt  1 iguales  1
+pasoCol(cnt).DUR  4
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    50000000000
+noteSimple: notapiano:       58  L 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.5
+COMIENZA RETARDO En  old_time on : 18092.45472995357
+noteSimple: liga:            0
+---FIN -----paso: 21 --------------------------------
+---START-----paso: 22 --------------------------------
+jply  22dura  4
+paso  22 cnt  1 notapiano  49
+cnt  1 iguales  1
+pasoCol(cnt).DUR  4
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    50000000000
+noteSimple: notapiano:       49  L 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.5
+COMIENZA RETARDO En  old_time on : 18092.95478890492
+noteSimple: liga:            0
+---FIN -----paso: 22 --------------------------------
+---START-----paso: 23 --------------------------------
+jply  23dura  95
+paso  23 cnt  1 notapiano  53
+cnt  1 iguales  1
+pasoCol(cnt).DUR  95
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    25000000000
+noteSimple: notapiano:       53  F+
+no se envia noteon de 1er nota +, se suma su tiempo a la siguiente
+NoteSimple acum pasoCol(1).tiempoFiguraOld  25000000000
+noteSimple: liga:            1
+---FIN -----paso: 23 --------------------------------
+---START-----paso: 24 --------------------------------
+jply  24dura  5
+paso  24 cnt  1 notapiano  53
+cnt  1 iguales  1
+pasoCol(cnt).DUR  5
+i1=NB= 1 SIMPLE cnt=  1
+NoteSimple old > 0 pasoCol(1).tiempoFiguraOld  25000000000
+tempofigura + old 50000000000
+ESTOS EN NOTEsIMPLE!
+noteSimple: tiempoFigura:    50000000000
+noteSimple: notapiano:       53  F 
+pasoCol(1).liga              1
+envio on 
+noteSimple tiempoFigura  0.5
+COMIENZA RETARDO En  old_time on : 18093.45486926223
+noteSimple: liga:            0
+---FIN -----paso: 24 --------------------------------
+---START-----paso: 25 --------------------------------
+jply  25dura  41
+paso  25 cnt  1 notapiano  54
+cnt  1 iguales  1
+pasoCol(cnt).DUR  41
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    16666600108
+noteSimple: notapiano:       54 3F 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.16666600108
+COMIENZA RETARDO En  old_time on : 18093.95491869981
+noteSimple: liga:            0
+---FIN -----paso: 25 --------------------------------
+---START-----paso: 26 --------------------------------
+jply  26dura  41
+paso  26 cnt  1 notapiano  54
+cnt  1 iguales  1
+pasoCol(cnt).DUR  41
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    16666600108
+noteSimple: notapiano:       54 3F 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.16666600108
+COMIENZA RETARDO En  old_time on : 18094.12165485092
+noteSimple: liga:            0
+---FIN -----paso: 26 --------------------------------
+---START-----paso: 27 --------------------------------
+jply  27dura  41
+paso  27 cnt  1 notapiano  54
+cnt  1 iguales  1
+pasoCol(cnt).DUR  41
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    16666600108
+noteSimple: notapiano:       54 3F 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.16666600108
+COMIENZA RETARDO En  old_time on : 18094.28839066225
+noteSimple: liga:            0
+---FIN -----paso: 27 --------------------------------
+---START-----paso: 28 --------------------------------
+jply  28dura  41
+paso  28 cnt  1 notapiano  56
+cnt  1 iguales  1
+pasoCol(cnt).DUR  41
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    16666600108
+noteSimple: notapiano:       56 3F 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.16666600108
+COMIENZA RETARDO En  old_time on : 18094.45512545424
+noteSimple: liga:            0
+---FIN -----paso: 28 --------------------------------
+---START-----paso: 29 --------------------------------
+jply  29dura  41
+paso  29 cnt  1 notapiano  56
+cnt  1 iguales  1
+pasoCol(cnt).DUR  41
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    16666600108
+noteSimple: notapiano:       56 3F 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.16666600108
+COMIENZA RETARDO En  old_time on : 18094.62187009978
+noteSimple: liga:            0
+---FIN -----paso: 29 --------------------------------
+---START-----paso: 30 --------------------------------
+jply  30dura  41
+paso  30 cnt  1 notapiano  56
+cnt  1 iguales  1
+pasoCol(cnt).DUR  41
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    16666600108
+noteSimple: notapiano:       56 3F 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.16666600108
+COMIENZA RETARDO En  old_time on : 18094.78860659066
+noteSimple: liga:            0
+---FIN -----paso: 30 --------------------------------
+---START-----paso: 31 --------------------------------
+jply  31dura  40
+paso  31 cnt  1 notapiano  51
+cnt  1 iguales  1
+pasoCol(cnt).DUR  40
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    33333298564
+noteSimple: notapiano:       51 3L 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.33333298564
+COMIENZA RETARDO En  old_time on : 18094.95534512021
+noteSimple: liga:            0
+---FIN -----paso: 31 --------------------------------
+---START-----paso: 32 --------------------------------
+jply  32dura  40
+paso  32 cnt  1 notapiano  51
+cnt  1 iguales  1
+pasoCol(cnt).DUR  40
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    33333298564
+noteSimple: notapiano:       51 3L 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.33333298564
+COMIENZA RETARDO En  old_time on : 18095.28878820158
+noteSimple: liga:            0
+---FIN -----paso: 32 --------------------------------
+---START-----paso: 33 --------------------------------
+jply  33dura  40
+paso  33 cnt  1 notapiano  51
+cnt  1 iguales  1
+pasoCol(cnt).DUR  40
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    33333298564
+noteSimple: notapiano:       51 3L 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.33333298564
+COMIENZA RETARDO En  old_time on : 18095.62224793203
+noteSimple: liga:            0
+---FIN -----paso: 33 --------------------------------
+---START-----paso: 34 --------------------------------
+jply  34dura  4
+paso  34 cnt  1 notapiano  58
+cnt  1 iguales  1
+pasoCol(cnt).DUR  4
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    50000000000
+noteSimple: notapiano:       58  L 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.5
+COMIENZA RETARDO En  old_time on : 18095.95568489741
+noteSimple: liga:            0
+---FIN -----paso: 34 --------------------------------
+---START-----paso: 35 --------------------------------
+jply  35dura  4
+paso  35 cnt  1 notapiano  58
+cnt  1 iguales  1
+pasoCol(cnt).DUR  4
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    50000000000
+noteSimple: notapiano:       58  L 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.5
+COMIENZA RETARDO En  old_time on : 18096.45573807255
+noteSimple: liga:            0
+---FIN -----paso: 35 --------------------------------
+---START-----paso: 36 --------------------------------
+jply  36dura  4
+paso  36 cnt  1 notapiano  58
+cnt  1 iguales  1
+pasoCol(cnt).DUR  4
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    50000000000
+noteSimple: notapiano:       58  L 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.5
+COMIENZA RETARDO En  old_time on : 18096.95581367298
+noteSimple: liga:            0
+---FIN -----paso: 36 --------------------------------
+---START-----paso: 37 --------------------------------
+jply  37dura  95
+paso  37 cnt  1 notapiano  56
+cnt  1 iguales  1
+pasoCol(cnt).DUR  95
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    25000000000
+noteSimple: notapiano:       56  F+
+no se envia noteon de 1er nota +, se suma su tiempo a la siguiente
+NoteSimple acum pasoCol(1).tiempoFiguraOld  25000000000
+noteSimple: liga:            1
+---FIN -----paso: 37 --------------------------------
+---START-----paso: 38 --------------------------------
+jply  38dura  42
+paso  38 cnt  1 notapiano  56
+cnt  1 iguales  1
+pasoCol(cnt).DUR  42
+i1=NB= 1 SIMPLE cnt=  1
+NoteSimple old > 0 pasoCol(1).tiempoFiguraOld  25000000000
+tempofigura + old 33333300054
+ESTOS EN NOTEsIMPLE!
+noteSimple: tiempoFigura:    33333300054
+noteSimple: notapiano:       56 3E 
+pasoCol(1).liga              1
+envio on 
+noteSimple tiempoFigura  0.33333300054
+COMIENZA RETARDO En  old_time on : 18097.45589335073
+noteSimple: liga:            0
+---FIN -----paso: 38 --------------------------------
+---START-----paso: 39 --------------------------------
+jply  39dura  40
+paso  39 cnt  1 notapiano  56
+cnt  1 iguales  1
+pasoCol(cnt).DUR  40
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    33333298564
+noteSimple: notapiano:       56 3L 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.33333298564
+COMIENZA RETARDO En  old_time on : 18097.78934186854
+noteSimple: liga:            0
+---FIN -----paso: 39 --------------------------------
+---START-----paso: 40 --------------------------------
+jply  40dura  40
+paso  40 cnt  1 notapiano  56
+cnt  1 iguales  1
+pasoCol(cnt).DUR  40
+i1=NB= 1 SIMPLE cnt=  1
+noteSimple: tiempoFigura:    33333298564
+noteSimple: notapiano:       56 3L 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  0.33333298564
+COMIENZA RETARDO En  old_time on : 18098.12278902724
 noteSimple: liga:            0
 ---FIN -----paso: 40 --------------------------------
 ---START-----paso: 41 --------------------------------
