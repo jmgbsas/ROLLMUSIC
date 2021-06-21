@@ -1,3 +1,6 @@
+' 20-06-2021: ha que corregir el caso DESAFIO-LIGA-ACORDE-3-O-sin-O-ok
+'  dura poco el sonido de la ligadura
+' en el otro anda bien se corrigio uno se jodio el anterior!
 ' 12-06-2021: fix cursor durante play
 ' 12-06-2021: CAMBIO DEL ORDEN EN SEPARADUR DE LSO RANGOS DE BUSQUEDA
 ' 11-06-2021: scroll horizontal durante play

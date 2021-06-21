@@ -31,7 +31,7 @@ Dim size As UInteger<64>
 Dim sizeptr As UInteger<64> Ptr = @size
 Dim Shared As UInteger portsin, portsout 
 Dim Shared As Double tiempoPatron=60 ' cuantas negras enun minuto default
-Dim Shared As Double old_time=0
+Dim Shared As Double old_time_on=0,old_time_off=0
 Dim Shared As Integer jply=0, finplay=0
 'elpatron esla negra ej I=60ergo todo sera relativo  la negra
 ' 09-06-2021 agregue 0 en relDur para evitar cancelaciones pero ojo puede 
@@ -84,13 +84,14 @@ Type vec
 End Type
 
 Declare Sub noteon	( note As UByte, vel As UByte,canal As UByte)
-Declare Sub noteSimple	( pasoCol() As vec, vel As UByte,canal As UByte,tiempoDur As Double)
-Declare Sub AcordeIguales ( pasoCol() As vec,cnt As UByte, vel As UByte,canal As UByte,tiempoDur As double) 
-Declare Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte, canal As UByte)
-Declare Sub AcordeDistintos ( pasoCol() As vec,cnt As UByte, vel As UByte, canal As UByte,tiempoDur As double) 
-Declare Sub AcordeOffDistintos	( pasoCol() As vec , cnt As UByte,canal As UByte,tiempoDur As Double)
-Declare Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, vel As UByte,canal As UByte,tiempoDUR As Double)
-Declare Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, vel As UByte,canal As UByte,tiempoDUR As double)
+Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal As UByte,tiempoDur As Double)
+Declare Sub AcordeIguales ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte,canal As UByte,tiempoDur As double) 
+Declare Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte,cntold As UByte, canal As UByte)
+Declare Sub AcordeDistintos ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte, canal As UByte,tiempoDur As double) 
+Declare Sub AcordeOffDistintos	( pasoCol() As vec , cnt As UByte,cntold As UByte, canal As UByte,tiempoDur As Double)
+Declare Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As Double)
+Declare Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As double)
 Declare Function vol (dura As UByte, vel As UByte) As ubyte
 Declare sub noteoff( note As UByte, canal As UByte)
+Declare Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
 Dim Shared ligaglobal  as Integer=0
