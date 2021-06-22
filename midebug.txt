@@ -1,14 +1,14 @@
 version para ceros!!!!!! 
-06-12-202118:32:13
+06-22-202100:23:33
 arg desde  0
 arg hasta  0
 dires   
 recibi 
 common  0
-ABRIR MAXPOS ,NB,NA  42      1             116
-ABRIR MAXPOS ,NB,NA  42      1             116
-LECTURA DUR:  5 EN LA CARGA j:  1 i:  57 figura  F 
-Valdur i  5 57 grupo  1 figura  F 
+ABRIR MAXPOS ,NB,NA  28      1             116
+ABRIR MAXPOS ,NB,NA  28      1             116
+LECTURA DUR:  5 EN LA CARGA j:  1 i:  77 figura  F 
+Valdur i  5 77 grupo  1 figura  F 
 i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
 peso de mayor encontrado valdur  5dur  5 grupo  1
 ABRIR IN:  J:  1 DUR:  5 GRUPO:  1 figura  F 
@@ -21,86 +21,91 @@ acumulado / k / PEsoDur  625000            5             625000 figura  F
 j que hace cancelar  1
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
 ABRIR OUT: J:  1 compas(j):  0 figura  F 
-LECTURA DUR:  5 EN LA CARGA j:  2 i:  59 figura  F 
-Valdur i  5 59 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  2 DUR:  5 GRUPO:  1 figura  F 
+LECTURA DUR:  6 EN LA CARGA j:  2 i:  75 figura  E 
+Valdur i  6 75 grupo  1 figura  E 
+i=NA i:  116 NA:  116 Mayor  312500 grupo: 1
+peso de mayor encontrado valdur  6dur  6 grupo  1
+ABRIR IN:  J:  2 DUR:  6 GRUPO:  1 figura  E 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  2
 1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  2 figura:  F 
-acumulado / k / PEsoDur  1250000           5             625000 figura  F 
+1-calcCompas 3, DUR:  6 j:  2 figura:  E 
+acumulado / k / PEsoDur  937500            6             312500 figura  E 
 j que hace cancelar  2
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  2 compas(j):  0 figura  F 
-LECTURA DUR:  4 EN LA CARGA j:  3 i:  62 figura  L 
-Valdur i  4 62 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  3 DUR:  4 GRUPO:  1 figura  L 
+ABRIR OUT: J:  2 compas(j):  0 figura  E 
+LECTURA DUR:  6 EN LA CARGA j:  3 i:  75 figura  E 
+Valdur i  6 75 grupo  1 figura  E 
+i=NA i:  116 NA:  116 Mayor  312500 grupo: 1
+peso de mayor encontrado valdur  6dur  6 grupo  1
+ABRIR IN:  J:  3 DUR:  6 GRUPO:  1 figura  E 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  3
 1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  3 figura:  L 
-acumulado / k / PEsoDur  2500000           4             1250000 figura  L 
+1-calcCompas 3, DUR:  6 j:  3 figura:  E 
+acumulado / k / PEsoDur  1250000           6             312500 figura  E 
 j que hace cancelar  3
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  3 compas(j):  0 figura  L 
-LECTURA DUR:  5 EN LA CARGA j:  4 i:  57 figura  F 
-Valdur i  5 57 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  4 DUR:  5 GRUPO:  1 figura  F 
+ABRIR OUT: J:  3 compas(j):  0 figura  E 
+LECTURA DUR:  4 EN LA CARGA j:  4 i:  66 figura  L 
+Valdur i  4 66 grupo  1 figura  L 
+LECTURA DUR:  3 EN LA CARGA j:  4 i:  73 figura  I 
+Valdur i  3 73 grupo  1 figura  I 
+i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
+peso de mayor encontrado valdur  3dur  3 grupo  1
+ABRIR IN:  J:  4 DUR:  3 GRUPO:  1 figura  I 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  4
 1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  4 figura:  F 
-acumulado / k / PEsoDur  3125000           5             625000 figura  F 
+1-calcCompas 3, DUR:  3 j:  4 figura:  I 
+acumulado / k / PEsoDur  3750000           3             2500000 figura  I 
 j que hace cancelar  4
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  4 compas(j):  0 figura  F 
-LECTURA DUR:  6 EN LA CARGA j:  5 i:  62 figura  E 
-Valdur i  6 62 grupo  1 figura  E 
-i=NA i:  116 NA:  116 Mayor  312500 grupo: 1
-peso de mayor encontrado valdur  6dur  6 grupo  1
-ABRIR IN:  J:  5 DUR:  6 GRUPO:  1 figura  E 
+ABRIR OUT: J:  4 compas(j):  0 figura  I 
+LECTURA DUR:  3 EN LA CARGA j:  5 i:  72 figura  I 
+Valdur i  3 72 grupo  1 figura  I 
+i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
+peso de mayor encontrado valdur  3dur  3 grupo  1
+ABRIR IN:  J:  5 DUR:  3 GRUPO:  1 figura  I 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  5
 1-calcCompas 2
-1-calcCompas 3, DUR:  6 j:  5 figura:  E 
-acumulado / k / PEsoDur  3437500           6             312500 figura  E 
+1-calcCompas 3, DUR:  3 j:  5 figura:  I 
+acumulado / k / PEsoDur  6250000           3             2500000 figura  I 
 j que hace cancelar  5
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  5 compas(j):  0 figura  E 
-LECTURA DUR:  6 EN LA CARGA j:  6 i:  62 figura  E 
-Valdur i  6 62 grupo  1 figura  E 
-i=NA i:  116 NA:  116 Mayor  312500 grupo: 1
-peso de mayor encontrado valdur  6dur  6 grupo  1
-ABRIR IN:  J:  6 DUR:  6 GRUPO:  1 figura  E 
+ABRIR OUT: J:  5 compas(j):  0 figura  I 
+LECTURA DUR:  3 EN LA CARGA j:  6 i:  70 figura  I 
+Valdur i  3 70 grupo  1 figura  I 
+LECTURA DUR:  4 EN LA CARGA j:  6 i:  73 figura  L 
+Valdur i  4 73 grupo  1 figura  L 
+i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
+peso de mayor encontrado valdur  3dur  3 grupo  1
+ABRIR IN:  J:  6 DUR:  3 GRUPO:  1 figura  I 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  6
 1-calcCompas 2
-1-calcCompas 3, DUR:  6 j:  6 figura:  E 
-acumulado / k / PEsoDur  3750000           6             312500 figura  E 
+1-calcCompas 3, DUR:  3 j:  6 figura:  I 
+acumulado / k / PEsoDur  8750000           3             2500000 figura  I 
 j que hace cancelar  6
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  6 compas(j):  0 figura  E 
-LECTURA DUR:  6 EN LA CARGA j:  7 i:  57 figura  E 
-Valdur i  6 57 grupo  1 figura  E 
-i=NA i:  116 NA:  116 Mayor  312500 grupo: 1
-peso de mayor encontrado valdur  6dur  6 grupo  1
-ABRIR IN:  J:  7 DUR:  6 GRUPO:  1 figura  E 
+ABRIR OUT: J:  6 compas(j):  0 figura  I 
+LECTURA DUR:  94 EN LA CARGA j:  7 i:  68 figura  L+
+Valdur i  94 68 grupo  3 figura  L+
+i=NA i:  116 NA:  116 Mayor  1250000 grupo: 3
+peso de mayor encontrado valdur  94dur  94 grupo  3
+ABRIR IN:  J:  7 DUR:  94 GRUPO:  3 figura  L+
 =========================================================
 1-calcCompas j o posn RECIBIDA:  7
 1-calcCompas 2
-1-calcCompas 3, DUR:  6 j:  7 figura:  E 
-acumulado / k / PEsoDur  4062500           6             312500 figura  E 
-j que hace cancelar  7
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  7 compas(j):  0 figura  E 
-LECTURA DUR:  4 EN LA CARGA j:  8 i:  60 figura  L 
-Valdur i  4 60 grupo  1 figura  L 
+1-calcCompas 3, DUR:  94 j:  7 figura:  L+
+acumulado / k / PEsoDur  10000000          94            1250000 figura  L+
+acumulado  10000000
+Compas(j) , j:  7  7
+1-calcCompas 3.1 exit sub acumulado=0  0
+ABRIR OUT: J:  7 compas(j):  7 figura  L+
+LECTURA DUR:  4 EN LA CARGA j:  8 i:  68 figura  L 
+Valdur i  4 68 grupo  1 figura  L 
 i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
 peso de mayor encontrado valdur  4dur  4 grupo  1
 ABRIR IN:  J:  8 DUR:  4 GRUPO:  1 figura  L 
@@ -108,12 +113,12 @@ ABRIR IN:  J:  8 DUR:  4 GRUPO:  1 figura  L
 1-calcCompas j o posn RECIBIDA:  8
 1-calcCompas 2
 1-calcCompas 3, DUR:  4 j:  8 figura:  L 
-acumulado / k / PEsoDur  5312500           4             1250000 figura  L 
+acumulado / k / PEsoDur  1250000           4             1250000 figura  L 
 j que hace cancelar  8
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
 ABRIR OUT: J:  8 compas(j):  0 figura  L 
-LECTURA DUR:  3 EN LA CARGA j:  9 i:  62 figura  I 
-Valdur i  3 62 grupo  1 figura  I 
+LECTURA DUR:  3 EN LA CARGA j:  9 i:  77 figura  I 
+Valdur i  3 77 grupo  1 figura  I 
 i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
 peso de mayor encontrado valdur  3dur  3 grupo  1
 ABRIR IN:  J:  9 DUR:  3 GRUPO:  1 figura  I 
@@ -121,1716 +126,689 @@ ABRIR IN:  J:  9 DUR:  3 GRUPO:  1 figura  I
 1-calcCompas j o posn RECIBIDA:  9
 1-calcCompas 2
 1-calcCompas 3, DUR:  3 j:  9 figura:  I 
-acumulado / k / PEsoDur  7812500           3             2500000 figura  I 
+acumulado / k / PEsoDur  3750000           3             2500000 figura  I 
 j que hace cancelar  9
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
 ABRIR OUT: J:  9 compas(j):  0 figura  I 
-LECTURA DUR:  4 EN LA CARGA j:  10 i:  64 figura  L 
-Valdur i  4 64 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  10 DUR:  4 GRUPO:  1 figura  L 
+LECTURA DUR:  1 EN LA CARGA j:  10 i:  66 figura  O 
+Valdur i  1 66 grupo  1 figura  O 
+LECTURA DUR:  94 EN LA CARGA j:  10 i:  70 figura  L+
+Valdur i  94 70 grupo  3 figura  L+
+LECTURA DUR:  2 EN LA CARGA j:  10 i:  75 figura  P 
+Valdur i  2 75 grupo  1 figura  P 
+i=NA i:  116 NA:  116 Mayor  10000000 grupo: 1
+peso de mayor encontrado valdur  1dur  1 grupo  1
+ABRIR IN:  J:  10 DUR:  1 GRUPO:  1 figura  O 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  10
 1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  10 figura:  L 
-acumulado / k / PEsoDur  9062500           4             1250000 figura  L 
-j que hace cancelar  10
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  10 compas(j):  0 figura  L 
-LECTURA DUR:  113 EN LA CARGA j:  11 i:  60 figura F*+
-Valdur i  113 60 grupo  3 figura F*+
-i=NA i:  116 NA:  116 Mayor  937500 grupo: 3
-peso de mayor encontrado valdur  113dur  113 grupo  3
-ABRIR IN:  J:  11 DUR:  113 GRUPO:  3 figura F*+
+1-calcCompas 3, DUR:  1 j:  10 figura:  O 
+acumulado / k / PEsoDur  13750000          1             10000000 figura  O 
+ABRIR OUT: J:  10 compas(j):  0 figura  O 
+LECTURA DUR:  92 EN LA CARGA j:  11 i:  70 figura  P+
+Valdur i  92 70 grupo  3 figura  P+
+LECTURA DUR:  3 EN LA CARGA j:  11 i:  73 figura  I 
+Valdur i  3 73 grupo  1 figura  I 
+i=NA i:  116 NA:  116 Mayor  5000000 grupo: 3
+peso de mayor encontrado valdur  92dur  92 grupo  3
+ABRIR IN:  J:  11 DUR:  92 GRUPO:  3 figura  P+
 =========================================================
 1-calcCompas j o posn RECIBIDA:  11
 1-calcCompas 2
-1-calcCompas 3, DUR:  113 j:  11 figura: F*+
-acumulado / k / PEsoDur  10000000          113           937500 figura F*+
-acumulado  10000000
-Compas(j) , j:  11  11
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  11 compas(j):  11 figura F*+
-LECTURA DUR:  6 EN LA CARGA j:  12 i:  60 figura  E 
-Valdur i  6 60 grupo  1 figura  E 
-i=NA i:  116 NA:  116 Mayor  312500 grupo: 1
-peso de mayor encontrado valdur  6dur  6 grupo  1
-ABRIR IN:  J:  12 DUR:  6 GRUPO:  1 figura  E 
+1-calcCompas 3, DUR:  92 j:  11 figura:  P+
+acumulado / k / PEsoDur  18750000          92            5000000 figura  P+
+ABRIR OUT: J:  11 compas(j):  0 figura  P+
+LECTURA DUR:  1 EN LA CARGA j:  12 i:  70 figura  O 
+Valdur i  1 70 grupo  1 figura  O 
+i=NA i:  116 NA:  116 Mayor  10000000 grupo: 1
+peso de mayor encontrado valdur  1dur  1 grupo  1
+ABRIR IN:  J:  12 DUR:  1 GRUPO:  1 figura  O 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  12
 1-calcCompas 2
-1-calcCompas 3, DUR:  6 j:  12 figura:  E 
-acumulado / k / PEsoDur  312500            6             312500 figura  E 
-j que hace cancelar  12
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  12 compas(j):  0 figura  E 
-LECTURA DUR:  4 EN LA CARGA j:  13 i:  60 figura  L 
-Valdur i  4 60 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  13 DUR:  4 GRUPO:  1 figura  L 
+1-calcCompas 3, DUR:  1 j:  12 figura:  O 
+acumulado / k / PEsoDur  28750000          1             10000000 figura  O 
+ABRIR OUT: J:  12 compas(j):  0 figura  O 
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  13 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  13
-1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  13 figura:  L 
-acumulado / k / PEsoDur  1562500           4             1250000 figura  L 
-j que hace cancelar  13
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  13 compas(j):  0 figura  L 
-LECTURA DUR:  4 EN LA CARGA j:  14 i:  55 figura  L 
-Valdur i  4 55 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  14 DUR:  4 GRUPO:  1 figura  L 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  13 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  14 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  14
-1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  14 figura:  L 
-acumulado / k / PEsoDur  2812500           4             1250000 figura  L 
-j que hace cancelar  14
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  14 compas(j):  0 figura  L 
-LECTURA DUR:  4 EN LA CARGA j:  15 i:  64 figura  L 
-Valdur i  4 64 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  15 DUR:  4 GRUPO:  1 figura  L 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  14 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  15 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  15
-1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  15 figura:  L 
-acumulado / k / PEsoDur  4062500           4             1250000 figura  L 
-j que hace cancelar  15
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  15 compas(j):  0 figura  L 
-LECTURA DUR:  5 EN LA CARGA j:  16 i:  57 figura  F 
-Valdur i  5 57 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  16 DUR:  5 GRUPO:  1 figura  F 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  15 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  16 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  16
-1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  16 figura:  F 
-acumulado / k / PEsoDur  4687500           5             625000 figura  F 
-j que hace cancelar  16
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  16 compas(j):  0 figura  F 
-LECTURA DUR:  6 EN LA CARGA j:  17 i:  53 figura  E 
-Valdur i  6 53 grupo  1 figura  E 
-i=NA i:  116 NA:  116 Mayor  312500 grupo: 1
-peso de mayor encontrado valdur  6dur  6 grupo  1
-ABRIR IN:  J:  17 DUR:  6 GRUPO:  1 figura  E 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  16 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  17 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  17
-1-calcCompas 2
-1-calcCompas 3, DUR:  6 j:  17 figura:  E 
-acumulado / k / PEsoDur  5000000           6             312500 figura  E 
-j que hace cancelar  17
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  17 compas(j):  0 figura  E 
-LECTURA DUR:  6 EN LA CARGA j:  18 i:  62 figura  E 
-Valdur i  6 62 grupo  1 figura  E 
-i=NA i:  116 NA:  116 Mayor  312500 grupo: 1
-peso de mayor encontrado valdur  6dur  6 grupo  1
-ABRIR IN:  J:  18 DUR:  6 GRUPO:  1 figura  E 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  17 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  18 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  18
-1-calcCompas 2
-1-calcCompas 3, DUR:  6 j:  18 figura:  E 
-acumulado / k / PEsoDur  5312500           6             312500 figura  E 
-j que hace cancelar  18
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  18 compas(j):  0 figura  E 
-LECTURA DUR:  6 EN LA CARGA j:  19 i:  55 figura  E 
-Valdur i  6 55 grupo  1 figura  E 
-i=NA i:  116 NA:  116 Mayor  312500 grupo: 1
-peso de mayor encontrado valdur  6dur  6 grupo  1
-ABRIR IN:  J:  19 DUR:  6 GRUPO:  1 figura  E 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  18 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  19 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  19
-1-calcCompas 2
-1-calcCompas 3, DUR:  6 j:  19 figura:  E 
-acumulado / k / PEsoDur  5625000           6             312500 figura  E 
-j que hace cancelar  19
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  19 compas(j):  0 figura  E 
-LECTURA DUR:  4 EN LA CARGA j:  20 i:  59 figura  L 
-Valdur i  4 59 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  20 DUR:  4 GRUPO:  1 figura  L 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  19 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  20 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  20
-1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  20 figura:  L 
-acumulado / k / PEsoDur  6875000           4             1250000 figura  L 
-j que hace cancelar  20
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  20 compas(j):  0 figura  L 
-LECTURA DUR:  4 EN LA CARGA j:  21 i:  55 figura  L 
-Valdur i  4 55 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  21 DUR:  4 GRUPO:  1 figura  L 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  20 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  21 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  21
-1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  21 figura:  L 
-acumulado / k / PEsoDur  8125000           4             1250000 figura  L 
-j que hace cancelar  21
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  21 compas(j):  0 figura  L 
-LECTURA DUR:  4 EN LA CARGA j:  22 i:  64 figura  L 
-Valdur i  4 64 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  22 DUR:  4 GRUPO:  1 figura  L 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  21 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  22 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  22
-1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  22 figura:  L 
-acumulado / k / PEsoDur  9375000           4             1250000 figura  L 
-j que hace cancelar  22
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  22 compas(j):  0 figura  L 
-LECTURA DUR:  95 EN LA CARGA j:  23 i:  60 figura  F+
-Valdur i  95 60 grupo  3 figura  F+
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 3
-peso de mayor encontrado valdur  95dur  95 grupo  3
-ABRIR IN:  J:  23 DUR:  95 GRUPO:  3 figura  F+
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  22 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  23 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  23
-1-calcCompas 2
-1-calcCompas 3, DUR:  95 j:  23 figura:  F+
-acumulado / k / PEsoDur  10000000          95            625000 figura  F+
-acumulado  10000000
-Compas(j) , j:  23  23
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  23 compas(j):  23 figura  F+
-LECTURA DUR:  5 EN LA CARGA j:  24 i:  60 figura  F 
-Valdur i  5 60 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  24 DUR:  5 GRUPO:  1 figura  F 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  23 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  24 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  24
-1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  24 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
-j que hace cancelar  24
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  24 compas(j):  0 figura  F 
-LECTURA DUR:  41 EN LA CARGA j:  25 i:  59 figura 3F 
-Valdur i  41 59 grupo  1 figura 3F 
-i=NA i:  116 NA:  116 Mayor  416666 grupo: 1
-peso de mayor encontrado valdur  41dur  41 grupo  1
-ABRIR IN:  J:  25 DUR:  41 GRUPO:  1 figura 3F 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  24 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  25 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  25
-1-calcCompas 2
-1-calcCompas 3, DUR:  41 j:  25 figura: 3F 
-acumulado / k / PEsoDur  1041666           41            416666 figura 3F 
-j que hace cancelar  25
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  25 compas(j):  0 figura 3F 
-LECTURA DUR:  41 EN LA CARGA j:  26 i:  59 figura 3F 
-Valdur i  41 59 grupo  1 figura 3F 
-i=NA i:  116 NA:  116 Mayor  416666 grupo: 1
-peso de mayor encontrado valdur  41dur  41 grupo  1
-ABRIR IN:  J:  26 DUR:  41 GRUPO:  1 figura 3F 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  25 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  26 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  26
-1-calcCompas 2
-1-calcCompas 3, DUR:  41 j:  26 figura: 3F 
-acumulado / k / PEsoDur  1458332           41            416666 figura 3F 
-j que hace cancelar  26
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  26 compas(j):  0 figura 3F 
-LECTURA DUR:  41 EN LA CARGA j:  27 i:  59 figura 3F 
-Valdur i  41 59 grupo  1 figura 3F 
-i=NA i:  116 NA:  116 Mayor  416666 grupo: 1
-peso de mayor encontrado valdur  41dur  41 grupo  1
-ABRIR IN:  J:  27 DUR:  41 GRUPO:  1 figura 3F 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  27
-1-calcCompas 2
-1-calcCompas 3, DUR:  41 j:  27 figura: 3F 
-acumulado / k / PEsoDur  1874998           41            416666 figura 3F 
-j que hace cancelar  27
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  27 compas(j):  0 figura 3F 
-LECTURA DUR:  41 EN LA CARGA j:  28 i:  57 figura 3F 
-Valdur i  41 57 grupo  1 figura 3F 
-i=NA i:  116 NA:  116 Mayor  416666 grupo: 1
-peso de mayor encontrado valdur  41dur  41 grupo  1
-ABRIR IN:  J:  28 DUR:  41 GRUPO:  1 figura 3F 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  28
-1-calcCompas 2
-1-calcCompas 3, DUR:  41 j:  28 figura: 3F 
-acumulado / k / PEsoDur  2291664           41            416666 figura 3F 
-j que hace cancelar  28
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  28 compas(j):  0 figura 3F 
-LECTURA DUR:  41 EN LA CARGA j:  29 i:  57 figura 3F 
-Valdur i  41 57 grupo  1 figura 3F 
-i=NA i:  116 NA:  116 Mayor  416666 grupo: 1
-peso de mayor encontrado valdur  41dur  41 grupo  1
-ABRIR IN:  J:  29 DUR:  41 GRUPO:  1 figura 3F 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  29
-1-calcCompas 2
-1-calcCompas 3, DUR:  41 j:  29 figura: 3F 
-acumulado / k / PEsoDur  2708330           41            416666 figura 3F 
-j que hace cancelar  29
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  29 compas(j):  0 figura 3F 
-LECTURA DUR:  41 EN LA CARGA j:  30 i:  57 figura 3F 
-Valdur i  41 57 grupo  1 figura 3F 
-i=NA i:  116 NA:  116 Mayor  416666 grupo: 1
-peso de mayor encontrado valdur  41dur  41 grupo  1
-ABRIR IN:  J:  30 DUR:  41 GRUPO:  1 figura 3F 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  30
-1-calcCompas 2
-1-calcCompas 3, DUR:  41 j:  30 figura: 3F 
-acumulado / k / PEsoDur  3124996           41            416666 figura 3F 
-j que hace cancelar  30
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  30 compas(j):  0 figura 3F 
-LECTURA DUR:  40 EN LA CARGA j:  31 i:  62 figura 3L 
-Valdur i  40 62 grupo  1 figura 3L 
-i=NA i:  116 NA:  116 Mayor  833333 grupo: 1
-peso de mayor encontrado valdur  40dur  40 grupo  1
-ABRIR IN:  J:  31 DUR:  40 GRUPO:  1 figura 3L 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  31
-1-calcCompas 2
-1-calcCompas 3, DUR:  40 j:  31 figura: 3L 
-acumulado / k / PEsoDur  3958329           40            833333 figura 3L 
-j que hace cancelar  31
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  31 compas(j):  0 figura 3L 
-LECTURA DUR:  40 EN LA CARGA j:  32 i:  62 figura 3L 
-Valdur i  40 62 grupo  1 figura 3L 
-i=NA i:  116 NA:  116 Mayor  833333 grupo: 1
-peso de mayor encontrado valdur  40dur  40 grupo  1
-ABRIR IN:  J:  32 DUR:  40 GRUPO:  1 figura 3L 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  32
-1-calcCompas 2
-1-calcCompas 3, DUR:  40 j:  32 figura: 3L 
-acumulado / k / PEsoDur  4791662           40            833333 figura 3L 
-j que hace cancelar  32
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  32 compas(j):  0 figura 3L 
-LECTURA DUR:  40 EN LA CARGA j:  33 i:  62 figura 3L 
-Valdur i  40 62 grupo  1 figura 3L 
-i=NA i:  116 NA:  116 Mayor  833333 grupo: 1
-peso de mayor encontrado valdur  40dur  40 grupo  1
-ABRIR IN:  J:  33 DUR:  40 GRUPO:  1 figura 3L 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  33
-1-calcCompas 2
-1-calcCompas 3, DUR:  40 j:  33 figura: 3L 
-acumulado / k / PEsoDur  5624995           40            833333 figura 3L 
-j que hace cancelar  33
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  33 compas(j):  0 figura 3L 
-LECTURA DUR:  4 EN LA CARGA j:  34 i:  55 figura  L 
-Valdur i  4 55 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  34 DUR:  4 GRUPO:  1 figura  L 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  34
-1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  34 figura:  L 
-acumulado / k / PEsoDur  6874995           4             1250000 figura  L 
-j que hace cancelar  34
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  34 compas(j):  0 figura  L 
-LECTURA DUR:  4 EN LA CARGA j:  35 i:  55 figura  L 
-Valdur i  4 55 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  35 DUR:  4 GRUPO:  1 figura  L 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  35
-1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  35 figura:  L 
-acumulado / k / PEsoDur  8124995           4             1250000 figura  L 
-j que hace cancelar  35
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  35 compas(j):  0 figura  L 
-LECTURA DUR:  4 EN LA CARGA j:  36 i:  55 figura  L 
-Valdur i  4 55 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  36 DUR:  4 GRUPO:  1 figura  L 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  36
-1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  36 figura:  L 
-acumulado / k / PEsoDur  9374995           4             1250000 figura  L 
-j que hace cancelar  36
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  36 compas(j):  0 figura  L 
-LECTURA DUR:  95 EN LA CARGA j:  37 i:  57 figura  F+
-Valdur i  95 57 grupo  3 figura  F+
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 3
-peso de mayor encontrado valdur  95dur  95 grupo  3
-ABRIR IN:  J:  37 DUR:  95 GRUPO:  3 figura  F+
-=========================================================
-1-calcCompas j o posn RECIBIDA:  37
-1-calcCompas 2
-1-calcCompas 3, DUR:  95 j:  37 figura:  F+
-acumulado / k / PEsoDur  9999995           95            625000 figura  F+
-acumulado  10000000
-Compas(j) , j:  37  37
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  37 compas(j):  37 figura  F+
-LECTURA DUR:  42 EN LA CARGA j:  38 i:  57 figura 3E 
-Valdur i  42 57 grupo  1 figura 3E 
-i=NA i:  116 NA:  116 Mayor  208333 grupo: 1
-peso de mayor encontrado valdur  42dur  42 grupo  1
-ABRIR IN:  J:  38 DUR:  42 GRUPO:  1 figura 3E 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  38
-1-calcCompas 2
-1-calcCompas 3, DUR:  42 j:  38 figura: 3E 
-acumulado / k / PEsoDur  208333            42            208333 figura 3E 
-j que hace cancelar  38
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  38 compas(j):  0 figura 3E 
-LECTURA DUR:  40 EN LA CARGA j:  39 i:  57 figura 3L 
-Valdur i  40 57 grupo  1 figura 3L 
-i=NA i:  116 NA:  116 Mayor  833333 grupo: 1
-peso de mayor encontrado valdur  40dur  40 grupo  1
-ABRIR IN:  J:  39 DUR:  40 GRUPO:  1 figura 3L 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  39
-1-calcCompas 2
-1-calcCompas 3, DUR:  40 j:  39 figura: 3L 
-acumulado / k / PEsoDur  1041666           40            833333 figura 3L 
-j que hace cancelar  39
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  39 compas(j):  0 figura 3L 
-LECTURA DUR:  40 EN LA CARGA j:  40 i:  57 figura 3L 
-Valdur i  40 57 grupo  1 figura 3L 
-i=NA i:  116 NA:  116 Mayor  833333 grupo: 1
-peso de mayor encontrado valdur  40dur  40 grupo  1
-ABRIR IN:  J:  40 DUR:  40 GRUPO:  1 figura 3L 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  40
-1-calcCompas 2
-1-calcCompas 3, DUR:  40 j:  40 figura: 3L 
-acumulado / k / PEsoDur  1874999           40            833333 figura 3L 
-j que hace cancelar  40
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  40 compas(j):  0 figura 3L 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  26 compas(j):  0 figura    
 --->entra a reproducir thread1 
 --->paso llamada a thread1 
-portsout 4
   
 comienzo playaLL ==========> 
 -----------------------------------------
 ---START-----paso: 1 --------------------------------
 jply  1dura  5
-paso  1 cnt  1 notapiano  56
+paso  1 cnt  1 notapiano  37
 cnt  1 iguales  1
+ligaglobal es cero ****
 pasoCol(cnt).DUR  5
 i1=NB= 1 SIMPLE cnt=  1
+START noteSimple
+pasoCol(1).tiempoFiguraOld: 0
+cntold  0
 noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       56  F 
+noteSimple: notapiano:       37  F 
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  0.25
-COMIENZA RETARDO En  old_time on : 18048.83163835473
+COMIENZA RETARDO En  time : 20230.91115535751
 noteSimple: liga:            0
+limpiado noteSimple: liga:   0
+cnt,cntold 1  1
 ---FIN -----paso: 1 --------------------------------
 ---START-----paso: 2 --------------------------------
-jply  2dura  5
-paso  2 cnt  1 notapiano  54
+jply  2dura  6
+paso  2 cnt  1 notapiano  39
 cnt  1 iguales  1
-pasoCol(cnt).DUR  5
+ligaglobal es cero ****
+pasoCol(cnt).DUR  6
 i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       54  F 
+START noteSimple
+pasoCol(1).tiempoFiguraOld: 0
+cntold  1
+noteSimple: tiempoFigura:    12500000000
+noteSimple: notapiano:       39  E 
 pasoCol(1).liga              0
 envio on 
-noteSimple tiempoFigura  0.25
-COMIENZA RETARDO En  old_time on : 18049.08365858507
+noteSimple tiempoFigura  0.125
+COMIENZA RETARDO En  time : 20231.16134639659
 noteSimple: liga:            0
+limpiado noteSimple: liga:   0
+cnt,cntold 1  1
 ---FIN -----paso: 2 --------------------------------
 ---START-----paso: 3 --------------------------------
-jply  3dura  4
-paso  3 cnt  1 notapiano  51
+jply  3dura  6
+paso  3 cnt  1 notapiano  39
 cnt  1 iguales  1
-pasoCol(cnt).DUR  4
+ligaglobal es cero ****
+pasoCol(cnt).DUR  6
 i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       51  L 
+START noteSimple
+pasoCol(1).tiempoFiguraOld: 0
+cntold  1
+noteSimple: tiempoFigura:    12500000000
+noteSimple: notapiano:       39  E 
 pasoCol(1).liga              0
 envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18049.33369689495
+noteSimple tiempoFigura  0.125
+COMIENZA RETARDO En  time : 20231.28647062721
 noteSimple: liga:            0
+limpiado noteSimple: liga:   0
+cnt,cntold 1  1
 ---FIN -----paso: 3 --------------------------------
 ---START-----paso: 4 --------------------------------
-jply  4dura  5
-paso  4 cnt  1 notapiano  56
+jply  4dura  3
+paso  4 cnt  1 notapiano  41
 cnt  1 iguales  1
-pasoCol(cnt).DUR  5
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       56  F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.25
-COMIENZA RETARDO En  old_time on : 18049.83375754518
-noteSimple: liga:            0
+ligaglobal es cero ****
+pasoCol(cnt).DUR  3
+jply  4dura  4
+paso  4 cnt  2 notapiano  48
+cnt  2 distintos  1
+ligaglobal es cero ****
+pasoCol(cnt).DUR  4
+i1=NB= 1 ACORDE cnt=  2
+cnt  2 AcordeDistintos
+====>>> START AOD ON veo el pasocol que tiene
+AOD:DUR cnt=1: 3
+AOD: old_time_on  20231.41159859537
+start FOR
+for cnt=1
+AOD FOR: pasoCol(i1).Dur        3
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  41
+AOD FOR: pasoCol(i1).tiempofigOld  0
+AOD:CNT CNT CNT 2 dur 3
+1) pasoCol(i1).liga =0 
+pasoCol(i1).Dur  3 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  100000000000
+AOD:|||SIN LIGA DUR  3
+5)AOD: LIGA=1 ==========> 0
+for cnt=2
+AOD FOR: pasoCol(i1).Dur        4
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  48
+AOD FOR: pasoCol(i1).tiempofigOld  0
+AOD:CNT CNT CNT 2 dur 4
+1) pasoCol(i1).liga =0 
+pasoCol(i1).Dur  4 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  50000000000
+AOD:|||SIN LIGA DUR  4
+5)AOD: LIGA=1 ==========> 0
+AOD:SIN LIGAR Noteon de notepiano  41
+AOD:SIN LIGAR Noteon de notepiano  48
+====>>> START AOFF OFF veo el pasocol que tiene
+SORT POR tiempoFigura calculado en playAll
+Qsort called 1 time(s) with 50000000000 and 100000000000.
+====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
+-------------------------------------
+AOFFD:start AcordeOffDistintos
+AOFFD:old_time off no ligadas inicial  20231.41164718334
+AOFFD:no ligados calculo tiempo Figura y off:
+AOFFD:cnt 2i1 1 pasoCol(i1).liga  0 notapiano  48
+AOFFD:i1 1 tiempoFigura  0.5
+COMIENZA RETARDO En  time : 20231.41164718334
+AOFFD:SIN LIGAR OFF==>AOFFD:i1 1 AcordeOffDistintos: notapiano:        48  L 
+AOFFD:cnt 2i1 2 pasoCol(i1).liga  0 notapiano  41
+AOFFD:i1 2 tiempoFigura  1
+COMIENZA RETARDO En  time : 20231.41164718334
+AOFFD:SIN LIGAR OFF==>AOFFD:i1 2 AcordeOffDistintos: notapiano:        41  I 
+AOFFD:tiempoFigMayorNoligado  100000000000
+AOFFD:start OFF de ligados ---------
+cnt,cntold 2  2
 ---FIN -----paso: 4 --------------------------------
 ---START-----paso: 5 --------------------------------
-jply  5dura  6
-paso  5 cnt  1 notapiano  51
+jply  5dura  3
+paso  5 cnt  1 notapiano  42
 cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       51  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 18050.08379993239
-noteSimple: liga:            0
----FIN -----paso: 5 --------------------------------
----START-----paso: 6 --------------------------------
-jply  6dura  6
-paso  6 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       51  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 18050.20883896429
-noteSimple: liga:            0
----FIN -----paso: 6 --------------------------------
----START-----paso: 7 --------------------------------
-jply  7dura  6
-paso  7 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       56  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 18050.33388037464
-noteSimple: liga:            0
----FIN -----paso: 7 --------------------------------
----START-----paso: 8 --------------------------------
-jply  8dura  4
-paso  8 cnt  1 notapiano  53
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       53  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18050.45890717457
-noteSimple: liga:            0
----FIN -----paso: 8 --------------------------------
----START-----paso: 9 --------------------------------
-jply  9dura  3
-paso  9 cnt  1 notapiano  51
-cnt  1 iguales  1
+ligaglobal es cero ****
 pasoCol(cnt).DUR  3
 i1=NB= 1 SIMPLE cnt=  1
+START noteSimple
+pasoCol(1).tiempoFiguraOld: 0
+cntold  2
 noteSimple: tiempoFigura:    100000000000
-noteSimple: notapiano:       51  I 
+noteSimple: notapiano:       42  I 
 pasoCol(1).liga              0
 envio on 
 noteSimple tiempoFigura  1
-COMIENZA RETARDO En  old_time on : 18050.96062050114
+COMIENZA RETARDO En  time : 20232.41174401952
 noteSimple: liga:            0
+limpiado noteSimple: liga:   0
+cnt,cntold 1  1
+---FIN -----paso: 5 --------------------------------
+---START-----paso: 6 --------------------------------
+jply  6dura  4
+paso  6 cnt  1 notapiano  41
+cnt  1 iguales  1
+ligaglobal es cero ****
+pasoCol(cnt).DUR  4
+jply  6dura  3
+paso  6 cnt  2 notapiano  44
+cnt  2 distintos  1
+ligaglobal es cero ****
+pasoCol(cnt).DUR  3
+i1=NB= 1 ACORDE cnt=  2
+cnt  2 AcordeDistintos
+====>>> START AOD ON veo el pasocol que tiene
+AOD:DUR cnt=1: 4
+AOD: old_time_on  20233.41188502658
+start FOR
+for cnt=1
+AOD FOR: pasoCol(i1).Dur        4
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  41
+AOD FOR: pasoCol(i1).tiempofigOld  0
+AOD:CNT CNT CNT 2 dur 4
+1) pasoCol(i1).liga =0 
+pasoCol(i1).Dur  4 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  50000000000
+AOD:|||SIN LIGA DUR  4
+5)AOD: LIGA=1 ==========> 0
+for cnt=2
+AOD FOR: pasoCol(i1).Dur        3
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  44
+AOD FOR: pasoCol(i1).tiempofigOld  0
+AOD:CNT CNT CNT 2 dur 3
+1) pasoCol(i1).liga =0 
+pasoCol(i1).Dur  3 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  100000000000
+AOD:|||SIN LIGA DUR  3
+5)AOD: LIGA=1 ==========> 0
+AOD:SIN LIGAR Noteon de notepiano  41
+AOD:SIN LIGAR Noteon de notepiano  44
+====>>> START AOFF OFF veo el pasocol que tiene
+SORT POR tiempoFigura calculado en playAll
+Qsort called 2 time(s) with 100000000000 and 50000000000.
+====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
+-------------------------------------
+AOFFD:start AcordeOffDistintos
+AOFFD:old_time off no ligadas inicial  20233.41191764508
+AOFFD:no ligados calculo tiempo Figura y off:
+AOFFD:cnt 2i1 1 pasoCol(i1).liga  0 notapiano  41
+AOFFD:i1 1 tiempoFigura  0.5
+COMIENZA RETARDO En  time : 20233.41191764508
+AOFFD:SIN LIGAR OFF==>AOFFD:i1 1 AcordeOffDistintos: notapiano:        41  L 
+AOFFD:cnt 2i1 2 pasoCol(i1).liga  0 notapiano  44
+AOFFD:i1 2 tiempoFigura  1
+COMIENZA RETARDO En  time : 20233.41191764508
+AOFFD:SIN LIGAR OFF==>AOFFD:i1 2 AcordeOffDistintos: notapiano:        44  I 
+AOFFD:tiempoFigMayorNoligado  100000000000
+AOFFD:start OFF de ligados ---------
+cnt,cntold 2  2
+---FIN -----paso: 6 --------------------------------
+---START-----paso: 7 --------------------------------
+jply  7dura  94
+paso  7 cnt  1 notapiano  46
+cnt  1 iguales  1
+ligaglobal es cero ****
+pasoCol(cnt).DUR  94
+i1=NB= 1 SIMPLE cnt=  1
+START noteSimple
+pasoCol(1).tiempoFiguraOld: 0
+cntold  2
+noteSimple: tiempoFigura:    50000000000
+noteSimple: notapiano:       46  L+
+no se envia noteon de 1er nota +, se suma su tiempo a la siguiente
+NoteSimple acum pasoCol(1).tiempoFiguraOld  50000000000
+noteSimple: liga:            1
+limpiado noteSimple: liga:   1
+cnt,cntold 1  1
+---FIN -----paso: 7 --------------------------------
+---START-----paso: 8 --------------------------------
+jply  8dura  4
+paso  8 cnt  1 notapiano  46
+cnt  1 iguales  1
+ligaglobal es cero ****
+pasoCol(cnt).DUR  4
+i1=NB= 1 SIMPLE cnt=  1
+START noteSimple
+pasoCol(1).tiempoFiguraOld: 50000000000
+cntold  1
+NoteSimple old > 0 pasoCol(1).tiempoFiguraOld  50000000000
+tempofigura + old 100000000000
+ESTOS EN NOTEsIMPLE!
+noteSimple: tiempoFigura:    100000000000
+noteSimple: notapiano:       46  L 
+pasoCol(1).liga              1
+envio on 
+noteSimple tiempoFigura  1
+COMIENZA RETARDO En  time : 20234.41208753311
+noteSimple: liga:            0
+limpiado noteSimple: liga:   0
+cnt,cntold 1  1
+---FIN -----paso: 8 --------------------------------
+---START-----paso: 9 --------------------------------
+jply  9dura  3
+paso  9 cnt  1 notapiano  37
+cnt  1 iguales  1
+ligaglobal es cero ****
+pasoCol(cnt).DUR  3
+i1=NB= 1 SIMPLE cnt=  1
+START noteSimple
+pasoCol(1).tiempoFiguraOld: 0
+cntold  1
+noteSimple: tiempoFigura:    100000000000
+noteSimple: notapiano:       37  I 
+pasoCol(1).liga              0
+envio on 
+noteSimple tiempoFigura  1
+COMIENZA RETARDO En  time : 20235.41214257683
+noteSimple: liga:            0
+limpiado noteSimple: liga:   0
+cnt,cntold 1  1
 ---FIN -----paso: 9 --------------------------------
 ---START-----paso: 10 --------------------------------
-jply  10dura  4
-paso  10 cnt  1 notapiano  49
+jply  10dura  2
+paso  10 cnt  1 notapiano  39
 cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       49  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18051.9607105421
-noteSimple: liga:            0
+ligaglobal es cero ****
+pasoCol(cnt).DUR  2
+jply  10dura  94
+paso  10 cnt  2 notapiano  44
+cnt  2 distintos  1
+ligaglobal es cero ****
+pasoCol(cnt).DUR  94
+jply  10dura  1
+paso  10 cnt  3 notapiano  48
+cnt  3 distintos  1
+ligaglobal es cero ****
+pasoCol(cnt).DUR  1
+i1=NB= 1 ACORDE cnt=  3
+cnt  3 AcordeDistintos
+====>>> START AOD ON veo el pasocol que tiene
+AOD:DUR cnt=1: 2
+AOD: old_time_on  20236.4122237833
+start FOR
+for cnt=1
+AOD FOR: pasoCol(i1).Dur        2
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  39
+AOD FOR: pasoCol(i1).tiempofigOld  0
+AOD:CNT CNT CNT 3 dur 2
+1) pasoCol(i1).liga =0 
+pasoCol(i1).Dur  2 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  200000000000
+AOD:|||SIN LIGA DUR  2
+5)AOD: LIGA=1 ==========> 0
+for cnt=2
+AOD FOR: pasoCol(i1).Dur        94
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  44
+AOD FOR: pasoCol(i1).tiempofigOld  0
+AOD:CNT CNT CNT 3 dur 94
+1) pasoCol(i1).liga =0 
+AOD:ANALIZO LIGADURAS SUbSIGUIENTES si hay y toda la columna
+AOD:DUR  94
+AOD:liga  0
+AOD:notepiano  44
+guardo old_time_on primer liga  2023641222378330
+AOD:LIGA=1 ==========> 1
+AOD: LIGA ACUMULADA ===> 1
+AOD: ACUMULADO TIEMPOfIGURA  50000000000
+AOD: ACUMULADO TIEMPOfIGURAOLD  50000000000
+AOD:LIGA nj, durj  11  92
+AOD:LIGA nj reldur  11  2
+AOD:LIGA paso nj tiempoFiguraSig  11  200000000000
+AOD:LIGA pasoCol(i1).tiempoFigura+sig  250000000000
+AOD:LIGA nj, durj  12  1
+AOD:LIGA nj reldur  12  4
+AOD:LIGA paso nj tiempoFiguraSig  12  400000000000
+AOD:LIGA pasoCol(i1).tiempoFigura+sig  650000000000
+2) AOD:LIGA=1 ==========> 1
+numero de ligados: 2
+Noteon ligado notepiano  44
+3) AOD:LIGA=1 ==========> 1
+pasoCol(i1).Dur  94 pasoCol(i1).liga  2
+for cnt=3
+AOD FOR: pasoCol(i1).Dur        1
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  48
+AOD FOR: pasoCol(i1).tiempofigOld  0
+AOD:CNT CNT CNT 3 dur 1
+1) pasoCol(i1).liga =0 
+pasoCol(i1).Dur  1 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 1
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.1
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  400000000000
+AOD:|||SIN LIGA DUR  1
+5)AOD: LIGA=1 ==========> 1
+AOD:|||LIGA=1, pasoCol(i1).tiempoFiguraOld  400000000000
+AOD:SIN LIGAR Noteon de notepiano  39
+AOD:SIN LIGAR Noteon de notepiano  48
+====>>> START AOFF OFF veo el pasocol que tiene
+SORT POR tiempoFigura calculado en playAll
+Qsort called 3 time(s) with 650000000000 and 200000000000.
+Qsort called 4 time(s) with 400000000000 and 650000000000.
+Qsort called 5 time(s) with 400000000000 and 200000000000.
+====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
+-------------------------------------
+AOFFD:start AcordeOffDistintos
+AOFFD:old_time off no ligadas inicial  20236.41230261135
+AOFFD:no ligados calculo tiempo Figura y off:
+AOFFD:cnt 3i1 1 pasoCol(i1).liga  0 notapiano  39
+AOFFD:i1 1 tiempoFigura  2
+COMIENZA RETARDO En  time : 20236.41230261135
+AOFFD:SIN LIGAR OFF==>AOFFD:i1 1 AcordeOffDistintos: notapiano:        39  P 
+AOFFD:cnt 3i1 2 pasoCol(i1).liga  0 notapiano  48
+AOFFD:i1 2 tiempoFigura  4
+COMIENZA RETARDO En  time : 20236.41230261135
+AOFFD:SIN LIGAR OFF==>AOFFD:i1 2 AcordeOffDistintos: notapiano:        48  O 
+AOFFD:cnt 3i1 3 pasoCol(i1).liga  2 notapiano  44
+AOFFD:tiempoFigMayorNoligado  400000000000
+AOFFD:start OFF de ligados ---------
+AOFFD:HAY LIGADOS!
+pasoCol(i1).tiempoFiguraOld                650000000000
+tiempoFigMayorNoligado  400000000000
+AOFFD:old_time_on  20236.4122237833
+AOFFD:pasoCol(i1).tiempoFigura  650000000000
+AOFFD:pasoCol(i1).tiempoFiguraOld  650000000000
+AOFFD:retardo tf  0
+AOFFD:NO SE ENVIA OFF TF=0
+AOFFD:pasoCol(i1).tiempoFiguraOld: 650000000000
+pasoCol(i1).liga             1
+<<<<<<<<<<FIN ELSE>>>>>>> CUANTAS VECES PASA?
+cnt,cntold 3  3
 ---FIN -----paso: 10 --------------------------------
 ---START-----paso: 11 --------------------------------
-jply  11dura  113
-paso  11 cnt  1 notapiano  53
+jply  11dura  3
+paso  11 cnt  1 notapiano  41
 cnt  1 iguales  1
-pasoCol(cnt).DUR  113
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    37500000000
-noteSimple: notapiano:       53 F*+
-no se envia noteon de 1er nota +, se suma su tiempo a la siguiente
-NoteSimple acum pasoCol(1).tiempoFiguraOld  37500000000
-noteSimple: liga:            1
+ligaglobal es uno *****
+pasoCol(cnt).DUR  3
+jply  11dura  92
+paso  11 cnt  2 notapiano  44
+cnt  2 distintos  1
+ligaglobal es uno *****
+Notapiano de liga igual  44
+pasoCol(i2).DUR  181
+tiempofigura anterior  650000000000
+pasoCol(i2).i1  70
+ i1 debe ser igual al anterior: 70
+i1=NB= 1 ACORDE cnt=  2
+cnt  2 AcordeDistintos
+====>>> START AOD ON veo el pasocol que tiene
+DUR: 3 notepiano: 41 I  .liga: 0 old_time: 0
+DUR: 181 notepiano: 48    .liga: 0 old_time: 0
+DUR: 92 notepiano: 44 P+ .liga: 1 old_time: 2023641222378330
+AOD:DUR cnt=1: 3
+AOD: old_time_on  20240.41247555736
+start FOR
+for cnt=1
+AOD FOR: pasoCol(i1).Dur        3
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  41
+AOD FOR: pasoCol(i1).tiempofigOld  0
+AOD:CNT CNT CNT 2 dur 3
+1) pasoCol(i1).liga =0 
+pasoCol(i1).Dur  3 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  100000000000
+AOD:|||SIN LIGA DUR  3
+5)AOD: LIGA=1 ==========> 0
+for cnt=2
+AOD FOR: pasoCol(i1).Dur        181
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  48
+AOD FOR: pasoCol(i1).tiempofigOld  400000000000
+AOD:CNT CNT CNT 2 dur 181
+1) pasoCol(i1).liga =0 
+pasoCol(i1).Dur  181 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  0
+AOD:|||SIN LIGA DUR  181
+5)AOD: LIGA=1 ==========> 0
+AOD:SIN LIGAR Noteon de notepiano  41
+====>>> START AOFF OFF veo el pasocol que tiene
+DUR: 3 notepiano: 41 I  .liga: 0 old_time: 0
+DUR: 181 notepiano: 48    .liga: 0 old_time: 0
+DUR: 92 notepiano: 44 P+ .liga: 1 old_time: 2023641222378330
+SORT POR tiempoFigura calculado en playAll
+AOFFD:antes Sort Fig, DUR notapiano  3  41  100000000000
+AOFFD:antes Sort Fig, DUR notapiano  181  48  0
+AOFFD:antes Sort Fig, DUR notapiano  92  44  650000000000
+Qsort called 6 time(s) with 0 and 100000000000.
+AOFFD:deespues sort DUR notapiano fig 181  48  0
+AOFFD:deespues sort DUR notapiano fig 3  41  100000000000
+AOFFD:deespues sort DUR notapiano fig 92  44  650000000000
+====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
+DUR: 181 notepiano: 48    .liga: 0 old_time: 0
+DUR: 3 notepiano: 41 I  .liga: 0 old_time: 0
+DUR: 92 notepiano: 44 P+ .liga: 1 old_time: 2023641222378330
+-------------------------------------
+AOFFD:start AcordeOffDistintos
+AOFFD:old_time off no ligadas inicial  20240.41253943526
+AOFFD:no ligados calculo tiempo Figura y off:
+AOFFD:cnt 2i1 1 pasoCol(i1).liga  0 notapiano  48
+AOFFD:i1 1 tiempoFigura  0
+COMIENZA RETARDO En  time : 20240.41253943526
+AOFFD:SIN LIGAR OFF==>AOFFD:i1 1 AcordeOffDistintos: notapiano:        48    
+AOFFD:cnt 2i1 2 pasoCol(i1).liga  0 notapiano  41
+AOFFD:i1 2 tiempoFigura  1
+COMIENZA RETARDO En  time : 20240.41253943526
+AOFFD:SIN LIGAR OFF==>AOFFD:i1 2 AcordeOffDistintos: notapiano:        41  I 
+AOFFD:tiempoFigMayorNoligado  100000000000
+AOFFD:start OFF de ligados ---------
+cnt,cntold 2  2
 ---FIN -----paso: 11 --------------------------------
 ---START-----paso: 12 --------------------------------
-jply  12dura  6
-paso  12 cnt  1 notapiano  53
+jply  12dura  1
+paso  12 cnt  1 notapiano  44
 cnt  1 iguales  1
-pasoCol(cnt).DUR  6
+ligaglobal es uno *****
+pasoCol(cnt).DUR  1
 i1=NB= 1 SIMPLE cnt=  1
-NoteSimple old > 0 pasoCol(1).tiempoFiguraOld  37500000000
-tempofigura + old 50000000000
+START noteSimple
+pasoCol(1).tiempoFiguraOld: 400000000000
+cntold  2
+NoteSimple old > 0 pasoCol(1).tiempoFiguraOld  400000000000
+tempofigura  400000000000
 ESTOS EN NOTEsIMPLE!
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       53  E 
-pasoCol(1).liga              1
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18052.46078886075
+noteSimple: tiempoFigura:    400000000000
+noteSimple: notapiano:       44  O 
+pasoCol(1).liga              0
+noteSimple tiempoFigura  4
+COMIENZA RETARDO En  time : 20240.41247555736
 noteSimple: liga:            0
+limpiado noteSimple: liga:   0
+cnt,cntold 1  1
 ---FIN -----paso: 12 --------------------------------
 ---START-----paso: 13 --------------------------------
-jply  13dura  4
-paso  13 cnt  1 notapiano  53
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       53  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18052.96083795855
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 13 --------------------------------
 ---START-----paso: 14 --------------------------------
-jply  14dura  4
-paso  14 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       58  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18053.46088807569
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 14 --------------------------------
 ---START-----paso: 15 --------------------------------
-jply  15dura  4
-paso  15 cnt  1 notapiano  49
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       49  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18053.96093139728
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 15 --------------------------------
 ---START-----paso: 16 --------------------------------
-jply  16dura  5
-paso  16 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  5
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       56  F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.25
-COMIENZA RETARDO En  old_time on : 18054.46098083487
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 16 --------------------------------
 ---START-----paso: 17 --------------------------------
-jply  17dura  6
-paso  17 cnt  1 notapiano  60
-cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       60  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 18054.71102390163
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 17 --------------------------------
 ---START-----paso: 18 --------------------------------
-jply  18dura  6
-paso  18 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       51  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 18054.83606972908
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 18 --------------------------------
 ---START-----paso: 19 --------------------------------
-jply  19dura  6
-paso  19 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       58  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 18054.96117909487
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 19 --------------------------------
 ---START-----paso: 20 --------------------------------
-jply  20dura  4
-paso  20 cnt  1 notapiano  54
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       54  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18055.08622356321
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 20 --------------------------------
 ---START-----paso: 21 --------------------------------
-jply  21dura  4
-paso  21 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       58  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18055.58627198146
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 21 --------------------------------
 ---START-----paso: 22 --------------------------------
-jply  22dura  4
-paso  22 cnt  1 notapiano  49
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       49  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18056.08631802127
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 22 --------------------------------
 ---START-----paso: 23 --------------------------------
-jply  23dura  95
-paso  23 cnt  1 notapiano  53
-cnt  1 iguales  1
-pasoCol(cnt).DUR  95
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       53  F+
-no se envia noteon de 1er nota +, se suma su tiempo a la siguiente
-NoteSimple acum pasoCol(1).tiempoFiguraOld  25000000000
-noteSimple: liga:            1
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 23 --------------------------------
 ---START-----paso: 24 --------------------------------
-jply  24dura  5
-paso  24 cnt  1 notapiano  53
-cnt  1 iguales  1
-pasoCol(cnt).DUR  5
-i1=NB= 1 SIMPLE cnt=  1
-NoteSimple old > 0 pasoCol(1).tiempoFiguraOld  25000000000
-tempofigura + old 50000000000
-ESTOS EN NOTEsIMPLE!
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       53  F 
-pasoCol(1).liga              1
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18056.58640279569
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 24 --------------------------------
 ---START-----paso: 25 --------------------------------
-jply  25dura  41
-paso  25 cnt  1 notapiano  54
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       54 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18057.08644509795
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 25 --------------------------------
 ---START-----paso: 26 --------------------------------
-jply  26dura  41
-paso  26 cnt  1 notapiano  54
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       54 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18057.25317853084
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 26 --------------------------------
 ---START-----paso: 27 --------------------------------
-jply  27dura  41
-paso  27 cnt  1 notapiano  54
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       54 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18057.41992045816
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 27 --------------------------------
 ---START-----paso: 28 --------------------------------
-jply  28dura  41
-paso  28 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       56 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18057.58666408436
-noteSimple: liga:            0
+i1=NB= 1 SIMPLE cnt=  0
+cnt,cntold 0  0
 ---FIN -----paso: 28 --------------------------------
----START-----paso: 29 --------------------------------
-jply  29dura  41
-paso  29 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       56 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18057.75339853658
-noteSimple: liga:            0
----FIN -----paso: 29 --------------------------------
----START-----paso: 30 --------------------------------
-jply  30dura  41
-paso  30 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       56 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18057.92013162969
-noteSimple: liga:            0
----FIN -----paso: 30 --------------------------------
----START-----paso: 31 --------------------------------
-jply  31dura  40
-paso  31 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       51 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18058.08687049901
-noteSimple: liga:            0
----FIN -----paso: 31 --------------------------------
----START-----paso: 32 --------------------------------
-jply  32dura  40
-paso  32 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       51 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18058.42030984284
-noteSimple: liga:            0
----FIN -----paso: 32 --------------------------------
----START-----paso: 33 --------------------------------
-jply  33dura  40
-paso  33 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       51 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18058.75376583574
-noteSimple: liga:            0
----FIN -----paso: 33 --------------------------------
----START-----paso: 34 --------------------------------
-jply  34dura  4
-paso  34 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       58  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18059.08720993645
-noteSimple: liga:            0
----FIN -----paso: 34 --------------------------------
----START-----paso: 35 --------------------------------
-jply  35dura  4
-paso  35 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       58  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18059.58725937403
-noteSimple: liga:            0
----FIN -----paso: 35 --------------------------------
----START-----paso: 36 --------------------------------
-jply  36dura  4
-paso  36 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       58  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18060.08731934471
-noteSimple: liga:            0
----FIN -----paso: 36 --------------------------------
----START-----paso: 37 --------------------------------
-jply  37dura  95
-paso  37 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  95
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       56  F+
-no se envia noteon de 1er nota +, se suma su tiempo a la siguiente
-NoteSimple acum pasoCol(1).tiempoFiguraOld  25000000000
-noteSimple: liga:            1
----FIN -----paso: 37 --------------------------------
----START-----paso: 38 --------------------------------
-jply  38dura  42
-paso  38 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  42
-i1=NB= 1 SIMPLE cnt=  1
-NoteSimple old > 0 pasoCol(1).tiempoFiguraOld  25000000000
-tempofigura + old 33333300054
-ESTOS EN NOTEsIMPLE!
-noteSimple: tiempoFigura:    33333300054
-noteSimple: notapiano:       56 3E 
-pasoCol(1).liga              1
-envio on 
-noteSimple tiempoFigura  0.33333300054
-COMIENZA RETARDO En  old_time on : 18060.58739562469
-noteSimple: liga:            0
----FIN -----paso: 38 --------------------------------
----START-----paso: 39 --------------------------------
-jply  39dura  40
-paso  39 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       56 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18060.92082001832
-noteSimple: liga:            0
----FIN -----paso: 39 --------------------------------
----START-----paso: 40 --------------------------------
-jply  40dura  40
-paso  40 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       56 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18061.25421247288
-noteSimple: liga:            0
----FIN -----paso: 40 --------------------------------
----START-----paso: 41 --------------------------------
-i1=NB= 1 SIMPLE cnt=  0
----FIN -----paso: 41 --------------------------------
----START-----paso: 42 --------------------------------
-i1=NB= 1 SIMPLE cnt=  0
----FIN -----paso: 42 --------------------------------
---->entra a reproducir thread1 
---->paso llamada a thread1 
-portsout 4
-  
-comienzo playaLL ==========> 
------------------------------------------
----START-----paso: 12 --------------------------------
-jply  12dura  6
-paso  12 cnt  1 notapiano  53
-cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       53  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 18073.06261652235
-noteSimple: liga:            0
----FIN -----paso: 12 --------------------------------
----START-----paso: 13 --------------------------------
-jply  13dura  4
-paso  13 cnt  1 notapiano  53
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       53  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18073.18995652551
-noteSimple: liga:            0
----FIN -----paso: 13 --------------------------------
----START-----paso: 14 --------------------------------
-jply  14dura  4
-paso  14 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       58  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18073.69001275863
-noteSimple: liga:            0
----FIN -----paso: 14 --------------------------------
----START-----paso: 15 --------------------------------
-jply  15dura  4
-paso  15 cnt  1 notapiano  49
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       49  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18074.1900669531
-noteSimple: liga:            0
----FIN -----paso: 15 --------------------------------
----START-----paso: 16 --------------------------------
-jply  16dura  5
-paso  16 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  5
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       56  F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.25
-COMIENZA RETARDO En  old_time on : 18074.69011673046
-noteSimple: liga:            0
----FIN -----paso: 16 --------------------------------
----START-----paso: 17 --------------------------------
-jply  17dura  6
-paso  17 cnt  1 notapiano  60
-cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       60  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 18074.94016625299
-noteSimple: liga:            0
----FIN -----paso: 17 --------------------------------
----START-----paso: 18 --------------------------------
-jply  18dura  6
-paso  18 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       51  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 18075.06520664401
-noteSimple: liga:            0
----FIN -----paso: 18 --------------------------------
----START-----paso: 19 --------------------------------
-jply  19dura  6
-paso  19 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  6
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    12500000000
-noteSimple: notapiano:       58  E 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.125
-COMIENZA RETARDO En  old_time on : 18075.19026912054
-noteSimple: liga:            0
----FIN -----paso: 19 --------------------------------
----START-----paso: 20 --------------------------------
-jply  20dura  4
-paso  20 cnt  1 notapiano  54
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       54  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18075.31531222977
-noteSimple: liga:            0
----FIN -----paso: 20 --------------------------------
----START-----paso: 21 --------------------------------
-jply  21dura  4
-paso  21 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       58  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18075.81537220045
-noteSimple: liga:            0
----FIN -----paso: 21 --------------------------------
----START-----paso: 22 --------------------------------
-jply  22dura  4
-paso  22 cnt  1 notapiano  49
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       49  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18076.31542979269
-noteSimple: liga:            0
----FIN -----paso: 22 --------------------------------
----START-----paso: 23 --------------------------------
-jply  23dura  95
-paso  23 cnt  1 notapiano  53
-cnt  1 iguales  1
-pasoCol(cnt).DUR  95
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       53  F+
-no se envia noteon de 1er nota +, se suma su tiempo a la siguiente
-NoteSimple acum pasoCol(1).tiempoFiguraOld  25000000000
-noteSimple: liga:            1
----FIN -----paso: 23 --------------------------------
----START-----paso: 24 --------------------------------
-jply  24dura  5
-paso  24 cnt  1 notapiano  53
-cnt  1 iguales  1
-pasoCol(cnt).DUR  5
-i1=NB= 1 SIMPLE cnt=  1
-NoteSimple old > 0 pasoCol(1).tiempoFiguraOld  25000000000
-tempofigura + old 50000000000
-ESTOS EN NOTEsIMPLE!
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       53  F 
-pasoCol(1).liga              1
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18076.81555126304
-noteSimple: liga:            0
----FIN -----paso: 24 --------------------------------
----START-----paso: 25 --------------------------------
-jply  25dura  41
-paso  25 cnt  1 notapiano  54
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       54 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18077.31560375862
-noteSimple: liga:            0
----FIN -----paso: 25 --------------------------------
----START-----paso: 26 --------------------------------
-jply  26dura  41
-paso  26 cnt  1 notapiano  54
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       54 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18077.48234568593
-noteSimple: liga:            0
----FIN -----paso: 26 --------------------------------
----START-----paso: 27 --------------------------------
-jply  27dura  41
-paso  27 cnt  1 notapiano  54
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       54 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18077.64908285637
-noteSimple: liga:            0
----FIN -----paso: 27 --------------------------------
----START-----paso: 28 --------------------------------
-jply  28dura  41
-paso  28 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       56 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18077.81581832792
-noteSimple: liga:            0
----FIN -----paso: 28 --------------------------------
----START-----paso: 29 --------------------------------
-jply  29dura  41
-paso  29 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       56 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18077.98255923591
-noteSimple: liga:            0
----FIN -----paso: 29 --------------------------------
----START-----paso: 30 --------------------------------
-jply  30dura  41
-paso  30 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       56 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18078.14929402791
-noteSimple: liga:            0
----FIN -----paso: 30 --------------------------------
----START-----paso: 31 --------------------------------
-jply  31dura  40
-paso  31 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       51 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18078.31603119835
-noteSimple: liga:            0
----FIN -----paso: 31 --------------------------------
----START-----paso: 32 --------------------------------
-jply  32dura  40
-paso  32 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       51 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18078.64951165521
-noteSimple: liga:            0
----FIN -----paso: 32 --------------------------------
----START-----paso: 33 --------------------------------
-jply  33dura  40
-paso  33 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       51 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18078.98291056554
-noteSimple: liga:            0
----FIN -----paso: 33 --------------------------------
----START-----paso: 34 --------------------------------
-jply  34dura  4
-paso  34 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       58  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18079.31634243427
-noteSimple: liga:            0
----FIN -----paso: 34 --------------------------------
----START-----paso: 35 --------------------------------
-jply  35dura  4
-paso  35 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       58  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18079.81644997375
-noteSimple: liga:            0
----FIN -----paso: 35 --------------------------------
----START-----paso: 36 --------------------------------
-jply  36dura  4
-paso  36 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       58  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18080.31656227012
-noteSimple: liga:            0
----FIN -----paso: 36 --------------------------------
----START-----paso: 37 --------------------------------
-jply  37dura  95
-paso  37 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  95
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       56  F+
-no se envia noteon de 1er nota +, se suma su tiempo a la siguiente
-NoteSimple acum pasoCol(1).tiempoFiguraOld  25000000000
-noteSimple: liga:            1
----FIN -----paso: 37 --------------------------------
----START-----paso: 38 --------------------------------
-jply  38dura  42
-paso  38 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  42
-i1=NB= 1 SIMPLE cnt=  1
-NoteSimple old > 0 pasoCol(1).tiempoFiguraOld  25000000000
-tempofigura + old 33333300054
-ESTOS EN NOTEsIMPLE!
-noteSimple: tiempoFigura:    33333300054
-noteSimple: notapiano:       56 3E 
-pasoCol(1).liga              1
-envio on 
-noteSimple tiempoFigura  0.33333300054
-COMIENZA RETARDO En  old_time on : 18080.81669053602
-noteSimple: liga:            0
----FIN -----paso: 38 --------------------------------
----START-----paso: 39 --------------------------------
-jply  39dura  40
-paso  39 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       56 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18081.15012784117
-noteSimple: liga:            0
----FIN -----paso: 39 --------------------------------
----START-----paso: 40 --------------------------------
-jply  40dura  40
-paso  40 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       56 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18081.4835746601
-noteSimple: liga:            0
----FIN -----paso: 40 --------------------------------
----START-----paso: 41 --------------------------------
-i1=NB= 1 SIMPLE cnt=  0
----FIN -----paso: 41 --------------------------------
----START-----paso: 42 --------------------------------
-i1=NB= 1 SIMPLE cnt=  0
----FIN -----paso: 42 --------------------------------
---->entra a reproducir thread1 
---->paso llamada a thread1 
-portsout 4
-  
-comienzo playaLL ==========> 
------------------------------------------
----START-----paso: 20 --------------------------------
-jply  20dura  4
-paso  20 cnt  1 notapiano  54
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       54  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18091.95458673748
-noteSimple: liga:            0
----FIN -----paso: 20 --------------------------------
----START-----paso: 21 --------------------------------
-jply  21dura  4
-paso  21 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       58  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18092.45472995357
-noteSimple: liga:            0
----FIN -----paso: 21 --------------------------------
----START-----paso: 22 --------------------------------
-jply  22dura  4
-paso  22 cnt  1 notapiano  49
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       49  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18092.95478890492
-noteSimple: liga:            0
----FIN -----paso: 22 --------------------------------
----START-----paso: 23 --------------------------------
-jply  23dura  95
-paso  23 cnt  1 notapiano  53
-cnt  1 iguales  1
-pasoCol(cnt).DUR  95
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       53  F+
-no se envia noteon de 1er nota +, se suma su tiempo a la siguiente
-NoteSimple acum pasoCol(1).tiempoFiguraOld  25000000000
-noteSimple: liga:            1
----FIN -----paso: 23 --------------------------------
----START-----paso: 24 --------------------------------
-jply  24dura  5
-paso  24 cnt  1 notapiano  53
-cnt  1 iguales  1
-pasoCol(cnt).DUR  5
-i1=NB= 1 SIMPLE cnt=  1
-NoteSimple old > 0 pasoCol(1).tiempoFiguraOld  25000000000
-tempofigura + old 50000000000
-ESTOS EN NOTEsIMPLE!
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       53  F 
-pasoCol(1).liga              1
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18093.45486926223
-noteSimple: liga:            0
----FIN -----paso: 24 --------------------------------
----START-----paso: 25 --------------------------------
-jply  25dura  41
-paso  25 cnt  1 notapiano  54
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       54 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18093.95491869981
-noteSimple: liga:            0
----FIN -----paso: 25 --------------------------------
----START-----paso: 26 --------------------------------
-jply  26dura  41
-paso  26 cnt  1 notapiano  54
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       54 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18094.12165485092
-noteSimple: liga:            0
----FIN -----paso: 26 --------------------------------
----START-----paso: 27 --------------------------------
-jply  27dura  41
-paso  27 cnt  1 notapiano  54
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       54 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18094.28839066225
-noteSimple: liga:            0
----FIN -----paso: 27 --------------------------------
----START-----paso: 28 --------------------------------
-jply  28dura  41
-paso  28 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       56 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18094.45512545424
-noteSimple: liga:            0
----FIN -----paso: 28 --------------------------------
----START-----paso: 29 --------------------------------
-jply  29dura  41
-paso  29 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       56 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18094.62187009978
-noteSimple: liga:            0
----FIN -----paso: 29 --------------------------------
----START-----paso: 30 --------------------------------
-jply  30dura  41
-paso  30 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  41
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    16666600108
-noteSimple: notapiano:       56 3F 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.16666600108
-COMIENZA RETARDO En  old_time on : 18094.78860659066
-noteSimple: liga:            0
----FIN -----paso: 30 --------------------------------
----START-----paso: 31 --------------------------------
-jply  31dura  40
-paso  31 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       51 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18094.95534512021
-noteSimple: liga:            0
----FIN -----paso: 31 --------------------------------
----START-----paso: 32 --------------------------------
-jply  32dura  40
-paso  32 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       51 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18095.28878820158
-noteSimple: liga:            0
----FIN -----paso: 32 --------------------------------
----START-----paso: 33 --------------------------------
-jply  33dura  40
-paso  33 cnt  1 notapiano  51
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       51 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18095.62224793203
-noteSimple: liga:            0
----FIN -----paso: 33 --------------------------------
----START-----paso: 34 --------------------------------
-jply  34dura  4
-paso  34 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       58  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18095.95568489741
-noteSimple: liga:            0
----FIN -----paso: 34 --------------------------------
----START-----paso: 35 --------------------------------
-jply  35dura  4
-paso  35 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       58  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18096.45573807255
-noteSimple: liga:            0
----FIN -----paso: 35 --------------------------------
----START-----paso: 36 --------------------------------
-jply  36dura  4
-paso  36 cnt  1 notapiano  58
-cnt  1 iguales  1
-pasoCol(cnt).DUR  4
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    50000000000
-noteSimple: notapiano:       58  L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.5
-COMIENZA RETARDO En  old_time on : 18096.95581367298
-noteSimple: liga:            0
----FIN -----paso: 36 --------------------------------
----START-----paso: 37 --------------------------------
-jply  37dura  95
-paso  37 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  95
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    25000000000
-noteSimple: notapiano:       56  F+
-no se envia noteon de 1er nota +, se suma su tiempo a la siguiente
-NoteSimple acum pasoCol(1).tiempoFiguraOld  25000000000
-noteSimple: liga:            1
----FIN -----paso: 37 --------------------------------
----START-----paso: 38 --------------------------------
-jply  38dura  42
-paso  38 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  42
-i1=NB= 1 SIMPLE cnt=  1
-NoteSimple old > 0 pasoCol(1).tiempoFiguraOld  25000000000
-tempofigura + old 33333300054
-ESTOS EN NOTEsIMPLE!
-noteSimple: tiempoFigura:    33333300054
-noteSimple: notapiano:       56 3E 
-pasoCol(1).liga              1
-envio on 
-noteSimple tiempoFigura  0.33333300054
-COMIENZA RETARDO En  old_time on : 18097.45589335073
-noteSimple: liga:            0
----FIN -----paso: 38 --------------------------------
----START-----paso: 39 --------------------------------
-jply  39dura  40
-paso  39 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       56 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18097.78934186854
-noteSimple: liga:            0
----FIN -----paso: 39 --------------------------------
----START-----paso: 40 --------------------------------
-jply  40dura  40
-paso  40 cnt  1 notapiano  56
-cnt  1 iguales  1
-pasoCol(cnt).DUR  40
-i1=NB= 1 SIMPLE cnt=  1
-noteSimple: tiempoFigura:    33333298564
-noteSimple: notapiano:       56 3L 
-pasoCol(1).liga              0
-envio on 
-noteSimple tiempoFigura  0.33333298564
-COMIENZA RETARDO En  old_time on : 18098.12278902724
-noteSimple: liga:            0
----FIN -----paso: 40 --------------------------------
----START-----paso: 41 --------------------------------
-i1=NB= 1 SIMPLE cnt=  0
----FIN -----paso: 41 --------------------------------
----START-----paso: 42 --------------------------------
-i1=NB= 1 SIMPLE cnt=  0
----FIN -----paso: 42 --------------------------------

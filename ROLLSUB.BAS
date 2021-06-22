@@ -14,7 +14,7 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
  'if indice <= 0 then indice = 1
  'if indice >= 128 then indice = 128
 
- cairo_select_font_face (c, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
+ cairo_select_font_face (c, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL)
  cairo_set_font_size (c, font)
  
 
@@ -207,10 +207,10 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
  ' PARA ENTRADA POR MOUSE SOLO DEBO DETERMINAR EL SEMITONO...
  ' y hacer nota=semiotono 1 a 11 con el mouse...el resto es automtico...
 
- If nro = hasta Then ' es la 10 usamos 0 tmbien ose 9 octavas+ ayuda
+If nro = hasta Then ' es la 10 usamos 0 tmbien ose 9 octavas+ ayuda
   cairo_set_font_size (c, font)
   'cairo_select_font_face (c, "Georgia",CAIRO_FONT_SLANT_NORMAL , CAIRO_FONT_WEIGHT_BOLD)
-  t= "Flecha Abajo/Arriba scroll de las octavas en la ventana "
+  t= "Flecha Abajo/Arriba o ruedita del mouse, scroll de las octavas en la ventana "
   cairo_move_to(c, 0, Penta_y + inc_Penta * 14  )
   cairo_show_text(c, t)
 
@@ -218,18 +218,48 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
   cairo_move_to(c, 0, Penta_y + inc_Penta * 15 )
   cairo_show_text(c, t)
 
-  t = "PARA EDITAR CLICK EN EDIT EN EL BORDE SUPERIOR, ESC TERMINA LA APP"
+  t = "Entrar Notas Click en [Edicion] en Menu, otro Click en Edit para modificar, ESC TERMINA LA APP"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 16 )
   cairo_show_text(c, t)
 
-  t = "-/+ achica/agranda el area y altura de las octavas dentro de la ventana "
+  t = "En modificacion: CTRL-M o CTRL-N pasa al MODO CURSOR para reemplazar insertar borrar notas"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 17 )
   cairo_show_text(c, t)
 
-  t = "AvPag/RePag scroll de las octavas mas rapido "
+  t = "-/+ achica/agranda el area y altura de las octavas dentro de la ventana "
   cairo_move_to(c, 0, Penta_y + inc_Penta * 18 )
   cairo_show_text(c, t)
+
+  t = "AvPag/RePag scroll de las octavas mas rapido "
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 19 )
+  cairo_show_text(c, t)
+  
+  t = "Ctrl-Click en [Reproducir] Play con scroll e iluminacion de notas"
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 20 )
+  cairo_show_text(c, t)
+
+  t = "Barra Espacio: Play para Debug sin scroll, luego sera igual que ctrl-clik reproducir"
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 21 )
+  cairo_show_text(c, t)
+
+  t = "Pulsar F1 Para Un Notepad Con Ayuda Preliminar mas detallada, puede estar incompleta y no ser lo ultimo"
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 22 )
+  cairo_show_text(c, t)
+
+  t = "En el menu algunso funcionan con Ctrl-clik otros con click solamente"
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 23 )
+  cairo_show_text(c, t)
+
+  t = "En modificacion se pasa de una octava a otra para editarla, deslizando el mouse hasta el extremo izquierdo de la octava deseada, eso iluminara "
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 24 )
+  cairo_show_text(c, t)
+
+  t = "la octava en edicion. (No hay vocales acentuadas, Cairo, la libreria grafica usada, no las maneja con font simples)"
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 25 )
+  cairo_show_text(c, t)
+    
  End If
+
  ' si estoy en esta octava ...edicion solo para esa octava segun posicion
  ' del mouse automaticamete
  If ( Penta_y <= mousey) And ((Penta_y + 12 * inc_Penta) >= mousey)  Then

@@ -1,3 +1,4 @@
+' 22-05-2021:WHEEL LUEGO CTRL CAMBIA ESPACIADO DE LINEAS, REEMPLAZO BOLD POR NORMAL 
 ' 20-06-2021: ha que corregir el caso DESAFIO-LIGA-ACORDE-3-O-sin-O-ok
 '  dura poco el sonido de la ligadura
 ' en el otro anda bien se corrigio uno se jodio el anterior!
@@ -80,7 +81,7 @@ Open "midebug.txt" For Output As #1
 
 'Open "mivector.txt" For Output As #3
 Open "miplayall.txt" For Output As #4
-
+Open "test-AAAAA.TXT" For Output As #5
 Print #1, "version para ceros!!!!!! "
 
 ''Open cons  for Output As #1
@@ -223,10 +224,10 @@ Close
 End
 '/
 Dim Shared As Integer  ANCHO
-Dim Shared As Integer  ALTO
+Dim Shared As Integer  ALTO, deltaip=0
 Dim Shared As Double   BordeSupRoll, inc_Penta
 Dim Shared As Integer  AnchoInicial,AltoInicial
-Dim Shared As FLOAT font
+Dim Shared As FLOAT font, deltaipf=0, lockip=0 
 Dim Shared q As String * 1
 Dim Shared As UByte s1, s2, s3, s4, s5,s6, s7 ',s8,s9
 Dim escala As float = 1.0
@@ -385,7 +386,7 @@ If s6 = 1 Then
 EndIf
 
 
-inc_Penta = Int((ALTO -1) /40)
+inc_Penta = Int((ALTO -1) /40) - deltaip
 'llena la surface con nro_penta
 nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
 'Print nro_penta
@@ -558,7 +559,7 @@ If  MultiKey(SC_KEYPADPLUS) Then '78
 
 EndIf
 
-If MultiKey(SC_MINUS) Then
+If  MultiKey(SC_MINUS)  Then
  '    cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1 'evita fondo negro y flick
  '    cairo_paint(c)
 
@@ -571,7 +572,6 @@ If MultiKey(SC_MINUS) Then
  cairo_paint(c)
  cairo_stroke(c)
  cairo_destroy(c)
-
  ALTO = ALTO - inc_Penta/2
 
  If ALTO <= AltoInicial/3 Then
@@ -583,6 +583,19 @@ If MultiKey(SC_MINUS) Then
  Exit Do
 
 EndIf
+If MultiKey(sc_control) Then 
+  If incWheel < 0 Then
+      deltaipf=deltaipf + 0.05
+  Else
+      deltaipf=deltaipf - 0.05
+  EndIf
+      deltaip=deltaipf
+      lockip=1
+  Exit Do 
+Else
+     lockip=0     
+EndIf 
+
 If MultiKey(SC_CONTROL) Then 
  If MultiKey (SC_RIGHT) Then
     posicion=posicion + NroCol/2
@@ -797,26 +810,29 @@ If MultiKey(SC_L)  Then ' <======== load Roll
 EndIf
 
 If MultiKey (SC_F12) Then
+'''archivo test-AAAAA.TXT
  Dim As Integer i1, i2
  Dim As String result 
  ' testeo solo en la 1er octva por ahora
- Print #1,
+ Print #5,"vuelco de 1er octava "
+ Print #5,
  For i1 = 1 To 12
   For i2= 1 To Maxpos
    result = Format (Roll.trk(i1, i2).nota,"00")
-   Print #1,  result;"-";
+   Print #5,  result;"-";
   Next i2
-  Print #1,
+  Print #5,
   For i2= 1 To Maxpos
    result = Format (Roll.trk(i1, i2).dur,"00")
-   Print #1, result;"-";
+   Print #5, result;"-";
   Next i2
-  Print #1,
-  Print #1,"------------------------"
+  Print #5,
+  Print #5,"------------------------"
  Next i1
- While Inkey <> "": Wend
- Sleep 150
- Close 2
+ 'While Inkey <> "": Wend
+ 'Sleep 150
+ 'Close 5
+ Print #5,"fin >>>>>>>>>>> "
 EndIf
 
 If MultiKey (SC_F10) Then
@@ -1507,7 +1523,7 @@ If (ScreenEvent(@e)) Then
     posmouseOld = posmouse
    EndIf
    If incWheel > 0 Then
-    If s2=0 Then
+    If s2=0 And lockip=0 Then
      s2=1
      BordeSupRoll = BordeSupRoll + inc_Penta
     EndIf
@@ -1517,7 +1533,7 @@ If (ScreenEvent(@e)) Then
 
     Exit Do
    Else
-    If s1=0 Then
+    If s1=0  And lockip=0 Then
      s1=1
      BordeSupRoll = BordeSupRoll - inc_Penta
     EndIf

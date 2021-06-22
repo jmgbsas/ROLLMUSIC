@@ -1230,7 +1230,7 @@ End Select
 End Function
 Sub duracion (old_time As Double, tiempoFigura As Double)
 ' retardo puro sin on ni off
-Print #1,"COMIENZA RETARDO En  old_time on :"; old_time
+Print #1,"COMIENZA RETARDO En  time :"; old_time
 Dim start As double
   Do
    start = Timer

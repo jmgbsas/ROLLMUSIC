@@ -1,5 +1,5 @@
-    Ayuda Básica RollMusic
-    ======================
+    Ayuda Prelimiar Básica RollMusic
+    ================================
     I) INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
        RollMusic.exe y todas los archivos *.dll. 
@@ -7,11 +7,19 @@
         PUERTOS MIDI A USAR.
         Desde el Menu Principal -> Opciones->MIDI->MIDI-OUT
         o MIDI-IN, en la lista de dispositivos de salida o de Entrada
-        clickear la deseada y dar Ok.
+        clickear la deseada y dar Ok.(solo midi Out es funcional)
  
     III) USO:
  
     1) Modo Lectura
+
+       El espaciado entre lineas se puede cambiar:
+       Pulsando la tecla control. Antes de pulsar girar la rueda del mouse
+       en la direccion deseada apenas un pulso de rotacion para arriba o
+       para abajo, se suelta la rueda, luego se pulsa control.
+       Mientras se mantenga pulsado la tecla Control el espaciado
+       entre lineas cambiará aumentando o achicandose según la dirección
+       de rotación que se le dio a la rueda del mouse previamente.
 
     2.0) Modos de Edicion
     2.1) MODO EDIT (click en menu EDICION luego en EDIT cambiara a color 
@@ -165,8 +173,7 @@ III)
      sin datos paralelos...los paralelos solo se usarán en la visualizacion.
 2)   Borrar desde una posicion hasta el final.
      Estando en modo lectura posicionar el borde izquierdo en la posicion deseada de corte
-     dar Ctrl doble clik en [Edicion] y en esa posicion se cortara la secuencia borrando todo
-     lo que este a la derecha de la posicion.
+     dar Ctrl doble clik en [Edicion] y en esa posicion se cortara la secuencia borrando todo lo que este a la derecha de la posicion.
  
        
 
