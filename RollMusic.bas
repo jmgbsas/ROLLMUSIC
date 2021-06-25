@@ -583,18 +583,6 @@ If  MultiKey(SC_MINUS)  Then
  Exit Do
 
 EndIf
-If MultiKey(sc_control) Then 
-  If incWheel < 0 Then
-      deltaipf=deltaipf + 0.05
-  Else
-      deltaipf=deltaipf - 0.05
-  EndIf
-      deltaip=deltaipf
-      lockip=1
-  Exit Do 
-Else
-     lockip=0     
-EndIf 
 
 If MultiKey(SC_CONTROL) Then 
  If MultiKey (SC_RIGHT) Then
@@ -1501,6 +1489,15 @@ EndIf
 '  calcCompas(posn)
 ' EndIf
 
+' 24-06-2021 espaciado de lineas (1)
+If MultiKey(SC_CONTROL) And lockip=0  Then
+    deltaip=0
+    incWheel=0
+    lockip=1
+    Exit Do 
+
+EndIf 
+
 
 '-----------------------------SCREEN EVENT-------START -----------
 ' para detectar mouse sin usar sdl
@@ -1522,25 +1519,29 @@ If (ScreenEvent(@e)) Then
     incWheel = posmouse - posmouseOld
     posmouseOld = posmouse
    EndIf
-   If incWheel > 0 Then
-    If s2=0 And lockip=0 Then
-     s2=1
-     BordeSupRoll = BordeSupRoll + inc_Penta
-    EndIf
-    If BordeSupRoll >= AltoInicial * 0.5   Then
-     BordeSupRoll =  AltoInicial * 0.5
-    EndIf
+   If lockip=0 Then 
+     If incWheel > 0 Then
+        If s2=0  Then
+           s2=1
+           BordeSupRoll = BordeSupRoll + inc_Penta
+        EndIf
+        If BordeSupRoll >= AltoInicial * 0.5   Then
+           BordeSupRoll =  AltoInicial * 0.5
+        EndIf
 
-    Exit Do
-   Else
-    If s1=0  And lockip=0 Then
-     s1=1
-     BordeSupRoll = BordeSupRoll - inc_Penta
-    EndIf
-    If BordeSupRoll <= - AltoInicial * 2.8  Then
-     BordeSupRoll =  - AltoInicial * 2.8
-    EndIf
-    Exit Do
+           Exit Do
+     Else
+       If s1=0  Then
+         s1=1
+         BordeSupRoll = BordeSupRoll - inc_Penta
+       EndIf
+       If BordeSupRoll <= - AltoInicial * 2.8  Then
+         BordeSupRoll =  - AltoInicial * 2.8
+       EndIf
+       Exit Do
+     EndIf
+   Else 
+     Exit Do  
    EndIf
   Case EVENT_KEY_PRESS    ' <======== KEY PRESS PULSO
 
@@ -1700,6 +1701,7 @@ If (ScreenEvent(@e)) Then
      ReCalCompas() '''''calcCompas(posn) '' mayorDurEnUnaPosicion (posn)
     EndIf
    EndIf
+
 
    ' ------------------PULSAR MUCHO TIEMPO <====== REPEAT------
   Case EVENT_KEY_REPEAT
@@ -1871,8 +1873,25 @@ If (ScreenEvent(@e)) Then
 '  Exit Do
 ' EndIf
 'EndIf
-
+  Case EVENT_KEY_RELEASE 
+' 24-06-2021 espaciado de lineas (3)  
+       lockip=0
  End Select
+ ' --------------
+ ' 24-06-2021 espaciado de lineas (2)
+ If MultiKey(SC_CONTROL) And lockip=1 Then
+    If incWheel < 0 Then
+       deltaipf=deltaipf + 1
+    EndIf
+    If Incwheel > 0 Then
+       deltaipf=deltaipf - 1
+    EndIf
+      deltaip=deltaipf
+      incWheel=0
+   Exit Do 
+ EndIf 
+
+ 
  '-------------------------------------END SCREENEVENT ----------
 
  GetMouse mouseX, mouseY, , MouseButtons   ' <=======  CLICK EVENTOS

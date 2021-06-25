@@ -168,7 +168,7 @@ Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 
 Dim Shared As String nombreArchivo, TCompas,nombre
 nombre=""
-Dim Shared As UByte Vfuerte=120,Vsemifuerte=110,Vdebil=90
+Dim Shared As UByte Vfuerte=70,Vsemifuerte=60,Vdebil=50
 TCompas ="4/4"
 ' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido po r 8
 ' tengo elindice del revsado 1,2,3,4,5,6,7,8....

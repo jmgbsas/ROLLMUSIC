@@ -14,12 +14,10 @@
     1) Modo Lectura
 
        El espaciado entre lineas se puede cambiar:
-       Pulsando la tecla control. Antes de pulsar girar la rueda del mouse
-       en la direccion deseada apenas un pulso de rotacion para arriba o
-       para abajo, se suelta la rueda, luego se pulsa control.
-       Mientras se mantenga pulsado la tecla Control el espaciado
-       entre lineas cambiará aumentando o achicandose según la dirección
-       de rotación que se le dio a la rueda del mouse previamente.
+       Pulsar y mantener la tecla control. Girando la rueda del mouse
+       en la direccion  hacia afuera abre el espacio  entre lineas, hacia 
+       adentro lo achica, similar al tamaño de un texto
+       en un editor de texto. Para terminar liberar la tecla Ctrl.
 
     2.0) Modos de Edicion
     2.1) MODO EDIT (click en menu EDICION luego en EDIT cambiara a color 
