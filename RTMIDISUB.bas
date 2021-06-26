@@ -676,10 +676,6 @@ For jply=comienzo To final
 
 kNroCol= Int(jply/NroCol)
 If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < MaxPos)Then
-  ' iniciodelectura = iniciodelectura +  NroCol
- '  If inicioDeLEctura > MaxPos Then
- '     inicioDeLEctura = inicioDeLEctura -NroCol
- '  EndIf
    posicion=jply
    curpos=0
 EndIf
@@ -1228,6 +1224,17 @@ Select Case notaroll
 End Select
 
 End Function
+Function sumar( ind As integer) As Integer 
+Dim res As Integer 
+res= ind Mod 13
+ If res = 0 Then
+    sumar=1 
+ Else
+    sumar=0   
+ EndIf
+
+End Function 
+
 Sub duracion (old_time As Double, tiempoFigura As Double)
 ' retardo puro sin on ni off
 Print #1,"COMIENZA RETARDO En  time :"; old_time
@@ -1268,7 +1275,56 @@ for i = 0 to portsin -1
 Next
 
 End Sub
-Sub ligadura()
+Sub trasponerRoll( cant As Integer)
+Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc
+' NA ES EL MAYOR VALOR NUMERICO, 
+' NB EL MENOR VALOR NUMERICO
+' cant=(-1) si pulso flecha UP
+If cant < 0 Then ' UP
+ comienzo= NB
+ final = NA  
+ inc= 1
+EndIf
+If cant > 0 Then 'DOWN
+ comienzo= NA
+ final = NB  
+ inc=  -1
+EndIf
 
 
+For jpt = 1 To MaxPos  
+  For i1= comienzo To final Step inc
+     If cant < 0 Then  ' UP  
+        ind = i1+cant 
+        ind = ind - sumar(ind)
+     EndIf
+     If cant > 0 Then  ' DOWN  
+        ind = i1 + cant 
+        ind = ind + sumar(ind)
+     EndIf
+   
+    If ( (Roll.trk(i1,jpt).nota >= 0) And Roll.trk(i1,jpt).nota <= 181 ) _
+       OR (Roll.trk(i1,jpt).dur >=0 And Roll.trk(i1,jpt).dur <= 181 ) Then ' es semitono
+       
+      If ind >= NB And ind <= NA Then    
+         Roll.trk(ind,jpt).nota = Roll.trk(i1,jpt).nota
+         Roll.trk(ind,jpt).dur  = Roll.trk(i1,jpt).dur
+         Roll.trk(ind,jpt).vol  = Roll.trk(i1,jpt).vol
+         Roll.trk(ind,jpt).pan  = Roll.trk(i1,jpt).pan
+         Roll.trk(ind,jpt).pb   = Roll.trk(i1,jpt).pb
+         Roll.trk(ind,jpt).inst = Roll.trk(i1,jpt).inst
+
+         Roll.trk(i1,jpt).nota = 181
+         Roll.trk(i1,jpt).dur  = 0 
+         Roll.trk(i1,jpt).vol  = 0
+         Roll.trk(i1,jpt).pan  = 0
+         Roll.trk(i1,jpt).pb   = 0
+         Roll.trk(i1,jpt).inst = 0
+      EndIf
+
+    EndIf  
+  Next i1
+Next jpt
+
+''trasponer=0   
 End Sub

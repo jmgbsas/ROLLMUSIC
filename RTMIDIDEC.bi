@@ -16,6 +16,8 @@ Declare Sub allSoundoff(canal As UByte)
 Declare Sub alloff(canal As ubyte )
 Declare Sub listports( )
 Declare Sub sleep5dm()
+Declare Function sumar( ind As integer) As Integer
+Declare Sub trasponerRoll(cant As integer)
 
 Dim Shared message(1 To 21) As UByte ' message output 
 

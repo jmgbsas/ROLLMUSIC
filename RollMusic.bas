@@ -1,3 +1,7 @@
+' 26-06-2021:trasponer UP or Down ok
+' 24-06-2021: trasponer..tiene un defecto cuando hace el pasaje de una octava a otra 
+' hay una zona muerta ojo ajustar ,,,yo me complique todo con esta separacion o salto
+' hay una linea muerta entre octavas!!!
 ' 22-05-2021:WHEEL LUEGO CTRL CAMBIA ESPACIADO DE LINEAS, REEMPLAZO BOLD POR NORMAL 
 ' 20-06-2021: ha que corregir el caso DESAFIO-LIGA-ACORDE-3-O-sin-O-ok
 '  dura poco el sonido de la ligadura
@@ -229,7 +233,7 @@ Dim Shared As Double   BordeSupRoll, inc_Penta
 Dim Shared As Integer  AnchoInicial,AltoInicial
 Dim Shared As FLOAT font, deltaipf=0, lockip=0 
 Dim Shared q As String * 1
-Dim Shared As UByte s1, s2, s3, s4, s5,s6, s7 ',s8,s9
+Dim Shared As UByte s1, s2, s3, s4, s5,s6, s7 ,s8' ,s9
 Dim escala As float = 1.0
 Dim translado As float = 1.0
 ''https://www.freebasic.net/forum/viewtopic.php?t=15127
@@ -271,7 +275,7 @@ comEdit = FALSE:resize = FALSE
 Dim Shared po As Integer Ptr
 po = @octava
 *po = 8
-s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0':s8=0:s9=0
+s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0:s8=0 ':s9=0
 font=18
 Dim Shared e As EVENT
 Dim Shared rmerr As Integer
@@ -481,6 +485,10 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE 
 EndIf
 If cursorVert=0 Then
  If MultiKey(SC_DOWN)  Then
+     If trasponer=1 Then
+       Exit Do
+     EndIf 
+
    If s1=0 Then
    s1=1
    BordeSupRoll = BordeSupRoll -  inc_Penta
@@ -886,7 +894,7 @@ If MultiKey (SC_Q) Then ' con Q se deja de repetir espacios tmbien resetea todo 
  If fijarEspacio=99 Then
   fijarEspacio=0
  EndIf
-pun=0:sil=0:tres=0:mas=0:vdur=0:vnota=0
+pun=0:sil=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
 ' MAYUSCULAS PARA SOSTENIDOS
@@ -1546,6 +1554,11 @@ If (ScreenEvent(@e)) Then
   Case EVENT_KEY_PRESS    ' <======== KEY PRESS PULSO
 
    If e.scancode = 72  Then ' SC_UP sube por pulsos mas presicion
+    If trasponer=1 Then
+     trasponerRoll (-1)
+     Exit Do
+    EndIf 
+
     If cursorVert= 0 Then
      If s2=0 Then
       s2=1
@@ -1613,6 +1626,11 @@ If (ScreenEvent(@e)) Then
    '      Exit Do
    '  EndIf
    If e.scancode = 80 Then  ' <===== SC_DOWN pulso
+     If trasponer=1 Then
+       trasponerRoll (1)
+       Exit Do
+     EndIf 
+
     If cursorVert=1 Or cursorVert=2 Then
      notacur = notacur + 1
      If notacur > 12 Then
@@ -1706,6 +1724,10 @@ If (ScreenEvent(@e)) Then
    ' ------------------PULSAR MUCHO TIEMPO <====== REPEAT------
   Case EVENT_KEY_REPEAT
    If e.scancode = 72  Then ' <======= SC_UP
+     If trasponer=1 Then
+       Exit Do
+     EndIf 
+
     If cursorVert = 0 Then
      If s2=0 Then
       s2=1
@@ -1726,6 +1748,10 @@ If (ScreenEvent(@e)) Then
    EndIf
 
    If e.scancode = 80 Then  ' <===== SC_DOWN repeat
+     If trasponer=1 Then
+       Exit Do
+     EndIf 
+
     If cursorVert=1 Then
      notacur = notacur + 1
      If notacur > 12 Then
@@ -1890,7 +1916,13 @@ If (ScreenEvent(@e)) Then
       incWheel=0
    Exit Do 
  EndIf 
-
+ If MultiKey(SC_CONTROL) And MultiKey(SC_T) And trasponer=0  Then
+  ' trasponer notas 24-06-2021 - por teclado para todas las notas cargadas
+  ' si subo con flecha arriba sube 1 semitono
+  ' si bajo con flecha bajo un semitono
+         trasponer= 1
+ EndIf
+ 
  
  '-------------------------------------END SCREENEVENT ----------
 

@@ -91,7 +91,7 @@ Dim  Shared figura (1 To 182) As ZString  * 4 => _
 'cambiar 107 por 108, 109 por 110,  109 por 110.
 ' ligaduras de notas con + que va a + o - creo qu emenso seria mejor
 ' parecido a una pila polos opuestos se atraen je...
-Dim Shared As Integer comienzo1, fin1, comienzo2,fin2,PianoNota 
+Dim Shared As Integer comienzo1, fin1, comienzo2,fin2,PianoNota, trasponer=0 
 'comienzo1=28:fin1=54
 'comienzo2=82:fin2=180
 

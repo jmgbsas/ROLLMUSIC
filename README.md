@@ -1,4 +1,4 @@
-Una  ejercitacion para ver Cairo.
+Una  ejercitacion para ver Cairo.(Estado:ALpha Debug escribe archivos.)
 No encuentro secuenciadores que usen letras en vez de esos rectangulitos...
 Lo que pretendo hacer lento pero seguro y a mi ritmo.. es usar las 8 octavas 
 musicales desde C0 a B8 con sostenidos y en vez de figuras musicales o rectangulitos
@@ -64,4 +64,5 @@ a puro codigo sin clases. Despues agregare tracks, la opcion de poner instrument
 distintos, el vector esta rpeparado para poner instrumentos a nivel nota como el 
 volumen y pitch bend tambien. Los tracks seran tal vez en el formato de midi
 de modo que habrá que pasar del modo midi al del Vector Roll para mostrar  los 
-datos en edicion,,que mucho trabajo esto es apenas el 10%... 
+datos en edicion,,que mucho trabajo esto es apenas el 10%...
+Pulsando F1 aparede un Notepad con Ayuda Basica. 

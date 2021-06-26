@@ -18,7 +18,9 @@
        en la direccion  hacia afuera abre el espacio  entre lineas, hacia 
        adentro lo achica, similar al tamaño de un texto
        en un editor de texto. Para terminar liberar la tecla Ctrl.
-
+       Trasponer: Ctrl-T habilita la trasposicion, Q la deshabilita.
+       una vez habilitada con Flecha-UP sube de a un semitono con cada pulso
+       Con Flecha-Down baja un semitono can cada pulso.
     2.0) Modos de Edicion
     2.1) MODO EDIT (click en menu EDICION luego en EDIT cambiara a color 
           verde y la octava seleccionada tambien)
@@ -38,7 +40,8 @@
        La edicion siempre se hará en font=18, pues la misma depende del tamaño
        del mismo y está diseñado para ese tamaño.(se cambira en el futuro a 
        proporcionlidad)
-
+    7) Trasponer pro semitonos Ctrl-T - flecha arriba sube semitono.(flecha abajo no anda todavia)
+       pulsar Q para terminar la accion de trasponer.
 
    1) Modo Lectura se inicia en color de fondo Negro y texto blanco (ultimo 
       cambio).
