@@ -1724,9 +1724,9 @@ If (ScreenEvent(@e)) Then
    ' ------------------PULSAR MUCHO TIEMPO <====== REPEAT------
   Case EVENT_KEY_REPEAT
    If e.scancode = 72  Then ' <======= SC_UP
-     If trasponer=1 Then
-       Exit Do
-     EndIf 
+   '  If trasponer=1 Then
+   '    Exit Do
+   '  EndIf 
 
     If cursorVert = 0 Then
      If s2=0 Then
@@ -1748,9 +1748,9 @@ If (ScreenEvent(@e)) Then
    EndIf
 
    If e.scancode = 80 Then  ' <===== SC_DOWN repeat
-     If trasponer=1 Then
-       Exit Do
-     EndIf 
+   '  If trasponer=1 Then
+   '    Exit Do
+   '  EndIf 
 
     If cursorVert=1 Then
      notacur = notacur + 1
@@ -1914,13 +1914,19 @@ If (ScreenEvent(@e)) Then
     EndIf
       deltaip=deltaipf
       incWheel=0
-   Exit Do 
+   ' ojo con los Exit Do si por defautl entra al if y hace exit do 
+   ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click
+    
  EndIf 
  If MultiKey(SC_CONTROL) And MultiKey(SC_T) And trasponer=0  Then
   ' trasponer notas 24-06-2021 - por teclado para todas las notas cargadas
   ' si subo con flecha arriba sube 1 semitono
   ' si bajo con flecha bajo un semitono
          trasponer= 1
+   '      
+   ' ojo con los Exit Do si por defautl entra al if y hace exit do 
+   ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click
+
  EndIf
  
  

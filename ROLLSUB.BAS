@@ -916,7 +916,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
    '===> 3.1 [NUEVO]
    If MultiKey(sc_Control) And mousex > 42 And mousex < 110  And mousey < 50  Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
-    '  If MouseButtons And 1 Then
+    
       If MultiKey(sc_control) Then
        If dobleclick Then
           ReDim (Roll.trk ) (NB To NA, 1 To CantTicks)
@@ -958,11 +958,13 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
   '===> 3.3[GRABAR] SC_F11 COPIA
    If MultiKey(sc_Control) And mousex > 223 And mousex < 296  And mousey < 50  Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
-    If MouseButtons And 1 Then
-     '       Print #1, "Grabando a disco Roll GRABAR "
+    Print #1,"quepasa aca la puta mandre nombre= ", nombre 
+     If MouseButtons And 1 Then
+            Print #1, "Grabando a disco Roll GRABAR "
       '''' dialogoText("Grabar Archivo")
        Dim As String nombreg
        If nombre = "" Then
+          Print #1,"va a getfiles"
           getfiles(file,myfilter,"save")
           nombreg=*file.lpstrFile
           If nombreg = "" Then
@@ -975,6 +977,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
        GrabarArchivo (nombre)
     EndIf
    Else
+   Print #1,"va por el else ? quepasa aca la puta mandre nombre= ", nombre
     cairo_set_source_rgba c,1,1,1,1
    EndIf
    t = " [GRABAR]": cairo_show_text(c,t) :t= ""
@@ -982,7 +985,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
   '===> 3.3[GRABAR COMO] SC_F11 COPIA 
    If MultiKey(sc_Control) And mousex > 320 And mousex < 440  And mousey < 50  Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
-    If MouseButtons And 1 Then
+     If MouseButtons And 1 Then
      '       Print #1, "Grabando a disco Roll GRABAR "
        '''''no usar dialogoText("Grabar Archivo")
        Dim As String nombreg
