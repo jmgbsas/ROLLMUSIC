@@ -1290,9 +1290,19 @@ If cant > 0 Then 'DOWN
  final = NB  
  inc=  -1
 EndIf
+Dim As Integer desde, hasta
+If pasoZona1 > 0 Then 
+   desde = pasoZona1
+Else
+   desde=1   
+EndIf   
+If pasoZona2 > 0 Then 
+   hasta = pasoZona2
+Else
+   hasta= MaxPos   
+EndIf   
 
-
-For jpt = 1 To MaxPos  
+For jpt = desde To hasta  
   For i1= comienzo To final Step inc
      If cant < 0 Then  ' UP  
         ind = i1+cant 
@@ -1313,9 +1323,12 @@ For jpt = 1 To MaxPos
          Roll.trk(ind,jpt).pan  = Roll.trk(i1,jpt).pan
          Roll.trk(ind,jpt).pb   = Roll.trk(i1,jpt).pb
          Roll.trk(ind,jpt).inst = Roll.trk(i1,jpt).inst
-
-         Roll.trk(i1,jpt).nota = 181
-         Roll.trk(i1,jpt).dur  = 0 
+         If Roll.trk(ind,jpt).nota > 0 And Roll.trk(ind,jpt).nota <= 12  Then
+            Roll.trk(i1,jpt).dur  = Roll.trk(i1,jpt).dur + 45  
+         Else
+            Roll.trk(i1,jpt).nota = 181
+            Roll.trk(i1,jpt).dur  = 0
+         EndIf 
          Roll.trk(i1,jpt).vol  = 0
          Roll.trk(i1,jpt).pan  = 0
          Roll.trk(i1,jpt).pb   = 0

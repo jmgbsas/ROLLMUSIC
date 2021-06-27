@@ -169,6 +169,12 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
       t=Str(Compas(n).nro)
       cairo_show_text(c,t)
      EndIf
+     If n = pasozona1 Or n =pasoZona2 Then
+        cairo_move_to(c,42 + (ic ) *anchofig +anchofig, Penta_y + 13.5 * inc_Penta )
+         t="("+ Str(n) + ")"
+         cairo_show_text(c,t)
+     EndIf
+
     EndIf
     cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 6)
     ic += 1
@@ -958,13 +964,11 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
   '===> 3.3[GRABAR] SC_F11 COPIA
    If MultiKey(sc_Control) And mousex > 223 And mousex < 296  And mousey < 50  Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
-    Print #1,"quepasa aca la puta mandre nombre= ", nombre 
      If MouseButtons And 1 Then
-            Print #1, "Grabando a disco Roll GRABAR "
+      ''      Print #1, "Grabando a disco Roll GRABAR "
       '''' dialogoText("Grabar Archivo")
        Dim As String nombreg
        If nombre = "" Then
-          Print #1,"va a getfiles"
           getfiles(file,myfilter,"save")
           nombreg=*file.lpstrFile
           If nombreg = "" Then
@@ -977,7 +981,6 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
        GrabarArchivo (nombre)
     EndIf
    Else
-   Print #1,"va por el else ? quepasa aca la puta mandre nombre= ", nombre
     cairo_set_source_rgba c,1,1,1,1
    EndIf
    t = " [GRABAR]": cairo_show_text(c,t) :t= ""
@@ -1584,7 +1587,7 @@ Sub calcCompas( ByRef j As Integer)
  ' nota:fijarse que pasa con el grupo..1 to 4 de las 64 duraciones
  Print #1,"========================================================="
  Print #1,"1-calcCompas j o posn RECIBIDA: "; j
- Dim As Integer k, i,cantFalta,CantSobra, tengo, falta,sobra
+ Dim As Integer k, i,cantFalta,CantSobra, tengo, falta,sobra, noct
  
  If DUR=0  Then
   Compas(j).Posi=0
@@ -1615,7 +1618,7 @@ Sub calcCompas( ByRef j As Integer)
   id=1
   ' procesar el resto que sobra luego de 129 en el buffer 2
  EndIf
- Dim As Integer partes_falta (1 To 100), partes_sobra(1 To 100)
+ Dim As Integer partes_falta (1 To 100), partes_sobra(1 To 100) 
  Print #1,"1-calcCompas 3, DUR: ";DUR; " j: "; j; " figura: ";figura(DUR)
   
  For k=1 To 180
@@ -1725,13 +1728,22 @@ Sub calcCompas( ByRef j As Integer)
    If notaOld > 0 And notaOld <> nota Then
     Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 181
    EndIf
-   For i= 1 To 12 ' gracias a esto anda acordes
-    If i<> nota Then
-     If Roll.trk((i +(estoyEnOctava -1) * 13),posn).nota = 0 Then
-      Roll.trk((i +(estoyEnOctava-1) * 13), posn).nota = 181
-     EndIf
-    EndIf
-   Next i
+'------zzz
+   For noct = desde To hasta
+     For i= 1 To 12 ' gracias a esto anda acordes¿?
+       If i= nota And noct = estoyEnOctava Then
+         Continue For
+       Else    
+       
+         If Roll.trk((i +(noct -1) * 13),posn).nota = 0 Then
+         '   Print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
+            Roll.trk((i +(noct -1) * 13),posn).nota = 181
+            Roll.trk((i +(noct -1) * 13),posn).dur  = 0
+         EndIf
+       EndIf
+     Next i
+   Next noct
+'-------   
    acumulado=acumulado+pesoDur(partes_falta(k))
    If Abs(d7 -acumulado) <= 10 Then
        acumulado = d7
@@ -1817,13 +1829,25 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
     Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 181
 
    EndIf
-   For i= 1 To 12 ' gracias a esto anda acordes
-    If i<> nota Then
-     If Roll.trk((i +(estoyEnOctava -1) * 13),posn).nota = 0 Then
-      Roll.trk((i +(estoyEnOctava-1) * 13), posn).nota = 181
-     EndIf
-    EndIf
-   Next
+'------zzz
+
+   For noct = desde To hasta
+     For i= 1 To 12 ' gracias a esto anda acordes¿?
+       If i= nota And noct = estoyEnOctava Then
+         Continue For
+       Else    
+       
+         If Roll.trk((i +(noct -1) * 13),posn).nota = 0 Then
+         '   Print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
+            Roll.trk((i +(noct -1) * 13),posn).nota = 181
+            Roll.trk((i +(noct -1) * 13),posn).dur  = 0
+         EndIf
+       EndIf
+     Next i
+   Next noct
+'-------   
+   
+   
    Print #1,"ERROR==> ACUMULADO: " ;acumulado
    Print #1, "vlor buscdo de k: ";k
    Print #1,"partes_sobra(k) ";partes_sobra(k)
@@ -1861,17 +1885,17 @@ Sub separarDur(ByRef j As Integer, ByRef DUR As Integer,partes() As Integer, ByR
  falta1=falta
  Print #1,"FALTA RECIBIDO: ";FALTA1
  Print #1,;" DUR recibido: ";DUR;
- Dim As Integer desde, hasta
+ Dim As Integer desder, hastar
 
  Print #1,"pun: ";pun;" sil: ";sil;" mas: ";mas; " tres: ";tres
  Print #1,"incr: ";incr
 
  ' cuando hago la carga los k son de 1 a 64 no son mas de 1 a 8
 
- desde =  1 + incr
- hasta = 45 + incr
+ desder =  1 + incr
+ hastar = 45 + incr
 
- For k=desde To hasta
+ For k=desder To hastar
   If (falta >= pesoDur(K) - 10) And  (falta <= pesoDur(K) +10)    Then
    partes(lb)=k
    Compas(j).Posi=j ' hay compas ESTE PRODUCI DOBLES !!!! JMG SI
@@ -2189,10 +2213,10 @@ Sub ReCalCompas()
    nroCompas = 0
 
      carga=1 ' no es lo mismo calcCompas con cargar o procesando
-     Dim As Integer i,j , mayor,ia,valdur,cont, semi
+     Dim As Integer i,j , mayor,ia,valdur,cont, semi,i2
      cont=0
      Print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
-     Dim As Integer lim1, lim2, grupo, mayorgrupo
+     Dim As Integer lim1, lim2, grupo, mayorgrupo, noct
      For j = 1 To MaxPos -2
       Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
@@ -2275,6 +2299,21 @@ Sub ReCalCompas()
          if DUR<=180 Then
           Print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo;" figura ";figura(durm)
           calcCompas(j)
+         If carga=1 Then
+ '------zzz
+            For noct = desde To hasta
+              For i2= 1 To 12 ' gracias a esto anda acordes¿?
+                 If Roll.trk((i2 +(noct -1) * 13),j).nota = 0 Then
+                    Roll.trk((i2 +(noct -1) * 13),j).nota = 181
+                    Roll.trk((i2 +(noct -1) * 13),j).dur  = 0
+                 EndIf
+              Next i2
+            Next noct
+'-------   
+         EndIf   
+          
+          
+          
           Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j).Posi;" figura ";figura(durm)
           valdur=0
           DUR=0
@@ -2529,7 +2568,7 @@ Sub GrabarArchivo (nombre As String)
      Dim Trabajo (NB To NA, 1 To Maxpos) As dat
      Dim grabaPos (1,1)  As dat
      Dim grabaLim (1,1)  As dat 
-     Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0
+     Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
 Print #1, "inicio MaxPos "; MaxPos
  For i2 = 1 To MaxPos
@@ -2537,6 +2576,10 @@ Print #1, "inicio MaxPos "; MaxPos
        If Roll.trk(i1,i2 ).nota=190 And Roll.trk(i1,i2 ).dur=190 Then
           borrocol= 1 'Atrapa al menso un caso
        EndIf
+       If Roll.trk(i1,i2 ).dur=182 Then ' 26-06-2021 copiar final archivo
+          final= 1 'Atrapa el final
+       EndIf
+
        If Roll.trk(i1,i2 ).nota >=1 And Roll.trk(i1,i2 ).nota<=12 Then
           haynota=1 ' atrapa al menso 1 caso
        EndIf
@@ -2550,14 +2593,14 @@ Print #1, "inicio MaxPos "; MaxPos
        EndIf            
     Next i1
     i1=0  
-    If borrocol = 0 Or res=0 Then 'copio columna no borro
+    If borrocol = 0 Or res=0 Or final=1 Then 'copio columna no borro
        k=k+1
       For i1 = NB To NA
           Trabajo(i1,k)=Roll.trk(i1,i2 )
       Next i1
     EndIf
       
-    borrocol=0:res=0:haynota=0
+    borrocol=0:res=0:haynota=0:final=0
  Next i2
 ' MaxPos = k JMG 16-05-2021 TODAVIA NO SE COMO SE ACHICA LA SECUENCIA 
 ' AL GRABAR NO SOLO CON MAXPOS PARECE,,,ANDA BIEN PERO SI CONSERVO MAXPOS
@@ -2565,11 +2608,12 @@ Print #1, "inicio MaxPos "; MaxPos
 
 
 posn=k        
+
 Dim As Integer r1
 For i1=NB To NA 
   For r1= posn+1 To MaxPos
-    Trabajo(i1,r1).nota=0
-    Trabajo(i1,r1).dur=0 
+    Trabajo(i1,r1).nota=0 ' ok debo habiliatar desde ahi todas las columnas se juntaron
+    Trabajo(i1,r1).dur=0  ' la secuecnia quedo mas corta
   Next r1 
 Next i1  
 

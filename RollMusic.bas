@@ -1,3 +1,5 @@
+'0.0.8.8.1.0 seleccion de ZONA para accion con CTRL-Click en lectura 2 puntos.
+'           borrado de zona con Q como siempre. ok 27-06-2021
 ' 26-06-2021:trasponer UP or Down ok
 ' 24-06-2021: trasponer..tiene un defecto cuando hace el pasaje de una octava a otra 
 ' hay una zona muerta ojo ajustar ,,,yo me complique todo con esta separacion o salto
@@ -894,7 +896,8 @@ If MultiKey (SC_Q) Then ' con Q se deja de repetir espacios tmbien resetea todo 
  If fijarEspacio=99 Then
   fijarEspacio=0
  EndIf
-pun=0:sil=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0
+pun=0:sil=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0
+
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
 ' MAYUSCULAS PARA SOSTENIDOS
@@ -1639,6 +1642,7 @@ If (ScreenEvent(@e)) Then
     EndIf
     Exit Do
    EndIf
+' -------------------------------
    If e.scancode = 83 Then '<====== SC_DELETE cambia a silencio o nada le suma 16+16 ver eso
       Print #1, "PULSADO BORRAR ..·.."
        If borrar=1 Then
@@ -1724,9 +1728,6 @@ If (ScreenEvent(@e)) Then
    ' ------------------PULSAR MUCHO TIEMPO <====== REPEAT------
   Case EVENT_KEY_REPEAT
    If e.scancode = 72  Then ' <======= SC_UP
-   '  If trasponer=1 Then
-   '    Exit Do
-   '  EndIf 
 
     If cursorVert = 0 Then
      If s2=0 Then
@@ -1748,9 +1749,6 @@ If (ScreenEvent(@e)) Then
    EndIf
 
    If e.scancode = 80 Then  ' <===== SC_DOWN repeat
-   '  If trasponer=1 Then
-   '    Exit Do
-   '  EndIf 
 
     If cursorVert=1 Then
      notacur = notacur + 1
@@ -2369,6 +2367,23 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    EndIf 
  EndIf 
  ''
+' SELECCION DE ZONA PARA TRASPONER VOLUMEN INSTRUMENTO ETC ETC
+' SOLO SELECCIONO PASO DESDE HASTA
+  If MultiKey(SC_CONTROL) And MouseButtons And 1 Then
+     Dim pasox As Integer
+     pasox=(mousex- 81 )/35  + posishow  
+
+     If pasoZona1 = 0 Then 
+        pasoZona1=  pasox ' pos de la 1er ventana 
+        Print #1,"pasoZona1=",pasoZona1
+     EndIf
+     If pasoZona1 > 0 And pasoZona1 <> pasox Then
+        pasoZona2= pasox
+        Print #1,"pasoZona2=",pasoZona2
+     EndIf
+  EndIf 
+
+' FIN SELECION ZONA 
 EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 ' ------------------------------------------------------------------
 If MouseButtons And 1  Then

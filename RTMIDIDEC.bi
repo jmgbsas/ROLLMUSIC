@@ -34,7 +34,7 @@ Dim sizeptr As UInteger<64> Ptr = @size
 Dim Shared As UInteger portsin, portsout 
 Dim Shared As Double tiempoPatron=60 ' cuantas negras enun minuto default
 Dim Shared As Double old_time_on=0,old_time_off=0
-Dim Shared As Integer jply=0, finplay=0
+Dim Shared As Integer jply=0, finplay=0, pasoZona1=0,pasoZona2=0
 'elpatron esla negra ej I=60ergo todo sera relativo  la negra
 ' 09-06-2021 agregue 0 en relDur para evitar cancelaciones pero ojo puede 
 ' tapar otros errores qu el tiempo se calcule com ocero y siga y 
