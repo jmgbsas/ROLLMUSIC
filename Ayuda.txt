@@ -18,9 +18,19 @@
        en la direccion  hacia afuera abre el espacio  entre lineas, hacia 
        adentro lo achica, similar al tamaño de un texto
        en un editor de texto. Para terminar liberar la tecla Ctrl.
-       Trasponer: Ctrl-T habilita la trasposicion, Q la deshabilita.
+       Trasponer todo: Ctrl-T habilita la trasposicion, Q la deshabilita.
        una vez habilitada con Flecha-UP sube de a un semitono con cada pulso
        Con Flecha-Down baja un semitono can cada pulso.
+       Seleccion de Zona para una accion:
+       Ctrl-Click en la 1er posicion de la zona, otro Ctrl-click en la segunda
+       posicion, terminar al selecion con Q (borra todas las acciones).
+       Trasponer una Zona: seleccionar la zona deseada y luego igual que 
+       Trasponer todo, solo que esta vez la acion solo se ejecuta en la zona
+       elegida como antes terminar la seleccion y la trasposicion pulsando Q.
+       Trasponer una columna de notas: el segundo Ctrl-Click hacerlo en la misma
+       columna deseada,
+       Trasponer una sola nota: el 3er Ctrl-click hacerlo sobre la nota. 
+
     2.0) Modos de Edicion
     2.1) MODO EDIT (click en menu EDICION luego en EDIT cambiara a color 
           verde y la octava seleccionada tambien)

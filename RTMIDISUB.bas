@@ -1276,7 +1276,7 @@ Next
 
 End Sub
 Sub trasponerRoll( cant As Integer)
-Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc
+Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,b1=0
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
 ' cant=(-1) si pulso flecha UP
@@ -1290,19 +1290,19 @@ If cant > 0 Then 'DOWN
  final = NB  
  inc=  -1
 EndIf
-Dim As Integer desde, hasta
+Dim As Integer desdet, hastat
 If pasoZona1 > 0 Then 
-   desde = pasoZona1
+   desdet = pasoZona1
 Else
-   desde=1   
+   desdet=1   
 EndIf   
 If pasoZona2 > 0 Then 
-   hasta = pasoZona2
+   hastat = pasoZona2
 Else
-   hasta= MaxPos   
+   hastat= MaxPos   
 EndIf   
 
-For jpt = desde To hasta  
+For jpt = desdet To hastat  
   For i1= comienzo To final Step inc
      If cant < 0 Then  ' UP  
         ind = i1+cant 
@@ -1316,28 +1316,118 @@ For jpt = desde To hasta
     If ( (Roll.trk(i1,jpt).nota >= 0) And Roll.trk(i1,jpt).nota <= 181 ) _
        OR (Roll.trk(i1,jpt).dur >=0 And Roll.trk(i1,jpt).dur <= 181 ) Then ' es semitono
        
-      If ind >= NB And ind <= NA Then    
-         Roll.trk(ind,jpt).nota = Roll.trk(i1,jpt).nota
-         Roll.trk(ind,jpt).dur  = Roll.trk(i1,jpt).dur
-         Roll.trk(ind,jpt).vol  = Roll.trk(i1,jpt).vol
-         Roll.trk(ind,jpt).pan  = Roll.trk(i1,jpt).pan
-         Roll.trk(ind,jpt).pb   = Roll.trk(i1,jpt).pb
-         Roll.trk(ind,jpt).inst = Roll.trk(i1,jpt).inst
-         If Roll.trk(ind,jpt).nota > 0 And Roll.trk(ind,jpt).nota <= 12  Then
-            Roll.trk(i1,jpt).dur  = Roll.trk(i1,jpt).dur + 45  
-         Else
-            Roll.trk(i1,jpt).nota = 181
-            Roll.trk(i1,jpt).dur  = 0
-         EndIf 
-         Roll.trk(i1,jpt).vol  = 0
-         Roll.trk(i1,jpt).pan  = 0
-         Roll.trk(i1,jpt).pb   = 0
-         Roll.trk(i1,jpt).inst = 0
-      EndIf
+       If ind >= NB And ind <= NA  Then
+          If  pasoNota=0 Then    
+             Roll.trk(ind,jpt).nota = Roll.trk(i1,jpt).nota
+             Roll.trk(ind,jpt).dur  = Roll.trk(i1,jpt).dur
+             Roll.trk(ind,jpt).vol  = Roll.trk(i1,jpt).vol
+             Roll.trk(ind,jpt).pan  = Roll.trk(i1,jpt).pan
+             Roll.trk(ind,jpt).pb   = Roll.trk(i1,jpt).pb
+             Roll.trk(ind,jpt).inst = Roll.trk(i1,jpt).inst
+             If Roll.trk(ind,jpt).nota > 0 And Roll.trk(ind,jpt).nota <= 12  Then
+                Roll.trk(i1,jpt).nota = 181
+                Roll.trk(i1,jpt).dur  = 0
+             EndIf 
+             Roll.trk(i1,jpt).vol  = 0
+             Roll.trk(i1,jpt).pan  = 0
+             Roll.trk(i1,jpt).pb   = 0
+             Roll.trk(i1,jpt).inst = 0
+          Else
+            If pasoNota=Roll.trk(i1,jpt).nota And (Roll.trk(ind,jpt).nota=0 Or Roll.trk(ind,jpt).nota=181 )  Then
+               Roll.trk(ind,jpt).nota = Roll.trk(i1,jpt).nota
+               Roll.trk(ind,jpt).dur  = Roll.trk(i1,jpt).dur
+               Roll.trk(ind,jpt).vol  = Roll.trk(i1,jpt).vol
+               Roll.trk(ind,jpt).pan  = Roll.trk(i1,jpt).pan
+               Roll.trk(ind,jpt).pb   = Roll.trk(i1,jpt).pb
+               Roll.trk(ind,jpt).inst = Roll.trk(i1,jpt).inst
+               If Roll.trk(ind,jpt).nota > 0 And Roll.trk(ind,jpt).nota <= 12  Then
+                  Roll.trk(i1,jpt).nota = 181
+                  Roll.trk(i1,jpt).dur  = 0
+               EndIf 
+               Roll.trk(i1,jpt).vol  = 0
+               Roll.trk(i1,jpt).pan  = 0
+               Roll.trk(i1,jpt).pb   = 0
+               Roll.trk(i1,jpt).inst = 0
+                              
+            Else                
+               If Roll.trk(ind,jpt).nota >=1 And Roll.trk(ind,jpt).nota <=12  Then
+                   If cant < 0 Then  ' UP  
+                      ind = ind+cant 
+                      ind = ind - sumar(ind)
+                   EndIf
+                   If cant > 0 Then  ' DOWN  
+                      ind = ind + cant 
+                      ind = ind + sumar(ind)
+                   EndIf
 
-    EndIf  
+                  if ind > NA Then
+                     ind=NA
+                  EndIf
+                  If ind < NB Then
+                     ind=NB
+                  EndIf
+                  b1=1
+                  Roll.trk(ind,jpt).nota = Roll.trk(i1,jpt).nota
+                  Roll.trk(ind,jpt).dur  = Roll.trk(i1,jpt).dur
+                  Roll.trk(ind,jpt).vol  = Roll.trk(i1,jpt).vol
+                  Roll.trk(ind,jpt).pan  = Roll.trk(i1,jpt).pan
+                  Roll.trk(ind,jpt).pb   = Roll.trk(i1,jpt).pb
+                  Roll.trk(ind,jpt).inst = Roll.trk(i1,jpt).inst
+
+                  Roll.trk(i1,jpt).nota = 181
+                  Roll.trk(i1,jpt).dur  = 0
+                  Roll.trk(i1,jpt).vol  = 0
+                  Roll.trk(i1,jpt).pan  = 0
+                  Roll.trk(i1,jpt).pb   = 0
+                  Roll.trk(i1,jpt).inst = 0
+               'Else
+                ' b1=0   
+               EndIf
+            EndIf      
+          EndIf    
+       EndIf
+    EndIf
   Next i1
 Next jpt
 
 ''trasponer=0   
 End Sub
+
+Sub correcciondeNotas()
+
+Dim As Integer jpt=1, i1=1, comienzo , final,i2
+' NA ES EL MAYOR VALOR NUMERICO, 
+' NB EL MENOR VALOR NUMERICO
+' cant=(-1) si pulso flecha UP
+Dim As Integer desdet, hastat
+If pasoZona1 > 0 Then 
+   desdet = pasoZona1
+Else
+   desdet=1   
+EndIf   
+If pasoZona2 > 0 Then 
+   hastat = pasoZona2
+Else
+   hastat= MaxPos   
+EndIf   
+'Print #1,"CORRECION DE NOTAS ***********"
+For jpt = desdet To hastat  
+  For i1= 1 To 116   
+   
+     If ( (Roll.trk(i1,jpt).nota >= 0) And (Roll.trk(i1,jpt).nota <= 12 ) )  Then ' es semitono
+           'Print #1,"Roll.trk(i1,jpt).nota ",Roll.trk(i1,jpt).nota
+           'Print #1, "i1",i1
+           i2= i1 - restar (i1)
+          ' Print #1, "i2",i2
+          ' Print #1,"relnRNe (i2) ",relnRNe (i2)
+          ' Print #1,"---------------"   
+          If  Roll.trk(i1,jpt).nota <> relnRNe (i2) Then 
+              Roll.trk(i1,jpt).nota = relnRNe (i2)
+          EndIf    
+    EndIf
+  Next i1
+Next jpt
+
+
+
+End sub

@@ -18,6 +18,7 @@ Declare Sub listports( )
 Declare Sub sleep5dm()
 Declare Function sumar( ind As integer) As Integer
 Declare Sub trasponerRoll(cant As integer)
+Declare Sub correcciondeNotas()
 
 Dim Shared message(1 To 21) As UByte ' message output 
 
@@ -34,7 +35,7 @@ Dim sizeptr As UInteger<64> Ptr = @size
 Dim Shared As UInteger portsin, portsout 
 Dim Shared As Double tiempoPatron=60 ' cuantas negras enun minuto default
 Dim Shared As Double old_time_on=0,old_time_off=0
-Dim Shared As Integer jply=0, finplay=0, pasoZona1=0,pasoZona2=0
+Dim Shared As Integer jply=0, finplay=0
 'elpatron esla negra ej I=60ergo todo sera relativo  la negra
 ' 09-06-2021 agregue 0 en relDur para evitar cancelaciones pero ojo puede 
 ' tapar otros errores qu el tiempo se calcule com ocero y siga y 
@@ -97,3 +98,13 @@ Declare Function vol (dura As UByte, vel As UByte) As ubyte
 Declare sub noteoff( note As UByte, canal As UByte)
 Declare Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
 Dim Shared ligaglobal  as Integer=0
+'Relacion de nR indice de Roll, con nE semitono, para evitar calculos.
+Dim Shared As integer relnRnE(1 To 108) => { _  ' indice de Roll vs semitono
+1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12, _
+1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12, _
+1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12 }
+'12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1, _
+'12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1, _
+'12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1 }
+
+ 

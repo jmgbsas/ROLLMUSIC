@@ -40,7 +40,7 @@ Declare Sub borrarColumnasMarcadas()
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE ' etc
 
 Dim Shared RTA As String 
-Dim Shared As Integer nro=0, acumulado=0, controlEdit =0,octavaEdicion=0
+Dim Shared As Integer nro=0, acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoZona2=0, pasoNota=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0
 Dim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t

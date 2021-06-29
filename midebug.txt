@@ -1,54 +1,54 @@
 version para ceros!!!!!! 
-06-27-202101:33:56
+06-28-202116:51:04
 arg desde  0
 arg hasta  0
 dires   
 recibi 
 common  0
-ABRIR MAXPOS ,NB,NA  82      1             116
-ABRIR MAXPOS ,NB,NA  82      1             116
-LECTURA DUR:  3 EN LA CARGA j:  1 i:  64 figura  I 
-Valdur i  3 64 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  1 DUR:  3 GRUPO:  1 figura  I 
+ABRIR MAXPOS ,NB,NA  44      1             116
+ABRIR MAXPOS ,NB,NA  44      1             116
+LECTURA DUR:  5 EN LA CARGA j:  1 i:  64 figura  F 
+Valdur i  5 64 grupo  1 figura  F 
+i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
+peso de mayor encontrado valdur  5dur  5 grupo  1
+ABRIR IN:  J:  1 DUR:  5 GRUPO:  1 figura  F 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  1
 J=1 comienzo calcCompas 
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  1 figura:  I 
-acumulado / k / PEsoDur  2500000           3             2500000 figura  I 
+1-calcCompas 3, DUR:  5 j:  1 figura:  F 
+acumulado / k / PEsoDur  625000            5             625000 figura  F 
 j que hace cancelar  1
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  1 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  2 i:  62 figura  I 
-Valdur i  3 62 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  2 DUR:  3 GRUPO:  1 figura  I 
+ABRIR OUT: J:  1 compas(j):  0 figura  F 
+LECTURA DUR:  6 EN LA CARGA j:  2 i:  62 figura  E 
+Valdur i  6 62 grupo  1 figura  E 
+i=NA i:  116 NA:  116 Mayor  312500 grupo: 1
+peso de mayor encontrado valdur  6dur  6 grupo  1
+ABRIR IN:  J:  2 DUR:  6 GRUPO:  1 figura  E 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  2
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  2 figura:  I 
-acumulado / k / PEsoDur  5000000           3             2500000 figura  I 
+1-calcCompas 3, DUR:  6 j:  2 figura:  E 
+acumulado / k / PEsoDur  937500            6             312500 figura  E 
 j que hace cancelar  2
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  2 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  3 i:  60 figura  I 
-Valdur i  3 60 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  3 DUR:  3 GRUPO:  1 figura  I 
+ABRIR OUT: J:  2 compas(j):  0 figura  E 
+LECTURA DUR:  6 EN LA CARGA j:  3 i:  62 figura  E 
+Valdur i  6 62 grupo  1 figura  E 
+i=NA i:  116 NA:  116 Mayor  312500 grupo: 1
+peso de mayor encontrado valdur  6dur  6 grupo  1
+ABRIR IN:  J:  3 DUR:  6 GRUPO:  1 figura  E 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  3
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  3 figura:  I 
-acumulado / k / PEsoDur  7500000           3             2500000 figura  I 
+1-calcCompas 3, DUR:  6 j:  3 figura:  E 
+acumulado / k / PEsoDur  1250000           6             312500 figura  E 
 j que hace cancelar  3
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  3 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  4 i:  59 figura  I 
-Valdur i  3 59 grupo  1 figura  I 
+ABRIR OUT: J:  3 compas(j):  0 figura  E 
+LECTURA DUR:  3 EN LA CARGA j:  4 i:  60 figura  I 
+Valdur i  3 60 grupo  1 figura  I 
 i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
 peso de mayor encontrado valdur  3dur  3 grupo  1
 ABRIR IN:  J:  4 DUR:  3 GRUPO:  1 figura  I 
@@ -56,13 +56,12 @@ ABRIR IN:  J:  4 DUR:  3 GRUPO:  1 figura  I
 1-calcCompas j o posn RECIBIDA:  4
 1-calcCompas 2
 1-calcCompas 3, DUR:  3 j:  4 figura:  I 
-acumulado / k / PEsoDur  10000000          3             2500000 figura  I 
-acumulado  10000000
-Compas(j) , j:  4  4
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  4 compas(j):  4 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  5 i:  57 figura  I 
-Valdur i  3 57 grupo  1 figura  I 
+acumulado / k / PEsoDur  3750000           3             2500000 figura  I 
+j que hace cancelar  4
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
+ABRIR OUT: J:  4 compas(j):  0 figura  I 
+LECTURA DUR:  3 EN LA CARGA j:  5 i:  59 figura  I 
+Valdur i  3 59 grupo  1 figura  I 
 i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
 peso de mayor encontrado valdur  3dur  3 grupo  1
 ABRIR IN:  J:  5 DUR:  3 GRUPO:  1 figura  I 
@@ -70,12 +69,14 @@ ABRIR IN:  J:  5 DUR:  3 GRUPO:  1 figura  I
 1-calcCompas j o posn RECIBIDA:  5
 1-calcCompas 2
 1-calcCompas 3, DUR:  3 j:  5 figura:  I 
-acumulado / k / PEsoDur  2500000           3             2500000 figura  I 
+acumulado / k / PEsoDur  6250000           3             2500000 figura  I 
 j que hace cancelar  5
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
 ABRIR OUT: J:  5 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  6 i:  55 figura  I 
-Valdur i  3 55 grupo  1 figura  I 
+LECTURA DUR:  3 EN LA CARGA j:  6 i:  57 figura  I 
+Valdur i  3 57 grupo  1 figura  I 
+LECTURA DUR:  4 EN LA CARGA j:  6 i:  60 figura  L 
+Valdur i  4 60 grupo  1 figura  L 
 i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
 peso de mayor encontrado valdur  3dur  3 grupo  1
 ABRIR IN:  J:  6 DUR:  3 GRUPO:  1 figura  I 
@@ -83,39 +84,39 @@ ABRIR IN:  J:  6 DUR:  3 GRUPO:  1 figura  I
 1-calcCompas j o posn RECIBIDA:  6
 1-calcCompas 2
 1-calcCompas 3, DUR:  3 j:  6 figura:  I 
-acumulado / k / PEsoDur  5000000           3             2500000 figura  I 
+acumulado / k / PEsoDur  8750000           3             2500000 figura  I 
 j que hace cancelar  6
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
 ABRIR OUT: J:  6 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  7 i:  53 figura  I 
-Valdur i  3 53 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  7 DUR:  3 GRUPO:  1 figura  I 
+LECTURA DUR:  94 EN LA CARGA j:  7 i:  55 figura  L+
+Valdur i  94 55 grupo  3 figura  L+
+i=NA i:  116 NA:  116 Mayor  1250000 grupo: 3
+peso de mayor encontrado valdur  94dur  94 grupo  3
+ABRIR IN:  J:  7 DUR:  94 GRUPO:  3 figura  L+
 =========================================================
 1-calcCompas j o posn RECIBIDA:  7
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  7 figura:  I 
-acumulado / k / PEsoDur  7500000           3             2500000 figura  I 
-j que hace cancelar  7
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  7 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  8 i:  64 figura  I 
-Valdur i  3 64 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  8 DUR:  3 GRUPO:  1 figura  I 
+1-calcCompas 3, DUR:  94 j:  7 figura:  L+
+acumulado / k / PEsoDur  10000000          94            1250000 figura  L+
+acumulado  10000000
+Compas(j) , j:  7  7
+1-calcCompas 3.1 exit sub acumulado=0  0
+ABRIR OUT: J:  7 compas(j):  7 figura  L+
+LECTURA DUR:  4 EN LA CARGA j:  8 i:  55 figura  L 
+Valdur i  4 55 grupo  1 figura  L 
+i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
+peso de mayor encontrado valdur  4dur  4 grupo  1
+ABRIR IN:  J:  8 DUR:  4 GRUPO:  1 figura  L 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  8
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  8 figura:  I 
-acumulado / k / PEsoDur  10000000          3             2500000 figura  I 
-acumulado  10000000
-Compas(j) , j:  8  8
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  8 compas(j):  8 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  9 i:  62 figura  I 
-Valdur i  3 62 grupo  1 figura  I 
+1-calcCompas 3, DUR:  4 j:  8 figura:  L 
+acumulado / k / PEsoDur  1250000           4             1250000 figura  L 
+j que hace cancelar  8
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
+ABRIR OUT: J:  8 compas(j):  0 figura  L 
+LECTURA DUR:  3 EN LA CARGA j:  9 i:  64 figura  I 
+Valdur i  3 64 grupo  1 figura  I 
 i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
 peso de mayor encontrado valdur  3dur  3 grupo  1
 ABRIR IN:  J:  9 DUR:  3 GRUPO:  1 figura  I 
@@ -123,104 +124,114 @@ ABRIR IN:  J:  9 DUR:  3 GRUPO:  1 figura  I
 1-calcCompas j o posn RECIBIDA:  9
 1-calcCompas 2
 1-calcCompas 3, DUR:  3 j:  9 figura:  I 
-acumulado / k / PEsoDur  2500000           3             2500000 figura  I 
+acumulado / k / PEsoDur  3750000           3             2500000 figura  I 
 j que hace cancelar  9
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
 ABRIR OUT: J:  9 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  10 i:  60 figura  I 
-Valdur i  3 60 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  10 DUR:  3 GRUPO:  1 figura  I 
+LECTURA DUR:  94 EN LA CARGA j:  10 i:  57 figura  L+
+Valdur i  94 57 grupo  3 figura  L+
+LECTURA DUR:  4 EN LA CARGA j:  10 i:  62 figura  L 
+Valdur i  4 62 grupo  1 figura  L 
+i=NA i:  116 NA:  116 Mayor  1250000 grupo: 3
+peso de mayor encontrado valdur  94dur  94 grupo  3
+ABRIR IN:  J:  10 DUR:  94 GRUPO:  3 figura  L+
 =========================================================
 1-calcCompas j o posn RECIBIDA:  10
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  10 figura:  I 
-acumulado / k / PEsoDur  5000000           3             2500000 figura  I 
+1-calcCompas 3, DUR:  94 j:  10 figura:  L+
+acumulado / k / PEsoDur  5000000           94            1250000 figura  L+
 j que hace cancelar  10
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  10 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  11 i:  59 figura  I 
-Valdur i  3 59 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  11 DUR:  3 GRUPO:  1 figura  I 
+ABRIR OUT: J:  10 compas(j):  0 figura  L+
+LECTURA DUR:  92 EN LA CARGA j:  11 i:  57 figura  P+
+Valdur i  92 57 grupo  3 figura  P+
+LECTURA DUR:  3 EN LA CARGA j:  11 i:  60 figura  I 
+Valdur i  3 60 grupo  1 figura  I 
+i=NA i:  116 NA:  116 Mayor  5000000 grupo: 3
+peso de mayor encontrado valdur  92dur  92 grupo  3
+ABRIR IN:  J:  11 DUR:  92 GRUPO:  3 figura  P+
 =========================================================
 1-calcCompas j o posn RECIBIDA:  11
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  11 figura:  I 
-acumulado / k / PEsoDur  7500000           3             2500000 figura  I 
-j que hace cancelar  11
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  11 compas(j):  0 figura  I 
-LECTURA DUR:  4 EN LA CARGA j:  12 i:  62 figura  L 
-Valdur i  4 62 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  12 DUR:  4 GRUPO:  1 figura  L 
+1-calcCompas 3, DUR:  92 j:  11 figura:  P+
+acumulado / k / PEsoDur  10000000          92            5000000 figura  P+
+acumulado  10000000
+Compas(j) , j:  11  11
+1-calcCompas 3.1 exit sub acumulado=0  0
+ABRIR OUT: J:  11 compas(j):  11 figura  P+
+LECTURA DUR:  1 EN LA CARGA j:  12 i:  57 figura  O 
+Valdur i  1 57 grupo  1 figura  O 
+i=NA i:  116 NA:  116 Mayor  10000000 grupo: 1
+peso de mayor encontrado valdur  1dur  1 grupo  1
+ABRIR IN:  J:  12 DUR:  1 GRUPO:  1 figura  O 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  12
 1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  12 figura:  L 
-acumulado / k / PEsoDur  8750000           4             1250000 figura  L 
-j que hace cancelar  12
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  12 compas(j):  0 figura  L 
-LECTURA DUR:  4 EN LA CARGA j:  13 i:  60 figura  L 
-Valdur i  4 60 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  13 DUR:  4 GRUPO:  1 figura  L 
+1-calcCompas 3, DUR:  1 j:  12 figura:  O 
+acumulado / k / PEsoDur  10000000          1             10000000 figura  O 
+acumulado  10000000
+Compas(j) , j:  12  12
+1-calcCompas 3.1 exit sub acumulado=0  0
+ABRIR OUT: J:  12 compas(j):  12 figura  O 
+LECTURA DUR:  4 EN LA CARGA j:  13 i:  55 figura  L 
+Valdur i  4 55 grupo  1 figura  L 
+LECTURA DUR:  5 EN LA CARGA j:  13 i:  59 figura  F 
+Valdur i  5 59 grupo  1 figura  F 
+LECTURA DUR:  3 EN LA CARGA j:  13 i:  62 figura  I 
+Valdur i  3 62 grupo  1 figura  I 
+i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
+peso de mayor encontrado valdur  3dur  3 grupo  1
+ABRIR IN:  J:  13 DUR:  3 GRUPO:  1 figura  I 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  13
 1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  13 figura:  L 
-acumulado / k / PEsoDur  10000000          4             1250000 figura  L 
-acumulado  10000000
-Compas(j) , j:  13  13
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  13 compas(j):  13 figura  L 
-LECTURA DUR:  4 EN LA CARGA j:  14 i:  64 figura  L 
-Valdur i  4 64 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  14 DUR:  4 GRUPO:  1 figura  L 
+1-calcCompas 3, DUR:  3 j:  13 figura:  I 
+acumulado / k / PEsoDur  2500000           3             2500000 figura  I 
+j que hace cancelar  13
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
+ABRIR OUT: J:  13 compas(j):  0 figura  I 
+LECTURA DUR:  3 EN LA CARGA j:  14 i:  60 figura  I 
+Valdur i  3 60 grupo  1 figura  I 
+i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
+peso de mayor encontrado valdur  3dur  3 grupo  1
+ABRIR IN:  J:  14 DUR:  3 GRUPO:  1 figura  I 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  14
 1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  14 figura:  L 
-acumulado / k / PEsoDur  1250000           4             1250000 figura  L 
+1-calcCompas 3, DUR:  3 j:  14 figura:  I 
+acumulado / k / PEsoDur  5000000           3             2500000 figura  I 
 j que hace cancelar  14
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  14 compas(j):  0 figura  L 
-LECTURA DUR:  4 EN LA CARGA j:  15 i:  59 figura  L 
-Valdur i  4 59 grupo  1 figura  L 
-i=NA i:  116 NA:  116 Mayor  1250000 grupo: 1
-peso de mayor encontrado valdur  4dur  4 grupo  1
-ABRIR IN:  J:  15 DUR:  4 GRUPO:  1 figura  L 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  15
-1-calcCompas 2
-1-calcCompas 3, DUR:  4 j:  15 figura:  L 
-acumulado / k / PEsoDur  2500000           4             1250000 figura  L 
-j que hace cancelar  15
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  15 compas(j):  0 figura  L 
-LECTURA DUR:  3 EN LA CARGA j:  16 i:  59 figura  I 
+ABRIR OUT: J:  14 compas(j):  0 figura  I 
+LECTURA DUR:  3 EN LA CARGA j:  15 i:  59 figura  I 
 Valdur i  3 59 grupo  1 figura  I 
 i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
 peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  16 DUR:  3 GRUPO:  1 figura  I 
+ABRIR IN:  J:  15 DUR:  3 GRUPO:  1 figura  I 
+=========================================================
+1-calcCompas j o posn RECIBIDA:  15
+1-calcCompas 2
+1-calcCompas 3, DUR:  3 j:  15 figura:  I 
+acumulado / k / PEsoDur  7500000           3             2500000 figura  I 
+j que hace cancelar  15
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
+ABRIR OUT: J:  15 compas(j):  0 figura  I 
+LECTURA DUR:  93 EN LA CARGA j:  16 i:  59 figura  I+
+Valdur i  93 59 grupo  3 figura  I+
+i=NA i:  116 NA:  116 Mayor  2500000 grupo: 3
+peso de mayor encontrado valdur  93dur  93 grupo  3
+ABRIR IN:  J:  16 DUR:  93 GRUPO:  3 figura  I+
 =========================================================
 1-calcCompas j o posn RECIBIDA:  16
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  16 figura:  I 
-acumulado / k / PEsoDur  5000000           3             2500000 figura  I 
-j que hace cancelar  16
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  16 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  17 i:  57 figura  I 
-Valdur i  3 57 grupo  1 figura  I 
+1-calcCompas 3, DUR:  93 j:  16 figura:  I+
+acumulado / k / PEsoDur  10000000          93            2500000 figura  I+
+acumulado  10000000
+Compas(j) , j:  16  16
+1-calcCompas 3.1 exit sub acumulado=0  0
+ABRIR OUT: J:  16 compas(j):  16 figura  I+
+LECTURA DUR:  3 EN LA CARGA j:  17 i:  59 figura  I 
+Valdur i  3 59 grupo  1 figura  I 
 i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
 peso de mayor encontrado valdur  3dur  3 grupo  1
 ABRIR IN:  J:  17 DUR:  3 GRUPO:  1 figura  I 
@@ -228,63 +239,71 @@ ABRIR IN:  J:  17 DUR:  3 GRUPO:  1 figura  I
 1-calcCompas j o posn RECIBIDA:  17
 1-calcCompas 2
 1-calcCompas 3, DUR:  3 j:  17 figura:  I 
-acumulado / k / PEsoDur  7500000           3             2500000 figura  I 
+acumulado / k / PEsoDur  2500000           3             2500000 figura  I 
 j que hace cancelar  17
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
 ABRIR OUT: J:  17 compas(j):  0 figura  I 
-LECTURA DUR:  5 EN LA CARGA j:  18 i:  62 figura  F 
-Valdur i  5 62 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  18 DUR:  5 GRUPO:  1 figura  F 
+LECTURA DUR:  2 EN LA CARGA j:  18 i:  55 figura  P 
+Valdur i  2 55 grupo  1 figura  P 
+i=NA i:  116 NA:  116 Mayor  5000000 grupo: 1
+peso de mayor encontrado valdur  2dur  2 grupo  1
+ABRIR IN:  J:  18 DUR:  2 GRUPO:  1 figura  P 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  18
 1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  18 figura:  F 
-acumulado / k / PEsoDur  8125000           5             625000 figura  F 
+1-calcCompas 3, DUR:  2 j:  18 figura:  P 
+acumulado / k / PEsoDur  7500000           2             5000000 figura  P 
 j que hace cancelar  18
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  18 compas(j):  0 figura  F 
-LECTURA DUR:  112 EN LA CARGA j:  19 i:  60 figura L*+
-Valdur i  112 60 grupo  3 figura L*+
-i=NA i:  116 NA:  116 Mayor  1875000 grupo: 3
-peso de mayor encontrado valdur  112dur  112 grupo  3
-ABRIR IN:  J:  19 DUR:  112 GRUPO:  3 figura L*+
+ABRIR OUT: J:  18 compas(j):  0 figura  P 
+LECTURA DUR:  93 EN LA CARGA j:  19 i:  64 figura  I+
+Valdur i  93 64 grupo  3 figura  I+
+i=NA i:  116 NA:  116 Mayor  2500000 grupo: 3
+peso de mayor encontrado valdur  93dur  93 grupo  3
+ABRIR IN:  J:  19 DUR:  93 GRUPO:  3 figura  I+
 =========================================================
 1-calcCompas j o posn RECIBIDA:  19
 1-calcCompas 2
-1-calcCompas 3, DUR:  112 j:  19 figura: L*+
-acumulado / k / PEsoDur  10000000          112           1875000 figura L*+
+1-calcCompas 3, DUR:  93 j:  19 figura:  I+
+acumulado / k / PEsoDur  10000000          93            2500000 figura  I+
 acumulado  10000000
 Compas(j) , j:  19  19
 1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  19 compas(j):  19 figura L*+
-LECTURA DUR:  5 EN LA CARGA j:  20 i:  60 figura  F 
-Valdur i  5 60 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  20 DUR:  5 GRUPO:  1 figura  F 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  20
-1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  20 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
-j que hace cancelar  20
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  20 compas(j):  0 figura  F 
-LECTURA DUR:  3 EN LA CARGA j:  21 i:  64 figura  I 
+ABRIR OUT: J:  19 compas(j):  19 figura  I+
+LECTURA DUR:  3 EN LA CARGA j:  20 i:  64 figura  I 
 Valdur i  3 64 grupo  1 figura  I 
 i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
 peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  21 DUR:  3 GRUPO:  1 figura  I 
+ABRIR IN:  J:  20 DUR:  3 GRUPO:  1 figura  I 
+=========================================================
+1-calcCompas j o posn RECIBIDA:  20
+1-calcCompas 2
+1-calcCompas 3, DUR:  3 j:  20 figura:  I 
+acumulado / k / PEsoDur  2500000           3             2500000 figura  I 
+j que hace cancelar  20
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
+ABRIR OUT: J:  20 compas(j):  0 figura  I 
+LECTURA DUR:  93 EN LA CARGA j:  21 i:  55 figura  I+
+Valdur i  93 55 grupo  3 figura  I+
+LECTURA DUR:  3 EN LA CARGA j:  21 i:  60 figura  I 
+Valdur i  3 60 grupo  1 figura  I 
+LECTURA DUR:  3 EN LA CARGA j:  21 i:  62 figura  I 
+Valdur i  3 62 grupo  1 figura  I 
+i=NA i:  116 NA:  116 Mayor  2500000 grupo: 3
+peso de mayor encontrado valdur  93dur  93 grupo  3
+ABRIR IN:  J:  21 DUR:  93 GRUPO:  3 figura  I+
 =========================================================
 1-calcCompas j o posn RECIBIDA:  21
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  21 figura:  I 
-acumulado / k / PEsoDur  3125000           3             2500000 figura  I 
+1-calcCompas 3, DUR:  93 j:  21 figura:  I+
+acumulado / k / PEsoDur  5000000           93            2500000 figura  I+
 j que hace cancelar  21
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  21 compas(j):  0 figura  I 
+ABRIR OUT: J:  21 compas(j):  0 figura  I+
+LECTURA DUR:  3 EN LA CARGA j:  22 i:  55 figura  I 
+Valdur i  3 55 grupo  1 figura  I 
+LECTURA DUR:  3 EN LA CARGA j:  22 i:  60 figura  I 
+Valdur i  3 60 grupo  1 figura  I 
 LECTURA DUR:  3 EN LA CARGA j:  22 i:  62 figura  I 
 Valdur i  3 62 grupo  1 figura  I 
 i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
@@ -294,12 +313,12 @@ ABRIR IN:  J:  22 DUR:  3 GRUPO:  1 figura  I
 1-calcCompas j o posn RECIBIDA:  22
 1-calcCompas 2
 1-calcCompas 3, DUR:  3 j:  22 figura:  I 
-acumulado / k / PEsoDur  5625000           3             2500000 figura  I 
+acumulado / k / PEsoDur  7500000           3             2500000 figura  I 
 j que hace cancelar  22
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
 ABRIR OUT: J:  22 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  23 i:  60 figura  I 
-Valdur i  3 60 grupo  1 figura  I 
+LECTURA DUR:  3 EN LA CARGA j:  23 i:  64 figura  I 
+Valdur i  3 64 grupo  1 figura  I 
 i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
 peso de mayor encontrado valdur  3dur  3 grupo  1
 ABRIR IN:  J:  23 DUR:  3 GRUPO:  1 figura  I 
@@ -307,762 +326,201 @@ ABRIR IN:  J:  23 DUR:  3 GRUPO:  1 figura  I
 1-calcCompas j o posn RECIBIDA:  23
 1-calcCompas 2
 1-calcCompas 3, DUR:  3 j:  23 figura:  I 
-acumulado / k / PEsoDur  8125000           3             2500000 figura  I 
-j que hace cancelar  23
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  23 compas(j):  0 figura  I 
-LECTURA DUR:  112 EN LA CARGA j:  24 i:  59 figura L*+
-Valdur i  112 59 grupo  3 figura L*+
-i=NA i:  116 NA:  116 Mayor  1875000 grupo: 3
-peso de mayor encontrado valdur  112dur  112 grupo  3
-ABRIR IN:  J:  24 DUR:  112 GRUPO:  3 figura L*+
+acumulado / k / PEsoDur  10000000          3             2500000 figura  I 
+acumulado  10000000
+Compas(j) , j:  23  23
+1-calcCompas 3.1 exit sub acumulado=0  0
+ABRIR OUT: J:  23 compas(j):  23 figura  I 
+LECTURA DUR:  3 EN LA CARGA j:  24 i:  57 figura  I 
+Valdur i  3 57 grupo  1 figura  I 
+i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
+peso de mayor encontrado valdur  3dur  3 grupo  1
+ABRIR IN:  J:  24 DUR:  3 GRUPO:  1 figura  I 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  24
 1-calcCompas 2
-1-calcCompas 3, DUR:  112 j:  24 figura: L*+
-acumulado / k / PEsoDur  10000000          112           1875000 figura L*+
-acumulado  10000000
-Compas(j) , j:  24  24
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  24 compas(j):  24 figura L*+
-LECTURA DUR:  5 EN LA CARGA j:  25 i:  59 figura  F 
-Valdur i  5 59 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  25 DUR:  5 GRUPO:  1 figura  F 
+1-calcCompas 3, DUR:  3 j:  24 figura:  I 
+acumulado / k / PEsoDur  2500000           3             2500000 figura  I 
+j que hace cancelar  24
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
+ABRIR OUT: J:  24 compas(j):  0 figura  I 
+LECTURA DUR:  3 EN LA CARGA j:  25 i:  54 figura  I 
+Valdur i  3 54 grupo  1 figura  I 
+i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
+peso de mayor encontrado valdur  3dur  3 grupo  1
+ABRIR IN:  J:  25 DUR:  3 GRUPO:  1 figura  I 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  25
 1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  25 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
+1-calcCompas 3, DUR:  3 j:  25 figura:  I 
+acumulado / k / PEsoDur  5000000           3             2500000 figura  I 
 j que hace cancelar  25
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  25 compas(j):  0 figura  F 
-LECTURA DUR:  3 EN LA CARGA j:  26 i:  57 figura  I 
-Valdur i  3 57 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  26 DUR:  3 GRUPO:  1 figura  I 
+ABRIR OUT: J:  25 compas(j):  0 figura  I 
+LECTURA DUR:  40 EN LA CARGA j:  26 i:  62 figura 3L 
+Valdur i  40 62 grupo  1 figura 3L 
+i=NA i:  116 NA:  116 Mayor  833333 grupo: 1
+peso de mayor encontrado valdur  40dur  40 grupo  1
+ABRIR IN:  J:  26 DUR:  40 GRUPO:  1 figura 3L 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  26
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  26 figura:  I 
-acumulado / k / PEsoDur  3125000           3             2500000 figura  I 
+1-calcCompas 3, DUR:  40 j:  26 figura: 3L 
+acumulado / k / PEsoDur  5833333           40            833333 figura 3L 
 j que hace cancelar  26
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  26 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  27 i:  64 figura  I 
-Valdur i  3 64 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  27 DUR:  3 GRUPO:  1 figura  I 
+ABRIR OUT: J:  26 compas(j):  0 figura 3L 
+LECTURA DUR:  40 EN LA CARGA j:  27 i:  62 figura 3L 
+Valdur i  40 62 grupo  1 figura 3L 
+i=NA i:  116 NA:  116 Mayor  833333 grupo: 1
+peso de mayor encontrado valdur  40dur  40 grupo  1
+ABRIR IN:  J:  27 DUR:  40 GRUPO:  1 figura 3L 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  27
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  27 figura:  I 
-acumulado / k / PEsoDur  5625000           3             2500000 figura  I 
+1-calcCompas 3, DUR:  40 j:  27 figura: 3L 
+acumulado / k / PEsoDur  6666666           40            833333 figura 3L 
 j que hace cancelar  27
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  27 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  28 i:  60 figura  I 
-Valdur i  3 60 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  28 DUR:  3 GRUPO:  1 figura  I 
+ABRIR OUT: J:  27 compas(j):  0 figura 3L 
+LECTURA DUR:  40 EN LA CARGA j:  28 i:  62 figura 3L 
+Valdur i  40 62 grupo  1 figura 3L 
+i=NA i:  116 NA:  116 Mayor  833333 grupo: 1
+peso de mayor encontrado valdur  40dur  40 grupo  1
+ABRIR IN:  J:  28 DUR:  40 GRUPO:  1 figura 3L 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  28
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  28 figura:  I 
-acumulado / k / PEsoDur  8125000           3             2500000 figura  I 
+1-calcCompas 3, DUR:  40 j:  28 figura: 3L 
+acumulado / k / PEsoDur  7499999           40            833333 figura 3L 
 j que hace cancelar  28
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  28 compas(j):  0 figura  I 
-LECTURA DUR:  112 EN LA CARGA j:  29 i:  57 figura L*+
-Valdur i  112 57 grupo  3 figura L*+
-i=NA i:  116 NA:  116 Mayor  1875000 grupo: 3
-peso de mayor encontrado valdur  112dur  112 grupo  3
-ABRIR IN:  J:  29 DUR:  112 GRUPO:  3 figura L*+
+ABRIR OUT: J:  28 compas(j):  0 figura 3L 
+LECTURA DUR:  40 EN LA CARGA j:  29 i:  55 figura 3L 
+Valdur i  40 55 grupo  1 figura 3L 
+i=NA i:  116 NA:  116 Mayor  833333 grupo: 1
+peso de mayor encontrado valdur  40dur  40 grupo  1
+ABRIR IN:  J:  29 DUR:  40 GRUPO:  1 figura 3L 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  29
 1-calcCompas 2
-1-calcCompas 3, DUR:  112 j:  29 figura: L*+
-acumulado / k / PEsoDur  10000000          112           1875000 figura L*+
-acumulado  10000000
-Compas(j) , j:  29  29
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  29 compas(j):  29 figura L*+
-LECTURA DUR:  5 EN LA CARGA j:  30 i:  57 figura  F 
-Valdur i  5 57 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  30 DUR:  5 GRUPO:  1 figura  F 
+1-calcCompas 3, DUR:  40 j:  29 figura: 3L 
+acumulado / k / PEsoDur  8333332           40            833333 figura 3L 
+j que hace cancelar  29
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
+ABRIR OUT: J:  29 compas(j):  0 figura 3L 
+LECTURA DUR:  40 EN LA CARGA j:  30 i:  55 figura 3L 
+Valdur i  40 55 grupo  1 figura 3L 
+i=NA i:  116 NA:  116 Mayor  833333 grupo: 1
+peso de mayor encontrado valdur  40dur  40 grupo  1
+ABRIR IN:  J:  30 DUR:  40 GRUPO:  1 figura 3L 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  30
 1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  30 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
+1-calcCompas 3, DUR:  40 j:  30 figura: 3L 
+acumulado / k / PEsoDur  9166665           40            833333 figura 3L 
 j que hace cancelar  30
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  30 compas(j):  0 figura  F 
-LECTURA DUR:  3 EN LA CARGA j:  31 i:  55 figura  I 
-Valdur i  3 55 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  31 DUR:  3 GRUPO:  1 figura  I 
+ABRIR OUT: J:  30 compas(j):  0 figura 3L 
+LECTURA DUR:  40 EN LA CARGA j:  31 i:  55 figura 3L 
+Valdur i  40 55 grupo  1 figura 3L 
+i=NA i:  116 NA:  116 Mayor  833333 grupo: 1
+peso de mayor encontrado valdur  40dur  40 grupo  1
+ABRIR IN:  J:  31 DUR:  40 GRUPO:  1 figura 3L 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  31
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  31 figura:  I 
-acumulado / k / PEsoDur  3125000           3             2500000 figura  I 
-j que hace cancelar  31
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  31 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  32 i:  64 figura  I 
-Valdur i  3 64 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  32 DUR:  3 GRUPO:  1 figura  I 
+1-calcCompas 3, DUR:  40 j:  31 figura: 3L 
+acumulado / k / PEsoDur  9999998           40            833333 figura 3L 
+acumulado  10000000
+Compas(j) , j:  31  31
+1-calcCompas 3.1 exit sub acumulado=0  0
+ABRIR OUT: J:  31 compas(j):  31 figura 3L 
+LECTURA DUR:  40 EN LA CARGA j:  32 i:  64 figura 3L 
+Valdur i  40 64 grupo  1 figura 3L 
+i=NA i:  116 NA:  116 Mayor  833333 grupo: 1
+peso de mayor encontrado valdur  40dur  40 grupo  1
+ABRIR IN:  J:  32 DUR:  40 GRUPO:  1 figura 3L 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  32
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  32 figura:  I 
-acumulado / k / PEsoDur  5625000           3             2500000 figura  I 
+1-calcCompas 3, DUR:  40 j:  32 figura: 3L 
+acumulado / k / PEsoDur  833333            40            833333 figura 3L 
 j que hace cancelar  32
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  32 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  33 i:  60 figura  I 
-Valdur i  3 60 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  33 DUR:  3 GRUPO:  1 figura  I 
+ABRIR OUT: J:  32 compas(j):  0 figura 3L 
+LECTURA DUR:  40 EN LA CARGA j:  33 i:  64 figura 3L 
+Valdur i  40 64 grupo  1 figura 3L 
+i=NA i:  116 NA:  116 Mayor  833333 grupo: 1
+peso de mayor encontrado valdur  40dur  40 grupo  1
+ABRIR IN:  J:  33 DUR:  40 GRUPO:  1 figura 3L 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  33
 1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  33 figura:  I 
-acumulado / k / PEsoDur  8125000           3             2500000 figura  I 
+1-calcCompas 3, DUR:  40 j:  33 figura: 3L 
+acumulado / k / PEsoDur  1666666           40            833333 figura 3L 
 j que hace cancelar  33
 1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  33 compas(j):  0 figura  I 
-LECTURA DUR:  112 EN LA CARGA j:  34 i:  57 figura L*+
-Valdur i  112 57 grupo  3 figura L*+
-i=NA i:  116 NA:  116 Mayor  1875000 grupo: 3
-peso de mayor encontrado valdur  112dur  112 grupo  3
-ABRIR IN:  J:  34 DUR:  112 GRUPO:  3 figura L*+
+ABRIR OUT: J:  33 compas(j):  0 figura 3L 
+LECTURA DUR:  40 EN LA CARGA j:  34 i:  64 figura 3L 
+Valdur i  40 64 grupo  1 figura 3L 
+i=NA i:  116 NA:  116 Mayor  833333 grupo: 1
+peso de mayor encontrado valdur  40dur  40 grupo  1
+ABRIR IN:  J:  34 DUR:  40 GRUPO:  1 figura 3L 
 =========================================================
 1-calcCompas j o posn RECIBIDA:  34
 1-calcCompas 2
-1-calcCompas 3, DUR:  112 j:  34 figura: L*+
-acumulado / k / PEsoDur  10000000          112           1875000 figura L*+
-acumulado  10000000
-Compas(j) , j:  34  34
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  34 compas(j):  34 figura L*+
-LECTURA DUR:  5 EN LA CARGA j:  35 i:  57 figura  F 
-Valdur i  5 57 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  35 DUR:  5 GRUPO:  1 figura  F 
+1-calcCompas 3, DUR:  40 j:  34 figura: 3L 
+acumulado / k / PEsoDur  2499999           40            833333 figura 3L 
+j que hace cancelar  34
+1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
+ABRIR OUT: J:  34 compas(j):  0 figura 3L 
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  35 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  35
-1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  35 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
-j que hace cancelar  35
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  35 compas(j):  0 figura  F 
-LECTURA DUR:  3 EN LA CARGA j:  36 i:  62 figura  I 
-Valdur i  3 62 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  36 DUR:  3 GRUPO:  1 figura  I 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  35 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  36 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  36
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  36 figura:  I 
-acumulado / k / PEsoDur  3125000           3             2500000 figura  I 
-j que hace cancelar  36
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  36 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  37 i:  60 figura  I 
-Valdur i  3 60 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  37 DUR:  3 GRUPO:  1 figura  I 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  36 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  37 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  37
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  37 figura:  I 
-acumulado / k / PEsoDur  5625000           3             2500000 figura  I 
-j que hace cancelar  37
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  37 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  38 i:  64 figura  I 
-Valdur i  3 64 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  38 DUR:  3 GRUPO:  1 figura  I 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  37 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  38 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  38
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  38 figura:  I 
-acumulado / k / PEsoDur  8125000           3             2500000 figura  I 
-j que hace cancelar  38
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  38 compas(j):  0 figura  I 
-LECTURA DUR:  112 EN LA CARGA j:  39 i:  57 figura L*+
-Valdur i  112 57 grupo  3 figura L*+
-i=NA i:  116 NA:  116 Mayor  1875000 grupo: 3
-peso de mayor encontrado valdur  112dur  112 grupo  3
-ABRIR IN:  J:  39 DUR:  112 GRUPO:  3 figura L*+
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  38 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  39 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  39
-1-calcCompas 2
-1-calcCompas 3, DUR:  112 j:  39 figura: L*+
-acumulado / k / PEsoDur  10000000          112           1875000 figura L*+
-acumulado  10000000
-Compas(j) , j:  39  39
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  39 compas(j):  39 figura L*+
-LECTURA DUR:  5 EN LA CARGA j:  40 i:  57 figura  F 
-Valdur i  5 57 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  40 DUR:  5 GRUPO:  1 figura  F 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  39 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  40 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  40
-1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  40 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
-j que hace cancelar  40
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  40 compas(j):  0 figura  F 
-LECTURA DUR:  3 EN LA CARGA j:  41 i:  55 figura  I 
-Valdur i  3 55 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  41 DUR:  3 GRUPO:  1 figura  I 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  40 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  41 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  41
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  41 figura:  I 
-acumulado / k / PEsoDur  3125000           3             2500000 figura  I 
-j que hace cancelar  41
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  41 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  42 i:  55 figura  I 
-Valdur i  3 55 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  42 DUR:  3 GRUPO:  1 figura  I 
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  41 compas(j):  0 figura    
+i=NA i:  116 NA:  116 Mayor  0 grupo: 1
+ABRIR IN:  J:  42 DUR:  0 GRUPO:  1 figura    
 =========================================================
 1-calcCompas j o posn RECIBIDA:  42
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  42 figura:  I 
-acumulado / k / PEsoDur  5625000           3             2500000 figura  I 
-j que hace cancelar  42
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  42 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  43 i:  55 figura  I 
-Valdur i  3 55 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  43 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  43
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  43 figura:  I 
-acumulado / k / PEsoDur  8125000           3             2500000 figura  I 
-j que hace cancelar  43
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  43 compas(j):  0 figura  I 
-LECTURA DUR:  112 EN LA CARGA j:  44 i:  64 figura L*+
-Valdur i  112 64 grupo  3 figura L*+
-i=NA i:  116 NA:  116 Mayor  1875000 grupo: 3
-peso de mayor encontrado valdur  112dur  112 grupo  3
-ABRIR IN:  J:  44 DUR:  112 GRUPO:  3 figura L*+
-=========================================================
-1-calcCompas j o posn RECIBIDA:  44
-1-calcCompas 2
-1-calcCompas 3, DUR:  112 j:  44 figura: L*+
-acumulado / k / PEsoDur  10000000          112           1875000 figura L*+
-acumulado  10000000
-Compas(j) , j:  44  44
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  44 compas(j):  44 figura L*+
-LECTURA DUR:  5 EN LA CARGA j:  45 i:  64 figura  F 
-Valdur i  5 64 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  45 DUR:  5 GRUPO:  1 figura  F 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  45
-1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  45 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
-j que hace cancelar  45
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  45 compas(j):  0 figura  F 
-LECTURA DUR:  3 EN LA CARGA j:  46 i:  64 figura  I 
-Valdur i  3 64 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  46 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  46
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  46 figura:  I 
-acumulado / k / PEsoDur  3125000           3             2500000 figura  I 
-j que hace cancelar  46
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  46 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  47 i:  64 figura  I 
-Valdur i  3 64 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  47 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  47
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  47 figura:  I 
-acumulado / k / PEsoDur  5625000           3             2500000 figura  I 
-j que hace cancelar  47
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  47 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  48 i:  57 figura  I 
-Valdur i  3 57 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  48 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  48
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  48 figura:  I 
-acumulado / k / PEsoDur  8125000           3             2500000 figura  I 
-j que hace cancelar  48
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  48 compas(j):  0 figura  I 
-LECTURA DUR:  112 EN LA CARGA j:  49 i:  59 figura L*+
-Valdur i  112 59 grupo  3 figura L*+
-i=NA i:  116 NA:  116 Mayor  1875000 grupo: 3
-peso de mayor encontrado valdur  112dur  112 grupo  3
-ABRIR IN:  J:  49 DUR:  112 GRUPO:  3 figura L*+
-=========================================================
-1-calcCompas j o posn RECIBIDA:  49
-1-calcCompas 2
-1-calcCompas 3, DUR:  112 j:  49 figura: L*+
-acumulado / k / PEsoDur  10000000          112           1875000 figura L*+
-acumulado  10000000
-Compas(j) , j:  49  49
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  49 compas(j):  49 figura L*+
-LECTURA DUR:  5 EN LA CARGA j:  50 i:  59 figura  F 
-Valdur i  5 59 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  50 DUR:  5 GRUPO:  1 figura  F 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  50
-1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  50 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
-j que hace cancelar  50
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  50 compas(j):  0 figura  F 
-LECTURA DUR:  3 EN LA CARGA j:  51 i:  60 figura  I 
-Valdur i  3 60 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  51 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  51
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  51 figura:  I 
-acumulado / k / PEsoDur  3125000           3             2500000 figura  I 
-j que hace cancelar  51
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  51 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  52 i:  62 figura  I 
-Valdur i  3 62 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  52 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  52
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  52 figura:  I 
-acumulado / k / PEsoDur  5625000           3             2500000 figura  I 
-j que hace cancelar  52
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  52 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  53 i:  64 figura  I 
-Valdur i  3 64 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  53 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  53
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  53 figura:  I 
-acumulado / k / PEsoDur  8125000           3             2500000 figura  I 
-j que hace cancelar  53
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  53 compas(j):  0 figura  I 
-LECTURA DUR:  112 EN LA CARGA j:  54 i:  55 figura L*+
-Valdur i  112 55 grupo  3 figura L*+
-i=NA i:  116 NA:  116 Mayor  1875000 grupo: 3
-peso de mayor encontrado valdur  112dur  112 grupo  3
-ABRIR IN:  J:  54 DUR:  112 GRUPO:  3 figura L*+
-=========================================================
-1-calcCompas j o posn RECIBIDA:  54
-1-calcCompas 2
-1-calcCompas 3, DUR:  112 j:  54 figura: L*+
-acumulado / k / PEsoDur  10000000          112           1875000 figura L*+
-acumulado  10000000
-Compas(j) , j:  54  54
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  54 compas(j):  54 figura L*+
-LECTURA DUR:  5 EN LA CARGA j:  55 i:  55 figura  F 
-Valdur i  5 55 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  55 DUR:  5 GRUPO:  1 figura  F 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  55
-1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  55 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
-j que hace cancelar  55
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  55 compas(j):  0 figura  F 
-LECTURA DUR:  3 EN LA CARGA j:  56 i:  53 figura  I 
-Valdur i  3 53 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  56 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  56
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  56 figura:  I 
-acumulado / k / PEsoDur  3125000           3             2500000 figura  I 
-j que hace cancelar  56
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  56 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  57 i:  57 figura  I 
-Valdur i  3 57 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  57 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  57
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  57 figura:  I 
-acumulado / k / PEsoDur  5625000           3             2500000 figura  I 
-j que hace cancelar  57
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  57 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  58 i:  62 figura  I 
-Valdur i  3 62 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  58 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  58
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  58 figura:  I 
-acumulado / k / PEsoDur  8125000           3             2500000 figura  I 
-j que hace cancelar  58
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  58 compas(j):  0 figura  I 
-LECTURA DUR:  112 EN LA CARGA j:  59 i:  59 figura L*+
-Valdur i  112 59 grupo  3 figura L*+
-i=NA i:  116 NA:  116 Mayor  1875000 grupo: 3
-peso de mayor encontrado valdur  112dur  112 grupo  3
-ABRIR IN:  J:  59 DUR:  112 GRUPO:  3 figura L*+
-=========================================================
-1-calcCompas j o posn RECIBIDA:  59
-1-calcCompas 2
-1-calcCompas 3, DUR:  112 j:  59 figura: L*+
-acumulado / k / PEsoDur  10000000          112           1875000 figura L*+
-acumulado  10000000
-Compas(j) , j:  59  59
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  59 compas(j):  59 figura L*+
-LECTURA DUR:  5 EN LA CARGA j:  60 i:  59 figura  F 
-Valdur i  5 59 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  60 DUR:  5 GRUPO:  1 figura  F 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  60
-1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  60 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
-j que hace cancelar  60
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  60 compas(j):  0 figura  F 
-LECTURA DUR:  3 EN LA CARGA j:  61 i:  55 figura  I 
-Valdur i  3 55 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  61 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  61
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  61 figura:  I 
-acumulado / k / PEsoDur  3125000           3             2500000 figura  I 
-j que hace cancelar  61
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  61 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  62 i:  64 figura  I 
-Valdur i  3 64 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  62 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  62
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  62 figura:  I 
-acumulado / k / PEsoDur  5625000           3             2500000 figura  I 
-j que hace cancelar  62
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  62 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  63 i:  57 figura  I 
-Valdur i  3 57 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  63 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  63
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  63 figura:  I 
-acumulado / k / PEsoDur  8125000           3             2500000 figura  I 
-j que hace cancelar  63
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  63 compas(j):  0 figura  I 
-LECTURA DUR:  112 EN LA CARGA j:  64 i:  53 figura L*+
-Valdur i  112 53 grupo  3 figura L*+
-i=NA i:  116 NA:  116 Mayor  1875000 grupo: 3
-peso de mayor encontrado valdur  112dur  112 grupo  3
-ABRIR IN:  J:  64 DUR:  112 GRUPO:  3 figura L*+
-=========================================================
-1-calcCompas j o posn RECIBIDA:  64
-1-calcCompas 2
-1-calcCompas 3, DUR:  112 j:  64 figura: L*+
-acumulado / k / PEsoDur  10000000          112           1875000 figura L*+
-acumulado  10000000
-Compas(j) , j:  64  64
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  64 compas(j):  64 figura L*+
-LECTURA DUR:  5 EN LA CARGA j:  65 i:  53 figura  F 
-Valdur i  5 53 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  65 DUR:  5 GRUPO:  1 figura  F 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  65
-1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  65 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
-j que hace cancelar  65
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  65 compas(j):  0 figura  F 
-LECTURA DUR:  3 EN LA CARGA j:  66 i:  62 figura  I 
-Valdur i  3 62 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  66 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  66
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  66 figura:  I 
-acumulado / k / PEsoDur  3125000           3             2500000 figura  I 
-j que hace cancelar  66
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  66 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  67 i:  59 figura  I 
-Valdur i  3 59 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  67 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  67
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  67 figura:  I 
-acumulado / k / PEsoDur  5625000           3             2500000 figura  I 
-j que hace cancelar  67
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  67 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  68 i:  55 figura  I 
-Valdur i  3 55 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  68 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  68
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  68 figura:  I 
-acumulado / k / PEsoDur  8125000           3             2500000 figura  I 
-j que hace cancelar  68
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  68 compas(j):  0 figura  I 
-LECTURA DUR:  112 EN LA CARGA j:  69 i:  62 figura L*+
-Valdur i  112 62 grupo  3 figura L*+
-i=NA i:  116 NA:  116 Mayor  1875000 grupo: 3
-peso de mayor encontrado valdur  112dur  112 grupo  3
-ABRIR IN:  J:  69 DUR:  112 GRUPO:  3 figura L*+
-=========================================================
-1-calcCompas j o posn RECIBIDA:  69
-1-calcCompas 2
-1-calcCompas 3, DUR:  112 j:  69 figura: L*+
-acumulado / k / PEsoDur  10000000          112           1875000 figura L*+
-acumulado  10000000
-Compas(j) , j:  69  69
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  69 compas(j):  69 figura L*+
-LECTURA DUR:  5 EN LA CARGA j:  70 i:  62 figura  F 
-Valdur i  5 62 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  70 DUR:  5 GRUPO:  1 figura  F 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  70
-1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  70 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
-j que hace cancelar  70
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  70 compas(j):  0 figura  F 
-LECTURA DUR:  3 EN LA CARGA j:  71 i:  60 figura  I 
-Valdur i  3 60 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  71 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  71
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  71 figura:  I 
-acumulado / k / PEsoDur  3125000           3             2500000 figura  I 
-j que hace cancelar  71
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  71 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  72 i:  59 figura  I 
-Valdur i  3 59 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  72 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  72
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  72 figura:  I 
-acumulado / k / PEsoDur  5625000           3             2500000 figura  I 
-j que hace cancelar  72
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  72 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  73 i:  57 figura  I 
-Valdur i  3 57 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  73 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  73
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  73 figura:  I 
-acumulado / k / PEsoDur  8125000           3             2500000 figura  I 
-j que hace cancelar  73
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  73 compas(j):  0 figura  I 
-LECTURA DUR:  112 EN LA CARGA j:  74 i:  53 figura L*+
-Valdur i  112 53 grupo  3 figura L*+
-i=NA i:  116 NA:  116 Mayor  1875000 grupo: 3
-peso de mayor encontrado valdur  112dur  112 grupo  3
-ABRIR IN:  J:  74 DUR:  112 GRUPO:  3 figura L*+
-=========================================================
-1-calcCompas j o posn RECIBIDA:  74
-1-calcCompas 2
-1-calcCompas 3, DUR:  112 j:  74 figura: L*+
-acumulado / k / PEsoDur  10000000          112           1875000 figura L*+
-acumulado  10000000
-Compas(j) , j:  74  74
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  74 compas(j):  74 figura L*+
-LECTURA DUR:  5 EN LA CARGA j:  75 i:  53 figura  F 
-Valdur i  5 53 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  75 DUR:  5 GRUPO:  1 figura  F 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  75
-1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  75 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
-j que hace cancelar  75
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  75 compas(j):  0 figura  F 
-LECTURA DUR:  3 EN LA CARGA j:  76 i:  57 figura  I 
-Valdur i  3 57 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  76 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  76
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  76 figura:  I 
-acumulado / k / PEsoDur  3125000           3             2500000 figura  I 
-j que hace cancelar  76
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  76 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  77 i:  64 figura  I 
-Valdur i  3 64 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  77 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  77
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  77 figura:  I 
-acumulado / k / PEsoDur  5625000           3             2500000 figura  I 
-j que hace cancelar  77
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  77 compas(j):  0 figura  I 
-LECTURA DUR:  3 EN LA CARGA j:  78 i:  60 figura  I 
-Valdur i  3 60 grupo  1 figura  I 
-i=NA i:  116 NA:  116 Mayor  2500000 grupo: 1
-peso de mayor encontrado valdur  3dur  3 grupo  1
-ABRIR IN:  J:  78 DUR:  3 GRUPO:  1 figura  I 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  78
-1-calcCompas 2
-1-calcCompas 3, DUR:  3 j:  78 figura:  I 
-acumulado / k / PEsoDur  8125000           3             2500000 figura  I 
-j que hace cancelar  78
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  78 compas(j):  0 figura  I 
-LECTURA DUR:  112 EN LA CARGA j:  79 i:  62 figura L*+
-Valdur i  112 62 grupo  3 figura L*+
-i=NA i:  116 NA:  116 Mayor  1875000 grupo: 3
-peso de mayor encontrado valdur  112dur  112 grupo  3
-ABRIR IN:  J:  79 DUR:  112 GRUPO:  3 figura L*+
-=========================================================
-1-calcCompas j o posn RECIBIDA:  79
-1-calcCompas 2
-1-calcCompas 3, DUR:  112 j:  79 figura: L*+
-acumulado / k / PEsoDur  10000000          112           1875000 figura L*+
-acumulado  10000000
-Compas(j) , j:  79  79
-1-calcCompas 3.1 exit sub acumulado=0  0
-ABRIR OUT: J:  79 compas(j):  79 figura L*+
-LECTURA DUR:  5 EN LA CARGA j:  80 i:  62 figura  F 
-Valdur i  5 62 grupo  1 figura  F 
-i=NA i:  116 NA:  116 Mayor  625000 grupo: 1
-peso de mayor encontrado valdur  5dur  5 grupo  1
-ABRIR IN:  J:  80 DUR:  5 GRUPO:  1 figura  F 
-=========================================================
-1-calcCompas j o posn RECIBIDA:  80
-1-calcCompas 2
-1-calcCompas 3, DUR:  5 j:  80 figura:  F 
-acumulado / k / PEsoDur  625000            5             625000 figura  F 
-j que hace cancelar  80
-1-calcCompas 3.2 acumulado menor sigue exit sub, carga:  1
-ABRIR OUT: J:  80 compas(j):  0 figura  F 
-pasoZona1=     48
-pasoZona2=     56
+CALCOMPAS-0 DUR=0 COMPAS(J)=0 
+ABRIR OUT: J:  42 compas(j):  0 figura    
+pasoZona1=     13

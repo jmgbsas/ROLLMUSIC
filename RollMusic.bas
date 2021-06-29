@@ -1,3 +1,4 @@
+'0.0.8.9.0.0 seleccion de una sola nota en el 3er Ctrl-Click para una accion, en modo lectura.
 '0.0.8.8.1.0 seleccion de ZONA para accion con CTRL-Click en lectura 2 puntos.
 '           borrado de zona con Q como siempre. ok 27-06-2021
 ' 26-06-2021:trasponer UP or Down ok
@@ -896,7 +897,10 @@ If MultiKey (SC_Q) Then ' con Q se deja de repetir espacios tmbien resetea todo 
  If fijarEspacio=99 Then
   fijarEspacio=0
  EndIf
-pun=0:sil=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0
+If pasoZona1 > 0 Or pasoZona2 >0 Or pasoNota > 0 Or trasponer=1 Then ' hubo una trasposicion
+   correcciondeNotas()
+EndIf 
+pun=0:sil=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
 
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
@@ -2368,18 +2372,39 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  EndIf 
  ''
 ' SELECCION DE ZONA PARA TRASPONER VOLUMEN INSTRUMENTO ETC ETC
-' SOLO SELECCIONO PASO DESDE HASTA
+' SOLO SELECCIONO PASO DESDE HASTA 
   If MultiKey(SC_CONTROL) And MouseButtons And 1 Then
-     Dim pasox As Integer
+     Dim As Integer pasox, pasoy, pasonR
      pasox=(mousex- 81 )/35  + posishow  
+     pasoy=nE
 
-     If pasoZona1 = 0 Then 
-        pasoZona1=  pasox ' pos de la 1er ventana 
-        Print #1,"pasoZona1=",pasoZona1
+     correcciondeNotas()
+
+     If pasoZona1 = 0 Then  ' selecion 1er posicion de la zona
+        pasoZona1=  pasox ' pos de la 1er ventana
+        pasoNota=0 
+        Print #1,"pasoZona1=",pasoZona1;" pasoNota=";pasoNota
+        Exit Do
      EndIf
-     If pasoZona1 > 0 And pasoZona1 <> pasox Then
+
+     If pasoZona1 > 0 And pasoZona1 <> pasox Then ' posicion 2 de la zona
         pasoZona2= pasox
-        Print #1,"pasoZona2=",pasoZona2
+        pasoNota=0
+        Print #1,"pasoZona2=",pasoZona2;" pasoNota=";pasoNota
+        Exit Do
+     EndIf
+     If pasoZona1=pasoZona2 And pasoNota<>pasoy Then 
+        pasoNota=nE
+        Print #1,"pasoNota=",pasoNota
+        Exit Do
+     Else
+        pasoNota=0   
+     EndIf
+
+     If pasoZona1 > 0  And pasoZona1 = pasox Then ' la zona es solo  1 sola columna
+        pasoZona2= pasox
+        pasoNota=0 ' 28-06-2021 mueve acorde si existe , sino meuve nota 
+        Print #1,"pasoZona1 iguales pasoZona2=",pasoZona2;" pasoNota=";pasoNota
      EndIf
   EndIf 
 

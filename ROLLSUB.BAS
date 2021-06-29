@@ -169,7 +169,7 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
       t=Str(Compas(n).nro)
       cairo_show_text(c,t)
      EndIf
-     If n = pasozona1 Or n =pasoZona2 Then
+     If n = pasozona1 Or n =pasoZona2 Then '26-06-2021
         cairo_move_to(c,42 + (ic ) *anchofig +anchofig, Penta_y + 13.5 * inc_Penta )
          t="("+ Str(n) + ")"
          cairo_show_text(c,t)
