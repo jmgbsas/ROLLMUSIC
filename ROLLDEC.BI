@@ -41,7 +41,7 @@ Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE ' etc
 
 Dim Shared RTA As String 
 Dim Shared As Integer nro=0, acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoZona2=0, pasoNota=0
-Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0
+Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0
 Dim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, cursormove
@@ -143,7 +143,7 @@ dbl_click_time = 0.18
 Dim Shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen,anchofig
-Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, resultado
+Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, curposold, resultado
 Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 10000000,5000000,2500000,1250000, 625000,312500,156250, 78125,39063, _ '1  9
 12500000,6250000,3125000,1562500, 781250,390625,195313, 97656,48828, _ '10 18

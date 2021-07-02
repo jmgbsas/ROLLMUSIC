@@ -1,3 +1,7 @@
+'01-07-2021 se agrego loop ya sea total o por zona funciona se termina con P
+'01-07-2021 ya no permite entrar notas con click mucho antes de maxpos
+'01-07-2021 posicionado cursor ctrl-m, pasoZona1 y 2 seusan en playAll tambien 
+' ver ciertos problemas de play de las notas que subsistem !!!
 '0.0.8.9.0.0 seleccion de una sola nota en el 3er Ctrl-Click para una accion, en modo lectura.
 '0.0.8.8.1.0 seleccion de ZONA para accion con CTRL-Click en lectura 2 puntos.
 '           borrado de zona con Q como siempre. ok 27-06-2021
@@ -471,8 +475,10 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar co
  cursorHori = 1
  agregarNota=0
  menuMouse = 0
+
 EndIf
 If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
+ 
  cursorVert = 2
  cursorHori = 2
  agregarNota= 1
@@ -533,6 +539,7 @@ If MultiKey(SC_PAGEUP ) Then
 EndIf
 If MultiKey (sc_P) And play=1 Then
   CONTROL1=1 ' DETIENE EL PLAY VEREMOS
+  playloop=0
 EndIf
 If MultiKey(SC_PLUS) Then  '13 , ligadura
  mas=1
@@ -801,12 +808,17 @@ If MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
 EndIf
 ' cargar Roll y MaxPos de disco
 
-If MultiKey(SC_L)  Then ' <======== load Roll
+If MultiKey(SC_CONTROL) and MultiKey(SC_L)  Then ' <======== load Roll
   If carga=0 Then
    CargaArchivo()
   EndIf 
- ' colocar algo visual que indique quesehizo la grabcion
+ 
 EndIf
+
+If MultiKey(SC_ALT) and MultiKey(SC_L)  Then ' <======== playloop
+  playloop=1 
+EndIf
+
 
 If MultiKey (SC_F12) Then
 '''archivo test-AAAAA.TXT
@@ -1111,8 +1123,10 @@ If comEdit = TRUE Then
      nota=0
   EndIf
   If MultiKey(SC_CONTROL) And MultiKey(SC_0) Then ' fin seq en edit sin cursor
-     DUR = 182:Exit Do
+     DUR = 182
+     Print #1,"DUR=182 PUTA!"
      nota=0
+     Exit Do
   EndIf
   If MultiKey(SC_0) Then ' fin seq en edit sin cursor
      nota=0
@@ -1714,7 +1728,9 @@ If (ScreenEvent(@e)) Then
       nota=0
       Exit Do 
     EndIf
-    If cursorVert=1 Then ' solo válido con Ctrl-M
+  '01-07-2021 hubo una cancelacion en ctrl-m al pulsar FIN en el teclado con 
+  ' con And insert=2 se soluicona pero no se si es funcional para el insert verificar    
+    If cursorVert=1  Then ' solo válido con Ctrl-M 30-06-2021 
      ' no mas reemplazos
      insert=3
      Print #1, "-----SC_END StartInsert,indaux,insert,nota: ",StartInsert,indaux,insert,nota
@@ -1955,7 +1971,7 @@ If (ScreenEvent(@e)) Then
      '       Print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
      font = 18
      curpos=0
-     'mayorDurEnUnaPosicion (posn)
+     ''mayorDurEnUnaPosicion (posn)
      '' calcCompas(pos)
      controlEdit=0
      Exit Do
@@ -2234,6 +2250,8 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    'Print  #1,"  nroClick=1"
    'Print  #1,"comEdit=TRUE "
    'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+         curpos=(mousex- 81 )/35 '01-07-2021
+         notacur=nE
 
     Exit Do
    EndIf
@@ -2349,7 +2367,10 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    'Print  #1,"(8) (mouseButtons And 1) And (DUR > 0) And (nE > 0) And ayudaNuevaNota=FALSE "
    'Print  #1,"(8)  And comEdit=TRUE And ayudaModif=FALSE"
    'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
-   nota=nE ' <=== ingresamos varias notas por mouse del mismo valor
+   Dim As Integer posdur= (mousex- 81 )/35 + posishow '01-07-2021
+   If posdur >= Maxpos - 1 Then  ' no permite entrar notas con click ,ucho antes de maxpos
+      nota=nE ' <=== ingresamos varias notas por mouse del mismo valor
+   EndIf
    ' hasta que si vuelva a dar click derecho y aparesca de nuevo el menu de duraciones.
    '   Print  #1," nota=nE ", nE
    Exit Do
@@ -2407,6 +2428,13 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
         Print #1,"pasoZona1 iguales pasoZona2=",pasoZona2;" pasoNota=";pasoNota
      EndIf
   EndIf 
+
+ If MultiKey(SC_ALT) And MouseButtons And 1 Then 'posiciona el cursor
+    curpos=(mousex- 81 )/35
+    notacur=nE
+
+ EndIf 
+
 
 ' FIN SELECION ZONA 
 EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie

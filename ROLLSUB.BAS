@@ -139,7 +139,7 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
     EndIf
     cairo_show_text(c, t)
  ' ' jmg 11-05-2021 1839 start
-    If  n=jply Then
+    If  n=jply And ( play =1 Or playb=1 ) Then
         
       ShowNroCol= Int(n/posishow)
       If ShowNroCol = 0 Then
@@ -275,7 +275,7 @@ If nro = hasta Then ' es la 10 usamos 0 tmbien ose 9 octavas+ ayuda
   ' CURSOR
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
   If cursorHori=1 And cursorVert=1 Or play=1 Or playb=1 Then
-    cursor(c,posicion,nro)
+      cursor(c,posicion,nro) 
   EndIf
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
   'PERO PIERDO EL COLOR MARILLO DEL CURSOR
@@ -429,14 +429,21 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
  ' para C 38.5 25 notold=12
  'n esla posicion al cargar datos deberia llamar a curor creo,,,probando
 
-
+ 'If s8=1 Then
+ '   s8=0
+ '   'curpos=(mousex- 81 )/35 ' 01-07-2021
+ '   curpos=curposold
+ 'EndIf
+ 'curposold=curpos
  If cursorVert=1 Or cursorVert= 2 Then  ' vertical comEdit=TRUE
 
   cairo_move_to  (c, 81 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
   cairo_rectangle(c, 81 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
   cairo_move_to  (c, 81 + (curpos)*anchofig + inc_Penta, Penta_y  )
   cairo_line_to  (c, 81 + (curpos)*anchofig + inc_Penta, Penta_y + (notacur-1) * inc_Penta  +inc_Penta )
+ 
   RollDur=Roll.trk(notacur + (nro-1) * 13, n + curpos).dur
+  
   RollNota=Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
  EndIf
  If cursorVert= 0 And cursorHori=0 Then
@@ -506,9 +513,10 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
      Roll.trk(notacur + (nro-1) * 13, n + curpos).nota =181   ' 5.7.2
      cambiadur = 0
      DUR=0
- ElseIf DUR=182 Then ' borrado
+ ElseIf DUR=182 Then ' borrado 
      Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 182
-     Roll.trk(notacur + (nro-1) * 13, n + curpos).nota =0   ' 5.7.2
+     Roll.trk(notacur + (nro-1) * 13, n + curpos).nota =181   ' 5.7.2
+     Print #1,"FINDE SECUENCIA !!"
      cambiadur = 0
      DUR=0
  ElseIf DUR=0 Then ' borrado
@@ -1585,22 +1593,22 @@ End Sub
 '
 Sub calcCompas( ByRef j As Integer)
  ' nota:fijarse que pasa con el grupo..1 to 4 de las 64 duraciones
- Print #1,"========================================================="
- Print #1,"1-calcCompas j o posn RECIBIDA: "; j
+ ' x print #1,"========================================================="
+ ' x print #1,"1-calcCompas j o posn RECIBIDA: "; j
  Dim As Integer k, i,cantFalta,CantSobra, tengo, falta,sobra, noct
  
  If DUR=0  Then
   Compas(j).Posi=0
   Compas(j).nro = 0
 
-  Print #1,"CALCOMPAS-0 DUR=0 COMPAS(J)=0 "
+  ' x print #1,"CALCOMPAS-0 DUR=0 COMPAS(J)=0 "
   Exit Sub
  EndIf
  'If DUR=181 Then
  ' Compas(j).Posi=0
  ' Compas(j).nro = 0
 
- ' Print #1,"CALCOMPAS-0 DUR=181 COMPAS(J)=0 "
+ ' ' x print #1,"CALCOMPAS-0 DUR=181 COMPAS(J)=0 "
  ' Exit Sub
  'EndIf
 
@@ -1610,21 +1618,21 @@ Sub calcCompas( ByRef j As Integer)
   'Erase (buffCompas_2)
   acumulado=0
   ''erase (compas) 'cada item es la posicion en donde
-  Print #1,"J=1 comienzo calcCompas "
+  ' x print #1,"J=1 comienzo calcCompas "
   jc=j
  EndIf
- Print #1,"1-calcCompas 2"
+ ' x print #1,"1-calcCompas 2"
  If jc > 128 Then
   id=1
   ' procesar el resto que sobra luego de 129 en el buffer 2
  EndIf
  Dim As Integer partes_falta (1 To 100), partes_sobra(1 To 100) 
- Print #1,"1-calcCompas 3, DUR: ";DUR; " j: "; j; " figura: ";figura(DUR)
+ ' x print #1,"1-calcCompas 3, DUR: ";DUR; " j: "; j; " figura: ";figura(DUR)
   
  For k=1 To 180
   If DUR=k   Then
    acumulado =acumulado +pesoDur(k)
-   Print #1,"acumulado / k / PEsoDur "; acumulado, k , pesoDur(k);" figura ";figura(DUR)
+   ' x print #1,"acumulado / k / PEsoDur "; acumulado, k , pesoDur(k);" figura ";figura(DUR)
    If abs(d7 -acumulado) < 10 Then
       acumulado = d7
    EndIf
@@ -1632,21 +1640,21 @@ Sub calcCompas( ByRef j As Integer)
     Compas(j).Posi = j
     nroCompas = nroCompas+1
     Compas(j).nro = nroCompas
-    Print #1,"acumulado ";acumulado
-    Print #1,"Compas(j) , j: ";Compas(j).Posi;" "; j
+    ' x print #1,"acumulado ";acumulado
+    ' x print #1,"Compas(j) , j: ";Compas(j).Posi;" "; j
 
     acumulado=0
     jc=1
-    Print #1,"1-calcCompas 3.1 exit sub acumulado=0 ";acumulado
+    ' x print #1,"1-calcCompas 3.1 exit sub acumulado=0 ";acumulado
     Exit Sub
    EndIf
 
    If acumulado < d7  And j > 0 Then
-    Print #1, "j que hace cancelar ";j
+    ' x print #1, "j que hace cancelar ";j
     Compas(j).Posi = 0   
     Compas(j).nro = 0 ' reseteo
     velocidades(j)
-    Print #1,"1-calcCompas 3.2 acumulado menor sigue exit sub, carga: ";carga
+    ' x print #1,"1-calcCompas 3.2 acumulado menor sigue exit sub, carga: ";carga
     Exit Sub
    EndIf
    ' cuando cargamos desde disco aca nunca es necesario pasar pues
@@ -1658,48 +1666,48 @@ Sub calcCompas( ByRef j As Integer)
    EndIf
 
    Dim z1 As Integer
-   Print #1,"1-calcCompas acumulado 3.3 >d7  ";acumulado; " carga: ";carga
+   ' x print #1,"1-calcCompas acumulado 3.3 >d7  ";acumulado; " carga: ";carga
    If acumulado > d7 And carga =0 Then
-    Print #1,"acumulado > d7 :";acumulado
+    ' x print #1,"acumulado > d7 :";acumulado
     tengo= acumulado - pesoDUR(DUR)
-    Print #1,"tengo "; tengo
+    ' x print #1,"tengo "; tengo
     falta=d7 - tengo
-    Print #1,"falta ";falta
+    ' x print #1,"falta ";falta
     sobra=acumulado -d7
-    Print #1,"sobra "; sobra
+    ' x print #1,"sobra "; sobra
     '       Dim ultimafigura As Integer=0
     separarDur(j,DUR, partes_falta(),cantFalta,falta)
-    Print #1,"||||| CantFalta ";CantFalta
+    ' x print #1,"||||| CantFalta ";CantFalta
     If CantFalta > 100 Then
-     Print #1, "ERROR CANTFALTA > 100 ";CantFalta
+     ' x print #1, "ERROR CANTFALTA > 100 ";CantFalta
      EXIT Sub
     EndIf
     For z1 = 1 To CantFalta
-     Print #1, " ";partes_falta(z1);" ";figura(partes_falta(z1));
+     ' x print #1, " ";partes_falta(z1);" ";figura(partes_falta(z1));
     Next z1
-    Print #1,
+    ' x print #1,
     separarDur(j,DUR, partes_sobra(),cantSobra,sobra)
-    Print #1,"||||| CantSobra ";CantSobra
+    ' x print #1,"||||| CantSobra ";CantSobra
     If CantSobra > 100 Then
-     Print #1, "ERROR CANTSOBRA > 100 ";CantSobra
+     ' x print #1, "ERROR CANTSOBRA > 100 ";CantSobra
      EXIT Sub
     EndIf
 
     For z1 = 1 To CantSobra
-     Print #1, " ";partes_sobra(z1);" "; figura(partes_sobra(z1));
+     ' x print #1, " ";partes_sobra(z1);" "; figura(partes_sobra(z1));
     Next z1
-    Print #1,
-    Print #1,"HAGO  DUR=0 BUENO.pero el sobra va a acum.."
+    ' x print #1,
+    ' x print #1,"HAGO  DUR=0 BUENO.pero el sobra va a acum.."
     'preparo el acumulado de Falta ntes de reemplazar
   '  acumulado=pesoDur(partes_sobra(CantSobra))  'jmg 30-3-21
-  '  Print #1,"acumulado sobra ";acumulado 
+  '  ' x print #1,"acumulado sobra ";acumulado 
    EndIf
-   Print #1,"1-calcCompas 3.4"
+   ' x print #1,"1-calcCompas 3.4"
    '  EndIf
    Exit for
   EndIf
  Next k
- Print #1,"1-calcCompas 4  ingreso a REEMPLAZO EN ROLL de las durciones y notas"
+ ' x print #1,"1-calcCompas 4  ingreso a REEMPLAZO EN ROLL de las durciones y notas"
 
  acumulado=tengo
  ' la ultima nota a cortar se ha cargado es la quese reemplaza de este modo
@@ -1711,14 +1719,14 @@ Sub calcCompas( ByRef j As Integer)
  ' aradeterminar compas. En Nucleo se busc siemrep la not que este en 0
  ' ergo parareemplazardebo borrar el contenido o reemplazarlo
  If CantFalta > 0 And carga= 0 Then  ' empezamos el reemplazo en el vector desde posn
-  Print #1,"Recordar posn empieza en 0 "
-  Print #1,"REEMPLAZO Cantfalta ";CantFalta
+  ' x print #1,"Recordar posn empieza en 0 "
+  ' x print #1,"REEMPLAZO Cantfalta ";CantFalta
   For k=1 To CantFalta '
    If partes_falta(k)>= 1 And partes_falta(k) <=90 Then
     partes_falta(k)=partes_falta(k) + 90 ' comienzan los + ligados
    EndIf
-   Print #1,"k,partes_falta(k), FIGURA ", k, partes_falta(k), figura(partes_falta(k))
-   Print #1,"POSICION reemplazada: ";posn
+   ' x print #1,"k,partes_falta(k), FIGURA ", k, partes_falta(k), figura(partes_falta(k))
+   ' x print #1,"POSICION reemplazada: ";posn
    Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = partes_falta(k)
    
    If carga=0 Then ''no hce nada en la carga
@@ -1736,7 +1744,7 @@ Sub calcCompas( ByRef j As Integer)
        Else    
        
          If Roll.trk((i +(noct -1) * 13),posn).nota = 0 Then
-         '   Print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
+         '   ' x print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
             Roll.trk((i +(noct -1) * 13),posn).nota = 181
             Roll.trk((i +(noct -1) * 13),posn).dur  = 0
          EndIf
@@ -1753,7 +1761,7 @@ Sub calcCompas( ByRef j As Integer)
       nroCompas=nroCompas+1
       Compas(posn).nro = nroCompas
 
-      Print #1, "Hay compas en posn ";posn
+      ' x print #1, "Hay compas en posn ";posn
       acumulado=0
    posn=Posn+1
    posicion = posn
@@ -1761,16 +1769,16 @@ Sub calcCompas( ByRef j As Integer)
    '   If k= CantFalta Then
    '  EndIf
 
-   Print #1,"acumulado falta: ";acumulado; " posn: ";posn
+   ' x print #1,"acumulado falta: ";acumulado; " posn: ";posn
    
-   Print #1,"d7 ";d7
+   ' x print #1,"d7 ";d7
 
       Exit For 
    Else
       compas(posn).Posi= 0
       Compas(posn).nro = -2
    
-      Print #1,"No Hay compas todavia en posn ";posn
+      ' x print #1,"No Hay compas todavia en posn ";posn
    EndIf
 
    posn=Posn+1
@@ -1779,43 +1787,43 @@ Sub calcCompas( ByRef j As Integer)
    '   If k= CantFalta Then
    '  EndIf
 
-   Print #1,"acumulado falta: ";acumulado; " posn: ";posn
-   Print #1,"d7 ";d7
+   ' x print #1,"acumulado falta: ";acumulado; " posn: ";posn
+   ' x print #1,"d7 ";d7
 
 
   Next k
   
  ' If j=posn Then
- '  Print #1," j y posn son iguales "; j, posn
+ '  ' x print #1," j y posn son iguales "; j, posn
  ' Else
- '  Print #1," j y posn no son iguales, k "; j, posn,k
+ '  ' x print #1," j y posn no son iguales, k "; j, posn,k
  '  If posn = cantFAlta + j  Then
     ''''  If carga=0 Then
  '   Compas(posn-1) = posn-1 ' hay compas ' ok pero da 2
- '   Print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k);figura(partes_falta(k))
- '   Print #1, "ACUMULADO = ";acumulado
+ '   ' x print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k);figura(partes_falta(k))
+ '   ' x print #1, "ACUMULADO = ";acumulado
  '    acumulado=0 
- '   Print #1,"acumulado cero";acumulado
+ '   ' x print #1,"acumulado cero";acumulado
  '   cantFalta=0 'jmg 30-03-21
     '  EndIf
  '  EndIf
  ' EndIf
   '  If carga=0 Then
   'Compas(posn-1) = posn-1 ' hay compas ' ok pero da 2 jmg 30-03-21
- ' Print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k);figura(partes_falta(k))
+ ' ' x print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k);figura(partes_falta(k))
   
   '  EndIf
  End If
 
 CantFalta=0
 acumulado=0 ' se supone termino el compas sino habra que forzarlo.... 
- Print #1,"1-calcCompas 5 carga: ";carga
+ ' x print #1,"1-calcCompas 5 carga: ";carga
  If cantSobra > 0 And carga=0 Then
-  Print #1,"REEMPLAZO CantSobra ";CantSobra
+  ' x print #1,"REEMPLAZO CantSobra ";CantSobra
   For k=1 To CantSobra
    If k < CantSobra Then ' le agrega >, continuacion
-      Print #1,"k ,partes_sobra(k),figura ";k;" ";partes_sobra(k),figura(partes_sobra(k))
-      Print #1,"posicion reemplazada: ";posn
+      ' x print #1,"k ,partes_sobra(k),figura ";k;" ";partes_sobra(k),figura(partes_sobra(k))
+      ' x print #1,"posicion reemplazada: ";posn
       If partes_sobra(k)>= 1 And partes_sobra(k) <=90 Then
          partes_sobra(k)=partes_sobra(k) + 90 ' empieza ligados +
       EndIf
@@ -1838,7 +1846,7 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
        Else    
        
          If Roll.trk((i +(noct -1) * 13),posn).nota = 0 Then
-         '   Print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
+         '   ' x print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
             Roll.trk((i +(noct -1) * 13),posn).nota = 181
             Roll.trk((i +(noct -1) * 13),posn).dur  = 0
          EndIf
@@ -1848,11 +1856,11 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
 '-------   
    
    
-   Print #1,"ERROR==> ACUMULADO: " ;acumulado
-   Print #1, "vlor buscdo de k: ";k
-   Print #1,"partes_sobra(k) ";partes_sobra(k)
+   ' x print #1,"ERROR==> ACUMULADO: " ;acumulado
+   ' x print #1, "vlor buscdo de k: ";k
+   ' x print #1,"partes_sobra(k) ";partes_sobra(k)
    acumulado=acumulado + pesoDur(partes_sobra(k)) ' para el siguiente compas..¿?.
-   Print #1,"ERROR==> ACUMULADO: " ;acumulado
+   ' x print #1,"ERROR==> ACUMULADO: " ;acumulado
    If k= CantSobra Then
     CantSobra=0
     Exit For
@@ -1862,7 +1870,7 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
    MaxPos= Posicion
 
   Next k
-  Print #1,"1-calcCompas 6"
+  ' x print #1,"1-calcCompas 6"
   
  EndIf
  cantSobra=0
@@ -1870,25 +1878,25 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
  Erase partes_falta
  Erase partes_sobra
   ' fin compases
- Print #1,"1-calcCompas 7 carga: ";carga
+ ' x print #1,"1-calcCompas 7 carga: ";carga
 End Sub
 ' ======================================================================
 Sub separarDur(ByRef j As Integer, ByRef DUR As Integer,partes() As Integer, ByRef cantPArtes As Integer, ByRef falta As Integer)
 
- Print #1,"1-Separadur "
+ ' S print #1,"1-Separadur "
  Dim As Integer lb,lu,k,tengo,sobra, falta1,acumx
- Print #1,"EN SEPARADUR-------------------------------------------------"
+ ' S print #1,"EN SEPARADUR-------------------------------------------------"
  lb=LBound(partes)
  lu=UBound(partes)
  'dim integer ultimafigura= partes(CantPartes)
 
  falta1=falta
- Print #1,"FALTA RECIBIDO: ";FALTA1
- Print #1,;" DUR recibido: ";DUR;
+ ' S print #1,"FALTA RECIBIDO: ";FALTA1
+ ' S print #1,;" DUR recibido: ";DUR;
  Dim As Integer desder, hastar
 
- Print #1,"pun: ";pun;" sil: ";sil;" mas: ";mas; " tres: ";tres
- Print #1,"incr: ";incr
+ ' S print #1,"pun: ";pun;" sil: ";sil;" mas: ";mas; " tres: ";tres
+ ' S print #1,"incr: ";incr
 
  ' cuando hago la carga los k son de 1 a 64 no son mas de 1 a 8
 
@@ -1902,7 +1910,7 @@ Sub separarDur(ByRef j As Integer, ByRef DUR As Integer,partes() As Integer, ByR
    nroCompas = nroCompas+1
    Compas(j).nro = nroCompas
 
-   Print #1,"falta encontrado DUR ";k;" figura:";figura(k); " parte:";lb
+   ' S print #1,"falta encontrado DUR ";k;" figura:";figura(k); " parte:";lb
    CantPartes =lb
    acumulado=0
    falta=0
@@ -1916,13 +1924,13 @@ Sub separarDur(ByRef j As Integer, ByRef DUR As Integer,partes() As Integer, ByR
  ' si sigue es porque falló no hay ninguna figura con esa duracion
  lb=lb-1
  acumx=0
- Print #1,"SEGUIMOS NO SE ENCONTRO FALTA  POSN J "; J
- Print #1,"absoluto de falta1 original "; falta1
+ ' S print #1,"SEGUIMOS NO SE ENCONTRO FALTA  POSN J "; J
+ ' S print #1,"absoluto de falta1 original "; falta1
  falta1=Abs(falta1)
  
  'If falta1 >= 15000000 Then
 
- ' Print #1,"Caso de falla falta1 > 15000000 revisar codigo"
+ ' ' S print #1,"Caso de falla falta1 > 15000000 revisar codigo"
  ' Exit Sub
 
  'Else
@@ -1934,12 +1942,12 @@ Dim CUENTA As INTEGER
    For k=28+incr To 36+incr 
     If  falta1 > pesoDur(k)  Then
      lb += 1
-     Print #1,"dur k incr";k,incr
+     ' S print #1,"dur k incr";k,incr
      If lb > lu Then
       Exit Do
      EndIf
      partes(lb)=k
-     Print #1,"FALTA1 ENCONTRO PEDAZO >9a16 PArte;";lb; " figura:";figura(k); " parte:";lb
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO >9a16 PArte;";lb; " figura:";figura(k); " parte:";lb
      falta1=falta1-pesoDur(k)
      acumx=pesoDur(k)
      Exit For
@@ -1951,7 +1959,7 @@ Dim CUENTA As INTEGER
      EndIf
      partes(lb) = k
      acumx = acumx + pesoDur(k)
-     Print #1,"FALTA1 ENCONTRO PEDAZO =9a16 ";lb; " figura:";figura(k); " parte:";lb
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO =9a16 ";lb; " figura:";figura(k); " parte:";lb
      Exit For
     EndIf
 
@@ -1960,12 +1968,12 @@ Dim CUENTA As INTEGER
    For k=19+incr To 27+incr
     If  falta1 > pesoDur(k)  Then
      lb += 1
-     Print #1,"dur k incr";k,incr
+     ' S print #1,"dur k incr";k,incr
      If lb > lu Then
       Exit Do
      EndIf
      partes(lb)=k
-     Print #1,"FALTA1 ENCONTRO PEDAZO >9a16 PArte;";lb; " figura:";figura(k); " parte:";lb
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO >9a16 PArte;";lb; " figura:";figura(k); " parte:";lb
      falta1=falta1-pesoDur(k)
      acumx=pesoDur(k)
      Exit For
@@ -1977,7 +1985,7 @@ Dim CUENTA As INTEGER
      EndIf
      partes(lb) = k
      acumx = acumx + pesoDur(k)
-     Print #1,"FALTA1 ENCONTRO PEDAZO =9a16 ";lb; " figura:";figura(k); " parte:";lb
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO =9a16 ";lb; " figura:";figura(k); " parte:";lb
      Exit For
     EndIf
 
@@ -1987,12 +1995,12 @@ Dim CUENTA As INTEGER
    For k=10+incr To 18+incr
     If  falta1 > pesoDur(k)  Then
      lb += 1
-     Print #1,"dur k incr";k,incr
+     ' S print #1,"dur k incr";k,incr
      If lb > lu Then
       Exit Do
      EndIf
      partes(lb)=k
-     Print #1,"FALTA1 ENCONTRO PEDAZO >9a16 PArte;";lb; " figura:";figura(k); " parte:";lb
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO >9a16 PArte;";lb; " figura:";figura(k); " parte:";lb
      falta1=falta1-pesoDur(k)
      acumx=pesoDur(k)
      Exit For
@@ -2004,7 +2012,7 @@ Dim CUENTA As INTEGER
      EndIf
      partes(lb) = k
      acumx = acumx + pesoDur(k)
-     Print #1,"FALTA1 ENCONTRO PEDAZO =9a16 ";lb; " figura:";figura(k); " parte:";lb
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO =9a16 ";lb; " figura:";figura(k); " parte:";lb
      Exit For
     EndIf
 
@@ -2019,7 +2027,7 @@ Dim CUENTA As INTEGER
       Exit Do
      EndIf
      partes(lb)=k
-     Print #1,"FALTA1 ENCONTRO PEDAZO >1A8 ";lb; " figura:";figura(k); " parte:";lb
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO >1A8 ";lb; " figura:";figura(k); " parte:";lb
      falta1=falta1-pesoDur(k)
      acumx=pesoDur(k)
      Exit For
@@ -2032,7 +2040,7 @@ Dim CUENTA As INTEGER
      EndIf
      partes(lb) = k
      acumx = acumx + pesoDur(k)
-     Print #1,"FALTA1 ENCONTRO PEDAZO = 1a8";lb;" figura:";figura(k); " parte:";lb
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO = 1a8";lb;" figura:";figura(k); " parte:";lb
      Exit For
     EndIf
    Next k
@@ -2040,12 +2048,12 @@ Dim CUENTA As INTEGER
    For k=37+incr To 45+incr ' tresillos
     If  falta1 > pesoDur(k)  Then
      lb += 1
-     Print #1,"dur k incr";k,incr
+     ' S print #1,"dur k incr";k,incr
      If lb > lu Then
       Exit Do
      EndIf
      partes(lb)=k
-     Print #1,"FALTA1 ENCONTRO PEDAZO >19a27 PArte;";lb; " figura:";figura(k); " parte:";lb
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO >19a27 PArte;";lb; " figura:";figura(k); " parte:";lb
      falta1=falta1-pesoDur(k)
      acumx=pesoDur(k)
      Exit For
@@ -2057,35 +2065,35 @@ Dim CUENTA As INTEGER
      EndIf
      partes(lb) = k
      acumx = acumx + pesoDur(k)
-     Print #1,"FALTA1 ENCONTRO PEDAZO =19a27 ";lb; " figura:";figura(k); " parte:";lb
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO =19a27 ";lb; " figura:";figura(k); " parte:";lb
      Exit For
     EndIf
 
    Next k
    
    If acumx=falta Or lb > lu Then
-    Print #1,"FALTA1 FIN EN ";lb; " figura "; figura(K) ;" ACUMX";acumx
+    ' S print #1,"FALTA1 FIN EN ";lb; " figura "; figura(K) ;" ACUMX";acumx
     Exit Do
    EndIf
    If falta1 < 40000 Then
-    Print #1,">> falta1 es H/2..NO DEBERIA DAR ESTO AHORA ";falta1
+    ' S print #1,">> falta1 es H/2..NO DEBERIA DAR ESTO AHORA ";falta1
     Exit Do
    EndIf
    If CUENTA = 100 Then
-      Print "FALTA: ";falta;" Falta1: "; falta1
+      ' S print "FALTA: ";falta;" Falta1: "; falta1
       Close
       Exit Do
    EndIf   
   Loop
-  Print #1,"ACUMX SEPARADUR ";acumx
+  ' S print #1,"ACUMX SEPARADUR ";acumx
  EndIf
 
  'EndIf
 
  CantPartes =lb
 
- Print #1, "CANT PARTES LB, CantPartes "; LB;" "; CantPartes
- Print #1,"ACUMX  ";ACUMX
+ ' S print #1, "CANT PARTES LB, CantPartes "; LB;" "; CantPartes
+ ' S print #1,"ACUMX  ";ACUMX
 
 End Sub
 

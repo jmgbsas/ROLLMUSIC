@@ -100,8 +100,10 @@ For i1 =1 To cnt
  
 Next i1
 If nohay = cnt Then
-  For i1=1 To cnt 
+  For i1=NB To NA 
     pasoCol(i1).liga=0 
+    pasoCol(i1).tiempoFigura=0
+    pasoCol(i1).tiempoFiguraOld=0
   Next i1
   ligaglobal=0
 End If
@@ -128,7 +130,7 @@ EndIf
 If pasoCol(1).tiempoFiguraOld > 0  And cntold=1 Then
  Print #1,"NoteSimple old > 0 pasoCol(1).tiempoFiguraOld ";pasoCol(1).tiempoFiguraOld
    pasoCol(1).tiempoFigura= (pasoCol(1).tiempoFigura + pasoCol(1).tiempoFiguraOld)
-   Print #1,"tempofigura + old" ; pasoCol(1).tiempoFigura
+   Print #1,"tempofigura + old" ; pasoCol(1).tiempoFigura /100000000000
    Print #1,"ESTOS EN NOTEsIMPLE!"
    pasoCol(1).tiempoFiguraOld =0
 EndIf
@@ -136,7 +138,7 @@ EndIf
 If pasoCol(1).tiempoFiguraOld > 0  And cntold > 1 Then
  Print #1,"NoteSimple old > 0 pasoCol(1).tiempoFiguraOld ";pasoCol(1).tiempoFiguraOld
    pasoCol(1).tiempoFigura=  pasoCol(1).tiempoFiguraOld
-   Print #1,"tempofigura " ; pasoCol(1).tiempoFigura
+   Print #1,"tempofigura " ; pasoCol(1).tiempoFigura /100000000000
    Print #1,"ESTOS EN NOTEsIMPLE!"
    pasoCol(1).tiempoFiguraOld =0
 EndIf
@@ -144,7 +146,7 @@ EndIf
 
 
 
-Print #1,"noteSimple: tiempoFigura:", pasoCol(1).tiempoFigura
+Print #1,"noteSimple: tiempoFigura:", pasoCol(1).tiempoFigura/100000000000
 Print #1,"noteSimple: notapiano:", pasoCol(1).notapiano;" ";figura(pasoCol(1).DUR)
 
 If pasoCol(1).DUR >= 91 And pasoCol(1).DUR <=180  Then 'liga OFF DESPUES
@@ -163,11 +165,15 @@ Else
        Next i1 
     EndIf   
        tiempoFigura=pasoCol(1).tiempoFigura/100000000000
-       Print #1,"noteSimple tiempoFigura "; tiempoFigura
+       Print #1,"noteSimple OFF tiempoFigura "; tiempoFigura
        duracion old_time_on,tiempoFigura 'RETARDO SIN OFF
        noteoff pasoCol(1).notapiano ,canal  
        pasoCol(1).liga=0
-       ligaglobal=0   
+       Print #1,"ACA MANDE TODO A CERO PERO CREO AFECTA AL PASO 12 FIJAR"
+       ' VAMOS SACANDO UNO A UNO NO AFECTO EN NADA NO VOLVIO LO CORRECTO SIGO VIENDO
+       pasoCol(1).tiempoFigura=0 '01-07-2021
+       ligaglobal=0 
+       pasoCol(1).tiempoFiguraOld=0 ' 01-07-2021  
     ' fin completo?
 EndIf
 
@@ -592,9 +598,12 @@ For i1=1 To cnt
               Roll.trk(pasoCol(i1).i1 , jply+1).dur <= 181 Then
               Print #1,"AOFFD: ligado OFF==> i1 ";i1;" AcordeOffDistintos: notapiano:", pasoCol(i1).notapiano;" "; _
                    figura(Roll.trk(pasoCol(i1).i1 , jply+1).dur)
-                     
               noteoff pasoCol(i1).notapiano ,canal
            EndIf
+pasoCol(i1).tiempoFigura =0  '01-07-2021
+pasoCol(i1).tiempoFiguraOld=0 '01-07-2021
+pasoCol(i1).liga=0
+           
          Else
            If (pasoCol(i1).tiempoFigura=pasoCol(i1).tiempoFiguraOld) And pasoCol(i1).liga = 1  Then
               tf=tiempoFigMayorNoligado/100000000000 
@@ -625,6 +634,8 @@ Next i1
  ' observacion una ligadura de varios acordes en una nota dada podria
  ' terminar o tener una nota simple unica como final o intermedia ligada
  ' ver que pasa en ese caso como lo solucionamos
+ ' 01-07-2021 ACA NUNCA SE BLAQUEA no-> ligaglobal=0  porque corta las ligas largas en un acorde distinto 
+ 
 End Sub
 
 '-------------playAll-----21-05-2021-------
@@ -639,7 +650,7 @@ Sub playAll() ' play version 2
 Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
 tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
 Dim nombre As ZString ptr
-Dim As Integer i1,i2,i3,i4,i5,j
+Dim As Integer i1,i2,i3,i4,i5,j ,comienzoDeLoop=0
 Dim As Integer comienzo=1, final=MaxPos,  canal=1,vel=100,velpos =0
 Dim pasoCol (NB To NA) As vec  ' entrada de durciones a medida que barro una columna
 Dim As Double start
@@ -670,6 +681,13 @@ mousex=0
  Print #1,"-----------------------------------------"
 comienzo=posicion
 cntold=0
+If pasoZona1 > 0 Then
+ comienzo=pasoZona1
+EndIf
+
+If pasoZona2 > 0 Then
+ final=pasoZona2
+EndIf
 
 For jply=comienzo To final
 'posicion=jply
@@ -828,7 +846,10 @@ EndIf
   Print #1,"---FIN -----paso:"; jply;" --------------------------------" 
 '  Print #1,"COMIENZA OTRA  POSICION O J ======"; j
  mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
- 
+ If playloop=1 And jply= final Then
+    jply=comienzo
+    posicion=comienzo
+ EndIf
 Next jply
 posicion=comienzo
 'posishow=posicion + 20
@@ -848,7 +869,7 @@ Sleep 1000,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicaci
 close_port(midiout)
 out_free(midiout) 
 
-ThreadDetach(thread1) 'JMG REPONER !!!!
+'''ThreadDetach(thread1) 'JMG REPONER !!!!
 
 ' ================================FIN PLAYALL <<=================
 End Sub 
@@ -1431,3 +1452,4 @@ Next jpt
 
 
 End sub
+
