@@ -913,6 +913,7 @@ If pasoZona1 > 0 Or pasoZona2 >0 Or pasoNota > 0 Or trasponer=1 Then ' hubo una 
    correcciondeNotas()
 EndIf 
 pun=0:sil=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
+SelGrupoNota=0
 
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
@@ -1532,7 +1533,12 @@ EndIf
 ' para detectar mouse sin usar sdl
 If (ScreenEvent(@e)) Then
  Select Case As Const e.type
+  Case EVENT_MOUSE_BUTTON_PRESS
+       MousePress = 1
+		Case	EVENT_MOUSE_MOVE
+		     MouseMove=1			
   Case EVENT_MOUSE_BUTTON_RELEASE ' obtengoPosicion
+   MousePress = 0
    If s5=2 Then
     ScreenControl GET_WINDOW_POS, x0, y0
     s5=0
@@ -1575,9 +1581,13 @@ If (ScreenEvent(@e)) Then
   Case EVENT_KEY_PRESS    ' <======== KEY PRESS PULSO
 
    If e.scancode = 72  Then ' SC_UP sube por pulsos mas presicion
-    If trasponer=1 Then
+    If trasponer=1 And SelGrupoNota=0 Then
      trasponerRoll (-1)
      Exit Do
+    EndIf
+    If trasponer=1 And SelGrupoNota=1 Then
+     TrasponerGrupo (-1)
+     Exit Do 
     EndIf 
 
     If cursorVert= 0 Then
@@ -1647,8 +1657,12 @@ If (ScreenEvent(@e)) Then
    '      Exit Do
    '  EndIf
    If e.scancode = 80 Then  ' <===== SC_DOWN pulso
-     If trasponer=1 Then
+     If trasponer=1 And SelGrupoNota=0 Then
        trasponerRoll (1)
+       Exit Do
+     EndIf 
+     If trasponer=1 And SelGrupoNota=1 Then
+       trasponerGrupo (1)
        Exit Do
      EndIf 
 
@@ -1920,6 +1934,8 @@ If (ScreenEvent(@e)) Then
   Case EVENT_KEY_RELEASE 
 ' 24-06-2021 espaciado de lineas (3)  
        lockip=0
+	
+       
  End Select
  ' --------------
  ' 24-06-2021 espaciado de lineas (2)
@@ -2393,7 +2409,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  EndIf 
  ''
 ' SELECCION DE ZONA PARA TRASPONER VOLUMEN INSTRUMENTO ETC ETC
-' SOLO SELECCIONO PASO DESDE HASTA 
+' SOLO SELECCIONO PASO DESDE HASTA y/o NOTA
   If MultiKey(SC_CONTROL) And MouseButtons And 1 Then
      Dim As Integer pasox, pasoy, pasonR
      pasox=(mousex- 81 )/35  + posishow  
@@ -2430,9 +2446,19 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
   EndIf 
 
  If MultiKey(SC_ALT) And MouseButtons And 1 Then 'posiciona el cursor
-    curpos=(mousex- 81 )/35
-    notacur=nE
-
+    ' habilito trasposicion de una sola nota, ejecuta solo con Ctrl-T previo y
+    ' las flechas up/down, habilitare dragado tambien 02-07-2021
+'    pasoNota=nE
+    
+    indiceNota=(mousex- 81 )/35 + posishow
+     
+' grupo de notas seleccionadas poniendo un 13 en nota
+   Roll.trk(117-nR ,indiceNota).nota = 13 ' marcamos para mover 
+   
+   SelGrupoNota =1
+   ' el valor correcot lo repone la sub correcionnotas
+   ' luego puedo mover 1 sola nota o todas las marcadas con 13  
+        
  EndIf 
 
 

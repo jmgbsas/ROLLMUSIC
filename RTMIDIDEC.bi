@@ -18,6 +18,8 @@ Declare Sub listports( )
 Declare Sub sleep5dm()
 Declare Function sumar( ind As integer) As Integer
 Declare Sub trasponerRoll(cant As integer)
+Declare Sub trasponerGrupo(cant As integer)
+
 Declare Sub correcciondeNotas()
 
 Dim Shared message(1 To 21) As UByte ' message output 
@@ -103,8 +105,5 @@ Dim Shared As integer relnRnE(1 To 108) => { _  ' indice de Roll vs semitono
 1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12, _
 1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12, _
 1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12 }
-'12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1, _
-'12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1, _
-'12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1 }
 
  

@@ -880,10 +880,15 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
 '   If COMEDIT=TRUE Then ' jmg 02-06-2021 ver porque difieren
 '     nR=nR-3
 '   End If
+indiceNota=(mousex- 81 )/35 + posishow
+Dim veonota As Integer 
+If indiceNota > 0 Then
+veonota=Roll.trk(117-nR,indiceNota).nota 
+EndIf
    t = "      EDIT" + " " +  " UltimaPos: " + _
    Str(Maxpos) +" Posi: " + Str(posishow)+ " Posn: "+Str(posn)+ _
    " Font: " +Str(font) + " DUR:"+ Str(Dur) +" Nota:"+ Str(nota)+ _
-   " EnOct:" + Str(estoyEnOctava) + " nE:"+Str(nE) + " nR:"+ Str(PianoNota) + "Curpos: " +Str(curpos) + _
+   " EnOct:" + Str(estoyEnOctava) + " nE:"+Str(veonota) + " nR:"+ Str(PianoNota) + "Curpos: " +Str(curpos) + _
    " RollDur :"+ Str(RollDur) + " Rollnota: " + Str(RollNota) + _ 
    " Mx:" + Str(mousex) + " My:" + Str(mousey) + "Copiar:" + Str(copiar) ' + "Desde:" + Str(y1) + "Hasta:" +Str(y2)
    /' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +

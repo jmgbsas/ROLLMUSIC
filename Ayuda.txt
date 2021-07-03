@@ -30,7 +30,12 @@
        Trasponer una columna de notas: el segundo Ctrl-Click hacerlo en la misma
        columna deseada,
        Trasponer una sola nota: el 3er Ctrl-click hacerlo sobre la nota. 
-
+       Trasponer 1 o mas notas al azar en Grupo: pulsar ALT+Click en cada nota
+       deseada, luego Ctrl-T o viceversa no import ael orden, subir bajar con 
+       flechas arriba abajo como siempre. Terminar con pulsando letra 'q'.
+       (nota: si se da click en [Edicion] se puede ver el contenido de la celda
+       en el ultimo caso la nota a mover pasa a volor nE=13, al dar 'q' vuelve a su valor
+       normal segun su ubicacion nE=1 a nE=12 semitono).   
     2.0) Modos de Edicion
     2.1) MODO EDIT (click en menu EDICION luego en EDIT cambiara a color 
           verde y la octava seleccionada tambien)
