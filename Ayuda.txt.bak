@@ -47,8 +47,8 @@
        Nota si copiamos una zona en blanco agregara una zona en blanco donde se requiera o borrara
        la zona superponiendo la zona en balnco sobre la region en donde se mueve,
 
-       Copiar una zona 1 o mas veces: igual que en mover zona pero no borra la zona original, si pulsamos
-       una numero(1,3,15,etc)) N despues y antes de C+click , copiar N veces esa zona una al lado de la otra 
+       Copiar una zona 1 o ams veces: igual que en mover zona pero no borra la zona original, si pulsamos
+       una cifra N despues y antes de C+click , copiar N veces esa zona una al lado de la otra 
        (copia en masa)
     2.0) Modos de Edicion
     2.1) MODO EDIT (click en menu EDICION luego en EDIT cambiara a color 

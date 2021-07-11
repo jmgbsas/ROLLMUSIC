@@ -19,7 +19,7 @@ Declare Sub sleep5dm()
 Declare Function sumar( ind As integer) As Integer
 Declare Sub trasponerRoll(cant As integer)
 Declare Sub trasponerGrupo(cant As integer)
-
+Declare Sub moverZonaRoll(cant As Integer)
 Declare Sub correcciondeNotas()
 
 Dim Shared message(1 To 21) As UByte ' message output 
@@ -65,8 +65,11 @@ Dim Shared As float relDur (0 To 182) => {0, _
 7 ,3.5,1.75,0.875,0.4375,0.21875,0.109375,0.0546875,0.02734375, _ '163 171
 2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,0.0208333,0.01041666,0,0} '172 181
 
-Dim Shared As Integer play =0,playb=0, portout, portin 
-ReDim Shared As string listout(1 ), listin (1 ) 
+Dim Shared As Integer play =0,playb=0, portout, portin, numero 
+ReDim Shared As string listout(1 ), listin (1 )
+Dim Shared As String * 1 cifra 
+Dim Shared As String  digito
+ 
 '----------------------------
 ' PLAY ALL NEW
 Declare Function QCompare Cdecl (Byval e1 As Any Ptr, Byval e2 As Any Ptr) As Integer

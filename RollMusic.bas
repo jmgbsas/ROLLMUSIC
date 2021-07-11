@@ -1,3 +1,12 @@
+' Ubicar Home, End de secuecnia pulsando esas teclas.
+' copiar una zona 1 o mas veces en la posicion elegida
+'0.0.8.9.2.0 11-07-2021  mover zona a la derecha o izquierda con M + Click en la pos elegida
+' despues haremos dragado, como de trasponer tambien pero mucho mas adelante,,,
+' la idea es hacer algo parecido a trasponer,,pero horizontal ALT-M
+' los espacios vacios los dejaremos con dur=0 nota=181
+' insert tambien se hara mas facil usando estos metodos cambiaremos en 
+' versiones futuras....
+ 
 '01-07-2021 se agrego loop ya sea total o por zona funciona se termina con P
 '01-07-2021 ya no permite entrar notas con click mucho antes de maxpos
 '01-07-2021 posicionado cursor ctrl-m, pasoZona1 y 2 seusan en playAll tambien 
@@ -640,6 +649,7 @@ EndIf
 
   'kNroCol cantidad scroll de NrocOL)
  If  mouseY > 50 And MultiKey(SC_RIGHT) Then ' <======== RIGHT
+ 
      If comEdit = FALSE Then
         posicion = posicion + 1
         kNroCol= Int(posicion/NroCol)
@@ -674,6 +684,7 @@ EndIf
   Exit Do
  EndIf
  If  mouseY > 50 And MultiKey(SC_LEFT) Then
+
   'MOVER ROLL IZQUIERDA NO CURSOR
   If comEdit = FALSE Then
      Dim kNroCol As Integer ' cntidad de scroll de 66
@@ -910,10 +921,10 @@ If MultiKey (SC_Q) Then ' con Q se deja de repetir espacios tmbien resetea todo 
   fijarEspacio=0
  EndIf
 If pasoZona1 > 0 Or pasoZona2 >0 Or pasoNota > 0 Or trasponer=1 Then ' hubo una trasposicion
-   correcciondeNotas()
+   correcciondeNotas() ' para moverZona no se corrige creo por ahora...
 EndIf 
 pun=0:sil=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
-SelGrupoNota=0
+SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
 
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
@@ -922,6 +933,7 @@ EndIf
 ' ya que la 128 se llega por 12*8 octavas = 96 + espcops intermedios....etc..
 ' ergo por hhora las durciones empien con 13 al 20
 ' 13 = O, 14=P, 15=I, 16=L,17=F,18=E,19=W,20=H
+If comedit = TRUE Then ' ingreso de notas   
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_A)  Then ' A#
  nota= 2
@@ -1051,6 +1063,9 @@ If MultiKey (SC_G) Then
  EndIf
  Exit Do
 EndIf
+
+EndIf  ' comedit =true para ingreso de notas 
+
 
 If MultiKey(SC_BACKSPACE) Then
  backspace=1
@@ -1186,39 +1201,75 @@ If MultiKey(SC_R) Then ' recalculo de barras compas a veces no anda ¿?
  ReCalCompas() ' jmg 01-04-21 
 EndIf
 
-If comEdit = FALSE Then '''???????????????? veremos para que usarlo
- ' para ubicrno enun octava dada
+If comEdit = FALSE Then ' construir cifras para copiar Nveces por ejemplo
+ ' 
 
  If MultiKey(SC_1) Then
-
+    cifra = "1"
+    Exit Do
  EndIf
  If MultiKey(SC_2) Then
-
+    cifra = "2"
+     Exit Do
  EndIf
  If MultiKey(SC_3) Then
-
+    cifra = "3"
+    Exit Do
  EndIf
  If MultiKey(SC_4) Then
-
+    cifra = "4"
+    Exit Do
  EndIf
  If MultiKey(SC_5) Then
-
+   cifra = "5"
+    Exit Do   
  EndIf
  If MultiKey(SC_6) Then
-
+    cifra = "6"
+    Exit Do
  EndIf
  If MultiKey(SC_7) Then
-
+    cifra = "7"
+     Exit Do
  EndIf
  If MultiKey(SC_8) Then
-
+    cifra = "8"
+     Exit Do
  EndIf
+ If MultiKey(SC_9) Then
+    cifra = "9"
+     Exit Do
+ EndIf
+ If MultiKey(SC_0) Then
+    cifra = "0"
+    Exit Do
+ EndIf
+
+ If pasoZona1 > 0 And pasoZona2 > 0 And copiarZona=0 And cifra <> "" Then
+    digito= digito + cifra
+    numero = cint(digito)
+    Print #1,"numero ", numero
+    copi=numero
+    cifra=""
+    Exit Do  
+       
+ EndIf
+
  If MultiKey(SC_PERIOD) Then
 
  EndIf
  If MultiKey(SC_S) Then
 
  EndIf
+ If MultiKey(SC_HOME) Then
+    posicion=1
+    posishow=posicion
+ EndIf
+ If MultiKey(SC_END) Then
+    posicion=MaxPos - 30
+    posishow=posicion
+ EndIf
+ 
  ''''etc
 EndIf
 
@@ -1354,7 +1405,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    Next noct
 
    notaOld=nota
-   Print #1,"carga notaold";notaold
+   'Print #1,"carga notaold";notaold
    estoyEnOctavaOld=estoyEnOctava
    
    ' 
@@ -1757,7 +1808,20 @@ If (ScreenEvent(@e)) Then
      ReCalCompas() '''''calcCompas(posn) '' mayorDurEnUnaPosicion (posn)
     EndIf
    EndIf
-
+   
+'   If e.scancode = SC_RIGHT Then
+'        If moverZona =1 Then
+'        moverZonaRoll(1)
+'        Exit Do
+'        EndIf
+'   EndIf
+'   If e.scancode = SC_LEFT Then
+''        If moverZona =1 Then
+'        moverZonaRoll(-1)
+'        Exit Do
+'        EndIf
+'   EndIf
+   
 
    ' ------------------PULSAR MUCHO TIEMPO <====== REPEAT------
   Case EVENT_KEY_REPEAT
@@ -2444,6 +2508,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
         Print #1,"pasoZona1 iguales pasoZona2=",pasoZona2;" pasoNota=";pasoNota
      EndIf
   EndIf 
+' FIN SELECION ZONA
 
  If MultiKey(SC_ALT) And MouseButtons And 1 Then 'posiciona el cursor
     ' habilito trasposicion de una sola nota, ejecuta solo con Ctrl-T previo y
@@ -2460,9 +2525,33 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    ' luego puedo mover 1 sola nota o todas las marcadas con 13  
         
  EndIf 
+ If MultiKey(SC_M) And MouseButtons  And 1 And moverZona=0 Then  'mover Zona 
+' usamos la seleccion de Zona y luego movemos la zona a una posicion dada
+    indiceNota=(mousex- 81 )/35 + posishow
+    moverZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
+    moverZonaRoll(indiceNota)
+    Exit Do
+ EndIf 
 
+ If copiarZona=0 And MouseButtons  And 1 And MultiKey(SC_C)   Then  'mover Zona 
+' usamos la seleccion de Zona y luego movemos la zona a una posicion dada
+    nota=0
+    indiceNota=(mousex- 81 )/35 + posishow
+    copiarZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
+    If numero=0 Then
+       moverZonaRoll(indiceNota)
+    Else
+       Dim As short lz=0,delta
+       delta = pasoZona2 - pasoZona1 + 1
+       For lz = 1 To numero
+          moverZonaRoll(indiceNota)
+          indiceNota=indiceNota + delta
+       Next lz 
+    EndIf
+    Exit Do
+ EndIf 
 
-' FIN SELECION ZONA 
+ 
 EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 ' ------------------------------------------------------------------
 If MouseButtons And 1  Then

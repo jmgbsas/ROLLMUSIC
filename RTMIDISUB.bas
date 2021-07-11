@@ -1505,6 +1505,97 @@ Next jpt
 ''trasponer=0   
 
 End Sub
+
+Sub moverZonaRoll(ind As Integer)
+' mueve M + Click la zona a la posicion indicada pro el click
+' o copia c + click ñl azona a la posicion indicada  
+Dim As Integer jpt=1, i1=1, comienzo , final, inc,b1=0,cant=0
+' NA ES EL MAYOR VALOR NUMERICO, 
+' NB EL MENOR VALOR NUMERICO
+' cant=(-1) si pulso flecha UP
+ comienzo= NB
+ final = NA  
+Dim As Integer desdet, hastat
+
+
+If pasoZona1 > 0 Then 
+   desdet = pasoZona1
+Else
+   desdet=1 
+   pasoZona1=1  
+EndIf   
+
+If pasoZona2 > 0 Then
+   hastat = pasoZona2
+Else
+   hastat= MaxPos   
+   pasoZona2=MaxPos
+EndIf   
+cant = pasoZona2 - pasoZona1 
+
+' sitio donde se copia o mueve indiceNota en main (SC_M o SC_C )+ click 
+Dim  As Integer inicioind=ind , MaxPosOld=MaxPos
+  
+Print #1, "MaxPosOld ", MaxPosOld
+ 
+For jpt=desdet To hastat 
+   For  i1= comienzo To final
+     Roll.trk(i1,ind).nota = Roll.trk(i1,jpt).nota
+     Roll.trk(i1,ind).dur  = Roll.trk(i1,jpt).dur
+     Roll.trk(i1,ind).vol  = Roll.trk(i1,jpt).vol
+     Roll.trk(i1,ind).pan  = Roll.trk(i1,jpt).pan
+     Roll.trk(i1,ind).pb   = Roll.trk(i1,jpt).pb
+     Roll.trk(i1,ind).inst = Roll.trk(i1,jpt).inst
+    ' Print #1,"i1,ind Roll.trk(i1,ind).nota ",i1, ind, Roll.trk(i1,ind).nota
+     If moverZona=1 Then ' borro original
+        Roll.trk(i1,jpt).nota = 181
+        Roll.trk(i1,jpt).dur  = 0
+ 
+        Roll.trk(i1,jpt).vol  = 0
+        Roll.trk(i1,jpt).pan  = 0
+        Roll.trk(i1,jpt).pb   = 0
+        Roll.trk(i1,jpt).inst = 0
+     EndIf
+   Next i1
+   ind=ind+1
+ Next jpt
+  
+If ind > MaxPos then
+  MaxPos=ind
+EndIf
+'i la posicion donde copi es mayor a MaxPos debo llenar el espacio entre MAxPos y 
+'el punto inicial de copia con 0 y 181 para dur y Not repectivamente
+Print #1,"inicioind  MAxPosOld ",inicioind , MAxPosOld  
+If inicioind > MAxPosOld Then
+   inicioind = inicioind -1
+   Print #1,"MAxPosOld, inicioind ", MAxPosOld, inicioind
+   For jpt=MaxPosOld-1 To inicioind  
+     For  i1= comienzo To final
+        Roll.trk(i1,jpt).nota = 181
+        Roll.trk(i1,jpt).dur  = 0
+ 
+        Roll.trk(i1,jpt).vol  = 0
+        Roll.trk(i1,jpt).pan  = 0
+        Roll.trk(i1,jpt).pb   = 0
+        Roll.trk(i1,jpt).inst = 0
+  
+     Next i1
+   Next jpt
+
+EndIf
+
+' correccion de maspos al copiar antes de maxpos pero la zona suepra maxpos
+
+'If (inicioind < MaxPosOld) Then
+' If ( (MaxPosOld - inicioind ) < cant) Then ' cuadno el inicio de copia est aantes de MAxPos
+' pero la zona supera a MAxpos original
+     MaxPos=MAxPos+1 
+' EndIf
+'EndIf
+
+posn=MaxPos -1
+End Sub 
+
 Sub correcciondeNotas()
 
 Dim As Integer jpt=1, i1=1, comienzo , final,i2
@@ -1520,7 +1611,7 @@ EndIf
 If pasoZona2 > 0 Then 
    hastat = pasoZona2
 Else
-   hastat= MaxPos   
+   hastat= MaxPos - 1  
 EndIf   
 'Print #1,"CORRECION DE NOTAS ***********"
 For jpt = desdet To hastat  

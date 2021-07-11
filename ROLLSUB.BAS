@@ -881,16 +881,26 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
 '     nR=nR-3
 '   End If
 indiceNota=(mousex- 81 )/35 + posishow
-Dim veonota As Integer 
+Dim As Integer veonota, veocopi 
 If indiceNota > 0 Then
 veonota=Roll.trk(117-nR,indiceNota).nota 
 EndIf
-   t = "      EDIT" + " " +  " UltimaPos: " + _
-   Str(Maxpos) +" Posi: " + Str(posishow)+ " Posn: "+Str(posn)+ _
-   " Font: " +Str(font) + " DUR:"+ Str(Dur) +" Nota:"+ Str(nota)+ _
-   " EnOct:" + Str(estoyEnOctava) + " nE:"+Str(veonota) + " nR:"+ Str(PianoNota) + "Curpos: " +Str(curpos) + _
-   " RollDur :"+ Str(RollDur) + " Rollnota: " + Str(RollNota) + _ 
-   " Mx:" + Str(mousex) + " My:" + Str(mousey) + "Copiar:" + Str(copiar) ' + "Desde:" + Str(y1) + "Hasta:" +Str(y2)
+If copiar >0 Then
+   veocopi=copiar
+EndIf   
+If copi >0 Then
+   veocopi=copi
+EndIf   
+
+   t = "      EDIT" + " " +  " UltimaPos:" + _
+   Str(Maxpos) +" Posi:" + Str(posishow)+ " Posn:"+Str(posn)+ _
+   " Font:" +Str(font) + " EnOct:" + Str(estoyEnOctava) + " nE:"+Str(veonota) + _ 
+   " nR:"+ Str(PianoNota) + " Curpos:" +Str(curpos) + _
+   " RollDur :"+ Str(RollDur) + " Rollnota:" + Str(RollNota) + _ 
+   " Copiar:" + Str(veocopi) +" Col:" +Str(indicenota) + " DUR:"+ Str(Dur) + _ 
+    " Nota:"+ Str(nota) 
+   '''' " Mx:" + Str(mousex) + " My:" + Str(mousey) 
+  ' + "Desde:" + Str(y1) + "Hasta:" +Str(y2)
    /' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +
 '/
    '''   " modifmouse:" + Str(modifmouse) + " usamousey:" + Str(usamousey) + " usamousex:"+ Str(usamousex) + _
@@ -2228,10 +2238,10 @@ Sub ReCalCompas()
      carga=1 ' no es lo mismo calcCompas con cargar o procesando
      Dim As Integer i,j , mayor,ia,valdur,cont, semi,i2
      cont=0
-     Print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
+     'Print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
      Dim As Integer lim1, lim2, grupo, mayorgrupo, noct
      For j = 1 To MaxPos -2
-      Print #2,"POSICION :";J
+      'Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
       cont=0
       For i= NB To NA
@@ -2244,7 +2254,7 @@ Sub ReCalCompas()
 '' A ESA SUBRUTINA Y PONERLA EN NUCLEO
        semi => Roll.trk(i,j).nota  
       If valdur > 0 And valdur < 181 And semi >=1 And semi <=12 Then
-        Print #1, "LECTURA DUR: ";valdur;" EN LA CARGA j: ";j;" i: "; i;" figura ";figura(valdur)
+       ' Print #1, "LECTURA DUR: ";valdur;" EN LA CARGA j: ";j;" i: "; i;" figura ";figura(valdur)
        ' Print #3, "nota: "; i; " posi: "; j; " dur: ";valdur
         Select Case valdur
          Case  1   To 45
@@ -2267,7 +2277,7 @@ Sub ReCalCompas()
         End Select
 
         If  valdur >= lim1 And valdur <=lim2 And lim1 > 0 And lim2> 0 Then
-         Print #1, "Valdur i ";valdur ; i ; " grupo ";grupo;" figura ";figura(valdur)
+        ' Print #1, "Valdur i ";valdur ; i ; " grupo ";grupo;" figura ";figura(valdur)
          ' Print #1,"i NB ";i,NB
          If  cont=0   Then 'mira duraciones
           mayor=pesoDur(valdur):mayorgrupo=grupo
@@ -2284,14 +2294,18 @@ Sub ReCalCompas()
         EndIf
       EndIf 'jmg OJO OJO
       Dim As Integer iades =(mayorgrupo -1)*45 + 1
+      If mayorgrupo=0 Then '05-07-2021
+        iades=0
+      EndIf
       Dim As Integer iahas = mayorgrupo * 45 
-       If i=NA Then
+      
+       If i=NA  Then
 
-        Print #1,"i=NA i: ";i;" NA: ";NA;" Mayor ";mayor;" grupo:"; mayorgrupo
+        'Print #1,"i=NA i: ";i;" NA: ";NA;" Mayor ";mayor;" grupo:"; mayorgrupo
         For ia= iades To iahas ' tresillos es grupo 
          If mayor=pesoDur(ia) Then
           valdur=ia
-             Print #1, "peso de mayor encontrado valdur ";valdur; "dur ";ia; " grupo ";mayorgrupo
+        '     Print #1, "peso de mayor encontrado valdur ";valdur; "dur ";ia; " grupo ";mayorgrupo
           Exit For   
          EndIf
         Next ia
@@ -2310,7 +2324,7 @@ Sub ReCalCompas()
          EndIf
          
          if DUR<=180 Then
-          Print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo;" figura ";figura(durm)
+         ' Print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo;" figura ";figura(durm)
           calcCompas(j)
          If carga=1 Then
  '------zzz
@@ -2325,9 +2339,7 @@ Sub ReCalCompas()
 '-------   
          EndIf   
           
-          
-          
-          Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j).Posi;" figura ";figura(durm)
+          'Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j).Posi;" figura ";figura(durm)
           valdur=0
           DUR=0
           mayor=0
@@ -2397,10 +2409,10 @@ Sub CargaArchivo()
      carga=1 ' no es lo mismo calcCompas con cargar o procesando
      Dim As Integer i,j , mayor,ia,valdur,cont, semi
      cont=0
-     Print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
+ '    Print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
      Dim As Integer lim1, lim2, grupo, mayorgrupo
-     For j = 1 To MaxPos -2
-      Print #2,"POSICION :";J
+     For j = 1 To MaxPos '  -2 11-07-2021
+'      Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
       For i= NB To NA
 /'      
@@ -2583,7 +2595,7 @@ Sub GrabarArchivo (nombre As String)
      Dim grabaLim (1,1)  As dat 
      Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
-Print #1, "inicio MaxPos "; MaxPos
+'Print #1, "inicio MaxPos "; MaxPos
  For i2 = 1 To MaxPos
      For i1 = NB To NA
        If Roll.trk(i1,i2 ).nota=190 And Roll.trk(i1,i2 ).dur=190 Then
@@ -2633,16 +2645,16 @@ Next i1
 
 
 
-Print #1, "final MaxPos "; MaxPos
-Print #1,"---------------------------------------- K= "; K
-  For i1 = NB To NA
-  Print #1,i1;"|";
-    For i2 = 1 To MaxPos
-       Print #1,Trabajo(i1,i2).nota;"*";Trabajo(i1,i2).dur;"|";
-    Next i2
-    Print #1,
-   Print #1,"------------------------------------------" 
-  Next i1
+'Print #1, "final MaxPos "; MaxPos
+'Print #1,"---------------------------------------- K= "; K
+'  For i1 = NB To NA
+'  Print #1,i1;"|";
+'    For i2 = 1 To MaxPos
+'       Print #1,Trabajo(i1,i2).nota;"*";Trabajo(i1,i2).dur;"|";
+'    Next i2
+'    Print #1,
+'   Print #1,"------------------------------------------" 
+'  Next i1
   
  '''Shell "NOTEPAD test-AAAAA.TXT" 
 ''''Exit sub
@@ -2682,7 +2694,7 @@ Print #1,"---------------------------------------- K= "; K
      ' en dur tomamosla nota y esala grabamos en pb o ins
      ' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
      ' -------------------------------------
-    Dim As Integer i,j,notafinal
+'    Dim As Integer i,j,notafinal
 '    For j = 1 To MaxPos
 '     For i = NB To NA
 '      If Roll.trk(i,posicion+1).dur = 182 Then
@@ -2696,7 +2708,7 @@ Print #1,"---------------------------------------- K= "; K
 '      EndIf
 '     Next i
 '    Next j
-     grabaPos(1,1).pb = notafinal
+'     grabaPos(1,1).pb = notafinal
  '    Print #1,"****))) nota final y dur final "; notafinal,Roll.trk(i,posicion+1).dur
      '****))) nota final y dur final  0   0
      ' no existe mas 182 no se graba enningun lado q raro
