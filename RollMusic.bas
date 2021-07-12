@@ -1,3 +1,5 @@
+' 9.5 acordestriadas a partir de una fundamental.
+' 9.5 NUEVO ARCHIVO BORRA nombre y todo lo de 'Q'.
 ' Ubicar Home, End de secuecnia pulsando esas teclas.
 ' copiar una zona 1 o mas veces en la posicion elegida
 '0.0.8.9.2.0 11-07-2021  mover zona a la derecha o izquierda con M + Click en la pos elegida
@@ -135,13 +137,25 @@ Const NULL = 0
 Const NEWLINE = !"\n"
 ' iup fin
 Type dat Field=1
- nota As UByte
- dur As UByte  ' duracion
- vol As UByte  ' volumen
- pan As UByte  ' paneo
- pb  As UByte  ' pitch bend
+ nota As UByte  ' en un futuro contendra nota, octava etc 
+ dur As  UByte  ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
+ vol As  UByte  ' volumen
+ pan As  UByte  ' paneo
+ pb  As  UByte  ' pitch bend
  inst As UByte ' instrumento para cada nota podra ser distinto
 End Type
+' TRABAJO FUTURO: COMPRESION DEL VECTOR PARA GRABAR:
+' En nota indicaremos el nro de octava tambien desde 21 a 29,21=oct1, 22=oct2,23=oct3 ETC
+' y de esa manera para grabar ocuparemos menos lugar se comprimirá el vector...
+' ' simbolos de pentagrama, repeticion coda, cambio de ritmo..eso lo pondre en nota.
+' repeticion: para ello usaremos 3 numeros 30( indica comienzo),31(indica final)
+' 32(repeticion) 
+' vol se usa de 0 a 127, el resto no se usa, lo usaremos para guardar cosntruccion
+' de intervalos,a partir de una fundamental, 2da M/m,3era M/m,4ta justa,5ta, 6, 7,8,9,11
+' luego los acordes se construiran a partir de esos intervalos. 
+' seran como minimo 12 intervalso distintos ¿?...
+' luego vendran traiadas M/m, cuatriadas Maj,Maj7,m,m7, etc,etc
+' luego vendran las inversiones de triadas y cuatriadas ¿?..
 
 Dim Shared As Long CONTROL1 = 0
 ' ROLL PARAEL GRAFICO PERO LOS TRCKS PODRIAN SER DISTINTOS
@@ -168,7 +182,7 @@ Dim direp As ZString  Ptr
 Dim dires As String
 
 For ix = 0 To __FB_ARGC__
- '     Print #1, "arg "; ix; " = '"; Command(ix); "'"''
+ '    ' Print #1, "arg "; ix; " = '"; Command(ix); "'"''
 
  If ix=1 Then
   desde= CInt(Command(ix))
@@ -203,7 +217,7 @@ EndIf
 Dim Shared As Integer desdevector
 Dim Shared As Integer hastavector
 
-CantTicks=cantMin * 128 * tempo/4  ' 76800 ticks...
+CantTicks=cantMin * 128 * tempo/4  ' 76800 ticks...o pasos
 CantTicks=76800
 Type paso Field=1
  Posi As Integer
@@ -836,25 +850,25 @@ If MultiKey (SC_F12) Then
  Dim As Integer i1, i2
  Dim As String result 
  ' testeo solo en la 1er octva por ahora
- Print #5,"vuelco de 1er octava "
- Print #5,
+ 'Print #5,"vuelco de 1er octava "
+ 'Print #5,
  For i1 = 1 To 12
   For i2= 1 To Maxpos
    result = Format (Roll.trk(i1, i2).nota,"00")
-   Print #5,  result;"-";
+ '  Print #5,  result;"-";
   Next i2
-  Print #5,
+  'Print #5,
   For i2= 1 To Maxpos
    result = Format (Roll.trk(i1, i2).dur,"00")
-   Print #5, result;"-";
+  ' Print #5, result;"-";
   Next i2
-  Print #5,
-  Print #5,"------------------------"
+ ' Print #5,
+ ' Print #5,"------------------------"
  Next i1
  'While Inkey <> "": Wend
  'Sleep 150
  'Close 5
- Print #5,"fin >>>>>>>>>>> "
+ 'Print #5,"fin >>>>>>>>>>> "
 EndIf
 
 If MultiKey (SC_F10) Then
@@ -907,7 +921,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
  Else
    If playb = 0 And MaxPos > 1 Then
       playb=1
-      Print #1,"SPACE call play"
+  '    Print #1,"SPACE call play"
       'thread1 = ThreadCreate(@playAll)
       playAll()
       menunew=0
@@ -1140,7 +1154,7 @@ If comEdit = TRUE Then
   EndIf
   If MultiKey(SC_CONTROL) And MultiKey(SC_0) Then ' fin seq en edit sin cursor
      DUR = 182
-     Print #1,"DUR=182 PUTA!"
+'     Print #1,"DUR=182 !"
      nota=0
      Exit Do
   EndIf
@@ -1248,7 +1262,7 @@ If comEdit = FALSE Then ' construir cifras para copiar Nveces por ejemplo
  If pasoZona1 > 0 And pasoZona2 > 0 And copiarZona=0 And cifra <> "" Then
     digito= digito + cifra
     numero = cint(digito)
-    Print #1,"numero ", numero
+'    Print #1,"numero ", numero
     copi=numero
     cifra=""
     Exit Do  
@@ -1355,16 +1369,16 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    Roll.trk((nota +(estoyEnOctava -1) * 13),posn+1).dur = 182
    
    If notaOld > 0 And notaOld <> nota  Then
-    Print #1,"Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota"; _
-              Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota
+  '  Print #1,"Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota"; _
+   '           Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota
     Roll.trk((notaOld +(estoyEnOctavaOld -1) * 13),posn).dur = 181
     Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).dur = 181
     Roll.trk((notaOld +(estoyEnOctavaOld -1) * 13),posn).nota = 181
     Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota = 181
-    Print #1,"(notaOld +(estoyEnOctava  -1) * 13)"; notaOld +(estoyEnOctava  -1) * 13
-    Print #1,"posn ";posn
-    Print #1,"notaold";notaold
-    Print #1,"nota";nota
+ '   Print #1,"(notaOld +(estoyEnOctava  -1) * 13)"; notaOld +(estoyEnOctava  -1) * 13
+ '   Print #1,"posn ";posn
+ '   Print #1,"notaold";notaold
+ '   Print #1,"nota";nota
     '''ojo probar todo inserciones x  etc    endif
    EndIf
    ' cargamos Roll entonces Duracion no lo mostrara como "./."
@@ -1727,7 +1741,7 @@ If (ScreenEvent(@e)) Then
    EndIf
 ' -------------------------------
    If e.scancode = 83 Then '<====== SC_DELETE cambia a silencio o nada le suma 16+16 ver eso
-      Print #1, "PULSADO BORRAR ..·.."
+   '   Print #1, "PULSADO BORRAR ..·.."
        If borrar=1 Then
           borrar=0
           Exit Do
@@ -1746,7 +1760,7 @@ If (ScreenEvent(@e)) Then
     Exit Do
    EndIf
    ' para insertar en cada iten de Roll cda vez queingreso nota al final
-   ' comunmente se agregara 66 para indicar fin de datos..y loindicaremos
+   ' comunmente se agregara 182 ? 66 para indicar fin de datos..y loindicaremos
    'con FIN por ahora para visualizarlo
 
    If e.scancode = SC_INSERT And insert=0  Then '34 <===== SC_INSERT
@@ -1755,24 +1769,24 @@ If (ScreenEvent(@e)) Then
      ' solo tiene sentido insertar en lo echo y en cursor libre
      insert=1 ' comienzo hbilitotel I para insertr nota por nota
      indaux=0
-     Print #1,">>>SC_INSERT ajust STARTINSERT ", StartInsert
+   '  Print #1,">>>SC_INSERT ajust STARTINSERT ", StartInsert
      If indaux=0 Then ' no haria falta todas las demas inserciones se deben
       'hacer con I no volver a repetir SC_INSERT sino se pulso SC_END
       StartInsert = posicion + curpos  ' guardo sin modificar el comienzo xxx ok
      EndIf
-     Print #1,">>>SC_INSERT  despues ajuste STARTINSERT ", StartInsert
+   '  Print #1,">>>SC_INSERT  despues ajuste STARTINSERT ", StartInsert
      '''Erase (RollAux.trk) ' borro lo que habia en el auxiliar
      ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
      '''Erase (notasInsertadas)
      ReDim notasInsertadas (1 To 1500)
      notins=0
-     Print #1, ">>>SC_INSERT insert indaux borro RollAux.trk: ",insert,indaux
+   '  Print #1, ">>>SC_INSERT insert indaux borro RollAux.trk: ",insert,indaux
      'sigue el proceso en RollSub->sub cursor
     EndIf
    EndIf
    If e.scancode = SC_I And insert=1 And cursorVert=1 Then
     insert= 2 ' habilito cursor para que ingrese
-    Print #1, "-----SC_I -> insert,indaux : ",insert,indaux
+  '  Print #1, "-----SC_I -> insert,indaux : ",insert,indaux
    EndIf
    If e.scancode = SC_END Then ' mueve insercion, podria usarse para ELIMINAR Probar
     If backspace=1 Then
@@ -1798,8 +1812,8 @@ If (ScreenEvent(@e)) Then
     If cursorVert=1  Then ' solo válido con Ctrl-M 30-06-2021 
      ' no mas reemplazos
      insert=3
-     Print #1, "-----SC_END StartInsert,indaux,insert,nota: ",StartInsert,indaux,insert,nota
-     Print #1,"indaux no deberia valer cero !!!! es global "
+   '  Print #1, "-----SC_END StartInsert,indaux,insert,nota: ",StartInsert,indaux,insert,nota
+   '  Print #1,"indaux no deberia valer cero !!!! es global "
      moveresto (StartInsert,indaux, insert,nota)
      '  param : posicion comienzo (fijo), indice incremental para el aux
      ' ,insert comando habilitado = 1
@@ -2429,14 +2443,14 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
   And modifmouse<> 3 Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
   nota=nE   ''<== 1er nota ingresada para la duracion y nota elegida
   nroClick=0
-  Print #1, "------------------------------------------------------------"
-  Print  #1," DUR > 0 And nE > 0 And nroClick = 1 And ayudaNuevaNota=FALSE and comEdit=TRUE "
-  Print  #1," And ayudaModif=FALSE "
-  Print  #1," (7) ESTADO INGRESA O MODIFICA 1ER NOTA"
-  Print  #1," 7-><== 1er nota ingresada para la duracion y nota elegida"
-  Print  #1," 7->nota=nE   ", nE
-  Print  #1," 7-> nroClick=0"
-  Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+ ' Print #1, "------------------------------------------------------------"
+ ' Print  #1," DUR > 0 And nE > 0 And nroClick = 1 And ayudaNuevaNota=FALSE and comEdit=TRUE "
+ ' Print  #1," And ayudaModif=FALSE "
+ ' Print  #1," (7) ESTADO INGRESA O MODIFICA 1ER NOTA"
+ ' Print  #1," 7-><== 1er nota ingresada para la duracion y nota elegida"
+ ' Print  #1," 7->nota=nE   ", nE
+ ' Print  #1," 7-> nroClick=0"
+ ' Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 
   EndIf
    EndIf
@@ -2484,19 +2498,19 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
      If pasoZona1 = 0 Then  ' selecion 1er posicion de la zona
         pasoZona1=  pasox ' pos de la 1er ventana
         pasoNota=0 
-        Print #1,"pasoZona1=",pasoZona1;" pasoNota=";pasoNota
+   '     Print #1,"pasoZona1=",pasoZona1;" pasoNota=";pasoNota
         Exit Do
      EndIf
 
      If pasoZona1 > 0 And pasoZona1 <> pasox Then ' posicion 2 de la zona
         pasoZona2= pasox
         pasoNota=0
-        Print #1,"pasoZona2=",pasoZona2;" pasoNota=";pasoNota
+    '    Print #1,"pasoZona2=",pasoZona2;" pasoNota=";pasoNota
         Exit Do
      EndIf
      If pasoZona1=pasoZona2 And pasoNota<>pasoy Then 
         pasoNota=nE
-        Print #1,"pasoNota=",pasoNota
+     '   Print #1,"pasoNota=",pasoNota
         Exit Do
      Else
         pasoNota=0   
@@ -2505,7 +2519,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
      If pasoZona1 > 0  And pasoZona1 = pasox Then ' la zona es solo  1 sola columna
         pasoZona2= pasox
         pasoNota=0 ' 28-06-2021 mueve acorde si existe , sino meuve nota 
-        Print #1,"pasoZona1 iguales pasoZona2=",pasoZona2;" pasoNota=";pasoNota
+     '   Print #1,"pasoZona1 iguales pasoZona2=",pasoZona2;" pasoNota=";pasoNota
      EndIf
   EndIf 
 ' FIN SELECION ZONA

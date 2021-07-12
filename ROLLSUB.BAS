@@ -516,7 +516,7 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
  ElseIf DUR=182 Then ' borrado 
      Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = 182
      Roll.trk(notacur + (nro-1) * 13, n + curpos).nota =181   ' 5.7.2
-     Print #1,"FINDE SECUENCIA !!"
+  '   Print #1,"FINDE SECUENCIA !!"
      cambiadur = 0
      DUR=0
  ElseIf DUR=0 Then ' borrado
@@ -635,7 +635,7 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
   ' Print #1, "call a movedato con indaux ",indaux
   ' n es StartInsert fijo no se modifica mas
   movedato (n + curpos,indaux, insert,notacur + (nro-1) * 13 ) 'antes de reemplazarlo xxx
-  ' Print #1, "regreso de movedato con indaux ",indaux
+ '  Print #1, "regreso de movedato con indaux ",indaux
   ' param : posicion comienzo (fijo), indice incremental para el aux
   ' ,insert comando habilitado = 1
   'luego reemplazo
@@ -652,7 +652,7 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
   ' antes de reemplazarla
   insert=1  ' habilita de nuevo la tecla I deingreso de insercion en un lugar
   'elegido con cursor
-  Print #1, "insert 1 ",insert
+ ' Print #1, "insert 1 ",insert
 
  EndIf
  'proceso modificar Nuevo secunci limpia terminda en NroCol ,con
@@ -807,14 +807,14 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
     cairo_set_source_rgba c, 0, 1, 0, 1
       
      While InKey<>"" :Wend
-      Print #1,"--->entra a reproducir thread1 "
+   '   Print #1,"--->entra a reproducir thread1 "
               play=1        
 '    If (MouseButtons And 1) Then
         menuNew =0
         If  MaxPos > 1 Then
          thread1 = ThreadCreate(@PlayAll)
         EndIf 
-        Print #1,"--->paso llamada a thread1 "
+   '     Print #1,"--->paso llamada a thread1 "
     ''    menuNew = 4 por hora sin elecciones
  '   EndIf
 
@@ -957,6 +957,9 @@ EndIf
           notacur=1
           nroCompas=0
           tres=0:pun=0:sil=0:mas=0:doblepun=0:cuart=0
+          tres=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
+          SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
+          nombre = ""
           Dim As Integer r1,i
           For i=NB To NA 
             For r1= posn+1 To CantTicks
@@ -1195,7 +1198,7 @@ EndIf
      cairo_set_source_rgba c, 1, 0, 0, 1
      NB => 1 + (desde) * 13   ' 27 para 3
      NA => 12 + (hasta) * 13  ' 90 para  7
-     Print #1,"NB,NA,DESDE,HASTA ";NB,NA,desde,hasta
+  '   Print #1,"NB,NA,DESDE,HASTA ";NB,NA,desde,hasta
      CambiarDim()
      MaxPos = 1 'NroCol
      posicion=1:posn=1
@@ -1207,7 +1210,7 @@ EndIf
 
      redimensionar=1
      RTA="REDIMENSION VISUAL Y FISICA OK"
-     Print #1, RTA
+   '  Print #1, RTA
 
     EndIf
    Else
@@ -1417,11 +1420,11 @@ Sub movedato (ByVal n As Integer, ByRef indaux As Integer,ByRef  insert As Integ
   RollAux.trk(i1,indaux)= Roll.trk(i1,n ) 'xxx  n ya contiene curpos
  Next i1
  ' movio la nota queestaba antes de pulsar insert
- Print #1, "EN MOVEDATO carga RollAux.trk con valores viejos de roll"
- Print #1,"RollAux.trk(nota,indaux) nota,indaux " ,nota,indaux
- Print #1,"Roll.trk(nota,n) nota,n, curpos" ,nota,n, curpos
- Print #1,"duracion cargda RollAux.trk(nota,indaux).dur: ", RollAux.trk(nota,indaux).dur
- Print #1,"nota  cargda RollAux.trk(nota,indaux).nota : ", RollAux.trk(nota,indaux).nota
+ 'Print #1, "EN MOVEDATO carga RollAux.trk con valores viejos de roll"
+ 'Print #1,"RollAux.trk(nota,indaux) nota,indaux " ,nota,indaux
+ 'Print #1,"Roll.trk(nota,n) nota,n, curpos" ,nota,n, curpos
+ 'Print #1,"duracion cargda RollAux.trk(nota,indaux).dur: ", RollAux.trk(nota,indaux).dur
+ 'Print #1,"nota  cargda RollAux.trk(nota,indaux).nota : ", RollAux.trk(nota,indaux).nota
  'vamos reemplazando los eventos y sobreescribiendo con los nuevos pero
  '  los viejos se van guardando para desplazarlos a la derecha.
  ' RollAux.trk tendra lo viejo, notas insertdas lo nuevo
@@ -1450,25 +1453,25 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
   'Print #1,"antes del FOR Roll,RollAux.trk.. indpos,indaux ", indpos,indaux
   ' debemos barrer solo la octava? no porque puede haber otras octavas cargadas
   For s= NB To NA 'barremos todas las notas verticalmente para una misma posicion
-   If Roll.trk(s,indpos).dur = 182 Then ' fin de datos de Roll
+   If Roll.trk(s,indpos).dur = 182 Or indpos=MaxPos Then ' fin de datos de Roll
     RollAux.trk(s,indaux) = Roll.trk(s,indpos)
     insert= 4 ' fin de llenado de almacenamiento auxiliar
-    '    Print #1,"sale moveresto encontro 182 fin, indaux :" ,indaux
+  '      Print #1,"sale moveresto encontro 182 fin, indaux :" ,indaux
     Exit Do
    EndIf
    RollAux.trk(s,indaux) = Roll.trk(s,indpos)
    If s=1 Then
-    '  print #1, "luego de la copia a AUX del resto "
+  '    print #1, "luego de la copia a AUX del resto "
    EndIf
    If (Roll.trk(s,indpos).dur <>181  And Roll.trk(s,indpos).nota <> 181) _
     And (Roll.trk(s,indpos).dur > 0 Or Roll.trk(s,indpos).nota > 0)    Then
-    '   print #1, "Roll.trk(";s,indpos;").nota ",Roll.trk(s,indpos).nota
-    '   print #1, "Roll.trk(";s,indpos; ").dur ",Roll.trk(s,indpos).dur
+   '    print #1, "Roll.trk(";s,indpos;").nota ",Roll.trk(s,indpos).nota
+   '    print #1, "Roll.trk(";s,indpos; ").dur ",Roll.trk(s,indpos).dur
    EndIf
    If (RollAux.trk(s,indaux).dur <> 181 And RollAux.trk(s,indaux).nota <> 181) _
     And (RollAux.trk(s,indaux).dur > 0 Or RollAux.trk(s,indaux).nota > 0)    Then
-    '   print #1, "RollAux.trk(";s,indaux; ").nota ",RollAux.trk(s,indaux).nota
-    '   print #1, "RollAux.trk(";s,indaux; ").dur ",RollAux.trk(s,indaux).dur
+   '    print #1, "RollAux.trk(";s,indaux; ").nota ",RollAux.trk(s,indaux).nota
+   '    print #1, "RollAux.trk(";s,indaux; ").dur ",RollAux.trk(s,indaux).dur
    EndIf
 
   Next s
@@ -1480,39 +1483,39 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
  ' el 66 lo muevo??? sino debo hcer indaux = indaux -1
  ' indaux=indaux - 1 no le resto 1 copio el 66...el fin se corre
 
- Print #1, "StartInsert: " ,StartInsert '  ya se le sumo curpos
+' Print #1, "StartInsert: " ,StartInsert '  ya se le sumo curpos
  If insert = 4 Then 'movemos de nuevo todo el aux completo a Roll desde
   ' laultimainsercion o sea Startindice +
-  Print #1, "insert 4 movemos Aux a ROLL indaux maximos elementos en Aux: ",indaux
+ ' Print #1, "insert 4 movemos Aux a ROLL indaux maximos elementos en Aux: ",indaux
   t = StartInsert + cantInserciones ' xxx  OK
 
-  Print #1, "posicion, posn "; posicion, posn
+ ' Print #1, "posicion, posn "; posicion, posn
   For k = 1 To indaux ' todo el auxiliar SUMA ROLL REEMPLAZADO + NOREEMPLAZADO
-   Print #1, "k auxiliar "; k
+ '  Print #1, "k auxiliar "; k
    For s=NB To NA  ' todos los semitonos 96
     Roll.trk(s,t) = RollAux.trk(s,k)
     If s=1 Then
-     Print #1, "luego de la  copia A ROLL "
+ '    Print #1, "luego de la  copia A ROLL "
     EndIf
     If (Roll.trk(s,t).dur <> 181 And Roll.trk(s,t).nota <> 181) _
      And (Roll.trk(s,t).dur > 0 Or Roll.trk(s,t).nota > 0)    Then
-     '  Print #1, "I) Roll.trk(";s,t;")nota,s,t : ", Roll.trk(s,t).nota, s, t
-     '  Print #1, "I) Roll.trk(";s,t;")dur, s,t : ", Roll.trk(s,t).dur,s,t
+   '    Print #1, "I) Roll.trk(";s,t;")nota,s,t : ", Roll.trk(s,t).nota, s, t
+   '    Print #1, "I) Roll.trk(";s,t;")dur, s,t : ", Roll.trk(s,t).dur,s,t
     EndIf
     If (RollAux.trk(s,k).dur <> 181 And RollAux.trk(s,k).nota <> 181) _
      And (RollAux.trk(s,k).dur > 0 Or RollAux.trk(s,k).nota > 0)    Then
-     '  Print #1, "II) RollAux.trk(";s,k;").dur ", RollAux.trk(s,k).dur
-     '  Print #1, "II) RollAux.trk(";s,k;").nota ", RollAux.trk(s,k).nota
+   '    Print #1, "II) RollAux.trk(";s,k;").dur ", RollAux.trk(s,k).dur
+   '    Print #1, "II) RollAux.trk(";s,k;").nota ", RollAux.trk(s,k).nota
     EndIf
    Next s
    t=t+1
   Next k
-  Print #1, "Valor despues de END insercion, posicion, posn "; posicion, posn
+ ' Print #1, "Valor despues de END insercion, posicion, posn "; posicion, posn
   '' posicion = MaxPos con posn es suficiente,sino se va al tramo final
   posn = MaxPos
-  Print #1, "usamos MxPos pra posicion, posn "; posicion, posn
+'  Print #1, "usamos MxPos pra posicion, posn "; posicion, posn
   '' esto jode porque con insert=0 entra y dej aind= 0' final del ciclo
-  Print #1 ,"final ciclo moveresto a AUX"
+ ' Print #1 ,"final ciclo moveresto a AUX"
 
   For s = NB To NA
    For k=  StartInsert To MaxPos ' gracias a esto anda acordes
@@ -1525,7 +1528,7 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
   ' nota en 181 y durciones en  0. bueno hor determinamos donde y cuanto se inserto.
   ' estos son los valores  StartInsert y cantInserciones.
   ' StartInsert es de Roll antesdela insercion
-  Print #1, "==> valor de nota antes de CORRECCION: ",nota
+'  Print #1, "==> valor de nota antes de CORRECCION: ",nota
 
   ' aca revisamos el Roll solo la parte insertada , encada insercion en Roll
   ' esa posiicon se corresponde al de notas insertadas biunivocmente,,
@@ -2132,10 +2135,10 @@ Sub mayorDurEnUnaPosicion (ByRef posn as integer)
       valdur=ia
      EndIf
     Next ia
-    Print #1,"          J, valdur Mayor: "; J, valdur
+   ' Print #1,"          J, valdur Mayor: "; J, valdur
     DUR=valdur
     calcCompas(j)
-    Print #1,"ABRIR compas(j) ";compas(j).Posi; " j :"; j
+'    Print #1,"ABRIR compas(j) ";compas(j).Posi; " j :"; j
 
    EndIf
   EndIf
@@ -2146,7 +2149,7 @@ Sub mayorDurEnUnaPosicion (ByRef posn as integer)
 
 End Sub
 Sub organizaCompases()
- Print #1,"1-organiza Compases "
+' Print #1,"1-organiza Compases "
  Dim j As Integer
  For j = 1 To MAxPos
   MayorDurEnUnaPosicion (j)
@@ -2411,7 +2414,7 @@ Sub CargaArchivo()
      cont=0
  '    Print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
      Dim As Integer lim1, lim2, grupo, mayorgrupo
-     For j = 1 To MaxPos '  -2 11-07-2021
+     For j = 1 To MaxPos   -2 '11-07-2021
 '      Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
       For i= NB To NA

@@ -61,7 +61,19 @@
     2.3) Modificacion.
     2.4) Copiar 1 nota.
     2.5) Borrar 1 Nota.
-
+   2.6) Insertart Notas:
+          - posicionar el cursor en la posicion y lugar de la nota a insertar, debe ser en la misma columna
+             que será desplazada a la derecha junto con toda la secuecnia  luego de la insericon.
+         - presionar la tecla Insert.
+         - elegir duracion y luego posicionarse en el semitono deseado moviendo cursores arriba abajo, puede ser
+           encima de una nota existente , luego pulsar la letra 'I' y aparecera la duracion elegida en el semitono elegido
+           si habia otra duracion lo reemplazara visualmente pero no se borrara. seguir haciendo lo mismo
+           elegir otra duracion o seguir con la misma ubicar el cursor con la condicion de cambiar de posicion puede ser
+           el mismo semitono u otro, la condicion es que nunca forme o inserte un acorde. 
+         - Terminada la insercion de notas nuevas  pulsar la tecla 'Fin' y toda la secuencia desde el punto de insericon 
+          se movera a derecha segun sean la cantidad de posiciones insertadas y las notas nuevas  quedaran insertadas
+          en la secuencia.
+ 
     3) Recalcular Compas <R>
     4) Grabar Archivo [Archivo]->[Grabar] 
     5) Cargar Archivo [Archivo]->[Abrir] 
@@ -69,7 +81,7 @@
        La edicion siempre se hará en font=18, pues la misma depende del tamaño
        del mismo y está diseñado para ese tamaño.(se cambira en el futuro a 
        proporcionlidad)
-    7) Trasponer pro semitonos Ctrl-T - flecha arriba sube semitono.(flecha abajo no anda todavia)
+    7) Trasponer por semitonos Ctrl-T - flecha arriba sube semitono.(flecha abajo no anda todavia)
        pulsar Q para terminar la accion de trasponer.
 
    1) Modo Lectura se inicia en color de fondo Negro y texto blanco (ultimo 
@@ -197,14 +209,20 @@ III)
         con todas sus duraciones iguales o diferentes.
     para dar play se puede usar la barra espaciadora o Ctrl click en [Reproducir], 
     para detener el play pulsar P (solo funciona si se usó el play con Ctrl Click 
-    que será la version definitiva, en debug se usa play con la barra espaciadora con la     cual no funciona la telca P ni tampoco la iluminaicon de notas al ejecutar.
+    que será la version definitiva, en debug se usa play con la barra espaciadora con la
+    cual no funciona la telca P ni tampoco la iluminaicon de notas al ejecutar.
     Con Ctrl Click en Reproducir tambien se puede hacer otras actividades en el programa
-    ya que el play se ejecuta en un proceos independiente. en el futuro se podra     modificar volumen. Paneo instrumentos etc...para probar la ejecucion.
-     el metodo de play y el vector que tenga los datos se cambiará,por ahora solo es de      prueba. y se usa el mismo vector de visualizacion para el play, para hacer los tracks no se      usará el vector de visualiacion se hará nuevos que solo sea un secuencia 
-     sin datos paralelos...los paralelos solo se usarán en la visualizacion.
-    LOOP: usa las mismas marcas echas para trasponer o se Ctrl Click en dos posiciones
+    ya que el play se ejecuta en un proceos independiente. en el futuro se podra
+    modificar volumen. Paneo instrumentos etc...para probar la ejecucion.
+    el metodo de play y el vector que tenga los datos se cambiará,por ahora solo es de      prueba. y se usa el mismo vector de visualizacion para el play, para hacer los tracks no se      usará el vector de visualiacion se hará nuevos que solo sea un secuencia 
+    sin datos paralelos...los paralelos solo se usarán en la visualizacion.
+    Nota:Si el borde izquierdo de la pantalla no se situa al comienzo de la secuecnia,
+         la ejecucion comenzara desde esa pocicion hasrta el final, el borde izquierdo seria
+         el comienzo por defecto. Si quiero una zona de play se usa la zona de copiar o mover
+         y luego el play ejecutara una sola vez.
+    LOOP: usa las mismas marcas echas para la Zona en trasponer o se Ctrl Click en dos posiciones,
           no se usa el 3er click, luego para que haga loop pulsamos ALT-L
-          Para detenr la ejecucion como antes pulsar P.(parar)
+          Para detener la ejecucion como antes pulsar P.(parar)
  
 2)   Borrar desde una posicion hasta el final.
      Estando en modo lectura posicionar el borde izquierdo en la posicion deseada de corte
