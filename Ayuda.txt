@@ -11,7 +11,36 @@
  
     III) USO:
  
-    1) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia
+    1.0) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
+    1.1) El espaciado entre lineas se puede cambiar.
+    1.2) Trasponer todo: Ctrl-T habilita la trasposicion, Q la deshabilita.
+    1.3) Recalcular Compas <R>.
+    1.4) Grabar Archivo.
+    1.5) Cargar Archivo.
+    1.6) Tamaño Font. 
+
+    1) El Modo Lectura se inicia en color de fondo Negro y texto blanco (ultimo 
+      cambio).
+      - Para recorrer las octavas se usa flecha arriba o abajo, Retroceso-Pagina, 
+        Avance Pagina ó la rueda del mouse y luego se da click en cualquier parte
+        la octava deseada.
+      - la secuencia cargada puede recorrerse con teclas derecha izquierda o en 
+        forma más rápida con Ctrl-derecha Ctrl-Izquierda.
+      - Achicar la pantalla en modo Telón F7 / F8. O usando click en los botones 
+        amarillo(-) verde(+) de la esquina superior derecha, que equivalen a 
+        F7/F8, levanta bajar Telón o achicar agrandar la pantalla respectivamente.
+      - Mover pantalla, en la cinta gris del menu lado derecho se hace click 2 o 3
+        veces y se  draga suavemnte, no responde a dragados muy veloces.Para poder
+        efectuarlo se ubica el mouse sobre la cinta superior del menu, y se busca 
+        <MENU> desplazando flecha derecha -izquierda, sin salir dela zona de la 
+        cinta, tratar de dragar la ventana.
+      - Teclas -/+ keyboard, achica o agranda la altura de las octavas, desplazando
+        la zona de edición para arriba, deja parte libre inferior para otras cosas.
+      - redimension de la pantalla tanto en ancho como en altura sin tocar la altura 
+        de las octavas. Para ello se pulsa el simbolo <> el cual se pondrá rojo, y
+        dragando la ventanadesde el centro  de la misma se puede cambiar ancho y 
+        altura. Para terminar volver a pulsar el simbolo <>.
+
 
     1.1)   El espaciado entre lineas se puede cambiar:
        Pulsar y mantener la tecla control. Girando la rueda del mouse
@@ -35,21 +64,45 @@
        Trasponer una sola nota: el 3er Ctrl-click hacerlo sobre la nota. 
        Trasponer 1 o mas notas al azar en Grupo: pulsar ALT+Click en cada nota
        deseada, luego Ctrl-T o viceversa no import ael orden, subir bajar con 
-       flechas arriba abajo como siempre. Terminar con pulsando letra 'q'.
+       flechas arriba abajo como siempre. Terminar pulsando la letra 'q'.
        (nota: si se da click en [Edicion] se puede ver el contenido de la celda
        en el ultimo caso la nota a mover pasa a volor nE=13, al dar 'q' vuelve a su valor
-       normal segun su ubicacion nE=1 a nE=12 semitono).   
+       normal segun su ubicacion nE=1 a nE=12 semitono, 13 indica trasponer para el programa).   
 
        Mover una zona: igual que antes se selecciona las 2  posiciones de la zona a mover
        o puede ser que las 2 posiciones coincidan (movimiento de columna). Luego
-       pulsar M + Lcik en la posicion donde se requiera mover, puede estar antes de la zona o despues
+       pulsar M + Click en la posicion donde se requiera mover, puede estar antes de la zona o despues
        antes del final de la secuencia o despues del final de la secuencia.
-       Nota si copiamos una zona en blanco agregara una zona en blanco donde se requiera o borrara
-       la zona superponiendo la zona en balnco sobre la region en donde se mueve,
+       Nota si movemos una zona en blanco agregara una zona en blanco donde se requiera o borrara
+       la zona superponiendo la zona en blanco sobre la region en donde se mueve,
 
-       Copiar una zona 1 o mas veces: igual que en mover zona pero no borra la zona original, si pulsamos
-       una numero(1,3,15,etc)) N despues y antes de C+click , copiar N veces esa zona una al lado de la otra 
-       (copia en masa)
+       Copiar una zona 1 o mas veces: igual que en mover zona pero no borra la zona original, si entramos
+       una numero N (1,3,15,etc)), despues y antes de C+click , copia N veces esa zona una al lado de la otra 
+       (copia en masa).
+
+    1.3) Recalcular Compas <R>: para ver rápido si las notas ingresadas forman un compás completo normalmente
+       el compás recalcula la posicon de las barras separadoras automaticamente, sino satisface esa condición
+       no las muestra, hay procesos en que no se hace automatico sino con otras operaciones siguientes, en esos
+       casos un recalculo de los compases se puede ahcer pulsando 'r'.
+
+    1.4) Grabar Archivo [Archivo]->[Grabar]:
+       Si es nuevo pedirá un nombre, al generar un archivo nuevo tambien se borra el nombre anterior.
+       Si se marcaron columnas para borrar con <dur, nota> = 190,190 , se borran pero no se elimina el esapcio 
+       que dejan, al grabar se eliminarán automaticamente, con esta opción mientras se edita solo marcamos 
+       lo que no queremos. Habrá otras para eliminar directamente on line. (usaremos Retroceso o backtrace 
+       en próxima version).
+       
+    1.5) Cargar Archivo [Archivo]->[Abrir]:
+       
+    1.6) Tamaño Font  F9 disminuye <-> F10 aumenta font solamente no la proporcionalidad.
+       La edicion se hacia en font=18 (es el original al cual se vuelve al pulsar 'q') y actualmente en otros
+       tamaños, pues la  misma depende del tamaño del mismo, se cambio para trabajar a distintos tamaños de font.
+       (se cambió proporcionlidad) ESTE CAMBIO SE HACE PULSANDO MAYUSCULAS IZQ + FLECHAS IZQ <-> DER para
+       disminuir o agrandar la proporcionalidad includio el font. Luego para habilitar flechas de navegacion
+       navegar 1ero con Ctrl Flechas Der Izq (navegacion horizontal rapida)  y luego volver a usar sin Ctrl, 
+       esto evita perder la proporcionalidad deseada si pulsamos 'Q' (q resetea todo comandos y proporcionalidad).
+       (se vera como bloquear al proporcionalidad sin que sea afectada por el reseteo q en el futuro)
+ 
     2.0) Modos de Edicion
     2.1) MODO EDIT (click en menu EDICION luego en EDIT cambiara a color 
           verde y la octava seleccionada tambien)
@@ -58,53 +111,33 @@
     
     2.2) MODO EDIT CURSOR ( En MODO EDIT pulsar CTRL+M O dar CTRL+click derecho
          en modo mouse)
+    Nota: en este modo la pantella se congela solo edita lo que se ve, LAS FLECHAS DER IZQ  MUEVE EL CIRSOR 
+    PERO NO LA SECUENCIA. Si los cursores aparecen muy lejos del lugar de operacion deseado dar un click 
+    derecho en la posicion deseada y lso cursores se moveran a esa posición. Mover los cursores con flecha 
+    arriba abajo para ajustar al semitono deseado en esa posicion, o 
+    derecha izquierda para cambiar de posicion. SI DESEO ADELANTAR LA PANTALLA puedo usar Ctrl-Flecha Der
+    Ctrl-Flecha Izq. Al dejar de pulsar Ctrl las flechas solo moveran el cursor nuevamente.
+
     2.3) Modificacion.
     2.4) Copiar 1 nota.
     2.5) Borrar 1 Nota.
-   2.6) Insertart Notas:
-          - posicionar el cursor en la posicion y lugar de la nota a insertar, debe ser en la misma columna
-             que será desplazada a la derecha junto con toda la secuecnia  luego de la insericon.
-         - presionar la tecla Insert.
-         - elegir duracion y luego posicionarse en el semitono deseado moviendo cursores arriba abajo, puede ser
-           encima de una nota existente , luego pulsar la letra 'I' y aparecera la duracion elegida en el semitono elegido
-           si habia otra duracion lo reemplazara visualmente pero no se borrara. seguir haciendo lo mismo
-           elegir otra duracion o seguir con la misma ubicar el cursor con la condicion de cambiar de posicion puede ser
-           el mismo semitono u otro, la condicion es que nunca forme o inserte un acorde. 
-         - Terminada la insercion de notas nuevas  pulsar la tecla 'Fin' y toda la secuencia desde el punto de insericon 
-          se movera a derecha segun sean la cantidad de posiciones insertadas y las notas nuevas  quedaran insertadas
+    2.6) Insertar Notas:
+        - posicionar el cursor en la posicion y lugar de la nota a insertar, debe ser en la misma columna
+          que será desplazada a la derecha junto con toda la secuencia  luego de la inserición.
+        - 1) presionar la tecla Insert.
+        - 2) elegir duracion y luego posicionarse en el semitono deseado moviendo cursores arriba abajo, puede ser
+          encima de una nota existente , luego pulsar la letra 'I' y aparecera la duracion elegida en el semitono elegido
+          si habia otra duración lo reemplazará visualmente pero no se borrará. seguir haciendo lo mismo
+          elegir otra duracion ubicar el cursor con la condicion de cambiar de posicion puede ser
+          el mismo semitono u otro, la condicion es que nunca forme o inserte un acorde. (Los acordes se arman
+          manualmente fuera del proceso de insercion, en el modo cursor en una columna que ya exita una nota previa, 
+          modificando los semitonos vacios de esa columna, nos ubicamos en un semitono pulsamos duracion y 
+          X para modificar.)
+        - Terminada la insercion de notas nuevas  pulsar la tecla 'Fin' y toda la secuencia desde el punto de insericon 
+          se moverá a derecha según sean la cantidad de posiciones insertadas y las notas nuevas  quedarán insertadas
           en la secuencia.
  
-    3) Recalcular Compas <R>
-    4) Grabar Archivo [Archivo]->[Grabar] 
-    5) Cargar Archivo [Archivo]->[Abrir] 
-    6) Tamaño Font  F9 disminuye <-> F10 aumenta
-       La edicion siempre se hará en font=18, pues la misma depende del tamaño
-       del mismo y está diseñado para ese tamaño.(se cambira en el futuro a 
-       proporcionlidad)
-    7) Trasponer por semitonos Ctrl-T - flecha arriba sube semitono.(flecha abajo no anda todavia)
-       pulsar Q para terminar la accion de trasponer.
 
-   1) Modo Lectura se inicia en color de fondo Negro y texto blanco (ultimo 
-      cambio).
-      - Para recorrer las octavas se usa flecha arriba o abajo, Retroceso-Pagina, 
-        Avance Pagina ó la rueda del mouse y luego se da click en cualquier parte
-        la octava deseada.
-      - la secuencia cargada puede recorrerse con teclas derecha izquierda o en 
-        forma más rápida con Ctrl-derecha Ctrl-Izquierda.
-      - Achicar la pantalla en modo Telón F7 / F8. O usando click en los botones 
-        amarillo(-) verde(+) de la esquina superior derecha, que equivalen a 
-        F7/F8, levanta bajar Telón o achicar agrandar la pantalla respectivamente.
-      - Mover pantalla, en la cinta gris del menu lado derecho se hace click 2 o 3
-        veces y se  draga suavemnte, no responde a dragados muy veloces.Para poder
-        efectuarlo se ubica el mouse sobre la cinta superior del menu, y se busca 
-        <MENU> desplazando flecha derecha -izquierda, sin salir dela zona de la 
-        cinta, tratar de dragar la ventana.
-      - Teclas -/+ keyboard, achica o agranda la altura de las octavas, desplazando
-        la zona de edición para arriba, deja parte libre inferior para otras cosas.
-      - redimension de la pantalla tanto en ancho como en altura sin tocar la altura 
-        de las octavas. Para ello se pulsa el simbolo <> el cual se pondrá rojo, y
-        dragando la ventanadesde el centro  de la misma se puede cambiar ancho y 
-        altura. Para terminar volver a pulsar el simbolo <>.
    
    2.0) Modos de Edición.
    2.1) MODO EDIT 
@@ -184,20 +217,6 @@ UBICANDO EL CURSOR Y SOLO CON X REPITE LA ULTIMA NOTA EN ESTE CASO ESPACIO.
        ahi mismo sin salir de Cursor pulsando Ctrl-Delete o Ctrl-Supr.
        Se borrarran las posiciones marcadas,
 
-TECLAS RAPIDAS borrado arevisar y completar
-(DUR,NOTA) 0,181
- CTRL-M SPACE +X= 0,181 
- CTRL-N SPACE 
-------------
-(DUR,NOTA) 190,190 MARCAR DUR,NOTA se obtiene con
-en   CTRL-M  pulsar 0 y luego X
-o en ctrl-m  pulsar DEL yluego  X
-----------------------
-(DUR,NOTA)  0,0 se obtiene con
-en  CTRL-M pulsar solo DEL, borra la nota pero la habilita a ser escrita en EDIT simple o sea ingreso de NOTA nueva.
----------------
-
-
 
 III) 
 
@@ -214,14 +233,15 @@ III)
     Con Ctrl Click en Reproducir tambien se puede hacer otras actividades en el programa
     ya que el play se ejecuta en un proceos independiente. en el futuro se podra
     modificar volumen. Paneo instrumentos etc...para probar la ejecucion.
-    el metodo de play y el vector que tenga los datos se cambiará,por ahora solo es de      prueba. y se usa el mismo vector de visualizacion para el play, para hacer los tracks no se      usará el vector de visualiacion se hará nuevos que solo sea un secuencia 
-    sin datos paralelos...los paralelos solo se usarán en la visualizacion.
+    el metodo de play y el vector que tenga los datos se cambiará, por ahora solo es de prueba. y se usa 
+    el mismo vector de visualizacion para el play, para hacer los tracks no se usará el vector de visualiacion 
+    se hará nuevos que solo sea un secuencia sin datos paralelos...los paralelos solo se usarán en la visualizacion.
     Nota:Si el borde izquierdo de la pantalla no se situa al comienzo de la secuecnia,
-         la ejecucion comenzara desde esa pocicion hasrta el final, el borde izquierdo seria
+         la ejecucion comenzara desde esa pocicion hasta el final, el borde izquierdo seria
          el comienzo por defecto. Si quiero una zona de play se usa la zona de copiar o mover
          y luego el play ejecutara una sola vez.
-    LOOP: usa las mismas marcas echas para la Zona en trasponer o se Ctrl Click en dos posiciones,
-          no se usa el 3er click, luego para que haga loop pulsamos ALT-L
+    LOOP infinito: usa las mismas marcas echas para la Zona en trasponer o se Ctrl Click en dos posiciones,
+          no se usa el 3er click, luego para que haga loop infinito pulsamos ALT-L
           Para detener la ejecucion como antes pulsar P.(parar)
  
 2)   Borrar desde una posicion hasta el final.
@@ -231,5 +251,48 @@ III)
        
 
 
-    
+TECLAS RAPIDAS borrado revisar y completar
+(DUR,NOTA) 0,181 - permite ingreso de notas en acorde y evita qu eel ingreso de notas
+en modo edit simple use esas posiciones y topme siemrep una nueva al final de la secuencia
+sino el program insertaria notas en cualquier lugar o semitono en el que nota=0.
+
+ CTRL-M 9 + X = 0,181   (pulsar ctrl-m luego el numero 9 y finalmente X modifica a 0,181
+se puede observar arriba en la cinta en colr verde ->  Rolldur:0 Rollnota:181
+ CTRL-N SPACE 
+ 
+------------
+- marcar borrado de columna, al grabar y luego cargar desaparecen esas columnas
+(DUR,NOTA) 190,190 MARCAR: DUR,NOTA se obtiene pulsando en cualquier semitono de la columna
+vacio o con nota:
+en   CTRL-M,  pulsar 0 y luego X
+            ó espacio  y luego X  
+
+----------------------
+- borra la nota pero la habilita a ser escrita en EDIT simple o sea ingreso de NOTA nueva,
+(DUR,NOTA)  0,0 se obtiene con
+en  CTRL-M pulsar solo DEL, 
+si está antes del fin de secuecnia podria usarse accidentalmente o a proposito en EDIT simple 
+lo que hará que retroceda el cursor a esa posicion y agregue la nota nueva ahi en vez del 
+final de la secuencia
+---------------
+
+futuro: 
+-grabar zonas como patrones, luego usarlos para dragarlos a una posicion y soltarlos para insertar.-    
+-rasguidos automaticos o construidos por usuario.
+-armado de intervalos desde una nota dada para arriba o abajo.
+- armado de triadas tomando como fundamental una nota dada para arriba ceg o abajo cge
+- triadas 1era y 2da inversion desde una nota dada.
+- cuaternarios
+  Nota: todo sintervalso seran de una misma duracion, luego de creado se podra modificar
+cada uno de ellos a una duracion diferentedeseada. Tambien se podra cambiar si se desea
+sea un rasguido.
+- Acordes con estructura de guitarra de 6 cuerdas usados normalmente.(con o sin rasguido
+  automatico o manual o patron de usuario).
+- Muy en el futuro algun dia... harmonizacion básica.,,
+
+
+
+
+
+
    

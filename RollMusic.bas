@@ -1,5 +1,6 @@
 ' 9.5 acordestriadas a partir de una fundamental.
 ' 9.5 NUEVO ARCHIVO BORRA nombre y todo lo de 'Q'.
+' -> en desa: 9.5 repetir play zona grabado y marcado en Roll 
 ' Ubicar Home, End de secuecnia pulsando esas teclas.
 ' copiar una zona 1 o mas veces en la posicion elegida
 '0.0.8.9.2.0 11-07-2021  mover zona a la derecha o izquierda con M + Click en la pos elegida
@@ -263,7 +264,7 @@ Dim Shared As Double   BordeSupRoll, inc_Penta
 Dim Shared As Integer  AnchoInicial,AltoInicial
 Dim Shared As FLOAT font, deltaipf=0, lockip=0 
 Dim Shared q As String * 1
-Dim Shared As UByte s1, s2, s3, s4, s5,s6, s7 ,s8' ,s9
+Dim Shared As UByte s1, s2, s3, s4, s5,s6, s7 ,s8 ,s9
 Dim escala As float = 1.0
 Dim translado As float = 1.0
 ''https://www.freebasic.net/forum/viewtopic.php?t=15127
@@ -273,9 +274,10 @@ ANCHO = ANCHO
 ALTO = ALTO  -25
 AnchoInicial=ANCHO
 AltoInicial=ALTO
-anchofig=35
+anchofig=ANCHO/45 ' SON 45 COL PERO SE USAN MENOS 41
 NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
-
+' ANCHO/anchofig= 45
+'=> anchofig=ANCHO/45
 ''ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion si uso GDI
 ' pero llamando al programa con winExec con opcion SW_RESTORE no hay necesidad
 ' y puedousar  directx!!
@@ -305,7 +307,11 @@ comEdit = FALSE:resize = FALSE
 Dim Shared po As Integer Ptr
 po = @octava
 *po = 8
-s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0:s8=0 ':s9=0
+s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0:s8=0 :s9=0
+''font=18 haremos font funciona de anchofig O NroCol o ANCHO
+' para 35 font=18 =  18 /35 = 514/1000
+'font=anchofig * 515 /1000 '' 18 default
+'font=anchofig * 510 /1000 + (35-anchofig)* (anchofig ^2 - 1225) /1000
 font=18
 Dim Shared e As EVENT
 Dim Shared rmerr As Integer
@@ -329,6 +335,11 @@ BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio muestro octava 4 la cen
 ' inc_Penta=separacion de lineas
 '---------------------
 Dim As Integer mxold,myold, w,h
+gap1= anchofig* 2315/1000 ' 81 default
+gap2= (914 * gap1) /1000 ' 74 default
+gap3= (519 * gap1) /1000 ' 42 default
+
+Print #1,"gap1 ",gap1
 
 GetMouse mxold,myold, , MouseButtons
 
@@ -404,7 +415,7 @@ ScreenLock()
  cairo_set_source_rgba c, 0, 0, 0, 1
 'EndIf
 cairo_paint(c)
-cairo_set_line_cap(c, CAIRO_LINE_CAP_ROUND)
+'cairo_set_line_cap(c, CAIRO_LINE_CAP_ROUND)
 cairo_set_line_width(c, 1)
 'cairo_set_source_rgba(c, 0, 0, 0, 1)
 
@@ -498,13 +509,17 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar co
  cursorHori = 1
  agregarNota=0
  menuMouse = 0
-
+ nota=0
+ DUR=0
+ s9=0
 EndIf
 If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
- 
+ nota=0
  cursorVert = 2
  cursorHori = 2
  agregarNota= 1
+ DUR=0
+ s9=0
 EndIf
 
 
@@ -632,7 +647,7 @@ If MultiKey(SC_CONTROL) Then
       posicion = MaxPos
     EndIf
     posishow=posicion
-   
+    s9=0
  EndIf    
 EndIf
 
@@ -643,7 +658,7 @@ If MultiKey(SC_CONTROL) Then
       posicion = 1
    EndIf
    posishow=posicion
-  
+   s9=0
   EndIf
 EndIf
 
@@ -662,7 +677,7 @@ EndIf
  EndIf
 
   'kNroCol cantidad scroll de NrocOL)
- If  mouseY > 50 And MultiKey(SC_RIGHT) Then ' <======== RIGHT
+ If  mouseY > 50 And MultiKey(SC_RIGHT) And s9=0 Then ' <======== RIGHT
  
      If comEdit = FALSE Then
         posicion = posicion + 1
@@ -697,7 +712,7 @@ EndIf
   EndIf
   Exit Do
  EndIf
- If  mouseY > 50 And MultiKey(SC_LEFT) Then
+ If  mouseY > 50 And MultiKey(SC_LEFT) And s9=0 Then
 
   'MOVER ROLL IZQUIERDA NO CURSOR
   If comEdit = FALSE Then
@@ -939,14 +954,22 @@ If pasoZona1 > 0 Or pasoZona2 >0 Or pasoNota > 0 Or trasponer=1 Then ' hubo una 
 EndIf 
 pun=0:sil=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
 SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
+s9=0
+anchofig=35
+gap1= (anchofig* 2315)/1000  ' 81 default
+gap2= (914 * gap1) /1000 ' 74 default
+gap3= (519 * gap1) /1000 ' 42 default
+ 
+''''font=anchofig * 515 /1000 + (anchofig ^2 - 1225) /375' 18 default
+'font=anchofig * 510 /1000 + (anchofig ^2 - 1225) /1000
+'font=anchofig * 510 /1000 + (35-anchofig)* (anchofig ^2 - 1225) /1000
+font=18
+NroCol =  (ANCHO / anchofig ) - 4
 
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
 ' MAYUSCULAS PARA SOSTENIDOS
-' las duraciones iran del 1 al 8 ..cuadno se las pulsa le sumamos 12
-' ya que la 128 se llega por 12*8 octavas = 96 + espcops intermedios....etc..
-' ergo por hhora las durciones empien con 13 al 20
-' 13 = O, 14=P, 15=I, 16=L,17=F,18=E,19=W,20=H
+' Ahora en nota se guarda el semitono 1 a 12...,  DUR guarda la duracion
 If comedit = TRUE Then ' ingreso de notas   
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_A)  Then ' A#
@@ -976,6 +999,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_C)   Then ' C#
  EndIf
  Exit Do
 EndIf
+
 If MultiKey(SC_CONTROL) And MultiKey(SC_D)  Then ' D#
  nota= 9
  If espacio > 0 Then
@@ -986,6 +1010,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_D)  Then ' D#
  EndIf
  Exit Do
 EndIf
+
 If MultiKey(SC_CONTROL) And MultiKey(SC_F) Then ' F#
  nota= 6
  If espacio > 0 Then
@@ -996,6 +1021,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_F) Then ' F#
  EndIf
  Exit Do
 EndIf
+
 If  MultiKey(SC_CONTROL) And MultiKey(SC_G)  Then ' G#
  nota= 4
  If espacio > 0 Then
@@ -1047,6 +1073,7 @@ If MultiKey (SC_D) Then
  EndIf
  Exit Do
 EndIf
+
 If MultiKey (SC_E) Then
  nota = 8
  If espacio > 0 Then
@@ -1057,6 +1084,7 @@ If MultiKey (SC_E) Then
  EndIf
  Exit Do
 EndIf
+
 If MultiKey (SC_F) Then
  nota= 7
  If espacio >  0 Then
@@ -1067,6 +1095,7 @@ If MultiKey (SC_F) Then
  EndIf
  Exit Do
 EndIf
+
 If MultiKey (SC_G) Then
  nota= 5
  If espacio >  0 Then
@@ -1081,7 +1110,10 @@ EndIf
 EndIf  ' comedit =true para ingreso de notas 
 
 
-If MultiKey(SC_BACKSPACE) Then
+If MultiKey(SC_BACKSPACE) Then ' sin uso por ahora. 
+''podria ser otra forma de colocar 190,190 en lectura ¿? y
+' ir borrando columnas dejandolas vacias con solo 190,190 al ser eliminada al grabar.
+' y cargar. 
  backspace=1
 
 EndIf
@@ -1167,18 +1199,10 @@ If comEdit = TRUE Then
   If MultiKey(SC_PERIOD) Then
      pun = 1  ' puntillo      
   EndIf
-'  If MultiKey(SC_MULTIPLY) Then ' KEYPAD *
-'     cuart=1
-'   Exit Do
-'  EndIf
-  If MultiKey(SC_LSHIFT) Then ' :
-      cuart=1 
-      Exit Do
-  EndIf
-  If MultiKey(SC_RSHIFT) Then ' :
-      doblepun = 1  ' doble puntillo
-      Exit Do
-  EndIf
+''  If MultiKey(SC_MULTIPLY) Then ' KEYPAD *
+''     cuart=1
+''   Exit Do
+''  EndIf
 
   If MultiKey(SC_S) Then
    sil = 1
@@ -2100,13 +2124,15 @@ If (ScreenEvent(@e)) Then
    Exit Do  ' OK
   EndIf
  EndIf
-
- If mouseY < 50 And s5= 0 And mouseX > 70 And mousex < (ANCHO-70) Then
+' 12-07-2021 mousex > 70  
+ If mouseY < 50 And s5= 0 And mouseX > (2* ANCHO/3) And mousex < (ANCHO-70) Then
   x1=mouseX: y1=mouseY
   s5=1
+  Exit Do
  EndIf
- ' =========> MOVER VENTANA DRAGNDO L CINTA SUPERIOR EN OPCION <MENU> 
- If MouseButtons And 1 And s5=1 And mouseX > 70 And menuNro= 1 And mousex < (ANCHO-50)Then
+ ' =========> MOVER VENTANA DRAGNDO L CINTA SUPERIOR EN OPCION <MENU>
+ ' And menuNro= 1 
+ If MouseButtons And 1 And s5=1 And mouseX > (2* ANCHO/3)  And mousex < (ANCHO-70)Then
   x2=mouseX
   y2=mouseY
   x0=x0+x2-x1
@@ -2174,6 +2200,9 @@ If (ScreenEvent(@e)) Then
 
   ''  EndIf
  EndIf
+
+
+
  '         <==== MENU BORRR INSERTAR MODIFICAR ================>
  ' savemousex=0 : savemousey=0 LO QUE HACE ES PERMITIR QUE EL MENU APARESCA EN OTRO LADO
  ' DONDE SE CLICKEA, Y SI SON >0 DEJA QUE PERMANESCA VISUALMNETE
@@ -2226,7 +2255,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
           If (mousey >= usamousey -120) And  (mousey <= usamousey -100) Then
             modifmouse=1 'borrar =1
             notacur=nE
-            curpos=(mousex- 81 )/35
+            curpos=(mousex- gap1 )/anchofig
             Exit Do
           EndIf
           If (mousey >= usamousey -100) And  (mousey <= usamousey -70) Then
@@ -2240,7 +2269,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
          If (mousey >= usamousey -40) And  (mousey <= usamousey -10) Then
             modifmouse=4 'CAMBIADUR=1 modificar
             notacur=nE
-            curpos=(mousex- 81 )/35
+            curpos=(mousex- gap1 )/anchofig
             Exit Do
          EndIf
 
@@ -2263,7 +2292,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    'Print #1, "(3) (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And comedit=TRUE "
    'Print #1, " ESTADO: PREPARA COMANDO"
        notacur=nE
-       curpos= Int((mousex - 81)/35)
+       curpos= Int((mousex - gap1)/anchofig)
        posishow= curpos  + 1 ' NO CAUSA EL +1 EN MODIF MOUSE 03-03-21-15:10
    'Print #1, " savemousex=0 : savemousey=0 ' JMG NUEVA"
    'Print #1, " notacur=nE"
@@ -2313,7 +2342,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
        EndIf
        If modifmouse=4 Then ' modificar
          cambiadur=1
-         curpos=(mousex- 81 )/35
+         curpos=(mousex- gap1 )/anchofig
          notacur=nE
          ayudaNuevaNota=TRUE
          Exit Do
@@ -2344,9 +2373,9 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    'Print  #1,"  nroClick=1"
    'Print  #1,"comEdit=TRUE "
    'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
-         curpos=(mousex- 81 )/35 '01-07-2021
+         curpos=(mousex- gap1 )/anchofig '01-07-2021
          notacur=nE
-
+       s9=0
     Exit Do
    EndIf
  
@@ -2461,7 +2490,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    'Print  #1,"(8) (mouseButtons And 1) And (DUR > 0) And (nE > 0) And ayudaNuevaNota=FALSE "
    'Print  #1,"(8)  And comEdit=TRUE And ayudaModif=FALSE"
    'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
-   Dim As Integer posdur= (mousex- 81 )/35 + posishow '01-07-2021
+   Dim As Integer posdur= (mousex- gap1 )/anchofig + posishow '01-07-2021
    If posdur >= Maxpos - 1 Then  ' no permite entrar notas con click ,ucho antes de maxpos
       nota=nE ' <=== ingresamos varias notas por mouse del mismo valor
    EndIf
@@ -2490,7 +2519,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
 ' SOLO SELECCIONO PASO DESDE HASTA y/o NOTA
   If MultiKey(SC_CONTROL) And MouseButtons And 1 Then
      Dim As Integer pasox, pasoy, pasonR
-     pasox=(mousex- 81 )/35  + posishow  
+     pasox=(mousex- gap1 )/anchofig  + posishow  
      pasoy=nE
 
      correcciondeNotas()
@@ -2529,7 +2558,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
     ' las flechas up/down, habilitare dragado tambien 02-07-2021
 '    pasoNota=nE
     
-    indiceNota=(mousex- 81 )/35 + posishow
+    indiceNota=(mousex- gap1 )/anchofig + posishow
      
 ' grupo de notas seleccionadas poniendo un 13 en nota
    Roll.trk(117-nR ,indiceNota).nota = 13 ' marcamos para mover 
@@ -2541,7 +2570,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  EndIf 
  If MultiKey(SC_M) And MouseButtons  And 1 And moverZona=0 Then  'mover Zona 
 ' usamos la seleccion de Zona y luego movemos la zona a una posicion dada
-    indiceNota=(mousex- 81 )/35 + posishow
+    indiceNota=(mousex- gap1 )/anchofig + posishow
     moverZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
     moverZonaRoll(indiceNota)
     Exit Do
@@ -2550,7 +2579,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  If copiarZona=0 And MouseButtons  And 1 And MultiKey(SC_C)   Then  'mover Zona 
 ' usamos la seleccion de Zona y luego movemos la zona a una posicion dada
     nota=0
-    indiceNota=(mousex- 81 )/35 + posishow
+    indiceNota=(mousex- gap1 )/anchofig + posishow
     copiarZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
     If numero=0 Then
        moverZonaRoll(indiceNota)
@@ -2564,6 +2593,49 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
     EndIf
     Exit Do
  EndIf 
+ '12-07-2021 achicar agrandar ancho total de secuencia version 1
+ If MultiKey(SC_LSHIFT) And MultiKey(SC_RIGHT) Then
+   anchofig=anchofig + 5
+   gap1= anchofig* 2315/1000 '81 default
+   gap2= (914 * gap1) /1000 ' 74 default
+   gap3= (519 * gap1) /1000 ' 42 default
+   NroCol =  (ANCHO / anchofig ) - 4
+   If  anchofig > 175 Then
+       anchofig = 175
+   EndIf    
+   'font=anchofig * 515 /1000
+   ''font=anchofig * 515 /1000 + (anchofig ^2 - 1225) /375
+  '' font=anchofig * 510 /1000 + (anchofig ^2 - 1225) /1000
+  'font=anchofig * 510 /1000 + (35-anchofig)* (anchofig ^2 - 1225) /1000
+   font=font+1  
+   s9=1
+   
+ EndIf
+ If MultiKey(SC_LSHIFT) And MultiKey(SC_LEFT) Then '12-07-2021
+   anchofig=anchofig - 5
+   gap1= anchofig* 2315/1000
+   gap2= (914 * gap1) /1000 ' 74 default
+   gap3= (519 * gap1) /1000 ' 42 default
+   NroCol =  (ANCHO / anchofig ) - 4 
+   If  anchofig < 1 Then
+       anchofig = 1
+   EndIf    
+   s9=1
+   'font=anchofig * 515 /1000
+   ''font=anchofig * 515 /1000 + (anchofig ^2 - 1225) /375
+''   font=anchofig * 510 /1000 + (anchofig ^2 - 1225) /1000
+''   font=anchofig * 510 /1000 + (35-anchofig)* (anchofig ^2 - 1225) /1000
+   font=font -1
+   Exit Do
+ EndIf
+  If MultiKey(SC_LSHIFT) And s9=0 Then ' :
+      cuart=1 
+      Exit Do
+  EndIf
+  If MultiKey(SC_RSHIFT) And s9=0  Then ' :
+      doblepun = 1  ' doble puntillo
+      Exit Do
+  EndIf
 
  
 EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie

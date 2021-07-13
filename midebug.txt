@@ -1,36 +1,8 @@
 version para ceros!!!!!! 
-07-11-202100:27:56
+07-12-202120:18:00
 arg desde  0
 arg hasta  0
 dires   
 recibi 
 common  0
-pasoZona1=     13 pasoNota= 0
-pasoZona2=     17 pasoNota= 0
-numero         1
-numero         12
-MaxPosOld      37
-inicioind  MAxPosOld         40            37
-MAxPosOld, inicioind         37            39
-MaxPosOld      46
-inicioind  MAxPosOld         45            46
-MaxPosOld      51
-inicioind  MAxPosOld         50            51
-MaxPosOld      56
-inicioind  MAxPosOld         55            56
-MaxPosOld      61
-inicioind  MAxPosOld         60            61
-MaxPosOld      66
-inicioind  MAxPosOld         65            66
-MaxPosOld      71
-inicioind  MAxPosOld         70            71
-MaxPosOld      76
-inicioind  MAxPosOld         75            76
-MaxPosOld      81
-inicioind  MAxPosOld         80            81
-MaxPosOld      86
-inicioind  MAxPosOld         85            86
-MaxPosOld      91
-inicioind  MAxPosOld         90            91
-MaxPosOld      96
-inicioind  MAxPosOld         95            96
+gap1           83

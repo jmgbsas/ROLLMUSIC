@@ -16,7 +16,8 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
 
  cairo_select_font_face (c, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL)
  cairo_set_font_size (c, font)
- 
+' gap1 es la proporcion entre el ancho de la figura inicial 35 y el gap ajustado 81
+' gap1= anchofig* 2315/1000  
 
  ' ======== NOTAS  =========
  ' cuando hago click en Edit el fondo cambia en main para edicion
@@ -125,7 +126,7 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
       EndIf    
    
         
-    cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 4)
+    cairo_move_to(c, gap1 + ic * anchofig , Penta_y + semitono * inc_Penta - 4)
     Dim As Integer indf
     indf= Roll.trk (semitono + (nro-1) * 13, n).dur
     If (indf >= 1 And indf <= 182)  Then ' 13-05-2021 11
@@ -162,21 +163,21 @@ Sub creaPenta (c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer P
     'EndIf
     If n >0 And n <= CantTicks Then
      If Compas(n).Posi = n  Then ' ahi hay un corte un nuevo compas
-      cairo_move_to(c,81 + (ic ) *anchofig +anchofig , Penta_y)
-      cairo_line_to(c,81 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta )
+      cairo_move_to(c,gap1 + (ic ) *anchofig +anchofig , Penta_y)
+      cairo_line_to(c,gap1 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta )
       '    Print #1, "|";
-      cairo_move_to(c,74 + (ic ) *anchofig +anchofig, Penta_y + 12.5 * inc_Penta )
+      cairo_move_to(c,gap2 + (ic ) *anchofig +anchofig, Penta_y + 12.5 * inc_Penta )
       t=Str(Compas(n).nro)
       cairo_show_text(c,t)
      EndIf
      If n = pasozona1 Or n =pasoZona2 Then '26-06-2021
-        cairo_move_to(c,42 + (ic ) *anchofig +anchofig, Penta_y + 13.5 * inc_Penta )
+        cairo_move_to(c,gap3 + (ic ) *anchofig +anchofig, Penta_y + 13.5 * inc_Penta )
          t="("+ Str(n) + ")"
          cairo_show_text(c,t)
      EndIf
 
     EndIf
-    cairo_move_to(c, 81 + ic * anchofig , Penta_y + semitono * inc_Penta - 6)
+    cairo_move_to(c, gap1 + ic * anchofig , Penta_y + semitono * inc_Penta - 6)
     ic += 1
    Else
     Exit For
@@ -431,16 +432,16 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
 
  'If s8=1 Then
  '   s8=0
- '   'curpos=(mousex- 81 )/35 ' 01-07-2021
+ '   'curpos=(mousex- gap1 )/35 ' 01-07-2021
  '   curpos=curposold
  'EndIf
  'curposold=curpos
  If cursorVert=1 Or cursorVert= 2 Then  ' vertical comEdit=TRUE
 
-  cairo_move_to  (c, 81 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
-  cairo_rectangle(c, 81 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
-  cairo_move_to  (c, 81 + (curpos)*anchofig + inc_Penta, Penta_y  )
-  cairo_line_to  (c, 81 + (curpos)*anchofig + inc_Penta, Penta_y + (notacur-1) * inc_Penta  +inc_Penta )
+  cairo_move_to  (c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
+  cairo_rectangle(c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  , inc_Penta,inc_Penta)
+  cairo_move_to  (c, gap1 + (curpos)*anchofig + inc_Penta, Penta_y  )
+  cairo_line_to  (c, gap1 + (curpos)*anchofig + inc_Penta, Penta_y + (notacur-1) * inc_Penta  +inc_Penta )
  
   RollDur=Roll.trk(notacur + (nro-1) * 13, n + curpos).dur
   
@@ -453,13 +454,13 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer)
    'Print #1,"notaold en cursor laigualo a 1 ";notaold
    notacur=0
   EndIf
-  cairo_move_to  (c,81 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
-  cairo_rectangle(c,81 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
+  cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
+  cairo_rectangle(c,gap1 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
  EndIf
  If cursorHori=1 Or cursorHori = 2 Then
-  cairo_move_to  (c,81 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
-  cairo_rectangle(c,81 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
+  cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
+  cairo_rectangle(c,gap1 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , inc_Penta,inc_Penta)
 
  EndIf
  If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
@@ -763,7 +764,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
   ' 0.1 ==> [Archivo]
    If mousex > 38 And mousex< 117 And mousey < 50  Then
     cairo_set_source_rgba c, 0, 1, 0, 1
-    font=18 ' el menu esta diseñqdo para este tamaño
+     font=18 ' el menu esta diseñqdo para este tamaño 
     If MouseButtons And 1 Then
      menuNew = 3  ''<--- caso raro ¿?
     EndIf
@@ -880,7 +881,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer )
 '   If COMEDIT=TRUE Then ' jmg 02-06-2021 ver porque difieren
 '     nR=nR-3
 '   End If
-indiceNota=(mousex- 81 )/35 + posishow
+indiceNota=(mousex- gap1 )/anchofig + posishow
 Dim As Integer veonota, veocopi 
 If indiceNota > 0 Then
 veonota=Roll.trk(117-nR,indiceNota).nota 
@@ -894,12 +895,11 @@ EndIf
 
    t = "      EDIT" + " " +  " UltimaPos:" + _
    Str(Maxpos) +" Posi:" + Str(posishow)+ " Posn:"+Str(posn)+ _
-   " Font:" +Str(font) + " EnOct:" + Str(estoyEnOctava) + " nE:"+Str(veonota) + _ 
+   " Font:" +Str(fontOld) + " EnOct:" + Str(estoyEnOctava) + " nE:"+Str(veonota) + _ 
    " nR:"+ Str(PianoNota) + " Curpos:" +Str(curpos) + _
    " RollDur :"+ Str(RollDur) + " Rollnota:" + Str(RollNota) + _ 
    " Copiar:" + Str(veocopi) +" Col:" +Str(indicenota) + " DUR:"+ Str(Dur) + _ 
-    " Nota:"+ Str(nota) 
-   '''' " Mx:" + Str(mousex) + " My:" + Str(mousey) 
+    " Nota:"+ Str(nota) + " Mx:" + Str(mousex) + " My:" + Str(mousey) 
   ' + "Desde:" + Str(y1) + "Hasta:" +Str(y2)
    /' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +
 '/
