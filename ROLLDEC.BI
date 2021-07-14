@@ -1,5 +1,5 @@
-'miscroll_declare
-Declare Sub creaPenta (c AS cairo_t Ptr, ByRef nro As Integer, ByRef po as Integer Ptr, InicioDeLectura As integer)
+
+Declare Sub creaPenta (c AS cairo_t Ptr)
 Declare Sub Tracks (nroTrack As UByte, nroCanal As UByte)
 Declare Sub menu (c0 AS cairo_t Ptr,c AS cairo_t Ptr,n As Integer,menuNro As Integer)
 declare Sub botones(hWnd As HWND,c As cairo_t Ptr,cm As cairo_t Ptr,x As Integer,y As integer)
@@ -38,10 +38,10 @@ Declare Sub borrarColumnasMarcadas()
 
 'Declare Sub getfiles(Byref File As OpenFileName,flag As String)
 ' mover nota 
-Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE ' etc
+Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPenta 
 
 Dim Shared RTA As String 
-Dim Shared As Integer nro=0, acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoZona2=0, pasoNota=0
+Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoZona2=0, pasoNota=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, SelGrupoNota =0,moverZona=0, copiarZona=0
 Dim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t
@@ -49,7 +49,7 @@ Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, c
 Dim shared As integer Penta_y, indice, posicion,posicionOld, nota,espacio,posn,cursorHori
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow
-Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0
+Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro
 dim Shared as string cromatica(1 to 12)
 dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
@@ -96,7 +96,7 @@ Dim Shared As Integer comienzo1, fin1, comienzo2,fin2,PianoNota, trasponer=0
 'comienzo1=28:fin1=54
 'comienzo2=82:fin2=180
 
-Dim Shared as any ptr thread1, thread2 ' PARA PLAY
+Dim Shared as any ptr thread1, thread2,threadPenta 
 
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
 Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
@@ -177,7 +177,7 @@ Dim Shared As String nombreArchivo, TCompas,nombre
 nombre=""
 Dim Shared As UByte Vfuerte=70,Vsemifuerte=60,Vdebil=50
 TCompas ="4/4"
-' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido po r 8
+' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido por 8
 ' tengo elindice del revsado 1,2,3,4,5,6,7,8....
 ' comprobar qellimite este entre 1 a 8 
 

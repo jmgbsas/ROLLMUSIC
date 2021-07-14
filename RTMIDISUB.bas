@@ -850,6 +850,7 @@ EndIf
     jply=comienzo -1
     'posicion=comienzo
  EndIf
+ tiempoDUR=60/tiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
 Next jply
 posicion=comienzo
 'posishow=posicion + 20
@@ -869,7 +870,7 @@ Sleep 1000,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicaci
 close_port(midiout)
 out_free(midiout) 
 
-'''ThreadDetach(thread1) 'JMG REPONER !!!!
+ThreadDetach(thread1) 'JMG REPONER !!!!
 
 ' ================================FIN PLAYALL <<=================
 End Sub 

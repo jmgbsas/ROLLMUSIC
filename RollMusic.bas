@@ -1,4 +1,6 @@
-' 9.5 acordestriadas a partir de una fundamental.
+' 9.6 uso de thread para grafico, parametrizacion gap1 gap2y gap3
+' 9.6 ajustar ancho de columnas Y FONT con F2 F3,luego F9 F10 font solamente
+' 9.5 acordestriadas a partir de una fundamental. pendiente
 ' 9.5 NUEVO ARCHIVO BORRA nombre y todo lo de 'Q'.
 ' -> en desa: 9.5 repetir play zona grabado y marcado en Roll 
 ' Ubicar Home, End de secuecnia pulsando esas teclas.
@@ -264,7 +266,7 @@ Dim Shared As Double   BordeSupRoll, inc_Penta
 Dim Shared As Integer  AnchoInicial,AltoInicial
 Dim Shared As FLOAT font, deltaipf=0, lockip=0 
 Dim Shared q As String * 1
-Dim Shared As UByte s1, s2, s3, s4, s5,s6, s7 ,s8 ,s9
+Dim Shared As UByte s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
 Dim escala As float = 1.0
 Dim translado As float = 1.0
 ''https://www.freebasic.net/forum/viewtopic.php?t=15127
@@ -300,14 +302,16 @@ ScreenControl GET_WINDOW_POS, x0, y0
 ''ScreenControl SET_WINDOW_POS, 10,10
 'ScreenControl 103,"Directx" ' cambio ja
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
-Dim As Integer i, octava, posmouse, posmouseOld,incWheel, altofp11,edity1,edity2,octavaloop
+Dim  As Integer i,  posmouse, posmouseOld,incWheel, altofp11,edity1,edity2,octavaloop
+Dim Shared As Integer octaroll
 altofp11=ALTO:posmouseOld = 0:posmouse = 0
 Dim Shared As BOOLEAN comEdit, resize
 comEdit = FALSE:resize = FALSE
 Dim Shared po As Integer Ptr
-po = @octava
+
+po = @octaroll
 *po = 8
-s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0:s8=0 :s9=0
+s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0:s8=0 
 ''font=18 haremos font funciona de anchofig O NroCol o ANCHO
 ' para 35 font=18 =  18 /35 = 514/1000
 'font=anchofig * 515 /1000 '' 18 default
@@ -382,7 +386,7 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 ' ancho de figura,separaciondelasmismas en pantalla anchofig
 '' ---------------  LOOP 1 ---------------
  On Error GoTo errorhandler
- 
+     
 Do
 
 
@@ -449,7 +453,10 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 '  rango= hasta
 
 For i = desde To hasta ' nro_penta
- creaPenta (c, i, po,InicioDeLectura )
+  nro = i
+ Dim ta As Any Ptr = ThreadCreate (@CreaPenta,c) 
+  ThreadWait ta
+
  If *po = 99 Then
   *po = hasta - 1
   Exit For
@@ -511,7 +518,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar co
  menuMouse = 0
  nota=0
  DUR=0
- s9=0
+ 
 EndIf
 If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
  nota=0
@@ -519,7 +526,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
  cursorHori = 2
  agregarNota= 1
  DUR=0
- s9=0
+ 
 EndIf
 
 
@@ -647,7 +654,7 @@ If MultiKey(SC_CONTROL) Then
       posicion = MaxPos
     EndIf
     posishow=posicion
-    s9=0
+    
  EndIf    
 EndIf
 
@@ -658,7 +665,7 @@ If MultiKey(SC_CONTROL) Then
       posicion = 1
    EndIf
    posishow=posicion
-   s9=0
+   
   EndIf
 EndIf
 
@@ -677,7 +684,7 @@ EndIf
  EndIf
 
   'kNroCol cantidad scroll de NrocOL)
- If  mouseY > 50 And MultiKey(SC_RIGHT) And s9=0 Then ' <======== RIGHT
+ If  mouseY > 50 And MultiKey(SC_RIGHT)  Then ' <======== RIGHT
  
      If comEdit = FALSE Then
         posicion = posicion + 1
@@ -712,7 +719,7 @@ EndIf
   EndIf
   Exit Do
  EndIf
- If  mouseY > 50 And MultiKey(SC_LEFT) And s9=0 Then
+ If  mouseY > 50 And MultiKey(SC_LEFT) Then
 
   'MOVER ROLL IZQUIERDA NO CURSOR
   If comEdit = FALSE Then
@@ -795,9 +802,22 @@ If MultiKey(SC_CONTROL) And MultiKey (SC_F5)   Then
 
 EndIf
 If MultiKey (SC_F2)  Then
-
- escala = escala - 0.01
- Exit Do
+' escala = escala - 0.01
+   anchofig=anchofig - 5
+   gap1= anchofig* 2315/1000
+   gap2= (914 * gap1) /1000 ' 74 default
+   gap3= (519 * gap1) /1000 ' 42 default
+   NroCol =  (ANCHO / anchofig ) - 4 
+   If  anchofig < 1 Then
+       anchofig = 1
+   EndIf    
+   
+   'font=anchofig * 515 /1000
+   ''font=anchofig * 515 /1000 + (anchofig ^2 - 1225) /375
+''   font=anchofig * 510 /1000 + (anchofig ^2 - 1225) /1000
+''   font=anchofig * 510 /1000 + (35-anchofig)* (anchofig ^2 - 1225) /1000
+   font=font -1
+  Exit Do
 EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey (SC_F6)  Then
@@ -820,8 +840,21 @@ If MultiKey(SC_CONTROL) And MultiKey (SC_F6)  Then
  Exit Do
 EndIf
 If MultiKey (SC_F3)  Then
-
- escala = escala + 0.01
+' escala = escala + 0.01
+   anchofig=anchofig + 5
+   gap1= anchofig* 2315/1000 '81 default
+   gap2= (914 * gap1) /1000 ' 74 default
+   gap3= (519 * gap1) /1000 ' 42 default
+   NroCol =  (ANCHO / anchofig ) - 4
+   If  anchofig > 175 Then
+       anchofig = 175
+   EndIf    
+   'font=anchofig * 515 /1000
+   ''font=anchofig * 515 /1000 + (anchofig ^2 - 1225) /375
+  '' font=anchofig * 510 /1000 + (anchofig ^2 - 1225) /1000
+  'font=anchofig * 510 /1000 + (35-anchofig)* (anchofig ^2 - 1225) /1000
+   font=font+1  
+   
  Exit Do
 EndIf
 ' PRUEBAS DE GRABACION DEL VECTOR ROLL es sencillo porque grabo todo
@@ -954,7 +987,7 @@ If pasoZona1 > 0 Or pasoZona2 >0 Or pasoNota > 0 Or trasponer=1 Then ' hubo una 
 EndIf 
 pun=0:sil=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
 SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
-s9=0
+
 anchofig=35
 gap1= (anchofig* 2315)/1000  ' 81 default
 gap2= (914 * gap1) /1000 ' 74 default
@@ -2375,7 +2408,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
          curpos=(mousex- gap1 )/anchofig '01-07-2021
          notacur=nE
-       s9=0
+       
     Exit Do
    EndIf
  
@@ -2594,48 +2627,31 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
     Exit Do
  EndIf 
  '12-07-2021 achicar agrandar ancho total de secuencia version 1
- If MultiKey(SC_LSHIFT) And MultiKey(SC_RIGHT) Then
-   anchofig=anchofig + 5
-   gap1= anchofig* 2315/1000 '81 default
-   gap2= (914 * gap1) /1000 ' 74 default
-   gap3= (519 * gap1) /1000 ' 42 default
-   NroCol =  (ANCHO / anchofig ) - 4
-   If  anchofig > 175 Then
-       anchofig = 175
-   EndIf    
-   'font=anchofig * 515 /1000
-   ''font=anchofig * 515 /1000 + (anchofig ^2 - 1225) /375
-  '' font=anchofig * 510 /1000 + (anchofig ^2 - 1225) /1000
-  'font=anchofig * 510 /1000 + (35-anchofig)* (anchofig ^2 - 1225) /1000
-   font=font+1  
-   s9=1
+' If MultiKey(SC_RSHIFT) And MultiKey(SC_RIGHT) Then
+'   anchofig=anchofig + 5
+'   gap1= anchofig* 2315/1000 '81 default
+'   gap2= (914 * gap1) /1000 ' 74 default
+'   gap3= (519 * gap1) /1000 ' 42 default
+'   NroCol =  (ANCHO / anchofig ) - 4
+'   If  anchofig > 175 Then
+'       anchofig = 175
+'   EndIf    
+'   'font=anchofig * 515 /1000
+'   ''font=anchofig * 515 /1000 + (anchofig ^2 - 1225) /375
+'  '' font=anchofig * 510 /1000 + (anchofig ^2 - 1225) /1000
+'  'font=anchofig * 510 /1000 + (35-anchofig)* (anchofig ^2 - 1225) /1000
+'   font=font+1  
+'   
    
- EndIf
- If MultiKey(SC_LSHIFT) And MultiKey(SC_LEFT) Then '12-07-2021
-   anchofig=anchofig - 5
-   gap1= anchofig* 2315/1000
-   gap2= (914 * gap1) /1000 ' 74 default
-   gap3= (519 * gap1) /1000 ' 42 default
-   NroCol =  (ANCHO / anchofig ) - 4 
-   If  anchofig < 1 Then
-       anchofig = 1
-   EndIf    
-   s9=1
-   'font=anchofig * 515 /1000
-   ''font=anchofig * 515 /1000 + (anchofig ^2 - 1225) /375
-''   font=anchofig * 510 /1000 + (anchofig ^2 - 1225) /1000
-''   font=anchofig * 510 /1000 + (35-anchofig)* (anchofig ^2 - 1225) /1000
-   font=font -1
-   Exit Do
- EndIf
-  If MultiKey(SC_LSHIFT) And s9=0 Then ' :
+' EndIf
+ If MultiKey(SC_LSHIFT)  Then ' :
       cuart=1 
       Exit Do
-  EndIf
-  If MultiKey(SC_RSHIFT) And s9=0  Then ' :
-      doblepun = 1  ' doble puntillo
-      Exit Do
-  EndIf
+ EndIf
+ If MultiKey(SC_RSHIFT)  Then ' :
+     doblepun = 1  ' doble puntillo
+     Exit Do
+ EndIf
 
  
 EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
