@@ -46,7 +46,13 @@
        Pulsar y mantener la tecla control. Girando la rueda del mouse
        en la direccion  hacia afuera abre el espacio  entre lineas, hacia 
        adentro lo achica, similar al tamaño de un texto
-       en un editor de texto. Para terminar liberar la tecla Ctrl.
+       en un editor de texto. Para terminar liberar la tecla Ctrl. Si seguidamente 
+       se emiten otros comandos, se bloqueara el cambio del espaciado no se podrá
+       cambiarlo hasta que se pulse 'q'. Por lo tanto si luego de haber emitido 
+       varios comadnos como Ctrl-right para avansar rapido o flecha arriba para
+       subir, el interlineado estar bloqueado no se podrá cambianr hasta que se
+       pulse 'q'. Varias teclas rapidas bloquean al interlineado para evitar que 
+       el mismo actue mientras se emite otra clase de comando.
 
     1.2)  Trasponer todo: Ctrl-T habilita la trasposicion, Q la deshabilita.
        una vez habilitada con Flecha-UP sube de a un semitono con cada pulso
@@ -95,13 +101,12 @@
     1.5) Cargar Archivo [Archivo]->[Abrir]:
        
     1.6) Tamaño Font  F9 disminuye <-> F10 aumenta font solamente no la proporcionalidad.
-       La edicion se hacia en font=18 (es el original al cual se vuelve al pulsar 'q') y actualmente en otros
-       tamaños, pues la  misma depende del tamaño del mismo, se cambio para trabajar a distintos tamaños de font.
-       (se cambió proporcionlidad) ESTE CAMBIO SE HACE PULSANDO MAYUSCULAS IZQ + FLECHAS IZQ <-> DER para
-       disminuir o agrandar la proporcionalidad includio el font. Luego para habilitar flechas de navegacion
-       navegar 1ero con Ctrl Flechas Der Izq (navegacion horizontal rapida)  y luego volver a usar sin Ctrl, 
-       esto evita perder la proporcionalidad deseada si pulsamos 'Q' (q resetea todo comandos y proporcionalidad).
-       (se vera como bloquear al proporcionalidad sin que sea afectada por el reseteo q en el futuro)
+       La edicion en el diseño original se hacia en font=18 (al cual se vuelve al pulsar 'q') y actualmente 
+       en otros tamaños, se cambio para trabajar a distintos tamaños de fonty  proporcionlidad. ESTE CAMBIO 
+       SE HACE PULSANDO F2  ó F3 para disminuir o agrandar la proporcionalidad includio el font. 
+       Se recomiendo usar font 18 que es el valor para el cual es mas optimo la edicion, pero funciona bien 
+       desde Font 15 a más de 20 sin problemas. Se puede jugar con la proporcionalidad F2/F3 y luego ajustar
+       el font solamente con F9/F10.
  
     2.0) Modos de Edicion
     2.1) MODO EDIT (click en menu EDICION luego en EDIT cambiara a color 

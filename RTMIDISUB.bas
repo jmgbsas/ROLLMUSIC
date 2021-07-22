@@ -192,18 +192,7 @@ Function vol (dura As UByte, vel As UByte) As ubyte
 
 End Function
 
-Sub AcordeIguales (pasoCol() As vec, cnt As UByte,cntold As UByte, vel as UByte, canal As UByte,tiempoDur As double) 
-' todas las notas son de igual duracion, cnt cantidad de notas
-Print #1,"call acordeon iguales"
-AcordeOnIguales	 pasoCol() , cnt , cntold , vel,canal,tiempoDur
-AcordeOffIguales	 pasoCol(), cnt , cntold , canal
-' start  jmg 09-06-2021
-
-limpiarLigaduras (cnt,pasoCol())
-
-
-End Sub
-Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, cntold As UByte,vel As UByte,canal As UByte,tiempoDUR As double)
+Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, cntold As UByte,vel As UByte,canal As UByte,tiempoDUR As Double, Roll As inst)
 
 Dim As UByte i1, liga=0
 Dim As Integer tiempoFigura=0, tiempoFiguraSig=0
@@ -239,7 +228,7 @@ Print #1,"1)DUR cnt=";i1;":";pasoCol(i1).Dur
      Do
        nj=nj+1
        ' busca la proxima dur 
-       durj = Roll.trk(pasoCol(i1).i1 , nj).dur 
+       durj = Roll.trk(nj, pasoCol(i1).i1 ).dur 
    '    Print #1,"LIGA nj, durj "; nj ; " "; durj
        If durj > 0 Then
    '      Print #1,"LIGA nj reldur ";nj; " "; relDur(durj)
@@ -305,7 +294,7 @@ Next i1
 End Sub 
 
 
-Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As double)
+Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As Double,Roll As inst)
 
 Dim As UByte i1, liga=0,coff=0
 Dim As Integer tiempoFigura=0, tiempoFiguraSig=0
@@ -376,7 +365,7 @@ Print #1,"AOD FOR: pasoCol(i1).tiempofigOld ";pasoCol(i1).tiempoFiguraOld
      Do
        nj=nj+1
        ' busca la proxima dur 
-       durj = Roll.trk(pasoCol(i1).i1 , nj).dur 
+       durj = Roll.trk(nj, pasoCol(i1).i1 ).dur 
      '  Print #1,"AOD:LIGA nj, durj "; nj ; " "; durj
      '  Print #1,"AOD:LIGA nj reldur ";nj; " "; relDur(durj)
 '3) calculo tiempofigura de cada nota y su acumulacion en ligaduras
@@ -439,7 +428,7 @@ Next i1
  
 End Sub
 
-Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte, cntold As UByte,canal As UByte)
+Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte, cntold As UByte,canal As UByte,Roll As inst)
 Dim i1 As UByte
 Dim tiempoFigura As Double 
 '--------
@@ -477,8 +466,8 @@ For i1=1 To cnt
     ' Print #1, "retardo tf ";tf
      If TF > 0 Then 
        duracion old_time_on, tf
-       If Roll.trk(pasoCol(i1).i1 , jply+1).dur > 0 And _
-          Roll.trk(pasoCol(i1).i1 , jply+1).dur <= 181 Then
+       If Roll.trk(jply+1, pasoCol(i1).i1 ).dur > 0 And _
+          Roll.trk(jply+1, pasoCol(i1).i1 ).dur <= 181 Then
          ' Print #1," ligado OFF==> i1 ";i1;" AcordeOffDistintos: notapiano:", pasoCol(i1).notapiano;" "; _
    '       figura(Roll.trk(pasoCol(i1).i1 , jply+1).dur)
              
@@ -502,11 +491,14 @@ next i1
 
 End sub
 
-Sub AcordeDistintos (pasoCol() As vec, cnt As UByte, cntold As UByte,vel As UByte,canal As UByte,tiempoDur As double) 
-' Hay notas de sitinta duracion, cnt cantidad de notas
-Dim i1 As UByte
-AcordeOnDistintos  pasoCol(), cnt , cntold ,vel  , canal,tiempoDur
-AcordeOffDistintos pasoCol(), cnt , cntold ,canal,tiempoDur
+Sub AcordeIguales (pasoCol() As vec, cnt As UByte,cntold As UByte, vel as UByte, canal As UByte,tiempoDur As Double,Roll As inst) 
+' todas las notas son de igual duracion, cnt cantidad de notas
+Print #1,"call acordeon iguales"
+AcordeOnIguales	 pasoCol() , cnt , cntold , vel,canal,tiempoDur, Roll
+AcordeOffIguales	 pasoCol(), cnt , cntold , canal,Roll
+' start  jmg 09-06-2021
+
+limpiarLigaduras (cnt,pasoCol())
 
 
 End Sub
@@ -594,8 +586,8 @@ For i1=1 To cnt
         ' Print #1, "AOFFD:retardo tf ";tf
          If TF > 0 Then ' usamos el old_time-on que venia de antes
            duracion old_time_on, tf
-           If Roll.trk(pasoCol(i1).i1 , jply+1).dur > 0 And _
-              Roll.trk(pasoCol(i1).i1 , jply+1).dur <= 181 Then
+           If Roll.trk(jply+1, pasoCol(i1).i1 ).dur > 0 And _
+              Roll.trk(jply+1, pasoCol(i1).i1 ).dur <= 181 Then
            '   Print #1,"AOFFD: ligado OFF==> i1 ";i1;" AcordeOffDistintos: notapiano:", pasoCol(i1).notapiano;" "; _
            '        figura(Roll.trk(pasoCol(i1).i1 , jply+1).dur)
               noteoff pasoCol(i1).notapiano ,canal
@@ -638,8 +630,17 @@ Next i1
  
 End Sub
 
+Sub AcordeDistintos (pasoCol() As vec, cnt As UByte, cntold As UByte,vel As UByte,canal As UByte,tiempoDur As Double,Roll As inst ) 
+' Hay notas de sitinta duracion, cnt cantidad de notas
+Dim i1 As UByte
+AcordeOnDistintos  pasoCol(), cnt , cntold ,vel  , canal,tiempoDur,Roll
+AcordeOffDistintos pasoCol(), cnt , cntold ,canal,tiempoDur
+
+
+End Sub
+
 '-------------playAll-----21-05-2021-------
-Sub playAll() ' play version 2
+Sub playAll(Roll As inst) ' play version 2
 ' tiempo es cuantas negras en un minuto tiempoPAtron
 ' PLAY masavanzado en un mismo acorde si son de distinta duracion
 ' sus notas se toca cada una con su propia duracion,el corde no termina
@@ -726,15 +727,15 @@ EndIf
   iguales=0
   distintos=0
  ' Print #1,"---START-----paso:";jply;" --------------------------------"
-  '116 a 1
+  '115 a 0
   ' recorre una posicion vertical
   For i1=NA To NB Step -1 
    
-   If (Roll.trk(i1,jply).nota >= 1) And Roll.trk(i1,jply).nota <= 12 _
-      And Roll.trk(i1,jply).dur >=1 And Roll.trk(i1,jply).dur <= 180 Then ' es semitono 
-      Notapiano= 117-i1 
+   If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12 _
+      And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Then ' es semitono 
+      Notapiano= 115-i1 
       Notapiano= Notapiano - restar (Notapiano)
-      dura=CInt(Roll.trk(i1,jply).dur) '1) I 2) I dur x 1 to 108
+      dura=CInt(Roll.trk(jply, i1).dur) '1) I 2) I dur x 1 to 108
      ' Print #1,"jply ";jply; "dura ";dura
       cnt=cnt+1
      ' Print #1,"paso ";jply;" cnt ";cnt;" notapiano "; Notapiano
@@ -827,12 +828,12 @@ EndIf
                Next i2
 
                ' Print #1,"cnt ";cnt;" Acordeiguales "
-                AcordeIguales pasoCol(),cnt,cntold,vel,canal,tiempoDur
+                AcordeIguales pasoCol(),cnt,cntold,vel,canal,tiempoDur,Roll
                 
             EndIf
             If  distintos=1 Then
               ' Print #1,"cnt ";cnt;" AcordeDistintos"
-                AcordeDistintos pasoCol(),cnt, cntold,vel,canal,tiempoDur
+                AcordeDistintos pasoCol(),cnt, cntold,vel,canal,tiempoDur,Roll
                 
             EndIf
             
@@ -870,7 +871,7 @@ Sleep 1000,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicaci
 close_port(midiout)
 out_free(midiout) 
 
-ThreadDetach(thread1) 'JMG REPONER !!!!
+'ThreadDetach(thread1) 'JMG REPONER !!!!
 
 ' ================================FIN PLAYALL <<=================
 End Sub 
@@ -1038,11 +1039,11 @@ Print #1,"-----------------------------------------"
  
   For i=NA To NB Step -1 
     
-   If (Roll.trk(i,jply).nota >= 1) And Roll.trk(i,jply).nota <= 12 _
-      And Roll.trk(i,jply).dur >=1 And Roll.trk(i,jply).dur <= 180 Then ' es semitono 
-      Notapiano= 117-i 
+   If (Roll.trk(jply,i).nota >= 1) And Roll.trk(jply,i).nota <= 12 _
+      And Roll.trk(jply,i).dur >=1 And Roll.trk(jply,i ).dur <= 180 Then ' es semitono 
+      Notapiano= 115-i 
       Notapiano= Notapiano - restar (Notapiano)
-      dura=Roll.trk(i,jply).dur '1) I 2) I dur x 1 to 108
+      dura=Roll.trk(jply, i).dur '1) I 2) I dur x 1 to 108
 
 
 
@@ -1224,23 +1225,23 @@ End sub
 Function restar (notaRoll As Integer) As Integer
 
 Select Case notaroll
-   Case 1 To 12
+   Case 0 To 11
      restar=0
-   Case 14 To 25
+   Case 13 To 24
      restar=1
-   Case 27 To 38
+   Case 26 To 37
      restar= 2
-   Case 40 To 51
+   Case 39 To 50
      restar= 3
-   Case 53 To 64
+   Case 52 To 63
      restar =4
-   Case 66 To 77
+   Case 65 To 76
      restar= 5
-   Case 79 To 90
+   Case 78 To 89
      restar=6
-   Case 92 To 103
+   Case 91 To 102
      restar= 7
-   Case 105 To 116
+   Case 104 To 115
      restar=8         
        
 End Select
@@ -1297,7 +1298,8 @@ for i = 0 to portsin -1
 Next
 
 End Sub
-Sub TrasponerGrupo( cant As Integer)
+Sub TrasponerGrupo( cant As Integer, Roll As inst)
+
 Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,b1=0
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
@@ -1327,28 +1329,28 @@ For jpt = desdet To hastat
         ind = ind + sumar(ind)
      EndIf
    
-    If ( (Roll.trk(i1,jpt).nota >= 0) And Roll.trk(i1,jpt).nota <= 181 ) _
-       OR (Roll.trk(i1,jpt).dur >=0 And Roll.trk(i1,jpt).dur <= 181 ) Then ' es semitono
+    If ( (Roll.trk(jpt, i1).nota >= 0) And Roll.trk(jpt, i1).nota <= 181 ) _
+       OR (Roll.trk(jpt, i1).dur >=0 And Roll.trk(jpt, i1).dur <= 181 ) Then ' es semitono
        
        If ind >= NB And ind <= NA  Then
-            If pasoNota = Roll.trk(i1,jpt).nota And (Roll.trk(ind,jpt).nota=0 Or Roll.trk(ind,jpt).nota=181 )  Then
-               Roll.trk(ind,jpt).nota = Roll.trk(i1,jpt).nota
-               Roll.trk(ind,jpt).dur  = Roll.trk(i1,jpt).dur
-               Roll.trk(ind,jpt).vol  = Roll.trk(i1,jpt).vol
-               Roll.trk(ind,jpt).pan  = Roll.trk(i1,jpt).pan
-               Roll.trk(ind,jpt).pb   = Roll.trk(i1,jpt).pb
-               Roll.trk(ind,jpt).inst = Roll.trk(i1,jpt).inst
-               If Roll.trk(ind,jpt).nota > 0 And Roll.trk(ind,jpt).nota <= 13  Then
-                  Roll.trk(i1,jpt).nota = 181
-                  Roll.trk(i1,jpt).dur  = 0
+            If pasoNota = Roll.trk(jpt,i1).nota And (Roll.trk(jpt,ind).nota=0 Or Roll.trk(jpt,ind).nota=181 )  Then
+               Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
+               Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
+               Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
+               Roll.trk(jpt,ind).pan  = Roll.trk(jpt,i1).pan
+               Roll.trk(jpt,ind).pb   = Roll.trk(jpt,i1).pb
+               Roll.trk(jpt,ind).inst = Roll.trk(jpt,i1).inst
+               If Roll.trk(jpt,ind).nota > 0 And Roll.trk(jpt,ind).nota <= 13  Then
+                  Roll.trk(jpt,i1).nota = 181
+                  Roll.trk(jpt,i1).dur  = 0
                EndIf 
-               Roll.trk(i1,jpt).vol  = 0
-               Roll.trk(i1,jpt).pan  = 0
-               Roll.trk(i1,jpt).pb   = 0
-               Roll.trk(i1,jpt).inst = 0
+               Roll.trk(jpt,i1).vol  = 0
+               Roll.trk(jpt,i1).pan  = 0
+               Roll.trk(jpt,i1).pb   = 0
+               Roll.trk(jpt,i1).inst = 0
                               
             Else                
-               If Roll.trk(ind,jpt).nota >=1 And Roll.trk(ind,jpt).nota <=12  Then
+               If Roll.trk(jpt,ind).nota >=1 And Roll.trk(jpt,ind).nota <=12  Then
                    If cant < 0 Then  ' UP  
                       ind = ind+cant 
                       ind = ind - sumar(ind)
@@ -1365,19 +1367,19 @@ For jpt = desdet To hastat
                      ind=NB
                   EndIf
                   b1=1
-                  Roll.trk(ind,jpt).nota = Roll.trk(i1,jpt).nota
-                  Roll.trk(ind,jpt).dur  = Roll.trk(i1,jpt).dur
-                  Roll.trk(ind,jpt).vol  = Roll.trk(i1,jpt).vol
-                  Roll.trk(ind,jpt).pan  = Roll.trk(i1,jpt).pan
-                  Roll.trk(ind,jpt).pb   = Roll.trk(i1,jpt).pb
-                  Roll.trk(ind,jpt).inst = Roll.trk(i1,jpt).inst
+                  Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
+                  Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
+                  Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
+                  Roll.trk(jpt,ind).pan  = Roll.trk(jpt,i1).pan
+                  Roll.trk(jpt,ind).pb   = Roll.trk(jpt,i1).pb
+                  Roll.trk(jpt,ind).inst = Roll.trk(jpt,i1).inst
 
-                  Roll.trk(i1,jpt).nota = 181
-                  Roll.trk(i1,jpt).dur  = 0
-                  Roll.trk(i1,jpt).vol  = 0
-                  Roll.trk(i1,jpt).pan  = 0
-                  Roll.trk(i1,jpt).pb   = 0
-                  Roll.trk(i1,jpt).inst = 0
+                  Roll.trk(jpt,i1).nota = 181
+                  Roll.trk(jpt,i1).dur  = 0
+                  Roll.trk(jpt,i1).vol  = 0
+                  Roll.trk(jpt,i1).pan  = 0
+                  Roll.trk(jpt,i1).pb   = 0
+                  Roll.trk(jpt,i1).inst = 0
                EndIf
             EndIf      
        EndIf
@@ -1388,7 +1390,7 @@ Next jpt
 ''trasponer=0   
 End Sub
 
-Sub trasponerRoll( cant As Integer)
+Sub trasponerRoll( cant As Integer, Roll As inst)
 Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,b1=0
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
@@ -1426,44 +1428,44 @@ For jpt = desdet To hastat
         ind = ind + sumar(ind)
      EndIf
    
-    If ( (Roll.trk(i1,jpt).nota >= 0) And Roll.trk(i1,jpt).nota <= 181 ) _
-       OR (Roll.trk(i1,jpt).dur >=0 And Roll.trk(i1,jpt).dur <= 181 ) Then ' es semitono
+    If ( (Roll.trk(jpt,i1).nota >= 0) And Roll.trk(jpt,i1).nota <= 181 ) _
+       OR (Roll.trk(jpt,i1).dur >=0 And Roll.trk(jpt,i1).dur <= 181 ) Then ' es semitono
        
        If ind >= NB And ind <= NA  Then
           If  pasoNota=0  Then    
-             Roll.trk(ind,jpt).nota = Roll.trk(i1,jpt).nota
-             Roll.trk(ind,jpt).dur  = Roll.trk(i1,jpt).dur
-             Roll.trk(ind,jpt).vol  = Roll.trk(i1,jpt).vol
-             Roll.trk(ind,jpt).pan  = Roll.trk(i1,jpt).pan
-             Roll.trk(ind,jpt).pb   = Roll.trk(i1,jpt).pb
-             Roll.trk(ind,jpt).inst = Roll.trk(i1,jpt).inst
-             If Roll.trk(ind,jpt).nota > 0 And Roll.trk(ind,jpt).nota <= 12  Then
-                Roll.trk(i1,jpt).nota = 181
-                Roll.trk(i1,jpt).dur  = 0
+             Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
+             Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
+             Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
+             Roll.trk(jpt,ind).pan  = Roll.trk(jpt,i1).pan
+             Roll.trk(jpt,ind).pb   = Roll.trk(jpt,i1).pb
+             Roll.trk(jpt,ind).inst = Roll.trk(jpt,i1).inst
+             If Roll.trk(jpt,ind).nota > 0 And Roll.trk(jpt,ind).nota <= 12  Then
+                Roll.trk(jpt,i1).nota = 181
+                Roll.trk(jpt,i1).dur  = 0
              EndIf 
-             Roll.trk(i1,jpt).vol  = 0
-             Roll.trk(i1,jpt).pan  = 0
-             Roll.trk(i1,jpt).pb   = 0
-             Roll.trk(i1,jpt).inst = 0
+             Roll.trk(jpt,i1).vol  = 0
+             Roll.trk(jpt,i1).pan  = 0
+             Roll.trk(jpt,i1).pb   = 0
+             Roll.trk(jpt,i1).inst = 0
           Else
-            If pasoNota = Roll.trk(i1,jpt).nota And (Roll.trk(ind,jpt).nota=0 Or Roll.trk(ind,jpt).nota=181 )  Then
-               Roll.trk(ind,jpt).nota = Roll.trk(i1,jpt).nota
-               Roll.trk(ind,jpt).dur  = Roll.trk(i1,jpt).dur
-               Roll.trk(ind,jpt).vol  = Roll.trk(i1,jpt).vol
-               Roll.trk(ind,jpt).pan  = Roll.trk(i1,jpt).pan
-               Roll.trk(ind,jpt).pb   = Roll.trk(i1,jpt).pb
-               Roll.trk(ind,jpt).inst = Roll.trk(i1,jpt).inst
-               If Roll.trk(ind,jpt).nota > 0 And Roll.trk(ind,jpt).nota <= 12  Then
-                  Roll.trk(i1,jpt).nota = 181
-                  Roll.trk(i1,jpt).dur  = 0
+            If pasoNota = Roll.trk(jpt,i1).nota And (Roll.trk(jpt,ind).nota=0 Or Roll.trk(jpt,ind).nota=181 )  Then
+               Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
+               Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
+               Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
+               Roll.trk(jpt,ind).pan  = Roll.trk(jpt,i1).pan
+               Roll.trk(jpt,ind).pb   = Roll.trk(jpt,i1).pb
+               Roll.trk(jpt,ind).inst = Roll.trk(jpt,i1).inst
+               If Roll.trk(jpt,ind).nota > 0 And Roll.trk(jpt,ind).nota <= 12  Then
+                  Roll.trk(jpt,i1).nota = 181
+                  Roll.trk(jpt,i1).dur  = 0
                EndIf 
-               Roll.trk(i1,jpt).vol  = 0
-               Roll.trk(i1,jpt).pan  = 0
-               Roll.trk(i1,jpt).pb   = 0
-               Roll.trk(i1,jpt).inst = 0
+               Roll.trk(jpt,i1).vol  = 0
+               Roll.trk(jpt,i1).pan  = 0
+               Roll.trk(jpt,i1).pb   = 0
+               Roll.trk(jpt,i1).inst = 0
                               
             Else                
-               If Roll.trk(ind,jpt).nota >=1 And Roll.trk(ind,jpt).nota <=12  Then
+               If Roll.trk(jpt,ind).nota >=1 And Roll.trk(jpt,ind).nota <=12  Then
                    If cant < 0 Then  ' UP  
                       ind = ind+cant 
                       ind = ind - sumar(ind)
@@ -1480,19 +1482,19 @@ For jpt = desdet To hastat
                      ind=NB
                   EndIf
                   b1=1
-                  Roll.trk(ind,jpt).nota = Roll.trk(i1,jpt).nota
-                  Roll.trk(ind,jpt).dur  = Roll.trk(i1,jpt).dur
-                  Roll.trk(ind,jpt).vol  = Roll.trk(i1,jpt).vol
-                  Roll.trk(ind,jpt).pan  = Roll.trk(i1,jpt).pan
-                  Roll.trk(ind,jpt).pb   = Roll.trk(i1,jpt).pb
-                  Roll.trk(ind,jpt).inst = Roll.trk(i1,jpt).inst
+                  Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
+                  Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
+                  Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
+                  Roll.trk(jpt,ind).pan  = Roll.trk(jpt,i1).pan
+                  Roll.trk(jpt,ind).pb   = Roll.trk(jpt,i1).pb
+                  Roll.trk(jpt,ind).inst = Roll.trk(jpt,i1).inst
 
-                  Roll.trk(i1,jpt).nota = 181
-                  Roll.trk(i1,jpt).dur  = 0
-                  Roll.trk(i1,jpt).vol  = 0
-                  Roll.trk(i1,jpt).pan  = 0
-                  Roll.trk(i1,jpt).pb   = 0
-                  Roll.trk(i1,jpt).inst = 0
+                  Roll.trk(jpt,i1).nota = 181
+                  Roll.trk(jpt,i1).dur  = 0
+                  Roll.trk(jpt,i1).vol  = 0
+                  Roll.trk(jpt,i1).pan  = 0
+                  Roll.trk(jpt,i1).pb   = 0
+                  Roll.trk(jpt,i1).inst = 0
                'Else
                 ' b1=0   
                EndIf
@@ -1507,7 +1509,7 @@ Next jpt
 
 End Sub
 
-Sub moverZonaRoll(ind As Integer)
+Sub moverZonaRoll(ind As Integer, Roll As inst)
 ' mueve M + Click la zona a la posicion indicada pro el click
 ' o copia c + click ñl azona a la posicion indicada  
 Dim As Integer jpt=1, i1=1, comienzo , final, inc,b1=0,cant=0
@@ -1541,21 +1543,20 @@ Print #1, "MaxPosOld ", MaxPosOld
  
 For jpt=desdet To hastat 
    For  i1= comienzo To final
-     Roll.trk(i1,ind).nota = Roll.trk(i1,jpt).nota
-     Roll.trk(i1,ind).dur  = Roll.trk(i1,jpt).dur
-     Roll.trk(i1,ind).vol  = Roll.trk(i1,jpt).vol
-     Roll.trk(i1,ind).pan  = Roll.trk(i1,jpt).pan
-     Roll.trk(i1,ind).pb   = Roll.trk(i1,jpt).pb
-     Roll.trk(i1,ind).inst = Roll.trk(i1,jpt).inst
+     Roll.trk(ind,i1).nota = Roll.trk(jpt,i1).nota
+     Roll.trk(ind,i1).dur  = Roll.trk(jpt,i1).dur
+     Roll.trk(ind,i1).vol  = Roll.trk(jpt,i1).vol
+     Roll.trk(ind,i1).pan  = Roll.trk(jpt,i1).pan
+     Roll.trk(ind,i1).pb   = Roll.trk(jpt,i1).pb
+     Roll.trk(ind,i1).inst = Roll.trk(jpt,i1).inst
     ' Print #1,"i1,ind Roll.trk(i1,ind).nota ",i1, ind, Roll.trk(i1,ind).nota
      If moverZona=1 Then ' borro original
-        Roll.trk(i1,jpt).nota = 181
-        Roll.trk(i1,jpt).dur  = 0
- 
-        Roll.trk(i1,jpt).vol  = 0
-        Roll.trk(i1,jpt).pan  = 0
-        Roll.trk(i1,jpt).pb   = 0
-        Roll.trk(i1,jpt).inst = 0
+        Roll.trk(jpt,i1).nota = 181
+        Roll.trk(jpt,i1).dur  = 0
+        Roll.trk(jpt,i1).vol  = 0
+        Roll.trk(jpt,i1).pan  = 0
+        Roll.trk(jpt,i1).pb   = 0
+        Roll.trk(jpt,i1).inst = 0
      EndIf
    Next i1
    ind=ind+1
@@ -1572,13 +1573,12 @@ If inicioind > MAxPosOld Then
   ' Print #1,"MAxPosOld, inicioind ", MAxPosOld, inicioind
    For jpt=MaxPosOld-1 To inicioind  
      For  i1= comienzo To final
-        Roll.trk(i1,jpt).nota = 181
-        Roll.trk(i1,jpt).dur  = 0
- 
-        Roll.trk(i1,jpt).vol  = 0
-        Roll.trk(i1,jpt).pan  = 0
-        Roll.trk(i1,jpt).pb   = 0
-        Roll.trk(i1,jpt).inst = 0
+        Roll.trk(jpt,i1).nota = 181
+        Roll.trk(jpt,i1).dur  = 0
+        Roll.trk(jpt,i1).vol  = 0
+        Roll.trk(jpt,i1).pan  = 0
+        Roll.trk(jpt,i1).pb   = 0
+        Roll.trk(jpt,i1).inst = 0
   
      Next i1
    Next jpt
@@ -1597,7 +1597,7 @@ EndIf
 posn=MaxPos -1
 End Sub 
 
-Sub correcciondeNotas()
+Sub correcciondeNotas(Roll As inst)
 
 Dim As Integer jpt=1, i1=1, comienzo , final,i2
 ' NA ES EL MAYOR VALOR NUMERICO, 
@@ -1616,17 +1616,17 @@ Else
 EndIf   
 'Print #1,"CORRECION DE NOTAS ***********"
 For jpt = desdet To hastat  
-  For i1= 1 To 116   
+  For i1= 0 To 115   
    
-     If ( (Roll.trk(i1,jpt).nota >= 0) And (Roll.trk(i1,jpt).nota <= 13 ) )  Then ' es semitono
+     If ( (Roll.trk(jpt,i1).nota >= 0) And (Roll.trk(jpt,i1).nota <= 13 ) )  Then ' es semitono
            'Print #1,"Roll.trk(i1,jpt).nota ",Roll.trk(i1,jpt).nota
            'Print #1, "i1",i1
            i2= i1 - restar (i1)
           ' Print #1, "i2",i2
           ' Print #1,"relnRNe (i2) ",relnRNe (i2)
           ' Print #1,"---------------"   
-          If  Roll.trk(i1,jpt).nota <> relnRNe (i2) Then 
-              Roll.trk(i1,jpt).nota = relnRNe (i2)
+          If  Roll.trk(jpt,i1).nota <> relnRNe (i2) Then 
+              Roll.trk(jpt,i1).nota = relnRNe (i2)
           EndIf    
     EndIf
   Next i1

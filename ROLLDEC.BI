@@ -1,24 +1,25 @@
+'Declare Sub RollLoop (c As cairo_t Ptr, Roll As inst)
+'Declare Sub creaPenta (c AS cairo_t Ptr, Roll As inst  )
 
-Declare Sub creaPenta (c AS cairo_t Ptr)
 Declare Sub Tracks (nroTrack As UByte, nroCanal As UByte)
-Declare Sub menu (c0 AS cairo_t Ptr,c AS cairo_t Ptr,n As Integer,menuNro As Integer)
+'Declare Sub menu (c0 AS cairo_t Ptr,c AS cairo_t Ptr,n As Integer,menuNro As Integer)
 declare Sub botones(hWnd As HWND,c As cairo_t Ptr,cm As cairo_t Ptr,x As Integer,y As integer)
 Declare Sub menuAcc (c AS cairo_t Ptr)
 Declare Sub moveresto (ByVal StartInsert As integer,ByRef indaux as Integer, Byref insert As Integer,Byref nota As integer)
 Declare Sub movedato (ByVal StartInsert As Integer, ByRef indaux As Integer, Byref insert As Integer,Byref nota As integer)
-Declare sub calcCompas(ByRef j As Integer)
+'Declare sub calcCompas(ByRef j As Integer)
 Declare Sub mayorDurEnUnaPosicion (ByRef posn as integer)
 Declare Sub organizaCompases()
 Declare Function KeyPress(Key As Integer) As Integer
 ' 128 track,16 canales o sea cada canal con 8 voces
-Declare Sub cursor(c AS cairo_t Ptr, ByRef n As Integer, ByRef nro As Integer)
+'Declare Sub cursor(c AS cairo_t Ptr, ByRef n As Integer, ByRef nro As Integer)
 'Declare Function print_text(ByVal x As Integer, ByVal y As Integer, ByRef text As String, _
 '        ByVal font As FT_Face, ByVal size As Integer, ByVal col As UInteger ) As Integer
 Declare Sub separarDur(ByRef j As Integer,ByRef DUR As Integer,  partes() As Integer,  ByRef cantPartes As Integer, ByRef falta As Integer )
 
 Declare Sub menugrafico(c0 AS cairo_t Ptr,c AS cairo_t Ptr, Cantitems As Integer, items() As String )
-Declare Sub ReCalCompas()
-Declare Sub CargaArchivo()
+'Declare Sub ReCalCompas()
+'Declare Sub CargaArchivo()
 Declare Sub CambiarDim()
 ' para IUP textbox 
 Declare Sub dialogoText(cadena As string)
@@ -49,11 +50,11 @@ Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, c
 Dim shared As integer Penta_y, indice, posicion,posicionOld, nota,espacio,posn,cursorHori
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow
-Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro
+Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
 dim Shared as string cromatica(1 to 12)
 dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
-Dim Shared NotasGuia (1 To 12) As String * 2 => _
+Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
 ' 5.7.6.00 tresillos
 espacio=0:notacur=1 '16-05-2021 jmg
@@ -147,7 +148,7 @@ Dim shared As mouse m
 Dim Shared As Double old_btn_press_time, new_btn_press_time,dbl_click_time,redimensionar=0
 dbl_click_time = 0.18
 
-Dim Shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota
+Dim Shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota,compasX
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen,anchofig,gap1,gap2,gap3
 Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, curposold, resultado, indiceNota
@@ -173,7 +174,7 @@ Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 17500000,8750000,4375000,2187500,1093750,546875,273438,136719,68360, _ '163 171
  6666666,3333333,1666666, 833333, 416666,208333,104166, 52083,26042,0,0 }  '172 180 
 
-Dim Shared As String nombreArchivo, TCompas,nombre
+Dim Shared As String nombreArchivo, TCompas,nombre, menuOldStr
 nombre=""
 Dim Shared As UByte Vfuerte=70,Vsemifuerte=60,Vdebil=50
 TCompas ="4/4"

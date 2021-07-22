@@ -8,8 +8,8 @@
 dim Shared midiin As   RtMidiInPtr 
 dim Shared midiout As  RtMidiOutPtr
 Declare Function restar (notaRoll As Integer) As Integer
-Declare Sub PlayRoll ( )
-declare Sub playAll() 
+Declare Sub PlayRoll  
+'declare Sub playAll() 
 Declare Sub duracion (old_time As double,tiempoFigura As double)
 Declare Sub pedaloff()
 Declare Sub allSoundoff(canal As UByte)
@@ -17,10 +17,10 @@ Declare Sub alloff(canal As ubyte )
 Declare Sub listports( )
 Declare Sub sleep5dm()
 Declare Function sumar( ind As integer) As Integer
-Declare Sub trasponerRoll(cant As integer)
-Declare Sub trasponerGrupo(cant As integer)
-Declare Sub moverZonaRoll(cant As Integer)
-Declare Sub correcciondeNotas()
+'Declare Sub trasponerRoll(cant As integer)
+'Declare Sub trasponerGrupo(cant As integer)
+'Declare Sub moverZonaRoll(cant As Integer)
+'Declare Sub correcciondeNotas()
 
 Dim Shared message(1 To 21) As UByte ' message output 
 
@@ -93,18 +93,18 @@ End Type
 
 Declare Sub noteon	( note As UByte, vel As UByte,canal As UByte)
 Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal As UByte,tiempoDur As Double)
-Declare Sub AcordeIguales ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte,canal As UByte,tiempoDur As double) 
-Declare Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte,cntold As UByte, canal As UByte)
-Declare Sub AcordeDistintos ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte, canal As UByte,tiempoDur As double) 
-Declare Sub AcordeOffDistintos	( pasoCol() As vec , cnt As UByte,cntold As UByte, canal As UByte,tiempoDur As Double)
-Declare Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As Double)
-Declare Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As double)
+'Declare Sub AcordeIguales ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte,canal As UByte,tiempoDur As double) 
+'Declare Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte,cntold As UByte, canal As UByte)
+'Declare Sub AcordeDistintos ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte, canal As UByte,tiempoDur As double) 
+'Declare Sub AcordeOffDistintos	( pasoCol() As vec , cnt As UByte,cntold As UByte, canal As UByte,tiempoDur As Double)
+'Declare Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As Double)
+'Declare Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As double)
 Declare Function vol (dura As UByte, vel As UByte) As ubyte
 Declare sub noteoff( note As UByte, canal As UByte)
 Declare Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
 Dim Shared ligaglobal  as Integer=0
 'Relacion de nR indice de Roll, con nE semitono, para evitar calculos.
-Dim Shared As integer relnRnE(1 To 108) => { _  ' indice de Roll vs semitono
+Dim Shared As integer relnRnE(0 To 107) => { _  ' indice de Roll vs semitono
 1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12, _
 1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12, _
 1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12 }
