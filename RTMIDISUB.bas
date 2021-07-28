@@ -1247,6 +1247,33 @@ Select Case notaroll
 End Select
 
 End Function
+Function SumarnR (notaPiano As Integer) As Integer
+' dado la NotaPiano encuentro nR el indice del Vector Roll de visualizacion
+Select Case notaPiano
+   Case 0 To 11
+     SumarnR=0
+   Case 12 To 23
+     SumarnR=1
+   Case 24 To 35
+     SumarnR= 2
+   Case 36 To 47
+     SumarnR = 3
+   Case 48 To 59
+     SumarnR =4
+   Case 60 To 71
+     SumarnR= 5
+   Case 72 To 83
+     SumarnR=6
+   Case 84 To 95
+     SumarnR= 7
+   Case 96 To 107
+     SumarnR=8         
+       
+End Select
+
+End Function
+
+
 Function sumar( ind As integer) As Integer 
 Dim res As Integer 
 res= ind Mod 13

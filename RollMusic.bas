@@ -1,3 +1,10 @@
+' TRACKS: 1) 1ER ETAPA GRABAMOS TRACKS A PARTIR DEL VECTOR DE VISUALIZACION
+' EN EDICION.
+'    2DA ETAPA) CARGAMOS TRACKS Y PASAMOS AL DE VISUALIZACION PARA EDITAR
+'  UNO QUE SE ELIJA..EMPEZAREMOS CON UN SOLO TRACK EL 1..O SEA GRABAR Y CARGAR 
+' EN FORMATO TRACK Y EDITAR EN FORMATO VISUALIZACION, LEUGO SUPERADA ESA ETAPA
+' SEGUIMSO AGREGANDO TRACKS---
+'
 ' 9.9 cambiamos la sdimensiones de lugar, asi maxpos es la 1era y podemos
 ' redimensionar con preserve !! algunaso archivos *.roll fueron reconvertidos
 ' ESTANDARIZACION OCTAVAS Y NUMEROS DE NOTAS DE PIANO EMPIEZAN EN CERO DESDE
@@ -88,7 +95,7 @@ End Sub
 
 Dim Shared file As OpenFileName
 Dim Shared As String myfilter
-myfilter  = "Roll Files"+Chr(0)  +"*.roll;*.mp3"+Chr(0)
+myfilter  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
 'myfilter += "Ini files"+Chr(0)   +"*.ini;*.txt;*.cfg"+Chr(0)
 myfilter += "All Files"+Chr(0)   +"*.*"+Chr(0)
 
@@ -117,6 +124,8 @@ Const list_item_data_key ="list_item_data"
 ScreenControl  SET_DRIVER_NAME,"GDI"
 
 Open "midebug.txt" For Output As #1
+Print #1,"start"
+
 
 'Open "mivector.txt" For Output As #3
 Open "miplayall.txt" For Output As #4
@@ -183,9 +192,9 @@ End Type
 ' PUEDO TENER UN SHARED DINAMICO GRACIAS A TYPE !!!
 Dim Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 
-
-Dim Shared As inst Track (1 To 32) ' tracks
-Dim Shared As inst Roll ' para visualizar 
+Dim Shared As inst Temp 
+Dim Shared As inst Track (0 To 32) ' tracks para guardar,.. y tocar 
+Dim Shared As inst Roll ' para visualizar y tocar
 
 'tempo I=160, seri equivalente a O=40 como l maxima cantdad de ticks de O es
 ' eldela figura mas pequeña=128 ticks...40 * 128 = 5120 por minuto.
@@ -247,15 +256,19 @@ Dim Shared As paso compas (1 To CantTicks) 'cada item es la posicion en donde
 desdevector = desde
 hastavector = hasta
 NB => 0 + (desde-1) * 13   ' 27 para 3 = 0
-NA => 11 + (hasta-1) * 13  ' 90 para  7 = 115
+NA => 11 + (hasta-1) * 13  ' 90 para  9 = 115
+
 ReDim (Roll.trk ) (1 To CantTicks,NB To NA) ' Roll de trabajo en Pantalla
+
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
-Dim As Integer lim1=1,lim2=10, ctres=CantTicks ' 5 octavas por track
-' c/inst puede tocar como una persona hasta 10 notas juntas de acorde
-' entonces no se justifica tener en un solo instrumento una polifonia mas de 10
+'Dim Shared As Integer lim2=12, ctres=CantTicks
+Dim Shared As Integer lim2=12
+Dim AS Integer  ctres=CantTicks ' 5 octavas por track 
+' c/inst puede tocar como una persona hasta 12 notas juntas de acorde
+' entonces no se justifica tener en un solo instrumento una polifonia mas de 12
 ' ni de 108,,,ergo puedo poner mas trakcs o mas longitud
-' asi ocupa 270k , 64 ocupara 550 y 128 ocupara 1 giga...listo!
+' asi ocupa,recalcular.., 270k , 64 ocupara 550 y 128 ocupara 1 giga...listo!
 ' lo hare de 32 tracks 275 mgbytes !
 'CREAR UN MENU ACA DE CREACION DE TRACKS SEGUN SE ELIJA SE VAN EJECUTANDO LOS
 ' REDIM Y LUEGO SE PUEDE ELEGIR CADA UNO PARA EDITAR, PARA ELLOS
@@ -263,18 +276,24 @@ Dim As Integer lim1=1,lim2=10, ctres=CantTicks ' 5 octavas por track
 ' debo modificar todo el programa para incorporar el indice del inst o Track
 ' Sigo enviando  Roll, pero cuadno lo uso debo especificar cual track estoy usando
 ' creo 4 tracks por default a pedido del ususraio se pueden agregar mas
+'=============================================================
+' ctres SERA DINAMICO A MEDIDA QUE SE ENTRA MAS NOTAS SE IRA EXTENDIENDO LAS POSICIONES
+'============== IMPLEMENTARLO AL FINAL 
+
+ReDim (Track(0).trk ) (1 To Ctres,1 To lim2)
 ReDim (Track(1).trk ) (1 To Ctres,1 To lim2)
 ReDim (Track(2).trk ) (1 To Ctres,1 To lim2)
 ReDim (Track(3).trk ) (1 To ctres,1 To lim2)
 ReDim (Track(4).trk ) (1 To ctres,1 To lim2)
 ' c/u de estos track es redimensionable preserve en la 1era dimension 
-' o sea en las posicioenes, lo que debo hacer es cargar estos Tracks
+' o sea en las posiciones, lo que debo hacer es cargar estos Tracks
 ' con eventos pero para mostrarlso usaria el Roll 
 ' suponemos que cada track solo puede tener acordes de hasta 12 notas,1 to lim2
 ' en el momento de la carga de Roll cargar tambien Track ¿?
-' creo qu eno solo debo copiar en elmomento antes de grabar o reproducir
-' debere ahcer otro play PlayTracks en donde se ejecutara todos los tracks
-' barriendo la posicion comun a todos y las notas de cada uno !
+' creo que no solo debo copiar en el momento antes de grabar o reproducir
+' debere hAcer otro play PlayTracks en donde se ejecutara todos los tracks
+' barriendo la posicion comun a todos y las notas de cada uno EN SINCRONIA CON LA VISUALIZACION!
+' ENTONCES EN PLAYALL RECORRO TRACKS PERO NO EL DE VISUALIZACION,,,,,VEREMOS.,
 
 Dim Shared As inst RollAux
 ReDim (RollAux.trk) ( 1 To CantTicks,NB To NA )

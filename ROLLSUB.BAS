@@ -1,3 +1,4 @@
+
 Sub calcCompas( ByRef j As Integer,Roll As inst)
  ' nota:fijarse que pasa con el grupo..1 to 4 de las 64 duraciones
  ' x print #1,"========================================================="
@@ -969,6 +970,7 @@ Sub CargaArchivo(Roll As inst)
      
      Dim As String x,x1,x2,x3,x4,nombrea
      ''' no usar mas  dialogoText("Cargar Archivo")
+      myfilter  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
       getfiles(file,myfilter,"open")
       nombrea=*file.lpstrFile
 '  nombrea="DESAFIO-LIGA-ACORDES-EN-1-NOTA.ROLL" ' para debug sino no funciona
@@ -1021,32 +1023,6 @@ Sub CargaArchivo(Roll As inst)
 '      Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
       For i= NB To NA
-/'      
-       If Trabajo(i,j).nota=255 Then
-          Trabajo(i,j).nota=181
-          Trabajo(i,j).dur=0
-       EndIf
-       If Trabajo(i,j).dur=255 Then
-          Trabajo(i,j).dur=0
-          Trabajo(i,j).nota=181
-       EndIf   
-       If Trabajo(i,j).nota=254 Then
-          Trabajo(i,j).nota=181
-          Trabajo(i,j).dur=0
-       EndIf
-       If Trabajo(i,j).dur=254 Then
-          Trabajo(i,j).dur=0
-          Trabajo(i,j).nota=181
-       EndIf   
-       If Trabajo(i,j).nota=253 Then
-          Trabajo(i,j).nota=181
-          Trabajo(i,j).dur=0
-       EndIf
-       If Trabajo(i,j).dur=253 Then
-          Trabajo(i,j).dur=0
-          Trabajo(i,j).nota=181
-       EndIf   
-'/
        Roll.TRK(j,i)  => Trabajo (j,i)    
 '       Roll.TRK(j,i)  => Trabajo (i,j) ' temporario convertir
       Next i
@@ -1058,17 +1034,185 @@ Sub CargaArchivo(Roll As inst)
      curpos =>0
      carga=0
      ReCalCompas(Roll)     
-    ''''''' REPONER TEMPORARIO ReCalCompas(Roll)
- '    Dim cmax As Integer
- '    For j = 1 To MaxPos -2
- '      nroCompas = compas(j).nro
- '      If nroCompas > cmax Then
- '         cmax=nroCompas
- '      EndIf   
- '    Next j
- '    nroCompas=cmax     
+    
 End Sub
+' ------------------------------------------
+Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
+' solo carga track no lo pasa a Vector de Visualizacion
+  Print #1,"CargaTrack 1"   
+     Dim z (1,1 )  As dat
+     Dim zLim (1,1) As dat
+     Dim As Integer ubi1,ubi2 
+     Dim As String x,x1,x2,x3,x4,nombrea
+     ''' no usar mas  dialogoText("Cargar Archivo")
+     myfilter  = "Track Files"+Chr(0)  +"*.rtk"+Chr(0)
+      getfiles(file,myfilter,"open")
+      nombrea=*file.lpstrFile
+'  nombrea="DESAFIO-LIGA-ACORDES-EN-1-NOTA.ROLL" ' para debug sino no funciona
+'  nombrea="test-acordes-iguales01.roll"
+'  nombrea="DESAFIO-LIGA-ACORDE-3-O.roll"
+       If nombrea = "" Then
+          Exit Sub
+       Else
+          nombre=nombrea   
+       EndIf
+    ubi1 = InStrrev(nombre,"[")
+    ubi2 =InStrRev (nombre,"]")
+    ntk=CInt(Mid(nombre,ubi1+1,ubi2-ubi1-1))
+  Print #1,"CargaTrack 2, ntk",ntk   
+  Print #1,"nombre arch track ",nombre
 
+     'Open "Trabajo_03.roll" For Binary Access Read As #2
+    ' Open nombreArchivo +".roll" For Binary Access Read As #2
+      Open nombre  For Binary Access Read As #2
+       Print #1,"arch track  abrio" 
+     Get #2, , z(1,1)
+     x1=Bin(z(1,1).nota,4)
+     x2=Bin(z(1,1).dur,4)
+     x3=Bin(z(1,1).vol,4)
+     x4=Bin(z(1,1).pan,4)
+     x=x1+x2+x3+x4
+        Print #1,"reconstruccion x pos bin ", x
+     MaxPosTrack(ntk)=CInt("&B"+x)
+     Print #1,"MaxPosTrack(ntk) ",MaxPosTrack(ntk)
+     posicion = 1
+       Print #1,"reconstruccion x pos int ", Posicion
+     notaold= z(1,1).pb
+     nota=0 '''notaOld
+     inicioDeLectura=0' Int(Maxpos/NroCol)
+     posnTrack(ntk)=MaxPosTrack(ntk)- 1
+' aca supongo que cuadno cargo un track siemrp elo veo por pantalla
+' CAMBIAR CUADNO CARGUE CANCION,,,,!!!!      
+     posn=MaxPosTrack(ntk)- 1
+     MaxPos=MaxPosTrack(ntk)
+     ' crgamos limites Roll de octavas
+     Get #2, , zLim(1,1)
+     desde=zLim(1,1).nota
+     hasta=zLim(1,1).dur
+     Print #1,"desde ",desde
+     Print #1,"hasta ",hasta
+'     NB => 1 + (desde-1) * 13   ' 27 para 3
+'     NA => 12 + (hasta-1) * 13  ' 90 para  7
+  '''REPONER    CambiarDim()
+     
+     ' cargamos trabajo datos
+     Dim Trabajo (1 To MaxPosTrack(ntk), 1 To lim2) As dat
+     ''Dim Trabajo (NB To NA,1 To MaxPos) As dat ' temporario para convertir
+     Print #1,"Get Trabajo "
+     Get #2, , Trabajo()
+     Print #1,"Geteo Trabajo "
+     ' movemos los datos a Roll
+     ' -------------------------
+     'ReDim compas(1 To CantTicks) es solo para visualizar
+     'carga=1 ' para visualizar no es lo mismo calcCompas con cargar o procesando
+     Dim As Integer i,j , mayor,ia,valdur,cont, semi
+     cont=0
+ '    Print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
+     Dim As Integer  grupo, mayorgrupo
+     For j = 1 To MaxPosTrack(ntk)  -2 '11-07-2021
+       Print #1,"POSICION :",J
+      Print #1,"lim2 :", lim2
+      
+      For i= 1 To lim2
+      Print #1,"carga i acorde ",i
+      Track(ntk).TRK(j,i)  => Trabajo (j,i)  
+      Print #1,"luego de carga i acorde ",i  
+' cargar en visualizacion con otra sub si es necesario
+      Next i
+
+     Next j
+     Close 2
+
+     DUR => 0
+     curpos =>0
+     carga=0
+  '...   ReCalCompas(Roll) No es vEctor de Visualizacion      
+    ''''''' REPONER TEMPORARIO ReCalCompas(Roll)
+      Print #1,"CargaTrack 3 fin"   
+
+End Sub
+'
+Sub Nuevo(Roll As inst)
+          ReDim (Roll.trk ) (1 To CantTicks, NB To NA )
+          ReDim compas(1 To CantTicks)
+          ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
+          MaxPos = 1 'NroCol
+          posicion=1:posn=1
+          curpos=1
+          notacur=1
+          nroCompas=0
+          tres=0:pun=0:sil=0:mas=0:doblepun=0:cuart=0
+          tres=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
+          SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
+          nombre = ""
+          Dim As Integer r1,i
+          For i=NB To NA 
+            For r1= posn+1 To CantTicks
+                Roll.trk(r1,i).nota=0
+                Roll.trk(r1,i).dur=0 
+             Next r1 
+         Next i           
+
+End Sub
+' 
+Sub TrackaRoll (Track() As inst, ByRef ntk As Integer, Roll As inst)
+Dim As Integer i1,i2,i3,Maxposicion
+  Print #1,"TrackaRoll 1"   
+ 
+'NB => 0 + (desde-1) * 13   ' 27 para 3 = 0
+'NA => 11 + (hasta-1) * 13  ' 90 para  9 = 115
+' para octava 2 
+'NB=13
+' NA=24 =13 +11
+' para octava 3 
+'NB=26
+'NA=37
+'=> semitono=nr-int(nR/13)*13+1
+'ej semitono=30-26+1=5
+  Print #1,"TrackaRoll 1 Nuevo"
+Nuevo (Roll)
+    Print #1,"TrackaRoll FOR"
+For i2 = 1 To MaxPosTrack(ntk)
+   For i1=1 To lim2
+ 
+      If Track(ntk).trk(i2,i1).nota >= 0 and Track(ntk).trk(i2,i1 ).nota <=115 Then
+      ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
+         PianoNota=Track(ntk).trk(i2,i1 ).nota
+         PianoNota= PianoNota + SumarnR (PianoNota)
+         i3= 115 -PianoNota
+         'i3=semitono + (nro-1) * 13
+         Roll.trk(i2,i3).nota = CUByte(i3 - (Int(i3/13))*13+1) ' semitono
+         Roll.trk(i2,i3).dur  = Track(ntk).trk(i2,i1).dur         
+      EndIf
+   Next i1
+Next i2     
+For i2 = 1 To MaxPosTrack(ntk)
+  For i1=NB To NA
+   If Roll.trk(i2,i1).nota =0 Then
+      Roll.trk(i2,i1).nota=181
+      Roll.trk(i2,i1).dur=0
+   Else
+   Print #1,i2,Roll.trk(i2,i1).nota,Roll.trk(i2,i1).dur
+    ' Continue For   
+   EndIf
+  Next i1
+Next i2     
+
+
+
+MaxPos=MaxPosTrack(ntk)
+posicion=1:posn=MaxPos-2
+curpos=1
+notacur=1
+nroCompas=0
+tres=0:pun=0:sil=0:mas=0:doblepun=0:cuart=0
+tres=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
+SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
+
+  Print #1,"TrackaRoll Fin"
+
+
+End Sub
 '-------------------------------MENU----------
 Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst )
  ''Print #1,"1-menu "
@@ -1188,8 +1332,8 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    
    t=  " [Reproducir]":cairo_show_text(c, t)
    ' --------------------------
- '0.7  ===> [Opciones]  
-   If MultiKey(sc_Control) And mousex > 473 And mousex< 562 And mousey < 50  Then  'OPCIONES
+ '0.7  ===> [Opciones]  '25-07-2021
+   If MultiKey(sc_Control) And mousex > 480 And mousex< 555 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      menuNew=5
@@ -1311,25 +1455,7 @@ EndIf
     
       If MultiKey(sc_control) Then
        If dobleclick Then
-          ReDim (Roll.trk ) (1 To CantTicks, NB To NA )
-          ReDim compas(1 To CantTicks)
-          ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
-          MaxPos = 1 'NroCol
-          posicion=1:posn=1
-          curpos=1
-          notacur=1
-          nroCompas=0
-          tres=0:pun=0:sil=0:mas=0:doblepun=0:cuart=0
-          tres=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
-          SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
-          nombre = ""
-          Dim As Integer r1,i
-          For i=NB To NA 
-            For r1= posn+1 To CantTicks
-                Roll.trk(r1,i).nota=0
-                Roll.trk(r1,i).dur=0 
-             Next r1 
-         Next i           
+          Nuevo(Roll)
        EndIf
       EndIf 
    Else
@@ -1337,21 +1463,49 @@ EndIf
    EndIf
    t = "      [NUEVO]":cairo_show_text(c,t)
 
-   '===> 3.2 [ABRIR]
+   '===> 3.2 <ABRIR>[*.ROLL]
 
-   If mousex > 134 And mousex < 190  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
+   If mousex > 134 And mousex < 254  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And carga = 0 Then
-     CargaArchivo(Roll)
+       CargaArchivo(Roll)
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
     carga=0  ' <======= control de Carga
    EndIf
-   t = " [ABRIR]":cairo_show_text(c,t)
+   t = " <ABRIR>[*.ROLL]":cairo_show_text(c,t)
+
+   '===> 3.2.1 [*.RTK]
+
+   If mousex > 262 And mousex <  318  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
+    cairo_set_source_rgba c, 0, 1, 0, 1
+    If MouseButtons And 1 And carga = 0 Then
+       CargaTrack (Track() , ntk )
+       TrackaRoll (Track() , ntk , Roll)
+    EndIf
+   Else
+    cairo_set_source_rgba c, 1, 1, 1, 1
+    carga=0  ' <======= control de Carga
+   EndIf
+   t = " [*.RTK]":cairo_show_text(c,t)
+
+   '===> 3.2.2 [CARPETA]
+
+   If mousex > 326 And mousex <  398  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
+    cairo_set_source_rgba c, 0, 1, 0, 1
+    If MouseButtons And 1 And carga = 0 Then
+      ' CargaTema(...)
+    EndIf
+   Else
+    cairo_set_source_rgba c, 1, 1, 1, 1
+    carga=0  ' <======= control de Carga
+   EndIf
+   t = " [CARPETA]":cairo_show_text(c,t)
+
    
   '===> 3.3[GRABAR] SC_F11 COPIA
-   If MultiKey(sc_Control) And mousex > 223 And mousex < 296  And mousey < 50  Then ' <=
+   If MultiKey(sc_Control) And mousex > 406 And mousex < 470  And mousey < 50  Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 Then
       ''      Print #1, "Grabando a disco Roll GRABAR "
@@ -1375,7 +1529,7 @@ EndIf
    t = " [GRABAR]": cairo_show_text(c,t) :t= ""
    '
   '===> 3.3[GRABAR COMO] SC_F11 COPIA 
-   If MultiKey(sc_Control) And mousex > 320 And mousex < 440  And mousey < 50  Then ' <=
+   If MultiKey(sc_Control) And mousex > 478 And mousex < 582  And mousey < 50  Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 Then
      '       Print #1, "Grabando a disco Roll GRABAR "
@@ -1395,10 +1549,40 @@ EndIf
    Else
     cairo_set_source_rgba c,1,1,1,1
    EndIf
-
-
    t = " [GRABAR COMO]" : cairo_show_text(c,t) :t= ""
-   If mousex > 350 And mousey < 50 Then
+
+'-----------------------------
+  '===> 3.3.1 [ROLL=>RTK] SC_F11 COPIA 
+  
+   If MultiKey(sc_Control) And mousex > 778 And mousex < 917  And mousey < 50  Then ' <=
+    cairo_set_source_rgba c, 0, 1, 0, 1
+    Print #1, "Grabando a disco Roll a Track ----",nombre
+     If MouseButtons And 1 Then
+       Print #1, "Grabando a disco Roll a Track ",nombre
+      '''' dialogoText("Grabar Archivo")
+       Dim As String nombreg
+       If nombre = "" Then
+          getfiles(file,myfilter,"save")
+          nombreg=*file.lpstrFile
+          If nombreg = "" Then
+             Exit Sub
+          Else
+             nombre=nombreg   
+          EndIf
+       EndIf
+''''       grabaprueba()
+  Print #1, "la puta madre no escribe mas ?"
+        GrabarRollaTrack(nombre)
+    EndIf
+   Else
+    cairo_set_source_rgba c,1,1,1,1
+   EndIf
+
+
+   t = " (ROLL=>TRK[0])" : cairo_show_text(c,t) :t= ""
+
+
+   If mousex > 925 And mousey < 50 Then
     If MouseButtons And 1 Then
      MenuNew=0
     EndIf
@@ -2356,7 +2540,284 @@ Next i1
      Sleep 150
 
 End Sub
+' ----------------------------------
+Sub GrabarRollaTrack (nombre As String)
+' GRABO ROLL EN EDICION COMO TRACK PARA ELLO DEBE ESTAR LIBRE
+' EL TRACK 0 
+     ''Open "Trabajo_03.roll" For Binary Access write As #2
+     ''Open nombreArchivo +".roll" For Binary Access write As #2
+   Dim As Integer ubi1,ubi2 
+   Dim As String no1,no2
+   ubi1=InStrRev(nombre,"\")
+   ubi2=InStrRev(nombre,".")
+   no1= Mid(nombre,1,ubi1)
+   no2= Mid(nombre,ubi1+1,ubi2-1-ubi1)
+   
+   nombre=no1+"[0]"+no2 +".rtk"
 
+   Open nombre  For Binary Access write As #2
+   Print #1, "nombre tie el path ",nombre
+     
+  ''''  Open "test-AAAAA.TXT" For Output    As #2
+
+     ReDim Trabajo (1 To Maxpos, NB To NA) As dat
+
+     Dim grabaPos (1,1)  As dat
+     Dim grabaLim (1,1)  As dat 
+     Dim As Integer i1, i2, i3, semitono, borrocol=0, haynota=0,res=0,k=0,final=0
+'eliminar columnas marcadas al grabar disco, 0 + X
+'Print #1, "inicio MaxPos "; MaxPos
+ For i2 = 1 To MaxPos
+     For i1 = NB To NA
+       If Roll.trk(i2,i1 ).nota=190 And Roll.trk(i2,i1 ).dur=190 Then
+          borrocol= 1 'Atrapa al menso un caso
+       EndIf
+       If Roll.trk(i2,i1 ).dur=182 Then ' 26-06-2021 copiar final archivo
+          final= 1 'Atrapa el final
+       EndIf
+
+       If Roll.trk(i2,i1 ).nota >=1 And Roll.trk(i2,i1 ).nota<=12 Then
+          haynota=1 ' atrapa al menso 1 caso
+       EndIf
+       
+       If i1= NA And haynota=1 Then ' sihay unasola notaen la columna no borro
+         res=0 ' no borrar
+       Else
+          If borrocol = 1 Then
+             res=1  
+          EndIf  
+       EndIf            
+    Next i1
+    i1=0  
+    If borrocol = 0 Or res=0 Or final=1 Then 'copio columna no borro
+       k=k+1
+      For i1 = NB To NA
+          Trabajo(k, i1)=Roll.trk(i2,i1 )
+      Next i1
+    EndIf
+      
+    borrocol=0:res=0:haynota=0:final=0
+ Next i2
+
+
+posn=k        
+
+Dim As Integer r1
+For i1=NB To NA 
+  For r1= posn+1 To MaxPos
+    Trabajo(r1, i1).nota=0 ' ok debo habiliatar desde ahi todas las columnas se juntaron
+    Trabajo(r1, i1).dur=0  ' la secuecnia quedo mas corta
+  Next r1 
+Next i1  
+' tengo a Roll listo para convertir a track sin marcas de borrado de Col
+' convertir
+
+
+ReDim (Temp.trk ) (1 To MaxPos,1 To lim2)
+i3=0
+
+For i2 = 1 To MaxPos
+   i3=0
+   For i1=NB To NA 
+      If Roll.trk(i2,i1 ).nota >= 1 and Roll.trk(i2,i1 ).nota <=12 Then
+      ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
+         i3=i3+1
+         Temp.trk(i2,i3)=Roll.trk(i2,i1 )
+         PianoNota= 115-i1 ' nR=i1 es el indice de Roll
+         ' cuanta al reves desde ocatva mas aguda a la mas grave,,,
+         ' no lo cambiare o podri aahcer lo veremos 
+         ' convertimos a PianoNota
+         PianoNota= PianoNota - restar (PianoNota)
+         ' track tendra directamente el valor del piano para tocar con rtmidi
+         Temp.trk(i2,i3).nota=PianoNota 
+         If i3=12 Then ' track solo guarda 12 notas en acorde el resto se desrpecia
+            Exit For, For  
+         End If
+      EndIf
+   Next i1
+Next i2     
+
+
+
+     Dim As Integer y1,y2,y3,y4, y5,y6 ' y5 e y6 son los limites NB y NA
+     Dim As String a1,a2,a3,a4 ,x
+     
+     
+     x= Bin(MaxPos,16)
+     '    Print #1,"Posicion ",Posicion
+     'Print "string representando ", x
+     a1=Mid(x,1,4)
+     a2=Mid(x,5,4)
+     a3=Mid(x,9,4)
+     a4=Mid(x,13,4)
+     '    Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
+
+     y1= CInt("&B"+a1)
+     y2= CInt("&B"+a2)
+     y3= CInt("&B"+a3)
+     y4= CInt("&B"+a4)
+     '    Print #1, "y1,y2,y3,y4", y1,y2,y3,y4
+     ' grabamos maxpos en 4 ubyte
+     grabaPos(1,1).nota = y1
+     grabaPos(1,1).dur  = y2
+     grabaPos(1,1).vol  = y3
+     grabaPos(1,1).pan  = y4
+     '-----------------------
+     grabaLim(1,1).nota = desde
+     grabaLim(1,1).dur  = hasta
+
+     Put #2, ,grabaPos(1,1)
+     Put #2, ,grabaLim(1,1)
+     Put #2, ,Temp.trk()
+     Close 2
+     While InKey <> "": Wend
+     Sleep 150
+
+End Sub
+
+' ---------------------------------
+Sub GrabarTrack (nombre As String,ntk As integer)
+     ''Open "Trabajo_03.roll" For Binary Access write As #2
+     ''Open nombreArchivo +".roll" For Binary Access write As #2
+    Open nombre  For Binary Access write As #2
+  ''''  Open "test-AAAAA.TXT" For Output    As #2
+     Dim Trabajo (1 To Maxpos, 1 To lim2 ) As dat
+     Dim grabaPos (1,1)  As dat
+     Dim grabaLim (1,1)  As dat 
+     Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
+'eliminar columnas marcadas al grabar disco, 0 + X
+'Print #1, "inicio MaxPos "; MaxPos
+ For i2 = 1 To MaxPos
+     For i1 = 1 To lim2
+       If Track(ntk).trk(i2,i1 ).nota=190 And Track(ntk).trk(i2,i1 ).dur=190 Then
+          borrocol= 1 'Atrapa al menso un caso
+       EndIf
+       If Track(ntk).trk(i2,i1 ).dur=182 Then ' 26-06-2021 copiar final archivo
+          final= 1 'Atrapa el final
+       EndIf
+
+       If Track(ntk).trk(i2,i1 ).nota >=1 And Track(ntk).trk(i2,i1 ).nota<=12 Then
+          haynota=1 ' atrapa al menso 1 caso
+       EndIf
+       
+       If i1= lim2 And haynota=1 Then ' sihay unasola notaen la columna no borro
+         res=0 ' no borrar
+       Else
+          If borrocol = 1 Then
+             res=1  
+          EndIf  
+       EndIf            
+    Next i1
+    i1=0  
+    If borrocol = 0 Or res=0 Or final=1 Then 'copio columna no borro
+       k=k+1
+      For i1 = 1 To lim2
+          Trabajo(k, i1)=Track(ntk).trk(i2,i1 )
+      Next i1
+    EndIf
+      
+    borrocol=0:res=0:haynota=0:final=0
+ Next i2
+' MaxPos = k JMG 16-05-2021 TODAVIA NO SE COMO SE ACHICA LA SECUENCIA 
+' AL GRABAR NO SOLO CON MAXPOS PARECE,,,ANDA BIEN PERO SI CONSERVO MAXPOS
+' DEL MISMO VALOR EN VEZ DE K     
+
+
+posn=k        
+
+Dim As Integer r1
+For i1=1 To lim2 
+  For r1= posn+1 To MaxPos
+    Trabajo(r1, i1).nota=0 ' ok debo habiliatar desde ahi todas las columnas se juntaron
+    Trabajo(r1, i1).dur=0  ' la secuecnia quedo mas corta
+  Next r1 
+Next i1  
+
+
+
+
+'Print #1, "final MaxPos "; MaxPos
+'Print #1,"---------------------------------------- K= "; K
+'  For i1 = NB To NA
+'  Print #1,i1;"|";
+'    For i2 = 1 To MaxPos
+'       Print #1,Trabajo(i1,i2).nota;"*";Trabajo(i1,i2).dur;"|";
+'    Next i2
+'    Print #1,
+'   Print #1,"------------------------------------------" 
+'  Next i1
+  
+ '''Shell "NOTEPAD test-AAAAA.TXT" 
+''''Exit sub
+     Dim As Integer y1,y2,y3,y4, y5,y6 ' y5 e y6 son los limites NB y NA
+     Dim As String a1,a2,a3,a4 ,x
+     
+     
+     x= Bin(MaxPos,16)
+     '    Print #1,"Posicion ",Posicion
+     'Print "string representando ", x
+     a1=Mid(x,1,4)
+     a2=Mid(x,5,4)
+     a3=Mid(x,9,4)
+     a4=Mid(x,13,4)
+     '    Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
+
+     y1= CInt("&B"+a1)
+     y2= CInt("&B"+a2)
+     y3= CInt("&B"+a3)
+     y4= CInt("&B"+a4)
+     '    Print #1, "y1,y2,y3,y4", y1,y2,y3,y4
+     ' grabamos maxpos en 4 ubyte
+     grabaPos(1,1).nota = y1
+     grabaPos(1,1).dur  = y2
+     grabaPos(1,1).vol  = y3
+     grabaPos(1,1).pan  = y4
+     '-----------------------
+     grabaLim(1,1).nota = desde
+     grabaLim(1,1).dur  = hasta
+     
+     
+     
+     ' ------------------------------------
+     ' para seguir poniendo notas nuevas
+     ' hacemoslo mismo para l ultima not que se grabo que teng el 182
+     ' esa es lapapa recorremos todas las dur de las notas en donde este el 182
+     ' en dur tomamosla nota y esala grabamos en pb o ins
+     ' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
+     ' -------------------------------------
+'    Dim As Integer i,j,notafinal
+'    For j = 1 To MaxPos
+'     For i = NB To NA
+'      If Roll.trk(i,posicion+1).dur = 182 Then
+'       notafinal= Roll.trk(i,posicion).nota
+       '        Print #1, "ENCONTRO NOTA FINAL ", notafinal
+       '        Print "ENCONTRO NOTA FINAL ", notafinal
+       ' esten la posiciond ela ultimanotapero grasoerror
+       ' o seaque no tiene duracion solo el 182
+       ' esta mal ...
+'       Exit For
+'      EndIf
+'     Next i
+'    Next j
+'     grabaPos(1,1).pb = notafinal
+ '    Print #1,"****))) nota final y dur final "; notafinal,Roll.trk(i,posicion+1).dur
+     '****))) nota final y dur final  0   0
+     ' no existe mas 182 no se graba enningun lado q raro
+     ' Grabacion de Trabajo
+     ' ------------------------------------
+
+     '  Print #1,"MaxPos grabada en Trabajo ",MaxPos
+
+     Put #2, ,grabaPos(1,1)
+     Put #2, ,grabaLim(1,1)
+     Put #2, ,Trabajo()
+     Close 2
+     While InKey <> "": Wend
+     Sleep 150
+
+End Sub
+
+' ---------------------------------
 Sub GtkListBox()
 ' ==============================================
 ' Main GTK Sub
@@ -2657,7 +3118,7 @@ mitipo=  CInt(tipo)
 '' fin ruso
 
 End Sub
-
+'-------------------
 Sub ComboBox()
 
 #Ifdef __FB_WIN32__

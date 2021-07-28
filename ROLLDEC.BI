@@ -17,7 +17,7 @@ Declare Function KeyPress(Key As Integer) As Integer
 '        ByVal font As FT_Face, ByVal size As Integer, ByVal col As UInteger ) As Integer
 Declare Sub separarDur(ByRef j As Integer,ByRef DUR As Integer,  partes() As Integer,  ByRef cantPartes As Integer, ByRef falta As Integer )
 
-Declare Sub menugrafico(c0 AS cairo_t Ptr,c AS cairo_t Ptr, Cantitems As Integer, items() As String )
+Declare Sub menugrafico(c0 AS cairo_t Ptr,c As cairo_t Ptr, Cantitems As Integer, items() As String )
 'Declare Sub ReCalCompas()
 'Declare Sub CargaArchivo()
 Declare Sub CambiarDim()
@@ -26,20 +26,20 @@ Declare Sub dialogoText(cadena As string)
 Declare Sub velocidades(j as integer)
 Declare Sub playthread()
 Declare Sub GrabarArchivo (nombre As String)
+Declare Sub GrabarTrack   (nombre As String,ntk As integer)
+Declare Sub GrabarRollaTrack (nombre As String)
 ' gtk
 Declare Sub GtkListBox()
-Declare Sub sigh_button_event Cdecl ( Byval gtklist As GtkWidget Ptr, Byval event As GdkEventButton Ptr, Byval frame As GtkWidget Ptr )
+Declare Sub sigh_button_event Cdecl ( Byval gtklist As GtkWidget Ptr, ByVal event As GdkEventButton Ptr, Byval frame As GtkWidget Ptr )
 Declare Sub sigh_print_selection Cdecl ( Byval gtklist As GtkWidget Ptr, Byval func_data As gpointer )
 ' end gtk
 Declare sub selport(ByVal tipo As any ptr) 
 Declare Sub ComboBox()
 Declare Sub grabaprueba()
 Declare Sub borrarColumnasMarcadas()
+Declare Function SumarnR (notaPiano As Integer) As Integer
 
-
-'Declare Sub getfiles(Byref File As OpenFileName,flag As String)
-' mover nota 
-Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPenta 
+Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
 
 Dim Shared RTA As String 
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoZona2=0, pasoNota=0
@@ -52,7 +52,7 @@ Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
 dim Shared as string cromatica(1 to 12)
-dim shared MaxPos as integer ' la nota o posicon mayor alcanzada
+dim shared As Integer MaxPos,ntk  
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
@@ -97,7 +97,7 @@ Dim Shared As Integer comienzo1, fin1, comienzo2,fin2,PianoNota, trasponer=0
 'comienzo1=28:fin1=54
 'comienzo2=82:fin2=180
 
-Dim Shared as any ptr thread1, thread2,threadPenta 
+Dim Shared as any ptr thread1, thread2,threadPenta,thread3 
 
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
 Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
@@ -178,6 +178,9 @@ Dim Shared As String nombreArchivo, TCompas,nombre, menuOldStr
 nombre=""
 Dim Shared As UByte Vfuerte=70,Vsemifuerte=60,Vdebil=50
 TCompas ="4/4"
+Dim Shared As Integer MaxPosTrack(0 To 32) ' cada track tendra su max pos
+Dim Shared As Integer posnTrack(0 To 32) ' cada track tendra su posn
+
 ' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido por 8
 ' tengo elindice del revsado 1,2,3,4,5,6,7,8....
 ' comprobar qellimite este entre 1 a 8 
