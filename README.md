@@ -1,10 +1,11 @@
+Version ROLLMUSIC-0.0.9.9.1-VECTOR-COMPRIMIDO mas estrucurada usa Threads.
 Una  ejercitacion para ver Cairo.(Estado:ALpha Debug escribe archivos.)
 No encuentro secuenciadores que usen letras en vez de esos rectangulitos...
 Lo que pretendo hacer lento pero seguro y a mi ritmo.. es usar las 8 octavas 
 musicales desde C0 a B8 con sostenidos y en vez de figuras musicales o rectangulitos
 colocar duraciones de notas con la opcion de cambiar insertar etc...
 Es solo el front end...inicial,,luego por su puesto usare RTmidiC para reproducir
-Por ahora permitira 12000 duraciones o eventos secuenciales
+Por ahora permitira 78000 duraciones o eventos secuenciales en vector Visual.
 Duraciones "O","P","I","L","F","E","W","H" , Redonda, blanca,negra,corchea
 semicorchea,fusa y semifusa..Busque las letras mas parecidas a las figuras
 musicales L corchea tiene un palito, F semicorchea tiene 2, E tiene 3 como fusa,
@@ -60,9 +61,19 @@ concosco como GTK maneja un loop de dibujo...solo veo ejemplos sin loop...
 MenuPopup de Microsoft es incontrolable....
 Probando distintas formas de play, pero algun dia usaré ticks al estilo de archivos midi. 
 Estoy viendo la dificultad del play sin usar ticks, solo las duraciones de las notas, 
-a puro codigo sin clases. Despues agregare tracks, la opcion de poner instrumentos
-distintos, el vector esta rpeparado para poner instrumentos a nivel nota como el 
-volumen y pitch bend tambien. Los tracks seran tal vez en el formato de midi
-de modo que habrá que pasar del modo midi al del Vector Roll para mostrar  los 
-datos en edicion,,que mucho trabajo esto es apenas el 10%...
-Pulsando F1 aparede un Notepad con Ayuda Basica. 
+a puro codigo sin clases. En esta Version se Inició Tracks. Podra poner instrumentos distintos
+en un mismo track a nivel nota,o un instrumento pro Track segun se desee, volumen y pitch bend 
+tambien. Los tracks seran tal vez en el formato de midi de modo que habrá que pasar del modo 
+midi al del Vector Roll para mostrar  los datos en edicion, se hará en el futuro.
+Ya puede grabar tracks pero solo es el vector de visualizacion comprimido,lo que se
+obserba es que en un track o instrumento, el acorde no tendrá mas de 12 notas cuanto mucho, 
+se hará posiblemente dinamico en el futuro. 32 tracks c/u con 12 notas de acorde no existira nunca.
+Ya se puede cargar un archivo (.Roll) y luego grabarlo en formato track (.trk) y volverlo a cargar
+viendolo en pantalla (se convierte al grabar de Roll a Trk y al cargar de Trk a Roll )
+Debido a eso la columna vertical de la pantalla visual solo tendra 12 notas en cualquier acorde 
+como maximo el resto vacio,en el archivo Trk, el de Visualizacion tiene 116 en vertical acorde por
+78000 posiciones de largo de secuencia.De modo que la memoria usada es mucho menor.
+Todo se prepara para que el Nro de posiciones pueda ser dinamico tambien,a medida que se usa
+se implementara que vaya incrementando el numero de posiciones, con lo cual el limite sera
+la memoria de la Ram .
+Pulsando F1 aparece un Notepad con Ayuda Basica. 
