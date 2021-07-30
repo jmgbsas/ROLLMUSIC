@@ -871,7 +871,7 @@ Sleep 1000,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicaci
 close_port(midiout)
 out_free(midiout) 
 
-'ThreadDetach(thread1) 'JMG REPONER !!!!
+ThreadDetach(thread1) 'JMG REPONER !!!!
 
 ' ================================FIN PLAYALL <<=================
 End Sub 

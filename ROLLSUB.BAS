@@ -1048,9 +1048,7 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
      myfilter  = "Track Files"+Chr(0)  +"*.rtk"+Chr(0)
       getfiles(file,myfilter,"open")
       nombrea=*file.lpstrFile
-'  nombrea="DESAFIO-LIGA-ACORDES-EN-1-NOTA.ROLL" ' para debug sino no funciona
-'  nombrea="test-acordes-iguales01.roll"
-'  nombrea="DESAFIO-LIGA-ACORDE-3-O.roll"
+
        If nombrea = "" Then
           Exit Sub
        Else
@@ -1059,11 +1057,7 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
     ubi1 = InStrrev(nombre,"[")
     ubi2 =InStrRev (nombre,"]")
     ntk=CInt(Mid(nombre,ubi1+1,ubi2-ubi1-1))
-  Print #1,"CargaTrack 2, ntk",ntk   
-  Print #1,"nombre arch track ",nombre
 
-     'Open "Trabajo_03.roll" For Binary Access Read As #2
-    ' Open nombreArchivo +".roll" For Binary Access Read As #2
       Open nombre  For Binary Access Read As #2
        Print #1,"arch track  abrio" 
      Get #2, , z(1,1)
@@ -1110,13 +1104,13 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
  '    Print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
      Dim As Integer  grupo, mayorgrupo
      For j = 1 To MaxPosTrack(ntk)  -2 '11-07-2021
-       Print #1,"POSICION :",J
-      Print #1,"lim2 :", lim2
+    '   Print #1,"POSICION :",J
+    '  Print #1,"lim2 :", lim2
       
       For i= 1 To lim2
-      Print #1,"carga i acorde ",i
+    '  Print #1,"carga i acorde ",i
       Track(ntk).TRK(j,i)  => Trabajo (j,i)  
-      Print #1,"luego de carga i acorde ",i  
+    '  Print #1,"luego de carga i acorde ",i  
 ' cargar en visualizacion con otra sub si es necesario
       Next i
 
@@ -1132,7 +1126,7 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
 
 End Sub
 '
-Sub Nuevo(Roll As inst)
+Sub Nuevo(Roll As inst,borraNombre As integer)
           ReDim (Roll.trk ) (1 To CantTicks, NB To NA )
           ReDim compas(1 To CantTicks)
           ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
@@ -1144,7 +1138,9 @@ Sub Nuevo(Roll As inst)
           tres=0:pun=0:sil=0:mas=0:doblepun=0:cuart=0
           tres=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
           SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
-          nombre = ""
+          If borraNombre > 0 Then 
+             nombre = ""
+          EndIf
           Dim As Integer r1,i
           For i=NB To NA 
             For r1= posn+1 To CantTicks
@@ -1157,7 +1153,7 @@ End Sub
 ' 
 Sub TrackaRoll (Track() As inst, ByRef ntk As Integer, Roll As inst)
 Dim As Integer i1,i2,i3,Maxposicion
-  Print #1,"TrackaRoll 1"   
+ ' Print #1,"TrackaRoll 1"   
  
 'NB => 0 + (desde-1) * 13   ' 27 para 3 = 0
 'NA => 11 + (hasta-1) * 13  ' 90 para  9 = 115
@@ -1169,9 +1165,9 @@ Dim As Integer i1,i2,i3,Maxposicion
 'NA=37
 '=> semitono=nr-int(nR/13)*13+1
 'ej semitono=30-26+1=5
-  Print #1,"TrackaRoll 1 Nuevo"
-Nuevo (Roll)
-    Print #1,"TrackaRoll FOR"
+ ' Print #1,"TrackaRoll 1 Nuevo"
+Nuevo (Roll,0)
+ '   Print #1,"TrackaRoll FOR"
 For i2 = 1 To MaxPosTrack(ntk)
    For i1=1 To lim2
  
@@ -1192,7 +1188,7 @@ For i2 = 1 To MaxPosTrack(ntk)
       Roll.trk(i2,i1).nota=181
       Roll.trk(i2,i1).dur=0
    Else
-   Print #1,i2,Roll.trk(i2,i1).nota,Roll.trk(i2,i1).dur
+ '  Print #1,i2,Roll.trk(i2,i1).nota,Roll.trk(i2,i1).dur
     ' Continue For   
    EndIf
   Next i1
@@ -1209,7 +1205,7 @@ tres=0:pun=0:sil=0:mas=0:doblepun=0:cuart=0
 tres=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
 SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
 
-  Print #1,"TrackaRoll Fin"
+ ' Print #1,"TrackaRoll Fin"
 
 
 End Sub
@@ -1268,7 +1264,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
     cairo_set_source_rgba c, 0, 1, 0, 1
      font=18 ' el menu esta diseñqdo para este tamaño 
     If MouseButtons And 1 Then
-     menuNew = 3  ''<--- caso raro ¿?
+     menuNew = 3  ''
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -1319,8 +1315,11 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
               play=1        
 '    If (MouseButtons And 1) Then
         menuNew =0
+' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 1 Then
+          Dim tlock As Any Ptr = MutexCreate()
          thread1 = ThreadCall  playAll(Roll)
+         MutexDestroy tlock
         EndIf 
    '     Print #1,"--->paso llamada a thread1 "
     ''    menuNew = 4 por hora sin elecciones
@@ -1446,7 +1445,7 @@ EndIf
   EndIf
 
 
-  Case 3
+  Case 3 ' ==========================> caso 3
    '   t = " [NUEVO] [ABRIR] [GRABAR] [GRABAR COMO] [EXPORTAR] [CERRAR] [SALIR] "
 
    '===> 3.1 [NUEVO]
@@ -1455,7 +1454,7 @@ EndIf
     
       If MultiKey(sc_control) Then
        If dobleclick Then
-          Nuevo(Roll)
+          Nuevo(Roll,1)
        EndIf
       EndIf 
    Else
@@ -1465,7 +1464,7 @@ EndIf
 
    '===> 3.2 <ABRIR>[*.ROLL]
 
-   If mousex > 134 And mousex < 254  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
+   If mousex > 215 And mousex < 269  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And carga = 0 Then
        CargaArchivo(Roll)
@@ -1474,15 +1473,20 @@ EndIf
     cairo_set_source_rgba c, 1, 1, 1, 1
     carga=0  ' <======= control de Carga
    EndIf
-   t = " <ABRIR>[*.ROLL]":cairo_show_text(c,t)
+   t = " ABRIR<[*.ROLL]":cairo_show_text(c,t)
 
    '===> 3.2.1 [*.RTK]
 
-   If mousex > 262 And mousex <  318  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
+   If mousex > 300 And mousex <  345  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And carga = 0 Then
+      Print #1,"carga track veo nombre antes   ",nombre
        CargaTrack (Track() , ntk )
+      Print #1,"carga track veo nombre despues ",nombre 
        TrackaRoll (Track() , ntk , Roll)
+      Print #1,"TrackaRollcarga rtk veo nombre ",nombre 
+       RecalCompas (Roll)
+      Print #1,"despues RecalCompas veo nombre ",nombre 
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -1492,7 +1496,7 @@ EndIf
 
    '===> 3.2.2 [CARPETA]
 
-   If mousex > 326 And mousex <  398  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
+   If mousex > 378 And mousex <  459  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And carga = 0 Then
       ' CargaTema(...)
@@ -1501,16 +1505,17 @@ EndIf
     cairo_set_source_rgba c, 1, 1, 1, 1
     carga=0  ' <======= control de Carga
    EndIf
-   t = " [CARPETA]":cairo_show_text(c,t)
+   t = " [CARPETA]>":cairo_show_text(c,t)
 
    
   '===> 3.3[GRABAR] SC_F11 COPIA
-   If MultiKey(sc_Control) And mousex > 406 And mousex < 470  And mousey < 50  Then ' <=
+   If MultiKey(sc_Control) And mousex > 504 And mousex < 573  And mousey < 50  Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 Then
       ''      Print #1, "Grabando a disco Roll GRABAR "
       '''' dialogoText("Grabar Archivo")
        Dim As String nombreg
+       Print #1,"EN Grabar nombre ",nombre
        If nombre = "" Then
           getfiles(file,myfilter,"save")
           nombreg=*file.lpstrFile
@@ -1521,15 +1526,25 @@ EndIf
           EndIf
        EndIf
 ''''       grabaprueba()
-       GrabarArchivo (nombre)
+' si el noombre era un rtk se graba como rtk
+' si era roll se graba como roll salvo que el usuario queira convertir nose
+       Dim As Integer ubi1=0,ubi2=0 
+       Dim As String no1,no2
+       ubi1=InStr(nombre,"[")
+       ubi2=InStr(nombre,"]")
+       If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
+           GrabarRollaTrack(0)
+       Else ' se graba como roll, si se desea eso solo sacar [xx] del nombre
+           GrabarArchivo ()
+       EndIf  
     EndIf
    Else
     cairo_set_source_rgba c,1,1,1,1
    EndIf
-   t = " [GRABAR]": cairo_show_text(c,t) :t= ""
+   t = "[GRABAR]": cairo_show_text(c,t) :t= ""
    '
   '===> 3.3[GRABAR COMO] SC_F11 COPIA 
-   If MultiKey(sc_Control) And mousex > 478 And mousex < 582  And mousey < 50  Then ' <=
+   If MultiKey(sc_Control) And mousex > 608 And mousex < 743  And mousey < 50  Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 Then
      '       Print #1, "Grabando a disco Roll GRABAR "
@@ -1544,7 +1559,7 @@ EndIf
        EndIf
      ''Open "Trabajo_03.roll" For Binary Access write As #2
      ''Open nombreArchivo +".roll" For Binary Access write As #2
-       GrabarArchivo(nombre)
+       GrabarArchivo()
     EndIf
    Else
     cairo_set_source_rgba c,1,1,1,1
@@ -1554,7 +1569,7 @@ EndIf
 '-----------------------------
   '===> 3.3.1 [ROLL=>RTK] SC_F11 COPIA 
   
-   If MultiKey(sc_Control) And mousex > 778 And mousex < 917  And mousey < 50  Then ' <=
+   If MultiKey(sc_Control) And mousex > 778 And mousex < 912  And mousey < 50  Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
     Print #1, "Grabando a disco Roll a Track ----",nombre
      If MouseButtons And 1 Then
@@ -1571,18 +1586,18 @@ EndIf
           EndIf
        EndIf
 ''''       grabaprueba()
-  Print #1, "la puta madre no escribe mas ?"
-        GrabarRollaTrack(nombre)
+  
+        GrabarRollaTrack(1)
     EndIf
    Else
     cairo_set_source_rgba c,1,1,1,1
    EndIf
 
 
-   t = " (ROLL=>TRK[0])" : cairo_show_text(c,t) :t= ""
+   t = " [ROLL=>TRK(0)]" : cairo_show_text(c,t) :t= ""
 
 
-   If mousex > 925 And mousey < 50 Then
+   If mousex > 941 And mousey < 50 Then
     If MouseButtons And 1 Then
      MenuNew=0
     EndIf
@@ -1810,7 +1825,14 @@ EndIf
  ' USAR LA ENTRADA DE TEXTO DE IUP
       Select Case  menuOldStr
           Case "[ver]" 
-            dialogoText("IR A COMPAS")
+          nombreArchivo="0"
+          Dim cadena As String 
+          cadena="IR A COMPAS"
+          If pubi =0 Then 'ptr shared , se llaam solo una vez 
+            pubi=@cadena
+            thread3= ThreadCreate (@dialogoText(),CPtr(Any Ptr, pubi))
+          EndIf
+
             compasX=CInt(nombreArchivo)
             If compasX > NroCompas Then
                compasX=Nrocompas
@@ -1818,6 +1840,10 @@ EndIf
             If compasX < 0 Then
                compasX=1
             EndIf
+   '         If compasX = 0 Then
+    '           Exit Sub
+    '        EndIf
+          If compasX >=1 Then       
             Dim ni As Integer
             Print #1,"NroCompas: ", NroCompas
             Print #1,"CompasX: ", CompasX
@@ -1829,13 +1855,20 @@ EndIf
                   Exit For
                EndIf
             Next ni
-            
+          EndIf  
           Case "[TEMPO]" 
-            dialogoText("AJUSTE TEMPO")  
-            tiempoPatron= Cdbl(nombreArchivo)
-            If tiempoPatron = 0 Then
+          nombreArchivo="0"
+          Dim cadena As String 
+          cadena="AJUSTE TEMPO"
+          If pubi =0 Then 'ptr shared , se llaam solo una vez 
+            pubi=@cadena
+            thread3= ThreadCreate (@dialogoText(),CPtr(Any Ptr, pubi))
+          EndIf
+''           dialogoText("AJUSTE TEMPO")  
+          tiempoPatron= Cdbl(nombreArchivo)
+          If tiempoPatron = 0 Then
                tiempoPatron=60
-            EndIf
+          EndIf
       End Select
     menunew=0
   Case 9
@@ -2316,16 +2349,20 @@ Function on_click_ok cdecl(byval handler as Ihandle ptr) as Long
 ''''
 end function
 Sub dialogoText(cadena As string)
+Dim mensaje As String 
+If menuOldStr="[ver]" Then
+  mensaje ="Nro De Compas."
+Else
+  mensaje ="Tempo: Negras en 1 minuto."  
+EndIf
+
 
 IupOpen(NULL, NULL)
 
 '' Create a window with a text box, ok button, and a label
 var textbox = IupText(NULL)
 var okbutton = IupButton("OK", "on_click_ok")
-Var label = IupLabel("Tempo: Negras en 1 minuto.")
-If menuOldStr="[ver]" Then
-  var label = IupLabel("Nro De Compas.")
-EndIf
+Var label = IupLabel(mensaje)
 var vbox = IupVbox(textbox, okbutton, label, NULL)
 var dialog = IupDialog(vbox)
 
@@ -2363,8 +2400,9 @@ IupMainLoop()
 
 
 IupClose()
-
-
+' ptr de ver ubicacion
+pubi=0 ' habilita siguiente llamada de ver nrocompas 
+ThreadDetach(thread3) 
 End Sub
 
 Sub velocidades(j As integer)
@@ -2400,7 +2438,7 @@ Sub velocidades(j As integer)
     EndIf
 
 End Sub 
-Sub GrabarArchivo (nombre As String)
+Sub GrabarArchivo ()
      ''Open "Trabajo_03.roll" For Binary Access write As #2
      ''Open nombreArchivo +".roll" For Binary Access write As #2
     Open nombre  For Binary Access write As #2
@@ -2541,24 +2579,23 @@ Next i1
 
 End Sub
 ' ----------------------------------
-Sub GrabarRollaTrack (nombre As String)
+Sub GrabarRollaTrack (cambiaNombre As Integer)
 ' GRABO ROLL EN EDICION COMO TRACK PARA ELLO DEBE ESTAR LIBRE
 ' EL TRACK 0 
-     ''Open "Trabajo_03.roll" For Binary Access write As #2
-     ''Open nombreArchivo +".roll" For Binary Access write As #2
-   Dim As Integer ubi1,ubi2 
-   Dim As String no1,no2
-   ubi1=InStrRev(nombre,"\")
-   ubi2=InStrRev(nombre,".")
-   no1= Mid(nombre,1,ubi1)
-   no2= Mid(nombre,ubi1+1,ubi2-1-ubi1)
-   
-   nombre=no1+"[0]"+no2 +".rtk"
+   If cambianombre >0 Then
+     Dim As Integer ubi1=0,ubi2=0 
+     Dim As String no1,no2
 
+    ubi1=InStrRev(nombre,"\")
+    ubi2=InStrRev(nombre,".")
+    no1= Mid(nombre,1,ubi1)
+    no2= Mid(nombre,ubi1+1,ubi2-1-ubi1)
+   
+    nombre=no1+"[0]"+no2 +".rtk"
+   EndIf
    Open nombre  For Binary Access write As #2
-   Print #1, "nombre tie el path ",nombre
+   Print #1, "nombre tiene el path ",nombre
      
-  ''''  Open "test-AAAAA.TXT" For Output    As #2
 
      ReDim Trabajo (1 To Maxpos, NB To NA) As dat
 
@@ -2676,11 +2713,8 @@ Next i2
 End Sub
 
 ' ---------------------------------
-Sub GrabarTrack (nombre As String,ntk As integer)
-     ''Open "Trabajo_03.roll" For Binary Access write As #2
-     ''Open nombreArchivo +".roll" For Binary Access write As #2
+Sub GrabarTrack (ntk As integer)
     Open nombre  For Binary Access write As #2
-  ''''  Open "test-AAAAA.TXT" For Output    As #2
      Dim Trabajo (1 To Maxpos, 1 To lim2 ) As dat
      Dim grabaPos (1,1)  As dat
      Dim grabaLim (1,1)  As dat 
@@ -3277,6 +3311,7 @@ Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0
 'Next i  
  
 End SUB
+
 
 
 

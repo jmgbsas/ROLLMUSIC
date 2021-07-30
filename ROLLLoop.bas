@@ -418,9 +418,8 @@ If nro = hasta Then ' es la 10 usamos 0 tmbien ose 9 octavas+ ayuda
   EndIf
  EndIf
 
+
 End Sub
-
-
 
 
 'Roll Main Loop ACA NO APARECE EL VECTOR DE ROLL 
@@ -497,17 +496,22 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 '  rango= hasta
 
 For i = desde To hasta ' nro_penta
-  nro = i 
- Dim ta As Any Ptr = ThreadCall creaPenta (c, Roll )
+  nro = i
+  ' si ahce falta ejecutar mas de un Penta podremos usar threads
+  ' por ahora no lousamos 
+ 'Dim tlock As Any Ptr = MutexCreate() 
+ 'Dim ta As Any Ptr = ThreadCall creaPenta (c, Roll )
   
-  ThreadWait ta
-
+ ' ThreadWait ta
+ ' MutexDestroy tlock
+ creaPenta (c, Roll )
  If *po = 99 Then
   *po = hasta - 1
   Exit For
  EndIf
 cairo_stroke(c)
 Next
+
 
 ''''''''estos 3 comadnos con los de arriba son para scale o translate------
 ' pero se pierde totalmenmte la proporcionalidad manual habrai que ver como sincronizarlas
@@ -983,7 +987,7 @@ If MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
          nombre=nombreg   
       EndIf
    EndIf
-   GrabarArchivo(nombre)
+   GrabarArchivo()
    
 EndIf
 ' cargar Roll y MaxPos de disco

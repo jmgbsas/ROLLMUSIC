@@ -1,9 +1,30 @@
+' PLAN siguiente: dejamos por ahora la creacion de songs por medio de tracks 
+' y pasamos a grabar perfomance real midi desde teclado en tracks midi, 
+' pero para grabar usamos un tick o pulso de ritmo o una pista de roll o track ya
+' grabada pro el usuario y a medida que la escucha puede empezar a tocar
+' al 5to pulso [1 2 3 4],5 y con ese ritmo pedimos toque el usuario
+' a medida que toca vamos calculando las duraciones en base a calCompas,,
+' y almacenando las mismas en el formato de track comprimido donde no 
+' interviene el tiempo para nada no hay ticks guardados,hay tick de posicion,
+' todo es relativo y solo depende del tiempo ajustado, por default usara 
+' el tiempo que ajusto el usuario el cual quedara grabado  en un archivo aparte
+' por ahora como nombredelTema.cfg configuracion del teme  *.cfg
+' ademas del tiempo de ejecucion se pondran otros parametros para grabar
+' como instrumento efectos volumen del canal etc etc.,..tambien el usuario
+' podrá cambiarlo en el archivo plano previamente sin necesidad de editarlo 
+' en el programa
+'-------------------------
 ' TRACKS: 1) 1ER ETAPA GRABAMOS TRACKS A PARTIR DEL VECTOR DE VISUALIZACION
-' EN EDICION.
+' EN EDICION. listo ok
 '    2DA ETAPA) CARGAMOS TRACKS Y PASAMOS AL DE VISUALIZACION PARA EDITAR
 '  UNO QUE SE ELIJA..EMPEZAREMOS CON UN SOLO TRACK EL 1..O SEA GRABAR Y CARGAR 
 ' EN FORMATO TRACK Y EDITAR EN FORMATO VISUALIZACION, LEUGO SUPERADA ESA ETAPA
-' SEGUIMSO AGREGANDO TRACKS---
+' SEGUIMSO AGREGANDO TRACKS---listo ok
+' 3) si cargamos un trak desde disco, se convierte y carga a visualizacion ahi se modifica 
+' y al GRABAR convierte de nuevo a track sin cambiar el nombre o sea reemplaza 
+' el track cargado con su modificacion. Podriamos grabar en formato roll 
+' si hace falta renombrando el archivo eliminando [nn] del principio
+' asi Roll pensara que no se cargo un track y se grabara como *.Roll.
 '
 ' 9.9 cambiamos la sdimensiones de lugar, asi maxpos es la 1era y podemos
 ' redimensionar con preserve !! algunaso archivos *.roll fueron reconvertidos

@@ -25,9 +25,9 @@ Declare Sub CambiarDim()
 Declare Sub dialogoText(cadena As string)
 Declare Sub velocidades(j as integer)
 Declare Sub playthread()
-Declare Sub GrabarArchivo (nombre As String)
-Declare Sub GrabarTrack   (nombre As String,ntk As integer)
-Declare Sub GrabarRollaTrack (nombre As String)
+Declare Sub GrabarArchivo ()
+Declare Sub GrabarTrack   (ntk As integer)
+Declare Sub GrabarRollaTrack (cambianombre As integer)
 ' gtk
 Declare Sub GtkListBox()
 Declare Sub sigh_button_event Cdecl ( Byval gtklist As GtkWidget Ptr, ByVal event As GdkEventButton Ptr, Byval frame As GtkWidget Ptr )
@@ -97,7 +97,7 @@ Dim Shared As Integer comienzo1, fin1, comienzo2,fin2,PianoNota, trasponer=0
 'comienzo1=28:fin1=54
 'comienzo2=82:fin2=180
 
-Dim Shared as any ptr thread1, thread2,threadPenta,thread3 
+Dim Shared as any ptr thread1, thread2,threadPenta,thread3,pubi 
 
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
 Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
