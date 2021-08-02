@@ -1,5 +1,10 @@
-' PLAN siguiente: dejamos por ahora la creacion de songs por medio de tracks 
-' y pasamos a grabar perfomance real midi desde teclado en tracks midi, 
+' ROLLMUSIC-0.1.0.0.0-U-TRACKS
+' ADOPTAMOS LIBRERIA PAR LEER Y GRABAR MIDI midilib de github
+'---------------------------------------------
+' PLAN 0.1.0.0.0-U-TRACKS :
+' i) Vamos a testear si funciona la conversion 01-08-2021
+' ii) dejamos por ahora la creacion de songs por medio de tracks con formato Roll
+' y pasamos a grabar perfomance real midi desde teclado en tracks midi de Roll o midi con midilib, 
 ' pero para grabar usamos un tick o pulso de ritmo o una pista de roll o track ya
 ' grabada pro el usuario y a medida que la escucha puede empezar a tocar
 ' al 5to pulso [1 2 3 4],5 y con ese ritmo pedimos toque el usuario
@@ -12,8 +17,11 @@
 ' ademas del tiempo de ejecucion se pondran otros parametros para grabar
 ' como instrumento efectos volumen del canal etc etc.,..tambien el usuario
 ' podrá cambiarlo en el archivo plano previamente sin necesidad de editarlo 
-' en el programa
-'-------------------------
+' en el programa. Todo se puede hacer en formato Roll. Pero vermos o no la convenicncia
+' de usar el formato midi para grabar a archivo y luego volverlo a cargar..
+' para eso Roll graba y carga transformando de *.trk a *.Roll 
+' en esta version ya tenemos un alibreria par agrabar y leer *.mid 
+'----------------------------------------------------------------------
 ' TRACKS: 1) 1ER ETAPA GRABAMOS TRACKS A PARTIR DEL VECTOR DE VISUALIZACION
 ' EN EDICION. listo ok
 '    2DA ETAPA) CARGAMOS TRACKS Y PASAMOS AL DE VISUALIZACION PARA EDITAR

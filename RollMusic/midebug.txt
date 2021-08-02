@@ -1,0 +1,10 @@
+start
+version para ceros!!!!!! 
+07-30-202120:29:16
+arg desde  0
+arg hasta  0
+dires   
+recibi 
+common  0
+gap1           83
+FIN

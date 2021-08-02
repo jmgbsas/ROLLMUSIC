@@ -1,0 +1,53 @@
+[Project]
+Version=3
+Description=RollMusic Secuenciador con letras
+Api=fb (FreeBASIC)
+Grouping=1
+AddMainFiles=0
+AddModuleFiles=1
+ResExport=
+CompileIfNewer=0
+IncVersion=0
+RunCmd=0
+[Make]
+Current=1
+1=Windows GUI ,fbc64  -s gui -fpu SSE -exx
+Recompile=2
+Module=Module Build,fbc -c
+Output=..\RollMusic.exe
+Run=
+Delete=
+[TabOrder]
+TabOrder=1001,3,4,5,1,2
+[File]
+1001=..\RollMusic.bas
+Main=1001
+1002=
+1003=
+1004=
+1=..\ROLLDEC.BI
+2=..\RTMIDIDEC.bi
+3=..\ROLLLoop.bas
+4=..\ROLLSUB.BAS
+5=..\RTMIDISUB.bas
+1005=
+[BreakPoint]
+1001=
+1002=
+1003=
+1004=
+1=
+2=
+3=
+4=
+5=
+[FileInfo]
+1001=0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1002=0,404,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1003=0,2438,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1004=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1=0,49,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2=0,6,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+3=0,2837,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+4=0,1386,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+5=0,1200,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

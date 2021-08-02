@@ -1,3 +1,7 @@
+Version prepracion ROLLMUSIC-0.1.0.0.0-U-TRACKS
+El directorio RollMusic , contiene el proyecto del editor FbEdit para editar y compilar
+El directorio midilib contiene la libreria libmidilib.a estatica compilada con Gcc Msys2 
+que se testeara si funciona bien las llamadas luego de armar el Wrapper desde C.
 Version ROLLMUSIC-0.0.9.9.1-VECTOR-COMPRIMIDO mas estrucurada usa Threads.
 Una  ejercitacion para ver Cairo.(Estado:ALpha Debug escribe archivos.)
 No encuentro secuenciadores que usen letras en vez de esos rectangulitos...
