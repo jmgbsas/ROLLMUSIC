@@ -1009,10 +1009,13 @@ Sub CargaArchivo(Roll As inst)
      
      ' cargamos trabajo datos
      Dim Trabajo (1 To MaxPos, NB To NA) As dat
+     CantTicks = MaxPos+1000 ' le damos un minuto mas
+     ReDim  (Roll.trk ) (1 To CantTicks, NB To NA)
      ''Dim Trabajo (NB To NA,1 To MaxPos) As dat ' temporario para convertir
      Get #2, , Trabajo()
      ' movemos los datos a Roll
      ' -------------------------
+
      ReDim compas(1 To CantTicks)
      carga=1 ' no es lo mismo calcCompas con cargar o procesando
      Dim As Integer i,j , mayor,ia,valdur,cont, semi
@@ -1079,6 +1082,7 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
 ' CAMBIAR CUADNO CARGUE CANCION,,,,!!!!      
      posn=MaxPosTrack(ntk)- 1
      MaxPos=MaxPosTrack(ntk)
+     ReDim (Track(ntk).trk ) (1 To Maxpos,1 To lim2)
      ' crgamos limites Roll de octavas
      Get #2, , zLim(1,1)
      desde=zLim(1,1).nota
@@ -1127,10 +1131,11 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
 End Sub
 '
 Sub Nuevo(Roll As inst,borraNombre As integer)
+CantTicks=4000 ' vuelvo al original default 
           ReDim (Roll.trk ) (1 To CantTicks, NB To NA )
           ReDim compas(1 To CantTicks)
           ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
-          MaxPos = 1 'NroCol
+          MaxPos = 2 'NroCol
           posicion=1:posn=1
           curpos=1
           notacur=1
@@ -1166,16 +1171,21 @@ Dim As Integer i1,i2,i3,Maxposicion
 '=> semitono=nr-int(nR/13)*13+1
 'ej semitono=30-26+1=5
  ' Print #1,"TrackaRoll 1 Nuevo"
-Nuevo (Roll,0)
+'Nuevo (Roll,0)
  '   Print #1,"TrackaRoll FOR"
+     CantTicks = MaxPosTrack(ntk)+1000 ' le damos un minuto mas
+     ReDim (Roll.trk ) (1 To CantTicks, NB To NA )
+     ReDim compas(1 To CantTicks)
+     ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
+
 For i2 = 1 To MaxPosTrack(ntk)
    For i1=1 To lim2
  
-      If Track(ntk).trk(i2,i1).nota >= 0 and Track(ntk).trk(i2,i1 ).nota <=115 Then
+      If Track(ntk).trk(i2,i1).nota >= 0 and Track(ntk).trk(i2,i1 ).nota <=NA Then
       ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
          PianoNota=Track(ntk).trk(i2,i1 ).nota
          PianoNota= PianoNota + SumarnR (PianoNota)
-         i3= 115 -PianoNota
+         i3= NA -PianoNota
          'i3=semitono + (nro-1) * 13
          Roll.trk(i2,i3).nota = CUByte(i3 - (Int(i3/13))*13+1) ' semitono
          Roll.trk(i2,i3).dur  = Track(ntk).trk(i2,i1).dur         
@@ -1209,6 +1219,62 @@ SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
 
 
 End Sub
+'
+Sub menugrafico( c0 As cairo_t Ptr,c As cairo_t Ptr ,Cantitems As Integer, text() As String  )
+
+ If savemousex > 0 Or savemousey > 0 Then
+  usamousex=savemousex
+  usamousey=savemousey
+ Else
+  usamousex=mousex
+  usamousey=mousey
+ EndIf
+ 
+ Var cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
+
+ Dim As cairo_text_extents_t extents
+
+ '   cairo_move_to (c0 , usamousex, usamousey + 250)
+ '  SetMouse 100,200
+ '    If mousey > 50 Then
+ cairo_set_font_face( c0, cface )
+ cairo_set_font_size( c0, 24 )
+ cairo_set_source_rgba( c0, 1, 1, 1, 1 )
+ Dim i As Integer
+ usamousex = usamousex + 200
+ usamousex = usamousey + 100
+
+
+ For i= 1 To CantItems
+  cairo_move_to( c0, 100  , 100 + (i-1)*24 )
+  cairo_text_extents( c0, text(i), @extents )
+  cairo_show_text( c0, text(i) )
+ Next i
+'/
+
+ ' <= control-m O P
+ '          If cursorVert=0 Or cursorHori=0 then
+ '             cairo_move_to( c, usamousex -60 , usamousey +50 )
+ '             cairo_text_extents( c, text(9), @extents )
+ '             cairo_show_text( c, text(9) )
+ '          EndIf
+ '          If cursorVert=1 Or cursorHori=1 then
+ '             cairo_move_to( c, usamousex -60 , usamousey -40 )
+ '             cairo_text_extents( c, text(10), @extents )
+ '             cairo_show_text( c, text(10) )
+ '          EndIf
+
+ '     menumouse = 0
+ '  EndIf
+
+ ' EndIf
+ If savemousex=0 Or savemousey=0 Then
+  savemousex=mousex
+  savemousey=mousey
+ EndIf
+
+End Sub
+
 '-------------------------------MENU----------
 Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst )
  ''Print #1,"1-menu "
@@ -1334,6 +1400,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
  '0.7  ===> [Opciones]  '25-07-2021
    If MultiKey(sc_Control) And mousex > 480 And mousex< 555 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
+     Sleep 200
     If MouseButtons And 1 Then
      menuNew=5
     EndIf
@@ -1389,8 +1456,8 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 '   End If
 indiceNota=(mousex- gap1 )/anchofig + posishow
 Dim As Integer veonota, veocopi 
-If indiceNota >0 And nR <=115 Then
-veonota=Roll.trk(indiceNota, 115-nR).nota 
+If indiceNota >NB And nR <=NA Then
+veonota=Roll.trk(indiceNota, NA-nR).nota 
 EndIf
 If copiar >0 Then
    veocopi=copiar
@@ -1483,7 +1550,7 @@ EndIf
       Print #1,"carga track veo nombre antes   ",nombre
        CargaTrack (Track() , ntk )
       Print #1,"carga track veo nombre despues ",nombre 
-       TrackaRoll (Track() , ntk , Roll)
+        TrackaRoll (Track() , ntk , Roll)
       Print #1,"TrackaRollcarga rtk veo nombre ",nombre 
        RecalCompas (Roll)
       Print #1,"despues RecalCompas veo nombre ",nombre 
@@ -1670,17 +1737,14 @@ EndIf
      "y es automatico, o sea, se cargaran los datos ", _
      "y la capacidad de Octavas. A mas Octavas mas memoria usada", _
      "El numero de octavas puede achicarse respecto del inicio",_
-     "pero agrandar puede destruir la memoria, si la cantidad de",_
-     "octavas al inicio es menor al proyectado, por ello para incrementar",_
-     "las octavas conviene iniciar siempre con el maximo de octavas y luego",_
-     "cargar el archivo de octavas reducido, si en la misma sesion se desea",_
-     "incrementar se lo podra hacer sin fallos"}
-
-     menugrafico  c0, c, CantItems, text()
+     "o agrandar "}
+  Print #1, "ANTES DE MENUGRAFICO"
+      menugrafico  c0, c, CantItems, text()
 
     EndIf
 
    EndIf
+   t="    ":cairo_show_text(c,t)
 '  ----> DESDE
    If mousex > 144 And mousex< 196 And mousey < 50 And MultiKey(sc_Control) Then ' DESDE LABEL
     cairo_set_source_rgba c, 0, 1, 0, 1
@@ -1787,7 +1851,9 @@ EndIf
     If MouseButtons And 1 Then
      d7=10000000
      menuNew= 7
-     ReCalCompas(Roll)
+     If mAXpOS > 2 Then
+       ReCalCompas(Roll)
+     EndIf
      TCompas="4/4"
     
     EndIf
@@ -1801,7 +1867,9 @@ EndIf
      d7=15000000
      menuNew=7
      TCompas="12/8"
+     If mAXpOS > 2 Then
      ReCalCompas(Roll)
+     End If
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -1812,7 +1880,9 @@ EndIf
     If MouseButtons And 1 Then
      d7=5000000
      menuNew=7
+     If mAXpOS > 2 Then
      ReCalCompas(Roll)
+     EndIf
      TCompas="2/4"
     EndIf
    Else
@@ -2169,6 +2239,7 @@ Sub botones(hWnd As HWND, c As cairo_t Ptr, cm As cairo_t Ptr, x As Integer,y As
  cairo_set_source_rgba cm, 0.8, 0, 0.2, 1
  cairo_move_to  (cm, ANCHO-10, 10 )
  cairo_fill (cm)
+
  cairo_set_source_rgba cm, 0.9, 0.9, 0.9, 1
  cairo_select_font_face (cm, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
  cairo_set_font_size (cm, 14)
@@ -2223,57 +2294,6 @@ Sub organizaCompases()
  Next j
 End Sub
 
-Sub menugrafico(c0 As cairo_t Ptr,c As cairo_t Ptr ,Cantitems As Integer, text() As String  )
- If savemousex > 0 Or savemousey > 0 Then
-  usamousex=savemousex
-  usamousey=savemousey
- Else
-  usamousex=mousex
-  usamousey=mousey
- EndIf
-
- Var  cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
-
- Dim As cairo_text_extents_t extents
-
- '   cairo_move_to (c0 , usamousex, usamousey + 250)
- '  SetMouse 100,200
- '    If mousey > 50 Then
- cairo_set_font_face( c0, cface )
- cairo_set_font_size( c0, 24 )
- cairo_set_source_rgba( c0, 1, 1, 1, 1 )
- Dim i As Integer
- usamousex = usamousex + 200
- usamousex = usamousey + 100
-
- For i= 1 To CantItems
-  cairo_move_to( c0, 100  , 100 + (i-1)*24 )
-  cairo_text_extents( c0, text(i), @extents )
-  cairo_show_text( c0, text(i) )
- Next i
-
- ' <= control-m O P
- '          If cursorVert=0 Or cursorHori=0 then
- '             cairo_move_to( c, usamousex -60 , usamousey +50 )
- '             cairo_text_extents( c, text(9), @extents )
- '             cairo_show_text( c, text(9) )
- '          EndIf
- '          If cursorVert=1 Or cursorHori=1 then
- '             cairo_move_to( c, usamousex -60 , usamousey -40 )
- '             cairo_text_extents( c, text(10), @extents )
- '             cairo_show_text( c, text(10) )
- '          EndIf
-
- '     menumouse = 0
- '  EndIf
-
- ' EndIf
- If savemousex=0 Or savemousey=0 Then
-  savemousex=mousex
-  savemousey=mousey
- EndIf
-
-End Sub
 
 '------------------------------------
 ' https://www.freebasic.net/forum/viewtopic.php?t=10398
@@ -2308,8 +2328,8 @@ End Function
 Sub CambiarDim()
      NB => 0 + (desde-1) * 13   ' 27 para 3
      NA => 11 + (hasta-1) * 13  ' 90 para  7
-
-     ReDim (Roll.trk ) ( 1 To CantTicks, NB To NA)
+' hacemos un redim preserve por default 
+     ReDim Preserve (Roll.trk ) ( 1 To CantTicks, NB To NA)
      ''ReDim (Roll.trk ) ( NB To NA,1 To CantTicks) ' temporario     
 'no se puede reemplaar en el main del programa por cuestion de scope
 ' o sea la definicion debe hcerse en el scope del main para que funcione
@@ -2441,6 +2461,9 @@ End Sub
 Sub GrabarArchivo ()
      ''Open "Trabajo_03.roll" For Binary Access write As #2
      ''Open nombreArchivo +".roll" For Binary Access write As #2
+     If nombre = "" Then ' backup
+        nombre = "Backup"+ Date + ".roll"
+     EndIf   
     Open nombre  For Binary Access write As #2
   ''''  Open "test-AAAAA.TXT" For Output    As #2
      Dim Trabajo (1 To Maxpos, NB To NA) As dat
@@ -2576,7 +2599,9 @@ Next i1
      Close 2
      While InKey <> "": Wend
      Sleep 150
-
+If nombre = "Backup"+ Date + ".roll" Then
+   nombre=""
+EndIf
 End Sub
 ' ----------------------------------
 Sub GrabarRollaTrack (cambiaNombre As Integer)
@@ -2660,7 +2685,7 @@ For i2 = 1 To MaxPos
       ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
          i3=i3+1
          Temp.trk(i2,i3)=Roll.trk(i2,i1 )
-         PianoNota= 115-i1 ' nR=i1 es el indice de Roll
+         PianoNota= NA - i1 ' nR=i1 es el indice de Roll
          ' cuanta al reves desde ocatva mas aguda a la mas grave,,,
          ' no lo cambiare o podri aahcer lo veremos 
          ' convertimos a PianoNota
@@ -3081,12 +3106,7 @@ Dim As hwnd haw,hwl
 Dim mitipo As Integer 
 mitipo=  CInt(tipo)
 '' => desde acaecho con tool del ruso no anda muy bien
-' como mierda selecciono???
      haw=OpenWindow("MIDI",100,50,400,400,WS_VISIBLE, WS_EX_TOPMOST )
-'       WindowBounds(haw,100,50,300,400) para no redimensioonar
- '    CenterWindow(haw) 
-'         ''UpdateInfoXserver()
-''Var style = LVS_EX_FULLROWSELECT   
      hwl=  ListViewGadget(1,10,10,300,400,,,,32,LVS_SINGLESEL  )
      listports()
 
@@ -3109,28 +3129,21 @@ mitipo=  CInt(tipo)
        ButtonGadget(2,330,30,50,40," OK ")
          #Ifdef __FB_WIN64__
            SetFocus (hwl) 
-  '''''    SetForegroundWindow(FindWindow(NULL, "MIDI"))
            SetForegroundWindow(haw)
           #Else
            gtk_widget_grab_focus(GadgetID(1))
          #EndIf
-         'SetSelectListViewItem(1,3)
          menunew=0
          Do
-'         MoveWindow(haw,100,50,300,400,TRUE)
 
          Var event= waitEvent
 
           If event=eventgadget Then
             If eventnumber()=2 Then
               menunew=0
-             ''  Print GetItemListView()
-              MessBox("","This is a TextGadget " + Str( GetItemListView()))
               portout = GetItemListView()
               Close_Window(haw)
               Exit Do 
-'            Case 2
-'               MessBox("","This is a TextGadget")
             End If
           EndIf 
           Sleep 5  

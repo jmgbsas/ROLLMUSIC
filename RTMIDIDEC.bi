@@ -4,11 +4,7 @@
 #Inclib  "rtmidi.dll"
 #include "fbthread.bi"
 #Include "crt.bi" ' QSORT
-'--------------midilib estatica para midi files---libmidilib.a-----compilar con nombre midilib
-#include "./midilib/mod_midiinfo.bi"
-#include "./midilib/mod_midifile.bi"
-#Include "./midilib/mod_midiutil.bi"
-' -------------------
+
 dim Shared midiin As   RtMidiInPtr 
 dim Shared midiout As  RtMidiOutPtr
 Declare Function restar (notaRoll As Integer) As Integer

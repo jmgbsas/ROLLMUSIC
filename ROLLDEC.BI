@@ -52,7 +52,7 @@ Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
 dim Shared as string cromatica(1 to 12)
-dim shared As Integer MaxPos=1,ntk  
+dim shared As Integer MaxPos=2,ntk=0  
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
@@ -93,11 +93,13 @@ Dim  Shared figura (1 To 182) As ZString  * 4 => _
 'cambiar 107 por 108, 109 por 110,  109 por 110.
 ' ligaduras de notas con + que va a + o - creo qu emenso seria mejor
 ' parecido a una pila polos opuestos se atraen je...
-Dim Shared As Integer comienzo1, fin1, comienzo2,fin2,PianoNota, trasponer=0 
+Dim Shared As Integer comienzo1, fin1, comienzo2,fin2,PianoNota, trasponer=0, _
+loopDeThreads=0 ,sefini=0
 'comienzo1=28:fin1=54
 'comienzo2=82:fin2=180
 
-Dim Shared as any ptr thread1, thread2,threadPenta,thread3,pubi 
+Dim Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
+Dim Shared As Any Ptr p2,tl1,tl2,tl3,tl4,tl5,tl6,tl7,tl8,tl9,tl10,tl11,tl12 
 
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
 Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio

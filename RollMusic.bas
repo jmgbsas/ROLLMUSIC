@@ -1,3 +1,10 @@
+' Correccion de notas cuadno se usa pocas OCTAVAS PianoNota no es correcta.
+' USAR CALLROLL CON SHELL WINEXEC FUNCIONA MAL ES PARA 16 ITS
+' ROLLMUSIC-0.3.0.0.0-U-TRACKS CARGA Y GRABACION DE TRACKS ANDA BIEN,
+' para conectar instancias podriamos usar ZEROMQ
+' O ALGUN PTR A UNA UDT CON DATOS COMUNES 
+' AHROA LE PUSIMOS REDIM PRESERVE PARA TODO ANDA OK, DE MODO QUE EL VECTOR ROLL
+' ES CHICO AL INICIO Y SE VA AGRANDANDO SEGUN NECESIDAD 
 ' ROLLMUSIC-0.1.0.0.0-U-TRACKS
 ' ADOPTAMOS LIBRERIA PAR LEER Y GRABAR MIDI midilib de github
 '---------------------------------------------
@@ -86,7 +93,10 @@
 ' cdefgabcde = 1,2,3,4,5,6,7,8,9,0...otra octava cualqueira seran los semitonos
 '
 ' ------------------------------
-
+'  -Wc -fstack-usage genera un archivo en runtime *.su con el uso del stack
+' por cada funcoin el default total es 1024k, -t 1024 no haria falta colocarlo
+' en la linea de comando
+' https://gcc.gnu.org/onlinedocs/gnat_ugn/index.html#SEC_Contents
 #define WIN_INCLUDEALL
 #Include Once "windows.bi"
 #Include Once "/win/commctrl.bi"
@@ -120,7 +130,9 @@ Sub getfiles(ByRef File As OpenFileName,flag As String, accion As String)
     EndIf
 
 End Sub
-' FILE DIALOG adicionales 
+' FILE DIALOG adicionales
+ 
+'--------
 
 Dim Shared file As OpenFileName
 Dim Shared As String myfilter
@@ -146,11 +158,11 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 ' para GTK Gtk:list()
 #Include Once "crt.bi"
 #Include Once "gtk/gtk.bi"
+
 ' This is our data identification string to store data in list items
 Const list_item_data_key ="list_item_data"
 ' fin GTK
 
-ScreenControl  SET_DRIVER_NAME,"GDI"
 
 Open "midebug.txt" For Output As #1
 Print #1,"start"
@@ -183,6 +195,7 @@ Print #1,Date;Time
 '==============================
 ' iup start
 #Include Once "IUP/iup.bi"
+#Include Once "iup/iupcontrols.bi"
 '#Include once "foro/fmidi.bi"
 '#include "fbthread.bi"
 #Include "foro/window9.bi"
@@ -225,6 +238,7 @@ Dim Shared As inst Temp
 Dim Shared As inst Track (0 To 32) ' tracks para guardar,.. y tocar 
 Dim Shared As inst Roll ' para visualizar y tocar
 
+
 'tempo I=160, seri equivalente a O=40 como l maxima cantdad de ticks de O es
 ' eldela figura mas pequeña=128 ticks...40 * 128 = 5120 por minuto.
 ' Si deseo un secuecnia de CantMin minutos
@@ -237,28 +251,30 @@ Dim ix As Integer
 'Print #1, "__FB_ARGC__ ",__FB_ARGC__
 Dim direp As ZString  Ptr
 Dim dires As String
-
+Dim titu As String
+Dim As integer desdeold = 0, hastaold=0
 For ix = 0 To __FB_ARGC__
- '    ' Print #1, "arg "; ix; " = '"; Command(ix); "'"''
+  Print #1, "arg "; ix; " = '"; Command(ix); "'"''
 
  If ix=1 Then
   desde= CInt(Command(ix))
+   
  EndIf
  If ix=2 Then
   hasta= CInt (Command(ix))
  EndIf
-
+ 
  If ix=3 Then
-  dires=  (Command(ix))
+  titu=  (Command(ix))
  EndIf
 
 
 Next ix
 
 
-Dim diren As Integer
-diren = CInt(dires)
-direp = @diren
+'Dim diren As Integer
+'diren = CInt(dires)
+'direp = @diren
 Print #1, "arg desde "; desde
 Print #1, "arg hasta "; hasta
 Print #1, "dires   "; dires
@@ -275,17 +291,27 @@ Dim Shared As Integer desdevector
 Dim Shared As Integer hastavector
 
 CantTicks=cantMin * 128 * tempo/4  ' 76800 ticks...o pasos
-CantTicks=76800
+'CantTicks=76800
+CantTicks=4000 ' 3 MINUTOS A NEGRA 160/min=500 Y Q TODAS SEAN FUSA
+ 
 Type paso Field=1
  Posi As Integer
  nro  As Integer 
 End Type
+Type pasa Field=1 
+  As cairo_t Ptr c
+  As inst Roll
+  As String  titulo
+  As Integer ancho
+  As Integer alto
+End Type
+
 Dim Shared As paso compas (1 To CantTicks) 'cada item es la posicion en donde
 
 desdevector = desde
 hastavector = hasta
-NB => 0 + (desde-1) * 13   ' 27 para 3 = 0
-NA => 11 + (hasta-1) * 13  ' 90 para  9 = 115
+NB => 0 + (desde-1) * 13   ' 27 para 3 = 0     reemplazar 0 por NB
+NA => 11 + (hasta-1) * 13  ' 90 para  9 = 115  reemplazr 115 por NA
 
 ReDim (Roll.trk ) (1 To CantTicks,NB To NA) ' Roll de trabajo en Pantalla
 
@@ -362,15 +388,15 @@ Dim Shared translado As Integer = 1
 ''https://www.freebasic.net/forum/viewtopic.php?t=15127
 ANCHO = GetSystemMetrics(SM_CXSCREEN)
 ALTO = GetSystemMetrics(SM_CYSCREEN)
-ANCHO = ANCHO
-ALTO = ALTO  -25
+ANCHO = ANCHO *11/12
+ALTO = (ALTO -25)*11/12
 AnchoInicial=ANCHO
 AltoInicial=ALTO
 anchofig=ANCHO/45 ' SON 45 COL PERO SE USAN MENOS 41
 NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
 ' ANCHO/anchofig= 45
 '=> anchofig=ANCHO/45
-''ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion si uso GDI
+'ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion si uso GDI
 ' pero llamando al programa con winExec con opcion SW_RESTORE no hay necesidad
 ' y puedousar  directx!!
 
@@ -383,10 +409,10 @@ NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8
 Dim As String driver
 
 
-ScreenRes ANCHO, ALTO, 32,1,  GFX_NO_FRAME Or GFX_HIGH_PRIORITY
+'------ScreenRes ANCHO, ALTO, 32,1,  GFX_NO_FRAME Or GFX_HIGH_PRIORITY
 
 
-ScreenControl GET_WINDOW_POS, x0, y0
+'-------ScreenControl GET_WINDOW_POS, x0, y0
 
 
 ''ScreenControl SET_WINDOW_POS, 10,10
@@ -442,7 +468,7 @@ Dim  Shared c As cairo_t  Ptr
 Dim  Shared cm As cairo_t  Ptr
 Dim  Shared c3 As cairo_t  Ptr
 
-Dim Shared As Integer stride, nro_penta,IhWnd,Style,desktopwidth,desktopheight
+Dim Shared As Integer stride, nro_penta,IhWnd,Mhwnd,Style,desktopwidth,desktopheight
 posicion = 1 ' comienzo del roll
 'indice   = 1  ' numero de nota al comienzo del programa B8
 espacio = 0
@@ -451,9 +477,9 @@ fijarEspacio=0
 'amedida que nos movemos ira incrementando o decrementando
 Dim Shared surface As Any Ptr
 ' ------------------------ windows controls ---------
-ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
-Dim Shared As hWnd hwnd 
-hwnd = Cast(hwnd,IhWnd)
+'---ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
+'---Dim Shared As hWnd hwnd 
+'---hwnd = Cast(hwnd,IhWnd)
 Dim comienzo As Integer = 0
 '--FFT FREE FONT-
 Var Shared ft => FreeType()
@@ -462,6 +488,9 @@ Var Shared ft => FreeType()
 Dim Shared As FT_Face ftface
 
 FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
+'''Dim Shared cface as cairo_font_face_t Ptr
+
+
 ' ========== CONTROL DEL NRO DEOCTAVASMOSTRADO SEPODRAPONER PARA EL USUARIO
 ' VER SI SE PUEDE USAR ARRAYS PORPROCIONES
 
@@ -481,28 +510,55 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
 
-
 '========================== 
 #Include "RTMIDISUB.bas"
 #Include "ROLLSUB.BAS"
-
 '===========================
+'ScreenControl  SET_DRIVER_NAME,"GDI"
+Dim Shared As hWnd hwnd,hwndMenu 
+'hwnd = Cast(hwnd,IhWnd)
+'hwndmENU = Cast(hwnd,MhWnd)
+
+ Dim Shared As UINT codsalida=0
+ Dim shared As Any Ptr lpExitCode
+ Dim As Integer MenuFlag=0, LoopFlag=0 
 
 #Include "ROllLoop.BAS"
+dim Shared As Ihandle Ptr frame, dialog, mnu, btn_start,btn_stop
+
+
+
+'''#Include "ROllMenu.BAS"
+
 ' aca puedo llamar a varios thread 1 por vez segun el instrumento editado
 ' o sea 1 vector de roll distinto para casa Thread o llamar a cada Vector
 ' con el mismo Thread para verlo en pantalla. Se veria 1 por vez o si queremos podriamos
 ' ver mas de 1 pero apra eso deberia llamar a roll music mas de una vez 
 ' y eso lo haria desde call roll 
 '----------------
+#Include "ROLLMIDI.BAS"
 
 '----------------
 'Dim pRoll As Any Ptr
+''USAR PIRULO.EXE COMO LLAMADOR, USA WINEXEC Y ES SIMILAR A SHELL
+' MEJOR NO PRODUCE CONSOLA Y DA MAS PARAMETROS 
 
- Dim tloop As Any Ptr = ThreadCall RollLoop(c, Roll ) 
-  ThreadWait tloop
+'  Dim tloop As Any Ptr = ThreadCall RollLoop(c, Roll )
+Dim param As pasa 
+    param.c= c
+    param.Roll = Roll
+    param.titulo = titu
+    param.ancho = ANCHO
+    param.alto = ALTO
+    p1=@param
 
-     
+    threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1)) 
+    ThreadWait threadloop
+
+
+End 0
+
+'---------fin iup---    
 errorhandler:
 Dim As Integer er, ErrorNumber, ErrorLine
 er = Err

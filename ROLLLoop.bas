@@ -1,3 +1,4 @@
+
 Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
 'Dim octava As Integer Ptr
 
@@ -197,15 +198,22 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
   '------------------------
   ' ENTRADAD DE NOTA NUEVA CONMOUSE: SE ELIGE LA DURACION CON LASTECLS 1 A 8
   'Y SE SELECCIONA CON EL MOUSE CLICKI ZQUIERDO,LA NOTA DESEADA.
+  ' LAS OCTAVAS Y LA SNOTAS TODAS SE INVIERTE PORQUE EL VECTOR SE DIBUJA DE ARRIBA 
+  ' HACIA ABAJO Y COMO SE DESEA QUE LAS MAS AGUDAS ESTEN ARRIBA Y LAS MAS GRAVES ABAJO
+  ' TENEMOS QUE LA OCTAVA 1 ES LA 1ERA DE ARRIBA HACIA ABAJO PERO AL INVERTIRLA
+  ' ES LA OCTAVA 9 , PEOR PARA LOS CALCULOS CONTAMOS DE ARRIBA HACI AABAJO DE 1 A 9
+  ' ASI LA OCATVA 3 (-1,0,1) O SEA LA 1 EN PANTALLA B1,C1 EN RELIDAD ES LA OCTAVA
+  ' 7..Y B1 TIENE UN VALOR nR=(13-0-2) + (9-7)*13=37 y la PianoNota es 35 
+  ' restandole restar(37). Semitono va de arriba hacia abajo de 0 a 11 y
+  ' nE es la nota de carga va de 1 a 12.
   lugar=Penta_y + (semitono +1) * inc_Penta
   cairo_move_to(c, 0, lugar )
   cairo_line_to(c, ANCHO - 1, lugar)
   cairo_stroke(c)
   If (mousey <= lugar) And (mousey >= lugarOld ) Then
    nE=semitono + 1 'semitono ahora va desde 0 a 11 usadopor entrada de tecladoy ahroa mouse
-   nR=(13-semitono-2) + (hasta-nro) * 13  ' indice de la nota en Roll , en algo será util.
-   PianoNota= nR 
-   PianoNota= PianoNota - restar (PianoNota)
+   nR=(13-semitono-2) + (hasta-nro) * 13 + (desde -1)*13 ' indice de la nota en Roll , en algo será util.
+   PianoNota= nR - restar (nR)
 
   EndIf
   lugarOld=lugar
@@ -213,8 +221,9 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
  Next semitono
  ' PARA ENTRADA POR MOUSE SOLO DEBO DETERMINAR EL SEMITONO...
  ' y hacer nota=semiotono 1 a 11 con el mouse...el resto es automtico...
-
-If nro = hasta Then ' es la 10 usamos 0 tmbien ose 9 octavas+ ayuda
+' nro=hasta significa que ya dibujo la octava 9, luego puede seguir dibujando
+' hacia abajo, la ayuda 
+If nro = hasta Then ' termino 9 octavas y ahora  + ayuda...
   cairo_set_font_size (c, font)
   'cairo_select_font_face (c, "Georgia",CAIRO_FONT_SLANT_NORMAL , CAIRO_FONT_WEIGHT_BOLD)
   t= "Flecha Abajo/Arriba o ruedita del mouse, scroll de las octavas en la ventana "
@@ -423,10 +432,64 @@ End Sub
 
 
 'Roll Main Loop ACA NO APARECE EL VECTOR DE ROLL 
-Sub RollLoop(c As cairo_t Ptr, Roll As inst)
+
+
+sub  RollLoop (param As pasa) ' (c As cairo_t Ptr, Roll As inst)
+ c=param.c
+ Roll=param.Roll
+ '    If hwnd =0 Then   ,GFX_WINDOWED
+     ScreenControl  SET_DRIVER_NAME,"GDI"
+     ScreenRes param.ancho, param.alto, 32,2, GFX_NO_FRAME 'Or GFX_HIGH_PRIORITY
+     Print #1,"param.titulo ",param.titulo
+     WindowTitle param.titulo
+     ScreenControl GET_WINDOW_POS, x0, y0
+     ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
+     hwnd = Cast(hwnd,IhWnd)
+     
+
+
+  '  End If
 'Dim Roll As inst
 ' @Roll(1) = *pRoll  
+Dim As DWORD pid = GetCurrentProcessId()' , pid_parent = 0
+Print #1 ,"pid", pid
+Var surface = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, ALTO, stride)
+ c = cairo_create(surface)
+Var surf2 = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, 50, stride)
+ cm = cairo_create(surf2)
+/' AL CARGAR OCTAVAS MENOS QUE 1 9 SEGUIMOS EL DESDE E INCREMENTAMOS O DECEMENTAMON INC_pENTA
+1 A 2  64 UP
+2 A 3 54 UP
+3 A 4 44 UP
+4 A 5 30 UP
+5 A 6 15 UP
+6 A 7  0 UP
+7 A 8  6  DOWN
+8 A 9  9 DOWN
+'/
 
+inc_Penta = Int((ALTO -1) /40) - deltaip
+'llena la surface con nro_penta
+nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
+'Print nro_penta
+Select Case desde
+    Case 1
+      BordeSupRoll = BordeSupRoll + 64 * inc_Penta
+    Case 2
+      BordeSupRoll = BordeSupRoll + 54 * inc_Penta    
+    Case 3
+      BordeSupRoll = BordeSupRoll + 44 * inc_Penta
+    Case 4
+      BordeSupRoll = BordeSupRoll + 30 * inc_Penta
+    Case 5
+      BordeSupRoll = BordeSupRoll + 15 * inc_Penta
+    Case 6
+    Case 7
+      BordeSupRoll = BordeSupRoll - 15 * inc_Penta    
+    Case 8
+      BordeSupRoll = BordeSupRoll - 30 * inc_Penta
+     
+End Select
 Do
 
 
@@ -435,14 +498,11 @@ edity2 = 40 ' botton Edit bordeInf
 
 
 
-
 '' Create a cairo drawing context, using the FB screen as surface.
 '' l originalestba mal sizeof(integer ) es mu chico debe ser 4
 stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
 
-Var surface = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, ALTO, stride)
-Var c = cairo_create(surface)
 
 ScreenLock()
 
@@ -494,22 +554,25 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 '
 ' desde=3 hasta=7
 '  rango= hasta
-
+' si viene de 7 a 9, nro va de 1 a 3  en relidad es de
+'
+  
 For i = desde To hasta ' nro_penta
-  nro = i
+   nro = i
   ' si ahce falta ejecutar mas de un Penta podremos usar threads
   ' por ahora no lousamos 
  'Dim tlock As Any Ptr = MutexCreate() 
- 'Dim ta As Any Ptr = ThreadCall creaPenta (c, Roll )
+ Dim ta As Any Ptr = ThreadCall creaPenta (c, Roll )
   
- ' ThreadWait ta
+  ThreadWait ta
  ' MutexDestroy tlock
- creaPenta (c, Roll )
+ '''creaPenta (c, Roll )
  If *po = 99 Then
   *po = hasta - 1
   Exit For
  EndIf
 cairo_stroke(c)
+ 
 Next
 
 
@@ -522,8 +585,8 @@ Next
 '  cairo_save (c) ' comentado
 
 ''''''''''''--------------------------------------------------
-Var surf2 = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, 50, stride)
-Var cm = cairo_create(surf2)
+'Var surf2 = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, 50, stride)
+'Var cm = cairo_create(surf2)
 ' cm no lo estoy usando por ahora pero las surf son transparentes
 'a lo de abajo, si doy click podria responderme la otra superficie,sigue
 'siendo lamisma ,intentare usar view de fb,,,,
@@ -1039,24 +1102,24 @@ If MultiKey (SC_F10) Then
 EndIf
 
 If MultiKey(SC_ESCAPE) Then
- '  ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
- '  Dim As hWnd hwnd = Cast(hwnd,IhWnd)
+   'ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
+   'Dim As hWnd hwnd = Cast(hwnd,IhWnd)
 
- If MessageBox(hWnd,"¿SEGURO FINALIZA?","RollMusic End ",4 Or 64) =6 Then
-  cairo_destroy(c)
-  '   cairo_surface_destroy( surface )
+  If MessageBox(hWnd,"¿FIN Edicion? "+param.titulo ,param.titulo ,4 Or 64) =6 Then
+    cairo_destroy(c)
+    cairo_surface_destroy( surface )
   '   cairo_font_face_destroy( cface )
-  FT_Done_Face( ftface )
-  Print #1,"FIN"
-  Close
-If play=1 Or playb=1 Then
-  alloff (1)
-  close_port(midiout)
-  out_free(midiout) 
-  ThreadDetach(thread1)
-EndIf
-  End
- EndIf
+    FT_Done_Face( ftface )
+  'Print #1,"FIN"
+    Close
+    If play=1 Or playb=1 Then
+      alloff (1)
+      close_port(midiout)
+      out_free(midiout) 
+      ThreadDetach(thread1)
+    EndIf
+    Exit Sub
+  EndIf  
 EndIf
 ' AYUDA =============ESPACIOS MANEJO ===================================
 ' repetir espacios con barra+ALTGRAF..luego la nota correspondiente
@@ -1481,11 +1544,14 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
  'Print #1,">>>START NUCLEO-COMPAS VECTOR posn: "; posn; "suma:";acumulado
  'Print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;_
  '   " nota: ";nota; " figura: ";figura(DUR)
+ 
+ 
  posn=1 + InicioDeLectura
  'If DUR=0 Then
  ' nota=0
  ' 
  'EndIf
+ 
  If controlEdit=0 Then
    controlEdit=1 
    octavaEdicion=estoyEnOctava
@@ -1515,6 +1581,17 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
      Exit Do
     EndIf
     posn = posn + 1
+'--- AUMENTO DE CAPACIDAD DEL VECTOR EN 1000 POSICIONES 
+    If CantTicks - MaxPos < 120 Then
+       GrabarArchivo ''hacer un backup !!! 
+      CantTicks=CantTicks + 1000 ' incremento el tamaño en 1000 posiciones =1 min
+      ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
+      ReDim Preserve compas(1 To CantTicks)
+      ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
+      
+    EndIf
+
+'---
     If (posn > NroCol + InicioDeLectura) Then
      InicioDeLectura=InicioDeLectura + NroCol
     EndIf
@@ -2294,7 +2371,7 @@ If (ScreenEvent(@e)) Then
     EndIf
    EndIf
   EndIf
-  If (mouseX > 0) And (mouseX <= 20 ) Then
+  If (mouseX > 0) And (mouseX <= 20 ) Then ' <=== RESIZE
    If MouseButtons And 1 Then
     If s4 = 0 Then
      resize = TRUE : s4 = 1
@@ -2330,9 +2407,10 @@ If (ScreenEvent(@e)) Then
  ''  EndIf
  ''https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-movewindow
  '                           <====== [BOTONES] =======>
+ ' 07-08-2021 lugar para test tamaño 10x8
  If (mousex>=(ANCHO-40)) And (mousey <= 16) Then
   If  MouseButtons And 1 Then
-   If MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","RollMusic End ",4 Or 64) =6 Then
+   If MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","Fin Edicion RollMusic",4 Or 64) =6 Then
     cairo_destroy(c)
     '   cairo_surface_destroy( surface )
     '     cairo_font_face_destroy( cface )
@@ -2340,7 +2418,7 @@ If (ScreenEvent(@e)) Then
 
     Close
 
-    End
+    Exit Sub 
    EndIf
   EndIf
  EndIf
@@ -2355,7 +2433,6 @@ If (ScreenEvent(@e)) Then
    If ALTO <= ALTO * 0.3 Then
     ALTO =  ALTO * 0.3
    EndIf
-   '
    '    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
    '    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
    MoveWindow( hWnd , 0 , (0+h-ALTO)\2, ANCHO,ALTO, TRUE )
@@ -2758,7 +2835,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
     indiceNota=(mousex- gap1 )/anchofig + posishow
      
 ' grupo de notas seleccionadas poniendo un 13 en nota
-   Roll.trk(indiceNota,115-nR ).nota = 13 ' marcamos para mover 
+   Roll.trk(indiceNota,NA-nR ).nota = 13 ' marcamos para mover 
    
    SelGrupoNota =1
    ' el valor correcot lo repone la sub correcionnotas
@@ -2790,24 +2867,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
     EndIf
     Exit Do
  EndIf 
- '12-07-2021 achicar agrandar ancho total de secuencia version 1
-' If MultiKey(SC_RSHIFT) And MultiKey(SC_RIGHT) Then
-'   anchofig=anchofig + 5
-'   gap1= anchofig* 2315/1000 '81 default
-'   gap2= (914 * gap1) /1000 ' 74 default
-'   gap3= (519 * gap1) /1000 ' 42 default
-'   NroCol =  (ANCHO / anchofig ) - 4
-'   If  anchofig > 175 Then
-'       anchofig = 175
-'   EndIf    
-'   'font=anchofig * 515 /1000
-'   ''font=anchofig * 515 /1000 + (anchofig ^2 - 1225) /375
-'  '' font=anchofig * 510 /1000 + (anchofig ^2 - 1225) /1000
-'  'font=anchofig * 510 /1000 + (35-anchofig)* (anchofig ^2 - 1225) /1000
-'   font=font+1  
-'   
-   
-' EndIf
+ '
  If MultiKey(SC_LSHIFT)  Then ' :
       cuart=1 
       Exit Do
@@ -2830,12 +2890,10 @@ If MouseButtons And 1  Then
    EndIf
 EndIf
 
-
-
 '                     <===  FIN    O P I L F E W H
 
-
- If resize = TRUE Then    ' <===== MOVER Y REDIMENSIONAR LA PANTALLA NO TAN FACIL
+'            <===== RESIZE ===================>
+ If resize = TRUE Then ' <=====  MOVER Y REDIMENSIONAR LA PANTALLA NO TAN FACIL
   'CLICKEAR CERCA DEL CENTRO Y DRAGAR DERECHA IZQUIERDA ARRIBA ABAJO
   m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
   If m.buttons = 1 And (m.x > 5 ) And (m.y > 5 ) Then
@@ -2847,7 +2905,9 @@ EndIf
    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
    ' m.x The new position of the left side of the window.
    ' m.y The new position of the top of the window.
-   MoveWindow( hWnd , m.x/2 , m.y/2 , desktopwidth - mxold, desktopheight - myold, TRUE )
+   ' 07-08-2021 cambien m.x/2 y m.y/2  por 1 y 1
+   
+   MoveWindow( hWnd , 1, 1 , desktopwidth - mxold, desktopheight - myold, TRUE )
    mxold=m.x
    myold=m.y
   EndIf
@@ -2909,7 +2969,37 @@ EndIf
 ' en la entrada y salida de midi, midi reltime hasta 10 ms
 ' o sea tengo 8msg para procesar se?ales dibujar notas y moverlas...
 
+ /'
+ If MultiKey(SC_ESCAPE) Then
+           Close
+           If play=1 Or playb=1 Then
+             alloff (1)
+             close_port(midiout)
+             out_free(midiout) 
+             ThreadDetach(thread1)
+           EndIf
+           Exit sub
+           
+ EndIf
+'/
+
 Loop
 
-End Sub
+End sub
+Function save_check (ih as Ihandle Ptr ) As integer
+dim as Ihandle Ptr canvas = IupGetDialogChild(ih, "CANVAS")
+ ' if (IupGetInt(canvas, "DIRTY")) Then 
+    Select Case  IupAlarm("Llamao a RollMusic ", "File not saved! Save it now?", "Yes", "No", "Cancel")
+     case 1  '/* save the changes and continue */
+ '      save_file(canvas)
+
+    case 2  '/* ignore the changes and continue */
+
+    case 3  '/* cancel */
+      return 0  
+    End Select
+ ' End If
+  return 1
+End function
+
 

@@ -733,7 +733,7 @@ EndIf
    
    If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12 _
       And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Then ' es semitono 
-      Notapiano= 115-i1 
+      Notapiano= NA - i1 
       Notapiano= Notapiano - restar (Notapiano)
       dura=CInt(Roll.trk(jply, i1).dur) '1) I 2) I dur x 1 to 108
      ' Print #1,"jply ";jply; "dura ";dura
@@ -1041,7 +1041,7 @@ Print #1,"-----------------------------------------"
     
    If (Roll.trk(jply,i).nota >= 1) And Roll.trk(jply,i).nota <= 12 _
       And Roll.trk(jply,i).dur >=1 And Roll.trk(jply,i ).dur <= 180 Then ' es semitono 
-      Notapiano= 115-i 
+      Notapiano= NA - i 
       Notapiano= Notapiano - restar (Notapiano)
       dura=Roll.trk(jply, i).dur '1) I 2) I dur x 1 to 108
 
@@ -1643,7 +1643,7 @@ Else
 EndIf   
 'Print #1,"CORRECION DE NOTAS ***********"
 For jpt = desdet To hastat  
-  For i1= 0 To 115   
+  For i1= NB To NA   
    
      If ( (Roll.trk(jpt,i1).nota >= 0) And (Roll.trk(jpt,i1).nota <= 13 ) )  Then ' es semitono
            'Print #1,"Roll.trk(i1,jpt).nota ",Roll.trk(i1,jpt).nota

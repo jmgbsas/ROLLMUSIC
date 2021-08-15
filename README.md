@@ -1,4 +1,9 @@
-Version prepracion ROLLMUSIC-0.1.0.0.0-U-TRACKS
+Version prepracion ROLLMUSIC-0.3.0.0.0-U-TRACKS 14-08-2021
+Introduccion de RollMusicControl.exe Bosquejo desde donde se podra controlar las diferentes 
+instancias de RollMusic, en Nuevo Track se puede elegir el rango desde hasta de octavas para 
+el editor y luego con Crear Track se abriar una instancia nueva de RollMusic. 
+Una sola instancia de RollMusic podrá tener varios tracks, con el mismo MidiOut y MidiIn 
+pero para editar al mismo tiempo se usarán varias instancias.
 El directorio RollMusic , contiene el proyecto del editor FbEdit para editar y compilar
 El directorio midilib contiene la libreria libmidilib.a estatica compilada con Gcc Msys2 
 que se testeara si funciona bien las llamadas luego de armar el Wrapper desde C.
