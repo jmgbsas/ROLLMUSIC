@@ -1003,9 +1003,9 @@ Sub CargaArchivo(Roll As inst)
      Get #2, , zLim(1,1)
      desde=zLim(1,1).nota
      hasta=zLim(1,1).dur
-'     NB => 1 + (desde-1) * 13   ' 27 para 3
-'     NA => 12 + (hasta-1) * 13  ' 90 para  7
-  '''REPONER    CambiarDim()
+     'NB => 0 + (desde-1) * 13   ' 27 para 3
+     'NA => 11 + (hasta-1) * 13  ' 90 para  7
+     CambiarDim() ' ya tiene calculo NB y NA 
      
      ' cargamos trabajo datos
      Dim Trabajo (1 To MaxPos, NB To NA) As dat
@@ -1037,7 +1037,7 @@ Sub CargaArchivo(Roll As inst)
      curpos =>0
      carga=0
      ReCalCompas(Roll)     
-    
+    ''If Roll.trk(1,NA).
 End Sub
 ' ------------------------------------------
 Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
@@ -1383,8 +1383,9 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
         menuNew =0
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 1 Then
-          Dim tlock As Any Ptr = MutexCreate()
+         Dim tlock As Any Ptr = MutexCreate()
          thread1 = ThreadCall  playAll(Roll)
+         '''playAll(Roll)
          MutexDestroy tlock
         EndIf 
    '     Print #1,"--->paso llamada a thread1 "

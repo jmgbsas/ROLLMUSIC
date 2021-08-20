@@ -1,3 +1,4 @@
+' ENVIO DE INSTRUMENTO ANDUVO OK!! 18-08-2021
 #Define __FB_WIN64__
 #If Defined (__FB_WIN64__) 
 #LibPath "C:\msys64\mingw64\lib"
@@ -13,6 +14,8 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include Once "crt.bi"
 #Include "window9.bi"
 #Include Once "gtk/gtk.bi"
+#Include "midiinfo.bi"
+#Include "ROLLCONTROLDEC.bi"
 Dim As Integer ancho, alto
 ancho = GetSystemMetrics(SM_CXSCREEN)
 alto = GetSystemMetrics(SM_CYSCREEN)
@@ -23,6 +26,7 @@ Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,Men
 
 Dim As Long event=0
 Dim As Integer desde , hasta
+
 hMessages=Create_Menu()
 MenName1=MenuTitle(hMessages,"Archivo")
 MenName2=MenuTitle(hMessages,"Edicion")
@@ -36,21 +40,23 @@ MenName8=MenuTitle(hMessages,"Ayuda")
 
 
 MenuItem(1001,MenName1, "1 Menu")
-MenuItem(1002,MenName2,"2 Menu")
-MenuItem(1003,MenName3,"Seleccion Octavas")
-MenuItem(1004,MenName3,"Crear Track")
+MenuItem(1002,MenName2, "2 Menu")
+MenuItem(1003,MenName3, "Seleccion Octavas")
+MenuItem(1004,MenName3, "Seleccion Instrumento por orden numerico")
+MenuItem(1005,MenName3, "Seleccion Instrumento por orden Alfabetico")
+MenuItem(1006,MenName3, "Crear Track")
 
 
-MenuItem(1005,MenName4,"5 Menu")
-MenuItem(1006,MenName5,"6 Menu")
-MenuItem(1007,MenName6,"7 Menu")
-MenuItem(1008,MenName7,"8 Menu")
-MenuItem(1009,MenName8,"9 Menu")
+MenuItem(1007,MenName4,"5 Menu")
+MenuItem(1008,MenName5,"6 Menu")
+MenuItem(1009,MenName6,"7 Menu")
+MenuItem(1010,MenName7,"8 Menu")
+MenuItem(1011,MenName8,"9 Menu")
 '-------
-Sub CreaTrack  (ByRef octadesde As Integer , ByRef octahasta As Integer ) 
+Sub CreaTrack  (ByRef octadesde As Integer , ByRef octahasta As Integer, ByRef instru As Integer ) 
 
-Shell ("start RollMusic "+ Str(octadesde)+" "+ Str(octahasta) + " Track_"+Str(octadesde)+"_"+Str(octahasta))
- 
+Shell ("start RollMusic "+ Str(octadesde)+" "+ Str(octahasta) + " Track_"+Str(octadesde)+"_"+Str(octahasta) + " "+Str(instru) )
+Print #1,"Str(instru) ", Str(instru) 
   
 End sub
 
@@ -83,6 +89,7 @@ For x= 1 To 2
 
 
        ButtonGadget(2,330,30,50,40," OK ")
+       
          #Ifdef __FB_WIN64__
            SetFocus (hwl) 
            SetForegroundWindow(haw)
@@ -119,10 +126,77 @@ Dim As Integer i
          Loop 
 Next x
 '' fin ruso
-'Return IUP_DEFAULT
-End Sub
-'---------------------------- main -----------------
+If octadesde=0 Then
+octadesde=1
+EndIf
+If octahasta=0 Then
+octahasta=9
+EndIf
+Print #1,"OCtadesde ",octadesde
+Print #1,"OCtahasta ",octahasta
 
+End Sub
+Sub selInstORdenNum()
+
+
+end Sub
+
+Sub selInstORdenAlfa (ByRef instru As integer)
+Dim As hwnd haw,hwl
+Dim As Integer aa ,paso=0,x=0  
+instru=0
+
+ 
+'' => desde acaecho con tool del ruso no anda muy bien
+     haw=OpenWindow("INSTRUMENTOS PATCH",100,50,600,600,WS_VISIBLE, WS_EX_TOPMOST )
+     hwl=  ListViewGadget(1,10,10,500,500,,,,32,LVS_SINGLESEL  )
+     AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
+     AddListViewItem(1, "CLICK EN UN ITEM DE LA LISTA Y EN OK",0,aa,0)
+       For aa =1 To 128 
+           AddListViewItem(1, NombreInst(aa),0,aa,0)
+
+       Next
+       
+
+
+       ButtonGadget(2,530,30,50,40," OK ")
+'       ButtonGadget(3,530,90,50,40,"+Pag")
+         #Ifdef __FB_WIN64__
+           SetFocus (hwl) 
+           SetForegroundWindow(haw)
+          #Else
+           gtk_widget_grab_focus(GadgetID(1))
+         #EndIf
+         Do
+
+         Var event= waitEvent
+
+          If event=eventgadget Then
+          
+            If eventnumber()=2 Then
+               Instru = GetItemListView()
+'''               instru=instru + 1
+            ''   If instru > 1 Then
+                  Close_Window(haw)
+                  Exit Do
+           ''    EndIf
+           End If
+
+          EndIf 
+          Sleep 5  
+          
+         Loop
+         
+
+'' fin ruso
+'Return IUP_DEFAULT
+Print #1,"Str(instru) ", Str(instru)
+
+End Sub
+
+'---------------------------- main -----------------
+Open "RollMusicControl.txt" For Output As #1
+Dim instru As Integer=0
 Do
    event=WaitEvent
    If event=EventMenu then
@@ -133,22 +207,27 @@ Do
             MessBox("","2 Menu")
        Case 1003 ' seleccion octavas 
            seloctava (desde, hasta)
-       Case 1004 ' crear Track
-        CreaTrack (desde, hasta)
-       Case 1005
+       Case 1004 ' seleccion de instrumento por orden numerico
+           selInstORdenNum ()
+       Case 1005 ' seleccion de instrumento por orden alfabetico
+           selInstORdenAlfa (instru)
+       Case 1006 ' crear Track
+        CreaTrack (desde, hasta, instru)
+       Case 1007
        MessBox("","5 Menu")
-       Case 1006
+       Case 1008
        MessBox("","6 Menu")
-      Case  1007 
+      Case  1009 
          MessBox("","7 Menu")
-      Case  1008
+      Case  1010
          MessBox ("","8 Menu")
-      Case  1009
+      Case  1011
          MessBox ("","9 Menu")
      
       End Select
    EndIf
    If event=EventClose Then End
 Loop
+Close
 
 End 0

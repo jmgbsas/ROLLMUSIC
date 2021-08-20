@@ -37,7 +37,8 @@ End Sub
 Sub allSoundoff(canal As UByte ) 
 ' canal 1
 ' 120 da sound off para todas las notas solo hy qu eenvirlo a 
-'todoslos canales NOFUNCIONA
+'todoslos canales 120 es canal 0 sera modo + canal 
+' habria que hacer un for 120,121,122,123 etc 120 + canal=modo
 	Dim modo As UByte
 	Dim leng As UInteger <8>
 	Dim result As Integer
@@ -45,7 +46,7 @@ Sub allSoundoff(canal As UByte )
 	
  message(1) = modo 
  message(2) = 0
- message(3) = canal
+ message(3) = canal '' ??? donde lo saque 
  leng=3
 result = send_message (midiout, p, leng)
 
@@ -57,6 +58,7 @@ Sub alloff(canal As UByte )
 ' 123 da note off para todas las notas solo hy qu eenvirlo a 
 'todoslos canales
 ' 120 all sound off https://www.tweakheadz.com/midi_controllers.htm
+'https://www.cs.cmu.edu/~music/cmsip/readings/MIDI%20tutorial%20for%20programmers.html
 	Dim modo As UByte
 	Dim leng As UInteger <8>
 	Dim result As Integer
@@ -70,15 +72,32 @@ Sub alloff(canal As UByte )
 result = send_message (midiout, p, leng)
 
 End Sub
+Sub ChangeProgram ( ByVal instru As UByte, ByVal canal As ubyte)
+	Dim modo As UByte
+	Dim leng As UInteger <8>
+	Dim result As Integer ' canal 0 to 15 canal 0 es el 1
+	If canal = 0 Then  ' 0xC0 = 12x16 = 192
+		 modo = 192 ' 0xC0 + 0 = 192 +0 = 192 
+	Else
+	  modo = 192 + canal 
+	EndIf
+	' funciona!!!! se manda al inicio PERO SOLO me funcioan con todas las octavas ver por que
+ message(1) = modo 
+ message(2) = instru
+
+ leng=2
+result = send_message (midiout, p, leng)
+
+End Sub
 Sub noteon	( note As ubyte, vel As UByte, canal As ubyte)
 	' canal 1
 	Dim modo As UByte
 	Dim leng As UInteger <8>
-	Dim result As Integer
-	If canal = 1 Then
-		 modo = 144
+	Dim result As Integer ' canal 0 to 15 canal 0 es el 1
+	If canal = 0 Then
+		 modo = 144 ' 0x90 + 0 = 9x16+0=144 +0 = 144 
 	Else
-	  modo = 144 + canal
+	  modo = 144 + canal 
 	EndIf
 	
  message(1) = modo 
@@ -652,14 +671,15 @@ Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
 tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
 Dim nombre As ZString ptr
 Dim As Integer i1,i2,i3,i4,i5,j ,comienzoDeLoop=0
-Dim As Integer comienzo=1, final=MaxPos,  canal=1,vel=100,velpos =0
-Dim pasoCol (NB To NA) As vec  ' entrada de durciones a medida que barro una columna
+Dim As Integer comienzo=1, final=MaxPos,  canal=0,vel=100,velpos =0
+' canal 0 es el 1 van de 0 a 15
+Dim pasoCol (0 To 115) As vec  ' entrada de durciones a medida que barro una columna
 Dim As Double start
 Dim as Integer cnt=0, cntold=0,cpar=0,dura=0,duraOld=0,nj, durj,tiempoFiguraSig
 Dim As Integer liga=0,notapiano=0,old_notapiano=0, iguales=0, distintos=0
 Dim leng As UInteger <8>
 Dim result As Integer
-
+/'
 midiout = rtmidi_out_create_default()
 'Print #1,"PLAYALL---------->>>>>>>"
 portsout =  port_count (midiout)
@@ -676,6 +696,7 @@ portsout = portout
 open_port (midiout,portsout, nombre)
 
 Print #1,"  "
+'/
 Print #1,"comienzo playaLL ==========> "
 jply=0:curpos=0
 mousex=0
@@ -690,8 +711,15 @@ If pasoZona2 > 0 Then
  final=pasoZona2
 EndIf
 
+' If jply=1 And Roll.trk(1,NA).inst > 0 Then
+'   ChangeProgram ( Roll.trk(1,NA).inst , 0)
+'    Print #1,"ChangeProgram jply", Roll.trk(1,NA).inst
+  ''        On Error GoTo labelerror 
+' End If 
+
+
 For jply=comienzo To final
-'posicion=jply
+
 
 kNroCol= Int(jply/NroCol)
 If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < MaxPos)Then
@@ -729,12 +757,19 @@ EndIf
  ' Print #1,"---START-----paso:";jply;" --------------------------------"
   '115 a 0
   ' recorre una posicion vertical
+  ' envio de instrumetno o CAMBIO de PROGRAMA PATCH 
+  
+  ' ============================== 18-08-2021 funciono!!!!
   For i1=NA To NB Step -1 
    
    If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12 _
-      And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Then ' es semitono 
-      Notapiano= NA - i1 
+      And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Then ' es semitono
+     ' por mas que achique en octavas, Notapiano se calcula respecto del nro 
+     ' completo de octavas del piano ergo 115 es fijo siempre mientras
+        
+      Notapiano= 115 - i1 
       Notapiano= Notapiano - restar (Notapiano)
+      Print #1,"VEO LO CORRECTO DE NOTAPIANO "; Notapiano
       dura=CInt(Roll.trk(jply, i1).dur) '1) I 2) I dur x 1 to 108
      ' Print #1,"jply ";jply; "dura ";dura
       cnt=cnt+1
@@ -763,8 +798,9 @@ EndIf
       '+++++++++
       If ligaglobal=0 Then 
         ' Print #1,"ligaglobal es cero ****"   
+        Print #1,"-> cnt"; cnt 
          pasoCol(cnt).DUR =dura
-        ' Print #1,"pasoCol(cnt).DUR "; pasoCol(cnt).DUR 
+        '' Print #1,"pasoCol(cnt).DUR ", pasoCol(cnt).DUR 
          pasoCol(cnt).notapiano=Notapiano 
          pasoCol(cnt).tiempoFigura=relDur(pasoCol(cnt).DUR) * tiempoDur * 100000000000
          pasoCol(cnt).i1 = i1 'posicion vertical en el vector real
@@ -808,7 +844,8 @@ EndIf
         '       
         '    EndIf
         ' EndIf
-         
+
+
          If cnt > 1 Then' Acorde
           ' Print #1,"i1=NB=";i1 ; " ACORDE cnt= ";cnt
          Else    
@@ -868,11 +905,12 @@ finplay=1
 
 mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 Sleep 1000,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
+/'
 close_port(midiout)
-out_free(midiout) 
+out_free(midiout)
+'/ 
 
 ThreadDetach(thread1) 'JMG REPONER !!!!
-
 ' ================================FIN PLAYALL <<=================
 End Sub 
 ' ---------------

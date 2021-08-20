@@ -18,7 +18,25 @@
     1.4) Grabar Archivo.
     1.5) Cargar Archivo.
     1.6) Tamaño Font. 
-
+    
+    IV) Se puede ejecutar RollMusic en modo aislado o en varias instancias.
+        Por ahora las instancias no estan sincronizadas. RollMusicControl.exe
+        puede llamar distintas instancias. El unico menu habilitado es
+        Nuevo Track, en el se puede elegir el intervalo de octavas desde-hasta
+        y le Instrumento para ejecutar 1 a 128 de GM. Luego de elegidos o sin
+        elegir nada se procede a pulsar en ese menu Crear Track y aparecerá
+        Roll Music en otra ventana independiente. Si luego se carga otro archivo 
+        de secuencia la misma se ejecutara con el instrumento elegido. 
+        (se intentara en un futuro..sincrocnizar las instancias,,en el play)
+        Pero la version Aislada podra crear variso tracks pero solo editar de a uno
+        por vez tal vez las instancia sirvan más para editar varios Tracks al mismo
+        tiempo o tenerlas abiertas. Para ello deberia estar cargada en una instancia
+        principal todos los tracks modificados (no implementado) y luego
+        dar play solo a la instancia  principal por ahora ya que todavia no hay
+        sincronizacion de instancias. Del mismo podo aunque la carga de muchso tracks 
+        en una instancia falta poco tambien hace falta implementar el play simultaneo
+        de varios tracks,,,(cargar y grabar en fomato midi es al go para el futuro 
+        tambien pero ya se consiguio y compilo la libreria midi en C.)
     1) El Modo Lectura se inicia en color de fondo Negro y texto blanco (ultimo 
       cambio).
       - Para recorrer las octavas se usa flecha arriba o abajo, Retroceso-Pagina, 
@@ -46,13 +64,7 @@
        Pulsar y mantener la tecla control. Girando la rueda del mouse
        en la direccion  hacia afuera abre el espacio  entre lineas, hacia 
        adentro lo achica, similar al tamaño de un texto
-       en un editor de texto. Para terminar liberar la tecla Ctrl. Si seguidamente 
-       se emiten otros comandos, se bloqueara el cambio del espaciado no se podrá
-       cambiarlo hasta que se pulse 'q'. Por lo tanto si luego de haber emitido 
-       varios comadnos como Ctrl-right para avansar rapido o flecha arriba para
-       subir, el interlineado estar bloqueado no se podrá cambianr hasta que se
-       pulse 'q'. Varias teclas rapidas bloquean al interlineado para evitar que 
-       el mismo actue mientras se emite otra clase de comando.
+       en un editor de texto. Para terminar liberar la tecla Ctrl.
 
     1.2)  Trasponer todo: Ctrl-T habilita la trasposicion, Q la deshabilita.
        una vez habilitada con Flecha-UP sube de a un semitono con cada pulso

@@ -1,5 +1,10 @@
-' Correccion de notas cuadno se usa pocas OCTAVAS PianoNota no es correcta.
-' USAR CALLROLL CON SHELL WINEXEC FUNCIONA MAL ES PARA 16 ITS
+' con el tiempo pasar toa a e.scancode  event If e.scancode = SC_P And Play=1
+' anduvo mejor sino no cortaba el play en secuecnias largas...
+' se puede usar llamdo desde ROllMusicControl o standAlone.
+' 18-08-2021 envio de cambio de programa patch INSTRUMENTO EN ROLL.TRK(1,1)
+' FUNCIONO,,,
+' Correccion de notas cuadno se usa pocas OCTAVAS PianoNota no es correcta. LISTO OK
+' USAR CALLROLL CON SHELL OK LISTO
 ' ROLLMUSIC-0.3.0.0.0-U-TRACKS CARGA Y GRABACION DE TRACKS ANDA BIEN,
 ' para conectar instancias podriamos usar ZEROMQ
 ' O ALGUN PTR A UNA UDT CON DATOS COMUNES 
@@ -187,6 +192,7 @@ Print #1,Date;Time
 ''
 #Include "string.bi"
 #Include Once "cairo/cairo.bi"
+#Include "midiinfo.bi"
 '===============================
 #Include "ROLLDEC.BI"
 '==============================
@@ -249,9 +255,10 @@ CantMin=15
 Dim ix As Integer
 'Print #1, "__FB_ARGV__ ",__FB_ARGV__
 'Print #1, "__FB_ARGC__ ",__FB_ARGC__
-Dim direp As ZString  Ptr
-Dim dires As String
+'Dim direp As ZString  Ptr
+'Dim dires As String
 Dim titu As String
+Dim instru As UByte
 Dim As integer desdeold = 0, hastaold=0
 For ix = 0 To __FB_ARGC__
   Print #1, "arg "; ix; " = '"; Command(ix); "'"''
@@ -268,21 +275,26 @@ For ix = 0 To __FB_ARGC__
   titu=  (Command(ix))
  EndIf
 
+ If ix=4 Then
+  instru=  CUByte (Command(ix))
+ EndIf
 
 Next ix
 
+'Print #1, "dires   "; dires
+'Print #1, "recibi "; *direp
+'Print #1, "common "; mensaje
 
 'Dim diren As Integer
 'diren = CInt(dires)
 'direp = @diren
-Print #1, "arg desde "; desde
-Print #1, "arg hasta "; hasta
-Print #1, "dires   "; dires
+Print #1, "1 arg desde "; desde
+Print #1, "2 arg hasta "; hasta
+Print #1, "3 arg titu  "; titu
+Print #1, "4 arg instru"; instru
 
-Print #1, "recibi "; *direp
-Print #1, "common "; mensaje
-
-If desde=0 And hasta=0 Then
+If desde = 0 And hasta = 0 Then
+ Print #1,"intervalo no dado usando default!"
  desde => 1  ' 1 3
  hasta => 9  ' 9 7
 EndIf
@@ -310,10 +322,23 @@ Dim Shared As paso compas (1 To CantTicks) 'cada item es la posicion en donde
 
 desdevector = desde
 hastavector = hasta
+' test test
+' --------
 NB => 0 + (desde-1) * 13   ' 27 para 3 = 0     reemplazar 0 por NB
 NA => 11 + (hasta-1) * 13  ' 90 para  9 = 115  reemplazr 115 por NA
 
 ReDim (Roll.trk ) (1 To CantTicks,NB To NA) ' Roll de trabajo en Pantalla
+Print #1,"instru ",instru
+' ojo debe se NB al reducir octabas NB cambia
+If instru > 0 Then
+  Roll.trk(1,NA).inst = instru
+EndIf
+Print #1,"Roll.trk(1,NA).inst ",Roll.trk(1,NA).inst
+Print #1,"NB ",NB
+Print #1,"NA ",NA
+
+Print #1,"desde ",desde
+Print #1,"hasta ",hasta
 
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
@@ -551,10 +576,37 @@ Dim param As pasa
     param.ancho = ANCHO
     param.alto = ALTO
     p1=@param
+#Include "mod_rtmidi_c.bi"    
+'----------------------------
+Dim nombreport As ZString Ptr
+midiout = rtmidi_out_create_default()
+'Print #1,"PLAYALL---------->>>>>>>"
+portsout =  port_count (midiout)
+Dim i1 As integer
+'Print #1, "portsin  "; portsin
+'Print #1, "portsout "; portsout
+For i1 = 0 to portsout -1 
+    nombreport = port_name(midiout, i1)
+ '   Print #1, *nombre
+Next i1  
 
-    threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1)) 
-    ThreadWait threadloop
+portsout = portout
+*nombreport = ""
 
+open_port (midiout,portsout, nombreport)
+
+Print #1,"  "
+If Roll.trk(1,NA).inst > 0 Then
+ ChangeProgram ( Roll.trk(1,NA).inst , 0)
+EndIf
+ Print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
+ 
+
+
+'---------------------------
+   threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1)) 
+   ThreadWait threadloop
+''RollLoop ( param)
 
 End 0
 

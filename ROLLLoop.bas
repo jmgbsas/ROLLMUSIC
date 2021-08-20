@@ -561,11 +561,10 @@ For i = desde To hasta ' nro_penta
    nro = i
   ' si ahce falta ejecutar mas de un Penta podremos usar threads
   ' por ahora no lousamos 
- 'Dim tlock As Any Ptr = MutexCreate() 
- Dim ta As Any Ptr = ThreadCall creaPenta (c, Roll )
-  
-  ThreadWait ta
- ' MutexDestroy tlock
+  Dim tlock As Any Ptr = MutexCreate() 
+  Dim ta As Any Ptr = ThreadCall creaPenta (c, Roll )
+    ThreadWait ta
+  MutexDestroy tlock
  '''creaPenta (c, Roll )
  If *po = 99 Then
   *po = hasta - 1
@@ -1144,8 +1143,13 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
    If playb = 0 And MaxPos > 1 Then
       playb=1
   '    Print #1,"SPACE call play"
-      'thread1 = ThreadCreate(@playAll)
-      playAll(Roll)
+  '''      thread1 = ThreadCreate(@playAll)
+      If  MaxPos > 1 Then 
+         Dim tlock As Any Ptr = MutexCreate()
+         thread1 = ThreadCall  playAll(Roll)
+         MutexDestroy tlock
+      EndIf   
+      'playAll(Roll)
       menunew=0
    EndIf
  EndIf  
@@ -1928,7 +1932,10 @@ If (ScreenEvent(@e)) Then
      Exit Do  
    EndIf
   Case EVENT_KEY_PRESS    ' <======== KEY PRESS PULSO
-
+   If e.scancode = SC_P And Play=1 then ' 25 anda mejor q con multikey
+      CONTROL1=1
+      playloop=0
+   EndIf
    If e.scancode = 72  Then ' SC_UP sube por pulsos mas presicion
     If trasponer=1 And SelGrupoNota=0 Then
      trasponerRoll (-1,Roll)
