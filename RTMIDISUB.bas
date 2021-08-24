@@ -700,7 +700,7 @@ Print #1,"  "
 Print #1,"comienzo playaLL ==========> "
 jply=0:curpos=0
 mousex=0
-' Print #1,"-----------------------------------------"
+' Print #1,                    "-----------------------------------------"
 comienzo=posicion
 cntold=0
 If pasoZona1 > 0 Then
@@ -720,6 +720,9 @@ EndIf
 
 For jply=comienzo To final
 
+ If Roll.trk(1,NA).inst > 0 And jply=1 Then
+       ChangeProgram ( Roll.trk(1,NA).inst , 0)
+ EndIf
 
 kNroCol= Int(jply/NroCol)
 If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < MaxPos)Then
@@ -904,6 +907,8 @@ mousey=100 'otra mas para evitar rentrar a play en menu
 finplay=1
 
 mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
+
+
 Sleep 1000,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
 /'
 close_port(midiout)

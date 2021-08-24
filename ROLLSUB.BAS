@@ -489,7 +489,7 @@ Dim CUENTA As INTEGER
    EndIf
    If CUENTA = 100 Then
       ' S print "FALTA: ";falta;" Falta1: "; falta1
-      Close
+     ' Close
       Exit Do
    EndIf   
   Loop
@@ -1031,7 +1031,7 @@ Sub CargaArchivo(Roll As inst)
       Next i
 
      Next j
-     Close 2
+    ' Close 2
 
      DUR => 0
      curpos =>0
@@ -1119,7 +1119,7 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
       Next i
 
      Next j
-     Close 2
+    ' Close 2
 
      DUR => 0
      curpos =>0
@@ -1395,7 +1395,15 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   
+   If CPlay=1 Then
+      If  MaxPos > 1 Then
+         Dim tlock As Any Ptr = MutexCreate()
+         thread1 = ThreadCall  playAll(Roll)
+         '''playAll(Roll)
+         MutexDestroy tlock
+      EndIf 
+      CPlay=0
+   EndIf
    t=  " [Reproducir]":cairo_show_text(c, t)
    ' --------------------------
  '0.7  ===> [Opciones]  '25-07-2021
@@ -2330,7 +2338,7 @@ Sub CambiarDim()
      NB => 0 + (desde-1) * 13   ' 27 para 3
      NA => 11 + (hasta-1) * 13  ' 90 para  7
 ' hacemos un redim preserve por default 
-     ReDim Preserve (Roll.trk ) ( 1 To CantTicks, NB To NA)
+     ReDim  (Roll.trk ) ( 1 To CantTicks, NB To NA)
      ''ReDim (Roll.trk ) ( NB To NA,1 To CantTicks) ' temporario     
 'no se puede reemplaar en el main del programa por cuestion de scope
 ' o sea la definicion debe hcerse en el scope del main para que funcione
@@ -2597,7 +2605,7 @@ Next i1
      Put #2, ,grabaPos(1,1)
      Put #2, ,grabaLim(1,1)
      Put #2, ,Trabajo()
-     Close 2
+     'Close 2
      While InKey <> "": Wend
      Sleep 150
 If nombre = "Backup"+ Date + ".roll" Then
@@ -2732,7 +2740,7 @@ Next i2
      Put #2, ,grabaPos(1,1)
      Put #2, ,grabaLim(1,1)
      Put #2, ,Temp.trk()
-     Close 2
+     'Close 2
      While InKey <> "": Wend
      Sleep 150
 
@@ -2871,7 +2879,7 @@ Next i1
      Put #2, ,grabaPos(1,1)
      Put #2, ,grabaLim(1,1)
      Put #2, ,Trabajo()
-     Close 2
+     'Close 2
      While InKey <> "": Wend
      Sleep 150
 

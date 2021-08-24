@@ -1,4 +1,4 @@
-
+#include "crt/stdio.bi"
 Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
 'Dim octava As Integer Ptr
 
@@ -434,7 +434,7 @@ End Sub
 'Roll Main Loop ACA NO APARECE EL VECTOR DE ROLL 
 
 
-sub  RollLoop (param As pasa) ' (c As cairo_t Ptr, Roll As inst)
+sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
  c=param.c
  Roll=param.Roll
  '    If hwnd =0 Then   ,GFX_WINDOWED
@@ -446,6 +446,7 @@ sub  RollLoop (param As pasa) ' (c As cairo_t Ptr, Roll As inst)
      ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
      hwnd = Cast(hwnd,IhWnd)
      
+  
 
 
   '  End If
@@ -490,7 +491,13 @@ Select Case desde
       BordeSupRoll = BordeSupRoll - 30 * inc_Penta
      
 End Select
+
+' IPC
+
+' -----------------
+
 Do
+
 
 
 edity1 = 10 ' botton Edit bordeSup
@@ -1110,14 +1117,15 @@ If MultiKey(SC_ESCAPE) Then
   '   cairo_font_face_destroy( cface )
     FT_Done_Face( ftface )
   'Print #1,"FIN"
-    Close
+    
     If play=1 Or playb=1 Then
       alloff (1)
       close_port(midiout)
       out_free(midiout) 
       ThreadDetach(thread1)
     EndIf
-    Exit Sub
+    Close 
+    End 0
   EndIf  
 EndIf
 ' AYUDA =============ESPACIOS MANEJO ===================================
@@ -1935,6 +1943,7 @@ If (ScreenEvent(@e)) Then
    If e.scancode = SC_P And Play=1 then ' 25 anda mejor q con multikey
       CONTROL1=1
       playloop=0
+      
    EndIf
    If e.scancode = 72  Then ' SC_UP sube por pulsos mas presicion
     If trasponer=1 And SelGrupoNota=0 Then
@@ -2424,8 +2433,9 @@ If (ScreenEvent(@e)) Then
     FT_Done_Face( ftface )
 
     Close
+    End 0
 
-    Exit Sub 
+     
    EndIf
   EndIf
  EndIf
@@ -2961,43 +2971,29 @@ EndIf
 
 EndIf ' end  (ScreenEvent(@e)) EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 ' PODRIA SACARSE LOS MULTIKEY DE SCREEN EVENT PERO NO SE SI ANDAN MEJOR DEBO VERIFICAR
+' ------------IPC sensado de comando fifo..
 
-If s5<> 1 Then' acelerar mover ventana con el mouse
- Sleep 1 '1000 / 1000 frames = 1 milisegundos
-End If
-Loop
-
-While Inkey <> "": Wend
 
 If s5<> 1 Then
- Sleep 1 '1000 / 1000 frames = 1 milisegundos
+ Sleep 1
 EndIf
-' total 2msg, lo mas rapido posible para que no interfiera
-' en la entrada y salida de midi, midi reltime hasta 10 ms
-' o sea tengo 8msg para procesar se?ales dibujar notas y moverlas...
+Loop
 
- /'
- If MultiKey(SC_ESCAPE) Then
-           Close
-           If play=1 Or playb=1 Then
-             alloff (1)
-             close_port(midiout)
-             out_free(midiout) 
-             ThreadDetach(thread1)
-           EndIf
-           Exit sub
-           
- EndIf
-'/
+While InKey <> "": Wend
+
+If s5<> 1 Then
+ Sleep 1
+EndIf
 
 Loop
+
 
 End sub
 Function save_check (ih as Ihandle Ptr ) As integer
 dim as Ihandle Ptr canvas = IupGetDialogChild(ih, "CANVAS")
  ' if (IupGetInt(canvas, "DIRTY")) Then 
     Select Case  IupAlarm("Llamao a RollMusic ", "File not saved! Save it now?", "Yes", "No", "Cancel")
-     case 1  '/* save the changes and continue */
+     Case 1  '/* save the changes and continue */
  '      save_file(canvas)
 
     case 2  '/* ignore the changes and continue */

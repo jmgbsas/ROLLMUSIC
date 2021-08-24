@@ -19,24 +19,39 @@
     1.5) Cargar Archivo.
     1.6) Tamaño Font. 
     
-    IV) Se puede ejecutar RollMusic en modo aislado o en varias instancias.
-        Por ahora las instancias no estan sincronizadas. RollMusicControl.exe
-        puede llamar distintas instancias. El unico menu habilitado es
-        Nuevo Track, en el se puede elegir el intervalo de octavas desde-hasta
-        y le Instrumento para ejecutar 1 a 128 de GM. Luego de elegidos o sin
-        elegir nada se procede a pulsar en ese menu Crear Track y aparecerá
-        Roll Music en otra ventana independiente. Si luego se carga otro archivo 
-        de secuencia la misma se ejecutara con el instrumento elegido. 
-        (se intentara en un futuro..sincrocnizar las instancias,,en el play)
-        Pero la version Aislada podra crear variso tracks pero solo editar de a uno
-        por vez tal vez las instancia sirvan más para editar varios Tracks al mismo
-        tiempo o tenerlas abiertas. Para ello deberia estar cargada en una instancia
-        principal todos los tracks modificados (no implementado) y luego
-        dar play solo a la instancia  principal por ahora ya que todavia no hay
-        sincronizacion de instancias. Del mismo podo aunque la carga de muchso tracks 
-        en una instancia falta poco tambien hace falta implementar el play simultaneo
-        de varios tracks,,,(cargar y grabar en fomato midi es al go para el futuro 
-        tambien pero ya se consiguio y compilo la libreria midi en C.)
+    IV) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
+        estilo pentagrama. Se podrán usar varias instancias pero sin ningun control
+        entre ellas.RollMusic.exe levanta ahora 2 pantallas un menu GUI y el grafico habitual.
+        Acciones: elegir octavas, instrumentos, antes de crear el track. Al crearlo
+        se borra el cargado anteriormente y se reemplaza por uno nuevo vacio.
+        Se agrega menu de Cancion, no funcional todavia.   
+        Esta version Aislada podra crear varios tracks pero solo editar de a uno
+        por vez. Si se quieren más ediciones simultaneas, se podria usar  otra isntancia.
+        Pero no tendrá sincronizacion en el play,.. por ahora. La apliacaion se termina
+        cerrrando la pantalal del MEnu GUI o cerrndo el gráfico es indistinto.   
+        Y luego de terminada levantarla con la instancia original y agregarla a la Cancion
+        si se lo desea, donde sí se podrá escuchar todos los tracks al unisono(en desarrollo). 
+        Otra forma será en el futuro, partir pantalla y editar 2 track en simultaneo.
+        O pasar entre tracks simplemente con el tabulador u otra tecla o clickeando 
+        el track agregado en foram de imagen pulsada o simplemente  combo. 
+        o mejor aún un scroll  continuo entre track hacia arriba y hacia abajo.( posible
+        implementacion, combinando tecla rapida tabulador y lentas, scroll viendo  
+        pasar verticalmetne cada uno de los roll de cada Track, parece intersante 
+        veremso que sale mejor.) Por ejemplo si tengo 8 instrumentos con 4 octavas 
+        cada uno podriamos navegar 32 octavas en una misma pantalla o saltar de un
+        instrumetno a otro con tabulador, esta última parece la mas facil de implementar
+        y menos tediosa de usar. Se puede cargar un track en el menú del Grafico y 
+        darle Reproducir en la GUI pero para que comience debo hacer foco en el 
+        Gráfico. Controlar otras instancias o aplicaciones mediante midi creo será
+        más facil que usar sockets(¿? cual sera mas facil y eficiente ? probaremos), 
+        todos estos temas lso pruebo durante mi aprendizaje, la madeja de código algun 
+        dia lo limpiare cuando este satisfecho  con el diseño. Gracias. Esto seguirá
+        en evolución por que es un hobby de aprendisaje y tendrá paradas por estudio
+        e idas y vueltas. Si me limita mucho el lenguaje podremos hacer parches 
+        con otro lenguaje o pasar todo a otro lenguaje similar porque lo que
+        está echo en Cairo se podrá trasladar a cualqueir otro lenguaje. 
+    
+        
     1) El Modo Lectura se inicia en color de fondo Negro y texto blanco (ultimo 
       cambio).
       - Para recorrer las octavas se usa flecha arriba o abajo, Retroceso-Pagina, 

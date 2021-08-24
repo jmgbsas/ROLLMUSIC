@@ -1,3 +1,10 @@
+
+Declare Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer)
+Declare Sub reproducir()
+'Declare Sub CreaTrack  (ByRef octadesde As Integer , ByRef octahasta As Integer, ByRef instru As Integer, param As pasa )
+Declare Sub selInstORdenNum ()
+Declare Sub selInstORdenAlfa (ByRef instru As Integer)
+
 'Declare Sub RollLoop (c As cairo_t Ptr, Roll As inst)
 'Declare Sub creaPenta (c AS cairo_t Ptr, Roll As inst  )
 
@@ -52,7 +59,8 @@ Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
 dim Shared as string cromatica(1 to 12)
-dim shared As Integer MaxPos=2,ntk=0  
+dim shared As Integer MaxPos=2,ntk=0,CPlay=0
+  
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
@@ -149,8 +157,8 @@ End Type
 Dim shared As mouse m
 Dim Shared As Double old_btn_press_time, new_btn_press_time,dbl_click_time,redimensionar=0
 dbl_click_time = 0.18
+Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota,compasX
 
-Dim Shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota,compasX
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen,anchofig,gap1,gap2,gap3
 Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, curposold, resultado, indiceNota

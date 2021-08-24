@@ -1,3 +1,5 @@
+' VERSION DE PRUENA 0.4.0.0.0 INTEGRAMOS UNA GUI Y UNA GRAFICA 
+' COMPILAMOS CON fbc64  -s gui rollMusicControl.bas RollMusic.bas -x RollMusic.exe
 ' con el tiempo pasar toa a e.scancode  event If e.scancode = SC_P And Play=1
 ' anduvo mejor sino no cortaba el play en secuecnias largas...
 ' se puede usar llamdo desde ROllMusicControl o standAlone.
@@ -105,7 +107,9 @@
 #define WIN_INCLUDEALL
 #Include Once "windows.bi"
 #Include Once "/win/commctrl.bi"
+#include "crt/stdio.bi"
 #Include "file.bi"
+
 
 Sub getfiles(ByRef File As OpenFileName,flag As String, accion As String)
     Dim As ZString * 2048 SELFILE
@@ -169,7 +173,7 @@ Const list_item_data_key ="list_item_data"
 ' fin GTK
 
 
-Open "midebug.txt" For Output As #1
+Open "./midebug.txt" For Output As #1
 Print #1,"start"
 
 
@@ -190,6 +194,9 @@ Print #1,Date;Time
 ' no genera midi todavia..
 '-------------
 ''
+'=======================
+ 
+'--------------
 #Include "string.bi"
 #Include Once "cairo/cairo.bi"
 #Include "midiinfo.bi"
@@ -257,9 +264,10 @@ Dim ix As Integer
 'Print #1, "__FB_ARGC__ ",__FB_ARGC__
 'Dim direp As ZString  Ptr
 'Dim dires As String
-Dim titu As String
-Dim instru As UByte
-Dim As integer desdeold = 0, hastaold=0
+Dim Shared titu As String
+Dim Shared instru As integer
+Dim Shared As integer desdeold = 0, hastaold=0
+/'
 For ix = 0 To __FB_ARGC__
   Print #1, "arg "; ix; " = '"; Command(ix); "'"''
 
@@ -292,7 +300,7 @@ Print #1, "1 arg desde "; desde
 Print #1, "2 arg hasta "; hasta
 Print #1, "3 arg titu  "; titu
 Print #1, "4 arg instru"; instru
-
+'/
 If desde = 0 And hasta = 0 Then
  Print #1,"intervalo no dado usando default!"
  desde => 1  ' 1 3
@@ -548,6 +556,7 @@ Dim Shared As hWnd hwnd,hwndMenu
  Dim shared As Any Ptr lpExitCode
  Dim As Integer MenuFlag=0, LoopFlag=0 
 
+
 #Include "ROllLoop.BAS"
 dim Shared As Ihandle Ptr frame, dialog, mnu, btn_start,btn_stop
 
@@ -569,7 +578,7 @@ dim Shared As Ihandle Ptr frame, dialog, mnu, btn_start,btn_stop
 ' MEJOR NO PRODUCE CONSOLA Y DA MAS PARAMETROS 
 
 '  Dim tloop As Any Ptr = ThreadCall RollLoop(c, Roll )
-Dim param As pasa 
+Dim Shared  As pasa param 
     param.c= c
     param.Roll = Roll
     param.titulo = titu
@@ -600,13 +609,100 @@ If Roll.trk(1,NA).inst > 0 Then
  ChangeProgram ( Roll.trk(1,NA).inst , 0)
 EndIf
  Print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
+
+' ---insercion de CONTROL----
+Var hwndC = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*3/4)
+
+Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
+
+COMMON Shared As Long eventc
+EVENTc=0
+
+
+hMessages=Create_Menu()
+MenName1=MenuTitle(hMessages,"Archivo")
+MenName2=MenuTitle(hMessages,"Nueva Cancion")
+MenName3=MenuTitle(hMessages,"Nuevo Track")
+MenName4=MenuTitle(hMessages,"Ver")
+MenName5=MenuTitle(hMessages,"Pista")
+MenName6=MenuTitle(hMessages,"Reproducir")
+MenName7=MenuTitle(hMessages,"Opciones")
+MenName8=MenuTitle(hMessages,"Ayuda")
+
+
+
+MenuItem(1010,MenName1, "1 Menu")
+MenuItem(1020,MenName2, "Nombre o Título")
+MenuItem(1021,MenName2, "Tiempo")
+MenuItem(1022,MenName2, "Ritmo")
+MenuItem(1023,MenName2, "Duracion Estimada Min.(Por Omision 3)")
+
+MenuItem(1030,MenName3, "Seleccion Octavas")
+MenuItem(1031,MenName3, "Octavas de Instrumetnos Estandares")
+MenuItem(1032,MenName3, "Seleccion Canal")
+MenuItem(1040,MenName3, "Instrumento Alfabetico")
+MenuItem(1050,MenName3, "Instrumento Numérico")
+MenuItem(1060,MenName3, "Crear Track")
+
+
+
+MenuItem(1070,MenName4,"5 Menu")
+MenuItem(1080,MenName5,"6 Menu")
+MenuItem(1090,MenName6,"7 Menu")
+MenuItem(1100,MenName7,"8 Menu")
+MenuItem(1110,MenName8,"9 Menu")
+
+'---------------------------- main -----------------
+
+Open "RollMusicControl.txt" For Output As #1
+'Dim instru As Integer=0
+param.titulo ="RollMusic"
+
+threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+
+Do
+   eventC=WaitEvent
+   If eventC=EventMenu then
+      Select case EventNumber
+         Case 1010
+            MessBox("","1 Menu")
+         Case 1020
+            MessBox("","2 Menu")
+       Case 1030 ' seleccion octavas 
+           seloctava (desde, hasta)
+       Case 1040 ' seleccion de instrumento por orden numerico
+           selInstORdenNum ()
+       Case 1050 ' seleccion de instrumento por orden alfabetico
+           selInstORdenAlfa (instru)
+           ChangeProgram ( CUByte (instru) , 0)
+       Case 1060 ' crea track y reemplaza al existente en al edicion
+              Nuevo(Roll,1 )
+       Case 1070
+       MessBox("","5 Menu")
+       Case 1080
+       MessBox("","6 Menu")
+      Case  1090 
+            CPlay=1
+      Case  1100
+         MessBox ("","8 Menu")
+      Case  1110
+         MessBox ("","9 Menu")
+     
+      End Select
+   EndIf
+   If eventC=EventClose Then End
+Loop
+
+
+
+
+
+
+'----FIN CONTROL-------------------
+'   threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1)) 
+'   ThreadWait threadloop
  
-
-
-'---------------------------
-   threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1)) 
-   ThreadWait threadloop
-''RollLoop ( param)
+'RollLoop ( param)
 
 End 0
 
@@ -646,6 +742,6 @@ Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
 Print #1,"Error Function: "; *Erfn()
 Dim ers As Integer = nota +(estoyEnOctava -1) * 13
 Print #1, "nota +(estoyEnOctava -1) * 13) "; ers
-Close
+
 
 

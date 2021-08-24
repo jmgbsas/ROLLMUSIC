@@ -1,5 +1,5 @@
 
-Dim Shared  NombreInst(1 to 128) as string * 24 => _ 
+Dim Shared  NombreInst(1 to 127) as string * 24 => _ 
              { "ACOUSTIC_GRAND_PIANO   1", _
                "BRIGHT_ACOUSTIC_PIANO  2" , _
                "ELECTRIC_GRAND_PIANO   3" , _
@@ -118,14 +118,14 @@ Dim Shared  NombreInst(1 to 128) as string * 24 => _
                "WOODBLOCK            116" , _
                "TAIKO_DRUM           117" , _
                "MELODIC_TOM          118" , _
-               "SYNTH_DRUM           119" , _
-               "REVERSE_CYMBAL       120" , _
-               "GUITAR_FRET_NOISE    121" , _
-               "BREATH_NOISE         122" , _
-               "SEASHORE             123" , _
-               "BIRD_TWEET           124" , _
-               "TELEPHONE_RING       125" , _
-               "HELICOPTER           126" , _
-               "APPLAUSE             127" , _
-               "GUNSHOT              128" }
+               "REVERSE_CYMBAL       119" , _
+               "GUITAR_FRET_NOISE    120" , _
+               "BREATH_NOISE         121" , _
+               "SEASHORE             122" , _
+               "BIRD_TWEET           123" , _
+               "TELEPHONE_RING       124" , _
+               "HELICOPTER           125" , _
+               "APPLAUSE             126" , _
+               "GUNSHOT              127" }
+
                
