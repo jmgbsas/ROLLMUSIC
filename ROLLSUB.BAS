@@ -1,3 +1,4 @@
+
 Sub cerrar (ByVal n As Integer)
    If n=0 Then
     Close
@@ -1365,7 +1366,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    If mousex > 225 And mousex< 263 And mousey < 50 Then
       If MouseButtons And 1 Then
          cairo_set_source_rgba c, 0, 1, 0, 1
-         menuOldStr="[ver]"
+         menuOldStr="[Ver]"
          menuNew=8
       EndIf 
    Else
@@ -1541,12 +1542,13 @@ EndIf
       If MultiKey(sc_control) Then
        If dobleclick Then
           Nuevo(Roll,1)
+          MenuNew=0
        EndIf
       EndIf 
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   t = "      [NUEVO]":cairo_show_text(c,t)
+   t = "      [Nuevo]":cairo_show_text(c,t)
 
    '===> 3.2 <ABRIR>[*.ROLL]
 
@@ -1554,12 +1556,13 @@ EndIf
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And carga = 0 Then
        CargaArchivo(Roll)
+       MenuNew=0
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
     carga=0  ' <======= control de Carga
    EndIf
-   t = " ABRIR<[*.ROLL]":cairo_show_text(c,t)
+   t = " Abrir<[*.ROLL]":cairo_show_text(c,t)
 
    '===> 3.2.1 [*.RTK]
 
@@ -1572,13 +1575,14 @@ EndIf
         TrackaRoll (Track() , ntk , Roll)
       Print #1,"TrackaRollcarga rtk veo nombre ",nombre 
        RecalCompas (Roll)
-      Print #1,"despues RecalCompas veo nombre ",nombre 
+      Print #1,"despues RecalCompas veo nombre ",nombre
+      MenuNew=0 
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
     carga=0  ' <======= control de Carga
    EndIf
-   t = " [*.RTK]":cairo_show_text(c,t)
+   t = " [*.Rtk]":cairo_show_text(c,t)
 
    '===> 3.2.2 [CARPETA]
 
@@ -1591,7 +1595,7 @@ EndIf
     cairo_set_source_rgba c, 1, 1, 1, 1
     carga=0  ' <======= control de Carga
    EndIf
-   t = " [CARPETA]>":cairo_show_text(c,t)
+   t = " [Carpeta]>":cairo_show_text(c,t)
 
    
   '===> 3.3[GRABAR] SC_F11 COPIA
@@ -1624,12 +1628,13 @@ EndIf
            GrabarArchivo ()
            
        EndIf
-         lockip=2 ' habilita mouse 28-08-2021 
+         lockip=2 ' habilita mouse 28-08-2021
+        MenuNew=0  
     EndIf
    Else
     cairo_set_source_rgba c,1,1,1,1
    EndIf
-   t = "[GRABAR]": cairo_show_text(c,t) :t= ""
+   t = "[Grabar]": cairo_show_text(c,t) :t= ""
    '
   '===> 3.3[GRABAR COMO] SC_F11 COPIA 
    If MultiKey(sc_Control) And mousex > 608 And mousex < 743  And mousey < 50  Then ' <=
@@ -1649,11 +1654,12 @@ EndIf
      ''Open nombreArchivo +".roll" For Binary Access write As #2
        GrabarArchivo()
           lockip=2 ' habilita mouse 28-08-2021
+       MenuNew=0   
     EndIf
    Else
     cairo_set_source_rgba c,1,1,1,1
    EndIf
-   t = " [GRABAR COMO]" : cairo_show_text(c,t) :t= ""
+   t = " [Grabar Como]" : cairo_show_text(c,t) :t= ""
 
 '-----------------------------
   '===> 3.3.1 [ROLL=>RTK] SC_F11 COPIA 
@@ -1677,23 +1683,25 @@ EndIf
 ''''       grabaprueba()
   
         GrabarRollaTrack(1)
+        MenuNew=0
     EndIf
    Else
     cairo_set_source_rgba c,1,1,1,1
    EndIf
 
 
-   t = " [ROLL=>TRK(0)]" : cairo_show_text(c,t) :t= ""
+   t = " [Roll=>Trk(0)]" : cairo_show_text(c,t) :t= ""
 
 
-   If mousex > 941 And mousey < 50 Then
-    If MouseButtons And 1 Then
-     MenuNew=0
-    EndIf
-   EndIf
+ '  If mousex > 941 And mousey < 50 Then
+ '   If MouseButtons And 1 Then
+ '    MenuNew=0
+ '   EndIf
+ '  EndIf
+   
   Case 4  ' <======= COMO REPRODUCUIR
    cairo_set_source_rgba c,1,1,1,1
-   t=  "      [DESDE INICIO][DESDE ESTA POSICION] [VOLUMEN / + / - /] No habilitado"
+   t=  "      [Desde Inicio][Desde Esta Posicion] [Volumen / + / - /] No habilitado"
 '----
    If mousex > 330 And mousey < 50 And mousex < ANCHO-50 Then
     If MouseButtons And 1 Then
@@ -1710,7 +1718,7 @@ EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   t=  "       [COMPAS]":cairo_show_text(c, t)
+   t=  "       [Compas]":cairo_show_text(c, t)
   If mousex > 130 And mousex < 235 And mousey < 50  Then  'OCTAVAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
@@ -1719,17 +1727,17 @@ EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   t=  " [OCTAVAS]":cairo_show_text(c, t)
+   t=  " [Octavas]":cairo_show_text(c, t)
   If mousex > 245 And mousex < 330 And mousey < 50  Then  'OCTAVAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
-     menuOldStr="[TEMPO]"
+     menuOldStr="[Tempo]"
      menuNew=8
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   t=  " [TEMPO]":cairo_show_text(c, t)
+   t=  " [Tempo]":cairo_show_text(c, t)
  '
   If MultiKey(sc_Control) And mousex > 354 And mousex < 514 And mousey < 50  Then  'OCTAVAS
     cairo_set_source_rgba c, 0, 1, 0, 1
@@ -1740,7 +1748,7 @@ EndIf
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
 
-   t=  " [CONFIGURACION]": cairo_show_text(c, t)
+   t=  " [Configuracion]": cairo_show_text(c, t)
  cairo_stroke(c)
  
   Case 6 'OPCIONES => OCTAVAS
@@ -1782,7 +1790,7 @@ EndIf
       desde = 1 'desdevector
      EndIf
      octavas=1
-    RTA = "SOLO REDIMENSION VISUAL "
+    RTA = "Solo Redimension Visual "
     EndIf
    EndIf
 ' ----> +
@@ -1794,10 +1802,10 @@ EndIf
       desde = hastavector
      EndIf
      octavas =2
-    RTA = "SOLO REDIMENSION VISUAL "
+    RTA = "Solo Redimension Visual "
     EndIf
    EndIf
-   t = "      [OCTAVAS DESDE   - / + ] " + Str(desde-1): cairo_show_text(c,t)
+   t = "      [Octavas Desde   - / + ] " + Str(desde-1): cairo_show_text(c,t)
    ' --------------------------------
 ' ===> 6.2 [HASTA  - / + ]
    If mousex > 308 And mousex< 363 And mousey < 50  Then ' HASTA
@@ -1818,7 +1826,7 @@ EndIf
        hasta = desdevector
       EndIf
       octavas=1
-      RTA = "SOLO REDIMENSION VISUAL "
+      RTA = "Solo Redimension Visual "
      EndIf
     EndIf
 ' -----> +
@@ -1830,12 +1838,12 @@ EndIf
        hasta = 9
       EndIf
       octavas=2
-      RTA = "SOLO REDIMENSION VISUAL "
+      RTA = "Solo Redimension Visual "
      EndIf
     EndIf
    EndIf
 
-   t = "  [HASTA  - / + ] " + Str(hasta-1): cairo_show_text(c,t)
+   t = "  [Hasta  - / + ] " + Str(hasta-1): cairo_show_text(c,t)
 
 ' ===> 5.3 [REDIMENSIONAR]
  
@@ -1858,15 +1866,15 @@ EndIf
      inicioDeLectura=0
 
      redimensionar=1
-     RTA="REDIMENSION VISUAL Y FISICA OK"
+     RTA="Redimension Visual y Fisica Ok"
    '  Print #1, RTA
-
+      MenuNew=0
     EndIf
    Else
   '  cairo_set_source_rgba c, 1, 1, 1, 1
    
    EndIf
-   t = "  [REDIMENSIONAR]<-Borra Datos " + RTA
+   t = "  [Redimensionar]<-Borra Datos " + RTA
    Case 7
    If mousex > 38 And mousex < 90 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
@@ -1892,6 +1900,7 @@ EndIf
      If mAXpOS > 2 Then
      ReCalCompas(Roll)
      End If
+     MenuNew=0
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -1906,6 +1915,7 @@ EndIf
      ReCalCompas(Roll)
      EndIf
      TCompas="2/4"
+     MenuNew=0
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -1916,7 +1926,7 @@ EndIf
   Case 8
  ' USAR LA ENTRADA DE TEXTO DE IUP
       Select Case  menuOldStr
-          Case "[ver]" 
+          Case "[Ver]" 
           nombreArchivo="0"
           Dim cadena As String 
           cadena="IR A COMPAS"
@@ -1948,10 +1958,10 @@ EndIf
                EndIf
             Next ni
           EndIf  
-          Case "[TEMPO]" 
+          Case "[Tempo]" 
           nombreArchivo="0"
           Dim cadena As String 
-          cadena="AJUSTE TEMPO"
+          cadena="Ajuste Tempo"
           If pubi =0 Then 'ptr shared , se llaam solo una vez 
             pubi=@cadena
             thread3= ThreadCreate (@dialogoText(),CPtr(Any Ptr, pubi))
@@ -1974,8 +1984,9 @@ EndIf
  '     
     Else
       cairo_set_source_rgba c, 1, 1, 1, 1
+      MenuNew=9
     EndIf
-    t = "      [MIDI]":cairo_show_text(c,t):t=""
+    t = "      [Midi]":cairo_show_text(c,t):t=""
  Case 10
 
     If mousex > 90 And mousex < 190  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
@@ -1984,14 +1995,14 @@ EndIf
         ''thread2 = ThreadCreate(@ComboBox)
        Dim miport As Integer=1
        thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))  '' 'GtkListBox()
-
+       MenuNew=0
       EndIf ' mousebuttons
  'listaMIDI=1     
     Else
       cairo_set_source_rgba c, 1, 1, 1, 1
     EndIf
 
-    t = "             [MIDI-OUT]":cairo_show_text(c,t):t=""
+    t = "             [Midi-Out]":cairo_show_text(c,t):t=""
     If mousex > 200 And mousex < 300  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
@@ -1999,14 +2010,14 @@ EndIf
        Dim miport As Integer=2
        'mira usa create con argumentos!!!! jmg jmg jmg !!!! vER esto urgente me olvide!!!!
        thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))  '' 'GtkListBox()
-
+       MenuNew=0
       EndIf ' mousebuttons
  'listaMIDI=1     
     Else
       cairo_set_source_rgba c, 1, 1, 1, 1
     EndIf
 
-    t = " [MIDI-IN]":cairo_show_text(c,t):t=""
+    t = " [Midi-In]":cairo_show_text(c,t):t=""
       
  End Select
  ' Si nodoy Stroke los show text van apendendo al final como un print;

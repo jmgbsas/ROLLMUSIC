@@ -234,11 +234,11 @@ If nro = hasta Then ' termino 9 octavas y ahora  + ayuda...
   cairo_move_to(c, 0, Penta_y + inc_Penta * 15 )
   cairo_show_text(c, t)
 
-  t = "Entrar Notas Click en [Edicion] en Menu, otro Click en Edit para modificar, ESC TERMINA LA APP"
+  t = "Entrar Notas Click en [Edicion] en Menu, otro Click en Edit para modificar, otro Click en Edit deja de editar,ESC TERMINA LA APP"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 16 )
   cairo_show_text(c, t)
 
-  t = "En modificacion: CTRL-M o CTRL-N pasa al MODO CURSOR para reemplazar insertar borrar notas"
+  t = "En modificacion o Edit: CTRL-M o CTRL-N pasa al MODO CURSOR para reemplazar insertar borrar notas, para volver a Edit Ctrl-P"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 17 )
   cairo_show_text(c, t)
 
@@ -266,13 +266,30 @@ If nro = hasta Then ' termino 9 octavas y ahora  + ayuda...
   cairo_move_to(c, 0, Penta_y + inc_Penta * 23 )
   cairo_show_text(c, t)
 
-  t = "En modificacion se pasa de una octava a otra para editarla, deslizando el mouse hasta el extremo izquierdo de la octava deseada, eso iluminara "
+  t = "En modificacion o Edit, se pasa de una octava a otra para editarla, deslizando el mouse hasta el extremo izquierdo de la octava deseada, eso iluminara las lines de verde"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 24 )
   cairo_show_text(c, t)
 
   t = "la octava en edicion. (No hay vocales acentuadas, Cairo, la libreria grafica usada, no las maneja con font simples)"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 25 )
   cairo_show_text(c, t)
+
+  t = "F2-F3 comprime - expande horizontalmente la secuencia, se puede editar tambien"
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 26 )
+  cairo_show_text(c, t)
+
+  t = "En Edit entrar notas: 1) duracion 1 a 9, luego el nombre CDEFGAB o Ctrl+ nombre para sostenidos "
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 27 )
+  cairo_show_text(c, t)
+
+  t = "En Lectura navegar a derecha o izquierda con Flecha horizontales, arriba abajo con Flechas Verticales"
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 28 )
+  cairo_show_text(c, t)
+
+  t = "En Lectura seleccionar zona entre 2 posiciones,con Ctrl+Click en cualquier parte de la posicion deseada de la octava deseada, repetir hacia derecha para la 2da posicion "
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 29 )
+  cairo_show_text(c, t)
+
     
  End If
 
@@ -643,6 +660,7 @@ Do
 '  EndIf
 '''
 /'
+copiar un track para edicion,,,,
 Dim As Integer ik,jk
 For jk = 1 To MaxPos   
   For ik= NB To NA
@@ -651,7 +669,6 @@ For jk = 1 To MaxPos
      Case 1
    Roll.TRK(ik,jk)  => Roll1.trk (ik,jk)      
      Case 2
-   Roll.TRK(ik,jk)  => Roll2.trk (ik,jk)
    Roll.TRK(ik,jk)  => Roll2.trk (ik,jk)
      Case 3
    Roll.TRK(ik,jk)  => Roll3.trk (ik,jk)
@@ -1112,7 +1129,7 @@ If MultiKey(SC_ESCAPE) Then
    'ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
    'Dim As hWnd hwnd = Cast(hwnd,IhWnd)
 
-  If MessageBox(hWnd,"¿FIN Edicion? "+param.titulo ,param.titulo ,4 Or 64) =6 Then
+  If MessageBox(hWnd,"¿Fin RollMusic? " ,param.titulo ,4 Or 64) =6 Then
     cairo_destroy(c)
     cairo_surface_destroy( surface )
   '   cairo_font_face_destroy( cface )
@@ -2434,7 +2451,7 @@ If (ScreenEvent(@e)) Then
  ' 07-08-2021 lugar para test tamaño 10x8
  If (mousex>=(ANCHO-40)) And (mousey <= 16) Then
   If  MouseButtons And 1 Then
-   If MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","Fin Edicion RollMusic",4 Or 64) =6 Then
+   If MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","Fin RollMusic",4 Or 64) =6 Then
     cairo_destroy(c)
     '   cairo_surface_destroy( surface )
     '     cairo_font_face_destroy( cface )
@@ -2966,18 +2983,18 @@ EndIf
  EndIf
  '  Exit do
  ''  Loop While (m.buttons = 1  )
- If mouseY > 50 Then
+ If mouseY > 50 And MouseButtons  And 1 Then
   s5=2        'se resetea en EVENT_MOUSE_BUTTON_RELEASE ' obtengoPosicion
   '' ES ACA PROHIBIDO PONER EXIT DO ! NO FUNCION DETECTOR DE OCTAVAS
   '' DEBE SEGUIR EJECUTNDO HACIA ABAJO Y CALCULARINDICE VAMOS A MOVER
   ''ESTEIF AL FINAL
-  If MenuNew <> 2 Then
+    If MenuNew <> 2 Then
      MenuNew=0
-  EndIf
+    End If 
  EndIf
  Exit Do
 
-EndIf ' end  (ScreenEvent(@e)) EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
+EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 ' PODRIA SACARSE LOS MULTIKEY DE SCREEN EVENT PERO NO SE SI ANDAN MEJOR DEBO VERIFICAR
 ' ------------IPC sensado de comando fifo..
 
