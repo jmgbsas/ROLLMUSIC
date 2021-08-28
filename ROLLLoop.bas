@@ -438,7 +438,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
  c=param.c
  Roll=param.Roll
  '    If hwnd =0 Then   ,GFX_WINDOWED
-     ScreenControl  SET_DRIVER_NAME,"GDI"
+     ScreenControl  SET_DRIVER_NAME,"DIRECTX"', "GDI"
      ScreenRes param.ancho, param.alto, 32,2, GFX_NO_FRAME 'Or GFX_HIGH_PRIORITY
      Print #1,"param.titulo ",param.titulo
      WindowTitle param.titulo
@@ -604,6 +604,7 @@ Next
 'EndIf
 
 menu(c,cm, posicion,menuNro, Roll)
+
 botones(hWnd, c ,cm, ANCHO,ALTO) ' este despues sinocrash
 cairo_stroke(c)
 cairo_stroke(cm) ' cm despues de c sino crash
@@ -883,7 +884,7 @@ EndIf
  If  mouseY < 50  And MultiKey(SC_RIGHT)   Then ' <======== RIGHT
  ' seleccion de menu, mouse sobre cinta + teclas
       menuNro=menuNro+1
-     If menuNro > 6 Then
+     If menuNro > 10 Then ' 28-08-2021 
        menuNro=0
        menuNew=0
      EndIf
@@ -923,8 +924,8 @@ EndIf
   menuNro=menuNro - 1
   menuNew=menuNro
   If menuNro < 0 Then
-   menuNro=3
-   menuNew=3
+   menuNro=10  ' 28-08-2021
+   menuNew=10
   EndIf
   Exit Do
  EndIf
@@ -1124,7 +1125,7 @@ If MultiKey(SC_ESCAPE) Then
       out_free(midiout) 
       ThreadDetach(thread1)
     EndIf
-    Close 
+    cerrar 0 
     End 0
   EndIf  
 EndIf
@@ -1885,7 +1886,7 @@ If MultiKey(SC_CONTROL) And lockip=0  Then
     deltaip=0
     incWheel=0
     lockip=1
-    Exit Do 
+    Exit Do    
 
 EndIf 
 
@@ -1894,6 +1895,13 @@ EndIf
 ' para detectar mouse sin usar sdl
 If (ScreenEvent(@e)) Then
  Select Case As Const e.type
+ ' 23-08-21 CPU consumo fuera de foco
+  Case EVENT_MOUSE_EXIT ' mouse fuera de pantalla  
+       If play = 1 Or playb=1 Then ' fuera pero en play
+           
+       Else     ' fuera de y sin play reducimos consumo CPU
+            Sleep 20
+       EndIf
   Case EVENT_MOUSE_BUTTON_PRESS
        MousePress = 1
 		Case	EVENT_MOUSE_MOVE
@@ -1915,7 +1923,7 @@ If (ScreenEvent(@e)) Then
     incWheel = posmouse - posmouseOld
     posmouseOld = posmouse
    EndIf
-   If lockip=0 Then 
+   If lockip=0 Or lockip=2 Then 
      If incWheel > 0 Then
         If s2=0  Then
            s2=1
@@ -2030,7 +2038,7 @@ If (ScreenEvent(@e)) Then
        trasponerGrupo (1,Roll)
        Exit Do
      EndIf 
-
+     
     If cursorVert=1 Or cursorVert=2 Then
      notacur = notacur + 1
      If notacur > 12 Then
@@ -2432,7 +2440,7 @@ If (ScreenEvent(@e)) Then
     '     cairo_font_face_destroy( cface )
     FT_Done_Face( ftface )
 
-    Close
+    cerrar 0
     End 0
 
      

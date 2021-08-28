@@ -941,6 +941,7 @@ Function QCompare Cdecl (Byval e1 As Any Ptr, _
         End If
 End Function
 
+
 ' ----------------------
  Sub PlayRoll ( ) ' 1er play version 0 
 ' tiempo es cuantas negras en un minuto tiempoPAtron

@@ -1,9 +1,9 @@
-
+Declare Sub cerrar(n As integer)
 Declare Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer)
 Declare Sub reproducir()
 'Declare Sub CreaTrack  (ByRef octadesde As Integer , ByRef octahasta As Integer, ByRef instru As Integer, param As pasa )
-Declare Sub selInstORdenNum ()
 Declare Sub selInstORdenAlfa (ByRef instru As Integer)
+Declare Sub selInstORdenNum (ByRef instru As Integer)
 
 'Declare Sub RollLoop (c As cairo_t Ptr, Roll As inst)
 'Declare Sub creaPenta (c AS cairo_t Ptr, Roll As inst  )

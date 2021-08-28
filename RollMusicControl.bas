@@ -16,6 +16,7 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include Once "gtk/gtk.bi"
 #Include "midiinfo.bi"
 #Include "ROLLCONTROLDEC.bi"
+
 Dim As Integer ancho, alto
 ancho = GetSystemMetrics(SM_CXSCREEN)
 alto = GetSystemMetrics(SM_CYSCREEN)
@@ -27,6 +28,7 @@ alto = GetSystemMetrics(SM_CYSCREEN)
 COMMON Shared As Long eventc
 'Dim As Long event=0
 Dim Shared As Integer desde , hasta,MaxPos=2
+#Include "RTMIDIDEC.BI"
 
 '------
 Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer) 
@@ -103,12 +105,69 @@ Print #1,"OCtadesde ",octadesde
 Print #1,"OCtahasta ",octahasta
 
 End Sub
-Sub selInstORdenNum()
+Sub selInstORdenAlfa(ByRef instru As Integer)
+Dim As hwnd haw,hwl
+Dim As Integer aa ,paso=0,x=0,in=0  
+instru=0
 
+ 
+'' => desde acaecho con tool del ruso no anda muy bien
+     haw=OpenWindow("INSTRUMENTOS PATCH",100,50,600,600,WS_VISIBLE, WS_EX_TOPMOST )
+     'Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
+     ' commctrl.bi modificado
+     hwl=  ListViewGadget(1,10,10,500,500,,,,32,LVS_SINGLESEL )
+     
+     AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
+     AddListViewItem(1, "CLICK EN UN ITEM  Y EN OK",0,aa,0)
+       For aa =1 To 127 
+           AddListViewItem(1, NombreInstAlfa(aa),0,aa,0)
+       Next
+       
+
+
+       ButtonGadget(2,530,30,50,40," OK ")
+'       ButtonGadget(3,530,90,50,40,"+Pag")
+         #Ifdef __FB_WIN64__
+           SetFocus (hwl) 
+           SetForegroundWindow(haw)
+          #Else
+           gtk_widget_grab_focus(GadgetID(1))
+         #EndIf
+         Do
+
+         Var eventC= waitEvent
+
+          If eventC=eventgadget Then
+          
+            If eventnumber()=2 Then
+               Instru = GetItemListView()
+               Print #1,"in = ",in 
+               
+              ' If in >= 1 And in <=127 Then
+                 instru = IndiceInstAlfa(instru)
+              ' EndIf
+'''               instru=instru + 1
+            ''   If instru > 1 Then
+                  Close_Window(haw)
+                  Exit Do
+           ''    EndIf
+           End If
+
+          EndIf 
+          Sleep 5  
+          
+         Loop
+         
+
+'' fin ruso
+'Return IUP_DEFAULT
+Print #1,"Str(instru) ", Str(instru)
+  
+ 
 
 end Sub
 
-Sub selInstORdenAlfa (ByRef instru As integer)
+Sub selInstORdenNum (ByRef instru As integer)
 Dim As hwnd haw,hwl
 Dim As Integer aa ,paso=0,x=0  
 instru=0
@@ -116,9 +175,12 @@ instru=0
  
 '' => desde acaecho con tool del ruso no anda muy bien
      haw=OpenWindow("INSTRUMENTOS PATCH",100,50,600,600,WS_VISIBLE, WS_EX_TOPMOST )
-     hwl=  ListViewGadget(1,10,10,500,500,,,,32,LVS_SINGLESEL  )
+     'Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
+     ' commctrl.bi modificado
+     hwl=  ListViewGadget(1,10,10,500,500,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL )
+     
      AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
-     AddListViewItem(1, "CLICK EN UN ITEM DE LA LISTA Y EN OK",0,aa,0)
+     AddListViewItem(1, "CLICK EN UN ITEM  Y EN OK",0,aa,0)
        For aa =1 To 127 
            AddListViewItem(1, NombreInst(aa),0,aa,0)
 
@@ -161,6 +223,3 @@ Print #1,"Str(instru) ", Str(instru)
 
 End Sub
 
-Sub reproducir()
-
-End Sub

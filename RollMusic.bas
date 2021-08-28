@@ -1,4 +1,5 @@
-' VERSION DE PRUENA 0.4.0.0.0 INTEGRAMOS UNA GUI Y UNA GRAFICA 
+' VERSION DE PRUENA 0.4.1.0.0 INTEGRAMOS UNA GUI Y 2 GRAFICAS UNA SIN USO
+' PREPARADO PARA 2 PANTALLAS GRAFICAS LA OTRA ES OPENGL WIN COMENTADA  
 ' COMPILAMOS CON fbc64  -s gui rollMusicControl.bas RollMusic.bas -x RollMusic.exe
 ' con el tiempo pasar toa a e.scancode  event If e.scancode = SC_P And Play=1
 ' anduvo mejor sino no cortaba el play en secuecnias largas...
@@ -160,7 +161,7 @@ Common Shared  mensaje As Integer
 #EndIf
 #Define EXTCHAR Chr(255)
 #Include "fbgfx.bi"
-#Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
+'''#Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
 #If __FB_LANG__ = "fb"
 Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #EndIf
@@ -171,16 +172,24 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 ' This is our data identification string to store data in list items
 Const list_item_data_key ="list_item_data"
 ' fin GTK
-
-
-Open "./midebug.txt" For Output As #1
+' -- INICIO openGL GLFW 3.1.1 
+/'
+#Include once "glfw3.bi"
+If glfwInit()=GL_FALSE then
+  print "error: can't init GLFW"
+  beep : sleep : end 1
+end If
+Dim As GLFWwindow ptr  win
+' ----FIN OPENGL 
+'/
+Open "midebug.txt" For Output As #1
 Print #1,"start"
 
 
 'Open "mivector.txt" For Output As #3
-Open "miplayall.txt" For Output As #4
-Open "test-AAAAA.TXT" For Output As #5
-Print #1, "version para ceros!!!!!! "
+'Open "miplayall.txt" For Output As #4
+'Open "test-AAAAA.TXT" For Output As #5
+'Print #1, "version para ceros!!!!!! "
 
 ''Open cons  for Output As #1
 
@@ -209,8 +218,8 @@ Print #1,Date;Time
 ' iup start
 #Include Once "IUP/iup.bi"
 #Include Once "iup/iupcontrols.bi"
-'#Include once "foro/fmidi.bi"
-'#include "fbthread.bi"
+#Include once "foro/fmidi.bi"
+#Include "fbthread.bi"
 #Include "foro/window9.bi"
 ''#Include "Afx/windowsxx.bi"
 
@@ -259,15 +268,15 @@ tempo=160  ' negra=160
 CantMin=15
 'NotaBaja=1 : NotaAlta=128
 
-Dim ix As Integer
+Dim Shared ix As Integer=0
 'Print #1, "__FB_ARGV__ ",__FB_ARGV__
 'Print #1, "__FB_ARGC__ ",__FB_ARGC__
 'Dim direp As ZString  Ptr
 'Dim dires As String
 Dim Shared titu As String
-Dim Shared instru As integer
+Dim Shared As Integer instru, instruOld
 Dim Shared As integer desdeold = 0, hastaold=0
-/'
+Print #1,"__FB_ARGC__ ", __FB_ARGC__
 For ix = 0 To __FB_ARGC__
   Print #1, "arg "; ix; " = '"; Command(ix); "'"''
 
@@ -296,11 +305,11 @@ Next ix
 'Dim diren As Integer
 'diren = CInt(dires)
 'direp = @diren
-Print #1, "1 arg desde "; desde
-Print #1, "2 arg hasta "; hasta
-Print #1, "3 arg titu  "; titu
-Print #1, "4 arg instru"; instru
-'/
+'Print #1, "1 arg desde "; desde
+'Print #1, "2 arg hasta "; hasta
+'Print #1, "3 arg titu  "; titu
+'Print #1, "4 arg instru"; instru
+
 If desde = 0 And hasta = 0 Then
  Print #1,"intervalo no dado usando default!"
  desde => 1  ' 1 3
@@ -339,7 +348,7 @@ ReDim (Roll.trk ) (1 To CantTicks,NB To NA) ' Roll de trabajo en Pantalla
 Print #1,"instru ",instru
 ' ojo debe se NB al reducir octabas NB cambia
 If instru > 0 Then
-  Roll.trk(1,NA).inst = instru
+  Roll.trk(1,NA).inst = CUByte(instru)
 EndIf
 Print #1,"Roll.trk(1,NA).inst ",Roll.trk(1,NA).inst
 Print #1,"NB ",NB
@@ -427,29 +436,9 @@ AnchoInicial=ANCHO
 AltoInicial=ALTO
 anchofig=ANCHO/45 ' SON 45 COL PERO SE USAN MENOS 41
 NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
-' ANCHO/anchofig= 45
-'=> anchofig=ANCHO/45
-'ScreenControl  SET_DRIVER_NAME,"GDI" ' le da foco a la aplicacion si uso GDI
-' pero llamando al programa con winExec con opcion SW_RESTORE no hay necesidad
-' y puedousar  directx!!
 
-' con Directx nunca tomaelfoco se lodebe dar elusuario
-'nofuncionaningun comndo de winuser.bipara tomar el foco...
-'''''ScreenControl POLL_EVENTS '200
-'ScreenControl SET_WINDOW_POS ' (100) 'Sets the current program window position, in desktop coordinates.
-
-' https://www.freebasic.net/forum/viewtopic.php?f=6&t=27555
 Dim As String driver
 
-
-'------ScreenRes ANCHO, ALTO, 32,1,  GFX_NO_FRAME Or GFX_HIGH_PRIORITY
-
-
-'-------ScreenControl GET_WINDOW_POS, x0, y0
-
-
-''ScreenControl SET_WINDOW_POS, 10,10
-'ScreenControl 103,"Directx" ' cambio ja
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
 Dim shared As Integer i,  posmouse, posmouseOld,incWheel, altofp11,edity1,edity2,octavaloop
 Dim Shared As Integer octaroll
@@ -610,12 +599,14 @@ If Roll.trk(1,NA).inst > 0 Then
 EndIf
  Print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
 
-' ---insercion de CONTROL----
+COMMON Shared As Long eventc
+If ix < 3 Then ' rollmusic independiente sin menu de control
+ 
 Var hwndC = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*3/4)
 
 Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 
-COMMON Shared As Long eventc
+
 EVENTc=0
 
 
@@ -642,8 +633,8 @@ MenuItem(1031,MenName3, "Octavas de Instrumetnos Estandares")
 MenuItem(1032,MenName3, "Seleccion Canal")
 MenuItem(1040,MenName3, "Instrumento Alfabetico")
 MenuItem(1050,MenName3, "Instrumento Numérico")
-MenuItem(1060,MenName3, "Crear Track")
-
+MenuItem(1060,MenName3, "Crear Track Con lo elgido")
+MenuItem(1061,MenName3, "Crear una nueva Instancia de RollMusic Con lo elegido")
 
 
 MenuItem(1070,MenName4,"5 Menu")
@@ -652,17 +643,58 @@ MenuItem(1090,MenName6,"7 Menu")
 MenuItem(1100,MenName7,"8 Menu")
 MenuItem(1110,MenName8,"9 Menu")
 
+EndIf
+
+
+
+' opengl
+/'
+sub FramebuffersizefunCB GLFWCALLBACK (win As GLFWwindow ptr, w as long, h as long)
+  'print "FramebuffersizefunCB " & w & " x " & h
+  glViewport(0,0,w,h)
+end sub
+
+Sub correwin( vwin As GLFWwindow Ptr, ta As Any Ptr)
+glfwMakeContextCurrent(vwin) 
+glfwSetFramebufferSizeCallback(vwin,@FramebuffersizefunCB)
+
+While glfwWindowShouldClose(vwin)=GL_FALSE andalso glfwGetKey(vwin,GLFW_KEY_ESCAPE)=GL_FALSE
+glfwMakeContextCurrent(vwin)
+
+' press [ESC] or close the window with the mouse or press [ALT] + [F4]
+'while glfwWindowShouldClose(win2)=GL_FALSE andalso glfwGetKey(win,GLFW_KEY_ESCAPE)=GL_FALSE
+  dim as double t=glfwGetTime()
+  glClearColor(.5+cos(t)*.5, 0, 0,1)
+  glClear(GL_COLOR_BUFFER_BIT)
+  glfwSwapBuffers(vwin)
+  glfwPollEvents() ' handle OS events (window,keyboard,joystick,mouse ...)
+  sleep 20
+Wend
+    Close
+    End 0
+
+
+End Sub
+'/
+
+
 '---------------------------- main -----------------
 
-Open "RollMusicControl.txt" For Output As #1
-'Dim instru As Integer=0
 param.titulo ="RollMusic"
 
 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
 
-Do
-   eventC=WaitEvent
-   If eventC=EventMenu then
+'RollLoop ( param)
+'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
+ ''win = glfwCreateWindow(800,600,"Track OPENGL" )
+'' Dim ta As Any Ptr = threadcall correwin(win,ta)
+
+ 
+If ix < 3 Then
+   Do
+     eventC=WaitEvent
+
+     If eventC=EventMenu then
       Select case EventNumber
          Case 1010
             MessBox("","1 Menu")
@@ -670,13 +702,22 @@ Do
             MessBox("","2 Menu")
        Case 1030 ' seleccion octavas 
            seloctava (desde, hasta)
-       Case 1040 ' seleccion de instrumento por orden numerico
-           selInstORdenNum ()
-       Case 1050 ' seleccion de instrumento por orden alfabetico
-           selInstORdenAlfa (instru)
+       Case 1040 ' seleccion de instrumento por orden Alfabetico
+                  selInstORdenAlfa (instru)
+                  ChangeProgram ( CUByte (instru) , 0)
+                  Roll.trk(1,NA).inst= CUByte(instru)
+       Case 1050 ' seleccion de instrumento por orden Numerico
+           selInstORdenNum (instru)
            ChangeProgram ( CUByte (instru) , 0)
-       Case 1060 ' crea track y reemplaza al existente en al edicion
+           Roll.trk(1,NA).inst= CUByte(instru)
+       Case 1060 ' crea track y reemplaza al existente en la edicion
               Nuevo(Roll,1 )
+              instruOld=instru
+              Roll.trk(1,NA).inst= CUByte(instru)
+       Case 1061
+ ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
+ ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.       
+    Shell ("start ./RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) )                
        Case 1070
        MessBox("","5 Menu")
        Case 1080
@@ -686,13 +727,19 @@ Do
       Case  1100
          MessBox ("","8 Menu")
       Case  1110
-         MessBox ("","9 Menu")
-     
+         MessBox ("","Salir")
+         End
       End Select
-   EndIf
-   If eventC=EventClose Then End
-Loop
+     EndIf
+     If eventC=EventClose Then  End 
+     
+   Loop
+Else
+ ThreadWait threadloop   
+EndIf
 
+
+End 0
 
 
 

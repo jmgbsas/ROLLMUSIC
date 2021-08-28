@@ -1,4 +1,10 @@
-
+Sub cerrar (ByVal n As Integer)
+   If n=0 Then
+    Close
+   Else 
+    Close (n)
+   EndIf 
+End Sub
 Sub calcCompas( ByRef j As Integer,Roll As inst)
  ' nota:fijarse que pasa con el grupo..1 to 4 de las 64 duraciones
  ' x print #1,"========================================================="
@@ -489,7 +495,7 @@ Dim CUENTA As INTEGER
    EndIf
    If CUENTA = 100 Then
       ' S print "FALTA: ";falta;" Falta1: "; falta1
-     ' Close
+      Cerrar 0
       Exit Do
    EndIf   
   Loop
@@ -1031,7 +1037,7 @@ Sub CargaArchivo(Roll As inst)
       Next i
 
      Next j
-    ' Close 2
+     Cerrar 2
 
      DUR => 0
      curpos =>0
@@ -1119,7 +1125,7 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
       Next i
 
      Next j
-    ' Close 2
+     cerrar  2
 
      DUR => 0
      curpos =>0
@@ -1284,12 +1290,16 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
  Dim As cairo_text_extents_t te  '      text size
  Dim  As Double Ptr xo,yo
  Dim As Double nxo,nyo
- Dim cd As cairo_device_t Ptr
+ 'Dim cd As cairo_device_t Ptr
  'Dim cbool as cairo_bool_t
  ' pinta celeste totodo surface 2
  ''cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1
  ' cairo_set_source_rgba(c, 0.6, 0.5, 0.6, 1) ' morado
- cairo_set_source_rgba(c, 0.3, 0.3, 0.3, 1) 'fondo gris de la cinta
+ If   ix > 2   Then ' instancia independiente
+   cairo_set_source_rgba(c, 0.3, 0.3, 0.3, 1) 'fondo gris de la cinta independiente 
+ Else 
+   cairo_set_source_rgba(c, 0.3, 0.3, 0.6, 1) 'fondo azulada de la cinta esclava
+ EndIf 
  cairo_paint(c)
 
  cairo_set_source_rgba(c, 1, 1, 1, 1) ' blanco letras
@@ -1612,7 +1622,9 @@ EndIf
            GrabarRollaTrack(0)
        Else ' se graba como roll, si se desea eso solo sacar [xx] del nombre
            GrabarArchivo ()
-       EndIf  
+           
+       EndIf
+         lockip=2 ' habilita mouse 28-08-2021 
     EndIf
    Else
     cairo_set_source_rgba c,1,1,1,1
@@ -1636,6 +1648,7 @@ EndIf
      ''Open "Trabajo_03.roll" For Binary Access write As #2
      ''Open nombreArchivo +".roll" For Binary Access write As #2
        GrabarArchivo()
+          lockip=2 ' habilita mouse 28-08-2021
     EndIf
    Else
     cairo_set_source_rgba c,1,1,1,1
@@ -2473,6 +2486,7 @@ Sub GrabarArchivo ()
      If nombre = "" Then ' backup
         nombre = "Backup"+ Date + ".roll"
      EndIf   
+     Print #1,"NOMBRE A GRABAR COMO",nombre
     Open nombre  For Binary Access write As #2
   ''''  Open "test-AAAAA.TXT" For Output    As #2
      Dim Trabajo (1 To Maxpos, NB To NA) As dat
@@ -2569,7 +2583,12 @@ Next i1
      '-----------------------
      grabaLim(1,1).nota = desde
      grabaLim(1,1).dur  = hasta
-     
+     If instru=0 Then 
+        instru=1
+     EndIf
+     If instru > 0 Then
+       Trabajo(1,NA).inst = CUByte(instru)
+     EndIf
      
      
      ' ------------------------------------
@@ -2605,9 +2624,10 @@ Next i1
      Put #2, ,grabaPos(1,1)
      Put #2, ,grabaLim(1,1)
      Put #2, ,Trabajo()
-     'Close 2
+     cerrar(2)
      While InKey <> "": Wend
      Sleep 150
+     
 If nombre = "Backup"+ Date + ".roll" Then
    nombre=""
 EndIf
@@ -2740,7 +2760,7 @@ Next i2
      Put #2, ,grabaPos(1,1)
      Put #2, ,grabaLim(1,1)
      Put #2, ,Temp.trk()
-     'Close 2
+     cerrar 2
      While InKey <> "": Wend
      Sleep 150
 
@@ -2879,7 +2899,7 @@ Next i1
      Put #2, ,grabaPos(1,1)
      Put #2, ,grabaLim(1,1)
      Put #2, ,Trabajo()
-     'Close 2
+     cerrar 2
      While InKey <> "": Wend
      Sleep 150
 
