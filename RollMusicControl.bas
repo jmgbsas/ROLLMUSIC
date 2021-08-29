@@ -142,6 +142,7 @@ instru=0
             If eventnumber()=2 Then
                Instru = GetItemListView()
                Print #1,"in = ",in 
+              If instru=0 Then  instru=1 EndIf 
                
               ' If in >= 1 And in <=127 Then
                  instru = IndiceInstAlfa(instru)
@@ -151,7 +152,7 @@ instru=0
                   Close_Window(haw)
                   Exit Do
            ''    EndIf
-           End If
+            End If
 
           EndIf 
           Sleep 5  
@@ -163,7 +164,6 @@ instru=0
 'Return IUP_DEFAULT
 Print #1,"Str(instru) ", Str(instru)
   
- 
 
 end Sub
 

@@ -1925,7 +1925,7 @@ If (ScreenEvent(@e)) Then
 		     MouseMove=1			
   Case EVENT_MOUSE_BUTTON_RELEASE ' obtengoPosicion
    MousePress = 0
-   If s5=2 Then
+   If mousey < 50 And s5=2 Then
     ScreenControl GET_WINDOW_POS, x0, y0
     s5=0
    EndIf
@@ -2426,14 +2426,14 @@ If (ScreenEvent(@e)) Then
   EndIf
  EndIf
 ' 12-07-2021 mousex > 70  
- If mouseY < 50 And s5= 0 And mouseX > (2* ANCHO/3) And mousex < (ANCHO-70) Then
+ If mouseY < 25 And s5= 0 And mouseX > (2* ANCHO/3) And mousex < (ANCHO-70) Then
   x1=mouseX: y1=mouseY
   s5=1
   Exit Do
  EndIf
  ' =========> MOVER VENTANA DRAGNDO L CINTA SUPERIOR EN OPCION <MENU>
  ' And menuNro= 1 
- If MouseButtons And 1 And s5=1 And mouseX > (2* ANCHO/3)  And mousex < (ANCHO-70)Then
+ If MouseButtons And 1 And s5=1 And mouseX > (2* ANCHO/3)  And mousex < (ANCHO-70) Then
   x2=mouseX
   y2=mouseY
   x0=x0+x2-x1
