@@ -1,9 +1,3 @@
-Declare Sub cerrar(n As integer)
-Declare Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer)
-Declare Sub reproducir()
-'Declare Sub CreaTrack  (ByRef octadesde As Integer , ByRef octahasta As Integer, ByRef instru As Integer, param As pasa )
-Declare Sub selInstORdenAlfa (ByRef instru As Integer)
-Declare Sub selInstORdenNum (ByRef instru As Integer)
 
 'Declare Sub RollLoop (c As cairo_t Ptr, Roll As inst)
 'Declare Sub creaPenta (c AS cairo_t Ptr, Roll As inst  )
@@ -190,6 +184,7 @@ Dim Shared As UByte Vfuerte=70,Vsemifuerte=60,Vdebil=50
 TCompas ="4/4"
 Dim Shared As Integer MaxPosTrack(0 To 32) ' cada track tendra su max pos
 Dim Shared As Integer posnTrack(0 To 32) ' cada track tendra su posn
+
 
 ' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido por 8
 ' tengo elindice del revsado 1,2,3,4,5,6,7,8....

@@ -1,4 +1,5 @@
-
+' este es  un modulo no es un include asi se podria hacer mas modulos...
+'  o sacar algunos de include en elmain
 #Define __FB_WIN64__
 #If Defined (__FB_WIN64__) 
 #LibPath "C:\msys64\mingw64\lib"
@@ -26,6 +27,7 @@ alto = GetSystemMetrics(SM_CYSCREEN)
 
 'Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 COMMON Shared As Long eventc
+Common Shared As hwnd hwndC
 'Dim As Long event=0
 Dim Shared As Integer desde , hasta,MaxPos=2
 #Include "RTMIDIDEC.BI"
@@ -222,4 +224,35 @@ instru=0
 Print #1,"Str(instru) ", Str(instru)
 
 End Sub
+' ---------
+Sub EntrarNombreCancion(ByRef NombreCancion As string)
+  NombreCancion=Date
+  NombreCancion = InputBox("InputBox",,NombreCancion)
+  If NombreCancion ="" Then
+    SetWindowText(hwndC, "RollMusic Control")
+  Else
+    SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + NombreCancion)
+  EndIf
+ 'AL GRABAR tracks AGREGAREMOS ".cnr" COMO EXTENSION cancion roll pero no para
+ ' dir de cancion,
+End Sub
+' -------
+Sub CrearDirCancion (ByVal NombreCancion As string)
 
+Dim pathdir As String
+pathdir = ShellFolder( "Select Folder", "C:\")
+pathdir=pathdir+"\"+NombreCancion
+Print #1, "DIRECTORIO CANCION EN ",pathdir
+CreateDir(pathdir)
+SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + pathdir)
+NombreCancion=pathdir
+
+End Sub
+Sub cargarDirectorioCancion (ByRef NombreCancion As string)
+Dim pathdir As string
+NombreCancion = ShellFolder( "Select Folder", "C:\")
+SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + NombreCancion)
+Print #1,"cargarDirectorioCancion ", NombreCancion 
+' aca NombreCancion contiene el path tambien....
+
+End Sub

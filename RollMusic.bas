@@ -1,4 +1,4 @@
-' dragar ventana desde cinta fix.
+' dragar ventana desde cinta fix. en mousex=1048 anda mejor
 ' VERSION DE PRUENA 0.4.1.0.0 INTEGRAMOS UNA GUI Y 2 GRAFICAS UNA SIN USO
 ' PREPARADO PARA 2 PANTALLAS GRAFICAS LA OTRA ES OPENGL WIN COMENTADA  
 ' COMPILAMOS CON fbc64  -s gui rollMusicControl.bas RollMusic.bas -x RollMusic.exe
@@ -216,6 +216,8 @@ Print #1,Date;Time
 '#Include "NOTAS.bi"
 #Include "RTMIDIDEC.bi"
 '==============================
+#Include "ROLLCONTROLDEC.bi"
+'=============================
 ' iup start
 #Include Once "IUP/iup.bi"
 #Include Once "iup/iupcontrols.bi"
@@ -228,25 +230,13 @@ Const NULL = 0
 Const NEWLINE = !"\n"
 ' iup fin
 Type dat Field=1
- nota As UByte  ' en un futuro contendra nota, octava etc 
+ nota As UByte  ' en un futuro contendra nota, octava, canal etc 
  dur As  UByte  ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
  vol As  UByte  ' volumen
  pan As  UByte  ' paneo
  pb  As  UByte  ' pitch bend
  inst As UByte ' instrumento para cada nota podra ser distinto
 End Type
-' TRABAJO FUTURO: COMPRESION DEL VECTOR PARA GRABAR:
-' En nota indicaremos el nro de octava tambien desde 21 a 29,21=oct1, 22=oct2,23=oct3 ETC
-' y de esa manera para grabar ocuparemos menos lugar se comprimirá el vector...
-' ' simbolos de pentagrama, repeticion coda, cambio de ritmo..eso lo pondre en nota.
-' repeticion: para ello usaremos 3 numeros 30( indica comienzo),31(indica final)
-' 32(repeticion) 
-' vol se usa de 0 a 127, el resto no se usa, lo usaremos para guardar cosntruccion
-' de intervalos,a partir de una fundamental, 2da M/m,3era M/m,4ta justa,5ta, 6, 7,8,9,11
-' luego los acordes se construiran a partir de esos intervalos. 
-' seran como minimo 12 intervalso distintos ¿?...
-' luego vendran traiadas M/m, cuatriadas Maj,Maj7,m,m7, etc,etc
-' luego vendran las inversiones de triadas y cuatriadas ¿?..
 
 Dim Shared As Long CONTROL1 = 0
 ' ROLL PARAEL GRAFICO PERO LOS TRCKS PODRIAN SER DISTINTOS
@@ -258,7 +248,7 @@ End Type
 Dim Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 
 Dim Shared As inst Temp 
-Dim Shared As inst Track (0 To 32) ' tracks para guardar,.. y tocar 
+Dim Shared As inst Track (0 To 64) ' tracks para guardar,.. y tocar 
 Dim Shared As inst Roll ' para visualizar y tocar
 
 
@@ -299,22 +289,12 @@ For ix = 0 To __FB_ARGC__
 
 Next ix
 
-'Print #1, "dires   "; dires
-'Print #1, "recibi "; *direp
-'Print #1, "common "; mensaje
-
-'Dim diren As Integer
-'diren = CInt(dires)
-'direp = @diren
-'Print #1, "1 arg desde "; desde
-'Print #1, "2 arg hasta "; hasta
-'Print #1, "3 arg titu  "; titu
-'Print #1, "4 arg instru"; instru
 
 If desde = 0 And hasta = 0 Then
  Print #1,"intervalo no dado usando default!"
- desde => 1  ' 1 3
- hasta => 9  ' 9 7
+ desde => 2  ' 1 3
+ hasta => 6  ' 9 7
+ 
 EndIf
 
 Dim Shared As Integer desdevector
@@ -342,8 +322,8 @@ desdevector = desde
 hastavector = hasta
 ' test test
 ' --------
-NB => 0 + (desde-1) * 13   ' 27 para 3 = 0     reemplazar 0 por NB
-NA => 11 + (hasta-1) * 13  ' 90 para  9 = 115  reemplazr 115 por NA
+NB => 0 + (desde-1) * 13   ' 26 para 3 = 0     reemplazar 0 por NB
+NA => 11 + (hasta-1) * 13  ' 115 para  9 = 115  reemplazr 115 por NA
 
 ReDim (Roll.trk ) (1 To CantTicks,NB To NA) ' Roll de trabajo en Pantalla
 Print #1,"instru ",instru
@@ -575,6 +555,7 @@ Dim Shared  As pasa param
     param.ancho = ANCHO
     param.alto = ALTO
     p1=@param
+Common Shared As hwnd hwndC    
 #Include "mod_rtmidi_c.bi"    
 '----------------------------
 Dim nombreport As ZString Ptr
@@ -603,44 +584,95 @@ EndIf
 COMMON Shared As Long eventc
 If ix < 3 Then ' rollmusic independiente sin menu de control
  
-Var hwndC = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*3/4)
+ 
+hwndC = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
+UpdateInfoXserver()
 
 Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
-
 
 EVENTc=0
 
 
+ListBoxGadget(1,10,10,200,650,LBS_EXTENDEDSEL )
+AddListBoxItem(1,"01 TRACK")
+AddListBoxItem(1,"02 TRACK")
+AddListBoxItem(1,"03 TRACK")
+AddListBoxItem(1,"04 TRACK")
+AddListBoxItem(1,"05 TRACK")
+AddListBoxItem(1,"06 TRACK")
+AddListBoxItem(1,"07 TRACK")
+AddListBoxItem(1,"08 TRACK")
+AddListBoxItem(1,"09 TRACK")
+AddListBoxItem(1,"10 TRACK")
+AddListBoxItem(1,"11 TRACK")
+AddListBoxItem(1,"12 TRACK")
+AddListBoxItem(1,"13 TRACK")
+AddListBoxItem(1,"14 TRACK")
+AddListBoxItem(1,"15 TRACK")
+AddListBoxItem(1,"16 TRACK")
+AddListBoxItem(1,"17 TRACK")
+AddListBoxItem(1,"18 TRACK")
+AddListBoxItem(1,"19 TRACK")
+AddListBoxItem(1,"20 TRACK")
+AddListBoxItem(1,"21 TRACK")
+AddListBoxItem(1,"22 TRACK")
+AddListBoxItem(1,"23 TRACK")
+AddListBoxItem(1,"24 TRACK")
+AddListBoxItem(1,"25 TRACK")
+AddListBoxItem(1,"26 TRACK")
+AddListBoxItem(1,"27 TRACK")
+AddListBoxItem(1,"28 TRACK")
+AddListBoxItem(1,"29 TRACK")
+AddListBoxItem(1,"30 TRACK")
+AddListBoxItem(1,"31 TRACK")
+AddListBoxItem(1,"32 TRACK")
+
+'StatusBarGadget(1,"StatusBarGadget")
+
 hMessages=Create_Menu()
 MenName1=MenuTitle(hMessages,"Archivo")
 MenName2=MenuTitle(hMessages,"Nueva Cancion")
-MenName3=MenuTitle(hMessages,"Nuevo Track")
-MenName4=MenuTitle(hMessages,"Ver")
-MenName5=MenuTitle(hMessages,"Pista")
+MenName3=MenuTitle(hMessages,"Pistas")
+MenName4=MenuTitle(hMessages,"Ver desde Posicion")
+MenName5=MenuTitle(hMessages,"Cambiar Tiempo Y Ritmo")
 MenName6=MenuTitle(hMessages,"Reproducir")
 MenName7=MenuTitle(hMessages,"Opciones")
 MenName8=MenuTitle(hMessages,"Ayuda")
 
+MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
+MenuItem(1006,MenName1, "Cargar directorio de Cancion con Tracks separados")
+MenuItem(1007,MenName1, "Na.Grabar Cancion")
+MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
+MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
+MenuItem(1010,MenName1, "Na.Cargar una sola Pista(o track) de Cancion")
+MenuItem(1011,MenName1, "Grabar una Pista de la Cancion")
+MenuItem(1012,MenName1, "Na.Grabar una Pista de cancion Como")
+MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
+
+MenuItem(1020,MenName2, "Nombre o Título (fecha por omision)")
+MenuItem(1021,MenName2, "Na.Tiempo I=60 por omision")
+MenuItem(1022,MenName2, "Na.Ritmo 4/4 por omision")
+MenuItem(1023,MenName2, "Na.Duracion Estimada Min.(Por Omision 3 estimada)")
+MenuItem(1024,MenName2, "Na.Crear Cancion en un solo archivo")
+MenuItem(1025,MenName2, "Crear un directorio de Cancion Nuevo con cada uno de los tracks separados")
+MenuItem(1026,MenName2, "Na.Ver Lista Tracks de la Cancion (Nombre y numero)")
+MenuItem(1027,MenName2, "Na.Modificar Nombre de Pistas de Cancion")
 
 
-MenuItem(1010,MenName1, "1 Menu")
-MenuItem(1020,MenName2, "Nombre o Título")
-MenuItem(1021,MenName2, "Tiempo")
-MenuItem(1022,MenName2, "Ritmo")
-MenuItem(1023,MenName2, "Duracion Estimada Min.(Por Omision 3)")
-
-MenuItem(1030,MenName3, "Seleccion Octavas")
-MenuItem(1031,MenName3, "Octavas de Instrumetnos Estandares")
-MenuItem(1032,MenName3, "Seleccion Canal")
+MenuItem(1028,MenName3, "Seleccion Octavas (1 a 9 maximo) (-1,0,1,2,3,4,5,6,7)")
+MenuItem(1029,MenName3, "Na.Seleccion rango de 3 octava repetidas 2 veces ")
+MenuItem(1030,MenName3, "Na.Octavas de Instrumetnos Estandares")
+MenuItem(1031,MenName3, "Na.Seleccion Canal")
 MenuItem(1040,MenName3, "Instrumento Alfabetico")
 MenuItem(1050,MenName3, "Instrumento Numérico")
-MenuItem(1060,MenName3, "Crear Track Con lo elgido")
-MenuItem(1061,MenName3, "Crear una nueva Instancia de RollMusic Con lo elegido")
+MenuItem(1060,MenName3, "Crear Track aislado Con lo elgido")
+MenuItem(1061,MenName3, "Crear Track en la Cancion en Edicion, Con lo elgido")
+MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
 
 
 MenuItem(1070,MenName4,"5 Menu")
 MenuItem(1080,MenName5,"6 Menu")
-MenuItem(1090,MenName6,"7 Menu")
+MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
 MenuItem(1100,MenName7,"8 Menu")
 MenuItem(1110,MenName8,"9 Menu")
 
@@ -677,31 +709,44 @@ Wend
 
 End Sub
 '/
-
-
 '---------------------------- main -----------------
 
 param.titulo ="RollMusic"
 
+
 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+
 
 'RollLoop ( param)
 'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
  ''win = glfwCreateWindow(800,600,"Track OPENGL" )
 '' Dim ta As Any Ptr = threadcall correwin(win,ta)
-
+Dim As String NombreCancion
  
 If ix < 3 Then
    Do
      eventC=WaitEvent
-
+'WindowStartDraw(hwndC)
+'  fillrectdraw(40,40,&h888888)
+'  TextDraw(10,10,NombreCancion,-1,&hff0000)
+'StopDraw
      If eventC=EventMenu then
       Select case EventNumber
-         Case 1010
-            MessBox("","1 Menu")
-         Case 1020
-            MessBox("","2 Menu")
-       Case 1030 ' seleccion octavas 
+     '  Case 1005,1007 To 1016,1018 to 1019, 1021 To 1024, 1026,1027
+     '       MessBox("","Menu no habilitado")
+       Case 1006     
+        cargarDirectorioCancion(NombreCancion)
+       Case 1017 ' grabarpista
+       If NombreCancion <>"" Then ' es una cancion grabamos en el directorio de la cancion
+          GrabarPistaCancion=1
+       Else 
+          GrabarPistaCancion=0
+       EndIf      
+       Case 1020     
+           EntrarNombreCancion(NombreCancion)
+       Case 1025
+           CrearDirCancion (NombreCancion)            
+       Case 1028 ' seleccion octavas 
            seloctava (desde, hasta)
        Case 1040 ' seleccion de instrumento por orden Alfabetico
                   selInstORdenAlfa (instru)
@@ -732,8 +777,9 @@ If ix < 3 Then
          End
       End Select
      EndIf
-     If eventC=EventClose Then  End 
-     
+     If eventC=EventClose Then
+       Close:End 0
+     EndIf
    Loop
 Else
  ThreadWait threadloop   

@@ -1048,7 +1048,9 @@ Sub CargaArchivo(Roll As inst)
 End Sub
 ' ------------------------------------------
 Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
-' solo carga track no lo pasa a Vector de Visualizacion
+' solo carga track no lo pasa a Vector de Visualizacion.
+' para cargar desde disco un track se usa esta sub y luego TrackaRoll para verlo
+' y editarlo
   Print #1,"CargaTrack 1"   
      Dim z (1,1 )  As dat
      Dim zLim (1,1) As dat
@@ -1599,9 +1601,10 @@ EndIf
 
    
   '===> 3.3[GRABAR] SC_F11 COPIA
-   If MultiKey(sc_Control) And mousex > 504 And mousex < 573  And mousey < 50  Then ' <=
+   If MultiKey(sc_Control) And mousex > 504 And mousex < 573  And mousey < 50  Or _
+         GrabarPistaCancion=1  Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
-     If MouseButtons And 1 Then
+     If MouseButtons And 1  Or  GrabarPistaCancion=1     Then
       ''      Print #1, "Grabando a disco Roll GRABAR "
       '''' dialogoText("Grabar Archivo")
        Dim As String nombreg
@@ -1681,9 +1684,9 @@ EndIf
           EndIf
        EndIf
 ''''       grabaprueba()
-  
-        GrabarRollaTrack(1)
-        MenuNew=0
+' por ahroa todo RollaTRack graba con [0] adelante. s epodra cambiarlo en futuro  
+        GrabarRollaTrack(1) ' 1 significa cambiar el foramto de nombre de Rool
+        MenuNew=0           ' por formato de TRack anteponiendo[0]
     EndIf
    Else
     cairo_set_source_rgba c,1,1,1,1
@@ -2645,8 +2648,12 @@ EndIf
 End Sub
 ' ----------------------------------
 Sub GrabarRollaTrack (cambiaNombre As Integer)
-' GRABO ROLL EN EDICION COMO TRACK PARA ELLO DEBE ESTAR LIBRE
-' EL TRACK 0 
+' GRABO ROLL EN EDICION COMO TRACK PARA ELLO DEBE ESTAR LIBRE en disco
+' EL TRACK 0,como nombre de archivo...,, esto sirve para archivos tipo Roll al cargarlos
+' solo queda en Roll no se carga en ningun track porque para cargarlo en track
+' debo ingresar nota por nota es cuadno se carga en Roll y en track...
+' cuadno cargu un track desde archivo se pasa a Roll
+' por default siemrpe usa [0] podremos cambiarlo agregando mas codigo a pedido del susario
    If cambianombre >0 Then
      Dim As Integer ubi1=0,ubi2=0 
      Dim As String no1,no2
@@ -2779,6 +2786,21 @@ End Sub
 
 ' ---------------------------------
 Sub GrabarTrack (ntk As integer)
+' por ahroa no se usa para nada , parece qu elo probe en un momento
+' pero ahroa siemrep grabo con GrabarRollaTrack, asi tomo als modificaciones
+' enchas en edicion de Roll. Si no modifico nada de lo cargado, pero 
+' agrego notas nuevas sin modificacion alguna de Cursor u otras cosas
+' podria usar esta sub para grabar...será util al grabar Cancion
+' en donde todos los tracks cargado se grabaran a disco pero no como track 
+' individual sino como el track de 2 dimensiones por lo tanto esta
+' subruttina debe copiarse a otra y cambiarle el nombre diciendo GrabarCancion
+' como 1er paso deberia pasar de RollaTrack en memoria para que quede el Track
+' en edicion con todo lo modificado en Roll. dEspue sí, grabar el vector
+' multiple con todos los tracks. Esa serai al forma compacta de grabar una
+' cancion, OTra forma seria crear una carpeta y grabar todos los tracks o pistas 
+' individualmente y ahi sí usaría esta sub, teniendo en cuenta de que si el track 
+' grabado esta en edicion en Roll 1ero pasar de rollatrack ..
+
     Open nombre  For Binary Access write As #2
      Dim Trabajo (1 To Maxpos, 1 To lim2 ) As dat
      Dim grabaPos (1,1)  As dat

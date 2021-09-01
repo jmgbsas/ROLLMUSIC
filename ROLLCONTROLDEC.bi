@@ -1,3 +1,15 @@
+Declare Sub EntrarNombreCancion(ByRef NombreCancion As string)
+Declare Sub cerrar(n As integer)
+Declare Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer)
+Declare Sub reproducir()
+Declare Sub CrearDirCancion (ByVal NombreCancion As string)
+Declare Sub cargarDirectorioCancion (ByRef NombreCancion As string)
+
+'Declare Sub CreaTrack  (ByRef octadesde As Integer , ByRef octahasta As Integer, ByRef instru As Integer, param As pasa )
+Declare Sub selInstORdenAlfa (ByRef instru As Integer)
+Declare Sub selInstORdenNum (ByRef instru As Integer)
+
+Dim Shared As ubyte GrabarPistaCancion=0
 
 Dim Shared  NombreInst(1 to 127) as string * 24 => _ 
              { "ACOUSTIC_GRAND_PIANO   1" , _

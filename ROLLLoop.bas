@@ -1634,6 +1634,11 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    Track(ntk).trk(posn,1).nota= PianoNota
    ' itk=1 indice vertical de 1 a 12 cuando se carga nota vale siemrep 1
    ' itk cambiara solo para cargar acordes....en cursor y solo se podra cargar 12.
+   ' si el acorde tiene un modo de construccion estandar usado pro el usuario al 
+   ' crearlo(se har aun menu) ergo se grabara solo itk=1 con al funamental y
+   ' en nota la cosntrucicon usada estara en el miembro .vol de 128 hata 255
+   ' intervalso y formulas de acordes o sea tengo 128 formas de construir
+   ' se colocara en un menu... 
    ' o sea siemrep se carga una melodia solo cursor carga los acordes..
    ' o en [modo lectura] tambien lo cargaremos en un futuro asi como transpoder
    'If espacio > 0 Then
