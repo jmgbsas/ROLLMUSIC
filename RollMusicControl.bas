@@ -27,7 +27,8 @@ alto = GetSystemMetrics(SM_CYSCREEN)
 
 'Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 COMMON Shared As Long eventc
-Common Shared As hwnd hwndC
+Common Shared As hwnd hwndC, hwndListBox
+
 'Dim As Long event=0
 Dim Shared As Integer desde , hasta,MaxPos=2
 #Include "RTMIDIDEC.BI"
@@ -254,5 +255,10 @@ NombreCancion = ShellFolder( "Select Folder", "C:\")
 SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + NombreCancion)
 Print #1,"cargarDirectorioCancion ", NombreCancion 
 ' aca NombreCancion contiene el path tambien....
+
+End Sub
+Sub EntrarNombrePista(ByRef NombrePista As String)
+
+  NombrePista = InputBox("InputBox",,NombrePista)
 
 End Sub

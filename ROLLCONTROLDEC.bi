@@ -1,4 +1,6 @@
 Declare Sub EntrarNombreCancion(ByRef NombreCancion As string)
+Declare Sub EntrarNombrePista(ByRef NombrePista As string)
+
 Declare Sub cerrar(n As integer)
 Declare Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer)
 Declare Sub reproducir()
@@ -10,8 +12,9 @@ Declare Sub selInstORdenAlfa (ByRef instru As Integer)
 Declare Sub selInstORdenNum (ByRef instru As Integer)
 
 Dim Shared As ubyte GrabarPistaCancion=0
+  
 
-Dim Shared  NombreInst(1 to 127) as string * 24 => _ 
+Dim Shared  NombreInst(1 to 127) As string * 24 => _ 
              { "ACOUSTIC_GRAND_PIANO   1" , _
                "BRIGHT_ACOUSTIC_PIANO  2" , _
                "ELECTRIC_GRAND_PIANO   3" , _

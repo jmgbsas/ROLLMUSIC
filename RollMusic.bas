@@ -582,50 +582,18 @@ EndIf
  Print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
 
 COMMON Shared As Long eventc
-If ix < 3 Then ' rollmusic independiente sin menu de control
+Common Shared As hwnd hwndListBox
+
+If ix < 3 Then ' rollmusic CON control
  
  
 hwndC = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
-UpdateInfoXserver()
+''UpdateInfoXserver()
+hwndListBox= ListBoxGadget(3,10,10,240,650,LBS_EXTENDEDSEL )
 
 Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 
 EVENTc=0
-
-
-ListBoxGadget(1,10,10,200,650,LBS_EXTENDEDSEL )
-AddListBoxItem(1,"01 TRACK")
-AddListBoxItem(1,"02 TRACK")
-AddListBoxItem(1,"03 TRACK")
-AddListBoxItem(1,"04 TRACK")
-AddListBoxItem(1,"05 TRACK")
-AddListBoxItem(1,"06 TRACK")
-AddListBoxItem(1,"07 TRACK")
-AddListBoxItem(1,"08 TRACK")
-AddListBoxItem(1,"09 TRACK")
-AddListBoxItem(1,"10 TRACK")
-AddListBoxItem(1,"11 TRACK")
-AddListBoxItem(1,"12 TRACK")
-AddListBoxItem(1,"13 TRACK")
-AddListBoxItem(1,"14 TRACK")
-AddListBoxItem(1,"15 TRACK")
-AddListBoxItem(1,"16 TRACK")
-AddListBoxItem(1,"17 TRACK")
-AddListBoxItem(1,"18 TRACK")
-AddListBoxItem(1,"19 TRACK")
-AddListBoxItem(1,"20 TRACK")
-AddListBoxItem(1,"21 TRACK")
-AddListBoxItem(1,"22 TRACK")
-AddListBoxItem(1,"23 TRACK")
-AddListBoxItem(1,"24 TRACK")
-AddListBoxItem(1,"25 TRACK")
-AddListBoxItem(1,"26 TRACK")
-AddListBoxItem(1,"27 TRACK")
-AddListBoxItem(1,"28 TRACK")
-AddListBoxItem(1,"29 TRACK")
-AddListBoxItem(1,"30 TRACK")
-AddListBoxItem(1,"31 TRACK")
-AddListBoxItem(1,"32 TRACK")
 
 'StatusBarGadget(1,"StatusBarGadget")
 
@@ -675,8 +643,7 @@ MenuItem(1080,MenName5,"6 Menu")
 MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
 MenuItem(1100,MenName7,"8 Menu")
 MenuItem(1110,MenName8,"9 Menu")
-
-EndIf
+End If
 
 
 
@@ -716,74 +683,93 @@ param.titulo ="RollMusic"
 
 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
 
-
+If ix < 3 Then 
 'RollLoop ( param)
 'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
  ''win = glfwCreateWindow(800,600,"Track OPENGL" )
 '' Dim ta As Any Ptr = threadcall correwin(win,ta)
 Dim As String NombreCancion
- 
-If ix < 3 Then
-   Do
+Dim numpista As Integer=0
+Dim NombrePista  As String  
+    Do
      eventC=WaitEvent
 'WindowStartDraw(hwndC)
 '  fillrectdraw(40,40,&h888888)
 '  TextDraw(10,10,NombreCancion,-1,&hff0000)
 'StopDraw
-     If eventC=EventMenu then
-      Select case EventNumber
+     Select Case EVENTC 
+       Case EventMenu 
+         Select case EventNumber
      '  Case 1005,1007 To 1016,1018 to 1019, 1021 To 1024, 1026,1027
      '       MessBox("","Menu no habilitado")
-       Case 1006     
-        cargarDirectorioCancion(NombreCancion)
-       Case 1017 ' grabarpista
-       If NombreCancion <>"" Then ' es una cancion grabamos en el directorio de la cancion
-          GrabarPistaCancion=1
-       Else 
-          GrabarPistaCancion=0
-       EndIf      
-       Case 1020     
-           EntrarNombreCancion(NombreCancion)
-       Case 1025
-           CrearDirCancion (NombreCancion)            
-       Case 1028 ' seleccion octavas 
-           seloctava (desde, hasta)
-       Case 1040 ' seleccion de instrumento por orden Alfabetico
-                  selInstORdenAlfa (instru)
-                  ChangeProgram ( CUByte (instru) , 0)
-                  Roll.trk(1,NA).inst= CUByte(instru)
-       Case 1050 ' seleccion de instrumento por orden Numerico
-           selInstORdenNum (instru)
-           ChangeProgram ( CUByte (instru) , 0)
-           Roll.trk(1,NA).inst= CUByte(instru)
-       Case 1060 ' crea track y reemplaza al existente en la edicion
-              Nuevo(Roll,1 )
-              instruOld=instru
-              Roll.trk(1,NA).inst= CUByte(instru)
-       Case 1061
+            Case 1006     
+             cargarDirectorioCancion(NombreCancion)
+            Case 1017 ' grabarpista
+             If NombreCancion <>"" Then ' es una cancion grabamos en el directorio de la cancion
+                GrabarPistaCancion=1
+             Else 
+                GrabarPistaCancion=0
+             EndIf      
+            Case 1020     
+               EntrarNombreCancion(NombreCancion)
+            Case 1025
+               CrearDirCancion (NombreCancion)            
+            Case 1028 ' seleccion octavas 
+               seloctava (desde, hasta)
+            Case 1040 ' seleccion de instrumento por orden Alfabetico
+               Dim tinstalfa As Any Ptr = ThreadCall selInstORdenAlfa (instru)
+               Dim tinstProg As Any Ptr = ThreadCall ChangeProgram ( CUByte (instru) , 0)
+               Roll.trk(1,NA).inst= CUByte(instru)
+
+            Case 1050 ' seleccion de instrumento por orden Numerico
+               Dim tinsnum As Any Ptr = ThreadCall selInstORdenNum (instru)
+               ChangeProgram ( CUByte (instru) , 0)
+               Roll.trk(1,NA).inst= CUByte(instru)
+            Case 1060 ' crea track y reemplaza al existente en la edicion
+               Nuevo(Roll,1 )
+               instruOld=instru
+               Roll.trk(1,NA).inst= CUByte(instru)
+            Case 1061
+               EntrarNombrePista(NombrePista)
+               numpista += 1
+               If instru=0 Then 
+                  instru=1
+               EndIf
+               If NombrePista ="" Then
+                NombrePista = str(numpista) +"-"+ RTrim(Mid(NombreInst(instru), 1,21))
+               Else
+                NombrePista = str(numpista) +"-"+ NombrePista 
+                
+               EndIf
+
+              AddListBoxItem(3, NombrePista)
+              NombrePista=""
+            Case 1062
  ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
  ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.       
-    Shell ("start ./RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) )                
-       Case 1070
-       MessBox("","5 Menu")
-       Case 1080
-       MessBox("","6 Menu")
-      Case  1090 
-            CPlay=1
-      Case  1100
-         MessBox ("","8 Menu")
-      Case  1110
-         MessBox ("","Salir")
-         End
-      End Select
-     EndIf
-     If eventC=EventClose Then
+             Shell ("start ./RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) )                
+            Case 1070
+              MessBox("","5 Menu")
+            Case 1080
+              MessBox("","6 Menu")
+            Case  1090 
+              CPlay=1
+            Case  1100
+              MessBox ("","8 Menu")
+            Case  1110
+             MessBox ("","Salir")
+              End
+          End Select
+      Case EventClose 
        Close:End 0
-     EndIf
+     End Select
    Loop
 Else
- ThreadWait threadloop   
-EndIf
+'    param.titulo ="RollMusic"
+'    threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+    ThreadWait threadloop  
+End If
+    
 
 
 End 0
