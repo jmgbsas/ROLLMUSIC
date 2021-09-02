@@ -631,11 +631,12 @@ MenuItem(1028,MenName3, "Seleccion Octavas (1 a 9 maximo) (-1,0,1,2,3,4,5,6,7)")
 MenuItem(1029,MenName3, "Na.Seleccion rango de 3 octava repetidas 2 veces ")
 MenuItem(1030,MenName3, "Na.Octavas de Instrumetnos Estandares")
 MenuItem(1031,MenName3, "Na.Seleccion Canal")
-MenuItem(1040,MenName3, "Instrumento Alfabetico")
-MenuItem(1050,MenName3, "Instrumento Numérico")
+MenuItem(1040,MenName3, "Cambia Instrumento Alfabetico en la pista editada")
+MenuItem(1050,MenName3, "Cambia Instrumento Numérico  en la pista editada")
 MenuItem(1060,MenName3, "Crear Track aislado Con lo elgido")
 MenuItem(1061,MenName3, "Crear Track en la Cancion en Edicion, Con lo elgido")
 MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
+
 
 
 MenuItem(1070,MenName4,"5 Menu")
@@ -717,12 +718,12 @@ Dim NombrePista  As String
             Case 1028 ' seleccion octavas 
                seloctava (desde, hasta)
             Case 1040 ' seleccion de instrumento por orden Alfabetico
-               Dim tinstalfa As Any Ptr = ThreadCall selInstORdenAlfa (instru)
-               Dim tinstProg As Any Ptr = ThreadCall ChangeProgram ( CUByte (instru) , 0)
+               selInstORdenAlfa (instru)
+               ChangeProgram ( CUByte (instru) , 0)
                Roll.trk(1,NA).inst= CUByte(instru)
 
             Case 1050 ' seleccion de instrumento por orden Numerico
-               Dim tinsnum As Any Ptr = ThreadCall selInstORdenNum (instru)
+               selInstORdenNum (instru)
                ChangeProgram ( CUByte (instru) , 0)
                Roll.trk(1,NA).inst= CUByte(instru)
             Case 1060 ' crea track y reemplaza al existente en la edicion
