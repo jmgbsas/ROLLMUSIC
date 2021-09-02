@@ -613,7 +613,7 @@ MenuItem(1007,MenName1, "Na.Grabar Cancion")
 MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
 MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
 MenuItem(1010,MenName1, "Na.Cargar una sola Pista(o track) de Cancion")
-MenuItem(1011,MenName1, "Grabar una Pista de la Cancion")
+MenuItem(1011,MenName1, "Grabar una Pista en Edicion en la Cancion")
 MenuItem(1012,MenName1, "Na.Grabar una Pista de cancion Como")
 MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
 
@@ -683,15 +683,13 @@ param.titulo ="RollMusic"
 
 
 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+'''RollLoop ( param)
 
 If ix < 3 Then 
-'RollLoop ( param)
+
 'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
  ''win = glfwCreateWindow(800,600,"Track OPENGL" )
 '' Dim ta As Any Ptr = threadcall correwin(win,ta)
-Dim As String NombreCancion
-Dim numpista As Integer=0
-Dim NombrePista  As String  
     Do
      eventC=WaitEvent
 'WindowStartDraw(hwndC)
@@ -705,6 +703,11 @@ Dim NombrePista  As String
      '       MessBox("","Menu no habilitado")
             Case 1006     
              cargarDirectorioCancion(NombreCancion)
+             GrabarRollaTrack(1,1) ' se usa solo como dir y carga en lista 
+            Case 1011 ' graba pista en edicion en la cancion
+            Print #1,"entro a 1011 en elmenu"
+             ResetAllListBox(3)
+             GrabarRollaTrack(1,1)
             Case 1017 ' grabarpista
              If NombreCancion <>"" Then ' es una cancion grabamos en el directorio de la cancion
                 GrabarPistaCancion=1
@@ -768,7 +771,7 @@ Dim NombrePista  As String
 Else
 '    param.titulo ="RollMusic"
 '    threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-    ThreadWait threadloop  
+  ThreadWait threadloop  
 End If
     
 
@@ -824,5 +827,5 @@ Print #1,"Error Function: "; *Erfn()
 Dim ers As Integer = nota +(estoyEnOctava -1) * 13
 Print #1, "nota +(estoyEnOctava -1) * 13) "; ers
 
-
+ 
 

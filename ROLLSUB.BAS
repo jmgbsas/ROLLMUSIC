@@ -1396,10 +1396,10 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
         menuNew =0
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 1 Then
-         Dim tlock As Any Ptr = MutexCreate()
+         
          thread1 = ThreadCall  playAll(Roll)
          '''playAll(Roll)
-         MutexDestroy tlock
+         
         EndIf 
    '     Print #1,"--->paso llamada a thread1 "
     ''    menuNew = 4 por hora sin elecciones
@@ -1410,10 +1410,8 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    EndIf
    If CPlay=1 Then
       If  MaxPos > 1 Then
-         Dim tlock As Any Ptr = MutexCreate()
          thread1 = ThreadCall  playAll(Roll)
-         '''playAll(Roll)
-         MutexDestroy tlock
+         '''''playAll(Roll)
       EndIf 
       CPlay=0
    EndIf
@@ -1440,11 +1438,11 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   Dim muestra As String=nombre
-   If Len(muestra) > 60  Then
-     muestra=" C:\..\"+Mid(muestra,30)
+   Dim muestra As String ' nombre tambien se usa en cancion
+   If Len(nombre) > 60  Then
+     muestra="C:\..\"+Mid(nombre,30)
    EndIf
-   muestra=Str(PianoNota) + muestra   
+   muestra=Str(PianoNota) + " "+ nombre   
 
    t=  " [Ayuda] "+ muestra :cairo_show_text(c, t)
 
@@ -1478,8 +1476,9 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 '   End If
 indiceNota=(mousex- gap1 )/anchofig + posishow
 Dim As Integer veonota, veocopi 
-If indiceNota >NB And nR <=NA Then
-veonota=Roll.trk(indiceNota, NA-nR).nota 
+' indicenota < MaxPos fix 02-09-21
+If indiceNota >NB And nR <=NA And indicenota < MaxPos Then
+   veonota=Roll.trk(indiceNota, NA-nR).nota 
 EndIf
 If copiar >0 Then
    veocopi=copiar
@@ -1626,7 +1625,7 @@ EndIf
        ubi1=InStr(nombre,"[")
        ubi2=InStr(nombre,"]")
        If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
-           GrabarRollaTrack(0)
+           GrabarRollaTrack(0,0)
        Else ' se graba como roll, si se desea eso solo sacar [xx] del nombre
            GrabarArchivo ()
            
@@ -1685,7 +1684,7 @@ EndIf
        EndIf
 ''''       grabaprueba()
 ' por ahroa todo RollaTRack graba con [0] adelante. s epodra cambiarlo en futuro  
-        GrabarRollaTrack(1) ' 1 significa cambiar el foramto de nombre de Rool
+        GrabarRollaTrack(1,0) ' 1 significa cambiar el foramto de nombre de Rool
         MenuNew=0           ' por formato de TRack anteponiendo[0]
     EndIf
    Else
@@ -1995,7 +1994,7 @@ EndIf
     If mousex > 90 And mousex < 190  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
-        ''thread2 = ThreadCreate(@ComboBox)
+       
        Dim miport As Integer=1
        thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))  '' 'GtkListBox()
        MenuNew=0
@@ -2009,9 +2008,8 @@ EndIf
     If mousex > 200 And mousex < 300  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
-        ''thread2 = ThreadCreate(@ComboBox)
        Dim miport As Integer=2
-       'mira usa create con argumentos!!!! jmg jmg jmg !!!! vER esto urgente me olvide!!!!
+       ' create con argumentos
        thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))  '' 'GtkListBox()
        MenuNew=0
       EndIf ' mousebuttons
@@ -2647,17 +2645,16 @@ If nombre = "Backup"+ Date + ".roll" Then
 EndIf
 End Sub
 ' ----------------------------------
-Sub GrabarRollaTrack (cambiaNombre As Integer)
+Sub GrabarRollaTrack (cambiaNombre As Integer, enCancion As integer)
 ' GRABO ROLL EN EDICION COMO TRACK PARA ELLO DEBE ESTAR LIBRE en disco
 ' EL TRACK 0,como nombre de archivo...,, esto sirve para archivos tipo Roll al cargarlos
 ' solo queda en Roll no se carga en ningun track porque para cargarlo en track
 ' debo ingresar nota por nota es cuadno se carga en Roll y en track...
 ' cuadno cargu un track desde archivo se pasa a Roll
 ' por default siemrpe usa [0] podremos cambiarlo agregando mas codigo a pedido del susario
-   If cambianombre >0 Then
+   Dim As String no1,no2
+   If cambianombre >0 And nombre > "" Then
      Dim As Integer ubi1=0,ubi2=0 
-     Dim As String no1,no2
-
     ubi1=InStrRev(nombre,"\")
     ubi2=InStrRev(nombre,".")
     no1= Mid(nombre,1,ubi1)
@@ -2665,7 +2662,55 @@ Sub GrabarRollaTrack (cambiaNombre As Integer)
    
     nombre=no1+"[0]"+no2 +".rtk"
    EndIf
-   Open nombre  For Binary Access write As #2
+   If enCancion > 0 Then
+     Dim As String filename, filenameold
+     filename = Dir (NombreCancion+"\*")
+     Print #1,"filename encancion > 0 ",filename
+     If filename = "" Then ' no hay ningu archivo dentro del dir de cancion
+        Numpista=1
+        Print #1,"dice que no hay archivos uff"
+     Else
+       
+       Do While Len(filename) > 0 ' If len(filename) is 0, exit the loop: no more filenames are left to be read.
+        filenameold=filename
+        Print #1, "trabajo con este filename...", filenameOld
+        Dim no1 As Integer
+        Dim cadena As String
+        no1=InStrRev (filenameOld,".")
+        cadena=Mid(filenameOld,1,no1-1)
+        AddListBoxItem(3, cadena)
+        filename = Dir()
+        
+       Loop
+      ' ver que nro de pista sigue ....
+      Dim As String no1,no2
+      Dim As Integer ubi1=0,ubi2=0 
+      ubi1=InStr(filenameold,"[")
+      ubi2=InStr(filenameold,"]")
+      no1= Mid(filenameold,ubi1+1,ubi2-1-ubi1)
+      Numpista=CInt(no1) +1
+      Print #1, "Numpista luego ",Numpista
+     EndIf
+     
+     Print #1,"Nombre Cancion", NombreCancion
+     Print #1,"NumPista ", NumPista
+     Print #1,"no2 nombre del roll puro ",no2
+     
+      If no2<> "" Then
+         nombre= NombreCancion + "\[" + Str(Numpista) + "]" + no2 +".rtk"
+         Dim cadena As String = "[" + Str(Numpista) + "]" + no2
+         AddListBoxItem(3, cadena)
+         Print #1,"GRABANDO PISTA EN CANCION EN ",nombre
+      'si es vacio tomo la ultima
+      Else
+         Exit Sub ' no hay archivo nuevo se sale sin grabar nada
+      EndIf
+   EndIf
+   
+   If Open (nombre  For Binary Access write As #2 ) <> 0 Then
+     Print #1,"Error open Rollsub 2676, nombre ",nombre
+     Exit Sub
+   End If
    Print #1, "nombre tiene el path ",nombre
      
 

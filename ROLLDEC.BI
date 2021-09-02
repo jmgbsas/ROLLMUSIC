@@ -28,7 +28,7 @@ Declare Sub velocidades(j as integer)
 Declare Sub playthread()
 Declare Sub GrabarArchivo ()
 Declare Sub GrabarTrack   (ntk As integer)
-Declare Sub GrabarRollaTrack (cambianombre As integer)
+Declare Sub GrabarRollaTrack (cambianombre As Integer, enCancion As integer)
 ' gtk
 Declare Sub GtkListBox()
 Declare Sub sigh_button_event Cdecl ( Byval gtklist As GtkWidget Ptr, ByVal event As GdkEventButton Ptr, Byval frame As GtkWidget Ptr )

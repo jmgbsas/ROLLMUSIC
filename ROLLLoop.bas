@@ -585,11 +585,11 @@ For i = desde To hasta ' nro_penta
    nro = i
   ' si ahce falta ejecutar mas de un Penta podremos usar threads
   ' por ahora no lousamos 
-  Dim tlock As Any Ptr = MutexCreate() 
-  Dim ta As Any Ptr = ThreadCall creaPenta (c, Roll )
-    ThreadWait ta
-  MutexDestroy tlock
- '''creaPenta (c, Roll )
+''  Dim tlock As Any Ptr = MutexCreate() 
+''  Dim ta As Any Ptr = ThreadCall creaPenta (c, Roll )
+''    ThreadWait ta
+''  MutexDestroy tlock
+  creaPenta (c, Roll )
  If *po = 99 Then
   *po = hasta - 1
   Exit For
@@ -1169,11 +1169,10 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
    If playb = 0 And MaxPos > 1 Then
       playb=1
   '    Print #1,"SPACE call play"
-  '''      thread1 = ThreadCreate(@playAll)
-      If  MaxPos > 1 Then 
-         Dim tlock As Any Ptr = MutexCreate()
+        If  MaxPos > 1 Then 
+         '''Dim tlock As Any Ptr = MutexCreate()
          thread1 = ThreadCall  playAll(Roll)
-         MutexDestroy tlock
+         '''MutexDestroy tlock
       EndIf   
       'playAll(Roll)
       menunew=0

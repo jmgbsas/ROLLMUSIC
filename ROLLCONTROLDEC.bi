@@ -12,6 +12,9 @@ Declare Sub selInstORdenAlfa (ByRef instru As Integer)
 Declare Sub selInstORdenNum (ByRef instru As Integer)
 
 Dim Shared As ubyte GrabarPistaCancion=0
+Dim Shared As String NombreCancion, NombrePista 
+Dim Shared As Integer numpista =0
+#Include "dir.bi"  
   
 
 Dim Shared  NombreInst(1 to 127) As string * 24 => _ 
