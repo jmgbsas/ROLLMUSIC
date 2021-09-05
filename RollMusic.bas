@@ -1,3 +1,6 @@
+' el play consume mucha CPU debo cambiar el metodo
+' y tocar con un time guia el metodo qu euso es muy costoso
+' debo transformar a ese formato y luego tocar
 ' dragar ventana desde cinta fix. en mousex=1048 anda mejor
 ' VERSION DE PRUENA 0.4.1.0.0 INTEGRAMOS UNA GUI Y 2 GRAFICAS UNA SIN USO
 ' PREPARADO PARA 2 PANTALLAS GRAFICAS LA OTRA ES OPENGL WIN COMENTADA  
@@ -162,7 +165,7 @@ Common Shared  mensaje As Integer
 #EndIf
 #Define EXTCHAR Chr(255)
 #Include "fbgfx.bi"
-'''#Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
+#Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
 #If __FB_LANG__ = "fb"
 Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #EndIf
@@ -225,7 +228,11 @@ Print #1,Date;Time
 #Include "fbthread.bi"
 #Include "foro/window9.bi"
 ''#Include "Afx/windowsxx.bi"
-
+' prueba de secuencia 
+Dim Shared fs As Integer 
+fs = FreeFile 
+Open "secuencia.txt" For Output As #fs
+ 
 Const NULL = 0
 Const NEWLINE = !"\n"
 ' iup fin
@@ -244,13 +251,30 @@ Dim Shared As Long CONTROL1 = 0
 Type inst
  As dat trk(Any, Any)
 End Type
+' dur debe ser el 1er elemento para que ande bien el sort
+Type poli ' para guardar la secuencia
+ dur As  Integer  ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
+ nota As UByte  ' en un futuro contendra nota, octava, canal etc 
+ vol As  UByte  ' volumen
+ pan As  UByte  ' paneo
+ pb  As  UByte  ' pitch bend
+ inst As UByte ' instrumento para cada nota podra ser distinto
+ tick As Integer ' 128 tiene la redonda, 1 la cuartifusa
+ posn As Integer ' de roll
+ acorde  As ubyte  ' 1 a 12 , son el se hara el sort    
+End Type 
+
+Type sec
+ As poli trk(Any, any)
+End Type
+  
 ' PUEDO TENER UN SHARED DINAMICO GRACIAS A TYPE !!!
 Dim Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 
 Dim Shared As inst Temp 
-Dim Shared As inst Track (0 To 64) ' tracks para guardar,.. y tocar 
+Dim Shared As inst  Track (0 To 64) ' tracks para guardar,.. y tocar 
 Dim Shared As inst Roll ' para visualizar y tocar
-
+Dim Shared As sec  Ptrack (0 To 64)
 
 'tempo I=160, seri equivalente a O=40 como l maxima cantdad de ticks de O es
 ' eldela figura mas pequeña=128 ticks...40 * 128 = 5120 por minuto.
@@ -342,7 +366,7 @@ Print #1,"hasta ",hasta
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
 'Dim Shared As Integer lim2=12, ctres=CantTicks
 Dim Shared As Integer lim2=12
-Dim AS Integer  ctres=CantTicks ' 5 octavas por track 
+Dim AS Integer  ctres=CantTicks  
 ' c/inst puede tocar como una persona hasta 12 notas juntas de acorde
 ' entonces no se justifica tener en un solo instrumento una polifonia mas de 12
 ' ni de 108,,,ergo puedo poner mas trakcs o mas longitud
@@ -363,6 +387,14 @@ ReDim (Track(1).trk ) (1 To Ctres,1 To lim2)
 ReDim (Track(2).trk ) (1 To Ctres,1 To lim2)
 ReDim (Track(3).trk ) (1 To ctres,1 To lim2)
 ReDim (Track(4).trk ) (1 To ctres,1 To lim2)
+
+ReDim (PTrack(0).trk ) (1 To Ctres,1 To lim2)
+ReDim (PTrack(1).trk ) (1 To Ctres,1 To lim2)
+ReDim (PTrack(2).trk ) (1 To Ctres,1 To lim2)
+ReDim (PTrack(3).trk ) (1 To ctres,1 To lim2)
+ReDim (PTrack(4).trk ) (1 To ctres,1 To lim2)
+
+
 ' c/u de estos track es redimensionable preserve en la 1era dimension 
 ' o sea en las posiciones, lo que debo hacer es cargar estos Tracks
 ' con eventos pero para mostrarlso usaria el Roll 
@@ -559,6 +591,14 @@ Common Shared As hwnd hwndC
 #Include "mod_rtmidi_c.bi"    
 '----------------------------
 Dim nombreport As ZString Ptr
+' msn -> uint -- midiOutGetNumDevs()
+'MMRESULT midiOutOpen(
+'  LPHMIDIOUT phmo,
+'  UINT       uDeviceID,
+'  DWORD_PTR  dwCallback,
+'  DWORD_PTR  dwInstance,
+'  DWORD      fdwOpen
+');
 midiout = rtmidi_out_create_default()
 'Print #1,"PLAYALL---------->>>>>>>"
 portsout =  port_count (midiout)
@@ -682,8 +722,8 @@ End Sub
 param.titulo ="RollMusic"
 
 
-threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-'''RollLoop ( param)
+'''threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+RollLoop ( param)
 
 If ix < 3 Then 
 

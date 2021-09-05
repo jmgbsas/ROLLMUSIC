@@ -1,5 +1,5 @@
 #include "crt/stdio.bi"
-Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
+Sub creaPenta  (c As cairo_t Ptr, Roll as inst  )
 'Dim octava As Integer Ptr
 
  Dim As cairo_font_extents_t fe   '     font data
@@ -580,15 +580,12 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 '  rango= hasta
 ' si viene de 7 a 9, nro va de 1 a 3  en relidad es de
 '
-  
+Dim ta As Any Ptr  
+ 
 For i = desde To hasta ' nro_penta
    nro = i
   ' si ahce falta ejecutar mas de un Penta podremos usar threads
   ' por ahora no lousamos 
-''  Dim tlock As Any Ptr = MutexCreate() 
-''  Dim ta As Any Ptr = ThreadCall creaPenta (c, Roll )
-''    ThreadWait ta
-''  MutexDestroy tlock
   creaPenta (c, Roll )
  If *po = 99 Then
   *po = hasta - 1
@@ -1173,8 +1170,8 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
          '''Dim tlock As Any Ptr = MutexCreate()
          thread1 = ThreadCall  playAll(Roll)
          '''MutexDestroy tlock
-      EndIf   
-      'playAll(Roll)
+         '' playAll(Roll)
+        EndIf
       menunew=0
    EndIf
  EndIf  
@@ -1617,7 +1614,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
       ReDim Preserve compas(1 To CantTicks)
       ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
-      
+      ReDim Preserve (Track(ntk).trk)(1 To CantTicks,1 To lim2)
     EndIf
 
 '---
@@ -1631,6 +1628,11 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).nota = nota 'carga visualizacion
    ' cargo TRACK 
    Track(ntk).trk(posn,1).nota= PianoNota
+   ' tick acumulativo 
+   PTrack(ntk).trk(posn,1).nota= PianoNota
+   PTrack(ntk).trk(posn,1).posn=posn
+   
+   
    ' itk=1 indice vertical de 1 a 12 cuando se carga nota vale siemrep 1
    ' itk cambiara solo para cargar acordes....en cursor y solo se podra cargar 12.
    ' si el acorde tiene un modo de construccion estandar usado pro el usuario al 
@@ -1650,10 +1652,11 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    ' para insertar y saber hasta donde se debe mover...esta solo
    'en dur no afecta a notas pero se debe insertar siempreenedicion
    ' con o sin cursor
-   
+   ' 182 fin de secuencia
    Roll.trk(posn+1,(nota-1 +(estoyEnOctava -1) * 13)).dur = 182
    'cargo TRACK
-   Track(ntk).trk(posn,1).nota= 182
+   Track(ntk).trk(posn,1).dur= 182
+   
    If notaOld > 0 And notaOld <> nota  Then
   '  Print #1,"Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota"; _
    '           Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota
@@ -1706,19 +1709,21 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
        EndIf
      Next i
    Next noct
-   ' para track permitir acordes
-   For i=1 To lim2
-         If Track(ntk).trk(posn,i).nota = 0 Then
+   ' para track permitir acordes pero Track no se edita solo Roll
+   ' en track y Ptrack solo se le pone copia de Roll¿? 
+   'For i=1 To lim2 ' hara falta verlo en SUB CURSOR COMO TRATAMOS ACORDES
+   '      If Track(ntk).trk(posn,i).nota = 0 Then
          '   Print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
-            Track(ntk).trk(posn,i).nota = 181
-            Track(ntk).trk(posn,i).dur  = 0
+   '         Track(ntk).trk(posn,i).nota = 181
+   '         Track(ntk).trk(posn,i).dur  = 0
 
-         EndIf
-   Next i
+   '      EndIf
+   'Next i
 
    notaOld=nota
    'Print #1,"carga notaold";notaold
    estoyEnOctavaOld=estoyEnOctava
+
    
    ' 
 ' los bloques de durcion se repiten de a 3, el incr es por bloque
@@ -1727,6 +1732,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
 If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR 'era duracion
    Track(ntk).trk(posn,1).dur = DUR
+   PTrack(ntk).trk(posn,1).dur =DUR
     'DUR nunca se ahce cero solo para espacio ergo si pulso
     ' la misma u otra nota sigue con la misma duracion
    incr=0
@@ -1735,6 +1741,7 @@ EndIf
 If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
     Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 9 'era duracion
     Track(ntk).trk(posn,1).dur = DUR +9
+    PTrack(ntk).trk(posn,1).dur = DUR +9
     'DUR nunca se ahce cero solo para espacio ergo si pulso
     ' la misma u otra nota sigue con la misma duracion
     incr=0
@@ -1744,18 +1751,21 @@ EndIf
 If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
     Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 18 'era dur
     Track(ntk).trk(posn,1).dur = DUR + 18
+    PTrack(ntk).trk(posn,1).dur = DUR + 18
     incr=0
 EndIf
 'DOBLE PUNTILLO   
 If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=0 Then 
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 27
    Track(ntk).trk(posn,1).dur = DUR + 27
+   PTrack(ntk).trk(posn,1).dur = DUR + 27
    incr=0
 EndIf
 
 If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=0 Then 
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 36
    Track(ntk).trk(posn,1).dur = DUR + 36
+   PTrack(ntk).trk(posn,1).dur = DUR + 36
    incr=0
 EndIf   
 ' -----fin 1er bloque ------------------------
@@ -1763,6 +1773,7 @@ EndIf
 If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 45 'era dur
    Track(ntk).trk(posn,1).dur = DUR + 45
+   PTrack(ntk).trk(posn,1).dur = DUR + 45
 '   Print #1," NUCLEO GUARDO EN ROLL CON S DUR: ";DUR +27;" figura:";figura(DUR+27) 
    incr=45
 EndIf
@@ -1770,23 +1781,27 @@ EndIf
 If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 54
    Track(ntk).trk(posn,1).dur = DUR + 54
+   PTrack(ntk).trk(posn,1).dur = DUR + 54
    incr=45
 EndIf
 
 If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 63
    Track(ntk).trk(posn,1).dur = DUR + 63
+   PTrack(ntk).trk(posn,1).dur = DUR + 63
    incr=45
 EndIf
 If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=0 Then 
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 72
    Track(ntk).trk(posn,1).dur = DUR + 72
+   PTrack(ntk).trk(posn,1).dur = DUR + 72
    incr=45
 EndIf
 
 If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=0 Then 
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 81
    Track(ntk).trk(posn,1).dur = DUR + 81
+   PTrack(ntk).trk(posn,1).dur = DUR + 81
    incr=45
 EndIf
 
@@ -1794,59 +1809,69 @@ EndIf
 If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
     Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 90
     Track(ntk).trk(posn,1).dur = DUR + 90
+    PTrack(ntk).trk(posn,1).dur = DUR + 90
     incr=90
 EndIf
 
 If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
     Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 99
     Track(ntk).trk(posn,1).dur = DUR + 99
+    PTrack(ntk).trk(posn,1).dur = DUR + 99
     incr=90
 EndIf
 
 If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
     Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 108
     Track(ntk).trk(posn,1).dur = DUR + 108
+    PTrack(ntk).trk(posn,1).dur = DUR + 108
     incr=90
 EndIf
 
 If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=1 Then 
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 117
    Track(ntk).trk(posn,1).dur = DUR + 117
+   PTrack(ntk).trk(posn,1).dur = DUR + 117
    incr=90
 EndIf
 If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=1 Then 
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 126
    Track(ntk).trk(posn,1).dur = DUR + 126
+   PTrack(ntk).trk(posn,1).dur = DUR + 126
    incr=90
 EndIf
 '----- fin 3er bloque   
 If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 135
    Track(ntk).trk(posn,1).dur = DUR + 135
+   PTrack(ntk).trk(posn,1).dur = DUR + 135
    incr=135
 EndIf   
 
 If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 144
    Track(ntk).trk(posn,1).dur = DUR + 144
+   PTrack(ntk).trk(posn,1).dur = DUR + 144
    incr=135
 EndIf   
 
 If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 153
    Track(ntk).trk(posn,1).dur = DUR + 153
+   PTrack(ntk).trk(posn,1).dur = DUR + 153
    incr=135
 EndIf   
 
 If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=1 Then 
    Roll.trk(posn, (nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 162
    Track(ntk).trk(posn,1).dur = DUR + 162
+   PTrack(ntk).trk(posn,1).dur = DUR + 162
    incr=135
 EndIf   
 
 If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=1 Then 
    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 171
    Track(ntk).trk(posn,1).dur = DUR + 171
+   PTrack(ntk).trk(posn,1).dur = DUR + 171
    incr=135
 EndIf   
 ' ---fin 4to bloque -
@@ -1858,13 +1883,10 @@ EndIf
  '   DUR=0
  '  EndIf
    cuart=0:pun=0:doblepun=0:tres=0:sil=0:mas=0
-   ' mayorDurEnUnaPosicion (posn) quedo <--defectuoso
-     'If DUR >=1 And DUR <= 72 Then
       DUR = Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur
-      calcCompas(posn,Roll) 'lrepeticion no espor calcCompas
-     'EndIf
-   '   rmerr = Err
-   '  Print #1,"Nucleo Error "; rmerr
+
+         calcCompas(posn,Roll) 'lrepeticion no espor calcCompas
+
 
    nota = 0
    If DUR= 181 Then
@@ -1893,8 +1915,17 @@ EndIf
  'If octavaloop > 1000 Then
  '   octavaEdicion=estoyEnOctava
  'EndIf
+' ============================================== 
+' CREACION DE SECUENCIA PARA TOCAR CON POCA CPU
+'============================================== 
+' notan vale 1 para toda la melodia cargada en Edit.
+' al cargar acorde notan cambiara de 2 a 12
+  If  MaxPos > 1 Then
+    thread1=  ThreadCall crearsecuencia(Ptrack(ntk), posn)
+  EndIf 
 
  Exit Do 'kkkk 30-01-21 probando
+
 EndIf
 ' fin correccion loop
 
@@ -1919,9 +1950,10 @@ If (ScreenEvent(@e)) Then
  ' 23-08-21 CPU consumo fuera de foco
   Case EVENT_MOUSE_EXIT ' mouse fuera de pantalla  
        If play = 1 Or playb=1 Then ' fuera pero en play
-           
+           fueradefoco=0
        Else     ' fuera de y sin play reducimos consumo CPU
             Sleep 20
+            fueradefoco=1
        EndIf
   Case EVENT_MOUSE_BUTTON_PRESS
        MousePress = 1
@@ -2659,7 +2691,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  '                     <=== INICIO  O P I L F E W H
 
    If (MouseButtons And 2)  Then ''<=== menu de duraciones para seleccionar con click
-   ' el resto del code en CrearPenta(), para todaedicion lasduraciones 1 a 8 en letras
+   ' el resto del code en CreaPenta(), para todaedicion lasduraciones 1 a 8 en letras
      ayudaNuevaNota=TRUE 'ESTADO: CALL MENU DURACIONES O CTRL-M
      ayudaModif =FALSE
      savemousex=0 : savemousey=0 ''ACA NO ¿?
@@ -3001,7 +3033,9 @@ EndIf
 EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 ' PODRIA SACARSE LOS MULTIKEY DE SCREEN EVENT PERO NO SE SI ANDAN MEJOR DEBO VERIFICAR
 ' ------------IPC sensado de comando fifo..
-
+if fueradefoco=1  Then
+   Sleep 10
+EndIf
 
 If s5<> 1 Then
  Sleep 1
@@ -3009,6 +3043,10 @@ EndIf
 Loop
 
 While InKey <> "": Wend
+
+if fueradefoco=1  Then
+   Sleep 10
+EndIf
 
 If s5<> 1 Then
  Sleep 1
