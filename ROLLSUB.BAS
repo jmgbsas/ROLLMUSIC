@@ -701,7 +701,7 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
   cairo_move_to  (c, gap1 + (curpos)*anchofig , Penta_y  )
   cairo_line_to  (c, gap1 + (curpos)*anchofig , Penta_y + (notacur-1) * inc_Penta  +inc_Penta )
  
-  RollDur=Roll.trk(n + curpos,notacur -1 + (nro-1) * 13 ).dur ' notacur -1 05-09-2021
+  RollDur=Roll.trk(n + curpos,notacur -1 + (nro-1) * 13 ).dur
   
   RollNota=Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).nota
  EndIf
@@ -733,8 +733,8 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
   ' debo cambiar esa nota por (equivalente en silencio no va mas
   'para eso entra un silencio) se pone nota cero y dur 0
   
-  Roll.trk(n + curpos, notacur + (nro-1) * 13 ).dur = 0
-  Roll.trk(n + curpos, notacur + (nro-1) * 13 ).nota = 0
+  Roll.trk(n + curpos, notacur -1 + (nro-1) * 13 ).dur = 0
+  Roll.trk(n + curpos, notacur -1 + (nro-1) * 13 ).nota = 0
   'Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = dursaved + 16
  ' If Roll.trk(notacur + (nro-1) * 13, n +curpos).dur > 181 Then
  '  Roll.trk(notacur + (nro-1) * 13, n +curpos).dur = 181
@@ -773,8 +773,8 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
      cambiadur = 0
      DUR=0
  ElseIf DUR=182 Then ' borrado 
-     Roll.trk(n + curpos, notacur -1  + (nro-1) * 13).dur = 182
-     Roll.trk(n + curpos, notacur -1  + (nro-1) * 13).nota =181   ' 5.7.2
+     Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = 182
+     Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).nota =181   ' 5.7.2
   '   Print #1,"FINDE SECUENCIA !!"
      cambiadur = 0
      DUR=0
@@ -893,7 +893,7 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
   ' hasta que se pulse FINose alcance el FIN (66)
   ' Print #1, "call a movedato con indaux ",indaux
   ' n es StartInsert fijo no se modifica mas
-  movedato (n + curpos,indaux, insert,notacur  -1+ (nro-1) * 13 ) 'antes de reemplazarlo xxx
+  movedato (n + curpos,indaux, insert,notacur + (nro-1) * 13 ) 'antes de reemplazarlo xxx
  '  Print #1, "regreso de movedato con indaux ",indaux
   ' param : posicion comienzo (fijo), indice incremental para el aux
   ' ,insert comando habilitado = 1
@@ -970,7 +970,7 @@ Sub Tracks (nroTrack As UByte, nroCanal As UByte)
 
 End Sub
 '--------
-Sub CargaArchivo(Roll As inst) ' carga formato roll 
+Sub CargaArchivo(Roll As inst)
    
      Dim z (1,1 )  As dat
      Dim zLim (1,1) As dat
@@ -989,7 +989,7 @@ Sub CargaArchivo(Roll As inst) ' carga formato roll
           nombre=nombrea   
        EndIf
    Dim ca As Integer
-   ca=FreeFile
+   ca=FreeFile   
      'Open "Trabajo_03.roll" For Binary Access Read As #2
     ' Open nombreArchivo +".roll" For Binary Access Read As #2
       Open nombre  For Binary Access Read As #ca
@@ -1013,49 +1013,33 @@ Sub CargaArchivo(Roll As inst) ' carga formato roll
      hasta=zLim(1,1).dur
      'NB => 0 + (desde-1) * 13   ' 27 para 3
      'NA => 11 + (hasta-1) * 13  ' 90 para  7
-     CambiarDim() ' ya tiene calculo NB y NA 
+     CambiarDim(0) ' ya tiene calculo NB y NA 
      
      ' cargamos trabajo datos
      Dim Trabajo (1 To MaxPos, NB To NA) As dat
-     CantTicks = MaxPos 
+     CantTicks = MaxPos+1000 ' le damos un minuto mas
      ReDim  (Roll.trk ) (1 To CantTicks, NB To NA)
-
+     ''Dim Trabajo (NB To NA,1 To MaxPos) As dat ' temporario para convertir
      Get #ca, , Trabajo()
-     ' movemos los datos a Roll y  a track(0)
+     ' movemos los datos a Roll
      ' -------------------------
 
      ReDim compas(1 To CantTicks)
      carga=1 ' no es lo mismo calcCompas con cargar o procesando
-     Dim As Integer j , mayor,ia,valdur,cont, semi
+     Dim As Integer i,j , mayor,ia,valdur,cont, semi
      cont=0
  '    Print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
      Dim As Integer lim1, lim2, grupo, mayorgrupo
-     Dim As UByte Notapiano,i
      For j = 1 To MaxPos   -2 '11-07-2021
 '      Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
-      Dim As integer ip=0
       For i= NB To NA
-       Roll.TRK(j,i)  => Trabajo (j,i)
-       If Trabajo (j,i).nota >= 1 And Trabajo (j,i).nota <=12 And _ 
-          Trabajo (j,i).dur >=1 and Trabajo (j,i).dur <= 180  Then
-         ip+=1 
-         Notapiano= 115 - i 
-         Notapiano= Notapiano - restar (Notapiano)
-          
-         PTrack(0).trk(j,ip).nota => Notapiano
-         PTrack(0).trk(j,ip).dur  => Trabajo (j,i).dur   
-         PTrack(0).trk(j,ip).vol  => Trabajo (j,i).vol
-         PTrack(0).trk(j,ip).pan  => Trabajo (j,i).pan       
-         PTrack(0).trk(j,ip).pb   => Trabajo (j,i).pb
-         PTrack(0).trk(j,ip).inst => Trabajo (j,NA).inst
-       EndIf
-
+       Roll.TRK(j,i)  => Trabajo (j,i)    
+'       Roll.TRK(j,i)  => Trabajo (i,j) ' temporario convertir
       Next i
-      PTrack(0).trk(j,1).acorde=ip
-      crearsecuencia(PTrack(0), j )
+
      Next j
-     Cerrar ca
+     Cerrar (ca)
 
      DUR => 0
      curpos =>0
@@ -1086,10 +1070,14 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
     ubi1 = InStrrev(nombre,"[")
     ubi2 =InStrRev (nombre,"]")
     ntk=CInt(Mid(nombre,ubi1+1,ubi2-ubi1-1))
-      Dim ct As Integer
-      ct=FreeFile
-      Open nombre  For Binary Access Read As #ct
-       Print #1,"arch track  abrio" 
+    Dim ct As Integer
+    ct=FreeFile
+    
+     If ( Open (nombre  For Binary Access Read As #ct )) <> 0 Then
+       Print #1,"arch track  abrio con error 1076 CargaTrack"
+       Exit sub
+     EndIf
+        
      Get #ct, , z(1,1)
      x1=Bin(z(1,1).nota,4)
      x2=Bin(z(1,1).dur,4)
@@ -1097,7 +1085,8 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
      x4=Bin(z(1,1).pan,4)
      x=x1+x2+x3+x4
         Print #1,"reconstruccion x pos bin ", x
-     MaxPosTrack(ntk)=CInt("&B"+x)
+     MaxPos=CInt("&B"+x)   
+     MaxPosTrack(ntk)=MaxPos
      Print #1,"MaxPosTrack(ntk) ",MaxPosTrack(ntk)
      posicion = 1
        Print #1,"reconstruccion x pos int ", Posicion
@@ -1108,18 +1097,21 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
 ' aca supongo que cuadno cargo un track siemrp elo veo por pantalla
 ' CAMBIAR CUADNO CARGUE CANCION,,,,!!!!      
      posn=MaxPosTrack(ntk)- 1
-     MaxPos=MaxPosTrack(ntk)
+     Print #1,"MaxPos ",MaxPos
+ 
      ReDim (Track(ntk).trk ) (1 To Maxpos,1 To lim2)
+
      ' crgamos limites Roll de octavas
      Get #ct, , zLim(1,1)
      desde=zLim(1,1).nota
      hasta=zLim(1,1).dur
      Print #1,"desde ",desde
      Print #1,"hasta ",hasta
-'     NB => 1 + (desde-1) * 13   ' 27 para 3
-'     NA => 12 + (hasta-1) * 13  ' 90 para  7
-  '''REPONER    CambiarDim()
-     
+     NB => 0 + (desde-1) * 13   ' 27 para 3 SI CARGO CANCION NO VA
+     NA => 11 + (hasta-1) * 13  ' 90 para  7 06-09-2021 decia 12 -> es 11
+     Print #1,"cargaTrack desde hasta NB Na", desde, hasta, NB, NA
+       '''REPONER  NO  CambiarDim() YA ESTA EN TRACKArOLL
+     ' DILEMA TENER DISTINTOS TRACK CON NB NA DISTINTOS !!!!     
      ' cargamos trabajo datos
      Dim Trabajo (1 To MaxPosTrack(ntk), 1 To lim2) As dat
      ''Dim Trabajo (NB To NA,1 To MaxPos) As dat ' temporario para convertir
@@ -1146,13 +1138,13 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
       Next i
 
      Next j
-     cerrar  ct
+     cerrar (ct)
 
      DUR => 0
      curpos =>0
      carga=0
-  '...   ReCalCompas(Roll) No es vEctor de Visualizacion      
-    ''''''' REPONER TEMPORARIO ReCalCompas(Roll)
+     '''''ReCalCompas(Roll) '''No es vEctor de Visualizacion      
+'''''' Reponer    ReCalCompas(Roll)
       Print #1,"CargaTrack 3 fin"   
 
 End Sub
@@ -1187,39 +1179,32 @@ Sub TrackaRoll (Track() As inst, ByRef ntk As Integer, Roll As inst)
 Dim As Integer i1,i2,i3,Maxposicion
  ' Print #1,"TrackaRoll 1"   
  
-'NB => 0 + (desde-1) * 13   ' 27 para 3 = 0
-'NA => 11 + (hasta-1) * 13  ' 90 para  9 = 115
-' para octava 2 
-'NB=13
-' NA=24 =13 +11
-' para octava 3 
-'NB=26
-'NA=37
-'=> semitono=nr-int(nR/13)*13+1
-'ej semitono=30-26+1=5
- ' Print #1,"TrackaRoll 1 Nuevo"
-'Nuevo (Roll,0)
- '   Print #1,"TrackaRoll FOR"
-     CantTicks = MaxPosTrack(ntk)+1000 ' le damos un minuto mas
+NB => 0 + (desde-1) * 13   ' 27 para 3 = 0
+NA => 11 + (hasta-1) * 13  ' 90 para  9 = 115
+
+     CantTicks = MaxPosTrack(ntk) '
      ReDim (Roll.trk ) (1 To CantTicks, NB To NA )
      ReDim compas(1 To CantTicks)
      ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
+Print #1,"TrackaRoll desde, hasta ", desde , hasta
+Print #1,"NB, NA ", NB , NA
 
-For i2 = 1 To MaxPosTrack(ntk)
+For i2 = 1 To MaxPosTrack(ntk) -1
    For i1=1 To lim2
  
-      If Track(ntk).trk(i2,i1).nota >= 0 and Track(ntk).trk(i2,i1 ).nota <=NA Then
+      If Track(ntk).trk(i2,i1).nota > 0 and Track(ntk).trk(i2,i1 ).nota <=NA Then
       ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
          PianoNota=Track(ntk).trk(i2,i1 ).nota
          PianoNota= PianoNota + SumarnR (PianoNota)
-         i3= NA -PianoNota
+         i3= 115 -PianoNota  ' 06-09-2021 jmg para 1 a 9 octava anda ok menso no
+         Print #1,"indice i3 el vertical ", i3
          'i3=semitono + (nro-1) * 13
          Roll.trk(i2,i3).nota = CUByte(i3 - (Int(i3/13))*13+1) ' semitono
          Roll.trk(i2,i3).dur  = Track(ntk).trk(i2,i1).dur         
       EndIf
    Next i1
 Next i2     
-For i2 = 1 To MaxPosTrack(ntk)
+For i2 = 1 To MaxPosTrack(ntk) -1
   For i1=NB To NA
    If Roll.trk(i2,i1).nota =0 Then
       Roll.trk(i2,i1).nota=181
@@ -1367,7 +1352,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    carga=0
-   t = "       [ARCHIVO]":cairo_show_text(c, t)
+   t = "       [Archivo]":cairo_show_text(c, t)
 
 '  0.2 ===> [Edicion]
    If mousex > 134 And mousex< 210 And mousey < 50 Then
@@ -1379,7 +1364,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    ' Print #1, "INVESTIGO COMEDIT ENTRO X CLICK EN SUB S3, menuNro: ",S3, menuNro
-   t=  " [EDICION]":cairo_show_text(c, t)
+   t=  " [Edicion]":cairo_show_text(c, t)
 
 ' 0.3 ===> [Ver] pondremos aca ver una posicion dada de la secuecnia
 ' entrando el numero.
@@ -1414,9 +1399,10 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
         menuNew =0
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 1 Then
-         thread1 = ThreadCreate (@PlayAll ,CPtr(Any Ptr, @Roll))
+         
+         thread1 = ThreadCall  playAll(Roll)
          '''playAll(Roll)
- 
+         
         EndIf 
    '     Print #1,"--->paso llamada a thread1 "
     ''    menuNew = 4 por hora sin elecciones
@@ -1427,7 +1413,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    EndIf
    If CPlay=1 Then
       If  MaxPos > 1 Then
-         thread1 = ThreadCreate (@PlayAll ,CPtr(Any Ptr, @Roll))
+         thread1 = ThreadCall  playAll(Roll)
          '''''playAll(Roll)
       EndIf 
       CPlay=0
@@ -1737,7 +1723,7 @@ EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   t=  "       [Compas]":cairo_show_text(c, t)
+   t=  "       [COMPAS]":cairo_show_text(c, t)
   If mousex > 130 And mousex < 235 And mousey < 50  Then  'OCTAVAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
@@ -1746,7 +1732,7 @@ EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   t=  " [Octavas]":cairo_show_text(c, t)
+   t=  " [OCTAVAS]":cairo_show_text(c, t)
   If mousex > 245 And mousex < 330 And mousey < 50  Then  'OCTAVAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
@@ -1809,7 +1795,7 @@ EndIf
       desde = 1 'desdevector
      EndIf
      octavas=1
-    RTA = "Solo Redimension Visual "
+    RTA = "SOLO REDIMENSION VISUAL "
     EndIf
    EndIf
 ' ----> +
@@ -1821,7 +1807,7 @@ EndIf
       desde = hastavector
      EndIf
      octavas =2
-    RTA = "Solo Redimension Visual "
+    RTA = "SOLO REDIMENSION VISUAL "
     EndIf
    EndIf
    t = "      [OCTAVAS DESDE   - / + ] " + Str(desde-1): cairo_show_text(c,t)
@@ -1845,7 +1831,7 @@ EndIf
        hasta = desdevector
       EndIf
       octavas=1
-      RTA = "Solo Redimension Visual "
+      RTA = "SOLO REDIMENSION VISUAL "
      EndIf
     EndIf
 ' -----> +
@@ -1857,7 +1843,7 @@ EndIf
        hasta = 9
       EndIf
       octavas=2
-      RTA = "Solo Redimension Visual "
+      RTA = "SOLO REDIMENSION VISUAL "
      EndIf
     EndIf
    EndIf
@@ -1875,7 +1861,7 @@ EndIf
      NB => 0 + (desde) * 13   ' 27 para 3
      NA => 11 + (hasta) * 13  ' 90 para  7
   '   Print #1,"NB,NA,DESDE,HASTA ";NB,NA,desde,hasta
-     CambiarDim()
+     CambiarDim(1)
      MaxPos = 1 'NroCol
      posicion=1:posn=1
      curpos=1
@@ -1885,7 +1871,7 @@ EndIf
      inicioDeLectura=0
 
      redimensionar=1
-     RTA="Redimension Visual y Fisica Ok"
+     RTA="REDIMENSION VISUAL y FISICA OK"
    '  Print #1, RTA
       MenuNew=0
     EndIf
@@ -1893,7 +1879,7 @@ EndIf
   '  cairo_set_source_rgba c, 1, 1, 1, 1
    
    EndIf
-   t = "  [REDIMENSIONAR]<- CON  DATOS " + RTA
+   t = "  [REDIMENSIONAR]<-NO BORRA DATOS" + RTA
    Case 7
    If mousex > 38 And mousex < 90 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
@@ -1903,7 +1889,7 @@ EndIf
      If mAXpOS > 2 Then
        ReCalCompas(Roll)
      EndIf
-     TCOMPAS="4/4"
+     TCompas="4/4"
     
     EndIf
    Else
@@ -2286,14 +2272,13 @@ Sub botones(hWnd As HWND, c As cairo_t Ptr, cm As cairo_t Ptr, x As Integer,y As
  Dim As cairo_text_extents_t te  '      text size
 
 ' indicacion de sitio optimo par amover la ventana ancho*2/3
-Dim sitio As Integer=ANCHO*2/3
- cairo_set_source_rgba cm, 1, 0, 1, 1
- cairo_move_to  (cm, sitio, 0 )
- cairo_line_to  (cm, sitio, 13)
- cairo_move_to  (cm, sitio, 50 )
- cairo_line_to  (cm, sitio, 37)
-
- cairo_stroke(cm)
+'Dim sitio As Integer=ANCHO*2/3
+' cairo_move_to  (cm, sitio, 0 )
+' cairo_rectangle(cm, sitio,  0 , sitio+10,50)
+' cairo_set_source_rgba cm, 0.2, 0, 0.4, 1 
+' cairo_move_to  (cm, sitio+5, 25 )
+' cairo_fill (cm)
+' cairo_stroke(cm)
 
 
 
@@ -2388,11 +2373,15 @@ End Function
 
 
 
-Sub CambiarDim()
+Sub CambiarDim(redi As Integer)
      NB => 0 + (desde-1) * 13   ' 27 para 3
      NA => 11 + (hasta-1) * 13  ' 90 para  7
-' hacemos un redim preserve por default 
+' hacemos un redim preserve por default
+If redi=1 Then 
+     ReDim  Preserve (Roll.trk ) ( 1 To CantTicks, NB To NA)
+Else
      ReDim  (Roll.trk ) ( 1 To CantTicks, NB To NA)
+EndIf     
      ''ReDim (Roll.trk ) ( NB To NA,1 To CantTicks) ' temporario     
 'no se puede reemplaar en el main del programa por cuestion de scope
 ' o sea la definicion debe hcerse en el scope del main para que funcione
@@ -2737,9 +2726,11 @@ Sub GrabarRollaTrack (cambiaNombre As Integer, enCancion As integer)
          Exit Sub ' no hay archivo nuevo se sale sin grabar nada
       EndIf
    EndIf
-   
-   If Open (nombre  For Binary Access write As #2 ) <> 0 Then
-     Print #1,"Error open Rollsub 2676, nombre ",nombre
+   Dim grt As Integer
+   grt = FreeFile
+  
+   If Open (nombre  For Binary Access write As #grt ) <> 0 Then
+     Print #1,"Error open Rollsub 2727, nombre ",nombre
      Exit Sub
    End If
    Print #1, "nombre tiene el path ",nombre
@@ -2808,7 +2799,7 @@ For i2 = 1 To MaxPos
       ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
          i3=i3+1
          Temp.trk(i2,i3)=Roll.trk(i2,i1 )
-         PianoNota= NA - i1 ' nR=i1 es el indice de Roll
+         PianoNota= 115 - i1 ' nR=i1 es el indice de Roll 06-09-2021 N!=115
          ' cuanta al reves desde ocatva mas aguda a la mas grave,,,
          ' no lo cambiare o podri aahcer lo veremos 
          ' convertimos a PianoNota
@@ -2851,9 +2842,9 @@ Next i2
      grabaLim(1,1).nota = desde
      grabaLim(1,1).dur  = hasta
 
-     Put #2, ,grabaPos(1,1)
-     Put #2, ,grabaLim(1,1)
-     Put #2, ,Temp.trk()
+     Put #grt, ,grabaPos(1,1)
+     Put #grt, ,grabaLim(1,1)
+     Put #grt, ,Temp.trk()
      cerrar 2
      While InKey <> "": Wend
      Sleep 150
@@ -2876,8 +2867,8 @@ Sub GrabarTrack (ntk As integer)
 ' cancion, OTra forma seria crear una carpeta y grabar todos los tracks o pistas 
 ' individualmente y ahi sí usaría esta sub, teniendo en cuenta de que si el track 
 ' grabado esta en edicion en Roll 1ero pasar de rollatrack ..
-Dim gt As Integer
-   gt=FreeFile
+ Dim gt As Integer
+ gt=FreeFile
     Open nombre  For Binary Access write As #gt
      Dim Trabajo (1 To Maxpos, 1 To lim2 ) As dat
      Dim grabaPos (1,1)  As dat
@@ -3009,7 +3000,7 @@ Next i1
      Put #gt, ,grabaPos(1,1)
      Put #gt, ,grabaLim(1,1)
      Put #gt, ,Trabajo()
-     cerrar gt
+     cerrar (gt)
      While InKey <> "": Wend
      Sleep 150
 

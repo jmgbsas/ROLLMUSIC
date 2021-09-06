@@ -17,7 +17,10 @@ Declare Sub alloff(canal As ubyte )
 Declare Sub listports( )
 Declare Sub sleep5dm()
 Declare Function sumar( ind As integer) As Integer
-
+'Declare Sub trasponerRoll(cant As integer)
+'Declare Sub trasponerGrupo(cant As integer)
+'Declare Sub moverZonaRoll(cant As Integer)
+'Declare Sub correcciondeNotas()
 
 Dim Shared message(1 To 21) As UByte ' message output 
 
@@ -66,8 +69,7 @@ Dim Shared As Integer play =0,playb=0, portout, portin, numero
 ReDim Shared As string listout(1 ), listin (1 )
 Dim Shared As String * 1 cifra 
 Dim Shared As String  digito
-
-  
+ 
 '----------------------------
 ' PLAY ALL NEW
 Declare Function QCompare Cdecl (Byval e1 As Any Ptr, Byval e2 As Any Ptr) As Integer
@@ -77,8 +79,7 @@ Type Re   ' de relaciones
  Dur As Integer   ' nuemrcion de figura
  SonyLiga As Integer
 End Type
-'en vec debo agregar la nota piano, tiempo figura debe ser el 1er elemento para que
-' funciones el sort y todos los elementos integer ..o casteamos¿?
+'en vec debo agregar la nota piano
 Type vec
    tiempoFigura As Integer
    DUR As Integer 'DUR

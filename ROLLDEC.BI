@@ -21,7 +21,7 @@ Declare Sub separarDur(ByRef j As Integer,ByRef DUR As Integer,  partes() As Int
 Declare Sub menugrafico(c0 AS cairo_t Ptr,c As cairo_t Ptr, Cantitems As Integer, items() As String )
 'Declare Sub ReCalCompas()
 'Declare Sub CargaArchivo()
-Declare Sub CambiarDim()
+Declare Sub CambiarDim(redi As integer)
 ' para IUP textbox 
 Declare Sub dialogoText(cadena As string)
 Declare Sub velocidades(j as integer)
@@ -39,6 +39,7 @@ Declare Sub ComboBox()
 Declare Sub grabaprueba()
 Declare Sub borrarColumnasMarcadas()
 Declare Function SumarnR (notaPiano As Integer) As Integer
+
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
 
 Dim Shared RTA As String 
@@ -52,13 +53,13 @@ Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
 dim Shared as string cromatica(1 to 12)
-dim shared As Integer MaxPos=2,ntk=0,CPlay=0,notan=1
+dim shared As Integer MaxPos=2,ntk=0,CPlay=0
   
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
 ' 5.7.6.00 tresillos
-espacio=0:notacur=0 '16-05-2021 jmg
+espacio=0:notacur=1 '16-05-2021 jmg
 Dim  Shared figura (1 To 182) As ZString  * 4 => _
 {" O "," P "," I "," L "," F "," E "," X "," H "," W ",_  '  1  9
  " O4"," P4"," I4"," L4"," F4"," E4"," X4"," H4"," W4",_  ' 10 18
@@ -177,8 +178,6 @@ Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 17500000,8750000,4375000,2187500,1093750,546875,273438,136719,68360, _ '163 171
  6666666,3333333,1666666, 833333, 416666,208333,104166, 52083,26042,0,0 }  '172 180 
 
-Dim Shared As Integer Durtick(1 To 8) => {128,64,32,16,8,4,2,1}
- 
 Dim Shared As String nombreArchivo, TCompas,nombre, menuOldStr
 nombre=""
 Dim Shared As UByte Vfuerte=70,Vsemifuerte=60,Vdebil=50
