@@ -1709,4 +1709,82 @@ Next jpt
 
 
 End sub
+' 06-09-2021 jmg
+Sub crearsecuencia(Track() As sec, posn As Integer, ntk As Integer)
+' ON LISTOS, FALTA LOS OFFS
+'Track(ntk).trk(posn,1) 1 a 12 va la segunda..
+' la melodia se carga todo en (posn,1) el acorde en (posn,x) x=2 a 12
+' recibe una instancia de Track no todo el vector
+' cuadno se carga el acorde se hara un sort del mismo incluido la 
+' nota existente en posicion 1 y se ordenara de menor a mayor de modo que
+' siemrpe resultara facil dar ON a todas al mismo tiempo y luego dar off
+' de menro a mayor, 1er paso para mantener el play de acordes con notas de 
+' distinto tamaño.
+' si el usu ingresa acorde en campo OK se pone 1, sino sera una nota ordinaria 
+' con 0 (eso se hará en sub cursor...) <HACER>
+' acorde irá de 1 a 12 , 1 no hay acorde 12 lo maximo
+' si cargo un roll debo calcualr la Notapiano
+Dim As Integer I,J,cnt
+Dim vecs(1 To 12) As poli
+'Print #fs,"ntk --------------------------",ntk,posn
+'
+
+For i=1 To 12
+'Print #fs, i, Track(ntk).trk(posn,i).nota, Track(ntk).trk(posn,i).dur
+vecs(i).dur = CInt  (Track(ntk).trk(posn,i).dur )
+vecs(i).nota = Track(ntk).trk(posn,i).nota
+vecs(i).vol = Track(ntk).trk(posn,i).vol
+vecs(i).pan = Track(ntk).trk(posn,i).pan
+vecs(i).pb = Track(ntk).trk(posn,i).pb
+
+Next i
+' volumenm cero si dur esta entre 46 a 90 o de 136 a 180
+
+Print #fs,"--------------------------"
+
+    If Track(ntk).trk(posn,1).acorde > 1 Then 
+      cnt= Track(ntk).trk(posn,1).acorde
+      Print #fs,"acorde ",cnt
+      qsort( @vecs(1).dur, cnt, SizeOf(poli), @QCompare )
+'      Print #fs,"despues de sort muestra"
+      For i=1 To cnt
+'        Print #fs, vecs(i).nota,vecs(i).dur
+      Next i
+'      Print #fs,"fin muestra sort "
+    EndIf      
+For i=1 To 12
+Track(ntk).trk(posn,i).dur  = CUByte(vecs(i).dur)
+Track(ntk).trk(posn,i).nota = vecs(i).nota
+Track(ntk).trk(posn,i).vol  = vecs(i).vol
+Track(ntk).trk(posn,i).pan  = vecs(i).pan
+Track(ntk).trk(posn,i).pb   = vecs(i).pb
+
+
+Next i
+
+
+' SUPONGO ACORDE DE DISTINTAS DURACIONES
+ FOR  I= 1 TO 12 'PTrack.trk(posn,I).acorde
+    If Track(ntk).trk(posn,I).nota > 0 And  Track(ntk).trk(posn,I).dur >= 1 And _ 
+       Track(ntk).trk(posn,I).dur <= 180 Then    
+       If posn = 1 Then 
+          Track(ntk).trk(posn,I).tick=0
+       Else   
+          Track(ntk).trk(posn,I).tick=(Pesodur(Track(ntk).trk(posn,I).dur)/d7)*128 + _
+          Track(ntk).trk(posn-1,1).tick
+       EndIf      
+      ' guardar si es > 0 ON, notapiano,vol,pan,pb,inst y guargar tick=0
+       Print #fs,posn;",";"ON,";Track(ntk).trk(posn,I).nota;",";Track(ntk).trk(posn,I).vol; ","; _
+           Track(ntk).trk(posn,I).inst;",";Track(ntk).trk(posn,I).tick;","; _
+           (Pesodur(Track(ntk).trk(posn,I).dur)/d7)*128;",";Track(ntk).trk(posn,I).dur 
+
+
+    EndIf 
+ Next I
+        
+       
+'luego
+
+End Sub
+
 

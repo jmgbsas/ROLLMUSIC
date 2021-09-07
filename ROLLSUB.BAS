@@ -1033,12 +1033,33 @@ Sub CargaArchivo(Roll As inst)
      For j = 1 To MaxPos   -2 '11-07-2021
 '      Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
+      Dim As integer ip=0,Notapiano
       For i= NB To NA
        Roll.TRK(j,i)  => Trabajo (j,i)    
-'       Roll.TRK(j,i)  => Trabajo (i,j) ' temporario convertir
-      Next i
+' 06-09-2021 carga Track 
+      
+      
+       If Trabajo (j,i).nota >= 1 And Trabajo (j,i).nota <=12 And _ 
+          Trabajo (j,i).dur >=1 and Trabajo (j,i).dur <= 180  Then
+         ip+=1 
+         Notapiano= 115 - i 
+         Notapiano= Notapiano - restar (Notapiano)
+          
+         Track(ntk).trk(j,ip).nota => Notapiano
+         Track(ntk).trk(j,ip).dur  => Trabajo (j,i).dur   
+         Track(ntk).trk(j,ip).vol  => Trabajo (j,i).vol
+         Track(ntk).trk(j,ip).pan  => Trabajo (j,i).pan       
+         Track(ntk).trk(j,ip).pb   => Trabajo (j,i).pb
+         Track(ntk).trk(j,ip).inst => Trabajo (j,NA).inst
+         'Print #fs,"notapiano,ntk", Track(ntk).trk(j,ip).nota,ntk,Track(ntk).trk(j,ip).dur 
+       EndIf
 
+      Next i
+      Track(ntk).trk(j,1).acorde=ip
+     ' Print #fs, "acorde ",Track(ntk).trk(j,1).acorde
+       crearsecuencia(Track(), j, ntk )
      Next j
+  
      Cerrar (ca)
 
      DUR => 0
@@ -1048,13 +1069,13 @@ Sub CargaArchivo(Roll As inst)
     ''If Roll.trk(1,NA).
 End Sub
 ' ------------------------------------------
-Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
+Sub CargaTrack(Track() As sec, ByRef ntk As Integer)
 ' solo carga track no lo pasa a Vector de Visualizacion.
 ' para cargar desde disco un track se usa esta sub y luego TrackaRoll para verlo
 ' y editarlo
   Print #1,"CargaTrack 1"   
-     Dim z (1,1 )  As dat
-     Dim zLim (1,1) As dat
+     Dim z (1,1 )  As poli
+     Dim zLim (1,1) As poli
      Dim As Integer ubi1,ubi2 
      Dim As String x,x1,x2,x3,x4,nombrea
      ''' no usar mas  dialogoText("Cargar Archivo")
@@ -1099,12 +1120,12 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
      posn=MaxPosTrack(ntk)- 1
      Print #1,"MaxPos ",MaxPos
  
-     ReDim (Track(ntk).trk ) (1 To Maxpos,1 To lim2)
+     ReDim Trabajo  (1 To Maxpos,1 To lim2) As poli 
 
      ' crgamos limites Roll de octavas
      Get #ct, , zLim(1,1)
-     desde=zLim(1,1).nota
-     hasta=zLim(1,1).dur
+     desde=CInt(zLim(1,1).nota)
+     hasta=CInt(zLim(1,1).dur)
      Print #1,"desde ",desde
      Print #1,"hasta ",hasta
      NB => 0 + (desde-1) * 13   ' 27 para 3 SI CARGO CANCION NO VA
@@ -1113,11 +1134,12 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
        '''REPONER  NO  CambiarDim() YA ESTA EN TRACKArOLL
      ' DILEMA TENER DISTINTOS TRACK CON NB NA DISTINTOS !!!!     
      ' cargamos trabajo datos
-     Dim Trabajo (1 To MaxPosTrack(ntk), 1 To lim2) As dat
-     ''Dim Trabajo (NB To NA,1 To MaxPos) As dat ' temporario para convertir
-     Print #1,"Get Trabajo "
+
+    
+     
+     Print #1,"Get TrK POLI "
      Get #ct, , Trabajo()
-     Print #1,"Geteo Trabajo "
+     Print #1,"Geteo Trabajo poli "
      ' movemos los datos a Roll
      ' -------------------------
      'ReDim compas(1 To CantTicks) es solo para visualizar
@@ -1132,7 +1154,7 @@ Sub CargaTrack(Track() As inst, ByRef ntk As Integer)
       
       For i= 1 To lim2
     '  Print #1,"carga i acorde ",i
-      Track(ntk).TRK(j,i)  => Trabajo (j,i)  
+      Track(ntk).trk (j,i)  => Trabajo (j,i)  
     '  Print #1,"luego de carga i acorde ",i  
 ' cargar en visualizacion con otra sub si es necesario
       Next i
@@ -1175,7 +1197,7 @@ CantTicks=4000 ' vuelvo al original default
 
 End Sub
 ' 
-Sub TrackaRoll (Track() As inst, ByRef ntk As Integer, Roll As inst)
+Sub TrackaRoll (Track() As sec, byval ntk As Integer, Roll As inst)
 Dim As Integer i1,i2,i3,Maxposicion
  ' Print #1,"TrackaRoll 1"   
  
@@ -1192,7 +1214,7 @@ Print #1,"NB, NA ", NB , NA
 For i2 = 1 To MaxPosTrack(ntk) -1
    For i1=1 To lim2
  
-      If Track(ntk).trk(i2,i1).nota > 0 and Track(ntk).trk(i2,i1 ).nota <=NA Then
+      If Track(ntk).trk (i2,i1).nota > 0 and Track(ntk).trk(i2,i1 ).nota <=NA Then
       ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
          PianoNota=Track(ntk).trk(i2,i1 ).nota
          PianoNota= PianoNota + SumarnR (PianoNota)
@@ -2738,8 +2760,6 @@ Sub GrabarRollaTrack (cambiaNombre As Integer, enCancion As integer)
 
      ReDim Trabajo (1 To Maxpos, NB To NA) As dat
 
-     Dim grabaPos (1,1)  As dat
-     Dim grabaLim (1,1)  As dat 
      Dim As Integer i1, i2, i3, semitono, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
 'Print #1, "inicio MaxPos "; MaxPos
@@ -2768,7 +2788,7 @@ Sub GrabarRollaTrack (cambiaNombre As Integer, enCancion As integer)
     If borrocol = 0 Or res=0 Or final=1 Then 'copio columna no borro
        k=k+1
       For i1 = NB To NA
-          Trabajo(k, i1)=Roll.trk(i2,i1 )
+          Trabajo(k, i1) =Roll.trk(i2,i1 )
       Next i1
     EndIf
       
@@ -2788,8 +2808,10 @@ Next i1
 ' tengo a Roll listo para convertir a track sin marcas de borrado de Col
 ' convertir
 
+     Dim grabaPos (1,1)  As poli
+     Dim grabaLim (1,1)  As poli 
 
-ReDim (Temp.trk ) (1 To MaxPos,1 To lim2)
+Dim Temp (1 To MaxPos,1 To lim2) As poli
 i3=0
 
 For i2 = 1 To MaxPos
@@ -2798,14 +2820,20 @@ For i2 = 1 To MaxPos
       If Roll.trk(i2,i1 ).nota >= 1 and Roll.trk(i2,i1 ).nota <=12 Then
       ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
          i3=i3+1
-         Temp.trk(i2,i3)=Roll.trk(i2,i1 )
+         Temp(i2,i3).dur=CInt(Roll.trk(i2,i1 ).dur)
+         Temp(i2,i3).nota=Roll.trk(i2,i1 ).nota
+         Temp(i2,i3).vol=Roll.trk(i2,i1 ).vol
+         Temp(i2,i3).pan=Roll.trk(i2,i1 ).pan
+         Temp(i2,i3).pb=Roll.trk(i2,i1 ).pb
+         Temp(i2,i3).inst=Roll.trk(i2,i1 ).inst
+         
          PianoNota= 115 - i1 ' nR=i1 es el indice de Roll 06-09-2021 N!=115
          ' cuanta al reves desde ocatva mas aguda a la mas grave,,,
          ' no lo cambiare o podri aahcer lo veremos 
          ' convertimos a PianoNota
          PianoNota= PianoNota - restar (PianoNota)
          ' track tendra directamente el valor del piano para tocar con rtmidi
-         Temp.trk(i2,i3).nota=PianoNota 
+         Temp(i2,i3).nota=CUByte(PianoNota) 
          If i3=12 Then ' track solo guarda 12 notas en acorde el resto se desrpecia
             Exit For, For  
          End If
@@ -2839,13 +2867,13 @@ Next i2
      grabaPos(1,1).vol  = y3
      grabaPos(1,1).pan  = y4
      '-----------------------
-     grabaLim(1,1).nota = desde
-     grabaLim(1,1).dur  = hasta
+     grabaLim(1,1).nota = CUByte(desde)
+     grabaLim(1,1).dur  = CUByte(hasta)
 
      Put #grt, ,grabaPos(1,1)
      Put #grt, ,grabaLim(1,1)
-     Put #grt, ,Temp.trk()
-     cerrar 2
+     Put #grt, ,Temp()
+     cerrar (grt)
      While InKey <> "": Wend
      Sleep 150
 
@@ -2853,6 +2881,7 @@ End Sub
 
 ' ---------------------------------
 Sub GrabarTrack (ntk As integer)
+' DE MUCHOS TRACKS UN VECTOR, GRABA UNA SOLA OCURRENCIA 
 ' por ahroa no se usa para nada , parece qu elo probe en un momento
 ' pero ahroa siemrep grabo con GrabarRollaTrack, asi tomo als modificaciones
 ' enchas en edicion de Roll. Si no modifico nada de lo cargado, pero 
@@ -2870,9 +2899,9 @@ Sub GrabarTrack (ntk As integer)
  Dim gt As Integer
  gt=FreeFile
     Open nombre  For Binary Access write As #gt
-     Dim Trabajo (1 To Maxpos, 1 To lim2 ) As dat
-     Dim grabaPos (1,1)  As dat
-     Dim grabaLim (1,1)  As dat 
+     Dim Trabajo (1 To Maxpos, 1 To lim2 ) As poli
+     Dim grabaPos (1,1)  As poli
+     Dim grabaLim (1,1)  As poli 
      Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
 'Print #1, "inicio MaxPos "; MaxPos

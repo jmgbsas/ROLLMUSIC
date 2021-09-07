@@ -40,6 +40,7 @@ Declare Sub grabaprueba()
 Declare Sub borrarColumnasMarcadas()
 Declare Function SumarnR (notaPiano As Integer) As Integer
 
+
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
 
 Dim Shared RTA As String 

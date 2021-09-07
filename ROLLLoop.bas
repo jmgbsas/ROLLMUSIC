@@ -1900,7 +1900,14 @@ EndIf
  'If octavaloop > 1000 Then
  '   octavaEdicion=estoyEnOctava
  'EndIf
-
+' ============================================== 
+' CREACION DE SECUENCIA PARA TOCAR CON POCA CPU
+'============================================== 
+' notan vale 1 para toda la melodia cargada en Edit.
+' al cargar acorde notan cambiara de 2 a 12
+  If  MaxPos > 1 Then
+   ' crearsecuencia(track(ntk).trk(), posn,ntk)
+  EndIf 
  Exit Do 'kkkk 30-01-21 probando
 EndIf
 ' fin correccion loop

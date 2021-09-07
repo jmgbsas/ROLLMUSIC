@@ -226,9 +226,31 @@ Print #1,Date;Time
 #Include "foro/window9.bi"
 ''#Include "Afx/windowsxx.bi"
 
+' prueba de secuencia 
+Dim Shared fs As Integer 
+fs = FreeFile 
+Open "secuencia.txt" For Output As #fs
+
 Const NULL = 0
 Const NEWLINE = !"\n"
 ' iup fin
+Type poli ' para guardar la secuencia
+ dur As  Integer  ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
+ nota As UByte  ' en un futuro contendra nota, octava, canal etc 
+ vol As  UByte  ' volumen
+ pan As  UByte  ' paneo
+ pb  As  UByte  ' pitch bend
+ inst As UByte ' instrumento para cada nota podra ser distinto
+ tick As Integer ' 128 tiene la redonda, 1 la cuartifusa
+ posn As Integer ' de roll
+ acorde  As ubyte  ' 1 a 12 , son el se hara el sort    
+End Type 
+
+Type sec
+ As poli trk(Any, any)
+End Type
+
+'-------------------------------
 Type dat Field=1
  nota As UByte  ' en un futuro contendra nota, octava, canal etc 
  dur As  UByte  ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
@@ -237,19 +259,25 @@ Type dat Field=1
  pb  As  UByte  ' pitch bend
  inst As UByte ' instrumento para cada nota podra ser distinto
 End Type
+Type inst
+ As dat trk(Any, Any)
+End Type
+
 
 Dim Shared As Long CONTROL1 = 0
 ' ROLL PARAEL GRAFICO PERO LOS TRCKS PODRIAN SER DISTINTOS
 'Dim Shared As dat Roll  (1 To 128 , 1 To 19200)
-Type inst
- As dat trk(Any, Any)
-End Type
+
+' dur debe ser el 1er elemento para que ande bien el sort
+
 ' PUEDO TENER UN SHARED DINAMICO GRACIAS A TYPE !!!
 Dim Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 
-Dim Shared As inst Temp 
-Dim Shared As inst Track (0 To 64) ' tracks para guardar,.. y tocar 
 Dim Shared As inst Roll ' para visualizar y tocar
+ 
+
+Dim Shared Track  (0 To 64) As sec ' tracks para guardar,.. y tocar 
+
 
 
 'tempo I=160, seri equivalente a O=40 como l maxima cantdad de ticks de O es
@@ -372,6 +400,7 @@ ReDim (Track(4).trk ) (1 To ctres,1 To lim2)
 ' debere hAcer otro play PlayTracks en donde se ejecutara todos los tracks
 ' barriendo la posicion comun a todos y las notas de cada uno EN SINCRONIA CON LA VISUALIZACION!
 ' ENTONCES EN PLAYALL RECORRO TRACKS PERO NO EL DE VISUALIZACION,,,,,VEREMOS.,
+
 
 Dim Shared As inst RollAux
 ReDim (RollAux.trk) ( 1 To CantTicks,NB To NA )
@@ -775,7 +804,8 @@ If ix < 3 Then
 Else
 '    param.titulo ="RollMusic"
 '    threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-  ThreadWait threadloop  
+  ThreadWait threadloop
+  cerrar(0)  
 End If
     
 
