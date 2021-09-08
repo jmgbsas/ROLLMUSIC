@@ -625,7 +625,7 @@ Next
 'If mousey > 50 Then
 '   play=0
 'EndIf
-
+pubi=0
 menu(c,cm, posicion,menuNro, Roll)
 
 botones(hWnd, c ,cm, ANCHO,ALTO) ' este despues sinocrash
@@ -3039,20 +3039,5 @@ Loop
 
 
 End sub
-Function save_check (ih as Ihandle Ptr ) As integer
-dim as Ihandle Ptr canvas = IupGetDialogChild(ih, "CANVAS")
- ' if (IupGetInt(canvas, "DIRTY")) Then 
-    Select Case  IupAlarm("Llamao a RollMusic ", "File not saved! Save it now?", "Yes", "No", "Cancel")
-     Case 1  '/* save the changes and continue */
- '      save_file(canvas)
-
-    case 2  '/* ignore the changes and continue */
-
-    case 3  '/* cancel */
-      return 0  
-    End Select
- ' End If
-  return 1
-End function
 
 

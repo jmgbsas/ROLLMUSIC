@@ -169,6 +169,8 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 ' para GTK Gtk:list()
 #Include Once "crt.bi"
 #Include Once "gtk/gtk.bi"
+'#inclib "ntdll"
+'#include "win\ntdef.bi"
 
 ' This is our data identification string to store data in list items
 Const list_item_data_key ="list_item_data"
@@ -219,11 +221,15 @@ Print #1,Date;Time
 #Include "ROLLCONTROLDEC.bi"
 '=============================
 ' iup start
-#Include Once "IUP/iup.bi"
-#Include Once "iup/iupcontrols.bi"
 #Include once "foro/fmidi.bi"
 #Include "fbthread.bi"
 #Include "foro/window9.bi"
+'#Include "crt/win32/unistd.bi"
+#inclib "ntdll"
+#Include "win/ntdef.bi"
+'#Include "nanosleep/mod_nanosleep.bi"
+'#Include "nanosleep/mod_nanosleep_dll.bi"
+'#Inclib "nanosleep_dll"
 ''#Include "Afx/windowsxx.bi"
 
 ' prueba de secuencia 
@@ -555,9 +561,10 @@ Dim Shared As hWnd hwnd,hwndMenu
  Dim shared As Any Ptr lpExitCode
  Dim As Integer MenuFlag=0, LoopFlag=0 
 
-
+'========================== 
 #Include "ROllLoop.BAS"
-dim Shared As Ihandle Ptr frame, dialog, mnu, btn_start,btn_stop
+'========================== 
+
 
 
 

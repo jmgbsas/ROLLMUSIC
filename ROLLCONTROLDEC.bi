@@ -1,6 +1,6 @@
 Declare Sub EntrarNombreCancion(ByRef NombreCancion As string)
 Declare Sub EntrarNombrePista(ByRef NombrePista As string)
-
+Declare Sub EntrarTeclado (cadena As String)
 Declare Sub cerrar(n As integer)
 Declare Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer)
 Declare Sub reproducir()

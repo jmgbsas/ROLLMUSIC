@@ -1199,9 +1199,10 @@ Print #1,"-----------------------------------------"
     Dim As Double start,final
     start=Timer
     Do
-      If (Timer-start) > 0.0001 Then ' 0.1 MILESIMA DE PRESICION DE DURACION
-        Exit Do
-      EndIf
+'      If (Timer-start) > 0.0001 Then ' 0.1 MILESIMA DE PRESICION DE DURACION
+'        Exit Do
+'      EndIf
+       Sleep 2  
     Loop
 
    Loop Until (Timer - old_time_on) >= tiempoFigura
@@ -1333,19 +1334,43 @@ res= ind Mod 13
 End Function 
 
 Sub duracion (old_time As Double, tiempoFigura As Double)
-' retardo puro sin on ni off
+' retardo puro sin on ni off dejo de andar porque ???
 Print #1,"COMIENZA RETARDO En  time :"; old_time
-Dim start As double
+Print #1, "tiempoFigura " , tiempoFigura
+Dim As Double start
+dim as LARGE_INTEGER delay 
+'la funcion nativa resuelve en unidades de 100 nanosegundos!
+'-50000000 '5 seconds
+'si son unidade sde 100 nanosegundos
+'entonces 100 unidades de nsec  son= 10^-9 *10^ 2 = 10^-7 =0,0000001
+'50000000 = 5*10^7 * 10^-7 =5
+'
+'1000 = 1*10^3*10^-7=1*10^-4 = 0,0001 = 0,1mseg !!!
+'obtenermos una resolucion de 0,1 mseg y sin consumo de CPU!
+
+delay.QuadPart = -1000 ' =0.1 mili segundos 
+ start=Timer
   Do
-   start = Timer
-   Do
-    If (Timer - start) > 0.0001 Then ' 0.1 MILESIMA DE PRESICION DE DURACION
-       Exit Do
-    EndIf
-   Loop
-  Loop Until (Timer - old_time) >= tiempoFigura
+    'Sleep 1
+    NtDelayExecution(FALSE,@delay)
+  Loop Until Timer - old_time >= tiempoFigura
 
 End Sub
+
+
+Sub duracionokOLD (old_time As Double, tiempoFigura As Double)
+' retardo puro sin on ni off dejo de andar porque ???
+Print #1,"COMIENZA RETARDO En  time :"; old_time
+Print #1, "tiempoFigura " , tiempoFigura
+Dim As Double start, endtime 
+ start=Timer
+  Do
+    Sleep 1
+  Loop Until Timer - old_time >= tiempoFigura
+
+End Sub
+
+
 Sub listports( )
 
 

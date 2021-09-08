@@ -207,9 +207,42 @@ Dim Shared As Integer fueradefoco=0
 'Ctrl nro 1,2,3,4,5,6,7,8 9 notiene sentido
 ' 123 234 345 456 567 678 789 son7 doblepuntilo simple
 
-' free type
 #Include Once "freetype2/freetype.bi"
 '' The FB headers don't contain this prototype
+extern "c"
+Declare function usleep( as ulong) as long '=0 when working
+end Extern
+
+'extern "c"
+'Declare function nanosleep( r As Any Ptr, q As Any ptr) as long '=0 when working
+'end Extern
+
+'Type nanot
+' rqtp As Integer
+' rmtp As integer
+'End Type
+' code from
+'https://freebasic.net/forum/viewtopic.php?t=23680
+'Declare sub RtlInitUnicodeString alias "RtlInitUnicodeString"(as PUNICODE_STRING,as PCWSTR)
+'Declare function NtDisplayString alias "NtDisplayString"(as PUNICODE_STRING)as NTSTATUS
+Declare function NtDelayExecution alias "NtDelayExecution"(as BOOLEAN,as PLARGE_INTEGER)as NTSTATUS
+Declare function NtTerminateProcess alias "NtTerminateProcess"(as HANDLE,as NTSTATUS)as NTSTATUS
+'#define NtCurrentProcess() cast(HANDLE,-1)
+'our entry point
+'sub startup cdecl() 'NtProcessStartup... any name is ok
+'    dim as UNICODE_STRING us
+'    dim as LARGE_INTEGER delay
+'    delay.QuadPart = -10000 '1 m seconds
+'  ' RtlInitUnicodeString(@us,@wstr("FreeBasic Native Application"))
+'  '  NtDisplayString(@us) 'show the message
+'    NtDelayExecution(FALSE,@delay) 'so we can see the message
+'    NtTerminateProcess(cast(HANDLE,-1),0)
+'end Sub
+
+
+
+
+
 extern "C"
 declare function _
 cairo_ft_font_face_create_for_ft_face ( as FT_Face, as long ) as cairo_font_face_t ptr
@@ -219,7 +252,7 @@ end extern
 type FreeType
  public:
  declare constructor()
- declare destructor()
+ Declare destructor()
 
  declare operator Cast() as FT_Library
 

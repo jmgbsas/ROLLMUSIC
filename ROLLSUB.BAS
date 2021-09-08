@@ -990,8 +990,7 @@ Sub CargaArchivo(Roll As inst)
        EndIf
    Dim ca As Integer
    ca=FreeFile   
-     'Open "Trabajo_03.roll" For Binary Access Read As #2
-    ' Open nombreArchivo +".roll" For Binary Access Read As #2
+
       Open nombre  For Binary Access Read As #ca
      Get #ca, , z(1,1)
      x1=Bin(z(1,1).nota,4)
@@ -1019,6 +1018,7 @@ Sub CargaArchivo(Roll As inst)
      Dim Trabajo (1 To MaxPos, NB To NA) As dat
      CantTicks = MaxPos+1000 ' le damos un minuto mas
      ReDim  (Roll.trk ) (1 To CantTicks, NB To NA)
+     ReDim  (Track(ntk).trk ) (1 To CantTicks, NB To NA)
      ''Dim Trabajo (NB To NA,1 To MaxPos) As dat ' temporario para convertir
      Get #ca, , Trabajo()
      ' movemos los datos a Roll
@@ -1134,8 +1134,8 @@ Sub CargaTrack(Track() As sec, ByRef ntk As Integer)
        '''REPONER  NO  CambiarDim() YA ESTA EN TRACKArOLL
      ' DILEMA TENER DISTINTOS TRACK CON NB NA DISTINTOS !!!!     
      ' cargamos trabajo datos
+     ReDim (Track(ntk).trk) (1 To MAxPos, 1 To lim2)
 
-    
      
      Print #1,"Get TrK POLI "
      Get #ct, , Trabajo()
@@ -1219,7 +1219,7 @@ For i2 = 1 To MaxPosTrack(ntk) -1
          PianoNota=Track(ntk).trk(i2,i1 ).nota
          PianoNota= PianoNota + SumarnR (PianoNota)
          i3= 115 -PianoNota  ' 06-09-2021 jmg para 1 a 9 octava anda ok menso no
-         Print #1,"indice i3 el vertical ", i3
+      '   Print #1,"indice i3 el vertical ", i3
          'i3=semitono + (nro-1) * 13
          Roll.trk(i2,i3).nota = CUByte(i3 - (Int(i3/13))*13+1) ' semitono
          Roll.trk(i2,i3).dur  = Track(ntk).trk(i2,i1).dur         
@@ -1394,6 +1394,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
       If MouseButtons And 1 Then
          cairo_set_source_rgba c, 0, 1, 0, 1
          menuOldStr="[Ver]"
+         Print #1,"voy a menu 8 desde ver"
          menuNew=8
       EndIf 
    Else
@@ -1423,7 +1424,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
         If  MaxPos > 1 Then
          
          thread1 = ThreadCall  playAll(Roll)
-         '''playAll(Roll)
+         ''playAll(Roll)
          
         EndIf 
    '     Print #1,"--->paso llamada a thread1 "
@@ -1436,16 +1437,16 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    If CPlay=1 Then
       If  MaxPos > 1 Then
          thread1 = ThreadCall  playAll(Roll)
-         '''''playAll(Roll)
+         ''playAll(Roll)
       EndIf 
       CPlay=0
    EndIf
    t=  " [Reproducir]":cairo_show_text(c, t)
    ' --------------------------
  '0.7  ===> [Opciones]  '25-07-2021
-   If MultiKey(sc_Control) And mousex > 480 And mousex< 555 And mousey < 50  Then  'OPCIONES
+   If MultiKey(sc_Control) And mousex > 504 And mousex< 598 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
-     Sleep 200
+     Sleep 100
     If MouseButtons And 1 Then
      menuNew=5
     EndIf
@@ -1677,8 +1678,7 @@ EndIf
        Else
          nombre=nombreg   
        EndIf
-     ''Open "Trabajo_03.roll" For Binary Access write As #2
-     ''Open nombreArchivo +".roll" For Binary Access write As #2
+
        GrabarArchivo()
           lockip=2 ' habilita mouse 28-08-2021
        MenuNew=0   
@@ -1755,10 +1755,11 @@ EndIf
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [OCTAVAS]":cairo_show_text(c, t)
-  If mousex > 245 And mousex < 330 And mousey < 50  Then  'OCTAVAS
+  If mousex > 260 And mousex < 329 And mousey < 50  Then  'OCTAVAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
-     menuOldStr="[Tempo]"
+     menuOldStr="[TEMPO]"
+     
      menuNew=8
     EndIf
    Else
@@ -1951,53 +1952,32 @@ EndIf
  
  cairo_stroke(c)
   Case 8
- ' USAR LA ENTRADA DE TEXTO DE IUP
+ Print #1,"entro a menu 8 desde ver"
+ 
       Select Case  menuOldStr
           Case "[Ver]" 
           nombreArchivo="0"
           Dim cadena As String 
           cadena="IR A COMPAS"
-          If pubi =0 Then 'ptr shared , se llaam solo una vez 
-            pubi=@cadena
-            thread3= ThreadCreate (@dialogoText(),CPtr(Any Ptr, pubi))
+          If pubi =0 Then
+           Print #1,"voy a EntrarTEcla desde ver menu8"
+            menunew=0
+             
+            thread3= ThreadCall EntrarTeclado(cadena)
+             pubi=1
           EndIf
-
-            compasX=CInt(nombreArchivo)
-            If compasX > NroCompas Then
-               compasX=Nrocompas
-            EndIf
-            If compasX < 0 Then
-               compasX=1
-            EndIf
-   '         If compasX = 0 Then
-    '           Exit Sub
-    '        EndIf
-          If compasX >=1 Then       
-            Dim ni As Integer
-            Print #1,"NroCompas: ", NroCompas
-            Print #1,"CompasX: ", CompasX
-            For ni=1 To MaxPos
-'            Print #1,"ni: ,posi, nro Compas ", ni, Compas(ni).Posi, Compas(ni).nro
-               If Compas(ni).nro = compasX Then
-                  posicion = Compas(ni).Posi
-'                  Print #1,"encontro : ", CompasX
-                  Exit For
-               EndIf
-            Next ni
-          EndIf  
-          Case "[Tempo]" 
+ '          
+          Case "[TEMPO]" 
           nombreArchivo="0"
           Dim cadena As String 
           cadena="Ajuste Tempo"
-          If pubi =0 Then 'ptr shared , se llaam solo una vez 
-            pubi=@cadena
-            thread3= ThreadCreate (@dialogoText(),CPtr(Any Ptr, pubi))
+          Print #1,">>>>>>>>TIEMPO PATRON viejo>>>>>>>>>>,PUBI ", tiempoPatron,pubi
+          If pubi =0 Then
+             menunew=0  
+             thread3= ThreadCall EntrarTeclado(cadena)
+            pubi=1   
           EndIf
-''           dialogoText("AJUSTE TEMPO")  
-          tiempoPatron= Cdbl(nombreArchivo)
-          If tiempoPatron = 0 Then
-               tiempoPatron=60
-          EndIf
+
       End Select
     menunew=0
   Case 9
@@ -2413,91 +2393,46 @@ EndIf
 
 End Sub
 
-Function on_click_ok cdecl(byval handler as Ihandle ptr) as Long
-	var dialog = IupGetHandle("dialog")
-	var textbox = IupGetHandle("textbox")
-	var label = IupGetHandle("label")
+Sub EntrarTeclado(cadena As String)
 
-	nombreArchivo = *IupGetAttribute(textbox, IUP_VALUE)
 
-'	Print "OK clicked! content of textbox: <" + nombreArchivo + ">"
+NombreArchivo=InputBox(cadena ,,"")
+If menuOldStr="[Ver]" Then
+            compasX=CInt(nombreArchivo)
+            If compasX > NroCompas Then
+               compasX=Nrocompas
+            EndIf
+            If compasX < 0 Then
+               compasX=1
+            EndIf
+   '         If compasX = 0 Then
+    '           Exit Sub
+    '        EndIf
+          If compasX >=1 Then       
+            Dim ni As Integer
+            Print #1,"NroCompas: ", NroCompas
+            Print #1,"CompasX: ", CompasX
+            For ni=1 To MaxPos
+            Print #1,"ni: ,posi, nro Compas ", ni, Compas(ni).Posi, Compas(ni).nro
+               If Compas(ni).nro = compasX Then
+                  posicion = Compas(ni).Posi
+                  Print #1,"encontro : ", CompasX
+                  Exit For
+               EndIf
+            Next ni
+          EndIf  
 
-	'IupSetStrAttribute(label, IUP_TITLE, _
-'		"Thanks. You entered <" + nombreArchivo + ">." + NEWLINE + _
-'		"val() result: " & val(nombreArchivo) & ". " + NEWLINE + _
-'		"IupGetInt() result: " & IupGetInt(textbox, IUP_VALUE) & "." + NEWLINE + _
-'		"IupGetFloat() result: " & IupGetFloat(textbox, IUP_VALUE) & "." _
-'	)
-
-	'' Recalculate the window layout. Since we changed the label text, it
-	'' may require more space. This may require us to even increase the
-	'' entire dialog's size to make room for the bigger label. According to
-	'' IUP documentation doing this requires setting the SIZE attribute of
-	'' the dialog, then call IupRefresh() on it. I'm not 100% sure whether
-	'' this is the right/best way to do it.
-	IupSetAttribute(dialog, IUP_SIZE, NULL)
-	IupRefresh(dialog)
- Function = IUP_DEFAULT
-''''movido
- IupClose() '<== movido aca asi al dar ok cierra el dialago
-''''
-end function
-Sub dialogoText(cadena As string)
-Dim mensaje As String 
-If menuOldStr="[ver]" Then
-  mensaje ="Nro De Compas."
 Else
-  mensaje ="Tempo: Negras en 1 minuto."  
+ Print #1,"nombreArchivo de click ok",nombreArchivo
+ tiempoPatron= Cdbl(nombreArchivo)
+ Print #1,">>>>>>>>TIEMPO PATRON NUEVO>>>>>>>>>>,pubi", tiempoPatron,pubi
+ If tiempoPatron = 0 Then
+    tiempoPatron=60
+ EndIf
 EndIf
 
-
-IupOpen(NULL, NULL)
-
-'' Create a window with a text box, ok button, and a label
-var textbox = IupText(NULL)
-var okbutton = IupButton("OK", "on_click_ok")
-Var label = IupLabel(mensaje)
-var vbox = IupVbox(textbox, okbutton, label, NULL)
-var dialog = IupDialog(vbox)
-
-'' Window title
-IupSetAttribute(dialog, IUP_TITLE, cadena )
-
-'' Make text box accept numbers only (instead of arbitrary text)
-'' According to the IUP documentation, the IupText() control accepts a FILTER
-'' attribute on Windows, which can have the values LOWERCASE, UPPERCASE or NUMBER.
-'' Thus FLOAT does not seem to be valid!?
-'IupSetAttribute(textbox, IUP_FILTER, "FLOAT")
-'' However, NUMBER does not disallow letters to be entered on Windows XP either...
-'IupSetAttribute(textbox, IUP_FILTER, "NUMBER")
-
-'' Adjust layout a little bit
-IupSetAttribute(textbox, IUP_EXPAND, "YES")
-IupSetAttribute(okbutton, IUP_EXPAND, "YES")
-IupSetAttribute(label, IUP_EXPAND, "YES")
-IupSetAttribute(vbox, IUP_GAP, "4")
-IupSetAttribute(vbox, IUP_ALIGNMENT, "ACENTER")
-IupSetAttribute(vbox, IUP_MARGIN, "4x4")
-
-'' Set callbacks and handles
-IupSetFunction("on_click_ok", @on_click_ok)
-IupSetHandle("dialog", dialog)
-IupSetHandle("textbox", textbox)
-IupSetHandle("label", label)
-
-'' Show window and run main loop
-IupShow(dialog)
-' agregue pra dar el foco una funcion de win api
-SetForegroundWindow(FindWindow(NULL, cadena))
-
-IupMainLoop()
-
-
-IupClose()
-' ptr de ver ubicacion
-pubi=0 ' habilita siguiente llamada de ver nrocompas 
-ThreadDetach(thread3) 
 End Sub
+
 
 Sub velocidades(j As integer)
     If TCompas="4/4" Then
@@ -2533,8 +2468,7 @@ Sub velocidades(j As integer)
 
 End Sub 
 Sub GrabarArchivo ()
-     ''Open "Trabajo_03.roll" For Binary Access write As #2
-     ''Open nombreArchivo +".roll" For Binary Access write As #2
+
      If nombre = "" Then ' backup
         nombre = "Backup"+ Date + ".roll"
      EndIf   
