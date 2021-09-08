@@ -169,8 +169,6 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 ' para GTK Gtk:list()
 #Include Once "crt.bi"
 #Include Once "gtk/gtk.bi"
-'#inclib "ntdll"
-'#include "win\ntdef.bi"
 
 ' This is our data identification string to store data in list items
 Const list_item_data_key ="list_item_data"
@@ -718,8 +716,8 @@ End Sub
 param.titulo ="RollMusic"
 
 
-''''threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-RollLoop ( param)
+threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+'''RollLoop ( param)
 
 If ix < 3 Then 
 
