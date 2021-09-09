@@ -1172,10 +1172,26 @@ Sub CargaTrack(Track() As sec, ByRef ntk As Integer)
 End Sub
 '
 Sub Nuevo(Roll As inst,borraNombre As integer)
-CantTicks=4000 ' vuelvo al original default 
+CantTicks=4000 ' vuelvo al original default
+' se inicia el vector desde 1 hasta 9, se puede achicar las octavas ok.
+' si ya se habian achicado y quiero agrandar, no se puede, debo borrar el vector.
+' En la cantidad de posiciones no hay porblema en ambas direcciones. 
+          If desdevector > desde Or hastavector < hasta Then ' si se amplia el rango
+               Erase ( Roll.trk)
+               Erase (RollAux.trk)  
+               NB => 0 + (desde-1) * 13   ' 27 para 3
+               NA => 11 + (hasta-1) * 13  ' 90 para  7
+               desdevector= desde
+               hastavector= hasta
+               Print #1,"Runtime desde hasta ",desde ,hasta
+               Print #1,"Runtime NB NA ",NB ,NA
+          EndIf
+
+'          
           ReDim (Roll.trk ) (1 To CantTicks, NB To NA )
           ReDim compas(1 To CantTicks)
           ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
+
           MaxPos = 2 'NroCol
           posicion=1:posn=1
           curpos=1

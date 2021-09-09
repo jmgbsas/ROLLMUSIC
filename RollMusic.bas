@@ -298,7 +298,7 @@ Dim Shared ix As Integer=0
 'Dim dires As String
 Dim Shared titu As String
 Dim Shared As Integer instru, instruOld
-Dim Shared As integer desdeold = 0, hastaold=0
+
 Print #1,"__FB_ARGC__ ", __FB_ARGC__
 For ix = 0 To __FB_ARGC__
   Print #1, "arg "; ix; " = '"; Command(ix); "'"''
@@ -324,8 +324,8 @@ Next ix
 
 If desde = 0 And hasta = 0 Then
  Print #1,"intervalo no dado usando default!"
- desde => 2  ' 1 3
- hasta => 6  ' 9 7
+ desde => 1  ' 1 3
+ hasta => 9  ' 9 7
  
 EndIf
 
@@ -650,6 +650,8 @@ MenuItem(1010,MenName1, "Na.Cargar una sola Pista(o track) de Cancion")
 MenuItem(1011,MenName1, "Grabar una Pista en Edicion en la Cancion")
 MenuItem(1012,MenName1, "Na.Grabar una Pista de cancion Como")
 MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
+MenuItem(1014,MenName1, "Salir")
+
 
 MenuItem(1020,MenName2, "Nombre o Título (fecha por omision)")
 MenuItem(1021,MenName2, "Na.Tiempo I=60 por omision")
@@ -667,8 +669,8 @@ MenuItem(1030,MenName3, "Na.Octavas de Instrumetnos Estandares")
 MenuItem(1031,MenName3, "Na.Seleccion Canal")
 MenuItem(1040,MenName3, "Cambia Instrumento Alfabetico en la pista editada")
 MenuItem(1050,MenName3, "Cambia Instrumento Numérico  en la pista editada")
-MenuItem(1060,MenName3, "Crear Track aislado Con lo elgido")
-MenuItem(1061,MenName3, "Crear Track en la Cancion en Edicion, Con lo elgido")
+MenuItem(1060,MenName3, "Crea track aislado con lo elegido y reemplaza al existente en la edicion")
+MenuItem(1061,MenName3, "Crear Track en la Cancion en Edicion, Con lo elegido")
 MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
 
 
@@ -719,15 +721,17 @@ Dim Shared As Any Ptr cond
 Dim Shared As String txt
 Dim As Any Ptr pt
 Dim Shared As Integer ok = 0
+Dim As Integer Terminar=0,abrirRoll=0
 
+Do
 param.titulo ="RollMusic"
 
-reinicio:
-
-threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+  If abrirRoll=1 Then
+     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
 '''RollLoop ( param)
+  EndIf
 
-If ix < 3 Then 
+  If ix < 3 Then 
 
 'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
  ''win = glfwCreateWindow(800,600,"Track OPENGL" )
@@ -750,6 +754,10 @@ If ix < 3 Then
             Print #1,"entro a 1011 en elmenu"
              ResetAllListBox(3)
              GrabarRollaTrack(1,1)
+            Case 1014 ' salir 
+              Terminar=1
+              cerrar(0)
+              Exit Do
             Case 1017 ' grabarpista
              If NombreCancion <>"" Then ' es una cancion grabamos en el directorio de la cancion
                 GrabarPistaCancion=1
@@ -760,7 +768,7 @@ If ix < 3 Then
                EntrarNombreCancion(NombreCancion)
             Case 1025
                CrearDirCancion (NombreCancion)            
-            Case 1028 ' seleccion octavas 
+            Case 1028 ' seleccion octavas menores a 1 9 
                seloctava (desde, hasta)
             Case 1040 ' seleccion de instrumento por orden Alfabetico
                selInstORdenAlfa (instru)
@@ -772,14 +780,16 @@ If ix < 3 Then
                ChangeProgram ( CUByte (instru) , 0)
                Roll.trk(1,NA).inst= CUByte(instru)
             Case 1060 ' crea track y reemplaza al existente en la edicion
-               NB => 0 + (desde-1) * 13   ' 27 para 3
-               NA => 11 + (hasta-1) * 13  ' 90 para  7
                Nuevo(Roll,1 )
                instruOld=instru
                Roll.trk(1,NA).inst= CUByte(instru)
+               ChangeProgram ( CUByte (instru) , 0)
+
+               If abrirRoll=0 Then
+                  abrirRoll=1
+                  Exit Do
+               EndIf
             Case 1061
-               NB => 0 + (desde-1) * 13   ' 27 para 3
-               NA => 11 + (hasta-1) * 13  ' 90 para  7
                EntrarNombrePista(NombrePista)
                numpista += 1
                If instru=0 Then 
@@ -794,6 +804,11 @@ If ix < 3 Then
 
               AddListBoxItem(3, NombrePista)
               NombrePista=""
+               If abrirRoll=0 Then
+                  abrirRoll=1
+                  Exit Do
+               EndIf
+' FALTA CREAR LA PISTA !!!
             Case 1062
  ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
  ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.       
@@ -811,9 +826,10 @@ If ix < 3 Then
                  usarmarcoOld=usarmarco            
                  usarmarco=0
             Case  1110
-             MessBox ("","Salir")
+             MessBox ("","Acerca de este programa")
               End
           End Select
+
       Case EventClose 
        Close:End 0
      End Select
@@ -821,9 +837,8 @@ If ix < 3 Then
           reiniciar=0
           ThreadDetach(threadloop)
           usarmarcoOld=usarmarco
-          GoTo reinicio  
+          Exit  Do  
        EndIf   
-
    Loop
 Else
 '    param.titulo ="RollMusic"
@@ -831,8 +846,12 @@ Else
   ThreadWait threadloop
   cerrar(0)  
 End If
-    
 
+ If terminar=1 Then
+     Exit Do 
+ EndIf
+    
+Loop
 
 End 0
 

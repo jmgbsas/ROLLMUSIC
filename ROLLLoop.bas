@@ -89,15 +89,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
   ic=0 'indice cursor 'donde se dibujara la duracion
   n=0:indf=0
   font= font + 2
-Dim detiene As Integer
-  detiene=semitono + (nro-1) * 13
   For n = posishow To posishow + NroCol
-   If detiene < NB Or detiene > NA Or n > MAxPos Then
-   Print #1,"limite creapenta semitono + (nro-1) * 13 ",semitono + (nro-1) * 13 
-   Print #1,"NA,NB,n",NA,NB,n 
-      Exit sub
-      Continue for
-   EndIf 
    If Roll.trk (n,semitono + (nro-1) * 13 ).nota > 0 Or _
       Roll.trk (n,semitono + (nro-1) * 13 ).dur > 0 Then
       If comEdit=TRUE Then 
@@ -1629,7 +1621,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
       ReDim Preserve compas(1 To CantTicks)
       ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
-      
+      ReDim Preserve (Track(ntk).trk)(1 To CantTicks,1 To lim2)
     EndIf
 
 '---
