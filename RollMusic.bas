@@ -676,7 +676,8 @@ MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo 
 MenuItem(1070,MenName4,"5 Menu")
 MenuItem(1080,MenName5,"6 Menu")
 MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
-MenuItem(1100,MenName7,"8 Menu")
+MenuItem(1100,MenName7,"Usar MARCO de Ventana ")
+MenuItem(1101,MenName7,"No Usar MARCO de Ventana ")
 MenuItem(1110,MenName8,"9 Menu")
 End If
 
@@ -713,8 +714,15 @@ End Sub
 '/
 '---------------------------- main -----------------
 
+Dim Shared As Any Ptr mutex
+Dim Shared As Any Ptr cond
+Dim Shared As String txt
+Dim As Any Ptr pt
+Dim Shared As Integer ok = 0
+
 param.titulo ="RollMusic"
 
+reinicio:
 
 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
 '''RollLoop ( param)
@@ -797,7 +805,11 @@ If ix < 3 Then
             Case  1090 
               CPlay=1
             Case  1100
-              MessBox ("","8 Menu")
+                usarmarcoOld=usarmarco
+                usarmarco=1
+            Case 1101
+                 usarmarcoOld=usarmarco            
+                 usarmarco=0
             Case  1110
              MessBox ("","Salir")
               End
@@ -805,6 +817,13 @@ If ix < 3 Then
       Case EventClose 
        Close:End 0
      End Select
+       If reiniciar=1  Then
+          reiniciar=0
+          ThreadDetach(threadloop)
+          usarmarcoOld=usarmarco
+          GoTo reinicio  
+       EndIf   
+
    Loop
 Else
 '    param.titulo ="RollMusic"

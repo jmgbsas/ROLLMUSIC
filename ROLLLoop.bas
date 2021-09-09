@@ -460,9 +460,14 @@ End Sub
 sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
  c=param.c
  Roll=param.Roll
+
  '    If hwnd =0 Then   ,GFX_WINDOWED
      ScreenControl  SET_DRIVER_NAME, "GDI"
-     ScreenRes param.ancho, param.alto, 32,1 ''', GFX_NO_FRAME 'Or GFX_HIGH_PRIORITY
+     If usarmarco= 1 then
+        ScreenRes param.ancho, param.alto, 32,1 ''',  'Or GFX_HIGH_PRIORITY
+     Else
+        ScreenRes param.ancho, param.alto, 32,1 , GFX_NO_FRAME 
+     EndIf
      Print #1,"param.titulo ",param.titulo
      WindowTitle param.titulo
      ScreenControl GET_WINDOW_POS, x0, y0
@@ -2023,7 +2028,7 @@ If (ScreenEvent(@e)) Then
     If comEdit = FALSE Then
      ' MOVE VENTANA
      w=ANCHO:h=ALTO
-     '
+     ScreenControl GET_WINDOW_POS, x0, y0
      ALTO = ALTO - inc_Penta
      If ALTO <= ALTO * 0.3 Then
       ALTO =  ALTO * 0.3
@@ -2031,18 +2036,17 @@ If (ScreenEvent(@e)) Then
      '
      '    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
      '    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-     MoveWindow( hWnd , 0 , (0+h-ALTO)\2, ANCHO,ALTO, TRUE )
+     MoveWindow( hWnd , X0 , (Y0+h-ALTO)\2, ANCHO,ALTO, TRUE )
      altofp11 = ALTO
     EndIf
     Exit Do
    EndIf
    If e.scancode = &h42  Then ' <==== F8
     If comEdit = FALSE Then
-
      ' MOVE VENTANA
      Dim As Integer w,h
      w=ANCHO:h=ALTO
-     '
+     ScreenControl GET_WINDOW_POS, x0, y0
      ALTO = ALTO + inc_Penta
      If ALTO >= altoInicial - 1  Then
       ALTO = altoInicial  - 1
@@ -2051,7 +2055,7 @@ If (ScreenEvent(@e)) Then
      '  ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
 
      '  Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-     MoveWindow( hWnd , 0, (0+ALTO-h)\2, ANCHO,ALTO, TRUE )
+     MoveWindow( hWnd , X0, (Y0+ALTO-h)\2, ANCHO,ALTO, TRUE )
      altofp11 = ALTO
     EndIf
     Exit Do
@@ -2431,7 +2435,18 @@ If (ScreenEvent(@e)) Then
     EndIf
    EndIf
   EndIf
-  If (mouseX > 0) And (mouseX <= 20 ) Then ' <=== RESIZE
+ ' RESIZE OCULTADO TAL VEZ SEA UNA OPCION EN OTRA VERSION O USAR SIN FRAME
+ ' O CON FRAME SEGUN EL GUSTO DEL USU AUNQUE NO ES PEFECTO EL RESIZE TIENE
+ ' SUS VENTAJAS...USAR UN MARCO O NO  EN LA VENTANA DE EDICION ?
+  If usarmarco<>usarmarcoOld  Then
+     reiniciar=1
+     cairo_destroy(c)
+     cairo_surface_destroy( surface )
+     'FT_Done_Face( ftface )
+     Sleep 1
+     Exit Sub 
+  EndIf 
+  If (mouseX > 0) And (mouseX <= 20 ) And usarmarco=0 Then ' <=== RESIZE
    If MouseButtons And 1 Then
     If s4 = 0 Then
      resize = TRUE : s4 = 1
@@ -2445,23 +2460,25 @@ If (ScreenEvent(@e)) Then
   EndIf
  EndIf
 ' 12-07-2021 mousex > 70  
-' If mouseY < 25 And s5= 0 And mouseX > (2* ANCHO/3) And mousex < (ANCHO-70) Then
-'  x1=mouseX: y1=mouseY
-'  s5=1
-'  Exit Do
-' EndIf
+ If mouseY < 25 And s5= 0 And mouseX > (2* ANCHO/3) And mousex < (ANCHO-70) And _
+     usarmarco=0 Then
+     x1=mouseX: y1=mouseY
+     s5=1
+     Exit Do
+ EndIf
  ' =========> MOVER VENTANA DRAGNDO L CINTA SUPERIOR EN OPCION <MENU>
  ' And menuNro= 1 
-' If MouseButtons And 1 And s5=1 And mouseX > (2* ANCHO/3)  And mousex < (ANCHO-70) Then
-'  x2=mouseX
-'  y2=mouseY
-'  x0=x0+x2-x1
-'  y0=y0+y2-y1
-'  ScreenControl SET_WINDOW_POS, x0, y0
+ If MouseButtons And 1 And s5=1 And mouseX > (2* ANCHO/3)  And mousex < (ANCHO-70) And _
+    usarmarco = 0 Then
+   x2=mouseX
+   y2=mouseY
+   x0=x0+x2-x1
+   y0=y0+y2-y1
+   ScreenControl SET_WINDOW_POS, x0, y0
   ' mientras mantengo presiondo el mouse pudo mover el mouse con la ventana
   ' la performance no es tan buena pero funciona
-'  Exit Do
-' EndIf
+   Exit Do
+  EndIf
  ''  If mouseY > 50 Then ' <=== MENU DEFAULT 0 POR AHORA NO ES MOLESTO
  ''         menuNew=menuNro
  ''  EndIf
@@ -2496,7 +2513,7 @@ If (ScreenEvent(@e)) Then
    EndIf
    '    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
    '    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-   MoveWindow( hWnd , 0 , (0+h-ALTO)\2, ANCHO,ALTO, TRUE )
+   '''MoveWindow( hWnd , X0 , (Y0+h-ALTO)\2, ANCHO,ALTO, TRUE )
    altofp11 = ALTO
   EndIf
   Exit Do
@@ -2514,7 +2531,7 @@ If (ScreenEvent(@e)) Then
    If ALTO >= altoInicial - 1  Then
     ALTO = altoInicial  - 1
    EndIf
-   MoveWindow( hWnd , 0, (0+ALTO-h)\2, ANCHO,ALTO, TRUE )
+   MoveWindow( hWnd , X0, (Y0+ALTO-h)\2, ANCHO,ALTO, TRUE )
    altofp11 = ALTO
   EndIf
   Exit Do
@@ -2954,7 +2971,7 @@ EndIf
 '                     <===  FIN    O P I L F E W H
 
 '            <===== RESIZE ===================>
- If resize = TRUE Then ' <=====  MOVER Y REDIMENSIONAR LA PANTALLA NO TAN FACIL
+ If resize = TRUE And usarmarco=0 Then ' <=====  MOVER Y REDIMENSIONAR LA PANTALLA NO TAN FACIL
   'CLICKEAR CERCA DEL CENTRO Y DRAGAR DERECHA IZQUIERDA ARRIBA ABAJO
   m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
   If m.buttons = 1 And (m.x > 5 ) And (m.y > 5 ) Then

@@ -2028,21 +2028,21 @@ EndIf
  End Select
  ' Si nodoy Stroke los show text van apendendo al final como un print;
 
- cairo_show_text(c, t)
- cairo_stroke(c)
+  cairo_show_text(c, t)
+  cairo_stroke(c)
+  If usarmarco=0 Then 
+   cairo_move_to(c, 0, 30 )
+   If resize = TRUE Then
+     cairo_set_source_rgba c, 1, 0, 0, 1
+     t = "<>"
+   Else
+     cairo_set_source_rgba c, 1, 1, 1, 1
+     t = "<>"
+   EndIf
 
- cairo_move_to(c, 0, 30 )
- If resize = TRUE Then
-  cairo_set_source_rgba c, 1, 0, 0, 1
-  t = "<>"
- Else
-  cairo_set_source_rgba c, 1, 1, 1, 1
-  t = "<>"
+   cairo_show_text(c, t)
+   cairo_stroke(c)
  EndIf
-
- cairo_show_text(c, t)
- cairo_stroke(c)
-
  ' ayuda
  If ayuda = TRUE Then
   Var  cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
@@ -2395,9 +2395,19 @@ End Sub
 
 Sub EntrarTeclado(cadena As String)
 
-
-NombreArchivo=InputBox(cadena ,,"")
+Dim default As String
+ Dim  As Integer ni
+ 
 If menuOldStr="[Ver]" Then
+            For ni=1 To MaxPos
+               If Compas(ni).Posi = posicion Then
+                  compasX = Compas(ni).nro
+                  Exit For
+               EndIf
+            Next ni
+
+default=Str(CompasX)
+NombreArchivo=InputBox(cadena ,"Entre una posicion",default)
             compasX=CInt(nombreArchivo)
             If compasX > NroCompas Then
                compasX=Nrocompas
@@ -2423,6 +2433,8 @@ If menuOldStr="[Ver]" Then
           EndIf  
 
 Else
+default=Str(tiempoPatron)
+NombreArchivo=InputBox(cadena ,"Entre un Tempo",default)
  Print #1,"nombreArchivo de click ok",nombreArchivo
  tiempoPatron= Cdbl(nombreArchivo)
  Print #1,">>>>>>>>TIEMPO PATRON NUEVO>>>>>>>>>>,pubi", tiempoPatron,pubi
