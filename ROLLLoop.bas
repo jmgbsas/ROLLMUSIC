@@ -1,7 +1,7 @@
 #include "crt/stdio.bi"
 Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
 'Dim octava As Integer Ptr
-
+'*po va desde hasta -1 haci aabajo 
  Dim As cairo_font_extents_t fe   '     font data
  Dim As cairo_text_extents_t te  '      text size
  Dim As Integer semitono,n, ic,indf
@@ -71,7 +71,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
 
  ''' Var t = " " reempladapor sharedaprapoder poner if
  For semitono = 0 To 11
-   If comEdit = TRUE  and estoyEnOctava = nro  Then
+   If comEdit = TRUE  and estoyEnOctava = *po + 1  Then
      If octavaEdicion=estoyEnOctava Then 
         cairo_set_source_rgba(c, 0, 1, 0.5, 1)
      Else 
@@ -90,12 +90,12 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
   n=0:indf=0
   font= font + 2
   For n = posishow To posishow + NroCol
-   If Roll.trk (n,semitono + (nro-1) * 13 ).nota > 0 Or _
-      Roll.trk (n,semitono + (nro-1) * 13 ).dur > 0 Then
+   If Roll.trk (n,11- semitono  + (*po) * 13 ).nota > 0 Or _
+      Roll.trk (n,11- semitono + (*po) * 13 ).dur > 0 Then
       If comEdit=TRUE Then 
          If cursorVert=0 Then  
             If espacio = (semitono +1) Then
-               Roll.trk (n, semitono + (nro-1) * 13 ).dur = 181
+               Roll.trk (n, 11-semitono + (hasta -nro) * 13 ).dur = 181
                If fijarEspacio=0 Then
                  espacio=0
                EndIf
@@ -105,8 +105,8 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
 ' ((n - inicioDeLectura)=curpos) y moviendoelcursor derecha izquierda
 ' en ctrl-m borra todo de una!! implementarlo...        
          If cursorVert=1 Then  
-            If espacio = semitono And ((n - inicioDeLectura)=curpos)  Then
-               Roll.trk (n,semitono + (nro-1) * 13 ).dur = 181
+            If (espacio = semitono +1 ) And ((n - inicioDeLectura)=curpos)  Then
+               Roll.trk (n,11-semitono + (*po) * 13 ).dur = 181
                If fijarEspacio=0 Then
                   espacio=0
                EndIf
@@ -115,8 +115,8 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
      ' BORRADO LIBRE NO MARCA SOLO BLANCO habilita para usar nota=0    
     '     If cursorVert=1 And Borrar=1 Then  
     '        If ((n - inicioDeLectura)=curpos)  Then
-    '           Roll.trk (semitono + (nro-1) * 13, n ).dur = 0
-    '           Roll.trk (semitono + (nro-1) * 13, n ).nota = 0
+    '           Roll.trk (semitono + (*po) * 13, n ).dur = 0
+    '           Roll.trk (semitono + (*po) * 13, n ).nota = 0
     '           If fijarEspacio=0 Then
     '              Borrar=0
     '           EndIf
@@ -127,7 +127,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
         
     cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono+1 ) * inc_Penta - 4)
     Dim As Integer indf
-    indf= Roll.trk (n, semitono + (nro-1) * 13).dur
+    indf= Roll.trk (n, 11- semitono + (*po) * 13).dur
     If (indf >= 1 And indf <= 182)  Then ' 13-05-2021 11
     Else
        indf=181
@@ -210,7 +210,10 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
   cairo_stroke(c)
   If (mousey <= lugar) And (mousey >= lugarOld ) Then
    nE=semitono + 1 'semitono ahora va desde 0 a 11 usadopor entrada de tecladoy ahroa mouse
-   nR=(13-semitono-2) + (hasta-nro) * 13 + (desde -1)*13 ' indice de la nota en Roll , en algo será util.
+   nR=(11-semitono) + (*po ) * 13 ''+ (desde -1)*13 ' indice de la nota en Roll , en algo será util.
+   If *po=1 Then
+      Print #8, "nR octava 1 ",nR
+   EndIf
    PianoNota= nR - restar (nR)
 
   EndIf
@@ -221,7 +224,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
  ' y hacer nota=semiotono 1 a 11 con el mouse...el resto es automtico...
 ' nro=hasta significa que ya dibujo la octava 9, luego puede seguir dibujando
 ' hacia abajo, la ayuda 
-If nro = hasta Then ' termino 9 octavas y ahora  + ayuda...
+If nro = hasta Then ' termino 9 octavas o la NA y ahora  + ayuda...
   cairo_set_font_size (c, font)
   'cairo_select_font_face (c, "Georgia",CAIRO_FONT_SLANT_NORMAL , CAIRO_FONT_WEIGHT_BOLD)
   t= "Flecha Abajo/Arriba o ruedita del mouse, scroll de las octavas en la ventana "
@@ -292,10 +295,10 @@ If nro = hasta Then ' termino 9 octavas y ahora  + ayuda...
  End If
 
  ' si estoy en esta octava ...edicion solo para esa octava segun posicion
- ' del mouse automaticamete
+ ' del mouse automaticamete iluminar
  If ( Penta_y <= mousey) And ((Penta_y + 12 * inc_Penta) >= mousey)  Then
   ' estoy en una octava
-  estoyEnOctava = nro '<========== DETERMINACION DE OCTAVA DE TRABAJO
+  estoyEnOctava = *po +1 '<========== DETERMINACION DE OCTAVA DE TRABAJO
   EnOctava=1
   ' CURSOR
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
@@ -583,9 +586,12 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 '  rango= hasta
 ' si viene de 7 a 9, nro va de 1 a 3  en relidad es de
 '
-  
-For i = desde To hasta ' nro_penta
-   nro = i
+' Creapenta no hace una nueva vuelta para la ayuda, la escribe directamente abajo
+' de la ultima octava o vuelta o sea la 9.- solo que las octabas estn invertidas
+' van de abajo hacia arriba 1 a 9 o 9 a 1 desde arriba a bajo por eo se usa
+' *po para contener el control de la octava invertida   
+For i = desde To hasta 
+   nro = i 
   ' si ahce falta ejecutar mas de un Penta podremos usar threads
   ' por ahora no lousamos 
 ''  Dim tlock As Any Ptr = MutexCreate() 
@@ -594,7 +600,7 @@ For i = desde To hasta ' nro_penta
 ''  MutexDestroy tlock
   creaPenta (c, Roll )
  If *po = 99 Then
-  *po = hasta - 1
+  *po = hasta -1 ' 9 po ejemplo
   Exit For
  EndIf
 cairo_stroke(c)
@@ -1177,8 +1183,9 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
          '''Dim tlock As Any Ptr = MutexCreate()
          thread1 = ThreadCall  playAll(Roll)
          '''MutexDestroy tlock
-      EndIf   
-      'playAll(Roll)
+         '''playAll(Roll)
+        EndIf   
+      
       menunew=0
    EndIf
  EndIf  
@@ -1607,8 +1614,8 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    ' PARA USAR ESTO CON ENTRADA POR MOUSE SOLO DEBO DETERMINAR EL SEMITONO...
    ' y hacer nota=semiotono 1 a 11 con el mouse...el esto es automtico...
    Do ' nota es semitono ahora va de 0 a 11 deborestr 1 a nota
-    If Roll.trk(posn,(nota -1 +(estoyEnOctava -1) * 13)).nota = 0 Or _
-     Roll.trk(posn,(nota -1 +(estoyEnOctava -1) * 13)).dur = 182 Then
+    If Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0 Or _
+     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 182 Then
      posicion=posn
      '      Print #1, "ingreso a NUCLEO POSICION=POSN", posicion
      Exit Do
@@ -1632,7 +1639,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    Loop
    ' ESTO ME UBICA EN QUE RENGLON DE LA OCTaVA ESTOY SN USAR EL MOUSE
    ' LUEGO haRE ALGO CON EL MOUSE POR AHORA TODO TECLADO
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).nota = nota 'carga visualizacion
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = nota 'carga visualizacion
    ' cargo TRACK 
    Track(ntk).trk(posn,1).nota= PianoNota
    ' itk=1 indice vertical de 1 a 12 cuando se carga nota vale siemrep 1
@@ -1655,16 +1662,16 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    'en dur no afecta a notas pero se debe insertar siempreenedicion
    ' con o sin cursor
    
-   Roll.trk(posn+1,(nota-1 +(estoyEnOctava -1) * 13)).dur = 182
+   Roll.trk(posn+1,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
    'cargo TRACK
    Track(ntk).trk(posn,1).nota= 182
    If notaOld > 0 And notaOld <> nota  Then
   '  Print #1,"Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota"; _
    '           Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota
-    Roll.trk(posn,(notaOld -1 +(estoyEnOctavaOld -1) * 13)).dur = 181
-    Roll.trk(posn,(notaOld -1 +(estoyEnOctava    -1) * 13)).dur = 181
-    Roll.trk(posn,(notaOld -1 +(estoyEnOctavaOld -1) * 13)).nota = 181
-    Roll.trk(posn,(notaOld -1 +(estoyEnOctava    -1) * 13)).nota = 181
+    Roll.trk(posn,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).dur = 181
+    Roll.trk(posn,(12-notaOld  +(estoyEnOctava    -1) * 13)).dur = 181
+    Roll.trk(posn,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota = 181
+    Roll.trk(posn,(12-notaOld  +(estoyEnOctava    -1) * 13)).nota = 181
    
     
  '   Print #1,"(notaOld +(estoyEnOctava  -1) * 13)"; notaOld +(estoyEnOctava  -1) * 13
@@ -1693,7 +1700,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    Dim As Integer noct ''oclog = 8 - (estoyEnOctava-1)
    For noct = desde To hasta
      For i= 0 To 11 ' gracias a esto anda acordes¿?
-       If i= nota -1 And noct = estoyEnOctava Then
+       If i= 12 - nota  And noct = estoyEnOctava Then
          Continue For
        Else    
        ' semitono ahroa va de 0 a 11 para Roll -> i-1 21-07-2021 jmg
@@ -1729,7 +1736,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
 ' si voy al 2do bloque de 3 el incrdeja de ser 0 y pasa a 27 respectro de la
 ' 1er linea l cargo TRAck como 2da linea
 If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR 'era duracion
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR 'era duracion
    Track(ntk).trk(posn,1).dur = DUR
     'DUR nunca se ahce cero solo para espacio ergo si pulso
     ' la misma u otra nota sigue con la misma duracion
@@ -1737,7 +1744,7 @@ If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then
 EndIf
 ' CUART   
 If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
-    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 9 'era duracion
+    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 9 'era duracion
     Track(ntk).trk(posn,1).dur = DUR +9
     'DUR nunca se ahce cero solo para espacio ergo si pulso
     ' la misma u otra nota sigue con la misma duracion
@@ -1746,110 +1753,110 @@ EndIf
 ' PUNTILLO   
 ' 3I* = I = 1 , el puntillo a un 3 suma dando la figura de la q proviene.   
 If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
-    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 18 'era dur
+    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 18 'era dur
     Track(ntk).trk(posn,1).dur = DUR + 18
     incr=0
 EndIf
 'DOBLE PUNTILLO   
 If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=0 Then 
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 27
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 27
    Track(ntk).trk(posn,1).dur = DUR + 27
    incr=0
 EndIf
-
+' SEGUIR  JMG
 If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=0 Then 
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 36
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 36
    Track(ntk).trk(posn,1).dur = DUR + 36
    incr=0
 EndIf   
 ' -----fin 1er bloque ------------------------
 
 If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 45 'era dur
+   Roll.trk(posn,(12 -nota +(estoyEnOctava -1) * 13)).dur = DUR + 45 'era dur
    Track(ntk).trk(posn,1).dur = DUR + 45
 '   Print #1," NUCLEO GUARDO EN ROLL CON S DUR: ";DUR +27;" figura:";figura(DUR+27) 
    incr=45
 EndIf
 
 If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 54
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 54
    Track(ntk).trk(posn,1).dur = DUR + 54
    incr=45
 EndIf
 
 If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 63
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 63
    Track(ntk).trk(posn,1).dur = DUR + 63
    incr=45
 EndIf
 If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=0 Then 
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 72
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 72
    Track(ntk).trk(posn,1).dur = DUR + 72
    incr=45
 EndIf
 
 If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=0 Then 
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 81
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 81
    Track(ntk).trk(posn,1).dur = DUR + 81
    incr=45
 EndIf
 
 ' -- fin 2do bloque   
 If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
-    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 90
+    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 90
     Track(ntk).trk(posn,1).dur = DUR + 90
     incr=90
 EndIf
 
 If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
-    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 99
+    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 99
     Track(ntk).trk(posn,1).dur = DUR + 99
     incr=90
 EndIf
 
 If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
-    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 108
+    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 108
     Track(ntk).trk(posn,1).dur = DUR + 108
     incr=90
 EndIf
 
 If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=1 Then 
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 117
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 117
    Track(ntk).trk(posn,1).dur = DUR + 117
    incr=90
 EndIf
 If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=1 Then 
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 126
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 126
    Track(ntk).trk(posn,1).dur = DUR + 126
    incr=90
 EndIf
 '----- fin 3er bloque   
 If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 135
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 135
    Track(ntk).trk(posn,1).dur = DUR + 135
    incr=135
 EndIf   
 
 If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 144
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 144
    Track(ntk).trk(posn,1).dur = DUR + 144
    incr=135
 EndIf   
 
 If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 153
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 153
    Track(ntk).trk(posn,1).dur = DUR + 153
    incr=135
 EndIf   
 
 If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=1 Then 
-   Roll.trk(posn, (nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 162
+   Roll.trk(posn, (12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 162
    Track(ntk).trk(posn,1).dur = DUR + 162
    incr=135
 EndIf   
 
 If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=1 Then 
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = DUR + 171
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 171
    Track(ntk).trk(posn,1).dur = DUR + 171
    incr=135
 EndIf   
@@ -1864,7 +1871,7 @@ EndIf
    cuart=0:pun=0:doblepun=0:tres=0:sil=0:mas=0
    ' mayorDurEnUnaPosicion (posn) quedo <--defectuoso
      'If DUR >=1 And DUR <= 72 Then
-      DUR = Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur
+      DUR = Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
       calcCompas(posn,Roll) 'lrepeticion no espor calcCompas
      'EndIf
    '   rmerr = Err
@@ -1986,13 +1993,13 @@ If (ScreenEvent(@e)) Then
       playloop=0
       
    EndIf
-   If e.scancode = 72  Then ' SC_UP sube por pulsos mas presicion
+   If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion
     If trasponer=1 And SelGrupoNota=0 Then
-     trasponerRoll (-1,Roll)
+     trasponerRoll ( 1,Roll)
      Exit Do
     EndIf
     If trasponer=1 And SelGrupoNota=1 Then
-     TrasponerGrupo (-1, Roll)
+     TrasponerGrupo ( 1, Roll)
      Exit Do 
     EndIf 
 
@@ -2063,11 +2070,11 @@ If (ScreenEvent(@e)) Then
    '  EndIf
    If e.scancode = 80 Then  ' <===== SC_DOWN pulso
      If trasponer=1 And SelGrupoNota=0 Then
-       trasponerRoll (1,Roll)
+       trasponerRoll ( -1,Roll)
        Exit Do
      EndIf 
      If trasponer=1 And SelGrupoNota=1 Then
-       trasponerGrupo (1,Roll)
+       trasponerGrupo ( -1,Roll)
        Exit Do
      EndIf 
      

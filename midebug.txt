@@ -1,17 +1,17 @@
 start
-09-07-202101:07:04
+09-11-202123:28:14
 __FB_ARGC__    1
-arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.1.0.0-U-Integrado-MULTIPLE\RollMusic.exe'
+arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.3.0.0-U-Integrado-OCTAVAS-REVISION\RollMusic.exe'
 arg  1 = ''
 intervalo no dado usando default!
 instru         0
 Roll.trk(1,NA).inst         0
-NB             13
-NA             76
-desde          2
-hasta          6
+NB             0
+NA             128
+desde          1
+hasta          10
 gap1           76
   
 ChangeProgram inst          0
 param.titulo  RollMusic
-pid           4172
+pid           5500

@@ -209,18 +209,10 @@ Dim Shared As Integer fueradefoco=0
 
 #Include Once "freetype2/freetype.bi"
 '' The FB headers don't contain this prototype
-extern "c"
-Declare function usleep( as ulong) as long '=0 when working
-end Extern
-
 'extern "c"
-'Declare function nanosleep( r As Any Ptr, q As Any ptr) as long '=0 when working
+'Declare function usleep( as ulong) as long '=0 when working
 'end Extern
 
-'Type nanot
-' rqtp As Integer
-' rmtp As integer
-'End Type
 ' code from
 'https://freebasic.net/forum/viewtopic.php?t=23680
 'Declare sub RtlInitUnicodeString alias "RtlInitUnicodeString"(as PUNICODE_STRING,as PCWSTR)

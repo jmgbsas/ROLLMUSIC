@@ -142,26 +142,26 @@ Sub calcCompas( ByRef j As Integer,Roll As inst)
    EndIf
    ' x print #1,"k,partes_falta(k), FIGURA ", k, partes_falta(k), figura(partes_falta(k))
    ' x print #1,"POSICION reemplazada: ";posn
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = partes_falta(k)
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = partes_falta(k)
    
    If carga=0 Then ''no hce nada en la carga
-    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).nota = notaold
+    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = notaold
    EndIf
-   Roll.trk(posn+1,(nota-1 +(estoyEnOctava -1) * 13)).dur = 182
+   Roll.trk(posn+1,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
    If notaOld > 0 And notaOld <> nota Then
     Roll.trk(posn,(notaOld-1 +(estoyEnOctava -1) * 13)).dur = 181
    EndIf
 '------zzz
    For noct = desde To hasta
      For i= 0 To 11 ' gracias a esto anda acordes¿?
-       If i= nota -1 And noct = estoyEnOctava Then
+       If i= 12 -nota And noct = estoyEnOctava Then
          Continue For
        Else    
        
-         If Roll.trk(posn,(i +(noct -1) * 13)).nota = 0 Then
+         If Roll.trk(posn,(11 - i +(noct -1) * 13)).nota = 0 Then
          '   ' x print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
-            Roll.trk(posn,(i +(noct -1) * 13)).nota = 181
-            Roll.trk(posn,(i +(noct -1) * 13)).dur  = 0
+            Roll.trk(posn,(11 - i +(noct -1) * 13)).nota = 181
+            Roll.trk(posn,(11 - i +(noct -1) * 13)).dur  = 0
          EndIf
        EndIf
      Next i
@@ -243,11 +243,11 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
          partes_sobra(k)=partes_sobra(k) + 90 ' empieza ligados +
       EndIf
    EndIf
-   Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).dur = partes_sobra(k)
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = partes_sobra(k)
    If carga=0 Then
-    Roll.trk(posn,(nota-1 +(estoyEnOctava -1) * 13)).nota = notaold
+    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = notaold
    EndIf
-   Roll.trk(posn+1,(nota-1 +(estoyEnOctava -1) * 13)).dur = 182
+   Roll.trk(posn+1,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
    If notaOld > 0 And notaOld <> nota Then
     Roll.trk(posn,(notaOld-1 +(estoyEnOctava -1) * 13)).dur = 181
 
@@ -256,14 +256,14 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
 
    For noct = desde To hasta
      For i= 0 To 11 ' gracias a esto anda acordes¿?
-       If i= nota-1 And noct = estoyEnOctava Then
+       If i= 12-nota And noct = estoyEnOctava Then
          Continue For
        Else    
        
-         If Roll.trk(posn,(i +(noct -1) * 13)).nota = 0 Then
+         If Roll.trk(posn,(11 - i +(noct -1) * 13)).nota = 0 Then
          '   ' x print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
-            Roll.trk(posn,(i +(noct -1) * 13)).nota = 181
-            Roll.trk(posn,(i +(noct -1) * 13)).dur  = 0
+            Roll.trk(posn,(11 - i +(noct -1) * 13)).nota = 181
+            Roll.trk(posn,(11 - i +(noct -1) * 13)).dur  = 0
          EndIf
        EndIf
      Next i
@@ -645,9 +645,9 @@ Sub ReCalCompas(Roll As inst)
  '------zzz
             For noct = desde To hasta
               For i2= 0 To 11 ' gracias a esto anda acordes¿?
-                 If Roll.trk(j,(i2 +(noct -1) * 13)).nota = 0 Then
-                    Roll.trk(j,(i2 +(noct -1) * 13)).nota = 181
-                    Roll.trk(j,(i2 +(noct -1) * 13)).dur  = 0
+                 If Roll.trk(j,(11-i2 +(noct -1) * 13)).nota = 0 Then
+                    Roll.trk(j,(11-i2 +(noct -1) * 13)).nota = 181
+                    Roll.trk(j,(11-i2 +(noct -1) * 13)).dur  = 0
                  EndIf
               Next i2
             Next noct
@@ -701,9 +701,9 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
   cairo_move_to  (c, gap1 + (curpos)*anchofig , Penta_y  )
   cairo_line_to  (c, gap1 + (curpos)*anchofig , Penta_y + (notacur-1) * inc_Penta  +inc_Penta )
  
-  RollDur=Roll.trk(n + curpos,notacur -1 + (nro-1) * 13 ).dur
+  RollDur=Roll.trk(n + curpos,12 - notacur + (*po) * 13 ).dur
   
-  RollNota=Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).nota
+  RollNota=Roll.trk(n + curpos, 12 - notacur + (*po) * 13).nota
  EndIf
  If cursorVert= 0 And cursorHori=0 Then
   If notacur=1 Then
@@ -729,15 +729,15 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
   If notacur=0 Then
    notacur=notaOld 
   EndIf
-  'dursaved = Roll.trk(notacur + (nro-1) * 13, n + curpos).dur
+  'dursaved = Roll.trk(notacur + (*po) * 13, n + curpos).dur
   ' debo cambiar esa nota por (equivalente en silencio no va mas
   'para eso entra un silencio) se pone nota cero y dur 0
   
-  Roll.trk(n + curpos, notacur -1 + (nro-1) * 13 ).dur = 0
-  Roll.trk(n + curpos, notacur -1 + (nro-1) * 13 ).nota = 0
-  'Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = dursaved + 16
- ' If Roll.trk(notacur + (nro-1) * 13, n +curpos).dur > 181 Then
- '  Roll.trk(notacur + (nro-1) * 13, n +curpos).dur = 181
+  Roll.trk(n + curpos, 12 - notacur + (*po) * 13 ).dur = 0
+  Roll.trk(n + curpos, 12 - notacur + (*po) * 13 ).nota = 0
+  'Roll.trk(notacur + (*po) * 13, n + curpos).dur = dursaved + 16
+ ' If Roll.trk(notacur + (*po) * 13, n +curpos).dur > 181 Then
+ '  Roll.trk(notacur + (*po) * 13, n +curpos).dur = 181
  ' EndIf
   borrar = 0
   ''calcCompas(n) ''mayorDurEnUnaPosicion (n)
@@ -751,11 +751,11 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
   If notacur=0 Then  '<- aca ingreso nota aunqne no haya?
    notacur=notaOld
   EndIf
-  '  Roll.trk(notacur + (nro-1) * 13, n + curpos).dur = DUR
-  '  vdur=Roll.trk(notacur + (nro-1) * 13, n +curpos).dur
+  '  Roll.trk(notacur + (*po) * 13, n + curpos).dur = DUR
+  '  vdur=Roll.trk(notacur + (*po) * 13, n +curpos).dur
   '  ' SI LA NOTA  NO EXITIA LA agrega
-  '  Roll.trk(notacur + (nro-1) * 13, n + curpos).nota = notacur  ' 5.7.2
-  '  vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
+  '  Roll.trk(notacur + (*po) * 13, n + curpos).nota = notacur  ' 5.7.2
+  '  vroll= Roll.trk(notacur + (*po) * 13, n + curpos).nota
   '  cambiadur = 0
   ' ------------------------------------
   ' nueva verion con puntillo o silencio
@@ -768,104 +768,104 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
 
   
  If DUR=181 Then
-     Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = 0
-     Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).nota =181   ' 5.7.2
+     Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = 0
+     Roll.trk(n + curpos, 12 - notacur + (*po) * 13).nota =181   ' 5.7.2
      cambiadur = 0
      DUR=0
  ElseIf DUR=182 Then ' borrado 
-     Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = 182
-     Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).nota =181   ' 5.7.2
+     Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = 182
+     Roll.trk(n + curpos, 12 - notacur + (*po) * 13).nota =181   ' 5.7.2
   '   Print #1,"FINDE SECUENCIA !!"
      cambiadur = 0
      DUR=0
  ElseIf DUR=0 Then ' borrado
-     Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = 190
-     Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).nota =190   ' 5.7.2
+     Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = 190
+     Roll.trk(n + curpos, 12 - notacur + (*po) * 13).nota =190   ' 5.7.2
      cambiadur = 0
      DUR=0
  Else
 'desde aca lasnotas se colocan con notacur siemrpe tienen valorde 1 a 12
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR
   EndIf
  
   If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 9
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 9
   EndIf
  
   If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=0 Then
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 18
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 18
   EndIf
  
   If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=0 Then
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 27
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 27
   EndIf 
  
   If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=0 Then
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 36
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 36
   EndIf
  
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 45
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 45
   EndIf
    
   If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 54
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 54
   EndIf
   If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 63
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 63
   EndIf
   If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=0 Then
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 72
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 72
   EndIf
    
   If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=0 Then 
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 81
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 81
   EndIf   
  
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 90
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 90
   EndIf   
  
   If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 99
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 99
   EndIf 
 
   If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 108
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 108
   EndIf
 
   If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=1 Then 
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 117
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 117
   EndIf
 
   If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=1 Then 
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 126
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 126
   EndIf
 '----- fin 3er bloque   
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 135
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 135
   EndIf   
 
   If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 144
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 144
   EndIf   
 
   If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 153
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 153
   EndIf   
 
   If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=1 Then 
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 162
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 162
   EndIf   
 
   If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=1 Then 
-    Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR + 171
+    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 171
   EndIf   
-  Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).nota = notacur  ' 5.7.2    
+  Roll.trk(n + curpos, 12 - notacur + (*po) * 13).nota = notacur  ' 5.7.2    
  EndIf
 
- '   vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
+ '   vroll= Roll.trk(notacur + (*po) * 13, n + curpos).nota
   cambiadur = 0
   cuart=0:pun=0:doblepun=0:tres=0:sil=0:mas=0
 
@@ -893,19 +893,19 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
   ' hasta que se pulse FINose alcance el FIN (66)
   ' Print #1, "call a movedato con indaux ",indaux
   ' n es StartInsert fijo no se modifica mas
-  movedato (n + curpos,indaux, insert,notacur + (nro-1) * 13 ) 'antes de reemplazarlo xxx
+  movedato (n + curpos,indaux, insert,notacur + (*po) * 13 ) 'antes de reemplazarlo xxx
  '  Print #1, "regreso de movedato con indaux ",indaux
   ' param : posicion comienzo (fijo), indice incremental para el aux
   ' ,insert comando habilitado = 1
   'luego reemplazo
-  ' Print #1, "inserta DUR, en ROLL n,nota,posicion ",DUR,n,(notacur + (nro-1) * 13),n
-  Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = DUR ' reemplazo con lo nuevo
-  'vdur=Roll.trk(notacur + (nro-1) * 13, n+curpos).dur
+  ' Print #1, "inserta DUR, en ROLL n,nota,posicion ",DUR,n,(notacur + (*po) * 13),n
+  Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR ' reemplazo con lo nuevo
+  'vdur=Roll.trk(notacur + (*po) * 13, n+curpos).dur
   ' SI LA NOTA  NO EXITIA LA agrega...osea sirve para acordes tambien
-  'Print #1, "carga notacur en ROLL n,nota calculada ", n,(notacur + (nro-1) * 13)
+  'Print #1, "carga notacur en ROLL n,nota calculada ", n,(notacur + (*po) * 13)
 
-  Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).nota = notacur ' 5.7.3
-  'vroll= Roll.trk(notacur + (nro-1) * 13, n + curpos).nota
+  Roll.trk(n + curpos, 12 - notacur + (*po) * 13).nota = notacur ' 5.7.3
+  'vroll= Roll.trk(notacur + (*po) * 13, n + curpos).nota
   ' TODO IGUAL A cambiadur = 1 deberia andar ,,,,lunica diff es
   ' que se cargala nota en roll,<- pero 1ero debo guardar la nota de Roll en aux
   ' antes de reemplazarla
@@ -919,9 +919,9 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
  ' ====> MODIFICAR con ctrl-n
  If (cursorHori=2 Or cursorVert = 2) And agregarNota=1  And nota> 0 Then
  
-  Roll.trk(n + curpos, nota-1 + (nro-1) * 13).dur = DUR
+  Roll.trk(n + curpos, 12-nota + (*po) * 13).dur = DUR
   ' SI LA NOTA  NO EXITIA LA agrega
-  Roll.trk(n + curpos, nota-1 + (nro-1) * 13).nota = nota  ' 5.7.3.4
+  Roll.trk(n + curpos, 12-nota + (*po) * 13).nota = nota  ' 5.7.3.4
    ReCalCompas(Roll) 
    nota=0
  EndIf
@@ -929,21 +929,21 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
  ''cairo_surface_get_device_offset
  cairo_stroke(c) ' aca el stroke da el amarillo y no jode a teclas - + con saltos!
 
-'If Roll.trk(notacur + (nro-1) * 13, n+curpos).dur >= 1 And _ 
-'   Roll.trk(notacur + (nro-1) * 13, n+curpos).dur <= 181 Then
+'If Roll.trk(notacur + (*po) * 13, n+curpos).dur >= 1 And _ 
+'   Roll.trk(notacur + (*po) * 13, n+curpos).dur <= 181 Then
    If cursorHori=1 And vdur=0 And vnota=0 And copiar=1 Then
       vnota=notacur 
-      vdur =Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur  ' 5.7.3
+      vdur =Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur  ' 5.7.3
        copiar=2
    EndIf
 'EndIf
 
-'If Roll.trk(notacur + (nro-1) * 13, n+curpos).dur  < 1  And _  
-'   Roll.trk(notacur + (nro-1) * 13, n+curpos).dur   > 180 Then
+'If Roll.trk(notacur + (*po) * 13, n+curpos).dur  < 1  And _  
+'   Roll.trk(notacur + (*po) * 13, n+curpos).dur   > 180 Then
 If cursorHori=1 And vdur>0 And copiar=3 Then
    If notacur<> vnota And MultiKey (SC_ENTER) Then 
-      Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).nota = notacur 
-      Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = vdur
+      Roll.trk(n + curpos, 12 - notacur + (*po) * 13).nota = notacur 
+      Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = vdur
       copiar=0
       vdur=0:vnota=0
       ReCalCompas(Roll)
@@ -956,7 +956,7 @@ If notacur=0 Then
   notacur=1
 EndIf
 
-If copiar=3 And Roll.trk(n + curpos, notacur -1 + (nro-1) * 13).dur = vdur _
+If copiar=3 And Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = vdur _
    And notacur=vnota Then
    copiar=0:vdur=0:vnota=0  
 
@@ -1042,7 +1042,7 @@ Sub CargaArchivo(Roll As inst)
        If Trabajo (j,i).nota >= 1 And Trabajo (j,i).nota <=12 And _ 
           Trabajo (j,i).dur >=1 and Trabajo (j,i).dur <= 180  Then
          ip+=1 
-         Notapiano= 115 - i 
+         Notapiano= i 
          Notapiano= Notapiano - restar (Notapiano)
           
          Track(ntk).trk(j,ip).nota => Notapiano
@@ -1235,8 +1235,9 @@ For i2 = 1 To MaxPosTrack(ntk) -1
          PianoNota=Track(ntk).trk(i2,i1 ).nota
          PianoNota= PianoNota + SumarnR (PianoNota)
          i3= 115 -PianoNota  ' 06-09-2021 jmg para 1 a 9 octava anda ok menso no
+         i3= PianoNota  ' JMG 4.3 
       '   Print #1,"indice i3 el vertical ", i3
-         'i3=semitono + (nro-1) * 13
+         'i3=semitono + (*po) * 13
          Roll.trk(i2,i3).nota = CUByte(i3 - (Int(i3/13))*13+1) ' semitono
          Roll.trk(i2,i3).dur  = Track(ntk).trk(i2,i1).dur         
       EndIf
@@ -1440,7 +1441,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
         If  MaxPos > 1 Then
          
          thread1 = ThreadCall  playAll(Roll)
-         ''playAll(Roll)
+         ''''playAll(Roll)
          
         EndIf 
    '     Print #1,"--->paso llamada a thread1 "
@@ -1531,7 +1532,7 @@ EndIf
 
    t = "      EDIT" + " " +  " UltimaPos:" + _
    Str(Maxpos) +" Posi:" + Str(posishow)+ " Posn:"+Str(posn)+ _
-   " Font:" +Str(fontOld) + " EnOct:" + Str(8 - estoyEnOctava) + " nA:"+Str(veonota) + _ 
+   " Font:" +Str(fontOld) + " EnOct:" + Str(estoyEnOctava) + " nA:"+Str(veonota) + _ 
    " nR:"+ Str(PianoNota) + " nE:"+Str(nE) + " Curpos:" +Str(curpos) + _
    " RollDur :"+ Str(RollDur) + " Rollnota:" + Str(RollNota) + _ 
    " Copiar:" + Str(veocopi) +" Col:" +Str(indicenota) + " DUR:"+ Str(Dur) + _ 

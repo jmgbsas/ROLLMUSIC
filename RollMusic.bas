@@ -1,3 +1,5 @@
+' 09-09-2021: error yendo y viniendo con octavas, las notas cargadas en la misma
+' octava suenen diferente hay corrimiento de 1 octava parece chequear
 ' dragar ventana desde cinta fix. en mousex=1048 anda mejor
 ' VERSION DE PRUENA 0.4.1.0.0 INTEGRAMOS UNA GUI Y 2 GRAFICAS UNA SIN USO
 ' PREPARADO PARA 2 PANTALLAS GRAFICAS LA OTRA ES OPENGL WIN COMENTADA  
@@ -191,8 +193,9 @@ Print #1,"start"
 'Open "miplayall.txt" For Output As #4
 'Open "test-AAAAA.TXT" For Output As #5
 'Print #1, "version para ceros!!!!!! "
-
-''Open cons  for Output As #1
+'Dim fcon As Integer 
+'fcon=freefile
+'Open cons  for Output As #8
 
 ''Open "figuras.txt" For Output As #1
 Print #1,Date;Time
@@ -325,7 +328,7 @@ Next ix
 If desde = 0 And hasta = 0 Then
  Print #1,"intervalo no dado usando default!"
  desde => 1  ' 1 3
- hasta => 9  ' 9 7
+ hasta => 10  ' 9 7 hasta-1
  
 EndIf
 
@@ -460,9 +463,10 @@ altofp11=ALTO:posmouseOld = 0:posmouse = 0
 Dim Shared As BOOLEAN comEdit, resize
 comEdit = FALSE:resize = FALSE
 Dim Shared po As Integer Ptr
-
+' son 9 octavas y 1 para escribir? o escribe en la ultima ?
 po = @octaroll
-*po = 8
+'''*po = 8
+*po = hasta -1 ' test 09-09-2021 
 s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0:s8=0 
 ''font=18 haremos font funciona de anchofig O NroCol o ANCHO
 ' para 35 font=18 =  18 /35 = 514/1000
@@ -727,8 +731,8 @@ Do
 param.titulo ="RollMusic"
 
   If abrirRoll=1 Then
-     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-'''RollLoop ( param)
+    threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+    '''RollLoop ( param)
   EndIf
 
   If ix < 3 Then 
@@ -780,6 +784,7 @@ param.titulo ="RollMusic"
                ChangeProgram ( CUByte (instru) , 0)
                Roll.trk(1,NA).inst= CUByte(instru)
             Case 1060 ' crea track y reemplaza al existente en la edicion
+               *po = hasta -1
                Nuevo(Roll,1 )
                instruOld=instru
                Roll.trk(1,NA).inst= CUByte(instru)

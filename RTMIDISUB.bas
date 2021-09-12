@@ -135,9 +135,9 @@ Sub noteSimple	( pasoCol() As vec, cntold As integer,vel As UByte,canal As ubyte
 Dim As Double tiempoFigura=0
 'con o sin liga, recalcula tiempo dur no usa multiplicado por 10a la once
 Dim As Integer i1
-Print #1,"START noteSimple"
-Print #1,"pasoCol(1).tiempoFiguraOld:";pasoCol(1).tiempoFiguraOld
-Print #1,"cntold "; cntold
+'Print #1,"START noteSimple"
+'Print #1,"pasoCol(1).tiempoFiguraOld:";pasoCol(1).tiempoFiguraOld
+'Print #1,"cntold "; cntold
 If cntold > 1 And pasoCol(1).tiempoFiguraOld=0 And jply > 1 Then
    For i1=1 To cntold
       If pasoCol(i1).tiempoFiguraOld > 0 Then
@@ -147,36 +147,36 @@ If cntold > 1 And pasoCol(1).tiempoFiguraOld=0 And jply > 1 Then
    
 EndIf 
 If pasoCol(1).tiempoFiguraOld > 0  And cntold=1 Then
- 'Print #1,"NoteSimple old > 0 pasoCol(1).tiempoFiguraOld ";pasoCol(1).tiempoFiguraOld
+'' Print #1,"NoteSimple old > 0 pasoCol(1).tiempoFiguraOld ";pasoCol(1).tiempoFiguraOld
    pasoCol(1).tiempoFigura= (pasoCol(1).tiempoFigura + pasoCol(1).tiempoFiguraOld)
-  ' Print #1,"tempofigura + old" ; pasoCol(1).tiempoFigura /100000000000
-  ' Print #1,"ESTOS EN NOTEsIMPLE!"
+ '  Print #1,"tempofigura + old" ; pasoCol(1).tiempoFigura /100000000000
+ '  Print #1,"ESTOS EN NOTEsIMPLE!"
    pasoCol(1).tiempoFiguraOld =0
 EndIf
 
 If pasoCol(1).tiempoFiguraOld > 0  And cntold > 1 Then
- 'Print #1,"NoteSimple old > 0 pasoCol(1).tiempoFiguraOld ";pasoCol(1).tiempoFiguraOld
+'' Print #1,"NoteSimple old > 0 pasoCol(1).tiempoFiguraOld ";pasoCol(1).tiempoFiguraOld
    pasoCol(1).tiempoFigura=  pasoCol(1).tiempoFiguraOld
-  ' Print #1,"tempofigura " ; pasoCol(1).tiempoFigura /100000000000
-  ' Print #1,"ESTOS EN NOTEsIMPLE!"
+ '  Print #1,"tempofigura " ; pasoCol(1).tiempoFigura /100000000000
+ '  Print #1,"ESTOS EN NOTEsIMPLE!"
    pasoCol(1).tiempoFiguraOld =0
 EndIf
 
 
 
 
-Print #1,"noteSimple: tiempoFigura:", pasoCol(1).tiempoFigura/100000000000
-Print #1,"noteSimple: notapiano:", pasoCol(1).notapiano;" ";figura(pasoCol(1).DUR)
+'Print #1,"noteSimple: tiempoFigura:", pasoCol(1).tiempoFigura/100000000000
+'Print #1,"noteSimple: notapiano:", pasoCol(1).notapiano;" ";figura(pasoCol(1).DUR)
 
 If pasoCol(1).DUR >= 91 And pasoCol(1).DUR <=180  Then 'liga OFF DESPUES
    pasoCol(1).liga=1
-  ' Print #1,"no se envia noteon de 1er nota +, se suma su tiempo a la siguiente"
+'   Print #1,"no se envia noteon de 1er nota +, se suma su tiempo a la siguiente"
    pasoCol(1).tiempoFiguraOld=pasoCol(1).tiempoFigura
-  ' Print #1,"NoteSimple acum pasoCol(1).tiempoFiguraOld ";pasoCol(1).tiempoFiguraOld
+'   Print #1,"NoteSimple acum pasoCol(1).tiempoFiguraOld ";pasoCol(1).tiempoFiguraOld
 Else
-  ' Print #1,"pasoCol(1).liga ", pasoCol(1).liga
+'   Print #1,"pasoCol(1).liga ", pasoCol(1).liga
     If ligaglobal=0 Then 
-      ' Print #1,"envio on "
+'  Print #1,"envio on pasoCol(1).notapiano, vel ,canal " , pasoCol(1).notapiano, vel ,canal
        old_time_on=Timer
        noteon	 pasoCol(1).notapiano, vel ,canal
        For i1=NB To NA
@@ -184,11 +184,11 @@ Else
        Next i1 
     EndIf   
        tiempoFigura=pasoCol(1).tiempoFigura/100000000000
-      ' Print #1,"noteSimple OFF tiempoFigura "; tiempoFigura
+'       Print #1,"noteSimple OFF tiempoFigura "; tiempoFigura
        duracion old_time_on,tiempoFigura 'RETARDO SIN OFF
        noteoff pasoCol(1).notapiano ,canal  
        pasoCol(1).liga=0
-      ' Print #1,"ACA MANDE TODO A CERO PERO CREO AFECTA AL PASO 12 FIJAR"
+'       Print #1,"ACA MANDE TODO A CERO PERO CREO AFECTA AL PASO 12 FIJAR"
        ' VAMOS SACANDO UNO A UNO NO AFECTO EN NADA NO VOLVIO LO CORRECTO SIGO VIENDO
        pasoCol(1).tiempoFigura=0 '01-07-2021
        ligaglobal=0 
@@ -196,9 +196,9 @@ Else
     ' fin completo?
 EndIf
 
-Print #1,"noteSimple: liga:", pasoCol(1).liga
+'Print #1,"noteSimple: liga:", pasoCol(1).liga
 limpiarLigaduras(1,pasoCol())
-Print #1,"limpiado noteSimple: liga:", pasoCol(1).liga
+'Print #1,"limpiado noteSimple: liga:", pasoCol(1).liga
 
 End Sub
 
@@ -218,21 +218,21 @@ Dim As Integer tiempoFigura=0, tiempoFiguraSig=0
 ' 2 o mas acordes ligados ...en 1 o mas notas
 '1)HAGO EL SORT POR RELDUR ASC., TOMO LA ULTIMA, SERÁ LA MAYOR DURACION 
 '  DEL ACORDE.(MDA)
-For i1=1 To cnt
+'For i1=1 To cnt
 '  print #1,"DUR notapiano ";pasoCol(i1).DUR;" ";pasoCol(i1).notapiano;figura(pasoCol(i1).DUR) 
-Next i1
+'Next i1
 
 
 ' 2) SI HAY LIGADURA TRAIGO LA DURACION DEL ACORDE SIGUIENTE O NOTA AL ACORDE ACTUAL
 ' ASI HASTA LLEGAR A LA ULTIMA POSICION SIN LIGADURA puede haber varios acordes ligados
 Dim As integer nj=jply, durj ' indice del vector roll, dur
 
-Print #1,"DUR cnt=1:";pasoCol(1).Dur
+'Print #1,"DUR cnt=1:";pasoCol(1).Dur
 
 old_time_on=Timer
 
 For i1=1 To cnt
-Print #1,"1)DUR cnt=";i1;":";pasoCol(i1).Dur
+'Print #1,"1)DUR cnt=";i1;":";pasoCol(i1).Dur
 ' SOLO EL 1ER ACORDE LIGADO SE ANALIZA EL RESTO POR MAS LIGADURAS QUE TENGA YA NO
 ' PORQUE .LIGA SERA > 0
 ' Print #1,"CNT CNT CNT ";cnt ;" dur";pasoCol(i1).Dur
@@ -323,7 +323,7 @@ Dim As Integer tiempoFigura=0, tiempoFiguraSig=0
 If cntold >cnt Then
  coff=cntold
 EndIf
-print #1,"====>>> START AOD ON veo el pasocol que tiene"
+'print #1,"====>>> START AOD ON veo el pasocol que tiene"
 Dim As UByte noAnalizo=0 
 For i1=1 To coff ' 20-06-2021 JMG
  ' print #1,"DUR:";pasoCol(i1).DUR;" ";"notepiano:";pasoCol(i1).notapiano;figura(pasoCol(i1).DUR); _
@@ -339,18 +339,18 @@ Next i1
 ' ASI HASTA LLEGAR A LA ULTIMA POSICION SIN LIGADURA puede haber varios acordes ligados
 Dim As integer nj=jply, durj ' indice del vector roll, dur
 
-Print #1,"AOD:DUR cnt=1:";pasoCol(1).Dur
+'Print #1,"AOD:DUR cnt=1:";pasoCol(1).Dur
 
 old_time_on=Timer
-Print #1,"AOD: old_time_on ";old_time_on
+'Print #1,"AOD: old_time_on ";old_time_on
 
-Print #1,"start FOR"
+'Print #1,"start FOR"
 For i1=1 To cnt
-Print #1,"for cnt=";i1
-Print #1,"AOD FOR: pasoCol(i1).Dur       ";pasoCol(i1).Dur
-Print #1,"AOD FOR: pasoCol(i1).liga      ";pasoCol(i1).liga
-Print #1,"AOD FOR: pasoCol(i1).NOTAPIANO ";pasoCol(i1).notapiano
-Print #1,"AOD FOR: pasoCol(i1).tiempofigOld ";pasoCol(i1).tiempoFiguraOld
+'Print #1,"for cnt=";i1
+'Print #1,"AOD FOR: pasoCol(i1).Dur       ";pasoCol(i1).Dur
+'Print #1,"AOD FOR: pasoCol(i1).liga      ";pasoCol(i1).liga
+'Print #1,"AOD FOR: pasoCol(i1).NOTAPIANO ";pasoCol(i1).notapiano
+'Print #1,"AOD FOR: pasoCol(i1).tiempofigOld ";pasoCol(i1).tiempoFiguraOld
 
 
 ' SOLO EL 1ER ACORDE LIGADO SE ANALIZA EL RESTO POR MAS LIGADURAS QUE TENGA YA NO
@@ -451,14 +451,14 @@ Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte, cntold As UByte,canal As 
 Dim i1 As UByte
 Dim tiempoFigura As Double 
 '--------
-Print #1,"-------------------------------------"
-Print #1,"start AcordeOffIguales"
+'Print #1,"-------------------------------------"
+'Print #1,"start AcordeOffIguales"
 
 
  old_time_off=Timer
 ' Print #1,"old_time off inicial ";old_time_off
 
-Print #1,"no ligados calculo tiempo Figura y off:" 
+'Print #1,"no ligados calculo tiempo Figura y off:" 
 
 For i1 = 1 To cnt ' (1) 
   If pasoCol(i1).liga = 0 Then
@@ -512,7 +512,7 @@ End sub
 
 Sub AcordeIguales (pasoCol() As vec, cnt As UByte,cntold As UByte, vel as UByte, canal As UByte,tiempoDur As Double,Roll As inst) 
 ' todas las notas son de igual duracion, cnt cantidad de notas
-Print #1,"call acordeon iguales"
+'Print #1,"call acordeon iguales"
 AcordeOnIguales	 pasoCol() , cnt , cntold , vel,canal,tiempoDur, Roll
 AcordeOffIguales	 pasoCol(), cnt , cntold , canal,Roll
 ' start  jmg 09-06-2021
@@ -531,7 +531,7 @@ Sub AcordeOffDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte,canal 
 ' en el paso final el retado es el total de la liga respecto
 ' del old_time_on del 1er acorde,,,asoi funciona el rtmidi...
 Dim  As UByte i1, coff
-print #1,"====>>> START AOFF OFF veo el pasocol que tiene"
+'print #1,"====>>> START AOFF OFF veo el pasocol que tiene"
 If cntold > cnt Then
   coff=cntold
 EndIf
@@ -541,33 +541,33 @@ For i1=1 To coff 'reemplazo CNT 20-06-2021 JMG
 Next i1
 
 'Print #1,"SORT POR tiempoFigura calculado en playAll" 
-For i1=1 To coff
+'For i1=1 To coff
  ' print #1,"AOFFD:antes Sort Fig, DUR notapiano ";pasoCol(i1).Dur;" ";pasoCol(i1).notapiano;" ";pasoCol(i1).tiempoFigura 
-Next i1
+'Next i1
    qsort(@pasoCol(1).tiempoFigura, cnt, SizeOf(vec), @QCompare )
-For i1=1 To coff
-  print #1,"AOFFD:deespues sort DUR notapiano fig";pasoCol(i1).Dur;" ";pasoCol(i1).notapiano;" ";pasoCol(i1).tiempoFigura 
-Next i1   
+'For i1=1 To coff
+'  print #1,"AOFFD:deespues sort DUR notapiano fig";pasoCol(i1).Dur;" ";pasoCol(i1).notapiano;" ";pasoCol(i1).tiempoFigura 
+'Next i1   
 '-----------------------------------------
-print #1,"====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene"
-For i1=1 To coff 'CNT 20-06-2021 JMG
+'print #1,"====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene"
+'For i1=1 To coff 'CNT 20-06-2021 JMG
  ' print #1,"DUR:";pasoCol(i1).DUR;" ";"notepiano:";pasoCol(i1).notapiano;figura(pasoCol(i1).DUR); _
  ' " .liga:";pasoCol(i1).liga;" old_time:";pasoCol(i1).old_time    
-Next i1
+'Next i1
 
 ' ---------------------------------------
 Dim As Double tiempoFigura
-Print #1,"-------------------------------------"
-Print #1,"AOFFD:start AcordeOffDistintos"
+'Print #1,"-------------------------------------"
+'Print #1,"AOFFD:start AcordeOffDistintos"
 
 
  old_time_off=Timer ' para notas no ligadas
 ' Print #1,"AOFFD:old_time off no ligadas inicial ";old_time_off
 
-Print #1,"AOFFD:no ligados calculo tiempo Figura y off:" 
+'Print #1,"AOFFD:no ligados calculo tiempo Figura y off:" 
 Dim tiempoFigMayorNoligado As Integer 
 For i1 = 1 To cnt ' (1)
-Print #1,"AOFFD:cnt "; cnt; "i1 "; I1; " pasoCol(i1).liga "; pasoCol(i1).liga;" notapiano ";pasoCol(i1).notapiano 
+'Print #1,"AOFFD:cnt "; cnt; "i1 "; I1; " pasoCol(i1).liga "; pasoCol(i1).liga;" notapiano ";pasoCol(i1).notapiano 
   If pasoCol(i1).liga = 0 Then
      tiempoFigura = pasoCol(i1).tiempoFigura/100000000000
    '  Print #1,"AOFFD:i1 ";i1;" tiempoFigura ";tiempoFigura
@@ -578,8 +578,8 @@ Print #1,"AOFFD:cnt "; cnt; "i1 "; I1; " pasoCol(i1).liga "; pasoCol(i1).liga;" 
   EndIf
 Next i1     
 tiempoFigMayorNoligado=  tiempofigura * 100000000000
-Print #1,"AOFFD:tiempoFigMayorNoligado ";tiempoFigMayorNoligado
-Print #1,"AOFFD:start OFF de ligados ---------" 
+'Print #1,"AOFFD:tiempoFigMayorNoligado ";tiempoFigMayorNoligado
+'Print #1,"AOFFD:start OFF de ligados ---------" 
  Dim tf As Double
 
 For i1=1 To cnt
@@ -673,7 +673,7 @@ Dim nombre As ZString ptr
 Dim As Integer i1,i2,i3,i4,i5,j ,comienzoDeLoop=0
 Dim As Integer comienzo=1, final=MaxPos,  canal=0,vel=100,velpos =0
 ' canal 0 es el 1 van de 0 a 15
-Dim pasoCol (0 To 115) As vec  ' entrada de durciones a medida que barro una columna
+Dim pasoCol (NB To NA) As vec  ' entrada de durciones a medida que barro una columna
 Dim As Double start
 Dim as Integer cnt=0, cntold=0,cpar=0,dura=0,duraOld=0,nj, durj,tiempoFiguraSig
 Dim As Integer liga=0,notapiano=0,old_notapiano=0, iguales=0, distintos=0
@@ -697,7 +697,7 @@ open_port (midiout,portsout, nombre)
 
 Print #1,"  "
 '/
-Print #1,"comienzo playaLL ==========> "
+'Print #1,"comienzo playaLL ==========> "
 jply=0:curpos=0
 mousex=0
 ' Print #1,                    "-----------------------------------------"
@@ -763,20 +763,21 @@ EndIf
   ' envio de instrumetno o CAMBIO de PROGRAMA PATCH 
   
   ' ============================== 18-08-2021 funciono!!!!
-  For i1=NA To NB Step -1 
+  For i1=NB To NA ''Step -1 
    
    If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12 _
       And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Then ' es semitono
      ' por mas que achique en octavas, Notapiano se calcula respecto del nro 
      ' completo de octavas del piano ergo 115 es fijo siempre mientras
         
-      Notapiano= 115 - i1 
+      Notapiano= i1
+      'Notapiano= 115 - i1 
       Notapiano= Notapiano - restar (Notapiano)
-      Print #1,"VEO LO CORRECTO DE NOTAPIANO "; Notapiano
+ '     Print #1,"VEO LO CORRECTO DE NOTAPIANO "; Notapiano
       dura=CInt(Roll.trk(jply, i1).dur) '1) I 2) I dur x 1 to 108
-     ' Print #1,"jply ";jply; "dura ";dura
+  '    Print #1,"jply ";jply; "dura ";dura
       cnt=cnt+1
-     ' Print #1,"paso ";jply;" cnt ";cnt;" notapiano "; Notapiano
+   '   Print #1,"paso ";jply;" cnt ";cnt;" notapiano "; Notapiano
       If cnt=1 Then 
          duraOld=dura
          
@@ -791,45 +792,45 @@ EndIf
       EndIf
       If duraOld=dura  Then
          iguales=1
-        ' Print #1,"cnt ";cnt;" iguales ";iguales
+    '     Print #1,"cnt ";cnt;" iguales ";iguales
       Else
          distintos=1
-        ' Print #1,"cnt ";cnt;" distintos ";distintos
+    '     Print #1,"cnt ";cnt;" distintos ";distintos
       EndIf         
 
      
       '+++++++++
       If ligaglobal=0 Then 
-        ' Print #1,"ligaglobal es cero ****"   
-        Print #1,"-> cnt"; cnt 
+     '    Print #1,"ligaglobal es cero ****"   
+      '  Print #1,"-> cnt"; cnt 
          pasoCol(cnt).DUR =dura
-        '' Print #1,"pasoCol(cnt).DUR ", pasoCol(cnt).DUR 
+       '  Print #1,"pasoCol(cnt).DUR ", pasoCol(cnt).DUR 
          pasoCol(cnt).notapiano=Notapiano 
          pasoCol(cnt).tiempoFigura=relDur(pasoCol(cnt).DUR) * tiempoDur * 100000000000
          pasoCol(cnt).i1 = i1 'posicion vertical en el vector real
       ' 20-06-2021 eliminado duraold=dura repetido    
          vel= vol( dura, velpos)
       Else
-        ' Print #1,"ligaglobal es uno *****"
+       '  Print #1,"ligaglobal es uno *****"
          If dura >= 91 And dura <=180 Then
             For i2=1 To cntold
                 If Notapiano  = pasoCol(i2).notapiano Then
-                  ' Print #1,"Notapiano de liga igual "; Notapiano
+        '           Print #1,"Notapiano de liga igual "; Notapiano
                    pasoCol(i2).DUR =dura
-                  ' Print #1,"pasoCol(i2).DUR "; pasoCol(cnt).DUR 
+         '          Print #1,"pasoCol(i2).DUR "; pasoCol(cnt).DUR 
                    pasoCol(i2).notapiano=Notapiano 
                 ' tiempofigur aya calculado
-                  ' Print #1,"tiempofigura anterior ";pasoCol(i2).tiempoFiguraOld
+        '           Print #1,"tiempofigura anterior ";pasoCol(i2).tiempoFiguraOld
                    pasoCol(i2).tiempoFigura=pasoCol(i2).tiempoFiguraOld       
-                  ' Print #1,"pasoCol(i2).i1 ";pasoCol(i2).i1
-                  ' Print #1," i1 debe ser igual al anterior:"; i1       
+        '           Print #1,"pasoCol(i2).i1 ";pasoCol(i2).i1
+        '           Print #1," i1 debe ser igual al anterior:"; i1       
                    pasoCol(i2).i1 = i1 'posicion vertical en el vector real es igual
                    vel= vol( dura, velpos)
                EndIf    
             Next i2
          Else
                    pasoCol(cnt).DUR =dura
-                  ' Print #1,"pasoCol(cnt).DUR "; pasoCol(cnt).DUR 
+         '          Print #1,"pasoCol(cnt).DUR "; pasoCol(cnt).DUR 
                    pasoCol(cnt).notapiano=Notapiano 
                 ' tiempofigur aya calculado
                    pasoCol(cnt).tiempoFigura=relDur(pasoCol(cnt).DUR) * tiempoDur * 100000000000       
@@ -841,7 +842,7 @@ EndIf
    EndIf
    
    ' i1=1
-   If i1=NB  Then 'And cnt >= 1 Then ' envio noteoff 1) no entra
+   If i1=NA  Then 'And cnt >= 1 Then ' envio noteoff 1) no entra
         ' If ligaglobal=1 Then
         '    If cntold<> cnt Then
         '       
@@ -850,14 +851,15 @@ EndIf
 
 
          If cnt > 1 Then' Acorde
-          ' Print #1,"i1=NB=";i1 ; " ACORDE cnt= ";cnt
+    '       Print #1,"i1=NB=";i1 ; " ACORDE cnt= ";cnt
          Else    
-          ' Print #1,"i1=NB=";i1 ; " SIMPLE cnt= ";cnt
+    '       Print #1,"i1=NB=";i1 ; " SIMPLE cnt= ";cnt
          EndIf  
          Select Case cnt
           Case 1 
            ' con y sin liga
            ' INCLUYE LIGADOS O NO LIGADOS
+ Print #1, "CALLL A NOTESIMPLE cntold, vel, canal, tiempodur",  cntold, vel, canal,tiempoDur
             noteSimple  pasoCol(), cntold, vel, canal,tiempoDur
                      
           Case Is > 1
@@ -867,12 +869,12 @@ EndIf
                  pasoCol(i2).tiempoFiguraOld=0
                Next i2
 
-               ' Print #1,"cnt ";cnt;" Acordeiguales "
+  '              Print #1,"cnt ";cnt;" Acordeiguales "
                 AcordeIguales pasoCol(),cnt,cntold,vel,canal,tiempoDur,Roll
                 
             EndIf
             If  distintos=1 Then
-              ' Print #1,"cnt ";cnt;" AcordeDistintos"
+  '             Print #1,"cnt ";cnt;" AcordeDistintos"
                 AcordeDistintos pasoCol(),cnt, cntold,vel,canal,tiempoDur,Roll
                 
             EndIf
@@ -880,12 +882,12 @@ EndIf
          End Select  
 
         cntold = cnt
-       ' Print #1,"cnt,cntold"; cnt;" ";cntold
+  '      Print #1,"cnt,cntold"; cnt;" ";cntold
        
    End If 
      
   Next i1
- ' Print #1,"---FIN -----paso:"; jply;" --------------------------------" 
+'  Print #1,"---FIN -----paso:"; jply;" --------------------------------" 
 '  Print #1,"COMIENZA OTRA  POSICION O J ======"; j
  mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
  If playloop=1 And jply= final Then
@@ -988,7 +990,7 @@ open_port (midiout,portsout, nombre)
 
 'Sleep 50
 'nota, velocidad,canal 
-' nR=semitono + (nro-1) * 13
+' nR=semitono + (*po) * 13
 
 'noteOn 64,87,1
 'leng = 3
@@ -1022,7 +1024,7 @@ Dim As Integer durl
    '   noteon 64, vel, canal
    '   Sleep 1500
    '   noteoff 64,canal
-'nR=(13-semitono) + (hasta-nro) * 13    
+'nR=(13-semitono) + (*po) * 13    
 ' mientras j no cambie se acumula el acorde
 ' se va enviando elon a cada nota a medida que se la recorre
 ' se toma su duracion para enviarle luego el off a cada una ellos 
@@ -1271,7 +1273,7 @@ finplay=1
 'https://freebasic.net/forum/viewtopic.php?f=14&t=26725
 End sub
 Function restar (notaRoll As Integer) As Integer
-
+' sale Notapiano 
 Select Case notaroll
    Case 0 To 11
      restar=0
@@ -1291,6 +1293,8 @@ Select Case notaroll
      restar= 7
    Case 104 To 115
      restar=8         
+   Case 117 To 128
+     restar=9         
        
 End Select
 
@@ -1316,14 +1320,19 @@ Select Case notaPiano
      SumarnR= 7
    Case 96 To 107
      SumarnR=8         
+   Case 108 To 119
+     SumarnR=9         
+   Case 120 To 131
+     SumarnR=10         
        
 End Select
 
 End Function
 
 
-Function sumar( ind As integer) As Integer 
-Dim res As Integer 
+Function sumar( ByVal ind As integer) As Integer 
+Dim res As Integer 'campiado segun nuevo algoritmo de octavas,,,
+ind=ind +1 
 res= ind Mod 13
  If res = 0 Then
     sumar=1 
@@ -1398,34 +1407,38 @@ Next
 
 End Sub
 Sub TrasponerGrupo( cant As Integer, Roll As inst)
+' ANDA BIEN, ES EQUIVALENT EEMPEIZA EN EL EXTREMO QUE ATACA BAJANDO LA POSICION
+' DE LA COPIA ES LO MISMO PEOR INVERTIDO FUNCIONA IGUAL, LO IMPORTANE DEL CAMBIO
+' FUE EN LA SUBRUTUNA SUMAR COMO EL VECTOR EMPIEZA DE CERO 0 EL ESPACIO ENTRE
+' OCTAVAS NO QUEDA MULTIPLO DE 13 ERGO LE SUMO 1 AHORA,,,ANTES DE AHCER EL MOD 13
 
 Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,b1=0
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
-' cant=(-1) si pulso flecha UP
-If cant < 0 Then ' UP
- comienzo= NB
- final = NA  
- inc= 1
-EndIf
-If cant > 0 Then 'DOWN
+' cant=(-1) si pulso flecha DOWN
+If cant < 0 Then ' DOWN
  comienzo= NA
  final = NB  
- inc=  -1
+ inc= -1
+EndIf
+If cant > 0 Then 'UP
+ comienzo= NB
+ final = NA  
+ inc=  1
 EndIf
 Dim As Integer desdet, hastat
    desdet=1   
    hastat= MaxPos   
-pasoNota=13
+pasoNota=13 ' es 12 25 38 en el vector real 
 For jpt = desdet To hastat  
   For i1= comienzo To final Step inc
-     If cant < 0 Then  ' UP  
+     If cant < 0 Then  ' DOWN  
         ind = i1+cant 
-        ind = ind - sumar(ind)
-     EndIf
-     If cant > 0 Then  ' DOWN  
-        ind = i1 + cant 
         ind = ind + sumar(ind)
+     EndIf
+     If cant > 0 Then  ' UP  
+        ind = i1 + cant 
+        ind = ind - sumar(ind)
      EndIf
    
     If ( (Roll.trk(jpt, i1).nota >= 0) And Roll.trk(jpt, i1).nota <= 181 ) _
@@ -1450,13 +1463,13 @@ For jpt = desdet To hastat
                               
             Else                
                If Roll.trk(jpt,ind).nota >=1 And Roll.trk(jpt,ind).nota <=12  Then
-                   If cant < 0 Then  ' UP  
-                      ind = ind+cant 
-                      ind = ind - sumar(ind)
-                   EndIf
-                   If cant > 0 Then  ' DOWN  
-                      ind = ind + cant 
+                   If cant < 0 Then  ' DOWN  
+                      ind = ind - cant 
                       ind = ind + sumar(ind)
+                   EndIf
+                   If cant > 0 Then  ' UP  
+                      ind = ind - cant 
+                      ind = ind - sumar(ind)
                    EndIf
 
                   if ind > NA Then
@@ -1490,16 +1503,17 @@ Next jpt
 End Sub
 
 Sub trasponerRoll( cant As Integer, Roll As inst)
+'AJSUTADO DE NUEVO 11-09-2021 CON EL NUEVO ALGORITMO DE OCTAVAS
 Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,b1=0
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
-' cant=(-1) si pulso flecha UP
-If cant < 0 Then ' UP
+' cant=(1) si pulso flecha UP
+If cant < 0 Then ' DOWN
  comienzo= NB
  final = NA  
  inc= 1
 EndIf
-If cant > 0 Then 'DOWN
+If cant > 0 Then 'UP
  comienzo= NA
  final = NB  
  inc=  -1
@@ -1518,13 +1532,13 @@ EndIf
 
 For jpt = desdet To hastat  
   For i1= comienzo To final Step inc
-     If cant < 0 Then  ' UP  
-        ind = i1+cant 
-        ind = ind - sumar(ind)
-     EndIf
-     If cant > 0 Then  ' DOWN  
+     If cant > 0 Then  ' UP  
         ind = i1 + cant 
         ind = ind + sumar(ind)
+     EndIf
+     If cant < 0 Then  ' DOWN  
+        ind = i1 + cant 
+        ind = ind - sumar(ind)
      EndIf
    
     If ( (Roll.trk(jpt,i1).nota >= 0) And Roll.trk(jpt,i1).nota <= 181 ) _
@@ -1565,13 +1579,13 @@ For jpt = desdet To hastat
                               
             Else                
                If Roll.trk(jpt,ind).nota >=1 And Roll.trk(jpt,ind).nota <=12  Then
-                   If cant < 0 Then  ' UP  
+                   If cant > 0 Then  ' UP  
                       ind = ind+cant 
-                      ind = ind - sumar(ind)
-                   EndIf
-                   If cant > 0 Then  ' DOWN  
-                      ind = ind + cant 
                       ind = ind + sumar(ind)
+                   EndIf
+                   If cant < 0 Then  ' DOWN  
+                      ind = ind + cant 
+                      ind = ind - sumar(ind)
                    EndIf
 
                   if ind > NA Then

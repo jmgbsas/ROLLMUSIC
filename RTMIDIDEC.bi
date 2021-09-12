@@ -16,7 +16,7 @@ Declare Sub allSoundoff(canal As UByte)
 Declare Sub alloff(canal As ubyte )
 Declare Sub listports( )
 Declare Sub sleep5dm()
-Declare Function sumar( ind As integer) As Integer
+Declare Function sumar( ByVal ind As integer) As Integer
 'Declare Sub trasponerRoll(cant As integer)
 'Declare Sub trasponerGrupo(cant As integer)
 'Declare Sub moverZonaRoll(cant As Integer)
@@ -104,9 +104,10 @@ Declare sub noteoff( note As UByte, canal As UByte)
 Declare Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
 Dim Shared ligaglobal  as Integer=0
 'Relacion de nR indice de Roll, con nE semitono, para evitar calculos.
-Dim Shared As integer relnRnE(0 To 107) => { _  ' indice de Roll vs semitono
+Dim Shared As integer relnRnE(0 To 132) => { _  ' indice de Roll vs nota ..semitono
 1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12, _
 1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12, _
-1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12 }
+1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12, _
+1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12 }
 
  
