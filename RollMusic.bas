@@ -327,8 +327,8 @@ Next ix
 
 If desde = 0 And hasta = 0 Then
  Print #1,"intervalo no dado usando default!"
- desde => 1  ' 1 3
- hasta => 10  ' 9 7 hasta-1
+ desde => 4  ' 1 3
+ hasta => 8  ' 9 7 hasta-1
  
 EndIf
 
@@ -457,9 +457,9 @@ NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8
 Dim As String driver
 
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
-Dim shared As Integer i,  posmouse, posmouseOld,incWheel, altofp11,edity1,edity2,octavaloop
+Dim shared As Integer i,  posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
 Dim Shared As Integer octaroll
-altofp11=ALTO:posmouseOld = 0:posmouse = 0
+posmouseOld = 0:posmouse = 0
 Dim Shared As BOOLEAN comEdit, resize
 comEdit = FALSE:resize = FALSE
 Dim Shared po As Integer Ptr
@@ -667,7 +667,7 @@ MenuItem(1026,MenName2, "Na.Ver Lista Tracks de la Cancion (Nombre y numero)")
 MenuItem(1027,MenName2, "Na.Modificar Nombre de Pistas de Cancion")
 
 
-MenuItem(1028,MenName3, "Seleccion Octavas (1 a 9 maximo) (-1,0,1,2,3,4,5,6,7)")
+MenuItem(1028,MenName3, "Cambia Octavas, si rango es mayor al anterior, se borran datos  (-1,0,1,2,3,4,5,6,7)")
 MenuItem(1029,MenName3, "Na.Seleccion rango de 3 octava repetidas 2 veces ")
 MenuItem(1030,MenName3, "Na.Octavas de Instrumetnos Estandares")
 MenuItem(1031,MenName3, "Na.Seleccion Canal")
@@ -726,13 +726,14 @@ Dim Shared As String txt
 Dim As Any Ptr pt
 Dim Shared As Integer ok = 0
 Dim As Integer Terminar=0,abrirRoll=0
-
+abrirRoll=0
 Do
 param.titulo ="RollMusic"
 
   If abrirRoll=1 Then
     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
     '''RollLoop ( param)
+    ''''abrirRoll=2
   EndIf
 
   If ix < 3 Then 
@@ -774,6 +775,8 @@ param.titulo ="RollMusic"
                CrearDirCancion (NombreCancion)            
             Case 1028 ' seleccion octavas menores a 1 9 
                seloctava (desde, hasta)
+               *po = hasta -1
+                Nuevo(Roll,1 )
             Case 1040 ' seleccion de instrumento por orden Alfabetico
                selInstORdenAlfa (instru)
                ChangeProgram ( CUByte (instru) , 0)
@@ -789,9 +792,18 @@ param.titulo ="RollMusic"
                instruOld=instru
                Roll.trk(1,NA).inst= CUByte(instru)
                ChangeProgram ( CUByte (instru) , 0)
-
                If abrirRoll=0 Then
                   abrirRoll=1
+                  If reiniciar=1 Then
+                     ThreadDetach(threadloop)
+                     usarmarcoOld=usarmarco
+                     reiniciar=1
+                  EndIf
+                  If reiniciar=0 Then
+                     reiniciar=1
+                     usarmarcoOld=usarmarco
+                  EndIf   
+                  
                   Exit Do
                EndIf
             Case 1061
@@ -838,12 +850,6 @@ param.titulo ="RollMusic"
       Case EventClose 
        Close:End 0
      End Select
-       If reiniciar=1  Then
-          reiniciar=0
-          ThreadDetach(threadloop)
-          usarmarcoOld=usarmarco
-          Exit  Do  
-       EndIf   
    Loop
 Else
 '    param.titulo ="RollMusic"

@@ -158,10 +158,10 @@ Sub calcCompas( ByRef j As Integer,Roll As inst)
          Continue For
        Else    
        
-         If Roll.trk(posn,(11 - i +(noct -1) * 13)).nota = 0 Then
+         If Roll.trk(posn,(i +(noct -1) * 13)).nota = 0 Then
          '   ' x print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
-            Roll.trk(posn,(11 - i +(noct -1) * 13)).nota = 181
-            Roll.trk(posn,(11 - i +(noct -1) * 13)).dur  = 0
+            Roll.trk(posn,(i +(noct -1) * 13)).nota = 181
+            Roll.trk(posn,(i +(noct -1) * 13)).dur  = 0
          EndIf
        EndIf
      Next i
@@ -260,10 +260,10 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
          Continue For
        Else    
        
-         If Roll.trk(posn,(11 - i +(noct -1) * 13)).nota = 0 Then
+         If Roll.trk(posn,(i +(noct -1) * 13)).nota = 0 Then
          '   ' x print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
-            Roll.trk(posn,(11 - i +(noct -1) * 13)).nota = 181
-            Roll.trk(posn,(11 - i +(noct -1) * 13)).dur  = 0
+            Roll.trk(posn,(i +(noct -1) * 13)).nota = 181
+            Roll.trk(posn,(i +(noct -1) * 13)).dur  = 0
          EndIf
        EndIf
      Next i
@@ -645,9 +645,9 @@ Sub ReCalCompas(Roll As inst)
  '------zzz
             For noct = desde To hasta
               For i2= 0 To 11 ' gracias a esto anda acordes¿?
-                 If Roll.trk(j,(11-i2 +(noct -1) * 13)).nota = 0 Then
-                    Roll.trk(j,(11-i2 +(noct -1) * 13)).nota = 181
-                    Roll.trk(j,(11-i2 +(noct -1) * 13)).dur  = 0
+                 If Roll.trk(j,(i2 +(noct -1) * 13)).nota = 0 Then
+                    Roll.trk(j,(i2 +(noct -1) * 13)).nota = 181
+                    Roll.trk(j,(i2 +(noct -1) * 13)).dur  = 0
                  EndIf
               Next i2
             Next noct
@@ -1176,21 +1176,26 @@ CantTicks=4000 ' vuelvo al original default
 ' se inicia el vector desde 1 hasta 9, se puede achicar las octavas ok.
 ' si ya se habian achicado y quiero agrandar, no se puede, debo borrar el vector.
 ' En la cantidad de posiciones no hay porblema en ambas direcciones. 
+          NB => 0 + (desde-1) * 13   ' 27 para 3
+          NA => 11 + (hasta-1) * 13  ' 90 para  7
           If desdevector > desde Or hastavector < hasta Then ' si se amplia el rango
+               Print #1,"entro a redimiensionar vector por octavas"
                Erase ( Roll.trk)
                Erase (RollAux.trk)  
-               NB => 0 + (desde-1) * 13   ' 27 para 3
-               NA => 11 + (hasta-1) * 13  ' 90 para  7
                desdevector= desde
                hastavector= hasta
                Print #1,"Runtime desde hasta ",desde ,hasta
                Print #1,"Runtime NB NA ",NB ,NA
-          EndIf
+               ReDim (Roll.trk ) (1 To CantTicks, NB To NA )
+               ReDim compas(1 To CantTicks)
+               ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
+          Else
 
-'          
-          ReDim (Roll.trk ) (1 To CantTicks, NB To NA )
-          ReDim compas(1 To CantTicks)
-          ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
+               ReDim Preserve (Roll.trk ) (1 To CantTicks, NB To NA )
+               ReDim Preserve compas(1 To CantTicks)
+               ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
+                          
+          EndIf
 
           MaxPos = 2 'NroCol
           posicion=1:posn=1

@@ -1949,7 +1949,7 @@ If (ScreenEvent(@e)) Then
   Case EVENT_MOUSE_BUTTON_RELEASE ' obtengoPosicion
    MousePress = 0
    If mousey < 50 And s5=2 Then
-    ScreenControl GET_WINDOW_POS, x0, y0
+  '  ScreenControl GET_WINDOW_POS, x0, y0
     s5=0
    EndIf
   
@@ -2026,7 +2026,7 @@ If (ScreenEvent(@e)) Then
    If e.scancode = &h41 Then ' <======= SC_F7
     If comEdit = FALSE Then
      ' MOVE VENTANA
-     w=ANCHO:h=ALTO
+     h=ALTO
      ScreenControl GET_WINDOW_POS, x0, y0
      ALTO = ALTO - inc_Penta
      If ALTO <= ALTO * 0.3 Then
@@ -2035,8 +2035,8 @@ If (ScreenEvent(@e)) Then
      '
      '    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
      '    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-     MoveWindow( hWnd , X0 , (Y0+h-ALTO)\2, ANCHO,ALTO, TRUE )
-     altofp11 = ALTO
+     MoveWindow( hWnd , X0 , (Y0+h-ALTO)\2, ANCHO - mxold,ALTO, TRUE )
+
     EndIf
     Exit Do
    EndIf
@@ -2044,7 +2044,7 @@ If (ScreenEvent(@e)) Then
     If comEdit = FALSE Then
      ' MOVE VENTANA
      Dim As Integer w,h
-     w=ANCHO:h=ALTO
+     h=ALTO
      ScreenControl GET_WINDOW_POS, x0, y0
      ALTO = ALTO + inc_Penta
      If ALTO >= altoInicial - 1  Then
@@ -2054,8 +2054,8 @@ If (ScreenEvent(@e)) Then
      '  ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
 
      '  Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-     MoveWindow( hWnd , X0, (Y0+ALTO-h)\2, ANCHO,ALTO, TRUE )
-     altofp11 = ALTO
+     MoveWindow( hWnd , X0, (Y0+ALTO-h)\2, ANCHO - mxold,ALTO, TRUE )
+
     EndIf
     Exit Do
    EndIf
@@ -2241,8 +2241,8 @@ If (ScreenEvent(@e)) Then
 
     If comEdit = FALSE Then
      ' MOVE VENTANA
-     w=ANCHO:h=ALTO
-     '
+     h=ALTO
+     ScreenControl GET_WINDOW_POS, x0, y0
      ALTO = ALTO - inc_Penta
      If ALTO <= ALTO * 0.3 Then
       ALTO =  ALTO * 0.3
@@ -2251,9 +2251,8 @@ If (ScreenEvent(@e)) Then
      '
      '   ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
      '   Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-     MoveWindow( hWnd , 0 , (0+h-ALTO)\2, ANCHO,ALTO, TRUE )
+     MoveWindow( hWnd , X0 , (Y0+h-ALTO)\2, ANCHO - mxold,ALTO, TRUE )
 
-     altofp11 = ALTO
     EndIf
 
     Exit Do
@@ -2265,8 +2264,8 @@ If (ScreenEvent(@e)) Then
      ' MOVE VENTANA
      Dim As Integer w,h
 
-     w=ANCHO:h=ALTO
-     '
+     h=ALTO
+     ScreenControl GET_WINDOW_POS, x0, y0
      ALTO = ALTO + inc_Penta
      If ALTO >= altoInicial - 1  Then
       ALTO = altoInicial  - 1
@@ -2275,9 +2274,7 @@ If (ScreenEvent(@e)) Then
      '   ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
 
      '   Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-     MoveWindow( hWnd , 0, (0+ALTO-h)\2, ANCHO,ALTO, TRUE )
-
-     altofp11 = ALTO
+     MoveWindow( hWnd , X0, (Y0+ALTO-h)\2, ANCHO - mxold,ALTO, TRUE )
 
     EndIf
 
@@ -2461,6 +2458,7 @@ If (ScreenEvent(@e)) Then
 ' 12-07-2021 mousex > 70  
  If mouseY < 25 And s5= 0 And mouseX > (2* ANCHO/3) And mousex < (ANCHO-70) And _
      usarmarco=0 Then
+     ScreenControl SET_WINDOW_POS, x0, y0
      x1=mouseX: y1=mouseY
      s5=1
      Exit Do
@@ -2469,6 +2467,7 @@ If (ScreenEvent(@e)) Then
  ' And menuNro= 1 
  If MouseButtons And 1 And s5=1 And mouseX > (2* ANCHO/3)  And mousex < (ANCHO-70) And _
     usarmarco = 0 Then
+    Sleep 1
    x2=mouseX
    y2=mouseY
    x0=x0+x2-x1
@@ -2504,16 +2503,16 @@ If (ScreenEvent(@e)) Then
   If  MouseButtons And 1 Then
    ''      If comEdit = FALSE Then
    ' MOVE VENTANA
-   w=ANCHO:h=ALTO
-   '
+   h=ALTO
+   ScreenControl GET_WINDOW_POS, x0, y0
    ALTO = ALTO - inc_Penta
    If ALTO <= ALTO * 0.3 Then
     ALTO =  ALTO * 0.3
    EndIf
    '    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
    '    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-   '''MoveWindow( hWnd , X0 , (Y0+h-ALTO)\2, ANCHO,ALTO, TRUE )
-   altofp11 = ALTO
+     MoveWindow( hWnd , X0 , (Y0+h-ALTO)\2, ANCHO - mxold,ALTO, TRUE )
+ 
   EndIf
   Exit Do
 
@@ -2525,13 +2524,13 @@ If (ScreenEvent(@e)) Then
    ''    If comEdit = FALSE Then
    ' MOVE VENTANA
    Dim As Integer w,h
-   w=ANCHO:h=ALTO
+   h=ALTO
    ALTO = ALTO + inc_Penta
    If ALTO >= altoInicial - 1  Then
     ALTO = altoInicial  - 1
    EndIf
-   MoveWindow( hWnd , X0, (Y0+ALTO-h)\2, ANCHO,ALTO, TRUE )
-   altofp11 = ALTO
+   MoveWindow( hWnd , X0, (Y0+ALTO-h)\2, ANCHO - mxold,ALTO, TRUE )
+
   EndIf
   Exit Do
 
@@ -2975,8 +2974,8 @@ EndIf
   m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
   If m.buttons = 1 And (m.x > 5 ) And (m.y > 5 ) Then
    'dim as integer desktopwidth,desktopheight
-   desktopwidth = GetSystemMetrics(SM_CXSCREEN)
-   desktopheight =GetSystemMetrics(SM_CYSCREEN)
+  ' desktopwidth = GetSystemMetrics(SM_CXSCREEN)
+  ' desktopheight =GetSystemMetrics(SM_CYSCREEN)
 
    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
@@ -2984,10 +2983,11 @@ EndIf
    ' m.y The new position of the top of the window.
    ' 07-08-2021 cambien m.x/2 y m.y/2  por 1 y 1
    
-   MoveWindow( hWnd , 1, 1 , desktopwidth - mxold, desktopheight - myold, TRUE )
+   MoveWindow( hWnd , 1, 1 , ANCHO - mxold, ALTO - myold, TRUE )
    mxold=m.x
    myold=m.y
   EndIf
+  
   Exit Do
  Else
   '  m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
