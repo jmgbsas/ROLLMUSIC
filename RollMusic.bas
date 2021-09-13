@@ -829,7 +829,7 @@ param.titulo ="RollMusic"
             Case 1062
  ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
  ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.       
-             Shell ("start ./RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) )                
+             Shell ("start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) )                
             Case 1070
               MessBox("","5 Menu")
             Case 1080
@@ -852,8 +852,8 @@ param.titulo ="RollMusic"
      End Select
    Loop
 Else
-'    param.titulo ="RollMusic"
-'    threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+  param.titulo ="RollMusic"
+  threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
   ThreadWait threadloop
   cerrar(0)  
 End If

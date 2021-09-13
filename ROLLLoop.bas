@@ -2456,30 +2456,39 @@ If (ScreenEvent(@e)) Then
   EndIf
  EndIf
 ' 12-07-2021 mousex > 70  
- If mouseY < 25 And s5= 0 And mouseX > (2* ANCHO/3) And mousex < (ANCHO-70) And _
-     usarmarco=0 Then
+ If mouseY < 25 And s5= 0 And mouseX > 350 And mousex < (ANCHO-70) And _
+     usarmarco=0 and mousey < 50 Then
      ScreenControl SET_WINDOW_POS, x0, y0
      x1=mouseX: y1=mouseY
      s5=1
      Exit Do
- EndIf
+  EndIf
  ' =========> MOVER VENTANA DRAGNDO L CINTA SUPERIOR EN OPCION <MENU>
- ' And menuNro= 1 
- If MouseButtons And 1 And s5=1 And mouseX > (2* ANCHO/3)  And mousex < (ANCHO-70) And _
-    usarmarco = 0 Then
-    Sleep 1
+ ' And menuNro= 1  '''348  (2* ANCHO/3)
+ If MouseButtons And 1 And s5=1 And mouseX > 350  And mousex < (ANCHO-70) And _
+    usarmarco = 0 AND mousey < 50 Then
+    
    x2=mouseX
    y2=mouseY
+   If x2-x1 > 20  Then
+     x2=0:x1=0
+   EndIf
+   If y2-y1 > 10  Then
+     y2=0:y1=0
+   EndIf 
+ 
    x0=x0+x2-x1
    y0=y0+y2-y1
    ScreenControl SET_WINDOW_POS, x0, y0
   ' mientras mantengo presiondo el mouse pudo mover el mouse con la ventana
   ' la performance no es tan buena pero funciona
    Exit Do
+  Else
+      x2=x1:y2=y1 
   EndIf
- ''  If mouseY > 50 Then ' <=== MENU DEFAULT 0 POR AHORA NO ES MOLESTO
- ''         menuNew=menuNro
- ''  EndIf
+   If mouseY > 50 Then ' <=== MENU DEFAULT 0 POR AHORA NO ES MOLESTO
+      x1=0:x2=0:y1=0:y2=0   ''         menuNew=menuNro
+   EndIf
  ''https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-movewindow
  '                           <====== [BOTONES] =======>
  ' 07-08-2021 lugar para test tamaño 10x8
@@ -2986,7 +2995,9 @@ EndIf
    MoveWindow( hWnd , 1, 1 , ANCHO - mxold, ALTO - myold, TRUE )
    mxold=m.x
    myold=m.y
+   
   EndIf
+  
   
   Exit Do
  Else
@@ -3036,7 +3047,7 @@ if fueradefoco=1  Then
    Sleep 10
 EndIf
 
-If s5<> 1 Then
+If s5=2 Then
  Sleep 1
 EndIf
 Loop
@@ -3047,7 +3058,7 @@ if fueradefoco=1  Then
    Sleep 10
 EndIf
 
-If s5<> 1 Then
+If s5=2 Then
  Sleep 1
 EndIf
 
