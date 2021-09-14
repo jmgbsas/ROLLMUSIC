@@ -2470,10 +2470,10 @@ If (ScreenEvent(@e)) Then
     
    x2=mouseX
    y2=mouseY
-   If x2-x1 > 20  Then
+   If x2-x1 > 50  Then
      x2=0:x1=0
    EndIf
-   If y2-y1 > 10  Then
+   If y2-y1 > 50  Then
      y2=0:y1=0
    EndIf 
  
@@ -2483,11 +2483,14 @@ If (ScreenEvent(@e)) Then
   ' mientras mantengo presiondo el mouse pudo mover el mouse con la ventana
   ' la performance no es tan buena pero funciona
    Exit Do
+   s5=0
   Else
       x2=x1:y2=y1 
+      s5=0
   EndIf
    If mouseY > 50 Then ' <=== MENU DEFAULT 0 POR AHORA NO ES MOLESTO
       x1=0:x2=0:y1=0:y2=0   ''         menuNew=menuNro
+      s5=0
    EndIf
  ''https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-movewindow
  '                           <====== [BOTONES] =======>
