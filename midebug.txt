@@ -1,0 +1,16 @@
+start
+09-13-202120:01:51
+__FB_ARGC__    1
+arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.3.0.0-U-Integrado-OCTAVAS-REVISION\RollMusic.exe'
+arg  1 = ''
+intervalo no dado usando default!
+instru         0
+Roll.trk(1,NA).inst         0
+NB             39
+NA             102
+desde          4
+hasta          8
+gap1           76
+  
+ChangeProgram inst          0
+  8144

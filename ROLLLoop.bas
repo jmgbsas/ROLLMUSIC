@@ -2631,7 +2631,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  ' debere agregr un nuevo comando END paraahcerlo con elmouse....
    If   ayudaModif=FALSE Then
      If (mouseButtons And 1 )  And nroClick = 2  Then
-       savemousex=0 : savemousey=0 ' JMG NUEVA
+       savemousex=0 : savemousey=0 ' 
    ' ESTADO: PREPARA COMANDO
    'Print #1, "------------------------------------------------------------"
    'Print #1, "(3) (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And comedit=TRUE "
@@ -2937,17 +2937,41 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
 
  If copiarZona=0 And MouseButtons  And 1 And MultiKey(SC_C)   Then  'mover Zona 
 ' usamos la seleccion de Zona y luego movemos la zona a una posicion dada
+   Print #1,"entra a copiar "
     nota=0
     indiceNota=(mousex- gap1 )/anchofig + posishow
     copiarZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
     If numero=0 Then
+    Print #1,"entra a copiar numero 0"
        moverZonaRoll(indiceNota,Roll)
     Else
+     Print #1,"entra por Else numero > 0"
        Dim As short lz=0,delta
        delta = pasoZona2 - pasoZona1 + 1
+' si la secuencia es chica debo agrandarla jmg   
+'--- AUMENTO DE CAPACIDAD DEL VECTOR EN POSICIONES NECESARIAS
+   Print #1,"DELTA ",delta
+    Dim As Integer nuevaspos
+    nuevaspos= indicenota + delta * numero
+    Print #1,"NuevaPos,,", nuevaspos
+      
+    If CantTicks - MaxPos < nuevaspos  Then
+     '  GrabarArchivo ''hacer un backup !!! 
+      CantTicks= nuevaspos + 1 ' incremento el tamaño en 1000 posiciones =1 min
+      Print #1,"incremento final de CantTick ", CantTicks 
+      ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
+      ReDim Preserve compas(1 To CantTicks)
+      ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
+      ReDim Preserve (Track(ntk).trk)(1 To CantTicks,1 To lim2)
+      Print #1,"Redim exitoso"
+    EndIf
+ Print #1,"va a copiar FOR lz "
+'---
+    
        For lz = 1 To numero
           moverZonaRoll(indiceNota,Roll)
           indiceNota=indiceNota + delta
+          
        Next lz 
     EndIf
     Exit Do

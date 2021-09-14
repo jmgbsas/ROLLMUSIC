@@ -14,7 +14,7 @@
     1.0) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
     1.1) El espaciado entre lineas se puede cambiar.
     1.2) Trasponer todo: Ctrl-T habilita la trasposicion, Q la deshabilita.
-    1.3) Recalcular Compas <R>.
+    1.3) Recalcular Compas <R>. Establece las barras divisorias entre compases.c
     1.4) Grabar Archivo.
     1.5) Cargar Archivo.
     1.6) Tamaño Font. 

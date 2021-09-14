@@ -971,7 +971,7 @@ Sub Tracks (nroTrack As UByte, nroCanal As UByte)
 End Sub
 '--------
 Sub CargaArchivo(Roll As inst)
-   
+   '  carga roll 
      Dim z (1,1 )  As dat
      Dim zLim (1,1) As dat
      
@@ -1016,7 +1016,7 @@ Sub CargaArchivo(Roll As inst)
      
      ' cargamos trabajo datos
      Dim Trabajo (1 To MaxPos, NB To NA) As dat
-     CantTicks = MaxPos+1000 ' le damos un minuto mas
+     CantTicks = MaxPos     
      ReDim  (Roll.trk ) (1 To CantTicks, NB To NA)
      ReDim  (Track(ntk).trk ) (1 To CantTicks, NB To NA)
      ''Dim Trabajo (NB To NA,1 To MaxPos) As dat ' temporario para convertir
@@ -1036,7 +1036,7 @@ Sub CargaArchivo(Roll As inst)
       Dim As integer ip=0,Notapiano
       For i= NB To NA
        Roll.TRK(j,i)  => Trabajo (j,i)    
-' 06-09-2021 carga Track 
+' 06-09-2021 carga track si es la qera vez carga en ntk=0 
       
       
        If Trabajo (j,i).nota >= 1 And Trabajo (j,i).nota <=12 And _ 
@@ -1064,7 +1064,7 @@ Sub CargaArchivo(Roll As inst)
 
      DUR => 0
      curpos =>0
-     carga=0
+    ''' carga=0
      ReCalCompas(Roll)     
     ''If Roll.trk(1,NA).
 End Sub
@@ -1164,9 +1164,9 @@ Sub CargaTrack(Track() As sec, ByRef ntk As Integer)
 
      DUR => 0
      curpos =>0
-     carga=0
+
      '''''ReCalCompas(Roll) '''No es vEctor de Visualizacion      
-'''''' Reponer    ReCalCompas(Roll)
+
       Print #1,"CargaTrack 3 fin"   
 
 End Sub
@@ -1239,7 +1239,7 @@ For i2 = 1 To MaxPosTrack(ntk) -1
       ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
          PianoNota=Track(ntk).trk(i2,i1 ).nota
          PianoNota= PianoNota + SumarnR (PianoNota)
-         i3= 115 -PianoNota  ' 06-09-2021 jmg para 1 a 9 octava anda ok menso no
+         'i3= 115 -PianoNota  ' 06-09-2021 jmg para 1 a 9 octava anda ok menso no
          i3= PianoNota  ' JMG 4.3 
       '   Print #1,"indice i3 el vertical ", i3
          'i3=semitono + (*po) * 13
@@ -1254,8 +1254,8 @@ For i2 = 1 To MaxPosTrack(ntk) -1
       Roll.trk(i2,i1).nota=181
       Roll.trk(i2,i1).dur=0
    Else
- '  Print #1,i2,Roll.trk(i2,i1).nota,Roll.trk(i2,i1).dur
-    ' Continue For   
+   ''Print #1,i2,Roll.trk(i2,i1).nota,Roll.trk(i2,i1).dur
+    '' Continue For   
    EndIf
   Next i1
 Next i2     
@@ -1488,9 +1488,9 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    EndIf
    Dim muestra As String ' nombre tambien se usa en cancion
    If Len(nombre) > 60  Then
-     muestra="C:\..\"+Mid(nombre,30)
+     muestra="C:\..\" + Right (nombre,60)
    EndIf
-   muestra=Str(PianoNota) + " "+ nombre   
+   muestra=Str(PianoNota) + " "+ muestra   
 
    t=  " [Ayuda] "+ muestra :cairo_show_text(c, t)
 
@@ -1606,30 +1606,33 @@ EndIf
     If MouseButtons And 1 And carga = 0 Then
        CargaArchivo(Roll)
        MenuNew=0
+       carga=1  ' <======= control de Carga
     EndIf
    Else
+    carga=0   
     cairo_set_source_rgba c, 1, 1, 1, 1
-    carga=0  ' <======= control de Carga
    EndIf
    t = " ABRIR<[*.ROLL]":cairo_show_text(c,t)
 
    '===> 3.2.1 [*.RTK]
 
    If mousex > 300 And mousex <  345  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
-    cairo_set_source_rgba c, 0, 1, 0, 1
-    If MouseButtons And 1 And carga = 0 Then
-      Print #1,"carga track veo nombre antes   ",nombre
-       CargaTrack (Track() , ntk )
-      Print #1,"carga track veo nombre despues ",nombre 
-        TrackaRoll (Track() , ntk , Roll)
-      Print #1,"TrackaRollcarga rtk veo nombre ",nombre 
-       RecalCompas (Roll)
-      Print #1,"despues RecalCompas veo nombre ",nombre
-      MenuNew=0 
-    EndIf
+     Print #1,"entra a cargar TRACK"
+      cairo_set_source_rgba c, 0, 1, 0, 1
+      If MouseButtons And 1 And carga=0  Then
+         Print #1,"carga track veo nombre antes   ",nombre
+         CargaTrack (Track() , ntk )
+         Print #1,"carga track veo nombre despues ",nombre 
+         TrackaRoll (Track() , ntk , Roll)
+         Print #1,"TrackaRollcarga rtk veo nombre ",nombre 
+         RecalCompas (Roll)
+         Print #1,"despues RecalCompas veo nombre ",nombre
+         MenuNew=0
+         carga=0 ' <======= control de Carga 
+     EndIf
    Else
+    carga=0
     cairo_set_source_rgba c, 1, 1, 1, 1
-    carga=0  ' <======= control de Carga
    EndIf
    t = " [*.RTK]":cairo_show_text(c,t)
 
@@ -1648,8 +1651,8 @@ EndIf
 
    
   '===> 3.3[GRABAR] SC_F11 COPIA
-   If MultiKey(sc_Control) And mousex > 504 And mousex < 573  And mousey < 50  Or _
-         GrabarPistaCancion=1  Then ' <=
+   If (MultiKey(sc_Control) And mousex > 504 And mousex < 573  And mousey < 50  Or _
+         GrabarPistaCancion=1 ) And carga=0 Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1  Or  GrabarPistaCancion=1     Then
       ''      Print #1, "Grabando a disco Roll GRABAR "
@@ -1678,16 +1681,18 @@ EndIf
            GrabarArchivo ()
            
        EndIf
+         carga=1
          lockip=2 ' habilita mouse 28-08-2021
         MenuNew=0  
     EndIf
    Else
+    carga=0
     cairo_set_source_rgba c,1,1,1,1
    EndIf
    t = "[GRABAR]": cairo_show_text(c,t) :t= ""
    '
   '===> 3.3[GRABAR COMO] SC_F11 COPIA 
-   If MultiKey(sc_Control) And mousex > 608 And mousex < 743  And mousey < 50  Then ' <=
+   If MultiKey(sc_Control) And mousex > 608 And mousex < 743  And mousey < 50  And carga=0 Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 Then
      '       Print #1, "Grabando a disco Roll GRABAR "
@@ -1703,9 +1708,11 @@ EndIf
 
        GrabarArchivo()
           lockip=2 ' habilita mouse 28-08-2021
-       MenuNew=0   
+       MenuNew=0
+       carga=1   
     EndIf
    Else
+    carga=0
     cairo_set_source_rgba c,1,1,1,1
    EndIf
    t = " [GRABAR COMO]" : cairo_show_text(c,t) :t= ""
@@ -1713,11 +1720,10 @@ EndIf
 '-----------------------------
   '===> 3.3.1 [ROLL=>RTK] SC_F11 COPIA 
   
-   If MultiKey(sc_Control) And mousex > 778 And mousex < 912  And mousey < 50  Then ' <=
+   If MultiKey(sc_Control) And mousex > 778 And mousex < 912  And mousey < 50  And carga=0 Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
-    Print #1, "Grabando a disco Roll a Track ----",nombre
      If MouseButtons And 1 Then
-       Print #1, "Grabando a disco Roll a Track ",nombre
+       Print #1, "Click Grabando a disco Roll a Track ",nombre
       '''' dialogoText("Grabar Archivo")
        Dim As String nombreg
        If nombre = "" Then
@@ -1731,10 +1737,12 @@ EndIf
        EndIf
 ''''       grabaprueba()
 ' por ahroa todo RollaTRack graba con [0] adelante. s epodra cambiarlo en futuro  
-        GrabarRollaTrack(1,0) ' 1 significa cambiar el foramto de nombre de Rool
+        GrabarRollaTrack(1,0) ' 1 significa cambiar el formato de nombre de Rool
         MenuNew=0           ' por formato de TRack anteponiendo[0]
+        carga=1
     EndIf
    Else
+    carga=0
     cairo_set_source_rgba c,1,1,1,1
    EndIf
 
@@ -2795,7 +2803,7 @@ For i2 = 1 To MaxPos
          Temp(i2,i3).pb=Roll.trk(i2,i1 ).pb
          Temp(i2,i3).inst=Roll.trk(i2,i1 ).inst
          
-         PianoNota= 115 - i1 ' nR=i1 es el indice de Roll 06-09-2021 N!=115
+         PianoNota= i1 ' nR=i1 es el indice de Roll 06-09-2021 N!=115
          ' cuanta al reves desde ocatva mas aguda a la mas grave,,,
          ' no lo cambiare o podri aahcer lo veremos 
          ' convertimos a PianoNota
@@ -2803,7 +2811,7 @@ For i2 = 1 To MaxPos
          ' track tendra directamente el valor del piano para tocar con rtmidi
          Temp(i2,i3).nota=CUByte(PianoNota) 
          If i3=12 Then ' track solo guarda 12 notas en acorde el resto se desrpecia
-            Exit For, For  
+            Exit For '13-09-2021 tenia 2 for salia del todo ja  
          End If
       EndIf
    Next i1

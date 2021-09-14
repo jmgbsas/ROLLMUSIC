@@ -1623,8 +1623,8 @@ Next jpt
 End Sub
 
 Sub moverZonaRoll(ind As Integer, Roll As inst)
-' mueve M + Click la zona a la posicion indicada pro el click
-' o copia c + click ñl azona a la posicion indicada  
+' mueve M + Click la zona a la posicion deseada por el click
+' o copia c + click en en la posicion deseada   
 Dim As Integer jpt=1, i1=1, comienzo , final, inc,b1=0,cant=0
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
@@ -1662,7 +1662,7 @@ For jpt=desdet To hastat
      Roll.trk(ind,i1).pan  = Roll.trk(jpt,i1).pan
      Roll.trk(ind,i1).pb   = Roll.trk(jpt,i1).pb
      Roll.trk(ind,i1).inst = Roll.trk(jpt,i1).inst
-    ' Print #1,"i1,ind Roll.trk(i1,ind).nota ",i1, ind, Roll.trk(i1,ind).nota
+   '  Print #1,"i1,ind Roll.trk(i1,ind).nota ",i1, ind, Roll.trk(ind,i1).nota
      If moverZona=1 Then ' borro original
         Roll.trk(jpt,i1).nota = 181
         Roll.trk(jpt,i1).dur  = 0
@@ -1673,13 +1673,13 @@ For jpt=desdet To hastat
      EndIf
    Next i1
    ind=ind+1
- Next jpt
-  
+Next jpt
+Print #1,"TERMINO copia ¿? ",ind   
 If ind > MaxPos then
   MaxPos=ind
 EndIf
-'i la posicion donde copi es mayor a MaxPos debo llenar el espacio entre MAxPos y 
-'el punto inicial de copia con 0 y 181 para dur y Not repectivamente
+'si la posicion donde copio es mayor a MaxPos, debo llenar el espacio entre MAxPos y 
+'el punto inicial de copia con 0 y 181 para dur y Nota repectivamente
 Print #1,"inicioind  MAxPosOld ",inicioind , MAxPosOld  
 If inicioind > MAxPosOld Then
    inicioind = inicioind -1
@@ -1697,8 +1697,8 @@ If inicioind > MAxPosOld Then
    Next jpt
 
 EndIf
-
-' correccion de maspos al copiar antes de maxpos pero la zona suepra maxpos
+Print #1,"--> TERMINO la vuelta de ind ", ind
+' correccion de maxpos al copiar antes de maxpos pero la zona suepera maxpos
 
 'If (inicioind < MaxPosOld) Then
 ' If ( (MaxPosOld - inicioind ) < cant) Then ' cuadno el inicio de copia est aantes de MAxPos
