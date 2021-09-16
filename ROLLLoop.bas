@@ -57,10 +57,10 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
  'delta=NroCol
  If cursorVert=0 And comEdit=TRUE  Then
   If posicion < 30  Then
-   posishow=  1
-  
+   posishow=  posicion ''curpos ' decia 1   
+  ' valla tatlmente al inicio veremos si es aca jmgjmg
   Else
-   posishow = posicion - 20
+   posishow = posicion ''- 20
   EndIf
  Else
   posishow = posicion
@@ -754,7 +754,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar co
  menuMouse = 0
  nota=0
  DUR=0
- 
+
 EndIf
 If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
  nota=0
@@ -772,6 +772,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE 
  agregarNota = 0
  menuMouse = 0
  '' notadur=0
+ 
 EndIf
 If cursorVert=0 Then
  If MultiKey(SC_DOWN)  Then
@@ -939,6 +940,10 @@ EndIf
         If curpos > NroCol  Then
           curpos = NroCol
         EndIf
+        If posicion + curpos > MaxPos -1  Then
+           curpos = MaxPos -1 - posicion 
+        EndIf
+
      EndIf
      Sleep 100
     Exit Do
@@ -2409,19 +2414,24 @@ If (ScreenEvent(@e)) Then
      '       Print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
      font = 18
      curpos=0
+     guardopos=posicion
      ''mayorDurEnUnaPosicion (posn)
      '' calcCompas(pos)
      controlEdit=0
+     posishow=posicion
      Exit Do
     Else
      comEdit = FALSE : s3 = 0 ' solo LECTURA
      '       Print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
      'posicion= posicion + curPOS ' estaba mal no va 3-3-21 jmg
-     If play=0 Then 
+     If play=0 Then
+       posicion=guardopos
+       '''posicion = posicion + curpos ' 15-09-2021 jmgjmg ok mejoró 
        curpos=0
        controlEdit=0 'jmg 09-06-2021
        nota=0
-       posicion=posicion - NroCol/2
+       ''posicion=posicion - NroCol/2
+
        If posicion < 1 Then
          posicion = 1
        EndIf
@@ -2463,7 +2473,7 @@ If (ScreenEvent(@e)) Then
      s5=1
      Exit Do
   EndIf
- ' =========> MOVER VENTANA DRAGNDO L CINTA SUPERIOR EN OPCION <MENU>
+ ' =========> MOVER VENTANA DRAGAR LA CINTA SUPERIOR con el mouse
  ' And menuNro= 1  '''348  (2* ANCHO/3)
  If MouseButtons And 1 And s5=1 And mouseX > 350  And mousex < (ANCHO-70) And _
     usarmarco = 0 AND mousey < 50 Then
@@ -2569,6 +2579,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
      nroClick=1
      cursorVert = 1
      cursorHori = 1
+
  '  Print #1, "------------------------------------------------------------"
  '  Print  #1,"(1) MultiKey(SC_CONTROL) And (MouseButtons And 2) And comEdit=TRUE"
  '  Print #1, "sc_CONTROL + MB2 + CE=TRUE <= ESTADO:CALL MENU COMANDO"
@@ -2723,6 +2734,16 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
          curpos=(mousex- gap1 )/anchofig '01-07-2021
          notacur=nE
+     ' 15-09-2021 no se puede dar ctrl-m mas alla de Maxpos, no sepuede modifar algo
+     ' que no existe o si deberia???    
+     If curpos > Maxpos -2 Or posicion +  curpos > MAxPos -2 Then
+        nroClick=0
+        cursorVert = 0
+        cursorHori = 0
+        mousex=(Maxpos -2 )*anchofig + gap1
+        savemousex=mousex
+        ayudaNuevaNota=FALSE
+     EndIf   
        
     Exit Do
    EndIf

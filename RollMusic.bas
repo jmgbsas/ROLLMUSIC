@@ -671,10 +671,10 @@ MenuItem(1028,MenName3, "Cambia Octavas, si rango es mayor al anterior, se borra
 MenuItem(1029,MenName3, "Na.Seleccion rango de 3 octava repetidas 2 veces ")
 MenuItem(1030,MenName3, "Na.Octavas de Instrumetnos Estandares")
 MenuItem(1031,MenName3, "Na.Seleccion Canal")
-MenuItem(1040,MenName3, "Cambia Instrumento Alfabetico en la pista editada")
-MenuItem(1050,MenName3, "Cambia Instrumento Numérico  en la pista editada")
-MenuItem(1060,MenName3, "Crea track aislado con lo elegido y reemplaza al existente en la edicion")
-MenuItem(1061,MenName3, "Crear Track en la Cancion en Edicion, Con lo elegido")
+MenuItem(1040,MenName3, "Cambia Instrumento por orden Alfabetico")
+MenuItem(1050,MenName3, "Cambia Instrumento por orden Numérico")
+MenuItem(1060,MenName3, "Crea pista aislada con lo elegido y reemplaza la existente en la edicion")
+MenuItem(1061,MenName3, "Crear Pista en la Cancion en Edicion, Con lo elegido")
 MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
 
 

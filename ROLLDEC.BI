@@ -54,7 +54,7 @@ Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
 dim Shared as string cromatica(1 to 12)
-dim shared As Integer MaxPos=2,ntk=0,CPlay=0
+dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0
   
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
@@ -107,7 +107,7 @@ Dim Shared As Any Ptr p2,tl1,tl2,tl3,tl4,tl5,tl6,tl7,tl8,tl9,tl10,tl11,tl12
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
 Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
 Dim Shared mas As Integer = 0 ' + continuacion o ligadura
-Dim Shared incr As Integer =0
+Dim Shared  As Integer incr=0 , entroActrlM =0, salgoDeCtrlM=0
 Dim Shared tres As Integer = 0
 Dim shared doblepun As Integer =0
 Dim Shared cuart As Integer=0 'nro q indica sumarle 1/4 de su valor 
