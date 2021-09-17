@@ -1,3 +1,6 @@
+
+ 
+ 
 Sub noteoff( note As UByte, canal As UByte) 
 ' canal 1
 ' 123 da note off para todas las notas solo hy qu eenvirlo a 
@@ -135,6 +138,8 @@ Sub noteSimple	( pasoCol() As vec, cntold As integer,vel As UByte,canal As ubyte
 Dim As Double tiempoFigura=0
 'con o sin liga, recalcula tiempo dur no usa multiplicado por 10a la once
 Dim As Integer i1
+On Local Error GoTo errorhand 
+
 'Print #1,"START noteSimple"
 'Print #1,"pasoCol(1).tiempoFiguraOld:";pasoCol(1).tiempoFiguraOld
 'Print #1,"cntold "; cntold
@@ -199,6 +204,35 @@ EndIf
 'Print #1,"noteSimple: liga:", pasoCol(1).liga
 limpiarLigaduras(1,pasoCol())
 'Print #1,"limpiado noteSimple: liga:", pasoCol(1).liga
+
+ errorhand:
+  
+Dim As Integer er1, ErrorNumber1, ErrorLine1
+er1 = Err
+If er1 > 0 Then
+Print #1,"Error NOTE SIMPLE detected ", er1, " posicion ";posicion; " maxpos";MaxPos;" curpos ";curpos
+Print #1,"desde ";desde;" hasta ";hasta; "hasta-1 ";hasta-1; " *po-1 ";*po-1;" *po+1 ";*po+1
+Dim As Integer valor1, valor2
+valor2=12 - notacur + (*po) * 13
+
+Print #1,"*po ";*po;" notacur ";notacur; " indice1 ";valor1 
+Print #1,Erl, Erfn,Ermn,Err
+Print #1,"------------------------------------"
+ErrorNumber1 = Err
+ErrorLine1 = Erl
+'Dim As String ProgError1(0 To 17)
+
+
+Print #1,"ERROR = ";ProgError(ErrorNumber1); " on line ";ErrorLine1
+Print #1,"Error Function: "; *Erfn()
+ers= 12 -notacur +(*po) * 13
+Print #1, "12 - notacur +(*po) * 13) "; ers; "notacur ";notacur
+EndIf
+
+ 
+ Exit Sub
+
+
 
 End Sub
 
@@ -664,7 +698,7 @@ Sub playAll(Roll As inst) ' play version 2
 ' PLAY masavanzado en un mismo acorde si son de distinta duracion
 ' sus notas se toca cada una con su propia duracion,el corde no termina
 ' hasta queterminede tocar la nota mas larga.
-
+ On Local Error GoTo errorhand
 fueradefoco=1
 
 Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
@@ -673,7 +707,7 @@ Dim nombre As ZString ptr
 Dim As Integer i1,i2,i3,i4,i5,j ,comienzoDeLoop=0
 Dim As Integer comienzo=1, final=MaxPos,  canal=0,vel=100,velpos =0
 ' canal 0 es el 1 van de 0 a 15
-Dim pasoCol (NB To NA) As vec  ' entrada de durciones a medida que barro una columna
+Dim pasoCol (0 To 128) As vec  ' entrada de durciones a medida que barro una columna
 Dim As Double start
 Dim as Integer cnt=0, cntold=0,cpar=0,dura=0,duraOld=0,nj, durj,tiempoFiguraSig
 Dim As Integer liga=0,notapiano=0,old_notapiano=0, iguales=0, distintos=0
@@ -919,6 +953,45 @@ Sleep 100,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacio
 close_port(midiout)
 out_free(midiout)
 '/ 
+
+errorhand:
+Exit sub
+Dim As Integer er, ErrorNumber, ErrorLine
+er = Err
+Print #1,"Error detected ", er, posicion, MaxPos
+Print #1,Erl, Erfn,Ermn,Err
+
+Print #1,"------------------------------------"
+ErrorNumber = Err
+ErrorLine = Erl
+Dim As String ProgError(0 To 17)
+
+ProgError(0) = "No error"
+ProgError(1) = "Illegal function call"
+ProgError(2) = "File not found signal"
+ProgError(3) = "File I/O error"
+ProgError(4) = "Out of memory"
+ProgError(5) = "Illegal resume"
+ProgError(6) = "Out of bounds array access"
+ProgError(7) = "Null Pointer Access"
+ProgError(8) = "No privileges"
+ProgError(9) = "interrupted signal"
+ProgError(10) = "illegal instruction signal"
+ProgError(11) = "floating point error signal "
+ProgError(12) = "segmentation violation signal"
+ProgError(13) = "Termination request signal"
+ProgError(14) = "abnormal termination signal"
+ProgError(15) = "quit request signal"
+ProgError(16) = "return without gosub"
+ProgError(17) = "end of file"
+
+
+Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
+Print #1,"Error Function: "; *Erfn()
+Dim ers As Integer = nota +(estoyEnOctava -1) * 13
+Print #1, "nota +(estoyEnOctava -1) * 13) "; ers
+
+
 
 ThreadDetach(thread1) 'JMG REPONER !!!!
 ' ================================FIN PLAYALL <<=================
@@ -1825,5 +1898,7 @@ Next i
 'luego
 
 End Sub
+
+ 
 
 

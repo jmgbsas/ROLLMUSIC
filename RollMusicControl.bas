@@ -37,7 +37,7 @@ Dim Shared As Integer desde , hasta,MaxPos=2
 Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer) 
 Dim As hwnd haw,hwl
 Dim As Integer aa ,paso=0,x  
-Dim listoctava(1 To 9) As string ={"-1","0","1","2","3","4","5","6","7"}
+Dim listoctava(1 To 10) As string ={"-1","0","1","2","3","4","5","6","7","8"}
 
 For x= 1 To 2 
 '' => desde acaecho con tool del ruso no anda muy bien
@@ -47,14 +47,14 @@ For x= 1 To 2
 
   If paso=0 Then
        AddListViewColumn(1, "Elegir Desde ",0,0,250)
-       For aa =1 To 9 
+       For aa =1 To 10 
            AddListViewItem(1, listoctava(aa)+" "+Str(aa),0,aa,0)
        Next
        
   EndIf   
   If paso=1 Then  
        AddListViewColumn(1, "Elegir Hasta ",0,0,250)
-       For aa =1 To 9 
+       For aa =1 To 10 
            AddListViewItem(1, listoctava(aa)+" "+Str(aa),0,aa,0)
        Next
   EndIf

@@ -327,7 +327,7 @@ Next ix
 
 If desde = 0 And hasta = 0 Then
  Print #1,"intervalo no dado usando default!"
- desde => 4  ' 1 3
+ desde => 4  ' 1 3   4 a 8 decia
  hasta => 8  ' 9 7 hasta-1
  
 EndIf
@@ -671,10 +671,10 @@ MenuItem(1028,MenName3, "Cambia Octavas, si rango es mayor al anterior, se borra
 MenuItem(1029,MenName3, "Na.Seleccion rango de 3 octava repetidas 2 veces ")
 MenuItem(1030,MenName3, "Na.Octavas de Instrumetnos Estandares")
 MenuItem(1031,MenName3, "Na.Seleccion Canal")
-MenuItem(1040,MenName3, "Cambia Instrumento por orden Alfabetico")
-MenuItem(1050,MenName3, "Cambia Instrumento por orden Numérico")
-MenuItem(1060,MenName3, "Crea pista aislada con lo elegido y reemplaza la existente en la edicion")
-MenuItem(1061,MenName3, "Crear Pista en la Cancion en Edicion, Con lo elegido")
+MenuItem(1040,MenName3, "Cambia Instrumento Alfabetico en la pista editada")
+MenuItem(1050,MenName3, "Cambia Instrumento Numérico  en la pista editada")
+MenuItem(1060,MenName3, "Crea track aislado con lo elegido y reemplaza al existente en la edicion")
+MenuItem(1061,MenName3, "Crear Track en la Cancion en Edicion, Con lo elegido")
 MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
 
 
@@ -888,7 +888,7 @@ Print #1,Erl, Erfn,Ermn,Err
 Print #1,"------------------------------------"
 ErrorNumber = Err
 ErrorLine = Erl
-Dim As String ProgError(0 To 17)
+
 
 ProgError(0) = "No error"
 ProgError(1) = "Illegal function call"
@@ -912,8 +912,9 @@ ProgError(17) = "end of file"
 
 Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
 Print #1,"Error Function: "; *Erfn()
-Dim ers As Integer = nota +(estoyEnOctava -1) * 13
-Print #1, "nota +(estoyEnOctava -1) * 13) "; ers
+ 
+ers= 12 -nota +(estoyEnOctava -1) * 13
+Print #1, "12 nota +(estoyEnOctava -1) * 13) "; ers
 
  
 

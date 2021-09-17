@@ -82,7 +82,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
        cairo_set_source_rgba(c, 1, 1, 1, 1)
    EndIf
   font= font - 2 ' achicamos notas giuas 
-  t = NotasGuia(semitono) + Str(*po - 1) + "_["
+  t = NotasGuia(semitono) + Str(*po -1) + "_["
   cairo_move_to(c, 0, Penta_y + (semitono+1) * inc_Penta- 6)
   cairo_show_text(c, t)
   t= ""
@@ -3114,5 +3114,6 @@ Loop
 
 
 End sub
+
 
 

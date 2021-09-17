@@ -676,7 +676,14 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
  'Print #1,"1-cursor "
  cairo_set_source_rgba c, 1, 1, 0.2, 1
  Dim Wc As Integer
-  
+On Local Error GoTo errorhand 
+
+'Dim sobra As Integer
+'     sobra=MAXPOS - n -curpos
+'  if sobra > 0 Then
+'     curpos =curpos -sobra
+'  EndIf
+    
  'If play=1 Or playb=1 Then
      wc=3*anchofig/4
  'Else
@@ -694,6 +701,7 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
  '   curpos=curposold
  'EndIf
  'curposold=curpos
+ 
  If cursorVert=1 Or cursorVert= 2 Then  ' vertical comEdit=TRUE
 
   cairo_move_to  (c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
@@ -710,7 +718,7 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
    'Print #1,"notaold en cursor ";notaold
    notaOld=notacur
    'Print #1,"notaold en cursor laigualo a 1 ";notaold
-   notacur=0
+   'notacur=0
   EndIf
   cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
   cairo_rectangle(c,gap1 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , wc,inc_Penta)
@@ -726,7 +734,7 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
 ''' If  borrar= 1 Then ' 
   cairo_set_source_rgba c, 1, 0, 0.2, 1
   Dim dursaved As Integer
-  If notacur=0 Then
+  If notacur=1 Then ' 1 POR 0 JMG
    notacur=notaOld 
   EndIf
   'dursaved = Roll.trk(notacur + (*po) * 13, n + curpos).dur
@@ -748,7 +756,7 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
   ' debo cambiar esa nota por su equivalente silencio
   '1ero se pulsa la nueva duracion y luego la X porque aca se anula luego elflag cambiadur
   'y la dUR debe tener un valor antes de esto
-  If notacur=0 Then  '<- aca ingreso nota aunqne no haya?
+  If notacur=1 Then  ' 1 PO 0 JMG <- aca ingreso nota aunqne no haya?
    notacur=notaOld
   EndIf
   '  Roll.trk(notacur + (*po) * 13, n + curpos).dur = DUR
@@ -883,7 +891,7 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
   ' al final de todo la tecla I (ubicrse en lnota luego 3 teclas
   ' Dur + insert + I)
   'y la dUR debe tener un valor antes de esto
-  If notacur=0 Then  '<- aca ingreso nota aunqne no haya..
+  If notacur=1 Then  ' 1 POR 0 JMG <- aca ingreso nota aunqne no haya..
    notacur=notaOld  'cual toma ? es donde esta el cursor ?
   EndIf
   ' Print #1, "Entra a Cursor con insert 2 notacur: ", notacur
@@ -919,9 +927,9 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
  ' ====> MODIFICAR con ctrl-n
  If (cursorHori=2 Or cursorVert = 2) And agregarNota=1  And nota> 0 Then
  
-  Roll.trk(n + curpos, 12-nota + (*po) * 13).dur = DUR
+  Roll.trk(n + curpos, 12-notacur + (*po) * 13).dur = DUR
   ' SI LA NOTA  NO EXITIA LA agrega
-  Roll.trk(n + curpos, 12-nota + (*po) * 13).nota = nota  ' 5.7.3.4
+  Roll.trk(n + curpos, 12-notacur + (*po) * 13).nota = nota  ' 5.7.3.4
    ReCalCompas(Roll) 
    nota=0
  EndIf
@@ -955,13 +963,49 @@ EndIf
 If notacur=0 Then
   notacur=1
 EndIf
-
-If copiar=3 And Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = vdur _
-   And notacur=vnota Then
-   copiar=0:vdur=0:vnota=0  
-
+' la causa del error era que el limite mayor del ubound es 39 
+' el ubound aunque tenga muchas mas posisiones 4000
+' y n + curpos supera los 39 termina en 67 
+' si hago curpos=0 funciona pero lso cuadraditos no avanzan
+' ergo salto esto en play y listo deberi aestar condicionado oara edicion eso es
+If cursorHori=1 Then ' 17-09-2021 faltaba condicion de modificacion !! 
+  If copiar=3 And (Roll.trk(n + curpos, 12 -notacur + *po * 13).dur = vdur) And notacur = vnota Then
+     copiar=0:vdur=0:vnota=0
+  EndIf
 EndIf
+' modelo para poner control de errores en subrutinas lo dejo de modelito
+ errorhand:
   
+Dim As Integer er1, ErrorNumber1, ErrorLine1
+er1 = Err
+If er1 > 0 Then
+Print #1,"Error detected ", er1, " posicion ";posicion; " maxpos";MaxPos;" curpos ";curpos
+Print #1,"desde ";desde;" hasta ";hasta; "hasta-1 ";hasta-1; " *po-1 ";*po-1;" *po+1 ";*po+1
+Print #1, "NB "; NB; " NA ";NA; " n ="; n
+Print #1, "LBound (Roll.trk,1) ",LBound (Roll.trk,1)
+Print #1, "LBound (Roll.trk,2) ",LBound (Roll.trk,2)
+Print #1, "UBound (Roll.trk,1) ",UBound (Roll.trk,1)
+Print #1, "UBound (Roll.trk,2) ",UBound (Roll.trk,2)
+ 
+Dim As Integer valor1 , valor2
+valor2=12 - notacur + (*po) * 13
+valor1 = n + curpos
+Print #1,"*po ";*po;" notacur ";notacur; " indice1 ";valor1; " indice2 ";valor2
+Print #1,Erl, Erfn,Ermn,Err
+Print #1,"------------------------------------"
+ErrorNumber1 = Err
+ErrorLine1 = Erl
+'Dim As String ProgError1(0 To 17)
+
+
+Print #1,"ERROR = ";ProgError(ErrorNumber1); " on line ";ErrorLine1
+Print #1,"Error Function: "; *Erfn()
+ers= 12 -notacur +(*po) * 13
+Print #1, "12 - notacur +(*po) * 13) "; ers; "notacur ";notacur
+EndIf
+
+ 
+ Exit Sub
 End Sub
 '----------------------------------------
 Sub Tracks (nroTrack As UByte, nroCanal As UByte)
@@ -1067,6 +1111,13 @@ Sub CargaArchivo(Roll As inst)
     ''' carga=0
      ReCalCompas(Roll)     
     ''If Roll.trk(1,NA).
+    
+    Print #1, "CargaARchivo LBound (Roll.trk,1) ",LBound (Roll.trk,1)
+    Print #1, "CargaARchivo LBound (Roll.trk,2) ",LBound (Roll.trk,2)
+    
+    Print #1, "CargaARchivo UBound (Roll.trk,1) ",UBound (Roll.trk,1)
+    Print #1, "CargaARchivo UBound (Roll.trk,2) ",UBound (Roll.trk,2)
+
 End Sub
 ' ------------------------------------------
 Sub CargaTrack(Track() As sec, ByRef ntk As Integer)
@@ -2409,11 +2460,19 @@ Sub CambiarDim(redi As Integer)
      NB => 0 + (desde-1) * 13   ' 27 para 3
      NA => 11 + (hasta-1) * 13  ' 90 para  7
 ' hacemos un redim preserve por default
+     *po=hasta-1
+     Print #1,"CambiarDim desde ";desde;" hasta ";hasta;" *po ";*po;" NA ";NA;" NB ";NB
+     Print #1,"CantTicks ";CantTicks
+     
 If redi=1 Then 
      ReDim  Preserve (Roll.trk ) ( 1 To CantTicks, NB To NA)
 Else
      ReDim  (Roll.trk ) ( 1 To CantTicks, NB To NA)
 EndIf     
+Print #1,"CAMBIARDIM CANCELA O NO ? Roll.trk(39, 128).dur ";Roll.trk(39, 128).dur
+
+
+
      ''ReDim (Roll.trk ) ( NB To NA,1 To CantTicks) ' temporario     
 'no se puede reemplaar en el main del programa por cuestion de scope
 ' o sea la definicion debe hcerse en el scope del main para que funcione

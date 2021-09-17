@@ -55,7 +55,8 @@ Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
 dim Shared as string cromatica(1 to 12)
 dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0
-  
+Dim Shared As String ProgError(0 To 17)
+Dim Shared ers As Integer  
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
@@ -177,7 +178,7 @@ Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 12500000,6250000,3125000,1562500, 781250,390625,195313, 97656,48828, _ '145 153
 15000000,7500000,3750000,1875000, 937500,468750,234375,117187,58594, _ '154 162
 17500000,8750000,4375000,2187500,1093750,546875,273438,136719,68360, _ '163 171
- 6666666,3333333,1666666, 833333, 416666,208333,104166, 52083,26042,0,0 }  '172 180 
+ 6666666,3333333,1666666, 833333, 416666,208333,104166, 52083,26042,0,0 }  '172 182
 
 Dim Shared As String nombreArchivo, TCompas,nombre, menuOldStr
 nombre=""
