@@ -1021,9 +1021,16 @@ Sub CargaArchivo(Roll As inst)
      
      Dim As String x,x1,x2,x3,x4,nombrea
      ''' no usar mas  dialogoText("Cargar Archivo")
-      myfilter  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
-      getfiles(file,myfilter,"open")
-      nombrea=*file.lpstrFile
+      If lineadecomando=0 Then
+         myfilter  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
+         getfiles(file,myfilter,"open")
+         nombrea=*file.lpstrFile
+      Else
+         If lineadecomando=2 Then
+            nombrea=nombre
+            lineadecomando=0
+         EndIf      
+      EndIf
 '  nombrea="DESAFIO-LIGA-ACORDES-EN-1-NOTA.ROLL" ' para debug sino no funciona
 '  nombrea="test-acordes-iguales01.roll"
 '  nombrea="DESAFIO-LIGA-ACORDE-3-O.roll"
@@ -1130,10 +1137,16 @@ Sub CargaTrack(Track() As sec, ByRef ntk As Integer)
      Dim As Integer ubi1,ubi2 
      Dim As String x,x1,x2,x3,x4,nombrea
      ''' no usar mas  dialogoText("Cargar Archivo")
+     If lineadecomando=0 Then
      myfilter  = "Track Files"+Chr(0)  +"*.rtk"+Chr(0)
       getfiles(file,myfilter,"open")
       nombrea=*file.lpstrFile
-
+     Else
+       If lineadecomando=1 then
+          nombrea=nombre
+          lineadecomando=0
+       EndIf   
+     EndIf
        If nombrea = "" Then
           Exit Sub
        Else
@@ -1417,7 +1430,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
  ' debo ubicarlo caracter por caracter o posicion no en string!!!
 
  Dim oclog As Integer
- oclog = 8 - (estoyEnOctava-1)
+ oclog = 8 - (estoyEnOctava-1) ' jmg ojo hay un hardcodeo ¿?
  'If comEdit = TRUE Then
  '  cairo_set_source_rgba c, 0, 1, 0, 1
  '  menuNew=2
@@ -1652,9 +1665,11 @@ EndIf
 
    '===> 3.2 <ABRIR>[*.ROLL]
 
-   If mousex > 215 And mousex < 269  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
+   If (mousex > 215 And mousex < 269  And mousey < 50 And carga=0 ) Or _
+       lineadecomando=2 Then ' <= ABRIR lee grabaroll.roll
+      
     cairo_set_source_rgba c, 0, 1, 0, 1
-    If MouseButtons And 1 And carga = 0 Then
+    If MouseButtons And 1 And carga = 0 Or lineadecomando=2 Then
        CargaArchivo(Roll)
        MenuNew=0
        carga=1  ' <======= control de Carga
@@ -1667,10 +1682,13 @@ EndIf
 
    '===> 3.2.1 [*.RTK]
 
-   If mousex > 300 And mousex <  345  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
+   If mousex > 300 And mousex <  345  And mousey < 50 And carga=0 Or _
+      lineadecomando = 1 Then ' <= ABRIR lee grabaroll.roll
      Print #1,"entra a cargar TRACK"
+      
       cairo_set_source_rgba c, 0, 1, 0, 1
-      If MouseButtons And 1 And carga=0  Then
+      If MouseButtons And 1 And carga=0 Or lineadecomando=1  Then
+         
          Print #1,"carga track veo nombre antes   ",nombre
          CargaTrack (Track() , ntk )
          Print #1,"carga track veo nombre despues ",nombre 
@@ -1943,7 +1961,7 @@ EndIf
      cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 And octavas = 0 Then
       hasta += 1
-      If hasta > 9 Then
+      If hasta > 9 Then '' jmg parametriza no va hardcodeo 
        hasta = 9
       EndIf
       octavas=2

@@ -1,8 +1,11 @@
 start
-09-15-202123:15:07
-__FB_ARGC__    1
-arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.3.0.0-U-Integrado-OCTAVAS-REVISION\RollMusic.exe'
-arg  1 = ''
+09-18-202120:36:12
+__FB_ARGC__    2
+arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC\RollMusic.exe'
+arg  1 = 'C:\IT64\AREAWORK\ROLLMUSIC\[0]DESAFIO-LARGO.rtk'
+ubirtk         44
+ubiroll        0
+arg  2 = ''
 intervalo no dado usando default!
 instru         0
 Roll.trk(1,NA).inst         0
@@ -13,3 +16,24 @@ hasta          8
 gap1           76
   
 ChangeProgram inst          0
+param.titulo  RollMusic
+pid           4900
+nombre en rollLoop llego    C:\IT64\AREAWORK\ROLLMUSIC\[0]DESAFIO-LARGO.rtk
+entra a cargar TRACK
+carga track veo nombre antes              C:\IT64\AREAWORK\ROLLMUSIC\[0]DESAFIO-LARGO.rtk
+CargaTrack 1
+reconstruccion x pos bin    0111110100100100
+MaxPosTrack(ntk)             32036
+reconstruccion x pos int     1
+MaxPos         32036
+desde          1
+hasta          10
+cargaTrack desde hasta NB Na               1             10            0             128
+Get TrK POLI 
+Geteo Trabajo poli 
+CargaTrack 3 fin
+carga track veo nombre despues            C:\IT64\AREAWORK\ROLLMUSIC\[0]DESAFIO-LARGO.rtk
+TrackaRoll desde, hasta      1             10
+NB, NA         0             128
+TrackaRollcarga rtk veo nombre            C:\IT64\AREAWORK\ROLLMUSIC\[0]DESAFIO-LARGO.rtk
+despues RecalCompas veo nombre            C:\IT64\AREAWORK\ROLLMUSIC\[0]DESAFIO-LARGO.rtk

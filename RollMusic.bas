@@ -1,3 +1,5 @@
+'18-09-2021 DOBLE CLIK EN UN ARCHIVO RTK O ROLL ABRE EL PROGRAM Y CARGA EL ARCHIVO
+' SI LA EXTENSION ESTA ASOCIADA AL PROGRAMA
 ' 09-09-2021: error yendo y viniendo con octavas, las notas cargadas en la misma
 ' octava suenen diferente hay corrimiento de 1 octava parece chequear
 ' dragar ventana desde cinta fix. en mousex=1048 anda mejor
@@ -301,6 +303,7 @@ Dim Shared ix As Integer=0
 'Dim dires As String
 Dim Shared titu As String
 Dim Shared As Integer instru, instruOld
+Dim Shared As Integer ubirtk, ubiroll
 
 Print #1,"__FB_ARGC__ ", __FB_ARGC__
 For ix = 0 To __FB_ARGC__
@@ -308,7 +311,15 @@ For ix = 0 To __FB_ARGC__
 
  If ix=1 Then
   desde= CInt(Command(ix))
-   
+  'C:\IT\JMGROLL01\[1]AAA.rtk
+ ubirtk = InStr (LCase(Command(ix)),".rtk")
+ ubiroll=  InStr(LCase(Command(ix)),".roll")
+ If ubirtk > 0 or ubiroll>0 Then 
+     nombre=Command(ix)
+ EndIf
+ Print #1,"ubirtk ",ubirtk
+ Print #1,"ubiroll ",ubiroll
+    'sigue en roolloop principio
  EndIf
  If ix=2 Then
   hasta= CInt (Command(ix))
@@ -627,8 +638,10 @@ If ix < 3 Then ' rollmusic CON control
  
 hwndC = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
 ''UpdateInfoXserver()
-hwndListBox= ListBoxGadget(3,10,10,240,650,LBS_EXTENDEDSEL )
-
+hwndListBox= ListBoxGadget(3,10,10,240,650,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL )
+SendMessage(GadgetID(3),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
+ ' GetTextExtentPoint32 PARA DETERMINAR EL ANCHO EN PIXELS DE UN TEXTO
+ ' EL SCROLL VERTICAL APARECE CUANDO SE SOBREPASA LSO ITEM QUE SE PUEDEN VER 
 Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 
 EVENTc=0
@@ -671,10 +684,10 @@ MenuItem(1028,MenName3, "Cambia Octavas, si rango es mayor al anterior, se borra
 MenuItem(1029,MenName3, "Na.Seleccion rango de 3 octava repetidas 2 veces ")
 MenuItem(1030,MenName3, "Na.Octavas de Instrumetnos Estandares")
 MenuItem(1031,MenName3, "Na.Seleccion Canal")
-MenuItem(1040,MenName3, "Cambia Instrumento Alfabetico en la pista editada")
-MenuItem(1050,MenName3, "Cambia Instrumento Numérico  en la pista editada")
-MenuItem(1060,MenName3, "Crea track aislado con lo elegido y reemplaza al existente en la edicion")
-MenuItem(1061,MenName3, "Crear Track en la Cancion en Edicion, Con lo elegido")
+MenuItem(1040,MenName3, "Cambia Instrumento por orden Alfabetico")
+MenuItem(1050,MenName3, "Cambia Instrumento por orden Numérico")
+MenuItem(1060,MenName3, "Crea pista aislada con lo elegido y reemplaza la existente en la edicion")
+MenuItem(1061,MenName3, "Crear Pista en la Cancion en Edicion, Con lo elegido")
 MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
 
 
@@ -912,9 +925,8 @@ ProgError(17) = "end of file"
 
 Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
 Print #1,"Error Function: "; *Erfn()
- 
-ers= 12 -nota +(estoyEnOctava -1) * 13
-Print #1, "12 nota +(estoyEnOctava -1) * 13) "; ers
+'Dim ers As Integer = 12 - nota +(estoyEnOctava ) * 13 
+Print #1, "12 -nota +(estoyEnOctava ) * 13) "; ers
 
  
 

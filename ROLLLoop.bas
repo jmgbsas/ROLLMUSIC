@@ -512,10 +512,28 @@ Select Case desde
       BordeSupRoll = BordeSupRoll - 15 * inc_Penta    
     Case 8
       BordeSupRoll = BordeSupRoll - 30 * inc_Penta
+    Case 9
+      BordeSupRoll = BordeSupRoll - 44 * inc_Penta ' 16-09-2021
      
 End Select
 
-' IPC
+' command
+ If ubirtk >0   Then
+   'nombre=Command(ix)
+   Print #1,"nombre en rollLoop llego ", nombre
+   lineadecomando=1 ' abre la puerta`de carga track
+   menunew=3
+   menunro=3 
+ EndIf
+
+ If ubiroll >0   Then
+   'nombre=Command(ix)
+      Print #1,"nombre en rollLoop llego ", nombre
+   lineadecomando=2 ' abre la puerta`de carga track 
+   menunew=3
+   menunro=3
+ EndIf
+
 
 ' -----------------
 

@@ -186,7 +186,7 @@ Dim Shared As UByte Vfuerte=70,Vsemifuerte=60,Vdebil=50
 TCompas ="4/4"
 Dim Shared As Integer MaxPosTrack(0 To 32) ' cada track tendra su max pos
 Dim Shared As Integer posnTrack(0 To 32) ' cada track tendra su posn
-Dim Shared As Integer fueradefoco=0
+Dim Shared As Integer fueradefoco=0, lineadecomando=0
 
 ' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido por 8
 ' tengo elindice del revsado 1,2,3,4,5,6,7,8....
