@@ -640,6 +640,7 @@ hwndC = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*4/5,,WS_EX_ACCEPTFIL
 ''UpdateInfoXserver()
 hwndListBox= ListBoxGadget(3,10,10,240,650,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL )
 SendMessage(GadgetID(3),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
+TextGadget(4,250,10,240,20,, SS_SIMPLE  )
  ' GetTextExtentPoint32 PARA DETERMINAR EL ANCHO EN PIXELS DE UN TEXTO
  ' EL SCROLL VERTICAL APARECE CUANDO SE SOBREPASA LSO ITEM QUE SE PUEDEN VER 
 Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
@@ -659,7 +660,7 @@ MenName7=MenuTitle(hMessages,"Opciones")
 MenName8=MenuTitle(hMessages,"Ayuda")
 
 MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
-MenuItem(1006,MenName1, "Cargar directorio de Cancion con Tracks separados")
+MenuItem(1006,MenName1, "Cargar directorio de Cancion con Pistas separados")
 MenuItem(1007,MenName1, "Na.Grabar Cancion")
 MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
 MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
@@ -675,7 +676,7 @@ MenuItem(1021,MenName2, "Na.Tiempo I=60 por omision")
 MenuItem(1022,MenName2, "Na.Ritmo 4/4 por omision")
 MenuItem(1023,MenName2, "Na.Duracion Estimada Min.(Por Omision 3 estimada)")
 MenuItem(1024,MenName2, "Na.Crear Cancion en un solo archivo")
-MenuItem(1025,MenName2, "Crear un directorio de Cancion Nuevo con cada uno de los tracks separados")
+MenuItem(1025,MenName2, "Crear un directorio de Cancion con Pistas separadas")
 MenuItem(1026,MenName2, "Na.Ver Lista Tracks de la Cancion (Nombre y numero)")
 MenuItem(1027,MenName2, "Na.Modificar Nombre de Pistas de Cancion")
 
@@ -765,9 +766,15 @@ param.titulo ="RollMusic"
          Select case EventNumber
      '  Case 1005,1007 To 1016,1018 to 1019, 1021 To 1024, 1026,1027
      '       MessBox("","Menu no habilitado")
-            Case 1006     
+            Case 1006   ' CARGAR CANCION  
              cargarDirectorioCancion(NombreCancion)
-             GrabarRollaTrack(1,1) ' se usa solo como dir y carga en lista 
+             GrabarRollaTrack(1,1) ' se usa solo como dir y carga de tracks 
+             ' en la lista y en los track o pistas correspondientes
+             If abrirRoll=0 Then
+                abrirRoll=1
+                Exit Do
+             EndIf
+ 
             Case 1011 ' graba pista en edicion en la cancion
             Print #1,"entro a 1011 en elmenu"
              ResetAllListBox(3)
@@ -800,11 +807,13 @@ param.titulo ="RollMusic"
                ChangeProgram ( CUByte (instru) , 0)
                Roll.trk(1,NA).inst= CUByte(instru)
             Case 1060 ' crea track y reemplaza al existente en la edicion
-               *po = hasta -1
-               Nuevo(Roll,1 )
-               instruOld=instru
-               Roll.trk(1,NA).inst= CUByte(instru)
-               ChangeProgram ( CUByte (instru) , 0)
+               If ntk=0 Then  ' no se cargo ningun track
+                  *po = hasta -1
+                  Nuevo(Roll,1 )
+                  instruOld=instru
+                  Roll.trk(1,NA).inst= CUByte(instru)
+                  ChangeProgram ( CUByte (instru) , 0)
+               EndIf   
                If abrirRoll=0 Then
                   abrirRoll=1
                   If reiniciar=1 Then
@@ -838,7 +847,8 @@ param.titulo ="RollMusic"
                   abrirRoll=1
                   Exit Do
                EndIf
-' FALTA CREAR LA PISTA !!!
+' FALTA CREAR LA PISTA !!! jmg
+            
             Case 1062
  ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
  ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.       
@@ -859,6 +869,31 @@ param.titulo ="RollMusic"
              MessBox ("","Acerca de este programa")
               End
           End Select
+      Case eventgadget
+         If eventnumber()=3 Then
+             Dim item As String
+             item= "                        "
+             setgadgettext(4,item)
+              
+             item=GetListBoxText(3,GetItemListBox(3))
+             If Len (item) < 24 Then
+               item = item + String( 40-Len(item),32)
+             EndIf
+             setgadgettext(4,item)
+             item=Trim(item)
+             If item > "" Then
+                nombre= NombreCancion + "\"+item +".rtk"
+                Print #1," eventgadget click en lista nombre", nombre
+                lineadecomando=1
+                cargarTrack (Track(), ntk) ' este ntk se resuelve dentro de la sub
+             ' donde se lo saca del nombre por lotanto devuelve el numero de ntk
+             ' despues dela rutina
+                TrackaRoll (Track(), ntk , Roll )
+                Print #1,"ntk cargado, nombre ",ntk, nombre
+                ReCalCompas(Roll)
+                item=""
+             EndIf  
+         EndIf
 
       Case EventClose 
        Close:End 0
@@ -866,7 +901,7 @@ param.titulo ="RollMusic"
    Loop
 Else
   param.titulo ="RollMusic"
-  threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+''''  threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
   ThreadWait threadloop
   cerrar(0)  
 End If

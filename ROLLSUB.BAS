@@ -1015,6 +1015,9 @@ Sub Tracks (nroTrack As UByte, nroCanal As UByte)
 End Sub
 '--------
 Sub CargaArchivo(Roll As inst)
+ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
+' la carga de tracks aislada o la carga de una cancion con sus tracks
+' ira aumentando ntk 
    '  carga roll 
      Dim z (1,1 )  As dat
      Dim zLim (1,1) As dat
@@ -1072,8 +1075,8 @@ Sub CargaArchivo(Roll As inst)
      ReDim  (Track(ntk).trk ) (1 To CantTicks, NB To NA)
      ''Dim Trabajo (NB To NA,1 To MaxPos) As dat ' temporario para convertir
      Get #ca, , Trabajo()
-     ' movemos los datos a Roll
-     ' -------------------------
+     ' CARGA VECTOR ROLL movemos los datos a Roll Y a track 0
+     ' --------------------------------------------
 
      ReDim compas(1 To CantTicks)
      carga=1 ' no es lo mismo calcCompas con cargar o procesando
@@ -1087,7 +1090,7 @@ Sub CargaArchivo(Roll As inst)
       Dim As integer ip=0,Notapiano
       For i= NB To NA
        Roll.TRK(j,i)  => Trabajo (j,i)    
-' 06-09-2021 carga track si es la qera vez carga en ntk=0 
+' 06-09-2021 carga track en ntk=0 
       
       
        If Trabajo (j,i).nota >= 1 And Trabajo (j,i).nota <=12 And _ 
@@ -1127,11 +1130,11 @@ Sub CargaArchivo(Roll As inst)
 
 End Sub
 ' ------------------------------------------
-Sub CargaTrack(Track() As sec, ByRef ntk As Integer)
-' solo carga track no lo pasa a Vector de Visualizacion.
+Sub CargarTrack(Track() As sec, ByRef ntk As Integer)
+' solo carga track no lo pasa a Vector de Visualizacion. ntk debe venir informado
 ' para cargar desde disco un track se usa esta sub y luego TrackaRoll para verlo
 ' y editarlo
-  Print #1,"CargaTrack 1"   
+  Print #1,"CargarTrack 1"   
      Dim z (1,1 )  As poli
      Dim zLim (1,1) As poli
      Dim As Integer ubi1,ubi2 
@@ -1142,7 +1145,7 @@ Sub CargaTrack(Track() As sec, ByRef ntk As Integer)
       getfiles(file,myfilter,"open")
       nombrea=*file.lpstrFile
      Else
-       If lineadecomando=1 then
+       If lineadecomando=1 Then ' carga *.trk de linea de comadno o de cancion
           nombrea=nombre
           lineadecomando=0
        EndIf   
@@ -1159,7 +1162,7 @@ Sub CargaTrack(Track() As sec, ByRef ntk As Integer)
     ct=FreeFile
     
      If ( Open (nombre  For Binary Access Read As #ct )) <> 0 Then
-       Print #1,"arch track  abrio con error 1076 CargaTrack"
+       Print #1,"arch track  abrio con error 1076 CargarTrack"
        Exit sub
      EndIf
         
@@ -1179,8 +1182,7 @@ Sub CargaTrack(Track() As sec, ByRef ntk As Integer)
      nota=0 '''notaOld
      inicioDeLectura=0' Int(Maxpos/NroCol)
      posnTrack(ntk)=MaxPosTrack(ntk)- 1
-' aca supongo que cuadno cargo un track siemrp elo veo por pantalla
-' CAMBIAR CUADNO CARGUE CANCION,,,,!!!!      
+' ==> aca no lo esta cargadno a roll visual solo a un track ntk
      posn=MaxPosTrack(ntk)- 1
      Print #1,"MaxPos ",MaxPos
  
@@ -1194,7 +1196,7 @@ Sub CargaTrack(Track() As sec, ByRef ntk As Integer)
      Print #1,"hasta ",hasta
      NB => 0 + (desde-1) * 13   ' 27 para 3 SI CARGO CANCION NO VA
      NA => 11 + (hasta-1) * 13  ' 90 para  7 06-09-2021 decia 12 -> es 11
-     Print #1,"cargaTrack desde hasta NB Na", desde, hasta, NB, NA
+     Print #1,"CargarTrack desde hasta NB Na", desde, hasta, NB, NA
        '''REPONER  NO  CambiarDim() YA ESTA EN TRACKArOLL
      ' DILEMA TENER DISTINTOS TRACK CON NB NA DISTINTOS !!!!     
      ' cargamos trabajo datos
@@ -1231,7 +1233,7 @@ Sub CargaTrack(Track() As sec, ByRef ntk As Integer)
 
      '''''ReCalCompas(Roll) '''No es vEctor de Visualizacion      
 
-      Print #1,"CargaTrack 3 fin"   
+      Print #1,"CargarTrack 3 fin"   
 
 End Sub
 '
@@ -1663,7 +1665,8 @@ EndIf
    EndIf
    t = "      [NUEVO]":cairo_show_text(c,t)
 
-   '===> 3.2 <ABRIR>[*.ROLL]
+   '===> 3.2 <ABRIR>[*.ROLL] abre roll y automaticamente lo pone
+   ' en trak 0 ntk=0
 
    If (mousex > 215 And mousex < 269  And mousey < 50 And carga=0 ) Or _
        lineadecomando=2 Then ' <= ABRIR lee grabaroll.roll
@@ -1682,15 +1685,18 @@ EndIf
 
    '===> 3.2.1 [*.RTK]
 
+
+'  =====< CARGA UN TRACK EN NTK=0 Y LO PASA A ROLL PARA EDITAR >=======
    If mousex > 300 And mousex <  345  And mousey < 50 And carga=0 Or _
       lineadecomando = 1 Then ' <= ABRIR lee grabaroll.roll
      Print #1,"entra a cargar TRACK"
-      
+      ntk=0   
       cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 And carga=0 Or lineadecomando=1  Then
          
          Print #1,"carga track veo nombre antes   ",nombre
-         CargaTrack (Track() , ntk )
+         
+         CargarTrack (Track() , ntk )
          Print #1,"carga track veo nombre despues ",nombre 
          TrackaRoll (Track() , ntk , Roll)
          Print #1,"TrackaRollcarga rtk veo nombre ",nombre 
@@ -2587,7 +2593,7 @@ Sub velocidades(j As integer)
 
 End Sub 
 Sub GrabarArchivo ()
-
+' GRABA ARCHIVOS CON EXTENSION Y FORMATO *.ROLL
      If nombre = "" Then ' backup
         nombre = "Backup"+ Date + ".roll"
      EndIf   
@@ -2741,15 +2747,21 @@ EndIf
 End Sub
 ' ----------------------------------
 Sub GrabarRollaTrack (cambiaNombre As Integer, enCancion As integer)
-' GRABO ROLL EN EDICION COMO TRACK PARA ELLO DEBE ESTAR LIBRE en disco
-' EL TRACK 0,como nombre de archivo...,, esto sirve para archivos tipo Roll al cargarlos
-' solo queda en Roll no se carga en ningun track porque para cargarlo en track
-' debo ingresar nota por nota es cuadno se carga en Roll y en track...
-' cuadno cargu un track desde archivo se pasa a Roll
-' por default siemrpe usa [0] podremos cambiarlo agregando mas codigo a pedido del susario
-   Dim As String no1,no2
+' GRABO ROLL EN EDICION COMO PISTA PARA ELLO DEBE ESTAR LIBRE en disco
+' LA PISTA 0,como nombre de archivo.[0]-..,, esto sirve para archivos tipo Roll 
+' al cargarlos solo queda en Roll?? ahora no cuanDo cargo Roll se carga en track(0)
+' tambien. Tambien se carga en TRack a medida que cargo las notas
+' pero si modifico el Roll, todavia las estoy pasando los cambios a trcak..
+' una forma por ahora es ahcer un Roll modificarlo todo lo qeu necesita 
+' y al terminarlo grabarlo como track ..ROLLATRACK EN EL MENU.(GrabarRollaTRack())
+' En edicion de Roll en track al ingresar nota por nota es cuadno se carga en Roll
+' y en track...pero las modificacione sno van a track por ahora..
+' cuando cargue una pista desde archivo se pasa a Roll
+' por default siemrpe usa [0] podremos cambiarlo agregando mas codigo SI SE DESEA
+   Dim As String no1, no2
+   Dim As Integer ubi1=0,ubi2=0 
+
    If cambianombre >0 And nombre > "" Then
-     Dim As Integer ubi1=0,ubi2=0 
     ubi1=InStrRev(nombre,"\")
     ubi2=InStrRev(nombre,".")
     no1= Mid(nombre,1,ubi1)
@@ -2769,17 +2781,26 @@ Sub GrabarRollaTrack (cambiaNombre As Integer, enCancion As integer)
        Do While Len(filename) > 0 ' If len(filename) is 0, exit the loop: no more filenames are left to be read.
         filenameold=filename
         Print #1, "trabajo con este filename...", filenameOld
-        Dim no1 As Integer
         Dim cadena As String
-        no1=InStrRev (filenameOld,".")
-        cadena=Mid(filenameOld,1,no1-1)
+        ubi1=InStrRev (filenameOld,".")
+        cadena=Mid(filenameOld,1,ubi1-1)
         AddListBoxItem(3, cadena)
+        ubi1=InStr(filenameold,"[")
+        ubi2=InStr(filenameold,"]")
+        no1 = Mid(filenameold,ubi1+1,ubi2-1-ubi1)
+       
+        Numpista=CInt(no1)
+  ' va cargando los track internos, tomando el nro de track 
+  ' del nombre del archivo solamente , ergo el usuario puede cambiar el orden
+  ' o poner un trakck de otra cancion
+        nombre=cadena
+        lineadecomando=1  ' cargamos un track simulamos coomo linea de cmd
+        CargarTrack  (Track() , Numpista )
+  '      
         filename = Dir()
         
        Loop
       ' ver que nro de pista sigue ....
-      Dim As String no1,no2
-      Dim As Integer ubi1=0,ubi2=0 
       ubi1=InStr(filenameold,"[")
       ubi2=InStr(filenameold,"]")
       no1= Mid(filenameold,ubi1+1,ubi2-1-ubi1)
@@ -3536,6 +3557,7 @@ Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0
 'Next i  
  
 End SUB
+
 
 
 
