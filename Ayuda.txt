@@ -24,7 +24,7 @@
         entre ellas.RollMusic.exe levanta ahora 2 pantallas un menu GUI y el grafico habitual.
         Acciones: elegir octavas, instrumentos, antes de crear el track. Al crearlo
         se borra el cargado anteriormente y se reemplaza por uno nuevo vacio.
-        Se agrega menu de Cancion, no funcional todavia.   
+        Se agrega Menu de Cancion, funciona en modo basico.   
         Esta version Aislada podra crear varios tracks pero solo editar de a uno
         por vez. Si se quieren más ediciones simultaneas, se podria usar  otra isntancia.
         Pero no tendrá sincronizacion en el play,.. por ahora. La aplicacion se termina
@@ -279,8 +279,21 @@ III)
 2)   Borrar desde una posicion hasta el final.
      Estando en modo lectura posicionar el borde izquierdo en la posicion deseada de corte
      dar Ctrl doble clik en [Edicion] y en esa posicion se cortara la secuencia borrando todo lo que este a la derecha de la posicion.
- 
-       
+IV) Menu Cancion (en revision)
+    -Nueva Cancion: Se tipea en titulo el nombre del directorio que sera el nombre de la cancion.
+     Hay opciones todavi ano funcionales. Luego en el mismo menu Crear un directorio de Cancion
+     con pistas separadas. Luefo en Menu Pistas, elegir las onfiguraciones disponibles  y despues
+     crear pista aislada con lo elegido y reemplaza a la existente en la edicion. Esta ultima accion
+     crea un roll grafico par aingresar las letras de las notas. luego de terminado, se pasa el Roll
+     a una pista de la cancion con Crear Pista en la Cancion en Edicion, con lo elegido es decir
+     con el Roll desarrollado previamente. Si se sale y vuelve a entrar se puede recuperar 
+     la cancion con el siguiente paso:
+     
+    -En Archivo, Cargar Directorio de Cancion con pistas separadas, se navega al directorio
+    de la Cancion s elo selecciona y aparecela lista de pistas y se abre el entorno grafico
+    con las notas de la secuencia. Todos las pistas se cargan, pero no en visualizacion.   
+    Al dar click en una pista de la lista y luego otro click sobre el grafico
+    se carga la secuencia en Roll de Visualizacion y edcion.
 
 
 TECLAS RAPIDAS borrado revisar y completar
