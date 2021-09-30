@@ -227,6 +227,7 @@ Print #1,"ERROR = ";ProgError(ErrorNumber1); " on line ";ErrorLine1
 Print #1,"Error Function: "; *Erfn()
 ers= 12 -notacur +(*po) * 13
 Print #1, "12 - notacur +(*po) * 13) "; ers; "notacur ";notacur
+Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
 EndIf
 
  
@@ -958,7 +959,7 @@ errorhand:
 Exit sub
 Dim As Integer er, ErrorNumber, ErrorLine
 er = Err
-Print #1,"Error detected ", er, posicion, MaxPos
+Print #1,"Error Play detected ", er, posicion, MaxPos
 Print #1,Erl, Erfn,Ermn,Err
 
 Print #1,"------------------------------------"
@@ -990,7 +991,7 @@ Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
 Print #1,"Error Function: "; *Erfn()
 Dim ers As Integer = nota +(estoyEnOctava -1) * 13
 Print #1, "nota +(estoyEnOctava -1) * 13) "; ers
-
+Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
 
 
 ThreadDetach(thread1) 'JMG REPONER !!!!
@@ -1035,14 +1036,14 @@ midiout = rtmidi_out_create_default()
 portsout =  port_count (midiout)
 Print #1, "portsin  "; portsin
 Print #1, "portsout "; portsout
-Dim nombre As ZString ptr
+Dim nombrez As ZString Ptr ' nombre local
 
 'Print #1,""
 'Print #1, "Output port"
 
 Dim i As INTeger
 for i = 0 to portsout -1 
-    nombre = port_name(midiout, i)
+    nombrez = port_name(midiout, i)
 '    Print #1, *nombre
 Next   
 'Print #1, ""
@@ -1057,9 +1058,9 @@ Dim leng As UInteger <8>
 Dim result As Integer
 
 portsout = portout
-*nombre = ""
+*nombrez = ""
 
-open_port (midiout,portsout, nombre)
+open_port (midiout,portsout, nombrez)
 
 'Sleep 50
 'nota, velocidad,canal 
@@ -1722,7 +1723,7 @@ Else
 EndIf   
 cant = pasoZona2 - pasoZona1 
 
-' sitio donde se copia o mueve indiceNota en main (SC_M o SC_C )+ click 
+' sitio donde se copia o mueve indicePos en main (SC_M o SC_C )+ click 
 Dim  As Integer inicioind=ind , MaxPosOld=MaxPos
   
 Print #1, "MaxPosOld ", MaxPosOld

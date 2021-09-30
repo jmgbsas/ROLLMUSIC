@@ -18,7 +18,10 @@
     1.4) Grabar Archivo.
     1.5) Cargar Archivo.
     1.6) Tamaño Font. 
-    
+    1.7) Crear Canción.
+    1.8) Agregar tracks a cancion.
+    1.9) Conmutar de track en una cancion cargada.
+
     IV) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
         estilo pentagrama. Se podrán usar varias instancias pero sin ningun control
         entre ellas.RollMusic.exe levanta ahora 2 pantallas un menu GUI y el grafico habitual.
@@ -134,7 +137,34 @@
        Se recomiendo usar font 18 que es el valor para el cual es mas optimo la edicion, pero funciona bien 
        desde Font 15 a más de 20 sin problemas. Se puede jugar con la proporcionalidad F2/F3 y luego ajustar
        el font solamente con F9/F10.
- 
+
+    1.7) Crear Canción.
+
+          En RollNusic Control usar 'Nueva Cancion' del menu (lo qu ediga Na es no aplicable todavia
+        no está habilitado) , agregar el titulo o nombre de la cancion.
+        Luego en el mismo menu pulsar 'Crear un directorio de Cancion con los tracks separados' 
+        buscar un lugar para el directorio nuevo de la cancion con el nombre asignado.
+
+    1.8) Agregar tracks o Pistas a Cancion   
+
+         Hay 3 opciones la que es a prtir de todo nuevo es crear un Roll en la ventana grafica o cargar
+        un Roll (*.roll) y luego usar de esa misma ventana la opcion de grabar ROLLaTrack
+        O sea [Archivo] luego [ROLL=>TRACK(0)] con esa accion como estamos con una cancion
+        en edicion grabara el track convertido en el directorio de cancion...en track 0 si no hay cancion
+        pero en track [x] siendo x la numeracion siguiente nueva si existen otros tracks previos.
+         Otro metodo sera copiar a mano un *.rtk en el directorio y ponerle un numero secuencial
+        al primcipio que tenga este formato [x]  donde 'x' es un numero si exiten 1,2,3 sera [4]
+        luego volver a cargar la cancion. 
+         Y otro mas que se puede hacer es cargar un *.rtk desde el grafico y como esa accion convierte 
+        de *.rtk a Roll, luego como antes usando [ROLL=>TRACK(0)], grabará el Roll convertido a track en 
+        la cancion, vemos que aca hay  2 conversiones, de *.rtk a *.roll al cargar y otra de *.Roll a *.rtk 
+        al grabar en la cancion.
+    1.9) Luego de cargada el directorio de la cancion, si se da click con el mouse en la lista
+         de nombres de pistas en la ventana Control, se cargara esa pista en Roll. Siemrpe se carga
+         Roll y la pista 0, ambas se usan para modificacion. El resto de las pistas quedan cargadas
+         desde 1 a 32. Cada vez que elija otra se cargara en Roll grafico de Visualizacion y Edicion
+         y como dijimo sen Pista cero 0. Hay un directorio ejemplo "cancion" de carga.
+
     2.0) Modos de Edicion
     2.1) MODO EDIT (click en menu EDICION luego en EDIT cambiara a color 
           verde y la octava seleccionada tambien)

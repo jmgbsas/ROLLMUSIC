@@ -255,7 +255,7 @@ NombreCancion = ShellFolder( "Select Folder", "C:\")
 SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + NombreCancion)
 Print #1,"cargarDirectorioCancion ", NombreCancion 
 ' aca NombreCancion contiene el path tambien....
-
+Sleep 100
 End Sub
 Sub EntrarNombrePista(ByRef NombrePista As String)
 

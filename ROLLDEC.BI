@@ -1,3 +1,56 @@
+#Include Once "freetype2/freetype.bi"
+'' The FB headers don't contain this prototype
+'extern "c"
+'Declare function usleep( as ulong) as long '=0 when working
+'end Extern
+
+' code from
+'https://freebasic.net/forum/viewtopic.php?t=23680
+'Declare sub RtlInitUnicodeString alias "RtlInitUnicodeString"(as PUNICODE_STRING,as PCWSTR)
+'Declare function NtDisplayString alias "NtDisplayString"(as PUNICODE_STRING)as NTSTATUS
+Declare function NtDelayExecution alias "NtDelayExecution"(as BOOLEAN,as PLARGE_INTEGER)as NTSTATUS
+Declare function NtTerminateProcess alias "NtTerminateProcess"(as HANDLE,as NTSTATUS)as NTSTATUS
+'#define NtCurrentProcess() cast(HANDLE,-1)
+'our entry point
+'sub startup cdecl() 'NtProcessStartup... any name is ok
+'    dim as UNICODE_STRING us
+'    dim as LARGE_INTEGER delay
+'    delay.QuadPart = -10000 '1 m seconds
+'  ' RtlInitUnicodeString(@us,@wstr("FreeBasic Native Application"))
+'  '  NtDisplayString(@us) 'show the message
+'    NtDelayExecution(FALSE,@delay) 'so we can see the message
+'    NtTerminateProcess(cast(HANDLE,-1),0)
+'end Sub
+
+
+extern "C"
+declare function _
+cairo_ft_font_face_create_for_ft_face ( as FT_Face, as long ) as cairo_font_face_t ptr
+end extern
+
+'' Convenience
+type FreeType
+ public:
+ declare constructor()
+ Declare destructor()
+
+ declare operator Cast() as FT_Library
+
+ private:
+ as FT_Library _library
+end type
+
+constructor FreeType()
+FT_Init_FreeType( @_library )
+end constructor
+
+destructor FreeType()
+FT_Done_FreeType( _library )
+end destructor
+
+operator FreeType.cast() as FT_Library
+ return( _library )
+end Operator
 
 'Declare Sub RollLoop (c As cairo_t Ptr, Roll As inst)
 'Declare Sub creaPenta (c AS cairo_t Ptr, Roll As inst  )
@@ -29,6 +82,7 @@ Declare Sub playthread()
 Declare Sub GrabarArchivo ()
 Declare Sub GrabarTrack   (ntk As integer)
 Declare Sub GrabarRollaTrack (cambianombre As Integer, enCancion As integer)
+Declare Sub CargarPistasEnCancion ()
 ' gtk
 Declare Sub GtkListBox()
 Declare Sub sigh_button_event Cdecl ( Byval gtklist As GtkWidget Ptr, ByVal event As GdkEventButton Ptr, Byval frame As GtkWidget Ptr )
@@ -42,7 +96,7 @@ Declare Function SumarnR (notaPiano As Integer) As Integer
 
 
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
-
+Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6
 Dim Shared RTA As String 
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoZona2=0, pasoNota=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, SelGrupoNota =0,moverZona=0, copiarZona=0
@@ -54,7 +108,7 @@ Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
 dim Shared as string cromatica(1 to 12)
-dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0
+dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0, cargaCancion=0
 Dim Shared As String ProgError(0 To 17)
 Dim Shared ers As Integer  
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
@@ -157,7 +211,7 @@ Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota
 
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen,anchofig,gap1,gap2,gap3
-Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, curposold, resultado, indiceNota
+Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, curposold, resultado, indicePos
 Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 10000000,5000000,2500000,1250000, 625000,312500,156250, 78125,39063, _ '1  9
 12500000,6250000,3125000,1562500, 781250,390625,195313, 97656,48828, _ '10 18
@@ -184,10 +238,22 @@ Dim Shared As String nombreArchivo, TCompas,nombre, menuOldStr
 nombre=""
 Dim Shared As UByte Vfuerte=70,Vsemifuerte=60,Vdebil=50
 TCompas ="4/4"
-Dim Shared As Integer MaxPosTrack(0 To 32) ' cada track tendra su max pos
-Dim Shared As Integer posnTrack(0 To 32) ' cada track tendra su posn
-Dim Shared As Integer fueradefoco=0, lineadecomando=0
-
+'Dim Shared As Integer MaxPosTrack(0 To 32) ' cada track tendra su max pos
+'Dim Shared As Integer posnTrack(0 To 32) ' cada track tendra su posn
+Dim Shared As Integer fueradefoco=0, tope=0
+Type rangoOct
+ As Integer desde
+ As Integer hasta
+ As Integer NB
+ As Integer NA
+ As Integer MaxPos
+ As Integer posn
+ As UByte   notaold
+ As Integer Ticks
+End type
+Dim Shared As rangoOct pmTk (0 To 32)
+Dim Shared As String titulos(0 To 32)  
+Dim Shared As Integer ContadorError=0  
 ' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido por 8
 ' tengo elindice del revsado 1,2,3,4,5,6,7,8....
 ' comprobar qellimite este entre 1 a 8 
@@ -208,61 +274,130 @@ Dim Shared As Integer fueradefoco=0, lineadecomando=0
 'Ctrl nro 1,2,3,4,5,6,7,8 9 notiene sentido
 ' 123 234 345 456 567 678 789 son7 doblepuntilo simple
 
-#Include Once "freetype2/freetype.bi"
-'' The FB headers don't contain this prototype
-'extern "c"
-'Declare function usleep( as ulong) as long '=0 when working
-'end Extern
-
-' code from
-'https://freebasic.net/forum/viewtopic.php?t=23680
-'Declare sub RtlInitUnicodeString alias "RtlInitUnicodeString"(as PUNICODE_STRING,as PCWSTR)
-'Declare function NtDisplayString alias "NtDisplayString"(as PUNICODE_STRING)as NTSTATUS
-Declare function NtDelayExecution alias "NtDelayExecution"(as BOOLEAN,as PLARGE_INTEGER)as NTSTATUS
-Declare function NtTerminateProcess alias "NtTerminateProcess"(as HANDLE,as NTSTATUS)as NTSTATUS
-'#define NtCurrentProcess() cast(HANDLE,-1)
-'our entry point
-'sub startup cdecl() 'NtProcessStartup... any name is ok
-'    dim as UNICODE_STRING us
-'    dim as LARGE_INTEGER delay
-'    delay.QuadPart = -10000 '1 m seconds
-'  ' RtlInitUnicodeString(@us,@wstr("FreeBasic Native Application"))
-'  '  NtDisplayString(@us) 'show the message
-'    NtDelayExecution(FALSE,@delay) 'so we can see the message
-'    NtTerminateProcess(cast(HANDLE,-1),0)
-'end Sub
-
-
-
-
-
-extern "C"
-declare function _
-cairo_ft_font_face_create_for_ft_face ( as FT_Face, as long ) as cairo_font_face_t ptr
-end extern
-
-'' Convenience
-type FreeType
- public:
- declare constructor()
- Declare destructor()
-
- declare operator Cast() as FT_Library
-
- private:
- as FT_Library _library
-end type
-
-constructor FreeType()
-FT_Init_FreeType( @_library )
-end constructor
-
-destructor FreeType()
-FT_Done_FreeType( _library )
-end destructor
-
-operator FreeType.cast() as FT_Library
- return( _library )
-end Operator
 Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _
 modifmouse, EnOctava,nE,nR,lugarOld, nroClick, posinterna, indCompas
+
+Type poli ' para guardar la secuencia
+ dur As  Integer  ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
+ nota As UByte  ' en un futuro contendra nota, octava, canal etc 
+ vol As  UByte  ' volumen
+ pan As  UByte  ' paneo
+ pb  As  UByte  ' pitch bend
+ inst As UByte ' instrumento para cada nota podra ser distinto
+ tick As Integer ' 128 tiene la redonda, 1 la cuartifusa
+ posn As Integer ' de roll
+ acorde  As ubyte  ' 1 a 12 , son el se hara el sort    
+End Type 
+
+Type sec
+ As poli trk(Any, any)
+End Type
+
+'-------------------------------
+Type dat Field=1
+ nota As UByte  ' en un futuro contendra nota, octava, canal etc 
+ dur As  UByte  ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
+ vol As  UByte  ' volumen
+ pan As  UByte  ' paneo
+ pb  As  UByte  ' pitch bend
+ inst As UByte ' instrumento para cada nota podra ser distinto
+End Type
+Type inst
+ As dat trk(Any, Any)
+End Type
+
+Type paso Field=1
+ Posi As Integer
+ nro  As Integer 
+End Type
+Type pasa Field=1 
+  As cairo_t Ptr c
+  As inst Roll
+  As String  titulo
+  As Integer ancho
+  As Integer alto
+End Type
+
+Dim Shared As Long CONTROL1 = 0
+Dim Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
+Dim Shared As inst Roll ' para visualizar y tocar
+Dim Shared Track  (0 To 64) As sec ' tracks para guardar,.. y tocar 
+
+Dim Shared ix As Integer=0
+Dim Shared titu As String
+Dim Shared As Integer instru, instruOld
+Dim Shared As Integer ubirtk, ubiroll
+Dim Shared As Integer desdevector
+Dim Shared As Integer hastavector
+' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
+' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
+'Dim Shared As Integer lim2=12, ctres=CantTicks
+Dim Shared As Integer lim2=12
+ 
+' c/inst puede tocar como una persona hasta 12 notas juntas de acorde
+' entonces no se justifica tener en un solo instrumento una polifonia mas de 12
+' ni de 108,,,ergo puedo poner mas trakcs o mas longitud
+' asi ocupa,recalcular.., 270k , 64 ocupara 550 y 128 ocupara 1 giga...listo!
+' lo hare de 32 tracks 275 mgbytes !
+'CREAR UN MENU ACA DE CREACION DE TRACKS SEGUN SE ELIJA SE VAN EJECUTANDO LOS
+' REDIM Y LUEGO SE PUEDE ELEGIR CADA UNO PARA EDITAR, PARA ELLOS
+' SE PASARA SU NOMBRE A RollLoop EN UN SELECT CASE , CASE1 ROLL1 CASE2 ROLL2 ETC
+' debo modificar todo el programa para incorporar el indice del inst o Track
+' Sigo enviando  Roll, pero cuadno lo uso debo especificar cual track estoy usando
+' creo 4 tracks por default a pedido del ususraio se pueden agregar mas
+'=============================================================
+' ctres SERA DINAMICO A MEDIDA QUE SE ENTRA MAS NOTAS SE IRA EXTENDIENDO LAS POSICIONES
+'============== IMPLEMENTARLO AL FINAL 
+Dim Shared As inst RollAux
+Dim Shared As Integer  ANCHO
+Dim Shared As Integer  ALTO, deltaip=0
+Dim Shared As Double   BordeSupRoll, inc_Penta
+Dim Shared As Integer  AnchoInicial,AltoInicial
+Dim Shared As FLOAT font, deltaipf=0, lockip=0 
+Dim Shared q As String * 1
+Dim Shared As UByte s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
+Dim Shared escala As float = 1.0
+Dim Shared translado As Integer = 1
+' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
+Dim shared As Integer i,  posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
+Dim Shared As Integer octaroll
+Dim Shared As BOOLEAN comEdit, resize
+Dim Shared po As Integer Ptr
+Dim Shared e As EVENT
+Dim Shared rmerr As Integer
+Dim Shared As Integer mxold,myold, w,h
+Dim Shared c As cairo_t  Ptr
+Dim Shared cm As cairo_t  Ptr
+Dim Shared c3 As cairo_t  Ptr
+Dim Shared As Integer stride, nro_penta,IhWnd,Mhwnd,Style,desktopwidth,desktopheight
+Dim Shared surface As Any Ptr
+Dim Shared comienzo As Integer = 0
+'ScreenControl  SET_DRIVER_NAME,"GDI"
+Dim Shared As hWnd hwnd,hwndMenu 
+'hwnd = Cast(hwnd,IhWnd)
+'hwndmENU = Cast(hwnd,MhWnd)
+Dim Shared As UINT codsalida=0
+Dim shared As Any Ptr lpExitCode
+'---------------------
+ANCHO = GetSystemMetrics(SM_CXSCREEN)
+ALTO = GetSystemMetrics(SM_CYSCREEN)
+ANCHO = ANCHO *11/12
+ALTO = (ALTO -25)*11/12
+AnchoInicial=ANCHO
+AltoInicial=ALTO
+anchofig=ANCHO/45 ' SON 45 COL PERO SE USAN MENOS 41
+NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
+
+'--------------------
+Dim Shared  As pasa param 
+    param.c= c
+    param.Roll = Roll
+    param.titulo = titu
+    param.ancho = ANCHO
+    param.alto = ALTO
+    p1=@param
+Common Shared As hwnd hwndC    
+#Include "mod_rtmidi_c.bi"    
+'----------------------------
+COMMON Shared As Long eventc
+Common Shared As hwnd hwndListBox

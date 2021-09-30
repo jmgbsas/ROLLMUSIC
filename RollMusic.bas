@@ -1,109 +1,3 @@
-'18-09-2021 DOBLE CLIK EN UN ARCHIVO RTK O ROLL ABRE EL PROGRAM Y CARGA EL ARCHIVO
-' SI LA EXTENSION ESTA ASOCIADA AL PROGRAMA
-' 09-09-2021: error yendo y viniendo con octavas, las notas cargadas en la misma
-' octava suenen diferente hay corrimiento de 1 octava parece chequear
-' dragar ventana desde cinta fix. en mousex=1048 anda mejor
-' VERSION DE PRUENA 0.4.1.0.0 INTEGRAMOS UNA GUI Y 2 GRAFICAS UNA SIN USO
-' PREPARADO PARA 2 PANTALLAS GRAFICAS LA OTRA ES OPENGL WIN COMENTADA  
-' COMPILAMOS CON fbc64  -s gui rollMusicControl.bas RollMusic.bas -x RollMusic.exe
-' con el tiempo pasar toa a e.scancode  event If e.scancode = SC_P And Play=1
-' anduvo mejor sino no cortaba el play en secuecnias largas...
-' se puede usar llamdo desde ROllMusicControl o standAlone.
-' 18-08-2021 envio de cambio de programa patch INSTRUMENTO EN ROLL.TRK(1,1)
-' FUNCIONO,,,
-' Correccion de notas cuadno se usa pocas OCTAVAS PianoNota no es correcta. LISTO OK
-' USAR CALLROLL CON SHELL OK LISTO
-' ROLLMUSIC-0.3.0.0.0-U-TRACKS CARGA Y GRABACION DE TRACKS ANDA BIEN,
-' para conectar instancias podriamos usar ZEROMQ
-' O ALGUN PTR A UNA UDT CON DATOS COMUNES 
-' AHROA LE PUSIMOS REDIM PRESERVE PARA TODO ANDA OK, DE MODO QUE EL VECTOR ROLL
-' ES CHICO AL INICIO Y SE VA AGRANDANDO SEGUN NECESIDAD 
-' ROLLMUSIC-0.1.0.0.0-U-TRACKS
-' ADOPTAMOS LIBRERIA PAR LEER Y GRABAR MIDI midilib de github
-'---------------------------------------------
-' PLAN 0.1.0.0.0-U-TRACKS :
-' i) Vamos a testear si funciona la conversion 01-08-2021
-' ii) dejamos por ahora la creacion de songs por medio de tracks con formato Roll
-' y pasamos a grabar perfomance real midi desde teclado en tracks midi de Roll o midi con midilib, 
-' pero para grabar usamos un tick o pulso de ritmo o una pista de roll o track ya
-' grabada pro el usuario y a medida que la escucha puede empezar a tocar
-' al 5to pulso [1 2 3 4],5 y con ese ritmo pedimos toque el usuario
-' a medida que toca vamos calculando las duraciones en base a calCompas,,
-' y almacenando las mismas en el formato de track comprimido donde no 
-' interviene el tiempo para nada no hay ticks guardados,hay tick de posicion,
-' todo es relativo y solo depende del tiempo ajustado, por default usara 
-' el tiempo que ajusto el usuario el cual quedara grabado  en un archivo aparte
-' por ahora como nombredelTema.cfg configuracion del teme  *.cfg
-' ademas del tiempo de ejecucion se pondran otros parametros para grabar
-' como instrumento efectos volumen del canal etc etc.,..tambien el usuario
-' podrá cambiarlo en el archivo plano previamente sin necesidad de editarlo 
-' en el programa. Todo se puede hacer en formato Roll. Pero vermos o no la convenicncia
-' de usar el formato midi para grabar a archivo y luego volverlo a cargar..
-' para eso Roll graba y carga transformando de *.trk a *.Roll 
-' en esta version ya tenemos un alibreria par agrabar y leer *.mid 
-'----------------------------------------------------------------------
-' TRACKS: 1) 1ER ETAPA GRABAMOS TRACKS A PARTIR DEL VECTOR DE VISUALIZACION
-' EN EDICION. listo ok
-'    2DA ETAPA) CARGAMOS TRACKS Y PASAMOS AL DE VISUALIZACION PARA EDITAR
-'  UNO QUE SE ELIJA..EMPEZAREMOS CON UN SOLO TRACK EL 1..O SEA GRABAR Y CARGAR 
-' EN FORMATO TRACK Y EDITAR EN FORMATO VISUALIZACION, LEUGO SUPERADA ESA ETAPA
-' SEGUIMSO AGREGANDO TRACKS---listo ok
-' 3) si cargamos un trak desde disco, se convierte y carga a visualizacion ahi se modifica 
-' y al GRABAR convierte de nuevo a track sin cambiar el nombre o sea reemplaza 
-' el track cargado con su modificacion. Podriamos grabar en formato roll 
-' si hace falta renombrando el archivo eliminando [nn] del principio
-' asi Roll pensara que no se cargo un track y se grabara como *.Roll.
-'
-' 9.9 cambiamos la sdimensiones de lugar, asi maxpos es la 1era y podemos
-' redimensionar con preserve !! algunaso archivos *.roll fueron reconvertidos
-' ESTANDARIZACION OCTAVAS Y NUMEROS DE NOTAS DE PIANO EMPIEZAN EN CERO DESDE
-' OCTAVA -1 --V ok. cambio masivo de variabel semitono va de 0 a 11
-' cuadno nota ocupa el lugar de semitono se resta 1 porque semitono va de 0 a 11
-' las notas letras van de 1 a 12 eso sigue igual pues ausencia de nota es 0
-' de C a B van de 12 a 1 decreciente internamente limites de vector 0 a 115
-' sub restar se adecuo al desplazamiento -1 de semitono etc etc etc gran cambio..! 
-' 9.8 ya anda pasar como parametro Roll, ahora creacion de tracks
-' seleccion de track y visualizacion del elegido grabacio etc gran trabajo!
-' 9.7 ubicar nro compas entrando el numero en [Ver] ok
-' 9.7 el RollLoop lo envie a una Sub con thread, de ese modo podre
-' llamar varias pistas graficas a la vez pongamosle 8 par a8 instrumentos
-' debere ahcer 8 pantallas o superficies ¿?
-' 9.6 uso de thread para grafico, parametrizacion gap1 gap2y gap3
-' 9.6 ajustar ancho de columnas Y FONT con F2 F3,luego F9 F10 font solamente
-' 9.5 acordestriadas a partir de una fundamental. pendiente
-' 9.5 NUEVO ARCHIVO BORRA nombre y todo lo de 'Q'.
-' -> en desa: 9.5 repetir play zona grabado y marcado en Roll 
-' Ubicar Home, End de secuecnia pulsando esas teclas.
-' copiar una zona 1 o mas veces en la posicion elegida
-'0.0.8.9.2.0 11-07-2021  mover zona a la derecha o izquierda con M + Click en la pos elegida
-' despues haremos dragado, como de trasponer tambien pero mucho mas adelante,,,
-' la idea es hacer algo parecido a trasponer,,pero horizontal ALT-M
-' los espacios vacios los dejaremos con dur=0 nota=181
-' insert tambien se hara mas facil usando estos metodos cambiaremos en 
-' versiones futuras....
- 
-'01-07-2021 se agrego loop ya sea total o por zona funciona se termina con P
-'01-07-2021 ya no permite entrar notas con click mucho antes de maxpos
-'01-07-2021 posicionado cursor ctrl-m, pasoZona1 y 2 seusan en playAll tambien 
-' ver ciertos problemas de play de las notas que subsistem !!!
-'0.0.8.9.0.0 seleccion de una sola nota en el 3er Ctrl-Click para una accion, en modo lectura.
-'0.0.8.8.1.0 seleccion de ZONA para accion con CTRL-Click en lectura 2 puntos.
-'           borrado de zona con Q como siempre. ok 27-06-2021
-' 26-06-2021:trasponer UP or Down ok
-' 24-06-2021: trasponer..tiene un defecto cuando hace el pasaje de una octava a otra 
-' hay una zona muerta ojo ajustar ,,,yo me complique todo con esta separacion o salto
-' hay una linea muerta entre octavas!!!
-' 22-05-2021:WHEEL LUEGO CTRL CAMBIA ESPACIADO DE LINEAS, REEMPLAZO BOLD POR NORMAL 
-' 20-06-2021: ha que corregir el caso DESAFIO-LIGA-ACORDE-3-O-sin-O-ok
-'  dura poco el sonido de la ligadura
-' en el otro anda bien se corrigio uno se jodio el anterior!
-' 12-06-2021: fix cursor durante play
-' 12-06-2021: CAMBIO DEL ORDEN EN SEPARADUR DE LSO RANGOS DE BUSQUEDA
-' 11-06-2021: scroll horizontal durante play
-' 11-06-2021:[NUEVO] fix se agrego que limpie toda la secuecnia hasta el final.
-' 11-06-2021 posible desarrollo: usar teclado para entrada de notas al estilo
-' de entrada por teclado de la PC..los numeros 1 al 0 de duraciones seran
-' cdefgabcde = 1,2,3,4,5,6,7,8,9,0...otra octava cualqueira seran los semitonos
 '
 ' ------------------------------
 '  -Wc -fstack-usage genera un archivo en runtime *.su con el uso del stack
@@ -243,49 +137,14 @@ Open "secuencia.txt" For Output As #fs
 Const NULL = 0
 Const NEWLINE = !"\n"
 ' iup fin
-Type poli ' para guardar la secuencia
- dur As  Integer  ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
- nota As UByte  ' en un futuro contendra nota, octava, canal etc 
- vol As  UByte  ' volumen
- pan As  UByte  ' paneo
- pb  As  UByte  ' pitch bend
- inst As UByte ' instrumento para cada nota podra ser distinto
- tick As Integer ' 128 tiene la redonda, 1 la cuartifusa
- posn As Integer ' de roll
- acorde  As ubyte  ' 1 a 12 , son el se hara el sort    
-End Type 
-
-Type sec
- As poli trk(Any, any)
-End Type
-
-'-------------------------------
-Type dat Field=1
- nota As UByte  ' en un futuro contendra nota, octava, canal etc 
- dur As  UByte  ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
- vol As  UByte  ' volumen
- pan As  UByte  ' paneo
- pb  As  UByte  ' pitch bend
- inst As UByte ' instrumento para cada nota podra ser distinto
-End Type
-Type inst
- As dat trk(Any, Any)
-End Type
 
 
-Dim Shared As Long CONTROL1 = 0
 ' ROLL PARAEL GRAFICO PERO LOS TRCKS PODRIAN SER DISTINTOS
 'Dim Shared As dat Roll  (1 To 128 , 1 To 19200)
 
 ' dur debe ser el 1er elemento para que ande bien el sort
 
 ' PUEDO TENER UN SHARED DINAMICO GRACIAS A TYPE !!!
-Dim Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
-
-Dim Shared As inst Roll ' para visualizar y tocar
- 
-
-Dim Shared Track  (0 To 64) As sec ' tracks para guardar,.. y tocar 
 
 
 
@@ -296,26 +155,26 @@ tempo=160  ' negra=160
 CantMin=15
 'NotaBaja=1 : NotaAlta=128
 
-Dim Shared ix As Integer=0
 'Print #1, "__FB_ARGV__ ",__FB_ARGV__
 'Print #1, "__FB_ARGC__ ",__FB_ARGC__
 'Dim direp As ZString  Ptr
 'Dim dires As String
-Dim Shared titu As String
-Dim Shared As Integer instru, instruOld
-Dim Shared As Integer ubirtk, ubiroll
 
 Print #1,"__FB_ARGC__ ", __FB_ARGC__
 For ix = 0 To __FB_ARGC__
   Print #1, "arg "; ix; " = '"; Command(ix); "'"''
 
  If ix=1 Then
-  desde= CInt(Command(ix))
+  
   'C:\IT\JMGROLL01\[1]AAA.rtk
  ubirtk = InStr (LCase(Command(ix)),".rtk")
  ubiroll=  InStr(LCase(Command(ix)),".roll")
- If ubirtk > 0 or ubiroll>0 Then 
-     nombre=Command(ix)
+ If ubirtk > 0 or ubiroll>0 Then
+   ntk=0 
+   titulos(0)=Command(ix)
+ Else
+    desde= CInt(Command(ix))
+'    pmTk(ntk).desde=desde    
  EndIf
  Print #1,"ubirtk ",ubirtk
  Print #1,"ubiroll ",ubiroll
@@ -323,6 +182,7 @@ For ix = 0 To __FB_ARGC__
  EndIf
  If ix=2 Then
   hasta= CInt (Command(ix))
+ ' pmTk(ntk).hasta=hasta
  EndIf
  
  If ix=3 Then
@@ -340,27 +200,14 @@ If desde = 0 And hasta = 0 Then
  Print #1,"intervalo no dado usando default!"
  desde => 4  ' 1 3   4 a 8 decia
  hasta => 8  ' 9 7 hasta-1
- 
+ 'pmTk(ntk).desde=desde
+ 'pmTk(ntk).hasta=hasta
 EndIf
-
-Dim Shared As Integer desdevector
-Dim Shared As Integer hastavector
 
 CantTicks=cantMin * 128 * tempo/4  ' 76800 ticks...o pasos
 'CantTicks=76800
 CantTicks=4000 ' 3 MINUTOS A NEGRA 160/min=500 Y Q TODAS SEAN FUSA
  
-Type paso Field=1
- Posi As Integer
- nro  As Integer 
-End Type
-Type pasa Field=1 
-  As cairo_t Ptr c
-  As inst Roll
-  As String  titulo
-  As Integer ancho
-  As Integer alto
-End Type
 
 Dim Shared As paso compas (1 To CantTicks) 'cada item es la posicion en donde
 
@@ -368,10 +215,11 @@ desdevector = desde
 hastavector = hasta
 ' test test
 ' --------
-NB => 0 + (desde-1) * 13   ' 26 para 3 = 0     reemplazar 0 por NB
-NA => 11 + (hasta-1) * 13  ' 115 para  9 = 115  reemplazr 115 por NA
+NB => 0 + (desde-1) * 13   ' 39 
+NA => 11 + (hasta-1) * 13  ' 102
 
 ReDim (Roll.trk ) (1 To CantTicks,NB To NA) ' Roll de trabajo en Pantalla
+
 Print #1,"instru ",instru
 ' ojo debe se NB al reducir octabas NB cambia
 If instru > 0 Then
@@ -383,32 +231,44 @@ Print #1,"NA ",NA
 
 Print #1,"desde ",desde
 Print #1,"hasta ",hasta
+param.Roll=Roll
+Dim  AS Integer  ctres=1 ' 5 octavas por track
+Dim As Integer lim1 
+lim1=1
+ReDim (Track(0).trk ) (1 To CantTicks,1 To lim2)
+ReDim (Track(1).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(2).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(3).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(4).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(5).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(6).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(7).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(8).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(9).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(10).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(11).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(12).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(13).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(14).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(15).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(16).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(17).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(18).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(19).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(20).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(21).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(22).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(23).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(24).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(25).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(26).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(27).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(28).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(29).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(30).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(31).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(32).trk ) (1 To Ctres,1 To lim1)
 
-' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
-' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
-'Dim Shared As Integer lim2=12, ctres=CantTicks
-Dim Shared As Integer lim2=12
-Dim AS Integer  ctres=CantTicks ' 5 octavas por track 
-' c/inst puede tocar como una persona hasta 12 notas juntas de acorde
-' entonces no se justifica tener en un solo instrumento una polifonia mas de 12
-' ni de 108,,,ergo puedo poner mas trakcs o mas longitud
-' asi ocupa,recalcular.., 270k , 64 ocupara 550 y 128 ocupara 1 giga...listo!
-' lo hare de 32 tracks 275 mgbytes !
-'CREAR UN MENU ACA DE CREACION DE TRACKS SEGUN SE ELIJA SE VAN EJECUTANDO LOS
-' REDIM Y LUEGO SE PUEDE ELEGIR CADA UNO PARA EDITAR, PARA ELLOS
-' SE PASARA SU NOMBRE A RollLoop EN UN SELECT CASE , CASE1 ROLL1 CASE2 ROLL2 ETC
-' debo modificar todo el programa para incorporar el indice del inst o Track
-' Sigo enviando  Roll, pero cuadno lo uso debo especificar cual track estoy usando
-' creo 4 tracks por default a pedido del ususraio se pueden agregar mas
-'=============================================================
-' ctres SERA DINAMICO A MEDIDA QUE SE ENTRA MAS NOTAS SE IRA EXTENDIENDO LAS POSICIONES
-'============== IMPLEMENTARLO AL FINAL 
-
-ReDim (Track(0).trk ) (1 To Ctres,1 To lim2)
-ReDim (Track(1).trk ) (1 To Ctres,1 To lim2)
-ReDim (Track(2).trk ) (1 To Ctres,1 To lim2)
-ReDim (Track(3).trk ) (1 To ctres,1 To lim2)
-ReDim (Track(4).trk ) (1 To ctres,1 To lim2)
 ' c/u de estos track es redimensionable preserve en la 1era dimension 
 ' o sea en las posiciones, lo que debo hacer es cargar estos Tracks
 ' con eventos pero para mostrarlso usaria el Roll 
@@ -419,8 +279,6 @@ ReDim (Track(4).trk ) (1 To ctres,1 To lim2)
 ' barriendo la posicion comun a todos y las notas de cada uno EN SINCRONIA CON LA VISUALIZACION!
 ' ENTONCES EN PLAYALL RECORRO TRACKS PERO NO EL DE VISUALIZACION,,,,,VEREMOS.,
 
-
-Dim Shared As inst RollAux
 ReDim (RollAux.trk) ( 1 To CantTicks,NB To NA )
 CantCompas = 40 * CantMin
 ' 600 COMPASES DE 32 POSICIONES 14,74 MBYTES , 235 MBYTES 16 TRACKS
@@ -446,56 +304,22 @@ Next l
 Close
 End
 '/
-Dim Shared As Integer  ANCHO
-Dim Shared As Integer  ALTO, deltaip=0
-Dim Shared As Double   BordeSupRoll, inc_Penta
-Dim Shared As Integer  AnchoInicial,AltoInicial
-Dim Shared As FLOAT font, deltaipf=0, lockip=0 
-Dim Shared q As String * 1
-Dim Shared As UByte s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
-Dim Shared escala As float = 1.0
-Dim Shared translado As Integer = 1
 ''https://www.freebasic.net/forum/viewtopic.php?t=15127
-ANCHO = GetSystemMetrics(SM_CXSCREEN)
-ALTO = GetSystemMetrics(SM_CYSCREEN)
-ANCHO = ANCHO *11/12
-ALTO = (ALTO -25)*11/12
-AnchoInicial=ANCHO
-AltoInicial=ALTO
-anchofig=ANCHO/45 ' SON 45 COL PERO SE USAN MENOS 41
-NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
-
+Print #1,"NroCol, ancho, anchofig ",NroCol, ANCHO, anchofig
 Dim As String driver
 
-' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
-Dim shared As Integer i,  posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
-Dim Shared As Integer octaroll
 posmouseOld = 0:posmouse = 0
-Dim Shared As BOOLEAN comEdit, resize
 comEdit = FALSE:resize = FALSE
-Dim Shared po As Integer Ptr
-' son 9 octavas y 1 para escribir? o escribe en la ultima ?
 po = @octaroll
-'''*po = 8
 *po = hasta -1 ' test 09-09-2021 
 s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0:s8=0 
-''font=18 haremos font funciona de anchofig O NroCol o ANCHO
-' para 35 font=18 =  18 /35 = 514/1000
-'font=anchofig * 515 /1000 '' 18 default
-'font=anchofig * 510 /1000 + (35-anchofig)* (anchofig ^2 - 1225) /1000
 font=18
-Dim Shared e As EVENT
-Dim Shared rmerr As Integer
-
 indaux=0:carga=0
 ' -----------------------------------------------------------------------
-' notas redonda (O),blanca(P),negra(I),corchea(C),semicorchea(S), Fusa(F),Semifusa(U)
-' O P I L F E # (listo todas mis notas!!!)
+' notas redonda (O),blanca(P),negra(I),corchea(C),semicorchea(S), Fusa(F),Semifusa(E)
+' O P I L F E W H 
 ' puntillo O* P*  C* elsigno  *
 ' -puntillo resta en vez de sumar -O -P -C ...-U
-' O P I L F E # (redonda, blanca,corchea, semicorchea, Fusa,Semifusa)
-' no meconviene escribir encima de las lineas debo cmbiar todo para
-' escibirsolo sobre espacios hgmos ROLL4
 ' -------------------------------------------------------------------------
 BordeSupRoll = Int((ALTO ) /18) ' (1400 )/18 integer = 77
 inc_Penta = Int((ALTO - BordeSupRoll) /(40)) ' 26 double 1330/66 para 1400 resolu
@@ -505,7 +329,6 @@ BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio muestro octava 4 la cen
 ' *************************************************+
 ' inc_Penta=separacion de lineas
 '---------------------
-Dim Shared As Integer mxold,myold, w,h
 gap1= anchofig* 2315/1000 ' 81 default
 gap2= (914 * gap1) /1000 ' 74 default
 gap3= (519 * gap1) /1000 ' 42 default
@@ -514,37 +337,20 @@ Print #1,"gap1 ",gap1
 
 GetMouse mxold,myold, , MouseButtons
 
-
-Dim  Shared c As cairo_t  Ptr
-Dim  Shared cm As cairo_t  Ptr
-Dim  Shared c3 As cairo_t  Ptr
-
-Dim Shared As Integer stride, nro_penta,IhWnd,Mhwnd,Style,desktopwidth,desktopheight
 posicion = 1 ' comienzo del roll
 'indice   = 1  ' numero de nota al comienzo del programa B8
 espacio = 0
 backspace = 0
 fijarEspacio=0
-'amedida que nos movemos ira incrementando o decrementando
-Dim Shared surface As Any Ptr
-' ------------------------ windows controls ---------
-'---ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
-'---Dim Shared As hWnd hwnd 
-'---hwnd = Cast(hwnd,IhWnd)
-Dim comienzo As Integer = 0
+
 '--FFT FREE FONT-
 Var Shared ft => FreeType()
-
 '' Load a font with FreeType
 Dim Shared As FT_Face ftface
-
 FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
-'''Dim Shared cface as cairo_font_face_t Ptr
 
-
-' ========== CONTROL DEL NRO DEOCTAVASMOSTRADO SEPODRAPONER PARA EL USUARIO
-' VER SI SE PUEDE USAR ARRAYS PORPROCIONES
-
+' ========== CONTROL DEL NRO DE OCTAVAS MOSTRADO SE PODRA PONER PARA EL USUARIO
+' VER SI SE PUEDE USAR ARRAYS POR PORCIONES
 '----- -FIN
 '----- MIDI MICROSOFT
 'https://docs.microsoft.com/en-us/windows/win32/multimedia/midi-functions
@@ -565,24 +371,11 @@ stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 #Include "RTMIDISUB.bas"
 #Include "ROLLSUB.BAS"
 '===========================
-'ScreenControl  SET_DRIVER_NAME,"GDI"
-Dim Shared As hWnd hwnd,hwndMenu 
-'hwnd = Cast(hwnd,IhWnd)
-'hwndmENU = Cast(hwnd,MhWnd)
-
- Dim Shared As UINT codsalida=0
- Dim shared As Any Ptr lpExitCode
  Dim As Integer MenuFlag=0, LoopFlag=0 
 
 '========================== 
 #Include "ROllLoop.BAS"
 '========================== 
-
-
-
-
-'''#Include "ROllMenu.BAS"
-
 ' aca puedo llamar a varios thread 1 por vez segun el instrumento editado
 ' o sea 1 vector de roll distinto para casa Thread o llamar a cada Vector
 ' con el mismo Thread para verlo en pantalla. Se veria 1 por vez o si queremos podriamos
@@ -592,21 +385,6 @@ Dim Shared As hWnd hwnd,hwndMenu
 #Include "ROLLMIDI.BAS"
 
 '----------------
-'Dim pRoll As Any Ptr
-''USAR PIRULO.EXE COMO LLAMADOR, USA WINEXEC Y ES SIMILAR A SHELL
-' MEJOR NO PRODUCE CONSOLA Y DA MAS PARAMETROS 
-
-'  Dim tloop As Any Ptr = ThreadCall RollLoop(c, Roll )
-Dim Shared  As pasa param 
-    param.c= c
-    param.Roll = Roll
-    param.titulo = titu
-    param.ancho = ANCHO
-    param.alto = ALTO
-    p1=@param
-Common Shared As hwnd hwndC    
-#Include "mod_rtmidi_c.bi"    
-'----------------------------
 Dim nombreport As ZString Ptr
 midiout = rtmidi_out_create_default()
 'Print #1,"PLAYALL---------->>>>>>>"
@@ -629,35 +407,32 @@ If Roll.trk(1,NA).inst > 0 Then
  ChangeProgram ( Roll.trk(1,NA).inst , 0)
 EndIf
  Print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
-
-COMMON Shared As Long eventc
-Common Shared As hwnd hwndListBox
+Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 
 If ix < 3 Then ' rollmusic CON control
- 
- 
-hwndC = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
+
+  hwndC = OpenWindow("RollMusic Control ver 0.4.3.2",10,10,ancho*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
 ''UpdateInfoXserver()
-hwndListBox= ListBoxGadget(3,10,10,240,650,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL )
-SendMessage(GadgetID(3),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
-TextGadget(4,250,10,240,20,, SS_SIMPLE  )
+  hwndListBox= ListBoxGadget(3,10,10,240,650,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL )
+  SendMessage(GadgetID(3),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
+  TextGadget(4,250,10,240,20,, SS_SIMPLE  )
  ' GetTextExtentPoint32 PARA DETERMINAR EL ANCHO EN PIXELS DE UN TEXTO
  ' EL SCROLL VERTICAL APARECE CUANDO SE SOBREPASA LSO ITEM QUE SE PUEDEN VER 
-Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
+  Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 
-EVENTc=0
+  EVENTc=0
 
 'StatusBarGadget(1,"StatusBarGadget")
 
-hMessages=Create_Menu()
-MenName1=MenuTitle(hMessages,"Archivo")
-MenName2=MenuTitle(hMessages,"Nueva Cancion")
-MenName3=MenuTitle(hMessages,"Pistas")
-MenName4=MenuTitle(hMessages,"Ver desde Posicion")
-MenName5=MenuTitle(hMessages,"Cambiar Tiempo Y Ritmo")
-MenName6=MenuTitle(hMessages,"Reproducir")
-MenName7=MenuTitle(hMessages,"Opciones")
-MenName8=MenuTitle(hMessages,"Ayuda")
+  hMessages=Create_Menu()
+  MenName1=MenuTitle(hMessages,"Archivo")
+  MenName2=MenuTitle(hMessages,"Nueva Cancion")
+  MenName3=MenuTitle(hMessages,"Pistas")
+  MenName4=MenuTitle(hMessages,"Ver desde Posicion")
+  MenName5=MenuTitle(hMessages,"Cambiar Tiempo Y Ritmo")
+  MenName6=MenuTitle(hMessages,"Reproducir")
+  MenName7=MenuTitle(hMessages,"Opciones")
+  MenName8=MenuTitle(hMessages,"Ayuda")
 
 MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
 MenuItem(1006,MenName1, "Cargar directorio de Cancion con Pistas separados")
@@ -665,7 +440,7 @@ MenuItem(1007,MenName1, "Na.Grabar Cancion")
 MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
 MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
 MenuItem(1010,MenName1, "Na.Cargar una sola Pista(o track) de Cancion")
-MenuItem(1011,MenName1, "Grabar una Pista en Edicion en la Cancion")
+MenuItem(1011,MenName1, "Grabar una Pista Roll en Edicion en la Cancion")
 MenuItem(1012,MenName1, "Na.Grabar una Pista de cancion Como")
 MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
 MenuItem(1014,MenName1, "Salir")
@@ -693,17 +468,17 @@ MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo 
 
 
 
-MenuItem(1070,MenName4,"5 Menu")
-MenuItem(1080,MenName5,"6 Menu")
-MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
-MenuItem(1100,MenName7,"Usar MARCO de Ventana ")
-MenuItem(1101,MenName7,"No Usar MARCO de Ventana ")
-MenuItem(1110,MenName8,"9 Menu")
+  MenuItem(1070,MenName4,"5 Menu")
+  MenuItem(1080,MenName5,"6 Menu")
+  MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
+  MenuItem(1100,MenName7,"Usar MARCO de Ventana ")
+  MenuItem(1101,MenName7,"No Usar MARCO de Ventana ")
+  MenuItem(1110,MenName8,"9 Menu")
 End If
 
 
 
-' opengl
+' opengl funciona bein futuro usar opnegl
 /'
 sub FramebuffersizefunCB GLFWCALLBACK (win As GLFWwindow ptr, w as long, h as long)
   'print "FramebuffersizefunCB " & w & " x " & h
@@ -734,22 +509,31 @@ End Sub
 '/
 '---------------------------- main -----------------
 
-Dim Shared As Any Ptr mutex
-Dim Shared As Any Ptr cond
-Dim Shared As String txt
-Dim As Any Ptr pt
-Dim Shared As Integer ok = 0
+' Dim Shared As Any Ptr mutex no se usa todavia exoermental de sync
+' Dim Shared As Any Ptr cond
+' Dim Shared As String txt
+' Dim As Any Ptr pt
+' Dim Shared As Integer ok = 0
 Dim As Integer Terminar=0,abrirRoll=0
 abrirRoll=0
-Do
-param.titulo ="RollMusic"
 
+Do
+param.titulo ="RollMusic Ver 0.4.3.5"
+Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
+Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
+Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
   If abrirRoll=1 Then
     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-    '''RollLoop ( param)
+    ''''RollLoop ( param)
     ''''abrirRoll=2
+    Sleep 100 ' sin este retardo no le da teimpo al thread de cargar a Roll
+    ' y CargarPistasEnCancion no puede cargar proque no hay Roll
   EndIf
-
+  If cargaCancion=1 Then
+     CargarPistasEnCancion ()
+     cargaCancion=0
+  EndIf
+     
   If ix < 3 Then 
 
 'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
@@ -764,32 +548,50 @@ param.titulo ="RollMusic"
      Select Case EVENTC 
        Case EventMenu 
          Select case EventNumber
-     '  Case 1005,1007 To 1016,1018 to 1019, 1021 To 1024, 1026,1027
-     '       MessBox("","Menu no habilitado")
-            Case 1006   ' CARGAR CANCION  
-             cargarDirectorioCancion(NombreCancion)
-             GrabarRollaTrack(1,1) ' se usa solo como dir y carga de tracks 
-             ' en la lista y en los track o pistas correspondientes
-             If abrirRoll=0 Then
-                abrirRoll=1
-                Exit Do
+            Case 1006   ' CARGAR CANCION
+             '1ero cargamos a roll sino cancela y luego cargamso todos los tracks
+             ' ok anda bien, ahroa debo permutar entre track sin neecsidad
+             ' de cargarlos desde disco haciedno click en la lista
+             ' o pulsando el Tabulador + otr key¿?
+             If NombreCancion = "" Then
+               cargarDirectorioCancion(NombreCancion)
              EndIf
+             If abrirRoll=0 And NombreCancion > ""  Then
+                abrirRoll=1
+                cargaCancion=1
+                Exit Do                 
+             EndIf
+
+             Print #1,"termino 1006 v aa abrir Roll"
+             ''GrabarRollaTrack(1,1) ' se usa solo como dir y carga de tracks 
+             ' en la lista y en los track o pistas correspondientes
  
             Case 1011 ' graba pista en edicion en la cancion
-            Print #1,"entro a 1011 en elmenu"
-             ResetAllListBox(3)
-             GrabarRollaTrack(1,1)
-            Case 1014 ' salir 
-              Terminar=1
-              cerrar(0)
-              Exit Do
-            Case 1017 ' grabarpista
-             If NombreCancion <>"" Then ' es una cancion grabamos en el directorio de la cancion
-                GrabarPistaCancion=1
-             Else 
-                GrabarPistaCancion=0
-             EndIf      
+            Print #1,"entro a 1011 en elmenu" '' jmg probar es nuevo...
+ ' copiamos logica Rolla Track 
+            Print #1, "Click Grabando a disco Roll a Track ",nombre
+      '''' dialogoText("Grabar Archivo")
+            Dim As String nombreg
+            If nombre = "" Then
+               getfiles(file,myfilter,"save")
+               nombreg=*file.lpstrFile
+               If nombreg = "" Then
+                  Exit Select 
+               Else
+                  nombre=nombreg   
+               EndIf
+           EndIf
+''''       grabaprueba()
+' por ahroa todo RollaTRack graba con [0] adelante. s epodra cambiarlo en futuro
+           If NombreCancion > ""  Then
+              GrabarRollaTrack(1,1)
+           Else    
+              GrabarRollaTrack(1,0) ' 1 significa cambiar el formato de nombre de Rool
+           EndIf
+          MenuNew=0           ' por formato de TRack anteponiendo[0]
+          carga=1
             Case 1020     
+               NombreCancion = ""
                EntrarNombreCancion(NombreCancion)
             Case 1025
                CrearDirCancion (NombreCancion)            
@@ -830,14 +632,14 @@ param.titulo ="RollMusic"
                EndIf
             Case 1061
                EntrarNombrePista(NombrePista)
-               numpista += 1
+               ntk += 1
                If instru=0 Then 
                   instru=1
                EndIf
                If NombrePista ="" Then
-                NombrePista = str(numpista) +"-"+ RTrim(Mid(NombreInst(instru), 1,21))
+                NombrePista = str(ntk) +"-"+ RTrim(Mid(NombreInst(instru), 1,21))
                Else
-                NombrePista = str(numpista) +"-"+ NombrePista 
+                NombrePista = str(ntk) +"-"+ NombrePista 
                 
                EndIf
 
@@ -847,7 +649,7 @@ param.titulo ="RollMusic"
                   abrirRoll=1
                   Exit Do
                EndIf
-' FALTA CREAR LA PISTA !!! jmg
+' FALTA CREAR LA PISTA !!! jmg ERO PUEDO USAR UNA PISTA YA CREADA EN 1011
             
             Case 1062
  ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
@@ -870,8 +672,16 @@ param.titulo ="RollMusic"
               End
           End Select
       Case eventgadget
+      ' el codigo anterior que traia de disco esta en notas
          If eventnumber()=3 Then
+ ' esto servia cuando cargaba solo la lista y no los tracks en 1006
+ ' pero ahroa solo deberia hacer switch no cargar de disco sino
+ ' directamente cargar Roll desde el numero de track correspondiente
+ ' en memoria         
+             
+            Print #1,"CLICK EN LISTA"
              Dim item As String
+             Dim As Integer ubi1,ubi2
              item= "                        "
              setgadgettext(4,item)
               
@@ -883,25 +693,33 @@ param.titulo ="RollMusic"
              item=Trim(item)
              If item > "" Then
                 nombre= NombreCancion + "\"+item +".rtk"
-                Print #1," eventgadget click en lista nombre", nombre
-                lineadecomando=1
-                cargarTrack (Track(), ntk) ' este ntk se resuelve dentro de la sub
+                Print #1," NUEVO eventgadget click en lista nombre", nombre
+              ubirtk=3 ' ahora indice carga desde lista o memoria
+             ' No mas de disco  cargarTrack (Track(), ntk) ' este ntk se resuelve dentro de la sub
              ' donde se lo saca del nombre por lotanto devuelve el numero de ntk
-             ' despues dela rutina
-                TrackaRoll (Track(), ntk , Roll )
-                Print #1,"ntk cargado, nombre ",ntk, nombre
-                ReCalCompas(Roll)
+             ' despues dela rutina,cargarTrack pone a 0 lineadecomadno=0
+             ' pero si quiero volver a disco solo debo resetear ubirtk=0
+                ubi1 = InStr(item,"[")
+                ubi2 = InStr (item,"]")
+                ntk=CInt(Mid(item,ubi1+1,ubi2-ubi1-1))
+                Print #1,"LLAMA A TRACKrOLL CON NTK ",ntk
+                titulos(ntk)=nombre 
+                TrackaRoll (Track(), ntk , Roll ) ' no usa ubirtk
+                Print #1,">>> ntk cargado, nombre ",ntk, nombre
+                Print #1,"llama a RecalCompas para ntk ",ntk
+                ReCalCompas(Roll) 
+                Print #1,"Fin RecalCompas para ntk ",ntk
                 item=""
              EndIf  
          EndIf
-
+         Print #1," CLICK EN LISTA FIN "
       Case EventClose 
        Close:End 0
      End Select
    Loop
 Else
-  param.titulo ="RollMusic"
-''''  threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+  param.titulo ="RollMusic Editor" ' esto no sale si no hay marco
+  threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
   ThreadWait threadloop
   cerrar(0)  
 End If
@@ -930,7 +748,7 @@ End 0
 errorhandler:
 Dim As Integer er, ErrorNumber, ErrorLine
 er = Err
-Print #1,"Error detected ", er, posicion, MaxPos
+Print #1,"Error  MAIN detected ", er, posicion, MaxPos
 Print #1,Erl, Erfn,Ermn,Err
 
 Print #1,"------------------------------------"
@@ -962,6 +780,7 @@ Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
 Print #1,"Error Function: "; *Erfn()
 'Dim ers As Integer = 12 - nota +(estoyEnOctava ) * 13 
 Print #1, "12 -nota +(estoyEnOctava ) * 13) "; ers
+Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
 
  
 

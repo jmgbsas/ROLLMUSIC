@@ -1,7 +1,19 @@
-#include "crt/stdio.bi"
+#Include "crt/stdio.bi"
+''For i = desde To hasta ' nro_penta
+'' creaPenta (c, i, po,InicioDeLectura ) po es octava
+'' If *po = 99 Then
+''  *po = hasta - 1
+''  Exit For
+'' EndIf
+''cairo_stroke(c)
+''Next
+On  Error GoTo errorloopbas
+
+''(c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer Ptr, InicioDeLectura As Integer)
 Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
 'Dim octava As Integer Ptr
 '*po va desde hasta -1 haci aabajo 
+
  Dim As cairo_font_extents_t fe   '     font data
  Dim As cairo_text_extents_t te  '      text size
  Dim As Integer semitono,n, ic,indf
@@ -16,6 +28,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
  'if indice <= 0 then indice = 1
  'if indice >= 128 then indice = 128
 
+ 
  cairo_select_font_face (c, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL)
  cairo_set_font_size (c, font)
  
@@ -57,7 +70,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
  'delta=NroCol
  If cursorVert=0 And comEdit=TRUE  Then
   If posicion < 30  Then
-   posishow=  posicion ''curpos ' decia 1   
+   posishow=  posicion ''curpos ' decia 1
   ' valla tatlmente al inicio veremos si es aca jmgjmg
   Else
    posishow = posicion ''- 20
@@ -70,9 +83,12 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
  lugarOld=Penta_y
 
  ''' Var t = " " reempladapor sharedaprapoder poner if
+''  For semitono = 1 To 12
+''   If comEdit = TRUE  and estoyEnOctava = nro  Then
+
  For semitono = 0 To 11
-   If comEdit = TRUE  and estoyEnOctava = *po + 1  Then
-     If octavaEdicion=estoyEnOctava Then 
+   If comEdit = TRUE  and estoyEnOctava = *po  Then ''+ 1  Then
+     If octavaEdicion=estoyEnOctava Then
         cairo_set_source_rgba(c, 0, 1, 0.5, 1)
      Else 
         cairo_set_source_rgba(c, 1, 1, 1, 1)   
@@ -81,7 +97,9 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
  
        cairo_set_source_rgba(c, 1, 1, 1, 1)
    EndIf
-  font= font - 2 ' achicamos notas giuas 
+  font= font - 2 ' achicamos notas giuas
+''  t = NotasGuia(semitono) + Str(*octava) + "_[" 
+'' cairo_move_to(c, 0, Penta_y + semitono * inc_Penta- 6) 
   t = NotasGuia(semitono) + Str(*po -1) + "_["
   cairo_move_to(c, 0, Penta_y + (semitono+1) * inc_Penta- 6)
   cairo_show_text(c, t)
@@ -89,9 +107,15 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
   ic=0 'indice cursor 'donde se dibujara la duracion
   n=0:indf=0
   font= font + 2
+  
   For n = posishow To posishow + NroCol
-   If Roll.trk (n,11- semitono  + (*po) * 13 ).nota > 0 Or _
-      Roll.trk (n,11- semitono + (*po) * 13 ).dur > 0 Then
+  'Print #1,"lugar ",10
+''   If Roll.trk (semitono + (nro-1) * 13, n  ).nota > 0 Or _
+''      Roll.trk (semitono + (nro-1) * 13, n  ).dur > 0 Then
+  
+   If Roll.trk (n,11- semitono  + (*po -1) * 13 ).nota > 0 Or _
+      Roll.trk (n,11- semitono +  (*po -1) * 13 ).dur > 0 Then
+     ' Print #1,"lugar ",11
       If comEdit=TRUE Then 
          If cursorVert=0 Then  
             If espacio = (semitono +1) Then
@@ -124,10 +148,11 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
     '     EndIf
       EndIf    
    
-        
     cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono+1 ) * inc_Penta - 4)
     Dim As Integer indf
-    indf= Roll.trk (n, 11- semitono + (*po) * 13).dur
+  '  Print #1,"lugar ",12
+    indf= Roll.trk (n, 11- semitono + (*po -1) * 13).dur
+  '  Print #1,"lugar ",13
     If (indf >= 1 And indf <= 182)  Then ' 13-05-2021 11
     Else
        indf=181
@@ -160,8 +185,11 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
     'If indf> 0 And indf< 181 Then
     '  Print #1," CREAPENTA t  DUR: ";indf;" figura ";figura(indf); " semitono: "; semitono
     'EndIf
-    If n >0 And n <= CantTicks Then
+    ' puede ser aca CantTicks pro MaxPos
+    If n >0 And n <= MaxPos  Then '''''CantTicks Then
+    'Print #1,"lugar ",14
      If Compas(n).Posi = n  Then ' ahi hay un corte un nuevo compas
+    ' Print #1,"lugar ",15
       cairo_move_to(c,gap1 + (ic ) *anchofig +anchofig , Penta_y)
       cairo_line_to(c,gap1 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta )
       '    Print #1, "|";
@@ -169,7 +197,9 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
       t=Str(Compas(n).nro)
       cairo_show_text(c,t)
      EndIf
+     'Print #1,"lugar ",16
      If n = pasozona1 Or n =pasoZona2 Then '26-06-2021
+     'Print #1,"lugar ",17
         cairo_move_to(c,gap3 + (ic ) *anchofig +anchofig, Penta_y + 13.5 * inc_Penta )
          t="("+ Str(n) + ")"
          cairo_show_text(c,t)
@@ -179,16 +209,18 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
     cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono +1)* inc_Penta - 6)
     ic += 1
    Else
+   
     Exit For
    EndIf
    'con ic * 40 es + 32 osea ic * 40 + 32
+
   Next n
   'Else
   'Print #1, " n= ";n; " posn=";posn;" MaxPos=";MaxPos;" Posishow=";Posishow
   'EndIf
-
-  If n  > MAXPos Then
-   MaxPos = n
+' incremento aca ? raro lo deberia incrementar al cargar notas
+  If n  > MAXPos Then 
+    MaxPos = n
   EndIf
 
   '--------TRAZADI DE LINEAS VERTICALES GUIA DE COMPAS 1ERA VERSION
@@ -210,7 +242,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
   cairo_stroke(c)
   If (mousey <= lugar) And (mousey >= lugarOld ) Then
    nE=semitono + 1 'semitono ahora va desde 0 a 11 usadopor entrada de tecladoy ahroa mouse
-   nR=(11-semitono) + (*po ) * 13 ''+ (desde -1)*13 ' indice de la nota en Roll , en algo será util.
+   nR=(11-semitono) + (*po -1 ) * 13 ''+ (desde -1)*13 ' indice de la nota en Roll , en algo será util.
    If *po=1 Then
       Print #8, "nR octava 1 ",nR
    EndIf
@@ -218,13 +250,17 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
 
   EndIf
   lugarOld=lugar
-
+   If semitono =11 Then ' asi no suma 1 a semitono y no pasa a ser 12
+      Exit For
+   EndIf 
  Next semitono
+  
+ 
  ' PARA ENTRADA POR MOUSE SOLO DEBO DETERMINAR EL SEMITONO...
  ' y hacer nota=semiotono 1 a 11 con el mouse...el resto es automtico...
 ' nro=hasta significa que ya dibujo la octava 9, luego puede seguir dibujando
 ' hacia abajo, la ayuda 
-If nro = hasta Then ' termino 9 octavas o la NA y ahora  + ayuda...
+If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
   cairo_set_font_size (c, font)
   'cairo_select_font_face (c, "Georgia",CAIRO_FONT_SLANT_NORMAL , CAIRO_FONT_WEIGHT_BOLD)
   t= "Flecha Abajo/Arriba o ruedita del mouse, scroll de las octavas en la ventana "
@@ -298,7 +334,7 @@ If nro = hasta Then ' termino 9 octavas o la NA y ahora  + ayuda...
  ' del mouse automaticamete iluminar
  If ( Penta_y <= mousey) And ((Penta_y + 12 * inc_Penta) >= mousey)  Then
   ' estoy en una octava
-  estoyEnOctava = *po +1 '<========== DETERMINACION DE OCTAVA DE TRABAJO
+  estoyEnOctava = *po  '<========== DETERMINACION DE OCTAVA DE TRABAJO
   EnOctava=1
   ' CURSOR
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
@@ -315,7 +351,7 @@ If nro = hasta Then ' termino 9 octavas o la NA y ahora  + ayuda...
   estoyEnOctava=90 'praque esto ????jmg
  EndIf
  *po = *po -1
- If *po < desde -1 Then
+ If *po = desde -1 Then  ' 22-09-2021 < estaba mal es = ej 4 a 8 -> 4-1=3 ya ejecuto la 3 me voy 
   *po = 99
   Exit Sub
  EndIf
@@ -446,6 +482,8 @@ If nro = hasta Then ' termino 9 octavas o la NA y ahora  + ayuda...
  EndIf
 
 
+
+
 End Sub
 
 
@@ -455,7 +493,9 @@ End Sub
 sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
  c=param.c
  Roll=param.Roll
-
+  
+ Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
+ Print #1,"posicion ", posicion
  '    If hwnd =0 Then   ,GFX_WINDOWED
      ScreenControl  SET_DRIVER_NAME, "GDI"
      If usarmarco= 1 then
@@ -468,10 +508,11 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
      ScreenControl GET_WINDOW_POS, x0, y0
      ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
      hwnd = Cast(hwnd,IhWnd)
-     
-  
-
-
+  ' datos recibidos   
+  Print #1,"datos recibidos en rooloop nombre ", nombre
+  Print #1,"datos recibidos en rooloop desde,hasta ", desde, hasta
+  Print #1,"datos recibidos en rooloop *po ", *po 
+  Print #1, "ubound roll.trk 2 ",ubound(roll.trk,2)
   '  End If
 'Dim Roll As inst
 ' @Roll(1) = *pRoll  
@@ -492,9 +533,13 @@ Var surf2 = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32
 8 A 9  9 DOWN
 '/
 
+
 inc_Penta = Int((ALTO -1) /40) - deltaip
+Print "inc_Penta", inc_Penta
 'llena la surface con nro_penta
 nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
+Print "nto_Penta", nro_Penta
+
 'Print nro_penta
 Select Case desde
     Case 1
@@ -516,20 +561,21 @@ Select Case desde
       BordeSupRoll = BordeSupRoll - 44 * inc_Penta ' 16-09-2021
      
 End Select
+Print #1,"BordeSupRoll ",BordeSupRoll
 
 ' command
  If ubirtk >0   Then
    'nombre=Command(ix)
-   Print #1,"nombre en rollLoop llego ", nombre
-   lineadecomando=1 ' abre la puerta`de carga track
+ 
+   Print #1,"nombre en rollLoop llego ", titulos(0)
    menunew=3
    menunro=3 
  EndIf
 
  If ubiroll >0   Then
    'nombre=Command(ix)
-      Print #1,"nombre en rollLoop llego ", nombre
-   lineadecomando=2 ' abre la puerta`de carga track 
+  
+   Print #1,"nombre en rollLoop llego ", titulos(0)
    menunew=3
    menunro=3
  EndIf
@@ -624,7 +670,14 @@ For i = desde To hasta
 cairo_stroke(c)
  
 Next
-
+''For i = desde To hasta ' nro_penta
+'' creaPenta (c, i, po,InicioDeLectura )
+'' If *po = 99 Then
+''  *po = hasta - 1
+''  Exit For
+'' EndIf
+''cairo_stroke(c)
+''Next
 
 ''''''''estos 3 comadnos con los de arriba son para scale o translate------
 ' pero se pierde totalmenmte la proporcionalidad manual habrai que ver como sincronizarlas
@@ -654,15 +707,6 @@ cairo_stroke(c)
 cairo_stroke(cm) ' cm despues de c sino crash
 
 
-
-If menuaccion=1111 Then ' no sirve las aciones perforan
- cairo_move_to(c, 9*(ANCHO/10),50)
- Var surf3 = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO/10, ALTO, stride)
- Var c3 = cairo_create(surf3)
- menuAcc (c3)
- cairo_stroke(c3)
-
-EndIf
 
 ScreenUnLock()
 ''ScreenSync
@@ -837,7 +881,7 @@ If MultiKey(SC_PAGEUP ) Then
  Exit Do
 
 EndIf
-If MultiKey (sc_P) And play=1 Then
+If MultiKey (sc_P) And (play=1 Or playb=1 )Then
   CONTROL1=1 ' DETIENE EL PLAY VEREMOS
   playloop=0
 EndIf
@@ -958,9 +1002,9 @@ EndIf
         If curpos > NroCol  Then
           curpos = NroCol
         EndIf
-        If posicion + curpos > MaxPos -1  Then
-           curpos = MaxPos -1 - posicion 
-        EndIf
+    '    If posicion + curpos > MaxPos -1  Then 'ojo esto jmg
+    '       curpos = MaxPos -1 - posicion 
+    '    EndIf
 
      EndIf
      Sleep 100
@@ -1004,39 +1048,6 @@ EndIf
     Exit Do
  EndIf
 
-' https://freebasic.net/forum/viewtopic.php?t=15100
-' interfiere con ALT+ tAB del usuario apr amirar otra apliccion
-' no va
-'If MultiKey(SC_ALT)  Then
-'   escala = escala - 2
-'EndIf
-
-
-' ALTUR DE LA VENTANA ,SE PODRA? VEMOS si se pudo con movewindow
-' https://www.freebasic.net/forum/viewtopic.php?t=15127
-' DISPONIBLE F4 F5
-'If  MultiKey (SC_F5)  Then
-' Exit Do
-'EndIf
-
-'If  MultiKey (SC_F4)    Then
-' Exit Do
-'EndIf
-
-'If MultiKey (SC_F8)  Then
-' If comEdit = FALSE Then
-'  ' MOVE VENTANA
-'  Dim As Integer w,h
-'  w=ANCHO:h=ALTO
-'  ALTO = ALTO + inc_Penta
-'  If ALTO >= altoInicial - 1  Then
-'   ALTO = altoInicial  - 1
-'  EndIf
-'  MoveWindow( hWnd , 0, (0+ALTO-h)\2, ANCHO,ALTO, TRUE )
-'  altofp11 = ALTO
-' EndIf
-' Exit Do
-'EndIf
 
 '----------
 ' SIZE ANCHO F5
@@ -1388,37 +1399,6 @@ If MultiKey(SC_BACKSPACE) Then ' sin uso por ahora.
 
 EndIf
 ' ----------------------FIN NOTAS-------------------------
-' -----------REDIMENSIONAMIENTO DE OCTAVAS POR EL USUARIO
-'  If octavas = 3 and DUR <> desde And DUR > 0 Then
-'      Print #1, "OCTAVAS 3"; OCTAVAS,Timer
-'       hasta=DUR
-'       DUR=0
-'        Print "DUR2 ", DUR
-'        Print "DUR2 ", DUR
-'        Print "DUR2 ", DUR'
-'
-'        octavas=0
-'        NB => 1 + (desde-1) * 13   ' 27 para 3
-'        NA => 12 + (hasta-1) * 13  ' 90 para  7
-'        ReDim (Roll.trk ) (NB To NA, 1 To CantTicks)
-'        ReDim (RollAux.trk) (NB To NA , 1 To CantTicks)
-'        MaxPos = 1
-'        posicion=1:posn=1
-'        curpos=1
-'        notacur=1
-'   EndIf
-'If octavas = 1 And DUR > 0 Then
-'Print #1, "OCTAVAS 1 "; OCTAVAS,Timer
-'      desde=DUR
-'      Print "DUR1 ", DUR
-'      Print "DUR1 ", DUR
-'      Print "DUR1 ", DUR
-'      DUR=0
-'         OCTAVAS=2
-'Print #1, "OCTAVAS 2 "; OCTAVAS,Timer
-'EndIf
-
-'------FIN OCTAVAS REDIM
 ' ----------INGRESO DE DURACIONES DE NOTAS -------------
 
 If comEdit = TRUE Then
@@ -1602,7 +1582,7 @@ EndIf
 ' del roll ante una entrada de nota hasta el próximo incremento de pantalla
 ' SOLO SEUSAPARAINGRESO DE NOTAS NUEVAS ..VERIFICANDO JMG
 If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
-   And carga=0 And nota <=182 Then
+   And carga=0 And nota <=182 Then ' 182 entra el fin de archivo 
  'Print #1,"--------------------------------------------------------------"
  'Print #1,">>>START NUCLEO-COMPAS VECTOR posn: "; posn; "suma:";acumulado
  'Print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;_
@@ -1640,12 +1620,14 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
     If Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0 Or _
      Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 182 Then
      posicion=posn
+     '182 el fin de archivo lo puedo pisar para seguir la secuencia
      '      Print #1, "ingreso a NUCLEO POSICION=POSN", posicion
      Exit Do
     EndIf
     posn = posn + 1
 '--- AUMENTO DE CAPACIDAD DEL VECTOR EN 1000 POSICIONES 
     If CantTicks - MaxPos < 120 Then
+       Print #1,"hace backup....."
        GrabarArchivo ''hacer un backup !!! 
       CantTicks=CantTicks + 1000 ' incremento el tamaño en 1000 posiciones =1 min
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
@@ -1654,45 +1636,28 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
       ReDim Preserve (Track(ntk).trk)(1 To CantTicks,1 To lim2)
     EndIf
 
-'---
+'---control barrido de pantalla columna
     If (posn > NroCol + InicioDeLectura) Then
      InicioDeLectura=InicioDeLectura + NroCol
     EndIf
     '   Print #1, "ingreso a NUCLEO posn ",posn
    Loop
    ' ESTO ME UBICA EN QUE RENGLON DE LA OCTaVA ESTOY SN USAR EL MOUSE
-   ' LUEGO haRE ALGO CON EL MOUSE POR AHORA TODO TECLADO
+   ' CON EL MOUSE tambien se hizo
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = nota 'carga visualizacion
    ' cargo TRACK 
-   Track(ntk).trk(posn,1).nota= PianoNota
-   ' itk=1 indice vertical de 1 a 12 cuando se carga nota vale siemrep 1
-   ' itk cambiara solo para cargar acordes....en cursor y solo se podra cargar 12.
-   ' si el acorde tiene un modo de construccion estandar usado pro el usuario al 
-   ' crearlo(se har aun menu) ergo se grabara solo itk=1 con al funamental y
-   ' en nota la cosntrucicon usada estara en el miembro .vol de 128 hata 255
-   ' intervalso y formulas de acordes o sea tengo 128 formas de construir
-   ' se colocara en un menu... 
-   ' o sea siemrep se carga una melodia solo cursor carga los acordes..
-   ' o en [modo lectura] tambien lo cargaremos en un futuro asi como transpoder
-   'If espacio > 0 Then
-   '  Roll.trk((nota +(estoyEnOctava -1) * 13),posn).dur = 181
-   '  espacio=0
-   'EndIf
-   '' ojo ver'  If cursorVert = 0 and cursorHori = 0 Then
-   ' no actua para modificaciones o agregado en lo existente
-   ' 65 o FIN indica final de TODO es la MAXPOS (+1obvio),se usara
-   ' para insertar y saber hasta donde se debe mover...esta solo
-   'en dur no afecta a notas pero se debe insertar siempreenedicion
-   ' con o sin cursor
+   Track(ntk).trk(posn,1).nota= PianoNota ' de done la saca? creapenta ya se ejecuto?
    
    Roll.trk(posn+1,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
+   
    'cargo TRACK
-   Track(ntk).trk(posn,1).nota= 182
+   Track(ntk).trk(posn,1).dur= 182
+
    If notaOld > 0 And notaOld <> nota  Then
   '  Print #1,"Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota"; _
    '           Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota
-    Roll.trk(posn,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).dur = 181
-    Roll.trk(posn,(12-notaOld  +(estoyEnOctava    -1) * 13)).dur = 181
+    Roll.trk(posn,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).dur = 181 
+    Roll.trk(posn,(12-notaOld  +(estoyEnOctava    -1) * 13)).dur = 181 
     Roll.trk(posn,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota = 181
     Roll.trk(posn,(12-notaOld  +(estoyEnOctava    -1) * 13)).nota = 181
    
@@ -1721,13 +1686,16 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    'Print #1,"-------------------------------------------"
 
    Dim As Integer noct ''oclog = 8 - (estoyEnOctava-1)
+   ' barre solo vertical no la posicion 
    For noct = desde To hasta
      For i= 0 To 11 ' gracias a esto anda acordes¿?
-       If i= 12 - nota  And noct = estoyEnOctava Then
+       If i= 12 - nota  And noct = estoyEnOctava  Then 
          Continue For
        Else    
        ' semitono ahroa va de 0 a 11 para Roll -> i-1 21-07-2021 jmg
-         If Roll.trk(posn,(i +(noct -1) * 13)).nota = 0 Then
+       ' si estoy en fin de sec 182-> nota=0 dur=182
+         If Roll.trk(posn,(i +(noct -1) * 13)).nota = 0 And _ 
+            Roll.trk(posn,(i +(noct -1) * 13)).nota < 182  Then ' no borra 182
          '   Print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
             Roll.trk(posn,(i +(noct -1) * 13)).nota = 181
             Roll.trk(posn,(i +(noct -1) * 13)).dur  = 0
@@ -1742,7 +1710,8 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    Next noct
    ' para track permitir acordes
    For i=1 To lim2
-         If Track(ntk).trk(posn,i).nota = 0 Then
+         If Track(ntk).trk(posn,i).nota = 0 And _ 
+            Track(ntk).trk(posn,i).dur <182    Then
          '   Print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
             Track(ntk).trk(posn,i).nota = 181
             Track(ntk).trk(posn,i).dur  = 0
@@ -1933,7 +1902,7 @@ EndIf
 ' notan vale 1 para toda la melodia cargada en Edit.
 ' al cargar acorde notan cambiara de 2 a 12
   If  MaxPos > 1 Then
-   ' crearsecuencia(track(ntk).trk(), posn,ntk)
+   ' crearsecuencia(track(ntk).trk(), posn,ntk) habilitar cuadno todo ande bie
   EndIf 
  Exit Do 'kkkk 30-01-21 probando
 EndIf
@@ -2169,7 +2138,7 @@ If (ScreenEvent(@e)) Then
       Next y
       MaxPos=posishow+1 'jmg 03-04-2021
       posn=posishow
-      Roll.trk(MaxPos,nR).dur=182
+      Roll.trk(MaxPos,nR).dur=182 '  jmg no sera not1=182 ?
       Roll.trk(MaxPos,nR).nota=0
       ReCalCompas(Roll)
       backspace=0
@@ -2425,7 +2394,7 @@ If (ScreenEvent(@e)) Then
    agregarNota = 0
    menuMouse = 0
    carga=0
-   '-----fin
+   '-----fin 2609 referencia de busqueda
    If MouseButtons And 1 Then ' <========= EDICION SOLO INGRESO DE NOTAS NUEVAS
     If s3 = 0 Then
      comEdit = TRUE : s3 = 1
@@ -2754,14 +2723,20 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
          notacur=nE
      ' 15-09-2021 no se puede dar ctrl-m mas alla de Maxpos, no sepuede modifar algo
      ' que no existe o si deberia???    
-     If curpos > Maxpos -2 Or posicion +  curpos > MAxPos -2 Then
-        nroClick=0
-        cursorVert = 0
-        cursorHori = 0
-        mousex=(Maxpos -2 )*anchofig + gap1
-        savemousex=mousex
-        ayudaNuevaNota=FALSE
-     EndIf   
+     ' esto es necesario si no agrego las 500 posiciones al cargar el archivo
+     ' peo como le agregue posiciones el vector es mas grande que lo cargado
+     ' ergo esto no es necesario fue un error sacar las posicioens agregadas
+     ' en al carga siemrep tender mas en las edicion 
+     'If curpos > Maxpos -2 Or posicion +  curpos > MAxPos -2 Then
+     '   nroClick=0
+     '   cursorVert = 0   ' JMG ERROR 24-09-2021
+     '   cursorHori = 0
+     '   mousex=(Maxpos -2 )*anchofig + gap1
+     ''   Print #1,"mousex ",mousex
+     '   Print #1,"LINEA 2784 TE CAMBIEN MOUSEX ",mousex
+     '   '''savemousex=mousex '''ESTO NO SE PORQU ELO PUSE SACANDO
+     '   ayudaNuevaNota=FALSE
+     'EndIf   
        
     Exit Do
    EndIf
@@ -2889,7 +2864,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
   
  EndIf 
  ' habilitar una octava para edicion con el mouse
- If mousex >=0 And mousex <= 5  Then ' 09-06-2021 para que nochoque con boton EDIT
+ If mousex >=0 And mousex > ANCHO -5  Then ' 09-06-2021 para que nochoque con boton EDIT
        octavaEdicion=estoyEnOctava
  EndIf
  If comedit=TRUE Then
@@ -2959,10 +2934,10 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
     ' las flechas up/down, habilitare dragado tambien 02-07-2021
 '    pasoNota=nE
     
-    indiceNota=(mousex- gap1 )/anchofig + posishow
+    indicePos=(mousex- gap1 )/anchofig + posishow
      
 ' grupo de notas seleccionadas poniendo un 13 en nota
-   Roll.trk(indiceNota,NA-nR ).nota = 13 ' marcamos para mover 
+   Roll.trk(indicePos,NA-nR ).nota = 13 ' marcamos para mover 
    
    SelGrupoNota =1
    ' el valor correcot lo repone la sub correcionnotas
@@ -2971,9 +2946,9 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  EndIf 
  If MultiKey(SC_M) And MouseButtons  And 1 And moverZona=0 Then  'mover Zona 
 ' usamos la seleccion de Zona y luego movemos la zona a una posicion dada
-    indiceNota=(mousex- gap1 )/anchofig + posishow
+    indicePos=(mousex- gap1 )/anchofig + posishow
     moverZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
-    moverZonaRoll(indiceNota,Roll)
+    moverZonaRoll(indicePos,Roll)
     Exit Do
  EndIf 
 
@@ -2981,11 +2956,11 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
 ' usamos la seleccion de Zona y luego movemos la zona a una posicion dada
    Print #1,"entra a copiar "
     nota=0
-    indiceNota=(mousex- gap1 )/anchofig + posishow
+    indicePos=(mousex- gap1 )/anchofig + posishow
     copiarZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
     If numero=0 Then
     Print #1,"entra a copiar numero 0"
-       moverZonaRoll(indiceNota,Roll)
+       moverZonaRoll(indicePos,Roll)
     Else
      Print #1,"entra por Else numero > 0"
        Dim As short lz=0,delta
@@ -2994,7 +2969,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
 '--- AUMENTO DE CAPACIDAD DEL VECTOR EN POSICIONES NECESARIAS
    Print #1,"DELTA ",delta
     Dim As Integer nuevaspos
-    nuevaspos= indicenota + delta * numero
+    nuevaspos= indicePos + delta * numero
     Print #1,"NuevaPos,,", nuevaspos
       
     If CantTicks - MaxPos < nuevaspos  Then
@@ -3011,8 +2986,8 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
 '---
     
        For lz = 1 To numero
-          moverZonaRoll(indiceNota,Roll)
-          indiceNota=indiceNota + delta
+          moverZonaRoll(indicePos,Roll)
+          indicePos=indicePos + delta
           
        Next lz 
     EndIf
@@ -3131,7 +3106,39 @@ EndIf
 Loop
 
 
+
+
+
 End sub
 
 
+' error
+errorloopbas:
+  
+Dim As Integer er1, ErrorNumber1, ErrorLine1
+ErrorNumber1 = Err
+ErrorLine1 = Erl
+
+If ErrorNumber1 > 0 And ContadorError < 101 Then
+Print #1,"------------------------------------"
+  ContadorError=ContadorError+1
+  Print #1,"ContadorError ",ContadorError
+  Print #1,"ErrorNumber1 ",ErrorNumber1
+  Print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
+  Print #1,"Error Function: "; *Erfn()
+  Print #1, "n ",posicion;" posishow "; posishow; " NroCol ";NroCol
+  Print #1, "semitono "; nE; " *po "; *po 
+  Print #1, "valor1 ",posicion; " valor2 "; 12- nE  + (*po -1)* 13
+  Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
+  Print #1, "lbound 2 de Roll.trk ", lBound(Roll.trk, 2)   
+  Print #1, "Roll.trk (n,11- nE  + (*po-1) * 13 ).nota", Asc(Str(Roll.trk (posicion,12- nE  + (*po -1)* 13 ).nota))
+  Print #1,"Roll.trk (n,12- nE  + (*po -1)* 13 ).dur ",  Asc(Str(Roll.trk (posicion,12- nE  + (*po -1) * 13 ).dur))
+  Print #1,"gap1 + ic * anchofig ",gap1 + ic * anchofig
+  Print #1,"desde ";desde;" hasta ";hasta; "hasta-1 ";hasta-1; " *po ";*po
+  Print #1, "nE ";nE; " nR ";nR; " PianoNota ";PianoNota
+  Print #1, "mensaje, Ermn ", *Ermn, Ermn
+  Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2) 
+  Print #1,"------------------------------------"
+
+EndIf
 
