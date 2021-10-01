@@ -1337,7 +1337,7 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer)
      ' DILEMA TENER DISTINTOS TRACK CON NB NA DISTINTOS !!!!     
      ' cargamos trabajo datos
      ReDim (Track(ntk).trk) (1 To pmTk(ntk).Ticks, 1 To lim2)
-     Print #1,"*PO ,hasta -1 ", *po, hasta -1
+     Print #1,"*PO = hasta -1 ",  pmTk(ntk).hasta -1
      Print #1,"Get TrK POLI "
      Dim errget As Integer
      errget= Get( #ct, , Trabajo()) 
@@ -1459,7 +1459,7 @@ Print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulos(ntk)
    MaxPos = pmTk(ntk).MaxPos
    posn   = pmTk(ntk).posn
    notaOld= pmTk(ntk).notaold
-  ' *po    = pmTk(ntk).po
+  
    Print #1,"TrackaRoll ntk, desde, hasta, MaxPos ", ntk, desde,hasta,MaxPos
    desdevector=desde
    hastavector=hasta
@@ -1472,17 +1472,20 @@ Print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulos(ntk)
    ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
    ' redimensiono track (0)! que estara a ala par de roll cargandose
    ReDim (Track(0).trk ) (1 To CantTicks,1 To lim2)
+   
    posicion=1
    nota=0
    inicioDeLEctura=0
    *po=pmTk(ntk).hasta -1
    
    Print #1,"TrackaRoll desde, hasta ", desde , hasta
-Print #1,"TrackaRoll NB, NA ,*po ", NB , NA, *po
-
-For i2 = 1 To MaxPos -1
+Print #1,"TrackaRoll NB, NA ,*po, MaxPos ", NB , NA, *po,MaxPos
+Print #1, "ubound (Track(ntk).trk,2) ", ubound (Track(ntk).trk,2)
+Print #1, "lbound (Track(ntk).trk,2) ", LBound (Track(ntk).trk,2)
+Print #1," va a ejecutar 1488 de Track aRoll"
+For i2 = 1 To MaxPos 
    For i1=1 To lim2
- 
+      Print #1,"ntk ";ntk; " i2 ";i2;" i1 ";i1
       If Track(ntk).trk (i2,i1).nota > 0 and Track(ntk).trk(i2,i1 ).nota <=NA Then
       ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
          PianoNota=Track(ntk).trk(i2,i1 ).nota
@@ -1502,9 +1505,9 @@ For i2 = 1 To MaxPos -1
       EndIf
    Next i1
 Next i2     
-For i2 = 1 To MaxPos -1
+For i2 = 1 To MaxPos 
   For i1=NB To NA
-   If Roll.trk(i2,i1).nota =0 Then
+   If Roll.trk(i2,i1).nota =0 And Roll.trk(i2,i1).dur <>182  Then
       Roll.trk(i2,i1).nota=181
       Roll.trk(i2,i1).dur=0
    Else
@@ -1513,8 +1516,9 @@ For i2 = 1 To MaxPos -1
    EndIf
   Next i1
 Next i2     
-' aca me falta pasar lso datos de Roll a Track(0)!!
- For i1=1 To MaxPos
+' aca me falta pasar lso datos del Track(x) a Track(0)!!
+' el redim esta arriba
+ For i1=1 To MaxPos 
   For i2 = 1 To lim2
   Track(0).trk(i1,i2) = Track(ntk).trk(i1,i2)
   Next i2
@@ -3040,7 +3044,7 @@ Sub GrabarRollaTrack (cambiaNombre As Integer, enCancion As integer)
 Print #1,"---------------------------------------------------------------------------------"
 Print #1,"inicia GrabarRollaTrack en Cancionfunciona como un Dir y contador de archivos ",cambianombre,enCancion 
    Dim As String no1, no2
-   Dim As Integer ubi1=0,ubi2=0 
+   Dim As Integer ubi1=0,ubi2=0,ntkold=ntk ' el ntk que esta en edicion 
 '' cambia de nombre de rool a track, i tengo una cancion ene edcion
 ' y queiro un roll nuevo no conviene hacerlo aca si hay cancion no se usa
     ubi1=InStrRev(nombre,"\")
@@ -3090,7 +3094,22 @@ Print #1,"inicia GrabarRollaTrack en Cancionfunciona como un Dir y contador de a
      Print #1,"Nombre Cancion", NombreCancion
      Print #1,"NumPista ntk ", ntk
      Print #1,"no2 nombre del roll puro ",no2
-     
+     ' estoy grabando un track en edicion con cancion, por lo tanto
+     ' se crea un nuevo track copia con cotro numero pero debe tener
+     ' todos los parametros anteriores..luego debo ahcer una grabacion de
+     ' track que haga sobreescritura no nuevo track eso se manejara dede
+     ' control
+     pmTk(ntk).desde=pmTk(ntkold).desde
+     pmTk(ntk).hasta=pmTk(ntkold).hasta
+     pmTk(ntk).NB=pmTk(ntkold).NB
+     pmTk(ntk).NA=pmTk(ntkold).NA
+     pmTk(ntk).MaxPos=pmTk(ntkold).MaxPos
+     pmTk(ntk).posn=pmTk(ntkold).posn
+     pmTk(ntk).notaold=pmTk(ntkold).notaold
+     pmTk(ntk).Ticks=pmTk(ntkold).Ticks
+     ReDim (Track(ntk).trk) (1 To pmTk(ntkold).Ticks, 1 To lim2)
+     Print #1,"hizo copia de parametro sde trackold en new"
+     Print #1," *po seria hasta -1 ", pmTk(ntk).hasta -1
       If no2<> "" Then ' graba roll en cancion
          Dim haycorchete As Integer
          haycorchete = InStr(no2,"]")
@@ -3102,6 +3121,7 @@ Print #1,"inicia GrabarRollaTrack en Cancionfunciona como un Dir y contador de a
          AddListBoxItem(3, cadena)
          Print #1,"GRABANDO PISTA EN CANCION EN ",nombre
       'si es vacio tomo la ultima
+        titulos(ntk)=nombre
       Else
          Exit Sub ' no hay archivo nuevo se sale sin grabar nada
       EndIf
@@ -3210,6 +3230,13 @@ Next i2
 
 Print #1,"termino compia a temp"
 
+Print #1,"copia a ntk vector nuevo, se creo a partir de otro y se debe guardar en track ntk"
+     For i1=1 To MAxPos
+      For i2= 1 To lim2
+      Track(ntk).trk(i1,i2)=Temp(i1,i2)
+      Next i2
+     next i1
+     
      Dim As Integer y1,y2,y3,y4, y5,y6 ' y5 e y6 son los limites NB y NA
      Dim As String a1,a2,a3,a4 ,x
      
