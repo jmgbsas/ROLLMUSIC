@@ -108,8 +108,7 @@ Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
 dim Shared as string cromatica(1 to 12)
-dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0, cargaCancion=0
-Dim Shared As String ProgError(0 To 17)
+Dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0, cargaCancion=0
 Dim Shared ers As Integer  
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
@@ -316,6 +315,8 @@ Type pasa Field=1
   As String  titulo
   As Integer ancho
   As Integer alto
+  As Integer ubiroll
+  As Integer ubirtk
 End Type
 
 Dim Shared As Long CONTROL1 = 0
@@ -326,7 +327,6 @@ Dim Shared Track  (0 To 64) As sec ' tracks para guardar,.. y tocar
 Dim Shared ix As Integer=0
 Dim Shared titu As String
 Dim Shared As Integer instru, instruOld
-Dim Shared As Integer ubirtk, ubiroll
 Dim Shared As Integer desdevector
 Dim Shared As Integer hastavector
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
@@ -396,8 +396,16 @@ Dim Shared  As pasa param
     param.ancho = ANCHO
     param.alto = ALTO
     p1=@param
+    param.ubiroll=0
+    param.ubirtk=0
 Common Shared As hwnd hwndC    
 #Include "mod_rtmidi_c.bi"    
 '----------------------------
+Dim Shared  As String ProgError(0 To 17)
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndListBox
+Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA 
+
+
+
+

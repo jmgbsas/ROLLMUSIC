@@ -147,18 +147,20 @@
 
     1.8) Agregar tracks o Pistas a Cancion   
 
-         Hay 3 opciones la que es a prtir de todo nuevo es crear un Roll en la ventana grafica o cargar
+         Hay 3 opciones  a partir de una cancion recien creada es crear un Roll en la ventana grafica o cargar
         un Roll (*.roll) y luego usar de esa misma ventana la opcion de grabar ROLLaTrack
         O sea [Archivo] luego [ROLL=>TRACK(0)] con esa accion como estamos con una cancion
         en edicion grabara el track convertido en el directorio de cancion...en track 0 si no hay cancion
-        pero en track [x] siendo x la numeracion siguiente nueva si existen otros tracks previos.
+        o si hay cancion en track [x] siendo x la numeracion siguiente nueva si existen otros tracks previos.
          Otro metodo sera copiar a mano un *.rtk en el directorio y ponerle un numero secuencial
         al primcipio que tenga este formato [x]  donde 'x' es un numero si exiten 1,2,3 sera [4]
-        luego volver a cargar la cancion. 
+        luego volver a cargar la cancion. (track 0 solo se usa para grabar Roll a Track sin cancion 
+        y siempre se sobreescribe)
          Y otro mas que se puede hacer es cargar un *.rtk desde el grafico y como esa accion convierte 
         de *.rtk a Roll, luego como antes usando [ROLL=>TRACK(0)], grabará el Roll convertido a track en 
         la cancion, vemos que aca hay  2 conversiones, de *.rtk a *.roll al cargar y otra de *.Roll a *.rtk 
-        al grabar en la cancion.
+        al grabar en la cancion. O por ultimo colocar rtk en el dir de cancion a mano anteponiendo
+        al nombre [x] donde x va de 1 a 32. Notas(1).
     1.9) Luego de cargada el directorio de la cancion, si se da click con el mouse en la lista
          de nombres de pistas en la ventana Control, se cargara esa pista en Roll. Siemrpe se carga
          Roll y la pista 0, ambas se usan para modificacion. El resto de las pistas quedan cargadas
@@ -324,8 +326,26 @@ IV) Menu Cancion (en revision)
     con las notas de la secuencia. Todos las pistas se cargan, pero no en visualizacion.   
     Al dar click en una pista de la lista y luego otro click sobre el grafico
     se carga la secuencia en Roll de Visualizacion y edcion.
+    -------------------------0-0-0------------------------------------
+Notas Tecnicas de desarrollo: 
 
-
+   (1) con cancion cargada puedo cargar cualqueir pista de cancion existente
+    en Roll Visual, modificarlo y al pasar de RollaTrack AL grabarlo SE PONDRA 
+    en cancion automaticamente con un numero nuevo de pista, eso seria una copia
+    del track con datos y hacer un nuevo track
+    Procedimiento: con los datos de otro track, tomo los valores del track[x] cargado 
+    desde el directorio de cancion en curso, los dejo como actuales (o sea esta en Roll y Trac(0))
+    quedando en Roll visual al grabar con rollatrack estando en cancion, internamente se copia 
+    en memoria a un nuevo ntk distinto de 0, buscando el proximo nro de track y grabo a disco 
+    el track con el nuevo numero de track en el dir de cancion, roll queda con esos datos
+    y Track [0] tambien, solo que ahora apuntan a un archivo en cancion como track nuevo 
+    en cancion.Además lógico hay que agregarlo como item a la listbox y el nombre a titulos()
+    y todos los parametros nuevos al vector pmTk()
+    2) Sin cancion cargada puedo cargar un Roll y grabarlo como track, en este caso siempre se
+    grabara a Track[0] sobreescribiendo en disco, los tracks 1 a 32 son exclusivos de Cancion.
+    Si uso GRABAR , lo hara siempre en formato Roll con el nombre que se desee. Y si deseo 
+    una copia se usará GRABAR COMO. 
+-------------------------------------------------------------------------
 TECLAS RAPIDAS borrado revisar y completar
 (DUR,NOTA) 0,181 - permite ingreso de notas en acorde y evita qu eel ingreso de notas
 en modo edit simple use esas posiciones y topme siemrep una nueva al final de la secuencia

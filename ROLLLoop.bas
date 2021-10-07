@@ -491,9 +491,13 @@ End Sub
 
 
 sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
+Dim As Integer ubiroll,ubirtk
  c=param.c
  Roll=param.Roll
-  
+ ubiroll=param.ubiroll 
+ ubirtk=param.ubirtk
+ 
+ Print #1,"ubirtk ",ubirtk
  Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
  Print #1,"posicion ", posicion
  '    If hwnd =0 Then   ,GFX_WINDOWED
@@ -563,22 +567,6 @@ Select Case desde
 End Select
 Print #1,"BordeSupRoll ",BordeSupRoll
 
-' command
- If ubirtk >0   Then
-   'nombre=Command(ix)
- 
-   Print #1,"nombre en rollLoop llego ", titulos(0)
-   menunew=3
-   menunro=3 
- EndIf
-
- If ubiroll >0   Then
-   'nombre=Command(ix)
-  
-   Print #1,"nombre en rollLoop llego ", titulos(0)
-   menunew=3
-   menunro=3
- EndIf
 
 
 ' -----------------
@@ -700,7 +688,7 @@ Next
 '   play=0
 'EndIf
 pubi=0
-menu(c,cm, posicion,menuNro, Roll)
+menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
 
 botones(hWnd, c ,cm, ANCHO,ALTO) ' este despues sinocrash
 cairo_stroke(c)
@@ -1124,7 +1112,7 @@ EndIf
 
 If MultiKey(SC_CONTROL) and MultiKey(SC_L)  Then ' <======== load Roll
   If carga=0 Then
-   CargaArchivo(Roll)
+   CargaArchivo(Roll,0)
   EndIf 
  
 EndIf
@@ -1943,9 +1931,10 @@ If (ScreenEvent(@e)) Then
    If mousey < 50 And s5=2 Then
   '  ScreenControl GET_WINDOW_POS, x0, y0
     s5=0
+    Exit Do ' 07-10-2021 evitara saltos en pantalla tal vez
    EndIf
   
-   Exit Do
+   
  
   Case EVENT_MOUSE_WHEEL      ' <<<=== MOUSE WHEEL
    ' new position & e.z
@@ -3022,7 +3011,7 @@ EndIf
  If resize = TRUE And usarmarco=0 Then ' <=====  MOVER Y REDIMENSIONAR LA PANTALLA NO TAN FACIL
   'CLICKEAR CERCA DEL CENTRO Y DRAGAR DERECHA IZQUIERDA ARRIBA ABAJO
   m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
-  If m.buttons = 1 And (m.x > 5 ) And (m.y > 5 ) Then
+  If m.buttons = 1 And (m.x > 5 ) And (m.y > 5 )  Then
    'dim as integer desktopwidth,desktopheight
   ' desktopwidth = GetSystemMetrics(SM_CXSCREEN)
   ' desktopheight =GetSystemMetrics(SM_CYSCREEN)
@@ -3115,14 +3104,14 @@ End sub
 ' error
 errorloopbas:
   
-Dim As Integer er1, ErrorNumber1, ErrorLine1
+'Dim As Integer er1, ErrorNumber1, ErrorLine1
 ErrorNumber1 = Err
 ErrorLine1 = Erl
 
 If ErrorNumber1 > 0 And ContadorError < 101 Then
 Print #1,"------------------------------------"
   ContadorError=ContadorError+1
-  Print #1,"ContadorError ",ContadorError
+  Print #1,"ErrorLoop ContadorError ",ContadorError
   Print #1,"ErrorNumber1 ",ErrorNumber1
   Print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
   Print #1,"Error Function: "; *Erfn()

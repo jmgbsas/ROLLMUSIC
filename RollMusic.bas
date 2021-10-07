@@ -159,7 +159,7 @@ CantMin=15
 'Print #1, "__FB_ARGC__ ",__FB_ARGC__
 'Dim direp As ZString  Ptr
 'Dim dires As String
-
+Dim As integer ubirtk, ubiroll
 Print #1,"__FB_ARGC__ ", __FB_ARGC__
 For ix = 0 To __FB_ARGC__
   Print #1, "arg "; ix; " = '"; Command(ix); "'"''
@@ -232,6 +232,10 @@ Print #1,"NA ",NA
 Print #1,"desde ",desde
 Print #1,"hasta ",hasta
 param.Roll=Roll
+param.ubiroll=ubiroll
+param.ubirtk=ubirtk
+
+
 Dim  AS Integer  ctres=1 ' 5 octavas por track
 Dim As Integer lim1 
 lim1=1
@@ -369,6 +373,7 @@ stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
 '========================== 
 #Include "RTMIDISUB.bas"
+#Include "rolltracks.bas"
 #Include "ROLLSUB.BAS"
 '===========================
  Dim As Integer MenuFlag=0, LoopFlag=0 
@@ -518,7 +523,7 @@ Dim As Integer Terminar=0,abrirRoll=0
 abrirRoll=0
 
 Do
-param.titulo ="RollMusic Ver 0.4.3.5"
+param.titulo ="RollMusic Ver 0.4.4.0"
 Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
 Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
@@ -553,16 +558,24 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
              ' ok anda bien, ahroa debo permutar entre track sin neecsidad
              ' de cargarlos desde disco haciedno click en la lista
              ' o pulsando el Tabulador + otr key¿?
+             If NombreCancion > "" And cargaCancion=0 Then
+                NombreCancion = ""
+                ResetAllListBox(3)
+                Resetear (pmTk()) 
+               cargarDirectorioCancion(NombreCancion)
+               CargarPistasEnCancion ()
+             EndIf
              If NombreCancion = "" Then
                cargarDirectorioCancion(NombreCancion)
              EndIf
+             
              If abrirRoll=0 And NombreCancion > ""  Then
                 abrirRoll=1
                 cargaCancion=1
                 Exit Do                 
              EndIf
 
-             Print #1,"termino 1006 v aa abrir Roll"
+             Print #1,"termino 1006 va a abrir Roll"
              ''GrabarRollaTrack(1,1) ' se usa solo como dir y carga de tracks 
              ' en la lista y en los track o pistas correspondientes
  
@@ -583,7 +596,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
            EndIf
 ''''       grabaprueba()
 ' por ahroa todo RollaTRack graba con [0] adelante. s epodra cambiarlo en futuro
-           If NombreCancion > ""  Then
+           If NombreCancion > ""  Then 
               GrabarRollaTrack(1,1)
            Else    
               GrabarRollaTrack(1,0) ' 1 significa cambiar el formato de nombre de Rool
@@ -637,9 +650,9 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                   instru=1
                EndIf
                If NombrePista ="" Then
-                NombrePista = str(ntk) +"-"+ RTrim(Mid(NombreInst(instru), 1,21))
+                NombrePista = doscifras(ntk) +"-"+ RTrim(Mid(NombreInst(instru), 1,21))
                Else
-                NombrePista = str(ntk) +"-"+ NombrePista 
+                NombrePista = doscifras(ntk) +"-"+ NombrePista 
                 
                EndIf
 
@@ -699,15 +712,15 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
              ' donde se lo saca del nombre por lotanto devuelve el numero de ntk
              ' despues dela rutina,cargarTrack pone a 0 lineadecomadno=0
              ' pero si quiero volver a disco solo debo resetear ubirtk=0
-                ubi1 = InStr(item,"[")
-                ubi2 = InStr (item,"]")
-                ntk=CInt(Mid(item,ubi1+1,ubi2-ubi1-1))
+                ntk=sacarNtk(item)
                 Print #1,"LLAMA A TRACKrOLL CON NTK ",ntk
                 titulos(ntk)=nombre 
+                ' aca no debe leer a disco solo conmutar de track en track
                 TrackaRoll (Track(), ntk , Roll ) ' no usa ubirtk
                 Print #1,">>> ntk cargado, nombre ",ntk, nombre
                 Print #1,"llama a RecalCompas para ntk ",ntk
                 ReCalCompas(Roll) 
+                ''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
                 Print #1,"Fin RecalCompas para ntk ",ntk
                 item=""
              EndIf  
@@ -746,7 +759,7 @@ End 0
 
 '---------fin iup---    
 errorhandler:
-Dim As Integer er, ErrorNumber, ErrorLine
+'Dim As Integer  ErrorNumber, ErrorLine
 er = Err
 Print #1,"Error  MAIN detected ", er, posicion, MaxPos
 Print #1,Erl, Erfn,Ermn,Err

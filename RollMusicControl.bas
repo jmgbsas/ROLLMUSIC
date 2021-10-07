@@ -28,11 +28,14 @@ alto = GetSystemMetrics(SM_CYSCREEN)
 'Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox
-
+Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA
+dim Shared As String  ProgError(0 To 17)
+Dim Shared As Integer ContadorError=0
 'Dim As Long event=0
 Dim Shared As Integer desde , hasta,MaxPos=2
 #Include "RTMIDIDEC.BI"
 
+On  Error GoTo errorControl
 '------
 Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer) 
 Dim As hwnd haw,hwl
@@ -247,6 +250,7 @@ Print #1, "DIRECTORIO CANCION EN ",pathdir
 CreateDir(pathdir)
 SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + pathdir)
 NombreCancion=pathdir
+CANCIONCREADA=TRUE
 
 End Sub
 Sub cargarDirectorioCancion (ByRef NombreCancion As string)
@@ -262,3 +266,55 @@ Sub EntrarNombrePista(ByRef NombrePista As String)
   NombrePista = InputBox("InputBox",,NombrePista)
 
 End Sub
+Function sacarNtk (item As String) As Integer
+Dim As Integer ubi1,ubi2
+ ubi1 = InStr(item,"[")
+ ubi2 = InStr (item,"]")
+ sacarntk=CInt(Mid(item,ubi1+1,ubi2-ubi1-1))
+
+End Function
+'
+Function sacarExtension(file As string) As String
+ Dim ubi1 As Integer
+ ubi1=InStrRev (file,".")
+ sacarExtension=Mid(file,1,ubi1-1)
+ 
+End Function
+
+' error
+errorControl:
+ProgError(0) = "No error"
+ProgError(1) = "Illegal function call"
+ProgError(2) = "File not found signal"
+ProgError(3) = "File I/O error"
+ProgError(4) = "Out of memory"
+ProgError(5) = "Illegal resume"
+ProgError(6) = "Out of bounds array access"
+ProgError(7) = "Null Pointer Access"
+ProgError(8) = "No privileges"
+ProgError(9) = "interrupted signal"
+ProgError(10) = "illegal instruction signal"
+ProgError(11) = "floating point error signal "
+ProgError(12) = "segmentation violation signal"
+ProgError(13) = "Termination request signal"
+ProgError(14) = "abnormal termination signal"
+ProgError(15) = "quit request signal"
+ProgError(16) = "return without gosub"
+ProgError(17) = "end of file"
+  
+Dim As Integer er1, ErrorNumber1, ErrorLine1
+ErrorNumber1 = Err
+ErrorLine1 = Erl
+
+If ErrorNumber1 > 0 And ContadorError < 101 Then
+Print #1,"------------------------------------"
+  ContadorError=ContadorError+1
+  Print #1,"ErrorControl ContadorError ",ContadorError
+  Print #1,"ErrorNumber1 ",ErrorNumber1
+  Print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
+  Print #1,"Error Function: "; *Erfn()
+  Print #1, "mensaje, Ermn ", *Ermn, Ermn
+  Print #1,"------------------------------------"
+
+EndIf
+

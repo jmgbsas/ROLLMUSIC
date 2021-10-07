@@ -1,6 +1,6 @@
-
- 
- 
+'
+ On Error GoTo errorRtmidi
+' 
 Sub noteoff( note As UByte, canal As UByte) 
 ' canal 1
 ' 123 da note off para todas las notas solo hy qu eenvirlo a 
@@ -699,7 +699,7 @@ Sub playAll(Roll As inst) ' play version 2
 ' PLAY masavanzado en un mismo acorde si son de distinta duracion
 ' sus notas se toca cada una con su propia duracion,el corde no termina
 ' hasta queterminede tocar la nota mas larga.
- On Local Error GoTo errorhand
+ 
 fueradefoco=1
 
 Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
@@ -955,43 +955,6 @@ close_port(midiout)
 out_free(midiout)
 '/ 
 
-errorhand:
-Exit sub
-Dim As Integer er, ErrorNumber, ErrorLine
-er = Err
-Print #1,"Error Play detected ", er, posicion, MaxPos
-Print #1,Erl, Erfn,Ermn,Err
-
-Print #1,"------------------------------------"
-ErrorNumber = Err
-ErrorLine = Erl
-Dim As String ProgError(0 To 17)
-
-ProgError(0) = "No error"
-ProgError(1) = "Illegal function call"
-ProgError(2) = "File not found signal"
-ProgError(3) = "File I/O error"
-ProgError(4) = "Out of memory"
-ProgError(5) = "Illegal resume"
-ProgError(6) = "Out of bounds array access"
-ProgError(7) = "Null Pointer Access"
-ProgError(8) = "No privileges"
-ProgError(9) = "interrupted signal"
-ProgError(10) = "illegal instruction signal"
-ProgError(11) = "floating point error signal "
-ProgError(12) = "segmentation violation signal"
-ProgError(13) = "Termination request signal"
-ProgError(14) = "abnormal termination signal"
-ProgError(15) = "quit request signal"
-ProgError(16) = "return without gosub"
-ProgError(17) = "end of file"
-
-
-Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
-Print #1,"Error Function: "; *Erfn()
-Dim ers As Integer = nota +(estoyEnOctava -1) * 13
-Print #1, "nota +(estoyEnOctava -1) * 13) "; ers
-Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
 
 
 ThreadDetach(thread1) 'JMG REPONER !!!!
@@ -1901,5 +1864,22 @@ Next i
 End Sub
 
  
+errorRtmidi:
+
+Dim As Integer er, ErrorNumber, ErrorLine
+er = Err
+Print #1,"Error Modulo RTMIDISUB ", er, posicion, MaxPos
+Print #1,Erl, Erfn,Ermn,Err
+
+Print #1,"------------------------------------"
+ErrorNumber = Err
+ErrorLine = Erl
+
+
+Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
+Print #1,"Error Function: "; *Erfn()
+ers = nota +(*po -1) * 13
+Print #1, "nota +(estoyEnOctava -1) * 13) "; ers
+Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
 
 

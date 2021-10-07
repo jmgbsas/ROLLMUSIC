@@ -6,6 +6,9 @@ Declare Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer
 Declare Sub reproducir()
 Declare Sub CrearDirCancion (ByVal NombreCancion As string)
 Declare Sub cargarDirectorioCancion (ByRef NombreCancion As string)
+Declare Function sacarNtk (cadena As String) As Integer
+Declare Function sacarExtension(file As string) As String
+Declare Function doscifras (NTK As Integer) As String
 
 'Declare Sub CreaTrack  (ByRef octadesde As Integer , ByRef octahasta As Integer, ByRef instru As Integer, param As pasa )
 Declare Sub selInstORdenAlfa (ByRef instru As Integer)
