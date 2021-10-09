@@ -496,8 +496,7 @@ Dim As Integer ubiroll,ubirtk
  Roll=param.Roll
  ubiroll=param.ubiroll 
  ubirtk=param.ubirtk
- 
- Print #1,"ubirtk ",ubirtk
+ print #1,"ubirtk ",ubirtk
  Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
  Print #1,"posicion ", posicion
  '    If hwnd =0 Then   ,GFX_WINDOWED
@@ -641,23 +640,30 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 ' Creapenta no hace una nueva vuelta para la ayuda, la escribe directamente abajo
 ' de la ultima octava o vuelta o sea la 9.- solo que las octabas estn invertidas
 ' van de abajo hacia arriba 1 a 9 o 9 a 1 desde arriba a bajo por eo se usa
-' *po para contener el control de la octava invertida   
-For i = desde To hasta 
-   nro = i 
+' *po para contener el control de la octava invertida
+If NombreCancion > "" And CANCIONCARGADA=FALSE  Then
+' esta cargando cancion 
+   Sleep 10
+Else   
+  For i = desde To hasta 
+    nro = i 
   ' si ahce falta ejecutar mas de un Penta podremos usar threads
   ' por ahora no lousamos 
 ''  Dim tlock As Any Ptr = MutexCreate() 
 ''  Dim ta As Any Ptr = ThreadCall creaPenta (c, Roll )
 ''    ThreadWait ta
 ''  MutexDestroy tlock
-  creaPenta (c, Roll )
- If *po = 99 Then
-  *po = hasta -1 ' 9 po ejemplo
-  Exit For
- EndIf
-cairo_stroke(c)
+  
+   creaPenta (c, Roll )
+  If *po = 99 Then
+     *po = hasta -1 ' 9 po ejemplo
+     Exit For
+  EndIf
+  cairo_stroke(c)
  
-Next
+  Next
+
+EndIf
 ''For i = desde To hasta ' nro_penta
 '' creaPenta (c, i, po,InicioDeLectura )
 '' If *po = 99 Then
@@ -1931,10 +1937,10 @@ If (ScreenEvent(@e)) Then
    If mousey < 50 And s5=2 Then
   '  ScreenControl GET_WINDOW_POS, x0, y0
     s5=0
-    Exit Do ' 07-10-2021 evitara saltos en pantalla tal vez
+     Exit Do ' 07-10-2021
    EndIf
   
-   
+  
  
   Case EVENT_MOUSE_WHEEL      ' <<<=== MOUSE WHEEL
    ' new position & e.z
@@ -2070,6 +2076,26 @@ If (ScreenEvent(@e)) Then
 ' -------------------------------
    If e.scancode = 83 Then '<====== SC_DELETE cambia a silencio o nada le suma 16+16 ver eso
    '   Print #1, "PULSADO BORRAR ..·.."
+       If NombreCancion > "" Then
+          borrar=2
+          DeleteListBoxItem(3,ntk-1)
+          Print #1,"eventgadget borrar 2"
+          titulos(ntk)=""
+          pmTk(ntk).desde=0
+          pmTk(ntk).hasta=0
+          pmTk(ntk).NB=0
+          pmTk(ntk).NA=0                  
+          pmTk(ntk).MaxPos=0
+          pmTk(ntk).posn=0
+          pmTk(ntk).notaold=0                  
+          pmTk(ntk).Ticks=0
+
+          Sleep 1
+          SetItemListBox(3,ntk)
+          'SetGadgetState(3,1) ' se usa pra algo creo q no no ajusta nada
+
+          Exit Do
+       EndIf
        If borrar=1 Then
           borrar=0
           Exit Do
@@ -3011,7 +3037,7 @@ EndIf
  If resize = TRUE And usarmarco=0 Then ' <=====  MOVER Y REDIMENSIONAR LA PANTALLA NO TAN FACIL
   'CLICKEAR CERCA DEL CENTRO Y DRAGAR DERECHA IZQUIERDA ARRIBA ABAJO
   m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
-  If m.buttons = 1 And (m.x > 5 ) And (m.y > 5 )  Then
+  If m.buttons = 1 And (m.x > 5 ) And (m.y > 5 ) Then
    'dim as integer desktopwidth,desktopheight
   ' desktopwidth = GetSystemMetrics(SM_CXSCREEN)
   ' desktopheight =GetSystemMetrics(SM_CYSCREEN)

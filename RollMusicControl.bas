@@ -253,6 +253,7 @@ NombreCancion=pathdir
 CANCIONCREADA=TRUE
 
 End Sub
+'
 Sub cargarDirectorioCancion (ByRef NombreCancion As string)
 Dim pathdir As string
 NombreCancion = ShellFolder( "Select Folder", "C:\")
@@ -261,11 +262,13 @@ Print #1,"cargarDirectorioCancion ", NombreCancion
 ' aca NombreCancion contiene el path tambien....
 Sleep 100
 End Sub
+'
 Sub EntrarNombrePista(ByRef NombrePista As String)
 
   NombrePista = InputBox("InputBox",,NombrePista)
 
 End Sub
+'
 Function sacarNtk (item As String) As Integer
 Dim As Integer ubi1,ubi2
  ubi1 = InStr(item,"[")

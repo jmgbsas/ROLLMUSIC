@@ -535,6 +535,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
     ' y CargarPistasEnCancion no puede cargar proque no hay Roll
   EndIf
   If cargaCancion=1 Then
+     CANCIONCARGADA=FALSE
      CargarPistasEnCancion ()
      cargaCancion=0
   EndIf
@@ -563,6 +564,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                 ResetAllListBox(3)
                 Resetear (pmTk()) 
                cargarDirectorioCancion(NombreCancion)
+               CANCIONCARGADA=FALSE
                CargarPistasEnCancion ()
              EndIf
              If NombreCancion = "" Then
@@ -691,7 +693,6 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
  ' pero ahroa solo deberia hacer switch no cargar de disco sino
  ' directamente cargar Roll desde el numero de track correspondiente
  ' en memoria         
-             
             Print #1,"CLICK EN LISTA"
              Dim item As String
              Dim As Integer ubi1,ubi2
@@ -716,6 +717,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                 Print #1,"LLAMA A TRACKrOLL CON NTK ",ntk
                 titulos(ntk)=nombre 
                 ' aca no debe leer a disco solo conmutar de track en track
+
                 TrackaRoll (Track(), ntk , Roll ) ' no usa ubirtk
                 Print #1,">>> ntk cargado, nombre ",ntk, nombre
                 Print #1,"llama a RecalCompas para ntk ",ntk
@@ -759,7 +761,7 @@ End 0
 
 '---------fin iup---    
 errorhandler:
-'Dim As Integer  ErrorNumber, ErrorLine
+Dim As Integer er, ErrorNumber, ErrorLine
 er = Err
 Print #1,"Error  MAIN detected ", er, posicion, MaxPos
 Print #1,Erl, Erfn,Ermn,Err

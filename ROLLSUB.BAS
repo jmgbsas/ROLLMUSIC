@@ -1687,10 +1687,9 @@ EndIf
    '===> 3.2 <ABRIR>[*.ROLL] abre roll y automaticamente lo pone
    ' en trak 0 ntk=0
 
-   If (mousex > 215 And mousex < 269  And mousey < 50 And carga=0 ) >0 Then ' <= ABRIR lee grabaroll.roll
-      
+   If (mousex > 215 And mousex < 269  And mousey < 50 And carga=0 ) Then ' <= ABRIR lee grabaroll.roll
     cairo_set_source_rgba c, 0, 1, 0, 1
-    If MouseButtons And 1 And carga = 0 > 0 Then
+    If MouseButtons And 1 And carga = 0  Then
        CargaArchivo(Roll, 0)
        Print #1,"nombre cargado en Roll ",nombre
        MenuNew=0
@@ -1698,6 +1697,7 @@ EndIf
        ROLLCARGADO=TRUE ' aunque este en cancion puedo cargar un roll
     EndIf
    Else
+    Print #1,"else de *ROLL CARGA, mousex ", carga, mousex, mousey
     carga=0   
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
@@ -1711,7 +1711,7 @@ EndIf
      
       ntk=0  ' siempre carga a ntk=0 por ahora 
       cairo_set_source_rgba c, 0, 1, 0, 1
-      If (MouseButtons And 1 And carga=0)  > 0 Then
+      If (MouseButtons And 1 And carga=0) Then
          
          Print #1,"carga track veo nombre antes   ",nombre
          CargarTrack (Track() , ntk, 0 )
@@ -2783,6 +2783,7 @@ If nombre = "Backup"+ Date + ".roll" Then
    nombre=""
 EndIf
 End Sub
+'
 Sub CargarPistasEnCancion ()
 Print #1,"-------------------------------------------------------"
 Print #1,"inicia CargaPistasEnCancion"
@@ -2790,7 +2791,7 @@ Print #1,"inicia CargaPistasEnCancion"
   Dim As Integer ubi1=0,ubi2=0 
      Dim As String filename, filenameold
      ' el Dir me trae lso nombres sin el path de cancion
-     filename = Dir (NombreCancion+"\*")
+     filename = Dir (NombreCancion+"\*.rtk")
      Print #1,"filename encancion > 0 ",filename
      If filename = "" Then ' no hay ningu archivo dentro del dir de cancion
         ntk=1

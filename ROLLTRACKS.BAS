@@ -1,4 +1,4 @@
-On Error GoTo errorTrack
+'On Error GoTo errorTrack
 
 Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As integer)
 ' solo carga track no lo pasa a Vector de Visualizacion. ntk debe venir informado
@@ -433,7 +433,7 @@ EndIf
 
 End Sub
 ' -------------------
-Sub TrackaRoll (Track() As sec, byval ntk As Integer, Roll As inst)
+Sub TrackaRoll (Track() As sec, byref ntk As Integer, Roll As inst)
 ' FALTA LLENAR .ACORDE DE TRACK ...
 ' como es track a Roll se supone que el track ya esta cargado en memoria
 ' y esta sub pasa de Track a Roll Visual y track 0 
@@ -443,7 +443,14 @@ Dim As Integer i1,i2,i3,Maxposicion
 ' si no estoy en cancion el nto va a ntk 0, siemrep uso ntk y el vector de pnTk
 print #1,"-------------ARRANCA TRACKAROLL---------------------------------"
 Print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulos(ntk)
-
+   If borrar=2 And ntk >=1 And ntk <= 32 And ntk <= tope Then
+      borrar=0      
+   Else 
+      If borrar=2 And ntk<1 Then
+            borrar=0
+            Exit Sub
+      EndIf  
+   EndIf   
    desde  = pmTk(ntk).desde
    hasta  = pmTk(ntk).hasta
    NB     = pmTk(ntk).NB
@@ -579,7 +586,7 @@ Function doscifras (NTK As Integer) As String
   EndIf
   doscifras=cifra
 End Function
-
+/'
 errorTrack:
 
 'Dim As Integer er, ErrorNumber, ErrorLine
@@ -597,6 +604,6 @@ Print #1,"Error Function: "; *Erfn()
 ers = nota +(*po -1) * 13
 Print #1, "nota +(estoyEnOctava -1) * 13) "; ers
 Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
-
+'/
 
  

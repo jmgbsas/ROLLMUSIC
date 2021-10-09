@@ -1,5 +1,5 @@
 start
-10-07-202101:47:58
+10-09-202100:39:58
 __FB_ARGC__    1
 arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.4.0.0-U-Integrado-OCTAVAS-REVISION\RollMusic.exe'
 arg  1 = ''
@@ -14,20 +14,6 @@ desde          4
 hasta          8
 NroCol, ancho, anchofig      40            1467          33
 gap1           76
-Error Modulo RTMIDISUB       0             1             2
- 0            4894853       4894720        0
-------------------------------------
-ERROR =  on line  0
-Error Function: 
-nota +(estoyEnOctava -1) * 13)  78
-ubound 2 de Roll.trk         102
-Error Modulo ROLLTRACKS      0             1             2
- 0            4894853       4894720        0
-------------------------------------
-ERROR =  on line  0
-Error Function: 
-nota +(estoyEnOctava -1) * 13)  78
-ubound 2 de Roll.trk         102
   
 ChangeProgram inst          0
 param.ancho    1467 param.alto  916
@@ -46,7 +32,7 @@ datos recibidos en rooloop nombre
 datos recibidos en rooloop desde,hasta     4             8
 datos recibidos en rooloop *po             7
 ubound roll.trk 2            102
-pid           4080
+pid           2296
 BordeSupRoll  -676
 -------------------------------------------------------
 inicia CargaPistasEnCancion
@@ -708,11 +694,11 @@ llama a RecalCompas de pista 1 desde CargaPistaEnCancion
 FIN CargaPistasEnCancion no debe calcuar *po             9
 -------------------------------------------------------
 CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[18]SEIS.rtk
-LLAMA A TRACKrOLL CON NTK    18
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[12]SEIS.rtk
+LLAMA A TRACKrOLL CON NTK    12
 -------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        18           C:\aaaa\09-21-2021\[18]SEIS.rtk
-TrackaRoll ntk, desde, hasta, MaxPos       18            1             10            37
+NTK Y nombre que llego a TrackaRoll        12           C:\aaaa\09-21-2021\[12]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       12            1             10            37
 TrackaRoll, NB, NA, CantTricks             0             128           537
 REDIM DE TRACK 0, NO SE HACE SIN CANCION
 TrackaRoll desde, hasta      1             10
@@ -722,26 +708,170 @@ lbound (Track(ntk).trk,2)    1
  va a ejecutar 1534 de Track aRoll
 TrackaRoll Fin
 ----------------------------------------------
->>> ntk cargado, nombre      18           C:\aaaa\09-21-2021\[18]SEIS.rtk
-llama a RecalCompas para ntk               18
-Fin RecalCompas para ntk     18
+>>> ntk cargado, nombre      12           C:\aaaa\09-21-2021\[12]SEIS.rtk
+llama a RecalCompas para ntk               12
+Fin RecalCompas para ntk     12
  CLICK EN LISTA FIN 
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         0             70            0             1
+COMIENZA RETARDO En  time : 40123.47137550864
+tiempoFigura   0.25
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             70            0             1
+COMIENZA RETARDO En  time : 40123.72214305518
+tiempoFigura   0.125
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             70            0             1
+COMIENZA RETARDO En  time : 40123.8481287358
+tiempoFigura   0.125
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40123.97412325051
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             60            0             1
+COMIENZA RETARDO En  time : 40124.97509873795
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40125.97607830266
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             70            0             1
+COMIENZA RETARDO En  time : 40126.97707995259
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40127.97802384117
+tiempoFigura   1
 CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[29]SEIS.rtk
-LLAMA A TRACKrOLL CON NTK    29
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[02]TodasNegras.rtk
+LLAMA A TRACKrOLL CON NTK    2
 -------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        29           C:\aaaa\09-21-2021\[29]SEIS.rtk
-TrackaRoll ntk, desde, hasta, MaxPos       29            1             10            37
-TrackaRoll, NB, NA, CantTricks             0             128           537
+NTK Y nombre que llego a TrackaRoll        2            C:\aaaa\09-21-2021\[02]TodasNegras.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       2             1             10            18
+TrackaRoll, NB, NA, CantTricks             0             128           518
 REDIM DE TRACK 0, NO SE HACE SIN CANCION
 TrackaRoll desde, hasta      1             10
-TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             18
 ubound (Track(ntk).trk,2)    12
 lbound (Track(ntk).trk,2)    1
  va a ejecutar 1534 de Track aRoll
 TrackaRoll Fin
 ----------------------------------------------
->>> ntk cargado, nombre      29           C:\aaaa\09-21-2021\[29]SEIS.rtk
-llama a RecalCompas para ntk               29
-Fin RecalCompas para ntk     29
+>>> ntk cargado, nombre      2            C:\aaaa\09-21-2021\[02]TodasNegras.rtk
+llama a RecalCompas para ntk               2
+Fin RecalCompas para ntk     2
  CLICK EN LISTA FIN 
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         0             70            0             1
+COMIENZA RETARDO En  time : 40137.67894129543
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40138.67980839538
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             60            0             1
+COMIENZA RETARDO En  time : 40139.680741751
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40140.68171825775
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             70            0             1
+COMIENZA RETARDO En  time : 40141.68269204633
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40142.68366753377
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             60            0             1
+COMIENZA RETARDO En  time : 40143.68464913711
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40144.6856178291
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             70            0             1
+COMIENZA RETARDO En  time : 40145.68658414267
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40146.68756812443
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             60            0             1
+COMIENZA RETARDO En  time : 40147.68852492436
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40148.68952249703
+tiempoFigura   1
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         0             70            0             1
+COMIENZA RETARDO En  time : 40149.69051293447
+tiempoFigura   1
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
+LLAMA A TRACKrOLL CON NTK    4
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        4            C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       4             1             10            10
+TrackaRoll, NB, NA, CantTricks             0             128           510
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             10
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+>>> ntk cargado, nombre      4            C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
+llama a RecalCompas para ntk               4
+Fin RecalCompas para ntk     4
+ CLICK EN LISTA FIN 
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         0             70            0             1
+COMIENZA RETARDO En  time : 40159.89506493736
+tiempoFigura   0.5
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             70            0             1
+COMIENZA RETARDO En  time : 40160.39527389757
+tiempoFigura   0.5
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40160.89630001115
+tiempoFigura   0.5
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40161.39720584518
+tiempoFigura   0.5
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             60            0             1
+COMIENZA RETARDO En  time : 40161.89817759512
+tiempoFigura   0.5
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             60            0             1
+COMIENZA RETARDO En  time : 40162.3991836621
+tiempoFigura   0.5
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40162.9001683234
+tiempoFigura   0.5
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40163.40116079947
+tiempoFigura   0.5
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[03]ddffgg.rtk
+LLAMA A TRACKrOLL CON NTK    3
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        3            C:\aaaa\09-21-2021\[03]ddffgg.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       3             1             10            8
+TrackaRoll, NB, NA, CantTricks             0             128           508
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             8
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+>>> ntk cargado, nombre      3            C:\aaaa\09-21-2021\[03]ddffgg.rtk
+llama a RecalCompas para ntk               3
+Fin RecalCompas para ntk     3
+ CLICK EN LISTA FIN 
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         0             50            0             1
+COMIENZA RETARDO En  time : 40179.29610070048
+tiempoFigura   2
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40181.29675816066
+tiempoFigura   2
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40183.29765176288
+tiempoFigura   2
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40185.29861943554
+tiempoFigura   2
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40187.29956910026
+tiempoFigura   2
+CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
+COMIENZA RETARDO En  time : 40189.30055580019
+tiempoFigura   2

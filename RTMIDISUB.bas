@@ -1,5 +1,5 @@
 '
- On Error GoTo errorRtmidi
+ 'On Error GoTo errorRtmidi
 ' 
 Sub noteoff( note As UByte, canal As UByte) 
 ' canal 1
@@ -1863,7 +1863,7 @@ Next i
 
 End Sub
 
- 
+ /'
 errorRtmidi:
 
 Dim As Integer er, ErrorNumber, ErrorLine
@@ -1881,5 +1881,5 @@ Print #1,"Error Function: "; *Erfn()
 ers = nota +(*po -1) * 13
 Print #1, "nota +(estoyEnOctava -1) * 13) "; ers
 Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
-
+'/
 
