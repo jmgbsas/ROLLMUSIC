@@ -399,7 +399,7 @@ Dim i1 As integer
 'Print #1, "portsout "; portsout
 For i1 = 0 to portsout -1 
     nombreport = port_name(midiout, i1)
- '   Print #1, *nombre
+    Print #1, *nombreport
 Next i1  
 
 portsout = portout
@@ -719,9 +719,11 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                 ' aca no debe leer a disco solo conmutar de track en track
 
                 TrackaRoll (Track(), ntk , Roll ) ' no usa ubirtk
+                Sleep 100
                 Print #1,">>> ntk cargado, nombre ",ntk, nombre
                 Print #1,"llama a RecalCompas para ntk ",ntk
-                ReCalCompas(Roll) 
+                ReCalCompas(Roll)
+                Sleep 20 
                 ''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
                 Print #1,"Fin RecalCompas para ntk ",ntk
                 item=""

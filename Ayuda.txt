@@ -162,10 +162,13 @@
         al grabar en la cancion. O por ultimo colocar rtk en el dir de cancion a mano anteponiendo
         al nombre [x] donde x va de 1 a 32. Notas(1).
     1.9) Luego de cargada el directorio de la cancion, si se da click con el mouse en la lista
-         de nombres de pistas en la ventana Control, se cargara esa pista en Roll. Siemrpe se carga
+         de nombres de pistas en la ventana Control, se cargara esa pista en Roll. Siempre se carga
          Roll y la pista 0, ambas se usan para modificacion. El resto de las pistas quedan cargadas
          desde 1 a 32. Cada vez que elija otra se cargara en Roll grafico de Visualizacion y Edicion
          y como dijimo sen Pista cero 0. Hay un directorio ejemplo "cancion" de carga.
+         Para pasar de un Track o Pista a otra se incorporó tambien la tecla TAB, con ella
+         se puede conmutar o pasar de una Pista a otra en Edicion, esto va copiando el track
+         sucesivo en Roll y Track(0), al alcanzar la pista 32 sigue en circulo con la 1.
 
     2.0) Modos de Edicion
     2.1) MODO EDIT (click en menu EDICION luego en EDIT cambiara a color 

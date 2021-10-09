@@ -643,7 +643,7 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 ' *po para contener el control de la octava invertida
 If NombreCancion > "" And CANCIONCARGADA=FALSE  Then
 ' esta cargando cancion 
-   Sleep 10
+   Sleep 100
 Else   
   For i = desde To hasta 
     nro = i 
@@ -718,12 +718,17 @@ Do
 ' comienzo=1
 'EndIf
 
-'If MultiKey(SC_TAB) Then
-'  Trak = trak + 1
-'  If trak > 32 Then
-'     trak=1 
-'  EndIf
-'''
+If MultiKey(SC_TAB) Then
+  ntk = ntk + 1
+  If ntk > 32 Then
+     ntk=1 
+  EndIf
+  Tracks (ntk , 1,Roll) ' track , nro,  Canal
+  Sleep 100
+  SetItemListBox(3,ntk)
+  SetGadgetState(3,0)
+
+EndIf
 /'
 copiar un track para edicion,,,,
 Dim As Integer ik,jk
@@ -2092,7 +2097,7 @@ If (ScreenEvent(@e)) Then
 
           Sleep 1
           SetItemListBox(3,ntk)
-          'SetGadgetState(3,1) ' se usa pra algo creo q no no ajusta nada
+          SetGadgetState(3,1)
 
           Exit Do
        EndIf

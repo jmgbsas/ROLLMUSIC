@@ -55,7 +55,7 @@ end Operator
 'Declare Sub RollLoop (c As cairo_t Ptr, Roll As inst)
 'Declare Sub creaPenta (c AS cairo_t Ptr, Roll As inst  )
 
-Declare Sub Tracks (nroTrack As UByte, nroCanal As UByte)
+
 'Declare Sub menu (c0 AS cairo_t Ptr,c AS cairo_t Ptr,n As Integer,menuNro As Integer)
 declare Sub botones(hWnd As HWND,c As cairo_t Ptr,cm As cairo_t Ptr,x As Integer,y As integer)
 Declare Sub menuAcc (c AS cairo_t Ptr)
@@ -318,7 +318,7 @@ Type pasa Field=1
   As Integer ubiroll
   As Integer ubirtk
 End Type
-
+Declare Sub Tracks (nroTrack As integer, nroCanal As UByte, Roll As inst)
 Dim Shared As Long CONTROL1 = 0
 Dim Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Dim Shared As inst Roll ' para visualizar y tocar

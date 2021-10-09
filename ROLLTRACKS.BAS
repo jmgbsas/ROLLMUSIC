@@ -496,6 +496,7 @@ Print #1, "ubound (Track(ntk).trk,2) ", ubound (Track(ntk).trk,2)
 Print #1, "lbound (Track(ntk).trk,2) ", LBound (Track(ntk).trk,2)
 Print #1," va a ejecutar 1534 de Track aRoll"
 
+' 1) carga de Roll desde track ntk
 For i2 = 1 To MaxPos 
    For i1=1 To lim2
       If Track(ntk).trk (i2,i1).nota > 0 and Track(ntk).trk(i2,i1 ).nota <=NA Then
@@ -522,6 +523,8 @@ For i2 = 1 To MaxPos
       EndIf
    Next i1
 Next i2     
+' ajuste de notas no usadas con 181 para evitar retrocesos en la carga de notas
+' y poder entrar acordes
 For i2 = 1 To MaxPos 
   For i1=NB To NA
    If Roll.trk(i2,i1).nota =0 And Roll.trk(i2,i1).dur <>182  Then
@@ -533,7 +536,7 @@ For i2 = 1 To MaxPos
    EndIf
   Next i1
 Next i2     
-' aca me falta pasar lso datos del Track(x) a Track(0)!! si es cancion
+' 2)  pasar lso datos del Track(x) a Track(0)!! si es cancion
 ' el redim esta arriba
 If cargaCancion=1 Then ' solo mientras cargo cancion? no  
  For i1=1 To MaxPos 

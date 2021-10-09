@@ -1097,9 +1097,17 @@ EndIf
  Exit Sub
 End Sub
 '----------------------------------------
-Sub Tracks (nroTrack As UByte, nroCanal As UByte)
+Sub Tracks (ntk As integer, nroCanal As UByte,Roll As inst)
+
  ' sizeof array de ubytepr almcenar el pentagrama roll
  'Notas ( 1 To 65536, 1 To 128) as UByte
+' usaremso para cambianr de track en Roll y Track(0)
+nombre= titulos(ntk) 
+TrackaRoll (Track(), ntk,Roll ) ' no usa ubirtk
+Print #1,"Conmutando con TAB >>> ntk cargado, nombre ",ntk, nombre
+Print #1,"llama a RecalCompas para ntk ",ntk
+ReCalCompas(Roll) 
+
 
 End Sub
 '--------

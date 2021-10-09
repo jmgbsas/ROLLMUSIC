@@ -1,5 +1,5 @@
 start
-10-09-202100:39:58
+10-09-202118:16:59
 __FB_ARGC__    1
 arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.4.0.0-U-Integrado-OCTAVAS-REVISION\RollMusic.exe'
 arg  1 = ''
@@ -14,6 +14,10 @@ desde          4
 hasta          8
 NroCol, ancho, anchofig      40            1467          33
 gap1           76
+CoolSoft VirtualMIDISynth 0
+Microsoft GS Wavetable Synth 1
+E-DSP MIDI Port [BC00] 2
+LoopBe Internal MIDI 3
   
 ChangeProgram inst          0
 param.ancho    1467 param.alto  916
@@ -32,7 +36,7 @@ datos recibidos en rooloop nombre
 datos recibidos en rooloop desde,hasta     4             8
 datos recibidos en rooloop *po             7
 ubound roll.trk 2            102
-pid           2296
+pid           4916
 BordeSupRoll  -676
 -------------------------------------------------------
 inicia CargaPistasEnCancion
@@ -693,53 +697,6 @@ despues de cargar pista 1 TrackaRoll desde CargaPistaEnCancion
 llama a RecalCompas de pista 1 desde CargaPistaEnCancion
 FIN CargaPistasEnCancion no debe calcuar *po             9
 -------------------------------------------------------
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[12]SEIS.rtk
-LLAMA A TRACKrOLL CON NTK    12
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        12           C:\aaaa\09-21-2021\[12]SEIS.rtk
-TrackaRoll ntk, desde, hasta, MaxPos       12            1             10            37
-TrackaRoll, NB, NA, CantTricks             0             128           537
-REDIM DE TRACK 0, NO SE HACE SIN CANCION
-TrackaRoll desde, hasta      1             10
-TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 1534 de Track aRoll
-TrackaRoll Fin
-----------------------------------------------
->>> ntk cargado, nombre      12           C:\aaaa\09-21-2021\[12]SEIS.rtk
-llama a RecalCompas para ntk               12
-Fin RecalCompas para ntk     12
- CLICK EN LISTA FIN 
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         0             70            0             1
-COMIENZA RETARDO En  time : 40123.47137550864
-tiempoFigura   0.25
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             70            0             1
-COMIENZA RETARDO En  time : 40123.72214305518
-tiempoFigura   0.125
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             70            0             1
-COMIENZA RETARDO En  time : 40123.8481287358
-tiempoFigura   0.125
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40123.97412325051
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             60            0             1
-COMIENZA RETARDO En  time : 40124.97509873795
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40125.97607830266
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             70            0             1
-COMIENZA RETARDO En  time : 40126.97707995259
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40127.97802384117
-tiempoFigura   1
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[02]TodasNegras.rtk
-LLAMA A TRACKrOLL CON NTK    2
 -------------ARRANCA TRACKAROLL---------------------------------
 NTK Y nombre que llego a TrackaRoll        2            C:\aaaa\09-21-2021\[02]TodasNegras.rtk
 TrackaRoll ntk, desde, hasta, MaxPos       2             1             10            18
@@ -752,95 +709,8 @@ lbound (Track(ntk).trk,2)    1
  va a ejecutar 1534 de Track aRoll
 TrackaRoll Fin
 ----------------------------------------------
->>> ntk cargado, nombre      2            C:\aaaa\09-21-2021\[02]TodasNegras.rtk
+Conmutando con TAB >>> ntk cargado, nombre               2            C:\aaaa\09-21-2021\[02]TodasNegras.rtk
 llama a RecalCompas para ntk               2
-Fin RecalCompas para ntk     2
- CLICK EN LISTA FIN 
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         0             70            0             1
-COMIENZA RETARDO En  time : 40137.67894129543
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40138.67980839538
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             60            0             1
-COMIENZA RETARDO En  time : 40139.680741751
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40140.68171825775
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             70            0             1
-COMIENZA RETARDO En  time : 40141.68269204633
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40142.68366753377
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             60            0             1
-COMIENZA RETARDO En  time : 40143.68464913711
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40144.6856178291
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             70            0             1
-COMIENZA RETARDO En  time : 40145.68658414267
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40146.68756812443
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             60            0             1
-COMIENZA RETARDO En  time : 40147.68852492436
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40148.68952249703
-tiempoFigura   1
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         0             70            0             1
-COMIENZA RETARDO En  time : 40149.69051293447
-tiempoFigura   1
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
-LLAMA A TRACKrOLL CON NTK    4
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        4            C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
-TrackaRoll ntk, desde, hasta, MaxPos       4             1             10            10
-TrackaRoll, NB, NA, CantTricks             0             128           510
-REDIM DE TRACK 0, NO SE HACE SIN CANCION
-TrackaRoll desde, hasta      1             10
-TrackaRoll NB, NA ,*po, MaxPos             0             128           9             10
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 1534 de Track aRoll
-TrackaRoll Fin
-----------------------------------------------
->>> ntk cargado, nombre      4            C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
-llama a RecalCompas para ntk               4
-Fin RecalCompas para ntk     4
- CLICK EN LISTA FIN 
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         0             70            0             1
-COMIENZA RETARDO En  time : 40159.89506493736
-tiempoFigura   0.5
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             70            0             1
-COMIENZA RETARDO En  time : 40160.39527389757
-tiempoFigura   0.5
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40160.89630001115
-tiempoFigura   0.5
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40161.39720584518
-tiempoFigura   0.5
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             60            0             1
-COMIENZA RETARDO En  time : 40161.89817759512
-tiempoFigura   0.5
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             60            0             1
-COMIENZA RETARDO En  time : 40162.3991836621
-tiempoFigura   0.5
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40162.9001683234
-tiempoFigura   0.5
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40163.40116079947
-tiempoFigura   0.5
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[03]ddffgg.rtk
-LLAMA A TRACKrOLL CON NTK    3
 -------------ARRANCA TRACKAROLL---------------------------------
 NTK Y nombre que llego a TrackaRoll        3            C:\aaaa\09-21-2021\[03]ddffgg.rtk
 TrackaRoll ntk, desde, hasta, MaxPos       3             1             10            8
@@ -853,25 +723,453 @@ lbound (Track(ntk).trk,2)    1
  va a ejecutar 1534 de Track aRoll
 TrackaRoll Fin
 ----------------------------------------------
->>> ntk cargado, nombre      3            C:\aaaa\09-21-2021\[03]ddffgg.rtk
+Conmutando con TAB >>> ntk cargado, nombre               3            C:\aaaa\09-21-2021\[03]ddffgg.rtk
 llama a RecalCompas para ntk               3
-Fin RecalCompas para ntk     3
- CLICK EN LISTA FIN 
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         0             50            0             1
-COMIENZA RETARDO En  time : 40179.29610070048
-tiempoFigura   2
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40181.29675816066
-tiempoFigura   2
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40183.29765176288
-tiempoFigura   2
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40185.29861943554
-tiempoFigura   2
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40187.29956910026
-tiempoFigura   2
-CALLL A NOTESIMPLE cntold, vel, canal, tiempodur         1             50            0             1
-COMIENZA RETARDO En  time : 40189.30055580019
-tiempoFigura   2
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        4            C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       4             1             10            10
+TrackaRoll, NB, NA, CantTricks             0             128           510
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             10
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               4            C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
+llama a RecalCompas para ntk               4
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        5            C:\aaaa\09-21-2021\[05]bbbb.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       5             1             10            36
+TrackaRoll, NB, NA, CantTricks             0             128           536
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             36
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               5            C:\aaaa\09-21-2021\[05]bbbb.rtk
+llama a RecalCompas para ntk               5
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        6            C:\aaaa\09-21-2021\[06]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       6             1             10            36
+TrackaRoll, NB, NA, CantTricks             0             128           536
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             36
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               6            C:\aaaa\09-21-2021\[06]SEIS.rtk
+llama a RecalCompas para ntk               6
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        7            C:\aaaa\09-21-2021\[07]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       7             1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               7            C:\aaaa\09-21-2021\[07]SEIS.rtk
+llama a RecalCompas para ntk               7
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        8            C:\aaaa\09-21-2021\[08]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       8             1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               8            C:\aaaa\09-21-2021\[08]SEIS.rtk
+llama a RecalCompas para ntk               8
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        9            C:\aaaa\09-21-2021\[09]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       9             1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               9            C:\aaaa\09-21-2021\[09]SEIS.rtk
+llama a RecalCompas para ntk               9
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        10           C:\aaaa\09-21-2021\[10]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       10            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               10           C:\aaaa\09-21-2021\[10]SEIS.rtk
+llama a RecalCompas para ntk               10
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        11           C:\aaaa\09-21-2021\[11]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       11            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               11           C:\aaaa\09-21-2021\[11]SEIS.rtk
+llama a RecalCompas para ntk               11
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        12           C:\aaaa\09-21-2021\[12]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       12            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               12           C:\aaaa\09-21-2021\[12]SEIS.rtk
+llama a RecalCompas para ntk               12
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        13           C:\aaaa\09-21-2021\[13]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       13            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               13           C:\aaaa\09-21-2021\[13]SEIS.rtk
+llama a RecalCompas para ntk               13
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        14           C:\aaaa\09-21-2021\[14]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       14            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               14           C:\aaaa\09-21-2021\[14]SEIS.rtk
+llama a RecalCompas para ntk               14
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        15           C:\aaaa\09-21-2021\[15]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       15            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               15           C:\aaaa\09-21-2021\[15]SEIS.rtk
+llama a RecalCompas para ntk               15
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        16           C:\aaaa\09-21-2021\[16]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       16            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               16           C:\aaaa\09-21-2021\[16]SEIS.rtk
+llama a RecalCompas para ntk               16
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        17           C:\aaaa\09-21-2021\[17]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       17            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               17           C:\aaaa\09-21-2021\[17]SEIS.rtk
+llama a RecalCompas para ntk               17
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        18           C:\aaaa\09-21-2021\[18]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       18            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               18           C:\aaaa\09-21-2021\[18]SEIS.rtk
+llama a RecalCompas para ntk               18
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        19           C:\aaaa\09-21-2021\[19]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       19            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               19           C:\aaaa\09-21-2021\[19]SEIS.rtk
+llama a RecalCompas para ntk               19
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        20           C:\aaaa\09-21-2021\[20]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       20            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               20           C:\aaaa\09-21-2021\[20]SEIS.rtk
+llama a RecalCompas para ntk               20
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        21           C:\aaaa\09-21-2021\[21]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       21            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               21           C:\aaaa\09-21-2021\[21]SEIS.rtk
+llama a RecalCompas para ntk               21
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        22           C:\aaaa\09-21-2021\[22]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       22            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               22           C:\aaaa\09-21-2021\[22]SEIS.rtk
+llama a RecalCompas para ntk               22
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        23           C:\aaaa\09-21-2021\[23]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       23            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               23           C:\aaaa\09-21-2021\[23]SEIS.rtk
+llama a RecalCompas para ntk               23
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        24           C:\aaaa\09-21-2021\[24]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       24            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               24           C:\aaaa\09-21-2021\[24]SEIS.rtk
+llama a RecalCompas para ntk               24
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        25           C:\aaaa\09-21-2021\[25]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       25            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               25           C:\aaaa\09-21-2021\[25]SEIS.rtk
+llama a RecalCompas para ntk               25
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        26           C:\aaaa\09-21-2021\[26]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       26            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               26           C:\aaaa\09-21-2021\[26]SEIS.rtk
+llama a RecalCompas para ntk               26
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        27           C:\aaaa\09-21-2021\[27]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       27            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               27           C:\aaaa\09-21-2021\[27]SEIS.rtk
+llama a RecalCompas para ntk               27
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        28           C:\aaaa\09-21-2021\[28]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       28            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               28           C:\aaaa\09-21-2021\[28]SEIS.rtk
+llama a RecalCompas para ntk               28
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        29           C:\aaaa\09-21-2021\[29]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       29            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               29           C:\aaaa\09-21-2021\[29]SEIS.rtk
+llama a RecalCompas para ntk               29
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        30           C:\aaaa\09-21-2021\[30]SEIS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       30            1             10            37
+TrackaRoll, NB, NA, CantTricks             0             128           537
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             37
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               30           C:\aaaa\09-21-2021\[30]SEIS.rtk
+llama a RecalCompas para ntk               30
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        31           C:\aaaa\09-21-2021\[31]TodasNegras.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       31            1             10            19
+TrackaRoll, NB, NA, CantTricks             0             128           519
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             19
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               31           C:\aaaa\09-21-2021\[31]TodasNegras.rtk
+llama a RecalCompas para ntk               31
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        32           C:\aaaa\09-21-2021\[32]CORCHEAS.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       32            1             10            11
+TrackaRoll, NB, NA, CantTricks             0             128           511
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             11
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               32           C:\aaaa\09-21-2021\[32]CORCHEAS.rtk
+llama a RecalCompas para ntk               32
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        1            C:\aaaa\09-21-2021\[01]AAA.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       1             1             10            40
+TrackaRoll, NB, NA, CantTricks             0             128           540
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             40
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               1            C:\aaaa\09-21-2021\[01]AAA.rtk
+llama a RecalCompas para ntk               1
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        2            C:\aaaa\09-21-2021\[02]TodasNegras.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       2             1             10            18
+TrackaRoll, NB, NA, CantTricks             0             128           518
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             18
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               2            C:\aaaa\09-21-2021\[02]TodasNegras.rtk
+llama a RecalCompas para ntk               2
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        3            C:\aaaa\09-21-2021\[03]ddffgg.rtk
+TrackaRoll ntk, desde, hasta, MaxPos       3             1             10            8
+TrackaRoll, NB, NA, CantTricks             0             128           508
+REDIM DE TRACK 0, NO SE HACE SIN CANCION
+TrackaRoll desde, hasta      1             10
+TrackaRoll NB, NA ,*po, MaxPos             0             128           9             8
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 1534 de Track aRoll
+TrackaRoll Fin
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               3            C:\aaaa\09-21-2021\[03]ddffgg.rtk
+llama a RecalCompas para ntk               3

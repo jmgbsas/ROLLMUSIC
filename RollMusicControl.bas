@@ -29,6 +29,8 @@ alto = GetSystemMetrics(SM_CYSCREEN)
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA
+
+
 dim Shared As String  ProgError(0 To 17)
 Dim Shared As Integer ContadorError=0
 'Dim As Long event=0
