@@ -1102,12 +1102,24 @@ Sub Tracks (ntk As integer, nroCanal As UByte,Roll As inst)
  ' sizeof array de ubytepr almcenar el pentagrama roll
  'Notas ( 1 To 65536, 1 To 128) as UByte
 ' usaremso para cambianr de track en Roll y Track(0)
-nombre= titulos(ntk) 
+nombre= titulos(ntk)
+' evita leer track vacios   
+If nombre=""  Then ' evita revisar track vacios
+ Do While nombre=""
+ ntk=ntk+1
+ If ntk>32 Then
+    ntk=1
+    Exit Do
+ EndIf
+ nombre= titulos(ntk)
+ Loop
+Else   
+ 
 TrackaRoll (Track(), ntk,Roll ) ' no usa ubirtk
 Print #1,"Conmutando con TAB >>> ntk cargado, nombre ",ntk, nombre
 Print #1,"llama a RecalCompas para ntk ",ntk
 ReCalCompas(Roll) 
-
+EndIf
 
 End Sub
 '--------
@@ -1313,7 +1325,8 @@ CantTicks=4000 ' vuelvo al original default
              nombre = ""
              Dim i As Integer
              For i=1 To 32
-               titulos(i)= "" ' borro toda la lista si habia de cancion anterior 
+               titulos(i)= "" ' borro toda la lista si habia de cancion anterior
+               pistas(i)="" 
              Next i
              tope=0
           EndIf
@@ -2822,6 +2835,7 @@ Print #1,"inicia CargaPistasEnCancion"
          ' cargamos un track simulamos como linea de cmd o cancion cargada
         nombre=NombreCancion+"\"+filename
         titulos(ntk)=nombre
+        pistas (ntk)=filename
         Print #1,"nombre en CargarPistasEnCancion ,Numpista",nombre, ntk
         CargarTrack  (Track() , ntk, 1 ) ' se cargo a track x nada mas
         Sleep 100

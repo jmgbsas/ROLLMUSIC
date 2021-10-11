@@ -29,7 +29,8 @@ alto = GetSystemMetrics(SM_CYSCREEN)
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA
-
+Common Shared As string pathdir
+common Shared As String NombreCancion, NombrePista
 
 dim Shared As String  ProgError(0 To 17)
 Dim Shared As Integer ContadorError=0
@@ -245,7 +246,7 @@ End Sub
 ' -------
 Sub CrearDirCancion (ByVal NombreCancion As string)
 
-Dim pathdir As String
+
 pathdir = ShellFolder( "Select Folder", "C:\")
 pathdir=pathdir+"\"+NombreCancion
 Print #1, "DIRECTORIO CANCION EN ",pathdir
@@ -253,6 +254,7 @@ CreateDir(pathdir)
 SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + pathdir)
 NombreCancion=pathdir
 CANCIONCREADA=TRUE
+CreateDir(pathdir+"\Temp") ' ok
 
 End Sub
 '
@@ -285,6 +287,31 @@ Function sacarExtension(file As string) As String
  sacarExtension=Mid(file,1,ubi1-1)
  
 End Function
+'---------------------
+Sub GrabarCancion()
+ '1) recorro titulos(ntk) los titulos que quedan se graban, los otros se borran o
+ ' en el momento de borrar se copia a backup y se borra del directorio de cancion
+ ' eso si se borro alguna pista. (en vez de borrar mandamos a una carpeta de backup)
+ '2) cada pista se graba con RollaTrack
+ 
+ 
+End Sub
+'
+Sub copiarATemp ( titulo As String, pista As String)
+Dim As String lineacomando ' pathDir =NombreCancion
+Dim As String  origen, destino 
+'lineacomando="copy /B /v /Y "+ titulo +" "+ NombreCancion+"\Temp\"+pista 
+''print #1, "orden copia ",lineacomando 
+'  Shell (lineacomando)
+'lineacomando="copy /B /v /Y "+ titulo +" "+ NombreCancion+"\Temp\"+pista
+Print "lineacomando ",lineacomando   
+Dim As Long result
+'Shell( lineacomando)
+destino=NombreCancion+"\Temp\"+pista
+
+copyFileA (StrPtr(titulo),StrPtr(destino),TRUE)
+Print #1,titulo, destino   
+End Sub
 
 ' error
 errorControl:

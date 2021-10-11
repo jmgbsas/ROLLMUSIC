@@ -719,10 +719,25 @@ Do
 'EndIf
 
 If MultiKey(SC_TAB) Then
+borrapos=0
   ntk = ntk + 1
   If ntk > 32 Then
      ntk=1 
   EndIf
+  nombre= titulos(ntk)
+' evita leer track vacios   
+If nombre=""  Then ' evita revisar track vacios
+ Do While nombre=""
+ ntk=ntk+1
+ If ntk>32 Then
+    ntk=1
+    nombre= titulos(ntk)
+    Exit Do
+ EndIf
+ nombre= titulos(ntk)
+ Loop
+Endif   
+  
   Tracks (ntk , 1,Roll) ' track , nro,  Canal
   Sleep 100
   SetItemListBox(3,ntk)
@@ -1949,7 +1964,9 @@ If (ScreenEvent(@e)) Then
  
   Case EVENT_MOUSE_WHEEL      ' <<<=== MOUSE WHEEL
    ' new position & e.z
-
+    If cargaCancion=1 Then ' 10-10-2021 durante al carga de cancion deshabilitamos
+       Exit Do
+    EndIf   
    posmouse = e.z
    If posmouse <> posmouseOld Then
     incWheel = posmouse - posmouseOld
@@ -2080,28 +2097,28 @@ If (ScreenEvent(@e)) Then
    EndIf
 ' -------------------------------
    If e.scancode = 83 Then '<====== SC_DELETE cambia a silencio o nada le suma 16+16 ver eso
-   '   Print #1, "PULSADO BORRAR ..·.."
-       If NombreCancion > "" Then
-          borrar=2
-          DeleteListBoxItem(3,ntk-1)
-          Print #1,"eventgadget borrar 2"
-          titulos(ntk)=""
-          pmTk(ntk).desde=0
-          pmTk(ntk).hasta=0
-          pmTk(ntk).NB=0
-          pmTk(ntk).NA=0                  
-          pmTk(ntk).MaxPos=0
-          pmTk(ntk).posn=0
-          pmTk(ntk).notaold=0                  
-          pmTk(ntk).Ticks=0
-
-          Sleep 1
-          SetItemListBox(3,ntk)
-          SetGadgetState(3,1)
-
-          Exit Do
-       EndIf
-       If borrar=1 Then
+      Print #1, "PULSADO BORRAR en Roll..·.."
+         If NombreCancion > "" And ntk > 0 Then
+            DeleteListBoxItem(3,ntk-1)
+            
+            Print #1,"EventKeyDown borrar ntk",ntk
+            titulos(ntk+borrapos)=""
+            pistas(ntk+borrapos)=""
+            Print #1,"titulos(";ntk+borrapos;") ",titulos(ntk+borrapos)
+            pmTk(ntk).desde=0
+            pmTk(ntk).hasta=0
+            pmTk(ntk).NB=0
+            pmTk(ntk).NA=0                  
+            pmTk(ntk).MaxPos=0
+            pmTk(ntk).posn=0
+            pmTk(ntk).notaold=0                  
+            pmTk(ntk).Ticks=0
+            borrapos=borrapos+1
+            Sleep 1
+            Exit Do
+          EndIf
+      
+        If borrar=1 Then
           borrar=0
           Exit Do
        EndIf   
@@ -2399,8 +2416,10 @@ If (ScreenEvent(@e)) Then
  
  
  '-------------------------------------END SCREENEVENT ----------
-
+'10-10-2021 tratamso de evitar flickr porel mous edurante la caga de cancion
+If cargaCancion=0 Then '10-10-2021 tratamso de evitar flickr
  GetMouse mouseX, mouseY, , MouseButtons   ' <=======  CLICK EVENTOS
+EndIf 
  If (mouseY >= edity1 ) And (mouseY <= edity2) Then
   If (mouseX >= 36) And (mouseX <= 70) And (menuNew=2 Or menuNro=2)  Then
   ' =====> EDIT <===

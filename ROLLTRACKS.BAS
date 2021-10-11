@@ -434,7 +434,6 @@ EndIf
 End Sub
 ' -------------------
 Sub TrackaRoll (Track() As sec, byref ntk As Integer, Roll As inst)
-' FALTA LLENAR .ACORDE DE TRACK ...
 ' como es track a Roll se supone que el track ya esta cargado en memoria
 ' y esta sub pasa de Track a Roll Visual y track 0 
 Dim As Integer i1,i2,i3,Maxposicion
@@ -443,14 +442,12 @@ Dim As Integer i1,i2,i3,Maxposicion
 ' si no estoy en cancion el nto va a ntk 0, siemrep uso ntk y el vector de pnTk
 print #1,"-------------ARRANCA TRACKAROLL---------------------------------"
 Print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulos(ntk)
-   If borrar=2 And ntk >=1 And ntk <= 32 And ntk <= tope Then
-      borrar=0      
-   Else 
-      If borrar=2 And ntk<1 Then
-            borrar=0
-            Exit Sub
-      EndIf  
-   EndIf   
+'0) Si se pula delete o Supr estando en Roll Visual, se iran borando de memoria
+' los datos de ese trrack y de la lista de Control, pero los archivo sen disco
+' seguiran iguales, primera etapa,luego al Grabar Cancion se borrara definitivamente
+' los track no usados, lso nombres de los tracks permaneceran iguales.
+'  luego se hara que si se borro y se agregan nuevos tracks estos tomaran los lugares
+' de lso tracks borados y sus numeros no usados [x].
    desde  = pmTk(ntk).desde
    hasta  = pmTk(ntk).hasta
    NB     = pmTk(ntk).NB
@@ -458,11 +455,11 @@ Print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulos(ntk)
    MaxPos = pmTk(ntk).MaxPos
    posn   = pmTk(ntk).posn
    notaOld= pmTk(ntk).notaold
-  
    Print #1,"TrackaRoll ntk, desde, hasta, MaxPos ", ntk, desde,hasta,MaxPos
    desdevector=desde
    hastavector=hasta
-
+   estoyEnOctava =desde
+   estoyEnOctavaOld =desde
    CantTicks = pmTk(ntk).Ticks '
    Print #1,"TrackaRoll, NB, NA, CantTricks", NB,NA, CantTicks
 ' redim de ROLL de Visualizacion       

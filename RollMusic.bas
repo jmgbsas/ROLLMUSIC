@@ -1,4 +1,11 @@
-'
+'0.4.4.1:Tiempo de 09-10-2021 
+' 1) perfeccionar algo mas el Play de una Pista y luego
+' 2) pasar a Play de todos las pistas en simultaneo,para ello se modificara el PlayAll
+'  o se hará uno nuevo en vez de barrer vericalmente una sola pista debera barrer
+' todas las pistas cargadas. y el putno limite NA o NB será del ultimo Track o Pista
+' ejecutado. Luego de terminado eso ,,pero esto se hara con Tracks no con Roll
+' o sea debo empezar con un playAll de un Track y luego pasarlo a todas las pistas
+' o las que se quieran tocar... 
 ' ------------------------------
 '  -Wc -fstack-usage genera un archivo en runtime *.su con el uso del stack
 ' por cada funcoin el default total es 1024k, -t 1024 no haria falta colocarlo
@@ -213,6 +220,8 @@ Dim Shared As paso compas (1 To CantTicks) 'cada item es la posicion en donde
 
 desdevector = desde
 hastavector = hasta
+estoyEnOctava =desde
+estoyEnOctavaOld =desde
 ' test test
 ' --------
 NB => 0 + (desde-1) * 13   ' 39 
@@ -418,12 +427,15 @@ If ix < 3 Then ' rollmusic CON control
 
   hwndC = OpenWindow("RollMusic Control ver 0.4.3.2",10,10,ancho*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
 ''UpdateInfoXserver()
-  hwndListBox= ListBoxGadget(3,10,10,240,650,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL )
+  hwndListBox= ListBoxGadget(3,10,10,240,650,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
+
+
   SendMessage(GadgetID(3),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
   TextGadget(4,250,10,240,20,, SS_SIMPLE  )
  ' GetTextExtentPoint32 PARA DETERMINAR EL ANCHO EN PIXELS DE UN TEXTO
  ' EL SCROLL VERTICAL APARECE CUANDO SE SOBREPASA LSO ITEM QUE SE PUEDEN VER 
   Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
+ 
 
   EVENTc=0
 
@@ -481,7 +493,7 @@ MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo 
   MenuItem(1110,MenName8,"9 Menu")
 End If
 
-
+'AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS
 
 ' opengl funciona bein futuro usar opnegl
 /'
@@ -513,7 +525,7 @@ Wend
 End Sub
 '/
 '---------------------------- main -----------------
-
+#define EventKeyDown &h100
 ' Dim Shared As Any Ptr mutex no se usa todavia exoermental de sync
 ' Dim Shared As Any Ptr cond
 ' Dim Shared As String txt
@@ -546,7 +558,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
  ''win = glfwCreateWindow(800,600,"Track OPENGL" )
 '' Dim ta As Any Ptr = threadcall correwin(win,ta)
     Do
-     eventC=WaitEvent
+     eventC=WaitEvent()
 'WindowStartDraw(hwndC)
 '  fillrectdraw(40,40,&h888888)
 '  TextDraw(10,10,NombreCancion,-1,&hff0000)
@@ -688,12 +700,13 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
           End Select
       Case eventgadget
       ' el codigo anterior que traia de disco esta en notas
-         If eventnumber()=3 Then
+       If eventnumber()=3 Then
+         borrapos=0
  ' esto servia cuando cargaba solo la lista y no los tracks en 1006
  ' pero ahroa solo deberia hacer switch no cargar de disco sino
  ' directamente cargar Roll desde el numero de track correspondiente
- ' en memoria         
-            Print #1,"CLICK EN LISTA"
+ ' en memoria       
+             Print #1,"CLICK EN LISTA"
              Dim item As String
              Dim As Integer ubi1,ubi2
              item= "                        "
@@ -713,11 +726,40 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
              ' donde se lo saca del nombre por lotanto devuelve el numero de ntk
              ' despues dela rutina,cargarTrack pone a 0 lineadecomadno=0
              ' pero si quiero volver a disco solo debo resetear ubirtk=0
-                ntk=sacarNtk(item)
-                Print #1,"LLAMA A TRACKrOLL CON NTK ",ntk
-                titulos(ntk)=nombre 
-                ' aca no debe leer a disco solo conmutar de track en track
-
+                ntk=sacarNtk(item) ' este ntk no sirve para boorar
+' este ntk sirve para identificar el ntk del arcchivo t dle vector
+' pero el ntk de la lista es otro vector y al borrar el indice cambia
+' debo obtener el indice primero                
+'' esta andando con defectos verlos borrado en la lista LBS_WANTKEYBOARDINPUT  
+                If WM_VKEYTOITEM Then '
+                  Print #1,"---------->>> APRETO TEcla ",NTK,NombreCancion
+                 If EventKEY = VK_DELETE Then 
+                 Print #1,"---------->>> APRETO DELETE ",NTK,NombreCancion
+                  If NombreCancion > "" And ntk > 0 Then
+                     borrar=2
+                     DeleteListBoxItem(3,GetItemListBox(3))
+                    Print #1,"LISTABOX EventKeyDown borrar ntk",ntk
+                    Print #1,"LISTBOX  titulos(ntk)= ",titulos(ntk)
+                    copiarATemp (titulos(ntk),pistas(ntk))
+                ''    BorrarPista (titulos(ntk))
+                    titulos(ntk)=""
+                    pistas(ntk)=""
+                    pmTk(ntk).desde=0
+                    pmTk(ntk).hasta=0
+                    pmTk(ntk).NB=0
+                    pmTk(ntk).NA=0                  
+                    pmTk(ntk).MaxPos=0
+                    pmTk(ntk).posn=0
+                    pmTk(ntk).notaold=0                  
+                    pmTk(ntk).Ticks=0
+                    Sleep 1
+                    'SetItemListBox(3,ind+1) no funca
+                    'SetGadgetState(3,1) no funca 
+                    borrar=0
+                  EndIf
+                 EndIf 
+                Else 
+           ' aca no debe leer a disco solo conmutar de track en track
                 TrackaRoll (Track(), ntk , Roll ) ' no usa ubirtk
                 Sleep 100
                 Print #1,">>> ntk cargado, nombre ",ntk, nombre
@@ -727,9 +769,11 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                 ''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
                 Print #1,"Fin RecalCompas para ntk ",ntk
                 item=""
-             EndIf  
-         EndIf
-         Print #1," CLICK EN LISTA FIN "
+                EndIf  
+                Print #1," CLICK EN LISTA FIN "
+             EndIf 
+       EndIf
+
       Case EventClose 
        Close:End 0
      End Select

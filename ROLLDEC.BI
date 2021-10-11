@@ -109,7 +109,7 @@ Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
 dim Shared as string cromatica(1 to 12)
 Dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0, cargaCancion=0
-Dim Shared ers As Integer  
+Dim Shared As Integer ers, borrapos=0  
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
@@ -251,7 +251,9 @@ Type rangoOct
  As Integer Ticks
 End type
 Dim Shared As rangoOct pmTk (0 To 32)
-Dim Shared As String titulos(0 To 32)  
+Dim Shared As String titulos(0 To 32)
+Dim Shared As String pistas (0 To 32)
+  
 Dim Shared As Integer ContadorError=0  
 ' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido por 8
 ' tengo elindice del revsado 1,2,3,4,5,6,7,8....
@@ -398,14 +400,15 @@ Dim Shared  As pasa param
     p1=@param
     param.ubiroll=0
     param.ubirtk=0
-Common Shared As hwnd hwndC    
+    
 #Include "mod_rtmidi_c.bi"    
 '----------------------------
 Dim Shared  As String ProgError(0 To 17)
 COMMON Shared As Long eventc
-Common Shared As hwnd hwndListBox
+Common Shared As hwnd hwndC, hwndListBox
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA 
-
+Common Shared As string pathdir
+common Shared As String NombreCancion, NombrePista
 
 
 

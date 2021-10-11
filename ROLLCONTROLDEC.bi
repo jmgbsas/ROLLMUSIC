@@ -9,13 +9,15 @@ Declare Sub cargarDirectorioCancion (ByRef NombreCancion As string)
 Declare Function sacarNtk (cadena As String) As Integer
 Declare Function sacarExtension(file As string) As String
 Declare Function doscifras (NTK As Integer) As String
+Declare Sub copiarATemp ( titulo As String, pista As String)
+Declare Sub GrabarCancion()
 
 'Declare Sub CreaTrack  (ByRef octadesde As Integer , ByRef octahasta As Integer, ByRef instru As Integer, param As pasa )
 Declare Sub selInstORdenAlfa (ByRef instru As Integer)
 Declare Sub selInstORdenNum (ByRef instru As Integer)
 
 Dim Shared As ubyte GrabarPistaCancion=0
-Dim Shared As String NombreCancion, NombrePista 
+ 
 Dim Shared As Integer  usarmarco= 0 , usarmarcoOld=0,reiniciar=0
 #Include "dir.bi"  
   
