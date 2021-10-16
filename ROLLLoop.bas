@@ -538,10 +538,10 @@ Var surf2 = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32
 
 
 inc_Penta = Int((ALTO -1) /40) - deltaip
-Print "inc_Penta", inc_Penta
+
 'llena la surface con nro_penta
 nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
-Print "nto_Penta", nro_Penta
+
 
 'Print nro_penta
 Select Case desde
@@ -564,12 +564,11 @@ Select Case desde
       BordeSupRoll = BordeSupRoll - 44 * inc_Penta ' 16-09-2021
      
 End Select
-Print #1,"BordeSupRoll ",BordeSupRoll
+'Print #1,"BordeSupRoll ",BordeSupRoll
 
 
 
 ' -----------------
-
 Do
 
 
@@ -582,6 +581,17 @@ edity2 = 40 ' botton Edit bordeInf
 '' Create a cairo drawing context, using the FB screen as surface.
 '' l originalestba mal sizeof(integer ) es mu chico debe ser 4
 stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
+
+' ---------------------
+If  cargaCancion=1 Then
+' esta cargando cancion 
+   'Locate 5,10
+   Print "CARGANDO CANCION ...PISTA Nro ", ntk
+   Sleep 250
+Else   
+
+'--------------
+
 
 
 
@@ -641,10 +651,7 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 ' de la ultima octava o vuelta o sea la 9.- solo que las octabas estn invertidas
 ' van de abajo hacia arriba 1 a 9 o 9 a 1 desde arriba a bajo por eo se usa
 ' *po para contener el control de la octava invertida
-If NombreCancion > "" And CANCIONCARGADA=FALSE  Then
-' esta cargando cancion 
-   Sleep 100
-Else   
+'
   For i = desde To hasta 
     nro = i 
   ' si ahce falta ejecutar mas de un Penta podremos usar threads
@@ -663,7 +670,7 @@ Else
  
   Next
 
-EndIf
+
 ''For i = desde To hasta ' nro_penta
 '' creaPenta (c, i, po,InicioDeLectura )
 '' If *po = 99 Then
@@ -704,27 +711,21 @@ cairo_stroke(cm) ' cm despues de c sino crash
 
 ScreenUnLock()
 ''ScreenSync
-
+EndIf
 
 
 '' ---------------  LOOP 2 ---------------
 Do 
 
-'If comienzo=0 Then
-' ScreenControl  SET_DRIVER_NAME,"Directx" ' cambio ja
-' ScreenRes ANCHO, ALTO, 32,2, GFX_NO_FRAME,GFX_HIGH_PRIORITY
-' ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
-' Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-' comienzo=1
-'EndIf
 
 If MultiKey(SC_TAB) Then
-borrapos=0
+Print #1,"--TAB BORAPOS=0"
   ntk = ntk + 1
   If ntk > 32 Then
      ntk=1 
   EndIf
   nombre= titulos(ntk)
+  Print #1,"1-NTK nombre", ntk,nombre
 ' evita leer track vacios   
 If nombre=""  Then ' evita revisar track vacios
  Do While nombre=""
@@ -734,14 +735,13 @@ If nombre=""  Then ' evita revisar track vacios
     nombre= titulos(ntk)
     Exit Do
  EndIf
+ 
  nombre= titulos(ntk)
  Loop
-Endif   
-  
+EndIf   
+  Print #1, "2-NTK nombre", ntk,nombre  
   Tracks (ntk , 1,Roll) ' track , nro,  Canal
   Sleep 100
-  SetItemListBox(3,ntk)
-  SetGadgetState(3,0)
 
 EndIf
 /'
@@ -1595,8 +1595,7 @@ EndIf
 ' al usar iniciodeLectura, pero eso sí, con inicio congelaba el movimiento
 ' del roll ante una entrada de nota hasta el próximo incremento de pantalla
 ' SOLO SEUSAPARAINGRESO DE NOTAS NUEVAS ..VERIFICANDO JMG
-If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
-   And carga=0 And nota <=182 Then ' 182 entra el fin de archivo 
+If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 And nota <=182 Then ' 182 entra el fin de archivo 
  'Print #1,"--------------------------------------------------------------"
  'Print #1,">>>START NUCLEO-COMPAS VECTOR posn: "; posn; "suma:";acumulado
  'Print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;_
@@ -1631,8 +1630,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    ' PARA USAR ESTO CON ENTRADA POR MOUSE SOLO DEBO DETERMINAR EL SEMITONO...
    ' y hacer nota=semiotono 1 a 11 con el mouse...el esto es automtico...
    Do ' nota es semitono ahora va de 0 a 11 deborestr 1 a nota
-    If Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0 Or _
-     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 182 Then
+    If Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0 Or Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 182 Then
      posicion=posn
      '182 el fin de archivo lo puedo pisar para seguir la secuencia
      '      Print #1, "ingreso a NUCLEO POSICION=POSN", posicion
@@ -1708,8 +1706,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
        Else    
        ' semitono ahroa va de 0 a 11 para Roll -> i-1 21-07-2021 jmg
        ' si estoy en fin de sec 182-> nota=0 dur=182
-         If Roll.trk(posn,(i +(noct -1) * 13)).nota = 0 And _ 
-            Roll.trk(posn,(i +(noct -1) * 13)).nota < 182  Then ' no borra 182
+         If Roll.trk(posn,(i +(noct -1) * 13)).nota = 0 And Roll.trk(posn,(i +(noct -1) * 13)).nota < 182  Then ' no borra 182
          '   Print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
             Roll.trk(posn,(i +(noct -1) * 13)).nota = 181
             Roll.trk(posn,(i +(noct -1) * 13)).dur  = 0
@@ -1724,8 +1721,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 _
    Next noct
    ' para track permitir acordes
    For i=1 To lim2
-         If Track(ntk).trk(posn,i).nota = 0 And _ 
-            Track(ntk).trk(posn,i).dur <182    Then
+         If Track(ntk).trk(posn,i).nota = 0 And Track(ntk).trk(posn,i).dur <182    Then
          '   Print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
             Track(ntk).trk(posn,i).nota = 181
             Track(ntk).trk(posn,i).dur  = 0
@@ -2096,28 +2092,9 @@ If (ScreenEvent(@e)) Then
     Exit Do
    EndIf
 ' -------------------------------
+ 
    If e.scancode = 83 Then '<====== SC_DELETE cambia a silencio o nada le suma 16+16 ver eso
-      Print #1, "PULSADO BORRAR en Roll..·.."
-         If NombreCancion > "" And ntk > 0 Then
-            DeleteListBoxItem(3,ntk-1)
-            
-            Print #1,"EventKeyDown borrar ntk",ntk
-            titulos(ntk+borrapos)=""
-            pistas(ntk+borrapos)=""
-            Print #1,"titulos(";ntk+borrapos;") ",titulos(ntk+borrapos)
-            pmTk(ntk).desde=0
-            pmTk(ntk).hasta=0
-            pmTk(ntk).NB=0
-            pmTk(ntk).NA=0                  
-            pmTk(ntk).MaxPos=0
-            pmTk(ntk).posn=0
-            pmTk(ntk).notaold=0                  
-            pmTk(ntk).Ticks=0
-            borrapos=borrapos+1
-            Sleep 1
-            Exit Do
-          EndIf
-      
+   
         If borrar=1 Then
           borrar=0
           Exit Do
@@ -3143,7 +3120,6 @@ If s5=2 Then
 EndIf
 
 Loop
-
 
 
 

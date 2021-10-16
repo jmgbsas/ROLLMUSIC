@@ -298,19 +298,17 @@ Sub GrabarCancion()
 End Sub
 '
 Sub copiarATemp ( titulo As String, pista As String)
-Dim As String lineacomando ' pathDir =NombreCancion
-Dim As String  origen, destino 
-'lineacomando="copy /B /v /Y "+ titulo +" "+ NombreCancion+"\Temp\"+pista 
-''print #1, "orden copia ",lineacomando 
-'  Shell (lineacomando)
-'lineacomando="copy /B /v /Y "+ titulo +" "+ NombreCancion+"\Temp\"+pista
-Print "lineacomando ",lineacomando   
-Dim As Long result
-'Shell( lineacomando)
+Dim As String destino 
 destino=NombreCancion+"\Temp\"+pista
 
 copyFileA (StrPtr(titulo),StrPtr(destino),TRUE)
 Print #1,titulo, destino   
+End Sub
+'
+Sub BorrarPista (titulo As String)
+
+deleteFileA (StrPtr(titulo))
+
 End Sub
 
 ' error

@@ -1,7 +1,7 @@
 start
-10-11-202102:24:39
+10-15-202123:42:40
 __FB_ARGC__    1
-arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.4.0.0-U-Integrado-OCTAVAS-REVISION\RollMusic.exe'
+arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.0.0\RollMusic.exe'
 arg  1 = ''
 ubirtk         0
 ubiroll        0
@@ -36,8 +36,7 @@ datos recibidos en rooloop nombre
 datos recibidos en rooloop desde,hasta     4             8
 datos recibidos en rooloop *po             7
 ubound roll.trk 2            102
-pid           4532
-BordeSupRoll  -676
+pid           3144
 -------------------------------------------------------
 inicia CargaPistasEnCancion
 filename encancion > 0      [01]AAA.rtk
@@ -698,76 +697,96 @@ llama a RecalCompas de pista 1 desde CargaPistaEnCancion
 FIN CargaPistasEnCancion no debe calcuar *po             9
 -------------------------------------------------------
 CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[10]SEIS.rtk
----------->>> APRETO TEcla   10           C:\aaaa\09-21-2021
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
+---------->>> APRETO TEcla   4            C:\aaaa\09-21-2021
+ CLICK EN LISTA FIN 
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
+---------->>> APRETO TEcla   4            C:\aaaa\09-21-2021
+---------->>> APRETO DELETE                4            C:\aaaa\09-21-2021
+LISTABOX EventKeyDown borrar ntk           4
+LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
+C:\aaaa\09-21-2021\[04]CORCHEAS.rtk       C:\aaaa\09-21-2021\Temp\[04]CORCHEAS.rtk
+ CLICK EN LISTA FIN 
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[03]ddffgg.rtk
+---------->>> APRETO TEcla   3            C:\aaaa\09-21-2021
+---------->>> APRETO DELETE                3            C:\aaaa\09-21-2021
+LISTABOX EventKeyDown borrar ntk           3
+LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[03]ddffgg.rtk
+C:\aaaa\09-21-2021\[03]ddffgg.rtk         C:\aaaa\09-21-2021\Temp\[03]ddffgg.rtk
+ CLICK EN LISTA FIN 
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[02]TodasNegras.rtk
+---------->>> APRETO TEcla   2            C:\aaaa\09-21-2021
+---------->>> APRETO DELETE                2            C:\aaaa\09-21-2021
+LISTABOX EventKeyDown borrar ntk           2
+LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[02]TodasNegras.rtk
+C:\aaaa\09-21-2021\[02]TodasNegras.rtk    C:\aaaa\09-21-2021\Temp\[02]TodasNegras.rtk
+ CLICK EN LISTA FIN 
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[01]AAA.rtk
+---------->>> APRETO TEcla   1            C:\aaaa\09-21-2021
+---------->>> APRETO DELETE                1            C:\aaaa\09-21-2021
+LISTABOX EventKeyDown borrar ntk           1
+LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[01]AAA.rtk
+C:\aaaa\09-21-2021\[01]AAA.rtk            C:\aaaa\09-21-2021\Temp\[01]AAA.rtk
+ CLICK EN LISTA FIN 
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[05]bbbb.rtk
+---------->>> APRETO TEcla   5            C:\aaaa\09-21-2021
+---------->>> APRETO DELETE                5            C:\aaaa\09-21-2021
+LISTABOX EventKeyDown borrar ntk           5
+LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[05]bbbb.rtk
+C:\aaaa\09-21-2021\[05]bbbb.rtk           C:\aaaa\09-21-2021\Temp\[05]bbbb.rtk
+ CLICK EN LISTA FIN 
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[06]SEIS.rtk
+---------->>> APRETO TEcla   6            C:\aaaa\09-21-2021
+---------->>> APRETO DELETE                6            C:\aaaa\09-21-2021
+LISTABOX EventKeyDown borrar ntk           6
+LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[06]SEIS.rtk
+C:\aaaa\09-21-2021\[06]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[06]SEIS.rtk
+ CLICK EN LISTA FIN 
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[07]SEIS.rtk
+---------->>> APRETO TEcla   7            C:\aaaa\09-21-2021
+---------->>> APRETO DELETE                7            C:\aaaa\09-21-2021
+LISTABOX EventKeyDown borrar ntk           7
+LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[07]SEIS.rtk
+C:\aaaa\09-21-2021\[07]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[07]SEIS.rtk
+ CLICK EN LISTA FIN 
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[08]SEIS.rtk
+---------->>> APRETO TEcla   8            C:\aaaa\09-21-2021
+---------->>> APRETO DELETE                8            C:\aaaa\09-21-2021
+LISTABOX EventKeyDown borrar ntk           8
+LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[08]SEIS.rtk
+C:\aaaa\09-21-2021\[08]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[08]SEIS.rtk
  CLICK EN LISTA FIN 
 CLICK EN LISTA
  NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[10]SEIS.rtk
 ---------->>> APRETO TEcla   10           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                10           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           10
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[10]SEIS.rtk
-C:\aaaa\09-21-2021\[10]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[10]SEIS.rtk
  CLICK EN LISTA FIN 
 CLICK EN LISTA
  NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[11]SEIS.rtk
 ---------->>> APRETO TEcla   11           C:\aaaa\09-21-2021
  CLICK EN LISTA FIN 
 CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[11]SEIS.rtk
----------->>> APRETO TEcla   11           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                11           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           11
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[11]SEIS.rtk
-C:\aaaa\09-21-2021\[11]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[11]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
  NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[12]SEIS.rtk
 ---------->>> APRETO TEcla   12           C:\aaaa\09-21-2021
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[12]SEIS.rtk
----------->>> APRETO TEcla   12           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                12           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           12
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[12]SEIS.rtk
-C:\aaaa\09-21-2021\[12]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[12]SEIS.rtk
  CLICK EN LISTA FIN 
 CLICK EN LISTA
  NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[13]SEIS.rtk
 ---------->>> APRETO TEcla   13           C:\aaaa\09-21-2021
  CLICK EN LISTA FIN 
 CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[13]SEIS.rtk
----------->>> APRETO TEcla   13           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                13           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           13
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[13]SEIS.rtk
-C:\aaaa\09-21-2021\[13]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[13]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
  NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[14]SEIS.rtk
 ---------->>> APRETO TEcla   14           C:\aaaa\09-21-2021
  CLICK EN LISTA FIN 
 CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[14]SEIS.rtk
----------->>> APRETO TEcla   14           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                14           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           14
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[14]SEIS.rtk
-C:\aaaa\09-21-2021\[14]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[14]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
  NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[15]SEIS.rtk
 ---------->>> APRETO TEcla   15           C:\aaaa\09-21-2021
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[15]SEIS.rtk
----------->>> APRETO TEcla   15           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                15           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           15
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[15]SEIS.rtk
-C:\aaaa\09-21-2021\[15]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[15]SEIS.rtk
  CLICK EN LISTA FIN 
 CLICK EN LISTA
  NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[16]SEIS.rtk
@@ -786,36 +805,12 @@ CLICK EN LISTA
 ---------->>> APRETO TEcla   17           C:\aaaa\09-21-2021
  CLICK EN LISTA FIN 
 CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[17]SEIS.rtk
----------->>> APRETO TEcla   17           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                17           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           17
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[17]SEIS.rtk
-C:\aaaa\09-21-2021\[17]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[17]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
  NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[18]SEIS.rtk
 ---------->>> APRETO TEcla   18           C:\aaaa\09-21-2021
  CLICK EN LISTA FIN 
 CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[18]SEIS.rtk
----------->>> APRETO TEcla   18           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                18           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           18
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[18]SEIS.rtk
-C:\aaaa\09-21-2021\[18]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[18]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
  NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[19]SEIS.rtk
 ---------->>> APRETO TEcla   19           C:\aaaa\09-21-2021
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[19]SEIS.rtk
----------->>> APRETO TEcla   19           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                19           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           19
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[19]SEIS.rtk
-C:\aaaa\09-21-2021\[19]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[19]SEIS.rtk
  CLICK EN LISTA FIN 
 CLICK EN LISTA
  NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[20]SEIS.rtk
@@ -828,4 +823,52 @@ CLICK EN LISTA
 LISTABOX EventKeyDown borrar ntk           20
 LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[20]SEIS.rtk
 C:\aaaa\09-21-2021\[20]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[20]SEIS.rtk
+ CLICK EN LISTA FIN 
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[19]SEIS.rtk
+---------->>> APRETO TEcla   19           C:\aaaa\09-21-2021
+---------->>> APRETO DELETE                19           C:\aaaa\09-21-2021
+LISTABOX EventKeyDown borrar ntk           19
+LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[19]SEIS.rtk
+C:\aaaa\09-21-2021\[19]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[19]SEIS.rtk
+ CLICK EN LISTA FIN 
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[18]SEIS.rtk
+---------->>> APRETO TEcla   18           C:\aaaa\09-21-2021
+---------->>> APRETO DELETE                18           C:\aaaa\09-21-2021
+LISTABOX EventKeyDown borrar ntk           18
+LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[18]SEIS.rtk
+C:\aaaa\09-21-2021\[18]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[18]SEIS.rtk
+ CLICK EN LISTA FIN 
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[17]SEIS.rtk
+---------->>> APRETO TEcla   17           C:\aaaa\09-21-2021
+---------->>> APRETO DELETE                17           C:\aaaa\09-21-2021
+LISTABOX EventKeyDown borrar ntk           17
+LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[17]SEIS.rtk
+C:\aaaa\09-21-2021\[17]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[17]SEIS.rtk
+ CLICK EN LISTA FIN 
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[15]SEIS.rtk
+---------->>> APRETO TEcla   15           C:\aaaa\09-21-2021
+---------->>> APRETO DELETE                15           C:\aaaa\09-21-2021
+LISTABOX EventKeyDown borrar ntk           15
+LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[15]SEIS.rtk
+C:\aaaa\09-21-2021\[15]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[15]SEIS.rtk
+ CLICK EN LISTA FIN 
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[14]SEIS.rtk
+---------->>> APRETO TEcla   14           C:\aaaa\09-21-2021
+---------->>> APRETO DELETE                14           C:\aaaa\09-21-2021
+LISTABOX EventKeyDown borrar ntk           14
+LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[14]SEIS.rtk
+C:\aaaa\09-21-2021\[14]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[14]SEIS.rtk
+ CLICK EN LISTA FIN 
+CLICK EN LISTA
+ NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[13]SEIS.rtk
+---------->>> APRETO TEcla   13           C:\aaaa\09-21-2021
+---------->>> APRETO DELETE                13           C:\aaaa\09-21-2021
+LISTABOX EventKeyDown borrar ntk           13
+LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[13]SEIS.rtk
+C:\aaaa\09-21-2021\[13]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[13]SEIS.rtk
  CLICK EN LISTA FIN 

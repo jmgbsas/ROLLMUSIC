@@ -109,7 +109,7 @@ Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
 dim Shared as string cromatica(1 to 12)
 Dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0, cargaCancion=0
-Dim Shared As Integer ers, borrapos=0  
+Dim Shared As Integer ers, borrapos=0,comienza=0  
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}

@@ -549,6 +549,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
   If cargaCancion=1 Then
      CANCIONCARGADA=FALSE
      CargarPistasEnCancion ()
+     CANCIONCARGADA=TRUE
      cargaCancion=0
   EndIf
      
@@ -735,13 +736,13 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                   Print #1,"---------->>> APRETO TEcla ",NTK,NombreCancion
                  If EventKEY = VK_DELETE Then 
                  Print #1,"---------->>> APRETO DELETE ",NTK,NombreCancion
-                  If NombreCancion > "" And ntk > 0 Then
+                  If NombreCancion > "" And ntk > 0  Then
                      borrar=2
                      DeleteListBoxItem(3,GetItemListBox(3))
                     Print #1,"LISTABOX EventKeyDown borrar ntk",ntk
                     Print #1,"LISTBOX  titulos(ntk)= ",titulos(ntk)
                     copiarATemp (titulos(ntk),pistas(ntk))
-                ''    BorrarPista (titulos(ntk))
+                    BorrarPista (titulos(ntk))
                     titulos(ntk)=""
                     pistas(ntk)=""
                     pmTk(ntk).desde=0
