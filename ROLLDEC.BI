@@ -240,7 +240,7 @@ TCompas ="4/4"
 'Dim Shared As Integer MaxPosTrack(0 To 32) ' cada track tendra su max pos
 'Dim Shared As Integer posnTrack(0 To 32) ' cada track tendra su posn
 Dim Shared As Integer fueradefoco=0, tope=0
-Type rangoOct
+Type rangoOct Field=1
  As Integer desde
  As Integer hasta
  As Integer NB
@@ -278,7 +278,7 @@ Dim Shared As Integer ContadorError=0
 Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _
 modifmouse, EnOctava,nE,nR,lugarOld, nroClick, posinterna, indCompas
 
-Type poli ' para guardar la secuencia
+Type poli Field=1 ' para guardar la secuencia
  dur As  Integer  ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
  nota As UByte  ' en un futuro contendra nota, octava, canal etc 
  vol As  UByte  ' volumen
@@ -301,8 +301,10 @@ Type dat Field=1
  vol As  UByte  ' volumen
  pan As  UByte  ' paneo
  pb  As  UByte  ' pitch bend
- inst As UByte ' instrumento para cada nota podra ser distinto
+ inst As UByte  ' instrumento para cada nota podra ser distinto
+ t   As Ulong   '  ticks 
 End Type
+ 
 Type inst
  As dat trk(Any, Any)
 End Type
@@ -380,6 +382,11 @@ Dim Shared As hWnd hwnd,hwndMenu
 'hwndmENU = Cast(hwnd,MhWnd)
 Dim Shared As UINT codsalida=0
 Dim shared As Any Ptr lpExitCode
+
+Type RelacionTiempo Field=1
+  As ULong t
+  As ULong posicion
+End Type
 '---------------------
 ANCHO = GetSystemMetrics(SM_CXSCREEN)
 ALTO = GetSystemMetrics(SM_CYSCREEN)

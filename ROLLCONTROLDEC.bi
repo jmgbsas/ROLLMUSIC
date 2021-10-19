@@ -305,7 +305,7 @@ Dim Shared  IndiceInstAlfa(1 to 127) as integer   => _
                 20 , _
                 72 , _
                 8 , _
-                4 , _
+                44, _
                 31, _
                 17, _
                 16, _

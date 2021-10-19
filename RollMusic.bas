@@ -1,4 +1,15 @@
-'0.4.4.1:Tiempo de 09-10-2021 
+'0.4.5.2: contine en dat ulon pra el time...cancion 17-10-2021
+' y agraba bien crear cancion o cargarla y luego elegi run instrumento o no
+' y crear una pist aen lacancion con lo elegido , luego de creado se debe grabar en roll
+' por ahora se graba al pista en Roll ahi toma el path y el nombre y graba a disco sino
+' solo esta en la ista gadget pero no existe fisicamente...ok
+' Podria ahce rtodo eso en Control ? no se veremos,,,
+' revisar cancion al crear hace lio ...y al crear una pista nueva, solo grabando
+' no se da cuenta habria que cargar la cancion de nuevo automaricamente !!!
+' lo que pas si creo una nuev apista desde roll y hago roollaTrack silo graba
+' en cancion a hroa no se si queda en al lista.
+'0.4.5.1: correccion grabacio y lectura add X5 Y5 para pasade 16 bits a 20 bits
+' y Cint a Cubyte estaba mal la conversion 
 ' 1) perfeccionar algo mas el Play de una Pista y luego
 ' 2) pasar a Play de todos las pistas en simultaneo,para ello se modificara el PlayAll
 '  o se hará uno nuevo en vez de barrer vericalmente una sola pista debera barrer
@@ -542,7 +553,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
   If abrirRoll=1 Then
     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
     ''''RollLoop ( param)
-    ''''abrirRoll=2
+    ''abrirRoll=2 ' roll ya abierto
     Sleep 100 ' sin este retardo no le da teimpo al thread de cargar a Roll
     ' y CargarPistasEnCancion no puede cargar proque no hay Roll
   EndIf
@@ -659,26 +670,40 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                   Exit Do
                EndIf
             Case 1061
-               EntrarNombrePista(NombrePista)
-               ntk += 1
+               Print #1,"En 1061 crear pista en cancion con lo elegido"
+               
+               ntk = CountItemListBox(3)+ 1
+               Print #1,"ntk creado instru ", ntk
                If instru=0 Then 
                   instru=1
                EndIf
-               If NombrePista ="" Then
-                NombrePista = doscifras(ntk) +"-"+ RTrim(Mid(NombreInst(instru), 1,21))
-               Else
-                NombrePista = doscifras(ntk) +"-"+ NombrePista 
+               Print #1,"instru en 1061 ",instru
+               NombrePista=RTrim(Mid(NombreInst(instru), 1,21))
+               EntrarNombrePista(NombrePista)
+               
+               'If NombrePista ="" Then
+               ' NombrePista = "["+doscifras(ntk)+"]"+ RTrim(Mid(NombreInst(instru), 1,21))
+               'Else
+                NombrePista = "["+doscifras(ntk)+"]" + NombrePista 
                 
-               EndIf
-
+               'EndIf
+               Print #1, "NombrePista en 1061",NombrePista
               AddListBoxItem(3, NombrePista)
-              NombrePista=""
-               If abrirRoll=0 Then
+              
+              ' crear pista en disco 
+               'MaxPos=2
+               nombre=NombreCancion+"\"+NombrePista+".rtk"
+               Print #1,"nombre en 1061",nombre
+               'GrabarTrack(ntk)
+               NombrePista="" 
+               posicion=1
+               posn=1
+               If abrirRoll=0 Then 
                   abrirRoll=1
                   Exit Do
                EndIf
 ' FALTA CREAR LA PISTA !!! jmg ERO PUEDO USAR UNA PISTA YA CREADA EN 1011
-            
+' la graba igual desde roll parece pero debe ser en orden            
             Case 1062
  ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
  ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.       

@@ -20,7 +20,7 @@
     1.6) Tamaño Font. 
     1.7) Crear Canción.
     1.8) Agregar tracks a cancion.
-    1.9) Conmutar de Pista en una cancion cargada.
+    1.9) Conmutar de Pista en una cancion cargadacon TAB.
     1.10) Borrar pistas de la lista.
   
     IV) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
@@ -122,12 +122,13 @@
        no las muestra, hay procesos en que no se hace automatico sino con otras operaciones siguientes, en esos
        casos un recalculo de los compases se puede ahcer pulsando 'r'.
 
-    1.4) Grabar Archivo [Archivo]->[Grabar]:
+    1.4) Grabar Archivo Roll [Archivo]->[Grabar]:
        Si es nuevo pedirá un nombre, al generar un archivo nuevo tambien se borra el nombre anterior.
        Si se marcaron columnas para borrar con <dur, nota> = 190,190 , se borran pero no se elimina el esapcio 
        que dejan, al grabar se eliminarán automaticamente, con esta opción mientras se edita solo marcamos 
        lo que no queremos. Habrá otras para eliminar directamente on line. (usaremos Retroceso o backtrace 
-       en próxima version).
+       en próxima version). Grabar ARchivo TRack o Pista Trk, se usa ROLLaTrack y graba siempre al mismo
+       nombre ed rool pero anteponiendo [0], [0]nombreRoll.Trk.
        
     1.5) Cargar Archivo [Archivo]->[Abrir]:
        
@@ -141,7 +142,7 @@
 
     1.7) Crear Canción.
 
-          En RollNusic Control usar 'Nueva Cancion' del menu (lo qu ediga Na es no aplicable todavia
+          En RollNusic Control usar 'Nueva Cancion' del menu (lo que diga Na es no aplicable todavia
         no está habilitado) , agregar el titulo o nombre de la cancion.
         Luego en el mismo menu pulsar 'Crear un directorio de Cancion con los tracks separados' 
         buscar un lugar para el directorio nuevo de la cancion con el nombre asignado.
@@ -183,8 +184,8 @@
     2.0) Modos de Edicion
     2.1) MODO EDIT (click en menu EDICION luego en EDIT cambiara a color 
           verde y la octava seleccionada tambien)
-    2.1.1) Entrada por teclado
-    2.1.2) Entrada por mouse y teclado
+    2.1.1) Entrada por teclado de PC.
+    2.1.2) Entrada por mouse y teclado de PC.
     
     2.2) MODO EDIT CURSOR ( En MODO EDIT pulsar CTRL+M O dar CTRL+click derecho
          en modo mouse)
@@ -326,7 +327,7 @@ III)
      dar Ctrl doble clik en [Edicion] y en esa posicion se cortara la secuencia borrando todo lo que este a la derecha de la posicion.
 IV) Menu Cancion (en revision)
     -Nueva Cancion: Se tipea en titulo el nombre del directorio que sera el nombre de la cancion.
-     Hay opciones todavi ano funcionales. Luego en el mismo menu Crear un directorio de Cancion
+     Hay opciones todavia no funcionales. Luego en el mismo menu Crear un directorio de Cancion
      con pistas separadas. Luefo en Menu Pistas, elegir las onfiguraciones disponibles  y despues
      crear pista aislada con lo elegido y reemplaza a la existente en la edicion. Esta ultima accion
      crea un roll grafico par aingresar las letras de las notas. luego de terminado, se pasa el Roll
@@ -335,10 +336,11 @@ IV) Menu Cancion (en revision)
      la cancion con el siguiente paso:
      
     -En Archivo, Cargar Directorio de Cancion con pistas separadas, se navega al directorio
-    de la Cancion s elo selecciona y aparecela lista de pistas y se abre el entorno grafico
+    de la Cancion se lo selecciona y aparecera lista de pistas y se abre el entorno grafico
     con las notas de la secuencia. Todos las pistas se cargan, pero no en visualizacion.   
     Al dar click en una pista de la lista y luego otro click sobre el grafico
-    se carga la secuencia en Roll de Visualizacion y edcion.
+    se carga la secuencia en Roll de Visualizacion y edcion,o pulasndo TAB se recorera circularmente
+    una a una cada Pista.
     -------------------------0-0-0------------------------------------
 Notas Tecnicas de desarrollo: 
 
@@ -384,7 +386,14 @@ lo que hará que retroceda el cursor a esa posicion y agregue la nota nueva ahi e
 final de la secuencia
 ---------------
 
-futuro: 
+futuro: (creo me demandará muchos meses  más jeje, no estoy a full y ademas voy aprendiendo,
+ es hobby y estudio basico de freebasic, luego incorporare otro lenguaje, pero que sea compilado
+ NIM que ya probé pero le faltaba libreria de win y mingw, algo similar en D, HASKEL lento,
+ Rust demasiado estructurado y las librerias mucho tiempo de descarga, compilacion, infierno de versiones
+ y librerias oscuras nunca podes ver que tienen adentro ja como funcionan o un help, C o C++ mas bajo nivel
+ Python mucho lio con las sangrias y para hacer un ejecutable es interpretado, lua interpretado ahora hay
+ algo compilado el lua jit o el Nelua-lang en desarrollo, Java byteCode, odio las VM virtual machine.
+ Microsoft monstruito de CLR NET etc IDE gigante, asi que por ahroa viva freebasic ja )
 -grabar zonas como patrones, luego usarlos para dragarlos a una posicion y soltarlos para insertar.-    
 -rasguidos automaticos o construidos por usuario.
 -armado de intervalos desde una nota dada para arriba o abajo.
@@ -397,6 +406,8 @@ sea un rasguido.
 - Acordes con estructura de guitarra de 6 cuerdas usados normalmente.(con o sin rasguido
   automatico o manual o patron de usuario).
 - Muy en el futuro algun dia... harmonizacion básica.,,
+- perfeccionamiento de algoritmo de play, play e ,as de un track. grabar en formato midi,
+  cargar un midi.
 
 
 

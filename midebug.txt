@@ -1,7 +1,7 @@
 start
-10-15-202123:42:40
+10-19-202100:51:42
 __FB_ARGC__    1
-arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.0.0\RollMusic.exe'
+arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-TIME-ULONG\RollMusic.exe'
 arg  1 = ''
 ubirtk         0
 ubiroll        0
@@ -14,6 +14,13 @@ desde          4
 hasta          8
 NroCol, ancho, anchofig      40            1467          33
 gap1           76
+Error Modulo ROLLTRACKS      0             1             2
+ 0            4903027       4902912        0
+------------------------------------
+ERROR =  on line  0
+Error Function: 
+nota +(estoyEnOctava -1) * 13)  78
+ubound 2 de Roll.trk         102
 CoolSoft VirtualMIDISynth 0
 Microsoft GS Wavetable Synth 1
 E-DSP MIDI Port [BC00] 2
@@ -24,7 +31,7 @@ param.ancho    1467 param.alto  916
 param.ancho    1467 param.alto  916
 inicio ubound roll.trk       102
 iniio lbound roll.trk        39
-cargarDirectorioCancion     C:\aaaa\09-21-2021
+cargarDirectorioCancion     C:\aaaa\10-18-2021
 param.ancho    1467 param.alto  916
 inicio ubound roll.trk       102
 iniio lbound roll.trk        39
@@ -36,839 +43,68 @@ datos recibidos en rooloop nombre
 datos recibidos en rooloop desde,hasta     4             8
 datos recibidos en rooloop *po             7
 ubound roll.trk 2            102
-pid           3144
+pid           4740
 -------------------------------------------------------
 inicia CargaPistasEnCancion
-filename encancion > 0      [01]AAA.rtk
-trabajo con este filename...              [01]AAA.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[01]AAA.rtk             1
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[01]AAA.rtk             1
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              1            C:\aaaa\09-21-2021\[01]AAA.rtk
-reconstruccion x pos bin    0000000000101000
-pmTk(ntk).MaxPos             40
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        40            1
-ABRIR MAXPOS ,NB,NA  40      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [02]TodasNegras.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[02]TodasNegras.rtk     2
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[02]TodasNegras.rtk     2
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              2            C:\aaaa\09-21-2021\[02]TodasNegras.rtk
-reconstruccion x pos bin    0000000000010010
-pmTk(ntk).MaxPos             18
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        18            2
-ABRIR MAXPOS ,NB,NA  18      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [03]ddffgg.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[03]ddffgg.rtk          3
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[03]ddffgg.rtk          3
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              3            C:\aaaa\09-21-2021\[03]ddffgg.rtk
-reconstruccion x pos bin    0000000000001000
-pmTk(ntk).MaxPos             8
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        8             3
-ABRIR MAXPOS ,NB,NA  8       0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [04]CORCHEAS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[04]CORCHEAS.rtk        4
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[04]CORCHEAS.rtk        4
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              4            C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
-reconstruccion x pos bin    0000000000001010
-pmTk(ntk).MaxPos             10
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        10            4
-ABRIR MAXPOS ,NB,NA  10      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [05]bbbb.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[05]bbbb.rtk            5
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[05]bbbb.rtk            5
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              5            C:\aaaa\09-21-2021\[05]bbbb.rtk
-reconstruccion x pos bin    0000000000100100
-pmTk(ntk).MaxPos             36
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        36            5
-ABRIR MAXPOS ,NB,NA  36      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [06]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[06]SEIS.rtk            6
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[06]SEIS.rtk            6
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              6            C:\aaaa\09-21-2021\[06]SEIS.rtk
-reconstruccion x pos bin    0000000000100100
-pmTk(ntk).MaxPos             36
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        36            6
-ABRIR MAXPOS ,NB,NA  36      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [07]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[07]SEIS.rtk            7
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[07]SEIS.rtk            7
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              7            C:\aaaa\09-21-2021\[07]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            7
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [08]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[08]SEIS.rtk            8
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[08]SEIS.rtk            8
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              8            C:\aaaa\09-21-2021\[08]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            8
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [09]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[09]SEIS.rtk            9
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[09]SEIS.rtk            9
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              9            C:\aaaa\09-21-2021\[09]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            9
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [10]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[10]SEIS.rtk            10
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[10]SEIS.rtk            10
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              10           C:\aaaa\09-21-2021\[10]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            10
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [11]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[11]SEIS.rtk            11
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[11]SEIS.rtk            11
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              11           C:\aaaa\09-21-2021\[11]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            11
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [12]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[12]SEIS.rtk            12
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[12]SEIS.rtk            12
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              12           C:\aaaa\09-21-2021\[12]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            12
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [13]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[13]SEIS.rtk            13
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[13]SEIS.rtk            13
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              13           C:\aaaa\09-21-2021\[13]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            13
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [14]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[14]SEIS.rtk            14
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[14]SEIS.rtk            14
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              14           C:\aaaa\09-21-2021\[14]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            14
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [15]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[15]SEIS.rtk            15
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[15]SEIS.rtk            15
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              15           C:\aaaa\09-21-2021\[15]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            15
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [16]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[16]SEIS.rtk            16
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[16]SEIS.rtk            16
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              16           C:\aaaa\09-21-2021\[16]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            16
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [17]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[17]SEIS.rtk            17
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[17]SEIS.rtk            17
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              17           C:\aaaa\09-21-2021\[17]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            17
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [18]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[18]SEIS.rtk            18
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[18]SEIS.rtk            18
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              18           C:\aaaa\09-21-2021\[18]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            18
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [19]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[19]SEIS.rtk            19
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[19]SEIS.rtk            19
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              19           C:\aaaa\09-21-2021\[19]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            19
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [20]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[20]SEIS.rtk            20
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[20]SEIS.rtk            20
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              20           C:\aaaa\09-21-2021\[20]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            20
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [21]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[21]SEIS.rtk            21
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[21]SEIS.rtk            21
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              21           C:\aaaa\09-21-2021\[21]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            21
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [22]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[22]SEIS.rtk            22
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[22]SEIS.rtk            22
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              22           C:\aaaa\09-21-2021\[22]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            22
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [23]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[23]SEIS.rtk            23
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[23]SEIS.rtk            23
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              23           C:\aaaa\09-21-2021\[23]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            23
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [24]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[24]SEIS.rtk            24
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[24]SEIS.rtk            24
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              24           C:\aaaa\09-21-2021\[24]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            24
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [25]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[25]SEIS.rtk            25
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[25]SEIS.rtk            25
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              25           C:\aaaa\09-21-2021\[25]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            25
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [26]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[26]SEIS.rtk            26
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[26]SEIS.rtk            26
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              26           C:\aaaa\09-21-2021\[26]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            26
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [27]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[27]SEIS.rtk            27
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[27]SEIS.rtk            27
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              27           C:\aaaa\09-21-2021\[27]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            27
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [28]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[28]SEIS.rtk            28
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[28]SEIS.rtk            28
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              28           C:\aaaa\09-21-2021\[28]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            28
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [29]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[29]SEIS.rtk            29
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[29]SEIS.rtk            29
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              29           C:\aaaa\09-21-2021\[29]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            29
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [30]SEIS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[30]SEIS.rtk            30
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[30]SEIS.rtk            30
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              30           C:\aaaa\09-21-2021\[30]SEIS.rtk
-reconstruccion x pos bin    0000000000100101
-pmTk(ntk).MaxPos             37
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        37            30
-ABRIR MAXPOS ,NB,NA  37      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [31]TodasNegras.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[31]TodasNegras.rtk     31
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[31]TodasNegras.rtk     31
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              31           C:\aaaa\09-21-2021\[31]TodasNegras.rtk
-reconstruccion x pos bin    0000000000010011
-pmTk(ntk).MaxPos             19
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        19            31
-ABRIR MAXPOS ,NB,NA  19      0             128
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [32]CORCHEAS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\09-21-2021\[32]CORCHEAS.rtk        32
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\09-21-2021\[32]CORCHEAS.rtk        32
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              32           C:\aaaa\09-21-2021\[32]CORCHEAS.rtk
-reconstruccion x pos bin    0000000000001011
-pmTk(ntk).MaxPos             11
-desde          1
-hasta          10
-en la carga de track desde hasta           1             10
-CargarTrack  NB Na           0             128
-cargaCancion   1
-*PO = hasta -1               9
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        11            32
-ABRIR MAXPOS ,NB,NA  11      0             128
-CargarTrack  fin
-----------------------------------------------
-llama a cargar pista 1 con TrackaRoll desde CargaPistaEnCancion
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        1            C:\aaaa\09-21-2021\[01]AAA.rtk
-TrackaRoll ntk, desde, hasta, MaxPos       1             1             10            40
-TrackaRoll, NB, NA, CantTricks             0             128           540
-TrackaRoll desde, hasta      1             10
-TrackaRoll NB, NA ,*po, MaxPos             0             128           9             40
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 1534 de Track aRoll
-TrackaRoll Fin
-----------------------------------------------
-despues de cargar pista 1 TrackaRoll desde CargaPistaEnCancion
-llama a RecalCompas de pista 1 desde CargaPistaEnCancion
-FIN CargaPistasEnCancion no debe calcuar *po             9
--------------------------------------------------------
+filename encancion > 0      
+dice que no hay archivos 
+En 1061 crear pista en cancion con lo elegido
+ntk creado instru            1
+instru en 1061               1
+NombrePista en 1061         [01]ACOUSTIC_GRAND_PIANO
+nombre en 1061              C:\aaaa\10-18-2021\[01]ACOUSTIC_GRAND_PIANO.rtk
 CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
----------->>> APRETO TEcla   4            C:\aaaa\09-21-2021
+ NUEVO eventgadget click en lista nombre  C:\aaaa\10-18-2021\[01]ACOUSTIC_GRAND_PIANO.rtk
+---------->>> APRETO TEcla   1            C:\aaaa\10-18-2021
  CLICK EN LISTA FIN 
+EN Grabar nombre            C:\aaaa\10-18-2021\[01]ACOUSTIC_GRAND_PIANO.rtk
+---------------------------------------------------------------------------------
+inicia GrabarRollaTrack en Cancionfunciona como un Dir y contador de archivos        0             0
+no2 nombre sin extension ni path          [01]ACOUSTIC_GRAND_PIANO
+nombre tiene el path        C:\aaaa\10-18-2021\[01]ACOUSTIC_GRAND_PIANO.rtk
+NB , NA,MAXPOS               39            102           2
+termina con los borrados
+Termina con achicar secuencia
+termino compia a temp
+copia a ntk vector nuevo, se creo a partir de otro y se debe guardar en track ntk    1
+paso copia a vector
+etapa1
+Posicion       1
+string representando        00000000000000000010
+a1 a2 a3 a4,a5              0000          0000          0000          0000          0010
+y1,y2,y3,y4,y5              0             0             0             0             2
+etapa final puts
+uso Close
+FIN GrabarRollaTrack         0             0
+---------------------------------------------------------------------------------
+in =           0
+Str(instru)   44
+En 1061 crear pista en cancion con lo elegido
+ntk creado instru            2
+instru en 1061               44
+NombrePista en 1061         [02]CONTRABASS
+nombre en 1061              C:\aaaa\10-18-2021\[02]CONTRABASS.rtk
 CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
----------->>> APRETO TEcla   4            C:\aaaa\09-21-2021
----------->>> APRETO DELETE                4            C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           4
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[04]CORCHEAS.rtk
-C:\aaaa\09-21-2021\[04]CORCHEAS.rtk       C:\aaaa\09-21-2021\Temp\[04]CORCHEAS.rtk
+ NUEVO eventgadget click en lista nombre  C:\aaaa\10-18-2021\[02]CONTRABASS.rtk
+---------->>> APRETO TEcla   2            C:\aaaa\10-18-2021
  CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[03]ddffgg.rtk
----------->>> APRETO TEcla   3            C:\aaaa\09-21-2021
----------->>> APRETO DELETE                3            C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           3
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[03]ddffgg.rtk
-C:\aaaa\09-21-2021\[03]ddffgg.rtk         C:\aaaa\09-21-2021\Temp\[03]ddffgg.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[02]TodasNegras.rtk
----------->>> APRETO TEcla   2            C:\aaaa\09-21-2021
----------->>> APRETO DELETE                2            C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           2
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[02]TodasNegras.rtk
-C:\aaaa\09-21-2021\[02]TodasNegras.rtk    C:\aaaa\09-21-2021\Temp\[02]TodasNegras.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[01]AAA.rtk
----------->>> APRETO TEcla   1            C:\aaaa\09-21-2021
----------->>> APRETO DELETE                1            C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           1
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[01]AAA.rtk
-C:\aaaa\09-21-2021\[01]AAA.rtk            C:\aaaa\09-21-2021\Temp\[01]AAA.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[05]bbbb.rtk
----------->>> APRETO TEcla   5            C:\aaaa\09-21-2021
----------->>> APRETO DELETE                5            C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           5
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[05]bbbb.rtk
-C:\aaaa\09-21-2021\[05]bbbb.rtk           C:\aaaa\09-21-2021\Temp\[05]bbbb.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[06]SEIS.rtk
----------->>> APRETO TEcla   6            C:\aaaa\09-21-2021
----------->>> APRETO DELETE                6            C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           6
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[06]SEIS.rtk
-C:\aaaa\09-21-2021\[06]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[06]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[07]SEIS.rtk
----------->>> APRETO TEcla   7            C:\aaaa\09-21-2021
----------->>> APRETO DELETE                7            C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           7
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[07]SEIS.rtk
-C:\aaaa\09-21-2021\[07]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[07]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[08]SEIS.rtk
----------->>> APRETO TEcla   8            C:\aaaa\09-21-2021
----------->>> APRETO DELETE                8            C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           8
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[08]SEIS.rtk
-C:\aaaa\09-21-2021\[08]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[08]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[10]SEIS.rtk
----------->>> APRETO TEcla   10           C:\aaaa\09-21-2021
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[11]SEIS.rtk
----------->>> APRETO TEcla   11           C:\aaaa\09-21-2021
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[12]SEIS.rtk
----------->>> APRETO TEcla   12           C:\aaaa\09-21-2021
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[13]SEIS.rtk
----------->>> APRETO TEcla   13           C:\aaaa\09-21-2021
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[14]SEIS.rtk
----------->>> APRETO TEcla   14           C:\aaaa\09-21-2021
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[15]SEIS.rtk
----------->>> APRETO TEcla   15           C:\aaaa\09-21-2021
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[16]SEIS.rtk
----------->>> APRETO TEcla   16           C:\aaaa\09-21-2021
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[16]SEIS.rtk
----------->>> APRETO TEcla   16           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                16           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           16
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[16]SEIS.rtk
-C:\aaaa\09-21-2021\[16]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[16]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[17]SEIS.rtk
----------->>> APRETO TEcla   17           C:\aaaa\09-21-2021
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[18]SEIS.rtk
----------->>> APRETO TEcla   18           C:\aaaa\09-21-2021
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[19]SEIS.rtk
----------->>> APRETO TEcla   19           C:\aaaa\09-21-2021
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[20]SEIS.rtk
----------->>> APRETO TEcla   20           C:\aaaa\09-21-2021
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[20]SEIS.rtk
----------->>> APRETO TEcla   20           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                20           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           20
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[20]SEIS.rtk
-C:\aaaa\09-21-2021\[20]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[20]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[19]SEIS.rtk
----------->>> APRETO TEcla   19           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                19           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           19
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[19]SEIS.rtk
-C:\aaaa\09-21-2021\[19]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[19]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[18]SEIS.rtk
----------->>> APRETO TEcla   18           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                18           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           18
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[18]SEIS.rtk
-C:\aaaa\09-21-2021\[18]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[18]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[17]SEIS.rtk
----------->>> APRETO TEcla   17           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                17           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           17
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[17]SEIS.rtk
-C:\aaaa\09-21-2021\[17]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[17]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[15]SEIS.rtk
----------->>> APRETO TEcla   15           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                15           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           15
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[15]SEIS.rtk
-C:\aaaa\09-21-2021\[15]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[15]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[14]SEIS.rtk
----------->>> APRETO TEcla   14           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                14           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           14
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[14]SEIS.rtk
-C:\aaaa\09-21-2021\[14]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[14]SEIS.rtk
- CLICK EN LISTA FIN 
-CLICK EN LISTA
- NUEVO eventgadget click en lista nombre  C:\aaaa\09-21-2021\[13]SEIS.rtk
----------->>> APRETO TEcla   13           C:\aaaa\09-21-2021
----------->>> APRETO DELETE                13           C:\aaaa\09-21-2021
-LISTABOX EventKeyDown borrar ntk           13
-LISTBOX  titulos(ntk)=      C:\aaaa\09-21-2021\[13]SEIS.rtk
-C:\aaaa\09-21-2021\[13]SEIS.rtk           C:\aaaa\09-21-2021\Temp\[13]SEIS.rtk
- CLICK EN LISTA FIN 
+EN Grabar nombre            C:\aaaa\10-18-2021\[02]CONTRABASS.rtk
+---------------------------------------------------------------------------------
+inicia GrabarRollaTrack en Cancionfunciona como un Dir y contador de archivos        0             0
+no2 nombre sin extension ni path          [02]CONTRABASS
+nombre tiene el path        C:\aaaa\10-18-2021\[02]CONTRABASS.rtk
+NB , NA,MAXPOS               39            102           2
+termina con los borrados
+Termina con achicar secuencia
+termino compia a temp
+copia a ntk vector nuevo, se creo a partir de otro y se debe guardar en track ntk    2
+paso copia a vector
+etapa1
+Posicion       1
+string representando        00000000000000000010
+a1 a2 a3 a4,a5              0000          0000          0000          0000          0010
+y1,y2,y3,y4,y5              0             0             0             0             2
+etapa final puts
+uso Close
+FIN GrabarRollaTrack         0             0
+---------------------------------------------------------------------------------

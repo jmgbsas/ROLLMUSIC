@@ -1,4 +1,4 @@
-'On Error GoTo errorTrack
+On Error GoTo errorTrack
 
 Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As integer)
 ' solo carga track no lo pasa a Vector de Visualizacion. ntk debe venir informado
@@ -9,7 +9,7 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As integer)
      Dim z (1,1 )  As poli
      Dim zLim (1,1) As poli
      Dim As Integer ubi1,ubi2 
-     Dim As String x,x1,x2,x3,x4,nombrea
+     Dim As String x,x1,x2,x3,x4,x5,nombrea
   '1) cargar pista desde disco y desde Roll puro   
      If ubirtk=0  Then 
       myfilter  = "Track Files"+Chr(0)  +"*.rtk"+Chr(0)
@@ -50,7 +50,8 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As integer)
      x2=Bin(z(1,1).dur,4)
      x3=Bin(z(1,1).vol,4)
      x4=Bin(z(1,1).pan,4)
-     x=x1+x2+x3+x4
+     x5=Bin(z(1,1).pb,4)
+     x=x1+x2+x3+x4+x5
         Print #1,"reconstruccion x pos bin ", x
      'toda carga de track se guarda en pmTk sea ntk=0 u otro valor   
      pmTk(ntk).MaxPos=CInt("&B"+x)   
@@ -331,7 +332,7 @@ For i1=NB To NA
 Next i1  
 ' tengo a Roll listo para convertir a track sin marcas de borrado de Col
 ' convertir
-
+Print #1,"Termina con achicar secuencia"
  Dim grabaPos (1,1)  As poli
  Dim grabaLim (1,1)  As poli
   
@@ -381,43 +382,51 @@ Print #1,"termino compia a temp"
 
 If ROLLCARGADO=FALSE Then
    
-Print #1,"copia a ntk vector nuevo, se creo a partir de otro y se debe guardar en track ntk"
+Print #1,"copia a ntk vector nuevo, se creo a partir de otro y se debe guardar en track ntk",ntk
+If cambianombre=0 And enCancion=0 Then ' es nuevo y no paso por ningun caso anterior
+   ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim2)
+EndIf
      For i1=1 To MAxPos
       For i2= 1 To lim2
       Track(ntk).trk(i1,i2)=Temp(i1,i2)
       Next i2
      next i1
 Else
-' SE ESTA CARGANDO ROLL NUEVO Y GRAVANDO A UN TRACK NUEVO     
+    Print #1," SE ESTA CARGANDO ROLL NUEVO Y GRAVANDO A UN TRACK NUEVO"     
 EndIf     
-     Dim As Integer y1,y2,y3,y4, y5,y6 ' y5 e y6 son los limites NB y NA
-     Dim As String a1,a2,a3,a4 ,x
+Print #1,"paso copia a vector"
+     Dim As ubyte y1,y2,y3,y4, y5 
+     Dim As String a1,a2,a3,a4,a5 ,x
      
-     
-     x= Bin(MaxPos,16)
-     '    Print #1,"Posicion ",Posicion
-     'Print "string representando ", x
+     Print #1,"etapa1"
+     x= Bin(MaxPos,20)
+         Print #1,"Posicion ",Posicion
+     Print #1,"string representando ", x
      a1=Mid(x,1,4)
      a2=Mid(x,5,4)
      a3=Mid(x,9,4)
      a4=Mid(x,13,4)
-     '    Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
+     a5=Mid(x,17,4)
+         Print #1,"a1 a2 a3 a4,a5 ",a1, a2 ,a3, a4,a5
 
-     y1= CInt("&B"+a1)
-     y2= CInt("&B"+a2)
-     y3= CInt("&B"+a3)
-     y4= CInt("&B"+a4)
-     '    Print #1, "y1,y2,y3,y4", y1,y2,y3,y4
-     ' grabamos maxpos en 4 ubyte
+     y1= Cubyte("&B"+a1)
+     y2= CUByte("&B"+a2)
+     y3= CUByte("&B"+a3)
+     y4= CUByte("&B"+a4)
+     y5= CUByte("&B"+a5)
+         Print #1, "y1,y2,y3,y4,y5", y1,y2,y3,y4,y5
+     ' grabamos maxpos en 5 ubyte
      grabaPos(1,1).nota = y1
      grabaPos(1,1).dur  = y2
      grabaPos(1,1).vol  = y3
      grabaPos(1,1).pan  = y4
+     grabaPos(1,1).pb   = y5
      '-----------------------
      grabaLim(1,1).nota = CUByte(desde)
      grabaLim(1,1).dur  = CUByte(hasta)
      grabaLim(1,1).pb   = CUByte(notaold)
      '-----------------------------
+     Print #1,"etapa final puts"
      Put #grt, ,grabaPos(1,1)
      Put #grt, ,grabaLim(1,1)
      Put #grt, ,Temp()
@@ -586,24 +595,24 @@ Function doscifras (NTK As Integer) As String
   EndIf
   doscifras=cifra
 End Function
-/'
+'
 errorTrack:
 
-'Dim As Integer er, ErrorNumber, ErrorLine
-er = Err
-Print #1,"Error Modulo ROLLTRACKS ", er, posicion, MaxPos
+Dim As Integer ert,  ErrorNumbert, ErrorLinet
+ert = Err
+Print #1,"Error Modulo ROLLTRACKS ", ert, posicion, MaxPos
 Print #1,Erl, Erfn,Ermn,Err
 
 Print #1,"------------------------------------"
-ErrorNumber = Err
-ErrorLine = Erl
+ErrorNumbert = Err
+ErrorLinet = Erl
 
 
-Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
+Print #1,"ERROR = ";ProgError(ErrorNumbert); " on line ";ErrorLinet
 Print #1,"Error Function: "; *Erfn()
 ers = nota +(*po -1) * 13
 Print #1, "nota +(estoyEnOctava -1) * 13) "; ers
 Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
-'/
+
 
  

@@ -2,9 +2,11 @@ On  Error GoTo errorSub
 
 Sub cerrar (ByVal n As Integer)
    If n=0 Then
+    Print #1,"uso Reset"
     Reset
    Else 
     Close (n)
+    Print #1,"uso Close"
    EndIf 
 End Sub
 Sub calcCompas( ByRef j As Integer,Roll As inst)
@@ -1132,7 +1134,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      Dim z (1,1 )  As dat
      Dim zLim (1,1) As dat
      
-     Dim As String x,x1,x2,x3,x4,nombrea
+     Dim As String x,x1,x2,x3,x4,x5,nombrea
      ''' no usar mas  dialogoText("Cargar Archivo")
       If ubiroll=0 Then
          myfilter  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
@@ -1161,7 +1163,8 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      x2=Bin(z(1,1).dur,4)
      x3=Bin(z(1,1).vol,4)
      x4=Bin(z(1,1).pan,4)
-     x=x1+x2+x3+x4
+     x5=Bin(z(1,1).pb,4)
+     x=x1+x2+x3+x4+x5
      '   Print #1,"reconstruccion x pos bin ", x
      MaxPos=CInt("&B"+x)
      posicion = 1
@@ -1549,7 +1552,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
      While InKey<>"" :Wend
    '   Print #1,"--->entra a reproducir thread1 "
               play=1        
-'    If (MouseButtons And 1) Then
+    If (MouseButtons And 1) Then
         menuNew =0
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 1 Then
@@ -1560,7 +1563,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
         EndIf 
    '     Print #1,"--->paso llamada a thread1 "
     ''    menuNew = 4 por hora sin elecciones
- '   EndIf
+    EndIf
 
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -1718,7 +1721,7 @@ EndIf
        ROLLCARGADO=TRUE ' aunque este en cancion puedo cargar un roll
     EndIf
    Else
-    Print #1,"else de *ROLL CARGA, mousex ", carga, mousex, mousey
+   ' Print #1,"else de *ROLL CARGA, mousex ", carga, mousex, mousey
     carga=0   
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
@@ -2651,8 +2654,19 @@ Sub velocidades(j As integer)
 End Sub 
 Sub GrabarArchivo ()
 ' GRABA ARCHIVOS CON EXTENSION Y FORMATO *.ROLL
+Dim pl As Integer
      If nombre = "" Then ' backup
         nombre = "Backup"+ Date + ".roll"
+     Else
+       pl= InStr(UCase(nombre),".TRK") 
+       If pl > 0 Then
+          nombre=Mid(nombre,1,pl-1)
+          Print #1,"un trk grabado como roll",nombre   
+       Else
+        If InStr(UCase(nombre),".ROLL") = 0 Then
+           nombre = nombre +".roll"   
+        EndIf
+       EndIf 
      EndIf   
      Print #1,"NOMBRE A GRABAR COMO",nombre
     Dim ga As Integer 
@@ -2727,30 +2741,32 @@ Next i1
   
  '''Shell "NOTEPAD test-AAAAA.TXT" 
 ''''Exit sub
-     Dim As Integer y1,y2,y3,y4, y5,y6 ' y5 e y6 son los limites NB y NA
-     Dim As String a1,a2,a3,a4 ,x
+     Dim As ubyte y1,y2,y3,y4, y5  
+     Dim As String a1,a2,a3,a4,a5, x
     
      
-     x= Bin(MaxPos,16)
+     x= Bin(MaxPos,20)
      '    Print #1,"Posicion ",Posicion
      'Print "string representando ", x
      a1=Mid(x,1,4)
      a2=Mid(x,5,4)
      a3=Mid(x,9,4)
      a4=Mid(x,13,4)
+     a5=Mid(x,17,4)
      '    Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
 
-     y1= CInt("&B"+a1)
-     y2= CInt("&B"+a2)
-     y3= CInt("&B"+a3)
-     y4= CInt("&B"+a4)
+     y1= CUByte("&B"+a1)
+     y2= CUByte("&B"+a2)
+     y3= CUByte("&B"+a3)
+     y4= CUByte("&B"+a4)
+     y5= CUByte("&B"+a5)
      '    Print #1, "y1,y2,y3,y4", y1,y2,y3,y4
-     ' grabamos maxpos en 4 ubyte y notaold (1 a 12 no notapiano)
+     ' grabamos maxpos en 5 ubyte y notaold (1 a 12 no notapiano)
      grabaPos(1,1).nota = y1
      grabaPos(1,1).dur  = y2
      grabaPos(1,1).vol  = y3
      grabaPos(1,1).pan  = y4
-    
+     grabaPos(1,1).pb   = y5
     '-----------------------
      grabaLim(1,1).nota = CUByte(desde) 
      grabaLim(1,1).dur  = CUByte(hasta)
@@ -2888,7 +2904,7 @@ Sub GrabarTrack (ntk As integer)
 ' EL VECTOR ESTARA CON PARAM VIEJOS
  Dim gt As Integer
  Print #1,"---------------------------------------------------------------------------------"
- Print #1,"  inicia GrabarTrack "
+ Print #1,"  inicia GrabarTrack nombre= ",nombre
  gt=FreeFile
     Open nombre  For Binary Access write As #gt
      Dim Trabajo (1 To Maxpos, 1 To lim2 ) As poli
@@ -2959,8 +2975,8 @@ Next i1
   
  '''Shell "NOTEPAD test-AAAAA.TXT" 
 ''''Exit sub
-     Dim As Integer y1,y2,y3,y4, y5,y6 ' y5 e y6 son los limites NB y NA
-     Dim As String a1,a2,a3,a4 ,x
+     Dim As ubyte y1,y2,y3,y4, y5 
+     Dim As String a1,a2,a3,a4,a5 ,x
      
      
      x= Bin(MaxPos,16)
@@ -2970,18 +2986,21 @@ Next i1
      a2=Mid(x,5,4)
      a3=Mid(x,9,4)
      a4=Mid(x,13,4)
+     a5=Mid(x,17,4)
      '    Print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
 
-     y1= CInt("&B"+a1)
-     y2= CInt("&B"+a2)
-     y3= CInt("&B"+a3)
-     y4= CInt("&B"+a4)
+     y1= CUByte("&B"+a1)
+     y2= CUByte("&B"+a2)
+     y3= CUByte("&B"+a3)
+     y4= CUByte("&B"+a4)
+     y5= CUByte("&B"+a5)
      '    Print #1, "y1,y2,y3,y4", y1,y2,y3,y4
      ' grabamos maxpos en 4 ubyte
      grabaPos(1,1).nota = y1
      grabaPos(1,1).dur  = y2
      grabaPos(1,1).vol  = y3
      grabaPos(1,1).pan  = y4
+     grabaPos(1,1).pb   = y5
      '-----------------------
      grabaLim(1,1).nota = CUByte(desde)
      grabaLim(1,1).dur  = CUByte(hasta)

@@ -70,13 +70,13 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
  'delta=NroCol
  If cursorVert=0 And comEdit=TRUE  Then
   If posicion < 30  Then
-   posishow=  posicion ''curpos ' decia 1
+   posishow=  1 ''curpos ' decia 1
   ' valla tatlmente al inicio veremos si es aca jmgjmg
   Else
-   posishow = posicion ''- 20
+   posishow = posicion - 20
   EndIf
  Else
-  posishow = posicion
+  posishow = posicion  
  EndIf
 
  Dim As Integer lugar=0, sitio
@@ -586,8 +586,8 @@ stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 If  cargaCancion=1 Then
 ' esta cargando cancion 
    'Locate 5,10
-   Print "CARGANDO CANCION ...PISTA Nro ", ntk
-   Sleep 250
+   'Print "CARGANDO ...PISTA Nro ", ntk
+   'Sleep 100
 Else   
 
 '--------------
@@ -660,7 +660,7 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 ''  Dim ta As Any Ptr = ThreadCall creaPenta (c, Roll )
 ''    ThreadWait ta
 ''  MutexDestroy tlock
-  
+  ScreenSync  
    creaPenta (c, Roll )
   If *po = 99 Then
      *po = hasta -1 ' 9 po ejemplo
@@ -710,7 +710,7 @@ cairo_stroke(cm) ' cm despues de c sino crash
 
 
 ScreenUnLock()
-''ScreenSync
+
 EndIf
 
 
@@ -848,24 +848,6 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE 
  agregarNota = 0
  menuMouse = 0
  '' notadur=0
- 
-EndIf
-If cursorVert=0 Then
- If MultiKey(SC_DOWN)  Then
-     If trasponer=1 Then
-       Exit Do
-     EndIf 
-
-   If s1=0 Then
-   s1=1
-   BordeSupRoll = BordeSupRoll -  inc_Penta
-  EndIf
-
-  If BordeSupRoll <= - AltoInicial * 2.8  Then
-   BordeSupRoll =  - AltoInicial * 2.8
-  EndIf
-  Exit Do
- EndIf
 EndIf
 
 If MultiKey(SC_PAGEDOWN) Then
@@ -940,6 +922,7 @@ If  MultiKey(SC_MINUS)  Then
  '    cairo_paint(c)
 
  '   ALTO = AltoInicial/1.5
+ '   cairo_set_source_surface (c, surface, ANCHO, ALTO ) ' ALTO)
  '   cairo_set_source_surface (c, surface, ANCHO, ALTO ) ' ALTO)
  '   Exit Do
  ' LA ZONA QUE DEJA ESTA POSICION EN LA PARTE INFERIOR SE USARA PARA
@@ -2011,6 +1994,7 @@ If (ScreenEvent(@e)) Then
     If cursorVert= 0 Then
      If s2=0 Then
       s2=1
+         Print #1,"pulso UP screenevent 1 inc_penta"
       BordeSupRoll = BordeSupRoll +   inc_Penta
      EndIf
      If BordeSupRoll >= AltoInicial * 0.5  Then
@@ -2088,8 +2072,21 @@ If (ScreenEvent(@e)) Then
      If notacur > 12 Then
       notacur=1
      EndIf
+      Exit Do
     EndIf
-    Exit Do
+    If cursorVert=0 Then 
+       If s1=0 Then
+          s1=1
+        Print #1,"pulso down screenevent"
+        BordeSupRoll = BordeSupRoll -  inc_Penta
+       EndIf
+      If BordeSupRoll <= - AltoInicial * 2.8  Then
+         BordeSupRoll =  - AltoInicial * 2.8
+      EndIf
+      Exit Do
+    EndIf
+    
+
    EndIf
 ' -------------------------------
  
@@ -2197,6 +2194,7 @@ If (ScreenEvent(@e)) Then
     If cursorVert = 0 Then
      If s2=0 Then
       s2=1
+         Print #1,"pulso UP screenevent 2 inc_Penta"
       BordeSupRoll = BordeSupRoll +   2 * inc_Penta
      EndIf
      If BordeSupRoll >= AltoInicial * 0.5  Then
@@ -2224,7 +2222,8 @@ If (ScreenEvent(@e)) Then
     If cursorVert=0 Then
        If s1=0 Then
          s1=1
-         BordeSupRoll = BordeSupRoll -  inc_Penta
+       Print #1,"pulso down screeevent"
+         BordeSupRoll = BordeSupRoll - 2 * inc_Penta
        EndIf
        If BordeSupRoll <= - AltoInicial * 2.8  Then
           BordeSupRoll =  - AltoInicial * 2.8
