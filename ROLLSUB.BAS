@@ -203,9 +203,7 @@ On Local Error GoTo errorCalc
 
    posn=Posn+1
    posicion = posn
-   MaxPos= Posicion
-   '   If k= CantFalta Then
-   '  EndIf
+   MaxPos= Posicion 
 
    ' x print #1,"acumulado falta: ";acumulado; " posn: ";posn
    ' x print #1,"d7 ";d7
@@ -1099,8 +1097,9 @@ EndIf
  Exit Sub
 End Sub
 '----------------------------------------
-Sub Tracks (ntk As integer, nroCanal As UByte,Roll As inst)
-
+Sub Tracks ( ByRef ntk As integer, ByRef nroCanal As UByte,Roll As inst)
+nota=0:dur=0
+Print #1,"EN TRACKS MAXPOS (NTK).MAXPOS ", maxpos, pmTK(ntk).maxpos
  ' sizeof array de ubytepr almcenar el pentagrama roll
  'Notas ( 1 To 65536, 1 To 128) as UByte
 ' usaremso para cambianr de track en Roll y Track(0)
@@ -1113,15 +1112,17 @@ If nombre=""  Then ' evita revisar track vacios
     ntk=1
     Exit Do
  EndIf
- nombre= titulos(ntk)
  Loop
+  nombre= titulos(ntk)
 Else   
  
 TrackaRoll (Track(), ntk,Roll ) ' no usa ubirtk
 Print #1,"Conmutando con TAB >>> ntk cargado, nombre ",ntk, nombre
-Print #1,"llama a RecalCompas para ntk ",ntk
+Print #1,"llama a RecalCompas para ntk,maxpos, .maxpos ",ntk,maxpos,pmTk(ntk).MaxPos
 ReCalCompas(Roll) 
+Print #1,"MAXPOS DESPUES DE RECALCOMPAS ", maxpos, pmTK(ntk).maxpos
 EndIf
+
 
 End Sub
 '--------
@@ -1173,6 +1174,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      nota=0 '''notaOld
      inicioDeLectura=0' Int(Maxpos/NroCol)
      posn=Maxpos- 2
+     If posn < 0 Then posn=0 EndIf
      ' crgamos limites Roll de octavas
      Get #ca, , zLim(1,1)
      desde  = CInt(zLim(1,1).nota)
@@ -1316,7 +1318,7 @@ CantTicks=4000 ' vuelvo al original default
           EndIf
 
           MaxPos = 2 'NroCol
-          posicion=1:posn=1
+          posicion=0:posn=0
           curpos=1
           notacur=1
           nroCompas=0
@@ -1644,8 +1646,8 @@ If copi >0 Then
    veocopi=copi
 EndIf   
 
-   t = "      EDIT" + " " +  " UltimaPos:" + _
-   Str(Maxpos) +" Posi:" + Str(posishow)+ " Posn:"+Str(posn)+ _
+   t = "      EDIT" + " " +  " Maxpos:" + _
+   Str(Maxpos) +" Posicion:" + Str(posicion)+ " Posn:"+Str(posn)+ _
    " Font:" +Str(fontOld) + " EnOct:" + Str(estoyEnOctava) + " nA:"+Str(veonota) + _ 
    " nR:"+ Str(PianoNota) + " nE:"+Str(nE) + " Curpos:" +Str(curpos) + _
    " RollDur :"+ Str(RollDur) + " Rollnota:" + Str(RollNota) + _ 
@@ -2041,8 +2043,8 @@ EndIf
      NA => 11 + (hasta) * 13  ' 90 para  7
   '   Print #1,"NB,NA,DESDE,HASTA ";NB,NA,desde,hasta
      CambiarDim(1)
-     MaxPos = 2 'NroCol
-     posicion=1:posn=1
+     MaxPos = 1 'NroCol
+     posicion=0:posn=0
      curpos=1
      notacur=1
      nota=0 
@@ -2218,58 +2220,7 @@ EndIf
  font=fontOld
 End Sub
 '----------------------------------------------------------------------
-Sub menuAcc(c As cairo_t Ptr)
- ' IMPLEMENTAR NO SE USA
- Dim As cairo_font_extents_t fe   '     font data
- Dim As cairo_text_extents_t te  '      text size
- Dim  As Double Ptr xo,yo
- Dim As Double nxo,nyo
- Dim cd As cairo_device_t Ptr
- cairo_set_source_rgba(c, 0.6, 0.5, 0.6, 1) ' morado
- cairo_paint(c)
-
- cairo_set_source_rgba(c, 0, 0, 0, 1)
-
- cairo_select_font_face (c, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
- cairo_set_font_size (c, font)
-
- '---encendido de edit
- Var t = "menuaccion"
- cairo_font_extents (c, @fe)
- cairo_text_extents (c, t, @te)
-
- cairo_move_to(c, ANCHO/10, 30 ) ' aca esta la cosa la ubicacion del font!!!
- ' debo ubicarlo caracterpor caracter no en string!!!
-
- 'Dim oclog As Integer
- 'oclog = 8 - (estoyEnOctava-1)
- 'If comEdit = TRUE Then
- '  cairo_set_source_rgba c, 0, 1, 0, 1
- 'Else
- '  cairo_set_source_rgba c, 0, 0, 0, 1
- 'EndIf
- '   t = "      EDIT" + " " + Str(mouseX) + " " + Str(mouseY) + " Octava: " + Str(oclog) + " UltimaPos: " + Str(Maxpos-1) +" Pos: " + Str(posicion)+ "posn: "+Str(posn)+" Font: " +str(font)
-
-
- 'cairo_show_text(c, t)
-
- 'cairo_move_to(c, ANCHO/10, 30 )
- 'If resize = TRUE Then
- '  cairo_set_source_rgba c, 1, 0, 0, 1
- '   t = "<>"
-
- 'Else
- '  cairo_set_source_rgba c, 0, 0, 0, 1
- '   t = "<>"
-
- 'EndIf
-
-
- cairo_show_text(c, t)
- cairo_stroke(c)
-
-
-End Sub
+' menuacc estaba
 '--------------------------
 Sub movedato (ByVal n As Integer, ByRef indaux As Integer,ByRef  insert As Integer, ByRef nota As Integer)
 

@@ -143,26 +143,39 @@
     1.7) Crear Canción.
 
           En RollNusic Control usar 'Nueva Cancion' del menu (lo que diga Na es no aplicable todavia
-        no está habilitado) , agregar el titulo o nombre de la cancion.
+        no está habilitado) , agregar el titulo o nombre de la cancion. Si no se agrega pondra de
+        título de la cancoin o sea el nombre del directorio como la fecha.
         Luego en el mismo menu pulsar 'Crear un directorio de Cancion con los tracks separados' 
         buscar un lugar para el directorio nuevo de la cancion con el nombre asignado.
 
     1.8) Agregar tracks o Pistas a Cancion   
 
-         Hay 3 opciones  a partir de una cancion recien creada es crear un Roll en la ventana grafica o cargar
-        un Roll (*.roll) y luego usar de esa misma ventana la opcion de grabar ROLLaTrack
-        O sea [Archivo] luego [ROLL=>TRACK(0)] con esa accion como estamos con una cancion
-        en edicion grabara el track convertido en el directorio de cancion...en track 0 si no hay cancion
-        o si hay cancion en track [x] siendo x la numeracion siguiente nueva si existen otros tracks previos.
-         Otro metodo sera copiar a mano un *.rtk en el directorio y ponerle un numero secuencial
-        al primcipio que tenga este formato [x]  donde 'x' es un numero si exiten 1,2,3 sera [4]
-        luego volver a cargar la cancion. (track 0 solo se usa para grabar Roll a Track sin cancion 
-        y siempre se sobreescribe)
-         Y otro mas que se puede hacer es cargar un *.rtk desde el grafico y como esa accion convierte 
-        de *.rtk a Roll, luego como antes usando [ROLL=>TRACK(0)], grabará el Roll convertido a track en 
-        la cancion, vemos que aca hay  2 conversiones, de *.rtk a *.roll al cargar y otra de *.Roll a *.rtk 
-        al grabar en la cancion. O por ultimo colocar rtk en el dir de cancion a mano anteponiendo
-        al nombre [x] donde x va de 1 a 32. Notas(1).
+         Hay 4 opciones  
+         a) Con la cancion creada, ir al menu de Pistas, ajsutar lso aprametros deseados
+            como intervalo de octavas, nombre del instrumento, etc, con ello en el mismo menu
+            dar click en "Crear pista en la cancion con lo elegifo". Hasta este momento 
+            la pista solo existe en la lista dar GRABAR en el grafico ROLL si se desea en este momento 
+            o despues cuando tenga  datos. Ir creando pistas hasta 32 de la misma forma.
+            Si se ajusta el instrumento si se desea se sugiere el nombre del instrumento o
+            cambiarlo por otro, se agrega automaticamente el nro de pista [x] donde x= 1,2,3,4...
+            y al final se le agrega la estencion .rtk sera una pista a o track. Con la tecla TAB
+            sepodra navegar de un track a otro en la vista grafica (la cual es unica en esta version).
+         b) a partir de una cancion recien creada es crear un Roll en la ventana grafica o cargar
+            un Roll (*.roll) y luego usar de esa misma ventana la opcion de grabar ROLLaTrack
+            O sea [Archivo] luego [ROLL=>TRACK(0)] con esa accion como estamos con una cancion
+            en edicion grabara el track convertido en el directorio de cancion...en track 0 si no hay cancion
+            o si hay cancion en track [x] siendo x la numeracion siguiente nueva si existen otros tracks previos.
+         c) Otro metodo sera copiar a mano un *.rtk en el directorio y ponerle un numero secuencial
+            al primcipio que tenga este formato [x]  donde 'x' es un numero si exiten 1,2,3 sera [4]
+            luego volver a cargar la cancion. (track 0 solo se usa para grabar Roll a Track sin cancion 
+            y siempre se sobreescribe)
+         d) Y otro mas que se puede hacer es cargar un *.rtk desde el grafico y como esa accion convierte 
+            de *.rtk a Roll, luego como antes usando [ROLL=>TRACK(0)], grabará el Roll convertido a track en 
+            la cancion, vemos que aca hay  2 conversiones, de *.rtk a *.roll al cargar y otra de *.Roll a *.rtk 
+            al grabar en la cancion. O por ultimo colocar rtk en el dir de cancion a mano anteponiendo
+            al nombre [x] donde x va de 1 a 32. Notas(1).
+         Nota: El ultimo test fue con el caso a), lso demas estaban propbados pero con las modificaciones
+         echas par ael caso a) deben probarse de neuvo,,,
     1.9) Luego de cargada el directorio de la cancion, si se da click con el mouse en la lista
          de nombres de pistas en la ventana Control, se cargara esa pista en Roll. Siempre se carga
          Roll y la pista 0, ambas se usan para modificacion. El resto de las pistas quedan cargadas

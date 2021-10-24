@@ -58,7 +58,7 @@ end Operator
 
 'Declare Sub menu (c0 AS cairo_t Ptr,c AS cairo_t Ptr,n As Integer,menuNro As Integer)
 declare Sub botones(hWnd As HWND,c As cairo_t Ptr,cm As cairo_t Ptr,x As Integer,y As integer)
-Declare Sub menuAcc (c AS cairo_t Ptr)
+'Declare Sub menuAcc (c AS cairo_t Ptr)
 Declare Sub moveresto (ByVal StartInsert As integer,ByRef indaux as Integer, Byref insert As Integer,Byref nota As integer)
 Declare Sub movedato (ByVal StartInsert As Integer, ByRef indaux As Integer, Byref insert As Integer,Byref nota As integer)
 'Declare sub calcCompas(ByRef j As Integer)
@@ -103,7 +103,7 @@ Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, SelGrupoNota =0,
 Dim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, cursormove
-Dim shared As integer Penta_y, indice, posicion=1,posicionOld=1, nota=0,espacio,posn=1,cursorHori
+Dim shared As integer Penta_y, indice, posicion=0,posicionOld=0, nota=0,espacio,posn=0,cursorHori
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
@@ -241,14 +241,15 @@ TCompas ="4/4"
 'Dim Shared As Integer posnTrack(0 To 32) ' cada track tendra su posn
 Dim Shared As Integer fueradefoco=0, tope=0
 Type rangoOct Field=1
- As Integer desde
- As Integer hasta
- As Integer NB
- As Integer NA
- As Integer MaxPos
- As Integer posn
- As UByte   notaold
- As Integer Ticks
+ As Integer desde = 0
+ As Integer hasta =0
+ As Integer NB =0
+ As Integer NA =0
+ As Integer MaxPos =0
+ As Integer posn =0 
+ As UByte   notaold=0 
+ As Integer Ticks =0
+ 
 End type
 Dim Shared As rangoOct pmTk (0 To 32)
 Dim Shared As String titulos(0 To 32)
@@ -279,15 +280,15 @@ Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _
 modifmouse, EnOctava,nE,nR,lugarOld, nroClick, posinterna, indCompas
 
 Type poli Field=1 ' para guardar la secuencia
- dur As  Integer  ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
- nota As UByte  ' en un futuro contendra nota, octava, canal etc 
- vol As  UByte  ' volumen
- pan As  UByte  ' paneo
- pb  As  UByte  ' pitch bend
- inst As UByte ' instrumento para cada nota podra ser distinto
- tick As Integer ' 128 tiene la redonda, 1 la cuartifusa
- posn As Integer ' de roll
- acorde  As ubyte  ' 1 a 12 , son el se hara el sort    
+ dur As  Integer =0   ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
+ nota As UByte =0 ' en un futuro contendra nota, octava, canal etc 
+ vol As  UByte =0 ' volumen
+ pan As  UByte =0 ' paneo
+ pb  As  UByte =0 ' pitch bend
+ inst As UByte =0' instrumento para cada nota podra ser distinto
+ tick As Integer =0' 128 tiene la redonda, 1 la cuartifusa
+ posn As Integer =0' de roll
+ acorde  As ubyte =0 ' 1 a 12 , son el se hara el sort    
 End Type 
 
 Type sec
@@ -296,13 +297,13 @@ End Type
 
 '-------------------------------
 Type dat Field=1
- nota As UByte  ' en un futuro contendra nota, octava, canal etc 
- dur As  UByte  ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
- vol As  UByte  ' volumen
- pan As  UByte  ' paneo
- pb  As  UByte  ' pitch bend
- inst As UByte  ' instrumento para cada nota podra ser distinto
- t   As Ulong   '  ticks 
+ nota As UByte =0 ' en un futuro contendra nota, octava, canal etc 
+ dur As  UByte =0 ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
+ vol As  UByte =0 ' volumen
+ pan As  UByte =0 ' paneo
+ pb  As  UByte =0 ' pitch bend
+ inst As UByte =0 ' instrumento para cada nota podra ser distinto
+ ''t   As Ulong   '  ticks por ahroa no 
 End Type
  
 Type inst
@@ -310,19 +311,19 @@ Type inst
 End Type
 
 Type paso Field=1
- Posi As Integer
- nro  As Integer 
+ Posi As Integer =0
+ nro  As Integer =0
 End Type
 Type pasa Field=1 
   As cairo_t Ptr c
   As inst Roll
-  As String  titulo
-  As Integer ancho
-  As Integer alto
-  As Integer ubiroll
-  As Integer ubirtk
+  As String  titulo = ""
+  As Integer ancho =0
+  As Integer alto=0
+  As Integer ubiroll=0
+  As Integer ubirtk=0
 End Type
-Declare Sub Tracks (nroTrack As integer, nroCanal As UByte, Roll As inst)
+Declare Sub Tracks (ByRef nroTrack As integer, ByRef nroCanal As UByte, Roll As inst)
 Dim Shared As Long CONTROL1 = 0
 Dim Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Dim Shared As inst Roll ' para visualizar y tocar
@@ -364,7 +365,7 @@ Dim Shared escala As float = 1.0
 Dim Shared translado As Integer = 1
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
 Dim shared As Integer i,  posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
-Dim Shared As Integer octaroll
+Dim Shared As Integer octaroll,instancia=0
 Dim Shared As BOOLEAN comEdit, resize
 Dim Shared po As Integer Ptr
 Dim Shared e As EVENT

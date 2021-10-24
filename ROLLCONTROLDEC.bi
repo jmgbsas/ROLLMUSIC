@@ -4,7 +4,7 @@ Declare Sub EntrarTeclado (cadena As String)
 Declare Sub cerrar(n As integer)
 Declare Sub seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer)
 Declare Sub reproducir()
-Declare Sub CrearDirCancion (ByVal NombreCancion As string)
+Declare Sub CrearDirCancion (ByRef NombreCancion As string)
 Declare Sub cargarDirectorioCancion (ByRef NombreCancion As string)
 Declare Function sacarNtk (cadena As String) As Integer
 Declare Function sacarExtension(file As string) As String

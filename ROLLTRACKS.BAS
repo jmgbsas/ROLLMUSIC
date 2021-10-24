@@ -1,4 +1,3 @@
-On Error GoTo errorTrack
 
 Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As integer)
 ' solo carga track no lo pasa a Vector de Visualizacion. ntk debe venir informado
@@ -61,6 +60,7 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As integer)
      '|--> LLEVAR A TRACK A rOLL    inicioDeLectura=0' Int(Maxpos/NroCol)
 ' ==> aca no lo esta cargadno a roll visual solo a un track ntk
      pmTk(ntk).posn=pmTk(ntk).MaxPos - 2
+     If pmTk(ntk).posn < 0 Then pmTk(ntk).posn=0 EndIf
      pmTk(ntk).Ticks = pmTk(ntk).MaxPos + 500
      'es un get trabajo debe ser exactamente MAxPos
      ReDim Trabajo  (1 To pmTk(ntk).MaxPos,1 To lim2) As poli 
@@ -102,7 +102,8 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As integer)
         MaxPos=pmTk(ntk).MaxPos
         notaOld=pmTk(ntk).notaold
         posn=MaxPos -2
-        posicion=1
+        If posn< 0 Then posn=0 EndIf
+        posicion=0
         curpos=1
         CantTicks=pmTk(ntk).Ticks
      EndIf
@@ -165,7 +166,7 @@ Sub GrabarRollaTrack (cambiaNombre As Integer, enCancion As Integer)
 ' por default siemrpe usa [0] podremos cambiarlo agregando mas codigo SI SE DESEA
 Print #1,"---------------------------------------------------------------------------------"
 Print #1,"inicia GrabarRollaTrack en Cancionfunciona como un Dir y contador de archivos ",cambianombre,enCancion 
-   Dim As String no1, no2
+   Dim As String no1, no2,ext
    Dim As Integer ubi1=0,ubi2=0,ntkold=ntk ' el ntk que esta en edicion 
 '' cambia de nombre de rool a track, i tengo una cancion en edcion
 ' y queiro un roll nuevo no conviene hacerlo aca si hay cancion no se usa
@@ -173,6 +174,7 @@ Print #1,"inicia GrabarRollaTrack en Cancionfunciona como un Dir y contador de a
     ubi2=InStrRev(nombre,".")
     no1= Mid(nombre,1,ubi1) ' path
     no2= Mid(nombre,ubi1+1,ubi2-1-ubi1) ' nomre archivo sin extension
+    ext= LCase(Mid(nombre,ubi2)) ' contiene el punto .rtk .roll
     Print #1,"no2 nombre sin extension ni path ",no2
     ' convierte rool a rtk sin cancion y lo graba a  track 0
     ' O SEA CANCIONCREADA=FALSE CANCIONCARGADA=FALSE
@@ -284,7 +286,7 @@ Print #1,"inicia GrabarRollaTrack en Cancionfunciona como un Dir y contador de a
    Print #1, "NB , NA,MAXPOS ",NB,NA,MaxPos  
 
  ReDim Trabajo (1 To Maxpos, NB To NA) As dat
-
+' copia en Trabajo el Roll ....que tiene las modificaciones ultimas
  Dim As Integer i1, i2, i3, semitono, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
 'Print #1, "inicio MaxPos "; MaxPos
@@ -322,7 +324,9 @@ Print #1,"inicia GrabarRollaTrack en Cancionfunciona como un Dir y contador de a
 Print #1,"termina con los borrados"
 
 posn=k        
+pmTk(ntk).posn=posn
 
+' track nuevo empieza desde k..no es eso
 Dim As Integer r1
 For i1=NB To NA 
   For r1= posn+1 To MaxPos
@@ -330,16 +334,18 @@ For i1=NB To NA
     Trabajo(r1, i1).dur=0  ' la secuecnia quedo mas corta
   Next r1 
 Next i1  
+
+
 ' tengo a Roll listo para convertir a track sin marcas de borrado de Col
 ' convertir
 Print #1,"Termina con achicar secuencia"
  Dim grabaPos (1,1)  As poli
  Dim grabaLim (1,1)  As poli
-  
+' datos para track....en temp  
  Dim Temp (1 To MaxPos,1 To lim2) As poli
 
 i3=0
-
+' copia en Temp Trabajo donde esta Roll
 For i2 = 1 To MaxPos
    i3=0
    For i1=NB To NA 
@@ -378,19 +384,23 @@ For i2 = 1 To MaxPos
    EndIf 
 Next i2     
 
-Print #1,"termino compia a temp"
-
-If ROLLCARGADO=FALSE Then
+Print #1,"termino compia a temp, maxpos, posn ", maxpos, posn
+' deberia andar igual en el caso de grabar track en cancion porque se pasa a
+' temp y de ahi se copia de nuevo al track previamente borrado
+' siemrpe que se maneje track individuales o una cancion y se haga modificacioens
+' como borrados de notas se pasa por Temp y se vuelve a grabar 
+' en disco y en el TRack
+If ROLLCARGADO=FALSE  Then ' o sea si cargo un track o una cancion de tracks
    
-Print #1,"copia a ntk vector nuevo, se creo a partir de otro y se debe guardar en track ntk",ntk
-If cambianombre=0 And enCancion=0 Then ' es nuevo y no paso por ningun caso anterior
-   ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim2)
-EndIf
-     For i1=1 To MAxPos
-      For i2= 1 To lim2
-      Track(ntk).trk(i1,i2)=Temp(i1,i2)
-      Next i2
-     next i1
+  Print #1,"copia a ntk vector nuevo, se creo a partir de otro y se debe guardar en track ntk",ntk
+  If cambianombre=0 And enCancion=0 Then ' es nuevo y no paso por ningun caso anterior
+     ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim2)
+  EndIf
+  For i1=1 To MAxPos
+     For i2= 1 To lim2
+       Track(ntk).trk(i1,i2)=Temp(i1,i2) ' deberia andar igual
+     Next i2
+  Next i1
 Else
     Print #1," SE ESTA CARGANDO ROLL NUEVO Y GRAVANDO A UN TRACK NUEVO"     
 EndIf     
@@ -433,13 +443,15 @@ Print #1,"paso copia a vector"
      cerrar (grt)
      While InKey <> "": Wend
      Sleep 150
-Print #1,"FIN GrabarRollaTrack ",cambianombre,enCancion
+Print #1,"FIN GrabarRollaTrack ,cambianombre,enCancion ",cambianombre,enCancion
+Print #1,"FIN GrabarRollaTrack ,maxpos,posn, enCancion ",maxpos,posn
+
 Print #1,"---------------------------------------------------------------------------------"
 
 If ROLLCARGADO=TRUE Then
    ROLLCARGADO=FALSE 
 EndIf   
-
+ 
 End Sub
 ' -------------------
 Sub TrackaRoll (Track() As sec, byref ntk As Integer, Roll As inst)
@@ -451,19 +463,23 @@ Dim As Integer i1,i2,i3,Maxposicion
 ' si no estoy en cancion el nto va a ntk 0, siemrep uso ntk y el vector de pnTk
 print #1,"-------------ARRANCA TRACKAROLL---------------------------------"
 Print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulos(ntk)
+Print #1,"maxpos y (ntk).maxpos ", maxpos,pmTk(ntk).MaxPos
 '0) Si se pula delete o Supr estando en Roll Visual, se iran borando de memoria
 ' los datos de ese trrack y de la lista de Control, pero los archivo sen disco
 ' seguiran iguales, primera etapa,luego al Grabar Cancion se borrara definitivamente
 ' los track no usados, lso nombres de los tracks permaneceran iguales.
 '  luego se hara que si se borro y se agregan nuevos tracks estos tomaran los lugares
 ' de lso tracks borados y sus numeros no usados [x].
+nota=0:dur=0
+'copia a variables de Roll desde track
    desde  = pmTk(ntk).desde
    hasta  = pmTk(ntk).hasta
    NB     = pmTk(ntk).NB
    NA     = pmTk(ntk).NA
    MaxPos = pmTk(ntk).MaxPos
    posn   = pmTk(ntk).posn
-   notaOld= pmTk(ntk).notaold
+   notaOld= CInt(pmTk(ntk).notaold)
+   
    Print #1,"TrackaRoll ntk, desde, hasta, MaxPos ", ntk, desde,hasta,MaxPos
    desdevector=desde
    hastavector=hasta
@@ -491,8 +507,7 @@ Print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulos(ntk)
        ' SE LLENA TRACK 0 SIEMRPE.,,,
        ReDim (Track(0).trk ) (1 To CantTicks,1 To lim2)
    EndIf
-   posicion=1
-   nota=0
+   nota=0:dur=0
    inicioDeLEctura=0
    *po=pmTk(ntk).hasta -1
    
@@ -500,7 +515,7 @@ Print #1,"TrackaRoll desde, hasta ", desde , hasta
 Print #1,"TrackaRoll NB, NA ,*po, MaxPos ", NB , NA, *po,MaxPos
 Print #1, "ubound (Track(ntk).trk,2) ", ubound (Track(ntk).trk,2)
 Print #1, "lbound (Track(ntk).trk,2) ", LBound (Track(ntk).trk,2)
-Print #1," va a ejecutar 1534 de Track aRoll"
+Print #1," va a ejecutar 510 de Track aRoll"
 
 ' 1) carga de Roll desde track ntk
 For i2 = 1 To MaxPos 
@@ -556,8 +571,6 @@ EndIf
 
 
 '--------------------------------Track(0) fin
-'MaxPos=MaxPosTrack(ntk)
-posicion=1:posn=MaxPos-2
 curpos=1
 notacur=1
 nroCompas=0
@@ -565,7 +578,7 @@ tres=0:pun=0:sil=0:mas=0:doblepun=0:cuart=0
 tres=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
 SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
 
-  Print #1,"TrackaRoll Fin"
+  Print #1,"TrackaRoll Fin,,maxpos y (ntk).maxpos ", maxpos,pmTk(ntk).MaxPos
 print #1,"----------------------------------------------"
 Sleep 100
 
@@ -596,23 +609,4 @@ Function doscifras (NTK As Integer) As String
   doscifras=cifra
 End Function
 '
-errorTrack:
-
-Dim As Integer ert,  ErrorNumbert, ErrorLinet
-ert = Err
-Print #1,"Error Modulo ROLLTRACKS ", ert, posicion, MaxPos
-Print #1,Erl, Erfn,Ermn,Err
-
-Print #1,"------------------------------------"
-ErrorNumbert = Err
-ErrorLinet = Erl
-
-
-Print #1,"ERROR = ";ProgError(ErrorNumbert); " on line ";ErrorLinet
-Print #1,"Error Function: "; *Erfn()
-ers = nota +(*po -1) * 13
-Print #1, "nota +(estoyEnOctava -1) * 13) "; ers
-Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
-
-
  

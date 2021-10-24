@@ -66,17 +66,20 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
  ' la vista por pantalla
  'If comEdit= TRUE Then
  'Dim As Integer delta
-
  'delta=NroCol
  If cursorVert=0 And comEdit=TRUE  Then
-  If posicion < 30  Then
-   posishow=  1 ''curpos ' decia 1
+    If posicion < 30  Then
+      posishow=  1 ''curpos ' decia 1
   ' valla tatlmente al inicio veremos si es aca jmgjmg
-  Else
-   posishow = posicion - 20
-  EndIf
+    Else
+        posishow = posicion - 20
+    EndIf
  Else
-  posishow = posicion  
+   If posicion=0 Then ' para TAB de track nuevo  
+      posishow=1 
+   Else
+      posishow = posicion
+   EndIf  
  EndIf
 
  Dim As Integer lugar=0, sitio
@@ -213,15 +216,16 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
     Exit For
    EndIf
    'con ic * 40 es + 32 osea ic * 40 + 32
-
+   
   Next n
   'Else
   'Print #1, " n= ";n; " posn=";posn;" MaxPos=";MaxPos;" Posishow=";Posishow
   'EndIf
 ' incremento aca ? raro lo deberia incrementar al cargar notas
-  If n  > MAXPos Then 
-    MaxPos = n
-  EndIf
+  'If n  > MaxPos Then 
+  '  MaxPos = n  
+' 
+'  EndIf
 
   '--------TRAZADI DE LINEAS VERTICALES GUIA DE COMPAS 1ERA VERSION
 
@@ -566,7 +570,7 @@ Select Case desde
 End Select
 'Print #1,"BordeSupRoll ",BordeSupRoll
 
-
+Print #1,"INSTANCIA ", instancia
 
 ' -----------------
 Do
@@ -718,31 +722,55 @@ EndIf
 Do 
 
 
-If MultiKey(SC_TAB) Then
-Print #1,"--TAB BORAPOS=0"
-  ntk = ntk + 1
-  If ntk > 32 Then
+If MultiKey(SC_TAB) And instancia=0 Then
+   Print #1,"--TAB "
+   nota=0
+   dur=0
+   Print #1,"1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
+   ntk = ntk + 1
+   Print #1,"2- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos  
+   If ntk > 32 Then
      ntk=1 
-  EndIf
-  nombre= titulos(ntk)
-  Print #1,"1-NTK nombre", ntk,nombre
+     Print #1,">32- 1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos     
+   EndIf
+   nombre= titulos(ntk)
+   If nombre> "" Then
+     Print #1,"--------------------------"
+     Print #1,"3-NTK nombre", ntk,nombre
+     Print #1,"3-NTK MAXPOS pmtk(ntk).maxpos  ", maxpos,pmTK(ntk).maxpos
+     Print #1,"--------------------------"
+   EndIf  
 ' evita leer track vacios   
-If nombre=""  Then ' evita revisar track vacios
- Do While nombre=""
- ntk=ntk+1
- If ntk>32 Then
-    ntk=1
-    nombre= titulos(ntk)
-    Exit Do
- EndIf
+   If nombre=""  Then ' evita revisar track vacios
+     Do While nombre=""
+        ntk=ntk+1
+        If ntk>32 Then
+           ntk=1
+           nombre= titulos(ntk)
+  Print #1,"4 - NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos    
+           Exit Do
+        EndIf
  
- nombre= titulos(ntk)
- Loop
+        nombre= titulos(ntk)
+    Loop
+     MaxPos=pmTk(ntk).MaxPos
+     posn=pmTk(ntk).posn
+     desde=pmTk(ntk).desde
+     hasta=pmTk(ntk).hasta
+     NB=pmTk(ntk).NB
+     NA=pmTk(ntk).NA
+     notaold = CInt(pmTk(ntk).notaold)
+     CantTicks=pmTk(ntk).Ticks
+     
+  Print #1,"5- MAXPOS final TAB " ,maxpos
 EndIf   
-  Print #1, "2-NTK nombre", ntk,nombre  
+' ACA INCREMENTA MAXPODS NO SE PORQU EMIERDA...
+
+  Print #1, "6-NTK nombre", ntk,nombre  
+  Print #1, "6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, maxpos,pmTK(ntk).maxpos
   Tracks (ntk , 1,Roll) ' track , nro,  Canal
   Sleep 100
-
+ Print #1,"7- instancia, maspos ",instancia, maxpos
 EndIf
 /'
 copiar un track para edicion,,,,
@@ -1547,7 +1575,7 @@ If comEdit = FALSE Then ' construir cifras para copiar Nveces por ejemplo
 
  EndIf
  If MultiKey(SC_HOME) Then
-    posicion=1
+    posicion=0
     posishow=posicion
  EndIf
  If MultiKey(SC_END) Then
@@ -1620,17 +1648,24 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 An
      Exit Do
     EndIf
     posn = posn + 1
+    MaxPos=Posn +1 
+    pmTk(ntk).posn=posn
+    pmTk(ntk).MaxPos=MaxPos
+    pmTk(ntk).notaold=CUByte(notaold)
+
 '--- AUMENTO DE CAPACIDAD DEL VECTOR EN 1000 POSICIONES 
     If CantTicks - MaxPos < 120 Then
-       Print #1,"hace backup....."
+       Print #1,"hace backup.....¿que nombre usamos?"
        GrabarArchivo ''hacer un backup !!! 
       CantTicks=CantTicks + 1000 ' incremento el tamaño en 1000 posiciones =1 min
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
       ReDim Preserve compas(1 To CantTicks)
       ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
+      ' ¿a que ntk apunta al 0 o al de cancion ?
+      Print #1,"REDIM EN NUCLEO DE TRACK NTK= ", ntk
       ReDim Preserve (Track(ntk).trk)(1 To CantTicks,1 To lim2)
     EndIf
-
+    pmTk(ntk).Ticks=CantTicks
 '---control barrido de pantalla columna
     If (posn > NroCol + InicioDeLectura) Then
      InicioDeLectura=InicioDeLectura + NroCol
@@ -1640,7 +1675,9 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 An
    ' ESTO ME UBICA EN QUE RENGLON DE LA OCTaVA ESTOY SN USAR EL MOUSE
    ' CON EL MOUSE tambien se hizo
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = nota 'carga visualizacion
-   ' cargo TRACK 
+   nR=(12-nota) + (estoyEnOctava -1 ) * 13 
+   PianoNota= nR - restar (nR)
+   Print #1,"' cargo TRACK nro, PianoNota ",ntk,PianoNota 
    Track(ntk).trk(posn,1).nota= PianoNota ' de done la saca? creapenta ya se ejecuto?
    
    Roll.trk(posn+1,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
@@ -2435,7 +2472,7 @@ EndIf
        ''posicion=posicion - NroCol/2
 
        If posicion < 1 Then
-         posicion = 1
+         posicion = 0
        EndIf
        posishow=posicion
      EndIf
@@ -2879,7 +2916,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
   
  EndIf 
  ' habilitar una octava para edicion con el mouse
- If mousex >=0 And mousex > ANCHO -5  Then ' 09-06-2021 para que nochoque con boton EDIT
+ If  mousex > ANCHO -50  Then ' 09-06-2021 para que nochoque con boton EDIT
        octavaEdicion=estoyEnOctava
  EndIf
  If comedit=TRUE Then

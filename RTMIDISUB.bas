@@ -1744,7 +1744,8 @@ Print #1,"--> TERMINO la vuelta de ind ", ind
 ' EndIf
 'EndIf
 
-posn=MaxPos -1
+posn=MaxPos -2
+If posn < 0 Then posn=0 EndIf
 End Sub 
 
 Sub correcciondeNotas(Roll As inst)

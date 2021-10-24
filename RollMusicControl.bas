@@ -31,11 +31,12 @@ Common Shared As hwnd hwndC, hwndListBox
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA
 Common Shared As string pathdir
 common Shared As String NombreCancion, NombrePista
+pathdir=""
 
 dim Shared As String  ProgError(0 To 17)
 Dim Shared As Integer ContadorError=0
 'Dim As Long event=0
-Dim Shared As Integer desde , hasta,MaxPos=2
+Dim Shared As Integer desde , hasta,MaxPos=1
 #Include "RTMIDIDEC.BI"
 
 On  Error GoTo errorControl
@@ -244,22 +245,25 @@ Sub EntrarNombreCancion(ByRef NombreCancion As string)
  ' dir de cancion,
 End Sub
 ' -------
-Sub CrearDirCancion (ByVal NombreCancion As string)
+Sub CrearDirCancion (Byref NombreCancion As string)
 
-
+If NombreCancion = "" Then
+   NombreCancion= Date
+EndIf
 pathdir = ShellFolder( "Select Folder", "C:\")
 pathdir=pathdir+"\"+NombreCancion
 Print #1, "DIRECTORIO CANCION EN ",pathdir
 CreateDir(pathdir)
 SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + pathdir)
 NombreCancion=pathdir
+Print #1,"NombreCancion en CrearDirCancion ",NombreCancion
 CANCIONCREADA=TRUE
 CreateDir(pathdir+"\Temp") ' ok
 
 End Sub
 '
 Sub cargarDirectorioCancion (ByRef NombreCancion As string)
-Dim pathdir As string
+''Dim pathdir As string
 NombreCancion = ShellFolder( "Select Folder", "C:\")
 SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + NombreCancion)
 Print #1,"cargarDirectorioCancion ", NombreCancion 

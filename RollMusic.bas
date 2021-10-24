@@ -192,7 +192,8 @@ For ix = 0 To __FB_ARGC__
    titulos(0)=Command(ix)
  Else
     desde= CInt(Command(ix))
-'    pmTk(ntk).desde=desde    
+'    pmTk(ntk).desde=desde
+   Instancia=1    
  EndIf
  Print #1,"ubirtk ",ubirtk
  Print #1,"ubiroll ",ubiroll
@@ -201,14 +202,17 @@ For ix = 0 To __FB_ARGC__
  If ix=2 Then
   hasta= CInt (Command(ix))
  ' pmTk(ntk).hasta=hasta
+    Instancia=2
  EndIf
  
  If ix=3 Then
   titu=  (Command(ix))
+     Instancia=3
  EndIf
 
  If ix=4 Then
   instru=  CUByte (Command(ix))
+     Instancia=4
  EndIf
 
 Next ix
@@ -260,7 +264,7 @@ Dim  AS Integer  ctres=1 ' 5 octavas por track
 Dim As Integer lim1 
 lim1=1
 ReDim (Track(0).trk ) (1 To CantTicks,1 To lim2)
-ReDim (Track(1).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(1).trk ) (1 To CantTicks,1 To lim2)
 ReDim (Track(2).trk ) (1 To Ctres,1 To lim1)
 ReDim (Track(3).trk ) (1 To ctres,1 To lim1)
 ReDim (Track(4).trk ) (1 To ctres,1 To lim1)
@@ -433,9 +437,10 @@ If Roll.trk(1,NA).inst > 0 Then
 EndIf
  Print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
 Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
+Print #1,"INSTANCIA ",instancia
 
 If ix < 3 Then ' rollmusic CON control
-
+  instancia=0
   hwndC = OpenWindow("RollMusic Control ver 0.4.3.2",10,10,ancho*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
 ''UpdateInfoXserver()
   hwndListBox= ListBoxGadget(3,10,10,240,650,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
@@ -474,7 +479,7 @@ MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
 MenuItem(1014,MenName1, "Salir")
 
 
-MenuItem(1020,MenName2, "Nombre o Título (fecha por omision)")
+MenuItem(1020,MenName2, "Nombre o Título (fecha por omision), la cancion es un directorio")
 MenuItem(1021,MenName2, "Na.Tiempo I=60 por omision")
 MenuItem(1022,MenName2, "Na.Ritmo 4/4 por omision")
 MenuItem(1023,MenName2, "Na.Duracion Estimada Min.(Por Omision 3 estimada)")
@@ -615,6 +620,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                getfiles(file,myfilter,"save")
                nombreg=*file.lpstrFile
                If nombreg = "" Then
+                  Print #1,"exit select por nombreg vacio "
                   Exit Select 
                Else
                   nombre=nombreg   
@@ -631,6 +637,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
           carga=1
             Case 1020     
                NombreCancion = ""
+               pathdir=""
                EntrarNombreCancion(NombreCancion)
             Case 1025
                CrearDirCancion (NombreCancion)            
@@ -673,14 +680,24 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                Print #1,"En 1061 crear pista en cancion con lo elegido"
                
                ntk = CountItemListBox(3)+ 1
-               Print #1,"ntk creado instru ", ntk
+               If ntk > 32 Then
+                  Print #1,"exit select ntk> 32"
+                  Exit Select
+               EndIf 
+               Print #1,"ntk creado pista nro ", ntk
                If instru=0 Then 
                   instru=1
                EndIf
                Print #1,"instru en 1061 ",instru
                NombrePista=RTrim(Mid(NombreInst(instru), 1,21))
-               EntrarNombrePista(NombrePista)
-               
+               Print #1,"pathdir",pathdir
+               If pathdir="" Then
+                  SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + "Debe Crear un directorio de Cancion Con el Nombre de Cancion Elegido")
+                  Print #1,"exit select donde miercoles se va? duplica ventana"
+                  Exit Select 
+               Else
+                  EntrarNombrePista(NombrePista)
+               EndIf
                'If NombrePista ="" Then
                ' NombrePista = "["+doscifras(ntk)+"]"+ RTrim(Mid(NombreInst(instru), 1,21))
                'Else
@@ -692,12 +709,26 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
               
               ' crear pista en disco 
                'MaxPos=2
-               nombre=NombreCancion+"\"+NombrePista+".rtk"
+               nombre= NombreCancion+"\"+NombrePista+".rtk"
                Print #1,"nombre en 1061",nombre
-               'GrabarTrack(ntk)
+               ''' para cuando las pistas esten juntas en un archivo ->ZGrabarTrack(ntk)
+               ReDim (Roll.trk ) (1 To CantTicks,NB To NA)
+               titulos(ntk)=nombre
+               pmTk(ntk).desde=desde
+               pmTk(ntk).hasta=hasta
+               pmTk(ntk).NB=NB
+               pmTk(ntk).NA=NA                  
+               pmTk(ntk).MaxPos=1
+               pmTk(ntk).posn=0
+               pmTk(ntk).notaold=0                  
+               pmTk(ntk).Ticks=4000
+               GrabarRollaTrack(0,0)
                NombrePista="" 
-               posicion=1
-               posn=1
+               posicion=0
+               posn=0
+               MaxPos=1
+               nota=0
+               dur=0
                If abrirRoll=0 Then 
                   abrirRoll=1
                   Exit Do
@@ -803,6 +834,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
       Case EventClose 
        Close:End 0
      End Select
+
    Loop
 Else
   param.titulo ="RollMusic Editor" ' esto no sale si no hay marco
