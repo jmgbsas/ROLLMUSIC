@@ -371,7 +371,7 @@ Dim Shared po As Integer Ptr
 Dim Shared e As EVENT
 Dim Shared rmerr As Integer
 Dim Shared As Integer mxold,myold, w,h
-Dim Shared c As cairo_t  Ptr
+Dim Shared As cairo_t  Ptr c, c2
 Dim Shared cm As cairo_t  Ptr
 Dim Shared c3 As cairo_t  Ptr
 Dim Shared As Integer stride, nro_penta,IhWnd,Mhwnd,Style,desktopwidth,desktopheight
@@ -397,9 +397,10 @@ AnchoInicial=ANCHO
 AltoInicial=ALTO
 anchofig=ANCHO/45 ' SON 45 COL PERO SE USAN MENOS 41
 NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
-
+Dim Shared ANCHO3div4 As Integer 
+ ANCHO3div4 = ANCHO *3 / 4
 '--------------------
-Dim Shared  As pasa param 
+Dim Shared  As pasa param ', param2 
     param.c= c
     param.Roll = Roll
     param.titulo = titu

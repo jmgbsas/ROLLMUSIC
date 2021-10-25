@@ -1300,25 +1300,26 @@ CantTicks=4000 ' vuelvo al original default
           NA => 11 + (hasta-1) * 13  ' 90 para  7
           If desdevector > desde Or hastavector < hasta Then ' si se amplia el rango
                Print #1,"entro a redimiensionar vector por octavas"
-               Erase ( Roll.trk)
-               Erase (RollAux.trk)  
+               Erase  Roll.trk, Track(ntk).trk, RollAux.trk  
                desdevector= desde
                hastavector= hasta
                Print #1,"Runtime desde hasta ",desde ,hasta
                Print #1,"Runtime NB NA ",NB ,NA
                ReDim (Roll.trk ) (1 To CantTicks, NB To NA )
+               ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim2)
                ReDim compas(1 To CantTicks)
                ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
+               posn=1
           Else
 
                ReDim Preserve (Roll.trk ) (1 To CantTicks, NB To NA )
                ReDim Preserve compas(1 To CantTicks)
                ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
-                          
+               ReDim preserve (Track(ntk).trk ) (1 To CantTicks,1 To lim2)           
           EndIf
 
           MaxPos = 2 'NroCol
-          posicion=0:posn=0
+          posicion=0
           curpos=1
           notacur=1
           nroCompas=0
@@ -1343,6 +1344,8 @@ CantTicks=4000 ' vuelvo al original default
              nombre = ""
              ntk=ntk+1
           EndIf
+          Print #1,"posn,CantTicks ",posn,CantTicks
+          Print #1,"NB, NA ",NB,NA
           
           Dim As Integer r1,i
           For i=NB To NA 
@@ -1351,7 +1354,8 @@ CantTicks=4000 ' vuelvo al original default
                 Roll.trk(r1,i).dur=0 
              Next r1 
          Next i           
-
+param.Roll = Roll ' por esto reventava al variar octavas se debecargar
+' de nuevo Roll que quedo en rolldec ahora 405
 End Sub
 ' 
 '
@@ -2605,13 +2609,13 @@ Sub velocidades(j As integer)
 End Sub 
 Sub GrabarArchivo ()
 ' GRABA ARCHIVOS CON EXTENSION Y FORMATO *.ROLL
-Dim pl As Integer
+Dim npl As Integer
      If nombre = "" Then ' backup
         nombre = "Backup"+ Date + ".roll"
      Else
-       pl= InStr(UCase(nombre),".TRK") 
-       If pl > 0 Then
-          nombre=Mid(nombre,1,pl-1)
+       npl= InStr(UCase(nombre),".TRK") 
+       If npl > 0 Then
+          nombre=Mid(nombre,1,npl-1)
           Print #1,"un trk grabado como roll",nombre   
        Else
         If InStr(UCase(nombre),".ROLL") = 0 Then

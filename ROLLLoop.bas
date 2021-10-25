@@ -1486,8 +1486,8 @@ If comEdit = TRUE Then
   EndIf
   If MultiKey(SC_t) Then
    tres = 1
-   Exit Do  ' silencio
-   ' indicadorde silencio solo para calculo de compas
+   Exit Do  ' tresillo
+   ' indicadorde tresillo solo para calculo de compas
   EndIf
 
   If MultiKey(SC_CONTROL) And MultiKey(SC_DELETE) Then
@@ -1651,7 +1651,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 An
     MaxPos=Posn +1 
     pmTk(ntk).posn=posn
     pmTk(ntk).MaxPos=MaxPos
-    pmTk(ntk).notaold=CUByte(notaold)
+
 
 '--- AUMENTO DE CAPACIDAD DEL VECTOR EN 1000 POSICIONES 
     If CantTicks - MaxPos < 120 Then
@@ -1750,6 +1750,7 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 An
    Next i
 
    notaOld=nota
+   pmTk(ntk).notaold=CUByte(notaold)
    'Print #1,"carga notaold";notaold
    estoyEnOctavaOld=estoyEnOctava
    
@@ -1933,6 +1934,8 @@ EndIf
 ' al cargar acorde notan cambiara de 2 a 12
   If  MaxPos > 1 Then
    ' crearsecuencia(track(ntk).trk(), posn,ntk) habilitar cuadno todo ande bie
+   ' en pausa secuecnia seria un pasopara crear un archivo midi de 1 track
+   ' o crear un [[[play mas sencillo]] y rapido
   EndIf 
  Exit Do 'kkkk 30-01-21 probando
 EndIf
@@ -2916,7 +2919,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
   
  EndIf 
  ' habilitar una octava para edicion con el mouse
- If  mousex > ANCHO -50  Then ' 09-06-2021 para que nochoque con boton EDIT
+ If  mousex > ANCHO3div4  Then ' 09-06-2021 para que nochoque con boton EDIT
        octavaEdicion=estoyEnOctava
  EndIf
  If comedit=TRUE Then
@@ -2929,8 +2932,11 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    EndIf 
  EndIf 
  ''
-' SELECCION DE ZONA PARA TRASPONER VOLUMEN INSTRUMENTO ETC ETC
-' SOLO SELECCIONO PASO DESDE HASTA y/o NOTA
+' SELECCION DE ZONA PARA TRASPONER, VOLUMEN, INSTRUMENTO, ETC ETC
+' SOLO SELECCIONO PASO DESDE HASTA y/o NOTA. 
+' usaremos tambien (en desarrollo futuro) para borrar un intervalo ya sea de 
+' la octava elegida o todas las octavas o desde una nota hasta otra ....¿?
+' clave DEVF (desarrollo futuro)
   If MultiKey(SC_CONTROL) And MouseButtons And 1 Then
      Dim As Integer pasox, pasoy, pasonR
      pasox=(mousex- gap1 )/anchofig  + posishow  

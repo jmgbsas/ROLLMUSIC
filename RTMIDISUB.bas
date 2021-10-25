@@ -699,7 +699,7 @@ Sub playAll(Roll As inst) ' play version 2
 ' PLAY masavanzado en un mismo acorde si son de distinta duracion
 ' sus notas se toca cada una con su propia duracion,el corde no termina
 ' hasta queterminede tocar la nota mas larga.
- 
+' TIENE DEFECTO A CORREGIR 24-10-2021 MANTENER-UNA-NOTA-Y-TOCAR-OTRA 
 fueradefoco=1
 
 Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0

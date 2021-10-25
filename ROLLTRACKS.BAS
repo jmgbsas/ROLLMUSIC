@@ -609,4 +609,102 @@ Function doscifras (NTK As Integer) As String
   doscifras=cifra
 End Function
 '
- 
+Sub PlayCancion(Track As sec)
+fueradefoco=1
+Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
+tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
+Dim nombre As ZString ptr
+Dim As Integer i1,i2,i3,i4,i5,j ,comienzoDeLoop=0
+Dim As Integer comienzo=1, final=MaxPos,  canal=0,vel=100,velpos =0
+' canal 0 es el 1 van de 0 a 15
+Dim pasoCol (0 To 128) As vec  ' entrada de durciones a medida que barro una columna
+Dim As Double start
+Dim as Integer cnt=0, cntold=0,cpar=0,dura=0,duraOld=0,nj, durj,tiempoFiguraSig
+Dim As Integer liga=0,notapiano=0,old_notapiano=0, iguales=0, distintos=0
+Dim leng As UInteger <8>
+Dim result As Integer
+
+jply=0:curpos=0
+mousex=0
+' Print #1,                    "-----------------------------------------"
+comienzo=posicion
+cntold=0
+If pasoZona1 > 0 Then
+ comienzo=pasoZona1
+EndIf
+
+If pasoZona2 > 0 Then
+ final=pasoZona2
+EndIf
+
+For jply=comienzo To final
+
+ If Roll.trk(1,NA).inst > 0 And jply=1 Then
+       ChangeProgram ( Roll.trk(1,NA).inst , 0)
+ EndIf
+
+kNroCol= Int(jply/NroCol)
+If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < MaxPos)Then
+   posicion=jply
+   curpos=0
+EndIf
+
+ mousex=jply
+ If CONTROL1 = 1 Then
+   alloff( 1 )
+   CONTROL1=0
+   Exit For
+ EndIf  
+
+ If Compas(jply).nro = -1 Then
+    velpos=vfuerte
+ EndIf
+ If Compas(jply).nro = -2 Then
+    velpos=vdebil
+ EndIf
+ If Compas(jply).nro = -3 Then
+    velpos=vsemifuerte
+ EndIf
+ If Compas(jply).nro = -4 Then
+    velpos=vdebil
+ EndIf
+ If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
+    velpos=vdebil
+ EndIf
+   
+' ojo con silencios ligados !!!
+  cnt=0
+  iguales=0
+  distintos=0
+ ' Print #1,"---START-----paso:";jply;" --------------------------------"
+  '115 a 0
+  ' recorre una posicion vertical
+  ' envio de instrumetno o CAMBIO de PROGRAMA PATCH 
+' CON VARIAS PISTAS DE DIFERENTES NB Y NA DEBO ELEGIR EL NB MAS CHICO 
+' Y EL NA MAS GRANDE POR DEFAULT TOMAREMOS NB=1 NA=7 ¿?  
+  ' ============================== 18-08-2021 funciono!!!!
+'  For i1=NB To NA ''Step -1 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+next
+
+End Sub 

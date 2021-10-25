@@ -22,6 +22,17 @@
 ' por cada funcoin el default total es 1024k, -t 1024 no haria falta colocarlo
 ' en la linea de comando
 ' https://gcc.gnu.org/onlinedocs/gnat_ugn/index.html#SEC_Contents
+'====> clave DEVF (desarrollo futuro, comentarios en lugares apr adessarrollar mas
+' funcionalidades.)
+' -------------------------------------------------
+' TAREAS PENDIENTES AL 24-10-2021
+' HAY QUE PROBAR TODAS LAS FUNCIONES DE EDICION DESPUES DE TANTOS CAMBIOS 
+' EN CANCION TRACKS MAXPOS POSN ETC ETC, CREAR CANCION NUEVA, USARLA MODIFICARLA
+' DE TODAS LOS MODOS POSIBLES.GRABARLA VOLVERLA A CARGAR ETC..24-10-2021.
+' CREAR PLAYTRACKS PARA EL PLAY SIPMULTANEO DE TODA AL CANCION CON OPCION 
+' A PONE MUDO UN TRACK O PISTA. PODRIAMOS AGREGAR UNA OPCION DE EDITAR O NO A
+' C/PISTA.CHECKS=MUTE/PLAY, EDIT/LOCK. -> 2 RADIO BUTTON PARA C/PISTA
+ 
 #define WIN_INCLUDEALL
 #Include Once "windows.bi"
 #Include Once "/win/commctrl.bi"
@@ -263,8 +274,8 @@ param.ubirtk=ubirtk
 Dim  AS Integer  ctres=1 ' 5 octavas por track
 Dim As Integer lim1 
 lim1=1
-ReDim (Track(0).trk ) (1 To CantTicks,1 To lim2)
-ReDim (Track(1).trk ) (1 To CantTicks,1 To lim2)
+ReDim (Track(0).trk ) (1 To CantTicks,1 To lim2) ' lo usa instancia sin cancion
+ReDim (Track(1).trk ) (1 To CantTicks,1 To lim2) ' lo usa sin instancia
 ReDim (Track(2).trk ) (1 To Ctres,1 To lim1)
 ReDim (Track(3).trk ) (1 To ctres,1 To lim1)
 ReDim (Track(4).trk ) (1 To ctres,1 To lim1)
@@ -511,7 +522,12 @@ End If
 
 'AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS
 
-' opengl funciona bein futuro usar opnegl
+' opengl funciona bien, en futuro usare opnegl para otro roll grafico adicional
+' o cambiar el actual. Tal vez para mostrar un roll comun de barras horizontales
+' al grabar midi desde teclado (muchos meses adelante ja, 
+' ideas sobran tiempo no hay y organizar el codigo de a poco optimizarlo
+'usar listas enlazadas ? podria ser, faltaria ahcer un prototipo a ver si es
+'rapido o no ventajas y desventajas o hacer un mix com arrays)
 /'
 sub FramebuffersizefunCB GLFWCALLBACK (win As GLFWwindow ptr, w as long, h as long)
   'print "FramebuffersizefunCB " & w & " x " & h
@@ -561,12 +577,17 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
     ''abrirRoll=2 ' roll ya abierto
     Sleep 100 ' sin este retardo no le da teimpo al thread de cargar a Roll
     ' y CargarPistasEnCancion no puede cargar proque no hay Roll
+    ' QU EPSA SI LLAMO  VECES??
+''no se lo banca     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p2))
   EndIf
   If cargaCancion=1 Then
      CANCIONCARGADA=FALSE
      CargarPistasEnCancion ()
      CANCIONCARGADA=TRUE
      cargaCancion=0
+  Else
+    CANCIONCARGADA=FALSE
+    cargaCancion=0   
   EndIf
      
   If ix < 3 Then 
@@ -584,10 +605,9 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
        Case EventMenu 
          Select case EventNumber
             Case 1006   ' CARGAR CANCION
-             '1ero cargamos a roll sino cancela y luego cargamso todos los tracks
-             ' ok anda bien, ahroa debo permutar entre track sin neecsidad
-             ' de cargarlos desde disco haciedno click en la lista
-             ' o pulsando el Tabulador + otr key¿?
+             'cargamso todos los tracks
+             ' ok anda bien, una vez cagados se permuta en memoria con TAB
+             ' o haciedno click en la lista
              If NombreCancion > "" And cargaCancion=0 Then
                 NombreCancion = ""
                 ResetAllListBox(3)
@@ -607,14 +627,11 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
              EndIf
 
              Print #1,"termino 1006 va a abrir Roll"
-             ''GrabarRollaTrack(1,1) ' se usa solo como dir y carga de tracks 
-             ' en la lista y en los track o pistas correspondientes
  
             Case 1011 ' graba pista en edicion en la cancion
             Print #1,"entro a 1011 en elmenu" '' jmg probar es nuevo...
  ' copiamos logica Rolla Track 
             Print #1, "Click Grabando a disco Roll a Track ",nombre
-      '''' dialogoText("Grabar Archivo")
             Dim As String nombreg
             If nombre = "" Then
                getfiles(file,myfilter,"save")
@@ -628,6 +645,8 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
            EndIf
 ''''       grabaprueba()
 ' por ahroa todo RollaTRack graba con [0] adelante. s epodra cambiarlo en futuro
+' ya cambio en cancion se graba lso track numerados de 1 a 32, track 0 solo se usa en 
+' instancia separada el viejo roll aislado, usa roll y tack 0
            If NombreCancion > ""  Then 
               GrabarRollaTrack(1,1)
            Else    
@@ -644,7 +663,12 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
             Case 1028 ' seleccion octavas menores a 1 9 
                seloctava (desde, hasta)
                *po = hasta -1
-                Nuevo(Roll,1 )
+                posn=1
+                Nuevo (Roll,1 )
+                param.ubiroll=ubiroll
+                param.ubirtk=ubirtk
+
+                posn=0
             Case 1040 ' seleccion de instrumento por orden Alfabetico
                selInstORdenAlfa (instru)
                ChangeProgram ( CUByte (instru) , 0)
@@ -655,13 +679,15 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                ChangeProgram ( CUByte (instru) , 0)
                Roll.trk(1,NA).inst= CUByte(instru)
             Case 1060 ' crea track y reemplaza al existente en la edicion
-               If ntk=0 Then  ' no se cargo ningun track
-                  *po = hasta -1
-                  Nuevo(Roll,1 )
+               'If ntk=0 Then  ' no se cargo ningun track
+               '   *po = hasta -1
+               '   posn=1
+               '   Nuevo(Roll,1 )
+               '   posn=0
                   instruOld=instru
                   Roll.trk(1,NA).inst= CUByte(instru)
                   ChangeProgram ( CUByte (instru) , 0)
-               EndIf   
+               'EndIf   
                If abrirRoll=0 Then
                   abrirRoll=1
                   If reiniciar=1 Then
