@@ -133,7 +133,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
 ' en ctrl-m borra todo de una!! implementarlo...        
          If cursorVert=1 Then  
             If (espacio = semitono +1 ) And ((n - inicioDeLectura)=curpos)  Then
-               Roll.trk (n,11-semitono + (*po) * 13 ).dur = 181
+               Roll.trk (n,11-semitono + (*po-1) * 13 ).dur = 181
                If fijarEspacio=0 Then
                   espacio=0
                EndIf
@@ -154,7 +154,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
     cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono+1 ) * inc_Penta - 4)
     Dim As Integer indf
   '  Print #1,"lugar ",12
-    indf= Roll.trk (n, 11- semitono + (*po -1) * 13).dur
+    indf= Roll.trk (n, 11- semitono + (*po-1) * 13).dur
   '  Print #1,"lugar ",13
     If (indf >= 1 And indf <= 182)  Then ' 13-05-2021 11
     Else
@@ -169,7 +169,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
  ' ' jmg 11-05-2021 1839 start
     If  n=jply And ( play =1 Or playb=1 ) Then
         
-      ShowNroCol= Int(n/posishow)
+      ShowNroCol= Int(n/posishow) 
       If ShowNroCol = 0 Then
          curpos= n  - 1 
       Else
@@ -342,8 +342,10 @@ If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
   EnOctava=1
   ' CURSOR
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
-  If cursorHori=1 And cursorVert=1 Or play=1 Or playb=1 Then
-      cursor(c,posicion,nro,Roll) 
+  ' Or (cursorHori=2 And cursorVert=2 paa hbilitar ctrl-N
+  If cursorHori=1 And cursorVert=1 Or play=1 Or playb=1  Then
+      cursor(c,posicion,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos 
+      ' se ilumina en posicion 0 
   EndIf
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
   'PERO PIERDO EL COLOR MARILLO DEL CURSOR
@@ -352,7 +354,7 @@ If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
  EndIf
  If ((Penta_y + 12 * inc_Penta) <= mousey) And ((Penta_y + 14 * inc_Penta) >= mousey) Then
   EnOctava = 0
-  estoyEnOctava=90 'praque esto ????jmg
+  estoyEnOctava=90 
  EndIf
  *po = *po -1
  If *po = desde -1 Then  ' 22-09-2021 < estaba mal es = ej 4 a 8 -> 4-1=3 ya ejecuto la 3 me voy 
@@ -1240,7 +1242,11 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
   '    Print #1,"SPACE call play"
         If  MaxPos > 1 Then 
          '''Dim tlock As Any Ptr = MutexCreate()
-         thread1 = ThreadCall  playAll(Roll)
+         If CANCIONCARGADA Then
+            thread1 = ThreadCall  playCancion(Track())
+         Else
+            thread1 = ThreadCall  playAll(Roll)
+         EndIf
          '''MutexDestroy tlock
          '''playAll(Roll)
         EndIf   
@@ -2432,10 +2438,9 @@ If (ScreenEvent(@e)) Then
  
  
  '-------------------------------------END SCREENEVENT ----------
-'10-10-2021 tratamso de evitar flickr porel mous edurante la caga de cancion
-If cargaCancion=0 Then '10-10-2021 tratamso de evitar flickr
- GetMouse mouseX, mouseY, , MouseButtons   ' <=======  CLICK EVENTOS
-EndIf 
+ If cargacancion=0 Then ' evita flickr por carga de cancion
+   GetMouse mouseX, mouseY, , MouseButtons   ' <=======  CLICK EVENTOS
+ EndIf
  If (mouseY >= edity1 ) And (mouseY <= edity2) Then
   If (mouseX >= 36) And (mouseX <= 70) And (menuNew=2 Or menuNro=2)  Then
   ' =====> EDIT <===
@@ -3007,6 +3012,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
     indicePos=(mousex- gap1 )/anchofig + posishow
     moverZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
     moverZonaRoll(indicePos,Roll)
+   ''' curpos=posishow-1 ' 26-10-2021 jmg
     Exit Do
  EndIf 
 

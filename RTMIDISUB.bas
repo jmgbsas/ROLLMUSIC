@@ -180,7 +180,7 @@ If pasoCol(1).DUR >= 91 And pasoCol(1).DUR <=180  Then 'liga OFF DESPUES
 '   Print #1,"NoteSimple acum pasoCol(1).tiempoFiguraOld ";pasoCol(1).tiempoFiguraOld
 Else
 '   Print #1,"pasoCol(1).liga ", pasoCol(1).liga
-    If ligaglobal=0 Then 
+    If ligaglobal=0 Then '?????????? 
 '  Print #1,"envio on pasoCol(1).notapiano, vel ,canal " , pasoCol(1).notapiano, vel ,canal
        old_time_on=Timer
        noteon	 pasoCol(1).notapiano, vel ,canal
@@ -346,7 +346,6 @@ Next i1
 
 
 End Sub 
-
 
 Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As Double,Roll As inst)
 
@@ -557,7 +556,6 @@ limpiarLigaduras (cnt,pasoCol())
 
 End Sub
 
-
 Sub AcordeOffDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte,canal As UByte,tiempoDUR As Double)
 ' si hay en cadena varios acordes y notas simples ligados
 ' el 1er acorde da el old_time_on, luego se suma toda su duracion
@@ -575,20 +573,20 @@ For i1=1 To coff 'reemplazo CNT 20-06-2021 JMG
  ' " .liga:";pasoCol(i1).liga;" old_time:";pasoCol(i1).old_time    
 Next i1
 
-'Print #1,"SORT POR tiempoFigura calculado en playAll" 
-'For i1=1 To coff
- ' print #1,"AOFFD:antes Sort Fig, DUR notapiano ";pasoCol(i1).Dur;" ";pasoCol(i1).notapiano;" ";pasoCol(i1).tiempoFigura 
-'Next i1
+Print #1,"SORT POR tiempoFigura calculado en playAll" 
+For i1=1 To coff
+  print #1,"AOFFD:antes Sort Fig, DUR notapiano ";pasoCol(i1).Dur;" ";pasoCol(i1).notapiano;" ";pasoCol(i1).tiempoFigura 
+Next i1
    qsort(@pasoCol(1).tiempoFigura, cnt, SizeOf(vec), @QCompare )
-'For i1=1 To coff
-'  print #1,"AOFFD:deespues sort DUR notapiano fig";pasoCol(i1).Dur;" ";pasoCol(i1).notapiano;" ";pasoCol(i1).tiempoFigura 
-'Next i1   
+For i1=1 To coff
+  print #1,"AOFFD:deespues sort DUR notapiano fig";pasoCol(i1).Dur;" ";pasoCol(i1).notapiano;" ";pasoCol(i1).tiempoFigura 
+Next i1   
 '-----------------------------------------
-'print #1,"====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene"
-'For i1=1 To coff 'CNT 20-06-2021 JMG
- ' print #1,"DUR:";pasoCol(i1).DUR;" ";"notepiano:";pasoCol(i1).notapiano;figura(pasoCol(i1).DUR); _
- ' " .liga:";pasoCol(i1).liga;" old_time:";pasoCol(i1).old_time    
-'Next i1
+Print #1,"====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene"
+For i1=1 To coff 'CNT 20-06-2021 JMG
+  print #1,"DUR:";pasoCol(i1).DUR;" ";"notepiano:";pasoCol(i1).notapiano;figura(pasoCol(i1).DUR); _
+  " .liga:";pasoCol(i1).liga;" old_time:";pasoCol(i1).old_time    
+Next i1
 
 ' ---------------------------------------
 Dim As Double tiempoFigura
@@ -663,7 +661,7 @@ pasoCol(i1).liga=0
 
              ' Print #1,"AOFFD:NO SE ENVIA OFF TF=0"
               pasoCol(i1).liga=1 '13-06-2021 PARA QU ESIGA EN EL OTRO PASO SI NO SE BORRA....
-              pasoCol(i1).tiempoFiguraOld=pasoCol(i1).tiempoFigura ' 13
+              pasoCol(i1).tiempoFiguraOld= pasoCol(i1).tiempoFigura ' 13
               pasoCol(i1).tiempoFiguraOld= pasoCol(i1).tiempoFiguraOld '- tiempoFigMayorNoligado
              ' Print #1,"AOFFD:pasoCol(i1).tiempoFiguraOld:";pasoCol(i1).tiempoFiguraOld ' 13
            EndIf  
@@ -684,6 +682,8 @@ Next i1
  
 End Sub
 
+
+
 Sub AcordeDistintos (pasoCol() As vec, cnt As UByte, cntold As UByte,vel As UByte,canal As UByte,tiempoDur As Double,Roll As inst ) 
 ' Hay notas de sitinta duracion, cnt cantidad de notas
 Dim i1 As UByte
@@ -692,14 +692,13 @@ AcordeOffDistintos pasoCol(), cnt , cntold ,canal,tiempoDur
 
 
 End Sub
-
 '-------------playAll-----21-05-2021-------
 Sub playAll(Roll As inst) ' play version 2
 ' tiempo es cuantas negras en un minuto tiempoPAtron
 ' PLAY masavanzado en un mismo acorde si son de distinta duracion
 ' sus notas se toca cada una con su propia duracion,el corde no termina
 ' hasta queterminede tocar la nota mas larga.
-' TIENE DEFECTO A CORREGIR 24-10-2021 MANTENER-UNA-NOTA-Y-TOCAR-OTRA 
+ 
 fueradefoco=1
 
 Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
@@ -960,6 +959,7 @@ out_free(midiout)
 ThreadDetach(thread1) 'JMG REPONER !!!!
 ' ================================FIN PLAYALL <<=================
 End Sub 
+
 ' ---------------
 '' Comparison function for qsort
 Function QCompare Cdecl (Byval e1 As Any Ptr, _
@@ -1094,7 +1094,7 @@ mousex=0
 For jply=comienzo To final
 Print #1,"-----------------------------------------"
  If curpos > NroCol  Then
-    curpos = 1
+    curpos=0
     posishow=0
  EndIf
 

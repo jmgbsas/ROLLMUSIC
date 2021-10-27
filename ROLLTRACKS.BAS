@@ -101,10 +101,10 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As integer)
         hasta=pmTk(ntk).hasta
         MaxPos=pmTk(ntk).MaxPos
         notaOld=pmTk(ntk).notaold
-        posn=MaxPos -2
+        posn=MaxPos -1
         If posn< 0 Then posn=0 EndIf
         posicion=0
-        curpos=1
+        curpos=0
         CantTicks=pmTk(ntk).Ticks
      EndIf
      ' configuro el track receptor
@@ -143,13 +143,13 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As integer)
      cerrar (ct)
 
      DUR => 0
-     curpos =>0
+     curpos =>1
 
      '''''ReCalCompas(Roll) '''No es vEctor de Visualizacion      
 
       Print #1,"CargarTrack  fin"  
       print #1,"----------------------------------------------" 
-      Sleep 100
+ Sleep 100 ' retardo para que se ubiquen lso datos en memoria ¿? parece necesario
 End Sub
 ' ----------------------------------
 Sub GrabarRollaTrack (cambiaNombre As Integer, enCancion As Integer)
@@ -571,7 +571,7 @@ EndIf
 
 
 '--------------------------------Track(0) fin
-curpos=1
+curpos=0
 notacur=1
 nroCompas=0
 tres=0:pun=0:sil=0:mas=0:doblepun=0:cuart=0
@@ -609,102 +609,260 @@ Function doscifras (NTK As Integer) As String
   doscifras=cifra
 End Function
 '
-Sub PlayCancion(Track As sec)
+Sub PlayCancion(Track() As sec)
 fueradefoco=1
-Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
+Dim As Double tiempoDUR
 tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
 Dim nombre As ZString ptr
-Dim As Integer i1,i2,i3,i4,i5,j ,comienzoDeLoop=0
+Dim As Integer i1,i2,pis,K
 Dim As Integer comienzo=1, final=MaxPos,  canal=0,vel=100,velpos =0
 ' canal 0 es el 1 van de 0 a 15
-Dim pasoCol (0 To 128) As vec  ' entrada de durciones a medida que barro una columna
+' pasoCol debe ser de 2 dimensiones 1 para c/pista, 115 el amxio de octavas
+' ojo si cambioaamos por mas octavas debo cambiar, igual el nro de tracks 32 
+Dim pasoCol (0 To 384) As vec  ' entrada de durciones a medida que barro una columna
+
 Dim As Double start
 Dim as Integer cnt=0, cntold=0,cpar=0,dura=0,duraOld=0,nj, durj,tiempoFiguraSig
 Dim As Integer liga=0,notapiano=0,old_notapiano=0, iguales=0, distintos=0
 Dim leng As UInteger <8>
-Dim result As Integer
+Dim As Integer result,limsup
 
-jply=0:curpos=0
-mousex=0
+' tope es la maxima capacidad de tracks usada , lso tracks son contiguos
+' si se borra un track queda sin usar eso hay que verlo...
+' por ahora solo proceso los que tengan lim2 o si llegamos a tope 
+  jply=0:curpos=0
+  mousex=0
 ' Print #1,                    "-----------------------------------------"
-comienzo=posicion
-cntold=0
-If pasoZona1 > 0 Then
- comienzo=pasoZona1
-EndIf
+  comienzo=posicion
+  cntold=0
+  If pasoZona1 > 0 Then
+    comienzo=pasoZona1
+  EndIf
 
-If pasoZona2 > 0 Then
- final=pasoZona2
-EndIf
+  If pasoZona2 > 0 Then
+    final=pasoZona2
+  EndIf
 
-For jply=comienzo To final
 
- If Roll.trk(1,NA).inst > 0 And jply=1 Then
-       ChangeProgram ( Roll.trk(1,NA).inst , 0)
- EndIf
 
-kNroCol= Int(jply/NroCol)
-If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < MaxPos)Then
-   posicion=jply
-   curpos=0
-EndIf
 
- mousex=jply
- If CONTROL1 = 1 Then
-   alloff( 1 )
-   CONTROL1=0
-   Exit For
- EndIf  
-
- If Compas(jply).nro = -1 Then
-    velpos=vfuerte
- EndIf
- If Compas(jply).nro = -2 Then
-    velpos=vdebil
- EndIf
- If Compas(jply).nro = -3 Then
-    velpos=vsemifuerte
- EndIf
- If Compas(jply).nro = -4 Then
-    velpos=vdebil
- EndIf
- If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
-    velpos=vdebil
- EndIf
-   
-' ojo con silencios ligados !!!
-  cnt=0
-  iguales=0
-  distintos=0
  ' Print #1,"---START-----paso:";jply;" --------------------------------"
   '115 a 0
   ' recorre una posicion vertical
   ' envio de instrumetno o CAMBIO de PROGRAMA PATCH 
-' CON VARIAS PISTAS DE DIFERENTES NB Y NA DEBO ELEGIR EL NB MAS CHICO 
-' Y EL NA MAS GRANDE POR DEFAULT TOMAREMOS NB=1 NA=7 ¿?  
-  ' ============================== 18-08-2021 funciono!!!!
-'  For i1=NB To NA ''Step -1 
+' Esto es play de pistas el limite de barrido es 1 a 12 siempre en c/pista  
+' debo hcer un for para cada pista, en cada psita ver si esta mute o play
+' ajustar el instrumento de la pista cada vez que cambie la pista.
+'-----------------------------------
+' cambio de inst por track por ahora....
+'--------------------
+   If Track(pis).trk(1,lim2).inst > 0 And jply=1 Then
+       ChangeProgram ( Track(pis).trk(1,lim2).inst , 0)
+   EndIf
+   If Roll.trk(1,NA).inst > 0 And jply=1 Then
+       ChangeProgram ( Roll.trk(1,NA).inst , 0)
+   EndIf
 
 
 
+For jply=comienzo To final
+' cambio de inst para la pista, podria poner mas de un instrumento por pista
+' o por cada nota.. 
+' VER DE PONER LOS INSTRUMENTOS EN TRACK  
+kNroCol= Int(jply/NroCol)
+   If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < pmTk(pis).MaxPos)Then
+     posicion=jply
+     curpos=0
+   EndIf
+
+   mousex=jply
+   If CONTROL1 = 1 Then
+      alloff( 1 )
+      CONTROL1=0
+      Exit For
+   EndIf  
+
+   If Compas(jply).nro = -1 Then
+     velpos=vfuerte
+   EndIf
+   If Compas(jply).nro = -2 Then
+      velpos=vdebil
+   EndIf
+   If Compas(jply).nro = -3 Then
+      velpos=vsemifuerte
+   EndIf
+   If Compas(jply).nro = -4 Then
+      velpos=vdebil
+   EndIf
+   If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
+      velpos=vdebil
+   EndIf
+   cnt=0
+   iguales=0
+   distintos=0
+
+ For pis =1 To 32 ' loop de pistas
+    limsup=UBound (Track(pis).trk,2)
+    If limsup < lim2 Then
+          Exit For 
+    EndIf  
+    If pis > tope Then
+       Exit For
+    EndIf
+  '''final=pmTk(pis).MaxPos
+
+      
+' ojo con silencios ligados !!!
+
+' limites para cada pista NB,NA 
+   NB = 0  + (pmTk(pis).desde -1 ) * 13 
+   NA = 11 + (pmTk(pis).hasta -1 ) * 13 
+   
+   For i1=1 To lim2  
+
+     If (Track(pis).trk(jply,i1).nota >= NB) And (Track(pis).trk(jply,i1).nota <= NA) And (Track(pis).trk(jply,i1).dur >=1) And (Track(pis).trk(jply,i1).dur <= 180) Then ' es semitono
+         Notapiano = Track(pis).trk(jply,i1).nota
+'       Print #1,"VEO LO CORRECTO DE NOTAPIANO "; Notapiano
+         dura=Track(pis).trk(jply,i1).dur ' el dur de track esta en integer
+'      Print #1,"jply ";jply; "dura ";dura
+         cnt=cnt+1
+   '   Print #1,"paso ";jply;" cnt ";cnt;" notapiano "; Notapiano
+        If cnt=1 Then 
+           duraOld=dura
+        
+          If ligaglobal=1 Then
+            For i2=1 To cntold
+                pasoCol(i2).DUR =181
+'                pasoCol(i2).liga=0
+                pasoCol(i2).tiempoFigura =0
+'                pasoCol(i2).old_time=0
+            Next i2
+         EndIf
+       EndIf
+       If duraOld=dura  Then
+          iguales=1
+    '     Print #1,"cnt ";cnt;" iguales ";iguales
+       Else
+          distintos=1
+    '     Print #1,"cnt ";cnt;" distintos ";distintos
+       EndIf         
+      If ligaglobal =0 Then 
+     '    Print #1,"ligaglobal es cero ****"   
+      '  Print #1,"-> cnt"; cnt 
+         pasoCol(cnt).DUR =dura
+       '  Print #1,"pasoCol(cnt).DUR ", pasoCol(cnt).DUR 
+         pasoCol(cnt).notapiano=Notapiano 
+         pasoCol(cnt).tiempoFigura=relDur(pasoCol(cnt).DUR) * tiempoDur * 100000000000
+         pasoCol(cnt).i1 = i1 'posicion vertical en el vector real
+      ' 20-06-2021 eliminado duraold=dura repetido    
+         vel= vol( dura, velpos)
+      Else
+       '  Print #1,"ligaglobal es uno *****"
+         If dura >= 91 And dura <=180 Then
+            For i2=1 To cntold
+                If Notapiano  = pasoCol(i2).notapiano Then
+        '           Print #1,"Notapiano de liga igual "; Notapiano
+                   pasoCol(i2).DUR =dura
+         '          Print #1,"pasoCol(i2).DUR "; pasoCol(cnt).DUR 
+                   pasoCol(i2).notapiano=Notapiano 
+                ' tiempofigur aya calculado
+        '           Print #1,"tiempofigura anterior ";pasoCol(i2).tiempoFiguraOld
+                   pasoCol(i2).tiempoFigura=pasoCol(i2).tiempoFiguraOld       
+        '           Print #1,"pasoCol(i2).i1 ";pasoCol(i2).i1
+        '           Print #1," i1 debe ser igual al anterior:"; i1       
+                   pasoCol(i2).i1 = i1 'posicion vertical en el vector real es igual
+                   vel= vol( dura, velpos)
+               EndIf    
+            Next i2
+         Else
+                   pasoCol(cnt).DUR =dura
+         '          Print #1,"pasoCol(cnt).DUR "; pasoCol(cnt).DUR 
+                   pasoCol(cnt).notapiano=Notapiano 
+                ' tiempofigur aya calculado
+                   pasoCol(cnt).tiempoFigura=relDur(pasoCol(cnt).DUR) * tiempoDur * 100000000000       
+                   pasoCol(cnt).i1 = i1 'posicion vertical en el vector real es igual
+                   vel= vol( dura, velpos)
+         EndIf
+      EndIf
+' llegamos al final de la Columna
+
+     EndIf
+   ' i1=1
+     If i1=lim2  And (pis = tope Or pis=32) Then
+ 
+        If cnt > 1 Then' Acorde
+   '       Print #1,"i1=NB=";i1 ; " ACORDE cnt= ";cnt
+        Else    
+    '       Print #1,"i1=NB=";i1 ; " SIMPLE cnt= ";cnt
+        EndIf  
+        Select Case cnt
+          Case 1 
+           ' con y sin liga
+           ' INCLUYE LIGADOS O NO LIGADOS
+ Print #1, "CALLL A NOTESIMPLE cntold, vel, canal, tiempodur",  cntold, vel, canal,tiempoDur
+            noteSimple  pasoCol(), cntold, vel, canal,tiempoDur
+                     
+          Case Is > 1
+
+            If iguales=1 And distintos=0  Then
+               For i2=1 To cnt
+                 pasoCol(i2).tiempoFiguraOld=0
+               Next i2
+
+  '              Print #1,"cnt ";cnt;" Acordeiguales "
+                AcordeIguales pasoCol(),cnt,cntold,vel,canal,tiempoDur,Roll
+                
+            EndIf
+            If  distintos=1 Then
+  '             Print #1,"cnt ";cnt;" AcordeDistintos"
+                AcordeDistintos pasoCol(),cnt, cntold,vel,canal,tiempoDur,Roll
+                
+            EndIf
+            
+         End Select  
+
+        cntold = cnt
+  '      Print #1,"cnt,cntold"; cnt;" ";cntold
+  
+     EndIf 
+   Next i1
+'  Print #1,"---FIN -----paso:"; jply;" --------------------------------" 
+'  Print #1,"COMIENZA OTRA  POSICION O J ======"; j
+ mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
+ If playloop=1 And jply= final Then
+    jply=comienzo -1
+    'posicion=comienzo
+ EndIf
+ tiempoDUR=60/tiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
+
+  Next pis   
+
+Next jply
+
+
+posicion=comienzo
+'posishow=posicion + 20
+'posishow=posicion - 20
+'posicion=posicion -20
+ 
+jply=0:curpos=0
+' 11-06-2021 se volvio a colocar 1 seg retardo para no escuchar un corte abrubto
+' al final, por ahroa no parpadea mas veremos.... 
+play=0 
+playb=0
+mousey=100 'otra mas para evitar rentrar a play en menu
+finplay=1
+
+mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
+fueradefoco=0
+
+Sleep 100,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
+/'
+close_port(midiout)
+out_free(midiout)
+'/ 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-next
-
+ThreadDetach(thread1) 'JMG REPONER !!!!
 End Sub 

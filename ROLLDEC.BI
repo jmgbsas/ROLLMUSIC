@@ -108,7 +108,7 @@ Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
 dim Shared as string cromatica(1 to 12)
-Dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0, cargaCancion=0
+Dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0 ', cargaCancion=0
 Dim Shared As Integer ers, borrapos=0,comienza=0  
 Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
@@ -210,7 +210,7 @@ Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota
 
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen,anchofig,gap1,gap2,gap3
-Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos, curposold, resultado, indicePos
+Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos=0, curposold, resultado, indicePos
 Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 10000000,5000000,2500000,1250000, 625000,312500,156250, 78125,39063, _ '1  9
 12500000,6250000,3125000,1562500, 781250,390625,195313, 97656,48828, _ '10 18
@@ -327,7 +327,7 @@ Declare Sub Tracks (ByRef nroTrack As integer, ByRef nroCanal As UByte, Roll As 
 Dim Shared As Long CONTROL1 = 0
 Dim Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Dim Shared As inst Roll ' para visualizar y tocar
-Dim Shared Track  (0 To 64) As sec ' tracks para guardar,.. y tocar 
+Dim Shared Track  (0 To 32) As sec ' tracks para guardar,.. y tocar 
 
 Dim Shared ix As Integer=0
 Dim Shared titu As String
@@ -413,11 +413,14 @@ Dim Shared  As pasa param ', param2
 #Include "mod_rtmidi_c.bi"    
 '----------------------------
 Dim Shared  As String ProgError(0 To 17)
+Declare Sub PlayCancion(Track() As sec)
+
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA 
 Common Shared As string pathdir
 common Shared As String NombreCancion, NombrePista
-
+Common Shared As Integer cargaCancion
+cargaCancion=0
 
 

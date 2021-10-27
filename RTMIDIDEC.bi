@@ -90,6 +90,7 @@ Type vec
    i1           As Integer
    old_time As integer
 End Type
+Dim Shared pasoCol (0 To 384) As vec
 
 Declare Sub noteon	( note As UByte, vel As UByte,canal As UByte)
 Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal As UByte,tiempoDur As Double)
@@ -102,7 +103,7 @@ Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal
 Declare Function vol (dura As UByte, vel As UByte) As ubyte
 Declare sub noteoff( note As UByte, canal As UByte)
 Declare Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
-Dim Shared ligaglobal  as Integer=0
+Dim Shared As Integer ligaglobal=0 ', ligaglobalc (1 To 32)
 'Relacion de nR indice de Roll, con nE semitono, para evitar calculos.
 Dim Shared As integer relnRnE(0 To 132) => { _  ' indice de Roll vs nota ..semitono
 1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12, _

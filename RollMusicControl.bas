@@ -31,6 +31,8 @@ Common Shared As hwnd hwndC, hwndListBox
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA
 Common Shared As string pathdir
 common Shared As String NombreCancion, NombrePista
+Common Shared As Integer cargaCancion
+
 pathdir=""
 
 dim Shared As String  ProgError(0 To 17)
@@ -268,7 +270,7 @@ NombreCancion = ShellFolder( "Select Folder", "C:\")
 SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + NombreCancion)
 Print #1,"cargarDirectorioCancion ", NombreCancion 
 ' aca NombreCancion contiene el path tambien....
-Sleep 100
+'Sleep 100
 End Sub
 '
 Sub EntrarNombrePista(ByRef NombrePista As String)

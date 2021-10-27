@@ -796,9 +796,9 @@ On Local Error GoTo errorhand
   cairo_move_to  (c, gap1 + (curpos)*anchofig , Penta_y  )
   cairo_line_to  (c, gap1 + (curpos)*anchofig , Penta_y + (notacur-1) * inc_Penta  +inc_Penta )
  
-  RollDur=Roll.trk(n + curpos,12 - notacur + (*po) * 13 ).dur
-  
-  RollNota=Roll.trk(n + curpos, 12 - notacur + (*po) * 13).nota
+  RollDur=Roll.trk(n + curpos,12 - notacur + (*po-1) * 13 ).dur
+
+  RollNota=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota
  EndIf
  If cursorVert= 0 And cursorHori=0 Then
   If notacur=1 Then
@@ -828,8 +828,8 @@ On Local Error GoTo errorhand
   ' debo cambiar esa nota por (equivalente en silencio no va mas
   'para eso entra un silencio) se pone nota cero y dur 0
   
-  Roll.trk(n + curpos, 12 - notacur + (*po) * 13 ).dur = 0
-  Roll.trk(n + curpos, 12 - notacur + (*po) * 13 ).nota = 0
+  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).dur = 0
+  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).nota = 0
   'Roll.trk(notacur + (*po) * 13, n + curpos).dur = dursaved + 16
  ' If Roll.trk(notacur + (*po) * 13, n +curpos).dur > 181 Then
  '  Roll.trk(notacur + (*po) * 13, n +curpos).dur = 181
@@ -843,9 +843,9 @@ On Local Error GoTo errorhand
   ' debo cambiar esa nota por su equivalente silencio
   '1ero se pulsa la nueva duracion y luego la X porque aca se anula luego elflag cambiadur
   'y la dUR debe tener un valor antes de esto
-  If notacur=1 Then  ' 1 PO 0 JMG <- aca ingreso nota aunqne no haya?
-   notacur=notaOld
-  EndIf
+  'If notacur=1 Then  ' 1 PO 0 JMG <- aca ingreso nota aunqne no haya?
+  ' notacur=notaOld   ' ESTO DABA EL LIO DE LA NOTA B 
+  'EndIf
   '  Roll.trk(notacur + (*po) * 13, n + curpos).dur = DUR
   '  vdur=Roll.trk(notacur + (*po) * 13, n +curpos).dur
   '  ' SI LA NOTA  NO EXITIA LA agrega
@@ -863,101 +863,101 @@ On Local Error GoTo errorhand
 
   
  If DUR=181 Then
-     Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = 0
-     Roll.trk(n + curpos, 12 - notacur + (*po) * 13).nota =181   ' 5.7.2
+     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 0
+     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =181   ' 5.7.2
      cambiadur = 0
      DUR=0
  ElseIf DUR=182 Then ' borrado 
-     Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = 182
-     Roll.trk(n + curpos, 12 - notacur + (*po) * 13).nota =181   ' 5.7.2
+     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 182
+     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =181   ' 5.7.2
   '   Print #1,"FINDE SECUENCIA !!"
      cambiadur = 0
      DUR=0
  ElseIf DUR=0 Then ' borrado
-     Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = 190
-     Roll.trk(n + curpos, 12 - notacur + (*po) * 13).nota =190   ' 5.7.2
+     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 190
+     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =190   ' 5.7.2
      cambiadur = 0
      DUR=0
  Else
 'desde aca lasnotas se colocan con notacur siemrpe tienen valorde 1 a 12
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR
   EndIf
  
   If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 9
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 9
   EndIf
  
   If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=0 Then
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 18
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 18
   EndIf
  
   If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=0 Then
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 27
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 27
   EndIf 
  
   If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=0 Then
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 36
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 36
   EndIf
  
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 45
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 45
   EndIf
    
   If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 54
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 54
   EndIf
   If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 63
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 63
   EndIf
   If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=0 Then
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 72
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 72
   EndIf
    
   If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=0 Then 
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 81
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 81
   EndIf   
  
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 90
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 90
   EndIf   
  
   If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 99
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 99
   EndIf 
 
   If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 108
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 108
   EndIf
 
   If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=1 Then 
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 117
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 117
   EndIf
 
   If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=1 Then 
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 126
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 126
   EndIf
 '----- fin 3er bloque   
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 135
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 135
   EndIf   
 
   If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 144
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 144
   EndIf   
 
   If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 153
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 153
   EndIf   
 
   If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=1 Then 
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 162
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 162
   EndIf   
 
   If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=1 Then 
-    Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR + 171
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 171
   EndIf   
-  Roll.trk(n + curpos, 12 - notacur + (*po) * 13).nota = notacur  ' 5.7.2    
+  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur  ' 5.7.2    
  EndIf
 
  '   vroll= Roll.trk(notacur + (*po) * 13, n + curpos).nota
@@ -988,18 +988,18 @@ On Local Error GoTo errorhand
   ' hasta que se pulse FINose alcance el FIN (66)
   ' Print #1, "call a movedato con indaux ",indaux
   ' n es StartInsert fijo no se modifica mas
-  movedato (n + curpos,indaux, insert,notacur + (*po) * 13 ) 'antes de reemplazarlo xxx
+  movedato (n + curpos,indaux, insert,notacur + (*po-1) * 13 ) 'antes de reemplazarlo xxx
  '  Print #1, "regreso de movedato con indaux ",indaux
   ' param : posicion comienzo (fijo), indice incremental para el aux
   ' ,insert comando habilitado = 1
   'luego reemplazo
   ' Print #1, "inserta DUR, en ROLL n,nota,posicion ",DUR,n,(notacur + (*po) * 13),n
-  Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = DUR ' reemplazo con lo nuevo
+  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR ' reemplazo con lo nuevo
   'vdur=Roll.trk(notacur + (*po) * 13, n+curpos).dur
   ' SI LA NOTA  NO EXITIA LA agrega...osea sirve para acordes tambien
   'Print #1, "carga notacur en ROLL n,nota calculada ", n,(notacur + (*po) * 13)
 
-  Roll.trk(n + curpos, 12 - notacur + (*po) * 13).nota = notacur ' 5.7.3
+  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur ' 5.7.3
   'vroll= Roll.trk(notacur + (*po) * 13, n + curpos).nota
   ' TODO IGUAL A cambiadur = 1 deberia andar ,,,,lunica diff es
   ' que se cargala nota en roll,<- pero 1ero debo guardar la nota de Roll en aux
@@ -1014,9 +1014,9 @@ On Local Error GoTo errorhand
  ' ====> MODIFICAR con ctrl-n
  If (cursorHori=2 Or cursorVert = 2) And agregarNota=1  And nota> 0 Then
  
-  Roll.trk(n + curpos, 12-notacur + (*po) * 13).dur = DUR
+  Roll.trk(n + curpos, 12-notacur + (*po-1) * 13).dur = DUR
   ' SI LA NOTA  NO EXITIA LA agrega
-  Roll.trk(n + curpos, 12-notacur + (*po) * 13).nota = nota  ' 5.7.3.4
+  Roll.trk(n + curpos, 12-notacur + (*po-1) * 13).nota = nota  ' 5.7.3.4
    ReCalCompas(Roll) 
    nota=0
  EndIf
@@ -1028,7 +1028,7 @@ On Local Error GoTo errorhand
 '   Roll.trk(notacur + (*po) * 13, n+curpos).dur <= 181 Then
    If cursorHori=1 And vdur=0 And vnota=0 And copiar=1 Then
       vnota=notacur 
-      vdur =Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur  ' 5.7.3
+      vdur =Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur  ' 5.7.3
        copiar=2
    EndIf
 'EndIf
@@ -1037,8 +1037,8 @@ On Local Error GoTo errorhand
 '   Roll.trk(notacur + (*po) * 13, n+curpos).dur   > 180 Then
 If cursorHori=1 And vdur>0 And copiar=3 Then
    If notacur<> vnota And MultiKey (SC_ENTER) Then 
-      Roll.trk(n + curpos, 12 - notacur + (*po) * 13).nota = notacur 
-      Roll.trk(n + curpos, 12 - notacur + (*po) * 13).dur = vdur
+      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur 
+      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = vdur
       copiar=0
       vdur=0:vnota=0
       ReCalCompas(Roll)
@@ -1057,7 +1057,7 @@ EndIf
 ' si hago curpos=0 funciona pero lso cuadraditos no avanzan
 ' ergo salto esto en play y listo deberi aestar condicionado oara edicion eso es
 If cursorHori=1 Then ' 17-09-2021 faltaba condicion de modificacion !! 
-  If copiar=3 And (Roll.trk(n + curpos, 12 -notacur + *po * 13).dur = vdur) And notacur = vnota Then
+  If copiar=3 And (Roll.trk(n + curpos, 12 -notacur + (*po-1) * 13).dur = vdur) And notacur = vnota Then
      copiar=0:vdur=0:vnota=0
   EndIf
 EndIf
@@ -1276,7 +1276,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      Cerrar (ca)
 
      DUR => 0
-     curpos =>0
+     curpos =>1
     ''' carga=0
      ReCalCompas(Roll)      
     ''If Roll.trk(1,NA).
@@ -1320,7 +1320,7 @@ CantTicks=4000 ' vuelvo al original default
 
           MaxPos = 2 'NroCol
           posicion=0
-          curpos=1
+          curpos=0 
           notacur=1
           nroCompas=0
           tres=0:pun=0:sil=0:mas=0:doblepun=0:cuart=0
@@ -1554,22 +1554,20 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 ' 0.5 ===> [Reproducir]
    If MultiKey(sc_Control) AND (mousex > 348 And mousex< 453 And mousey < 50   And play=0) Then
     cairo_set_source_rgba c, 0, 1, 0, 1
-      
      While InKey<>"" :Wend
    '   Print #1,"--->entra a reproducir thread1 "
-              play=1        
-    If (MouseButtons And 1) Then
+              play=1
         menuNew =0
+         Print #1,"hizo click para llamar a playall, maxpos ",maxpos 
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 1 Then
-         
+         Print #1,"llama a playall"
          thread1 = ThreadCall  playAll(Roll)
          ''''playAll(Roll)
          
         EndIf 
    '     Print #1,"--->paso llamada a thread1 "
     ''    menuNew = 4 por hora sin elecciones
-    EndIf
 
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -2049,7 +2047,7 @@ EndIf
      CambiarDim(1)
      MaxPos = 1 'NroCol
      posicion=0:posn=0
-     curpos=1
+     curpos=0
      notacur=1
      nota=0 
      notaOld=0

@@ -771,6 +771,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
               MessBox("","6 Menu")
             Case  1090 
               CPlay=1
+              Dim As Any Ptr thplayC = ThreadCall  playCancion(Track())
             Case  1100
                 usarmarcoOld=usarmarco
                 usarmarco=1
