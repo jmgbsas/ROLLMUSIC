@@ -1155,6 +1155,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
        Else
           nombre=nombrea   
        EndIf
+   Print #1,"CArgarArchivo ",nombre    
    Dim ca As Integer
    ca=FreeFile   
 
@@ -1489,7 +1490,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
  ' loop.....
  t=" "
    Dim muestra As String ' nombre tambien se usa en cancion
-   If NombreCancion > "" And titulos(ntk) > "" Then
+   If NombreCancion > "" And titulos(ntk) > "" And ROLLCARGADO=FALSE Then
       nombre = titulos(ntk)
    EndIf
    If Len(nombre) > 60  Then
@@ -1498,7 +1499,6 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
      muestra =nombre  
    EndIf
    muestra=Str(PianoNota) + " "+ muestra   
-
 
 
  Select Case menuNro
@@ -1743,7 +1743,8 @@ EndIf
          
          Print #1,"carga track veo nombre antes   ",nombre
          CargarTrack (Track() , ntk, 0 )
-         Print #1,"carga track veo nombre despues ",nombre 
+         Print #1,"carga track veo nombre despues ",nombre
+         ROLLCARGADO=TRUE ' NO PERMITOQUE TRACK(0) SE BORRE
          TrackaRoll (Track() , ntk , Roll)
          Print #1,"TrackaRollcarga rtk veo nombre ",nombre 
          RecalCompas (Roll)
@@ -1751,6 +1752,7 @@ EndIf
          MenuNew=0
          carga=1 ' <======= control de Carga 
          TRACKCARGADO=TRUE
+         ROLLCARGADO=FALSE
      Else
          TRACKCARGADO=FALSE    
      EndIf
@@ -1761,11 +1763,12 @@ EndIf
    t = " [*.RTK]":cairo_show_text(c,t)
 
    '===> 3.2.2 [CARPETA]
-
+   ' para cargar cancion o tema habia sido proyectado, podria usarlo
+   ' para que una instancia pueda cargar una cancion..... 
    If mousex > 378 And mousex <  459  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And carga = 0 Then
-      ' CargaTema(...)
+      ' CargaTema(...) o cancion ! lo tenia...
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -1775,14 +1778,10 @@ EndIf
 
    
   '===> 3.3[GRABAR] SC_F11 COPIA
-   ' graba ub roll como roll, un track como track sea o no de cancion
-
-   If (MultiKey(sc_Control) And mousex > 504 And mousex < 573  And mousey < 50  Or _
-         GrabarPistaCancion=1 ) And carga=0 Then ' <=
+' graba el roll a roll y el track a track..
+   If (MultiKey(sc_Control) And mousex > 504 And mousex < 573  And mousey < 50) And carga=0 Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
-     If MouseButtons And 1  Or  GrabarPistaCancion=1     Then
-      ''      Print #1, "Grabando a disco Roll GRABAR "
-      '''' dialogoText("Grabar Archivo")
+     If MouseButtons And 1    Then
        Dim As String nombreg
        Print #1,"EN Grabar nombre ",nombre
        If nombre = "" Then
@@ -1794,16 +1793,16 @@ EndIf
              nombre=nombreg   
           EndIf
        EndIf
-''''       grabaprueba()
-' si el noombre era un rtk se graba como rtk
-' si era roll se graba como roll salvo que el usuario queira convertir nose
-       Dim As Integer ubi1=0,ubi2=0 
+       Dim As Integer ubi1=0,ubi2=0,ubi3=0,ubi4=0 
        Dim As String no1,no2
        ubi1=InStr(nombre,"[")
        ubi2=InStr(nombre,"]")
-       If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
-           GrabarRollaTrack(0,0)
-       Else ' se graba como roll, si se desea eso solo sacar [xx] del nombre
+       ubi3=InStr(nombre,".rtk")
+       ubi4=InStr(nombre,".roll")
+       If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Then 'graba un track como track
+       ' pero como las modificaciones estan en ROLL debo usar rollaTrack 
+           GrabarRollaTrack(0)
+       Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
            GrabarArchivo ()
            
        EndIf
@@ -1862,11 +1861,16 @@ EndIf
           EndIf
        EndIf
 ''''       grabaprueba()
+       Dim As integer esroll, esrtk 
+       esroll=InStr(LCase(nombre),".roll")
+       esrtk =InStr(LCase(nombre),".rtk")        
 ' por ahroa todo RollaTRack graba con [0] adelante. s epodra cambiarlo en futuro
-        If NombreCancion > "" Then
-           GrabarRollaTrack(1,1)
-        Else    
-           GrabarRollaTrack(1,0) ' 1 significa cambiar el formato de nombre de Rool
+        If esrtk >0 Then ' update de un track con o sin cancion
+           GrabarRollaTrack(0)
+        endif  
+        ' convierte roll a track comun le abtepone [00] y rtk al final
+        If esroll > 0 Then ' con o sin cancion
+           GrabarRollaTrack(1) ' el 0 no lo toma es indiferente
         EndIf
         MenuNew=0           ' por formato de TRack anteponiendo[0]
         carga=1
@@ -2607,7 +2611,8 @@ Sub velocidades(j As integer)
 End Sub 
 Sub GrabarArchivo ()
 ' GRABA ARCHIVOS CON EXTENSION Y FORMATO *.ROLL
-Dim npl As Integer
+
+Dim  As Integer npl
      If nombre = "" Then ' backup
         nombre = "Backup"+ Date + ".roll"
      Else

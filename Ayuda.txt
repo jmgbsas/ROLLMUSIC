@@ -30,21 +30,15 @@
         se borra el cargado anteriormente y se reemplaza por uno nuevo vacio.
         Se agrega Menu de Cancion, funciona en modo basico.   
         Esta version Aislada podra crear varios tracks pero solo editar de a uno
-        por vez. Si se quieren más ediciones simultaneas, se podria usar  otra isntancia.
-        Pero no tendrá sincronizacion en el play,.. por ahora. La aplicacion se termina
-        cerrrando la pantalal del Menu GUI o cerrando el gráfico es indistinto.   
-        Y luego de terminada levantarla con la instancia original y agregarla a la Cancion
+        por vez. Si se quieren más ediciones simultaneas, se podria usar  otra instancia.
+        Y luego de terminada levantarla con la instancia unida a Control y agregarla a la Cancion
         si se lo desea, donde sí se podrá escuchar todos los tracks al unisono(en desarrollo). 
+        Pero no tendrá sincronizacion en el play,.. por ahora. La aplicacion se termina
+        cerrrando la pantalla del Menu GUI o cerrando el gráfico es indistinto.   
         Otra forma será en el futuro, partir pantalla y editar 2 track en simultaneo.
-        O pasar entre tracks simplemente con el tabulador u otra tecla o clickeando 
-        el track agregado en forma de imagen pulsada o simplemente  combo. 
-        o mejor aún un scroll  continuo entre track hacia arriba y hacia abajo.( posible
-        implementacion, combinando tecla rapida tabulador y lentas, scroll viendo  
-        pasar verticalmetne cada uno de los roll de cada Track, parece intersante 
-        veremso que sale mejor.) Por ejemplo si tengo 8 instrumentos con 4 octavas 
-        cada uno podriamos navegar 32 octavas en una misma pantalla o saltar de un
-        instrumetno a otro con tabulador, esta última parece la mas facil de implementar
-        y menos tediosa de usar. Se puede cargar un track en el menú del Grafico y 
+        Se puede pasar entre tracks simplemente con el tabulador  o clickeando 
+        la pista en la lista en Control. 
+        Notas desarrollo (Se puede cargar un track en el menú del Grafico y 
         darle Reproducir en la GUI pero para que comience debo hacer foco en el 
         Gráfico. Controlar otras instancias o aplicaciones mediante midi creo será
         más facil que usar sockets(¿? cual sera mas facil y eficiente ? probaremos), 
@@ -53,7 +47,7 @@
         en evolución por que es un hobby de aprendisaje y tendrá paradas por estudio
         e idas y vueltas. Si me limita mucho el lenguaje podre hacer parches 
         con otro lenguaje o pasar todo a otro lenguaje similar porque lo que
-        está echo en Cairo se podrá trasladar a cualqueir otro lenguaje. creo. 
+        está echo en Cairo se podrá trasladar a cualqueir otro lenguaje. creo.) 
     
         
     1) El Modo Lectura se inicia en color de fondo Negro y texto blanco (ultimo 
@@ -122,16 +116,18 @@
        no las muestra, hay procesos en que no se hace automatico sino con otras operaciones siguientes, en esos
        casos un recalculo de los compases se puede ahcer pulsando 'r'.
 
-    1.4) Grabar Archivo Roll [Archivo]->[Grabar]:
-       Si es nuevo pedirá un nombre, al generar un archivo nuevo tambien se borra el nombre anterior.
-       Si se marcaron columnas para borrar con <dur, nota> = 190,190 , se borran pero no se elimina el esapcio 
+    1.4) Grabar Archivo Roll [Archivo]->[Grabar]: 
+       Si se marcaron columnas para borrar con <dur, nota> = 190,190 , se borran pero no se elimina el espapcio 
        que dejan, al grabar se eliminarán automaticamente, con esta opción mientras se edita solo marcamos 
        lo que no queremos. Habrá otras para eliminar directamente on line. (usaremos Retroceso o backtrace 
        en próxima version). Grabar ARchivo TRack o Pista Trk, se usa ROLLaTrack y graba siempre al mismo
-       nombre ed rool pero anteponiendo [0], [0]nombreRoll.Trk.
-       
+       nombre en roll pero anteponiendo [00], [00]nombreRoll.Trk.
+       Si estamos en cancion y uso Grabar, se graba la pista rtk en cancion una actualizacion.        
+       Si estamos en cancion y cargo un roll y lo grabo se graba una actualziacion de ese roll.
+       Si no hay cancion y cargo roll o pista, se graba tal cual se cargo si es roll como roll
+       sobreescribe, si es pista rtk coom pista rtk. (verificar esta ultimas funciones)
     1.5) Cargar Archivo [Archivo]->[Abrir]:
-       
+         Puedo cargar un roll *.roll o un rtk *rtk o pista. Tanto con o sin cancion.
     1.6) Tamaño Font  F9 disminuye <-> F10 aumenta font solamente no la proporcionalidad.
        La edicion en el diseño original se hacia en font=18 (al cual se vuelve al pulsar 'q') y actualmente 
        en otros tamaños, se cambio para trabajar a distintos tamaños de fonty  proporcionlidad. ESTE CAMBIO 
@@ -177,13 +173,16 @@
          Nota: El ultimo test fue con el caso a), lso demas estaban propbados pero con las modificaciones
          echas par ael caso a) deben probarse de neuvo,,,
     1.9) Luego de cargada el directorio de la cancion, si se da click con el mouse en la lista
-         de nombres de pistas en la ventana Control, se cargara esa pista en Roll. Siempre se carga
-         Roll y la pista 0, ambas se usan para modificacion. El resto de las pistas quedan cargadas
-         desde 1 a 32. Cada vez que elija otra se cargara en Roll grafico de Visualizacion y Edicion
-         y como dijimos en Pista cero 0. Hay un directorio ejemplo "cancion" de carga.
-         En la pantalal de Visualización, para pasar de un Track o Pista a otra se incorporó tambien 
+         de nombres de pistas en la ventana Control, se cargara esa pista en Roll y en su pista correpondiente.
+         Siempre se carga Roll que es el grafico visual , ambas se usan para modificacion. 
+         Si no hay cancion la pista cargada correpsondiente a Roll es la [00].
+         El resto de las pistas quedan cargadas desde 1 a 32. 
+         Cada vez que elija otra se cargara en Roll grafico de Visualizacion y Edicion
+         y como dijimos en su Pista N. Hay un directorio ejemplo "cancion" de carga.
+         En la pantalla de Visualización, para pasar de un Track o Pista a otra se incorporó tambien 
          la tecla TAB, con ella se puede conmutar o pasar de una Pista a otra en Edicion, esto va 
-         copiando el track sucesivo en Roll y Track(0), al alcanzar la pista 32 sigue en circulo con la 1.
+         copiando el track sucesivo en Roll y Track(N), al alcanzar la ultima pista con datos o la ultima 32 
+         sigue en circulo con la 1.
     1.10) Borrar Pistas de la Lista y de disco:
           Estando en Control o la Lista de Control, seleccionar la pista pulsar delete,
           se borra de la lista y del disco copiandose lo borrado en un subdirectorio interno \Temp, luego 
@@ -193,7 +192,14 @@
           sola pista y se sigue dando delete se iran borrando las pistas en forma contigua tambien en 
           direccion hacia arriba o sea, si selecciono la pista 5 se borraran con cada pulso 5,4,3,2,1. 
           Al llegar a la 1, si se sigue  pulsando  empezará a borrar la 6,7,8,9...
-
+    1.11) Copiar una pista de Cancion en otra pista nueva de cancion con sus datos
+          En el menu de Control usar en el menu Archivo->"Copiar una pista a otra nueva en cancion"
+          Copiará lso datos cambiara el numero de pista por uno mas grande N+1 [NN]
+          El resto el nombre será igual. Por ahora no se puede renombrar online,ya se hará
+          en proxima version, pero se puede renombrar la pista dede afuera y volver a cargar
+          la cancion.
+    1.12)  En el mismo menu de 1.11 se puede actualizar una pista con "Grabar una pista de la cancion
+          con midificaciones, igual que se puede ahcer en Roll.
     2.0) Modos de Edicion
     2.1) MODO EDIT (click en menu EDICION luego en EDIT cambiara a color 
           verde y la octava seleccionada tambien)

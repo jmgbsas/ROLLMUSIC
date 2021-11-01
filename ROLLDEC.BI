@@ -81,8 +81,11 @@ Declare Sub velocidades(j as integer)
 Declare Sub playthread()
 Declare Sub GrabarArchivo ()
 Declare Sub GrabarTrack   (ntk As integer)
-Declare Sub GrabarRollaTrack (cambianombre As Integer, enCancion As integer)
+Declare Sub ActualizarRollyGrabarPista ()
+Declare Sub GrabarRollaTrack (cambiaext As Integer)
 Declare Sub CargarPistasEnCancion ()
+Declare sub GrabarCopiadePista()
+
 ' gtk
 Declare Sub GtkListBox()
 Declare Sub sigh_button_event Cdecl ( Byval gtklist As GtkWidget Ptr, ByVal event As GdkEventButton Ptr, Byval frame As GtkWidget Ptr )
@@ -249,7 +252,7 @@ Type rangoOct Field=1
  As Integer posn =0 
  As UByte   notaold=0 
  As Integer Ticks =0
- 
+ As Byte    inst
 End type
 Dim Shared As rangoOct pmTk (0 To 32)
 Dim Shared As String titulos(0 To 32)
@@ -290,7 +293,11 @@ Type poli Field=1 ' para guardar la secuencia
  posn As Integer =0' de roll
  acorde  As ubyte =0 ' 1 a 12 , son el se hara el sort    
 End Type 
-
+' comentarios Para Futuro:
+' tick y posn seria para tener una relacion entre ticks los 128, y la posicin 
+' de roll, o sea  en que posicion o columna esta la nota en Roll
+' acorde, no se si seria necesario quiere indicar si hay o no un acorde
+' una forma de disminuir el algoritmo de lectura posterior....a verlo....
 Type sec
  As poli trk(Any, any)
 End Type
@@ -322,6 +329,7 @@ Type pasa Field=1
   As Integer alto=0
   As Integer ubiroll=0
   As Integer ubirtk=0
+  As Integer encancion=0
 End Type
 Declare Sub Tracks (ByRef nroTrack As integer, ByRef nroCanal As UByte, Roll As inst)
 Dim Shared As Long CONTROL1 = 0
@@ -333,7 +341,7 @@ Dim Shared ix As Integer=0
 Dim Shared titu As String
 Dim Shared As Integer instru, instruOld
 Dim Shared As Integer desdevector
-Dim Shared As Integer hastavector
+Dim Shared As Integer hastavector,abrirRoll=0
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
 'Dim Shared As Integer lim2=12, ctres=CantTicks
@@ -409,6 +417,7 @@ Dim Shared  As pasa param ', param2
     p1=@param
     param.ubiroll=0
     param.ubirtk=0
+    param.encancion=0
     
 #Include "mod_rtmidi_c.bi"    
 '----------------------------

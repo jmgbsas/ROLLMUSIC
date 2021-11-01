@@ -1,3 +1,18 @@
+' ya reproduce 2 tracks y forma acordes de 2 melodias...
+' 2 problemas se agrego inst en posicion 1 no lim2 dado que la snotas se barren de 
+' 1 a lim2 y la informacion ya es necesaria para 1 vertical...
+' el 1er problema debo diferenciar bien cuadno grabo track nuevo en cancion
+' como copia de un track exisente (y aexiste), de un roll grabarlo en cancion
+' como track (ya existe), y pro ultimo grabar un track de cancion con sus
+' modificaicones,,,sin cancion parece que y ahacia eso o sea grabar un track
+' cargado sin cancion su smodificaciones,,,(creo solo consideraba track(0)
+' luego pasocol se le agrego en vec al campo inst para tener la info
+' del inst en cada nota porque en el sort pueden cambiar de posicion
+' ergo la solucion final por ahora sera enviar la info de instrumento 
+' para cada nota pero par ano enviar tantos comandos simplemente
+' comparo el inst enviado anteriorment eocn el actual si es igual no envio nada
+' si es distinto vuelvo a enviar el changeprogram...
+' --------------- 
 '0.4.5.2: contine en dat ulon pra el time...cancion 17-10-2021
 ' y agraba bien crear cancion o cargarla y luego elegi run instrumento o no
 ' y crear una pist aen lacancion con lo elegido , luego de creado se debe grabar en roll
@@ -471,7 +486,7 @@ If ix < 3 Then ' rollmusic CON control
   hMessages=Create_Menu()
   MenName1=MenuTitle(hMessages,"Archivo")
   MenName2=MenuTitle(hMessages,"Nueva Cancion")
-  MenName3=MenuTitle(hMessages,"Pistas")
+  MenName3=MenuTitle(hMessages,"Crear Pistas")
   MenName4=MenuTitle(hMessages,"Ver desde Posicion")
   MenName5=MenuTitle(hMessages,"Cambiar Tiempo Y Ritmo")
   MenName6=MenuTitle(hMessages,"Reproducir")
@@ -484,8 +499,8 @@ MenuItem(1007,MenName1, "Na.Grabar Cancion")
 MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
 MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
 MenuItem(1010,MenName1, "Na.Cargar una sola Pista(o track) de Cancion")
-MenuItem(1011,MenName1, "Grabar una Pista Roll en Edicion en la Cancion")
-MenuItem(1012,MenName1, "Na.Grabar una Pista de cancion Como")
+MenuItem(1011,MenName1, "Grabar una Pista de la Cancion con modificaciones, carga pista si no hubiera cargada")
+MenuItem(1012,MenName1, "Copia una pista a otra  nueva nueva en cancion")
 MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
 MenuItem(1014,MenName1, "Salir")
 
@@ -563,7 +578,7 @@ End Sub
 ' Dim Shared As String txt
 ' Dim As Any Ptr pt
 ' Dim Shared As Integer ok = 0
-Dim As Integer Terminar=0,abrirRoll=0
+Dim  As Integer Terminar=0
 abrirRoll=0
 
 Do
@@ -585,9 +600,11 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
      CargarPistasEnCancion ()
      CANCIONCARGADA=TRUE
      cargaCancion=0
+     param.encancion=1
   Else
     CANCIONCARGADA=FALSE
-    cargaCancion=0   
+    cargaCancion=0  
+    param.encancion=0 
   EndIf
      
   If ix < 3 Then 
@@ -610,14 +627,20 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
              ' o haciedno click en la lista
              If NombreCancion > "" And cargaCancion=0 Then
                 NombreCancion = ""
+                param.encancion=0
                 ResetAllListBox(3)
                 Resetear (pmTk()) 
                cargarDirectorioCancion(NombreCancion)
                CANCIONCARGADA=FALSE
+               ntk=0
+               cargaCancion=1
                CargarPistasEnCancion ()
+               cargaCancion=0
+               param.encancion=1
              EndIf
              If NombreCancion = "" Then
                cargarDirectorioCancion(NombreCancion)
+               param.encancion=1
              EndIf
              
              If abrirRoll=0 And NombreCancion > ""  Then
@@ -625,13 +648,33 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                 cargaCancion=1
                 Exit Do                 
              EndIf
-
              Print #1,"termino 1006 va a abrir Roll"
  
-            Case 1011 ' graba pista en edicion en la cancion
-            Print #1,"entro a 1011 en elmenu" '' jmg probar es nuevo...
+            Case 1011 ' Grabar una Pista de la Cancion con modificaciones, que son tracks
+            Print #1,"entro a 1011 esto lo hace menu de Roll tambien" '' jmg probar es nuevo...
  ' copiamos logica Rolla Track 
-            Print #1, "Click Grabando a disco Roll a Track ",nombre
+            Print #1, "Click Grabando a disco pista modif con RollaTrack ",nombre
+            Dim As String nombreg
+            ROLLCARGADO=FALSE 
+            'If nombre = "" Then
+            '   getfiles(file,myfilter,"save")
+            '   nombreg=*file.lpstrFile
+            '   If nombreg = "" Then
+            '      Print #1,"exit select por nombreg vacio "
+            '      Exit Select 
+            '   Else
+            '      nombre=nombreg   
+            '   EndIf
+            'EndIf
+           If NombreCancion > ""  Then
+              GrabarRollaTrack(0)
+           EndIf
+          MenuNew=0           
+          carga=1
+
+           Case 1012 ' Grabar Pista Como, Copia una pista a otra  nueva nueva
+           Print #1,"entro a 1012 Grabar Pista Como, Copia una pista a otra  nueva nueva"
+           ROLLCARGADO=FALSE 
             Dim As String nombreg
             If nombre = "" Then
                getfiles(file,myfilter,"save")
@@ -643,23 +686,20 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                   nombre=nombreg   
                EndIf
            EndIf
-''''       grabaprueba()
-' por ahroa todo RollaTRack graba con [0] adelante. s epodra cambiarlo en futuro
-' ya cambio en cancion se graba lso track numerados de 1 a 32, track 0 solo se usa en 
-' instancia separada el viejo roll aislado, usa roll y tack 0
            If NombreCancion > ""  Then 
-              GrabarRollaTrack(1,1)
-           Else    
-              GrabarRollaTrack(1,0) ' 1 significa cambiar el formato de nombre de Rool
-           EndIf
-          MenuNew=0           ' por formato de TRack anteponiendo[0]
+              GrabarCopiadePista() ' estoy en cancion copiando una pista desde otra pista
+           EndIf   
+          MenuNew=0           
           carga=1
             Case 1020     
                NombreCancion = ""
                pathdir=""
                EntrarNombreCancion(NombreCancion)
             Case 1025
-               CrearDirCancion (NombreCancion)            
+               CrearDirCancion (NombreCancion)
+               If NombreCancion > "" Then
+                  param.encancion=1
+               EndIf            
             Case 1028 ' seleccion octavas menores a 1 9 
                seloctava (desde, hasta)
                *po = hasta -1
@@ -671,13 +711,16 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                 posn=0
             Case 1040 ' seleccion de instrumento por orden Alfabetico
                selInstORdenAlfa (instru)
-               ChangeProgram ( CUByte (instru) , 0)
+              ' ChangeProgram ( CUByte (instru) , 0)
                Roll.trk(1,NA).inst= CUByte(instru)
-
+               Track(ntk).trk(1,1).inst=CUByte(instru)
+               Roll.trk(1,NA).inst=CUByte(instru)  
             Case 1050 ' seleccion de instrumento por orden Numerico
                selInstORdenNum (instru)
-               ChangeProgram ( CUByte (instru) , 0)
+              ' ChangeProgram ( CUByte (instru) , 0)
                Roll.trk(1,NA).inst= CUByte(instru)
+               Track(ntk).trk(1,1).inst=CUByte(instru)
+               Roll.trk(1,NA).inst=CUByte(instru)
             Case 1060 ' crea track y reemplaza al existente en la edicion
                'If ntk=0 Then  ' no se cargo ningun track
                '   *po = hasta -1
@@ -686,7 +729,8 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                '   posn=0
                   instruOld=instru
                   Roll.trk(1,NA).inst= CUByte(instru)
-                  ChangeProgram ( CUByte (instru) , 0)
+                  Track(ntk).trk(1,1).inst=CUByte(instru)
+                  'ChangeProgram ( CUByte (instru) , 0)
                'EndIf   
                If abrirRoll=0 Then
                   abrirRoll=1
@@ -748,7 +792,8 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                pmTk(ntk).posn=0
                pmTk(ntk).notaold=0                  
                pmTk(ntk).Ticks=4000
-               GrabarRollaTrack(0,0)
+               ' usamos encancion=1 para grabar dentro de la cancion
+               GrabarRollaTrack(0)   
                NombrePista="" 
                posicion=0
                posn=0
@@ -791,6 +836,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
  ' directamente cargar Roll desde el numero de track correspondiente
  ' en memoria       
              Print #1,"CLICK EN LISTA"
+             ROLLCARGADO=FALSE
              Dim item As String
              Dim As Integer ubi1,ubi2
              item= "                        "
@@ -811,6 +857,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
              ' despues dela rutina,cargarTrack pone a 0 lineadecomadno=0
              ' pero si quiero volver a disco solo debo resetear ubirtk=0
                 ntk=sacarNtk(item) ' este ntk no sirve para boorar
+                Tracks (ntk , 1,Roll)
 ' este ntk sirve para identificar el ntk del arcchivo t dle vector
 ' pero el ntk de la lista es otro vector y al borrar el indice cambia
 ' debo obtener el indice primero                

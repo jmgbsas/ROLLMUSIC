@@ -183,6 +183,7 @@ Else
     If ligaglobal=0 Then '?????????? 
 '  Print #1,"envio on pasoCol(1).notapiano, vel ,canal " , pasoCol(1).notapiano, vel ,canal
        old_time_on=Timer
+       ChangeProgram (pasoCol(1).inst,1)
        noteon	 pasoCol(1).notapiano, vel ,canal
        For i1=NB To NA
         pasoCol(i1).liga=0
@@ -312,6 +313,7 @@ For i1=1 To cnt
      ' se va borando hasta que se haya dado el off final
  '    print #1,"numero de ligados:";pasoCol(i1).liga
  '    Print #1,"Noteon ligado notepiano "; pasoCol(i1).notapiano
+     ChangeProgram (pasoCol(i1).inst,1)
      noteon pasoCol(i1).notapiano,vel,canal
  '    Print #1,"3) LIGA=1 ==========> ";liga
      
@@ -440,6 +442,7 @@ For i1=1 To cnt
      ' se va borando hasta que se haya dado el off final
     ' print #1,"numero de ligados:";pasoCol(i1).liga
     ' Print #1,"Noteon ligado notepiano "; pasoCol(i1).notapiano
+     ChangeProgram (pasoCol(i1).inst,1)
      noteon pasoCol(i1).notapiano,vel,canal
    '  Print #1,"3) AOD:LIGA=1 ==========> ";liga
      
@@ -754,9 +757,9 @@ EndIf
 
 For jply=comienzo To final
 
- If Roll.trk(1,NA).inst > 0 And jply=1 Then
-       ChangeProgram ( Roll.trk(1,NA).inst , 0)
- EndIf
+' If Roll.trk(1,NA).inst > 0 And jply=1 Then
+'       ChangeProgram ( Roll.trk(1,NA).inst , 0)
+' EndIf
 
 kNroCol= Int(jply/NroCol)
 If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < MaxPos)Then
@@ -1443,12 +1446,12 @@ for i = 0 to portsin -1
 Next
 
 End Sub
-Sub TrasponerGrupo( cant As Integer, Roll As inst)
+Sub TrasponerGrupo( cant As Integer, Roll As inst, encancion As Integer)
 ' ANDA BIEN, ES EQUIVALENT EEMPEIZA EN EL EXTREMO QUE ATACA BAJANDO LA POSICION
 ' DE LA COPIA ES LO MISMO PEOR INVERTIDO FUNCIONA IGUAL, LO IMPORTANE DEL CAMBIO
 ' FUE EN LA SUBRUTUNA SUMAR COMO EL VECTOR EMPIEZA DE CERO 0 EL ESPACIO ENTRE
 ' OCTAVAS NO QUEDA MULTIPLO DE 13 ERGO LE SUMO 1 AHORA,,,ANTES DE AHCER EL MOD 13
-
+Print #1,"ARRANCA TRASPONER GRUPO"
 Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,b1=0
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
@@ -1535,11 +1538,26 @@ For jpt = desdet To hastat
     EndIf
   Next i1
 Next jpt
+' para trasponer tracks debo grabar lo cual copia a track los cambios
+' de ese modo al dar play se escuch also cambios sino solo quedan en Roll
+' y el play de cancion no lo registra , solo el play de roll lo registraria
+If encancion > 0 Then
+  Print #1,"en trasponer grupo graba track traspuesto"
+   Dim As Integer ubi1=0,ubi2=0 
+   Dim As String no1,no2
+   ubi1=InStr(nombre,"[")
+   ubi2=InStr(nombre,"]")
+   If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
+       GrabarRollaTrack(0)
+   EndIf
+EndIf       
+
+
 
 ''trasponer=0   
 End Sub
 
-Sub trasponerRoll( cant As Integer, Roll As inst)
+Sub trasponerRoll( cant As Integer, Roll As inst, encancion As integer)
 'AJSUTADO DE NUEVO 11-09-2021 CON EL NUEVO ALGORITMO DE OCTAVAS
 Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,b1=0
 ' NA ES EL MAYOR VALOR NUMERICO, 
@@ -1656,6 +1674,18 @@ For jpt = desdet To hastat
 Next jpt
 
 ''trasponer=0   
+' para trasponer tracks debo grabar lo cual copia a track los cambios
+' de ese modo al dar play se escuch also cambios sino solo quedan en Roll
+' y el play de cancion no lo registra , solo el play de roll lo registraria
+If encancion > 0 Then
+   Dim As Integer ubi1=0,ubi2=0 
+   Dim As String no1,no2
+   ubi1=InStr(nombre,"[")
+   ubi2=InStr(nombre,"]")
+   If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
+       GrabarRollaTrack(0)
+   EndIf
+EndIf       
 
 End Sub
 

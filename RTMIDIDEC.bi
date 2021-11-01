@@ -88,7 +88,8 @@ Type vec
    tiempoFiguraOld As integer
    notapianoOld As Integer
    i1           As Integer
-   old_time As integer
+   old_time As Integer
+   inst     As Integer 
 End Type
 Dim Shared pasoCol (0 To 384) As vec
 

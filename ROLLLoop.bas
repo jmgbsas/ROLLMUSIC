@@ -497,11 +497,14 @@ End Sub
 
 
 sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
-Dim As Integer ubiroll,ubirtk
+Dim As Integer ubiroll,ubirtk,encancion
  c=param.c
  Roll=param.Roll
  ubiroll=param.ubiroll 
  ubirtk=param.ubirtk
+ encancion=param.encancion
+ abrirRoll=2
+ 
  print #1,"ubirtk ",ubirtk
  Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
  Print #1,"posicion ", posicion
@@ -725,6 +728,7 @@ Do
 
 
 If MultiKey(SC_TAB) And instancia=0 Then
+   ROLLCARGADO = FALSE
    Print #1,"--TAB "
    nota=0
    dur=0
@@ -766,7 +770,7 @@ If MultiKey(SC_TAB) And instancia=0 Then
      
   Print #1,"5- MAXPOS final TAB " ,maxpos
 EndIf   
-' ACA INCREMENTA MAXPODS NO SE PORQU EMIERDA...
+'
 
   Print #1, "6-NTK nombre", ntk,nombre  
   Print #1, "6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, maxpos,pmTK(ntk).maxpos
@@ -2029,11 +2033,11 @@ If (ScreenEvent(@e)) Then
    EndIf
    If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion
     If trasponer=1 And SelGrupoNota=0 Then
-     trasponerRoll ( 1,Roll)
+     trasponerRoll ( 1,Roll,encancion)
      Exit Do
     EndIf
     If trasponer=1 And SelGrupoNota=1 Then
-     TrasponerGrupo ( 1, Roll)
+     TrasponerGrupo ( 1, Roll,encancion)
      Exit Do 
     EndIf 
 
@@ -2105,11 +2109,11 @@ If (ScreenEvent(@e)) Then
    '  EndIf
    If e.scancode = 80 Then  ' <===== SC_DOWN pulso
      If trasponer=1 And SelGrupoNota=0 Then
-       trasponerRoll ( -1,Roll)
+       trasponerRoll ( -1,Roll,encancion)
        Exit Do
      EndIf 
      If trasponer=1 And SelGrupoNota=1 Then
-       trasponerGrupo ( -1,Roll)
+       trasponerGrupo ( -1,Roll,encancion)
        Exit Do
      EndIf 
      
