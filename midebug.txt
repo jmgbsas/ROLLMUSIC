@@ -1,5 +1,5 @@
 start
-11-01-202100:41:56
+11-01-202121:02:49
 __FB_ARGC__    1
 arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V3-CANCION-FIX\RollMusic.exe'
 arg  1 = ''
@@ -25,3 +25,484 @@ INSTANCIA      1
 param.ancho    1467 param.alto  916
 inicio ubound roll.trk       102
 iniio lbound roll.trk        39
+cargarDirectorioCancion     C:\aaaa\10-24-2021
+param.ancho    1467 param.alto  916
+inicio ubound roll.trk       102
+iniio lbound roll.trk        39
+ubirtk         0
+param.ancho    1467 param.alto  916
+posicion       1
+param.titulo  RollMusic Ver 0.4.4.0
+datos recibidos en rooloop nombre         
+datos recibidos en rooloop desde,hasta     4             8
+datos recibidos en rooloop *po             7
+ubound roll.trk 2            102
+pid           3240
+INSTANCIA      0
+-------------------------------------------------------
+inicia CargaPistasEnCancion
+filename encancion > 0      [01]ACOUSTIC_BASS.rtk
+trabajo con este filename...              [01]ACOUSTIC_BASS.rtk
+nombre en CargarPistasEnCancion ,Numpista C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk   1
+----------------------------------------------
+1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk   1
+ubirtk > 0 carga de disco o cancion        1
+NTK Y nombre que llego a open en CargaTrack              1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
+reconstruccion x pos bin    00000000000000001001
+pmTk(ntk).MaxPos             9
+desde          4
+hasta          8
+en la carga de track desde hasta           4             8
+CargarTrack  NB Na           39            102
+cargaCancion   1
+*PO = hasta -1               7
+Get TrK POLI 
+Geteo Trabajo poli ok 
+pmtk(ntk).MaxPos, ntk        9             1
+ABRIR MAXPOS ,NB,NA  9       39            102
+uso Close
+CargarTrack  fin
+----------------------------------------------
+trabajo con este filename...              [02]ACOUSTIC_GUITAR_NYLON.rtk
+nombre en CargarPistasEnCancion ,Numpista C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk         2
+----------------------------------------------
+1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk         2
+ubirtk > 0 carga de disco o cancion        1
+NTK Y nombre que llego a open en CargaTrack              2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
+reconstruccion x pos bin    00000000000000001001
+pmTk(ntk).MaxPos             9
+desde          4
+hasta          8
+en la carga de track desde hasta           4             8
+CargarTrack  NB Na           39            102
+cargaCancion   1
+*PO = hasta -1               7
+Get TrK POLI 
+Geteo Trabajo poli ok 
+pmtk(ntk).MaxPos, ntk        9             2
+ABRIR MAXPOS ,NB,NA  9       39            102
+uso Close
+CargarTrack  fin
+----------------------------------------------
+trabajo con este filename...              [03]ACOUSTIC_BASS.rtk
+nombre en CargarPistasEnCancion ,Numpista C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk   3
+----------------------------------------------
+1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk   3
+ubirtk > 0 carga de disco o cancion        1
+NTK Y nombre que llego a open en CargaTrack              3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
+reconstruccion x pos bin    00000000000000001001
+pmTk(ntk).MaxPos             9
+desde          4
+hasta          8
+en la carga de track desde hasta           4             8
+CargarTrack  NB Na           39            102
+cargaCancion   1
+*PO = hasta -1               7
+Get TrK POLI 
+Geteo Trabajo poli ok 
+pmtk(ntk).MaxPos, ntk        9             3
+ABRIR MAXPOS ,NB,NA  9       39            102
+uso Close
+CargarTrack  fin
+----------------------------------------------
+trabajo con este filename...              [04]ACOUSTIC_GUITAR_NYLON.rtk
+nombre en CargarPistasEnCancion ,Numpista C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk         4
+----------------------------------------------
+1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk         4
+ubirtk > 0 carga de disco o cancion        1
+NTK Y nombre que llego a open en CargaTrack              4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
+reconstruccion x pos bin    00000000000000001001
+pmTk(ntk).MaxPos             9
+desde          4
+hasta          8
+en la carga de track desde hasta           4             8
+CargarTrack  NB Na           39            102
+cargaCancion   1
+*PO = hasta -1               7
+Get TrK POLI 
+Geteo Trabajo poli ok 
+pmtk(ntk).MaxPos, ntk        9             4
+ABRIR MAXPOS ,NB,NA  9       39            102
+uso Close
+CargarTrack  fin
+----------------------------------------------
+trabajo con este filename...              [05]instancia-01.rtk
+nombre en CargarPistasEnCancion ,Numpista C:\aaaa\10-24-2021\[05]instancia-01.rtk    5
+----------------------------------------------
+1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\10-24-2021\[05]instancia-01.rtk    5
+ubirtk > 0 carga de disco o cancion        1
+NTK Y nombre que llego a open en CargaTrack              5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
+reconstruccion x pos bin    00000000000000000110
+pmTk(ntk).MaxPos             6
+desde          4
+hasta          8
+en la carga de track desde hasta           4             8
+CargarTrack  NB Na           39            102
+cargaCancion   1
+*PO = hasta -1               7
+Get TrK POLI 
+Geteo Trabajo poli ok 
+pmtk(ntk).MaxPos, ntk        6             5
+ABRIR MAXPOS ,NB,NA  6       39            102
+uso Close
+CargarTrack  fin
+----------------------------------------------
+llama a cargar pista 1 con TrackaRoll desde CargaPistaEnCancion
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
+maxpos y (ntk).maxpos        2             9
+TrackaRoll ntk, desde, hasta, MaxPos       1             4             8             9
+TrackaRoll, NB, NA, CantTricks             39            102           509
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 510 de Track aRoll
+TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
+----------------------------------------------
+despues de cargar pista 1 TrackaRoll desde CargaPistaEnCancion
+llama a RecalCompas de pista 1 desde CargaPistaEnCancion
+FIN CargaPistasEnCancion no debe calcuar *po             7
+-------------------------------------------------------
+--TAB 
+1- NTK,MAXPOS, pmtk(ntk).maxpos            1             9             9
+2- NTK,MAXPOS, pmtk(ntk).maxpos            2             9             9
+--------------------------
+3-NTK nombre   2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
+3-NTK MAXPOS pmtk(ntk).maxpos              9             9
+--------------------------
+6-NTK nombre   2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
+6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         2             9             9
+EN TRACKS MAXPOS (NTK).MAXPOS              9             9
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
+maxpos y (ntk).maxpos        9             9
+TrackaRoll ntk, desde, hasta, MaxPos       2             4             8             9
+TrackaRoll, NB, NA, CantTricks             39            102           509
+REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 510 de Track aRoll
+TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
+llama a RecalCompas para ntk,maxpos, .maxpos             2             9             9
+MAXPOS DESPUES DE RECALCOMPAS              9             9
+7- instancia, maspos         0             9
+--TAB 
+1- NTK,MAXPOS, pmtk(ntk).maxpos            2             9             9
+2- NTK,MAXPOS, pmtk(ntk).maxpos            3             9             9
+--------------------------
+3-NTK nombre   3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
+3-NTK MAXPOS pmtk(ntk).maxpos              9             9
+--------------------------
+6-NTK nombre   3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
+6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         3             9             9
+EN TRACKS MAXPOS (NTK).MAXPOS              9             9
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
+maxpos y (ntk).maxpos        9             9
+TrackaRoll ntk, desde, hasta, MaxPos       3             4             8             9
+TrackaRoll, NB, NA, CantTricks             39            102           509
+REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 510 de Track aRoll
+TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
+llama a RecalCompas para ntk,maxpos, .maxpos             3             9             9
+MAXPOS DESPUES DE RECALCOMPAS              9             9
+7- instancia, maspos         0             9
+--TAB 
+1- NTK,MAXPOS, pmtk(ntk).maxpos            3             9             9
+2- NTK,MAXPOS, pmtk(ntk).maxpos            4             9             9
+--------------------------
+3-NTK nombre   4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
+3-NTK MAXPOS pmtk(ntk).maxpos              9             9
+--------------------------
+6-NTK nombre   4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
+6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         4             9             9
+EN TRACKS MAXPOS (NTK).MAXPOS              9             9
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
+maxpos y (ntk).maxpos        9             9
+TrackaRoll ntk, desde, hasta, MaxPos       4             4             8             9
+TrackaRoll, NB, NA, CantTricks             39            102           509
+REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 510 de Track aRoll
+TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
+llama a RecalCompas para ntk,maxpos, .maxpos             4             9             9
+MAXPOS DESPUES DE RECALCOMPAS              9             9
+7- instancia, maspos         0             9
+--TAB 
+1- NTK,MAXPOS, pmtk(ntk).maxpos            4             9             9
+2- NTK,MAXPOS, pmtk(ntk).maxpos            5             9             6
+--------------------------
+3-NTK nombre   5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
+3-NTK MAXPOS pmtk(ntk).maxpos              9             6
+--------------------------
+6-NTK nombre   5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
+6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         5             9             6
+EN TRACKS MAXPOS (NTK).MAXPOS              9             6
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
+maxpos y (ntk).maxpos        9             6
+TrackaRoll ntk, desde, hasta, MaxPos       5             4             8             6
+TrackaRoll, NB, NA, CantTricks             39            102           506
+REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             6
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 510 de Track aRoll
+TrackaRoll Fin,,maxpos y (ntk).maxpos      6             6
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
+llama a RecalCompas para ntk,maxpos, .maxpos             5             6             6
+MAXPOS DESPUES DE RECALCOMPAS              6             6
+7- instancia, maspos         0             6
+--TAB 
+1- NTK,MAXPOS, pmtk(ntk).maxpos            5             6             6
+2- NTK,MAXPOS, pmtk(ntk).maxpos            6             6             0
+4 - NTK,MAXPOS, pmtk(ntk).maxpos           1             6             9
+5- MAXPOS final TAB          9
+6-NTK nombre   1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
+6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         1             9             9
+EN TRACKS MAXPOS (NTK).MAXPOS              9             9
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
+maxpos y (ntk).maxpos        9             9
+TrackaRoll ntk, desde, hasta, MaxPos       1             4             8             9
+TrackaRoll, NB, NA, CantTricks             39            102           509
+REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 510 de Track aRoll
+TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
+llama a RecalCompas para ntk,maxpos, .maxpos             1             9             9
+MAXPOS DESPUES DE RECALCOMPAS              9             9
+7- instancia, maspos         0             9
+entro a 1010 Cargar Pista externa a cancion
+---------------------------------------------------------------------------------
+inicia ImportarPistaExterna 
+extension de la pista importada           .roll
+nom nombre sin extension ni path          instancia-01
+numero de pista tope =       5
+pista nueva importada será ntk=            6
+CArgarArchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V3-CANCION-FIX\instancia-01.roll
+open nombre en CArgaARchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V3-CANCION-FIX\instancia-01.roll
+CambiarDim desde  4 hasta  8 *po  7 NB  39 NA  102
+CantTicks  506
+FIN CAMBIARDIM 
+En CargarArchivo NB NA       39            102
+uso Close
+CargaARchivo LBound (Roll.trk,1)           1
+CargaARchivo LBound (Roll.trk,2)           39
+CargaARchivo UBound (Roll.trk,1)           506
+CargaARchivo UBound (Roll.trk,2)           102
+GRABANDO PISTA EN CANCION EN              C:\aaaa\10-24-2021\[06]instancia-01.rtk
+---------------------------------------------------------------------------------
+inicia GrabarCopiaPista 
+extension     .rtk
+nom nombre sin extension ni path          [06]instancia-01
+pista origen ntk=            0
+pista nueva ntk=             6
+copia track a otro track
+hizo copia de parametros de trackold en new
+ *po seria hasta -1          7
+preparo nombre cancion nuevo ntk           6
+GRABANDO PISTA EN CANCION EN              C:\aaaa\10-24-2021\[06]instancia-01.rtk
+inicio MaxPos  6
+termina con los borrados
+posn           6
+MaxPos despues de acchicar   6
+Termina con achicar secuencia
+termino copia a Trktemp, maxpos, posn      6             4
+nombre tiene el path        C:\aaaa\10-24-2021\[06]instancia-01.rtk
+NB , NA,MAXPOS               39            102           6
+pasó copia a vector
+etapa1
+Posicion       1
+string representando        00000000000000000110
+a1 a2 a3 a4,a5              0000          0000          0000          0000          0110
+y1,y2,y3,y4,y5              0             0             0             0             6
+etapa final puts
+uso Close
+FIN GrabarCopiaPista nueva   6
+FIN GrabarCopiaPista ,maxpos,posn          6             4
+---------------------------------------------------------------------------------
+--TAB 
+1- NTK,MAXPOS, pmtk(ntk).maxpos            6             6             6
+2- NTK,MAXPOS, pmtk(ntk).maxpos            7             6             0
+4 - NTK,MAXPOS, pmtk(ntk).maxpos           1             6             9
+5- MAXPOS final TAB          9
+6-NTK nombre   1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
+6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         1             9             9
+EN TRACKS MAXPOS (NTK).MAXPOS              9             9
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
+maxpos y (ntk).maxpos        9             9
+TrackaRoll ntk, desde, hasta, MaxPos       1             4             8             9
+TrackaRoll, NB, NA, CantTricks             39            102           509
+REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 510 de Track aRoll
+TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
+llama a RecalCompas para ntk,maxpos, .maxpos             1             9             9
+MAXPOS DESPUES DE RECALCOMPAS              9             9
+7- instancia, maspos         0             9
+--TAB 
+1- NTK,MAXPOS, pmtk(ntk).maxpos            1             9             9
+2- NTK,MAXPOS, pmtk(ntk).maxpos            2             9             9
+--------------------------
+3-NTK nombre   2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
+3-NTK MAXPOS pmtk(ntk).maxpos              9             9
+--------------------------
+6-NTK nombre   2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
+6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         2             9             9
+EN TRACKS MAXPOS (NTK).MAXPOS              9             9
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
+maxpos y (ntk).maxpos        9             9
+TrackaRoll ntk, desde, hasta, MaxPos       2             4             8             9
+TrackaRoll, NB, NA, CantTricks             39            102           509
+REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 510 de Track aRoll
+TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
+llama a RecalCompas para ntk,maxpos, .maxpos             2             9             9
+MAXPOS DESPUES DE RECALCOMPAS              9             9
+7- instancia, maspos         0             9
+--TAB 
+1- NTK,MAXPOS, pmtk(ntk).maxpos            2             9             9
+2- NTK,MAXPOS, pmtk(ntk).maxpos            3             9             9
+--------------------------
+3-NTK nombre   3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
+3-NTK MAXPOS pmtk(ntk).maxpos              9             9
+--------------------------
+6-NTK nombre   3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
+6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         3             9             9
+EN TRACKS MAXPOS (NTK).MAXPOS              9             9
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
+maxpos y (ntk).maxpos        9             9
+TrackaRoll ntk, desde, hasta, MaxPos       3             4             8             9
+TrackaRoll, NB, NA, CantTricks             39            102           509
+REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 510 de Track aRoll
+TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
+llama a RecalCompas para ntk,maxpos, .maxpos             3             9             9
+MAXPOS DESPUES DE RECALCOMPAS              9             9
+7- instancia, maspos         0             9
+--TAB 
+1- NTK,MAXPOS, pmtk(ntk).maxpos            3             9             9
+2- NTK,MAXPOS, pmtk(ntk).maxpos            4             9             9
+--------------------------
+3-NTK nombre   4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
+3-NTK MAXPOS pmtk(ntk).maxpos              9             9
+--------------------------
+6-NTK nombre   4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
+6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         4             9             9
+EN TRACKS MAXPOS (NTK).MAXPOS              9             9
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
+maxpos y (ntk).maxpos        9             9
+TrackaRoll ntk, desde, hasta, MaxPos       4             4             8             9
+TrackaRoll, NB, NA, CantTricks             39            102           509
+REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 510 de Track aRoll
+TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
+llama a RecalCompas para ntk,maxpos, .maxpos             4             9             9
+MAXPOS DESPUES DE RECALCOMPAS              9             9
+7- instancia, maspos         0             9
+--TAB 
+1- NTK,MAXPOS, pmtk(ntk).maxpos            4             9             9
+2- NTK,MAXPOS, pmtk(ntk).maxpos            5             9             6
+--------------------------
+3-NTK nombre   5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
+3-NTK MAXPOS pmtk(ntk).maxpos              9             6
+--------------------------
+6-NTK nombre   5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
+6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         5             9             6
+EN TRACKS MAXPOS (NTK).MAXPOS              9             6
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
+maxpos y (ntk).maxpos        9             6
+TrackaRoll ntk, desde, hasta, MaxPos       5             4             8             6
+TrackaRoll, NB, NA, CantTricks             39            102           506
+REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             6
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 510 de Track aRoll
+TrackaRoll Fin,,maxpos y (ntk).maxpos      6             6
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
+llama a RecalCompas para ntk,maxpos, .maxpos             5             6             6
+MAXPOS DESPUES DE RECALCOMPAS              6             6
+7- instancia, maspos         0             6
+--TAB 
+1- NTK,MAXPOS, pmtk(ntk).maxpos            5             6             6
+2- NTK,MAXPOS, pmtk(ntk).maxpos            6             6             6
+--------------------------
+3-NTK nombre   6            C:\aaaa\10-24-2021\[06]instancia-01.rtk
+3-NTK MAXPOS pmtk(ntk).maxpos              6             6
+--------------------------
+6-NTK nombre   6            C:\aaaa\10-24-2021\[06]instancia-01.rtk
+6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         6             6             6
+EN TRACKS MAXPOS (NTK).MAXPOS              6             6
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        6            C:\aaaa\10-24-2021\[06]instancia-01.rtk
+maxpos y (ntk).maxpos        6             6
+TrackaRoll ntk, desde, hasta, MaxPos       6             4             8             6
+TrackaRoll, NB, NA, CantTricks             39            102           506
+REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             6
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 510 de Track aRoll
+TrackaRoll Fin,,maxpos y (ntk).maxpos      6             6
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               6            C:\aaaa\10-24-2021\[06]instancia-01.rtk
+llama a RecalCompas para ntk,maxpos, .maxpos             6             6             6
+MAXPOS DESPUES DE RECALCOMPAS              6             6
+7- instancia, maspos         0             6

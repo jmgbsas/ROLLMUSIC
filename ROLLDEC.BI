@@ -70,10 +70,7 @@ Declare Function KeyPress(Key As Integer) As Integer
 'Declare Function print_text(ByVal x As Integer, ByVal y As Integer, ByRef text As String, _
 '        ByVal font As FT_Face, ByVal size As Integer, ByVal col As UInteger ) As Integer
 Declare Sub separarDur(ByRef j As Integer,ByRef DUR As Integer,  partes() As Integer,  ByRef cantPartes As Integer, ByRef falta As Integer )
-
 Declare Sub menugrafico(c0 AS cairo_t Ptr,c As cairo_t Ptr, Cantitems As Integer, items() As String )
-'Declare Sub ReCalCompas()
-'Declare Sub CargaArchivo()
 Declare Sub CambiarDim(redi As integer)
 ' para IUP textbox 
 Declare Sub dialogoText(cadena As string)
@@ -85,6 +82,7 @@ Declare Sub ActualizarRollyGrabarPista ()
 Declare Sub GrabarRollaTrack (cambiaext As Integer)
 Declare Sub CargarPistasEnCancion ()
 Declare sub GrabarCopiadePista()
+Declare Sub ImportarPistaExterna()
 
 ' gtk
 Declare Sub GtkListBox()
@@ -423,6 +421,9 @@ Dim Shared  As pasa param ', param2
 '----------------------------
 Dim Shared  As String ProgError(0 To 17)
 Declare Sub PlayCancion(Track() As sec)
+Declare Sub TrackaRoll (Track() As sec, byref ntk As Integer, Roll As inst)
+Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
+Declare Sub ReCalCompas(Roll As inst)
 
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox

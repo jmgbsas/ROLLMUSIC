@@ -91,7 +91,7 @@ Dim Shared file As OpenFileName
 Dim Shared As String myfilter
 myfilter  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
 'myfilter += "Ini files"+Chr(0)   +"*.ini;*.txt;*.cfg"+Chr(0)
-myfilter += "All Files"+Chr(0)   +"*.*"+Chr(0)
+myfilter += "Rtk  Files"+Chr(0)   +"*.rtk"+Chr(0)
 
 
 Common Shared  mensaje As Integer 
@@ -498,7 +498,7 @@ MenuItem(1006,MenName1, "Cargar directorio de Cancion con Pistas separados")
 MenuItem(1007,MenName1, "Na.Grabar Cancion")
 MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
 MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
-MenuItem(1010,MenName1, "Na.Cargar una sola Pista(o track) de Cancion")
+MenuItem(1010,MenName1, "Cargar una Pista (rtk ó roll) externa en Cancion")
 MenuItem(1011,MenName1, "Grabar una Pista de la Cancion con modificaciones, carga pista si no hubiera cargada")
 MenuItem(1012,MenName1, "Copia una pista a otra  nueva nueva en cancion")
 MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
@@ -649,7 +649,26 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                 Exit Do                 
              EndIf
              Print #1,"termino 1006 va a abrir Roll"
- 
+
+            Case 1010
+           Print #1,"entro a 1010 Cargar Pista externa a cancion"
+           ROLLCARGADO=FALSE 
+            Dim As String nombreg
+            
+            getfiles(file,myfilter,"save")
+            nombreg=*file.lpstrFile
+            If nombreg = "" Then
+               Print #1,"exit select por nombreg vacio "
+               Exit Select 
+            Else
+               nombre=nombreg   
+            EndIf
+            If NombreCancion > ""  Then 
+               ImportarPistaExterna() ' estoy en cancion importando  una pista rtk
+            EndIf   
+          MenuNew=0           
+          carga=1
+            
             Case 1011 ' Grabar una Pista de la Cancion con modificaciones, que son tracks
             Print #1,"entro a 1011 esto lo hace menu de Roll tambien" '' jmg probar es nuevo...
  ' copiamos logica Rolla Track 

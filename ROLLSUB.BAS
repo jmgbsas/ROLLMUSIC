@@ -1137,9 +1137,10 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      
      Dim As String x,x1,x2,x3,x4,x5,nombrea
      ''' no usar mas  dialogoText("Cargar Archivo")
+     Dim myFil As String
       If ubiroll=0 Then
-         myfilter  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
-         getfiles(file,myfilter,"open")
+         myfil  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
+         getfiles(file,myfil,"open")
          nombrea=*file.lpstrFile
       Else
          If ubiroll > 0 Then
@@ -1158,7 +1159,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
    Print #1,"CArgarArchivo ",nombre    
    Dim ca As Integer
    ca=FreeFile   
-
+ Print #1,"open nombre en CArgaARchivo ",nombre
       Open nombre  For Binary Access Read As #ca
      Get #ca, , z(1,1)
      x1=Bin(z(1,1).nota,4)
@@ -1201,6 +1202,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      pmTk(0).NB=NB  ' aunque es un track debe memorizar de que octavas Rol vino
      pmTk(0).NA=NA
      ReDim compas(1 To CantTicks)
+     Print #1,"En CargarArchivo NB NA ", NB,NA
      Dim Trabajo (1 To MaxPos, NB To NA) As dat     
      Get #ca, , Trabajo() ' aca levanta tambien el instrumento que se grabo 
      ' CARGA VECTOR ROLL movemos los datos a Roll Y a track 0
@@ -1467,9 +1469,9 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
     ubiroll=0
  EndIf
  
- If ubirtk > 0 Then
-    Print #1,"carga track desde linea de comando veo nombre antes   ",titulos(0)
-    CargarTrack (Track() , 0, 0 ) ' ntk=0
+ If ubirtk > 0 Then ' ya tengo el nommbre en linea de comando
+    Print #1,"carga track desde linea de comando,  nombre antes   ",titulos(0)
+    CargarTrack (Track() , 0, ubirtk ) ' ntk=0
     Print #1,"carga track veo nombre despues ", titulos(0)
     TrackaRoll (Track() , 0 , Roll) ' ntk=0
     Print #1,"TrackaRollcarga rtk veo nombre ", titulos(0)
@@ -1742,7 +1744,7 @@ EndIf
       If (MouseButtons And 1 And carga=0) Then
          
          Print #1,"carga track veo nombre antes   ",nombre
-         CargarTrack (Track() , ntk, 0 )
+         CargarTrack (Track() , ntk, 0)
          Print #1,"carga track veo nombre despues ",nombre
          ROLLCARGADO=TRUE ' NO PERMITOQUE TRACK(0) SE BORRE
          TrackaRoll (Track() , ntk , Roll)
@@ -2808,10 +2810,11 @@ Print #1,"inicia CargaPistasEnCancion"
   '      
          ' cargamos un track simulamos como linea de cmd o cancion cargada
         nombre=NombreCancion+"\"+filename
-        titulos(ntk)=nombre
+        titulos(ntk)=nombre ' como agregue en titulos la opcion es 1
+        ' como si viniera de lie ad ecomadno puedo usar cualquiera o 0
         pistas (ntk)=filename
         Print #1,"nombre en CargarPistasEnCancion ,Numpista",nombre, ntk
-        CargarTrack  (Track() , ntk, 1 ) ' se cargo a track x nada mas
+        CargarTrack  (Track() , ntk, 1) ' se cargo a track x nada mas
         Sleep 100
         filename = Dir()
                 

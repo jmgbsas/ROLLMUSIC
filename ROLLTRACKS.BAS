@@ -1,5 +1,5 @@
 
-Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As integer)
+Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
 ' solo carga track no lo pasa a Vector de Visualizacion. ntk debe venir informado
 ' para cargar desde disco un track se usa esta sub y luego TrackaRoll para verlo
 ' y editarlo
@@ -10,13 +10,13 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As integer)
      Dim As Integer ubi1,ubi2 
      Dim As String x,x1,x2,x3,x4,x5,nombrea
   '1) cargar pista desde disco y desde Roll puro   
-     If ubirtk=0  Then 
-      myfilter  = "Track Files"+Chr(0)  +"*.rtk"+Chr(0)
-      getfiles(file,myfilter,"open")
-      nombrea=*file.lpstrFile
-      ubi1 = InStrrev(nombrea,"[")
-      ubi2 =InStrRev (nombrea,"]")
-      ntk=CInt(Mid(nombrea,ubi1+1,ubi2-ubi1-1))
+     If ubirtk=0  Then ' no tengo nombre debo explorar
+           myfilter  = "Track Files"+Chr(0)  +"*.rtk"+Chr(0)
+           getfiles(file,myfilter,"open")
+           nombrea=*file.lpstrFile
+           ubi1 = InStrrev(nombrea,"[")
+           ubi2 =InStrRev (nombrea,"]")
+           ntk=CInt(Mid(nombrea,ubi1+1,ubi2-ubi1-1))
       '
      Else
   '2)  carga *.rtk de linea de comando doble clik o de cancion   
@@ -659,7 +659,76 @@ Print #1,"pasó copia a vector"
 
 End Sub
 ' ---------------------------
+Sub ImportarPistaExterna()
+Print #1,"---------------------------------------------------------------------------------"
+Print #1,"inicia ImportarPistaExterna " 
+Dim As String path, nom,ext
+Dim As Integer barra=0,punto=0,ubi3=0,ubi4=0,ntkold=ntk ' el ntk que esta en edicion
+' al seleccionar en lista el ntk no se selecciona automaticamente sacando ntk del nombre
+ '  quiero una pista nueva  
+    barra=InStrRev(nombre,"\")
+    punto=InStrRev(nombre,".")
+    path= Mid(nombre,1,barra) ' path
+    nom= Mid(nombre,barra+1,punto - 1 -barra) ' nombre archivo sin extension
+    ext= LCase(Mid(nombre,punto)) ' contiene el punto .rtk .roll
+    
+    Print #1,"extension de la pista importada",ext
+    Print #1,"nom nombre sin extension ni path ",nom
+    Print #1,"numero de pista tope =",tope
+   tope=tope+1
+   If tope <= 32 Then
+      ntk=tope
+   Else    
+      Exit Sub   
+   EndIf
+   Print #1,"pista nueva importada será ntk=",ntk   
 
+  
+Select Case ext
+ Case ".rtk"
+' sacar corchetes si lso tiene del nombre y armar de nuevo el nombre
+' toma el ntk globalmente,,,
+  titulos(ntk)=nombre
+  CargarTrack(Track(),ntk,1)
+  TrackaRoll (Track(),ntk,Roll) 'carga a roll el track cargado anteriormente
+  ' cambiamos el nombre segun el ntk
+    Dim haycorchete As Integer
+    haycorchete = InStr(nom,"]")
+    If haycorchete> 0 Then
+       nom = Mid(nom, haycorchete+1)  ' sacamos el [x] si existe
+    EndIf
+     
+    nombre= NombreCancion + "\[" + doscifras(ntk) + "]" + nom +".rtk"
+    Dim cadena As String = "[" + doscifras(ntk) + "]" + nom
+    AddListBoxItem(3, cadena)
+    Print #1,"GRABANDO PISTA EN CANCION EN ",nombre
+      'si es vacio tomo la ultima
+    titulos(ntk)=nombre ' cambiamos el nombre de la pista 
+' grabar en el directorio de cancion
+    GrabarRollaTrack(0) ' graba el roll del rtk a directorio cancion 
+      
+ Case ".roll"
+    titulos(0)=nombre ' nombre de un roll externo fuera de cancion
+    CargaArchivo(Roll,1) ' sobreescribe ntk global con 0, carga a Roll y a track(0)
+    ntk=Tope  ' recupero ntk 
+   ' todos los valores quedaron en ntk=0 
+
+    nombre= NombreCancion + "\[" + doscifras(ntk) + "]" + nom +".rtk"
+    Print #1,"GRABANDO PISTA EN CANCION EN ",nombre
+    
+'esta en Roll y track (0) debo grabarlo a rtk nuevo ntk en cancion
+    titulos(ntk)=nombre ' cambiamos el nombre de la pista en el ntk nuevo 
+' grabar en el directorio de cancion
+    Tope=Tope-1 'retrocedo el tope porque GrabarCopiaPista incrementa 
+    'de nuevo el tope, debo estar posicionado en roll y pista 0
+    ntk=0 ' asi apunto o simulo que estoy en ntk=0, será el ntkold  
+    GrabarCopiadePista() ' de 0 a ntk 
+            
+End Select 
+    
+
+
+End Sub
 sub GrabarCopiadePista()
 ' variables globales nombre, ntk
 ' recorro la list atomo el ntk proximo o simplemente sumo 1 a tope e incremento tope

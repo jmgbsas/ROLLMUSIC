@@ -146,7 +146,7 @@
 
     1.8) Agregar tracks o Pistas a Cancion   
 
-         Hay 4 opciones  
+         Hay 3 opciones  
          a) Con la cancion creada, ir al menu de Pistas, ajsutar lso aprametros deseados
             como intervalo de octavas, nombre del instrumento, etc, con ello en el mismo menu
             dar click en "Crear pista en la cancion con lo elegifo". Hasta este momento 
@@ -156,20 +156,14 @@
             cambiarlo por otro, se agrega automaticamente el nro de pista [x] donde x= 1,2,3,4...
             y al final se le agrega la estencion .rtk sera una pista a o track. Con la tecla TAB
             sepodra navegar de un track a otro en la vista grafica (la cual es unica en esta version).
-         b) a partir de una cancion recien creada es crear un Roll en la ventana grafica o cargar
-            un Roll (*.roll) y luego usar de esa misma ventana la opcion de grabar ROLLaTrack
-            O sea [Archivo] luego [ROLL=>TRACK(0)] con esa accion como estamos con una cancion
-            en edicion grabara el track convertido en el directorio de cancion...en track 0 si no hay cancion
-            o si hay cancion en track [x] siendo x la numeracion siguiente nueva si existen otros tracks previos.
+         b) En Roll gráfico crear un archivo nuevo grabar como roll con [GRABAR] eimportar ese Roll
+            en menu ARchivo de Control. O si existe el roll improtarlo directamente en dicho
+            menu. Tambien podrianos Grabar el Roll recien creado coo rtk con [ROLL=>Track] del
+            menu de Roll Grafico , e importar el rtk en menu ARchivo Importar de Control.
          c) Otro metodo sera copiar a mano un *.rtk en el directorio y ponerle un numero secuencial
             al primcipio que tenga este formato [x]  donde 'x' es un numero si exiten 1,2,3 sera [4]
             luego volver a cargar la cancion. (track 0 solo se usa para grabar Roll a Track sin cancion 
             y siempre se sobreescribe)
-         d) Y otro mas que se puede hacer es cargar un *.rtk desde el grafico y como esa accion convierte 
-            de *.rtk a Roll, luego como antes usando [ROLL=>TRACK(0)], grabará el Roll convertido a track en 
-            la cancion, vemos que aca hay  2 conversiones, de *.rtk a *.roll al cargar y otra de *.Roll a *.rtk 
-            al grabar en la cancion. O por ultimo colocar rtk en el dir de cancion a mano anteponiendo
-            al nombre [x] donde x va de 1 a 32. Notas(1).
          Nota: El ultimo test fue con el caso a), lso demas estaban propbados pero con las modificaciones
          echas par ael caso a) deben probarse de neuvo,,,
     1.9) Luego de cargada el directorio de la cancion, si se da click con el mouse en la lista
