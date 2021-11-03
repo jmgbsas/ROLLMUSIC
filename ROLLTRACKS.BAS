@@ -1046,8 +1046,10 @@ Function doscifras (NTK As Integer) As String
   EndIf
   doscifras=cifra
 End Function
-'
+' ------------------------------
+
 Sub PlayCancion(Track() As sec)
+
 fueradefoco=1
 Dim As Double tiempoDUR
 tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
@@ -1146,11 +1148,17 @@ kNroCol= Int(jply/NroCol)
 ' limites para cada pista NB,NA 
    NB = 0  + (pmTk(pis).desde -1 ) * 13 
    NA = 11 + (pmTk(pis).hasta -1 ) * 13 
+   Print #1,"Play Cancion NB ,NA, pis",NB,NA,pis
+   
+   Dim As ubyte NBpiano= CUByte(NB) - CUByte(restar(NB))
+   Print #1,"limite inferior NBpiano ",NBpiano
 ' info del inst en 1 no en lim2   
    For i1=1 To lim2   ' coo voy de 1 a lim2 necesito que la info del int este en 1
 
-     If (Track(pis).trk(jply,i1).nota >= NB) And (Track(pis).trk(jply,i1).nota <= NA) And (Track(pis).trk(jply,i1).dur >=1) And (Track(pis).trk(jply,i1).dur <= 180) Then ' es semitono
+     If (Track(pis).trk(jply,i1).nota >= NBpiano) And (Track(pis).trk(jply,i1).nota <= NA) And (Track(pis).trk(jply,i1).dur >=1) And (Track(pis).trk(jply,i1).dur <= 180) Then ' es semitono
          Notapiano = Track(pis).trk(jply,i1).nota
+         Print #1,"Notapiano ",Notapiano
+         Print #1,"i1,NB,NA ",i1,NB,NA
 '       Print #1,"VEO LO CORRECTO DE NOTAPIANO "; Notapiano
          dura=Track(pis).trk(jply,i1).dur ' el dur de track esta en integer
 '      Print #1,"jply ";jply; "dura ";dura
@@ -1220,13 +1228,13 @@ kNroCol= Int(jply/NroCol)
 ' llegamos al final de la Columna
 
      EndIf
-   ' i1=1
+   
      If i1=lim2  And (pis = tope Or pis=32) Then
  
         If cnt > 1 Then' Acorde
-   '       Print #1,"i1=NB=";i1 ; " ACORDE cnt= ";cnt
+          Print #1,"i1=NB=";i1 ; " ACORDE cnt= ";cnt
         Else    
-    '       Print #1,"i1=NB=";i1 ; " SIMPLE cnt= ";cnt
+           Print #1,"i1=NB=";i1 ; " SIMPLE cnt= ";cnt
         EndIf  
         Select Case cnt
           Case 1 
@@ -1234,7 +1242,7 @@ kNroCol= Int(jply/NroCol)
            ' INCLUYE LIGADOS O NO LIGADOS
  Print #1, "CALLL A NOTESIMPLE cntold, vel, canal, tiempodur",  cntold, vel, canal,tiempoDur
              
-            noteSimple  pasoCol(), cntold, vel, canal,tiempoDur
+            noteSimple  pasoCol(), cntold, vel, canal,tiempoDur,velpos
                      
           Case Is > 1
 
@@ -1243,27 +1251,27 @@ kNroCol= Int(jply/NroCol)
                  pasoCol(i2).tiempoFiguraOld=0
                Next i2
 
-  '              Print #1,"cnt ";cnt;" Acordeiguales "
+                Print #1,"cnt ";cnt;" Acordeiguales "
                 
-                AcordeIguales pasoCol(),cnt,cntold,vel,canal,tiempoDur,Roll
+                AcordeIguales pasoCol(),cnt,cntold,vel,canal,tiempoDur,Roll,velpos,pis
                 
             EndIf
             If  distintos=1 Then
-  '             Print #1,"cnt ";cnt;" AcordeDistintos"
+               Print #1,"cnt ";cnt;" AcordeDistintos"
                 
-                AcordeDistintos pasoCol(),cnt, cntold,vel,canal,tiempoDur,Roll
+                AcordeDistintos pasoCol(),cnt, cntold,vel,canal,tiempoDur,Roll,velpos,pis
                 
             EndIf
             
          End Select  
 
         cntold = cnt
-  '      Print #1,"cnt,cntold"; cnt;" ";cntold
+        Print #1,"cnt,cntold"; cnt;" ";cntold
   
      EndIf 
    Next i1
-'  Print #1,"---FIN -----paso:"; jply;" --------------------------------" 
-'  Print #1,"COMIENZA OTRA  POSICION O J ======"; j
+  Print #1,"---FIN -----paso:"; jply;" --------------------------------" 
+  Print #1,"COMIENZA OTRA  POSICION O J ======"; jply
  mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
  If playloop=1 And jply= final Then
     jply=comienzo -1

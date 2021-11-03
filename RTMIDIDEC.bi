@@ -1,7 +1,7 @@
  
 #Include once  "file.bi"
 #include "mod_rtmidi_c.bi"
-#Inclib  "rtmidi.dll"
+#Inclib  "rtmidi.dll" 'usa librerias estaticas 
 #include "fbthread.bi"
 #Include "crt.bi" ' QSORT
 
@@ -94,7 +94,7 @@ End Type
 Dim Shared pasoCol (0 To 384) As vec
 
 Declare Sub noteon	( note As UByte, vel As UByte,canal As UByte)
-Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal As UByte,tiempoDur As Double)
+Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal As UByte,tiempoDur As Double,velpos As integer)
 'Declare Sub AcordeIguales ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte,canal As UByte,tiempoDur As double) 
 'Declare Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte,cntold As UByte, canal As UByte)
 'Declare Sub AcordeDistintos ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte, canal As UByte,tiempoDur As double) 

@@ -1,7 +1,7 @@
 start
-11-01-202121:02:49
+11-03-202101:12:08
 __FB_ARGC__    1
-arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V3-CANCION-FIX\RollMusic.exe'
+arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V4-PLAY-INSTRUMENTOS\RollMusic.exe'
 arg  1 = ''
 ubirtk         0
 ubiroll        0
@@ -37,17 +37,17 @@ datos recibidos en rooloop nombre
 datos recibidos en rooloop desde,hasta     4             8
 datos recibidos en rooloop *po             7
 ubound roll.trk 2            102
-pid           3240
+pid           5356
 INSTANCIA      0
 -------------------------------------------------------
 inicia CargaPistasEnCancion
-filename encancion > 0      [01]ACOUSTIC_BASS.rtk
-trabajo con este filename...              [01]ACOUSTIC_BASS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk   1
+filename encancion > 0      [01]PIANO.rtk
+trabajo con este filename...              [01]PIANO.rtk
+nombre en CargarPistasEnCancion ,Numpista C:\aaaa\10-24-2021\[01]PIANO.rtk           1
 ----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk   1
+1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\10-24-2021\[01]PIANO.rtk           1
 ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
+NTK Y nombre que llego a open en CargaTrack              1            C:\aaaa\10-24-2021\[01]PIANO.rtk
 reconstruccion x pos bin    00000000000000001001
 pmTk(ntk).MaxPos             9
 desde          4
@@ -63,12 +63,12 @@ ABRIR MAXPOS ,NB,NA  9       39            102
 uso Close
 CargarTrack  fin
 ----------------------------------------------
-trabajo con este filename...              [02]ACOUSTIC_GUITAR_NYLON.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk         2
+trabajo con este filename...              [02]BAJO.rtk
+nombre en CargarPistasEnCancion ,Numpista C:\aaaa\10-24-2021\[02]BAJO.rtk            2
 ----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk         2
+1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\10-24-2021\[02]BAJO.rtk            2
 ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
+NTK Y nombre que llego a open en CargaTrack              2            C:\aaaa\10-24-2021\[02]BAJO.rtk
 reconstruccion x pos bin    00000000000000001001
 pmTk(ntk).MaxPos             9
 desde          4
@@ -84,72 +84,9 @@ ABRIR MAXPOS ,NB,NA  9       39            102
 uso Close
 CargarTrack  fin
 ----------------------------------------------
-trabajo con este filename...              [03]ACOUSTIC_BASS.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk   3
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk   3
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
-reconstruccion x pos bin    00000000000000001001
-pmTk(ntk).MaxPos             9
-desde          4
-hasta          8
-en la carga de track desde hasta           4             8
-CargarTrack  NB Na           39            102
-cargaCancion   1
-*PO = hasta -1               7
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        9             3
-ABRIR MAXPOS ,NB,NA  9       39            102
-uso Close
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [04]ACOUSTIC_GUITAR_NYLON.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk         4
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk         4
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
-reconstruccion x pos bin    00000000000000001001
-pmTk(ntk).MaxPos             9
-desde          4
-hasta          8
-en la carga de track desde hasta           4             8
-CargarTrack  NB Na           39            102
-cargaCancion   1
-*PO = hasta -1               7
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        9             4
-ABRIR MAXPOS ,NB,NA  9       39            102
-uso Close
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [05]instancia-01.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\10-24-2021\[05]instancia-01.rtk    5
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\10-24-2021\[05]instancia-01.rtk    5
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
-reconstruccion x pos bin    00000000000000000110
-pmTk(ntk).MaxPos             6
-desde          4
-hasta          8
-en la carga de track desde hasta           4             8
-CargarTrack  NB Na           39            102
-cargaCancion   1
-*PO = hasta -1               7
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        6             5
-ABRIR MAXPOS ,NB,NA  6       39            102
-uso Close
-CargarTrack  fin
-----------------------------------------------
 llama a cargar pista 1 con TrackaRoll desde CargaPistaEnCancion
 -------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
+NTK Y nombre que llego a TrackaRoll        1            C:\aaaa\10-24-2021\[01]PIANO.rtk
 maxpos y (ntk).maxpos        2             9
 TrackaRoll ntk, desde, hasta, MaxPos       1             4             8             9
 TrackaRoll, NB, NA, CantTricks             39            102           509
@@ -164,345 +101,539 @@ despues de cargar pista 1 TrackaRoll desde CargaPistaEnCancion
 llama a RecalCompas de pista 1 desde CargaPistaEnCancion
 FIN CargaPistasEnCancion no debe calcuar *po             7
 -------------------------------------------------------
---TAB 
-1- NTK,MAXPOS, pmtk(ntk).maxpos            1             9             9
-2- NTK,MAXPOS, pmtk(ntk).maxpos            2             9             9
---------------------------
-3-NTK nombre   2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
-3-NTK MAXPOS pmtk(ntk).maxpos              9             9
---------------------------
-6-NTK nombre   2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
-6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         2             9             9
-EN TRACKS MAXPOS (NTK).MAXPOS              9             9
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
-maxpos y (ntk).maxpos        9             9
-TrackaRoll ntk, desde, hasta, MaxPos       2             4             8             9
-TrackaRoll, NB, NA, CantTricks             39            102           509
-REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
-TrackaRoll desde, hasta      4             8
-TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 510 de Track aRoll
-TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
-----------------------------------------------
-Conmutando con TAB >>> ntk cargado, nombre               2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
-llama a RecalCompas para ntk,maxpos, .maxpos             2             9             9
-MAXPOS DESPUES DE RECALCOMPAS              9             9
-7- instancia, maspos         0             9
---TAB 
-1- NTK,MAXPOS, pmtk(ntk).maxpos            2             9             9
-2- NTK,MAXPOS, pmtk(ntk).maxpos            3             9             9
---------------------------
-3-NTK nombre   3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
-3-NTK MAXPOS pmtk(ntk).maxpos              9             9
---------------------------
-6-NTK nombre   3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
-6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         3             9             9
-EN TRACKS MAXPOS (NTK).MAXPOS              9             9
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
-maxpos y (ntk).maxpos        9             9
-TrackaRoll ntk, desde, hasta, MaxPos       3             4             8             9
-TrackaRoll, NB, NA, CantTricks             39            102           509
-REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
-TrackaRoll desde, hasta      4             8
-TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 510 de Track aRoll
-TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
-----------------------------------------------
-Conmutando con TAB >>> ntk cargado, nombre               3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
-llama a RecalCompas para ntk,maxpos, .maxpos             3             9             9
-MAXPOS DESPUES DE RECALCOMPAS              9             9
-7- instancia, maspos         0             9
---TAB 
-1- NTK,MAXPOS, pmtk(ntk).maxpos            3             9             9
-2- NTK,MAXPOS, pmtk(ntk).maxpos            4             9             9
---------------------------
-3-NTK nombre   4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
-3-NTK MAXPOS pmtk(ntk).maxpos              9             9
---------------------------
-6-NTK nombre   4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
-6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         4             9             9
-EN TRACKS MAXPOS (NTK).MAXPOS              9             9
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
-maxpos y (ntk).maxpos        9             9
-TrackaRoll ntk, desde, hasta, MaxPos       4             4             8             9
-TrackaRoll, NB, NA, CantTricks             39            102           509
-REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
-TrackaRoll desde, hasta      4             8
-TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 510 de Track aRoll
-TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
-----------------------------------------------
-Conmutando con TAB >>> ntk cargado, nombre               4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
-llama a RecalCompas para ntk,maxpos, .maxpos             4             9             9
-MAXPOS DESPUES DE RECALCOMPAS              9             9
-7- instancia, maspos         0             9
---TAB 
-1- NTK,MAXPOS, pmtk(ntk).maxpos            4             9             9
-2- NTK,MAXPOS, pmtk(ntk).maxpos            5             9             6
---------------------------
-3-NTK nombre   5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
-3-NTK MAXPOS pmtk(ntk).maxpos              9             6
---------------------------
-6-NTK nombre   5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
-6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         5             9             6
-EN TRACKS MAXPOS (NTK).MAXPOS              9             6
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
-maxpos y (ntk).maxpos        9             6
-TrackaRoll ntk, desde, hasta, MaxPos       5             4             8             6
-TrackaRoll, NB, NA, CantTricks             39            102           506
-REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
-TrackaRoll desde, hasta      4             8
-TrackaRoll NB, NA ,*po, MaxPos             39            102           7             6
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 510 de Track aRoll
-TrackaRoll Fin,,maxpos y (ntk).maxpos      6             6
-----------------------------------------------
-Conmutando con TAB >>> ntk cargado, nombre               5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
-llama a RecalCompas para ntk,maxpos, .maxpos             5             6             6
-MAXPOS DESPUES DE RECALCOMPAS              6             6
-7- instancia, maspos         0             6
---TAB 
-1- NTK,MAXPOS, pmtk(ntk).maxpos            5             6             6
-2- NTK,MAXPOS, pmtk(ntk).maxpos            6             6             0
-4 - NTK,MAXPOS, pmtk(ntk).maxpos           1             6             9
-5- MAXPOS final TAB          9
-6-NTK nombre   1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
-6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         1             9             9
-EN TRACKS MAXPOS (NTK).MAXPOS              9             9
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
-maxpos y (ntk).maxpos        9             9
-TrackaRoll ntk, desde, hasta, MaxPos       1             4             8             9
-TrackaRoll, NB, NA, CantTricks             39            102           509
-REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
-TrackaRoll desde, hasta      4             8
-TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 510 de Track aRoll
-TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
-----------------------------------------------
-Conmutando con TAB >>> ntk cargado, nombre               1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
-llama a RecalCompas para ntk,maxpos, .maxpos             1             9             9
-MAXPOS DESPUES DE RECALCOMPAS              9             9
-7- instancia, maspos         0             9
-entro a 1010 Cargar Pista externa a cancion
----------------------------------------------------------------------------------
-inicia ImportarPistaExterna 
-extension de la pista importada           .roll
-nom nombre sin extension ni path          instancia-01
-numero de pista tope =       5
-pista nueva importada será ntk=            6
-CArgarArchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V3-CANCION-FIX\instancia-01.roll
-open nombre en CArgaARchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V3-CANCION-FIX\instancia-01.roll
-CambiarDim desde  4 hasta  8 *po  7 NB  39 NA  102
-CantTicks  506
-FIN CAMBIARDIM 
-En CargarArchivo NB NA       39            102
-uso Close
-CargaARchivo LBound (Roll.trk,1)           1
-CargaARchivo LBound (Roll.trk,2)           39
-CargaARchivo UBound (Roll.trk,1)           506
-CargaARchivo UBound (Roll.trk,2)           102
-GRABANDO PISTA EN CANCION EN              C:\aaaa\10-24-2021\[06]instancia-01.rtk
----------------------------------------------------------------------------------
-inicia GrabarCopiaPista 
-extension     .rtk
-nom nombre sin extension ni path          [06]instancia-01
-pista origen ntk=            0
-pista nueva ntk=             6
-copia track a otro track
-hizo copia de parametros de trackold en new
- *po seria hasta -1          7
-preparo nombre cancion nuevo ntk           6
-GRABANDO PISTA EN CANCION EN              C:\aaaa\10-24-2021\[06]instancia-01.rtk
-inicio MaxPos  6
-termina con los borrados
-posn           6
-MaxPos despues de acchicar   6
-Termina con achicar secuencia
-termino copia a Trktemp, maxpos, posn      6             4
-nombre tiene el path        C:\aaaa\10-24-2021\[06]instancia-01.rtk
-NB , NA,MAXPOS               39            102           6
-pasó copia a vector
-etapa1
-Posicion       1
-string representando        00000000000000000110
-a1 a2 a3 a4,a5              0000          0000          0000          0000          0110
-y1,y2,y3,y4,y5              0             0             0             0             6
-etapa final puts
-uso Close
-FIN GrabarCopiaPista nueva   6
-FIN GrabarCopiaPista ,maxpos,posn          6             4
----------------------------------------------------------------------------------
---TAB 
-1- NTK,MAXPOS, pmtk(ntk).maxpos            6             6             6
-2- NTK,MAXPOS, pmtk(ntk).maxpos            7             6             0
-4 - NTK,MAXPOS, pmtk(ntk).maxpos           1             6             9
-5- MAXPOS final TAB          9
-6-NTK nombre   1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
-6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         1             9             9
-EN TRACKS MAXPOS (NTK).MAXPOS              9             9
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
-maxpos y (ntk).maxpos        9             9
-TrackaRoll ntk, desde, hasta, MaxPos       1             4             8             9
-TrackaRoll, NB, NA, CantTricks             39            102           509
-REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
-TrackaRoll desde, hasta      4             8
-TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 510 de Track aRoll
-TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
-----------------------------------------------
-Conmutando con TAB >>> ntk cargado, nombre               1            C:\aaaa\10-24-2021\[01]ACOUSTIC_BASS.rtk
-llama a RecalCompas para ntk,maxpos, .maxpos             1             9             9
-MAXPOS DESPUES DE RECALCOMPAS              9             9
-7- instancia, maspos         0             9
---TAB 
-1- NTK,MAXPOS, pmtk(ntk).maxpos            1             9             9
-2- NTK,MAXPOS, pmtk(ntk).maxpos            2             9             9
---------------------------
-3-NTK nombre   2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
-3-NTK MAXPOS pmtk(ntk).maxpos              9             9
---------------------------
-6-NTK nombre   2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
-6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         2             9             9
-EN TRACKS MAXPOS (NTK).MAXPOS              9             9
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
-maxpos y (ntk).maxpos        9             9
-TrackaRoll ntk, desde, hasta, MaxPos       2             4             8             9
-TrackaRoll, NB, NA, CantTricks             39            102           509
-REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
-TrackaRoll desde, hasta      4             8
-TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 510 de Track aRoll
-TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
-----------------------------------------------
-Conmutando con TAB >>> ntk cargado, nombre               2            C:\aaaa\10-24-2021\[02]ACOUSTIC_GUITAR_NYLON.rtk
-llama a RecalCompas para ntk,maxpos, .maxpos             2             9             9
-MAXPOS DESPUES DE RECALCOMPAS              9             9
-7- instancia, maspos         0             9
---TAB 
-1- NTK,MAXPOS, pmtk(ntk).maxpos            2             9             9
-2- NTK,MAXPOS, pmtk(ntk).maxpos            3             9             9
---------------------------
-3-NTK nombre   3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
-3-NTK MAXPOS pmtk(ntk).maxpos              9             9
---------------------------
-6-NTK nombre   3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
-6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         3             9             9
-EN TRACKS MAXPOS (NTK).MAXPOS              9             9
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
-maxpos y (ntk).maxpos        9             9
-TrackaRoll ntk, desde, hasta, MaxPos       3             4             8             9
-TrackaRoll, NB, NA, CantTricks             39            102           509
-REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
-TrackaRoll desde, hasta      4             8
-TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 510 de Track aRoll
-TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
-----------------------------------------------
-Conmutando con TAB >>> ntk cargado, nombre               3            C:\aaaa\10-24-2021\[03]ACOUSTIC_BASS.rtk
-llama a RecalCompas para ntk,maxpos, .maxpos             3             9             9
-MAXPOS DESPUES DE RECALCOMPAS              9             9
-7- instancia, maspos         0             9
---TAB 
-1- NTK,MAXPOS, pmtk(ntk).maxpos            3             9             9
-2- NTK,MAXPOS, pmtk(ntk).maxpos            4             9             9
---------------------------
-3-NTK nombre   4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
-3-NTK MAXPOS pmtk(ntk).maxpos              9             9
---------------------------
-6-NTK nombre   4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
-6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         4             9             9
-EN TRACKS MAXPOS (NTK).MAXPOS              9             9
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
-maxpos y (ntk).maxpos        9             9
-TrackaRoll ntk, desde, hasta, MaxPos       4             4             8             9
-TrackaRoll, NB, NA, CantTricks             39            102           509
-REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
-TrackaRoll desde, hasta      4             8
-TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 510 de Track aRoll
-TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
-----------------------------------------------
-Conmutando con TAB >>> ntk cargado, nombre               4            C:\aaaa\10-24-2021\[04]ACOUSTIC_GUITAR_NYLON.rtk
-llama a RecalCompas para ntk,maxpos, .maxpos             4             9             9
-MAXPOS DESPUES DE RECALCOMPAS              9             9
-7- instancia, maspos         0             9
---TAB 
-1- NTK,MAXPOS, pmtk(ntk).maxpos            4             9             9
-2- NTK,MAXPOS, pmtk(ntk).maxpos            5             9             6
---------------------------
-3-NTK nombre   5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
-3-NTK MAXPOS pmtk(ntk).maxpos              9             6
---------------------------
-6-NTK nombre   5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
-6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         5             9             6
-EN TRACKS MAXPOS (NTK).MAXPOS              9             6
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
-maxpos y (ntk).maxpos        9             6
-TrackaRoll ntk, desde, hasta, MaxPos       5             4             8             6
-TrackaRoll, NB, NA, CantTricks             39            102           506
-REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
-TrackaRoll desde, hasta      4             8
-TrackaRoll NB, NA ,*po, MaxPos             39            102           7             6
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 510 de Track aRoll
-TrackaRoll Fin,,maxpos y (ntk).maxpos      6             6
-----------------------------------------------
-Conmutando con TAB >>> ntk cargado, nombre               5            C:\aaaa\10-24-2021\[05]instancia-01.rtk
-llama a RecalCompas para ntk,maxpos, .maxpos             5             6             6
-MAXPOS DESPUES DE RECALCOMPAS              6             6
-7- instancia, maspos         0             6
---TAB 
-1- NTK,MAXPOS, pmtk(ntk).maxpos            5             6             6
-2- NTK,MAXPOS, pmtk(ntk).maxpos            6             6             6
---------------------------
-3-NTK nombre   6            C:\aaaa\10-24-2021\[06]instancia-01.rtk
-3-NTK MAXPOS pmtk(ntk).maxpos              6             6
---------------------------
-6-NTK nombre   6            C:\aaaa\10-24-2021\[06]instancia-01.rtk
-6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         6             6             6
-EN TRACKS MAXPOS (NTK).MAXPOS              6             6
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        6            C:\aaaa\10-24-2021\[06]instancia-01.rtk
-maxpos y (ntk).maxpos        6             6
-TrackaRoll ntk, desde, hasta, MaxPos       6             4             8             6
-TrackaRoll, NB, NA, CantTricks             39            102           506
-REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
-TrackaRoll desde, hasta      4             8
-TrackaRoll NB, NA ,*po, MaxPos             39            102           7             6
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 510 de Track aRoll
-TrackaRoll Fin,,maxpos y (ntk).maxpos      6             6
-----------------------------------------------
-Conmutando con TAB >>> ntk cargado, nombre               6            C:\aaaa\10-24-2021\[06]instancia-01.rtk
-llama a RecalCompas para ntk,maxpos, .maxpos             6             6             6
-MAXPOS DESPUES DE RECALCOMPAS              6             6
-7- instancia, maspos         0             6
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      52
+i1,NB,NA       1             39            102
+---FIN -----paso: 1 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 1
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 Acordeiguales 
+2]pasocol(1).inst en AcordeonIguales       3
+2]pasocol(2).inst en AcordeonIguales       108
+COMIENZA RETARDO En  time : 27536.57587547845
+tiempoFigura   0.25
+COMIENZA RETARDO En  time : 27536.57587547845
+tiempoFigura   0.25
+start OFF de ligados ---------
+cnt,cntold 2  2
+---FIN -----paso: 1 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 1
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      54
+i1,NB,NA       1             39            102
+---FIN -----paso: 2 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 2
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 AcordeDistintos
+====>>> START AOD ON veo el pasocol que tiene
+AOD:DUR cnt=1: 5
+AOD: old_time_on  27536.82724945253
+start FOR
+for cnt=1
+AOD FOR: pasoCol(i1).Dur        5
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  54
+AOD FOR: pasoCol(i1).tiempofigOld  0
+pasoCol(i1).Dur  5 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  25000000000
+AOD:|||SIN LIGA DUR  5
+5)AOD: LIGA=1 ==========> 0
+for cnt=2
+AOD FOR: pasoCol(i1).Dur        50
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  48
+AOD FOR: pasoCol(i1).tiempofigOld  0
+pasoCol(i1).Dur  50 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  25000000000
+AOD:|||SIN LIGA DUR  50
+5)AOD: LIGA=1 ==========> 0
+AOD:SIN LIGAR Noteon de notepiano  54
+2]pasocol(1).inst en AcordeonDistintos     3
+AOD:SIN LIGAR Noteon de notepiano  48
+2]pasocol(2).inst en AcordeonDistintos     108
+SORT POR tiempoFigura calculado en playAll
+====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
+COMIENZA RETARDO En  time : 27536.82731876709
+tiempoFigura   0.25
+COMIENZA RETARDO En  time : 27536.82731876709
+tiempoFigura   0.25
+cnt,cntold 2  2
+---FIN -----paso: 2 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 2
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      56
+i1,NB,NA       1             39            102
+---FIN -----paso: 3 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 3
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 AcordeDistintos
+====>>> START AOD ON veo el pasocol que tiene
+AOD:DUR cnt=1: 4
+AOD: old_time_on  27537.07923366649
+start FOR
+for cnt=1
+AOD FOR: pasoCol(i1).Dur        4
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  56
+AOD FOR: pasoCol(i1).tiempofigOld  0
+pasoCol(i1).Dur  4 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  50000000000
+AOD:|||SIN LIGA DUR  4
+5)AOD: LIGA=1 ==========> 0
+for cnt=2
+AOD FOR: pasoCol(i1).Dur        49
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  48
+AOD FOR: pasoCol(i1).tiempofigOld  0
+pasoCol(i1).Dur  49 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  50000000000
+AOD:|||SIN LIGA DUR  49
+5)AOD: LIGA=1 ==========> 0
+AOD:SIN LIGAR Noteon de notepiano  56
+2]pasocol(1).inst en AcordeonDistintos     3
+AOD:SIN LIGAR Noteon de notepiano  48
+2]pasocol(2).inst en AcordeonDistintos     108
+SORT POR tiempoFigura calculado en playAll
+====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
+COMIENZA RETARDO En  time : 27537.07943345549
+tiempoFigura   0.5
+COMIENZA RETARDO En  time : 27537.07943345549
+tiempoFigura   0.5
+cnt,cntold 2  2
+---FIN -----paso: 3 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 3
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      57
+i1,NB,NA       1             39            102
+---FIN -----paso: 4 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 4
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 AcordeDistintos
+====>>> START AOD ON veo el pasocol que tiene
+AOD:DUR cnt=1: 93
+AOD: old_time_on  27537.58122561037
+start FOR
+for cnt=1
+AOD FOR: pasoCol(i1).Dur        93
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  57
+AOD FOR: pasoCol(i1).tiempofigOld  0
+AOD:ANALIZO LIGADURAS SUbSIGUIENTES si hay y toda la columna
+AOD:DUR  93
+AOD:liga  0
+AOD:notepiano  57
+guardo old_time_on primer liga  2753758122561036
+*AOD:LIGA=1 ==========> 1
+*AOD: LIGA ACUMULADA ===> 1
+*AOD: ACUMULADO TIEMPOfIGURA  100000000000
+*AOD: ACUMULADO TIEMPOfIGURAOLD  100000000000
+*estamso aca ??
+pasoCol(i1).i1               1
+nj             5
+AOD: CANCIONCARGADA         durj           3
+AOD:LIGA nj, durj  5  3
+AOD:LIGA nj reldur  5  1
+AOD:LIGA paso nj tiempoFiguraSig  5  100000000000
+AOD:LIGA pasoCol(i1).tiempoFigura+sig  200000000000
+2) AOD:LIGA=1 ==========> 1
+numero de ligados: 1
+Noteon ligado notepiano  57
+1]pasocol(1).inst en AcordeonDistintos     3
+3) AOD:LIGA=1 ==========> 1
+pasoCol(i1).Dur  93 pasoCol(i1).liga  1
+for cnt=2
+AOD FOR: pasoCol(i1).Dur        3
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  48
+AOD FOR: pasoCol(i1).tiempofigOld  0
+pasoCol(i1).Dur  3 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 1
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.1
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  100000000000
+AOD:|||SIN LIGA DUR  3
+5)AOD: LIGA=1 ==========> 1
+AOD:|||LIGA=1, pasoCol(i1).tiempoFiguraOld  100000000000
+AOD:SIN LIGAR Noteon de notepiano  48
+2]pasocol(2).inst en AcordeonDistintos     108
+SORT POR tiempoFigura calculado en playAll
+====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
+COMIENZA RETARDO En  time : 27537.58133909596
+tiempoFigura   1
+COMIENZA RETARDO En  time : 27537.58122561036
+tiempoFigura   1
+cnt,cntold 2  2
+---FIN -----paso: 4 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 4
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      57
+i1,NB,NA       1             39            102
+---FIN -----paso: 5 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 5
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 Acordeiguales 
+2]pasocol(1).inst en AcordeonIguales       3
+COMIENZA RETARDO En  time : 27538.58325611896
+tiempoFigura   1
+start OFF de ligados ---------
+cnt,cntold 2  2
+---FIN -----paso: 5 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 5
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      59
+i1,NB,NA       1             39            102
+---FIN -----paso: 6 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 6
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 Acordeiguales 
+2]pasocol(1).inst en AcordeonIguales       3
+COMIENZA RETARDO En  time : 27539.58421463047
+tiempoFigura   0.5
+start OFF de ligados ---------
+cnt,cntold 2  2
+---FIN -----paso: 6 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 6
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      61
+i1,NB,NA       1             39            102
+---FIN -----paso: 7 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 7
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 Acordeiguales 
+2]pasocol(1).inst en AcordeonIguales       3
+COMIENZA RETARDO En  time : 27540.0852487424
+tiempoFigura   0.5
+start OFF de ligados ---------
+cnt,cntold 2  2
+---FIN -----paso: 7 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 7
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+---FIN -----paso: 8 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 8
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+i1=NB= 12 SIMPLE cnt=  0
+cnt,cntold 0  0
+---FIN -----paso: 8 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 8
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+---FIN -----paso: 9 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 9
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+i1=NB= 12 SIMPLE cnt=  0
+cnt,cntold 0  0
+---FIN -----paso: 9 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 9
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      52
+i1,NB,NA       1             39            102
+---FIN -----paso: 1 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 1
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 Acordeiguales 
+2]pasocol(1).inst en AcordeonIguales       3
+2]pasocol(2).inst en AcordeonIguales       108
+COMIENZA RETARDO En  time : 27548.18621353978
+tiempoFigura   0.25
+COMIENZA RETARDO En  time : 27548.18621353978
+tiempoFigura   0.25
+start OFF de ligados ---------
+cnt,cntold 2  2
+---FIN -----paso: 1 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 1
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      54
+i1,NB,NA       1             39            102
+---FIN -----paso: 2 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 2
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 AcordeDistintos
+====>>> START AOD ON veo el pasocol que tiene
+AOD:DUR cnt=1: 5
+AOD: old_time_on  27548.43808087038
+start FOR
+for cnt=1
+AOD FOR: pasoCol(i1).Dur        5
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  54
+AOD FOR: pasoCol(i1).tiempofigOld  0
+pasoCol(i1).Dur  5 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  25000000000
+AOD:|||SIN LIGA DUR  5
+5)AOD: LIGA=1 ==========> 0
+for cnt=2
+AOD FOR: pasoCol(i1).Dur        50
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  48
+AOD FOR: pasoCol(i1).tiempofigOld  0
+pasoCol(i1).Dur  50 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  25000000000
+AOD:|||SIN LIGA DUR  50
+5)AOD: LIGA=1 ==========> 0
+AOD:SIN LIGAR Noteon de notepiano  54
+2]pasocol(1).inst en AcordeonDistintos     3
+AOD:SIN LIGAR Noteon de notepiano  48
+2]pasocol(2).inst en AcordeonDistintos     108
+SORT POR tiempoFigura calculado en playAll
+====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
+COMIENZA RETARDO En  time : 27548.43823207123
+tiempoFigura   0.25
+COMIENZA RETARDO En  time : 27548.43823207123
+tiempoFigura   0.25
+cnt,cntold 2  2
+---FIN -----paso: 2 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 2
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      56
+i1,NB,NA       1             39            102
+---FIN -----paso: 3 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 3
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 AcordeDistintos
+====>>> START AOD ON veo el pasocol que tiene
+AOD:DUR cnt=1: 4
+AOD: old_time_on  27548.69010959514
+start FOR
+for cnt=1
+AOD FOR: pasoCol(i1).Dur        4
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  56
+AOD FOR: pasoCol(i1).tiempofigOld  0
+pasoCol(i1).Dur  4 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  50000000000
+AOD:|||SIN LIGA DUR  4
+5)AOD: LIGA=1 ==========> 0
+for cnt=2
+AOD FOR: pasoCol(i1).Dur        49
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  48
+AOD FOR: pasoCol(i1).tiempofigOld  0
+pasoCol(i1).Dur  49 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 0
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  50000000000
+AOD:|||SIN LIGA DUR  49
+5)AOD: LIGA=1 ==========> 0
+AOD:SIN LIGAR Noteon de notepiano  56
+2]pasocol(1).inst en AcordeonDistintos     3
+AOD:SIN LIGAR Noteon de notepiano  48
+2]pasocol(2).inst en AcordeonDistintos     108
+SORT POR tiempoFigura calculado en playAll
+====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
+COMIENZA RETARDO En  time : 27548.69016022194
+tiempoFigura   0.5
+COMIENZA RETARDO En  time : 27548.69016022194
+tiempoFigura   0.5
+cnt,cntold 2  2
+---FIN -----paso: 3 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 3
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      57
+i1,NB,NA       1             39            102
+---FIN -----paso: 4 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 4
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 AcordeDistintos
+====>>> START AOD ON veo el pasocol que tiene
+AOD:DUR cnt=1: 93
+AOD: old_time_on  27549.1920944037
+start FOR
+for cnt=1
+AOD FOR: pasoCol(i1).Dur        93
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  57
+AOD FOR: pasoCol(i1).tiempofigOld  0
+AOD:ANALIZO LIGADURAS SUbSIGUIENTES si hay y toda la columna
+AOD:DUR  93
+AOD:liga  0
+AOD:notepiano  57
+guardo old_time_on primer liga  2754919209440370
+*AOD:LIGA=1 ==========> 1
+*AOD: LIGA ACUMULADA ===> 1
+*AOD: ACUMULADO TIEMPOfIGURA  100000000000
+*AOD: ACUMULADO TIEMPOfIGURAOLD  100000000000
+*estamso aca ??
+pasoCol(i1).i1               1
+nj             5
+AOD: CANCIONCARGADA         durj           3
+AOD:LIGA nj, durj  5  3
+AOD:LIGA nj reldur  5  1
+AOD:LIGA paso nj tiempoFiguraSig  5  100000000000
+AOD:LIGA pasoCol(i1).tiempoFigura+sig  200000000000
+2) AOD:LIGA=1 ==========> 1
+numero de ligados: 1
+Noteon ligado notepiano  57
+1]pasocol(1).inst en AcordeonDistintos     3
+3) AOD:LIGA=1 ==========> 1
+pasoCol(i1).Dur  93 pasoCol(i1).liga  1
+for cnt=2
+AOD FOR: pasoCol(i1).Dur        3
+AOD FOR: pasoCol(i1).liga       0
+AOD FOR: pasoCol(i1).NOTAPIANO  48
+AOD FOR: pasoCol(i1).tiempofigOld  0
+pasoCol(i1).Dur  3 pasoCol(i1).liga  0
+4) AOD:LIGA=1 ==========> 1
+AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.1
+AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  100000000000
+AOD:|||SIN LIGA DUR  3
+5)AOD: LIGA=1 ==========> 1
+AOD:|||LIGA=1, pasoCol(i1).tiempoFiguraOld  100000000000
+AOD:SIN LIGAR Noteon de notepiano  48
+2]pasocol(2).inst en AcordeonDistintos     108
+SORT POR tiempoFigura calculado en playAll
+====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
+COMIENZA RETARDO En  time : 27549.19217798889
+tiempoFigura   1
+COMIENZA RETARDO En  time : 27549.1920944037
+tiempoFigura   1
+cnt,cntold 2  2
+---FIN -----paso: 4 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 4
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      57
+i1,NB,NA       1             39            102
+---FIN -----paso: 5 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 5
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 Acordeiguales 
+2]pasocol(1).inst en AcordeonIguales       3
+COMIENZA RETARDO En  time : 27550.19408957547
+tiempoFigura   1
+start OFF de ligados ---------
+cnt,cntold 2  2
+---FIN -----paso: 5 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 5
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      59
+i1,NB,NA       1             39            102
+---FIN -----paso: 6 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 6
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 Acordeiguales 
+2]pasocol(1).inst en AcordeonIguales       3
+COMIENZA RETARDO En  time : 27551.19509055912
+tiempoFigura   0.5
+start OFF de ligados ---------
+cnt,cntold 2  2
+---FIN -----paso: 6 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 6
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      61
+i1,NB,NA       1             39            102
+---FIN -----paso: 7 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 7
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 Acordeiguales 
+2]pasocol(1).inst en AcordeonIguales       3
+COMIENZA RETARDO En  time : 27551.69609069334
+tiempoFigura   0.5
+start OFF de ligados ---------
+cnt,cntold 2  2
+---FIN -----paso: 7 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 7
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+---FIN -----paso: 8 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 8
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+i1=NB= 12 SIMPLE cnt=  0
+cnt,cntold 0  0
+---FIN -----paso: 8 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 8
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+---FIN -----paso: 9 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 9
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+i1=NB= 12 SIMPLE cnt=  0
+cnt,cntold 0  0
+---FIN -----paso: 9 --------------------------------
+COMIENZA OTRA  POSICION O J ====== 9

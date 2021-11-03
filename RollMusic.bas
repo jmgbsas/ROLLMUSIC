@@ -1,3 +1,5 @@
+' 0.4.5.2.0-20-V4-CANCION-FIX crear para tocar diferentes instrumentos en Play
+' importa roll o rtk desde archivo menu control ROLLMUSIC-0.4.5.2.0-20-V3-CANCION-FIX
 ' ya reproduce 2 tracks y forma acordes de 2 melodias...
 ' 2 problemas se agrego inst en posicion 1 no lim2 dado que la snotas se barren de 
 ' 1 a lim2 y la informacion ya es necesaria para 1 vertical...
@@ -500,7 +502,7 @@ MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
 MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
 MenuItem(1010,MenName1, "Cargar una Pista (rtk ó roll) externa en Cancion")
 MenuItem(1011,MenName1, "Grabar una Pista de la Cancion con modificaciones, carga pista si no hubiera cargada")
-MenuItem(1012,MenName1, "Copia una pista a otra  nueva nueva en cancion")
+MenuItem(1012,MenName1, "Copia una pista a otra  nueva en cancion")
 MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
 MenuItem(1014,MenName1, "Salir")
 
@@ -675,16 +677,6 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
             Print #1, "Click Grabando a disco pista modif con RollaTrack ",nombre
             Dim As String nombreg
             ROLLCARGADO=FALSE 
-            'If nombre = "" Then
-            '   getfiles(file,myfilter,"save")
-            '   nombreg=*file.lpstrFile
-            '   If nombreg = "" Then
-            '      Print #1,"exit select por nombreg vacio "
-            '      Exit Select 
-            '   Else
-            '      nombre=nombreg   
-            '   EndIf
-            'EndIf
            If NombreCancion > ""  Then
               GrabarRollaTrack(0)
            EndIf
@@ -733,13 +725,33 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
               ' ChangeProgram ( CUByte (instru) , 0)
                Roll.trk(1,NA).inst= CUByte(instru)
                Track(ntk).trk(1,1).inst=CUByte(instru)
-               Roll.trk(1,NA).inst=CUByte(instru)  
+              ' grabar la pistacomo en 1011
+            Print #1, "Click Grabando inst a disco pista con RollaTrack ",nombre
+            Dim As String nombreg
+              ROLLCARGADO=FALSE 
+              If NombreCancion > ""  Then
+                GrabarRollaTrack(0)
+              EndIf
+              MenuNew=0           
+              carga=1
+
+                
             Case 1050 ' seleccion de instrumento por orden Numerico
                selInstORdenNum (instru)
               ' ChangeProgram ( CUByte (instru) , 0)
                Roll.trk(1,NA).inst= CUByte(instru)
                Track(ntk).trk(1,1).inst=CUByte(instru)
-               Roll.trk(1,NA).inst=CUByte(instru)
+              ' grabar el track 
+            Print #1, "Click Grabando inst a disco pista con RollaTrack ",nombre
+            Dim As String nombreg
+              ROLLCARGADO=FALSE 
+              If NombreCancion > ""  Then
+                GrabarRollaTrack(0)
+              EndIf
+              MenuNew=0           
+              carga=1
+
+
             Case 1060 ' crea track y reemplaza al existente en la edicion
                'If ntk=0 Then  ' no se cargo ningun track
                '   *po = hasta -1
