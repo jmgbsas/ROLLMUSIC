@@ -138,7 +138,7 @@ Dim  Shared figura (1 To 182) As ZString  * 4 => _
  "SO:+","SP:+","SI:+","SL:+","SF:+","SE:+","SX:+","SH:+","SW:+",_  '163 171 
  "s3O+","s3P+","s3I+","s3L+","s3F+","s3E+","s3X+","s3H+","s3W+", _ '172 180
  "   ","|| " } ' 181 182 - 109 110, son 108 (old 73 74 son 72)
-   
+' silencios entre  46 a 90 y 136 a 180    
  'los puntillos de tresillos coinciden con elvalor superior
 'ej (3I)*=I=1.. 1/3 tresillo de negra con puntillo = negra
 ' (3L)* = L ..1/3 tresillo de corchea con puntillo = corchea

@@ -1,5 +1,5 @@
 start
-11-03-202101:12:08
+11-05-202102:04:02
 __FB_ARGC__    1
 arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V4-PLAY-INSTRUMENTOS\RollMusic.exe'
 arg  1 = ''
@@ -37,7 +37,7 @@ datos recibidos en rooloop nombre
 datos recibidos en rooloop desde,hasta     4             8
 datos recibidos en rooloop *po             7
 ubound roll.trk 2            102
-pid           5356
+pid           4904
 INSTANCIA      0
 -------------------------------------------------------
 inicia CargaPistasEnCancion
@@ -84,6 +84,7 @@ ABRIR MAXPOS ,NB,NA  9       39            102
 uso Close
 CargarTrack  fin
 ----------------------------------------------
+CARGO PISTAS MAXIMA CANTIDAD TOPE=         2
 llama a cargar pista 1 con TrackaRoll desde CargaPistaEnCancion
 -------------ARRANCA TRACKAROLL---------------------------------
 NTK Y nombre que llego a TrackaRoll        1            C:\aaaa\10-24-2021\[01]PIANO.rtk
@@ -101,539 +102,635 @@ despues de cargar pista 1 TrackaRoll desde CargaPistaEnCancion
 llama a RecalCompas de pista 1 desde CargaPistaEnCancion
 FIN CargaPistasEnCancion no debe calcuar *po             7
 -------------------------------------------------------
+MAXPOS AL COMENZAR TODO,final              9             9
+]]]]START-----paso: 1 ================================
+---UP-----pista: 1 --------------------------------
+de esta pista MAXPOS ,final  9             9
 Play Cancion NB ,NA, pis     39            102           1
 limite inferior NBpiano     36
 Notapiano      52
 i1,NB,NA       1             39            102
----FIN -----paso: 1 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 1
+---DOWN -----PISTA: 1 --------------------------------
+---UP-----pista: 2 --------------------------------
+de esta pista MAXPOS ,final  9             9
 Play Cancion NB ,NA, pis     39            102           2
 limite inferior NBpiano     36
 Notapiano      48
 i1,NB,NA       1             39            102
 i1=NB= 12 ACORDE cnt=  2
 cnt  2 Acordeiguales 
-2]pasocol(1).inst en AcordeonIguales       3
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  25000000000
+DUR  5
+notapiano  52
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  1
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  25000000000
+DUR  5
+notapiano  48
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  108
+-----------------------------------
+2]pasocol(1).inst en AcordeonIguales       1
 2]pasocol(2).inst en AcordeonIguales       108
-COMIENZA RETARDO En  time : 27536.57587547845
+Start AcordeOffIguales cnt,cntold,pis     2             0              2
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  25000000000
+DUR  5
+notapiano  52
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  1
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  25000000000
+DUR  5
+notapiano  48
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  108
+-----------------------------------
+COMIENZA RETARDO En  time : 29378.46518473165
 tiempoFigura   0.25
-COMIENZA RETARDO En  time : 27536.57587547845
+COMIENZA RETARDO En  time : 29378.46518473165
 tiempoFigura   0.25
 start OFF de ligados ---------
+AcordeOFFIguales: liga:      0
+LimpiarLigaduras nohay=      2            cnt=2
+LimpiarLigaduras 1 cnt =     1            2
+limpiado AcordeOFFIguales: liga:           0
+FIN AcordeOffIguales
+LimpiarLigaduras nohay=      2            cnt=2
+LimpiarLigaduras 1 cnt =     1            2
 cnt,cntold 2  2
+---DOWN -----PISTA: 2 --------------------------------
 ---FIN -----paso: 1 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 1
+]]]]START-----paso: 2 ================================
+---UP-----pista: 1 --------------------------------
+de esta pista MAXPOS ,final  9             9
 Play Cancion NB ,NA, pis     39            102           1
 limite inferior NBpiano     36
 Notapiano      54
 i1,NB,NA       1             39            102
----FIN -----paso: 2 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 2
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 AcordeDistintos
-====>>> START AOD ON veo el pasocol que tiene
-AOD:DUR cnt=1: 5
-AOD: old_time_on  27536.82724945253
-start FOR
-for cnt=1
-AOD FOR: pasoCol(i1).Dur        5
-AOD FOR: pasoCol(i1).liga       0
-AOD FOR: pasoCol(i1).NOTAPIANO  54
-AOD FOR: pasoCol(i1).tiempofigOld  0
-pasoCol(i1).Dur  5 pasoCol(i1).liga  0
-4) AOD:LIGA=1 ==========> 0
-AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
-AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  25000000000
-AOD:|||SIN LIGA DUR  5
-5)AOD: LIGA=1 ==========> 0
-for cnt=2
-AOD FOR: pasoCol(i1).Dur        50
-AOD FOR: pasoCol(i1).liga       0
-AOD FOR: pasoCol(i1).NOTAPIANO  48
-AOD FOR: pasoCol(i1).tiempofigOld  0
-pasoCol(i1).Dur  50 pasoCol(i1).liga  0
-4) AOD:LIGA=1 ==========> 0
-AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
-AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  25000000000
-AOD:|||SIN LIGA DUR  50
-5)AOD: LIGA=1 ==========> 0
-AOD:SIN LIGAR Noteon de notepiano  54
-2]pasocol(1).inst en AcordeonDistintos     3
-AOD:SIN LIGAR Noteon de notepiano  48
-2]pasocol(2).inst en AcordeonDistintos     108
-SORT POR tiempoFigura calculado en playAll
-====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
-COMIENZA RETARDO En  time : 27536.82731876709
-tiempoFigura   0.25
-COMIENZA RETARDO En  time : 27536.82731876709
-tiempoFigura   0.25
-cnt,cntold 2  2
----FIN -----paso: 2 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 2
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      56
-i1,NB,NA       1             39            102
----FIN -----paso: 3 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 3
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 AcordeDistintos
-====>>> START AOD ON veo el pasocol que tiene
-AOD:DUR cnt=1: 4
-AOD: old_time_on  27537.07923366649
-start FOR
-for cnt=1
-AOD FOR: pasoCol(i1).Dur        4
-AOD FOR: pasoCol(i1).liga       0
-AOD FOR: pasoCol(i1).NOTAPIANO  56
-AOD FOR: pasoCol(i1).tiempofigOld  0
-pasoCol(i1).Dur  4 pasoCol(i1).liga  0
-4) AOD:LIGA=1 ==========> 0
-AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
-AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  50000000000
-AOD:|||SIN LIGA DUR  4
-5)AOD: LIGA=1 ==========> 0
-for cnt=2
-AOD FOR: pasoCol(i1).Dur        49
-AOD FOR: pasoCol(i1).liga       0
-AOD FOR: pasoCol(i1).NOTAPIANO  48
-AOD FOR: pasoCol(i1).tiempofigOld  0
-pasoCol(i1).Dur  49 pasoCol(i1).liga  0
-4) AOD:LIGA=1 ==========> 0
-AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
-AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  50000000000
-AOD:|||SIN LIGA DUR  49
-5)AOD: LIGA=1 ==========> 0
-AOD:SIN LIGAR Noteon de notepiano  56
-2]pasocol(1).inst en AcordeonDistintos     3
-AOD:SIN LIGAR Noteon de notepiano  48
-2]pasocol(2).inst en AcordeonDistintos     108
-SORT POR tiempoFigura calculado en playAll
-====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
-COMIENZA RETARDO En  time : 27537.07943345549
-tiempoFigura   0.5
-COMIENZA RETARDO En  time : 27537.07943345549
-tiempoFigura   0.5
-cnt,cntold 2  2
----FIN -----paso: 3 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 3
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      57
-i1,NB,NA       1             39            102
----FIN -----paso: 4 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 4
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 AcordeDistintos
-====>>> START AOD ON veo el pasocol que tiene
-AOD:DUR cnt=1: 93
-AOD: old_time_on  27537.58122561037
-start FOR
-for cnt=1
-AOD FOR: pasoCol(i1).Dur        93
-AOD FOR: pasoCol(i1).liga       0
-AOD FOR: pasoCol(i1).NOTAPIANO  57
-AOD FOR: pasoCol(i1).tiempofigOld  0
-AOD:ANALIZO LIGADURAS SUbSIGUIENTES si hay y toda la columna
-AOD:DUR  93
-AOD:liga  0
-AOD:notepiano  57
-guardo old_time_on primer liga  2753758122561036
-*AOD:LIGA=1 ==========> 1
-*AOD: LIGA ACUMULADA ===> 1
-*AOD: ACUMULADO TIEMPOfIGURA  100000000000
-*AOD: ACUMULADO TIEMPOfIGURAOLD  100000000000
-*estamso aca ??
-pasoCol(i1).i1               1
-nj             5
-AOD: CANCIONCARGADA         durj           3
-AOD:LIGA nj, durj  5  3
-AOD:LIGA nj reldur  5  1
-AOD:LIGA paso nj tiempoFiguraSig  5  100000000000
-AOD:LIGA pasoCol(i1).tiempoFigura+sig  200000000000
-2) AOD:LIGA=1 ==========> 1
-numero de ligados: 1
-Noteon ligado notepiano  57
-1]pasocol(1).inst en AcordeonDistintos     3
-3) AOD:LIGA=1 ==========> 1
-pasoCol(i1).Dur  93 pasoCol(i1).liga  1
-for cnt=2
-AOD FOR: pasoCol(i1).Dur        3
-AOD FOR: pasoCol(i1).liga       0
-AOD FOR: pasoCol(i1).NOTAPIANO  48
-AOD FOR: pasoCol(i1).tiempofigOld  0
-pasoCol(i1).Dur  3 pasoCol(i1).liga  0
-4) AOD:LIGA=1 ==========> 1
-AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.1
-AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  100000000000
-AOD:|||SIN LIGA DUR  3
-5)AOD: LIGA=1 ==========> 1
-AOD:|||LIGA=1, pasoCol(i1).tiempoFiguraOld  100000000000
-AOD:SIN LIGAR Noteon de notepiano  48
-2]pasocol(2).inst en AcordeonDistintos     108
-SORT POR tiempoFigura calculado en playAll
-====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
-COMIENZA RETARDO En  time : 27537.58133909596
-tiempoFigura   1
-COMIENZA RETARDO En  time : 27537.58122561036
-tiempoFigura   1
-cnt,cntold 2  2
----FIN -----paso: 4 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 4
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      57
-i1,NB,NA       1             39            102
----FIN -----paso: 5 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 5
+---DOWN -----PISTA: 1 --------------------------------
+---UP-----pista: 2 --------------------------------
+de esta pista MAXPOS ,final  9             9
 Play Cancion NB ,NA, pis     39            102           2
 limite inferior NBpiano     36
 Notapiano      48
 i1,NB,NA       1             39            102
 i1=NB= 12 ACORDE cnt=  2
 cnt  2 Acordeiguales 
-2]pasocol(1).inst en AcordeonIguales       3
-COMIENZA RETARDO En  time : 27538.58325611896
-tiempoFigura   1
-start OFF de ligados ---------
-cnt,cntold 2  2
----FIN -----paso: 5 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 5
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      59
-i1,NB,NA       1             39            102
----FIN -----paso: 6 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 6
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 Acordeiguales 
-2]pasocol(1).inst en AcordeonIguales       3
-COMIENZA RETARDO En  time : 27539.58421463047
-tiempoFigura   0.5
-start OFF de ligados ---------
-cnt,cntold 2  2
----FIN -----paso: 6 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 6
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      61
-i1,NB,NA       1             39            102
----FIN -----paso: 7 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 7
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 Acordeiguales 
-2]pasocol(1).inst en AcordeonIguales       3
-COMIENZA RETARDO En  time : 27540.0852487424
-tiempoFigura   0.5
-start OFF de ligados ---------
-cnt,cntold 2  2
----FIN -----paso: 7 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 7
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
----FIN -----paso: 8 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 8
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-i1=NB= 12 SIMPLE cnt=  0
-cnt,cntold 0  0
----FIN -----paso: 8 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 8
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
----FIN -----paso: 9 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 9
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-i1=NB= 12 SIMPLE cnt=  0
-cnt,cntold 0  0
----FIN -----paso: 9 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 9
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      52
-i1,NB,NA       1             39            102
----FIN -----paso: 1 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 1
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 Acordeiguales 
-2]pasocol(1).inst en AcordeonIguales       3
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  25000000000
+DUR  5
+notapiano  54
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  1
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  25000000000
+DUR  50
+notapiano  48
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  108
+-----------------------------------
+2]pasocol(1).inst en AcordeonIguales       1
 2]pasocol(2).inst en AcordeonIguales       108
-COMIENZA RETARDO En  time : 27548.18621353978
+Start AcordeOffIguales cnt,cntold,pis     2             2              2
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  25000000000
+DUR  5
+notapiano  54
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  1
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  25000000000
+DUR  50
+notapiano  48
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  108
+-----------------------------------
+COMIENZA RETARDO En  time : 29378.71660073921
 tiempoFigura   0.25
-COMIENZA RETARDO En  time : 27548.18621353978
+COMIENZA RETARDO En  time : 29378.71660073921
 tiempoFigura   0.25
 start OFF de ligados ---------
+AcordeOFFIguales: liga:      0
+LimpiarLigaduras nohay=      2            cnt=2
+LimpiarLigaduras 1 cnt =     1            2
+limpiado AcordeOFFIguales: liga:           0
+FIN AcordeOffIguales
+LimpiarLigaduras nohay=      2            cnt=2
+LimpiarLigaduras 1 cnt =     1            2
 cnt,cntold 2  2
----FIN -----paso: 1 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 1
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      54
-i1,NB,NA       1             39            102
+---DOWN -----PISTA: 2 --------------------------------
 ---FIN -----paso: 2 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 2
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 AcordeDistintos
-====>>> START AOD ON veo el pasocol que tiene
-AOD:DUR cnt=1: 5
-AOD: old_time_on  27548.43808087038
-start FOR
-for cnt=1
-AOD FOR: pasoCol(i1).Dur        5
-AOD FOR: pasoCol(i1).liga       0
-AOD FOR: pasoCol(i1).NOTAPIANO  54
-AOD FOR: pasoCol(i1).tiempofigOld  0
-pasoCol(i1).Dur  5 pasoCol(i1).liga  0
-4) AOD:LIGA=1 ==========> 0
-AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
-AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  25000000000
-AOD:|||SIN LIGA DUR  5
-5)AOD: LIGA=1 ==========> 0
-for cnt=2
-AOD FOR: pasoCol(i1).Dur        50
-AOD FOR: pasoCol(i1).liga       0
-AOD FOR: pasoCol(i1).NOTAPIANO  48
-AOD FOR: pasoCol(i1).tiempofigOld  0
-pasoCol(i1).Dur  50 pasoCol(i1).liga  0
-4) AOD:LIGA=1 ==========> 0
-AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
-AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  25000000000
-AOD:|||SIN LIGA DUR  50
-5)AOD: LIGA=1 ==========> 0
-AOD:SIN LIGAR Noteon de notepiano  54
-2]pasocol(1).inst en AcordeonDistintos     3
-AOD:SIN LIGAR Noteon de notepiano  48
-2]pasocol(2).inst en AcordeonDistintos     108
-SORT POR tiempoFigura calculado en playAll
-====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
-COMIENZA RETARDO En  time : 27548.43823207123
-tiempoFigura   0.25
-COMIENZA RETARDO En  time : 27548.43823207123
-tiempoFigura   0.25
-cnt,cntold 2  2
----FIN -----paso: 2 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 2
+]]]]START-----paso: 3 ================================
+---UP-----pista: 1 --------------------------------
+de esta pista MAXPOS ,final  9             9
 Play Cancion NB ,NA, pis     39            102           1
 limite inferior NBpiano     36
 Notapiano      56
 i1,NB,NA       1             39            102
----FIN -----paso: 3 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 3
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 AcordeDistintos
-====>>> START AOD ON veo el pasocol que tiene
-AOD:DUR cnt=1: 4
-AOD: old_time_on  27548.69010959514
-start FOR
-for cnt=1
-AOD FOR: pasoCol(i1).Dur        4
-AOD FOR: pasoCol(i1).liga       0
-AOD FOR: pasoCol(i1).NOTAPIANO  56
-AOD FOR: pasoCol(i1).tiempofigOld  0
-pasoCol(i1).Dur  4 pasoCol(i1).liga  0
-4) AOD:LIGA=1 ==========> 0
-AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
-AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  50000000000
-AOD:|||SIN LIGA DUR  4
-5)AOD: LIGA=1 ==========> 0
-for cnt=2
-AOD FOR: pasoCol(i1).Dur        49
-AOD FOR: pasoCol(i1).liga       0
-AOD FOR: pasoCol(i1).NOTAPIANO  48
-AOD FOR: pasoCol(i1).tiempofigOld  0
-pasoCol(i1).Dur  49 pasoCol(i1).liga  0
-4) AOD:LIGA=1 ==========> 0
-AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.0
-AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  50000000000
-AOD:|||SIN LIGA DUR  49
-5)AOD: LIGA=1 ==========> 0
-AOD:SIN LIGAR Noteon de notepiano  56
-2]pasocol(1).inst en AcordeonDistintos     3
-AOD:SIN LIGAR Noteon de notepiano  48
-2]pasocol(2).inst en AcordeonDistintos     108
-SORT POR tiempoFigura calculado en playAll
-====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
-COMIENZA RETARDO En  time : 27548.69016022194
-tiempoFigura   0.5
-COMIENZA RETARDO En  time : 27548.69016022194
-tiempoFigura   0.5
-cnt,cntold 2  2
----FIN -----paso: 3 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 3
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      57
-i1,NB,NA       1             39            102
----FIN -----paso: 4 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 4
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 AcordeDistintos
-====>>> START AOD ON veo el pasocol que tiene
-AOD:DUR cnt=1: 93
-AOD: old_time_on  27549.1920944037
-start FOR
-for cnt=1
-AOD FOR: pasoCol(i1).Dur        93
-AOD FOR: pasoCol(i1).liga       0
-AOD FOR: pasoCol(i1).NOTAPIANO  57
-AOD FOR: pasoCol(i1).tiempofigOld  0
-AOD:ANALIZO LIGADURAS SUbSIGUIENTES si hay y toda la columna
-AOD:DUR  93
-AOD:liga  0
-AOD:notepiano  57
-guardo old_time_on primer liga  2754919209440370
-*AOD:LIGA=1 ==========> 1
-*AOD: LIGA ACUMULADA ===> 1
-*AOD: ACUMULADO TIEMPOfIGURA  100000000000
-*AOD: ACUMULADO TIEMPOfIGURAOLD  100000000000
-*estamso aca ??
-pasoCol(i1).i1               1
-nj             5
-AOD: CANCIONCARGADA         durj           3
-AOD:LIGA nj, durj  5  3
-AOD:LIGA nj reldur  5  1
-AOD:LIGA paso nj tiempoFiguraSig  5  100000000000
-AOD:LIGA pasoCol(i1).tiempoFigura+sig  200000000000
-2) AOD:LIGA=1 ==========> 1
-numero de ligados: 1
-Noteon ligado notepiano  57
-1]pasocol(1).inst en AcordeonDistintos     3
-3) AOD:LIGA=1 ==========> 1
-pasoCol(i1).Dur  93 pasoCol(i1).liga  1
-for cnt=2
-AOD FOR: pasoCol(i1).Dur        3
-AOD FOR: pasoCol(i1).liga       0
-AOD FOR: pasoCol(i1).NOTAPIANO  48
-AOD FOR: pasoCol(i1).tiempofigOld  0
-pasoCol(i1).Dur  3 pasoCol(i1).liga  0
-4) AOD:LIGA=1 ==========> 1
-AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.1
-AOD:|||SIN LIGA pasoCol(i1).tiempoFigura  100000000000
-AOD:|||SIN LIGA DUR  3
-5)AOD: LIGA=1 ==========> 1
-AOD:|||LIGA=1, pasoCol(i1).tiempoFiguraOld  100000000000
-AOD:SIN LIGAR Noteon de notepiano  48
-2]pasocol(2).inst en AcordeonDistintos     108
-SORT POR tiempoFigura calculado en playAll
-====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene
-COMIENZA RETARDO En  time : 27549.19217798889
-tiempoFigura   1
-COMIENZA RETARDO En  time : 27549.1920944037
-tiempoFigura   1
-cnt,cntold 2  2
----FIN -----paso: 4 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 4
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      57
-i1,NB,NA       1             39            102
----FIN -----paso: 5 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 5
+---DOWN -----PISTA: 1 --------------------------------
+---UP-----pista: 2 --------------------------------
+de esta pista MAXPOS ,final  9             9
 Play Cancion NB ,NA, pis     39            102           2
 limite inferior NBpiano     36
 Notapiano      48
 i1,NB,NA       1             39            102
 i1=NB= 12 ACORDE cnt=  2
 cnt  2 Acordeiguales 
-2]pasocol(1).inst en AcordeonIguales       3
-COMIENZA RETARDO En  time : 27550.19408957547
-tiempoFigura   1
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+DUR  4
+notapiano  56
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  1
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+DUR  49
+notapiano  48
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  108
+-----------------------------------
+2]pasocol(1).inst en AcordeonIguales       1
+2]pasocol(2).inst en AcordeonIguales       108
+Start AcordeOffIguales cnt,cntold,pis     2             2              2
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+DUR  4
+notapiano  56
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  1
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+DUR  49
+notapiano  48
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  108
+-----------------------------------
+COMIENZA RETARDO En  time : 29378.96844893913
+tiempoFigura   0.5
+COMIENZA RETARDO En  time : 29378.96844893913
+tiempoFigura   0.5
 start OFF de ligados ---------
+AcordeOFFIguales: liga:      0
+LimpiarLigaduras nohay=      2            cnt=2
+LimpiarLigaduras 1 cnt =     1            2
+limpiado AcordeOFFIguales: liga:           0
+FIN AcordeOffIguales
+LimpiarLigaduras nohay=      2            cnt=2
+LimpiarLigaduras 1 cnt =     1            2
 cnt,cntold 2  2
----FIN -----paso: 5 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 5
+---DOWN -----PISTA: 2 --------------------------------
+---FIN -----paso: 3 --------------------------------
+]]]]START-----paso: 4 ================================
+---UP-----pista: 1 --------------------------------
+de esta pista MAXPOS ,final  9             9
 Play Cancion NB ,NA, pis     39            102           1
 limite inferior NBpiano     36
-Notapiano      59
+Notapiano      57
 i1,NB,NA       1             39            102
----FIN -----paso: 6 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 6
+---DOWN -----PISTA: 1 --------------------------------
+---UP-----pista: 2 --------------------------------
+de esta pista MAXPOS ,final  9             9
 Play Cancion NB ,NA, pis     39            102           2
 limite inferior NBpiano     36
 Notapiano      48
 i1,NB,NA       1             39            102
 i1=NB= 12 ACORDE cnt=  2
 cnt  2 Acordeiguales 
-2]pasocol(1).inst en AcordeonIguales       3
-COMIENZA RETARDO En  time : 27551.19509055912
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+DUR  93
+notapiano  57
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  1
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+DUR  3
+notapiano  48
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  108
+-----------------------------------
+1]pasocol(1).inst en AcordeonIguales       1
+2]pasocol(2).inst en AcordeonIguales       108
+Start AcordeOffIguales cnt,cntold,pis     2             2              2
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  200000000000
+DUR  93
+notapiano  57
+liga  1
+tiempoFiguraOld  200000000000
+notapianoOld  0
+i1  1
+old_time  293794703557500
+inst  1
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+DUR  3
+notapiano  48
+liga  0
+tiempoFiguraOld  100000000000
+notapianoOld  0
+i1  1
+old_time  0
+inst  108
+-----------------------------------
+COMIENZA RETARDO En  time : 29379.47039448425
+tiempoFigura   1
+start OFF de ligados ---------
+COMIENZA RETARDO En  time : 29379.47035575003
+tiempoFigura   2
+AcordeOFFIguales: liga:      0
+LimpiarLigaduras nohay=      1            cnt=2
+LimpiarLigaduras 1 cnt =     1            2
+limpiado AcordeOFFIguales: liga:           1
+FIN AcordeOffIguales
+LimpiarLigaduras nohay=      1            cnt=2
+LimpiarLigaduras 1 cnt =     1            2
+cnt,cntold 2  2
+---DOWN -----PISTA: 2 --------------------------------
+---FIN -----paso: 4 --------------------------------
+]]]]START-----paso: 5 ================================
+---UP-----pista: 1 --------------------------------
+de esta pista MAXPOS ,final  9             9
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      57
+i1,NB,NA       1             39            102
+No es una nota ligada        3
+pasoCol(cnt).DUR  3
+---DOWN -----PISTA: 1 --------------------------------
+---UP-----pista: 2 --------------------------------
+de esta pista MAXPOS ,final  9             9
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+No es una nota ligada        48
+pasoCol(cnt).DUR  48
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+DUR  3
+notapiano  57
+liga  1
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  293794703557500
+inst  1
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+DUR  48
+notapiano  48
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  108
+-----------------------------------
+2]pasocol(2).inst en AcordeonIguales       108
+Start AcordeOffIguales cnt,cntold,pis     2             2              2
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+DUR  3
+notapiano  57
+liga  1
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  293794703557500
+inst  1
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+DUR  48
+notapiano  48
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  108
+-----------------------------------
+COMIENZA RETARDO En  time : 29381.47139919555
+tiempoFigura   1
+start OFF de ligados ---------
+AcordeOFFIguales: liga:      1
+LimpiarLigaduras nohay=      2            cnt=2
+LimpiarLigaduras 1 cnt =     1            2
+limpiado AcordeOFFIguales: liga:           0
+FIN AcordeOffIguales
+LimpiarLigaduras nohay=      2            cnt=2
+LimpiarLigaduras 1 cnt =     1            2
+cnt,cntold 2  2
+---DOWN -----PISTA: 2 --------------------------------
+---FIN -----paso: 5 --------------------------------
+]]]]START-----paso: 6 ================================
+---UP-----pista: 1 --------------------------------
+de esta pista MAXPOS ,final  9             9
+Play Cancion NB ,NA, pis     39            102           1
+limite inferior NBpiano     36
+Notapiano      60
+i1,NB,NA       1             39            102
+---DOWN -----PISTA: 1 --------------------------------
+---UP-----pista: 2 --------------------------------
+de esta pista MAXPOS ,final  9             9
+Play Cancion NB ,NA, pis     39            102           2
+limite inferior NBpiano     36
+Notapiano      48
+i1,NB,NA       1             39            102
+i1=NB= 12 ACORDE cnt=  2
+cnt  2 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+DUR  4
+notapiano  60
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  293794703557500
+inst  1
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+DUR  4
+notapiano  48
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  108
+-----------------------------------
+2]pasocol(1).inst en AcordeonIguales       1
+2]pasocol(2).inst en AcordeonIguales       108
+Start AcordeOffIguales cnt,cntold,pis     2             2              2
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+DUR  4
+notapiano  60
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  293794703557500
+inst  1
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+DUR  4
+notapiano  48
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  108
+-----------------------------------
+COMIENZA RETARDO En  time : 29382.47243312741
+tiempoFigura   0.5
+COMIENZA RETARDO En  time : 29382.47243312741
 tiempoFigura   0.5
 start OFF de ligados ---------
+AcordeOFFIguales: liga:      0
+LimpiarLigaduras nohay=      2            cnt=2
+LimpiarLigaduras 1 cnt =     1            2
+limpiado AcordeOFFIguales: liga:           0
+FIN AcordeOffIguales
+LimpiarLigaduras nohay=      2            cnt=2
+LimpiarLigaduras 1 cnt =     1            2
 cnt,cntold 2  2
+---DOWN -----PISTA: 2 --------------------------------
 ---FIN -----paso: 6 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 6
+]]]]START-----paso: 7 ================================
+---UP-----pista: 1 --------------------------------
+de esta pista MAXPOS ,final  9             9
 Play Cancion NB ,NA, pis     39            102           1
 limite inferior NBpiano     36
 Notapiano      61
 i1,NB,NA       1             39            102
----FIN -----paso: 7 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 7
+---DOWN -----PISTA: 1 --------------------------------
+---UP-----pista: 2 --------------------------------
+de esta pista MAXPOS ,final  9             9
 Play Cancion NB ,NA, pis     39            102           2
 limite inferior NBpiano     36
 Notapiano      48
 i1,NB,NA       1             39            102
 i1=NB= 12 ACORDE cnt=  2
 cnt  2 Acordeiguales 
-2]pasocol(1).inst en AcordeonIguales       3
-COMIENZA RETARDO En  time : 27551.69609069334
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+DUR  4
+notapiano  61
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  293794703557500
+inst  1
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+DUR  4
+notapiano  48
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  108
+-----------------------------------
+2]pasocol(1).inst en AcordeonIguales       1
+2]pasocol(2).inst en AcordeonIguales       108
+Start AcordeOffIguales cnt,cntold,pis     2             2              2
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+DUR  4
+notapiano  61
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  293794703557500
+inst  1
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+DUR  4
+notapiano  48
+liga  0
+tiempoFiguraOld  0
+notapianoOld  0
+i1  1
+old_time  0
+inst  108
+-----------------------------------
+COMIENZA RETARDO En  time : 29382.97434639401
+tiempoFigura   0.5
+COMIENZA RETARDO En  time : 29382.97434639401
 tiempoFigura   0.5
 start OFF de ligados ---------
+AcordeOFFIguales: liga:      0
+LimpiarLigaduras nohay=      2            cnt=2
+LimpiarLigaduras 1 cnt =     1            2
+limpiado AcordeOFFIguales: liga:           0
+FIN AcordeOffIguales
+LimpiarLigaduras nohay=      2            cnt=2
+LimpiarLigaduras 1 cnt =     1            2
 cnt,cntold 2  2
+---DOWN -----PISTA: 2 --------------------------------
 ---FIN -----paso: 7 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 7
+]]]]START-----paso: 8 ================================
+---UP-----pista: 1 --------------------------------
+de esta pista MAXPOS ,final  9             9
 Play Cancion NB ,NA, pis     39            102           1
 limite inferior NBpiano     36
----FIN -----paso: 8 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 8
+---DOWN -----PISTA: 1 --------------------------------
+---UP-----pista: 2 --------------------------------
+de esta pista MAXPOS ,final  9             9
 Play Cancion NB ,NA, pis     39            102           2
 limite inferior NBpiano     36
 i1=NB= 12 SIMPLE cnt=  0
 cnt,cntold 0  0
+---DOWN -----PISTA: 2 --------------------------------
 ---FIN -----paso: 8 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 8
+]]]]START-----paso: 9 ================================
+---UP-----pista: 1 --------------------------------
+de esta pista MAXPOS ,final  9             9
 Play Cancion NB ,NA, pis     39            102           1
 limite inferior NBpiano     36
----FIN -----paso: 9 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 9
+---DOWN -----PISTA: 1 --------------------------------
+---UP-----pista: 2 --------------------------------
+de esta pista MAXPOS ,final  9             9
 Play Cancion NB ,NA, pis     39            102           2
 limite inferior NBpiano     36
 i1=NB= 12 SIMPLE cnt=  0
 cnt,cntold 0  0
+---DOWN -----PISTA: 2 --------------------------------
 ---FIN -----paso: 9 --------------------------------
-COMIENZA OTRA  POSICION O J ====== 9

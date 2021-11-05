@@ -1086,7 +1086,7 @@ Dim As Integer result,limsup
 
 
 
- ' Print #1,"---START-----paso:";jply;" --------------------------------"
+
   '115 a 0
   ' recorre una posicion vertical
   ' envio de instrumetno o CAMBIO de PROGRAMA PATCH 
@@ -1094,9 +1094,10 @@ Dim As Integer result,limsup
 ' debo hcer un for para cada pista, en cada psita ver si esta mute o play
 ' ajustar el instrumento de la pista cada vez que cambie la pista.
 
-
+Print #1,"MAXPOS AL COMENZAR TODO,final",Maxpos,final
 
 For jply=comienzo To final
+  Print #1,"]]]]START-----paso:";jply;" ================================"
 ' cambio de inst para la pista, podria poner mas de un instrumento por pista
 ' o por cada nota.. 
 ' VER DE PONER LOS INSTRUMENTOS EN TRACK  
@@ -1131,8 +1132,11 @@ kNroCol= Int(jply/NroCol)
    cnt=0
    iguales=0
    distintos=0
+   duraold=0 ' 04-11-2021
 
- For pis =1 To 32 ' loop de pistas
+ For pis =1 To tope ' loop de pistas
+   Print #1,"---UP-----pista:";pis;" --------------------------------"
+   Print #1,"de esta pista MAXPOS ,final",pmTk(pis).MaxPos, final
     limsup=UBound (Track(pis).trk,2)
     If limsup < lim2 Then
           Exit For 
@@ -1177,10 +1181,12 @@ kNroCol= Int(jply/NroCol)
             Next i2
          EndIf
        EndIf
-       If duraOld=dura  Then
+       ' usamos reldur() para comparar dura y con cnt>1 tiene sentido
+       If reldur(duraOld)=reldur(dura) And cnt > 1  Then
           iguales=1
     '     Print #1,"cnt ";cnt;" iguales ";iguales
-       Else
+       EndIf
+       If reldur(duraOld)<>reldur(dura) And cnt > 1 Then
           distintos=1
     '     Print #1,"cnt ";cnt;" distintos ";distintos
        EndIf         
@@ -1197,32 +1203,34 @@ kNroCol= Int(jply/NroCol)
          vel= vol( dura, velpos)
       Else
        '  Print #1,"ligaglobal es uno *****"
-         If dura >= 91 And dura <=180 Then
+         If dura >= 91 And dura <=180 Then ' es una nota ligada
+            Print #1,"es una nota ligada >=91 <=180 ",dura
             For i2=1 To cntold
                 If Notapiano  = pasoCol(i2).notapiano Then
-        '           Print #1,"Notapiano de liga igual "; Notapiano
+                   Print #1,"Notapiano de liga igual "; Notapiano
                    pasoCol(i2).DUR =dura
-         '          Print #1,"pasoCol(i2).DUR "; pasoCol(cnt).DUR 
+                   Print #1,"pasoCol(i2).DUR "; pasoCol(cnt).DUR 
                    pasoCol(i2).notapiano=Notapiano 
                 ' tiempofigur aya calculado
-        '           Print #1,"tiempofigura anterior ";pasoCol(i2).tiempoFiguraOld
+                   Print #1,"tiempofigura anterior ";pasoCol(i2).tiempoFiguraOld
                    pasoCol(i2).tiempoFigura=pasoCol(i2).tiempoFiguraOld       
-        '           Print #1,"pasoCol(i2).i1 ";pasoCol(i2).i1
-        '           Print #1," i1 debe ser igual al anterior:"; i1       
+                   Print #1,"pasoCol(i2).i1 ";pasoCol(i2).i1
+                   Print #1," i1 debe ser igual al anterior:"; i1       
                    pasoCol(i2).i1 = i1 'posicion vertical en el vector real es igual
                    pasoCol(i2).inst=Track(pis).trk(1,1).inst
-                   vel= vol( dura, velpos)
+                  ' vel= vol( dura, velpos) 
                EndIf    
             Next i2
          Else
+           Print #1,"No es una nota ligada ",dura
                    pasoCol(cnt).DUR =dura
-         '          Print #1,"pasoCol(cnt).DUR "; pasoCol(cnt).DUR 
+                   Print #1,"pasoCol(cnt).DUR "; pasoCol(cnt).DUR 
                    pasoCol(cnt).notapiano=Notapiano 
                 ' tiempofigur aya calculado
                    pasoCol(cnt).tiempoFigura=relDur(pasoCol(cnt).DUR) * tiempoDur * 100000000000       
                    pasoCol(cnt).i1 = i1 'posicion vertical en el vector real es igual
                    pasoCol(cnt).inst=Track(pis).trk(1,1).inst
-                   vel= vol( dura, velpos)
+                 '  vel= vol( dura, velpos)
          EndIf
       EndIf
 ' llegamos al final de la Columna
@@ -1241,8 +1249,8 @@ kNroCol= Int(jply/NroCol)
            ' con y sin liga
            ' INCLUYE LIGADOS O NO LIGADOS
  Print #1, "CALLL A NOTESIMPLE cntold, vel, canal, tiempodur",  cntold, vel, canal,tiempoDur
-             
-            noteSimple  pasoCol(), cntold, vel, canal,tiempoDur,velpos
+  ' cnt por cntold 04-11-2021           
+            noteSimple  pasoCol(), cnt, vel, canal,tiempoDur,velpos
                      
           Case Is > 1
 
@@ -1270,8 +1278,7 @@ kNroCol= Int(jply/NroCol)
   
      EndIf 
    Next i1
-  Print #1,"---FIN -----paso:"; jply;" --------------------------------" 
-  Print #1,"COMIENZA OTRA  POSICION O J ======"; jply
+  Print #1,"---DOWN -----PISTA:"; pis;" --------------------------------" 
  mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
  If playloop=1 And jply= final Then
     jply=comienzo -1
@@ -1280,7 +1287,7 @@ kNroCol= Int(jply/NroCol)
  tiempoDUR=60/tiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
 
   Next pis   
-
+  Print #1,"---FIN -----paso:"; jply;" --------------------------------"
 Next jply
 
 

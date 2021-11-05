@@ -2820,6 +2820,7 @@ Print #1,"inicia CargaPistasEnCancion"
                 
        Loop
        tope=ntk  ' el nro tope de la lista
+       Print #1,"CARGO PISTAS MAXIMA CANTIDAD TOPE=",tope
   ' cargo la pista 1
       ntk=1 ' carga track 1 para mostrarlo
   ' al terminar de cargar la cancion se posiciona en el track 1 y lo muestra 
