@@ -727,7 +727,7 @@ EndIf
 Do 
 
 
-If MultiKey(SC_TAB) And instancia=0 Then
+If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA Then
    ROLLCARGADO = FALSE
    Print #1,"--TAB "
    nota=0
@@ -1249,7 +1249,8 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
          If CANCIONCARGADA Then
             thread1 = ThreadCall  playCancion(Track())
          Else
-            thread1 = ThreadCall  playAll(Roll)
+''''            'thread1 = ThreadCall  playAll(Roll)
+      playAll(Roll)
          EndIf
          '''MutexDestroy tlock
          '''playAll(Roll)
@@ -1281,6 +1282,12 @@ gap3= (519 * gap1) /1000 ' 42 default
 'font=anchofig * 510 /1000 + (35-anchofig)* (anchofig ^2 - 1225) /1000
 font=18
 NroCol =  (ANCHO / anchofig ) - 4
+ cursorVert = 0
+ cursorHori = 0
+ agregarNota=0
+ menuMouse = 0
+ nota=0
+ DUR=0
 
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------

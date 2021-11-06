@@ -1584,7 +1584,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    t=  " [Reproducir]":cairo_show_text(c, t)
    ' --------------------------
  '0.7  ===> [Opciones]  '25-07-2021
-   If MultiKey(sc_Control) And mousex > 504 And mousex< 598 And mousey < 50  Then  'OPCIONES
+   If  mousex > 504 And mousex< 598 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
      Sleep 100
     If MouseButtons And 1 Then
@@ -2119,28 +2119,27 @@ EndIf
  cairo_stroke(c)
   Case 8
  Print #1,"entro a menu 8 desde ver"
- 
+
       Select Case  menuOldStr
           Case "[Ver]" 
           nombreArchivo="0"
-          Dim cadena As String 
-          cadena="IR A COMPAS"
+         
           If pubi =0 Then
            Print #1,"voy a EntrarTEcla desde ver menu8"
             menunew=0
-             
-            thread3= ThreadCall EntrarTeclado(cadena)
+            thread3= ThreadCall EntrarTeclado()
              pubi=1
           EndIf
  '          
           Case "[TEMPO]" 
           nombreArchivo="0"
-          Dim cadena As String 
-          cadena="Ajuste Tempo"
+          
           Print #1,">>>>>>>>TIEMPO PATRON viejo>>>>>>>>>>,PUBI ", tiempoPatron,pubi
+      
           If pubi =0 Then
-             menunew=0  
-             thread3= ThreadCall EntrarTeclado(cadena)
+             menunew=0
+               
+             thread3= ThreadCall EntrarTeclado()
             pubi=1   
           EndIf
 
@@ -2525,7 +2524,8 @@ Print #1,"FIN CAMBIARDIM "
 
 End Sub
 
-Sub EntrarTeclado(cadena As String)
+Sub EntrarTeclado ()
+
 
 Dim default As String
  Dim  As Integer ni
@@ -2539,7 +2539,7 @@ If menuOldStr="[Ver]" Then
             Next ni
 
 default=Str(CompasX)
-NombreArchivo=InputBox(cadena ,"Entre una posicion",default)
+NombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
             compasX=CInt(nombreArchivo)
             If compasX > NroCompas Then
                compasX=Nrocompas
@@ -2564,9 +2564,12 @@ NombreArchivo=InputBox(cadena ,"Entre una posicion",default)
             Next ni
           EndIf  
 
-Else
+Else ' TEMPO
 default=Str(tiempoPatron)
-NombreArchivo=InputBox(cadena ,"Entre un Tempo",default)
+Print #1,"llego a TEMPO en entrar tecla",NombreArchivo
+
+NombreArchivo = InputBox("Ajuste Tempo" ,"Entre un Tempo",default)
+      
  Print #1,"nombreArchivo de click ok",nombreArchivo
  tiempoPatron= Cdbl(nombreArchivo)
  Print #1,">>>>>>>>TIEMPO PATRON NUEVO>>>>>>>>>>,pubi", tiempoPatron,pubi

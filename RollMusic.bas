@@ -1,3 +1,6 @@
+' 05-11 con una sola ligadura anda bien playcancion y playall
+' ver a hora on mas de una ligadura tanto en melodia sola como cancion uff
+'------------------------------------------------------------
 ' 0.4.5.2.0-20-V4-CANCION-FIX crear para tocar diferentes instrumentos en Play
 ' importa roll o rtk desde archivo menu control ROLLMUSIC-0.4.5.2.0-20-V3-CANCION-FIX
 ' ya reproduce 2 tracks y forma acordes de 2 melodias...
@@ -589,8 +592,8 @@ Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
 Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
   If abrirRoll=1 Then
-    threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-    ''''RollLoop ( param)
+    'threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+    RollLoop ( param)
     ''abrirRoll=2 ' roll ya abierto
     Sleep 100 ' sin este retardo no le da teimpo al thread de cargar a Roll
     ' y CargarPistasEnCancion no puede cargar proque no hay Roll
@@ -970,9 +973,9 @@ End 0
 
 '---------fin iup---    
 errorhandler:
-Dim As Integer er, ErrorNumber, ErrorLine
+'Dim As Integer er, ErrorNumber, ErrorLine
 er = Err
-Print #1,"Error  MAIN detected ", er, posicion, MaxPos
+Print #1,"Error  Rollmusic detected ", er, posicion, MaxPos
 Print #1,Erl, Erfn,Ermn,Err
 
 Print #1,"------------------------------------"

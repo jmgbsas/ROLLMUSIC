@@ -1,5 +1,5 @@
 start
-11-05-202102:04:02
+11-05-202121:46:47
 __FB_ARGC__    1
 arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V4-PLAY-INSTRUMENTOS\RollMusic.exe'
 arg  1 = ''
@@ -14,6 +14,13 @@ desde          4
 hasta          8
 NroCol, ancho, anchofig      40            1467          33
 gap1           76
+Error Modulo RTMIDISUB       0             1             2
+ 0            4993152       4993024        0
+------------------------------------
+ERROR =  on line  0
+Error Function: 
+nota +(estoyEnOctava -1) * 13)  78
+ubound 2 de Roll.trk         102
 CoolSoft VirtualMIDISynth 0
 Microsoft GS Wavetable Synth 1
 E-DSP MIDI Port [BC00] 2
@@ -25,7 +32,6 @@ INSTANCIA      1
 param.ancho    1467 param.alto  916
 inicio ubound roll.trk       102
 iniio lbound roll.trk        39
-cargarDirectorioCancion     C:\aaaa\10-24-2021
 param.ancho    1467 param.alto  916
 inicio ubound roll.trk       102
 iniio lbound roll.trk        39
@@ -37,407 +43,261 @@ datos recibidos en rooloop nombre
 datos recibidos en rooloop desde,hasta     4             8
 datos recibidos en rooloop *po             7
 ubound roll.trk 2            102
-pid           4904
+pid           3832
 INSTANCIA      0
--------------------------------------------------------
-inicia CargaPistasEnCancion
-filename encancion > 0      [01]PIANO.rtk
-trabajo con este filename...              [01]PIANO.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\10-24-2021\[01]PIANO.rtk           1
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\10-24-2021\[01]PIANO.rtk           1
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              1            C:\aaaa\10-24-2021\[01]PIANO.rtk
-reconstruccion x pos bin    00000000000000001001
-pmTk(ntk).MaxPos             9
-desde          4
-hasta          8
-en la carga de track desde hasta           4             8
-CargarTrack  NB Na           39            102
-cargaCancion   1
-*PO = hasta -1               7
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        9             1
-ABRIR MAXPOS ,NB,NA  9       39            102
+entro a menu 8 desde ver
+>>>>>>>>TIEMPO PATRON viejo>>>>>>>>>>,PUBI               60           0
+llego a TEMPO en entrar tecla             0
+nombreArchivo de click ok   40
+>>>>>>>>TIEMPO PATRON NUEVO>>>>>>>>>>,pubi               40           0
+CArgarArchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V4-PLAY-INSTRUMENTOS\PIANO-FUNCA-MAL-ENTERO.roll
+open nombre en CArgaARchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V4-PLAY-INSTRUMENTOS\PIANO-FUNCA-MAL-ENTERO.roll
+CambiarDim desde  4 hasta  8 *po  7 NB  39 NA  102
+CantTicks  509
+FIN CAMBIARDIM 
+En CargarArchivo NB NA       39            102
 uso Close
-CargarTrack  fin
-----------------------------------------------
-trabajo con este filename...              [02]BAJO.rtk
-nombre en CargarPistasEnCancion ,Numpista C:\aaaa\10-24-2021\[02]BAJO.rtk            2
-----------------------------------------------
-1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\10-24-2021\[02]BAJO.rtk            2
-ubirtk > 0 carga de disco o cancion        1
-NTK Y nombre que llego a open en CargaTrack              2            C:\aaaa\10-24-2021\[02]BAJO.rtk
-reconstruccion x pos bin    00000000000000001001
-pmTk(ntk).MaxPos             9
-desde          4
-hasta          8
-en la carga de track desde hasta           4             8
-CargarTrack  NB Na           39            102
-cargaCancion   1
-*PO = hasta -1               7
-Get TrK POLI 
-Geteo Trabajo poli ok 
-pmtk(ntk).MaxPos, ntk        9             2
-ABRIR MAXPOS ,NB,NA  9       39            102
-uso Close
-CargarTrack  fin
-----------------------------------------------
-CARGO PISTAS MAXIMA CANTIDAD TOPE=         2
-llama a cargar pista 1 con TrackaRoll desde CargaPistaEnCancion
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        1            C:\aaaa\10-24-2021\[01]PIANO.rtk
-maxpos y (ntk).maxpos        2             9
-TrackaRoll ntk, desde, hasta, MaxPos       1             4             8             9
-TrackaRoll, NB, NA, CantTricks             39            102           509
-TrackaRoll desde, hasta      4             8
-TrackaRoll NB, NA ,*po, MaxPos             39            102           7             9
-ubound (Track(ntk).trk,2)    12
-lbound (Track(ntk).trk,2)    1
- va a ejecutar 510 de Track aRoll
-TrackaRoll Fin,,maxpos y (ntk).maxpos      9             9
-----------------------------------------------
-despues de cargar pista 1 TrackaRoll desde CargaPistaEnCancion
-llama a RecalCompas de pista 1 desde CargaPistaEnCancion
-FIN CargaPistasEnCancion no debe calcuar *po             7
--------------------------------------------------------
-MAXPOS AL COMENZAR TODO,final              9             9
-]]]]START-----paso: 1 ================================
----UP-----pista: 1 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      52
-i1,NB,NA       1             39            102
----DOWN -----PISTA: 1 --------------------------------
----UP-----pista: 2 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 Acordeiguales 
+CargaARchivo LBound (Roll.trk,1)           1
+CargaARchivo LBound (Roll.trk,2)           39
+CargaARchivo UBound (Roll.trk,1)           509
+CargaARchivo UBound (Roll.trk,2)           102
+nombre cargado en Roll      C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V4-PLAY-INSTRUMENTOS\PIANO-FUNCA-MAL-ENTERO.roll
+comienzo playaLL ==========> 
+)))---START-----paso: 1 --------------------------------
+VEO LO CORRECTO DE NOTAPIANO  52
+jply  1dura  5
+paso  1 cnt  1 notapiano  52
+ligaglobal es cero ****
+-> cnt 1
+pasoCol(cnt).DUR             5
+i1=NB= 102 SIMPLE cnt=  1
+call Notesimple cntold, vel, canal, tiempodur            0             100           0             1.5
 Desarrollo pasoCol() sin todos los campos integer 
 -----------------------------------
  cnt  1
 PasoCol( 1)
-tiempoFigura  25000000000
+tiempoFigura  37500000000
 DUR  5
 notapiano  52
 liga  0
 tiempoFiguraOld  0
 notapianoOld  0
-i1  1
+i1  56
 old_time  0
-inst  1
+inst  0
 -----------------------------------
- cnt  2
-PasoCol( 2)
-tiempoFigura  25000000000
-DUR  5
-notapiano  48
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  108
------------------------------------
-2]pasocol(1).inst en AcordeonIguales       1
-2]pasocol(2).inst en AcordeonIguales       108
-Start AcordeOffIguales cnt,cntold,pis     2             0              2
-Desarrollo pasoCol() sin todos los campos integer 
------------------------------------
- cnt  1
-PasoCol( 1)
-tiempoFigura  25000000000
-DUR  5
-notapiano  52
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  1
------------------------------------
- cnt  2
-PasoCol( 2)
-tiempoFigura  25000000000
-DUR  5
-notapiano  48
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  108
------------------------------------
-COMIENZA RETARDO En  time : 29378.46518473165
-tiempoFigura   0.25
-COMIENZA RETARDO En  time : 29378.46518473165
-tiempoFigura   0.25
-start OFF de ligados ---------
-AcordeOFFIguales: liga:      0
-LimpiarLigaduras nohay=      2            cnt=2
-LimpiarLigaduras 1 cnt =     1            2
-limpiado AcordeOFFIguales: liga:           0
-FIN AcordeOffIguales
-LimpiarLigaduras nohay=      2            cnt=2
-LimpiarLigaduras 1 cnt =     1            2
-cnt,cntold 2  2
----DOWN -----PISTA: 2 --------------------------------
+VELOCODAD PARA NOTE SIMPLE  70
+START noteSimple
+pasoCol(1).tiempoFiguraOld: 0
+cntold  1
+noteSimple: tiempoFigura:    0.375
+noteSimple: notapiano:       52  F 
+pasoCol(1).liga              0
+envio on pasoCol(1).notapiano, vel ,canal                52           70            0
+pasocol(1).inst en Notesimple              0
+->ENVIO NOTEON notapiano     52
+->ENVIO NOTEFOFF noteSimple OFF tiempoFigura  0.375
+COMIENZA RETARDO En  time : 43765.57609481561
+tiempoFigura   0.375
+ACA MANDE TODO A CERO PERO CREO AFECTA AL PASO 12 FIJAR
+noteSimple: liga:            0
+LimpiarLigaduras nohay=      1            cnt=1
+LimpiarLigaduras 1 cnt =     1            1
+limpiado noteSimple: liga:   0
+cnt,cntold 1  1
 ---FIN -----paso: 1 --------------------------------
-]]]]START-----paso: 2 ================================
----UP-----pista: 1 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      54
-i1,NB,NA       1             39            102
----DOWN -----PISTA: 1 --------------------------------
----UP-----pista: 2 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 Acordeiguales 
+)))---START-----paso: 2 --------------------------------
+VEO LO CORRECTO DE NOTAPIANO  54
+jply  2dura  5
+paso  2 cnt  1 notapiano  54
+ligaglobal es cero ****
+-> cnt 1
+pasoCol(cnt).DUR             5
+i1=NB= 102 SIMPLE cnt=  1
+call Notesimple cntold, vel, canal, tiempodur            1             100           0             1.5
 Desarrollo pasoCol() sin todos los campos integer 
 -----------------------------------
  cnt  1
 PasoCol( 1)
-tiempoFigura  25000000000
+tiempoFigura  37500000000
 DUR  5
 notapiano  54
 liga  0
 tiempoFiguraOld  0
 notapianoOld  0
-i1  1
+i1  58
 old_time  0
-inst  1
+inst  0
 -----------------------------------
- cnt  2
-PasoCol( 2)
-tiempoFigura  25000000000
-DUR  50
-notapiano  48
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  108
------------------------------------
-2]pasocol(1).inst en AcordeonIguales       1
-2]pasocol(2).inst en AcordeonIguales       108
-Start AcordeOffIguales cnt,cntold,pis     2             2              2
-Desarrollo pasoCol() sin todos los campos integer 
------------------------------------
- cnt  1
-PasoCol( 1)
-tiempoFigura  25000000000
-DUR  5
-notapiano  54
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  1
------------------------------------
- cnt  2
-PasoCol( 2)
-tiempoFigura  25000000000
-DUR  50
-notapiano  48
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  108
------------------------------------
-COMIENZA RETARDO En  time : 29378.71660073921
-tiempoFigura   0.25
-COMIENZA RETARDO En  time : 29378.71660073921
-tiempoFigura   0.25
-start OFF de ligados ---------
-AcordeOFFIguales: liga:      0
-LimpiarLigaduras nohay=      2            cnt=2
-LimpiarLigaduras 1 cnt =     1            2
-limpiado AcordeOFFIguales: liga:           0
-FIN AcordeOffIguales
-LimpiarLigaduras nohay=      2            cnt=2
-LimpiarLigaduras 1 cnt =     1            2
-cnt,cntold 2  2
----DOWN -----PISTA: 2 --------------------------------
+VELOCODAD PARA NOTE SIMPLE  70
+START noteSimple
+pasoCol(1).tiempoFiguraOld: 0
+cntold  1
+noteSimple: tiempoFigura:    0.375
+noteSimple: notapiano:       54  F 
+pasoCol(1).liga              0
+envio on pasoCol(1).notapiano, vel ,canal                54           70            0
+pasocol(1).inst en Notesimple              0
+->ENVIO NOTEON notapiano     54
+->ENVIO NOTEFOFF noteSimple OFF tiempoFigura  0.375
+COMIENZA RETARDO En  time : 43765.95125790651
+tiempoFigura   0.375
+ACA MANDE TODO A CERO PERO CREO AFECTA AL PASO 12 FIJAR
+noteSimple: liga:            0
+LimpiarLigaduras nohay=      1            cnt=1
+LimpiarLigaduras 1 cnt =     1            1
+limpiado noteSimple: liga:   0
+cnt,cntold 1  1
 ---FIN -----paso: 2 --------------------------------
-]]]]START-----paso: 3 ================================
----UP-----pista: 1 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      56
-i1,NB,NA       1             39            102
----DOWN -----PISTA: 1 --------------------------------
----UP-----pista: 2 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 Acordeiguales 
+)))---START-----paso: 3 --------------------------------
+VEO LO CORRECTO DE NOTAPIANO  56
+jply  3dura  4
+paso  3 cnt  1 notapiano  56
+ligaglobal es cero ****
+-> cnt 1
+pasoCol(cnt).DUR             4
+i1=NB= 102 SIMPLE cnt=  1
+call Notesimple cntold, vel, canal, tiempodur            1             100           0             1.5
 Desarrollo pasoCol() sin todos los campos integer 
 -----------------------------------
  cnt  1
 PasoCol( 1)
-tiempoFigura  50000000000
+tiempoFigura  75000000000
 DUR  4
 notapiano  56
 liga  0
 tiempoFiguraOld  0
 notapianoOld  0
-i1  1
+i1  60
 old_time  0
-inst  1
+inst  0
 -----------------------------------
- cnt  2
-PasoCol( 2)
-tiempoFigura  50000000000
-DUR  49
-notapiano  48
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  108
------------------------------------
-2]pasocol(1).inst en AcordeonIguales       1
-2]pasocol(2).inst en AcordeonIguales       108
-Start AcordeOffIguales cnt,cntold,pis     2             2              2
-Desarrollo pasoCol() sin todos los campos integer 
------------------------------------
- cnt  1
-PasoCol( 1)
-tiempoFigura  50000000000
-DUR  4
-notapiano  56
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  1
------------------------------------
- cnt  2
-PasoCol( 2)
-tiempoFigura  50000000000
-DUR  49
-notapiano  48
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  108
------------------------------------
-COMIENZA RETARDO En  time : 29378.96844893913
-tiempoFigura   0.5
-COMIENZA RETARDO En  time : 29378.96844893913
-tiempoFigura   0.5
-start OFF de ligados ---------
-AcordeOFFIguales: liga:      0
-LimpiarLigaduras nohay=      2            cnt=2
-LimpiarLigaduras 1 cnt =     1            2
-limpiado AcordeOFFIguales: liga:           0
-FIN AcordeOffIguales
-LimpiarLigaduras nohay=      2            cnt=2
-LimpiarLigaduras 1 cnt =     1            2
-cnt,cntold 2  2
----DOWN -----PISTA: 2 --------------------------------
+VELOCODAD PARA NOTE SIMPLE  70
+START noteSimple
+pasoCol(1).tiempoFiguraOld: 0
+cntold  1
+noteSimple: tiempoFigura:    0.75
+noteSimple: notapiano:       56  L 
+pasoCol(1).liga              0
+envio on pasoCol(1).notapiano, vel ,canal                56           70            0
+pasocol(1).inst en Notesimple              0
+->ENVIO NOTEON notapiano     56
+->ENVIO NOTEFOFF noteSimple OFF tiempoFigura  0.75
+COMIENZA RETARDO En  time : 43766.32725140191
+tiempoFigura   0.75
+ACA MANDE TODO A CERO PERO CREO AFECTA AL PASO 12 FIJAR
+noteSimple: liga:            0
+LimpiarLigaduras nohay=      1            cnt=1
+LimpiarLigaduras 1 cnt =     1            1
+limpiado noteSimple: liga:   0
+cnt,cntold 1  1
 ---FIN -----paso: 3 --------------------------------
-]]]]START-----paso: 4 ================================
----UP-----pista: 1 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      57
-i1,NB,NA       1             39            102
----DOWN -----PISTA: 1 --------------------------------
----UP-----pista: 2 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 Acordeiguales 
+)))---START-----paso: 4 --------------------------------
+VEO LO CORRECTO DE NOTAPIANO  57
+jply  4dura  93
+paso  4 cnt  1 notapiano  57
+ligaglobal es cero ****
+-> cnt 1
+pasoCol(cnt).DUR             93
+VEO LO CORRECTO DE NOTAPIANO  64
+jply  4dura  3
+paso  4 cnt  2 notapiano  64
+cnt  2 iguales  1
+ligaglobal es uno *****, dura              3
+ELSE pasoCol(cnt).DUR  3
+ELSE pasoCol(cnt).Notapiano  64
+i1=NB= 102 ACORDE cnt=  2
+cnt  2 call Acordeiguales 
+---------------------------
+AOI: START ACORDEONIGUALES 
 Desarrollo pasoCol() sin todos los campos integer 
 -----------------------------------
  cnt  1
 PasoCol( 1)
-tiempoFigura  100000000000
-DUR  93
-notapiano  57
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  1
------------------------------------
- cnt  2
-PasoCol( 2)
-tiempoFigura  100000000000
-DUR  3
-notapiano  48
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  108
------------------------------------
-1]pasocol(1).inst en AcordeonIguales       1
-2]pasocol(2).inst en AcordeonIguales       108
-Start AcordeOffIguales cnt,cntold,pis     2             2              2
-Desarrollo pasoCol() sin todos los campos integer 
------------------------------------
- cnt  1
-PasoCol( 1)
-tiempoFigura  200000000000
+tiempoFigura  150000000000
 DUR  93
 notapiano  57
 liga  1
-tiempoFiguraOld  200000000000
+tiempoFiguraOld  0
 notapianoOld  0
-i1  1
-old_time  293794703557500
-inst  1
+i1  61
+old_time  0
+inst  0
 -----------------------------------
  cnt  2
 PasoCol( 2)
-tiempoFigura  100000000000
+tiempoFigura  150000000000
 DUR  3
-notapiano  48
+notapiano  64
 liga  0
-tiempoFiguraOld  100000000000
+tiempoFiguraOld  0
 notapianoOld  0
-i1  1
+i1  69
 old_time  0
-inst  108
+inst  0
 -----------------------------------
-COMIENZA RETARDO En  time : 29379.47039448425
-tiempoFigura   1
+AOI 1: DUR cnt=1: 93
+AOI 2: OLD_TIME AL INICIO    43767.07827377797
+AOI 3: comienza For de 1 a cnt            2
+AOI 4: ANALIZO LIGADURAS SUbSIGUIENTES si hay y toda la columna
+AOI 5: DUR  93
+AOI 6: EMPIEZA EL DO CON LIGA=1 ==========> 1
+AOI 7:  DO-LIGA nj, durj  5  3
+AOI 8: DO-LIGA nj reldur  5  1
+AOI 10: DO-LIGA paso nj tiempoFiguraSig  5  150000000000
+AOI 11: DO-LIGA pasoCol(i1).tiempoFigura+sig  300000000000
+AOI 13: EXIT DO
+AOI 14: DESPUES DE DO- 2) LIGA=1 ==========> 1
+AOI 15: numero de ligados: 1
+AOI 16: Noteon ligado notepiano  57
+AOI 17: 1]NOTEON pasocol(1).inst en AcordeonIguales      0
+AOI 18: 3) LIGA=1 ==========> 1
+AOI 19: pasoCol(i1).Dur  93 pasoCol(i1).liga  1
+AOI 19: pasoCol(i1).Dur  3 pasoCol(i1).liga  0
+AOI 20: 4) LIGA=1 ==========> 1
+AOI 21: |||| la liga dentro if liga=0 debe dar 1 en algun momento.1
+AOI 22: |||SIN LIGA pasoCol(i1).tiempoFigura  150000000000
+AOI 23: |||SIN LIGA DUR  3
+AOI 24: 5) LIGA=1 ==========> 1
+AOI 25: |||LIGA=1, pasoCol(i1).tiempoFiguraOld  150000000000
+AOI 26: SIN LIGAR Noteon de notepiano  64
+AOI 27: NOTEON 2]pasocol(2).inst en AcordeonIguales      0
+]]]========Start AcordeOffIguales cnt,cntold,pis        2             1              0
+Desarrollo pasoCol() sin todos los campos integer 
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  300000000000
+DUR  93
+notapiano  57
+liga  1
+tiempoFiguraOld  300000000000
+notapianoOld  0
+i1  61
+old_time  437670782737780
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  150000000000
+DUR  3
+notapiano  64
+liga  0
+tiempoFiguraOld  150000000000
+notapianoOld  0
+i1  69
+old_time  0
+inst  0
+-----------------------------------
+COMIENZA RETARDO En  time : 43767.07851535637
+tiempoFigura   1.5
+SIN LIGAR NOTEOFF==>i1 2 AcordeOffIguales: notapiano:    64  I 
 start OFF de ligados ---------
-COMIENZA RETARDO En  time : 29379.47035575003
-tiempoFigura   2
-AcordeOFFIguales: liga:      0
+<<<<<<<<<<FIN ELSE>>>>>>> OFF IGUALES CUANTAS VECES PASA
+COMIENZA RETARDO En  time : 43767.07827377797
+tiempoFigura   1.5
+<<<<<<<<<<FIN ELSE>>>>>>> OFF IGUALES CUANTAS VECES PASA
+AcordeOFFIguales: liga:      1
 LimpiarLigaduras nohay=      1            cnt=2
 LimpiarLigaduras 1 cnt =     1            2
 limpiado AcordeOFFIguales: liga:           1
@@ -445,85 +305,96 @@ FIN AcordeOffIguales
 LimpiarLigaduras nohay=      1            cnt=2
 LimpiarLigaduras 1 cnt =     1            2
 cnt,cntold 2  2
----DOWN -----PISTA: 2 --------------------------------
 ---FIN -----paso: 4 --------------------------------
-]]]]START-----paso: 5 ================================
----UP-----pista: 1 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      57
-i1,NB,NA       1             39            102
-No es una nota ligada        3
-pasoCol(cnt).DUR  3
----DOWN -----PISTA: 1 --------------------------------
----UP-----pista: 2 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-No es una nota ligada        48
-pasoCol(cnt).DUR  48
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 Acordeiguales 
+)))---START-----paso: 5 --------------------------------
+VEO LO CORRECTO DE NOTAPIANO  57
+jply  5dura  3
+paso  5 cnt  1 notapiano  57
+ligaglobal es uno *****, dura              3
+ELSE pasoCol(cnt).DUR  3
+ELSE pasoCol(cnt).Notapiano  57
+VEO LO CORRECTO DE NOTAPIANO  64
+jply  5dura  48
+paso  5 cnt  2 notapiano  64
+cnt  2 iguales  1
+ligaglobal es uno *****, dura              48
+ELSE pasoCol(cnt).DUR  48
+ELSE pasoCol(cnt).Notapiano  64
+i1=NB= 102 ACORDE cnt=  2
+cnt  2 call Acordeiguales 
+---------------------------
+AOI: START ACORDEONIGUALES 
 Desarrollo pasoCol() sin todos los campos integer 
 -----------------------------------
  cnt  1
 PasoCol( 1)
-tiempoFigura  100000000000
+tiempoFigura  150000000000
 DUR  3
 notapiano  57
 liga  1
 tiempoFiguraOld  0
 notapianoOld  0
-i1  1
-old_time  293794703557500
-inst  1
+i1  61
+old_time  437670782737780
+inst  0
 -----------------------------------
  cnt  2
 PasoCol( 2)
-tiempoFigura  100000000000
+tiempoFigura  150000000000
 DUR  48
-notapiano  48
+notapiano  64
 liga  0
 tiempoFiguraOld  0
 notapianoOld  0
-i1  1
+i1  69
 old_time  0
-inst  108
+inst  0
 -----------------------------------
-2]pasocol(2).inst en AcordeonIguales       108
-Start AcordeOffIguales cnt,cntold,pis     2             2              2
+AOI 1: DUR cnt=1: 3
+AOI 2: OLD_TIME AL INICIO    43768.58020538581
+AOI 3: comienza For de 1 a cnt            2
+AOI 19: pasoCol(i1).Dur  3 pasoCol(i1).liga  1
+AOI 19: pasoCol(i1).Dur  48 pasoCol(i1).liga  0
+AOI 20: 4) LIGA=1 ==========> 0
+AOI 21: |||| la liga dentro if liga=0 debe dar 1 en algun momento.0
+AOI 22: |||SIN LIGA pasoCol(i1).tiempoFigura  150000000000
+AOI 23: |||SIN LIGA DUR  48
+AOI 24: 5) LIGA=1 ==========> 0
+AOI 26: SIN LIGAR Noteon de notepiano  64
+AOI 27: NOTEON 2]pasocol(2).inst en AcordeonIguales      0
+]]]========Start AcordeOffIguales cnt,cntold,pis        2             2              0
 Desarrollo pasoCol() sin todos los campos integer 
 -----------------------------------
  cnt  1
 PasoCol( 1)
-tiempoFigura  100000000000
+tiempoFigura  150000000000
 DUR  3
 notapiano  57
 liga  1
 tiempoFiguraOld  0
 notapianoOld  0
-i1  1
-old_time  293794703557500
-inst  1
+i1  61
+old_time  437670782737780
+inst  0
 -----------------------------------
  cnt  2
 PasoCol( 2)
-tiempoFigura  100000000000
+tiempoFigura  150000000000
 DUR  48
-notapiano  48
+notapiano  64
 liga  0
 tiempoFiguraOld  0
 notapianoOld  0
-i1  1
+i1  69
 old_time  0
-inst  108
+inst  0
 -----------------------------------
-COMIENZA RETARDO En  time : 29381.47139919555
-tiempoFigura   1
+COMIENZA RETARDO En  time : 43768.58027605853
+tiempoFigura   1.5
+SIN LIGAR NOTEOFF==>i1 2 AcordeOffIguales: notapiano:    64 sI 
 start OFF de ligados ---------
+<<<<<<<<<<FIN ELSE>>>>>>> OFF IGUALES CUANTAS VECES PASA
+<<<<<<<<<<FIN ELSE>>>>>>> OFF IGUALES CUANTAS VECES PASA
 AcordeOFFIguales: liga:      1
 LimpiarLigaduras nohay=      2            cnt=2
 LimpiarLigaduras 1 cnt =     1            2
@@ -532,205 +403,98 @@ FIN AcordeOffIguales
 LimpiarLigaduras nohay=      2            cnt=2
 LimpiarLigaduras 1 cnt =     1            2
 cnt,cntold 2  2
----DOWN -----PISTA: 2 --------------------------------
 ---FIN -----paso: 5 --------------------------------
-]]]]START-----paso: 6 ================================
----UP-----pista: 1 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      60
-i1,NB,NA       1             39            102
----DOWN -----PISTA: 1 --------------------------------
----UP-----pista: 2 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 Acordeiguales 
+)))---START-----paso: 6 --------------------------------
+VEO LO CORRECTO DE NOTAPIANO  60
+jply  6dura  4
+paso  6 cnt  1 notapiano  60
+ligaglobal es cero ****
+-> cnt 1
+pasoCol(cnt).DUR             4
+i1=NB= 102 SIMPLE cnt=  1
+call Notesimple cntold, vel, canal, tiempodur            2             100           0             1.5
 Desarrollo pasoCol() sin todos los campos integer 
 -----------------------------------
  cnt  1
 PasoCol( 1)
-tiempoFigura  50000000000
+tiempoFigura  75000000000
 DUR  4
 notapiano  60
 liga  0
 tiempoFiguraOld  0
 notapianoOld  0
-i1  1
-old_time  293794703557500
-inst  1
+i1  65
+old_time  437670782737780
+inst  0
 -----------------------------------
- cnt  2
-PasoCol( 2)
-tiempoFigura  50000000000
-DUR  4
-notapiano  48
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  108
------------------------------------
-2]pasocol(1).inst en AcordeonIguales       1
-2]pasocol(2).inst en AcordeonIguales       108
-Start AcordeOffIguales cnt,cntold,pis     2             2              2
-Desarrollo pasoCol() sin todos los campos integer 
------------------------------------
- cnt  1
-PasoCol( 1)
-tiempoFigura  50000000000
-DUR  4
-notapiano  60
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  293794703557500
-inst  1
------------------------------------
- cnt  2
-PasoCol( 2)
-tiempoFigura  50000000000
-DUR  4
-notapiano  48
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  108
------------------------------------
-COMIENZA RETARDO En  time : 29382.47243312741
-tiempoFigura   0.5
-COMIENZA RETARDO En  time : 29382.47243312741
-tiempoFigura   0.5
-start OFF de ligados ---------
-AcordeOFFIguales: liga:      0
-LimpiarLigaduras nohay=      2            cnt=2
-LimpiarLigaduras 1 cnt =     1            2
-limpiado AcordeOFFIguales: liga:           0
-FIN AcordeOffIguales
-LimpiarLigaduras nohay=      2            cnt=2
-LimpiarLigaduras 1 cnt =     1            2
-cnt,cntold 2  2
----DOWN -----PISTA: 2 --------------------------------
+VELOCODAD PARA NOTE SIMPLE  50
+START noteSimple
+pasoCol(1).tiempoFiguraOld: 0
+cntold  1
+noteSimple: tiempoFigura:    0.75
+noteSimple: notapiano:       60  L 
+pasoCol(1).liga              0
+envio on pasoCol(1).notapiano, vel ,canal                60           50            0
+pasocol(1).inst en Notesimple              0
+->ENVIO NOTEON notapiano     60
+->ENVIO NOTEFOFF noteSimple OFF tiempoFigura  0.75
+COMIENZA RETARDO En  time : 43770.08117985392
+tiempoFigura   0.75
+ACA MANDE TODO A CERO PERO CREO AFECTA AL PASO 12 FIJAR
+noteSimple: liga:            0
+LimpiarLigaduras nohay=      1            cnt=1
+LimpiarLigaduras 1 cnt =     1            1
+limpiado noteSimple: liga:   0
+cnt,cntold 1  1
 ---FIN -----paso: 6 --------------------------------
-]]]]START-----paso: 7 ================================
----UP-----pista: 1 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
-Notapiano      61
-i1,NB,NA       1             39            102
----DOWN -----PISTA: 1 --------------------------------
----UP-----pista: 2 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-Notapiano      48
-i1,NB,NA       1             39            102
-i1=NB= 12 ACORDE cnt=  2
-cnt  2 Acordeiguales 
+)))---START-----paso: 7 --------------------------------
+VEO LO CORRECTO DE NOTAPIANO  61
+jply  7dura  4
+paso  7 cnt  1 notapiano  61
+ligaglobal es cero ****
+-> cnt 1
+pasoCol(cnt).DUR             4
+i1=NB= 102 SIMPLE cnt=  1
+call Notesimple cntold, vel, canal, tiempodur            1             100           0             1.5
 Desarrollo pasoCol() sin todos los campos integer 
 -----------------------------------
  cnt  1
 PasoCol( 1)
-tiempoFigura  50000000000
+tiempoFigura  75000000000
 DUR  4
 notapiano  61
 liga  0
 tiempoFiguraOld  0
 notapianoOld  0
-i1  1
-old_time  293794703557500
-inst  1
+i1  66
+old_time  437670782737780
+inst  0
 -----------------------------------
- cnt  2
-PasoCol( 2)
-tiempoFigura  50000000000
-DUR  4
-notapiano  48
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  108
------------------------------------
-2]pasocol(1).inst en AcordeonIguales       1
-2]pasocol(2).inst en AcordeonIguales       108
-Start AcordeOffIguales cnt,cntold,pis     2             2              2
-Desarrollo pasoCol() sin todos los campos integer 
------------------------------------
- cnt  1
-PasoCol( 1)
-tiempoFigura  50000000000
-DUR  4
-notapiano  61
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  293794703557500
-inst  1
------------------------------------
- cnt  2
-PasoCol( 2)
-tiempoFigura  50000000000
-DUR  4
-notapiano  48
-liga  0
-tiempoFiguraOld  0
-notapianoOld  0
-i1  1
-old_time  0
-inst  108
------------------------------------
-COMIENZA RETARDO En  time : 29382.97434639401
-tiempoFigura   0.5
-COMIENZA RETARDO En  time : 29382.97434639401
-tiempoFigura   0.5
-start OFF de ligados ---------
-AcordeOFFIguales: liga:      0
-LimpiarLigaduras nohay=      2            cnt=2
-LimpiarLigaduras 1 cnt =     1            2
-limpiado AcordeOFFIguales: liga:           0
-FIN AcordeOffIguales
-LimpiarLigaduras nohay=      2            cnt=2
-LimpiarLigaduras 1 cnt =     1            2
-cnt,cntold 2  2
----DOWN -----PISTA: 2 --------------------------------
+VELOCODAD PARA NOTE SIMPLE  50
+START noteSimple
+pasoCol(1).tiempoFiguraOld: 0
+cntold  1
+noteSimple: tiempoFigura:    0.75
+noteSimple: notapiano:       61  L 
+pasoCol(1).liga              0
+envio on pasoCol(1).notapiano, vel ,canal                61           50            0
+pasocol(1).inst en Notesimple              0
+->ENVIO NOTEON notapiano     61
+->ENVIO NOTEFOFF noteSimple OFF tiempoFigura  0.75
+COMIENZA RETARDO En  time : 43770.83216417545
+tiempoFigura   0.75
+ACA MANDE TODO A CERO PERO CREO AFECTA AL PASO 12 FIJAR
+noteSimple: liga:            0
+LimpiarLigaduras nohay=      1            cnt=1
+LimpiarLigaduras 1 cnt =     1            1
+limpiado noteSimple: liga:   0
+cnt,cntold 1  1
 ---FIN -----paso: 7 --------------------------------
-]]]]START-----paso: 8 ================================
----UP-----pista: 1 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
----DOWN -----PISTA: 1 --------------------------------
----UP-----pista: 2 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-i1=NB= 12 SIMPLE cnt=  0
+)))---START-----paso: 8 --------------------------------
+i1=NB= 102 SIMPLE cnt=  0
 cnt,cntold 0  0
----DOWN -----PISTA: 2 --------------------------------
 ---FIN -----paso: 8 --------------------------------
-]]]]START-----paso: 9 ================================
----UP-----pista: 1 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           1
-limite inferior NBpiano     36
----DOWN -----PISTA: 1 --------------------------------
----UP-----pista: 2 --------------------------------
-de esta pista MAXPOS ,final  9             9
-Play Cancion NB ,NA, pis     39            102           2
-limite inferior NBpiano     36
-i1=NB= 12 SIMPLE cnt=  0
+)))---START-----paso: 9 --------------------------------
+i1=NB= 102 SIMPLE cnt=  0
 cnt,cntold 0  0
----DOWN -----PISTA: 2 --------------------------------
 ---FIN -----paso: 9 --------------------------------
