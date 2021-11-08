@@ -1678,7 +1678,7 @@ EndIf
             posn=posishow        
             Dim As Integer r1,i
             For i=NB To NA 
-              For r1= posn+1 To CantTicks
+              For r1= posn+2 To CantTicks
                  Roll.trk(r1,i).nota=0
                  Roll.trk(r1,i).dur=0 
               Next r1 
@@ -1700,7 +1700,7 @@ EndIf
    '   t = " [NUEVO] [ABRIR] [GRABAR] [GRABAR COMO] [EXPORTAR] [CERRAR] [SALIR] "
 
    '===> 3.1 [NUEVO]
-   If MultiKey(sc_Control) And mousex > 42 And mousex < 110  And mousey < 50  Then ' <= NUEVO
+   If mousex > 42 And mousex < 110  And mousey < 50  Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
     
       If MultiKey(sc_control) Then

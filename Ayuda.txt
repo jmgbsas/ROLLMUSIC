@@ -22,7 +22,8 @@
     1.8) Agregar tracks a cancion.
     1.9) Conmutar de Pista en una cancion cargadacon TAB.
     1.10) Borrar pistas de la lista.
-  
+    2.0 ) Modos de Edicion.
+
     IV) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
         estilo pentagrama. Se podrán usar varias instancias pero sin ningun control
         entre ellas.RollMusic.exe levanta ahora 2 pantallas un menu GUI y el grafico habitual.
@@ -307,6 +308,13 @@ UBICANDO EL CURSOR Y SOLO CON X REPITE LA ULTIMA NOTA EN ESTE CASO ESPACIO.
        enla posicion elegida,luego de terminado deborrar las posiciones
        ahi mismo sin salir de Cursor pulsando Ctrl-Delete o Ctrl-Supr.
        Se borrarran las posiciones marcadas,
+2.5.4) Borrar Hasta el Final, Mover la secuencia de forma que la nota final deseada este en 
+       la posicion 1 con flechas derecha izquierda, luego dar clck en Edicion, aparece la 
+       cinta arriba de Edicion pero todavia en color blanco , no verde, aparece MaxPos=nn
+       sobre MaxPos dar Ctrl+ dobleClick y se borrara desde la posicion 1 en adelante 
+       siendo la posicion 1 la 1er columna del grafico y ademas sera el nuevo final.
+       La secuencia completa queda fuera de pantalla a la izquierda. Luego para verla entera
+       pulsar Inicio o navegar a la izquierda con flecha izquierda o ctrl+izquierda.,
 
 
 III) 

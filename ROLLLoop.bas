@@ -1247,10 +1247,12 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
         If  MaxPos > 1 Then 
          '''Dim tlock As Any Ptr = MutexCreate()
          If CANCIONCARGADA Then
+         Print #1,"USANDO PLAYCANCION"
             thread1 = ThreadCall  playCancion(Track())
          Else
-''''            'thread1 = ThreadCall  playAll(Roll)
-      playAll(Roll)
+            thread1 = ThreadCall  playAll(Roll)
+       Print #1,"USANDO PLAYALL"
+      '''playAll(Roll)
          EndIf
          '''MutexDestroy tlock
          '''playAll(Roll)

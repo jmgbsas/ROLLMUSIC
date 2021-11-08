@@ -1,3 +1,17 @@
+  ' V7 CRASH DE SPACE EN PLAY, Y VER ACORDES DISTIENTOS SI SE PUEDE CAMBIAR UNA NOTA LARGA
+  ' EN 2 CORTAS AUTOAMTICAMENTE PARA PONER EN ACORDE OTRAS 2 MAS CHIVAS EL:
+  ' P    ==> L+I* || DISCERNIR (1) |P|     DE (2)| P   |
+  ' L+I      L+I                   |L| I         | L I |
+  ' EL ULTIMO CASO (2) NO SE PUEDE EN ROLL , EL (1) SI
+  ' O SEA QUE EL PROGRAMA AUTOMATICAMNETE PARTA UNA NOTA LARGA COMO P I O ETC
+  ' FRENTE A OTRAS EN ACORDE MAS CHICAS Y UNIDAS O NO...
+  ' V5 CORREGIDO, V6 CORREGIDO OTRAS COSAS,,QUEDA CRASH DE PLAY CON SPACE...
+  ' 08-11 V5 anda mejor qu ela V4 solo que la ligadura I+I+I la toca como I+I
+  ' LE FALTA UNA NEGRA DE DURACION, EL RESTO LO TOCA BIEN!!!
+  ' SIN TOCAR CASI NADA SOLO ELIMINAR EL ANALISIS DE LIGA EN PLAYALL
+  ' SEGUIR CORREGIR CON EL USO DE LSO CAMPOS NUEVOS Y AL TERMINAR 
+  ' ELIMINAR LOS CAMPOS DE VEC QUE NO SE USEN
+'----------------------------------------------
 ' 05-11 con una sola ligadura anda bien playcancion y playall
 ' ver a hora on mas de una ligadura tanto en melodia sola como cancion uff
 '------------------------------------------------------------
@@ -592,8 +606,8 @@ Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
 Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
   If abrirRoll=1 Then
-    'threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-    RollLoop ( param)
+    threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+    ''''RollLoop ( param)
     ''abrirRoll=2 ' roll ya abierto
     Sleep 100 ' sin este retardo no le da teimpo al thread de cargar a Roll
     ' y CargarPistasEnCancion no puede cargar proque no hay Roll
@@ -973,7 +987,7 @@ End 0
 
 '---------fin iup---    
 errorhandler:
-'Dim As Integer er, ErrorNumber, ErrorLine
+Dim As Integer er, ErrorNumber, ErrorLine
 er = Err
 Print #1,"Error  Rollmusic detected ", er, posicion, MaxPos
 Print #1,Erl, Erfn,Ermn,Err

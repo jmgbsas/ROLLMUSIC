@@ -1059,7 +1059,7 @@ Dim As Integer comienzo=1, final=MaxPos,  canal=0,vel=100,velpos =0
 ' canal 0 es el 1 van de 0 a 15
 ' pasoCol debe ser de 2 dimensiones 1 para c/pista, 115 el amxio de octavas
 ' ojo si cambioaamos por mas octavas debo cambiar, igual el nro de tracks 32 
-Dim pasoCol (0 To 384) As vec  ' entrada de durciones a medida que barro una columna
+''Dim pasoCol (0 To 384) As vec  ' entrada de durciones a medida que barro una columna
 
 Dim As Double start
 Dim as Integer cnt=0, cntold=0,cpar=0,dura=0,duraOld=0,nj, durj,tiempoFiguraSig
@@ -1170,17 +1170,7 @@ kNroCol= Int(jply/NroCol)
    '   Print #1,"paso ";jply;" cnt ";cnt;" notapiano "; Notapiano
         If cnt=1 Then 
            duraOld=dura
-        
-          If ligaglobal=1 Then
-            For i2=1 To cntold
-                pasoCol(i2).DUR =181
-'                pasoCol(i2).liga=0
-                pasoCol(i2).tiempoFigura =0
-                pasoCol(i2).inst=Track(pis).trk(1,1).inst
-'                pasoCol(i2).old_time=0
-            Next i2
-         EndIf
-       EndIf
+        EndIf
        ' usamos reldur() para comparar dura y con cnt>1 tiene sentido
        If reldur(duraOld)=reldur(dura) And cnt > 1  Then
           iguales=1
@@ -1190,60 +1180,38 @@ kNroCol= Int(jply/NroCol)
           distintos=1
     '     Print #1,"cnt ";cnt;" distintos ";distintos
        EndIf         
-      If ligaglobal =0 Then 
-     '    Print #1,"ligaglobal es cero ****"   
+
       '  Print #1,"-> cnt"; cnt 
          pasoCol(cnt).DUR =dura
+         pasoCol(cnt).DURold =dura
        '  Print #1,"pasoCol(cnt).DUR ", pasoCol(cnt).DUR 
+         If pasoCol(cnt).DUR >= 91 And pasoCol(cnt).DUR <=180 Then
+            print #1,"PALL 9:PALL 0: nota con + es una liga"
+            pasoCol(cnt).liga         = pasoCol(cnt).ligaold + 1
+            pasoCol(cnt).ligaold = pasoCol(cnt).liga
+         EndIf
+
          pasoCol(cnt).notapiano=Notapiano 
+         pasoCol(cnt).notapianoOld=Notapiano 
+         
          pasoCol(cnt).tiempoFigura=relDur(pasoCol(cnt).DUR) * tiempoDur * 100000000000
          pasoCol(cnt).i1 = i1 'posicion vertical en el vector real
+         pasoCol(cnt).i1Old = i1 'posicion vertical en el vector real
+
       ' 20-06-2021 eliminado duraold=dura repetido  
          pasoCol(cnt).inst=Track(pis).trk(1,1).inst  
          vel= vol( dura, velpos)
-      Else
-       '  Print #1,"ligaglobal es uno *****"
-         If dura >= 91 And dura <=180 Then ' es una nota ligada
-            Print #1,"es una nota ligada >=91 <=180 ",dura
-            For i2=1 To cntold
-                If Notapiano  = pasoCol(i2).notapiano Then
-                   Print #1,"Notapiano de liga igual "; Notapiano
-                   pasoCol(i2).DUR =dura
-                   Print #1,"pasoCol(i2).DUR "; pasoCol(cnt).DUR 
-                   pasoCol(i2).notapiano=Notapiano 
-                ' tiempofigur aya calculado
-                   Print #1,"tiempofigura anterior ";pasoCol(i2).tiempoFiguraOld
-                   pasoCol(i2).tiempoFigura=pasoCol(i2).tiempoFiguraOld       
-                   Print #1,"pasoCol(i2).i1 ";pasoCol(i2).i1
-                   Print #1," i1 debe ser igual al anterior:"; i1       
-                   pasoCol(i2).i1 = i1 'posicion vertical en el vector real es igual
-                   pasoCol(i2).inst=Track(pis).trk(1,1).inst
-                  ' vel= vol( dura, velpos) 
-               EndIf    
-            Next i2
-         Else
-           Print #1,"No es una nota ligada ",dura
-                   pasoCol(cnt).DUR =dura
-                   Print #1,"pasoCol(cnt).DUR "; pasoCol(cnt).DUR 
-                   pasoCol(cnt).notapiano=Notapiano 
-                ' tiempofigur aya calculado
-                   pasoCol(cnt).tiempoFigura=relDur(pasoCol(cnt).DUR) * tiempoDur * 100000000000       
-                   pasoCol(cnt).i1 = i1 'posicion vertical en el vector real es igual
-                   pasoCol(cnt).inst=Track(pis).trk(1,1).inst
-                 '  vel= vol( dura, velpos)
-         EndIf
-      EndIf
+   EndIf
 ' llegamos al final de la Columna
-
-     EndIf
    
      If i1=lim2  And (pis = tope Or pis=32) Then
  
         If cnt > 1 Then' Acorde
-          Print #1,"i1=NB=";i1 ; " ACORDE cnt= ";cnt
+          Print #1,"i1=";i1 ; " ACORDE cnt= ";cnt
         Else    
-           Print #1,"i1=NB=";i1 ; " SIMPLE cnt= ";cnt
+           Print #1,"i1=";i1 ; " SIMPLE cnt= ";cnt
         EndIf  
+
         Select Case cnt
           Case 1 
            ' con y sin liga
@@ -1255,9 +1223,6 @@ kNroCol= Int(jply/NroCol)
           Case Is > 1
 
             If iguales=1 And distintos=0  Then
-               For i2=1 To cnt
-                 pasoCol(i2).tiempoFiguraOld=0
-               Next i2
 
                 Print #1,"cnt ";cnt;" Acordeiguales "
                 
