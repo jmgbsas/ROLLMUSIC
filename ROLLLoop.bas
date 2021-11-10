@@ -1707,8 +1707,8 @@ If comEdit = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 An
    If notaOld > 0 And notaOld <> nota  Then
   '  Print #1,"Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota"; _
    '           Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota
-    Roll.trk(posn,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).dur = 181 
-    Roll.trk(posn,(12-notaOld  +(estoyEnOctava    -1) * 13)).dur = 181 
+    Roll.trk(posn,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).dur = 0 
+    Roll.trk(posn,(12-notaOld  +(estoyEnOctava    -1) * 13)).dur = 0 
     Roll.trk(posn,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota = 181
     Roll.trk(posn,(12-notaOld  +(estoyEnOctava    -1) * 13)).nota = 181
    

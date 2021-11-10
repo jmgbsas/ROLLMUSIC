@@ -180,7 +180,7 @@ haycompas=0
 dobleclick=>FALSE
 
 Dim Shared d7 As Integer => 10000000 ' PROBAREMOS CON 12/8 O 6 NEGRAS,,,15 MILL
-
+Dim Shared d11 As Integer => 100000000000
 ' comienza el compas , se calculara dinamicamente,,,según posicion  y la historia anterior
 ' del mismo array (acumulado, nro Compas, posicion)
 
@@ -389,11 +389,14 @@ Dim Shared As hWnd hwnd,hwndMenu
 'hwndmENU = Cast(hwnd,MhWnd)
 Dim Shared As UINT codsalida=0
 Dim shared As Any Ptr lpExitCode
-
-Type RelacionTiempo Field=1
-  As ULong t
-  As ULong posicion
-End Type
+' suponemos 64 divisiones dentro de un compas semifusa...y 5000 compases
+Dim Shared Guia (1 To 300000  ) As ULong
+' la idea es poner las posiciones de track o roll dentro de este otro
+' array, el array salta de una posicion a otra en 1/128 en tiempo relativo
+' entonces para poner una negra por ejemplo si su inicio va en 1 entonces
+' un salto de 128 seria una redonda, 64 una blanca y 32 una negra
+' ergo la negra se representa comienzo en 1 fin en 32-33 o sea empeiza en 1
+' y termina en el comienzo de 33.
 '---------------------
 ANCHO = GetSystemMetrics(SM_CXSCREEN)
 ALTO = GetSystemMetrics(SM_CYSCREEN)

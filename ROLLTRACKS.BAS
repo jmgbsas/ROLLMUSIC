@@ -1183,7 +1183,7 @@ kNroCol= Int(jply/NroCol)
 
       '  Print #1,"-> cnt"; cnt 
          pasoCol(cnt).DUR =dura
-         pasoCol(cnt).DURold =dura
+'         pasoCol(cnt).DURold =dura
        '  Print #1,"pasoCol(cnt).DUR ", pasoCol(cnt).DUR 
          If pasoCol(cnt).DUR >= 91 And pasoCol(cnt).DUR <=180 Then
             print #1,"PALL 9:PALL 0: nota con + es una liga"
@@ -1192,11 +1192,11 @@ kNroCol= Int(jply/NroCol)
          EndIf
 
          pasoCol(cnt).notapiano=Notapiano 
-         pasoCol(cnt).notapianoOld=Notapiano 
+ '        pasoCol(cnt).notapianoOld=Notapiano 
          
          pasoCol(cnt).tiempoFigura=relDur(pasoCol(cnt).DUR) * tiempoDur * 100000000000
          pasoCol(cnt).i1 = i1 'posicion vertical en el vector real
-         pasoCol(cnt).i1Old = i1 'posicion vertical en el vector real
+  '       pasoCol(cnt).i1Old = i1 'posicion vertical en el vector real
 
       ' 20-06-2021 eliminado duraold=dura repetido  
          pasoCol(cnt).inst=Track(pis).trk(1,1).inst  
@@ -1218,8 +1218,8 @@ kNroCol= Int(jply/NroCol)
            ' INCLUYE LIGADOS O NO LIGADOS
  Print #1, "CALLL A NOTESIMPLE cntold, vel, canal, tiempodur",  cntold, vel, canal,tiempoDur
   ' cnt por cntold 04-11-2021           
-            noteSimple  pasoCol(), cnt, vel, canal,tiempoDur,velpos
-                     
+  ''    noteSimple  pasoCol(), cnt, vel, canal,tiempoDur,velpos
+       AcordeIguales pasoCol(),cnt,cntold,vel,canal,tiempoDur,Roll,velpos,pis                     
           Case Is > 1
 
             If iguales=1 And distintos=0  Then

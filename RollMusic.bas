@@ -1,3 +1,5 @@
+  ' v8 fix nucle dur=0 nota=181 sino el borrado de notas anda mal
+  ' toda celda debe tener 0,181 nada de 181,181...eso se cambio
   ' V7 CRASH DE SPACE EN PLAY, Y VER ACORDES DISTIENTOS SI SE PUEDE CAMBIAR UNA NOTA LARGA
   ' EN 2 CORTAS AUTOAMTICAMENTE PARA PONER EN ACORDE OTRAS 2 MAS CHIVAS EL:
   ' P    ==> L+I* || DISCERNIR (1) |P|     DE (2)| P   |
@@ -274,7 +276,8 @@ EndIf
 CantTicks=cantMin * 128 * tempo/4  ' 76800 ticks...o pasos
 'CantTicks=76800
 CantTicks=4000 ' 3 MINUTOS A NEGRA 160/min=500 Y Q TODAS SEAN FUSA
- 
+' 4000*30=120000 x 16=1920000
+'  
 
 Dim Shared As paso compas (1 To CantTicks) 'cada item es la posicion en donde
 
@@ -308,16 +311,16 @@ param.ubirtk=ubirtk
 Dim  AS Integer  ctres=1 ' 5 octavas por track
 Dim As Integer lim1 
 lim1=1
-ReDim (Track(0).trk ) (1 To CantTicks,1 To lim2) ' lo usa instancia sin cancion
-ReDim (Track(1).trk ) (1 To CantTicks,1 To lim2) ' lo usa sin instancia
-ReDim (Track(2).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(3).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(4).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(5).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(6).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(7).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(8).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(9).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(00).trk ) (1 To CantTicks,1 To lim2) ' lo usa instancia sin cancion
+ReDim (Track(01).trk ) (1 To CantTicks,1 To lim2) ' lo usa sin instancia
+ReDim (Track(02).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(03).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(04).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(05).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(06).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(07).trk ) (1 To Ctres,1 To lim1)
+ReDim (Track(08).trk ) (1 To ctres,1 To lim1)
+ReDim (Track(09).trk ) (1 To ctres,1 To lim1)
 ReDim (Track(10).trk ) (1 To Ctres,1 To lim1)
 ReDim (Track(11).trk ) (1 To Ctres,1 To lim1)
 ReDim (Track(12).trk ) (1 To Ctres,1 To lim1)
