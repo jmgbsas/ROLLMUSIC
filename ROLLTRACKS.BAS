@@ -1094,10 +1094,13 @@ Dim As Integer result,limsup
 ' debo hcer un for para cada pista, en cada psita ver si esta mute o play
 ' ajustar el instrumento de la pista cada vez que cambie la pista.
 
-Print #1,"MAXPOS AL COMENZAR TODO,final",Maxpos,final
+Print #1,"[[[[ PCA CANCION MAXPOS AL COMENZAR TODO,final]]]",Maxpos,final
 
 For jply=comienzo To final
-  Print #1,"]]]]START-----paso:";jply;" ================================"
+  Print #1," ---------------000000000000000000000-----------------"
+  Print #1," [[[PCA 0:]]]---START--PASO:[";jply;"] ----------------"
+  Print #1," ---------------000000000000000000000-----------------"
+  
 ' cambio de inst para la pista, podria poner mas de un instrumento por pista
 ' o por cada nota.. 
 ' VER DE PONER LOS INSTRUMENTOS EN TRACK  
@@ -1149,20 +1152,27 @@ kNroCol= Int(jply/NroCol)
       
 ' ojo con silencios ligados !!!
 
-' limites para cada pista NB,NA 
+' limites para cada pista NB,NA,son limites para las Notapiano
+' si se grabo con un limite de octavas las Notapiano tambien estan limitadas  
    NB = 0  + (pmTk(pis).desde -1 ) * 13 
    NA = 11 + (pmTk(pis).hasta -1 ) * 13 
    Print #1,"Play Cancion NB ,NA, pis",NB,NA,pis
    
    Dim As ubyte NBpiano= CUByte(NB) - CUByte(restar(NB))
+   Dim As ubyte NApiano= CUByte(NA) - CUByte(restar(NA))
    Print #1,"limite inferior NBpiano ",NBpiano
+   Print #1,"limite Superior NApiano ",NApiano
+' en realida seria bueno no tner limites para los tracks, cada track
+' tiene polifonia de 12 o sea un acorde de 12 notas, ergo
+' la cancion podria tener 12*32tracks = 384 de polifonia, no se si rtmidi lo soporta
+' 
 ' info del inst en 1 no en lim2   
    For i1=1 To lim2   ' coo voy de 1 a lim2 necesito que la info del int este en 1
 
      If (Track(pis).trk(jply,i1).nota >= NBpiano) And (Track(pis).trk(jply,i1).nota <= NA) And (Track(pis).trk(jply,i1).dur >=1) And (Track(pis).trk(jply,i1).dur <= 180) Then ' es semitono
          Notapiano = Track(pis).trk(jply,i1).nota
          Print #1,"Notapiano ",Notapiano
-         Print #1,"i1,NB,NA ",i1,NB,NA
+         Print #1,"i1,NBpiano,NApiano ",i1,NBpiano,NApiano
 '       Print #1,"VEO LO CORRECTO DE NOTAPIANO "; Notapiano
          dura=Track(pis).trk(jply,i1).dur ' el dur de track esta en integer
 '      Print #1,"jply ";jply; "dura ";dura
@@ -1174,31 +1184,33 @@ kNroCol= Int(jply/NroCol)
        ' usamos reldur() para comparar dura y con cnt>1 tiene sentido
        If reldur(duraOld)=reldur(dura) And cnt > 1  Then
           iguales=1
-    '     Print #1,"cnt ";cnt;" iguales ";iguales
+          Print #1,"cnt ";cnt;" iguales ";iguales
        EndIf
        If reldur(duraOld)<>reldur(dura) And cnt > 1 Then
           distintos=1
-    '     Print #1,"cnt ";cnt;" distintos ";distintos
+          Print #1,"cnt ";cnt;" distintos ";distintos
        EndIf         
 
-      '  Print #1,"-> cnt"; cnt 
+        Print #1,"-> cnt"; cnt 
          pasoCol(cnt).DUR =dura
 '         pasoCol(cnt).DURold =dura
-       '  Print #1,"pasoCol(cnt).DUR ", pasoCol(cnt).DUR 
+         Print #1,"pasoCol(cnt).DUR ", pasoCol(cnt).DUR 
          If pasoCol(cnt).DUR >= 91 And pasoCol(cnt).DUR <=180 Then
-            print #1,"PALL 9:PALL 0: nota con + es una liga"
-            pasoCol(cnt).liga         = pasoCol(cnt).ligaold + 1
-            pasoCol(cnt).ligaold = pasoCol(cnt).liga
+            print #1,"nota con + es una liga"
+            pasoCol(cnt).liga    =  1
+         Else   
+            pasoCol(cnt).liga  = 0
          EndIf
 
          pasoCol(cnt).notapiano=Notapiano 
  '        pasoCol(cnt).notapianoOld=Notapiano 
          
-         pasoCol(cnt).tiempoFigura=relDur(pasoCol(cnt).DUR) * tiempoDur * 100000000000
+         pasoCol(cnt).tiempoFigura=relDur(pasoCol(cnt).DUR) * tiempoDur * d11
          pasoCol(cnt).i1 = i1 'posicion vertical en el vector real
   '       pasoCol(cnt).i1Old = i1 'posicion vertical en el vector real
 
-      ' 20-06-2021 eliminado duraold=dura repetido  
+      ' 20-06-2021 eliminado duraold=dura repetido 
+     '' ??VER SI SAO DE ACA INST Y VEL 
          pasoCol(cnt).inst=Track(pis).trk(1,1).inst  
          vel= vol( dura, velpos)
    EndIf
@@ -1216,14 +1228,17 @@ kNroCol= Int(jply/NroCol)
           Case 1 
            ' con y sin liga
            ' INCLUYE LIGADOS O NO LIGADOS
- Print #1, "CALLL A NOTESIMPLE cntold, vel, canal, tiempodur",  cntold, vel, canal,tiempoDur
+ Print #1, "SIMPLE COM ACORDES IGUALES cntold, vel, canal, tiempodur",  cntold, vel, canal,tiempoDur
   ' cnt por cntold 04-11-2021           
   ''    noteSimple  pasoCol(), cnt, vel, canal,tiempoDur,velpos
-       AcordeIguales pasoCol(),cnt,cntold,vel,canal,tiempoDur,Roll,velpos,pis                     
+         TipoAcorde=1 ' simple   
+         AcordeIguales pasoCol(),cnt,cntold,vel,canal,tiempoDur,Roll,velpos,pis
+         pasoCol(cnt).notapianoOld    = Notapiano             
+                     
           Case Is > 1
 
             If iguales=1 And distintos=0  Then
-
+                TipoAcorde=2 ' iguales
                 Print #1,"cnt ";cnt;" Acordeiguales "
                 
                 AcordeIguales pasoCol(),cnt,cntold,vel,canal,tiempoDur,Roll,velpos,pis
@@ -1231,7 +1246,7 @@ kNroCol= Int(jply/NroCol)
             EndIf
             If  distintos=1 Then
                Print #1,"cnt ";cnt;" AcordeDistintos"
-                
+                TipoAcorde=3 ' distintos               
                 AcordeDistintos pasoCol(),cnt, cntold,vel,canal,tiempoDur,Roll,velpos,pis
                 
             EndIf

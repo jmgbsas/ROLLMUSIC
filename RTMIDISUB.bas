@@ -548,7 +548,7 @@ For i1=1 To cnt
        EndIf
        If CANCIONCARGADA Then
           Print #1,"AFI 13: ligado NOTEOFF==> i1 ";i1;" AcordeOffIguales: notapiano:", pasoCol(i1).notapiano;" "; _
-          figura(Roll.trk(pasoCol(i1).i1 , jply+1).dur)
+          figura(pasoCol(i1).DUR)
              
             noteoff pasoCol(i1).notapiano ,canal
           'liga cero no
