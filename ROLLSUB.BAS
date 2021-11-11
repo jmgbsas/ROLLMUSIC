@@ -1214,7 +1214,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      cont=0
  '    Print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
      Dim As Integer lim1, lim2, grupo, mayorgrupo
-     For j = 1 To MaxPos   -2 '11-07-2021
+     For j = 1 To MaxPos    '11-07-2021
 '      Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
       Dim As integer ip=0,Notapiano
@@ -2669,6 +2669,8 @@ Dim  As Integer npl
       For i1 = NB To NA
           Trabajo(k, i1)=Roll.trk(i2,i1 )
       Next i1
+    Else
+      Maxpos=MaxPos-1  
     EndIf
       
     borrocol=0:res=0:haynota=0:final=0
@@ -2678,7 +2680,7 @@ Dim  As Integer npl
 ' DEL MISMO VALOR EN VEZ DE K     
 
 
-posn=k        
+posn=k       
 
 Dim As Integer r1
 For i1=NB To NA 
@@ -2688,7 +2690,7 @@ For i1=NB To NA
   Next r1 
 Next i1  
 
-
+MaxPos=k+1
 
 
 'Print #1, "final MaxPos "; MaxPos
