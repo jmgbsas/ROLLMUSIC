@@ -1460,7 +1460,9 @@ If comEdit = TRUE Then
    DUR = 4:Exit Do
   EndIf
   If MultiKey(SC_5) Then
-   DUR = 5:Exit Do
+   DUR = 5
+   Print #1,"DUR ",DUR
+   Exit Do
   EndIf
   If MultiKey(SC_6) Then
    DUR = 6:Exit Do
@@ -3024,7 +3026,8 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
 ' usamos la seleccion de Zona y luego movemos la zona a una posicion dada
     indicePos=(mousex- gap1 )/anchofig + posishow
     moverZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
-    moverZonaRoll(indicePos,Roll)
+    If pasozona1 =0 Then pasozona1=1 EndIf
+    moverZonaRoll(indicePos,Roll,pasozona1)
    ''' curpos=posishow-1 ' 26-10-2021 jmg
     Exit Do
  EndIf 
@@ -3037,7 +3040,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
     copiarZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
     If numero=0 Then
     Print #1,"entra a copiar numero 0"
-       moverZonaRoll(indicePos,Roll)
+       moverZonaRoll(indicePos,Roll,pasozona1)
     Else
      Print #1,"entra por Else numero > 0"
        Dim As short lz=0,delta
@@ -3063,7 +3066,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
 '---
     
        For lz = 1 To numero
-          moverZonaRoll(indicePos,Roll)
+          moverZonaRoll(indicePos,Roll,pasozona1)
           indicePos=indicePos + delta
           
        Next lz 
@@ -3071,6 +3074,12 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
     Exit Do
  EndIf 
  '
+ If MultiKey(SC_Z) And Mousebuttons And 1 then
+    indicePos=(mousex- gap1 )/anchofig + posishow 
+    Rolldur=CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur)
+    FraccionarDur(Track(),Roll,indicePos, Rolldur,nR)  
+       
+ EndIf
  If MultiKey(SC_LSHIFT)  Then ' :
       cuart=1 
       Exit Do
@@ -3079,7 +3088,10 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
      doblepun = 1  ' doble puntillo
      Exit Do
  EndIf
-
+ if MultiKey(SC_ALT) And MouseButtons And 1  Then
+ ' elijo la notapiano actual del click 
+     
+ EndIf
  
 EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 ' ------------------------------------------------------------------

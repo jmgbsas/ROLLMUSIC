@@ -1,6 +1,7 @@
+ ' V10 FRACCIONADOR divido la nota seleccionada en n partes 
   ' v8 fix nucle dur=0 nota=181 sino el borrado de notas anda mal
   ' toda celda debe tener 0,181 nada de 181,181...eso se cambio
-  ' V7 CRASH DE SPACE EN PLAY, Y VER ACORDES DISTIENTOS SI SE PUEDE CAMBIAR UNA NOTA LARGA
+  ' V7 CRASH DE SPACE EN PLAY, Y VER ACORDES DISTINTOS SI SE PUEDE CAMBIAR UNA NOTA LARGA
   ' EN 2 CORTAS AUTOAMTICAMENTE PARA PONER EN ACORDE OTRAS 2 MAS CHIVAS EL:
   ' P    ==> L+I* || DISCERNIR (1) |P|     DE (2)| P   |
   ' L+I      L+I                   |L| I         | L I |

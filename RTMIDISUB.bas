@@ -1743,17 +1743,21 @@ EndIf
 
 End Sub
 
-Sub moverZonaRoll(ind As Integer, Roll As inst)
+ Sub moverZonaRoll(posinueva As Integer, Roll As inst,posivieja As Integer)
+' ind es donde hago el click! no lo modifico uso inc
 ' mueve M + Click la zona a la posicion deseada por el click
 ' o copia c + click en en la posicion deseada   
-Dim As Integer jpt=1, i1=1, comienzo , final, inc,b1=0,cant=0
+Dim As Integer jpt=1, i1=1, comienzo , final, inc=posivieja ,b1=0,cant=0
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
 ' cant=(-1) si pulso flecha UP
  comienzo= NB
  final = NA  
-Dim As Integer desdet, hastat
+' revision hay que mover desde la ultima hasta la actual al reves
+' sino perdimos las notas.....13-11-2021 
 
+Dim As Integer desdet, hastat
+ 
 
 If pasoZona1 > 0 Then 
    desdet = pasoZona1
@@ -1767,69 +1771,144 @@ If pasoZona2 > 0 Then
 Else
    hastat= MaxPos   
    pasoZona2=MaxPos
-EndIf   
-cant = pasoZona2 - pasoZona1 
+EndIf
+
+
+cant = pasoZona2 - pasoZona1 'delta original
 
 ' sitio donde se copia o mueve indicePos en main (SC_M o SC_C )+ click 
-Dim  As Integer inicioind=ind , MaxPosOld=MaxPos
+Dim  As Integer  MaxPosOld=MaxPos
   
 Print #1, "MaxPosOld ", MaxPosOld
- 
-For jpt=desdet To hastat 
-   For  i1= comienzo To final
-     Roll.trk(ind,i1).nota = Roll.trk(jpt,i1).nota
-     Roll.trk(ind,i1).dur  = Roll.trk(jpt,i1).dur
-     Roll.trk(ind,i1).vol  = Roll.trk(jpt,i1).vol
-     Roll.trk(ind,i1).pan  = Roll.trk(jpt,i1).pan
-     Roll.trk(ind,i1).pb   = Roll.trk(jpt,i1).pb
-     Roll.trk(ind,i1).inst = Roll.trk(jpt,i1).inst
+' si movemos a derecha empezamos copiando a la nueva posicion el final de 
+' la secuencia, luego en la nueva posicion -1 copiamos el final -1
+' asi desde el final haci aadelante...
+' si movemos a izqierda el reves..
+' o sea lo que está echo es para mover a izquierda donde la posiion destino
+' el click esta a la izquierda de pasozona1  
+
+If posinueva > Maxpos Then ' movemos a izquierda
+inc=posinueva
+Print #1,"ENTRA POR IZQUIERDA"
+  For jpt=desdet To hastat
+       
+     For  i1= comienzo To final
+       Roll.trk(inc,i1).nota = Roll.trk(jpt,i1).nota
+       Roll.trk(inc,i1).dur  = Roll.trk(jpt,i1).dur
+       Roll.trk(inc,i1).vol  = Roll.trk(jpt,i1).vol
+       Roll.trk(inc,i1).pan  = Roll.trk(jpt,i1).pan
+       Roll.trk(inc,i1).pb   = Roll.trk(jpt,i1).pb
+       Roll.trk(inc,i1).inst = Roll.trk(jpt,i1).inst
    '  Print #1,"i1,ind Roll.trk(i1,ind).nota ",i1, ind, Roll.trk(ind,i1).nota
-     If moverZona=1 Then ' borro original
-        Roll.trk(jpt,i1).nota = 181
-        Roll.trk(jpt,i1).dur  = 0
-        Roll.trk(jpt,i1).vol  = 0
-        Roll.trk(jpt,i1).pan  = 0
-        Roll.trk(jpt,i1).pb   = 0
-        Roll.trk(jpt,i1).inst = 0
-     EndIf
-   Next i1
-   ind=ind+1
-Next jpt
-Print #1,"TERMINO copia ¿? ",ind   
-If ind > MaxPos then
-  MaxPos=ind
-EndIf
+       If moverZona=1 Then ' borro original
+          Roll.trk(jpt,i1).nota = 181
+          Roll.trk(jpt,i1).dur  = 0
+          Roll.trk(jpt,i1).vol  = 0
+          Roll.trk(jpt,i1).pan  = 0
+          Roll.trk(jpt,i1).pb   = 0
+          Roll.trk(jpt,i1).inst = 0
+       EndIf
+     Next i1
+     inc=inc+1
+  Next jpt
+  Print #1,"TERMINO copia a izquierda ",posinueva   
 'si la posicion donde copio es mayor a MaxPos, debo llenar el espacio entre MAxPos y 
 'el punto inicial de copia con 0 y 181 para dur y Nota repectivamente
-Print #1,"inicioind  MAxPosOld ",inicioind , MAxPosOld  
-If inicioind > MAxPosOld Then
-   inicioind = inicioind -1
+  Print #1,"inicioind  MAxPosOld ",posinueva , MAxPosOld  
+  If posinueva > MAxPosOld Then
+
   ' Print #1,"MAxPosOld, inicioind ", MAxPosOld, inicioind
-   For jpt=MaxPosOld-1 To inicioind  
-     For  i1= comienzo To final
-        Roll.trk(jpt,i1).nota = 181
-        Roll.trk(jpt,i1).dur  = 0
-        Roll.trk(jpt,i1).vol  = 0
-        Roll.trk(jpt,i1).pan  = 0
-        Roll.trk(jpt,i1).pb   = 0
-        Roll.trk(jpt,i1).inst = 0
+     For jpt=MaxPosOld-1 To posinueva -1 
+       For  i1= comienzo To final
+          Roll.trk(jpt,i1).nota = 181
+          Roll.trk(jpt,i1).dur  = 0
+          Roll.trk(jpt,i1).vol  = 0
+          Roll.trk(jpt,i1).pan  = 0
+          Roll.trk(jpt,i1).pb   = 0
+          Roll.trk(jpt,i1).inst = 0
   
+       Next i1
+     Next jpt
+
+  EndIf
+  Print #1,"--> TERMINO la vuelta de ind a la izquierda", posinueva
+' aca el maxpos deberia achicarse....
+MaxPos=inc +1
+'-------------------------------
+Else ' if ind posiion nueva > pasozona1 movemos a derecha
+'---------------------------------
+
+Print #1,"ENTRA POR DERECHA POSINUEVA < MaxPos"
+Print #1,"posinueva ",posinueva
+Print #1,"MaxPosold ",MaxPosold
+Print #1,"posivIEJa ",posivieja
+  If posinueva < MaxPos then
+    MaxPos=MaxposOld + posinueva - posivieja
+  EndIf
+Print #1,"MaxPos ",MaxPos
+ 
+  hastat=Maxpos
+  desdet=posivieja+1
+  inc=MaxPosOld
+Print #1,"hastat ",hastat
+Print #1, "desdet=inc ",desdet
+Print #1,"UBOUND(ROLL,1)", UBOUND (ROLL.TRK,1)
+Print #1,"LBOUND(ROLL,1)", LBound (ROLL.TRK,1)
+Print #1,"UBOUND(ROLL,2)", UBOUND (ROLL.TRK,2)
+Print #1,"LBOUND(ROLL,2)", LBOUND (ROLL.TRK,2)
+Print #1,"inc=posivieja+1 ",inc
+    
+  For jpt= hastat To desdet Step -1
+     For  i1= comienzo To final
+       Roll.trk(jpt,i1).nota = Roll.trk(inc,i1).nota
+       Roll.trk(jpt,i1).dur  = Roll.trk(inc,i1).dur
+       Roll.trk(jpt,i1).vol  = Roll.trk(inc,i1).vol
+       Roll.trk(jpt,i1).pan  = Roll.trk(inc,i1).pan
+       Roll.trk(jpt,i1).pb   = Roll.trk(inc,i1).pb
+       Roll.trk(jpt,i1).inst = Roll.trk(inc,i1).inst
+   '  Print #1,"i1,ind Roll.trk(i1,ind).nota ",i1, ind, Roll.trk(ind,i1).nota
+       If moverZona=1 Then ' borro original
+          Roll.trk(inc,i1).nota = 181
+          Roll.trk(inc,i1).dur  = 0
+          Roll.trk(inc,i1).vol  = 0
+          Roll.trk(inc,i1).pan  = 0
+          Roll.trk(inc,i1).pb   = 0
+          Roll.trk(inc,i1).inst = 0
+       EndIf
      Next i1
-   Next jpt
+     inc=inc-1
+     If inc < posivieja +1  Then
+        Exit For
+     EndIf
+  Next jpt
+  Print #1,"TERMINO copia a derecha ",posinueva   
+'---
+'si la posicion donde copio es mayor a MaxPos, debo llenar el espacio entre MAxPos y 
+'el punto inicial de copia con 0 y 181 para dur y Nota repectivamente
+  Print #1,"inicioind  MAxPosOld ",posinueva , MAxPosOld  
+  If posinueva > MAxPosOld Then
 
-EndIf
-Print #1,"--> TERMINO la vuelta de ind ", ind
-' correccion de maxpos al copiar antes de maxpos pero la zona suepera maxpos
+  ' Print #1,"MAxPosOld, inicioind ", MAxPosOld, inicioind
+     For jpt=MaxPosOld To posinueva  
+       For  i1= comienzo To final
+          Roll.trk(jpt,i1).nota = 181
+          Roll.trk(jpt,i1).dur  = 0
+          Roll.trk(jpt,i1).vol  = 0
+          Roll.trk(jpt,i1).pan  = 0
+          Roll.trk(jpt,i1).pb   = 0
+          Roll.trk(jpt,i1).inst = 0
+  
+       Next i1
+     Next jpt
 
-'If (inicioind < MaxPosOld) Then
-' If ( (MaxPosOld - inicioind ) < cant) Then ' cuadno el inicio de copia est aantes de MAxPos
-' pero la zona supera a MAxpos original
-     MaxPos=MAxPos+1 
-' EndIf
-'EndIf
+  EndIf
+  Print #1,"--> TERMINO la vuelta de ind a derecha ", posinueva
 
-posn=MaxPos -2
+
+'-------
+EndIf 
 If posn < 0 Then posn=0 EndIf
+
 End Sub 
 
 Sub correcciondeNotas(Roll As inst)

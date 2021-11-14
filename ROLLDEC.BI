@@ -390,7 +390,7 @@ Dim Shared As hWnd hwnd,hwndMenu
 Dim Shared As UINT codsalida=0
 Dim shared As Any Ptr lpExitCode
 ' suponemos 64 divisiones dentro de un compas semifusa...y 5000 compases
-Dim Shared Guia (1 To 300000  ) As ULong
+'Dim Shared Guia (1 To 300000  ) As ULong
 ' la idea es poner las posiciones de track o roll dentro de este otro
 ' array, el array salta de una posicion a otra en 1/128 en tiempo relativo
 ' entonces para poner una negra por ejemplo si su inicio va en 1 entonces
