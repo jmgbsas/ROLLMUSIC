@@ -327,7 +327,7 @@ EndIf
  
 End Sub
 ' ======================================================================
-Sub separarDur(ByRef j As Integer, ByRef DUR As Integer,partes() As Integer, ByRef cantPArtes As Integer, ByRef falta As Integer)
+Sub separarDur(ByRef j As Integer, ByRef DUR As Ubyte,partes() As Integer, ByRef cantPArtes As Integer, ByRef falta As Integer)
 
 On Local Error GoTo errorSepara
 
@@ -2229,7 +2229,7 @@ End Sub
 '----------------------------------------------------------------------
 ' menuacc estaba
 '--------------------------
-Sub movedato (ByVal n As Integer, ByRef indaux As Integer,ByRef  insert As Integer, ByRef nota As Integer)
+Sub movedato (ByVal n As Integer, ByRef indaux As Integer,ByRef  insert As Integer, ByRef nota As ubyte)
 
  ' OJO n ya entra conla suma de curpos
  ' indaux parte de cero es el indaux para el auxiliar que se ha borrado
@@ -2260,7 +2260,7 @@ Sub movedato (ByVal n As Integer, ByRef indaux As Integer,ByRef  insert As Integ
 End Sub
 
 '--------------------------
-Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef insert As Integer, ByRef nota As Integer)
+Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef insert As Integer, ByRef nota As ubyte)
  Dim As Integer indpos,lastPosRollReemplzada,s,t,k,i
  lastPosRollReemplzada=posicion + curpos
  indpos=posicion + curpos'indice posicion partimos de ultima posicion global reemplazada

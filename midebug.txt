@@ -1,7 +1,7 @@
 start
-11-13-202123:37:05
+11-16-202112:51:58
 __FB_ARGC__    1
-arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V10-FRACCIONADOR\RollMusic.exe'
+arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V11-PLAY-FRACCIONA\RollMusic.exe'
 arg  1 = ''
 ubirtk         0
 ubiroll        0
@@ -37,46 +37,2267 @@ datos recibidos en rooloop nombre
 datos recibidos en rooloop desde,hasta     4             8
 datos recibidos en rooloop *po             7
 ubound roll.trk 2            102
-pid           6540
+pid           2632
 INSTANCIA      0
-CArgarArchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V9\IIIIII.roll
-open nombre en CArgaARchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V9\IIIIII.roll
+CArgarArchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V9\IIIIII-ACORDEDE2-AF+F+F+F-OK-MALPLAY-REVISAR.roll
+open nombre en CArgaARchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V9\IIIIII-ACORDEDE2-AF+F+F+F-OK-MALPLAY-REVISAR.roll
 CambiarDim desde  4 hasta  8 *po  7 NB  39 NA  102
-CantTicks  517
+CantTicks  522
 FIN CAMBIARDIM 
 En CargarArchivo NB NA       39            102
 uso Close
 CargaARchivo LBound (Roll.trk,1)           1
 CargaARchivo LBound (Roll.trk,2)           39
-CargaARchivo UBound (Roll.trk,1)           517
+CargaARchivo UBound (Roll.trk,1)           522
 CargaARchivo UBound (Roll.trk,2)           102
-nombre cargado en Roll      C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V9\IIIIII.roll
-pasoy nE=      12
-entra a copiar 
-entra a copiar numero 0
-MaxPosOld      17
-ENTRA POR IZQUIERDA
-TERMINO copia a izquierda    19
-inicioind  MAxPosOld         19            17
---> TERMINO la vuelta de ind a la izquierda              19
-CArgarArchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V9\IIIIII.roll
-open nombre en CArgaARchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V9\IIIIII.roll
-CambiarDim desde  4 hasta  8 *po  7 NB  39 NA  102
-CantTicks  517
-FIN CAMBIARDIM 
-En CargarArchivo NB NA       39            102
-uso Close
-CargaARchivo LBound (Roll.trk,1)           1
-CargaARchivo LBound (Roll.trk,2)           39
-CargaARchivo UBound (Roll.trk,1)           517
-CargaARchivo UBound (Roll.trk,2)           102
-nombre cargado en Roll      C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V9\IIIIII.roll
-pasoy nE=      12
-pasoy nE=      12
-entra a copiar 
-entra a copiar numero 0
-MaxPosOld      17
-ENTRA POR IZQUIERDA
-TERMINO copia a izquierda    19
-inicioind  MAxPosOld         19            17
---> TERMINO la vuelta de ind a la izquierda              19
+nombre cargado en Roll      C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V9\IIIIII-ACORDEDE2-AF+F+F+F-OK-MALPLAY-REVISAR.roll
+USANDO PLAYALL
+comienzo playaLL ==========> tiempoPatron =              60
+playAll         ==========> tiempoDur= 60/tiempoPatron =               1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 1] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  40
+PALL 1:jply  1dura 93
+PALL 2:paso  1 cnt  1 notapiano  40
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      93
+PALL 9:PALL 0: nota con + es una liga
+PALL 10:Notapiano            40
+PALL 11: posicion vertical en el vector real             43
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  59
+PALL 1:jply  1dura 3
+PALL 2:paso  1 cnt  2 notapiano  59
+PALL 4:cnt  2 iguales  1
+PALL 7:-> cnt 2
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            59
+PALL 11: posicion vertical en el vector real             63
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+i1=NA= 102 ACORDE cnt=  2
+case is > 1
+cnt  2 call Acordeiguales 
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                0             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  93
+notapiano  40
+liga  1
+ligaold  0
+i1  43
+old_time  0
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  0
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 93
+AOI 2: OLD_TIME AL INICIO    11298.35786288404
+AOI 3: comienza For de 1 a cnt            2
+AOI 4: 1)DUR cnt=1: 93
+AOI 5:CNT CNT CNT 2 dur 93
+AOI 12: ANALIZO LIGADURAS horizontalmente si hay y toda la columna
+AOI 13: DUR  93
+AOI 15:  durj 1  93
+AOI 15:  reldur 1  1
+AOI 23:       numero de ligadosOld: 0
+AOI 24: Noteon ligado notepiano  40
+AOI 25: 1]NOTEON ligado pasocol(1).inst en AcordeonIguales             0
+EN NOTE ON nota, RESULT     40             0
+AOI 26: 3) LIGA=1 ==========>  1
+AOI 4: 1)DUR cnt=2: 3
+AOI 5:CNT CNT CNT 2 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  59
+AOI 10: sin ligar NOTEON 2]pasocol(2).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     59             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1129835786288405
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     2             0              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                0             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  40
+liga  1
+ligaold  1
+i1  43
+old_time  1129835786288404
+old_timeold  1129835786288404
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1129835786288404
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11298.35800354995
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 3:i1 2 no ligado tiempoFigura  1
+i1 2 no ligado old_time  1129835786288404
+AFI 4:i1 2 AcordeOffIguales: notapiano:    59  I 
+AFI 5:call duracion o retardo con          1129835786288404
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11298.35786288404
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    59             0
+AFI 8:start OFF de ligados ---------
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 17:HAY LIGADOS que llegan y siguen!
+AFI 18:pasoCol(i1).tiempoFiguraOld         100000000000
+AFI 19:pasoCol(i1).tiempoFigura            100000000000
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 2  2
+---FIN -----paso: 1 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 2] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  40
+PALL 1:jply  2dura 3
+PALL 2:paso  2 cnt  1 notapiano  40
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            40
+PALL 11: posicion vertical en el vector real             43
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  59
+PALL 1:jply  2dura 3
+PALL 2:paso  2 cnt  2 notapiano  59
+PALL 4:cnt  2 iguales  1
+PALL 7:-> cnt 2
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            59
+PALL 11: posicion vertical en el vector real             63
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+i1=NA= 102 ACORDE cnt=  2
+case is > 1
+cnt  2 call Acordeiguales 
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  3
+notapiano  40
+liga  0
+ligaold  1
+i1  43
+old_time  1129835786288404
+old_timeold  1129835786288404
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1129835786288404
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 3
+AOI 2: OLD_TIME AL INICIO    11299.35820877266
+AOI 3: comienza For de 1 a cnt            2
+AOI 4: 1)DUR cnt=1: 3
+AOI 5:CNT CNT CNT 2 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 11:No se envia Note on es la continuancion de un ligado
+AOI 4: 1)DUR cnt=2: 3
+AOI 5:CNT CNT CNT 2 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  59
+AOI 10: sin ligar NOTEON 2]pasocol(2).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     59             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1129935820877266
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     2             2              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  200000000000
+DUR  3
+notapiano  40
+liga  0
+ligaold  1
+i1  43
+old_time  1129835786288404
+old_timeold  1129835786288404
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1129935820877266
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11299.35841671356
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 3:i1 2 no ligado tiempoFigura  1
+i1 2 no ligado old_time  1129935820877266
+AFI 4:i1 2 AcordeOffIguales: notapiano:    59  I 
+AFI 5:call duracion o retardo con          1129935820877266
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11299.35820877266
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    59             0
+AFI 8:start OFF de ligados ---------
+AFI 9:HAY LIGADOS que llegan y terminan aca!
+AFI 10:pasoCol(i1).tiempoFiguraOld         200000000000
+AFI 11:pasoCol(i1).tiempoFigura            100000000000
+AFI 12:retardo tf  2
+En Duracion COMIENZA RETARDO En  time : 11298.35786288404
+tiempoFigura   2
+AFI 14: ligado DOY OFF==> i1 1 AcordeOffDistintos: notapiano:          40  I 
+EN NOTE OFF nota, RESULT    40             0
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 2  2
+---FIN -----paso: 2 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 3] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  44
+PALL 1:jply  3dura 3
+PALL 2:paso  3 cnt  1 notapiano  44
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            44
+PALL 11: posicion vertical en el vector real             47
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  52
+PALL 1:jply  3dura 3
+PALL 2:paso  3 cnt  2 notapiano  52
+PALL 4:cnt  2 iguales  1
+PALL 7:-> cnt 2
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            52
+PALL 11: posicion vertical en el vector real             56
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+i1=NA= 102 ACORDE cnt=  2
+case is > 1
+cnt  2 call Acordeiguales 
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  44
+liga  0
+ligaold  0
+i1  47
+old_time  1129835786288404
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  52
+liga  0
+ligaold  0
+i1  56
+old_time  1129935820877266
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 3
+AOI 2: OLD_TIME AL INICIO    11300.36010572368
+AOI 3: comienza For de 1 a cnt            2
+AOI 4: 1)DUR cnt=1: 3
+AOI 5:CNT CNT CNT 2 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  44
+AOI 10: sin ligar NOTEON 2]pasocol(1).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     44             0
+AOI 4: 1)DUR cnt=2: 3
+AOI 5:CNT CNT CNT 2 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  52
+AOI 10: sin ligar NOTEON 2]pasocol(2).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     52             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1130036010572368
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     2             2              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  44
+liga  0
+ligaold  0
+i1  47
+old_time  1130036010572368
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  52
+liga  0
+ligaold  0
+i1  56
+old_time  1130036010572368
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11300.36019814185
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 3:i1 1 no ligado tiempoFigura  1
+i1 1 no ligado old_time  1130036010572368
+AFI 4:i1 1 AcordeOffIguales: notapiano:    44  I 
+AFI 5:call duracion o retardo con          1130036010572368
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11300.36010572368
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    44             0
+AFI 3:i1 2 no ligado tiempoFigura  1
+i1 2 no ligado old_time  1130036010572368
+AFI 4:i1 2 AcordeOffIguales: notapiano:    52  I 
+AFI 5:call duracion o retardo con          1130036010572368
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11300.36010572368
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    52             0
+AFI 8:start OFF de ligados ---------
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 2  2
+---FIN -----paso: 3 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 4] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  53
+PALL 1:jply  4dura 3
+PALL 2:paso  4 cnt  1 notapiano  53
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            53
+PALL 11: posicion vertical en el vector real             57
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+i1=NA= 102 SIMPLE cnt=  1
+PALL 24:call Notesimple cntold, vel, canal, tiempodur    2             100           0             1
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                2             1
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  53
+liga  0
+ligaold  0
+i1  57
+old_time  1130036010572368
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  52
+liga  0
+ligaold  0
+i1  56
+old_time  1130036010572368
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 3
+AOI 2: OLD_TIME AL INICIO    11301.36206553264
+AOI 3: comienza For de 1 a cnt            1
+AOI 4: 1)DUR cnt=1: 3
+AOI 5:CNT CNT CNT 1 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  53
+AOI 10: sin ligar NOTEON 2]pasocol(1).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     53             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1130136206553264
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     1             2              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                2             1
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  53
+liga  0
+ligaold  0
+i1  57
+old_time  1130136206553264
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  52
+liga  0
+ligaold  0
+i1  56
+old_time  1130036010572368
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11301.36223304059
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 3:i1 1 no ligado tiempoFigura  1
+i1 1 no ligado old_time  1130136206553264
+AFI 4:i1 1 AcordeOffIguales: notapiano:    53  I 
+AFI 5:call duracion o retardo con          1130136206553264
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11301.36206553264
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    53             0
+AFI 8:start OFF de ligados ---------
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 1  1
+---FIN -----paso: 4 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 5] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  42
+PALL 1:jply  5dura 93
+PALL 2:paso  5 cnt  1 notapiano  42
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      93
+PALL 9:PALL 0: nota con + es una liga
+PALL 10:Notapiano            42
+PALL 11: posicion vertical en el vector real             45
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  58
+PALL 1:jply  5dura 3
+PALL 2:paso  5 cnt  2 notapiano  58
+PALL 4:cnt  2 iguales  1
+PALL 7:-> cnt 2
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            58
+PALL 11: posicion vertical en el vector real             62
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+i1=NA= 102 ACORDE cnt=  2
+case is > 1
+cnt  2 call Acordeiguales 
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                1             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  93
+notapiano  42
+liga  1
+ligaold  0
+i1  45
+old_time  1130136206553264
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  58
+liga  0
+ligaold  0
+i1  62
+old_time  1130036010572368
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 93
+AOI 2: OLD_TIME AL INICIO    11302.36305495076
+AOI 3: comienza For de 1 a cnt            2
+AOI 4: 1)DUR cnt=1: 93
+AOI 5:CNT CNT CNT 2 dur 93
+AOI 12: ANALIZO LIGADURAS horizontalmente si hay y toda la columna
+AOI 13: DUR  93
+AOI 15:  durj 1  0
+AOI 17:  reldur 1  0
+AOI 23:       numero de ligadosOld: 0
+AOI 24: Noteon ligado notepiano  42
+AOI 25: 1]NOTEON ligado pasocol(1).inst en AcordeonIguales             0
+EN NOTE ON nota, RESULT     42             0
+AOI 26: 3) LIGA=1 ==========>  1
+AOI 4: 1)DUR cnt=2: 3
+AOI 5:CNT CNT CNT 2 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  58
+AOI 10: sin ligar NOTEON 2]pasocol(2).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     58             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1130236305495076
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     2             1              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                1             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  42
+liga  1
+ligaold  1
+i1  45
+old_time  1130236305495076
+old_timeold  1130236305495076
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  58
+liga  0
+ligaold  0
+i1  62
+old_time  1130236305495076
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11302.3631528053
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 3:i1 2 no ligado tiempoFigura  1
+i1 2 no ligado old_time  1130236305495076
+AFI 4:i1 2 AcordeOffIguales: notapiano:    58  I 
+AFI 5:call duracion o retardo con          1130236305495076
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11302.36305495076
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    58             0
+AFI 8:start OFF de ligados ---------
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 17:HAY LIGADOS que llegan y siguen!
+AFI 18:pasoCol(i1).tiempoFiguraOld         100000000000
+AFI 19:pasoCol(i1).tiempoFigura            100000000000
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 2  2
+---FIN -----paso: 5 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 6] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  42
+PALL 1:jply  6dura 3
+PALL 2:paso  6 cnt  1 notapiano  42
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            42
+PALL 11: posicion vertical en el vector real             45
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  57
+PALL 1:jply  6dura 3
+PALL 2:paso  6 cnt  2 notapiano  57
+PALL 4:cnt  2 iguales  1
+PALL 7:-> cnt 2
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            57
+PALL 11: posicion vertical en el vector real             61
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+i1=NA= 102 ACORDE cnt=  2
+case is > 1
+cnt  2 call Acordeiguales 
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  3
+notapiano  42
+liga  0
+ligaold  1
+i1  45
+old_time  1130236305495076
+old_timeold  1130236305495076
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  57
+liga  0
+ligaold  0
+i1  61
+old_time  1130236305495076
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 3
+AOI 2: OLD_TIME AL INICIO    11303.3640379132
+AOI 3: comienza For de 1 a cnt            2
+AOI 4: 1)DUR cnt=1: 3
+AOI 5:CNT CNT CNT 2 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 11:No se envia Note on es la continuancion de un ligado
+AOI 4: 1)DUR cnt=2: 3
+AOI 5:CNT CNT CNT 2 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  57
+AOI 10: sin ligar NOTEON 2]pasocol(2).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     57             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1130336403791320
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     2             2              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  200000000000
+DUR  3
+notapiano  42
+liga  0
+ligaold  1
+i1  45
+old_time  1130236305495076
+old_timeold  1130236305495076
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  57
+liga  0
+ligaold  0
+i1  61
+old_time  1130336403791320
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11303.36415853251
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 3:i1 2 no ligado tiempoFigura  1
+i1 2 no ligado old_time  1130336403791320
+AFI 4:i1 2 AcordeOffIguales: notapiano:    57  I 
+AFI 5:call duracion o retardo con          1130336403791320
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11303.3640379132
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    57             0
+AFI 8:start OFF de ligados ---------
+AFI 9:HAY LIGADOS que llegan y terminan aca!
+AFI 10:pasoCol(i1).tiempoFiguraOld         200000000000
+AFI 11:pasoCol(i1).tiempoFigura            100000000000
+AFI 12:retardo tf  2
+En Duracion COMIENZA RETARDO En  time : 11302.36305495076
+tiempoFigura   2
+AFI 14: ligado DOY OFF==> i1 1 AcordeOffDistintos: notapiano:          42  I 
+EN NOTE OFF nota, RESULT    42             0
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 2  2
+---FIN -----paso: 6 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 7] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  59
+PALL 1:jply  7dura 3
+PALL 2:paso  7 cnt  1 notapiano  59
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            59
+PALL 11: posicion vertical en el vector real             63
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+i1=NA= 102 SIMPLE cnt=  1
+PALL 24:call Notesimple cntold, vel, canal, tiempodur    2             100           0             1
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                2             1
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1130236305495076
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  57
+liga  0
+ligaold  0
+i1  61
+old_time  1130336403791320
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 3
+AOI 2: OLD_TIME AL INICIO    11304.36599364489
+AOI 3: comienza For de 1 a cnt            1
+AOI 4: 1)DUR cnt=1: 3
+AOI 5:CNT CNT CNT 1 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  59
+AOI 10: sin ligar NOTEON 2]pasocol(1).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     59             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1130436599364489
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     1             2              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                2             1
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1130436599364489
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  57
+liga  0
+ligaold  0
+i1  61
+old_time  1130336403791320
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11304.36606363807
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 3:i1 1 no ligado tiempoFigura  1
+i1 1 no ligado old_time  1130436599364489
+AFI 4:i1 1 AcordeOffIguales: notapiano:    59  I 
+AFI 5:call duracion o retardo con          1130436599364489
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11304.36599364489
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    59             0
+AFI 8:start OFF de ligados ---------
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 1  1
+---FIN -----paso: 7 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 8] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  48
+PALL 1:jply  8dura 95
+PALL 2:paso  8 cnt  1 notapiano  48
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      95
+PALL 9:PALL 0: nota con + es una liga
+PALL 10:Notapiano            48
+PALL 11: posicion vertical en el vector real             52
+PALL 12:pasoCol(cnt).tiempoFigura          25000000000
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  52
+PALL 1:jply  8dura 95
+PALL 2:paso  8 cnt  2 notapiano  52
+PALL 4:cnt  2 iguales  1
+PALL 7:-> cnt 2
+PALL 8:pasoCol(cnt).DUR      95
+PALL 9:PALL 0: nota con + es una liga
+PALL 10:Notapiano            52
+PALL 11: posicion vertical en el vector real             56
+PALL 12:pasoCol(cnt).tiempoFigura          25000000000
+i1=NA= 102 ACORDE cnt=  2
+case is > 1
+cnt  2 call Acordeiguales 
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                1             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  25000000000
+tiempoFiguraOld  0
+DUR  95
+notapiano  48
+liga  1
+ligaold  0
+i1  52
+old_time  1130436599364489
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  25000000000
+tiempoFiguraOld  0
+DUR  95
+notapiano  52
+liga  1
+ligaold  0
+i1  56
+old_time  1130336403791320
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 95
+AOI 2: OLD_TIME AL INICIO    11305.36696811301
+AOI 3: comienza For de 1 a cnt            2
+AOI 4: 1)DUR cnt=1: 95
+AOI 5:CNT CNT CNT 2 dur 95
+AOI 12: ANALIZO LIGADURAS horizontalmente si hay y toda la columna
+AOI 13: DUR  95
+AOI 15:  durj 1  0
+AOI 17:  reldur 1  0
+AOI 23:       numero de ligadosOld: 0
+AOI 24: Noteon ligado notepiano  48
+AOI 25: 1]NOTEON ligado pasocol(1).inst en AcordeonIguales             0
+EN NOTE ON nota, RESULT     48             0
+AOI 26: 3) LIGA=1 ==========>  1
+AOI 4: 1)DUR cnt=2: 95
+AOI 5:CNT CNT CNT 2 dur 95
+AOI 12: ANALIZO LIGADURAS horizontalmente si hay y toda la columna
+AOI 13: DUR  95
+AOI 15:  durj 2  0
+AOI 17:  reldur 2  0
+AOI 23:       numero de ligadosOld: 0
+AOI 24: Noteon ligado notepiano  52
+AOI 25: 1]NOTEON ligado pasocol(2).inst en AcordeonIguales             0
+EN NOTE ON nota, RESULT     52             0
+AOI 26: 3) LIGA=1 ==========>  1
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1130536696811301
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     2             1              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                1             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  25000000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  48
+liga  1
+ligaold  1
+i1  52
+old_time  1130536696811301
+old_timeold  1130536696811301
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  25000000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  52
+liga  1
+ligaold  1
+i1  56
+old_time  1130536696811301
+old_timeold  1130536696811301
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11305.36716688004
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 8:start OFF de ligados ---------
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 17:HAY LIGADOS que llegan y siguen!
+AFI 18:pasoCol(i1).tiempoFiguraOld         25000000000
+AFI 19:pasoCol(i1).tiempoFigura            25000000000
+AFI 17:HAY LIGADOS que llegan y siguen!
+AFI 18:pasoCol(i1).tiempoFiguraOld         25000000000
+AFI 19:pasoCol(i1).tiempoFigura            25000000000
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 2  2
+---FIN -----paso: 8 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  48
+PALL 1:jply  9dura 95
+PALL 2:paso  9 cnt  1 notapiano  48
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      95
+PALL 9:PALL 0: nota con + es una liga
+PALL 10:Notapiano            48
+PALL 11: posicion vertical en el vector real             52
+PALL 12:pasoCol(cnt).tiempoFigura          25000000000
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  52
+PALL 1:jply  9dura 95
+PALL 2:paso  9 cnt  2 notapiano  52
+PALL 4:cnt  2 iguales  1
+PALL 7:-> cnt 2
+PALL 8:pasoCol(cnt).DUR      95
+PALL 9:PALL 0: nota con + es una liga
+PALL 10:Notapiano            52
+PALL 11: posicion vertical en el vector real             56
+PALL 12:pasoCol(cnt).tiempoFigura          25000000000
+i1=NA= 102 ACORDE cnt=  2
+case is > 1
+cnt  2 call Acordeiguales 
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  25000000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  48
+liga  1
+ligaold  1
+i1  52
+old_time  1130536696811301
+old_timeold  1130536696811301
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  25000000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  52
+liga  1
+ligaold  1
+i1  56
+old_time  1130536696811301
+old_timeold  1130536696811301
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 95
+AOI 2: OLD_TIME AL INICIO    11305.36728478117
+AOI 3: comienza For de 1 a cnt            2
+AOI 4: 1)DUR cnt=1: 95
+AOI 5:CNT CNT CNT 2 dur 95
+AOI 12: ANALIZO LIGADURAS horizontalmente si hay y toda la columna
+AOI 13: DUR  95
+AOI 15:  durj 1  0
+AOI 17:  reldur 1  0
+AOI 23:       numero de ligadosOld: 1
+AOI 24: Noteon ligado notepiano  48
+AOI 26: 3) LIGA=1 ==========>  1
+AOI 4: 1)DUR cnt=2: 95
+AOI 5:CNT CNT CNT 2 dur 95
+AOI 12: ANALIZO LIGADURAS horizontalmente si hay y toda la columna
+AOI 13: DUR  95
+AOI 15:  durj 2  0
+AOI 17:  reldur 2  0
+AOI 23:       numero de ligadosOld: 1
+AOI 24: Noteon ligado notepiano  52
+AOI 26: 3) LIGA=1 ==========>  1
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1130536728478117
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     2             2              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  25000000000
+tiempoFiguraOld  50000000000
+DUR  95
+notapiano  48
+liga  1
+ligaold  2
+i1  52
+old_time  1130536696811301
+old_timeold  1130536696811301
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  25000000000
+tiempoFiguraOld  50000000000
+DUR  95
+notapiano  52
+liga  1
+ligaold  2
+i1  56
+old_time  1130536696811301
+old_timeold  1130536696811301
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11305.36736258912
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 8:start OFF de ligados ---------
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 17:HAY LIGADOS que llegan y siguen!
+AFI 18:pasoCol(i1).tiempoFiguraOld         50000000000
+AFI 19:pasoCol(i1).tiempoFigura            50000000000
+AFI 17:HAY LIGADOS que llegan y siguen!
+AFI 18:pasoCol(i1).tiempoFiguraOld         50000000000
+AFI 19:pasoCol(i1).tiempoFigura            50000000000
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 2  2
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  48
+PALL 1:jply  10dura 95
+PALL 2:paso  10 cnt  1 notapiano  48
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      95
+PALL 9:PALL 0: nota con + es una liga
+PALL 10:Notapiano            48
+PALL 11: posicion vertical en el vector real             52
+PALL 12:pasoCol(cnt).tiempoFigura          25000000000
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  52
+PALL 1:jply  10dura 95
+PALL 2:paso  10 cnt  2 notapiano  52
+PALL 4:cnt  2 iguales  1
+PALL 7:-> cnt 2
+PALL 8:pasoCol(cnt).DUR      95
+PALL 9:PALL 0: nota con + es una liga
+PALL 10:Notapiano            52
+PALL 11: posicion vertical en el vector real             56
+PALL 12:pasoCol(cnt).tiempoFigura          25000000000
+i1=NA= 102 ACORDE cnt=  2
+case is > 1
+cnt  2 call Acordeiguales 
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  25000000000
+tiempoFiguraOld  50000000000
+DUR  95
+notapiano  48
+liga  1
+ligaold  2
+i1  52
+old_time  1130536696811301
+old_timeold  1130536696811301
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  25000000000
+tiempoFiguraOld  50000000000
+DUR  95
+notapiano  52
+liga  1
+ligaold  2
+i1  56
+old_time  1130536696811301
+old_timeold  1130536696811301
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 95
+AOI 2: OLD_TIME AL INICIO    11305.36747539366
+AOI 3: comienza For de 1 a cnt            2
+AOI 4: 1)DUR cnt=1: 95
+AOI 5:CNT CNT CNT 2 dur 95
+AOI 12: ANALIZO LIGADURAS horizontalmente si hay y toda la columna
+AOI 13: DUR  95
+AOI 15:  durj 1  0
+AOI 17:  reldur 1  0
+AOI 23:       numero de ligadosOld: 2
+AOI 24: Noteon ligado notepiano  48
+AOI 26: 3) LIGA=1 ==========>  1
+AOI 4: 1)DUR cnt=2: 95
+AOI 5:CNT CNT CNT 2 dur 95
+AOI 12: ANALIZO LIGADURAS horizontalmente si hay y toda la columna
+AOI 13: DUR  95
+AOI 15:  durj 2  0
+AOI 17:  reldur 2  0
+AOI 23:       numero de ligadosOld: 2
+AOI 24: Noteon ligado notepiano  52
+AOI 26: 3) LIGA=1 ==========>  1
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1130536747539366
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     2             2              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  25000000000
+tiempoFiguraOld  75000000000
+DUR  95
+notapiano  48
+liga  1
+ligaold  3
+i1  52
+old_time  1130536696811301
+old_timeold  1130536696811301
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  25000000000
+tiempoFiguraOld  75000000000
+DUR  95
+notapiano  52
+liga  1
+ligaold  3
+i1  56
+old_time  1130536696811301
+old_timeold  1130536696811301
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11305.36756339479
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 8:start OFF de ligados ---------
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 17:HAY LIGADOS que llegan y siguen!
+AFI 18:pasoCol(i1).tiempoFiguraOld         75000000000
+AFI 19:pasoCol(i1).tiempoFigura            75000000000
+AFI 17:HAY LIGADOS que llegan y siguen!
+AFI 18:pasoCol(i1).tiempoFiguraOld         75000000000
+AFI 19:pasoCol(i1).tiempoFigura            75000000000
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 2  2
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  48
+PALL 1:jply  11dura 5
+PALL 2:paso  11 cnt  1 notapiano  48
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      5
+PALL 10:Notapiano            48
+PALL 11: posicion vertical en el vector real             52
+PALL 12:pasoCol(cnt).tiempoFigura          25000000000
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  52
+PALL 1:jply  11dura 5
+PALL 2:paso  11 cnt  2 notapiano  52
+PALL 4:cnt  2 iguales  1
+PALL 7:-> cnt 2
+PALL 8:pasoCol(cnt).DUR      5
+PALL 10:Notapiano            52
+PALL 11: posicion vertical en el vector real             56
+PALL 12:pasoCol(cnt).tiempoFigura          25000000000
+i1=NA= 102 ACORDE cnt=  2
+case is > 1
+cnt  2 call Acordeiguales 
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  25000000000
+tiempoFiguraOld  75000000000
+DUR  5
+notapiano  48
+liga  0
+ligaold  3
+i1  52
+old_time  1130536696811301
+old_timeold  1130536696811301
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  25000000000
+tiempoFiguraOld  75000000000
+DUR  5
+notapiano  52
+liga  0
+ligaold  3
+i1  56
+old_time  1130536696811301
+old_timeold  1130536696811301
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 5
+AOI 2: OLD_TIME AL INICIO    11305.36767518001
+AOI 3: comienza For de 1 a cnt            2
+AOI 4: 1)DUR cnt=1: 5
+AOI 5:CNT CNT CNT 2 dur 5
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  25000000000
+AOI 8: no ligado DUR  5
+AOI 11:No se envia Note on es la continuancion de un ligado
+AOI 4: 1)DUR cnt=2: 5
+AOI 5:CNT CNT CNT 2 dur 5
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  25000000000
+AOI 8: no ligado DUR  5
+AOI 11:No se envia Note on es la continuancion de un ligado
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1130536767518001
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     2             2              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  25000000000
+tiempoFiguraOld  100000000000
+DUR  5
+notapiano  48
+liga  0
+ligaold  3
+i1  52
+old_time  1130536696811301
+old_timeold  1130536696811301
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  25000000000
+tiempoFiguraOld  100000000000
+DUR  5
+notapiano  52
+liga  0
+ligaold  3
+i1  56
+old_time  1130536696811301
+old_timeold  1130536696811301
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11305.36774449364
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 8:start OFF de ligados ---------
+AFI 9:HAY LIGADOS que llegan y terminan aca!
+AFI 10:pasoCol(i1).tiempoFiguraOld         100000000000
+AFI 11:pasoCol(i1).tiempoFigura            25000000000
+AFI 12:retardo tf  1
+En Duracion COMIENZA RETARDO En  time : 11305.36696811301
+tiempoFigura   1
+AFI 14: ligado DOY OFF==> i1 1 AcordeOffDistintos: notapiano:          48  F 
+EN NOTE OFF nota, RESULT    48             0
+AFI 9:HAY LIGADOS que llegan y terminan aca!
+AFI 10:pasoCol(i1).tiempoFiguraOld         100000000000
+AFI 11:pasoCol(i1).tiempoFigura            25000000000
+AFI 12:retardo tf  1
+En Duracion COMIENZA RETARDO En  time : 11305.36696811301
+tiempoFigura   1
+AFI 14: ligado DOY OFF==> i1 2 AcordeOffDistintos: notapiano:          52  F 
+EN NOTE OFF nota, RESULT    52             0
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 2  2
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+i1=NA= 102 SIMPLE cnt=  0
+cantidad de elementos Acorde actual y anterior cnt,cntold 0  0
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  42
+PALL 1:jply  13dura 93
+PALL 2:paso  13 cnt  1 notapiano  42
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      93
+PALL 9:PALL 0: nota con + es una liga
+PALL 10:Notapiano            42
+PALL 11: posicion vertical en el vector real             45
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  58
+PALL 1:jply  13dura 3
+PALL 2:paso  13 cnt  2 notapiano  58
+PALL 4:cnt  2 iguales  1
+PALL 7:-> cnt 2
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            58
+PALL 11: posicion vertical en el vector real             62
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+i1=NA= 102 ACORDE cnt=  2
+case is > 1
+cnt  2 call Acordeiguales 
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                0             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  93
+notapiano  42
+liga  1
+ligaold  0
+i1  45
+old_time  1130536696811301
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  58
+liga  0
+ligaold  0
+i1  62
+old_time  1130536696811301
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 93
+AOI 2: OLD_TIME AL INICIO    11306.3689761697
+AOI 3: comienza For de 1 a cnt            2
+AOI 4: 1)DUR cnt=1: 93
+AOI 5:CNT CNT CNT 2 dur 93
+AOI 12: ANALIZO LIGADURAS horizontalmente si hay y toda la columna
+AOI 13: DUR  93
+AOI 15:  durj 1  0
+AOI 17:  reldur 1  0
+AOI 23:       numero de ligadosOld: 0
+AOI 24: Noteon ligado notepiano  42
+AOI 25: 1]NOTEON ligado pasocol(1).inst en AcordeonIguales             0
+EN NOTE ON nota, RESULT     42             0
+AOI 26: 3) LIGA=1 ==========>  1
+AOI 4: 1)DUR cnt=2: 3
+AOI 5:CNT CNT CNT 2 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  58
+AOI 10: sin ligar NOTEON 2]pasocol(2).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     58             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1130636897616970
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     2             0              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                0             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  42
+liga  1
+ligaold  1
+i1  45
+old_time  1130636897616970
+old_timeold  1130636897616970
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  58
+liga  0
+ligaold  0
+i1  62
+old_time  1130636897616970
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11306.3691056231
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 3:i1 2 no ligado tiempoFigura  1
+i1 2 no ligado old_time  1130636897616970
+AFI 4:i1 2 AcordeOffIguales: notapiano:    58  I 
+AFI 5:call duracion o retardo con          1130636897616970
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11306.3689761697
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    58             0
+AFI 8:start OFF de ligados ---------
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 17:HAY LIGADOS que llegan y siguen!
+AFI 18:pasoCol(i1).tiempoFiguraOld         100000000000
+AFI 19:pasoCol(i1).tiempoFigura            100000000000
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 2  2
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  42
+PALL 1:jply  14dura 3
+PALL 2:paso  14 cnt  1 notapiano  42
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            42
+PALL 11: posicion vertical en el vector real             45
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  59
+PALL 1:jply  14dura 3
+PALL 2:paso  14 cnt  2 notapiano  59
+PALL 4:cnt  2 iguales  1
+PALL 7:-> cnt 2
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            59
+PALL 11: posicion vertical en el vector real             63
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+i1=NA= 102 ACORDE cnt=  2
+case is > 1
+cnt  2 call Acordeiguales 
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  3
+notapiano  42
+liga  0
+ligaold  1
+i1  45
+old_time  1130636897616970
+old_timeold  1130636897616970
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1130636897616970
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 3
+AOI 2: OLD_TIME AL INICIO    11307.36998937191
+AOI 3: comienza For de 1 a cnt            2
+AOI 4: 1)DUR cnt=1: 3
+AOI 5:CNT CNT CNT 2 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 11:No se envia Note on es la continuancion de un ligado
+AOI 4: 1)DUR cnt=2: 3
+AOI 5:CNT CNT CNT 2 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  59
+AOI 10: sin ligar NOTEON 2]pasocol(2).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     59             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1130736998937191
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     2             2              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  200000000000
+DUR  3
+notapiano  42
+liga  0
+ligaold  1
+i1  45
+old_time  1130636897616970
+old_timeold  1130636897616970
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1130736998937191
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11307.37007601395
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 3:i1 2 no ligado tiempoFigura  1
+i1 2 no ligado old_time  1130736998937191
+AFI 4:i1 2 AcordeOffIguales: notapiano:    59  I 
+AFI 5:call duracion o retardo con          1130736998937191
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11307.36998937191
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    59             0
+AFI 8:start OFF de ligados ---------
+AFI 9:HAY LIGADOS que llegan y terminan aca!
+AFI 10:pasoCol(i1).tiempoFiguraOld         200000000000
+AFI 11:pasoCol(i1).tiempoFigura            100000000000
+AFI 12:retardo tf  2
+En Duracion COMIENZA RETARDO En  time : 11306.3689761697
+tiempoFigura   2
+AFI 14: ligado DOY OFF==> i1 1 AcordeOffDistintos: notapiano:          42  I 
+EN NOTE OFF nota, RESULT    42             0
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 2  2
+---FIN -----paso: 14 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 15] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  50
+PALL 1:jply  15dura 3
+PALL 2:paso  15 cnt  1 notapiano  50
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            50
+PALL 11: posicion vertical en el vector real             54
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+i1=NA= 102 SIMPLE cnt=  1
+PALL 24:call Notesimple cntold, vel, canal, tiempodur    2             100           0             1
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                2             1
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  50
+liga  0
+ligaold  0
+i1  54
+old_time  1130636897616970
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1130736998937191
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 3
+AOI 2: OLD_TIME AL INICIO    11308.37189481724
+AOI 3: comienza For de 1 a cnt            1
+AOI 4: 1)DUR cnt=1: 3
+AOI 5:CNT CNT CNT 1 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  50
+AOI 10: sin ligar NOTEON 2]pasocol(1).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     50             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1130837189481724
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     1             2              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                2             1
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  50
+liga  0
+ligaold  0
+i1  54
+old_time  1130837189481724
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1130736998937191
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11308.37196515019
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 3:i1 1 no ligado tiempoFigura  1
+i1 1 no ligado old_time  1130837189481724
+AFI 4:i1 1 AcordeOffIguales: notapiano:    50  I 
+AFI 5:call duracion o retardo con          1130837189481724
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11308.37189481724
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    50             0
+AFI 8:start OFF de ligados ---------
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 1  1
+---FIN -----paso: 15 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 16] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  50
+PALL 1:jply  16dura 3
+PALL 2:paso  16 cnt  1 notapiano  50
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            50
+PALL 11: posicion vertical en el vector real             54
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+i1=NA= 102 SIMPLE cnt=  1
+PALL 24:call Notesimple cntold, vel, canal, tiempodur    1             100           0             1
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                1             1
+ cntold = cnt                1             1
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  50
+liga  0
+ligaold  0
+i1  54
+old_time  1130837189481724
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 3
+AOI 2: OLD_TIME AL INICIO    11309.37283836605
+AOI 3: comienza For de 1 a cnt            1
+AOI 4: 1)DUR cnt=1: 3
+AOI 5:CNT CNT CNT 1 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  50
+AOI 10: sin ligar NOTEON 2]pasocol(1).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     50             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1130937283836605
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     1             1              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                1             1
+ cntold = cnt                1             1
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  50
+liga  0
+ligaold  0
+i1  54
+old_time  1130937283836605
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11309.37288491491
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 3:i1 1 no ligado tiempoFigura  1
+i1 1 no ligado old_time  1130937283836605
+AFI 4:i1 1 AcordeOffIguales: notapiano:    50  I 
+AFI 5:call duracion o retardo con          1130937283836605
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11309.37283836605
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    50             0
+AFI 8:start OFF de ligados ---------
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 1  1
+---FIN -----paso: 16 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 17] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  42
+PALL 1:jply  17dura 93
+PALL 2:paso  17 cnt  1 notapiano  42
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      93
+PALL 9:PALL 0: nota con + es una liga
+PALL 10:Notapiano            42
+PALL 11: posicion vertical en el vector real             45
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  59
+PALL 1:jply  17dura 3
+PALL 2:paso  17 cnt  2 notapiano  59
+PALL 4:cnt  2 iguales  1
+PALL 7:-> cnt 2
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            59
+PALL 11: posicion vertical en el vector real             63
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+i1=NA= 102 ACORDE cnt=  2
+case is > 1
+cnt  2 call Acordeiguales 
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                1             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  93
+notapiano  42
+liga  1
+ligaold  0
+i1  45
+old_time  1130937283836605
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1130736998937191
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 93
+AOI 2: OLD_TIME AL INICIO    11310.37386380007
+AOI 3: comienza For de 1 a cnt            2
+AOI 4: 1)DUR cnt=1: 93
+AOI 5:CNT CNT CNT 2 dur 93
+AOI 12: ANALIZO LIGADURAS horizontalmente si hay y toda la columna
+AOI 13: DUR  93
+AOI 15:  durj 1  0
+AOI 17:  reldur 1  0
+AOI 23:       numero de ligadosOld: 0
+AOI 24: Noteon ligado notepiano  42
+AOI 25: 1]NOTEON ligado pasocol(1).inst en AcordeonIguales             0
+EN NOTE ON nota, RESULT     42             0
+AOI 26: 3) LIGA=1 ==========>  1
+AOI 4: 1)DUR cnt=2: 3
+AOI 5:CNT CNT CNT 2 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  59
+AOI 10: sin ligar NOTEON 2]pasocol(2).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     59             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1131037386380007
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     2             1              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                1             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  42
+liga  1
+ligaold  1
+i1  45
+old_time  1131037386380007
+old_timeold  1131037386380007
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1131037386380007
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11310.3739630137
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 3:i1 2 no ligado tiempoFigura  1
+i1 2 no ligado old_time  1131037386380007
+AFI 4:i1 2 AcordeOffIguales: notapiano:    59  I 
+AFI 5:call duracion o retardo con          1131037386380007
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11310.37386380007
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    59             0
+AFI 8:start OFF de ligados ---------
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 17:HAY LIGADOS que llegan y siguen!
+AFI 18:pasoCol(i1).tiempoFiguraOld         100000000000
+AFI 19:pasoCol(i1).tiempoFigura            100000000000
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 2  2
+---FIN -----paso: 17 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 18] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  42
+PALL 1:jply  18dura 3
+PALL 2:paso  18 cnt  1 notapiano  42
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            42
+PALL 11: posicion vertical en el vector real             45
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  59
+PALL 1:jply  18dura 3
+PALL 2:paso  18 cnt  2 notapiano  59
+PALL 4:cnt  2 iguales  1
+PALL 7:-> cnt 2
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            59
+PALL 11: posicion vertical en el vector real             63
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+i1=NA= 102 ACORDE cnt=  2
+case is > 1
+cnt  2 call Acordeiguales 
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  3
+notapiano  42
+liga  0
+ligaold  1
+i1  45
+old_time  1131037386380007
+old_timeold  1131037386380007
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1131037386380007
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 3
+AOI 2: OLD_TIME AL INICIO    11311.37488277842
+AOI 3: comienza For de 1 a cnt            2
+AOI 4: 1)DUR cnt=1: 3
+AOI 5:CNT CNT CNT 2 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 11:No se envia Note on es la continuancion de un ligado
+AOI 4: 1)DUR cnt=2: 3
+AOI 5:CNT CNT CNT 2 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  59
+AOI 10: sin ligar NOTEON 2]pasocol(2).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     59             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1131137488277842
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     2             2              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ cntold = cnt                2             2
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  200000000000
+DUR  3
+notapiano  42
+liga  0
+ligaold  1
+i1  45
+old_time  1131037386380007
+old_timeold  1131037386380007
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1131137488277842
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11311.37497077955
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 3:i1 2 no ligado tiempoFigura  1
+i1 2 no ligado old_time  1131137488277842
+AFI 4:i1 2 AcordeOffIguales: notapiano:    59  I 
+AFI 5:call duracion o retardo con          1131137488277842
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11311.37488277842
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    59             0
+AFI 8:start OFF de ligados ---------
+AFI 9:HAY LIGADOS que llegan y terminan aca!
+AFI 10:pasoCol(i1).tiempoFiguraOld         200000000000
+AFI 11:pasoCol(i1).tiempoFigura            100000000000
+AFI 12:retardo tf  2
+En Duracion COMIENZA RETARDO En  time : 11310.37386380007
+tiempoFigura   2
+AFI 14: ligado DOY OFF==> i1 1 AcordeOffDistintos: notapiano:          42  I 
+EN NOTE OFF nota, RESULT    42             0
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 2  2
+---FIN -----paso: 18 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 19] ----------------
+ ---------------000000000000000000000-----------------
+PALL 0:VEO LO CORRECTO DE NOTAPIANO  55
+PALL 1:jply  19dura 3
+PALL 2:paso  19 cnt  1 notapiano  55
+PALL 7:-> cnt 1
+PALL 8:pasoCol(cnt).DUR      3
+PALL 10:Notapiano            55
+PALL 11: posicion vertical en el vector real             59
+PALL 12:pasoCol(cnt).tiempoFigura          100000000000
+i1=NA= 102 SIMPLE cnt=  1
+PALL 24:call Notesimple cntold, vel, canal, tiempodur    2             100           0             1
+---------------------------
+AOI:] START ACORDEONIGUALES 
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                2             1
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  55
+liga  0
+ligaold  0
+i1  59
+old_time  1131037386380007
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1131137488277842
+old_timeold  0
+inst  0
+-----------------------------------
+AOI 1: DUR cnt=1: 3
+AOI 2: OLD_TIME AL INICIO    11312.37678788398
+AOI 3: comienza For de 1 a cnt            1
+AOI 4: 1)DUR cnt=1: 3
+AOI 5:CNT CNT CNT 1 dur 3
+AOI 6: 4) no ligado,liga -1
+AOI 7: no ligado pasoCol(i1).tiempoFigura  100000000000
+AOI 8: no ligado DUR  3
+AOI 9: SIN LIGAR Noteon de notepiano  55
+AOI 10: sin ligar NOTEON 2]pasocol(1).inst en AcordeonIguales          0
+EN NOTE ON nota, RESULT     55             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               1131237678788398
+-------------------------------------
+AFI :]========Start AcordeOffIguales cnt,cntold,pis     1             2              0
+-------------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                2             1
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  55
+liga  0
+ligaold  0
+i1  59
+old_time  1131237678788398
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+i1  63
+old_time  1131137488277842
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 1:old_time off inicial  11312.3768585567
+AFI 2:no ligados calculo tiempo Figura y doy off:
+AFI 3:i1 1 no ligado tiempoFigura  1
+i1 1 no ligado old_time  1131237678788398
+AFI 4:i1 1 AcordeOffIguales: notapiano:    55  I 
+AFI 5:call duracion o retardo con          1131237678788398
+AFI 6:call duracion o retardo con          1
+En Duracion COMIENZA RETARDO En  time : 11312.37678788398
+tiempoFigura   1
+AFI 7:SIN LIGAR NOTEOFF==>
+EN NOTE OFF nota, RESULT    55             0
+AFI 8:start OFF de ligados ---------
+AFI 15: fin ligados off
+AFI 16: start ligados continuacion en este paso 
+AFI 20:FIN AcordeOffIguales o simple
+cantidad de elementos Acorde actual y anterior cnt,cntold 1  1
+---FIN -----paso: 19 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 20] ----------------
+ ---------------000000000000000000000-----------------
+i1=NA= 102 SIMPLE cnt=  0
+cantidad de elementos Acorde actual y anterior cnt,cntold 0  0
+---FIN -----paso: 20 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 21] ----------------
+ ---------------000000000000000000000-----------------
+i1=NA= 102 SIMPLE cnt=  0
+cantidad de elementos Acorde actual y anterior cnt,cntold 0  0
+---FIN -----paso: 21 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 22] ----------------
+ ---------------000000000000000000000-----------------
+i1=NA= 102 SIMPLE cnt=  0
+cantidad de elementos Acorde actual y anterior cnt,cntold 0  0
+---FIN -----paso: 22 --------------------------------

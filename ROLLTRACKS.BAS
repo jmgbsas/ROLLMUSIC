@@ -1052,21 +1052,28 @@ Else ' FRACCIONAR LA PISTA CARGADA
 Print #1,"MUEVO DESDE POSI ";posiVIEJA;" A POSInueva ";posinueva  
   pasoZona1=indicePos+1
   moverzona=1
-  moverZonaRoll(posinueva, Roll,posivieja)
+  moverZonaRoll(posinueva, Roll,posivieja) '16-11-2021
   Print #1,"NB, NA", NB,NA
-  
-  'For j=NB To NA
-  '  For i= posi To posinueva
-  '    If Roll.trk(i,j).dur = Rolldur Then
-  '       Print #1,"i, j", i,j
-  '       If i < posinueva Then
-  '          Roll.trk(i,j).dur = CUByte(indiceligada)
-  ''       Else
-  '          Roll.trk(i,j).dur = CUByte(indicenoligada)
-  '       EndIf
-  '    EndIf 
-  ' Next i
-  'Next j
+ ' si no anda nE usar
+ ' nE = 11 -nR   +  (EstoyEnOctava -1 ) * 13 + 1 
+ Dim As Integer conge=0
+ 'conge=(EstoyEnOctava -1 ) * 13 + 1 
+  For j=NB To NA
+      If Roll.trk(posivieja,j).dur = Rolldur Then
+           nE = 11 -j +  (EstoyEnOctava -1 ) * 13 + 1
+         For i= posivieja To posinueva -1
+            If i < posinueva-1 Then
+'            Print #1,"DENTRO 1) i, j,nE ", i,j,nE
+               Roll.trk(i,j).dur = CUByte(indiceligada)
+               Roll.trk(i,j).nota= CUByte(nE)
+            Else
+ '           Print #1,"DENTRO 2) i, j,nE ", i,j,nE
+               Roll.trk(i,j).dur = CUByte(indicenoligada)
+               Roll.trk(i,j).nota= CUByte(nE)
+            EndIf
+        Next i
+     EndIf 
+  Next j
 '    indicePos=(mousex- gap1 )/anchofig + posishow
 '    moverZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
 '    moverZonaRoll(indicePos,Roll)

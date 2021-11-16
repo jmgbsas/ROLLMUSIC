@@ -114,8 +114,8 @@ Dim Shared As String myfilter
 myfilter  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
 'myfilter += "Ini files"+Chr(0)   +"*.ini;*.txt;*.cfg"+Chr(0)
 myfilter += "Rtk  Files"+Chr(0)   +"*.rtk"+Chr(0)
-
-
+Open "AAAAA-test.TXT" For Output As 5
+Dim Shared As Integer abierto=0
 Common Shared  mensaje As Integer 
 ' end file dialog  
 #Define __FB_WIN64__

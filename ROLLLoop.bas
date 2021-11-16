@@ -251,7 +251,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
       Print #8, "nR octava 1 ",nR
    EndIf
    PianoNota= nR - restar (nR)
-
+''' desèjando nE = 11 -nR   +  (*po -1 ) * 13 + 1
   EndIf
   lugarOld=lugar
    If semitono =11 Then ' asi no suma 1 a semitono y no pasa a ser 12
@@ -1165,30 +1165,36 @@ If MultiKey(SC_ALT) and MultiKey(SC_L)  Then ' <======== playloop
 EndIf
 
 
-If MultiKey (SC_F12) Then
+If MultiKey (SC_F12) And abierto=0 Then
 '''archivo test-AAAAA.TXT
+
+abierto=1
  Dim As Integer i1, i2
  Dim As String result 
  ' testeo solo en la 1er octva por ahora
- 'Print #5,"vuelco de 1er octava "
- 'Print #5,
- For i1 = 0 To 11
+  Print #5,
+ Dim As Integer oct1, oct2
+ oct1= 0 + (EstoyEnOctava-1) * 13 
+ oct2 = 11 + (EstoyEnOctava-1)*13
+ Print #5,"vuelco de octava ";EstoyEnOctava; " desde ";oct1;" a ";oct2
+ For i1 = oct2 To oct1 Step -1
   For i2= 1 To Maxpos
    result = Format (Roll.trk(i2, i1).nota,"00")
- '  Print #5,  result;"-";
+   Print #5,  result;"-";
   Next i2
-  'Print #5,
+  Print #5,
   For i2= 1 To Maxpos
    result = Format (Roll.trk(i2, i1).dur,"00")
-  ' Print #5, result;"-";
+   Print #5, result;"-";
   Next i2
- ' Print #5,
- ' Print #5,"------------------------"
+  Print #5,
+  Print #5,"------------------------"
  Next i1
- 'While Inkey <> "": Wend
- 'Sleep 150
- 'Close 5
- 'Print #5,"fin >>>>>>>>>>> "
+ While Inkey <> "": Wend
+ Sleep 150
+ Close 5
+ Print #5,"fin >>>>>>>>>>> "
+ 
 EndIf
 
 If MultiKey (SC_F10) Then

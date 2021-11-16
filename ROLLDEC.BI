@@ -59,8 +59,8 @@ end Operator
 'Declare Sub menu (c0 AS cairo_t Ptr,c AS cairo_t Ptr,n As Integer,menuNro As Integer)
 declare Sub botones(hWnd As HWND,c As cairo_t Ptr,cm As cairo_t Ptr,x As Integer,y As integer)
 'Declare Sub menuAcc (c AS cairo_t Ptr)
-Declare Sub moveresto (ByVal StartInsert As integer,ByRef indaux as Integer, Byref insert As Integer,Byref nota As integer)
-Declare Sub movedato (ByVal StartInsert As Integer, ByRef indaux As Integer, Byref insert As Integer,Byref nota As integer)
+Declare Sub moveresto (ByVal StartInsert As integer,ByRef indaux as Integer, Byref insert As Integer,Byref nota As UByte)
+Declare Sub movedato (ByVal StartInsert As Integer, ByRef indaux As Integer, Byref insert As Integer,Byref nota As ubyte)
 'Declare sub calcCompas(ByRef j As Integer)
 Declare Sub mayorDurEnUnaPosicion (ByRef posn as integer)
 Declare Sub organizaCompases()
@@ -69,7 +69,7 @@ Declare Function KeyPress(Key As Integer) As Integer
 'Declare Sub cursor(c AS cairo_t Ptr, ByRef n As Integer, ByRef nro As Integer)
 'Declare Function print_text(ByVal x As Integer, ByVal y As Integer, ByRef text As String, _
 '        ByVal font As FT_Face, ByVal size As Integer, ByVal col As UInteger ) As Integer
-Declare Sub separarDur(ByRef j As Integer,ByRef DUR As Integer,  partes() As Integer,  ByRef cantPartes As Integer, ByRef falta As Integer )
+Declare Sub separarDur(ByRef j As Integer,ByRef DUR As ubyte,  partes() As Integer,  ByRef cantPartes As Integer, ByRef falta As Integer )
 Declare Sub menugrafico(c0 AS cairo_t Ptr,c As cairo_t Ptr, Cantitems As Integer, items() As String )
 Declare Sub CambiarDim(redi As integer)
 ' para IUP textbox 
@@ -101,17 +101,18 @@ Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6
 Dim Shared RTA As String 
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoZona2=0, pasoNota=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, SelGrupoNota =0,moverZona=0, copiarZona=0
-Dim Shared as ubyte  notasInsertadas (1 to 1500)
+Dim Shared as ubyte  DUR,nota,notasInsertadas (1 to 1500),notacur
 Dim Shared As String t
-Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert,notacur, cursormove
-Dim shared As integer Penta_y, indice, posicion=0,posicionOld=0, nota=0,espacio,posn=0,cursorHori
+Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert, cursormove
+Dim shared As integer Penta_y, indice, posicion=0,posicionOld=0, espacio,posn=0,cursorHori
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
 dim Shared as string cromatica(1 to 12)
 Dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0 ', cargaCancion=0
 Dim Shared As Integer ers, borrapos=0,comienza=0  
-Dim Shared As Integer DUR, menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
+Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
+
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
 ' 5.7.6.00 tresillos
