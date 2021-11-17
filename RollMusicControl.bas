@@ -113,8 +113,8 @@ EndIf
 If octahasta=0 Then
 octahasta=9
 EndIf
-Print #1,"OCtadesde ",octadesde
-Print #1,"OCtahasta ",octahasta
+''print #1,"OCtadesde ",octadesde
+''print #1,"OCtahasta ",octahasta
 
 End Sub
 Sub selInstORdenAlfa(ByRef instru As Integer)
@@ -153,7 +153,7 @@ instru=0
           
             If eventnumber()=2 Then
                Instru = GetItemListView()
-               Print #1,"in = ",in 
+               ''print #1,"in = ",in 
               If instru=0 Then  instru=1 EndIf 
                
               ' If in >= 1 And in <=127 Then
@@ -174,7 +174,7 @@ instru=0
 
 '' fin ruso
 'Return IUP_DEFAULT
-Print #1,"Str(instru) ", Str(instru)
+''print #1,"Str(instru) ", Str(instru)
   
 
 end Sub
@@ -231,7 +231,7 @@ instru=0
 
 '' fin ruso
 'Return IUP_DEFAULT
-Print #1,"Str(instru) ", Str(instru)
+''print #1,"Str(instru) ", Str(instru)
 
 End Sub
 ' ---------
@@ -254,11 +254,11 @@ If NombreCancion = "" Then
 EndIf
 pathdir = ShellFolder( "Select Folder", "C:\")
 pathdir=pathdir+"\"+NombreCancion
-Print #1, "DIRECTORIO CANCION EN ",pathdir
+''print #1, "DIRECTORIO CANCION EN ",pathdir
 CreateDir(pathdir)
 SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + pathdir)
 NombreCancion=pathdir
-Print #1,"NombreCancion en CrearDirCancion ",NombreCancion
+''print #1,"NombreCancion en CrearDirCancion ",NombreCancion
 CANCIONCREADA=TRUE
 CreateDir(pathdir+"\Temp") ' ok
 
@@ -268,7 +268,7 @@ Sub cargarDirectorioCancion (ByRef NombreCancion As string)
 ''Dim pathdir As string
 NombreCancion = ShellFolder( "Select Folder", "C:\")
 SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + NombreCancion)
-Print #1,"cargarDirectorioCancion ", NombreCancion 
+''print #1,"cargarDirectorioCancion ", NombreCancion 
 ' aca NombreCancion contiene el path tambien....
 'Sleep 100
 End Sub
@@ -308,7 +308,7 @@ Dim As String destino
 destino=NombreCancion+"\Temp\"+pista
 
 copyFileA (StrPtr(titulo),StrPtr(destino),TRUE)
-Print #1,titulo, destino   
+''print #1,titulo, destino   
 End Sub
 '
 Sub BorrarPista (titulo As String)
@@ -343,14 +343,14 @@ ErrorNumber1 = Err
 ErrorLine1 = Erl
 
 If ErrorNumber1 > 0 And ContadorError < 101 Then
-Print #1,"------------------------------------"
+''print #1,"------------------------------------"
   ContadorError=ContadorError+1
-  Print #1,"ErrorControl ContadorError ",ContadorError
-  Print #1,"ErrorNumber1 ",ErrorNumber1
-  Print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
-  Print #1,"Error Function: "; *Erfn()
-  Print #1, "mensaje, Ermn ", *Ermn, Ermn
-  Print #1,"------------------------------------"
+  ''print #1,"ErrorControl ContadorError ",ContadorError
+  ''print #1,"ErrorNumber1 ",ErrorNumber1
+  ''print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
+  ''print #1,"Error Function: "; *Erfn()
+  ''print #1, "mensaje, Ermn ", *Ermn, Ermn
+  ''print #1,"------------------------------------"
 
 EndIf
 
