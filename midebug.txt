@@ -1,0 +1,199 @@
+start
+11-18-202113:44:15
+__FB_ARGC__    1
+arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-20-V11-SIN-PRINT\RollMusic.exe'
+arg  1 = ''
+ubirtk         0
+ubiroll        0
+intervalo no dado usando default!
+instru         0
+Roll.trk(1,NA).inst         0
+NB             39
+NA             102
+desde          4
+hasta          8
+NroCol, ancho, anchofig      40            1467          33
+gap1           76
+Fin duracion
+CoolSoft VirtualMIDISynth 0
+Microsoft GS Wavetable Synth 1
+E-DSP MIDI Port [BC00] 2
+LoopBe Internal MIDI 3
+  
+ChangeProgram inst          0
+param.ancho    1467 param.alto  916
+INSTANCIA      1
+param.ancho    1467 param.alto  916
+inicio ubound roll.trk       102
+iniio lbound roll.trk        39
+cargarDirectorioCancion     C:\aaaa\11-18-2021
+param.ancho    1467 param.alto  916
+inicio ubound roll.trk       102
+iniio lbound roll.trk        39
+ubirtk         0
+param.ancho    1467 param.alto  916
+posicion       1
+param.titulo  RollMusic Ver 0.4.4.0
+datos recibidos en rooloop nombre         
+datos recibidos en rooloop desde,hasta     4             8
+datos recibidos en rooloop *po             7
+ubound roll.trk 2            102
+pid           6088
+INSTANCIA      0
+-------------------------------------------------------
+inicia CargaPistasEnCancion
+filename encancion > 0      [01]ACOUSTIC_GUITAR_NYLON.rtk
+trabajo con este filename...              [01]ACOUSTIC_GUITAR_NYLON.rtk
+nombre en CargarPistasEnCancion ,Numpista C:\aaaa\11-18-2021\[01]ACOUSTIC_GUITAR_NYLON.rtk         1
+----------------------------------------------
+1) ENTRA A CargarTrack nombre, ntk=       C:\aaaa\11-18-2021\[01]ACOUSTIC_GUITAR_NYLON.rtk         1
+ubirtk > 0 carga de disco o cancion        1
+NTK Y nombre que llego a open en CargaTrack              1            C:\aaaa\11-18-2021\[01]ACOUSTIC_GUITAR_NYLON.rtk
+reconstruccion x pos bin    00000000000000001011
+pmTk(ntk).MaxPos             11
+desde          4
+hasta          8
+en la carga de track desde hasta           4             8
+CargarTrack  NB Na           39            102
+cargaCancion   1
+*PO = hasta -1               7
+Get TrK POLI 
+Geteo Trabajo poli ok 
+pmtk(ntk).MaxPos, ntk        11            1
+ABRIR MAXPOS ,NB,NA  11      39            102
+uso Close
+CargarTrack  fin
+----------------------------------------------
+CARGO PISTAS MAXIMA CANTIDAD TOPE=         1
+llama a cargar pista 1 con TrackaRoll desde CargaPistaEnCancion
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        1            C:\aaaa\11-18-2021\[01]ACOUSTIC_GUITAR_NYLON.rtk
+maxpos y (ntk).maxpos        2             11
+TrackaRoll ntk, desde, hasta, MaxPos       1             4             8             11
+TrackaRoll, NB, NA, CantTricks             39            102           511
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             11
+ubound (Track(ntk).trk,2)    12
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar 510 de Track aRoll
+TrackaRoll Fin,,maxpos y (ntk).maxpos      11            11
+----------------------------------------------
+despues de cargar pista 1 TrackaRoll desde CargaPistaEnCancion
+llama a RecalCompas de pista 1 desde CargaPistaEnCancion
+FIN CargaPistasEnCancion no debe calcuar *po             7
+-------------------------------------------------------
+entro nota    7
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  7
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  0
+posn, Maxpos,nota            10            11           7
+NUCLEO: Posn,nota,EstoyEnOctava            10           7              6
+' cargo TRACK nro, PianoNota               1             65
+entro nota    5
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  5
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  0
+posn, Maxpos,nota            11            12           5
+NUCLEO: Posn,nota,EstoyEnOctava            11           5              6
+' cargo TRACK nro, PianoNota               1             67
+entro nota    3
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  3
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  0
+posn, Maxpos,nota            12            13           3
+NUCLEO: Posn,nota,EstoyEnOctava            12           3              6
+' cargo TRACK nro, PianoNota               1             69
+entro nota    1
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  1
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  0
+posn, Maxpos,nota            13            14           1
+NUCLEO: Posn,nota,EstoyEnOctava            13           1              6
+' cargo TRACK nro, PianoNota               1             71
+entro nota    12
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  12
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  12
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  181
+Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota  0
+posn, Maxpos,nota            14            15           12
+NUCLEO: Posn,nota,EstoyEnOctava            14           12             6
+' cargo TRACK nro, PianoNota               1             60
+EN Grabar nombre            C:\aaaa\11-18-2021\[01]ACOUSTIC_GUITAR_NYLON.rtk
+---------------------------------------------------------------------------------
+inicia GrabarRollaTrack, cambiaext         0
+extension     .rtk
+nom nombre sin extension ni path          [01]ACOUSTIC_GUITAR_NYLON
+update ntk, Nombre Cancion  C:\aaaa\11-18-2021
+update de NumPista ntk       1
+update,nombre del track con  path no se toca            C:\aaaa\11-18-2021\[01]ACOUSTIC_GUITAR_NYLON.rtk
+  ntk          1
+GRABANDO UPDATE DE PISTA EN CANCION EN    C:\aaaa\11-18-2021\[01]ACOUSTIC_GUITAR_NYLON.rtk
+desde          4             4
+hasta          8             8
+Maxpos         15            15
+NB             39            39
+NA             102           102
+inicio MaxPos  15
+termina con los borrados
+posn           15
+MaxPos despues de acchicar   15
+Termina con achicar secuencia
+termino copia a Trktemp, maxpos, posn      15            13
+nombre tiene el path        C:\aaaa\11-18-2021\[01]ACOUSTIC_GUITAR_NYLON.rtk
+NB , NA,MAXPOS               39            102           15
+pasó copia a vector
+etapa1
+Posicion       1
+string representando        00000000000000001111
+a1 a2 a3 a4,a5              0000          0000          0000          0000          1111
+y1,y2,y3,y4,y5              0             0             0             0             15
+etapa final puts
+uso Close
+FIN GrabarRollaTrack ,cambiaext            0
+FIN GrabarRollaTrack ,maxpos,posn          15            13
+---------------------------------------------------------------------------------
+uso Reset

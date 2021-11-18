@@ -1,40 +1,40 @@
 
 '
 Sub veoPasoCol(pasoCol() As vec,cnt As integer, cntold As Integer)
-''print #1,"Desarrollo pasoCol() sin todos los campos integer "
+print #1,"Desarrollo pasoCol() sin todos los campos integer "
 Dim As Integer mayor,j
 mayor=cnt
 If cntold > cnt Then
-  ''print #1," cntold > cnt ",cntold,cnt
+  print #1," cntold > cnt ",cntold,cnt
   mayor=cntold
 Else 
-  ''print #1," cntold < cnt ",cntold,cnt
+  print #1," cntold < cnt ",cntold,cnt
 
 EndIf
 If cntold = cnt Then
-  ''print #1," cntold = cnt ",cntold,cnt
+  print #1," cntold = cnt ",cntold,cnt
 
 EndIf
 ' en lso old acumulo los valores actuales solo si estan en cero
 ' de otro modo se hacen 0 en OFF o se incrementan en ligaduras
-''print #1, "-----------------------------------"
+print #1, "-----------------------------------"
 For j=1 To mayor
-''print #1," cnt ";j
-''print #1, "PasoCol(";j;")" 
-''print #1, "tiempoFigura ";PasoCol(j).tiempoFigura 
-''print #1, "tiempoFiguraOld "; PasoCol(j).tiempoFiguraOld
-''print #1, "DUR ";PasoCol(j).DUR
-'''print #1, "DURold "; pasoCol(j).DURold  
-''print #1, "notapiano "; pasoCol(j).notapiano
-'''print #1, "notapianoOld "; pasoCol(j).notapianoOld 
-''print #1, "liga ";pasoCol(j).liga       
-''print #1, "ligaold ";pasoCol(j).ligaold 
-''print #1, "i1 ";pasoCol(j).i1           
-'''print #1, "i1 ";pasoCol(j).i1old           
-''print #1, "old_time ";pasoCol(j).old_time
-''print #1, "old_timeold ";pasoCol(j).old_timeold 
-''print #1, "inst ";PasoCol(j).inst
-''print #1, "-----------------------------------"      
+print #1," cnt ";j
+print #1, "PasoCol(";j;")" 
+print #1, "tiempoFigura ";PasoCol(j).tiempoFigura 
+print #1, "tiempoFiguraOld "; PasoCol(j).tiempoFiguraOld
+print #1, "DUR ";PasoCol(j).DUR
+'print #1, "DURold "; pasoCol(j).DURold  
+print #1, "notapiano "; pasoCol(j).notapiano
+'print #1, "notapianoOld "; pasoCol(j).notapianoOld 
+print #1, "liga ";pasoCol(j).liga       
+print #1, "ligaold ";pasoCol(j).ligaold 
+print #1, "i1 ";pasoCol(j).i1           
+'print #1, "i1 ";pasoCol(j).i1old           
+print #1, "old_time ";pasoCol(j).old_time
+print #1, "old_timeold ";pasoCol(j).old_timeold 
+print #1, "inst ";PasoCol(j).inst
+print #1, "-----------------------------------"      
 Next j
 
 End Sub
@@ -58,7 +58,7 @@ Sub noteoff( note As UByte, canal As UByte)
  message(3) = 0
  leng=3
 result = send_message (midiout, p, leng)
-''print #1,"EN NOTE OFF nota, RESULT", note, result
+print #1,"EN NOTE OFF nota, RESULT", note, result
 
 End Sub
 Sub pedaloff( ) 
@@ -148,7 +148,7 @@ Sub noteon	( note As ubyte, vel As UByte, canal As ubyte)
  message(3) = vel
  leng=3
 result = send_message (midiout, p, leng)
-''print #1,"EN NOTE ON nota, RESULT", note, result
+print #1,"EN NOTE ON nota, RESULT", note, result
 End Sub
 '-------------------------------------
 Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
@@ -161,8 +161,8 @@ For i1 =1 To cnt
  EndIf    
  
 Next i1
-''print #1,"LimpiarLigaduras nohay=",nohay,"cnt=";cnt
-''print #1,"LimpiarLigaduras 1 cnt =",1 ,cnt
+print #1,"LimpiarLigaduras nohay=",nohay,"cnt=";cnt
+print #1,"LimpiarLigaduras 1 cnt =",1 ,cnt
 If nohay = cnt Then
   For i1=1 To cnt 
     pasoCol(i1).liga=0 
@@ -193,9 +193,9 @@ Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, cntold As UByte,vel As UB
 Dim As UByte i1
 Dim As Integer tiempoFigura=0, tiempoFiguraSig=0
 'debug..
-''print #1,"---------------------------"
-''print #1,"AOI:] START ACORDEONIGUALES "
-''print #1,"-------------------------------------"
+print #1,"---------------------------"
+print #1,"AOI:] START ACORDEONIGUALES "
+print #1,"-------------------------------------"
  veoPasoCol(pasoCol(),CInt(cnt), CInt(cntold))
 ' en .ligaoLD acumulo las ligaduras horizontalmente solo se va a cero en OFF ultimo
 ' en .liga solo determino la liga actual.-
@@ -204,18 +204,18 @@ Dim As Integer tiempoFigura=0, tiempoFiguraSig=0
 
 Dim As integer nj=jply, durj ' indice del vector roll, dur
 
-''print #1,"AOI 1: DUR cnt=1:";pasoCol(1).Dur
+print #1,"AOI 1: DUR cnt=1:";pasoCol(1).Dur
 
 old_time_on=Timer
-''print #1,"AOI 2: OLD_TIME AL INICIO ",old_time_on
+print #1,"AOI 2: OLD_TIME AL INICIO ",old_time_on
 old_time_on_int=old_time_on * d11 
-''print #1,"AOI 3: comienza For de 1 a cnt",cnt
+print #1,"AOI 3: comienza For de 1 a cnt",cnt
 ' SI HAY LIGADURA TRAIGO LA DURACION DEL ACORDE SIGUIENTE O NOTA AL ACORDE ACTUAL
 ' ASI HASTA LLEGAR A LA ULTIMA POSICION SIN LIGADURA puede haber varios acordes ligados
  
 For i1=1 To cnt
-''print #1,"AOI 4: 1)DUR cnt=";i1;":";pasoCol(i1).Dur
- ''print #1,"AOI 5:CNT CNT CNT ";cnt ;" dur";pasoCol(i1).Dur
+print #1,"AOI 4: 1)DUR cnt=";i1;":";pasoCol(i1).Dur
+ print #1,"AOI 5:CNT CNT CNT ";cnt ;" dur";pasoCol(i1).Dur
 ' sin ligar
   If  pasoCol(i1).Dur <= 90 And pasoCol(i1).Dur >= 1  Then
     ' GUARDO EL old_time_on DE LAS NO LIGADAS SI NO HAY HISTORICO DE OLD_TIME
@@ -226,7 +226,7 @@ For i1=1 To cnt
          pasoCol(i1).old_time=pasoCol(i1).old_timeold 
       EndIf    
       pasoCol(i1).liga =0
-      ''print #1,"AOI 6: 4) no ligado,liga ";pasoCol(i1).liga =0 
+      print #1,"AOI 6: 4) no ligado,liga ";pasoCol(i1).liga =0 
       If pasoCol(i1).tiempoFiguraOld = 0 Then
           pasoCol(i1).tiempoFigura = relDur(pasoCol(i1).Dur) * tiempoDUR * d11
       Else
@@ -239,23 +239,23 @@ For i1=1 To cnt
         EndIf  
           
       EndIf  
-      ''print #1,"AOI 7: no ligado pasoCol(i1).tiempoFigura "; pasoCol(i1).tiempoFigura
-      ''print #1,"AOI 8: no ligado DUR "; pasoCol(i1).Dur
+      print #1,"AOI 7: no ligado pasoCol(i1).tiempoFigura "; pasoCol(i1).tiempoFigura
+      print #1,"AOI 8: no ligado DUR "; pasoCol(i1).Dur
 ' el mayor valor de duracion de los no ligados no lo calculo aca
      If pasoCol(i1).ligaold =0 Then
-       ''print #1,"AOI 9: SIN LIGAR Noteon de notepiano "; pasoCol(i1).notapiano
-       ''print #1,"AOI 10: sin ligar NOTEON 2]pasocol("+Str(i1)+").inst en AcordeonIguales ",pasoCol(i1).inst
+       print #1,"AOI 9: SIN LIGAR Noteon de notepiano "; pasoCol(i1).notapiano
+       print #1,"AOI 10: sin ligar NOTEON 2]pasocol("+Str(i1)+").inst en AcordeonIguales ",pasoCol(i1).inst
        ChangeProgram (pasoCol(i1).inst,0)
        vel= vol( pasoCol(i1).DUR, velpos)
        noteon pasoCol(i1).notapiano,vel,canal
        '''duracion old_time_on, pasoCol(i1).tiempoFigura/d11
      Else
-        ''print #1,"AOI 11:No se envia Note on es la continuancion de un ligado"  
+        print #1,"AOI 11:No se envia Note on es la continuancion de un ligado"  
      EndIf
   Else  
     If pasoCol(i1).Dur >= 91 And pasoCol(i1).Dur <= 180 then
-     ''print #1,"AOI 12: ANALIZO LIGADURAS horizontalmente si hay y toda la columna"
-     ''print #1,"AOI 13: DUR ";pasoCol(i1).Dur
+     print #1,"AOI 12: ANALIZO LIGADURAS horizontalmente si hay y toda la columna"
+     print #1,"AOI 13: DUR ";pasoCol(i1).Dur
      pasoCol(i1).liga=1
      If pasoCol(i1).old_timeold = 0 Then
         pasoCol(i1).old_time = old_time_on_int
@@ -283,16 +283,16 @@ For i1=1 To cnt
           durj = Roll.trk(i1, pasoCol(i1).i1 ).dur
      EndIf
        
-     ''print #1,"AOI 15:  durj "; i1 ; " "; durj
+     print #1,"AOI 15:  durj "; i1 ; " "; durj
      If durj > 0 Then
-         ''print #1,"AOI 15:  reldur ";i1; " "; relDur(durj)
+         print #1,"AOI 15:  reldur ";i1; " "; relDur(durj)
      Else 
-        ''print #1,"AOI 17:  reldur ";i1; " "; 0 ' revisar jmgjmg  
+        print #1,"AOI 17:  reldur ";i1; " "; 0 ' revisar jmgjmg  
      EndIf
      ' liga me da la cantidad de acordes y/o nota ligados en esa nota
      ' se va borando hasta que se haya dado el off final
-     ''print #1,"AOI 23:       numero de ligadosOld:";pasoCol(i1).ligaold
-     ''print #1,"AOI 24: Noteon ligado notepiano "; pasoCol(i1).notapiano
+     print #1,"AOI 23:       numero de ligadosOld:";pasoCol(i1).ligaold
+     print #1,"AOI 24: Noteon ligado notepiano "; pasoCol(i1).notapiano
      If pasoCol(i1).ligaold > 0 And  TipoAcorde=1 Then
      ' solo es para nota ligada simple que ataca o se liga a un acorde siguiente
      ' para que el siguiernet acorde no empice jutno a la nota de inicio de la ligadura
@@ -311,7 +311,7 @@ For i1=1 To cnt
  ' usar Figura para el off y el oldtime_inicio de off       
      Else
        If pasoCol(i1).ligaold =0 And pasoCol(i1).liga=1 Then '16-11-2021 UN SOLO ON
-          ''print #1,"AOI 25: 1]NOTEON ligado pasocol("+Str(i1)+").inst en AcordeonIguales ",pasoCol(i1).inst
+          print #1,"AOI 25: 1]NOTEON ligado pasocol("+Str(i1)+").inst en AcordeonIguales ",pasoCol(i1).inst
           ChangeProgram (pasoCol(i1).inst,0)
           vel= vol( pasoCol(i1).DUR, velpos)
           noteon pasoCol(i1).notapiano,vel,canal
@@ -321,22 +321,22 @@ For i1=1 To cnt
        EndIf
      EndIf
      pasoCol(i1).ligaold = pasoCol(i1).ligaold + 1 ' para el proximo paso
-     ''print #1,"AOI 26: 3) LIGA=1 ==========> ";pasoCol(i1).liga
+     print #1,"AOI 26: 3) LIGA=1 ==========> ";pasoCol(i1).liga
     EndIf 
   endif
 Next I1
 
 ' for de NOTEON DE NO LIGADOS, EN NOTEON NO HACE FALTA SORT SOLO EN OFFS"
 
-''print #1,"=====> FIN ACORDEON IGUALES O SIMPLE"
-''print #1,"=AOI tenia   old_time_on_int ", old_time_on_int
+print #1,"=====> FIN ACORDEON IGUALES O SIMPLE"
+print #1,"=AOI tenia   old_time_on_int ", old_time_on_int
 
 End Sub 
 
 Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As Double,Roll As inst,velpos As Integer,pis As integer)
-''print #1,"-------------------------------------"
-''print #1,"AOD :]start AcordeOnDistintos cnt,cntold,pis ",cnt,cntold,pis
-''print #1,"-------------------------------------"
+print #1,"-------------------------------------"
+print #1,"AOD :]start AcordeOnDistintos cnt,cntold,pis ",cnt,cntold,pis
+print #1,"-------------------------------------"
 'debug..
  veoPasoCol(pasoCol(),CInt(cnt), CInt(cntold))
 
@@ -350,10 +350,10 @@ If cntold >cnt Then
 Else
  coff=cnt 
 EndIf
-''print #1,"====>>> START AOD ON veo el pasocol que tiene"
+print #1,"====>>> START AOD ON veo el pasocol que tiene"
 Dim As UByte noAnalizo=0 
 For i1=1 To coff ' 20-06-2021 JMG
-  ''print #1,"DUR:";pasoCol(i1).DUR;" ";"notepiano:";pasoCol(i1).notapiano;figura(pasoCol(i1).DUR); _
+  print #1,"DUR:";pasoCol(i1).DUR;" ";"notepiano:";pasoCol(i1).notapiano;figura(pasoCol(i1).DUR); _
 ''  " .liga:";pasoCol(i1).liga;" old_time:";pasoCol(i1).old_time
   If pasoCol(i1).liga > 1 Then ' si hay liga viene de antes
      noAnalizo=1
@@ -366,72 +366,72 @@ Next i1
 ' ASI HASTA LLEGAR A LA ULTIMA POSICION SIN LIGADURA puede haber varios acordes ligados
 Dim As integer nj=jply, durj ' indice del vector roll, dur
 
-''print #1,"AOD:DUR cnt=1:";pasoCol(1).Dur
+print #1,"AOD:DUR cnt=1:";pasoCol(1).Dur
 
 old_time_on=Timer
-''print #1,"AOD: old_time_on ";old_time_on
+print #1,"AOD: old_time_on ";old_time_on
 
-''print #1,"start FOR"
+print #1,"start FOR"
 For i1=1 To cnt
-''print #1,"for cnt=";i1
-''print #1,"AOD FOR: pasoCol(i1).Dur       ";pasoCol(i1).Dur
-''print #1,"AOD FOR: pasoCol(i1).liga      ";pasoCol(i1).liga
-''print #1,"AOD FOR: pasoCol(i1).NOTAPIANO ";pasoCol(i1).notapiano
-''print #1,"AOD FOR: pasoCol(i1).tiempofigOld ";pasoCol(i1).tiempoFiguraOld
+print #1,"for cnt=";i1
+print #1,"AOD FOR: pasoCol(i1).Dur       ";pasoCol(i1).Dur
+print #1,"AOD FOR: pasoCol(i1).liga      ";pasoCol(i1).liga
+print #1,"AOD FOR: pasoCol(i1).NOTAPIANO ";pasoCol(i1).notapiano
+print #1,"AOD FOR: pasoCol(i1).tiempofigOld ";pasoCol(i1).tiempoFiguraOld
 
 
 ' SOLO EL 1ER ACORDE LIGADO SE ANALIZA EL RESTO POR MAS LIGADURAS QUE TENGA YA NO
 ' PORQUE .LIGA SERA > 0
-' ''print #1,"AOD:CNT CNT CNT ";cnt ;" dur";pasoCol(i1).Dur
+' print #1,"AOD:CNT CNT CNT ";cnt ;" dur";pasoCol(i1).Dur
  ' este AND  para iguales no va pero para distintos??? 
  If pasoCol(i1).liga = 0 Then  ' 13-06-2021
- '   ''print #1,"1) pasoCol(i1).liga =0 "
+ '   print #1,"1) pasoCol(i1).liga =0 "
   ' de 91 a 180 son todos ligadso pero incluye los silencios ojo!
   If pasoCol(i1).Dur >= 91 And pasoCol(i1).Dur <=180 And pasoCol(i1).liga=0 Then
-     ''print #1,"AOD:ANALIZO LIGADURAS SUbSIGUIENTES si hay y toda la columna"
-     ''print #1,"AOD:DUR ";pasoCol(i1).Dur
-     ''print #1,"AOD:liga anterior";pasoCol(i1).liga
-     ''print #1,"AOD:notepiano ";pasoCol(i1).notapiano
+     print #1,"AOD:ANALIZO LIGADURAS SUbSIGUIENTES si hay y toda la columna"
+     print #1,"AOD:DUR ";pasoCol(i1).Dur
+     print #1,"AOD:liga anterior";pasoCol(i1).liga
+     print #1,"AOD:notepiano ";pasoCol(i1).notapiano
           
      If pasoCol(i1).liga =0 Then ' 13-06-2021
         pasoCol(i1).liga=1
         pasoCol(i1).old_time=old_time_on * d11
-        ''print #1,"ligado 1 guardo old_time_on primer liga "; pasoCol(i1).old_time
+        print #1,"ligado 1 guardo old_time_on primer liga "; pasoCol(i1).old_time
      Else
         pasoCol(i1).liga=pasoCol(i1).liga + 1 ' 13-06-2021
         ' no se carga old_time sigue siendo el mismo
      EndIf
      ligaglobal=1
      liga=1
-     ''print #1,"*AOD:LIGA=1 ==========> ";liga
-     ''print #1,"*AOD: LIGA ACUMULADA ===>";pasoCol(i1).liga
-     ''print #1,"*AOD: ACUMULADO TIEMPOfIGURA ";pasoCol(i1).tiempoFigura
+     print #1,"*AOD:LIGA=1 ==========> ";liga
+     print #1,"*AOD: LIGA ACUMULADA ===>";pasoCol(i1).liga
+     print #1,"*AOD: ACUMULADO TIEMPOfIGURA ";pasoCol(i1).tiempoFigura
      pasoCol(i1).tiempoFiguraOld=pasoCol(i1).tiempoFigura
-     ''print #1,"*AOD: ACUMULADO TIEMPOfIGURAOLD ";pasoCol(i1).tiempoFiguraOld
-     ''print #1,"Loop "
+     print #1,"*AOD: ACUMULADO TIEMPOfIGURAOLD ";pasoCol(i1).tiempoFiguraOld
+     print #1,"Loop "
      Do
        nj=nj+1
        ' busca la proxima dur 
-       ''print #1,"pasoCol(i1).i1 ",pasoCol(i1).i1 
-       ''print #1,"nj ",nj
+       print #1,"pasoCol(i1).i1 ",pasoCol(i1).i1 
+       print #1,"nj ",nj
        If CANCIONCARGADA Then
-          ''print #1,"AOD: CANCIONCARGADA",
+          print #1,"AOD: CANCIONCARGADA",
           durj = Track(pis).trk(nj, pasoCol(i1).i1 ).dur
-          ''print #1,"durj ",durj
+          print #1,"durj ",durj
        Else
           durj = Roll.trk(nj, pasoCol(i1).i1 ).dur
        EndIf
 ' problema con las octavas necesita 1 y solo vade 39 a 102 uuu
 ' en vez de 1 deberia ser 39         
-       ''print #1,"AOD:LIGA nj, durj "; nj ; " "; durj
-       ''print #1,"AOD:LIGA nj reldur ";nj; " "; relDur(durj)
+       print #1,"AOD:LIGA nj, durj "; nj ; " "; durj
+       print #1,"AOD:LIGA nj reldur ";nj; " "; relDur(durj)
 '3) calculo tiempofigura de cada nota y su acumulacion en ligaduras
        tiempoFiguraSig = relDur(durj) * tiempoDUR * 100000000000
-       ''print #1,"AOD:LIGA paso nj tiempoFiguraSig ";nj; " "; tiempoFiguraSig
+       print #1,"AOD:LIGA paso nj tiempoFiguraSig ";nj; " "; tiempoFiguraSig
 ' almaceno todo el tiempo en la nota 1er acorde       
        pasoCol(i1).tiempoFigura = pasoCol(i1).tiempoFigura +tiempoFiguraSig
        pasoCol(i1).tiempoFiguraOld = pasoCol(i1).tiempoFigura
-       ''print #1,"AOD:LIGA pasoCol(i1).tiempoFigura+sig "; pasoCol(i1).tiempoFigura
+       print #1,"AOD:LIGA pasoCol(i1).tiempoFigura+sig "; pasoCol(i1).tiempoFigura
        If durj >= 91 And durj <=180  Then ' si es liga 
          pasoCol(i1).liga= pasoCol(i1).liga +1
        Else
@@ -439,34 +439,34 @@ For i1=1 To cnt
        EndIf
      Loop
      nj=jply '08-06-2021
-     ''print #1,"2) AOD:LIGA=1 ==========> ";liga
+     print #1,"2) AOD:LIGA=1 ==========> ";liga
      ' liga me da la cantidad de acordes ligados en esa nota
      ' se va borando hasta que se haya dado el off final
-     ''print #1,"numero de ligados:";pasoCol(i1).liga
-     ''print #1,"Noteon ligado notepiano "; pasoCol(i1).notapiano
-    ''print #1,"1]pasocol("+Str(i1)+").inst en AcordeonDistintos ",pasoCol(i1).inst
+     print #1,"numero de ligados:";pasoCol(i1).liga
+     print #1,"Noteon ligado notepiano "; pasoCol(i1).notapiano
+    print #1,"1]pasocol("+Str(i1)+").inst en AcordeonDistintos ",pasoCol(i1).inst
      ChangeProgram (pasoCol(i1).inst,0)
      vel= vol( pasoCol(i1).DUR, velpos)
      noteon pasoCol(i1).notapiano,vel,canal
-     ''print #1,"3) AOD:LIGA=1 ==========> ";liga
+     print #1,"3) AOD:LIGA=1 ==========> ";liga
      
   EndIf
  Else ' ya venia una ligadura ' 13-06-2021
-     ''print #1,"AOD:ya venia con ligadura de antes" ' 13-06-2021
-     ''print #1,"AOD: OJO! pasoCol(i1).old_time ";pasoCol(i1).old_time
-     ''print #1,"AOD:pasoCol(i1).tiempoFiguraOld ";pasoCol(i1).tiempoFiguraOld ' 13-06-2021  
+     print #1,"AOD:ya venia con ligadura de antes" ' 13-06-2021
+     print #1,"AOD: OJO! pasoCol(i1).old_time ";pasoCol(i1).old_time
+     print #1,"AOD:pasoCol(i1).tiempoFiguraOld ";pasoCol(i1).tiempoFiguraOld ' 13-06-2021  
  EndIf 
-  ''print #1, "pasoCol(i1).Dur ";pasoCol(i1).Dur; " pasoCol(i1).liga ";pasoCol(i1).liga
+  print #1, "pasoCol(i1).Dur ";pasoCol(i1).Dur; " pasoCol(i1).liga ";pasoCol(i1).liga
   If pasoCol(i1).liga = 0 Then 
-      ''print #1,"4) AOD:LIGA=1 ==========> ";liga 
-      ''print #1,"AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.";liga 
+      print #1,"4) AOD:LIGA=1 ==========> ";liga 
+      print #1,"AOD:|||| la liga dentro if liga=0 debe dar 1 en algun momento.";liga 
       pasoCol(i1).tiempoFigura = relDur(pasoCol(i1).Dur) * tiempoDUR * 100000000000  
-      ''print #1,"AOD:|||SIN LIGA pasoCol(i1).tiempoFigura "; pasoCol(i1).tiempoFigura
-      ''print #1,"AOD:|||SIN LIGA DUR "; pasoCol(i1).Dur
-      ''print #1,"5)AOD: LIGA=1 ==========> ";liga
+      print #1,"AOD:|||SIN LIGA pasoCol(i1).tiempoFigura "; pasoCol(i1).tiempoFigura
+      print #1,"AOD:|||SIN LIGA DUR "; pasoCol(i1).Dur
+      print #1,"5)AOD: LIGA=1 ==========> ";liga
       If liga=1 Then
        pasoCol(i1).tiempoFiguraOld=pasoCol(i1).tiempoFigura
-       ''print #1,"6)AOD:|||LIGA=1, pasoCol(i1).tiempoFiguraOld ";pasoCol(i1).tiempoFiguraOld
+       print #1,"6)AOD:|||LIGA=1, pasoCol(i1).tiempoFiguraOld ";pasoCol(i1).tiempoFiguraOld
       EndIf
       ' cuando termine el for, habré guardado el tiempoFigura mayor de lso 
       ' no ligados..
@@ -478,15 +478,15 @@ Next I1
 For i1=1 To cnt
 
  If pasoCol(i1).liga = 0 And pasoCol(i1).DUR <> 181 Then 
-    ''print #1,"7)AOD:SIN LIGAR Noteon de notepiano "; pasoCol(i1).notapiano
-    ''print #1,"2]pasocol("+Str(i1)+").inst en AcordeonDistintos ",pasoCol(i1).inst
+    print #1,"7)AOD:SIN LIGAR Noteon de notepiano "; pasoCol(i1).notapiano
+    print #1,"2]pasocol("+Str(i1)+").inst en AcordeonDistintos ",pasoCol(i1).inst
      ChangeProgram (pasoCol(i1).inst,0)
     vel= vol( pasoCol(i1).DUR, velpos)
     noteon pasoCol(i1).notapiano,vel,canal
  End If
 Next i1
 
-''print #1,"FIN AcordeOnDistintos"
+print #1,"FIN AcordeOnDistintos"
 	
  
 End Sub
@@ -494,9 +494,9 @@ End Sub
 Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte, cntold As UByte,canal As UByte,Roll As inst, pis As integer)
 Dim i1 As UByte
 Dim tiempoFigura As Double 
-''print #1,"-------------------------------------"
-''print #1,"AFI :]========Start AcordeOffIguales cnt,cntold,pis ",cnt,cntold,pis
-''print #1,"-------------------------------------"
+print #1,"-------------------------------------"
+print #1,"AFI :]========Start AcordeOffIguales cnt,cntold,pis ",cnt,cntold,pis
+print #1,"-------------------------------------"
 'debug..
  veoPasoCol(pasoCol(),CInt(cnt), CInt(cntold))
 
@@ -506,10 +506,10 @@ Dim tiempoFigura As Double
 
 
  old_time_off=Timer
- ''print #1,"AFI 1:old_time off inicial ";old_time_off
+ print #1,"AFI 1:old_time off inicial ";old_time_off
  old_time_off_int = old_time_off * d11 ' solo para guardar y poder hacer sort
  
-''print #1,"AFI 2:no ligados calculo tiempo Figura y doy off:" 
+print #1,"AFI 2:no ligados calculo tiempo Figura y doy off:" 
 ' son iguales las duraciones son las mismoas no ahce falta sort
 ' este 1er for tendra las duraciones mas cortas pues son acordes iguales 
 ' y si hay un acorde debe ser igual y si esta ligado a un acorde 
@@ -517,20 +517,20 @@ Dim tiempoFigura As Double
 For i1 = 1 To cnt ' (1) 
   If pasoCol(i1).liga = 0 And pasoCol(i1).ligaOld=0 Then
      tiempoFigura = pasoCol(i1).tiempoFigura/d11
-     ''print #1,"AFI 3:i1 ";i1;" no ligado tiempoFigura ";tiempoFigura
-     ''print #1,"i1 ";i1;" no ligado old_time ";pasoCol(i1).old_time
-     ''print #1, "AFI 4:i1 ";i1;" AcordeOffIguales: notapiano:", pasoCol(i1).notapiano;" ";figura(pasoCol(i1).Dur)
-     ''print #1, "AFI 5:call duracion o retardo con ",pasoCol(i1).old_time 
-     ''print #1, "AFI 6:call duracion o retardo con ",tiempoFigura
+     print #1,"AFI 3:i1 ";i1;" no ligado tiempoFigura ";tiempoFigura
+     print #1,"i1 ";i1;" no ligado old_time ";pasoCol(i1).old_time
+     print #1, "AFI 4:i1 ";i1;" AcordeOffIguales: notapiano:", pasoCol(i1).notapiano;" ";figura(pasoCol(i1).Dur)
+     print #1, "AFI 5:call duracion o retardo con ",pasoCol(i1).old_time 
+     print #1, "AFI 6:call duracion o retardo con ",tiempoFigura
      duracion pasoCol(i1).old_time / d11, tiempoFigura
-     ''print #1, "AFI 7:SIN LIGAR NOTEOFF==>" 
+     print #1, "AFI 7:SIN LIGAR NOTEOFF==>" 
      noteoff pasoCol(i1).notapiano ,canal
   EndIf
 
 
 Next i1     
 
-''print #1,"AFI 8:start OFF de ligados ---------" 
+print #1,"AFI 8:start OFF de ligados ---------" 
  Dim tf As Double
 ' los ligados pueden terminar en el paso 2 o seguir eso lo determino
 ' con el numero de liga qu epuede ser 1,2,3,4,etc
@@ -540,17 +540,17 @@ For i1=1 To cnt
 ' solo la tiro despues en el s2do paso cuando ligaglobal se ajsuto a 0 
 ' verificar si la ajusto
   If pasoCol(i1).liga = 0 And pasoCol(i1).ligaOld >0 Then
-     ''print #1,"AFI 9:HAY LIGADOS que llegan y terminan aca!"
-     ''print #1,"AFI 10:pasoCol(i1).tiempoFiguraOld ",pasoCol(i1).tiempoFiguraOld
-     ''print #1,"AFI 11:pasoCol(i1).tiempoFigura ",pasoCol(i1).tiempoFigura
+     print #1,"AFI 9:HAY LIGADOS que llegan y terminan aca!"
+     print #1,"AFI 10:pasoCol(i1).tiempoFiguraOld ",pasoCol(i1).tiempoFiguraOld
+     print #1,"AFI 11:pasoCol(i1).tiempoFigura ",pasoCol(i1).tiempoFigura
    'old_time= pasoCol(i1).old_time/100000000000 
-    ' ''print #1,"old_time_on ";old_time_on
+    ' print #1,"old_time_on ";old_time_on
      If tipoAcorde=1 Then        
        tf = pasoCol(i1).tiempoFigura  /d11
      Else
        tf = pasoCol(i1).tiempoFiguraOld  /d11
      EndIf
-     ''print #1, "AFI 12:retardo tf ";tf
+     print #1, "AFI 12:retardo tf ";tf
      ' el time tomo del inicio de aca del off porque ya gaste duracon de la 
      ' ligarura en el paso anterior
      If TF > 0 Then 
@@ -572,14 +572,14 @@ For i1=1 To cnt
   '        duracion pasoCol(i1).old_time /d11, tf   
     
        If CANCIONCARGADA Then
-          ''print #1,"AFI 13: ligado NOTEOFF==> i1 ";i1;" AcordeOffIguales: notapiano:", pasoCol(i1).notapiano;" "; _
+          print #1,"AFI 13: ligado NOTEOFF==> i1 ";i1;" AcordeOffIguales: notapiano:", pasoCol(i1).notapiano;" "; _
 ''          figura(pasoCol(i1).DUR)
              
             noteoff pasoCol(i1).notapiano ,canal
           'liga cero no
        '  EndIf
        Else
-          ''print #1,"AFI 14: ligado DOY OFF==> i1 ";i1;" AcordeOffDistintos: notapiano:", pasoCol(i1).notapiano;" "; _
+          print #1,"AFI 14: ligado DOY OFF==> i1 ";i1;" AcordeOffDistintos: notapiano:", pasoCol(i1).notapiano;" "; _
 ''          figura(PasoCol(i1).dur)
              
            noteoff pasoCol(i1).notapiano ,canal
@@ -601,23 +601,23 @@ For i1=1 To cnt
 '  If pasoCol(i1).liga < 0 Then
 '     pasoCol(i1).liga=0
 '  EndIf
-'  ''print #1,"le resto 1 a  pasoCol(i1).liga ", pasoCol(i1).liga
+'  print #1,"le resto 1 a  pasoCol(i1).liga ", pasoCol(i1).liga
  '05-11-2021 comentado' ligaglobal = pasoCol(i1).liga ' por si sigue una simple
 
 Next i1
-''print #1,"AFI 15: fin ligados off"
+print #1,"AFI 15: fin ligados off"
 
-''print #1,"AFI 16: start ligados continuacion en este paso " 
+print #1,"AFI 16: start ligados continuacion en este paso " 
 For i1=1 To cnt
 ' solo la tiro despues en el s2do paso cuando ligaglobal se ajsuto a 0 
 ' verificar si la ajusto
   If pasoCol(i1).liga > 0 And pasoCol(i1).ligaOld >0 Then
-     ''print #1,"AFI 17:HAY LIGADOS que llegan y siguen!"
-     ''print #1,"AFI 18:pasoCol(i1).tiempoFiguraOld ",pasoCol(i1).tiempoFiguraOld
+     print #1,"AFI 17:HAY LIGADOS que llegan y siguen!"
+     print #1,"AFI 18:pasoCol(i1).tiempoFiguraOld ",pasoCol(i1).tiempoFiguraOld
    'old_time= pasoCol(i1).old_time/100000000000 
-    ' ''print #1,"old_time_on ";old_time_on        
+    ' print #1,"old_time_on ";old_time_on        
      pasoCol(i1).tiempoFigura=pasoCol(i1).tiempoFiguraOld
-     ''print #1,"AFI 19:pasoCol(i1).tiempoFigura ",pasoCol(i1).tiempoFigura
+     print #1,"AFI 19:pasoCol(i1).tiempoFigura ",pasoCol(i1).tiempoFigura
      pasoCol(i1).liga=1
      pasoCol(i1).old_time=pasoCol(i1).old_timeold
   EndIf 
@@ -625,16 +625,16 @@ For i1=1 To cnt
 Next i1
 ' limpiando ligaduras 05-11-2021 por cancion	,
 ' ligalobal dice si al menos una nota esta ligada
-'''print #1,"AcordeOFFIguales: liga:", ligaglobal
+'print #1,"AcordeOFFIguales: liga:", ligaglobal
 'limpiarLigaduras(cnt,pasoCol())
-'''print #1,"limpiado AcordeOFFIguales: liga:", ligaglobal
+'print #1,"limpiado AcordeOFFIguales: liga:", ligaglobal
 
-''print #1,"AFI 20:FIN AcordeOffIguales o simple"
+print #1,"AFI 20:FIN AcordeOffIguales o simple"
 End sub
 
 Sub AcordeIguales (pasoCol() As vec, cnt As UByte,cntold As UByte, vel as UByte, canal As UByte,tiempoDur As Double,Roll As inst,velpos As Integer,pis As integer) 
 ' todas las notas son de igual duracion, cnt cantidad de notas
-'''print #1,"call acordeon iguales"
+'print #1,"call acordeon iguales"
 AcordeOnIguales	 pasoCol() , cnt , cntold , vel,canal,tiempoDur, Roll,velpos,pis
 AcordeOffIguales	 pasoCol(), cnt , cntold , canal,Roll,pis
 ' start  jmg 09-06-2021
@@ -652,103 +652,103 @@ Sub AcordeOffDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte,canal 
 ' en el paso final el retado es el total de la liga respecto
 ' del old_time_on del 1er acorde,,,asoi funciona el rtmidi...
 'debug..
-''print #1,"--------------------------------------------"
-''print #1,"AFD :]start AcordeOffDistintos cnt,cntold,pis ",cnt,cntold,pis
-''print #1,"-------------------------------------"
+print #1,"--------------------------------------------"
+print #1,"AFD :]start AcordeOffDistintos cnt,cntold,pis ",cnt,cntold,pis
+print #1,"-------------------------------------"
  veoPasoCol(pasoCol(),CInt(cnt), CInt(cntold))
 
 
 Dim  As UByte i1, coff
-'''print #1,"====>>> START AOFF OFF veo el pasocol que tiene"
+'print #1,"====>>> START AOFF OFF veo el pasocol que tiene"
 If cntold > cnt Then
   coff=cntold
 Else
   coff=cnt  
 EndIf
 For i1=1 To coff 'reemplazo CNT 20-06-2021 JMG
- ' ''print #1,"DUR:";pasoCol(i1).DUR;" ";"notepiano:";pasoCol(i1).notapiano;figura(pasoCol(i1).DUR); _
+ ' print #1,"DUR:";pasoCol(i1).DUR;" ";"notepiano:";pasoCol(i1).notapiano;figura(pasoCol(i1).DUR); _
  ' " .liga:";pasoCol(i1).liga;" old_time:";pasoCol(i1).old_time    
 Next i1
 
-''print #1,"SORT POR tiempoFigura calculado en playAll" 
+print #1,"SORT POR tiempoFigura calculado en playAll" 
 For i1=1 To coff
-  ''print #1,"AOFFD:antes Sort Fig, DUR notapiano ";pasoCol(i1).Dur;" ";pasoCol(i1).notapiano;" ";pasoCol(i1).tiempoFigura;" ";pasoCol(i1).liga 
+  print #1,"AOFFD:antes Sort Fig, DUR notapiano ";pasoCol(i1).Dur;" ";pasoCol(i1).notapiano;" ";pasoCol(i1).tiempoFigura;" ";pasoCol(i1).liga 
 Next i1
    qsort(@pasoCol(1).tiempoFigura, cnt, SizeOf(vec), @QCompare )
 For i1=1 To coff
-  ''print #1,"AOFFD:deespues sort DUR notapiano fig";pasoCol(i1).Dur;" ";pasoCol(i1).notapiano;" ";pasoCol(i1).tiempoFigura;" ";pasoCol(i1).liga 
+  print #1,"AOFFD:deespues sort DUR notapiano fig";pasoCol(i1).Dur;" ";pasoCol(i1).notapiano;" ";pasoCol(i1).tiempoFigura;" ";pasoCol(i1).liga 
 Next i1   
 '-----------------------------------------
-''print #1,"====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene"
+print #1,"====>>> LUEGO SORT AOFF OFF veo el pasocol que tiene"
 For i1=1 To coff 'CNT 20-06-2021 JMG
-  ''print #1,"DUR:";pasoCol(i1).DUR;" ";"notepiano:";pasoCol(i1).notapiano;figura(pasoCol(i1).DUR); _
+  print #1,"DUR:";pasoCol(i1).DUR;" ";"notepiano:";pasoCol(i1).notapiano;figura(pasoCol(i1).DUR); _
 ''  " .liga:";pasoCol(i1).liga;" old_time:";pasoCol(i1).old_time    
 Next i1
 
 ' ---------------------------------------
 Dim As Double tiempoFigura
-'''print #1,"-------------------------------------"
-'''print #1,"AOFFD:start AcordeOffDistintos"
+'print #1,"-------------------------------------"
+'print #1,"AOFFD:start AcordeOffDistintos"
 
 
  old_time_off=Timer ' para notas no ligadas
- ''print #1,"AOFFD:old_time off no ligadas inicial ";old_time_off
+ print #1,"AOFFD:old_time off no ligadas inicial ";old_time_off
 
-''print #1,"FOR: AOFFD:no ligados calculo tiempo Figura y off:" 
+print #1,"FOR: AOFFD:no ligados calculo tiempo Figura y off:" 
 Dim tiempoFigMayorNoligado As Integer 
 For i1 = 1 To cnt ' (1)
-''print #1,"FOR 1:AOFFD:cnt "; cnt; "i1 "; I1; " pasoCol(i1).liga "; pasoCol(i1).liga;" notapiano ";pasoCol(i1).notapiano 
+print #1,"FOR 1:AOFFD:cnt "; cnt; "i1 "; I1; " pasoCol(i1).liga "; pasoCol(i1).liga;" notapiano ";pasoCol(i1).notapiano 
   If pasoCol(i1).liga = 0 Then
      tiempoFigura = pasoCol(i1).tiempoFigura/100000000000
-     ''print #1,"FOR 2:AOFFD:i1 ";i1;" tiempoFigura ";tiempoFigura
+     print #1,"FOR 2:AOFFD:i1 ";i1;" tiempoFigura ";tiempoFigura
      duracion old_time_off, tiempoFigura
-     ''print #1, "FOR 3:AOFFD:SIN LIGAR OFF==>"; 
-     ''print #1,"FOR 4:AOFFD:i1 ";i1;" AcordeOffDistintos: notapiano:", pasoCol(i1).notapiano;" ";figura(pasoCol(i1).Dur)
+     print #1, "FOR 3:AOFFD:SIN LIGAR OFF==>"; 
+     print #1,"FOR 4:AOFFD:i1 ";i1;" AcordeOffDistintos: notapiano:", pasoCol(i1).notapiano;" ";figura(pasoCol(i1).Dur)
      noteoff pasoCol(i1).notapiano ,canal
   EndIf
 Next i1     
 tiempoFigMayorNoligado=  tiempofigura * 100000000000
-''print #1,"5) AOFFD:tiempoFigMayorNoligado ";tiempoFigMayorNoligado
-''print #1,"6) AOFFD:start OFF de ligados ---------" 
+print #1,"5) AOFFD:tiempoFigMayorNoligado ";tiempoFigMayorNoligado
+print #1,"6) AOFFD:start OFF de ligados ---------" 
  Dim tf As Double
 
 For i1=1 To cnt
   If pasoCol(i1).liga >0  Then
-   ''print #1,"FOR 7:AOFFD:HAY LIGADOS!"
-   ''print #1,"FOR 8:pasoCol(i1).tiempoFiguraOld ",pasoCol(i1).tiempoFiguraOld
-   ''print #1,"FOR 9:tiempoFigMayorNoligado ";tiempoFigMayorNoligado
+   print #1,"FOR 7:AOFFD:HAY LIGADOS!"
+   print #1,"FOR 8:pasoCol(i1).tiempoFiguraOld ",pasoCol(i1).tiempoFiguraOld
+   print #1,"FOR 9:tiempoFigMayorNoligado ";tiempoFigMayorNoligado
      If  pasoCol(i1).tiempoFiguraOld < tiempoFigMayorNoligado Then
-         ''print #1,"FOR 10:AOFFD: ligado no se envia off,old  es mayor a la mayor de no ligado "
+         print #1,"FOR 10:AOFFD: ligado no se envia off,old  es mayor a la mayor de no ligado "
          pasoCol(i1).tiempoFigura= tiempoFigMayorNoligado - pasoCol(i1).tiempoFiguraOld
          'le reste el mayor de los no ligados OLD al ligado 
-        ''print #1,"FOR 11:AOFFD:i1 ";i1;" tiempoFigura q falta para el off de ligado ";
-        ''print #1,pasoCol(i1).tiempoFigura
+        print #1,"FOR 11:AOFFD:i1 ";i1;" tiempoFigura q falta para el off de ligado ";
+        print #1,pasoCol(i1).tiempoFigura
      ' added cambio 07 06 acum old jmg   
         pasoCol(i1).tiempoFiguraOld=pasoCol(i1).tiempoFigura
-        ''print #1,"FOR 12:AOFFD:pasoCol(i1).tiempoFiguraOld:";pasoCol(i1).tiempoFiguraOld
+        print #1,"FOR 12:AOFFD:pasoCol(i1).tiempoFiguraOld:";pasoCol(i1).tiempoFiguraOld
      Else 
          old_time_on= pasoCol(i1).old_time/100000000000 '20-06-2021 habilitado
-         ''print #1,"FOR 13:AOFFD:old_time_on ";old_time_on        
+         print #1,"FOR 13:AOFFD:old_time_on ";old_time_on        
          tf = (pasoCol(i1).tiempoFiguraOld - pasoCol(i1).tiempoFigura) /100000000000
-         ''print #1,"FOR 14:AOFFD:pasoCol(i1).tiempoFigura ";pasoCol(i1).tiempoFigura
-         ''print #1,"FOR 15:AOFFD:pasoCol(i1).tiempoFiguraOld ";pasoCol(i1).tiempoFiguraOld
-         ''print #1, "FOR 16:AOFFD:retardo tf ";tf
+         print #1,"FOR 14:AOFFD:pasoCol(i1).tiempoFigura ";pasoCol(i1).tiempoFigura
+         print #1,"FOR 15:AOFFD:pasoCol(i1).tiempoFiguraOld ";pasoCol(i1).tiempoFiguraOld
+         print #1, "FOR 16:AOFFD:retardo tf ";tf
          If TF > 0 Then ' usamos el old_time-on que venia de antes
            duracion old_time_on, tf
            If CANCIONCARGADA Then
              If Track(pis).trk(jply+1, pasoCol(i1).i1 ).dur > 0 And _
                 Track(pis).trk(jply+1, pasoCol(i1).i1 ).dur <= 181 Then
-              ''print #1,"FOR 17:AOFFD: ligado OFF==> i1 ";i1;" AcordeOffDistintos: notapiano:", pasoCol(i1).notapiano;" "; figura(Roll.trk(pasoCol(i1).i1 , jply+1).dur)
+              print #1,"FOR 17:AOFFD: ligado OFF==> i1 ";i1;" AcordeOffDistintos: notapiano:", pasoCol(i1).notapiano;" "; figura(Roll.trk(pasoCol(i1).i1 , jply+1).dur)
                 noteoff pasoCol(i1).notapiano ,canal
              EndIf
 
            Else
              If Roll.trk(jply+1, pasoCol(i1).i1 ).dur > 0 And _
                 Roll.trk(jply+1, pasoCol(i1).i1 ).dur <= 181 Then
-''print #1,"FOR 18:pasoCol(i1).i1 , jply+1 ", pasoCol(i1).i1 , jply+1
-''print #1,"FOR 18+:figura(pasoCol(i1).DUR)",figura(pasoCol(i1).DUR)
+print #1,"FOR 18:pasoCol(i1).i1 , jply+1 ", pasoCol(i1).i1 , jply+1
+print #1,"FOR 18+:figura(pasoCol(i1).DUR)",figura(pasoCol(i1).DUR)
 
-''print #1,"FOR 19:AOFFD: ligado OFF==> i1 ";i1;" AcordeOffDistintos: notapiano:", pasoCol(i1).notapiano;" " ;  figura(pasoCol(i1).DUR)
+print #1,"FOR 19:AOFFD: ligado OFF==> i1 ";i1;" AcordeOffDistintos: notapiano:", pasoCol(i1).notapiano;" " ;  figura(pasoCol(i1).DUR)
                 noteoff pasoCol(i1).notapiano ,canal
              EndIf
            EndIf  
@@ -759,24 +759,24 @@ pasoCol(i1).liga=0
          Else
            If (pasoCol(i1).tiempoFigura=pasoCol(i1).tiempoFiguraOld) And pasoCol(i1).liga = 1  Then
               tf=tiempoFigMayorNoligado/100000000000 
-               ''print #1, "FOR 20:AOFFD:retardo recuperado en condicion (=) ..tf= ";tf
-               ''print #1,"FOR 21:pasoCol(i1).notapiano:";pasoCol(i1).notapiano
+               print #1, "FOR 20:AOFFD:retardo recuperado en condicion (=) ..tf= ";tf
+               print #1,"FOR 21:pasoCol(i1).notapiano:";pasoCol(i1).notapiano
               duracion old_time_on, tf
               pasoCol(i1).tiempoFiguraOld=pasoCol(i1).tiempoFiguraOld   '- tiempoFigMayorNoligado  
-              ''print #1,"FOR 22:pasoCol(i1).tiempoFiguraOld:";pasoCol(i1).tiempoFiguraOld 
+              print #1,"FOR 22:pasoCol(i1).tiempoFiguraOld:";pasoCol(i1).tiempoFiguraOld 
  '    comentado  noteoff pasoCol(i1).notapiano ,canal ' 21-06-2021
            Else
 
-              ''print #1,"FOR 23:AOFFD:NO SE ENVIA OFF TF=0"
+              print #1,"FOR 23:AOFFD:NO SE ENVIA OFF TF=0"
               pasoCol(i1).liga=1 '13-06-2021 PARA QU ESIGA EN EL OTRO PASO SI NO SE BORRA....
               pasoCol(i1).tiempoFiguraOld= pasoCol(i1).tiempoFigura ' 13
               pasoCol(i1).tiempoFiguraOld= pasoCol(i1).tiempoFiguraOld '- tiempoFigMayorNoligado
-              ''print #1,"FOR 24:AOFFD:pasoCol(i1).tiempoFiguraOld:";pasoCol(i1).tiempoFiguraOld ' 13
+              print #1,"FOR 24:AOFFD:pasoCol(i1).tiempoFiguraOld:";pasoCol(i1).tiempoFiguraOld ' 13
            EndIf  
          EndIf 
-         ''print #1,"FOR 25:pasoCol(i1).liga ", pasoCol(i1).liga
+         print #1,"FOR 25:pasoCol(i1).liga ", pasoCol(i1).liga
          ligaglobal = pasoCol(i1).liga ' por si sigue una simple
-         ''print #1,"FOR 26:<<<<<<<<<<FIN ELSE>>>>>>> CUANTAS VECES PASA?"
+         print #1,"FOR 26:<<<<<<<<<<FIN ELSE>>>>>>> CUANTAS VECES PASA?"
      EndIf
      ''pasoCol(i1).liga=0 ' ya la use se va 05-11-2021   
   EndIf 
@@ -788,11 +788,11 @@ Next i1
  ' terminar o tener una nota simple unica como final o intermedia ligada
  ' ver que pasa en ese caso como lo solucionamos
  ' 01-07-2021 ACA NUNCA SE BLAQUEA no-> ligaglobal=0  porque corta las ligas largas en un acorde distinto 
-''print #1,"FIN AcordeOffDistintos  " 
+print #1,"FIN AcordeOffDistintos  " 
 
-''print #1,"AcordeOFFDistintos: liga:", ligaglobal
+print #1,"AcordeOFFDistintos: liga:", ligaglobal
 limpiarLigaduras(cnt,pasoCol())
-''print #1,"limpiado AcordeOFFDistintos: liga:", ligaglobal
+print #1,"limpiado AcordeOFFDistintos: liga:", ligaglobal
 
 End Sub
 
@@ -829,11 +829,11 @@ Dim As Integer liga=0,notapiano=0,old_notapiano=0, iguales=0, distintos=0
 Dim leng As UInteger <8>
 Dim result As Integer
 
-''print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron
-''print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron =", tiempoDur
+print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron
+print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron =", tiempoDur
 jply=0:curpos=0
 mousex=0
-' ''print #1,                    "-----------------------------------------"
+' print #1,                    "-----------------------------------------"
 comienzo=posicion
 cntold=0
 If pasoZona1 > 0 Then
@@ -846,7 +846,7 @@ EndIf
 
 ' If jply=1 And Roll.trk(1,NA).inst > 0 Then
 '   ChangeProgram ( Roll.trk(1,NA).inst , 0)
-'    ''print #1,"ChangeProgram jply", Roll.trk(1,NA).inst
+'    print #1,"ChangeProgram jply", Roll.trk(1,NA).inst
   ''        On Error GoTo labelerror 
 ' End If 
 
@@ -891,9 +891,9 @@ EndIf
   iguales=0
   distintos=0
   duraold=0 ' 04-11-2021 jmg
-  ''print #1," ---------------000000000000000000000-----------------"
-  ''print #1," (((PALL 0:)))---START--PASO:[";jply;"] ----------------"
-  ''print #1," ---------------000000000000000000000-----------------"
+  print #1," ---------------000000000000000000000-----------------"
+  print #1," (((PALL 0:)))---START--PASO:[";jply;"] ----------------"
+  print #1," ---------------000000000000000000000-----------------"
   '115 a 0
   ' recorre una posicion vertical
   ' envio de instrumetno o CAMBIO de PROGRAMA PATCH 
@@ -905,8 +905,8 @@ EndIf
   ' SEGUIR CORREGIR CON EL USO DE LSO CAMPOS NUEVOS Y AL TERMINAR 
   ' ELIMINAR LOS CAMPOS DE VEC QUE NO SE USEN
   For i1=NB To NA  
-    '''print #1,"Roll.trk(jply, i1).nota ",Roll.trk(jply, i1).nota
-    '''print #1,"Roll.trk(jply, i1).DUR ",Roll.trk(jply, i1).dur
+    'print #1,"Roll.trk(jply, i1).nota ",Roll.trk(jply, i1).nota
+    'print #1,"Roll.trk(jply, i1).DUR ",Roll.trk(jply, i1).dur
    If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12 _
       And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Then ' es semitono
      ' por mas que achique en octavas, Notapiano se calcula respecto del nro 
@@ -915,46 +915,46 @@ EndIf
       Notapiano= i1
       'Notapiano= 115 - i1 
       Notapiano= Notapiano - restar (Notapiano)
-      ''print #1,"PALL 0:VEO LO CORRECTO DE NOTAPIANO "; Notapiano
+      print #1,"PALL 0:VEO LO CORRECTO DE NOTAPIANO "; Notapiano
       dura=Roll.trk(jply, i1).dur '1) I 2) I dur x 1 to 108
-      ''print #1,"PALL 1:jply ";jply; "dura ";dura
+      print #1,"PALL 1:jply ";jply; "dura ";dura
       cnt=cnt+1
-      ''print #1,"PALL 2:paso ";jply;" cnt ";cnt;" notapiano "; Notapiano
+      print #1,"PALL 2:paso ";jply;" cnt ";cnt;" notapiano "; Notapiano
       If cnt=1 Then 
          duraOld=dura
       EndIf
       ' 04-11-2021 usamos reldur para comparar duraciones !!!
       If reldur(duraOld)=reldur(dura)  And cnt > 1 Then
          iguales=1
-         ''print #1,"PALL 4:cnt ";cnt;" iguales ";iguales
+         print #1,"PALL 4:cnt ";cnt;" iguales ";iguales
       EndIf
       If reldur(duraOld)<>reldur(dura)  And cnt > 1 Then
          distintos=1 ' atrapa no importa cuantos elementos tenga el acorde
-         ''print #1,"PALL 5:cnt ";cnt;" distintos ";distintos
+         print #1,"PALL 5:cnt ";cnt;" distintos ";distintos
       EndIf         
 
      
       '+++++++++
   
-        ''print #1,"PALL 7:-> cnt"; cnt 
+        print #1,"PALL 7:-> cnt"; cnt 
         pasoCol(cnt).DUR    =dura
  '       pasoCol(cnt).DURold =dura
-        ''print #1,"PALL 8:pasoCol(cnt).DUR ", pasoCol(cnt).DUR 
+        print #1,"PALL 8:pasoCol(cnt).DUR ", pasoCol(cnt).DUR 
         If pasoCol(cnt).DUR >= 91 And pasoCol(cnt).DUR <=180 Then
-            ''print #1,"PALL 9:PALL 0: nota con + es una liga"
+            print #1,"PALL 9:PALL 0: nota con + es una liga"
             pasoCol(cnt).liga =  1
         Else
             pasoCol(cnt).liga =  0   
         EndIf
         pasoCol(cnt).notapiano = Notapiano 
-        ''print #1,"PALL 10:Notapiano ",Notapiano
+        print #1,"PALL 10:Notapiano ",Notapiano
        
         pasoCol(cnt).tiempoFigura    = relDur(pasoCol(cnt).DUR) * tiempoDur * d11
     
         pasoCol(cnt).i1    = i1 'posicion vertical en el vector real
   '      pasoCol(cnt).i1old = i1 'posicion vertical en el vector real
-        ''print #1,"PALL 11: posicion vertical en el vector real ",i1
-        ''print #1,"PALL 12:pasoCol(cnt).tiempoFigura ",pasoCol(cnt).tiempoFigura
+        print #1,"PALL 11: posicion vertical en el vector real ",i1
+        print #1,"PALL 12:pasoCol(cnt).tiempoFigura ",pasoCol(cnt).tiempoFigura
       ' 20-06-2021 eliminado duraold=dura repetido    
         '' vel= vol( dura, velpos) 02-11-2021
 ' llegamos al final de la Columna
@@ -964,29 +964,29 @@ EndIf
       If i1=NA  Then 'And cnt >= 1 Then ' envio noteoff 1) no entra
 
          If cnt > 1 Then' Acorde
-           ''print #1,"i1=NA=";i1 ; " ACORDE cnt= ";cnt
+           print #1,"i1=NA=";i1 ; " ACORDE cnt= ";cnt
          Else    
-           ''print #1,"i1=NA=";i1 ; " SIMPLE cnt= ";cnt
+           print #1,"i1=NA=";i1 ; " SIMPLE cnt= ";cnt
          EndIf  
 
          Select Case cnt
           Case 1 
- ''print #1, "PALL 24:call Notesimple cntold, vel, canal, tiempodur",  cntold, vel, canal,tiempoDur
+ print #1, "PALL 24:call Notesimple cntold, vel, canal, tiempodur",  cntold, vel, canal,tiempoDur
  ' 04-11-2021 cnt por cntold ....aca|
           TipoAcorde=1 ' simple   
           AcordeIguales pasoCol(),cnt,cntold,vel,canal,tiempoDur,Roll,velpos,0
           pasoCol(cnt).notapianoOld    = Notapiano             
           Case Is > 1
-       ''print #1,"case is > 1
+       print #1,"case is > 1
             If iguales=1 And distintos=0  Then
                 TipoAcorde=2 ' iguales
-                ''print #1,"cnt ";cnt;" call Acordeiguales "
+                print #1,"cnt ";cnt;" call Acordeiguales "
                 AcordeIguales pasoCol(),cnt,cntold,vel,canal,tiempoDur,Roll,velpos,0
                 
             EndIf
             If  distintos=1 Then
                TipoAcorde=3 ' distintos
-               ''print #1,"cnt ";cnt;" call AcordeDistintos"
+               print #1,"cnt ";cnt;" call AcordeDistintos"
                  AcordeDistintos pasoCol(),cnt, cntold,vel,canal,tiempoDur,Roll,velpos,0
                 
             EndIf
@@ -994,12 +994,12 @@ EndIf
          End Select  
 
         cntold = cnt
- ''print #1,"cantidad de elementos Acorde actual y anterior cnt,cntold"; cnt;" ";cntold
+ print #1,"cantidad de elementos Acorde actual y anterior cnt,cntold"; cnt;" ";cntold
         
         
    EndIf  
   Next i1
-  ''print #1,"---FIN -----paso:"; jply;" --------------------------------" 
+  print #1,"---FIN -----paso:"; jply;" --------------------------------" 
   
  mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
  If playloop=1 And jply= final Then
@@ -1050,7 +1050,7 @@ Function QCompare Cdecl (Byval e1 As Any Ptr, _
         'Get the values, must cast to integer ptr
         el1 = *(Cptr(Integer Ptr, e1))
         el2 = *(Cptr(Integer Ptr, e2))
-       ' ''print #1,"Qsort called";cnt;" time(s) with";el1;" and";el2;"."
+       ' print #1,"Qsort called";cnt;" time(s) with";el1;" and";el2;"."
         'Compare the values
         If el1 < el2 Then
            return( -1 )
@@ -1075,24 +1075,24 @@ tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
 
 '''portsin  =  port_count (midiin)
 'portsout =  port_count (midiout)
-'''print #1, "portsin  "; portsin
-'''print #1, "portsout "; portsout
+'print #1, "portsin  "; portsin
+'print #1, "portsout "; portsout
 'Dim nombrez As ZString Ptr ' nombre local
 
-'''print #1,""
-'''print #1, "Output port"
+'print #1,""
+'print #1, "Output port"
 
 'Dim i As INTeger
 'for i = 0 to portsout -1 
 '    nombrez = port_name(midiout, i)
-'    ''print #1, *nombre
+'    print #1, *nombre
 'Next   
-'''print #1, ""
-'''print #1, "Input port "
+'print #1, ""
+'print #1, "Input port "
 
 'For i = 0 to  portsin -1  
 '    nombre = port_name(midiin, i)
-'    ''print #1, *nombre
+'    print #1, *nombre
 'Next
 
 Dim leng As UInteger <8>
@@ -1126,9 +1126,9 @@ Dim result As Integer
 ' fusa                       E  =  46,875   mseg
 ' semifusa                   H  =  23,4375  mseg
 '                            W  =  11,71875 mseg
-' ergo si toco 4 5 6 notas a la vez secuecnialmente talvezeltimepo
-' enejecutarlo es muy rapido y pareceriaun acorde ¿? ok o no¿?
-' buenoenrealidad laspongojuntas en el buffer y luego lasseparo en
+' ergo si toco 4 5 6 notas a la vez secuecnialmente talvez el timepo
+' en ejecutarlo es muy rapido y pareceria un acorde ¿? ok o no¿?
+' bueno en realidad las pongo juntas en el buffer y luego las separo en
 ' el menssage para send_message....peroel tiempo q tardo enponerlo es
 ' masqu eenviarlo diretamente
 Dim As Integer final=MaxPos  , comienzo=1, notapiano, canal=1,vel=100,j
@@ -1150,7 +1150,7 @@ Dim As float durl
 Dim As Integer jcompas = 0, velpos =0
 Dim As Double tinicio   
 
-'''print #1,"comienzo play ==========> "
+'print #1,"comienzo play ==========> "
 ' FUTURO: JMG EN CALCOMPAS EN EL VECTOR Compas debere marcar 
 ' en el con numeros lso tiempos feurtes semifertes y debiles
 ' ej:partodo el tiempo de negra=1 en 4/4 todas esas figuras son fuertes
@@ -1171,7 +1171,7 @@ jply=0:curpos=0
 mousex=0
 
 For jply=comienzo To final
-''print #1,"-----------------------------------------"
+print #1,"-----------------------------------------"
  If curpos > NroCol  Then
     curpos=0
     posishow=0
@@ -1213,7 +1213,7 @@ For jply=comienzo To final
 
 
       If durb > 0 Then ' 1 to 108
-'      ''print #1,"durb> 0, i, j ";durb,i,j
+'      print #1,"durb> 0, i, j ";durb,i,j
          durl=relDur(durb)+relDur(dura)  '2) P
 ' si durb ya era silencio su continuacion sera silencio tambien solo
 ' hace falta analizar la 1era parte para saber si suena o en que grupo caera
@@ -1241,18 +1241,18 @@ For jply=comienzo To final
               exit For
            EndIf 
          Next x
-     ' ''print #1,"dura + durb "; dura   
+     ' print #1,"dura + durb "; dura   
          liga=1
          durb=0
          durl=0
       EndIf   
       If dura >= 91 And dura <=180 Then ' se suma la duración al siguiente
          durb=dura  ' 1) I+, 2) no entra
-        ' ''print #1,"entro nota ligada "; dura, figura(dura)
+        ' print #1,"entro nota ligada "; dura, figura(dura)
       EndIf   
       If con=0 Then
         maxdur=dura  ' 1) I, 2) P
-      '  ''print #1, jply; " con=0 atrapa dura maxdura ";dura, maxdur
+      '  print #1, jply; " con=0 atrapa dura maxdura ";dura, maxdur
          con = 1
       EndIf
       'vel=Roll.trk(i,j).vel
@@ -1260,16 +1260,16 @@ For jply=comienzo To final
 ' SACAR ESTO TOCAR ACORDE CADA ELEMENTO CON SU DURACION        
       If relDur(dura) > relDur(maxdur) Then ' esto lo debo sacar y tocar todas las notas con su duracion
          maxdur= dura ' 1) I, 2) P cuantoms chica dur es mas grnde en relidd
-     ' ''print #1,jply;"if dura-figura "; dura, figura(dura)
-     ' ''print #1,jply;"if cambio Maxdur-figura "; Maxdur, figura(Maxdur)
+     ' print #1,jply;"if dura-figura "; dura, figura(dura)
+     ' print #1,jply;"if cambio Maxdur-figura "; Maxdur, figura(Maxdur)
       Else    
         '' notacur=i
-     ' ''print #1,jply;"else dura-figura "; dura, figura(dura)
-     ' ''print #1,jply;"sigue igual else Maxdur-figura "; Maxdur, figura(Maxdur)
+     ' print #1,jply;"else dura-figura "; dura, figura(dura)
+     ' print #1,jply;"sigue igual else Maxdur-figura "; Maxdur, figura(Maxdur)
 
       EndIf 
       If liga=0 Then  
-       ' ''print #1,"liga=0 "
+       ' print #1,"liga=0 "
         If (maxdur >=46 And maxdur <= 90 ) Or (maxdur >=136 And maxdur <= 180 ) Then
           vel =0
         Else
@@ -1282,12 +1282,12 @@ For jply=comienzo To final
  
         cx = cx + 1   ' 1) 1
         non (cx) = notapiano '1) G
-       ' ''print #1, "ON==>  notapiano, vel, canal ";notapiano, vel, canal
-       ' ''print #1,"cx ";cx 
+       ' print #1, "ON==>  notapiano, vel, canal ";notapiano, vel, canal
+       ' print #1,"cx ";cx 
       ''''''  Sleep 1,1
         old_time_on=Timer
       Else
-       ' ''print #1,"liga=1 no se envia noteon " 
+       ' print #1,"liga=1 no se envia noteon " 
         liga=0 
       EndIf 
    EndIf
@@ -1295,11 +1295,11 @@ For jply=comienzo To final
    If i=NB And durb = 0 Then ' envio noteoff 1) no entra
  ''Sleep segun duracion o Timer de la q mas dura o para cada uno
       ' tiempoPatron input al redimsub
-   ' ''print #1,"i=NB=";i," maxdur=";maxdur;  
+   ' print #1,"i=NB=";i," maxdur=";maxdur;  
     If maxdur > 0 And maxdur <= 182 Then
-      ' ''print #1, figura(maxdur)
+      ' print #1, figura(maxdur)
     Else 
-      ' ''print #1, "No se puede mostrar"  
+      ' print #1, "No se puede mostrar"  
     EndIf   
     
   ''''   duracion (maxdur)
@@ -1308,7 +1308,7 @@ For jply=comienzo To final
  If maxdur >= 1 And maxdur<= 180 Then 
     tiempoFigura = relDur(maxdur)*tiempoDUR
  
- '  ''print #1, "tiempoFigura ";tiempoFigura  
+ '  print #1, "tiempoFigura ";tiempoFigura  
    Do
 
  ' Sleep 1,1
@@ -1333,19 +1333,19 @@ For jply=comienzo To final
 ' SE EJEUCTA LA DURCION DE 1 NEGRA SE DA EL OFF DELA MISMA,LUEGO
 ' PARA LA BLANCA SE RESTA UNA NEGRA MAS, Q ES LA DIFERENCIA CON LA ANTERIOR
 ' SE EJECUTA UNA DURCION DE NEGRA ADICIONAL Y SE ENVIA ELOFF DE LA BLANCA     
-   '  ''print #1," cantidad cx de off ";cx
+   '  print #1," cantidad cx de off ";cx
      
      For ioff=1 To cx
      noteoff non(ioff),canal
 
-    ' ''print #1, "OFF==>   non(ioff),  canal "; non(ioff),canal
+    ' print #1, "OFF==>   non(ioff),  canal "; non(ioff),canal
      Next ioff
- '    ''print #1,"pasó for de off .."
- '    ''print #1," ==============> fin paso...j"; j   
+ '    print #1,"pasó for de off .."
+ '    print #1," ==============> fin paso...j"; j   
    EndIf 
   Next i
 
-'  ''print #1,"COMIENZA OTRA  POSICION O J ======"; j
+'  print #1,"COMIENZA OTRA  POSICION O J ======"; j
   If durb=0 Then
    cx=0
   EndIf
@@ -1460,8 +1460,8 @@ End Function
 
 Sub duracion (old_time As Double, tiempoFigura As Double)
 ' retardo puro sin on ni off dejo de andar porque ???
-''print #1,"En Duracion COMIENZA RETARDO En  time :"; old_time
-''print #1, "tiempoFigura " , tiempoFigura
+print #1,"En Duracion COMIENZA RETARDO En  time :"; old_time
+print #1, "tiempoFigura " , tiempoFigura
 Dim As Double start
 dim as LARGE_INTEGER delay 
 'la funcion nativa resuelve en unidades de 100 nanosegundos!
@@ -1486,12 +1486,12 @@ delay.QuadPart = -1000 ' =0.1 mili segundos
   Loop Until Timer - old_time >= tiempoFigura
 
 End Sub
-''print #1,"Fin duracion"
+print #1,"Fin duracion"
 
 Sub duracionokOLD (old_time As Double, tiempoFigura As Double)
 ' retardo puro sin on ni off dejo de andar porque ???
-''print #1,"COMIENZA RETARDO En  time :"; old_time
-''print #1, "tiempoFigura " , tiempoFigura
+print #1,"COMIENZA RETARDO En  time :"; old_time
+print #1, "tiempoFigura " , tiempoFigura
 Dim As Double start, endtime 
  start=Timer
   Do
@@ -1532,7 +1532,7 @@ Sub TrasponerGrupo( cant As Integer, Roll As inst, encancion As Integer)
 ' DE LA COPIA ES LO MISMO PEOR INVERTIDO FUNCIONA IGUAL, LO IMPORTANE DEL CAMBIO
 ' FUE EN LA SUBRUTUNA SUMAR COMO EL VECTOR EMPIEZA DE CERO 0 EL ESPACIO ENTRE
 ' OCTAVAS NO QUEDA MULTIPLO DE 13 ERGO LE SUMO 1 AHORA,,,ANTES DE AHCER EL MOD 13
-''print #1,"ARRANCA TRASPONER GRUPO"
+print #1,"ARRANCA TRASPONER GRUPO"
 Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,b1=0
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
@@ -1623,7 +1623,7 @@ Next jpt
 ' de ese modo al dar play se escuch also cambios sino solo quedan en Roll
 ' y el play de cancion no lo registra , solo el play de roll lo registraria
 If encancion > 0 Then
-  ''print #1,"en trasponer grupo graba track traspuesto"
+  print #1,"en trasponer grupo graba track traspuesto"
    Dim As Integer ubi1=0,ubi2=0 
    Dim As String no1,no2
    ubi1=InStr(nombre,"[")
@@ -1806,7 +1806,7 @@ cant = pasoZona2 - pasoZona1 'delta original
 ' sitio donde se copia o mueve indicePos en main (SC_M o SC_C )+ click 
 Dim  As Integer  MaxPosOld=MaxPos
   
-''print #1, "MaxPosOld ", MaxPosOld
+print #1, "MaxPosOld ", MaxPosOld
 ' si movemos a derecha empezamos copiando a la nueva posicion el final de 
 ' la secuencia, luego en la nueva posicion -1 copiamos el final -1
 ' asi desde el final haci aadelante...
@@ -1814,24 +1814,24 @@ Dim  As Integer  MaxPosOld=MaxPos
 ' o sea lo que está echo es para mover a izquierda donde la posiion destino
 ' el click esta a la izquierda de pasozona1  
 /'
-''print #1," chequeo"
+print #1," chequeo"
 For jpt= 1 To maxpos
   For i1=comienzo To final
        If Roll.trk(jpt,i1).nota < 13 And i1= 67 Then
-        ''print #1,"Roll.trk(inc,i1).nota ",Roll.trk(inc,i1).nota
-        ''print #1,"Roll.trk(inc,i1).dur ",Roll.trk(inc,i1).dur
-        ''print #1,"Roll.trk(jpt,i1).nota ",Roll.trk(jpt,i1).nota
-        ''print #1,"Roll.trk(jpt,i1).dur ",Roll.trk(jpt,i1).dur
+        print #1,"Roll.trk(inc,i1).nota ",Roll.trk(inc,i1).nota
+        print #1,"Roll.trk(inc,i1).dur ",Roll.trk(inc,i1).dur
+        print #1,"Roll.trk(jpt,i1).nota ",Roll.trk(jpt,i1).nota
+        print #1,"Roll.trk(jpt,i1).dur ",Roll.trk(jpt,i1).dur
 
        EndIf
 
   Next i1
 Next jpt
-''print #1,"fin chequeo"
+print #1,"fin chequeo"
 '/
 If posinueva > Maxpos Then ' movemos a izquierda
 inc=posinueva
-''print #1,"ENTRA POR IZQUIERDA"
+print #1,"ENTRA POR IZQUIERDA"
   For jpt=desdet To hastat
        
      For  i1= comienzo To final
@@ -1841,7 +1841,7 @@ inc=posinueva
        Roll.trk(inc,i1).pan  = Roll.trk(jpt,i1).pan
        Roll.trk(inc,i1).pb   = Roll.trk(jpt,i1).pb
        Roll.trk(inc,i1).inst = Roll.trk(jpt,i1).inst
-   '  ''print #1,"i1,ind Roll.trk(i1,ind).nota ",i1, ind, Roll.trk(ind,i1).nota
+   '  print #1,"i1,ind Roll.trk(i1,ind).nota ",i1, ind, Roll.trk(ind,i1).nota
        If moverZona=1 Then ' borro original
           Roll.trk(jpt,i1).nota = 181
           Roll.trk(jpt,i1).dur  = 0
@@ -1853,13 +1853,13 @@ inc=posinueva
      Next i1
      inc=inc+1
   Next jpt
-  ''print #1,"TERMINO copia a izquierda ",posinueva   
+  print #1,"TERMINO copia a izquierda ",posinueva   
 'si la posicion donde copio es mayor a MaxPos, debo llenar el espacio entre MAxPos y 
 'el punto inicial de copia con 0 y 181 para dur y Nota repectivamente
-  ''print #1,"inicioind  MAxPosOld ",posinueva , MAxPosOld  
+  print #1,"inicioind  MAxPosOld ",posinueva , MAxPosOld  
   If posinueva > MAxPosOld Then
 
-  ' ''print #1,"MAxPosOld, inicioind ", MAxPosOld, inicioind
+  ' print #1,"MAxPosOld, inicioind ", MAxPosOld, inicioind
      For jpt=MaxPosOld-1 To posinueva -1 
        For  i1= comienzo To final
           Roll.trk(jpt,i1).nota = 181
@@ -1873,32 +1873,32 @@ inc=posinueva
      Next jpt
 
   EndIf
-  ''print #1,"--> TERMINO la vuelta de ind a la izquierda", posinueva
+  print #1,"--> TERMINO la vuelta de ind a la izquierda", posinueva
 ' aca el maxpos deberia achicarse....
 MaxPos=inc +1
 '-------------------------------
 Else ' if ind posiion nueva > pasozona1 movemos a derecha
 '---------------------------------
 
-''print #1,"ENTRA POR DERECHA POSINUEVA < MaxPos"
-''print #1,"posinueva ",posinueva
-''print #1,"MaxPosold ",MaxPosold
-''print #1,"posivIEJa ",posivieja
+print #1,"ENTRA POR DERECHA POSINUEVA < MaxPos"
+print #1,"posinueva ",posinueva
+print #1,"MaxPosold ",MaxPosold
+print #1,"posivIEJa ",posivieja
   If posinueva < MaxPos then
     MaxPos=MaxposOld + posinueva - posivieja
   EndIf
-''print #1,"MaxPos ",MaxPos
+print #1,"MaxPos ",MaxPos
  
   hastat=Maxpos
   desdet=posivieja+1
   inc=MaxPosOld
-''print #1,"hastat ",hastat
-''print #1, "desdet=inc ",desdet
-'''print #1,"UBOUND(ROLL,1)", UBOUND (ROLL.TRK,1)
-'''print #1,"LBOUND(ROLL,1)", LBound (ROLL.TRK,1)
-'''print #1,"UBOUND(ROLL,2)", UBOUND (ROLL.TRK,2)
-'''print #1,"LBOUND(ROLL,2)", LBOUND (ROLL.TRK,2)
-'''print #1,"inc=posivieja+1 ",inc
+print #1,"hastat ",hastat
+print #1, "desdet=inc ",desdet
+'print #1,"UBOUND(ROLL,1)", UBOUND (ROLL.TRK,1)
+'print #1,"LBOUND(ROLL,1)", LBound (ROLL.TRK,1)
+'print #1,"UBOUND(ROLL,2)", UBOUND (ROLL.TRK,2)
+'print #1,"LBOUND(ROLL,2)", LBOUND (ROLL.TRK,2)
+'print #1,"inc=posivieja+1 ",inc
   '        mAXpOS TO  POSIVIEJA+1          inc=MAxPosOld   
   For jpt= hastat To desdet Step -1
      For  i1= comienzo To final
@@ -1924,14 +1924,14 @@ Else ' if ind posiion nueva > pasozona1 movemos a derecha
         Exit For
      EndIf
   Next jpt
-  ''print #1,"TERMINO copia a derecha ",posinueva   
+  print #1,"TERMINO copia a derecha ",posinueva   
 '---
 'si la posicion donde copio es mayor a MaxPos, debo llenar el espacio entre MAxPos y 
 'el punto inicial de copia con 0 y 181 para dur y Nota repectivamente
-  ''print #1,"inicioind  MAxPosOld ",posinueva , MAxPosOld  
+  print #1,"inicioind  MAxPosOld ",posinueva , MAxPosOld  
   'If posinueva > MAxPosOld Then
 
-  ' ''print #1,"MAxPosOld, inicioind ", MAxPosOld, inicioind
+  ' print #1,"MAxPosOld, inicioind ", MAxPosOld, inicioind
   '   For jpt=MaxPosOld To posinueva  
   '     For  i1= comienzo To final
   '        Roll.trk(jpt,i1).nota = 181
@@ -1945,7 +1945,7 @@ Else ' if ind posiion nueva > pasozona1 movemos a derecha
  '    Next jpt
 
   'EndIf
-  ''print #1,"--> TERMINO la vuelta de ind a derecha ", posinueva
+  print #1,"--> TERMINO la vuelta de ind a derecha ", posinueva
 
 
 '-------
@@ -1971,17 +1971,17 @@ If pasoZona2 > 0 Then
 Else
    hastat= MaxPos - 1  
 EndIf   
-'''print #1,"CORRECION DE NOTAS ***********"
+'print #1,"CORRECION DE NOTAS ***********"
 For jpt = desdet To hastat  
   For i1= NB To NA   
    
      If ( (Roll.trk(jpt,i1).nota >= 0) And (Roll.trk(jpt,i1).nota <= 13 ) )  Then ' es semitono
-           '''print #1,"Roll.trk(i1,jpt).nota ",Roll.trk(i1,jpt).nota
-           '''print #1, "i1",i1
+           'print #1,"Roll.trk(i1,jpt).nota ",Roll.trk(i1,jpt).nota
+           'print #1, "i1",i1
            i2= i1 - restar (i1)
-          ' ''print #1, "i2",i2
-          ' ''print #1,"relnRNe (i2) ",relnRNe (i2)
-          ' ''print #1,"---------------"   
+          ' print #1, "i2",i2
+          ' print #1,"relnRNe (i2) ",relnRNe (i2)
+          ' print #1,"---------------"   
           If  Roll.trk(jpt,i1).nota <> relnRNe (i2) Then 
               Roll.trk(jpt,i1).nota = relnRNe (i2)
           EndIf    
