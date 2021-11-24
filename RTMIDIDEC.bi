@@ -81,20 +81,20 @@ Type Re   ' de relaciones
 End Type
 'en vec debo agregar la nota piano
 Type vec
-   tiempoFigura As Integer
+   tiempoFigura    As Integer
    tiempoFiguraOld As Integer
-   DUR As Integer 'DUR
- '  DURold As Integer 'DUR
-   notapiano As integer ' del piano real
-   notapianoOld As Integer
-   liga      As Integer
-   ligaold    As Integer
-   i1           As Integer
- '  i1old           As Integer
-   old_time As Integer
-   old_timeold As Integer
-   inst     As Integer 
- '  instold     As Integer
+   DUR             As Integer 'DUR
+   audio           As Integer ' 0 silencio, 1 o >0 suena
+   audioOld        As Integer ' 0 silencio no audio > 0 suena old o anterior..
+   notapiano       As integer ' del piano real
+   notapianoOld    As Integer
+   liga            As Integer
+   ligaold         As Integer
+   i1              As Integer
+   i1old           As Integer
+   old_time        As Integer
+   old_timeold     As Integer
+   inst            As Integer 
 End Type
 Dim Shared pasoCol (0 To 384) As vec
 

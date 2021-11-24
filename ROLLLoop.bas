@@ -1597,7 +1597,9 @@ If comEdit = FALSE Then ' construir cifras para copiar Nveces por ejemplo
     posishow=posicion
  EndIf
  If MultiKey(SC_END) Then
-    posicion=MaxPos - 30
+    If MaxPos > 70 then
+       posicion=MaxPos - 30
+    EndIf
     posishow=posicion
  EndIf
  
