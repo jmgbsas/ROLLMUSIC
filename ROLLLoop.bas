@@ -1249,7 +1249,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
          Else
             thread1 = ThreadCall  playAll(Roll)
        print #1,"USANDO PLAYALL"
-      '''playAll(Roll)
+            '' playAll(Roll)
          EndIf
          '''MutexDestroy tlock
          '''playAll(Roll)

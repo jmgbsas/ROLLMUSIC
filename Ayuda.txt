@@ -286,6 +286,44 @@ II) MODO CURSOR O MODIFICACION SOLO EN LA PANTALLA SELECCIONADA O CONGELADA, SIN
      usar las flechas de teclado.
      De Ctrl-N (se sale con ctrl-p tambien)
 
+2.3.1) En ambos modos se puede entrar acordes, condicion inicial: haber entrado una melodia
+       o notas base del acorde. Por ahora es entrada nota por nota apiladas, arriba o abajo 
+       en una misma posicion. si se entran acordes con silencios por ahroa se hacen asi
+       sF+sF+F+F
+        F+ F+F+F
+        F+ F+F+F
+       por ahora esto no es correcto, no sonara igual que antes,hace falta los silencios 
+       al principio. (se corregirá más adelante )
+             F+F
+        F+ F+F+F
+        F+ F+F+F
+       como se resulve por posicion y tenemos lo siguiente
+       I
+       P
+       esto sonara bien por acordes distintos cosa que todavia no se desarrollo mas.
+       pero si queremos entras 2 figuras reemplazando la negra I , debemos partir en 2 la blanca
+       por ejemplo:
+       L L
+       I+I
+       o mejor que las pastes sean todas iguales. Lo qu epermitira ubicar mas exactamente donde se 
+       desea la corchea L, al comienzo del 1er tiempo y tercer
+       L+sL+ L+sL
+       L+ L+ L+ L
+       De esa foram solo se usa AcordesIguales que esta mejor desarrollado. Cada posicion es un acorde
+       de iguales duraicones. Las posibilidades son muchas se seguira testeando.
+       Por ejemplo sin uniones o ligaduras que veremos si suena igual.
+       L sL  L sL
+       L+ L+ L+ L
+       Suenan parecidos pero es correcto el 1ero todo ligado. Los caminso del algoritmo son
+       distintos se corregirá para que suenen igual...En el 2do caso usa Acordes Iguales tmbien,
+       pero no hay ligaduras en la 1er linea superior, ergo usa otros caminos que se deben corregir
+       parece que los retardos son  mayores.
+       Ergo la apertira para acordes por ahora funciona mas correcto con ligaduras en todas las lineas
+       halla o no silencios, y sin esapcio sen blanco donde no se queira sonido se usara un silencio 
+       ligado (+) ej:sI+ o sL+ o sF+ etc.
+       
+
+
 2.4) Copiar nota en modo Cursor.
    - En EDIT Cursor [ Edit + Ctrl_M] ó [Edit + Ctrl + clicK derecho + seleccion
      gráfica de ctrl-M]   

@@ -145,6 +145,7 @@ On Local Error GoTo errorCalc
    If partes_falta(k)>= 1 And partes_falta(k) <=90 Then
     partes_falta(k)=partes_falta(k) + 90 ' comienzan los + ligados
    EndIf
+ 
    ' x print #1,"k,partes_falta(k), FIGURA ", k, partes_falta(k), figura(partes_falta(k))
    ' x print #1,"POSICION reemplazada: ";posn
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = partes_falta(k)
@@ -186,9 +187,7 @@ On Local Error GoTo errorCalc
    posn=Posn+1
    posicion = posn
    MaxPos= Posicion
-   '   If k= CantFalta Then
-   '  EndIf
-
+ 
    ' x print #1,"acumulado falta: ";acumulado; " posn: ";posn
    
    ' x print #1,"d7 ";d7
@@ -211,27 +210,7 @@ On Local Error GoTo errorCalc
 
   Next k
   
- ' If j=posn Then
- '  ' x print #1," j y posn son iguales "; j, posn
- ' Else
- '  ' x print #1," j y posn no son iguales, k "; j, posn,k
- '  If posn = cantFAlta + j  Then
-    ''''  If carga=0 Then
- '   Compas(posn-1) = posn-1 ' hay compas ' ok pero da 2
- '   ' x print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k);figura(partes_falta(k))
- '   ' x print #1, "ACUMULADO = ";acumulado
- '    acumulado=0 
- '   ' x print #1,"acumulado cero";acumulado
- '   cantFalta=0 'jmg 30-03-21
-    '  EndIf
- '  EndIf
- ' EndIf
-  '  If carga=0 Then
-  'Compas(posn-1) = posn-1 ' hay compas ' ok pero da 2 jmg 30-03-21
- ' ' x print #1, "HAY COMPAS calcompas ultima figura ";partes_falta(k);figura(partes_falta(k))
-  
-  '  EndIf
- End If
+  End If
 
 CantFalta=0
 acumulado=0 ' se supone termino el compas sino habra que forzarlo.... 
@@ -347,6 +326,16 @@ On Local Error GoTo errorSepara
  ' S print #1,"incr: ";incr
 
  ' cuando hago la carga los k son de 1 a 64 no son mas de 1 a 8
+        Select Case DUR
+         Case  1   To 45
+          incr=0
+         Case  46  To  90
+          incr=45
+         Case  91  To  135
+          incr=90
+         Case  136  To  180
+          incr=135
+        End Select
 
  desder =  1 + incr
  hastar = 45 + incr
@@ -623,7 +612,7 @@ On Local Error GoTo errorRecal
       For i= NB To NA
        valdur => Roll.trk(j,i).dur ' de 1 a 180
        ' al cargr tenemos 4 grupos de 16 de duraciones identicas que se repiten
-       ' 1-16,17-32,33-48.49-64 , el indicemeindicaa cual grupo pertenece, y
+       ' 1-45,46-90,91-135,136-180 , el indicemeindicaa cual grupo pertenece, y
        'en que rango buscar
   '     mayorgrupo=0
 ''DE LO QUE SIGUE DEBO EXTRCTAR MAYOR ENUNA POSCION Y COPIARLO
@@ -632,24 +621,17 @@ On Local Error GoTo errorRecal
       If valdur > 0 And valdur < 181 And semi >=1 And semi <=12 Then
        ' print #1, "LECTURA DUR: ";valdur;" EN LA CARGA j: ";j;" i: "; i;" figura ";figura(valdur)
        ' Print #3, "nota: "; i; " posi: "; j; " dur: ";valdur
+       ' las duraciones e repiten cada 45 de modo que no importan los incr
         Select Case valdur
          Case  1   To 45
-          lim1=1:lim2=45:grupo=1
+          lim1=1:lim2=45:grupo=1:incr=0
          Case  46  To  90
-          lim1=46:lim2=90:grupo=2
+          lim1=46:lim2=90:grupo=2:incr=45
          Case  91  To  135
-          lim1=91:lim2=135:grupo=3
+          lim1=91:lim2=135:grupo=3:incr=90
          Case  136  To  180
-          lim1=136:lim2=180:grupo=4
-'         Case 181
-'          compas(j).Posi= 0
-'          Compas(j).nro = 0
- 
-        '  lim1=0:lim2=0
-        '  valdur=180
-        '  mayorgrupo=0
-        '  mayor=180:grupo=0
-          Continue For,For
+          lim1=136:lim2=180:grupo=4:incr=135
+        ' POR ESTO NOANDABA SILENCIOS LO LIMITE ANTES Continue For,For V19 incluimos silencios en recaocompas!!!
         End Select
 
         If  valdur >= lim1 And valdur <=lim2 And lim1 > 0 And lim2> 0 Then
@@ -882,80 +864,100 @@ On Local Error GoTo errorhand
 'desde aca lasnotas se colocan con notacur siemrpe tienen valorde 1 a 12
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR
+    incr=0
   EndIf
  
   If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 9
+   incr=0
   EndIf
  
   If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=0 Then
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 18
+   incr=0
   EndIf
  
   If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=0 Then
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 27
+   incr=0
   EndIf 
  
   If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=0 Then
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 36
+   incr=0    
   EndIf
  
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 45
+    incr=45
   EndIf
    
   If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 54
+    incr=45
   EndIf
   If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 63
+    incr=45
   EndIf
   If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=0 Then
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 72
+    incr=45
   EndIf
    
   If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=0 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 81
+    incr=45
   EndIf   
  
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 90
+    incr=90
   EndIf   
  
   If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 99
+    incr=90
   EndIf 
 
   If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 108
+    incr=90
   EndIf
 
   If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 117
+    incr=90
   EndIf
 
   If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 126
+    incr=90
   EndIf
 '----- fin 3er bloque   
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 135
+   incr=135
   EndIf   
 
   If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 144
+   incr=135
   EndIf   
 
   If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 153
+   incr=135
   EndIf   
 
   If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 162
+   incr=135
   EndIf   
 
   If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 171
+   incr=135
   EndIf   
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur  ' 5.7.2    
  EndIf

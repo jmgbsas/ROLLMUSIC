@@ -83,9 +83,9 @@ End Type
 Type vec
    tiempoFigura    As Integer
    tiempoFiguraOld As Integer
-   DUR             As Integer 'DUR
    audio           As Integer ' 0 silencio, 1 o >0 suena
    audioOld        As Integer ' 0 silencio no audio > 0 suena old o anterior..
+   DUR             As Integer 'DUR
    notapiano       As integer ' del piano real
    notapianoOld    As Integer
    liga            As Integer
@@ -97,6 +97,9 @@ Type vec
    inst            As Integer 
 End Type
 Dim Shared pasoCol (0 To 384) As vec
+
+
+
 
 Declare Sub noteon	( note As UByte, vel As UByte,canal As UByte)
 Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal As UByte,tiempoDur As Double,velpos As integer)
@@ -117,4 +120,4 @@ Dim Shared As integer relnRnE(0 To 132) => { _  ' indice de Roll vs nota ..semit
 12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1, _
 12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1 }
 
- 
+Dim Shared indiceaudio (0 To 384) As Integer 
