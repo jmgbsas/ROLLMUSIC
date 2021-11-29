@@ -709,7 +709,8 @@ Print #1,"pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoC
      print #1,"AFI 11:pasoCol(i1).tiempoFigura ",pasoCol(i1).tiempoFigura
    'old_time= pasoCol(i1).old_time/100000000000 
     ' print #1,"old_time_on ";old_time_on
-     If tipoAcorde=1 Or pasoCol(i1).audioOld=2 And pasoCol(i1).audio=1 Then        
+    ' V20 audioOl>=1 o sea 1 o 2
+     If tipoAcorde=1 Or pasoCol(i1).audioOld =2 And pasoCol(i1).audio=1 Then        
        tf = pasoCol(i1).tiempoFigura  /d11
      Else
        tf = pasoCol(i1).tiempoFiguraOld  /d11
@@ -718,24 +719,32 @@ Print #1,"pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoC
      ' el time tomo del inicio de aca del off porque ya gaste duracon de la 
      ' ligarura en el paso anterior
      If TF > 0 Then 
+     Print #1,"puta entras o no pro aca "
      ' la nota ligada es simple y ataca luego a una nota de un acorde
      ' se parte la duracion en un pedazo luego de la ligada en noteon
      ' y otro pedazo de la duracion o reardo luego de la resolucion 
        If pasoCol(i1).tiempoFiguraOld = pasoCol(i1).tiempoFigura And pasoCol(i1).tiempoFigura > 0 Then
-          If TipoAcorde=1 Then 
+          If TipoAcorde=1 Then
+          Print #1,"por aca no debe entrar tfold=tf" 
             duracion old_time_off , tf
           EndIf  
        Else
          If pasoCol(i1).tiempoFiguraOld > pasoCol(i1).tiempoFigura Then 
-            If  tipoAcorde > 1 And pasoCol(i1).audioOld=1 Then 'zzzzzzz
+  ' V20 -> And pasoCol(i1).audio=2        
+            If  tipoAcorde > 1 And pasoCol(i1).audioOld=1 And pasoCol(i1).audio=2 Then 'zzzzzzz
+                Print #1,"audioold=1 y tfold> tf"
                 duracion pasoCol(i1).old_timeold/d11, tf ' falta cambiar TF 16-11-2021
             Else
-               If pasoCol(i1).audioOld=2 And pasoCol(i1).audio=1 Then
+               If pasoCol(i1).audioOld=2 And pasoCol(i1).audio >=1 Then
                   Print #1,"uso old_time ",pasoCol(i1).old_time
                   duracion pasoCol(i1).old_time/d11,tf
                Else
-                   Print #1,"uso old_time_off de aca ", old_time_off  
-                  duracion old_time_off , tf
+                  If pasoCol(i1).audioOld=1 And pasoCol(i1).audio=1 Then
+                     duracion pasoCol(i1).old_time/d11,tf
+                  Else
+                     Print #1,"uso old_time_off de aca ", old_time_off  
+                     duracion old_time_off , tf
+                  EndIf
                EndIf      
             EndIf
          EndIf    
@@ -1123,20 +1132,20 @@ EndIf
       Notapiano= Notapiano - restar (Notapiano)
       'print #1,"PALL 0:VEO LO CORRECTO DE NOTAPIANO "; Notapiano
       dura=Roll.trk(jply, i1).dur '1) I 2) I dur x 1 to 108
-      'print #1,"PALL 1:jply ";jply; "dura ";dura
+      Print #1,"PALL 1:jply ";jply; "dura ";dura
       cnt=cnt+1
-      'print #1,"PALL 2:paso ";jply;" cnt ";cnt;" notapiano "; Notapiano
+      Print #1,"PALL 2:paso ";jply;" cnt ";cnt;" notapiano "; Notapiano
       If cnt=1 Then 
          duraOld=dura
       EndIf
       ' 04-11-2021 usamos reldur para comparar duraciones !!!
       If reldur(duraOld)=reldur(dura)  And cnt > 1 Then
          iguales=1
-       '  print #1,"PALL 4:cnt ";cnt;" iguales ";iguales
+         print #1,"PALL 4:cnt ";cnt;" iguales ";iguales
       EndIf
       If reldur(duraOld)<>reldur(dura)  And cnt > 1 Then
          distintos=1 ' atrapa no importa cuantos elementos tenga el acorde
-       '  print #1,"PALL 5:cnt ";cnt;" distintos ";distintos
+         print #1,"PALL 5:cnt ";cnt;" distintos ";distintos
       EndIf         
 
      
@@ -1148,17 +1157,18 @@ EndIf
         'print #1,"PALL 8:pasoCol(cnt).DUR ", pasoCol(cnt).DUR
         ' DURACIONE CON LIGA O SIN LIGA EJ F+ O F 
         If pasoCol(cnt).DUR >= 91 And pasoCol(cnt).DUR <=180 Then
-         '   print #1,"PALL 9:PALL 0: nota con + es una liga"
+            print #1,"PALL 9:PALL 0: nota con + es una li DUR R ",pasoCol(cnt).DUR
             pasoCol(cnt).liga =  1
         Else
             pasoCol(cnt).liga =  0   
         EndIf
         ' DURACIOENS SILENCIO O NO sF o sF+
         If (pasoCol(cnt).DUR >= 1 And pasoCol(cnt).DUR <=45) Or (pasoCol(cnt).DUR >= 91 And pasoCol(cnt).DUR <= 135) Then
-          '  print #1,"PALL 9a:PALL 0: nota tiene audio"
+            print #1,"PALL 9a:PALL 0: nota tiene audio 1"
             pasoCol(cnt).audio =  1 ' tiene audio
         Else
-            pasoCol(cnt).audio =  2 ' no tiene audio, 0 valor no ajustado no se nada  
+            pasoCol(cnt).audio =  2 ' no tiene audio, 0 valor no ajustado no se nada
+            print #1,"PALL 9a:PALL 0: nota NO tiene audio 2"  
         EndIf
         
 ' debo saber si la nota anterior con ligaold   

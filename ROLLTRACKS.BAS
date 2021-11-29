@@ -869,6 +869,13 @@ kNroCol= Int(jply/NroCol)
          Else   
             pasoCol(cnt).liga  = 0
          EndIf
+        ' DURACIOENS SILENCIO O NO sF o sF+
+        If (pasoCol(cnt).DUR >= 1 And pasoCol(cnt).DUR <=45) Or (pasoCol(cnt).DUR >= 91 And pasoCol(cnt).DUR <= 135) Then
+          '  print #1,"PALL 9a:PALL 0: nota tiene audio"
+            pasoCol(cnt).audio =  1 ' tiene audio
+        Else
+            pasoCol(cnt).audio =  2 ' no tiene audio, 0 valor no ajustado no se nada  
+        EndIf
 
          pasoCol(cnt).notapiano=Notapiano 
  '        pasoCol(cnt).notapianoOld=Notapiano 
