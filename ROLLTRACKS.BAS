@@ -961,6 +961,7 @@ finplay=1
 
 mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 fueradefoco=0
+ alloff( 1 )
 
 Sleep 100,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
 /'

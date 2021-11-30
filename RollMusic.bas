@@ -1,3 +1,6 @@
+ ' V21 SE AJSUTO MOVER LA VENTANA DRAGANDO LA CINTA SUPERIOR FUNCIONA MEJOR
+ ' V21 TREADdETACH DE tHEREADlOOP Y THREAD1 PLAY CLOSE PORTS ETC EN EL CIERRE DE CONTROL 
+ 'V21 ESTRUCTURO ACORDESONIGUALES Y COLOCO ALLOF EN VARIAS PARTES,Q,FIN PLAY, P.
  ' V19 TOCA BASTANTE BIEN ACORDES IGUALES CON SILENCIOS EN SU FORMACION
  ' Y CALCOMPAS AHROA INCLUYE SILENCIOS 
  ' v14 ...AOI-NUEVO PERFECTO TODOS LOS ACORDES IGUALES EN ACORDES TODAS LAS POSICIONES DBEN ESAR LLENAS
@@ -19,46 +22,6 @@
   ' SIN TOCAR CASI NADA SOLO ELIMINAR EL ANALISIS DE LIGA EN PLAYALL
   ' SEGUIR CORREGIR CON EL USO DE LSO CAMPOS NUEVOS Y AL TERMINAR 
   ' ELIMINAR LOS CAMPOS DE VEC QUE NO SE USEN
-'----------------------------------------------
-' 05-11 con una sola ligadura anda bien playcancion y playall
-' ver a hora on mas de una ligadura tanto en melodia sola como cancion uff
-'------------------------------------------------------------
-' 0.4.5.2.0-20-V4-CANCION-FIX crear para tocar diferentes instrumentos en Play
-' importa roll o rtk desde archivo menu control ROLLMUSIC-0.4.5.2.0-20-V3-CANCION-FIX
-' ya reproduce 2 tracks y forma acordes de 2 melodias...
-' 2 problemas se agrego inst en posicion 1 no lim2 dado que la snotas se barren de 
-' 1 a lim2 y la informacion ya es necesaria para 1 vertical...
-' el 1er problema debo diferenciar bien cuadno grabo track nuevo en cancion
-' como copia de un track exisente (y aexiste), de un roll grabarlo en cancion
-' como track (ya existe), y pro ultimo grabar un track de cancion con sus
-' modificaicones,,,sin cancion parece que y ahacia eso o sea grabar un track
-' cargado sin cancion su smodificaciones,,,(creo solo consideraba track(0)
-' luego pasocol se le agrego en vec al campo inst para tener la info
-' del inst en cada nota porque en el sort pueden cambiar de posicion
-' ergo la solucion final por ahora sera enviar la info de instrumento 
-' para cada nota pero par ano enviar tantos comandos simplemente
-' comparo el inst enviado anteriorment eocn el actual si es igual no envio nada
-' si es distinto vuelvo a enviar el changeprogram...
-' --------------- 
-'0.4.5.2: contine en dat ulon pra el time...cancion 17-10-2021
-' y agraba bien crear cancion o cargarla y luego elegi run instrumento o no
-' y crear una pist aen lacancion con lo elegido , luego de creado se debe grabar en roll
-' por ahora se graba al pista en Roll ahi toma el path y el nombre y graba a disco sino
-' solo esta en la ista gadget pero no existe fisicamente...ok
-' Podria ahce rtodo eso en Control ? no se veremos,,,
-' revisar cancion al crear hace lio ...y al crear una pista nueva, solo grabando
-' no se da cuenta habria que cargar la cancion de nuevo automaricamente !!!
-' lo que pas si creo una nuev apista desde roll y hago roollaTrack silo graba
-' en cancion a hroa no se si queda en al lista.
-'0.4.5.1: correccion grabacio y lectura add X5 Y5 para pasade 16 bits a 20 bits
-' y Cint a Cubyte estaba mal la conversion 
-' 1) perfeccionar algo mas el Play de una Pista y luego
-' 2) pasar a Play de todos las pistas en simultaneo,para ello se modificara el PlayAll
-'  o se hará uno nuevo en vez de barrer vericalmente una sola pista debera barrer
-' todas las pistas cargadas. y el putno limite NA o NB será del ultimo Track o Pista
-' ejecutado. Luego de terminado eso ,,pero esto se hara con Tracks no con Roll
-' o sea debo empezar con un playAll de un Track y luego pasarlo a todas las pistas
-' o las que se quieran tocar... 
 ' ------------------------------
 '  -Wc -fstack-usage genera un archivo en runtime *.su con el uso del stack
 ' por cada funcoin el default total es 1024k, -t 1024 no haria falta colocarlo
@@ -67,13 +30,6 @@
 '====> clave DEVF (desarrollo futuro, comentarios en lugares apr adessarrollar mas
 ' funcionalidades.)
 ' -------------------------------------------------
-' TAREAS PENDIENTES AL 24-10-2021
-' HAY QUE PROBAR TODAS LAS FUNCIONES DE EDICION DESPUES DE TANTOS CAMBIOS 
-' EN CANCION TRACKS MAXPOS POSN ETC ETC, CREAR CANCION NUEVA, USARLA MODIFICARLA
-' DE TODAS LOS MODOS POSIBLES.GRABARLA VOLVERLA A CARGAR ETC..24-10-2021.
-' CREAR PLAYTRACKS PARA EL PLAY SIPMULTANEO DE TODA AL CANCION CON OPCION 
-' A PONE MUDO UN TRACK O PISTA. PODRIAMOS AGREGAR UNA OPCION DE EDITAR O NO A
-' C/PISTA.CHECKS=MUTE/PLAY, EDIT/LOCK. -> 2 RADIO BUTTON PARA C/PISTA
  
 #define WIN_INCLUDEALL
 #Include Once "windows.bi"
@@ -990,6 +946,17 @@ print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
        EndIf
 
       Case EventClose 
+      cairo_destroy(c)
+      cairo_surface_destroy( surface )
+      FT_Done_Face( ftface )
+      If play=1 Or playb=1 Then
+        alloff (1)
+        ThreadDetach(thread1)
+      EndIf
+      close_port(midiout)
+      out_free(midiout) 
+      cerrar 0
+      ThreadDetach(threadloop)
        Close:End 0
      End Select
 

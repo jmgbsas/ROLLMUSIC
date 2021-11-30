@@ -1287,6 +1287,7 @@ NroCol =  (ANCHO / anchofig ) - 4
  menuMouse = 0
  nota=0
  DUR=0
+ alloff( 1 )
 
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
@@ -2005,9 +2006,8 @@ If (ScreenEvent(@e)) Then
   Case EVENT_MOUSE_BUTTON_RELEASE ' obtengoPosicion
    MousePress = 0
    If mousey < 50 And s5=2 Then
-  '  ScreenControl GET_WINDOW_POS, x0, y0
-    s5=0
-     Exit Do ' 07-10-2021
+      s5=0
+      Exit Do ' 07-10-2021
    EndIf
   
   
@@ -2050,7 +2050,7 @@ If (ScreenEvent(@e)) Then
    If e.scancode = SC_P And Play=1 then ' 25 anda mejor q con multikey
       CONTROL1=1
       playloop=0
-      
+      alloff( 1 )
    EndIf
    If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion
     If trasponer=1 And SelGrupoNota=0 Then
@@ -2538,26 +2538,19 @@ If (ScreenEvent(@e)) Then
   EndIf
  EndIf
 ' 12-07-2021 mousex > 70  
- If mouseY < 25 And s5= 0 And mouseX > 350 And mousex < (ANCHO-70) And _
+ If  s5= 0 And mouseX > 350 And mousex < (ANCHO-70) And _
      usarmarco=0 and mousey < 50 Then
-     ScreenControl SET_WINDOW_POS, x0, y0
      x1=mouseX: y1=mouseY
      s5=1
      Exit Do
   EndIf
  ' =========> MOVER VENTANA DRAGAR LA CINTA SUPERIOR con el mouse
  ' And menuNro= 1  '''348  (2* ANCHO/3)
- If MouseButtons And 1 And s5=1 And mouseX > 350  And mousex < (ANCHO-70) And _
+ If MouseButtons And 1 And S5=1 And mouseX > 350  And mousex < (ANCHO-70) And _
     usarmarco = 0 AND mousey < 50 Then
-    
+   
    x2=mouseX
    y2=mouseY
-   If x2-x1 > 50  Then
-     x2=0:x1=0
-   EndIf
-   If y2-y1 > 50  Then
-     y2=0:y1=0
-   EndIf 
  
    x0=x0+x2-x1
    y0=y0+y2-y1
@@ -2567,13 +2560,8 @@ If (ScreenEvent(@e)) Then
    Exit Do
    s5=0
   Else
-      x2=x1:y2=y1 
-      s5=0
+     s5=0
   EndIf
-   If mouseY > 50 Then ' <=== MENU DEFAULT 0 POR AHORA NO ES MOLESTO
-      x1=0:x2=0:y1=0:y2=0   ''         menuNew=menuNro
-      s5=0
-   EndIf
  ''https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-movewindow
  '                           <====== [BOTONES] =======>
  ' 07-08-2021 lugar para test tamaño 10x8

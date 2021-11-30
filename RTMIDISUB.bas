@@ -249,21 +249,16 @@ EndIf
 ' en .liga solo determino la liga actual.-
 ' la  liga final de esa nota que este en cero 0 me determina que es el OFF
 ' final y ahi hago .ligaold=0
-Print #1,"AOI 00:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld
+
 Dim As integer nj=jply, durj ' indice del vector roll, dur
 Dim As Double f
-print #1,"AOI 1: DUR cnt=1:";pasoCol(1).Dur
-
 old_time_on=Timer
-print #1,"AOI 2: OLD_TIME AL INICIO ",old_time_on
 old_time_on_int=old_time_on * d11 
-print #1,"AOI 3: comienza For de 1 a cnt",cnt
+
 ' LIGADURAS SEGUIDAS. AL INICIO LIGAOLD ES CERO SE DA EL ON
 ' Y SI HAY VARIAS LIGADURAS SECUENCIALES VOY EJECUTANDO
 ' LAS DURACIONES O RETARDOS DE CADA PASO Y AL FINAL DOY EL RETARDO FINAL Y EL OFF
 ' CUANDO LA ULTIMA NOTA NO TENGA MAS LIGADURA ES EL MOMENTO DEL OFF.
-Print #1, " analizamos la columna:" 
-Print #1,"AOI 3a:pasoCol(i1).tiempoFiguraOld, notapiano ",pasoCol(i1).tiempoFiguraOld,pasoCol(i1).notapiano
 For k1=1 To cnt  ' PARA CADA NOTA
 
  If p1=1 Then
@@ -272,150 +267,71 @@ For k1=1 To cnt  ' PARA CADA NOTA
    i1 = k1  
  EndIf
 
-Print #1,"AOI 4: 1)DUR cnt=";i1;":";pasoCol(i1).Dur
-print #1,"AOI 5:CNT CNT CNT ";cnt ;" dur";pasoCol(i1).Dur
-Print #1,"aoi 5a:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld
-  If  pasoCol(i1).Dur >= 1 And pasoCol(i1).Dur <= 90   Then
-Print #1,"AOI 5B:pasoCol(i1).tiempoFiguraOld, notapiano ",pasoCol(i1).tiempoFiguraOld,pasoCol(i1).notapiano
-      print #1,"AOI 6:  no ligado,liga ";pasoCol(i1).liga
+ Select Case pasoCol(i1).Dur
+  
+   CASE   1 To  90  ' SIN LIGADURA  
       If pasoCol(i1).old_timeold = 0 Then
          pasoCol(i1).old_time=old_time_on_int
       Else
          pasoCol(i1).old_time=pasoCol(i1).old_timeold 
       EndIf
       pasoCol(i1).liga =0
-      print #1,"AOI 7: no ligado,old_time ";pasoCol(i1).old_time
       pasoCol(i1).tiempoFigura= reldur(pasoCol(i1).DUR) * tiempoDUR * d11    
-Print #1,"AOI 7W:pasoCol(i1).tiempoFiguraOld, notapiano ",pasoCol(i1).tiempoFiguraOld,pasoCol(i1).notapiano
-      If pasoCol(i1).tiempoFiguraOld = 0 Then
-      Print #1,"=>pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld
-      Else
-Print #1,"=>AOI 7X:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld
+      If pasoCol(i1).tiempoFiguraOld <> 0 Then
         If tipoAcorde = 1 Then
            pasoCol(i1).tiempoFigura = pasoCol(i1).tiempoFiguraOld
-           Print #1,"=>AOI 7Y:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld
         Else ' acumulo si no es ligado pero hay ligaol porque es final de ligadura
            If pasoCol(i1).ligaold > 0 Then
               pasoCol(i1).tiempoFiguraOld= pasoCol(i1).tiempoFiguraOld+ pasoCol(i1).tiempoFigura
-              Print #1,"=>AOI 7Z:pasoCol(i1).tiempoFiguraOld, notapiano ",pasoCol(i1).tiempoFiguraOld,pasoCol(i1).notapiano
            EndIf
-       
         EndIf  
       EndIf  
-      Print #1,"AOI 7a: notapiano " ,pasoCol(i1).notapiano
-      print #1,"AOI 8 : no ligado pasoCol(i1).tiempoFigura "; pasoCol(i1).tiempoFigura
-      Print #1,"AOI 8a: no ligado,tiempoFiguraOld ";pasoCol(i1).tiempoFiguraOld            
-      print #1,"AOI 9 : no ligado DUR "; pasoCol(i1).Dur
-      print #1,"AOI 10: no ligado Audio "; pasoCol(i1).audio
-      print #1,"AOI 10a: no ligado AudioOld "; pasoCol(i1).audioOld
-      print #1,"AOI 11: no ligado i1 "; pasoCol(i1).i1
-      print #1,"AOI 11a: no ligado i1Old "; pasoCol(i1).i1old
       
       If pasoCol(i1).ligaold =0  Then
-         print #1,"AOI 12: SIN LIGAR Noteon 1] de notepiano "; pasoCol(i1).notapiano
-         print #1,"AOI 13: sin ligar inst pasocol("+Str(i1)+").inst ",pasoCol(i1).inst
          ChangeProgram (pasoCol(i1).inst,0)
          vel= vol( pasoCol(i1).DUR, velpos)
          noteon pasoCol(i1).notapiano,vel,canal
-Print #1,"AOI 13A:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld
-       '''duracion old_time_on, pasoCol(i1).tiempoFigura/d11
-       ' las duraciones no las tiro aca porque las tiro en AcordeOff..
-       ' por compatibilidad con AcordeOffDistintos donde se hace un sort 
-       ' para que el retardo se haga desde el mas chico al mas grande...
       Else
-      Print #1,"AOI 13B:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld
-         print #1,"AOI 14:No se envia Note on es la continuancion de un ligado, notapiano ",pasoCol(i1).notapianoOld
-         print #1,"No se envia duracion en ligados la duracion se tira toda al final"
-         print #1,"o podria tirarla de a pedazos tambien..¿? hare eso.."
-         Print #1,"AOI 14W:pasoCol(i1).tiempoFiguraOld, notapiano ",pasoCol(i1).tiempoFiguraOld,pasoCol(i1).notapiano
-         ' aca se da que  si al ultima nota de una sucesion de ligados sin sonido , tiene sonido
-         ' y la anterior no tenia entonces se resta los retardos de la nota sin sonido
-         ' alas notas con audioold=0 igual que en la otra parte se copia
-         Dim As Integer cret ' ojo me muevo verticalmente y deberia ahcerlo horizontalmente!!!
-            ' suma de retardos enviados de audio=1
-              If pasoCol(i1).audio=1 And pasoCol(i1).audioold=2 Then
-                 print #1,"AOI 14a: SIN LIGAR Noteon de nota que era silencio ahora se enciende 3] de notepiano "; pasoCol(i1).notapiano
-                 print #1,"AOI 14b: sin ligar inst pasocol("+Str(i1)+").inst ",pasoCol(i1).inst
-Print #1,"AOI 14X:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld
-                 ChangeProgram (pasoCol(i1).inst,0)
-                 vel= vol( pasoCol(i1).DUR, velpos)
-                 noteon pasoCol(i1).notapiano,vel,canal
-                 pasoCol(i1).old_time=old_time_on_int
-              EndIf
-
+          Dim As Integer cret 
+          If pasoCol(i1).audio=1 And pasoCol(i1).audioold=2 Then
+             ChangeProgram (pasoCol(i1).inst,0)
+             vel= vol( pasoCol(i1).DUR, velpos)
+             noteon pasoCol(i1).notapiano,vel,canal
+             pasoCol(i1).old_time=old_time_on_int
+          EndIf
+         ENDIF 
+   Case   91  To 180 ' CON LIGADURA  
+     pasoCol(i1).liga=1
+     If pasoCol(i1).old_timeold = 0 Then
+        pasoCol(i1).old_time = old_time_on_int
+        pasoCol(i1).old_timeOld = old_time_on_int
+     Else
+        If tipoAcorde=1 Then
+           pasoCol(i1).old_time= pasoCol(i1).old_timeold
+        EndIf 
      EndIf
-  Else
-Print #1,"AOI 14Y:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld
-     If pasoCol(i1).Dur >= 91 And pasoCol(i1).Dur <= 180 Then ''LIGADOS
-         Print #1,"AOI 15: DUR debe ser ligado >=91 <=180 ";pasoCol(i1).Dur
-         Print #1,"AOI 15a: notapiano " ,pasoCol(i1).notapiano
-         Print #1,"AOI 16: liga debe ser 1: ",pasoCol(i1).liga
-         pasoCol(i1).liga=1
-         If pasoCol(i1).old_timeold = 0 Then
-            pasoCol(i1).old_time = old_time_on_int
-            pasoCol(i1).old_timeOld = old_time_on_int
-         Else
-            If tipoAcorde=1 Then
-               pasoCol(i1).old_time= pasoCol(i1).old_timeold
-            EndIf 
-         EndIf
-Print #1,"AOI 16A:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld         
-         Print #1,"AOI 17:  ligado,old_time ";pasoCol(i1).old_time    
-         pasoCol(i1).tiempoFigura= reldur(pasoCol(i1).DUR) * tiempoDUR * d11
-Print #1,"AOI 17X:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld         
-         If pasoCol(i1).tiempoFiguraOld =0  Then
-            pasoCol(i1).tiempoFiguraOld =pasoCol(i1).tiempoFigura
-          Print #1,"17a pasoCol(i1).tiempoFiguraOld, notapiano ",pasoCol(i1).tiempoFiguraOld,pasoCol(i1).notapiano  
-         Else
-           If tipoAcorde = 1 Then
-              pasoCol(i1).tiempoFigura=pasoCol(i1).tiempoFiguraOld
-Print #1,"AOI 17X:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld              
-           Else ' acumulo
-           Print #1,"AOI 17b: notapiano " ,pasoCol(i1).notapiano
-              pasoCol(i1).tiempoFiguraOld= pasoCol(i1).tiempoFiguraOld+ pasoCol(i1).tiempoFigura
-              Print #1,"17c:pasoCol(i1).tiempoFiguraOld, notapiano ",pasoCol(i1).tiempoFiguraOld,pasoCol(i1).notapiano
-           EndIf  
-         EndIf
-         print #1,"AOI 18 :  ligado,tiempoFigura ";pasoCol(i1).tiempoFigura
-         Print #1,"AOI 18a:  ligado,tiempoFiguraOld ";pasoCol(i1).tiempoFiguraOld            
-         print #1,"AOI 19 :  ligado DUR "; pasoCol(i1).Dur
-         print #1,"AOI 20 :  ligado Audio "; pasoCol(i1).audio
-         print #1,"AOI 20a:  ligado AudioOld "; pasoCol(i1).audioOld
-         print #1,"AOI 21 :  ligado i1 "; pasoCol(i1).i1
-         print #1,"AOI 21a:  ligado i1Old "; pasoCol(i1).i1old
-         If pasoCol(i1).ligaold > 0 And pasoCol(i1).audio=1 And pasoCol(i1).audioOld = 2  Then 
-            Print #1,"AOI 21b:En NOTEON de ligado con audio, pero su old era sin audio notepiano:"; pasoCol(i1).notapiano
-            ChangeProgram (pasoCol(i1).inst,0)
-            vel= vol( pasoCol(i1).DUR, velpos)
-            Print #1,"   21b:velpos,vel ",velpos,vel
-            noteon pasoCol(i1).notapiano,vel,canal
-            pasoCol(i1).old_time=old_time_on_int
-            Print #1,"AOI 21W:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld
-            pasoCol(i1).tiempoFiguraOld= pasoCol(i1).tiempoFigura ''''aca toma 0.25 
-            pasoCol(i1).old_timeold=old_time_on_int
-            '  borramos los retardos de silencio anteriores a las notas que tenian noteon antes o sea
-            ' que eran audio=2
-
-Print #1,"AOI 21X:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld   
-
-         EndIf           
-       ''  ' 24-11 para nota 52 paso 10 noteon caso raro
-       '  If tipoAcorde > 1 And pasoCol(i1).ligaold > 0 And pasoCol(i1).audio=2 And pasoCol(i1).audioOld = 2 And pasoCol(i1).tiempoFigura=pasoCol(i1).tiempoFiguraOld Then 
-       '     noteon pasoCol(i1).notapiano,vel,canal
-       '     pasoCol(i1).old_time = old_time_on_int  
-       '  EndIf 
-         If pasoCol(i1).ligaold > 0  and tipoAcorde=1 Or pasoCol(i1).audio=2 Then
-     ' solo es para nota ligada simple que ataca o se liga a un acorde siguiente
-     ' para que el siguiente acorde no empice junto a la nota de inicio de la ligadura
-     ' se separa la nota ligada simple con esta duracion que no se usa si fuese
-     ' parte de un acorde..
-     ' ya hice el pedazo de retardo de la nota anterior, o sea c/nota ligada
-     ' hace su retardo  
-Print #1,"AOI 21X:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld
-          f=pasoCol(i1).tiempoFigura/d11
-          Print #1,"AOI 21d: ligadoold notapiano, duracion ",pasoCol(i1).notapiano, f
-          Print #1,"AOI 21d: notapiano " ,pasoCol(i1).notapiano
-          'duracion old_time_on, f ' ESTA DURACION ES PARA TODAS LAS NOTAS ERGO DEBO DESCONTAR
+     pasoCol(i1).tiempoFigura= reldur(pasoCol(i1).DUR) * tiempoDUR * d11
+     If pasoCol(i1).tiempoFiguraOld =0  Then
+        pasoCol(i1).tiempoFiguraOld =pasoCol(i1).tiempoFigura
+     Else
+        If tipoAcorde = 1 Then
+           pasoCol(i1).tiempoFigura=pasoCol(i1).tiempoFiguraOld
+        Else ' acumulo
+           pasoCol(i1).tiempoFiguraOld= pasoCol(i1).tiempoFiguraOld+ pasoCol(i1).tiempoFigura
+        EndIf  
+     EndIf
+     Select Case  pasoCol(i1).ligaold
+        Case Is > 0
+           If  pasoCol(i1).audio=1 And pasoCol(i1).audioOld = 2  Then 
+               ChangeProgram (pasoCol(i1).inst,0)
+               vel= vol( pasoCol(i1).DUR, velpos)
+               noteon pasoCol(i1).notapiano,vel,canal
+               pasoCol(i1).old_time=old_time_on_int
+               pasoCol(i1).tiempoFiguraOld= pasoCol(i1).tiempoFigura ''''aca toma 0.25 
+               pasoCol(i1).old_timeold=old_time_on_int
+           EndIf           
+           If  tipoAcorde=1 Or pasoCol(i1).audio=2 Then
+              f=pasoCol(i1).tiempoFigura/d11
               Dim As Integer k=0
               For J1=1 To CNT
                  If pasoCol(j1).liga =1 Then
@@ -426,55 +342,42 @@ Print #1,"AOI 21X:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapia
                  EndIf
               Next J1
               If k=cnt Then
-                 '0 duracion pasoCol(i1).old_time/d11, pasoCol(i1).tiempoFigura/d11
-                 '1 duracion pasoCol(i1).old_timeold/d11, f '25-11
                  If pasoCol(i1).audioOld=1 And pasoCol(i1).audio=2 Then
-                   Print #1,"AOI 21E: se usa el time almacenado del apso anterior ",pasoCol(i1).old_timeold 
-                   duracion pasoCol(i1).old_timeold/d11, f '25-11
-         ' 25-11 --si ok! falta q no se escucha 52 L
-                   noteoff pasoCol(i1).notapiano ,canal ' la notapiano es la misma porque esta ligado 
+                    duracion pasoCol(i1).old_timeold/d11, f '25-11
+                    noteoff pasoCol(i1).notapiano ,canal ' la notapiano es la misma porque esta ligado 
                  EndIf
-                 
-                 ' V18 If pasoCol(i1).audio=2 And pasoCol(i1).liga=1 Then
                  If pasoCol(i1).liga=1 Then
-                    Print #1,"AOI 21E: se usa el time de este paso ",old_time_on 
                     duracion old_time_on, f '25-11
                  EndIf
               EndIf
-          
-          ' a LA DURACION DE LAS OTRAS le resto la duracion del silencio
-        Else
-Print #1,"AOI 21Y:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld        
+           EndIf    
+        Case Else
           If pasoCol(i1).ligaold =0 And pasoCol(i1).liga=1 Then '16-11-2021 UN SOLO ON
-              ChangeProgram (pasoCol(i1).inst,0)
-              vel= vol( pasoCol(i1).DUR, velpos)
-              If pasoCol(i1).audio = 1 Then
-                 noteon pasoCol(i1).notapiano,vel,canal
-                 pasoCol(i1).old_time = old_time_on_int
-                Print #1, "AOI 22: 2]NOTEON ligado pasocol("+Str(i1)+").inst en AcordeonIguales ", pasoCol(i1).notapiano
-                 Print #1,"AOI 22A:OLD_TIME DE NOTEON ", old_time_on_int
-              EndIf
+             ChangeProgram (pasoCol(i1).inst,0)
+             vel= vol( pasoCol(i1).DUR, velpos)
+             If pasoCol(i1).audio = 1 Then
+                noteon pasoCol(i1).notapiano,vel,canal
+                pasoCol(i1).old_time = old_time_on_int
+             EndIf
               
-              Dim As Integer k=0
-              For J1=1 To CNT
-                 If pasoCol(j1).liga =1 Then
-                    k=k+1
-                 EndIf
-                 If j1=cnt then 
-                   Exit For
-                 EndIf
-              Next J1
-              If k=cnt And tipoAcorde=1 Then
-                 duracion pasoCol(i1).old_time/d11, pasoCol(i1).tiempoFigura/d11
-              EndIf
-           EndIf
-         EndIf 
+             Dim As Integer k=0
+             For J1=1 To CNT
+               If pasoCol(j1).liga =1 Then
+                  k=k+1
+               EndIf
+               If j1=cnt then 
+                  Exit For
+               EndIf
+             Next J1
+             If k=cnt And tipoAcorde=1 Then
+                duracion pasoCol(i1).old_time/d11, pasoCol(i1).tiempoFigura/d11
+             EndIf
+          EndIf
+     End Select 
          pasoCol(i1).ligaold = pasoCol(i1).ligaold + 1 ' para el proximo paso
-         Print #1,"AOI 23:  cantidad Ligaold ==========> ";pasoCol(i1).ligaold
-     EndIf
-  EndIf 
+     
+ End SELECT
 
-Print #1,"AOI 24:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld
 Next k1
 
 ' for de NOTEON DE NO LIGADOS, EN NOTEON NO HACE FALTA SORT SOLO EN OFFS"
@@ -1259,6 +1162,7 @@ finplay=1
 
 mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 fueradefoco=0
+ alloff( 1 )
 
 Sleep 100,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
 /'
