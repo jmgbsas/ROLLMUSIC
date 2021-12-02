@@ -2023,7 +2023,7 @@ print #1,"posinueva ",posinueva
 print #1,"MaxPosold ",MaxPosold
 print #1,"posivIEJa ",posivieja
   If posinueva < MaxPos then
-    MaxPos=MaxposOld + posinueva - posivieja
+    MaxPos=MaxposOld + posinueva - posivieja -1 ' -1 01-12-21
   EndIf
 print #1,"MaxPos ",MaxPos
  

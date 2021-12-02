@@ -19,7 +19,7 @@ Declare Sub selInstORdenNum (ByRef instru As Integer)
 
 Dim Shared As ubyte GrabarPistaCancion=0
  
-Dim Shared As Integer  usarmarco= 0 , usarmarcoOld=0,reiniciar=0
+Dim Shared As Integer  usarmarco= 0 , usarmarcoOld=0,reiniciar=0,usarAcordesIguales=0
 #Include "dir.bi"  
   
 

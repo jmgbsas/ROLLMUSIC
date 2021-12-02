@@ -1,3 +1,10 @@
+ ' v23 fraccionar automaticamente en comEdit cursor al poner notas menores o 
+ ' mayores en duracion a otra nota en acorde existente, tambien armar acordes desde una nota
+ ' existente como tonica mayores menores etc,,buscar al tonica si consideramos es una 3era
+ ' o una 5ta..
+ ' V22 agregamso menu contextual en lectura con click derecho para acordes falta desarrollar
+ ' v22  SetStateMenu(hmessages,1102,3) o  SetStateMenu(hmessages,1103,0) check items menu
+ ' V22 abrir nota se ajuto final dejaba una columna vacia
  ' V21 SE AJSUTO MOVER LA VENTANA DRAGANDO LA CINTA SUPERIOR FUNCIONA MEJOR
  ' V21 TREADdETACH DE tHEREADlOOP Y THREAD1 PLAY CLOSE PORTS ETC EN EL CIERRE DE CONTROL 
  'V21 ESTRUCTURO ACORDESONIGUALES Y COLOCO ALLOF EN VARIAS PARTES,Q,FIN PLAY, P.
@@ -37,6 +44,8 @@
 #include "crt/stdio.bi"
 #Include "file.bi"
 
+' Nota: algun dia si quiero midifile intentar usar una libreria de C pura 
+' C:\IT64\AREAWORKAUX\MIDI-LIBRARY\midilib-master\midilib-master\freeBasic
 
 Sub getfiles(ByRef File As OpenFileName,flag As String, accion As String)
     Dim As ZString * 2048 SELFILE
@@ -449,6 +458,9 @@ EndIf
 print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 print #1,"INSTANCIA ",instancia
 
+Dim As Integer  tilde1102=MF_UNCHECKED,tilde1103=MF_UNCHECKED  
+
+Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 If ix < 3 Then ' rollmusic CON control
   instancia=0
   hwndC = OpenWindow("RollMusic Control ver 0.4.3.2",10,10,ancho*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
@@ -460,7 +472,7 @@ If ix < 3 Then ' rollmusic CON control
   TextGadget(4,250,10,240,20,, SS_SIMPLE  )
  ' GetTextExtentPoint32 PARA DETERMINAR EL ANCHO EN PIXELS DE UN TEXTO
  ' EL SCROLL VERTICAL APARECE CUANDO SE SOBREPASA LSO ITEM QUE SE PUEDEN VER 
-  Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
+
  
 
   EVENTc=0
@@ -517,9 +529,10 @@ MenuItem(1080,MenName5,"TEMPO")
   
 MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
 
-MenuItem(1100,MenName7,"Usar MARCO de Ventana ")
-
-MenuItem(1101,MenName7,"No Usar MARCO de Ventana ")
+MenuItem(1100,MenName7,"Usar MARCO de Ventana ", MF_UNCHECKED)
+MenuItem(1101,MenName7,"No Usar MARCO de Ventana ",MF_CHECKED)
+MenuItem(1102,MenName7,"Usar Acordes iguales, Fracciona notas automaticamente en una pista ",MF_UNCHECKED  )
+MenuItem(1103,MenName7,"NO Usar Acordes iguales, NO Fracciona notas ", MF_CHECKED )
 
 MenuItem(1110,MenName8,"9 Menu")
 End If
@@ -568,6 +581,7 @@ End Sub
 ' Dim As Any Ptr pt
 ' Dim Shared As Integer ok = 0
 Dim  As Integer Terminar=0
+
 abrirRoll=0
 
 Do
@@ -859,10 +873,30 @@ print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
               Dim As Any Ptr thplayC = ThreadCall  playCancion(Track())
             Case  1100
                 usarmarcoOld=usarmarco
+'0 - the menu is active, the checkbox is not selected
+'1 - the menu item is unavailable, grayed out
+'2 - the menu item is unavailable (on Linux the same as under the number 1)
+'3 - Check the box
+                 SetStateMenu(hmessages,1100,3)
+                 SetStateMenu(hmessages,1101,0)
+
                 usarmarco=1
             Case 1101
                  usarmarcoOld=usarmarco            
+                 SetStateMenu(hmessages,1100,0)
+                 SetStateMenu(hmessages,1101,3)
                  usarmarco=0
+            Case 1102
+                 usarAcordesIguales=1 
+                 SetStateMenu(hmessages,1102,3)
+                 SetStateMenu(hmessages,1103,0)
+
+            Case 1103
+                 usarAcordesIguales=0
+                 SetStateMenu(hmessages,1102,0)
+                 SetStateMenu(hmessages,1103,3)
+
+
             Case  1110
              MessBox ("","Acerca de este programa")
               

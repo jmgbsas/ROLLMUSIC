@@ -989,9 +989,9 @@ Sub FraccionarDur (Track() As sec,Roll As inst, indicePos As Integer, dura As ub
 ' en RollLoop coocar ctrl+alt+x un if con la cifra que se entra,,,
 '4) DETERMIANR EN CUANTAS PARTES SE FRACCIONA LA NOTA NP (NPARTES)
 ' deducirla con al duracion de la nota exsitente en la pista o roll y la 
-'  cifra introducida por el usuario ej I (2),,,usuario:5 -> I fraccionada como E
-' seran 4 E hace una I son 4 partes 1 la origial pas de I a E+ y lasl otras 3
-' 2 E+ y uan final E osea E+E+E+E  
+'  cifra introducida por el usuario ej I (2),,,usuario:5 -> I fraccionada como F
+' seran 4 F hace una I son 4 partes 1 la origial pas de I a F+ y las otras 3
+' 2 F+ y una final F osea F+F+F+F  
 ' 5) RESTAR 1 A NP, NP-1.. (4 -1)
 ' 6) MOVER EN CADA PISTA NP-1 (3) POSICIONES A LA DERECHA DE LOS DATOS.
 ' 7) DETERMINAR LA NUEVA MAXPOS DE C/PISTA SUMANDOLE NP-1 (3)
@@ -1025,7 +1025,7 @@ print #1,"DUR de usuario, delta ",durfig,delta
 
 nroPartes=delta*2 ' tengo la cantidad de figuras=nroPArtes
 posivieja=indicePos
-posinueva=indicePos + nroPartes 
+posinueva=indicePos + nroPartes ' POSICION DONDE CONTINUA LA SECUENCIA 
 
 print #1,"nropartes =",nropartes
 print #1,"muevo  a ",posinueva

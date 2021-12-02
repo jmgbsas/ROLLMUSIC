@@ -1,3 +1,26 @@
+'01-12-2021
+' crearpente cursor y playAll se comunican par amover el cursor simplemente por variables globales
+' de modo que por ejemplo si yo tengo PlayAll funionando apenas empieza el play ajusta una Global a
+' start o 1 de comienzo yo llamo a PlayAll como thread puedo llamar como thread a otro play
+' pero de eventos grabados desde un teclado y sincronizo ambos loops por una variable..
+' l aposicion x de la secuencia , puedo llamar pero que no comienza que quede en esperra en un loop
+' al llegar la señal de comienzo se dispara el loop mas interno para lograr esto mejro se disparan los
+' escalvos primero que se quedan esperando y luego al conductor el playall o playcancion
+' lso cuales van enviando la posicion o columna tocada con la variable global como la jply
+' con ella el for en el eje x toma los valores de jply .. si uso un For el toma el comando
+' debo encontrar algo que reemplace al for o sea que el for del Play indirectamente controle la ejecucion de 
+' el otro proceso. El otro proceso serai otro thread en loop con un if dentro del loop que pregunte por
+' 3 condiciones si las varaibel sglobales son > 0 se ejecuta el proceso al terminar el loop
+' lo vuelve al principio y ahi x o y tendrian ptrp valor se puede preguntar si cambio,,,si no cambio
+' se espera que cambie...
+' si x e y son cero se ejeuta un retardo 1 o 2 mseg digamos....
+' si x e y son negativos se sale del loop fin , y el thread termina por detach...
+' se complicaria al sincronizaion pero es posible ...
+' lo mas practivo seria que los track grabados graben directo a lso tracks existentes y se lo tome
+' como cualqueir track o agregar al mismo vector tracks especiales...
+' voy atener que empezar a usar ticks creo....
+
+'-----------------------------------
 ' IMPLEMENTAR LINKED LIST CON XOR https://www.geeksforgeeks.org/xor-linked-list-a-memory-efficient-doubly-linked-list-set-2/
 ' HACER UNA LIBRERIA EN C? Y USARAL DESDE FREEBASIC? O IMPLEMENTAR TODO EN FREEBASIC?
 ' se corrigio lso 4 byte  para maxpos solo permitia 65000 posiciones se agrepgo un byte mas a5 y5 .pb

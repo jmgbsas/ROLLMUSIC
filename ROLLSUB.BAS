@@ -740,6 +740,53 @@ EndIf
 
 
 End Sub
+' ------
+Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As ubyte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As integer)
+' estoy en Roll el cual es único tengo entonces definido las globales NB y NA por default
+' recorro la columna
+Dim As Integer i1,j1=1
+Dim As UByte DurMen,DurMay
+
+  For i1 = NB To NA
+     If Roll.trk(ejex,i1).dur > 0 And Roll.trk(ejex,i1).dur < 181 Then
+        If j1=1 Then
+           DurMen=Roll.trk(ejex,i1).dur
+           DurMay=Roll.trk(ejex,i1).dur
+           menor = pesoDur(DurMen)
+           mayor = pesoDur(Roll.trk(ejex,i1).dur)
+           i1may=i1
+           i1men=i1
+           j1=2
+        EndIf   
+        If j1=2 Then
+           If menor > pesoDur(Roll.trk(ejex,i1).dur) Then
+              menor= pesoDur(Roll.trk(ejex,i1).dur)
+              DurMen=Roll.trk(ejex,i1).dur
+              i1men=i1
+           EndIf 
+           If mayor < pesoDur(Roll.trk(ejex,i1).dur) Then
+              mayor = pesoDur(Roll.trk(ejex,i1).dur)
+              DurMay=Roll.trk(ejex,i1).dur
+             i1may=i1
+           EndIf
+          
+        EndIf
+    EndIf        
+  Next i1
+
+Print #1,"encontra menor y mayor ", DurMen, DurMay, "En columna ",ejex
+Dim As Integer notapMay, notapMen
+notapMay=i1May -restar(i1May)
+notapMen=i1Men -restar(i1Men)
+menor=DurMen
+mayor=DurMay
+Print #1,"Notapiano menor,mayor ", notapMen, notapMay
+i1May=notapMay
+i1Men=notapMen 
+' ejex es fijo es al columna en analis y origen del  fraccionamiento
+  
+End Sub
+
 ''========================= C U R S O R ============
 Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As inst)
  'print #1,"1-cursor "
@@ -806,21 +853,24 @@ On Local Error GoTo errorhand
   If notacur=1 Then ' 1 POR 0 JMG
    notacur=notaOld 
   EndIf
-  'dursaved = Roll.trk(notacur + (*po) * 13, n + curpos).dur
-  ' debo cambiar esa nota por (equivalente en silencio no va mas
-  'para eso entra un silencio) se pone nota cero y dur 0
   
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).dur = 0
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).nota = 0
-  'Roll.trk(notacur + (*po) * 13, n + curpos).dur = dursaved + 16
- ' If Roll.trk(notacur + (*po) * 13, n +curpos).dur > 181 Then
- '  Roll.trk(notacur + (*po) * 13, n +curpos).dur = 181
- ' EndIf
+
   borrar = 0
   ''calcCompas(n) ''mayorDurEnUnaPosicion (n)
  EndIf
+ ' ==========================================================================
  ' << CAMBIADUR TAMBIEN INGRESA NOTA NUEVA Y DURACION DONDE NO HABIA >>
- ' << SOBREESCRIBE >>
+ ' << SOBREESCRIBE >> aca si usarAcordesIguales=1 debo hacer el FraccionaDur automatico
+ ' si tengo notas en acorde preexistentes de menor, igual  o mayor valor de duracion.
+ ' tambien deberé Fraccionar ---TAREA FUTURA---- FUTURO
+ ' EN UNA COLUMNA BUSCO LA DURACION MENOR Y LA MAYOR COMPARO CON LA DE ENTRADA NUEVA.
+ ' TOMO LA MENOR DE TODAS INCLUSO LA ENTRADA Y FRACCIONO TODAS LAS NOTAS DE LA COLUMNA
+ ' ES TANTAS PARTES TENGA CADA FIGURA DE ESA MENOR. PARA ELLO TOMARE LA MAYOR Y AL PARTIRE
+ ' EN LAS PARTES CORRESPONDIENTES DE LA MENOR, LUEGO DE ESO SIGO FRACCIONANDO LAS OTRAS
+ ' QU ESON MAYORES A LA MENOR PERO MENORES A LA MAYOR ,,,,
+  '=============================================================================
  If (cursorHori=1 Or cursorVert = 1) And cambiadur= 1 Then
   ' debo cambiar esa nota por su equivalente silencio
   '1ero se pulsa la nueva duracion y luego la X porque aca se anula luego elflag cambiadur
@@ -837,13 +887,13 @@ On Local Error GoTo errorhand
   ' ------------------------------------
   ' nueva verion con puntillo o silencio
   ' ------------------------------------
-  'si en una columna todas las notas son 0,181 y sihay un 254 en dur
-  ' y nota esa columna se elimina,,,,,implementar 12-05-2021
+  'si en una columna todas las notas son 0,181 y sihay un 190 en dur
+  ' y nota esa columna se elimina,,,,,implementar 12-05-2021 implementado se uso 190
   ' la forma facil de borrar seria grabar a disco cuando se está
-  ' en posicion con 254 saltar esa posicion y restar 1 a la posicion final.
-
-
+  ' en posicion con 190 saltar esa posicion y restar 1 a la posicion final.
+  ' se ahce ya de ambasformas usando delete tambiense borra online
   
+   
  If DUR=181 Then
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 0
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =181   ' 5.7.2
@@ -962,6 +1012,30 @@ On Local Error GoTo errorhand
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur  ' 5.7.2    
  EndIf
 
+' EN UNA COLUMNA BUSCO LA DURACION MENOR Y LA MAYOR incluido LA DE ENTRADA NUEVA.
+' TOMO LA MENOR DE TODAS INCLUSO LA ENTRADA Y FRACCIONO TODAS LAS NOTAS DE LA COLUMNA
+' En TANTAS PARTES TENGA CADA FIGURA DE ESA MENOR. PARA ELLO TOMARE LA MAYOR Y LA PARTIRE
+' EN LAS PARTES CORRESPONDIENTES DE LA MENOR, LUEGO DE ESO SIGO FRACCIONANDO LAS OTRAS
+' QUE SON MAYORES A LA MENOR PERO MENORES A LA MAYOR ,,,,
+
+'  
+ '-----------------------------------------------------------
+If usarAcordesIguales = 1 Then ' empeiza Fraccionador..
+ ' determino la duracion menor y mayor incluida la de entrada ya cargada
+ ' en Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur
+   Dim As UByte menor, mayor
+   Dim As Integer i1men,i1may
+   menoryMayorEnColumna (Roll, n+curpos,menor,mayor,i1men,i1may)
+' saco la info para usar Fraccionador...pero ojo fraccionador solo reemplaza a notas
+' de igual duracion no de distintas, debere ahce run nuevo fraccionador??   
+   Print #1,"En Cursor: menor,mayor,i1men,i1may ",menor,mayor,i1men,i1may
+ 
+  
+ 
+EndIf
+
+
+ '-----------------------------------------------------------
  '   vroll= Roll.trk(notacur + (*po) * 13, n + curpos).nota
   cambiadur = 0
   cuart=0:pun=0:doblepun=0:tres=0:sil=0:mas=0

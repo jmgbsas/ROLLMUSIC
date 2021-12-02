@@ -2633,6 +2633,60 @@ If (ScreenEvent(@e)) Then
  '  MOMENTO EN EL QUE SE EJECUTA EL COMANDO Y SE VE EL CAMBIO.
  '       ==== NOTAS O DURACIONES EXISTENTES ====
 If  mouseY > 50 Then '<=== delimitacion de area de trabajo
+
+  If comEdit=FALSE Then
+' para ingreser automatico acordes a partir de una TONICA futuro--01-12-2021  
+     If MouseButtons And 2 Then
+     Dim As HMENU hpopup1
+     Dim As Integer event
+      
+     Var haco = OpenWindow("Acordes",mousex -10,mousey,20,80,WS_VISIBLE Or WS_THICKFRAME , WS_EX_TOPMOST Or WS_EX_TRANSPARENT  )
+     
+
+     hpopup1=CreatePopMenu()
+     MenuItem(1001,hpopup1,"Mayor")
+     MenuItem(1002,hpopup1,"Menor")
+     MenuItem(1003,hpopup1,"Disminuido")
+     MenuItem(1004,hpopup1,"<-Cancelar->")
+    
+     Do
+      event=WaitEvent
+    mouse_event MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0
+    sleep 10
+    mouse_event MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0
+      
+      If event=EventMenu then
+       Select case EventNumber
+         Case 1001
+            'MessBox("","1 Menu")
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+
+         Case 1002
+            'MessBox("","2 Menu")
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+
+         Case 1003
+            'MessBox("","2 Menu")
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+
+         Case 1004
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+        End Select
+      ElseIf event=eventrbdown Then
+          DisplayPopupMenu(hpopup1, GlobalMouseX,GlobalMouseY)
+      EndIf
+ 
+    Loop     
+     EndIf
+ EndIf
  If  comEdit=TRUE  Then
     If  MultiKey(SC_CONTROL) And (MouseButtons And 2)  Then
    ' trae un menu contextual solo con ctrl-m  previo <==== menu borrar insertar modificar
@@ -2938,13 +2992,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    Exit Do
   EndIf
    EndIf
-  
- EndIf 
- ' habilitar una octava para edicion con el mouse
- If  mousex > ANCHO3div4  Then ' 09-06-2021 para que nochoque con boton EDIT
-       octavaEdicion=estoyEnOctava
- EndIf
- If comedit=TRUE Then
+
    If MultiKey (SC_ENTER) And copiar=0 Then
       copiar=1
    EndIf 
@@ -2952,8 +3000,23 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
    If MultiKey (SC_ENTER) And copiar=2 Then
       copiar=3
    EndIf 
- EndIf 
- ''
+
+ EndIf ' comEdit=False
+ ' menu contextual
+ 
+' You'd have to get the thread id of the graphics window (GetWindowThreadProcessId), 
+' set a WH_GETMESSAGE hook with that thread id and then process the command messages 
+' in your hook function. chino basico je
+
+
+  
+ 
+ ' habilitar una octava para edicion con el mouse
+ If  mousex > ANCHO3div4  Then ' 09-06-2021 para que nochoque con boton EDIT
+       octavaEdicion=estoyEnOctava
+ EndIf
+
+
 ' SELECCION DE ZONA PARA TRASPONER, VOLUMEN, INSTRUMENTO, ETC ETC
 ' SOLO SELECCIONO PASO DESDE HASTA y/o NOTA. 
 ' usaremos tambien (en desarrollo futuro) para borrar un intervalo ya sea de 
@@ -3089,10 +3152,6 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  If MultiKey(SC_RSHIFT)  Then ' :
      doblepun = 1  ' doble puntillo
      Exit Do
- EndIf
- if MultiKey(SC_ALT) And MouseButtons And 1  Then
- ' elijo la notapiano actual del click 
-     
  EndIf
  
 EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie

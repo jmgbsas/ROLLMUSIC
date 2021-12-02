@@ -1,7 +1,7 @@
 start
-11-29-202122:43:05
+12-01-202123:56:03
 __FB_ARGC__    1
-arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-V21-ESTRUCTURO-ACORDESIGUALES\RollMusic.exe'
+arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-V23-ABRIR-NOTA-EN-INGRESO\RollMusic.exe'
 arg  1 = ''
 ubirtk         0
 ubiroll        0
@@ -37,6 +37,21 @@ datos recibidos en rooloop nombre
 datos recibidos en rooloop desde,hasta     4             8
 datos recibidos en rooloop *po             7
 ubound roll.trk 2            102
-pid           2076
+pid           6960
 INSTANCIA      0
+CArgarArchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-V21-ESTRUCTURO-ACORDESIGUALES\IIIIF+F+F+FIII.roll
+open nombre en CArgaARchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-V21-ESTRUCTURO-ACORDESIGUALES\IIIIF+F+F+FIII.roll
+CambiarDim desde  4 hasta  8 *po  7 NB  39 NA  102
+CantTicks  522
+FIN CAMBIARDIM 
+En CargarArchivo NB NA       39            102
+uso Close
+CargaARchivo LBound (Roll.trk,1)           1
+CargaARchivo LBound (Roll.trk,2)           39
+CargaARchivo UBound (Roll.trk,1)           522
+CargaARchivo UBound (Roll.trk,2)           102
+nombre cargado en Roll      C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-V21-ESTRUCTURO-ACORDESIGUALES\IIIIF+F+F+FIII.roll
+encontra menor y mayor      3             2             En columna     3
+Notapiano menor,mayor        44            52
+En Cursor: menor,mayor,i1men,i1may        3             2              44            52
 uso Reset
