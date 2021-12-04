@@ -20,19 +20,48 @@
     1.6) Tamaño Font. 
     1.7) Crear Canción.
     1.8) Agregar tracks a cancion.
-    1.9) Conmutar de Pista en una cancion cargadacon TAB.
+    1.9) Conmutar de Pista en una cancion cargada con TAB.
     1.10) Borrar pistas de la lista.
     1.11) Abrir una columna cuya mayor duracion es N Ej: I negra. Toda la columna se dividira
           en varias posiciona a nivel Pista con la duracion seleccionada previamente
-          con la duraicon correspondiente que se usa normalmente para duraicon de nota.
-          Ej: 5 (F), luego pulsar Ctrl-Z y sin levantar esa pulsacion luego dar enseguida Click 
-          en la nota con el mouse, o sea la secuencia es Ctrl-Z + Click mouse.Luego pulsar Q
-          ya que apareceán marcas de seleccion de zona. Si no se posiciona sobre una nota
-          todo el espacio con vacio se cambaira a esa division. Si tengo una duraicon distinta
-          En un acorde de elementos distintos solo se cambian los que sean de la misma duracion
-          que la nota seleccionada.
-          todas las duraciones de la columna se dividiran en 4 notas ligadas F+F+F+F
-          insertandose  3 posiciones adicionales en ese punto a la secuencia.
+          con la duracion correspondiente que se usa normalmente para duracion de nota.
+          Ej: 5 (F), luego pulsar  'Z' y sin levantar esa pulsacion luego dar enseguida Click 
+          en la nota con el mouse, o sea la secuencia es 'Z + Click mouse'.Luego pulsar Q
+          ya que aparecerán marcas de seleccion de zona. Nueva versio: si no se ingresa duración
+          toma la menor si es un acorde distinto (o sea formado por notas de distinta duracion.
+          El z+Click puede ser en cualquier parte de la columna, no necesariamente sobre una figura
+          o letra musical. 
+          Ej; P L I. En este caso todas las duraciones de la columna se dividiran en 4 notas 
+          ligadas L+..L , y rellenando con silencios
+          P  ----> L+  L+  L+  L
+          L  ----> L+ sL+ sL+ sL
+          I  ----> L+  L+ sL+ sL
+          de ese modo tenemos un acorde ligado cuyos componentes son AcordesIguales y se tocara
+          con Acordesiguales, sino se usa esta funcion se tocará con AcordesDistintos. En el caso de
+          distintos todas las notas empiezan al mismo tiempo solo que c/u tiene distinta duracion.
+          La ejecucion en los casos probados funciona..
+          Pero si se desea que haya retardos en el inicio de alguna nota pero luego se superpongan los sonidos
+          formando acordes la forma de hacerlo es usar AcordesIguales a traves de esta funcion 'z+click'
+          asi luego se podrá cambiar el acorde fraccionado, por ejemplo a 
+          > L+  L+  L+  L  ---> L+  L+  L+  L
+          > L+ sL+ sL+ sL  ---> sL+ L+ sL+ sL
+          > L+  L+ sL+ sL  ---> sL+ L+ L+  sL
+          donde las notas L e I iniciales comienzan despues de la P con un retardo de L (sL+)
+          En la secuecnia se insertan  3 posiciones adicionales en ese punto.
+          Hay 2 opciones más, en el menu de opciones, aparecen 4,  la ultima es No fraccionar
+          por default esta chequeado usar automatico, la 3era, la descripta anteriormente.
+          Las otras 2 siempre requieren la entrada de una duracion por el usuario que será la unidad
+          con la que se fraccionará.
+          La 1era fracciona la nota elegida al dar 'z+click' y cualquier otra de la misma duracion, las
+          demas notas no se modifican.
+          La 2da fracciona todas las notas encontradas y agrega silencios en las mas cortas.
+          La 3era es la descripta al principio, puede o no recibir duracion del usuario, sino la
+          recibe, toma la menor duracion del acorde y lo convierte en unidad de fraccion. Luego fracciona
+          con esa duracion a todas las notas agregando silencios en las mas cortas. 
+          En este caso la ventaja adicional es que no hace falta dar click sobre ninguna nota, solo es necesario
+          que el click sea en esa columna en cualquier linea puede no existir nota, la funcion buscara
+          la nota menor y mayor, y fraccionara empezando por la mayor con al unidad de la menor.
+          Es la elegida por el programa por omision. 
 
     IV) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
         estilo pentagrama. Se podrán usar varias instancias pero sin ningun control

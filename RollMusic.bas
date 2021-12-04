@@ -531,11 +531,17 @@ MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
 
 MenuItem(1100,MenName7,"Usar MARCO de Ventana ", MF_UNCHECKED)
 MenuItem(1101,MenName7,"No Usar MARCO de Ventana ",MF_CHECKED)
-MenuItem(1102,MenName7,"Usar Acordes iguales, Fracciona notas automaticamente en una pista ",MF_UNCHECKED  )
-MenuItem(1103,MenName7,"NO Usar Acordes iguales, NO Fracciona notas ", MF_CHECKED )
+
+MenuItem(1102,MenName7,"Acordes distintos a iguales, Fracciona notas similares en una Columna en una pista (no hay silencios)",MF_UNCHECKED  )
+MenuItem(1103,MenName7,"Acordes distintos a iguales, Fracciona todas las notas agregando silencios en una columna en una pista ",MF_UNCHECKED  )
+MenuItem(1104,MenName7,"Acordes distintos a iguales, Fracciona notas automaticamente en Columna de una pista ",MF_CHECKED  )
+MenuItem(1105,MenName7,"No Fraccionar, NO Usar Acordes iguales ", MF_UNCHECKED )
 
 MenuItem(1110,MenName8,"9 Menu")
 End If
+' default de FRACCIOANR autodur 
+   usarAcordesIguales=1
+   TipoFrac="autodur" 
 
 'AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS
 
@@ -887,14 +893,36 @@ print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                  SetStateMenu(hmessages,1101,3)
                  usarmarco=0
             Case 1102
-                 usarAcordesIguales=1 
+                 usarAcordesIguales=1
+                 TipoFrac="igualdur" 
                  SetStateMenu(hmessages,1102,3)
                  SetStateMenu(hmessages,1103,0)
-
+                 SetStateMenu(hmessages,1104,0)
+                 SetStateMenu(hmessages,1105,0)
+                 
             Case 1103
-                 usarAcordesIguales=0
+                 usarAcordesIguales=1
+                 TipoFrac="tododur" 
                  SetStateMenu(hmessages,1102,0)
                  SetStateMenu(hmessages,1103,3)
+                 SetStateMenu(hmessages,1104,0)
+                 SetStateMenu(hmessages,1105,0)
+                 
+            Case 1104
+                 usarAcordesIguales=1
+                 TipoFrac="autodur" 
+                 SetStateMenu(hmessages,1102,0)
+                 SetStateMenu(hmessages,1103,0)
+                 SetStateMenu(hmessages,1104,3)
+                 SetStateMenu(hmessages,1105,0)
+                 
+
+            Case 1105
+                 usarAcordesIguales=0
+                 SetStateMenu(hmessages,1102,0)
+                 SetStateMenu(hmessages,1103,0)
+                 SetStateMenu(hmessages,1104,0)
+                 SetStateMenu(hmessages,1105,3)
 
 
             Case  1110

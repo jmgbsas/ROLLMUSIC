@@ -838,45 +838,54 @@ End Sub
 Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As ubyte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As integer)
 ' estoy en Roll el cual es único tengo entonces definido las globales NB y NA por default
 ' recorro la columna
-Dim As Integer i1,j1=1
-Dim As UByte DurMen,DurMay
+Dim As Integer i1,j1=0, DurMen,DurMay
 
   For i1 = NB To NA
-     If Roll.trk(ejex,i1).dur > 0 And Roll.trk(ejex,i1).dur < 181 Then
+    If Roll.trk(ejex,i1).nota >=1 And Roll.trk(ejex,i1).nota <=12 Then 
+     If Roll.trk(ejex,i1).dur >=1 And Roll.trk(ejex,i1).dur <= 180 Then
+        Print #1,"=> VEO DATOS i1,nota,dur ", i1, Roll.trk(ejex,i1).nota,Roll.trk(ejex,i1).dur
+        j1=j1+1
         If j1=1 Then
-           DurMen=Roll.trk(ejex,i1).dur
-           DurMay=Roll.trk(ejex,i1).dur
-           menor = pesoDur(DurMen)
-           mayor = pesoDur(Roll.trk(ejex,i1).dur)
+           menor=Roll.trk(ejex,i1).dur
+           Print #1,"menor inicial ", menor
+           DurMen = pesoDur(menor)
+           Print #1,"DurMen inicial ", DurMen
+           mayor=Roll.trk(ejex,i1).dur
+           Print #1,"mayor inicial ", mayor
+           DurMay = pesoDur(mayor)
+           Print #1,"DurMay inicial ", DurMay
            i1may=i1
            i1men=i1
-           j1=2
+           
         EndIf   
-        If j1=2 Then
-           If menor > pesoDur(Roll.trk(ejex,i1).dur) Then
-              menor= pesoDur(Roll.trk(ejex,i1).dur)
-              DurMen=Roll.trk(ejex,i1).dur
+        If j1 > 1 Then
+           If DurMen > pesoDur(Roll.trk(ejex,i1).dur) Then
+              DurMen = pesoDur(Roll.trk(ejex,i1).dur)
+              Print #1,"DurMen sig ", DurMen
+              menor=Roll.trk(ejex,i1).dur
+              Print #1,"menor sig ", menor
               i1men=i1
            EndIf 
-           If mayor < pesoDur(Roll.trk(ejex,i1).dur) Then
-              mayor = pesoDur(Roll.trk(ejex,i1).dur)
-              DurMay=Roll.trk(ejex,i1).dur
+           If DurMay < pesoDur(Roll.trk(ejex,i1).dur) Then
+              DurMay = pesoDur(Roll.trk(ejex,i1).dur)
+              Print #1,"DurMmay sig ", DurMay              
+              mayor=Roll.trk(ejex,i1).dur
+              Print #1,"mayor sig ", mayor
              i1may=i1
            EndIf
           
         EndIf
-    EndIf        
+    EndIf  
+    EndIf      
   Next i1
 
-Print #1,"encontra menor y mayor ", DurMen, DurMay, "En columna ",ejex
+Print #1,"encontra menor y mayor ", menor, mayor, "En columna ",ejex
 Dim As Integer notapMay, notapMen
-notapMay=i1May -restar(i1May)
-notapMen=i1Men -restar(i1Men)
-menor=DurMen
-mayor=DurMay
+notapMay=i1may -restar(i1may)
+notapMen=i1men -restar(i1men)
 Print #1,"Notapiano menor,mayor ", notapMen, notapMay
-i1May=notapMay
-i1Men=notapMen 
+i1may=notapMay
+i1men=notapMen 
 ' ejex es fijo es al columna en analis y origen del  fraccionamiento
   
 End Sub
@@ -1114,7 +1123,8 @@ On Local Error GoTo errorhand
 
 '  
  '-----------------------------------------------------------
-If usarAcordesIguales = 1 Then ' empeiza Fraccionador..
+ ' ADAPTAR BIEN PARA CURSOR POR AHORA NO SE USA PONEMOS 3
+If usarAcordesIguales = 3 Then ' empeiza Fraccionador..
  ' determino la duracion menor y mayor incluida la de entrada ya cargada
  ' en Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur
    Dim As UByte menor, mayor

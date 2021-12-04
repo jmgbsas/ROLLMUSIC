@@ -3173,9 +3173,14 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
   ' ya funciona ok con DUR 
     
     ArmarDurFrac()
-    
-    '''FraccionarDur  Track(),Roll,indicePos, Rolldur,nR,ntk  
-    FracTodoDur  Track(),Roll,indicePos, Rolldur,nR,ntk 
+    Select Case TipoFrac
+       Case "igualdur" ' dando click en la nota a cambiar y lo hara en las similares
+          FraccionarDur  Track(),Roll,indicePos, Rolldur,nR,ntk '1er verison  
+       Case "tododur" ' dando click en la nota a cambiar y lo hara en todas agregando silencios
+          FracTodoDur  Track(),Roll,indicePos, Rolldur,nR,ntk  ' 2da version
+       Case "autodur" ' automatico toma la entrada si no la hay toma la menor y mayor fracciona todas las notas 
+          AutoFracTodoDur Track(),Roll,indicePos, Rolldur,nR,ntk  ' 3er version
+    End Select      
  EndIf
  If MultiKey(SC_LSHIFT)  Then ' :
       cuart=1 

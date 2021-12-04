@@ -390,6 +390,7 @@ Dim Shared As hWnd hwnd,hwndMenu
 'hwndmENU = Cast(hwnd,MhWnd)
 Dim Shared As UINT codsalida=0
 Dim shared As Any Ptr lpExitCode
+Dim Shared As String TipoFrac ' para fraccionar notas segun estilo deseado
 ' suponemos 64 divisiones dentro de un compas semifusa...y 5000 compases
 'Dim Shared Guia (1 To 300000  ) As ULong
 ' la idea es poner las posiciones de track o roll dentro de este otro
