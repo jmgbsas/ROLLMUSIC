@@ -155,7 +155,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
        indf=181
     EndIf ' t no puede quedar en un scope dsitinto se hace shared    
      t= figura(indf)
-' ////////dar color al font en una determinada posicion     
+' ////////dar color al font en una determinada posicion   
     If n=jply Then 
        cairo_set_source_rgba(c,1,0,1,1)
     EndIf
@@ -1443,8 +1443,8 @@ EndIf
 ' ----------------------FIN NOTAS-------------------------
 ' ----------INGRESO DE DURACIONES DE NOTAS -------------
 
-If comEdit = TRUE Then
- If (menuNew = 2 Or menuNro=2) Then
+If comEdit = TRUE Then  
+ If (menuNew = 2 Or menuNro=2) Then  
   If MultiKey(SC_1) Then
    DUR = 1 :Exit Do
   EndIf
@@ -1514,9 +1514,11 @@ If comEdit = TRUE Then
      borrarColumnasMarcadas()
   EndIf
 
- EndIf
+ EndIf 
  ' ojo ver q no habia  exit do antes !!!!!
-EndIf
+EndIf 
+
+
 ' ----HELP PRUEBA DE TEXT
 If MultiKey(SC_F1) Then
 ' por ahora solo traeremos un texto, luego usaremos llamar
@@ -1538,71 +1540,95 @@ If comEdit = FALSE Then ' construir cifras para copiar Nveces por ejemplo
 
  If MultiKey(SC_1) Then
     cifra = "1"
+    DUR=1
     Exit Do
  EndIf
  If MultiKey(SC_2) Then
     cifra = "2"
+    DUR=2
      Exit Do
  EndIf
  If MultiKey(SC_3) Then
     cifra = "3"
+    DUR=3
     Exit Do
  EndIf
  If MultiKey(SC_4) Then
     cifra = "4"
+    DUR=4
     Exit Do
  EndIf
  If MultiKey(SC_5) Then
    cifra = "5"
+   DUR=5
     Exit Do   
  EndIf
  If MultiKey(SC_6) Then
     cifra = "6"
+    DUR=6
     Exit Do
  EndIf
  If MultiKey(SC_7) Then
     cifra = "7"
+    DUR=7
      Exit Do
  EndIf
  If MultiKey(SC_8) Then
     cifra = "8"
+    DUR=8
      Exit Do
  EndIf
  If MultiKey(SC_9) Then
     cifra = "9"
+    DUR = 9
      Exit Do
  EndIf
  If MultiKey(SC_0) Then
     cifra = "0"
     Exit Do
  EndIf
+' v23 agregado  inicio 
+  If MultiKey(SC_PERIOD) Then
+     pun = 1  ' puntillo      
+  EndIf
+''  If MultiKey(SC_MULTIPLY) Then ' KEYPAD *
+''     cuart=1
+''   Exit Do
+''  EndIf
 
- If pasoZona1 > 0 And pasoZona2 > 0 And copiarZona=0 And cifra <> "" Then
-    digito= digito + cifra
-    numero = cint(digito)
+  If MultiKey(SC_S) Then
+   sil = 1
+   Exit Do  ' silencio
+   ' indicadorde silencio solo para calculo de compas
+  EndIf
+  If MultiKey(SC_t) Then
+   tres = 1
+   Exit Do  ' tresillo
+   ' indicadorde tresillo solo para calculo de compas
+  EndIf
+' v23 agregado fin 
+ 
+ If pasoZona1 > 0 And pasoZona2 > 0 And copiarZona=0 And cifra<>""  Then
+        digito= digito + cifra
+        numero = cint(digito)
 '    print #1,"numero ", numero
-    copi=numero
-    cifra=""
-    Exit Do  
-       
+        copi=numero
+        cifra=""
+        Exit Do  
  EndIf
-
- If MultiKey(SC_PERIOD) Then
-
- EndIf
- If MultiKey(SC_S) Then
-
- EndIf
+ 
  If MultiKey(SC_HOME) Then
-    posicion=0
-    posishow=posicion
+     posicion=0
+     posishow=posicion
  EndIf
+
  If MultiKey(SC_END) Then
     If MaxPos > 70 then
        posicion=MaxPos - 30
     EndIf
     posishow=posicion
  EndIf
+      
  
  ''''etc
 EndIf
@@ -1925,6 +1951,7 @@ EndIf
    ' mayorDurEnUnaPosicion (posn) quedo <--defectuoso
      'If DUR >=1 And DUR <= 72 Then
       DUR = Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
+
       calcCompas(posn,Roll) 'lrepeticion no espor calcCompas
      'EndIf
    '   rmerr = Err
@@ -1985,7 +2012,6 @@ If MultiKey(SC_CONTROL) And lockip=0  Then
     Exit Do    
 
 EndIf 
-
 
 '-----------------------------SCREEN EVENT-------START -----------
 ' para detectar mouse sin usar sdl
@@ -3142,8 +3168,14 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  If MultiKey(SC_Z) And Mousebuttons And 1 then
     indicePos=(mousex- gap1 )/anchofig + posishow 
     Rolldur=CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur)
-    FraccionarDur(Track(),Roll,indicePos, Rolldur,nR)  
-       
+    pasozona1=0: pasoZona2=0 
+  ' ARMADUR USA MOVE EL CUAL SETEA LAS PASOZONA NECESARIAS
+  ' ya funciona ok con DUR 
+    
+    ArmarDurFrac()
+    
+    '''FraccionarDur  Track(),Roll,indicePos, Rolldur,nR,ntk  
+    FracTodoDur  Track(),Roll,indicePos, Rolldur,nR,ntk 
  EndIf
  If MultiKey(SC_LSHIFT)  Then ' :
       cuart=1 

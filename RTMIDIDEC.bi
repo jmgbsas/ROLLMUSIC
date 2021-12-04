@@ -65,10 +65,10 @@ Dim Shared As float relDur (0 To 182) => {0, _
 7 ,3.5,1.75,0.875,0.4375,0.21875,0.109375,0.0546875,0.02734375, _ '163 171
 2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,0.0208333,0.01041666,0,0} '172 181
 
-Dim Shared As Integer play =0,playb=0, portout, portin, numero 
+Dim Shared As Integer play =0,playb=0, portout, portin, numero, numeroFrac 
 ReDim Shared As string listout(1 ), listin (1 )
 Dim Shared As String * 1 cifra 
-Dim Shared As String  digito
+Dim Shared As String  digito, digitoFrac
  
 '----------------------------
 ' PLAY ALL NEW

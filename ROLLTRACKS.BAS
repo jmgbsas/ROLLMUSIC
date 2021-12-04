@@ -552,6 +552,62 @@ If ROLLCARGADO=TRUE Then
 EndIf   
  
 End Sub
+'---------
+Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)
+' 02-12-2021
+' condicion Roll debe estar cargado en el editor entonces copiamos Roll a Track
+' si es ntk=0 estamos copiando el gemelo de Roll en Track...
+' MaxPos es global y lim2 tambien no s eporque -2 debo copiar todo
+Dim As Integer j,i3,i2,i1
+'------------------------------------------
+' basada en ActualizarRollyGrabarPista pero en un solo paso, dejare una aola ? veremos
+ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim2)
+
+
+i3=0
+' copia en TrkTemp RollTemp donde esta Roll modificado
+For i2 = 1 To MaxPos
+   'print #1,"i2",i2
+   i3=0
+   For i1=NB To NA 
+    ' print #1,"i1",i1
+      If Roll.trk(i2,i1 ).nota >= 1 and Roll.trk(i2,i1 ).nota <=12 Then
+         i3=i3+1
+         Track(ntk).trk(i2,i3).dur  =CInt(Roll.trk(i2,i1 ).dur)
+         Track(ntk).trk(i2,i3).nota =Roll.trk(i2,i1 ).nota
+         Track(ntk).trk(i2,i3).vol  =Roll.trk(i2,i1 ).vol
+         Track(ntk).trk(i2,i3).pan  =Roll.trk(i2,i1 ).pan
+         Track(ntk).trk(i2,i3).pb   =Roll.trk(i2,i1 ).pb
+         track(ntk).trk(i2,i3).inst =Roll.trk(i2,i1 ).inst
+         
+         PianoNota= i1 ' nR=i1 es el indice de Roll 06-09-2021 N!=115
+         ' cuanta al reves desde ocatva mas aguda a la mas grave,,,
+         ' no lo cambiare o podri aahcer lo veremos 
+         ' convertimos a PianoNota
+         PianoNota= PianoNota - restar (PianoNota)
+          
+         ' track tendra directamente el valor del piano para tocar con rtmidi
+         Track(ntk).trk(i2,i3).nota=CUByte(PianoNota)
+   '      print #1,"Temp(i2,i3).nota ",Temp(i2,i3).nota
+   '      print #1,"Temp(i2,i3).dur ",Temp(i2,i3).dur 
+' acorde          
+         If i3=12 Then ' track solo guarda 12 notas en acorde el resto se desrpecia
+            print #1,"Error mas de 12 elementeos de un acorde"
+            Exit For '13-09-2021 tenia 2 for salia del todo ja  
+         End If
+      EndIf
+   Next i1
+   
+   If i3 >=2 Then
+    print #1,"copia acorde ",i3," en ",i2
+    Track(ntk).trk(i2,i3).acorde=CUByte(i3)   ' Grabamos la cantidad de elem del acorde
+   EndIf 
+Next i2   
+Track(ntk).trk(1,1).inst=Roll.trk(1,NA).inst  
+Print #1,"Fin copia de Roll a Track, RollaTrack"
+
+ 
+End Sub
 ' ---------------------
 Sub TrackaRoll (Track() As sec, byref ntk As Integer, Roll As inst)
 ' como es track a Roll se supone que el track ya esta cargado en memoria
@@ -972,7 +1028,7 @@ out_free(midiout)
 ThreadDetach(thread1) 'JMG REPONER !!!!
 End Sub 
 
-Sub FraccionarDur (Track() As sec,Roll As inst, indicePos As Integer, dura As ubyte,nR As integer)
+Sub FraccionarDur (Track() As sec,Roll As inst, indicePos As Integer, dura As ubyte,nR As Integer, ntk As integer)
 ' npo= notapiano, posi =posicion
 ' DADA una Notapiano selecionada con cursor o click
 ' entrar argumento de division con las figiuras 2,3,4,5,6,7
@@ -1015,15 +1071,29 @@ Sub FraccionarDur (Track() As sec,Roll As inst, indicePos As Integer, dura As ub
 Dim As Integer posivieja,durfig,posinueva,i,j,pis=0,delta=0, nroPartes=0, nroligadas=0,indiceligada,indicenoligada
 
 print #1,"Rolldur ",Rolldur
-durfig=CInt(cifra)
+
+Print #1,"numeroFrac DUR", numeroFrac, DUR
+If numeroFrac >=1 And numeroFrac <= 180 Then
+Else
+  Exit Sub
+     
+EndIf
+' numeroFrac es la DUR real con tresillo silencio puntillo etc SALE DE ArmarDurFrac()
+durfig=pesoDur(numeroFrac) ' la sdiferencia se calculas con el peso real 
+DUR = 0 ' reseteo para la proxima entrada.
+cifra=""
+digito=""
+    
 If durfig=0 Then
   Exit Sub
 EndIf
-delta=durfig - Rolldur
+' se supone que durfig es la menor con la cual dividir a RollDur ergo siempre RollDur > durfig 
+delta= pesoDur(Rolldur) -durfig
 
 print #1,"DUR de usuario, delta ",durfig,delta
+' nropartes es integer ergo redondea, el cociente da el nro de partes
 
-nroPartes=delta*2 ' tengo la cantidad de figuras=nroPArtes
+nroPartes=pesoDur(Rolldur) /durfig ' tengo la cantidad de figuras=nroPArtes
 posivieja=indicePos
 posinueva=indicePos + nroPartes ' POSICION DONDE CONTINUA LA SECUENCIA 
 
@@ -1032,9 +1102,9 @@ print #1,"muevo  a ",posinueva
 ' nroPartes -1
 nroligadas=nroPArtes -1 
 print #1,"nroligadas ",nroligadas
-indiceligada=durfig + 90 ' indice de la ligada correpsondiente
+indiceligada= numeroFrac + 90 ' indice de la ligada correpsondiente
 print #1,"indiceligada ",indiceligada
-indicenoligada=durfig 
+indicenoligada=numeroFrac 
 'print #1,"FIGURA A CAMBIAR ",figura(DUR)
 print #1,"FIGURA de REEMPLAZO LIGADA ",figura(INDICELIGADA)
 print #1,"FIGURA de REEMPLAZO NO LIGADA ",figura(indicenoligada)
@@ -1091,10 +1161,169 @@ print #1,"MUEVO DESDE POSI ";posiVIEJA;" A POSInueva ";posinueva
   Next j
 ' tenemos Roll fraccionado ahroa debemos borrar Track(0) y copiar Roll en Track(0)
 ' o sea RollaTrack...al reves
+ntk=0 
 ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim2)
-
-
+RollaTrack Track(), ntk,Roll
 
 EndIf
+ 
+End Sub
+''
+Sub FracTodoDur (Track() As sec,Roll As inst, indicePos As Integer, dura As ubyte,nR As Integer, ntk As integer)
+' Generalizacion de FraccionarDur.Esto servira para ambos casos al estar en lectura y quiero
+' abrir como antes o desde cursor al ingresar notas. En ambo scasos lo hará en mas de 2 notas
+' recibira la menro y mayor oco antes determinado por la sub ya echa menoryMayorEncolumna
+' lugo determino partes con la mayor, fracciono. Y toa nota menor a la mayor y mayor ala menro 
+' o sea intermedia se contrastara con la menor y asi determinamos cuantas menores van en esa
+' nota media se llenara con ellas y lo que falta ocmpletar de esa media y hasta las partes de
+' la mayor se llenaran con silencios de la menor en cuestion 
 
+Dim As Integer posivieja,durfig,posinueva,i,j,pis=0,delta=0, nroPartes=0, nroligadas=0,indiceligada,indicenoligada
+Dim As Integer otronroligadas=0,otroindiceligada,otroindicenoligada
+' dura es la mayor o la nota sobre la cual me poso con el mouse y le doy click para fraccionar
+print #1,"dura ",dura
+
+Print #1,"numeroFrac DUR", numeroFrac, DUR 
+If numeroFrac >=1 And numeroFrac <= 180 Then ' entrada de usuario que podra ser menor auomatico
+Else
+  Exit Sub
+     
+EndIf
+' numeroFrac es la DUR real con tresillo silencio puntillo etc SALE DE ArmarDurFrac()
+durfig=pesoDur(numeroFrac) ' peso de la mneor con la que fraccionare,la diferencia se calculas con el peso real 
+DUR = 0 ' reseteo para la proxima entrada.
+cifra=""
+digito=""
+    
+If durfig=0 Then
+  Exit Sub
+EndIf
+' se supone que durfig es la menor con la cual dividir a RollDur ergo siempre RollDur > durfig 
+delta= pesoDur(dura) -durfig
+
+print #1,"DUR de usuario, delta ",durfig,delta
+' nropartes es integer ergo redondea, el cociente da el nro de partes
+
+nroPartes=pesoDur(dura) /durfig ' tengo la cantidad de figuras=nroPArtes
+posivieja=indicePos
+posinueva=indicePos + nroPartes ' POSICION DONDE CONTINUA LA SECUENCIA 
+
+print #1,"nropartes =",nropartes
+print #1,"posinueva ",posinueva
+' nroPartes -1
+nroligadas=nroPArtes -1 
+print #1,"nroligadas ",nroligadas
+If numeroFrac <= 90 Then
+indiceligada= numeroFrac + 90 ' indice de la menro o du rde usuario ligada correpsondiente
+Else
+indiceligada= numeroFrac
+EndIf
+print #1,"indiceligada ",indiceligada
+If numeroFrac <= 90 Then
+indicenoligada=numeroFrac
+Else
+indicenoligada=numeroFrac -90
+EndIf 
+
+'print #1,"FIGURA A CAMBIAR ",figura(DUR)
+print #1,"FIGURA de REEMPLAZO LIGADA ",figura(INDICELIGADA)
+print #1,"FIGURA de REEMPLAZO NO LIGADA ",figura(indicenoligada)
+' entonces tengo nroligadas columnas de figura indiceligada
+' y una ultima columna de indice de  figura (numusuario)
+If CANCIONCARGADA Then ' ¿FRACCIONAR TODAS LAS PISTAS DE UNA CANCION?
+' si vamoa a fracionar toda la cancion al fraccionar una pista, podemos
+' detectar si maxpos de la pista a fraccionar es mayor a la posicion fraccionada,
+' si lo es, fraccionamos, y si no lo es, se saltea....ahorramos trabajo
+' 
+' muevo N tracks y Roll en edicion
+   For pis= 1 To tope
+ '     moverPista pis
+ ' aca deberemos fraccionar Tracks en vez de Rolls
+   Next pis
+ '     moverRoll 
+Else ' FRACCIONAR LA PISTA CARGADA
+' muevo 1 track y Roll de edicion
+ '--  moverPista  0 ' solo mueve pista cero
+ '--  moverRoll 
+   ' posi es la not a partir luego se reemplaza por otra figura peo se mueve
+   ' a derecha desde posi+1
+' ind de moverZonaRoll es donde empezara los datos movidos
+' en este caso sera n divisiones -1 + posicion
+
+
+'''Rolldur=Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur
+dim As Integer otroPesoDur, otronroPartes, indiceLigadasilencio, indiceNoLigadasilencio
+'---posi= posi + ndiv -1   
+print #1,"MUEVO DESDE POSI ";posiVIEJA;" A POSInueva ";posinueva  
+  pasoZona1=indicePos+1
+  moverzona=1
+  moverZonaRoll(posinueva, Roll,posivieja) '16-11-2021
+  print #1,"NB, NA", NB,NA
+ ' si no anda nE usar
+ ' nE = 11 -nR   +  (EstoyEnOctava -1 ) * 13 + 1 
+ Dim As Integer conge=0, divi
+ 'conge=(EstoyEnOctava -1 ) * 13 + 1 
+  For j=NB To NA
+     If Roll.trk(posivieja,j).dur >=1 And Roll.trk(posivieja,j).dur <=180 Then
+        Select Case Roll.trk(posivieja,j).dur
+        Case  dura ' la mayor
+           nE = 11 -j +  (EstoyEnOctava -1 ) * 13 + 1
+         For i= posivieja To posinueva -1
+            If i < posinueva-1 Then
+'            print #1,"DENTRO 1) i, j,nE ", i,j,nE
+               Roll.trk(i,j).dur = CUByte(indiceligada)
+               Roll.trk(i,j).nota= CUByte(nE)
+            Else
+ '           print #1,"DENTRO 2) i, j,nE ", i,j,nE
+               Roll.trk(i,j).dur = CUByte(indicenoligada)
+               Roll.trk(i,j).nota= CUByte(nE)
+            EndIf
+        Next i
+        Case Else
+
+           otroPesoDur    = pesoDur(Roll.trk(posivieja,j).dur)
+           otronroPartes  = otroPesoDur /durfig ' I/L --2
+           otronroligadas = nroligadas ' igual que antes solo aque alguans son silencio y otras no 
+           
+           indiceLigadasilencio   = numeroFrac + 45  + 90
+           indiceNoLigadasilencio = numeroFrac + 45 
+           
+           ' indiceligada se usa el mismo 
+       ' tengo el nro de partes que se parte esa otra dur del medio ni menorni mayor
+           nE = 11 -j +  (EstoyEnOctava -1 ) * 13 + 1
+          Dim As Integer limparte = posivieja + otronroPartes -1
+         For i= posivieja To  limparte ' son todos ligados porque despue ssigu eligado con silencio
+'            print #1,"DENTRO 1) i, j,nE ", i,j,nE
+               Roll.trk(i,j).dur = CUByte(indiceLigada)
+               Roll.trk(i,j).nota= CUByte(nE)
+            
+         Next i
+         
+         For i= limparte+1   To posinueva -1
+            If i < posinueva -1 Then ' silencios ligados
+'            print #1,"DENTRO 1) i, j,nE ", i,j,nE
+               Roll.trk(i,j).dur = CUByte(indiceLigadasilencio)
+               Roll.trk(i,j).nota= CUByte(nE)
+            Else
+ '           print #1,"DENTRO 2) i, j,nE ", i,j,nE
+               Roll.trk(i,j).dur = CUByte( indiceNoLigadasilencio)
+               Roll.trk(i,j).nota= CUByte(nE)
+            EndIf
+            
+        Next i
+           
+       End Select   
+    EndIf 
+     
+  Next j
+' tenemos Roll fraccionado ahroa debemos borrar Track(0) y copiar Roll en Track(0)
+' o sea RollaTrack...al reves
+ntk=0 
+ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim2)
+RollaTrack Track(), ntk,Roll
+
+ReCalCompas (Roll)
+
+EndIf
+ 
 End Sub

@@ -1,5 +1,99 @@
 On  Error GoTo errorSub
 
+Sub ArmarDurFrac ()
+' los bloques de durcion se repiten de a 3, el incr es por bloque
+' si voy al 2do bloque de 3 el incrdeja de ser 0 y pasa a 27 respectro de la
+' 1er linea l cargo TRAck como 2da linea
+If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
+   numeroFrac = DUR 'era duracion
+    'DUR nunca se ahce cero solo para espacio ergo si pulso
+    ' la misma u otra nota sigue con la misma duracion
+EndIf
+' CUART   
+If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
+    numeroFrac = DUR + 9 'era duracion
+    'DUR nunca se ahce cero solo para espacio ergo si pulso
+    ' la misma u otra nota sigue con la misma duracion
+EndIf
+' PUNTILLO   
+' 3I* = I = 1 , el puntillo a un 3 suma dando la figura de la q proviene.   
+If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
+    numeroFrac = DUR + 18 'era dur
+EndIf
+'DOBLE PUNTILLO   
+If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=0 Then 
+   numeroFrac = DUR + 27
+EndIf
+' SEGUIR  JMG
+If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=0 Then 
+   numeroFrac = DUR + 36
+EndIf   
+' -----fin 1er bloque ------------------------
+
+If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
+   numeroFrac = DUR + 45 'era dur
+EndIf
+
+If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
+   numeroFrac = DUR + 54
+EndIf
+
+If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
+   numeroFrac = DUR + 63
+EndIf
+If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=0 Then 
+   numeroFrac = DUR + 72
+EndIf
+
+If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=0 Then 
+   numeroFrac = DUR + 81
+EndIf
+
+' -- fin 2do bloque   
+If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+    numeroFrac = DUR + 90
+EndIf
+
+If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+    numeroFrac = DUR + 99
+EndIf
+
+If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+    numeroFrac = DUR + 108
+EndIf
+
+If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=1 Then 
+   numeroFrac = DUR + 117
+EndIf
+If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=1 Then 
+   numeroFrac = DUR + 126
+EndIf
+'----- fin 3er bloque   
+If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+   numeroFrac = DUR + 135
+EndIf   
+
+If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+   numeroFrac = DUR + 144
+EndIf   
+
+If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+   numeroFrac = DUR + 153
+EndIf   
+
+If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=1 Then 
+   numeroFrac = DUR + 162
+EndIf   
+
+If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=1 Then 
+   numeroFrac = DUR + 171
+EndIf   
+' ---fin 4to bloque -
+   cuart=0:pun=0:doblepun=0:tres=0:sil=0:mas=0
+
+
+End Sub
+
 Sub cerrar (ByVal n As Integer)
    If n=0 Then
     print #1,"uso Reset"
@@ -1024,12 +1118,40 @@ If usarAcordesIguales = 1 Then ' empeiza Fraccionador..
  ' determino la duracion menor y mayor incluida la de entrada ya cargada
  ' en Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur
    Dim As UByte menor, mayor
-   Dim As Integer i1men,i1may
+   Dim As Integer i1men,i1may,j
    menoryMayorEnColumna (Roll, n+curpos,menor,mayor,i1men,i1may)
 ' saco la info para usar Fraccionador...pero ojo fraccionador solo reemplaza a notas
-' de igual duracion no de distintas, debere ahce run nuevo fraccionador??   
+' de igual duracion no de distintas, debere hacer un nuevo fraccionador ? o generalizo
+' el existente y lo parametrizo   
    Print #1,"En Cursor: menor,mayor,i1men,i1may ",menor,mayor,i1men,i1may
- 
+' tengo menor mayor, ergo debo dividir a mayor en varias partes de menor con 
+' Fraccionador, una ve zecho eso puede haber duraciones intemedias que no sean
+' ni menor ni mayor, pero se deben dividir en varias menores hast aalcanzar al
+' valro que tiene. ejempo tengo una negra I, una corchea L y una blanca P
+' I
+' L
+' P
+' ----> el resultado debe ser el siguiente: I=2L, P=4L,L=L
+' L+  L+  sL+ sL
+' L+ sL+ sL+ sL
+' L+  L+   L+  L
+'---------------
+'ERGO 1ERO DETERMINO LAS PARTES DE P COMO HACE FRACCIONADOR DESDE LA CIFRA O FIG MENOR L
+' DEBO LLENAR 3 POSICIONES ADICIONALES COMO HACE FRACCIONADOR, EN EL CASO DE QUE 
+' LA DURACION SE COMPLETE ANTES EL RESTO SE LLENA CON SILENCIOS DE LA FIGURA MENOR
+' durfig=CInt(cifra) de aca uso la global cifra para simular la entrada de usuario para la menor
+' l aduracion menor la debo converir en 1 a 9 ...
+' mm debo probar para duracione smayores a 9 
+    numeroFrac = cint(menor) ' simulamos la entrada por el usuario DE LA DURACION DUR
+    ' CON LA QUE FRACCIONAREMOS
+    print #1,"Cursor: numeroFrac ", numeroFrac
+
+
+  ''FraccionarDur Track(),Roll,n + curpos,mayor,nR,ntk
+  FracTodoDur Track(),Roll,indicePos, mayor,nR,ntk
+  
+' RollaTrack
+  RollaTrack Track(), 0,Roll 
   
  
 EndIf

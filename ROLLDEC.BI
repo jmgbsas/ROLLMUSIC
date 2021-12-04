@@ -429,6 +429,7 @@ Declare Sub TrackaRoll (Track() As sec, byref ntk As Integer, Roll As inst)
 Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
 Declare Sub ReCalCompas(Roll As inst)
 Declare Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As ubyte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As integer)
+Declare Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)
 
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox
