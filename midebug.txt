@@ -1,5 +1,5 @@
 start
-12-04-202115:00:30
+12-06-202101:10:16
 __FB_ARGC__    1
 arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-V23-ABRIR-NOTA-EN-INGRESO\RollMusic.exe'
 arg  1 = ''
@@ -12,32 +12,31 @@ NB             39
 NA             102
 desde          4
 hasta          8
-NroCol, ancho, anchofig      40            1467          33
-gap1           76
+NroCol, ancho, anchofig      41            1760          39
+gap1           90
 Fin duracion
-CoolSoft VirtualMIDISynth 0
-Microsoft GS Wavetable Synth 1
-E-DSP MIDI Port [BC00] 2
-LoopBe Internal MIDI 3
+Microsoft GS Wavetable Synth 0
+E-DSP MIDI Port [BC00] 1
+LoopBe Internal MIDI 2
   
 ChangeProgram inst          0
-param.ancho    1467 param.alto  916
+param.ancho    1760 param.alto  967
 INSTANCIA      1
-param.ancho    1467 param.alto  916
+param.ancho    1760 param.alto  967
 inicio ubound roll.trk       102
 iniio lbound roll.trk        39
-param.ancho    1467 param.alto  916
+param.ancho    1760 param.alto  967
 inicio ubound roll.trk       102
 iniio lbound roll.trk        39
 ubirtk         0
-param.ancho    1467 param.alto  916
+param.ancho    1760 param.alto  967
 posicion       1
 param.titulo  RollMusic Ver 0.4.4.0
 datos recibidos en rooloop nombre         
 datos recibidos en rooloop desde,hasta     4             8
 datos recibidos en rooloop *po             7
 ubound roll.trk 2            102
-pid           1804
+pid           4516
 INSTANCIA      0
 CArgarArchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-V23-ABRIR-NOTA-EN-INGRESO\ABRIR-NOTA-ACORDE-LPI.roll
 open nombre en CArgaARchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-V23-ABRIR-NOTA-EN-INGRESO\ABRIR-NOTA-ACORDE-LPI.roll
@@ -93,11 +92,43 @@ copia acorde   3             en            5
 copia acorde   3             en            6
 copia acorde   3             en            7
 Fin copia de Roll a Track, RollaTrack
-Rolldur        2
-numeroFrac DUR               4            4
+=> VEO DATOS i1,nota,dur     67           10            94
+menor inicial               94
+DurMen inicial               1250000
+mayor inicial               94
+DurMay inicial               1250000
+=> VEO DATOS i1,nota,dur     70           7             94
+=> VEO DATOS i1,nota,dur     73           4             94
+encontra menor y mayor      94            94            En columna     4
+Notapiano menor,mayor        62            62
+=> VEO DATOS i1,nota,dur     67           10            94
+menor inicial               94
+DurMen inicial               1250000
+mayor inicial               94
+DurMay inicial               1250000
+=> VEO DATOS i1,nota,dur     70           7             94
+=> VEO DATOS i1,nota,dur     73           4             94
+encontra menor y mayor      94            94            En columna     4
+Notapiano menor,mayor        62            62
+=> VEO DATOS i1,nota,dur     65           12            3
+menor inicial               3
+DurMen inicial               2500000
+mayor inicial               3
+DurMay inicial               2500000
+=> VEO DATOS i1,nota,dur     68           9             2
+DurMmay sig    5000000
+mayor sig     2
+=> VEO DATOS i1,nota,dur     73           4             4
+DurMen sig     1250000
+menor sig     4
+encontra menor y mayor      4             2             En columna     1
+Notapiano menor,mayor        68            63
+AutoFracTodoDur: menor,mayor,i1men,i1may  4             2              68            63
+dura          3
+numeroFrac DUR               0            0
 DUR de usuario, delta        1250000       3750000
 nropartes =    4
-muevo  a       5
+posinueva      5
 nroligadas     3
 indiceligada   94
 FIGURA de REEMPLAZO LIGADA   L+
@@ -116,50 +147,30 @@ inicioind  MAxPosOld         5             17
 --> TERMINO la vuelta de ind a derecha     5
 NB, NA         39            102
 copia acorde   3             en            1
+copia acorde   3             en            2
+copia acorde   3             en            3
+copia acorde   3             en            4
 copia acorde   3             en            7
 copia acorde   3             en            8
 copia acorde   3             en            9
 copia acorde   3             en            10
 Fin copia de Roll a Track, RollaTrack
-Rolldur        3
-numeroFrac DUR               4            4
-DUR de usuario, delta        1250000       1250000
-nropartes =    2
-muevo  a       3
-nroligadas     1
-indiceligada   94
-FIGURA de REEMPLAZO LIGADA   L+
-FIGURA de REEMPLAZO NO LIGADA              L 
-MUEVO DESDE POSI  1 A POSInueva  3
-MaxPosOld      20
-ENTRA POR DERECHA POSINUEVA < MaxPos
-posinueva      3
-MaxPosold      20
-posivIEJa      1
-MaxPos         21
-hastat         21
-desdet=inc     2
-TERMINO copia a derecha      3
-inicioind  MAxPosOld         3             20
---> TERMINO la vuelta de ind a derecha     3
-NB, NA         39            102
-copia acorde   3             en            1
-copia acorde   5             en            6
-copia acorde   5             en            7
-copia acorde   7             en            8
-copia acorde   3             en            9
-copia acorde   3             en            10
-copia acorde   3             en            11
-copia acorde   5             en            12
-copia acorde   5             en            13
-copia acorde   5             en            14
-copia acorde   5             en            15
-copia acorde   5             en            16
-copia acorde   5             en            17
-copia acorde   5             en            18
-Fin copia de Roll a Track, RollaTrack
-Rolldur        94
-numeroFrac DUR               0            0
-Rolldur        94
-numeroFrac DUR               0            0
+=> VEO DATOS i1,nota,dur     65           12            94
+menor inicial               94
+DurMen inicial               1250000
+mayor inicial               94
+DurMay inicial               1250000
+=> VEO DATOS i1,nota,dur     68           9             94
+=> VEO DATOS i1,nota,dur     73           4             94
+encontra menor y mayor      94            94            En columna     1
+Notapiano menor,mayor        60            60
+=> VEO DATOS i1,nota,dur     65           12            94
+menor inicial               94
+DurMen inicial               1250000
+mayor inicial               94
+DurMay inicial               1250000
+=> VEO DATOS i1,nota,dur     68           9             94
+=> VEO DATOS i1,nota,dur     73           4             94
+encontra menor y mayor      94            94            En columna     1
+Notapiano menor,mayor        60            60
 uso Reset

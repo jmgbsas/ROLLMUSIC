@@ -1,3 +1,5 @@
+ ' correccion Clcik end EDIT 06-12-2021 s3=0 movido a y > 50 
+ ' correccion de abrir nota si menor=mayor no hace nada, allevantar click rompia todo
  ' v23 fraccionar automaticamente en comEdit cursor al poner notas menores o 
  ' mayores en duracion a otra nota en acorde existente, tambien armar acordes desde una nota
  ' existente como tonica mayores menores etc,,buscar al tonica si consideramos es una 3era

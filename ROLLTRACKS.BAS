@@ -1345,6 +1345,9 @@ Sub AutoFracTodoDur (Track() As sec,Roll As inst, indicePos As Integer, dura As 
 ' la 2da posishow es en el vector hasta el inicio de la pantalla 
    posdur= (mousex- gap1 )/anchofig + posishow
    menoryMayorEnColumna (Roll, posdur,menor,mayor,i1men,i1may)
+   If menor=mayor Then  ' 06-12-2021
+      Exit Sub 
+   EndIf
 ' saco la info para usar Fraccionador...pero ojo fraccionador solo reemplaza a notas
 ' de igual duracion no de distintas, debere hacer un nuevo fraccionador ? o generalizo
 ' el existente y lo parametrizo   

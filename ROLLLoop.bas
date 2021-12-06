@@ -2519,7 +2519,7 @@ If (ScreenEvent(@e)) Then
      posishow=posicion
      Exit Do
     Else
-     comEdit = FALSE : s3 = 0 ' solo LECTURA
+     comEdit = FALSE ': s3 = 0 ' solo LECTURA 06-12-2021
      '       print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
      'posicion= posicion + curPOS ' estaba mal no va 3-3-21 jmg
      If play=0 Then
@@ -2659,6 +2659,7 @@ If (ScreenEvent(@e)) Then
  '  MOMENTO EN EL QUE SE EJECUTA EL COMANDO Y SE VE EL CAMBIO.
  '       ==== NOTAS O DURACIONES EXISTENTES ====
 If  mouseY > 50 Then '<=== delimitacion de area de trabajo
+s3 = 0 ''06-12-2021
 
   If comEdit=FALSE Then
 ' para ingreser automatico acordes a partir de una TONICA futuro--01-12-2021  
@@ -3165,7 +3166,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
     Exit Do
  EndIf 
  '
- If MultiKey(SC_Z) And Mousebuttons And 1 then
+ If MultiKey(SC_Z)  And MousePress = 1 Then
     indicePos=(mousex- gap1 )/anchofig + posishow 
     Rolldur=CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur)
     pasozona1=0: pasoZona2=0 
@@ -3180,7 +3181,8 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
           FracTodoDur  Track(),Roll,indicePos, Rolldur,nR,ntk  ' 2da version
        Case "autodur" ' automatico toma la entrada si no la hay toma la menor y mayor fracciona todas las notas 
           AutoFracTodoDur Track(),Roll,indicePos, Rolldur,nR,ntk  ' 3er version
-    End Select      
+    End Select    
+    MousePress=0  
  EndIf
  If MultiKey(SC_LSHIFT)  Then ' :
       cuart=1 
