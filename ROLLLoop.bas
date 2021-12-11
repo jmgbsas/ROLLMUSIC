@@ -772,84 +772,6 @@ EndIf
   Sleep 100
  print #1,"7- instancia, maspos ",instancia, maxpos
 EndIf
-/'
-copiar un track para edicion,,,,
-Dim As Integer ik,jk
-For jk = 1 To MaxPos   
-  For ik= NB To NA
-
-  Select Case trak
-     Case 1
-   Roll.TRK(ik,jk)  => Roll1.trk (ik,jk)      
-     Case 2
-   Roll.TRK(ik,jk)  => Roll2.trk (ik,jk)
-     Case 3
-   Roll.TRK(ik,jk)  => Roll3.trk (ik,jk)
-     Case 4
-   Roll.TRK(ik,jk)  => Roll4.trk (ik,jk)
-     Case 5
-   Roll.TRK(ik,jk)  => Roll5.trk (ik,jk)
-     Case 6
-   Roll.TRK(ik,jk)  => Roll6.trk (ik,jk)
-     Case 7
-   Roll.TRK(ik,jk)  => Roll7.trk (ik,jk)
-     Case 8
-   Roll.TRK(ik,jk)  => Roll8.trk (ik,jk)
-     Case 9
-   Roll.TRK(ik,jk)  => Roll9.trk (ik,jk)
-     Case 10
-   Roll.TRK(ik,jk)  => Roll10.trk (ik,jk)
-     Case 11
-   Roll.TRK(ik,jk)  => Roll11.trk (ik,jk)
-     Case 12
-   Roll.TRK(ik,jk)  => Roll12.trk (ik,jk)
-     Case 13
-   Roll.TRK(ik,jk)  => Roll13.trk (ik,jk)
-     Case 14
-   Roll.TRK(ik,jk)  => Roll14.trk (ik,jk)
-     Case 15
-   Roll.TRK(ik,jk)  => Roll15.trk (ik,jk)
-     Case 16
-   Roll.TRK(ik,jk)  => Roll16.trk (ik,jk)
-     Case 17
-   Roll.TRK(ik,jk)  => Roll17.trk (ik,jk)
-     Case 18
-   Roll.TRK(ik,jk)  => Roll18.trk (ik,jk)
-     Case 19
-   Roll.TRK(ik,jk)  => Roll19.trk (ik,jk)
-     Case 20
-   Roll.TRK(ik,jk)  => Roll20.trk (ik,jk)
-     Case 21
-   Roll.TRK(ik,jk)  => Roll21.trk (ik,jk)
-     Case 22
-   Roll.TRK(ik,jk)  => Roll22.trk (ik,jk)
-     Case 23
-   Roll.TRK(ik,jk)  => Roll23.trk (ik,jk)
-     Case 24
-   Roll.TRK(ik,jk)  => Roll24.trk (ik,jk)
-     Case 25
-   Roll.TRK(ik,jk)  => Roll25.trk (ik,jk)
-     Case 26
-   Roll.TRK(ik,jk)  => Roll26.trk (ik,jk)
-     Case 27
-   Roll.TRK(ik,jk)  => Roll27.trk (ik,jk)
-     Case 28
-   Roll.TRK(ik,jk)  => Roll28.trk (ik,jk)
-     Case 29
-   Roll.TRK(ik,jk)  => Roll29.trk (ik,jk)
-     Case 30
-   Roll.TRK(ik,jk)  => Roll30.trk (ik,jk)
-     Case 31
-   Roll.TRK(ik,jk)  => Roll31.trk (ik,jk)
-     Case 32
-   Roll.TRK(ik,jk)  => Roll32.trk (ik,jk)
-   Next i
-
-Next j
-    trakold = track 
-''EndIf
-'''
-'/
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar con Insert y I
  cursorVert = 1
@@ -2661,21 +2583,78 @@ If (ScreenEvent(@e)) Then
 If  mouseY > 50 Then '<=== delimitacion de area de trabajo
 s3 = 0 ''06-12-2021
 
-  If comEdit=FALSE Then
+ If comEdit=FALSE Then
 ' para ingreser automatico acordes a partir de una TONICA futuro--01-12-2021  
-     If MouseButtons And 2 Then
-     Dim As HMENU hpopup1
+    If MultiKey(SC_CONTROL) And MouseButtons And 2 Then
+     Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2
+     Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dis7,Mayor9,Menor9,Dis9     
      Dim As Integer event
       
      Var haco = OpenWindow("Acordes",mousex -10,mousey,20,80,WS_VISIBLE Or WS_THICKFRAME , WS_EX_TOPMOST Or WS_EX_TRANSPARENT  )
      
 
-     hpopup1=CreatePopMenu()
-     MenuItem(1001,hpopup1,"Mayor")
-     MenuItem(1002,hpopup1,"Menor")
-     MenuItem(1003,hpopup1,"Disminuido")
-     MenuItem(1004,hpopup1,"<-Cancelar->")
-    
+     hpopup1 =CreatePopMenu()
+     notas3  =OpenSubMenu(hpopup1,"3 Notas") 'triadas
+     notas4  =OpenSubMenu(hpopup1,"4 Notas") ' septimas
+     notas5  =OpenSubMenu(hpopup1,"5 Notas") ' novenas ...once 13 
+
+     cancelar=OpenSubMenu(hpopup1,"<-Cancelar->")
+          
+     Mayor=OpenSubMenu(notas3,"Mayor")
+     Menor=OpenSubMenu(notas3,"Menor")
+     Dis  =OpenSubMenu(notas3,"Dis")
+               
+     Mayor7=OpenSubMenu(notas4,"Mayor 7")
+     Menor7=OpenSubMenu(notas4,"Menor 7")
+     Dis7 =OpenSubMenu(notas4,"Dis 7")
+
+     Mayor9=OpenSubMenu(notas5,"Mayor 9")
+     Menor9=OpenSubMenu(notas5,"Menor 9")
+     Dis9 =OpenSubMenu(notas5,"Dis 9")
+
+
+     MenuItem (1001,Mayor,"No inversion")
+     Menuitem (1002,Mayor,"1era inversion")
+     Menuitem (1003,Mayor,"2da inversion")
+
+     MenuItem (1004,Menor,"No inversion")
+     Menuitem (1005,Menor,"1era inversion")
+     Menuitem (1006,Menor,"2da inversion")
+     
+     MenuItem (1007,Dis,"No inversion")
+     Menuitem (1008,Dis,"1era inversion")
+     Menuitem (1009,Dis,"2da inversion")
+
+     MenuItem (1010,Mayor7,"No inversion")
+     Menuitem (1011,Mayor7,"1era inversion")
+     Menuitem (1012,Mayor7,"2da inversion")
+
+     MenuItem (1013,Menor7,"No inversion")
+     Menuitem (1014,Menor7,"1era inversion")
+     Menuitem (1015,Menor7,"2da inversion")
+     
+     MenuItem (1016,Dis7,"No inversion")
+     Menuitem (1017,Dis7,"1era inversion")
+     Menuitem (1018,Dis7,"2da inversion")
+
+     MenuItem (1019,Mayor9,"No inversion")
+     Menuitem (1020,Mayor9,"1era inversion")
+     Menuitem (1021,Mayor9,"2da inversion")
+
+     MenuItem (1022,Menor9,"No inversion")
+     Menuitem (1023,Menor9,"1era inversion")
+     Menuitem (1024,Menor9,"2da inversion")
+     
+     MenuItem (1025,Dis9,"No inversion")
+     Menuitem (1026,Dis9,"1era inversion")
+     Menuitem (1027,Dis9,"2da inversion")
+
+
+
+     MenuItem(1028,cancelar,"Salir")
+ 
+ 
+     
      Do
       event=WaitEvent
     mouse_event MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0
@@ -2684,35 +2663,141 @@ s3 = 0 ''06-12-2021
       
       If event=EventMenu then
        Select case EventNumber
+    ' TRIADAS   
          Case 1001
-            'MessBox("","1 Menu")
+       'NO INVERSION
+         Delete_Menu (hpopup1)
            Close_Window(hpopup1)
            Close_Window(haco)
            Exit Do 
 
          Case 1002
-            'MessBox("","2 Menu")
+        '1ERA INVERSION
+         Delete_Menu (hpopup1)            
            Close_Window(hpopup1)
            Close_Window(haco)
            Exit Do 
 
          Case 1003
-            'MessBox("","2 Menu")
+        ' 2DA INVERSION
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+' FIN TRIADAS
+         Case 1004
+         Delete_Menu (hpopup1)
+          Close_Window(hpopup1)
+          Close_Window(haco)
+           Exit Do 
+         Case 1005
+            'MessBox("","1 Menu")
+         Delete_Menu (hpopup1)
            Close_Window(hpopup1)
            Close_Window(haco)
            Exit Do 
 
-         Case 1004
+         Case 1006
+            'MessBox("","2 Menu")
+         Delete_Menu (hpopup1)            
            Close_Window(hpopup1)
            Close_Window(haco)
            Exit Do 
+
+         Case 1007
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1008
+            'MessBox("","1 Menu")
+         Delete_Menu (hpopup1)
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+
+         Case 1009
+            'MessBox("","2 Menu")
+         Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+
+         Case 1010
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1011
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1012
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1013
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+
+         Case 1014
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1015
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1016
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1017
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1018
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1019 To 1028
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+
         End Select
       ElseIf event=eventrbdown Then
           DisplayPopupMenu(hpopup1, GlobalMouseX,GlobalMouseY)
       EndIf
  
-    Loop     
+     Loop  
+        
      EndIf
+  s2=0 :s1= 0 ' 10-12-2021 wheel no se movia
+  lockip=0   ' 10-12-2021 wheel no se movia
+  fueradefoco=0
+   Exit Do  ' 10-12-2021 por las dudas agrego exit do para que tarde menos 
  EndIf
  If  comEdit=TRUE  Then
     If  MultiKey(SC_CONTROL) And (MouseButtons And 2)  Then

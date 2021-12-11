@@ -1509,7 +1509,7 @@ CantTicks=4000 ' vuelvo al original default
 ' En la cantidad de posiciones no hay porblema en ambas direcciones. 
           NB => 0 + (desde-1) * 13   ' 27 para 3
           NA => 11 + (hasta-1) * 13  ' 90 para  7
-          If desdevector > desde Or hastavector < hasta Then ' si se amplia el rango
+       '   If desdevector > desde Or hastavector < hasta Then ' si se amplia el rango
                print #1,"entro a redimiensionar vector por octavas"
                Erase  Roll.trk, Track(ntk).trk, RollAux.trk  
                desdevector= desde
@@ -1521,13 +1521,13 @@ CantTicks=4000 ' vuelvo al original default
                ReDim compas(1 To CantTicks)
                ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
                posn=1
-          Else
-
-               ReDim Preserve (Roll.trk ) (1 To CantTicks, NB To NA )
-               ReDim Preserve compas(1 To CantTicks)
-               ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
-               ReDim preserve (Track(ntk).trk ) (1 To CantTicks,1 To lim2)           
-          EndIf
+     '     Else
+'
+'               ReDim Preserve (Roll.trk ) (1 To CantTicks, NB To NA )
+'               ReDim Preserve compas(1 To CantTicks)
+'               ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
+'               ReDim preserve (Track(ntk).trk ) (1 To CantTicks,1 To lim2)           
+'          EndIf
 
           MaxPos = 2 'NroCol
           posicion=0
@@ -1914,6 +1914,7 @@ EndIf
       If MultiKey(sc_control) Then
        If dobleclick Then
           Nuevo(Roll,1)
+          Sleep 100
           MenuNew=0
        EndIf
       EndIf 

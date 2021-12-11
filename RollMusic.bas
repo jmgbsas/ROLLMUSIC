@@ -1,3 +1,4 @@
+ ' rooloop 2673 menu contextual acordes desarrollo 06-12-2021 AL 10-12-2021
  ' correccion Clcik end EDIT 06-12-2021 s3=0 movido a y > 50 
  ' correccion de abrir nota si menor=mayor no hace nada, allevantar click rompia todo
  ' v23 fraccionar automaticamente en comEdit cursor al poner notas menores o 

@@ -62,6 +62,8 @@
           que el click sea en esa columna en cualquier linea puede no existir nota, la funcion buscara
           la nota menor y mayor, y fraccionara empezando por la mayor con al unidad de la menor.
           Es la elegida por el programa por omision. 
+    1.12) Inicio de desarrollo del Menu contextual para acordes, aparece al pulsar Ctrl+click derecho
+          
 
     IV) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
         estilo pentagrama. Se podrán usar varias instancias pero sin ningun control
