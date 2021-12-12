@@ -3,7 +3,7 @@
 'extern "c"
 'Declare function usleep( as ulong) as long '=0 when working
 'end Extern
-
+' ESCALAS Y ACORDES http://www.looknohands.com/chordhouse/guitar/index_rb.html
 ' code from
 'https://freebasic.net/forum/viewtopic.php?t=23680
 'Declare sub RtlInitUnicodeString alias "RtlInitUnicodeString"(as PUNICODE_STRING,as PCWSTR)
@@ -288,7 +288,7 @@ Type poli Field=1 ' para guardar la secuencia
  pan As  UByte =0 ' paneo
  pb  As  UByte =0 ' pitch bend
  inst As UByte =0' instrumento para cada nota podra ser distinto
- tick As Integer =0' 128 tiene la redonda, 1 la cuartifusa
+ tick As Integer =0' 128 tiene la redonda, 1 la cuartifusa todavia no la uso
  posn As Integer =0' de roll
  acorde  As ubyte =0 ' 1 a 12 , son el se hara el sort    
 End Type 
@@ -305,13 +305,18 @@ End Type
 Type dat Field=1
  nota As UByte =0 ' en un futuro contendra nota, octava, canal etc 
  dur As  UByte =0 ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
- vol As  UByte =0 ' volumen
- pan As  UByte =0 ' paneo
- pb  As  UByte =0 ' pitch bend
+ vol As  UByte =0 ' volumen cambiamos si es + es volumen si es negativo es escala
+ pan As  UByte =0 ' paneo + o -
+ pb  As  UByte =0 ' pitch bend + o -
  inst As UByte =0 ' instrumento para cada nota podra ser distinto
  ''t   As Ulong   '  ticks por ahroa no 
 End Type
- 
+' dentro del vol pondremso las escalas
+' chords http://www.looknohands.com/chordhouse/piano/ ahi hay 168 escalas..!!
+' en vol tengo desde 129 a 255 para numerar escalas. si faltan puedo usar pan o pb
+' l aidea es poner en que escala esta cada nota o compas y asi poder tener cambios de escla
+' y construir los acordes que se quieran construir es esa escala de esea nota o del compas o 
+' la escala del ultimo cambio...por default la escala sera C mayor.. 
 Type inst
  As dat trk(Any, Any)
 End Type

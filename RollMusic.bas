@@ -1,4 +1,14 @@
- ' rooloop 2673 menu contextual acordes desarrollo 06-12-2021 AL 10-12-2021
+' el borrado de columna esta defectuoso hay que dar 0 y luego 12 x en toda la octava para
+' que borre mejor usaremos marcas de zona para borrar.
+' dejo de andar marcado de zonas porque habia un exit do en Comedit=False con mousex>50
+' se movio zonas dentro de mousex> 50 y luefo Comedit=false volvio a funcionar
+ ' se intento usar Byte en vez de Ubyte para usar negativos pero hay qu emodificar mucho
+ ' se usara IF variabrlee > 127 par ausar por ejemplo Vol > 127 para indicar escalas...
+ ' Esta nota base...es Tonica 3era 5ta 7ma ...
+ ' uso ctrl+click para ingresar notas nuevas en Edit, sino al pasar a Ctrl-M u otras acciones
+ ' entraba notas no deseadas..
+ ' 11-12-2021 redusco la camtidad de partes a 20 partes_falta (1 To 20), partes_sobra(1 To 20)
+ ' rooloop 2673 menu contextual acordes desarrollo 06-12-2021
  ' correccion Clcik end EDIT 06-12-2021 s3=0 movido a y > 50 
  ' correccion de abrir nota si menor=mayor no hace nada, allevantar click rompia todo
  ' v23 fraccionar automaticamente en comEdit cursor al poner notas menores o 

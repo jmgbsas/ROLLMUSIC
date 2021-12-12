@@ -930,7 +930,7 @@ EndIf
  EndIf
 
   'kNroCol cantidad scroll de NrocOL)
- If  mouseY > 50 And MultiKey(SC_RIGHT)  Then ' <======== RIGHT
+ If  mouseY > 50 And MultiKey(SC_RIGHT)   Then ' <======== RIGHT
  
      If comEdit = FALSE Then
         posicion = posicion + 1
@@ -969,7 +969,7 @@ EndIf
   EndIf
   Exit Do
  EndIf
- If  mouseY > 50 And MultiKey(SC_LEFT) Then
+ If  MultiKey(SC_LEFT) And mouseY > 50   Then
 
   'MOVER ROLL IZQUIERDA NO CURSOR
   If comEdit = FALSE Then
@@ -1433,11 +1433,12 @@ If comEdit = TRUE Then
 
   If MultiKey(SC_CONTROL) And MultiKey(SC_DELETE) Then
   ' BORRAR COLUMNA UTOMATICO LUEGO DE BORRAR NOTAS CON 0 Y X
+  ' no anda bien 12-12-2021 se cambia a marcar por zona columna o columnas
      borrarColumnasMarcadas()
   EndIf
 
  EndIf 
- ' ojo ver q no habia  exit do antes !!!!!
+ ' ojo ver q no haYa  exit do antes !!!!!
 EndIf 
 
 
@@ -1551,8 +1552,13 @@ If comEdit = FALSE Then ' construir cifras para copiar Nveces por ejemplo
     posishow=posicion
  EndIf
       
+' ESTE LLAMADO ACTUA EN COMEDIT=FALSE Y CON pasoZona 1 y/o 2 
+  If MultiKey(SC_CONTROL) And MultiKey(SC_DELETE) Then
+  ' BORRAR COLUMNA UTOMATICO LUEGO DE BORRAR NOTAS CON 0 Y X
+  ' no anda bien 12-12-2021 se cambia a marcar por zona columna o columnas
+     borrarColumnasMarcadas()
+  EndIf
  
- ''''etc
 EndIf
 
 
@@ -2573,21 +2579,14 @@ If (ScreenEvent(@e)) Then
 
 
 
- '         <==== MENU BORRR INSERTAR MODIFICAR ================>
- ' savemousex=0 : savemousey=0 LO QUE HACE ES PERMITIR QUE EL MENU APARESCA EN OTRO LADO
- ' DONDE SE CLICKEA, Y SI SON >0 DEJA QUE PERMANESCA VISUALMNETE
- ' HASTA EL PROXIMO CLICK IZQUIERDO, POR ESO SE PASAN A CERO SOLO EN EL ULTIMO CLICK
- ' IZQUIERDO (2 o 1 segun la cantidad necesaria para ejecutar el comando)
- '  MOMENTO EN EL QUE SE EJECUTA EL COMANDO Y SE VE EL CAMBIO.
- '       ==== NOTAS O DURACIONES EXISTENTES ====
-If  mouseY > 50 Then '<=== delimitacion de area de trabajo
+ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
 s3 = 0 ''06-12-2021
-
+ ' <==== MENU CONTEXTUAL ACORDES CON CTRL+ CLICK DERECHO EN LECTURA ================>
  If comEdit=FALSE Then
 ' para ingreser automatico acordes a partir de una TONICA futuro--01-12-2021  
     If MultiKey(SC_CONTROL) And MouseButtons And 2 Then
      Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2
-     Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dis7,Mayor9,Menor9,Dis9     
+     Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dis7,Mayor9,Menor9,Dis9, notabase     
      Dim As Integer event
       
      Var haco = OpenWindow("Acordes",mousex -10,mousey,20,80,WS_VISIBLE Or WS_THICKFRAME , WS_EX_TOPMOST Or WS_EX_TRANSPARENT  )
@@ -2597,7 +2596,7 @@ s3 = 0 ''06-12-2021
      notas3  =OpenSubMenu(hpopup1,"3 Notas") 'triadas
      notas4  =OpenSubMenu(hpopup1,"4 Notas") ' septimas
      notas5  =OpenSubMenu(hpopup1,"5 Notas") ' novenas ...once 13 
-
+     notabase    =OpenSubMenu(hpopup1,"Esta Nota Base...") ' si la nota elegida será Tonica 3era 5ta etc
      cancelar=OpenSubMenu(hpopup1,"<-Cancelar->")
           
      Mayor=OpenSubMenu(notas3,"Mayor")
@@ -2611,6 +2610,7 @@ s3 = 0 ''06-12-2021
      Mayor9=OpenSubMenu(notas5,"Mayor 9")
      Menor9=OpenSubMenu(notas5,"Menor 9")
      Dis9 =OpenSubMenu(notas5,"Dis 9")
+
 
 
      MenuItem (1001,Mayor,"No inversion")
@@ -2649,6 +2649,10 @@ s3 = 0 ''06-12-2021
      Menuitem (1026,Dis9,"1era inversion")
      Menuitem (1027,Dis9,"2da inversion")
 
+     MenuItem (1028,notabase,"Es Tonica")
+     Menuitem (1029,notabase,"Es 3era ")
+     Menuitem (1030,notabase,"Es 5ta ")
+     Menuitem (1031,notabase,"Es 7ma ")
 
 
      MenuItem(1028,cancelar,"Salir")
@@ -2779,7 +2783,31 @@ s3 = 0 ''06-12-2021
            Close_Window(hpopup1)
            Close_Window(haco)
            Exit Do 
-         Case 1019 To 1028
+         Case 1019 To 1027
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1028 ' es Tonica
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1029 ' es 3era
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1030 ' es 5ta
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1031 ' es 7ma
             'MessBox("","2 Menu")
            Delete_Menu (hpopup1)            
            Close_Window(hpopup1)
@@ -2797,8 +2825,69 @@ s3 = 0 ''06-12-2021
   s2=0 :s1= 0 ' 10-12-2021 wheel no se movia
   lockip=0   ' 10-12-2021 wheel no se movia
   fueradefoco=0
+' SELECCION DE ZONA PARA TRASPONER, VOLUMEN, INSTRUMENTO, ETC ETC
+' SOLO SELECCIONO PASO DESDE HASTA y/o NOTA. 
+' usaremos tambien (en desarrollo futuro) para borrar un intervalo ya sea de 
+' la octava elegida o todas las octavas o desde una nota hasta otra ....¿?
+' clave DEVF (desarrollo futuro)
+' esto funciona solo en modo lectura asi que lomovere ahi
+  If MultiKey(SC_CONTROL) And MouseButtons And 1 Then
+     Dim As Integer pasox, pasoy, pasonR
+     pasox=(mousex- gap1 )/anchofig  + posishow  
+     pasoy=nE
+     print #1,"pasoy nE=",pasoy
+     
+     correcciondeNotas(Roll)
+
+     If pasoZona1 = 0 Then  ' selecion 1er posicion de la zona
+        pasoZona1=  pasox ' pos de la 1er ventana
+        pasoNota=0 
+   '     print #1,"pasoZona1=",pasoZona1;" pasoNota=";pasoNota
+        Exit Do
+     EndIf
+
+     If pasoZona1 > 0 And pasoZona1 <> pasox Then ' posicion 2 de la zona
+        pasoZona2= pasox
+        pasoNota=0
+    '    print #1,"pasoZona2=",pasoZona2;" pasoNota=";pasoNota
+        Exit Do
+     EndIf
+     If pasoZona1=pasoZona2 And pasoNota<>pasoy Then 
+        pasoNota=nE
+     '   print #1,"pasoNota=",pasoNota
+        Exit Do
+     Else
+        pasoNota=0   
+     EndIf
+
+     If pasoZona1 > 0  And pasoZona1 = pasox Then ' la zona es solo  1 sola columna
+        pasoZona2= pasox
+        pasoNota=0 ' 28-06-2021 mueve acorde si existe , sino meuve nota 
+     '   print #1,"pasoZona1 iguales pasoZona2=",pasoZona2;" pasoNota=";pasoNota
+     EndIf
+  EndIf 
+' FIN SELECION ZONA
+' cambio de lugar ...
+' 24-06-2021 espaciado de lineas (1)
+'If MultiKey(SC_CONTROL) And lockip=0  Then
+'    deltaip=0
+'    incWheel=0
+'    lockip=1
+'    Exit Do 
+'
+'EndIf 
+
    Exit Do  ' 10-12-2021 por las dudas agrego exit do para que tarde menos 
  EndIf
+ 
+ '         <==== MENU BORRAR INSERTAR MODIFICAR ================>
+ ' savemousex=0 : savemousey=0 LO QUE HACE ES PERMITIR QUE EL MENU APARESCA EN OTRO LADO
+ ' DONDE SE CLICKEA, Y SI SON >0 DEJA QUE PERMANESCA VISUALMNETE
+ ' HASTA EL PROXIMO CLICK IZQUIERDO, POR ESO SE PASAN A CERO SOLO EN EL ULTIMO CLICK
+ ' IZQUIERDO (2 o 1 segun la cantidad necesaria para ejecutar el comando)
+ '  MOMENTO EN EL QUE SE EJECUTA EL COMANDO Y SE VE EL CAMBIO.
+ '       ==== NOTAS O DURACIONES EXISTENTES ====
+
  If  comEdit=TRUE  Then
     If  MultiKey(SC_CONTROL) And (MouseButtons And 2)  Then
    ' trae un menu contextual solo con ctrl-m  previo <==== menu borrar insertar modificar
@@ -3073,10 +3162,9 @@ s3 = 0 ''06-12-2021
    EndIf
 
    If ayudaNuevaNota=FALSE And ayudaModif=FALSE Then
-  If DUR > 0 And nE > 0 And nroClick = 1 _
-  And modifmouse<> 3 Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
-  nota=nE   ''<== 1er nota ingresada para la duracion y nota elegida
-  nroClick=0
+      If DUR > 0 And nE > 0 And nroClick = 1 And modifmouse<> 3 Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
+         nota=nE   ''<== 1er nota ingresada para la duracion y nota elegida
+         nroClick=0
  ' print #1, "------------------------------------------------------------"
  ' Print  #1," DUR > 0 And nE > 0 And nroClick = 1 And ayudaNuevaNota=FALSE and comEdit=TRUE "
  ' Print  #1," And ayudaModif=FALSE "
@@ -3086,22 +3174,23 @@ s3 = 0 ''06-12-2021
  ' Print  #1," 7-> nroClick=0"
  ' print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 
-  EndIf
+     EndIf
    EndIf
-   If ayudaModif=FALSE And ayudaNuevaNota=FALSE _
-   And octavaEdicion = estoyEnOctava Then
-  If (mouseButtons And 1) And (DUR > 0) And (nE > 0) And modifmouse<> 3 Then
+  If ayudaModif=FALSE And ayudaNuevaNota=FALSE And octavaEdicion = estoyEnOctava Then
+     '11-12-2021 uso Ctrl + click para ingresar notas con el mouse sino se ingresa por error
+     ' facilmente durante el pasaje de edit a ctrl-m
+     If (mouseButtons And 1) And (DUR > 0) And (nE > 0) And modifmouse<> 3 And MultiKey(SC_CONTROL) Then
    'print #1, "------------------------------------------------------------"
    'Print  #1,"(8) (mouseButtons And 1) And (DUR > 0) And (nE > 0) And ayudaNuevaNota=FALSE "
    'Print  #1,"(8)  And comEdit=TRUE And ayudaModif=FALSE"
    'print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
-   Dim As Integer posdur= (mousex- gap1 )/anchofig + posishow '01-07-2021
-   If posdur >= Maxpos - 1 Then  ' no permite entrar notas con click ,ucho antes de maxpos
-      nota=nE ' <=== ingresamos varias notas por mouse del mismo valor
-   EndIf
+     Dim As Integer posdur= (mousex- gap1 )/anchofig + posishow '01-07-2021
+     If posdur >= Maxpos - 1 Then  ' no permite entrar notas con click ,ucho antes de maxpos
+       nota=nE ' <=== ingresamos varias notas por mouse del mismo valor
+     EndIf
    ' hasta que si vuelva a dar click derecho y aparesca de nuevo el menu de duraciones.
    '   Print  #1," nota=nE ", nE
-   Exit Do
+     Exit Do
   EndIf
    EndIf
 
@@ -3129,56 +3218,6 @@ s3 = 0 ''06-12-2021
  EndIf
 
 
-' SELECCION DE ZONA PARA TRASPONER, VOLUMEN, INSTRUMENTO, ETC ETC
-' SOLO SELECCIONO PASO DESDE HASTA y/o NOTA. 
-' usaremos tambien (en desarrollo futuro) para borrar un intervalo ya sea de 
-' la octava elegida o todas las octavas o desde una nota hasta otra ....¿?
-' clave DEVF (desarrollo futuro)
-  If MultiKey(SC_CONTROL) And MouseButtons And 1 Then
-     Dim As Integer pasox, pasoy, pasonR
-     pasox=(mousex- gap1 )/anchofig  + posishow  
-     pasoy=nE
-     print #1,"pasoy nE=",pasoy
-     
-     correcciondeNotas(Roll)
-
-     If pasoZona1 = 0 Then  ' selecion 1er posicion de la zona
-        pasoZona1=  pasox ' pos de la 1er ventana
-        pasoNota=0 
-   '     print #1,"pasoZona1=",pasoZona1;" pasoNota=";pasoNota
-        Exit Do
-     EndIf
-
-     If pasoZona1 > 0 And pasoZona1 <> pasox Then ' posicion 2 de la zona
-        pasoZona2= pasox
-        pasoNota=0
-    '    print #1,"pasoZona2=",pasoZona2;" pasoNota=";pasoNota
-        Exit Do
-     EndIf
-     If pasoZona1=pasoZona2 And pasoNota<>pasoy Then 
-        pasoNota=nE
-     '   print #1,"pasoNota=",pasoNota
-        Exit Do
-     Else
-        pasoNota=0   
-     EndIf
-
-     If pasoZona1 > 0  And pasoZona1 = pasox Then ' la zona es solo  1 sola columna
-        pasoZona2= pasox
-        pasoNota=0 ' 28-06-2021 mueve acorde si existe , sino meuve nota 
-     '   print #1,"pasoZona1 iguales pasoZona2=",pasoZona2;" pasoNota=";pasoNota
-     EndIf
-  EndIf 
-' FIN SELECION ZONA
-' cambio de lugar ...
-' 24-06-2021 espaciado de lineas (1)
-'If MultiKey(SC_CONTROL) And lockip=0  Then
-'    deltaip=0
-'    incWheel=0
-'    lockip=1
-'    Exit Do 
-'
-'EndIf 
 
 
 
@@ -3249,8 +3288,10 @@ s3 = 0 ''06-12-2021
        Next lz 
     EndIf
     Exit Do
- EndIf 
- '
+ EndIf
+ '  ========================================================================= 
+ ' <========= ABRIR NOTAS O FRACCIONAR EN DURACIONES MAS PEQUEÑAS ============>
+ '  =========================================================================
  If MultiKey(SC_Z)  And MousePress = 1 Then
     indicePos=(mousex- gap1 )/anchofig + posishow 
     Rolldur=CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur)
@@ -3278,7 +3319,7 @@ s3 = 0 ''06-12-2021
      Exit Do
  EndIf
  
-EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
+ EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 ' ------------------------------------------------------------------
 If MouseButtons And 1  Then
    old_btn_press_time = new_btn_press_time

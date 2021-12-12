@@ -62,8 +62,6 @@
           que el click sea en esa columna en cualquier linea puede no existir nota, la funcion buscara
           la nota menor y mayor, y fraccionara empezando por la mayor con al unidad de la menor.
           Es la elegida por el programa por omision. 
-    1.12) Inicio de desarrollo del Menu contextual para acordes, aparece al pulsar Ctrl+click derecho
-          
 
     IV) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
         estilo pentagrama. Se podrán usar varias instancias pero sin ningun control
@@ -254,7 +252,7 @@
 
     2.3) Modificacion.
     2.4) Copiar 1 nota.
-    2.5) Borrar 1 Nota.
+    2.5) Borrar 1 Nota, Borrar 1 columna o un rango de columnas:
     2.6) Insertar Notas.
    ------------------------------------------------------------------------------------------   
     2.0) Modos de Edición.
@@ -266,8 +264,9 @@
          - Estando sobre una octava elegida con el mouse, pulsar una duracion de 1 a 8
            1=O redonda, 2=P blanca, 3=I negra, 4=L corchea, 5=F semicorchea, 6=E fusa,
            7=X semifusa, 8=H garrapatea, 9=W semigarrapatea, 9=espacio,ctrl-0=Fin Secuencia.
-           En modo Cursor: 0=marcar borrar columna seguidode X.(por ahora el borado se ejecuta al guardar
-           el archivo al cargarlo de nuevo se ve el efecto del borrado).
+           En modo Cursor: 0=marcar borrar columna seguido de X.(el borado se ejecuta al guardar
+           el archivo y al cargarlo de nuevo, la nota se borra, pero si en esa columna era la unica nota y 
+           se desea borrar la columna en ese momento usar ctrl-delete ver 2.5.3).
            Luego pulsar una nota en alfabeto americano C,D,E,F,G,A,B, o las mimsas notas
            pero sostenido usando Ctrl-C, ctrl-D ..etc.
            Si repetimos la misma duracion en diferentes nota subsiguientes, basta pulsar las 
@@ -277,15 +276,18 @@
            de verde a blanco. Luego repetir elproceso pero eligiendo otra octava posicionando
            el mouse sobre   esa octava deseada.
          - Pero si se está editando una octava y se desea pasar rapido a otra octava, simplemete
-           se pasa el mouse por encima del extremo izquierdo de la octava en la zona de las
-           Notas Guia por ejemplo sobre  ' C_3_[ ' y se estara editando esa nueva octava
-           no pudiendo hacerlo en la de antes eso evita errores de entrada.
+           se pasa el mouse por encima del extremo DERECHO de la octava en el extremo final derecho
+           y se estara editando esa nueva octava  no pudiendo hacerlo en la de antes eso evita errores de entrada.
 
     2.1.2) Entrada Por mouse y Teclado 
            estando habilitada una octava como en 2) se hace click derecho aparece un menu de
-           notas contextual se da click a la deseada y se da click sobre la nota deseada, se puede
-           seguir dando click a otras notas con la misma duracion sin neceidad de traer el menu
-           contextual de notas.
+           notas contextual se da click izquierdo a la deseada del menu y luego se da click sobre la nota deseada 
+           en la linea en pantalla, se puede seguir usando la misma duracion dando ctrl-click a otras notas con la 
+           misma duracion sin neceidad de traer de nuevo el menu contextual de notas. (observar que la 1er nota 
+           luego de elegir del menu contextual es solo con Click de mouse izquierdo, despues son con Ctrl-clik 
+           si se usa la misma duracion.
+           Otra forma es entrar la duracion por teclado y la nota con Ctrl-click (se agrego Ctrl para evitar
+           errores de entradas)
 
     II) MODO CURSOR O MODIFICACION SOLO EN LA PANTALLA SELECCIONADA O CONGELADA, SIN AVANCE DE LA 
         SECUENCIA O SIN AVANCE DE PANTALLA CON FLECHAS DER O IZQ. LAS FLECHAS MUEVEN EL CURSOR
@@ -359,7 +361,7 @@
          nuevo. Se puede seguir a otras posiciones, dando ENTER seguirá copiando.
    
 
-    2.5) Borrar 1 Nota:
+    2.5) Borrar 1 Nota,borrar 1 columna o un rango de columnas:
     2.5.1) BORRAR NOTA EN CTRL-N UBICANDO EL CURSOR SOBRE LA NOTA
            Y LUEGO PULSAR ESPACIO.PARA CADA NOTA SE DEBE HACER LO MISMO
            UBICAR CURSOR PULSAR ESPACIO.
@@ -367,11 +369,14 @@
            Y LUEGO X PARA MODIFICAR..SE PUEDE SEGUIR BORRARNDO OTRAS NOTAS
            UBICANDO EL CURSOR Y SOLO CON X REPITE LA ULTIMA NOTA EN ESTE CASO ESPACIO.
 
-    2.5.3) Borrado de columna o posicion, en Cursor modificar cada nota en cualquier
-       columna pulsando 0 y luego X para modificar no dejando ninguna nota visible 
-       enla posicion elegida,luego de terminado deborrar las posiciones
-       ahi mismo sin salir de Cursor pulsando Ctrl-Delete o Ctrl-Supr.
-       Se borrarran las posiciones marcadas,
+    2.5.3) Borrado de columna o posicion, en Modo Cursor modificar cada nota en cualquier
+       columna pulsando una vez 0 y luego X en los 12 semitonos para modificar toda la octava  
+       en la posicion elegida, luego de terminado de marcar toda la posicion 
+       ahi mismo sin salir de Cursor pulsando Ctrl-Delete o Ctrl-Supr,se borrarra la/s posiciones marcadas,
+       En Modo lectura marcando Zonas, Borrar 1 sola columna: 
+          Marcar solo una columna con Ctrl-click igual que play, y luego pulso Ctrl-delete.
+          Borrar varias columnas: marcar la zona a borrar con 2 ctrl-clik en 2 posiciones distintas
+          Toda esa regin entre ambas marcas se borraran al pulzar Ctrl-delete. o supr.
     2.5.4) Borrar Hasta el Final, Mover la secuencia de forma que la nota final deseada este en 
        la posicion 1 con flechas derecha izquierda, luego dar clck en Edicion, aparece la 
        cinta arriba de Edicion pero todavia en color blanco , no verde, aparece MaxPos=nn

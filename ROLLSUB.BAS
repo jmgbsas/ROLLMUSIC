@@ -140,7 +140,10 @@ On Local Error GoTo errorCalc
   id=1
   ' procesar el resto que sobra luego de 129 en el buffer 2
  EndIf
- Dim As Integer partes_falta (1 To 100), partes_sobra(1 To 100) 
+ ' ---------------------------------------------
+ '11-12-2021 redusco la camtidad de partes a 20
+ '---------------------------------------------
+ Dim As Integer partes_falta (1 To 20), partes_sobra(1 To 20) 
  ' x print #1,"1-calcCompas 3, DUR: ";DUR; " j: "; j; " figura: ";figura(DUR)
   
  For k=1 To 180
@@ -3616,11 +3619,51 @@ Exit Sub
 '-------------------------
 
 End Sub
+'
 Sub borrarColumnasMarcadas()
 ' toda columna en una posicion que tengasolo 190 en su nota y durcion
-' seraeliminada y todaslas demas desplazadas a izquierda,.
-Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0
-    For i2 = 1 To MaxPos
+' sera eliminada y todaslas demas desplazadas a izquierda,.
+' es trabajoso hay que pulsar 0 y dar x en tola la columna 
+' anda ok , igualmente implementare por zona 
+' pregunto si las zonas estan marcadas uso ese emtodo y sino uso el metodo viejo
+'<====== METODO NUEVO POR ZONAS ===> sI ESTAN MARCADAS Y PULSO CTRL-DELETE SE BORRA TODA ESA
+' ZONA O COLUMNA SI SE SUPERPONEN LAS MARCAS DE ZONA 2 CLICKS SOBRE LA MISMA COLUMNA
+' O UNA SOLO CLIK MEJOR,,,,
+' pasoZona1 pasoZona2 
+Print #1," BORRACOLUMNASMARCADAS"
+
+Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,delta=0
+If pasoZona1 > 0 Or (pasoZona1 > 0 And pasoZona2 > 0) Then
+' metodo nuevo ok
+  Print #1,"pasoZona1 pasoZona2 ",pasoZona1, pasoZona2
+  
+  If pasoZona1 > 0 And pasoZona2 = 0 Then ' borrado de esa columna ok
+    Print #1,"entra por pasoZona1  "
+    For k=pasoZona1 To MAxpos 
+     For i1 = NB To NA
+         Roll.trk(k, i1)=Roll.trk(k+1,i1 )
+     Next i1
+    Next k
+    pasoZona1=0
+  EndIf
+  
+  If pasoZona1 > 0 And pasoZona2 > 0 Then ' borrado del rango del paso ok
+    Print #1,"entra por pasoZona1 y 2  "
+    delta=pasoZona2 - pasoZona1
+    For k=pasoZona1 To MAxpos 
+     For i1 = NB To NA
+         Roll.trk(k, i1)=Roll.trk(k+delta+1,i1 )
+     Next i1
+    Next k
+  
+  
+     pasoZona1=0 :pasoZona1=0
+  EndIf
+  
+Else
+' <====METODO VIEJO ======>
+
+For i2 = 1 To MaxPos
      For i1 = NB To NA
        If Roll.trk(i2,i1 ).nota=190 And Roll.trk(i2,i1 ).dur=190 Then
           borrocol= 1 'Atrapa al menso un caso
@@ -3629,45 +3672,30 @@ Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0
           haynota=1 ' atrapa al menso 1 caso
        EndIf
        
-       If i1= NA And haynota=1 Then ' sihay unasola notaen la columna no borro
+       If i1= NA Then 
+        If haynota=1 Then ' sihay unasola notaen la columna no borro
          res=0 ' no borrar
-       Else
+        Else
           If borrocol = 1 Then
              res=1  
           EndIf  
-       EndIf            
+        EndIf
+       EndIf             
     Next i1
     i1=0  
     If borrocol = 0 Or res=0 Then 'copio columna no borro
        k=k+1
-      For i1 = NB To NA
-          Roll.trk(k, i1)=Roll.trk(i2,i1 )
-      Next i1
+      If k<> i2 Then 
+         For i1 = NB To NA
+            Roll.trk(k, i1)=Roll.trk(i2,i1 )
+         Next i1
+      EndIf
     EndIf
       
     borrocol=0:res=0:haynota=0
- Next i2
-' Dim k1 As Integer
-' dejo el mismo largo o achico??? --achico
-' For i2 = k+1 To MaxPos
-'     For i1 = NB To NA
-'     Roll.trk(i1,i2 ).nota=0
-'     Roll.trk(i1,i2 ).dur=0
-'     Roll.trk(i1,i2 ).vol=0
-'     Roll.trk(i1,i2 ).pan=0
-'     Roll.trk(i1,i2 ).inst=0
-'     Next i1
-' Next i2
- 
-'MaxPos=k+1
-        
-'Dim As Integer r1,i
-'For i=NB To NA 
-'  For r1= k+1 To MaxPos
-'    Roll.trk(i,r1).nota=0
-'    Roll.trk(i,r1).dur=0 
-'  Next r1 
-'Next i  
+Next i2
+
+End if
  
 End SUB
 
