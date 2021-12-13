@@ -2447,7 +2447,7 @@ If (ScreenEvent(@e)) Then
      posishow=posicion
      Exit Do
     Else
-     comEdit = FALSE ': s3 = 0 ' solo LECTURA 06-12-2021
+     comEdit = FALSE '': s3 = 0 ' solo LECTURA 06-12-2021
      '       print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
      'posicion= posicion + curPOS ' estaba mal no va 3-3-21 jmg
      If play=0 Then
@@ -2500,7 +2500,7 @@ If (ScreenEvent(@e)) Then
   EndIf
  ' =========> MOVER VENTANA DRAGAR LA CINTA SUPERIOR con el mouse
  ' And menuNro= 1  '''348  (2* ANCHO/3)
- If MouseButtons And 1 And S5=1 And mouseX > 350  And mousex < (ANCHO-70) And _
+ If MouseButtons And 1 And S5=1 And mouseX > 350  And mousex < (ANCHO-70-mxold) And _
     usarmarco = 0 AND mousey < 50 Then
    
    x2=mouseX
@@ -2519,7 +2519,8 @@ If (ScreenEvent(@e)) Then
  ''https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-movewindow
  '                           <====== [BOTONES] =======>
  ' 07-08-2021 lugar para test tamaño 10x8
- If (mousex>=(ANCHO-40)) And (mousey <= 16) Then
+ 
+ If (mousex>=(ANCHO-40-mxold)) And (mousey <= 16) Then
   If  MouseButtons And 1 Then
    If MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","Fin RollMusic",4 Or 64) =6 Then
     cairo_destroy(c)
@@ -2539,7 +2540,7 @@ If (ScreenEvent(@e)) Then
   EndIf
  EndIf
 ' ======> F7  BOTON - 
- If (mousex>=(ANCHO-40)) And (mousey > 17) And (mousey < 32) Then
+ If (mousex>=(ANCHO-40-mxold)) And (mousey > 17) And (mousey < 32) Then
   If  MouseButtons And 1 Then
    ''      If comEdit = FALSE Then
    ' MOVE VENTANA
@@ -2559,7 +2560,7 @@ If (ScreenEvent(@e)) Then
   ''  EndIf
  EndIf
  ' BOTON + F8
- If (mousex>=(ANCHO-40)) And (mousey > 33) And (mousey < 50) Then
+ If (mousex>=(ANCHO-40-mxold)) And (mousey > 33) And (mousey < 50) Then
   If  MouseButtons And 1 Then
    ''    If comEdit = FALSE Then
    ' MOVE VENTANA
@@ -2580,7 +2581,7 @@ If (ScreenEvent(@e)) Then
 
 
  If  mouseY > 50 Then '<=== delimitacion de area de trabajo
-s3 = 0 ''06-12-2021
+  s3 = 0 ''06-12-2021
  ' <==== MENU CONTEXTUAL ACORDES CON CTRL+ CLICK DERECHO EN LECTURA ================>
  If comEdit=FALSE Then
 ' para ingreser automatico acordes a partir de una TONICA futuro--01-12-2021  
@@ -2877,6 +2878,32 @@ s3 = 0 ''06-12-2021
 '
 'EndIf 
 
+'            <===== RESIZE ===================>
+ If resize = TRUE And usarmarco=0 Then ' <=====  MOVER Y REDIMENSIONAR LA PANTALLA NO TAN FACIL
+  'CLICKEAR CERCA DEL CENTRO Y DRAGAR DERECHA IZQUIERDA ARRIBA ABAJO
+  m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
+  If m.buttons = 1 And (m.x > 5 ) And (m.y > 5 ) Then
+   'dim as integer desktopwidth,desktopheight
+  ' desktopwidth = GetSystemMetrics(SM_CXSCREEN)
+  ' desktopheight =GetSystemMetrics(SM_CYSCREEN)
+
+   ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
+   Dim As hWnd hwnd = Cast(hwnd,IhWnd)
+   ' m.x The new position of the left side of the window.
+   ' m.y The new position of the top of the window.
+   ' 07-08-2021 cambien m.x/2 y m.y/2  por 1 y 1
+   
+   MoveWindow( hWnd , 1, 1 , ANCHO - mxold, ALTO - myold, TRUE )
+   mxold=m.x
+   myold=m.y
+   
+  EndIf
+  
+  
+  Exit Do
+
+ EndIf
+
    Exit Do  ' 10-12-2021 por las dudas agrego exit do para que tarde menos 
  EndIf
  
@@ -3031,7 +3058,7 @@ s3 = 0 ''06-12-2021
  '                     <=== INICIO  O P I L F E W H
 
    If (MouseButtons And 2)  Then ''<=== menu de duraciones para seleccionar con click
-   ' el resto del code en CrearPenta(), para todaedicion lasduraciones 1 a 8 en letras
+   ' el resto del code en CreaPenta(), para todaedicion lasduraciones 1 a 8 en letras
      ayudaNuevaNota=TRUE 'ESTADO: CALL MENU DURACIONES O CTRL-M
      ayudaModif =FALSE
      savemousex=0 : savemousey=0 ''ACA NO ¿?
@@ -3289,6 +3316,8 @@ s3 = 0 ''06-12-2021
     EndIf
     Exit Do
  EndIf
+ 
+
  '  ========================================================================= 
  ' <========= ABRIR NOTAS O FRACCIONAR EN DURACIONES MAS PEQUEÑAS ============>
  '  =========================================================================
@@ -3333,58 +3362,6 @@ EndIf
 
 '                     <===  FIN    O P I L F E W H
 
-'            <===== RESIZE ===================>
- If resize = TRUE And usarmarco=0 Then ' <=====  MOVER Y REDIMENSIONAR LA PANTALLA NO TAN FACIL
-  'CLICKEAR CERCA DEL CENTRO Y DRAGAR DERECHA IZQUIERDA ARRIBA ABAJO
-  m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
-  If m.buttons = 1 And (m.x > 5 ) And (m.y > 5 ) Then
-   'dim as integer desktopwidth,desktopheight
-  ' desktopwidth = GetSystemMetrics(SM_CXSCREEN)
-  ' desktopheight =GetSystemMetrics(SM_CYSCREEN)
-
-   ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
-   Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-   ' m.x The new position of the left side of the window.
-   ' m.y The new position of the top of the window.
-   ' 07-08-2021 cambien m.x/2 y m.y/2  por 1 y 1
-   
-   MoveWindow( hWnd , 1, 1 , ANCHO - mxold, ALTO - myold, TRUE )
-   mxold=m.x
-   myold=m.y
-   
-  EndIf
-  
-  
-  Exit Do
- Else
-  '  m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
-  '  indice = Int(((m.y - bordesuproll)/inc_Penta)) + 1
-  ' DEL INDICE DEPENDE TODO EL CONTROL DE OCTAVAY DE NOTAS mentira ni se usa
-  /'
-     If m.buttons = 2 Then
-       Select Case indice
-        Case 1
-     '       Roll.trk(indice,1) = entraNota
-        Case 2
-        Case 3
-        Case 4
-        Case 5
-        Case 6
-        Case 7
-        Case 8
-        Case 9
-        Case 10
-        Case 11
-        Case 12
-
-       End Select
-    EndIf
-  '/
-
-
- EndIf
- '  Exit do
- ''  Loop While (m.buttons = 1  )
  If mouseY > 50 And MouseButtons  And 1 Then
   s5=2        'se resetea en EVENT_MOUSE_BUTTON_RELEASE ' obtengoPosicion
   '' ES ACA PROHIBIDO PONER EXIT DO ! NO FUNCION DETECTOR DE OCTAVAS

@@ -195,7 +195,10 @@ menuAccion=0:insert=0:agregarNota=0:octavas=0
 Dim Shared As Integer MousePress = 0, MouseMove=0 '02-07-2021
 Type mouse
  As Integer res
- As Integer x, y, wheel, clip
+ As Integer x
+ As integer y
+ As Integer  wheel
+ As Integer  clip
  Union
  buttons As Integer
  Type

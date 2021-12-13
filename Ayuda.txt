@@ -3,12 +3,24 @@
     I) INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
        RollMusic.exe y todas los archivos *.dll. 
-    II) Configuracion
-        PUERTOS MIDI A USAR.
-        Desde el Menu Principal -> Opciones->MIDI->MIDI-OUT
+    II) Opciones Configuracion
+        a) PUERTOS MIDI A USAR.
+        Desde el Menu Principal -> Opciones->Configuracion->MIDI->MIDI-OUT
         o MIDI-IN, en la lista de dispositivos de salida o de Entrada
         clickear la deseada y dar Ok.(solo midi Out es funcional)
- 
+        (nota: Opciones,MIDI y MIDI-OUT funcionan con un click simple. Pero Configuracion 
+         funciona con Ctrl-Click)
+        b) Usar Marco o No Usar. 
+        Usando marco es mas facil mover la ventana porque usa el modo nativo de
+        windows, pero en esta implementacion no se puede redimensionar la ventana.
+        No usar marco: mover la ventana desde la cinta superior debe hacerse lento para que funcione.
+        tiene la ventaja que se puede redimensionar la ventana en forma vertical con -/+ en la esquina
+        superior derecha. Cuando se usa marco no redimensiona la ventana pero es otra forma de achicar 
+        el interlineado. Al no usar marco ademas de cambiar el interlineado haciedno mas juntas las lineas
+        levanta el borde superior con - y lo baja con +. Pulsando <> en l aesquina superior izquierda
+        y dragando con el mouse desde el centro de la ventana se consigue redimensionar(dejode funcionar)
+        
+           
     III) USO:
  
     1.0) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
@@ -433,7 +445,7 @@
     IV) Menu Cancion (en revision)
        -Nueva Cancion: Se tipea en titulo el nombre del directorio que sera el nombre de la cancion.
         Hay opciones todavia no funcionales. Luego en el mismo menu Crear un directorio de Cancion
-        con pistas separadas. Luefo en Menu Pistas, elegir las onfiguraciones disponibles  y despues
+        con pistas separadas. Luego en Menu Pistas, elegir las onfiguraciones disponibles  y despues
         crear pista aislada con lo elegido y reemplaza a la existente en la edicion. Esta ultima accion
         crea un roll grafico par aingresar las letras de las notas. luego de terminado, se pasa el Roll
         a una pista de la cancion con Crear Pista en la Cancion en Edicion, con lo elegido es decir

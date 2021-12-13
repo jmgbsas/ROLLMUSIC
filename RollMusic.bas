@@ -1,3 +1,5 @@
+' futuro grabar mxold y algo mas para conservar el tamaño de la ventana y el tamaño del font
+' usado por el usuario !!!!
 ' el borrado de columna esta defectuoso hay que dar 0 y luego 12 x en toda la octava para
 ' que borre mejor usaremos marcas de zona para borrar.
 ' dejo de andar marcado de zonas porque habia un exit do en Comedit=False con mousex>50
@@ -555,7 +557,7 @@ End If
 ' default de FRACCIOANR autodur 
    usarAcordesIguales=1
    TipoFrac="autodur" 
-
+usarmarco=0
 'AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS
 
 ' opengl funciona bien, en futuro usare opnegl para otro roll grafico adicional
