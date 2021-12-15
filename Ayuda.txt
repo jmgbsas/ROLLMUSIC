@@ -15,10 +15,13 @@
         windows, pero en esta implementacion no se puede redimensionar la ventana.
         No usar marco: mover la ventana desde la cinta superior debe hacerse lento para que funcione.
         tiene la ventaja que se puede redimensionar la ventana en forma vertical con -/+ en la esquina
-        superior derecha. Cuando se usa marco no redimensiona la ventana pero es otra forma de achicar 
-        el interlineado. Al no usar marco ademas de cambiar el interlineado haciedno mas juntas las lineas
-        levanta el borde superior con - y lo baja con +. Pulsando <> en l aesquina superior izquierda
-        y dragando con el mouse desde el centro de la ventana se consigue redimensionar(dejode funcionar)
+        superior derecha. Cuando se usa marco no redimensiona la ventana pero sí  achica o agranda 
+        el interlineado. Al no usar marco ademas de cambiar el interlineado haciendo mas juntas las lineas
+        levanta el borde superior con - y lo baja con +. Pulsando <> en la esquina superior izquierda
+        y dragando con el mouse desde el costado izquierdo de la ventana se consigue redimensionar
+        los botones de cerrar - y + acompañsan el dedimensionado. Pulsar - + y x sobre todo - y mas
+        pueden variar el punto exacto de respuesta, en general al achicar la ventana parece que
+        el punto de accion virtual sube pro encima del - o + .
         
            
     III) USO:
@@ -100,6 +103,21 @@
         e idas y vueltas. Si me limita mucho el lenguaje podre hacer parches 
         con otro lenguaje o pasar todo a otro lenguaje similar porque lo que
         está echo en Cairo se podrá trasladar a cualqueir otro lenguaje. creo.) 
+      - VARIAS SESIONES DE ROLLMUSIC.
+        El menu de Control permite crear un editor gráfico integerado a dicho Control
+        es la opcion en "Crear Pistas"-> "Crear Pista Aislada con lo elegido y reemplaza la existente
+        en la edicion", aparece un editor gráfico que podra editar cada pista de una cancion por vez
+        o una pista sin cancion (el editor tiene un borde azul en la parte superior).
+        Otra opcion es la última "Crear Instancia de RollMusic Sin Control Alguno Con lo elegido" 
+        Esto crea una sesion sin ventana de Control de borde gris en su parte superior.
+        Se pueden abrir todas las que se desean. Se podrá editar pistas de una cancion en c/u
+        (el play no se sincroniza con Control ni la sesion correspondiente). Al cerrar desde la
+        ventana de Control "Archivo" -> "Salir",o el boton superior derecho X, se cerrarán todas las 
+        sesiones incluidas las independiente usando  su numero de proceso, si no se hace asi cada 
+        ventana de sesion independiente se debera cerrar una por una con Escape o el boton rojo X 
+        en la esquina superior derecha de cada sesion abierta.
+
+
     --------------------------------------------------------------------------------------
         
     1.0) El Modo Lectura se inicia en color de fondo Negro y texto blanco (ultimo 
@@ -121,9 +139,14 @@
         la zona de edición para arriba, deja parte libre inferior para otras cosas.
       - redimension de la pantalla tanto en ancho como en altura sin tocar la altura 
         de las octavas. Para ello se pulsa el simbolo <> el cual se pondrá rojo, y
-        dragando la ventanadesde el centro  de la misma se puede cambiar ancho y 
+        dragando la ventana desde el costado izquierdo de la misma se puede cambiar ancho y 
         altura. Para terminar volver a pulsar el simbolo <>.
-
+        El tamaño de ventana y font se guarda para ello se genera RollMusic.ini
+        Se conservara ese tamaño para las siguientes sesiones. Si se desea modificar
+        se debe cerrar RollMusic borrar RollMusic.ini,  ejecutar el programa de nuevo 
+        y redimensionar dede el tamaño normal al nuevo tamaño deseado de ventana y font.
+        
+        
     1.1)   El espaciado entre lineas se puede cambiar:
        Pulsar y mantener la tecla control. Girando la rueda del mouse
        en la direccion  hacia afuera abre el espacio  entre lineas, hacia 

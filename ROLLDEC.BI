@@ -382,6 +382,7 @@ Dim Shared translado As Integer = 1
 Dim shared As Integer i,  posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
 Dim Shared As Integer octaroll,instancia=0
 Dim Shared As BOOLEAN comEdit, resize
+Dim Shared As Integer nfont,nmxold,nmyold,nancho,nalto
 Dim Shared po As Integer Ptr
 Dim Shared e As EVENT
 Dim Shared rmerr As Integer
@@ -423,7 +424,7 @@ Dim Shared  As pasa param ', param2
     param.c= c
     param.Roll = Roll
     param.titulo = titu
-    param.ancho = ANCHO
+    param.ancho = ANCHO 
     param.alto = ALTO
     p1=@param
     param.ubiroll=0
@@ -444,8 +445,10 @@ COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA 
 Common Shared As string pathdir
-common Shared As String NombreCancion, NombrePista
-Common Shared As Integer cargaCancion
+common Shared As String NombreCancion,NombrePista
+Common Shared As Integer cargaCancion, pid1
+pid1=0
+
 cargaCancion=0
 
 

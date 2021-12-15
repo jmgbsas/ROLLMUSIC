@@ -498,16 +498,20 @@ Dim As Integer ubiroll,ubirtk,encancion
  ubirtk=param.ubirtk
  encancion=param.encancion
  abrirRoll=2
- 
+ ALTO=param.alto
+ ANCHO=param.ancho
+
  print #1,"ubirtk ",ubirtk
  print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
  print #1,"posicion ", posicion
+ Print #1,"ancho, alto", ANCHO, ALTO
+ 
  '    If hwnd =0 Then   ,GFX_WINDOWED
      ScreenControl  SET_DRIVER_NAME, "GDI"
      If usarmarco= 1 then
-        ScreenRes param.ancho, param.alto, 32,1 ''',  'Or GFX_HIGH_PRIORITY
+        ScreenRes ANCHO, ALTO , 32,1 ''',  'Or GFX_HIGH_PRIORITY
      Else
-        ScreenRes param.ancho, param.alto, 32,1 , GFX_NO_FRAME 
+        ScreenRes ANCHO, ALTO, 32,1 , GFX_NO_FRAME 
      EndIf
      print #1,"param.titulo ",param.titulo
      WindowTitle param.titulo
@@ -522,7 +526,7 @@ Dim As Integer ubiroll,ubirtk,encancion
   '  End If
 'Dim Roll As inst
 ' @Roll(1) = *pRoll  
-Dim As DWORD pid = GetCurrentProcessId()' , pid_parent = 0
+Dim As Integer pid = GetCurrentProcessId()' , pid_parent = 0
 print #1 ,"pid", pid
 Var surface = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, ALTO, stride)
  c = cairo_create(surface)
@@ -539,12 +543,10 @@ Var surf2 = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32
 8 A 9  9 DOWN
 '/
 
-
 inc_Penta = Int((ALTO -1) /40) - deltaip
 
 'llena la surface con nro_penta
 nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
-
 
 'Print nro_penta
 Select Case desde
@@ -1136,6 +1138,26 @@ If MultiKey(SC_ESCAPE) Then
     EndIf
     close_port(midiout)
     out_free(midiout) 
+    Dim ffile As Integer
+    ffile=FreeFile
+    Open "RollMusic.ini" For output As ffile
+
+    If nmxold = 0 Then
+       nmxold=mxold
+       nmyold=myold
+    EndIf   
+    If nancho=0 Then
+       nancho=ANCHO
+       nalto =ALTO
+    EndIf    
+
+    Print #ffile,font , " font"
+    Print #ffile,nmxold, " mxold "
+    Print #ffile,nmyold, " myold"
+    Print #ffile,nANCHO, " ANCHO"
+    Print #ffile,nALTO, " ALTO"
+    Close ffile
+
     cerrar 0
     End 0
   EndIf  
@@ -2482,6 +2504,7 @@ If (ScreenEvent(@e)) Then
    If MouseButtons And 1 Then
     If s4 = 0 Then
      resize = TRUE : s4 = 1
+
      Exit Do
     Else
      resize = FALSE: s4 = 0
@@ -2532,7 +2555,29 @@ If (ScreenEvent(@e)) Then
       ThreadDetach(thread1)
     EndIf
     close_port(midiout)
-    out_free(midiout) 
+    out_free(midiout)
+    Dim ffile As Integer
+    ffile=FreeFile
+    Open "RollMusic.ini" For output As ffile
+
+    If nmxold = 0 Then
+       nmxold=mxold
+       nmyold=myold
+    EndIf   
+    If nancho=0 Then
+       nancho=ANCHO
+       nalto =ALTO
+    EndIf    
+
+    Print #ffile,font , " font"
+    Print #ffile,nmxold, " mxold "
+    Print #ffile,nmyold, " myold"
+    Print #ffile,nANCHO, " ANCHO"
+    Print #ffile,nALTO, " ALTO"
+
+
+    Close ffile
+      
     cerrar 0
     End 0
     
@@ -2553,7 +2598,7 @@ If (ScreenEvent(@e)) Then
    '    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
    '    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
      MoveWindow( hWnd , X0 , (Y0+h-ALTO)\2, ANCHO - mxold,ALTO, TRUE )
- 
+
   EndIf
   Exit Do
 
@@ -2884,8 +2929,6 @@ If (ScreenEvent(@e)) Then
   m.res = GetMouse( m.x, m.y, m.wheel, m.buttons, m.clip )
   If m.buttons = 1 And (m.x > 5 ) And (m.y > 5 ) Then
    'dim as integer desktopwidth,desktopheight
-  ' desktopwidth = GetSystemMetrics(SM_CXSCREEN)
-  ' desktopheight =GetSystemMetrics(SM_CYSCREEN)
 
    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
@@ -2896,7 +2939,6 @@ If (ScreenEvent(@e)) Then
    MoveWindow( hWnd , 1, 1 , ANCHO - mxold, ALTO - myold, TRUE )
    mxold=m.x
    myold=m.y
-   
   EndIf
   
   

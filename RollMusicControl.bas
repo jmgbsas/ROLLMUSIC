@@ -18,9 +18,6 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include "midiinfo.bi"
 #Include "ROLLCONTROLDEC.bi"
 
-Dim As Integer ancho, alto
-ancho = GetSystemMetrics(SM_CXSCREEN)
-alto = GetSystemMetrics(SM_CYSCREEN)
 
 
 'Var hwnd = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*3/4)
@@ -31,7 +28,9 @@ Common Shared As hwnd hwndC, hwndListBox
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA
 Common Shared As string pathdir
 common Shared As String NombreCancion, NombrePista
-Common Shared As Integer cargaCancion
+Common Shared As Integer cargaCancion, pid1
+
+
 
 pathdir=""
 

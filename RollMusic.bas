@@ -1,5 +1,6 @@
+' YA cierra toas las sesiones de rollmusic desde control
 ' futuro grabar mxold y algo mas para conservar el tamaño de la ventana y el tamaño del font
-' usado por el usuario !!!!
+' usado por el usuario !!!! OK Y AANDA
 ' el borrado de columna esta defectuoso hay que dar 0 y luego 12 x en toda la octava para
 ' que borre mejor usaremos marcas de zona para borrar.
 ' dejo de andar marcado de zonas porque habia un exit do en Comedit=False con mousex>50
@@ -132,9 +133,18 @@ end If
 Dim As GLFWwindow ptr  win
 ' ----FIN OPENGL 
 '/
-Open "midebug.txt" For Output As #1
-print #1,"start"
+'===============================
+#Include "ROLLDEC.BI"
 
+Dim Shared As Integer pd1, fa1 
+pd1 = GetCurrentProcessId()  
+Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As #1
+print #1,"start"
+Print #1,"PID DE ESTE PROCESO ",pd1
+fa1=FreeFile
+Open "procesos.txt" For Append As #fa1
+Print #fa1, pd1
+Close fa1
 
 'Open "mivector.txt" For Output As #3
 'Open "miplayall.txt" For Output As #4
@@ -145,7 +155,7 @@ print #1,"start"
 'Open cons  for Output As #8
 
 ''Open "figuras.txt" For Output As #1
-print #1,Date;Time
+Print #1,Date;Time
 ' secuenciador de 9 octavas estereo, modo Piano Roll,hace uso de
 'letras para las duraciones en vez de rectangulos...
 ' edicion modificacion insercion,,,12 eventos c/u con
@@ -160,8 +170,6 @@ print #1,Date;Time
 #Include "string.bi"
 #Include Once "cairo/cairo.bi"
 #Include "midiinfo.bi"
-'===============================
-#Include "ROLLDEC.BI"
 '==============================
 '#Include "NOTAS.bi"
 #Include "RTMIDIDEC.bi"
@@ -206,12 +214,12 @@ tempo=160  ' negra=160
 CantMin=15
 'NotaBaja=1 : NotaAlta=128
 
-'print #1, "__FB_ARGV__ ",__FB_ARGV__
-'print #1, "__FB_ARGC__ ",__FB_ARGC__
+Print #1, "__FB_ARGV__ ",__FB_ARGV__
+Print #1, "__FB_ARGC__ ",__FB_ARGC__
 'Dim direp As ZString  Ptr
 'Dim dires As String
 Dim As integer ubirtk, ubiroll
-print #1,"__FB_ARGC__ ", __FB_ARGC__
+Print #1,"__FB_ARGC__ ", __FB_ARGC__
 For ix = 0 To __FB_ARGC__
   print #1, "arg "; ix; " = '"; Command(ix); "'"''
 
@@ -278,17 +286,18 @@ NA => 11 + (hasta-1) * 13  ' 102
 
 ReDim (Roll.trk ) (1 To CantTicks,NB To NA) ' Roll de trabajo en Pantalla
 
-print #1,"instru ",instru
+Print #1,"instru ",instru
 ' ojo debe se NB al reducir octabas NB cambia
 If instru > 0 Then
   Roll.trk(1,NA).inst = CUByte(instru)
 EndIf
-print #1,"Roll.trk(1,NA).inst ",Roll.trk(1,NA).inst
-print #1,"NB ",NB
-print #1,"NA ",NA
+Print #1,"Roll.trk(1,NA).inst ",Roll.trk(1,NA).inst
+Print #1,"NB ",NB
+Print #1,"NA ",NA
 
-print #1,"desde ",desde
-print #1,"hasta ",hasta
+Print #1,"desde ",desde
+Print #1,"hasta ",hasta
+
 param.Roll=Roll
 param.ubiroll=ubiroll
 param.ubirtk=ubirtk
@@ -367,7 +376,7 @@ Close
 End
 '/
 ''https://www.freebasic.net/forum/viewtopic.php?t=15127
-print #1,"NroCol, ancho, anchofig ",NroCol, ANCHO, anchofig
+'print #1,"NroCol, ancho, anchofig ",NroCol, ANCHO, anchofig
 Dim As String driver
 
 posmouseOld = 0:posmouse = 0
@@ -395,9 +404,44 @@ gap1= anchofig* 2315/1000 ' 81 default
 gap2= (914 * gap1) /1000 ' 74 default
 gap3= (519 * gap1) /1000 ' 42 default
 
-print #1,"gap1 ",gap1
+'print #1,"gap1 ",gap1
+'---------
+Dim ffini As Integer 
+Dim As String sfont,smxold,smyold,sancho,salto
 
+ffini=FreeFile
+Open "RollMusic.ini" For Input As ffini
+Line Input #ffini, sfont
+Line Input #ffini, smxold
+Line Input #ffini, smyold
+Line Input #ffini, sancho
+Line Input #ffini, salto
+Print #1,"sfont, smxold, smyold,sANCHO,sALTO  ",sfont, smxold, smyold,sancho,salto
+
+Close ffini
+
+nfont=ValInt(sfont)
+nmxold=ValInt(smxold)
+nmyold=ValInt(smyold)
+nancho=ValInt(sancho)
+nalto=ValInt(salto)
+
+
+If nfont > 0 Then
+  font=nfont
+EndIf
+If nmxold > 0 Then
+   mxold=nmxold
+EndIf
+If nmyold > 0 Then
+   myold=nmyold
+EndIf
+
+
+'---------
+If mxold=0 And myold=0 Then
 GetMouse mxold,myold, , MouseButtons
+EndIf
 
 posicion = 1 ' comienzo del roll
 'indice   = 1  ' numero de nota al comienzo del programa B8
@@ -426,7 +470,7 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
  On Error GoTo errorhandler
 ' enviamos esto a una sub ROLLLoop, creaPenta esta al principio y no tiene declare
 ' el declare falla si se usa con este tipo de vector udt no se puede usar declare
-stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
+'stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
 
 '========================== 
@@ -453,8 +497,8 @@ midiout = rtmidi_out_create_default()
 'print #1,"PLAYALL---------->>>>>>>"
 portsout =  port_count (midiout)
 Dim i1 As integer
-'print #1, "portsin  "; portsin
-'print #1, "portsout "; portsout
+'Print #1, "portsin  "; portsin
+Print #1, "portsout "; portsout
 For i1 = 0 to portsout -1 
     nombreport = port_name(midiout, i1)
     print #1, *nombreport
@@ -465,20 +509,25 @@ portsout = portout
 
 open_port (midiout,portsout, nombreport)
 
-print #1,"  "
+'print #1,"  "
 If Roll.trk(1,NA).inst > 0 Then
  ChangeProgram ( Roll.trk(1,NA).inst , 0)
 EndIf
  print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
-print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
-print #1,"INSTANCIA ",instancia
+Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
+Print #1,"INSTANCIA ",instancia
+' carga de opciones iniciales RollMusic.ini
+
 
 Dim As Integer  tilde1102=MF_UNCHECKED,tilde1103=MF_UNCHECKED  
+Dim As Integer anchoK, altoK
+anchoK = GetSystemMetrics(SM_CXSCREEN)
+'altoK = GetSystemMetrics(SM_CYSCREEN)
 
 Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 If ix < 3 Then ' rollmusic CON control
   instancia=0
-  hwndC = OpenWindow("RollMusic Control ver 0.4.3.2",10,10,ancho*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
+  hwndC = OpenWindow("RollMusic Control ver 0.4.3.2",10,10,anchoK*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
 ''UpdateInfoXserver()
   hwndListBox= ListBoxGadget(3,10,10,240,650,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
 
@@ -603,15 +652,55 @@ End Sub
 ' Dim Shared As Integer ok = 0
 Dim  As Integer Terminar=0
 
+Print #1,"ANTES ANCHO , ALTO ", ANCHO, ALTO
+If mxold > 0 Then
+
+'MoveWindow( hWnd , 1, 1 , ANCHO - mxold, ALTO - myold, TRUE )
+  If ANCHO = nancho Then
+  ANCHO= nancho -mxold 
+  endif
+  AnchoInicial=ANCHO
+  anchofig=ANCHO/45 ' SON 45 COL PERO SE USAN MENOS 41
+  NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
+  ANCHO3div4 = ANCHO *3 / 4
+  gap1= anchofig* 2315/1000 ' 81 default
+  gap2= (914 * gap1) /1000 ' 74 default
+  gap3= (519 * gap1) /1000 ' 42 default
+  mxold=0
+EndIf
+If myold > 0 Then
+  If ALTO = nalto Then
+    ALTO= nalto -myold 
+  endif
+
+ AltoInicial=ALTO
+ myold=0
+EndIf
+stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
+
+
+Print #1,"nfont, nmxold, nmyold, nancho,nalto  ",nfont, nmxold, nmyold,nancho,nalto
+    param.ancho = ANCHO 
+    param.alto = ALTO
+Print #1,"DESPUES ANCHO , ALTO ", ANCHO, ALTO
+'''mxold=0:myold=0
+
 abrirRoll=0
+
 
 Do
 param.titulo ="RollMusic Ver 0.4.4.0"
-print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
-print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
-print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
+Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
+Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
+Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
   If abrirRoll=1 Then
+   If pid1=0 And ix < 3 Then
+      pid1=pd1
+   EndIf
     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+'------------------
+'------------------
+
     ''''RollLoop ( param)
     ''abrirRoll=2 ' roll ya abierto
     Sleep 100 ' sin este retardo no le da teimpo al thread de cargar a Roll
@@ -734,8 +823,49 @@ print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
               ThreadDetach(thread1)
            EndIf
            close_port(midiout)
-           out_free(midiout) 
-           cerrar 0
+           out_free(midiout)
+    Dim ffile As Integer
+    ffile=FreeFile
+    Open "RollMusic.ini" For output As ffile
+
+    If nmxold = 0 Then
+       nmxold=mxold
+       nmyold=myold
+    EndIf   
+    If nancho=0 Then
+       nancho=ANCHO
+       nalto =ALTO
+    EndIf    
+
+    Print #ffile,font , " font"
+    Print #ffile,nmxold, " mxold "
+    Print #ffile,nmyold, " myold"
+    Print #ffile,nANCHO, " ANCHO"
+    Print #ffile,nALTO, " ALTO"
+    Close ffile
+Dim As Integer fk,nroproc
+Dim As String linea
+fk=FreeFile
+ Open "procesos.txt" For Input As #fk
+ 
+       ' carga Todos los pid de las instancias
+       Do While Not Eof(fk)
+        Line Input #fk, linea
+        nroproc=CInt(linea)
+        print #1, "trabajo con este proceso..", linea 
+        Print #1,"SE SuPONE PID1 PRINCIPAL NO MATAR ",pid1
+        Print #1,"pid1 <> nroproc ",pid1, nroproc
+        If pid1 <> nroproc  Then
+          Print #1,"terminar pid ", linea
+          WINEXEC ("C:\WINDOWS\SYSTEM32\taskkill /PID "+ linea + " /T /F ",00)        
+        EndIf
+        
+      Loop
+Close fk
+    cerrar 0
+    Close
+    Kill "procesos.txt"
+ 
            End 0
             
              End
@@ -881,8 +1011,13 @@ print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
 ' la graba igual desde roll parece pero debe ser en orden            
             Case 1062
  ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
- ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.       
-             Shell ("start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) )                
+ ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.
+               If pid1=0 And ix < 3 Then
+                  pid1=pd1
+               EndIf
+       
+             Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) )
+                            
             Case 1070
               MessBox("","5 Menu")
             Case 1080
@@ -1031,17 +1166,63 @@ print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
         ThreadDetach(thread1)
       EndIf
       close_port(midiout)
-      out_free(midiout) 
-      cerrar 0
+      out_free(midiout)
+    Dim ffile As Integer
+    ffile=FreeFile
+    Open "RollMusic.ini" For output As ffile
+
+    If nmxold = 0 Then
+       nmxold=mxold
+       nmyold=myold
+    EndIf   
+    If nancho=0 Then
+       nancho=ANCHO
+       nalto =ALTO
+    EndIf    
+
+    Print #ffile,font , " font"
+    Print #ffile,nmxold, " mxold "
+    Print #ffile,nmyold, " myold"
+    Print #ffile,nANCHO, " ANCHO"
+    Print #ffile,nALTO, " ALTO"
+    Close ffile
       ThreadDetach(threadloop)
-       Close:End 0
+
+Dim As Integer fk,nroproc
+Dim As String linea
+fk=FreeFile
+ Open "procesos.txt" For Input As #fk
+ 
+       ' carga Todos los pid de las instancias
+       Do While Not Eof(fk)
+        Line Input #fk, linea
+        nroproc=CInt(linea)
+        print #1, "trabajo con este proceso..", linea 
+        Print #1,"SE SuPONE PID1 PRINCIPAL NO MATAR ",pid1
+        Print #1,"pid1 <> nroproc ",pid1, nroproc
+        
+        If pid1 <> nroproc  Then
+          Print #1,"terminar pid ", linea        
+   ''''       Shell("start /B /MIN taskkill /PID "+ linea + " /T /F  ")
+          WINEXEC ("C:\WINDOWS\SYSTEM32\taskkill /PID "+ linea + " /T /F ",00)            
+        EndIf
+        
+      Loop
+ Close fk   
+    cerrar 0
+    Close
+    Kill "procesos.txt"
+       End 0
      End Select
 
    Loop
 Else
   param.titulo ="RollMusic Editor" ' esto no sale si no hay marco
+
   threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+
   ThreadWait threadloop
+
   cerrar(0)  
 End If
 
@@ -1050,7 +1231,62 @@ End If
  EndIf
     
 Loop
+    cairo_destroy(c)
+    cairo_surface_destroy( surface )
+    FT_Done_Face( ftface )
+   
+    If play=1 Or playb=1 Then
+      alloff (1)
+      ThreadDetach(thread1)
+    EndIf
+    close_port(midiout)
+    out_free(midiout)
 
+    Dim ffile As Integer
+    ffile=FreeFile
+    Open "RollMusic.ini" For output As ffile
+
+    If nmxold = 0 Then
+       nmxold=mxold
+       nmyold=myold
+    EndIf 
+    If nancho=0 Then
+       nancho=ANCHO
+       nalto =ALTO
+    EndIf    
+    Print #ffile,font , " font"
+    Print #ffile,nmxold, " mxold "
+    Print #ffile,nmyold, " myold"
+    Print #ffile,nANCHO, " ANCHO"
+    Print #ffile,nALTO, " ALTO"
+    Close ffile
+'
+Dim As Integer fk,nroproc
+Dim As String linea
+fk=FreeFile
+ Open "procesos.txt" For Input As #fk
+ 
+       ' carga Todos los pid de las instancias
+       Do While Not Eof(fk)
+        Line Input #fk, linea
+        nroproc=CInt(linea)
+        print #1, "trabajo con este proceso..", linea 
+        Print #1,"SE SuPONE PID1 PRINCIPAL NO MATAR ",pid1
+        Print #1,"pid1 <> nroproc ",pid1, nroproc
+        
+        If pid1 <> nroproc  Then
+          Print #1,"terminar pid ", linea
+          '''
+          Shell("start /B /MIN taskkill /PID "+ linea + " /T /F  ")  
+          WINEXEC ("C:\WINDOWS\SYSTEM32\taskkill /PID "+ linea + " /T /F ",00)
+        EndIf
+        
+      Loop
+
+Close fk
+    cerrar 0
+    Close
+       Kill "procesos.txt" 
 End 0
 
 

@@ -97,7 +97,7 @@ End Sub
 Sub cerrar (ByVal n As Integer)
    If n=0 Then
     print #1,"uso Reset"
-    Reset
+    Close
    Else 
     Close (n)
     print #1,"uso Close"
@@ -2607,20 +2607,20 @@ Sub botones(hWnd As HWND, c As cairo_t Ptr, cm As cairo_t Ptr, x As Integer,y As
 ' cairo_move_to  (cm, sitio+5, 25 )
 ' cairo_fill (cm)
 ' cairo_stroke(cm)
-Dim ANCHOLOCAL As Integer
-ANCHOLOCAL=ANCHO - mxold
 
 
- cairo_move_to  (cm, ANCHOLOCAL-40, 0 )
- cairo_rectangle(cm, ANCHOLOCAL-40, 0 , ANCHOLOCAL,16)
+
+
+ cairo_move_to  (cm, ANCHO-40-mxold, 0 )
+ cairo_rectangle(cm, ANCHO-40-mxold, 0 , ANCHO,16)
  cairo_set_source_rgba cm, 0.8, 0, 0.2, 1
- cairo_move_to  (cm, ANCHOLOCAL-10, 10 )
+ cairo_move_to  (cm, ANCHO-10-mxold, 10 )
  cairo_fill (cm)
 
  cairo_set_source_rgba cm, 0.9, 0.9, 0.9, 1
  cairo_select_font_face (cm, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
  cairo_set_font_size (cm, 14)
- cairo_move_to (cm,ANCHOLOCAL-25,14)
+ cairo_move_to (cm,ANCHO-25-mxold,14)
  cairo_font_extents (cm, @fe)
  Var t= "X"
  cairo_text_extents (cm, t, @te)
@@ -2628,15 +2628,15 @@ ANCHOLOCAL=ANCHO - mxold
  cairo_show_text(cm,t)
  cairo_stroke(cm)
  '---------
- cairo_move_to  (cm, ANCHOLOCAL-40, 17 )
- cairo_rectangle(cm, ANCHOLOCAL-40, 17 , ANCHOLOCAL,17)
+ cairo_move_to  (cm, ANCHO-40-mxold, 17 )
+ cairo_rectangle(cm, ANCHO-40-mxold, 17 , ANCHO,17)
  cairo_set_source_rgba cm, 0.8, 0.8, 0.2, 1
- cairo_move_to  (cm, ANCHOLOCAL-10, 26 )
+ cairo_move_to  (cm, ANCHO-10-mxold, 26 )
  cairo_fill (cm)
  cairo_set_source_rgba cm, 0, 0, 0, 1
  cairo_select_font_face (cm, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
  cairo_set_font_size (cm, 14)
- cairo_move_to (cm,ANCHOLOCAL-25,31)
+ cairo_move_to (cm,ANCHO-25-mxold,31)
  cairo_font_extents (cm, @fe)
  t= "-"
  cairo_text_extents (cm, t, @te)
@@ -2644,15 +2644,15 @@ ANCHOLOCAL=ANCHO - mxold
  cairo_show_text(cm,t)
  cairo_stroke(cm)
  '---------
- cairo_move_to  (cm, ANCHOLOCAL-40, 33 )
- cairo_rectangle(cm, ANCHOLOCAL-40, 33 , ANCHOLOCAL,33)
+ cairo_move_to  (cm, ANCHO-40-mxold, 33 )
+ cairo_rectangle(cm, ANCHO-40-mxold, 33 , ANCHO,33)
  cairo_set_source_rgba cm, 0, 1, 0, 1
- cairo_move_to  (cm, ANCHOLOCAL-10, 30 )
+ cairo_move_to  (cm, ANCHO-10-mxold, 30 )
  cairo_fill (cm)
  cairo_set_source_rgba cm, 0, 0, 0, 1
  cairo_select_font_face (cm, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
  cairo_set_font_size (cm, 14)
- cairo_move_to (cm,ANCHOLOCAL-25,45)
+ cairo_move_to (cm,ANCHO-25-mxold,45)
  cairo_font_extents (cm, @fe)
  t= "+"
  cairo_text_extents (cm, t, @te)
