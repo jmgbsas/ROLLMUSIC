@@ -178,7 +178,7 @@ Print #1,Date;Time
 '=============================
 ' iup start
 #Include once "foro/fmidi.bi"
-#Include "fbthread.bi"
+#Include Once "fbthread.bi"
 #Include "foro/window9.bi"
 '#Include "crt/win32/unistd.bi"
 #inclib "ntdll"
@@ -452,7 +452,7 @@ fijarEspacio=0
 '--FFT FREE FONT-
 Var Shared ft => FreeType()
 '' Load a font with FreeType
-Dim Shared As FT_Face ftface
+Common Shared As FT_Face ftface
 FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 
 ' ========== CONTROL DEL NRO DE OCTAVAS MOSTRADO SE PODRA PONER PARA EL USUARIO
@@ -734,7 +734,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
      Select Case EVENTC 
        Case EventMenu 
          Select case EventNumber
-            Case 1006   ' CARGAR CANCION
+           Case 1006   ' CARGAR CANCION
              'cargamso todos los tracks
              ' ok anda bien, una vez cagados se permuta en memoria con TAB
              ' o haciedno click en la lista
@@ -763,7 +763,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
              EndIf
              print #1,"termino 1006 va a abrir Roll"
 
-            Case 1010
+           Case 1010
            print #1,"entro a 1010 Cargar Pista externa a cancion"
            ROLLCARGADO=FALSE 
             Dim As String nombreg
@@ -782,7 +782,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
           MenuNew=0           
           carga=1
             
-            Case 1011 ' Grabar una Pista de la Cancion con modificaciones, que son tracks
+           Case 1011 ' Grabar una Pista de la Cancion con modificaciones, que son tracks
             print #1,"entro a 1011 esto lo hace menu de Roll tambien" '' jmg probar es nuevo...
  ' copiamos logica Rolla Track 
             print #1, "Click Grabando a disco pista modif con RollaTrack ",nombre
@@ -814,61 +814,9 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
           MenuNew=0           
           carga=1
           
-          Case 1014
-           cairo_destroy(c)
-           cairo_surface_destroy( surface )
-           FT_Done_Face( ftface )
-           If play=1 Or playb=1 Then
-              alloff (1)
-              ThreadDetach(thread1)
-           EndIf
-           close_port(midiout)
-           out_free(midiout)
-    Dim ffile As Integer
-    ffile=FreeFile
-    Open "RollMusic.ini" For output As ffile
-
-    If nmxold = 0 Then
-       nmxold=mxold
-       nmyold=myold
-    EndIf   
-    If nancho=0 Then
-       nancho=ANCHO
-       nalto =ALTO
-    EndIf    
-
-    Print #ffile,font , " font"
-    Print #ffile,nmxold, " mxold "
-    Print #ffile,nmyold, " myold"
-    Print #ffile,nANCHO, " ANCHO"
-    Print #ffile,nALTO, " ALTO"
-    Close ffile
-Dim As Integer fk,nroproc
-Dim As String linea
-fk=FreeFile
- Open "procesos.txt" For Input As #fk
- 
-       ' carga Todos los pid de las instancias
-       Do While Not Eof(fk)
-        Line Input #fk, linea
-        nroproc=CInt(linea)
-        print #1, "trabajo con este proceso..", linea 
-        Print #1,"SE SuPONE PID1 PRINCIPAL NO MATAR ",pid1
-        Print #1,"pid1 <> nroproc ",pid1, nroproc
-        If pid1 <> nroproc  Then
-          Print #1,"terminar pid ", linea
-          WINEXEC ("C:\WINDOWS\SYSTEM32\taskkill /PID "+ linea + " /T /F ",00)        
-        EndIf
-        
-      Loop
-Close fk
-    cerrar 0
-    Close
-    Kill "procesos.txt"
- 
-           End 0
-            
-             End
+           Case 1014  ''<==== SALIR TERMINA ROLL
+            terminar=1
+            Exit Do
            Case 1020     
                NombreCancion = ""
                pathdir=""
@@ -878,12 +826,12 @@ Close fk
              nombreArchivo="0"
                thread3= ThreadCall EntrarTeclado()
     
-            Case 1025
+           Case 1025
                CrearDirCancion (NombreCancion)
                If NombreCancion > "" Then
                   param.encancion=1
                EndIf            
-            Case 1028 ' seleccion octavas menores a 1 9 
+           Case 1028 ' seleccion octavas menores a 1 9 
                seloctava (desde, hasta)
                *po = hasta -1
                 posn=1
@@ -892,7 +840,7 @@ Close fk
                 param.ubirtk=ubirtk
 
                 posn=0
-            Case 1040 ' seleccion de instrumento por orden Alfabetico
+           Case 1040 ' seleccion de instrumento por orden Alfabetico
                selInstORdenAlfa (instru)
               ' ChangeProgram ( CUByte (instru) , 0)
                Roll.trk(1,NA).inst= CUByte(instru)
@@ -908,7 +856,7 @@ Close fk
               carga=1
 
                 
-            Case 1050 ' seleccion de instrumento por orden Numerico
+           Case 1050 ' seleccion de instrumento por orden Numerico
                selInstORdenNum (instru)
               ' ChangeProgram ( CUByte (instru) , 0)
                Roll.trk(1,NA).inst= CUByte(instru)
@@ -924,7 +872,7 @@ Close fk
               carga=1
 
 
-            Case 1060 ' crea track y reemplaza al existente en la edicion
+           Case 1060 ' crea track y reemplaza al existente en la edicion
                'If ntk=0 Then  ' no se cargo ningun track
                '   *po = hasta -1
                '   posn=1
@@ -949,7 +897,7 @@ Close fk
                   
                   Exit Do
                EndIf
-            Case 1061
+           Case 1061
                print #1,"En 1061 crear pista en cancion con lo elegido"
                
                ntk = CountItemListBox(3)+ 1
@@ -1009,7 +957,7 @@ Close fk
                EndIf
 ' FALTA CREAR LA PISTA !!! jmg ERO PUEDO USAR UNA PISTA YA CREADA EN 1011
 ' la graba igual desde roll parece pero debe ser en orden            
-            Case 1062
+           Case 1062
  ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
  ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.
                If pid1=0 And ix < 3 Then
@@ -1018,16 +966,16 @@ Close fk
        
              Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) )
                             
-            Case 1070
+           Case 1070
               MessBox("","5 Menu")
-            Case 1080
+           Case 1080
               nombreArchivo="0"
               menuOldStr="[TEMPO]"
               thread3= ThreadCall EntrarTeclado()
-            Case  1090 
+           Case 1090 
               CPlay=1
               Dim As Any Ptr thplayC = ThreadCall  playCancion(Track())
-            Case  1100
+           Case 1100
                 usarmarcoOld=usarmarco
 '0 - the menu is active, the checkbox is not selected
 '1 - the menu item is unavailable, grayed out
@@ -1037,12 +985,12 @@ Close fk
                  SetStateMenu(hmessages,1101,0)
 
                 usarmarco=1
-            Case 1101
+           Case 1101
                  usarmarcoOld=usarmarco            
                  SetStateMenu(hmessages,1100,0)
                  SetStateMenu(hmessages,1101,3)
                  usarmarco=0
-            Case 1102
+           Case 1102
                  usarAcordesIguales=1
                  TipoFrac="igualdur" 
                  SetStateMenu(hmessages,1102,3)
@@ -1050,7 +998,7 @@ Close fk
                  SetStateMenu(hmessages,1104,0)
                  SetStateMenu(hmessages,1105,0)
                  
-            Case 1103
+           Case 1103
                  usarAcordesIguales=1
                  TipoFrac="tododur" 
                  SetStateMenu(hmessages,1102,0)
@@ -1058,7 +1006,7 @@ Close fk
                  SetStateMenu(hmessages,1104,0)
                  SetStateMenu(hmessages,1105,0)
                  
-            Case 1104
+           Case 1104
                  usarAcordesIguales=1
                  TipoFrac="autodur" 
                  SetStateMenu(hmessages,1102,0)
@@ -1067,7 +1015,7 @@ Close fk
                  SetStateMenu(hmessages,1105,0)
                  
 
-            Case 1105
+           Case 1105
                  usarAcordesIguales=0
                  SetStateMenu(hmessages,1102,0)
                  SetStateMenu(hmessages,1103,0)
@@ -1075,11 +1023,11 @@ Close fk
                  SetStateMenu(hmessages,1105,3)
 
 
-            Case  1110
+           Case 1110
              MessBox ("","Acerca de este programa")
               
-          End Select
-      Case eventgadget
+         End Select
+       Case eventgadget
       ' el codigo anterior que traia de disco esta en notas
        If eventnumber()=3 Then
          borrapos=0
@@ -1157,62 +1105,10 @@ Close fk
              EndIf 
        EndIf
 
-      Case EventClose 
-      cairo_destroy(c)
-      cairo_surface_destroy( surface )
-      FT_Done_Face( ftface )
-      If play=1 Or playb=1 Then
-        alloff (1)
-        ThreadDetach(thread1)
-      EndIf
-      close_port(midiout)
-      out_free(midiout)
-    Dim ffile As Integer
-    ffile=FreeFile
-    Open "RollMusic.ini" For output As ffile
-
-    If nmxold = 0 Then
-       nmxold=mxold
-       nmyold=myold
-    EndIf   
-    If nancho=0 Then
-       nancho=ANCHO
-       nalto =ALTO
-    EndIf    
-
-    Print #ffile,font , " font"
-    Print #ffile,nmxold, " mxold "
-    Print #ffile,nmyold, " myold"
-    Print #ffile,nANCHO, " ANCHO"
-    Print #ffile,nALTO, " ALTO"
-    Close ffile
-      ThreadDetach(threadloop)
-
-Dim As Integer fk,nroproc
-Dim As String linea
-fk=FreeFile
- Open "procesos.txt" For Input As #fk
- 
-       ' carga Todos los pid de las instancias
-       Do While Not Eof(fk)
-        Line Input #fk, linea
-        nroproc=CInt(linea)
-        print #1, "trabajo con este proceso..", linea 
-        Print #1,"SE SuPONE PID1 PRINCIPAL NO MATAR ",pid1
-        Print #1,"pid1 <> nroproc ",pid1, nroproc
-        
-        If pid1 <> nroproc  Then
-          Print #1,"terminar pid ", linea        
-   ''''       Shell("start /B /MIN taskkill /PID "+ linea + " /T /F  ")
-          WINEXEC ("C:\WINDOWS\SYSTEM32\taskkill /PID "+ linea + " /T /F ",00)            
-        EndIf
-        
-      Loop
- Close fk   
-    cerrar 0
-    Close
-    Kill "procesos.txt"
-       End 0
+       Case EventClose  ''<==== SALIR TERMINA ROLL
+       'salir() si ponemos aca da asercion de cairo.c 
+        terminar=1
+        Exit Do     
      End Select
 
    Loop
@@ -1231,67 +1127,8 @@ End If
  EndIf
     
 Loop
-    cairo_destroy(c)
-    cairo_surface_destroy( surface )
-    FT_Done_Face( ftface )
-   
-    If play=1 Or playb=1 Then
-      alloff (1)
-      ThreadDetach(thread1)
-    EndIf
-    close_port(midiout)
-    out_free(midiout)
 
-    Dim ffile As Integer
-    ffile=FreeFile
-    Open "RollMusic.ini" For output As ffile
-
-    If nmxold = 0 Then
-       nmxold=mxold
-       nmyold=myold
-    EndIf 
-    If nancho=0 Then
-       nancho=ANCHO
-       nalto =ALTO
-    EndIf    
-    Print #ffile,font , " font"
-    Print #ffile,nmxold, " mxold "
-    Print #ffile,nmyold, " myold"
-    Print #ffile,nANCHO, " ANCHO"
-    Print #ffile,nALTO, " ALTO"
-    Close ffile
-'
-Dim As Integer fk,nroproc
-Dim As String linea
-fk=FreeFile
- Open "procesos.txt" For Input As #fk
- 
-       ' carga Todos los pid de las instancias
-       Do While Not Eof(fk)
-        Line Input #fk, linea
-        nroproc=CInt(linea)
-        print #1, "trabajo con este proceso..", linea 
-        Print #1,"SE SuPONE PID1 PRINCIPAL NO MATAR ",pid1
-        Print #1,"pid1 <> nroproc ",pid1, nroproc
-        
-        If pid1 <> nroproc  Then
-          Print #1,"terminar pid ", linea
-          '''
-          Shell("start /B /MIN taskkill /PID "+ linea + " /T /F  ")  
-          WINEXEC ("C:\WINDOWS\SYSTEM32\taskkill /PID "+ linea + " /T /F ",00)
-        EndIf
-        
-      Loop
-
-Close fk
-    cerrar 0
-    Close
-       Kill "procesos.txt" 
-End 0
-
-
-
-
+salir() ''<==== SALIR TERMINA ROLL
 
 '----FIN CONTROL-------------------
 '   threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1)) 

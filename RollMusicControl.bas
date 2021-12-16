@@ -18,19 +18,27 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include "midiinfo.bi"
 #Include "ROLLCONTROLDEC.bi"
 
+#Include Once "freetype2/freetype.bi"
+
 
 
 'Var hwnd = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*3/4)
 
 'Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
+common Shared As Integer  ANCHO,ALTO
+Common Shared As FLOAT font
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA
 Common Shared As string pathdir
 common Shared As String NombreCancion, NombrePista
 Common Shared As Integer cargaCancion, pid1
-
-
+Common Shared As cairo_t  Ptr c, c2
+Common Shared surface As Any Ptr
+Common Shared As FT_Face ftface
+common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
+Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto
+Common Shared As Integer mxold,myold, w,h
 
 pathdir=""
 
@@ -315,6 +323,7 @@ Sub BorrarPista (titulo As String)
 deleteFileA (StrPtr(titulo))
 
 End Sub
+
 
 ' error
 errorControl:

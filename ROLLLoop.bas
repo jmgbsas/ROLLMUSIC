@@ -1,4 +1,4 @@
-#Include "crt/stdio.bi"
+#Include Once "crt/stdio.bi"
 
 On  Error GoTo errorloopbas
 
@@ -1580,6 +1580,8 @@ If comEdit = FALSE Then ' construir cifras para copiar Nveces por ejemplo
   ' no anda bien 12-12-2021 se cambia a marcar por zona columna o columnas
      borrarColumnasMarcadas()
   EndIf
+
+
  
 EndIf
 
@@ -1962,6 +1964,16 @@ If MultiKey(SC_CONTROL) And lockip=0  Then
     Exit Do    
 
 EndIf 
+'If COMEDIT=FALSE Then '''HARIA FALTA COMEDIT FALSE ? CREO QUE NOORRERA EN TRUE?
+' '' 24-06-2021 espaciado de lineas (1)
+'  If MultiKey(SC_CONTROL) And lockip=0  Then
+'    deltaip=0
+'    incWheel=0
+'    lockip=1
+'    Exit Do    
+'
+'  EndIf 
+'EndIf
 
 '-----------------------------SCREEN EVENT-------START -----------
 ' para detectar mouse sin usar sdl
@@ -2411,6 +2423,10 @@ If (ScreenEvent(@e)) Then
 	
        
  End Select
+''If COMEDIT=FALSE Then ''HACE FALTA? 
+' NO HACE FALTA SINO DEBERIAMSO AJUSTAR EL INTERLINEADO AL DEFAULT Y DEBERIAMOS REPETOR 
+' EL SELECT CASE INICIAL DE ROOLLOOP O SEA ESTO FUNCIONE EN CONTROL-M TAMBIEN POR COMODIDAD EL USUARIO
+' EL CAMBIO DE FONT PARA CONTROL-M JODE SACAMOS TAMBIEN
  ' --------------
  ' 24-06-2021 espaciado de lineas (2)
  If MultiKey(SC_CONTROL) And lockip=1 Then
@@ -2426,6 +2442,8 @@ If (ScreenEvent(@e)) Then
    ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click
     
  EndIf 
+'''EndIf
+
  If MultiKey(SC_CONTROL) And MultiKey(SC_T) And trasponer=0  Then
   ' trasponer notas 24-06-2021 - por teclado para todas las notas cargadas
   ' si subo con flecha arriba sube 1 semitono
@@ -2460,7 +2478,7 @@ If (ScreenEvent(@e)) Then
     If s3 = 0 Then
      comEdit = TRUE : s3 = 1
      '       print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
-     font = 18
+     ''' font = 18 SACAMOS AHORA FUNCIONA PROPORCIONALMENTE 
      curpos=0
      guardopos=posicion
      ''mayorDurEnUnaPosicion (posn)
@@ -2633,12 +2651,37 @@ If (ScreenEvent(@e)) Then
     If MultiKey(SC_CONTROL) And MouseButtons And 2 Then
      Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2
      Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dis7,Mayor9,Menor9,Dis9, notabase     
-     Dim As Integer event
-      
-     Var haco = OpenWindow("Acordes",mousex -10,mousey,20,80,WS_VISIBLE Or WS_THICKFRAME , WS_EX_TOPMOST Or WS_EX_TRANSPARENT  )
-     
-
+     Dim As Integer event,Posx,Posy 
+    ScreenControl GET_WINDOW_POS, x0, y0
+    Print #1,"x0 ,y0 en menu contextual " ,x0,y0
+    Print #1,"mousex ,mousey en menu contextual ", mousex,mousey
+    Print #1,"Posx ,Posy en menu contextual ", Posx ,Posy
+    Print #1,"ANCHO ,ALTO en menu contextual ", ANCHO ,ALTO
+    Print #1,"mxold, myold ", mxold,myold
+    Print #1,"nmxold, nmyold ", nmxold,nmyold
+'xxxx
+          ' You'd have to get the thread id of the graphics window (GetWindowThreadProcessId), 
+' set a WH_GETMESSAGE hook with that thread id and then process the command messages 
+' in your hook function. chino basico je                                                                  'WS_THICKFRAME
+Dim As hwnd haco
+Posx=x0 +mousex -anchofig
+Posy=y0 +mousey -40
+If mousex -anchofig > (ANCHO-mxold)* 3/5 Then
+  Posx=x0+(ANCHO-mxold)* 3/5
+EndIf
+If mousey -40 > (ALTO-myold) *3/5 Then
+  Posy=y0+(ALTO-myold)*3/5
+EndIf  
+    ' haco = OpenWindow("Acordes", x0+Posx ,y0+Posy,40,40,WS_VISIBLE Or WS_THICKFRAME , WS_EX_TOPMOST ) 'Or WS_EX_TRANSPARENT  )
+  
+     haco = OpenWindow("",Posx ,Posy,anchofig*2,60,WS_VISIBLE Or WS_THICKFRAME , WS_EX_TOPMOST Or WS_EX_TOOLWINDOW )''Or WS_EX_TRANSPARENT  )
+     UpdateInfoXserver()    
+     WindowStartDraw(haco)
+       fillrectdraw(2,2,&hffffff)
+       TextDraw(2,2,"[X]",&hffffff)
+     StopDraw
      hpopup1 =CreatePopMenu()
+  
      notas3  =OpenSubMenu(hpopup1,"3 Notas") 'triadas
      notas4  =OpenSubMenu(hpopup1,"4 Notas") ' septimas
      notas5  =OpenSubMenu(hpopup1,"5 Notas") ' novenas ...once 13 
@@ -2868,8 +2911,9 @@ If (ScreenEvent(@e)) Then
      Loop  
         
      EndIf
-  s2=0 :s1= 0 ' 10-12-2021 wheel no se movia
-  lockip=0   ' 10-12-2021 wheel no se movia
+   s2=0 :s1= 0 ' 10-12-2021 wheel no se movia ** ES SUFICIENTE??? CUANDO NO SE MOVIA?? 
+   '                      RECORDDAR TEST CASE
+ ' lockip=0   ' 10-12-2021 wheel no se movia ***JMG OJO JODE INTERLINEADO VER MAS COMENTADO
   fueradefoco=0
 ' SELECCION DE ZONA PARA TRASPONER, VOLUMEN, INSTRUMENTO, ETC ETC
 ' SOLO SELECCIONO PASO DESDE HASTA y/o NOTA. 

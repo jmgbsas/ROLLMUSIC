@@ -94,7 +94,7 @@ Declare Sub ComboBox()
 Declare Sub grabaprueba()
 Declare Sub borrarColumnasMarcadas()
 Declare Function SumarnR (notaPiano As Integer) As Integer
-
+Declare Sub salir()
 
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
 Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6
@@ -157,7 +157,7 @@ loopDeThreads=0 ,sefini=0
 'comienzo1=28:fin1=54
 'comienzo2=82:fin2=180
 
-Dim Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
+''Dim Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
 Dim Shared As Any Ptr p2,tl1,tl2,tl3,tl4,tl5,tl6,tl7,tl8,tl9,tl10,tl11,tl12 
 
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
@@ -369,11 +369,12 @@ Dim Shared As Integer lim2=12
 ' ctres SERA DINAMICO A MEDIDA QUE SE ENTRA MAS NOTAS SE IRA EXTENDIENDO LAS POSICIONES
 '============== IMPLEMENTARLO AL FINAL 
 Dim Shared As inst RollAux
-Dim Shared As Integer  ANCHO
-Dim Shared As Integer  ALTO, deltaip=0
+common Shared As Integer  ANCHO,ALTO,ANCHOSYSTEM, ALTOSYSTEM
+Dim Shared As Integer   deltaip=0
 Dim Shared As Double   BordeSupRoll, inc_Penta
 Dim Shared As Integer  AnchoInicial,AltoInicial
-Dim Shared As FLOAT font, deltaipf=0, lockip=0 
+Common Shared As FLOAT font
+Dim Shared As float  deltaipf=0, lockip=0 
 Dim Shared q As String * 1
 Dim Shared As UByte s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
 Dim Shared escala As float = 1.0
@@ -382,16 +383,14 @@ Dim Shared translado As Integer = 1
 Dim shared As Integer i,  posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
 Dim Shared As Integer octaroll,instancia=0
 Dim Shared As BOOLEAN comEdit, resize
-Dim Shared As Integer nfont,nmxold,nmyold,nancho,nalto
+
 Dim Shared po As Integer Ptr
 Dim Shared e As EVENT
 Dim Shared rmerr As Integer
-Dim Shared As Integer mxold,myold, w,h
-Dim Shared As cairo_t  Ptr c, c2
+
 Dim Shared cm As cairo_t  Ptr
 Dim Shared c3 As cairo_t  Ptr
 Dim Shared As Integer stride, nro_penta,IhWnd,Mhwnd,Style,desktopwidth,desktopheight
-Dim Shared surface As Any Ptr
 Dim Shared comienzo As Integer = 0
 'ScreenControl  SET_DRIVER_NAME,"GDI"
 Dim Shared As hWnd hwnd,hwndMenu 
@@ -411,6 +410,8 @@ Dim Shared As String TipoFrac ' para fraccionar notas segun estilo deseado
 '---------------------
 ANCHO = GetSystemMetrics(SM_CXSCREEN)
 ALTO = GetSystemMetrics(SM_CYSCREEN)
+ANCHOSYSTEM=ANCHO
+ALTOSYSTEM=ALTO
 ANCHO = ANCHO *11/12
 ALTO = (ALTO -25)*11/12
 AnchoInicial=ANCHO
@@ -420,16 +421,6 @@ NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8
 Dim Shared ANCHO3div4 As Integer 
  ANCHO3div4 = ANCHO *3 / 4
 '--------------------
-Dim Shared  As pasa param ', param2 
-    param.c= c
-    param.Roll = Roll
-    param.titulo = titu
-    param.ancho = ANCHO 
-    param.alto = ALTO
-    p1=@param
-    param.ubiroll=0
-    param.ubirtk=0
-    param.encancion=0
     
 #Include "mod_rtmidi_c.bi"    
 '----------------------------
@@ -447,8 +438,24 @@ Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO
 Common Shared As string pathdir
 common Shared As String NombreCancion,NombrePista
 Common Shared As Integer cargaCancion, pid1
+Common Shared As cairo_t  Ptr c, c2
+Common Shared surface As Any Ptr
+common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
+Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto
+Common Shared As Integer mxold,myold, w,h
+
 pid1=0
 
 cargaCancion=0
+Dim Shared  As pasa param ', param2 
+    param.c= c
+    param.Roll = Roll
+    param.titulo = titu
+    param.ancho = ANCHO 
+    param.alto = ALTO
+    p1=@param
+    param.ubiroll=0
+    param.ubirtk=0
+    param.encancion=0
 
 

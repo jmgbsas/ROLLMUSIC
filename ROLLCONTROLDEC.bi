@@ -13,6 +13,7 @@ Declare Sub copiarATemp ( titulo As String, pista As String)
 Declare Sub GrabarCancion()
 Declare Sub BorrarPista (titulo As String)
 
+
 'Declare Sub CreaTrack  (ByRef octadesde As Integer , ByRef octahasta As Integer, ByRef instru As Integer, param As pasa )
 Declare Sub selInstORdenAlfa (ByRef instru As Integer)
 Declare Sub selInstORdenNum (ByRef instru As Integer)

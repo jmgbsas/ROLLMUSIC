@@ -1633,7 +1633,7 @@ End Sub
 Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst, ByRef ubiroll As Integer, ByRef ubirtk As Integer )
  ''print #1,"1-menu "
  Dim As Integer fontOld = font
- font=18
+ font=18 ' ACA AHCE FALTA ESTE TAMAÑO TODO ESTA CALCULADO EN PIXELS PARA QUE ANDE EL MENU
  Dim As cairo_font_extents_t fe   '     font data
  Dim As cairo_text_extents_t te  '      text size
  Dim  As Double Ptr xo,yo
@@ -3698,6 +3698,65 @@ Next i2
 End if
  
 End SUB
+
+Sub salir()
+' NO PUEDE ESTAR EN MUSICCONTROL.BAS DEBE ESTAR EN ALGUNA PARTE DE ROLLMUSIC PARA QUE FUNCIONE
+
+           cairo_destroy(c)
+           cairo_surface_destroy( surface )
+           FT_Done_Face( ftface )
+           If play=1 Or playb=1 Then
+              alloff (1)
+              ThreadDetach(thread1)
+           EndIf
+           close_port(midiout)
+           out_free(midiout)
+    Dim ffile As Integer
+    ffile=FreeFile
+    Open "RollMusic.ini" For output As ffile
+
+    If nmxold = 0 Then
+       nmxold=mxold
+       nmyold=myold
+    EndIf   
+    If nancho=0 Then
+       nancho=ANCHO
+       nalto =ALTO
+    EndIf    
+
+    Print #ffile,font , " font"
+    Print #ffile,nmxold, " mxold "
+    Print #ffile,nmyold, " myold"
+    Print #ffile,nANCHO, " ANCHO"
+    Print #ffile,nALTO, " ALTO"
+    Close ffile
+ Dim As Integer fk,nroproc
+Dim As String linea
+fk=FreeFile
+ Open "procesos.txt" For Input As #fk
+ 
+       ' carga Todos los pid de las instancias
+       Do While Not Eof(fk)
+        Line Input #fk, linea
+        nroproc=CInt(linea)
+        print #1, "trabajo con este proceso..", linea 
+        Print #1,"SE SuPONE PID1 PRINCIPAL NO MATAR ",pid1
+        Print #1,"pid1 <> nroproc ",pid1, nroproc
+        If pid1 <> nroproc  Then
+          Print #1,"terminar pid ", linea
+          WINEXEC ("C:\WINDOWS\SYSTEM32\taskkill /PID "+ linea + " /T /F ",00)        
+        EndIf
+        
+      Loop
+Close fk
+    cerrar 0
+    Close
+    Kill "procesos.txt"
+   
+            
+
+End Sub
+
 
 ' error
 errorSub:
