@@ -52,6 +52,9 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
      x3=Bin(z(1,1).vol,4)
      x4=Bin(z(1,1).pan,4)
      x5=Bin(z(1,1).pb,4)
+     tipoescala =CInt( Z(1,1).inst) ' 20-12-2021 - tipoescala en uso
+     pmTk(ntk).tipoescala=Z(1,1).inst
+     
      x=x1+x2+x3+x4+x5
         print #1,"reconstruccion x pos bin ", x
      'toda carga de track se guarda en pmTk sea ntk=0 u otro valor   
@@ -72,6 +75,11 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
      pmTk(ntk).desde  = CInt(zLim(1,1).nota)
      pmTk(ntk).hasta  = zLim(1,1).dur
      pmTk(ntk).notaold= CInt(zLim(1,1).pb)
+' la nota esca y la esca es la misma `para todos lso tracks despues lo debo cambiar
+     
+     notaescala =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
+     pmTk(ntk).notaescala=zLim(1,1).vol
+     
      print #1,"desde ",pmTk(ntk).desde
      print #1,"hasta ",pmTk(ntk).hasta
      
@@ -148,6 +156,8 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
      curpos =>1
 
      '''''ReCalCompas(Roll) '''No es vEctor de Visualizacion      
+    cadenaes=""
+    armarescala (cadenaes)
 
       print #1,"CargarTrack  fin"  
       print #1,"----------------------------------------------" 
@@ -312,10 +322,24 @@ print #1,"pasó copia a vector"
      grabaPos(1,1).vol  = y3
      grabaPos(1,1).pan  = y4
      grabaPos(1,1).pb   = y5
+     grabaPos(1,1).inst = CUByte(tipoescala) ' 20-12-2021 - tipoescala en uso
      '-----------------------
      grabaLim(1,1).nota = CUByte(desde)
      grabaLim(1,1).dur  = CUByte(hasta)
      grabaLim(1,1).pb   = CUByte(notaold)
+     grabaLim(1,1).vol  = CUByte(notaescala) ' notadeescala 20-12-2021
+     If alteracion="sos" Then
+        grabaLim(1,1).pan  = CUByte(3)
+     Else
+        grabaLim(1,1).pan  = CUByte(2)
+     EndIf
+'     If instru=0 Then 'ESATO ESTA DEMAS Y ASE GRABA ANTES 
+'        instru=1
+'     EndIf
+'     If instru > 0 Then
+'       TrkTemp(1,NA).inst = CUByte(instru)
+'     EndIf
+     
      '-----------------------------
      print #1,"etapa final puts"
      Put #grt, ,grabaPos(1,1)

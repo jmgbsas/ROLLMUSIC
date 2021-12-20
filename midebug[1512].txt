@@ -1,0 +1,233 @@
+start
+PID DE ESTE PROCESO          1512
+12-20-202100:48:18
+__FB_ARGV__   6854032
+__FB_ARGC__    1
+__FB_ARGC__    1
+arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-V25-ACORDES-CONTEXTUALES-SIGUE\RollMusic.exe'
+arg  1 = ''
+ubirtk         0
+ubiroll        0
+intervalo no dado usando default!
+instru         1
+Roll.trk(1,NA).inst         1
+NB             39
+NA             102
+desde          4
+hasta          8
+sfont, smxold, smyold,sANCHO,sALTO         17            font          403           mxold         224           myold         1467          ANCHO         916           ALTO
+Fin duracion
+portsout 4
+VirtualMIDISynth #1 0
+Microsoft GS Wavetable Synth 1
+E-DSP MIDI Port [BC00] 2
+LoopBe Internal MIDI 3
+ChangeProgram inst          1
+param.ancho    1467 param.alto  916
+INSTANCIA      1
+mayor
+ 2, 2, 1, 2, 2, 2, 1
+ 12  10  8  7  5  3  1
+harmonicaMenor
+ 2, 1, 2, 2, 1, 3, 1
+ 12  10  9  7  5  4  1
+melodicaMenorAsc
+ 2, 1, 2, 2, 2, 2, 1
+ 12  10  9  7  5  3  1
+melodicaMenorDesc
+ 2, 1, 2, 2, 1, 2, 2
+ 12  10  9  7  5  4  2
+cromatica
+ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+ 12  11  10  9  8  7  6  5  4  3  2  1
+tonoEntero
+ 2, 2, 2, 2, 2, 2
+ 12  10  8  6  4  2
+pentatonicaMayor
+ 2, 2, 3, 2, 3
+ 12  10  8  5  3
+pentatonicaMenor
+ 3, 2, 2, 3, 2
+ 12  9  7  5  2
+pentatonicaBlues
+ 3, 2, 1, 1, 3, 2
+ 12  9  7  6  5  2
+pentatonicaNeutral
+ 2, 3, 2, 3, 2
+ 12  10  7  5  2
+octatonicHW
+ 1, 2, 1, 2, 1, 2, 1, 2
+ 12  11  9  8  6  5  3  2
+octatonicWH
+ 2, 1, 2, 1, 2, 1, 2, 1
+ 12  10  9  7  6  4  3  1
+ionian
+ 2, 2, 1, 2, 2, 2, 1
+ 12  10  8  7  5  3  1
+dorian
+ 2, 1, 2, 2, 2, 1, 2
+ 12  10  9  7  5  3  2
+frigia
+ 1, 2, 2, 2, 1, 2, 2
+ 12  11  9  7  5  4  2
+lidia
+ 2, 2, 2, 1, 2, 2, 1
+ 12  10  8  6  5  3  1
+mixolidia
+ 2, 2, 1, 2, 2, 1, 2
+ 12  10  8  7  5  3  2
+aeolia
+ 2, 1, 2, 2, 1, 2, 2
+ 12  10  9  7  5  4  2
+locria
+ 1, 2, 2, 1, 2, 2, 2
+ 12  11  9  7  6  4  2
+algeriana
+ 2, 1, 2, 1, 1, 1, 3, 1
+ 12  10  9  7  6  5  4  1
+arabianA
+ 2, 1, 2, 1, 2, 1, 2, 1
+ 12  10  9  7  6  4  3  1
+arabianB
+ 2, 2, 1, 1, 2, 2, 2
+ 12  10  8  7  6  4  2
+aumentada
+ 3, 1, 2, 2, 3, 1
+ 12  9  8  6  4  1
+disminuidaAuxiliar
+ 2, 1, 2, 1, 2, 1, 2, 1
+ 12  10  9  7  6  4  3  1
+disminuidaAumentada
+ 2, 2, 2, 2, 2, 2
+ 12  10  8  6  4  2
+disminuidaAuxiliarBlues
+ 1, 2, 1, 2, 1, 2, 1, 2
+ 12  11  9  8  6  5  3  2
+balinese
+ 1, 2, 4, 1, 4
+ 12  11  9  5  4
+blues
+ 3, 2, 1, 1, 3, 2
+ 12  9  7  6  5  2
+bisantina
+ 1, 3, 1, 2, 1, 3, 1
+ 12  11  8  7  5  4  1
+china
+ 4, 2, 1, 4, 1
+ 12  8  6  5  1
+chinaMongolia
+ 2, 2, 3, 2, 3
+ 12  10  8  5  3
+diatonica
+ 2, 2, 3, 2, 3
+ 12  10  8  5  3
+disminuida
+ 2, 1, 2, 1, 2, 1, 2, 1
+ 12  10  9  7  6  4  3  1
+disminuidaAmedias
+ 1, 2, 1, 2, 1, 2, 1, 2
+ 12  11  9  8  6  5  3  2
+disminuidaEntera
+ 2, 1, 2, 1, 2, 1, 2, 1
+ 12  10  9  7  6  4  3  1
+disminuidaTonoEntero
+ 1, 2, 1, 2, 2, 2, 2
+ 12  11  9  8  6  4  2
+dominante7h
+ 2, 2, 1, 2, 2, 1, 2
+ 12  10  8  7  5  3  2
+dobleharmonica
+ 1, 3, 1, 2, 1, 3, 1
+ 12  11  8  7  5  4  1
+egipcia
+ 2, 3, 2, 3, 2
+ 12  10  7  5  2
+española8Tonos
+ 1, 2, 1, 1, 1, 2, 2, 2
+ 12  11  9  8  7  6  4  2
+engimatic
+ 1, 3, 2, 2, 2, 1, 1
+ 12  11  8  6  4  2  1
+etiopiaAraray
+ 2, 2, 1, 2, 2, 2, 1
+ 12  10  8  7  5  3  1
+etiopiaGeezYEzel
+ 2, 1, 2, 2, 1, 2, 2
+ 12  10  9  7  5  4  2
+MitadDisminuidaLocrian
+ 1, 2, 2, 1, 2, 2, 2
+ 12  11  9  7  6  4  2
+MitadDisminuida2Locrian2
+ 2, 1, 2, 1, 2, 2, 2
+ 12  10  9  7  6  4  2
+Hawaiana
+ 2, 1, 2, 2, 2, 2, 1
+ 12  10  9  7  5  3  1
+Hindu
+ 2, 2, 1, 2, 1, 2, 2
+ 12  10  8  7  5  4  2
+ANTES ANCHO , ALTO           1467          916
+nfont, nmxold, nmyold, nancho,nalto        17            403           224           1467          916
+DESPUES ANCHO , ALTO         1064          692
+param.ancho    1064 param.alto  692
+inicio ubound roll.trk       102
+iniio lbound roll.trk        39
+Str(instru)   0
+Click Grabando inst a disco pista con RollaTrack        
+trabajo con este proceso..   2040
+SE SuPONE PID1 PRINCIPAL NO MATAR          0
+pid1 <> nroproc              0             2040
+terminar pid   2040
+trabajo con este proceso..   2744
+SE SuPONE PID1 PRINCIPAL NO MATAR          0
+pid1 <> nroproc              0             2744
+terminar pid   2744
+trabajo con este proceso..   3324
+SE SuPONE PID1 PRINCIPAL NO MATAR          0
+pid1 <> nroproc              0             3324
+terminar pid   3324
+trabajo con este proceso..   3940
+SE SuPONE PID1 PRINCIPAL NO MATAR          0
+pid1 <> nroproc              0             3940
+terminar pid   3940
+trabajo con este proceso..   3456
+SE SuPONE PID1 PRINCIPAL NO MATAR          0
+pid1 <> nroproc              0             3456
+terminar pid   3456
+trabajo con este proceso..   3716
+SE SuPONE PID1 PRINCIPAL NO MATAR          0
+pid1 <> nroproc              0             3716
+terminar pid   3716
+trabajo con este proceso..   4056
+SE SuPONE PID1 PRINCIPAL NO MATAR          0
+pid1 <> nroproc              0             4056
+terminar pid   4056
+trabajo con este proceso..   1720
+SE SuPONE PID1 PRINCIPAL NO MATAR          0
+pid1 <> nroproc              0             1720
+terminar pid   1720
+trabajo con este proceso..   1244
+SE SuPONE PID1 PRINCIPAL NO MATAR          0
+pid1 <> nroproc              0             1244
+terminar pid   1244
+trabajo con este proceso..   1432
+SE SuPONE PID1 PRINCIPAL NO MATAR          0
+pid1 <> nroproc              0             1432
+terminar pid   1432
+trabajo con este proceso..   3816
+SE SuPONE PID1 PRINCIPAL NO MATAR          0
+pid1 <> nroproc              0             3816
+terminar pid   3816
+trabajo con este proceso..   2276
+SE SuPONE PID1 PRINCIPAL NO MATAR          0
+pid1 <> nroproc              0             2276
+terminar pid   2276
+trabajo con este proceso..   3004
+SE SuPONE PID1 PRINCIPAL NO MATAR          0
+pid1 <> nroproc              0             3004
+terminar pid   3004
+trabajo con este proceso..   1512
+SE SuPONE PID1 PRINCIPAL NO MATAR          0
+pid1 <> nroproc              0             1512
+terminar pid   1512
+uso Reset

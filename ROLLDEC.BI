@@ -530,6 +530,9 @@ Type rangoOct Field=1
  As UByte   notaold=0 
  As Integer Ticks =0
  As Byte    inst
+ As Byte    notaescala
+ As byte    tipoescala
+ As Byte    alteracion  ' sos 3, bem 2
 End type
 Dim Shared As rangoOct pmTk (0 To 32)
 Dim Shared As String titulos(0 To 32)
@@ -581,12 +584,15 @@ End Type
 
 '-------------------------------
 Type dat Field=1
- nota As UByte =0 ' en un futuro contendra nota, octava, canal etc 
+ nota As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
  dur As  UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
  vol As  UByte =0 ' volumen hasta 127 es volumen desde ahi es escala 128 a 255 =127 escalas
  pan As  UByte =0 ' paneo + o -
  pb  As  UByte =0 ' pitch bend + o -
- inst As UByte =0 ' instrumento para cada nota podra ser distinto
+ inst As UByte =0 ' instrumento para cada nota podra ser distinto 1 to 128
+ ' Nota de escala son 12 ..bemol o sostenido son 2
+ ' entonces en 14 numero stengo la info
+ ' 129 -> c,130->c#,131->d...140->B--, 141-sos,142,bemol
  ''t   As Ulong   '  ticks por ahroa no 
 End Type
 ' dentro del vol pondremso las escalas
@@ -603,6 +609,7 @@ Type paso Field=1
  Posi As Integer =0
  nro  As Integer =0
 End Type
+
 Type pasa Field=1 
   As cairo_t Ptr c
   As inst Roll
@@ -706,6 +713,8 @@ Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
 Declare Sub ReCalCompas(Roll As inst)
 Declare Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As ubyte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As integer)
 Declare Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)
+Declare Sub armarescala(ByRef cadenaes As String )
+
 
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox

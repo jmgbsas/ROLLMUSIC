@@ -1073,6 +1073,10 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                  
            Case 1106 ' escala de la secuencia, similar a la de instrumentos
                selTipoEscala (tipoescala)
+' GRABADO EN grabaPos(1,1).inst = CUByte(tipoescala) ' 20-12-2021 - tipoescala en uso
+' CUADNO QUEIRO UN CAMBIO PUEDO DEJAR UN ACOLUMNA VACIA Y PONER TODO ESTA INFO
+' PERO DEBO INDICAR AL PROGRAM QUE SALTEE ESTA COLUMNA CREO CON TENER NOTA=181 Y DUR181
+' PODRI AINDICAR ESO DEBO PROBARLO Y USAR LSO DEMAS CAMPOS PARA INTRODUCIR ALGUN  CAMBIO               
                Roll.trk(1,NA).vol= CUByte(tipoescala) + 127 ' a partir de 128
                Track(ntk).trk(1,1).vol=CUByte(tipoescala) + 127
               ' grabar el track 
@@ -1091,7 +1095,8 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
 
 ' --------------------------   
            Case 1107 ' usamos sostenidos o bemoles ???
-               selNotaEscala (notaescala)
+               selNotaEscala (notaescala) 
+ ' GRABADO EN grabaLim(1,1).vol  = CUByte(notaescala) ' notadeescala 20-12-2021
              '  Roll.trk(1,NA).vol= CUByte(notaescala) + 127 ' a partir de 128
              '  Track(ntk).trk(1,1).vol=CUByte(notaescala) + 127
               ' grabar el track 
@@ -1107,7 +1112,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
               armarescala(cadenaes)
 
            Case 1108 ' alteraciones sotenidos o bemoles
-              alteracion="sos"
+              alteracion="sos" ' grabado en grabaLim(1,1).pan  = CUByte(3)
               SetStateMenu(hmessages,1108,3)  
               SetStateMenu(hmessages,1109,0) 
               cadenaes=""
@@ -1115,7 +1120,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
 
 ' --------------------------   
            Case 1109 ' alteraciones sotenidos o bemoles
-              alteracion="bem"
+              alteracion="bem" ' grabado en grabaLim(1,1).pan  = CUByte(2)
               SetStateMenu(hmessages,1108,0)  
               SetStateMenu(hmessages,1109,3) 
               cadenaes=""

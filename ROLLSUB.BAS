@@ -1382,21 +1382,35 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      x3=Bin(z(1,1).vol,4)
      x4=Bin(z(1,1).pan,4)
      x5=Bin(z(1,1).pb,4)
+     tipoescala =CInt( Z(1,1).inst) ' 20-12-2021 - tipoescala en uso
+
      x=x1+x2+x3+x4+x5
      '   print #1,"reconstruccion x pos bin ", x
      MaxPos=CInt("&B"+x)
      posicion = 1
      '  print #1,"reconstruccion x pos int ", Posicion
      
+     
      nota=0 '''notaOld
      inicioDeLectura=0' Int(Maxpos/NroCol)
      posn=Maxpos- 2
+     
+     
+     
      If posn < 0 Then posn=0 EndIf
      ' crgamos limites Roll de octavas
      Get #ca, , zLim(1,1)
      desde  = CInt(zLim(1,1).nota)
      hasta  = CInt(zLim(1,1).dur)
      notaold= CInt(zLim(1,1).pb)
+     notaescala =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
+     if  zLim(1,1).pan = 3 Then
+         alteracion="sos"
+     EndIf    
+     if  zLim(1,1).pan = 2 Then
+         alteracion="bem"
+     EndIf    
+
      NB= 0 + (desde-1) * 13
      NA= 11 + (hasta -1)*13
      pmTk(0).notaold = notaold  'notaold es ubyte en pmTk
@@ -1498,6 +1512,8 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
     ''' carga=0
      ReCalCompas(Roll)      
     ''If Roll.trk(1,NA).
+    cadenaes=""
+    armarescala (cadenaes)
     
     print #1, "CargaARchivo LBound (Roll.trk,1) ",LBound (Roll.trk,1)
     print #1, "CargaARchivo LBound (Roll.trk,2) ",LBound (Roll.trk,2)
@@ -2948,10 +2964,17 @@ MaxPos=k+1
      grabaPos(1,1).vol  = y3
      grabaPos(1,1).pan  = y4
      grabaPos(1,1).pb   = y5
+     grabaPos(1,1).inst = CUByte(tipoescala) ' 20-12-2021 - tipoescala en uso
     '-----------------------
      grabaLim(1,1).nota = CUByte(desde) 
      grabaLim(1,1).dur  = CUByte(hasta)
      grabaLim(1,1).pb   = CUByte(notaold)
+     grabaLim(1,1).vol  = CUByte(notaescala) ' notadeescala 20-12-2021
+     If alteracion="sos" Then
+        grabaLim(1,1).pan  = CUByte(3)
+     Else
+        grabaLim(1,1).pan  = CUByte(2)
+     EndIf
      If instru=0 Then 
         instru=1
      EndIf
@@ -3184,11 +3207,19 @@ Next i1
      grabaPos(1,1).vol  = y3
      grabaPos(1,1).pan  = y4
      grabaPos(1,1).pb   = y5
+     grabaPos(1,1).inst = CUByte(tipoescala) ' 20-12-2021 - tipoescala en uso
      '-----------------------
      grabaLim(1,1).nota = CUByte(desde)
      grabaLim(1,1).dur  = CUByte(hasta)
      grabaLim(1,1).pb   = CUByte(notaold)
-     
+     grabaLim(1,1).vol  = CUByte(notaescala) ' notadeescala 20-12-2021     
+
+     If alteracion="sos" Then
+        grabaLim(1,1).pan  = CUByte(3)
+     Else
+        grabaLim(1,1).pan  = CUByte(2)
+     EndIf
+
      ' ------------------------------------
      ' para seguir poniendo notas nuevas
      ' hacemoslo mismo para l ultima not que se grabo que teng el 182
