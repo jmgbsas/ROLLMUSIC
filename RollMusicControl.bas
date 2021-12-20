@@ -13,7 +13,7 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #EndIf
 ' para GTK Gtk:list()
 #Include Once "crt.bi"
-#Include "window9.bi"
+#Include "foro/window9.bi"
 #Include Once "gtk/gtk.bi"
 #Include "midiinfo.bi"
 #Include "ROLLCONTROLDEC.bi"
@@ -39,9 +39,19 @@ Common Shared As FT_Face ftface
 common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto
 Common Shared As Integer mxold,myold, w,h
+'Type esc1 
+'  nombre   As String
+'  nropasos As Integer
+'  pasos    As Byte Ptr   
+'End Type
 
+'common shared as esc1 ptr pescala
+  
 pathdir=""
+'-------------
 
+
+'-----------
 dim Shared As String  ProgError(0 To 17)
 Dim Shared As Integer ContadorError=0
 'Dim As Long event=0
@@ -194,7 +204,7 @@ instru=0
  
 '' => desde acaecho con tool del ruso no anda muy bien
      haw=OpenWindow("INSTRUMENTOS PATCH",100,50,600,600,WS_VISIBLE, WS_EX_TOPMOST )
-     'Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
+     'Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
      ' commctrl.bi modificado
      hwl=  ListViewGadget(1,10,10,500,500,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL )
      
@@ -242,6 +252,8 @@ print #1,"Str(instru) ", Str(instru)
 
 End Sub
 ' ---------
+
+'------------
 Sub EntrarNombreCancion(ByRef NombreCancion As string)
   NombreCancion=Date
   NombreCancion = InputBox("InputBox",,NombreCancion)
@@ -324,6 +336,9 @@ deleteFileA (StrPtr(titulo))
 
 End Sub
 
+'
+
+'
 
 ' error
 errorControl:

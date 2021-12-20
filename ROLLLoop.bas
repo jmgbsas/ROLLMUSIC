@@ -39,10 +39,25 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
 ' 
 ' cairo_set_source_rgba(c, 1, 1, 1, 1)
 'EndIf
-
-
+' --preubas de encabezado donde pondremos mas informaicon y tal vez menues botoes etc
 
  Penta_y = BordeSupRoll + 14 * ( inc_Penta ) *( nro -1)
+'--------------------------
+  If cadenaes="" Then
+     armarescala(cadenaes)
+  EndIf
+ t=" ESCALA: "+ UCase(escala(tipoescala).nombre) + " [" +cadenaes +"] I="+Str(tiempoPatron) + " Compas=" +TCompas  
+  cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - inc_Penta)
+  cairo_show_text(c, t)
+  t= ""
+
+  
+' t=" BordeSupRoll="+ Str(BordeSupRoll)  
+'  cairo_move_to(c, 0, BordeSupRoll )
+'  cairo_show_text(c, t)
+'  t= ""
+'--------------------------
+
  cairo_move_to(c, 0, Penta_y )
  cairo_line_to(c, ANCHO - 1, Penta_y )
 
@@ -95,8 +110,12 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
    EndIf
   font= font - 2 ' achicamos notas giuas
 ''  t = NotasGuia(semitono) + Str(*octava) + "_[" 
-'' cairo_move_to(c, 0, Penta_y + semitono * inc_Penta- 6) 
-  t = NotasGuia(semitono) + Str(*po -1) + "_["
+'' cairo_move_to(c, 0, Penta_y + semitono * inc_Penta- 6)
+  If alteracion="bem" Then
+     t = NotasGuia2(semitono) + Str(*po -1) + "_["
+  Else 
+    t = NotasGuia(semitono) + Str(*po -1) + "_["
+  EndIf
   cairo_move_to(c, 0, Penta_y + (semitono+1) * inc_Penta- 6)
   cairo_show_text(c, t)
   t= ""
@@ -355,7 +374,7 @@ If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
   *po = 99
   Exit Sub
  EndIf
- '           ================  MENUES CONTEXTUALES PARA MOUSE ==================
+ '           ================  MENUES CONTEXTUALES GRAFICOS PARA MOUSE ==================
  If ayudaModif=TRUE  And comEdit=TRUE Then
   If  (cursorVert = 1 Or  cursorHori = 1 ) Then
    'print #1,".............SUBRUTINA........................................."
@@ -546,7 +565,7 @@ Var surf2 = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32
 inc_Penta = Int((ALTO -1) /40) - deltaip
 
 'llena la surface con nro_penta
-nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
+'nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
 
 'Print nro_penta
 Select Case desde
@@ -570,7 +589,7 @@ Select Case desde
      
 End Select
 'print #1,"BordeSupRoll ",BordeSupRoll
-
+'nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
 print #1,"INSTANCIA ", instancia
 
 ' -----------------
@@ -633,7 +652,7 @@ EndIf
 
 inc_Penta = Int((ALTO -1) /40) - deltaip
 'llena la surface con nro_penta
-nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
+'nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
 'Print nro_penta
 
 ''''''''estos 3 comadnos con los de abajo son para scale o translate ---------
@@ -2646,6 +2665,14 @@ If (ScreenEvent(@e)) Then
  If  mouseY > 50 Then '<=== delimitacion de area de trabajo
   s3 = 0 ''06-12-2021
  ' <==== MENU CONTEXTUAL ACORDES CON CTRL+ CLICK DERECHO EN LECTURA ================>
+ ' 2 casos 1)en la posicion elegida y aexiste una nota de una melodia o secuencia
+ ' 2) no hay nada. En el 1er caso se tomara por omision a la nota como la tónica
+ ' y se armara un acorde con la misma duración a la nota elegida...
+ ' en el caso 2) se necitara 1ero la entrada de una duració o tomar la que ya estaba cargada
+ ' en cuyo caso se arma igual que antes el acorde con las selecciones del siguiente menu.
+ ' usaremos la denominacion 1,3,5,7,9 ..4,6..11 etc para las posiciones de las notas del acorde.
+ ' todo se armara segun la escala elegida previamente...el cual pasmos a desarrollar...16-12-2021
+ 
  If comEdit=FALSE Then
 ' para ingreser automatico acordes a partir de una TONICA futuro--01-12-2021  
     If MultiKey(SC_CONTROL) And MouseButtons And 2 Then
@@ -2673,7 +2700,9 @@ If mousey -40 > (ALTO-myold) *3/5 Then
   Posy=y0+(ALTO-myold)*3/5
 EndIf  
     ' haco = OpenWindow("Acordes", x0+Posx ,y0+Posy,40,40,WS_VISIBLE Or WS_THICKFRAME , WS_EX_TOPMOST ) 'Or WS_EX_TRANSPARENT  )
+' VALOR POR OMISION  NOTA ORIGEN O DE COMIENZO -> 1 tonica
   
+'  
      haco = OpenWindow("",Posx ,Posy,anchofig*2,60,WS_VISIBLE Or WS_THICKFRAME , WS_EX_TOPMOST Or WS_EX_TOOLWINDOW )''Or WS_EX_TRANSPARENT  )
      UpdateInfoXserver()    
      WindowStartDraw(haco)
@@ -3487,8 +3516,10 @@ Loop
 
 
 End sub
+'
 
 
+'
 ' error
 errorloopbas:
   

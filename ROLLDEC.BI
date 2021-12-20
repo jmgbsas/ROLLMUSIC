@@ -98,7 +98,8 @@ Declare Sub salir()
 
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
 Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6
-Dim Shared RTA As String 
+Dim Shared As String RTA, alteracion
+alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoZona2=0, pasoNota=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, SelGrupoNota =0,moverZona=0, copiarZona=0
 Dim Shared as ubyte  DUR,nota,notasInsertadas (1 to 1500),notacur
@@ -108,13 +109,287 @@ Dim shared As integer Penta_y, indice, posicion=0,posicionOld=0, espacio,posn=0,
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
-dim Shared as string cromatica(1 to 12)
 Dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0 ', cargaCancion=0
 Dim Shared As Integer ers, borrapos=0,comienza=0  
 Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
+Dim Shared NotasEscala (1 To 12) As String *2 => _
+{"C ","C#","D ","D#","E ","F ","F#","G ","G#","A ","A#","B "}
+Dim Shared NotasEscalaArmado (1 To 24) As String *2 => _
+{"C ","C#","D ","D#","E ","F ","F#","G ","G#","A ","A#","B ","C ","C#","D ","D#","E ","F ","F#","G ","G#","A ","A#","B "}
+
+
+Dim Shared NotasGuia2 (0 To 11) As String * 2 => _
+{"B_","Bb","A_","Ab","G_","Gb","F_","E_","Eb","D_","Db","C_"}
+Dim Shared NotasEscala2 (1 To 12) As String *2 => _
+{"C ","Db","D ","Eb","E ","F ","Gb","G ","Ab","A ","Bb","B "}
+
+Dim Shared NotasEscalaArmado2 (1 To 24) As String *2 => _
+{"C ","Db","D ","Eb","E ","F ","Gb","G ","Ab","A ","Bb","B ","C ","Db","D ","Eb","E ","F ","Gb","G ","Ab","A ","Bb","B "}
+
+
+Type esc1 
+  nombre   As String
+  nropasos As Integer
+  pasos    As Byte Ptr   
+End Type
+Dim Shared escala (1 To 168) As esc1 
+common shared as esc1 ptr pescala
+ pescala=@escala(1)
+
+'escalawork 
+
+Dim Shared mayor  (1 To 7)  As byte => {2,2,1,2,2,2,1}  _
+,  harmonicaMenor     (1 To 7)  As Byte => {2,1,2,2,1,3,1}  _
+,  melodicaMenorAsc   (1 To 7)  As Byte => {2,1,2,2,2,2,1} _
+,  melodicaMenorDesc  (1 To 7)  As Byte => {2,1,2,2,1,2,2} _
+,  cromatica          (1 To 12) As Byte => {1,1,1,1,1,1,1,1,1,1,1,1} _
+,  tonoEntero         (1 To 6)  As Byte => {2,2,2,2,2,2} _
+,  pentatonicaMayor   (1 To 5)  As byte => {2,2,3,2,3} _
+,  pentatonicaMenor   (1 To 5)  As byte => {3,2,2,3,2} _
+,  pentatonicaBlues   (1 To 6)  As Byte => {3,2,1,1,3,2} _
+,  pentatonicaNeutral (1 To 5)  As Byte => {2,3,2,3,2} _
+,  octatonicHW        (1 To 8)  As Byte => {1,2,1,2,1,2,1,2} _
+,  octatonicWH        (1 To 8)  As Byte => {2,1,2,1,2,1,2,1} _
+,  ionian             (1 To 7)  As Byte => {2,2,1,2,2,2,1} _
+,  dorian             (1 To 7)  As Byte => {2,1,2,2,2,1,2} _
+,  frigia             (1 To 7)  As byte => {1,2,2,2,1,2,2} _
+,  lidia              (1 To 7)  As Byte => {2,2,2,1,2,2,1} _
+,  mixolidia          (1 To 7)  As Byte => {2,2,1,2,2,1,2} _
+,  aeolia             (1 To 7)  As Byte => {2,1,2,2,1,2,2} _
+,  locria             (1 To 7)  As Byte => {1,2,2,1,2,2,2} _
+,  algeriana          (1 To 8)  As Byte => {2,1,2,1,1,1,3,1} _
+,  arabianA           (1 To 8)  As Byte => {2,1,2,1,2,1,2,1} _
+,  arabianB           (1 To 7)  As Byte => {2,2,1,1,2,2,2} _
+,  aumentada          (1 To 6)  As Byte => {3,1,2,2,3,1} _
+,  disminuidaAuxiliar (1 To 8)  As Byte => {2,1,2,1,2,1,2,1} _
+,  disminuidaAumentada  (1 To 6)  As Byte => {2,2,2,2,2,2} _  ' igual a tono entero..¿?
+,  disminuidaAuxiliarBlues (1 To 8) As Byte=> {1,2,1,2,1,2,1,2} _ ' igual a octatonicHW
+,  balinese           (1 To 5)  As Byte => {1,2,4,1,4} _
+,  blues              (1 To 6)  As Byte => {3,2,1,1,3,2} _
+,  bisantina          (1 To 7)  As Byte => {1,3,1,2,1,3,1} _
+,  china              (1 To 5) As Byte => {4,2,1,4,1} _
+,  chinaMongolia      (1 To 5) As Byte => {2,2,3,2,3} _
+,  diatonica          (1 To 5)  as Byte => {2,2,3,2,3}  _
+,  disminuida         (1 To 8)  As Byte => {2,1,2,1,2,1,2,1} _
+,  disminuidaAmedias  (1 To 8)  As Byte => {1,2,1,2,1,2,1,2} _
+,  disminuidaEntera   (1 To 8)  As Byte => {2,1,2,1,2,1,2,1} _
+,  disminuidaTonoEntero (1 To 7) As Byte => {1,2,1,2,2,2,2} _
+,  dominante7h        (1 To 7) As Byte => {2,2,1,2,2,1,2} _
+,  dobleharmonica     (1 To 7) As Byte => {1,3,1,2,1,3,1} _
+,  egipcia            (1 To 5) As Byte => {2,3,2,3,2} _
+,  espanola8Tonos     (1 To 8) As Byte => {1,2,1,1,1,2,2,2} _
+,  engimatic          (1 To 7) As Byte => {1,3,2,2,2,1,1} _    
+,  etiopiaAraray     (1 To 7) As Byte => {2,2,1,2,2,2,1} _
+,  etiopiaGeezYEzel  (1 To 7) As Byte => {2,1,2,2,1,2,2} _
+,  MitadDisminuidaLocrian (1 To 7) As Byte =>  {1,2,2,1,2,2,2} _
+,  MitadDisminuida2Locrian2 (1 To 7) As Byte => {2,1,2,1,2,2,2} _
+,  Hawaiana          (1 To 7) As byte => {2,1,2,2,2,2,1} _ 
+,  Hindu             (1 To 7) As Byte => {2,2,1,2,1,2,2}
+
+escala(1).nombre="mayor"
+escala(1).nropasos=7
+escala(1).pasos = @mayor(1)
+  
+escala(2).nombre="harmonicaMenor"
+escala(2).nropasos=7
+escala(2).pasos = @harmonicaMenor(1)
+     
+escala(3).nombre="melodicaMenorAsc"
+escala(3).nropasos=7
+escala(3).pasos = @melodicaMenorAsc(1)
+
+escala(4).nombre="melodicaMenorDesc"
+escala(4).nropasos=7
+escala(4).pasos = @melodicaMenorDesc(1)
+
+escala(5).nombre="cromatica"
+escala(5).nropasos=12
+escala(5).pasos = @cromatica(1)
+
+escala(6).nombre="tonoEntero"
+escala(6).nropasos=6
+escala(6).pasos = @tonoEntero(1)
+
+escala(7).nombre="pentatonicaMayor"
+escala(7).nropasos=5
+escala(7).pasos = @pentatonicaMayor(1)
+
+escala(8).nombre="pentatonicaMenor"
+escala(8).nropasos=5
+escala(8).pasos = @pentatonicaMenor(1)
+
+escala(9).nombre="pentatonicaBlues"
+escala(9).nropasos=6
+escala(9).pasos = @pentatonicaBlues(1)
+
+escala(10).nombre="pentatonicaNeutral"
+escala(10).nropasos=5
+escala(10).pasos = @pentatonicaNeutral(1)
+
+escala(11).nombre="octatonicHW"
+escala(11).nropasos=8
+escala(11).pasos = @octatonicHW(1)
+
+escala(12).nombre="octatonicWH"
+escala(12).nropasos=8
+escala(12).pasos = @octatonicWH(1)
+
+escala(13).nombre="ionian"
+escala(13).nropasos=7
+escala(13).pasos = @ionian(1)
+
+escala(14).nombre="dorian"
+escala(14).nropasos=7
+escala(14).pasos = @dorian(1)
+
+escala(15).nombre="frigia"
+escala(15).nropasos=7
+escala(15).pasos = @frigia(1)
+
+escala(16).nombre="lidia"
+escala(16).nropasos=7
+escala(16).pasos = @lidia(1)
+
+escala(17).nombre="mixolidia"
+escala(17).nropasos=7
+escala(17).pasos = @mixolidia(1)
+
+escala(18).nombre="aeolia"
+escala(18).nropasos=7
+escala(18).pasos = @aeolia(1)
+
+escala(19).nombre="locria"
+escala(19).nropasos=7
+escala(19).pasos = @locria(1)
+
+escala(20).nombre="algeriana"
+escala(20).nropasos=8
+escala(20).pasos = @algeriana(1)
+
+escala(21).nombre="arabianA"
+escala(21).nropasos=8
+escala(21).pasos = @arabianA(1)
+
+escala(22).nombre="arabianB"
+escala(22).nropasos=7
+escala(22).pasos = @arabianB(1)
+
+escala(23).nombre="aumentada"
+escala(23).nropasos=6
+escala(23).pasos = @aumentada(1)
+
+escala(24).nombre="disminuidaAuxiliar"
+escala(24).nropasos=8
+escala(24).pasos = @disminuidaAuxiliar(1)
+
+escala(25).nombre="disminuidaAumentada"
+escala(25).nropasos=6
+escala(25).pasos = @disminuidaAumentada(1)
+
+escala(26).nombre="disminuidaAuxiliarBlues"
+escala(26).nropasos=8
+escala(26).pasos = @disminuidaAuxiliarBlues(1)
+
+escala(27).nombre="balinese"
+escala(27).nropasos=5
+escala(27).pasos = @balinese(1)
+
+escala(28).nombre="blues"
+escala(28).nropasos=6
+escala(28).pasos = @blues(1)
+
+escala(29).nombre="bisantina"
+escala(29).nropasos=7
+escala(29).pasos = @bisantina(1)
+
+escala(30).nombre="china" 
+escala(30).nropasos=5
+escala(30).pasos = @china(1)
+
+escala(31).nombre="chinaMongolia"
+escala(31).nropasos=5
+escala(31).pasos = @chinaMongolia(1)
+
+escala(32).nombre="diatonica"
+escala(32).nropasos=5
+escala(32).pasos = @diatonica(1)
+
+escala(33).nombre="disminuida"
+escala(33).nropasos=8
+escala(33).pasos = @disminuida(1)
+
+escala(34).nombre="disminuidaAmedias"
+escala(34).nropasos=8
+escala(34).pasos = @disminuidaAmedias(1)
+
+escala(35).nombre="disminuidaEntera"
+escala(35).nropasos=8
+escala(35).pasos = @disminuidaEntera(1)
+
+escala(36).nombre="disminuidaTonoEntero"
+escala(36).nropasos=7
+escala(36).pasos = @disminuidaTonoEntero(1)
+
+escala(37).nombre="dominante7h"
+escala(37).nropasos=7
+escala(37).pasos = @dominante7h(1)
+
+escala(38).nombre="dobleharmonica"
+escala(38).nropasos=7
+escala(38).pasos = @dobleharmonica(1)
+
+escala(39).nombre="egipcia"
+escala(39).nropasos=5
+escala(39).pasos = @egipcia(1)
+
+escala(40).nombre="española8Tonos"
+escala(40).nropasos=8
+escala(40).pasos = @espanola8Tonos(1)
+
+escala(41).nombre="engimatic"
+escala(41).nropasos=7
+escala(41).pasos = @engimatic(1)
+
+escala(42).nombre="etiopiaAraray"
+escala(42).nropasos=7
+escala(42).pasos = @etiopiaAraray(1)
+
+escala(43).nombre="etiopiaGeezYEzel"
+escala(43).nropasos=7
+escala(43).pasos = @etiopiaGeezYEzel(1)
+
+escala(44).nombre="MitadDisminuidaLocrian"
+escala(44).nropasos=7
+escala(44).pasos = @MitadDisminuidaLocrian(1)
+
+escala(45).nombre="MitadDisminuida2Locrian2"
+escala(45).nropasos=7
+escala(45).pasos = @MitadDisminuida2Locrian2(1)
+
+escala(46).nombre="Hawaiana"
+escala(46).nropasos=7
+escala(46).pasos = @Hawaiana(1)
+
+escala(47).nombre="Hindu"
+escala(47).nropasos=7
+escala(47).pasos = @Hindu(1)
+/'
+escala(48).nombre=""
+escala(48).nropasos=7
+escala(48).pasos = @(1)
+
+escala(49).nombre=""
+escala(49).nropasos=7
+escala(49).pasos = @(1)
+
+escala(50).nombre=""
+escala(50).nropasos=7
+escala(50).pasos = @(1)
+'/
+
 ' 5.7.6.00 tresillos
 espacio=0:notacur=1 '16-05-2021 jmg
 Dim  Shared figura (1 To 182) As ZString  * 4 => _
@@ -307,8 +582,8 @@ End Type
 '-------------------------------
 Type dat Field=1
  nota As UByte =0 ' en un futuro contendra nota, octava, canal etc 
- dur As  UByte =0 ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
- vol As  UByte =0 ' volumen cambiamos si es + es volumen si es negativo es escala
+ dur As  UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
+ vol As  UByte =0 ' volumen hasta 127 es volumen desde ahi es escala 128 a 255 =127 escalas
  pan As  UByte =0 ' paneo + o -
  pb  As  UByte =0 ' pitch bend + o -
  inst As UByte =0 ' instrumento para cada nota podra ser distinto
@@ -345,8 +620,8 @@ Dim Shared As inst Roll ' para visualizar y tocar
 Dim Shared Track  (0 To 32) As sec ' tracks para guardar,.. y tocar 
 
 Dim Shared ix As Integer=0
-Dim Shared titu As String
-Dim Shared As Integer instru, instruOld
+Dim Shared As String titu, cadenaes 
+Dim Shared As Integer instru=1, instruOld, tipoescala=1, tipoescalaOld=1, notaescala=1,notaescalaOld
 Dim Shared As Integer desdevector
 Dim Shared As Integer hastavector,abrirRoll=0
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
@@ -377,7 +652,7 @@ Common Shared As FLOAT font
 Dim Shared As float  deltaipf=0, lockip=0 
 Dim Shared q As String * 1
 Dim Shared As UByte s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
-Dim Shared escala As float = 1.0
+''Dim Shared escala As float = 1.0
 Dim Shared translado As Integer = 1
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
 Dim shared As Integer i,  posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
@@ -390,7 +665,7 @@ Dim Shared rmerr As Integer
 
 Dim Shared cm As cairo_t  Ptr
 Dim Shared c3 As cairo_t  Ptr
-Dim Shared As Integer stride, nro_penta,IhWnd,Mhwnd,Style,desktopwidth,desktopheight
+Dim Shared As Integer stride, IhWnd,Mhwnd,Style,desktopwidth,desktopheight
 Dim Shared comienzo As Integer = 0
 'ScreenControl  SET_DRIVER_NAME,"GDI"
 Dim Shared As hWnd hwnd,hwndMenu 

@@ -180,6 +180,7 @@ Print #1,Date;Time
 #Include once "foro/fmidi.bi"
 #Include Once "fbthread.bi"
 #Include "foro/window9.bi"
+
 '#Include "crt/win32/unistd.bi"
 #inclib "ntdll"
 #Include "win/ntdef.bi"
@@ -518,12 +519,56 @@ Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 Print #1,"INSTANCIA ",instancia
 ' carga de opciones iniciales RollMusic.ini
 
+''https://www.freebasic.net/forum/viewtopic.php?f=3&t=22821&p=204270&hilit=loop+through+an+array+with+the+pointer#p204270
 
 Dim As Integer  tilde1102=MF_UNCHECKED,tilde1103=MF_UNCHECKED  
 Dim As Integer anchoK, altoK
 anchoK = GetSystemMetrics(SM_CXSCREEN)
 'altoK = GetSystemMetrics(SM_CYSCREEN)
+'-------------
+Dim As Integer g1, h1,h2
+Dim As  byte Ptr p5,p6
 
+Dim hnro As Integer
+' prueba desarrolllo escalas 
+ For g1 =1 To 47
+    Print #1, escala(g1).nombre
+    hnro=escala(g1).nropasos 
+    p5= escala(g1).pasos 
+    For h1 = 1 To hnro -1
+     
+     Print #1, *p5;",";  ' impresion de intervalos de la escala
+     p5=p5+1 
+    Next h1
+    Print #1, *p5
+' CONSTRUCCION DE LA ESCALA
+ Dim As Integer k3=1
+   p6= escala(g1).pasos
+    For h2 = 1 To hnro -1
+     
+     'Print #1,NotasEscala(k3);" " ;  ' impresion de la escala con las notas c c# d  etc
+     Print #1, 12-k3+1;" ";
+     k3= *p6 + k3
+     
+     p6=p6+1 
+    Next h2
+    Print #1, 12-k3+1 
+    'Print #1, NotasEscala(k3)
+
+ Next g1
+ ' ahora debo traducir las notas a notas de Roll e incorporarlas al vector
+ ' las notas  en Roll van de 0 a 11 para el indice son los semitonos, pero se cargan 
+ ' los valores 1 a 12. En Roll C=12 ...B=1 ergo si la escala dice 12=B debe ser 1
+ ' o sea =12-valor+1 (12-1+1) o podemos crear el vector de escalas al reves de 12 a 1 pero
+ ' se complicaria todo para analizar. ergo invertimos y listo 1 a 12 es 12 a 1...
+ ' Entonces para taducir a Roll hago 12-valor+1 . pero par aanalizar y mostrar es valor
+ ' ejemplo triada=1,3,5=C,E,G, en Roll seria = 12,10,8
+ 
+ ' genial puedo recorrer un array con un pointer!!!!
+'-------
+
+ 
+'------------
 Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 If ix < 3 Then ' rollmusic CON control
   instancia=0
@@ -600,6 +645,10 @@ MenuItem(1102,MenName7,"Acordes distintos a iguales, Fracciona notas similares e
 MenuItem(1103,MenName7,"Acordes distintos a iguales, Fracciona todas las notas agregando silencios en una columna en una pista ",MF_UNCHECKED  )
 MenuItem(1104,MenName7,"Acordes distintos a iguales, Fracciona notas automaticamente en Columna de una pista ",MF_CHECKED  )
 MenuItem(1105,MenName7,"No Fraccionar, NO Usar Acordes iguales ", MF_UNCHECKED )
+MENUITEM(1106,MenName7,"Seleccionar TIPO DE ESCALA de la secuencia (Por omision Mayor)")
+MENUITEM(1107,MenName7,"Seleccionar NOTA DE LA ESCALA ESCALA (Por omision C )")
+MENUITEM(1108,MenName7,"Trabajar con sostenidos (Por omision Sostenidos #)",MF_CHECKED )
+MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
 
 MenuItem(1110,MenName8,"9 Menu")
 End If
@@ -1021,7 +1070,57 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                  SetStateMenu(hmessages,1103,0)
                  SetStateMenu(hmessages,1104,0)
                  SetStateMenu(hmessages,1105,3)
+                 
+           Case 1106 ' escala de la secuencia, similar a la de instrumentos
+               selTipoEscala (tipoescala)
+               Roll.trk(1,NA).vol= CUByte(tipoescala) + 127 ' a partir de 128
+               Track(ntk).trk(1,1).vol=CUByte(tipoescala) + 127
+              ' grabar el track 
+            print #1, "Click Grabando escala a disco pista con RollaTrack ",nombre
+            Dim As String nombreg
+              ROLLCARGADO=FALSE 
+              If NombreCancion > ""  Then
+                GrabarRollaTrack(0)
+              EndIf
+              MenuNew=0           
+              carga=1
+' -------cadena de escala, construye dsde C hay que hacer las otras esclas
+    ' C,D,E,F,G,A,B,Bb,Ab,Gb ver las debo pedir escala y 1er nota desde donde empieza uff
+              cadenaes=""
+              armarescala(cadenaes)
 
+' --------------------------   
+           Case 1107 ' usamos sostenidos o bemoles ???
+               selNotaEscala (notaescala)
+             '  Roll.trk(1,NA).vol= CUByte(notaescala) + 127 ' a partir de 128
+             '  Track(ntk).trk(1,1).vol=CUByte(notaescala) + 127
+              ' grabar el track 
+            print #1, "seleccion de Nota de la escala  ",notaescala
+            Dim As String nombreg
+              ROLLCARGADO=FALSE 
+              If NombreCancion > ""  Then
+                GrabarRollaTrack(0)
+              EndIf
+              MenuNew=0           
+              carga=1
+              cadenaes=""
+              armarescala(cadenaes)
+
+           Case 1108 ' alteraciones sotenidos o bemoles
+              alteracion="sos"
+              SetStateMenu(hmessages,1108,3)  
+              SetStateMenu(hmessages,1109,0) 
+              cadenaes=""
+              armarescala(cadenaes)
+
+' --------------------------   
+           Case 1109 ' alteraciones sotenidos o bemoles
+              alteracion="bem"
+              SetStateMenu(hmessages,1108,0)  
+              SetStateMenu(hmessages,1109,3) 
+              cadenaes=""
+              armarescala(cadenaes)
+            
 
            Case 1110
              MessBox ("","Acerca de este programa")

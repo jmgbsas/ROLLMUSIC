@@ -1,4 +1,8 @@
+ 
+#Include "foro/window9.bi"
+
 On  Error GoTo errorSub
+
 
 Sub ArmarDurFrac ()
 ' los bloques de durcion se repiten de a 3, el incr es por bloque
@@ -1711,7 +1715,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    Else
      muestra =nombre  
    EndIf
-   muestra=Str(PianoNota) + " "+ muestra   
+   muestra=Str(PianoNota) + " "+ muestra   'xxxx Str (BordeSupRoll)
 
 
  Select Case menuNro
@@ -3756,8 +3760,157 @@ Close fk
             
 
 End Sub
+'-------
+Sub selTipoEscala (ByRef tipoescala As integer)
+Dim As hwnd haw,hwl
+Dim As Integer aa ,paso1=0,x=0  
+tipoescala=0
+
+ 
+'' => desde acaecho con tool del ruso no anda muy bien
+     haw=OpenWindow("ESCALAS ",100,50,600,600,WS_VISIBLE, WS_EX_TOPMOST )
+     Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
+' COSA DE MANDINGA LVS_EX_AUTOSIZECOLUMNS ACA NO LA ENCUENTRA PERO EN LAS OTRAS
+' SUBRUTINAS LA ENCUENTRA JAJAJAA ANDA PARA LA MIERDA ESTE FB 
+''Y ESTE NO ES UN MODULO A PARTE ES UN INCLUDE!!!     
+     ' commctrl.bi modificado
+     hwl=  ListViewGadget(1,10,10,500,500,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL )
+     
+     AddListViewColumn(1, "Elegir De 1 a 168 ",0,0,250)
+     AddListViewItem(1, "CLICK EN UN ITEM  Y EN OK",0,aa,0)
+       For aa =1 To 168 
+               AddListViewItem(1, escala(aa).nombre ,0,aa,0) 
+       Next
+       
 
 
+       ButtonGadget(2,530,30,50,40," OK ")
+'       ButtonGadget(3,530,90,50,40,"+Pag")
+         #Ifdef __FB_WIN64__
+           SetFocus (hwl) 
+           SetForegroundWindow(haw)
+          #Else
+           gtk_widget_grab_focus(GadgetID(1))
+         #EndIf
+         Do
+
+         Var eventC= waitEvent
+
+          If eventC=eventgadget Then
+          
+            If eventnumber()=2 Then
+               tipoescala = GetItemListView()
+'''               instru=instru + 1
+            ''   If instru > 1 Then
+                  Close_Window(haw)
+                  Exit Do
+           ''    EndIf
+           End If
+
+          EndIf 
+          Sleep 5  
+          
+         Loop
+         
+
+'' fin ruso
+'Return IUP_DEFAULT
+print #1,"Str(tipoescala) ", Str(tipoescala)
+
+End Sub
+'----
+Sub selNotaEscala (ByRef notaescala As integer)
+Dim As hwnd haw,hwl
+Dim As Integer aa ,paso1=0,x=0  
+notaescala=0
+
+ 
+'' => desde acaecho con tool del ruso no anda muy bien
+     haw=OpenWindow("ESCALAS ",100,50,500,500,WS_VISIBLE, WS_EX_TOPMOST )
+     Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
+' COSA DE MANDINGA LVS_EX_AUTOSIZECOLUMNS ACA NO LA ENCUENTRA PERO EN LAS OTRAS
+' SUBRUTINAS LA ENCUENTRA JAJAJAA ANDA PARA LA MIERDA ESTE FB 
+''Y ESTE NO ES UN MODULO A PARTE ES UN INCLUDE!!!     
+     ' commctrl.bi modificado
+     hwl=  ListViewGadget(1,10,10,400,350,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL )
+     
+     AddListViewColumn(1, "Elegir De 1 a 12 ",0,0,250)
+     AddListViewItem(1, "CLICK EN UN ITEM  Y EN OK",0,aa,0)
+       For aa =1 To 12 
+           If alteracion = "bem" Then
+             AddListViewItem(1, Notasescala2(aa) ,0,aa,0)
+           Else
+             AddListViewItem(1, Notasescala(aa) ,0,aa,0)
+           EndIf
+
+       Next
+       
+
+
+       ButtonGadget(2,430,30,50,40," OK ")
+'       ButtonGadget(3,530,90,50,40,"+Pag")
+         #Ifdef __FB_WIN64__
+           SetFocus (hwl) 
+           SetForegroundWindow(haw)
+          #Else
+           gtk_widget_grab_focus(GadgetID(1))
+         #EndIf
+         Do
+
+         Var eventC= waitEvent
+
+          If eventC=eventgadget Then
+          
+            If eventnumber()=2 Then
+               notaescala = GetItemListView()
+'''               instru=instru + 1
+            ''   If instru > 1 Then
+                  Close_Window(haw)
+                  Exit Do
+           ''    EndIf
+           End If
+
+          EndIf 
+          Sleep 5  
+          
+         Loop
+         
+
+'' fin ruso
+'Return IUP_DEFAULT
+print #1,"Str(notaescala) ", Str(notaescala)
+
+
+End sub
+
+'--------
+Sub armarescala(ByRef cadenaes As String )
+cadenaes=""
+Dim As Integer k3=1,h2,hnro,dif,dif2
+Dim p6 As Byte Ptr
+' si notaescala es distinto de 1 emepzamos la escala desde esa nota
+   p6= escala(tipoescala).pasos
+   
+   hnro=escala(tipoescala).nropasos 
+   Print #1,"notaescala llego a armarescala ",notaescala
+   If notaescala > 1 Then
+     k3=notaescala 
+   EndIf
+    Print #1,"k3 inicial=",k3
+    For h2 = 1 To hnro 
+     If alteracion="bem" then
+     cadenaes = cadenaes + NotasEscalaArmado2(k3) + " "   ' impresion de la escala con las notas c c# d  etc
+     Else
+     cadenaes = cadenaes + NotasEscalaArmado(k3) + " "
+     EndIf
+      k3= *p6 + k3
+     Print #1,"h2, k3",h2, k3
+     p6=p6+1 
+    Next h2
+    
+    
+  Print #1,"Final cadena de escala armada ",cadenaes
+End Sub
 ' error
 errorSub:
   
