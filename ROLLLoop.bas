@@ -760,8 +760,9 @@ EndIf
 '' ---------------  LOOP 2 ---------------
 Do 
 
-
-If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA Then
+'simulamos TAB para cargaCancion=1 cuadno recien se carga la cancion
+If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA Or cargaCancion=1 Then
+   cargaCancion=0 ' para que no entre mas luego de cargada la cancion
    ROLLCARGADO = FALSE
    print #1,"--TAB "
    nota=0
