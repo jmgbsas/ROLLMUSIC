@@ -2685,6 +2685,7 @@ If (ScreenEvent(@e)) Then
 
  If  mouseY > 50 Then '<=== delimitacion de area de trabajo
   s3 = 0 ''06-12-2021
+  
  ' <==== MENU CONTEXTUAL ACORDES CON CTRL+ CLICK DERECHO EN LECTURA ================>
  ' 2 casos 1)en la posicion elegida y aexiste una nota de una melodia o secuencia
  ' 2) no hay nada. En el 1er caso se tomara por omision a la nota como la tónica

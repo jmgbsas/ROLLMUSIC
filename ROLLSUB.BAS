@@ -3106,7 +3106,7 @@ print #1,"inicia CargaPistasEnCancion"
       print #1,"llama a cargar pista 1 con TrackaRoll desde CargaPistaEnCancion"
   ' aca pasa el ntk en curso a Roll y a track 0, Roll y track 0 van cargados 
   ' juntos siempre
-      cargaCancion=1 ' me aseguro la carga a  trak 0..
+      cargaCancion=1 ' me aseguro la carga a  trak 0 TAMBIEN..
       TrackaRoll (Track() ,ntk, Roll)
       print #1,"despues de cargar pista 1 TrackaRoll desde CargaPistaEnCancion"
       nombre=titulos(ntk)

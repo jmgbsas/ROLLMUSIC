@@ -490,11 +490,7 @@
       Al dar click en una pista de la lista y luego otro click sobre el grafico
       se carga la secuencia en Roll de Visualizacion y edcion,o pulasndo TAB se recorera circularmente
       una a una cada Pista.
-    - AL CARGAR UNA CANCION por varias modificaciones, en la ultima version para poder
-       ver los tracks en el grafico hay que pulsar la tecla TAB O DAR CLCIK EN EL TRACK 
-       DESEADO EN LA LISTA DE TRACKS EN EL MENU DE CONTROL. (se corregira en el futuro que muestre
-       por omision el 1er track como lo haci antes o lo dejaremos asi...tambien track en blanco
-       estarai lsito para crear un nuevo track en la cancion muy conveniente).
+    - AL CARGAR UNA CANCION se muestra el TRACK o PISTA 1 . (se corrigió).
     -------------------------0-0-0------------------------------------
 Notas Tecnicas de desarrollo: 
 

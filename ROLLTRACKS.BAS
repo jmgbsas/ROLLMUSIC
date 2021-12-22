@@ -735,17 +735,17 @@ Next i2
 ' el 181 es durante la carga para evitar retrocesos en la carga de notas
 ' y poder entrar acordes
 ' ¿y si tiene datos ? debrai pregunta por MAxpos si es mayor a 2,no hizo falta
-For i2 = 1 To MaxPos 
-  For i1=NB To NA
-   If Roll.trk(i2,i1).nota =0 And Roll.trk(i2,i1).dur <>182  Then
-      Roll.trk(i2,i1).nota=0
-      Roll.trk(i2,i1).dur=0
-   Else
-   ''print #1,i2,Roll.trk(i2,i1).nota,Roll.trk(i2,i1).dur
-    '' Continue For   
-   EndIf
-  Next i1
-Next i2     
+'For i2 = 1 To MaxPos 
+'  For i1=NB To NA
+'   If Roll.trk(i2,i1).nota =0 And Roll.trk(i2,i1).dur <>182  Then
+'      Roll.trk(i2,i1).nota=0
+'      Roll.trk(i2,i1).dur=0
+'   Else
+'   ''print #1,i2,Roll.trk(i2,i1).nota,Roll.trk(i2,i1).dur
+'    '' Continue For   
+'   EndIf
+'  Next i1
+'Next i2     
 ' 2)  pasar lso datos del Track(x) a Track(0)!! si es cancion
 ' el redim esta arriba
 If cargaCancion=1 Then ' solo mientras cargo cancion? no  
