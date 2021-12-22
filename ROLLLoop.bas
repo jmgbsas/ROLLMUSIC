@@ -43,9 +43,6 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
 
  Penta_y = BordeSupRoll + 14 * ( inc_Penta ) *( nro -1)
 '--------------------------
-  If cadenaes="" Then
-     armarescala(cadenaes)
-  EndIf
  t=" ESCALA: "+ UCase(escala(tipoescala).nombre) + " [" +cadenaes +"] I="+Str(tiempoPatron) + " Compas=" +TCompas  
   cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - inc_Penta)
   cairo_show_text(c, t)
@@ -592,6 +589,26 @@ End Select
 'nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
 print #1,"INSTANCIA ", instancia
 
+Print #1,"call roolloop, tipoescala",tipoescala
+Print #1,"call roolloop, notaescala",notaescala    
+
+If ubiroll > 0 Then
+   Print #1,"cargo archivo desde rollLoop
+   nombre = titulos(0)
+   Print #1,"nombre",nombre
+   Print #1,"titulo(0) ",titulos(0)
+    cargaArchivo (Roll,ubiroll)
+   ROLLCARGADO=TRUE
+   MenuNew=0
+   ubiroll=0
+EndIf
+'If ubiroll > 0 Then
+ '   CargaArchivo(Roll,ubiroll)
+ '   ROLLCARGADO=TRUE
+ '   MenuNew=0
+ '   ubiroll=0
+ 'EndIf
+ 
 ' -----------------
 Do
 
@@ -676,6 +693,7 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 ' van de abajo hacia arriba 1 a 9 o 9 a 1 desde arriba a bajo por eo se usa
 ' *po para contener el control de la octava invertida
 '
+
   For i = desde To hasta 
     nro = i 
   ' si ahce falta ejecutar mas de un Penta podremos usar threads
@@ -693,6 +711,7 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
   cairo_stroke(c)
  
   Next
+
 
 
 ''For i = desde To hasta ' nro_penta
@@ -2003,7 +2022,7 @@ If (ScreenEvent(@e)) Then
        If play = 1 Or playb=1 Then ' fuera pero en play
            fueradefoco=0
        Else     ' fuera de y sin play reducimos consumo CPU
-            Sleep 20
+            'Sleep 20
             fueradefoco=1
        EndIf
   Case EVENT_MOUSE_BUTTON_PRESS

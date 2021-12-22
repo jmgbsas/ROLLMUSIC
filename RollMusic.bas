@@ -58,7 +58,7 @@
 #Include Once "windows.bi"
 #Include Once "/win/commctrl.bi"
 #include "crt/stdio.bi"
-#Include "file.bi"
+'#Include "file.bi" ' al final esto no se usa
 
 ' Nota: algun dia si quiero midifile intentar usar una libreria de C pura 
 ' C:\IT64\AREAWORKAUX\MIDI-LIBRARY\midilib-master\midilib-master\freeBasic
@@ -111,7 +111,7 @@ Common Shared  mensaje As Integer
 #LibPath "/usr/lib"
 #EndIf
 #Define EXTCHAR Chr(255)
-#Include "fbgfx.bi"
+#Include "fbgfx.bi" ' se carga antes de windows.bi para evitar duplicates..o conflictos
 #Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
 #If __FB_LANG__ = "fb"
 Using FB '' Scan code constants are stored in the FB namespace in lang FB
@@ -219,7 +219,7 @@ Print #1, "__FB_ARGV__ ",__FB_ARGV__
 Print #1, "__FB_ARGC__ ",__FB_ARGC__
 'Dim direp As ZString  Ptr
 'Dim dires As String
-Dim As integer ubirtk, ubiroll
+Common Shared As integer ubirtk, ubiroll
 Print #1,"__FB_ARGC__ ", __FB_ARGC__
 For ix = 0 To __FB_ARGC__
   print #1, "arg "; ix; " = '"; Command(ix); "'"''
@@ -229,6 +229,7 @@ For ix = 0 To __FB_ARGC__
   'C:\IT\JMGROLL01\[1]AAA.rtk
  ubirtk = InStr (LCase(Command(ix)),".rtk")
  ubiroll=  InStr(LCase(Command(ix)),".roll")
+
  If ubirtk > 0 or ubiroll>0 Then
    ntk=0 
    titulos(0)=Command(ix)
@@ -473,7 +474,7 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 ' el declare falla si se usa con este tipo de vector udt no se puede usar declare
 'stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
-
+Dim Shared nombreport As ZString Ptr
 '========================== 
 #Include "RTMIDISUB.bas"
 #Include "rolltracks.bas"
@@ -493,7 +494,7 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 #Include "ROLLMIDI.BAS"
 
 '----------------
-Dim nombreport As ZString Ptr
+
 midiout = rtmidi_out_create_default()
 'print #1,"PLAYALL---------->>>>>>>"
 portsout =  port_count (midiout)
@@ -526,6 +527,7 @@ Dim As Integer anchoK, altoK
 anchoK = GetSystemMetrics(SM_CXSCREEN)
 'altoK = GetSystemMetrics(SM_CYSCREEN)
 '-------------
+/'
 Dim As Integer g1, h1,h2
 Dim As  byte Ptr p5,p6
 
@@ -556,6 +558,7 @@ Dim hnro As Integer
     'Print #1, NotasEscala(k3)
 
  Next g1
+ '/
  ' ahora debo traducir las notas a notas de Roll e incorporarlas al vector
  ' las notas  en Roll van de 0 a 11 para el indice son los semitonos, pero se cargan 
  ' los valores 1 a 12. En Roll C=12 ...B=1 ergo si la escala dice 12=B debe ser 1
@@ -752,7 +755,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
 
     ''''RollLoop ( param)
     ''abrirRoll=2 ' roll ya abierto
-    Sleep 100 ' sin este retardo no le da teimpo al thread de cargar a Roll
+    Sleep 200 ' sin este retardo no le da teimpo al thread de cargar a Roll
     ' y CargarPistasEnCancion no puede cargar proque no hay Roll
     ' QU EPSA SI LLAMO  VECES??
 ''no se lo banca     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p2))
@@ -1023,7 +1026,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
               thread3= ThreadCall EntrarTeclado()
            Case 1090 
               CPlay=1
-              Dim As Any Ptr thplayC = ThreadCall  playCancion(Track())
+              Dim As Any Ptr thplayC = ThreadCall  playCancion(track())
            Case 1100
                 usarmarcoOld=usarmarco
 '0 - the menu is active, the checkbox is not selected
@@ -1091,6 +1094,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
 ' -------cadena de escala, construye dsde C hay que hacer las otras esclas
     ' C,D,E,F,G,A,B,Bb,Ab,Gb ver las debo pedir escala y 1er nota desde donde empieza uff
               cadenaes=""
+              Print #1,"armarescla desde 1106"
               armarescala(cadenaes)
 
 ' --------------------------   
@@ -1109,6 +1113,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
               MenuNew=0           
               carga=1
               cadenaes=""
+              Print #1,"armarescla desde 1107"
               armarescala(cadenaes)
 
            Case 1108 ' alteraciones sotenidos o bemoles
@@ -1116,6 +1121,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
               SetStateMenu(hmessages,1108,3)  
               SetStateMenu(hmessages,1109,0) 
               cadenaes=""
+              Print #1,"armarescla desde 1108"
               armarescala(cadenaes)
 
 ' --------------------------   
@@ -1124,6 +1130,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
               SetStateMenu(hmessages,1108,0)  
               SetStateMenu(hmessages,1109,3) 
               cadenaes=""
+              Print #1,"armarescla desde 1109"
               armarescala(cadenaes)
             
 
@@ -1216,15 +1223,16 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
      End Select
 
    Loop
-Else
+  Else
   param.titulo ="RollMusic Editor" ' esto no sale si no hay marco
+
 
   threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
 
   ThreadWait threadloop
 
   cerrar(0)  
-End If
+  End If
 
  If terminar=1 Then
      Exit Do 

@@ -36,9 +36,10 @@ Common Shared As Integer cargaCancion, pid1
 Common Shared As cairo_t  Ptr c, c2
 Common Shared surface As Any Ptr
 Common Shared As FT_Face ftface
-common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
+common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu ',thplayC
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto
 Common Shared As Integer mxold,myold, w,h
+Common Shared As integer ubirtk, ubiroll
 'Type esc1 
 '  nombre   As String
 '  nropasos As Integer

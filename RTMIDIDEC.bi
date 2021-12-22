@@ -1,5 +1,5 @@
  
-#Include once  "file.bi"
+''#Include once  "file.bi"
 #include "mod_rtmidi_c.bi"
 #Inclib  "rtmidi.dll" 'usa librerias estaticas 
 #include "fbthread.bi"
@@ -30,10 +30,10 @@ Dim Shared message(1 To 21) As UByte ' message output
 ' si agregamos velocidad distinta para cada nota serian
 ' 20 mas canal = 21 bytes...maximo 
 ' podriamos agregar presion promedio aftertouch etc pero serin mensajes independientes 
-Dim errorString As ZString Ptr
+'Dim errorString As ZString Ptr
 Dim Shared p as UBYTE Ptr = @message(1) 
 Dim size As UInteger<64> 
-Dim sizeptr As UInteger<64> Ptr = @size
+'Dim sizeptr As UInteger<64> Ptr = @size
 Dim Shared As UInteger portsin, portsout 
 Dim Shared As Double tiempoPatron=60 ' cuantas negras en un minuto default
 Dim Shared As Double old_time_on=0,old_time_off=0,old_time_on_int=0,old_time_off_int=0

@@ -1347,8 +1347,9 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
 ' la carga de tracks aislada o la carga de una cancion con sus tracks
 ' ira aumentando ntk 
    '  carga roll 
-     Dim z (1,1 )  As dat
-     Dim zLim (1,1) As dat
+   
+   
+   Print #1,"ubiroll en CA ",ubiroll
      
      Dim As String x,x1,x2,x3,x4,x5,nombrea
      ''' no usar mas  dialogoText("Cargar Archivo")
@@ -1359,9 +1360,10 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
          nombrea=*file.lpstrFile
       Else
          If ubiroll > 0 Then
-            nombrea=titulos(0)
-            ubiroll =0
-         EndIf      
+'           *file.lpstrFile=titulos(0)
+'            fclose(file.lpstrFile)
+            nombrea=Trim(titulos(0))
+          EndIf      
       EndIf
 '  nombrea="DESAFIO-LIGA-ACORDES-EN-1-NOTA.ROLL" ' para debug sino no funciona
 '  nombrea="test-acordes-iguales01.roll"
@@ -1374,16 +1376,36 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
    print #1,"CArgarArchivo ",nombre    
    Dim ca As Integer
    ca=FreeFile   
- print #1,"open nombre en CArgaARchivo ",nombre
-      Open nombre  For Binary Access Read As #ca
-     Get #ca, , z(1,1)
-     x1=Bin(z(1,1).nota,4)
-     x2=Bin(z(1,1).dur,4)
-     x3=Bin(z(1,1).vol,4)
-     x4=Bin(z(1,1).pan,4)
-     x5=Bin(z(1,1).pb,4)
-     tipoescala =CInt( Z(1,1).inst) ' 20-12-2021 - tipoescala en uso
+ print #1,"open nombre en CargaArchivo ",nombre
+      If  ubiroll =0 Then
 
+         Open nombre  For Binary Access Read As #ca
+      Else
+         Sleep 100
+'' NO LEE UN AMIERDA SI ENTRA POR ACA TODO LO QUE TRAE ESTA EN CERO INCREIBLE LA PUTA MADRE!!!
+         Print #1,"lee con control de error.. "
+     If Open (nombre  For Binary Access Read Shared As #ca ) <> 0 Then
+        print #1,"Error open cargaARchivo 1387, nombre ",nombre
+        Exit Sub
+     End If
+         
+     ''    Open "temp.roll"  For Binary Access Read As #ca
+         ubiroll=0
+      EndIf
+     Dim z (1,1)  As dat
+     Dim zLim (1,1) As dat
+
+     'Print #1,"posicion lectura en ca ", Seek(ca)  
+'     Seek ca,1
+     Get #ca, , z(1,1)
+     x1=Bin(z(1,1).nota,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
+     x2=Bin(z(1,1).dur,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
+     x3=Bin(z(1,1).vol,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
+     x4=Bin(z(1,1).pan,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
+     x5=Bin(z(1,1).pb,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
+     tipoescala =CInt( Z(1,1).inst) ' 20-12-2021 - tipoescala en uso
+     Print #1,"tipoescala ",tipoescala ' ' NO LEE UNA MIERDA CON UBIRROLL> 0
+     ' MISTERIO ME PUDRIO...!
      x=x1+x2+x3+x4+x5
      '   print #1,"reconstruccion x pos bin ", x
      MaxPos=CInt("&B"+x)
@@ -1401,16 +1423,24 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      ' crgamos limites Roll de octavas
      Get #ca, , zLim(1,1)
      desde  = CInt(zLim(1,1).nota)
+     Print #1,"desde ",desde
      hasta  = CInt(zLim(1,1).dur)
+     Print #1,"hasta ",hasta
      notaold= CInt(zLim(1,1).pb)
+     Print #1,"notaold ",notaold     
      notaescala =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
+     Print #1,"notaescala ",notaescala     
      if  zLim(1,1).pan = 3 Then
          alteracion="sos"
      EndIf    
      if  zLim(1,1).pan = 2 Then
          alteracion="bem"
      EndIf    
-
+     Print #1,"alteracion ",alteracion
+    cadenaes=""
+    Print #1,"armarescala desde cargarArchivo"
+    armarescala (cadenaes)
+     
      NB= 0 + (desde-1) * 13
      NA= 11 + (hasta -1)*13
      pmTk(0).notaold = notaold  'notaold es ubyte en pmTk
@@ -1428,6 +1458,10 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      ntk=0
      CambiarDim(0) ' ya tiene calculo NB y NA Redim Roll y Track con CantTicks
                    ' y carga de pmTk.NB y NA
+
+
+
+
      pmTk(0).NB=NB  ' aunque es un track debe memorizar de que octavas Rol vino
      pmTk(0).NA=NA
      ReDim compas(1 To CantTicks)
@@ -1512,15 +1546,13 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
     ''' carga=0
      ReCalCompas(Roll)      
     ''If Roll.trk(1,NA).
-    cadenaes=""
-    armarescala (cadenaes)
     
     print #1, "CargaARchivo LBound (Roll.trk,1) ",LBound (Roll.trk,1)
     print #1, "CargaARchivo LBound (Roll.trk,2) ",LBound (Roll.trk,2)
     
     print #1, "CargaARchivo UBound (Roll.trk,1) ",UBound (Roll.trk,1)
     print #1, "CargaARchivo UBound (Roll.trk,2) ",UBound (Roll.trk,2)
-    Sleep 1000
+    Sleep 10
 End Sub
 ' ------------------------------------------
 
@@ -1693,16 +1725,17 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
  'EndIf
 
  'cairo_move_to(c, 0, 30 )
- If ubiroll > 0 Then
-    CargaArchivo(Roll,ubiroll)
-    ROLLCARGADO=TRUE
-    MenuNew=0
-    ubiroll=0
- EndIf
+ 'If ubiroll > 0 Then
+ '   CargaArchivo(Roll,ubiroll)
+ '   ROLLCARGADO=TRUE
+ '   MenuNew=0
+ '   ubiroll=0
+ 'EndIf
  
  If ubirtk > 0 Then ' ya tengo el nommbre en linea de comando
     print #1,"carga track desde linea de comando,  nombre antes   ",titulos(0)
     CargarTrack (Track() , 0, ubirtk ) ' ntk=0
+    CargarTrack (Track() , 0, ubirtk ) ' ntk=0    
     print #1,"carga track veo nombre despues ", titulos(0)
     TrackaRoll (Track() , 0 , Roll) ' ntk=0
     print #1,"TrackaRollcarga rtk veo nombre ", titulos(0)
@@ -2457,6 +2490,7 @@ EndIf
   EndIf
  EndIf
  font=fontOld
+ DeAllocate xo: DeAllocate yo
 End Sub
 '----------------------------------------------------------------------
 ' menuacc estaba
@@ -3739,6 +3773,11 @@ Sub salir()
 
            cairo_destroy(c)
            cairo_surface_destroy( surface )
+           DeAllocate c
+           DeAllocate cm
+           DeAllocate c3
+           DeAllocate c2
+           DeAllocate surface
            FT_Done_Face( ftface )
            If play=1 Or playb=1 Then
               alloff (1)
@@ -3746,6 +3785,16 @@ Sub salir()
            EndIf
            close_port(midiout)
            out_free(midiout)
+           DeAllocate nombreport
+           DeAllocate p
+           DeAllocate p2:DeAllocate tl1:DeAllocate tl2:DeAllocate tl3: DeAllocate tl4
+           DeAllocate tl5: DeAllocate tl6: DeAllocate tl7:DeAllocate tl8:DeAllocate tl9
+           DeAllocate tl10: DeAllocate tl11: DeAllocate tl12
+           DeAllocate thread1: DeAllocate thread2:DeAllocate threadPenta:DeAllocate thread3
+           DeAllocate pubi: DeAllocate threadloop: DeAllocate p1 : DeAllocate threadMenu
+           DeAllocate po
+ ''          DeAllocate thplayC
+           
     Dim ffile As Integer
     ffile=FreeFile
     Open "RollMusic.ini" For output As ffile
@@ -3917,9 +3966,11 @@ End sub
 '--------
 Sub armarescala(ByRef cadenaes As String )
 cadenaes=""
+
 Dim As Integer k3=1,h2,hnro,dif,dif2
 Dim p6 As Byte Ptr
 ' si notaescala es distinto de 1 emepzamos la escala desde esa nota
+   Print #1,"tipo escala que llego a armar escala ",tipoescala
    p6= escala(tipoescala).pasos
    
    hnro=escala(tipoescala).nropasos 
@@ -3941,6 +3992,7 @@ Dim p6 As Byte Ptr
     
     
   Print #1,"Final cadena de escala armada ",cadenaes
+  DeAllocate p6
 End Sub
 ' error
 errorSub:

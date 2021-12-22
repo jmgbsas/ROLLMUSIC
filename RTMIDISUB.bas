@@ -1164,12 +1164,12 @@ mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 fueradefoco=0
  alloff( 1 )
 
-Sleep 100,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
+Sleep 10,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
 /'
 close_port(midiout)
 out_free(midiout)
 '/ 
-
+DeAllocate nombre
 
 
 ThreadDetach(thread1) 'JMG REPONER !!!!
@@ -1663,6 +1663,7 @@ for i = 0 to portsin -1
     nombre = port_name(midiin, i)
     listin(i) =*nombre
 Next
+DeAllocate nombre
 
 End Sub
 Sub TrasponerGrupo( cant As Integer, Roll As inst, encancion As Integer)

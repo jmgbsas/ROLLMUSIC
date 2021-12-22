@@ -727,7 +727,7 @@ Common Shared surface As Any Ptr
 common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto
 Common Shared As Integer mxold,myold, w,h
-
+'Common Shared As Any Ptr thplayC
 pid1=0
 
 cargaCancion=0
@@ -737,9 +737,9 @@ Dim Shared  As pasa param ', param2
     param.titulo = titu
     param.ancho = ANCHO 
     param.alto = ALTO
-    p1=@param
     param.ubiroll=0
     param.ubirtk=0
     param.encancion=0
+    p1=@param
 
 

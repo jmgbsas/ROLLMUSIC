@@ -157,6 +157,7 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
 
      '''''ReCalCompas(Roll) '''No es vEctor de Visualizacion      
     cadenaes=""
+    Print #1,"armarescala desde cargar track"
     armarescala (cadenaes)
 
       print #1,"CargarTrack  fin"  
@@ -1045,12 +1046,12 @@ mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 fueradefoco=0
  alloff( 1 )
 
-Sleep 100,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
+Sleep 10,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
 /'
 close_port(midiout)
 out_free(midiout)
 '/ 
-
+DeAllocate nombre
 ThreadDetach(thread1) 'JMG REPONER !!!!
 End Sub 
 
