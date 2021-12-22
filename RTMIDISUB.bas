@@ -935,7 +935,7 @@ fueradefoco=1
 
 Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
 tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
-Dim nombre As ZString ptr
+
 Dim As Integer i1,i2,i3,i4,i5,j ,comienzoDeLoop=0
 Dim As Integer comienzo=1, final=MaxPos,  canal=0,vel=100,velpos =0
 ' canal 0 es el 1 van de 0 a 15
@@ -1169,7 +1169,7 @@ Sleep 10,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion
 close_port(midiout)
 out_free(midiout)
 '/ 
-DeAllocate nombre
+
 
 
 ThreadDetach(thread1) 'JMG REPONER !!!!
@@ -1663,8 +1663,8 @@ for i = 0 to portsin -1
     nombre = port_name(midiin, i)
     listin(i) =*nombre
 Next
-DeAllocate nombre
-
+DeAllocate nombre '' ojo con Deallocate si es al final ok pero si es una dire de un array cancela
+' aca no se creo se puede dejar.....
 End Sub
 Sub TrasponerGrupo( cant As Integer, Roll As inst, encancion As Integer)
 ' ANDA BIEN, ES EQUIVALENT EEMPEIZA EN EL EXTREMO QUE ATACA BAJANDO LA POSICION

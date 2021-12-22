@@ -804,7 +804,7 @@ Sub PlayCancion(Track() As sec)
 fueradefoco=1
 Dim As Double tiempoDUR
 tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
-Dim nombre As ZString ptr
+
 Dim As Integer i1,i2,pis,K
 Dim As Integer comienzo=1, final=MaxPos,  canal=0,vel=100,velpos =0
 ' canal 0 es el 1 van de 0 a 15
@@ -1051,7 +1051,7 @@ Sleep 10,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion
 close_port(midiout)
 out_free(midiout)
 '/ 
-DeAllocate nombre
+
 ThreadDetach(thread1) 'JMG REPONER !!!!
 End Sub 
 

@@ -138,9 +138,11 @@ Dim As GLFWwindow ptr  win
 
 Dim Shared As Integer pd1, fa1 
 pd1 = GetCurrentProcessId()  
-Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As #1
-print #1,"start"
-Print #1,"PID DE ESTE PROCESO ",pd1
+'Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As #1
+Open "midebug.txt" For Output As #1
+
+' - print #1,"start"
+' - print #1,"PID DE ESTE PROCESO ",pd1
 fa1=FreeFile
 Open "procesos.txt" For Append As #fa1
 Print #fa1, pd1
@@ -149,13 +151,13 @@ Close fa1
 'Open "mivector.txt" For Output As #3
 'Open "miplayall.txt" For Output As #4
 'Open "test-AAAAA.TXT" For Output As #5
-'print #1, "version para ceros!!!!!! "
+'' - print #1, "version para ceros!!!!!! "
 'Dim fcon As Integer 
 'fcon=freefile
 'Open cons  for Output As #8
 
 ''Open "figuras.txt" For Output As #1
-Print #1,Date;Time
+' - print #1,Date;Time
 ' secuenciador de 9 octavas estereo, modo Piano Roll,hace uso de
 'letras para las duraciones en vez de rectangulos...
 ' edicion modificacion insercion,,,12 eventos c/u con
@@ -215,14 +217,14 @@ tempo=160  ' negra=160
 CantMin=15
 'NotaBaja=1 : NotaAlta=128
 
-Print #1, "__FB_ARGV__ ",__FB_ARGV__
-Print #1, "__FB_ARGC__ ",__FB_ARGC__
+' - print #1, "__FB_ARGV__ ",__FB_ARGV__
+' - print #1, "__FB_ARGC__ ",__FB_ARGC__
 'Dim direp As ZString  Ptr
 'Dim dires As String
 Common Shared As integer ubirtk, ubiroll
-Print #1,"__FB_ARGC__ ", __FB_ARGC__
+' - print #1,"__FB_ARGC__ ", __FB_ARGC__
 For ix = 0 To __FB_ARGC__
-  print #1, "arg "; ix; " = '"; Command(ix); "'"''
+  ' - print #1, "arg "; ix; " = '"; Command(ix); "'"''
 
  If ix=1 Then
   
@@ -238,8 +240,8 @@ For ix = 0 To __FB_ARGC__
 '    pmTk(ntk).desde=desde
    Instancia=1    
  EndIf
- print #1,"ubirtk ",ubirtk
- print #1,"ubiroll ",ubiroll
+ ' - print #1,"ubirtk ",ubirtk
+ ' - print #1,"ubiroll ",ubiroll
     'sigue en roolloop principio
  EndIf
  If ix=2 Then
@@ -262,7 +264,7 @@ Next ix
 
 
 If desde = 0 And hasta = 0 Then
- print #1,"intervalo no dado usando default!"
+ ' - print #1,"intervalo no dado usando default!"
  desde => 4  ' 1 3   4 a 8 decia
  hasta => 8  ' 9 7 hasta-1
  'pmTk(ntk).desde=desde
@@ -288,17 +290,17 @@ NA => 11 + (hasta-1) * 13  ' 102
 
 ReDim (Roll.trk ) (1 To CantTicks,NB To NA) ' Roll de trabajo en Pantalla
 
-Print #1,"instru ",instru
+' - print #1,"instru ",instru
 ' ojo debe se NB al reducir octabas NB cambia
 If instru > 0 Then
   Roll.trk(1,NA).inst = CUByte(instru)
 EndIf
-Print #1,"Roll.trk(1,NA).inst ",Roll.trk(1,NA).inst
-Print #1,"NB ",NB
-Print #1,"NA ",NA
+' - print #1,"Roll.trk(1,NA).inst ",Roll.trk(1,NA).inst
+' - print #1,"NB ",NB
+' - print #1,"NA ",NA
 
-Print #1,"desde ",desde
-Print #1,"hasta ",hasta
+' - print #1,"desde ",desde
+' - print #1,"hasta ",hasta
 
 param.Roll=Roll
 param.ubiroll=ubiroll
@@ -372,13 +374,13 @@ CantCompas = 40 * CantMin
 /'
 Dim l As Integer
 For l = 1 To 65
-print #1, l;" ";figura(l)
+' - print #1, l;" ";figura(l)
 Next l
 Close
 End
 '/
 ''https://www.freebasic.net/forum/viewtopic.php?t=15127
-'print #1,"NroCol, ancho, anchofig ",NroCol, ANCHO, anchofig
+'' - print #1,"NroCol, ancho, anchofig ",NroCol, ANCHO, anchofig
 Dim As String driver
 
 posmouseOld = 0:posmouse = 0
@@ -406,7 +408,7 @@ gap1= anchofig* 2315/1000 ' 81 default
 gap2= (914 * gap1) /1000 ' 74 default
 gap3= (519 * gap1) /1000 ' 42 default
 
-'print #1,"gap1 ",gap1
+'' - print #1,"gap1 ",gap1
 '---------
 Dim ffini As Integer 
 Dim As String sfont,smxold,smyold,sancho,salto
@@ -418,7 +420,7 @@ Line Input #ffini, smxold
 Line Input #ffini, smyold
 Line Input #ffini, sancho
 Line Input #ffini, salto
-Print #1,"sfont, smxold, smyold,sANCHO,sALTO  ",sfont, smxold, smyold,sancho,salto
+' - print #1,"sfont, smxold, smyold,sANCHO,sALTO  ",sfont, smxold, smyold,sancho,salto
 
 Close ffini
 
@@ -464,7 +466,7 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 'https://docs.microsoft.com/en-us/windows/win32/multimedia/midi-functions
 'DIM CAN As UINT
 'CAN= midiOutGetNumDevs()
-'print #1, "MIDI NUM DEVS ";CAN
+'' - print #1, "MIDI NUM DEVS ";CAN
  
 '-----
 ' ancho de figura,separaciondelasmismas en pantalla anchofig
@@ -496,14 +498,14 @@ Dim Shared nombreport As ZString Ptr
 '----------------
 
 midiout = rtmidi_out_create_default()
-'print #1,"PLAYALL---------->>>>>>>"
+'' - print #1,"PLAYALL---------->>>>>>>"
 portsout =  port_count (midiout)
 Dim i1 As integer
-'Print #1, "portsin  "; portsin
-Print #1, "portsout "; portsout
+'' - print #1, "portsin  "; portsin
+' - print #1, "portsout "; portsout
 For i1 = 0 to portsout -1 
     nombreport = port_name(midiout, i1)
-    print #1, *nombreport
+    ' - print #1, *nombreport
 Next i1  
 
 portsout = portout
@@ -511,13 +513,13 @@ portsout = portout
 
 open_port (midiout,portsout, nombreport)
 
-'print #1,"  "
+'' - print #1,"  "
 If Roll.trk(1,NA).inst > 0 Then
  ChangeProgram ( Roll.trk(1,NA).inst , 0)
 EndIf
- print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
-Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
-Print #1,"INSTANCIA ",instancia
+ ' - print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
+' - print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
+' - print #1,"INSTANCIA ",instancia
 ' carga de opciones iniciales RollMusic.ini
 
 ''https://www.freebasic.net/forum/viewtopic.php?f=3&t=22821&p=204270&hilit=loop+through+an+array+with+the+pointer#p204270
@@ -534,28 +536,28 @@ Dim As  byte Ptr p5,p6
 Dim hnro As Integer
 ' prueba desarrolllo escalas 
  For g1 =1 To 47
-    Print #1, escala(g1).nombre
+    ' - print #1, escala(g1).nombre
     hnro=escala(g1).nropasos 
     p5= escala(g1).pasos 
     For h1 = 1 To hnro -1
      
-     Print #1, *p5;",";  ' impresion de intervalos de la escala
+     ' - print #1, *p5;",";  ' impresion de intervalos de la escala
      p5=p5+1 
     Next h1
-    Print #1, *p5
+    ' - print #1, *p5
 ' CONSTRUCCION DE LA ESCALA
  Dim As Integer k3=1
    p6= escala(g1).pasos
     For h2 = 1 To hnro -1
      
-     'Print #1,NotasEscala(k3);" " ;  ' impresion de la escala con las notas c c# d  etc
-     Print #1, 12-k3+1;" ";
+     '' - print #1,NotasEscala(k3);" " ;  ' impresion de la escala con las notas c c# d  etc
+     ' - print #1, 12-k3+1;" ";
      k3= *p6 + k3
      
      p6=p6+1 
     Next h2
-    Print #1, 12-k3+1 
-    'Print #1, NotasEscala(k3)
+    ' - print #1, 12-k3+1 
+    '' - print #1, NotasEscala(k3)
 
  Next g1
  '/
@@ -704,7 +706,7 @@ End Sub
 ' Dim Shared As Integer ok = 0
 Dim  As Integer Terminar=0
 
-Print #1,"ANTES ANCHO , ALTO ", ANCHO, ALTO
+' - print #1,"ANTES ANCHO , ALTO ", ANCHO, ALTO
 If mxold > 0 Then
 
 'MoveWindow( hWnd , 1, 1 , ANCHO - mxold, ALTO - myold, TRUE )
@@ -731,10 +733,10 @@ EndIf
 stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
 
-Print #1,"nfont, nmxold, nmyold, nancho,nalto  ",nfont, nmxold, nmyold,nancho,nalto
+' - print #1,"nfont, nmxold, nmyold, nancho,nalto  ",nfont, nmxold, nmyold,nancho,nalto
     param.ancho = ANCHO 
     param.alto = ALTO
-Print #1,"DESPUES ANCHO , ALTO ", ANCHO, ALTO
+' - print #1,"DESPUES ANCHO , ALTO ", ANCHO, ALTO
 '''mxold=0:myold=0
 
 abrirRoll=0
@@ -742,9 +744,9 @@ abrirRoll=0
 
 Do
 param.titulo ="RollMusic Ver 0.4.4.0"
-Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
-Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
-Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
+' - print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
+' - print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
+' - print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
 
 
   If abrirRoll=1  Then
@@ -809,17 +811,17 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                 cargaCancion=1
                 Exit Do                 
              EndIf
-             print #1,"termino 1006 va a abrir Roll"
+             ' - print #1,"termino 1006 va a abrir Roll"
 
            Case 1010
-           print #1,"entro a 1010 Cargar Pista externa a cancion"
+           ' - print #1,"entro a 1010 Cargar Pista externa a cancion"
            ROLLCARGADO=FALSE 
             Dim As String nombreg
             
             getfiles(file,myfilter,"save")
             nombreg=*file.lpstrFile
             If nombreg = "" Then
-               print #1,"exit select por nombreg vacio "
+               ' - print #1,"exit select por nombreg vacio "
                Exit Select 
             Else
                nombre=nombreg   
@@ -831,9 +833,9 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
           carga=1
             
            Case 1011 ' Grabar una Pista de la Cancion con modificaciones, que son tracks
-            print #1,"entro a 1011 esto lo hace menu de Roll tambien" '' jmg probar es nuevo...
+            ' - print #1,"entro a 1011 esto lo hace menu de Roll tambien" '' jmg probar es nuevo...
  ' copiamos logica Rolla Track 
-            print #1, "Click Grabando a disco pista modif con RollaTrack ",nombre
+            ' - print #1, "Click Grabando a disco pista modif con RollaTrack ",nombre
             Dim As String nombreg
             ROLLCARGADO=FALSE 
            If NombreCancion > ""  Then
@@ -843,14 +845,14 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
           carga=1
 
            Case 1012 ' Grabar Pista Como, Copia una pista a otra  nueva nueva
-           print #1,"entro a 1012 Grabar Pista Como, Copia una pista a otra  nueva nueva"
+           ' - print #1,"entro a 1012 Grabar Pista Como, Copia una pista a otra  nueva nueva"
            ROLLCARGADO=FALSE 
             Dim As String nombreg
             If nombre = "" Then
                getfiles(file,myfilter,"save")
                nombreg=*file.lpstrFile
                If nombreg = "" Then
-                  print #1,"exit select por nombreg vacio "
+                  ' - print #1,"exit select por nombreg vacio "
                   Exit Select 
                Else
                   nombre=nombreg   
@@ -894,7 +896,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                Roll.trk(1,NA).inst= CUByte(instru)
                Track(ntk).trk(1,1).inst=CUByte(instru)
               ' grabar la pistacomo en 1011
-            print #1, "Click Grabando inst a disco pista con RollaTrack ",nombre
+            ' - print #1, "Click Grabando inst a disco pista con RollaTrack ",nombre
             Dim As String nombreg
               ROLLCARGADO=FALSE 
               If NombreCancion > ""  Then
@@ -910,7 +912,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                Roll.trk(1,NA).inst= CUByte(instru)
                Track(ntk).trk(1,1).inst=CUByte(instru)
               ' grabar el track 
-            print #1, "Click Grabando inst a disco pista con RollaTrack ",nombre
+            ' - print #1, "Click Grabando inst a disco pista con RollaTrack ",nombre
             Dim As String nombreg
               ROLLCARGADO=FALSE 
               If NombreCancion > ""  Then
@@ -946,23 +948,23 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                   Exit Do
                EndIf
            Case 1061
-               print #1,"En 1061 crear pista en cancion con lo elegido"
+               ' - print #1,"En 1061 crear pista en cancion con lo elegido"
                
                ntk = CountItemListBox(3)+ 1
                If ntk > 32 Then
-                  print #1,"exit select ntk> 32"
+                  ' - print #1,"exit select ntk> 32"
                   Exit Select
                EndIf 
-               print #1,"ntk creado pista nro ", ntk
+               ' - print #1,"ntk creado pista nro ", ntk
                If instru=0 Then 
                   instru=1
                EndIf
-               print #1,"instru en 1061 ",instru
+               ' - print #1,"instru en 1061 ",instru
                NombrePista=RTrim(Mid(NombreInst(instru), 1,21))
-               print #1,"pathdir",pathdir
+               ' - print #1,"pathdir",pathdir
                If pathdir="" Then
                   SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + "Debe Crear un directorio de Cancion Con el Nombre de Cancion Elegido")
-                  print #1,"exit select donde miercoles se va? duplica ventana"
+                  ' - print #1,"exit select donde miercoles se va? duplica ventana"
                   Exit Select 
                Else
                   EntrarNombrePista(NombrePista)
@@ -973,13 +975,13 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                 NombrePista = "["+doscifras(ntk)+"]" + NombrePista 
                 
                'EndIf
-               print #1, "NombrePista en 1061",NombrePista
+               ' - print #1, "NombrePista en 1061",NombrePista
               AddListBoxItem(3, NombrePista)
               
               ' crear pista en disco 
                'MaxPos=2
                nombre= NombreCancion+"\"+NombrePista+".rtk"
-               print #1,"nombre en 1061",nombre
+               ' - print #1,"nombre en 1061",nombre
                ''' para cuando las pistas esten juntas en un archivo ->ZGrabarTrack(ntk)
                ReDim (Roll.trk ) (1 To CantTicks,NB To NA)
                titulos(ntk)=nombre
@@ -1027,7 +1029,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
               If Cplay = 0 And MaxPos > 1 Then
                  CPlay=1
                  If CANCIONCARGADA Then
-                    Print #1,"USANDO PLAYCANCION"
+                    ' - print #1,"USANDO PLAYCANCION"
                     thread1 = ThreadCall  playCancion(Track())
                  EndIf
                  Cplay=0
@@ -1089,25 +1091,25 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
 ' PERO DEBO INDICAR AL PROGRAM QUE SALTEE ESTA COLUMNA CREO CON TENER NOTA=181 Y DUR181
 ' PODRI AINDICAR ESO DEBO PROBARLO Y USAR LSO DEMAS CAMPOS PARA INTRODUCIR ALGUN  CAMBIO               
 '''            Roll.trk(1,NA).vol= CUByte(tipoescala + 127) ' a partir de 128
-''               Print #1,"Roll.trk(1,NA).vol ",Roll.trk(1,NA).vol
+''               ' - print #1,"Roll.trk(1,NA).vol ",Roll.trk(1,NA).vol
 ''               END
 ''               Track(ntk).trk(1,1).vol=CUByte(tipoescala + 127)
               ' grabar el track 
-            Print #1,"tipo de escala seleccionado ", tipoescala
+            ' - print #1,"tipo de escala seleccionado ", tipoescala
               
 ' -------cadena de escala, construye dsde C hay que hacer las otras esclas
     ' C,D,E,F,G,A,B,Bb,Ab,Gb ver las debo pedir escala y 1er nota desde donde empieza uff
       '        cadenaes=""
-              Print #1,"armarescla desde 1106"
+              ' - print #1,"armarescla desde 1106"
               armarescala(cadenaes)
               
 ' --------------------------   
            Case 1107 ' usamos sostenidos o bemoles ???
               selNotaEscala (notaescala) 
-               print #1, "seleccion de Nota de la escala  ",notaescala
+               ' - print #1, "seleccion de Nota de la escala  ",notaescala
 
       '        cadenaes=""
-              Print #1,"armarescla desde 1107"
+              ' - print #1,"armarescla desde 1107"
               armarescala(cadenaes)
 
            Case 1108 ' alteraciones sotenidos o bemoles
@@ -1117,7 +1119,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
             ' si hay nombre de archivo grabar sino no   
       ''        GrabarArchivo()
       '        cadenaes=""
-              Print #1,"armarescla desde 1108"
+              ' - print #1,"armarescla desde 1108"
               armarescala(cadenaes)
 
 ' --------------------------   
@@ -1126,7 +1128,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
               SetStateMenu(hmessages,1108,0)  
               SetStateMenu(hmessages,1109,3) 
               cadenaes=""
-              Print #1,"armarescla desde 1109"
+              ' - print #1,"armarescla desde 1109"
               armarescala(cadenaes)
             
 
@@ -1142,7 +1144,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
  ' pero ahroa solo deberia hacer switch no cargar de disco sino
  ' directamente cargar Roll desde el numero de track correspondiente
  ' en memoria       
-             print #1,"CLICK EN LISTA"
+             ' - print #1,"CLICK EN LISTA"
              ROLLCARGADO=FALSE
              Dim item As String
              Dim As Integer ubi1,ubi2
@@ -1157,7 +1159,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
              item=Trim(item)
              If item > "" Then
                 nombre= NombreCancion + "\"+item +".rtk"
-                print #1," NUEVO eventgadget click en lista nombre", nombre
+                ' - print #1," NUEVO eventgadget click en lista nombre", nombre
               ubirtk=3 ' ahora indice carga desde lista o memoria
              ' No mas de disco  cargarTrack (Track(), ntk) ' este ntk se resuelve dentro de la sub
              ' donde se lo saca del nombre por lotanto devuelve el numero de ntk
@@ -1170,14 +1172,14 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
 ' debo obtener el indice primero                
 '' esta andando con defectos verlos borrado en la lista LBS_WANTKEYBOARDINPUT  
                 If WM_VKEYTOITEM Then '
-                  print #1,"---------->>> APRETO TEcla ",NTK,NombreCancion
+                  ' - print #1,"---------->>> APRETO TEcla ",NTK,NombreCancion
                  If EventKEY = VK_DELETE Then 
-                 print #1,"---------->>> APRETO DELETE ",NTK,NombreCancion
+                 ' - print #1,"---------->>> APRETO DELETE ",NTK,NombreCancion
                   If NombreCancion > "" And ntk > 0  Then
                      borrar=2
                      DeleteListBoxItem(3,GetItemListBox(3))
-                    print #1,"LISTABOX EventKeyDown borrar ntk",ntk
-                    print #1,"LISTBOX  titulos(ntk)= ",titulos(ntk)
+                    ' - print #1,"LISTABOX EventKeyDown borrar ntk",ntk
+                    ' - print #1,"LISTBOX  titulos(ntk)= ",titulos(ntk)
                     copiarATemp (titulos(ntk),pistas(ntk))
                     BorrarPista (titulos(ntk))
                     titulos(ntk)=""
@@ -1200,15 +1202,15 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
            ' aca no debe leer a disco solo conmutar de track en track
                 TrackaRoll (Track(), ntk , Roll ) ' no usa ubirtk
                 Sleep 100
-                print #1,">>> ntk cargado, nombre ",ntk, nombre
-                print #1,"llama a RecalCompas para ntk ",ntk
+                ' - print #1,">>> ntk cargado, nombre ",ntk, nombre
+                ' - print #1,"llama a RecalCompas para ntk ",ntk
                 ReCalCompas(Roll)
                 Sleep 20 
                 ''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
-                print #1,"Fin RecalCompas para ntk ",ntk
+                ' - print #1,"Fin RecalCompas para ntk ",ntk
                 item=""
                 EndIf  
-                print #1," CLICK EN LISTA FIN "
+                ' - print #1," CLICK EN LISTA FIN "
              EndIf 
        EndIf
 
@@ -1281,8 +1283,8 @@ ProgError(17) = "end of file"
 Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
 Print #1,"Error Function: "; *Erfn()
 'Dim ers As Integer = 12 - nota +(estoyEnOctava ) * 13 
-Print #1, "12 -nota +(estoyEnOctava ) * 13) "; ers
-Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
+ print #1, "12 -nota +(estoyEnOctava ) * 13) "; ers
+ print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
 
  
 

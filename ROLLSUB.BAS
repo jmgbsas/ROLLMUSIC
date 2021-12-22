@@ -3794,7 +3794,7 @@ Sub salir()
            DeAllocate thread1: DeAllocate thread2:DeAllocate threadPenta:DeAllocate thread3
            DeAllocate pubi: DeAllocate threadloop: DeAllocate p1 : DeAllocate threadMenu
            DeAllocate po
- ''          DeAllocate thplayC
+ 
            
     Dim ffile As Integer
     ffile=FreeFile
@@ -3993,7 +3993,7 @@ Dim p6 As Byte Ptr
     
     
   Print #1,"Final cadena de escala armada ",cadenaes
- ' DeAllocate p6
+ 
   
 End Sub
 ' error
