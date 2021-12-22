@@ -3993,7 +3993,8 @@ Dim p6 As Byte Ptr
     
     
   Print #1,"Final cadena de escala armada ",cadenaes
-  DeAllocate p6
+ ' DeAllocate p6
+  
 End Sub
 ' error
 errorSub:

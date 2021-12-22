@@ -757,6 +757,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
       pid1=pd1
    EndIf
     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+    ''' RollLoop(param)
     ''Sleep 200 ' NO HACE FALTA AHORA sin este retardo no le da teimpo al thread de cargar a Roll
   Else
     CANCIONCARGADA=FALSE
@@ -1087,47 +1088,35 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
 ' CUADNO QUEIRO UN CAMBIO PUEDO DEJAR UN ACOLUMNA VACIA Y PONER TODO ESTA INFO
 ' PERO DEBO INDICAR AL PROGRAM QUE SALTEE ESTA COLUMNA CREO CON TENER NOTA=181 Y DUR181
 ' PODRI AINDICAR ESO DEBO PROBARLO Y USAR LSO DEMAS CAMPOS PARA INTRODUCIR ALGUN  CAMBIO               
-               Roll.trk(1,NA).vol= CUByte(tipoescala) + 127 ' a partir de 128
-               Track(ntk).trk(1,1).vol=CUByte(tipoescala) + 127
+'''            Roll.trk(1,NA).vol= CUByte(tipoescala + 127) ' a partir de 128
+''               Print #1,"Roll.trk(1,NA).vol ",Roll.trk(1,NA).vol
+''               END
+''               Track(ntk).trk(1,1).vol=CUByte(tipoescala + 127)
               ' grabar el track 
-            print #1, "Click Grabando escala a disco pista con RollaTrack ",nombre
-            Dim As String nombreg
-              ROLLCARGADO=FALSE 
-              If NombreCancion > ""  Then
-                GrabarRollaTrack(0)
-              EndIf
-              MenuNew=0           
-              carga=1
+            Print #1,"tipo de escala seleccionado ", tipoescala
+              
 ' -------cadena de escala, construye dsde C hay que hacer las otras esclas
     ' C,D,E,F,G,A,B,Bb,Ab,Gb ver las debo pedir escala y 1er nota desde donde empieza uff
-              cadenaes=""
+      '        cadenaes=""
               Print #1,"armarescla desde 1106"
               armarescala(cadenaes)
-
+              
 ' --------------------------   
            Case 1107 ' usamos sostenidos o bemoles ???
-               selNotaEscala (notaescala) 
- ' GRABADO EN grabaLim(1,1).vol  = CUByte(notaescala) ' notadeescala 20-12-2021
-             '  Roll.trk(1,NA).vol= CUByte(notaescala) + 127 ' a partir de 128
-             '  Track(ntk).trk(1,1).vol=CUByte(notaescala) + 127
-              ' grabar el track 
-            print #1, "seleccion de Nota de la escala  ",notaescala
-            Dim As String nombreg
-              ROLLCARGADO=FALSE 
-              If NombreCancion > ""  Then
-                GrabarRollaTrack(0)
-              EndIf
-              MenuNew=0           
-              carga=1
-              cadenaes=""
+              selNotaEscala (notaescala) 
+               print #1, "seleccion de Nota de la escala  ",notaescala
+
+      '        cadenaes=""
               Print #1,"armarescla desde 1107"
               armarescala(cadenaes)
 
            Case 1108 ' alteraciones sotenidos o bemoles
               alteracion="sos" ' grabado en grabaLim(1,1).pan  = CUByte(3)
               SetStateMenu(hmessages,1108,3)  
-              SetStateMenu(hmessages,1109,0) 
-              cadenaes=""
+              SetStateMenu(hmessages,1109,0)
+            ' si hay nombre de archivo grabar sino no   
+      ''        GrabarArchivo()
+      '        cadenaes=""
               Print #1,"armarescla desde 1108"
               armarescala(cadenaes)
 
