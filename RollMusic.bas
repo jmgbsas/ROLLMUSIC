@@ -745,7 +745,19 @@ param.titulo ="RollMusic Ver 0.4.4.0"
 Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
 Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
-  If abrirRoll=1 Then
+  If cargaCancion=1 Then
+     CANCIONCARGADA=FALSE
+     CargarPistasEnCancion ()
+     CANCIONCARGADA=TRUE
+     cargaCancion=0
+     param.encancion=1
+  Else
+    CANCIONCARGADA=FALSE
+    cargaCancion=0  
+    param.encancion=0 
+  EndIf
+
+  If abrirRoll=1  Then
    If pid1=0 And ix < 3 Then
       pid1=pd1
    EndIf
@@ -760,17 +772,8 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
     ' QU EPSA SI LLAMO  VECES??
 ''no se lo banca     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p2))
   EndIf
-  If cargaCancion=1 Then
-     CANCIONCARGADA=FALSE
-     CargarPistasEnCancion ()
-     CANCIONCARGADA=TRUE
-     cargaCancion=0
-     param.encancion=1
-  Else
-    CANCIONCARGADA=FALSE
-    cargaCancion=0  
-    param.encancion=0 
-  EndIf
+
+
      
   If ix < 3 Then 
 
@@ -1025,8 +1028,20 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
               menuOldStr="[TEMPO]"
               thread3= ThreadCall EntrarTeclado()
            Case 1090 
-              CPlay=1
-              Dim As Any Ptr thplayC = ThreadCall  playCancion(track())
+          
+          '    Dim As Any Ptr thplayC = ThreadCall  playCancion(track())
+          '    CONTROL1 = 1
+              If Cplay = 0 And MaxPos > 1 Then
+                 CPlay=1
+                 If CANCIONCARGADA Then
+                    Print #1,"USANDO PLAYCANCION"
+                    thread1 = ThreadCall  playCancion(Track())
+                 EndIf
+                 Cplay=0
+             EndIf   
+      
+              menunew=0
+
            Case 1100
                 usarmarcoOld=usarmarco
 '0 - the menu is active, the checkbox is not selected

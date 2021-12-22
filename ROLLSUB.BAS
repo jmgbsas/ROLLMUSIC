@@ -1838,13 +1838,13 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
-   If CPlay=1 Then
-      If  MaxPos > 1 Then
-         thread1 = ThreadCall  playAll(Roll)
-         ''playAll(Roll)
-      EndIf 
-      CPlay=0
-   EndIf
+  ' If CPlay=1 Then
+  '    If  MaxPos > 1 Then
+  '       thread1 = ThreadCall  playAll(Roll)
+  '       ''playAll(Roll)
+  '    EndIf 
+  '    CPlay=0
+   'EndIf
    t=  " [Reproducir]":cairo_show_text(c, t)
    ' --------------------------
  '0.7  ===> [Opciones]  '25-07-2021
@@ -3106,6 +3106,7 @@ print #1,"inicia CargaPistasEnCancion"
       print #1,"llama a cargar pista 1 con TrackaRoll desde CargaPistaEnCancion"
   ' aca pasa el ntk en curso a Roll y a track 0, Roll y track 0 van cargados 
   ' juntos siempre
+      cargaCancion=1 ' me aseguro la carga a  trak 0..
       TrackaRoll (Track() ,ntk, Roll)
       print #1,"despues de cargar pista 1 TrackaRoll desde CargaPistaEnCancion"
       nombre=titulos(ntk)

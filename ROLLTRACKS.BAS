@@ -724,7 +724,7 @@ For i2 = 1 To MaxPos
          Roll.trk(i2,i3).pb   = Track(ntk).trk(i2,i1).pb
          Roll.trk(i2,i3).inst = Track(ntk).trk(i2,i1).inst
                 
-     '    print #1,"Roll.trk(i2,i3).dur ",Roll.trk(i2,i3).dur
+         print #1,"VEO CARGA DE ROLL Roll.trk(i2,i3).dur ",Roll.trk(i2,i3).dur
       Else
  ''        print #1,"nada nota,dur ",Roll.trk(i2,i3).nota,Roll.trk(i2,i3).dur
                 

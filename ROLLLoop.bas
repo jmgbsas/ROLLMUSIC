@@ -1229,7 +1229,9 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
          print #1,"USANDO PLAYCANCION"
             thread1 = ThreadCall  playCancion(Track())
          Else
+         CONTROL1 = 0
             thread1 = ThreadCall  playAll(Roll)
+         CONTROL1 = 1   
        print #1,"USANDO PLAYALL"
             '' playAll(Roll)
          EndIf
@@ -2467,7 +2469,7 @@ If (ScreenEvent(@e)) Then
 ' EL CAMBIO DE FONT PARA CONTROL-M JODE SACAMOS TAMBIEN
  ' --------------
  ' 24-06-2021 espaciado de lineas (2)
- If MultiKey(SC_CONTROL) And lockip=1 Then
+ If MultiKey(SC_CONTROL) And lockip=1 And cargacancion=0 Then
     If incWheel < 0 Then
        deltaipf=deltaipf + 1
     EndIf
@@ -3484,7 +3486,7 @@ EndIf
  
  EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 ' ------------------------------------------------------------------
-If MouseButtons And 1  Then
+If MouseButtons And 1  And cargacancion=0 Then
    old_btn_press_time = new_btn_press_time
    new_btn_press_time = Timer
    If ((new_btn_press_time - old_btn_press_time) < dbl_click_time) Then
@@ -3496,7 +3498,7 @@ EndIf
 
 '                     <===  FIN    O P I L F E W H
 
- If mouseY > 50 And MouseButtons  And 1 Then
+ If mouseY > 50 And MouseButtons  And 1 And cargacancion=0 Then
   s5=2        'se resetea en EVENT_MOUSE_BUTTON_RELEASE ' obtengoPosicion
   '' ES ACA PROHIBIDO PONER EXIT DO ! NO FUNCION DETECTOR DE OCTAVAS
   '' DEBE SEGUIR EJECUTNDO HACIA ABAJO Y CALCULARINDICE VAMOS A MOVER

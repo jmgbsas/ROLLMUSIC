@@ -449,26 +449,31 @@
            - ligadura unica entre 3 notas seguidas.
            - ligadura de 2 acordes en todas las notas o alguna/s sean estos
              con todas sus duraciones iguales o diferentes.
-         para dar play se puede usar la barra espaciadora o Ctrl click en [Reproducir], 
-         para detener el play pulsar P (solo funciona si se usó el play con Ctrl Click 
-         que será la version definitiva, en debug se usa play con la barra espaciadora con la
-         cual no funciona la telca P ni tampoco la iluminaicon de notas al ejecutar.
-         Con Ctrl Click en Reproducir tambien se puede hacer otras actividades en el programa
-         ya que el play se ejecuta en un proceos independiente. en el futuro se podra
-         modificar volumen. Paneo instrumentos etc...para probar la ejecucion.
-         el metodo de play y el vector que tenga los datos se cambiará, por ahora solo es de prueba. 
-         y se usa el mismo vector de visualizacion para el play, para hacer los tracks no se usará 
-         el vector de visualiacion 
-         se hará nuevos que solo sea un secuencia sin datos paralelos...los paralelos solo se usarán en la visualizacion.
-         Nota:Si el borde izquierdo de la pantalla no se situa al comienzo de la secuecnia,
+          PLAY EN EL EDITOR
+            Para dar play se puede usar la barra espaciadora o Ctrl click en [Reproducir], 
+         para detener el play pulsar P.  En el 1er caso la barra espaciadora ejecuta la 
+         cancion que este cargada o sea toca todos los tracks cargados sino hay cancion cargada
+         ejecutara el track cargado.
+           El ctrl-click en [Reproducir] siemrpe tocara el track cargado en el grafico no tocara la cancion
+         si esta cargada, o sea toca tracks individuales.
+           El play es un proceso independiente, por eso se puede dar scroll vertivcal por ejemplo
+         o pasar de un track a otro con el TAB mientras se ejecuta la cancion,
+            Se puede  modificar el volumen o el TEMPO durante la ejecucion 
+         Nota:Si en el borde izquierdo de la pantalla no se situa el comienzo de la secuencia,
          la ejecucion comenzara desde esa pocicion hasta el final, el borde izquierdo seria
          el comienzo por defecto. Si quiero una zona de play se usa la zona de copiar o mover
          y luego el play ejecutara una sola vez.
          
-        LOOP infinito: usa las mismas marcas echas para la Zona en trasponer o se Ctrl Click en dos posiciones,
-            no se usa el 3er click, luego para que haga loop infinito pulsamos ALT-L
+        LOOP infinito: usa las mismas marcas echas para la Zona en trasponer o se Ctrl Click en dos 
+        posiciones,  no se usa el 3er click, luego para que haga loop infinito pulsamos ALT-L
             Para detener la ejecucion como antes pulsar P.(parar)
- 
+        PLAY EN EL MENU DE CONTROL
+        Tenemos solo una opcion por ahora y es dar play de la cancion en las mismas condiciones 
+        de antes, o sea ejecutara desde la posicion que se vea en 1er lugar en el borde izquierdo.
+         Tamien toma la zona de play y el Loop como antes,
+         Cuando damos play de cancion desde este menu por ahora tod ose ilumina de difernete color
+         vermos si lo modificamos,,,pero esto indica bien desde donde hemos dado play.
+      
     IV) Menu Cancion (en revision)
        -Nueva Cancion: Se tipea en titulo el nombre del directorio que sera el nombre de la cancion.
         Hay opciones todavia no funcionales. Luego en el mismo menu Crear un directorio de Cancion
@@ -479,12 +484,17 @@
         con el Roll desarrollado previamente. Si se sale y vuelve a entrar se puede recuperar 
         la cancion con el siguiente paso:
      
-    -En Archivo, Cargar Directorio de Cancion con pistas separadas, se navega al directorio
-    de la Cancion se lo selecciona y aparecera lista de pistas y se abre el entorno grafico
-    con las notas de la secuencia. Todos las pistas se cargan, pero no en visualizacion.   
-    Al dar click en una pista de la lista y luego otro click sobre el grafico
-    se carga la secuencia en Roll de Visualizacion y edcion,o pulasndo TAB se recorera circularmente
-    una a una cada Pista.
+     -En Archivo, Cargar Directorio de Cancion con pistas separadas, se navega al directorio
+      de la Cancion se lo selecciona y aparecera lista de pistas y se abre el entorno grafico
+      con las notas de la secuencia. Todos las pistas se cargan, pero no en visualizacion.   
+      Al dar click en una pista de la lista y luego otro click sobre el grafico
+      se carga la secuencia en Roll de Visualizacion y edcion,o pulasndo TAB se recorera circularmente
+      una a una cada Pista.
+    - AL CARGAR UNA CANCION por varias modificaciones, en la ultima version para poder
+       ver los tracks en el grafico hay que pulsar la tecla TAB O DAR CLCIK EN EL TRACK 
+       DESEADO EN LA LISTA DE TRACKS EN EL MENU DE CONTROL. (se corregira en el futuro que muestre
+       por omision el 1er track como lo haci antes o lo dejaremos asi...tambien track en blanco
+       estarai lsito para crear un nuevo track en la cancion muy conveniente).
     -------------------------0-0-0------------------------------------
 Notas Tecnicas de desarrollo: 
 
