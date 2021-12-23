@@ -1,0 +1,54 @@
+__FB_ARGV__   5584512
+__FB_ARGC__    1
+__FB_ARGC__    1
+arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.0-V25-ACORDES-CONTEXTUALES-SIGUE\RollMusic.exe'
+arg  1 = ''
+ubirtk         0
+ubiroll        0
+start
+PID DE ESTE PROCESO          7192
+intervalo no dado usando default!
+instru         1
+Roll.trk(1,NA).inst         1
+NB             39
+NA             102
+desde          4
+hasta          8
+sfont, smxold, smyold,sANCHO,sALTO         14            font          299           mxold         348           myold         1467          ANCHO         916           ALTO          16            inc_Penta
+Fin duracion
+portsout 4
+VirtualMIDISynth #1 0
+Microsoft GS Wavetable Synth 1
+E-DSP MIDI Port [BC00] 2
+LoopBe Internal MIDI 3
+ChangeProgram inst          1
+param.ancho    1467 param.alto  916
+INSTANCIA      1
+ANTES ANCHO , ALTO           1467          916
+nfont, nmxold, nmyold, nancho,nalto        14            299           348           1467          916
+DESPUES ANCHO , ALTO         1168          568
+param.ancho    1168 param.alto  568
+inicio ubound roll.trk       102
+iniio lbound roll.trk        39
+param.ancho    1168 param.alto  568
+inicio ubound roll.trk       102
+iniio lbound roll.trk        39
+-------------------------------------------------------
+inicia CargaPistasEnCancion
+filename encancion > 0      
+dice que no hay archivos 
+ubirtk         0
+param.ancho    1168 param.alto  568
+posicion       1
+ancho, alto    1168          568
+param.titulo  RollMusic Ver 0.4.4.0
+datos recibidos en rooloop nombre         
+datos recibidos en rooloop desde,hasta     4             8
+datos recibidos en rooloop *po             7
+ubound roll.trk 2            102
+pid            7192
+INSTANCIA      0
+call roolloop, tipoescala    1
+call roolloop, notaescala    1
+uso Close
+uso Reset

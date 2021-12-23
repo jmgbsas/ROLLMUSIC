@@ -3804,11 +3804,16 @@ Sub salir()
        nalto =ALTO
     EndIf    
 
+    If ndeltaip=0 Then
+       ndeltaip=inc_Penta
+    EndIf
     Print #ffile,font , " font"
     Print #ffile,nmxold, " mxold "
     Print #ffile,nmyold, " myold"
     Print #ffile,nANCHO, " ANCHO"
     Print #ffile,nALTO, " ALTO"
+    Print #ffile,ndeltaip, " inc_Penta"
+
     Close ffile
  Dim As Integer fk,nroproc, ppp=0
 Dim As String linea

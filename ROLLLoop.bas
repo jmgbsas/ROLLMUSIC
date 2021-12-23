@@ -1190,11 +1190,16 @@ If MultiKey(SC_ESCAPE) Then
        nalto =ALTO
     EndIf    
 
+    If ndeltaip=0 Then
+       ndeltaip=inc_Penta
+    EndIf
     Print #ffile,font , " font"
     Print #ffile,nmxold, " mxold "
     Print #ffile,nmyold, " myold"
     Print #ffile,nANCHO, " ANCHO"
     Print #ffile,nALTO, " ALTO"
+    Print #ffile,ndeltaip, " inc_Penta"
+
     Close ffile
     salir()
     cerrar 0
@@ -2627,13 +2632,15 @@ If (ScreenEvent(@e)) Then
        nancho=ANCHO
        nalto =ALTO
     EndIf    
-
+    If ndeltaip=0 Then
+       ndeltaip=inc_Penta
+    EndIf
     Print #ffile,font , " font"
     Print #ffile,nmxold, " mxold "
     Print #ffile,nmyold, " myold"
     Print #ffile,nANCHO, " ANCHO"
     Print #ffile,nALTO, " ALTO"
-
+    Print #ffile,ndeltaip, " inc_Penta"
 
     Close ffile
       

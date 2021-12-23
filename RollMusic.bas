@@ -424,7 +424,7 @@ gap3= (519 * gap1) /1000 ' 42 default
 'print #1,"gap1 ",gap1
 '---------
 Dim ffini As Integer 
-Dim As String sfont,smxold,smyold,sancho,salto
+Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip
 
 ffini=FreeFile
 Open "RollMusic.ini" For Input As ffini
@@ -433,7 +433,8 @@ Line Input #ffini, smxold
 Line Input #ffini, smyold
 Line Input #ffini, sancho
 Line Input #ffini, salto
-Print #1,"sfont, smxold, smyold,sANCHO,sALTO  ",sfont, smxold, smyold,sancho,salto
+Line Input #ffini, sdeltaip
+Print #1,"sfont, smxold, smyold,sANCHO,sALTO  ",sfont, smxold, smyold,sancho,salto,sdeltaip
 
 Close ffini
 
@@ -442,7 +443,7 @@ nmxold=ValInt(smxold)
 nmyold=ValInt(smyold)
 nancho=ValInt(sancho)
 nalto=ValInt(salto)
-
+ndeltaip=ValInt(sdeltaip)
 
 If nfont > 0 Then
   font=nfont
@@ -454,7 +455,9 @@ If nmyold > 0 Then
    myold=nmyold
 EndIf
 
-
+If ndeltaip > 0 Then
+   inc_Penta=ndeltaip
+EndIf
 '---------
 If mxold=0 And myold=0 Then
 GetMouse mxold,myold, , MouseButtons

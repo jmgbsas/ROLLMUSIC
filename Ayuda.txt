@@ -149,7 +149,7 @@
         Se conservara ese tamaño para las siguientes sesiones. Si se desea modificar
         se debe cerrar RollMusic borrar RollMusic.ini,  ejecutar el programa de nuevo 
         y redimensionar dede el tamaño normal al nuevo tamaño deseado de ventana y font.
-        
+        e interlineado inc_penta-
         
     1.1)   El espaciado entre lineas se puede cambiar:
        Pulsar y mantener la tecla control. Girando la rueda del mouse
