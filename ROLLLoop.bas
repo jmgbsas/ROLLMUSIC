@@ -1196,7 +1196,7 @@ If MultiKey(SC_ESCAPE) Then
     Print #ffile,nANCHO, " ANCHO"
     Print #ffile,nALTO, " ALTO"
     Close ffile
-
+    salir()
     cerrar 0
     End 0
   EndIf  
@@ -3515,7 +3515,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 ' PODRIA SACARSE LOS MULTIKEY DE SCREEN EVENT PERO NO SE SI ANDAN MEJOR DEBO VERIFICAR
 ' ------------IPC sensado de comando fifo..
 if fueradefoco=1  Then
-   Sleep 10
+   Sleep 20
 EndIf
 
 If s5=2 Then

@@ -101,7 +101,7 @@ End Sub
 Sub cerrar (ByVal n As Integer)
    If n=0 Then
     print #1,"uso Reset"
-    Close
+    Reset
    Else 
     Close (n)
     print #1,"uso Close"
@@ -2472,7 +2472,7 @@ EndIf
 
    cairo_show_text(c, t)
    cairo_stroke(c)
- EndIf
+  EndIf
  ' ayuda
  If ayuda = TRUE Then
   Var  cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
@@ -2490,6 +2490,12 @@ EndIf
   EndIf
  EndIf
  font=fontOld
+   If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
+     If MouseButtons And 1 Then
+      MenuNew=0
+     EndIf
+  EndIf
+
  DeAllocate xo: DeAllocate yo
 End Sub
 '----------------------------------------------------------------------
@@ -3774,11 +3780,8 @@ Sub salir()
 
            cairo_destroy(c)
            cairo_surface_destroy( surface )
-           DeAllocate c
-           DeAllocate cm
-           DeAllocate c3
-           DeAllocate c2
-           DeAllocate surface
+ ' no usar nunca deallocate falla montonde cosas ni si quiera se puede cerrar
+ ' un archivo ni borrarlo una cagada la recomendacion del foro!!!!          
            FT_Done_Face( ftface )
            If play=1 Or playb=1 Then
               alloff (1)
@@ -3786,14 +3789,6 @@ Sub salir()
            EndIf
            close_port(midiout)
            out_free(midiout)
-           DeAllocate nombreport
-           DeAllocate p
-           DeAllocate p2:DeAllocate tl1:DeAllocate tl2:DeAllocate tl3: DeAllocate tl4
-           DeAllocate tl5: DeAllocate tl6: DeAllocate tl7:DeAllocate tl8:DeAllocate tl9
-           DeAllocate tl10: DeAllocate tl11: DeAllocate tl12
-           DeAllocate thread1: DeAllocate thread2:DeAllocate threadPenta:DeAllocate thread3
-           DeAllocate pubi: DeAllocate threadloop: DeAllocate p1 : DeAllocate threadMenu
-           DeAllocate po
  
            
     Dim ffile As Integer
@@ -3815,7 +3810,7 @@ Sub salir()
     Print #ffile,nANCHO, " ANCHO"
     Print #ffile,nALTO, " ALTO"
     Close ffile
- Dim As Integer fk,nroproc
+ Dim As Integer fk,nroproc, ppp=0
 Dim As String linea
 fk=FreeFile
  Open "procesos.txt" For Input As #fk
@@ -3824,19 +3819,25 @@ fk=FreeFile
        Do While Not Eof(fk)
         Line Input #fk, linea
         nroproc=CInt(linea)
-        print #1, "trabajo con este proceso..", linea 
-        Print #1,"SE SuPONE PID1 PRINCIPAL NO MATAR ",pid1
-        Print #1,"pid1 <> nroproc ",pid1, nroproc
+        ' -print #1, "trabajo con este proceso..", linea 
+        ' -print #1,"SE SuPONE PID1 PRINCIPAL NO MATAR ",pid1
+        ' -print #1,"pid1 <> nroproc ",pid1, nroproc
+        Print #1,"pid1 , nroproc ",pid1, nroproc
         If pid1 <> nroproc  Then
           Print #1,"terminar pid ", linea
           WINEXEC ("C:\WINDOWS\SYSTEM32\taskkill /PID "+ linea + " /T /F ",00)        
         EndIf
         
-      Loop
-Close fk
+      Loop      
+    
+cerrar fk
+
+Sleep 1000
+
+  
     cerrar 0
     Close
-    Kill "procesos.txt"
+    
    
             
 
