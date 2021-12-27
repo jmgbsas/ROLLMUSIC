@@ -81,7 +81,31 @@
           que el click sea en esa columna en cualquier linea puede no existir nota, la funcion buscara
           la nota menor y mayor, y fraccionara empezando por la mayor con al unidad de la menor.
           Es la elegida por el programa por omision. 
-
+    1.12) Cambiar o agregar una escala a la secuencia (se usara para agregar acordes todavia en desarrollo)
+          teniendo una secuencia en edicion:
+          En el Menu de control buscar dentro de Opciones, Tipo de Escala, elegir una en la ventana que emrge
+          dar ok. En opcione stambien clik en Nota de la escala. elegir una nota en l aventana emergentedar ok.
+          En opciones elegir si se trabaja con sostenidos (po romision)  o con bemoles.
+          Con todo eso al dar clik para ver la secuencia en su parte superior se vera la escala ingresada como tambien
+          el tempo. Grabar el archivo en Roll grafico click [Archivo]-> Ctrl-Click [Grabar], de esa forma
+          La escala de la Nota y tipo elegida se graba con la secuencia la cual volvera a cargarse en la proxima
+          carga del archivo roll o trk.
+    Nota: todas estas acciones funcionan tambien en modo instancia Separada sin Menu de Control.
+    1.13) Una instancia sin control puede ejecutarse tambien si asociamos la sextensiones *.roll y *.rtk
+          con Rollmusi.exe. En ese caso al dar doble clik o enter sobre el nombre de una secuencia en el
+          explorador, se levantará una sesion de RollMusic sin el Menu de Control. 
+          Queda editado el arcivo *.roll o el *.rtk (este ultimo caso dejo de andar bien, esta abriendo una ventana de carga, 
+          pero si se le da  cancelar muestra bien lo cargado).Queda por corregir al levantar un *.rtk.
+          En este modo se puede ver la escala previamente ajustada desde Control y Grabada al archivo desde Roll.
+    1.14 ) En desarrollo, Entrar un acorde a partir de una Nota de la secuencia o si no hay nada tambien.
+           PAra ello damos Ctrl-Click derecho sobre la nota a convertir en acorde..y aprece un menu contextual
+           (el cual todavia no es funcional, triadas cuaternarias etc, 1era o 2da inversion etc)
+    1.15 ) En algun Futuro: exportar a MusicXml o midi pra poder interactuar con otros programas.
+           Como tambien importar...
+    1.16 )Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a toca como esclavo
+          o ordenar la ejecuicion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
+          o ejecutar con otras instancias de RollMusic con o sin Control...(hay muchisimo por hacer...)
+        
     IV) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
         estilo pentagrama. Se podrán usar varias instancias pero sin ningun control
         entre ellas.RollMusic.exe levanta ahora 2 pantallas un menu GUI y el grafico habitual.
