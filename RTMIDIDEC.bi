@@ -1,5 +1,5 @@
  
-''#Include once  "file.bi"
+#Include once  "file.bi"
 #include "mod_rtmidi_c.bi"
 #Inclib  "rtmidi.dll" 'usa librerias estaticas 
 #include "fbthread.bi"

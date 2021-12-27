@@ -1,6 +1,4 @@
 
-
-
 Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
 ' solo carga track no lo pasa a Vector de Visualizacion. ntk debe venir informado
 ' para cargar desde disco un track se usa esta sub y luego TrackaRoll para verlo
@@ -350,6 +348,7 @@ print #1,"pasó copia a vector"
      While InKey <> "": Wend
      Sleep 150
 
+
 End Sub
 ' ---------------------------
 Sub ImportarPistaExterna()
@@ -568,7 +567,7 @@ EndIf
 
 ' edsde aca es igual.. 
   ActualizarRollyGrabarPista () 
-' hasta aca es igual     
+
 print #1,"FIN GrabarRollaTrack ,cambiaext ",cambiaext
 print #1,"FIN GrabarRollaTrack ,maxpos,posn ",maxpos,posn
 

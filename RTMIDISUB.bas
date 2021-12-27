@@ -1663,8 +1663,7 @@ for i = 0 to portsin -1
     nombre = port_name(midiin, i)
     listin(i) =*nombre
 Next
-DeAllocate nombre '' ojo con Deallocate si es al final ok pero si es una dire de un array cancela
-' aca no se creo se puede dejar.....
+
 End Sub
 Sub TrasponerGrupo( cant As Integer, Roll As inst, encancion As Integer)
 ' ANDA BIEN, ES EQUIVALENT EEMPEIZA EN EL EXTREMO QUE ATACA BAJANDO LA POSICION

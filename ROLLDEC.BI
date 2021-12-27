@@ -533,7 +533,9 @@ Type rangoOct Field=1
  As Byte    notaescala
  As byte    tipoescala
  As Byte    alteracion  ' sos 3, bem 2
-End type
+ As Double  fechasPistas
+End Type
+
 Dim Shared As rangoOct pmTk (0 To 32)
 Dim Shared As String titulos(0 To 32)
 Dim Shared As String pistas (0 To 32)
@@ -620,6 +622,8 @@ Type pasa Field=1
   As Integer ubirtk=0
   As Integer encancion=0
 End Type
+
+
 Declare Sub Tracks (ByRef nroTrack As integer, ByRef nroCanal As UByte, Roll As inst)
 Dim Shared As Long CONTROL1 = 0
 Dim Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
@@ -742,4 +746,5 @@ Dim Shared  As pasa param ', param2
     param.encancion=0
     p1=@param
 
-
+' usaremos xml par aleer y escribir musicxml 
+' http://xmlsoft.org/examples/index.html

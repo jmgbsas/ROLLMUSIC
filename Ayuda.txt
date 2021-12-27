@@ -225,25 +225,33 @@
     1.8) Agregar tracks o Pistas a Cancion   
 
          Hay 3 opciones  
-         a) Con la cancion creada, ir al menu de Pistas, ajsutar lso aprametros deseados
+         a) Con la cancion creada, ir al menu de Pistas, ajustar los parámetros deseados
             como intervalo de octavas, nombre del instrumento, etc, con ello en el mismo menu
-            dar click en "Crear pista en la cancion con lo elegifo". Hasta este momento 
-            la pista solo existe en la lista dar GRABAR en el grafico ROLL si se desea en este momento 
-            o despues cuando tenga  datos. Ir creando pistas hasta 32 de la misma forma.
+            dar click en "Crear pista en la cancion con lo elegido". 
+            La pista se crea en la lista y en el disco vacia con el nombre elegido o el automatico sugerido.
+            Cargar datos si se desea  o despues cuando tenga  datos. 
+            Se puede ir creando pistas hasta 32 de la misma forma.
             Si se ajusta el instrumento si se desea se sugiere el nombre del instrumento o
             cambiarlo por otro, se agrega automaticamente el nro de pista [x] donde x= 1,2,3,4...
-            y al final se le agrega la estencion .rtk sera una pista a o track. Con la tecla TAB
-            sepodra navegar de un track a otro en la vista grafica (la cual es unica en esta version).
-         b) En Roll gráfico crear un archivo nuevo grabar como roll con [GRABAR] eimportar ese Roll
-            en menu ARchivo de Control. O si existe el roll improtarlo directamente en dicho
-            menu. Tambien podrianos Grabar el Roll recien creado coo rtk con [ROLL=>Track] del
-            menu de Roll Grafico , e importar el rtk en menu ARchivo Importar de Control.
-         c) Otro metodo sera copiar a mano un *.rtk en el directorio y ponerle un numero secuencial
+            y al final se le agrega la estencion .rtk sera una pista  o track. Con la tecla TAB
+            se podrá navegar de un track a otro en la vista grafica (la cual es unica en esta version).
+            O puede editarse otros tracks desde el menu levantando otra instancia de Roll sin Contorl.
+            "Crear Instancia de RollMusic sin Control con lo elegido"
+           
+         b) En Roll gráfico crear un archivo nuevo grabar como roll con [GRABAR] e importar ese Roll
+            en menu Archivo de Control "Cargar una Pista (rtk o roll)) externa en Canción..
+            O si existe el roll improtarlo directamente en dicho  menu. 
+            Tambien podrianos Grabar el Roll recien creado como rtk con [ROLL=>Track] del
+            menu de Roll Grafico , e importar el rtk en la misma accion del menu mencionado de 
+           Archivo Cargar una pista externa (o Importar diriamos) en Cancion .
+ 
+        c) Otro metodo sera copiar a mano un *.rtk en el directorio y ponerle un numero secuencial
             al primcipio que tenga este formato [x]  donde 'x' es un numero si exiten 1,2,3 sera [4]
             luego volver a cargar la cancion. (track 0 solo se usa para grabar Roll a Track sin cancion 
             y siempre se sobreescribe)
          Nota: El ultimo test fue con el caso a), lso demas estaban propbados pero con las modificaciones
          echas par ael caso a) deben probarse de neuvo,,,
+
     1.9) Luego de cargada el directorio de la cancion, si se da click con el mouse en la lista
          de nombres de pistas en la ventana Control, se cargara esa pista en Roll y en su pista correpondiente.
          Siempre se carga Roll que es el grafico visual , ambas se usan para modificacion. 
@@ -255,6 +263,7 @@
          la tecla TAB, con ella se puede conmutar o pasar de una Pista a otra en Edicion, esto va 
          copiando el track sucesivo en Roll y Track(N), al alcanzar la ultima pista con datos o la ultima 32 
          sigue en circulo con la 1.
+
     1.10) Borrar Pistas de la Lista y de disco:
           Estando en Control o la Lista de Control, seleccionar la pista pulsar delete,
           se borra de la lista y del disco copiandose lo borrado en un subdirectorio interno \Temp, luego 
@@ -264,13 +273,15 @@
           sola pista y se sigue dando delete se iran borrando las pistas en forma contigua tambien en 
           direccion hacia arriba o sea, si selecciono la pista 5 se borraran con cada pulso 5,4,3,2,1. 
           Al llegar a la 1, si se sigue  pulsando  empezará a borrar la 6,7,8,9...
+
     1.11) Copiar una pista de Cancion en otra pista nueva de cancion con sus datos
           En el menu de Control usar en el menu Archivo->"Copiar una pista a otra nueva en cancion"
           Copiará lso datos cambiara el numero de pista por uno mas grande N+1 [NN]
           El resto el nombre será igual. Por ahora no se puede renombrar online,ya se hará
           en proxima version, pero se puede renombrar la pista dede afuera y volver a cargar
           la cancion.
-    1.12)  En el mismo menu de 1.11 se puede actualizar una pista con "Grabar una pista de la cancion
+
+     1.12)  En el mismo menu de 1.11 se puede actualizar una pista con "Grabar una pista de la cancion
           con midificaciones, igual que se puede ahcer en Roll.
     --------------------------------------------------------------------------------------------
     2.0) Modos de Edicion

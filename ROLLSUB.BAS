@@ -1,5 +1,5 @@
  
-#Include "foro/window9.bi"
+'#Include "foro/window9.bi" no hace falta parece
 
 On  Error GoTo errorSub
 
@@ -100,11 +100,11 @@ End Sub
 
 Sub cerrar (ByVal n As Integer)
    If n=0 Then
-    print #1,"uso Reset"
-    Reset
+    print #1,"uso CLOSE ALL"
+    CLOSE
    Else 
     Close (n)
-    print #1,"uso Close"
+    print #1,"uso Close N"
    EndIf 
 End Sub
 Sub calcCompas( ByRef j As Integer,Roll As inst)
@@ -1486,8 +1486,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
 ' 06-09-2021 carga track en ntk=0 
       
       
-       If Trabajo (j,i).nota >= 1 And Trabajo (j,i).nota <=12 And _ 
-          Trabajo (j,i).dur >=1 and Trabajo (j,i).dur <= 180  Then
+       If Trabajo (j,i).nota >= 1 And Trabajo (j,i).nota <=12 And  Trabajo (j,i).dur >=1 and Trabajo (j,i).dur <= 180  Then
          ip+=1
          If ip >12 Then
               print #1,"error  ip > 12,ip, Tr,j,i ",ip, Trabajo (j,i).dur,j,i
@@ -1511,48 +1510,19 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      ' Print #fs, "acorde ",Track(ntk).trk(j,1).acorde
        crearsecuencia(Track(), j, ntk )
     Next j
-'' MAL LOS TRACK SDEBO GRABARLSO SIEMREP CON POLI
-' CUADNO GRABO ROLLATRACK DEBO USAR POLI PARA GRABAR TRACK       
-' Trabajo
-'Type dat Field=1
-' nota As UByte  ' en un futuro contendra nota, octava, canal etc 
-' dur As  UByte  ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
-' vol As  UByte  ' volumen
-' pan As  UByte  ' paneo
-' pb  As  UByte  ' pitch bend
-' inst As UByte ' instrumento para cada nota podra ser distinto
-'End Type
-
-' Track
-'Type poli ' para guardar la secuencia
-' dur As  Integer  ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
-' nota As UByte  ' en un futuro contendra nota, octava, canal etc 
-' vol As  UByte  ' volumen
-' pan As  UByte  ' paneo
-' pb  As  UByte  ' pitch bend
-' inst As UByte ' instrumento para cada nota podra ser distinto
-' tick As Integer ' 128 tiene la redonda, 1 la cuartifusa
-' posn As Integer ' --->de roll SER LA POSICIN DE CASA NOTA???
-' --------------------->ASI TENDRE LA RELACION TICK POSN
-' acorde  As ubyte  ' 1 a 12 , son el se hara el sort    
-'End Type
-
-
-  
-     Cerrar (ca)
-
-     DUR => 0
-     curpos =>1
-    ''' carga=0
-     ReCalCompas(Roll)      
-    ''If Roll.trk(1,NA).
+Close ca
+DUR => 0
+curpos =>1
+''' carga=0
+ ReCalCompas(Roll)      
+''If Roll.trk(1,NA).
+   
+ print #1, "CargaARchivo LBound (Roll.trk,1) ",LBound (Roll.trk,1)
+ print #1, "CargaARchivo LBound (Roll.trk,2) ",LBound (Roll.trk,2)
     
-    print #1, "CargaARchivo LBound (Roll.trk,1) ",LBound (Roll.trk,1)
-    print #1, "CargaARchivo LBound (Roll.trk,2) ",LBound (Roll.trk,2)
-    
-    print #1, "CargaARchivo UBound (Roll.trk,1) ",UBound (Roll.trk,1)
-    print #1, "CargaARchivo UBound (Roll.trk,2) ",UBound (Roll.trk,2)
-    Sleep 10
+ print #1, "CargaARchivo UBound (Roll.trk,1) ",UBound (Roll.trk,1)
+ print #1, "CargaARchivo UBound (Roll.trk,2) ",UBound (Roll.trk,2)
+  Sleep 10
 End Sub
 ' ------------------------------------------
 
@@ -2496,7 +2466,7 @@ EndIf
      EndIf
   EndIf
 
- DeAllocate xo: DeAllocate yo
+ 'DeAllocate xo: DeAllocate yo
 End Sub
 '----------------------------------------------------------------------
 ' menuacc estaba
@@ -3066,6 +3036,8 @@ EndIf
 End Sub
 '
 Sub CargarPistasEnCancion ()
+' cada vez que cargo borro la info de fechas de pistas anterior
+ReDim As Double fechasPistas(1 To 32)
 print #1,"-------------------------------------------------------"
 print #1,"inicia CargaPistasEnCancion"
   Dim As String no1, no2
@@ -3839,11 +3811,10 @@ cerrar fk
 
 Sleep 1000
 
-  
-    cerrar 0
-    Close
-    
-   
+    Close 1
+'    cerrar 0
+'    Close
+ 
             
 
 End Sub

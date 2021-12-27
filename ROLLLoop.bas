@@ -586,7 +586,7 @@ Select Case desde
      
 End Select
 'print #1,"BordeSupRoll ",BordeSupRoll
-'nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
+'no se usa en ningun lado nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
 print #1,"INSTANCIA ", instancia
 
 Print #1,"call roolloop, tipoescala",tipoescala
@@ -668,7 +668,7 @@ EndIf
 
 
 inc_Penta = Int((ALTO -1) /40) - deltaip
-'llena la surface con nro_penta
+'llena la surface con nro_penta no se usa
 'nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
 'Print nro_penta
 
@@ -1218,27 +1218,25 @@ EndIf
 ' ============== E S P A C I O ========
 If MultiKey(SC_SPACE)  Then 'barra espacio
  If comEdit=TRUE Then
-  espacio = 1
-  DUR=0
-  nota=notacur ''nE 10-05-2021 00:06 probar de nuevo 
-  If cursorVert =2 Then
-    agregarNota = 1
-  EndIf
+    espacio = 1
+    DUR=0
+    nota=notacur ''nE 10-05-2021 00:06 probar de nuevo 
+    If cursorVert =2 Then
+      agregarNota = 1
+    EndIf
 
  Else
    If playb = 0 And MaxPos > 1 Then
       playb=1
-  '    print #1,"SPACE call play"
+      print #1,"SPACE call play"
         If  MaxPos > 1 Then 
          '''Dim tlock As Any Ptr = MutexCreate()
          If CANCIONCARGADA Then
-         print #1,"USANDO PLAYCANCION"
+             Print #1,"USANDO PLAYCANCION"
             thread1 = ThreadCall  playCancion(Track())
          Else
-         CONTROL1 = 0
             thread1 = ThreadCall  playAll(Roll)
-         CONTROL1 = 1   
-       print #1,"USANDO PLAYALL"
+            Print #1,"USANDO PLAYALL"
             '' playAll(Roll)
          EndIf
          '''MutexDestroy tlock
@@ -2488,8 +2486,6 @@ If (ScreenEvent(@e)) Then
    ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click
     
  EndIf 
-'''EndIf
-
  If MultiKey(SC_CONTROL) And MultiKey(SC_T) And trasponer=0  Then
   ' trasponer notas 24-06-2021 - por teclado para todas las notas cargadas
   ' si subo con flecha arriba sube 1 semitono

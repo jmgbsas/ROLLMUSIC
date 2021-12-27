@@ -1,4 +1,8 @@
-' YA cierra toas las sesiones de rollmusic desde control
+' usaremos xml para leer y escribir musicxml e intercambia rocn otros programas
+' antes que midi despue salgun dia haremos midi no se veremos.... 
+' http://xmlsoft.org/examples/index.html
+
+' YA cierra todas las sesiones de rollmusic desde control
 ' futuro grabar mxold y algo mas para conservar el tamaño de la ventana y el tamaño del font
 ' usado por el usuario !!!! OK Y AANDA
 ' el borrado de columna esta defectuoso hay que dar 0 y luego 12 x en toda la octava para
@@ -58,7 +62,7 @@
 #Include Once "windows.bi"
 #Include Once "/win/commctrl.bi"
 #include "crt/stdio.bi"
-'#Include "file.bi" ' al final esto no se usa
+#Include "file.bi"
 
 ' Nota: algun dia si quiero midifile intentar usar una libreria de C pura 
 ' C:\IT64\AREAWORKAUX\MIDI-LIBRARY\midilib-master\midilib-master\freeBasic
@@ -135,6 +139,11 @@ Dim As GLFWwindow ptr  win
 '/
 '===============================
 #Include "ROLLDEC.BI"
+Dim Shared As Integer pd1, fa1 
+pd1 = GetCurrentProcessId()  
+Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As #1
+print #1,"start"
+Print #1,"PID DE ESTE PROCESO ",pd1
 
 
 
@@ -257,11 +266,14 @@ For ix = 0 To __FB_ARGC__
 
 
 Next ix
-Dim Shared As Integer pd1, fa1 
-pd1 = GetCurrentProcessId()  
-Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As #1
-print #1,"start"
-Print #1,"PID DE ESTE PROCESO ",pd1
+'Dim Shared As Integer pd1, fa1 
+
+'pd1 = GetCurrentProcessId()  
+'Open "midebug" + "["+Str(pd1)+"]" + ".txt" For Output As #1
+
+''Open "midebug.txt" For Output As #1
+'Print #1,"start"
+'Print #1,"PID DE ESTE PROCESO ",pd1
 fa1=FreeFile
 Open "procesos.txt" For Append As #fa1
 If pid1=0 And ix < 3 Then
@@ -389,7 +401,8 @@ Dim l As Integer
 For l = 1 To 65
 print #1, l;" ";figura(l)
 Next l
-Close
+''Close aca estaba habilitado el close humm ah pero esta comentado
+
 End
 '/
 ''https://www.freebasic.net/forum/viewtopic.php?t=15127
@@ -765,7 +778,7 @@ Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
 Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
 
 
-  If abrirRoll=1  Then
+  If abrirRoll=1 And cargacancion=1  Then
      CargarPistasEnCancion ()
      CANCIONCARGADA=TRUE
      '''lo hace tab cargaCancion=0
@@ -775,13 +788,16 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
       pid1=pd1
    EndIf
     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+    cargacancion=0
     ''' RollLoop(param)
     ''Sleep 200 ' NO HACE FALTA AHORA sin este retardo no le da teimpo al thread de cargar a Roll
   Else
-    CANCIONCARGADA=FALSE
-    cargaCancion=0  
-    param.encancion=0 
-
+    If abrirRoll=1 And cargacancion=0 Then
+       CANCIONCARGADA=FALSE
+       ''cargaCancion=0  
+       param.encancion=0 
+       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+    EndIf
   EndIf
 
 
@@ -951,7 +967,9 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                   'ChangeProgram ( CUByte (instru) , 0)
                'EndIf   
                If abrirRoll=0 Then
+Print #1,"1060 abrirRoll=0 entro"
                   abrirRoll=1
+                  cargacancion=0
                   If reiniciar=1 Then
                      ThreadDetach(threadloop)
                      usarmarcoOld=usarmarco
@@ -961,13 +979,14 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                      reiniciar=1
                      usarmarcoOld=usarmarco
                   EndIf   
-                  
+                  Print #1,"sale de 1060 abrirrol,reiniciar, cargacancion ", abrirRoll, reiniciar, cargacancion
                   Exit Do
                EndIf
            Case 1061
                print #1,"En 1061 crear pista en cancion con lo elegido"
                
                ntk = CountItemListBox(3)+ 1
+
                If ntk > 32 Then
                   print #1,"exit select ntk> 32"
                   Exit Select
@@ -976,14 +995,13 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                If instru=0 Then 
                   instru=1
                EndIf
-               print #1,"instru en 1061 ",instru
+               print #1,"instru en 1061 , toma el ultimo ",instru
                NombrePista=RTrim(Mid(NombreInst(instru), 1,21))
-               print #1,"pathdir",pathdir
-               If pathdir="" Then
-                  SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + "Debe Crear un directorio de Cancion Con el Nombre de Cancion Elegido")
-                  print #1,"exit select donde miercoles se va? duplica ventana"
-                  Exit Select 
-               Else
+               Print #1, "NombrePista en 1061 sin nro track ",NombrePista
+               print #1,"porque se resetea? pathdir",pathdir
+               If CANCIONCARGADA Or NombreCancion <> "" Then
+                 ' armó el nombre de pista nuevo, pero permite modicifar 
+               
                   EntrarNombrePista(NombrePista)
                EndIf
                'If NombrePista ="" Then

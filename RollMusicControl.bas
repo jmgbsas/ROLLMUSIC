@@ -17,7 +17,7 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include Once "gtk/gtk.bi"
 #Include "midiinfo.bi"
 #Include "ROLLCONTROLDEC.bi"
-
+'#include "vbcompat.bi"
 #Include Once "freetype2/freetype.bi"
 
 
@@ -48,7 +48,7 @@ Common Shared As integer ubirtk, ubiroll
 
 'common shared as esc1 ptr pescala
   
-pathdir=""
+
 '-------------
 
 
