@@ -246,7 +246,7 @@
            Archivo Cargar una pista externa (o Importar diriamos) en Cancion .
  
         c) Otro metodo sera copiar a mano un *.rtk en el directorio y ponerle un numero secuencial
-            al primcipio que tenga este formato [x]  donde 'x' es un numero si exiten 1,2,3 sera [4]
+            al primcipio que tenga este formato [xx]  donde 'xx' es un numero si exiten 1,2,3 sera [04]
             luego volver a cargar la cancion. (track 0 solo se usa para grabar Roll a Track sin cancion 
             y siempre se sobreescribe)
          Nota: El ultimo test fue con el caso a), lso demas estaban propbados pero con las modificaciones

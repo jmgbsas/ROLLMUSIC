@@ -878,58 +878,33 @@ If MultiKey(SC_PLUS) Then  '13 , ligadura
 EndIf
 
 If  MultiKey(SC_KEYPADPLUS) Then '78
- '    ALTO = ALTO + 2 'inc_Penta
- '      If ALTO >= AltoInicial Then
- '         ALTO =  Altoinicial
- '      EndIf
 
+   Dim As Integer w,h
+   h=ALTO
+   ALTO = ALTO + inc_Penta
+   If ALTO >= altoInicial - 1  Then
+    ALTO = altoInicial  - 1
+   EndIf
+   MoveWindow( hWnd , X0, (Y0+ALTO-h)\2, ANCHO - mxold,ALTO, TRUE )
 
- '   cairo_set_source_surface (c, surface, ANCHO, ALTO)
-
- '   Sleep 10
- '    Exit Do
- '------------------------------
- cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1
- cairo_paint(c)
- cairo_stroke(c)
- cairo_destroy(c)
-
-
- ALTO = ALTO + inc_Penta/2
-
- 'Print "ALTO+ ", ALTO
- If ALTO >= AltoInicial Then
-  ALTO =  AltoInicial
- EndIf
-
- cairo_set_source_surface (c, surface, ANCHO, ALTO)
- cairo_paint(c)
  Exit Do
 
 EndIf
 
 If  MultiKey(SC_MINUS)  Then
- '    cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1 'evita fondo negro y flick
- '    cairo_paint(c)
+   h=ALTO
+   ScreenControl GET_WINDOW_POS, x0, y0
+   ALTO = ALTO - inc_Penta
+   If ALTO <= ALTO * 0.3 Then
+    ALTO =  ALTO * 0.3
+   EndIf
+   '    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
+   '    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
+     MoveWindow( hWnd , X0 , (Y0+h-ALTO)\2, ANCHO - mxold,ALTO, TRUE )
 
- '   ALTO = AltoInicial/1.5
- '   cairo_set_source_surface (c, surface, ANCHO, ALTO ) ' ALTO)
- '   cairo_set_source_surface (c, surface, ANCHO, ALTO ) ' ALTO)
- '   Exit Do
- ' LA ZONA QUE DEJA ESTA POSICION EN LA PARTE INFERIOR SE USARA PARA
- ' HACER AJUSTES DE VELOCIDAD CON CURVAS O MOSTRAR CONTROLES ADICIONALES
- cairo_set_source_rgba c, 0.6, 0.7, 0.8, 1
- cairo_paint(c)
- cairo_stroke(c)
- cairo_destroy(c)
- ALTO = ALTO - inc_Penta/2
+    Exit Do
 
- If ALTO <= AltoInicial/3 Then
-  ALTO= AltoInicial/3
- EndIf
 
- cairo_set_source_surface (c, surface, ANCHO, AltoInicial ) ' ALTO)
- cairo_paint(c)
  Exit Do
 
 EndIf
