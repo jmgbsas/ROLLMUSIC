@@ -199,7 +199,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
     '  print #1," CREAPENTA t  DUR: ";indf;" figura ";figura(indf); " semitono: "; semitono
     'EndIf
     ' puede ser aca CantTicks pro MaxPos
-    If n >0 And n <= MaxPos  Then '''''CantTicks Then
+    If n >0 And n <= MaxPos  Then '''''CantTicks Then +1 para ver mas el fin
     'print #1,"lugar ",14
      If Compas(n).Posi = n  Then ' ahi hay un corte un nuevo compas
     ' print #1,"lugar ",15
@@ -222,8 +222,17 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
     cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono +1)* inc_Penta - 6)
     ic += 1
    Else
-   
-    Exit For
+      If n= MaxPos-1 Then ' indicador de final de secuencia
+      cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
+      cairo_line_to(c,gap1 + (ic ) *anchofig , Penta_y + 12 * inc_Penta )
+      t=Str("FIN")
+      cairo_show_text(c,t)
+      cairo_move_to(c,gap1 + (ic ) *anchofig +anchofig , Penta_y)
+      cairo_move_to(c,gap2 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta )
+        
+     EndIf  
+  
+   ' Exit For ' salia para saltear lso nota=0, dur=0 ¿?
    EndIf
    'con ic * 40 es + 32 osea ic * 40 + 32
    
@@ -1604,7 +1613,7 @@ If comEdit = FALSE Then ' construir cifras para copiar Nveces por ejemplo
  EndIf
 
  If MultiKey(SC_END) Then
-    If MaxPos > 70 then
+    If MaxPos > 45 then
        posicion=MaxPos - 30
     EndIf
     posishow=posicion

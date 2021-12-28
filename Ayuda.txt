@@ -84,12 +84,12 @@
     1.12) Cambiar o agregar una escala a la secuencia (se usara para agregar acordes todavia en desarrollo)
           teniendo una secuencia en edicion:
           En el Menu de control buscar dentro de Opciones, Tipo de Escala, elegir una en la ventana que emrge
-          dar ok. En opcione stambien clik en Nota de la escala. elegir una nota en l aventana emergentedar ok.
-          En opciones elegir si se trabaja con sostenidos (po romision)  o con bemoles.
-          Con todo eso al dar clik para ver la secuencia en su parte superior se vera la escala ingresada como tambien
+          dar ok. En opcione stambien clik en Nota de la escala. elegir una nota en la ventana emergente y dar ok.
+          En opciones elegir si se trabaja con sostenidos (por omision)  o con bemoles.
+          Con todo eso al dar clik para ver la secuencia en su parte superior se verá la escala ingresada como tambien
           el tempo. Grabar el archivo en Roll grafico click [Archivo]-> Ctrl-Click [Grabar], de esa forma
           La escala de la Nota y tipo elegida se graba con la secuencia la cual volvera a cargarse en la proxima
-          carga del archivo roll o trk.
+          carga del archivo roll o trk.(falta grabar el tempo en el archivo)
     Nota: todas estas acciones funcionan tambien en modo instancia Separada sin Menu de Control.
     1.13) Una instancia sin control puede ejecutarse tambien si asociamos la sextensiones *.roll y *.rtk
           con Rollmusi.exe. En ese caso al dar doble clik o enter sobre el nombre de una secuencia en el
@@ -98,23 +98,30 @@
           En este modo se puede ver la escala previamente ajustada desde Control y Grabada al archivo desde Roll.
           Como tambien si se usa sostenidos o bemoles..
           Nota: en el caso de bemoles la entrada de notas es igual que antes, Si antes May+C era C#
-          si uso bemoles será Db, siemrpe subo un semitono , es solo una convencion.
-    1.14 ) En desarrollo, Entrar un acorde a partir de una Nota de la secuencia o si no hay nada tambien.
-           PAra ello damos Ctrl-Click derecho sobre la nota a convertir en acorde..y aprece un menu contextual
+          si uso bemoles será Db, siempre subo un semitono , es solo una convencion.
+    1.14 ) En desarrollo, Entrar un acorde a partir de una Nota de la secuencia o si no hay nada tambien pero usando
+           la nota en donde se da el click.
+           Para ello damos Ctrl-Click derecho sobre la nota a convertir en acorde..y aprece un menu contextual
            (el cual todavia no es funcional, triadas cuaternarias etc, 1era o 2da inversion etc)
     1.15 ) En algun Futuro: exportar a MusicXml o midi para poder interactuar con otros programas.
            Como tambien importar...
-    1.16 )Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
-          o ordenar la ejecuicion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
+    1.16 ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
+          o ordenar la ejecucion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
           o ejecutar con otras instancias de RollMusic con o sin Control...(hay muchisimo por hacer...)
     NOTA: si en algun momento se traba el scroll arriba abajo con la rueda del mouse, destrabar la situacion  con 
-                flecha arriba o abajo y habilitar la rueda del mouse.
-                Si una opcion de menu en el grafico de Roll no funciona colocando el mouse encima del rotulo
-               necesitara un click o un ctrl-click ...
+          flecha arriba o abajo lo cual habilita la rueda del mouse.
+          Si una opcion de menu en el grafico de Roll no funciona colocando el mouse encima del rotulo
+          necesitará un click o un ctrl-click ...
+          En esta ultima version ejecutar o reproducir o play desde Control funiona igual que hacerlo desde
+          la barra de espacio en el grafico. Para tocar solo un track dar Ctrl-click a Reproducir.
+          en una instanci sin control tantobarra de espacio como Ctrl clik Reproducir tocaran la secuencia
+          cargada indistintamente.
+
     IV) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
         estilo pentagrama. Se podrán usar varias instancias pero sin ningun control
-        entre ellas.RollMusic.exe levanta ahora 2 pantallas un menu GUI y el grafico habitual.
-        Acciones: elegir octavas, instrumentos, antes de crear el track. Al crearlo
+        entre ellas todavia, se lo hara mas adelante mediante midi.
+        RollMusic.exe levanta ahora 2 pantallas un menu GUI y el grafico habitual.
+          Acciones: elegir octavas, instrumentos, antes de crear el track. Al crearlo
         se borra el cargado anteriormente y se reemplaza por uno nuevo vacio.
         Se agrega Menu de Cancion, funciona en modo basico.   
         Esta version Aislada podra crear varios tracks pero solo editar de a uno
@@ -122,22 +129,24 @@
         Y luego de terminada levantarla con la instancia unida a Control y agregarla a la Cancion
         si se lo desea, donde sí se podrá escuchar todos los tracks al unisono(en desarrollo). 
         Pero no tendrá sincronizacion en el play,.. por ahora. La aplicacion se termina
-        cerrrando la pantalla del Menu GUI o cerrando el gráfico es indistinto.   
-        Otra forma será en el futuro, partir pantalla y editar 2 track en simultaneo.
+        cerrando la ventana de Control Archivo->Salir o desde X en extremo superior derecho.   
+        Otra forma podria ser en el futuro, partir pantalla y editar 2 track en simultaneo, en una sola 
+        pantalla grafica del Roll.
         Se puede pasar entre tracks simplemente con el tabulador  o clickeando 
         la pista en la lista en Control. 
-        Notas desarrollo (Se puede cargar un track en el menú del Grafico y 
-        darle Reproducir en la GUI pero para que comience debo hacer foco en el 
-        Gráfico. Controlar otras instancias o aplicaciones mediante midi creo será
+        Notas desarrollo (No se puede cargar un track en el menú del Grafico y 
+        darle Reproducir en la GUI por consistencia solo reproducimos en Roll Gráfico. 
+        Controlar otras instancias o aplicaciones mediante midi creo será
         más facil que usar sockets(¿? cual sera mas facil y eficiente ? probaremos), 
-        todos estos temas lso pruebo durante mi aprendizaje, la madeja de código algun 
-        dia lo limpiare cuando este satisfecho  con el diseño. . Esto seguirá
+        todos estos temas los pruebo durante mi aprendizaje, la madeja de código algun 
+        dia lo limpiare cuando este satisfecho  con el diseño.  Esto seguirá
         en evolución por que es un hobby de aprendisaje y tendrá paradas por estudio
         e idas y vueltas. Si me limita mucho el lenguaje podre hacer parches 
         con otro lenguaje o pasar todo a otro lenguaje similar porque lo que
-        está echo en Cairo se podrá trasladar a cualqueir otro lenguaje. creo.) 
+        está echo en Cairo se podrá trasladar a cualqueir otro lenguaje. creo. Estoy evaluando de
+        usar como lenguaje alternativo, V o Go , V es mas veloz parece...) 
       - VARIAS SESIONES DE ROLLMUSIC.
-        El menu de Control permite crear un editor gráfico integerado a dicho Control
+        El menu de Control permite crear un editor gráfico integrado a dicho Control
         es la opcion en "Crear Pistas"-> "Crear Pista Aislada con lo elegido y reemplaza la existente
         en la edicion", aparece un editor gráfico que podra editar cada pista de una cancion por vez
         o una pista sin cancion (el editor tiene un borde azul en la parte superior).
@@ -147,7 +156,7 @@
         (el play no se sincroniza con Control ni la sesion correspondiente). Al cerrar desde la
         ventana de Control "Archivo" -> "Salir",o el boton superior derecho X, se cerrarán todas las 
         sesiones incluidas las independiente usando  su numero de proceso, si no se hace asi cada 
-        ventana de sesion independiente se debera cerrar una por una con Escape o el boton rojo X 
+        ventana de sesion independiente se deberá cerrar una por una con Escape o el boton rojo X 
         en la esquina superior derecha de cada sesion abierta.
 
 
@@ -163,28 +172,34 @@
       - Achicar la pantalla en modo Telón F7 / F8. O usando click en los botones 
         amarillo(-) verde(+) de la esquina superior derecha, que equivalen a 
         F7/F8, levanta bajar Telón o achicar agrandar la pantalla respectivamente.
-      - Mover pantalla, en la cinta gris del menu lado derecho se hace click 2 o 3
-        veces y se  draga suavemnte, no responde a dragados muy veloces.Para poder
-        efectuarlo se ubica el mouse sobre la cinta superior del menu, y se busca 
-        <MENU> desplazando flecha derecha -izquierda, sin salir dela zona de la 
-        cinta, tratar de dragar la ventana.
-      - Teclas -/+ keyboard, achica o agranda la altura de las octavas, desplazando
-        la zona de edición para arriba, deja parte libre inferior para otras cosas.
+        O tambien usar teclas - y + del teclado llamado Keypad.(o el - del taclado
+        comun, el + no se usa en el teclado comun tiene otra funcion para entrar notas
+        ligadas )
+      - Mover ventana, en la cinta superior gris o azul del Roll Gráfico del lado derecho, 
+        se daclick y se draga lentamente, no responde a dragados muy veloces. Funciona
+        siemrpe del lado derecho de la cinta independiente del menu que se muestre.
+      - Teclas -/+ keyboard, igual que F7/F8.
       - redimension de la pantalla tanto en ancho como en altura sin tocar la altura 
-        de las octavas. Para ello se pulsa el simbolo <> el cual se pondrá rojo, y
-        dragando la ventana desde el costado izquierdo de la misma se puede cambiar ancho y 
-        altura. Para terminar volver a pulsar el simbolo <>.
-        El tamaño de ventana y font se guarda para ello se genera RollMusic.ini
+        de las octavas. Para ello se pulsa click izquierdo, el simbolo <> el cual se pondrá rojo, y
+        dragando con un click izquierdo la ventana desde el costado izquierdo de la misma y 
+        por debajo de la cinta del menu en todas direcciones, se puede cambiar ancho y altura. 
+        Para terminar dejar de pulsar click izquierdo, pulsar el simbolo <> hasta que se ponga blanco
+        de nuevo.
+        El tamaño de ventana interlineado y font se guardan para ello se genera RollMusic.ini
         Se conservara ese tamaño para las siguientes sesiones. Si se desea modificar
         se debe cerrar RollMusic borrar RollMusic.ini,  ejecutar el programa de nuevo 
         y redimensionar dede el tamaño normal al nuevo tamaño deseado de ventana y font.
-        e interlineado inc_penta-
+        e interlineado inc_penta. Si se cambia de resolucion la pantalla del monitor se
+        deberá hacer lo mismo. Tambien se podria editar a mano RollMusic.ini con la aplicacion 
+        apagada.
         
     1.1)   El espaciado entre lineas se puede cambiar:
        Pulsar y mantener la tecla control. Girando la rueda del mouse
        en la direccion  hacia afuera abre el espacio  entre lineas, hacia 
        adentro lo achica, similar al tamaño de un texto
-       en un editor de texto. Para terminar liberar la tecla Ctrl.
+       en un editor de texto. Para terminar liberar la tecla Ctrl. Si por alguna funcion
+       usada anterior deja de funcionar, mover el scroll con las flechas eso habilita de nuevo
+       la rueda del mouse.
 
     1.2)  Trasponer todo: Ctrl-T habilita la trasposicion, Q la deshabilita.
        una vez habilitada con Flecha-UP sube de a un semitono con cada pulso
@@ -201,10 +216,10 @@
     
        Trasponer una sola nota: el 3er Ctrl-click hacerlo sobre la nota. 
        Trasponer 1 o mas notas al azar en Grupo: pulsar ALT+Click en cada nota
-       deseada, luego Ctrl-T o viceversa no import ael orden, subir bajar con 
+       deseada, luego Ctrl-T o viceversa no importa el orden, subir bajar con 
        flechas arriba abajo como siempre. Terminar pulsando la letra 'q'.
        (nota: si se da click en [Edicion] se puede ver el contenido de la celda
-       en el ultimo caso la nota a mover pasa a volor nE=13, al dar 'q' vuelve a su valor
+       en el ultimo caso la nota a mover pasa al valor nE=13, al dar 'q' vuelve a su valor
        normal segun su ubicacion nE=1 a nE=12 semitono, 13 indica trasponer para el programa).   
 
        Mover una zona: igual que antes se selecciona las 2  posiciones de la zona a mover
@@ -215,21 +230,30 @@
        la zona superponiendo la zona en blanco sobre la region en donde se mueve,
 
        Copiar una zona 1 o mas veces: igual que en mover zona pero no borra la zona original, si entramos
-       una numero N (1,3,15,etc)), despues y antes de C+click , copia N veces esa zona una al lado de la otra 
+       una numero N (1,3,15,etc)), antes de C+click , copia N veces esa zona una al lado de la otra 
        (copia en masa).
 
     1.3) Recalcular Compas <R>: para ver rápido si las notas ingresadas forman un compás completo normalmente
        el compás recalcula la posicon de las barras separadoras automaticamente, sino satisface esa condición
        no las muestra, hay procesos en que no se hace automatico sino con otras operaciones siguientes, en esos
-       casos un recalculo de los compases se puede ahcer pulsando 'r'.
+       casos un recalculo de los compases se puede hacer pulsando 'r'. Solo cuando se está ingresando notas
+       nuevas desde el teclado, si se  revasa el tamaño de un compas el programa  automaticamente corige la entrada
+       partiendo  la ultima nota y lo reemplaza por  notas ligadas una parte en el compas actual y el resto en el siguiente.
 
     1.4) Grabar Archivo Roll [Archivo]->[Grabar]: 
        Si se marcaron columnas para borrar con <dur, nota> = 190,190 , se borran pero no se elimina el espapcio 
        que dejan, al grabar se eliminarán automaticamente, con esta opción mientras se edita solo marcamos 
-       lo que no queremos. Habrá otras para eliminar directamente on line. (usaremos Retroceso o backtrace 
-       en próxima version). Grabar ARchivo TRack o Pista Trk, se usa ROLLaTrack y graba siempre al mismo
+       lo que no queremos. Para eliminar directamente en ese momento ,usaremos Delete o Supr. 
+       Grabar Archivo Track o Pista Trk, se usa ROLLaTrack y graba siempre al mismo
        nombre en roll pero anteponiendo [00], [00]nombreRoll.Trk.
-       Si estamos en cancion y uso Grabar, se graba la pista rtk en cancion una actualizacion.        
+        Si cargue un .roll y se modifica, se graba el mismo  .roll, si cargue un track rtk se graba como rtk.
+       Si estamos en cancion y uso Grabar, se graba la pista rtk en cancion una actualizacion. (las canciones
+       son siemrpe un grupo de .rtk nunca .roll en una carpeta en esta version, tal vez en el futuro
+       se grabe todo como un unico archivoque incluy atodos los tracks, pero en carpeta es mas manuable
+       para hace rcambios por fuera del programa como nombres orden reemplazo de un trakc facilmente sin
+       depender del programa, el programa cargara la infromacion de nombre nro de track todo desde los nombres
+       de los archivos lo que da una cierta libertad podria mezclar o reusar tracks de otras canciones facilmente, todo
+       a nivel archivo nada más)
        Si estamos en cancion y cargo un roll y lo grabo se graba una actualziacion de ese roll.
        Si no hay cancion y cargo roll o pista, se graba tal cual se cargo si es roll como roll
        sobreescribe, si es pista rtk coom pista rtk. (verificar esta ultimas funciones)
@@ -237,17 +261,21 @@
          Puedo cargar un roll *.roll o un rtk *rtk o pista. Tanto con o sin cancion.
     1.6) Tamaño Font  F9 disminuye <-> F10 aumenta font solamente no la proporcionalidad.
        La edicion en el diseño original se hacia en font=18 (al cual se vuelve al pulsar 'q') y actualmente 
-       en otros tamaños, se cambio para trabajar a distintos tamaños de fonty  proporcionlidad. ESTE CAMBIO 
+       en otros tamaños, se cambio para trabajar a distintos tamaños de font y  proporcionlidad. ESTE CAMBIO 
        SE HACE PULSANDO F2  ó F3 para disminuir o agrandar la proporcionalidad includio el font. 
        Se recomiendo usar font 18 que es el valor para el cual es mas optimo la edicion, pero funciona bien 
        desde Font 15 a más de 20 sin problemas. Se puede jugar con la proporcionalidad F2/F3 y luego ajustar
-       el font solamente con F9/F10.
+       el font solamente con F9/F10. Los ajustes se graban en RollMusic.ini para otra sesion futura 
+       independiente del archivo cargado solo depende del inicio RollMusic.ini. Se agregaran otros 
+       parametros convenientes en el futuro. Colores, escalas deseadas etc etc.
+       
+       
 
     1.7) Crear Canción.
 
           En RollNusic Control usar 'Nueva Cancion' del menu (lo que diga Na es no aplicable todavia
-        no está habilitado) , agregar el titulo o nombre de la cancion. Si no se agrega pondra de
-        título de la cancoin o sea el nombre del directorio como la fecha.
+        no está habilitado) , agregar el titulo o nombre de la cancion. Si no se agrega pondra un titulo 
+        por omision de la cancoin (o sea el nombre del directorio) como la fecha.
         Luego en el mismo menu pulsar 'Crear un directorio de Cancion con los tracks separados' 
         buscar un lugar para el directorio nuevo de la cancion con el nombre asignado.
 

@@ -630,7 +630,7 @@ If ix < 3 Then ' rollmusic CON control
   MenName5=MenuTitle(hMessages,"Cambiar Tiempo Y Ritmo")
   MenName6=MenuTitle(hMessages,"Reproducir")
   MenName7=MenuTitle(hMessages,"Opciones")
-  MenName8=MenuTitle(hMessages,"Ayuda")
+  MenName8=MenuTitle(hMessages,"Acerca de")
 
 MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
 MenuItem(1006,MenName1, "Cargar directorio de Cancion con Pistas separados")
@@ -684,7 +684,7 @@ MENUITEM(1107,MenName7,"Seleccionar NOTA DE LA ESCALA ESCALA (Por omision C )")
 MENUITEM(1108,MenName7,"Trabajar con sostenidos (Por omision Sostenidos #)",MF_CHECKED )
 MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
 
-MenuItem(1110,MenName8,"9 Menu")
+MenuItem(1110,MenName8,"Acerca de")
 End If
 ' default de FRACCIOANR autodur 
    usarAcordesIguales=1
@@ -1168,7 +1168,8 @@ Print #1,"1060 abrirRoll=0 entro"
             
 
            Case 1110
-             MessBox ("","Acerca de este programa")
+   
+             MessBox ("", acercade)
               
          End Select
        Case eventgadget

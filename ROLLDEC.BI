@@ -750,3 +750,11 @@ Dim Shared  As pasa param ', param2
 
 ' usaremos xml par aleer y escribir musicxml 
 ' http://xmlsoft.org/examples/index.html
+Dim Shared As String acercade
+acercade = "Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version Solo ejecuta las secuencias " + _
+ "a base de algoritmos sin una linea conductora de tiempos. Solo se basa en las duraciones de las notas. " + _
+ "Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
+ "o su ejecucion. " + _
+ "Usa Cairo como libreria de graficos, Rtmidi como libreria midi, " + _
+ "Editor de código FbEdit. Echo en Freebasic como hobby.FreeBASIC Compiler - Version 1.08.1 (2021-07-05), " + _ 
+ "built for win64 (64bit) Copyright (C) 2004-2021 The FreeBASIC development team." 
