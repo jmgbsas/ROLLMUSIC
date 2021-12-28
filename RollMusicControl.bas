@@ -25,12 +25,13 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 'Var hwnd = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*3/4)
 
 'Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
+Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota,compasX
 common Shared As Integer  ANCHO,ALTO
 Common Shared As FLOAT font
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA
-Common Shared As string pathdir
+Common Shared As string pathdir,nombre
 common Shared As String NombreCancion, NombrePista
 Common Shared As Integer cargaCancion, pid1
 Common Shared As cairo_t  Ptr c, c2
@@ -56,7 +57,7 @@ Common Shared As integer ubirtk, ubiroll
 dim Shared As String  ProgError(0 To 17)
 Dim Shared As Integer ContadorError=0
 'Dim As Long event=0
-Dim Shared As Integer desde , hasta,MaxPos=1
+Dim Shared As Integer MaxPos=1
 #Include "RTMIDIDEC.BI"
 
 On  Error GoTo errorControl

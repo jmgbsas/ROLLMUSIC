@@ -457,6 +457,7 @@ dobleclick=>FALSE
 
 Dim Shared d7 As Integer => 10000000 ' PROBAREMOS CON 12/8 O 6 NEGRAS,,,15 MILL
 Dim Shared d11 As Integer => 100000000000
+Dim Shared d4 As Integer => 10000 'para parametrizar menu roll 
 ' comienza el compas , se calculara dinamicamente,,,según posicion  y la historia anterior
 ' del mismo array (acumulado, nro Compas, posicion)
 Dim Shared As Integer TipoAcorde=0 '1 simple,2 acordes iguales, 3 acorde  distintos
@@ -513,8 +514,8 @@ Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 17500000,8750000,4375000,2187500,1093750,546875,273438,136719,68360, _ '163 171
  6666666,3333333,1666666, 833333, 416666,208333,104166, 52083,26042,0,0 }  '172 182
 
-Dim Shared As String nombreArchivo, TCompas,nombre, menuOldStr
-nombre=""
+Dim Shared As String nombreArchivo, TCompas,menuOldStr
+
 Dim Shared As UByte Vfuerte=70,Vsemifuerte=60,Vdebil=50
 TCompas ="4/4"
 'Dim Shared As Integer MaxPosTrack(0 To 32) ' cada track tendra su max pos
@@ -706,6 +707,7 @@ anchofig=ANCHO/45 ' SON 45 COL PERO SE USAN MENOS 41
 NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
 Dim Shared ANCHO3div4 As Integer 
  ANCHO3div4 = ANCHO *3 / 4
+ 
 '--------------------
     
 #Include "mod_rtmidi_c.bi"    
@@ -723,7 +725,7 @@ Declare Sub armarescala(ByRef cadenaes As String )
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA 
-Common Shared As string pathdir
+Common Shared As string pathdir,nombre
 common Shared As String NombreCancion,NombrePista
 Common Shared As Integer cargaCancion, pid1
 Common Shared As cairo_t  Ptr c, c2

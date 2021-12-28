@@ -4,13 +4,15 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
 ' para cargar desde disco un track se usa esta sub y luego TrackaRoll para verlo
 ' y editarlo
   print #1,"----------------------------------------------"
-  print #1,"1) ENTRA A CargarTrack nombre, ntk= ",nombre , ntk   
+  print #1,"1) CargarTrack nombre, ntk= ", nombre , ntk  
+  Print #1,"1) UBIRTK QUE LLEGA ", ubirtk
+ 
      Dim z (1,1 )  As poli
      Dim zLim (1,1) As poli
      Dim As Integer ubi1,ubi2 
      Dim As String x,x1,x2,x3,x4,x5,nombrea
   '1) cargar pista desde disco y desde Roll puro   
-     If ubirtk=0  Then ' no tengo nombre debo explorar
+     If ubirtk = 0   Then ' no tengo nombre debo explorar
            myfilter  = "Track Files"+Chr(0)  +"*.rtk"+Chr(0)
            getfiles(file,myfilter,"open")
            nombrea=*file.lpstrFile
@@ -26,6 +28,7 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
           ubirtk=0
        EndIf   
      EndIf
+ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
        If nombrea = "" Then
        print #1, "cargaTrack exit sub"
           Exit Sub
@@ -160,6 +163,7 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
 
       print #1,"CargarTrack  fin"  
       print #1,"----------------------------------------------" 
+ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
  Sleep 100 ' retardo para que se ubiquen lso datos en memoria ¿? parece necesario
 End Sub
 '

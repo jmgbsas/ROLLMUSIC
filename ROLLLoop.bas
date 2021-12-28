@@ -601,7 +601,24 @@ If ubiroll > 0 Then
    ROLLCARGADO=TRUE
    MenuNew=0
    ubiroll=0
+  param.ubiroll=0
 EndIf
+
+ If ubirtk > 0 Then ' ya tengo el nommbre en linea de comando
+    print #1,"carga track desde linea de comando,  nombre antes   ",titulos(0)
+    nombre = titulos(0)
+    CargarTrack (Track() , 0, ubirtk ) ' ntk=0
+    print #1,"carga track veo nombre despues ", titulos(0)
+    TrackaRoll (Track() , 0 , Roll) ' ntk=0
+    print #1,"TrackaRollcarga rtk veo nombre ", titulos(0)
+    RecalCompas (Roll)
+    print #1,"despues RecalCompas veo nombre ", titulos(0)
+    MenuNew=0
+    TRACKCARGADO=TRUE
+    ubirtk=0
+param.ubirtk=0
+ EndIf
+
 'If ubiroll > 0 Then
  '   CargaArchivo(Roll,ubiroll)
  '   ROLLCARGADO=TRUE
@@ -2558,7 +2575,7 @@ If (ScreenEvent(@e)) Then
   EndIf
  ' =========> MOVER VENTANA DRAGAR LA CINTA SUPERIOR con el mouse
  ' And menuNro= 1  '''348  (2* ANCHO/3)
- If MouseButtons And 1 And S5=1 And mouseX > 350  And mousex < (ANCHO-70-mxold) And _
+ If MouseButtons And 1 And S5=1 And mouseX > ANCHO*7041/d4  And mousex < (ANCHO-70-mxold) And _
     usarmarco = 0 AND mousey < 50 Then
    
    x2=mouseX

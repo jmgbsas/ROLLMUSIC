@@ -100,12 +100,15 @@
     1.14 ) En desarrollo, Entrar un acorde a partir de una Nota de la secuencia o si no hay nada tambien.
            PAra ello damos Ctrl-Click derecho sobre la nota a convertir en acorde..y aprece un menu contextual
            (el cual todavia no es funcional, triadas cuaternarias etc, 1era o 2da inversion etc)
-    1.15 ) En algun Futuro: exportar a MusicXml o midi pra poder interactuar con otros programas.
+    1.15 ) En algun Futuro: exportar a MusicXml o midi para poder interactuar con otros programas.
            Como tambien importar...
-    1.16 )Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a toca como esclavo
+    1.16 )Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
           o ordenar la ejecuicion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
           o ejecutar con otras instancias de RollMusic con o sin Control...(hay muchisimo por hacer...)
-        
+    NOTA: si en algun momento se traba el scroll arriba abajo con la rueda del mouse, destrabar la situacion  con 
+                flecha arriba o abajo y habilitar la rueda del mouse.
+                Si una opcion de menu en el grafico de Roll no funciona colocando el mouse encima del rotulo
+               necesitara un click o un ctrl-click ...
     IV) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
         estilo pentagrama. Se podrán usar varias instancias pero sin ningun control
         entre ellas.RollMusic.exe levanta ahora 2 pantallas un menu GUI y el grafico habitual.

@@ -739,9 +739,12 @@ Print #1,"ANTES ANCHO , ALTO ", ANCHO, ALTO
 If mxold > 0 Then
 
 'MoveWindow( hWnd , 1, 1 , ANCHO - mxold, ALTO - myold, TRUE )
+Print #1,"rollmusic.bas 742: ANCHO,nancho ",ANCHO, nancho
   If ANCHO = nancho Then
   ANCHO= nancho -mxold 
-  endif
+  EndIf
+Print #1,"rollmusic.bas 745: ANCHO resultante  ",ANCHO
+
   AnchoInicial=ANCHO
   anchofig=ANCHO/45 ' SON 45 COL PERO SE USAN MENOS 41
   NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
