@@ -80,7 +80,13 @@ ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
      
      notaescala =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
      pmTk(ntk).notaescala=zLim(1,1).vol
-     
+     If zLim(1,1).pan = 3 Then
+        alteracion="sos"
+     EndIf
+     If zLim(1,1).pan = 2 Then
+        alteracion="bem"
+     EndIf
+     Print #1,"altereacion ",alteracion
      print #1,"desde ",pmTk(ntk).desde
      print #1,"hasta ",pmTk(ntk).hasta
      

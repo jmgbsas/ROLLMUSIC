@@ -94,9 +94,11 @@
     1.13) Una instancia sin control puede ejecutarse tambien si asociamos la sextensiones *.roll y *.rtk
           con Rollmusi.exe. En ese caso al dar doble clik o enter sobre el nombre de una secuencia en el
           explorador, se levantará una sesion de RollMusic sin el Menu de Control. 
-          Queda editado el arcivo *.roll o el *.rtk (este ultimo caso dejo de andar bien, esta abriendo una ventana de carga, 
-          pero si se le da  cancelar muestra bien lo cargado).Queda por corregir al levantar un *.rtk.
+          Queda editado el arcivo *.roll o el *.rtk.
           En este modo se puede ver la escala previamente ajustada desde Control y Grabada al archivo desde Roll.
+          Como tambien si se usa sostenidos o bemoles..
+          Nota: en el caso de bemoles la entrada de notas es igual que antes, Si antes May+C era C#
+          si uso bemoles será Db, siemrpe subo un semitono , es solo una convencion.
     1.14 ) En desarrollo, Entrar un acorde a partir de una Nota de la secuencia o si no hay nada tambien.
            PAra ello damos Ctrl-Click derecho sobre la nota a convertir en acorde..y aprece un menu contextual
            (el cual todavia no es funcional, triadas cuaternarias etc, 1era o 2da inversion etc)
