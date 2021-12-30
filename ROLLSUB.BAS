@@ -8,6 +8,7 @@ Sub ArmarDurFrac ()
 ' los bloques de durcion se repiten de a 3, el incr es por bloque
 ' si voy al 2do bloque de 3 el incrdeja de ser 0 y pasa a 27 respectro de la
 ' 1er linea l cargo TRAck como 2da linea
+Print #1,"armardurFrac procesa numeroFrac"
 If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
    numeroFrac = DUR 'era duracion
     'DUR nunca se ahce cero solo para espacio ergo si pulso
@@ -95,7 +96,7 @@ EndIf
 ' ---fin 4to bloque -
    cuart=0:pun=0:doblepun=0:tres=0:sil=0:mas=0
 
-
+Print #1,"armardurFrac  numeroFrac Resultante ", numeroFrac
 End Sub
 
 Sub cerrar (ByVal n As Integer)
@@ -1440,7 +1441,14 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
     cadenaes=""
     Print #1,"armarescala desde cargarArchivo"
     armarescala (cadenaes)
-     
+    cadenaes_inicial = cadenaes
+    tipoescala_inicial=escala(tipoescala).nombre
+' carga de escala en guia de escala
+    guiaEscala(1).tipoescala=tipoescala
+    guiaEscala(1).notaescala=notaescala
+    guiaEscala(1).alteracion =CInt(zLim(1,1).pan)
+    guiaEscala(1).posicion=1
+
      NB= 0 + (desde-1) * 13
      NA= 11 + (hasta -1)*13
      pmTk(0).notaold = notaold  'notaold es ubyte en pmTk
@@ -1834,7 +1842,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
   '1.1
    
    t=  "      <MENU=(<=|=>)>/<VENTANA=(MOVER=DRAGAR CINTA)(POSICON NORMAL,SUBE/BAJA BORDE INFERIOR=F7-F8)> "
-   Sleep 50
+   
   Case 2 ' para posicionar  en pantalla NO BORRAR. <= EDIT MENU
  
    menuNew=2
@@ -1915,7 +1923,7 @@ EndIf
      EndIf
   EndIf
 
-  Sleep 50
+  
 
   Case 3 ' ==========================> caso 3
    '   t = " [NUEVO] [ABRIR] [GRABAR] [GRABAR COMO] [EXPORTAR] [CERRAR] [SALIR] "
@@ -2113,7 +2121,7 @@ EndIf
  '    MenuNew=0
  '   EndIf
  '  EndIf
-  Sleep 50 
+   
 
   Case 4  ' <======= COMO REPRODUCUIR
    cairo_set_source_rgba c,1,1,1,1
@@ -2124,7 +2132,7 @@ EndIf
        MenuNew=0
     EndIf
    EndIf
-   Sleep 50
+   
 
   Case 5 ' OPCIONES MENU, [COMPAS] [OCTAVAS] [TEMPO] [CONFIGURACION]
 
@@ -2169,7 +2177,7 @@ EndIf
 
    t=  " [CONFIGURACION]": cairo_show_text(c, t)
  cairo_stroke(c)
- Sleep 50
+ 
 
   Case 6 'OPCIONES => OCTAVAS
    
@@ -2343,7 +2351,7 @@ EndIf
    t=  " [2/4]":cairo_show_text(c, t)
  
  cairo_stroke(c)
-Sleep 50
+
 
   Case 8
  print #1,"entro a menu 8 desde ver"
@@ -2373,7 +2381,7 @@ Sleep 50
 
       End Select
     menunew=0
-   Sleep 100
+   
 
   Case 9
   ' [MIDI] 
@@ -2389,7 +2397,7 @@ Sleep 50
       MenuNew=9
     EndIf
     t = "      [MIDI]":cairo_show_text(c,t):t=""
-   Sleep 100
+   
 
  Case 10
 

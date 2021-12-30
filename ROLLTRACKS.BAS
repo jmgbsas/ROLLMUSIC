@@ -1375,13 +1375,17 @@ Sub AutoFracTodoDur (Track() As sec,Roll As inst, indicePos As Integer, dura As 
 ' nota media se llenara con ellas y lo que falta ocmpletar de esa media y hasta las partes de
 ' la mayor se llenaran con silencios de la menor en cuestion
 '----------
+Print #1,">>>> START AutoFracTodoDur "
    Dim As UByte menor, mayor
    Dim As Integer i1men,i1may,posdur
 ' en modo lectura la posicion de una nota en el vector es posdur, la 1er parte es en la pantalla
 ' la 2da posishow es en el vector hasta el inicio de la pantalla 
    posdur= (mousex- gap1 )/anchofig + posishow
+   Print #1,"posdur ",posdur
    menoryMayorEnColumna (Roll, posdur,menor,mayor,i1men,i1may)
+   Print #1,"menoryMayorEnColumna, posdur,menor,mayor,i1men,i1may ", posdur,menor,mayor,i1men,i1may
    If menor=mayor Then  ' 06-12-2021
+    Print #1,"menor=mayor  no se procesa Use otra opcion"
       Exit Sub 
    EndIf
 ' saco la info para usar Fraccionador...pero ojo fraccionador solo reemplaza a notas
@@ -1398,6 +1402,7 @@ print #1,"dura ",dura
 If pesoDur(dura) < pesoDur(mayor)  Then ' error corregimos no puede ser mayor a menor
    dura=mayor
 EndIf
+Print #1,"dura ",dura
 
 ' numeroFrac es lo q entra el usuario por teclado , sino entro nada se toma la menor
 
@@ -1408,6 +1413,7 @@ EndIf
 
 If numeroFrac >=1 And numeroFrac <= 180 Then ' entrada de usuario que podra ser menor auomatico
 Else
+ Print #1,"se sale numeroFrac no compatible 1 a 180 ",numeroFrac
   Exit Sub
      
 EndIf

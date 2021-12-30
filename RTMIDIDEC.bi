@@ -37,7 +37,7 @@ Dim size As UInteger<64>
 Dim Shared As UInteger portsin, portsout 
 Dim Shared As Double tiempoPatron=60 ' cuantas negras en un minuto default
 Dim Shared As Double old_time_on=0,old_time_off=0,old_time_on_int=0,old_time_off_int=0
-Dim Shared As Integer jply=0, finplay=0
+Dim Shared As Integer jply=0, finplay=0,indEscala=1
 
 'elpatron esla negra ej I=60 ergo todo sera relativo A la negra q dura 1 seg
 ' 09-06-2021 agregue 0 en relDur para evitar cancelaciones pero ojo puede 
@@ -66,7 +66,7 @@ Dim Shared As float relDur (0 To 182) => {0, _
 7 ,3.5,1.75,0.875,0.4375,0.21875,0.109375,0.0546875,0.02734375, _ '163 171
 2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,0.0208333,0.01041666,0,0} '172 181
 
-Dim Shared As Integer play =0,playb=0, portout, portin, numero, numeroFrac 
+Dim Shared As Integer play =0,playb=0, portout, portin, numero, numeroFrac,cambioescala=0 
 ReDim Shared As string listout(1 ), listin (1 )
 Dim Shared As String * 1 cifra 
 Dim Shared As String  digito, digitoFrac
@@ -122,3 +122,13 @@ Dim Shared As integer relnRnE(0 To 132) => { _  ' indice de Roll vs nota ..semit
 12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1 }
 
 Dim Shared indiceaudio (0 To 384) As Integer 
+Type PGE  ' parametros guia escala 
+ tipoescala As Integer
+ notaescala As Integer
+ alteracion As Integer ' 3=sos, 2 bem
+ posicion   As integer
+End Type
+
+Dim Shared guiaEscala  (1 To 100) As PGE ' suponemos  100 cambios de escala en una pista
+' en la posicion 1 se cargará la escala leida de la pista al inicio
+' la escal debe guarar los 3 parametros Tipo escala , notaescala y alteracion en un principio basico

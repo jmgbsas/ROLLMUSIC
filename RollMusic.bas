@@ -1,7 +1,10 @@
+' TODO MULTIKEY IR PASANDO DE A POCO PROBANDO A E.SCANCODE MULTIKEY ES UNA BASURA REPITE EL COMANDO MIL VECES
+' paso previo para armar acordes: necesitamos poder INGRESAR CAMBIOS DE ESCALA  y guardarlos en la secuencia
+' pero al tocar se saltean como si no existieran,,,al retroceder o avanzar en la secuencia se debe ir actualizando
+' la escala en uso, esto permite al ingresar un acorder construirlo en base a la escala usada en ese tramo.
 ' usaremos xml para leer y escribir musicxml e intercambia rocn otros programas
 ' antes que midi despue salgun dia haremos midi no se veremos.... 
 ' http://xmlsoft.org/examples/index.html
-
 ' YA cierra todas las sesiones de rollmusic desde control
 ' futuro grabar mxold y algo mas para conservar el tamaño de la ventana y el tamaño del font
 ' usado por el usuario !!!! OK Y AANDA
@@ -630,7 +633,7 @@ If ix < 3 Then ' rollmusic CON control
   MenName5=MenuTitle(hMessages,"Cambiar Tiempo Y Ritmo")
   MenName6=MenuTitle(hMessages,"Reproducir")
   MenName7=MenuTitle(hMessages,"Opciones")
-  MenName8=MenuTitle(hMessages,"Acerca de")
+  MenName8=MenuTitle(hMessages,"Info")
 
 MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
 MenuItem(1006,MenName1, "Cargar directorio de Cancion con Pistas separados")
@@ -683,6 +686,8 @@ MENUITEM(1106,MenName7,"Seleccionar TIPO DE ESCALA de la secuencia (Por omision 
 MENUITEM(1107,MenName7,"Seleccionar NOTA DE LA ESCALA ESCALA (Por omision C )")
 MENUITEM(1108,MenName7,"Trabajar con sostenidos (Por omision Sostenidos #)",MF_CHECKED )
 MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
+MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
+MenuItem(1111,MenName7,"Cambio de escala en la Posicion actual (Pasozona1), se borra todo lo que haya y se salta en la ejecucion, ajustar antes alteracion # o b ")
 
 MenuItem(1110,MenName8,"Acerca de")
 End If
@@ -1170,7 +1175,24 @@ Print #1,"1060 abrirRoll=0 entro"
            Case 1110
    
              MessBox ("", acercade)
-              
+           Case 1111 'cambiode escala
+             If pasozona1 > 0 Then ' gurdamos en la posicion actual los valores cambiode escala
+                cadenaes=""
+                selTipoEscala (tipoescala)
+                selNotaEscala (notaescala) 
+                cambioescala=1
+                indEscala=indEscala+1
+
+                guiaEscala(indEscala).tipoescala=tipoescala
+                guiaEscala(indEscala).notaescala=notaescala
+                If alteracion="sos" Then
+                   guiaEscala(indEscala).alteracion=3
+                EndIf 
+                If alteracion="bem" Then
+                   guiaEscala(indEscala).alteracion=2
+                EndIf 
+              Print #1,"1111 TIPOESCALA NOTAESCALA ",tipoescala, notaescala
+            EndIf              
          End Select
        Case eventgadget
       ' el codigo anterior que traia de disco esta en notas

@@ -90,6 +90,13 @@
           el tempo. Grabar el archivo en Roll grafico click [Archivo]-> Ctrl-Click [Grabar], de esa forma
           La escala de la Nota y tipo elegida se graba con la secuencia la cual volvera a cargarse en la proxima
           carga del archivo roll o trk.(falta grabar el tempo en el archivo)
+    1.12.1) Si se marca en una posicion la 1er marca de zona en la secuencia, y luego seteamos tipoescla notaescala  
+            y alteracion si se desea, se cambiara la escala en esa posicion, la cual regira desde ahi para construir 
+           acordes en esa nueva escala. (1er etapa lista, falta coordinar que escala se usa en cada parte  sea,
+           si hay una escala general se usará desde la posicion 1 hasta la nueva entrada con marca y desde ahi la otra
+           en desarrollo... ) Mostrar E Mayor abajo de cada octava creo no tiene sentido ¿o si ?eso estara arriba de todo
+           es mejor mostrar las notas de la escala o ambas cosas CE:E F# G# A B C# D# por ejemplo debajo de cada cambio con CE:
+           significando cambio de escala.(o mostrar esos popup lindos de ayuda chiquitos debo buscar una libreria)
     Nota: todas estas acciones funcionan tambien en modo instancia Separada sin Menu de Control.
     1.13) Una instancia sin control puede ejecutarse tambien si asociamos la sextensiones *.roll y *.rtk
           con Rollmusi.exe. En ese caso al dar doble clik o enter sobre el nombre de una secuencia en el

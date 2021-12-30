@@ -103,7 +103,7 @@ alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoZona2=0, pasoNota=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, SelGrupoNota =0,moverZona=0, copiarZona=0
 Dim Shared as ubyte  DUR,nota,notasInsertadas (1 to 1500),notacur
-Dim Shared As String t
+Dim Shared As String t,t2
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert, cursormove
 Dim shared As integer Penta_y, indice, posicion=0,posicionOld=0, espacio,posn=0,cursorHori
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
@@ -132,6 +132,7 @@ Dim Shared NotasEscalaArmado2 (1 To 24) As String *2 => _
 
 Type esc1 
   nombre   As String
+  nota     As string
   nropasos As Integer
   pasos    As Byte Ptr   
 End Type
@@ -632,7 +633,7 @@ Dim Shared As inst Roll ' para visualizar y tocar
 Dim Shared Track  (0 To 32) As sec ' tracks para guardar,.. y tocar 
 
 Dim Shared ix As Integer=0
-Dim Shared As String titu, cadenaes 
+Dim Shared As String titu, cadenaes,cadenaes_inicial,tipoescala_inicial 
 Dim Shared As Integer instru=1, instruOld, tipoescala=1, tipoescalaOld=1, notaescala=1,notaescalaOld
 Dim Shared As Integer desdevector
 Dim Shared As Integer hastavector,abrirRoll=0
@@ -663,7 +664,7 @@ Dim Shared As Integer  AnchoInicial,AltoInicial
 Common Shared As FLOAT font
 Dim Shared As float  deltaipf=0, lockip=0 
 Dim Shared q As String * 1
-Dim Shared As UByte s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
+Dim Shared As UByte  indf,s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
 ''Dim Shared escala As float = 1.0
 Dim Shared translado As Integer = 1
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
@@ -754,7 +755,7 @@ Dim Shared As String acercade
 acercade = "Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version Solo ejecuta las secuencias " + _
  "a base de algoritmos sin una linea conductora de tiempos. Solo se basa en las duraciones de las notas. " + _
  "Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
- "o su ejecucion. " + _
+ "o su ejecucion. Programado en OS:Windows7, Proc:AMD Phenom-II Black Edition. " + _
  "Usa Cairo como libreria de graficos, Rtmidi como libreria midi, " + _
  "Editor de código FbEdit. Echo en Freebasic como hobby.FreeBASIC Compiler - Version 1.08.1 (2021-07-05), " + _ 
  "built for win64 (64bit) Copyright (C) 2004-2021 The FreeBASIC development team." 

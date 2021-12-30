@@ -932,6 +932,7 @@ Sub playAll(Roll As inst) ' play version 2
 ' hasta queterminede tocar la nota mas larga.
  
 fueradefoco=1
+indEscala=1 ' inicializamos la guiade escalas a la 1era 
 
 Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
 tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
