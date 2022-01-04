@@ -171,7 +171,7 @@ Dim t2 As String=""
      If (indf >= 1 And indf <= 182)  Then ' 13-05-2021 11
      Else
 
-        If indf = 200 Then
+        If indf = 200 And nVerEscalasAuxiliares=3 Then
            cairo_set_source_rgba(c, 0, 1, 0, 1) 
            cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
            cairo_line_to(c,gap1 + (ic ) *anchofig , Penta_y + 13.5 * inc_Penta )
@@ -559,7 +559,7 @@ Dim As Integer ubiroll,ubirtk,encancion
  
  '    If hwnd =0 Then   ,GFX_WINDOWED
      ScreenControl  SET_DRIVER_NAME, "GDI"
-     If usarmarco= 1 then
+     If usarmarco= 3 then
         ScreenRes ANCHO, ALTO , 32,1 ''',  'Or GFX_HIGH_PRIORITY
      Else
         ScreenRes ANCHO, ALTO, 32,1 , GFX_NO_FRAME 
@@ -1226,13 +1226,13 @@ If MultiKey(SC_ESCAPE) Then
     cairo_destroy(c)
     cairo_surface_destroy( surface )
     FT_Done_Face( ftface )
-    
+   
     If play=1 Or playb=1 Then
       alloff (1)
       ThreadDetach(thread1)
     EndIf
     close_port(midiout)
-    out_free(midiout) 
+    out_free(midiout)
     Dim ffile As Integer
     ffile=FreeFile
     Open "RollMusic.ini" For output As ffile
@@ -1245,7 +1245,6 @@ If MultiKey(SC_ESCAPE) Then
        nancho=ANCHO
        nalto =ALTO
     EndIf    
-
     If ndeltaip=0 Then
        ndeltaip=inc_Penta
     EndIf
@@ -1255,11 +1254,14 @@ If MultiKey(SC_ESCAPE) Then
     Print #ffile,nANCHO, " ANCHO"
     Print #ffile,nALTO, " ALTO"
     Print #ffile,ndeltaip, " inc_Penta"
+    Print #ffile,nVerEscalasAuxiliares, "nVerEscalasAuxiliares"
+    Print #ffile,nanchofig, "nanchofig"
 
     Close ffile
-    salir()
+      
     cerrar 0
     End 0
+
   EndIf  
 EndIf
 ' AYUDA =============ESPACIOS MANEJO ===================================
@@ -1315,16 +1317,12 @@ EndIf
 pun=0:sil=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
 SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
 deltaip=0:incWheel=0:lockip=0
-anchofig=35
-gap1= (anchofig* 2315)/1000  ' 81 default
-gap2= (914 * gap1) /1000 ' 74 default
-gap3= (519 * gap1) /1000 ' 42 default
- 
-''''font=anchofig * 515 /1000 + (anchofig ^2 - 1225) /375' 18 default
-'font=anchofig * 510 /1000 + (anchofig ^2 - 1225) /1000
-'font=anchofig * 510 /1000 + (35-anchofig)* (anchofig ^2 - 1225) /1000
-font=18
-NroCol =  (ANCHO / anchofig ) - 4
+'anchofig=35
+'gap1= (anchofig* 2315)/1000  ' 81 default
+'gap2= (914 * gap1) /1000 ' 74 default
+'gap3= (519 * gap1) /1000 ' 42 default
+'font=18
+'NroCol =  (ANCHO / anchofig ) - 4
  cursorVert = 0
  cursorHori = 0
  agregarNota=0
@@ -2738,6 +2736,8 @@ EndIf
     Print #ffile,nANCHO, " ANCHO"
     Print #ffile,nALTO, " ALTO"
     Print #ffile,ndeltaip, " inc_Penta"
+    Print #ffile,nVerEscalasAuxiliares, "nVerEscalasAuxiliares"
+    Print #ffile,nanchofig, "nanchofig"
 
     Close ffile
       
@@ -2802,7 +2802,7 @@ EndIf
  
  If comEdit=FALSE Then
 ' para ingreser automatico acordes a partir de una TONICA futuro--01-12-2021  
-    If MultiKey(SC_CONTROL) And MouseButtons And 2 Then
+    If MultiKey(SC_CONTROL) And MouseButtons And 2 Then 'yyy
      Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2
      Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dis7,Mayor9,Menor9,Dis9, notabase     
      Dim As Integer event,Posx,Posy 
@@ -2813,7 +2813,7 @@ EndIf
     Print #1,"ANCHO ,ALTO en menu contextual ", ANCHO ,ALTO
     Print #1,"mxold, myold ", mxold,myold
     Print #1,"nmxold, nmyold ", nmxold,nmyold
-'xxxx
+'
           ' You'd have to get the thread id of the graphics window (GetWindowThreadProcessId), 
 ' set a WH_GETMESSAGE hook with that thread id and then process the command messages 
 ' in your hook function. chino basico je                                                                  'WS_THICKFRAME
@@ -2826,6 +2826,25 @@ EndIf
 If mousey -40 > (ALTO-myold) *3/5 Then
   Posy=y0+(ALTO-myold)*3/5
 EndIf  
+' determinacion de la posicion y duracion en el click del mouse...igual que en Sc_Z
+    indicePos=(mousex- gap1 )/anchofig + posishow 
+    Print #1,"ACORDES: indicePos ",indicePos
+    Rolldur=CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur)
+    Print #1,"ACORDES: Rolldur ",Rolldur
+    Print #1,"ACORDES: nE ",nE
+    Print #1,"ACORDES: nR ",nR
+    Print #1,"ACORDES: PianoNota del piano ",PianoNota
+    Print #1,"ACORDES: vovlemos a nR  ",PianoNota + SumarnR(PianoNota)
+' nE,nR y PianoNota se calculan en creaPenta..solo depende de mousey
+' aunque de click derecho no importa el mouse y no depende del click 
+'PianoNota=(12-nE +(estoyEnOctava -1) * 13) ' es nR ya lo tengo
+' indice de la nota en el vector = nR,vertical como NA NB
+' determinacion de la notapiano...
+' calcualdo en CreaPenta -> PianoNota= nR - restar (nR) esto para el teclado real pero en roll es nR
+' trabajo con Pianonota y luego convietrto a nR de nuevo...,con Pianonota
+' para reconvertir volver debo usar SumaNr 
+
+
     ' haco = OpenWindow("Acordes", x0+Posx ,y0+Posy,40,40,WS_VISIBLE Or WS_THICKFRAME , WS_EX_TOPMOST ) 'Or WS_EX_TRANSPARENT  )
 ' VALOR POR OMISION  NOTA ORIGEN O DE COMIENZO -> 1 tonica
   
@@ -2858,18 +2877,18 @@ EndIf
 
 
 
-     MenuItem (1001,Mayor,"No inversion")
-     Menuitem (1002,Mayor,"1era inversion")
-     Menuitem (1003,Mayor,"2da inversion")
+     MenuItem (1001,Mayor,"No inversion") 'triada
+     Menuitem (1002,Mayor,"1era inversion") 'triada
+     Menuitem (1003,Mayor,"2da inversion")  ' triada
 
-     MenuItem (1004,Menor,"No inversion")
-     Menuitem (1005,Menor,"1era inversion")
-     Menuitem (1006,Menor,"2da inversion")
+     MenuItem (1004,Menor,"No inversion")  ' triada
+     Menuitem (1005,Menor,"1era inversion")  ' triada
+     Menuitem (1006,Menor,"2da inversion")  ' triada
      
-     MenuItem (1007,Dis,"No inversion")
-     Menuitem (1008,Dis,"1era inversion")
-     Menuitem (1009,Dis,"2da inversion")
-
+     MenuItem (1007,Dis,"No inversion")  ' triada
+     Menuitem (1008,Dis,"1era inversion")  ' triada
+     Menuitem (1009,Dis,"2da inversion")  ' triada
+' ------------------------------------------------------
      MenuItem (1010,Mayor7,"No inversion")
      Menuitem (1011,Mayor7,"1era inversion")
      Menuitem (1012,Mayor7,"2da inversion")
@@ -2895,12 +2914,26 @@ EndIf
      Menuitem (1027,Dis9,"2da inversion")
 
      MenuItem (1028,notabase,"Es Tonica")
+' aca puedo decir que la base tonica es la nota del click, Notapiano
+' nuevo campp grado 1,2,3,4,5,6,7.8.9.10,11,12
+             
      Menuitem (1029,notabase,"Es 3era ")
+        
      Menuitem (1030,notabase,"Es 5ta ")
+        
      Menuitem (1031,notabase,"Es 7ma ")
+        
+' es 4ta, 6ta, 9na, 11a  ¿? podriamo agregar
+     Menuitem (1032,notabase,"Es 4ta ")
+        
+     Menuitem (1033,notabase,"Es 6ta ")
+        
+     Menuitem (1034,notabase,"Es 9ma ")
+        
+     Menuitem (1035,notabase,"Es 11va ")
+        
 
-
-     MenuItem(1028,cancelar,"Salir")
+     MenuItem(1040,cancelar,"Salir")
  
  
      
@@ -2915,6 +2948,33 @@ EndIf
     ' TRIADAS   
          Case 1001
        'NO INVERSION
+      If grado=0 Then grado=1 EndIf
+      Print #1,"Grado ",grado
+      Select Case grado
+        Case 1  ' es Tonica
+        ' armar acorde notapiano, Notapiano+4, NotaPiano+7=la anterior +3
+        Dim As Integer st=0
+        Print #1,"armando acorde ,,indicePos ",indicePos
+        Print #1,"armando acorde ,,RollDur ",RollDur
+        st=PianoNota+4 
+        st =st +SumarnR(st)
+        Print #1,"armando acorde 3ta,,nR ",st
+        Roll.trk(indicePos, st).dur=CUByte(RollDur)
+        st=PianoNota+7
+        st=st + SumarnR(st)
+        Print #1,"armando acorde ,5ta,nR ",st  
+        Roll.trk(indicePos, st).dur=CUByte(RollDur)
+             
+             Case 3
+             Case 5
+             Case 7
+             Case 4
+             Case 6
+             Case 9
+             Case 11
+      End Select       
+
+
          Delete_Menu (hpopup1)
            Close_Window(hpopup1)
            Close_Window(haco)
@@ -3036,6 +3096,7 @@ EndIf
            Exit Do 
          Case 1028 ' es Tonica
             'MessBox("","2 Menu")
+            grado=1
            Delete_Menu (hpopup1)            
            Close_Window(hpopup1)
            Close_Window(haco)
@@ -3058,6 +3119,37 @@ EndIf
            Close_Window(hpopup1)
            Close_Window(haco)
            Exit Do 
+         Case 1032 ' es 4ta
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1033 ' es 6ta
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1034 ' es 9na
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+         Case 1035 ' es 11va
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
+
+         Case 1040 ' es Salir
+            'MessBox("","2 Menu")
+           Delete_Menu (hpopup1)            
+           Close_Window(hpopup1)
+           Close_Window(haco)
+           Exit Do 
 
         End Select
       ElseIf event=eventrbdown Then
@@ -3071,6 +3163,7 @@ EndIf
    '                      RECORDDAR TEST CASE
  ' lockip=0   ' 10-12-2021 wheel no se movia ***JMG OJO JODE INTERLINEADO VER MAS COMENTADO
   fueradefoco=0
+' ========================================================  
 ' SELECCION DE ZONA PARA TRASPONER, VOLUMEN, INSTRUMENTO, ETC ETC
 ' SOLO SELECCIONO PASO DESDE HASTA y/o NOTA. 
 ' usaremos tambien (en desarrollo futuro) para borrar un intervalo ya sea de 

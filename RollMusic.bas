@@ -1,3 +1,7 @@
+' Funciona Acorde en Tonica triaca,,Ctrl+clik derecho luego seguir con mayor hasta no inversion
+' SE ELIMINO DE 'Q' la configuracion de tamaños, proporciones y font
+' se agrego nverEscalasAuxiliares y nanchofig a RollMusic.ini
+' se agrego en Ver, si se ven o no las Escalas Auxiliares en el grafico
 ' TODO MULTIKEY IR PASANDO DE A POCO PROBANDO A E.SCANCODE MULTIKEY ES UNA BASURA REPITE EL COMANDO MIL VECES
 ' paso previo para armar acordes: necesitamos poder INGRESAR CAMBIOS DE ESCALA  y guardarlos en la secuencia
 ' pero al tocar se saltean como si no existieran,,,al retroceder o avanzar en la secuencia se debe ir actualizando
@@ -440,7 +444,7 @@ gap3= (519 * gap1) /1000 ' 42 default
 'print #1,"gap1 ",gap1
 '---------
 Dim ffini As Integer 
-Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip
+Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
 
 ffini=FreeFile
 Open "RollMusic.ini" For Input As ffini
@@ -450,7 +454,9 @@ Line Input #ffini, smyold
 Line Input #ffini, sancho
 Line Input #ffini, salto
 Line Input #ffini, sdeltaip
-Print #1,"sfont, smxold, smyold,sANCHO,sALTO  ",sfont, smxold, smyold,sancho,salto,sdeltaip
+Line Input #ffini, sVerEscalasAuxiliares
+Line Input #ffini, sanchofig
+Print #1,"sfont, smxold, smyold,sANCHO,sALTO..  ",sfont, smxold, smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
 
 Close ffini
 
@@ -460,6 +466,8 @@ nmyold=ValInt(smyold)
 nancho=ValInt(sancho)
 nalto=ValInt(salto)
 ndeltaip=ValInt(sdeltaip)
+nVerEscalasAuxiliares=ValInt(sVerEscalasAuxiliares)
+nanchofig =ValInt(sanchofig)
 
 If nfont > 0 Then
   font=nfont
@@ -473,6 +481,12 @@ EndIf
 
 If ndeltaip > 0 Then
    inc_Penta=ndeltaip
+EndIf
+If nanchofig > 0 Then
+   gap1= anchofig* 2315/1000
+   gap2= (914 * gap1) /1000 ' 74 default
+   gap3= (519 * gap1) /1000 ' 42 default
+   NroCol =  (ANCHO / anchofig ) - 4 
 EndIf
 '---------
 If mxold=0 And myold=0 Then
@@ -629,7 +643,7 @@ If ix < 3 Then ' rollmusic CON control
   MenName1=MenuTitle(hMessages,"Archivo")
   MenName2=MenuTitle(hMessages,"Nueva Cancion")
   MenName3=MenuTitle(hMessages,"Crear Pistas")
-  MenName4=MenuTitle(hMessages,"Ver desde Posicion")
+  MenName4=MenuTitle(hMessages,"Ver")
   MenName5=MenuTitle(hMessages,"Cambiar Tiempo Y Ritmo")
   MenName6=MenuTitle(hMessages,"Reproducir")
   MenName7=MenuTitle(hMessages,"Opciones")
@@ -669,14 +683,13 @@ MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo 
 
 
 
-MenuItem(1070,MenName4,"5 Menu")
+MenuItem(1070,MenName4,"Ver Escalas auxiliares ajustadas", MF_CHECKED)
   
 MenuItem(1080,MenName5,"TEMPO")
   
 MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
 
-MenuItem(1100,MenName7,"Usar MARCO de Ventana ", MF_UNCHECKED)
-MenuItem(1101,MenName7,"No Usar MARCO de Ventana ",MF_CHECKED)
+MenuItem(1100,MenName7,"Usar MARCO de Ventana ",MF_UNCHECKED)
 
 MenuItem(1102,MenName7,"Acordes distintos a iguales, Fracciona notas similares en una Columna en una pista (no hay silencios)",MF_UNCHECKED  )
 MenuItem(1103,MenName7,"Acordes distintos a iguales, Fracciona todas las notas agregando silencios en una columna en una pista ",MF_UNCHECKED  )
@@ -686,7 +699,6 @@ MENUITEM(1106,MenName7,"Seleccionar TIPO DE ESCALA de la secuencia (Por omision 
 MENUITEM(1107,MenName7,"Seleccionar NOTA DE LA ESCALA ESCALA (Por omision C )")
 MENUITEM(1108,MenName7,"Trabajar con sostenidos (Por omision Sostenidos #)",MF_CHECKED )
 MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
-MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
 MenuItem(1111,MenName7,"Cambio de escala en la Posicion actual (Pasozona1), se borra todo lo que haya y se salta en la ejecucion, ajustar antes alteracion # o b ")
 
 MenuItem(1110,MenName8,"Acerca de")
@@ -695,6 +707,14 @@ End If
    usarAcordesIguales=1
    TipoFrac="autodur" 
 usarmarco=0
+' condicion inicial para ver o no escalas auxiliares en el grafico
+Select Case nVerEscalasAuxiliares
+  Case 0             
+       SetStateMenu(hMessages,1070,0)
+  Case 3
+       SetStateMenu(hMessages,1070,3)
+End Select
+
 'AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS
 
 ' opengl funciona bien, en futuro usare opnegl para otro roll grafico adicional
@@ -1057,7 +1077,17 @@ Print #1,"1060 abrirRoll=0 entro"
              Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1))
                             
            Case 1070
-              MessBox("","5 Menu")
+                nVerEscalasAuxiliares=GetStateMenu(hmessages,1070)
+              Select Case nVerEscalasAuxiliares 
+                     Case  3 
+                    nVerEscalasAuxiliares=0
+                    SetStateMenu(hmessages,1070,0)
+                     Case 0
+                    nVerEscalasAuxiliares=3
+                    SetStateMenu(hmessages,1070,3)
+
+              End Select
+              
            Case 1080
               nombreArchivo="0"
               menuOldStr="[TEMPO]"
@@ -1078,20 +1108,21 @@ Print #1,"1060 abrirRoll=0 entro"
               menunew=0
 
            Case 1100
-                usarmarcoOld=usarmarco
 '0 - the menu is active, the checkbox is not selected
 '1 - the menu item is unavailable, grayed out
 '2 - the menu item is unavailable (on Linux the same as under the number 1)
 '3 - Check the box
-                 SetStateMenu(hmessages,1100,3)
-                 SetStateMenu(hmessages,1101,0)
-
-                usarmarco=1
-           Case 1101
-                 usarmarcoOld=usarmarco            
-                 SetStateMenu(hmessages,1100,0)
-                 SetStateMenu(hmessages,1101,3)
-                 usarmarco=0
+             usarmarcoOld=usarmarco
+             usarmarco=GetStateMenu (hMessages,1100)
+             Select Case usarmarco
+               Case 0             
+                  SetStateMenu(hMessages,1100,3)
+                  usarmarco=3
+               Case 3
+                  SetStateMenu(hMessages,1100,0)
+                  usarmarco=0
+             End Select
+                 
            Case 1102
                  usarAcordesIguales=1
                  TipoFrac="igualdur" 
@@ -1126,6 +1157,7 @@ Print #1,"1060 abrirRoll=0 entro"
                  
            Case 1106 ' escala de la secuencia, similar a la de instrumentos
                selTipoEscala (tipoescala)
+               tipoescala_num=tipoescala
 ' GRABADO EN grabaPos(1,1).inst = CUByte(tipoescala) ' 20-12-2021 - tipoescala en uso
 ' CUADNO QUEIRO UN CAMBIO PUEDO DEJAR UN ACOLUMNA VACIA Y PONER TODO ESTA INFO
 ' PERO DEBO INDICAR AL PROGRAM QUE SALTEE ESTA COLUMNA CREO CON TENER NOTA=181 Y DUR181
@@ -1135,41 +1167,52 @@ Print #1,"1060 abrirRoll=0 entro"
 ''               END
 ''               Track(ntk).trk(1,1).vol=CUByte(tipoescala + 127)
               ' grabar el track 
-            Print #1,"tipo de escala seleccionado ", tipoescala
+'' NOTA: LA VARIABLES DE ESCALA DE TODA LA SECUENCIA TIENEN SUBFIJOS _STR O _NUM
+'' LAS QUE SON PARA USO DE ESCLAS EN POSICIONES NO LO TIENEN
+            Print #1,"tipo de escala seleccionado ", tipoescala_num
               
 ' -------cadena de escala, construye dsde C hay que hacer las otras esclas
     ' C,D,E,F,G,A,B,Bb,Ab,Gb ver las debo pedir escala y 1er nota desde donde empieza uff
       '        cadenaes=""
               Print #1,"armarescla desde 1106"
+              cadenaes="":cadenaes_inicial=""
               armarescala(cadenaes)
+              cadenaes_inicial=cadenaes 
               
 ' --------------------------   
            Case 1107 ' usamos sostenidos o bemoles ???
-              selNotaEscala (notaescala) 
-               print #1, "seleccion de Nota de la escala  ",notaescala
-
+              selNotaEscala (notaescala)
+               notaescala_num=notaescala 
+               print #1, "seleccion de Nota de la escala num  ",notaescala_num
       '        cadenaes=""
               Print #1,"armarescla desde 1107"
+              cadenaes="":cadenaes_inicial=""
               armarescala(cadenaes)
+              cadenaes_inicial=cadenaes 
 
            Case 1108 ' alteraciones sotenidos o bemoles
-              alteracion="sos" ' grabado en grabaLim(1,1).pan  = CUByte(3)
+              alteracion_str="sos" ' grabado en grabaLim(1,1).pan  = CUByte(3)
               SetStateMenu(hmessages,1108,3)  
               SetStateMenu(hmessages,1109,0)
             ' si hay nombre de archivo grabar sino no   
       ''        GrabarArchivo()
       '        cadenaes=""
               Print #1,"armarescla desde 1108"
+              cadenaes="":cadenaes_inicial=""
               armarescala(cadenaes)
+              cadenaes_inicial=cadenaes
+               
 
 ' --------------------------   
            Case 1109 ' alteraciones sotenidos o bemoles
-              alteracion="bem" ' grabado en grabaLim(1,1).pan  = CUByte(2)
+              alteracion_str="bem" ' grabado en grabaLim(1,1).pan  = CUByte(2)
               SetStateMenu(hmessages,1108,0)  
               SetStateMenu(hmessages,1109,3) 
               cadenaes=""
               Print #1,"armarescla desde 1109"
+              cadenaes_inicial=""
               armarescala(cadenaes)
+              cadenaes_inicial=cadenaes  
             
 
            Case 1110

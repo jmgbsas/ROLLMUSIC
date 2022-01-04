@@ -1404,9 +1404,9 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      x3=Bin(z(1,1).vol,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
      x4=Bin(z(1,1).pan,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
      x5=Bin(z(1,1).pb,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
-     tipoescala =CInt( Z(1,1).inst) ' 20-12-2021 - tipoescala en uso
-     Print #1,"tipoescala ",tipoescala ' ' NO LEE UNA MIERDA CON UBIRROLL> 0
-     ' MISTERIO ME PUDRIO...!
+     tipoescala_num =CInt( Z(1,1).inst) ' 20-12-2021 - tipoescala en uso
+     Print #1,"tipoescala_num ",tipoescala_num ' ' NO LEE UNA MIERDA CON UBIRROLL> 0
+     
      x=x1+x2+x3+x4+x5
      '   print #1,"reconstruccion x pos bin ", x
      MaxPos=CInt("&B"+x)
@@ -1429,23 +1429,25 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      Print #1,"hasta ",hasta
      notaold= CInt(zLim(1,1).pb)
      Print #1,"notaold ",notaold     
-     notaescala =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
-     Print #1,"notaescala ",notaescala     
+     notaescala_num =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
+     Print #1,"notaescala_num ",notaescala_num     
      if  zLim(1,1).pan = 3 Then
-         alteracion="sos"
+         alteracion_str="sos"
      EndIf    
      if  zLim(1,1).pan = 2 Then
-         alteracion="bem"
+         alteracion_str="bem"
      EndIf    
-     Print #1,"alteracion ",alteracion
+     Print #1,"alteracion_str ",alteracion_str
     cadenaes=""
     Print #1,"armarescala desde cargarArchivo"
+    notaescala=notaescala_num
+    tipoescala=tipoescala_num
     armarescala (cadenaes)
-    cadenaes_inicial = cadenaes
-    tipoescala_inicial=escala(tipoescala).nombre
+    cadenaes_inicial=cadenaes  
+    tipoescala_inicial=escala(tipoescala_num).nombre
 ' carga de escala en guia de escala
-    guiaEscala(1).tipoescala=tipoescala
-    guiaEscala(1).notaescala=notaescala
+    guiaEscala(1).tipoescala=tipoescala_num
+    guiaEscala(1).notaescala=notaescala_num
     guiaEscala(1).alteracion =CInt(zLim(1,1).pan)
     guiaEscala(1).posicion=1
 
@@ -1814,9 +1816,11 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    t=  " [Reproducir]":cairo_show_text(c, t)
    ' --------------------------
  '0.7  ===> [Opciones]  '25-07-2021
-   If  mousex > 483 And mousex< 561 And mousey < 50  Then  'OPCIONES
+   If  MultiKey(SC_ALT) And mousex > 483 And mousex< 561 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
-     menuNew=5
+        Sleep 100
+        menuNew=5
+        
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
@@ -2012,8 +2016,9 @@ EndIf
   '===> 3.3[GRABAR] SC_F11 COPIA
 ' graba el roll a roll y el track a track..
    If (MultiKey(sc_Control) And mousex > 504 And mousex < 573  And mousey < 50) And carga=0 Then ' <=
-    cairo_set_source_rgba c, 0, 1, 0, 1
+    cairo_set_source_rgba c, 1, 0.5, 0, 1
      If MouseButtons And 1    Then
+      cairo_set_source_rgba c,1,0,0,1
        Dim As String nombreg
        print #1,"EN Grabar nombre ",nombre
        If nombre = "" Then
@@ -2032,15 +2037,17 @@ EndIf
        ubi3=InStr(nombre,".rtk")
        ubi4=InStr(nombre,".roll")
        If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Then 'graba un track como track
-       ' pero como las modificaciones estan en ROLL debo usar rollaTrack 
-           GrabarRollaTrack(0)
+       ' pero como las modificaciones estan en ROLL debo usar rollaTrack
+          GrabarRollaTrack(0)
+           Sleep 3000           
        Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
            GrabarArchivo ()
-           
+           Sleep 3000
        EndIf
          carga=1
          lockip=2 ' habilita mouse 28-08-2021
-        MenuNew=0  
+        MenuNew=3  
+       
     EndIf
    Else
     carga=0
@@ -2979,13 +2986,16 @@ MaxPos=k+1
      grabaPos(1,1).vol  = y3
      grabaPos(1,1).pan  = y4
      grabaPos(1,1).pb   = y5
-     grabaPos(1,1).inst = CUByte(tipoescala) ' 20-12-2021 - tipoescala en uso
+Print #1,"grabando tipoescala_num en el archivo ",tipoescala_num 
+     grabaPos(1,1).inst = CUByte(tipoescala_num) ' 20-12-2021 - tipoescala en uso
     '-----------------------
      grabaLim(1,1).nota = CUByte(desde) 
      grabaLim(1,1).dur  = CUByte(hasta)
      grabaLim(1,1).pb   = CUByte(notaold)
-     grabaLim(1,1).vol  = CUByte(notaescala) ' notadeescala 20-12-2021
-     If alteracion="sos" Then
+Print #1,"grabando notaescala_num en el archivo ",notaescala_num
+     grabaLim(1,1).vol  = CUByte(notaescala_num) ' notadeescala 20-12-2021
+Print #1,"grabando alteracion en el archivo ",alteracion_str
+     If alteracion_str="sos" Then
         grabaLim(1,1).pan  = CUByte(3)
      Else
         grabaLim(1,1).pan  = CUByte(2)
@@ -3790,6 +3800,8 @@ Sub salir()
     Print #ffile,nANCHO, " ANCHO"
     Print #ffile,nALTO, " ALTO"
     Print #ffile,ndeltaip, " inc_Penta"
+    Print #ffile,nVerEscalasAuxiliares, "nVerEscalasAuxiliares"
+    Print #ffile,nanchofig, "nanchofig"
 
     Close ffile
  Dim As Integer fk,nroproc, ppp=0

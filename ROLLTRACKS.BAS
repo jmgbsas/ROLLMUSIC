@@ -1458,7 +1458,7 @@ print #1,"FIGURA de REEMPLAZO LIGADA ",figura(INDICELIGADA)
 print #1,"FIGURA de REEMPLAZO NO LIGADA ",figura(indicenoligada)
 ' entonces tengo nroligadas columnas de figura indiceligada
 ' y una ultima columna de indice de  figura (numusuario)
-If CANCIONCARGADA Then ' ¿FRACCIONAR TODAS LAS PISTAS DE UNA CANCION?
+If CANCIONCARGADA Then ' ¿FRACCIONAR TODAS LAS PISTAS DE UNA CANCION? PENDIENTE....
 ' si vamoa a fracionar toda la cancion al fraccionar una pista, podemos
 ' detectar si maxpos de la pista a fraccionar es mayor a la posicion fraccionada,
 ' si lo es, fraccionamos, y si no lo es, se saltea....ahorramos trabajo
@@ -1469,7 +1469,7 @@ If CANCIONCARGADA Then ' ¿FRACCIONAR TODAS LAS PISTAS DE UNA CANCION?
  ' aca deberemos fraccionar Tracks en vez de Rolls
    Next pis
  '     moverRoll 
-Else ' FRACCIONAR LA PISTA CARGADA
+Else ' FRACCIONAR SOLO LA PISTA CARGADA
 ' muevo 1 track y Roll de edicion
  '--  moverPista  0 ' solo mueve pista cero
  '--  moverRoll 

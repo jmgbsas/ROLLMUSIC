@@ -98,7 +98,7 @@ Declare Sub salir()
 
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
 Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6
-Dim Shared As String RTA, alteracion
+Dim Shared As String RTA, alteracion,alteracion_str
 alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoZona2=0, pasoNota=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, SelGrupoNota =0,moverZona=0, copiarZona=0
@@ -635,6 +635,7 @@ Dim Shared Track  (0 To 32) As sec ' tracks para guardar,.. y tocar
 Dim Shared ix As Integer=0
 Dim Shared As String titu, cadenaes,cadenaes_inicial,tipoescala_inicial 
 Dim Shared As Integer instru=1, instruOld, tipoescala=1, tipoescalaOld=1, notaescala=1,notaescalaOld
+Dim Shared As Integer tipoescala_num = 1, notaescala_num = 1
 Dim Shared As Integer desdevector
 Dim Shared As Integer hastavector,abrirRoll=0
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
@@ -732,8 +733,8 @@ Common Shared As Integer cargaCancion, pid1
 Common Shared As cairo_t  Ptr c, c2
 Common Shared surface As Any Ptr
 common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
-Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip
-Common Shared As Integer mxold,myold, w,h
+Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig
+Common Shared As Integer mxold,myold, w,h,grado
 'Common Shared As Any Ptr thplayC
 pid1=0
 
