@@ -2806,6 +2806,7 @@ EndIf
  If comEdit=FALSE Then
 ' para ingreser automatico acordes a partir de una TONICA futuro--01-12-2021  
     If MultiKey(SC_CONTROL) And MouseButtons And 2 Then 'yyy
+    pasoZona1=0:pasoZona2=0
      Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2
      Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dis7,Mayor9,Menor9,Dis9, notabase     
      Dim As Integer event,Posx,Posy 
@@ -2950,46 +2951,8 @@ EndIf
        Select case EventNumber
     ' TRIADAS   
          Case 1001
-       'NO INVERSION
-      If grado=0 Then grado=1 EndIf
-      Print #1,"Grado ",grado
-      Select Case grado
-        Case 1  ' es Tonica
-        ' armar acorde notapiano, Notapiano+4, NotaPiano+7=la anterior +3
-        ' haremos todo a mano luego algun dia un algoritmo si es necesario,.,,
-        ' qu etenga en cuenta todos los casos (formar mayor-> +4 +7)
-        Dim As Integer st=0,pn=0
-        Print #1,"armando acorde ,,indicePos ",indicePos
-        Print #1,"armando acorde ,,RollDur ",RollDur
-        pn=PianoNota+4 
-        pn =pn +SumarnR(pn)
-        Print #1,"armando acorde 3ta,,nR ",pn
-        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
-' saltos de octava
-        st=nE-4 
-        If st <= 0 Then
-           st=12 + nE -4
-        EndIf            
-        Roll.trk(indicePos, pn).nota=st
-        pn=PianoNota+7
-        pn=pn + SumarnR(pn)
-        Print #1,"armando acorde ,5ta,nR ",pn  
-        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
-        st=nE-7 
-        If st <= 0 Then
-           st=12 + nE -7
-        EndIf            
-        Roll.trk(indicePos, pn).nota=st     
-
-             Case 3
-             Case 5
-             Case 7
-             Case 4
-             Case 6
-             Case 9
-             Case 11
-      End Select       
-
+       'NO INVERSION Mayor
+    armarAcorde(grado ,4, 7, 0) ' mayor 4, 7
          Case 1002
         '1ERA INVERSION
 
@@ -2997,44 +2960,7 @@ EndIf
         ' 2DA INVERSION
 
          Case 1004 ' Menores <------------No inversion
-      If grado=0 Then grado=1 EndIf
-      Print #1,"Grado ",grado
-      Select Case grado ' dede tonica una menor 
-        Case 1  ' es Tonica
-        ' armar acorde notapiano, Notapiano+4, NotaPiano+7=la anterior +3
-        ' haremos todo a mano luego algun dia un algoritmo si es necesario,.,,
-        ' qu etenga en cuenta todos los casos (formar mayor-> +4 +7)
-        Dim As Integer st=0,pn=0
-        Print #1,"armando acorde ,,indicePos ",indicePos
-        Print #1,"armando acorde ,,RollDur ",RollDur
-        pn=PianoNota+3 
-        pn =pn +SumarnR(pn)
-        Print #1,"armando acorde 3ta menor,,nR ",pn
-        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
-' saltos de octava
-        st=nE-3 
-        If st <= 0 Then
-           st=12 + nE -3
-        EndIf            
-        Roll.trk(indicePos, pn).nota=st
-        pn=PianoNota+7
-        pn=pn + SumarnR(pn)
-        Print #1,"armando acorde ,5ta,nR ",pn  
-        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
-        st=nE-7 
-        If st <= 0 Then
-           st=12 + nE -7
-        EndIf            
-        Roll.trk(indicePos, pn).nota=st     
-
-             Case 3
-             Case 5
-             Case 7
-             Case 4
-             Case 6
-             Case 9
-             Case 11
-      End Select       
+      armarAcorde(grado ,3, 7, 0) ' menor 3,7  
 
          
          Case 1005
@@ -3042,44 +2968,8 @@ EndIf
          Case 1006
 
          Case 1007
-      If grado=0 Then grado=1 EndIf
-      Print #1,"Grado ",grado
-      Select Case grado
-        Case 1  ' es Tonica arma disminuida
-        ' armar acorde notapiano, Notapiano+4, NotaPiano+7=la anterior +3
-        ' haremos todo a mano luego algun dia un algoritmo si es necesario,.,,
-        ' qu etenga en cuenta todos los casos (formar mayor-> +4 +7)
-        Dim As Integer st=0,pn=0
-        Print #1,"armando acorde ,,indicePos ",indicePos
-        Print #1,"armando acorde ,,RollDur ",RollDur
-        pn=PianoNota+3 
-        pn =pn +SumarnR(pn)
-        Print #1,"armando acorde 3ta,,nR ",pn
-        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
-' saltos de octava
-        st=nE-3 
-        If st <= 0 Then
-           st=12 + nE -3
-        EndIf            
-        Roll.trk(indicePos, pn).nota=st
-        pn=PianoNota+6
-        pn=pn + SumarnR(pn)
-        Print #1,"armando acorde ,5ta,nR ",pn  
-        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
-        st=nE-6 
-        If st <= 0 Then
-           st=12 + nE -6
-        EndIf            
-        Roll.trk(indicePos, pn).nota=st     
+      armarAcorde(grado ,3, 6, 0) ' disminuida 3,6
 
-             Case 3
-             Case 5
-             Case 7
-             Case 4
-             Case 6
-             Case 9
-             Case 11
-      End Select       
            
          Case 1008
 

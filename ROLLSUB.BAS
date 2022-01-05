@@ -3990,6 +3990,52 @@ Dim p6 As Byte Ptr
  
   
 End Sub
+Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
+  ' para mayo4      n1=4 y n2=7
+  ' para menor      n1=3 y n2=7
+  ' para disminuido n1=3 y n2=6
+  
+       If grado=0 Then grado=1 EndIf
+      Print #1,"Grado ",grado
+      Select Case grado
+        Case 1  ' es Tonica
+        ' armar acorde notapiano, Notapiano+4, NotaPiano+7=la anterior +3
+        ' haremos todo a mano luego algun dia un algoritmo si es necesario,.,,
+        ' qu etenga en cuenta todos los casos (formar mayor-> +4 +7)
+        Dim As Integer st=0,pn=0
+        Print #1,"armando acorde ,,indicePos ",indicePos
+        Print #1,"armando acorde ,,RollDur ",RollDur
+        pn=PianoNota+n1 
+        pn =pn +SumarnR(pn)
+        Print #1,"armando acorde 3ta,,nR ",pn
+        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
+' saltos de octava
+        st=nE-n1 
+        If st <= 0 Then
+           st=12 + nE -n1
+        EndIf            
+        Roll.trk(indicePos, pn).nota=st
+        pn=PianoNota+n2
+        pn=pn + SumarnR(pn)
+        Print #1,"armando acorde ,5ta,nR ",pn  
+        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
+        st=nE-n2 
+        If st <= 0 Then
+           st=12 + nE -n2
+        EndIf            
+        Roll.trk(indicePos, pn).nota=st     
+
+             Case 3
+             Case 5
+             Case 7
+             Case 4
+             Case 6
+             Case 9
+             Case 11
+      End Select       
+ 
+  
+End Sub
 ' error
 errorSub:
   
