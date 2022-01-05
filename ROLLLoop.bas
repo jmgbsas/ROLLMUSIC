@@ -2956,6 +2956,8 @@ EndIf
       Select Case grado
         Case 1  ' es Tonica
         ' armar acorde notapiano, Notapiano+4, NotaPiano+7=la anterior +3
+        ' haremos todo a mano luego algun dia un algoritmo si es necesario,.,,
+        ' qu etenga en cuenta todos los casos (formar mayor-> +4 +7)
         Dim As Integer st=0,pn=0
         Print #1,"armando acorde ,,indicePos ",indicePos
         Print #1,"armando acorde ,,RollDur ",RollDur
@@ -2988,184 +2990,130 @@ EndIf
              Case 11
       End Select       
 
-
-         Delete_Menu (hpopup1)
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
-
          Case 1002
         '1ERA INVERSION
-         Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
 
          Case 1003
         ' 2DA INVERSION
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
-' FIN TRIADAS
-         Case 1004
-         Delete_Menu (hpopup1)
-          Close_Window(hpopup1)
-          Close_Window(haco)
-           Exit Do 
+
+         Case 1004 ' Menores <------------No inversion
+      If grado=0 Then grado=1 EndIf
+      Print #1,"Grado ",grado
+      Select Case grado ' dede tonica una menor 
+        Case 1  ' es Tonica
+        ' armar acorde notapiano, Notapiano+4, NotaPiano+7=la anterior +3
+        ' haremos todo a mano luego algun dia un algoritmo si es necesario,.,,
+        ' qu etenga en cuenta todos los casos (formar mayor-> +4 +7)
+        Dim As Integer st=0,pn=0
+        Print #1,"armando acorde ,,indicePos ",indicePos
+        Print #1,"armando acorde ,,RollDur ",RollDur
+        pn=PianoNota+3 
+        pn =pn +SumarnR(pn)
+        Print #1,"armando acorde 3ta menor,,nR ",pn
+        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
+' saltos de octava
+        st=nE-3 
+        If st <= 0 Then
+           st=12 + nE -3
+        EndIf            
+        Roll.trk(indicePos, pn).nota=st
+        pn=PianoNota+7
+        pn=pn + SumarnR(pn)
+        Print #1,"armando acorde ,5ta,nR ",pn  
+        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
+        st=nE-7 
+        If st <= 0 Then
+           st=12 + nE -7
+        EndIf            
+        Roll.trk(indicePos, pn).nota=st     
+
+             Case 3
+             Case 5
+             Case 7
+             Case 4
+             Case 6
+             Case 9
+             Case 11
+      End Select       
+
+         
          Case 1005
-            'MessBox("","1 Menu")
-         Delete_Menu (hpopup1)
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
 
          Case 1006
-            'MessBox("","2 Menu")
-         Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
 
          Case 1007
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
+      If grado=0 Then grado=1 EndIf
+      Print #1,"Grado ",grado
+      Select Case grado
+        Case 1  ' es Tonica arma disminuida
+        ' armar acorde notapiano, Notapiano+4, NotaPiano+7=la anterior +3
+        ' haremos todo a mano luego algun dia un algoritmo si es necesario,.,,
+        ' qu etenga en cuenta todos los casos (formar mayor-> +4 +7)
+        Dim As Integer st=0,pn=0
+        Print #1,"armando acorde ,,indicePos ",indicePos
+        Print #1,"armando acorde ,,RollDur ",RollDur
+        pn=PianoNota+3 
+        pn =pn +SumarnR(pn)
+        Print #1,"armando acorde 3ta,,nR ",pn
+        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
+' saltos de octava
+        st=nE-3 
+        If st <= 0 Then
+           st=12 + nE -3
+        EndIf            
+        Roll.trk(indicePos, pn).nota=st
+        pn=PianoNota+6
+        pn=pn + SumarnR(pn)
+        Print #1,"armando acorde ,5ta,nR ",pn  
+        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
+        st=nE-6 
+        If st <= 0 Then
+           st=12 + nE -6
+        EndIf            
+        Roll.trk(indicePos, pn).nota=st     
+
+             Case 3
+             Case 5
+             Case 7
+             Case 4
+             Case 6
+             Case 9
+             Case 11
+      End Select       
+           
          Case 1008
-            'MessBox("","1 Menu")
-         Delete_Menu (hpopup1)
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
 
          Case 1009
-            'MessBox("","2 Menu")
-         Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
-
+' -------------FIN TRIADAS
          Case 1010
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1011
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1012
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1013
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
 
          Case 1014
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1015
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1016
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1017
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1018
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1019 To 1027
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1028 ' es Tonica
-            'MessBox("","2 Menu")
             grado=1
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1029 ' es 3era
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1030 ' es 5ta
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1031 ' es 7ma
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1032 ' es 4ta
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1033 ' es 6ta
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1034 ' es 9na
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
          Case 1035 ' es 11va
-            'MessBox("","2 Menu")
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
 
          Case 1040 ' es Salir
-            'MessBox("","2 Menu")
+
+       End Select
            Delete_Menu (hpopup1)            
            Close_Window(hpopup1)
            Close_Window(haco)
            Exit Do 
-
-        End Select
+       
       ElseIf event=eventrbdown Then
           DisplayPopupMenu(hpopup1, GlobalMouseX,GlobalMouseY)
       EndIf
@@ -3176,7 +3124,7 @@ EndIf
    s2=0 :s1= 0 ' 10-12-2021 wheel no se movia ** ES SUFICIENTE??? CUANDO NO SE MOVIA?? 
    '                      RECORDDAR TEST CASE
  ' lockip=0   ' 10-12-2021 wheel no se movia ***JMG OJO JODE INTERLINEADO VER MAS COMENTADO
-  fueradefoco=0
+
 ' ========================================================  
 ' SELECCION DE ZONA PARA TRASPONER, VOLUMEN, INSTRUMENTO, ETC ETC
 ' SOLO SELECCIONO PASO DESDE HASTA y/o NOTA. 

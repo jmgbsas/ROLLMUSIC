@@ -1,3 +1,5 @@
+' Triadas desde Tonica completo Mayor Menor Disminuido formacion y play 
+' fix consumo cpu S5=2 y fueradefoco=0 eliminado
 ' Funciona Acorde en Tonica triaca,,Ctrl+clik derecho luego seguir con mayor hasta no inversion
 ' SE ELIMINO DE 'Q' la configuracion de tamaños, proporciones y font
 ' se agrego nverEscalasAuxiliares y nanchofig a RollMusic.ini
