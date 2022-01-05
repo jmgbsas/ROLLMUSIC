@@ -23,6 +23,7 @@ Declare Sub selNotaEscala (ByRef notaescala As integer)
 Dim Shared As ubyte GrabarPistaCancion=0
  
 Dim Shared As Integer  usarmarco= 0 , usarmarcoOld=0,reiniciar=0,usarAcordesIguales=0
+Dim Shared As Integer  usarmarcoins= 0 , usarmarcoOldins=0
 #Include "dir.bi"  
   
 

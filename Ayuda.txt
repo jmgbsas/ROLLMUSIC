@@ -150,24 +150,43 @@
           cargada indistintamente.
 
     IV) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
-        estilo pentagrama. Se podrán usar varias instancias pero sin ningun control
+        estilo pentagrama-roll una combinacion. Se podrán usar varias instancias pero sin ningun control
         entre ellas todavia, se lo hara mas adelante mediante midi.
         RollMusic.exe levanta ahora 2 pantallas un menu GUI y el grafico habitual.
           Acciones: elegir octavas, instrumentos, antes de crear el track. Al crearlo
         se borra el cargado anteriormente y se reemplaza por uno nuevo vacio.
         Se agrega Menu de Cancion, funciona en modo basico.   
-        Esta version Aislada podra crear varios tracks pero solo editar de a uno
-        por vez. Si se quieren más ediciones simultaneas, se podria usar  otra instancia.
-        Y luego de terminada levantarla con la instancia unida a Control y agregarla a la Cancion
-        si se lo desea, donde sí se podrá escuchar todos los tracks al unisono(en desarrollo). 
-        Pero no tendrá sincronizacion en el play,.. por ahora. La aplicacion se termina
-        cerrando la ventana de Control Archivo->Salir o desde X en extremo superior derecho.   
+        La Aplicación mediante el Contorl podrá crear varios tracks pero solo editar de a uno
+        por vez en el gráfico conmutando con TAB. Si se quieren más ediciones simultaneas, se podria usar  
+        otra instancia, als cuales pueden ser tantnas como sean necesarias. PAra terminar todas a la vez
+        o cerrarlas siempre cerral la ventana de Control. Cada instancia podra editar o crear
+        un roll o pista(track) y luego de terminada levantarla con la instancia unida a Control o con Control
+        directamnet y agregarla a la Cancion  si se lo desea, donde sí se podrá escuchar todos los tracks 
+        al unisono. 
+        Las instancias separadas de Conrol solo tocaran su propio roll o track y no tendrá sincronizacion 
+        en el play. Por comodidad de reconfigura el tamaño de ventana se usa un grafico sin marco de
+        windows, pero para mover la ventanas desde la cinta superior derecha es lento y dificultoso. 
+       Si se usa marco en la ventana del grafico tanto en la instancia propai de Control o las independientes
+       su ventana podra moverse facilmente pero no cambiar su tamaño en la misma sesion. RollMusic.ini
+        es una rchivo que mantiene los parametros del tamaño de la ventana ajustados al redimensionar
+        el grafico de Control (previo a eso borrar Rollmusic.ini antes de ejecutar), si se redimensiona
+        sin borrar Rollmusic.ini el tamaño se puede achicar pero no agrandar. Ese tamaño tambien
+        será el tamaño de cada instancia independiente. lo recomendable es dejar el grafico de Control
+        sin marco como levanta y luego poner marco de la instancia , de esa forma las instancias auxiliares
+        se pueden mover todas rapidamente. Al Usar marco se pierde el uso de F7/F8 o -/+ para achicar el tamaño
+        vertical durante la sesion. Al terminar la sesion RollMusic.ini no recordará los ajustes de F7/F8 o -/+ 
+        y la sesion levantara con el tamaño completo de lso parametros de ventana guardados. 
+        La aplicacion se termina  cerrando la ventana de Control Archivo->Salir o desde X en extremo superior derecho.   
         Otra forma podria ser en el futuro, partir pantalla y editar 2 track en simultaneo, en una sola 
         pantalla grafica del Roll.
         Se puede pasar entre tracks simplemente con el tabulador  o clickeando 
         la pista en la lista en Control. 
         Notas desarrollo (No se puede cargar un track en el menú del Grafico y 
-        darle Reproducir en la GUI por consistencia solo reproducimos en Roll Gráfico. 
+        darle Reproducir en la GUI por consistencia solo reproducimos en Roll Gráfico, el 
+        reproductor en Control es solo para la cancion. Sin embargo el grafico asociado 
+        a Control podra reproducir canciones con la barra espaciadora. Par reproducir el Track
+        de cancion solamente, dar Ctrl-clik en Reproducir del menu del grafico.- 
+        Sin cancion cargada, la barra espaciadora tambien reproduce el track cargado.
         Controlar otras instancias o aplicaciones mediante midi creo será
         más facil que usar sockets(¿? cual sera mas facil y eficiente ? probaremos), 
         todos estos temas los pruebo durante mi aprendizaje, la madeja de código algun 
@@ -175,9 +194,9 @@
         en evolución por que es un hobby de aprendisaje y tendrá paradas por estudio
         e idas y vueltas. Si me limita mucho el lenguaje podre hacer parches 
         con otro lenguaje o pasar todo a otro lenguaje similar porque lo que
-        está echo en Cairo se podrá trasladar a cualqueir otro lenguaje. creo. Estoy evaluando de
+        está echo en Cairo se podrá trasladar a cualqueir otro lenguaje, creo... Estoy evaluando de
         usar como lenguaje alternativo, V o Go , V es mas veloz parece...) 
-      - VARIAS SESIONES DE ROLLMUSIC.
+      - VARIAS SESIONES DE ROLLMUSIC, detalles.
         El menu de Control permite crear un editor gráfico integrado a dicho Control
         es la opcion en "Crear Pistas"-> "Crear Pista Aislada con lo elegido y reemplaza la existente
         en la edicion", aparece un editor gráfico que podra editar cada pista de una cancion por vez
@@ -190,7 +209,13 @@
         sesiones incluidas las independiente usando  su numero de proceso, si no se hace asi cada 
         ventana de sesion independiente se deberá cerrar una por una con Escape o el boton rojo X 
         en la esquina superior derecha de cada sesion abierta.
-
+    Nota: Cuando se hace una modificacion por fuera de control en un track de Cancion con la edicion
+        en una instancia, por ahora se debe cargar de nuevo la cancion. Pondremos en el futuro
+        carga automatica a cancion para ahorrar ese paso adicional desde disco. Sino creo 
+        que por ahora se podria cargar desde el grafico asociado a control, con [Archivo]->[abrir].
+        Por si queremos usar TAB, eos conmuta los track pero en memoria no lee el disco.
+        
+        
 
     --------------------------------------------------------------------------------------
         

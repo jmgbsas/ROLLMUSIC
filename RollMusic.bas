@@ -231,6 +231,7 @@ Print #1, "__FB_ARGC__ ",__FB_ARGC__
 'Dim dires As String
 Common Shared As integer ubirtk, ubiroll
 Print #1,"__FB_ARGC__ ", __FB_ARGC__
+Dim As Integer com_usarmarco =0
 For ix = 0 To __FB_ARGC__
   print #1, "arg "; ix; " = '"; Command(ix); "'"''
 
@@ -273,6 +274,10 @@ For ix = 0 To __FB_ARGC__
      Instancia=5
  EndIf
 
+ If ix=6 Then
+  com_usarmarco=  CInt (Command(ix))
+     Instancia=6
+ EndIf
 
 Next ix
 'Dim Shared As Integer pd1, fa1 
@@ -692,6 +697,7 @@ MenuItem(1080,MenName5,"TEMPO")
 MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
 
 MenuItem(1100,MenName7,"Usar MARCO de Ventana ",MF_UNCHECKED)
+MenuItem(1101,MenName7,"Usar MARCO de Ventana en instancias",MF_UNCHECKED)
 
 MenuItem(1102,MenName7,"Acordes distintos a iguales, Fracciona notas similares en una Columna en una pista (no hay silencios)",MF_UNCHECKED  )
 MenuItem(1103,MenName7,"Acordes distintos a iguales, Fracciona todas las notas agregando silencios en una columna en una pista ",MF_UNCHECKED  )
@@ -707,8 +713,17 @@ MenuItem(1110,MenName8,"Acerca de")
 End If
 ' default de FRACCIOANR autodur 
    usarAcordesIguales=1
-   TipoFrac="autodur" 
-usarmarco=0
+   TipoFrac="autodur"
+
+usarmarcoins=0
+usarmarco=0 
+If com_usarmarco =0 Then
+   usarmarco=0
+   usarmarcoOld=0   
+Else
+   usarmarco=com_usarmarco  
+   usarmarcoOld=usarmarco
+EndIf
 ' condicion inicial para ver o no escalas auxiliares en el grafico
 Select Case nVerEscalasAuxiliares
   Case 0             
@@ -1076,8 +1091,8 @@ Print #1,"1060 abrirRoll=0 entro"
  ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
  ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.
              Print #fa1,pd1       
-             Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1))
-                            
+             Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins))
+
            Case 1070
                 nVerEscalasAuxiliares=GetStateMenu(hmessages,1070)
               Select Case nVerEscalasAuxiliares 
@@ -1123,6 +1138,22 @@ Print #1,"1060 abrirRoll=0 entro"
                Case 3
                   SetStateMenu(hMessages,1100,0)
                   usarmarco=0
+             End Select
+
+           Case 1101 ' marco o no marco par ainstancias
+'0 - the menu is active, the checkbox is not selected
+'1 - the menu item is unavailable, grayed out
+'2 - the menu item is unavailable (on Linux the same as under the number 1)
+'3 - Check the box
+             usarmarcoOld=usarmarcoins
+             usarmarcoins=GetStateMenu (hMessages,1101)
+             Select Case usarmarcoins
+               Case 0             
+                  SetStateMenu(hMessages,1101,3)
+                  usarmarcoins=3
+               Case 3
+                  SetStateMenu(hMessages,1101,0)
+                  usarmarcoins=0
              End Select
                  
            Case 1102
