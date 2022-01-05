@@ -876,6 +876,11 @@ kNroCol= Int(jply/NroCol)
       CONTROL1=0
       Exit For
    EndIf  
+' puede pasar que el maxpos sea menro al final de la secuencia porque se agrego espacio
+ If jply=MaxPos Then
+    alloff( 1 )
+    Exit For
+ EndIf
 
    If Compas(jply).nro = -1 Then
      velpos=vfuerte

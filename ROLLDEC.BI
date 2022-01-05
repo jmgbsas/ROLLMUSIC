@@ -660,7 +660,7 @@ Dim Shared As Integer lim2=12
 Dim Shared As inst RollAux
 common Shared As Integer  ANCHO,ALTO,ANCHOSYSTEM, ALTOSYSTEM
 Dim Shared As Integer   deltaip=0
-Dim Shared As Double   BordeSupRoll, inc_Penta
+Dim Shared As Double   BordeSupRoll, inc_Penta,arranqueDo1=0
 Dim Shared As Integer  AnchoInicial,AltoInicial
 Common Shared As FLOAT font
 Dim Shared As float  deltaipf=0, lockip=0 

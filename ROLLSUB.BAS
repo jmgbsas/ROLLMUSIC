@@ -2042,11 +2042,11 @@ EndIf
            Sleep 3000           
        Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
            GrabarArchivo ()
-           Sleep 3000
+           Sleep 3000 
        EndIf
          carga=1
          lockip=2 ' habilita mouse 28-08-2021
-        MenuNew=3  
+        MenuNew=3  '  sera aca ? jjjj decia menunew=0
        
     EndIf
    Else

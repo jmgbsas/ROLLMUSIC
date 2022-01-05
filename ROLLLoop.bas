@@ -663,6 +663,7 @@ param.ubirtk=0
  
 ' -----------------
 Do
+arranquedo1=Timer
 
 edity1 = 10 ' botton Edit bordeSup
 edity2 = 40 ' botton Edit bordeInf
@@ -677,6 +678,7 @@ If  cargaCancion=1 Then
    'Locate 5,10
    'Print "CARGANDO ...PISTA Nro ", ntk
    'Sleep 100
+ s5=2  
 Else   
 
 '--------------
@@ -944,11 +946,11 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE 
  '' notadur=0
 EndIf
 
-
 If MultiKey (sc_P) And (play=1 Or playb=1 )Then
   CONTROL1=1 ' DETIENE EL PLAY VEREMOS
   playloop=0
 EndIf
+
 If MultiKey(SC_PLUS) Then  '13 , ligadura
  mas=1
  Exit Do
@@ -2082,7 +2084,7 @@ If (ScreenEvent(@e)) Then
        If play = 1 Or playb=1 Then ' fuera pero en play
            fueradefoco=0
        Else     ' fuera de y sin play reducimos consumo CPU
-            'Sleep 20
+           '' Sleep 20
             fueradefoco=1
        EndIf
   Case EVENT_MOUSE_BUTTON_PRESS
@@ -2161,7 +2163,7 @@ If (ScreenEvent(@e)) Then
     If cursorVert= 0 Then
      If s2=0 Then
       s2=1
-         print #1,"pulso UP screenevent 1 inc_penta"
+         print #1,"pulso UP r 1 inc_penta"
       BordeSupRoll = BordeSupRoll +   inc_Penta
      EndIf
      If BordeSupRoll >= AltoInicial * 0.5  Then
@@ -2789,6 +2791,7 @@ EndIf
 
 
  If  mouseY > 50 Then '<=== delimitacion de area de trabajo
+  s5=2  ' 04-01-2021
   s3 = 0 ''06-12-2021
   
  ' <==== MENU CONTEXTUAL ACORDES CON CTRL+ CLICK DERECHO EN LECTURA ================>
@@ -2953,18 +2956,29 @@ EndIf
       Select Case grado
         Case 1  ' es Tonica
         ' armar acorde notapiano, Notapiano+4, NotaPiano+7=la anterior +3
-        Dim As Integer st=0
+        Dim As Integer st=0,pn=0
         Print #1,"armando acorde ,,indicePos ",indicePos
         Print #1,"armando acorde ,,RollDur ",RollDur
-        st=PianoNota+4 
-        st =st +SumarnR(st)
-        Print #1,"armando acorde 3ta,,nR ",st
-        Roll.trk(indicePos, st).dur=CUByte(RollDur)
-        st=PianoNota+7
-        st=st + SumarnR(st)
-        Print #1,"armando acorde ,5ta,nR ",st  
-        Roll.trk(indicePos, st).dur=CUByte(RollDur)
-             
+        pn=PianoNota+4 
+        pn =pn +SumarnR(pn)
+        Print #1,"armando acorde 3ta,,nR ",pn
+        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
+' saltos de octava
+        st=nE-4 
+        If st <= 0 Then
+           st=12 + nE -4
+        EndIf            
+        Roll.trk(indicePos, pn).nota=st
+        pn=PianoNota+7
+        pn=pn + SumarnR(pn)
+        Print #1,"armando acorde ,5ta,nR ",pn  
+        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
+        st=nE-7 
+        If st <= 0 Then
+           st=12 + nE -7
+        EndIf            
+        Roll.trk(indicePos, pn).nota=st     
+
              Case 3
              Case 5
              Case 7
@@ -3727,9 +3741,9 @@ if fueradefoco=1  Then
    Sleep 10
 EndIf
 
-'If s5=2 Then se elimino el retardo de 1 mseg frena mucho el scroll ahora 29-12-2021
- 'Sleep 1
-'EndIf
+If s5=2 Then ''se elimino el retardo de 1 mseg frena mucho el scroll ahora 29-12-2021
+ Sleep 1
+EndIf
 Loop
 
 While InKey <> "": Wend
@@ -3738,10 +3752,14 @@ if fueradefoco=1  Then
    Sleep 10
 EndIf
 
-'If s5=2 Then
- 'Sleep 1
+If s5=2 Then
+ Sleep 1
+EndIf
+'arranquedo1=Timer - arranquedo1
+'If  arranquedo1 <= 0.07 Then
+'  Print #1,"arranquedo1 ", arranquedo1
+'  Sleep 20
 'EndIf
-
 Loop
 
 
