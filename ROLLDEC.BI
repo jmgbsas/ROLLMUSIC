@@ -642,7 +642,8 @@ Dim Shared As Integer hastavector,abrirRoll=0
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
 'Dim Shared As Integer lim2=12, ctres=CantTicks
 Dim Shared As Integer lim2=12
- 
+Dim Shared As Boolean Vaciodur=FALSE
+  
 ' c/inst puede tocar como una persona hasta 12 notas juntas de acorde
 ' entonces no se justifica tener en un solo instrumento una polifonia mas de 12
 ' ni de 108,,,ergo puedo poner mas trakcs o mas longitud

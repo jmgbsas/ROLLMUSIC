@@ -4033,8 +4033,11 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
              Case 9
              Case 11
       End Select       
+ If Vaciodur Then
+    ReCalCompas (Roll)
+    Vaciodur=FALSE
+ EndIf 
  
-  
 End Sub
 ' error
 errorSub:

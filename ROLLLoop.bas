@@ -2833,7 +2833,21 @@ EndIf
 ' determinacion de la posicion y duracion en el click del mouse...igual que en Sc_Z
     indicePos=(mousex- gap1 )/anchofig + posishow 
     Print #1,"ACORDES: indicePos ",indicePos
-    Rolldur=CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur)
+    Rolldur = CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur)
+    Rollnota= CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).nota)
+    If Rollnota = 0 Or Rollnota=181 Or Rolldur=0 or Rolldur=181 Then ' construimos acorde donde no haya nada
+       Rollnota = nE 
+       Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).nota = CUByte(nE)
+       Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur = CUByte(DUR)
+       Rolldur=DUR
+       Vaciodur= TRUE
+    EndIf   
+    If DUR <> Rolldur And DUR > 0 Then
+       Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur = CUByte(DUR)
+       Vaciodur= TRUE ' cambio la duracion se necesita un RecalCompas
+       Rolldur=DUR
+       DUR=0
+    EndIf
     Print #1,"ACORDES: Rolldur ",Rolldur
     Print #1,"ACORDES: nE ",nE
     Print #1,"ACORDES: nR ",nR

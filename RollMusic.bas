@@ -1,3 +1,4 @@
+' Se agrego formar acordes aun sin nota en el lugar elegido, se deb eentrar al duracion
 ' Triadas desde Tonica completo Mayor Menor Disminuido formacion y play 
 ' fix consumo cpu S5=2 y fueradefoco=0 eliminado
 ' Funciona Acorde en Tonica triaca,,Ctrl+clik derecho luego seguir con mayor hasta no inversion

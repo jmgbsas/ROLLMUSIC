@@ -102,15 +102,15 @@
 
     1.12.1) ESCALAS AUXILIARES EN ALGUNAS POSICIONES PARA QUE EL PROGRAMA GENERE ACORDES
                 SEGUN ESA ESCALA.
-            Si se marca en una posicion la 1er marca de zona en la secuencia, y luego seteamos tipoescla notaescala  
-            y alteracion si se desea, se cambiara la escala en esa posicion, la cual regira desde ahi para construir 
+            Si se marca en una posicion la 1er marca de zona en la secuencia, y luego seteamos tipo escla nota escala  
+            y alteracion si se desea, se cambiará la escala en esa posición, la cual regirá desde ahá para construir 
            acordes en esa nueva escala. (1er etapa lista, falta coordinar que escala se usa en cada parte ,
            si hay una escala general se usará desde la posicion 1 hasta la nueva entrada con marca y desde ahi la otra
-           en desarrollo... En la escala de una posicion dada se muestrs la nota de les escala el nombre de la escala 
+           en desarrollo... En la escala de una posicion dada se muestra la nota de la escala, el nombre de la escala 
            y las notas que la componen ej  E Mayor F# G# A B C# D# por ejemplo debajo de cada cambio :
            significando cambio de escala. Esa información se muestra debajo de cada octava en color verde, podemos
            mostrarla o no , en el menu Ver de Control por omision esta chequeado Ver escalsa Auxiliares., damos click
-          par desmarcar y no se veran las escalas. (grabaremos este dato en RollMusic.ini)
+          para desmarcar y no se verán las escalas. (grabaremos este dato en RollMusic.ini)
     Nota: todas estas acciones funcionan tambien en modo instancia Separada sin Menu de Control.
 
     1.13) Una instancia sin control puede ejecutarse tambien si asociamos la sextensiones *.roll y *.rtk
@@ -122,15 +122,19 @@
           Nota: en el caso de bemoles la entrada de notas es igual que antes, Si antes May+C era C#
           si uso bemoles será Db, siempre subo un semitono , es solo una convencion.
 
-    1.14 ) En desarrollo, Entrar un acorde a partir de una Nota de la secuencia o si no hay nada tambien pero usando
-           la nota en donde se da el click.
+    1.14 ) (En desarrollo), Entrar un acorde a partir de una Nota de la secuencia o si no hay nada tambien, usando
+           la nota en donde se da el click, o si no hay nada usando la duracion pulsada (1,2,3,4,5,6,7,8).
+           Si existe la nota y se desea cambiar su duracion , pulsando una duracion antes de usar el comando 
+           se reemplazará la duración existente y se armará un acorde con esa nueva duración. 
            Para ello damos Ctrl-Click derecho sobre la nota a convertir en acorde..y aparece un menu contextual
            (el cual todavia no es funcional, totalmente, triadas cuaternarias etc, 1era o 2da inversion etc)
            Ya funciona 3 Notas ->Mayor ->Noinversion (es una triadas Mayor cuya Tonica es la nota elegida, 
            dar Ctrl+click derecho sobre la nota navegar como se indica al comienzo llegar a No inversion y ahi dar 
-           click izquierdo, soltar click , soltar ctrl. (el menu que aparece se sincroniza con la ventana de Roll pero no
-           pertenece a ella, puede haber situaciones en que no este posicionada la X justo encima de la nota pero 
-           deberia funcionar igual ) .Funciona tambien 1era Inversion y 2da inversion de triadas mayores.
+           click izquierdo, soltar click , soltar ctrl apenas salga el menu o al final es indiferente. 
+           (el menu que aparece se sincroniza con la ventana de Roll pero no pertenece a ella, es un menu flotante 
+           puede haber  situaciones en que no esté posicionada la [X] justo encima de la nota pero 
+           funciona igual pues la posicion exacta de la nota lo da el clik ) .
+           Funciona tambien 1era Inversion y 2da inversion de triadas mayores.
 
     1.15 ) En algun Futuro: exportar a MusicXml o midi para poder interactuar con otros programas.
            Como tambien importar...
