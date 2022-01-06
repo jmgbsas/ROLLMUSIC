@@ -125,12 +125,12 @@
     1.14 ) En desarrollo, Entrar un acorde a partir de una Nota de la secuencia o si no hay nada tambien pero usando
            la nota en donde se da el click.
            Para ello damos Ctrl-Click derecho sobre la nota a convertir en acorde..y aparece un menu contextual
-           (el cual todavia no es funcional, totlamente, triadas cuaternarias etc, 1era o 2da inversion etc)
+           (el cual todavia no es funcional, totalmente, triadas cuaternarias etc, 1era o 2da inversion etc)
            Ya funciona 3 Notas ->Mayor ->Noinversion (es una triadas Mayor cuya Tonica es la nota elegida, 
-           dar Ctrl+click derecho sobre la nota    navegar como se indica al comienzo llegar a No inversion y ahi dar 
+           dar Ctrl+click derecho sobre la nota navegar como se indica al comienzo llegar a No inversion y ahi dar 
            click izquierdo, soltar click , soltar ctrl. (el menu que aparece se sincroniza con la ventana de Roll pero no
            pertenece a ella, puede haber situaciones en que no este posicionada la X justo encima de la nota pero 
-           deberia funcionar igual )
+           deberia funcionar igual ) .Funciona tambien 1era Inversion y 2da inversion de triadas mayores.
 
     1.15 ) En algun Futuro: exportar a MusicXml o midi para poder interactuar con otros programas.
            Como tambien importar...

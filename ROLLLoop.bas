@@ -2951,14 +2951,14 @@ EndIf
        Select case EventNumber
     ' TRIADAS   
          Case 1001
-       'NO INVERSION Mayor
+       'NO INVERSION Mayor   C E G
     armarAcorde(grado ,4, 7, 0) ' mayor 4, 7
-         Case 1002
-        '1ERA INVERSION
-
+         Case 1002      
+        '1ERA INVERSION MAYOR  E G C
+    armarAcorde(grado ,-5, -8, 0)       
          Case 1003
-        ' 2DA INVERSION
-
+        ' 2DA INVERSION MAYOR  G C E
+    armarAcorde(grado ,4, -5, 0)
          Case 1004 ' Menores <------------No inversion
       armarAcorde(grado ,3, 7, 0) ' menor 3,7  
 
