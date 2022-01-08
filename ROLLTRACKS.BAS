@@ -89,7 +89,10 @@ ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
      Print #1,"altereacion ",alteracion
      print #1,"desde ",pmTk(ntk).desde
      print #1,"hasta ",pmTk(ntk).hasta
-     
+     tiempoPatron=CInt(zLim(1,1).inst)
+     If tiempoPatron = 0 Then 
+        tiempoPatron = 60
+     EndIf
      print #1,"en la carga de track desde hasta", pmTk(ntk).desde,pmTk(ntk).hasta
      pmTk(ntk).NB => 0 + (pmTk(ntk).desde-1) * 13   ' 27 para 3 SI CARGO CANCION NO VA
      pmTk(ntk).NA => 11 + (pmTk(ntk).hasta-1) * 13  ' 90 para  7 06-09-2021 decia 12 -> es 11
@@ -342,6 +345,7 @@ print #1,"pasó copia a vector"
      Else
         grabaLim(1,1).pan  = CUByte(2)
      EndIf
+     grabaLim(1,1).inst = CUByte(tiempoPatron)
 '     If instru=0 Then 'ESATO ESTA DEMAS Y ASE GRABA ANTES 
 '        instru=1
 '     EndIf

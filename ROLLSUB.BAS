@@ -1438,6 +1438,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
          alteracion_str="bem"
      EndIf    
      Print #1,"alteracion_str ",alteracion_str
+      
     cadenaes=""
     Print #1,"armarescala desde cargarArchivo"
     notaescala=notaescala_num
@@ -1450,6 +1451,11 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
     guiaEscala(1).notaescala=notaescala_num
     guiaEscala(1).alteracion =CInt(zLim(1,1).pan)
     guiaEscala(1).posicion=1
+
+    tiempoPatron=CInt(zLim(1,1).inst)
+     If tiempoPatron = 0 Then 
+        tiempoPatron = 60
+     EndIf
 
      NB= 0 + (desde-1) * 13
      NA= 11 + (hasta -1)*13
@@ -2825,7 +2831,7 @@ print #1,"llego a TEMPO en entrar tecla",NombreArchivo
 NombreArchivo = InputBox("Ajuste Tempo" ,"Entre un Tempo",default)
       
  print #1,"nombreArchivo de click ok",nombreArchivo
- tiempoPatron= Cdbl(nombreArchivo)
+ tiempoPatron= cint(nombreArchivo) '08-01-2022 de doble a int
  print #1,">>>>>>>>TIEMPO PATRON NUEVO>>>>>>>>>>,pubi", tiempoPatron,pubi
  If tiempoPatron = 0 Then
     tiempoPatron=60
@@ -3000,6 +3006,22 @@ Print #1,"grabando alteracion en el archivo ",alteracion_str
      Else
         grabaLim(1,1).pan  = CUByte(2)
      EndIf
+     grabaLim(1,1).inst = CUByte(tiempoPatron) '08-01-2022 hasta 256 sera suficiente¿?
+/' 
+Negras por minuto	 tempo
+40-43	Grave
+44-47	Largo
+48-51	Larghetto
+52-54	Adagio
+55-65	Andante
+66-69	Andantino
+70-95	Moderato
+96-112	Allegretto
+113-120	Allegro
+121-140	Vivace
+141-175	Presto
+176-208	Prestissimo
+'/    
      If instru=0 Then 
         instru=1
      EndIf
@@ -3247,7 +3269,7 @@ Next i1
      Else
         grabaLim(1,1).pan  = CUByte(2)
      EndIf
-
+     grabaLim(1,1).inst = CUByte(tiempoPatron)
      ' ------------------------------------
      ' para seguir poniendo notas nuevas
      ' hacemoslo mismo para l ultima not que se grabo que teng el 182

@@ -13,16 +13,22 @@
          el rotulo o label que cambia por una accion está en la misma posición.
         b) Usar Marco o No Usar. 
         Usando marco es mas facil mover la ventana porque usa el modo nativo de
-        windows, pero en esta implementacion no se puede redimensionar la ventana.
+        windows, pero en esta implementacion no se puede redimensionar la ventana CON EL PROGRAMA EJECUTANDO.
         No usar marco: mover la ventana desde la cinta superior debe hacerse lento para que funcione.
         tiene la ventaja que se puede redimensionar la ventana en forma vertical con -/+ en la esquina
-        superior derecha. Cuando se usa marco no redimensiona la ventana pero sí  achica o agranda 
-        el interlineado. Al no usar marco ademas de cambiar el interlineado haciendo mas juntas las lineas
-        levanta el borde superior con - y lo baja con +. Pulsando <> en la esquina superior izquierda
-        y dragando con el mouse desde el costado izquierdo de la ventana se consigue redimensionar
-        los botones de cerrar - y + acompañsan el dedimensionado. Pulsar - + y x sobre todo - y mas
-        pueden variar el punto exacto de respuesta, en general al achicar la ventana parece que
-        el punto de accion virtual sube pro encima del - o + .
+        superior derecha y con reize <> en la esquina superior izquierda. Cuando se usa marco no redimensiona 
+        la ventana pero sí  achica o agranda el interlineado. Al no usar marco ademas de cambiar el interlineado 
+        haciendo mas juntas las lineas levanta el borde superior con - y lo baja con +. 
+        Pulsando <> en la esquina superior izquierda  y dragando con el mouse desde el costado izquierdo de la 
+        ventana se consigue redimensionar miestras se ejecuta el programa, los botones de cerrar - y + acompañan 
+        el redimensionado. Pulsar - + y x sobre todo - y mas,  pueden variar el punto exacto de respuesta, 
+        en general al achicar la ventana parece que el punto de accion virtual sube por encima del - o + .
+        REcordemos que: Rollmusic.ini recuerda los parametros de tamaño de la ventana como el interlineado
+        y tamaño del font. Luego aunque no se use marco, si el tamaño de la ventana es chico, no se podra 
+        agrandar, para ello hay que borrar el archivo RollMusic.ini, y volver a ejecutar el programa
+        de ese modo tomara gran parte de la pantalla y desde ahi se podra achicar de nuevo a gusto. O sea
+        siempre se modifica desde un tamaño mayor a menor pero no de menor a mayor mientras se ejecuta el 
+        programa.
         c) Tipo de escala,(mayor (por omision), harmonica, etc)
         d) Nota de la escala (C (por omision),D,E,Eb,Gb,F#,etc)
         c) Trabajar con sostenidos (por omision) o bemoles        
@@ -33,9 +39,9 @@
     0.0) Ante todo para desarrollar se muestran variables al Pulsar [Edicion], en ese estado y en cualqueir otro
          si quiero volver al menu inicial Archivo,Edicion,Ver,Pista,Reproducir etc....simplemente dar un click 
          en la cinta celeste de arriba en su parte mas derecha entre la mitad y casi hasta el final antes de 
-         los botones. rojo, amarillo y verde...Ojo por ahora al pasar el mouse encima de opciones por la cinta
-         se abre el menu de opciones usar control o click del mouse es problematico, por ahora se deja asi...
-         por eso conviene bajar el mouse y no pasar por encima de opciones por ahora....
+         los botones. rojo, amarillo y verde...Recordar que Opciones se abre pulsando ALT y ubicando el mouse
+         encima del label . 
+         
     1.0) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
     1.1) El espaciado entre lineas se puede cambiar.
     1.2) Trasponer todo: Ctrl-T habilita la trasposicion, Q la deshabilita.

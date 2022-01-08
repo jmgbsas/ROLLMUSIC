@@ -1,3 +1,4 @@
+' tiempoPatron a entero no tiene porque ser double, se graba en archivo
 ' Se agrego formar acordes aun sin nota en el lugar elegido, se deb eentrar al duracion
 ' Triadas desde Tonica completo Mayor Menor Disminuido formacion y play 
 ' fix consumo cpu S5=2 y fueradefoco=0 eliminado
