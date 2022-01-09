@@ -2370,7 +2370,6 @@ EndIf
     EndIf
    EndIf
 
-
 '--------   
 '   If e.scancode = SC_RIGHT Then
 '        If moverZona =1 Then
@@ -2618,7 +2617,8 @@ EndIf
    menuMouse = 0
    carga=0
    '-----fin 2609 referencia de busqueda
-   If MouseButtons And 1 Then ' <========= EDICION SOLO INGRESO DE NOTAS NUEVAS
+   '''If MouseButtons And 1 Then ' <========= EDICION SOLO INGRESO DE NOTAS NUEVAS
+   If MousePress = 1 Then ' no se si funciona mejor lo dejaremos un tiempo
     If s3 = 0 Then
      comEdit = TRUE : s3 = 1
      '       print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
@@ -2942,13 +2942,13 @@ EndIf
      Menuitem (1031,notabase,"Es 7ma ")
         
 ' es 4ta, 6ta, 9na, 11a  ¿? podriamo agregar
-     Menuitem (1032,notabase,"Es 4ta ")
+     Menuitem (1032,notabase,"Es 4ta o 11")
         
      Menuitem (1033,notabase,"Es 6ta ")
         
      Menuitem (1034,notabase,"Es 9ma ")
         
-     Menuitem (1035,notabase,"Es 11va ")
+     Menuitem (1035,notabase,"Es 11va o 4ta")
         
 
      MenuItem(1040,cancelar,"Salir")
@@ -2966,28 +2966,29 @@ EndIf
     ' TRIADAS   
          Case 1001
        'NO INVERSION Mayor   C E G
-    armarAcorde(grado ,4, 7, 0) ' mayor 4, 7
+      armarAcorde(grado ,4, 7, 0) ' mayor 4, 7
          Case 1002      
         '1ERA INVERSION MAYOR  E G C
-    armarAcorde(grado ,-5, -8, 0)       
+      armarAcorde(grado ,-5, -8, 0)       
          Case 1003
         ' 2DA INVERSION MAYOR  G C E
-    armarAcorde(grado ,4, -5, 0)
+      armarAcorde(grado ,4, -5, 0)
+' -----------------
          Case 1004 ' Menores <------------No inversion
-      armarAcorde(grado ,3, 7, 0) ' menor 3,7  
-
-         
+      armarAcorde(grado ,3, 7, 0) ' menor 3,7 C, Eb, G  
          Case 1005
-
+      armarAcorde(grado ,-5, -9, 0) ' Eb, G ,C ' menor 1era inversion 
          Case 1006
+      armarAcorde(grado ,3, -5, 0) ' G ,C , Eb' menor 2da inversion
 
+' -----------
          Case 1007
-      armarAcorde(grado ,3, 6, 0) ' disminuida 3,6
-
-           
-         Case 1008
-
+      armarAcorde(grado ,3, 6, 0) ' disminuida 3,6 C,Eb,Gb
+         Case 1008 ' 
+      armarAcorde(grado ,-4, -9, 0) '  Eb, Gb, C dism 1era inv
          Case 1009
+      armarAcorde(grado ,3, -4, 0) '  Gb, C , Eb dism 2da inv
+           
 ' -------------FIN TRIADAS
          Case 1010
          Case 1011

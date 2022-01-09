@@ -1,4 +1,11 @@
--08-01-2021 grabamos y recuperamos tempo en los archivos
+-09-01-2022 Fix error cargar archivo y luego una cancion, ahroa funciona. dio error alguna vez
+            en monitoreo.(*)
+-08-01-2022 ERROR aleatorio,pasó 1 vesz,-> al grabar luego de dar NUEVO y cargar notas, el play no funciona porque 
+            se va a Maxpos  si pulsamos inicio se va al inicio pero al tocar vuelve a maxpos y no ejecuta nada, 
+            revisar Nuevo..
+ se cambio comando NUEVO a Ctrl-click con un and veremos...en monitoreo (*)
+-08-01-2022 triadas automaticas disminuidas con y sin inverion 1 y 2
+-08-01-2022 grabamos y recuperamos tempo en los archivos
 - tiempoPatron a entero no tiene porque ser double, se graba en archivo
 - Se agrego formar acordes aun sin nota en el lugar elegido, se deb eentrar al duracion
 - Triadas desde Tonica completo Mayor Menor Disminuido formacion y play 

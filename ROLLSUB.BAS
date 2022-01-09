@@ -1759,7 +1759,8 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 '  0.2 ===> [Edicion]
    If mousex > 141 And mousex< 203 And mousey < 50 Then
     cairo_set_source_rgba c, 0, 1, 0, 1
-    If MouseButtons And 1 Then
+    '''If MouseButtons And 1 Then
+    If MousePress = 1 Then  ' funciona mejor ? veremos...
      menuNew=2
     EndIf
    Else
@@ -1942,12 +1943,13 @@ EndIf
    If mousex > 42 And mousex < 110  And mousey < 50  Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
     
-      If MultiKey(sc_control) Then
-       If dobleclick Then
-          Nuevo(Roll,1)
-          Sleep 100
-          MenuNew=0
-       EndIf
+        If MultiKey(sc_control) And MousePress=1 Then
+         'If dobleclick Then
+            Nuevo(Roll,1)
+            Sleep 50
+            MenuNew=0
+         'EndIf
+         
       EndIf 
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -4034,8 +4036,12 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
 ' saltos de octava
         st=nE-n1 
         If st <= 0 Then
-           st=12 + nE -n1
+           st=st + 12
         EndIf            
+        If st >= 12 Then
+           st=st -12 
+        EndIf            
+        
         Roll.trk(indicePos, pn).nota=st
         pn=PianoNota+n2
         pn=pn + SumarnR(pn)
@@ -4043,8 +4049,12 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
         Roll.trk(indicePos, pn).dur=CUByte(RollDur)
         st=nE-n2 
         If st <= 0 Then
-           st=12 + nE -n2
+           st=12 + st
         EndIf            
+        If st >= 12 Then
+           st=st -12 
+        EndIf            
+
         Roll.trk(indicePos, pn).nota=st     
 
              Case 3

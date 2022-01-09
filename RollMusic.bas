@@ -867,6 +867,9 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
              'cargamso todos los tracks
              ' ok anda bien, una vez cagados se permuta en memoria con TAB
              ' o haciedno click en la lista
+               nombre=""
+              
+             Sleep 20
              If NombreCancion > "" And cargaCancion=0 Then
                 NombreCancion = ""
                 param.encancion=0
@@ -881,8 +884,17 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                param.encancion=1
              EndIf
              If NombreCancion = "" Then
-               cargarDirectorioCancion(NombreCancion)
-               param.encancion=1
+                nombre=""
+                ntk=0
+                cargarDirectorioCancion(NombreCancion)
+                param.encancion=1
+               If abrirRoll=2 Then ' ver rollloop roll esta cargado vengo a cargar cancion de nuevo
+               ' por ejemplo tenia solo un roll abierto
+                  CargarPistasEnCancion ()
+                  CANCIONCARGADA=TRUE
+                  param.encancion=1
+
+               EndIf
              EndIf
              
              If abrirRoll=0 And NombreCancion > ""  Then
