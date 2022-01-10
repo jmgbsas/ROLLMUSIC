@@ -36,25 +36,25 @@
              extremo superior del Grafico de RollMusic (subir para arriba hasta que aparesca la escala)
 
     III) USO:
-    0.0) Ante todo para desarrollar se muestran variables al Pulsar [Edicion], en ese estado y en cualqueir otro
+    0) Ante todo para desarrollar se muestran variables al Pulsar [Edicion], en ese estado y en cualqueir otro
          si quiero volver al menu inicial Archivo,Edicion,Ver,Pista,Reproducir etc....simplemente dar un click 
          en la cinta celeste de arriba en su parte mas derecha entre la mitad y casi hasta el final antes de 
          los botones. rojo, amarillo y verde...Recordar que Opciones se abre pulsando ALT y ubicando el mouse
          encima del label . 
          
-    1.0) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
-    1.1) El espaciado entre lineas se puede cambiar.
-    1.2) Trasponer todo: Ctrl-T habilita la trasposicion, Q la deshabilita.
-    1.3) Recalcular Compas <R>. Establece las barras divisorias entre compases.c
-    1.4) Grabar Archivo. (Ctrl-click). Se ha puesto un retardo de 3 segundos si tarda eso es porque se
+    1) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
+    2) El espaciado entre lineas se puede cambiar.
+    3) Trasponer todo: Ctrl-T habilita la trasposicion, Q la deshabilita.
+    4) Recalcular Compas <R>. Establece las barras divisorias entre compases.c
+    5) Grabar Archivo. (Ctrl-click). Se ha puesto un retardo de 3 segundos si tarda eso es porque se
          ejecutó bien el comando y grabó, porque de otra forma a veces salia sin grabar..
-    1.5) Cargar Archivo. click en [Archivo]-> luego en  [*.ROLL] o [+.RTK]
-    1.6) Tamaño Font. f2-f3, f9-f10
-    1.7) Crear Canción.
-    1.8) Agregar tracks a cancion.
-    1.9) Conmutar de Pista en una cancion cargada con TAB.
-    1.10) Borrar pistas de la lista. Delete o supr.
-    1.11) Abrir una columna cuya mayor duracion es N Ej: I negra. Toda la columna se dividira
+    6) Cargar Archivo. click en [Archivo]-> luego en  [*.ROLL] o [+.RTK]
+    7) Tamaño Font. f2-f3, f9-f10
+    8) Crear Canción.
+    9) Agregar tracks a cancion.
+    10) Conmutar de Pista en una cancion cargada con TAB.
+    11) Borrar pistas de la lista. Delete o supr.
+    12) Abrir una columna cuya mayor duracion es N Ej: I negra. Toda la columna se dividira
           en varias posiciona a nivel Pista con la duracion seleccionada previamente
           con la duracion correspondiente que se usa normalmente para duracion de nota.
           Ej: 5 (F), luego pulsar  'Z' y sin levantar esa pulsacion luego dar enseguida Click 
@@ -94,7 +94,7 @@
           que el click sea en esa columna en cualquier linea puede no existir nota, la funcion buscara
           la nota menor y mayor, y fraccionara empezando por la mayor con al unidad de la menor.
           Es la elegida por el programa por omision. 
-    1.12) Cambiar o agregar una escala a la secuencia (se usara para agregar acordes todavia en desarrollo)
+    13) Cambiar o agregar una escala a la secuencia (se usara para agregar acordes todavia en desarrollo)
           teniendo una secuencia en edicion:(por omision no hay ninguna escala en la secuencia)
           ESCALA GENERAL DE TODA LA SECUENCIA (es un recordatorio de que escala estoy usando y que notas debo 
           usar para que una melodia  esté en esa escala)
@@ -106,7 +106,7 @@
           La escala de la Nota y tipo elegida se graba con la secuencia la cual volvera a cargarse en la proxima
           carga del archivo roll o trk.(falta grabar el tempo en el archivo)
 
-    1.12.1) ESCALAS AUXILIARES EN ALGUNAS POSICIONES PARA QUE EL PROGRAMA GENERE ACORDES
+    14) ESCALAS AUXILIARES EN ALGUNAS POSICIONES PARA QUE EL PROGRAMA GENERE ACORDES
                 SEGUN ESA ESCALA.
             Si se marca en una posicion la 1er marca de zona en la secuencia, y luego seteamos tipo escla nota escala  
             y alteracion si se desea, se cambiará la escala en esa posición, la cual regirá desde ahá para construir 
@@ -119,7 +119,7 @@
           para desmarcar y no se verán las escalas. (grabaremos este dato en RollMusic.ini)
     Nota: todas estas acciones funcionan tambien en modo instancia Separada sin Menu de Control.
 
-    1.13) Una instancia sin control puede ejecutarse tambien si asociamos la sextensiones *.roll y *.rtk
+    15) Una instancia sin control puede ejecutarse tambien si asociamos la sextensiones *.roll y *.rtk
           con Rollmusi.exe. En ese caso al dar doble clik o enter sobre el nombre de una secuencia en el
           explorador, se levantará una sesion de RollMusic sin el Menu de Control. 
           Queda editado el arcivo *.roll o el *.rtk.  En este modo se puede ver la escala previamente 
@@ -128,24 +128,10 @@
           Nota: en el caso de bemoles la entrada de notas es igual que antes, Si antes May+C era C#
           si uso bemoles será Db, siempre subo un semitono , es solo una convencion.
 
-    1.14 ) (En desarrollo), Entrar un acorde a partir de una Nota de la secuencia o si no hay nada tambien, usando
-           la nota en donde se da el click, o si no hay nada usando la duracion pulsada (1,2,3,4,5,6,7,8).
-           Si existe la nota y se desea cambiar su duracion , pulsando una duracion antes de usar el comando 
-           se reemplazará la duración existente y se armará un acorde con esa nueva duración. 
-           Para ello damos Ctrl-Click derecho sobre la nota a convertir en acorde..y aparece un menu contextual
-           (el cual todavia no es funcional, totalmente, triadas cuaternarias etc, 1era o 2da inversion etc)
-           Ya funciona 3 Notas ->Mayor ->Noinversion (es una triadas Mayor cuya Tonica es la nota elegida, 
-           dar Ctrl+click derecho sobre la nota navegar como se indica al comienzo llegar a No inversion y ahi dar 
-           click izquierdo, soltar click , soltar ctrl apenas salga el menu o al final es indiferente. 
-           (el menu que aparece se sincroniza con la ventana de Roll pero no pertenece a ella, es un menu flotante 
-           puede haber  situaciones en que no esté posicionada la [X] justo encima de la nota pero 
-           funciona igual pues la posicion exacta de la nota lo da el clik ) .
-           Funciona tambien 1era Inversion y 2da inversion de triadas mayores.
-
-    1.15 ) En algun Futuro: exportar a MusicXml o midi para poder interactuar con otros programas.
+    16 ) En algun Futuro: exportar a MusicXml o midi para poder interactuar con otros programas.
            Como tambien importar...
 
-    1.16 ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
+    17 ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
           o ordenar la ejecucion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
           o ejecutar con otras instancias de RollMusic con o sin Control...(hay muchisimo por hacer...)
     NOTA: si en algun momento se traba el scroll arriba abajo con la rueda del mouse, destrabar la situacion  con 
@@ -335,7 +321,25 @@
        el font solamente con F9/F10. Los ajustes se graban en RollMusic.ini para otra sesion futura 
        independiente del archivo cargado solo depende del inicio RollMusic.ini. Se agregaran otros 
        parametros convenientes en el futuro. Colores, escalas deseadas etc etc.
-       
+
+    1.7 ) (En desarrollo), Entrar un acorde a partir de una Nota de la secuencia o si no hay nada tambien, usando
+         la nota en donde se da el click, o si no hay nada usando la duracion pulsada (1,2,3,4,5,6,7,8).
+         Si existe la nota y se desea cambiar su duracion , pulsando una duracion antes de usar el comando 
+         se reemplazará la duración existente y se armará un acorde con esa nueva duración. 
+         Para ello damos Ctrl-Click derecho sobre la nota a convertir en acorde..y aparece un menu contextual
+         (el cual todavia no es funcional, totalmente, triadas cuaternarias etc, 1era o 2da inversion etc)
+         Ya funciona 3 Notas ->Mayor ->Noinversion (es una triadas Mayor cuya Tonica es la nota elegida, 
+         dar Ctrl+click derecho sobre la nota navegar como se indica al comienzo llegar a No inversion y ahi dar 
+         click izquierdo, soltar click , soltar ctrl apenas salga el menu o al final es indiferente. 
+         (el menu que aparece se sincroniza con la ventana de Roll pero no pertenece a ella, es un menu flotante 
+         puede haber  situaciones en que no esté posicionada la [X] justo encima de la nota pero 
+         funciona igual pues la posicion exacta de la nota lo da el clik ) .
+         Funciona tambien 1era Inversion y 2da inversion de triadas mayores, menores y disminuidas.
+         Luego de insertado el acorde automatico inmediatamente se escucha el mismo y si se desea borrarlo y 
+         volver a la condicion  anterior se pulsará Alt-U. Se puede tocar la pista o un pedazo de ella
+         antes de borrar el acorde y si luego si se quiere se puede eliminar el ultimo acorde ingresado 
+         como se dijo con ALt-D. 
+   
        
 
     1.7) Crear Canción.
@@ -452,6 +456,7 @@
          - Pero si se está editando una octava y se desea pasar rapido a otra octava, simplemete
            se pasa el mouse por encima del extremo DERECHO de la octava en el extremo final derecho
            y se estara editando esa nueva octava  no pudiendo hacerlo en la de antes eso evita errores de entrada.
+         - Undo de entrada de melodia ALT-U
 
     2.1.2) Entrada Por mouse y Teclado 
            estando habilitada una octava como en 2) se hace click derecho aparece un menu de
@@ -570,11 +575,11 @@
           el mismo semitono u otro, la condicion es que nunca forme o inserte un acorde. (Los acordes se arman
           manualmente fuera del proceso de insercion, en el modo cursor en una columna que ya exita una nota previa, 
           modificando los semitonos vacios de esa columna, nos ubicamos en un semitono pulsamos duracion y 
-          X para modificar.)
+          X para modificar.) 
         - Terminada la insercion de notas nuevas  pulsar la tecla 'Fin' y toda la secuencia desde el punto de insericon 
           se moverá a derecha según sean la cantidad de posiciones insertadas y las notas nuevas  quedarán insertadas
           en la secuencia.
-
+       
 
     III) 
 

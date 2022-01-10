@@ -485,6 +485,7 @@ Type mouse
  End Type
  End Union
 End Type
+
 Dim shared As mouse m
 Dim Shared As Double old_btn_press_time, new_btn_press_time,dbl_click_time,redimensionar=0
 dbl_click_time = 0.18
@@ -641,9 +642,23 @@ Dim Shared As Integer hastavector,abrirRoll=0
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
 'Dim Shared As Integer lim2=12, ctres=CantTicks
-Dim Shared As Integer lim2=12
+Dim Shared As Integer lim2=12,undo_k=0,mel_undo_k=0
 Dim Shared As Boolean Vaciodur=FALSE
-  
+Type notas_agregadas Field=1
+  As Integer pn
+  As UByte  dur
+  As UByte  nota
+End Type
+
+Type melodia_undo Field=1
+  As Integer trk
+  As Integer posn
+  'As notas_agregadas columna
+End Type
+Dim Shared As melodia_undo mel_undo(1 To 5000)
+
+
+Dim Shared As notas_agregadas undo_acorde(1 To 12) ' undo para 1 acorde entrado de hasta 12 notas adicionales  
 ' c/inst puede tocar como una persona hasta 12 notas juntas de acorde
 ' entonces no se justifica tener en un solo instrumento una polifonia mas de 12
 ' ni de 108,,,ergo puedo poner mas trakcs o mas longitud
@@ -660,7 +675,7 @@ Dim Shared As Boolean Vaciodur=FALSE
 '============== IMPLEMENTARLO AL FINAL 
 Dim Shared As inst RollAux
 common Shared As Integer  ANCHO,ALTO,ANCHOSYSTEM, ALTOSYSTEM
-Dim Shared As Integer   deltaip=0
+Dim Shared As Integer   deltaip=0,scan_alt=0,scan_d=0
 Dim Shared As Double   BordeSupRoll, inc_Penta,arranqueDo1=0
 Dim Shared As Integer  AnchoInicial,AltoInicial
 Common Shared As FLOAT font

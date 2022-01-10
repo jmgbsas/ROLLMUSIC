@@ -2878,6 +2878,8 @@ Sub velocidades(j As integer)
 End Sub 
 Sub GrabarArchivo ()
 ' GRABA ARCHIVOS CON EXTENSION Y FORMATO *.ROLL
+mel_undo_k=0
+Erase mel_undo
 
 Dim  As Integer npl
      If nombre = "" Then ' backup
@@ -4032,6 +4034,10 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
         pn=PianoNota+n1 
         pn =pn +SumarnR(pn)
         Print #1,"armando acorde 3ta,,nR ",pn
+        undo_acorde(1).pn=pn
+        undo_acorde(1).dur=Roll.trk(indicePos, pn).dur
+        undo_acorde(1).nota=Roll.trk(indicePos, pn).nota
+
         Roll.trk(indicePos, pn).dur=CUByte(RollDur)
 ' saltos de octava
         st=nE-n1 
@@ -4045,7 +4051,12 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
         Roll.trk(indicePos, pn).nota=st
         pn=PianoNota+n2
         pn=pn + SumarnR(pn)
+
         Print #1,"armando acorde ,5ta,nR ",pn  
+        undo_acorde(2).pn=pn
+        undo_acorde(2).dur=Roll.trk(indicePos, pn).dur
+        undo_acorde(2).nota=Roll.trk(indicePos, pn).nota
+
         Roll.trk(indicePos, pn).dur=CUByte(RollDur)
         st=nE-n2 
         If st <= 0 Then
@@ -4054,7 +4065,7 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
         If st >= 12 Then
            st=st -12 
         EndIf            
-
+        undo_k=2
         Roll.trk(indicePos, pn).nota=st     
 
              Case 3
@@ -4068,7 +4079,15 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
  If Vaciodur Then
     ReCalCompas (Roll)
     Vaciodur=FALSE
- EndIf 
+ EndIf
+ Dim As Integer guardpos
+ guardpos=posicion
+ pasozona1=indicePos
+ pasozona2=indicePos
+ playAll (roll)
+ pasozona1=0
+ pasozona2=0
+ posicion=guardpos
  
 End Sub
 ' error

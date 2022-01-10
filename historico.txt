@@ -1,3 +1,10 @@
+-09-01-2022 undo para entrada de melodia en Edit 5000 notas de undo. El vector se inicializa al 
+pasar de un track a otro en cancion, y al grabar un archivo. O sea mientras no se grabe o pulse TAB
+se podrá ahcer undo de melodia, nada mas por ahora. ALT-U undo melodia
+-09-01-2022 undo para el ultimo acorde automatico Alt-U (ALT-U tambien borra melodia de a una posicion
+ por lo tanto se va borrando la melodia y el ultimo acorde)
+
+-09-01-2022 al entrar un acorde automatico se toca para escucharlo, la posicion no se mueve.
 -09-01-2022 Fix error cargar archivo y luego una cancion, ahroa funciona. dio error alguna vez
             en monitoreo.(*)
 -08-01-2022 ERROR aleatorio,pasó 1 vesz,-> al grabar luego de dar NUEVO y cargar notas, el play no funciona porque 

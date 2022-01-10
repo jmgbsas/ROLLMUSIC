@@ -1179,6 +1179,41 @@ If MultiKey(SC_ALT) and MultiKey(SC_L)  Then ' <======== playloop
   playloop=1 
 EndIf
 
+If MultiKey(SC_ALT)  And MultiKey(SC_U) And scan_alt=0 Then
+  'undo de acorde o melodia
+  ' esto funciona en Roll hay qu ever que pasa con los tracks....pendiente jjj
+   
+  Dim As Integer ik=0,ij=0
+   If undo_k > 0 Then   
+        
+      For ik=1 To undo_k
+          Roll.trk(indicePos,undo_acorde(ik).pn).dur=undo_acorde(ik).dur
+          Roll.trk(indicePos,undo_acorde(ik).pn).nota =undo_acorde(ik).nota
+          Track(ntk).trk(indicePos,1+ik).nota=0
+          Track(ntk).trk(indicePos,1+ik).dur=0
+      Next ik
+      undo_k=0
+   EndIf
+   If mel_undo_k > 0 Then ' borra de a uno dede fina  a adelante
+     ik=mel_undo_k
+      ' no hace falta grabar y reponer se supone era nuevo ergo 0,0
+      '   Roll.trk( mel_undo(ik).posn, mel_undo(ik).columna.pn).dur =mel_undo(ik).columna.dur
+      '   Roll.trk( mel_undo(ik).posn, mel_undo(ik).columna.pn).nota =mel_undo(ik).columna.nota
+' volver a ceros el resto de notas
+' tola la melodia en track esta en posicion vertical 1 las otras son de acorde 
+         For ij=NB To NA '''NA -12 ???? ver la 1er octava no se usa
+            Roll.trk(mel_undo(ik).posn, ij).nota =0
+            Roll.trk(mel_undo(ik).posn, ij).dur  =0
+            Track(ntk).trk(mel_undo(ik).posn,1).nota=0
+            Track(ntk).trk(mel_undo(ik).posn,1).dur=0
+         Next ij 
+     
+     MaxPos=MaxPos-1
+     mel_undo_k=mel_undo_k -1
+   EndIf
+   scan_alt=1
+   Exit Do
+EndIf 
 
 If MultiKey (SC_F12) And abierto=0 Then
 '''archivo test-AAAAA.TXT
@@ -1438,7 +1473,7 @@ If MultiKey (SC_D) Then
  If cursorVert =2 Then
   agregarNota = 1
  EndIf
- Exit Do
+ Exit Do 
 EndIf
 
 If MultiKey (SC_E) Then
@@ -1991,6 +2026,15 @@ If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=1 Then
    Track(ntk).trk(posn,1).dur = DUR + 171
    incr=135
 EndIf   
+mel_undo_k = mel_undo_k + 1
+
+mel_undo(mel_undo_k).trk = ntk
+mel_undo(mel_undo_k).posn = posn
+'mel_undo(mel_undo_k).columna.pn = nR
+'mel_undo(mel_undo_k).columna.dur = DUR
+'mel_undo(mel_undo_k).columna.nota = nota
+
+
 ' ---fin 4to bloque -
    
   ' print #1," NUCLEO GUARDO DUR EN ROLL ";DUR;" figura ";figura(DUR)
@@ -2048,7 +2092,7 @@ EndIf
    ' o crear un [[[play mas sencillo]] y rapido
   EndIf 
   nota=0 '18-11-20201
- Exit Do 'kkkk 30-01-21 probando
+ ''''Exit Do 'kkkk 09-01-22 probando no debe sali rdebe seguir chequeando
 EndIf
 ' fin correccion loop
 
@@ -2143,8 +2187,6 @@ If (ScreenEvent(@e)) Then
    EndIf
 
   Case EVENT_KEY_PRESS    ' <======== KEY PRESS PULSO
-
-
    If e.scancode = SC_P And Play=1 then ' 25 anda mejor q con multikey
       CONTROL1=1
       playloop=0
@@ -2562,7 +2604,11 @@ EndIf
        lockip=0
 
 ' -----------
- 
+  ' arriba de todo ponemos deteccion de teclas sin exit do para que siga.. 
+       scan_alt=0
+
+'---------------------------------------
+
 
 
 	
