@@ -709,7 +709,7 @@ MENUITEM(1106,MenName7,"Seleccionar TIPO DE ESCALA de la secuencia (Por omision 
 MENUITEM(1107,MenName7,"Seleccionar NOTA DE LA ESCALA ESCALA (Por omision C )")
 MENUITEM(1108,MenName7,"Trabajar con sostenidos (Por omision Sostenidos #)",MF_CHECKED )
 MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
-MenuItem(1111,MenName7,"Cambio de escala en la Posicion actual (Pasozona1), se borra todo lo que haya y se salta en la ejecucion, ajustar antes alteracion # o b ")
+MenuItem(1111,MenName7,"Cambio de escala en la Posicion actual (Pasozona1)")
 
 MenuItem(1110,MenName8,"Acerca de")
 End If
@@ -1203,8 +1203,9 @@ Print #1,"1060 abrirRoll=0 entro"
                  SetStateMenu(hmessages,1105,3)
                  
            Case 1106 ' escala de la secuencia, similar a la de instrumentos
-               selTipoEscala (tipoescala)
-               tipoescala_num=tipoescala
+               pasozona1=0
+               selTipoEscala (tipoescala_num_ini)
+
 ' GRABADO EN grabaPos(1,1).inst = CUByte(tipoescala) ' 20-12-2021 - tipoescala en uso
 ' CUADNO QUEIRO UN CAMBIO PUEDO DEJAR UN ACOLUMNA VACIA Y PONER TODO ESTA INFO
 ' PERO DEBO INDICAR AL PROGRAM QUE SALTEE ESTA COLUMNA CREO CON TENER NOTA=181 Y DUR181
@@ -1216,72 +1217,66 @@ Print #1,"1060 abrirRoll=0 entro"
               ' grabar el track 
 '' NOTA: LA VARIABLES DE ESCALA DE TODA LA SECUENCIA TIENEN SUBFIJOS _STR O _NUM
 '' LAS QUE SON PARA USO DE ESCLAS EN POSICIONES NO LO TIENEN
-            Print #1,"tipo de escala seleccionado ", tipoescala_num
+            Print #1,"tipo de escala seleccionado ", tipoescala_num_ini
               
 ' -------cadena de escala, construye dsde C hay que hacer las otras esclas
     ' C,D,E,F,G,A,B,Bb,Ab,Gb ver las debo pedir escala y 1er nota desde donde empieza uff
-      '        cadenaes=""
               Print #1,"armarescla desde 1106"
-              cadenaes="":cadenaes_inicial=""
-              armarescala(cadenaes)
-              cadenaes_inicial=cadenaes 
-              
+              cadenaes_inicial=""
+              armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion)
 ' --------------------------   
            Case 1107 ' usamos sostenidos o bemoles ???
-              selNotaEscala (notaescala)
-               notaescala_num=notaescala 
-               print #1, "seleccion de Nota de la escala num  ",notaescala_num
-      '        cadenaes=""
+              pasozona1=0
+              selNotaEscala (notaescala_num_ini)
+ 
+              Print #1, "seleccion de Nota de la escala num  ",notaescala_num
               Print #1,"armarescla desde 1107"
-              cadenaes="":cadenaes_inicial=""
-              armarescala(cadenaes)
-              cadenaes_inicial=cadenaes 
+              cadenaes_inicial=""
+              armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion)
+
 
            Case 1108 ' alteraciones sotenidos o bemoles
-              alteracion_str="sos" ' grabado en grabaLim(1,1).pan  = CUByte(3)
+              pasozona1=0
+              alteracion="sos" ' grabado en grabaLim(1,1).pan  = CUByte(3)
               SetStateMenu(hmessages,1108,3)  
               SetStateMenu(hmessages,1109,0)
             ' si hay nombre de archivo grabar sino no   
       ''        GrabarArchivo()
-      '        cadenaes=""
               Print #1,"armarescla desde 1108"
-              cadenaes="":cadenaes_inicial=""
-              armarescala(cadenaes)
-              cadenaes_inicial=cadenaes
-               
+              cadenaes_inicial=""
+              armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion)
+          
 
 ' --------------------------   
            Case 1109 ' alteraciones sotenidos o bemoles
-              alteracion_str="bem" ' grabado en grabaLim(1,1).pan  = CUByte(2)
+              pasozona1=0
+              alteracion="bem" ' grabado en grabaLim(1,1).pan  = CUByte(2)
               SetStateMenu(hmessages,1108,0)  
               SetStateMenu(hmessages,1109,3) 
-              cadenaes=""
               Print #1,"armarescla desde 1109"
               cadenaes_inicial=""
-              armarescala(cadenaes)
-              cadenaes_inicial=cadenaes  
-            
+              armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion)
+      
 
            Case 1110
    
              MessBox ("", acercade)
            Case 1111 'cambiode escala
              If pasozona1 > 0 Then ' gurdamos en la posicion actual los valores cambiode escala
-                cadenaes=""
-                selTipoEscala (tipoescala)
-                selNotaEscala (notaescala) 
+                selTipoEscala (tipoescala_num)
+                selNotaEscala (notaescala_num) 
                 cambioescala=1
                 indEscala=indEscala+1
 
-                guiaEscala(indEscala).tipoescala=tipoescala
-                guiaEscala(indEscala).notaescala=notaescala
+                guiaEscala(indEscala).tipoescala=tipoescala_num
+                guiaEscala(indEscala).notaescala=notaescala_num
                 If alteracion="sos" Then
                    guiaEscala(indEscala).alteracion=3
                 EndIf 
                 If alteracion="bem" Then
                    guiaEscala(indEscala).alteracion=2
                 EndIf 
-              Print #1,"1111 TIPOESCALA NOTAESCALA ",tipoescala, notaescala
+              Print #1,"1111 TIPOESCALA NOTAESCALA ",tipoescala_num, notaescala_num
             EndIf              
          End Select
        Case eventgadget
@@ -1359,7 +1354,9 @@ Print #1,"1060 abrirRoll=0 entro"
                 item=""
                 EndIf  
                 print #1," CLICK EN LISTA FIN "
+                  
              EndIf 
+
        EndIf
 
        Case EventClose  ''<==== SALIR TERMINA ROLL lax de win control???

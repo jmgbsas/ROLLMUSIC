@@ -53,7 +53,7 @@ ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
      x3=Bin(z(1,1).vol,4)
      x4=Bin(z(1,1).pan,4)
      x5=Bin(z(1,1).pb,4)
-     tipoescala =CInt( Z(1,1).inst) ' 20-12-2021 - tipoescala en uso
+     tipoescala_num_ini =CInt( Z(1,1).inst) ' 20-12-2021 - tipoescala en uso
      pmTk(ntk).tipoescala=Z(1,1).inst
      
      x=x1+x2+x3+x4+x5
@@ -78,7 +78,7 @@ ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
      pmTk(ntk).notaold= CInt(zLim(1,1).pb)
 ' la nota esca y la esca es la misma `para todos lso tracks despues lo debo cambiar
      
-     notaescala =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
+     notaescala_num_ini =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
      pmTk(ntk).notaescala=zLim(1,1).vol
      If zLim(1,1).pan = 3 Then
         alteracion="sos"
@@ -86,7 +86,7 @@ ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
      If zLim(1,1).pan = 2 Then
         alteracion="bem"
      EndIf
-     Print #1,"altereacion ",alteracion
+     Print #1,"alteracion ",alteracion
      print #1,"desde ",pmTk(ntk).desde
      print #1,"hasta ",pmTk(ntk).hasta
      tiempoPatron=CInt(zLim(1,1).inst)
@@ -168,7 +168,7 @@ ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
      '''''ReCalCompas(Roll) '''No es vEctor de Visualizacion      
     cadenaes=""
     Print #1,"armarescala desde cargar track"
-    armarescala (cadenaes)
+    armarescala (cadenaes_inicial, tipoescala_num_ini , notaescala_num_ini, alteracion )
 
       print #1,"CargarTrack  fin"  
       print #1,"----------------------------------------------" 
@@ -517,7 +517,10 @@ Sub GrabarRollaTrack ( cambiaext As Integer )
  ' cambiaext=1 porqu epasa de .roll a .rtk  
 '2) convierte un Roll a trk y graba en cancion, igual que antes pero 
  ' lo pone en cancion con le mismo nro de track sobreescribe
-
+' ACA NO ELIMINAMOS LA POSIBILIDAD DE UNDO YA QUE NO GRABAMOS ROLL
+' ESTAMSO GRABANDO A TRACK EXPORTANDO PERO EL ROLL NO SE GRABO Y PODRIA AHCER UNDO
+' EXPORTARLO DE NUEVO O NO EXPORTARLO Y HACER UNDO DE ROLL PERO TRACK QUEDA COMO BACKUP
+' DE LO NUEVO , SOLO AL GRABAR ROLL SE ELIMINA EL UNDO
 print #1,"---------------------------------------------------------------------------------"
 print #1,"inicia GrabarRollaTrack, cambiaext ",cambiaext 
    Dim As String path, nom,ext
@@ -602,6 +605,8 @@ Dim As Integer j,i3,i2,i1
 '------------------------------------------
 ' basada en ActualizarRollyGrabarPista pero en un solo paso, dejare una aola ? veremos
 ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim2)
+   Erase mel_undo, undo_acorde  
+   undo_k=0:mel_undo_k=0
 
 
 i3=0

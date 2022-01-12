@@ -1404,8 +1404,8 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      x3=Bin(z(1,1).vol,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
      x4=Bin(z(1,1).pan,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
      x5=Bin(z(1,1).pb,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
-     tipoescala_num =CInt( Z(1,1).inst) ' 20-12-2021 - tipoescala en uso
-     Print #1,"tipoescala_num ",tipoescala_num ' ' NO LEE UNA MIERDA CON UBIRROLL> 0
+     tipoescala_num_ini =CInt( Z(1,1).inst) ' 20-12-2021 - tipoescala en uso
+     Print #1,"tipoescala_num_ini ",tipoescala_num_ini ' ' NO LEE  CON UBIRROLL> 0
      
      x=x1+x2+x3+x4+x5
      '   print #1,"reconstruccion x pos bin ", x
@@ -1429,22 +1429,22 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      Print #1,"hasta ",hasta
      notaold= CInt(zLim(1,1).pb)
      Print #1,"notaold ",notaold     
-     notaescala_num =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
-     Print #1,"notaescala_num ",notaescala_num     
+     notaescala_num_ini =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
+     Print #1,"notaescala_num_ini ",notaescala_num_ini     
      if  zLim(1,1).pan = 3 Then
-         alteracion_str="sos"
+         alteracion="sos"
      EndIf    
      if  zLim(1,1).pan = 2 Then
-         alteracion_str="bem"
+         alteracion="bem"
      EndIf    
-     Print #1,"alteracion_str ",alteracion_str
+     Print #1,"alteracion ",alteracion
       
-    cadenaes=""
+    cadenaes_inicial=""
     Print #1,"armarescala desde cargarArchivo"
-    notaescala=notaescala_num
-    tipoescala=tipoescala_num
-    armarescala (cadenaes)
-    cadenaes_inicial=cadenaes  
+  '  notaescala_inicial=notaescala_num
+  '  tipoescala_inicial=tipoescala_num
+    armarescala (cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini, alteracion )
+
     tipoescala_inicial=escala(tipoescala_num).nombre
 ' carga de escala en guia de escala
     guiaEscala(1).tipoescala=tipoescala_num
@@ -1552,7 +1552,7 @@ CantTicks=4000 ' vuelvo al original default
           NA => 11 + (hasta-1) * 13  ' 90 para  7
        '   If desdevector > desde Or hastavector < hasta Then ' si se amplia el rango
                print #1,"entro a redimiensionar vector por octavas"
-               Erase  Roll.trk, Track(ntk).trk, RollAux.trk  
+               Erase  Roll.trk, Track(ntk).trk, RollAux.trk, mel_undo,undo_acorde  
                desdevector= desde
                hastavector= hasta
                print #1,"Runtime desde hasta ",desde ,hasta
@@ -1561,6 +1561,7 @@ CantTicks=4000 ' vuelvo al original default
                ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim2)
                ReDim compas(1 To CantTicks)
                ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
+               mel_undo_k=0:undo_k=0
                posn=1
      '     Else
 '
@@ -2049,7 +2050,7 @@ EndIf
           GrabarRollaTrack(0)
            Sleep 3000           
        Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
-           GrabarArchivo ()
+           GrabarArchivo (0)
            Sleep 3000 
        EndIf
          carga=1
@@ -2077,8 +2078,8 @@ EndIf
        Else
          nombre=nombreg   
        EndIf
-
-       GrabarArchivo()
+        
+       GrabarArchivo(1)
           lockip=2 ' habilita mouse 28-08-2021
        MenuNew=0
        carga=1   
@@ -2876,13 +2877,14 @@ Sub velocidades(j As integer)
     EndIf
 
 End Sub 
-Sub GrabarArchivo ()
+Sub GrabarArchivo (grabar_como As Integer)
 ' GRABA ARCHIVOS CON EXTENSION Y FORMATO *.ROLL
-mel_undo_k=0
-Erase mel_undo
-
+If grabar_como =0 Then
+   mel_undo_k=0: undo_k=0
+   Erase mel_undo, undo_acorde
+EndIf
 Dim  As Integer npl
-     If nombre = "" Then ' backup
+     If nombre = "" Then ' backup antes de aumentar el tamaño del vector
         nombre = "Backup"+ Date + ".roll"
      Else
        npl= InStr(UCase(nombre),".TRK") 
@@ -2996,16 +2998,16 @@ MaxPos=k+1
      grabaPos(1,1).vol  = y3
      grabaPos(1,1).pan  = y4
      grabaPos(1,1).pb   = y5
-Print #1,"grabando tipoescala_num en el archivo ",tipoescala_num 
-     grabaPos(1,1).inst = CUByte(tipoescala_num) ' 20-12-2021 - tipoescala en uso
+Print #1,"grabando tipoescala_num en el archivo ",tipoescala_num_ini 
+     grabaPos(1,1).inst = CUByte(tipoescala_num_ini) ' 20-12-2021 - tipoescala en uso
     '-----------------------
      grabaLim(1,1).nota = CUByte(desde) 
      grabaLim(1,1).dur  = CUByte(hasta)
      grabaLim(1,1).pb   = CUByte(notaold)
-Print #1,"grabando notaescala_num en el archivo ",notaescala_num
-     grabaLim(1,1).vol  = CUByte(notaescala_num) ' notadeescala 20-12-2021
-Print #1,"grabando alteracion en el archivo ",alteracion_str
-     If alteracion_str="sos" Then
+Print #1,"grabando notaescala_num en el archivo ",notaescala_num_ini
+     grabaLim(1,1).vol  = CUByte(notaescala_num_ini) ' notadeescala 20-12-2021
+Print #1,"grabando alteracion en el archivo ",alteracion
+     If alteracion="sos" Then
         grabaLim(1,1).pan  = CUByte(3)
      Else
         grabaLim(1,1).pan  = CUByte(2)
@@ -3261,12 +3263,12 @@ Next i1
      grabaPos(1,1).vol  = y3
      grabaPos(1,1).pan  = y4
      grabaPos(1,1).pb   = y5
-     grabaPos(1,1).inst = CUByte(tipoescala) ' 20-12-2021 - tipoescala en uso
+     grabaPos(1,1).inst = CUByte(tipoescala_num_ini) ' 20-12-2021 - tipoescala en uso
      '-----------------------
      grabaLim(1,1).nota = CUByte(desde)
      grabaLim(1,1).dur  = CUByte(hasta)
      grabaLim(1,1).pb   = CUByte(notaold)
-     grabaLim(1,1).vol  = CUByte(notaescala) ' notadeescala 20-12-2021     
+     grabaLim(1,1).vol  = CUByte(notaescala_num_ini) ' notadeescala 20-12-2021     
 
      If alteracion="sos" Then
         grabaLim(1,1).pan  = CUByte(3)
@@ -3862,10 +3864,10 @@ Sleep 1000
 
 End Sub
 '-------
-Sub selTipoEscala (ByRef tipoescala As integer)
+Sub selTipoEscala (ByRef tipoescala_num As integer)
 Dim As hwnd haw,hwl
 Dim As Integer aa ,paso1=0,x=0  
-tipoescala=0
+tipoescala_num=0
 
  
 '' => desde acaecho con tool del ruso no anda muy bien
@@ -3900,7 +3902,7 @@ tipoescala=0
           If eventC=eventgadget Then
           
             If eventnumber()=2 Then
-               tipoescala = GetItemListView()
+               tipoescala_num = GetItemListView()
 '''               instru=instru + 1
             ''   If instru > 1 Then
                   Close_Window(haw)
@@ -3916,14 +3918,14 @@ tipoescala=0
 
 '' fin ruso
 'Return IUP_DEFAULT
-print #1,"Str(tipoescala) ", Str(tipoescala)
+print #1,"Str(tipoescala_num) ", Str(tipoescala_num)
 
 End Sub
 '----
-Sub selNotaEscala (ByRef notaescala As integer)
+Sub selNotaEscala (ByRef notaescala_num As integer)
 Dim As hwnd haw,hwl
 Dim As Integer aa ,paso1=0,x=0  
-notaescala=0
+notaescala_num=0
 
  
 '' => desde acaecho con tool del ruso no anda muy bien
@@ -3963,7 +3965,7 @@ notaescala=0
           If eventC=eventgadget Then
           
             If eventnumber()=2 Then
-               notaescala = GetItemListView()
+               notaescala_num = GetItemListView()
 '''               instru=instru + 1
             ''   If instru > 1 Then
                   Close_Window(haw)
@@ -3979,32 +3981,32 @@ notaescala=0
 
 '' fin ruso
 'Return IUP_DEFAULT
-print #1,"Str(notaescala) ", Str(notaescala)
+print #1,"Str(notaescala_num) ", Str(notaescala_num)
 
 
 End sub
 
 '--------
-Sub armarescala(ByRef cadenaes As String )
-cadenaes=""
+Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As string )
+cadena=""
 
 Dim As Integer k3=1,h2,hnro,dif,dif2
 Dim p6 As Byte Ptr
 ' si notaescala es distinto de 1 emepzamos la escala desde esa nota
-   Print #1,"tipo escala que llego a armar escala ",tipoescala
-   p6= escala(tipoescala).pasos
+   Print #1,"tipo escala que llego a armar escala ",tipoesc
+   p6= escala(tipoesc).pasos
    
-   hnro=escala(tipoescala).nropasos 
-   Print #1,"notaescala llego a armarescala ",notaescala
-   If notaescala > 1 Then
-     k3=notaescala 
+   hnro=escala(tipoesc).nropasos 
+   Print #1,"notaescala llego a armarescala ",notaesc
+   If notaesc > 1 Then
+     k3=notaesc 
    EndIf
     Print #1,"k3 inicial=",k3
     For h2 = 1 To hnro 
-     If alteracion="bem" then
-     cadenaes = cadenaes + NotasEscalaArmado2(k3) + " "   ' impresion de la escala con las notas c c# d  etc
+     If altera="bem" then
+     cadena = cadena + NotasEscalaArmado2(k3) + " "   ' impresion de la escala con las notas c c# d  etc
      Else
-     cadenaes = cadenaes + NotasEscalaArmado(k3) + " "
+     cadena = cadena + NotasEscalaArmado(k3) + " "
      EndIf
       k3= *p6 + k3
      Print #1,"h2, k3",h2, k3
@@ -4012,7 +4014,7 @@ Dim p6 As Byte Ptr
     Next h2
     
     
-  Print #1,"Final cadena de escala armada ",cadenaes
+  Print #1,"Final cadena de escala armada ",cadena
  
   
 End Sub

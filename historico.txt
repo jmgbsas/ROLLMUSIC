@@ -1,3 +1,4 @@
+-11-01-2022 se ajusto la independencia de la escala de la secuencia y las auxiliares ,se graban y recuperan
 -09-01-2022 undo para entrada de melodia en Edit 5000 notas de undo. El vector se inicializa al 
 pasar de un track a otro en cancion, y al grabar un archivo. O sea mientras no se grabe o pulse TAB
 se podrá ahcer undo de melodia, nada mas por ahora. ALT-U undo melodia

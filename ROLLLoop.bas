@@ -172,16 +172,25 @@ Dim t2 As String=""
      Else
 
         If indf = 200 And nVerEscalasAuxiliares=3 Then
+         ''' Print #1,"ENTROA VER ESCAL AAUXILIAR"
            cairo_set_source_rgba(c, 0, 1, 0, 1) 
            cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
            cairo_line_to(c,gap1 + (ic ) *anchofig , Penta_y + 13.5 * inc_Penta )
+           notaescala=CInt( Roll.trk(n, 11- semitono  + (*po -1) * 13).vol)
            If Roll.trk(n, 11- semitono  + (*po -1) * 13).pan =3 Then
-             t2= NotasEscala(CInt( Roll.trk(n, 11- semitono  + (*po -1) * 13).vol) )  
+             t2= NotasEscala(CInt( notaescala ))
            EndIf
            If  Roll.trk(n, 11- semitono  + (*po -1) * 13).pan =2 Then
-             t2= NotasEscala2(CInt( Roll.trk(n, 11- semitono  + (*po -1) * 13).vol) ) 
+             t2= NotasEscala2(CInt( notaescala ))
            EndIf
-           t2=t2+" "+ escala(CInt(Roll.trk(n, 11- semitono  + (*po -1) * 13).inst)).nombre + " "+cadenaes
+'           Print #1, "NOTAESCALA ",t2
+           ' 11-01-2022
+           tipoescala=CInt(Roll.trk(n, 11- semitono  + (*po -1) * 13).inst)
+'           Print #1," tipoescala ",tipoescala
+           armarescala cadenaes,tipoescala, notaescala, alteracion
+'           Print #1,"cadenaes ",cadenaes
+           ' fin 11-01-2022
+           t2=t2+" "+ escala(tipoescala).nombre + " "+cadenaes
            
         Else
            t2=""
@@ -624,8 +633,8 @@ End Select
 'no se usa en ningun lado nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
 print #1,"INSTANCIA ", instancia
 
-Print #1,"call roolloop, tipoescala",tipoescala
-Print #1,"call roolloop, notaescala",notaescala    
+Print #1,"call roolloop, tipoescala",tipoescala_inicial
+Print #1,"call roolloop, notaescala",notaescala_inicial    
 
 If ubiroll > 0 Then
    Print #1,"cargo archivo desde rollLoop
@@ -747,12 +756,15 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 '---------
 If cambioescala=1 And pasoZona1 > 0 Then ' creamos una posicion con cambio de escala en pasoZona1
 ' la escala queda vigente hasta el proximo cambio, esto recuerda las notas que se deben usar o para crear acordes
-Print #1,"cAMBIO ESCALA Na,NB, tipoescala, notaescala ", NA,NB,tipoescala,notaescala
+Print #1,"cAMBIO ESCALA Na,NB, tipoescala, notaescala ", NA,NB,tipoescala_num,notaescala_num
 ' DEBO CARGAR EN LAS ZONAS DONDE NO HAY NOTAS O SEA ENTRE OCTAVAS TENGO LUGARES SIN USAR ERGO NO HACE FALTA
 ' BORRAR LOS DATOS PUEDO TENERUN CAMBIO DE ESCALA EN DATOS PREVIOS
 ' CUALE SSON ESAS POSICIONES SIN NOTAS..LAS QUE SON MULTIPLO DE 13 SUPONGO
+ tipoescala=tipoescala_num
+ notaescala=notaescala_num
+
 Dim K As Integer
-For K=NB To NA Step 12 
+For K=NB To NA Step 12 ' step 12 queda entre 2 octavas
  Print #1,"CARGO FOR !!! NOTA 30 DUR 200, k, pasozona1, NA ", "K=";K, pasoZona1,NA
    
      Roll.trk(pasozona1, K).inst=CUByte(tipoescala)
@@ -785,7 +797,7 @@ For K=NB To NA Step 12
 '     alteracion="bem"
 '  EndIf
 cadenaes=""
-armarescala cadenaes
+armarescala cadenaes,tipoescala,notaescala , alteracion
 
 EndIf
 
@@ -863,11 +875,12 @@ EndIf
 Do 
 
 
-
 '---------
 'simulamos TAB para cargaCancion=1 cuadno recien se carga la cancion
 If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA Or cargaCancion=1 Then
    cargaCancion=0 ' para que no entre mas luego de cargada la cancion
+   Erase mel_undo, undo_acorde  
+   undo_k=0:mel_undo_k=0
    ROLLCARGADO = FALSE
    print #1,"--TAB "
    nota=0
@@ -1163,7 +1176,7 @@ If MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
          nombre=nombreg   
       EndIf
    EndIf
-   GrabarArchivo()
+   GrabarArchivo(0)
    
 EndIf
 ' cargar Roll y MaxPos de disco
@@ -1179,7 +1192,7 @@ If MultiKey(SC_ALT) and MultiKey(SC_L)  Then ' <======== playloop
   playloop=1 
 EndIf
 
-If MultiKey(SC_ALT)  And MultiKey(SC_U) And scan_alt=0 Then
+If MultiKey(SC_ALT)  And MultiKey(SC_U) And scan_alt=0 Then '<=== undo melodia
   'undo de acorde o melodia
   ' esto funciona en Roll hay qu ever que pasa con los tracks....pendiente jjj
    
@@ -1197,7 +1210,7 @@ If MultiKey(SC_ALT)  And MultiKey(SC_U) And scan_alt=0 Then
    If mel_undo_k > 0 Then ' borra de a uno dede fina  a adelante
      ik=mel_undo_k
       ' no hace falta grabar y reponer se supone era nuevo ergo 0,0
-      '   Roll.trk( mel_undo(ik).posn, mel_undo(ik).columna.pn).dur =mel_undo(ik).columna.dur
+      '   Roll.trk( cmel_undo(ik).posn, mel_undo(ik).columna.pn).dur =mel_undo(ik).columna.dur
       '   Roll.trk( mel_undo(ik).posn, mel_undo(ik).columna.pn).nota =mel_undo(ik).columna.nota
 ' volver a ceros el resto de notas
 ' tola la melodia en track esta en posicion vertical 1 las otras son de acorde 
@@ -1801,8 +1814,8 @@ Print #1,"entro nota ",nota
 
 '--- AUMENTO DE CAPACIDAD DEL VECTOR EN 1000 POSICIONES 
     If CantTicks - MaxPos < 120 Then
-       print #1,"hace backup.....¿que nombre usamos?"
-       GrabarArchivo ''hacer un backup !!! 
+       print #1,"hace backup....." ' si no hay nombre usa fecha"
+       GrabarArchivo(1) ''hacer un backup !!! 
       CantTicks=CantTicks + 1000 ' incremento el tamaño en 1000 posiciones =1 min
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
       ReDim Preserve compas(1 To CantTicks)
@@ -3551,7 +3564,7 @@ EndIf
     print #1,"NuevaPos,,", nuevaspos
       
     If CantTicks - MaxPos < nuevaspos  Then
-     '  GrabarArchivo ''hacer un backup !!! 
+     '  GrabarArchivo(1) ''hacer un backup !!! 
       CantTicks= nuevaspos + 1 ' incremento el tamaño en 1000 posiciones =1 min
       print #1,"incremento final de CantTick ", CantTicks 
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)

@@ -106,19 +106,20 @@
           La escala de la Nota y tipo elegida se graba con la secuencia la cual volvera a cargarse en la proxima
           carga del archivo roll o trk.(falta grabar el tempo en el archivo)
 
-    14) ESCALAS AUXILIARES EN ALGUNAS POSICIONES PARA QUE EL PROGRAMA GENERE ACORDES
-                SEGUN ESA ESCALA.
-            Si se marca en una posicion la 1er marca de zona en la secuencia, y luego seteamos tipo escla nota escala  
-            y alteracion si se desea, se cambiará la escala en esa posición, la cual regirá desde ahá para construir 
-           acordes en esa nueva escala. (1er etapa lista, falta coordinar que escala se usa en cada parte ,
-           si hay una escala general se usará desde la posicion 1 hasta la nueva entrada con marca y desde ahi la otra
-           en desarrollo... En la escala de una posicion dada se muestra la nota de la escala, el nombre de la escala 
-           y las notas que la componen ej  E Mayor F# G# A B C# D# por ejemplo debajo de cada cambio :
-           significando cambio de escala. Esa información se muestra debajo de cada octava en color verde, podemos
-           mostrarla o no , en el menu Ver de Control por omision esta chequeado Ver escalsa Auxiliares., damos click
+    14) ESCALAS AUXILIARES EN ALGUNAS POSICIONES PARA QUE SEA UNA GUIA y en un futuro construir
+        acordes segun esa escala.(en desarrollo, por ajora indica que notas usar para la melodia)
+          Si se marca en una posicion la 1er marca de zona en la secuencia, y usamos la opcion 
+          "Cambio de escala en la Posicion actual (Pasozona1)")
+          luego nos pide  setear tipo escala y nota escala, se cambiará la escala en esa posición, la cual regirá 
+          desde ahá para construir  acordes en esa nueva escala. 
+          Si hay una escala general se usará desde la posicion 1 hasta la nueva entrada con marca y desde ahi la otra
+          en desarrollo... En la escala de una posicion dada se muestra la nota de la escala, el nombre de la escala 
+          y las notas que la componen ej  E Mayor F# G# A B C# D# por ejemplo debajo de cada cambio :
+          significando cambio de escala. Esa información se muestra debajo de cada octava en color verde, podemos
+          mostrarla o no , en el menu Ver de Control por omision esta chequeado Ver escalsa Auxiliares., damos click
           para desmarcar y no se verán las escalas. (grabaremos este dato en RollMusic.ini)
     Nota: todas estas acciones funcionan tambien en modo instancia Separada sin Menu de Control.
-
+      ubicacion (If cambioescala=1 And pasoZona1 > 0 Then) Rolloop 757 
     15) Una instancia sin control puede ejecutarse tambien si asociamos la sextensiones *.roll y *.rtk
           con Rollmusi.exe. En ese caso al dar doble clik o enter sobre el nombre de una secuencia en el
           explorador, se levantará una sesion de RollMusic sin el Menu de Control. 
@@ -154,13 +155,13 @@
         Se agrega Menu de Cancion, funciona en modo basico.   
         La Aplicación mediante el Contorl podrá crear varios tracks pero solo editar de a uno
         por vez en el gráfico conmutando con TAB. Si se quieren más ediciones simultaneas, se podria usar  
-        otra instancia, als cuales pueden ser tantnas como sean necesarias. PAra terminar todas a la vez
-        o cerrarlas siempre cerral la ventana de Control. Cada instancia podra editar o crear
+        otra instancia, las cuales pueden ser tantas como sean necesarias. Para terminar todas a la vez
+        o cerrarlas siempre cerrar la ventana de Control. Cada instancia podra editar o crear
         un roll o pista(track) y luego de terminada levantarla con la instancia unida a Control o con Control
-        directamnet y agregarla a la Cancion  si se lo desea, donde sí se podrá escuchar todos los tracks 
+        directamente y agregarla a la Cancion  si se lo desea, donde sí se podrá escuchar todos los tracks 
         al unisono. 
         Las instancias separadas de Conrol solo tocaran su propio roll o track y no tendrá sincronizacion 
-        en el play. Por comodidad de reconfigura el tamaño de ventana se usa un grafico sin marco de
+        en el play. Por comodidad para reconfigurar  el tamaño de ventana, se usa un grafico sin marco de
         windows, pero para mover la ventanas desde la cinta superior derecha es lento y dificultoso. 
        Si se usa marco en la ventana del grafico tanto en la instancia propai de Control o las independientes
        su ventana podra moverse facilmente pero no cambiar su tamaño en la misma sesion. RollMusic.ini
@@ -175,12 +176,15 @@
         La aplicacion se termina  cerrando la ventana de Control Archivo->Salir o desde X en extremo superior derecho.   
         Otra forma podria ser en el futuro, partir pantalla y editar 2 track en simultaneo, en una sola 
         pantalla grafica del Roll.
-        Se puede pasar entre tracks simplemente con el tabulador  o clickeando 
-        la pista en la lista en Control. 
+        Se puede pasar entre tracks simplemente con el tabulador  o clickeando  la pista en la lista en Control. 
+       Al clickear la lista de Control por una pista inmediatamente se debe dar click  sobre el grafico. 
+       De esa forma responde bien, si se da 2 o 3 click sobre distintas pistas no cambiara en el grafico
+        por mas que se de ckick al final. O sea siempre se debe dar click en lista seguido de click en el grafico. 
+        No se ha conseguido el cambio  de focus a la ventanta del grafico que es un thread distinto. 
         Notas desarrollo (No se puede cargar un track en el menú del Grafico y 
         darle Reproducir en la GUI por consistencia solo reproducimos en Roll Gráfico, el 
         reproductor en Control es solo para la cancion. Sin embargo el grafico asociado 
-        a Control podra reproducir canciones con la barra espaciadora. Par reproducir el Track
+        a Control podra reproducir canciones con la barra espaciadora. Para reproducir el Track
         de cancion solamente, dar Ctrl-clik en Reproducir del menu del grafico.- 
         Sin cancion cargada, la barra espaciadora tambien reproduce el track cargado.
         Controlar otras instancias o aplicaciones mediante midi creo será
@@ -190,8 +194,8 @@
         en evolución por que es un hobby de aprendisaje y tendrá paradas por estudio
         e idas y vueltas. Si me limita mucho el lenguaje podre hacer parches 
         con otro lenguaje o pasar todo a otro lenguaje similar porque lo que
-        está echo en Cairo se podrá trasladar a cualqueir otro lenguaje, creo... Estoy evaluando de
-        usar como lenguaje alternativo, V o Go , V es mas veloz parece...) 
+        está echo en Cairo se podrá trasladar a cualqueir otro lenguaje, creo... 
+
       - VARIAS SESIONES DE ROLLMUSIC, detalles.
         El menu de Control permite crear un editor gráfico integrado a dicho Control
         es la opcion en "Crear Pistas"-> "Crear Pista Aislada con lo elegido y reemplaza la existente
@@ -207,9 +211,19 @@
         en la esquina superior derecha de cada sesion abierta.
     Nota: Cuando se hace una modificacion por fuera de control en un track de Cancion con la edicion
         en una instancia, por ahora se debe cargar de nuevo la cancion. Pondremos en el futuro
-        carga automatica a cancion para ahorrar ese paso adicional desde disco. Sino creo 
-        que por ahora se podria cargar desde el grafico asociado a control, con [Archivo]->[abrir].
-        Por si queremos usar TAB, eos conmuta los track pero en memoria no lee el disco.
+        carga automatica a cancion para ahorrar ese paso adicional desde disco. Por ahora se puede 
+        cargar desde el gráfico asociado a control, la pista modificada desde afuera con [Archivo]->[abrir] .
+        Usar TAB, conmuta los track pero en memoria no lee el disco. Pero luego de cargar
+        desde el grafico asociado a Control la pista modificada, se la podra ver tambien conmutando con
+        Tab ya que está en memoria con su numero de track correspondiente cargado desde el nombre
+        del archivo [01]Piano.rtk por ejemplo. Que no se cargue automaticamente en cancion podria tener 
+        una ventaja, si desde el grafico asociado a Control le doy grabar vuelvo como backup
+        a la version original serai como un undo de toda la pista. Otra forma de undo seria
+        borrar la pista con al tecla delete luego de clickeada, en el directorio \Temp que se crea
+        en esa cancion estaran las pista borradas las cuales se pueden recuperar simplemente copiandolas
+        de nuevo al directorio padre o principal de la cancion,Puedo jugar can Temp y ambos graficos
+        para modificar cargar grabar y hacer backups disponibles para undo completo de la pista, ademas del undo
+        de ALT-U.
         
         
 
@@ -338,7 +352,7 @@
          Luego de insertado el acorde automatico inmediatamente se escucha el mismo y si se desea borrarlo y 
          volver a la condicion  anterior se pulsará Alt-U. Se puede tocar la pista o un pedazo de ella
          antes de borrar el acorde y si luego si se quiere se puede eliminar el ultimo acorde ingresado 
-         como se dijo con ALt-D. 
+         como se dijo con ALt-U. 
    
        
 
@@ -456,7 +470,8 @@
          - Pero si se está editando una octava y se desea pasar rapido a otra octava, simplemete
            se pasa el mouse por encima del extremo DERECHO de la octava en el extremo final derecho
            y se estara editando esa nueva octava  no pudiendo hacerlo en la de antes eso evita errores de entrada.
-         - Undo de entrada de melodia ALT-U
+         - Undo de entrada de melodia ALT-U. El undo siempre se hace al Grabar, coo accion de definitivo, pero al 
+           exportar por ejemplo Roll a Track, o Grabar Como, no se se hace, pues a lo mejor se desearia modificar.
 
     2.1.2) Entrada Por mouse y Teclado 
            estando habilitada una octava como en 2) se hace click derecho aparece un menu de

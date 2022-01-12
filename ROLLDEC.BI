@@ -76,7 +76,7 @@ Declare Sub CambiarDim(redi As integer)
 Declare Sub dialogoText(cadena As string)
 Declare Sub velocidades(j as integer)
 Declare Sub playthread()
-Declare Sub GrabarArchivo ()
+Declare Sub GrabarArchivo (grabar_como As Integer)
 Declare Sub GrabarTrack   (ntk As integer)
 Declare Sub ActualizarRollyGrabarPista ()
 Declare Sub GrabarRollaTrack (cambiaext As Integer)
@@ -98,7 +98,7 @@ Declare Sub salir()
 
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
 Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6
-Dim Shared As String RTA, alteracion,alteracion_str
+Dim Shared As String RTA, alteracion '',alteracion_str
 alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoZona2=0, pasoNota=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, SelGrupoNota =0,moverZona=0, copiarZona=0
@@ -634,9 +634,9 @@ Dim Shared As inst Roll ' para visualizar y tocar
 Dim Shared Track  (0 To 32) As sec ' tracks para guardar,.. y tocar 
 
 Dim Shared ix As Integer=0
-Dim Shared As String titu, cadenaes,cadenaes_inicial,tipoescala_inicial 
+Dim Shared As String titu, cadenaes,cadenaes_inicial,tipoescala_inicial, notaescala_inicial 
 Dim Shared As Integer instru=1, instruOld, tipoescala=1, tipoescalaOld=1, notaescala=1,notaescalaOld
-Dim Shared As Integer tipoescala_num = 1, notaescala_num = 1
+Dim Shared As Integer tipoescala_num = 1, notaescala_num = 1,tipoescala_num_ini=1,notaescala_num_ini=1
 Dim Shared As Integer desdevector
 Dim Shared As Integer hastavector,abrirRoll=0
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
@@ -699,6 +699,7 @@ Dim Shared As Integer stride, IhWnd,Mhwnd,Style,desktopwidth,desktopheight
 Dim Shared comienzo As Integer = 0
 'ScreenControl  SET_DRIVER_NAME,"GDI"
 Dim Shared As hWnd hwnd,hwndMenu 
+
 'hwnd = Cast(hwnd,IhWnd)
 'hwndmENU = Cast(hwnd,MhWnd)
 Dim Shared As UINT codsalida=0
@@ -737,7 +738,7 @@ Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
 Declare Sub ReCalCompas(Roll As inst)
 Declare Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As ubyte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As integer)
 Declare Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)
-Declare Sub armarescala(ByRef cadenaes As String )
+Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As string )
 
 
 COMMON Shared As Long eventc
