@@ -1314,6 +1314,7 @@ EndIf
 End Sub
 '----------------------------------------
 Sub Tracks ( ByRef ntk As integer, ByRef nroCanal As UByte,Roll As inst)
+  ''copia track a Roll en memoria
 nota=0:dur=0
 print #1,"EN TRACKS MAXPOS (NTK).MAXPOS ", maxpos, pmTK(ntk).maxpos
  ' sizeof array de ubytepr almcenar el pentagrama roll
@@ -1399,13 +1400,13 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      'Print #1,"posicion lectura en ca ", Seek(ca)  
 '     Seek ca,1
      Get #ca, , z(1,1)
-     x1=Bin(z(1,1).nota,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
-     x2=Bin(z(1,1).dur,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
-     x3=Bin(z(1,1).vol,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
-     x4=Bin(z(1,1).pan,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
-     x5=Bin(z(1,1).pb,4) ' NO LEE UNA MIERDA CON UBIRROLL> 0
+     x1=Bin(z(1,1).nota,4) 
+     x2=Bin(z(1,1).dur,4) 
+     x3=Bin(z(1,1).vol,4) 
+     x4=Bin(z(1,1).pan,4) 
+     x5=Bin(z(1,1).pb,4) 
      tipoescala_num_ini =CInt( Z(1,1).inst) ' 20-12-2021 - tipoescala en uso
-     Print #1,"tipoescala_num_ini ",tipoescala_num_ini ' ' NO LEE  CON UBIRROLL> 0
+     Print #1,"tipoescala_num_ini ",tipoescala_num_ini ' 
      
      x=x1+x2+x3+x4+x5
      '   print #1,"reconstruccion x pos bin ", x
@@ -1441,14 +1442,13 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
       
     cadenaes_inicial=""
     Print #1,"armarescala desde cargarArchivo"
-  '  notaescala_inicial=notaescala_num
-  '  tipoescala_inicial=tipoescala_num
+
     armarescala (cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini, alteracion )
 
-    tipoescala_inicial=escala(tipoescala_num).nombre
+    tipoescala_inicial=escala(tipoescala_num_ini).nombre ' 13-01-2022 faltaba ini
 ' carga de escala en guia de escala
-    guiaEscala(1).tipoescala=tipoescala_num
-    guiaEscala(1).notaescala=notaescala_num
+    guiaEscala(1).tipoescala=tipoescala_num_ini '13-01-2022 faltaba ini
+    guiaEscala(1).notaescala=notaescala_num_ini
     guiaEscala(1).alteracion =CInt(zLim(1,1).pan)
     guiaEscala(1).posicion=1
 
@@ -1893,7 +1893,7 @@ EndIf
    t = "      EDIT" + " " +  " Maxpos:" + _
    Str(Maxpos) +" Posicion:" + Str(posicion)+ " Posn:"+Str(posn)+ _
    " Font:" +Str(fontOld) + " EnOct:" + Str(estoyEnOctava) + " nA:"+Str(veonota) + _ 
-   " nR:"+ Str(PianoNota) + " nE:"+Str(nE) + " Curpos:" +Str(curpos) + _
+   " NP:"+ Str(PianoNota) + " nE:"+Str(nE) + " Curpos:" +Str(curpos) + _
    " RollDur :"+ Str(RollDur) + " Rollnota:" + Str(RollNota) + _ 
    " Copiar:" + Str(veocopi) +" Col:" +Str(indicePos) + " DUR:"+ Str(Dur) + _ 
    " Nota:"+ Str(nota) + " Mx:" + Str(mousex) + " My:" + Str(mousey) 
@@ -2048,10 +2048,10 @@ EndIf
        If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Then 'graba un track como track
        ' pero como las modificaciones estan en ROLL debo usar rollaTrack
           GrabarRollaTrack(0)
-           Sleep 3000           
+           Sleep 1000           
        Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
            GrabarArchivo (0)
-           Sleep 3000 
+           Sleep 1000 
        EndIf
          carga=1
          lockip=2 ' habilita mouse 28-08-2021
@@ -2793,7 +2793,8 @@ Sub EntrarTeclado ()
 Dim default As String
  Dim  As Integer ni
  
-If menuOldStr="[Ver]" Then
+Select Case  menuOldStr 
+      Case  "[Ver]" 
             For ni=1 To MaxPos
                If Compas(ni).Posi = posicion Then
                   compasX = Compas(ni).nro
@@ -2827,19 +2828,30 @@ NombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
             Next ni
           EndIf  
 
-Else ' TEMPO
-default=Str(tiempoPatron)
-print #1,"llego a TEMPO en entrar tecla",NombreArchivo
+ Case "[TEMPO]"
+    default=Str(tiempoPatron)
+    Print #1,"llego a TEMPO en entrar tecla",NombreArchivo 
 
-NombreArchivo = InputBox("Ajuste Tempo" ,"Entre un Tempo",default)
+    NombreArchivo = InputBox("Ajuste Tempo" ,"Entre un Tempo ",default)
       
- print #1,"nombreArchivo de click ok",nombreArchivo
- tiempoPatron= cint(nombreArchivo) '08-01-2022 de doble a int
- print #1,">>>>>>>>TIEMPO PATRON NUEVO>>>>>>>>>>,pubi", tiempoPatron,pubi
- If tiempoPatron = 0 Then
-    tiempoPatron=60
- EndIf
-EndIf
+    Print #1,"nombreArchivo de click ok",nombreArchivo
+    tiempoPatron= cint(nombreArchivo) '08-01-2022 de doble a int
+    Print #1,">>>>>>>>TIEMPO PATRON NUEVO>>>>>>>>>>,pubi", tiempoPatron,pubi
+    If tiempoPatron = 0 Then
+       tiempoPatron=60
+    EndIf
+ Case "[FACTOR]"
+   default=Str("1.25")
+    Print #1,"llego a TEMPO en entrar tecla",NombreArchivo 
+
+    NombreArchivo = InputBox("Ajuste Factor Tempo " ,"Entre un Factor ",default)
+      
+    Print #1,"nombreArchivo de click ok",nombreArchivo
+    FactortiempoPatron= cdbl(nombreArchivo) '08-01-2022 de doble a int
+    Print #1,">>>>>>>>Factor TIEMPO PATRON NUEVO>>>>>>>", FactortiempoPatron
+
+    
+End Select
 
 End Sub
 
@@ -2998,13 +3010,13 @@ MaxPos=k+1
      grabaPos(1,1).vol  = y3
      grabaPos(1,1).pan  = y4
      grabaPos(1,1).pb   = y5
-Print #1,"grabando tipoescala_num en el archivo ",tipoescala_num_ini 
+Print #1,"grabando tipoescala_num_ini en el archivo ",tipoescala_num_ini 
      grabaPos(1,1).inst = CUByte(tipoescala_num_ini) ' 20-12-2021 - tipoescala en uso
     '-----------------------
      grabaLim(1,1).nota = CUByte(desde) 
      grabaLim(1,1).dur  = CUByte(hasta)
      grabaLim(1,1).pb   = CUByte(notaold)
-Print #1,"grabando notaescala_num en el archivo ",notaescala_num_ini
+Print #1,"grabando notaescala_num_ini en el archivo ",notaescala_num_ini
      grabaLim(1,1).vol  = CUByte(notaescala_num_ini) ' notadeescala 20-12-2021
 Print #1,"grabando alteracion en el archivo ",alteracion
      If alteracion="sos" Then
@@ -3986,6 +3998,65 @@ print #1,"Str(notaescala_num) ", Str(notaescala_num)
 
 End sub
 
+Sub EscalaAlternativa (ByRef tipoescala_alt As integer, byref notaescala_alt As Integer)
+' si la escala principal es menor le sumo una 3era menor y obtengo la escala Mayor relativa
+' ej Lam->+3st=DoM
+' si la escala principal es Mayor le resto una 3era menor y obtengo la escala Menor relativa
+' ej DoM->-3st=DoM 
+'Entrada a este programa son las shared tipoescala_num_ini y notaescala_num_ini
+' tipoescala_num_ini es tipoesc en sub armarescala
+' notaescala_num_ini es notaesc en sub armarescala
+' la nota de la escala alternativa sale de caminar 3 saltos hacia adelante o atras sobre la escala
+' cromatica..saltos de 1 semitono, 3 st.-
+' veo si estoy en sostenidos o bemoles
+Print #1,"EscalaAlternativa tipoescala_num_ini ",tipoescala_num_ini
+Print #1,"EscalaAlternativa notaescala_num_ini ",notaescala_num_ini
+' ¿y la menro armonica la considero tambien = 2 ?
+If tipoescala_num_ini =2 Or tipoescala_num_ini =3 Or tipoescala_num_ini =4 Then  ' es una escala Menor debo buscar la relativa Mayor
+   notaescala_alt=notaescala_num_ini +3  
+ 
+
+'  If alteracion="sos" Then ' usar
+'     notastr=NotasEscalaArmado(notaescala_alt)
+'  EndIf 
+'  If alteracion="bem" Then ' usar
+'     notastr=NotasEscalaArmado2(notaescala_alt)
+'  EndIf 
+  
+' y el tipo escala_alt ES UNA EOLIA O AEOLIA la escal menor natural lo mas simple
+' o sea aeolia(18) 2,1,2,2,1,2,2, o melodicaMenorDesc 2,1,2,2,1,2,2 -----(4)
+' la natural es realmente la 18 aeolia o eolia...
+' ergo
+tipoescala_alt=1 ' aeolia
+
+EndIf
+
+  
+If tipoescala_num_ini =1 Then  ' es una escala MAyor debo buscar la relativa menor  
+
+  notaescala_num_ini=notaescala_num_ini+12 ' 2 octavas asi retrocedo sin problemas
+   notaescala_alt=notaescala_num_ini -3  
+ 
+
+'  If alteracion="sos" Then ' usar
+'     notastr=NotasEscalaArmado(notaescala_alt)
+'  EndIf 
+'  If alteracion="bem" Then ' usar
+'     notastr=NotasEscalaArmado2(notaescala_alt)
+'  EndIf 
+  If notaescala_alt > 12 Then
+    notaescala_alt=notaescala_alt -12 ' para una escala de solo 1 octava
+  EndIf
+    
+' tengo la nota escala y el tipo solo resta armar al escala para la posicion como antes
+' debo ousar notaescala_alt y  
+tipoescala_alt=18 ' Menor aeolia
+
+EndIf
+
+' al salir de aca graba en el vector Roll esta escala...
+End Sub
+
 '--------
 Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As string )
 cadena=""
@@ -3993,15 +4064,15 @@ cadena=""
 Dim As Integer k3=1,h2,hnro,dif,dif2
 Dim p6 As Byte Ptr
 ' si notaescala es distinto de 1 emepzamos la escala desde esa nota
-   Print #1,"tipo escala que llego a armar escala ",tipoesc
+  ' Print #1,"tipo escala que llego a armar escala ",tipoesc
    p6= escala(tipoesc).pasos
    
    hnro=escala(tipoesc).nropasos 
-   Print #1,"notaescala llego a armarescala ",notaesc
+   'Print #1,"notaescala llego a armarescala ",notaesc
    If notaesc > 1 Then
      k3=notaesc 
    EndIf
-    Print #1,"k3 inicial=",k3
+   ' Print #1,"k3 inicial=",k3
     For h2 = 1 To hnro 
      If altera="bem" then
      cadena = cadena + NotasEscalaArmado2(k3) + " "   ' impresion de la escala con las notas c c# d  etc
@@ -4009,12 +4080,12 @@ Dim p6 As Byte Ptr
      cadena = cadena + NotasEscalaArmado(k3) + " "
      EndIf
       k3= *p6 + k3
-     Print #1,"h2, k3",h2, k3
+    ' Print #1,"h2, k3",h2, k3
      p6=p6+1 
     Next h2
     
     
-  Print #1,"Final cadena de escala armada ",cadena
+  'Print #1,"Final cadena de escala armada ",cadena
  
   
 End Sub
@@ -4051,10 +4122,12 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
         EndIf            
         
         Roll.trk(indicePos, pn).nota=st
+'--------------------------------------------
+        Print #1,"armando acorde ,5ta,nR ",pn  
+
         pn=PianoNota+n2
         pn=pn + SumarnR(pn)
 
-        Print #1,"armando acorde ,5ta,nR ",pn  
         undo_acorde(2).pn=pn
         undo_acorde(2).dur=Roll.trk(indicePos, pn).dur
         undo_acorde(2).nota=Roll.trk(indicePos, pn).nota
@@ -4068,8 +4141,28 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
            st=st -12 
         EndIf            
         undo_k=2
-        Roll.trk(indicePos, pn).nota=st     
+        Roll.trk(indicePos, pn).nota=st  
+If n3 <> 0 Then           
+    Print #1,"armando acorde ,7ta,nR ",pn
+        pn=PianoNota+n3
+        pn=pn + SumarnR(pn)
 
+        undo_acorde(3).pn=pn
+        undo_acorde(3).dur=Roll.trk(indicePos, pn).dur
+        undo_acorde(3).nota=Roll.trk(indicePos, pn).nota
+
+        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
+        st=nE-n3 
+        If st <= 0 Then
+           st=12 + st
+        EndIf            
+        If st >= 12 Then
+           st=st -12 
+        EndIf            
+        undo_k=3
+        Roll.trk(indicePos, pn).nota=st  
+
+EndIf
              Case 3
              Case 5
              Case 7

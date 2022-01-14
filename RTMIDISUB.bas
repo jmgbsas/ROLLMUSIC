@@ -935,7 +935,7 @@ fueradefoco=1
 indEscala=1 ' inicializamos la guiade escalas a la 1era 
 
 Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
-tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
+tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '60 seg/ cuantas negras enun minuto
 
 Dim As Integer i1,i2,i3,i4,i5,j ,comienzoDeLoop=0
 Dim As Integer comienzo=1, final=MaxPos,  canal=0,vel=100,velpos =0
@@ -948,8 +948,8 @@ Dim As Integer liga=0,notapiano=0,old_notapiano=0, iguales=0, distintos=0
 Dim leng As UInteger <8>
 Dim result As Integer
 
-print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron
-print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron =", tiempoDur
+print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
+print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
 jply=0:curpos=0
 mousex=0
 ' print #1,                    "-----------------------------------------"
@@ -1149,7 +1149,7 @@ EndIf
     jply=comienzo -1
     'posicion=comienzo
  EndIf
- tiempoDUR=60/tiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
+ tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
  
 Next jply
 
@@ -1211,7 +1211,7 @@ End Function
 ' tiempo es cuantas negras en un minuto tiempoPAtron
 ' los acrodes se tocan con la duracion de la nota mas larga que lo compone 
 Dim As Double tiempoDUR, tiempoFigura=0
-tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
+tiempoDUR=(60/tiempoPatron) / FactortiempoPatron'60 seg/ cuantas negras enun minuto
 
 '''midiin  = rtmidi_in_create_default()
 'midiout = rtmidi_out_create_default()

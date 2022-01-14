@@ -45,7 +45,8 @@ Dim t2 As String=""
 
  Penta_y = BordeSupRoll + 14 * ( inc_Penta ) *( nro -1)
 '--------------------------
- t=" ESCALA: "+ UCase(tipoescala_inicial) + " [" +cadenaes_inicial +"] I="+Str(tiempoPatron) + " Compas=" +TCompas  
+ t=" ESCALA: "+ UCase(tipoescala_inicial) + " [" +cadenaes_inicial +"] I="+Str(tiempoPatron) + "Factor "+ Str(FactortiempoPatron) + " Compas=" +TCompas  
+
   cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - inc_Penta)
   cairo_show_text(c, t)
   t= ""
@@ -754,6 +755,7 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 ' sabre la escala actual, podriamso cambiar par aponer mas inforamcion en vez de repetir ...veremos
 ' falta tomar al informacion segun la posicion actual y aplicarla armando la escala
 '---------
+' insercion en ROLL de la escala en un aposicion dada <======= ESCALAS AUXILIARES INSERCION
 If cambioescala=1 And pasoZona1 > 0 Then ' creamos una posicion con cambio de escala en pasoZona1
 ' la escala queda vigente hasta el proximo cambio, esto recuerda las notas que se deben usar o para crear acordes
 Print #1,"cAMBIO ESCALA Na,NB, tipoescala, notaescala ", NA,NB,tipoescala_num,notaescala_num
@@ -786,19 +788,7 @@ For K=NB To NA Step 12 ' step 12 queda entre 2 octavas
    cambioescala=0
    pasoZona1=0
 
-'
-' estoy en un cambio 
-' tipoescala=CInt(Roll.trk(posicion,NA ).inst)
-' notaescala=CInt(Roll.trk(posicion,NA ).vol)
-'  If Roll.trk(posicion, NA).pan = 3 Then
-'     alteracion="sos"
-'  EndIf
-'  If Roll.trk(posicion, NA).pan = 2 Then
-'     alteracion="bem"
-'  EndIf
-cadenaes=""
-armarescala cadenaes,tipoescala,notaescala , alteracion
-
+' sigue en crea_penta donde al barer el roll va leyendo las escalas auxiliares
 EndIf
 
 
@@ -920,13 +910,20 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA Or cargaCancion=1 Then
      NA=pmTk(ntk).NA
      notaold = CInt(pmTk(ntk).notaold)
      CantTicks=pmTk(ntk).Ticks
-     
+' ajusto escala principal durante la conmutacion para cada track visualizado con TAB     
+     notaescala_num_ini=CInt(pmTk(ntk).notaescala) '13-01-2022
+     tipoescala_num_ini= CInt(pmTk(ntk).tipoescala) '13-01-2022
+     cadenaes_inicial="" '13-01-2022
+     armarescala cadenaes_inicial,tipoescala_num_ini,notaescala_num_ini,alteracion '13-01-2022
+' todavia no probado, escala principal para TAB en cada track testeat 13-01-2022     
+' no he grabado las escalas auxiliares en lso Trackc todavia !! 13-01-2022 jjj     
   print #1,"5- MAXPOS final TAB " ,maxpos
 EndIf   
 '
 
   print #1, "6-NTK nombre", ntk,nombre  
   print #1, "6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, maxpos,pmTK(ntk).maxpos
+' copia track a Roll en memoria  
   Tracks (ntk , 1,Roll) ' track , nro,  Canal
   Sleep 100
  print #1,"7- instancia, maspos ",instancia, maxpos
@@ -2867,7 +2864,7 @@ EndIf
     If MultiKey(SC_CONTROL) And MouseButtons And 2 Then 'yyy
     pasoZona1=0:pasoZona2=0
      Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2
-     Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dis7,Mayor9,Menor9,Dis9, notabase     
+     Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dom7,Dis7,Mayor9,Menor9,Dis9, notabase,Aum     
      Dim As Integer event,Posx,Posy 
     ScreenControl GET_WINDOW_POS, x0, y0
     Print #1,"x0 ,y0 en menu contextual " ,x0,y0
@@ -2943,9 +2940,12 @@ EndIf
      Mayor=OpenSubMenu(notas3,"Mayor")
      Menor=OpenSubMenu(notas3,"Menor")
      Dis  =OpenSubMenu(notas3,"Dis")
-               
-     Mayor7=OpenSubMenu(notas4,"Mayor 7")
-     Menor7=OpenSubMenu(notas4,"Menor 7")
+     Aum  =OpenSubMenu(notas3,"Aum")
+     
+     Mayor7=OpenSubMenu(notas4,"Mayor 7 o Maj7")
+     Menor7=OpenSubMenu(notas4,"Menor 7 o m7")
+     Dom7=OpenSubMenu(notas4,"Dominante 7, o M7")
+     
      Dis7 =OpenSubMenu(notas4,"Dis 7")
 
      Mayor9=OpenSubMenu(notas5,"Mayor 9")
@@ -2965,22 +2965,37 @@ EndIf
      MenuItem (1007,Dis,"No inversion")  ' triada
      Menuitem (1008,Dis,"1era inversion")  ' triada
      Menuitem (1009,Dis,"2da inversion")  ' triada
-' ------------------------------------------------------
-     MenuItem (1010,Mayor7,"No inversion")
-     Menuitem (1011,Mayor7,"1era inversion")
-     Menuitem (1012,Mayor7,"2da inversion")
-
-     MenuItem (1013,Menor7,"No inversion")
-     Menuitem (1014,Menor7,"1era inversion")
-     Menuitem (1015,Menor7,"2da inversion")
      
-     MenuItem (1016,Dis7,"No inversion")
-     Menuitem (1017,Dis7,"1era inversion")
-     Menuitem (1018,Dis7,"2da inversion")
+     MenuItem (1010,Aum,"No inversion")  ' triada
+     Menuitem (1011,Aum,"1era inversion")  ' triada
+     Menuitem (1012,Aum,"2da inversion")  ' triada
 
-     MenuItem (1019,Mayor9,"No inversion")
-     Menuitem (1020,Mayor9,"1era inversion")
-     Menuitem (1021,Mayor9,"2da inversion")
+
+' ------------------------------------------------------
+     MenuItem (1013,Mayor7,"No inversion")
+     Menuitem (1014,Mayor7,"1era inversion")
+     Menuitem (1015,Mayor7,"2da inversion")
+     Menuitem (1016,Mayor7,"3era inversion")
+     
+     MenuItem (1017,Menor7,"No inversion")
+     Menuitem (1018,Menor7,"1era inversion")
+     Menuitem (1019,Menor7,"2da inversion")
+     Menuitem (1020,Menor7,"3era inversion")
+'---------------------------------------------------     
+     MenuItem (1018,Dom7,"No inversion")   ' domianante 7 o M7
+     Menuitem (1019,Dom7,"1era inversion")
+     Menuitem (1020,Dom7,"2da inversion")
+     Menuitem (1021,Dom7,"3era inversion")
+
+
+     MenuItem (1022,Dis7,"No inversion")
+     Menuitem (1023,Dis7,"1era inversion")
+     Menuitem (1024,Dis7,"2da inversion")
+     Menuitem (1025,Dis7,"2da inversion")
+'--------------------------------------------------     
+     MenuItem (1026,Mayor9,"No inversion")
+     Menuitem (1027,Mayor9,"1era inversion")
+     Menuitem (1028,Mayor9,"2da inversion")
 
      MenuItem (1022,Menor9,"No inversion")
      Menuitem (1023,Menor9,"1era inversion")
@@ -3022,7 +3037,7 @@ EndIf
       
       If event=EventMenu then
        Select case EventNumber
-    ' TRIADAS   
+' TRIADAS   
          Case 1001
        'NO INVERSION Mayor   C E G
       armarAcorde(grado ,4, 7, 0) ' mayor 4, 7
@@ -3040,25 +3055,50 @@ EndIf
          Case 1006
       armarAcorde(grado ,3, -5, 0) ' G ,C , Eb' menor 2da inversion
 
-' -----------
+' -----------disminuida
          Case 1007
       armarAcorde(grado ,3, 6, 0) ' disminuida 3,6 C,Eb,Gb
          Case 1008 ' 
       armarAcorde(grado ,-4, -9, 0) '  Eb, Gb, C dism 1era inv
          Case 1009
       armarAcorde(grado ,3, -4, 0) '  Gb, C , Eb dism 2da inv
-           
-' -------------FIN TRIADAS
+' ------------aumentada
          Case 1010
-         Case 1011
-         Case 1012
-         Case 1013
+       'NO INVERSION Mayor   C E G#
+      armarAcorde(grado ,4, 8, 0) ' mayor 4, 7
 
-         Case 1014
-         Case 1015
-         Case 1016
+         Case 1011
+        '1ERA INVERSION MAYOR  E G C ..-8 -4 0
+      armarAcorde(grado ,-4, -8, 0)       
+
+         Case 1012
+        ' 2DA INVERSION MAYOR  G C E  -4 0 4
+      armarAcorde(grado ,4, -4, 0)
+
+' -------------FIN TRIADAS
+' Cuaternario 
+         Case 1013 ' mayor 7 no inversion
+      armarAcorde(grado ,4, 7, 11) ' mayor 4, 7,11 C,E,G,B   
+         Case 1014 ' mayor 7 1er inversion E,G,B,C
+      armarAcorde(grado , -8, -5, -1)       
+     
+         Case 1015 ' MAYOR 7 2da inv G,B,C,E 
+      armarAcorde(grado , -5, -1, 4)     
+         Case 1016 'mayor 7 3era inversion B,C,E,G
+      armarAcorde(grado , -1, 4, 7)
+
+' --Menor 7 o m7--------------      
          Case 1017
+      armarAcorde(grado ,3, 7, 10) ' menor 3,7,10  ej D:  D, F, A, C           
          Case 1018
+      armarAcorde(grado , -9, -5, -2) ' F, A ,C, D ' menor 1era inversion     
+         Case 1019
+      armarAcorde(grado ,-5, -2, 3) ' A ,C , D, F  ' menor 2da inversion           
+         Case 1020
+      armarAcorde(grado , -2, 3, 7) ' C , D, F, A ' menor 3era inversion      
+' --------------------------------------------           
+         Case 1018
+           
          Case 1019 To 1027
          Case 1028 ' es Tonica
             grado=1

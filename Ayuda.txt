@@ -109,7 +109,7 @@
     14) ESCALAS AUXILIARES EN ALGUNAS POSICIONES PARA QUE SEA UNA GUIA y en un futuro construir
         acordes segun esa escala.(en desarrollo, por ajora indica que notas usar para la melodia)
           Si se marca en una posicion la 1er marca de zona en la secuencia, y usamos la opcion 
-          "Cambio de escala en la Posicion actual (Pasozona1)")
+          "Insertar escala libre en la Posicion actual (Pasozona1)"
           luego nos pide  setear tipo escala y nota escala, se cambiará la escala en esa posición, la cual regirá 
           desde ahá para construir  acordes en esa nueva escala. 
           Si hay una escala general se usará desde la posicion 1 hasta la nueva entrada con marca y desde ahi la otra
@@ -118,6 +118,10 @@
           significando cambio de escala. Esa información se muestra debajo de cada octava en color verde, podemos
           mostrarla o no , en el menu Ver de Control por omision esta chequeado Ver escalsa Auxiliares., damos click
           para desmarcar y no se verán las escalas. (grabaremos este dato en RollMusic.ini)
+       ESCALA AUXILIAR ALTERNATIVA."Insertar escala Alternativa de la Principal en la Posicion actual (Pasozona1)"
+       Si la pista tiene una escala Principal previamente ajustada (13) al marcar una posicion con ctrl clik
+       pasozona1, y luego se pulsa la opcion mencionada se agrega la escala auxiliar alternativa a la escala
+       principal de la pista.
     Nota: todas estas acciones funcionan tambien en modo instancia Separada sin Menu de Control.
       ubicacion (If cambioescala=1 And pasoZona1 > 0 Then) Rolloop 757 
     15) Una instancia sin control puede ejecutarse tambien si asociamos la sextensiones *.roll y *.rtk

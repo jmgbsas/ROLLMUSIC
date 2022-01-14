@@ -1,3 +1,7 @@
+-13-01-2022 se agrega insertar en posicion una escala alternativa a la escala principal probada ok
+-13-01-2022 se agrega ver escala principal de Tracks al usar TAB para conmutar de track No probado
+-12-01-2022 acordes m7 automaticos no inv,1era inv,2da inv, 3er inv. probado
+-12-01-2022 se agrego FactortiempoPatron solo para cambiar la velocidad de ejecucion no se graba en archivo.
 -11-01-2022 se ajusto la independencia de la escala de la secuencia y las auxiliares ,se graban y recuperan
 -09-01-2022 undo para entrada de melodia en Edit 5000 notas de undo. El vector se inicializa al 
 pasar de un track a otro en cancion, y al grabar un archivo. O sea mientras no se grabe o pulse TAB

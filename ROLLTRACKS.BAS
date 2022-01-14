@@ -169,7 +169,25 @@ ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
     cadenaes=""
     Print #1,"armarescala desde cargar track"
     armarescala (cadenaes_inicial, tipoescala_num_ini , notaescala_num_ini, alteracion )
+    tipoescala_inicial=escala(tipoescala_num_ini).nombre
+'------------
 
+ 
+    cadenaes_inicial=""
+    Print #1,"armarescala desde cargar Track"
+
+    armarescala (cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini, alteracion )
+
+    tipoescala_inicial=escala(tipoescala_num_ini).nombre ' 13-01-2022 faltaba ini
+' carga de escala en guia de escala
+    guiaEscala(1).tipoescala=tipoescala_num_ini '13-01-2022 faltaba ini
+    guiaEscala(1).notaescala=notaescala_num_ini
+    guiaEscala(1).alteracion =CInt(zLim(1,1).pan)
+    guiaEscala(1).posicion=1
+' cuando cargo un track desde disco sin cancion, aisalo, es similar a Roll
+' ahora durante al carga de cancion y el uso de tAB esto debe ir cambiadno para
+' cada track cambiado en el grafico 
+'----------
       print #1,"CargarTrack  fin"  
       print #1,"----------------------------------------------" 
 ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
@@ -657,6 +675,7 @@ End Sub
 Sub TrackaRoll (Track() As sec, byref ntk As Integer, Roll As inst)
 ' como es track a Roll se supone que el track ya esta cargado en memoria
 ' y esta sub pasa de Track a Roll Visual y track 0 
+' o sea copia track a Roll en memoria
 Dim As Integer i1,i2,i3,Maxposicion
  ' print #1,"TrackaRoll 1"   
 ''If ubirtk=3 Then ' estoy conmutando de track durante la edicion
@@ -821,7 +840,7 @@ Sub PlayCancion(Track() As sec)
 
 fueradefoco=1
 Dim As Double tiempoDUR
-tiempoDUR=60/tiempoPatron '60 seg/ cuantas negras enun minuto
+tiempoDUR=(60/tiempoPatron) / FactortiempoPatron'60 seg/ cuantas negras enun minuto
 
 Dim As Integer i1,i2,pis,K
 Dim As Integer comienzo=1, final=MaxPos,  canal=0,vel=100,velpos =0
@@ -1045,7 +1064,7 @@ kNroCol= Int(jply/NroCol)
     jply=comienzo -1
     'posicion=comienzo
  EndIf
- tiempoDUR=60/tiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
+ tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
 
   Next pis   
   print #1,"---FIN -----paso:"; jply;" --------------------------------"

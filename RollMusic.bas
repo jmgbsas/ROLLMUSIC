@@ -695,6 +695,8 @@ MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo 
 MenuItem(1070,MenName4,"Ver Escalas auxiliares ajustadas", MF_CHECKED)
   
 MenuItem(1080,MenName5,"TEMPO")
+MenuItem(1081,MenName5,"Factor para Aumentar velocidad de ejecucion, No se graba en archivo 1,5 o 0,5 etc")
+
   
 MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
 
@@ -705,11 +707,12 @@ MenuItem(1102,MenName7,"Acordes distintos a iguales, Fracciona notas similares e
 MenuItem(1103,MenName7,"Acordes distintos a iguales, Fracciona todas las notas agregando silencios en una columna en una pista ",MF_UNCHECKED  )
 MenuItem(1104,MenName7,"Acordes distintos a iguales, Fracciona notas automaticamente en Columna de una pista ",MF_CHECKED  )
 MenuItem(1105,MenName7,"No Fraccionar, NO Usar Acordes iguales ", MF_UNCHECKED )
-MENUITEM(1106,MenName7,"Seleccionar TIPO DE ESCALA de la secuencia (Por omision Mayor)")
-MENUITEM(1107,MenName7,"Seleccionar NOTA DE LA ESCALA ESCALA (Por omision C )")
+MENUITEM(1106,MenName7,"Seleccionar TIPO DE ESCALA PRINCIPAL de la PISTA (Por omision Mayor)")
+MENUITEM(1107,MenName7,"Seleccionar NOTA DE LA ESCALA ESCALA PRINCIPAL DE LA PISTA (Por omision C )")
 MENUITEM(1108,MenName7,"Trabajar con sostenidos (Por omision Sostenidos #)",MF_CHECKED )
 MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
-MenuItem(1111,MenName7,"Cambio de escala en la Posicion actual (Pasozona1)")
+MenuItem(1111,MenName7,"Insertar escala libre en la Posicion actual (Pasozona1)")
+MenuItem(1112,MenName7,"Insertar escala Alternativa de la Principal en la Posicion actual (Pasozona1)")
 
 MenuItem(1110,MenName8,"Acerca de")
 End If
@@ -1123,6 +1126,11 @@ Print #1,"1060 abrirRoll=0 entro"
               nombreArchivo="0"
               menuOldStr="[TEMPO]"
               thread3= ThreadCall EntrarTeclado()
+           Case 1081
+              nombreArchivo="0"
+              menuOldStr="[FACTOR]"
+              thread3= ThreadCall EntrarTeclado()
+
            Case 1090 
           
           '    Dim As Any Ptr thplayC = ThreadCall  playCancion(track())
@@ -1277,7 +1285,27 @@ Print #1,"1060 abrirRoll=0 entro"
                    guiaEscala(indEscala).alteracion=2
                 EndIf 
               Print #1,"1111 TIPOESCALA NOTAESCALA ",tipoescala_num, notaescala_num
-            EndIf              
+             EndIf
+             
+           Case 1112 'cambiode a escala Alternativa de la Principal
+             If pasozona1 > 0 Then ' gurdamos en la posicion actual los valores cambiode escala
+                Dim As String notastr
+                'tipoescala_num,notaescala_num se pisan de modo q no hace falta inicializar
+                EscalaAlternativa (tipoescala_num,notaescala_num) 
+                cambioescala=1
+                indEscala=indEscala+1
+
+                guiaEscala(indEscala).tipoescala=tipoescala_num
+                guiaEscala(indEscala).notaescala=notaescala_num
+                If alteracion="sos" Then
+                   guiaEscala(indEscala).alteracion=3
+                EndIf 
+                If alteracion="bem" Then
+                   guiaEscala(indEscala).alteracion=2
+                EndIf 
+              Print #1,"1112 Alternativa TIPOESCALA NOTAESCALA ",tipoescala_num, notaescala_num
+             EndIf
+             
          End Select
        Case eventgadget
       ' el codigo anterior que traia de disco esta en notas

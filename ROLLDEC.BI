@@ -4,6 +4,8 @@
 'Declare function usleep( as ulong) as long '=0 when working
 'end Extern
 ' ESCALAS Y ACORDES http://www.looknohands.com/chordhouse/guitar/index_rb.html
+'                  http://www.looknohands.com/chordhouse/piano/
+' DUDA DE GUITARRISTAS https://www.guitarristas.info/foros/dudas-sobre-conceptos-armonia/239164
 ' code from
 'https://freebasic.net/forum/viewtopic.php?t=23680
 'Declare sub RtlInitUnicodeString alias "RtlInitUnicodeString"(as PUNICODE_STRING,as PCWSTR)
@@ -145,7 +147,7 @@ common shared as esc1 ptr pescala
 Dim Shared mayor  (1 To 7)  As byte => {2,2,1,2,2,2,1}  _
 ,  harmonicaMenor     (1 To 7)  As Byte => {2,1,2,2,1,3,1}  _
 ,  melodicaMenorAsc   (1 To 7)  As Byte => {2,1,2,2,2,2,1} _
-,  melodicaMenorDesc  (1 To 7)  As Byte => {2,1,2,2,1,2,2} _
+,  melodicaMenorDesc  (1 To 7)  As Byte => {2,1,2,2,1,2,2} _ ' A,B,C,D,E,F,G,A
 ,  cromatica          (1 To 12) As Byte => {1,1,1,1,1,1,1,1,1,1,1,1} _
 ,  tonoEntero         (1 To 6)  As Byte => {2,2,2,2,2,2} _
 ,  pentatonicaMayor   (1 To 5)  As byte => {2,2,3,2,3} _
@@ -159,7 +161,7 @@ Dim Shared mayor  (1 To 7)  As byte => {2,2,1,2,2,2,1}  _
 ,  frigia             (1 To 7)  As byte => {1,2,2,2,1,2,2} _
 ,  lidia              (1 To 7)  As Byte => {2,2,2,1,2,2,1} _
 ,  mixolidia          (1 To 7)  As Byte => {2,2,1,2,2,1,2} _
-,  aeolia             (1 To 7)  As Byte => {2,1,2,2,1,2,2} _
+,  aeolia             (1 To 7)  As Byte => {2,1,2,2,1,2,2} _ ' MENOR NATURAL EOLIA A,B,C,D,E,F,G,A, LA RELATIVA MENOR MAS SIMPLE 
 ,  locria             (1 To 7)  As Byte => {1,2,2,1,2,2,2} _
 ,  algeriana          (1 To 8)  As Byte => {2,1,2,1,1,1,3,1} _
 ,  arabianA           (1 To 8)  As Byte => {2,1,2,1,2,1,2,1} _
@@ -637,6 +639,8 @@ Dim Shared ix As Integer=0
 Dim Shared As String titu, cadenaes,cadenaes_inicial,tipoescala_inicial, notaescala_inicial 
 Dim Shared As Integer instru=1, instruOld, tipoescala=1, tipoescalaOld=1, notaescala=1,notaescalaOld
 Dim Shared As Integer tipoescala_num = 1, notaescala_num = 1,tipoescala_num_ini=1,notaescala_num_ini=1
+
+
 Dim Shared As Integer desdevector
 Dim Shared As Integer hastavector,abrirRoll=0
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
@@ -776,4 +780,6 @@ acercade = "Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer apl
  "o su ejecucion. Programado en OS:Windows7, Proc:AMD Phenom-II Black Edition. " + _
  "Usa Cairo como libreria de graficos, Rtmidi como libreria midi, " + _
  "Editor de código FbEdit. Echo en Freebasic como hobby.FreeBASIC Compiler - Version 1.08.1 (2021-07-05), " + _ 
- "built for win64 (64bit) Copyright (C) 2004-2021 The FreeBASIC development team." 
+ "built for win64 (64bit) Copyright (C) 2004-2021 The FreeBASIC development team." + _
+ "Si alguien quiere colaborar a mejorar, call me, me gustaria pasar a opengl de a poco, " + _
+ "Exportar a MusicXml o midi, etc.  mail:galeanoj2005@gmail.com" 
