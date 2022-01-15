@@ -79,18 +79,13 @@ Declare Sub dialogoText(cadena As string)
 Declare Sub velocidades(j as integer)
 Declare Sub playthread()
 Declare Sub GrabarArchivo (grabar_como As Integer)
-Declare Sub GrabarTrack   (ntk As integer)
+Declare Sub GrabarTrack   (ntk As integer) ' NO SE ESTA USANDO
 Declare Sub ActualizarRollyGrabarPista ()
 Declare Sub GrabarRollaTrack (cambiaext As Integer)
 Declare Sub CargarPistasEnCancion ()
 Declare sub GrabarCopiadePista()
 Declare Sub ImportarPistaExterna()
 
-' gtk
-Declare Sub GtkListBox()
-Declare Sub sigh_button_event Cdecl ( Byval gtklist As GtkWidget Ptr, ByVal event As GdkEventButton Ptr, Byval frame As GtkWidget Ptr )
-Declare Sub sigh_print_selection Cdecl ( Byval gtklist As GtkWidget Ptr, Byval func_data As gpointer )
-' end gtk
 Declare sub selport(ByVal tipo As any ptr) 
 Declare Sub ComboBox()
 Declare Sub grabaprueba()
@@ -646,7 +641,7 @@ Dim Shared As Integer hastavector,abrirRoll=0
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
 'Dim Shared As Integer lim2=12, ctres=CantTicks
-Dim Shared As Integer lim2=12,undo_k=0,mel_undo_k=0
+Dim Shared As Integer lim2=12,undo_k=0,mel_undo_k=0,lim3=13
 Dim Shared As Boolean Vaciodur=FALSE
 Type notas_agregadas Field=1
   As Integer pn

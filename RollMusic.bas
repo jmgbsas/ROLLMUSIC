@@ -350,9 +350,9 @@ param.ubirtk=ubirtk
 
 Dim  AS Integer  ctres=1 ' 5 octavas por track
 Dim As Integer lim1 
-lim1=1
-ReDim (Track(00).trk ) (1 To CantTicks,1 To lim2) ' lo usa instancia sin cancion
-ReDim (Track(01).trk ) (1 To CantTicks,1 To lim2) ' lo usa sin instancia
+lim1=1 ' lim3 vale 13 se reserva el ultimo par avalores de control
+ReDim (Track(00).trk ) (1 To CantTicks,1 To lim3) ' lo usa instancia sin cancion
+ReDim (Track(01).trk ) (1 To CantTicks,1 To lim3) ' lo usa sin instancia
 ReDim (Track(02).trk ) (1 To Ctres,1 To lim1)
 ReDim (Track(03).trk ) (1 To ctres,1 To lim1)
 ReDim (Track(04).trk ) (1 To ctres,1 To lim1)
@@ -929,7 +929,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
            Case 1011 ' Grabar una Pista de la Cancion con modificaciones, que son tracks
             print #1,"entro a 1011 esto lo hace menu de Roll tambien" '' jmg probar es nuevo...
  ' copiamos logica Rolla Track 
-            print #1, "Click Grabando a disco pista modif con RollaTrack ",nombre
+            print #1, "Click Grabando a disco pista modif con GrabarRollaTrack ",nombre
             Dim As String nombreg
             ROLLCARGADO=FALSE 
            If NombreCancion > ""  Then
@@ -991,7 +991,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                Roll.trk(1,NA).inst= CUByte(instru)
                Track(ntk).trk(1,1).inst=CUByte(instru)
               ' grabar la pistacomo en 1011
-            print #1, "Click Grabando inst a disco pista con RollaTrack ",nombre
+            print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
               ROLLCARGADO=FALSE 
               If NombreCancion > ""  Then
@@ -1007,7 +1007,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
                Roll.trk(1,NA).inst= CUByte(instru)
                Track(ntk).trk(1,1).inst=CUByte(instru)
               ' grabar el track 
-            print #1, "Click Grabando inst a disco pista con RollaTrack ",nombre
+            print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
               ROLLCARGADO=FALSE 
               If NombreCancion > ""  Then

@@ -315,11 +315,11 @@ Function sacarExtension(file As string) As String
  
 End Function
 '---------------------
-Sub GrabarCancion()
+Sub GrabarCancion() ' PENDIENTE GRABAR TODA LA CANCION EN UN SOLO COMANDO
  '1) recorro titulos(ntk) los titulos que quedan se graban, los otros se borran o
  ' en el momento de borrar se copia a backup y se borra del directorio de cancion
  ' eso si se borro alguna pista. (en vez de borrar mandamos a una carpeta de backup)
- '2) cada pista se graba con RollaTrack
+ '2) cada pista se graba con GrabarRollaTrack
  
  
 End Sub

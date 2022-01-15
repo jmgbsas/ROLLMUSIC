@@ -1492,7 +1492,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      Dim As Integer i,j , mayor,ia,valdur,cont, semi
      cont=0
  '    print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
-     Dim As Integer lim1, lim2, grupo, mayorgrupo
+
      For j = 1 To MaxPos    '11-07-2021
 '      Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
@@ -1558,7 +1558,7 @@ CantTicks=4000 ' vuelvo al original default
                print #1,"Runtime desde hasta ",desde ,hasta
                print #1,"Runtime NB NA ",NB ,NA
                ReDim (Roll.trk ) (1 To CantTicks, NB To NA )
-               ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim2)
+               ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim3)
                ReDim compas(1 To CantTicks)
                ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
                mel_undo_k=0:undo_k=0
@@ -1568,7 +1568,7 @@ CantTicks=4000 ' vuelvo al original default
 '               ReDim Preserve (Roll.trk ) (1 To CantTicks, NB To NA )
 '               ReDim Preserve compas(1 To CantTicks)
 '               ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
-'               ReDim preserve (Track(ntk).trk ) (1 To CantTicks,1 To lim2)           
+'               ReDim preserve (Track(ntk).trk ) (1 To CantTicks,1 To lim3)           
 '          EndIf
 
           MaxPos = 2 'NroCol
@@ -2046,7 +2046,7 @@ EndIf
        ubi3=InStr(nombre,".rtk")
        ubi4=InStr(nombre,".roll")
        If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Then 'graba un track como track
-       ' pero como las modificaciones estan en ROLL debo usar rollaTrack
+       ' pero como las modificaciones estan en ROLL debo usar GrabarrollaTrack
           GrabarRollaTrack(0)
            Sleep 1000           
        Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
@@ -2112,7 +2112,8 @@ EndIf
        Dim As integer esroll, esrtk 
        esroll=InStr(LCase(nombre),".roll")
        esrtk =InStr(LCase(nombre),".rtk")        
-' por ahroa todo RollaTRack graba con [0] adelante. s epodra cambiarlo en futuro
+'   GrabarRollaTRack aca graba con [00] adelante, pues no es comando de cancion
+' la pista de cancion van de 1 a 32 la pista 00 es el track asociado a Roll sin cancion 
         If esrtk >0 Then ' update de un track con o sin cancion
            GrabarRollaTrack(0)
         endif  
@@ -2765,10 +2766,10 @@ Sub CambiarDim(redi As Integer)
      
 If redi=1 Then 
      ReDim  Preserve (Roll.trk ) ( 1 To CantTicks, NB To NA)
-     ReDim  Preserve (Track(ntk).trk ) (1 To CantTicks, 1 To lim2)
+     ReDim  Preserve (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
 Else
      ReDim  (Roll.trk ) ( 1 To CantTicks, NB To NA)
-     ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim2)
+     ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
 EndIf   
 ReDim (RollAux.trk) ( 1 To CantTicks,NB To NA )
  desdevector=desde
@@ -3156,16 +3157,16 @@ print #1,"inicia CargaPistasEnCancion"
 End Sub
 
 ' ---------------------------------
-Sub GrabarTrack (ntk As integer)
+Sub GrabarTrack (ntk As integer) ' NO SE ESTA USANDO pero seria el modelo de GrabarCancion
 ' DE MUCHOS TRACKS UN VECTOR, GRABA UNA SOLA OCURRENCIA 
-' por ahroa no se usa para nada , parece qu elo probe en un momento
-' pero ahroa siemrep grabo con GrabarRollaTrack, asi tomo als modificaciones
-' enchas en edicion de Roll. Si no modifico nada de lo cargado, pero 
+' por ahroa no se usa para nada , parece que lo probe en un momento
+' pero ahroa siempre grabo con GrabarRollaTrack, asi tomo las modificaciones
+' echas en edicion de Roll. Si no modifico nada de lo cargado, pero 
 ' agrego notas nuevas sin modificacion alguna de Cursor u otras cosas
 ' podria usar esta sub para grabar...será util al grabar Cancion
 ' en donde todos los tracks cargado se grabaran a disco pero no como track 
 ' individual sino como el track de 2 dimensiones por lo tanto esta
-' subruttina debe copiarse a otra y cambiarle el nombre diciendo GrabarCancion
+' subruttina debe copiarse a otra y cambiarle el nombre diciendo <<GrabarCancion tipo carpeta>>
 ' como 1er paso deberia pasar de RollaTrack en memoria para que quede el Track
 ' en edicion con todo lo modificado en Roll. dEspue sí, grabar el vector
 ' multiple con todos los tracks. Esa serai al forma compacta de grabar una
@@ -3181,7 +3182,7 @@ Sub GrabarTrack (ntk As integer)
  print #1,"  inicia GrabarTrack nombre= ",nombre
  gt=FreeFile
     Open nombre  For Binary Access write As #gt
-     Dim Trabajo (1 To Maxpos, 1 To lim2 ) As poli
+     Dim Trabajo (1 To Maxpos, 1 To lim3 ) As poli
      Dim grabaPos (1,1)  As poli
      Dim grabaLim (1,1)  As poli 
      Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
@@ -3211,8 +3212,8 @@ Sub GrabarTrack (ntk As integer)
     i1=0  
     If borrocol = 0 Or res=0 Or final=1 Then 'copio columna no borro
        k=k+1
-      For i1 = 1 To lim2
-          Trabajo(k, i1)=Track(ntk).trk(i2,i1 ) ' ACA IRIA LA COPIA DE ACORDE
+      For i1 = 1 To lim3 ' aca copio controles tambien en lim3
+          Trabajo(k, i1)=Track(ntk).trk(i2,i1 ) ' ACA IRIA LA COPIA DE ACORDE y control
       Next i1
     EndIf
       
@@ -3226,7 +3227,7 @@ Sub GrabarTrack (ntk As integer)
 posn=k        
 
 Dim As Integer r1
-For i1=1 To lim2 
+For i1=1 To lim3 ' faltaria agregar campo de de control a blanquear .....jjj jmg 15-01-2022 
   For r1= posn+1 To MaxPos
     Trabajo(r1, i1).nota=0 ' ok debo habiliatar desde ahi todas las columnas se juntaron
     Trabajo(r1, i1).dur=0  ' la secuecnia quedo mas corta
@@ -3329,230 +3330,8 @@ print #1,"  Fin GrabarTrack "
 End Sub
 
 ' ---------------------------------
-Sub GtkListBox()
-' ==============================================
-' Main GTK Sub
-' ==============================================
-
-	Dim As GtkWidget Ptr separator
-	Dim As GtkWidget Ptr win
-	Dim As GtkWidget Ptr vbox
-	Dim As GtkWidget Ptr scrolled_window
-	Dim As GtkWidget Ptr frame
-	Dim As GtkWidget Ptr gtklist
-	Dim As GtkWidget Ptr button
-	Dim As GtkWidget Ptr list_item
-	Dim As GList Ptr dlist 
-	Dim As Integer i
-	Dim As Zstring * 64 buffer
-	
-	' Initialize GTK (and subsequently GDK) 
-	
-	gtk_init (NULL, NULL)
-	
-	' Create a window to put all the widgets in
-	' connect gtk_main_quit() to the "destroy" event of
-	' the window to handle window manager close-window-events
-	
-	win = gtk_window_new (GTK_WINDOW_POPUP) '(GTK_WINDOW_TOPLEVEL)
-	gtk_window_set_title (GTK_WINDOW (win), "GtkList Example")
-	g_signal_connect (G_OBJECT (win), "destroy", G_CALLBACK (@gtk_main_quit), NULL)
-	
-	' Inside the window we need a box to arrange the widgets vertically 
-	vbox=gtk_vbox_new (FALSE, 5)
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), 5)
-	gtk_container_add (GTK_CONTAINER (win), vbox)
-	gtk_widget_show (vbox)
-	
-	' This is the scrolled window to put the List widget inside 
-	scrolled_window = gtk_scrolled_window_new (NULL, NULL)
-	gtk_widget_set_size_request (scrolled_window, 250, 150)
-	gtk_container_add (GTK_CONTAINER (vbox), scrolled_window)
-	gtk_widget_show (scrolled_window)
-	
-	' Create thekList widget.
-	' Connect the sigh_print_selection() signal handler
-	' function to the "selection_changed" signal of the List
-	' to print out the selected items each time the selection
-	' has changed */
-	gtklist=gtk_list_new ()
-	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_window), gtklist)
-	gtk_widget_show (gtklist)
-	g_signal_connect (G_OBJECT (gtklist), "selection_changed", G_CALLBACK (@sigh_print_selection), NULL)
-	
-	' We create a "Prison" to put a list item in ;) 
-	frame=gtk_frame_new ("Prison")
-	gtk_widget_set_size_request (frame, 200, 50)
-	gtk_container_set_border_width (GTK_CONTAINER (frame), 5)
-	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT)
-	gtk_container_add (GTK_CONTAINER (vbox), frame)
-	gtk_widget_show (frame)
-	
-	' Connect the sigh_button_event() signal handler to the List
-	' which will handle the "arresting" of list items
-	g_signal_connect (G_OBJECT (gtklist), "button_release_event", G_CALLBACK (@sigh_button_event), frame)
-	
-	' Create a separator 
-	separator=gtk_hseparator_new ()
-	gtk_container_add (GTK_CONTAINER (vbox), separator)
-	gtk_widget_show (separator)
-	
-	' Finally create a button and connect its "clicked" signal
-	' to the destruction of the window 
-	button=gtk_button_new_with_label ("Close")
-	gtk_container_add (GTK_CONTAINER (vbox), button)
-	gtk_widget_show (button)
-	g_signal_connect_swapped (G_OBJECT (button), "clicked", G_CALLBACK (@gtk_widget_destroy), win)
-	
-	'* Now we create 5 list items, each having its own
-	' label and add them to the List using gtk_container_add()
-	' Also we query the text string from the label and
-	' associate it with the list_item_data_key for each list item
-	Dim As Zstring Ptr tmp
-	For i = 0 To 4
-		Dim As GtkWidget Ptr label
-		Dim As Zstring Ptr m_string
-	
-		sprintf(buffer, "ListItemContainer with Label #%d", i)
-		label=gtk_label_new (buffer)
-		list_item=gtk_list_item_new ()
-		gtk_container_add (GTK_CONTAINER (list_item), label)
-		gtk_widget_show (label)
-		gtk_container_add (GTK_CONTAINER (gtklist), list_item)
-		gtk_widget_show (list_item)
-		gtk_label_get (GTK_LABEL (label), @m_string)
-		g_object_set_data (G_OBJECT (list_item), @list_item_data_key, m_string)
-	Next
-	
-	' Here, we are creating another 5 labels, this time
-	' we use gtk_list_item_new_with_label() for the creation
-	' we can't query the text string from the label because
-	' we don't have the labels pointer and therefore
-	' we just associate the list_item_data_key of each
-	' list item with the same text string.
-	' For adding of the list items we put them all into a doubly
-	' linked list (GList), and then add them by a single call to
-	' gtk_list_append_items().
-	' Because we use g_list_prepend() to put the items into the
-	' doubly linked list, their order will be descending (instead
-	' of ascending when using g_list_append())
-	
-	dlist = NULL
-	For  i = 5 To 9
-		sprintf(buffer, "List Item with Label %d", i)
-		list_item = gtk_list_item_new_with_label (buffer)
-		dlist = g_list_prepend (dlist, list_item)
-		gtk_widget_show (list_item)
-		tmp = @"ListItem with integrated Label"
-		g_object_set_data (G_OBJECT (list_item), @list_item_data_key, tmp)
-	Next
-	gtk_list_append_items (GTK_LIST (gtklist), dlist)
-	
-	' Finally we want to see the window, don't we? ;) 
-	''gtk_window_set_position(window as GtkWindow Ptr, GTK_WIN_POS_CENTER_ON_PARENT ) 'byval position as GtkWindowPosition)
-	gtk_window_set_position (win, GTK_WIN_POS_CENTER)
-	gtk_widget_show (win)
-	
-	' Fire up the main event loop of gtk 
-	gtk_main ()
-	
-	' We get here after gtk_main_quit() has been called which
-	' happens if the main window gets destroyed
-
-End Sub
-
-' This is the signal handler that got connected to button
-' press/release events of the List
-
-Sub sigh_button_event Cdecl ( Byval gtklist As GtkWidget Ptr, Byval event As GdkEventButton Ptr, Byval frame As GtkWidget Ptr )
-
-	' We only do something if the third (rightmost mouse button was released
-
-	If event->Type = GDK_BUTTON_RELEASE And event->button = 3 Then
-		Dim As GList Ptr dlist, free_list
-		Dim As GtkWidget Ptr new_prisoner
-
-		' Fetch the currently selected list item which
-		' will be our next prisoner ;)
-		dlist = GTK_LIST (gtklist)->selection
-		If dlist Then
-			new_prisoner = GTK_WIDGET (dlist->Data)
-		Else
-			new_prisoner = NULL
-		End If
-
-		' Look for already imprisoned list items, we
-		' will put them back into the list.
-		' Remember to free the doubly linked list that
-		' gtk_container_children() returns
-		dlist = gtk_container_children (GTK_CONTAINER (frame))
-		free_list = dlist
-		Do While (dlist) 
-			Dim As GtkWidget Ptr list_item
-
-			list_item = dlist->Data
-
-			gtk_widget_reparent (list_item, gtklist)
-
-			dlist = dlist->Next
-		Loop
-	
-		g_list_free (free_list)
-	
-		' If we have a new prisoner, remove him from the
-		' List and put him into the frame "Prison".
-		' We need to unselect the item first.
-		If (new_prisoner) Then
-			Dim As GList static_dlist
-	    
-			static_dlist.data = new_prisoner
-			static_dlist.next = NULL
-			static_dlist.prev = NULL
-	    
-			gtk_list_unselect_child (GTK_LIST (gtklist), new_prisoner)
-			gtk_widget_reparent (new_prisoner, frame)
-		End If
-	End If
-End Sub
 
 
-' This is the signal handler that gets called if List
-' emits the "selection_changed" signal
-
-Sub sigh_print_selection Cdecl ( Byval gtklist As GtkWidget Ptr, Byval func_data As gpointer )
-
-	Dim As GList Ptr dlist
-
-	' Fetch the doubly linked list of selected items
-	' of the List, remember to treat this as read-only!
-
-	dlist = GTK_LIST (gtklist)->selection
-	
-	' If there are no selected items there is nothing more
-	' to do than just telling the user so
-
-	If  dlist = NULL Then
-		g_print (!"Selection cleared\n")
-		Return
-	End If
-	
-	' Ok, we got a selection and so we print it
-	g_print ("The selection is a ")
-    
-	' Get the list item from the doubly linked list
-	' and then query the data associated with list_item_data_key.
-	' We then just print it */
-	Do While (dlist) 
-		Dim As Zstring Ptr  item_data_string
-
-		item_data_string = g_object_get_data (G_OBJECT (dlist->Data), list_item_data_key)
-		g_print("%s ", *item_data_string)
- 	
-		dlist = dlist->Next
-	Loop
-	g_print (!"\n")
-	
-End Sub
 Sub  selport (ByVal tipo As Any Ptr)  ' list de ruso
 Dim As hwnd haw,hwl
 Dim mitipo As Integer 

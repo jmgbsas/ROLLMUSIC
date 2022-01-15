@@ -122,8 +122,14 @@
        Si la pista tiene una escala Principal previamente ajustada (13) al marcar una posicion con ctrl clik
        pasozona1, y luego se pulsa la opcion mencionada se agrega la escala auxiliar alternativa a la escala
        principal de la pista.
+
     Nota: todas estas acciones funcionan tambien en modo instancia Separada sin Menu de Control.
-      ubicacion (If cambioescala=1 And pasoZona1 > 0 Then) Rolloop 757 
+      ubicacion (If cambioescala=1 And pasoZona1 > 0 Then) Rolloop 
+      AMBAS funciones andan al cargar las pistas en Cancion. se agrego un caso en la cancion 10-24-2021
+      por sierto, las canciones estan mal construidas no respetan las duraciones iguales en cada posicion
+      en cada pista para que suene bien se debe usar FraccionarDur o FraccionarAuto por omision de modo de
+      alinear las posicion de cada pista entre ellas...Se probara y hara una cancion como prueba 
+      mas adelante que suene bien con dsitintos instrumentos.....
     15) Una instancia sin control puede ejecutarse tambien si asociamos la sextensiones *.roll y *.rtk
           con Rollmusi.exe. En ese caso al dar doble clik o enter sobre el nombre de una secuencia en el
           explorador, se levantará una sesion de RollMusic sin el Menu de Control. 

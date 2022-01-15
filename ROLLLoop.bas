@@ -1819,7 +1819,7 @@ Print #1,"entro nota ",nota
       ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
       ' ¿a que ntk apunta al 0 o al de cancion ?
       print #1,"REDIM EN NUCLEO DE TRACK NTK= ", ntk
-      ReDim Preserve (Track(ntk).trk)(1 To CantTicks,1 To lim2)
+      ReDim Preserve (Track(ntk).trk)(1 To CantTicks,1 To lim3)
     EndIf
     pmTk(ntk).Ticks=CantTicks
 
@@ -3610,7 +3610,7 @@ EndIf
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
       ReDim Preserve compas(1 To CantTicks)
       ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
-      ReDim Preserve (Track(ntk).trk)(1 To CantTicks,1 To lim2)
+      ReDim Preserve (Track(ntk).trk)(1 To CantTicks,1 To lim3)
       print #1,"Redim exitoso"
     EndIf
  print #1,"va a copiar FOR lz "

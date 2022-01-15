@@ -1,3 +1,11 @@
+-15-01-2022 elimino GtkListBox ,sigh_button_event,sigh_print_selection de GTK no lo uso no me gusto
+-15-01-2022 RollaTrack y GrabarRollaTrack usan la misma sub RollTempaTrackTemp para unificar codigo
+ pero eso trae aparejado hacer 2 copias de la pista durante FraccionarDur o AutoFracTodoDur en memoria 
+ con RollaTrack, si este tiempo es excesivo (seria el doble..) , volveriamos a la original RollaTrack_ORIGINAL 
+ LA CUAL FUE GUARDADA en el codigo aunque no se use, si se vuelve a usar verificar que este al dia y correcta...
+-15-01-2022 copia de datos de control de Track ocurrencia 13, a Roll, en TrackaRoll.
+-15-01-2022 copia de datos de control de Roll a Track ocurrencia 13, en RollaTrack.
+-15-01-2022 se agrega una ocurrencia mas al vector Track para guardar datos de control,lim3=13
 -13-01-2022 se agrega insertar en posicion una escala alternativa a la escala principal probada ok
 -13-01-2022 se agrega ver escala principal de Tracks al usar TAB para conmutar de track No probado
 -12-01-2022 acordes m7 automaticos no inv,1era inv,2da inv, 3er inv. probado
