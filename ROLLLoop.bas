@@ -3694,7 +3694,7 @@ EndIf
 EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 ' PODRIA SACARSE LOS MULTIKEY DE SCREEN EVENT PERO NO SE SI ANDAN MEJOR DEBO VERIFICAR
 ' ------------IPC sensado de comando fifo..
-If fueradefoco=1  Then
+If fueradefoco=1  And (play = 0) and (playb=0) Then
 '   Print #1,"fueradefoco=1"
    Sleep 1
 EndIf
@@ -3706,7 +3706,7 @@ Loop
 
 While InKey <> "": Wend
 
-If fueradefoco=1  Then
+If fueradefoco=1 And (play = 0) and (playb=0) Then
 '  Print #1,"2 -fueradefoco=1"
    Sleep 1
 EndIf

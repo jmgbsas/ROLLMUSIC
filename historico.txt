@@ -1,3 +1,4 @@
+-16-01-2022 se ajusto mejor en el play el movimiento de las marcas [] durante el play
 -16-01-2022 eliminacion de retardos que bajan performance, en el grafico y en el Play
 -16-01-2022 error de play cancion crash fixed, al pulsar la key inicio o home se posicionaba en posicion=0
  y eso daba crash por fuera de indice debe ser siemrep posicion=1 en algunso casos podria ser posicion=0

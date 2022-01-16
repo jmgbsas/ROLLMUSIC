@@ -1108,7 +1108,7 @@ EndIf
    EndIf   
   
       If i1=NA  Then 'And cnt >= 1 Then ' envio noteoff 1) no entra
-         
+         mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
          If cnt > 1 Then' Acorde
          '  print #1,"i1=NA=";i1 ; " ACORDE cnt= ";cnt
          Else    

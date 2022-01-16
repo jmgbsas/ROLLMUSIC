@@ -1284,7 +1284,7 @@ kNroCol= Int(jply/NroCol)
 ' llegamos al final de la Columna
    
      If i1=lim2  And (pis = tope Or pis=32) Then
- 
+        mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
         If cnt > 1 Then' Acorde
           print #1,"i1=";i1 ; " ACORDE cnt= ";cnt
         Else    
@@ -1325,8 +1325,9 @@ kNroCol= Int(jply/NroCol)
           
      EndIf 
    Next i1
+   mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
   print #1,"---DOWN -----PISTA:"; pis;" --------------------------------" 
-  mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0  
+    
  If playloop=1 And jply= final Then
     jply=comienzo -1
     'posicion=comienzo
