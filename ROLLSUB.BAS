@@ -1732,7 +1732,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    Dim muestra As String ' nombre tambien se usa en cancion
    If NombreCancion > "" And titulos(ntk) > "" And ROLLCARGADO=FALSE Then
       nombre = titulos(ntk)
-      Print #1,"en menu nombre ",nombre
+     ' Print #1,"en menu nombre ",nombre
    EndIf
    If Len(nombre) > 60  Then
      muestra="C:\..\" + Right (nombre,60)
@@ -1761,7 +1761,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    If mousex > 141 And mousex< 203 And mousey < 50 Then
     cairo_set_source_rgba c, 0, 1, 0, 1
     '''If MouseButtons And 1 Then
-    If MousePress = 1 Then  ' funciona mejor ? veremos...
+    If MouseButtons And 1 Then  ' funciona mejor ? veremos...
      menuNew=2
     EndIf
    Else
@@ -1912,8 +1912,7 @@ EndIf
   '====================================================== 
   If mousex > 91 And mousex < 174  And mousey < 50 Then ' <= MaxPos ajuste a la posicion dada
     cairo_set_source_rgba c, 0, 1, 0, 1
-      If MultiKey(SC_CONTROL ) Then 
-         If dobleclick Then
+      If MultiKey(SC_ALT ) Then ''And  dobleclick Then
             MaxPos=posishow +1
             posn=posishow        
             Dim As Integer r1,i
@@ -1923,7 +1922,7 @@ EndIf
                  Roll.trk(r1,i).dur=0 
               Next r1 
             Next i 
-        EndIf
+        
       EndIf
   Else
     cairo_set_source_rgba c, 1, 1, 1, 1    
@@ -3093,6 +3092,7 @@ End Sub
 '
 Sub CargarPistasEnCancion ()
 ' cada vez que cargo borro la info de fechas de pistas anterior
+ROLLCARGADO=FALSE
 ReDim As Double fechasPistas(1 To 32)
 print #1,"-------------------------------------------------------"
 print #1,"inicia CargaPistasEnCancion"
@@ -3133,6 +3133,9 @@ print #1,"inicia CargaPistasEnCancion"
        Loop
        tope=ntk  ' el nro tope de la lista
        print #1,"CARGO PISTAS MAXIMA CANTIDAD TOPE=",tope
+       CANCIONCARGADA=TRUE
+       ntk=0
+/'       
   ' cargo la pista 1
       ntk=1 ' carga track 1 para mostrarlo
   ' al terminar de cargar la cancion se posiciona en el track 1 y lo muestra 
@@ -3149,9 +3152,10 @@ print #1,"inicia CargaPistasEnCancion"
       RecalCompas (Roll) 
        ''' nombre=cadena cadena no tiene la extension
       '''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0 
+'/
     EndIf
     '*po = hasta -1
-    CANCIONCARGADA=TRUE
+    
     print #1,"FIN CargaPistasEnCancion no debe calcuar *po ",*po
     print #1,"-------------------------------------------------------"   
 End Sub

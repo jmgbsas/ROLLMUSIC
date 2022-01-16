@@ -21,7 +21,6 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include Once "freetype2/freetype.bi"
 
 
-
 'Var hwnd = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*3/4)
 
 'Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8

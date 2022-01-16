@@ -1,3 +1,9 @@
+-16-01-2022 se paso a Mousebuttons and 1  la key para [Edicion], y PARA borrar desde una posicion hasta el final
+ conl ALT y posarse sobre MAxPos
+- 16-01-2022 se corrigio al cargar Cancion que muestre automaticamente la 1er pista.
+  Hay un error esporadico al usar mucho el TAB ejecutando play para cada pista y/o play de la cancion,
+  luego en un momento hay un crash ..error pendiente, alguan psita podria estar defectuosa por ser version vieja
+  o veremos....pendiente...
 -15-01-2022 elimino GtkListBox ,sigh_button_event,sigh_print_selection de GTK no lo uso no me gusto
 -15-01-2022 RollaTrack y GrabarRollaTrack usan la misma sub RollTempaTrackTemp para unificar codigo
  pero eso trae aparejado hacer 2 copias de la pista durante FraccionarDur o AutoFracTodoDur en memoria 

@@ -917,7 +917,8 @@ Dim As Integer i1,i2,i3,Maxposicion
 ' si no estoy en cancion el nto va a ntk 0, siemrep uso ntk y el vector de pnTk
 print #1,"-------------ARRANCA TRACKAROLL---------------------------------"
 print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulos(ntk)
-print #1,"maxpos y (ntk).maxpos ", maxpos,pmTk(ntk).MaxPos
+print #1,"(ntk).maxpos ", pmTk(ntk).MaxPos
+nombre=titulos(ntk)
 '0) Si se pula delete o Supr estando en Roll Visual, se iran borando de memoria
 ' los datos de ese trrack y de la lista de Control, pero los archivo sen disco
 ' seguiran iguales, primera etapa,luego al Grabar Cancion se borrara definitivamente
@@ -954,7 +955,17 @@ nota=0:dur=0
    ' y si cargo de disco Track(0) no debo borrar track(0) al hacer track a Roll
    ' si cargo cancion no deberia cargar Roll si no al final el track 1
    ' o luego haciedno click
-   '  
+   '
+   If CANCIONCARGADA Then 
+     Print #1,"CANCION CARGADA EN TRACKAROLL"
+   Else
+     Print #1,"CANCION NO CARGADA EN TRACKAROLL"
+   EndIf
+   If ROLLCARGADO=FALSE Then 
+     Print #1,"ROLL NO CARGADO EN TRACKAROLL"
+   Else
+       Print #1,"ROLL CARGADO EN TRACKAROLL"
+   EndIf  
    If CANCIONCARGADA=TRUE And ROLLCARGADO=FALSE Then ' cargarcancion NO SE USA VIVE muy poco solo durante lA carga  
        print #1,"REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO"
        ' SE PREPARA TRACK 0 PARA RECIBIR DATOS DE TRACK X,PUES PARA IR A ROLL
@@ -969,7 +980,7 @@ print #1,"TrackaRoll desde, hasta ", desde , hasta
 print #1,"TrackaRoll NB, NA ,*po, MaxPos ", NB , NA, *po,MaxPos
 print #1, "ubound (Track(ntk).trk,2) ", ubound (Track(ntk).trk,2)
 print #1, "lbound (Track(ntk).trk,2) ", LBound (Track(ntk).trk,2)
-print #1," va a ejecutar 510 de Track aRoll"
+print #1," va a ejecutar for de copia de TrackaRoll"
 
 ' 1) carga de Roll desde track ntk
 For i2 = 1 To MaxPos 
@@ -986,11 +997,13 @@ For i2 = 1 To MaxPos
          ' para 71 PianoNota=71 + 5=76.(12-(76 - (int(76/13)*13))= 1 ..ok
          ' es ok si las notas van de 1 a 12 bajando....  
          Roll.trk(i2,i3).nota = CUByte(12 -( i3 - (Int(i3/13))*13) )
+         Print #1,"Roll.trk(i2,i3).nota ",Roll.trk(i2,i3).nota
      '    print #1,"Roll.trk(i2,i3).nota ",Roll.trk(i2,i3).nota
          'ers=11- semitono  + *po * 13
          '    11 - semitono +(*po) * 13)  103 notacur  12
          '  11 - 12 + 9*13 = -1+ 117 = 116
          Roll.trk(i2,i3).dur  = Track(ntk).trk(i2,i1).dur
+         Print #1,"Roll.trk(i2,i3).dur ",Roll.trk(i2,i3).dur
          Roll.trk(i2,i3).vol  = Track(ntk).trk(i2,i1).vol
          Roll.trk(i2,i3).pan  = Track(ntk).trk(i2,i1).pan
          Roll.trk(i2,i3).pb   = Track(ntk).trk(i2,i1).pb
@@ -1021,6 +1034,8 @@ Next i2
 ' el 181 es durante la carga para evitar retrocesos en la carga de notas
 ' y poder entrar acordes
 ' ¿y si tiene datos ? debrai pregunta por MAxpos si es mayor a 2,no hizo falta
+' DUDA REVISAR JMG JJJJ NO AFECTA AL VISUALISACION DE PISTA 1 QUE NO SE PUEDE VER EN LA 
+' CARG ANTES ANDABA ....SEGUIR BUSCANDO
 'For i2 = 1 To MaxPos 
 '  For i1=NB To NA
 '   If Roll.trk(i2,i1).nota =0 And Roll.trk(i2,i1).dur <>182  Then
@@ -1034,6 +1049,7 @@ Next i2
 'Next i2     
 ' 2)  pasar lso datos del Track(x) a Track(0)!! si es cancion
 ' el redim esta arriba
+Print #1,"cargaCancion DEBE SER 1 ",cargaCancion 
 If cargaCancion=1 Then ' solo mientras cargo cancion? no  
  For i1=1 To MaxPos 
   For i2 = 1 To lim3
@@ -1052,6 +1068,7 @@ nroCompas=0
 tres=0:pun=0:sil=0:mas=0:doblepun=0:cuart=0
 tres=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
 SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
+
 
   print #1,"TrackaRoll Fin,,maxpos y (ntk).maxpos ", maxpos,pmTk(ntk).MaxPos
 print #1,"----------------------------------------------"

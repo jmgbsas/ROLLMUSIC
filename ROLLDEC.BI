@@ -106,7 +106,7 @@ Dim shared As integer Penta_y, indice, posicion=0,posicionOld=0, espacio,posn=0,
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
-Dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0 ', cargaCancion=0
+Dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0 
 Dim Shared As Integer ers, borrapos=0,comienza=0  
 Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 
@@ -740,6 +740,7 @@ Declare Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)
 Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As string )
 
 
+
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA 
@@ -752,6 +753,7 @@ common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig
 Common Shared As Integer mxold,myold, w,h,grado
 'Common Shared As Any Ptr thplayC
+
 pid1=0
 
 cargaCancion=0

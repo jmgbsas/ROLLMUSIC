@@ -561,18 +561,19 @@ Dim As Integer ubiroll,ubirtk,encancion
  abrirRoll=2
  ALTO=param.alto
  ANCHO=param.ancho
+ 
 
  print #1,"ubirtk ",ubirtk
  print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
  print #1,"posicion ", posicion
  Print #1,"ancho, alto", ANCHO, ALTO
- 
+ Print #1, "EN ROLLLOOP cargaCancion DEBE SER 1 EN INICIO ",cargaCancion
  '    If hwnd =0 Then   ,GFX_WINDOWED
      ScreenControl  SET_DRIVER_NAME, "GDI"
      If usarmarco= 3 then
-        ScreenRes ANCHO, ALTO , 32,1 ''',  'Or GFX_HIGH_PRIORITY
+        ScreenRes ANCHO, ALTO , 32,1 , GFX_HIGH_PRIORITY
      Else
-        ScreenRes ANCHO, ALTO, 32,1 , GFX_NO_FRAME 
+        ScreenRes ANCHO, ALTO, 32,1 , GFX_NO_FRAME Or GFX_HIGH_PRIORITY
      EndIf
      print #1,"param.titulo ",param.titulo
      WindowTitle param.titulo
@@ -636,7 +637,7 @@ print #1,"INSTANCIA ", instancia
 
 Print #1,"call roolloop, tipoescala",tipoescala_inicial
 Print #1,"call roolloop, notaescala",notaescala_inicial    
-
+Print #1,"4 ROLLLOOP ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion
 If ubiroll > 0 Then
    Print #1,"cargo archivo desde rollLoop
    nombre = titulos(0)
@@ -869,6 +870,7 @@ Do
 'simulamos TAB para cargaCancion=1 cuadno recien se carga la cancion
 If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA Or cargaCancion=1 Then
    cargaCancion=0 ' para que no entre mas luego de cargada la cancion
+   
    Erase mel_undo, undo_acorde  
    undo_k=0:mel_undo_k=0
    ROLLCARGADO = FALSE

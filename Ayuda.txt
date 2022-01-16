@@ -3,6 +3,13 @@
     I) INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
        RollMusic.exe y todas los archivos *.dll. 
+       Observacion. al usar Chrome este toma mucho recurso de Explorer, RollMusic se pone muy lento.
+       Recomendacion cerrar Chrome con RollMusic funcionando, luego abir Chrome de nuevo
+       si es necesario. Chrome se cuelga de Explorer en windows 7 como tambien RollMusic.
+       RollMusic tiene alta prioridad en el Grafico pero en el resto. Otra solucion podria ser darle
+       alta prioridad.
+       En el futuro se buscara de que RollMusic no cuelgue de Explorer, algo dificil como lo hace
+       Process Explorer.  
     II) Opciones Configuracion
         a) PUERTOS MIDI A USAR.
         Desde el Menu Principal -> ALT + posarse sobre ->Opciones->Ctrl+Click->Configuracion->click->MIDI->
@@ -582,10 +589,11 @@
           Borrar varias columnas: marcar la zona a borrar con 2 ctrl-clik en 2 posiciones distintas
           Toda esa regin entre ambas marcas se borraran al pulzar Ctrl-delete. o supr.
     2.5.4) Borrar Hasta el Final, Mover la secuencia de forma que la nota final deseada este en 
-       la posicion 1 con flechas derecha izquierda, luego dar clck en Edicion, aparece la 
-       cinta arriba de Edicion pero todavia en color blanco , no verde, aparece MaxPos=nn
-       sobre MaxPos dar Ctrl+ dobleClick y se borrara desde la posicion 1 en adelante 
-       siendo la posicion 1 la 1er columna del grafico y ademas sera el nuevo final.
+       la posicion 1 con flechas derecha izquierda, luego dar click en Edicion, aparece la 
+       cinta arriba de EDIT pero todavia en color blanco , no verde, aparece MaxPos=nn
+       posarse con el mouse sobre MaxPos y dar ALT, se borrara desde la posicion actual en adelante 
+       siendo la posicion actual la 1er columna del grafico en la que posicionamos la secuencia 
+       y ademas sera el nuevo final.
        La secuencia completa queda fuera de pantalla a la izquierda. Luego para verla entera
        pulsar Inicio o navegar a la izquierda con flecha izquierda o ctrl+izquierda.,
 

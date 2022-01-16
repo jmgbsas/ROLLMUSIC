@@ -826,19 +826,24 @@ param.titulo ="RollMusic Ver 0.4.4.0"
 Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
 Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
-
+Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
 
   If abrirRoll=1 And cargacancion=1  Then
+    Print #1,"1 ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion
      CargarPistasEnCancion ()
+    Print #1,"2 ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion 
      CANCIONCARGADA=TRUE
-     '''lo hace tab cargaCancion=0
+     ROLLCARGADO=FALSE
+     '''lo hace tab-cargaCancion=0
      param.encancion=1
      
    If pid1=0 And ix < 3 Then
       pid1=pd1
    EndIf
+  Print #1,"3 ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion 
     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-    cargacancion=0
+ Print #1,"ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion   
+    ''''cargacancion=0 esto me ponia en cero antes que lo use el thread!!!!
     ''' RollLoop(param)
     ''Sleep 200 ' NO HACE FALTA AHORA sin este retardo no le da teimpo al thread de cargar a Roll
   Else
@@ -871,7 +876,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
              ' ok anda bien, una vez cagados se permuta en memoria con TAB
              ' o haciedno click en la lista
                nombre=""
-              
+              ROLLCARGADO=FALSE
              Sleep 20
              If NombreCancion > "" And cargaCancion=0 Then
                 NombreCancion = ""
@@ -889,6 +894,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
              If NombreCancion = "" Then
                 nombre=""
                 ntk=0
+                CANCIONCARGADA=FALSE
                 cargarDirectorioCancion(NombreCancion)
                 param.encancion=1
                If abrirRoll=2 Then ' ver rollloop roll esta cargado vengo a cargar cancion de nuevo
@@ -903,6 +909,7 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
              If abrirRoll=0 And NombreCancion > ""  Then
                 abrirRoll=1
                 cargaCancion=1
+                Print #1,"SALE A CARGAR rOLL 1ERA VEZ ABRIRROLL=1 EXIT DO"
                 Exit Do                 
              EndIf
              print #1,"termino 1006 va a abrir Roll"
