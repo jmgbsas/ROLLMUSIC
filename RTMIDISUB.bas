@@ -931,7 +931,7 @@ Sub playAll(Roll As inst) ' play version 2
 ' sus notas se toca cada una con su propia duracion,el corde no termina
 ' hasta queterminede tocar la nota mas larga.
  
-fueradefoco=1
+'''fueradefoco=1
 indEscala=1 ' inicializamos la guiade escalas a la 1era 
 
 Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
@@ -1031,6 +1031,9 @@ EndIf
   For i1=NB To NA  
     'print #1,"Roll.trk(jply, i1).nota ",Roll.trk(jply, i1).nota
     'print #1,"Roll.trk(jply, i1).DUR ",Roll.trk(jply, i1).dur
+   If Roll.trk(jply, i1).dur = 182 or Roll.trk(jply, i1).nota=182 Then
+        Exit For 
+   EndIf 
    If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12 _
       And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Then ' es semitono
      ' por mas que achique en octavas, Notapiano se calcula respecto del nro 
@@ -1105,7 +1108,7 @@ EndIf
    EndIf   
   
       If i1=NA  Then 'And cnt >= 1 Then ' envio noteoff 1) no entra
-
+         
          If cnt > 1 Then' Acorde
          '  print #1,"i1=NA=";i1 ; " ACORDE cnt= ";cnt
          Else    
@@ -1138,13 +1141,14 @@ EndIf
 
         cntold = cnt
  'print #1,"cantidad de elementos Acorde actual y anterior cnt,cntold"; cnt;" ";cntold
-
         
-   EndIf  
+        
+      EndIf  
   Next i1
+  mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
   print #1,"---FIN -----paso:"; jply;" --------------------------------" 
   
- mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
+ 
  If playloop=1 And jply= final Then
     jply=comienzo -1
     'posicion=comienzo
@@ -1152,6 +1156,8 @@ EndIf
  tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
  
 Next jply
+''while (PeekMessage(NULL, hwnd, WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE or PM_QS_INPUT))
+''Wend
 
 posicion=comienzo
 'posishow=posicion + 20
@@ -1166,11 +1172,11 @@ playb=0
 mousey=100 'otra mas para evitar rentrar a play en menu
 finplay=1
 
-mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
-fueradefoco=0
+'''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
+'''fueradefoco=0
  alloff( 1 )
 
-Sleep 10,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
+Sleep 20,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
 /'
 close_port(midiout)
 out_free(midiout)

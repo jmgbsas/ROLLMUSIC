@@ -365,12 +365,12 @@
          (el menu que aparece se sincroniza con la ventana de Roll pero no pertenece a ella, es un menu flotante 
          puede haber  situaciones en que no esté posicionada la [X] justo encima de la nota pero 
          funciona igual pues la posicion exacta de la nota lo da el clik ) .
-         Funciona tambien 1era Inversion y 2da inversion de triadas mayores, menores y disminuidas.
+         Funciona tambien 1era Inversion y 2da inversion de triadas mayores, menores, disminuidas y aumentada.
          Luego de insertado el acorde automatico inmediatamente se escucha el mismo y si se desea borrarlo y 
          volver a la condicion  anterior se pulsará Alt-U. Se puede tocar la pista o un pedazo de ella
          antes de borrar el acorde y si luego si se quiere se puede eliminar el ultimo acorde ingresado 
          como se dijo con ALt-U. 
-   
+         Se agrego acordes cuaternarios mayores y menor 7.
        
 
     1.7) Crear Canción.
@@ -723,9 +723,9 @@ futuro: (creo me demandará muchos meses  más jeje, no estoy a full y ademas voy 
 - armado de triadas tomando como fundamental una nota dada para arriba ceg o abajo cge
 - triadas 1era y 2da inversion desde una nota dada.
 - cuaternarios
-  Nota: todo sintervalso seran de una misma duracion, luego de creado se podra modificar
-cada uno de ellos a una duracion diferentedeseada. Tambien se podra cambiar si se desea
-sea un rasguido.
+  Nota: todos los intervalos seran de una misma duracion, luego de creado se podra modificar
+  cada uno de ellos a una duracion diferente deseada. Tambien se podra cambiar si se desea
+  que sea un rasguido.(futuro)
 - Acordes con estructura de guitarra de 6 cuerdas usados normalmente.(con o sin rasguido
   automatico o manual o patron de usuario).
 - Muy en el futuro algun dia... harmonizacion básica.,,

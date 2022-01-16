@@ -1100,7 +1100,7 @@ Print #1,"1060 abrirRoll=0 entro"
                ' usamos encancion=1 para grabar dentro de la cancion
                GrabarRollaTrack(0)   
                NombrePista="" 
-               posicion=0
+               posicion=1
                posn=0
                MaxPos=1
                nota=0

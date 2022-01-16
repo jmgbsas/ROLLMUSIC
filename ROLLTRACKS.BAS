@@ -1105,7 +1105,7 @@ End Function
 Sub PlayCancion(Track() As sec)
 ' PARA PLAY SOLO USO LA INFO DE NOTAS QUE ESTA ENTRE 1 A lim2=12 en cada track no voy 
 ' hasta lim3=13
-fueradefoco=1
+'''fueradefoco=1
 Dim As Double tiempoDUR
 tiempoDUR=(60/tiempoPatron) / FactortiempoPatron'60 seg/ cuantas negras enun minuto
 
@@ -1322,11 +1322,11 @@ kNroCol= Int(jply/NroCol)
 
         cntold = cnt
         print #1,"cnt,cntold"; cnt;" ";cntold
-  
+          
      EndIf 
    Next i1
   print #1,"---DOWN -----PISTA:"; pis;" --------------------------------" 
- mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
+  mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0  
  If playloop=1 And jply= final Then
     jply=comienzo -1
     'posicion=comienzo
@@ -1352,7 +1352,7 @@ mousey=100 'otra mas para evitar rentrar a play en menu
 finplay=1
 
 mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
-fueradefoco=0
+''fueradefoco=0
  alloff( 1 )
 
 Sleep 10,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 

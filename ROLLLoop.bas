@@ -2141,7 +2141,7 @@ If (ScreenEvent(@e)) Then
            fueradefoco=0
        Else     ' fuera de y sin play reducimos consumo CPU
            '' Sleep 20
-            fueradefoco=1
+           fueradefoco=1
        EndIf
   Case EVENT_MOUSE_BUTTON_PRESS
 ' el help de freebasic esta mal dice que button left es 0 y es 1 !!!! joder pero anda mejor 
@@ -2863,7 +2863,10 @@ EndIf
  
  If comEdit=FALSE Then
 ' para ingreser automatico acordes a partir de una TONICA futuro--01-12-2021  
+
     If MultiKey(SC_CONTROL) And MouseButtons And 2 Then 'yyy
+
+
     pasoZona1=0:pasoZona2=0
      Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2
      Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dom7,Dis7,Mayor9,Menor9,Dis9, notabase,Aum     
@@ -3691,8 +3694,9 @@ EndIf
 EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 ' PODRIA SACARSE LOS MULTIKEY DE SCREEN EVENT PERO NO SE SI ANDAN MEJOR DEBO VERIFICAR
 ' ------------IPC sensado de comando fifo..
-if fueradefoco=1  Then
-   Sleep 10
+If fueradefoco=1  Then
+'   Print #1,"fueradefoco=1"
+   Sleep 1
 EndIf
 
 If s5=2 Then ''se elimino el retardo de 1 mseg frena mucho el scroll ahora 29-12-2021
@@ -3702,8 +3706,9 @@ Loop
 
 While InKey <> "": Wend
 
-if fueradefoco=1  Then
-   Sleep 10
+If fueradefoco=1  Then
+'  Print #1,"2 -fueradefoco=1"
+   Sleep 1
 EndIf
 
 If s5=2 Then
