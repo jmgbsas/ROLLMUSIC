@@ -124,7 +124,7 @@ ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
         notaOld=pmTk(ntk).notaold
         posn=MaxPos -2
         If posn< 0 Then posn=0 EndIf
-        posicion=0
+        posicion=1
         curpos=0
         CantTicks=pmTk(ntk).Ticks
      EndIf

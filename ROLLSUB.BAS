@@ -1572,7 +1572,7 @@ CantTicks=4000 ' vuelvo al original default
 '          EndIf
 
           MaxPos = 2 'NroCol
-          posicion=0
+          posicion=1
           curpos=0 
           notacur=1
           nroCompas=0
@@ -2301,8 +2301,8 @@ EndIf
      NA => 11 + (hasta) * 13  ' 90 para  7
   '   print #1,"NB,NA,DESDE,HASTA ";NB,NA,desde,hasta
      CambiarDim(1)
-     MaxPos = 1 'NroCol
-     posicion=0:posn=0
+     MaxPos = 2 'NroCol
+     posicion=1:posn=0
      curpos=0
      notacur=1
      nota=0 

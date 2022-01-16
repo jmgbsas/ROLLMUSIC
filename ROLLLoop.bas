@@ -1710,7 +1710,7 @@ If comEdit = FALSE Then ' construir cifras para copiar Nveces por ejemplo
  EndIf
  
  If MultiKey(SC_HOME) Then
-     posicion=0
+     posicion=1
      posishow=posicion
  EndIf
 
