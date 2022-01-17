@@ -1987,16 +1987,18 @@ EndIf
          
          print #1,"carga track veo nombre antes   ",nombre
          CargarTrack (Track() , ntk, 0)
-         print #1,"carga track veo nombre despues ",nombre
-         ROLLCARGADO=TRUE ' NO PERMITOQUE TRACK(0) SE BORRE
-         TrackaRoll (Track() , ntk , Roll)
-         print #1,"TrackaRollcarga rtk veo nombre ",nombre 
-         RecalCompas (Roll)
-         print #1,"despues RecalCompas veo nombre ",nombre
-         MenuNew=0
-         carga=1 ' <======= control de Carga 
-         TRACKCARGADO=TRUE
-         ROLLCARGADO=FALSE
+         If nombre > "" Then  ' evita crash al cancelar el dialogo 
+            print #1,"carga track veo nombre despues ",nombre
+            ROLLCARGADO=TRUE ' NO PERMITOQUE TRACK(0) SE BORRE
+            TrackaRoll (Track() , ntk , Roll)
+            print #1,"TrackaRollcarga rtk veo nombre ",nombre 
+            RecalCompas (Roll)
+            print #1,"despues RecalCompas veo nombre ",nombre
+            MenuNew=0
+            carga=1 ' <======= control de Carga 
+            TRACKCARGADO=TRUE
+            ROLLCARGADO=FALSE
+         EndIf
      Else
          TRACKCARGADO=FALSE    
      EndIf

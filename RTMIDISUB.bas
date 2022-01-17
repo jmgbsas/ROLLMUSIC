@@ -937,7 +937,7 @@ indEscala=1 ' inicializamos la guiade escalas a la 1era
 Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
 tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '60 seg/ cuantas negras enun minuto
 
-Dim As Integer i1,i2,i3,i4,i5,j ,comienzoDeLoop=0
+Dim As Integer i1,i2,i3,i4,i5,j ,comienzoDeLoop=0,xmouse, ymouse
 Dim As Integer comienzo=1, final=MaxPos,  canal=0,vel=100,velpos =0
 ' canal 0 es el 1 van de 0 a 15
 
@@ -962,6 +962,8 @@ EndIf
 If pasoZona2 > 0 Then
  final=pasoZona2
 EndIf
+xmouse = mousex
+ymouse = mousey
 
 ' If jply=1 And Roll.trk(1,NA).inst > 0 Then
 '   ChangeProgram ( Roll.trk(1,NA).inst , 0)
@@ -980,6 +982,7 @@ kNroCol= Int(jply/NroCol)
 If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < MaxPos)Then
    posicion=jply
    curpos=0
+   SetMouse xmouse, ymouse
 EndIf
 
  mousex=jply
@@ -1169,6 +1172,7 @@ jply=0:curpos=0
 ' al final, por ahroa no parpadea mas veremos.... 
 play=0 
 playb=0
+SetMouse xmouse, ymouse
 mousey=100 'otra mas para evitar rentrar a play en menu
 finplay=1
 

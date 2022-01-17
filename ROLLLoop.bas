@@ -654,13 +654,19 @@ EndIf
     print #1,"carga track desde linea de comando,  nombre antes   ",titulos(0)
     nombre = titulos(0)
     CargarTrack (Track() , 0, ubirtk ) ' ntk=0
-    print #1,"carga track veo nombre despues ", titulos(0)
-    TrackaRoll (Track() , 0 , Roll) ' ntk=0
-    print #1,"TrackaRollcarga rtk veo nombre ", titulos(0)
-    RecalCompas (Roll)
+    If nombre > ""  Then '16-01-2022 crach si se cancela la carga
+      print #1,"carga track veo nombre despues ", titulos(0)
+      TrackaRoll (Track() , 0 , Roll) ' ntk=0
+      print #1,"TrackaRollcarga rtk veo nombre ", titulos(0)
+      RecalCompas (Roll)
+      TRACKCARGADO=TRUE
+      ubirtk=0
+    Else
+      TRACKCARGADO=FALSE
+    EndIf
+
     print #1,"despues RecalCompas veo nombre ", titulos(0)
     MenuNew=0
-    TRACKCARGADO=TRUE
     ubirtk=0
 param.ubirtk=0
  EndIf

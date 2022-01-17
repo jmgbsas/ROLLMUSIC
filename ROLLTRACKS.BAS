@@ -28,9 +28,10 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
           ubirtk=0
        EndIf   
      EndIf
-ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
+ubirtk=0
        If nombrea = "" Then
        print #1, "cargaTrack exit sub"
+       nombre=""
           Exit Sub
        Else
           nombre=nombrea   
@@ -1109,13 +1110,25 @@ Sub PlayCancion(Track() As sec)
 Dim As Double tiempoDUR
 tiempoDUR=(60/tiempoPatron) / FactortiempoPatron'60 seg/ cuantas negras enun minuto
 
-Dim As Integer i1,i2,pis,K
+Dim As Integer i1,i2,pis,K, mayor,i0,xmouse,ymouse
 Dim As Integer comienzo=1, final=MaxPos,  canal=0,vel=100,velpos =0
 ' canal 0 es el 1 van de 0 a 15
 ' pasoCol debe ser de 2 dimensiones 1 para c/pista, 115 el amxio de octavas
 ' ojo si cambioaamos por mas octavas debo cambiar, igual el nro de tracks 32 
 ''Dim pasoCol (0 To 384) As vec  ' entrada de durciones a medida que barro una columna
+'------------determinamos el MAxPos de toda la cancion o sea la pista de mayor longitud
+mayor=pmTk(0).MaxPos
+For i0=0 To Tope 
+ If mayor < pmTk(i0).MaxPos Then
+    mayor=pmTk(i0).MaxPos
+ EndIf   
+Next i0
 
+final=mayor
+
+xmouse=mousex
+ymouse=mousey
+'-------------
 Dim As Double start
 Dim as Integer cnt=0, cntold=0,cpar=0,dura=0,duraOld=0,nj, durj,tiempoFiguraSig
 Dim As Integer liga=0,notapiano=0,old_notapiano=0, iguales=0, distintos=0
@@ -1163,6 +1176,7 @@ kNroCol= Int(jply/NroCol)
    If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < pmTk(pis).MaxPos)Then
      posicion=jply
      curpos=0
+     SetMouse xmouse, ymouse
    EndIf
 
    mousex=jply
@@ -1172,7 +1186,7 @@ kNroCol= Int(jply/NroCol)
       Exit For
    EndIf  
 ' puede pasar que el maxpos sea menro al final de la secuencia porque se agrego espacio
- If jply=MaxPos Then
+ If jply=mayor Then
     alloff( 1 )
     Exit For
  EndIf
@@ -1322,9 +1336,11 @@ kNroCol= Int(jply/NroCol)
 
         cntold = cnt
         print #1,"cnt,cntold"; cnt;" ";cntold
-          
-     EndIf 
+         
+     EndIf
+     
    Next i1
+   
    mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
   print #1,"---DOWN -----PISTA:"; pis;" --------------------------------" 
     
@@ -1349,13 +1365,14 @@ jply=0:curpos=0
 ' al final, por ahroa no parpadea mas veremos.... 
 play=0 
 playb=0
+
 mousey=100 'otra mas para evitar rentrar a play en menu
 finplay=1
 
 mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 ''fueradefoco=0
  alloff( 1 )
-
+ SetMouse xmouse, ymouse 
 Sleep 10,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
 /'
 close_port(midiout)
