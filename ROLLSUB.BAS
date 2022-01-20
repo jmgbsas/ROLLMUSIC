@@ -1552,7 +1552,7 @@ CantTicks=4000 ' vuelvo al original default
           NA => 11 + (hasta-1) * 13  ' 90 para  7
        '   If desdevector > desde Or hastavector < hasta Then ' si se amplia el rango
                print #1,"entro a redimiensionar vector por octavas"
-               Erase  Roll.trk, Track(ntk).trk, RollAux.trk, mel_undo,undo_acorde,undo_k
+               Erase  Roll.trk, Track(ntk).trk, RollAux.trk, mel_undo,undo_acorde,undo_kant_intervalos
                 ig=0:cnt_acor=0  
                desdevector= desde
                hastavector= hasta
@@ -1563,7 +1563,7 @@ CantTicks=4000 ' vuelvo al original default
                ReDim compas(1 To CantTicks)
                ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
                mel_undo_k=0:ig=0:cnt_acor=0
-               Erase undo_k,undo_Acorde
+               Erase undo_kant_intervalos,undo_Acorde
                posn=1
      '     Else
 '
@@ -2897,7 +2897,7 @@ Sub GrabarArchivo (grabar_como As Integer)
 ' GRABA ARCHIVOS CON EXTENSION Y FORMATO *.ROLL
 If grabar_como =0 Then
    mel_undo_k=0 :ig=0:cnt_acor=0
-   Erase mel_undo, undo_acorde,undo_k
+   Erase mel_undo, undo_acorde,undo_kant_intervalos
 EndIf
 Dim  As Integer npl
      If nombre = "" Then ' backup antes de aumentar el tamaño del vector
@@ -3896,11 +3896,12 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
         pn=PianoNota+n1 
         pn =pn +SumarnR(pn)
         Print #1,"armando acorde 3ta,,nR ",pn
+'------n1 acorde de 2 notas o intervalo
+        undo_kant_intervalos(cnt_acor)=1          
+        undo_acorde(cnt_acor,1).posn=indicePos
         undo_acorde(cnt_acor,1).pn=pn
         undo_acorde(cnt_acor,1).dur=Roll.trk(indicePos, pn).dur
         undo_acorde(cnt_acor,1).nota=Roll.trk(indicePos, pn).nota
-
-        undo_k(cnt_acor)=1
 
         Roll.trk(indicePos, pn).dur=CUByte(RollDur)
 ' saltos de octava
@@ -3913,12 +3914,13 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
         EndIf            
         
         Roll.trk(indicePos, pn).nota=st
-'--------------------------------------------
+'--------n2 acorde de 3 notas------------------------------------
         Print #1,"armando acorde ,5ta,nR ",pn  
 
         pn=PianoNota+n2
         pn=pn + SumarnR(pn)
-
+        undo_kant_intervalos(cnt_acor)=2
+        undo_acorde(cnt_acor,2).posn=indicePos
         undo_acorde(cnt_acor,2).pn=pn
         undo_acorde(cnt_acor,2).dur=Roll.trk(indicePos, pn).dur
         undo_acorde(cnt_acor,2).nota=Roll.trk(indicePos, pn).nota
@@ -3931,13 +3933,14 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
         If st >= 12 Then
            st=st -12 
         EndIf            
-        undo_k(cnt_acor)=2
+
         Roll.trk(indicePos, pn).nota=st  
-If n3 <> 0 Then           
+If n3 <> 0 Then ' es un acorde de 4 notas            
     Print #1,"armando acorde ,7ta,nR ",pn
         pn=PianoNota+n3
         pn=pn + SumarnR(pn)
-
+        undo_kant_intervalos(cnt_acor)=3 
+        undo_acorde(cnt_acor,3).posn=indicePos
         undo_acorde(cnt_acor,3).pn=pn
         undo_acorde(cnt_acor,3).dur=Roll.trk(indicePos, pn).dur
         undo_acorde(cnt_acor,3).nota=Roll.trk(indicePos, pn).nota
@@ -3950,7 +3953,7 @@ If n3 <> 0 Then
         If st >= 12 Then
            st=st -12 
         EndIf            
-        undo_k(cnt_acor)=3
+
         Roll.trk(indicePos, pn).nota=st  
 
 EndIf

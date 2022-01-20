@@ -235,12 +235,12 @@
         Tab ya que está en memoria con su numero de track correspondiente cargado desde el nombre
         del archivo [01]Piano.rtk por ejemplo. Que no se cargue automaticamente en cancion podria tener 
         una ventaja, si desde el grafico asociado a Control le doy grabar vuelvo como backup
-        a la version original serai como un undo de toda la pista. Otra forma de undo seria
+        a la version original seria como un undo de toda la pista. Otra forma de undo seria
         borrar la pista con al tecla delete luego de clickeada, en el directorio \Temp que se crea
         en esa cancion estaran las pista borradas las cuales se pueden recuperar simplemente copiandolas
         de nuevo al directorio padre o principal de la cancion,Puedo jugar can Temp y ambos graficos
         para modificar cargar grabar y hacer backups disponibles para undo completo de la pista, ademas del undo
-        de ALT-U.
+        de ALT-U(melodias) y ALT-BACKSPACE(acordes).
         
         
 
@@ -488,9 +488,16 @@
          - Pero si se está editando una octava y se desea pasar rapido a otra octava, simplemete
            se pasa el mouse por encima del extremo DERECHO de la octava en el extremo final derecho
            y se estara editando esa nueva octava  no pudiendo hacerlo en la de antes eso evita errores de entrada.
-         - Undo de entrada de melodia ALT-U. El undo siempre se hace al Grabar, coo accion de definitivo, pero al 
-           exportar por ejemplo Roll a Track, o Grabar Como, no se se hace, pues a lo mejor se desearia modificar.
 
+           UNDO SEPARADO DE MELODIAS Y ACORDES, 
+           útil al tener alguna de ambas previamente, una secuencia a la que luego se le agrega los acordes o 
+           al reves teniendo una progresion de acordes y se agrega melodia. (por ello se las diseño separadas).
+         - Undo de entrada de melodia ALT-U, uno por vez. El undo siempre se hace al Grabar, como accion definitiva,
+           pero al exportar por ejemplo Roll a Track, o Grabar Como, no se se hace, pues a lo mejor se desearia modificar.
+         - Undo de entrada de Acorces ALT-BACKSPACE, uno po vez. Va borrando del ultimo entrado hasta el 1er acorde
+           no importa la posicon.
+           Nota de Undo: dar pulsos cortos a ALT-U o ALT-BACKSPACE, podria borrar mas de 1 item por vez..
+           (queda por mejorar...)
     2.1.2) Entrada Por mouse y Teclado 
            estando habilitada una octava como en 2) se hace click derecho aparece un menu de
            notas contextual se da click izquierdo a la deseada del menu y luego se da click sobre la nota deseada 

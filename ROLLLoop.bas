@@ -877,7 +877,7 @@ Do
 If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA Or cargaCancion=1 Then
    cargaCancion=0 ' para que no entre mas luego de cargada la cancion
    
-   Erase mel_undo, undo_acorde, undo_k
+   Erase mel_undo, undo_acorde, undo_kant_intervalos
    mel_undo_k=0: ig=0:cnt_acor=0
    ROLLCARGADO = FALSE
    print #1,"--TAB "
@@ -1197,37 +1197,47 @@ If MultiKey(SC_ALT) and MultiKey(SC_L)  Then ' <======== playloop
   playloop=1 
 EndIf
 
-If MultiKey(SC_ALT)  And MultiKey(SC_U) And scan_alt=0  Then '<=== undo melodia y/o acorde
+If MultiKey(SC_ALT)  And MultiKey(SC_BACKSPACE) And scan_alt=0  Then '<=== undo acorde
   'undo de acorde y/o melodia
   ' esto funciona en Roll hay qu ever que pasa con los tracks....pendiente jjj
-   
-  Dim As Integer ik=0,ij=0
-' uno acordes hasta 100 acordes de 12 notas c/u
+  Dim As Integer ik=0,ij=0,im
+
+' undo de acordes hasta 500 acordes de 12 notas c/u
    ig=cnt_acor
-   If undo_k(ig) > 0 And ig <= cnt_acor Then   
+   If ig<>0 And undo_kant_intervalos(ig) > 0 And ig <= cnt_acor Then   
       Print #1,"ig= ",ig
-      Print #1," undo_k(ig) ", undo_k(ig)
+      Print #1," undo_kant_intervalos(ig) ", undo_kant_intervalos(ig)
       Print #1,"cnt_acor",cnt_acor
  
-      For ik=1 To undo_k(ig)
-          Roll.trk(indicePos,undo_acorde(ig,ik).pn).dur=undo_acorde(ig,ik).dur
-          Roll.trk(indicePos,undo_acorde(ig,ik).pn).nota =undo_acorde(ig,ik).nota
-          Track(ntk).trk(indicePos,1+ik).nota=0
-          Track(ntk).trk(indicePos,1+ik).dur=0
+      For ik=1 To undo_kant_intervalos(ig)
+          Roll.trk(undo_acorde(ig,ik).posn,undo_acorde(ig,ik).pn).dur=undo_acorde(ig,ik).dur
+          Roll.trk(undo_acorde(ig,ik).posn,undo_acorde(ig,ik).pn).nota =undo_acorde(ig,ik).nota
+         ' Track(ntk).trk(indicePos,1+ik).nota=0
+         ' Track(ntk).trk(indicePos,1+ik).dur=0
           
       Next ik
     
-      undo_k(ig)=0
+      ''undo_acorde(cnt_acor,ik).pn =0
+      
       cnt_acor=cnt_acor-1
-      indicePos=indicePos -1
       If cnt_acor=0 Then
          Print "se anulo indices info de undo"
-         ig=0:cnt_acor=0
+         ig=0
       EndIf
-
+      scan_alt=1
+      Sleep 100
    EndIf
-' melodia    
-   If mel_undo_k > 0 Then ' borra de a uno dede fina  a adelante
+   While InKey <> "": Wend
+   scan_alt=1
+Else
+   While InKey <> "": Wend
+   scan_alt=0
+   
+EndIf   
+' melodia  
+If MultiKey(SC_ALT)  And MultiKey(SC_U) And scan_alt=0  Then '<=== undo melodia
+Dim As Integer ik=0,ij=0,im  
+   If mel_undo_k > 0  Then ' borra de a uno desde final  a adelante
      ik=mel_undo_k
       ' no hace falta grabar y reponer se supone era nuevo ergo 0,0
       '   Roll.trk( cmel_undo(ik).posn, mel_undo(ik).columna.pn).dur =mel_undo(ik).columna.dur
@@ -1237,17 +1247,21 @@ If MultiKey(SC_ALT)  And MultiKey(SC_U) And scan_alt=0  Then '<=== undo melodia 
          For ij=NB To NA '''NA -12 ???? ver la 1er octava no se usa
             Roll.trk(mel_undo(ik).posn, ij).nota =0
             Roll.trk(mel_undo(ik).posn, ij).dur  =0
-            Track(ntk).trk(mel_undo(ik).posn,1).nota=0
-            Track(ntk).trk(mel_undo(ik).posn,1).dur=0
+           ' Track(ntk).trk(mel_undo(ik).posn,1).nota=0
+           ' Track(ntk).trk(mel_undo(ik).posn,1).dur=0
          Next ij 
      
      MaxPos=MaxPos-1
      mel_undo_k=mel_undo_k -1
+     Sleep 100
    EndIf
+   
+   While InKey <> "": Wend
    scan_alt=1
 Else
    While InKey <> "": Wend
    scan_alt=0
+   
 EndIf 
 
 
@@ -2642,7 +2656,7 @@ EndIf
 
 ' -----------
   ' arriba de todo ponemos deteccion de teclas sin exit do para que siga.. 
-       scan_alt=0
+       scan_alt=1
 
 '---------------------------------------
 

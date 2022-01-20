@@ -1,5 +1,5 @@
--20-01-2022 undo de hasta 500 acordes. Por ahora se borra de a uno con ALT-U hacia atras pero no hay rehacer.
- acordes Menor7b5,Dom7,Dom75a,Dis7, todos fundamental 1era, 2da y 3era inversion para cuatriadas.
+-20-01-2022 undo de hasta 500 acordes. Por ahora se borra de a uno con ALT-BACKSPACE hacia atras pero no hay rehacer.
+    se agregaron acordes Menor7b5,Dom7,Dom75a,Dis7, todos fundamental 1era, 2da y 3era inversion para cuatriadas.
 -16-01-2022 evitamos crash en la carga de *.rtk en rol si se cancela el dialogo
 -16-01-2022 se ajusto mejor en el play el movimiento de las marcas [] durante el play
 -16-01-2022 eliminacion de retardos que bajan performance, en el grafico y en el Play
