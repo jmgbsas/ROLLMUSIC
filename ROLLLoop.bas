@@ -877,8 +877,8 @@ Do
 If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA Or cargaCancion=1 Then
    cargaCancion=0 ' para que no entre mas luego de cargada la cancion
    
-   Erase mel_undo, undo_acorde  
-   undo_k=0:mel_undo_k=0
+   Erase mel_undo, undo_acorde, undo_k
+   mel_undo_k=0: ig=0:cnt_acor=0
    ROLLCARGADO = FALSE
    print #1,"--TAB "
    nota=0
@@ -1197,21 +1197,36 @@ If MultiKey(SC_ALT) and MultiKey(SC_L)  Then ' <======== playloop
   playloop=1 
 EndIf
 
-If MultiKey(SC_ALT)  And MultiKey(SC_U) And scan_alt=0 Then '<=== undo melodia
-  'undo de acorde o melodia
+If MultiKey(SC_ALT)  And MultiKey(SC_U) And scan_alt=0  Then '<=== undo melodia y/o acorde
+  'undo de acorde y/o melodia
   ' esto funciona en Roll hay qu ever que pasa con los tracks....pendiente jjj
    
   Dim As Integer ik=0,ij=0
-   If undo_k > 0 Then   
-        
-      For ik=1 To undo_k
-          Roll.trk(indicePos,undo_acorde(ik).pn).dur=undo_acorde(ik).dur
-          Roll.trk(indicePos,undo_acorde(ik).pn).nota =undo_acorde(ik).nota
+' uno acordes hasta 100 acordes de 12 notas c/u
+   ig=cnt_acor
+   If undo_k(ig) > 0 And ig <= cnt_acor Then   
+      Print #1,"ig= ",ig
+      Print #1," undo_k(ig) ", undo_k(ig)
+      Print #1,"cnt_acor",cnt_acor
+ 
+      For ik=1 To undo_k(ig)
+          Roll.trk(indicePos,undo_acorde(ig,ik).pn).dur=undo_acorde(ig,ik).dur
+          Roll.trk(indicePos,undo_acorde(ig,ik).pn).nota =undo_acorde(ig,ik).nota
           Track(ntk).trk(indicePos,1+ik).nota=0
           Track(ntk).trk(indicePos,1+ik).dur=0
+          
       Next ik
-      undo_k=0
+    
+      undo_k(ig)=0
+      cnt_acor=cnt_acor-1
+      indicePos=indicePos -1
+      If cnt_acor=0 Then
+         Print "se anulo indices info de undo"
+         ig=0:cnt_acor=0
+      EndIf
+
    EndIf
+' melodia    
    If mel_undo_k > 0 Then ' borra de a uno dede fina  a adelante
      ik=mel_undo_k
       ' no hace falta grabar y reponer se supone era nuevo ergo 0,0
@@ -1230,8 +1245,12 @@ If MultiKey(SC_ALT)  And MultiKey(SC_U) And scan_alt=0 Then '<=== undo melodia
      mel_undo_k=mel_undo_k -1
    EndIf
    scan_alt=1
-   Exit Do
+Else
+   While InKey <> "": Wend
+   scan_alt=0
 EndIf 
+
+
 
 If MultiKey (SC_F12) And abierto=0 Then
 '''archivo test-AAAAA.TXT
@@ -2875,7 +2894,7 @@ EndIf
 
     pasoZona1=0:pasoZona2=0
      Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2
-     Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dom7,Dis7,Mayor9,Menor9,Dis9, notabase,Aum     
+     Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dom7,Dis7,Mayor9,Menor9,Dis9, notabase,Aum,Menor7b5,Dom75a     
      Dim As Integer event,Posx,Posy 
     ScreenControl GET_WINDOW_POS, x0, y0
     Print #1,"x0 ,y0 en menu contextual " ,x0,y0
@@ -2933,8 +2952,11 @@ EndIf
     ' haco = OpenWindow("Acordes", x0+Posx ,y0+Posy,40,40,WS_VISIBLE Or WS_THICKFRAME , WS_EX_TOPMOST ) 'Or WS_EX_TRANSPARENT  )
 ' VALOR POR OMISION  NOTA ORIGEN O DE COMIENZO -> 1 tonica
   
-'  
-     haco = OpenWindow("",Posx ,Posy,anchofig*2,60,WS_VISIBLE Or WS_THICKFRAME , WS_EX_TOPMOST Or WS_EX_TOOLWINDOW )''Or WS_EX_TRANSPARENT  )
+' --------------- 18-01-2022
+ 
+
+'----------------  
+     haco = OpenWindow("",Posx ,Posy,anchofig*2,60,WS_VISIBLE Or WS_THICKFRAME  , WS_EX_TOPMOST Or WS_EX_TOOLWINDOW )''Or WS_EX_TRANSPARENT  )
      UpdateInfoXserver()    
      WindowStartDraw(haco)
        fillrectdraw(2,2,&hffffff)
@@ -2945,7 +2967,7 @@ EndIf
      notas3  =OpenSubMenu(hpopup1,"3 Notas") 'triadas
      notas4  =OpenSubMenu(hpopup1,"4 Notas") ' septimas
      notas5  =OpenSubMenu(hpopup1,"5 Notas") ' novenas ...once 13 
-     notabase    =OpenSubMenu(hpopup1,"Esta Nota Base...") ' si la nota elegida será Tonica 3era 5ta etc
+     notabase  =OpenSubMenu(hpopup1,"Esta Nota Base...") ' si la nota elegida será Tonica 3era 5ta etc
      cancelar=OpenSubMenu(hpopup1,"<-Cancelar->")
           
      Mayor=OpenSubMenu(notas3,"Mayor")
@@ -2953,11 +2975,12 @@ EndIf
      Dis  =OpenSubMenu(notas3,"Dis")
      Aum  =OpenSubMenu(notas3,"Aum")
      
-     Mayor7=OpenSubMenu(notas4,"Mayor 7 o Maj7")
-     Menor7=OpenSubMenu(notas4,"Menor 7 o m7")
-     Dom7=OpenSubMenu(notas4,"Dominante 7, o M7")
-     
-     Dis7 =OpenSubMenu(notas4,"Dis 7")
+     Mayor7=OpenSubMenu(notas4,"May7, Maj7")
+     Menor7=OpenSubMenu(notas4,"Menor7, m7")
+     Menor7b5 =OpenSubMenu(notas4,"Menor7b5, m7b5")
+     Dom7 =OpenSubMenu(notas4,"Dominante 7,  M7")
+     Dom75a =OpenSubMenu(notas4,"Dominante +7, 7#5, 7 +5")
+     Dis7 =OpenSubMenu(notas4,"Dis 7,o º7")
 
      Mayor9=OpenSubMenu(notas5,"Mayor 9")
      Menor9=OpenSubMenu(notas5,"Menor 9")
@@ -2993,50 +3016,63 @@ EndIf
      Menuitem (1019,Menor7,"2da inversion")
      Menuitem (1020,Menor7,"3era inversion")
 '---------------------------------------------------     
-     MenuItem (1018,Dom7,"No inversion")   ' domianante 7 o M7
-     Menuitem (1019,Dom7,"1era inversion")
-     Menuitem (1020,Dom7,"2da inversion")
-     Menuitem (1021,Dom7,"3era inversion")
+     MenuItem (1021,Menor7b5,"No inversion")
+     Menuitem (1022,Menor7b5,"1era inversion")
+     Menuitem (1023,Menor7b5,"2da inversion")
+     Menuitem (1024,Menor7b5,"3era inversion")
+'---------------------------------------------------     
+
+     MenuItem (1025,Dom7,"No inversion")   ' domianante 7 o M7
+     Menuitem (1026,Dom7,"1era inversion")
+     Menuitem (1027,Dom7,"2da inversion")
+     Menuitem (1028,Dom7,"3era inversion")
+
+     MenuItem (1029,Dom75a,"No inversion")   ' domianante 7 5 aumentda
+     Menuitem (1030,Dom75a,"1era inversion")
+     Menuitem (1031,Dom75a,"2da inversion")
+     Menuitem (1032,Dom75a,"3era inversion")
 
 
-     MenuItem (1022,Dis7,"No inversion")
-     Menuitem (1023,Dis7,"1era inversion")
-     Menuitem (1024,Dis7,"2da inversion")
-     Menuitem (1025,Dis7,"2da inversion")
-'--------------------------------------------------     
-     MenuItem (1026,Mayor9,"No inversion")
-     Menuitem (1027,Mayor9,"1era inversion")
-     Menuitem (1028,Mayor9,"2da inversion")
 
-     MenuItem (1022,Menor9,"No inversion")
-     Menuitem (1023,Menor9,"1era inversion")
-     Menuitem (1024,Menor9,"2da inversion")
+     MenuItem (1033,Dis7,"No inversion")
+     Menuitem (1034,Dis7,"1era inversion")
+     Menuitem (1035,Dis7,"2da inversion")
+     Menuitem (1036,Dis7,"3era inversion")
      
-     MenuItem (1025,Dis9,"No inversion")
-     Menuitem (1026,Dis9,"1era inversion")
-     Menuitem (1027,Dis9,"2da inversion")
+'--------------------------------------------------     
+     MenuItem (1037,Mayor9,"No inversion")
+     Menuitem (1038,Mayor9,"1era inversion")
+     Menuitem (1039,Mayor9,"2da inversion")
 
-     MenuItem (1028,notabase,"Es Tonica")
+     MenuItem (1040,Menor9,"No inversion")
+     Menuitem (1041,Menor9,"1era inversion")
+     Menuitem (1042,Menor9,"2da inversion")
+     
+     MenuItem (1043,Dis9,"No inversion")
+     Menuitem (1044,Dis9,"1era inversion")
+     Menuitem (1045,Dis9,"2da inversion")
+
+     MenuItem (1046,notabase,"Es Tonica")
 ' aca puedo decir que la base tonica es la nota del click, Notapiano
 ' nuevo campp grado 1,2,3,4,5,6,7.8.9.10,11,12
              
-     Menuitem (1029,notabase,"Es 3era ")
+     Menuitem (1047,notabase,"Es 3era ")
         
-     Menuitem (1030,notabase,"Es 5ta ")
+     Menuitem (1048,notabase,"Es 5ta ")
         
-     Menuitem (1031,notabase,"Es 7ma ")
+     Menuitem (1049,notabase,"Es 7ma ")
         
 ' es 4ta, 6ta, 9na, 11a  ¿? podriamo agregar
-     Menuitem (1032,notabase,"Es 4ta o 11")
+     Menuitem (1050,notabase,"Es 4ta o 11")
         
-     Menuitem (1033,notabase,"Es 6ta ")
+     Menuitem (1051,notabase,"Es 6ta ")
         
-     Menuitem (1034,notabase,"Es 9ma ")
+     Menuitem (1052,notabase,"Es 9ma ")
         
-     Menuitem (1035,notabase,"Es 11va o 4ta")
+     Menuitem (1053,notabase,"Es 11va o 4ta")
         
 
-     MenuItem(1040,cancelar,"Salir")
+     MenuItem(1044,cancelar,"Salir")
  
  
      
@@ -3100,28 +3136,85 @@ EndIf
 
 ' --Menor 7 o m7--------------      
          Case 1017
-      armarAcorde(grado ,3, 7, 10) ' menor 3,7,10  ej D:  D, F, A, C           
+      armarAcorde grado ,3, 7, 10 ' menor 3,7,10  ej D:  D, F, A, C           
          Case 1018
-      armarAcorde(grado , -9, -5, -2) ' F, A ,C, D ' menor 1era inversion     
+      armarAcorde grado , -9, -5, -2 ' F, A ,C, D ' menor 1era inversion     
          Case 1019
-      armarAcorde(grado ,-5, -2, 3) ' A ,C , D, F  ' menor 2da inversion           
+      armarAcorde grado ,-5, -2, 3 ' A ,C , D, F  ' menor 2da inversion           
          Case 1020
-      armarAcorde(grado , -2, 3, 7) ' C , D, F, A ' menor 3era inversion      
-' --------------------------------------------           
-         Case 1018
-           
-         Case 1019 To 1027
-         Case 1028 ' es Tonica
-            grado=1
-         Case 1029 ' es 3era
-         Case 1030 ' es 5ta
-         Case 1031 ' es 7ma
-         Case 1032 ' es 4ta
-         Case 1033 ' es 6ta
-         Case 1034 ' es 9na
-         Case 1035 ' es 11va
+      armarAcorde grado , -2, 3, 7 ' C , D, F, A ' menor 3era inversion      
+'---Menor7 b5  m7b5 o 
+         Case 1021
+      armarAcorde grado ,3, 6, 10 ' menor 3,7,10  ej D:  D, F, Ab, C           
+         Case 1022
+      armarAcorde grado , -9, -6, -2 ' F, Ab ,C, D ' menor 1era inversion     
+         Case 1023
+      armarAcorde grado ,-6, -2, 3 ' Ab ,C , D, F  ' menor 2da inversion           
+         Case 1024
+      armarAcorde grado , -2, 3, 6 ' C , D, F, Ab ' menor 3era inversion      
 
-         Case 1040 ' es Salir
+' ----Dom7 o 7 ---------------           
+         Case 1025              
+      armarAcorde  grado, 4, 7, 10 ' 7   C(0),E(4),G(7),Bb(10)  0,4,7,10  sin inversion 
+         Case 1026              
+      armarAcorde  grado,-8,-5,-2 ' E(-8),G(-5),Bb(-2),C(0)   1era inversion   
+         Case 1027
+      armarAcorde  grado,-5,-2, 4           'G(-5) Bb(-2) C E(4) 2da inversion      
+         Case 1028
+      armarAcorde  grado,-2, 4, 7         'Bb(-2) C E(4) G(7) 3ERA INVERSION
+
+' ----Dom7a o 7#5 7+5 ---------------           
+         Case 1029              
+      armarAcorde  grado, 4, 8, 10 ' 7   C(0),E(4),Ab(8),Bb(10)  0,4,7,10  sin inversion 
+         Case 1030              
+      armarAcorde  grado,-8,-4,-2 ' E(-8),Ab(-4),Bb(-2),C(0)   1era inversion   
+         Case 1031
+      armarAcorde  grado,-4,-2, 4   'Ab(-4) Bb(-2) C E(4) 2da inversion      
+         Case 1032
+      armarAcorde  grado,-2, 4, 8   'Bb(-2) C E(4) Ab(8) 3ERA INVERSION
+
+
+
+'---Dis7-------------------------
+           
+         Case 1033
+      armarAcorde grado ,3, 6, 9 ' DIS 3,6,9  ej D:  C, Eb, Gb, A           
+         Case 1034
+      armarAcorde grado , -9, -6, -3 ' Eb, Gb ,A, C ' DIS 1era inversion     
+         Case 1035
+      armarAcorde grado ,-6, -3, 3 ' Gb ,A , C, Eb  ' Dis 2da inversion           
+         Case 1036
+      armarAcorde grado , -3, 3, 6 ' A , C, Eb, Gb ' Dis 3era inversion      
+          
+         Case 1037 ' es 3era
+         
+         Case 1038 ' es 5ta
+
+         Case 1039 ' es 7ma
+
+         Case 1040 ' es 4ta
+
+         Case 1041 ' es 6ta
+
+         Case 1042 ' es 9na
+
+         Case 1043 ' es 11va
+
+         Case 1044 ' es Salir
+         Case 1046 ' tonica  
+            grado=1
+         Case 1047  
+            grado=3
+         Case 1048  
+            grado=5
+         Case 1049  
+            grado=7
+         Case 1050  
+            grado=9
+         Case 1051  
+            grado=11
+         Case 1052  
+            grado=13
 
        End Select
            Delete_Menu (hpopup1)            
@@ -3135,7 +3228,120 @@ EndIf
  
      Loop  
         
-     EndIf
+    EndIf
+' 18-01-2022 menu alternativo con las 58 formas de acorde jjj
+'  cambiar todo los popup menus por solamente un scroll   
+    If MultiKey(SC_LSHIFT) And MouseButtons And 2 Then 'yyy
+
+
+    pasoZona1=0:pasoZona2=0
+     Dim As Integer event,Posx,Posy 
+    ScreenControl GET_WINDOW_POS, x0, y0
+    Print #1,"x0 ,y0 en menu contextual " ,x0,y0
+    Print #1,"mousex ,mousey en menu contextual ", mousex,mousey
+    Print #1,"Posx ,Posy en menu contextual ", Posx ,Posy
+    Print #1,"ANCHO ,ALTO en menu contextual ", ANCHO ,ALTO
+    Print #1,"mxold, myold ", mxold,myold
+    Print #1,"nmxold, nmyold ", nmxold,nmyold
+'
+          ' You'd have to get the thread id of the graphics window (GetWindowThreadProcessId), 
+' set a WH_GETMESSAGE hook with that thread id and then process the command messages 
+' in your hook function. chino basico je                                                                  'WS_THICKFRAME
+Dim As hwnd haco
+Posx=x0 +mousex -anchofig
+Posy=y0 +mousey -40
+If mousex -anchofig > (ANCHO-mxold)* 3/5 Then
+  Posx=x0+(ANCHO-mxold)* 3/5
+EndIf
+If mousey -40 > (ALTO-myold) *3/5 Then
+  Posy=y0+(ALTO-myold)*3/5
+EndIf  
+' determinacion de la posicion y duracion en el click del mouse...igual que en Sc_Z
+    indicePos=(mousex- gap1 )/anchofig + posishow 
+    Print #1,"ACORDES: indicePos ",indicePos
+    Rolldur = CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur)
+    Rollnota= CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).nota)
+    If Rollnota = 0 Or Rollnota=181 Or Rolldur=0 or Rolldur=181 Then ' construimos acorde donde no haya nada
+       Rollnota = nE 
+       Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).nota = CUByte(nE)
+       Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur = CUByte(DUR)
+       Rolldur=DUR
+       Vaciodur= TRUE
+    EndIf   
+    If DUR <> Rolldur And DUR > 0 Then
+       Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur = CUByte(DUR)
+       Vaciodur= TRUE ' cambio la duracion se necesita un RecalCompas
+       Rolldur=DUR
+       DUR=0
+    EndIf
+    Print #1,"ACORDES: Rolldur ",Rolldur
+    Print #1,"ACORDES: nE ",nE
+    Print #1,"ACORDES: nR ",nR
+    Print #1,"ACORDES: PianoNota del piano ",PianoNota
+    Print #1,"ACORDES: vovlemos a nR  ",PianoNota + SumarnR(PianoNota)
+' nE,nR y PianoNota se calculan en creaPenta..solo depende de mousey
+' aunque de click derecho no importa el mouse y no depende del click 
+'PianoNota=(12-nE +(estoyEnOctava -1) * 13) ' es nR ya lo tengo
+' indice de la nota en el vector = nR,vertical como NA NB
+' determinacion de la notapiano...
+' calcualdo en CreaPenta -> PianoNota= nR - restar (nR) esto para el teclado real pero en roll es nR
+' trabajo con Pianonota y luego convietrto a nR de nuevo...,con Pianonota
+' para reconvertir volver debo usar SumaNr 
+
+
+    ' haco = OpenWindow("Acordes", x0+Posx ,y0+Posy,40,40,WS_VISIBLE Or WS_THICKFRAME , WS_EX_TOPMOST ) 'Or WS_EX_TRANSPARENT  )
+' VALOR POR OMISION  NOTA ORIGEN O DE COMIENZO -> 1 tonica
+  
+' --------------- 18-01-2022
+ 
+
+'----------------  
+     haco = OpenWindow("Acordes",Posx ,Posy,anchofig*6,720, , WS_EX_TOPMOST  )''Or WS_EX_TRANSPARENT  )
+     hwndListBox= ListBoxGadget(4,10,20,240,650,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
+     UpdateInfoXserver()    
+     WindowStartDraw(haco)
+       fillrectdraw(2,2,&hffffff)
+       TextDraw(2,2,"[Lista Acordes]",&hffffff)
+     StopDraw
+ 
+ 
+ButtonGadget(2,530,30,50,40," OK ")
+'       ButtonGadget(3,530,90,50,40,"+Pag")
+         #Ifdef __FB_WIN64__
+           SetFocus (hwndListBox) 
+           SetForegroundWindow(haco)
+          #Else
+           gtk_widget_grab_focus(GadgetID(4))
+         #EndIf
+         Do
+
+         Var eventC= waitEvent
+
+          If eventC=eventgadget Then
+          
+            If eventnumber()=2 Then
+               'Instru = GetItemListView()
+              ' print #1,"in = ",in 
+             ' If instru=0 Then  instru=1 EndIf 
+               
+              ' If in >= 1 And in <=127 Then
+              '   instru = IndiceInstAlfa(instru)
+              ' EndIf
+'''               instru=instru + 1
+            ''   If instru > 1 Then
+                  Close_Window(haco)
+                  Exit Do
+           ''    EndIf
+            End If
+
+          EndIf 
+          Sleep 5  
+          
+         Loop
+         
+     
+   EndIf     
+    
    s2=0 :s1= 0 ' 10-12-2021 wheel no se movia ** ES SUFICIENTE??? CUANDO NO SE MOVIA?? 
    '                      RECORDDAR TEST CASE
  ' lockip=0   ' 10-12-2021 wheel no se movia ***JMG OJO JODE INTERLINEADO VER MAS COMENTADO

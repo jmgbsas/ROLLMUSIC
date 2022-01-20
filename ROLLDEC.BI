@@ -641,7 +641,7 @@ Dim Shared As Integer hastavector,abrirRoll=0
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
 'Dim Shared As Integer lim2=12, ctres=CantTicks
-Dim Shared As Integer lim2=12,undo_k=0,mel_undo_k=0,lim3=13
+Dim Shared As Integer lim2=12,undo_k(1 To 100),mel_undo_k=0,lim3=13,cnt_acor=0,ig=0
 Dim Shared As Boolean Vaciodur=FALSE
 Type notas_agregadas Field=1
   As Integer pn
@@ -657,7 +657,7 @@ End Type
 Dim Shared As melodia_undo mel_undo(1 To 5000)
 
 
-Dim Shared As notas_agregadas undo_acorde(1 To 12) ' undo para 1 acorde entrado de hasta 12 notas adicionales  
+Dim Shared As notas_agregadas  undo_acorde(1 To 500, 1 To 12) ' undo para 1 acorde entrado de hasta 12 notas adicionales  
 ' c/inst puede tocar como una persona hasta 12 notas juntas de acorde
 ' entonces no se justifica tener en un solo instrumento una polifonia mas de 12
 ' ni de 108,,,ergo puedo poner mas trakcs o mas longitud

@@ -632,7 +632,7 @@ Dim hnro As Integer
 Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 If ix < 3 Then ' rollmusic CON control
   instancia=0
-  hwndC = OpenWindow("RollMusic Control ver 0.4.3.2",10,10,anchoK*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
+  hwndC = OpenWindow("RollMusic Control ver 0.4.5.0",10,10,anchoK*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
 ''UpdateInfoXserver()
   hwndListBox= ListBoxGadget(3,10,10,240,650,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
 

@@ -722,8 +722,8 @@ Dim As Integer j,i3,i2,i1
 '------------------------------------------
 ' basada en ActualizarRollyGrabarPista pero en un solo paso, dejare una aola ? veremos
 ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim3)
-   Erase mel_undo, undo_acorde  
-   undo_k=0:mel_undo_k=0
+   Erase mel_undo, undo_acorde,undo_k  
+   mel_undo_k=0: ig=0:cnt_acor=0
 ' `PODRIA USAR UN TEMP Y LUEGO COPIAR COMO SE HACE EN ACTUALIZARROLLATRACKYGRABAR
 ' Y ASI UNIFICARIAMOS
  ReDim RollTemp (1 To Maxpos, NB To NA) As dat
@@ -832,8 +832,8 @@ Dim As Integer j,i3,i2,i1
 ' basada en ActualizarRollyGrabarPista pero en un solo paso, dejare una aola ? veremos
 ' esto debe hacerse solo al pasar por memoria no al grabar
 ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim3)
-   Erase mel_undo, undo_acorde  
-   undo_k=0:mel_undo_k=0
+   Erase mel_undo, undo_acorde,undo_k  
+   mel_undo_k=0: ig=0: cnt_acor=0
 
 '----------------
 i3=0

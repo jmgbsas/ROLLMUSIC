@@ -114,7 +114,7 @@
           carga del archivo roll o trk.(falta grabar el tempo en el archivo)
 
     14) ESCALAS AUXILIARES EN ALGUNAS POSICIONES PARA QUE SEA UNA GUIA y en un futuro construir
-        acordes segun esa escala.(en desarrollo, por ajora indica que notas usar para la melodia)
+        acordes segun esa escala.(en desarrollo, por ahora indica que notas usar para la melodia)
           Si se marca en una posicion la 1er marca de zona en la secuencia, y usamos la opcion 
           "Insertar escala libre en la Posicion actual (Pasozona1)"
           luego nos pide  setear tipo escala y nota escala, se cambiará la escala en esa posición, la cual regirá 
@@ -370,7 +370,8 @@
          volver a la condicion  anterior se pulsará Alt-U. Se puede tocar la pista o un pedazo de ella
          antes de borrar el acorde y si luego si se quiere se puede eliminar el ultimo acorde ingresado 
          como se dijo con ALt-U. 
-         Se agrego acordes cuaternarios mayores y menor 7.
+         Se agrego acordes cuaternarios mayores y menor 7,Menor7b5,Dom7,Dom75a,Dis7, todos fundamental 
+         1era, 2da y 3era inversion para cuatriadas, grado 1 (la nota elegida es la fundamental).
        
 
     1.7) Crear Canción.
