@@ -2904,6 +2904,9 @@ EndIf
   If s3 = 2 Then  ''06-12-2021 jmg
      s3=0
   EndIf   
+  If CANCIONCARGADA Then
+     S3=0
+  EndIf
   ''s3 = 2 ''20-01-2021 ' otro estado mas?
  ' <==== MENU CONTEXTUAL ACORDES CON CTRL+ CLICK DERECHO EN LECTURA ================>
  ' 2 casos 1)en la posicion elegida y aexiste una nota de una melodia o secuencia

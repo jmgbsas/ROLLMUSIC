@@ -1,10 +1,14 @@
+-21-01-2022 S3=0 debe estar para cancioncargada  sino empieza el titileo del grafico.
+lo condicione con cancioncargada para que este siempre con cancion cargada...veremos..en prueba...
+-20-01-2022 dar un click al cargar archivos o pistas...
 -20-01-2022 Comandos de borrado de notas o columna en modo cursor no funcioan bien, se han comentado en Ayuda
  mejor usar para borrado de columna la opcion en el modo lectura y para nota en modo cursor pulsar 9 luego X. 
 (Todos los comandos habria que revisarlos uno por uno con mas detalle algun dia.....) 
 Fix Se mejoró la posicion del cursor al entrar notas en modo EDIT y luego pasar al modo lectura, antes iba siempre 
 al final de la secuencia noviendose el resto. Mejoró  no del todo pero ahora recuerda la posicion de lectura anterior,
 antes de la edicion no exacta pero proxima. (se agregó para ello, un nuevo estado(2) para S3 (0,1,2) asi ahora es un 
-proceso de 3 pasos. 
+proceso de 3 pasos.Pero S3=0 debe estar para cancioncargada  sino empieza el titileo creo del grafico.
+lo condicione con cancioncargada para que este siempre con cancion cargada...veremos..
 Fix La posicion de lectura empezaba desde 2 por el arreglo anterior, se corrigió es donde la posicion si debe valer 0,
 y no 1 como en el resto.  
 -20-01-2022 undo de hasta 500 acordes. Por ahora se borra de a uno con ALT-BACKSPACE hacia atras pero no hay rehacer.

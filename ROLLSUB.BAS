@@ -1532,7 +1532,8 @@ curpos =>1
 ''' carga=0
  ReCalCompas(Roll)      
 ''If Roll.trk(1,NA).
-   
+ mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  
+ mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0
  print #1, "CargaARchivo LBound (Roll.trk,1) ",LBound (Roll.trk,1)
  print #1, "CargaARchivo LBound (Roll.trk,2) ",LBound (Roll.trk,2)
     
@@ -3161,7 +3162,10 @@ print #1,"inicia CargaPistasEnCancion"
     '*po = hasta -1
     
     print #1,"FIN CargaPistasEnCancion no debe calcuar *po ",*po
-    print #1,"-------------------------------------------------------"   
+    print #1,"-------------------------------------------------------"
+mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
+mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0 
+      
 End Sub
 
 ' ---------------------------------

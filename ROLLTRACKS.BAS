@@ -189,6 +189,8 @@ Print #1,"cargaTrack tipoescala_inicial ",tipoescala_inicial
       print #1,"CargarTrack  fin"  
       print #1,"----------------------------------------------" 
 ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
+mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
+mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0
  Sleep 100 ' retardo para que se ubiquen lso datos en memoria ¿? parece necesario
 End Sub
 '
