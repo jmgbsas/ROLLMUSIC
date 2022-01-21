@@ -2199,6 +2199,10 @@ If (ScreenEvent(@e)) Then
       s5=0
       Exit Do ' 07-10-2021
    EndIf
+   If mousey < 50 And s3=2 Then ' 20-01-2022
+      s3=0
+      Exit Do       
+   EndIf
   
   
  
@@ -2716,35 +2720,43 @@ EndIf
    '-----fin 2609 referencia de busqueda
    '''If MouseButtons And 1 Then ' <========= EDICION SOLO INGRESO DE NOTAS NUEVAS
    If MousePress = 1 Then ' no se si funciona mejor lo dejaremos un tiempo
-    If s3 = 0 Then
-     comEdit = TRUE : s3 = 1
+    If s3 = 0  Then
+     comEdit = TRUE 
      '       print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
      ''' font = 18 SACAMOS AHORA FUNCIONA PROPORCIONALMENTE 
      curpos=0
-     guardopos=posicion
+     If s3=0 Then
+       guardopos=posicion
+     EndIf
+     Print #1,"1) s3, guardopos ",s3, guardopos
      ''mayorDurEnUnaPosicion (posn)
      '' calcCompas(pos)
+     s3 = 1
      controlEdit=0
      posishow=posicion
      Exit Do
     Else
-     comEdit = FALSE '': s3 = 0 ' solo LECTURA 06-12-2021
+     If s3=1 Then  
+        comEdit = FALSE '': s3 = 0 ' solo LECTURA 06-12-2021
      '       print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
      'posicion= posicion + curPOS ' estaba mal no va 3-3-21 jmg
-     If play=0 Then
-       posicion=guardopos
+        If play=0 Then
+           Print #1,"2) s3, guardopos ",s3, guardopos
+           posicion=guardopos
        '''posicion = posicion + curpos ' 15-09-2021 jmgjmg ok mejoró 
-       curpos=0
-       controlEdit=0 'jmg 09-06-2021
-       nota=0
+           curpos=0
+           controlEdit=0 'jmg 09-06-2021
+           nota=0
        ''posicion=posicion - NroCol/2
 
-       If posicion < 1 Then
-         posicion = 0
-       EndIf
-       posishow=posicion
+           If posicion < 1 Then
+              posicion = 0 ' 20-01-2022 jmg a testear pase a1 y dibuja mal 
+           EndIf
+           posishow=posicion
+        EndIf
+        s3=2
+        Exit Do
      EndIf
-     Exit Do
     EndIf
    EndIf
   EndIf
@@ -2889,8 +2901,10 @@ EndIf
 
  If  mouseY > 50 Then '<=== delimitacion de area de trabajo
   s5=2  ' 04-01-2021
-  s3 = 0 ''06-12-2021
-  
+  If s3 = 2 Then  ''06-12-2021 jmg
+     s3=0
+  EndIf   
+  ''s3 = 2 ''20-01-2021 ' otro estado mas?
  ' <==== MENU CONTEXTUAL ACORDES CON CTRL+ CLICK DERECHO EN LECTURA ================>
  ' 2 casos 1)en la posicion elegida y aexiste una nota de una melodia o secuencia
  ' 2) no hay nada. En el 1er caso se tomara por omision a la nota como la tónica

@@ -1,10 +1,19 @@
+-20-01-2022 Comandos de borrado de notas o columna en modo cursor no funcioan bien, se han comentado en Ayuda
+ mejor usar para borrado de columna la opcion en el modo lectura y para nota en modo cursor pulsar 9 luego X. 
+(Todos los comandos habria que revisarlos uno por uno con mas detalle algun dia.....) 
+Fix Se mejoró la posicion del cursor al entrar notas en modo EDIT y luego pasar al modo lectura, antes iba siempre 
+al final de la secuencia noviendose el resto. Mejoró  no del todo pero ahora recuerda la posicion de lectura anterior,
+antes de la edicion no exacta pero proxima. (se agregó para ello, un nuevo estado(2) para S3 (0,1,2) asi ahora es un 
+proceso de 3 pasos. 
+Fix La posicion de lectura empezaba desde 2 por el arreglo anterior, se corrigió es donde la posicion si debe valer 0,
+y no 1 como en el resto.  
 -20-01-2022 undo de hasta 500 acordes. Por ahora se borra de a uno con ALT-BACKSPACE hacia atras pero no hay rehacer.
     se agregaron acordes Menor7b5,Dom7,Dom75a,Dis7, todos fundamental 1era, 2da y 3era inversion para cuatriadas.
 -16-01-2022 evitamos crash en la carga de *.rtk en rol si se cancela el dialogo
 -16-01-2022 se ajusto mejor en el play el movimiento de las marcas [] durante el play
 -16-01-2022 eliminacion de retardos que bajan performance, en el grafico y en el Play
 -16-01-2022 error de play cancion crash fixed, al pulsar la key inicio o home se posicionaba en posicion=0
- y eso daba crash por fuera de indice debe ser siemrep posicion=1 en algunso casos podria ser posicion=0
+ y eso daba crash por fuera de indice debe ser siemrep posicion=1 en algunos casos podria ser posicion=0
  hay que verfificar lso casos...
 -16-01-2022 se paso a Mousebuttons and 1  la key para [Edicion], y PARA borrar desde una posicion hasta el final
  conl ALT y posarse sobre MAxPos

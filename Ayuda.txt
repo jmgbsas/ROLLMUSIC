@@ -584,16 +584,21 @@
     2.5.1) BORRAR NOTA EN CTRL-N UBICANDO EL CURSOR SOBRE LA NOTA
            Y LUEGO PULSAR ESPACIO.PARA CADA NOTA SE DEBE HACER LO MISMO
            UBICAR CURSOR PULSAR ESPACIO.
-    2.5.2) BORRAR EN CTRL-M O CURSOR UBICAR EL CURSOR SOBRE LA NOTA PULSAR ESPACIO
-           Y LUEGO X PARA MODIFICAR..SE PUEDE SEGUIR BORRARNDO OTRAS NOTAS
-           UBICANDO EL CURSOR Y SOLO CON X REPITE LA ULTIMA NOTA EN ESTE CASO ESPACIO.
+    2.5.2) Para Borrar una nota pero dejar su espacio usar-> Pulsar 9 luego X en cada nota a limpiar
+              Se deberepetir el pulso de 9 para cada nota, por ahora no repite si se pulsa X solamente
+              intriduce un codigo para borrar columna que por ahora no se usa. (siguietne Nota)
+           Nota: Revision No usar este modo de borrado -> (BORRAR EN CTRL-M O CURSOR UBICAR EL CURSOR 
+           SOBRE LA NOTA PULSAR ESPACIO  Y LUEGO X PARA MODIFICAR..SE PUEDE SEGUIR 
+          BORRARNDO OTRAS NOTAS  UBICANDO EL CURSOR Y SOLO CON X REPITE LA ULTIMA NOTA 
+          EN ESTE CASO ESPACIO.)
 
-    2.5.3) Borrado de columna o posicion, en Modo Cursor modificar cada nota en cualquier
+    2.5.3) Revision No usar -> (Borrado de columna o posicion, en Modo Cursor modificar cada nota en cualquier
        columna pulsando una vez 0 y luego X en los 12 semitonos para modificar toda la octava  
        en la posicion elegida, luego de terminado de marcar toda la posicion 
-       ahi mismo sin salir de Cursor pulsando Ctrl-Delete o Ctrl-Supr,se borrarra la/s posiciones marcadas,
-       En Modo lectura marcando Zonas, Borrar 1 sola columna: 
-          Marcar solo una columna con Ctrl-click igual que play, y luego pulso Ctrl-delete.
+       ahi mismo sin salir de Cursor pulsando Ctrl-Delete o Ctrl-Supr,se borrarra la/s posiciones marcadas,)
+       (NO BORRA COLUMNA dejo de andar pero si borra posiciones, par aposiciones mejor usar 2.5.2...20-01-2022, revisar)
+       USAR-> En Modo lectura marcando Zonas, Borrar 1 sola columna: 
+          Marcar solo una columna con Ctrl-click igual que play, y luego pulso Ctrl-delete(anda ok 20-01-2022).
           Borrar varias columnas: marcar la zona a borrar con 2 ctrl-clik en 2 posiciones distintas
           Toda esa regin entre ambas marcas se borraran al pulzar Ctrl-delete. o supr.
     2.5.4) Borrar Hasta el Final, Mover la secuencia de forma que la nota final deseada este en 
