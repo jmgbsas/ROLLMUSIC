@@ -93,9 +93,7 @@ Dim t2 As String=""
  Dim As Integer lugar=0, sitio
  lugarOld=Penta_y
 
- ''' Var t = " " reempladapor sharedaprapoder poner if
-''  For semitono = 1 To 12
-''   If comEdit = TRUE  and estoyEnOctava = nro  Then
+
 
  For semitono = 0 To 11
    If comEdit = TRUE  and estoyEnOctava = *po  Then ''+ 1  Then
@@ -124,9 +122,46 @@ Dim t2 As String=""
   font= font + 2
   
   For n = posishow To posishow + NroCol
-  'print #1,"lugar ",10
-''   If Roll.trk (semitono + (nro-1) * 13, n  ).nota > 0 Or _
-''      Roll.trk (semitono + (nro-1) * 13, n  ).dur > 0 Then
+
+' =======> deteccion escalas auxiliares y acordes
+    indf= Roll.trk (n, 12 + (*po-1) * 13).dur
+
+    If indf = 200 And nVerEscalasAuxiliares=3 Then
+   ''' Print #1,"ENTROA VER ESCAL AAUXILIAR"
+       cairo_set_source_rgba(c, 0, 1, 0, 1) 
+       cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
+       cairo_line_to(c,gap1 + (ic ) *anchofig , Penta_y + 13.5 * inc_Penta )
+       notaescala=CInt( Roll.trk(n, 12  + (*po -1) * 13).vol)
+       If Roll.trk(n, 12  + (*po -1) * 13).pan =3 Then
+          t2= NotasEscala(CInt( notaescala ))
+       EndIf
+       If  Roll.trk(n, 12  + (*po -1) * 13).pan =2 Then
+          t2= NotasEscala2(CInt( notaescala ))
+       EndIf
+'           Print #1, "NOTAESCALA ",t2
+           ' 11-01-2022
+       tipoescala=CInt(Roll.trk(n, 12  + (*po -1) * 13).inst)
+'           Print #1," tipoescala ",tipoescala
+       armarescala cadenaes,tipoescala, notaescala, alteracion
+           Print #1,"creapenta cadenaes ",cadenaes
+           ' fin 11-01-2022
+       t2=t2+" "+ escala(tipoescala).nombre + " "+cadenaes
+       Print #1,"creapenta t2 ",t2
+      
+    Else
+      t2=""
+    
+    EndIf
+  
+' t no puede quedar en un scope dsitinto se hace shared    
+      t= t2
+   
+      cairo_show_text(c, t)
+      'cairo_stroke(c)
+      cairo_set_source_rgba(c, 1, 1, 1, 1)
+
+' <=========fin escalas y acordes      
+
   
    If Roll.trk (n,11- semitono  + (*po -1) * 13 ).nota > 0 Or _
       Roll.trk (n,11- semitono +  (*po -1) * 13 ).dur > 0 Then
@@ -169,42 +204,15 @@ Dim t2 As String=""
   '  print #1,"lugar ",12
      indf= Roll.trk (n, 11- semitono + (*po-1) * 13).dur
   '  print #1,"lugar ",13
-     If (indf >= 1 And indf <= 182)  Then ' 13-05-2021 11
-     Else
-
-        If indf = 200 And nVerEscalasAuxiliares=3 Then
-         ''' Print #1,"ENTROA VER ESCAL AAUXILIAR"
-           cairo_set_source_rgba(c, 0, 1, 0, 1) 
-           cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
-           cairo_line_to(c,gap1 + (ic ) *anchofig , Penta_y + 13.5 * inc_Penta )
-           notaescala=CInt( Roll.trk(n, 11- semitono  + (*po -1) * 13).vol)
-           If Roll.trk(n, 11- semitono  + (*po -1) * 13).pan =3 Then
-             t2= NotasEscala(CInt( notaescala ))
-           EndIf
-           If  Roll.trk(n, 11- semitono  + (*po -1) * 13).pan =2 Then
-             t2= NotasEscala2(CInt( notaescala ))
-           EndIf
-'           Print #1, "NOTAESCALA ",t2
-           ' 11-01-2022
-           tipoescala=CInt(Roll.trk(n, 11- semitono  + (*po -1) * 13).inst)
-'           Print #1," tipoescala ",tipoescala
-           armarescala cadenaes,tipoescala, notaescala, alteracion
-'           Print #1,"cadenaes ",cadenaes
-           ' fin 11-01-2022
-           t2=t2+" "+ escala(tipoescala).nombre + " "+cadenaes
-           
-        Else
-           t2=""
-        EndIf
-        indf=181
-
-   
+    If (indf >= 1 And indf <= 182)  Then ' 13-05-2021 11
+    Else
+       indf=181
     EndIf ' t no puede quedar en un scope dsitinto se hace shared    
-     t= t2+figura(indf)
-     cairo_show_text(c, t)
-     cairo_stroke(c)
-     cairo_set_source_rgba(c, 1, 1, 1, 1)
-
+     t= figura(indf)
+'     cairo_show_text(c, t)
+'     cairo_stroke(c)
+'     cairo_set_source_rgba(c, 1, 1, 1, 1)
+  
 
 ' ////////dar color al font en una determinada posicion   
     If n=jply Then 
@@ -282,7 +290,7 @@ Dim t2 As String=""
 ' 
 '  EndIf
 
-  '--------TRAZADI DE LINEAS VERTICALES GUIA DE COMPAS 1ERA VERSION
+  '--------TRAZADOI DE LINEAS VERTICALES GUIA DE COMPAS 1ERA VERSION
 
   '------------------------
   ' ENTRADAD DE NOTA NUEVA CONMOUSE: SE ELIGE LA DURACION CON LASTECLS 1 A 8
@@ -309,12 +317,15 @@ Dim t2 As String=""
 ''' desèjando nE = 11 -nR   +  (*po -1 ) * 13 + 1
   EndIf
   lugarOld=lugar
+ ' ahora quiero que salga son semitono=12 asi lee las esclas y acordes
+ ' o lo ponemos directamente en 12 salir del loop debe ser mas rapido? 
    If semitono =11 Then ' asi no suma 1 a semitono y no pasa a ser 12
-      Exit For
+     Exit For
    EndIf 
  Next semitono
-  
+
  
+' ----------------------------------------------------------- 
  ' PARA ENTRADA POR MOUSE SOLO DEBO DETERMINAR EL SEMITONO...
  ' y hacer nota=semiotono 1 a 11 con el mouse...el resto es automtico...
 ' nro=hasta significa que ya dibujo la octava 9, luego puede seguir dibujando
@@ -761,8 +772,10 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 ' esa posicion solo debo consultar o cambiar la posicion y con la misma coordenada vertical de la nota en cuestion
 ' sabre la escala actual, podriamso cambiar par aponer mas inforamcion en vez de repetir ...veremos
 ' falta tomar al informacion segun la posicion actual y aplicarla armando la escala
-'---------
-' insercion en ROLL de la escala en un aposicion dada <======= ESCALAS AUXILIARES INSERCION
+'---------------------------------------------------------------
+'---------<======= ESCALAS AUXILIARES INSERCION ================>
+' --------------------------------------------------------------
+' insercion en ROLL de la escala en un aposicion dada 
 If cambioescala=1 And pasoZona1 > 0 Then ' creamos una posicion con cambio de escala en pasoZona1
 ' la escala queda vigente hasta el proximo cambio, esto recuerda las notas que se deben usar o para crear acordes
 Print #1,"cAMBIO ESCALA Na,NB, tipoescala, notaescala ", NA,NB,tipoescala_num,notaescala_num
@@ -772,22 +785,24 @@ Print #1,"cAMBIO ESCALA Na,NB, tipoescala, notaescala ", NA,NB,tipoescala_num,no
  tipoescala=tipoescala_num
  notaescala=notaescala_num
 
-Dim K As Integer
-For K=NB To NA Step 12 ' step 12 queda entre 2 octavas
+Dim As Integer k,vacio
+For K=desde To hasta  ' queda entre 2 octavas ,corregido  24-01-2022
  Print #1,"CARGO FOR !!! NOTA 30 DUR 200, k, pasozona1, NA ", "K=";K, pasoZona1,NA
-   
-     Roll.trk(pasozona1, K).inst=CUByte(tipoescala)
-     Roll.trk(pasozona1, K).vol= CUByte(notaescala)
+   vacio= 12 +(k -1) * 13
+   Print #1,"vacio,tipoescala ",vacio, tipoescala
+   Print #1,"vacio,notaescala ",vacio, notaescala
+     Roll.trk(pasozona1, vacio).inst=CUByte(tipoescala)
+     Roll.trk(pasozona1, vacio).vol= CUByte(notaescala)
 
-     Roll.trk(pasozona1,K ).nota = 30
-     Roll.trk(pasozona1,K ).dur  = 200
+     Roll.trk(pasozona1,vacio ).nota = 30
+     Roll.trk(pasozona1,vacio ).dur  = 200
 '     Print #1,"Roll.trk(pasozona1,k ).nota ",Roll.trk(pasozona1,k ).nota, k
 '     Print #1,"Roll.trk(pasozona1,k ).dur ",Roll.trk(pasozona1,k ).dur,k
      If  alteracion="sos" Then
-         Roll.trk(pasozona1, K).pan = 3
+         Roll.trk(pasozona1, vacio).pan = 3
      EndIf 
      If   alteracion="bem" Then
-          Roll.trk(pasozona1, K).pan = 2 
+          Roll.trk(pasozona1, vacio).pan = 2 
      EndIf
  Next K  
 ' nota=30 , dur=200 indicara cambio de escala
@@ -2908,11 +2923,12 @@ EndIf
      S3=0
   EndIf
   ''s3 = 2 ''20-01-2021 ' otro estado mas?
- ' <==== MENU CONTEXTUAL ACORDES CON CTRL+ CLICK DERECHO EN LECTURA ================>
- ' 2 casos 1)en la posicion elegida y aexiste una nota de una melodia o secuencia
+ ' <==== MENU CONTEXTUAL INSERCION DE ACORDES CON CTRL+ CLICK DERECHO EN LECTURA ================>
+ ' 2 casos 
+ ' 1) en la posicion elegida ya existe una nota de una melodia o secuencia
  ' 2) no hay nada. En el 1er caso se tomara por omision a la nota como la tónica
  ' y se armara un acorde con la misma duración a la nota elegida...
- ' en el caso 2) se necitara 1ero la entrada de una duració o tomar la que ya estaba cargada
+ ' en el caso 2) se necitara 1ero la entrada de una duracióN o tomar la que ya estaba cargada
  ' en cuyo caso se arma igual que antes el acorde con las selecciones del siguiente menu.
  ' usaremos la denominacion 1,3,5,7,9 ..4,6..11 etc para las posiciones de las notas del acorde.
  ' todo se armara segun la escala elegida previamente...el cual pasmos a desarrollar...16-12-2021
@@ -2972,20 +2988,53 @@ EndIf
     Print #1,"ACORDES: vovlemos a nR  ",PianoNota + SumarnR(PianoNota)
 ' nE,nR y PianoNota se calculan en creaPenta..solo depende de mousey
 ' aunque de click derecho no importa el mouse y no depende del click 
-'PianoNota=(12-nE +(estoyEnOctava -1) * 13) ' es nR ya lo tengo
+' PianoNota=(12-nE +(estoyEnOctava -1) * 13) ' es nR ya lo tengo
 ' indice de la nota en el vector = nR,vertical como NA NB
 ' determinacion de la notapiano...
 ' calcualdo en CreaPenta -> PianoNota= nR - restar (nR) esto para el teclado real pero en roll es nR
 ' trabajo con Pianonota y luego convietrto a nR de nuevo...,con Pianonota
 ' para reconvertir volver debo usar SumaNr 
+'---------------------------------------------------
+' PARA GRABAR el acorde en Roll necesito guadar nE (nota) ,el nro octava,
+' y acordeNro son 3 numeros...con ellos recosntruyo el acorde y lo escribo arriba 
+' en la octava y en la posuicon gurdada ej CMayor, Dm7, G7 etc 
 
 
     ' haco = OpenWindow("Acordes", x0+Posx ,y0+Posy,40,40,WS_VISIBLE Or WS_THICKFRAME , WS_EX_TOPMOST ) 'Or WS_EX_TRANSPARENT  )
 ' VALOR POR OMISION  NOTA ORIGEN O DE COMIENZO -> 1 tonica
   
-' --------------- 18-01-2022
- 
-
+' --------------- 24-01-2022 VOY A GRABAR EL ACORDE EN ROLL PARA MOSTRAR SU NOMBRE
+' ARRIBA DE LA OCTAVA DONDE SE USA ..CON UN FONT MAS CHICO TAL VEZ ,,,,
+' VARIABLE NUEVA acordeNro tipo integer shared 
+' la existencia de un acorde la ponemos en .inst con el nro 201 (solo indica buscar acorde)
+' de una octava en ocurrencia 12 como las escalas me indica que hay un acorde
+' o sea pueden subsistir la informacion de un acorde y una escala auxiliar
+' el resto de la informacion del acorde son nE y acordeNro la poneos en la octava
+' que no se usa la mas alta que sera diferente segun el tamaño de octavas elegido
+' que será la octava hasta+1 ahi tenemos 12 posiciones verticales sin usar
+' usamos la correspondiente al nro de octava contando como nE nE=1 octava 1
+' hasta nE=8 tenemos 8 octavas..
+' CALCULO DE SITIO DONDE GUARDO LA INFO DE ACORDE, EL RANGO ES
+' COMIENZO 11 + (hasta-2)*13+1   FINAL 11+ (hasta -1)*13  
+' la octava actual es=estoyEnoctava y debo encontrar en que sitio lo grabare.
+' la octava inferior 'desde' va siemrpe en el 1er lugar libre en el caso de maximo
+' en 103, en default el 1ero seria 90. de ahi en masa sumo la cantidad de octavas
+' de 1 a 9 son 9-1 =8 (0,1,2,3,4,5,6,7), de 4 a 8 son 8-4=4 (3,4,5,6)
+' 'estoyEnOctva' me da el nro de octava respecto al maximo (0,1,2,3,4,5,6,7)
+' en el caso de default dira la 1er octava es 4 pues comienza desde 0 se vera
+' en el grafico la octava 3 la 1era que es al 4 del rango total empezando de 
+' la octava 0.Luego el lugar se cuenta desde la octava 'desde' en adelante 
+' nR=desde
+' calculo nR con nE=0 inicial en default = 12-nE+ (estoyEnOctava -1)*13 =12+39=51
+' nR=51, indice de roll donde pongo la info d ela existencia de acorde en esa octava
+' ocatva 4 default, es la 3 de la capacidad total. Si quiero poner en la siguietne octava
+' 12 + 4*13=12+52=64
+' lugares nR-> 12-24-36-48-60-72-84 en Notapiano seria
+' o sea NB=0 to NA=115  step 12 salta 12 o sea cae en la 13 que es 12 ya que
+' Na empieza en 0,(0,1,2,3,4,5,6,7,8,9,10,11) son 12 la proxima es 12 y hubo 
+' un salto de 12 y es al 13 si cuento desde 1 en vez de 0
+' la ocatava siguietne empieza en 12 +13=25 
+' 0,12,25,38,51,64,77,90,103, como vemos salta en 12 
 '----------------  
      haco = OpenWindow("",Posx ,Posy,anchofig*2,60,WS_VISIBLE Or WS_THICKFRAME  , WS_EX_TOPMOST Or WS_EX_TOOLWINDOW )''Or WS_EX_TRANSPARENT  )
      UpdateInfoXserver()    
@@ -2995,27 +3044,27 @@ EndIf
      StopDraw
      hpopup1 =CreatePopMenu()
   
-     notas3  =OpenSubMenu(hpopup1,"3 Notas") 'triadas
-     notas4  =OpenSubMenu(hpopup1,"4 Notas") ' septimas
-     notas5  =OpenSubMenu(hpopup1,"5 Notas") ' novenas ...once 13 
-     notabase  =OpenSubMenu(hpopup1,"Esta Nota Base...") ' si la nota elegida será Tonica 3era 5ta etc
-     cancelar=OpenSubMenu(hpopup1,"<-Cancelar->")
+     notas3   =OpenSubMenu(hpopup1,"3 Notas") 'triadas
+     notas4   =OpenSubMenu(hpopup1,"4 Notas") ' septimas
+     notas5   =OpenSubMenu(hpopup1,"5 Notas") ' novenas ...once 13 
+     notabase =OpenSubMenu(hpopup1,"Esta Nota Base...") ' si la nota elegida será Tonica 3era 5ta etc
+     cancelar =OpenSubMenu(hpopup1,"<-Cancelar->")
           
      Mayor=OpenSubMenu(notas3,"Mayor")
      Menor=OpenSubMenu(notas3,"Menor")
      Dis  =OpenSubMenu(notas3,"Dis")
      Aum  =OpenSubMenu(notas3,"Aum")
      
-     Mayor7=OpenSubMenu(notas4,"May7, Maj7")
-     Menor7=OpenSubMenu(notas4,"Menor7, m7")
+     Mayor7   =OpenSubMenu(notas4,"May7, Maj7")
+     Menor7   =OpenSubMenu(notas4,"Menor7, m7")
      Menor7b5 =OpenSubMenu(notas4,"Menor7b5, m7b5")
-     Dom7 =OpenSubMenu(notas4,"Dominante 7,  M7")
-     Dom75a =OpenSubMenu(notas4,"Dominante +7, 7#5, 7 +5")
-     Dis7 =OpenSubMenu(notas4,"Dis 7,o º7")
+     Dom7     =OpenSubMenu(notas4,"Dominante 7,  M7")
+     Dom75a   =OpenSubMenu(notas4,"Dominante +7, 7#5, 7 +5")
+     Dis7     =OpenSubMenu(notas4,"Dis 7,o º7")
 
      Mayor9=OpenSubMenu(notas5,"Mayor 9")
      Menor9=OpenSubMenu(notas5,"Menor 9")
-     Dis9 =OpenSubMenu(notas5,"Dis 9")
+     Dis9  =OpenSubMenu(notas5,"Dis 9")
 
 
 
@@ -3105,7 +3154,6 @@ EndIf
 
      MenuItem(1044,cancelar,"Salir")
  
- 
      
      Do
       event=WaitEvent
@@ -3119,103 +3167,133 @@ EndIf
          Case 1001
        'NO INVERSION Mayor   C E G
       armarAcorde(grado ,4, 7, 0) ' mayor 4, 7
+      acordeNro=1
          Case 1002      
         '1ERA INVERSION MAYOR  E G C
-      armarAcorde(grado ,-5, -8, 0)       
+      armarAcorde(grado ,-5, -8, 0)
+      acordeNro=2       
          Case 1003
         ' 2DA INVERSION MAYOR  G C E
       armarAcorde(grado ,4, -5, 0)
+      acordeNro=3
 ' -----------------
          Case 1004 ' Menores <------------No inversion
-      armarAcorde(grado ,3, 7, 0) ' menor 3,7 C, Eb, G  
+      armarAcorde(grado ,3, 7, 0) ' menor 3,7 C, Eb, G
+      acordeNro=4  
          Case 1005
-      armarAcorde(grado ,-5, -9, 0) ' Eb, G ,C ' menor 1era inversion 
+      armarAcorde(grado ,-5, -9, 0) ' Eb, G ,C ' menor 1era inversion
+      acordeNro=5 
          Case 1006
       armarAcorde(grado ,3, -5, 0) ' G ,C , Eb' menor 2da inversion
 
 ' -----------disminuida
          Case 1007
       armarAcorde(grado ,3, 6, 0) ' disminuida 3,6 C,Eb,Gb
+      acordeNro=7
          Case 1008 ' 
       armarAcorde(grado ,-4, -9, 0) '  Eb, Gb, C dism 1era inv
+      acordeNro=8
          Case 1009
       armarAcorde(grado ,3, -4, 0) '  Gb, C , Eb dism 2da inv
+      acordeNro=9
 ' ------------aumentada
          Case 1010
        'NO INVERSION Mayor   C E G#
       armarAcorde(grado ,4, 8, 0) ' mayor 4, 7
+      acordeNro=10
 
          Case 1011
         '1ERA INVERSION MAYOR  E G C ..-8 -4 0
-      armarAcorde(grado ,-4, -8, 0)       
+      armarAcorde(grado ,-4, -8, 0)
+      acordeNro=11       
 
          Case 1012
         ' 2DA INVERSION MAYOR  G C E  -4 0 4
       armarAcorde(grado ,4, -4, 0)
-
+      acordeNro=12
 ' -------------FIN TRIADAS
 ' Cuaternario 
          Case 1013 ' mayor 7 no inversion
-      armarAcorde(grado ,4, 7, 11) ' mayor 4, 7,11 C,E,G,B   
+      armarAcorde(grado ,4, 7, 11) ' mayor 4, 7,11 C,E,G,B
+      acordeNro=13   
          Case 1014 ' mayor 7 1er inversion E,G,B,C
       armarAcorde(grado , -8, -5, -1)       
-     
+      acordeNro=14
          Case 1015 ' MAYOR 7 2da inv G,B,C,E 
-      armarAcorde(grado , -5, -1, 4)     
+      armarAcorde(grado , -5, -1, 4)
+      acordeNro=15     
          Case 1016 'mayor 7 3era inversion B,C,E,G
       armarAcorde(grado , -1, 4, 7)
-
+      acordeNro=16
 ' --Menor 7 o m7--------------      
          Case 1017
-      armarAcorde grado ,3, 7, 10 ' menor 3,7,10  ej D:  D, F, A, C           
+      armarAcorde grado ,3, 7, 10 ' menor 3,7,10  ej D:  D, F, A, C
+      acordeNro=17           
          Case 1018
-      armarAcorde grado , -9, -5, -2 ' F, A ,C, D ' menor 1era inversion     
+      armarAcorde grado , -9, -5, -2 ' F, A ,C, D ' menor 1era inversion
+      acordeNro=18     
          Case 1019
-      armarAcorde grado ,-5, -2, 3 ' A ,C , D, F  ' menor 2da inversion           
+      armarAcorde grado ,-5, -2, 3 ' A ,C , D, F  ' menor 2da inversion
+      acordeNro=19           
          Case 1020
-      armarAcorde grado , -2, 3, 7 ' C , D, F, A ' menor 3era inversion      
+      armarAcorde grado , -2, 3, 7 ' C , D, F, A ' menor 3era inversion
+      acordeNro=20      
 '---Menor7 b5  m7b5 o 
          Case 1021
-      armarAcorde grado ,3, 6, 10 ' menor 3,7,10  ej D:  D, F, Ab, C           
+      armarAcorde grado ,3, 6, 10 ' menor 3,7,10  ej D:  D, F, Ab, C
+      acordeNro=21           
          Case 1022
-      armarAcorde grado , -9, -6, -2 ' F, Ab ,C, D ' menor 1era inversion     
+      armarAcorde grado , -9, -6, -2 ' F, Ab ,C, D ' menor 1era inversion
+      acordeNro=22     
          Case 1023
-      armarAcorde grado ,-6, -2, 3 ' Ab ,C , D, F  ' menor 2da inversion           
+      armarAcorde grado ,-6, -2, 3 ' Ab ,C , D, F  ' menor 2da inversion
+      acordeNro=23           
          Case 1024
-      armarAcorde grado , -2, 3, 6 ' C , D, F, Ab ' menor 3era inversion      
+      armarAcorde grado , -2, 3, 6 ' C , D, F, Ab ' menor 3era inversion
+      acordeNro=24      
 
 ' ----Dom7 o 7 ---------------           
          Case 1025              
-      armarAcorde  grado, 4, 7, 10 ' 7   C(0),E(4),G(7),Bb(10)  0,4,7,10  sin inversion 
+      armarAcorde  grado, 4, 7, 10 ' 7   C(0),E(4),G(7),Bb(10)  0,4,7,10  sin inversion
+      acordeNro=25 
          Case 1026              
-      armarAcorde  grado,-8,-5,-2 ' E(-8),G(-5),Bb(-2),C(0)   1era inversion   
+      armarAcorde  grado,-8,-5,-2 ' E(-8),G(-5),Bb(-2),C(0)   1era inversion
+      acordeNro=26   
          Case 1027
-      armarAcorde  grado,-5,-2, 4           'G(-5) Bb(-2) C E(4) 2da inversion      
+      armarAcorde  grado,-5,-2, 4           'G(-5) Bb(-2) C E(4) 2da inversion
+      acordeNro=27      
          Case 1028
       armarAcorde  grado,-2, 4, 7         'Bb(-2) C E(4) G(7) 3ERA INVERSION
-
+      acordeNro=28
 ' ----Dom7a o 7#5 7+5 ---------------           
          Case 1029              
-      armarAcorde  grado, 4, 8, 10 ' 7   C(0),E(4),Ab(8),Bb(10)  0,4,7,10  sin inversion 
+      armarAcorde  grado, 4, 8, 10 ' 7   C(0),E(4),Ab(8),Bb(10)  0,4,7,10  sin inversion
+      acordeNro=29 
          Case 1030              
-      armarAcorde  grado,-8,-4,-2 ' E(-8),Ab(-4),Bb(-2),C(0)   1era inversion   
+      armarAcorde  grado,-8,-4,-2 ' E(-8),Ab(-4),Bb(-2),C(0)   1era inversion
+      acordeNro=30   
          Case 1031
-      armarAcorde  grado,-4,-2, 4   'Ab(-4) Bb(-2) C E(4) 2da inversion      
+      armarAcorde  grado,-4,-2, 4   'Ab(-4) Bb(-2) C E(4) 2da inversion
+      acordeNro=31      
          Case 1032
       armarAcorde  grado,-2, 4, 8   'Bb(-2) C E(4) Ab(8) 3ERA INVERSION
-
+      acordeNro=32
 
 
 '---Dis7-------------------------
            
          Case 1033
-      armarAcorde grado ,3, 6, 9 ' DIS 3,6,9  ej D:  C, Eb, Gb, A           
+      armarAcorde grado ,3, 6, 9 ' DIS 3,6,9  ej D:  C, Eb, Gb, A
+      acordeNro=33           
          Case 1034
-      armarAcorde grado , -9, -6, -3 ' Eb, Gb ,A, C ' DIS 1era inversion     
+      armarAcorde grado , -9, -6, -3 ' Eb, Gb ,A, C ' DIS 1era inversion
+      acordeNro=34     
          Case 1035
-      armarAcorde grado ,-6, -3, 3 ' Gb ,A , C, Eb  ' Dis 2da inversion           
+      armarAcorde grado ,-6, -3, 3 ' Gb ,A , C, Eb  ' Dis 2da inversion
+      acordeNro=35           
          Case 1036
-      armarAcorde grado , -3, 3, 6 ' A , C, Eb, Gb ' Dis 3era inversion      
+      armarAcorde grado , -3, 3, 6 ' A , C, Eb, Gb ' Dis 3era inversion
+      acordeNro=36      
           
          Case 1037 ' es 3era
          
@@ -3248,6 +3326,8 @@ EndIf
             grado=13
 
        End Select
+' grabacion en Roll y track
+       
            Delete_Menu (hpopup1)            
            Close_Window(hpopup1)
            Close_Window(haco)
@@ -3371,7 +3451,7 @@ ButtonGadget(2,530,30,50,40," OK ")
          Loop
          
      
-   EndIf     
+    EndIf     
     
    s2=0 :s1= 0 ' 10-12-2021 wheel no se movia ** ES SUFICIENTE??? CUANDO NO SE MOVIA?? 
    '                      RECORDDAR TEST CASE
@@ -3459,8 +3539,8 @@ ButtonGadget(2,530,30,50,40," OK ")
  EndIf
  '-------------------- ERROR DE 10-12-2021
  ''!!! NUNCA PONER UN EXIT DO POR UN ELSE O AL FIANL PORQUE NO SE PROCESA NADA DE LO QUE SIGUE!!!!
- '------DE JO DE ANDAR SC_z POR QUE QUI HABIA UN eXIT dO QU ESALAMINM JAJA 
- EndIf
+ '------DEJO DE ANDAR SC_z POR QUE QUI HABIA UN EXIT DO  
+ EndIf '' FIN COMEDIT=FALSE
  
  '         <==== MENU BORRAR INSERTAR MODIFICAR ================>
  ' savemousex=0 : savemousey=0 LO QUE HACE ES PERMITIR QUE EL MENU APARESCA EN OTRO LADO
@@ -3802,7 +3882,8 @@ ButtonGadget(2,530,30,50,40," OK ")
 
 
 
-
+' A PARTIR DE ACA FUNCIONA PARA AMBAS CONDICIONES? PERO LO ESTOY USANDO EN FALSE
+' REVISAR...24-01-2022
 
 
  If MultiKey(SC_ALT) And MouseButtons And 1 Then 'posiciona el cursor

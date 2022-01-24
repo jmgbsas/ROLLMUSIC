@@ -3409,7 +3409,7 @@ mitipo=  CInt(tipo)
 
 End Sub
 '-------------------
-Sub ComboBox()
+Sub ComboBox() ' lo deje de usar pero veo si sirve para algo en el futuro
 
 #Ifdef __FB_WIN32__
 Var h = 80

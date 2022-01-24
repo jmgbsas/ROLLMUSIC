@@ -324,10 +324,23 @@ desdevector = desde
 hastavector = hasta
 estoyEnOctava =desde
 estoyEnOctavaOld =desde
-' test test
+' test test el maximo es desde=1...,0 ... hasta=9 ..,115 y el default es 
+'           el default   desde=4..,39 ... hasta=8 ...102 
 ' --------
-NB => 0 + (desde-1) * 13   ' 39 
-NA => 11 + (hasta-1) * 13  ' 102
+NB => 0 + (desde-1) * 13   ' 39 , Notapiano=36, nR=39 -coincide no sobra nada
+NA => 11 + (hasta-1) * 13  ' 102, Notapiano= 83, nR=89 - no coincide sobra desde
+' sobra desde 90 a 102 inclisive o sea 13 posiciones...
+' automatiando podemos decier para cualqueir definicion de intervalo de octavas que
+' CALCULO DE POSICION DE LA INFORMACION DE ACORDES:
+' sobra desde -> [ 11 + (hasta-2)*13+1 ],  hasta -> [11+ (hasta -1)*13]
+' en este caso default ->11+ 6*13 +1=90  ==> 11 + 7*13=102
+' PARA EL MACIMO SERIA
+' sobra desde -> [ 11 + (hasta-2)*13+1 ],  hasta -> [11+ (hasta -1)*13]
+' en este caso default 9-2 ->11+ 7*13 +1=103  ==> 11 + 8*13=115
+' O sea maximo desde 103 a 115 son las posiciones libres...
+' vamos a reservar en una posicion dada para la info de acordes por ejemplo en la 
+' maxima 103 para octava0,104 octava1,105 octava2, 106 oct3,107 oc4,108 oct5
+' 109 oct6, 110 oct 7...ergo quedan libres 111,112,113,114,115  
 
 ReDim (Roll.trk ) (1 To CantTicks,NB To NA) ' Roll de trabajo en Pantalla
 

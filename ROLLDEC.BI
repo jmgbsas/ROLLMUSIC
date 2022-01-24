@@ -107,7 +107,7 @@ Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
 Dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0 
-Dim Shared As Integer ers, borrapos=0,comienza=0  
+Dim Shared As Integer ers, borrapos=0,comienza=0, acordeNro=0  
 Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
@@ -783,5 +783,4 @@ acercade = "Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer apl
  "Usa Cairo como libreria de graficos, Rtmidi como libreria midi, " + _
  "Editor de código FbEdit. Echo en Freebasic como hobby.FreeBASIC Compiler - Version 1.08.1 (2021-07-05), " + _ 
  "built for win64 (64bit) Copyright (C) 2004-2021 The FreeBASIC development team." + _
- "Si alguien quiere colaborar a mejorar, call me, me gustaria pasar a opengl de a poco, " + _
- "Exportar a MusicXml o midi, etc.  mail:galeanoj2005@gmail.com" 
+ "Si alguien quiere colaborar o tiene dudas o sugerencias,mail:galeanoj2005@gmail.com" 
