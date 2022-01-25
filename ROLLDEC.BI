@@ -125,7 +125,20 @@ Dim Shared NotasEscala2 (1 To 12) As String *2 => _
 
 Dim Shared NotasEscalaArmado2 (1 To 24) As String *2 => _
 {"C ","Db","D ","Eb","E ","F ","Gb","G ","Ab","A ","Bb","B ","C ","Db","D ","Eb","E ","F ","Gb","G ","Ab","A ","Bb","B "}
-
+Type claseac
+  clase As String * 7
+  nro As UByte
+End Type
+' Para Mostrar Acordes en Roll
+Dim Shared ClaseAcorde(1 To 100) As claseac => _
+{("       ",1) ,("/      ",2) ,("/      ",3) ,("m      ",4) ,("m/     ",5) ,("m/     ",6), _
+ ("º      ",7) ,("º/     ",8) ,("º/     ",9) ,("+      ",10),("+/     ",11),("+/     ",12), _
+ ("Maj7   ",13),("Maj7/  ",14),("Maj7/  ",15),("Maj7/  ",16),("m7     ",17),("m7/    ",18),_ 
+ ("m7/    ",19),("m7/    ",19),("m7(b5) ",21),("m7(b5)/",22),("m7(b5)/",23),("m7(b5)/",24), _   
+ ("7      ",25),("7/     ",26),("7/     ",27),("7/     ",28), _
+ ("7+     ",29),("7+/    ",30),("7+/    ",31),("7+/    ",32), _
+ ("º7     ",33),("º7/    ",34),("º7/    ",35),("º7/    ",36), _ 
+ ("(6)    ",37),("(6)/   ",38),("(6)/   ",39),("(6)/   ",40)} 
 
 Type esc1 
   nombre   As String
@@ -685,7 +698,7 @@ Dim Shared As Integer  AnchoInicial,AltoInicial
 Common Shared As FLOAT font
 Dim Shared As float  deltaipf=0, lockip=0 
 Dim Shared q As String * 1
-Dim Shared As UByte  indf,s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
+Dim Shared As UByte  indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
 ''Dim Shared escala As float = 1.0
 Dim Shared translado As Integer = 1
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!

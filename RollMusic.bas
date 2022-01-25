@@ -334,7 +334,7 @@ NA => 11 + (hasta-1) * 13  ' 102, Notapiano= 83, nR=89 - no coincide sobra desde
 ' CALCULO DE POSICION DE LA INFORMACION DE ACORDES:
 ' sobra desde -> [ 11 + (hasta-2)*13+1 ],  hasta -> [11+ (hasta -1)*13]
 ' en este caso default ->11+ 6*13 +1=90  ==> 11 + 7*13=102
-' PARA EL MACIMO SERIA
+' PARA EL MAxIMO SERIA
 ' sobra desde -> [ 11 + (hasta-2)*13+1 ],  hasta -> [11+ (hasta -1)*13]
 ' en este caso default 9-2 ->11+ 7*13 +1=103  ==> 11 + 8*13=115
 ' O sea maximo desde 103 a 115 son las posiciones libres...

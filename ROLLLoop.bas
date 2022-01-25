@@ -7,7 +7,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
 'Dim octava As Integer Ptr
 '*po va desde hasta -1 haci aabajo 
 indEscala=1 ' inicializamos la guiade escalas a la 1era 
-Dim t2 As String=""
+Dim As String t2="",t3=""
 
  Dim As cairo_font_extents_t fe   '     font data
  Dim As cairo_text_extents_t te  '      text size
@@ -118,14 +118,14 @@ Dim t2 As String=""
   cairo_show_text(c, t)
   t= ""
   ic=0 'indice cursor 'donde se dibujara la duracion
-  n=0:indf=0
+  n=0:indf=0:indfa=0
   font= font + 2
   
   For n = posishow To posishow + NroCol
 
 ' =======> deteccion escalas auxiliares y acordes
-    indf= Roll.trk (n, 12 + (*po-1) * 13).dur
-
+    indf = Roll.trk (n, 12 + (*po-1) * 13).dur
+    indfa= Roll.trk (n, 12 + (*po-1) * 13).inst
     If indf = 200 And nVerEscalasAuxiliares=3 Then
    ''' Print #1,"ENTROA VER ESCAL AAUXILIAR"
        cairo_set_source_rgba(c, 0, 1, 0, 1) 
@@ -152,9 +152,22 @@ Dim t2 As String=""
       t2=""
     
     EndIf
+    If indfa=201 Then
+      Dim As Integer verticalEnOctavaVacia
+      Dim As Integer notac, aconro
+       cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
+       ''cairo_line_to(c,gap1 + (ic ) *anchofig , Penta_y + 13.5 * inc_Penta )
+       verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde
+       notac=CInt(Roll.trk(n,verticalEnOctavaVacia ).nota) 'Rollnota
+       aconro=CInt(Roll.trk(n,verticalEnOctavaVacia ).dur) 'acordenro
+       t3=NotasEscala(notac-11)+ ClaseAcorde(aconro).clase
+      ' ÇÇÇ
+    Else
+      t3=""
+    EndIf
   
 ' t no puede quedar en un scope dsitinto se hace shared    
-      t= t2
+      t= t3+t2
    
       cairo_show_text(c, t)
       'cairo_stroke(c)
@@ -2940,7 +2953,7 @@ EndIf
 
 
     pasoZona1=0:pasoZona2=0
-     Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2
+     Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2,May6
      Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dom7,Dis7,Mayor9,Menor9,Dis9, notabase,Aum,Menor7b5,Dom75a     
      Dim As Integer event,Posx,Posy 
     ScreenControl GET_WINDOW_POS, x0, y0
@@ -3050,10 +3063,10 @@ EndIf
      notabase =OpenSubMenu(hpopup1,"Esta Nota Base...") ' si la nota elegida será Tonica 3era 5ta etc
      cancelar =OpenSubMenu(hpopup1,"<-Cancelar->")
           
-     Mayor=OpenSubMenu(notas3,"Mayor")
-     Menor=OpenSubMenu(notas3,"Menor")
-     Dis  =OpenSubMenu(notas3,"Dis")
-     Aum  =OpenSubMenu(notas3,"Aum")
+     Mayor=OpenSubMenu(notas3,"Mayor, ")
+     Menor=OpenSubMenu(notas3,"Menor, m")
+     Dis  =OpenSubMenu(notas3,"Dis, º")
+     Aum  =OpenSubMenu(notas3,"Aum, +")
      
      Mayor7   =OpenSubMenu(notas4,"May7, Maj7")
      Menor7   =OpenSubMenu(notas4,"Menor7, m7")
@@ -3061,76 +3074,79 @@ EndIf
      Dom7     =OpenSubMenu(notas4,"Dominante 7,  M7")
      Dom75a   =OpenSubMenu(notas4,"Dominante +7, 7#5, 7 +5")
      Dis7     =OpenSubMenu(notas4,"Dis 7,o º7")
-
+     May6     =OpenSubMenu(notas4,"May 6,o (6)")
+     
      Mayor9=OpenSubMenu(notas5,"Mayor 9")
      Menor9=OpenSubMenu(notas5,"Menor 9")
      Dis9  =OpenSubMenu(notas5,"Dis 9")
 
 
 
-     MenuItem (1001,Mayor,"No inversion") 'triada
-     Menuitem (1002,Mayor,"1era inversion") 'triada
-     Menuitem (1003,Mayor,"2da inversion")  ' triada
+     MenuItem (1001,Mayor,"No inv") 'triada
+     Menuitem (1002,Mayor,"1era inv") 'triada
+     Menuitem (1003,Mayor,"2da inv")  ' triada
 
-     MenuItem (1004,Menor,"No inversion")  ' triada
-     Menuitem (1005,Menor,"1era inversion")  ' triada
-     Menuitem (1006,Menor,"2da inversion")  ' triada
+     MenuItem (1004,Menor,"No inv")  ' triada
+     Menuitem (1005,Menor,"1era inv")  ' triada
+     Menuitem (1006,Menor,"2da inv")  ' triada
      
-     MenuItem (1007,Dis,"No inversion")  ' triada
-     Menuitem (1008,Dis,"1era inversion")  ' triada
-     Menuitem (1009,Dis,"2da inversion")  ' triada
+     MenuItem (1007,Dis,"No inv")  ' triada
+     Menuitem (1008,Dis,"1era inv")  ' triada
+     Menuitem (1009,Dis,"2da inv")  ' triada
      
-     MenuItem (1010,Aum,"No inversion")  ' triada
-     Menuitem (1011,Aum,"1era inversion")  ' triada
-     Menuitem (1012,Aum,"2da inversion")  ' triada
+     MenuItem (1010,Aum,"No inv")  ' triada
+     Menuitem (1011,Aum,"1era inv")  ' triada
+     Menuitem (1012,Aum,"2da inv")  ' triada
 
 
 ' ------------------------------------------------------
-     MenuItem (1013,Mayor7,"No inversion")
-     Menuitem (1014,Mayor7,"1era inversion")
-     Menuitem (1015,Mayor7,"2da inversion")
-     Menuitem (1016,Mayor7,"3era inversion")
+     MenuItem (1013,Mayor7,"No inv")
+     Menuitem (1014,Mayor7,"1era inv")
+     Menuitem (1015,Mayor7,"2da inv")
+     Menuitem (1016,Mayor7,"3era inv")
      
-     MenuItem (1017,Menor7,"No inversion")
-     Menuitem (1018,Menor7,"1era inversion")
-     Menuitem (1019,Menor7,"2da inversion")
-     Menuitem (1020,Menor7,"3era inversion")
-'---------------------------------------------------     
-     MenuItem (1021,Menor7b5,"No inversion")
-     Menuitem (1022,Menor7b5,"1era inversion")
-     Menuitem (1023,Menor7b5,"2da inversion")
-     Menuitem (1024,Menor7b5,"3era inversion")
-'---------------------------------------------------     
+     MenuItem (1017,Menor7,"No inv")
+     Menuitem (1018,Menor7,"1era inv")
+     Menuitem (1019,Menor7,"2da inv")
+     Menuitem (1020,Menor7,"3era inv")
+     
+     MenuItem (1021,Menor7b5,"No inv")
+     Menuitem (1022,Menor7b5,"1era inv")
+     Menuitem (1023,Menor7b5,"2da inv")
+     Menuitem (1024,Menor7b5,"3era inv")
+     
+     MenuItem (1025,Dom7,"No inv")   ' domianante 7 o M7
+     Menuitem (1026,Dom7,"1era inv")
+     Menuitem (1027,Dom7,"2da inv")
+     Menuitem (1028,Dom7,"3era inv")
 
-     MenuItem (1025,Dom7,"No inversion")   ' domianante 7 o M7
-     Menuitem (1026,Dom7,"1era inversion")
-     Menuitem (1027,Dom7,"2da inversion")
-     Menuitem (1028,Dom7,"3era inversion")
+     MenuItem (1029,Dom75a,"No inv")   ' domianante 7 5 aumentda
+     Menuitem (1030,Dom75a,"1era inv")
+     Menuitem (1031,Dom75a,"2da inv")
+     Menuitem (1032,Dom75a,"3era inv")
 
-     MenuItem (1029,Dom75a,"No inversion")   ' domianante 7 5 aumentda
-     Menuitem (1030,Dom75a,"1era inversion")
-     Menuitem (1031,Dom75a,"2da inversion")
-     Menuitem (1032,Dom75a,"3era inversion")
+     MenuItem (1033,Dis7,"No inv") ' disminuida
+     Menuitem (1034,Dis7,"1era inv")
+     Menuitem (1035,Dis7,"2da inv")
+     Menuitem (1036,Dis7,"3era inv")
 
-
-
-     MenuItem (1033,Dis7,"No inversion")
-     Menuitem (1034,Dis7,"1era inversion")
-     Menuitem (1035,Dis7,"2da inversion")
-     Menuitem (1036,Dis7,"3era inversion")
+     MenuItem (1037,May6,"No inv") ' Mayor 6ta
+     Menuitem (1038,May6,"1era inv")
+     Menuitem (1039,May6,"2da inv")
+     Menuitem (1040,May6,"3era inv")
      
 '--------------------------------------------------     
-     MenuItem (1037,Mayor9,"No inversion")
-     Menuitem (1038,Mayor9,"1era inversion")
-     Menuitem (1039,Mayor9,"2da inversion")
+     MenuItem (1037,Mayor9,"No inv")
+     Menuitem (1038,Mayor9,"1era inv")
+     Menuitem (1039,Mayor9,"2da inv")
 
-     MenuItem (1040,Menor9,"No inversion")
-     Menuitem (1041,Menor9,"1era inversion")
-     Menuitem (1042,Menor9,"2da inversion")
+     MenuItem (1040,Menor9,"No inv")
+     Menuitem (1041,Menor9,"1era inv")
+     Menuitem (1042,Menor9,"2da inv")
      
-     MenuItem (1043,Dis9,"No inversion")
-     Menuitem (1044,Dis9,"1era inversion")
-     Menuitem (1045,Dis9,"2da inversion")
+     MenuItem (1043,Dis9,"No inv")
+     Menuitem (1044,Dis9,"1era inv")
+     Menuitem (1045,Dis9,"2da inv")
 
      MenuItem (1046,notabase,"Es Tonica")
 ' aca puedo decir que la base tonica es la nota del click, Notapiano
@@ -3294,7 +3310,7 @@ EndIf
          Case 1036
       armarAcorde grado , -3, 3, 6 ' A , C, Eb, Gb ' Dis 3era inversion
       acordeNro=36      
-          
+'--May6          
          Case 1037 ' es 3era
          
          Case 1038 ' es 5ta
@@ -3327,7 +3343,42 @@ EndIf
 
        End Select
 ' grabacion en Roll y track
-       
+Dim As INTEGER vacio
+vacio= 12 +(estoyEnOctava-1)*13
+' marcamos en el interespacio con 201 en inst par aindicar que hay acorde
+' la info restante la ponemos arriab de todo en la octava que no se usa..
+' o sea estoy indicando que en esta octava y en esta posicion hay un acorde
+' y solo puede ahber uno de modo que la relacion es 1:1
+' estoyEOCtava y acordeNro y la RollNota  dan el acorde compelto
+'Dim NotaAcorde As String
+'NotaAcorde=NotasGuia(nE-1) ' c,c#,d,d#..etc
+ Roll.trk(indicePos, vacio).inst=201 
+
+
+' CALCULO DE POSICION DE LA INFORMACION DE ACORDES:
+' sobra desde -> [ 11 + (hasta-2)*13+1 ],  hasta -> [11+ (hasta -1)*13]
+' en este caso default ->11+ 6*13 +1=90  ==> 11 + 7*13=102
+' PARA EL MAXIMO SERIA
+' sobra desde -> [ 11 + (hasta-2)*13+1 ],  hasta -> [11+ (hasta -1)*13]
+' en este caso default 9-2 ->11+ 7*13 +1=103  ==> 11 + 8*13=115
+' O sea maximo desde 103 a 115 son las posiciones libres...
+' vamos a reservar en una posicion dada para la info de acordes por ejemplo en la 
+' maxima 103 para octava0,104 octava1,105 octava2, 106 oct3,107 oc4,108 oct5
+' 109 oct6, 110 oct 7...ergo quedan libres 111,112,113,114,115
+' 1) => vacio=11 + (hasta-2)*13+1 ' 90 es para la 1er octava , defULT 3,4,5,6 APARECEN
+' EN GRAFICO, PERO SON LAS OCTAVAS 4,5,6 Y7 4 ES LA 1ER OCTAVA DE LO QUE SE MUESTRA
+' 5 LA 2DA Y ASI SUCECIVAMENTE, ERGO la posicion es en vez de 90
+Dim As Integer verticalEnOctavaVacia '  6-4 =2
+' 90,91,92,93,95 la default tomara la posicion vertical 
+' 2) => verticalEnOctavaVacia= vacio + estoyEnOctava - desde   
+' en un solo paso, linea de la octava libre que contendra la info dela corde:
+verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde ' 90 + 6 - 4=92 
+ Roll.trk(indicePos,verticalEnOctavaVacia ).nota = CUByte(RollNota)
+ Roll.trk(indicePos,verticalEnOctavaVacia ).dur  = CUByte(acordeNro)
+' con esta info reconstruyo el acorde que luego muestro solo en la octava
+' la octava la se por donde esta el 201 no hace falta guardarla-. 
+' en uso. 
+
            Delete_Menu (hpopup1)            
            Close_Window(hpopup1)
            Close_Window(haco)
@@ -3340,6 +3391,7 @@ EndIf
      Loop  
         
     EndIf
+'=========================================================================    
 ' 18-01-2022 menu alternativo con las 58 formas de acorde jjj
 '  cambiar todo los popup menus por solamente un scroll   
     If MultiKey(SC_LSHIFT) And MouseButtons And 2 Then 'yyy

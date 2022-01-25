@@ -1031,10 +1031,10 @@ EndIf
   ' SIN TOCAR CASI NADA SOLO ELIMINAR EL ANALISIS DE LIGA EN PLAYALL
   ' SEGUIR CORREGIR CON EL USO DE LSO CAMPOS NUEVOS Y AL TERMINAR 
   ' ELIMINAR LOS CAMPOS DE VEC QUE NO SE USEN
-  For i1=NB To NA  
+  For i1=NB To NA  -13
     'print #1,"Roll.trk(jply, i1).nota ",Roll.trk(jply, i1).nota
     'print #1,"Roll.trk(jply, i1).DUR ",Roll.trk(jply, i1).dur
-   If Roll.trk(jply, i1).dur = 182 or Roll.trk(jply, i1).nota=182 Then
+   If Roll.trk(jply, i1).dur = 182 or Roll.trk(jply, i1).nota=182  Then
         Exit For 
    EndIf 
    If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12 _
@@ -1110,7 +1110,7 @@ EndIf
    
    EndIf   
   
-      If i1=NA  Then 'And cnt >= 1 Then ' envio noteoff 1) no entra
+      If i1=NA -13  Then 'And cnt >= 1 Then ' envio noteoff 1) no entra
          mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
          If cnt > 1 Then' Acorde
          '  print #1,"i1=NA=";i1 ; " ACORDE cnt= ";cnt
