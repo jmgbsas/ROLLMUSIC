@@ -1,4 +1,6 @@
--25-01-2023 se acomodó PlayAll para que no toque la octava que no se usa (NB to NA -13)
+-25-01-2022 fix modificacion RollMusic.ini, habia valores que no guardaba al modificacion font y nanchofig
+ 8-I-C.roll archivo ejemplo para esto y para cifrado de acordes.
+-25-01-2022 se acomodó PlayAll para que no toque la octava que no se usa (NB to NA -13)
 -25-01-2022 guardar nombre o cifrado del acorde solo en la octava en uso , funciona ok para 'No Inversion' 
   en PlayAll, solo se ve  el cifrado del acorde si se pasa el mouse por encima de la octava 
   (a mi me gusta asi no se, podra cambiar en el futuro.. ), falta las inversiones y mas acordes....

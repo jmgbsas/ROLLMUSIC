@@ -442,8 +442,10 @@ posmouseOld = 0:posmouse = 0
 comEdit = FALSE:resize = FALSE
 po = @octaroll
 *po = hasta -1 ' test 09-09-2021 
-s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0:s8=0 
-font=18
+s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0:s8=0
+If font=0 Then 
+ font=18
+EndIf
 indaux=0:carga=0
 ' -----------------------------------------------------------------------
 ' notas redonda (O),blanca(P),negra(I),corchea(C),semicorchea(S), Fusa(F),Semifusa(E)
@@ -469,7 +471,7 @@ Dim ffini As Integer
 Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
 
 ffini=FreeFile
-Open "RollMusic.ini" For Input As ffini
+Open "./RollMusic.ini" For Input As #ffini
 Line Input #ffini, sfont
 Line Input #ffini, smxold
 Line Input #ffini, smyold
@@ -480,7 +482,9 @@ Line Input #ffini, sVerEscalasAuxiliares
 Line Input #ffini, sanchofig
 Print #1,"sfont, smxold, smyold,sANCHO,sALTO..  ",sfont, smxold, smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
 
-Close ffini
+cerrar ffini
+Sleep 100
+
 
 nfont=ValInt(sfont)
 nmxold=ValInt(smxold)
@@ -490,21 +494,22 @@ nalto=ValInt(salto)
 ndeltaip=ValInt(sdeltaip)
 nVerEscalasAuxiliares=ValInt(sVerEscalasAuxiliares)
 nanchofig =ValInt(sanchofig)
-
+Print #1,"nanchofig " ,nanchofig
 If nfont > 0 Then
   font=nfont
 EndIf
-If nmxold > 0 Then
+If nmxold <> 0 Then
    mxold=nmxold
 EndIf
-If nmyold > 0 Then
+If nmyold <> 0 Then
    myold=nmyold
 EndIf
 
-If ndeltaip > 0 Then
+If ndeltaip <> 0 Then
    inc_Penta=ndeltaip
 EndIf
-If nanchofig > 0 Then
+If nanchofig <> 0 Then
+   anchofig=nanchofig
    gap1= anchofig* 2315/1000
    gap2= (914 * gap1) /1000 ' 74 default
    gap3= (519 * gap1) /1000 ' 42 default
@@ -806,7 +811,9 @@ Print #1,"rollmusic.bas 742: ANCHO,nancho ",ANCHO, nancho
 Print #1,"rollmusic.bas 745: ANCHO resultante  ",ANCHO
 
   AnchoInicial=ANCHO
-  anchofig=ANCHO/45 ' SON 45 COL PERO SE USAN MENOS 41
+  If anchofig=0 Then
+    anchofig=ANCHO/45 ' SON 45 COL PERO SE USAN MENOS 41
+  EndIf
   NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
   ANCHO3div4 = ANCHO *3 / 4
   gap1= anchofig* 2315/1000 ' 81 default

@@ -1147,7 +1147,7 @@ If MultiKey (SC_F2)  Then
    If  anchofig < 1 Then
        anchofig = 1
    EndIf    
-   
+   nanchofig=anchofig
    font=font -1
   Exit Do
 EndIf
@@ -1162,7 +1162,7 @@ If MultiKey (SC_F3)  Then
        anchofig = 175
    EndIf    
    font=font+1  
-   
+   nanchofig=anchofig
  Exit Do
 EndIf
 '----------
@@ -1351,7 +1351,7 @@ If MultiKey(SC_ESCAPE) Then
     out_free(midiout)
     Dim ffile As Integer
     ffile=FreeFile
-    Open "RollMusic.ini" For output As ffile
+    Open "./RollMusic.ini" For output As #ffile
 
     If nmxold = 0 Then
        nmxold=mxold
@@ -1364,6 +1364,7 @@ If MultiKey(SC_ESCAPE) Then
     If ndeltaip=0 Then
        ndeltaip=inc_Penta
     EndIf
+    nanchofig=anchofig
     Print #ffile,font , " font"
     Print #ffile,nmxold, " mxold "
     Print #ffile,nmyold, " myold"
@@ -1373,8 +1374,8 @@ If MultiKey(SC_ESCAPE) Then
     Print #ffile,nVerEscalasAuxiliares, "nVerEscalasAuxiliares"
     Print #ffile,nanchofig, "nanchofig"
 
-    Close ffile
-      
+    cerrar ffile
+      Sleep 100
     cerrar 0
     End 0
 
@@ -2856,7 +2857,7 @@ EndIf
     out_free(midiout)
     Dim ffile As Integer
     ffile=FreeFile
-    Open "RollMusic.ini" For output As ffile
+    Open "./RollMusic.ini" For output As #ffile
 
     If nmxold = 0 Then
        nmxold=mxold
@@ -2869,6 +2870,7 @@ EndIf
     If ndeltaip=0 Then
        ndeltaip=inc_Penta
     EndIf
+    nanchofig=anchofig
     Print #ffile,font , " font"
     Print #ffile,nmxold, " mxold "
     Print #ffile,nmyold, " myold"
@@ -2878,8 +2880,8 @@ EndIf
     Print #ffile,nVerEscalasAuxiliares, "nVerEscalasAuxiliares"
     Print #ffile,nanchofig, "nanchofig"
 
-    Close ffile
-      
+    cerrar ffile
+      Sleep 100
     cerrar 0
     End 0
     

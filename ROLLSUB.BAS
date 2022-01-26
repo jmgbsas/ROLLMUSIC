@@ -3611,7 +3611,8 @@ Sub salir()
            
     Dim ffile As Integer
     ffile=FreeFile
-    Open "RollMusic.ini" For output As ffile
+
+    Open "./RollMusic.ini" For output As #ffile
 
     If nmxold = 0 Then
        nmxold=mxold
@@ -3625,6 +3626,7 @@ Sub salir()
     If ndeltaip=0 Then
        ndeltaip=inc_Penta
     EndIf
+    nanchofig=anchofig
     Print #ffile,font , " font"
     Print #ffile,nmxold, " mxold "
     Print #ffile,nmyold, " myold"
@@ -3634,7 +3636,8 @@ Sub salir()
     Print #ffile,nVerEscalasAuxiliares, "nVerEscalasAuxiliares"
     Print #ffile,nanchofig, "nanchofig"
 
-    Close ffile
+    cerrar ffile
+    Sleep 100
  Dim As Integer fk,nroproc, ppp=0
 Dim As String linea
 fk=FreeFile
