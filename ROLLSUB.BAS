@@ -3844,7 +3844,7 @@ If tipoescala_num_ini =1 Then  ' es una escala MAyor debo buscar la relativa men
     
 ' tengo la nota escala y el tipo solo resta armar al escala para la posicion como antes
 ' debo ousar notaescala_alt y  
-tipoescala_alt=18 ' Menor aeolia
+tipoescala_alt=18 ' Menor aeolia es la alternativa de cualqueir modo mayor
 
 EndIf
 

@@ -1,3 +1,10 @@
+-26-01-2022 Fix Superposicion escalas y cifrqado de acorde.Ej ok 8-I-C.roll
+-26-01-2022 Colocar Recordatorio. un acorde con sexta no es lo mismo qu eun acorde de sexta
+   1er caso es una tension CEG, la sexta es A. Pero en la musica clasica acorde de sexta 6 
+   es para la 1era inversion!!!(teoria de mierda no se ponen de acuerdo ja) Ergo un acorde de sexta
+   es tanto la 1er inversion como la tension, o sea CEGA entre C y A hay una sexta. PEro en EGC
+   la distancia entre E y C tambien es una sexta ambos tienen razón. O sea la 1er inversion es un caso
+   Particular de acorde de sexta, siempre y cuando la 3era sea el sonido mas grave aun si se repiten notas.
 -25-01-2022 fix modificacion RollMusic.ini, habia valores que no guardaba al modificacion font y nanchofig
  8-I-C.roll archivo ejemplo para esto y para cifrado de acordes.
 -25-01-2022 se acomodó PlayAll para que no toque la octava que no se usa (NB to NA -13)

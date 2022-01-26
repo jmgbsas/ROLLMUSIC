@@ -2127,7 +2127,7 @@ Else
 EndIf   
 'print #1,"CORRECION DE NOTAS ***********"
 For jpt = desdet To hastat  
-  For i1= NB To NA   
+  For i1= NB To NA -13 ' 26-01-2022  
    
      If ( (Roll.trk(jpt,i1).nota >= 0) And (Roll.trk(jpt,i1).nota <= 13 ) )  Then ' es semitono
            'print #1,"Roll.trk(i1,jpt).nota ",Roll.trk(i1,jpt).nota

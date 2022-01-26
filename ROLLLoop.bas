@@ -125,8 +125,24 @@ Dim As String t2="",t3=""
 
 ' =======> deteccion escalas auxiliares y acordes
     indf = Roll.trk (n, 12 + (*po-1) * 13).dur
-    indfa= Roll.trk (n, 12 + (*po-1) * 13).inst
-    If indf = 200 And nVerEscalasAuxiliares=3 Then
+    indfa= Roll.trk (n, 12 + (*po-1) * 13).pb ' 26-01-2022
+    If indfa=201 Then ' cifrado acorde 
+      Dim As Integer verticalEnOctavaVacia
+      Dim As Integer notac, aconro
+       cairo_set_source_rgba(c, 1, 1, 1, 1)
+       cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
+       ''cairo_line_to(c,gap1 + (ic ) *anchofig , Penta_y + 13.5 * inc_Penta )
+       verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde
+       notac=CInt(Roll.trk(n,verticalEnOctavaVacia ).nota) 'Rollnota
+       aconro=CInt(Roll.trk(n,verticalEnOctavaVacia ).dur) 'acordenro
+       t3=NotasEscala(notac-11)+ ClaseAcorde(aconro).clase
+       'If t2 > "" Then t2="" EndIf
+    Else
+      t3=""
+    EndIf
+    t=t3
+    cairo_show_text(c, t)
+    If indf = 200 And nVerEscalasAuxiliares=3 Then ' escalas auxiliares o alternativas
    ''' Print #1,"ENTROA VER ESCAL AAUXILIAR"
        cairo_set_source_rgba(c, 0, 1, 0, 1) 
        cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
@@ -147,27 +163,15 @@ Dim As String t2="",t3=""
            ' fin 11-01-2022
        t2=t2+" "+ escala(tipoescala).nombre + " "+cadenaes
        Print #1,"creapenta t2 ",t2
-      
+       cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y + 13 * inc_Penta ) '26-01
     Else
       t2=""
     
     EndIf
-    If indfa=201 Then
-      Dim As Integer verticalEnOctavaVacia
-      Dim As Integer notac, aconro
-       cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
-       ''cairo_line_to(c,gap1 + (ic ) *anchofig , Penta_y + 13.5 * inc_Penta )
-       verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde
-       notac=CInt(Roll.trk(n,verticalEnOctavaVacia ).nota) 'Rollnota
-       aconro=CInt(Roll.trk(n,verticalEnOctavaVacia ).dur) 'acordenro
-       t3=NotasEscala(notac-11)+ ClaseAcorde(aconro).clase
-      ' ÇÇÇ
-    Else
-      t3=""
-    EndIf
+
   
 ' t no puede quedar en un scope dsitinto se hace shared    
-      t= t3+t2
+      t= t2
    
       cairo_show_text(c, t)
       'cairo_stroke(c)
@@ -799,7 +803,7 @@ Print #1,"cAMBIO ESCALA Na,NB, tipoescala, notaescala ", NA,NB,tipoescala_num,no
  notaescala=notaescala_num
 
 Dim As Integer k,vacio
-For K=desde To hasta  ' queda entre 2 octavas ,corregido  24-01-2022
+For K=desde To hasta -1 ' queda entre 2 octavas ,corregido  26-01-2022
  Print #1,"CARGO FOR !!! NOTA 30 DUR 200, k, pasozona1, NA ", "K=";K, pasoZona1,NA
    vacio= 12 +(k -1) * 13
    Print #1,"vacio,tipoescala ",vacio, tipoescala
@@ -3085,69 +3089,69 @@ EndIf
 
 
      MenuItem (1001,Mayor,"No inv") 'triada
-     Menuitem (1002,Mayor,"1era inv") 'triada
+     Menuitem (1002,Mayor,"1era inv o 6") 'triada
      Menuitem (1003,Mayor,"2da inv")  ' triada
 
      MenuItem (1004,Menor,"No inv")  ' triada
-     Menuitem (1005,Menor,"1era inv")  ' triada
+     Menuitem (1005,Menor,"1era inv o 6")  ' triada
      Menuitem (1006,Menor,"2da inv")  ' triada
      
      MenuItem (1007,Dis,"No inv")  ' triada
-     Menuitem (1008,Dis,"1era inv")  ' triada
+     Menuitem (1008,Dis,"1era inv o 6")  ' triada
      Menuitem (1009,Dis,"2da inv")  ' triada
      
      MenuItem (1010,Aum,"No inv")  ' triada
-     Menuitem (1011,Aum,"1era inv")  ' triada
+     Menuitem (1011,Aum,"1era inv o 6")  ' triada
      Menuitem (1012,Aum,"2da inv")  ' triada
 
 
 ' ------------------------------------------------------
      MenuItem (1013,Mayor7,"No inv")
-     Menuitem (1014,Mayor7,"1era inv")
+     Menuitem (1014,Mayor7,"1era inv o 6")
      Menuitem (1015,Mayor7,"2da inv")
      Menuitem (1016,Mayor7,"3era inv")
      
      MenuItem (1017,Menor7,"No inv")
-     Menuitem (1018,Menor7,"1era inv")
+     Menuitem (1018,Menor7,"1era inv o 6")
      Menuitem (1019,Menor7,"2da inv")
      Menuitem (1020,Menor7,"3era inv")
      
      MenuItem (1021,Menor7b5,"No inv")
-     Menuitem (1022,Menor7b5,"1era inv")
+     Menuitem (1022,Menor7b5,"1era inv o 6")
      Menuitem (1023,Menor7b5,"2da inv")
      Menuitem (1024,Menor7b5,"3era inv")
      
      MenuItem (1025,Dom7,"No inv")   ' domianante 7 o M7
-     Menuitem (1026,Dom7,"1era inv")
+     Menuitem (1026,Dom7,"1era inv o 6")
      Menuitem (1027,Dom7,"2da inv")
      Menuitem (1028,Dom7,"3era inv")
 
      MenuItem (1029,Dom75a,"No inv")   ' domianante 7 5 aumentda
-     Menuitem (1030,Dom75a,"1era inv")
+     Menuitem (1030,Dom75a,"1era inv o 6")
      Menuitem (1031,Dom75a,"2da inv")
      Menuitem (1032,Dom75a,"3era inv")
 
      MenuItem (1033,Dis7,"No inv") ' disminuida
-     Menuitem (1034,Dis7,"1era inv")
+     Menuitem (1034,Dis7,"1era inv o 6")
      Menuitem (1035,Dis7,"2da inv")
      Menuitem (1036,Dis7,"3era inv")
 
      MenuItem (1037,May6,"No inv") ' Mayor 6ta
-     Menuitem (1038,May6,"1era inv")
+     Menuitem (1038,May6,"1era inv o 6")
      Menuitem (1039,May6,"2da inv")
      Menuitem (1040,May6,"3era inv")
      
 '--------------------------------------------------     
      MenuItem (1037,Mayor9,"No inv")
-     Menuitem (1038,Mayor9,"1era inv")
+     Menuitem (1038,Mayor9,"1era inv o 6")
      Menuitem (1039,Mayor9,"2da inv")
 
      MenuItem (1040,Menor9,"No inv")
-     Menuitem (1041,Menor9,"1era inv")
+     Menuitem (1041,Menor9,"1era inv o 6")
      Menuitem (1042,Menor9,"2da inv")
      
      MenuItem (1043,Dis9,"No inv")
-     Menuitem (1044,Dis9,"1era inv")
+     Menuitem (1044,Dis9,"1era inv o 6")
      Menuitem (1045,Dis9,"2da inv")
 
      MenuItem (1046,notabase,"Es Tonica")
@@ -3354,7 +3358,8 @@ vacio= 12 +(estoyEnOctava-1)*13
 ' estoyEOCtava y acordeNro y la RollNota  dan el acorde compelto
 'Dim NotaAcorde As String
 'NotaAcorde=NotasGuia(nE-1) ' c,c#,d,d#..etc
- Roll.trk(indicePos, vacio).inst=201 
+' 26-01-2022 por choque con escalas cambio inst a pb
+ Roll.trk(indicePos, vacio).pb=201 
 
 
 ' CALCULO DE POSICION DE LA INFORMACION DE ACORDES:
