@@ -1,4 +1,7 @@
--26-01-2022 Fix Superposicion escalas y cifrqado de acorde.Ej ok 8-I-C.roll
+-26-01-2022 Borrar cifrado de acorde al borrar acorde...con ALT-Backspace, ok
+-26-01-2022 Se minimizo interferencia entre lso comandos Ctrl-click derecho acordes, y Ctrl+variables 
+ para interlineado.(como ctrl es comun conviene pulsarlo despues o bien simultaneo con la otra accion )ok
+-26-01-2022 Fix Superposicion escalas y cifrado de acorde.Ej ok 8-I-C.roll ok
 -26-01-2022 Colocar Recordatorio. un acorde con sexta no es lo mismo qu eun acorde de sexta
    1er caso es una tension CEG, la sexta es A. Pero en la musica clasica acorde de sexta 6 
    es para la 1era inversion!!!(teoria de mierda no se ponen de acuerdo ja) Ergo un acorde de sexta

@@ -675,7 +675,7 @@ Dim Shared As melodia_undo mel_undo(1 To 5000)
 ' el acorde tiene 1,3,5,7 aca almacenamos 3,5,7 pero no la funamental
 ' esa es el origen donde pulso Ctrl-click derecho, si suponemo teorico
 ' un acorde de 12 notas (raro), son 11 los lugares distintos de la funfamental
-Dim Shared As notas_agregadas  undo_acorde(1 To 500, 1 To 11) ' undo para 1 acorde entrado de hasta 12 notas adicionales  
+Dim Shared As notas_agregadas  undo_acorde(1 To 500, 0 To 11) ' undo para 1 acorde entrado de hasta 12 notas adicionales  
 ' c/inst puede tocar como una persona hasta 12 notas juntas de acorde
 ' entonces no se justifica tener en un solo instrumento una polifonia mas de 12
 ' ni de 108,,,ergo puedo poner mas trakcs o mas longitud

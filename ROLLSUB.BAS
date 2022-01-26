@@ -3894,23 +3894,34 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
       Print #1,"Grado ",grado
       Select Case grado
         Case 1  ' es Tonica
+' grabo la nota Tonica de la melodia  a partir de la cual hago el acorde
+        undo_kant_intervalos(cnt_acor)=0          
+        undo_acorde(cnt_acor,0).posn=indicePos ' shared global
+        Dim pnr As Integer
+        pnr=PianoNota+SumarnR(PianoNota)
+        undo_acorde(cnt_acor,0).pn=pnr ' se almacena elindice fisico del vector Roll
+        undo_acorde(cnt_acor,0).dur=Roll.trk(indicePos, pnr).dur
+        undo_acorde(cnt_acor,0).nota=Roll.trk(indicePos, pnr).nota
+
+
         ' armar acorde notapiano, Notapiano+4, NotaPiano+7=la anterior +3
         ' haremos todo a mano luego algun dia un algoritmo si es necesario,.,,
         ' qu etenga en cuenta todos los casos (formar mayor-> +4 +7)
-        Dim As Integer st=0,pn=0
+        ' 1,n=1 es 3,n=2 es 5,n=3 es 7
+        Dim As Integer st=0
         Print #1,"armando acorde ,,indicePos ",indicePos
         Print #1,"armando acorde ,,RollDur ",RollDur
-        pn=PianoNota+n1 
-        pn =pn +SumarnR(pn)
-        Print #1,"armando acorde 3ta,,nR ",pn
+        pnr=PianoNota+n1 
+        pnr =pnr +SumarnR(pnr) ' es el nR o indice fisico del vector Roll
+        Print #1,"armando acorde 3ta,,nR ",pnr
 '------n1 acorde de 2 notas o intervalo
         undo_kant_intervalos(cnt_acor)=1          
         undo_acorde(cnt_acor,1).posn=indicePos
-        undo_acorde(cnt_acor,1).pn=pn
-        undo_acorde(cnt_acor,1).dur=Roll.trk(indicePos, pn).dur
-        undo_acorde(cnt_acor,1).nota=Roll.trk(indicePos, pn).nota
+        undo_acorde(cnt_acor,1).pn=pnr ' se almacena elindice fisico del vector Roll
+        undo_acorde(cnt_acor,1).dur=Roll.trk(indicePos, pnr).dur
+        undo_acorde(cnt_acor,1).nota=Roll.trk(indicePos, pnr).nota
 
-        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
+        Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
 ' saltos de octava
         st=nE-n1 
         If st <= 0 Then
@@ -3920,19 +3931,19 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
            st=st -12 
         EndIf            
         
-        Roll.trk(indicePos, pn).nota=st
+        Roll.trk(indicePos, pnr).nota=st
 '--------n2 acorde de 3 notas------------------------------------
-        Print #1,"armando acorde ,5ta,nR ",pn  
+        Print #1,"armando acorde ,5ta,nR ",pnr  
 
-        pn=PianoNota+n2
-        pn=pn + SumarnR(pn)
+        pnr=PianoNota+n2
+        pnr=pnr + SumarnR(pnr) ' es nR indice del vector Roll
         undo_kant_intervalos(cnt_acor)=2
         undo_acorde(cnt_acor,2).posn=indicePos
-        undo_acorde(cnt_acor,2).pn=pn
-        undo_acorde(cnt_acor,2).dur=Roll.trk(indicePos, pn).dur
-        undo_acorde(cnt_acor,2).nota=Roll.trk(indicePos, pn).nota
+        undo_acorde(cnt_acor,2).pn=pnr
+        undo_acorde(cnt_acor,2).dur=Roll.trk(indicePos, pnr).dur
+        undo_acorde(cnt_acor,2).nota=Roll.trk(indicePos, pnr).nota
 
-        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
+        Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
         st=nE-n2 
         If st <= 0 Then
            st=12 + st
@@ -3941,18 +3952,18 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
            st=st -12 
         EndIf            
 
-        Roll.trk(indicePos, pn).nota=st  
+        Roll.trk(indicePos, pnr).nota=st  
 If n3 <> 0 Then ' es un acorde de 4 notas            
-    Print #1,"armando acorde ,7ta,nR ",pn
-        pn=PianoNota+n3
-        pn=pn + SumarnR(pn)
+    Print #1,"armando acorde ,7ta,nR ",pnr
+        pnr=PianoNota+n3
+        pnr=pnr + SumarnR(pnr)
         undo_kant_intervalos(cnt_acor)=3 
         undo_acorde(cnt_acor,3).posn=indicePos
-        undo_acorde(cnt_acor,3).pn=pn
-        undo_acorde(cnt_acor,3).dur=Roll.trk(indicePos, pn).dur
-        undo_acorde(cnt_acor,3).nota=Roll.trk(indicePos, pn).nota
+        undo_acorde(cnt_acor,3).pn=pnr
+        undo_acorde(cnt_acor,3).dur=Roll.trk(indicePos, pnr).dur
+        undo_acorde(cnt_acor,3).nota=Roll.trk(indicePos, pnr).nota
 
-        Roll.trk(indicePos, pn).dur=CUByte(RollDur)
+        Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
         st=nE-n3 
         If st <= 0 Then
            st=12 + st
@@ -3961,7 +3972,7 @@ If n3 <> 0 Then ' es un acorde de 4 notas
            st=st -12 
         EndIf            
 
-        Roll.trk(indicePos, pn).nota=st  
+        Roll.trk(indicePos, pnr).nota=st  
 
 EndIf
              Case 3

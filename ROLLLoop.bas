@@ -134,8 +134,10 @@ Dim As String t2="",t3=""
        ''cairo_line_to(c,gap1 + (ic ) *anchofig , Penta_y + 13.5 * inc_Penta )
        verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde
        notac=CInt(Roll.trk(n,verticalEnOctavaVacia ).nota) 'Rollnota
+       'Print #1,"creaPenta notac,NotasEscala(notac-11) ",notac, NotasEscala(13-notac)
+       
        aconro=CInt(Roll.trk(n,verticalEnOctavaVacia ).dur) 'acordenro
-       t3=NotasEscala(notac-11)+ ClaseAcorde(aconro).clase
+       t3=NotasEscala(13-notac)+ ClaseAcorde(aconro).clase
        'If t2 > "" Then t2="" EndIf
     Else
       t3=""
@@ -797,7 +799,7 @@ If cambioescala=1 And pasoZona1 > 0 Then ' creamos una posicion con cambio de es
 ' la escala queda vigente hasta el proximo cambio, esto recuerda las notas que se deben usar o para crear acordes
 Print #1,"cAMBIO ESCALA Na,NB, tipoescala, notaescala ", NA,NB,tipoescala_num,notaescala_num
 ' DEBO CARGAR EN LAS ZONAS DONDE NO HAY NOTAS O SEA ENTRE OCTAVAS TENGO LUGARES SIN USAR ERGO NO HACE FALTA
-' BORRAR LOS DATOS PUEDO TENERUN CAMBIO DE ESCALA EN DATOS PREVIOS
+' BORRAR LOS DATOS PUEDO TENER UN CAMBIO DE ESCALA EN DATOS PREVIOS
 ' CUALE SSON ESAS POSICIONES SIN NOTAS..LAS QUE SON MULTIPLO DE 13 SUPONGO
  tipoescala=tipoescala_num
  notaescala=notaescala_num
@@ -1228,11 +1230,11 @@ EndIf
 If MultiKey(SC_ALT) and MultiKey(SC_L)  Then ' <======== playloop
   playloop=1 
 EndIf
-
+'---UNDO ACORDE - O BORRAR ACORDES, debemos borrar cifrado tambien
 If MultiKey(SC_ALT)  And MultiKey(SC_BACKSPACE) And scan_alt=0  Then '<=== undo acorde
   'undo de acorde y/o melodia
   ' esto funciona en Roll hay qu ever que pasa con los tracks....pendiente jjj
-  Dim As Integer ik=0,ij=0,im
+  Dim As Integer ik=0,ij=0,im,pn=1,noti
 
 ' undo de acordes hasta 500 acordes de 12 notas c/u
    ig=cnt_acor
@@ -1240,13 +1242,29 @@ If MultiKey(SC_ALT)  And MultiKey(SC_BACKSPACE) And scan_alt=0  Then '<=== undo 
       Print #1,"ig= ",ig
       Print #1," undo_kant_intervalos(ig) ", undo_kant_intervalos(ig)
       Print #1,"cnt_acor",cnt_acor
- 
+' borrado de la informacion del cifrado de acorde en la octava mas alta no usada
+      Dim As Integer n0,pnr      
+      pnr=undo_acorde(ig,0).pn ' es el indice de Roll nR
+      
+      n0=restar(pnr)+1 ' seria la octava en donde se trabajó
+' ergo con ese nro de octava entro a la ultima octava de arriba que no se usa
+' y en la linea 90 + en nro de octava esta la info del acorde a borrar..
+      Dim As Integer verticalEnOctavaVacia '  6-4 =2
+' 90,91,92,93,95 la default tomara la posicion vertical 
+' 2) => verticalEnOctavaVacia= vacio + estoyEnOctava - desde   
+' en un solo paso, linea de la octava libre que contendra la info dela corde:
+verticalEnOctavaVacia= 12 + (hasta-2)*13 + n0 - desde ' 90 + 6 - 4=92 
+ Roll.trk(undo_acorde(ig,0).posn,verticalEnOctavaVacia ).nota = 0
+ Roll.trk(undo_acorde(ig,0).posn,verticalEnOctavaVacia ).dur  = 0
+
+   
+' ----fin borrado informacion de acorde en la octava mas alta no usada....        
+
       For ik=1 To undo_kant_intervalos(ig)
           Roll.trk(undo_acorde(ig,ik).posn,undo_acorde(ig,ik).pn).dur=undo_acorde(ig,ik).dur
           Roll.trk(undo_acorde(ig,ik).posn,undo_acorde(ig,ik).pn).nota =undo_acorde(ig,ik).nota
          ' Track(ntk).trk(indicePos,1+ik).nota=0
          ' Track(ntk).trk(indicePos,1+ik).dur=0
-          
       Next ik
     
       ''undo_acorde(cnt_acor,ik).pn =0
@@ -2185,13 +2203,13 @@ EndIf
 ' EndIf
 
 '' 24-06-2021 espaciado de lineas (1)
-If MultiKey(SC_CONTROL) And lockip=0  Then
-    deltaip=0
-    incWheel=0
-    lockip=1
-    Exit Do    
-
-EndIf 
+'If MultiKey(SC_CONTROL) And lockip=0  Then
+'    deltaip=0
+'    incWheel=0
+'    lockip=1
+'    Exit Do    '
+'
+'EndIf 
 'If COMEDIT=FALSE Then '''HARIA FALTA COMEDIT FALSE ? CREO QUE NOORRERA EN TRUE?
 ' '' 24-06-2021 espaciado de lineas (1)
 '  If MultiKey(SC_CONTROL) And lockip=0  Then
@@ -2708,19 +2726,19 @@ EndIf
 ' EL CAMBIO DE FONT PARA CONTROL-M JODE SACAMOS TAMBIEN
  ' --------------
  ' 24-06-2021 espaciado de lineas (2)
- If MultiKey(SC_CONTROL) And lockip=1 And cargacancion=0 Then
-    If incWheel < 0 Then
-       deltaipf=deltaipf + 1
-    EndIf
-    If Incwheel > 0 Then
-       deltaipf=deltaipf - 1
-    EndIf
-      deltaip=deltaipf
-      incWheel=0
-   ' ojo con los Exit Do si por defautl entra al if y hace exit do 
-   ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click
-    
- EndIf 
+' If MultiKey(SC_CONTROL) And lockip=1 And cargacancion=0 Then
+'    If incWheel < 0 Then
+'       deltaipf=deltaipf + 1
+'    EndIf
+'    If Incwheel > 0 Then
+'       deltaipf=deltaipf - 1
+'    EndIf
+'      deltaip=deltaipf
+'      incWheel=0
+'   ' ojo con los Exit Do si por defautl entra al if y hace exit do 
+'   ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click
+'    
+' EndIf 
  If MultiKey(SC_CONTROL) And MultiKey(SC_T) And trasponer=0  Then
   ' trasponer notas 24-06-2021 - por teclado para todas las notas cargadas
   ' si subo con flecha arriba sube 1 semitono
@@ -3596,6 +3614,29 @@ ButtonGadget(2,530,30,50,40," OK ")
   Exit Do
 
  EndIf
+ '' 26-01-2022 espaciado de lineas (1) movido desde 2190 afecta a acordes
+ If MultiKey(SC_CONTROL) And lockip=0  Then
+    deltaip=0
+    incWheel=0
+    lockip=1
+    Exit Do    
+
+ EndIf 
+ ' 26-01-2022 espaciado de lineas (2) movido desde 2713 afecta a acordes
+ If MultiKey(SC_CONTROL) And lockip=1 And cargacancion=0 Then
+    If incWheel < 0 Then
+       deltaipf=deltaipf + 1
+    EndIf
+    If Incwheel > 0 Then
+       deltaipf=deltaipf - 1
+    EndIf
+      deltaip=deltaipf
+      incWheel=0
+   ' ojo con los Exit Do si por defautl entra al if y hace exit do 
+   ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click
+    
+ EndIf 
+
  '-------------------- ERROR DE 10-12-2021
  ''!!! NUNCA PONER UN EXIT DO POR UN ELSE O AL FIANL PORQUE NO SE PROCESA NADA DE LO QUE SIGUE!!!!
  '------DEJO DE ANDAR SC_z POR QUE QUI HABIA UN EXIT DO  

@@ -1571,6 +1571,7 @@ End Select
 End Function
 Function SumarnR (notaPiano As Integer) As Integer
 ' dado la NotaPiano encuentro nR el indice del Vector Roll de visualizacion
+' puedo devolver la octava tambien
 Select Case notaPiano
    Case 0 To 11
      SumarnR=0

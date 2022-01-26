@@ -357,8 +357,10 @@
          la nota en donde se da el click, o si no hay nada usando la duracion pulsada (1,2,3,4,5,6,7,8).
          Si existe la nota y se desea cambiar su duracion , pulsando una duracion antes de usar el comando 
          se reemplazará la duración existente y se armará un acorde con esa nueva duración. 
-         Para ello damos Ctrl-Click derecho sobre la nota a convertir en acorde..y aparece un menu contextual
-         (el cual todavia no es funcional, totalmente, triadas cuaternarias etc, 1era o 2da inversion etc)
+         Para ello damos Ctrl-Click derecho (Nota: se recomienda pulsar 1ero clik derecho y luego Ctrl, 
+         por que podria haber interferencia con inerlineado que es Ctrl-wheel de mouse o ruedita subir bajar, 
+         se minimizo el efecto pero lso comandos son parecidos)  sobre la nota a convertir en acorde..y 
+         aparece un menu contextual (el cual ya es funcional, no totalmente, triadas cuaternarias etc, 1era o 2da inversion etc)
          Ya funciona 3 Notas ->Mayor ->Noinversion (es una triadas Mayor cuya Tonica es la nota elegida, 
          dar Ctrl+click derecho sobre la nota navegar como se indica al comienzo llegar a No inversion y ahi dar 
          click izquierdo, soltar click , soltar ctrl apenas salga el menu o al final es indiferente. 
@@ -374,7 +376,7 @@
          1era, 2da y 3era inversion para cuatriadas, grado 1 (la nota elegida es la fundamental).
        
 
-    1.7) Crear Canción.
+    1.8) Crear Canción.
 
           En RollNusic Control usar 'Nueva Cancion' del menu (lo que diga Na es no aplicable todavia
         no está habilitado) , agregar el titulo o nombre de la cancion. Si no se agrega pondra un titulo 
@@ -382,7 +384,7 @@
         Luego en el mismo menu pulsar 'Crear un directorio de Cancion con los tracks separados' 
         buscar un lugar para el directorio nuevo de la cancion con el nombre asignado.
 
-    1.8) Agregar tracks o Pistas a Cancion   
+    1.9) Agregar tracks o Pistas a Cancion   
 
          Hay 3 opciones  
          a) Con la cancion creada, ir al menu de Pistas, ajustar los parámetros deseados
@@ -412,7 +414,7 @@
          Nota: El ultimo test fue con el caso a), lso demas estaban propbados pero con las modificaciones
          echas par ael caso a) deben probarse de neuvo,,,
 
-    1.9) Luego de cargada el directorio de la cancion, si se da click con el mouse en la lista
+    1.10) Luego de cargada el directorio de la cancion, si se da click con el mouse en la lista
          de nombres de pistas en la ventana Control, se cargara esa pista en Roll y en su pista correpondiente.
          Siempre se carga Roll que es el grafico visual , ambas se usan para modificacion. 
          Si no hay cancion la pista cargada correpsondiente a Roll es la [00].
@@ -424,7 +426,7 @@
          copiando el track sucesivo en Roll y Track(N), al alcanzar la ultima pista con datos o la ultima 32 
          sigue en circulo con la 1.
 
-    1.10) Borrar Pistas de la Lista y de disco:
+    1.11) Borrar Pistas de la Lista y de disco:
           Estando en Control o la Lista de Control, seleccionar la pista pulsar delete,
           se borra de la lista y del disco copiandose lo borrado en un subdirectorio interno \Temp, luego 
           con flechas arriba o abajo o con mouse seleccionar otra pista aleatoriamente y borrar 
@@ -434,14 +436,14 @@
           direccion hacia arriba o sea, si selecciono la pista 5 se borraran con cada pulso 5,4,3,2,1. 
           Al llegar a la 1, si se sigue  pulsando  empezará a borrar la 6,7,8,9...
 
-    1.11) Copiar una pista de Cancion en otra pista nueva de cancion con sus datos
+    1.12) Copiar una pista de Cancion en otra pista nueva de cancion con sus datos
           En el menu de Control usar en el menu Archivo->"Copiar una pista a otra nueva en cancion"
           Copiará lso datos cambiara el numero de pista por uno mas grande N+1 [NN]
           El resto el nombre será igual. Por ahora no se puede renombrar online,ya se hará
           en proxima version, pero se puede renombrar la pista dede afuera y volver a cargar
           la cancion.
 
-     1.12)  En el mismo menu de 1.11 se puede actualizar una pista con "Grabar una pista de la cancion
+     1.13)  En el mismo menu de 1.11 se puede actualizar una pista con "Grabar una pista de la cancion
           con midificaciones, igual que se puede ahcer en Roll.
     --------------------------------------------------------------------------------------------
     2.0) Modos de Edicion
