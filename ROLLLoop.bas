@@ -1,7 +1,6 @@
 #Include Once "crt/stdio.bi"
 
 On  Error GoTo errorloopbas
-
 ''(c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer Ptr, InicioDeLectura As Integer)
 Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
 'Dim octava As Integer Ptr
@@ -161,10 +160,10 @@ Dim As String t2="",t3=""
        tipoescala=CInt(Roll.trk(n, 12  + (*po -1) * 13).inst)
 '           Print #1," tipoescala ",tipoescala
        armarescala cadenaes,tipoescala, notaescala, alteracion
-           Print #1,"creapenta cadenaes ",cadenaes
+
            ' fin 11-01-2022
        t2=t2+" "+ escala(tipoescala).nombre + " "+cadenaes
-       Print #1,"creapenta t2 ",t2
+
        cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y + 13 * inc_Penta ) '26-01
     Else
       t2=""
@@ -578,6 +577,27 @@ If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
 End Sub
 
 
+
+Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
+'------------------
+  For i = desde To hasta 
+    nro = i 
+  ' si ahce falta ejecutar mas de un Penta podremos usar threads
+  ' asi funciona mejor o no? igual debe esperar a que termine el thread
+  ScreenSync  
+   creaPenta (c, Roll )
+  If *po = 99 Then
+     *po = hasta -1 ' 9 po ejemplo
+     Exit For
+  EndIf
+  cairo_stroke(c)
+ 
+  Next
+  
+  
+End Sub
+
+
 'Roll Main Loop ACA NO APARECE EL VECTOR DE ROLL 
 
 
@@ -824,7 +844,7 @@ For K=desde To hasta -1 ' queda entre 2 octavas ,corregido  26-01-2022
           Roll.trk(pasozona1, vacio).pan = 2 
      EndIf
  Next K  
-' nota=30 , dur=200 indicara cambio de escala
+' nota=30 , dur=200 indicara cambio de escala ÇÇÇ
    guiaEscala(indEscala).posicion=posicion
    cambioescala=0
    pasoZona1=0
@@ -834,21 +854,26 @@ EndIf
 
 
 
+  Dim tlock As Any Ptr = MutexCreate() 
+  Dim ta As Any Ptr = ThreadCall barrePenta (c, Roll )
+    ThreadWait ta
+  MutexDestroy tlock
 
 
 
-
+/'
 '------------------
   For i = desde To hasta 
     nro = i 
   ' si ahce falta ejecutar mas de un Penta podremos usar threads
-  ' por ahora no lousamos 
-''  Dim tlock As Any Ptr = MutexCreate() 
-''  Dim ta As Any Ptr = ThreadCall creaPenta (c, Roll )
-''    ThreadWait ta
-''  MutexDestroy tlock
-  ScreenSync  
-   creaPenta (c, Roll )
+  ' asi funciona mejor o no? igual debe esperar a que termine el thread
+   ScreenSync 
+  Dim tlock As Any Ptr = MutexCreate() 
+  Dim ta As Any Ptr = ThreadCall creaPenta (c, Roll )
+    ThreadWait ta
+  MutexDestroy tlock
+'  ScreenSync  
+'   creaPenta (c, Roll )
   If *po = 99 Then
      *po = hasta -1 ' 9 po ejemplo
      Exit For
@@ -856,7 +881,7 @@ EndIf
   cairo_stroke(c)
  
   Next
-
+'/
 
 
 ''For i = desde To hasta ' nro_penta
@@ -2977,7 +3002,7 @@ EndIf
 
 
     pasoZona1=0:pasoZona2=0
-     Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2,May6
+     Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2,May6,Sus2
      Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dom7,Dis7,Mayor9,Menor9,Dis9, notabase,Aum,Menor7b5,Dom75a     
      Dim As Integer event,Posx,Posy 
     ScreenControl GET_WINDOW_POS, x0, y0
@@ -3091,6 +3116,7 @@ EndIf
      Menor=OpenSubMenu(notas3,"Menor, m")
      Dis  =OpenSubMenu(notas3,"Dis, º")
      Aum  =OpenSubMenu(notas3,"Aum, +")
+     Sus2 =OpenSubMenu(notas3,"Sus2  ")
      
      Mayor7   =OpenSubMenu(notas4,"May7, Maj7")
      Menor7   =OpenSubMenu(notas4,"Menor7, m7")
@@ -3154,25 +3180,31 @@ EndIf
      Menuitem (1035,Dis7,"2da inv")
      Menuitem (1036,Dis7,"3era inv")
 
-     MenuItem (1037,May6,"No inv") ' Mayor 6ta
-     Menuitem (1038,May6,"1era inv o 6")
-     Menuitem (1039,May6,"2da inv")
-     Menuitem (1040,May6,"3era inv")
-     
+     MenuItem (1037,May6,"No inv   6") ' Mayor 6ta
+     Menuitem (1038,May6,"1era inv o 6/3ERA")
+     Menuitem (1039,May6,"2da inv  6/5ta" )
+     Menuitem (1040,May6,"3era inv 6/6ta ") ' C6/A =Am7 
+'----sus2 triada     
+     MenuItem (1041,Sus2,"No inv")  ' triada
+     Menuitem (1042,Sus2,"1era inv o 6")  ' triada
+     Menuitem (1043,Sus2,"2da inv")  ' triada
+' ---fin sus2 triada
+
+
 '--------------------------------------------------     
-     MenuItem (1037,Mayor9,"No inv")
-     Menuitem (1038,Mayor9,"1era inv o 6")
-     Menuitem (1039,Mayor9,"2da inv")
+ '    MenuItem (1037,Mayor9,"No inv")
+ '    Menuitem (1038,Mayor9,"1era inv o 6")
+ '    Menuitem (1039,Mayor9,"2da inv")
 
-     MenuItem (1040,Menor9,"No inv")
-     Menuitem (1041,Menor9,"1era inv o 6")
-     Menuitem (1042,Menor9,"2da inv")
+ '    MenuItem (1040,Menor9,"No inv")
+ '    Menuitem (1041,Menor9,"1era inv o 6")
+ '    Menuitem (1042,Menor9,"2da inv")
      
-     MenuItem (1043,Dis9,"No inv")
-     Menuitem (1044,Dis9,"1era inv o 6")
-     Menuitem (1045,Dis9,"2da inv")
+'     MenuItem (1043,Dis9,"No inv")
+ '    Menuitem (1044,Dis9,"1era inv o 6")
+ '    Menuitem (1045,Dis9,"2da inv")
 
-     MenuItem (1046,notabase,"Es Tonica")
+ '    MenuItem (1046,notabase,"Es Tonica")
 ' aca puedo decir que la base tonica es la nota del click, Notapiano
 ' nuevo campp grado 1,2,3,4,5,6,7.8.9.10,11,12
              
@@ -3251,7 +3283,9 @@ EndIf
         ' 2DA INVERSION MAYOR  G C E  -4 0 4
       armarAcorde(grado ,4, -4, 0)
       acordeNro=12
-' -------------FIN TRIADAS
+     
+      
+' -------------FIN TRIADAS --mas abajo estasn las sus2 son triadas tambien
 ' Cuaternario 
          Case 1013 ' mayor 7 no inversion
       armarAcorde(grado ,4, 7, 11) ' mayor 4, 7,11 C,E,G,B
@@ -3334,20 +3368,41 @@ EndIf
          Case 1036
       armarAcorde grado , -3, 3, 6 ' A , C, Eb, Gb ' Dis 3era inversion
       acordeNro=36      
-'--May6          
-         Case 1037 ' es 3era
+'---------------------Mayor 6ta ' CEGA , C-A INTERVALO DE 6TA 
+'https://javi29clases.blogspot.com/2012/07/acordes-mayores-con-sexta-6-en-piano.html
+'Posición Fundamental: Formados por Tónica, su 3ra Mayor, su 5ta justa y su 6ta
+'inversión desde 3ra:  3ra Mayor , 5ta justa, 6ta y Tónica(1ra)
+'inversión desde su 5ta: 5ta justa, 6ta,  Tónica y su 3ra Mayor
+'inversión desde su 6ta: 6ta,  Tónica,   su 3ra Mayor y su 5ta justa        
+         Case 1037 ' 
+      armarAcorde grado ,4,7,9   ' C,E,G,A ....C6
+      acordeNro=37   
+         Case 1038 ' 1ERA INVERSION  
+      armarAcorde grado ,-3,-5,-8   ' E,G,A,C ...C6/E E-C INTERVALO DE 6TA
+      acordeNro=38   
+
+         Case 1039 ' 2DA INV 
+      armarAcorde grado ,-3,-5,4   ' G,A,C,E ...C6/G G-E INT 6TA
+      acordeNro=39   
+
+         Case 1040 '3ERA INV
+'https://javi29clases.blogspot.com/2012/07/acordes-mayores-con-sexta-6-en-guitarra.html          
+      armarAcorde grado ,-3,4,7   ' A,C,E,G ...C6/A =Am7, Am7/C=C6  
+      acordeNro=40   
+'--------------------------------
+' -----------------------Sus2 triada
+         Case 1041   'Sus2,"No inv")  ' triada
+      armarAcorde(grado ,2, 7, 0) ' CSus2
+      acordeNro=41
          
-         Case 1038 ' es 5ta
+         Case 1042  ' Sus2,"1era inv o 6")  ' triada
+      armarAcorde(grado ,-5, -10, 0) 'Csus2/D
+      acordeNro=42
 
-         Case 1039 ' es 7ma
-
-         Case 1040 ' es 4ta
-
-         Case 1041 ' es 6ta
-
-         Case 1042 ' es 9na
-
-         Case 1043 ' es 11va
+         Case 1043 'Sus2,"2da inv")  ' triada
+      armarAcorde(grado ,-5, 2, 0) 'Csus2/G
+      acordeNro=43
+'--------------fin sus2 triada
 
          Case 1044 ' es Salir
          Case 1046 ' tonica  
@@ -3369,7 +3424,7 @@ EndIf
 ' grabacion en Roll y track
 Dim As INTEGER vacio
 vacio= 12 +(estoyEnOctava-1)*13
-' marcamos en el interespacio con 201 en inst par aindicar que hay acorde
+' marcamos en el interespacio con 201 en pb para indicar que hay acorde
 ' la info restante la ponemos arriab de todo en la octava que no se usa..
 ' o sea estoy indicando que en esta octava y en esta posicion hay un acorde
 ' y solo puede ahber uno de modo que la relacion es 1:1
@@ -3398,10 +3453,14 @@ Dim As Integer verticalEnOctavaVacia '  6-4 =2
 ' 2) => verticalEnOctavaVacia= vacio + estoyEnOctava - desde   
 ' en un solo paso, linea de la octava libre que contendra la info dela corde:
 verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde ' 90 + 6 - 4=92 
+
  Roll.trk(indicePos,verticalEnOctavaVacia ).nota = CUByte(RollNota)
  Roll.trk(indicePos,verticalEnOctavaVacia ).dur  = CUByte(acordeNro)
+ Roll.trk(indicePos,verticalEnOctavaVacia ).vol  = CUByte(estoyEnOctava) ' para pasar a Track
+ Roll.trk(indicePos,verticalEnOctavaVacia ).pb   = 202
 ' con esta info reconstruyo el acorde que luego muestro solo en la octava
-' la octava la se por donde esta el 201 no hace falta guardarla-. 
+' la octava la se por donde esta el 201 no hace falta guardarla, pweo para pasarla a track si
+' hace falta!! 27-01-2022 -. 
 ' en uso. 
 
            Delete_Menu (hpopup1)            
@@ -3418,7 +3477,7 @@ verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde ' 90 + 6 - 4=92
     EndIf
 '=========================================================================    
 ' 18-01-2022 menu alternativo con las 58 formas de acorde jjj
-'  cambiar todo los popup menus por solamente un scroll   
+'  cambiar todo los popup menus por solamente un scroll ...futuro 
     If MultiKey(SC_LSHIFT) And MouseButtons And 2 Then 'yyy
 
 

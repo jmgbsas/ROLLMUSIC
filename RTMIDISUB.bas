@@ -1543,7 +1543,7 @@ finplay=1
 'https://freebasic.net/forum/viewtopic.php?f=14&t=26725
 End sub
 Function restar (notaRoll As Integer) As Integer
-' sale Notapiano 
+' sale Notapiano tambien sale la octava -> restar(i1) +1 
 Select Case notaroll
    Case 0 To 11
      restar=0

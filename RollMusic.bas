@@ -363,7 +363,8 @@ param.ubirtk=ubirtk
 
 Dim  AS Integer  ctres=1 ' 5 octavas por track
 Dim As Integer lim1 
-lim1=1 ' lim3 vale 13 se reserva el ultimo par avalores de control
+lim1=1 ' lim3 vale 25 se reserva el ultimo par avalores de control, no alcanza
+' 26-01-2022 la zona de control debe ser 1 octava mas o sea lim3=24
 ReDim (Track(00).trk ) (1 To CantTicks,1 To lim3) ' lo usa instancia sin cancion
 ReDim (Track(01).trk ) (1 To CantTicks,1 To lim3) ' lo usa sin instancia
 ReDim (Track(02).trk ) (1 To Ctres,1 To lim1)
@@ -685,7 +686,8 @@ MenuItem(1010,MenName1, "Cargar una Pista (rtk ó roll) externa en Cancion")
 MenuItem(1011,MenName1, "Grabar una Pista de la Cancion con modificaciones, carga pista si no hubiera cargada")
 MenuItem(1012,MenName1, "Copia una pista a otra  nueva en cancion")
 MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
-MenuItem(1014,MenName1, "Salir")
+MenuItem(1014,MenName1, "Grabar una Pista rtk a roll TrackaRoll")
+MenuItem(1015,MenName1, "Salir")
 
 
 MenuItem(1020,MenName2, "Nombre o Título (fecha por omision), la cancion es un directorio")
@@ -984,8 +986,11 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
            EndIf   
           MenuNew=0           
           carga=1
-          
-           Case 1014  ''<==== SALIR TERMINA ROLL
+           Case 1014  ' <==== TRACK A ROLL
+           TrackaRoll (Track(), ntk , Roll ) ' no usa ubirtk
+           GrabarArchivo(0)
+           
+           Case 1015  ''<==== SALIR TERMINA ROLL
             terminar=1
              
             Exit Do

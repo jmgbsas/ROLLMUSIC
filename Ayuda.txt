@@ -499,7 +499,8 @@
          - Undo de entrada de Acorces ALT-BACKSPACE, uno po vez. Va borrando del ultimo entrado hasta el 1er acorde
            no importa la posicon.
            Nota de Undo: dar pulsos cortos a ALT-U o ALT-BACKSPACE, podria borrar mas de 1 item por vez..
-           (queda por mejorar...)
+           (queda por mejorar...pulsar primero la tecla Backspace  o retroceso y sin levantar dar un pulso rapido a ALT, 
+            soltar ALT y luego soltar retroceso. lo mismo para U)
     2.1.2) Entrada Por mouse y Teclado 
            estando habilitada una octava como en 2) se hace click derecho aparece un menu de
            notas contextual se da click izquierdo a la deseada del menu y luego se da click sobre la nota deseada 

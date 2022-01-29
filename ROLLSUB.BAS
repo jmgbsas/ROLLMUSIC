@@ -711,7 +711,7 @@ On Local Error GoTo errorRecal
       'Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
       cont=0
-      For i= NB To NA
+      For i= NB To NA -13 ' 29-01-2022
        valdur => Roll.trk(j,i).dur ' de 1 a 180
        ' al cargr tenemos 4 grupos de 16 de duraciones identicas que se repiten
        ' 1-45,46-90,91-135,136-180 , el indicemeindicaa cual grupo pertenece, y
@@ -759,7 +759,7 @@ On Local Error GoTo errorRecal
       EndIf
       Dim As Integer iahas = mayorgrupo * 45 
       
-       If i=NA  Then
+       If i=NA -13 Then ' 29-01-2022
 
         'print #1,"i=NA i: ";i;" NA: ";NA;" Mayor ";mayor;" grupo:"; mayorgrupo
         For ia= iades To iahas ' tresillos es grupo 
@@ -1489,15 +1489,15 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      ' Roll y Track tendran 500 posiciones mas que trabajo el archivo de disco
      ' la carga se limita a MaxPos no deberi apasar nada...
      carga=1 ' no es lo mismo calcCompas con cargar o procesando
-     Dim As Integer i,j , mayor,ia,valdur,cont, semi
+     Dim As Integer i,j , mayor,ia,valdur,cont, semi,i3,verticalEnOctavaVacia,octavaDeAcorde
      cont=0
  '    print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
-
+Dim As Integer copiado=0
      For j = 1 To MaxPos    '11-07-2021
 '      Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
       Dim As integer ip=0,Notapiano
-      For i= NB To NA
+      For i= NB To NA 
        Roll.TRK(j,i)  => Trabajo (j,i)    
 ' 06-09-2021 carga track en ntk=0 
       
@@ -1520,12 +1520,41 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
          Track(ntk).trk(j,ip).inst => Trabajo (j,NA).inst
          'Print #fs,"notapiano,ntk", Track(ntk).trk(j,ip).nota,ntk,Track(ntk).trk(j,ip).dur
        EndIf
+' copia datos de escala, esta repetido en cada octava pero bueno....con una sola
+ ' copai estarai bien,,,,
+      If Trabajo(j,i ).dur= 200  And copiado=0 Then ' solo en 13 copia 1 sola vez ok sigue igual
+         
+         Track(ntk).trk(j,13).inst = Trabajo(j,i ).inst ''=CUByte(tipoescala)
+         Track(ntk).trk(j,13).vol = Trabajo(j,i ).vol ''= CUByte(notaescala)
+
+         Track(ntk).trk(j,13).nota = Trabajo(j,i ).nota ' = 30
+         Track(ntk).trk(j,13).dur  = Trabajo(j,i ).dur  ' = 200
+         Track(ntk).trk(j,13).pan = Trabajo(j,i ).pan
+         Print #1,"RollaTrack copia var de control inst ",Track(ntk).trk(j,13).inst
+         Print #1,"RollaTrack copia var de control vol ",Track(ntk).trk(j,13).vol
+         copiado=1 
+      EndIf
+' copiar campso de acordes a Track(ntk)       
+
+      If Trabajo(j,i ).pb = 201  Then ' info acorde en una octava
+      'ÇÇÇ vacio= 12 +(estoyEnOctava-1)*13 son las que no se ven 
+      '       i1= 12 + (octavaDeAcorde -1)*13 ergo
+         octavaDeAcorde=1+ (i-12)/13 
+         i3=13 + octavaDeAcorde 
+         verticalEnOctavaVacia= 12 + (hasta-2)*13 + octavaDeAcorde - desde ' 90 + 6 - 4=92
+         Track(ntk).trk(j,i3).vol  = Trabajo(j,verticalEnOctavaVacia).vol ' octava
+         Track(ntk).trk(j,i3).nota = Trabajo(j,verticalEnOctavaVacia ).nota ' Rollnota
+         Track(ntk).trk(j,i3).dur  = Trabajo(j,verticalEnOctavaVacia ).dur  ' acordeNro
+         Track(ntk).trk(j,i3).pb  = Trabajo(j,verticalEnOctavaVacia ).pb  ' hay acorde 202          
+      EndIf
+
+
      Next i
 ' SE CREA EL CAMPO ACORDE DE POLI DEL TRACK
       Track(ntk).trk(j,1).acorde=ip
      ' Print #fs, "acorde ",Track(ntk).trk(j,1).acorde
        crearsecuencia(Track(), j, ntk )
-    Next j
+     Next j
 Close ca
 DUR => 0
 curpos =>1
@@ -3239,7 +3268,7 @@ Sub GrabarTrack (ntk As integer) ' NO SE ESTA USANDO pero seria el modelo de Gra
 posn=k        
 
 Dim As Integer r1
-For i1=1 To lim3 ' faltaria agregar campo de de control a blanquear .....jjj jmg 15-01-2022 
+For i1=1 To lim3 '  
   For r1= posn+1 To MaxPos
     Trabajo(r1, i1).nota=0 ' ok debo habiliatar desde ahi todas las columnas se juntaron
     Trabajo(r1, i1).dur=0  ' la secuecnia quedo mas corta

@@ -138,7 +138,8 @@ Dim Shared ClaseAcorde(1 To 100) As claseac => _
  ("7      ",25),("7/     ",26),("7/     ",27),("7/     ",28), _
  ("7+     ",29),("7+/    ",30),("7+/    ",31),("7+/    ",32), _
  ("º7     ",33),("º7/    ",34),("º7/    ",35),("º7/    ",36), _ 
- ("(6)    ",37),("(6)/   ",38),("(6)/   ",39),("(6)/   ",40)} 
+ ("(6)    ",37),("(6)/   ",38),("(6)/   ",39),("(6)/   ",40), _ 
+ ("Sus2   ",41),("Sus2/  ",42),("Sus2/  ",43)} 
 
 Type esc1 
   nombre   As String
@@ -655,7 +656,7 @@ Dim Shared As Integer hastavector,abrirRoll=0
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
 'Dim Shared As Integer lim2=12, ctres=CantTicks
 
-Dim Shared As Integer lim2=12,mel_undo_k=0,lim3=13,cnt_acor=0,ig=0
+Dim Shared As Integer lim2=12,mel_undo_k=0,lim3=25,cnt_acor=0,ig=0
 Dim Shared As Boolean Vaciodur=FALSE
 Type notas_agregadas Field=1
   As Integer pn ' pianoNota

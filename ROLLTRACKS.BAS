@@ -196,16 +196,16 @@ End Sub
 '
 Sub RollTempaTrackTemp (TrkTemp() As poli,RollTemp() As dat)
 '--------CODIGO SIMILAR A ROLLATRACK SI SE CAMBIA ACA SE DEBE CAMBIAR HALLA
-Dim As Integer i3=0,i2=0,i1=0
-
+Dim As Integer i4,i3=0,i2=0,i1=0,verticalEnOctavaVacia, octavaDeAcorde,copiado=0
+' ÇÇÇ
 ' copia en TrkTemp RollTemp donde esta Roll modificado
  
 For i2 = 1 To MaxPos
    'print #1,"i2",i2
    i3=0
-   For i1=NB To NA 
+   For i1=NB To NA -13
     ' print #1,"i1",i1
-      If RollTemp(i2,i1 ).nota >= 1 and RollTemp(i2,i1 ).nota <=12 Then
+      If  RollTemp(i2,i1 ).nota >= 1 and RollTemp(i2,i1 ).nota <=12 Then
       ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
          'print #1,"copia Tabajo a Temp en GrabaRollaTrack"
          i3=i3+1
@@ -233,8 +233,8 @@ For i2 = 1 To MaxPos
          End If
       EndIf
 
-      If Roll.trk(i2,i1 ).dur= 200 Then ' solo en 13 copia 1 soal vez 
-         
+      If  Roll.trk(i2,i1 ).dur= 200 And copiado=0 Then ' solo en 13 copia 1 soal vez 
+        'OK 
          TrkTemp(i2,13).inst = RollTemp(i2, i1).inst ''=CUByte(tipoescala)
          TrkTemp(i2,13).vol = RollTemp(i2, i1).vol ''= CUByte(notaescala)
 
@@ -243,7 +243,31 @@ For i2 = 1 To MaxPos
          TrkTemp(i2,13).pan = RollTemp(i2, i1).pan
          Print #1,"Actualizar RollaTrack copia var de control inst ",TrkTemp(i2,13).inst
          Print #1,"Actualizar RollaTrack copia var de control vol ",TrkTemp(i2,13).vol
- 
+         copiado=1
+      EndIf
+' pero con acordes debo porner para cada octava la info de Roll en cada linea segun
+' su octava y agregar especificamente la octava ya que esa info se pierde 
+' en cada octava no puedo poner el 201,,el 201 ira una sola vez arriba 
+' cada linea correspondiente a una octava tendra la info de lso acordes para esa
+' octava eso sigue igual solo que esta info se debe leer antes de todo el resto
+' de foram que se sepa que cifrados de acorde van en cada octava...      
+      If Roll.trk(i2,i1 ).pb = 201  Then ' info acorde en una octava
+      'ÇÇÇ
+         Print #1,"RolltempaTrack hay marca 201, i2, i1",i2, i1
+         octavaDeAcorde=1+ (i1-12)/13 
+         Print #1,"i1, octavaDeAcorde,vacio deberia ser 6!! ",i1, octavaDeAcorde
+         i4=13 + octavaDeAcorde 
+         Print #1,"guardado en i4 ",i4
+         Print #1," desde, hasta ",desde, hasta
+         verticalEnOctavaVacia= 12 + (hasta-2)*13 + octavaDeAcorde - desde ' 90 + 6 - 4=92
+         Print #1,"lugar en roll guardado verticalEnOctavaVacia ",verticalEnOctavaVacia
+         Print #1,"Roll.trk(i2,verticalEnOctavaVacia).vol ",Roll.trk(i2,verticalEnOctavaVacia).vol
+Print #1,"Roll.trk(i2,verticalEnOctavaVacia).nota ",Roll.trk(i2,verticalEnOctavaVacia).nota
+Print #1,"Roll.trk(i2,verticalEnOctavaVacia).dur ",Roll.trk(i2,verticalEnOctavaVacia).dur         
+         TrkTemp(i2,i4).vol  = Roll.trk(i2,verticalEnOctavaVacia).vol ' octava
+         TrkTemp(i2,i4).nota = Roll.trk(i2,verticalEnOctavaVacia ).nota ' Rollnota
+         TrkTemp(i2,i4).dur  = Roll.trk(i2,verticalEnOctavaVacia ).dur  ' acordeNro
+         TrkTemp(i2,i4).pb  = 202 
       EndIf
 
       
@@ -824,12 +848,12 @@ End Sub
 ' DEBO PROBAR CON 2 TRACKS MUY PESADOS 
 Sub RollaTrack_ORIGINAL(Track() As sec, ntk As Integer,Roll As inst)
 ' PROCESO EN MEMORIA (DEBERIA SER LLAMADO POR GRABARROLLATRACK ASI SIMPLIFICO ALGO)  
-' 15-01-2022 copio campos control de Roll a Track en lim3=13  
+' 15-01-2022 copio campos control de Roll a Track en lim3=25  
 ' 02-12-2021
 ' condicion Roll debe estar cargado en el editor entonces copiamos Roll a Track
 ' si es ntk=0 estamos copiando el gemelo de Roll en Track...
 ' MaxPos es global y lim3 tambien no s eporque -2 debo copiar todo
-Dim As Integer j,i3,i2,i1
+Dim As Integer j,i3,i2,i1,verticalEnOctavaVacia, octavaDeAcorde
 '------------------------------------------
 ' basada en ActualizarRollyGrabarPista pero en un solo paso, dejare una aola ? veremos
 ' esto debe hacerse solo al pasar por memoria no al grabar
@@ -874,8 +898,9 @@ For i2 = 1 To MaxPos
             Exit For '13-09-2021 tenia 2 for salia del todo ja  
          End If
       EndIf
-
-      If Roll.trk(i2,i1 ).dur= 200  Then ' solo en 13 copia 1 soal vez 
+' con esaclas esta bien, con una sola vez que copie se repita para todas las octavas
+' ÇÇÇ
+      If Roll.trk(i2,i1 ).dur= 200  Then ' solo en 13 copia 1 sola vez ok sigue igual
          
          Track(ntk).trk(i2,13).inst = Roll.trk(i2, i1).inst ''=CUByte(tipoescala)
          Track(ntk).trk(i2,13).vol = Roll.trk(i2, i1).vol ''= CUByte(notaescala)
@@ -887,7 +912,22 @@ For i2 = 1 To MaxPos
          Print #1,"RollaTrack copia var de control vol ",Track(ntk).trk(i2,13).vol
           
       EndIf
-
+' pero con acordes debo porner para cada octava la info de Roll en cada linea segun
+' su octava y agregar especificamente la octava ya que esa info se pierde 
+' en cada octava no puedo poner el 201,,el 201 ira una sola vez arriba 
+' cada linea correspondiente a una octava tendra la info de lso acordes para esa
+' octava eso sigue igual solo que esta info se debe leer antes de todo el resto
+' de foram que se sepa que cifrados de acorde van en cada octava...      
+      If Roll.trk(i2,i1 ).pb = 201  Then ' info acorde en una octava
+      'ÇÇÇ
+         octavaDeAcorde=restar(i1)+1
+         i3=13 + octavaDeAcorde 
+         verticalEnOctavaVacia= 12 + (hasta-2)*13 + octavaDeAcorde - desde ' 90 + 6 - 4=92
+         Track(ntk).trk(i2,i3).vol  = Roll.trk(i2,verticalEnOctavaVacia).vol ' octava
+         Track(ntk).trk(i2,i3).nota = Roll.trk(i2,verticalEnOctavaVacia ).nota ' Rollnota
+         Track(ntk).trk(i2,i3).dur  = Roll.trk(i2,verticalEnOctavaVacia ).dur  ' acordeNro
+          
+      EndIf
    Next i1
    
    If i3 >=2 Then
@@ -914,7 +954,7 @@ Sub TrackaRoll (Track() As sec, byref ntk As Integer, Roll As inst)
 ' como es track a Roll se supone que el track ya esta cargado en memoria
 ' y esta sub pasa de Track a Roll Visual y track 0 
 ' o sea copia track a Roll en memoria
-Dim As Integer i1,i2,i3,Maxposicion
+Dim As Integer i1,i2,i3,Maxposicion,octavaDeAcorde,verticalEnOctavaVacia
  ' print #1,"TrackaRoll 1"   
 ''If ubirtk=3 Then ' estoy conmutando de track durante la edicion
 ' si no estoy en cancion el nto va a ntk 0, siemrep uso ntk y el vector de pnTk
@@ -1000,13 +1040,13 @@ For i2 = 1 To MaxPos
          ' para 71 PianoNota=71 + 5=76.(12-(76 - (int(76/13)*13))= 1 ..ok
          ' es ok si las notas van de 1 a 12 bajando....  
          Roll.trk(i2,i3).nota = CUByte(12 -( i3 - (Int(i3/13))*13) )
-         Print #1,"Roll.trk(i2,i3).nota ",Roll.trk(i2,i3).nota
+     '    Print #1,"Roll.trk(i2,i3).nota ",Roll.trk(i2,i3).nota
      '    print #1,"Roll.trk(i2,i3).nota ",Roll.trk(i2,i3).nota
          'ers=11- semitono  + *po * 13
          '    11 - semitono +(*po) * 13)  103 notacur  12
          '  11 - 12 + 9*13 = -1+ 117 = 116
          Roll.trk(i2,i3).dur  = Track(ntk).trk(i2,i1).dur
-         Print #1,"Roll.trk(i2,i3).dur ",Roll.trk(i2,i3).dur
+    '     Print #1,"Roll.trk(i2,i3).dur ",Roll.trk(i2,i3).dur
          Roll.trk(i2,i3).vol  = Track(ntk).trk(i2,i1).vol
          Roll.trk(i2,i3).pan  = Track(ntk).trk(i2,i1).pan
          Roll.trk(i2,i3).pb   = Track(ntk).trk(i2,i1).pb
@@ -1017,21 +1057,40 @@ For i2 = 1 To MaxPos
    Next i1
 Next i2
 
-'[[[[[ JMG 15-01-2022 ACA DEBO COPIAR EL CAMPO DE CONTROL DE LIM3 EL 13 !!!! ]]]]] 
-Dim k As Integer
+'ÇÇÇ [[[[[ JMG 15-01-2022 ACA DEBO COPIAR EL CAMPO DE CONTROL DE LIM3 EL 13 !!!! ]]]]] 
+Dim  As Integer k,vacio
 For i2=1 To MAxPos
   If Track(ntk).trk(i2,13).dur = 200 Then
-    For K=NB To NA Step 12 ' step 12 queda entre 2 octavas
+    For K=desde To hasta -1 
+    vacio= 12 +(k -1) * 13
     Print #1,"COPIA CONTROLES A ROLL DESDE TRACK INST",Track(ntk).trk(i2,13).inst
-       Roll.trk(i2, K).inst = Track(ntk).trk(i2,13).inst
-       Roll.trk(i2, K).vol  = Track(ntk).trk(i2,13).vol
-       Roll.trk(i2, K).nota = Track(ntk).trk(i2,13).nota ' 30
-       Roll.trk(i2, K).dur  = Track(ntk).trk(i2,13).dur ' 200
-       Roll.trk(i2, K).pan  = Track(ntk).trk(i2,13).pan ' alteracion
+       Roll.trk(i2, vacio).inst = Track(ntk).trk(i2,13).inst
+       Roll.trk(i2, vacio).vol  = Track(ntk).trk(i2,13).vol
+       Roll.trk(i2, vacio).nota = Track(ntk).trk(i2,13).nota ' 30
+       Roll.trk(i2, vacio).dur  = Track(ntk).trk(i2,13).dur ' 200
+       Roll.trk(i2, vacio).pan  = Track(ntk).trk(i2,13).pan ' alteracion
     Next K
   EndIf  
 Next i2
+'ççç
 
+'copiar info de acordes de track a Roll ,.,,,
+For i2=1 To MAxPos
+  For i1 = lim2 To lim3
+      If Track(ntk).trk(i2,i1 ).pb =202  Then ' info acorde en una octava
+      'ÇÇÇ 
+       Print #1,"TrackARoll hay octava de acorde a copiar a roll",Track(ntk).trk(i2,i1 ).vol
+         verticalEnOctavaVacia= 12 + (hasta-2)*13 + Track(ntk).trk(i2,i1 ).vol - desde ' 90 + 6 - 4=92
+         Print #1,"verticalEnOctavaVacia ",verticalEnOctavaVacia
+         Roll.trk(i2,verticalEnOctavaVacia).vol   = Track(ntk).trk(i2,i1).vol ' octava
+         Roll.trk(i2,verticalEnOctavaVacia ).nota = Track(ntk).trk(i2,i1).nota ' Rollnota
+         Roll.trk(i2,verticalEnOctavaVacia ).dur  = Track(ntk).trk(i2,i1).dur  ' acordeNro
+         Roll.trk(i2,verticalEnOctavaVacia ).pb  = 202
+         vacio= 12 +(Track(ntk).trk(i2,i1).vol -1) * 13
+         Roll.trk(i2,vacio).pb=201
+      EndIf
+  Next i1    
+Next i2
 
 ' ajuste de notas no usadas con 0, si uso 181 no se puede cargar notas
 ' el 181 es durante la carga para evitar retrocesos en la carga de notas
@@ -1107,7 +1166,7 @@ End Function
 
 Sub PlayCancion(Track() As sec)
 ' PARA PLAY SOLO USO LA INFO DE NOTAS QUE ESTA ENTRE 1 A lim2=12 en cada track no voy 
-' hasta lim3=13
+' hasta lim3=25
 '''fueradefoco=1
 Dim As Double tiempoDUR
 tiempoDUR=(60/tiempoPatron) / FactortiempoPatron'60 seg/ cuantas negras enun minuto

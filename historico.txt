@@ -1,4 +1,22 @@
--26-01-2022 Borrar cifrado de acorde al borrar acorde...con ALT-Backspace, ok
+-29-01-2022 se recrearon *.rtk, para ello en una version anterior se agrego rtk a roll como nuevo menu
+ tambien en la version actual. Con la version vieja(25 de mi control) se paso a roll y con la version nueva
+se paso de roll a track. Nuevo en menu Archivo->"Grabar una pista rtk a roll TrackaRoll".
+Los archivos rtk que tenian su archivo roll se los borro y recupero grabando de nuevo como rtk.
+-29-01-2022 Se corrigio barrido de recalcompas hasta NA-13 (no marcaba bien)
+ se probo en cancion agregar cifrado de acorde grabar a los rtk y volver a cargar funciona ok.
+
+-[27-01-2022] Se agrego una octava mas a los archivos *.rtk se verificaron  las rutinas de conversion
+ transformacion trak a roll y viceversa guardar todo lo de escalas y acordes en track y poder pasarlos a Roll
+ y viceversa.Todos los archivos actuales de rtk no servirán más hay que borrarlos todos y rehacer probando
+ el nuevo formato y las conversiones, o cargarlos con la version anterior del programa y grabarlos como *.roll.
+ Grabar y cargar Roll con escalas y acordes anda ok, rollaTrack de menu al cargar el track [00]
+ recupèra bien las escala y cifrados de acorde de track a Roll ok.(falta ver que pasa en cancion)
+
+-[27-02-2022] Se volvio a usar otro Thread para dibujar la pantalla (lo eliminaba para debug)
+ Se agrego la sub 'barrePenta' para que en un llamado al nuevo thread barra todas las octavas.
+-26-01-2022 Acordes 6 y Sus2
+-26-01-2022 Borrar cifrado de acorde al borrar acorde...con ALT-Backspace, pulsar 1ero Backspace o retroceso
+ luego pulsar ALT. ok
 -26-01-2022 Se minimizo interferencia entre lso comandos Ctrl-click derecho acordes, y Ctrl+variables 
  para interlineado.(como ctrl es comun conviene pulsarlo despues o bien simultaneo con la otra accion )ok
 -26-01-2022 Fix Superposicion escalas y cifrado de acorde.Ej ok 8-I-C.roll ok
