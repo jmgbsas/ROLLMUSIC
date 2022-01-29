@@ -1,3 +1,12 @@
+-29-01-2022 vuelta atras con modi por recalcompas to NA-13 produce mal barrido. se debera buscar otra la razon
+ de la falla de recalcompas en ciertos casos. Se pensó seria el tomar lso valores de control de cifrado de acorde
+ y escalas como valores a procesar por recalcompas, puede ser pero ademas hay algo mas que se debe encontrar que
+ afecta al barrido....fixed en vez de cortar el barrido por encima de los controles no se lso procesa
+      For i= NB To NA  ' 29-01-2022 vuelta atras 
+      If Roll.trk(j,i).pb = 202 Or Roll.trk(j,i).pb=201 Or Roll.trk(j,i).dur=200 Then
+         Continue for
+      EndIf
+
 -29-01-2022 se recrearon *.rtk, para ello en una version anterior se agrego rtk a roll como nuevo menu
  tambien en la version actual. Con la version vieja(25 de mi control) se paso a roll y con la version nueva
 se paso de roll a track. Nuevo en menu Archivo->"Grabar una pista rtk a roll TrackaRoll".

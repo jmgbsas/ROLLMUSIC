@@ -711,7 +711,10 @@ On Local Error GoTo errorRecal
       'Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
       cont=0
-      For i= NB To NA -13 ' 29-01-2022
+      For i= NB To NA  ' 29-01-2022 vuelta atras 
+      If Roll.trk(j,i).pb = 202 Or Roll.trk(j,i).pb=201 Or Roll.trk(j,i).dur=200 Then
+         Continue for
+      EndIf
        valdur => Roll.trk(j,i).dur ' de 1 a 180
        ' al cargr tenemos 4 grupos de 16 de duraciones identicas que se repiten
        ' 1-45,46-90,91-135,136-180 , el indicemeindicaa cual grupo pertenece, y
@@ -759,7 +762,7 @@ On Local Error GoTo errorRecal
       EndIf
       Dim As Integer iahas = mayorgrupo * 45 
       
-       If i=NA -13 Then ' 29-01-2022
+       If i=NA  Then ' 29-01-2022 vuelta atras
 
         'print #1,"i=NA i: ";i;" NA: ";NA;" Mayor ";mayor;" grupo:"; mayorgrupo
         For ia= iades To iahas ' tresillos es grupo 
