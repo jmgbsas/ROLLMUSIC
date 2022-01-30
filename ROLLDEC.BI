@@ -585,8 +585,8 @@ Type poli Field=1 ' para guardar la secuencia
  pan As  UByte =0 ' paneo
  pb  As  UByte =0 ' pitch bend
  inst As UByte =0' instrumento para cada nota podra ser distinto
- tick As Integer =0' 128 tiene la redonda, 1 la cuartifusa todavia no la uso
- posn As Integer =0' de roll
+ tick As ubyte =0' 128 tiene la redonda *1,75 segun pesoDur, 1 la cuartifusa o garrapatea todavia no la uso
+' posn As Integer =0' de roll todavia no lo uso para generar secuencia
  acorde  As ubyte =0 ' 1 a 12 , son el se hara el sort    
 End Type 
 ' comentarios Para Futuro:

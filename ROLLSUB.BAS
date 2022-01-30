@@ -1769,7 +1769,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
       nombre = titulos(ntk)
      ' Print #1,"en menu nombre ",nombre
    EndIf
-   If Len(nombre) > 60  Then
+   If Len(nombre) > 10  Then
      muestra="C:\..\" + Right (nombre,60)
    Else
      muestra =nombre  

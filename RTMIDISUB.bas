@@ -2038,24 +2038,27 @@ Else ' if ind posiion nueva > pasozona1 movemos a derecha
 print #1,"ENTRA POR DERECHA POSINUEVA < MaxPos"
 print #1,"posinueva ",posinueva
 print #1,"MaxPosold ",MaxPosold
-print #1,"posivIEJa ",posivieja
+print #1,"posivIEJa ",posivieja ' es pasozona1 inamovible
   If posinueva < MaxPos then
-    MaxPos=MaxposOld + posinueva - posivieja -1 ' -1 01-12-21
+    MaxPos=MaxposOld + pasozona2 - pasozona1 +1 ' -1 01-12-21
   EndIf
 print #1,"MaxPos ",MaxPos
  
-  hastat=Maxpos
-  desdet=posivieja+1
-  inc=MaxPosOld
+  'hastat=Maxpos
+  desdet=posinueva
+  'desdet=posivieja+1 30-01-2022 
+  hastat=posinueva-pasozona1+pasozona2 +1
+  'inc=MaxPosOld
+  inc=pasozona1
 print #1,"hastat ",hastat
-print #1, "desdet=inc ",desdet
+print #1, "desdet,inc ",desdet,inc 
 'print #1,"UBOUND(ROLL,1)", UBOUND (ROLL.TRK,1)
 'print #1,"LBOUND(ROLL,1)", LBound (ROLL.TRK,1)
 'print #1,"UBOUND(ROLL,2)", UBOUND (ROLL.TRK,2)
 'print #1,"LBOUND(ROLL,2)", LBOUND (ROLL.TRK,2)
 'print #1,"inc=posivieja+1 ",inc
   '        mAXpOS TO  POSIVIEJA+1          inc=MAxPosOld   
-  For jpt= hastat To desdet Step -1
+  For jpt= desdet To hastat
      For  i1= comienzo To final
        Roll.trk(jpt,i1).nota = Roll.trk(inc,i1).nota
        Roll.trk(jpt,i1).dur  = Roll.trk(inc,i1).dur
@@ -2074,8 +2077,8 @@ print #1, "desdet=inc ",desdet
        EndIf
 
      Next i1
-     inc=inc-1
-     If inc < posivieja +1  Then
+     inc=inc+1
+     If inc = pasozona2+1  Then
         Exit For
      EndIf
   Next jpt
@@ -2199,8 +2202,9 @@ Track(ntk).trk(posn,i).pb   = vecs(i).pb
 
 
 Next i
-
-
+' el maximo valor  de estos ticks es 128 la q sigue de semifusa garrapatea
+' y eo maximo de duracion es 1,75 * 128 segun pesoDur=224 ticks
+' ergo a tick lo puedo representar por un UBYTE como siempre
 ' SUPONGO ACORDE DE DISTINTAS DURACIONES
  FOR  I= 1 TO 12 'PTrack.trk(posn,I).acorde
     If Track(ntk).trk(posn,I).nota > 0 And  Track(ntk).trk(posn,I).dur >= 1 And _ 
@@ -2208,7 +2212,7 @@ Next i
        If posn = 1 Then 
           Track(ntk).trk(posn,I).tick=0
        Else   
-          Track(ntk).trk(posn,I).tick=(Pesodur(Track(ntk).trk(posn,I).dur)/d7)*128 + _
+          Track(ntk).trk(posn,I).tick=(pesoDur(Track(ntk).trk(posn,I).dur)/d7)*128 + _
           Track(ntk).trk(posn-1,1).tick
        EndIf      
       ' guardar si es > 0 ON, notapiano,vol,pan,pb,inst y guargar tick=0

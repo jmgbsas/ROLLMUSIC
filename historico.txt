@@ -1,3 +1,11 @@
+-20-01-2022 Fixed:Copiar una zona antes de MaxPos N veces corregido empezaba por 2da posicion desde la 1era de la zona.
+Test se copio 500 veces IIIIII-500-veces-ACORDEDE2-AF+F+F+F-OK-MALPLAY-REVISAR.roll
+se genero la version rtk
+IIIIII-500-veces-ACORDEDE2-AF+F+F+F-OK-MALPLAY-REVISAR.rtk
+Se paso a UBYTE desde integer los ticks de poli de ese modo *.rtk ahora es unpoco menor a *.roll
+pero tiene mas datos el ticks de cada duracion de notas, con eso se podra reconstruir la secuencia en ticks.
+Pendiente Construir: Para copiar usaremos undo tambien con Alt-U ???
+-29-01-2022 RecalCompas fixed. 
 -29-01-2022 vuelta atras con modi por recalcompas to NA-13 produce mal barrido. se debera buscar otra la razon
  de la falla de recalcompas en ciertos casos. Se pensó seria el tomar lso valores de control de cifrado de acorde
  y escalas como valores a procesar por recalcompas, puede ser pero ademas hay algo mas que se debe encontrar que

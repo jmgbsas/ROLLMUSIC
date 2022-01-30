@@ -254,7 +254,7 @@ For i2 = 1 To MaxPos
       If Roll.trk(i2,i1 ).pb = 201  Then ' info acorde en una octava
       'ÇÇÇ
          Print #1,"RolltempaTrack hay marca 201, i2, i1",i2, i1
-         octavaDeAcorde=1+ (i1-12)/13 
+         octavaDeAcorde=1+ (i1-12)/13 ' formula de vacio lineas entre octavas
          Print #1,"i1, octavaDeAcorde,vacio deberia ser 6!! ",i1, octavaDeAcorde
          i4=13 + octavaDeAcorde 
          Print #1,"guardado en i4 ",i4
@@ -425,7 +425,12 @@ print #1,"termino copia a Trktemp, maxpos, posn ", maxpos, posn
 '--FIN--CODIGO SIMILAR A ROLLATRACK SI SE CAMBIA ACA SE DEBE CAMBIAR HALLA Y VICEVERSA
 '/
 
-ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim3)
+'''ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim3) 30-01-2022 porque cantTicks?
+'ÇÇÇ  ojo espero no haga cancelaciones CantTicks siemrp es mayor a MAxPos o en 
+' nucleo se agranda ? fijarse,,,,si en nucleo se redimensiona Track y Roll si
+' hace falta sin borrar datos..
+ReDim (Track(ntk).trk ) (1 To Maxpos,1 To lim3)
+
 
 ' copiamaos a ntk que sera 0 al lado de roll, o ntk o ntk +1 segun sea el caso
 ' en el path de cancion
@@ -649,7 +654,7 @@ End Sub
 Sub GrabarRollaTrack ( cambiaext As Integer ) ' SE USA PARA TODO 
 ' las 3 1eras funciones pueden hacerce en roll sin problemas..roll lo deduce
 ' de la entrada y las variables globales. la 4ta no debe llamarse desde Control
-'1) Convierte y Graba un Roll cargado de disco, como Track[00] fuera de cancion. conversion
+'1) Convierte y Graba un Roll cargado de disco, como Track [00] fuera de cancion. conversion
 ' exclusivo de Roll no de Control (1,0,FALSE), es conversion no copia 
 ' cambiaext=1 porque pasa de .roll a .rtk  
 '2) convierte un Roll a trk y graba en cancion, igual que antes pero 

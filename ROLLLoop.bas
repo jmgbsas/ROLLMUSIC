@@ -580,6 +580,8 @@ End Sub
 
 Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
 '------------------
+
+
   For i = desde To hasta 
     nro = i 
   ' si ahce falta ejecutar mas de un Penta podremos usar threads
@@ -594,6 +596,7 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
  
   Next
   
+
   
 End Sub
 
@@ -853,67 +856,13 @@ For K=desde To hasta -1 ' queda entre 2 octavas ,corregido  26-01-2022
 EndIf
 
 
-
-  Dim tlock As Any Ptr = MutexCreate() 
+ 
   Dim ta As Any Ptr = ThreadCall barrePenta (c, Roll )
     ThreadWait ta
-  MutexDestroy tlock
 
 
-
-/'
-'------------------
-  For i = desde To hasta 
-    nro = i 
-  ' si ahce falta ejecutar mas de un Penta podremos usar threads
-  ' asi funciona mejor o no? igual debe esperar a que termine el thread
-   ScreenSync 
-  Dim tlock As Any Ptr = MutexCreate() 
-  Dim ta As Any Ptr = ThreadCall creaPenta (c, Roll )
-    ThreadWait ta
-  MutexDestroy tlock
-'  ScreenSync  
-'   creaPenta (c, Roll )
-  If *po = 99 Then
-     *po = hasta -1 ' 9 po ejemplo
-     Exit For
-  EndIf
-  cairo_stroke(c)
- 
-  Next
-'/
-
-
-''For i = desde To hasta ' nro_penta
-'' creaPenta (c, i, po,InicioDeLectura )
-'' If *po = 99 Then
-''  *po = hasta - 1
-''  Exit For
-'' EndIf
-''cairo_stroke(c)
-''Next
-
-''''''''estos 3 comadnos con los de arriba son para scale o translate------
-' pero se pierde totalmenmte la proporcionalidad manual habrai que ver como sincronizarlas
-
-'cairo_restore (c) ''' comentado esto es solo para translado
-
-'cairo_stroke(c) ' comentado Escribe desde la fuente source a la mask ...(peden ser varias fuentes)
-'  cairo_save (c) ' comentado
-
-''''''''''''--------------------------------------------------
-'Var surf2 = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, 50, stride)
-'Var cm = cairo_create(surf2)
-' cm no lo estoy usando por ahora pero las surf son transparentes
-'a lo de abajo, si doy click podria responderme la otra superficie,sigue
-'siendo lamisma ,intentare usar view de fb,,,,
-' y sea enmenu o con SC_L puedo cargar desde disco,...sepierdela
-' posicion aprentemente elcursorqueda clavado en 1 o 0 y no navega 5.7.3.1
-' solo pasando por Edicion vuelve a navegar
-'If mousey > 50 Then
-'   play=0
-'EndIf
 pubi=0
+
 menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
 
 botones(hWnd, c ,cm, ANCHO,ALTO) ' este despues sinocrash
@@ -3612,7 +3561,7 @@ ButtonGadget(2,530,30,50,40," OK ")
      If pasoZona1 = 0 Then  ' selecion 1er posicion de la zona
         pasoZona1=  pasox ' pos de la 1er ventana
         pasoNota=0 
-   '     print #1,"pasoZona1=",pasoZona1;" pasoNota=";pasoNota
+        print #1,"pasoZona1=",pasoZona1;" pasoNota=";pasoNota
         Exit Do
      EndIf
 
@@ -4076,6 +4025,12 @@ ButtonGadget(2,530,30,50,40," OK ")
    print #1,"entra a copiar "
     nota=0
     indicePos=(mousex- gap1 )/anchofig + posishow
+    
+    Print #1,"VA A COPIAR DESDE POSICION INDICEPOS ",indicePos
+    Print #1,"VA A COPIAR DESDE POSICION gap1 ",gap1
+    Print #1,"VA A COPIAR DESDE POSICION anchofig ",anchofig
+    Print #1,"VA A COPIAR DESDE POSICION POSishow ",posishow
+    Print #1,"VA A COPIAR DESDE POSICION mousex ",mousex
     copiarZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
     If numero=0 Then
     print #1,"entra a copiar numero 0"
@@ -4093,7 +4048,7 @@ ButtonGadget(2,530,30,50,40," OK ")
       
     If CantTicks - MaxPos < nuevaspos  Then
      '  GrabarArchivo(1) ''hacer un backup !!! 
-      CantTicks= nuevaspos + 1 ' incremento el tamaño en 1000 posiciones =1 min
+      CantTicks= nuevaspos + 2 ' incremento el tamaño en 1000 posiciones =1 min
       print #1,"incremento final de CantTick ", CantTicks 
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
       ReDim Preserve compas(1 To CantTicks)
@@ -4101,7 +4056,7 @@ ButtonGadget(2,530,30,50,40," OK ")
       ReDim Preserve (Track(ntk).trk)(1 To CantTicks,1 To lim3)
       print #1,"Redim exitoso"
     EndIf
- print #1,"va a copiar FOR lz "
+ print #1,"va a copiar FOR lz,numero de veces ",numero
 '---
     
        For lz = 1 To numero
