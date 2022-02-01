@@ -1,10 +1,22 @@
--20-01-2022 Fixed:Copiar una zona antes de MaxPos N veces corregido empezaba por 2da posicion desde la 1era de la zona.
+-01-02-2022 tratndo de pasar NA to NA-13 donde haga falta...y pendiente hay que ver todos los move e insert
+ de datos si movemos algo que tiene controle se debe mover tambien los otros campos ademas de dur y nota
+ o sea vol, pb, inst etc...pendiente pendiente....(movedato, moveresto por ejemplo) o sea estoy movimientos
+si debe incluir hasta NA completo pero ademas faltaria mover mas datos de control por ejemplo.
+OJO YA CAMBIE NA POR NA-13 EN TODO RECALCOMPAS DE NUEVO 
+-30-01-2022  Seguimos con C/x ....(ver si recalcompas podemos limitar NA-13 porque no andubo bien 
+ pero deberia andar,,,no debe barrar desde NA-13 to NA no hace falta...)
+-30-01-2022 se redujo el ancho del cursor de 3/4 a 1/4 delacnhco de la figura-
+-30-01-2022 FIX:se arreglo trasponerRoll para pasozona1 y 2, se reubico el comando por eso dejo de andar. 
+ SE CORRIGIO trasponer con ALT+click que pone nota=13..ya anda y tambien traspone en todas las octavas.
+-30-01-2022 se empezo a poner la nota x en cifrado C/x en las inversiones esta a medio camino, pero saltó que no
+funcionaba ningun trasponer, 
+-30-01-2022 El undo para copiar tambien se hace con Alt-U por columna con cada pulso.
+-30-01-2022 Fixed:Copiar una zona antes de MaxPos N veces corregido empezaba por 2da posicion desde la 1era de la zona.
 Test se copio 500 veces IIIIII-500-veces-ACORDEDE2-AF+F+F+F-OK-MALPLAY-REVISAR.roll
 se genero la version rtk
 IIIIII-500-veces-ACORDEDE2-AF+F+F+F-OK-MALPLAY-REVISAR.rtk
 Se paso a UBYTE desde integer los ticks de poli de ese modo *.rtk ahora es unpoco menor a *.roll
 pero tiene mas datos el ticks de cada duracion de notas, con eso se podra reconstruir la secuencia en ticks.
-Pendiente Construir: Para copiar usaremos undo tambien con Alt-U ???
 -29-01-2022 RecalCompas fixed. 
 -29-01-2022 vuelta atras con modi por recalcompas to NA-13 produce mal barrido. se debera buscar otra la razon
  de la falla de recalcompas en ciertos casos. Se pensó seria el tomar lso valores de control de cifrado de acorde

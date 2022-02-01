@@ -127,7 +127,8 @@ Dim Shared NotasEscalaArmado2 (1 To 24) As String *2 => _
 {"C ","Db","D ","Eb","E ","F ","Gb","G ","Ab","A ","Bb","B ","C ","Db","D ","Eb","E ","F ","Gb","G ","Ab","A ","Bb","B "}
 Type claseac
   clase As String * 7
-  nro As UByte
+  nro As Integer
+ ' tipo As integer ' 1 funfamental, 3 1era inv,5 2da inv, 7 3era inv
 End Type
 ' Para Mostrar Acordes en Roll
 Dim Shared ClaseAcorde(1 To 100) As claseac => _
@@ -139,8 +140,11 @@ Dim Shared ClaseAcorde(1 To 100) As claseac => _
  ("7+     ",29),("7+/    ",30),("7+/    ",31),("7+/    ",32), _
  ("º7     ",33),("º7/    ",34),("º7/    ",35),("º7/    ",36), _ 
  ("(6)    ",37),("(6)/   ",38),("(6)/   ",39),("(6)/   ",40), _ 
- ("Sus2   ",41),("Sus2/  ",42),("Sus2/  ",43)} 
-
+ ("Sus2   ",41),("Sus2/  ",42),("Sus2/  ",43)}
+Dim Shared deltanota(1 To 43) As Integer => _
+{0,-8,0,0,0,0,0,0,0,0,0,0 ,0,0,0,0,0,0,0,0, 0,0 ,0,0,0,0,0,0,0,0, _
+ 0,0 ,0,0,0,0,0,0,0,0, 0,0 ,0}     
+'Dim Shared As integer nota3era=0,nota5ta=0,nota7ma=0
 Type esc1 
   nombre   As String
   nota     As string
@@ -667,7 +671,7 @@ Type notas_agregadas Field=1
 End Type
 
 Type melodia_undo Field=1
-  As Integer trk
+  As Integer trk  ' NRO DE TRACK POR DEFAULT 0
   As Integer posn
   'As notas_agregadas columna
 End Type
@@ -705,7 +709,8 @@ Dim Shared translado As Integer = 1
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
 Dim shared As Integer i,  posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
 Dim Shared As Integer octaroll,instancia=0
-Dim Shared As BOOLEAN comEdit, resize
+Dim Shared As BOOLEAN COMEDIT, resize
+COMEDIT=FALSE
 
 Dim Shared po As Integer Ptr
 Dim Shared e As EVENT
@@ -757,7 +762,7 @@ Declare Sub ReCalCompas(Roll As inst)
 Declare Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As ubyte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As integer)
 Declare Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)
 Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As string )
-
+Declare Function lugarNota (lugar As integer) As Integer
 
 
 COMMON Shared As Long eventc

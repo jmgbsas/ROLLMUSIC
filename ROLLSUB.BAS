@@ -260,7 +260,7 @@ On Local Error GoTo errorCalc
     Roll.trk(posn,(notaOld-1 +(estoyEnOctava -1) * 13)).dur = 181
    EndIf
 '------zzz
-   For noct = desde To hasta
+   For noct = desde To hasta -1 '01-02-2022
      For i= 0 To 11 ' gracias a esto anda acordes¿?
        If i= 12 -nota And noct = estoyEnOctava Then
          Continue For
@@ -338,7 +338,7 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
    EndIf
 '------zzz
 
-   For noct = desde To hasta
+   For noct = desde To hasta -1 ' 01-02-2022
      For i= 0 To 11 ' gracias a esto anda acordes¿?
        If i= 12-nota And noct = estoyEnOctava Then
          Continue For
@@ -668,7 +668,7 @@ Sub mayorDurEnUnaPosicion (ByRef posn as integer)
  Dim As Integer i, j,mayor,ia ,valdur
  mayor=1
  j = posn
- For i= NB To NA
+ For i= NB To NA -13
   valdur => Roll.trk(j,i).dur
   If  valdur >= 1 And valdur <=181 Then
    'print #1, "DUR mayor";DUR, mayor
@@ -676,7 +676,7 @@ Sub mayorDurEnUnaPosicion (ByRef posn as integer)
     mayor=pesoDur(valdur)
     ' print #1, " DUR MAYOR";DUR,mayor
    EndIf
-   If i=NA Then
+   If i=NA -13 Then
 
     For ia=1 To 180
      If mayor=pesoDur(ia) Then
@@ -706,12 +706,12 @@ On Local Error GoTo errorRecal
      Dim As Integer i,j , mayor,ia,valdur,cont, semi,i2
      cont=0
      'print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
-     Dim As Integer lim1, lim2, grupo, mayorgrupo, noct
+     Dim As Integer tope1, tope2, grupo, mayorgrupo, noct
      For j = 1 To MaxPos -2
       'Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
       cont=0
-      For i= NB To NA  ' 29-01-2022 vuelta atras 
+      For i= NB To NA -13 ' 01-02-2022  
       If Roll.trk(j,i).pb = 202 Or Roll.trk(j,i).pb=201 Or Roll.trk(j,i).dur=200 Then
          Continue for
       EndIf
@@ -729,17 +729,17 @@ On Local Error GoTo errorRecal
        ' las duraciones e repiten cada 45 de modo que no importan los incr
         Select Case valdur
          Case  1   To 45
-          lim1=1:lim2=45:grupo=1:incr=0
+          tope1=1:tope2=45:grupo=1:incr=0
          Case  46  To  90
-          lim1=46:lim2=90:grupo=2:incr=45
+          tope1=46:tope2=90:grupo=2:incr=45
          Case  91  To  135
-          lim1=91:lim2=135:grupo=3:incr=90
+          tope1=91:tope2=135:grupo=3:incr=90
          Case  136  To  180
-          lim1=136:lim2=180:grupo=4:incr=135
+          tope1=136:tope2=180:grupo=4:incr=135
         ' POR ESTO NOANDABA SILENCIOS LO LIMITE ANTES Continue For,For V19 incluimos silencios en recaocompas!!!
         End Select
 
-        If  valdur >= lim1 And valdur <=lim2 And lim1 > 0 And lim2> 0 Then
+        If  valdur >= tope1 And valdur <=tope2 And tope1 > 0 And tope2> 0 Then
         ' print #1, "Valdur i ";valdur ; i ; " grupo ";grupo;" figura ";figura(valdur)
          ' print #1,"i NB ";i,NB
          If  cont=0   Then 'mira duraciones
@@ -762,7 +762,7 @@ On Local Error GoTo errorRecal
       EndIf
       Dim As Integer iahas = mayorgrupo * 45 
       
-       If i=NA  Then ' 29-01-2022 vuelta atras
+       If i=NA -13 Then ' 01-02-2022 vuelta atras
 
         'print #1,"i=NA i: ";i;" NA: ";NA;" Mayor ";mayor;" grupo:"; mayorgrupo
         For ia= iades To iahas ' tresillos es grupo 
@@ -851,7 +851,7 @@ Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As ubyte, B
 ' recorro la columna
 Dim As Integer i1,j1=0, DurMen,DurMay
 
-  For i1 = NB To NA
+  For i1 = NB To NA -13 ' 01-02-2022
     If Roll.trk(ejex,i1).nota >=1 And Roll.trk(ejex,i1).nota <=12 Then 
      If Roll.trk(ejex,i1).dur >=1 And Roll.trk(ejex,i1).dur <= 180 Then
         Print #1,"=> VEO DATOS i1,nota,dur ", i1, Roll.trk(ejex,i1).nota,Roll.trk(ejex,i1).dur
@@ -915,7 +915,7 @@ On Local Error GoTo errorhand
 '  EndIf
     
  'If play=1 Or playb=1 Then
-     wc=3*anchofig/4
+     wc=anchofig/4 '31-01-2022
  'Else
  '    wc=inc_penta
  'EndIf 
@@ -924,7 +924,9 @@ On Local Error GoTo errorhand
  ' para B 38.5 27 notaold=1  <- actualizar please
  ' para C 38.5 25 notold=12
  'n esla posicion al cargar datos deberia llamar a curor creo,,,probando
-
+ 'curpos es la posicion relativa horizontal del cursor cuando el barrido esta
+ ' detenido, es una foto del vector Roll inmovilizado horizontalmente, pero
+ ' puedo navegar con cursor.,
  'If s8=1 Then
  '   s8=0
  '   'curpos=(mousex- gap1 )/35 ' 01-07-2021
@@ -932,7 +934,7 @@ On Local Error GoTo errorhand
  'EndIf
  'curposold=curpos
  
- If cursorVert=1 Or cursorVert= 2 Then  ' vertical comEdit=TRUE
+ If cursorVert=1 Or cursorVert= 2 Then  ' vertical COMEDIT=TRUE
 
   cairo_move_to  (c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
   cairo_rectangle(c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  ,wc ,inc_Penta) '13-07-2021 inc_penta/2 por inc_penta
@@ -1739,7 +1741,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 
  Dim oclog As Integer
  oclog = 8 - (estoyEnOctava-1) ' jmg ojo hay un hardcodeo ¿?
- 'If comEdit = TRUE Then
+ 'If COMEDIT = TRUE Then
  '  cairo_set_source_rgba c, 0, 1, 0, 1
  '  menuNew=2
  'Else
@@ -1900,7 +1902,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    '      posishow = posicion
    '  EndIf
    cairo_move_to(c, 0, 36 )
-   If comEdit= TRUE   Then
+   If COMEDIT= TRUE   Then
     cairo_set_source_rgba c,0,1,0,1
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -1915,7 +1917,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 indicePos=(mousex- gap1 )/anchofig + posishow 
 Dim As Integer veonota, veocopi 
 ' indicePos < MaxPos fix 02-09-21
-If indicePos >gap1 And nR <=NA And indicePos < MaxPos Then
+If indicePos >gap1 And nR <=(NA -13) And indicePos < MaxPos Then
    veonota=Roll.trk(indicePos, nR).nota ' NA-nr cambiado a nR jmg 
 EndIf
 If copiar >0 Then
@@ -1954,7 +1956,10 @@ EndIf
             For i=NB To NA 
               For r1= posn+2 To CantTicks
                  Roll.trk(r1,i).nota=0
-                 Roll.trk(r1,i).dur=0 
+                 Roll.trk(r1,i).dur=0
+                 Roll.trk(r1,i).vol=0
+                 Roll.trk(r1,i).pan=0
+                 Roll.trk(r1,i).inst=0 
               Next r1 
             Next i 
         
@@ -3915,6 +3920,17 @@ Dim p6 As Byte Ptr
  
   
 End Sub
+Function lugarNota (lugar As integer) As Integer
+          lugar=nE-lugar
+        If lugar <= 0 Then
+           lugar=lugar + 12
+        EndIf            
+        If lugar >= 12 Then
+           lugar=lugar -12 
+        EndIf  
+lugarNota=lugar
+End Function
+
 Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
   ' para mayo4      n1=4 y n2=7
   ' para menor      n1=3 y n2=7

@@ -18,8 +18,8 @@
 ' usado por el usuario !!!! OK Y AANDA
 ' el borrado de columna esta defectuoso hay que dar 0 y luego 12 x en toda la octava para
 ' que borre mejor usaremos marcas de zona para borrar.
-' dejo de andar marcado de zonas porque habia un exit do en Comedit=False con mousex>50
-' se movio zonas dentro de mousex> 50 y luefo Comedit=false volvio a funcionar
+' dejo de andar marcado de zonas porque habia un exit do en COMEDIT=False con mousex>50
+' se movio zonas dentro de mousex> 50 y luefo COMEDIT=false volvio a funcionar
  ' se intento usar Byte en vez de Ubyte para usar negativos pero hay qu emodificar mucho
  ' se usara IF variabrlee > 127 par ausar por ejemplo Vol > 127 para indicar escalas...
  ' Esta nota base...es Tonica 3era 5ta 7ma ...
@@ -29,7 +29,7 @@
  ' rooloop 2673 menu contextual acordes desarrollo 06-12-2021
  ' correccion Clcik end EDIT 06-12-2021 s3=0 movido a y > 50 
  ' correccion de abrir nota si menor=mayor no hace nada, allevantar click rompia todo
- ' v23 fraccionar automaticamente en comEdit cursor al poner notas menores o 
+ ' v23 fraccionar automaticamente en COMEDIT cursor al poner notas menores o 
  ' mayores en duracion a otra nota en acorde existente, tambien armar acordes desde una nota
  ' existente como tonica mayores menores etc,,buscar al tonica si consideramos es una 3era
  ' o una 5ta..
@@ -440,7 +440,7 @@ End
 Dim As String driver
 
 posmouseOld = 0:posmouse = 0
-comEdit = FALSE:resize = FALSE
+COMEDIT = FALSE:resize = FALSE
 po = @octaroll
 *po = hasta -1 ' test 09-09-2021 
 s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0:s8=0
@@ -844,6 +844,7 @@ abrirRoll=0
 
 
 Do
+  COMEDIT = FALSE
 param.titulo ="RollMusic Ver 0.4.4.0"
 Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)

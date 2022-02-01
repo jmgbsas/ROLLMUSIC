@@ -1319,7 +1319,7 @@ Dim As Double tinicio
  'cursorHori = 1
  'agregarNota=0
  'menuMouse = 0
- 'comedit=TRUE
+ 'COMEDIT=TRUE
 'Dim As tEvent Ptr newEvent
 jply=0:curpos=0
 mousex=0
@@ -1684,43 +1684,50 @@ Next
 End Sub
 Sub TrasponerGrupo( cant As Integer, Roll As inst, encancion As Integer)
 ' ANDA BIEN, ES EQUIVALENT EEMPEIZA EN EL EXTREMO QUE ATACA BAJANDO LA POSICION
-' DE LA COPIA ES LO MISMO PEOR INVERTIDO FUNCIONA IGUAL, LO IMPORTANE DEL CAMBIO
-' FUE EN LA SUBRUTUNA SUMAR COMO EL VECTOR EMPIEZA DE CERO 0 EL ESPACIO ENTRE
+' DE LA COPIA ES LO MISMO PERO INVERTIDO FUNCIONA IGUAL, LO IMPORTANE DEL CAMBIO
+' FUE EN LA SUBRUTUNA SUMAR COMO EL VECTOR EMPIEZA DE CERO 0, EL ESPACIO ENTRE
 ' OCTAVAS NO QUEDA MULTIPLO DE 13 ERGO LE SUMO 1 AHORA,,,ANTES DE AHCER EL MOD 13
+' 31-01-2022 CORREGIDO EN BASE A tRASPONERROLL SEGUN OCTAVA NUEVA TIENE SOLO UN 
+' SOLO TRASPONE DENTRO DE LA MISMA OCTAVA HAY QUE VER SI PODEMOS HACER LO MISMO
+' QUE CON TRASPONERROLL Y MOVER A OTROS OCTAVAS....
+
 print #1,"ARRANCA TRASPONER GRUPO"
 Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,b1=0
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
 ' cant=(-1) si pulso flecha DOWN
 If cant < 0 Then ' DOWN
- comienzo= NA
- final = NB  
- inc= -1
+ comienzo= NB 
+ final = NA -13  
+ inc= 1
 EndIf
 If cant > 0 Then 'UP
- comienzo= NB
- final = NA  
- inc=  1
+ comienzo= NA -13
+ final = NB  
+ inc=  -1
 EndIf
+
 Dim As Integer desdet, hastat
    desdet=1   
    hastat= MaxPos   
 pasoNota=13 ' es 12 25 38 en el vector real 
+' 30-01-2022 CORREGIDO en base a la verion ROLLMUSIC-0.1.0.0.0-U-TRACKS 
 For jpt = desdet To hastat  
   For i1= comienzo To final Step inc
-     If cant < 0 Then  ' DOWN  
-        ind = i1+cant 
-        ind = ind + sumar(ind)
-     EndIf
      If cant > 0 Then  ' UP  
         ind = i1 + cant 
+        ind = ind + sumar(ind)
+     EndIf
+
+     If cant < 0 Then  ' DOWN  
+        ind = i1+cant 
         ind = ind - sumar(ind)
      EndIf
    
     If ( (Roll.trk(jpt, i1).nota >= 0) And Roll.trk(jpt, i1).nota <= 181 ) _
        OR (Roll.trk(jpt, i1).dur >=0 And Roll.trk(jpt, i1).dur <= 181 ) Then ' es semitono
        
-       If ind >= NB And ind <= NA  Then
+       If ind >= NB And ind <= NA -13 Then
             If pasoNota = Roll.trk(jpt,i1).nota And (Roll.trk(jpt,ind).nota=0 Or Roll.trk(jpt,ind).nota=181 )  Then
                Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
                Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
@@ -1731,6 +1738,7 @@ For jpt = desdet To hastat
                If Roll.trk(jpt,ind).nota > 0 And Roll.trk(jpt,ind).nota <= 13  Then
                   Roll.trk(jpt,i1).nota = 181
                   Roll.trk(jpt,i1).dur  = 0
+                  Print #1,"encontro una nota 13"
                EndIf 
                Roll.trk(jpt,i1).vol  = 0
                Roll.trk(jpt,i1).pan  = 0
@@ -1739,22 +1747,26 @@ For jpt = desdet To hastat
                               
             Else                
                If Roll.trk(jpt,ind).nota >=1 And Roll.trk(jpt,ind).nota <=12  Then
-                   If cant < 0 Then  ' DOWN  
-                      ind = ind - cant 
+                   If cant > 0 Then  ' UP  
+                      ind = ind + cant 
                       ind = ind + sumar(ind)
                    EndIf
-                   If cant > 0 Then  ' UP  
-                      ind = ind - cant 
+
+                   If cant < 0 Then  ' DOWN  
+                      ind = ind + cant 
                       ind = ind - sumar(ind)
                    EndIf
 
-                  if ind > NA Then
-                     ind=NA
+                  if ind > NA -13 Then
+                     ind=NA -13
                   EndIf
                   If ind < NB Then
                      ind=NB
                   EndIf
                   b1=1
+ ' CON ESTE IF SE CORRIGE QU ENOMUEVA OTRA COSA QUE LAS NOTAS CON 13
+ ' PERO TODAVIA SOLO MUEVE DENTRO DE UNA OCTAVA NO VA MAS HALLA-....                 
+   If Roll.trk(jpt,ind).nota > 0 And Roll.trk(jpt,ind).nota <= 13  Then '31-01-2022    
                   Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
                   Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
                   Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
@@ -1768,6 +1780,7 @@ For jpt = desdet To hastat
                   Roll.trk(jpt,i1).pan  = 0
                   Roll.trk(jpt,i1).pb   = 0
                   Roll.trk(jpt,i1).inst = 0
+   EndIf                
                EndIf
             EndIf      
        EndIf
@@ -1789,23 +1802,23 @@ If encancion > 0 Then
 EndIf       
 
 
-
 ''trasponer=0   
 End Sub
-
+'---------
 Sub trasponerRoll( cant As Integer, Roll As inst, encancion As integer)
 'AJSUTADO DE NUEVO 11-09-2021 CON EL NUEVO ALGORITMO DE OCTAVAS
 Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,b1=0
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
 ' cant=(1) si pulso flecha UP
+  Print #1,"ARRANCA  TRASPONER ROLL !!!!!!!!!!!!!!"
 If cant < 0 Then ' DOWN
  comienzo= NB
- final = NA  
+ final = NA  -13 '30-01-2022 NA->NA -13
  inc= 1
 EndIf
 If cant > 0 Then 'UP
- comienzo= NA
+ comienzo= NA -13
  final = NB  
  inc=  -1
 EndIf
@@ -1835,7 +1848,7 @@ For jpt = desdet To hastat
     If ( (Roll.trk(jpt,i1).nota >= 0) And Roll.trk(jpt,i1).nota <= 181 ) _
        OR (Roll.trk(jpt,i1).dur >=0 And Roll.trk(jpt,i1).dur <= 181 ) Then ' es semitono
        
-       If ind >= NB And ind <= NA  Then
+       If ind >= NB And ind <= NA  -13 Then
           If  pasoNota=0  Then    
              Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
              Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
@@ -1879,8 +1892,8 @@ For jpt = desdet To hastat
                       ind = ind - sumar(ind)
                    EndIf
 
-                  if ind > NA Then
-                     ind=NA
+                  if ind > NA -13Then
+                     ind=NA -13
                   EndIf
                   If ind < NB Then
                      ind=NB
@@ -1985,7 +1998,7 @@ Next jpt
 print #1,"fin chequeo"
 '/
 If posinueva > Maxpos Then ' movemos a izquierda
-inc=posinueva
+inc=posinueva ' aca inc son los datos copiados 
 print #1,"ENTRA POR IZQUIERDA"
   For jpt=desdet To hastat
        
@@ -2007,6 +2020,14 @@ print #1,"ENTRA POR IZQUIERDA"
        EndIf
      Next i1
      inc=inc+1
+ ' UNDO
+   mel_undo_k = mel_undo_k + 1
+
+   mel_undo(mel_undo_k).trk = ntk
+   mel_undo(mel_undo_k).posn = inc
+
+ ' FIN UNDO    
+     
   Next jpt
   print #1,"TERMINO copia a izquierda ",posinueva   
 'si la posicion donde copio es mayor a MaxPos, debo llenar el espacio entre MAxPos y 
@@ -2049,7 +2070,7 @@ print #1,"MaxPos ",MaxPos
   'desdet=posivieja+1 30-01-2022 
   hastat=posinueva-pasozona1+pasozona2 +1
   'inc=MaxPosOld
-  inc=pasozona1
+  inc=pasozona1 ' aca inc son lso datos a copiar
 print #1,"hastat ",hastat
 print #1, "desdet,inc ",desdet,inc 
 'print #1,"UBOUND(ROLL,1)", UBOUND (ROLL.TRK,1)
@@ -2081,6 +2102,13 @@ print #1, "desdet,inc ",desdet,inc
      If inc = pasozona2+1  Then
         Exit For
      EndIf
+ ' UNDO
+   mel_undo_k = mel_undo_k + 1
+
+   mel_undo(mel_undo_k).trk = ntk
+   mel_undo(mel_undo_k).posn = jpt
+
+ ' FIN UNDO    
   Next jpt
   print #1,"TERMINO copia a derecha ",posinueva   
 '---

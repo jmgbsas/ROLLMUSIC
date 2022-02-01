@@ -326,7 +326,8 @@
 
        Copiar una zona 1 o mas veces: igual que en mover zona pero no borra la zona original, si entramos
        una numero N (1,3,15,etc)), antes de C+click , copia N veces esa zona una al lado de la otra 
-       (copia en masa).
+       (copia en masa). Undo con ALT-U va borrando por columna de por vez  todas las octavas de la pista.
+
 
     1.3) Recalcular Compas <R>: para ver rápido si las notas ingresadas forman un compás completo normalmente
        el compás recalcula la posicon de las barras separadoras automaticamente, sino satisface esa condición
@@ -385,8 +386,15 @@
          como se dijo con ALt-U. 
          Se agrego acordes cuaternarios mayores y menor 7,Menor7b5,Dom7,Dom75a,Dis7, todos fundamental 
          1era, 2da y 3era inversion para cuatriadas, grado 1 (la nota elegida es la fundamental).
-       
-
+         Acordes No Diatonicos: en una melodia existente si se toma la 1er inverion como fundamental del 
+         acorde, la nota de la melodia debe ser el VII grado disminuido en un bemol o semitono o sea
+         en escala de C(C,D,E,F,G,A,B), para usar el acorde bVII deberai tener en la melodia una nota
+         Bb o lo que es lo mismo A#. A partir de ahi uso la construccion de la 1era inversion de bVII
+         que es igual a la construccion de un acorde MAyor, en la practica se le baja un semitono y se
+         construye un acorde mayor eso es todo. Entonces si bajo una nota B de la escala Mayor C
+         un semitono y lo uso como raiz de Acorde MAyor estare construyendo el bVII de la nota B o sea 
+         del VII grado de la escala de C Mayor. Y asi par acualqueir escala.
+         Lo mismo sucede con el bVIIMaj7, se bajaa un semitono la nota y se crea un Maj7.
     1.8) Crear Canción.
 
           En RollNusic Control usar 'Nueva Cancion' del menu (lo que diga Na es no aplicable todavia
@@ -502,7 +510,9 @@
            se pasa el mouse por encima del extremo DERECHO de la octava en el extremo final derecho
            y se estara editando esa nueva octava  no pudiendo hacerlo en la de antes eso evita errores de entrada.
 
-           UNDO SEPARADO DE MELODIAS Y ACORDES, 
+           UNDO SEPARADO DE MELODIAS Y ACORDES, (ALT-U de melodias funcina tambien al copiar una zona N veces
+           tambieb va borrardo por columna, ALT-U es undo completo de octava por columna, no se usa en entrada
+           de acordes pue ssino borraria las notas del acorde insetados y la nota de la melodia base seleccionada)
            útil al tener alguna de ambas previamente, una secuencia a la que luego se le agrega los acordes o 
            al reves teniendo una progresion de acordes y se agrega melodia. (por ello se las diseño separadas).
          - Undo de entrada de melodia ALT-U, uno por vez. El undo siempre se hace al Grabar, como accion definitiva,
