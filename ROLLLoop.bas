@@ -3478,7 +3478,7 @@ vacio= 12 +(estoyEnOctava-1)*13
 'Dim NotaAcorde As String
 'NotaAcorde=NotasGuia(nE-1) ' c,c#,d,d#..etc
 ' 26-01-2022 por choque con escalas cambio inst a pb
- Roll.trk(indicePos, vacio).pb=201 
+ Roll.trk(indicePos, vacio).pb=201  ' codigo de lugar en octavas de roll
 
 
 ' CALCULO DE POSICION DE LA INFORMACION DE ACORDES:
@@ -3503,7 +3503,9 @@ verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde ' 90 + 6 - 4=92
  Roll.trk(indicePos,verticalEnOctavaVacia ).nota = CUByte(RollNota)
  Roll.trk(indicePos,verticalEnOctavaVacia ).dur  = CUByte(acordeNro)
  Roll.trk(indicePos,verticalEnOctavaVacia ).vol  = CUByte(estoyEnOctava) ' para pasar a Track
- Roll.trk(indicePos,verticalEnOctavaVacia ).pb   = 202
+ Roll.trk(indicePos,verticalEnOctavaVacia ).pb   = 202 ' codigo de exsitencia de cifrado en el cabezado
+ ' por cada 201 en el encabezado hay un 202 en una octava de roll , en track solo
+ ' existe el 202 en el encabezado
 ' con esta info reconstruyo el acorde que luego muestro solo en la octava
 ' la octava la se por donde esta el 201 no hace falta guardarla, pweo para pasarla a track si
 ' hace falta!! 27-01-2022 -. 

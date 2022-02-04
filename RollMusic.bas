@@ -1033,6 +1033,8 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                 param.ubirtk=ubirtk
 
                 posn=0
+           Case 1031 ' SELECCION DE CANAL DE LA PISTA (10 DRUMS)
+                
            Case 1040 ' seleccion de instrumento por orden Alfabetico
                selInstORdenAlfa (instru)
               ' ChangeProgram ( CUByte (instru) , 0)

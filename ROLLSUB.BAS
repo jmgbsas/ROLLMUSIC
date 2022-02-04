@@ -1401,6 +1401,16 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
       EndIf
      Dim z (1,1)  As dat
      Dim zLim (1,1) As dat
+     Dim graba3   (1,1)  As dat ' 04-02-2022 se agregan 48 bytes para info futura 
+     Dim graba4   (1,1)  As dat 
+     Dim graba5   (1,1)  As dat 
+     Dim graba6   (1,1)  As dat 
+     Dim graba7   (1,1)  As dat 
+     Dim graba8   (1,1)  As dat 
+     Dim graba9   (1,1)  As dat 
+     Dim graba10  (1,1)  As dat 
+     
+     
 
      'Print #1,"posicion lectura en ca ", Seek(ca)  
 '     Seek ca,1
@@ -1480,11 +1490,23 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      CambiarDim(0) ' ya tiene calculo NB y NA Redim Roll y Track con CantTicks
                    ' y carga de pmTk.NB y NA
 
+     Get #ca, ,graba3  (1,1)
+     Get #ca, ,graba4  (1,1)
+     Get #ca, ,graba5  (1,1)
+     Get #ca, ,graba6  (1,1)
+     Get #ca, ,graba7  (1,1)
+     Get #ca, ,graba8  (1,1)
+     Get #ca, ,graba9  (1,1)
+     Get #ca, ,graba10 (1,1)
+
 
 
 
      pmTk(0).NB=NB  ' aunque es un track debe memorizar de que octavas Rol vino
      pmTk(0).NA=NA
+     
+     
+     
      ReDim compas(1 To CantTicks)
      print #1,"En CargarArchivo NB NA ", NB,NA
      Dim Trabajo (1 To MaxPos, NB To NA) As dat     
@@ -2955,6 +2977,15 @@ Dim  As Integer npl
      Dim Trabajo (1 To Maxpos, NB To NA) As dat
      Dim grabaPos (1,1)  As dat
      Dim grabaLim (1,1)  As dat 
+     Dim graba3   (1,1)  As dat ' 04-02-2022 se agregan 48 bytes para info futura 
+     Dim graba4   (1,1)  As dat 
+     Dim graba5   (1,1)  As dat 
+     Dim graba6   (1,1)  As dat 
+     Dim graba7   (1,1)  As dat 
+     Dim graba8   (1,1)  As dat 
+     Dim graba9   (1,1)  As dat 
+     Dim graba10  (1,1)  As dat 
+     
      Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
 'print #1, "inicio MaxPos "; MaxPos
@@ -3118,6 +3149,15 @@ Negras por minuto	 tempo
 
      Put #ga, ,grabaPos(1,1)
      Put #ga, ,grabaLim(1,1)
+     Put #ga, ,graba3  (1,1)
+     Put #ga, ,graba4  (1,1)
+     Put #ga, ,graba5  (1,1)
+     Put #ga, ,graba6  (1,1)
+     Put #ga, ,graba7  (1,1)
+     Put #ga, ,graba8  (1,1)
+     Put #ga, ,graba9  (1,1)
+     Put #ga, ,graba10 (1,1)
+               
      Put #ga, ,Trabajo()
      cerrar(ga)
      While InKey <> "": Wend
@@ -3229,7 +3269,16 @@ Sub GrabarTrack (ntk As integer) ' NO SE ESTA USANDO pero seria el modelo de Gra
     Open nombre  For Binary Access write As #gt
      Dim Trabajo (1 To Maxpos, 1 To lim3 ) As poli
      Dim grabaPos (1,1)  As poli
-     Dim grabaLim (1,1)  As poli 
+     Dim grabaLim (1,1)  As poli
+     Dim graba3   (1,1)  As poli ' 04-02-2022 se agregan 48 bytes para info futura 
+     Dim graba4   (1,1)  As poli 
+     Dim graba5   (1,1)  As poli 
+     Dim graba6   (1,1)  As poli 
+     Dim graba7   (1,1)  As poli 
+     Dim graba8   (1,1)  As poli 
+     Dim graba9   (1,1)  As poli 
+     Dim graba10  (1,1)  As poli 
+      
      Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
 'print #1, "inicio MaxPos "; MaxPos
@@ -3366,6 +3415,15 @@ Next i1
 
      Put #gt, ,grabaPos(1,1)
      Put #gt, ,grabaLim(1,1)
+     Put #gt, ,graba3  (1,1)
+     Put #gt, ,graba4  (1,1)
+     Put #gt, ,graba5  (1,1)
+     Put #gt, ,graba6  (1,1)
+     Put #gt, ,graba7  (1,1)
+     Put #gt, ,graba8  (1,1)
+     Put #gt, ,graba9  (1,1)
+     Put #gt, ,graba10 (1,1)
+     
      Put #gt, ,Trabajo() ' ACA DEBERIA QUEDAR EL CAMPO ACORDE !!
      cerrar (gt)
      While InKey <> "": Wend

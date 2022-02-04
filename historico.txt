@@ -1,3 +1,11 @@
+-04-02-2022 1er paso para cambio de canal es cambiar el formato del archivo con mas capacidad. 
+ 1ero Cambiamos grabacion, luego conversion lectura al viejo formato y grabacion al nuevo,,luego 
+cambiamos codigo lectura y ya está completo toda la conversion al nuevo formato.
+-04-02-2022 CAMBIO DE CANAL, EN ESPECIAL CANAL 10 DRUMS SELECCION DE CANAL PARA LA PISTA O TRACK 
+ para ello necesitamos mas bloques en el comienzo del archivo como grabaPos o grabaLim. colocaremos
+varios bloques para futura informacion.Cada bloque de 'dat' tiene 6 campos ubyte.Agregaremos info de canal
+de nro midi out,nro midi in,tipo de compas,etc.Para esto agregamso 2 bloque adicionales,graba3 y graba4.
+
 -03-02-2022 fix estabilidad para entrar en Edicion, pulsar [Edicion] luego Edit y la edicion quedara estable con
 un solo click. Para salir de edicion dar otro click en Edit. Ya no se podra entrar mas a Edit, para ellos
 pulsar en la mitad derecha de la cinta aparece el menu y empezar de nuevo desde [Edicion].

@@ -603,6 +603,12 @@ Type sec
 End Type
 
 '-------------------------------
+' grabaPos y GrabaLim estan completos no quedo nada libre deberia grabar una tercera
+' o grabar en la ocatva libre de NA> NA-13, creo debo poner un block mas para
+' dejar al octava libre para los cambios dinamicos como cifrado y varias cosas mas
+' como repeticion , loop etc y aque esta en vez d poner 1 solo bloque pondremos 2 mas
+' 1ero modificare la grabacion para leer en formato viejo y grabar en el nuevo..
+
 Type dat Field=1
  nota As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
  dur As  UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos

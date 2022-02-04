@@ -9,6 +9,15 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
  
      Dim z (1,1 )  As poli
      Dim zLim (1,1) As poli
+     Dim graba3   (1,1)  As poli ' 04-02-2022 se agregan 48 bytes para info futura 
+     Dim graba4   (1,1)  As poli 
+     Dim graba5   (1,1)  As poli 
+     Dim graba6   (1,1)  As poli 
+     Dim graba7   (1,1)  As poli 
+     Dim graba8   (1,1)  As poli 
+     Dim graba9   (1,1)  As poli 
+     Dim graba10  (1,1)  As poli 
+     
      Dim As Integer ubi1,ubi2 
      Dim As String x,x1,x2,x3,x4,x5,nombrea
   '1) cargar pista desde disco y desde Roll puro   
@@ -129,6 +138,17 @@ ubirtk=0
         curpos=0
         CantTicks=pmTk(ntk).Ticks
      EndIf
+
+     Get #ct, ,graba3  (1,1)
+     Get #ct, ,graba4  (1,1)
+     Get #ct, ,graba5  (1,1)
+     Get #ct, ,graba6  (1,1)
+     Get #ct, ,graba7  (1,1)
+     Get #ct, ,graba8  (1,1)
+     Get #ct, ,graba9  (1,1)
+     Get #ct, ,graba10 (1,1)
+
+     
      ' configuro el track receptor
      ReDim (Track(ntk).trk) (1 To pmTk(ntk).Ticks, 1 To lim3)
      print #1,"*PO = hasta -1 ",  pmTk(ntk).hasta -1
@@ -353,6 +373,16 @@ print #1,"MaxPos despues de acchicar",MaxPos
 print #1,"Termina con achicar secuencia"
  Dim grabaPos (1,1)  As poli
  Dim grabaLim (1,1)  As poli
+ Dim graba3   (1,1)  As poli ' 04-02-2022 se agregan 48 bytes para info futura 
+ Dim graba4   (1,1)  As poli 
+ Dim graba5   (1,1)  As poli 
+ Dim graba6   (1,1)  As poli 
+ Dim graba7   (1,1)  As poli 
+ Dim graba8   (1,1)  As poli 
+ Dim graba9   (1,1)  As poli 
+ Dim graba10  (1,1)  As poli 
+
+ 
 ' datos para track....en temp  
  Dim TrkTemp (1 To MaxPos,1 To lim3) As poli 'definimos un Track temporario
 ' no usamos RollaTrack porque son distintas estructuras RollaTrack usa sec
@@ -499,6 +529,15 @@ print #1,"pasó copia a vector"
      print #1,"etapa final puts"
      Put #grt, ,grabaPos(1,1)
      Put #grt, ,grabaLim(1,1)
+     Put #grt, ,graba3  (1,1)
+     Put #grt, ,graba4  (1,1)
+     Put #grt, ,graba5  (1,1)
+     Put #grt, ,graba6  (1,1)
+     Put #grt, ,graba7  (1,1)
+     Put #grt, ,graba8  (1,1)
+     Put #grt, ,graba9  (1,1)
+     Put #grt, ,graba10 (1,1)
+     
      Put #grt, ,TrkTemp()
      cerrar (grt)
      While InKey <> "": Wend
@@ -1092,7 +1131,7 @@ For i2=1 To MAxPos
          Roll.trk(i2,verticalEnOctavaVacia ).dur  = Track(ntk).trk(i2,i1).dur  ' acordeNro
          Roll.trk(i2,verticalEnOctavaVacia ).pb  = 202
          vacio= 12 +(Track(ntk).trk(i2,i1).vol -1) * 13
-         Roll.trk(i2,vacio).pb=201
+         Roll.trk(i2,vacio).pb  =  201
       EndIf
   Next i1    
 Next i2
