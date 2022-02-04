@@ -520,6 +520,7 @@ If nanchofig <> 0 Then
    gap3= (519 * gap1) /1000 ' 42 default
    NroCol =  (ANCHO / anchofig ) - 4 
 EndIf
+Print #1,"NROCOL AL INICIO, ANCHO, anchofig ",NroCol, ANCHO, anchofig
 
 '---------
 If mxold=0 And myold=0 Then

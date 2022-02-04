@@ -77,11 +77,11 @@ Dim As String t2="",t3="",t4=""
  'Dim As Integer delta
  'delta=NroCol
  If cursorVert=0 And COMEDIT=TRUE  Then
-    If posicion < 30  Then
+    If posicion < NroCol*3/4  Then '04-02-2022
       posishow=  1 ''curpos ' decia 1
   ' valla tatlmente al inicio veremos si es aca jmgjmg
     Else
-        posishow = posicion - 20
+        posishow = posicion - NroCol/2 '04-02-2022 
     EndIf
  Else
    If posicion=0 Then ' para TAB de track nuevo  
@@ -1869,8 +1869,8 @@ If COMEDIT = FALSE Then ' construir cifras para copiar Nveces por ejemplo
  EndIf
 
  If MultiKey(SC_END) Then
-    If MaxPos > 45 then
-       posicion=MaxPos - 30
+    If MaxPos > NroCol then
+       posicion=MaxPos - NroCol*3/4
     EndIf
     posishow=posicion
  EndIf
@@ -1955,6 +1955,7 @@ Print #1,"entro nota ",nota
 '---control barrido de pantalla columna
     If (posn > NroCol + InicioDeLectura) Then
      InicioDeLectura=InicioDeLectura + NroCol
+     Print #1,"NUCLEO::CONTROL DE PANTALLEO  NroCol,InicioDeLEctura ", NroCol,InicioDeLEctura
     EndIf
   '   print #1, "ingreso a NUCLEO posn ",posn
   Loop 

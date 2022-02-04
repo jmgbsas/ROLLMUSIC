@@ -2985,7 +2985,18 @@ Dim  As Integer npl
      Dim graba8   (1,1)  As dat 
      Dim graba9   (1,1)  As dat 
      Dim graba10  (1,1)  As dat 
-     
+' en bloque graba3 vamos a colocar nro de canal 1 a 16
+'                                   port midi de salida
+'                                   port midi de entrada
+' etc, para el canal pondremos una seleccion de nrro de canal de salida
+' en el menu de control , como tambien luego del puerto midi de entrada
+' una vez qu etenga nro de canal vamos a manipualr un poco el canal 10 de
+' percusion a ver si ponemos alguna ayuda de los instrumentos de percusion 
+'en vez de nombres de notas....lo que creo practivo sera posar el mouse sobre las notas guias
+' y mostrar el nombre del instrumento con letras popup al estilo de los menues graficos
+' que hice para control-M o pondremos en forma fija al final de pantalla y sobre cada 
+' linea el nombre del instrumento siemrpe estara en el extremo derecho y moviendo 
+' las flechas podre ingresar notas mas a al izquierda de drums,,,                                        
      Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
 'print #1, "inicio MaxPos "; MaxPos
