@@ -1,3 +1,6 @@
+-03-02-2022 fix estabilidad para entrar en Edicion, pulsar [Edicion] luego Edit y la edicion quedara estable con
+un solo click. Para salir de edicion dar otro click en Edit. Ya no se podra entrar mas a Edit, para ellos
+pulsar en la mitad derecha de la cinta aparece el menu y empezar de nuevo desde [Edicion].
 -03-02-2022 fix  si uso trasponer sobre un acorde automatico ya no se pierde la info de Cifrado.Logicamente
 solo tienen sentido en la octava que se agrego el cifrado.
  en las lineas invidibles donde se graba habria que no tocar la info y ademas ir aumentando o disminuyendo el 

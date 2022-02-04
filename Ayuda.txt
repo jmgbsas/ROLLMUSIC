@@ -7,9 +7,8 @@
        Recomendacion cerrar Chrome con RollMusic funcionando, luego abir Chrome de nuevo
        si es necesario. Chrome se cuelga de Explorer en windows 7 como tambien RollMusic.
        RollMusic tiene alta prioridad en el Grafico pero en el resto. Otra solucion podria ser darle
-       alta prioridad.
-       En el futuro se buscara de que RollMusic no cuelgue de Explorer, algo dificil como lo hace
-       Process Explorer.  
+       alta prioridad, se hizo un ejecutbel para eso. Un mejo browser de poco consumo es Vivaldi.
+
     II) Opciones Configuracion
         a) PUERTOS MIDI A USAR.
         Desde el Menu Principal -> ALT + posarse sobre ->Opciones->Ctrl+Click->Configuracion->click->MIDI->
@@ -478,8 +477,8 @@
     --------------------------------------------------------------------------------------------
     2.0) Modos de Edicion
 
-    2.1) MODO EDIT (click en menu EDICION luego en EDIT cambiara a color 
-          verde y la octava seleccionada tambien)
+    2.1) MODO EDIT insercion NOTAS NUEVAS POR TECLADO (click en menu [EDICION] luego en EDIT cambiara a color verde y la octava seleccionada tambien)
+         Para salir de EDIT pulsar de nuevo EDIT volvera a blanco la letra EDIT.
     2.1.1) Entrada por teclado de PC.
     2.1.2) Entrada por mouse y teclado de PC.
   
@@ -501,11 +500,13 @@
     2.1) MODO EDIT 
     2.1.1) Entrada por Teclado
          - Pasar a Edicion clickendo [Edicion], aparecera la cinta Edit.
-         - Dar click a Edit. Segun se mueva el cursor el texto ira cambiando a color verde
-           indicando la octava elegida.
+         - Dar click a Edit, Edit cambiara a verde y toda la linea, la octava donde se trabaje se pondra de  
+           color verde indicando la octava elegida. Para confirmar que la octava sea la elegida si aun no se
+           ingreso notas por teclado es mover el cursor hasta el extremo derecho de la pantalla y eso cambiara
+           a verde el color confirmando que la octava a sido elegida para edicion.
          - Estando sobre una octava elegida con el mouse, pulsar una duracion de 1 a 8
            1=O redonda, 2=P blanca, 3=I negra, 4=L corchea, 5=F semicorchea, 6=E fusa,
-           7=X semifusa, 8=H garrapatea, 9=W semigarrapatea, 9=espacio,ctrl-0=Fin Secuencia.
+           7=X semifusa, 8=H garrapatea,  9=espacio,ctrl-0=Fin Secuencia.
            En modo Cursor: 0=marcar borrar columna seguido de X.(el borado se ejecuta al guardar
            el archivo y al cargarlo de nuevo, la nota se borra, pero si en esa columna era la unica nota y 
            se desea borrar la columna en ese momento usar ctrl-delete ver 2.5.3).

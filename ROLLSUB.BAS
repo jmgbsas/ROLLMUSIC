@@ -1800,6 +1800,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
     '''If MouseButtons And 1 Then
     If MouseButtons And 1 Then  ' funciona mejor ? veremos...
      menuNew=2
+     cierroedit= 0 ' habilita EDIT de nuevo
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -1895,12 +1896,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
   Case 2 ' para posicionar  en pantalla NO BORRAR. <= EDIT MENU
  
    menuNew=2
-   '2.1 ===>      EDIT
-   '  If cursorHori=1 And CursorVert=1 Then
-   '      posishow= posicion + curpos
-   '  Else
-   '      posishow = posicion
-   '  EndIf
+   
    cairo_move_to(c, 0, 36 )
    If COMEDIT= TRUE   Then
     cairo_set_source_rgba c,0,1,0,1

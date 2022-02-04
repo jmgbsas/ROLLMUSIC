@@ -709,7 +709,7 @@ Dim Shared As UByte  indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
 Dim Shared translado As Integer = 1
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
 Dim shared As Integer i,  posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
-Dim Shared As Integer octaroll,instancia=0
+Dim Shared As Integer octaroll,instancia=0,cierroedit= 0
 Dim Shared As BOOLEAN COMEDIT, resize
 COMEDIT=FALSE
 

@@ -785,8 +785,8 @@ param.ubirtk=0
 Do
 arranquedo1=Timer
 
-edity1 = 10 ' botton Edit bordeSup
-edity2 = 40 ' botton Edit bordeInf
+edity1 = 1 ' botton Edit bordeSup
+edity2 = 50 ' botton Edit bordeInf
 
 '' Create a cairo drawing context, using the FB screen as surface.
 '' l originalestba mal sizeof(integer ) es mu chico debe ser 4
@@ -2821,7 +2821,8 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
    carga=0
    '-----fin 2609 referencia de busqueda
    '''If MouseButtons And 1 Then ' <========= EDICION SOLO INGRESO DE NOTAS NUEVAS
-   If MousePress = 1 Then ' no se si funciona mejor lo dejaremos un tiempo
+   If MouseButtons And 1 And cierroedit= 0 Then ' no se si funciona mejor lo dejaremos un tiempo
+      cierroedit=1 ' no permite modificar mas que una vez
     If s3 = 0  Then
      COMEDIT = TRUE 
      '       print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
@@ -2860,7 +2861,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
         Exit Do
      EndIf
     EndIf
-   EndIf
+   EndIf 
   EndIf
  ' RESIZE OCULTADO TAL VEZ SEA UNA OPCION EN OTRA VERSION O USAR SIN FRAME
  ' O CON FRAME SEGUN EL GUSTO DEL USU AUNQUE NO ES PEFECTO EL RESIZE TIENE
@@ -3004,6 +3005,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 
 
 If  mouseY > 50 Then '<=== delimitacion de area de trabajo
+ 
   s5=2  ' 04-01-2021
   If s3 = 2 Then  ''06-12-2021 jmg
      s3=0
@@ -3793,6 +3795,7 @@ ButtonGadget(2,530,30,50,40," OK ")
  '       ==== NOTAS O DURACIONES EXISTENTES ====
 
  If  COMEDIT=TRUE  Then
+         cierroedit=0
     If  MultiKey(SC_CONTROL) And (MouseButtons And 2)  Then
    ' trae un menu contextual solo con ctrl-m  previo <==== menu borrar insertar modificar
    ' ESTADO:CALL MENU COMANDO
