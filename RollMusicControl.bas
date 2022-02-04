@@ -38,8 +38,8 @@ Common Shared surface As Any Ptr
 Common Shared As FT_Face ftface
 common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu ',thplayC
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig
-Common Shared As Integer mxold,myold, w,h,grado
-Common Shared As integer ubirtk, ubiroll
+Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes
+Common Shared As integer ubirtk, ubiroll,trasponer
 'Type esc1 
 '  nombre   As String
 '  nropasos As Integer
@@ -47,7 +47,7 @@ Common Shared As integer ubirtk, ubiroll
 'End Type
 
 'common shared as esc1 ptr pescala
-  
+  trasponer=0
 
 '-------------
 

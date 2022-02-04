@@ -1807,11 +1807,16 @@ End Sub
 '---------
 Sub trasponerRoll( cant As Integer, Roll As inst, encancion As integer)
 'AJSUTADO DE NUEVO 11-09-2021 CON EL NUEVO ALGORITMO DE OCTAVAS
-Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,b1=0
+Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,octavaDeAcorde,verticalEnOctavaVacia  
+
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
 ' cant=(1) si pulso flecha UP
-  Print #1,"ARRANCA  TRASPONER ROLL !!!!!!!!!!!!!!"
+  Print #1,"ARRANCA  TRASPONER ROLL !!!!!!!!!!!!!!",trasponer
+  If trasponer=0 Then
+     Exit Sub
+  EndIf
+  
 If cant < 0 Then ' DOWN
  comienzo= NB
  final = NA  -13 '30-01-2022 NA->NA -13
@@ -1834,8 +1839,8 @@ Else
    hastat= MaxPos   
 EndIf   
 
-For jpt = desdet To hastat  
-  For i1= comienzo To final Step inc
+For jpt = desdet To hastat  ' eje x posiciones
+  For i1= comienzo To final Step inc ' indice roll nR vertical
      If cant > 0 Then  ' UP  
         ind = i1 + cant 
         ind = ind + sumar(ind)
@@ -1847,7 +1852,16 @@ For jpt = desdet To hastat
    
     If ( (Roll.trk(jpt,i1).nota >= 0) And Roll.trk(jpt,i1).nota <= 181 ) _
        OR (Roll.trk(jpt,i1).dur >=0 And Roll.trk(jpt,i1).dur <= 181 ) Then ' es semitono
-       
+       If Roll.trk(jpt, i1).pb = 201 Then
+           octavaDeAcorde=1+ (i1-12)/13
+           verticalEnOctavaVacia= 12 + (hasta-2)*13 + octavaDeAcorde - desde  
+           If cant> 0 Then 
+             Roll.trk(jpt, verticalEnOctavaVacia).nota=Roll.trk(jpt, verticalEnOctavaVacia).nota - 1
+           Else
+             Roll.trk(jpt, verticalEnOctavaVacia).nota=Roll.trk(jpt, verticalEnOctavaVacia).nota + 1
+           EndIf
+           Continue For
+       EndIf    
        If ind >= NB And ind <= NA  -13 Then
           If  pasoNota=0  Then    
              Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
@@ -1898,7 +1912,6 @@ For jpt = desdet To hastat
                   If ind < NB Then
                      ind=NB
                   EndIf
-                  b1=1
                   Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
                   Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
                   Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
@@ -1912,8 +1925,6 @@ For jpt = desdet To hastat
                   Roll.trk(jpt,i1).pan  = 0
                   Roll.trk(jpt,i1).pb   = 0
                   Roll.trk(jpt,i1).inst = 0
-               'Else
-                ' b1=0   
                EndIf
             EndIf      
           EndIf    
@@ -1924,7 +1935,7 @@ Next jpt
 
 ''trasponer=0   
 ' para trasponer tracks debo grabar lo cual copia a track los cambios
-' de ese modo al dar play se escuch also cambios sino solo quedan en Roll
+' de ese modo al dar play se escucha los cambios sino solo quedan en Roll
 ' y el play de cancion no lo registra , solo el play de roll lo registraria
 If encancion > 0 Then
    Dim As Integer ubi1=0,ubi2=0 

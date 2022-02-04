@@ -51,7 +51,18 @@
          
     1) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
     2) El espaciado entre lineas se puede cambiar.
-    3) Trasponer todo: Ctrl-T habilita la trasposicion, Q la deshabilita.
+    3) Trasponer todo: ALT-T habilita la trasposicion, Q la deshabilita.
+       TRASPONER (todo o una parte o una nota ) DESTRUIA LA INFORMACION DEL CIFRADO DEL ACORDE, EN VEZ DE 
+       TRASPONER UN ACORDE SE SUGIERE BORRARLO Y CONSTRUIIR UNO NUEVO SI LA NOTA BASE SALE DE LA OCTAVA ORIGINAL. 
+       SI LA NOTA BASE DEL ACORDE SE MUEVE DENTRO DE LA OCTAVA, TRASPONER TAMBIEN TRASPONE EL CIFRADO, SIN
+       DESTRUIRLA. SI SE CAMBIA LA ESCALA PRINCIPAL DE LA SECUENCIA HAY QUE BORRAR TODO PORQUE ESTAN CONSTRUIDOS
+       SEGUN LA ESCALA ANTERIOR no hay reconstruccion de acordes, lo que conviene ahcer es trasponer cada acorde
+       los semitonos necesarios para que la nota base se ajuste a la escala principal nueva. 
+       Nota de desarrollo: Ctrl-T se disparaba solo despues de cambiar el interlineado, pulsaba flecha abajo y 
+       empezaba a trasponer sin haber pulsado CTRL-T, ergo se cambio a ALT-T, ¿inconsistencia de la union de cairo
+       con freebasic? podria ser, o el uso de threads, no se, se cambió y listo.(dejo sentado los errores
+       porque investigar o pedir ayuda es muy engorroso hasta de tratan de ataque cibernetico jajaja...
+
     4) Recalcular Compas <R>. Establece las barras divisorias entre compases.c
     5) Grabar Archivo. (Ctrl-click). Se ha puesto un retardo de 1 segundos si tarda eso es porque se
          ejecutó bien el comando y grabó, porque de otra forma a veces salia sin grabar..
@@ -296,7 +307,7 @@
        usada anterior deja de funcionar, mover el scroll con las flechas eso habilita de nuevo
        la rueda del mouse.
 
-    1.2)  Trasponer todo: Ctrl-T habilita la trasposicion, Q la deshabilita.
+    1.2)  Trasponer todo: ALT-T habilita la trasposicion, Q la deshabilita.
        una vez habilitada con Flecha-UP sube de a un semitono con cada pulso
        Con Flecha-Down baja un semitono can cada pulso.
        Seleccion de Zona para una accion:

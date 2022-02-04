@@ -128,22 +128,22 @@ Dim Shared NotasEscalaArmado2 (1 To 24) As String *2 => _
 Type claseac
   clase As String * 7
   nro As Integer
- ' tipo As integer ' 1 funfamental, 3 1era inv,5 2da inv, 7 3era inv
+  tipo As integer ' sonido mas grave 1 fundamental, 3 1era inv,5 2da inv, 7 3era inv
 End Type
 ' Para Mostrar Acordes en Roll
 Dim Shared ClaseAcorde(1 To 100) As claseac => _
-{("       ",1) ,("/      ",2) ,("/      ",3) ,("m      ",4) ,("m/     ",5) ,("m/     ",6), _
- ("º      ",7) ,("º/     ",8) ,("º/     ",9) ,("+      ",10),("+/     ",11),("+/     ",12), _
- ("Maj7   ",13),("Maj7/  ",14),("Maj7/  ",15),("Maj7/  ",16),("m7     ",17),("m7/    ",18),_ 
- ("m7/    ",19),("m7/    ",19),("m7(b5) ",21),("m7(b5)/",22),("m7(b5)/",23),("m7(b5)/",24), _   
- ("7      ",25),("7/     ",26),("7/     ",27),("7/     ",28), _
- ("7+     ",29),("7+/    ",30),("7+/    ",31),("7+/    ",32), _
- ("º7     ",33),("º7/    ",34),("º7/    ",35),("º7/    ",36), _ 
- ("(6)    ",37),("(6)/   ",38),("(6)/   ",39),("(6)/   ",40), _ 
- ("Sus2   ",41),("Sus2/  ",42),("Sus2/  ",43)}
-Dim Shared deltanota(1 To 43) As Integer => _
-{0,-8,0,0,0,0,0,0,0,0,0,0 ,0,0,0,0,0,0,0,0, 0,0 ,0,0,0,0,0,0,0,0, _
- 0,0 ,0,0,0,0,0,0,0,0, 0,0 ,0}     
+{("       ",1,1) ,("/      ",2,3) ,("/      ",3,5) ,("m      ",4,1) ,("m/     ",5,3) ,("m/     ",6,5), _
+ ("º      ",7,1) ,("º/     ",8,3) ,("º/     ",9,5) ,("+      ",10,1),("+/     ",11,3),("+/     ",12,5), _
+ ("Maj7   ",13,1),("Maj7/  ",14,3),("Maj7/  ",15,5),("Maj7/  ",16,7),("m7     ",17,1),("m7/    ",18,3),_ 
+ ("m7/    ",19,5),("m7/    ",19,7),("m7(b5) ",21,1),("m7(b5)/",22,3),("m7(b5)/",23,5),("m7(b5)/",24,7), _   
+ ("7      ",25,1),("7/     ",26,3),("7/     ",27,5),("7/     ",28,7), _
+ ("7+     ",29,1),("7+/    ",30,3),("7+/    ",31,5),("7+/    ",32,7), _
+ ("º7     ",33,1),("º7/    ",34,3),("º7/    ",35,5),("º7/    ",36.7), _ 
+ ("(6)    ",37,1),("(6)/   ",38,3),("(6)/   ",39,5),("(6)/   ",40,7), _ 
+ ("Sus2   ",41,1),("Sus2/  ",42,3),("Sus2/  ",43,5)}
+'Dim Shared deltanota(1 To 43) As Integer => _
+'{0,-8,0,0,0,0,0,0,0,0,0,0 ,0,0,0,0,0,0,0,0, 0,0 ,0,0,0,0,0,0,0,0, _
+' 0,0 ,0,0,0,0,0,0,0,0, 0,0 ,0}     
 'Dim Shared As integer nota3era=0,nota5ta=0,nota7ma=0
 Type esc1 
   nombre   As String
@@ -443,7 +443,7 @@ Dim  Shared figura (1 To 182) As ZString  * 4 => _
 'cambiar 107 por 108, 109 por 110,  109 por 110.
 ' ligaduras de notas con + que va a + o - creo qu emenso seria mejor
 ' parecido a una pila polos opuestos se atraen je...
-Dim Shared As Integer comienzo1, fin1, comienzo2,fin2,PianoNota, trasponer=0, _
+Dim Shared As Integer comienzo1, fin1, comienzo2,fin2,PianoNota, _
 loopDeThreads=0 ,sefini=0
 'comienzo1=28:fin1=54
 'comienzo2=82:fin2=180
@@ -652,10 +652,11 @@ Dim Shared ix As Integer=0
 Dim Shared As String titu, cadenaes,cadenaes_inicial,tipoescala_inicial, notaescala_inicial 
 Dim Shared As Integer instru=1, instruOld, tipoescala=1, tipoescalaOld=1, notaescala=1,notaescalaOld
 Dim Shared As Integer tipoescala_num = 1, notaescala_num = 1,tipoescala_num_ini=1,notaescala_num_ini=1
-
+Dim Shared As String notas_esc_inicial (1 To 24)
 
 Dim Shared As Integer desdevector,undo_kant_intervalos(1 To 500)
 Dim Shared As Integer hastavector,abrirRoll=0
+Dim Shared As String grado_inicial(1 To 24)
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
 'Dim Shared As Integer lim2=12, ctres=CantTicks
@@ -761,7 +762,7 @@ Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
 Declare Sub ReCalCompas(Roll As inst)
 Declare Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As ubyte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As integer)
 Declare Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)
-Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As string )
+Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As String, orden As integer )
 Declare Function lugarNota (lugar As integer) As Integer
 
 
@@ -774,10 +775,10 @@ Common Shared As Integer cargaCancion, pid1
 Common Shared As cairo_t  Ptr c, c2
 Common Shared surface As Any Ptr
 common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
-Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig
-Common Shared As Integer mxold,myold, w,h,grado
+Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
+Common Shared As Integer mxold,myold, w,h,grado,trasponer
 'Common Shared As Any Ptr thplayC
-
+trasponer=0
 pid1=0
 
 cargaCancion=0

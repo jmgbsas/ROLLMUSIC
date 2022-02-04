@@ -10,7 +10,9 @@ Dim As String t2="",t3="",t4=""
 
  Dim As cairo_font_extents_t fe   '     font data
  Dim As cairo_text_extents_t te  '      text size
- Dim As Integer semitono,n, ic,indf
+ Dim As Integer semitono,n, ic,indf,indfa,indfb
+ Dim As Integer verticalEnOctavaVacia
+ Dim As Integer notac, aconro, grado
  ' VERSION 3 DEBO FORMAR LA OCTAVACOMPLET 12 SONIDOS
  ' v4 ponemos maslineas de separacion par q toda duricon este en espacios
  ' hay que usar el font Goergia o culqueir con utf8 o seguir lo que dice
@@ -117,40 +119,63 @@ Dim As String t2="",t3="",t4=""
   cairo_show_text(c, t)
   t= ""
   ic=0 'indice cursor 'donde se dibujara la duracion
-  n=0:indf=0:indfa=0
+  n=0:indf=0:indfa=0:indfb=0
   font= font + 2
   
   For n = posishow To posishow + NroCol
 
 ' =======> deteccion escalas auxiliares y acordes
-    indf = Roll.trk (n, 12 + (*po-1) * 13).dur
+    indfb = Roll.trk (n, 12 + (*po-1) * 13).dur
     indfa= Roll.trk (n, 12 + (*po-1) * 13).pb ' 26-01-2022
-    If indfa=201 Then ' cifrado acorde 
-      Dim As Integer verticalEnOctavaVacia
-      Dim As Integer notac, aconro
+    
+    t="": t2="":t3="":t4=""
+    
+' <====== CIFRADO ACORDE---
+    If indfa=201 And nVerCifradoAcordes=3 Then  
        cairo_set_source_rgba(c, 1, 1, 1, 1)
        cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
-       ''cairo_line_to(c,gap1 + (ic ) *anchofig , Penta_y + 13.5 * inc_Penta )
-       verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde
-       notac=CInt(Roll.trk(n,verticalEnOctavaVacia ).nota) 'Rollnota
-       'Print #1,"creaPenta notac,NotasEscala(notac-11) ",notac, NotasEscala(13-notac)
-       
+
+        verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde
+        notac=CInt(Roll.trk(n,verticalEnOctavaVacia ).nota) 'Rollnota
+     
        aconro=CInt(Roll.trk(n,verticalEnOctavaVacia ).dur) 'acordenro
-       t4=RTrim(ClaseAcorde(aconro).clase)
-       t3=RTrim(NotasEscala(13-notac))+ t4
-       If ClaseAcorde(aconro).nro = 2 Then
-          t3=t3+NotasEscala(notac +deltanota(aconro) +1)
-  '        Print #1,"lugar ",(notac +deltanota(aconro)+1)
-   '       Print #1,"notac, t3 completo ",t3
+       If aconro >=1 And aconro <=43 Then  ' por ahroa tenemo 43
+         t4=RTrim(ClaseAcorde(aconro).clase)
+       EndIf  
+       If 13-notac >=1 And 13-notac <=12 Then
+         
+         t3=RTrim(NotasEscala(13-notac)) ' C/ 
+           grado = BuscarGrado(t3) ' 4 en escala G
+         t3=t3+t4  
+          ' Print #1,"grado ",grado
+         If ClaseAcorde(aconro).tipo >1  Then
+           If ClaseAcorde(aconro).tipo -1 + grado > 0 Then
+            t3=t3+notas_esc_inicial(ClaseAcorde(aconro).tipo -1 + grado)
+           ' Print #1,"t3=t3+notas_esc_inicial(ClaseAcorde(aconro).tipo -1 + grado) ",t3
+           EndIf 
+          '  Print #1,"ClaseAcorde(aconro).tipo ",ClaseAcorde(aconro).tipo
+            
+          '  Print #1,"ClaseAcorde(aconro).tipo+grado-1 ",ClaseAcorde(aconro).tipo+grado-1
+          '  Print #1,"notas_esc_inicial(ClaseAcorde(aconro).tipo+grado-1) ",notas_esc_inicial(ClaseAcorde(aconro).tipo+grado-1) 
+         EndIf
        EndIf
        t4=""
-       'If t2 > "" Then t2="" EndIf
+       indfa=0
     Else
       t3="":t4=""
+      indfa=0
     EndIf
-    t=t3
-    cairo_show_text(c, t)
-    If indf = 200 And nVerEscalasAuxiliares=3 Then ' escalas auxiliares o alternativas
+    
+  '  If t3 >"" Then
+      cairo_show_text(c, t3)
+   '   cairo_stroke(c)
+      t3=""
+'    EndIf
+   ' cairo_stroke(c)
+    'indf=0:indfa=0
+
+
+    If indfb = 200 And nVerEscalasAuxiliares=3 Then ' escalas auxiliares o alternativas
    ''' Print #1,"ENTROA VER ESCAL AAUXILIAR"
        cairo_set_source_rgba(c, 0, 1, 0, 1) 
        cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
@@ -166,23 +191,30 @@ Dim As String t2="",t3="",t4=""
            ' 11-01-2022
        tipoescala=CInt(Roll.trk(n, 12  + (*po -1) * 13).inst)
 '           Print #1," tipoescala ",tipoescala
-       armarescala cadenaes,tipoescala, notaescala, alteracion
+       armarescala cadenaes,tipoescala, notaescala, alteracion,0
 
            ' fin 11-01-2022
        t2=t2+" "+ escala(tipoescala).nombre + " "+cadenaes
 
        cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y + 13 * inc_Penta ) '26-01
+       indfb=0
+       
     Else
       t2=""
-    
+    indfb=0
     EndIf
 
   
 ' t no puede quedar en un scope dsitinto se hace shared    
-      t= t2
+       ' apenas usas t2 o t3 hay que borrarlas sino se pudre todo raro
+  '  If t2 >"" Then
+      cairo_show_text(c, t2)
+     ' cairo_stroke(c)
+      t2=""
+'    EndIf
    
-      cairo_show_text(c, t)
-      'cairo_stroke(c)
+'      cairo_show_text(c, t)
+'      cairo_stroke(c)
       cairo_set_source_rgba(c, 1, 1, 1, 1)
 
 ' <=========fin escalas y acordes      
@@ -223,7 +255,7 @@ Dim As String t2="",t3="",t4=""
     '        EndIf   
     '     EndIf
       EndIf    
-   
+  
       cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono+1 ) * inc_Penta - 4)
     
   '  print #1,"lugar ",12
@@ -286,6 +318,7 @@ Dim As String t2="",t3="",t4=""
          cairo_show_text(c,t)
       EndIf
 
+
     EndIf
 
     cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono +1)* inc_Penta - 6)
@@ -301,11 +334,21 @@ Dim As String t2="",t3="",t4=""
         
       EndIf  
 
+
   
 '''    Exit For ' sale para saltear las nota=0, dur=0 ¿?, estaba mal creo debo mostrar todo
    EndIf
    'con ic * 40 es + 32 osea ic * 40 + 32
+   
   Next n
+
+
+
+
+
+
+
+
   'Else
   'print #1, " n= ";n; " posn=";posn;" MaxPos=";MaxPos;" Posishow=";Posishow
   'EndIf
@@ -359,67 +402,67 @@ If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
   cairo_set_font_size (c, font)
   'cairo_select_font_face (c, "Georgia",CAIRO_FONT_SLANT_NORMAL , CAIRO_FONT_WEIGHT_BOLD)
   t= "Flecha Abajo/Arriba o ruedita del mouse, scroll de las octavas en la ventana "
-  cairo_move_to(c, 0, Penta_y + inc_Penta * 14  )
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 15  )
   cairo_show_text(c, t)
 
   t = "F9/F10 achica/agranda el  font de las notas guia "
-  cairo_move_to(c, 0, Penta_y + inc_Penta * 15 )
-  cairo_show_text(c, t)
-
-  t = "Entrar Notas Click en [Edicion] en Menu, otro Click en Edit para modificar, otro Click en Edit deja de editar,ESC TERMINA LA APP"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 16 )
   cairo_show_text(c, t)
 
-  t = "En modificacion o Edit: CTRL-M o CTRL-N pasa al MODO CURSOR para reemplazar insertar borrar notas, para volver a Edit Ctrl-P"
+  t = "Entrar Notas Click en [Edicion] en Menu, otro Click en Edit para modificar, otro Click en Edit deja de editar,ESC TERMINA LA APP"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 17 )
   cairo_show_text(c, t)
 
-  t = "-/+ achica/agranda el area y altura de las octavas dentro de la ventana "
+  t = "En modificacion o Edit: CTRL-M o CTRL-N pasa al MODO CURSOR para reemplazar insertar borrar notas, para volver a Edit Ctrl-P"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 18 )
   cairo_show_text(c, t)
 
-  t = "AvPag/RePag scroll de las octavas mas rapido "
+  t = "-/+ achica/agranda el area y altura de las octavas dentro de la ventana "
   cairo_move_to(c, 0, Penta_y + inc_Penta * 19 )
+  cairo_show_text(c, t)
+
+  t = "AvPag/RePag scroll de las octavas mas rapido "
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 20 )
   cairo_show_text(c, t)
   
   t = "Ctrl-Click en [Reproducir] Play con scroll e iluminacion de notas"
-  cairo_move_to(c, 0, Penta_y + inc_Penta * 20 )
-  cairo_show_text(c, t)
-
-  t = "Barra Espacio: Play para Debug sin scroll, luego sera igual que ctrl-clik reproducir"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 21 )
   cairo_show_text(c, t)
 
-  t = "Pulsar F1 Para Un Notepad Con Ayuda Preliminar mas detallada, puede estar incompleta y no ser lo ultimo"
+  t = "Barra Espacio: Play para Debug sin scroll, luego sera igual que ctrl-clik reproducir"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 22 )
   cairo_show_text(c, t)
 
-  t = "En el menu algunso funcionan con Ctrl-clik otros con click solamente"
+  t = "Pulsar F1 Para Un Notepad Con Ayuda Preliminar mas detallada, puede estar incompleta y no ser lo ultimo"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 23 )
   cairo_show_text(c, t)
 
-  t = "En modificacion o Edit, se pasa de una octava a otra para editarla, deslizando el mouse hasta el extremo izquierdo de la octava deseada, eso iluminara las lines de verde"
+  t = "En el menu algunso funcionan con Ctrl-clik otros con click solamente"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 24 )
   cairo_show_text(c, t)
 
-  t = "la octava en edicion. (No hay vocales acentuadas, Cairo, la libreria grafica usada, no las maneja con font simples)"
+  t = "En modificacion o Edit, se pasa de una octava a otra para editarla, deslizando el mouse hasta el extremo izquierdo de la octava deseada, eso iluminara las lines de verde"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 25 )
   cairo_show_text(c, t)
 
-  t = "F2-F3 comprime - expande horizontalmente la secuencia, se puede editar tambien"
+  t = "la octava en edicion. (No hay vocales acentuadas, Cairo, la libreria grafica usada, no las maneja con font simples)"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 26 )
   cairo_show_text(c, t)
 
-  t = "En Edit entrar notas: 1) duracion 1 a 9, luego el nombre CDEFGAB o Ctrl+ nombre para sostenidos "
+  t = "F2-F3 comprime - expande horizontalmente la secuencia, se puede editar tambien"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 27 )
   cairo_show_text(c, t)
 
-  t = "En Lectura navegar a derecha o izquierda con Flecha horizontales, arriba abajo con Flechas Verticales"
+  t = "En Edit entrar notas: 1) duracion 1 a 9, luego el nombre CDEFGAB o Ctrl+ nombre para sostenidos "
   cairo_move_to(c, 0, Penta_y + inc_Penta * 28 )
   cairo_show_text(c, t)
 
-  t = "En Lectura seleccionar zona entre 2 posiciones,con Ctrl+Click en cualquier parte de la posicion deseada de la octava deseada, repetir hacia derecha para la 2da posicion "
+  t = "En Lectura navegar a derecha o izquierda con Flecha horizontales, arriba abajo con Flechas Verticales"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 29 )
+  cairo_show_text(c, t)
+
+  t = "En Lectura seleccionar zona entre 2 posiciones,con Ctrl+Click en cualquier parte de la posicion deseada de la octava deseada, repetir hacia derecha para la 2da posicion "
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 30 )
   cairo_show_text(c, t)
 
     
@@ -937,7 +980,7 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA Or cargaCancion=1 Then
      notaescala_num_ini=CInt(pmTk(ntk).notaescala) '13-01-2022
      tipoescala_num_ini= CInt(pmTk(ntk).tipoescala) '13-01-2022
      cadenaes_inicial="" '13-01-2022
-     armarescala cadenaes_inicial,tipoescala_num_ini,notaescala_num_ini,alteracion '13-01-2022
+     armarescala cadenaes_inicial,tipoescala_num_ini,notaescala_num_ini,alteracion,1 '13-01-2022
 ' todavia no probado, escala principal para TAB en cada track testeat 13-01-2022     
 ' no he grabado las escalas auxiliares en lso Trackc todavia !! 13-01-2022 jjj     
   print #1,"5- MAXPOS final TAB " ,maxpos
@@ -1041,6 +1084,41 @@ If MultiKey(SC_CONTROL) Then
    posishow=posicion
    
   EndIf
+EndIf
+
+' 03-02-2022 screen event me pone con su 80 trasponer=1 hace una asignacion !!!
+If MultiKey(SC_DOWN) Then  ' el screenevent me pone trasponer en 1 la puta e.scancode = 80 Then  ' <===== SC_DOWN pulso
+     If trasponer=1 And SelGrupoNota=0 Then
+        print #1,"0 pulso down screenevent TRASPONER con multikey!"
+       trasponerRoll ( -1,Roll,encancion)
+       Exit Do
+     EndIf 
+     If trasponer=1 And SelGrupoNota=1 Then
+       print #1,"1 pulso down screenevent TRASPONER"
+       trasponerGrupo ( -1,Roll,encancion)
+       Exit Do
+     EndIf 
+     
+    If cursorVert=1 Or cursorVert=2 Then
+     notacur = notacur + 1
+     If notacur > 12 Then
+      notacur=1
+     EndIf
+      Exit Do
+    EndIf
+    If cursorVert=0 Then 
+       If s1=0 Then
+          s1=1
+        print #1,"pulso down screenevent"
+        BordeSupRoll = BordeSupRoll -  inc_Penta
+       EndIf
+      If BordeSupRoll <= - AltoInicial * 2.8  Then
+         BordeSupRoll =  - AltoInicial * 2.8
+      EndIf
+      Exit Do
+    EndIf
+    
+
 EndIf
 
 '   escala = escala - 0.1
@@ -1380,6 +1458,7 @@ If MultiKey(SC_ESCAPE) Then
     Print #ffile,ndeltaip, " inc_Penta"
     Print #ffile,nVerEscalasAuxiliares, "nVerEscalasAuxiliares"
     Print #ffile,nanchofig, "nanchofig"
+    Print #ffile,nVerCifradoAcordes, "nVerCifradoAcordes"    
 
     cerrar ffile
       Sleep 100
@@ -2280,14 +2359,16 @@ If (ScreenEvent(@e)) Then
       alloff( 1 )
    EndIf
    If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion
+
     If trasponer=1 And SelGrupoNota=0 Then
-              Print #1,"3 TRASPONER !!!!!!!!!!!!!!"
+              Print #1,"3 TRASPONER !!!!!!!!!!!!!!", trasponer
      trasponerRoll ( 1,Roll,encancion)
      Exit Do
     EndIf
-    If trasponer=1 And SelGrupoNota=1 Then
-              Print #1,"4 TRASPONER !!!!!!!!!!!!!!"
+    If trasponer = 1 And SelGrupoNota=1 Then
+              Print #1,"4 TRASPONER !!!!!!!!!!!!!!",trasponer
      TrasponerGrupo ( 1, Roll,encancion)
+
      Exit Do 
     EndIf 
 
@@ -2357,39 +2438,6 @@ If (ScreenEvent(@e)) Then
    '      font = font + 1
    '      Exit Do
    '  EndIf
-   If e.scancode = 80 Then  ' <===== SC_DOWN pulso
-     If trasponer=1 And SelGrupoNota=0 Then
-        print #1,"0 pulso down screenevent TRASPONER"
-       trasponerRoll ( -1,Roll,encancion)
-       Exit Do
-     EndIf 
-     If trasponer=1 And SelGrupoNota=1 Then
-       print #1,"1 pulso down screenevent TRASPONER"
-       trasponerGrupo ( -1,Roll,encancion)
-       Exit Do
-     EndIf 
-     
-    If cursorVert=1 Or cursorVert=2 Then
-     notacur = notacur + 1
-     If notacur > 12 Then
-      notacur=1
-     EndIf
-      Exit Do
-    EndIf
-    If cursorVert=0 Then 
-       If s1=0 Then
-          s1=1
-        print #1,"pulso down screenevent"
-        BordeSupRoll = BordeSupRoll -  inc_Penta
-       EndIf
-      If BordeSupRoll <= - AltoInicial * 2.8  Then
-         BordeSupRoll =  - AltoInicial * 2.8
-      EndIf
-      Exit Do
-    EndIf
-    
-
-   EndIf
 ' -------------------------------
  
    If e.scancode = 83 Then '<====== SC_DELETE cambia a silencio o nada le suma 16+16 ver eso
@@ -2522,6 +2570,7 @@ EndIf
    ' ------------------PULSAR MUCHO TIEMPO <====== REPEAT------
   Case EVENT_KEY_REPEAT
    If e.scancode = 72  Then ' <======= SC_UP
+
       If trasponer=1 And SelGrupoNota=0 Then
          trasponerRoll ( 1,Roll,encancion)
          Exit Do
@@ -2551,13 +2600,13 @@ EndIf
    EndIf
 
    If e.scancode = 80 Then  ' <===== SC_DOWN repeat
+
       If trasponer=1 And SelGrupoNota=0 Then
-        Print #1,"0 TRASPONER !!!!!!!!!!!!!!"
+        Print #1,"0 TRASPONER !!!!!!!!!!!!!!",trasponer
          trasponerRoll ( -1,Roll,encancion)
          Exit Do
       EndIf
      If trasponer=1 And SelGrupoNota=1 Then
-           Print #1,"1 TRASPONER !!!!!!!!!!!!!!"
          TrasponerGrupo ( -1, Roll,encancion)
         Exit Do 
      EndIf 
@@ -2903,7 +2952,8 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
     Print #ffile,ndeltaip, " inc_Penta"
     Print #ffile,nVerEscalasAuxiliares, "nVerEscalasAuxiliares"
     Print #ffile,nanchofig, "nanchofig"
-
+    Print #ffile,nVerCifradoAcordes, "nVerCifradoAcordes"
+    
     cerrar ffile
       Sleep 100
     cerrar 0
@@ -3606,14 +3656,14 @@ ButtonGadget(2,530,30,50,40," OK ")
 ' clave DEVF (desarrollo futuro)
 ' esto funciona solo en modo lectura asi que lomovere ahi
 
-  If MultiKey(SC_CONTROL) And MousePress= 1 Then
+  If MultiKey(SC_CONTROL) And MousePress= 1  Then
      Dim As Integer pasox, pasoy, pasonR
      pasox=(mousex- gap1 )/anchofig  + posishow  
      pasoy=nE
      print #1,"pasoy nE=",pasoy
-     
-     correcciondeNotas(Roll)
-
+     If trasponer=1 Then '03-02-2022
+       correcciondeNotas(Roll)
+     EndIf
      If pasoZona1 = 0 Then  ' selecion 1er posicion de la zona
         pasoZona1=  pasox ' pos de la 1er ventana
         pasoNota=0 
@@ -3640,6 +3690,7 @@ ButtonGadget(2,530,30,50,40," OK ")
         pasoNota=0 ' 28-06-2021 mueve acorde si existe , sino meuve nota 
      '   print #1,"pasoZona1 iguales pasoZona2=",pasoZona2;" pasoNota=";pasoNota
      EndIf
+
   EndIf 
 
 
@@ -3679,15 +3730,15 @@ ButtonGadget(2,530,30,50,40," OK ")
 
  EndIf
  '' 26-01-2022 espaciado de lineas (1) movido desde 2190 afecta a acordes
- If MultiKey(SC_CONTROL) And lockip=0  Then '''' ççç REVISAR !!!!! 30-01-2022
+ If MultiKey(SC_CONTROL) And lockip=0   Then '''' ççç REVISAR !!!!! 30-01-2022
     deltaip=0
     incWheel=0
     lockip=1
     'Exit Do    
-
  EndIf 
  ' 26-01-2022 espaciado de lineas (2) movido desde 2713 afecta a acordes
- If MultiKey(SC_CONTROL) And lockip=1 And cargacancion=0 Then
+
+ If MultiKey(SC_CONTROL) And lockip=1 And cargacancion=0  Then
     If incWheel < 0 Then
        deltaipf=deltaipf + 1
     EndIf
@@ -3698,25 +3749,19 @@ ButtonGadget(2,530,30,50,40," OK ")
       incWheel=0
    ' ojo con los Exit Do si por defautl entra al if y hace exit do 
    ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click
-    
+
  EndIf 
-If MultiKey(SC_CONTROL) And (SC_T) And trasponer=0  Then
-  ' trasponer notas 24-06-2021 - por teclado para todas las notas cargadas
-  ' si subo con flecha arriba sube 1 semitono
-  ' si bajo con flecha bajo un semitono
-'  Print #1,"ENTRAS A TRSPONER O NO ?????"
-'  Print #1,"ENTRAS A TRSPONER O NO ?????"
-'  Print #1,"ENTRAS A TRSPONER O NO ?????"
-'  Print #1,"ENTRAS A TRSPONER O NO ?????"
-'        
+ If  MultiKey(SC_ALT) And (SC_T)Then
+
+      If trasponer=0  Then
          trasponer= 1
-   '      
+       EndIf  
    ' ojo con los Exit Do si por defautl entra al if y hace exit do 
    ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click'
+ EndIf
 
-EndIf
 
- If MultiKey(SC_ALT) And MouseButtons And 1 Then 'posiciona el cursor
+ If MultiKey(SC_ALT) And MouseButtons And 1  Then 'posiciona el cursor
     ' habilito trasposicion de una sola nota, ejecuta solo con Ctrl-T previo y
     ' las flechas up/down, habilitare dragado tambien 02-07-2021
 '    pasoNota=nE

@@ -469,7 +469,7 @@ gap3= (519 * gap1) /1000 ' 42 default
 'print #1,"gap1 ",gap1
 '---------
 Dim ffini As Integer 
-Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
+Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig,sVerCifradoAcordes
 
 ffini=FreeFile
 Open "./RollMusic.ini" For Input As #ffini
@@ -481,7 +481,9 @@ Line Input #ffini, salto
 Line Input #ffini, sdeltaip
 Line Input #ffini, sVerEscalasAuxiliares
 Line Input #ffini, sanchofig
-Print #1,"sfont, smxold, smyold,sANCHO,sALTO..  ",sfont, smxold, smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
+Line Input #ffini, sVerCifradoAcordes
+
+'Print #1,"sfont, smxold, smyold,sANCHO,sALTO..  ",sfont, smxold, smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
 
 cerrar ffini
 Sleep 100
@@ -495,6 +497,8 @@ nalto=ValInt(salto)
 ndeltaip=ValInt(sdeltaip)
 nVerEscalasAuxiliares=ValInt(sVerEscalasAuxiliares)
 nanchofig =ValInt(sanchofig)
+nVerCifradoAcordes=ValInt(sVerCifradoAcordes)
+
 Print #1,"nanchofig " ,nanchofig
 If nfont > 0 Then
   font=nfont
@@ -516,6 +520,7 @@ If nanchofig <> 0 Then
    gap3= (519 * gap1) /1000 ' 42 default
    NroCol =  (ANCHO / anchofig ) - 4 
 EndIf
+
 '---------
 If mxold=0 And myold=0 Then
 GetMouse mxold,myold, , MouseButtons
@@ -713,6 +718,7 @@ MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo 
 
 
 MenuItem(1070,MenName4,"Ver Escalas auxiliares ajustadas", MF_CHECKED)
+MenuItem(1071,MenName4,"Ver Cifrado de Acordes", MF_CHECKED)
   
 MenuItem(1080,MenName5,"TEMPO")
 MenuItem(1081,MenName5,"Factor para Aumentar velocidad de ejecucion, No se graba en archivo 1,5 o 0,5 etc")
@@ -756,6 +762,15 @@ Select Case nVerEscalasAuxiliares
   Case 3
        SetStateMenu(hMessages,1070,3)
 End Select
+
+' condicion inicial para ver o no cifrado acorde  en el grafico
+Select Case nVerCifradoAcordes
+  Case 0             
+       SetStateMenu(hMessages,1071,0)
+  Case 3
+       SetStateMenu(hMessages,1071,3)
+End Select
+
 
 'AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS
 
@@ -1155,6 +1170,18 @@ Print #1,"1060 abrirRoll=0 entro"
 
               End Select
               
+           Case 1071
+                nVerCifradoAcordes=GetStateMenu(hmessages,1071)
+              Select Case nVerCifradoAcordes 
+                     Case  3 
+                    nVerCifradoAcordes=0
+                    SetStateMenu(hmessages,1071,0)
+                     Case 0
+                    nVerCifradoAcordes=3
+                    SetStateMenu(hmessages,1071,3)
+
+              End Select
+
            Case 1080
               nombreArchivo="0"
               menuOldStr="[TEMPO]"
@@ -1264,7 +1291,7 @@ Print #1,"1060 abrirRoll=0 entro"
     ' C,D,E,F,G,A,B,Bb,Ab,Gb ver las debo pedir escala y 1er nota desde donde empieza uff
               Print #1,"armarescla desde 1106"
               cadenaes_inicial=""
-              armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion)
+              armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
 ' --------------------------   
            Case 1107 ' usamos sostenidos o bemoles ???
               pasozona1=0
@@ -1273,7 +1300,7 @@ Print #1,"1060 abrirRoll=0 entro"
               Print #1, "seleccion de Nota de la escala num  ",notaescala_num
               Print #1,"armarescla desde 1107"
               cadenaes_inicial=""
-              armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion)
+              armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
 
 
            Case 1108 ' alteraciones sotenidos o bemoles
@@ -1285,7 +1312,7 @@ Print #1,"1060 abrirRoll=0 entro"
       ''        GrabarArchivo()
               Print #1,"armarescla desde 1108"
               cadenaes_inicial=""
-              armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion)
+              armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
           
 
 ' --------------------------   
@@ -1296,7 +1323,7 @@ Print #1,"1060 abrirRoll=0 entro"
               SetStateMenu(hmessages,1109,3) 
               Print #1,"armarescla desde 1109"
               cadenaes_inicial=""
-              armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion)
+              armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
       
 
            Case 1110

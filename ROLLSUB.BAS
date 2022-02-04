@@ -1448,7 +1448,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
     cadenaes_inicial=""
     Print #1,"armarescala desde cargarArchivo"
 
-    armarescala (cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini, alteracion )
+    armarescala (cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini, alteracion ,1)
 
     tipoescala_inicial=escala(tipoescala_num_ini).nombre ' 13-01-2022 faltaba ini
 ' carga de escala en guia de escala
@@ -3672,6 +3672,7 @@ Sub salir()
     Print #ffile,ndeltaip, " inc_Penta"
     Print #ffile,nVerEscalasAuxiliares, "nVerEscalasAuxiliares"
     Print #ffile,nanchofig, "nanchofig"
+    Print #ffile,nVerCifradoAcordes, "nVerCifradoAcordes"
 
     cerrar ffile
     Sleep 100
@@ -3887,9 +3888,20 @@ EndIf
 
 ' al salir de aca graba en el vector Roll esta escala...
 End Sub
-
+function BuscarGrado(t3 As String) As Integer
+  Print #1,"=>busca grado entrada nrocromatico ",t3
+  t3=Trim(t3)
+Dim iz As Integer
+  For iz= 1 To 12
+     If t3 = Trim(grado_inicial (iz)) Then
+        BuscarGrado=iz
+        Print #1,"t3, grado encontrado ",t3, iz
+        Exit For
+     EndIf
+  Next iz
+End Function
 '--------
-Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As string )
+Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As String, orden As Integer )
 cadena=""
 
 Dim As Integer k3=1,h2,hnro,dif,dif2
@@ -3900,19 +3912,39 @@ Dim p6 As Byte Ptr
    
    hnro=escala(tipoesc).nropasos 
    'Print #1,"notaescala llego a armarescala ",notaesc
-   If notaesc > 1 Then
+   If notaesc >= 1 Then
      k3=notaesc 
    EndIf
    ' Print #1,"k3 inicial=",k3
     For h2 = 1 To hnro 
      If altera="bem" then
-     cadena = cadena + NotasEscalaArmado2(k3) + " "   ' impresion de la escala con las notas c c# d  etc
+        cadena = cadena + NotasEscalaArmado2(k3) + " "   ' impresion de la escala con las notas c c# d  etc
+        If orden=1 Then
+          notas_esc_inicial(h2)=NotasEscalaArmado2(k3)
+          notas_esc_inicial(h2+hnro)=NotasEscalaArmado2(k3)
+          grado_inicial(h2)=NotasEscalaArmado2(k3)
+          grado_inicial(h2+hnro)=NotasEscalaArmado2(k3)
+        EndIf
      Else
-     cadena = cadena + NotasEscalaArmado(k3) + " "
+        cadena = cadena + NotasEscalaArmado(k3) + " "
+        If orden=1 Then
+          notas_esc_inicial(h2)=NotasEscalaArmado2(k3)
+          notas_esc_inicial(h2+hnro)=NotasEscalaArmado2(k3)      
+          grado_inicial(h2)=NotasEscalaArmado2(k3)
+          grado_inicial(h2+hnro)=NotasEscalaArmado2(k3)
+
+        EndIf
      EndIf
       k3= *p6 + k3
     ' Print #1,"h2, k3",h2, k3
-     p6=p6+1 
+     p6=p6+1
+     If orden=1 Then 
+        Print #1,"h2 notas_esc_inicial(h2) ",h2, notas_esc_inicial(h2)
+        Print #1,"grado_inicial(h2) ",grado_inicial(h2)
+        Print #1,"h2 notas_esc_inicial(h2+hnro) ",h2+hnro, notas_esc_inicial(h2+hnro)
+        Print #1,"grado_inicial(h2) ",grado_inicial(h2+hnro)
+        
+     EndIf
     Next h2
     
     

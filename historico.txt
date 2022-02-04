@@ -1,4 +1,17 @@
--01-02-2022 tratndo de pasar NA to NA-13 donde haga falta...y pendiente hay que ver todos los move e insert
+-03-02-2022 fix  si uso trasponer sobre un acorde automatico ya no se pierde la info de Cifrado.Logicamente
+solo tienen sentido en la octava que se agrego el cifrado.
+ en las lineas invidibles donde se graba habria que no tocar la info y ademas ir aumentando o disminuyendo el 
+valro de la nota a medida que trasponemos,,,,,
+-03-02-2022 FIX <multikey(SC_CONTROL) AND SC_T> SE DISPARABA SOLO Y ME PONIA TRASPONER EN 1 LUEGO DE 
+PULSAR SC_CONTROL AND WHEEL (lockip). Parece hay una zona de superposicion que cambia el buffer,
+ergo para trasponer deje de usar CONTROL pase a usar ALT y todo anda bien,,,,INEXPLICABLE LOS ERRORES
+DE DETECCION DE TECLADO SERA POR EL USO DE CAIRO? O FREEBASIC ERROR¿? EN FIN ME HaCE PERDER TIEMPO ..
+tambien pasaba si usaba screenevent con hexadecimnal 80..LA DETECCION DE TECLADO ES PROBLEMATICA EN FREEBASIC
+ME TIENE cansado ja, VOY A TENER QUE USAR MAS LA TECLA ALT Y/O ALTERNAR CON CONTROL...
+-02-02-2022 Seguimos con C/x ...para escala C ya funiona!, pase a escala mayor G no anda corregir el algoritmo
+ ejemplo usado en G -> 8-I-C-D.roll
+ fix trasponer andaba cuando no sele pedia... con flechas arriba abajo raro...
+-01-02-2022 SE PASO NA to NA-13 en algunos donde haga falta...y pendiente hay que ver todos los move e insert
  de datos si movemos algo que tiene controle se debe mover tambien los otros campos ademas de dur y nota
  o sea vol, pb, inst etc...pendiente pendiente....(movedato, moveresto por ejemplo) o sea estoy movimientos
 si debe incluir hasta NA completo pero ademas faltaria mover mas datos de control por ejemplo.

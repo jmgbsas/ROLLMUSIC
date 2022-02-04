@@ -173,7 +173,7 @@ ubirtk=0
     cadenaes_inicial=""
     Print #1,"armarescala desde cargar Track"
 
-    armarescala (cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini, alteracion )
+    armarescala (cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini, alteracion,1 )
 Print #1,"cargaTrack cadena_inicial ",cadenaes_inicial
     tipoescala_inicial=escala(tipoescala_num_ini).nombre ' 13-01-2022 faltaba ini
 Print #1,"cargaTrack tipoescala_inicial ",tipoescala_inicial    
