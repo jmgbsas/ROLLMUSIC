@@ -39,7 +39,7 @@ Common Shared As FT_Face ftface
 common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu ',thplayC
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig
 Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes
-Common Shared As integer ubirtk, ubiroll,trasponer
+Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 'Type esc1 
 '  nombre   As String
 '  nropasos As Integer
@@ -234,12 +234,8 @@ instru=0
           
             If eventnumber()=2 Then
                Instru = GetItemListView()
-'''               instru=instru + 1
-            ''   If instru > 1 Then
-                  Close_Window(haw)
                   Exit Do
-           ''    EndIf
-           End If
+            End If
 
           EndIf 
           Sleep 5  

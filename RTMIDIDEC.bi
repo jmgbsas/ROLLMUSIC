@@ -68,6 +68,9 @@ Dim Shared As float relDur (0 To 182) => {0, _
 
 Dim Shared As Integer play =0,playb=0, portout, portin, numero, numeroFrac,cambioescala=0 
 ReDim Shared As string listout(1 ), listin (1 )
+Dim Shared As String *2  listCanal(1 To 16) => {" 1"," 2"," 3"," 4"," 5"," 6"," 7"," 8"," 9","10","11","12","13","14","15","16"}
+
+
 Dim Shared As String * 1 cifra 
 Dim Shared As String  digito, digitoFrac
  

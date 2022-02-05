@@ -86,7 +86,8 @@ Declare Sub CargarPistasEnCancion ()
 Declare sub GrabarCopiadePista()
 Declare Sub ImportarPistaExterna()
 
-Declare sub selport(ByVal tipo As any ptr) 
+Declare sub selport(ByVal tipo As any ptr)
+Declare Sub selcanal(ByVal tipo As Any Ptr)  
 Declare Sub ComboBox()
 Declare Sub grabaprueba()
 Declare Sub borrarColumnasMarcadas()
@@ -558,7 +559,7 @@ Dim Shared As rangoOct pmTk (0 To 32)
 Dim Shared As String titulos(0 To 32)
 Dim Shared As String pistas (0 To 32)
   
-Dim Shared As Integer ContadorError=0  
+Dim Shared As Integer ContadorError=0   
 ' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido por 8
 ' tengo elindice del revsado 1,2,3,4,5,6,7,8....
 ' comprobar qellimite este entre 1 a 8 
@@ -782,10 +783,11 @@ Common Shared As cairo_t  Ptr c, c2
 Common Shared surface As Any Ptr
 common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
-Common Shared As Integer mxold,myold, w,h,grado,trasponer
+Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx
 'Common Shared As Any Ptr thplayC
 trasponer=0
 pid1=0
+
 
 cargaCancion=0
 Dim Shared  As pasa param ', param2 

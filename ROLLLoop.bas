@@ -904,11 +904,11 @@ For K=desde To hasta -1 ' queda entre 2 octavas ,corregido  26-01-2022
 
 ' sigue en crea_penta donde al barer el roll va leyendo las escalas auxiliares
 EndIf
-
-
- 
-  Dim ta As Any Ptr = ThreadCall barrePenta (c, Roll )
-    ThreadWait ta
+'05-02-2022 usamos threarPenta ya definida global
+' se supone que la direccion es unica y se reusa no se la crea muchas veces
+' es mejor no ¿? zas je 
+    threadPenta = ThreadCall barrePenta (c, Roll )
+    ThreadWait threadPenta
 
 
 pubi=0
@@ -1126,7 +1126,7 @@ EndIf
  If  mouseY < 50  And MultiKey(SC_RIGHT)   Then ' <======== RIGHT
  ' seleccion de menu, mouse sobre cinta + teclas
       menuNro=menuNro+1
-     If menuNro > 10 Then ' 28-08-2021 
+     If menuNro > 11 Then ' 28-08-2021 
        menuNro=0
        menuNew=0
      EndIf
@@ -1170,8 +1170,8 @@ EndIf
   menuNro=menuNro - 1
   menuNew=menuNro
   If menuNro < 0 Then
-   menuNro=10  ' 28-08-2021
-   menuNew=10
+   menuNro=11  ' 28-08-2021
+   menuNew=11
   EndIf
   Exit Do
  EndIf
@@ -4262,15 +4262,15 @@ EndIf
 
 '                     <===  FIN    O P I L F E W H
 
- If mouseY > 50 And MouseButtons  And 1 And cargacancion=0 Then
+ 'If mouseY > 50 And MouseButtons  And 1 And cargacancion=0 Then ' anulado 05-02-2022
   '''s5=2        'se resetea en EVENT_MOUSE_BUTTON_RELEASE ' obtengoPosicion
   '' ES ACA PROHIBIDO PONER EXIT DO ! NO FUNCION DETECTOR DE OCTAVAS
   '' DEBE SEGUIR EJECUTNDO HACIA ABAJO Y CALCULARINDICE VAMOS A MOVER
   ''ESTEIF AL FINAL
-    If MenuNew <> 2 Then
-     MenuNew=0
-    End If 
- EndIf
+    'If MenuNew <> 2 Then ' 05-02-2022 ya no volvemos a menu 0 mucho trabajo volver 
+    ' MenuNew=0
+    'End If 
+' EndIf
  Exit Do
 
 '''EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI

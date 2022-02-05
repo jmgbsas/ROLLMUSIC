@@ -1491,6 +1491,9 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
                    ' y carga de pmTk.NB y NA
 
      Get #ca, ,graba3  (1,1)
+
+     canalx=graba3(1,1).inst ' canal midi cargado en Global si es un track se pasara a info de trck 
+
      Get #ca, ,graba4  (1,1)
      Get #ca, ,graba5  (1,1)
      Get #ca, ,graba6  (1,1)
@@ -2068,7 +2071,7 @@ EndIf
 
    '===> 3.2.2 [CARPETA]
    ' para cargar cancion o tema habia sido proyectado, podria usarlo
-   ' para que una instancia pueda cargar una cancion..... 
+   ' para que una instancia pueda cargar una cancion.....no porque no corre la otra logica
    If mousex > 378 And mousex <  459  And mousey < 50 And carga=0  Then ' <= ABRIR lee grabaroll.roll
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And carga = 0 Then
@@ -2078,7 +2081,7 @@ EndIf
     cairo_set_source_rgba c, 1, 1, 1, 1
     carga=0  ' <======= control de Carga
    EndIf
-   t = " [CARPETA]>":cairo_show_text(c,t)
+   t = " [SIN USO]>":cairo_show_text(c,t)
 
    
   '===> 3.3[GRABAR] SC_F11 COPIA
@@ -2459,59 +2462,90 @@ EndIf
     menunew=0
    
 
-  Case 9
+   Case 9
   ' [MIDI] 
     If mousex > 42 And mousex < 90  And mousey < 50 And listaMIDI = 0  Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
          menunew=10 
-         
       EndIf ' mousebuttons
- '     
+           
     Else
       cairo_set_source_rgba c, 1, 1, 1, 1
-      MenuNew=9
+      
     EndIf
-    t = "      [MIDI]":cairo_show_text(c,t):t=""
+    t = "      [MIDI]":cairo_show_text(c,t)
+
+   If mousex > 120 And mousex < 190  And mousey < 50 Then 'And listaMIDI = 0  Then ' <= NUEVO
+     cairo_set_source_rgba c, 0, 1, 0, 1
+     If MouseButtons And 1 Then
+        menunew=11 ' NRO CANALES 
+        
+     EndIf ' mousebuttons
+      
+   Else
+     cairo_set_source_rgba c, 1, 1, 1, 1
+   EndIf
    
+    t = " [CANALES]":cairo_show_text(c,t)
 
+   cairo_stroke(c)
  Case 10
-
+  
     If mousex > 90 And mousex < 190  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
-    cairo_set_source_rgba c, 0, 1, 0, 1
+       cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
-       
        Dim miport As Integer=1
        thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))  '' 'GtkListBox()
-       MenuNew=0
       EndIf ' mousebuttons
  'listaMIDI=1     
     Else
       cairo_set_source_rgba c, 1, 1, 1, 1
+      MenuNew=10
     EndIf
 
-    t = "             [MIDI-OUT]":cairo_show_text(c,t):t=""
+    t = "             [MIDI-OUT]":cairo_show_text(c,t)
     If mousex > 200 And mousex < 300  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
+             Print #1,"ENTRO POR EL MIDIIN PUTARRACO  !!!!!!!!!!!!!!!!!!! PUTA"
     cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
        Dim miport As Integer=2
+       MenuNew=10:Menunro=10
        ' create con argumentos
        thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))  '' 'GtkListBox()
-       MenuNew=0
       EndIf ' mousebuttons
  'listaMIDI=1     
     Else
       cairo_set_source_rgba c, 1, 1, 1, 1
+          
     EndIf
-
     t = " [MIDI-IN]":cairo_show_text(c,t):t=""
+
+  Case 11
+
+     If mousex > 40 And mousex < 190  And mousey < 50 Then 'And listaMIDI = 0 Then ' <= NUEVO
+      cairo_set_source_rgba c, 0, 1, 0, 1
+      If MouseButtons And 1 Then
+       Dim ti As Integer
+       ti=1 ' seleccion de canales midi de entrada
+       thread2 = ThreadCreate(@selcanal(), CPtr(Any Ptr, ti))
+         
+       'Print #1,"canal elegido luego del thread2 en menu ",canalx
+      EndIf ' mousebuttons
+      MenuNew=11
+     Else
+      cairo_set_source_rgba c, 1, 1, 1, 1
+      MenuNew=11
+     EndIf
+
+     t = "      Seleccione un canal"
       
  End Select
  ' Si nodoy Stroke los show text van apendendo al final como un print;
 
   cairo_show_text(c, t)
   cairo_stroke(c)
-  If usarmarco=0 Then 
+  If usarmarco=0  Then 
    cairo_move_to(c, 0, 30 )
    If resize = TRUE Then
      cairo_set_source_rgba c, 1, 0, 0, 1
@@ -3126,6 +3160,9 @@ Negras por minuto	 tempo
      If instru > 0 Then
        Trabajo(1,NA).inst = CUByte(instru)
      EndIf
+     If canalx >0 Then
+        graba3(1,1).inst =canalx ' el CANAL MIDI 1 A 16 QUE ACA VA DE 0 A 15
+     EndIf
      
      
      ' ------------------------------------
@@ -3478,14 +3515,14 @@ mitipo=  CInt(tipo)
           #Else
            gtk_widget_grab_focus(GadgetID(1))
          #EndIf
-         menunew=0
+         'menunew=0
          Do
 
          Var event= waitEvent
 
           If event=eventgadget Then
             If eventnumber()=2 Then
-              menunew=0
+              'menunew=0
               portout = GetItemListView()
               Close_Window(haw)
               Exit Do 
@@ -3510,6 +3547,61 @@ mitipo=  CInt(tipo)
 '' fin ruso
 
 End Sub
+
+' 
+Sub  selcanal (ByVal tipo As Any Ptr )  ' list de ruso
+Dim As hwnd haw,hwl
+Dim mitipo As Integer 
+mitipo=  CInt(tipo)
+Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
+'' => desde aca echo con tool del ruso no anda muy bien
+     haw=OpenWindow("CANALES",100,50,400,400,WS_VISIBLE, WS_EX_TOPMOST )
+     hwl=  ListViewGadget(1,10,10,300,300,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL  )
+     Dim As String mensaje 
+     If mitipo = 1 Then ' out
+      mensaje="Canales Salida"
+     EndIf
+     If mitipo = 2 Then ' in entradas
+      mensaje="Canales Entrada"
+     EndIf 
+     
+     AddListViewColumn(1, mensaje ,0,0,250)
+     For aa As Integer=1 To 16 
+         AddListViewItem(1, listCanal(aa) ,0,aa,0)
+     Next
+   
+
+       ButtonGadget(2,330,30,50,40," OK ")
+         #Ifdef __FB_WIN64__
+           SetFocus (hwl) 
+           SetForegroundWindow(haw)
+          #Else
+           gtk_widget_grab_focus(GadgetID(1))
+         #EndIf
+         Do
+
+         Var event= waitEvent
+
+          If event=eventgadget Then
+            If eventnumber()=2 Then
+              canalx = GetItemListView()
+           ' get itme va de 0 a 15 no ahce falta convertir 
+' esto sirve para cambia rdinamicamente el canal midi mientras tocamos, perp tambien
+' si grabamos el archjivo se grabara y pisara la info de midi canal en el archio
+' al cargar el archivo de nuevo se tomara ese canal.              
+          Print #1,"**********CANAL ELEGIDO EN SELCANAL ",canalx
+              Close_Window(haw)
+              Exit Do 
+            End If
+          EndIf 
+          Sleep 5  
+          
+         Loop 
+  
+'' fin ruso
+
+End Sub
+
 '-------------------
 Sub ComboBox() ' lo deje de usar pero veo si sirve para algo en el futuro
 
@@ -3526,7 +3618,7 @@ AddComboBoxItem(1,"Hola uno ",-1)
 AddComboBoxItem(1,"Hola dos",-1)
 ButtonGadget(2,150,10,220,20,"Select an item and click here")
  SetForegroundWindow(haw)
-menunew=0
+'menunew=0
 Do
    var event=WaitEvent()
    If event=eventclose Then End

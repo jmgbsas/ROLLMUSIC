@@ -73,6 +73,8 @@ Sub noteoff( note As UByte, canal As UByte)
 ' canal 1
 ' 123 da note off para todas las notas solo hy qu eenvirlo a 
 'todoslos canales
+' voy a tener que enviar el nro de canal que se usa en cada pista al tocarla...
+
 	Dim modo As UByte
 	Dim leng As UInteger <8>
 	Dim result As Integer
@@ -145,6 +147,7 @@ result = send_message (midiout, p, leng)
 
 End Sub
 Sub ChangeProgram ( ByVal instru As UByte, ByVal canal As ubyte)
+
 	Dim modo As UByte
 	Dim leng As UInteger <8>
 	Dim result As Integer ' canal 0 to 15 canal 0 es el 1
@@ -925,7 +928,7 @@ limpiarLigaduras (cnt,pasoCol())
 
 End Sub
 '-------------playAll-----21-05-2021-------
-Sub playAll(Roll As inst) ' play version 2
+Sub playAll(Roll As inst) ' play version 2 
 ' tiempo es cuantas negras en un minuto tiempoPAtron
 ' PLAY masavanzado en un mismo acorde si son de distinta duracion
 ' sus notas se toca cada una con su propia duracion,el corde no termina
@@ -939,7 +942,7 @@ tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '60 seg/ cuantas negras enun mi
 
 Dim As Integer i1,i2,i3,i4,i5,j ,comienzoDeLoop=0,xmouse, ymouse
 Dim As Integer comienzo=1, final=MaxPos,  canal=0,vel=100,velpos =0
-' canal 0 es el 1 van de 0 a 15
+' canal 0 es el 1 van d0 a 15
 
 Dim As Double start
 Dim as Integer cnt=0, cntold=0,cpar=0,nj, durj,tiempoFiguraSig
@@ -947,6 +950,13 @@ Dim As UByte dura=0,duraold=0
 Dim As Integer liga=0,notapiano=0,old_notapiano=0, iguales=0, distintos=0
 Dim leng As UInteger <8>
 Dim result As Integer
+
+' ==============> AJUSTE DE CANAL MIDI PARA UN ARCHIVO ROLL AISLADO <===========
+Print #1,">>>>>> canal elegido  en menu ",canalx
+If canalx> 0 Then
+  canal=canalx
+  ' RECORDAR CANALX EN SELECCION VA DE 1 A 16 PERO SE SUSA DE 0 A 15...
+EndIf
 
 print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
 print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur

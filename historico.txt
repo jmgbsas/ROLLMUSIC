@@ -1,3 +1,7 @@
+-05-02-2022 Seleccion de canal y grabacion en archivo del Nro de Canal en Bloque 3 graba3(1,1) ok
+ para archivo roll, falta para archivo rtk y manejo en cancion.
+-05-02-2022 Se anula en menu la vuelta a menu inicial menunew=0 por molesto si se queria volver a usar 
+ el mismo menu habia que volver a recorrer todo, anulado.
 -04-02-2022 fix al ingresar notas en Edit el pantalleo no estaba en funcion del cambio de tamaño
 se uso NroCol que ahora es dinamico.
 -04-02-2022 1er paso para cambio de canal es cambiar el formato del archivo con mas capacidad. 
