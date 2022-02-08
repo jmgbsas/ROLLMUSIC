@@ -17,6 +17,11 @@
         (nota: MIDI y MIDI-OUT funcionan con un click simple. Pero Opciones con ALT y Configuracion 
          con Ctrl-Click ), como estamos en un grafico puro se necesita que las teclas sean distintas si
          el rotulo o label que cambia por una accion está en la misma posición.
+        Fix nueva version: ahora con el menu de MIDI-OUT se puede cambiar de dispositivo en la misma sesion
+        sin necesidad de cambiar el dispositivo default por afuera del programa con alguna otra aplicacion.
+        Se agregara, poder tener por pista distinto dispositivo, solo port reales, se ve cada tarjeta o 
+        sintetizador por software standalone como un port distinto, RtmidiC no ve los port Virtuales en 
+        Windows..., pero si se usa un cable midi virtual sí lo ve como por ejemplo LoopBe1.
         b) Usar Marco o No Usar. 
         Usando marco es mas facil mover la ventana porque usa el modo nativo de
         windows, pero en esta implementacion no se puede redimensionar la ventana CON EL PROGRAMA EJECUTANDO.

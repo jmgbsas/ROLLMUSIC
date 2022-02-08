@@ -1669,8 +1669,8 @@ End Sub
 Sub listports( )
 
 
-midiin  = rtmidi_in_create_default()
-midiout = rtmidi_out_create_default()
+'midiin  = rtmidi_in_create_default()  se abre al principio
+'midiout = rtmidi_out_create_default() se abre al principio
 
 portsin  =  port_count (midiin)
 portsout =  port_count (midiout)

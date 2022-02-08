@@ -1,5 +1,26 @@
+-08-02-2022 se desarrollo 1era parte poder cambiar el port o dispositivo reproductor de MIDI-OUT en
+una misma sesion y funciona bien, paso siguiente a ver es colocar port distintos en pistas distintas
+ademas de canales...vovado a ayuda.
+-07-02-2022 estado ESTUDIO DE LIBRERIA PARA LEER Y ESCRIBIR MIDIFILE,   probé y grabé
+logre hacer el ejemplo en c en freebasic melodias acordes, pero trate con  notas ligadas pero es 
+medio dificultoso s elogra pero no del todo y no se puede en varios casos,,,pendiente
+cual camino seguir falta mas investigacion,,,
+otra coas es que que solo escribe hasta fusa le agregue semifusa y garrapatea pero no las reconoce 
+la libreria midilib , pero tampoco parece que casi no se usa ...pendiente...me queda duda de si 
+algunso programas pueden importar una semifusa,,,,
+C:\IT64\AREAWORKAUX\RtMidiC-MIDIFILE\FreeBasic
+-06-02-2022 Fix nota bemol o sotenido en cifrados D/F# o D/Gb
+-06-02-2022 encolumnamos los campos de inforamcion en el encabezado Compas, Factor, (Negra=60)I=60, 
+ Canal Midi, Escala. (Es un Bosquejo para poder cambiarlos en el futuro con el mouse o teclado 
+ seleccionandolo. O sea esto seria similar a un ToolBar que muestran y pueden modificar parametros, 
+ Hay mucho espacio puede haber muchos controles y a la vista. El Paneo sera util y Volumen de la pista...)s
 -05-02-2022 Seleccion de canal y grabacion en archivo del Nro de Canal en Bloque 3 graba3(1,1) ok
- para archivo roll, falta para archivo rtk y manejo en cancion.
+ para archivo roll y rtk y manejo en cancion.(grabaremos dispositivo midi usado ¿?)
+Esta echo falta probar: en cancion y conversiones ...Lo qu evoy hacer tambien sera ajustar el 
+Volumen de cada nota en una octava dada dibujando una curva pero sobre cada octava de ese 
+movo tendre volumen ajustado por octava en una pista en edicion. Tambien podre hacer eso con el 
+paneo...Volumen y paneo de cada nota de una octava...Pitch bend tambien algun dia .,,,todo se puede
+pero demanda tiempo...zas!
 -05-02-2022 Se anula en menu la vuelta a menu inicial menunew=0 por molesto si se queria volver a usar 
  el mismo menu habia que volver a recorrer todo, anulado.
 -04-02-2022 fix al ingresar notas en Edit el pantalleo no estaba en funcion del cambio de tamaño

@@ -2494,7 +2494,8 @@ EndIf
   
     If mousex > 90 And mousex < 190  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
        cairo_set_source_rgba c, 0, 1, 0, 1
-      If MouseButtons And 1 Then
+      If MouseButtons And 1 And cierroport = 0 Then
+        cierroport=1 
        Dim miport As Integer=1
        thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))  '' 'GtkListBox()
       EndIf ' mousebuttons
@@ -3545,7 +3546,7 @@ mitipo=  CInt(tipo)
 
   
 '' fin ruso
-
+cierroport=0
 End Sub
 
 ' 
@@ -3584,12 +3585,17 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 
           If event=eventgadget Then
             If eventnumber()=2 Then
-              canalx = GetItemListView()
+              canalx = GetItemListView() ' sirve para el roll actual en edicion
            ' get itme va de 0 a 15 no ahce falta convertir 
 ' esto sirve para cambia rdinamicamente el canal midi mientras tocamos, perp tambien
 ' si grabamos el archjivo se grabara y pisara la info de midi canal en el archio
 ' al cargar el archivo de nuevo se tomara ese canal.              
           Print #1,"**********CANAL ELEGIDO EN SELCANAL ",canalx
+          ' carga de canal MIDI al vector parametros de tracks de cancion
+          If CANCIONCARGADA  Then
+             pmTk(ntk).canalsalida=canalx ' sirve para el track cargao actual en cancion
+          EndIf
+          
               Close_Window(haw)
               Exit Do 
             End If
@@ -4081,14 +4087,15 @@ Dim p6 As Byte Ptr
           notas_esc_inicial(h2+hnro)=NotasEscalaArmado2(k3)
           grado_inicial(h2)=NotasEscalaArmado2(k3)
           grado_inicial(h2+hnro)=NotasEscalaArmado2(k3)
+
         EndIf
      Else
         cadena = cadena + NotasEscalaArmado(k3) + " "
         If orden=1 Then
-          notas_esc_inicial(h2)=NotasEscalaArmado2(k3)
-          notas_esc_inicial(h2+hnro)=NotasEscalaArmado2(k3)      
-          grado_inicial(h2)=NotasEscalaArmado2(k3)
-          grado_inicial(h2+hnro)=NotasEscalaArmado2(k3)
+          notas_esc_inicial(h2)=NotasEscalaArmado(k3)  ' 06-02-2022
+          notas_esc_inicial(h2+hnro)=NotasEscalaArmado(k3)      
+          grado_inicial(h2)=NotasEscalaArmado(k3)
+          grado_inicial(h2+hnro)=NotasEscalaArmado(k3)
 
         EndIf
      EndIf

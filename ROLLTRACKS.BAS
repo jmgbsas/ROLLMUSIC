@@ -108,7 +108,22 @@ ubirtk=0
      pmTk(ntk).NB => 0 + (pmTk(ntk).desde-1) * 13   ' 27 para 3 SI CARGO CANCION NO VA
      pmTk(ntk).NA => 11 + (pmTk(ntk).hasta-1) * 13  ' 90 para  7 06-09-2021 decia 12 -> es 11
      print #1,"CargarTrack  NB Na", pmTk(ntk).NB, pmTk(ntk).NA
+     
+     Get #ct, ,graba3  (1,1)
+     pmTk(ntk).canalsalida = graba3(1,1).inst    
+     
+     
      print #1,"cargaCancion ",cargacancion
+
+     Get #ct, ,graba4  (1,1)
+     Get #ct, ,graba5  (1,1)
+     Get #ct, ,graba6  (1,1)
+     Get #ct, ,graba7  (1,1)
+     Get #ct, ,graba8  (1,1)
+     Get #ct, ,graba9  (1,1)
+     Get #ct, ,graba10 (1,1)
+
+
      ' 1) con cancion cargada puedo cargar cualqueir pista de cancion existente
      ' en Roll Visual, modificarlo y al pasar de RollaTrack AL grabarlo SE PONDRA 
      ' en cancion automaticamente con un numero nuevo de pista, eso seria una copia
@@ -137,16 +152,10 @@ ubirtk=0
         posicion=1
         curpos=0
         CantTicks=pmTk(ntk).Ticks
+        canalx=pmTk(ntk).canalsalida
      EndIf
 
-     Get #ct, ,graba3  (1,1)
-     Get #ct, ,graba4  (1,1)
-     Get #ct, ,graba5  (1,1)
-     Get #ct, ,graba6  (1,1)
-     Get #ct, ,graba7  (1,1)
-     Get #ct, ,graba8  (1,1)
-     Get #ct, ,graba9  (1,1)
-     Get #ct, ,graba10 (1,1)
+
 
      
      ' configuro el track receptor
@@ -202,8 +211,8 @@ Print #1,"cargaTrack tipoescala_inicial ",tipoescala_inicial
     guiaEscala(1).notaescala=notaescala_num_ini
     guiaEscala(1).alteracion =CInt(zLim(1,1).pan)
     guiaEscala(1).posicion=1
-' cuando cargo un track desde disco sin cancion, aisalo, es similar a Roll
-' ahora durante al carga de cancion y el uso de tAB esto debe ir cambiadno para
+' cuando cargo un track desde disco sin cancion, aislado, es similar a Roll
+' ahora durante la carga de cancion y el uso de tAB esto debe ir cambiadno para
 ' cada track cambiado en el grafico 
 '----------
       print #1,"CargarTrack  fin"  
@@ -217,8 +226,10 @@ End Sub
 Sub RollTempaTrackTemp (TrkTemp() As poli,RollTemp() As dat)
 '--------CODIGO SIMILAR A ROLLATRACK SI SE CAMBIA ACA SE DEBE CAMBIAR HALLA
 Dim As Integer i4,i3=0,i2=0,i1=0,verticalEnOctavaVacia, octavaDeAcorde,copiado=0
-' ÇÇÇ
-' copia en TrkTemp RollTemp donde esta Roll modificado
+' 
+' copia en TrkTemp RollTemp donde está Roll modificado
+' se copia toda la secuencia y sus controles, la parte inicial de bloques de los archivos
+' solo se envia a dichos bloques en los comandos de grabacion a archivo
  
 For i2 = 1 To MaxPos
    'print #1,"i2",i2
@@ -272,7 +283,7 @@ For i2 = 1 To MaxPos
 ' octava eso sigue igual solo que esta info se debe leer antes de todo el resto
 ' de foram que se sepa que cifrados de acorde van en cada octava...      
       If Roll.trk(i2,i1 ).pb = 201  Then ' info acorde en una octava
-      'ÇÇÇ
+      '
          Print #1,"RolltempaTrack hay marca 201, i2, i1",i2, i1
          octavaDeAcorde=1+ (i1-12)/13 ' formula de vacio lineas entre octavas
          Print #1,"i1, octavaDeAcorde,vacio deberia ser 6!! ",i1, octavaDeAcorde
@@ -299,7 +310,7 @@ Print #1,"Roll.trk(i2,verticalEnOctavaVacia).dur ",Roll.trk(i2,verticalEnOctavaV
     TrkTemp(i2,i3).acorde=CUByte(i3)   ' Grabamos la cantidad de elem del acorde
    EndIf 
 Next i2   
-TrkTemp(1,1).inst=RollTemp(1,NA).inst  
+TrkTemp(1,1).inst=RollTemp(1,NA).inst  ' instrumento o PATCH
 print #1,"termino copia a Trktemp, maxpos, posn ", maxpos, posn
 '--FIN--CODIGO SIMILAR A ROLLATRACK SI SE CAMBIA ACA SE DEBE CAMBIAR HALLA Y VICEVERSA
 
@@ -456,7 +467,7 @@ print #1,"termino copia a Trktemp, maxpos, posn ", maxpos, posn
 '/
 
 '''ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim3) 30-01-2022 porque cantTicks?
-'ÇÇÇ  ojo espero no haga cancelaciones CantTicks siemrp es mayor a MAxPos o en 
+'  ojo espero no haga cancelaciones CantTicks siemrp es mayor a MAxPos o en 
 ' nucleo se agranda ? fijarse,,,,si en nucleo se redimensiona Track y Roll si
 ' hace falta sin borrar datos..
 ReDim (Track(ntk).trk ) (1 To Maxpos,1 To lim3)
@@ -524,6 +535,9 @@ print #1,"pasó copia a vector"
 '     If instru > 0 Then
 '       TrkTemp(1,NA).inst = CUByte(instru)
 '     EndIf
+' cargado un Roll desde archivo canalx toma el valor del canal midi de salida del archivo
+
+     graba3(1,1).inst=canalx
      
      '-----------------------------
      print #1,"etapa final puts"
@@ -736,9 +750,16 @@ If  nombre > "" Then
            pmTk(ntk).posn=posn
            pmTk(ntk).notaold=notaold
            pmTk(ntk).Ticks=CantTicks
+           pmTk(ntk).canalsalida=canalx ' SOLO VALIDO PRA UAN PISTA AISLADA 
         EndIf
       
    EndIf
+' NOTA: pra cambiar un canal de salida midi se debera editar la pista en el editor de Roll
+' cambiar al canal MIDI deseado y Grabar el archivo como roll y como rtk asi queda el valor
+' en ambos archivos o si se cargo como track se grabara como track..
+' si estoy en cancion al usar TAB para pasar de pista el valor del canal mido quedara ademas
+' en al estructura pmTk en memoeria,,,
+   
  '2) Actualizacion de un trk de cancion, se modifica desde roll igual que antes 
  'pero sobreescribe el track del roll correspondiente en cancion
  ' lso parametros no se tocan es la misma pista 
@@ -943,7 +964,7 @@ For i2 = 1 To MaxPos
          End If
       EndIf
 ' con esaclas esta bien, con una sola vez que copie se repita para todas las octavas
-' ÇÇÇ
+' 
       If Roll.trk(i2,i1 ).dur= 200  Then ' solo en 13 copia 1 sola vez ok sigue igual
          
          Track(ntk).trk(i2,13).inst = Roll.trk(i2, i1).inst ''=CUByte(tipoescala)
@@ -963,7 +984,7 @@ For i2 = 1 To MaxPos
 ' octava eso sigue igual solo que esta info se debe leer antes de todo el resto
 ' de foram que se sepa que cifrados de acorde van en cada octava...      
       If Roll.trk(i2,i1 ).pb = 201  Then ' info acorde en una octava
-      'ÇÇÇ
+      '
          octavaDeAcorde=restar(i1)+1
          i3=13 + octavaDeAcorde 
          verticalEnOctavaVacia= 12 + (hasta-2)*13 + octavaDeAcorde - desde ' 90 + 6 - 4=92
@@ -1021,6 +1042,7 @@ nota=0:dur=0
    MaxPos = pmTk(ntk).MaxPos
    posn   = pmTk(ntk).posn
    notaOld= CInt(pmTk(ntk).notaold)
+   canalx= CInt(pmTk(ntk).canalsalida)
    
    print #1,"TrackaRoll ntk, desde, hasta, MaxPos ", ntk, desde,hasta,MaxPos
    desdevector=desde
@@ -1101,7 +1123,7 @@ For i2 = 1 To MaxPos
    Next i1
 Next i2
 
-'ÇÇÇ [[[[[ JMG 15-01-2022 ACA DEBO COPIAR EL CAMPO DE CONTROL DE LIM3 EL 13 !!!! ]]]]] 
+' [[[[[ JMG 15-01-2022 ACA DEBO COPIAR EL CAMPO DE CONTROL DE LIM3 EL 13 !!!! ]]]]] 
 Dim  As Integer k,vacio
 For i2=1 To MAxPos
   If Track(ntk).trk(i2,13).dur = 200 Then
@@ -1116,13 +1138,13 @@ For i2=1 To MAxPos
     Next K
   EndIf  
 Next i2
-'ççç
+'
 
 'copiar info de acordes de track a Roll ,.,,,
 For i2=1 To MAxPos
   For i1 = lim2 To lim3
       If Track(ntk).trk(i2,i1 ).pb =202  Then ' info acorde en una octava
-      'ÇÇÇ 
+      ' 
        Print #1,"TrackARoll hay octava de acorde a copiar a roll",Track(ntk).trk(i2,i1 ).vol
          verticalEnOctavaVacia= 12 + (hasta-2)*13 + Track(ntk).trk(i2,i1 ).vol - desde ' 90 + 6 - 4=92
          Print #1,"verticalEnOctavaVacia ",verticalEnOctavaVacia
@@ -1327,7 +1349,9 @@ kNroCol= Int(jply/NroCol)
        Exit For
     EndIf
   '''final=pmTk(pis).MaxPos
-
+' ========> AJUSTE DE CANAL MIDI PARA CADA PISTA AL INICIO DE C/U <==========
+  canal=pmTk(pis).canalsalida
+' ========> AJUSTE DE CANAL MIDI PARA CADA PISTA AL INICIO DE C/U <==========  
       
 ' ojo con silencios ligados !!!
 

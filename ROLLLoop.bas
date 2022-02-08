@@ -46,9 +46,31 @@ Dim As String t2="",t3="",t4=""
 
  Penta_y = BordeSupRoll + 14 * ( inc_Penta ) *( nro -1)
 '--------------------------
- t=" ESCALA: "+ UCase(tipoescala_inicial) + " [" +cadenaes_inicial +"] I="+Str(tiempoPatron) + "Factor "+ Str(FactortiempoPatron) + " Compas=" +TCompas  
-
+ t=" ESCALA: "+ UCase(tipoescala_inicial) + " [" +cadenaes_inicial +"] 
   cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - inc_Penta)
+  cairo_show_text(c, t)
+  t= ""
+     
+ ' CAMBIOS FUTUROS FACILES: ubicar bien las posiciones de cada parametro con cairo_move tomar su argumento
+ ' y colocar mas para cada parametro y luego si apreto click izquierdo aumento el valor
+ ' si apreto click derecho lo disminuyo ,,o con la ruedita...Hace rlo mismo con el Pan
+ ' de sonido para ubicar el sonido entre la derecha o izquierda,,,o
+ ' PARA SABER SOBRE QUE CONTROL ESTOY HACE RUN CURSOSR PARA ESTA PARTE DE ARRIBA QUE PUEDA NAVEGAR
+ ' ENTRE CONTROLES MODIFICABLES Y ESTAANDO UBICADO USAR RUEDITA O FLECHAS PARA CAMBIAR... 
+ cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - 2* inc_Penta)
+  t=" CANAL MIDI: "+Str(canalx+1)
+  cairo_show_text(c, t)
+  t= ""
+ cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - 3* inc_Penta)
+ t=" I="+Str(tiempoPatron) 
+  cairo_show_text(c, t)
+  t= ""
+ cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - 4* inc_Penta)
+ t= " Factor: "+ Str(FactortiempoPatron)
+  cairo_show_text(c, t)
+  t= ""
+ cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - 5* inc_Penta)
+  t= " Compas=" +TCompas
   cairo_show_text(c, t)
   t= ""
 
@@ -94,10 +116,9 @@ Dim As String t2="",t3="",t4=""
  Dim As Integer lugar=0, sitio
  lugarOld=Penta_y
 
-
-
  For semitono = 0 To 11
    If COMEDIT = TRUE  and estoyEnOctava = *po  Then ''+ 1  Then
+
      If octavaEdicion=estoyEnOctava Then
         cairo_set_source_rgba(c, 0, 1, 0.5, 1)
      Else 
@@ -165,7 +186,7 @@ Dim As String t2="",t3="",t4=""
       t3="":t4=""
       indfa=0
     EndIf
-    
+' =======> fin cifrado acordes----    
   '  If t3 >"" Then
       cairo_show_text(c, t3)
    '   cairo_stroke(c)
@@ -271,7 +292,7 @@ Dim As String t2="",t3="",t4=""
 '     cairo_set_source_rgba(c, 1, 1, 1, 1)
   
 
-' ////////dar color al font en una determinada posicion   
+' ////////dar color al font en una determinada posicion durante el play
     If n=jply Then 
        cairo_set_source_rgba(c,1,0,1,1)
     EndIf
@@ -470,6 +491,7 @@ If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
 
  ' si estoy en esta octava ...edicion solo para esa octava segun posicion
  ' del mouse automaticamete iluminar
+
  If ( Penta_y <= mousey) And ((Penta_y + 12 * inc_Penta) >= mousey)  Then
   ' estoy en una octava
   estoyEnOctava = *po  '<========== DETERMINACION DE OCTAVA DE TRABAJO
@@ -486,7 +508,10 @@ If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
   cairo_set_source_rgba c, 0, 0, 0, 1
   'cairo_set_line_width(c, 3)
  EndIf
- If ((Penta_y + 12 * inc_Penta) <= mousey) And ((Penta_y + 14 * inc_Penta) >= mousey) Then
+ 
+'---------
+ 
+ If ((Penta_y + 12 * inc_Penta) <= mousey) And ((Penta_y + 14 * inc_Penta) >= mousey)  Then
   EnOctava = 0
   estoyEnOctava=90 
  EndIf
@@ -664,7 +689,7 @@ Dim As Integer ubiroll,ubirtk,encancion
  abrirRoll=2
  ALTO=param.alto
  ANCHO=param.ancho
- 
+ ANCHO3div4 = ANCHO *3 / 4
 
  print #1,"ubirtk ",ubirtk
  print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
@@ -897,7 +922,7 @@ For K=desde To hasta -1 ' queda entre 2 octavas ,corregido  26-01-2022
           Roll.trk(pasozona1, vacio).pan = 2 
      EndIf
  Next K  
-' nota=30 , dur=200 indicara cambio de escala ÇÇÇ
+' nota=30 , dur=200 indicara cambio de escala 
    guiaEscala(indEscala).posicion=posicion
    cambioescala=0
    pasoZona1=0
@@ -914,6 +939,42 @@ EndIf
 pubi=0
 
 menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
+
+'------------------08-02-2022--cambio de dispositivo por ahora solo usa un dispositivo
+' ---ya usaremos mas de uno....muy pronto...       
+If portsout <> portout And  cierroport=0 Then
+   Print #1,"  cerrando el por tanterior  portsout, nombreport ",portsout, *nombreport 
+   Print #1," postrsout cerrado ",portsout
+   Print #1," nombre del que se ciera ",nombreport
+   close_port(midiout)
+ ' como se que puerto cierro ? debo reordar el que abri?
+ ' debo permitir abir mas de un port y asciarlo a un apista seleccionada por el usuario
+ ' o directamenta cuano lo selecciona se graba en esa pista o el vector pmTk(ntk)
+ ' 
+ 
+  portsout = portout ' elegido en menu MIDI-OUT
+  nombreport = port_name(midiout, portsout)
+' cierro el puerto que haya abierto
+' no hace falta cerrar solo seleccioanr puerto ¿?   
+'           out_free(midiout) cierro pero no libero
+
+  Print #1,"  VA A ABRIR EL PORT portsout, nombreport ",portsout, *nombreport
+  open_port (midiout, portsout, nombreport)
+
+' usamos el instrumento default si hay uno almacenado en la pista
+' pero logico segun el dispositivo y el canal sera diferente el resultado
+  If Roll.trk(1,NA).inst > 0 Then
+   ChangeProgram ( Roll.trk(1,NA).inst , 0)
+  EndIf
+  Print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
+
+End If       
+       
+'--------------------------------       
+
+
+
+
 
 botones(hWnd, c ,cm, ANCHO,ALTO) ' este despues sinocrash
 cairo_stroke(c)
@@ -1214,6 +1275,7 @@ If MultiKey (SC_F2)  Then
    EndIf    
    nanchofig=anchofig
    font=font -1
+   ANCHO3div4 = ANCHO *3 / 4
   Exit Do
 EndIf
 
@@ -1228,6 +1290,7 @@ If MultiKey (SC_F3)  Then
    EndIf    
    font=font+1  
    nanchofig=anchofig
+   ANCHO3div4 = ANCHO *3 / 4
  Exit Do
 EndIf
 '----------
@@ -3735,7 +3798,7 @@ ButtonGadget(2,530,30,50,40," OK ")
 
  EndIf
  '' 26-01-2022 espaciado de lineas (1) movido desde 2190 afecta a acordes
- If MultiKey(SC_CONTROL) And lockip=0   Then '''' ççç REVISAR !!!!! 30-01-2022
+ If MultiKey(SC_CONTROL) And lockip=0   Then ''''  REVISAR !!!!! 30-01-2022
     deltaip=0
     incWheel=0
     lockip=1
@@ -4122,8 +4185,8 @@ ButtonGadget(2,530,30,50,40," OK ")
 
   
  
- ' habilitar una octava para edicion con el mouse
- If  mousex > ANCHO3div4  Then ' 09-06-2021 para que nochoque con boton EDIT
+ ' ====>>> HABILITAR UNA OCTAVA PARA EDICION CON EL MOUSE ççç
+ If  mousex > ANCHO3div4 And COMEDIT=TRUE Then ' 09-06-2021 para que nochoque con boton EDIT
        octavaEdicion=estoyEnOctava
  EndIf
 

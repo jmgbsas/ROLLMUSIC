@@ -548,13 +548,15 @@ Type rangoOct Field=1
  As Integer posn =0 
  As UByte   notaold=0 
  As Integer Ticks =0
- As Byte    inst
- As Byte    notaescala
- As byte    tipoescala
- As Byte    alteracion  ' sos 3, bem 2
+ As UByte    inst
+ As UByte    notaescala
+ As UByte    tipoescala
+ As UByte    alteracion  ' sos 3, bem 2
  As Double  fechasPistas
+ As UByte    canalsalida
+ As UByte    canalentrada
 End Type
-
+' faltaria agregar grabar el nombre del dispositivo ........
 Dim Shared As rangoOct pmTk (0 To 32)
 Dim Shared As String titulos(0 To 32)
 Dim Shared As String pistas (0 To 32)
@@ -716,7 +718,7 @@ Dim Shared As UByte  indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
 Dim Shared translado As Integer = 1
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
 Dim shared As Integer i,  posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
-Dim Shared As Integer octaroll,instancia=0,cierroedit= 0
+Dim Shared As Integer octaroll,instancia=0,cierroedit= 0,cierroport=0
 Dim Shared As BOOLEAN COMEDIT, resize
 COMEDIT=FALSE
 

@@ -518,7 +518,8 @@ If nanchofig <> 0 Then
    gap1= anchofig* 2315/1000
    gap2= (914 * gap1) /1000 ' 74 default
    gap3= (519 * gap1) /1000 ' 42 default
-   NroCol =  (ANCHO / anchofig ) - 4 
+   NroCol =  (ANCHO / anchofig ) - 4
+   ANCHO3div4 = ANCHO *3 / 4 
 EndIf
 Print #1,"NROCOL AL INICIO, ANCHO, anchofig ",NroCol, ANCHO, anchofig
 
@@ -576,7 +577,7 @@ Dim Shared nombreport As ZString Ptr
 #Include "ROLLMIDI.BAS"
 
 '----------------
-
+midiin  = rtmidi_in_create_default()
 midiout = rtmidi_out_create_default()
 'print #1,"PLAYALL---------->>>>>>>"
 portsout =  port_count (midiout)
@@ -588,15 +589,31 @@ For i1 = 0 to portsout -1
     print #1, *nombreport
 Next i1  
 
-portsout = portout
-*nombreport = ""
+'>>>>>>portsout = portout
+'>>>>>*nombreport = ""
+' POR AHORA SOLO ABRE EL PORT POR DEAFULT DEL SISTEMA ....el 0
+' LUEGO ABRIREMOS MAS DE UN PUERTO SI RTMIDIC LO PERMITE,,,
+' CUADNO TENGA ABIERTO SMAS DE UN PUERTO DEBERE ASIGNAR CIERTOS PUERTOS A CADA PISTA
+' LUEGO EN CADA PISTA PUEDO TENER UN PUERTO O DISPOSITIVO CADA UNO CON SUS 16 CNALES
+' Y EN CADA CANAL SUS 128 INSTRUMENTOS.,,LUEGO VEREMOS ESO DE LOS BANCOS ETC
+   ' nombreport = port_name(midiout, portsout)
+    
+' para abrir un port no hace falta el nombre en el comando ,puede estar en vacio ""
+' por ello vamos a grabar en el archivo el numero de port , podre abrir solo con el nombre
+' sin el numero de port? el nombr eidentifica mas al dispositivo,,,
+' deberia guardar ambos nro port y nombre,,,,ufff
+' i la pc no cambi ade configuracion de hardware lso numeros serian siempre lso mismos
+' par also ports y no haria falta los nombres, pero debo dejar constancia cual era el dispositivo
+' o los dispositivos usados....para poder elegir el port en el menu debo cerrar el port actual
+' y abrir el otor esto de ponerlo en el inicio esta mal
 
-open_port (midiout,portsout, nombreport)
+'Print #1,"  VA A ABRIR EL PORT portsout, nombreport ",portsout, *nombreport
+'open_port (midiout, portsout, nombreport)
 
 'print #1,"  "
-If Roll.trk(1,NA).inst > 0 Then
- ChangeProgram ( Roll.trk(1,NA).inst , 0)
-EndIf
+'If Roll.trk(1,NA).inst > 0 Then
+' ChangeProgram ( Roll.trk(1,NA).inst , 0)
+'EndIf
  print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
 Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 Print #1,"INSTANCIA ",instancia
