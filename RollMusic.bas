@@ -1158,6 +1158,7 @@ Print #1,"1060 abrirRoll=0 entro"
                pmTk(ntk).posn=0
                pmTk(ntk).notaold=0                  
                pmTk(ntk).Ticks=4000
+               pmTk(ntk).portout=portout
                ' usamos encancion=1 para grabar dentro de la cancion
                GrabarRollaTrack(0)   
                NombrePista="" 
@@ -1443,6 +1444,7 @@ Print #1,"1060 abrirRoll=0 entro"
                     pmTk(ntk).posn=0
                     pmTk(ntk).notaold=0                  
                     pmTk(ntk).Ticks=0
+                    pmTk(ntk).portout=portout
                     Sleep 1
                     'SetItemListBox(3,ind+1) no funca
                     'SetGadgetState(3,1) no funca 

@@ -111,7 +111,8 @@ ubirtk=0
      
      Get #ct, ,graba3  (1,1)
      pmTk(ntk).canalsalida = graba3(1,1).inst    
-     
+     pmTk(ntk).portout= graba3(1,1).dur
+     portout=graba3(1,1).dur 
      
      print #1,"cargaCancion ",cargacancion
 
@@ -153,6 +154,7 @@ ubirtk=0
         curpos=0
         CantTicks=pmTk(ntk).Ticks
         canalx=pmTk(ntk).canalsalida
+        portout=pmTk(ntk).portout
      EndIf
 
 
@@ -674,6 +676,7 @@ Dim As Integer barra=0,punto=0,ubi3=0,ubi4=0,ntkold=ntk ' el ntk que esta en edi
         pmTk(ntk).posn=pmTk(ntkold).posn
         pmTk(ntk).notaold=pmTk(ntkold).notaold
         pmTk(ntk).Ticks=pmTk(ntkold).Ticks
+        pmTk(ntk).portout=portout
         ReDim (Track(ntk).trk) (1 To pmTk(ntkold).Ticks, 1 To lim3)
         print #1,"hizo copia de parametros de trackold en new"
         print #1," *po seria hasta -1 ", pmTk(ntk).hasta -1
@@ -750,7 +753,8 @@ If  nombre > "" Then
            pmTk(ntk).posn=posn
            pmTk(ntk).notaold=notaold
            pmTk(ntk).Ticks=CantTicks
-           pmTk(ntk).canalsalida=canalx ' SOLO VALIDO PRA UAN PISTA AISLADA 
+           pmTk(ntk).canalsalida=canalx ' SOLO VALIDO PRA UAN PISTA AISLADA
+           pmTk(ntk).portout=portout 
         EndIf
       
    EndIf
@@ -1043,6 +1047,7 @@ nota=0:dur=0
    posn   = pmTk(ntk).posn
    notaOld= CInt(pmTk(ntk).notaold)
    canalx= CInt(pmTk(ntk).canalsalida)
+   portout=pmTk(ntk).portout
    
    print #1,"TrackaRoll ntk, desde, hasta, MaxPos ", ntk, desde,hasta,MaxPos
    desdevector=desde
@@ -1215,6 +1220,7 @@ Dim i As Integer
    pmTk(i).posn=0
    pmTk(i).notaold=0
    pmTk(i).Ticks=0
+   pmTk(i).portout=0
    titulos(i)=""          
  next i
  

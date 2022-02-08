@@ -941,7 +941,7 @@ pubi=0
 menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
 
 '------------------08-02-2022--cambio de dispositivo por ahora solo usa un dispositivo
-' ---ya usaremos mas de uno....muy pronto...       
+' ---ya usaremos mas de uno....muy pronto...   08-02-2022    
 If portsout <> portout And  cierroport=0 Then
    Print #1,"  cerrando el por tanterior  portsout, nombreport ",portsout, *nombreport 
    Print #1," postrsout cerrado ",portsout
@@ -1035,6 +1035,7 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA Or cargaCancion=1 Then
      hasta=pmTk(ntk).hasta
      NB=pmTk(ntk).NB
      NA=pmTk(ntk).NA
+     portout=pmTk(ntk).portout
      notaold = CInt(pmTk(ntk).notaold)
      CantTicks=pmTk(ntk).Ticks
 ' ajusto escala principal durante la conmutacion para cada track visualizado con TAB     

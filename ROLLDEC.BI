@@ -548,13 +548,14 @@ Type rangoOct Field=1
  As Integer posn =0 
  As UByte   notaold=0 
  As Integer Ticks =0
- As UByte    inst
- As UByte    notaescala
- As UByte    tipoescala
- As UByte    alteracion  ' sos 3, bem 2
+ As UByte   inst
+ As UByte   notaescala
+ As UByte   tipoescala
+ As UByte   alteracion  ' sos 3, bem 2
  As Double  fechasPistas
- As UByte    canalsalida
- As UByte    canalentrada
+ As UByte   canalsalida
+ As UByte   canalentrada
+ As UByte   portout      ' dispositivo midi de salida 
 End Type
 ' faltaria agregar grabar el nombre del dispositivo ........
 Dim Shared As rangoOct pmTk (0 To 32)

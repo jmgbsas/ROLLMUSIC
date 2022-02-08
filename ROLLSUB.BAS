@@ -1479,6 +1479,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      pmTk(0).desde = desde
      pmTk(0).hasta = hasta
      pmTk(0).posn = MaxPos -2
+
      'NB => 0 + (desde-1) * 13   ' 27 para 3
      'NA => 11 + (hasta-1) * 13  ' 90 para  7
      ' los 2 vectores deben tener el mismo tamaño ergo si CantTicks
@@ -1492,7 +1493,9 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
 
      Get #ca, ,graba3  (1,1)
 
-     canalx=graba3(1,1).inst ' canal midi cargado en Global si es un track se pasara a info de trck 
+     canalx  = graba3(1,1).inst ' canal midi cargado en Global si es un track se pasara a info de trck 
+     portout = graba3(1,1).dur 
+     pmTk(0).portout=portout
 
      Get #ca, ,graba4  (1,1)
      Get #ca, ,graba5  (1,1)
@@ -1507,7 +1510,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
 
      pmTk(0).NB=NB  ' aunque es un track debe memorizar de que octavas Rol vino
      pmTk(0).NA=NA
-     
+     pmTk(0).portout=portout
      
      
      ReDim compas(1 To CantTicks)
@@ -3164,7 +3167,7 @@ Negras por minuto	 tempo
      If canalx >0 Then
         graba3(1,1).inst =canalx ' el CANAL MIDI 1 A 16 QUE ACA VA DE 0 A 15
      EndIf
-     
+     graba3(1,1).dur = portout
      
      ' ------------------------------------
      ' para seguir poniendo notas nuevas
@@ -3432,6 +3435,8 @@ Next i1
         grabaLim(1,1).pan  = CUByte(2)
      EndIf
      grabaLim(1,1).inst = CUByte(tiempoPatron)
+     
+     graba3(1,1).dur = portout
      ' ------------------------------------
      ' para seguir poniendo notas nuevas
      ' hacemoslo mismo para l ultima not que se grabo que teng el 182

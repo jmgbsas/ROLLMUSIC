@@ -19,9 +19,10 @@
          el rotulo o label que cambia por una accion está en la misma posición.
         Fix nueva version: ahora con el menu de MIDI-OUT se puede cambiar de dispositivo en la misma sesion
         sin necesidad de cambiar el dispositivo default por afuera del programa con alguna otra aplicacion.
-        Se agregara, poder tener por pista distinto dispositivo, solo port reales, se ve cada tarjeta o 
-        sintetizador por software standalone como un port distinto, RtmidiC no ve los port Virtuales en 
-        Windows..., pero si se usa un cable midi virtual sí lo ve como por ejemplo LoopBe1.
+        Cada pista puede tener un dispositivo o port MIDI distinto, se graba en roll o en rtk. Solo usa port 
+        reales, se ve cada tarjeta o sintetizador por software standalone como un port distinto, RtmidiC no 
+        vé los port Virtuales en Windows..., pero si se usa un cable midi virtual sí lo ve como por 
+        ejemplo LoopBe1.
         b) Usar Marco o No Usar. 
         Usando marco es mas facil mover la ventana porque usa el modo nativo de
         windows, pero en esta implementacion no se puede redimensionar la ventana CON EL PROGRAMA EJECUTANDO.
