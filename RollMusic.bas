@@ -1,3 +1,4 @@
+' apertura de ports en play  ufff
 ' tiempoPatron a entero no tiene porque ser double, se graba en archivo
 ' Se agrego formar acordes aun sin nota en el lugar elegido, se deb eentrar al duracion
 ' Triadas desde Tonica completo Mayor Menor Disminuido formacion y play 
@@ -118,7 +119,7 @@ myfilter += "Rtk  Files"+Chr(0)   +"*.rtk"+Chr(0)
 Open "AAAAA-test.TXT" For Output As 5
 Dim Shared As Integer abierto=0
 Common Shared  mensaje As Integer 
-' end file dialog  
+'''  end file dialog  
 #Define __FB_WIN64__
 #If Defined (__FB_WIN64__) 
 #LibPath "C:\msys64\mingw64\lib"
@@ -152,7 +153,9 @@ Dim As GLFWwindow ptr  win
 #Include "ROLLDEC.BI"
 Dim Shared As Integer pd1, fa1 
 pd1 = GetCurrentProcessId()  
+
 Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As #1
+
 print #1,"start"
 Print #1,"PID DE ESTE PROCESO ",pd1
 
@@ -177,7 +180,7 @@ Print #1,Date;Time
 '-------------
 ''
 '=======================
- 
+ #Inclib  "rtmidi"  '''uso al dedeisco rtmidi.dll
 '--------------
 #Include "string.bi"
 #Include Once "cairo/cairo.bi"
@@ -552,12 +555,68 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 '-----
 ' ancho de figura,separaciondelasmismas en pantalla anchofig
 '' ---------------  LOOP 1 ---------------
- On Error GoTo errorhandler
+' On Error GoTo errorhandler
 ' enviamos esto a una sub ROLLLoop, creaPenta esta al principio y no tiene declare
 ' el declare falla si se usa con este tipo de vector udt no se puede usar declare
 'stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
+
+'Dim Shared nombreport As ZString Ptr
+'Dim Shared midiout (0 To 3) As  RtMidiOutPtr ' abrir hasta 32 dispositivos
+'Dim Shared midiin As RtMidiInPtr
+'Dim Shared As Integer porterror
 Dim Shared nombreport As ZString Ptr
+
+midiin  = rtmidi_in_create_default()
+midiout(0) = rtmidi_out_create_default()
+'print #1,"PLAYALL---------->>>>>>>"
+portsout =  port_count (midiout(0))
+Dim i1 As integer
+'Print #1, "portsin  "; portsin
+Print #1, "portsout "; portsout
+For i1 = 0 to portsout -1 
+    nombreport = port_name(midiout(0), i1)
+    print #1, *nombreport
+Next i1  
+
+ReDim  listOutAbierto (0 To portsout)
+
+listOutAbierto(0)=1
+
+Dim Shared nombreOut(0 To portsout) As ZString ptr
+Dim Shared nombreIn (0 To portsin) As ZString Ptr
+
+'Dim i1 As integer
+'Print #1, "portsin  "; portsin
+Print #1, "portsout "; portsout
+
+'For i= 1 To portsout - 1
+' midiout(i) = rtmidi_out_create_default ( )
+' Print #1,"creado default ",i
+'Next i
+
+For i1 = 0 to portsout -1 
+    nombreOut(i1) = port_name(midiout(0), i1)
+    print #1, *nombreOut(i1)
+Next i1  
+Print #1,"Microsoft No se usa en este programa con este algoritmo es muy inestable"
+Print #1,"-------------------------------------"
+
+close_port midiout(0)
+out_free   midiout(0)
+listOutAbierto(0)=0
+
+
+'Sleep 2000
+
+'For i=0 To portsout -1
+'   Print "midiout ",i, *nombreOut(i)  
+'   close_port midiout(i)
+'   out_free   midiout(i)
+'   Print ,"cierro ",*nombreOut(i)
+'Next i'
+
+'/
 '========================== 
 #Include "RTMIDISUB.bas"
 #Include "rolltracks.bas"
@@ -577,17 +636,6 @@ Dim Shared nombreport As ZString Ptr
 #Include "ROLLMIDI.BAS"
 
 '----------------
-midiin  = rtmidi_in_create_default()
-midiout = rtmidi_out_create_default()
-'print #1,"PLAYALL---------->>>>>>>"
-portsout =  port_count (midiout)
-Dim i1 As integer
-'Print #1, "portsin  "; portsin
-Print #1, "portsout "; portsout
-For i1 = 0 to portsout -1 
-    nombreport = port_name(midiout, i1)
-    print #1, *nombreport
-Next i1  
 
 '>>>>>>portsout = portout
 '>>>>>*nombreport = ""
@@ -614,7 +662,7 @@ Next i1
 'If Roll.trk(1,NA).inst > 0 Then
 ' ChangeProgram ( Roll.trk(1,NA).inst , 0)
 'EndIf
- print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
+' print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
 Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 Print #1,"INSTANCIA ",instancia
 ' carga de opciones iniciales RollMusic.ini
@@ -747,9 +795,9 @@ MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
 MenuItem(1100,MenName7,"Usar MARCO de Ventana ",MF_UNCHECKED)
 MenuItem(1101,MenName7,"Usar MARCO de Ventana en instancias",MF_UNCHECKED)
 
-MenuItem(1102,MenName7,"Acordes distintos a iguales, Fracciona notas similares en una Columna en una pista (no hay silencios)",MF_UNCHECKED  )
-MenuItem(1103,MenName7,"Acordes distintos a iguales, Fracciona todas las notas agregando silencios en una columna en una pista ",MF_UNCHECKED  )
-MenuItem(1104,MenName7,"Acordes distintos a iguales, Fracciona notas automaticamente en Columna de una pista ",MF_CHECKED  )
+MenuItem(1102,MenName7,"Fracciona Acorde [Con <> Duraciones], notas similares en una pista (no hay silencios)",MF_UNCHECKED  )
+MenuItem(1103,MenName7,"Fracciona NOTA o Acorde [CDD], agregando silencios en una pista ",MF_UNCHECKED  )
+MenuItem(1104,MenName7,"Fracciona [CDD], notas automaticamente en una pista ",MF_CHECKED  )
 MenuItem(1105,MenName7,"No Fraccionar, NO Usar Acordes iguales ", MF_UNCHECKED )
 MENUITEM(1106,MenName7,"Seleccionar TIPO DE ESCALA PRINCIPAL de la PISTA (Por omision Mayor)")
 MENUITEM(1107,MenName7,"Seleccionar NOTA DE LA ESCALA ESCALA PRINCIPAL DE LA PISTA (Por omision C )")
@@ -876,6 +924,8 @@ Print #1,"DESPUES ANCHO , ALTO ", ANCHO, ALTO
 abrirRoll=0
 
 
+
+
 Do
   COMEDIT = FALSE
 param.titulo ="RollMusic Ver 0.4.4.0"
@@ -885,9 +935,9 @@ Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
 Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
 
   If abrirRoll=1 And cargacancion=1  Then
-    Print #1,"1 ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion
+    Print #1," ENTRA A CARGAR PISTAS  cargaCancion = ",cargaCancion
      CargarPistasEnCancion ()
-    Print #1,"2 ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion 
+    Print #1,"CARGAR PISTAS cargacancion = ",cargaCancion 
      CANCIONCARGADA=TRUE
      ROLLCARGADO=FALSE
      '''lo hace tab-cargaCancion=0
@@ -896,9 +946,9 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
    If pid1=0 And ix < 3 Then
       pid1=pd1
    EndIf
-  Print #1,"3 ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion 
+  Print #1,"3 ENTRA A CARGAR PISTAS cargaCancion ES 1 SI O SI ",cargaCancion 
     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
- Print #1,"ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion   
+ Print #1,"ENTRA A CARGAR PISTAS cargaCancion ES 1 SI O SI ",cargaCancion   
     ''''cargacancion=0 esto me ponia en cero antes que lo use el thread!!!!
     ''' RollLoop(param)
     ''Sleep 200 ' NO HACE FALTA AHORA sin este retardo no le da teimpo al thread de cargar a Roll
@@ -1055,32 +1105,62 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                 
            Case 1040 ' seleccion de instrumento por orden Alfabetico
                selInstORdenAlfa (instru)
-              ' ChangeProgram ( CUByte (instru) , 0)
+          '     If CANCIONCARGADA Then
+           '    Else
+           '       midisal = midiout(portout)
+           '    EndIf
+                portsal=pmTk(ntk).portout
+               
+               ChangeProgram ( CUByte (instru) , pmTk(ntk).canalsalida,portsal) ' habilito de neuvo 13-02-2022 Ç
+               If instru=0 Then instru=1 EndIf
                Roll.trk(1,NA).inst= CUByte(instru)
                Track(ntk).trk(1,1).inst=CUByte(instru)
               ' grabar la pistacomo en 1011
             print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
-              ROLLCARGADO=FALSE 
-              If NombreCancion > ""  Then
-                GrabarRollaTrack(0)
-              EndIf
+              If CANCIONCARGADA Or TRACKCARGADO Then
+                 If NombreCancion > ""  And MAxPos > 1 Then
+                    GrabarRollaTrack(0)
+                 EndIf
+              Else
+                If MaxPos > 1  And ROLLCARGADO  Then
+                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
+                 ' no el undo dolo se debe borrar al ahcer nuevo creo
+                EndIf  
+              EndIf  
+
+
               MenuNew=0           
               carga=1
 
                 
            Case 1050 ' seleccion de instrumento por orden Numerico
                selInstORdenNum (instru)
-              ' ChangeProgram ( CUByte (instru) , 0)
+             '  If CANCIONCARGADA Then
+             '  Else
+             '     midisal = midiout(portout)
+             '  EndIf
+             ' no se cuadno funciona esto ÇÇÇ si midisal y canal tienen valores 
+             ' la seleccion de instrumento se ahce tanto par auna pista aislada como no
+               portsal=pmTk(ntk).portout
+               ChangeProgram ( CUByte (instru) , pmTk(ntk).canalsalida,portsal) ' habilito de nuevo
                Roll.trk(1,NA).inst= CUByte(instru)
                Track(ntk).trk(1,1).inst=CUByte(instru)
               ' grabar el track 
             print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
-              ROLLCARGADO=FALSE 
-              If NombreCancion > ""  Then
-                GrabarRollaTrack(0)
-              EndIf
+
+              If CANCIONCARGADA Or TRACKCARGADO Then
+                 If NombreCancion > ""  And MAxPos > 1 Then
+                    GrabarRollaTrack(0)
+                 EndIf
+              Else
+                If MaxPos > 1  And ROLLCARGADO  Then
+                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
+                 ' no el undo dolo se debe borrar al ahcer nuevo creo
+                EndIf  
+              EndIf  
+
               MenuNew=0           
               carga=1
 
@@ -1221,6 +1301,7 @@ Print #1,"1060 abrirRoll=0 entro"
                  If CANCIONCARGADA Then
                     Print #1,"USANDO PLAYCANCION"
                     thread1 = ThreadCall  playCancion(Track())
+                    
                  EndIf
                  Cplay=0
              EndIf   
@@ -1538,6 +1619,3 @@ Print #1,"Error Function: "; *Erfn()
 'Dim ers As Integer = 12 - nota +(estoyEnOctava ) * 13 
 Print #1, "12 -nota +(estoyEnOctava ) * 13) "; ers
 Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
-
- 
-

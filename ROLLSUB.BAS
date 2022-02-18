@@ -1353,7 +1353,12 @@ Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
 ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
 ' la carga de tracks aislada o la carga de una cancion con sus tracks
 ' ira aumentando ntk 
-   '  carga roll 
+   '  carga roll
+' al cargar borro todo el undo    
+
+   mel_undo_k=0 :ig=0:cnt_acor=0
+   Erase mel_undo, undo_acorde,undo_kant_intervalos
+' FIN BORRO UNDO
    
    
    Print #1,"ubiroll en CA ",ubiroll
@@ -1493,10 +1498,13 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
 
      Get #ca, ,graba3  (1,1)
 
-     canalx  = graba3(1,1).inst ' canal midi cargado en Global si es un track se pasara a info de trck 
-     portout = graba3(1,1).dur 
-     pmTk(0).portout=portout
-
+     canalx  = CInt(graba3(1,1).inst) ' canal midi cargado en Global si es un track se pasara a info de trck
+     Print #1,"canalx cargado desde archivo ",canalx
+     portout = CInt(graba3(1,1).dur) 
+     Print #1,"portout cargado desde archivo ",portout
+     pmTk(0).portout=graba3(1,1).dur   ' ubyte  a ubyte
+     pmTk(0).canalsalida = graba3(1,1).inst ' ubyte a ubyte
+     
      Get #ca, ,graba4  (1,1)
      Get #ca, ,graba5  (1,1)
      Get #ca, ,graba6  (1,1)
@@ -1608,6 +1616,11 @@ End Sub
 '
 Sub Nuevo(Roll As inst,borraNombre As integer)
 CantTicks=4000 ' vuelvo al original default
+' borro todo el undo
+   mel_undo_k=0 :ig=0:cnt_acor=0
+   Erase mel_undo, undo_acorde,undo_kant_intervalos
+' FIN BORRO UNDO
+
 ' se inicia el vector desde 1 hasta 9, se puede achicar las octavas ok.
 ' si ya se habian achicado y quiero agrandar, no se puede, debo borrar el vector.
 ' En la cantidad de posiciones no hay porblema en ambas direcciones. 
@@ -2510,7 +2523,7 @@ EndIf
 
     t = "             [MIDI-OUT]":cairo_show_text(c,t)
     If mousex > 200 And mousex < 300  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
-             Print #1,"ENTRO POR EL MIDIIN PUTARRACO  !!!!!!!!!!!!!!!!!!! PUTA"
+     '''        Print #1,"ENTRO POR EL MIDIIN !!!!!!!"
     cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
        Dim miport As Integer=2
@@ -2989,10 +3002,11 @@ Sub velocidades(j As integer)
 End Sub 
 Sub GrabarArchivo (grabar_como As Integer)
 ' GRABA ARCHIVOS CON EXTENSION Y FORMATO *.ROLL
-If grabar_como =0 Then
-   mel_undo_k=0 :ig=0:cnt_acor=0
-   Erase mel_undo, undo_acorde,undo_kant_intervalos
-EndIf
+' el borrado de undo solo se deberia ahcer si se crea un archivo nuevo y se borra
+' O SI EL USUARIO VACIA EL UNDO BOTON O MENU QUE HARA FALTA
+' el que se esta editando o se carga un nuevo archivo
+' para roll ntk es siemrpe cero
+ntk=0
 Dim  As Integer npl
      If nombre = "" Then ' backup antes de aumentar el tamaño del vector
         nombre = "Backup"+ Date + ".roll"
@@ -3164,10 +3178,12 @@ Negras por minuto	 tempo
      If instru > 0 Then
        Trabajo(1,NA).inst = CUByte(instru)
      EndIf
-     If canalx >0 Then
-        graba3(1,1).inst =canalx ' el CANAL MIDI 1 A 16 QUE ACA VA DE 0 A 15
+     If CANCIONCARGADA Then ' SELECCION DE ISNTRUMENTO CON CANCION CARGADA
+        Trabajo(1,NA).inst = Track(ntk).trk(1,1).inst
      EndIf
-     graba3(1,1).dur = portout
+     graba3(1,1).inst =pmTk(ntk).canalsalida ' el CANAL MIDI 1 A 16 QUE ACA VA DE 0 A 15
+
+     graba3(1,1).dur = pmTk(ntk).portout
      
      ' ------------------------------------
      ' para seguir poniendo notas nuevas
@@ -3223,6 +3239,8 @@ End Sub
 Sub CargarPistasEnCancion ()
 ' cada vez que cargo borro la info de fechas de pistas anterior
 ROLLCARGADO=FALSE
+cargaCancion=1 '12-02-2022 mientras carg las pista el 1 indica cargando pistas
+
 ReDim As Double fechasPistas(1 To 32)
 print #1,"-------------------------------------------------------"
 print #1,"inicia CargaPistasEnCancion"
@@ -3239,6 +3257,7 @@ print #1,"inicia CargaPistasEnCancion"
         Exit Sub
      Else
        ' carga Todos los tracks de cancion en un Loop
+       Dim  As Integer mayor=1
        Do While Len(filename) > 0 ' If len(filename) is 0, exit the loop: no more filenames are left to be read.
         filenameold=filename
         print #1, "trabajo con este filename...", filenameOld '[1]AAA.rtk por ejemplo
@@ -3246,6 +3265,9 @@ print #1,"inicia CargaPistasEnCancion"
         cadena= sacarExtension(filenameOld) ' [1]AAA
         AddListBoxItem(3, cadena)
         ntk= sacarNtk(filenameold)  ' 1
+        If mayor< ntk Then
+           mayor=ntk
+        EndIf
   ' va cargando los track internos, tomando el nro de track 
   ' del nombre del archivo solamente , ergo el usuario puede cambiar el orden
   ' o poner un trakck de otra cancion con un numero que no exista [x]
@@ -3257,11 +3279,13 @@ print #1,"inicia CargaPistasEnCancion"
         pistas (ntk)=filename
         print #1,"nombre en CargarPistasEnCancion ,Numpista",nombre, ntk
         CargarTrack  (Track() , ntk, 1) ' se cargo a track x nada mas
+  
+'        
         Sleep 100
         filename = Dir()
                 
        Loop
-       tope=ntk  ' el nro tope de la lista
+       tope=mayor  ' el nro tope de la lista
        print #1,"CARGO PISTAS MAXIMA CANTIDAD TOPE=",tope
        CANCIONCARGADA=TRUE
        ntk=0
@@ -3437,6 +3461,11 @@ Next i1
      grabaLim(1,1).inst = CUByte(tiempoPatron)
      
      graba3(1,1).dur = portout
+     graba3(1,1).inst = canalx ' canal midi cargado en Global si es un track se pasara a info de trck 
+    ' If CANCIONCARGADA Then
+     '  graba3(1,1).dur = pmTk(ntj).portout
+   ' 
+    ' EndIf 
      ' ------------------------------------
      ' para seguir poniendo notas nuevas
      ' hacemoslo mismo para l ultima not que se grabo que teng el 182
@@ -3491,14 +3520,19 @@ End Sub
 
 Sub  selport (ByVal tipo As Any Ptr)  ' list de ruso
 Dim As hwnd haw,hwl
-Dim mitipo As Integer 
+Dim mitipo As Integer
+ 
+''portsout = port_count (midisal)
+' ESTOY ABRIENDO LSO PORT SEGUN LO ELEGIDO CADA VEZ QUE SE ELIJA UNO
+' DEJA DE ESTAR DISPONIBLE PUES YA ESTA ABIERTO, PONDREMOS UN MENSAJE ABIERTO CREO ES MEJOR 
 mitipo=  CInt(tipo)
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("MIDI",100,50,400,400,WS_VISIBLE, WS_EX_TOPMOST )
-     hwl=  ListViewGadget(1,10,10,300,400,,,,32,LVS_SINGLESEL  )
+     haw=OpenWindow("MIDI",100,50,450,400,WS_VISIBLE, WS_EX_TOPMOST )
+     hwl=  ListViewGadget(1,10,10,350,400,,,,32,LVS_SINGLESEL  )
      listports()
+  
 
-     If mitipo = 1 Then ' out  
+     If mitipo = 1 Then ' out
        AddListViewColumn(1, "Salidas  MIDI",0,0,250)
        For aa As Integer=0 To UBound (listout) 
            AddListViewItem(1, listout(aa) +Str(aa),0,aa,0)
@@ -3506,6 +3540,7 @@ mitipo=  CInt(tipo)
 
      EndIf
      If mitipo = 2 Then ' in entradas
+       Dim midient As  RtMidiInPtr
        AddListViewColumn(1, "Entradas MIDI",0,0,250)
        For aa As Integer=0 To UBound (listin) 
            AddListViewItem(1, listin(aa) +Str(aa),0,aa,0)
@@ -3514,7 +3549,7 @@ mitipo=  CInt(tipo)
      EndIf
 
 
-       ButtonGadget(2,330,30,50,40," OK ")
+       ButtonGadget(2,380,30,50,40," OK ")
          #Ifdef __FB_WIN64__
            SetFocus (hwl) 
            SetForegroundWindow(haw)
@@ -3530,6 +3565,35 @@ mitipo=  CInt(tipo)
             If eventnumber()=2 Then
               'menunew=0
               portout = GetItemListView()
+              Print #1,"PORT SELECCIONADO en menu ",portout
+              If mitipo=1 Then
+                'If listoutAbierto (portout) =0  Then
+                '   listoutAbierto (portout) = 1
+                '
+                'EndIf
+                If CANCIONCARGADA Then
+                Else
+                  ntk=0
+                EndIf
+                pmTk(ntk).portout=CUByte(portout)
+               
+               
+              EndIf
+              If mitipo=2 Then
+                'listinAbierto (portout) = 1
+                'pmTk(ntk).portin=portin
+              EndIf
+
+              If CANCIONCARGADA Or TRACKCARGADO Then
+                 If NombreCancion > ""  And MAxPos > 1 Then
+                    GrabarRollaTrack(0)
+                 EndIf
+              Else
+                If MaxPos > 1  And ROLLCARGADO  Then
+                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
+                 ' no el undo dolo se debe borrar al ahcer nuevo creo
+                EndIf  
+              EndIf  
               Close_Window(haw)
               Exit Do 
             End If
@@ -3548,6 +3612,7 @@ mitipo=  CInt(tipo)
 'SendMessage(GadgetID(1), EM_SETSEL, 0,-1) 'select all
 
 'SendMessage(GadgetID(1), EM_REPLACESEL, 0,@TEXT) 'PASTE
+' abrir port
 
   
 '' fin ruso
@@ -3597,9 +3662,9 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 ' al cargar el archivo de nuevo se tomara ese canal.              
           Print #1,"**********CANAL ELEGIDO EN SELCANAL ",canalx
           ' carga de canal MIDI al vector parametros de tracks de cancion
-          If CANCIONCARGADA  Then
-             pmTk(ntk).canalsalida=canalx ' sirve para el track cargao actual en cancion
-          EndIf
+          Print #1,"ntk en cambio de canal ntk= ",ntk
+           pmTk(ntk).canalsalida=CUByte(canalx) ' sirve para el track cargao actual en cancion
+       
           
               Close_Window(haw)
               Exit Do 
@@ -3800,18 +3865,24 @@ End SUB
 
 Sub salir()
 ' NO PUEDE ESTAR EN MUSICCONTROL.BAS DEBE ESTAR EN ALGUNA PARTE DE ROLLMUSIC PARA QUE FUNCIONE
-
+Dim  As Integer i3
            cairo_destroy(c)
            cairo_surface_destroy( surface )
  ' no usar nunca deallocate falla montonde cosas ni si quiera se puede cerrar
  ' un archivo ni borrarlo una cagada la recomendacion del foro!!!!          
            FT_Done_Face( ftface )
            If play=1 Or playb=1 Then
-              alloff (1)
-              ThreadDetach(thread1)
+              '''alloff (canal)
+              
+              For i3 = 1 To tope
+               portsal = pmTk(i3).portout 
+               alloff (pmTk(i3).canalsalida, portsal )
+               close_port(midiout(portsal))
+               out_free(midiout(portsal))
+
+              Next i3
+              ThreadDetach(thread1)              
            EndIf
-           close_port(midiout)
-           out_free(midiout)
  
            
     Dim ffile As Integer
@@ -3915,11 +3986,8 @@ tipoescala_num=0
           
             If eventnumber()=2 Then
                tipoescala_num = GetItemListView()
-'''               instru=instru + 1
-            ''   If instru > 1 Then
                   Close_Window(haw)
                   Exit Do
-           ''    EndIf
            End If
 
           EndIf 
@@ -3978,11 +4046,8 @@ notaescala_num=0
           
             If eventnumber()=2 Then
                notaescala_num = GetItemListView()
-'''               instru=instru + 1
-            ''   If instru > 1 Then
                   Close_Window(haw)
                   Exit Do
-           ''    EndIf
            End If
 
           EndIf 
@@ -4057,13 +4122,13 @@ EndIf
 ' al salir de aca graba en el vector Roll esta escala...
 End Sub
 function BuscarGrado(t3 As String) As Integer
-  Print #1,"=>busca grado entrada nrocromatico ",t3
+  'Print #1,"=>busca grado entrada nrocromatico ",t3 ççç
   t3=Trim(t3)
 Dim iz As Integer
   For iz= 1 To 12
      If t3 = Trim(grado_inicial (iz)) Then
         BuscarGrado=iz
-        Print #1,"t3, grado encontrado ",t3, iz
+   '     Print #1,"t3, grado encontrado ",t3, iz ççç
         Exit For
      EndIf
   Next iz

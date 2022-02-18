@@ -117,6 +117,8 @@
           que el click sea en esa columna en cualquier linea puede no existir nota, la funcion buscara
           la nota menor y mayor, y fraccionara empezando por la mayor con al unidad de la menor.
           Es la elegida por el programa por omision. 
+          Nota:Ya funciona Fraccionar una nota o acorde en pista de una cancion.
+
     13) Cambiar o agregar una escala a la secuencia (se usara para agregar acordes todavia en desarrollo)
           teniendo una secuencia en edicion:(por omision no hay ninguna escala en la secuencia)
           ESCALA GENERAL DE TODA LA SECUENCIA (es un recordatorio de que escala estoy usando y que notas debo 
@@ -418,7 +420,14 @@
         por omision de la cancoin (o sea el nombre del directorio) como la fecha.
         Luego en el mismo menu pulsar 'Crear un directorio de Cancion con los tracks separados' 
         buscar un lugar para el directorio nuevo de la cancion con el nombre asignado.
-
+        Nota: En esta version para grabar pistas modificadeas de la cancion se usa
+        del menu archivo "Grabar una pista con modificaciones....."
+        pero ojo hay un error a corregir, si se cambai de cancion y se graba
+        podria sobreescribir el track si tiene el mismo numero de pista
+        con lso datos de la pista del mismo numero de la otra cancion,
+        por ahora para cargar una nueva cancion cerrar la aplicacion y luego 
+        cargar la nueva cancion.
+        Ya funciona Fraccionar una nota o acorde en pista de una cancion.
     1.9) Agregar tracks o Pistas a Cancion   
 
          Hay 3 opciones  
@@ -701,7 +710,24 @@
          Tamien toma la zona de play y el Loop como antes,
          Cuando damos play de cancion desde este menu por ahora tod ose ilumina de difernete color
          vermos si lo modificamos,,,pero esto indica bien desde donde hemos dado play.
-      
+         NOTA: CANCION YA HACE PLAY CON DISITNTOS DISPOSITIVOS A LA VEZ
+         Cada pista puede manejar un canal diferente de un mismo dispositivo O PORT
+         O TAMBIEN: CADA pista puede manejar un dispositivo diferente o port.
+         Ej: una pista apunta a LoopBe en un canal midi 7
+            otra pista apunta a VirtualSinth en canal 1
+         Teoricamente se le agrego la capacidad de tener un port para cada pista
+         o sea 32. Cada uno con su canal correpondiente configurable.
+         Toda la informacion se gurda en el archivo *.Roll y *.Rtk
+         Los MID-OUT CAMBIAN LSO PORTS, Y CANALAES --CANALES..
+         UNA SOLA PISTA cargada sin cancion: tambien puede cambiarse el midi canal
+         de un mismo port, o cambiar el port con su canal correpsondiente,,
+         Es una 1era version Rtmidi Reporta un warning y los ports probados 
+         funcionan igual, pero al usar el port de Microsoft laaplicacion se cae
+         parece que no soporta o no le gusta el warnig.
+         Un program aaislado de todo puede ejecutar varios ports al mismo tiempo
+         abriendolos son ningun error o warnig...pero todos los ports se abren desde 
+         el inicio,,,veremos que solucion futura elijo para qu eno de ningun warning.
+
     IV) Menu Cancion (en revision)
        -Nueva Cancion: Se tipea en titulo el nombre del directorio que sera el nombre de la cancion.
         Hay opciones todavia no funcionales. Luego en el mismo menu Crear un directorio de Cancion

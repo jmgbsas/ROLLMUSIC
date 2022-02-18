@@ -1,3 +1,20 @@
+-18-02-2022 varia smodificaciones:
+ play de cancion funciona con un solo porta y varios canales en cada pista.
+ O un port diferente en cada pista. osea se puede elegir una compbiancion de
+ <port, canal y patch para una pista dada.>
+ Sea rreglaron varios defectos como el parpadeo al terminar una ejecucion de una
+ melodia (sync producia eso con  cairo).
+ Se cambio el algorimto para manejar ports cargarlos grabarlos y cambiarlos
+ tanto en pista aislada como cancion. Se agrego Fraccionar en pista de 
+ cancion..etc etc.
+-13-02-2022 no guarda bien el port ni el canal en lso archivo sde track aparentemente
+ verificar porque sino solo anda si manualmente pongo un port  default
+ y yo quiero abrir mas de un port ,,,,,
+-12-02-2022 PlayCancion, usando un solo port toca cada pista en su canal midi ajustado
+ pudiendo usar un intrumento por canal en los sinthe que ajustan canal a instrumento.
+ Se ajsuto scroll horizontal durante el play de cancion no saltaba al llegar al final de pantalla
+ Se corrigio en Cancion al entrar en Edit TRUE no podia volver a Edit FALSE lectura.
+-08-02-2022 Se graba y se carga la inforamcion de dispositivo midi usado y el canal MIDI
 -08-02-2022 se desarrollo 1era parte poder cambiar el port o dispositivo reproductor de MIDI-OUT en
 una misma sesion y funciona bien, paso siguiente a ver es colocar port distintos en pistas distintas
 ademas de canales...vovado a ayuda.

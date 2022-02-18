@@ -538,7 +538,8 @@ Dim Shared As UByte Vfuerte=70,Vsemifuerte=60,Vdebil=50
 TCompas ="4/4"
 'Dim Shared As Integer MaxPosTrack(0 To 32) ' cada track tendra su max pos
 'Dim Shared As Integer posnTrack(0 To 32) ' cada track tendra su posn
-Dim Shared As Integer fueradefoco=0, tope=0
+Dim Shared As Integer fueradefoco=0
+Dim Shared As UByte  tope=0
 Type rangoOct Field=1
  As Integer desde = 0
  As Integer hasta =0
@@ -763,7 +764,12 @@ Dim Shared ANCHO3div4 As Integer
  
 '--------------------
     
-#Include "mod_rtmidi_c.bi"    
+#Include "mod_rtmidi_c.bi"
+''#Inclib  "rtmidi.dll" 'usa librerias estaticas
+#Inclib  "rtmidi" 
+#include "fbthread.bi"
+#Include "crt.bi" ' QSORT
+
 '----------------------------
 Dim Shared  As String ProgError(0 To 17)
 Declare Sub PlayCancion(Track() As sec)
@@ -784,9 +790,16 @@ common Shared As String NombreCancion,NombrePista
 Common Shared As Integer cargaCancion, pid1
 Common Shared As cairo_t  Ptr c, c2
 Common Shared surface As Any Ptr
-common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
+Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx
+Dim Shared  midiin As   RtMidiInPtr
+Dim Shared  midiout(0 To 31) As  RtMidiOutPtr ' abrir hasta 32 dispositivos
+
+Common Shared midisal As RtMidiOutPtr, portsal As ubyte
+'''Dim Shared midisal As RtMidiOutPtr, portsal As ubyte
+Dim Shared as boolean vieneDeListport=FALSE
+
 'Common Shared As Any Ptr thplayC
 trasponer=0
 pid1=0
@@ -814,4 +827,5 @@ acercade = "Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer apl
  "Usa Cairo como libreria de graficos, Rtmidi como libreria midi, " + _
  "Editor de código FbEdit. Echo en Freebasic como hobby.FreeBASIC Compiler - Version 1.08.1 (2021-07-05), " + _ 
  "built for win64 (64bit) Copyright (C) 2004-2021 The FreeBASIC development team." + _
- "Si alguien quiere colaborar o tiene dudas o sugerencias,mail:galeanoj2005@gmail.com" 
+ "Si alguien quiere colaborar o tiene dudas o sugerencias,mail:galeanoj2005@gmail.com"
+ 

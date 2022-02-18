@@ -19,6 +19,11 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include "ROLLCONTROLDEC.bi"
 '#include "vbcompat.bi"
 #Include Once "freetype2/freetype.bi"
+#Include once  "file.bi"
+#include "mod_rtmidi_c.bi"
+#Inclib  "rtmidi.dll" 'usa librerias estaticas 
+#include "fbthread.bi"
+#Include "crt.bi" ' QSORT
 
 
 'Var hwnd = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*3/4)
@@ -40,6 +45,8 @@ common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig
 Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx
+Common Shared  portsal As UByte
+
 'Type esc1 
 '  nombre   As String
 '  nropasos As Integer
@@ -137,9 +144,10 @@ print #1,"OCtahasta ",octahasta
 End Sub
 Sub selInstORdenAlfa(ByRef instru As Integer)
 Dim As hwnd haw,hwl
-Dim As Integer aa ,paso=0,x=0,in=0  
+Dim As Integer aa ,paso=0,x=0,i1=0,i2=0  
+Dim cad As String
 instru=0
-
+' la seleccion empieza de 1, no devuelve 0 para el 1er elemento 
  
 '' => desde acaecho con tool del ruso no anda muy bien
      haw=OpenWindow("INSTRUMENTOS PATCH",100,50,600,600,WS_VISIBLE, WS_EX_TOPMOST )
@@ -170,18 +178,17 @@ instru=0
           If eventC=eventgadget Then
           
             If eventnumber()=2 Then
-               Instru = GetItemListView()
-               print #1,"in = ",in 
-              If instru=0 Then  instru=1 EndIf 
-               
-              ' If in >= 1 And in <=127 Then
-                 instru = IndiceInstAlfa(instru)
-              ' EndIf
-'''               instru=instru + 1
-            ''   If instru > 1 Then
+               i1 = GetItemListView()
+               Print #1,"alfa seleccion in", i1
+               Print #1,"NombreInstAlfa ",NombreInstAlfa(i1)
+               i2=InStrrev(NombreInstAlfa(i1)," ")
+               cad=Mid(NombreInstAlfa(i1),i2)
+               Print #1,"cadena ",cad
+               instru = CUByte(ValInt(cad))
+                print #1,"seleccion instrumento alfa instru = ",instru     
+
                   Close_Window(haw)
                   Exit Do
-           ''    EndIf
             End If
 
           EndIf 
@@ -234,8 +241,10 @@ instru=0
           
             If eventnumber()=2 Then
                Instru = GetItemListView()
+               Print #1,"inst seleccionado numerico ",instru
+               Close_Window(haw)
                   Exit Do
-            End If
+           End If
 
           EndIf 
           Sleep 5  

@@ -56,9 +56,10 @@ Dim As String t2="",t3="",t4=""
  ' si apreto click derecho lo disminuyo ,,o con la ruedita...Hace rlo mismo con el Pan
  ' de sonido para ubicar el sonido entre la derecha o izquierda,,,o
  ' PARA SABER SOBRE QUE CONTROL ESTOY HACE RUN CURSOSR PARA ESTA PARTE DE ARRIBA QUE PUEDA NAVEGAR
- ' ENTRE CONTROLES MODIFICABLES Y ESTAANDO UBICADO USAR RUEDITA O FLECHAS PARA CAMBIAR... 
+ ' ENTRE CONTROLES MODIFICABLES Y ESTAANDO UBICADO USAR RUEDITA O FLECHAS PARA CAMBIAR...
+  
  cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - 2* inc_Penta)
-  t=" CANAL MIDI: "+Str(canalx+1)
+  t=" CANAL MIDI: "+Str(canalx+1) ' para mostrar le sumo 1 pero se usa asi como viene 0 a 15
   cairo_show_text(c, t)
   t= ""
  cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - 3* inc_Penta)
@@ -98,7 +99,7 @@ Dim As String t2="",t3="",t4=""
  'If COMEDIT= TRUE Then
  'Dim As Integer delta
  'delta=NroCol
- If cursorVert=0 And COMEDIT=TRUE  Then
+ If cursorVert=0 And COMEDIT=TRUE  Then 
     If posicion < NroCol*3/4  Then '04-02-2022
       posishow=  1 ''curpos ' decia 1
   ' valla tatlmente al inicio veremos si es aca jmgjmg
@@ -187,11 +188,11 @@ Dim As String t2="",t3="",t4=""
       indfa=0
     EndIf
 ' =======> fin cifrado acordes----    
-  '  If t3 >"" Then
+    If t3 >"" Then
       cairo_show_text(c, t3)
    '   cairo_stroke(c)
       t3=""
-'    EndIf
+    EndIf
    ' cairo_stroke(c)
     'indf=0:indfa=0
 
@@ -228,11 +229,11 @@ Dim As String t2="",t3="",t4=""
   
 ' t no puede quedar en un scope dsitinto se hace shared    
        ' apenas usas t2 o t3 hay que borrarlas sino se pudre todo raro
-  '  If t2 >"" Then
+    If t2 >"" Then
       cairo_show_text(c, t2)
      ' cairo_stroke(c)
       t2=""
-'    EndIf
+    EndIf
    
 '      cairo_show_text(c, t)
 '      cairo_stroke(c)
@@ -661,7 +662,8 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
     nro = i 
   ' si ahce falta ejecutar mas de un Penta podremos usar threads
   ' asi funciona mejor o no? igual debe esperar a que termine el thread
-  ScreenSync  
+ ' NOOOO ScreenSync  no usar nunca sync desfasa el barrido de cairo y salta
+ ' las lineas
    creaPenta (c, Roll )
   If *po = 99 Then
      *po = hasta -1 ' 9 po ejemplo
@@ -764,8 +766,10 @@ End Select
 print #1,"INSTANCIA ", instancia
 
 Print #1,"call roolloop, tipoescala",tipoescala_inicial
-Print #1,"call roolloop, notaescala",notaescala_inicial    
-Print #1,"4 ROLLLOOP ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion
+Print #1,"call roolloop, notaescala",notaescala_inicial  
+If cargacancion=1 Then  
+ Print #1,"4 ROLLLOOP ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion
+EndIf
 If ubiroll > 0 Then
    Print #1,"cargo archivo desde rollLoop
    nombre = titulos(0)
@@ -805,7 +809,6 @@ param.ubirtk=0
  '   MenuNew=0
  '   ubiroll=0
  'EndIf
- 
 ' -----------------
 Do
 arranquedo1=Timer
@@ -941,12 +944,13 @@ pubi=0
 menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
 
 '------------------08-02-2022--cambio de dispositivo por ahora solo usa un dispositivo
-' ---ya usaremos mas de uno....muy pronto...   08-02-2022    
-If portsout <> portout And  cierroport=0 Then
-   Print #1,"  cerrando el por tanterior  portsout, nombreport ",portsout, *nombreport 
-   Print #1," postrsout cerrado ",portsout
-   Print #1," nombre del que se ciera ",nombreport
-   close_port(midiout)
+' ---ya usaremos mas de uno....muy pronto...   08-02-2022
+/'    
+If portsout <> portout And  cierroport=0  And cargaCancion=0  Then
+   Print #1," ABRIENDO PORT  portsout, nombreport ",portsout, *nombreport 
+   Print #1," postrsout ABIERTO HAST AHORA ",portsout
+   Print #1," nombre del que YA ESTA ABIERTO ",nombreport
+   '''''''' NO CIERRO MAS LOS PORTS close_port(midiout)
  ' como se que puerto cierro ? debo reordar el que abri?
  ' debo permitir abir mas de un port y asciarlo a un apista seleccionada por el usuario
  ' o directamenta cuano lo selecciona se graba en esa pista o el vector pmTk(ntk)
@@ -958,21 +962,100 @@ If portsout <> portout And  cierroport=0 Then
 ' no hace falta cerrar solo seleccioanr puerto ¿?   
 '           out_free(midiout) cierro pero no libero
 
-  Print #1,"  VA A ABRIR EL PORT portsout, nombreport ",portsout, *nombreport
+  Print #1,"  VA A ABRIR OTRO PORT portsout, nombreport ",portsout, *nombreport
   open_port (midiout, portsout, nombreport)
 
 ' usamos el instrumento default si hay uno almacenado en la pista
 ' pero logico segun el dispositivo y el canal sera diferente el resultado
-  If Roll.trk(1,NA).inst > 0 Then
-   ChangeProgram ( Roll.trk(1,NA).inst , 0)
-  EndIf
+  'If Roll.trk(1,NA).inst > 0 Then
+  ' ChangeProgram ( Roll.trk(1,NA).inst , 0)
+  'EndIf
   Print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
 
 End If       
-       
-'--------------------------------       
+'/       
+'----------------APERTURA DE PORTS DE DESPUES DE LA CARG ADE CANCION Y POR MENU----------------
+' -----------PARA UNA PISTA SOLA TAMBIEN.....CARGAPISTA ABRE PORTS TAMBIEN....
+' PERO AL CARGA DE UN ROLL O TRK AISLADO NO LO HACE,,,,       
+/'
+    portout = CInt(pmTk(ntk).portout)  
+If portout >0 And portsout <> portout And  cierroport=0  And cargaCancion=0  Then   
+portsout = portout
+nombreport = port_name(midiout(portout), portout)
+  Print #1,"  VA A ABRIR OTRO PORT portsout, nombreport ",portout, *nombreport
+  If listOutAbierto(portout) = 0 Then ''And CANCIONCARGADA=FALSE  Then
+     midiout(portout) = rtmidi_out_create_default()
+     nombreOut(portout) = port_name(midiout(portout), portout)
+    Print #1, "Abriendo port  " , portout, *nombreOut(portout)
+    open_port (midiout(portout), portout, nombreOut(portout))
+    porterror=Err 
+
+    Select Case porterror
+      Case RTMIDI_ERROR_WARNING
+        Print #1, "RTMIDI_ERROR_WARNING"
+
+      Case RTMIDI_ERROR_DEBUG_WARNING
+        Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
+        Close
+        End
+
+      Case RTMIDI_ERROR_UNSPECIFIED
+        Print #1,"RTMIDI_ERROR_UNSPECIFIED"
+        Close
+        End
+
+      Case RTMIDI_ERROR_NO_DEVICES_FOUND
+        Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
+        Close
+        End
+
+      Case RTMIDI_ERROR_INVALID_DEVICE
+        Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
+        Close
+        End
+
+      Case RTMIDI_ERROR_MEMORY_ERROR
+        Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
+        Close
+        End
+
+      Case RTMIDI_ERROR_INVALID_PARAMETER
+        Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
+        Close
+        End
+
+      Case RTMIDI_ERROR_INVALID_USE
+        Print #1,"RTMIDI_ERROR_INVALID_USE"
+        Close
+        End
+
+      Case RTMIDI_ERROR_DRIVER_ERROR
+        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!
+        Close
+        End
+
+      Case RTMIDI_ERROR_SYSTEM_ERROR
+        Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
+        Close
+        End
+
+      Case RTMIDI_ERROR_THREAD_ERROR
+        Print #1,"RTMIDI_ERROR_THREAD_ERROR"
+        Close
+        End
+    End Select
 
 
+  Else
+     Print #1, "port ya abierto " , portout, *nombreOut(portout)
+  EndIf
+
+  listoutAbierto( portout ) = 1
+
+ '--------------------------------
+EndIf
+
+'/
 
 
 
@@ -983,6 +1066,7 @@ cairo_stroke(cm) ' cm despues de c sino crash
 
 
 ScreenUnLock()
+
 
 EndIf
 
@@ -1035,7 +1119,7 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA Or cargaCancion=1 Then
      hasta=pmTk(ntk).hasta
      NB=pmTk(ntk).NB
      NA=pmTk(ntk).NA
-     portout=pmTk(ntk).portout
+     portout=pmTk(ntk).portout 'solo debe servir para play de pista
      notaold = CInt(pmTk(ntk).notaold)
      CantTicks=pmTk(ntk).Ticks
 ' ajusto escala principal durante la conmutacion para cada track visualizado con TAB     
@@ -1046,6 +1130,7 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA Or cargaCancion=1 Then
 ' todavia no probado, escala principal para TAB en cada track testeat 13-01-2022     
 ' no he grabado las escalas auxiliares en lso Trackc todavia !! 13-01-2022 jjj     
   print #1,"5- MAXPOS final TAB " ,maxpos
+     
 EndIf   
 '
 
@@ -1486,18 +1571,23 @@ EndIf
 If MultiKey(SC_ESCAPE) Then
    'ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
    'Dim As hWnd hwnd = Cast(hwnd,IhWnd)
+Dim As Integer i3
 
   If MessageBox(hWnd,"¿Fin RollMusic? " ,param.titulo ,4 Or 64) =6 Then
     cairo_destroy(c)
     cairo_surface_destroy( surface )
     FT_Done_Face( ftface )
-   
-    If play=1 Or playb=1 Then
-      alloff (1)
-      ThreadDetach(thread1)
-    EndIf
-    close_port(midiout)
-    out_free(midiout)
+     If play=1 Or playb=1 Then
+      '''alloff (canal)
+        For i3 = 1 To tope
+           portsal = pmTk(i3).portout 
+           allSoundoff (pmTk(i3).canalsalida,portsal )
+           close_port(midiout(portsal))
+           out_free(midiout(portsal))
+        Next i3
+        ThreadDetach(thread1)              
+     EndIf
+  
     Dim ffile As Integer
     ffile=FreeFile
     Open "./RollMusic.ini" For output As #ffile
@@ -1558,11 +1648,12 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
          '''Dim tlock As Any Ptr = MutexCreate()
          If CANCIONCARGADA Then
              Print #1,"USANDO PLAYCANCION"
-            thread1 = ThreadCall  playCancion(Track())
+            thread2 = ThreadCall  playCancion(Track())
+            'playCancion(Track())
          Else
             thread1 = ThreadCall  playAll(Roll)
             Print #1,"USANDO PLAYALL"
-            '' playAll(Roll)
+            ' playAll(Roll)
          EndIf
          '''MutexDestroy tlock
          '''playAll(Roll)
@@ -1596,7 +1687,9 @@ deltaip=0:incWheel=0:lockip=0
  menuMouse = 0
  nota=0
  DUR=0
- alloff( 1 )
+'''''' alloff( 1 ) no ahce falta aca para eso esta P
+
+
 
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
@@ -2421,7 +2514,7 @@ If (ScreenEvent(@e)) Then
    If e.scancode = SC_P And Play=1 then ' 25 anda mejor q con multikey
       CONTROL1=1
       playloop=0
-      alloff( 1 )
+ '''     alloff( 1 ) lo hace el play 
    EndIf
    If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion
 
@@ -2913,7 +3006,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
            posicion=guardopos
        '''posicion = posicion + curpos ' 15-09-2021 jmgjmg ok mejoró 
            curpos=0
-           controlEdit=0 'jmg 09-06-2021
+           controlEdit=0 'jmg 09-06-2021 
            nota=0
        ''posicion=posicion - NroCol/2
 
@@ -2984,16 +3077,20 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
  If (mousex>=(ANCHO-40-mxold)) And (mousey <= 16) Then
   If  MouseButtons And 1 Then
    If MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","Fin RollMusic",4 Or 64) =6 Then
+    Dim As Integer i3  
     cairo_destroy(c)
     cairo_surface_destroy( surface )
     FT_Done_Face( ftface )
-   
     If play=1 Or playb=1 Then
-      alloff (1)
-      ThreadDetach(thread1)
+       For i3 = 1 To tope
+          portsal = pmTk(i3).portout 
+          allSoundoff (pmTk(i3).canalsalida,portsal )
+          close_port(midiout(portsal))
+          out_free(midiout(portsal))
+       Next i3
+       ThreadDetach(thread1)              
     EndIf
-    close_port(midiout)
-    out_free(midiout)
+
     Dim ffile As Integer
     ffile=FreeFile
     Open "./RollMusic.ini" For output As #ffile
@@ -3075,9 +3172,9 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
   If s3 = 2 Then  ''06-12-2021 jmg
      s3=0
   EndIf   
-  If CANCIONCARGADA Then
-     S3=0
-  EndIf
+'  If CANCIONCARGADA Then 12-02-2022 quedaba en edicion siempre  
+'     S3=0
+'  EndIf
   ''s3 = 2 ''20-01-2021 ' otro estado mas?
  ' <==== MENU CONTEXTUAL INSERCION DE ACORDES CON CTRL+ CLICK DERECHO EN LECTURA ================>
  ' 2 casos 

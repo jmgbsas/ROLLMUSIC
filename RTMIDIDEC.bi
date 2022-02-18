@@ -1,20 +1,20 @@
  
 #Include once  "file.bi"
 #include "mod_rtmidi_c.bi"
-#Inclib  "rtmidi.dll" 'usa librerias estaticas 
+'#Inclib  "rtmidi.dll" 'usa librerias estaticas 
+#Inclib  "rtmidi"  '''uso al dedeisco rtmidi.dll
 #include "fbthread.bi"
 #Include "crt.bi" ' QSORT
 
-dim Shared midiin As   RtMidiInPtr 
-dim Shared midiout As  RtMidiOutPtr
+
 Declare Function restar (notaRoll As Integer) As Integer
-Declare Sub PlayRoll  
+Declare Sub PlayRoll () 
 'declare Sub playAll() 
 Declare Sub duracion (old_time As double,tiempoFigura As double)
-Declare Sub pedaloff()
-Declare Sub allSoundoff(canal As UByte)
-Declare Sub alloff(canal As ubyte )
-Declare Sub listports( )
+Declare Sub pedaloff(portsal As ubyte)
+Declare Sub allSoundoff(canal As UByte,portsal As ubyte)
+Declare Sub alloff(canal As UByte,portsal As UByte)
+Declare Sub listports()
 Declare Sub sleep5dm()
 Declare Function sumar( ByVal ind As integer) As Integer
 'Declare Sub trasponerRoll(cant As integer)
@@ -22,7 +22,7 @@ Declare Function sumar( ByVal ind As integer) As Integer
 'Declare Sub moverZonaRoll(cant As Integer)
 'Declare Sub correcciondeNotas()
 
-Dim Shared message(1 To 21) As UByte ' message output 
+Dim Shared message(1 To 21) As UByte ' message output ' puede ser de hasta 1024 bytes 
 
 ' maximo seria para un acorde de 5 por ejemplo
 ' 5 notas + velocidad y canal = 7 bytes...para note on
@@ -34,10 +34,10 @@ Dim Shared message(1 To 21) As UByte ' message output
 Dim Shared p as UBYTE Ptr = @message(1) 
 Dim size As UInteger<64> 
 'Dim sizeptr As UInteger<64> Ptr = @size
-Dim Shared As UInteger portsin, portsout 
+Dim Shared As UInteger portsin=0, portsout =0
 Dim Shared As integer tiempoPatron=60 ' cuantas negras en un minuto default
 Dim Shared As Double old_time_on=0,old_time_off=0,old_time_on_int=0,old_time_off_int=0
-Dim Shared As Integer jply=0, finplay=0,indEscala=1
+Static Shared As Integer jply=0, finplay=0,indEscala=1
 Dim Shared As double FactortiempoPatron=1
 'elpatron esla negra ej I=60 ergo todo sera relativo A la negra q dura 1 seg
 ' 09-06-2021 agregue 0 en relDur para evitar cancelaciones pero ojo puede 
@@ -66,8 +66,10 @@ Dim Shared As float relDur (0 To 182) => {0, _
 7 ,3.5,1.75,0.875,0.4375,0.21875,0.109375,0.0546875,0.02734375, _ '163 171
 2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,0.0208333,0.01041666,0,0} '172 181
 
-Dim Shared As Integer play =0,playb=0, portout, portin, numero, numeroFrac,cambioescala=0 
-ReDim Shared As string listout(1 ), listin (1 )
+Dim Shared As Integer play =0,playb=0, portin, numero, numeroFrac,cambioescala=0
+Dim Shared As UInteger portout=0 
+Static Shared As string listout(), listin ()
+Static Shared As integer listoutAbierto(), listinAbierto ()
 Dim Shared As String *2  listCanal(1 To 16) => {" 1"," 2"," 3"," 4"," 5"," 6"," 7"," 8"," 9","10","11","12","13","14","15","16"}
 
 
@@ -98,14 +100,17 @@ Type vec
    i1old           As Integer
    old_time        As Integer
    old_timeold     As Integer
-   inst            As Integer 
+   inst            As Integer
+   canal           As Integer
+   port            As integer 
+   pista           As integer
 End Type
-Dim Shared pasoCol (0 To 384) As vec
+Static Shared pasoCol (0 To 384) As vec
 
 
 
 
-Declare Sub noteon	( note As UByte, vel As UByte,canal As UByte)
+Declare Sub noteon	( note As UByte, vel As UByte,canal As UByte,portsal As ubyte)
 Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal As UByte,tiempoDur As Double,velpos As integer)
 'Declare Sub AcordeIguales ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte,canal As UByte,tiempoDur As double) 
 'Declare Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte,cntold As UByte, canal As UByte)
@@ -114,7 +119,7 @@ Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal
 'Declare Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As Double)
 'Declare Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As double)
 Declare Function vol (dura As UByte, vel As UByte) As ubyte
-Declare sub noteoff( note As UByte, canal As UByte)
+Declare sub noteoff( note As UByte, canal As UByte,portsal As ubyte )
 Declare Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
 Dim Shared As Integer ligaglobal=0 ', ligaglobalc (1 To 32)
 'Relacion de nR indice de Roll, con nE semitono, para evitar calculos.
@@ -124,7 +129,7 @@ Dim Shared As integer relnRnE(0 To 132) => { _  ' indice de Roll vs nota ..semit
 12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1, _
 12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1 }
 
-Dim Shared indiceaudio (0 To 384) As Integer 
+Static Shared indiceaudio (0 To 384) As Integer 
 Type PGE  ' parametros guia escala 
  tipoescala As Integer
  notaescala As Integer
