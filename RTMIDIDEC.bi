@@ -1,10 +1,10 @@
  
 #Include once  "file.bi"
-#include "mod_rtmidi_c.bi"
-'#Inclib  "rtmidi.dll" 'usa librerias estaticas 
-#Inclib  "rtmidi"  '''uso al dedeisco rtmidi.dll
-#include "fbthread.bi"
-#Include "crt.bi" ' QSORT
+'#include "mod_rtmidi_c.bi"
+''#Inclib  "rtmidi.dll" 'usa librerias estaticas 
+'#Inclib  "rtmidi"  '''uso al dedeisco rtmidi.dll
+'#include "fbthread.bi"
+'#Include "crt.bi" ' QSORT
 
 
 Declare Function restar (notaRoll As Integer) As Integer
@@ -103,14 +103,14 @@ Type vec
    inst            As Integer
    canal           As Integer
    port            As integer 
-   pista           As integer
+   pista           As Integer
 End Type
 Static Shared pasoCol (0 To 384) As vec
 
 
 
 
-Declare Sub noteon	( note As UByte, vel As UByte,canal As UByte,portsal As ubyte)
+Declare Sub noteon	( note As UByte, vel As UByte,canal As UByte,portsal As UByte)
 Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal As UByte,tiempoDur As Double,velpos As integer)
 'Declare Sub AcordeIguales ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte,canal As UByte,tiempoDur As double) 
 'Declare Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte,cntold As UByte, canal As UByte)
@@ -119,7 +119,7 @@ Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal
 'Declare Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As Double)
 'Declare Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As double)
 Declare Function vol (dura As UByte, vel As UByte) As ubyte
-Declare sub noteoff( note As UByte, canal As UByte,portsal As ubyte )
+Declare sub noteoff( note As UByte, canal As UByte,portsal As UByte )
 Declare Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
 Dim Shared As Integer ligaglobal=0 ', ligaglobalc (1 To 32)
 'Relacion de nR indice de Roll, con nE semitono, para evitar calculos.

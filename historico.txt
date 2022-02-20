@@ -1,3 +1,27 @@
+-20-02-2022 se logro qu een cancion se reproduscan 3 pistas, si los
+ ports (o dispositivos) son diferentes para cada pista funciona bien en general.
+ Si 2 pistas usan el mismo port pero diferente canal y patch, algunas notas
+ ligadas terminan antes y tocan la ultima y no se oye la siguientes a la ligadura.
+ No se si se podrá corregir. Tabja como si fuera una corde gigante de N pistas
+ donde cada acorde tendra notas iguales o diferentes de sistintas pistas, canales
+ y patch, el patch se tira antes del play por canal y port y pista.
+ El problema creo es qu eel algoritmo estaba preparado para un solo port
+ un solo canal en todo un acorde,,,veremos o sino hasta aca llegamos y se intentara
+ con threads ¿un thread por pista? ¿32 thread sincronizados? nunca hice veremos.
+-20-02-2022 deberia usar un thread para cada pista y coordenarlas para
+que todas toquen al mismo tiempo tal pez coordinadas por Jply
+-19-02-2022 se intento de muchas formas ubicar la apertura de los ports, pero 
+siemrpe da warning
+abriendo ports....
+midiout        0            LoopBe Internal MIDI 0
+abro          LoopBe Internal MIDI 0
+RTMIDI_ERROR_WARNING         0
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING         0
+En un programa aislado solo con la libreria rtmido no da ningun error y abro 2 ports,,,
+(que interfiere¿?...zas), si uso solo un port tambien da error de warnig
+no es por usar mas de un port...
 -18-02-2022 varia smodificaciones:
  play de cancion funciona con un solo porta y varios canales en cada pista.
  O un port diferente en cada pista. osea se puede elegir una compbiancion de

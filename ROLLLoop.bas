@@ -1077,9 +1077,9 @@ Do
 
 '---------
 'simulamos TAB para cargaCancion=1 cuadno recien se carga la cancion
-If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA Or cargaCancion=1 Then
+If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA  And play=0 And playb=0  Or cargaCancion=1 Then
    cargaCancion=0 ' para que no entre mas luego de cargada la cancion
-   
+
    Erase mel_undo, undo_acorde, undo_kant_intervalos
    mel_undo_k=0: ig=0:cnt_acor=0
    ROLLCARGADO = FALSE
@@ -1648,12 +1648,15 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
          '''Dim tlock As Any Ptr = MutexCreate()
          If CANCIONCARGADA Then
              Print #1,"USANDO PLAYCANCION"
+             
             thread2 = ThreadCall  playCancion(Track())
             'playCancion(Track())
          Else
-            thread1 = ThreadCall  playAll(Roll)
-            Print #1,"USANDO PLAYALL"
-            ' playAll(Roll)
+           If  MaxPos > 1 Then
+              print #1,"llama a playall"
+             thread1 = ThreadCall  playAll(Roll)
+           EndIf 
+
          EndIf
          '''MutexDestroy tlock
          '''playAll(Roll)

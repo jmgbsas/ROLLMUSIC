@@ -15,13 +15,13 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include Once "crt.bi"
 #Include "foro/window9.bi"
 #Include Once "gtk/gtk.bi"
-#Include "midiinfo.bi"
+'#Include "midiinfo.bi"
 #Include "ROLLCONTROLDEC.bi"
 '#include "vbcompat.bi"
 #Include Once "freetype2/freetype.bi"
 #Include once  "file.bi"
-#include "mod_rtmidi_c.bi"
-#Inclib  "rtmidi.dll" 'usa librerias estaticas 
+'#include "mod_rtmidi_c.bi"
+'#Inclib  "rtmidi.dll" 'usa librerias estaticas 
 #include "fbthread.bi"
 #Include "crt.bi" ' QSORT
 

@@ -1361,7 +1361,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
 ' FIN BORRO UNDO
    
    
-   Print #1,"ubiroll en CA ",ubiroll
+'   Print #1,"ubiroll en CA ",ubiroll
      
      Dim As String x,x1,x2,x3,x4,x5,nombrea
      ''' no usar mas  dialogoText("Cargar Archivo")
@@ -1388,16 +1388,16 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
    print #1,"CArgarArchivo ",nombre    
    Dim ca As Integer
    ca=FreeFile   
- print #1,"open nombre en CargaArchivo ",nombre
+ ' print #1,"open nombre en CargaArchivo ",nombre
       If  ubiroll =0 Then
 
          Open nombre  For Binary Access Read As #ca
       Else
          Sleep 100
 '' NO LEE UN AMIERDA SI ENTRA POR ACA TODO LO QUE TRAE ESTA EN CERO INCREIBLE LA PUTA MADRE!!!
-         Print #1,"lee con control de error.. "
+  '       Print #1,"lee con control de error.. "
      If Open (nombre  For Binary Access Read Shared As #ca ) <> 0 Then
-        print #1,"Error open cargaARchivo 1387, nombre ",nombre
+   '     print #1,"Error open cargaARchivo 1387, nombre ",nombre
         Exit Sub
      End If
          
@@ -1426,7 +1426,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      x4=Bin(z(1,1).pan,4) 
      x5=Bin(z(1,1).pb,4) 
      tipoescala_num_ini =CInt( Z(1,1).inst) ' 20-12-2021 - tipoescala en uso
-     Print #1,"tipoescala_num_ini ",tipoescala_num_ini ' 
+  '   Print #1,"tipoescala_num_ini ",tipoescala_num_ini ' 
      
      x=x1+x2+x3+x4+x5
      '   print #1,"reconstruccion x pos bin ", x
@@ -1445,23 +1445,23 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      ' crgamos limites Roll de octavas
      Get #ca, , zLim(1,1)
      desde  = CInt(zLim(1,1).nota)
-     Print #1,"desde ",desde
+   '  Print #1,"desde ",desde
      hasta  = CInt(zLim(1,1).dur)
-     Print #1,"hasta ",hasta
+   '  Print #1,"hasta ",hasta
      notaold= CInt(zLim(1,1).pb)
-     Print #1,"notaold ",notaold     
+   '  Print #1,"notaold ",notaold     
      notaescala_num_ini =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
-     Print #1,"notaescala_num_ini ",notaescala_num_ini     
+   '  Print #1,"notaescala_num_ini ",notaescala_num_ini     
      if  zLim(1,1).pan = 3 Then
          alteracion="sos"
      EndIf    
      if  zLim(1,1).pan = 2 Then
          alteracion="bem"
      EndIf    
-     Print #1,"alteracion ",alteracion
+   '  Print #1,"alteracion ",alteracion
       
     cadenaes_inicial=""
-    Print #1,"armarescala desde cargarArchivo"
+    'Print #1,"armarescala desde cargarArchivo"
 
     armarescala (cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini, alteracion ,1)
 
@@ -1499,9 +1499,9 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      Get #ca, ,graba3  (1,1)
 
      canalx  = CInt(graba3(1,1).inst) ' canal midi cargado en Global si es un track se pasara a info de trck
-     Print #1,"canalx cargado desde archivo ",canalx
+ '    Print #1,"canalx cargado desde archivo ",canalx
      portout = CInt(graba3(1,1).dur) 
-     Print #1,"portout cargado desde archivo ",portout
+ '    Print #1,"portout cargado desde archivo ",portout
      pmTk(0).portout=graba3(1,1).dur   ' ubyte  a ubyte
      pmTk(0).canalsalida = graba3(1,1).inst ' ubyte a ubyte
      
@@ -1522,7 +1522,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      
      
      ReDim compas(1 To CantTicks)
-     print #1,"En CargarArchivo NB NA ", NB,NA
+ '    print #1,"En CargarArchivo NB NA ", NB,NA
      Dim Trabajo (1 To MaxPos, NB To NA) As dat     
      Get #ca, , Trabajo() ' aca levanta tambien el instrumento que se grabo 
      ' CARGA VECTOR ROLL movemos los datos a Roll Y a track 0
@@ -1546,8 +1546,8 @@ Dim As Integer copiado=0
        If Trabajo (j,i).nota >= 1 And Trabajo (j,i).nota <=12 And  Trabajo (j,i).dur >=1 and Trabajo (j,i).dur <= 180  Then
          ip+=1
          If ip >12 Then
-              print #1,"error  ip > 12,ip, Tr,j,i ",ip, Trabajo (j,i).dur,j,i
-              print #1,"saltamos linea vertical vamos a otra posicion"
+  '            print #1,"error  ip > 12,ip, Tr,j,i ",ip, Trabajo (j,i).dur,j,i
+   '           print #1,"saltamos linea vertical vamos a otra posicion"
               Exit For
          EndIf      
          Notapiano= i 
@@ -1571,8 +1571,8 @@ Dim As Integer copiado=0
          Track(ntk).trk(j,13).nota = Trabajo(j,i ).nota ' = 30
          Track(ntk).trk(j,13).dur  = Trabajo(j,i ).dur  ' = 200
          Track(ntk).trk(j,13).pan = Trabajo(j,i ).pan
-         Print #1,"RollaTrack copia var de control inst ",Track(ntk).trk(j,13).inst
-         Print #1,"RollaTrack copia var de control vol ",Track(ntk).trk(j,13).vol
+   '      Print #1,"RollaTrack copia var de control inst ",Track(ntk).trk(j,13).inst
+   '      Print #1,"RollaTrack copia var de control vol ",Track(ntk).trk(j,13).vol
          copiado=1 
       EndIf
 ' copiar campso de acordes a Track(ntk)       
@@ -1604,11 +1604,11 @@ curpos =>1
 ''If Roll.trk(1,NA).
  mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  
  mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0
- print #1, "CargaARchivo LBound (Roll.trk,1) ",LBound (Roll.trk,1)
- print #1, "CargaARchivo LBound (Roll.trk,2) ",LBound (Roll.trk,2)
+ 'print #1, "CargaARchivo LBound (Roll.trk,1) ",LBound (Roll.trk,1)
+ 'print #1, "CargaARchivo LBound (Roll.trk,2) ",LBound (Roll.trk,2)
     
- print #1, "CargaARchivo UBound (Roll.trk,1) ",UBound (Roll.trk,1)
- print #1, "CargaARchivo UBound (Roll.trk,2) ",UBound (Roll.trk,2)
+ 'print #1, "CargaARchivo UBound (Roll.trk,1) ",UBound (Roll.trk,1)
+ 'print #1, "CargaARchivo UBound (Roll.trk,2) ",UBound (Roll.trk,2)
   Sleep 10
 End Sub
 ' ------------------------------------------
@@ -3624,7 +3624,7 @@ Sub  selcanal (ByVal tipo As Any Ptr )  ' list de ruso
 Dim As hwnd haw,hwl
 Dim mitipo As Integer 
 mitipo=  CInt(tipo)
-Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
+'Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 '' => desde aca echo con tool del ruso no anda muy bien
      haw=OpenWindow("CANALES",100,50,400,400,WS_VISIBLE, WS_EX_TOPMOST )
      hwl=  ListViewGadget(1,10,10,300,300,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL  )
@@ -3665,7 +3665,19 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
           Print #1,"ntk en cambio de canal ntk= ",ntk
            pmTk(ntk).canalsalida=CUByte(canalx) ' sirve para el track cargao actual en cancion
        
-          
+             If CANCIONCARGADA Or TRACKCARGADO Then
+                 pmTk(ntk).canalsalida=CUByte(canalx) ' sirve para el track cargao actual en cancion
+                 If NombreCancion > ""  And MAxPos > 1 Then
+                    GrabarRollaTrack(0)
+                 EndIf
+
+              Else
+                If MaxPos > 1  And ROLLCARGADO  Then
+                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
+                 ' no el undo dolo se debe borrar al ahcer nuevo creo
+                EndIf  
+              EndIf  
+
               Close_Window(haw)
               Exit Do 
             End If
@@ -3955,7 +3967,7 @@ tipoescala_num=0
  
 '' => desde acaecho con tool del ruso no anda muy bien
      haw=OpenWindow("ESCALAS ",100,50,600,600,WS_VISIBLE, WS_EX_TOPMOST )
-     Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
+'     Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
 ' COSA DE MANDINGA LVS_EX_AUTOSIZECOLUMNS ACA NO LA ENCUENTRA PERO EN LAS OTRAS
 ' SUBRUTINAS LA ENCUENTRA JAJAJAA ANDA PARA LA MIERDA ESTE FB 
 ''Y ESTE NO ES UN MODULO A PARTE ES UN INCLUDE!!!     
@@ -4010,7 +4022,7 @@ notaescala_num=0
  
 '' => desde acaecho con tool del ruso no anda muy bien
      haw=OpenWindow("ESCALAS ",100,50,500,500,WS_VISIBLE, WS_EX_TOPMOST )
-     Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
+'     Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
 ' COSA DE MANDINGA LVS_EX_AUTOSIZECOLUMNS ACA NO LA ENCUENTRA PERO EN LAS OTRAS
 ' SUBRUTINAS LA ENCUENTRA JAJAJAA ANDA PARA LA MIERDA ESTE FB 
 ''Y ESTE NO ES UN MODULO A PARTE ES UN INCLUDE!!!     
@@ -4172,13 +4184,13 @@ Dim p6 As Byte Ptr
       k3= *p6 + k3
     ' Print #1,"h2, k3",h2, k3
      p6=p6+1
-     If orden=1 Then 
-        Print #1,"h2 notas_esc_inicial(h2) ",h2, notas_esc_inicial(h2)
-        Print #1,"grado_inicial(h2) ",grado_inicial(h2)
-        Print #1,"h2 notas_esc_inicial(h2+hnro) ",h2+hnro, notas_esc_inicial(h2+hnro)
-        Print #1,"grado_inicial(h2) ",grado_inicial(h2+hnro)
+ '    If orden=1 Then 
+ '       Print #1,"h2 notas_esc_inicial(h2) ",h2, notas_esc_inicial(h2)
+ '       Print #1,"grado_inicial(h2) ",grado_inicial(h2)
+ '       Print #1,"h2 notas_esc_inicial(h2+hnro) ",h2+hnro, notas_esc_inicial(h2+hnro)
+ '       Print #1,"grado_inicial(h2) ",grado_inicial(h2+hnro)
         
-     EndIf
+'     EndIf
     Next h2
     
     

@@ -69,12 +69,31 @@
 '====> clave DEVF (desarrollo futuro, comentarios en lugares apr adessarrollar mas
 ' funcionalidades.)
 ' -------------------------------------------------
+#Define __FB_WIN64__
+#If Defined (__FB_WIN64__) 
+#LibPath "C:\msys64\mingw64\lib"
+#Else
+#LibPath "/usr/lib"
+#EndIf
+#Define EXTCHAR Chr(255)
+
+
+#include "mod_rtmidi_c.bi"
+#Inclib  "rtmidi.dll" 'usa librerias estaticas 
+'#Inclib  "rtmidi"  '''uso al dedeisco rtmidi.dll
+#include "fbthread.bi"
+#Include "crt.bi" ' QSORT
  
 #define WIN_INCLUDEALL
 #Include Once "windows.bi"
-#Include Once "/win/commctrl.bi"
-#include "crt/stdio.bi"
+'#Include Once "/win/commctrl.bi"
+'#Include "crt/stdio.bi"
 #Include "file.bi"
+#Include "fbgfx.bi" ' se carga antes de windows.bi para evitar duplicates..o conflictos
+'#Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
+#If __FB_LANG__ = "fb"
+Using FB '' Scan code constants are stored in the FB namespace in lang FB
+#EndIf
 
 ' Nota: algun dia si quiero midifile intentar usar una libreria de C pura 
 ' C:\IT64\AREAWORKAUX\MIDI-LIBRARY\midilib-master\midilib-master\freeBasic
@@ -120,20 +139,8 @@ Open "AAAAA-test.TXT" For Output As 5
 Dim Shared As Integer abierto=0
 Common Shared  mensaje As Integer 
 '''  end file dialog  
-#Define __FB_WIN64__
-#If Defined (__FB_WIN64__) 
-#LibPath "C:\msys64\mingw64\lib"
-#Else
-#LibPath "/usr/lib"
-#EndIf
-#Define EXTCHAR Chr(255)
-#Include "fbgfx.bi" ' se carga antes de windows.bi para evitar duplicates..o conflictos
-#Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
-#If __FB_LANG__ = "fb"
-Using FB '' Scan code constants are stored in the FB namespace in lang FB
-#EndIf
 ' para GTK Gtk:list()
-#Include Once "crt.bi"
+'#Include Once "crt.bi"
 #Include Once "gtk/gtk.bi"
 
 ' This is our data identification string to store data in list items
@@ -180,7 +187,6 @@ Print #1,Date;Time
 '-------------
 ''
 '=======================
- #Inclib  "rtmidi"  '''uso al dedeisco rtmidi.dll
 '--------------
 #Include "string.bi"
 #Include Once "cairo/cairo.bi"
@@ -192,7 +198,8 @@ Print #1,Date;Time
 #Include "ROLLCONTROLDEC.bi"
 '=============================
 ' iup start
-#Include once "foro/fmidi.bi"
+' SOLO PARA WINDOWS LEE MIDI FILES PERO FALTA FUNCIONES PARA GRABAR!!!
+'---> #Include once "foro/fmidi.bi"
 #Include Once "fbthread.bi"
 #Include "foro/window9.bi"
 
@@ -209,7 +216,7 @@ Dim Shared fs As Integer
 fs = FreeFile 
 Open "secuencia.txt" For Output As #fs
 
-Const NULL = 0
+''Const NULL = 0
 Const NEWLINE = !"\n"
 ' iup fin
 
@@ -314,7 +321,7 @@ If desde = 0 And hasta = 0 Then
  'pmTk(ntk).desde=desde
  'pmTk(ntk).hasta=hasta
 EndIf
-
+' calculo teorico a tiempopatron 160 , pero roollmusic arranca a 120
 CantTicks=cantMin * 128 * tempo/4  ' 76800 ticks...o pasos
 'CantTicks=76800
 CantTicks=4000 ' 3 MINUTOS A NEGRA 160/min=500 Y Q TODAS SEAN FUSA
@@ -569,15 +576,13 @@ Dim Shared nombreport As ZString Ptr
 
 midiin  = rtmidi_in_create_default()
 midiout(0) = rtmidi_out_create_default()
+
+
 'print #1,"PLAYALL---------->>>>>>>"
 portsout =  port_count (midiout(0))
 Dim i1 As integer
 'Print #1, "portsin  "; portsin
 Print #1, "portsout "; portsout
-For i1 = 0 to portsout -1 
-    nombreport = port_name(midiout(0), i1)
-    print #1, *nombreport
-Next i1  
 
 ReDim  listOutAbierto (0 To portsout)
 
@@ -599,11 +604,69 @@ For i1 = 0 to portsout -1
     nombreOut(i1) = port_name(midiout(0), i1)
     print #1, *nombreOut(i1)
 Next i1  
+Dim As Long porterror
+open_port midiout(0),0, nombreOut(0)
+    Select Case porterror
+      Case RTMIDI_ERROR_WARNING ' esto da cero ¿? y es eror¿?
+        Print #1, "RTMIDI_ERROR_WARNING",porterror
+      Case RTMIDI_ERROR_DEBUG_WARNING
+        Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
+        Close
+        End
+
+      Case RTMIDI_ERROR_UNSPECIFIED
+        Print #1,"RTMIDI_ERROR_UNSPECIFIED"
+        Close
+        End
+
+      Case RTMIDI_ERROR_NO_DEVICES_FOUND
+        Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
+        Close
+        End
+
+      Case RTMIDI_ERROR_INVALID_DEVICE
+        Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
+        Close
+        End
+
+      Case RTMIDI_ERROR_MEMORY_ERROR
+        Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
+        Close
+        End
+
+      Case RTMIDI_ERROR_INVALID_PARAMETER
+        Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
+        Close
+        End
+
+      Case RTMIDI_ERROR_INVALID_USE
+        Print #1,"RTMIDI_ERROR_INVALID_USE"
+        Close
+        End
+
+      Case RTMIDI_ERROR_DRIVER_ERROR
+        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!
+        Close
+        End
+
+      Case RTMIDI_ERROR_SYSTEM_ERROR
+        Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
+        Close
+        End
+
+      Case RTMIDI_ERROR_THREAD_ERROR
+        Print #1,"RTMIDI_ERROR_THREAD_ERROR"
+        Close
+        End
+    End Select
+Sleep 1000
+
 Print #1,"Microsoft No se usa en este programa con este algoritmo es muy inestable"
 Print #1,"-------------------------------------"
 
 close_port midiout(0)
-out_free   midiout(0)
+''=====> nunc ausar mientras el programa funciona out_free   midiout(0)
+'' cerrar y abrir ports pero nunca liberar memoria 
 listOutAbierto(0)=0
 
 
@@ -946,7 +1009,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
    If pid1=0 And ix < 3 Then
       pid1=pd1
    EndIf
-  Print #1,"3 ENTRA A CARGAR PISTAS cargaCancion ES 1 SI O SI ",cargaCancion 
+  Print #1,"cALL rOLLLOOP I) cargaCancion ES 1 SI O SI ",cargaCancion 
     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
  Print #1,"ENTRA A CARGAR PISTAS cargaCancion ES 1 SI O SI ",cargaCancion   
     ''''cargacancion=0 esto me ponia en cero antes que lo use el thread!!!!
@@ -957,6 +1020,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
        CANCIONCARGADA=FALSE
        ''cargaCancion=0  
        param.encancion=0 
+       Print #1,"cALL rOLLLOOP II) "
        threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
     EndIf
   EndIf
@@ -1105,13 +1169,17 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                 
            Case 1040 ' seleccion de instrumento por orden Alfabetico
                selInstORdenAlfa (instru)
-          '     If CANCIONCARGADA Then
-           '    Else
-           '       midisal = midiout(portout)
-           '    EndIf
+                If CANCIONCARGADA Then
+               Else
+                  'midisal = midiout(portout)
+                  NTK=0
+                EndIf
                 portsal=pmTk(ntk).portout
-               
-               ChangeProgram ( CUByte (instru) , pmTk(ntk).canalsalida,portsal) ' habilito de neuvo 13-02-2022 Ç
+ ' los canales van de 0 a 15 (1 a 16) no se si en todos los dispositivos
+ ' van de 0 a 15 o en alguno de 1 a 16 opto por 0 a 15                
+             ''  If pmTk(ntk).canalsalida > 0 Then
+            '      ChangeProgram ( CUByte (instru) , pmTk(ntk).canalsalida,portsal) ' habilito de neuvo 13-02-2022 Ç
+             ''  EndIf
                If instru=0 Then instru=1 EndIf
                Roll.trk(1,NA).inst= CUByte(instru)
                Track(ntk).trk(1,1).inst=CUByte(instru)
@@ -1136,14 +1204,18 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                 
            Case 1050 ' seleccion de instrumento por orden Numerico
                selInstORdenNum (instru)
-             '  If CANCIONCARGADA Then
-             '  Else
-             '     midisal = midiout(portout)
-             '  EndIf
+               If CANCIONCARGADA Then
+               Else
+                 ' midisal = midiout(portout)
+                 ntk=0
+               EndIf
              ' no se cuadno funciona esto ÇÇÇ si midisal y canal tienen valores 
              ' la seleccion de instrumento se ahce tanto par auna pista aislada como no
                portsal=pmTk(ntk).portout
-               ChangeProgram ( CUByte (instru) , pmTk(ntk).canalsalida,portsal) ' habilito de nuevo
+      '         If pmTk(ntk).canalsalida > 0 Then
+          '         ChangeProgram ( CUByte (instru) , pmTk(ntk).canalsalida,portsal) ' habilito de nuevo
+       '        EndIf
+
                Roll.trk(1,NA).inst= CUByte(instru)
                Track(ntk).trk(1,1).inst=CUByte(instru)
               ' grabar el track 
@@ -1156,6 +1228,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                  EndIf
               Else
                 If MaxPos > 1  And ROLLCARGADO  Then
+                  'aca graba el roll con Roll.trk(1,NA).inst
                  GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
                 EndIf  
@@ -1559,6 +1632,7 @@ Print #1,"1060 abrirRoll=0 entro"
    Loop
   Else
       param.titulo ="RollMusic Editor" ' esto no sale si no hay marco
+      Print #1,"cALL rOLLLOOP III)"
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
       ThreadWait threadloop
       cerrar(0)  

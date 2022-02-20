@@ -44,26 +44,26 @@ If cntold = cnt Then
 EndIf
 ' en lso old acumulo los valores actuales solo si estan en cero
 ' de otro modo se hacen 0 en OFF o se incrementan en ligaduras
-print #1, "-----------------------------------"
+Print #1, "-----------------------------------"
 For j=1 To mayor
-print #1," cnt ";j
-print #1, "PasoCol(";j;")" 
-print #1, "tiempoFigura ";Col(j).tiempoFigura 
-print #1, "tiempoFiguraOld "; Col(j).tiempoFiguraOld
-print #1, "DUR ";Col(j).DUR
+Print #1," cnt ";j
+Print #1, "PasoCol(";j;")" 
+Print #1, "tiempoFigura ";Col(j).tiempoFigura 
+Print #1, "tiempoFiguraOld "; Col(j).tiempoFiguraOld
+Print #1, "DUR ";Col(j).DUR
 'print #1, "DURold "; pasoCol(j).DURold  
-print #1, "notapiano "; Col(j).notapiano
+Print #1, "notapiano "; Col(j).notapiano
 'print #1, "notapianoOld "; pasoCol(j).notapianoOld 
-print #1, "liga ";Col(j).liga       
-print #1, "ligaold ";Col(j).ligaold 
-print #1, "audio ";Col(j).audio       
-print #1, "audioOld ";Col(j).audioOld 
+Print #1, "liga ";Col(j).liga       
+Print #1, "ligaold ";Col(j).ligaold 
+Print #1, "audio ";Col(j).audio       
+Print #1, "audioOld ";Col(j).audioOld 
 Print #1, "i1 ";Col(j).i1           
 Print #1, "i1old ";Col(j).i1old           
 Print #1, "old_time ";Col(j).old_time
-print #1, "old_timeold ";Col(j).old_timeold 
-print #1, "inst ";col(j).inst
-print #1, "-----------------------------------"      
+Print #1, "old_timeold ";Col(j).old_timeold 
+Print #1, "inst ";col(j).inst
+Print #1, "-----------------------------------"      
 Next j
 
 End Sub
@@ -240,7 +240,7 @@ Sub noteon	( note As ubyte, vel As UByte, canal As UByte, portsal As UByte)
  message(3) = vel
  leng=3
 result = send_message (midiout(portsal), p, leng)
-print #1,"EN NOTE ON nota, RESULT", note, result
+Print #1,"EN NOTE ON nota, RESULT", note, result
 End Sub
 '-------------------------------------
 Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
@@ -353,7 +353,7 @@ For k1=1 To cnt  ' PARA CADA NOTA
       If pasoCol(i1).ligaold =0  Then
          canal=pasoCol(i1).canal
          portsal=CUByte(pasoCol(i1).port)
-         ChangeProgram (pasoCol(i1).inst,canal,portsal)
+     ''    ChangeProgram (pasoCol(i1).inst,canal,portsal)
          vel= CUByte(vol( pasoCol(i1).DUR, velpos))
          noteon CUByte(pasoCol(i1).notapiano),vel,canal,portsal
       Else
@@ -361,7 +361,7 @@ For k1=1 To cnt  ' PARA CADA NOTA
           If pasoCol(i1).audio=1 And pasoCol(i1).audioold=2 Then
              canal=pasoCol(i1).canal
              portsal=CUByte(pasoCol(i1).port)
-             ChangeProgram (pasoCol(i1).inst,canal,portsal)
+          ''   ChangeProgram (pasoCol(i1).inst,canal,portsal)
              vel= CUByte(vol( pasoCol(i1).DUR, velpos))
              noteon CUByte(pasoCol(i1).notapiano),vel,canal,portsal 
              pasoCol(i1).old_time=old_time_on_int
@@ -392,7 +392,7 @@ For k1=1 To cnt  ' PARA CADA NOTA
            If  pasoCol(i1).audio=1 And pasoCol(i1).audioOld = 2  Then
                canal=pasoCol(i1).canal
                portsal=CUByte(pasoCol(i1).port)
-               ChangeProgram (pasoCol(i1).inst,canal,portsal)
+      ''         ChangeProgram (pasoCol(i1).inst,canal,portsal)
                vel= CUByte(vol( pasoCol(i1).DUR, velpos))
                noteon CUByte(pasoCol(i1).notapiano),vel,canal,portsal
                pasoCol(i1).old_time=old_time_on_int
@@ -426,7 +426,7 @@ For k1=1 To cnt  ' PARA CADA NOTA
              If pasoCol(i1).audio = 1 Then
                 canal=pasoCol(i1).canal
                 portsal=CUByte(pasoCol(i1).port)
-                ChangeProgram (pasoCol(i1).inst,canal,portsal)
+        ''        ChangeProgram (pasoCol(i1).inst,canal,portsal)
                 vel= CUByte(vol( pasoCol(i1).DUR, velpos))
                 noteon CUByte(pasoCol(i1).notapiano),vel,canal,portsal
                 pasoCol(i1).old_time = old_time_on_int
@@ -573,7 +573,7 @@ For i1=1 To cnt
  '   print #1,"1]pasocol("+Str(i1)+").inst en AcordeonDistintos ",pasoCol(i1).inst
      canal=pasoCol(i1).canal
      portsal=CUByte(pasoCol(i1).port)
-     ChangeProgram (pasoCol(i1).inst,canal,portsal)
+''     ChangeProgram (pasoCol(i1).inst,canal,portsal)
      vel= CUByte(vol( pasoCol(i1).DUR, velpos))
      noteon CUByte(pasoCol(i1).notapiano),vel,canal,portsal
  '    print #1,"3) AOD:LIGA=1 ==========> ";liga
@@ -610,7 +610,7 @@ For i1=1 To cnt
  '   print #1,"2]pasocol("+Str(i1)+").inst en AcordeonDistintos ",pasoCol(i1).inst
     canal=pasoCol(i1).canal
     portsal=CUByte(pasoCol(i1).port)
-    ChangeProgram (pasoCol(i1).inst,canal,portsal)
+ ''   ChangeProgram (pasoCol(i1).inst,canal,portsal)
     vel= CUByte(vol( pasoCol(i1).DUR, velpos))
     noteon CUByte(pasoCol(i1).notapiano),vel,canal,portsal
  End If
@@ -1033,7 +1033,9 @@ Dim i1 As integer
 Print #1,"abriendo port...."
 Dim k1 As Integer
 
+  
    k1=CInt(pmTk(0).portout)
+    
    Print #1,"midiout ",k1, *nombreOut(k1)
    If InStr(*nombreOut(k1),"Microsoft")>0 Then
      Print #1,"No se usa Microsoft"
@@ -1041,13 +1043,9 @@ Dim k1 As Integer
      If listoutAbierto( k1) = 0 Then
         midiout(k1) = rtmidi_out_create_default ( )
         open_port midiout(k1),k1, nombreOut(k1)
+            porterror=Err 
         listoutAbierto( k1) = 1
         Print #1,"abro ",*nombreOut(k1)
-     Else
-        Print #1,"ya abierto ",*nombreOut(k1)
-     EndIf
-   EndIf
-    porterror=Err 
 
     Select Case porterror
       Case RTMIDI_ERROR_WARNING
@@ -1103,8 +1101,8 @@ Dim k1 As Integer
         Close
         End
     End Select
-
-  
+   EndIf
+ EndIf 
 
 Print #1,"-------------------------------------"
 '''midisal=midiout(0) ' el z
@@ -1245,9 +1243,9 @@ EndIf
   For i1=NB To NA  -13
     'print #1,"Roll.trk(jply, i1).nota ",Roll.trk(jply, i1).nota
     'print #1,"Roll.trk(jply, i1).DUR ",Roll.trk(jply, i1).dur
-   If Roll.trk(jply, i1).dur = 182 or Roll.trk(jply, i1).nota=182  Then
-        Exit For 
-   EndIf 
+  ' If Roll.trk(jply, i1).dur = 182 or Roll.trk(jply, i1).nota=182  Then
+  '      Continue For 
+  ' EndIf 
    If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12 _
       And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Then ' es semitono
      ' por mas que achique en octavas, Notapiano se calcula respecto del nro 
@@ -1328,9 +1326,9 @@ EndIf
    
    EndIf   
         canal = CUByte(pasoCol(cnt).canal)  '12-02-2022
-        Print #1,"  ajusta CANAL ",canal        
+     '   Print #1,"  ajusta CANAL ",canal        
         portsal= CUByte(pasoCol(cnt).port)
-          Print #1,"  ajuste port dispo ", portsal
+     '     Print #1,"  ajuste port dispo ", portsal
       If i1=NA -13  Then 'And cnt >= 1 Then ' envio noteoff 1) no entra
     ''''ÇÇÇÇ ya nohace falta     mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
          If cnt > 1 Then' Acorde
@@ -1410,19 +1408,14 @@ finplay=1
    listoutAbierto(k1)=0
    close_port midiout(k1)
    ''out_free   midiout(k1)
-   listoutAbierto( k1) = 0
+
 
 
 
 Sleep 20,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
-/'
-close_port(midiout)
-out_free(midiout)
-'/ 
 
+ThreadDetach(thread1)
 
-
-ThreadDetach(thread1) 'JMG REPONER !!!!
 ' ================================FIN PLAYALL <<=================
 End Sub 
 

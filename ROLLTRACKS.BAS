@@ -588,7 +588,7 @@ Dim midsal As  RtMidiOutPtr
     print #1,"nom nombre sin extension ni path ",nom
     print #1,"numero de pista tope =",tope
    tope=tope+1
-   If tope <= 32 Then
+   If tope <= 31 Then
       ntk=tope
    Else    
       Exit Sub   
@@ -664,7 +664,7 @@ Dim As Integer barra=0,punto=0,ubi3=0,ubi4=0,ntkold=ntk ' el ntk que esta en edi
 '-> copiamos una pista de cancion en otra pista nueva de cancion
 ' para invocar esto se necesit ael menu de Control 
    tope=tope+1
-   If tope <= 32 Then
+   If tope <= 31 Then
       ntk=tope
    Else    
       Exit Sub   
@@ -1247,8 +1247,8 @@ End Function
 
 Sub PlayCancion(Track() As sec)
 '------------apertura e ports
-Dim As Integer porterror,nousar
-porterror=Err
+Dim As Long porterror,nousar
+
 
 Dim i1 As integer
 ' creoa todos los defaults siempre
@@ -1257,9 +1257,12 @@ Dim i1 As integer
 ' los nombres ya fueron cargados al inicio
 
 Print #1,"abriendo ports...."
+
 Dim k1 As Integer
 For i=1 To tope
+  
    k1=CInt(pmTk(i).portout)
+    
    Print #1,"midiout ",k1, *nombreOut(k1)
    If InStr(*nombreOut(k1),"Microsoft")>0 Then
      Print #1,"No se usa Microsoft"
@@ -1267,18 +1270,12 @@ For i=1 To tope
      If listoutAbierto( k1) = 0 Then
         midiout(k1) = rtmidi_out_create_default ( )
         open_port midiout(k1),k1, nombreOut(k1)
+            porterror=Err 
         listoutAbierto( k1) = 1
         Print #1,"abro ",*nombreOut(k1)
-     Else
-        Print #1,"ya abierto ",*nombreOut(k1)
-     EndIf
-   EndIf
-    porterror=Err 
-
     Select Case porterror
-      Case RTMIDI_ERROR_WARNING
-        Print #1, "RTMIDI_ERROR_WARNING"
-
+      Case RTMIDI_ERROR_WARNING ' esto da cero ¿? y es eror¿?
+        Print #1, "RTMIDI_ERROR_WARNING",porterror
       Case RTMIDI_ERROR_DEBUG_WARNING
         Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
         Close
@@ -1330,18 +1327,16 @@ For i=1 To tope
         End
     End Select
 
+     Else
+        Print #1,"ya abierto ",*nombreOut(k1)
+        porterror=0
+     EndIf
+   EndIf
+
   
 
 Next i
 
-Print #1,"-------------------------------------"
-
-
-'-------------------------------------------- 
- 
-
-
-'---------------------
 Dim As Double tiempoDUR
 tiempoDUR=(60/tiempoPatron) / FactortiempoPatron'60 seg/ cuantas negras enun minuto
 
@@ -1381,11 +1376,11 @@ Dim As Integer result,limsup
   comienzo=posicion
   cntold=0
   If pasoZona1 > 0 Then
-    comienzo=pasoZona1
+    comienzo=pasoZona1 
   EndIf
 
   If pasoZona2 > 0 Then
-    final=pasoZona2
+    final=pasoZona2 +2
   EndIf
 
 
@@ -1398,7 +1393,12 @@ Dim As Integer result,limsup
 ' debo hcer un for para cada pista, en cada psita ver si esta mute o play
 ' ajustar el instrumento de la pista cada vez que cambie la pista.
 
-print #1,"[[[[ PCA CANCION MAXPOS AL COMENZAR ,final]]]",Maxpos,final
+ Print #1,"[[[[ PCA CANCION MAXPOS AL COMENZAR ,final]]]",Maxpos,final
+
+ For pis=1 To tope
+      Print #1,"ON patch ntk canal ",	Track(ntk).trk(1,1).inst, ntk,canal
+      ChangeProgram ( Track(pis).trk(1,1).inst, pmTk(pis).canalsalida, pmTk(pis).portout)	
+ Next pis
 
 For jply=comienzo To final
   print #1," ---------------000000000000000000000-----------------"
@@ -1445,7 +1445,7 @@ kNroCol= Int(jply/NroCol)
    iguales=0
    distintos=0
    duraold=0 ' 04-11-2021
-
+  
  For pis =1 To tope ' loop de pistas
 
    print #1,"--loop de pistas---pista NRO :";pis;" --------------------------------"
@@ -1458,6 +1458,10 @@ kNroCol= Int(jply/NroCol)
        Exit For
     EndIf
 
+'If Track(pis).trk(1,1).inst > 0 Then
+'  Print #1,"CAMBIO PATCH PISTA ",pis,"instru ",Track(pis).trk(1,1).inst
+'  ChangeProgram ( Track(pis).trk(1,1).inst, pmTk(ntk).canalsalida,pmTk(ntk).portout)
+'EndIf  
 
    
 ' ojo con silencios ligados !!!
@@ -1475,8 +1479,9 @@ kNroCol= Int(jply/NroCol)
 ' en realida seria bueno no tner limites para los tracks, cada track
 ' tiene polifonia de 12 o sea un acorde de 12 notas, ergo
 ' la cancion podria tener 12*32tracks = 384 de polifonia, no se si rtmidi lo soporta
-' 
 ' info del inst en 1 no en lim2   
+
+
 Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
    For i1=1 To lim2   ' coo voy de 1 a lim2 necesito que la info del int este en 1
 
@@ -1547,11 +1552,15 @@ Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
         Else    
            print #1,"i1=";i1 ; " SIMPLE cnt= ";cnt
         EndIf  
-        canalnota = pasoCol(cnt).canal  '12-02-2022
-        Print #1,"  ajusta CANAL ",canalnota        
-        pisnota= pasoCol(cnt).pista
-        Print #1,"  ajusta pista  ",pisnota        
-        portsal= pasoCol(cnt).port
+  '      canalnota = pasoCol(cnt).canal  '12-02-2022
+  '      Print #1,"  ajusta CANAL ",canalnota        
+  '      pisnota= pasoCol(cnt).pista
+  '      Print #1,"  ajusta pista  ",pisnota        
+  '      portsal= pasoCol(cnt).port
+  
+   
+   
+   
    ' If jply = pmTk(pis).MaxPos +1 Then
    '    alloff(pmTk(pis).canalsalida,portsal)
    '    Continue For
@@ -1597,7 +1606,7 @@ Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
   print #1,"---DOWN -----PISTA:"; pis;" --------------------------------" 
     
  If playloop=1 And jply= final Then
-    jply=comienzo -1
+    jply=comienzo
     'posicion=comienzo
  EndIf
  tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
@@ -1634,7 +1643,7 @@ out_free(midiout)
 For i=1 To tope
    k1=pmTk(i).portout
    Print #1,"midiout ",k1, *nombreOut(k1)
-   alloff( pmTk(i).canalsalida,portsal )  
+   alloff( pmTk(i).canalsalida,k1 )  
    'out_free   midiout(k1)
    ''Print #1,"desmarco ",*nombreOut(k1)
    listoutAbierto(k1)=0
@@ -1642,8 +1651,8 @@ For i=1 To tope
 '   out_free   midiout(k1)
    listoutAbierto( k1) = 0
 Next i
+ThreadDetach(thread2)
 
-ThreadDetach(thread1) 'JMG REPONER !!!!
 End Sub 
 
 Sub FraccionarDur (Track() As sec,Roll As inst, indicePos As Integer, dura As ubyte,nR As Integer, ntk As integer)

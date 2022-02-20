@@ -107,7 +107,7 @@ Dim shared As integer Penta_y, indice, posicion=0,posicionOld=0, espacio,posn=0,
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
-Dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0 
+Dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0,ntktab=0 
 Dim Shared As Integer ers, borrapos=0,comienza=0, acordeNro=0  
 Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 
@@ -767,7 +767,7 @@ Dim Shared ANCHO3div4 As Integer
 #Include "mod_rtmidi_c.bi"
 ''#Inclib  "rtmidi.dll" 'usa librerias estaticas
 #Inclib  "rtmidi" 
-#include "fbthread.bi"
+#Include "fbthread.bi"
 #Include "crt.bi" ' QSORT
 
 '----------------------------
@@ -793,8 +793,10 @@ Common Shared surface As Any Ptr
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx
+'Common Shared  midiin As   RtMidiInPtr
+'Common Shared  midiout () As  RtMidiOutPtr ' abrir hasta 32 dispositivos
 Dim Shared  midiin As   RtMidiInPtr
-Dim Shared  midiout(0 To 31) As  RtMidiOutPtr ' abrir hasta 32 dispositivos
+Dim Shared  midiout (0 To 31) As  RtMidiOutPtr ' abrir hasta 32 dispositivos
 
 Common Shared midisal As RtMidiOutPtr, portsal As ubyte
 '''Dim Shared midisal As RtMidiOutPtr, portsal As ubyte
