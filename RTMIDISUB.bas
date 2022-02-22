@@ -45,7 +45,7 @@ EndIf
 ' en lso old acumulo los valores actuales solo si estan en cero
 ' de otro modo se hacen 0 en OFF o se incrementan en ligaduras
 Print #1, "-----------------------------------"
-For j=1 To mayor
+For j=1 To cnt  ''''mayor veo solo el actual no el anterior 21-02-2022
 Print #1," cnt ";j
 Print #1, "PasoCol(";j;")" 
 Print #1, "tiempoFigura ";Col(j).tiempoFigura 
@@ -280,10 +280,12 @@ Function vol (dura As UByte,  vel As UByte) As ubyte
 
 End Function
 
-Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, cntold As UByte,vel As UByte,canal As UByte,tiempoDUR As Double, Roll As inst, velpos As Integer,pis As UByte,portsal As UByte)
+' SACAR EL CANAL DE LOS PARAMETROS NO SE USA
+Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, cntold As UByte,vel As UByte,tiempoDUR As Double, Roll As inst, velpos As Integer,pis As UByte,portsal As UByte)
 ' 22-11-2021 DEBO DAR RETARDOS EN CADA PASO DONDE HAYA ACORDES LIGADOS 1 UNO DE ELLOS SILENCIO
 Dim As integer i1=0,J1=0,k1=0,p1=0
 Dim As Integer tiempoFigura=0, tiempoFiguraSig=0
+Dim canal As UByte
 'debug..
 'print #1,"-----------------------------"
 'print #1,"AOI:] START ACORDEONIGUALES "
@@ -459,14 +461,14 @@ print #1,"=AOI tenia   old_time_on_int ", old_time_on_int
 
 End Sub 
 
-Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As Double,Roll As inst,velpos As Integer,pis As UByte,portsal As UByte)
+Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,tiempoDUR As Double,Roll As inst,velpos As Integer,pis As UByte,portsal As UByte)
 'print #1,"-------------------------------------"
 'print #1,"AOD :]start AcordeOnDistintos cnt,cntold,pis ",cnt,cntold,pis
 'print #1,"-------------------------------------"
 'debug..
  veoPasoCol pasoCol(),CInt(cnt), CInt(cntold)
 
-Dim As UByte i1, liga=0,coff=0
+Dim As UByte i1, liga=0,coff=0,canal
 Dim As Integer tiempoFigura=0, tiempoFiguraSig=0
 ' 2 o mas acordes ligados ...en 1 o mas notas
 '1)HAGO EL SORT POR RELDUR ASC., TOMO LA ULTIMA, SERÁ LA MAYOR DURACION 
@@ -621,8 +623,8 @@ print #1,"FIN AcordeOnDistintos"
  
 End Sub
 
-Sub AcordeOffIguales	(  pasoCol() As vec, cnt As UByte, cntold As UByte,canal As UByte,Roll As inst, pis As UByte,portsal As UByte)
-Dim i1 As UByte
+Sub AcordeOffIguales	(  pasoCol() As vec, cnt As UByte, cntold As UByte,Roll As inst, pis As UByte,portsal As UByte)
+Dim As UByte i1,canal
 Dim tiempoFigura As Double 
 'print #1,"-------------------------------------"
 'print #1,"AFI :]========Start AcordeOffIguales cnt,cntold,pis ",cnt,cntold,pis
@@ -822,17 +824,17 @@ Next i1
 print #1,"AFI 20:FIN AcordeOffIguales o simple"
 End sub
 
-Sub AcordeIguales ( pasoCol() As vec, cnt As UByte,cntold As UByte, vel as UByte, canal As UByte,tiempoDur As Double,Roll As inst,velpos As Integer,pis As UByte,portsal As UByte) 
+Sub AcordeIguales ( pasoCol() As vec, cnt As UByte,cntold As UByte, vel as UByte, tiempoDur As Double,Roll As inst,velpos As Integer,pis As UByte,portsal As UByte) 
 ' todas las notas son de igual duracion, cnt cantidad de notas
 'print #1,"call acordeon iguales"
-AcordeOnIguales	 pasoCol() , cnt , cntold , vel,canal,tiempoDur, Roll,velpos,pis,portsal
+AcordeOnIguales	 pasoCol() , cnt , cntold , vel,tiempoDur, Roll,velpos,pis,portsal
 'Print #1,"**AOI ACO:pasoCol(1).notapiano, tiempo FiguraOld ", pasoCol(1).notapiano,pasoCol(1).tiempoFiguraOld
 'Print #1,"**AOI ACO:pasoCol(2).notapiano, tiempo FiguraOld ", pasoCol(2).notapiano,pasoCol(2).tiempoFiguraOld
 'Print #1,"**AOI ACO:pasoCol(3).notapiano, tiempo FiguraOld ", pasoCol(3).notapiano,pasoCol(3).tiempoFiguraOld
 'Print #1,"**AOI ACO:pasoCol(4).notapiano, tiempo FiguraOld ", pasoCol(4).notapiano,pasoCol(4).tiempoFiguraOld
 'Print #1,"**AOI ACO:pasoCol(5).notapiano, tiempo FiguraOld ", pasoCol(5).notapiano,pasoCol(5).tiempoFiguraOld
 
-AcordeOffIguales	 pasoCol(), cnt , cntold , canal,Roll,pis,portsal
+AcordeOffIguales	 pasoCol(), cnt , cntold , Roll,pis,portsal
 ' start  jmg 09-06-2021
 
 ''limpiarLigaduras (cnt,pasoCol())
@@ -840,7 +842,7 @@ AcordeOffIguales	 pasoCol(), cnt , cntold , canal,Roll,pis,portsal
 
 End Sub
 
-Sub AcordeOffDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte,canal As UByte,tiempoDUR As Double,pis As UByte,portsal As UByte)
+Sub AcordeOffDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte,tiempoDUR As Double,pis As UByte,portsal As UByte)
 ' si hay en cadena varios acordes y notas simples ligados
 ' el 1er acorde da el old_time_on, luego se suma toda su duracion
 ' a treves de la liga compelta...ese valor va el tiempoFiguraOld
@@ -854,7 +856,7 @@ Sub AcordeOffDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte,canal 
  veoPasoCol pasoCol(),CInt(cnt), CInt(cntold)
 
 
-Dim  As UByte i1, coff
+Dim  As UByte i1, coff,canal
 'print #1,"====>>> START AOFF OFF veo el pasocol que tiene"
 If cntold > cnt Then
   coff=cntold
@@ -1003,11 +1005,11 @@ End Sub
 
 
 
-Sub AcordeDistintos (pasoCol() As vec, cnt As UByte, cntold As UByte,vel As UByte, canal As UByte,tiempoDur As Double,Roll As inst,velpos As Integer, pis As UByte,portsal As UByte ) 
+Sub AcordeDistintos (pasoCol() As vec, cnt As UByte, cntold As UByte,vel As UByte, tiempoDur As Double,Roll As inst,velpos As Integer, pis As UByte,portsal As UByte ) 
 ' Hay notas de sitinta duracion, cnt cantidad de notas
 Dim i1 As UByte
-AcordeOnDistintos  pasoCol(), cnt , cntold ,vel  , canal,tiempoDur,Roll,velpos,pis,portsal
-AcordeOffDistintos pasoCol(), cnt , cntold ,canal,tiempoDur,pis,portsal
+AcordeOnDistintos  pasoCol(), cnt , cntold ,vel  ,tiempoDur,Roll,velpos,pis,portsal
+AcordeOffDistintos pasoCol(), cnt , cntold ,tiempoDur,pis,portsal
 limpiarLigaduras (cnt,pasoCol())
 
 End Sub
@@ -1342,20 +1344,20 @@ EndIf
  'print #1, "PALL 24:call Notesimple cntold, vel, canal, tiempodur",  cntold, vel, canal,tiempoDur
  ' 04-11-2021 cnt por cntold ....aca|
           TipoAcorde=1 ' simple   
-          AcordeIguales pasoCol(),cnt,cntold,vel,canal,tiempoDur,Roll,velpos,0,0
+          AcordeIguales pasoCol(),cnt,cntold,vel,tiempoDur,Roll,velpos,0,0
           pasoCol(cnt).notapianoOld    = Notapiano             
           Case Is > 1
        print #1,"case is > 1
             If iguales=1 And distintos=0  Then
                 TipoAcorde=2 ' iguales
   '              print #1,"cnt ";cnt;" call Acordeiguales "
-                AcordeIguales pasoCol(),cnt,cntold,vel,canal,tiempoDur,Roll,velpos,0,0
+                AcordeIguales pasoCol(),cnt,cntold,vel,tiempoDur,Roll,velpos,0,0
                 
             EndIf
             If  distintos=1 Then
                TipoAcorde=3 ' distintos
    '            print #1,"cnt ";cnt;" call AcordeDistintos"
-                 AcordeDistintos pasoCol(),cnt, cntold,vel,canal,tiempoDur,Roll,velpos,0,0
+                 AcordeDistintos pasoCol(),cnt, cntold,vel,tiempoDur,Roll,velpos,0,0
                 
             EndIf
             

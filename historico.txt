@@ -1,8 +1,21 @@
--20-02-2022 se logro qu een cancion se reproduscan 3 pistas, si los
+-22-02-20222 se analizo el caso de falla anteriorm estaba mal escrito, para que el caso 
+ sea considerado acordes iguales, debe estar bien encuadrado en un rectangulo lleno, no puede
+ haber espacios vacios, se rellenan con silencios ligados o no ligados.
+ Se debe poner silencios ligados o no ya lo veremos en otro test.
+ Se cambió los silencios por otros simbolos para mejor visualizacion
+ sO->@,sP->%,sI->&,sL->/,sF->//,sE->{,sX->{{,sH->#,sW->##
+ Paso siguiente será tratar de ingresar silencios automaticamente a la izquierda
+ dentro de un acorde de iguales a medida que se introducen notas en Ctrl-M y
+ tambien a derecha. PAra ello hay que detectar que la intencion del usuario es
+ hacer un acorde de iguales.Para ello 1) debe haber en una linea 2 o mas notas ligadas
+ de la misma duracion.2) se este introduciento en ctrl-m notas de la misma duracion
+ en las columnas donde existe notas que cumplan la condicion 1).
+ 
+-20-02-2022 se logro que en cancion se reproduscan 3 pistas, si los
  ports (o dispositivos) son diferentes para cada pista funciona bien en general.
  Si 2 pistas usan el mismo port pero diferente canal y patch, algunas notas
  ligadas terminan antes y tocan la ultima y no se oye la siguientes a la ligadura.
- No se si se podrá corregir. Tabja como si fuera una corde gigante de N pistas
+ No se si se podrá corregir. Trabaja como si fuera un acorde gigante de N pistas
  donde cada acorde tendra notas iguales o diferentes de sistintas pistas, canales
  y patch, el patch se tira antes del play por canal y port y pista.
  El problema creo es qu eel algoritmo estaba preparado para un solo port

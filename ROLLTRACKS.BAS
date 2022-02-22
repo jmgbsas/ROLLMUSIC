@@ -1343,7 +1343,7 @@ tiempoDUR=(60/tiempoPatron) / FactortiempoPatron'60 seg/ cuantas negras enun min
 Dim As Integer i2,K, mayor,i0,xmouse,ymouse
 Dim As UByte i3=0, pis=0, pisnota=0
 
-Dim As Integer comienzo=1, final=MaxPos,  canal=0,canalnota=0,vel=100,velpos =0
+Dim As Integer comienzo=1, final=MaxPos, vel=100,velpos =0
 ' canal 0 es el 1 van de 0 a 15
 ' pasoCol debe ser de 2 dimensiones 1 para c/pista, 115 el amxio de octavas
 ' ojo si cambioaamos por mas octavas debo cambiar, igual el nro de tracks 32 
@@ -1396,7 +1396,7 @@ Dim As Integer result,limsup
  Print #1,"[[[[ PCA CANCION MAXPOS AL COMENZAR ,final]]]",Maxpos,final
 
  For pis=1 To tope
-      Print #1,"ON patch ntk canal ",	Track(ntk).trk(1,1).inst, ntk,canal
+      Print #1,"ON patch ntk canal ",	Track(ntk).trk(1,1).inst, ntk,pmTk(pis).canalsalida
       ChangeProgram ( Track(pis).trk(1,1).inst, pmTk(pis).canalsalida, pmTk(pis).portout)	
  Next pis
 
@@ -1544,37 +1544,25 @@ Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
          vel= CUByte(vol( dura, velpos))
      EndIf
 ' llegamos al final de la Columna
-   Print #1,"fin barrido columna envia a tocar columna"
-     If i1=lim2  And (pis = tope Or pis=31) Then
+   
+     If i1=lim2  And (pis = tope Or pis=32) Then
         '''' 피피피피 reponer mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
         If cnt > 1 Then' Acorde
           print #1,"i1=";i1 ; " ACORDE cnt= ";cnt
         Else    
            print #1,"i1=";i1 ; " SIMPLE cnt= ";cnt
         EndIf  
-  '      canalnota = pasoCol(cnt).canal  '12-02-2022
-  '      Print #1,"  ajusta CANAL ",canalnota        
-  '      pisnota= pasoCol(cnt).pista
-  '      Print #1,"  ajusta pista  ",pisnota        
-  '      portsal= pasoCol(cnt).port
   
-   
-   
-   
-   ' If jply = pmTk(pis).MaxPos +1 Then
-   '    alloff(pmTk(pis).canalsalida,portsal)
-   '    Continue For
-   ' EndIf
         
         Select Case cnt
           Case 1 
            ' con y sin liga
            ' INCLUYE LIGADOS O NO LIGADOS
-' print #1, "SIMPLE COM ACORDES IGUALES cntold, vel, canalnota, tiempodur",  cntold, vel, canalnota,tiempoDur
+' print #1, "SIMPLE COM ACORDES IGUALES cntold, vel, tiempodur",  cntold, vel, tiempoDur
   ' cnt por cntold 04-11-2021           
   ''    noteSimple  pasoCol(), cnt, vel, canal,tiempoDur,velpos
          TipoAcorde=1 ' simple   
-         AcordeIguales pasoCol(), cnt, cntold, vel,canalnota,tiempoDur,Roll,velpos,pisnota,portsal
+         AcordeIguales pasoCol(), cnt, cntold, vel,tiempoDur,Roll,velpos,pisnota,portsal
          pasoCol(cnt).notapianoOld    = Notapiano             
                      
           Case Is > 1
@@ -1583,13 +1571,13 @@ Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
                 TipoAcorde=2 ' iguales
                 print #1,"cnt ";cnt;" Acordeiguales "
                 
-                AcordeIguales pasoCol(),cnt,cntold,vel,canalnota,tiempoDur,Roll,velpos,pisnota,portsal
+                AcordeIguales pasoCol(),cnt,cntold,vel,tiempoDur,Roll,velpos,pisnota,portsal
                 
             EndIf
             If  distintos=1 Then
                print #1,"cnt ";cnt;" AcordeDistintos"
                 TipoAcorde=3 ' distintos               
-                AcordeDistintos pasoCol(),cnt, cntold,vel,canalnota,tiempoDur,Roll,velpos,pisnota,portsal
+                AcordeDistintos pasoCol(),cnt, cntold,vel,tiempoDur,Roll,velpos,pisnota,portsal
                 
             EndIf
             

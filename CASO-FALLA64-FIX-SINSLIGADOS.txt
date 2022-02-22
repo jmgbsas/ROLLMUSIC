@@ -1,0 +1,2420 @@
+start
+PID DE ESTE PROCESO          3872
+02-22-202209:06:31
+__FB_ARGV__   6304512
+__FB_ARGC__    1
+__FB_ARGC__    1
+arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.9-8-CORRECIONES\RollMusic.exe'
+arg  1 = ''
+ubirtk         0
+ubiroll        0
+intervalo no dado usando default!
+instru         1
+Roll.trk(1,NA).inst         1
+NB             39
+NA             102
+desde          4
+hasta          8
+uso Close N
+nanchofig      66
+NROCOL AL INICIO, ANCHO, anchofig          18            1467          66
+portsout 4
+portsout 4
+LoopBe Internal MIDI 0
+Microsoft GS Wavetable Synth 1
+VirtualMIDISynth #1 2
+E-DSP MIDI Port [BC00] 3
+RTMIDI_ERROR_WARNING         0
+Microsoft No se usa en este programa con este algoritmo es muy inestable
+-------------------------------------
+Fin duracion
+param.ancho    1467 param.alto  916
+INSTANCIA      1
+ANTES ANCHO , ALTO           1467          916
+rollmusic.bas 742: ANCHO,nancho            1467          1467
+rollmusic.bas 745: ANCHO resultante        1064
+nfont, nmxold, nmyold, nancho,nalto        19            403           224           1467          916
+DESPUES ANCHO , ALTO         1064          692
+param.ancho    1064 param.alto  692
+inicio ubound roll.trk       102
+iniio lbound roll.trk        39
+abrirRoll=1 And cargacancion=1             0             0
+1060 abrirRoll=0 entro
+sale de 1060 abrirrol,reiniciar, cargacancion            1             1             0
+param.ancho    1064 param.alto  692
+inicio ubound roll.trk       102
+iniio lbound roll.trk        39
+abrirRoll=1 And cargacancion=1             1             0
+cALL rOLLLOOP II) 
+ubirtk         0
+param.ancho    1064 param.alto  692
+posicion       1
+ancho, alto    1064          692
+EN ROLLLOOP cargaCancion DEBE SER 1 EN INICIO            0
+param.titulo  RollMusic Ver 0.4.4.0
+datos recibidos en rooloop nombre         
+datos recibidos en rooloop desde,hasta     4             8
+datos recibidos en rooloop *po             7
+ubound roll.trk 2            102
+pid            3872
+INSTANCIA      0
+call roolloop, tipoescala   
+call roolloop, notaescala   
+CArgarArchivo               C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.9-8-CORRECIONES\CASO-FALLA64-FINAL-ON-FIX.roll
+CambiarDim desde  4 hasta  8 *po  7 NB  39 NA  102
+CantTicks  513
+FIN CAMBIARDIM 
+nombre cargado en Roll      C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.9-8-CORRECIONES\CASO-FALLA64-FINAL-ON-FIX.roll
+NOMBRE A GRABAR COMO        C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.9-8-CORRECIONES\CASO-FALLA64-FIX-SINSLIGADOS.roll
+grabando tipoescala_num_ini en el archivo                1
+grabando notaescala_num_ini en el archivo                1
+grabando alteracion en el archivo         sos
+uso Close N
+pasoy nE=      1
+pasoZona1=     9 pasoNota= 0
+1) s3, guardopos            0              1
+2) s3, guardopos            1              1
+EN Grabar nombre            C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.9-8-CORRECIONES\CASO-FALLA64-FIX-SINSLIGADOS.roll
+NOMBRE A GRABAR COMO        C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.9-8-CORRECIONES\CASO-FALLA64-FIX-SINSLIGADOS.roll
+grabando tipoescala_num_ini en el archivo                1
+grabando notaescala_num_ini en el archivo                1
+grabando alteracion en el archivo         sos
+uso Close N
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+SPACE call play
+llama a playall
+abriendo port....
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING
+-------------------------------------
+Port usando en Play All     2
+comienzo playaLL ==========> tiempoPatron =              60            FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          1
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 1] ----------------
+ ---------------000000000000000000000-----------------
+PALL 1:jply  1dura 93
+PALL 2:paso  1 cnt  1 notapiano  40
+PALL 9:PALL 0: nota con + es una li DUR R                93
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  1dura 48
+PALL 2:paso  1 cnt  2 notapiano  44
+PALL 4:cnt  2 iguales  1
+PALL 9a:PALL 0: nota NO tiene audio 2
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  1dura 48
+PALL 2:paso  1 cnt  3 notapiano  52
+PALL 4:cnt  3 iguales  1
+PALL 9a:PALL 0: nota NO tiene audio 2
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  1dura 48
+PALL 2:paso  1 cnt  4 notapiano  53
+PALL 4:cnt  4 iguales  1
+PALL 9a:PALL 0: nota NO tiene audio 2
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  1dura 3
+PALL 2:paso  1 cnt  5 notapiano  59
+PALL 4:cnt  5 iguales  1
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  1dura 93
+PALL 2:paso  1 cnt  6 notapiano  60
+PALL 4:cnt  6 iguales  1
+PALL 9:PALL 0: nota con + es una li DUR R                93
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  1dura 93
+PALL 2:paso  1 cnt  7 notapiano  64
+PALL 4:cnt  7 iguales  1
+PALL 9:PALL 0: nota con + es una li DUR R                93
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+case is > 1
+indice, oreden por audio     1             1
+indice, oreden por audio     2             5
+indice, oreden por audio     3             6
+indice, oreden por audio     4             7
+indice, oreden por audio     5             2
+indice, oreden por audio     6             3
+indice, oreden por audio     7             4
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                0             7
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  93
+notapiano  40
+liga  1
+ligaold  0
+audio  1
+audioOld  0
+i1  43
+i1old  0
+old_time  0
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  44
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  47
+i1old  0
+old_time  0
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  52
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  56
+i1old  0
+old_time  0
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  53
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  57
+i1old  0
+old_time  0
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  5
+PasoCol( 5)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  63
+i1old  0
+old_time  0
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  6
+PasoCol( 6)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  93
+notapiano  60
+liga  1
+ligaold  0
+audio  1
+audioOld  0
+i1  65
+i1old  0
+old_time  0
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  7
+PasoCol( 7)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  93
+notapiano  64
+liga  1
+ligaold  0
+audio  1
+audioOld  0
+i1  69
+i1old  0
+old_time  0
+old_timeold  0
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     40             0
+EN NOTE ON nota, RESULT     59             0
+EN NOTE ON nota, RESULT     60             0
+EN NOTE ON nota, RESULT     64             0
+EN NOTE ON nota, RESULT     44             0
+EN NOTE ON nota, RESULT     52             0
+EN NOTE ON nota, RESULT     53             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               191801746811392.2
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                0             7
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  40
+liga  1
+ligaold  1
+audio  1
+audioOld  0
+i1  43
+i1old  0
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  44
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  47
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  52
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  56
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  53
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  57
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  5
+PasoCol( 5)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  63
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  6
+PasoCol( 6)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  1
+audio  1
+audioOld  0
+i1  65
+i1old  0
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+ cnt  7
+PasoCol( 7)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  1
+audio  1
+audioOld  0
+i1  69
+i1old  0
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 1918.01746811392
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    44             0
+En Duracion COMIENZA RETARDO En  time : 1918.01746811392
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    52             0
+En Duracion COMIENZA RETARDO En  time : 1918.01746811392
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    53             0
+En Duracion COMIENZA RETARDO En  time : 1918.01746811392
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    59             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                0             7
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  40
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  43
+i1old  43
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  44
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  47
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  52
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  56
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  53
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  57
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  5
+PasoCol( 5)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  63
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  6
+PasoCol( 6)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  65
+i1old  65
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+ cnt  7
+PasoCol( 7)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  69
+i1old  69
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+---FIN -----paso: 1 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 2] ----------------
+ ---------------000000000000000000000-----------------
+PALL 1:jply  2dura 3
+PALL 2:paso  2 cnt  1 notapiano  40
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  2dura 48
+PALL 2:paso  2 cnt  2 notapiano  44
+PALL 4:cnt  2 iguales  1
+PALL 9a:PALL 0: nota NO tiene audio 2
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  2dura 48
+PALL 2:paso  2 cnt  3 notapiano  52
+PALL 4:cnt  3 iguales  1
+PALL 9a:PALL 0: nota NO tiene audio 2
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  2dura 48
+PALL 2:paso  2 cnt  4 notapiano  53
+PALL 4:cnt  4 iguales  1
+PALL 9a:PALL 0: nota NO tiene audio 2
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  2dura 3
+PALL 2:paso  2 cnt  5 notapiano  59
+PALL 4:cnt  5 iguales  1
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  2dura 93
+PALL 2:paso  2 cnt  6 notapiano  60
+PALL 4:cnt  6 iguales  1
+PALL 9:PALL 0: nota con + es una li DUR R                93
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  2dura 93
+PALL 2:paso  2 cnt  7 notapiano  64
+PALL 4:cnt  7 iguales  1
+PALL 9:PALL 0: nota con + es una li DUR R                93
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+case is > 1
+indice, oreden por audio     1             1
+indice, oreden por audio     2             5
+indice, oreden por audio     3             6
+indice, oreden por audio     4             7
+indice, oreden por audio     5             2
+indice, oreden por audio     6             3
+indice, oreden por audio     7             4
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                7             7
+ el acorde anterior tenia menos notas
+ cntold = cnt                7             7
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  3
+notapiano  40
+liga  0
+ligaold  1
+audio  1
+audioOld  1
+i1  43
+i1old  43
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  44
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  47
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  52
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  56
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  53
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  57
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  5
+PasoCol( 5)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  63
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  6
+PasoCol( 6)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  65
+i1old  65
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+ cnt  7
+PasoCol( 7)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  69
+i1old  69
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     59             0
+EN NOTE ON nota, RESULT     44             0
+EN NOTE ON nota, RESULT     52             0
+EN NOTE ON nota, RESULT     53             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               191902090832425.6
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                7             7
+ el acorde anterior tenia menos notas
+ cntold = cnt                7             7
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  200000000000
+DUR  3
+notapiano  40
+liga  0
+ligaold  1
+audio  1
+audioOld  1
+i1  43
+i1old  43
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  44
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  47
+i1old  0
+old_time  191902090832426
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  52
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  56
+i1old  0
+old_time  191902090832426
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  53
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  57
+i1old  0
+old_time  191902090832426
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  5
+PasoCol( 5)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  63
+i1old  0
+old_time  191902090832426
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  6
+PasoCol( 6)
+tiempoFigura  100000000000
+tiempoFiguraOld  200000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  65
+i1old  65
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+ cnt  7
+PasoCol( 7)
+tiempoFigura  100000000000
+tiempoFiguraOld  200000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  69
+i1old  69
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 1919.02090832426
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    44             0
+En Duracion COMIENZA RETARDO En  time : 1919.02090832426
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    52             0
+En Duracion COMIENZA RETARDO En  time : 1919.02090832426
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    53             0
+En Duracion COMIENZA RETARDO En  time : 1919.02090832426
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    59             0
+En Duracion COMIENZA RETARDO En  time : 1918.01746811392
+tiempoFigura   2
+EN NOTE OFF nota, RESULT    40             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                7             7
+ el acorde anterior tenia menos notas
+ cntold = cnt                7             7
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  40
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  43
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  44
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  47
+i1old  0
+old_time  191902090832426
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  52
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  56
+i1old  0
+old_time  191902090832426
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  53
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  57
+i1old  0
+old_time  191902090832426
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  5
+PasoCol( 5)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  63
+i1old  0
+old_time  191902090832426
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  6
+PasoCol( 6)
+tiempoFigura  200000000000
+tiempoFiguraOld  200000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  65
+i1old  65
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+ cnt  7
+PasoCol( 7)
+tiempoFigura  200000000000
+tiempoFiguraOld  200000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  69
+i1old  69
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+---FIN -----paso: 2 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 3] ----------------
+ ---------------000000000000000000000-----------------
+PALL 1:jply  3dura 48
+PALL 2:paso  3 cnt  1 notapiano  40
+PALL 9a:PALL 0: nota NO tiene audio 2
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  3dura 3
+PALL 2:paso  3 cnt  2 notapiano  44
+PALL 4:cnt  2 iguales  1
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  3dura 3
+PALL 2:paso  3 cnt  3 notapiano  52
+PALL 4:cnt  3 iguales  1
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  3dura 48
+PALL 2:paso  3 cnt  4 notapiano  53
+PALL 4:cnt  4 iguales  1
+PALL 9a:PALL 0: nota NO tiene audio 2
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  3dura 48
+PALL 2:paso  3 cnt  5 notapiano  59
+PALL 4:cnt  5 iguales  1
+PALL 9a:PALL 0: nota NO tiene audio 2
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  3dura 93
+PALL 2:paso  3 cnt  6 notapiano  60
+PALL 4:cnt  6 iguales  1
+PALL 9:PALL 0: nota con + es una li DUR R                93
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  3dura 93
+PALL 2:paso  3 cnt  7 notapiano  64
+PALL 4:cnt  7 iguales  1
+PALL 9:PALL 0: nota con + es una li DUR R                93
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+case is > 1
+indice, oreden por audio     1             2
+indice, oreden por audio     2             3
+indice, oreden por audio     3             6
+indice, oreden por audio     4             7
+indice, oreden por audio     5             1
+indice, oreden por audio     6             4
+indice, oreden por audio     7             5
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                7             7
+ el acorde anterior tenia menos notas
+ cntold = cnt                7             7
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  40
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  43
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  44
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  47
+i1old  0
+old_time  191902090832426
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  52
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  56
+i1old  0
+old_time  191902090832426
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  53
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  57
+i1old  0
+old_time  191902090832426
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  5
+PasoCol( 5)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  59
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  63
+i1old  0
+old_time  191902090832426
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  6
+PasoCol( 6)
+tiempoFigura  100000000000
+tiempoFiguraOld  200000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  65
+i1old  65
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+ cnt  7
+PasoCol( 7)
+tiempoFigura  100000000000
+tiempoFiguraOld  200000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  69
+i1old  69
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     44             0
+EN NOTE ON nota, RESULT     52             0
+EN NOTE ON nota, RESULT     40             0
+EN NOTE ON nota, RESULT     53             0
+EN NOTE ON nota, RESULT     59             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               192002699945024.6
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                7             7
+ el acorde anterior tenia menos notas
+ cntold = cnt                7             7
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  40
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  43
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  44
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  47
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  52
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  56
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  53
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  57
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  5
+PasoCol( 5)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  59
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  63
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  6
+PasoCol( 6)
+tiempoFigura  100000000000
+tiempoFiguraOld  300000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  65
+i1old  65
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+ cnt  7
+PasoCol( 7)
+tiempoFigura  100000000000
+tiempoFiguraOld  300000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  69
+i1old  69
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 1920.02699945025
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    40             0
+En Duracion COMIENZA RETARDO En  time : 1920.02699945025
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    44             0
+En Duracion COMIENZA RETARDO En  time : 1920.02699945025
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    52             0
+En Duracion COMIENZA RETARDO En  time : 1920.02699945025
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    53             0
+En Duracion COMIENZA RETARDO En  time : 1920.02699945025
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    59             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                7             7
+ el acorde anterior tenia menos notas
+ cntold = cnt                7             7
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  40
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  43
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  44
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  47
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  52
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  56
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  53
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  57
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  5
+PasoCol( 5)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  59
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  63
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  6
+PasoCol( 6)
+tiempoFigura  300000000000
+tiempoFiguraOld  300000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  65
+i1old  65
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+ cnt  7
+PasoCol( 7)
+tiempoFigura  300000000000
+tiempoFiguraOld  300000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  69
+i1old  69
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+---FIN -----paso: 3 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 4] ----------------
+ ---------------000000000000000000000-----------------
+PALL 1:jply  4dura 48
+PALL 2:paso  4 cnt  1 notapiano  40
+PALL 9a:PALL 0: nota NO tiene audio 2
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  4dura 48
+PALL 2:paso  4 cnt  2 notapiano  44
+PALL 4:cnt  2 iguales  1
+PALL 9a:PALL 0: nota NO tiene audio 2
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  4dura 48
+PALL 2:paso  4 cnt  3 notapiano  52
+PALL 4:cnt  3 iguales  1
+PALL 9a:PALL 0: nota NO tiene audio 2
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  4dura 3
+PALL 2:paso  4 cnt  4 notapiano  53
+PALL 4:cnt  4 iguales  1
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  4dura 48
+PALL 2:paso  4 cnt  5 notapiano  59
+PALL 4:cnt  5 iguales  1
+PALL 9a:PALL 0: nota NO tiene audio 2
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  4dura 3
+PALL 2:paso  4 cnt  6 notapiano  60
+PALL 4:cnt  6 iguales  1
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+PALL 1:jply  4dura 3
+PALL 2:paso  4 cnt  7 notapiano  64
+PALL 4:cnt  7 iguales  1
+PALL 9a:PALL 0: nota tiene audio 1
+pasocol guarda canal, pista -->            0             
+pasocol guarda port , pista -->            2               
+case is > 1
+indice, oreden por audio     1             4
+indice, oreden por audio     2             6
+indice, oreden por audio     3             7
+indice, oreden por audio     4             1
+indice, oreden por audio     5             2
+indice, oreden por audio     6             3
+indice, oreden por audio     7             5
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                7             7
+ el acorde anterior tenia menos notas
+ cntold = cnt                7             7
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  40
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  43
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  44
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  47
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  52
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  56
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  53
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  57
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  5
+PasoCol( 5)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  59
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  63
+i1old  0
+old_time  192002699945025
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  6
+PasoCol( 6)
+tiempoFigura  100000000000
+tiempoFiguraOld  300000000000
+DUR  3
+notapiano  60
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  65
+i1old  65
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+ cnt  7
+PasoCol( 7)
+tiempoFigura  100000000000
+tiempoFiguraOld  300000000000
+DUR  3
+notapiano  64
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  69
+i1old  69
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     53             0
+EN NOTE ON nota, RESULT     40             0
+EN NOTE ON nota, RESULT     44             0
+EN NOTE ON nota, RESULT     52             0
+EN NOTE ON nota, RESULT     59             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               192103182254019
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                7             7
+ el acorde anterior tenia menos notas
+ cntold = cnt                7             7
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  40
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  43
+i1old  0
+old_time  192103182254019
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  44
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  47
+i1old  0
+old_time  192103182254019
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  52
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  56
+i1old  0
+old_time  192103182254019
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  53
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  57
+i1old  0
+old_time  192103182254019
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  5
+PasoCol( 5)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  59
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  63
+i1old  0
+old_time  192103182254019
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  6
+PasoCol( 6)
+tiempoFigura  100000000000
+tiempoFiguraOld  400000000000
+DUR  3
+notapiano  60
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  65
+i1old  65
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+ cnt  7
+PasoCol( 7)
+tiempoFigura  100000000000
+tiempoFiguraOld  400000000000
+DUR  3
+notapiano  64
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  69
+i1old  69
+old_time  191801746811392
+old_timeold  191801746811392
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 1921.03182254019
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    40             0
+En Duracion COMIENZA RETARDO En  time : 1921.03182254019
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    44             0
+En Duracion COMIENZA RETARDO En  time : 1921.03182254019
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    52             0
+En Duracion COMIENZA RETARDO En  time : 1921.03182254019
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    53             0
+En Duracion COMIENZA RETARDO En  time : 1921.03182254019
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    59             0
+En Duracion COMIENZA RETARDO En  time : 1918.01746811392
+tiempoFigura   4
+EN NOTE OFF nota, RESULT    60             0
+En Duracion COMIENZA RETARDO En  time : 1918.01746811392
+tiempoFigura   4
+EN NOTE OFF nota, RESULT    64             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                7             7
+ el acorde anterior tenia menos notas
+ cntold = cnt                7             7
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  40
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  43
+i1old  0
+old_time  192103182254019
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  44
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  47
+i1old  0
+old_time  192103182254019
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  52
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  56
+i1old  0
+old_time  192103182254019
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  53
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  57
+i1old  0
+old_time  192103182254019
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  5
+PasoCol( 5)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  48
+notapiano  59
+liga  0
+ligaold  0
+audio  2
+audioOld  0
+i1  63
+i1old  0
+old_time  192103182254019
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  6
+PasoCol( 6)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  60
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  65
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  7
+PasoCol( 7)
+tiempoFigura  100000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  64
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  69
+i1old  0
+old_time  191801746811392
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+---FIN -----paso: 4 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 5] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 5 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 6] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 6 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 7] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 7 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 8] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 8 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ (((PALL 0:)))---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+---FIN -----paso: 14 --------------------------------
+midiout        2            VirtualMIDISynth #1 2
+uso Close N
+uso CLOSE ALL
