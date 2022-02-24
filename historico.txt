@@ -1,9 +1,17 @@
--22-02-20222 se analizo el caso de falla anteriorm estaba mal escrito, para que el caso 
+-23-02-2022 estabilidad en Selcanal y Selport, indicacion de lo que habia seleccionado previamente.
+ Archvo [Nuevo] se selecciona Con ALT, para no chocar con Ctrl Click para [CANALES].Correccion patch
+ en PlayAll. Seleccion de intrumentos Alfa corregido. Todavia no se logra marcar lo seleccionado,
+ se ve al volver a cargar la seleccion de cualquier tipo de seleccion.(replace no se entiende...) 
+-22-02-2022 cancion 11-18-2021-FIXED, Se editaron las pistas y se procedio manualmente en Ctrl-M
+ a corregir sobre todo la pista nro 2. Con eso anda bien con arcordes iguales.
+ Siguiente paso ayuda automatica durante la insercion de notas dentro de una estructura
+ de acordes automaticos. [pendiente]
+-22-02-2022 se analizó el caso de falla anterior estaba mal escrito, para que el caso 
  sea considerado acordes iguales, debe estar bien encuadrado en un rectangulo lleno, no puede
  haber espacios vacios, se rellenan con silencios ligados o no ligados.
  Se debe poner silencios ligados o no ya lo veremos en otro test.
  Se cambió los silencios por otros simbolos para mejor visualizacion
- sO->@,sP->%,sI->&,sL->/,sF->//,sE->{,sX->{{,sH->#,sW->##
+ sO->@, sP->%, sI->&, sL->/, sF->//, sE->{, sX->{{, sH->#, sW->##
  Paso siguiente será tratar de ingresar silencios automaticamente a la izquierda
  dentro de un acorde de iguales a medida que se introducen notas en Ctrl-M y
  tambien a derecha. PAra ello hay que detectar que la intencion del usuario es

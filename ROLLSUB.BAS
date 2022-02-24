@@ -915,7 +915,7 @@ On Local Error GoTo errorhand
 '  EndIf
     
  'If play=1 Or playb=1 Then
-     wc=anchofig/4 '31-01-2022
+     wc=3*anchofig/4 '31-01-2022 23-02 tapaba la figura
  'Else
  '    wc=inc_penta
  'EndIf 
@@ -1128,6 +1128,7 @@ On Local Error GoTo errorhand
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur  ' 5.7.2    
  EndIf
 
+
 ' EN UNA COLUMNA BUSCO LA DURACION MENOR Y LA MAYOR incluido LA DE ENTRADA NUEVA.
 ' TOMO LA MENOR DE TODAS INCLUSO LA ENTRADA Y FRACCIONO TODAS LAS NOTAS DE LA COLUMNA
 ' En TANTAS PARTES TENGA CADA FIGURA DE ESA MENOR. PARA ELLO TOMARE LA MAYOR Y LA PARTIRE
@@ -1178,7 +1179,18 @@ If usarAcordesIguales = 3 Then ' empeiza Fraccionador..
   
  
 EndIf
+' ---------luego de cambiado el valor de una nota  o ingresado una nueva
+' donde no habia nada debo verificar si estoy en un posible acorde de iguales
+'  if   esAcordeIguales(devolver intervalo horizontal deSde hasta) then
+   ' un cilco for  desde hasta posicion de modificacio
+   ' si no hay nota poner silencios ligados menos el que esta pegado a la
+   ' nota nueva...
+   ' si hay msa espacio luego de la nota modificada si son espacios
+   ' colocar silencioas, lo problematico es que hay que hacerlo a nivel 
+   ' pista y a nivel cancion ÇÇÇÇÇ PENDIENTE JMG AUTOMATIZAR
+   ' EL LLANDAO DE ACORDES IGUALES CON SILENCIOS --22 02 2022
 
+'  endif 
 
  '-----------------------------------------------------------
  '   vroll= Roll.trk(notacur + (*po) * 13, n + curpos).nota
@@ -1505,6 +1517,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      pmTk(0).portout=graba3(1,1).dur   ' ubyte  a ubyte
      pmTk(0).canalsalida = graba3(1,1).inst ' ubyte a ubyte
      
+     
      Get #ca, ,graba4  (1,1)
      Get #ca, ,graba5  (1,1)
      Get #ca, ,graba6  (1,1)
@@ -1578,7 +1591,7 @@ Dim As Integer copiado=0
 ' copiar campso de acordes a Track(ntk)       
 
       If Trabajo(j,i ).pb = 201  Then ' info acorde en una octava
-      'ÇÇÇ vacio= 12 +(estoyEnOctava-1)*13 son las que no se ven 
+      ' vacio= 12 +(estoyEnOctava-1)*13 son las que no se ven 
       '       i1= 12 + (octavaDeAcorde -1)*13 ergo
          octavaDeAcorde=1+ (i-12)/13 
          i3=13 + octavaDeAcorde 
@@ -1596,12 +1609,14 @@ Dim As Integer copiado=0
      ' Print #fs, "acorde ",Track(ntk).trk(j,1).acorde
        crearsecuencia(Track(), j, ntk )
      Next j
+     
 Close ca
 DUR => 0
 curpos =>1
 ''' carga=0
  ReCalCompas(Roll)      
-''If Roll.trk(1,NA).
+ 
+ 
  mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  
  mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0
  'print #1, "CargaARchivo LBound (Roll.trk,1) ",LBound (Roll.trk,1)
@@ -1873,7 +1888,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    t=  " [Pista]":cairo_show_text(c, t)
    ' ------------------------------------------
 ' 0.5 ===> [Reproducir]
-   If MultiKey(sc_Control) AND (mousex > 355 And mousex< 451 And mousey < 50   And play=0) Then
+   If MultiKey(sc_Control) AND (mousex > 355 And mousex< 451 And mousey < 50 And play=0 and playb=0 And Cplay=0   ) Then
     cairo_set_source_rgba c, 0, 1, 0, 1
      While InKey<>"" :Wend
    '   print #1,"--->entra a reproducir thread1 "
@@ -2020,7 +2035,7 @@ EndIf
    If mousex > 42 And mousex < 110  And mousey < 50  Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
     
-        If MultiKey(sc_control) And MousePress=1 Then
+        If MultiKey(SC_ALT) And MousePress=1 Then
          'If dobleclick Then
             Nuevo(Roll,1)
             Sleep 50
@@ -2549,10 +2564,10 @@ EndIf
          
        'Print #1,"canal elegido luego del thread2 en menu ",canalx
       EndIf ' mousebuttons
-      MenuNew=11
+      MenuNew=9
      Else
       cairo_set_source_rgba c, 1, 1, 1, 1
-      MenuNew=11
+      MenuNew=9
      EndIf
 
      t = "      Seleccione un canal"
@@ -3520,14 +3535,18 @@ End Sub
 
 Sub  selport (ByVal tipo As Any Ptr)  ' list de ruso
 Dim As hwnd haw,hwl
-Dim mitipo As Integer
+Dim As Integer mitipo,x0,y0,Posx,Posy 
+ScreenControl GET_WINDOW_POS, x0, y0
+Posx=x0 +50
+Posy=y0 +100
+
  
 ''portsout = port_count (midisal)
 ' ESTOY ABRIENDO LSO PORT SEGUN LO ELEGIDO CADA VEZ QUE SE ELIJA UNO
 ' DEJA DE ESTAR DISPONIBLE PUES YA ESTA ABIERTO, PONDREMOS UN MENSAJE ABIERTO CREO ES MEJOR 
 mitipo=  CInt(tipo)
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("MIDI",100,50,450,400,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("MIDI",Posx,Posy,450,400,WS_VISIBLE, WS_EX_TOPMOST )
      hwl=  ListViewGadget(1,10,10,350,400,,,,32,LVS_SINGLESEL  )
      listports()
   
@@ -3535,7 +3554,12 @@ mitipo=  CInt(tipo)
      If mitipo = 1 Then ' out
        AddListViewColumn(1, "Salidas  MIDI",0,0,250)
        For aa As Integer=0 To UBound (listout) 
-           AddListViewItem(1, listout(aa) +Str(aa),0,aa,0)
+          If pmTk(ntk).portout = aa Then
+             AddListViewItem(1, "[x] "+listout(aa),0,aa,0)
+          Else
+             AddListViewItem(1, "[ ] "+listout(aa),0,aa,0)
+          EndIf   
+           
        Next
 
      EndIf
@@ -3622,11 +3646,16 @@ End Sub
 ' 
 Sub  selcanal (ByVal tipo As Any Ptr )  ' list de ruso
 Dim As hwnd haw,hwl
-Dim mitipo As Integer 
+Dim As Integer mitipo, x0,y0,Posx,Posy  
 mitipo=  CInt(tipo)
 'Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 '' => desde aca echo con tool del ruso no anda muy bien
-     haw=OpenWindow("CANALES",100,50,400,400,WS_VISIBLE, WS_EX_TOPMOST )
+ScreenControl GET_WINDOW_POS, x0, y0
+Posx=x0 +50
+Posy=y0 +100
+
+   ''  haw=OpenWindow("CANALES",100,50,400,400,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("CANALES",Posx,Posy,400,400,WS_VISIBLE, WS_EX_TOPMOST )
      hwl=  ListViewGadget(1,10,10,300,300,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL  )
      Dim As String mensaje 
      If mitipo = 1 Then ' out
@@ -3638,10 +3667,16 @@ mitipo=  CInt(tipo)
      
      AddListViewColumn(1, mensaje ,0,0,250)
      For aa As Integer=1 To 16 
-         AddListViewItem(1, listCanal(aa) ,0,aa,0)
+         If pmTk(ntk).canalsalida > 0 Then
+            If pmTk(ntk).canalsalida = aa Then
+               AddListViewItem(1, "[x] "+listCanal(aa),0,aa,0)
+            Else
+               AddListViewItem(1, "[ ] "+listCanal(aa),0,aa,0)
+            EndIf   
+         EndIf 
+         
      Next
-   
-
+ 
        ButtonGadget(2,330,30,50,40," OK ")
          #Ifdef __FB_WIN64__
            SetFocus (hwl) 
@@ -3656,14 +3691,17 @@ mitipo=  CInt(tipo)
           If event=eventgadget Then
             If eventnumber()=2 Then
               canalx = GetItemListView() ' sirve para el roll actual en edicion
+              
+''ReplaceTextItemListView(1,canalx,0, Str(canalx)+" x")              
            ' get itme va de 0 a 15 no ahce falta convertir 
 ' esto sirve para cambia rdinamicamente el canal midi mientras tocamos, perp tambien
 ' si grabamos el archjivo se grabara y pisara la info de midi canal en el archio
 ' al cargar el archivo de nuevo se tomara ese canal.              
           Print #1,"**********CANAL ELEGIDO EN SELCANAL ",canalx
+          
           ' carga de canal MIDI al vector parametros de tracks de cancion
           Print #1,"ntk en cambio de canal ntk= ",ntk
-           pmTk(ntk).canalsalida=CUByte(canalx) ' sirve para el track cargao actual en cancion
+           pmTk(ntk).canalsalida=CUByte(canalx+1) ' sirve para el track cargao actual en cancion
        
              If CANCIONCARGADA Or TRACKCARGADO Then
                  pmTk(ntk).canalsalida=CUByte(canalx) ' sirve para el track cargao actual en cancion
@@ -4134,13 +4172,13 @@ EndIf
 ' al salir de aca graba en el vector Roll esta escala...
 End Sub
 function BuscarGrado(t3 As String) As Integer
-  'Print #1,"=>busca grado entrada nrocromatico ",t3 ççç
+  'Print #1,"=>busca grado entrada nrocromatico ",t3 
   t3=Trim(t3)
 Dim iz As Integer
   For iz= 1 To 12
      If t3 = Trim(grado_inicial (iz)) Then
         BuscarGrado=iz
-   '     Print #1,"t3, grado encontrado ",t3, iz ççç
+   '     Print #1,"t3, grado encontrado ",t3, iz 
         Exit For
      EndIf
   Next iz

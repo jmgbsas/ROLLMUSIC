@@ -45,7 +45,30 @@ common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig
 Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx
-Common Shared  portsal As UByte
+common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
+Common Shared  portsal As UByte, patchsal As ubyte
+
+Type dat Field=1
+ nota As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
+ dur As  UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
+ vol As  UByte =0 ' volumen hasta 127 es volumen desde ahi es escala 128 a 255 =127 escalas
+ pan As  UByte =0 ' paneo + o -
+ pb  As  UByte =0 ' pitch bend + o -
+ inst As UByte =0 ' instrumento para cada nota podra ser distinto 1 to 128
+ ' Nota de escala son 12 ..bemol o sostenido son 2
+ ' entonces en 14 numero stengo la info
+ ' 129 -> c,130->c#,131->d...140->B--, 141-sos,142,bemol
+ ''t   As Ulong   '  ticks por ahroa no 
+End Type
+' dentro del vol pondremso las escalas
+' chords http://www.looknohands.com/chordhouse/piano/ ahi hay 168 escalas..!!
+' en vol tengo desde 129 a 255 para numerar escalas. si faltan puedo usar pan o pb
+' l aidea es poner en que escala esta cada nota o compas y asi poder tener cambios de escla
+' y construir los acordes que se quieran construir es esa escala de esea nota o del compas o 
+' la escala del ultimo cambio...por default la escala sera C mayor.. 
+
+
+
 
 'Type esc1 
 '  nombre   As String
@@ -142,11 +165,12 @@ print #1,"OCtadesde ",octadesde
 print #1,"OCtahasta ",octahasta
 
 End Sub
+'---------------------------
 Sub selInstORdenAlfa(ByRef instru As Integer)
 Dim As hwnd haw,hwl
 Dim As Integer aa ,paso=0,x=0,i1=0,i2=0  
 Dim cad As String
-instru=0
+
 ' la seleccion empieza de 1, no devuelve 0 para el 1er elemento 
  
 '' => desde acaecho con tool del ruso no anda muy bien
@@ -157,8 +181,21 @@ instru=0
      
      AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
      AddListViewItem(1, "CLICK EN UN ITEM  Y EN OK",0,aa,0)
+
+     instru=CInt(patchsal)
+
        For aa =1 To 127 
-           AddListViewItem(1, NombreInstAlfa(aa),0,aa,0)
+               i2=InStrrev(NombreInstAlfa(aa)," ")
+               cad=Mid(NombreInstAlfa(aa),i2)
+      '         Print #1,"cadena ",cad
+               
+     
+           If instru = CUByte(ValInt(cad)) Then
+              AddListViewItem(1, "[x] "+NombreInstAlfa(aa),0,aa,0)
+           Else
+              AddListViewItem(1, "[ ] "+NombreInstAlfa(aa),0,aa,0) 
+           EndIf
+           
        Next
        
 
@@ -186,9 +223,10 @@ instru=0
                Print #1,"cadena ",cad
                instru = CUByte(ValInt(cad))
                 print #1,"seleccion instrumento alfa instru = ",instru     
-
+               patchsal=instru
                   Close_Window(haw)
                   Exit Do
+              
             End If
 
           EndIf 
@@ -207,7 +245,7 @@ end Sub
 Sub selInstORdenNum (ByRef instru As integer)
 Dim As hwnd haw,hwl
 Dim As Integer aa ,paso=0,x=0  
-instru=0
+
 
  
 '' => desde acaecho con tool del ruso no anda muy bien
@@ -218,9 +256,16 @@ instru=0
      
      AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
      AddListViewItem(1, "CLICK EN UN ITEM  Y EN OK",0,aa,0)
+           instru=CInt(patchsal)
        For aa =1 To 127 
-           AddListViewItem(1, NombreInst(aa),0,aa,0)
-
+           If instru = aa Then
+              AddListViewItem(1, "[x] "+NombreInst(aa),0,aa,0)
+           Else
+              AddListViewItem(1, "[ ] " +NombreInst(aa),0,aa,0) 
+           EndIf
+ 
+           '''Track(ntk).trk(1,1).inst=CUByte(instru)
+           
        Next
        
 

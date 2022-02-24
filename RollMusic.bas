@@ -358,6 +358,7 @@ Print #1,"instru ",instru
 ' ojo debe se NB al reducir octabas NB cambia
 If instru > 0 Then
   Roll.trk(1,NA).inst = CUByte(instru)
+  patchsal=instru
 EndIf
 Print #1,"Roll.trk(1,NA).inst ",Roll.trk(1,NA).inst
 Print #1,"NB ",NB
@@ -374,7 +375,7 @@ param.ubirtk=ubirtk
 Dim  AS Integer  ctres=1 ' 5 octavas por track
 Dim As Integer lim1 
 lim1=1 ' lim3 vale 25 se reserva el ultimo par avalores de control, no alcanza
-' 26-01-2022 la zona de control debe ser 1 octava mas o sea lim3=24
+' 26-01-2022 la zona de control debe ser 1 octava mas o sea lim3=25
 ReDim (Track(00).trk ) (1 To CantTicks,1 To lim3) ' lo usa instancia sin cancion
 ReDim (Track(01).trk ) (1 To CantTicks,1 To lim3) ' lo usa sin instancia
 ReDim (Track(02).trk ) (1 To Ctres,1 To lim1)
@@ -1172,17 +1173,18 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                 If CANCIONCARGADA Then
                Else
                   'midisal = midiout(portout)
-                  NTK=0
+                  ntk=0
                 EndIf
                 portsal=pmTk(ntk).portout
+                
  ' los canales van de 0 a 15 (1 a 16) no se si en todos los dispositivos
  ' van de 0 a 15 o en alguno de 1 a 16 opto por 0 a 15                
              ''  If pmTk(ntk).canalsalida > 0 Then
             '      ChangeProgram ( CUByte (instru) , pmTk(ntk).canalsalida,portsal) ' habilito de neuvo 13-02-2022 Ç
              ''  EndIf
                If instru=0 Then instru=1 EndIf
-               Roll.trk(1,NA).inst= CUByte(instru)
-               Track(ntk).trk(1,1).inst=CUByte(instru)
+                Roll.trk(1,NA).inst= CUByte(instru)
+                Track(ntk).trk(1,1).inst=CUByte(instru)
               ' grabar la pistacomo en 1011
             print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
@@ -1209,7 +1211,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                  ' midisal = midiout(portout)
                  ntk=0
                EndIf
-             ' no se cuadno funciona esto ÇÇÇ si midisal y canal tienen valores 
+             ' no se cuadno funciona esto  si midisal y canal tienen valores 
              ' la seleccion de instrumento se ahce tanto par auna pista aislada como no
                portsal=pmTk(ntk).portout
       '         If pmTk(ntk).canalsalida > 0 Then
@@ -1369,14 +1371,14 @@ Print #1,"1060 abrirRoll=0 entro"
           
           '    Dim As Any Ptr thplayC = ThreadCall  playCancion(track())
           '    CONTROL1 = 1
-              If Cplay = 0 And MaxPos > 1 Then
+              If Cplay = 0 And Play=0 And Playb=0 And MaxPos > 1 Then
                  CPlay=1
                  If CANCIONCARGADA Then
                     Print #1,"USANDO PLAYCANCION"
                     thread1 = ThreadCall  playCancion(Track())
                     
                  EndIf
-                 Cplay=0
+                 'Cplay=0
              EndIf   
       
               menunew=0

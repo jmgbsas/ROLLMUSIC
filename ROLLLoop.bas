@@ -299,7 +299,7 @@ Dim As String t2="",t3="",t4=""
     EndIf
     cairo_show_text(c, t)
  ' ' jmg 11-05-2021 1839 start
-    If  n=jply And ( play =1 Or playb=1 ) Then
+    If  n=jply And ( play =1 Or playb=1 Or Cplay=1 ) Then
         
       ShowNroCol= Int(n/posishow) 
       If ShowNroCol = 0 Then
@@ -423,11 +423,11 @@ Dim As String t2="",t3="",t4=""
 If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
   cairo_set_font_size (c, font)
   'cairo_select_font_face (c, "Georgia",CAIRO_FONT_SLANT_NORMAL , CAIRO_FONT_WEIGHT_BOLD)
-  t= "Flecha Abajo/Arriba o ruedita del mouse, scroll de las octavas en la ventana "
+  t= "Flecha Abajo/Arriba o ruedita del mouse, scroll de las octavas en la ventana. F1 Ayuda Notepad "
   cairo_move_to(c, 0, Penta_y + inc_Penta * 15  )
   cairo_show_text(c, t)
 
-  t = "F9/F10 achica/agranda el  font de las notas guia "
+  t = "F9/F10 achica/agranda el  font de las notas guia,F2/F3 proporcion "
   cairo_move_to(c, 0, Penta_y + inc_Penta * 16 )
   cairo_show_text(c, t)
 
@@ -447,11 +447,11 @@ If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
   cairo_move_to(c, 0, Penta_y + inc_Penta * 20 )
   cairo_show_text(c, t)
   
-  t = "Ctrl-Click en [Reproducir] Play con scroll e iluminacion de notas"
+  t = "Ctrl-Click en [Reproducir] Play con scroll e iluminacion de notas, o barra espaciadora"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 21 )
   cairo_show_text(c, t)
 
-  t = "Barra Espacio: Play para Debug sin scroll, luego sera igual que ctrl-clik reproducir"
+  t = "Configuracion, Tempo. Port Salida MIDI-OUT,Canales"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 22 )
   cairo_show_text(c, t)
 
@@ -459,11 +459,11 @@ If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
   cairo_move_to(c, 0, Penta_y + inc_Penta * 23 )
   cairo_show_text(c, t)
 
-  t = "En el menu algunso funcionan con Ctrl-clik otros con click solamente"
+  t = "En el menu algunos funcionan con Ctrl-clik otros con click solamente o ALT"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 24 )
   cairo_show_text(c, t)
 
-  t = "En modificacion o Edit, se pasa de una octava a otra para editarla, deslizando el mouse hasta el extremo izquierdo de la octava deseada, eso iluminara las lines de verde"
+  t = "En modificacion o Edit, se pasa de una octava a otra para editarla, deslizando el mouse hasta el extremo derecho de la octava deseada, eso iluminara las lines de verde"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 25 )
   cairo_show_text(c, t)
 
@@ -471,7 +471,7 @@ If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
   cairo_move_to(c, 0, Penta_y + inc_Penta * 26 )
   cairo_show_text(c, t)
 
-  t = "F2-F3 comprime - expande horizontalmente la secuencia, se puede editar tambien"
+  t = "F2/F3 comprime - expande horizontalmente la secuencia proporcionalmente, se puede editar tambien"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 27 )
   cairo_show_text(c, t)
 
@@ -677,7 +677,6 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
   
 End Sub
 
-
 'Roll Main Loop ACA NO APARECE EL VECTOR DE ROLL 
 
 
@@ -741,6 +740,7 @@ inc_Penta = Int((ALTO -1) /40) - deltaip
 'nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
 
 'Print nro_penta
+
 Select Case desde
     Case 1
       BordeSupRoll = BordeSupRoll + 64 * inc_Penta
@@ -761,6 +761,7 @@ Select Case desde
       BordeSupRoll = BordeSupRoll - 44 * inc_Penta ' 16-09-2021
      
 End Select
+
 'print #1,"BordeSupRoll ",BordeSupRoll
 'no se usa en ningun lado nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
 print #1,"INSTANCIA ", instancia
@@ -1077,7 +1078,16 @@ Do
 
 '---------
 'simulamos TAB para cargaCancion=1 cuadno recien se carga la cancion
-If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA  And play=0 And playb=0  Or cargaCancion=1 Then
+' no permitimos cambio de track durante el play aveces trae problemas
+' por la apertura de ports hay que analizar, no deberia el play de cancion
+' solo usar los tracks y lo visual es solo Roll 
+' lo habilitamos de nuevo para observar si ocurren erroes de nuevo
+' 23-02-2022, lo q debo hacer es no permitir entrar si se esta usando
+'  playAll  play=0 y lo mismo en PlayAll no usar PlayCancion si esta
+' ejecutando PlayAll de unsa sola pista...
+''''If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA  And play=0 And playb=0  Or cargaCancion=1 Then
+
+If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA And play=0 Or cargaCancion=1 Then
    cargaCancion=0 ' para que no entre mas luego de cargada la cancion
 
    Erase mel_undo, undo_acorde, undo_kant_intervalos
@@ -1122,6 +1132,7 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA  And play=0 And playb=0  
      portout=pmTk(ntk).portout 'solo debe servir para play de pista
      notaold = CInt(pmTk(ntk).notaold)
      CantTicks=pmTk(ntk).Ticks
+     patchsal=Track(ntk).trk(1,1).inst
 ' ajusto escala principal durante la conmutacion para cada track visualizado con TAB     
      notaescala_num_ini=CInt(pmTk(ntk).notaescala) '13-01-2022
      tipoescala_num_ini= CInt(pmTk(ntk).tipoescala) '13-01-2022
@@ -1137,7 +1148,7 @@ EndIf
   print #1, "6-NTK nombre", ntk,nombre  
   print #1, "6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, maxpos,pmTK(ntk).maxpos
 ' copia track a Roll en memoria  
-  Tracks (ntk , 1,Roll) ' track , nro,  Canal
+  Tracks (ntk , 1,Roll) ' track , nro,  Canal, copia track a Roll en memoria
   Sleep 100
  print #1,"7- instancia, maspos ",instancia, maxpos
 EndIf
@@ -1641,19 +1652,20 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
     EndIf
 
  Else
-   If playb = 0 And MaxPos > 1 Then
-      playb=1
+   If playb = 0 And play=0 And Cplay=0 And MaxPos > 1 Then ' 23-02-22 ningun play
+      
       print #1,"SPACE call play"
         If  MaxPos > 1 Then 
          '''Dim tlock As Any Ptr = MutexCreate()
          If CANCIONCARGADA Then
              Print #1,"USANDO PLAYCANCION"
-             
+             playb=1       
             thread2 = ThreadCall  playCancion(Track())
             'playCancion(Track())
          Else
            If  MaxPos > 1 Then
               print #1,"llama a playall"
+              Play=1
              thread1 = ThreadCall  playAll(Roll)
            EndIf 
 
@@ -2643,7 +2655,7 @@ EndIf
    If e.scancode = SC_X Then ' 81 <==== SC_X ...fix
     'corrige nota cambia duracion o agrega nota nueva, acorde melodia
     ' solo debe funcionar con CTRL-M
-    If cursorVert=1 Then ' ver cursorVert2 archivonuevocon espacios....sirve??
+    If cursorVert=1 Then ' ver cursorVert2 archivo nuevo con espacios....sirve??
      cambiadur = 1    ' usando 1 a 8 para silencio esta delete
     EndIf
     Exit Do
@@ -4286,7 +4298,7 @@ ButtonGadget(2,530,30,50,40," OK ")
 
   
  
- ' ====>>> HABILITAR UNA OCTAVA PARA EDICION CON EL MOUSE ççç
+ ' ====>>> HABILITAR UNA OCTAVA PARA EDICION CON EL MOUSE 
  If  mousex > ANCHO3div4 And COMEDIT=TRUE Then ' 09-06-2021 para que nochoque con boton EDIT
        octavaEdicion=estoyEnOctava
  EndIf

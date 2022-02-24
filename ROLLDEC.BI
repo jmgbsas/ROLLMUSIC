@@ -549,7 +549,7 @@ Type rangoOct Field=1
  As Integer posn =0 
  As UByte   notaold=0 
  As Integer Ticks =0
- As UByte   inst
+ As UByte   patch
  As UByte   notaescala
  As UByte   tipoescala
  As UByte   alteracion  ' sos 3, bem 2
@@ -655,8 +655,9 @@ End Type
 
 Declare Sub Tracks (ByRef nroTrack As integer, ByRef nroCanal As UByte, Roll As inst)
 Dim Shared As Long CONTROL1 = 0
-Dim Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
+common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Dim Shared As inst Roll ' para visualizar y tocar
+ 
 Dim Shared Track  (0 To 32) As sec ' tracks para guardar,.. y tocar 
 
 Dim Shared ix As Integer=0
@@ -793,6 +794,9 @@ Common Shared surface As Any Ptr
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx
+Common Shared As ubyte patchsal
+''patchsal=Roll.trk(1,1).inst
+
 'Common Shared  midiin As   RtMidiInPtr
 'Common Shared  midiout () As  RtMidiOutPtr ' abrir hasta 32 dispositivos
 Dim Shared  midiin As   RtMidiInPtr

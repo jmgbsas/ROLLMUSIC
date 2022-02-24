@@ -1,0 +1,3711 @@
+start
+PID DE ESTE PROCESO          3356
+02-21-202222:35:19
+__FB_ARGV__   6304512
+__FB_ARGC__    1
+__FB_ARGC__    1
+arg  0 = 'C:\IT64\AREAWORK\ROLLMUSIC-0.4.5.2.9-8-CORRECIONES\RollMusic.exe'
+arg  1 = ''
+ubirtk         0
+ubiroll        0
+intervalo no dado usando default!
+instru         1
+Roll.trk(1,NA).inst         1
+NB             39
+NA             102
+desde          4
+hasta          8
+uso Close N
+nanchofig      54
+NROCOL AL INICIO, ANCHO, anchofig          23            1467          54
+portsout 4
+portsout 4
+LoopBe Internal MIDI 0
+Microsoft GS Wavetable Synth 1
+VirtualMIDISynth #1 2
+E-DSP MIDI Port [BC00] 3
+RTMIDI_ERROR_WARNING         0
+Microsoft No se usa en este programa con este algoritmo es muy inestable
+-------------------------------------
+Fin duracion
+param.ancho    1467 param.alto  916
+INSTANCIA      1
+ANTES ANCHO , ALTO           1467          916
+rollmusic.bas 742: ANCHO,nancho            1467          1467
+rollmusic.bas 745: ANCHO resultante        1064
+nfont, nmxold, nmyold, nancho,nalto        12            403           224           1467          916
+DESPUES ANCHO , ALTO         1064          692
+param.ancho    1064 param.alto  692
+inicio ubound roll.trk       102
+iniio lbound roll.trk        39
+abrirRoll=1 And cargacancion=1             0             0
+cargarDirectorioCancion     C:\aaaa\11-18-2021
+SALE A CARGAR rOLL 1ERA VEZ ABRIRROLL=1 EXIT DO
+param.ancho    1064 param.alto  692
+inicio ubound roll.trk       102
+iniio lbound roll.trk        39
+abrirRoll=1 And cargacancion=1             1             1
+ ENTRA A CARGAR PISTAS  cargaCancion =     1
+-------------------------------------------------------
+inicia CargaPistasEnCancion
+filename encancion > 0      [01]4NEGRAS-LIGADAS.rtk
+trabajo con este filename...              [01]4NEGRAS-LIGADAS.rtk
+nombre en CargarPistasEnCancion ,Numpista C:\aaaa\11-18-2021\[01]4NEGRAS-LIGADAS.rtk               1
+----------------------------------------------
+1) CargarTrack nombre, ntk=               C:\aaaa\11-18-2021\[01]4NEGRAS-LIGADAS.rtk               1
+1) UBIRTK QUE LLEGA          1
+Carga Track notaescala_num_ini             5
+uso Close N
+CargarTrack  fin
+----------------------------------------------
+trabajo con este filename...              [02]IIIIII-ACORDEDE2-AF+F+F+F-OK-MALPLAY-REVISAR.rtk
+nombre en CargarPistasEnCancion ,Numpista C:\aaaa\11-18-2021\[02]IIIIII-ACORDEDE2-AF+F+F+F-OK-MALPLAY-REVISAR.rtk              2
+----------------------------------------------
+1) CargarTrack nombre, ntk=               C:\aaaa\11-18-2021\[02]IIIIII-ACORDEDE2-AF+F+F+F-OK-MALPLAY-REVISAR.rtk              2
+1) UBIRTK QUE LLEGA          1
+Carga Track notaescala_num_ini             5
+uso Close N
+CargarTrack  fin
+----------------------------------------------
+trabajo con este filename...              [03]LIGADAS.rtk
+nombre en CargarPistasEnCancion ,Numpista C:\aaaa\11-18-2021\[03]LIGADAS.rtk         3
+----------------------------------------------
+1) CargarTrack nombre, ntk=               C:\aaaa\11-18-2021\[03]LIGADAS.rtk         3
+1) UBIRTK QUE LLEGA          1
+Carga Track notaescala_num_ini             5
+uso Close N
+CargarTrack  fin
+----------------------------------------------
+CARGO PISTAS MAXIMA CANTIDAD TOPE=        3
+FIN CargaPistasEnCancion no debe calcuar *po             7
+-------------------------------------------------------
+CARGAR PISTAS cargacancion =               1
+cALL rOLLLOOP I) cargaCancion ES 1 SI O SI               1
+ENTRA A CARGAR PISTAS cargaCancion ES 1 SI O SI          1
+ubirtk         0
+param.ancho    1064 param.alto  692
+posicion       1
+ancho, alto    1064          692
+EN ROLLLOOP cargaCancion DEBE SER 1 EN INICIO            1
+param.titulo  RollMusic Ver 0.4.4.0
+datos recibidos en rooloop nombre         C:\aaaa\11-18-2021\[03]LIGADAS.rtk
+datos recibidos en rooloop desde,hasta     4             8
+datos recibidos en rooloop *po             7
+ubound roll.trk 2            102
+pid            3356
+INSTANCIA      0
+call roolloop, tipoescala   mayor
+call roolloop, notaescala   
+4 ROLLLOOP ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI    1
+--TAB 
+1- NTK,MAXPOS, pmtk(ntk).maxpos            0             2             0
+2- NTK,MAXPOS, pmtk(ntk).maxpos            1             2             18
+--------------------------
+3-NTK nombre   1            C:\aaaa\11-18-2021\[01]4NEGRAS-LIGADAS.rtk
+3-NTK MAXPOS pmtk(ntk).maxpos              2             18
+--------------------------
+6-NTK nombre   1            C:\aaaa\11-18-2021\[01]4NEGRAS-LIGADAS.rtk
+6-NTK ntk,MAXPOS, pmtk(ntk).maxpos         1             2             18
+EN TRACKS MAXPOS (NTK).MAXPOS              2             18
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        1            C:\aaaa\11-18-2021\[01]4NEGRAS-LIGADAS.rtk
+(ntk).maxpos   18
+TrackaRoll ntk, desde, hasta, MaxPos       1             4             8             18
+TrackaRoll, NB, NA, CantTricks             39            102           518
+CANCION CARGADA EN TRACKAROLL
+ROLL NO CARGADO EN TRACKAROLL
+REDIM DE TRACK 0, NO SE HACE SIN CANCION O CON ROLLCARGADO
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             18
+ubound (Track(ntk).trk,2)    25
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar for de copia de TrackaRoll
+cargaCancion DEBE SER 1      0
+TrackaRoll Fin,,maxpos y (ntk).maxpos      18            18
+----------------------------------------------
+Conmutando con TAB >>> ntk cargado, nombre               1            C:\aaaa\11-18-2021\[01]4NEGRAS-LIGADAS.rtk
+llama a RecalCompas para ntk,maxpos, .maxpos             1             18            18
+MAXPOS DESPUES DE RECALCOMPAS              18            18
+7- instancia, maspos         0             18
+SPACE call play
+USANDO PLAYCANCION
+abriendo ports....
+midiout        0            LoopBe Internal MIDI 0
+abro          LoopBe Internal MIDI 0
+RTMIDI_ERROR_WARNING         0
+midiout        2            VirtualMIDISynth #1 2
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING         0
+midiout        2            VirtualMIDISynth #1 2
+ya abierto    VirtualMIDISynth #1 2
+[[[[ PCA CANCION MAXPOS AL COMENZAR ,final]]]            18            22
+ON patch ntk canal          1              1             0
+ON patch ntk canal          1              1             0
+ON patch ntk canal          1              1             0
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 1] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+pasocol guarda canal, pista -->            6             estoy en pista             1
+pasocol guarda port , pista -->            0             estoy en pista             1
+pasocol guarda pista  -->    1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+pasocol guarda canal, pista -->            1             estoy en pista             3
+pasocol guarda port , pista -->            2             estoy en pista             3
+pasocol guarda pista  -->    3
+i1= 12 ACORDE cnt=  4
+cnt  4 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                0             4
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  93
+notapiano  60
+liga  1
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  0
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  93
+notapiano  40
+liga  1
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  0
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  0
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  93
+notapiano  64
+liga  1
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  0
+old_timeold  0
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     60             0
+EN NOTE ON nota, RESULT     40             0
+EN NOTE ON nota, RESULT     59             0
+EN NOTE ON nota, RESULT     64             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4234836050735533
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                0             4
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  1
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  93
+notapiano  40
+liga  1
+ligaold  1
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4234836050735532
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  1
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42348.36050735532
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    59             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                0             4
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  93
+notapiano  40
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4234836050735532
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 4  4
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 1 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 2] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+pasocol guarda canal, pista -->            6             estoy en pista             1
+pasocol guarda port , pista -->            0             estoy en pista             1
+pasocol guarda pista  -->    1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+pasocol guarda canal, pista -->            1             estoy en pista             3
+pasocol guarda port , pista -->            2             estoy en pista             3
+pasocol guarda pista  -->    3
+i1= 12 ACORDE cnt=  4
+cnt  4 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  3
+notapiano  40
+liga  0
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4234836050735532
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     59             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4234886161485914
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  100000000000
+DUR  3
+notapiano  40
+liga  0
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4234886161485914
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  50000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42348.86161485914
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    59             0
+En Duracion COMIENZA RETARDO En  time : 42348.36050735532
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    40             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  40
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234836050735532
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4234886161485914
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  100000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 4  4
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 2 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 3] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+pasocol guarda canal, pista -->            6             estoy en pista             1
+pasocol guarda port , pista -->            0             estoy en pista             1
+pasocol guarda pista  -->    1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+pasocol guarda canal, pista -->            1             estoy en pista             3
+pasocol guarda port , pista -->            2             estoy en pista             3
+pasocol guarda pista  -->    3
+i1= 12 ACORDE cnt=  4
+cnt  4 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  44
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234836050735532
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  52
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4234886161485914
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  50000000000
+tiempoFiguraOld  100000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     44             0
+EN NOTE ON nota, RESULT     52             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4234936366932203
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  150000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  44
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234936366932202
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  52
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4234936366932202
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  50000000000
+tiempoFiguraOld  150000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42349.36366932202
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    44             0
+En Duracion COMIENZA RETARDO En  time : 42349.36366932202
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    52             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  150000000000
+tiempoFiguraOld  150000000000
+DUR  93
+notapiano  60
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  44
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234936366932202
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  52
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4234936366932202
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  150000000000
+tiempoFiguraOld  150000000000
+DUR  93
+notapiano  64
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 4  4
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 3 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 4] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+pasocol guarda canal, pista -->            6             estoy en pista             1
+pasocol guarda port , pista -->            0             estoy en pista             1
+pasocol guarda pista  -->    1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+pasocol guarda canal, pista -->            1             estoy en pista             3
+pasocol guarda port , pista -->            2             estoy en pista             3
+pasocol guarda pista  -->    3
+i1= 12 ACORDE cnt=  3
+cnt  3 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                4             3
+ muestro el acorde anterior de mas notas, la actual es menor o una nota simple
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  150000000000
+DUR  3
+notapiano  60
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  53
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234936366932202
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  64
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234936366932202
+old_timeold  0
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     53             0
+EN NOTE ON nota, RESULT     64             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4234986558243760
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                4             3
+ muestro el acorde anterior de mas notas, la actual es menor o una nota simple
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  200000000000
+DUR  3
+notapiano  60
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  53
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234986558243760
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  64
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234986558243760
+old_timeold  0
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42349.8655824376
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    53             0
+En Duracion COMIENZA RETARDO En  time : 42349.8655824376
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    64             0
+En Duracion COMIENZA RETARDO En  time : 42348.36050735532
+tiempoFigura   2
+EN NOTE OFF nota, RESULT    60             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                4             3
+ muestro el acorde anterior de mas notas, la actual es menor o una nota simple
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  60
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234836050735532
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  53
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234986558243760
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  64
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234986558243760
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 3  3
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 4 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 5] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+pasocol guarda canal, pista -->            6             estoy en pista             1
+pasocol guarda port , pista -->            0             estoy en pista             1
+pasocol guarda pista  -->    1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+pasocol guarda canal, pista -->            1             estoy en pista             3
+pasocol guarda port , pista -->            2             estoy en pista             3
+pasocol guarda pista  -->    3
+i1= 12 ACORDE cnt=  4
+cnt  4 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                3             4
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  67
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234836050735532
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  93
+notapiano  42
+liga  1
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234986558243760
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  58
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4234986558243760
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  50000000000
+tiempoFiguraOld  150000000000
+DUR  3
+notapiano  71
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     67             0
+EN NOTE ON nota, RESULT     42             0
+EN NOTE ON nota, RESULT     58             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4235036861070197
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                3             4
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  67
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235036861070197
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  93
+notapiano  42
+liga  1
+ligaold  1
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235036861070197
+old_timeold  4235036861070197
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  58
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4235036861070197
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  50000000000
+tiempoFiguraOld  200000000000
+DUR  3
+notapiano  71
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4234836050735532
+old_timeold  4234836050735532
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42350.36861070197
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    67             0
+En Duracion COMIENZA RETARDO En  time : 42350.36861070197
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    58             0
+En Duracion COMIENZA RETARDO En  time : 42348.36050735532
+tiempoFigura   2
+EN NOTE OFF nota, RESULT    71             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                3             4
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  67
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235036861070197
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  93
+notapiano  42
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235036861070197
+old_timeold  4235036861070197
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  58
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4235036861070197
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  71
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234836050735532
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 4  4
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 5 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 6] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+pasocol guarda canal, pista -->            6             estoy en pista             1
+pasocol guarda port , pista -->            0             estoy en pista             1
+pasocol guarda pista  -->    1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+pasocol guarda canal, pista -->            1             estoy en pista             3
+pasocol guarda port , pista -->            2             estoy en pista             3
+pasocol guarda pista  -->    3
+i1= 12 ACORDE cnt=  4
+cnt  4 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  64
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235036861070197
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  3
+notapiano  42
+liga  0
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235036861070197
+old_timeold  4235036861070197
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  57
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4235036861070197
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  68
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4234836050735532
+old_timeold  0
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     64             0
+EN NOTE ON nota, RESULT     57             0
+EN NOTE ON nota, RESULT     68             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4235087158664064
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  64
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235087158664064
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  100000000000
+DUR  3
+notapiano  42
+liga  0
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235036861070197
+old_timeold  4235036861070197
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  57
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4235087158664064
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  68
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235087158664064
+old_timeold  0
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42350.87158664064
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    64             0
+En Duracion COMIENZA RETARDO En  time : 42350.87158664064
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    57             0
+En Duracion COMIENZA RETARDO En  time : 42350.87158664064
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    68             0
+En Duracion COMIENZA RETARDO En  time : 42350.36861070197
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    42             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  64
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235087158664064
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  42
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235036861070197
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  57
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4235087158664064
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  68
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235087158664064
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 4  4
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 6 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 7] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+pasocol guarda canal, pista -->            6             estoy en pista             1
+pasocol guarda port , pista -->            0             estoy en pista             1
+pasocol guarda pista  -->    1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+pasocol guarda canal, pista -->            1             estoy en pista             3
+pasocol guarda port , pista -->            2             estoy en pista             3
+pasocol guarda pista  -->    3
+i1= 12 ACORDE cnt=  3
+cnt  3 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                4             3
+ muestro el acorde anterior de mas notas, la actual es menor o una nota simple
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  67
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235087158664064
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235036861070197
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  71
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235087158664064
+old_timeold  0
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     67             0
+EN NOTE ON nota, RESULT     59             0
+EN NOTE ON nota, RESULT     71             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4235137559312360
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                4             3
+ muestro el acorde anterior de mas notas, la actual es menor o una nota simple
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  67
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235137559312360
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235137559312360
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  71
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235137559312360
+old_timeold  0
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42351.3755931236
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    67             0
+En Duracion COMIENZA RETARDO En  time : 42351.3755931236
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    59             0
+En Duracion COMIENZA RETARDO En  time : 42351.3755931236
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    71             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                4             3
+ muestro el acorde anterior de mas notas, la actual es menor o una nota simple
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  67
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235137559312360
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235137559312360
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  71
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235137559312360
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 3  3
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 7 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 8] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+pasocol guarda canal, pista -->            6             estoy en pista             1
+pasocol guarda port , pista -->            0             estoy en pista             1
+pasocol guarda pista  -->    1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+pasocol guarda canal, pista -->            1             estoy en pista             3
+pasocol guarda port , pista -->            2             estoy en pista             3
+pasocol guarda pista  -->    3
+i1= 12 ACORDE cnt=  4
+cnt  4 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                3             4
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  12500000000
+tiempoFiguraOld  0
+DUR  95
+notapiano  60
+liga  1
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235137559312360
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  12500000000
+tiempoFiguraOld  0
+DUR  95
+notapiano  48
+liga  1
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235137559312360
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  12500000000
+tiempoFiguraOld  0
+DUR  95
+notapiano  52
+liga  1
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4235137559312360
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  12500000000
+tiempoFiguraOld  0
+DUR  95
+notapiano  64
+liga  1
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235087158664064
+old_timeold  0
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     60             0
+EN NOTE ON nota, RESULT     48             0
+EN NOTE ON nota, RESULT     52             0
+EN NOTE ON nota, RESULT     64             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4235187958363701
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                3             4
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  12500000000
+tiempoFiguraOld  12500000000
+DUR  95
+notapiano  60
+liga  1
+ligaold  1
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  12500000000
+tiempoFiguraOld  12500000000
+DUR  95
+notapiano  48
+liga  1
+ligaold  1
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  12500000000
+tiempoFiguraOld  12500000000
+DUR  95
+notapiano  52
+liga  1
+ligaold  1
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  12500000000
+tiempoFiguraOld  12500000000
+DUR  95
+notapiano  64
+liga  1
+ligaold  1
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                3             4
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  12500000000
+tiempoFiguraOld  12500000000
+DUR  95
+notapiano  60
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  12500000000
+tiempoFiguraOld  12500000000
+DUR  95
+notapiano  48
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  12500000000
+tiempoFiguraOld  12500000000
+DUR  95
+notapiano  52
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  2
+i1old  2
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  12500000000
+tiempoFiguraOld  12500000000
+DUR  95
+notapiano  64
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 4  4
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 8 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 9] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+pasocol guarda canal, pista -->            6             estoy en pista             1
+pasocol guarda port , pista -->            0             estoy en pista             1
+pasocol guarda pista  -->    1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+pasocol guarda canal, pista -->            1             estoy en pista             3
+pasocol guarda port , pista -->            2             estoy en pista             3
+pasocol guarda pista  -->    3
+i1= 12 ACORDE cnt=  4
+cnt  4 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  12500000000
+tiempoFiguraOld  12500000000
+DUR  95
+notapiano  60
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  12500000000
+tiempoFiguraOld  12500000000
+DUR  95
+notapiano  48
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  12500000000
+tiempoFiguraOld  12500000000
+DUR  95
+notapiano  52
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  2
+i1old  2
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  12500000000
+tiempoFiguraOld  12500000000
+DUR  95
+notapiano  64
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4235187990778447
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  12500000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  60
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  12500000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  48
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  12500000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  52
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  2
+i1old  2
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  12500000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  64
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  25000000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  60
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  25000000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  48
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  25000000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  52
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  2
+i1old  2
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  25000000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  64
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 4  4
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 9 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 10] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+pasocol guarda canal, pista -->            6             estoy en pista             1
+pasocol guarda port , pista -->            0             estoy en pista             1
+pasocol guarda pista  -->    1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+pasocol guarda canal, pista -->            1             estoy en pista             3
+pasocol guarda port , pista -->            2             estoy en pista             3
+pasocol guarda pista  -->    3
+i1= 12 ACORDE cnt=  4
+cnt  4 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  12500000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  60
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  12500000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  48
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  12500000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  52
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  2
+i1old  2
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  12500000000
+tiempoFiguraOld  25000000000
+DUR  95
+notapiano  64
+liga  1
+ligaold  2
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4235188019081889
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  12500000000
+tiempoFiguraOld  37500000000
+DUR  95
+notapiano  60
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  12500000000
+tiempoFiguraOld  37500000000
+DUR  95
+notapiano  48
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  12500000000
+tiempoFiguraOld  37500000000
+DUR  95
+notapiano  52
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  2
+i1old  2
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  12500000000
+tiempoFiguraOld  37500000000
+DUR  95
+notapiano  64
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  37500000000
+tiempoFiguraOld  37500000000
+DUR  95
+notapiano  60
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  37500000000
+tiempoFiguraOld  37500000000
+DUR  95
+notapiano  48
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  37500000000
+tiempoFiguraOld  37500000000
+DUR  95
+notapiano  52
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  2
+i1old  2
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  37500000000
+tiempoFiguraOld  37500000000
+DUR  95
+notapiano  64
+liga  1
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 4  4
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 10 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 11] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+pasocol guarda canal, pista -->            6             estoy en pista             1
+pasocol guarda port , pista -->            0             estoy en pista             1
+pasocol guarda pista  -->    1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+pasocol guarda canal, pista -->            1             estoy en pista             3
+pasocol guarda port , pista -->            2             estoy en pista             3
+pasocol guarda pista  -->    3
+i1= 12 ACORDE cnt=  4
+cnt  4 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  12500000000
+tiempoFiguraOld  37500000000
+DUR  5
+notapiano  60
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  12500000000
+tiempoFiguraOld  37500000000
+DUR  5
+notapiano  48
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  12500000000
+tiempoFiguraOld  37500000000
+DUR  5
+notapiano  52
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  2
+i1old  2
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  12500000000
+tiempoFiguraOld  37500000000
+DUR  5
+notapiano  64
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4235188050952991
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  12500000000
+tiempoFiguraOld  50000000000
+DUR  5
+notapiano  60
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  12500000000
+tiempoFiguraOld  50000000000
+DUR  5
+notapiano  48
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  12500000000
+tiempoFiguraOld  50000000000
+DUR  5
+notapiano  52
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  2
+i1old  2
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  12500000000
+tiempoFiguraOld  50000000000
+DUR  5
+notapiano  64
+liga  0
+ligaold  3
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235187958363701
+old_timeold  4235187958363701
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42351.87958363701
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    60             0
+En Duracion COMIENZA RETARDO En  time : 42351.87958363701
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    48             0
+En Duracion COMIENZA RETARDO En  time : 42351.87958363701
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    52             0
+En Duracion COMIENZA RETARDO En  time : 42351.87958363701
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    64             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                4             4
+ el acorde anterior tenia menos notas
+ cntold = cnt                4             4
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  12500000000
+tiempoFiguraOld  0
+DUR  5
+notapiano  60
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235187958363701
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  12500000000
+tiempoFiguraOld  0
+DUR  5
+notapiano  48
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235187958363701
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  3
+PasoCol( 3)
+tiempoFigura  12500000000
+tiempoFiguraOld  0
+DUR  5
+notapiano  52
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4235187958363701
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  4
+PasoCol( 4)
+tiempoFigura  12500000000
+tiempoFiguraOld  0
+DUR  5
+notapiano  64
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235187958363701
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 4  4
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 11 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 12] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+i1= 12 SIMPLE cnt=  0
+cnt,cntold 0  0
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 12 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 13] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+i1= 12 ACORDE cnt=  2
+cnt  2 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                0             2
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  93
+notapiano  42
+liga  1
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235187958363701
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  58
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  3
+i1old  0
+old_time  4235187958363701
+old_timeold  0
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     42             0
+EN NOTE ON nota, RESULT     58             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4235238370632377
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                0             2
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  93
+notapiano  42
+liga  1
+ligaold  1
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235238370632376
+old_timeold  4235238370632376
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  58
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  3
+i1old  0
+old_time  4235238370632376
+old_timeold  0
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42352.38370632376
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    58             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                0             2
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  93
+notapiano  42
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235238370632376
+old_timeold  4235238370632376
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  58
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  3
+i1old  0
+old_time  4235238370632376
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 2  2
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 13 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 14] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+i1= 12 ACORDE cnt=  2
+cnt  2 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ el acorde anterior tenia menos notas
+ cntold = cnt                2             2
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  3
+notapiano  42
+liga  0
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235238370632376
+old_timeold  4235238370632376
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  3
+i1old  0
+old_time  4235238370632376
+old_timeold  0
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     59             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4235288449137900
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ el acorde anterior tenia menos notas
+ cntold = cnt                2             2
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  100000000000
+DUR  3
+notapiano  42
+liga  0
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235238370632376
+old_timeold  4235238370632376
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  3
+i1old  0
+old_time  4235288449137900
+old_timeold  0
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42352.884491379
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    59             0
+En Duracion COMIENZA RETARDO En  time : 42352.38370632376
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    42             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ el acorde anterior tenia menos notas
+ cntold = cnt                2             2
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  42
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235238370632376
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  3
+i1old  0
+old_time  4235288449137900
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 2  2
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 14 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 15] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+i1= 12 SIMPLE cnt=  1
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                2             1
+ muestro el acorde anterior de mas notas, la actual es menor o una nota simple
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  50
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235238370632376
+old_timeold  0
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     50             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4235338648366267
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                2             1
+ muestro el acorde anterior de mas notas, la actual es menor o una nota simple
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  50
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235338648366266
+old_timeold  0
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42353.38648366266
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    50             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                2             1
+ muestro el acorde anterior de mas notas, la actual es menor o una nota simple
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  50
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235338648366266
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 1  1
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 15 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 16] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+i1= 12 SIMPLE cnt=  1
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                1             1
+ el acorde anterior tenia menos notas
+ cntold = cnt                1             1
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  50
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235338648366266
+old_timeold  0
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     50             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4235388748481621
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                1             1
+ el acorde anterior tenia menos notas
+ cntold = cnt                1             1
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  50
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235388748481621
+old_timeold  0
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42353.88748481621
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    50             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                1             1
+ el acorde anterior tenia menos notas
+ cntold = cnt                1             1
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  50
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235388748481621
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 1  1
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 16 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 17] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+i1= 12 ACORDE cnt=  2
+cnt  2 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                1             2
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  93
+notapiano  42
+liga  1
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235388748481621
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  3
+i1old  0
+old_time  4235288449137900
+old_timeold  0
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     42             0
+EN NOTE ON nota, RESULT     59             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4235438847951398
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                1             2
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  93
+notapiano  42
+liga  1
+ligaold  1
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235438847951398
+old_timeold  4235438847951398
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  3
+i1old  0
+old_time  4235438847951398
+old_timeold  0
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42354.38847951398
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    59             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                1             2
+ el acorde anterior tenia menos notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  93
+notapiano  42
+liga  1
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235438847951398
+old_timeold  4235438847951398
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  3
+i1old  0
+old_time  4235438847951398
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 2  2
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 17 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 18] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+i1= 12 ACORDE cnt=  2
+cnt  2 Acordeiguales 
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ el acorde anterior tenia menos notas
+ cntold = cnt                2             2
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  50000000000
+DUR  3
+notapiano  42
+liga  0
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235438847951398
+old_timeold  4235438847951398
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4235438847951398
+old_timeold  0
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     59             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4235488947726976
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ el acorde anterior tenia menos notas
+ cntold = cnt                2             2
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  100000000000
+DUR  3
+notapiano  42
+liga  0
+ligaold  1
+audio  1
+audioOld  1
+i1  1
+i1old  1
+old_time  4235438847951398
+old_timeold  4235438847951398
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4235488947726976
+old_timeold  0
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42354.88947726976
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    59             0
+En Duracion COMIENZA RETARDO En  time : 42354.38847951398
+tiempoFigura   1
+EN NOTE OFF nota, RESULT    42             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold < cnt                2             2
+ el acorde anterior tenia menos notas
+ cntold = cnt                2             2
+ el acorde anterior y el actual tienen = cant de notas
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  42
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235438847951398
+old_timeold  0
+inst  0
+-----------------------------------
+ cnt  2
+PasoCol( 2)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  59
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  2
+i1old  0
+old_time  4235488947726976
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 2  2
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 18 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 19] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+pasocol guarda canal, pista -->            0             estoy en pista             2
+pasocol guarda port , pista -->            2             estoy en pista             2
+pasocol guarda pista  -->    2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+i1= 12 SIMPLE cnt=  1
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                2             1
+ muestro el acorde anterior de mas notas, la actual es menor o una nota simple
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  55
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235438847951398
+old_timeold  0
+inst  0
+-----------------------------------
+EN NOTE ON nota, RESULT     55             0
+=====> FIN ACORDEON IGUALES O SIMPLE
+=AOI tenia   old_time_on_int               4235539144610879
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                2             1
+ muestro el acorde anterior de mas notas, la actual es menor o una nota simple
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  55
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235539144610879
+old_timeold  0
+inst  0
+-----------------------------------
+En Duracion COMIENZA RETARDO En  time : 42355.39144610879
+tiempoFigura   0.5
+EN NOTE OFF nota, RESULT    55             0
+Desarrollo pasoCol() sin todos los campos integer 
+ cntold > cnt                2             1
+ muestro el acorde anterior de mas notas, la actual es menor o una nota simple
+-----------------------------------
+ cnt  1
+PasoCol( 1)
+tiempoFigura  50000000000
+tiempoFiguraOld  0
+DUR  3
+notapiano  55
+liga  0
+ligaold  0
+audio  1
+audioOld  0
+i1  1
+i1old  0
+old_time  4235539144610879
+old_timeold  0
+inst  0
+-----------------------------------
+AFI 20:FIN AcordeOffIguales o simple
+cnt,cntold 1  1
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 19 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 20] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+i1= 12 SIMPLE cnt=  0
+cnt,cntold 0  0
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 20 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 21] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+i1= 12 SIMPLE cnt=  0
+cnt,cntold 0  0
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 21 --------------------------------
+ ---------------000000000000000000000-----------------
+ [[[PCA 0:]]]---START--PASO:[ 22] ----------------
+ ---------------000000000000000000000-----------------
+--loop de pistas---pista NRO :1 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        1
+---DOWN -----PISTA:1 --------------------------------
+--loop de pistas---pista NRO :2 --------------------------------
+  De esta pista MAXPOS ,final              22            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        2
+---DOWN -----PISTA:2 --------------------------------
+--loop de pistas---pista NRO :3 --------------------------------
+  De esta pista MAXPOS ,final              18            22
+FOR -- RECORRIDO DE NOTAS DE PISTA        3
+i1= 12 SIMPLE cnt=  0
+cnt,cntold 0  0
+---DOWN -----PISTA:3 --------------------------------
+---FIN -----paso: 22 --------------------------------
+midiout        0            LoopBe Internal MIDI 0
+midiout        2            VirtualMIDISynth #1 2
+midiout        2            VirtualMIDISynth #1 2
+uso Close N
+uso CLOSE ALL

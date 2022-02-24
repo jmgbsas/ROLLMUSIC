@@ -207,6 +207,7 @@ ubirtk=0
      DUR => 0
      curpos =>1
 
+    patchsal=Track(ntk).trk(1,1).inst
  '------------
 
  
@@ -1057,6 +1058,7 @@ nota=0:dur=0
    notaOld= CInt(pmTk(ntk).notaold)
    canalx= CInt(pmTk(ntk).canalsalida)
    portout=pmTk(ntk).portout
+   patchsal=Track(ntk).trk(1,1).inst
    
    print #1,"TrackaRoll ntk, desde, hasta, MaxPos ", ntk, desde,hasta,MaxPos
    desdevector=desde
@@ -1546,7 +1548,7 @@ Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
 ' llegamos al final de la Columna
    
      If i1=lim2  And (pis = tope Or pis=32) Then
-        '''' ÇÇÇÇÇÇÇÇ reponer mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
+        ''''  reponer mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
         If cnt > 1 Then' Acorde
           print #1,"i1=";i1 ; " ACORDE cnt= ";cnt
         Else    
@@ -1590,7 +1592,7 @@ Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
      
    Next i1
 ' usando variblkes staticas no hace falta usar esta trampita   
-   '''' ÇÇÇÇÇ reponer mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
+   ''''  reponer mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
   print #1,"---DOWN -----PISTA:"; pis;" --------------------------------" 
     
  If playloop=1 And jply= final Then
@@ -1612,13 +1614,13 @@ posicion=comienzo
 jply=0:curpos=0
 ' 11-06-2021 se volvio a colocar 1 seg retardo para no escuchar un corte abrubto
 ' al final, por ahroa no parpadea mas veremos.... 
-play=0 
+ 
 playb=0
-
+Cplay=0 ' ontrol de play cancion si fue desde control
 mousey=100 'otra mas para evitar rentrar a play en menu
 finplay=1
 
-''' ÇÇÇÇÇ reponer mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
+'''  reponer mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 ''fueradefoco=0
  
  SetMouse xmouse, ymouse 

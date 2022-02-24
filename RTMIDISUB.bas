@@ -1150,6 +1150,9 @@ Dim result As Integer
 '  Print #1,"  ajusta CANAL al del archivo canal= ",canal        '
 
 'EndIf
+ Print #1,"ON patch ntk canal ",	Roll.trk(1,NA).inst, ntk,pmTk(0).canalsalida
+ ChangeProgram ( Roll.trk(1,NA).inst, pmTk(0).canalsalida, pmTk(0).portout)	
+ patchsal =Roll.trk(1,NA).inst
 
 print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
 print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
@@ -1332,7 +1335,7 @@ EndIf
         portsal= CUByte(pasoCol(cnt).port)
      '     Print #1,"  ajuste port dispo ", portsal
       If i1=NA -13  Then 'And cnt >= 1 Then ' envio noteoff 1) no entra
-    ''''피피 ya nohace falta     mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
+    '''' ya nohace falta     mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
          If cnt > 1 Then' Acorde
           '  print #1,"i1=NA=";i1 ; " ACORDE cnt= ";cnt
          Else    
@@ -1369,7 +1372,7 @@ EndIf
         
       EndIf  
   Next i1
-  ''' 피피 ya no hace falta mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
+  '''  ya no hace falta mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
   print #1,"---FIN -----paso:"; jply;" --------------------------------" 
   
  
@@ -1392,7 +1395,7 @@ jply=0:curpos=0
 ' 11-06-2021 se volvio a colocar 1 seg retardo para no escuchar un corte abrubto
 ' al final, por ahroa no parpadea mas veremos.... 
 play=0 
-playb=0
+
 
 mousey=100 'otra mas para evitar rentrar a play en menu
 SetMouse xmouse, ymouse

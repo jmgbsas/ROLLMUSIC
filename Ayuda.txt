@@ -47,7 +47,7 @@
         Nota: para lso puntos c,d y e, se ejectua el armado de la escala la cual se muestra en el
              extremo superior del Grafico de RollMusic (subir para arriba hasta que aparesca la escala)
 
-    III) USO:
+    III) USO: (ventana Roll Grafica)
     0) Ante todo para desarrollar se muestran variables al Pulsar [Edicion], en ese estado y en cualqueir otro
          si quiero volver al menu inicial Archivo,Edicion,Ver,Pista,Reproducir etc....simplemente dar un click 
          en la cinta celeste de arriba en su parte mas derecha entre la mitad y casi hasta el final antes de 
@@ -71,7 +71,10 @@
     4) Recalcular Compas <R>. Establece las barras divisorias entre compases.c
     5) Grabar Archivo. (Ctrl-click). Se ha puesto un retardo de 1 segundos si tarda eso es porque se
          ejecutó bien el comando y grabó, porque de otra forma a veces salia sin grabar..
-    6) Cargar Archivo. click en [Archivo]-> luego en  [*.ROLL] o [+.RTK]
+    6) Cargar Archivo. click en [Archivo]-> luego en  [*.ROLL] o [+.RTK]. 
+       Archivo NUEVO borra el Roll de memoria y comienza de cero. En el menu del grafico de Roll (no control)
+       click en [ARchivo] -> ALT-Click [NUEVO]
+        
     7) Tamaño Font. f2-f3, f9-f10
     8) Crear Canción.
     9) Agregar tracks a cancion.
