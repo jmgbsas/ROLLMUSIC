@@ -1,4 +1,6 @@
--23-02-2022 estabilidad en Selcanal y Selport, indicacion de lo que habia seleccionado previamente.
+-25-02-2022 mas correciones a SelCanal, SelPort y Selintr..a partir de ahroa se haran varios test
+ par aver si sigue funcionando todas las cosas echas desde el inicio...copiar insertar etc
+ -23-02-2022 estabilidad en Selcanal y Selport, indicacion de lo que habia seleccionado previamente.
  Archvo [Nuevo] se selecciona Con ALT, para no chocar con Ctrl Click para [CANALES].Correccion patch
  en PlayAll. Seleccion de intrumentos Alfa corregido. Todavia no se logra marcar lo seleccionado,
  se ve al volver a cargar la seleccion de cualquier tipo de seleccion.(replace no se entiende...) 

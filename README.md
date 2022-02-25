@@ -1,17 +1,17 @@
 Una  ejercitacion para ver Cairo.(Estado:Alpha Debug escribe archivos.)
 Un secuenciador que usa letras en vez de rectangulitos...
 Ya funciona puede editarse una sola pista o crear una cancion de hasta 32 pistas.
-Ajustar el instrumento de cada pista.
+Ajustar el instrumento de cada pista o patch, usar uno o mas peurtos de salida MIDI-OUT.
 Usa las 8 octavas musicales desde C0 a B8 con sostenidos y en vez de figuras musicales 
 o rectangulitos, colocar letras que simbolizan duraciones de notas con la opcion de cambiar 
-insertar etc. Duraciones "O","P","I","L","F","E","W","H" , Redonda, blanca,negra,corchea
+insertar etc. Duraciones "O","P","I","L","F","E","X","H" , W, Redonda, blanca,negra,corchea
 semicorchea,fusa y semifusa..Busque las letras mas parecidas a las figuras
 musicales L corchea tiene un palito, F semicorchea tiene 2, E tiene 3 como fusa,
- W 4 semifusa, H 5...
-los silencios se colocan una s delante de la nota al mostrarla, pero las duraciones
+ X 4 semifusa, H 5...
+los silencios se cambiaron son los simbolos @,%,&,/,//,{ ,{{ ,#,## , redonda, blanca, negra
+corceha, semicorchea, fusa, semifusa,...
 se entran por teclado del 1 al 8 o por mouse click derecho en Edit Cursor. 
-Si alguien quiere colaborar lo compartire. Es un codigo  sucio no está optimizado ni 
-ordenado usa muchas globals.
+Es un codigo  algo organizado usa muchas globals.
 Al inicio se puede hacer scroll con flechas arriba abajo,,
 cambiar tamaño de font con F9-F10 y F2-F3, levantar el borde inferior dela ventana como un telon
 y asi achicar la pantalla con F7, volver a agrandar con F8, achicando o agrandando separaciones 
@@ -31,38 +31,37 @@ por las lineas ya escritas en todas las direcciones. (el cursor muestra doble el
 de navegacion y una linea vertical para visualizar mejor la posicon.
 Para modificar una nota existente o agregar una en una linea en que no existia nada
 pulsar la duracion y luego X, la posicion del cursor dara la nota deseada.
-Si se desea seguir usando la misma duracion solo navegar con las flechas y pulsar otra
-vez X. al finalizar pulsar Crl-P para terminar el modo cursor,,,
+Al finalizar pulsar Crl-P para terminar el modo cursor,,,
 Para insertar se usa el modo Cursor, pero luego de elegir la posicion de la insercion
 sobre la linea con datos  se pulsa Insert, luego una duracion y 
 luego la Tecla I, asi iremos insertando sobreescribiendo lo existente.
-Sin mover el cursor alfinalizar pulsar la telca Fin, y todo lo antiguo se desplazara  a derecha 
+Sin mover el cursor al finalizar pulsar la telca Fin, y todo lo antiguo se desplazara  a derecha 
 y se mostrara la nueva insercion incluida,,
 Los acordes se ingresan sobre Escribiendo en una zona cualquiera en el modo Cursor y con la 
 tecla X. Por ahora para insertar un acorde se hace con insercion de una nota con la tecla Insert,
 luego la tecla I, y terminamos con la tecla fin o End y luego con la opcion X de modificar se 
 agrega el resto del acorde insertado.Tambien se puede hacer por mouse en Edit Cursor, 
 Ctrl mouse derecho, aparece menu Blanquear, Insertar, Fin insertar
-y Modifcar. Falta mucho por hacer. Una distraccion durante la pandemia,,,,y poder hacer mi propio
+y Modifcar. Ahora hay ingreso de algunso tipos de acorde con Click derecho delmouse en el modo lectura.
+Falta mucho por hacer. Una distraccion durante la pandemia,,,,y poder hacer mi propio
 sequencer es mi 1er aplicación gráfica todo un desafio.
 Los silencios se agregan igual que las notas pero luego de pulsar la duración
-se pulsa "s" y la nota correspondiente.
+se pulsa "s" y la nota correspondiente. los simbolso usados son los dados.
+(s epodra modificar a gusto en el futuro que tipo de letra para que duracion...)
 También se puede agregar notas o silencios con puntillo, el mismo procedimeinto pero 
 pulsando punto (.) antes del nombre de la nota,. Las ligaduras se simbolizan con un + del lado 
 de la conexion con la otra nota (siempre a derecha).
-La aplicacion termina pulsando Escape..o l x en el extremo derecho superior..El ejecutable ha 
+La aplicacion termina pulsando Escape..o la X en el extremo derecho superior..El ejecutable ha 
 sido escaneado con Antivirus windows defender Spybot and Destroy y MalwareBytes.
-Tiene un menu basico  cambiante con Flecha Derecha Iquierda, siempre y cuando el mouse 
-esté posicionado en la cinta superior (menu archivo Nuevo, abrir, Guardar etc ya implementado.
+Tiene un menu basico  en la pantalla grafica. REacciona con click o ALT click o Ctrl Click..
 Se agrego una ventana que ahora es la de inicio de Control mas indicada para crear una Cancion.
-Se usa un play qu esolo tiene en cuenta las duraciones de las notas, no hay tiempo, pero algun dia 
+Se usa un play que solo tiene en cuenta las duraciones de las notas, no hay tiempo, pero algun dia 
 usaré ticks al estilo de archivos midi, para compatibilizar. 
 Es solo un código imperativo sin clase alguna ni constructores ni destructores. 
 Por ahora los instrumentos distintos son a nivel Pista o Track, luego sera tambien a nivel nota,
-volumen , pitch bend etc. Los tracks seran tal vez en el formato de midi de modo que habrá que pasar del modo 
-midi al del Vector Roll para mostrar  los datos en edicion, se hará en el futuro.
-Ya puede grabar tracks pero solo es el vector de visualizacion comprimido,lo que se
-obserba es que en un track o instrumento, el acorde no tendrá mas de 12 notas cuanto mucho, 
+volumen , (pitch bend produce mucho retardo dicen). 
+Ya puede grabar tracks  pero solo es el vector de visualizacion comprimido, lo que se
+observa es que en un track o instrumento, el acorde no tendrá mas de 12 notas cuanto mucho, 
 se hará posiblemente dinamico en el futuro. 32 tracks c/u con 12 notas de acorde no existira nunca.
 Ya se puede cargar un archivo (.Roll) y luego grabarlo en formato track (.trk) y volverlo a cargar
 viendolo en pantalla (se convierte al grabar de Roll a Trk y al cargar de Trk a Roll )

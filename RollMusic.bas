@@ -814,7 +814,7 @@ If ix < 3 Then ' rollmusic CON control
 
 MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
 MenuItem(1006,MenName1, "Cargar directorio de Cancion con Pistas separados")
-MenuItem(1007,MenName1, "Na.Grabar Cancion")
+MenuItem(1007,MenName1, "Grabar Cancion")
 MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
 MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
 MenuItem(1010,MenName1, "Cargar una Pista (rtk ó roll) externa en Cancion")
@@ -1084,7 +1084,20 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                 Exit Do                 
              EndIf
              print #1,"termino 1006 va a abrir Roll"
-
+           Case 1007 ' grabar cancion
+           If CANCION CARGADA Then
+             Dim As String nombreg
+            ROLLCARGADO=FALSE 
+           If NombreCancion > ""  Then
+              GrabarRollaTrack(0)
+              For i1 = 1 ti Tope
+                GrabarTrack ¿'
+              Next i1
+           EndIf
+          MenuNew=0           
+          carga=1
+              
+           EndIf
            Case 1010
            print #1,"entro a 1010 Cargar Pista externa a cancion"
            ROLLCARGADO=FALSE 

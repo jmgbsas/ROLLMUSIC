@@ -3657,7 +3657,7 @@ Posy=y0 +100
    ''  haw=OpenWindow("CANALES",100,50,400,400,WS_VISIBLE, WS_EX_TOPMOST )
      haw=OpenWindow("CANALES",Posx,Posy,400,400,WS_VISIBLE, WS_EX_TOPMOST )
      hwl=  ListViewGadget(1,10,10,300,300,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL  )
-     Dim As String mensaje 
+     Dim As String mensaje, cad 
      If mitipo = 1 Then ' out
       mensaje="Canales Salida"
      EndIf
@@ -3667,12 +3667,11 @@ Posy=y0 +100
      
      AddListViewColumn(1, mensaje ,0,0,250)
      For aa As Integer=1 To 16 
-         If pmTk(ntk).canalsalida > 0 Then
-            If pmTk(ntk).canalsalida = aa Then
+         If pmTk(ntk).canalsalida > 0 And pmTk(ntk).canalsalida = aa Then
                AddListViewItem(1, "[x] "+listCanal(aa),0,aa,0)
-            Else
+               
+         Else
                AddListViewItem(1, "[ ] "+listCanal(aa),0,aa,0)
-            EndIf   
          EndIf 
          
      Next
@@ -3691,13 +3690,20 @@ Posy=y0 +100
           If event=eventgadget Then
             If eventnumber()=2 Then
               canalx = GetItemListView() ' sirve para el roll actual en edicion
-              
-''ReplaceTextItemListView(1,canalx,0, Str(canalx)+" x")              
            ' get itme va de 0 a 15 no ahce falta convertir 
 ' esto sirve para cambia rdinamicamente el canal midi mientras tocamos, perp tambien
 ' si grabamos el archjivo se grabara y pisara la info de midi canal en el archio
 ' al cargar el archivo de nuevo se tomara ese canal.              
           Print #1,"**********CANAL ELEGIDO EN SELCANAL ",canalx
+
+  If event=EventLBDown Then
+      If EventNumberListView=1 Then
+           cad=GetTextItemListView(1,GetItemListView,0)           
+
+         ReplaceTextItemListView(1,GetItemListView,GetSubItemListView,cad + " [X]")
+      EndIf
+   EndIf
+
           
           ' carga de canal MIDI al vector parametros de tracks de cancion
           Print #1,"ntk en cambio de canal ntk= ",ntk
@@ -3725,6 +3731,14 @@ Posy=y0 +100
          Loop 
   
 '' fin ruso
+/'
+If EventNumberListView= 1 Then
+   cad=GetTextItemListView(1,GetItemListView,0)           
+   ReplaceTextItemListView(1,GetItemListView,0,cad + " [X]")
+           
+   ReplaceTextItemListView(1,canalx,0, Str(canalx)+" x")
+EndIf
+'/                 
 
 End Sub
 
