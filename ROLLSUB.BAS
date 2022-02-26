@@ -2054,6 +2054,11 @@ EndIf
    If (mousex > 215 And mousex < 269  And mousey < 50 And carga=0 ) Then ' <= ABRIR lee grabaroll.roll
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And carga = 0  Then
+      If play=1 Or playb=1 Then
+       CONTROL1=1 ' DETIENE EL PLAY VEREMOS
+       playloop=0
+       Sleep 2
+      EndIf 
        CargaArchivo(Roll, 0)
        print #1,"nombre cargado en Roll ",nombre
        MenuNew=0
@@ -2076,7 +2081,12 @@ EndIf
       ntk=0  ' siempre carga a ntk=0 por ahora 
       cairo_set_source_rgba c, 0, 1, 0, 1
       If (MouseButtons And 1 And carga=0) Then
-         
+         If play=1 Or playb=1 Then
+            CONTROL1=1 ' DETIENE EL PLAY VEREMOS
+            playloop=0
+            Sleep 2
+         EndIf 
+
          print #1,"carga track veo nombre antes   ",nombre
          CargarTrack (Track() , ntk, 0)
          If nombre > "" Then  ' evita crash al cancelar el dialogo 
@@ -2997,6 +3007,8 @@ Sub velocidades(j As integer)
        compas(j).nro = -2 ' debil
       EndIf
       
+     
+      
     EndIf
     If TCompas="12/8" Then
       If acumulado <= 3750000 Then 'nollego a I*
@@ -3539,7 +3551,7 @@ Dim As Integer mitipo,x0,y0,Posx,Posy
 ScreenControl GET_WINDOW_POS, x0, y0
 Posx=x0 +50
 Posy=y0 +100
-
+Dim cad As string
  
 ''portsout = port_count (midisal)
 ' ESTOY ABRIENDO LSO PORT SEGUN LO ELEGIDO CADA VEZ QUE SE ELIJA UNO
@@ -3567,7 +3579,7 @@ mitipo=  CInt(tipo)
        Dim midient As  RtMidiInPtr
        AddListViewColumn(1, "Entradas MIDI",0,0,250)
        For aa As Integer=0 To UBound (listin) 
-           AddListViewItem(1, listin(aa) +Str(aa),0,aa,0)
+           AddListViewItem(1, listin(aa) ,0,aa,0)
        Next
 
      EndIf
@@ -3584,11 +3596,23 @@ mitipo=  CInt(tipo)
          Do
 
          Var event= waitEvent
+         If event=EventLBDown Then ' 26-02-2022
+            If EventNumberListView=1 Then
+               portout=GetItemListView
+               cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
+               If InStr(cad,"x")>0 Then
+                 cad="[ ] " +listout(portout) 
+               Else  
+                 cad="[x] " +listout(portout) 
+               EndIf
+               ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
+           EndIf
+        EndIf
 
           If event=eventgadget Then
-            If eventnumber()=2 Then
+            If eventnumber()=2 And InStr(cad,"x")> 0 Then
               'menunew=0
-              portout = GetItemListView()
+              '''portout = GetItemListView()
               Print #1,"PORT SELECCIONADO en menu ",portout
               If mitipo=1 Then
                 'If listoutAbierto (portout) =0  Then
@@ -3669,7 +3693,6 @@ Posy=y0 +100
      For aa As Integer=1 To 16 
          If pmTk(ntk).canalsalida > 0 And pmTk(ntk).canalsalida = aa Then
                AddListViewItem(1, "[x] "+listCanal(aa),0,aa,0)
-               
          Else
                AddListViewItem(1, "[ ] "+listCanal(aa),0,aa,0)
          EndIf 
@@ -3687,45 +3710,52 @@ Posy=y0 +100
 
          Var event= waitEvent
 
+         If event=EventLBDown Then
+            If EventNumberListView=1 Then
+               canalx=GetItemListView
+               cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
+               If InStr(cad,"x")>0 Then
+                 cad="[ ] " +Str(canalx+1)
+               Else  
+                 cad="[x] " +Str(canalx+1)
+               EndIf
+               ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
+           EndIf
+        EndIf
+
+
+
           If event=eventgadget Then
-            If eventnumber()=2 Then
-              canalx = GetItemListView() ' sirve para el roll actual en edicion
+            If eventnumber()=2 And InStr(cad,"x") >0 Then
+            '  canalx = GetItemListView() ' sirve para el roll actual en edicion
            ' get itme va de 0 a 15 no ahce falta convertir 
 ' esto sirve para cambia rdinamicamente el canal midi mientras tocamos, perp tambien
 ' si grabamos el archjivo se grabara y pisara la info de midi canal en el archio
 ' al cargar el archivo de nuevo se tomara ese canal.              
-          Print #1,"**********CANAL ELEGIDO EN SELCANAL ",canalx
-
-  If event=EventLBDown Then
-      If EventNumberListView=1 Then
-           cad=GetTextItemListView(1,GetItemListView,0)           
-
-         ReplaceTextItemListView(1,GetItemListView,GetSubItemListView,cad + " [X]")
-      EndIf
-   EndIf
 
           
           ' carga de canal MIDI al vector parametros de tracks de cancion
-          Print #1,"ntk en cambio de canal ntk= ",ntk
-           pmTk(ntk).canalsalida=CUByte(canalx+1) ' sirve para el track cargao actual en cancion
+          
+               Print #1,"ntk en cambio de canal ntk= ",ntk
+               pmTk(ntk).canalsalida=CUByte(canalx+1) ' sirve para el track cargao actual en cancion
        
-             If CANCIONCARGADA Or TRACKCARGADO Then
-                 pmTk(ntk).canalsalida=CUByte(canalx) ' sirve para el track cargao actual en cancion
-                 If NombreCancion > ""  And MAxPos > 1 Then
-                    GrabarRollaTrack(0)
-                 EndIf
+               If CANCIONCARGADA Or TRACKCARGADO Then
+                  pmTk(ntk).canalsalida=CUByte(canalx) ' sirve para el track cargao actual en cancion
+                  If NombreCancion > ""  And MAxPos > 1 Then
+                     GrabarRollaTrack(0)
+                  EndIf
+               Else
+                  If MaxPos > 1  And ROLLCARGADO  Then
+                   GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
+                  ' no el undo dolo se debe borrar al ahcer nuevo creo
+                  EndIf  
+               EndIf  
+               Close_Window(haw)
+               Exit Do 
 
-              Else
-                If MaxPos > 1  And ROLLCARGADO  Then
-                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
-                 ' no el undo dolo se debe borrar al ahcer nuevo creo
-                EndIf  
-              EndIf  
-
-              Close_Window(haw)
-              Exit Do 
             End If
-          EndIf 
+          EndIf
+            
           Sleep 5  
           
          Loop 

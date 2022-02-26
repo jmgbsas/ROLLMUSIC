@@ -211,11 +211,23 @@ Dim cad As String
          Do
 
          Var eventC= waitEvent
+         If eventC=EventLBDown Then ' 26-02-2022
+            If EventNumberListView=1 Then
+               i1 = GetItemListView()
+               cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
+               If InStr(cad,"x")>0 Then
+                 cad="[ ] " +NombreInstAlfa(i1) 
+               Else  
+                 cad="[x] " +NombreInstAlfa(i1) 
+               EndIf
+               ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
+           EndIf
+        EndIf
 
           If eventC=eventgadget Then
           
-            If eventnumber()=2 Then
-               i1 = GetItemListView()
+            If eventnumber()=2 And InStr(cad,"x") >0 Then
+               ''i1 = GetItemListView()
                Print #1,"alfa seleccion in", i1
                Print #1,"NombreInstAlfa ",NombreInstAlfa(i1)
                i2=InStrrev(NombreInstAlfa(i1)," ")
@@ -245,7 +257,7 @@ end Sub
 Sub selInstORdenNum (ByRef instru As integer)
 Dim As hwnd haw,hwl
 Dim As Integer aa ,paso=0,x=0  
-
+Dim As String cad
 
  
 '' => desde acaecho con tool del ruso no anda muy bien
@@ -281,11 +293,23 @@ Dim As Integer aa ,paso=0,x=0
          Do
 
          Var eventC= waitEvent
+         If eventC=EventLBDown Then ' 26-02-2022
+            If EventNumberListView=1 Then
+               instru = GetItemListView()
+               cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
+               If InStr(cad,"x")>0 Then
+                 cad="[ ] " +NombreInst(instru) 
+               Else  
+                 cad="[x] " +NombreInst(instru) 
+               EndIf
+               ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
+           EndIf
+        EndIf
 
           If eventC=eventgadget Then
           
-            If eventnumber()=2 Then
-               Instru = GetItemListView()
+            If eventnumber()=2 And InStr(cad,"x") > 0 Then
+               ''Instru = GetItemListView()
                Print #1,"inst seleccionado numerico ",instru
                Close_Window(haw)
                   Exit Do

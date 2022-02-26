@@ -1123,7 +1123,7 @@ tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '60 seg/ cuantas negras enun mi
 'Dim As Integer i1 
 Dim As Integer i2,i3,i4,i5,j ,comienzoDeLoop=0,xmouse, ymouse
 Dim As Integer comienzo=1, final=MaxPos, velpos =0
-Dim As UByte canal=0,vel=75 
+Dim As UByte canal=0,vel=90 
 ' canal 0 es el 1 van d0 a 15
 xmouse = mousex
 ymouse = mousey
@@ -1151,8 +1151,10 @@ Dim result As Integer
 
 'EndIf
  Print #1,"ON patch ntk canal ",	Roll.trk(1,NA).inst, ntk,pmTk(0).canalsalida
- ChangeProgram ( Roll.trk(1,NA).inst, pmTk(0).canalsalida, pmTk(0).portout)	
- patchsal =Roll.trk(1,NA).inst
+ ''If Roll.trk(1,NA).inst > 0 Then
+    ChangeProgram ( Roll.trk(1,NA).inst, pmTk(0).canalsalida, pmTk(0).portout)	
+    patchsal =Roll.trk(1,NA).inst
+ '''EndIf
 
 print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
 print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
@@ -1330,11 +1332,8 @@ EndIf
 ' llegamos al final de la Columna
    
    EndIf   
-        canal = CUByte(pasoCol(cnt).canal)  '12-02-2022
-     '   Print #1,"  ajusta CANAL ",canal        
-        portsal= CUByte(pasoCol(cnt).port)
-     '     Print #1,"  ajuste port dispo ", portsal
       If i1=NA -13  Then 'And cnt >= 1 Then ' envio noteoff 1) no entra
+
     '''' ya nohace falta     mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
          If cnt > 1 Then' Acorde
           '  print #1,"i1=NA=";i1 ; " ACORDE cnt= ";cnt
@@ -1395,7 +1394,7 @@ jply=0:curpos=0
 ' 11-06-2021 se volvio a colocar 1 seg retardo para no escuchar un corte abrubto
 ' al final, por ahroa no parpadea mas veremos.... 
 play=0 
-
+playb=0
 
 mousey=100 'otra mas para evitar rentrar a play en menu
 SetMouse xmouse, ymouse
@@ -1419,7 +1418,7 @@ finplay=1
 
 Sleep 20,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
 
-ThreadDetach(thread1)
+''ThreadDetach(thread1)
 
 ' ================================FIN PLAYALL <<=================
 End Sub 

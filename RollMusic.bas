@@ -1085,14 +1085,13 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
              EndIf
              print #1,"termino 1006 va a abrir Roll"
            Case 1007 ' grabar cancion
-           If CANCION CARGADA Then
+           If CANCIONCARGADA Then
              Dim As String nombreg
             ROLLCARGADO=FALSE 
            If NombreCancion > ""  Then
               GrabarRollaTrack(0)
-              For i1 = 1 ti Tope
-                GrabarTrack ¿'
-              Next i1
+             ' For i1 = 1 ti Tope
+             ' Next i1
            EndIf
           MenuNew=0           
           carga=1
@@ -1387,6 +1386,12 @@ Print #1,"1060 abrirRoll=0 entro"
               If Cplay = 0 And Play=0 And Playb=0 And MaxPos > 1 Then
                  CPlay=1
                  If CANCIONCARGADA Then
+                         If play=1 Or playb=1 Or Cplay=1 Then
+                            CONTROL1=1 ' DETIENE EL PLAY VEREMOS
+                            playloop=0
+                            Sleep 2
+                         EndIf 
+
                     Print #1,"USANDO PLAYCANCION"
                     thread1 = ThreadCall  playCancion(Track())
                     

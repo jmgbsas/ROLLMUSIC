@@ -48,12 +48,16 @@
              extremo superior del Grafico de RollMusic (subir para arriba hasta que aparesca la escala)
 
     III) USO: (ventana Roll Grafica)
-    0) Ante todo para desarrollar se muestran variables al Pulsar [Edicion], en ese estado y en cualqueir otro
-         si quiero volver al menu inicial Archivo,Edicion,Ver,Pista,Reproducir etc....simplemente dar un click 
-         en la cinta celeste de arriba en su parte mas derecha entre la mitad y casi hasta el final antes de 
-         los botones. rojo, amarillo y verde...Recordar que Opciones se abre pulsando ALT y ubicando el mouse
-         encima del label . 
-         
+    0) Consideraciones generales:
+       Ante todo para desarrollar se muestran variables al Pulsar [Edicion], en ese estado y en cualqueir otro
+       si quiero volver al menu inicial Archivo,Edicion,Ver,Pista,Reproducir etc....simplemente dar un click 
+       en la cinta celeste de arriba en su parte mas derecha entre la mitad y casi hasta el final antes de 
+       los botones. rojo, amarillo y verde...Recordar que Opciones se abre pulsando ALT y ubicando el mouse
+       encima del label . 
+       Al abrir una seleccion de puerto port(MIDI-OUT), instrumentos o patch por orden ALfa o numerico, o canales  
+       midi , apareceran [] vacios sin seleccionar y [x] seleccionado, antes de seleccionar uno nuevo, se debe 
+       deseleccionar el anterior dandole click al que tenga [x] para apasarlo a [] y luego buscar el nuevo
+       hacicednolo pasar de [] a [x]. De todos modos solo toma el cambio si la ultima accion dejo una x.
     1) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
     2) El espaciado entre lineas se puede cambiar.
     3) Trasponer todo: ALT-T habilita la trasposicion, Q la deshabilita.

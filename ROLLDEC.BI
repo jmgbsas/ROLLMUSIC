@@ -534,7 +534,7 @@ Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 
 Dim Shared As String nombreArchivo, TCompas,menuOldStr
 
-Dim Shared As UByte Vfuerte=70,Vsemifuerte=60,Vdebil=50
+Dim Shared As UByte Vfuerte=120,Vsemifuerte=100,Vdebil=80
 TCompas ="4/4"
 'Dim Shared As Integer MaxPosTrack(0 To 32) ' cada track tendra su max pos
 'Dim Shared As Integer posnTrack(0 To 32) ' cada track tendra su posn
