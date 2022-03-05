@@ -542,7 +542,7 @@ For i1=1 To cnt
        ' busca la proxima dur 
  '      print #1,"pasoCol(i1).i1 ",pasoCol(i1).i1 
  '      print #1,"nj ",nj
-       If CANCIONCARGADA Then
+       If CANCIONCARGADA =TRUE Then
   '        print #1,"AOD: CANCIONCARGADA",
           durj = Track(pis).trk(nj, pasoCol(i1).i1 ).dur
   '        print #1,"durj ",durj
@@ -938,7 +938,7 @@ For i1=1 To cnt
  '        print #1, "FOR 16:AOFFD:retardo tf ";tf
          If TF > 0 Then ' usamos el old_time-on que venia de antes
            duracion old_time_on, tf
-           If CANCIONCARGADA Then
+           If CANCIONCARGADA =TRUE Then
              If Track(pis).trk(jply+1, pasoCol(i1).i1 ).dur > 0 And _
                 Track(pis).trk(jply+1, pasoCol(i1).i1 ).dur <= 181 Then
  '             print #1,"FOR 17:AOFFD: ligado OFF==> i1 ";i1;" AcordeOffDistintos: notapiano:", pasoCol(i1).notapiano;" "; figura(Roll.trk(pasoCol(i1).i1 , jply+1).dur)
@@ -1089,7 +1089,7 @@ Dim k1 As Integer
         End
 
       Case RTMIDI_ERROR_DRIVER_ERROR
-        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!
+        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
         Close
         End
 
@@ -1315,9 +1315,9 @@ EndIf
         'print #1,"PALL 10:Notapiano ",Notapiano
 ' >>>>>>>>>>>>>>>CANAL MIDI y POR SALIDA >>>>>>>>>>>>>>>>>>>>>>>>        
          pasoCol(cnt).canal=pmTk(0).canalsalida ' 12-02-2022 canal en pasoCol
-         Print #1,"pasocol guarda canal, pista --> ",pasoCol(cnt).canal," 
+         Print #1,"pasocol guarda canal, pista --> ",pasoCol(cnt).canal, 
          pasoCol(cnt).port=pmTk(0).portout
-         Print #1,"pasocol guarda port , pista --> ",pasoCol(cnt).port,"   
+         Print #1,"pasocol guarda port , pista --> ",pasoCol(cnt).port   
       
  ' >>>>>>>>>>>>>>>CANAL MIDI >>>>>>>>>>>>>>>>>>>>>>>>         
        
@@ -1349,7 +1349,7 @@ EndIf
           AcordeIguales pasoCol(),cnt,cntold,vel,tiempoDur,Roll,velpos,0,0
           pasoCol(cnt).notapianoOld    = Notapiano             
           Case Is > 1
-       print #1,"case is > 1
+       print #1,"case is > 1"
             If iguales=1 And distintos=0  Then
                 TipoAcorde=2 ' iguales
   '              print #1,"cnt ";cnt;" call Acordeiguales "
@@ -1682,11 +1682,11 @@ print #1,"-----------------------------------------"
  ''Sleep segun duracion o Timer de la q mas dura o para cada uno
       ' tiempoPatron input al redimsub
    ' print #1,"i=NB=";i," maxdur=";maxdur;  
-    If maxdur > 0 And maxdur <= 182 Then
+ '   If maxdur > 0 And maxdur <= 182 Then
       ' print #1, figura(maxdur)
-    Else 
+ '   Else 
       ' print #1, "No se puede mostrar"  
-    EndIf   
+ '   EndIf   
     
   ''''   duracion (maxdur)
 '''' DURACION  
@@ -1779,7 +1779,7 @@ finplay=1
 'https://freebasic.net/forum/viewtopic.php?f=14&t=26725
 End sub
 Function restar (notaRoll As Integer) As Integer
-' sale Notapiano tambien sale la octava -> restar(i1) +1 
+' sale Notapiano dsde el nR indice vector,tambien sale la octava -> restar(i1) +1 
 Select Case notaroll
    Case 0 To 11
      restar=0
@@ -1805,6 +1805,7 @@ Select Case notaroll
 End Select
 
 End Function
+
 Function SumarnR (notaPiano As Integer) As Integer
 ' dado la NotaPiano encuentro nR el indice del Vector Roll de visualizacion
 ' puedo devolver la octava tambien
@@ -2539,7 +2540,7 @@ Next i
        EndIf      
       ' guardar si es > 0 ON, notapiano,vol,pan,pb,inst y guargar tick=0
        Print #fs,posn;",";"ON,";Track(ntk).trk(posn,I).nota;",";Track(ntk).trk(posn,I).vol; ","; _
-           Track(ntk).trk(posn,I).inst;",";Track(ntk).trk(posn,I).tick;","; _
+           Track(ntk).trk(posn,I).nnn;",";Track(ntk).trk(posn,I).tick;","; _
            (Pesodur(Track(ntk).trk(posn,I).dur)/d7)*128;",";Track(ntk).trk(posn,I).dur 
 
 
@@ -2550,4 +2551,3 @@ Next i
 'luego
 
 End Sub
-

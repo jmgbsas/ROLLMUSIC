@@ -103,11 +103,10 @@ Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, SelGrupoNota =0,
 Dim Shared as ubyte  DUR,nota,notasInsertadas (1 to 1500),notacur
 Dim Shared As String t,t2
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert, cursormove
-Dim shared As integer Penta_y, indice, posicion=0,posicionOld=0, espacio,posn=0,cursorHori
+Dim shared As integer Penta_y, indice, espacio,cursorHori
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
-Dim shared As Integer MaxPos=2,ntk=0,CPlay=0, guardopos=0,ntktab=0 
 Dim Shared As Integer ers, borrapos=0,comienza=0, acordeNro=0  
 Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 
@@ -593,7 +592,7 @@ Type poli Field=1 ' para guardar la secuencia
  vol As  UByte =0 ' volumen
  pan As  UByte =0 ' paneo
  pb  As  UByte =0 ' pitch bend
- inst As UByte =0' instrumento para cada nota podra ser distinto
+ nnn As UByte =0' se usa para escala canal etc 
  tick As ubyte =0' 128 tiene la redonda *1,75 segun pesoDur, 1 la cuartifusa o garrapatea todavia no la uso
 ' posn As Integer =0' de roll todavia no lo uso para generar secuencia
  acorde  As ubyte =0 ' 1 a 12 , son el se hara el sort    
@@ -672,6 +671,7 @@ Dim Shared As String grado_inicial(1 To 24)
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
 'Dim Shared As Integer lim2=12, ctres=CantTicks
+Declare Sub calcCompas( ByRef j As Integer,Roll As inst)
 
 Dim Shared As Integer lim2=12,mel_undo_k=0,lim3=25,cnt_acor=0,ig=0
 Dim Shared As Boolean Vaciodur=FALSE
@@ -731,7 +731,7 @@ Dim Shared rmerr As Integer
 
 Dim Shared cm As cairo_t  Ptr
 Dim Shared c3 As cairo_t  Ptr
-Dim Shared As Integer stride, IhWnd,Mhwnd,Style,desktopwidth,desktopheight
+Dim Shared As Integer stride, IhWnd,Mhwnd,Style,desktopwidth,desktopheight,creapista=0
 Dim Shared comienzo As Integer = 0
 'ScreenControl  SET_DRIVER_NAME,"GDI"
 Dim Shared As hWnd hwnd,hwndMenu 
@@ -774,7 +774,7 @@ Dim Shared ANCHO3div4 As Integer
 '----------------------------
 Dim Shared  As String ProgError(0 To 17)
 Declare Sub PlayCancion(Track() As sec)
-Declare Sub TrackaRoll (Track() As sec, byref ntk As Integer, Roll As inst)
+Declare Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst)
 Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
 Declare Sub ReCalCompas(Roll As inst)
 Declare Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As ubyte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As integer)
@@ -788,13 +788,17 @@ Common Shared As hwnd hwndC, hwndListBox
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA 
 Common Shared As string pathdir,nombre
 common Shared As String NombreCancion,NombrePista
-Common Shared As Integer cargaCancion, pid1
+Common Shared As Integer cargaCancion, pid1,clickpista',pistacreada
 Common Shared As cairo_t  Ptr c, c2
 Common Shared surface As Any Ptr
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx
 Common Shared As ubyte patchsal
+Common Shared As Integer  posicion,posicionOld,posn
+COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab
+ MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0
+ posicion=0:posicionOld=0:posn=0
 ''patchsal=Roll.trk(1,1).inst
 
 'Common Shared  midiin As   RtMidiInPtr

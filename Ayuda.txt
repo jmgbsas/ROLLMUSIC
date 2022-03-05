@@ -230,15 +230,13 @@
         (Otra forma podria ser en el futuro, partir pantalla y editar 2 track en simultaneo, en una sola 
         pantalla grafica del Roll.)
         Se puede pasar entre tracks simplemente con el tabulador  o clickeando  la pista en la lista en Control. 
-       Al clickear la lista de Control por una pista inmediatamente se debe dar click  sobre el grafico. 
-       De esa forma responde bien, si se da 2 o 3 click sobre distintas pistas no cambiara en el grafico
-        por mas que se de ckick al final. O sea siempre se debe dar click en lista seguido de click en el grafico. 
-        No se ha conseguido el cambio  de focus a la ventanta del grafico que es un thread distinto. 
+        No se ha conseguido el cambio  de focus a la ventanta del grafico que es un thread distinto, pero ya al dar click
+       en la lista cambia en el grafico auqneu no ese en el foco.
         Notas desarrollo (No se puede cargar un track en el menú del Grafico y 
         darle Reproducir en la GUI por consistencia solo reproducimos en Roll Gráfico, el 
         reproductor en Control es solo para la cancion. Sin embargo el grafico asociado 
         a Control podra reproducir canciones con la barra espaciadora. Para reproducir el Track
-        de cancion solamente, dar Ctrl-clik en Reproducir del menu del grafico.- 
+        de cancion solamente, dar Ctrl,no hace falta click,  solo posicionarse sobre [Reproducir] ,  del menu del grafico.- 
         Sin cancion cargada, la barra espaciadora tambien reproduce el track cargado.
         Controlar otras instancias o aplicaciones mediante midi creo será
         más facil que usar sockets(¿? cual sera mas facil y eficiente ? probaremos), 

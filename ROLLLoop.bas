@@ -46,7 +46,7 @@ Dim As String t2="",t3="",t4=""
 
  Penta_y = BordeSupRoll + 14 * ( inc_Penta ) *( nro -1)
 '--------------------------
- t=" ESCALA: "+ UCase(tipoescala_inicial) + " [" +cadenaes_inicial +"] 
+ t=" ESCALA: "+ UCase(tipoescala_inicial) + " [" +cadenaes_inicial +"] "
   cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - inc_Penta)
   cairo_show_text(c, t)
   t= ""
@@ -321,7 +321,7 @@ Dim As String t2="",t3="",t4=""
     '  print #1," CREAPENTA t  DUR: ";indf;" figura ";figura(indf); " semitono: "; semitono
     'EndIf
     ' puede ser aca CantTicks pro MaxPos
-    If n >0 And n <= MaxPos  Then '''''CantTicks Then +1 para ver mas el fin
+    If n >0 And n < MaxPos  Then '''''CantTicks Then +1 para ver mas el fin
     'print #1,"lugar ",14
        If Compas(n).Posi = n  Then ' ahi hay un corte un nuevo compas
     ' print #1,"lugar ",15
@@ -345,16 +345,16 @@ Dim As String t2="",t3="",t4=""
 
     cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono +1)* inc_Penta - 6)
     ic += 1
-   Else ' revisar es extraño que funcione porque n esta dentro del tramo de arriba  Maxpos-1 < Maxpos zas
-      If n= MaxPos-1 Then ' indicador de final de secuencia
-         cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
-         cairo_line_to(c,gap1 + (ic ) *anchofig , Penta_y + 12 * inc_Penta )
-         t=Str("FIN")
-         cairo_show_text(c,t)
-         cairo_move_to(c,gap1 + (ic ) *anchofig +anchofig , Penta_y)
-         cairo_move_to(c,gap2 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta )
+'   Else ' revisar es extraño que funcione porque n esta dentro del tramo de arriba  Maxpos-1 < Maxpos zas
+'      If n= MaxPos Then ' indicador de final de secuencia
+         'cairo_move_to(c,gap1/4 + (ic ) *anchofig , Penta_y)
+'         cairo_move_to(c,gap1/4 + (ic ) *anchofig , Penta_y + 12 * inc_Penta )
+'         t=Str("*")
+'         cairo_show_text(c,t)
+        ' cairo_move_to(c,gap1 + (ic ) *anchofig +anchofig , Penta_y)
+        ' cairo_move_to(c,gap2 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta )
         
-      EndIf  
+'      EndIf  
 
 
   
@@ -772,7 +772,7 @@ If cargacancion=1 Then
  Print #1,"4 ROLLLOOP ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion
 EndIf
 If ubiroll > 0 Then
-   Print #1,"cargo archivo desde rollLoop
+   Print #1,"cargo archivo desde rollLoop"
    nombre = titulos(0)
    Print #1,"nombre",nombre
    Print #1,"titulo(0) ",titulos(0)
@@ -1085,9 +1085,9 @@ Do
 ' 23-02-2022, lo q debo hacer es no permitir entrar si se esta usando
 '  playAll  play=0 y lo mismo en PlayAll no usar PlayCancion si esta
 ' ejecutando PlayAll de unsa sola pista...
-''''If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA  And play=0 And playb=0  Or cargaCancion=1 Then
 
-If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA And play=0 Or cargaCancion=1 Then
+
+If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA And play=0 Or cargaCancion=1 Or clickpista=1 Then
    cargaCancion=0 ' para que no entre mas luego de cargada la cancion
 
    Erase mel_undo, undo_acorde, undo_kant_intervalos
@@ -1097,9 +1097,14 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA And play=0 Or cargaCancio
    nota=0
    dur=0
    print #1,"1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
-   ntk = ntk + 1
+   If clickpista=1 Then
+     Print #1,"no incrementea ntk"
+     clickpista=0
+   Else
+     ntk = ntk + 1
+   EndIf
    print #1,"2- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos  
-   If ntk > 32 Then
+   If ntk > 32 Or ntk > tope Then
      ntk=1 
      print #1,">32- 1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos     
    EndIf
@@ -1114,7 +1119,7 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA And play=0 Or cargaCancio
    If nombre=""  Then ' evita revisar track vacios
      Do While nombre=""
         ntk=ntk+1
-        If ntk>32 Then
+        If ntk>32 Or ntk > tope Then
            ntk=1
            nombre= titulos(ntk)
   print #1,"4 - NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos    
@@ -1122,7 +1127,8 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA And play=0 Or cargaCancio
         EndIf
  
         nombre= titulos(ntk)
-    Loop
+     Loop
+     posicion=1
      MaxPos=pmTk(ntk).MaxPos
      posn=pmTk(ntk).posn
      desde=pmTk(ntk).desde
@@ -1132,7 +1138,7 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA And play=0 Or cargaCancio
      portout=pmTk(ntk).portout 'solo debe servir para play de pista
      notaold = CInt(pmTk(ntk).notaold)
      CantTicks=pmTk(ntk).Ticks
-     patchsal=Track(ntk).trk(1,1).inst
+     patchsal=Track(ntk).trk(1,1).nnn
 ' ajusto escala principal durante la conmutacion para cada track visualizado con TAB     
      notaescala_num_ini=CInt(pmTk(ntk).notaescala) '13-01-2022
      tipoescala_num_ini= CInt(pmTk(ntk).tipoescala) '13-01-2022
@@ -1657,7 +1663,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
       print #1,"SPACE call play"
         If  MaxPos > 1 Then 
          '''Dim tlock As Any Ptr = MutexCreate()
-         If CANCIONCARGADA Then
+         If CANCIONCARGADA = TRUE Then
              Print #1,"USANDO PLAYCANCION"
              playb=1       
             thread2 = ThreadCall  playCancion(Track())
@@ -2078,12 +2084,13 @@ EndIf
 ' al usar iniciodeLectura, pero eso sí, con inicio congelaba el movimiento
 ' del roll ante una entrada de nota hasta el próximo incremento de pantalla
 ' SOLO SEUSAPARAINGRESO DE NOTAS NUEVAS ..VERIFICANDO JMG
-
 If COMEDIT = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 And nota <=182 Then ' 182 entra el fin de archivo 
  'print #1,"--------------------------------------------------------------"
  'print #1,">>>START NUCLEO-COMPAS VECTOR posn: "; posn; "suma:";acumulado
  'print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;_
  '   " nota: ";nota; " figura: ";figura(DUR)
+
+
 Print #1,"entro nota ",nota 
  
  posn=1+InicioDeLectura
@@ -2116,7 +2123,7 @@ Print #1,"entro nota ",nota
    Do ' nota es semitono ahora va de 0 a 11 deborestr 1 a nota
 '  Print #1,"Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota ",Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota
     If Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0 Or Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 182 Then
-     posicion=posn
+     'posicion=posn
      '182 el fin de archivo lo puedo pisar para seguir la secuencia
      '      print #1, "ingreso a NUCLEO POSICION=POSN", posicion
      Exit Do
@@ -2124,6 +2131,7 @@ Print #1,"entro nota ",nota
    
 
     posn = posn + 1
+    posicion=posn '05-03
 '---control barrido de pantalla columna
     If (posn > NroCol + InicioDeLectura) Then
      InicioDeLectura=InicioDeLectura + NroCol
@@ -2150,7 +2158,7 @@ Print #1,"entro nota ",nota
       print #1,"REDIM EN NUCLEO DE TRACK NTK= ", ntk
       ReDim Preserve (Track(ntk).trk)(1 To CantTicks,1 To lim3)
     EndIf
-    pmTk(ntk).Ticks=CantTicks
+   
 
 
    ' ESTO ME UBICA EN QUE RENGLON DE LA OCTaVA ESTOY SN USAR EL MOUSE
@@ -2160,12 +2168,12 @@ Print #1,"entro nota ",nota
    nR=(12-nota) + (estoyEnOctava -1 ) * 13 
    PianoNota= nR - restar (nR)
    print #1,"' cargo TRACK nro, PianoNota ",ntk,PianoNota 
-   Track(ntk).trk(posn,1).nota= PianoNota ' de done la saca? creapenta ya se ejecuto?
+   Track(ntk).trk(posn,1).nota= PianoNota ' 
    
    Roll.trk(posn+1,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
    
    'cargo TRACK
-   Track(ntk).trk(posn,1).dur= 182
+   Track(ntk).trk(posn+1,1).dur= 182
 
    If notaOld > 0 And notaOld <> nota  Then
   '  print #1,"Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota"; _
@@ -2174,7 +2182,7 @@ Print #1,"entro nota ",nota
     Roll.trk(posn,(12-notaOld  +(estoyEnOctava    -1) * 13)).dur = 0 
     Roll.trk(posn,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota = 181
     Roll.trk(posn,(12-notaOld  +(estoyEnOctava    -1) * 13)).nota = 181
-   
+ 
     
  '   print #1,"(notaOld +(estoyEnOctava  -1) * 13)"; notaOld +(estoyEnOctava  -1) * 13
  '   print #1,"posn ";posn
@@ -2221,7 +2229,7 @@ Print #1,"entro nota ",nota
        EndIf
      Next i
    Next noct
-   ' para track permitir acordes
+  ' para track permitir acordes no tiene sentido!!
    For i=1 To lim2
          If Track(ntk).trk(posn,i).nota = 0 And Track(ntk).trk(posn,i).dur <182    Then
          '   print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
@@ -4517,4 +4525,3 @@ Print #1,"------------------------------------"
   print #1,"------------------------------------"
 
 EndIf
-

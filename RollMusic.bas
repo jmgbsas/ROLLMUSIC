@@ -69,31 +69,31 @@
 '====> clave DEVF (desarrollo futuro, comentarios en lugares apr adessarrollar mas
 ' funcionalidades.)
 ' -------------------------------------------------
-#Define __FB_WIN64__
-#If Defined (__FB_WIN64__) 
-#LibPath "C:\msys64\mingw64\lib"
-#Else
-#LibPath "/usr/lib"
-#EndIf
-#Define EXTCHAR Chr(255)
+#define __FB_WIN64__
+#if defined (__FB_WIN64__) 
+#libpath "C:\msys64\mingw64\lib"
+#else
+#libpath "/usr/lib"
+#endif
+#define EXTCHAR Chr(255)
 
 
 #include "mod_rtmidi_c.bi"
-#Inclib  "rtmidi.dll" 'usa librerias estaticas 
+#inclib  "rtmidi.dll" 'usa librerias estaticas 
 '#Inclib  "rtmidi"  '''uso al dedeisco rtmidi.dll
 #include "fbthread.bi"
-#Include "crt.bi" ' QSORT
+#include "crt.bi" ' QSORT
  
 #define WIN_INCLUDEALL
-#Include Once "windows.bi"
+#include once "windows.bi"
 '#Include Once "/win/commctrl.bi"
 '#Include "crt/stdio.bi"
-#Include "file.bi"
-#Include "fbgfx.bi" ' se carga antes de windows.bi para evitar duplicates..o conflictos
+#include "file.bi"
+#include "fbgfx.bi" ' se carga antes de windows.bi para evitar duplicates..o conflictos
 '#Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
-#If __FB_LANG__ = "fb"
+#if __FB_LANG__ = "fb"
 Using FB '' Scan code constants are stored in the FB namespace in lang FB
-#EndIf
+#endif
 
 ' Nota: algun dia si quiero midifile intentar usar una libreria de C pura 
 ' C:\IT64\AREAWORKAUX\MIDI-LIBRARY\midilib-master\midilib-master\freeBasic
@@ -141,7 +141,7 @@ Common Shared  mensaje As Integer
 '''  end file dialog  
 ' para GTK Gtk:list()
 '#Include Once "crt.bi"
-#Include Once "gtk/gtk.bi"
+#include once "gtk/gtk.bi"
 
 ' This is our data identification string to store data in list items
 Const list_item_data_key ="list_item_data"
@@ -157,13 +157,13 @@ Dim As GLFWwindow ptr  win
 ' ----FIN OPENGL 
 '/
 '===============================
-#Include "ROLLDEC.BI"
+#include "ROLLDEC.BI"
 Dim Shared As Integer pd1, fa1 
 pd1 = GetCurrentProcessId()  
 
 Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As #1
 
-print #1,"start"
+Print #1,"start"
 Print #1,"PID DE ESTE PROCESO ",pd1
 
 
@@ -188,24 +188,24 @@ Print #1,Date;Time
 ''
 '=======================
 '--------------
-#Include "string.bi"
-#Include Once "cairo/cairo.bi"
-#Include "midiinfo.bi"
+#include "string.bi"
+#include once "cairo/cairo.bi"
+#include "midiinfo.bi"
 '==============================
 '#Include "NOTAS.bi"
-#Include "RTMIDIDEC.bi"
+#include "RTMIDIDEC.bi"
 '==============================
-#Include "ROLLCONTROLDEC.bi"
+#include "ROLLCONTROLDEC.bi"
 '=============================
 ' iup start
 ' SOLO PARA WINDOWS LEE MIDI FILES PERO FALTA FUNCIONES PARA GRABAR!!!
 '---> #Include once "foro/fmidi.bi"
-#Include Once "fbthread.bi"
-#Include "foro/window9.bi"
+#include once "fbthread.bi"
+#include "foro/window9.bi"
 
 '#Include "crt/win32/unistd.bi"
 #inclib "ntdll"
-#Include "win/ntdef.bi"
+#include "win/ntdef.bi"
 '#Include "nanosleep/mod_nanosleep.bi"
 '#Include "nanosleep/mod_nanosleep_dll.bi"
 '#Inclib "nanosleep_dll"
@@ -241,11 +241,11 @@ Print #1, "__FB_ARGV__ ",__FB_ARGV__
 Print #1, "__FB_ARGC__ ",__FB_ARGC__
 'Dim direp As ZString  Ptr
 'Dim dires As String
-Common Shared As integer ubirtk, ubiroll
+Common Shared As Integer ubirtk, ubiroll
 Print #1,"__FB_ARGC__ ", __FB_ARGC__
 Dim As Integer com_usarmarco =0
 For ix = 0 To __FB_ARGC__
-  print #1, "arg "; ix; " = '"; Command(ix); "'"''
+  Print #1, "arg "; ix; " = '"; Command(ix); "'"''
 
  If ix=1 Then
   
@@ -261,8 +261,8 @@ For ix = 0 To __FB_ARGC__
 '    pmTk(ntk).desde=desde
    Instancia=1    
  EndIf
- print #1,"ubirtk ",ubirtk
- print #1,"ubiroll ",ubiroll
+ Print #1,"ubirtk ",ubirtk
+ Print #1,"ubiroll ",ubiroll
     'sigue en roolloop principio
  EndIf
  If ix=2 Then
@@ -315,7 +315,7 @@ Sleep 100
 
 
 If desde = 0 And hasta = 0 Then
- print #1,"intervalo no dado usando default!"
+ Print #1,"intervalo no dado usando default!"
  desde => 4  ' 1 3   4 a 8 decia
  hasta => 8  ' 9 7 hasta-1
  'pmTk(ntk).desde=desde
@@ -372,7 +372,7 @@ param.ubiroll=ubiroll
 param.ubirtk=ubirtk
 
 
-Dim  AS Integer  ctres=1 ' 5 octavas por track
+Dim  As Integer  ctres=1 ' 5 octavas por track
 Dim As Integer lim1 
 lim1=1 ' lim3 vale 25 se reserva el ultimo par avalores de control, no alcanza
 ' 26-01-2022 la zona de control debe ser 1 octava mas o sea lim3=25
@@ -451,7 +451,7 @@ End
 Dim As String driver
 
 posmouseOld = 0:posmouse = 0
-COMEDIT = FALSE:resize = FALSE
+COMEDIT = False:resize = False
 po = @octaroll
 *po = hasta -1 ' test 09-09-2021 
 s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0:s8=0
@@ -563,7 +563,7 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 '-----
 ' ancho de figura,separaciondelasmismas en pantalla anchofig
 '' ---------------  LOOP 1 ---------------
-' On Error GoTo errorhandler
+ On Error Goto errorhandler
 ' enviamos esto a una sub ROLLLoop, creaPenta esta al principio y no tiene declare
 ' el declare falla si se usa con este tipo de vector udt no se puede usar declare
 'stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
@@ -581,7 +581,7 @@ midiout(0) = rtmidi_out_create_default()
 
 'print #1,"PLAYALL---------->>>>>>>"
 portsout =  port_count (midiout(0))
-Dim i1 As integer
+Dim i1 As Integer
 'Print #1, "portsin  "; portsin
 Print #1, "portsout "; portsout
 
@@ -589,7 +589,7 @@ ReDim  listOutAbierto (0 To portsout)
 
 listOutAbierto(0)=1
 
-Dim Shared nombreOut(0 To portsout) As ZString ptr
+Dim Shared nombreOut(0 To portsout) As ZString Ptr
 Dim Shared nombreIn (0 To portsin) As ZString Ptr
 
 'Dim i1 As integer
@@ -601,9 +601,9 @@ Print #1, "portsout "; portsout
 ' Print #1,"creado default ",i
 'Next i
 
-For i1 = 0 to portsout -1 
+For i1 = 0 To portsout -1 
     nombreOut(i1) = port_name(midiout(0), i1)
-    print #1, *nombreOut(i1)
+    Print #1, *nombreOut(i1)
 Next i1  
 Dim As Long porterror
 open_port midiout(0),0, nombreOut(0)
@@ -646,7 +646,7 @@ open_port midiout(0),0, nombreOut(0)
         End
 
       Case RTMIDI_ERROR_DRIVER_ERROR
-        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!
+        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
         Close
         End
 
@@ -682,14 +682,14 @@ listOutAbierto(0)=0
 
 '/
 '========================== 
-#Include "RTMIDISUB.bas"
-#Include "rolltracks.bas"
-#Include "ROLLSUB.BAS"
+#include "RTMIDISUB.bas"
+#include "rolltracks.bas"
+#include "ROLLSUB.BAS"
 '===========================
  Dim As Integer MenuFlag=0, LoopFlag=0 
 
 '========================== 
-#Include "ROllLoop.BAS"
+#include "ROllLoop.BAS"
 '========================== 
 ' aca puedo llamar a varios thread 1 por vez segun el instrumento editado
 ' o sea 1 vector de roll distinto para casa Thread o llamar a cada Vector
@@ -697,7 +697,7 @@ listOutAbierto(0)=0
 ' ver mas de 1 pero apra eso deberia llamar a roll music mas de una vez 
 ' y eso lo haria desde call roll 
 '----------------
-#Include "ROLLMIDI.BAS"
+#include "ROLLMIDI.BAS"
 
 '----------------
 
@@ -783,10 +783,10 @@ Dim hnro As Integer
 
  
 '------------
-Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
+Static As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 If ix < 3 Then ' rollmusic CON control
   instancia=0
-  hwndC = OpenWindow("RollMusic Control ver 0.4.5.0",10,10,anchoK*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
+  hwndC = OpenWindow("RollMusic Control ver 4.5.3.1",10,10,anchoK*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
 ''UpdateInfoXserver()
   hwndListBox= ListBoxGadget(3,10,10,240,650,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
 
@@ -971,7 +971,7 @@ EndIf
 If myold > 0 Then
   If ALTO = nalto Then
     ALTO= nalto -myold 
-  endif
+  EndIf
 
  AltoInicial=ALTO
  myold=0
@@ -986,50 +986,55 @@ Print #1,"DESPUES ANCHO , ALTO ", ANCHO, ALTO
 '''mxold=0:myold=0
 
 abrirRoll=0
-
-
+'pistacreada=0
 
 
 Do
-  COMEDIT = FALSE
+  COMEDIT = False
 param.titulo ="RollMusic Ver 0.4.4.0"
 Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
-Print #1,"iniio lbound roll.trk ", lBound(param.Roll.trk,2)
+Print #1,"iniio lbound roll.trk ", LBound(param.Roll.trk,2)
 Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
 
-  If abrirRoll=1 And cargacancion=1  Then
-    Print #1," ENTRA A CARGAR PISTAS  cargaCancion = ",cargaCancion
-     CargarPistasEnCancion ()
+  If abrirRoll=1 And cargacancion=1 Then
+     abrirRoll=0
+     Print #1," ENTRA A CARGAR PISTAS  cargaCancion = ",cargaCancion
+      CargarPistasEnCancion ()
     Print #1,"CARGAR PISTAS cargacancion = ",cargaCancion 
-     CANCIONCARGADA=TRUE
-     ROLLCARGADO=FALSE
+     ''CANCIONCARGADA=TRUE
+     ROLLCARGADO=False
      '''lo hace tab-cargaCancion=0
      param.encancion=1
      
    If pid1=0 And ix < 3 Then
       pid1=pd1
    EndIf
-  Print #1,"cALL rOLLLOOP I) cargaCancion ES 1 SI O SI ",cargaCancion 
+  Print #1,"cALL rOLLLOOP I) cargaCancion ES 1 SI O SI ",cargaCancion
+   If CANCIONCARGADA=True  Then
     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+   Else     ''''''''RollLoop ( param) '<--con esto anda
+     cargacancion=0
+   EndIf 
  Print #1,"ENTRA A CARGAR PISTAS cargaCancion ES 1 SI O SI ",cargaCancion   
     ''''cargacancion=0 esto me ponia en cero antes que lo use el thread!!!!
     ''' RollLoop(param)
     ''Sleep 200 ' NO HACE FALTA AHORA sin este retardo no le da teimpo al thread de cargar a Roll
   Else
     If abrirRoll=1 And cargacancion=0 Then
-       CANCIONCARGADA=FALSE
+       CANCIONCARGADA=False
        ''cargaCancion=0  
        param.encancion=0 
        Print #1,"cALL rOLLLOOP II) "
        threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+       abrirRoll=0
     EndIf
   EndIf
 
 
      
   If ix < 3 Then 
-
+    instancia=0
 'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
  ''win = glfwCreateWindow(800,600,"Track OPENGL" )
 '' Dim ta As Any Ptr = threadcall correwin(win,ta)
@@ -1041,21 +1046,22 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
 'StopDraw
      Select Case EVENTC 
        Case EventMenu 
-         Select case EventNumber
+         Select Case EventNumber
            Case 1006   ' CARGAR CANCION
              'cargamso todos los tracks
              ' ok anda bien, una vez cagados se permuta en memoria con TAB
              ' o haciedno click en la lista
                nombre=""
-              ROLLCARGADO=FALSE
+              ROLLCARGADO=False
              Sleep 20
              If NombreCancion > "" And cargaCancion=0 Then
                 NombreCancion = ""
                 param.encancion=0
+                'pistacreada=0
                 ResetAllListBox(3)
                 Resetear (pmTk()) 
                cargarDirectorioCancion(NombreCancion)
-               CANCIONCARGADA=FALSE
+               CANCIONCARGADA=False
                ntk=0
                cargaCancion=1
                CargarPistasEnCancion ()
@@ -1065,13 +1071,14 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
              If NombreCancion = "" Then
                 nombre=""
                 ntk=0
-                CANCIONCARGADA=FALSE
+               ' pistacreada=0
+                CANCIONCARGADA=False
                 cargarDirectorioCancion(NombreCancion)
                 param.encancion=1
                If abrirRoll=2 Then ' ver rollloop roll esta cargado vengo a cargar cancion de nuevo
                ' por ejemplo tenia solo un roll abierto
                   CargarPistasEnCancion ()
-                  CANCIONCARGADA=TRUE
+                  CANCIONCARGADA=True
                   param.encancion=1
 
                EndIf
@@ -1083,29 +1090,28 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                 Print #1,"SALE A CARGAR rOLL 1ERA VEZ ABRIRROLL=1 EXIT DO"
                 Exit Do                 
              EndIf
-             print #1,"termino 1006 va a abrir Roll"
-           Case 1007 ' grabar cancion
-           If CANCIONCARGADA Then
+             Print #1,"termino 1006 va a abrir Roll"
+           Case 1007 ' grabar cancion bosquejo
+' 26-02-2022 desarrollo           
+           If CANCIONCARGADA =True  Then
              Dim As String nombreg
-            ROLLCARGADO=FALSE 
+            ROLLCARGADO=False 
            If NombreCancion > ""  Then
-              GrabarRollaTrack(0)
-             ' For i1 = 1 ti Tope
-             ' Next i1
+               GrabarCancion()
            EndIf
           MenuNew=0           
           carga=1
               
            EndIf
            Case 1010
-           print #1,"entro a 1010 Cargar Pista externa a cancion"
-           ROLLCARGADO=FALSE 
+           Print #1,"entro a 1010 Cargar Pista externa a cancion"
+           ROLLCARGADO=False 
             Dim As String nombreg
             
             getfiles(file,myfilter,"save")
             nombreg=*file.lpstrFile
             If nombreg = "" Then
-               print #1,"exit select por nombreg vacio "
+               Print #1,"exit select por nombreg vacio "
                Exit Select 
             Else
                nombre=nombreg   
@@ -1182,7 +1188,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                 
            Case 1040 ' seleccion de instrumento por orden Alfabetico
                selInstORdenAlfa (instru)
-                If CANCIONCARGADA Then
+                If CANCIONCARGADA =TRUE  Then
                Else
                   'midisal = midiout(portout)
                   ntk=0
@@ -1196,11 +1202,11 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
              ''  EndIf
                If instru=0 Then instru=1 EndIf
                 Roll.trk(1,NA).inst= CUByte(instru)
-                Track(ntk).trk(1,1).inst=CUByte(instru)
+                Track(ntk).trk(1,1).nnn=CUByte(instru)
               ' grabar la pistacomo en 1011
             print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
-              If CANCIONCARGADA Or TRACKCARGADO Then
+              If CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE Then
                  If NombreCancion > ""  And MAxPos > 1 Then
                     GrabarRollaTrack(0)
                  EndIf
@@ -1218,7 +1224,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                 
            Case 1050 ' seleccion de instrumento por orden Numerico
                selInstORdenNum (instru)
-               If CANCIONCARGADA Then
+               If CANCIONCARGADA =TRUE Then
                Else
                  ' midisal = midiout(portout)
                  ntk=0
@@ -1231,12 +1237,12 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
        '        EndIf
 
                Roll.trk(1,NA).inst= CUByte(instru)
-               Track(ntk).trk(1,1).inst=CUByte(instru)
+               Track(ntk).trk(1,1).nnn =CUByte(instru)
               ' grabar el track 
             print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
 
-              If CANCIONCARGADA Or TRACKCARGADO Then
+              If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
                  If NombreCancion > ""  And MAxPos > 1 Then
                     GrabarRollaTrack(0)
                  EndIf
@@ -1260,7 +1266,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                '   posn=0
                   instruOld=instru
                   Roll.trk(1,NA).inst= CUByte(instru)
-                  Track(ntk).trk(1,1).inst=CUByte(instru)
+                  Track(ntk).trk(1,1).nnn= CUByte(instru)
                   'ChangeProgram ( CUByte (instru) , 0)
                'EndIf   
                If abrirRoll=0 Then
@@ -1279,16 +1285,16 @@ Print #1,"1060 abrirRoll=0 entro"
                   Print #1,"sale de 1060 abrirrol,reiniciar, cargacancion ", abrirRoll, reiniciar, cargacancion
                   Exit Do
                EndIf
-           Case 1061
+           Case 1061 ' 02-02-2022 error al crear 2da pisto o 3era etc pista nueva
                print #1,"En 1061 crear pista en cancion con lo elegido"
-               
-               ntk = CountItemListBox(3)+ 1
 
+               ntk = CountItemListBox(3)+ 1
+               Print #1,"creando Pista nto ",ntk
                If ntk > 32 Then
                   print #1,"exit select ntk> 32"
                   Exit Select
                EndIf 
-               print #1,"ntk creado pista nro ", ntk
+
                If instru=0 Then 
                   instru=1
                EndIf
@@ -1296,7 +1302,7 @@ Print #1,"1060 abrirRoll=0 entro"
                NombrePista=RTrim(Mid(NombreInst(instru), 1,21))
                Print #1, "NombrePista en 1061 sin nro track ",NombrePista
                print #1,"porque se resetea? pathdir",pathdir
-               If CANCIONCARGADA Or NombreCancion <> "" Then
+               If CANCIONCARGADA=true Or NombreCancion <> "" Then
                  ' armó el nombre de pista nuevo, pero permite modicifar 
                
                   EntrarNombrePista(NombrePista)
@@ -1308,36 +1314,50 @@ Print #1,"1060 abrirRoll=0 entro"
                 
                'EndIf
                print #1, "NombrePista en 1061",NombrePista
-              AddListBoxItem(3, NombrePista)
-              
+               AddListBoxItem(3, NombrePista)
+               
               ' crear pista en disco 
                'MaxPos=2
                nombre= NombreCancion+"\"+NombrePista+".rtk"
                print #1,"nombre en 1061",nombre
+               CantTicks=4000
+               Print #1,"CantTicks ",CantTicks
+               
                ''' para cuando las pistas esten juntas en un archivo ->ZGrabarTrack(ntk)
                ReDim (Roll.trk ) (1 To CantTicks,NB To NA)
+               ' EL TRACK SE CREA AL GrabarRollaTrack y debe tener CantTicks
+                
                titulos(ntk)=nombre
                pmTk(ntk).desde=desde
                pmTk(ntk).hasta=hasta
                pmTk(ntk).NB=NB
                pmTk(ntk).NA=NA                  
-               pmTk(ntk).MaxPos=1
+               pmTk(ntk).MaxPos=2
                pmTk(ntk).posn=0
                pmTk(ntk).notaold=0                  
                pmTk(ntk).Ticks=4000
-               pmTk(ntk).portout=portout
                ' usamos encancion=1 para grabar dentro de la cancion
-               GrabarRollaTrack(0)   
+               GrabarRollaTrack(0)
                NombrePista="" 
                posicion=1
                posn=0
-               MaxPos=1
+               MaxPos=2
                nota=0
                dur=0
-               If abrirRoll=0 Then 
+               tope=ntk
+               abrirRoll=0
+               If ntk=1 Then 
                   abrirRoll=1
-                  Exit Do
+                  cargacancion=0
+                  CANCIONCARGADA=TRUE
                EndIf
+               If ntk>=2 Then
+                 cargacancion=1
+                 abrirRoll=0
+                 CANCIONCARGADA=FALSE
+               EndIf
+               Exit Do                 
+               
 ' FALTA CREAR LA PISTA !!! jmg ERO PUEDO USAR UNA PISTA YA CREADA EN 1011
 ' la graba igual desde roll parece pero debe ser en orden            
            Case 1062
@@ -1385,7 +1405,7 @@ Print #1,"1060 abrirRoll=0 entro"
           '    CONTROL1 = 1
               If Cplay = 0 And Play=0 And Playb=0 And MaxPos > 1 Then
                  CPlay=1
-                 If CANCIONCARGADA Then
+                 If CANCIONCARGADA =TRUE Then
                          If play=1 Or playb=1 Or Cplay=1 Then
                             CONTROL1=1 ' DETIENE EL PLAY VEREMOS
                             playloop=0
@@ -1578,28 +1598,41 @@ Print #1,"1060 abrirRoll=0 entro"
              setgadgettext(4,item)
               
              item=GetListBoxText(3,GetItemListBox(3))
+             Print #1,"item 1580 ",item
              If Len (item) < 24 Then
                item = item + String( 40-Len(item),32)
              EndIf
              setgadgettext(4,item)
              item=Trim(item)
+             Print "item ",item
              If item > "" Then
-                nombre= NombreCancion + "\"+item +".rtk"
-                print #1," NUEVO eventgadget click en lista nombre", nombre
+             '  Dim nombre1 As String
+             '   nombre1= NombreCancion + "\"+item +".rtk"
+             '   print #1," NUEVO eventgadget click en lista nombre", nombre1
               ubirtk=3 ' ahora indice carga desde lista o memoria
              ' No mas de disco  cargarTrack (Track(), ntk) ' este ntk se resuelve dentro de la sub
              ' donde se lo saca del nombre por lotanto devuelve el numero de ntk
              ' despues dela rutina,cargarTrack pone a 0 lineadecomadno=0
              ' pero si quiero volver a disco solo debo resetear ubirtk=0
-                ntk=sacarNtk(item) ' este ntk no sirve para boorar
-                Tracks (ntk , 1,Roll)
+              ntk=sacarNtk(item) ' este ntk no sirve para boorar
+'                Tracks (ntk , 1,Roll) ' copia track a Roll en memoria
+'                 Print #1,"1596 despues Tracks" '<=== ok
+
+         nombre= titulos(ntk)
+         Print #1,"ntk, nombre ",ntk, nombre
+
+'--------------------------------------------------------------
+
+   clickpista=1 ' simula SC_TAB
+ 
+'--------------------------------------------------------------
 ' este ntk sirve para identificar el ntk del arcchivo t dle vector
 ' pero el ntk de la lista es otro vector y al borrar el indice cambia
 ' debo obtener el indice primero                
-'' esta andando con defectos verlos borrado en la lista LBS_WANTKEYBOARDINPUT  
+'' esta andando con defectos verlos borrado en la lista LBS_WANTKEYBOARDINPUT
                 If WM_VKEYTOITEM Then '
                   print #1,"---------->>> APRETO TEcla ",NTK,NombreCancion
-                 If EventKEY = VK_DELETE Then 
+                If EventKEY = VK_DELETE Then 
                  print #1,"---------->>> APRETO DELETE ",NTK,NombreCancion
                   If NombreCancion > "" And ntk > 0  Then
                      borrar=2
@@ -1624,20 +1657,12 @@ Print #1,"1060 abrirRoll=0 entro"
                     'SetGadgetState(3,1) no funca 
                     borrar=0
                   EndIf
-                 EndIf 
-                Else 
+                EndIf 
+ 
            ' aca no debe leer a disco solo conmutar de track en track
-                TrackaRoll (Track(), ntk , Roll ) ' no usa ubirtk
-                Sleep 100
-                print #1,">>> ntk cargado, nombre ",ntk, nombre
-                print #1,"llama a RecalCompas para ntk ",ntk
-                ReCalCompas(Roll)
-                Sleep 20 
-                ''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
-                print #1,"Fin RecalCompas para ntk ",ntk
-                item=""
-                EndIf  
-                print #1," CLICK EN LISTA FIN "
+            EndIf
+                                  
+                Print #1," CLICK EN LISTA FIN "
                   
              EndIf 
 

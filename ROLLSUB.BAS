@@ -1351,7 +1351,7 @@ If nombre=""  Then ' evita revisar track vacios
 Else   
  
 TrackaRoll (Track(), ntk,Roll ) ' no usa ubirtk
-print #1,"Conmutando con TAB >>> ntk cargado, nombre ",ntk, nombre
+print #1,"Tracks  ntk cargado, nombre ",ntk, nombre
 print #1,"llama a RecalCompas para ntk,maxpos, .maxpos ",ntk,maxpos,pmTk(ntk).MaxPos
 ReCalCompas(Roll) 
 print #1,"MAXPOS DESPUES DE RECALCOMPAS ", maxpos, pmTK(ntk).maxpos
@@ -1502,7 +1502,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      ' los 2 vectores deben tener el mismo tamaño ergo si CantTicks
      ' lo agrando trabajo tambien ? mmm no trabajo debe tener el tamaño del disco!
      ' cargamos trabajo datos
-     CantTicks = MAxPos + 500 ' jmg 24-09-2021
+     CantTicks = MAxPos  ' jmg 24-09-2021
      pmTk(0).Ticks=CantTicks
      ntk=0
      CambiarDim(0) ' ya tiene calculo NB y NA Redim Roll y Track con CantTicks
@@ -1571,14 +1571,14 @@ Dim As Integer copiado=0
          Track(ntk).trk(j,ip).vol  => Trabajo (j,i).vol
          Track(ntk).trk(j,ip).pan  => Trabajo (j,i).pan       
          Track(ntk).trk(j,ip).pb   => Trabajo (j,i).pb
-         Track(ntk).trk(j,ip).inst => Trabajo (j,NA).inst
+         Track(ntk).trk(j,ip).nnn => Trabajo (j,NA).inst
          'Print #fs,"notapiano,ntk", Track(ntk).trk(j,ip).nota,ntk,Track(ntk).trk(j,ip).dur
        EndIf
 ' copia datos de escala, esta repetido en cada octava pero bueno....con una sola
  ' copai estarai bien,,,,
       If Trabajo(j,i ).dur= 200  And copiado=0 Then ' solo en 13 copia 1 sola vez ok sigue igual
          
-         Track(ntk).trk(j,13).inst = Trabajo(j,i ).inst ''=CUByte(tipoescala)
+         Track(ntk).trk(j,13).nnn = Trabajo(j,i ).inst ''=CUByte(tipoescala)
          Track(ntk).trk(j,13).vol = Trabajo(j,i ).vol ''= CUByte(notaescala)
 
          Track(ntk).trk(j,13).nota = Trabajo(j,i ).nota ' = 30
@@ -1828,7 +1828,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
      ' Print #1,"en menu nombre ",nombre
    EndIf
    If Len(nombre) > 10  Then
-     muestra="C:\..\" + Right (nombre,60)
+     muestra=Right (nombre,60)
    Else
      muestra =nombre  
    EndIf
@@ -3205,8 +3205,8 @@ Negras por minuto	 tempo
      If instru > 0 Then
        Trabajo(1,NA).inst = CUByte(instru)
      EndIf
-     If CANCIONCARGADA Then ' SELECCION DE ISNTRUMENTO CON CANCION CARGADA
-        Trabajo(1,NA).inst = Track(ntk).trk(1,1).inst
+     If CANCIONCARGADA =TRUE Then ' SELECCION DE ISNTRUMENTO CON CANCION CARGADA
+        Trabajo(1,NA).inst = Track(ntk).trk(1,1).nnn
      EndIf
      graba3(1,1).inst =pmTk(ntk).canalsalida ' el CANAL MIDI 1 A 16 QUE ACA VA DE 0 A 15
 
@@ -3280,6 +3280,7 @@ print #1,"inicia CargaPistasEnCancion"
      If filename = "" Then ' no hay ningu archivo dentro del dir de cancion
         ntk=1
         print #1,"dice que no hay archivos "
+        CANCIONCARGADA=FALSE
         ' NO HAY NADA QUE CARGAR
         Exit Sub
      Else
@@ -3290,7 +3291,9 @@ print #1,"inicia CargaPistasEnCancion"
         print #1, "trabajo con este filename...", filenameOld '[1]AAA.rtk por ejemplo
         Dim cadena As String
         cadena= sacarExtension(filenameOld) ' [1]AAA
-        AddListBoxItem(3, cadena)
+       ''' If pistacreada=0 Then
+          AddListBoxItem(3, cadena)
+       ''' EndIf
         ntk= sacarNtk(filenameold)  ' 1
         If mayor< ntk Then
            mayor=ntk
@@ -3315,7 +3318,7 @@ print #1,"inicia CargaPistasEnCancion"
        tope=mayor  ' el nro tope de la lista
        print #1,"CARGO PISTAS MAXIMA CANTIDAD TOPE=",tope
        CANCIONCARGADA=TRUE
-       ntk=0
+       ntk=1   ' tab le suma 1 pero si creo pistas estria  mal 05-03-2022 ÇÇÇ
 /'       
   ' cargo la pista 1
       ntk=1 ' carga track 1 para mostrarlo
@@ -3345,13 +3348,11 @@ mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0
 End Sub
 
 ' ---------------------------------
-Sub GrabarTrack (ntk As integer) ' NO SE ESTA USANDO pero seria el modelo de GrabarCancion
-' DE MUCHOS TRACKS UN VECTOR, GRABA UNA SOLA OCURRENCIA 
-' por ahroa no se usa para nada , parece que lo probe en un momento
-' pero ahroa siempre grabo con GrabarRollaTrack, asi tomo las modificaciones
-' echas en edicion de Roll. Si no modifico nada de lo cargado, pero 
-' agrego notas nuevas sin modificacion alguna de Cursor u otras cosas
-' podria usar esta sub para grabar...será util al grabar Cancion
+Sub GrabarTrack (ntk As integer) 
+' solo util para Grabar Cancion en sus track independietnes
+' toma todos los valores de pmTk(ntk)
+' Graba cancion en sus archivo sde tracks independientes...
+' Otra forma será DE MUCHOS TRACKS UN VECTOR, GRABA UNA SOLA OCURRENCIA 
 ' en donde todos los tracks cargado se grabaran a disco pero no como track 
 ' individual sino como el track de 2 dimensiones por lo tanto esta
 ' subruttina debe copiarse a otra y cambiarle el nombre diciendo <<GrabarCancion tipo carpeta>>
@@ -3367,10 +3368,13 @@ Sub GrabarTrack (ntk As integer) ' NO SE ESTA USANDO pero seria el modelo de Gra
 ' EL VECTOR ESTARA CON PARAM VIEJOS
  Dim gt As Integer
  print #1,"---------------------------------------------------------------------------------"
- print #1,"  inicia GrabarTrack nombre= ",nombre
+ Dim ntknom As String 
+ ntknom=titulos(ntk)
+ print #1,"  inicia GrabarTrack NUMERO= ",ntk
  gt=FreeFile
-    Open nombre  For Binary Access write As #gt
-     Dim Trabajo (1 To Maxpos, 1 To lim3 ) As poli
+ Maxpos=pmTk(ntk).MaxPos
+    Open ntknom  For Binary Access write As #gt
+     Dim Trabajo (1 To  MAxPos, 1 To lim3 ) As poli
      Dim grabaPos (1,1)  As poli
      Dim grabaLim (1,1)  As poli
      Dim graba3   (1,1)  As poli ' 04-02-2022 se agregan 48 bytes para info futura 
@@ -3451,7 +3455,7 @@ Next i1
      Dim As String a1,a2,a3,a4,a5 ,x
      
      
-     x= Bin(MaxPos,16)
+     x= Bin(MaxPos,20)
      '    print #1,"Posicion ",Posicion
      'Print "string representando ", x
      a1=Mid(x,1,4)
@@ -3473,53 +3477,20 @@ Next i1
      grabaPos(1,1).vol  = y3
      grabaPos(1,1).pan  = y4
      grabaPos(1,1).pb   = y5
-     grabaPos(1,1).inst = CUByte(tipoescala_num_ini) ' 20-12-2021 - tipoescala en uso
+     grabaPos(1,1).nnn = pmTk(ntk).tipoescala
      '-----------------------
-     grabaLim(1,1).nota = CUByte(desde)
-     grabaLim(1,1).dur  = CUByte(hasta)
-     grabaLim(1,1).pb   = CUByte(notaold)
-     grabaLim(1,1).vol  = CUByte(notaescala_num_ini) ' notadeescala 20-12-2021     
+     grabaLim(1,1).nota = CUByte(pmTk(ntk).desde) 
+     grabaLim(1,1).dur  = CUByte(pmTk(ntk).hasta)
+     grabaLim(1,1).pb   = CUByte(pmTk(ntk).notaold) 
+     grabaLim(1,1).vol  = CUByte(pmTk(ntk).notaescala) ''   CUByte(notaescala_num_ini) ' notadeescala 20-12-2021     
 
-     If alteracion="sos" Then
-        grabaLim(1,1).pan  = CUByte(3)
-     Else
-        grabaLim(1,1).pan  = CUByte(2)
-     EndIf
-     grabaLim(1,1).inst = CUByte(tiempoPatron)
-     
-     graba3(1,1).dur = portout
-     graba3(1,1).inst = canalx ' canal midi cargado en Global si es un track se pasara a info de trck 
-    ' If CANCIONCARGADA Then
-     '  graba3(1,1).dur = pmTk(ntj).portout
-   ' 
-    ' EndIf 
-     ' ------------------------------------
-     ' para seguir poniendo notas nuevas
-     ' hacemoslo mismo para l ultima not que se grabo que teng el 182
-     ' esa es lapapa recorremos todas las dur de las notas en donde este el 182
-     ' en dur tomamosla nota y esala grabamos en pb o ins
-     ' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
-     ' -------------------------------------
-'    Dim As Integer i,j,notafinal
-'    For j = 1 To MaxPos
-'     For i = NB To NA
-'      If Roll.trk(i,posicion+1).dur = 182 Then
-'       notafinal= Roll.trk(i,posicion).nota
-       '        print #1, "ENCONTRO NOTA FINAL ", notafinal
-       '        Print "ENCONTRO NOTA FINAL ", notafinal
-       ' esten la posiciond ela ultimanotapero grasoerror
-       ' o seaque no tiene duracion solo el 182
-       ' esta mal ...
-'       Exit For
-'      EndIf
-'     Next i
-'    Next j
-'    .. grabaPos(1,1).pb = notafinal
- '    print #1,"****))) nota final y dur final "; notafinal,Roll.trk(i,posicion+1).dur
-     '****))) nota final y dur final  0   0
-     ' no existe mas 182 no se graba enningun lado q raro
-     ' Grabacion de Trabajo
-     ' ------------------------------------
+
+     grabaLim(1,1).pan  = pmTk(ntk).alteracion
+     grabaLim(1,1).nnn = CUByte(tiempoPatron)
+
+     graba3(1,1).dur = pmTk(ntk).portout
+     graba3(1,1).nnn = pmTk(ntk).canalsalida 
+
 
      '  print #1,"MaxPos grabada en Trabajo ",MaxPos
 
@@ -3543,6 +3514,18 @@ print #1,"  Fin GrabarTrack "
 End Sub
 
 ' ---------------------------------
+'---------------------
+Sub GrabarCancion() ' PENDIENTE GRABAR TODA LA CANCION EN UN SOLO COMANDO
+ '1) recorro titulos(ntk) los titulos que quedan se graban, los otros se borran o
+ ' en el momento de borrar se copia a backup y se borra del directorio de cancion
+ ' eso si se borro alguna pista. (en vez de borrar mandamos a una carpeta de backup)
+ '2) cada pista se graba con GrabarRollaTrack
+Dim i As Integer 
+  For i=1 To tope 
+   GrabarTrack(i)
+  Next i
+  
+End Sub
 
 
 Sub  selport (ByVal tipo As Any Ptr)  ' list de ruso
@@ -3619,7 +3602,7 @@ mitipo=  CInt(tipo)
                 '   listoutAbierto (portout) = 1
                 '
                 'EndIf
-                If CANCIONCARGADA Then
+                If CANCIONCARGADA =TRUE Then
                 Else
                   ntk=0
                 EndIf
@@ -3632,7 +3615,7 @@ mitipo=  CInt(tipo)
                 'pmTk(ntk).portin=portin
               EndIf
 
-              If CANCIONCARGADA Or TRACKCARGADO Then
+              If CANCIONCARGADA=TRUE  Or TRACKCARGADO=TRUE  Then
                  If NombreCancion > ""  And MAxPos > 1 Then
                     GrabarRollaTrack(0)
                  EndIf
@@ -3739,7 +3722,7 @@ Posy=y0 +100
                Print #1,"ntk en cambio de canal ntk= ",ntk
                pmTk(ntk).canalsalida=CUByte(canalx+1) ' sirve para el track cargao actual en cancion
        
-               If CANCIONCARGADA Or TRACKCARGADO Then
+               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
                   pmTk(ntk).canalsalida=CUByte(canalx) ' sirve para el track cargao actual en cancion
                   If NombreCancion > ""  And MAxPos > 1 Then
                      GrabarRollaTrack(0)

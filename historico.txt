@@ -1,3 +1,5 @@
+-05-03-2022 1era etapa fix erroes de edicion de Tracks en Cancion, siguen las pruebas
+-01-03-2022 FIX seleccion de pista con click en control.
 -26-02-2022 Selcanal sea selecciona y deselecciona con x. Primero hay que borar
  la x que exista luego colocar la x en la seleccion deseada. Solo funciona si 
  elultimo cambio fue una x por eso se debe borrar 1ero y luego marcar.
