@@ -1904,7 +1904,7 @@ Sub listports( )
 Print #1,"LISTPORTS portsout, portsin", portsout, portsin
 
 ReDim listout(0 To portsout -1)
-ReDim listin (0 To portsin  -1)
+''ReDim listin (0 To portsin  -1) por ahora nousamos portsin
 ' saco de la lista los ports ya abiertos
 
 Dim nombre As ZString ptr

@@ -1502,7 +1502,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      ' los 2 vectores deben tener el mismo tamaño ergo si CantTicks
      ' lo agrando trabajo tambien ? mmm no trabajo debe tener el tamaño del disco!
      ' cargamos trabajo datos
-     CantTicks = MAxPos  ' jmg 24-09-2021
+     CantTicks = MaxPos  +1000' jmg 24-09-2021
      pmTk(0).Ticks=CantTicks
      ntk=0
      CambiarDim(0) ' ya tiene calculo NB y NA Redim Roll y Track con CantTicks

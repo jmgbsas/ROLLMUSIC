@@ -99,7 +99,7 @@ Dim As String t2="",t3="",t4=""
  'If COMEDIT= TRUE Then
  'Dim As Integer delta
  'delta=NroCol
- If cursorVert=0 And COMEDIT=TRUE  Then 
+ If cursorVert=0 And COMEDIT=TRUE  Then  
     If posicion < NroCol*3/4  Then '04-02-2022
       posishow=  1 ''curpos ' decia 1
   ' valla tatlmente al inicio veremos si es aca jmgjmg
@@ -147,8 +147,8 @@ Dim As String t2="",t3="",t4=""
   For n = posishow To posishow + NroCol
 
 ' =======> deteccion escalas auxiliares y acordes
-    indfb = Roll.trk (n, 12 + (*po-1) * 13).dur
-    indfa= Roll.trk (n, 12 + (*po-1) * 13).pb ' 26-01-2022
+    indfb = CInt(Roll.trk (n, 12 + (*po-1) * 13).dur)
+    indfa= CInt(Roll.trk (n, 12 + (*po-1) * 13).pb) ' 26-01-2022
     
     t="": t2="":t3="":t4=""
     
@@ -656,8 +656,8 @@ End Sub
 
 Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
 '------------------
-
-
+ '''NroCol=(ANCHO / anchofig ) - 4 07-03 lo puse pero no se si ahce cancelar
+'' no no es esto...lo que hace cancelar...
   For i = desde To hasta 
     nro = i 
   ' si ahce falta ejecutar mas de un Penta podremos usar threads

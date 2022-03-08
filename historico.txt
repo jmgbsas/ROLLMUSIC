@@ -1,3 +1,6 @@
+-07-03-2022 2da etapa mas fix crash cancion, mas estable, falta ver la edicion de parametro scanal midi patch etc
+ y al edicion de notas en cada pista aprece que no empiezan en posicion correcta,,,
+-06-03-2022 fix carga de archivo ssin cancion cancelaba
 -05-03-2022 1era etapa fix erroes de edicion de Tracks en Cancion, siguen las pruebas
 -01-03-2022 FIX seleccion de pista con click en control.
 -26-02-2022 Selcanal sea selecciona y deselecciona con x. Primero hay que borar

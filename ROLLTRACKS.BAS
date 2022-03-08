@@ -3,6 +3,9 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
 ' solo carga track no lo pasa a Vector de Visualizacion. ntk debe venir informado
 ' para cargar desde disco un track se usa esta sub y luego TrackaRoll para verlo
 ' y editarlo
+'abrirRoll=0  
+'cargacancion=0
+
   print #1,"----------------------------------------------"
   print #1,"1) CargarTrack nombre, ntk= ", nombre , ntk  
   Print #1,"1) UBIRTK QUE LLEGA ", ubirtk
@@ -66,6 +69,9 @@ ubirtk=0
      x4=Bin(z(1,1).pan,4)
      x5=Bin(z(1,1).pb,4)
      tipoescala_num_ini =CInt( Z(1,1).nnn ) ' 20-12-2021 - tipoescala en uso
+     If tipoescala_num_ini=0 Then
+        tipoescala_num_ini=1
+     EndIf
      pmTk(ntk).tipoescala=Z(1,1).nnn
   '   Print #1,"Carga Track tipoescala_num_ini ",tipoescala_num_ini
      x=x1+x2+x3+x4+x5
@@ -99,6 +105,9 @@ ubirtk=0
 ' la nota esca y la esca es la misma `para todos lso tracks despues lo debo cambiar
      
      notaescala_num_ini =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
+     If notaescala_num_ini=0 Then
+        notaescala_num_ini=1
+     EndIf
      Print #1,"Carga Track notaescala_num_ini ",notaescala_num_ini
      pmTk(ntk).notaescala=zLim(1,1).vol
      If zLim(1,1).pan = 3 Then
@@ -107,6 +116,10 @@ ubirtk=0
      If zLim(1,1).pan = 2 Then
         alteracion="bem"
      EndIf
+     If zLim(1,1).pan = 0 Then
+        alteracion="sos"
+     EndIf
+     
  '    Print #1,"alteracion ",alteracion
  '    print #1,"desde ",pmTk(ntk).desde
  '    print #1,"hasta ",pmTk(ntk).hasta
@@ -211,6 +224,10 @@ ubirtk=0
      curpos =>1
 
     patchsal=Track(ntk).trk(1,1).nnn
+    If patchsal=0 Then
+       patchsal=1
+       Track(ntk).trk(1,1).nnn=1
+    EndIf
  '------------
 
  
@@ -319,9 +336,7 @@ Print #1,"Roll.trk(i2,verticalEnOctavaVacia).dur ",Roll.trk(i2,verticalEnOctavaV
          TrkTemp(i2,i4).pb  = 202 
       EndIf
       If i2=MaxPos  Then ' fin sec
-         If MaxPos<=2 Then 
-            i3=1
-         EndIf    
+         i3=1
          TrkTemp(i2,i3).dur  =182 
          TrkTemp(i2,i3).nota =RollTemp(i2,i1 ).nota
          TrkTemp(i2,i3).vol  =RollTemp(i2,i1 ).vol
@@ -340,7 +355,7 @@ Next i2
 TrkTemp(1,1).nnn=RollTemp(1,NA).inst  ' instrumento o PATCH
 print #1,"termino copia a Trktemp, maxpos, posn ", maxpos, posn
 '--FIN--CODIGO SIMILAR A ROLLATRACK SI SE CAMBIA ACA SE DEBE CAMBIAR HALLA Y VICEVERSA
-
+posicion =1
   
   
 End Sub
@@ -351,6 +366,10 @@ Sub ActualizarRollyGrabarPista ()
    Dim grt As Integer
    grt = FreeFile
    Maxpos=pmTk(ntk).MaxPos
+   NB => 0 + (desde-1) * 13   ' 06-03
+   NA => 11 + (hasta-1) * 13  ' 
+   pmTk(ntk).NB= NB
+   pmTk(ntk).NA= NA     
    ' DEFINO UN ROLL DONDE MANDO EL ROLL CARGADO LE SACO LOS DELETE SI HUBO
    ReDim RollTemp (1 To Maxpos, NB To NA) As dat 
 ' copia en RollTemp el Roll ....que tiene las modificaciones ultimas
@@ -389,11 +408,11 @@ Sub ActualizarRollyGrabarPista ()
       
     borrocol=0:res=0:haynota=0:final=0
    Next i2
- print #1,"termina con los borrados"
+ print #1,"termina con los borrados, posn ",posn
 
 posn=k        
-pmTk(ntk).posn=posn -1
-print #1,"posn ",posn
+
+print #1,"posn=k y  ",posn
 ' track empieza desde k..no es eso
 Dim As Integer r1
 For i1=NB To NA 
@@ -405,10 +424,14 @@ For i1=NB To NA
     RollTemp(r1, i1).dur=0  ' la secuecnia quedo mas corta
   Next r1 
 Next i1  
-' AHORA MAXPOS SE ACHICO 
+' AHORA MAXPOS SE ACHICO
+Print #1,"MaxPos, posn ",MaxPos,posn 
 MaxPos=posn
 pmTk(ntk).MaxPos=MaxPos
 posn=Maxpos-2
+pmTk(ntk).posn=posn
+Print #1,"MaxPos, posn ",MaxPos,posn
+posicion =1
 print #1,"MaxPos despues de acchicar",MaxPos
 ' tengo a Roll listo para convertir a track sin marcas de borrado de Col
 ' convertir
@@ -516,6 +539,7 @@ For i1=1 To MAxPos ' de Roll que deberia ser el PmTk(ntk).maxpos....verificar
     Next i2
 Next i1
 
+'ÇÇÇ
 ' nombr es global se resuelve en la subrutina que llama a esta
 If Open (nombre  For Binary Access write As #grt ) <> 0 Then
      print #1,"Error open Rollsub 2727, nombre ",nombre
@@ -1083,7 +1107,7 @@ nota=0:dur=0
    hastavector=hasta
    estoyEnOctava =desde
    estoyEnOctavaOld =desde
-   CantTicks = pmTk(ntk).Ticks
+   CantTicks = MaxPos + 1000
    print #1,"TrackaRoll, NB, NA, CantTricks", NB,NA, CantTicks
 ' redim de ROLL de Visualizacion       
    ReDim (Roll.trk ) (1 To CantTicks, NB To NA ) ' 27-02 ÇÇÇ
@@ -1158,15 +1182,15 @@ For i2 = 1 To pmTk(ntk).MaxPos
 '''         print #1,"VEO CARGA DE ROLL Roll.trk(i2,i3).dur ",Roll.trk(i2,i3).dur
       EndIf
    Next i1
-   If i2=pmTk(ntk).MaxPos Then
+   If i2=pmTk(ntk).MaxPos -1 And Track(ntk).trk (i2,i1).nota > 0 Then
     i3 =Track(ntk).trk(posn,1).nota  
     i3 = i3 + SumarnR(i3)    
-       Roll.trk(i2,i3).dur  = 182
-       Roll.trk(i2,i3).nota =0 
-       Roll.trk(i2,i3).vol  = 0
-       Roll.trk(i2,i3).pan  = 0
-       Roll.trk(i2,i3).pb   = 0
-       Roll.trk(i2,i3).inst = 0
+       Roll.trk(i2,i3+1).dur  = 182
+       Roll.trk(i2,i3+1).nota =0 
+       Roll.trk(i2,i3+1).vol  = 0
+       Roll.trk(i2,i3+1).pan  = 0
+       Roll.trk(i2,i3+1).pb   = 0
+       Roll.trk(i2,i3+1).inst = 0
        
    EndIf
 Next i2

@@ -1,0 +1,5 @@
+{   // -s gui -g  -m RollMusic RollMusic.bas rollMusicControl.bas  -x RollMusic.exe -exx
+    // "${fileBasenameNoExtension}.bas"
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    

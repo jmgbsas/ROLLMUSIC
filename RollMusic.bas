@@ -784,7 +784,7 @@ Dim hnro As Integer
  
 '------------
 Static As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
-If ix < 3 Then ' rollmusic CON control
+If ix < 3 And ubirtk=0 And ubiroll=0 Then ' rollmusic CON control
   instancia=0
   hwndC = OpenWindow("RollMusic Control ver 4.5.3.1",10,10,anchoK*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
 ''UpdateInfoXserver()
@@ -1020,6 +1020,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
     ''''cargacancion=0 esto me ponia en cero antes que lo use el thread!!!!
     ''' RollLoop(param)
     ''Sleep 200 ' NO HACE FALTA AHORA sin este retardo no le da teimpo al thread de cargar a Roll
+    abrirRoll=0
   Else
     If abrirRoll=1 And cargacancion=0 Then
        CANCIONCARGADA=False
@@ -1324,7 +1325,12 @@ Print #1,"1060 abrirRoll=0 entro"
                Print #1,"CantTicks ",CantTicks
                
                ''' para cuando las pistas esten juntas en un archivo ->ZGrabarTrack(ntk)
-               ReDim (Roll.trk ) (1 To CantTicks,NB To NA)
+               If ntk=1 Then
+                  ReDim (Roll.trk ) (1 To CantTicks,NB To NA)
+                  ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim3)
+               Else
+                  ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim3)
+               EndIf
                ' EL TRACK SE CREA AL GrabarRollaTrack y debe tener CantTicks
                 
                titulos(ntk)=nombre
@@ -1337,7 +1343,7 @@ Print #1,"1060 abrirRoll=0 entro"
                pmTk(ntk).notaold=0                  
                pmTk(ntk).Ticks=4000
                ' usamos encancion=1 para grabar dentro de la cancion
-               GrabarRollaTrack(0)
+
                NombrePista="" 
                posicion=1
                posn=0
@@ -1345,6 +1351,8 @@ Print #1,"1060 abrirRoll=0 entro"
                nota=0
                dur=0
                tope=ntk
+               *po = hasta -1
+               GrabarTrack(ntk)
                abrirRoll=0
                If ntk=1 Then 
                   abrirRoll=1
@@ -1592,6 +1600,7 @@ Print #1,"1060 abrirRoll=0 entro"
  ' en memoria       
              print #1,"CLICK EN LISTA"
              ROLLCARGADO=FALSE
+             CANCIONCARGADA=TRUE
              Dim item As String
              Dim As Integer ubi1,ubi2
              item= "                        "
