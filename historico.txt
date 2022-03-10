@@ -1,3 +1,5 @@
+-09-03-2022 fix carga archivo con datos de acorde, crash. Fix cargar un directorio de cancion equivocado
+ y luego con el correcto crash. Fix Cargar de nuevo el mismo directorio.
 -07-03-2022 2da etapa mas fix crash cancion, mas estable, falta ver la edicion de parametro scanal midi patch etc
  y al edicion de notas en cada pista aprece que no empiezan en posicion correcta,,,
 -06-03-2022 fix carga de archivo ssin cancion cancelaba

@@ -4,7 +4,7 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
 ' para cargar desde disco un track se usa esta sub y luego TrackaRoll para verlo
 ' y editarlo
 'abrirRoll=0  
-'cargacancion=0
+cargacancion=0
 
   print #1,"----------------------------------------------"
   print #1,"1) CargarTrack nombre, ntk= ", nombre , ntk  
@@ -575,17 +575,26 @@ End If
      grabaPos(1,1).vol  = y3
      grabaPos(1,1).pan  = y4
      grabaPos(1,1).pb   = y5
+     If tipoescala_num_ini = 0 Then
+        tipoescala_num_ini =1
+     EndIf
      grabaPos(1,1).nnn = CUByte(tipoescala_num_ini) ' 15-01-2022 - tipoescala en uso
      '-----------------------
      grabaLim(1,1).nota = CUByte(desde)
      grabaLim(1,1).dur  = CUByte(hasta)
      grabaLim(1,1).pb   = CUByte(notaold)
-     grabaLim(1,1).vol  = CUByte(notaescala_num_ini) ' notadeescala 15-01-2022 
-     If alteracion="sos" Then
-        grabaLim(1,1).pan  = CUByte(3)
-     Else
-        grabaLim(1,1).pan  = CUByte(2)
+     If notaescala_num_ini =0 Then
+        notaescala_num_ini =1
      EndIf
+     grabaLim(1,1).vol  = CUByte(notaescala_num_ini) ' notadeescala 15-01-2022 
+     Select Case alteracion
+       Case "sos" 
+         grabaLim(1,1).pan  = CUByte(3)
+       Case "bem"
+         grabaLim(1,1).pan  = CUByte(2)
+       Case Else 
+         grabaLim(1,1).pan  = CUByte(3) 
+     End Select
      grabaLim(1,1).nnn = CUByte(tiempoPatron)
 ' cargado un Roll desde archivo canalx toma el valor del canal midi de salida del archivo
 
@@ -1294,7 +1303,7 @@ Dim i As Integer
    pmTk(i).portout=0
    titulos(i)=""          
  next i
- 
+ ntk=0
 End Sub 
 Function doscifras (NTK As Integer) As String
   Dim cifra As String 
@@ -2097,6 +2106,9 @@ Print #1,">>>> START AutoFracTodoDur "
 ' la 2da posishow es en el vector hasta el inicio de la pantalla 
    posdur= (mousex- gap1 )/anchofig + posishow
    Print #1,"posdur ",posdur
+   If posdur < 1 Then ' 08-03-2022 servira?
+      Exit sub
+   EndIf
    menoryMayorEnColumna (Roll, posdur,menor,mayor,i1men,i1may)
    Print #1,"menoryMayorEnColumna, posdur,menor,mayor,i1men,i1may ", posdur,menor,mayor,i1men,i1may
    If menor=mayor Then  ' 06-12-2021

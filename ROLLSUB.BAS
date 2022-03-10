@@ -1367,7 +1367,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
 ' ira aumentando ntk 
    '  carga roll
 ' al cargar borro todo el undo    
-
+abrirRoll=2 ' habilita la carga de una cancion
    mel_undo_k=0 :ig=0:cnt_acor=0
    Erase mel_undo, undo_acorde,undo_kant_intervalos
 ' FIN BORRO UNDO
@@ -1438,6 +1438,9 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      x4=Bin(z(1,1).pan,4) 
      x5=Bin(z(1,1).pb,4) 
      tipoescala_num_ini =CInt( Z(1,1).inst) ' 20-12-2021 - tipoescala en uso
+     If tipoescala_num_ini =0 Then
+        tipoescala_num_ini =1
+     EndIf
   '   Print #1,"tipoescala_num_ini ",tipoescala_num_ini ' 
      
      x=x1+x2+x3+x4+x5
@@ -1463,13 +1466,19 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      notaold= CInt(zLim(1,1).pb)
    '  Print #1,"notaold ",notaold     
      notaescala_num_ini =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
+     If notaescala_num_ini = 0 Then
+        notaescala_num_ini =1
+     EndIf
    '  Print #1,"notaescala_num_ini ",notaescala_num_ini     
      if  zLim(1,1).pan = 3 Then
          alteracion="sos"
      EndIf    
      if  zLim(1,1).pan = 2 Then
          alteracion="bem"
-     EndIf    
+     EndIf 
+     if  zLim(1,1).pan = 3 Then
+         alteracion="sos"
+     EndIf
    '  Print #1,"alteracion ",alteracion
       
     cadenaes_inicial=""
@@ -1503,6 +1512,7 @@ ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
      ' lo agrando trabajo tambien ? mmm no trabajo debe tener el tamaño del disco!
      ' cargamos trabajo datos
      CantTicks = MaxPos  +1000' jmg 24-09-2021
+     '''ReDim Roll.TRK(1 To cantTicks,NB To NA)
      pmTk(0).Ticks=CantTicks
      ntk=0
      CambiarDim(0) ' ya tiene calculo NB y NA Redim Roll y Track con CantTicks
@@ -1607,7 +1617,7 @@ Dim As Integer copiado=0
 ' SE CREA EL CAMPO ACORDE DE POLI DEL TRACK
       Track(ntk).trk(j,1).acorde=ip
      ' Print #fs, "acorde ",Track(ntk).trk(j,1).acorde
-       crearsecuencia(Track(), j, ntk )
+     '  crearsecuencia(Track(), j, ntk )
      Next j
      
 Close ca
@@ -2060,6 +2070,7 @@ EndIf
        Sleep 2
       EndIf 
        CargaArchivo(Roll, 0)
+       cargaCancion=0
        print #1,"nombre cargado en Roll ",nombre
        MenuNew=0
        carga=1  ' <======= control de Carga
@@ -2100,6 +2111,7 @@ EndIf
             carga=1 ' <======= control de Carga 
             TRACKCARGADO=TRUE
             ROLLCARGADO=FALSE
+            cargaCancion=0
          EndIf
      Else
          TRACKCARGADO=FALSE    
@@ -3027,6 +3039,18 @@ Sub velocidades(j As integer)
     EndIf
 
 End Sub 
+Sub grabaralteracion(ByRef pan As UByte)
+       Select Case alteracion
+       Case "sos" 
+         pan  = CUByte(3)
+       Case "bem"
+         pan  = CUByte(2)
+       Case Else 
+         pan  = CUByte(3) 
+     End Select
+
+End Sub
+
 Sub GrabarArchivo (grabar_como As Integer)
 ' GRABA ARCHIVOS CON EXTENSION Y FORMATO *.ROLL
 ' el borrado de undo solo se deberia ahcer si se crea un archivo nuevo y se borra
@@ -3178,11 +3202,7 @@ Print #1,"grabando tipoescala_num_ini en el archivo ",tipoescala_num_ini
 Print #1,"grabando notaescala_num_ini en el archivo ",notaescala_num_ini
      grabaLim(1,1).vol  = CUByte(notaescala_num_ini) ' notadeescala 20-12-2021
 Print #1,"grabando alteracion en el archivo ",alteracion
-     If alteracion="sos" Then
-        grabaLim(1,1).pan  = CUByte(3)
-     Else
-        grabaLim(1,1).pan  = CUByte(2)
-     EndIf
+     grabaralteracion (grabaLim(1,1).pan)
      grabaLim(1,1).inst = CUByte(tiempoPatron) '08-01-2022 hasta 256 sera suficiente¿?
 /' 
 Negras por minuto	 tempo
@@ -3266,7 +3286,7 @@ End Sub
 Sub CargarPistasEnCancion ()
 ' cada vez que cargo borro la info de fechas de pistas anterior
 ROLLCARGADO=FALSE
-cargaCancion=1 '12-02-2022 mientras carg las pista el 1 indica cargando pistas
+
 
 ReDim As Double fechasPistas(1 To 32)
 print #1,"-------------------------------------------------------"
@@ -3282,6 +3302,7 @@ print #1,"inicia CargaPistasEnCancion"
         print #1,"dice que no hay archivos "
         CANCIONCARGADA=FALSE
         ' NO HAY NADA QUE CARGAR
+        abrirRoll=2 ' habilita otro camino para cargar pistas
         Exit Sub
      Else
        ' carga Todos los tracks de cancion en un Loop
@@ -3308,8 +3329,11 @@ print #1,"inicia CargaPistasEnCancion"
         ' como si viniera de lie ad ecomadno puedo usar cualquiera o 0
         pistas (ntk)=filename
         print #1,"nombre en CargarPistasEnCancion ,Numpista",nombre, ntk
+         'se carga track nada mas si dialogo simualmos un ubirtk>0 (1)
         CargarTrack  (Track() , ntk, 1) ' se cargo a track x nada mas
-  
+ 'durante la cargaTrack el programa va a Rolloop se encuentra con SC_TAB
+ ' y si cargacancion esta en 1 trata de cargar y no lo debe ahcer de modo
+ ' que se ajusta a 0 cargacancion dentro de la rutina veremos 
 '        
         Sleep 100
         filename = Dir()
@@ -3339,7 +3363,7 @@ print #1,"inicia CargaPistasEnCancion"
 '/
     EndIf
     '*po = hasta -1
-    
+cargaCancion=1 '12-02-2022 mientras carg las pista el 1 indica cargando pistas    
     print #1,"FIN CargaPistasEnCancion no debe calcuar *po ",*po
     print #1,"-------------------------------------------------------"
 mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
@@ -4417,6 +4441,9 @@ If ErrorNumber1 > 0 And ContadorError < 101 Then
   print #1,"------------------------------------"
 
 EndIf
+ Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
+
+
 
 
 

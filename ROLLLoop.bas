@@ -2,7 +2,7 @@
 
 On  Error GoTo errorloopbas
 ''(c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer Ptr, InicioDeLectura As Integer)
-Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
+    Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
 'Dim octava As Integer Ptr
 '*po va desde hasta -1 haci aabajo 
 indEscala=1 ' inicializamos la guiade escalas a la 1era 
@@ -10,7 +10,7 @@ Dim As String t2="",t3="",t4=""
 
  Dim As cairo_font_extents_t fe   '     font data
  Dim As cairo_text_extents_t te  '      text size
- Dim As Integer semitono,n, ic,indf,indfa,indfb
+ Dim As Integer semitono,n, ic,indf,indfa,indfb,k
  Dim As Integer verticalEnOctavaVacia
  Dim As Integer notac, aconro, grado
  ' VERSION 3 DEBO FORMAR LA OCTAVACOMPLET 12 SONIDOS
@@ -153,36 +153,33 @@ Dim As String t2="",t3="",t4=""
     t="": t2="":t3="":t4=""
     
 ' <====== CIFRADO ACORDE---
+
     If indfa=201 And nVerCifradoAcordes=3 Then  
        cairo_set_source_rgba(c, 1, 1, 1, 1)
        cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
 
         verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde
-        notac=CInt(Roll.trk(n,verticalEnOctavaVacia ).nota) 'Rollnota
-     
-       aconro=CInt(Roll.trk(n,verticalEnOctavaVacia ).dur) 'acordenro
-       If aconro >=1 And aconro <=43 Then  ' por ahroa tenemo 43
-         t4=RTrim(ClaseAcorde(aconro).clase)
-       EndIf  
-       If 13-notac >=1 And 13-notac <=12 Then
-         
-         t3=RTrim(NotasEscala(13-notac)) ' C/ 
-           grado = BuscarGrado(t3) ' 4 en escala G
-         t3=t3+t4  
+      If verticalEnOctavaVacia <= NA  Then '09-03
+         notac=CInt(Roll.trk(n,verticalEnOctavaVacia ).nota) 'Rollnota
+         aconro=CInt(Roll.trk(n,verticalEnOctavaVacia ).dur) 'acordenro
+         If aconro >=1 And aconro <=43 Then  ' por ahroa tenemo 43
+           t4=RTrim(ClaseAcorde(aconro).clase)
+         EndIf  
+         If 13 - notac >= 1 And 13 - notac <=12 Then
+            t3=RTrim(NotasEscala(13-notac)) ' C/ 
+            grado = BuscarGrado(t3) ' 4 en escala G
+            t3=t3+t4  
           ' Print #1,"grado ",grado
-         If ClaseAcorde(aconro).tipo >1  Then
-           If ClaseAcorde(aconro).tipo -1 + grado > 0 Then
-            t3=t3+notas_esc_inicial(ClaseAcorde(aconro).tipo -1 + grado)
-           ' Print #1,"t3=t3+notas_esc_inicial(ClaseAcorde(aconro).tipo -1 + grado) ",t3
-           EndIf 
-          '  Print #1,"ClaseAcorde(aconro).tipo ",ClaseAcorde(aconro).tipo
-            
-          '  Print #1,"ClaseAcorde(aconro).tipo+grado-1 ",ClaseAcorde(aconro).tipo+grado-1
-          '  Print #1,"notas_esc_inicial(ClaseAcorde(aconro).tipo+grado-1) ",notas_esc_inicial(ClaseAcorde(aconro).tipo+grado-1) 
-         EndIf
-       EndIf
-       t4=""
-       indfa=0
+            If ClaseAcorde(aconro).tipo >1  Then
+               If ClaseAcorde(aconro).tipo -1 + grado > 0 Then
+                  t3=t3+notas_esc_inicial(ClaseAcorde(aconro).tipo -1 + grado)
+             ' Print #1,"t3=t3+notas_esc_inicial(ClaseAcorde(aconro).tipo -1 + grado) ",t3
+               EndIf 
+            EndIf
+        EndIf
+        t4=""
+        indfa=0
+      EndIf   
     Else
       t3="":t4=""
       indfa=0
@@ -190,11 +187,8 @@ Dim As String t2="",t3="",t4=""
 ' =======> fin cifrado acordes----    
     If t3 >"" Then
       cairo_show_text(c, t3)
-   '   cairo_stroke(c)
       t3=""
     EndIf
-   ' cairo_stroke(c)
-    'indf=0:indfa=0
 
 
     If indfb = 200 And nVerEscalasAuxiliares=3 Then ' escalas auxiliares o alternativas
@@ -203,6 +197,9 @@ Dim As String t2="",t3="",t4=""
        cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
        cairo_line_to(c,gap1 + (ic ) *anchofig , Penta_y + 13.5 * inc_Penta )
        notaescala=CInt( Roll.trk(n, 12  + (*po -1) * 13).vol)
+       If notaescala=0 Then
+          notaescala=1
+       EndIf
        If Roll.trk(n, 12  + (*po -1) * 13).pan =3 Then
           t2= NotasEscala(CInt( notaescala ))
        EndIf
@@ -212,6 +209,9 @@ Dim As String t2="",t3="",t4=""
 '           Print #1, "NOTAESCALA ",t2
            ' 11-01-2022
        tipoescala=CInt(Roll.trk(n, 12  + (*po -1) * 13).inst)
+       If tipoescala=0 Then
+          tipoescala=1
+       EndIf
 '           Print #1," tipoescala ",tipoescala
        armarescala cadenaes,tipoescala, notaescala, alteracion,0
 
@@ -687,7 +687,7 @@ Dim As Integer ubiroll,ubirtk,encancion
  ubiroll=param.ubiroll 
  ubirtk=param.ubirtk
  encancion=param.encancion
- abrirRoll=2
+ abrirRoll=4
  ALTO=param.alto
  ANCHO=param.ancho
  ANCHO3div4 = ANCHO *3 / 4
@@ -936,8 +936,9 @@ EndIf
 '05-02-2022 usamos threarPenta ya definida global
 ' se supone que la direccion es unica y se reusa no se la crea muchas veces
 ' es mejor no ¿? zas je 
-    threadPenta = ThreadCall barrePenta (c, Roll )
-    ThreadWait threadPenta
+    'threadPenta = ThreadCall 
+    barrePenta (c, Roll )
+    'ThreadWait threadPenta
 
 
 pubi=0
@@ -2782,25 +2783,25 @@ EndIf
 
    If e.scancode = 80 Then  ' <===== SC_DOWN repeat
 
-      If trasponer=1 And SelGrupoNota=0 Then
+     If trasponer=1 And SelGrupoNota=0 Then
         Print #1,"0 TRASPONER !!!!!!!!!!!!!!",trasponer
          trasponerRoll ( -1,Roll,encancion)
          Exit Do
-      EndIf
+     EndIf
      If trasponer=1 And SelGrupoNota=1 Then
-         TrasponerGrupo ( -1, Roll,encancion)
+        TrasponerGrupo ( -1, Roll,encancion)
         Exit Do 
      EndIf 
     If cursorVert=1 Then
-     notacur = notacur + 1
-     If notacur > 12 Then
-      notacur=1
-     EndIf
+       notacur = notacur + 1
+       If notacur > 12 Then
+         notacur=1
+       EndIf
     EndIf
     If cursorVert=0 Then
        If s1=0 Then
          s1=1
-       print #1,"pulso down screeevent"
+ '      print #1,"pulso down screeevent"
          BordeSupRoll = BordeSupRoll - 2 * inc_Penta
        EndIf
        If BordeSupRoll <= - AltoInicial * 2.8  Then
@@ -2810,6 +2811,7 @@ EndIf
     
     Exit Do
    EndIf
+ 
   ' If e.scancode = 75 Then ' <=====  LEFT repeat
   '       posicion= posicion -1
    '     Exit Do
@@ -2984,7 +2986,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
  
  
  '-------------------------------------END SCREENEVENT ----------
- If cargacancion=0 Then ' evita flickr por carga de cancion
+ If cargacancion=0  Then ' evita flickr por carga de cancion
    GetMouse mouseX, mouseY, , MouseButtons   ' <=======  CLICK EVENTOS
  EndIf
  If (mouseY >= edity1 ) And (mouseY <= edity2) Then
@@ -4279,7 +4281,7 @@ ButtonGadget(2,530,30,50,40," OK ")
    'Print  #1,"(8)  And COMEDIT=TRUE And ayudaModif=FALSE"
    'print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
      Dim As Integer posdur= (mousex- gap1 )/anchofig + posishow '01-07-2021
-     If posdur >= Maxpos - 1 Then  ' no permite entrar notas con click ,ucho antes de maxpos
+     If posdur >= Maxpos - 1 Then  ' no permite entrar notas con click , antes de maxpos
        nota=nE ' <=== ingresamos varias notas por mouse del mismo valor
      EndIf
    ' hasta que si vuelva a dar click derecho y aparesca de nuevo el menu de duraciones.
@@ -4498,12 +4500,13 @@ End sub
 '
 ' error
 errorloopbas:
-  
+ 
 'Dim As Integer er1, ErrorNumber1, ErrorLine1
 ErrorNumber1 = Err
 ErrorLine1 = Erl
 
 If ErrorNumber1 > 0 And ContadorError < 101 Then
+
 Print #1,"------------------------------------"
   ContadorError=ContadorError+1
   Print #1,"ErrorLoop ContadorError ",ContadorError
@@ -4525,3 +4528,6 @@ Print #1,"------------------------------------"
   print #1,"------------------------------------"
 
 EndIf
+ Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
+
+

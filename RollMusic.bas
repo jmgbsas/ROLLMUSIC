@@ -1000,6 +1000,10 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
   If abrirRoll=1 And cargacancion=1 Then
      abrirRoll=0
      Print #1," ENTRA A CARGAR PISTAS  cargaCancion = ",cargaCancion
+     param.encancion=0
+     ResetAllListBox(3)
+     Resetear (pmTk()) 
+
       CargarPistasEnCancion ()
     Print #1,"CARGAR PISTAS cargacancion = ",cargaCancion 
      ''CANCIONCARGADA=TRUE
@@ -1028,6 +1032,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
        param.encancion=0 
        Print #1,"cALL rOLLLOOP II) "
        threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+       ''RollLoop ( param)
        abrirRoll=0
     EndIf
   EndIf
@@ -1055,19 +1060,34 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                nombre=""
               ROLLCARGADO=False
              Sleep 20
-             If NombreCancion > "" And cargaCancion=0 Then
-                NombreCancion = ""
-                param.encancion=0
-                'pistacreada=0
-                ResetAllListBox(3)
-                Resetear (pmTk()) 
-               cargarDirectorioCancion(NombreCancion)
-               CANCIONCARGADA=False
-               ntk=0
-               cargaCancion=1
-               CargarPistasEnCancion ()
-               cargaCancion=0
-               param.encancion=1
+             If NombreCancion > "" And cargaCancion=0 Then 
+                  NombreCancion = ""
+                  param.encancion=0
+                  ResetAllListBox(3)
+                  Resetear (pmTk()) 
+                  cargarDirectorioCancion(NombreCancion)
+                  CANCIONCARGADA=False
+                  ntk=0
+                  If Tope >0 Then ' tenia datos se supone q pudo abrir Roll y abrirRoll=0
+                     CargarPistasEnCancion ()
+                     If tope=0 Then  ' directorio fallido
+                        NombreCancion = ""
+                        cargacancion=0
+                        param.encancion=0
+                        abrirRoll=2 ' roll ya esta abierto abre mas abajo
+                     Else
+                        cargacancion=1
+                        param.encancion=1
+                        abrirRoll=3 ' para evitar que abra rolloop de nuevo
+                     EndIf
+
+                  Else
+                  ' si Tope=0 no cargo nada ni abrio roll posiblemente
+                     NombreCancion = "" ' serai como una carga inicial...  
+                     cargaCancion=1
+                     abrirRoll=0 ' para que abra rolloop nunca abrio tal vez
+                  EndIf   
+
              EndIf
              If NombreCancion = "" Then
                 nombre=""
@@ -1078,7 +1098,13 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                 param.encancion=1
                If abrirRoll=2 Then ' ver rollloop roll esta cargado vengo a cargar cancion de nuevo
                ' por ejemplo tenia solo un roll abierto
+                  param.encancion=0
+                  ResetAllListBox(3)
+                  Resetear (pmTk()) 
                   CargarPistasEnCancion ()
+                  If tope=0 Then
+                    NombreCancion = "" ' directorio fallido
+                  EndIf
                   CANCIONCARGADA=True
                   param.encancion=1
 
@@ -1747,3 +1773,6 @@ Print #1,"Error Function: "; *Erfn()
 'Dim ers As Integer = 12 - nota +(estoyEnOctava ) * 13 
 Print #1, "12 -nota +(estoyEnOctava ) * 13) "; ers
 Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
+ Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
+
+

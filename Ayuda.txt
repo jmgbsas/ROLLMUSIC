@@ -181,7 +181,7 @@
           flecha arriba o abajo lo cual habilita la rueda del mouse e inversamente si se traban las flechas 
           intentar con mouse. (hay inconsistencias que deben verse...en algun momento futuro)
           Si una opcion de menu en el grafico de Roll no funciona colocando el mouse encima del rotulo
-          necesitará un click o un ctrl-click ...o un Alt-clik se sigue modificando luego se hara uan carta de los
+          necesitará un click o un ctrl-click ...o un Alt-clik se sigue modificando luego se hara una carta de los
           keystrokes definitivos-.
           En esta ultima version ejecutar o reproducir o play desde el menu de Control funiona igual que hacerlo 
           desde la barra de espacio en el grafico. Para tocar solo un track dar Ctrl-click a Reproducir.
@@ -204,7 +204,14 @@
         RollMusic.exe levanta ahora 2 pantallas un menu GUI y el grafico habitual.
           Acciones: elegir octavas, instrumentos, antes de crear el track. Al crearlo
         se borra el cargado anteriormente y se reemplaza por uno nuevo vacio.
-        Se agrega Menu de Cancion, funciona en modo basico.   
+        Se agrega Menu de Cancion. 
+        Se puede editar o crear primero un track rtk o roll sin haber cargado una cancion, luego se puede cargar
+        una cancion , se borra el roll o rtk enedciion, se carga la cancion y ya no deja cargar pistas fuera de 
+        la cancion.
+        Si se carga la primera vez varias veces un directorio equivocado, se puede seguir hasta cargar uno correcto.
+        (tal vez convenga porner en el menu lo tradiconal cerrar cancion abrir cancion, pero por ahora el cierre
+         es automatico porque en realidad se sobreescribe todo en memoria, no hace falta cerrar nada)
+        Nota: algunas combinacione de cerrar abrir directorio incorrectos o correctos fallan.
         La Aplicación mediante el Contorl podrá crear varios tracks pero solo editar de a uno
         por vez en el gráfico conmutando con TAB. Si se quieren más ediciones simultaneas, se podria usar  
         otra instancia, las cuales pueden ser tantas como sean necesarias. Para terminar todas a la vez

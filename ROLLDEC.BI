@@ -594,9 +594,9 @@ Type poli Field=1 ' para guardar la secuencia
  pb  As  UByte =0 ' pitch bend
  nnn As UByte =0' se usa para escala canal etc 
  tick As ubyte =0' 128 tiene la redonda *1,75 segun pesoDur, 1 la cuartifusa o garrapatea todavia no la uso
-' posn As Integer =0' de roll todavia no lo uso para generar secuencia
  acorde  As ubyte =0 ' 1 a 12 , son el se hara el sort    
-End Type 
+End Type
+' posn As Integer =0' de roll todavia no lo uso para generar secuencia
 ' comentarios Para Futuro:
 ' tick y posn seria para tener una relacion entre ticks los 128, y la posicin 
 ' de roll, o sea  en que posicion o columna esta la nota en Roll
