@@ -247,6 +247,7 @@ ubirtk=0
 ' ahora durante la carga de cancion y el uso de tAB esto debe ir cambiadno para
 ' cada track cambiado en el grafico 
 '----------
+Print #1," patch ntk canal ",	Track(ntk).trk(1,1).nnn, ntk,pmTk(ntk).canalsalida
       print #1,"CargarTrack  fin"  
       print #1,"----------------------------------------------" 
 ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
@@ -1710,7 +1711,9 @@ For i=1 To tope
 '   out_free   midiout(k1)
    listoutAbierto( k1) = 0
 Next i
-ThreadDetach(thread2)
+ThreadDetach(thread1)
+
+
 
 End Sub 
 

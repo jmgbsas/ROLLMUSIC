@@ -1667,7 +1667,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
          If CANCIONCARGADA = TRUE Then
              Print #1,"USANDO PLAYCANCION"
              playb=1       
-            thread2 = ThreadCall  playCancion(Track())
+            thread1 = ThreadCall  playCancion(Track())
             'playCancion(Track())
          Else
            If  MaxPos > 1 Then
