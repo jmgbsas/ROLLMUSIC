@@ -1347,7 +1347,7 @@ EndIf
       ' 20-06-2021 eliminado duraold=dura repetido    
         '' vel= vol( dura, velpos) 02-11-2021
 ' llegamos al final de la Columna
-   
+        pasoCol(cnt).vol=velpos
    EndIf   
       If i1=NA -13  Then 'And cnt >= 1 Then ' envio noteoff 1) no entra
 
