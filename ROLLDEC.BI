@@ -773,6 +773,8 @@ Dim Shared ANCHO3div4 As Integer
 
 '----------------------------
 Dim Shared  As String ProgError(0 To 17)
+Static Shared As HWND cbxnum(1 To 32)
+Static Shared As Integer sonidoPista(1 To 32)
 Declare Sub PlayCancion(Track() As sec)
 Declare Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst)
 Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)

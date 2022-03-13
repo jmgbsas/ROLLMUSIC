@@ -1,3 +1,69 @@
+'-------------------------------------------------------------------------------
+' Checkbox
+'-------------------------------------------------------------------------------
+
+Function CheckBox_New(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, _
+										ByVal Label As String, ByVal Style As Ulong = WS_TABSTOP, _
+										ByVal hwnd As HWND) As HWND
+	'Create a new checkbox (autocheckbox, the state switches automatically by clicking). 
+	'Parameters:
+	'- x, y = top left corner
+	'- w = width '- h = height
+	'- label = label
+	'- Style: See description in Sub WaitEvent
+	'- hwnd = handle of the window		
+	
+	Return CreateWindowEx(0, "BUTTON", Label, _
+												Style Or WS_VISIBLE Or WS_CHILD Or BS_AUTOCHECKBOX, _
+												x, y, w, h,	hWnd, 0, 0, 0 )
+												
+End Function
+
+
+Sub CheckBox_SetCheck(ByVal hWndCheck As HWND, ByVal CheckState As Long)
+	'Set check status of the checkbox. Parameters:
+	'- hWndCheck = Handle of the checkbox
+	'- CheckState: <> 0 = checked, 0 = unchecked
+    
+  If CheckState Then SendMessage(hWndCheck, BM_SETCHECK, BST_CHECKED, 0) Else _
+    SendMessage(hWndCheck, BM_SETCHECK, BST_UNCHECKED, 0)
+       
+End Sub
+
+
+Function CheckBox_GetCheck(ByVal hWndCheck As HWND ) As Long
+	'Request the status of the checkbox. 0 = unchecked, 1 = checked. Parameters:
+	'- hWndCheck = handle of the checkbox
+	
+	If SendMessage(hWndCheck, BM_GETCHECK, 0, 0) = BST_CHECKED Then Return 1 _
+		Else Return 0
+       
+End Function
+
+
+'-------------------------------------------------------------------------------
+' Radiobutton
+'-------------------------------------------------------------------------------
+
+Function RadioButton_New(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, _
+										ByVal Label As String, ByVal Style As Long = WS_TABSTOP, _
+										ByVal hwnd As HWND) As HWND
+	'New radio button (if a radio button is clicked, its state will be
+	'automatically set to "checked" and the states of the others in the group
+	'will be set to "unchecked". Parameters:
+	'- x, y = top left corner
+	'- w = width
+	'- h = height
+	'- label = label
+	'- Style: See description in Sub WaitEvent. WS_GROUP must be used for the 
+	'  first radio button of a group
+	'- hwnd = handle of the window
+		
+	Return CreateWindowEx(0, "BUTTON", Label, _
+												Style Or WS_VISIBLE Or WS_CHILD Or BS_AUTORADIOBUTTON, _
+												x, y, w, h,	hWnd, 0, 0, 0 )
+												
+End Function
 
 Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
 ' solo carga track no lo pasa a Vector de Visualizacion. ntk debe venir informado
@@ -1470,6 +1536,16 @@ Dim As Integer result,limsup
  For pis=1 To tope
       Print #1,"ON patch ntk canal ",	Track(ntk).trk(1,1).nnn, ntk,pmTk(pis).canalsalida
       ChangeProgram ( Track(pis).trk(1,1).nnn, pmTk(pis).canalsalida, pmTk(pis).portout)	
+
+      If CheckBox_GetCheck( cbxnum(pis))= 1 Then
+         Print #1,"+++++++pista on ",pis
+         sonidoPista(pis)=1
+      Else  
+         Print #1,"+++++++pista off ",pis        
+         sonidoPista(pis)=0
+      EndIf
+
+
  Next pis
 
 For jply=comienzo To final
@@ -1513,6 +1589,7 @@ kNroCol= Int(jply/NroCol)
    If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
       velpos=vdebil
    EndIf
+   
    cnt=0
    iguales=0
    distintos=0
@@ -1535,7 +1612,6 @@ kNroCol= Int(jply/NroCol)
 '  ChangeProgram ( Track(pis).trk(1,1).inst, pmTk(ntk).canalsalida,pmTk(ntk).portout)
 'EndIf  
 
-   
 ' ojo con silencios ligados !!!
 
 ' limites para cada pista NB,NA,son limites para las Notapiano
@@ -1553,8 +1629,7 @@ kNroCol= Int(jply/NroCol)
 ' la cancion podria tener 12*32tracks = 384 de polifonia, no se si rtmidi lo soporta
 ' info del inst en 1 no en lim2   
 
-
-Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
+ Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
    For i1=1 To lim2   ' coo voy de 1 a lim2 necesito que la info del int este en 1
 
      If (Track(pis).trk(jply,i1).nota >= NBpiano) And (Track(pis).trk(jply,i1).nota <= NA) And (Track(pis).trk(jply,i1).dur >=1) And (Track(pis).trk(jply,i1).dur <= 180) Then ' es semitono
@@ -1610,10 +1685,17 @@ Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
          pasoCol(cnt).tiempoFigura=relDur(pasoCol(cnt).DUR) * tiempoDur * d11
          pasoCol(cnt).i1 = i1 'posicion vertical en el vector real
   '       pasoCol(cnt).i1Old = i1 'posicion vertical en el vector real
-
+     If sonidoPista(pis)=1 Then
+        pasoCol(cnt).vol=velpos
+     Else
+        pasoCol(cnt).vol=0
+     EndIf   
+        
       ' 20-06-2021 eliminado duraold=dura repetido 
      '' ??VER SI SAO DE ACA INST Y VEL 
-         vel= CUByte(vol( dura, velpos))
+        ' If sonidoPista(pis)=1 Then
+  
+         ''vel=CUByte(vol( dura, velpos))
      EndIf
 ' llegamos al final de la Columna
    

@@ -104,6 +104,7 @@ Type vec
    canal           As Integer
    port            As integer 
    pista           As Integer
+   vol             As integer
 End Type
 Static Shared pasoCol (0 To 384) As vec
 

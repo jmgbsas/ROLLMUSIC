@@ -238,8 +238,8 @@
         pantalla grafica del Roll.)
         Se puede pasar entre tracks simplemente con el tabulador  o clickeando  la pista en la lista en Control. 
         No se ha conseguido el cambio  de focus a la ventanta del grafico que es un thread distinto, pero ya al dar click
-       en la lista cambia en el grafico auqneu no ese en el foco.
-        Notas desarrollo (No se puede cargar un track en el menú del Grafico y 
+        en la lista cambia en el grafico aunque no ese en el foco.
+           Notas desarrollo (No se puede cargar un track en el menú del Grafico y 
         darle Reproducir en la GUI por consistencia solo reproducimos en Roll Gráfico, el 
         reproductor en Control es solo para la cancion. Sin embargo el grafico asociado 
         a Control podra reproducir canciones con la barra espaciadora. Para reproducir el Track
@@ -717,16 +717,16 @@
         posiciones,  no se usa el 3er click, luego para que haga loop infinito pulsamos ALT-L
             Para detener la ejecucion como antes pulsar P.(parar)
         PLAY EN EL MENU DE CONTROL
+        Se agregó un checkbox "S" delante de cada pista si esta checkeado suena, sino
+        permnece mudo o sin sonido.
         Tenemos solo una opcion por ahora y es dar play de la cancion en las mismas condiciones 
         de antes, o sea ejecutara desde la posicion que se vea en 1er lugar en el borde izquierdo.
          Tamien toma la zona de play y el Loop como antes,
-         Cuando damos play de cancion desde este menu por ahora tod ose ilumina de difernete color
-         vermos si lo modificamos,,,pero esto indica bien desde donde hemos dado play.
-         NOTA: CANCION YA HACE PLAY CON DISITNTOS DISPOSITIVOS A LA VEZ
+           NOTA: CANCION YA HACE PLAY CON DISITNTOS DISPOSITIVOS A LA VEZ
          Cada pista puede manejar un canal diferente de un mismo dispositivo O PORT
          O TAMBIEN: CADA pista puede manejar un dispositivo diferente o port.
          Ej: una pista apunta a LoopBe en un canal midi 7
-            otra pista apunta a VirtualSinth en canal 1
+             otra pista apunta a VirtualSinth en canal 1
          Teoricamente se le agrego la capacidad de tener un port para cada pista
          o sea 32. Cada uno con su canal correpondiente configurable.
          Toda la informacion se gurda en el archivo *.Roll y *.Rtk
@@ -756,7 +756,7 @@
       Al dar click en una pista de la lista y luego otro click sobre el grafico
       se carga la secuencia en Roll de Visualizacion y edcion,o pulasndo TAB se recorera circularmente
       una a una cada Pista.
-    - AL CARGAR UNA CANCION se muestra el TRACK o PISTA 1 . (se corrigió).
+    - AL CARGAR UNA CANCION se muestra el TRACK o PISTA 1 . (se debe corregir de nuevo).
     -------------------------0-0-0------------------------------------
 Notas Tecnicas de desarrollo: 
 

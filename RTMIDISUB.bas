@@ -355,16 +355,21 @@ For k1=1 To cnt  ' PARA CADA NOTA
       If pasoCol(i1).ligaold =0  Then
          canal=pasoCol(i1).canal
          portsal=CUByte(pasoCol(i1).port)
-     ''    ChangeProgram (pasoCol(i1).inst,canal,portsal)
          vel= CUByte(vol( pasoCol(i1).DUR, velpos))
+         if pasoCol(i1).vol = 0 Then
+            vel=0
+         EndIf   
          noteon CUByte(pasoCol(i1).notapiano),vel,canal,portsal
       Else
           Dim As Integer cret 
           If pasoCol(i1).audio=1 And pasoCol(i1).audioold=2 Then
              canal=pasoCol(i1).canal
              portsal=CUByte(pasoCol(i1).port)
-          ''   ChangeProgram (pasoCol(i1).inst,canal,portsal)
              vel= CUByte(vol( pasoCol(i1).DUR, velpos))
+             if pasoCol(i1).vol = 0 Then
+                vel=0
+             EndIf   
+
              noteon CUByte(pasoCol(i1).notapiano),vel,canal,portsal 
              pasoCol(i1).old_time=old_time_on_int
           EndIf
@@ -394,8 +399,11 @@ For k1=1 To cnt  ' PARA CADA NOTA
            If  pasoCol(i1).audio=1 And pasoCol(i1).audioOld = 2  Then
                canal=pasoCol(i1).canal
                portsal=CUByte(pasoCol(i1).port)
-      ''         ChangeProgram (pasoCol(i1).inst,canal,portsal)
                vel= CUByte(vol( pasoCol(i1).DUR, velpos))
+               if pasoCol(i1).vol = 0 Then
+                  vel=0
+               EndIf   
+               
                noteon CUByte(pasoCol(i1).notapiano),vel,canal,portsal
                pasoCol(i1).old_time=old_time_on_int
                pasoCol(i1).tiempoFiguraOld= pasoCol(i1).tiempoFigura ''''aca toma 0.25 
@@ -428,8 +436,11 @@ For k1=1 To cnt  ' PARA CADA NOTA
              If pasoCol(i1).audio = 1 Then
                 canal=pasoCol(i1).canal
                 portsal=CUByte(pasoCol(i1).port)
-        ''        ChangeProgram (pasoCol(i1).inst,canal,portsal)
                 vel= CUByte(vol( pasoCol(i1).DUR, velpos))
+                if pasoCol(i1).vol = 0 Then
+                   vel=0
+                EndIf   
+
                 noteon CUByte(pasoCol(i1).notapiano),vel,canal,portsal
                 pasoCol(i1).old_time = old_time_on_int
              EndIf
@@ -575,8 +586,11 @@ For i1=1 To cnt
  '   print #1,"1]pasocol("+Str(i1)+").inst en AcordeonDistintos ",pasoCol(i1).inst
      canal=pasoCol(i1).canal
      portsal=CUByte(pasoCol(i1).port)
-''     ChangeProgram (pasoCol(i1).inst,canal,portsal)
      vel= CUByte(vol( pasoCol(i1).DUR, velpos))
+     if pasoCol(i1).vol = 0 Then
+        vel=0
+     EndIf   
+
      noteon CUByte(pasoCol(i1).notapiano),vel,canal,portsal
  '    print #1,"3) AOD:LIGA=1 ==========> ";liga
      
@@ -612,8 +626,11 @@ For i1=1 To cnt
  '   print #1,"2]pasocol("+Str(i1)+").inst en AcordeonDistintos ",pasoCol(i1).inst
     canal=pasoCol(i1).canal
     portsal=CUByte(pasoCol(i1).port)
- ''   ChangeProgram (pasoCol(i1).inst,canal,portsal)
     vel= CUByte(vol( pasoCol(i1).DUR, velpos))
+    if pasoCol(i1).vol = 0 Then
+       vel=0
+    EndIf   
+
     noteon CUByte(pasoCol(i1).notapiano),vel,canal,portsal
  End If
 Next i1
@@ -1655,11 +1672,8 @@ print #1,"-----------------------------------------"
       EndIf 
       If liga=0 Then  
        ' print #1,"liga=0 "
-        If (maxdur >=46 And maxdur <= 90 ) Or (maxdur >=136 And maxdur <= 180 ) Then
-          vel =0
-        Else
-          vel= velpos
-        EndIf
+        vel=vol(maxdur,velpos)
+       
  ' SI ELUSUARIO GRABA VELOCIDADES DEBO USARESA NO LA DEFAULT !!! JMG
  ' Y NO SACRLA MAAX DURACION TOCAR TODAS CON SU DURCION Y VELOCIDAD!!!       
   ''      canal=pasoCol(i1).canal

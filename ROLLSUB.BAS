@@ -4412,6 +4412,9 @@ EndIf
  posicion=guardpos
  
 End Sub
+
+
+
 ' error
 errorSub:
   

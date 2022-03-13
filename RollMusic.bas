@@ -783,20 +783,57 @@ Dim hnro As Integer
 
  
 '------------
-Static As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
+Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
+
 If ix < 3 And ubirtk=0 And ubiroll=0 Then ' rollmusic CON control
   instancia=0
-  hwndC = OpenWindow("RollMusic Control ver 4.5.3.1",10,10,anchoK*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
+  hwndC = OpenWindow("RollMusic Control ver 0.4532",10,10,anchoK*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
 ''UpdateInfoXserver()
-  hwndListBox= ListBoxGadget(3,10,10,240,650,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
+
+  hwndListBox= ListBoxGadget(3,30,30,240,670,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
 
 
   SendMessage(GadgetID(3),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
-  TextGadget(4,250,10,240,20,, SS_SIMPLE  )
+ ' TextGadget(4,250,10,240,20,, SS_SIMPLE  )
+  StringGadget(1,10,10,20,20,"S")
  ' GetTextExtentPoint32 PARA DETERMINAR EL ANCHO EN PIXELS DE UN TEXTO
  ' EL SCROLL VERTICAL APARECE CUANDO SE SOBREPASA LSO ITEM QUE SE PUEDEN VER 
-
+ 'CheckBox_New(x , y , w ,h, "", wS_TABSTOP, hwndc)
  
+  cbxnum(1) =  CheckBox_New( 10 ,  30, 20, 20, "",, hwndc) 
+  cbxnum(2) =  CheckBox_New( 10 ,  50, 20, 20, "",, hwndc)
+  cbxnum(3) =  CheckBox_New( 10 ,  70, 20, 20, "",, hwndc)
+  cbxnum(4) =  CheckBox_New( 10 ,  90, 20, 20, "",, hwndc)
+  cbxnum(5) =  CheckBox_New( 10 , 110, 20, 20, "",, hwndc)
+  cbxnum(6) =  CheckBox_New( 10 , 130, 20, 20, "",, hwndc) 
+  cbxnum(7) =  CheckBox_New( 10 , 150, 20, 20, "",, hwndc) 
+  cbxnum(8) =  CheckBox_New( 10 , 170, 20, 20, "",, hwndc)
+  cbxnum(9) =  CheckBox_New( 10 , 190, 20, 20, "",, hwndc)
+  cbxnum(10) = CheckBox_New( 10 , 210, 20, 20, "",, hwndc)
+  cbxnum(11) = CheckBox_New( 10 , 230, 20, 20, "",, hwndc)
+  cbxnum(12) = CheckBox_New( 10 , 250, 20, 20, "",, hwndc)
+  cbxnum(13) = CheckBox_New( 10 , 270, 20, 20, "",, hwndc) 
+  cbxnum(14) = CheckBox_New( 10 , 290, 20, 20, "",, hwndc) 
+  cbxnum(15) = CheckBox_New( 10 , 310, 20, 20, "",, hwndc)
+  cbxnum(16) = CheckBox_New( 10 , 330, 20, 20, "",, hwndc)
+  cbxnum(17) = CheckBox_New( 10 , 350, 20, 20, "",, hwndc)
+  cbxnum(18) = CheckBox_New( 10 , 370, 20, 20, "",, hwndc)
+  cbxnum(19) = CheckBox_New( 10 , 390, 20, 20, "",, hwndc) 
+  cbxnum(20) = CheckBox_New( 10 , 410, 20, 20, "",, hwndc) 
+  cbxnum(21) = CheckBox_New( 10 , 430, 20, 20, "",, hwndc)
+  cbxnum(22) = CheckBox_New( 10 , 450, 20, 20, "",, hwndc)
+  cbxnum(23) = CheckBox_New( 10 , 470, 20, 20, "",, hwndc)
+  cbxnum(24) = CheckBox_New( 10 , 490, 20, 20, "",, hwndc)
+  cbxnum(25) = CheckBox_New( 10 , 510, 20, 20, "",, hwndc) 
+  cbxnum(26) = CheckBox_New( 10 , 530, 20, 20, "",, hwndc) 
+  cbxnum(27) = CheckBox_New( 10 , 550, 20, 20, "",, hwndc)
+  cbxnum(28) = CheckBox_New( 10 , 570, 20, 20, "",, hwndc)
+  cbxnum(29) = CheckBox_New( 10 , 590, 20, 20, "",, hwndc)
+  cbxnum(30) = CheckBox_New( 10 , 610, 20, 20, "",, hwndc)
+  cbxnum(31) = CheckBox_New( 10 , 630, 20, 20, "",, hwndc)
+  cbxnum(32) = CheckBox_New( 10 , 650, 20, 20, "",, hwndc) 
+
+
 
   EVENTc=0
 
@@ -945,7 +982,7 @@ End Sub
 ' Dim Shared As String txt
 ' Dim As Any Ptr pt
 ' Dim Shared As Integer ok = 0
-Dim  As Integer Terminar=0
+Dim  As Integer Terminar=0, gi = 0
 
 Print #1,"ANTES ANCHO , ALTO ", ANCHO, ALTO
 If mxold > 0 Then
@@ -1629,15 +1666,15 @@ Print #1,"1060 abrirRoll=0 entro"
              CANCIONCARGADA=TRUE
              Dim item As String
              Dim As Integer ubi1,ubi2
-             item= "                        "
-             setgadgettext(4,item)
+          '   item= "                        "
+          '   setgadgettext(4,item)
               
              item=GetListBoxText(3,GetItemListBox(3))
              Print #1,"item 1580 ",item
              If Len (item) < 24 Then
                item = item + String( 40-Len(item),32)
              EndIf
-             setgadgettext(4,item)
+         '    setgadgettext(4,item)
              item=Trim(item)
              Print "item ",item
              If item > "" Then
@@ -1699,9 +1736,10 @@ Print #1,"1060 abrirRoll=0 entro"
                                   
                 Print #1," CLICK EN LISTA FIN "
                   
-             EndIf 
-
+             EndIf
+  
        EndIf
+
 
        Case EventClose  ''<==== SALIR TERMINA ROLL lax de win control???
         ''si ponemos aca da asercion de cairo.c 
