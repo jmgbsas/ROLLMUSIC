@@ -1711,7 +1711,7 @@ finplay=1
 
 '''  reponer mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 ''fueradefoco=0
- 
+ SuenaTodo=0 ' habilita boton cotrol sonido de peistas
  SetMouse xmouse, ymouse 
 Sleep 10,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
 /'

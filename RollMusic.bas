@@ -1738,16 +1738,19 @@ Print #1,"1060 abrirRoll=0 entro"
   
        EndIf
 
-       If eventnumber()=5 And SuenaTodo=0 Then
-            SuenaTodo=1
-       Else
-            SuenaTodo=0          
+       If eventnumber()=5 Then 
+         Select Case  SuenaTodo
+            Case 0
+             SuenaTodo=1
+           Case 1
+             SuenaTodo=0
+         End Select
+         For i=1 To tope 
+            CheckBox_SetCheck(ByVal cbxnum(i), SuenaTodo)
+          Next i
+         SuenaTodo=3
        EndIf
-       For i=1 To tope 
-           CheckBox_SetCheck(ByVal cbxnum(i), SuenaTodo)
-       Next i
-
-
+       
        Case EventClose  ''<==== SALIR TERMINA ROLL lax de win control???
         ''si ponemos aca da asercion de cairo.c 
         terminar=1
