@@ -1,4 +1,4 @@
--14-03-2022 llave 'S' todo o nada, fix para otros estados
+-14-03-2022 llave 'S' todo o nada, fix para otros estados, con una sola llave hace todo
 -14-03-2022 v4533 boton 'S' llave conmuta de suena todo a mute todo. 
 -12-03-2022 checkbox para cada pista para darle sonido sin el check cadapista esta muteado
 -11-03-2022 fix play de cancion cargada 2 veces,,,fix 
