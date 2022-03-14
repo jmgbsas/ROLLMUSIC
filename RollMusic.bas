@@ -683,6 +683,7 @@ listOutAbierto(0)=0
 '/
 '========================== 
 #include "RTMIDISUB.bas"
+#include "WinGUI.bi"
 #include "rolltracks.bas"
 #include "ROLLSUB.BAS"
 '===========================
@@ -784,54 +785,51 @@ Dim hnro As Integer
  
 '------------
 Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
-
+ 
 If ix < 3 And ubirtk=0 And ubiroll=0 Then ' rollmusic CON control
   instancia=0
-  hwndC = OpenWindow("RollMusic Control ver 0.4532",10,10,anchoK*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
+  hwndC = OpenWindow("RollMusic Control ver 0.4533",10,10,anchoK*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
 ''UpdateInfoXserver()
 
-  hwndListBox= ListBoxGadget(3,30,30,240,670,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
+  hwndListBox= ListBoxGadget(3,80,30,290,670,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
 
-
+  ButtonGadget(5,60,10,20,20,"S")
   SendMessage(GadgetID(3),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
  ' TextGadget(4,250,10,240,20,, SS_SIMPLE  )
-  StringGadget(1,10,10,20,20,"S")
- ' GetTextExtentPoint32 PARA DETERMINAR EL ANCHO EN PIXELS DE UN TEXTO
- ' EL SCROLL VERTICAL APARECE CUANDO SE SOBREPASA LSO ITEM QUE SE PUEDEN VER 
- 'CheckBox_New(x , y , w ,h, "", wS_TABSTOP, hwndc)
- 
-  cbxnum(1) =  CheckBox_New( 10 ,  30, 20, 20, "",, hwndc) 
-  cbxnum(2) =  CheckBox_New( 10 ,  50, 20, 20, "",, hwndc)
-  cbxnum(3) =  CheckBox_New( 10 ,  70, 20, 20, "",, hwndc)
-  cbxnum(4) =  CheckBox_New( 10 ,  90, 20, 20, "",, hwndc)
-  cbxnum(5) =  CheckBox_New( 10 , 110, 20, 20, "",, hwndc)
-  cbxnum(6) =  CheckBox_New( 10 , 130, 20, 20, "",, hwndc) 
-  cbxnum(7) =  CheckBox_New( 10 , 150, 20, 20, "",, hwndc) 
-  cbxnum(8) =  CheckBox_New( 10 , 170, 20, 20, "",, hwndc)
-  cbxnum(9) =  CheckBox_New( 10 , 190, 20, 20, "",, hwndc)
-  cbxnum(10) = CheckBox_New( 10 , 210, 20, 20, "",, hwndc)
-  cbxnum(11) = CheckBox_New( 10 , 230, 20, 20, "",, hwndc)
-  cbxnum(12) = CheckBox_New( 10 , 250, 20, 20, "",, hwndc)
-  cbxnum(13) = CheckBox_New( 10 , 270, 20, 20, "",, hwndc) 
-  cbxnum(14) = CheckBox_New( 10 , 290, 20, 20, "",, hwndc) 
-  cbxnum(15) = CheckBox_New( 10 , 310, 20, 20, "",, hwndc)
-  cbxnum(16) = CheckBox_New( 10 , 330, 20, 20, "",, hwndc)
-  cbxnum(17) = CheckBox_New( 10 , 350, 20, 20, "",, hwndc)
-  cbxnum(18) = CheckBox_New( 10 , 370, 20, 20, "",, hwndc)
-  cbxnum(19) = CheckBox_New( 10 , 390, 20, 20, "",, hwndc) 
-  cbxnum(20) = CheckBox_New( 10 , 410, 20, 20, "",, hwndc) 
-  cbxnum(21) = CheckBox_New( 10 , 430, 20, 20, "",, hwndc)
-  cbxnum(22) = CheckBox_New( 10 , 450, 20, 20, "",, hwndc)
-  cbxnum(23) = CheckBox_New( 10 , 470, 20, 20, "",, hwndc)
-  cbxnum(24) = CheckBox_New( 10 , 490, 20, 20, "",, hwndc)
-  cbxnum(25) = CheckBox_New( 10 , 510, 20, 20, "",, hwndc) 
-  cbxnum(26) = CheckBox_New( 10 , 530, 20, 20, "",, hwndc) 
-  cbxnum(27) = CheckBox_New( 10 , 550, 20, 20, "",, hwndc)
-  cbxnum(28) = CheckBox_New( 10 , 570, 20, 20, "",, hwndc)
-  cbxnum(29) = CheckBox_New( 10 , 590, 20, 20, "",, hwndc)
-  cbxnum(30) = CheckBox_New( 10 , 610, 20, 20, "",, hwndc)
-  cbxnum(31) = CheckBox_New( 10 , 630, 20, 20, "",, hwndc)
-  cbxnum(32) = CheckBox_New( 10 , 650, 20, 20, "",, hwndc) 
+ '''hwndBoton(1) = Button_New(60, 10 , 20,  20 , "S", ,  hwndC )
+  
+  cbxnum(1) =  CheckBox_New( 60 ,  30, 20, 20, "",, hwndc) 
+  cbxnum(2) =  CheckBox_New( 60 ,  50, 20, 20, "",, hwndc)
+  cbxnum(3) =  CheckBox_New( 60 ,  70, 20, 20, "",, hwndc)
+  cbxnum(4) =  CheckBox_New( 60 ,  90, 20, 20, "",, hwndc)
+  cbxnum(5) =  CheckBox_New( 60 , 110, 20, 20, "",, hwndc)
+  cbxnum(6) =  CheckBox_New( 60 , 130, 20, 20, "",, hwndc) 
+  cbxnum(7) =  CheckBox_New( 60 , 150, 20, 20, "",, hwndc) 
+  cbxnum(8) =  CheckBox_New( 60 , 170, 20, 20, "",, hwndc)
+  cbxnum(9) =  CheckBox_New( 60 , 190, 20, 20, "",, hwndc)
+  cbxnum(10) = CheckBox_New( 60 , 210, 20, 20, "",, hwndc)
+  cbxnum(11) = CheckBox_New( 60 , 230, 20, 20, "",, hwndc)
+  cbxnum(12) = CheckBox_New( 60 , 250, 20, 20, "",, hwndc)
+  cbxnum(13) = CheckBox_New( 60 , 270, 20, 20, "",, hwndc) 
+  cbxnum(14) = CheckBox_New( 60 , 290, 20, 20, "",, hwndc) 
+  cbxnum(15) = CheckBox_New( 60 , 310, 20, 20, "",, hwndc)
+  cbxnum(16) = CheckBox_New( 60 , 330, 20, 20, "",, hwndc)
+  cbxnum(17) = CheckBox_New( 60 , 350, 20, 20, "",, hwndc)
+  cbxnum(18) = CheckBox_New( 60 , 370, 20, 20, "",, hwndc)
+  cbxnum(19) = CheckBox_New( 60 , 390, 20, 20, "",, hwndc) 
+  cbxnum(20) = CheckBox_New( 60 , 410, 20, 20, "",, hwndc) 
+  cbxnum(21) = CheckBox_New( 60 , 430, 20, 20, "",, hwndc)
+  cbxnum(22) = CheckBox_New( 60 , 450, 20, 20, "",, hwndc)
+  cbxnum(23) = CheckBox_New( 60 , 470, 20, 20, "",, hwndc)
+  cbxnum(24) = CheckBox_New( 60 , 490, 20, 20, "",, hwndc)
+  cbxnum(25) = CheckBox_New( 60 , 510, 20, 20, "",, hwndc) 
+  cbxnum(26) = CheckBox_New( 60 , 530, 20, 20, "",, hwndc) 
+  cbxnum(27) = CheckBox_New( 60 , 550, 20, 20, "",, hwndc)
+  cbxnum(28) = CheckBox_New( 60 , 570, 20, 20, "",, hwndc)
+  cbxnum(29) = CheckBox_New( 60 , 590, 20, 20, "",, hwndc)
+  cbxnum(30) = CheckBox_New( 60 , 610, 20, 20, "",, hwndc)
+  cbxnum(31) = CheckBox_New( 60 , 630, 20, 20, "",, hwndc)
+  cbxnum(32) = CheckBox_New( 60 , 650, 20, 20, "",, hwndc) 
 
 
 
@@ -1655,7 +1653,7 @@ Print #1,"1060 abrirRoll=0 entro"
          End Select
        Case eventgadget
       ' el codigo anterior que traia de disco esta en notas
-       If eventnumber()=3 Then
+       If eventnumber()=3 Then  ' VK_LBUTTON ?
          borrapos=0
  ' esto servia cuando cargaba solo la lista y no los tracks en 1006
  ' pero ahroa solo deberia hacer switch no cargar de disco sino
@@ -1739,6 +1737,15 @@ Print #1,"1060 abrirRoll=0 entro"
              EndIf
   
        EndIf
+
+       If eventnumber()=5 And SuenaTodo=0 Then
+            SuenaTodo=1
+       Else
+            SuenaTodo=0          
+       EndIf
+       For i=1 To tope 
+           CheckBox_SetCheck(ByVal cbxnum(i), SuenaTodo)
+       Next i
 
 
        Case EventClose  ''<==== SALIR TERMINA ROLL lax de win control???
