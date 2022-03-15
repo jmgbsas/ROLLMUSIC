@@ -3424,7 +3424,7 @@ Sub GrabarTrack (ntk As integer)  'Error seguro aca nota=181 posicion1
           final= 1 'Atrapa el final
        EndIf
 
-       If Track(ntk).trk(i2,i1 ).nota >=NA And Track(ntk).trk(i2,i1 ).nota<=NB-13 Then
+       If Track(ntk).trk(i2,i1 ).nota >=NB And Track(ntk).trk(i2,i1 ).nota<=NA-13 Then
           haynota=1 ' atrapa al menso 1 caso
        EndIf
        

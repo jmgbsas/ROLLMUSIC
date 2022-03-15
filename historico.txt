@@ -1,4 +1,4 @@
--15-03-2022 fix, en cancion comenzab aa grabar en posicion 2 porque (0,181) se colocaba con MaxPos=2 tambien
+-15-03-2022 fix, en cancion comenzaba a grabar en posicion 2 porque (0,181) se colocaba con MaxPos=2 tambien
 -14-03-2022 llave 'S' todo o nada, fix para otros estados, con una sola llave hace todo
 -14-03-2022 v4533 boton 'S' llave conmuta de suena todo a mute todo. 
 -12-03-2022 checkbox para cada pista para darle sonido sin el check cadapista esta muteado
