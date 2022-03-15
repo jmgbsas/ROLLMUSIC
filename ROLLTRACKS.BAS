@@ -1164,7 +1164,7 @@ Print #1," pmTk(ntk).MaxPos ",pmTk(ntk).MaxPos
 ' 1) carga de Roll desde track ntk
 For i2 = 1 To pmTk(ntk).MaxPos 
    For i1=1 To lim2
-      If Track(ntk).trk (i2,i1).nota > 0 and Track(ntk).trk(i2,i1 ).nota <=NA Then
+      If Track(ntk).trk (i2,i1).nota > 0 and Track(ntk).trk(i2,i1 ).nota <=NA -13 Then '14-03-2022 na-13
       ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
          PianoNota=Track(ntk).trk(i2,i1 ).nota
          PianoNota= PianoNota + SumarnR (PianoNota) ' para 60 es 65
@@ -1250,6 +1250,7 @@ Sleep 5
 ' al traer de track a Roll Roll no tiene ninguan infoarmacion de
 ' nota=181 y por ess puede retroceder al cargar notas
 ' esto es necesario si o si al pasar de Track a Roll 05-03 ÇÇÇ
+If Maxpos > 2 Then ''14-03-2022 esto ahceia empezar a grabra en posicion 2
 For i2 = 1 To MaxPos -1  
   For i1=NB To NA
    If Roll.trk(i2,i1).nota =0 And Roll.trk(i2,i1).dur <>182  Then
@@ -1261,6 +1262,7 @@ For i2 = 1 To MaxPos -1
    EndIf
   Next i1
 Next i2     
+EndIf
 ' 2)  pasar lso datos del Track(x) a Track(0)!! si es cancion
 ' el redim esta arriba
 Print #1,"cargaCancion DEBE SER 1 ",cargaCancion 

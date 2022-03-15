@@ -1393,7 +1393,9 @@ Print #1,"1060 abrirRoll=0 entro"
                   ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim3)
                EndIf
                ' EL TRACK SE CREA AL GrabarRollaTrack y debe tener CantTicks
-                
+               NB => 0 + (desde-1) * 13   
+               NA => 11 + (hasta-1) * 13  
+
                titulos(ntk)=nombre
                pmTk(ntk).desde=desde
                pmTk(ntk).hasta=hasta
@@ -1685,15 +1687,13 @@ Print #1,"1060 abrirRoll=0 entro"
              ' despues dela rutina,cargarTrack pone a 0 lineadecomadno=0
              ' pero si quiero volver a disco solo debo resetear ubirtk=0
               ntk=sacarNtk(item) ' este ntk no sirve para boorar
-'                Tracks (ntk , 1,Roll) ' copia track a Roll en memoria
-'                 Print #1,"1596 despues Tracks" '<=== ok
-
+ ' aca no copia track a Roll
          nombre= titulos(ntk)
          Print #1,"ntk, nombre ",ntk, nombre
 
 '--------------------------------------------------------------
 
-   clickpista=1 ' simula SC_TAB
+   clickpista=1 ' simula SC_TAB el cual carga el track a Roll
  
 '--------------------------------------------------------------
 ' este ntk sirve para identificar el ntk del arcchivo t dle vector

@@ -108,7 +108,8 @@ Dim As String t2="",t3="",t4=""
     EndIf
  Else
    If posicion=0 Then ' para TAB de track nuevo  
-      posishow=1 
+      posishow=1
+      posicion=1  ' 14-03-2022
    Else
       posishow = posicion
    EndIf  
@@ -1129,7 +1130,7 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA And play=0 Or cargaCancio
  
         nombre= titulos(ntk)
      Loop
-     posicion=1
+     posicion=0 ' 14.-03-2022
      MaxPos=pmTk(ntk).MaxPos
      posn=pmTk(ntk).posn
      desde=pmTk(ntk).desde
@@ -1147,17 +1148,18 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA And play=0 Or cargaCancio
      armarescala cadenaes_inicial,tipoescala_num_ini,notaescala_num_ini,alteracion,1 '13-01-2022
 ' todavia no probado, escala principal para TAB en cada track testeat 13-01-2022     
 ' no he grabado las escalas auxiliares en lso Trackc todavia !! 13-01-2022 jjj     
-  print #1,"5- MAXPOS final TAB " ,maxpos
+     print #1,"5- MAXPOS final TAB " ,maxpos
      
-EndIf   
+   EndIf   
 '
 
-  print #1, "6-NTK nombre", ntk,nombre  
-  print #1, "6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, maxpos,pmTK(ntk).maxpos
+   print #1, "6-NTK nombre", ntk,nombre  
+   print #1, "6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, maxpos,pmTK(ntk).maxpos
 ' copia track a Roll en memoria  
-  Tracks (ntk , 1,Roll) ' track , nro,  Canal, copia track a Roll en memoria
-  Sleep 100
- print #1,"7- instancia, maspos ",instancia, maxpos
+' el segundo parametro es canal no se usa...lo saco o lo dejo?
+   Tracks (ntk , 1,Roll) ' track , nro,  Canal, copia track a Roll en memoria
+   Sleep 100
+   Print #1,"7- instancia, maspos ",instancia, maxpos
 EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar con Insert y I
@@ -2091,7 +2093,6 @@ If COMEDIT = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 An
  'print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;_
  '   " nota: ";nota; " figura: ";figura(DUR)
 
-
 Print #1,"entro nota ",nota 
  
  posn=1+InicioDeLectura
@@ -2122,17 +2123,18 @@ Print #1,"entro nota ",nota
    ' PARA USAR ESTO CON ENTRADA POR MOUSE SOLO DEBO DETERMINAR EL SEMITONO...
    ' y hacer nota=semiotono 1 a 11 con el mouse...el esto es automtico...
    Do ' nota es semitono ahora va de 0 a 11 deborestr 1 a nota
-'  Print #1,"Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota ",Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota
+  Print #1,"posn, nota, estoyEnOctava ",posn,nota,estoyEnOctava 
+  Print #1,"Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota ",Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota
     If Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0 Or Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 182 Then
-     'posicion=posn
+       posicion=posn
      '182 el fin de archivo lo puedo pisar para seguir la secuencia
      '      print #1, "ingreso a NUCLEO POSICION=POSN", posicion
      Exit Do
     EndIf
    
 
-    posn = posn + 1
-    posicion=posn '05-03
+     posn = posn + 1
+ 
 '---control barrido de pantalla columna
     If (posn > NroCol + InicioDeLectura) Then
      InicioDeLectura=InicioDeLectura + NroCol

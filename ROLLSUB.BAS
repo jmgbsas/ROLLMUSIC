@@ -1332,6 +1332,7 @@ End Sub
 '----------------------------------------
 Sub Tracks ( ByRef ntk As integer, ByRef nroCanal As UByte,Roll As inst)
   ''copia track a Roll en memoria
+  ' nrocanal no se usa ,,,,borraremos mas adelante...
 nota=0:dur=0
 print #1,"EN TRACKS MAXPOS (NTK).MAXPOS ", maxpos, pmTK(ntk).maxpos
  ' sizeof array de ubytepr almcenar el pentagrama roll
@@ -3372,7 +3373,7 @@ mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0
 End Sub
 
 ' ---------------------------------
-Sub GrabarTrack (ntk As integer) 
+Sub GrabarTrack (ntk As integer)  'Error seguro aca nota=181 posicion1
 ' solo util para Grabar Cancion en sus track independietnes
 ' toma todos los valores de pmTk(ntk)
 ' Graba cancion en sus archivo sde tracks independientes...
@@ -3399,6 +3400,7 @@ Sub GrabarTrack (ntk As integer)
  Maxpos=pmTk(ntk).MaxPos
     Open ntknom  For Binary Access write As #gt
      Dim Trabajo (1 To  MAxPos, 1 To lim3 ) As poli
+   'r  Erase Trabajo ' todo a cero par aun array fijo no dinamico
      Dim grabaPos (1,1)  As poli
      Dim grabaLim (1,1)  As poli
      Dim graba3   (1,1)  As poli ' 04-02-2022 se agregan 48 bytes para info futura 
@@ -3422,7 +3424,7 @@ Sub GrabarTrack (ntk As integer)
           final= 1 'Atrapa el final
        EndIf
 
-       If Track(ntk).trk(i2,i1 ).nota >=1 And Track(ntk).trk(i2,i1 ).nota<=12 Then
+       If Track(ntk).trk(i2,i1 ).nota >=NA And Track(ntk).trk(i2,i1 ).nota<=NB-13 Then
           haynota=1 ' atrapa al menso 1 caso
        EndIf
        
