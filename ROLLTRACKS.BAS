@@ -1,3 +1,69 @@
+Function convertirLlavesEninteger (vector() As Integer, maxi As Integer ) As de64
+' tomamos un vector de enteros que solo tienen 1 o 0 y lo convertimos
+' en un ubyte , en el caso de sonido son 32 posisiones con 0 y 1
+' siemrep convertimos todo sin importar si las pistas estan siendo
+' usadas o no
+' binario en forma de string
+Dim As Integer i, j,k
+Dim As String s=""
+Dim ent As de64
+
+For i=1 To  maxi
+  s=s + Trim(Str(vector(i)))
+  j+=1
+  If j=4 Then
+     k+=1
+     Select Case k
+       Case 1
+          ent.b1 =CUByte(s)
+       Case 2
+          ent.b2 =CUByte(s)
+       Case 3
+          ent.b3 =CUByte(s)
+       Case 4
+          ent.b4 =CUByte(s)
+       Case 5
+          ent.b5 =CUByte(s)
+       Case 6
+          ent.b6 =CUByte(s)
+       Case 7
+          ent.b7 =CUByte(s)
+       Case 8
+          ent.b8 =CUByte(s)
+     
+     End Select
+    j=0
+  EndIf
+Next i 
+
+Return ent
+
+End Function
+
+Sub convertirBytesEnLlaves (vector() As Integer, maxi As Integer, entero As de64 ) 
+' tomamos un byte lo recortamos y llenmos el vector dado con las llaves reconstruidas
+Dim As Integer i,r
+Dim As String x="", x1="",x2="",x3="",x4="",x5="",x6="",x7="",x8="" 
+Dim c As string * 1 
+redim sonidoPista (1 To 32)
+x1=Bin(entero.b1,8)
+x2=Bin(entero.b2,8)
+x3=Bin(entero.b3,8)
+x4=Bin(entero.b4,8)
+'x5=entero.b5
+'x6=entero.b6
+'x7=entero.b7
+'x8=entero.b8
+
+x=x1+x2+x3+x4
+Print #1,"string sonidoPista ",x
+For i=1 To  maxi
+  c=Mid(x,i,1)
+  vector(i)=CInt(c)
+Next i 
+
+
+End Sub
 
 Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
 ' solo carga track no lo pasa a Vector de Visualizacion. ntk debe venir informado
@@ -10,8 +76,8 @@ cargacancion=0
   print #1,"1) CargarTrack nombre, ntk= ", nombre , ntk  
   Print #1,"1) UBIRTK QUE LLEGA ", ubirtk
  
-     Dim z (1,1 )  As poli
-     Dim zLim (1,1) As poli
+     Dim grabaPos (1,1 )  As poli
+     Dim grabaLim (1,1) As poli
      Dim graba3   (1,1)  As poli ' 04-02-2022 se agregan 48 bytes para info futura 
      Dim graba4   (1,1)  As poli 
      Dim graba5   (1,1)  As poli 
@@ -62,17 +128,17 @@ ubirtk=0
        Exit sub
      EndIf
         
-     Get #ct, , z(1,1)
-     x1=Bin(z(1,1).nota,4)
-     x2=Bin(z(1,1).dur,4)
-     x3=Bin(z(1,1).vol,4)
-     x4=Bin(z(1,1).pan,4)
-     x5=Bin(z(1,1).pb,4)
-     tipoescala_num_ini =CInt( Z(1,1).nnn ) ' 20-12-2021 - tipoescala en uso
+     Get #ct, , grabaPos(1,1)
+     x1=Bin(grabaPos(1,1).nota,4)
+     x2=Bin(grabaPos(1,1).dur,4)
+     x3=Bin(grabaPos(1,1).vol,4)
+     x4=Bin(grabaPos(1,1).pan,4)
+     x5=Bin(grabaPos(1,1).pb,4)
+     tipoescala_num_ini =CInt( grabaPos(1,1).nnn ) ' 20-12-2021 - tipoescala en uso
      If tipoescala_num_ini=0 Then
         tipoescala_num_ini=1
      EndIf
-     pmTk(ntk).tipoescala=Z(1,1).nnn
+     pmTk(ntk).tipoescala=grabaPos(1,1).nnn
   '   Print #1,"Carga Track tipoescala_num_ini ",tipoescala_num_ini
      x=x1+x2+x3+x4+x5
    '     print #1,"reconstruccion x pos bin ", x
@@ -97,33 +163,38 @@ ubirtk=0
      ReDim Trabajo  (1 To CantTicks,1 To lim3) As poli 
 
      ' crgamos limites Roll de octavas
-     Get #ct, , zLim(1,1)
-     pmTk(ntk).desde  = CInt(zLim(1,1).nota)
-     pmTk(ntk).hasta  = CInt(zLim(1,1).dur) '01-03 cint
+     Get #ct, , grabaLim(1,1)
+     
+     pmTk(ntk).desde  = CInt(grabaLim(1,1).nota)
+     pmTk(ntk).hasta  = CInt(grabaLim(1,1).dur) '01-03 cint
      Print #1,"ÇÇÇ ntk hasta",ntk, hasta
-     pmTk(ntk).notaold= CInt(zLim(1,1).pb)
+     pmTk(ntk).notaold= CInt(grabaLim(1,1).pb)
 ' la nota esca y la esca es la misma `para todos lso tracks despues lo debo cambiar
      
-     notaescala_num_ini =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
+     notaescala_num_ini =CInt(grabaLim(1,1).vol) ' notadeescala 20-12-2021
      If notaescala_num_ini=0 Then
         notaescala_num_ini=1
      EndIf
      Print #1,"Carga Track notaescala_num_ini ",notaescala_num_ini
-     pmTk(ntk).notaescala=zLim(1,1).vol
-     If zLim(1,1).pan = 3 Then
+     pmTk(ntk).notaescala=grabaLim(1,1).vol
+     If grabaLim(1,1).pan = 3 Then
         alteracion="sos"
      EndIf
-     If zLim(1,1).pan = 2 Then
+     If grabaLim(1,1).pan = 2 Then
         alteracion="bem"
      EndIf
-     If zLim(1,1).pan = 0 Then
+     If grabaLim(1,1).pan = 0 Then
         alteracion="sos"
      EndIf
-     
+     pmTk(ntk).portout    = grabaLim(1,1).dur2  ' 15-03-2022
+     pmTk(ntk).canalsalida= grabaLim(1,1).dur3  ' 15-03-2022 
+     canalx               = grabaLim(1,1).dur3
+     portout = CInt(grabaLim(1,1).dur2)
+
  '    Print #1,"alteracion ",alteracion
  '    print #1,"desde ",pmTk(ntk).desde
  '    print #1,"hasta ",pmTk(ntk).hasta
-     tiempoPatron=CInt(zLim(1,1).nnn)
+     tiempoPatron=CInt(grabaLim(1,1).nnn)
      If tiempoPatron = 0 Then 
         tiempoPatron = 60
      EndIf
@@ -133,10 +204,12 @@ ubirtk=0
  '    print #1,"CargarTrack  NB Na", pmTk(ntk).NB, pmTk(ntk).NA
      
      Get #ct, ,graba3  (1,1)
-     pmTk(ntk).canalsalida = graba3(1,1).nnn
-     canalx=graba3(1,1).nnn    
-     pmTk(ntk).portout= graba3(1,1).dur
-     portout = CInt(graba3(1,1).dur)
+     If graba3(1,1).dur=1 Then  
+        CheckBox_SetCheck(cbxnum(ntk),1)
+     Else
+        CheckBox_SetCheck(cbxnum(ntk),0)
+     End If
+
      
  '    print #1,"cargaCancion ",cargacancion
 
@@ -241,7 +314,7 @@ ubirtk=0
 ' carga de escala en guia de escala
     guiaEscala(1).tipoescala=tipoescala_num_ini '13-01-2022 faltaba ini
     guiaEscala(1).notaescala=notaescala_num_ini
-    guiaEscala(1).alteracion =CInt(zLim(1,1).pan)
+    guiaEscala(1).alteracion =CInt(grabaLim(1,1).pan)
     guiaEscala(1).posicion=1
 ' cuando cargo un track desde disco sin cancion, aislado, es similar a Roll
 ' ahora durante la carga de cancion y el uso de tAB esto debe ir cambiadno para
@@ -361,7 +434,7 @@ posicion =1
   
 End Sub
 '
-Sub ActualizarRollyGrabarPista ()
+Sub ActualizarRollyGrabarPista ()  '''GRBATRACK TAMBIEN 
 ' nombre es global ,,,por ahora...con un Roll único nombre puede ser global
 ' ya que es único y siempre es parte de Roll grafico...
    Dim grt As Integer
@@ -584,6 +657,9 @@ End If
      grabaLim(1,1).nota = CUByte(desde)
      grabaLim(1,1).dur  = CUByte(hasta)
      grabaLim(1,1).pb   = CUByte(notaold)
+     grabaLim(1,1).dur2  = pmTk(ntk).portout
+     grabaLim(1,1).dur3  = pmTk(ntk).canalsalida
+
      If notaescala_num_ini =0 Then
         notaescala_num_ini =1
      EndIf
@@ -598,9 +674,13 @@ End If
      End Select
      grabaLim(1,1).nnn = CUByte(tiempoPatron)
 ' cargado un Roll desde archivo canalx toma el valor del canal midi de salida del archivo
-
-     graba3(1,1).nnn=pmTk(ntk).canalsalida
-     graba3(1,1).dur=pmTk(ntk).portout 
+ If CANCIONCARGADA=TRUE THEN 
+     If CheckBox_GetCheck( cbxnum(ntk))= 1 Then
+         graba3(1,1).dur=1
+     Else
+         graba3(1,1).dur=0
+     EndIf
+ EndIf
      '-----------------------------
      print #1,"etapa final puts"
      Put #grt, ,grabaPos(1,1)

@@ -1676,7 +1676,7 @@ Print #1,"1060 abrirRoll=0 entro"
              EndIf
          '    setgadgettext(4,item)
              item=Trim(item)
-             Print "item ",item
+             Print #1, "item ",item
              If item > "" Then
              '  Dim nombre1 As String
              '   nombre1= NombreCancion + "\"+item +".rtk"
@@ -1755,7 +1755,7 @@ Print #1,"1060 abrirRoll=0 entro"
              SuenaTodo=0
          End Select
          For i=1 To tope 
-            CheckBox_SetCheck(ByVal cbxnum(i), SuenaTodo)
+            CheckBox_SetCheck( cbxnum(i), SuenaTodo)
             cntsuena+=SuenaTodo
           Next i
          SuenaTodo=3
@@ -1831,6 +1831,6 @@ Print #1,"Error Function: "; *Erfn()
 'Dim ers As Integer = 12 - nota +(estoyEnOctava ) * 13 
 Print #1, "12 -nota +(estoyEnOctava ) * 13) "; ers
 Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
- Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
+ Print #1,"error number: " + Str( Err ) + " at line: " + Str( Erl )
 
 

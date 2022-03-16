@@ -1950,7 +1950,7 @@ for i = 0 to portsout -1
 
     Else
     temp=*nombre
-    Print "temp 1 ",temp
+    Print #1,"temp 1 ",temp
     temp=temp + aviso
     Print #1,"temp 2 ",temp
     *nombre = temp + Chr(0) 

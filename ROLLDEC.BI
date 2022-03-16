@@ -587,7 +587,15 @@ Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _
 modifmouse, EnOctava,nE,nR,lugarOld, nroClick, posinterna, indCompas
 
 Type poli Field=1 ' para guardar la secuencia
- dur As  Integer =0   ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
+ dur  As ubyte =0   ' duracion 
+ dur2 As UByte =0   '  tambien tendra rasguidos distintos programables por usuario o fijos
+ dur3 As UByte =0   '  tambien tendra rasguidos distintos programables por usuario o fijos
+ dur4 As UByte =0   '  tambien tendra rasguidos distintos programables por usuario o fijos
+ dur5 As UByte =0   '  tambien tendra rasguidos distintos programables por usuario o fijos
+ dur6 As UByte =0   '  tambien tendra rasguidos distintos programables por usuario o fijos
+ dur7 As UByte =0   '  tambien tendra rasguidos distintos programables por usuario o fijos
+ dur8 As UByte =0   '  tambien tendra rasguidos distintos programables por usuario o fijos
+ 
  nota As UByte =0 ' en un futuro contendra nota, octava, canal etc 
  vol As  UByte =0 ' volumen
  pan As  UByte =0 ' paneo
@@ -595,6 +603,17 @@ Type poli Field=1 ' para guardar la secuencia
  nnn As UByte =0' se usa para escala canal etc 
  tick As ubyte =0' 128 tiene la redonda *1,75 segun pesoDur, 1 la cuartifusa o garrapatea todavia no la uso
  acorde  As ubyte =0 ' 1 a 12 , son el se hara el sort    
+End Type
+Type de64
+ b1 As UByte
+ b2 As UByte
+ b3 As UByte
+ b4 As UByte
+ b5 As UByte
+ b6 As UByte
+ b7 As UByte
+ b8 As UByte
+
 End Type
 ' posn As Integer =0' de roll todavia no lo uso para generar secuencia
 ' comentarios Para Futuro:
@@ -774,7 +793,7 @@ Dim Shared ANCHO3div4 As Integer
 '----------------------------
 Dim Shared  As String ProgError(0 To 17)
 Static Shared As HWND cbxnum(1 To 32),hwndBoton (1 To 10)
-Static Shared As Integer sonidoPista(1 To 32)
+ReDim Shared As Integer sonidoPista(1 To 32)
 static  Shared As Integer SuenaTodo =0, cntsuena=0
 Declare Sub PlayCancion(Track() As sec)
 Declare Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst)
