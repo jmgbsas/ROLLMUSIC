@@ -10,8 +10,8 @@ cargacancion=0
   print #1,"1) CargarTrack nombre, ntk= ", nombre , ntk  
   Print #1,"1) UBIRTK QUE LLEGA ", ubirtk
  
-     Dim z (1,1 )  As poli
-     Dim zLim (1,1) As poli
+     Dim grabaPos (1,1 )  As poli
+     Dim grabaLim (1,1) As poli
      Dim graba3   (1,1)  As poli ' 04-02-2022 se agregan 48 bytes para info futura 
      Dim graba4   (1,1)  As poli 
      Dim graba5   (1,1)  As poli 
@@ -62,17 +62,17 @@ ubirtk=0
        Exit sub
      EndIf
         
-     Get #ct, , z(1,1)
-     x1=Bin(z(1,1).nota,4)
-     x2=Bin(z(1,1).dur,4)
-     x3=Bin(z(1,1).vol,4)
-     x4=Bin(z(1,1).pan,4)
-     x5=Bin(z(1,1).pb,4)
-     tipoescala_num_ini =CInt( Z(1,1).nnn ) ' 20-12-2021 - tipoescala en uso
+     Get #ct, , grabaPos(1,1)
+     x1=Bin(grabaPos(1,1).nota,4)
+     x2=Bin(grabaPos(1,1).dur,4)
+     x3=Bin(grabaPos(1,1).vol,4)
+     x4=Bin(grabaPos(1,1).pan,4)
+     x5=Bin(grabaPos(1,1).pb,4)
+     tipoescala_num_ini =CInt( grabaPos(1,1).nnn ) ' 20-12-2021 - tipoescala en uso
      If tipoescala_num_ini=0 Then
         tipoescala_num_ini=1
      EndIf
-     pmTk(ntk).tipoescala=Z(1,1).nnn
+     pmTk(ntk).tipoescala=grabaPos(1,1).nnn
   '   Print #1,"Carga Track tipoescala_num_ini ",tipoescala_num_ini
      x=x1+x2+x3+x4+x5
    '     print #1,"reconstruccion x pos bin ", x
@@ -95,35 +95,42 @@ ubirtk=0
    '       Print #1,"llego a 2 antes de redim "
 
      ReDim Trabajo  (1 To CantTicks,1 To lim3) As poli 
-
+   If NombreCancion > "" Then
+     If grabaPos(1,1).dur2 = 1 Then ' sonido on/off 16-03-2022
+        print #1,"grabaPos(1,1).dur2",grabaPos(1,1).dur2
+        CheckBox_SetCheck(cbxnum(ntk),1) 
+     Else
+        CheckBox_SetCheck(cbxnum(ntk),0) 
+     EndIf
+   EndIf
      ' crgamos limites Roll de octavas
-     Get #ct, , zLim(1,1)
-     pmTk(ntk).desde  = CInt(zLim(1,1).nota)
-     pmTk(ntk).hasta  = CInt(zLim(1,1).dur) '01-03 cint
-     Print #1,"ÇÇÇ ntk hasta",ntk, hasta
-     pmTk(ntk).notaold= CInt(zLim(1,1).pb)
+     Get #ct, , grabaLim(1,1)
+     pmTk(ntk).desde  = CInt(grabaLim(1,1).nota)
+     pmTk(ntk).hasta  = CInt(grabaLim(1,1).dur) '01-03 cint
+     Print #1,"ntk hasta",ntk, hasta
+     pmTk(ntk).notaold= CInt(grabaLim(1,1).pb)
 ' la nota esca y la esca es la misma `para todos lso tracks despues lo debo cambiar
      
-     notaescala_num_ini =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
+     notaescala_num_ini =CInt(grabaLim(1,1).vol) ' notadeescala 20-12-2021
      If notaescala_num_ini=0 Then
         notaescala_num_ini=1
      EndIf
      Print #1,"Carga Track notaescala_num_ini ",notaescala_num_ini
-     pmTk(ntk).notaescala=zLim(1,1).vol
-     If zLim(1,1).pan = 3 Then
+     pmTk(ntk).notaescala=grabaLim(1,1).vol
+     If grabaLim(1,1).pan = 3 Then
         alteracion="sos"
      EndIf
-     If zLim(1,1).pan = 2 Then
+     If grabaLim(1,1).pan = 2 Then
         alteracion="bem"
      EndIf
-     If zLim(1,1).pan = 0 Then
+     If grabaLim(1,1).pan = 0 Then
         alteracion="sos"
      EndIf
      
  '    Print #1,"alteracion ",alteracion
  '    print #1,"desde ",pmTk(ntk).desde
  '    print #1,"hasta ",pmTk(ntk).hasta
-     tiempoPatron=CInt(zLim(1,1).nnn)
+     tiempoPatron=CInt(grabaLim(1,1).nnn)
      If tiempoPatron = 0 Then 
         tiempoPatron = 60
      EndIf
@@ -134,6 +141,7 @@ ubirtk=0
      
      Get #ct, ,graba3  (1,1)
      pmTk(ntk).canalsalida = graba3(1,1).nnn
+     Print #1,"cargatrack pmTk(ntk).canalsalida, ntk ",pmTk(ntk).canalsalida,ntk
      canalx=graba3(1,1).nnn    
      pmTk(ntk).portout= graba3(1,1).dur
      portout = CInt(graba3(1,1).dur)
@@ -241,7 +249,7 @@ ubirtk=0
 ' carga de escala en guia de escala
     guiaEscala(1).tipoescala=tipoescala_num_ini '13-01-2022 faltaba ini
     guiaEscala(1).notaescala=notaescala_num_ini
-    guiaEscala(1).alteracion =CInt(zLim(1,1).pan)
+    guiaEscala(1).alteracion =CInt(grabaLim(1,1).pan)
     guiaEscala(1).posicion=1
 ' cuando cargo un track desde disco sin cancion, aislado, es similar a Roll
 ' ahora durante la carga de cancion y el uso de tAB esto debe ir cambiadno para
@@ -370,9 +378,11 @@ Sub ActualizarRollyGrabarPista ()
    NB => 0 + (desde-1) * 13   ' 06-03
    NA => 11 + (hasta-1) * 13  ' 
    pmTk(ntk).NB= NB
-   pmTk(ntk).NA= NA     
+   pmTk(ntk).NA= NA   
+   print #1,"Maxpos ",MaxPos  
    ' DEFINO UN ROLL DONDE MANDO EL ROLL CARGADO LE SACO LOS DELETE SI HUBO
-   ReDim RollTemp (1 To Maxpos, NB To NA) As dat 
+   CantTicks=MaxPos+4000
+   ReDim RollTemp (1 To CantTicks, NB To NA) As dat 
 ' copia en RollTemp el Roll ....que tiene las modificaciones ultimas
    Dim As Integer i1, i2, i3, semitono, borrocol=0, haynota=0,res=0,k=0,final=0
   'eliminar columnas marcadas al grabar disco, 0 + X
@@ -450,7 +460,7 @@ print #1,"Termina con achicar secuencia"
 
  
 ' datos para track....en temp  
- Dim TrkTemp (1 To Maxpos,1 To lim3) As poli 'definimos un Track temporario
+ Dim TrkTemp (1 To CantTicks,1 To lim3) As poli 'definimos un Track temporario
 ' no usamos RollaTrack porque son distintas estructuras RollaTrack usa sec
 ' vector de tracks a solo usamos un track as poli, de modo que dejaremos 
 ' un codigo casi duplicado condensado seri amas engorroso creo
@@ -580,6 +590,13 @@ End If
         tipoescala_num_ini =1
      EndIf
      grabaPos(1,1).nnn = CUByte(tipoescala_num_ini) ' 15-01-2022 - tipoescala en uso
+   If NombreCancion > "" THEN
+     If CheckBox_GetCheck( cbxnum(ntk))= 1 Then ' sonido on/off 16-03-2022
+         grabaPos(1,1).dur2=1
+     Else
+         graba3(1,1).dur2=0
+     EndIf
+   EndIf
      '-----------------------
      grabaLim(1,1).nota = CUByte(desde)
      grabaLim(1,1).dur  = CUByte(hasta)

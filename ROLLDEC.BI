@@ -587,7 +587,15 @@ Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _
 modifmouse, EnOctava,nE,nR,lugarOld, nroClick, posinterna, indCompas
 
 Type poli Field=1 ' para guardar la secuencia
- dur As  Integer =0   ' duracion , tambien tendra rasguidos distintos programables por usuario o fijos
+ dur As  UByte =0   ' duracion 
+ dur2 As UByte =0   ' SONIDO ON/OFF 
+ dur3 As UByte =0   '  
+ dur4 As UByte =0   '  
+ dur5 As UByte =0   '  
+ dur6 As UByte =0   '  
+ dur7 As UByte =0   '  
+ dur8 As UByte =0   '  
+
  nota As UByte =0 ' en un futuro contendra nota, octava, canal etc 
  vol As  UByte =0 ' volumen
  pan As  UByte =0 ' paneo

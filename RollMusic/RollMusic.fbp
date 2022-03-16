@@ -7,30 +7,29 @@ AddMainFiles=0
 AddModuleFiles=1
 ResExport=
 CompileIfNewer=1
-IncVersion=0
+IncVersion=1
 RunCmd=0
 [Make]
 Module=Module Build,fbc64  -s gui
 Recompile=2
 Current=3
 1=Windows Console,fbc64   -g -s console -exx
-2=Windows GUI ,fbc64  -s gui  -fpu SSE -exx
-3=Windows GUI (debug)  ,fbc64 -s gui -g  -m RollMusic -exx -Wc -fstack-usage
+2=Windows GUI ,fbc64  -s gui   -fpu SSE -arch amd64  -m RollMusic
+3=Windows GUI (debug)  ,fbc64 -v -g   -gen gcc -s gui   -m RollMusic  -exx  -Wc -gdwarf-2
 Output=..\RollMusic.exe
 Run=
 Delete=
 [TabOrder]
-TabOrder=1001,1002,3,4,5,1,6,7
+TabOrder=1001,1002,3,4,5,7,2,1,6
 [File]
 1001=..\RollMusic.bas
+1002=..\RollMusicControl.bas
 Main=1001
 1=..\ROLLDEC.BI
 2=..\RTMIDIDEC.bi
 3=..\ROLLLoop.bas
 4=..\ROLLSUB.BAS
 5=..\RTMIDISUB.bas
-1002=..\RollMusicControl.bas
-1003=
 6=..\ROLLCONTROLDEC.bi
 7=..\ROLLTRACKS.BAS
 [BreakPoint]
@@ -45,14 +44,14 @@ Main=1001
 6=
 7=
 [FileInfo]
-1001=0,743,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-1=0,114,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-2=0,93,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-3=0,1668,1,536870912,12,0,32,0,1610612736,0,0,0,2,0,0,0,0,0,0
-4=0,1118,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-5=0,1445,1,0,0,0,1073741824,0,0,0,0,0,0,0,0,0,0,0,0
-1002=0,243,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-6=0,11,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-7=0,564,1,0,4096,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1001=0,790,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1=0,588,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2=0,66,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+3=0,1091,1,0,0,0,81920,-1073741824,9346,0,268435456,19193856,4681,131088,591396864,67108865,0,0,0
+4=0,3334,1,0,0,0,0,0,0,33554432,0,0,0,0,65536,131072,0,0,0
+5=0,959,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1002=0,368,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+6=0,18,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+7=0,618,1,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0
 [ReallyRad]
 IDD_DLG1=,,SELTRK01

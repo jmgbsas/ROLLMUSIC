@@ -1419,14 +1419,14 @@ abrirRoll=2 ' habilita la carga de una cancion
       EndIf
      Dim z (1,1)  As dat
      Dim zLim (1,1) As dat
-     Dim graba3   (1,1)  As dat ' 04-02-2022 se agregan 48 bytes para info futura 
-     Dim graba4   (1,1)  As dat 
-     Dim graba5   (1,1)  As dat 
-     Dim graba6   (1,1)  As dat 
-     Dim graba7   (1,1)  As dat 
-     Dim graba8   (1,1)  As dat 
-     Dim graba9   (1,1)  As dat 
-     Dim graba10  (1,1)  As dat 
+     Dim z3   (1,1)  As dat ' 04-02-2022 se agregan 48 bytes para info futura 
+     Dim z4   (1,1)  As dat 
+     Dim z5   (1,1)  As dat 
+     Dim z6   (1,1)  As dat 
+     Dim z7   (1,1)  As dat 
+     Dim z8   (1,1)  As dat 
+     Dim z9   (1,1)  As dat 
+     Dim z10  (1,1)  As dat 
      
      
 
@@ -1519,23 +1519,23 @@ abrirRoll=2 ' habilita la carga de una cancion
      CambiarDim(0) ' ya tiene calculo NB y NA Redim Roll y Track con CantTicks
                    ' y carga de pmTk.NB y NA
 
-     Get #ca, ,graba3  (1,1)
+     Get #ca, ,z3  (1,1)
 
-     canalx  = CInt(graba3(1,1).inst) ' canal midi cargado en Global si es un track se pasara a info de trck
+     canalx  = CInt(z3(1,1).inst) ' canal midi cargado en Global si es un track se pasara a info de trck
  '    Print #1,"canalx cargado desde archivo ",canalx
-     portout = CInt(graba3(1,1).dur) 
+     portout = CInt(z3(1,1).dur) 
  '    Print #1,"portout cargado desde archivo ",portout
-     pmTk(0).portout=graba3(1,1).dur   ' ubyte  a ubyte
-     pmTk(0).canalsalida = graba3(1,1).inst ' ubyte a ubyte
+     pmTk(0).portout=z3(1,1).dur   ' ubyte  a ubyte
+     pmTk(0).canalsalida = z3(1,1).inst ' ubyte a ubyte
      
      
-     Get #ca, ,graba4  (1,1)
-     Get #ca, ,graba5  (1,1)
-     Get #ca, ,graba6  (1,1)
-     Get #ca, ,graba7  (1,1)
-     Get #ca, ,graba8  (1,1)
-     Get #ca, ,graba9  (1,1)
-     Get #ca, ,graba10 (1,1)
+     Get #ca, ,z4  (1,1)
+     Get #ca, ,z5  (1,1)
+     Get #ca, ,z6  (1,1)
+     Get #ca, ,z7  (1,1)
+     Get #ca, ,z8  (1,1)
+     Get #ca, ,z9  (1,1)
+     Get #ca, ,z10 (1,1)
 
 
 
@@ -3504,6 +3504,14 @@ Next i1
      grabaPos(1,1).pan  = y4
      grabaPos(1,1).pb   = y5
      grabaPos(1,1).nnn = pmTk(ntk).tipoescala
+If NombreCancion > "" Then
+     If CheckBox_GetCheck( cbxnum(ntk))= 1 Then ' sonido on/off 16-03-2022
+         print #1,"grabo grabaPos(1,1).dur2=1,, ntk", ntk
+         grabaPos(1,1).dur2=1
+     Else
+         grabaPos(1,1).dur2=0
+     EndIf
+EndIf   
      '-----------------------
      grabaLim(1,1).nota = CUByte(pmTk(ntk).desde) 
      grabaLim(1,1).dur  = CUByte(pmTk(ntk).hasta)
@@ -3516,7 +3524,7 @@ Next i1
 
      graba3(1,1).dur = pmTk(ntk).portout
      graba3(1,1).nnn = pmTk(ntk).canalsalida 
-
+     Print #1,"grabartrack graba3(1,1).nnn, ntk ",graba3(1,1).nnn , ntk
 
      '  print #1,"MaxPos grabada en Trabajo ",MaxPos
 
@@ -3546,9 +3554,21 @@ Sub GrabarCancion() ' PENDIENTE GRABAR TODA LA CANCION EN UN SOLO COMANDO
  ' en el momento de borrar se copia a backup y se borra del directorio de cancion
  ' eso si se borro alguna pista. (en vez de borrar mandamos a una carpeta de backup)
  '2) cada pista se graba con GrabarRollaTrack
+Dim As Integer ntkvivo =ntk
+
+  If CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE Then
+     If NombreCancion > ""  And MAxPos > 1 Then
+        GrabarRollaTrack(0)
+     EndIf
+  EndIf
+
+
 Dim i As Integer 
-  For i=1 To tope 
-   GrabarTrack(i)
+
+  For i=1 To tope
+   If i<> ntkvivo Then 
+      GrabarTrack(i)
+   EndIf
   Next i
   
 End Sub
@@ -3702,6 +3722,7 @@ Posy=y0 +100
      For aa As Integer=1 To 16 
          If pmTk(ntk).canalsalida > 0 And pmTk(ntk).canalsalida = aa Then
                AddListViewItem(1, "[x] "+listCanal(aa),0,aa,0)
+               Print #1,"pmTk(ntk).canalsalida ",pmTk(ntk).canalsalida, 
          Else
                AddListViewItem(1, "[ ] "+listCanal(aa),0,aa,0)
          EndIf 
@@ -3747,18 +3768,18 @@ Posy=y0 +100
           
                Print #1,"ntk en cambio de canal ntk= ",ntk
                pmTk(ntk).canalsalida=CUByte(canalx+1) ' sirve para el track cargao actual en cancion
-       
-               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
-                  pmTk(ntk).canalsalida=CUByte(canalx) ' sirve para el track cargao actual en cancion
-                  If NombreCancion > ""  And MAxPos > 1 Then
+            If  MAxPos > 1 Then
+               pmTk(ntk).canalsalida=CUByte(canalx+1)
+               If NombreCancion > ""  Or TRACKCARGADO =TRUE Then
+                   ' sirve para el track cargao actual en cancion
                      GrabarRollaTrack(0)
-                  EndIf
                Else
-                  If MaxPos > 1  And ROLLCARGADO  Then
+                  If ROLLCARGADO=TRUE  Then
                    GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
                   ' no el undo dolo se debe borrar al ahcer nuevo creo
                   EndIf  
                EndIf  
+            End If  
                Close_Window(haw)
                Exit Do 
 

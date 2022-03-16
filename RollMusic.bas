@@ -788,7 +788,7 @@ Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,Me
  
 If ix < 3 And ubirtk=0 And ubiroll=0 Then ' rollmusic CON control
   instancia=0
-  hwndC = OpenWindow("RollMusic Control ver 0.4533",10,10,anchoK*3/4,alto*4/5,,WS_EX_ACCEPTFILES   )
+  hwndC = OpenWindow("RollMusic Control ver 0.4533",10,10,anchoK*0.9 ,alto,,WS_EX_ACCEPTFILES   )
 ''UpdateInfoXserver()
 
   hwndListBox= ListBoxGadget(3,80,30,290,670,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
@@ -1051,6 +1051,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
    EndIf
   Print #1,"cALL rOLLLOOP I) cargaCancion ES 1 SI O SI ",cargaCancion
    If CANCIONCARGADA=True  Then
+     ntk=0 '16-03-2022
     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
    Else     ''''''''RollLoop ( param) '<--con esto anda
      cargacancion=0
