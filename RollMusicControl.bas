@@ -449,5 +449,5 @@ Print #1,"------------------------------------"
   Print #1,"------------------------------------"
 
 EndIf
- Print #1,"error number: " + Str( Err ) + " at line: " + Str( Erl )
+ Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
 

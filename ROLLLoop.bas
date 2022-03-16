@@ -1499,7 +1499,7 @@ verticalEnOctavaVacia= 12 + (hasta-2)*13 + n0 - desde ' 90 + 6 - 4=92
       
       cnt_acor=cnt_acor-1
       If cnt_acor=0 Then
-         Print #1,"se anulo indices info de undo"
+         Print "se anulo indices info de undo"
          ig=0
       EndIf
       scan_alt=1
@@ -2416,7 +2416,7 @@ mel_undo(mel_undo_k).posn = posn
     nota=0
   EndIf
   nota = 0 '18-11-2021
-  'print #1," Roll ", Roll.trk(indice, posicion)
+  'print " Roll ", Roll.trk(indice, posicion)
     
   ' mostrarla en la t del Roll en el indice correspondiente
   ' ocalculo elindice en cada t y meto la nota o saco en t las otas
@@ -4530,6 +4530,6 @@ Print #1,"------------------------------------"
   print #1,"------------------------------------"
 
 EndIf
- Print #1,"error number: " + Str( Err ) + " at line: " + Str( Erl )
+ Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
 
 

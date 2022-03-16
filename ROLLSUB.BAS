@@ -3507,24 +3507,18 @@ Next i1
      '-----------------------
      grabaLim(1,1).nota = CUByte(pmTk(ntk).desde) 
      grabaLim(1,1).dur  = CUByte(pmTk(ntk).hasta)
-     grabaLim(1,1).dur2  = pmTk(ntk).portout
-     grabaLim(1,1).dur3  = pmTk(ntk).canalsalida
-
-
      grabaLim(1,1).pb   = CUByte(pmTk(ntk).notaold) 
      grabaLim(1,1).vol  = CUByte(pmTk(ntk).notaescala) ''   CUByte(notaescala_num_ini) ' notadeescala 20-12-2021     
 
 
      grabaLim(1,1).pan  = pmTk(ntk).alteracion
      grabaLim(1,1).nnn = CUByte(tiempoPatron)
-' grabar seleccion de sonido de pistas, obtengo los checks y paso a sonidoPista
-' -> start 15-03-2022
- 
-      If CheckBox_GetCheck( cbxnum(ntk))= 1 Then
-         graba3(1,1).dur=1
-      Else
-         graba3(1,1).dur=0
-      EndIf
+
+     graba3(1,1).dur = pmTk(ntk).portout
+     graba3(1,1).nnn = pmTk(ntk).canalsalida 
+
+
+     '  print #1,"MaxPos grabada en Trabajo ",MaxPos
 
      Put #gt, ,grabaPos(1,1)
      Put #gt, ,grabaLim(1,1)
@@ -3552,17 +3546,9 @@ Sub GrabarCancion() ' PENDIENTE GRABAR TODA LA CANCION EN UN SOLO COMANDO
  ' en el momento de borrar se copia a backup y se borra del directorio de cancion
  ' eso si se borro alguna pista. (en vez de borrar mandamos a una carpeta de backup)
  '2) cada pista se graba con GrabarRollaTrack
-' LA pista correite o en edicion se debe copiar de Roll Visual a Track
-' y luego los otros track se graban directamente
-Dim As Integer ntkcorriente=ntk 
 Dim i As Integer 
   For i=1 To tope 
-   If i= ntkcorriente Then ' actualiza Track en edicion antes de grabar
-      RollaTrack (Track(),ntkcorriente,Roll)  
-   EndIf  
-   Sleep 20 ' retardo porsi el proceso en meoria tarda un poco
    GrabarTrack(i)
-   Sleep 20 ' retardo por el disco si tarda ,,
   Next i
   
 End Sub
@@ -4460,7 +4446,7 @@ If ErrorNumber1 > 0 And ContadorError < 101 Then
   print #1,"------------------------------------"
 
 EndIf
- Print #1,"error number: " + Str( Err ) + " at line: " + Str( Erl )
+ Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
 
 
 
