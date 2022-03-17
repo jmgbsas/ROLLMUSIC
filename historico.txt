@@ -1,3 +1,4 @@
+-16-03-2022 Fix Reproducir dejo de funcionar en Control
 -16-03-2022 Fix marcar sonido no viene al frente.
 -16-03-2022 Traer Editor Roll al frente luego de usar el menu.
 -16-03-2022 Cancion Grabamos en archivos *.rtk el estado del sonido on/off..

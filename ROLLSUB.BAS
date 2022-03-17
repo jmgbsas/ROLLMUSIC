@@ -1838,13 +1838,19 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
       nombre = titulos(ntk)
      ' Print #1,"en menu nombre ",nombre
    EndIf
-   If Len(nombre) > 10  Then
-     muestra=Right (nombre,60)
+   Dim ps As Integer
+   If NombreCancion > "" Then
+      ps=InStr(nombre,"[")
+      muestra=mid (nombre,ps) + " "
    Else
-     muestra =nombre  
+     ps=InStrRev (nombre,"\") 
+     muestra =Mid(nombre,ps) +" "
+     camino= mid (nombre,1,ps-1) + " "
+     SetWindowText(hwndC, "RollMusic Path archivo: " + camino)
    EndIf
+   
    muestra=Str(PianoNota) + " "+ muestra   + "ANCHO "+ Str(ANCHO)+ " Mx:" + Str(mousex) + " My:" + Str(mousey) 'xxxx Str (BordeSupRoll)
-
+   
 
  Select Case menuNro
   Case 0
@@ -2072,7 +2078,7 @@ EndIf
       EndIf 
        CargaArchivo(Roll, 0)
        cargaCancion=0
-       print #1,"nombre cargado en Roll ",nombre
+    '   print #1,"nombre cargado en Roll ",nombre
        MenuNew=0
        carga=1  ' <======= control de Carga
        ROLLCARGADO=TRUE ' aunque este en cancion puedo cargar un roll
@@ -2099,21 +2105,22 @@ EndIf
             Sleep 2
          EndIf 
 
-         print #1,"carga track veo nombre antes   ",nombre
+         'print #1,"carga track veo nombre antes   ",nombre
          CargarTrack (Track() , ntk, 0)
          If nombre > "" Then  ' evita crash al cancelar el dialogo 
-            print #1,"carga track veo nombre despues ",nombre
+         '   print #1,"carga track veo nombre despues ",nombre
             ROLLCARGADO=TRUE ' NO PERMITOQUE TRACK(0) SE BORRE
             TrackaRoll (Track() , ntk , Roll)
-            print #1,"TrackaRollcarga rtk veo nombre ",nombre 
+          '  print #1,"TrackaRollcarga rtk veo nombre ",nombre 
             RecalCompas (Roll)
-            print #1,"despues RecalCompas veo nombre ",nombre
+          '  print #1,"despues RecalCompas veo nombre ",nombre
             MenuNew=0
             carga=1 ' <======= control de Carga 
             TRACKCARGADO=TRUE
             ROLLCARGADO=FALSE
             cargaCancion=0
          EndIf
+
      Else
          TRACKCARGADO=FALSE    
      EndIf
@@ -2536,7 +2543,7 @@ EndIf
         menunew=11 ' NRO CANALES 
         
      EndIf ' mousebuttons
-      
+   
    Else
      cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
@@ -2553,7 +2560,8 @@ EndIf
        Dim miport As Integer=1
        thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))  '' 'GtkListBox()
       EndIf ' mousebuttons
- 'listaMIDI=1     
+ 'listaMIDI=1 
+    
     Else
       cairo_set_source_rgba c, 1, 1, 1, 1
       MenuNew=10
@@ -2588,6 +2596,7 @@ EndIf
        'Print #1,"canal elegido luego del thread2 en menu ",canalx
       EndIf ' mousebuttons
       MenuNew=9
+
      Else
       cairo_set_source_rgba c, 1, 1, 1, 1
       MenuNew=9
@@ -2998,8 +3007,14 @@ NombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
     Print #1,"nombreArchivo de click ok",nombreArchivo
     FactortiempoPatron= cdbl(nombreArchivo) '08-01-2022 de doble a int
     Print #1,">>>>>>>>Factor TIEMPO PATRON NUEVO>>>>>>>", FactortiempoPatron
+ Case "[NROREP]
+  DEFAULT=Str("2")
+  NombreArchivo = InputBox("Repeticiones " ,"Cantidad entera ",default)
+  pmTk(ntk).zona1  = CUByte(pasozona1)
+  pmTk(ntk).zona2  = CUByte(pasozona2)
+  pmTk(ntk).nroRep = CUByte(nroRep)                
+ 
 
-    
 End Select
 
 End Sub
@@ -3675,7 +3690,7 @@ mitipo=  CInt(tipo)
               Exit Do 
             End If
           EndIf 
-          Sleep 5  
+  
           
          Loop 
 ' SendMessage(GadgetID(1), EM_UNDO, 0, 0) 'undo the last edit
@@ -3699,7 +3714,7 @@ End Sub
 ' 
 Sub  selcanal (ByVal tipo As Any Ptr )  ' list de ruso
 Dim As hwnd haw,hwl
-Dim As Integer mitipo, x0,y0,Posx,Posy  
+Dim As Integer mitipo, x0,y0,Posx,Posy,cambio=0  
 mitipo=  CInt(tipo)
 'Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 '' => desde aca echo con tool del ruso no anda muy bien
@@ -3707,9 +3722,10 @@ ScreenControl GET_WINDOW_POS, x0, y0
 Posx=x0 +50
 Posy=y0 +100
 
-   ''  haw=OpenWindow("CANALES",100,50,400,400,WS_VISIBLE, WS_EX_TOPMOST )
      haw=OpenWindow("CANALES",Posx,Posy,400,400,WS_VISIBLE, WS_EX_TOPMOST )
+     
      hwl=  ListViewGadget(1,10,10,300,300,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL  )
+     
      Dim As String mensaje, cad 
      If mitipo = 1 Then ' out
       mensaje="Canales Salida"
@@ -3730,18 +3746,18 @@ Posy=y0 +100
      Next
  
        ButtonGadget(2,330,30,50,40," OK ")
-         #Ifdef __FB_WIN64__
+           SetForegroundWindow(haw)        
            SetFocus (hwl) 
-           SetForegroundWindow(haw)
-          #Else
-           gtk_widget_grab_focus(GadgetID(1))
-         #EndIf
+
+        '  #Else
+        '   gtk_widget_grab_focus(GadgetID(1))
+        ' #EndIf
          Do
 
          Var event= waitEvent
 
          If event=EventLBDown Then
-            If EventNumberListView=1 Then
+            If EventNumberListView=1  Then
                canalx=GetItemListView
                cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
                If InStr(cad,"x")>0 Then
@@ -3749,11 +3765,10 @@ Posy=y0 +100
                Else  
                  cad="[x] " +Str(canalx+1)
                EndIf
-               ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
+
+              ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
            EndIf
         EndIf
-
-
 
           If event=eventgadget Then
             If eventnumber()=2 And InStr(cad,"x") >0 Then
@@ -3780,14 +3795,13 @@ Posy=y0 +100
                   EndIf  
                EndIf  
             End If  
+               
                Close_Window(haw)
                Exit Do 
-
             End If
           EndIf
             
-          Sleep 5  
-          
+         
          Loop 
   
 '' fin ruso
@@ -4115,7 +4129,7 @@ tipoescala_num=0
            End If
 
           EndIf 
-          Sleep 5  
+  
           
          Loop
          
@@ -4175,7 +4189,7 @@ notaescala_num=0
            End If
 
           EndIf 
-          Sleep 5  
+  
           
          Loop
          

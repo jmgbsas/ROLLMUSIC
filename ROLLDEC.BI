@@ -98,7 +98,8 @@ Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1
 Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6
 Dim Shared As String RTA, alteracion '',alteracion_str
 alteracion="sos"
-Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoZona2=0, pasoNota=0
+Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0
+Dim Shared As integer pasoZona2=0,nroRep=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, SelGrupoNota =0,moverZona=0, copiarZona=0
 Dim Shared as ubyte  DUR,nota,notasInsertadas (1 to 1500),notacur
 Dim Shared As String t,t2
@@ -556,6 +557,9 @@ Type rangoOct Field=1
  As UByte   canalsalida
  As UByte   canalentrada
  As UByte   portout      ' dispositivo midi de salida 
+ As UByte   zona1
+ As UByte   zona2
+ As UByte   nroRep   
 End Type
 ' faltaria agregar grabar el nombre del dispositivo ........
 Dim Shared As rangoOct pmTk (0 To 32)
@@ -840,13 +844,5 @@ Dim Shared  As pasa param ', param2
 
 ' usaremos xml par aleer y escribir musicxml 
 ' http://xmlsoft.org/examples/index.html
-Dim Shared As String acercade
-acercade = "Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version Solo ejecuta las secuencias " + _
- "a base de algoritmos sin una linea conductora de tiempos. Solo se basa en las duraciones de las notas. " + _
- "Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
- "o su ejecucion. Programado en OS:Windows7, Proc:AMD Phenom-II Black Edition. " + _
- "Usa Cairo como libreria de graficos, Rtmidi como libreria midi, " + _
- "Editor de código FbEdit. Echo en Freebasic como hobby.FreeBASIC Compiler - Version 1.08.1 (2021-07-05), " + _ 
- "built for win64 (64bit) Copyright (C) 2004-2021 The FreeBASIC development team." + _
- "Si alguien quiere colaborar o tiene dudas o sugerencias,mail:galeanoj2005@gmail.com"
+Dim Shared As String acercade, camino,nroversion
  

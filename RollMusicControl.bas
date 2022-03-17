@@ -48,6 +48,8 @@ Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Common Shared  portsal As UByte, patchsal As ubyte
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab
+ 
+
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0
 Common Shared As Integer  posicion,posicionOld,posn
  posicion=0:posicionOld=0:posn=0
@@ -156,7 +158,7 @@ Dim As Integer i
               Exit Do 
             End If
           EndIf 
-          Sleep 5  
+  
           
          Loop 
 Next x
@@ -248,7 +250,7 @@ Dim cad As String
             End If
 
           EndIf 
-          Sleep 5  
+  
           
          Loop
          
@@ -368,7 +370,7 @@ Sub cargarDirectorioCancion (ByRef NombreCancion As string)
 ''Dim pathdir As string
     SetForegroundWindow(hwndc)
 NombreCancion = ShellFolder( "Select Folder", "C:\")
-SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + NombreCancion)
+SetWindowText(hwndC, "RollMusic Cancion: " + NombreCancion)
 
 
 print #1,"cargarDirectorioCancion ", NombreCancion 
