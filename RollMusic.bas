@@ -786,9 +786,10 @@ Dim hnro As Integer
 '------------
 Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
  
-If ix < 3 And ubirtk=0 And ubiroll=0 Then ' rollmusic CON control
+If ix < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON control
+  menuabierto=1 ' evita apertura de mas de un menu
   instancia=0
-  hwndC = OpenWindow("RollMusic Control ver 0.4533",10,10,anchoK*0.9 ,alto,,WS_EX_ACCEPTFILES   )
+  hwndC = OpenWindow("RollMusic Control ver 0.4534",10,10,ANCHOSYSTEM*0.91 ,ALTOSYSTEM*0.91,,WS_EX_ACCEPTFILES   )
 ''UpdateInfoXserver()
 
   hwndListBox= ListBoxGadget(3,80,30,290,670,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
@@ -887,9 +888,33 @@ MenuItem(1071,MenName4,"Ver Cifrado de Acordes", MF_CHECKED)
   
 MenuItem(1080,MenName5,"TEMPO")
 MenuItem(1081,MenName5,"Factor para Aumentar velocidad de ejecucion, No se graba en archivo 1,5 o 0,5 etc")
+MenuItem(1082,MenName5,"Na. TEMPO por nombres, Lento,adagio etc y control fino")
+MenuItem(1083,MenName5,"Na. TEMPO insertar cambio de tempo")
+MenuItem(1084,MenName5,"Na. TEMPO borrar cambio de tempo")
+MenuItem(1085,MenName5,"Na. TEMPO ver marcas de cambio de tempo")
+MenuItem(1086,MenName5,"Na. TEMPO ocultar marcas de tempo")
+MenuItem(1087,MenName5,"Na. TEMPO incremento de tempo gradual alcanzado en N compases")
+
+/' futuro agregar limite menor de c/rango con opcion de incrementarlo hasta el tope
+  d esu rango 
+Negras por minuto	 tempo
+40-43	Grave
+44-47	Largo
+48-51	Larghetto
+52-54	Adagio
+55-65	Andante
+66-69	Andantino
+70-95	Moderato
+96-112	Allegretto
+113-120	Allegro
+121-140	Vivace
+141-175	Presto
+176-208	Prestissimo
+'/    
 
   
 MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
+MenuItem(1091,MenName6,"Fijar en archivo un Loop de play de N repetiicones")
 
 MenuItem(1100,MenName7,"Usar MARCO de Ventana ",MF_UNCHECKED)
 MenuItem(1101,MenName7,"Usar MARCO de Ventana en instancias",MF_UNCHECKED)
@@ -1026,7 +1051,7 @@ abrirRoll=0
 
 Do
   COMEDIT = False
-param.titulo ="RollMusic Ver 0.4.4.0"
+param.titulo ="RollMusic Ver 0.4534"
 Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
 Print #1,"iniio lbound roll.trk ", LBound(param.Roll.trk,2)
@@ -1053,6 +1078,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
    If CANCIONCARGADA=True  Then
      ntk=0 '16-03-2022
     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+
    Else     ''''''''RollLoop ( param) '<--con esto anda
      cargacancion=0
    EndIf 
@@ -1767,7 +1793,8 @@ Print #1,"1060 abrirRoll=0 entro"
         terminar=1
         Exit Do     
      End Select
-
+    'SetFocus (hwndc) 
+    SetForegroundWindow(hwnd)
    Loop
   Else
       param.titulo ="RollMusic Editor" ' esto no sale si no hay marco

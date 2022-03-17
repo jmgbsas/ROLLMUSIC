@@ -1,3 +1,4 @@
+-16-03-2022 Traer Editor Roll al frene luego de usar el menu.
 -16-03-2022 Cancion Grabamos en archivos *.rtk el estado del sonido on/off..
 -15-03-2022 fix, en cancion comenzaba a grabar en posicion 2 porque (0,181) se colocaba con MaxPos=2 tambien
 -14-03-2022 llave 'S' todo o nada, fix para otros estados, con una sola llave hace todo

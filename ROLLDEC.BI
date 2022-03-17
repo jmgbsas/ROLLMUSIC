@@ -584,7 +584,7 @@ Dim Shared As Integer ContadorError=0
 ' 123 234 345 456 567 678 789 son7 doblepuntilo simple
 
 Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _
-modifmouse, EnOctava,nE,nR,lugarOld, nroClick, posinterna, indCompas
+modifmouse, EnOctava,nE,nR,lugarOld, nroClick, posinterna, indCompas,menuabierto=0
 
 Type poli Field=1 ' para guardar la secuencia
  dur As  UByte =0   ' duracion 

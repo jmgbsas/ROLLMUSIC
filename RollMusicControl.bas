@@ -366,8 +366,11 @@ End Sub
 '
 Sub cargarDirectorioCancion (ByRef NombreCancion As string)
 ''Dim pathdir As string
+    SetForegroundWindow(hwndc)
 NombreCancion = ShellFolder( "Select Folder", "C:\")
 SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + NombreCancion)
+
+
 print #1,"cargarDirectorioCancion ", NombreCancion 
 ' aca NombreCancion contiene el path tambien....
 'Sleep 100
