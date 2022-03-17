@@ -1112,8 +1112,10 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
 '  fillrectdraw(40,40,&h888888)
 '  TextDraw(10,10,NombreCancion,-1,&hff0000)
 'StopDraw
+   
      Select Case EVENTC 
        Case EventMenu 
+  SetForegroundWindow(hwndC)
          Select Case EventNumber
            Case 1006   ' CARGAR CANCION
              'cargamso todos los tracks
@@ -1180,6 +1182,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                 Exit Do                 
              EndIf
              Print #1,"termino 1006 va a abrir Roll"
+          SetForegroundWindow(hwnd)
            Case 1007 ' grabar cancion bosquejo
 ' 26-02-2022 desarrollo           
            If CANCIONCARGADA =True  Then
@@ -1192,6 +1195,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
           carga=1
               
            EndIf
+          SetForegroundWindow(hwnd)
            Case 1010
            Print #1,"entro a 1010 Cargar Pista externa a cancion"
            ROLLCARGADO=False 
@@ -1222,7 +1226,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
            EndIf
           MenuNew=0           
           carga=1
-
+          SetForegroundWindow(hwnd)
            Case 1012 ' Grabar Pista Como, Copia una pista a otra  nueva nueva
            print #1,"entro a 1012 Grabar Pista Como, Copia una pista a otra  nueva nueva"
            ROLLCARGADO=FALSE 
@@ -1245,7 +1249,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
            Case 1014  ' <==== TRACK A ROLL
            TrackaRoll (Track(), ntk , Roll ) ' no usa ubirtk
            GrabarArchivo(0)
-           
+                     SetForegroundWindow(hwnd)
            Case 1015  ''<==== SALIR TERMINA ROLL
             terminar=1
              
@@ -1254,16 +1258,18 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                NombreCancion = ""
                pathdir=""
                EntrarNombreCancion(NombreCancion)
+          SetForegroundWindow(hwnd)
            Case 1021
              menuOldStr="[TEMPO]"
              nombreArchivo="0"
                thread3= ThreadCall EntrarTeclado()
-    
+              SetForegroundWindow(hwnd)
            Case 1025
                CrearDirCancion (NombreCancion)
                If NombreCancion > "" Then
                   param.encancion=1
-               EndIf            
+               EndIf    
+          SetForegroundWindow(hwnd)        
            Case 1028 ' seleccion octavas menores a 1 9 
                seloctava (desde, hasta)
                *po = hasta -1
@@ -1273,6 +1279,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
                 param.ubirtk=ubirtk
 
                 posn=0
+          SetForegroundWindow(hwnd)
            Case 1031 ' SELECCION DE CANAL DE LA PISTA (10 DRUMS)
                 
            Case 1040 ' seleccion de instrumento por orden Alfabetico
@@ -1310,7 +1317,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
               MenuNew=0           
               carga=1
 
-                
+                      SetForegroundWindow(hwnd)    
            Case 1050 ' seleccion de instrumento por orden Numerico
                selInstORdenNum (instru)
                If CANCIONCARGADA =TRUE Then
@@ -1346,7 +1353,7 @@ Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
               MenuNew=0           
               carga=1
 
-
+          SetForegroundWindow(hwnd)
            Case 1060 ' crea track y reemplaza al existente en la edicion
                'If ntk=0 Then  ' no se cargo ningun track
                '   *po = hasta -1
@@ -1374,6 +1381,7 @@ Print #1,"1060 abrirRoll=0 entro"
                   Print #1,"sale de 1060 abrirrol,reiniciar, cargacancion ", abrirRoll, reiniciar, cargacancion
                   Exit Do
                EndIf
+          SetForegroundWindow(hwnd)
            Case 1061 ' 02-02-2022 error al crear 2da pisto o 3era etc pista nueva
                print #1,"En 1061 crear pista en cancion con lo elegido"
 
@@ -1457,13 +1465,14 @@ Print #1,"1060 abrirRoll=0 entro"
                Exit Do                 
                
 ' FALTA CREAR LA PISTA !!! jmg ERO PUEDO USAR UNA PISTA YA CREADA EN 1011
-' la graba igual desde roll parece pero debe ser en orden            
+' la graba igual desde roll parece pero debe ser en orden
+          SetForegroundWindow(hwnd)            
            Case 1062
  ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
  ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.
              Print #fa1,pd1       
              Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins))
-
+          SetForegroundWindow(hwnd)
            Case 1070
                 nVerEscalasAuxiliares=GetStateMenu(hmessages,1070)
               Select Case nVerEscalasAuxiliares 
@@ -1475,7 +1484,7 @@ Print #1,"1060 abrirRoll=0 entro"
                     SetStateMenu(hmessages,1070,3)
 
               End Select
-              
+                        SetForegroundWindow(hwnd)
            Case 1071
                 nVerCifradoAcordes=GetStateMenu(hmessages,1071)
               Select Case nVerCifradoAcordes 
@@ -1487,16 +1496,17 @@ Print #1,"1060 abrirRoll=0 entro"
                     SetStateMenu(hmessages,1071,3)
 
               End Select
-
+          SetForegroundWindow(hwnd)
            Case 1080
               nombreArchivo="0"
               menuOldStr="[TEMPO]"
               thread3= ThreadCall EntrarTeclado()
+          SetForegroundWindow(hwnd)
            Case 1081
               nombreArchivo="0"
               menuOldStr="[FACTOR]"
               thread3= ThreadCall EntrarTeclado()
-
+          SetForegroundWindow(hwnd)
            Case 1090 
           
           '    Dim As Any Ptr thplayC = ThreadCall  playCancion(track())
@@ -1518,7 +1528,7 @@ Print #1,"1060 abrirRoll=0 entro"
              EndIf   
       
               menunew=0
-
+          SetForegroundWindow(hwnd)
            Case 1100
 '0 - the menu is active, the checkbox is not selected
 '1 - the menu item is unavailable, grayed out
@@ -1534,7 +1544,7 @@ Print #1,"1060 abrirRoll=0 entro"
                   SetStateMenu(hMessages,1100,0)
                   usarmarco=0
              End Select
-
+          SetForegroundWindow(hwnd)
            Case 1101 ' marco o no marco par ainstancias
 '0 - the menu is active, the checkbox is not selected
 '1 - the menu item is unavailable, grayed out
@@ -1550,7 +1560,7 @@ Print #1,"1060 abrirRoll=0 entro"
                   SetStateMenu(hMessages,1101,0)
                   usarmarcoins=0
              End Select
-                 
+            SetForegroundWindow(hwnd)
            Case 1102
                  usarAcordesIguales=1
                  TipoFrac="igualdur" 
@@ -1558,7 +1568,7 @@ Print #1,"1060 abrirRoll=0 entro"
                  SetStateMenu(hmessages,1103,0)
                  SetStateMenu(hmessages,1104,0)
                  SetStateMenu(hmessages,1105,0)
-                 
+            SetForegroundWindow(hwnd)                 
            Case 1103
                  usarAcordesIguales=1
                  TipoFrac="tododur" 
@@ -1566,7 +1576,7 @@ Print #1,"1060 abrirRoll=0 entro"
                  SetStateMenu(hmessages,1103,3)
                  SetStateMenu(hmessages,1104,0)
                  SetStateMenu(hmessages,1105,0)
-                 
+            SetForegroundWindow(hwnd)                 
            Case 1104
                  usarAcordesIguales=1
                  TipoFrac="autodur" 
@@ -1574,7 +1584,7 @@ Print #1,"1060 abrirRoll=0 entro"
                  SetStateMenu(hmessages,1103,0)
                  SetStateMenu(hmessages,1104,3)
                  SetStateMenu(hmessages,1105,0)
-                 
+            SetForegroundWindow(hwnd)                 
 
            Case 1105
                  usarAcordesIguales=0
@@ -1582,7 +1592,7 @@ Print #1,"1060 abrirRoll=0 entro"
                  SetStateMenu(hmessages,1103,0)
                  SetStateMenu(hmessages,1104,0)
                  SetStateMenu(hmessages,1105,3)
-                 
+            SetForegroundWindow(hwnd)                 
            Case 1106 ' escala de la secuencia, similar a la de instrumentos
                pasozona1=0
                selTipoEscala (tipoescala_num_ini)
@@ -1606,6 +1616,7 @@ Print #1,"1060 abrirRoll=0 entro"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
 ' --------------------------   
+            SetForegroundWindow(hwnd)
            Case 1107 ' usamos sostenidos o bemoles ???
               pasozona1=0
               selNotaEscala (notaescala_num_ini)
@@ -1615,7 +1626,7 @@ Print #1,"1060 abrirRoll=0 entro"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
 
-
+            SetForegroundWindow(hwnd)
            Case 1108 ' alteraciones sotenidos o bemoles
               pasozona1=0
               alteracion="sos" ' grabado en grabaLim(1,1).pan  = CUByte(3)
@@ -1627,7 +1638,7 @@ Print #1,"1060 abrirRoll=0 entro"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
           
-
+            SetForegroundWindow(hwnd)
 ' --------------------------   
            Case 1109 ' alteraciones sotenidos o bemoles
               pasozona1=0
@@ -1638,10 +1649,11 @@ Print #1,"1060 abrirRoll=0 entro"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
       
-
+            SetForegroundWindow(hwnd)
            Case 1110
    
              MessBox ("", acercade)
+            SetForegroundWindow(hwnd)
            Case 1111 'cambiode escala
              If pasozona1 > 0 Then ' gurdamos en la posicion actual los valores cambiode escala
                 selTipoEscala (tipoescala_num)
@@ -1659,7 +1671,7 @@ Print #1,"1060 abrirRoll=0 entro"
                 EndIf 
               Print #1,"1111 TIPOESCALA NOTAESCALA ",tipoescala_num, notaescala_num
              EndIf
-             
+            SetForegroundWindow(hwnd)             
            Case 1112 'cambiode a escala Alternativa de la Principal
              If pasozona1 > 0 Then ' gurdamos en la posicion actual los valores cambiode escala
                 Dim As String notastr
@@ -1678,9 +1690,10 @@ Print #1,"1060 abrirRoll=0 entro"
                 EndIf 
               Print #1,"1112 Alternativa TIPOESCALA NOTAESCALA ",tipoescala_num, notaescala_num
              EndIf
-             
+            SetForegroundWindow(hwnd)             
          End Select
        Case eventgadget
+                 SetForegroundWindow(hwndC)
       ' el codigo anterior que traia de disco esta en notas
        If eventnumber()=3 Then  ' VK_LBUTTON ?
          borrapos=0
@@ -1766,6 +1779,7 @@ Print #1,"1060 abrirRoll=0 entro"
        EndIf
 
        If eventnumber()=5 Then
+       
          If cntsuena =0 Then
             SuenaTodo=0
          EndIf
@@ -1787,14 +1801,14 @@ Print #1,"1060 abrirRoll=0 entro"
           Next i
          SuenaTodo=3
        EndIf
-       
+         SetForegroundWindow(hwnd)
        Case EventClose  ''<==== SALIR TERMINA ROLL lax de win control???
         ''si ponemos aca da asercion de cairo.c 
         terminar=1
         Exit Do     
      End Select
     'SetFocus (hwndc) 
-    SetForegroundWindow(hwnd)
+    
    Loop
   Else
       param.titulo ="RollMusic Editor" ' esto no sale si no hay marco
