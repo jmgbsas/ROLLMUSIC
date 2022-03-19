@@ -1138,8 +1138,8 @@ indEscala=1 ' inicializamos la guiade escalas a la 1era
 Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
 tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '60 seg/ cuantas negras enun minuto
 'Dim As Integer i1 
-Dim As Integer i2,i3,i4,i5,j ,comienzoDeLoop=0,xmouse, ymouse
-Dim As Integer comienzo=1, final=MaxPos, velpos =0
+Dim As Integer i2,i3,i4,i5,j ,xmouse, ymouse,RepeIni,RepeFin
+Dim As Integer comienzo=1, final=MaxPos,velpos =0,cntrepe
 Dim As UByte canal=0,vel=90 
 ' canal 0 es el 1 van d0 a 15
 xmouse = mousex
@@ -1179,6 +1179,7 @@ jply=0:curpos=0
 mousex=0
 ' print #1,                    "-----------------------------------------"
 comienzo=posicion
+
 cntold=0
 If pasoZona1 > 0 Then
  comienzo=pasoZona1
@@ -1263,13 +1264,25 @@ EndIf
   ' SIN TOCAR CASI NADA SOLO ELIMINAR EL ANALISIS DE LIGA EN PLAYALL
   ' SEGUIR CORREGIR CON EL USO DE LSO CAMPOS NUEVOS Y AL TERMINAR 
   ' ELIMINAR LOS CAMPOS DE VEC QUE NO SE USEN
-
-  For i1=NB To NA  -13
+  '=========================================================================
+  ' ACA BUSCO SI EN UN PARAMETRO DADO FIJO SOLO DEPENDIENTE DE CUAL ES LA ULTIMA OCTAVA ,
+  ' SI LA POSICION ACTUAL ENTRE NA-13 Y HASTA NA TIENE UN COMADNO DE REPETICION 
+  ' DE COMPASES Y SI LO HAY CONDICIONO EL PLAY DE MAS ABAJO..
+  ' If Roll() tiene inicio derepetiiocn then
+  ' simular un pasozona1 pero con repeticion ponemo sun comienzo de loop
+  ' al llegar a donde este el pasozona2 no sindicara la cantiad de repetiicones y fin del
+  ' loop o sea determinamoe el final del loop y sacmaos el factor N de numeros de repeticiones
+  ' con un contado rdescndente y al final se ahce comienzo y final = 0 y la secuencia
+  ' seguira el play del resto... 
+  For i1=NB To NA 
     'print #1,"Roll.trk(jply, i1).nota ",Roll.trk(jply, i1).nota
     'print #1,"Roll.trk(jply, i1).DUR ",Roll.trk(jply, i1).dur
   ' If Roll.trk(jply, i1).dur = 182 or Roll.trk(jply, i1).nota=182  Then
   '      Continue For 
   ' EndIf 
+
+If i1<= NA-13 Then
+
    If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12 _
       And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Then ' es semitono
      ' por mas que achique en octavas, Notapiano se calcula respecto del nro 
@@ -1386,7 +1399,32 @@ EndIf
  'print #1,"cantidad de elementos Acorde actual y anterior cnt,cntold"; cnt;" ";cntold
         
         
-      EndIf  
+      EndIf
+EndIf  
+
+If i1 > NA-13 Then
+ If Roll.trk(jply,i1).nota = 210 Then
+    Print #1,"210 leido jply",jply
+    playloop=1
+    comienzo=jply
+ EndIf
+
+ If Roll.trk(jply,i1).nota = 211 Then
+    Print #1,"211 leido jply",jply 
+    final=jply
+    If cntrepe > 0 Then
+      cntrepe -= 1
+    Else
+      cntrepe=Roll.trk(jply,i1+1).nota ' nro repeticiones en vertical +1
+    EndIf
+    If cntrepe =0 Then
+       'comienzo=final+1
+       final=MaxPos
+    EndIf 
+ EndIf
+EndIf
+
+ 
   Next i1
   '''  ya no hace falta mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
   print #1,"---FIN -----paso:"; jply;" --------------------------------" 
@@ -1403,10 +1441,13 @@ Next jply
 ''Wend
 
 posicion=comienzo
-'posishow=posicion + 20
-'posishow=posicion - 20
-'posicion=posicion -20
- 
+'======================
+' IF hay loop de repeticion se detecta en la posicion final Then
+' posicion = comienzorepe , con esto vuelvo a repetir un pedazo
+' o sea el final es el que me indica desde donde debo repetir solo ahce falta 
+' insertar el final en Roll con 2 parametros dede donde repetir cuantas veces y este es el final
+' =========================l listo algoritmo mañana implemenamos
+'  
 jply=0:curpos=0
 ' 11-06-2021 se volvio a colocar 1 seg retardo para no escuchar un corte abrubto
 ' al final, por ahroa no parpadea mas veremos.... 

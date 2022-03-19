@@ -1,3 +1,6 @@
+-19-03-2022 Repeticiones de N veces de un grupo de compases en pista aislada tipo Roll
+-18-03-2022 seleccion de octavas se oculta octava de control y se usa convencion
+ comenzando en 0, en vez de la menos usada comenznado en -1 
 -16-03-2022 Fix Reproducir dejo de funcionar en Control
 -16-03-2022 Fix marcar sonido no viene al frente.
 -16-03-2022 Traer Editor Roll al frente luego de usar el menu.

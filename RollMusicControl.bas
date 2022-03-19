@@ -102,7 +102,7 @@ On  Error GoTo errorControl
 Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer) 
 Dim As hwnd haw,hwl
 Dim As Integer aa ,paso=0,x  
-Dim listoctava(1 To 9) As string ={"-1","0","1","2","3","4","5","6","7"}
+Dim listoctava(1 To 9) As string ={"0","1","2","3","4","5","6","7","8"}
 
 For x= 1 To 2 
 '' => desde acaecho con tool del ruso no anda muy bien
@@ -149,7 +149,7 @@ Dim As Integer i
               EndIf   
               If paso=1 Then
                  Octahasta = GetItemListView()
-                 Octahasta=octahasta+1
+                 Octahasta=octahasta+2 ' se suma una de control
  
               EndIf   
 

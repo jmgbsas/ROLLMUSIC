@@ -2,7 +2,9 @@
 
 On  Error GoTo errorloopbas
 ''(c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer Ptr, InicioDeLectura As Integer)
-    Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
+
+Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
+
 'Dim octava As Integer Ptr
 '*po va desde hasta -1 haci aabajo 
 indEscala=1 ' inicializamos la guiade escalas a la 1era 
@@ -11,8 +13,11 @@ Dim As String t2="",t3="",t4=""
  Dim As cairo_font_extents_t fe   '     font data
  Dim As cairo_text_extents_t te  '      text size
  Dim As Integer semitono,n, ic,indf,indfa,indfb,k
+ Dim As UByte code,repe
  Dim As Integer verticalEnOctavaVacia
- Dim As Integer notac, aconro, grado
+ Dim As Integer notac, aconro, grado,repeind
+ repeind=12+(hasta-2)*13+hasta 
+'Print #1,"creaPenta ajustado repeind ",repeind  98 para 4 a 8
  ' VERSION 3 DEBO FORMAR LA OCTAVACOMPLET 12 SONIDOS
  ' v4 ponemos maslineas de separacion par q toda duricon este en espacios
  ' hay que usar el font Goergia o culqueir con utf8 o seguir lo que dice
@@ -148,8 +153,8 @@ Dim As String t2="",t3="",t4=""
   For n = posishow To posishow + NroCol
 
 ' =======> deteccion escalas auxiliares y acordes
-    indfb = CInt(Roll.trk (n, 12 + (*po-1) * 13).dur)
-    indfa= CInt(Roll.trk (n, 12 + (*po-1) * 13).pb) ' 26-01-2022
+    indfb = CInt(Roll.trk (n, 12 + (*po-1) * 13).dur) ' 103 --dur
+    indfa = CInt(Roll.trk (n, 12 + (*po-1) * 13).pb) ' 26-01-2022 103 pb
     
     t="": t2="":t3="":t4=""
     
@@ -315,16 +320,15 @@ Dim As String t2="",t3="",t4=""
       cursor(c,n,nro,Roll)
       cairo_set_source_rgba(c, 1, 1, 1, 1)
     EndIf
-    
+
 ' jmg 11-05-2021 1839 end 
-    ' LINEAS DE COMPAS
-    'If indf> 0 And indf< 181 Then
-    '  print #1," CREAPENTA t  DUR: ";indf;" figura ";figura(indf); " semitono: "; semitono
-    'EndIf
-    ' puede ser aca CantTicks pro MaxPos
-    If n >0 And n < MaxPos  Then '''''CantTicks Then +1 para ver mas el fin
+'===== LINEAS DE COMPAS  ==================================
+    If n >0 And n < MaxPos  Then 
     'print #1,"lugar ",14
-       If Compas(n).Posi = n  Then ' ahi hay un corte un nuevo compas
+      If Compas(n).Posi = n  Then 
+' aca tambien tendremos las repeticiones si estan las leemos y la usamos en el play
+' seri aun loop como hasta ahora pero N veces no infinitas, o sea aca solo
+' grabo las N veces y comienzo de loop y en el final grabare fin loop 
     ' print #1,"lugar ",15
           cairo_move_to(c,gap1 + (ic ) *anchofig +anchofig , Penta_y)
           cairo_line_to(c,gap1 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta )
@@ -340,7 +344,25 @@ Dim As String t2="",t3="",t4=""
          t="("+ Str(n) + ")"
          cairo_show_text(c,t)
       EndIf
-
+      
+     ' If code > NA Then
+     ' Print #1,"mayor que NA,code ", NA,code
+     ' EndIf
+ 
+      code=Roll.trk (n, repeind).nota
+      repe=Roll.trk (n, repeind+1).nota
+      If code =210 Or code=211  Then
+         cairo_move_to(c,gap3 + (ic ) *anchofig +anchofig, Penta_y + 13.5 * inc_Penta )
+         Select Case code   
+            Case 210
+               t="[:"
+  '          Print #1,"code 210, *po= ", *po, t  
+            Case 211
+              t= Str(repe)+":]"
+   '         Print #1,"code 211, *po= ", *po, t
+         End Select         
+            cairo_show_text(c,t)
+      End If
 
     EndIf
 
@@ -670,8 +692,7 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
      *po = hasta -1 ' 9 po ejemplo
      Exit For
   EndIf
-  cairo_stroke(c)
- 
+     cairo_stroke(c)
   Next
   
 
@@ -938,14 +959,12 @@ EndIf
 ' se supone que la direccion es unica y se reusa no se la crea muchas veces
 ' es mejor no ¿? zas je 
     'threadPenta = ThreadCall 
-    barrePenta (c, Roll )
-    'ThreadWait threadPenta
+  barrePenta (c, Roll )
+  'ThreadWait threadPenta
+   
+  pubi=0
 
-
-pubi=0
-
-menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
-
+  menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
 '------------------08-02-2022--cambio de dispositivo por ahora solo usa un dispositivo
 ' ---ya usaremos mas de uno....muy pronto...   08-02-2022
 /'    
@@ -1060,17 +1079,11 @@ EndIf
 
 '/
 
+    botones(hWnd, c ,cm, ANCHO,ALTO) ' este despues sinocrash
+    cairo_stroke(c)
+    cairo_stroke(cm) ' cm despues de c sino crash
 
-
-botones(hWnd, c ,cm, ANCHO,ALTO) ' este despues sinocrash
-cairo_stroke(c)
-cairo_stroke(cm) ' cm despues de c sino crash
-
-
-
-ScreenUnLock()
-
-
+  ScreenUnLock()
 EndIf
 
 
@@ -1256,12 +1269,12 @@ EndIf
 ' 03-02-2022 screen event me pone con su 80 trasponer=1 hace una asignacion !!!
 If MultiKey(SC_DOWN) Then  ' el screenevent me pone trasponer en 1 la puta e.scancode = 80 Then  ' <===== SC_DOWN pulso
      If trasponer=1 And SelGrupoNota=0 Then
-        print #1,"0 pulso down screenevent TRASPONER con multikey!"
+        'print #1,"0 pulso down screenevent TRASPONER con multikey!"
        trasponerRoll ( -1,Roll,encancion)
        Exit Do
      EndIf 
      If trasponer=1 And SelGrupoNota=1 Then
-       print #1,"1 pulso down screenevent TRASPONER"
+       'print #1,"1 pulso down screenevent TRASPONER"
        trasponerGrupo ( -1,Roll,encancion)
        Exit Do
      EndIf 
@@ -1276,7 +1289,7 @@ If MultiKey(SC_DOWN) Then  ' el screenevent me pone trasponer en 1 la puta e.sca
     If cursorVert=0 Then 
        If s1=0 Then
           s1=1
-        print #1,"pulso down screenevent"
+        'print #1,"pulso down screenevent"
         BordeSupRoll = BordeSupRoll -  inc_Penta
        EndIf
       If BordeSupRoll <= - AltoInicial * 2.8  Then
@@ -2545,12 +2558,12 @@ If (ScreenEvent(@e)) Then
    If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion
 
     If trasponer=1 And SelGrupoNota=0 Then
-              Print #1,"3 TRASPONER !!!!!!!!!!!!!!", trasponer
+             ' Print #1,"3 TRASPONER !!!!!!!!!!!!!!", trasponer
      trasponerRoll ( 1,Roll,encancion)
      Exit Do
     EndIf
     If trasponer = 1 And SelGrupoNota=1 Then
-              Print #1,"4 TRASPONER !!!!!!!!!!!!!!",trasponer
+             ' Print #1,"4 TRASPONER !!!!!!!!!!!!!!",trasponer
      TrasponerGrupo ( 1, Roll,encancion)
 
      Exit Do 
@@ -2559,7 +2572,7 @@ If (ScreenEvent(@e)) Then
     If cursorVert= 0 Then
      If s2=0 Then
       s2=1
-         print #1,"pulso UP r 1 inc_penta"
+         'print #1,"pulso UP r 1 inc_penta"
       BordeSupRoll = BordeSupRoll +   inc_Penta
      EndIf
      If BordeSupRoll >= AltoInicial * 0.5  Then
@@ -3658,7 +3671,11 @@ EndIf
        End Select
 ' grabacion en Roll y track
 Dim As INTEGER vacio
-vacio= 12 +(estoyEnOctava-1)*13
+' estoyEnOctava cuenta las octavas desde 1 a 9, pero por eo el 1er vacio ocurre en 12
+' luego son: 25,38,52,64,77,90,103..es la ultima de 103 a 115 es una octava que nos usa
+' para notas pero si para este control al notener notas no hay acorde ni tampoco vacio
+' que seria el 116 qu enoexiste....
+vacio= 12 +(estoyEnOctava-1)*13 ' vacio lim inferior d ela octava que sobra arriba
 ' marcamos en el interespacio con 201 en pb para indicar que hay acorde
 ' la info restante la ponemos arriab de todo en la octava que no se usa..
 ' o sea estoy indicando que en esta octava y en esta posicion hay un acorde
@@ -3688,19 +3705,32 @@ Dim As Integer verticalEnOctavaVacia '  6-4 =2
 ' 2) => verticalEnOctavaVacia= vacio + estoyEnOctava - desde   
 ' en un solo paso, linea de la octava libre que contendra la info dela corde:
 verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde ' 90 + 6 - 4=92 
-
+' para la octava cero su info de acorde se escribe en 90+0-0 = 90
+' par alñ octava 1    su info de   "     "  "         90+1-1 = 90
+' coinciden proque las 2 son la 1er octava y la inferior
+' para el caso de 4 a 8 que se analiza primero la octava 5 estaria
+' 90 + 5 -4 =91 , y es correcto porque es la 2da octava siendo al 1era del intervalo 
+' la octava 4. 
  Roll.trk(indicePos,verticalEnOctavaVacia ).nota = CUByte(RollNota)
  Roll.trk(indicePos,verticalEnOctavaVacia ).dur  = CUByte(acordeNro)
  Roll.trk(indicePos,verticalEnOctavaVacia ).vol  = CUByte(estoyEnOctava) ' para pasar a Track
  Roll.trk(indicePos,verticalEnOctavaVacia ).pb   = 202 ' codigo de exsitencia de cifrado en el cabezado
- ' por cada 201 en el encabezado hay un 202 en una octava de roll , en track solo
+ ' por cada 201 en el INTERESPACIO hay un 202 en una octava de roll , en track solo
  ' existe el 202 en el encabezado
 ' con esta info reconstruyo el acorde que luego muestro solo en la octava
-' la octava la se por donde esta el 201 no hace falta guardarla, pweo para pasarla a track si
-' hace falta!! 27-01-2022 -. 
+' la octava la se por donde esta el 201 no hace falta guardarla, peRo para pasarla a track si
+' hace falta!! 27-01-2022 -. YA INCORPORADO A TRACK
+' Lo maximo que uso son 8 posiciones para las octavas de 0 a 7 o 1 a 8 , como tengo 13
+' posiciones verticales en la ultiam octava me quedan 5 posiciones libres y tambien
+' como la estructura dat tiene 6 campos me quedan 2 campos en las 8 primeras
+' y todas las 6 en las 5 siguietnes = 46 sitios donde poner informaicon para una posicion dada
+' las repeticiones las colocaremos en la 1era de la posicion libre o sea en este caso 
+' la posicion 98 como si fuera una octava 9 ficticia...las repeticiones no dependen de la
+' octava todas las pisas se repiten al unisono. solo hace falta inforamcion
+' arriba en al octava que no se usa.
+ 
 ' en uso. 
-/'
-If nota3era <> 0 Then 
+/'If nota3era <> 0 Then 
         nota3era= lugarNota(deltanota(aconro))
         
 EndIf
@@ -3853,14 +3883,14 @@ ButtonGadget(2,530,30,50,40," OK ")
      Dim As Integer pasox, pasoy, pasonR
      pasox=(mousex- gap1 )/anchofig  + posishow  
      pasoy=nE
-     print #1,"pasoy nE=",pasoy
+     'print #1,"pasoy nE=",pasoy
      If trasponer=1 Then '03-02-2022
        correcciondeNotas(Roll)
      EndIf
      If pasoZona1 = 0 Then  ' selecion 1er posicion de la zona
         pasoZona1=  pasox ' pos de la 1er ventana
         pasoNota=0 
-        print #1,"pasoZona1=",pasoZona1;" pasoNota=";pasoNota
+       ' print #1,"pasoZona1=",pasoZona1;" pasoNota=";pasoNota
         Exit Do
      EndIf
 

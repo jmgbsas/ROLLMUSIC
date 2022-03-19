@@ -3008,13 +3008,51 @@ NombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
     FactortiempoPatron= cdbl(nombreArchivo) '08-01-2022 de doble a int
     Print #1,">>>>>>>>Factor TIEMPO PATRON NUEVO>>>>>>>", FactortiempoPatron
  Case "[NROREP]
-  DEFAULT=Str("2")
+  default=Str("2")
   NombreArchivo = InputBox("Repeticiones " ,"Cantidad entera ",default)
-  pmTk(ntk).zona1  = CUByte(pasozona1)
-  pmTk(ntk).zona2  = CUByte(pasozona2)
-  pmTk(ntk).nroRep = CUByte(nroRep)                
- 
+' en este momento inserto al repeticion 
+' Lo maximo que uso son 8 posiciones para los acrodes de las octavas de 0 a 7 o 1 a 8,
+' como tengo 13 posiciones verticales en la ultima octava me quedan 5 posiciones libres 
+' y tambien como la estructura 'dat' tiene 6 campos me quedan 2 campos en las 8 primeras
+' y todas las 6 en las 5 siguietnes = 46 sitios donde poner informaicon para una posicion
+' dada. Las repeticiones las colocaremos en la 1era de la posicion libre o sea en este caso 
+' octavas que van default de 4 a 8, la posicion 98 como si fuera una octava 9 ficticia...
+' las repeticiones no dependen de la octava todas las pistas se repiten al unisono. 
+' solo hace falta inforamcion arriba en la octava que no se usa.
+' pa la infor de acordes usabamos
+' verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde ' 90 + 6 - 4=92
+' luego para repeticiones usaremos desde la 98del caso dicho o sea generalizando
+'verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde ' 90 + 6 - 4=92
+' par ala octava mas alta seria 9
+' 12+7*13
+  Dim As Integer vertical=0 ' elvalor minimo 
+  vertical=12+(hasta-2)*13+hasta ' para 9 -> 112
+  'Print #1,"ajustado repeind ",vertical  98
+  Roll.trk(pasozona1,vertical).nota = 210 ' comienza repeticion en pasozona1
+' ajusto comienzo= pasozona1...
+' al llear pasozona2 en el mismo lugar pongo le nro de repeticiones
+  Roll.trk(pasozona2,vertical).nota = 211' indica final de repeticion
+  Roll.trk(pasozona2,vertical+1).nota = CUByte(NombreArchivo) ' nro de repeticiones
+' ajusto final=pasozona2 
+' creo un contador que vaya disminuyendo su valor con cada repeticion  
+  pasozona1=0:pasozona2=0
+' en crear penta coloco un [ ariba de laposiicon 
 
+' luego al detectar 210 tomoel ascii de vertical+1 [ 
+' 
+' con esta info comienzo en play=pasozona1 y final=posicion (seria el pasozona2)
+' en cada play de la repetiion le resto 1 al nro de repeticiones
+' cuadno lleg aa 0 habra terminado el nro de repeticiones. 
+' asi digo hay repeticion de 
+' no se sipongo en pmTk eso solo sirve para una sola repeticion
+' debo ponerlo en NA-13 o lim3 -lim2
+' aca lo dejo solo como paso transitorio para luego colocarlo en la pista 
+' tanto en Roll como en Track 
+'  pmTk(ntk).zona1  = CUByte(pasozona1)
+'  pmTk(ntk).zona2  = CUByte(pasozona2)
+'  pmTk(ntk).nroRep = CUByte(nroRep)                
+' Roll.trk()= 
+' Track(ntk).trk=
 End Select
 
 End Sub
@@ -4004,8 +4042,11 @@ End SUB
 Sub salir()
 ' NO PUEDE ESTAR EN MUSICCONTROL.BAS DEBE ESTAR EN ALGUNA PARTE DE ROLLMUSIC PARA QUE FUNCIONE
 Dim  As Integer i3
-           cairo_destroy(c)
-           cairo_surface_destroy( surface )
+ ThreadDetach(threadloop)
+ DestroyWindow(hWnd)
+ cairo_destroy(c)
+ cairo_surface_destroy( surface )
+
  ' no usar nunca deallocate falla montonde cosas ni si quiera se puede cerrar
  ' un archivo ni borrarlo una cagada la recomendacion del foro!!!!          
            FT_Done_Face( ftface )
