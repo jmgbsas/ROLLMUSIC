@@ -1557,7 +1557,7 @@ Print #1,"1060 abrirRoll=0 entro"
                  If NombreCancion > "" Then
                     If play=1 Or playb=1 Then
                        CONTROL1=1 ' DETIENE EL PLAY VEREMOS
-                       playloop=0
+                       playloop=0:playloop2=0
                        play=0 : playb=0
                        Sleep 20
                     EndIf 

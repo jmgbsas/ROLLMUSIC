@@ -100,7 +100,7 @@ Dim Shared As String RTA, alteracion '',alteracion_str
 alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0
 Dim Shared As integer pasoZona2=0,nroRep=0
-Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, SelGrupoNota =0,moverZona=0, copiarZona=0
+Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, playloop2=0,SelGrupoNota =0,moverZona=0, copiarZona=0
 Dim Shared as ubyte  DUR,nota,notasInsertadas (1 to 1500),notacur
 Dim Shared As String t,t2
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert, cursormove

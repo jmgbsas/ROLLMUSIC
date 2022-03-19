@@ -1204,7 +1204,7 @@ EndIf
 
 If MultiKey (sc_P) And (play=1 Or playb=1 )Then
   CONTROL1=1 ' DETIENE EL PLAY VEREMOS
-  playloop=0
+  playloop=0:playloop2=0
 EndIf
 
 If MultiKey(SC_PLUS) Then  '13 , ligadura
@@ -1711,7 +1711,7 @@ If pasoZona1 > 0 Or pasoZona2 >0 Or pasoNota > 0 Or trasponer=1 Then ' hubo una 
 EndIf 
 pun=0:sil=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
 SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
-deltaip=0:incWheel=0:lockip=0
+deltaip=0:incWheel=0:lockip=0:playloop=0
 'anchofig=35
 'gap1= (anchofig* 2315)/1000  ' 81 default
 'gap2= (914 * gap1) /1000 ' 74 default
@@ -2552,7 +2552,7 @@ If (ScreenEvent(@e)) Then
   Case EVENT_KEY_PRESS    ' <======== KEY PRESS PULSO
    If e.scancode = SC_P And Play=1 then ' 25 anda mejor q con multikey
       CONTROL1=1
-      playloop=0
+      playloop=0:playloop2=0
  '''     alloff( 1 ) lo hace el play 
    EndIf
    If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion

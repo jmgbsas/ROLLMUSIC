@@ -1138,8 +1138,8 @@ indEscala=1 ' inicializamos la guiade escalas a la 1era
 Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
 tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '60 seg/ cuantas negras enun minuto
 'Dim As Integer i1 
-Dim As Integer i2,i3,i4,i5,j ,xmouse, ymouse,RepeIni,RepeFin
-Dim As Integer comienzo=1, final=MaxPos,velpos =0,cntrepe
+Dim As Integer i2,i3,i4,i5,j ,xmouse, ymouse,RepeIni,RepeFin,finalloop=0,comienzoloop=0
+Dim As Integer comienzo=1, final=MaxPos,velpos =0,cntrepe,final2=0,comienzo2=0
 Dim As UByte canal=0,vel=90 
 ' canal 0 es el 1 van d0 a 15
 xmouse = mousex
@@ -1151,7 +1151,7 @@ Dim As UByte dura=0,duraold=0
 Dim As Integer liga=0,notapiano=0,old_notapiano=0, iguales=0, distintos=0
 Dim leng As UInteger <8>
 Dim result As Integer
-
+playloop2=0
 ' ==============> AJUSTE DE CANAL MIDI PARA UN ARCHIVO ROLL AISLADO <===========
 
 'If canalx > 0 Then
@@ -1183,10 +1183,12 @@ comienzo=posicion
 cntold=0
 If pasoZona1 > 0 Then
  comienzo=pasoZona1
+ comienzoloop=comienzo
 EndIf
 
 If pasoZona2 > 0 Then
  final=pasoZona2
+ finalloop=final
 EndIf
 
 ' If jply=1 And Roll.trk(1,NA).inst > 0 Then
@@ -1405,13 +1407,13 @@ EndIf
 If i1 > NA-13 Then
  If Roll.trk(jply,i1).nota = 210 Then
     Print #1,"210 leido jply",jply
-    playloop=1
-    comienzo=jply
+    playloop2=1
+    comienzo2=jply
  EndIf
 
  If Roll.trk(jply,i1).nota = 211 Then
     Print #1,"211 leido jply",jply 
-    final=jply
+    final2=jply
     If cntrepe > 0 Then
       cntrepe -= 1
     Else
@@ -1419,7 +1421,10 @@ If i1 > NA-13 Then
     EndIf
     If cntrepe =0 Then
        'comienzo=final+1
-       final=MaxPos
+       final2=MaxPos
+       If finalloop> 0 Then
+           final2=finalloop
+       EndIf
     EndIf 
  EndIf
 EndIf
@@ -1430,10 +1435,22 @@ EndIf
   print #1,"---FIN -----paso:"; jply;" --------------------------------" 
   
  
- If playloop=1 And jply= final Then
-    jply=comienzo -1
-    'posicion=comienzo
+ If playloop=1 And jply= finalloop Then
+    jply=comienzoloop -1
  EndIf
+ If playloop2=1 And jply= final2 Then
+    jply=comienzo2 -1
+    If final2=finalloop Then 
+       If playloop=1 Then
+         jply=comienzoloop -1
+       Else
+         final=MaxPos
+         final2=Maxpos 
+         jply=final2 
+       EndIf
+    EndIf
+ EndIf
+
  tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
  
 Next jply

@@ -2073,7 +2073,7 @@ EndIf
     If MouseButtons And 1 And carga = 0  Then
       If play=1 Or playb=1 Then
        CONTROL1=1 ' DETIENE EL PLAY VEREMOS
-       playloop=0
+       playloop=0:playloop2=0
        Sleep 2
       EndIf 
        CargaArchivo(Roll, 0)
@@ -2101,7 +2101,7 @@ EndIf
       If (MouseButtons And 1 And carga=0) Then
          If play=1 Or playb=1 Then
             CONTROL1=1 ' DETIENE EL PLAY VEREMOS
-            playloop=0
+            playloop=0:playloop2=0
             Sleep 2
          EndIf 
 

@@ -1,3 +1,4 @@
+-19-03-2022 Loop infinito para una pista aislada con repeticiones internas al loop.
 -19-03-2022 Repeticiones de N veces de un grupo de compases en pista aislada tipo Roll
 -18-03-2022 seleccion de octavas se oculta octava de control y se usa convencion
  comenzando en 0, en vez de la menos usada comenznado en -1 
