@@ -294,12 +294,11 @@ Dim As String t2="",t3="",t4=""
        indf=181
     EndIf ' t no puede quedar en un scope dsitinto se hace shared    
      t= figura(indf)
+
 '     cairo_show_text(c, t)
 '     cairo_stroke(c)
 '     cairo_set_source_rgba(c, 1, 1, 1, 1)
-  
-
-' ////////dar color al font en una determinada posicion durante el play
+ ' ////////dar color al font en una determinada posicion durante el play
     If n=jply Then 
        cairo_set_source_rgba(c,1,0,1,1)
     EndIf
@@ -350,7 +349,7 @@ Dim As String t2="",t3="",t4=""
      ' EndIf
  
       code=Roll.trk (n, repeind).nota
-      repe=Roll.trk (n, repeind+1).nota
+      repe=Roll.trk (n, repeind).vol
       If code =210 Or code=211  Then
          cairo_move_to(c,gap3 + (ic ) *anchofig +anchofig, Penta_y + 13.5 * inc_Penta )
          Select Case code   
@@ -958,7 +957,9 @@ EndIf
 '05-02-2022 usamos threarPenta ya definida global
 ' se supone que la direccion es unica y se reusa no se la crea muchas veces
 ' es mejor no ¿? zas je 
-    'threadPenta = ThreadCall 
+    'threadPenta = ThreadCall
+
+
   barrePenta (c, Roll )
   'ThreadWait threadPenta
    
@@ -1111,23 +1112,23 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA And play=0 Or cargaCancio
    print #1,"--TAB "
    nota=0
    dur=0
-   print #1,"1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
+   print #1,"TAB 1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
    If clickpista=1 Then
      Print #1,"no incrementea ntk"
      clickpista=0
    Else
      ntk = ntk + 1
    EndIf
-   print #1,"2- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos  
+   print #1,"TAB 2- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos  
    If ntk > 32 Or ntk > tope Then
      ntk=1 
-     print #1,">32- 1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos     
+     print #1,">TAB 2A- 1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos     
    EndIf
    nombre= titulos(ntk)
    If nombre> "" Then
      print #1,"--------------------------"
-     print #1,"3-NTK nombre", ntk,nombre
-     print #1,"3-NTK MAXPOS pmtk(ntk).maxpos  ", maxpos,pmTK(ntk).maxpos
+     print #1,"TAB 3-NTK nombre", ntk,nombre
+     print #1,"TAB 3-NTK MAXPOS pmtk(ntk).maxpos  ", maxpos,pmTK(ntk).maxpos
      print #1,"--------------------------"
    EndIf  
 ' evita leer track vacios   
@@ -1137,12 +1138,13 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA And play=0 Or cargaCancio
         If ntk>32 Or ntk > tope Then
            ntk=1
            nombre= titulos(ntk)
-  print #1,"4 - NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos    
+  print #1,"TAB 4 - NTK, pmtk(ntk).maxpos  ", ntk,pmTK(ntk).maxpos    
            Exit Do
         EndIf
  
         nombre= titulos(ntk)
      Loop
+  EndIf
      posicion=0 ' 14.-03-2022
      MaxPos=pmTk(ntk).MaxPos
      posn=pmTk(ntk).posn
@@ -1161,18 +1163,18 @@ If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA And play=0 Or cargaCancio
      armarescala cadenaes_inicial,tipoescala_num_ini,notaescala_num_ini,alteracion,1 '13-01-2022
 ' todavia no probado, escala principal para TAB en cada track testeat 13-01-2022     
 ' no he grabado las escalas auxiliares en lso Trackc todavia !! 13-01-2022 jjj     
-     print #1,"5- MAXPOS final TAB " ,maxpos
+     print #1,"TAB 5- MAXPOS final TAB " ,maxpos
      
-   EndIf   
+      
 '
 
-   print #1, "6-NTK nombre", ntk,nombre  
-   print #1, "6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, maxpos,pmTK(ntk).maxpos
+   print #1, "TAB 6-NTK nombre", ntk,nombre  
+   print #1, "TAB 6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, MaxPos,pmTK(ntk).maxpos
 ' copia track a Roll en memoria  
 ' el segundo parametro es canal no se usa...lo saco o lo dejo?
    Tracks (ntk , 1,Roll) ' track , nro,  Canal, copia track a Roll en memoria
    Sleep 100
-   Print #1,"7- instancia, maspos ",instancia, maxpos
+   Print #1,"TAB 7- instancia, maspos ",instancia, maxpos
 EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar con Insert y I
@@ -2100,7 +2102,7 @@ EndIf
 ' al usar iniciodeLectura, pero eso sí, con inicio congelaba el movimiento
 ' del roll ante una entrada de nota hasta el próximo incremento de pantalla
 ' SOLO SEUSAPARAINGRESO DE NOTAS NUEVAS ..VERIFICANDO JMG
-If COMEDIT = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 And nota <=182 Then ' 182 entra el fin de archivo 
+If COMEDIT = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 And nota <=182  Then ' 182 entra el fin de archivo 
  'print #1,"--------------------------------------------------------------"
  'print #1,">>>START NUCLEO-COMPAS VECTOR posn: "; posn; "suma:";acumulado
  'print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;_
@@ -2136,8 +2138,8 @@ Print #1,"entro nota ",nota
    ' PARA USAR ESTO CON ENTRADA POR MOUSE SOLO DEBO DETERMINAR EL SEMITONO...
    ' y hacer nota=semiotono 1 a 11 con el mouse...el esto es automtico...
    Do ' nota es semitono ahora va de 0 a 11 deborestr 1 a nota
-  Print #1,"posn, nota, estoyEnOctava ",posn,nota,estoyEnOctava 
-  Print #1,"Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota ",Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota
+'  Print #1,"posn, nota, estoyEnOctava ",posn,nota,estoyEnOctava 
+ ' Print #1,"Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota ",Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota
     If Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0 Or Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 182 Then
        posicion=posn
      '182 el fin de archivo lo puedo pisar para seguir la secuencia
@@ -2151,13 +2153,13 @@ Print #1,"entro nota ",nota
 '---control barrido de pantalla columna
     If (posn > NroCol + InicioDeLectura) Then
      InicioDeLectura=InicioDeLectura + NroCol
-     Print #1,"NUCLEO::CONTROL DE PANTALLEO  NroCol,InicioDeLEctura ", NroCol,InicioDeLEctura
+ '    Print #1,"NUCLEO::CONTROL DE PANTALLEO  NroCol,InicioDeLEctura ", NroCol,InicioDeLEctura
     EndIf
   '   print #1, "ingreso a NUCLEO posn ",posn
   Loop 
 
     MaxPos=Posn +1 
-    Print #1,"posn, Maxpos,nota ",posn,Maxpos,nota
+ '   Print #1,"posn, Maxpos,nota ",posn,Maxpos,nota
     pmTk(ntk).posn=posn
     pmTk(ntk).MaxPos=MaxPos
 
@@ -2180,10 +2182,10 @@ Print #1,"entro nota ",nota
    ' ESTO ME UBICA EN QUE RENGLON DE LA OCTaVA ESTOY SN USAR EL MOUSE
    ' CON EL MOUSE tambien se hizo
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = nota 'carga visualizacion
-   Print #1,"NUCLEO: Posn,nota,EstoyEnOctava ",posn,nota,EstoyEnOctava
+ '  Print #1,"NUCLEO: Posn,nota,EstoyEnOctava ",posn,nota,EstoyEnOctava
    nR=(12-nota) + (estoyEnOctava -1 ) * 13 
    PianoNota= nR - restar (nR)
-   print #1,"' cargo TRACK nro, PianoNota ",ntk,PianoNota 
+ '  print #1,"' cargo TRACK nro, PianoNota ",ntk,PianoNota 
    Track(ntk).trk(posn,1).nota= PianoNota ' 
    
    Roll.trk(posn+1,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
@@ -2410,7 +2412,7 @@ mel_undo(mel_undo_k).posn = posn
    ' mayorDurEnUnaPosicion (posn) quedo <--defectuoso
      'If DUR >=1 And DUR <= 72 Then
       DUR = Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
-
+      
       calcCompas(posn,Roll) 'lrepeticion no espor calcCompas
      'EndIf
    '   rmerr = Err
@@ -3303,7 +3305,7 @@ EndIf
 ' VARIABLE NUEVA acordeNro tipo integer shared 
 ' la existencia de un acorde la ponemos en .inst con el nro 201 (solo indica buscar acorde)
 ' de una octava en ocurrencia 12 como las escalas me indica que hay un acorde
-' o sea pueden subsistir la informacion de un acorde y una escala auxiliar
+' o sea pueden subsistir la informacion de un acorde y una escala 77777
 ' el resto de la informacion del acorde son nE y acordeNro la poneos en la octava
 ' que no se usa la mas alta que sera diferente segun el tamaño de octavas elegido
 ' que será la octava hasta+1 ahi tenemos 12 posiciones verticales sin usar
@@ -3715,7 +3717,7 @@ verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde ' 90 + 6 - 4=92
  Roll.trk(indicePos,verticalEnOctavaVacia ).dur  = CUByte(acordeNro)
  Roll.trk(indicePos,verticalEnOctavaVacia ).vol  = CUByte(estoyEnOctava) ' para pasar a Track
  Roll.trk(indicePos,verticalEnOctavaVacia ).pb   = 202 ' codigo de exsitencia de cifrado en el cabezado
- ' por cada 201 en el INTERESPACIO hay un 202 en una octava de roll , en track solo
+ ' por cada 201 en el INTERESPACIO hay un 202 de una octava de roll , en track solo
  ' existe el 202 en el encabezado
 ' con esta info reconstruyo el acorde que luego muestro solo en la octava
 ' la octava la se por donde esta el 201 no hace falta guardarla, peRo para pasarla a track si

@@ -1,4 +1,4 @@
-' apertura de ports en play  ufff
+' apertura de ports en play  
 ' tiempoPatron a entero no tiene porque ser double, se graba en archivo
 ' Se agrego formar acordes aun sin nota en el lugar elegido, se deb eentrar al duracion
 ' Triadas desde Tonica completo Mayor Menor Disminuido formacion y play 
@@ -135,6 +135,8 @@ Dim Shared As String myfilter
 myfilter  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
 'myfilter += "Ini files"+Chr(0)   +"*.ini;*.txt;*.cfg"+Chr(0)
 myfilter += "Rtk  Files"+Chr(0)   +"*.rtk"+Chr(0)
+
+
 Open "AAAAA-test.TXT" For Output As 5
 Dim Shared As Integer abierto=0
 Common Shared  mensaje As Integer 
@@ -316,8 +318,9 @@ Sleep 100
 
 If desde = 0 And hasta = 0 Then
  Print #1,"intervalo no dado usando default!"
- desde => 4  ' 3 -> 3  
- hasta => 8  ' 7 -> 6
+ desde => 4  ' -> 3  
+ hasta => 8  ' -> 6 le debo restar la octava oculta +1
+ 
 ' internamente no usamos cero , empezamos desde 1 pero en roll se ve tal cual es
 ' va desde 0 a 7 ergo de 4 a 8 el default es la eleccion en roll 3 a 7 pero al 7 es de
 ' ontrol o sea es de 3 a 6 y la de control no aparece en el grafico...
@@ -329,7 +332,7 @@ EndIf
 ' calculo teorico a tiempopatron 160 , pero roollmusic arranca a 120
 CantTicks=cantMin * 128 * tempo/4  ' 76800 ticks...o pasos
 'CantTicks=76800
-CantTicks=4000 ' 3 MINUTOS A NEGRA 160/min=500 Y Q TODAS SEAN FUSA
+CantTicks=1000 ' 3 MINUTOS A NEGRA 160/min=500 Y Q TODAS SEAN FUSA
 ' 4000*30=120000 x 16=1920000
 '  
 
@@ -690,7 +693,7 @@ listOutAbierto(0)=0
 '========================== 
 #include "RTMIDISUB.bas"
 #include "WinGUI.bi"
-#include "rolltracks.bas"
+#include "ROLLTRACKS.bas"
 #include "ROLLSUB.BAS"
 '===========================
  Dim As Integer MenuFlag=0, LoopFlag=0 
@@ -710,8 +713,7 @@ listOutAbierto(0)=0
 
 '>>>>>>portsout = portout
 '>>>>>*nombreport = ""
-' POR AHORA SOLO ABRE EL PORT POR DEAFULT DEL SISTEMA ....el 0
-' LUEGO ABRIREMOS MAS DE UN PUERTO SI RTMIDIC LO PERMITE,,,
+' SE ABRE MAS DE UN PUERTO SI SE DESEA ,,
 ' CUADNO TENGA ABIERTO SMAS DE UN PUERTO DEBERE ASIGNAR CIERTOS PUERTOS A CADA PISTA
 ' LUEGO EN CADA PISTA PUEDO TENER UN PUERTO O DISPOSITIVO CADA UNO CON SUS 16 CNALES
 ' Y EN CADA CANAL SUS 128 INSTRUMENTOS.,,LUEGO VEREMOS ESO DE LOS BANCOS ETC
@@ -787,7 +789,8 @@ Dim hnro As Integer
  
  ' genial puedo recorrer un array con un pointer!!!!
 '-------
-nroversion="0.4534"
+nroversion="0.4536"
+'4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
 acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version Solo ejecuta las secuencias " + _
  "a base de algoritmos sin una linea conductora de tiempos. Solo se basa en las duraciones de las notas. " + _
  "Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
@@ -795,7 +798,7 @@ acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aire
  "Usa Cairo como libreria de graficos, Rtmidi como libreria midi, " + _
  "Editor de código FbEdit. Echo en Freebasic como hobby.FreeBASIC Compiler - Version 1.08.1 (2021-07-05), " + _ 
  "built for win64 (64bit) Copyright (C) 2004-2021 The FreeBASIC development team." + _
- "Si alguien quiere colaborar o tiene dudas o sugerencias,mail:galeanoj2005@gmail.com"
+ "mail:galeanoj2005@gmail.com"
  
 '------------
 Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
@@ -1444,7 +1447,7 @@ Print #1,"1060 abrirRoll=0 entro"
                'MaxPos=2
                nombre= NombreCancion+"\"+NombrePista+".rtk"
     '           print #1,"nombre en 1061",nombre
-               CantTicks=4000
+               CantTicks=1000
     '           Print #1,"CantTicks ",CantTicks
                
                ''' para cuando las pistas esten juntas en un archivo ->ZGrabarTrack(ntk)

@@ -116,9 +116,9 @@ Sub calcCompas( ByRef j As Integer,Roll As inst)
 
 On Local Error GoTo errorCalc 
 
- If DUR=0  Then
-  Compas(j).Posi=0
-  Compas(j).nro = 0
+ If DUR=0  then ''And j >0 Then '23-03-2022 ÇÇÇ
+  compas(j).Posi=0
+  compas(j).nro = 0
 
   ' x print #1,"CALCOMPAS-0 DUR=0 COMPAS(J)=0 "
   Exit Sub
@@ -700,6 +700,9 @@ End Sub
 '-----------
 Sub ReCalCompas(Roll As inst)
 On Local Error GoTo errorRecal
+'If MaxPos=0 Then ' 23-03-2022 ÇÇÇ
+'   Exit Sub
+'EndIf
    nroCompas = 0
 
      carga=1 ' no es lo mismo calcCompas con cargar o procesando
@@ -712,7 +715,7 @@ On Local Error GoTo errorRecal
       'Print #3,"POSICION :";J
       cont=0
       For i= NB To NA -13 ' 01-02-2022  
-      If Roll.trk(j,i).pb = 202 Or Roll.trk(j,i).pb=201 Or Roll.trk(j,i).dur=200 Then
+      If Roll.trk(j,i).pb = 202 Or Roll.trk(j,i).pb=201 Or Roll.trk(j,i).dur=200  Then
          Continue for
       EndIf
        valdur => Roll.trk(j,i).dur ' de 1 a 180
@@ -1333,6 +1336,9 @@ End Sub
 Sub Tracks ( ByRef ntk As integer, ByRef nroCanal As UByte,Roll As inst)
   ''copia track a Roll en memoria
   ' nrocanal no se usa ,,,,borraremos mas adelante...
+If MaxPos <=2 Or pmTK(ntk).maxpos=0 Then
+  Exit Sub
+EndIf
 nota=0:dur=0
 print #1,"EN TRACKS MAXPOS (NTK).MAXPOS ", maxpos, pmTK(ntk).maxpos
  ' sizeof array de ubytepr almcenar el pentagrama roll
@@ -1554,10 +1560,12 @@ abrirRoll=2 ' habilita la carga de una cancion
      ' Roll y Track tendran 500 posiciones mas que trabajo el archivo de disco
      ' la carga se limita a MaxPos no deberi apasar nada...
      carga=1 ' no es lo mismo calcCompas con cargar o procesando
-     Dim As Integer i,j , mayor,ia,valdur,cont, semi,i3,verticalEnOctavaVacia,octavaDeAcorde
+     Dim As Integer i,j , mayor,ia,valdur,cont, semi,i3,verticalEnOctavaVacia,octavaDeAcorde,vertical
      cont=0
  '    print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
 Dim As Integer copiado=0
+
+ vertical=12+(hasta-2)*13+hasta ' "[NROREP]" de EntrarTeclado
      For j = 1 To MaxPos    '11-07-2021
 '      Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
@@ -1601,16 +1609,23 @@ Dim As Integer copiado=0
       EndIf
 ' copiar campso de acordes a Track(ntk)       
 
-      If Trabajo(j,i ).pb = 201  Then ' info acorde en una octava
+      If Trabajo(j,i ).pb = 201  Then ' info acorde en una octava es el 202 de Roll
       ' vacio= 12 +(estoyEnOctava-1)*13 son las que no se ven 
       '       i1= 12 + (octavaDeAcorde -1)*13 ergo
-         octavaDeAcorde=1+ (i-12)/13 
+         octavaDeAcorde=1+ (i-12)/13 ' nro octava de roll empieza por  cero 0 
          i3=13 + octavaDeAcorde 
          verticalEnOctavaVacia= 12 + (hasta-2)*13 + octavaDeAcorde - desde ' 90 + 6 - 4=92
          Track(ntk).trk(j,i3).vol  = Trabajo(j,verticalEnOctavaVacia).vol ' octava
          Track(ntk).trk(j,i3).nota = Trabajo(j,verticalEnOctavaVacia ).nota ' Rollnota
          Track(ntk).trk(j,i3).dur  = Trabajo(j,verticalEnOctavaVacia ).dur  ' acordeNro
          Track(ntk).trk(j,i3).pb  = Trabajo(j,verticalEnOctavaVacia ).pb  ' hay acorde 202          
+      EndIf
+
+      If Trabajo(j,vertical ).nota = 210 Or Trabajo(j,vertical ).nota = 211 Then ' repeticiones [:  n:]
+      ' vacio= 12 +(estoyEnOctava-1)*13 son las que no se ven 
+      '       i1= 12 + (octavaDeAcorde -1)*13 ergo
+         Track(ntk).trk(j,21).nota = Trabajo(j,vertical ).nota '
+         Track(ntk).trk(j,21).vol = Trabajo(j,vertical ).vol ' 
       EndIf
 
 
@@ -1641,7 +1656,7 @@ End Sub
 
 '
 Sub Nuevo(Roll As inst,borraNombre As integer)
-CantTicks=4000 ' vuelvo al original default
+CantTicks=1000 ' vuelvo al original default
 ' borro todo el undo
    mel_undo_k=0 :ig=0:cnt_acor=0
    Erase mel_undo, undo_acorde,undo_kant_intervalos
@@ -2095,8 +2110,10 @@ EndIf
 
 '  =====< CARGA UN TRACK EN NTK=0 Y LO PASA A ROLL PARA EDITAR >=======
    If (mousex > 300 And mousex <  345  And mousey < 50 And carga=0 )  Then ' <= ABRIR lee grabaroll.roll
-     
-      ntk=0  ' siempre carga a ntk=0 por ahora 
+     If NombreCancion > "" Then
+     Else
+      ntk=0  
+     EndIf 
       cairo_set_source_rgba c, 0, 1, 0, 1
       If (MouseButtons And 1 And carga=0) Then
          If play=1 Or playb=1 Then
@@ -2170,7 +2187,8 @@ EndIf
        ubi4=InStr(nombre,".roll")
        If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Then 'graba un track como track
        ' pero como las modificaciones estan en ROLL debo usar GrabarrollaTrack
-          GrabarRollaTrack(0)
+  Print #1,"2190 menu pierde ntk ??? ",ntk
+          GrabarRollaTrack(0) 'ÇÇÇÇÑÑÑÑ
            Sleep 1000           
        Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
            GrabarArchivo (0)
@@ -3007,7 +3025,7 @@ NombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
     Print #1,"nombreArchivo de click ok",nombreArchivo
     FactortiempoPatron= cdbl(nombreArchivo) '08-01-2022 de doble a int
     Print #1,">>>>>>>>Factor TIEMPO PATRON NUEVO>>>>>>>", FactortiempoPatron
- Case "[NROREP]
+ Case "[NROREP]"
   default=Str("2")
   NombreArchivo = InputBox("Repeticiones " ,"Cantidad entera ",default)
 ' en este momento inserto al repeticion 
@@ -3032,7 +3050,7 @@ NombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
 ' ajusto comienzo= pasozona1...
 ' al llear pasozona2 en el mismo lugar pongo le nro de repeticiones
   Roll.trk(pasozona2,vertical).nota = 211' indica final de repeticion
-  Roll.trk(pasozona2,vertical+1).nota = CUByte(NombreArchivo) ' nro de repeticiones
+  Roll.trk(pasozona2,vertical).vol = CUByte(NombreArchivo) ' nro de repeticiones
 ' ajusto final=pasozona2 
 ' creo un contador que vaya disminuyendo su valor con cada repeticion  
   pasozona1=0:pasozona2=0
@@ -3052,6 +3070,8 @@ NombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
 '  pmTk(ntk).zona2  = CUByte(pasozona2)
 '  pmTk(ntk).nroRep = CUByte(nroRep)                
 ' Roll.trk()= 
+' HACEMOS LO MISMO PARA EL TRACK ntk en edicion ya sea nto= en caso de Roll puro o pista ntk
+' en edicion
 ' Track(ntk).trk=
 End Select
 

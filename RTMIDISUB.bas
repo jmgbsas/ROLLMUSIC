@@ -1035,9 +1035,9 @@ End Sub
 '-------------playAll-----21-05-2021-------
 Sub playAll(Roll As inst) ' play version 2 
 ' tiempo es cuantas negras en un minuto tiempoPAtron
-' PLAY masavanzado en un mismo acorde si son de distinta duracion
+' PLAY mas avanzado en un mismo acorde si son de distinta duracion
 ' sus notas se toca cada una con su propia duracion,el corde no termina
-' hasta queterminede tocar la nota mas larga.
+' hasta que termine de tocar la nota mas larga.
  ' abrir hasta 32 dispositivos
 'Dim Shared midiin As RtMidiInPtr
 Dim As Integer porterror,nousar
@@ -1417,7 +1417,7 @@ If i1 > NA-13 Then
     If cntrepe > 0 Then
       cntrepe -= 1
     Else
-      cntrepe=Roll.trk(jply,i1+1).nota ' nro repeticiones en vertical +1
+      cntrepe=Roll.trk(jply,i1).vol ' nro repeticiones en vertical +1
     EndIf
     If cntrepe =0 Then
        'comienzo=final+1
@@ -2208,7 +2208,7 @@ For jpt = desdet To hastat  ' eje x posiciones
    
     If ( (Roll.trk(jpt,i1).nota >= 0) And Roll.trk(jpt,i1).nota <= 181 ) _
        OR (Roll.trk(jpt,i1).dur >=0 And Roll.trk(jpt,i1).dur <= 181 ) Then ' es semitono
-       If Roll.trk(jpt, i1).pb = 201 Then
+       If Roll.trk(jpt, i1).pb = 201 Then ''ÇÇÇ cuando traspongo muevo el cifrado ...¿?
            octavaDeAcorde=1+ (i1-12)/13
            verticalEnOctavaVacia= 12 + (hasta-2)*13 + octavaDeAcorde - desde  
            If cant> 0 Then 
@@ -2217,7 +2217,8 @@ For jpt = desdet To hastat  ' eje x posiciones
              Roll.trk(jpt, verticalEnOctavaVacia).nota=Roll.trk(jpt, verticalEnOctavaVacia).nota + 1
            EndIf
            Continue For
-       EndIf    
+       EndIf  
+  
        If ind >= NB And ind <= NA  -13 Then
           If  pasoNota=0  Then    
              Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota

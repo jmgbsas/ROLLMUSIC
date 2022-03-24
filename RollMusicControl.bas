@@ -149,7 +149,7 @@ Dim As Integer i
               EndIf   
               If paso=1 Then
                  Octahasta = GetItemListView()
-                 Octahasta=octahasta+2 ' se suma una de control
+                 Octahasta=octahasta+1 
  
               EndIf   
 
