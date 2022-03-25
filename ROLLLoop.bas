@@ -957,10 +957,11 @@ EndIf
 '05-02-2022 usamos threarPenta ya definida global
 ' se supone que la direccion es unica y se reusa no se la crea muchas veces
 ' es mejor no ¿? zas je 
-    'threadPenta = ThreadCall
+    threadPenta = ThreadCall barrePenta (c, Roll )
+    ThreadWait threadPenta
 
 
-  barrePenta (c, Roll )
+'''  barrePenta (c, Roll )
   'ThreadWait threadPenta
    
   pubi=0
@@ -1248,7 +1249,7 @@ EndIf
 
 If MultiKey(SC_CONTROL) Then 
  If MultiKey (SC_RIGHT) Then
-    posicion=posicion + Maxpos/5
+    posicion=posicion + NroCol*2
     If posicion > MaxPos Then
       posicion = MaxPos
     EndIf
@@ -1259,7 +1260,7 @@ EndIf
 
 If MultiKey(SC_CONTROL) Then 
   If  MultiKey (SC_LEFT) Then
-   posicion=posicion - Maxpos/5
+   posicion=posicion - NroCol*2
    If posicion < 1 Then
       posicion = 1
    EndIf
@@ -2829,15 +2830,22 @@ EndIf
     Exit Do
    EndIf
  
-  ' If e.scancode = 75 Then ' <=====  LEFT repeat
-  '       posicion= posicion -1
-   '     Exit Do
-   ' EndIf
+  ' If e.scancode = 75 Then ' <=====  SC_LEFT repeat
+  '     posicion=posicion - NroCol
+  '     If posicion < 1 Then
+  '        posicion = 1
+  '     EndIf
+  '     posishow=posicion
+ ' 
+ '   EndIf''
 
-   ' If e.scancode = 77 Then ' <======= RIGHT repeat
-   '       posicion = posicion + 1
-   '
-   ' EndIf
+'    If e.scancode = 77 Then ' <======= SC_RIGHT repeat
+'        posicion=posicion + Nrocol
+'        If posicion > MaxPos Then
+'           posicion = MaxPos
+'        EndIf
+'        posishow=posicion
+'    EndIf
 
    If e.scancode = &h41 Then ' <============ SC_F7
 
@@ -3089,14 +3097,15 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
   EndIf
  EndIf
 ' 12-07-2021 mousex > 70  
- If  s5= 0 And mouseX > 350 And mousex < (ANCHO-70) And  usarmarco=0 and mousey < 50 Then
+ If  s5= 0 And mouseX > 450 And mousex < (ANCHO -70 - mxold) And  usarmarco=0 and mousey < 50 Then
      x1=mouseX: y1=mouseY
      s5=1
+     Sleep 3
      Exit Do
   EndIf
  ' =========> MOVER VENTANA DRAGAR LA CINTA SUPERIOR con el mouse
  ' And menuNro= 1  '''348  (2* ANCHO/3)
- If MouseButtons And 1 And S5=1 And mouseX > ANCHO*7041/d4  And mousex < (ANCHO-70-mxold) And _
+ If MouseButtons And 1 And S5=1 And mouseX > 450  And mousex < (ANCHO -70 - mxold) And _
     usarmarco = 0 AND mousey < 50 Then
    
    x2=mouseX
@@ -3107,10 +3116,11 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
    ScreenControl SET_WINDOW_POS, x0, y0
   ' mientras mantengo presiondo el mouse pudo mover el mouse con la ventana
   ' la performance no es tan buena pero funciona
-   Exit Do
-   s5=0
+    Exit Do
+  
   Else
      s5=0
+     Sleep 10
   EndIf
  ''https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-movewindow
  '                           <====== [BOTONES] =======>

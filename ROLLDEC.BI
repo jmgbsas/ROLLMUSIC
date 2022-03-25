@@ -107,7 +107,7 @@ Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert, cursormov
 Dim shared As integer Penta_y, indice, espacio,cursorHori
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
-Dim Shared As Integer octavas,  jc,ic,id,listaMIDI=0,ShowNroCol=0,nro,trak=1,trackold=1
+Dim Shared As Integer octavas,  jc,ic,id,ShowNroCol=0,nro,trak=1,trackold=1
 Dim Shared As Integer ers, borrapos=0,comienza=0, acordeNro=0  
 Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 
@@ -559,7 +559,8 @@ Type rangoOct Field=1
  As UByte   portout      ' dispositivo midi de salida 
  As UByte   zona1
  As UByte   zona2
- As UByte   nroRep   
+ As UByte   nroRep
+ As UByte   portin   
 End Type
 ' faltaria agregar grabar el nombre del dispositivo ........
 Dim Shared As rangoOct pmTk (0 To 32)
@@ -750,6 +751,7 @@ Dim Shared As hWnd hwnd,hwndMenu
 
 'hwnd = Cast(hwnd,IhWnd)
 'hwndmENU = Cast(hwnd,MhWnd)
+
 Dim Shared As UINT codsalida=0
 Dim shared As Any Ptr lpExitCode
 Dim Shared As String TipoFrac ' para fraccionar notas segun estilo deseado
@@ -818,7 +820,7 @@ COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab
 
 'Common Shared  midiin As   RtMidiInPtr
 'Common Shared  midiout () As  RtMidiOutPtr ' abrir hasta 32 dispositivos
-Dim Shared  midiin As   RtMidiInPtr
+Dim Shared  midiin  (0 To 15) As  RtMidiInPtr  ' 16 dispo de entrada..mucho no¿?
 Dim Shared  midiout (0 To 31) As  RtMidiOutPtr ' abrir hasta 32 dispositivos
 
 Common Shared midisal As RtMidiOutPtr, portsal As ubyte
@@ -842,7 +844,22 @@ Dim Shared  As pasa param ', param2
     param.encancion=0
     p1=@param
 
+Type midicod Field=1
+ As UByte nota
+ As UByte xon
+ As UByte  xoff
+ As Integer clock
+ As UByte  ctrl1
+ As UByte  ctrl2
+ As UByte  ctrl3
+ As UByte  ctrl4 
+End Type
+Type ejec
+ As midicod trk(Any, any)
+End Type
+
+
 ' usaremos xml par aleer y escribir musicxml 
 ' http://xmlsoft.org/examples/index.html
 Dim Shared As String acercade, camino,nroversion
- 
+Dim Shared Toca (1 To 16) as ejec  ' vector ejecucion real

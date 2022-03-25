@@ -79,7 +79,7 @@
 
 
 #include "mod_rtmidi_c.bi"
-#inclib  "rtmidi.dll" 'usa librerias estaticas 
+#Inclib  "rtmidi.dll" 'usa librerias estaticas 
 '#Inclib  "rtmidi"  '''uso al dedeisco rtmidi.dll
 #include "fbthread.bi"
 #include "crt.bi" ' QSORT
@@ -208,29 +208,12 @@ Print #1,Date;Time
 '#Include "crt/win32/unistd.bi"
 #inclib "ntdll"
 #include "win/ntdef.bi"
-'#Include "nanosleep/mod_nanosleep.bi"
-'#Include "nanosleep/mod_nanosleep_dll.bi"
-'#Inclib "nanosleep_dll"
-''#Include "Afx/windowsxx.bi"
 
-' prueba de secuencia 
 Dim Shared fs As Integer 
 fs = FreeFile 
 Open "secuencia.txt" For Output As #fs
 
-''Const NULL = 0
 Const NEWLINE = !"\n"
-' iup fin
-
-
-' ROLL PARAEL GRAFICO PERO LOS TRCKS PODRIAN SER DISTINTOS
-'Dim Shared As dat Roll  (1 To 128 , 1 To 19200)
-
-' dur debe ser el 1er elemento para que ande bien el sort
-
-' PUEDO TENER UN SHARED DINAMICO GRACIAS A TYPE !!!
-
-
 
 'tempo I=160, seri equivalente a O=40 como l maxima cantdad de ticks de O es
 ' eldela figura mas pequeña=128 ticks...40 * 128 = 5120 por minuto.
@@ -251,7 +234,6 @@ For ix = 0 To __FB_ARGC__
 
  If ix=1 Then
   
-  'C:\IT\JMGROLL01\[1]AAA.rtk
  ubirtk = InStr (LCase(Command(ix)),".rtk")
  ubiroll=  InStr(LCase(Command(ix)),".roll")
 
@@ -457,6 +439,38 @@ End
 '/
 ''https://www.freebasic.net/forum/viewtopic.php?t=15127
 'print #1,"NroCol, ancho, anchofig ",NroCol, ANCHO, anchofig
+' ------------ play de usuario - datos por midiin -------------------
+' 16 CANALES DE ENTRADA, PAR AL REPRODUCION O ARMADO
+' SUMAREMOS SIEMRE ENTRE AMBAS FORMAS NO AMS DE 32 PORQUE AL REPRODUCIR
+' SE SUMAN ESTOS 16 , OSEA OUTPUT+INPUT <=32 SINO EN LA REPRODUCCION
+' TENDRIASMO UN MAZIMO DE 32+16=48...Y LA POLIFONIA DE RTMIDI   
+ReDim (Toca(01).trk ) (1 To CantTicks,1 To lim3) ' lo usa instancia sin cancion
+ReDim (Toca(02).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(03).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(04).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(05).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(06).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(07).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(08).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(09).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(10).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(11).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(12).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(13).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(14).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(15).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(16).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+'1) tomar de midin los eventos
+'2) si como vienen imprimirlos para ir viendo que sale
+'3) luego de verificados los eventos, guardarloe es el vector Toca
+'   colocandole el timestamp con una presicion mayo ra 15 mseg,
+' consideramos I=250  por minuto (240ms) => L=500 (120ms),=>F=1000(60ms)
+' E=2000 (30ms), H=4000 (15ms).
+' usar rtmidi_in_create cdecl alias "rtmidi_in_create" (byval api as RtMidiApi, byval clientName as zstring ptr, byval queueSizeLimit as uinteger) as RtMidiInPtr
+' para modificar el limite de la cola , default 1024 odriamos pasarlo a mas
+' 4096 o 8192 valro tipico ,,,de un buffer
+
+'--------------------------
 Dim As String driver
 
 posmouseOld = 0:posmouse = 0
@@ -584,36 +598,44 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 'Dim Shared As Integer porterror
 Dim Shared nombreport As ZString Ptr
 
-midiin  = rtmidi_in_create_default()
+midiin(0)     = rtmidi_in_create_default()
 midiout(0) = rtmidi_out_create_default()
 
 
 'print #1,"PLAYALL---------->>>>>>>"
 portsout =  port_count (midiout(0))
+portsin  =  port_count(midiin(0))
 Dim i1 As Integer
-'Print #1, "portsin  "; portsin
+Print #1, "portsin  "; portsin
 Print #1, "portsout "; portsout
 
 ReDim  listOutAbierto (0 To portsout)
+ReDim  listInAbierto  (0 To portsin)
 
-listOutAbierto(0)=1
+'listOutAbierto(0)=1
+listInAbierto(1)=1
 
 Dim Shared nombreOut(0 To portsout) As ZString Ptr
-Dim Shared nombreIn (0 To portsin) As ZString Ptr
+Dim Shared nombreIn (0 To portsin)  As ZString Ptr
 
 'Dim i1 As integer
-'Print #1, "portsin  "; portsin
-Print #1, "portsout "; portsout
 
-'For i= 1 To portsout - 1
-' midiout(i) = rtmidi_out_create_default ( )
-' Print #1,"creado default ",i
+'For i= 1 To portsin - 1
+' midiin = rtmidi_in_create_default ( )
+' Print #1,"creando default ",i
 'Next i
 
+For i1 = 0 To portsin -1 
+    nombrein(i1) = port_name(midiin(0), i1)
+    Print #1, *nombrein(i1)
+Next i1  
+Print #1,"-----------------------------"
 For i1 = 0 To portsout -1 
     nombreOut(i1) = port_name(midiout(0), i1)
-    Print #1, *nombreOut(i1)
+    Print #1, *nombreout(i1)
 Next i1  
+
+'---------------------
 Dim As Long porterror
 open_port midiout(0),0, nombreOut(0)
     Select Case porterror
@@ -789,7 +811,7 @@ Dim hnro As Integer
  
  ' genial puedo recorrer un array con un pointer!!!!
 '-------
-nroversion="0.4536"
+nroversion="0.4540"
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
 acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version Solo ejecuta las secuencias " + _
  "a base de algoritmos sin una linea conductora de tiempos. Solo se basa en las duraciones de las notas. " + _
@@ -1132,7 +1154,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
    
      Select Case EVENTC 
        Case EventMenu
-  If NombreCancion > "" Then 
+  If NombreCancion > "" And S5=0 Then 
      SetForegroundWindow(hwndC)
   EndIf
          Select Case EventNumber

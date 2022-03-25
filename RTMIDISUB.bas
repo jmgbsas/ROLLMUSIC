@@ -1924,10 +1924,10 @@ End Function
 
 Sub duracion (old_time As Double, tiempoFigura As Double)
 ' retardo puro sin on ni off dejo de andar porque ???
-print #1,"En Duracion COMIENZA RETARDO En  time :"; old_time
-print #1, "tiempoFigura " , tiempoFigura
-Dim As Double start
-dim as LARGE_INTEGER delay 
+'print #1,"En Duracion COMIENZA RETARDO En  time :"; old_time
+'print #1, "tiempoFigura " , tiempoFigura
+'Static As Double start
+Static as LARGE_INTEGER delay 
 'la funcion nativa resuelve en unidades de 100 nanosegundos!
 '-50000000 '5 seconds
 '-1000 ' 0,0001 seconds
@@ -1943,21 +1943,19 @@ dim as LARGE_INTEGER delay
 'obtenermos una resolucion de 0,1 mseg y sin consumo de CPU!
 ' EL TIEMPO DE LA FIGURA DEBE VENIR EN SEGUNDOS
 delay.QuadPart = -1000 ' =0.1 mili segundos 
- start=Timer
   Do
-    'Sleep 1
     NtDelayExecution(FALSE,@delay)
   Loop Until Timer - old_time >= tiempoFigura
 
 End Sub
-print #1,"Fin duracion"
+'print #1,"Fin duracion"
 
 Sub duracionokOLD (old_time As Double, tiempoFigura As Double)
 ' retardo puro sin on ni off dejo de andar porque ???
 print #1,"COMIENZA RETARDO En  time :"; old_time
 print #1, "tiempoFigura " , tiempoFigura
-Dim As Double start, endtime 
- start=Timer
+Dim As Double  endtime 
+ 
   Do
     Sleep 1
   Loop Until Timer - old_time >= tiempoFigura
@@ -1976,7 +1974,7 @@ Sub listports( )
 Print #1,"LISTPORTS portsout, portsin", portsout, portsin
 
 ReDim listout(0 To portsout -1)
-''ReDim listin (0 To portsin  -1) por ahora nousamos portsin
+ReDim listin (0 To portsin  -1) 
 ' saco de la lista los ports ya abiertos
 
 Dim nombre As ZString ptr
@@ -2021,22 +2019,44 @@ for i = 0 to portsout -1
   
 Next
 temp=""
-/'
+' entradas copia
 for i = 0 to portsin -1 
-   If listinAbierto (i) =0 Then
-    '''nombre = port_name(midiin, i)
-    listin(i) = *nombreIn(i) '*nombre
-   EndIf 
-   If listinAbierto (i) =1 Then
-     temp = *nombreIn(i) ''*(port_name(midiin, i))
-     
-     temp = temp + aviso
-     *nombre = temp +Chr(0)       'port_name(midisal, i) + *aviso
-    listin(i) =*nombre
-   EndIf 
+  If listInAbierto (i) =0 Then
+    nombre = nombreIn(i)
+    If InStr(*nombre,"Microsoft") > 0 Then ' microsoft no funa bien
+      listin(i) = "Crash No usar Microsoft" 
+      Print #1,"listin(i) ",listin(i)
 
+    Else
+     listin(i) = *nombre
+      Print #1,"listin(i) ",listin(i)
+    endif
+  EndIf  
+  If listInAbierto (i) =1 Then
+'    lg=Len(*port_name(, i))
+    nombre = nombreIn(i)
+    If InStr(*nombre,"Microsoft") > 0 Then
+      listin(i) = "Crash No usar Microsoft" 
+      Print #1,"listin(i) ",listin(i)
+
+    Else
+    temp=*nombre
+    Print "temp 1 ",temp
+    temp=temp + aviso
+    Print #1,"temp 2 ",temp
+    *nombre = temp + Chr(0) 
+    Print #1,"nombre 1",*nombre 
+    listin(i) =*nombre
+    EndIf
+    Print #1,"listports entrada ocupada ",listin(i)
+    
+  EndIf  
+  
 Next
-'/
+temp=""
+
+
+
 End Sub
 Sub TrasponerGrupo( cant As Integer, Roll As inst, encancion As Integer)
 ' ANDA BIEN, ES EQUIVALENT EEMPEIZA EN EL EXTREMO QUE ATACA BAJANDO LA POSICION

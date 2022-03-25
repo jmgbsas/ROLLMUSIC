@@ -2543,7 +2543,7 @@ EndIf
 
    Case 9
   ' [MIDI] 
-    If mousex > 42 And mousex < 90  And mousey < 50 And listaMIDI = 0  Then ' <= NUEVO
+    If mousex > 42 And mousex < 90  And mousey < 50  Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
          menunew=10 
@@ -2555,7 +2555,7 @@ EndIf
     EndIf
     t = "      [MIDI]":cairo_show_text(c,t)
 
-   If mousex > 120 And mousex < 190  And mousey < 50 Then 'And listaMIDI = 0  Then ' <= NUEVO
+   If mousex > 120 And mousex < 190  And mousey < 50 Then 
      cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 Then
         menunew=11 ' NRO CANALES 
@@ -2571,31 +2571,31 @@ EndIf
    cairo_stroke(c)
  Case 10
   
-    If mousex > 90 And mousex < 190  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
+    If mousex > 90 And mousex < 190  And mousey < 50  Then ' <= NUEVO
        cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 And cierroport = 0 Then
         cierroport=1 
        Dim miport As Integer=1
        thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))  '' 'GtkListBox()
       EndIf ' mousebuttons
- 'listaMIDI=1 
-    
+  
     Else
       cairo_set_source_rgba c, 1, 1, 1, 1
       MenuNew=10
     EndIf
 
     t = "             [MIDI-OUT]":cairo_show_text(c,t)
-    If mousex > 200 And mousex < 300  And mousey < 50 And listaMIDI = 0 Then ' <= NUEVO
+    If mousex > 200 And mousex < 300  And mousey < 50  Then ' <= NUEVO
      '''        Print #1,"ENTRO POR EL MIDIIN !!!!!!!"
     cairo_set_source_rgba c, 0, 1, 0, 1
-      If MouseButtons And 1 Then
+      If MouseButtons And 1 And cierroport = 0 Then
+       cierroport=1 
        Dim miport As Integer=2
        MenuNew=10:Menunro=10
        ' create con argumentos
        thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))  '' 'GtkListBox()
       EndIf ' mousebuttons
- 'listaMIDI=1     
+    
     Else
       cairo_set_source_rgba c, 1, 1, 1, 1
           
@@ -3678,17 +3678,22 @@ mitipo=  CInt(tipo)
 
      EndIf
      If mitipo = 2 Then ' in entradas
-       Dim midient As  RtMidiInPtr
+      
        AddListViewColumn(1, "Entradas MIDI",0,0,250)
        For aa As Integer=0 To UBound (listin) 
-           AddListViewItem(1, listin(aa) ,0,aa,0)
+          If pmTk(ntk).portin = aa Then
+             AddListViewItem(1, "[x] "+listin(aa),0,aa,0)
+          Else
+             AddListViewItem(1, "[ ] "+listin(aa),0,aa,0)
+          EndIf   
+
        Next
 
      EndIf
 
 
        ButtonGadget(2,380,30,50,40," OK ")
-         #Ifdef __FB_WIN64__
+         #Ifdef __FB_WIN32__
            SetFocus (hwl) 
            SetForegroundWindow(haw)
           #Else
@@ -3700,13 +3705,28 @@ mitipo=  CInt(tipo)
          Var event= waitEvent
          If event=EventLBDown Then ' 26-02-2022
             If EventNumberListView=1 Then
-               portout=GetItemListView
-               cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
-               If InStr(cad,"x")>0 Then
-                 cad="[ ] " +listout(portout) 
-               Else  
-                 cad="[x] " +listout(portout) 
+               If mitipo=1 Then 
+                  portout=GetItemListView
                EndIf
+               If mitipo=2 Then
+                 portin=GetItemListView
+               EndIf 
+               cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)
+               If  mitipo=1 then           
+                  If InStr(cad,"x") >0  Then
+                     cad="[ ] " +listout(portout) 
+                  Else  
+                     cad="[x] " +listout(portout) 
+                  EndIf
+               EndIf
+               If mitipo=2 Then 
+                  If InStr(cad,"x") >0  Then
+                    cad="[ ] " +listin(portin) 
+                  Else  
+                    cad="[x] " +listin(portin) 
+                  EndIf 
+               EndIf 
+
                ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
            EndIf
         EndIf
@@ -3715,23 +3735,24 @@ mitipo=  CInt(tipo)
             If eventnumber()=2 And InStr(cad,"x")> 0 Then
               'menunew=0
               '''portout = GetItemListView()
-              Print #1,"PORT SELECCIONADO en menu ",portout
+
               If mitipo=1 Then
-                'If listoutAbierto (portout) =0  Then
-                '   listoutAbierto (portout) = 1
-                '
-                'EndIf
+              Print #1,"PORT SELECCIONADO en menu ",portout
                 If CANCIONCARGADA =TRUE Then
                 Else
                   ntk=0
                 EndIf
                 pmTk(ntk).portout=CUByte(portout)
                
-               
               EndIf
               If mitipo=2 Then
-                'listinAbierto (portout) = 1
-                'pmTk(ntk).portin=portin
+              Print #1,"PORT SELECCIONADO en menu ",portin
+                If CANCIONCARGADA =TRUE Then
+                Else
+                  ntk=0
+                EndIf
+                pmTk(ntk).portin =CUByte(portin)
+
               EndIf
 
               If CANCIONCARGADA=TRUE  Or TRACKCARGADO=TRUE  Then

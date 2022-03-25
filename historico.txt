@@ -1,9 +1,12 @@
+-25-03-2022 Se habilito entradas midi de input y su seleccion.(se preparó los vectores, comienza el desarrollo
+ de grabar la ejecucion real por teclado y luego reproducirla en paralelo a las pistas midi manual o
+pasar una performance real cuantificada a una pista manual...tiempo de desarrollo ..to be continued,,,
+-24-04-2022 Fix mover ventana de Roll estaba nuevamente inestable se ajusto para un movimiento mas acorde,
 -23-03-2022 Se puede usar uan sola pista con repeticiones y toda al cancion hara las repeticiones
 probado con pista 1 pero podria estar la repeticion en cualqueir pista...
 Se setea igual que con una pista sola. Tambien responde bien a un loop infinito
 solo o con una repeticion interna al loop. se detiene siemrep con P se elimina
-el loop infinito con Q como siempre. (habia varios errores de grabacion por maxpos ntk etc)
-sigue en test....
+el loop infinito con Q como siempre. (habia varios errores de grabacion por maxpos ntk etc), se esperan mas test
 -19-03-2022 Loop infinito para una pista aislada con repeticiones internas al loop.
 -19-03-2022 Repeticiones de N veces de un grupo de compases en pista aislada tipo Roll
 -18-03-2022 seleccion de octavas se oculta octava de control y se usa convencion
