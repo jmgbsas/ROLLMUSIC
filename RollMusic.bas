@@ -149,7 +149,8 @@ Common Shared  mensaje As Integer
 Const list_item_data_key ="list_item_data"
 ' fin GTK
 ' -- INICIO openGL GLFW 3.1.1 
-/'
+' habilitamos OPENGL para ver si podemso mostrar la grabacion de ejecucion
+' de entrada por MIDI-IN.
 #Include once "glfw3.bi"
 If glfwInit()=GL_FALSE then
   print "error: can't init GLFW"
@@ -157,7 +158,7 @@ If glfwInit()=GL_FALSE then
 end If
 Dim As GLFWwindow ptr  win
 ' ----FIN OPENGL 
-'/
+
 '===============================
 #include "ROLLDEC.BI"
 Dim Shared As Integer pd1, fa1 
@@ -444,22 +445,39 @@ End
 ' SUMAREMOS SIEMRE ENTRE AMBAS FORMAS NO AMS DE 32 PORQUE AL REPRODUCIR
 ' SE SUMAN ESTOS 16 , OSEA OUTPUT+INPUT <=32 SINO EN LA REPRODUCCION
 ' TENDRIASMO UN MAZIMO DE 32+16=48...Y LA POLIFONIA DE RTMIDI   
-ReDim (Toca(01).trk ) (1 To CantTicks,1 To lim3) ' lo usa instancia sin cancion
-ReDim (Toca(02).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
-ReDim (Toca(03).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
-ReDim (Toca(04).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
-ReDim (Toca(05).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
-ReDim (Toca(06).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
-ReDim (Toca(07).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
-ReDim (Toca(08).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
-ReDim (Toca(09).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
-ReDim (Toca(10).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
-ReDim (Toca(11).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
-ReDim (Toca(12).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
-ReDim (Toca(13).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
-ReDim (Toca(14).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
-ReDim (Toca(15).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
-ReDim (Toca(16).trk ) (1 To CantTicks,1 To lim1) ' lo usa instancia sin cancion
+ReDim (Toca(01).trk ) (1 To CantTicks,1 To lim3) 
+ReDim (Toca(02).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(03).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(04).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(05).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(06).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(07).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(08).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(09).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(10).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(11).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(12).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(13).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(14).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(15).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(16).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(17).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(18).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(19).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(20).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(21).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(22).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(23).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(24).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(25).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(26).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(27).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(28).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(28).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(30).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(31).trk ) (1 To CantTicks,1 To lim1) 
+ReDim (Toca(32).trk ) (1 To CantTicks,1 To lim1) 
+
 '1) tomar de midin los eventos
 '2) si como vienen imprimirlos para ir viendo que sale
 '3) luego de verificados los eventos, guardarloe es el vector Toca
@@ -831,50 +849,153 @@ If ix < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON cont
   hwndC = OpenWindow("RollMusic Ctrl V "+ nroversion,10,10,ANCHOSYSTEM*0.91 ,ALTOSYSTEM*0.91,,WS_EX_ACCEPTFILES   )
 ''UpdateInfoXserver()
 
-  hwndListBox= ListBoxGadget(3,80,30,290,670,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
+  hwndListBox= ListBoxGadget(3,80,40,290,670,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
 
-  ButtonGadget(5,60,10,20,20,"S")
+  ButtonGadget(5,60,20,20,20,"S")
   SendMessage(GadgetID(3),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
  ' TextGadget(4,250,10,240,20,, SS_SIMPLE  )
- '''hwndBoton(1) = Button_New(60, 10 , 20,  20 , "S", ,  hwndC )
+ 
   
-  cbxnum(1) =  CheckBox_New( 60 ,  30, 20, 20, "",, hwndc) 
-  cbxnum(2) =  CheckBox_New( 60 ,  50, 20, 20, "",, hwndc)
-  cbxnum(3) =  CheckBox_New( 60 ,  70, 20, 20, "",, hwndc)
-  cbxnum(4) =  CheckBox_New( 60 ,  90, 20, 20, "",, hwndc)
-  cbxnum(5) =  CheckBox_New( 60 , 110, 20, 20, "",, hwndc)
-  cbxnum(6) =  CheckBox_New( 60 , 130, 20, 20, "",, hwndc) 
-  cbxnum(7) =  CheckBox_New( 60 , 150, 20, 20, "",, hwndc) 
-  cbxnum(8) =  CheckBox_New( 60 , 170, 20, 20, "",, hwndc)
-  cbxnum(9) =  CheckBox_New( 60 , 190, 20, 20, "",, hwndc)
-  cbxnum(10) = CheckBox_New( 60 , 210, 20, 20, "",, hwndc)
-  cbxnum(11) = CheckBox_New( 60 , 230, 20, 20, "",, hwndc)
-  cbxnum(12) = CheckBox_New( 60 , 250, 20, 20, "",, hwndc)
-  cbxnum(13) = CheckBox_New( 60 , 270, 20, 20, "",, hwndc) 
-  cbxnum(14) = CheckBox_New( 60 , 290, 20, 20, "",, hwndc) 
-  cbxnum(15) = CheckBox_New( 60 , 310, 20, 20, "",, hwndc)
-  cbxnum(16) = CheckBox_New( 60 , 330, 20, 20, "",, hwndc)
-  cbxnum(17) = CheckBox_New( 60 , 350, 20, 20, "",, hwndc)
-  cbxnum(18) = CheckBox_New( 60 , 370, 20, 20, "",, hwndc)
-  cbxnum(19) = CheckBox_New( 60 , 390, 20, 20, "",, hwndc) 
-  cbxnum(20) = CheckBox_New( 60 , 410, 20, 20, "",, hwndc) 
-  cbxnum(21) = CheckBox_New( 60 , 430, 20, 20, "",, hwndc)
-  cbxnum(22) = CheckBox_New( 60 , 450, 20, 20, "",, hwndc)
-  cbxnum(23) = CheckBox_New( 60 , 470, 20, 20, "",, hwndc)
-  cbxnum(24) = CheckBox_New( 60 , 490, 20, 20, "",, hwndc)
-  cbxnum(25) = CheckBox_New( 60 , 510, 20, 20, "",, hwndc) 
-  cbxnum(26) = CheckBox_New( 60 , 530, 20, 20, "",, hwndc) 
-  cbxnum(27) = CheckBox_New( 60 , 550, 20, 20, "",, hwndc)
-  cbxnum(28) = CheckBox_New( 60 , 570, 20, 20, "",, hwndc)
-  cbxnum(29) = CheckBox_New( 60 , 590, 20, 20, "",, hwndc)
-  cbxnum(30) = CheckBox_New( 60 , 610, 20, 20, "",, hwndc)
-  cbxnum(31) = CheckBox_New( 60 , 630, 20, 20, "",, hwndc)
-  cbxnum(32) = CheckBox_New( 60 , 650, 20, 20, "",, hwndc) 
+  cbxnum(1) =  CheckBox_New( 60 ,  40, 20, 20, "",, hwndc) 
+  cbxnum(2) =  CheckBox_New( 60 ,  60, 20, 20, "",, hwndc)
+  cbxnum(3) =  CheckBox_New( 60 ,  80, 20, 20, "",, hwndc)
+  cbxnum(4) =  CheckBox_New( 60 , 100, 20, 20, "",, hwndc)
+  cbxnum(5) =  CheckBox_New( 60 , 120, 20, 20, "",, hwndc)
+  cbxnum(6) =  CheckBox_New( 60 , 140, 20, 20, "",, hwndc) 
+  cbxnum(7) =  CheckBox_New( 60 , 160, 20, 20, "",, hwndc) 
+  cbxnum(8) =  CheckBox_New( 60 , 180, 20, 20, "",, hwndc)
+  cbxnum(9) =  CheckBox_New( 60 , 200, 20, 20, "",, hwndc)
+  cbxnum(10) = CheckBox_New( 60 , 220, 20, 20, "",, hwndc)
+  cbxnum(11) = CheckBox_New( 60 , 240, 20, 20, "",, hwndc)
+  cbxnum(12) = CheckBox_New( 60 , 260, 20, 20, "",, hwndc)
+  cbxnum(13) = CheckBox_New( 60 , 280, 20, 20, "",, hwndc) 
+  cbxnum(14) = CheckBox_New( 60 , 300, 20, 20, "",, hwndc) 
+  cbxnum(15) = CheckBox_New( 60 , 320, 20, 20, "",, hwndc)
+  cbxnum(16) = CheckBox_New( 60 , 340, 20, 20, "",, hwndc)
+  cbxnum(17) = CheckBox_New( 60 , 360, 20, 20, "",, hwndc)
+  cbxnum(18) = CheckBox_New( 60 , 380, 20, 20, "",, hwndc)
+  cbxnum(19) = CheckBox_New( 60 , 400, 20, 20, "",, hwndc) 
+  cbxnum(20) = CheckBox_New( 60 , 420, 20, 20, "",, hwndc) 
+  cbxnum(21) = CheckBox_New( 60 , 440, 20, 20, "",, hwndc)
+  cbxnum(22) = CheckBox_New( 60 , 460, 20, 20, "",, hwndc)
+  cbxnum(23) = CheckBox_New( 60 , 480, 20, 20, "",, hwndc)
+  cbxnum(24) = CheckBox_New( 60 , 500, 20, 20, "",, hwndc)
+  cbxnum(25) = CheckBox_New( 60 , 520, 20, 20, "",, hwndc) 
+  cbxnum(26) = CheckBox_New( 60 , 540, 20, 20, "",, hwndc) 
+  cbxnum(27) = CheckBox_New( 60 , 560, 20, 20, "",, hwndc)
+  cbxnum(28) = CheckBox_New( 60 , 580, 20, 20, "",, hwndc)
+  cbxnum(29) = CheckBox_New( 60 , 600, 20, 20, "",, hwndc)
+  cbxnum(30) = CheckBox_New( 60 , 620, 20, 20, "",, hwndc)
+  cbxnum(31) = CheckBox_New( 60 , 640, 20, 20, "",, hwndc)
+  cbxnum(32) = CheckBox_New( 60 , 660, 20, 20, "",, hwndc) 
 
 
 
   EVENTc=0
 
+'---------------------------LISTA DE EJECUCIONES------------
+  hwndListEjec= ListBoxGadget(4,430,40,290,670,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
+
+  ButtonGadget(6,380,20,20,20,"S")
+
+
+  SendMessage(GadgetID(4),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
+' BS_PUSHLIKE se hune el boton al seelccioanrlo
+' CHECK PARA ESCUCHAR SONIDO
+  cbxejec(1) =  CheckBox_New( 380 ,  40, 20, 20, "",, hwndC) 
+  cbxejec(2) =  CheckBox_New( 380 ,  60, 20, 20, "",, hwndC)
+  cbxejec(3) =  CheckBox_New( 380 ,  80, 20, 20, "",, hwndC)
+  cbxejec(4) =  CheckBox_New( 380 , 100, 20, 20, "",, hwndC)
+  cbxejec(5) =  CheckBox_New( 380 , 120, 20, 20, "",, hwndC)
+  cbxejec(6) =  CheckBox_New( 380 , 140, 20, 20, "",, hwndC) 
+  cbxejec(7) =  CheckBox_New( 380 , 160, 20, 20, "",, hwndC) 
+  cbxejec(8) =  CheckBox_New( 380 , 180, 20, 20, "",, hwndC)
+  cbxejec(9) =  CheckBox_New( 380 , 200, 20, 20, "",, hwndC)
+  cbxejec(10) = CheckBox_New( 380 , 220, 20, 20, "",, hwndC)
+  cbxejec(11) = CheckBox_New( 380 , 240, 20, 20, "",, hwndC)
+  cbxejec(12) = CheckBox_New( 380 , 260, 20, 20, "",, hwndC)
+  cbxejec(13) = CheckBox_New( 380 , 280, 20, 20, "",, hwndC) 
+  cbxejec(14) = CheckBox_New( 380 , 300, 20, 20, "",, hwndC) 
+  cbxejec(15) = CheckBox_New( 380 , 320, 20, 20, "",, hwndC)
+  cbxejec(16) = CheckBox_New( 380 , 340, 20, 20, "",, hwndC)
+  cbxejec(17) = CheckBox_New( 380 , 360, 20, 20, "",, hwndc)
+  cbxejec(18) = CheckBox_New( 380 , 380, 20, 20, "",, hwndc)
+  cbxejec(19) = CheckBox_New( 380 , 400, 20, 20, "",, hwndc) 
+  cbxejec(20) = CheckBox_New( 380 , 420, 20, 20, "",, hwndc) 
+  cbxejec(21) = CheckBox_New( 380 , 440, 20, 20, "",, hwndc)
+  cbxejec(22) = CheckBox_New( 380 , 460, 20, 20, "",, hwndc)
+  cbxejec(23) = CheckBox_New( 380 , 480, 20, 20, "",, hwndc)
+  cbxejec(24) = CheckBox_New( 380 , 500, 20, 20, "",, hwndc)
+  cbxejec(25) = CheckBox_New( 380 , 520, 20, 20, "",, hwndc) 
+  cbxejec(26) = CheckBox_New( 380 , 540, 20, 20, "",, hwndc) 
+  cbxejec(27) = CheckBox_New( 380 , 560, 20, 20, "",, hwndc)
+  cbxejec(28) = CheckBox_New( 380 , 580, 20, 20, "",, hwndc)
+  cbxejec(29) = CheckBox_New( 380 , 600, 20, 20, "",, hwndc)
+  cbxejec(30) = CheckBox_New( 380 , 620, 20, 20, "",, hwndc)
+  cbxejec(31) = CheckBox_New( 380 , 640, 20, 20, "",, hwndc)
+  cbxejec(32) = CheckBox_New( 380 , 660, 20, 20, "",, hwndc) 
+'---------------------------------------------------------
+' CHECK PARA GRABAR O SEA ARMA LA PISTA PARA RECIBIR DATOS MIDI-IN
+  ButtonGadget(7,410,20,20,20,"G")  
+ ' ButtonGadget(8,450,0,100,30,"PARAR",BS_RADIOBUTTON )
+ ' ButtonGadget(9,580,0,120,30,"GRABAR",BS_RADIOBUTTON  )
+Var IMGP=Load_image(".\recur\Parar.bmp")
+Var IMGG=Load_image(".\recur\Grabar.bmp")
+Var IMGE=Load_image(".\recur\Ejec.bmp")
+GroupGadget(8,450,0,55,40,"")
+
+ButtonImageGadget(9,450,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
+ButtonImageGadget(10,480,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
+
+GroupGadget(13,100,0,55,40,"")
+ButtonImageGadget(11,100,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
+ButtonImageGadget(12,130,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
+
+
+
+ 'rbparar = RadioButton_New( 450 , 10, 40, 20, "P",BS_LEFTTEXT , hwndC) '65
+ 'rbgrabar =RadioButton_New( 500 , 10, 40, 20, "G",, hwndC) ' 80
+
+
+
+
+
+
+  cbxgrab(1) =  CheckBox_New( 410 ,  40, 20, 20, "",, hwndC) 
+  cbxgrab(2) =  CheckBox_New( 410 ,  60, 20, 20, "",, hwndC)
+  cbxgrab(3) =  CheckBox_New( 410 ,  80, 20, 20, "",, hwndC)
+  cbxgrab(4) =  CheckBox_New( 410 , 100, 20, 20, "",, hwndC)
+  cbxgrab(5) =  CheckBox_New( 410 , 120, 20, 20, "",, hwndC)
+  cbxgrab(6) =  CheckBox_New( 410 , 140, 20, 20, "",, hwndC) 
+  cbxgrab(7) =  CheckBox_New( 410 , 160, 20, 20, "",, hwndC) 
+  cbxgrab(8) =  CheckBox_New( 410 , 180, 20, 20, "",, hwndC)
+  cbxgrab(9) =  CheckBox_New( 410 , 200, 20, 20, "",, hwndC)
+  cbxgrab(10) = CheckBox_New( 410 , 220, 20, 20, "",, hwndC)
+  cbxgrab(11) = CheckBox_New( 410 , 240, 20, 20, "",, hwndC)
+  cbxgrab(12) = CheckBox_New( 410 , 260, 20, 20, "",, hwndC)
+  cbxgrab(13) = CheckBox_New( 410 , 280, 20, 20, "",, hwndC) 
+  cbxgrab(14) = CheckBox_New( 410 , 300, 20, 20, "",, hwndC) 
+  cbxgrab(15) = CheckBox_New( 410 , 320, 20, 20, "",, hwndC)
+  cbxgrab(16) = CheckBox_New( 410 , 340, 20, 20, "",, hwndC)
+  cbxgrab(17) = CheckBox_New( 410 , 360, 20, 20, "",, hwndc)
+  cbxgrab(18) = CheckBox_New( 410 , 380, 20, 20, "",, hwndc)
+  cbxgrab(19) = CheckBox_New( 410 , 400, 20, 20, "",, hwndc) 
+  cbxgrab(20) = CheckBox_New( 410 , 420, 20, 20, "",, hwndc) 
+  cbxgrab(21) = CheckBox_New( 410 , 440, 20, 20, "",, hwndc)
+  cbxgrab(22) = CheckBox_New( 410 , 460, 20, 20, "",, hwndc)
+  cbxgrab(23) = CheckBox_New( 410 , 480, 20, 20, "",, hwndc)
+  cbxgrab(24) = CheckBox_New( 410 , 500, 20, 20, "",, hwndc)
+  cbxgrab(25) = CheckBox_New( 410 , 520, 20, 20, "",, hwndc) 
+  cbxgrab(26) = CheckBox_New( 410 , 540, 20, 20, "",, hwndc) 
+  cbxgrab(27) = CheckBox_New( 410 , 560, 20, 20, "",, hwndc)
+  cbxgrab(28) = CheckBox_New( 410 , 580, 20, 20, "",, hwndc)
+  cbxgrab(29) = CheckBox_New( 410 , 600, 20, 20, "",, hwndc)
+  cbxgrab(30) = CheckBox_New( 410 , 620, 20, 20, "",, hwndc)
+  cbxgrab(31) = CheckBox_New( 410 , 640, 20, 20, "",, hwndc)
+  cbxgrab(32) = CheckBox_New( 410 , 660, 20, 20, "",, hwndc) 
+
+
+'---------------------------
 'StatusBarGadget(1,"StatusBarGadget")
 
   hMessages=Create_Menu()
@@ -1886,6 +2007,22 @@ Print #1,"1060 abrirRoll=0 entro"
           Next i
          SuenaTodo=3
        EndIf
+'------------------
+      If eventnumber()= 10 Then
+         SetGadgetstate(9,0)
+      EndIf
+      If eventnumber()= 9 Then
+         SetGadgetstate(10,0)
+      EndIf
+'-------------------------------
+      If eventnumber()= 11 Then
+         SetGadgetstate(12,0)
+      EndIf
+      If eventnumber()= 12 Then
+         SetGadgetstate(11,0)
+      EndIf
+
+
          'SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
        Case EventClose  ''<==== SALIR TERMINA ROLL lax de win control???

@@ -787,7 +787,7 @@ Dim Shared ANCHO3div4 As Integer
 
 '----------------------------
 Dim Shared  As String ProgError(0 To 17)
-Static Shared As HWND cbxnum(1 To 32),hwndBoton (1 To 10)
+Static Shared As HWND cbxnum(1 To 32), cbxejec(1 To 32),cbxgrab(1 To 32),rbparar,rbgrabar
 Static Shared As Integer sonidoPista(1 To 32)
 static  Shared As Integer SuenaTodo =0, cntsuena=0
 Declare Sub PlayCancion(Track() As sec)
@@ -801,7 +801,7 @@ Declare Function lugarNota (lugar As integer) As Integer
 
 
 COMMON Shared As Long eventc
-Common Shared As hwnd hwndC, hwndListBox
+Common Shared As hwnd hwndC, hwndListBox, hwndListEjec
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA 
 Common Shared As string pathdir,nombre
 common Shared As String NombreCancion,NombrePista
@@ -862,4 +862,4 @@ End Type
 ' usaremos xml par aleer y escribir musicxml 
 ' http://xmlsoft.org/examples/index.html
 Dim Shared As String acercade, camino,nroversion
-Dim Shared Toca (1 To 16) as ejec  ' vector ejecucion real
+Dim Shared Toca (1 To 32) as ejec  ' vector ejecucion real
