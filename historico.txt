@@ -1,3 +1,5 @@
+-26-03-2022 Botones Parar y Tocar (negro y verde) de cancion habilitados. Parar tambien detiene pista aislada.
+ terminado lo basico para seguir con MIDI Input.
 -26-03-2022 FrontEnd: Con mspaint dibuje bmp y los usaré para controlar [ parar grabar y ejecutar]
 -25-03-2022 Se habilito entradas midi de input y su seleccion.(se preparó los vectores, comienza el desarrollo
  de grabar la ejecucion real por teclado y luego reproducirla en paralelo a las pistas midi manual o

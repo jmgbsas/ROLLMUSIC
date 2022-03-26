@@ -1208,6 +1208,7 @@ EndIf
 If MultiKey (sc_P) And (play=1 Or playb=1 )Then
   CONTROL1=1 ' DETIENE EL PLAY VEREMOS
   playloop=0:playloop2=0
+  SetGadgetstate(12,0)
 EndIf
 
 If MultiKey(SC_PLUS) Then  '13 , ligadura

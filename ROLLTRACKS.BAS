@@ -1854,6 +1854,7 @@ Sleep 10,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion
 close_port(midiout)
 out_free(midiout)
 '/ 
+SetGadgetstate(12,0)
 
 For i=1 To tope
    k1=pmTk(i).portout

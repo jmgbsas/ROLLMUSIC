@@ -829,7 +829,7 @@ Dim hnro As Integer
  
  ' genial puedo recorrer un array con un pointer!!!!
 '-------
-nroversion="0.4540"
+nroversion="0.4541"
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
 acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version Solo ejecuta las secuencias " + _
  "a base de algoritmos sin una linea conductora de tiempos. Solo se basa en las duraciones de las notas. " + _
@@ -2017,13 +2017,33 @@ Print #1,"1060 abrirRoll=0 entro"
 '-------------------------------
       If eventnumber()= 11 Then
          SetGadgetstate(12,0)
-      EndIf
+''      If NombreCancion > "" Then ' detiene todo pista aisalda o cancion 
+            If play=1 Or playb=1 Or CPlay=1 Then
+               CONTROL1=1 ' DETIENE EL PLAY 
+               playloop=0:playloop2=0
+               play=0 : playb=0:CPlay=0
+               Sleep 20
+            EndIf 
+      ' EndIf
+      EndIf   
+
       If eventnumber()= 12 Then
          SetGadgetstate(11,0)
+         If Cplay = 0 And MaxPos > 1 Then
+            CPlay=1
+            If NombreCancion > "" Then
+               If play=1 Or playb=1 Then
+                  CONTROL1=1 ' DETIENE EL PLAY 
+                  playloop=0:playloop2=0
+                  play=0 : playb=0
+                  Sleep 20
+               EndIf 
+               thread1 = ThreadCall  playCancion(Track())
+            EndIf
+         EndIf   
+
       EndIf
-
-
-         'SetForegroundWindow(hwnd)
+      SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
        Case EventClose  ''<==== SALIR TERMINA ROLL lax de win control???
         ''si ponemos aca da asercion de cairo.c 
