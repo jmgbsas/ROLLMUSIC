@@ -3658,6 +3658,13 @@ Dim cad As string
 ''portsout = port_count (midisal)
 ' ESTOY ABRIENDO LSO PORT SEGUN LO ELEGIDO CADA VEZ QUE SE ELIJA UNO
 ' DEJA DE ESTAR DISPONIBLE PUES YA ESTA ABIERTO, PONDREMOS UN MENSAJE ABIERTO CREO ES MEJOR 
+    If NombreCancion > "" Then
+    Else
+       ntk=0
+    EndIf
+
+
+
 mitipo=  CInt(tipo)
 '' => desde acaecho con tool del ruso no anda muy bien
      haw=OpenWindow("MIDI",Posx,Posy,450,400,WS_VISIBLE, WS_EX_TOPMOST )
@@ -3738,19 +3745,11 @@ mitipo=  CInt(tipo)
 
               If mitipo=1 Then
               Print #1,"PORT SELECCIONADO en menu ",portout
-                If CANCIONCARGADA =TRUE Then
-                Else
-                  ntk=0
-                EndIf
                 pmTk(ntk).portout=CUByte(portout)
                
               EndIf
               If mitipo=2 Then
               Print #1,"PORT SELECCIONADO en menu ",portin
-                If CANCIONCARGADA =TRUE Then
-                Else
-                  ntk=0
-                EndIf
                 pmTk(ntk).portin =CUByte(portin)
 
               EndIf
@@ -4103,7 +4102,17 @@ Dim  As Integer i3
               Next i3
               ThreadDetach(thread1)              
            EndIf
- 
+   If teclado=1 Then
+       cancel_callback(midiin(pmTk(ntk).portin ))
+       Dim k1 As Integer
+       k1=pmTk(ntk).portout
+       Print #1,"midiout ",k1, *nombreOut(k1)
+       alloff( pmTk(ntk).canalsalida,k1 )  
+       listoutAbierto(k1)=0
+       close_port midiout(k1)
+       teclado=0
+
+   EndIf
            
     Dim ffile As Integer
     ffile=FreeFile

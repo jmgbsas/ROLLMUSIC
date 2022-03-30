@@ -1624,7 +1624,17 @@ Dim As Integer i3
         Next i3
         ThreadDetach(thread1)              
      EndIf
-  
+    If teclado=1 Then
+      cancel_callback(midiin(pmTk(ntk).portin ))
+      Dim k1 As Integer
+      k1=pmTk(ntk).portout
+      Print #1,"midiout ",k1, *nombreOut(k1)
+      alloff( pmTk(ntk).canalsalida,k1 )  
+      listoutAbierto(k1)=0
+      close_port midiout(k1)
+
+
+    End If 
     Dim ffile As Integer
     ffile=FreeFile
     Open "./RollMusic.ini" For output As #ffile

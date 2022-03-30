@@ -1075,6 +1075,9 @@ Negras por minuto	 tempo
   
 MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
 MenuItem(1091,MenName6,"Fijar Repeticiones de un numero de Compases elegido como zona")
+MenuItem(1092,MenName6,"Reproducir MIDI-IN (teclado) por  MIDI-OUT. (test de Input) ")
+MenuItem(1093,MenName6,"Detener Reproduccion MIDI-IN (teclado) por  MIDI-OUT. (test de Input) ")
+
 
 MenuItem(1100,MenName7,"Usar MARCO de Ventana ",MF_UNCHECKED)
 MenuItem(1101,MenName7,"Usar MARCO de Ventana en instancias",MF_UNCHECKED)
@@ -1723,6 +1726,102 @@ Print #1,"1060 abrirRoll=0 entro"
                MessBox ("Repeticiones", "Debe entrar una zona de campases, Ctrl-clik en comienzo y Ctrl-click final")
              EndIf
              SetForegroundWindow(hwnd)
+'-----------------------------------------------------------------------
+           Case 1092
+              open_port (midiin(pmTk(ntk).portin ),pmTk(ntk).portin, *nombrein( pmTk(ntk).portin ) )
+              set_callback midiin(pmTk(ntk).portin ), @mycallback, p
+' por ahrao iognoramos otros tipsod de mensaje
+              rtmidi_in_ignore_types  (midiin(pmTk(ntk).portin ), 1, 2, 4)
+              teclado=1 
+'------------hace falta abrir la salida
+Print #1,"abriendo port...."
+Dim k1 As Integer
+
+  
+   k1=CInt(pmTk(0).portout)
+    
+   Print #1,"midiout ",k1, *nombreOut(k1)
+   If InStr(*nombreOut(k1),"Microsoft")>0 Then
+     Print #1,"No se usa Microsoft"
+   Else
+     If listoutAbierto( k1) = 0 Then
+        midiout(k1) = rtmidi_out_create_default ( )
+        open_port midiout(k1),k1, nombreOut(k1)
+            porterror=Err 
+        listoutAbierto( k1) = 1
+        Print #1,"abro ",*nombreOut(k1)
+
+    Select Case porterror
+      Case RTMIDI_ERROR_WARNING
+        Print #1, "RTMIDI_ERROR_WARNING"
+
+      Case RTMIDI_ERROR_DEBUG_WARNING
+        Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
+        Close
+        End
+
+      Case RTMIDI_ERROR_UNSPECIFIED
+        Print #1,"RTMIDI_ERROR_UNSPECIFIED"
+        Close
+        End
+
+      Case RTMIDI_ERROR_NO_DEVICES_FOUND
+        Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
+        Close
+        End
+
+      Case RTMIDI_ERROR_INVALID_DEVICE
+        Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
+        Close
+        End
+
+      Case RTMIDI_ERROR_MEMORY_ERROR
+        Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
+        Close
+        End
+
+      Case RTMIDI_ERROR_INVALID_PARAMETER
+        Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
+        Close
+        End
+
+      Case RTMIDI_ERROR_INVALID_USE
+        Print #1,"RTMIDI_ERROR_INVALID_USE"
+        Close
+        End
+
+      Case RTMIDI_ERROR_DRIVER_ERROR
+        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
+        Close
+        End
+
+      Case RTMIDI_ERROR_SYSTEM_ERROR
+        Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
+        Close
+        End
+
+      Case RTMIDI_ERROR_THREAD_ERROR
+        Print #1,"RTMIDI_ERROR_THREAD_ERROR"
+        Close
+        End
+    End Select
+   EndIf
+ EndIf 
+
+ Print #1,"Port usando en Play teclado ",portout
+Print #1,"-------------------------------------"
+
+
+'-------------------------------
+           Case 1093
+        cancel_callback(midiin(pmTk(ntk).portin ))
+       Dim k1 As Integer
+   k1=pmTk(ntk).portout
+   Print #1,"midiout ",k1, *nombreOut(k1)
+   alloff( pmTk(ntk).canalsalida,k1 )  
+   listoutAbierto(k1)=0
+   close_port midiout(k1)
+   teclado=0
 '-----------------------------------------------------------------------
            Case 1100 '<======== usar o no, marco de ventana de Roll
 '0 - the menu is active, the checkbox is not selected

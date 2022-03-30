@@ -23,7 +23,7 @@ Declare Function sumar( ByVal ind As integer) As Integer
 'Declare Sub correcciondeNotas()
 
 Dim Shared message(1 To 21) As UByte ' message output ' puede ser de hasta 1024 bytes 
-
+Dim Shared msgin  (1 To 8192) As UByte ' message in futuro secuencia veremos si ahce falta 
 ' maximo seria para un acorde de 5 por ejemplo
 ' 5 notas + velocidad y canal = 7 bytes...para note on
 ' si tomamos 10 dedos de las 2 manos serian 10 notas+ vel + canal = 12

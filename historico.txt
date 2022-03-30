@@ -1,3 +1,6 @@
+-30-03-2022 [1er etapa] MIDI-IN SIN LEVANTAR ROLL Grafico, habilitar entrada por teclado del sonido default
+ del port default. En mi caso Virtualsynth Acoustic pinao,,,se pued etocar el teclado y oir su salida.
+ Ya tenemos MIDI-IN..2D ETAPA,,,empezar a llevar lso datos a un track de ejecucion ,,,,
 -26-03-2022 Botones Parar y Tocar (negro y verde) de cancion habilitados. Parar tambien detiene pista aislada.
  terminado lo basico para seguir con MIDI Input.
 -26-03-2022 FrontEnd: Con mspaint dibuje bmp y los usaré para controlar [ parar grabar y ejecutar]

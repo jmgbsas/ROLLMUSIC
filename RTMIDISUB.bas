@@ -129,7 +129,17 @@ Sub noteoff(  note As UByte, canal As UByte,portsal As UByte)
 	Dim modo As UByte
 	Dim leng As UInteger <8>
 	Dim result As Integer
-	
+  If canal = 0 Then  ' 0xB0 = 11x16 = 176
+		 modo = 128 ' 0xB0 + 0 = 176 +0 = 176 
+	Else
+	  modo = 128 + canal
+  EndIf   	
+ message(1) = modo 
+ message(2) = note ' 123 all note off, 124 omni mode off, 125, omni mode on, 126 mono mode on, 127 poly mode on
+ message(3) = 0  
+
+
+/'	
   If canal = 0 Then  ' 0xB0 = 11x16 = 176
 		 modo = 176 ' 0xB0 + 0 = 176 +0 = 176 
 	Else
@@ -138,10 +148,12 @@ Sub noteoff(  note As UByte, canal As UByte,portsal As UByte)
  message(1) = modo 
  message(2) = 123 ' 123 all note off, 124 omni mode off, 125, omni mode on, 126 mono mode on, 127 poly mode on
  message(3) = 0  
-	
+'/	
+
+
  leng=3
 result = send_message (midiout(portsal), p, leng)
-print #1,"EN NOTE OFF nota, RESULT", note, result
+print #1,"EN NOTE OFF nota, portsal ", note, portsal
 
 End Sub
 Sub pedaloff( portsal As UByte) 
@@ -240,7 +252,7 @@ Sub noteon	( note As ubyte, vel As UByte, canal As UByte, portsal As UByte)
  message(3) = vel
  leng=3
 result = send_message (midiout(portsal), p, leng)
-Print #1,"EN NOTE ON nota, RESULT", note, result
+Print #1,"EN NOTE ON nota, portsal ", note, portsal
 End Sub
 '-------------------------------------
 Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
@@ -1928,21 +1940,7 @@ Sub duracion (old_time As Double, tiempoFigura As Double)
 'print #1, "tiempoFigura " , tiempoFigura
 'Static As Double start
 Static as LARGE_INTEGER delay 
-'la funcion nativa resuelve en unidades de 100 nanosegundos!
-'-50000000 '5 seconds
-'-1000 ' 0,0001 seconds
-'si son unidade sde 100 nanosegundos
-'entonces 100 unidades de nsec  son= 10^-9 *10^ 2 = 10^-7 =0,0000001
-' SON 0,1, LA DECIMA PARTE DE UN MICROSEGUNDO
-' O SEA 5 SEGUNDOS SON CUANTOS 0,1 MICROSEGUNDOS? (10^-7)
-' 5 * 10^7 * 10^-7 = 5
-'50000000 = 5*10^7 * 10^-7 =5
-' SI EN VEZ DE 5 SEGUNDOS QUIERO 0,1 MSEG,
-' 10^-4 * 10^7= 1000  
-'1000 = 1*10^3*10^-7=1*10^-4 = 0,0001 = 0,1mseg !!!
-'obtenermos una resolucion de 0,1 mseg y sin consumo de CPU!
-' EL TIEMPO DE LA FIGURA DEBE VENIR EN SEGUNDOS
-delay.QuadPart = -1000 ' =0.1 mili segundos 
+delay.QuadPart = -1 
   Do
     NtDelayExecution(FALSE,@delay)
   Loop Until Timer - old_time >= tiempoFigura
@@ -2013,7 +2011,7 @@ for i = 0 to portsout -1
     Print #1,"nombre 1",*nombre 
     listout(i) =*nombre
     EndIf
-    Print #1,"listports salida ocupada ",listout(i)
+  '  Print #1,"listports salida ocupada ",listout(i)
     
   EndIf  
   
@@ -2025,11 +2023,11 @@ for i = 0 to portsin -1
     nombre = nombreIn(i)
     If InStr(*nombre,"Microsoft") > 0 Then ' microsoft no funa bien
       listin(i) = "Crash No usar Microsoft" 
-      Print #1,"listin(i) ",listin(i)
+   '   Print #1,"listin(i) ",listin(i)
 
     Else
      listin(i) = *nombre
-      Print #1,"listin(i) ",listin(i)
+   '   Print #1,"listin(i) ",listin(i)
     endif
   EndIf  
   If listInAbierto (i) =1 Then
@@ -2037,18 +2035,18 @@ for i = 0 to portsin -1
     nombre = nombreIn(i)
     If InStr(*nombre,"Microsoft") > 0 Then
       listin(i) = "Crash No usar Microsoft" 
-      Print #1,"listin(i) ",listin(i)
+  '    Print #1,"listin(i) ",listin(i)
 
     Else
     temp=*nombre
-    Print "temp 1 ",temp
+ '   Print "temp 1 ",temp
     temp=temp + aviso
-    Print #1,"temp 2 ",temp
+'    Print #1,"temp 2 ",temp
     *nombre = temp + Chr(0) 
-    Print #1,"nombre 1",*nombre 
+'    Print #1,"nombre 1",*nombre 
     listin(i) =*nombre
     EndIf
-    Print #1,"listports entrada ocupada ",listin(i)
+ '   Print #1,"listports entrada ocupada ",listin(i)
     
   EndIf  
   
@@ -2639,8 +2637,49 @@ Next i
 
     EndIf 
  Next I
-        
-       
-'luego
 
 End Sub
+'---------------
+Function mycallback ( ByVal deltatime As double, ByVal vec As UByte Ptr, ByVal leng as UInteger<64>, ByVal otro As Any ptr ) as RtMidiCCallback
+
+Dim As UByte Ptr memoria = vec
+dim i As Integer
+Dim dato1 As UByte
+Dim dato2 As UByte
+Dim dato3 As UByte
+static old_time As Double
+Dim new_time As Double
+/'
+  For i =1 To leng
+     Print " Byte "; i ; "=", *memoria ;
+     memoria=memoria+1
+  Next i  
+  If leng > 1 Then
+   Print deltatime
+  EndIf
+'/
+'--------------play
+ 
+    new_time=Timer
+    If old_time - new_time > 0.00001 Then
+       duracion (old_time,deltatime)
+    EndIf 
+    dato1=*memoria: memoria += 1
+    dato2=*memoria: memoria += 1
+    dato3=*memoria 
+
+     Select Case  dato1 
+         Case 144 ' on
+            noteon dato2,dato3,1,pmTk(ntk).portout 'message(3) ' noter vel canal
+'     Print   dato1;" ";  dato2;" "; dato3
+           
+         Case 128 'off
+            noteoff dato2,1,pmTk(ntk).portout 'message(2)'
+'     Print   dato1;" ";  dato2;" "; dato3
+
+     End Select
+
+    old_time=new_time
+
+
+End Function

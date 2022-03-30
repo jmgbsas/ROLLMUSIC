@@ -822,6 +822,7 @@ COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab
 'Common Shared  midiout () As  RtMidiOutPtr ' abrir hasta 32 dispositivos
 Dim Shared  midiin  (0 To 15) As  RtMidiInPtr  ' 16 dispo de entrada..mucho no¿?
 Dim Shared  midiout (0 To 31) As  RtMidiOutPtr ' abrir hasta 32 dispositivos
+Dim Shared As Integer teclado=0 ' salida de ejecucion teclado 
 
 Common Shared midisal As RtMidiOutPtr, portsal As ubyte
 '''Dim Shared midisal As RtMidiOutPtr, portsal As ubyte
