@@ -670,7 +670,7 @@ Dim Shared As Long CONTROL1 = 0
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Dim Shared As inst Roll ' para visualizar y tocar
  
-Dim Shared Track  (0 To 32) As sec ' tracks para guardar,.. y tocar 
+ReDim Shared Track  (0 To 32) As sec ' tracks para guardar,.. y tocar 
 
 Dim Shared ix As Integer=0
 Dim Shared As String titu, cadenaes,cadenaes_inicial,tipoescala_inicial, notaescala_inicial 
@@ -790,6 +790,7 @@ Dim Shared  As String ProgError(0 To 17)
 Static Shared As HWND cbxnum(1 To 32), cbxejec(1 To 32),cbxgrab(1 To 32),rbparar,rbgrabar
 Static Shared As Integer sonidoPista(1 To 32)
 static  Shared As Integer SuenaTodo =0, cntsuena=0
+Static Shared  As Integer jgrb=0
 Declare Sub PlayCancion(Track() As sec)
 Declare Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst)
 Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
@@ -813,11 +814,14 @@ Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAu
 Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn
-COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab
- MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0
+COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca
+ MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
 ''patchsal=Roll.trk(1,1).inst
+Dim Shared As Any Ptr threadG 
 
+ReDim Shared As Integer tt(1 To 32)
+Dim Shared As Integer cual=0, repro=0
 'Common Shared  midiin As   RtMidiInPtr
 'Common Shared  midiout () As  RtMidiOutPtr ' abrir hasta 32 dispositivos
 Dim Shared  midiin  (0 To 15) As  RtMidiInPtr  ' 16 dispo de entrada..mucho no¿?
@@ -846,21 +850,29 @@ Dim Shared  As pasa param ', param2
     p1=@param
 
 Type midicod Field=1
+ As UByte modo
  As UByte nota
- As UByte xon
- As UByte  xoff
- As Integer clock
- As UByte  ctrl1
- As UByte  ctrl2
- As UByte  ctrl3
- As UByte  ctrl4 
+ As UByte  vel
+ As Integer partes
 End Type
-Type ejec
- As midicod trk(Any, any)
+Redim shared CargaIn (1 To 192000) As midicod
+
+Type vivo Field=1
+ As UByte modo
+ As UByte nota
+ As UByte vel
 End Type
 
+Type ejec
+ As vivo trk(Any)
+End Type
+
+ReDim Shared Toca (1 To 32) as ejec  ' vector ejecucion real
 
 ' usaremos xml par aleer y escribir musicxml 
 ' http://xmlsoft.org/examples/index.html
 Dim Shared As String acercade, camino,nroversion
-Dim Shared Toca (1 To 32) as ejec  ' vector ejecucion real
+
+Dim Shared GrabarEjec As Byte =0 
+
+

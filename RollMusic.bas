@@ -444,39 +444,40 @@ End
 ' 16 CANALES DE ENTRADA, PAR AL REPRODUCION O ARMADO
 ' SUMAREMOS SIEMRE ENTRE AMBAS FORMAS NO AMS DE 32 PORQUE AL REPRODUCIR
 ' SE SUMAN ESTOS 16 , OSEA OUTPUT+INPUT <=32 SINO EN LA REPRODUCCION
-' TENDRIASMO UN MAZIMO DE 32+16=48...Y LA POLIFONIA DE RTMIDI   
-ReDim (Toca(01).trk ) (1 To CantTicks,1 To lim3) 
-ReDim (Toca(02).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(03).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(04).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(05).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(06).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(07).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(08).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(09).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(10).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(11).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(12).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(13).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(14).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(15).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(16).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(17).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(18).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(19).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(20).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(21).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(22).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(23).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(24).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(25).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(26).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(27).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(28).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(28).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(30).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(31).trk ) (1 To CantTicks,1 To lim1) 
-ReDim (Toca(32).trk ) (1 To CantTicks,1 To lim1) 
+' TENDRIASMO UN MAZIMO DE 32+16=48...Y LA POLIFONIA DE RTMIDI
+   
+ReDim (Toca(01).trk ) (1 To Ctres) 
+ReDim (Toca(02).trk ) (1 To Ctres) 
+ReDim (Toca(03).trk ) (1 To Ctres) 
+ReDim (Toca(04).trk ) (1 To Ctres) 
+ReDim (Toca(05).trk ) (1 To Ctres) 
+ReDim (Toca(06).trk ) (1 To Ctres) 
+ReDim (Toca(07).trk ) (1 To Ctres) 
+ReDim (Toca(08).trk ) (1 To Ctres) 
+ReDim (Toca(09).trk ) (1 To Ctres) 
+ReDim (Toca(10).trk ) (1 To Ctres) 
+ReDim (Toca(11).trk ) (1 To Ctres) 
+ReDim (Toca(12).trk ) (1 To Ctres) 
+ReDim (Toca(13).trk ) (1 To Ctres) 
+ReDim (Toca(14).trk ) (1 To Ctres) 
+ReDim (Toca(15).trk ) (1 To Ctres) 
+ReDim (Toca(16).trk ) (1 To Ctres) 
+ReDim (Toca(17).trk ) (1 To Ctres) 
+ReDim (Toca(18).trk ) (1 To Ctres) 
+ReDim (Toca(19).trk ) (1 To Ctres) 
+ReDim (Toca(20).trk ) (1 To Ctres) 
+ReDim (Toca(21).trk ) (1 To Ctres) 
+ReDim (Toca(22).trk ) (1 To Ctres) 
+ReDim (Toca(23).trk ) (1 To Ctres) 
+ReDim (Toca(24).trk ) (1 To Ctres) 
+ReDim (Toca(25).trk ) (1 To Ctres) 
+ReDim (Toca(26).trk ) (1 To Ctres) 
+ReDim (Toca(27).trk ) (1 To Ctres) 
+ReDim (Toca(28).trk ) (1 To Ctres) 
+ReDim (Toca(28).trk ) (1 To Ctres) 
+ReDim (Toca(30).trk ) (1 To Ctres) 
+ReDim (Toca(31).trk ) (1 To Ctres) 
+ReDim (Toca(32).trk ) (1 To Ctres) 
 
 '1) tomar de midin los eventos
 '2) si como vienen imprimirlos para ir viendo que sale
@@ -731,9 +732,9 @@ listOutAbierto(0)=0
 
 '/
 '========================== 
-#include "RTMIDISUB.bas"
 #include "WinGUI.bi"
-#include "ROLLTRACKS.bas"
+#include "RTMIDISUB.bas"
+#Include "ROLLTRACKS.bas"
 #include "ROLLSUB.BAS"
 '===========================
  Dim As Integer MenuFlag=0, LoopFlag=0 
@@ -829,7 +830,7 @@ Dim hnro As Integer
  
  ' genial puedo recorrer un array con un pointer!!!!
 '-------
-nroversion="0.4541"
+nroversion="0.4550 desa:tracks de ejecucion por MIDI-IN"
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
 acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version Solo ejecuta las secuencias " + _
  "a base de algoritmos sin una linea conductora de tiempos. Solo se basa en las duraciones de las notas. " + _
@@ -850,12 +851,12 @@ If ix < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON cont
 ''UpdateInfoXserver()
 
   hwndListBox= ListBoxGadget(3,80,40,290,670,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
-
+' botton todo o nada , sonido o mudo para todas las pistas
   ButtonGadget(5,60,20,20,20,"S")
   SendMessage(GadgetID(3),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
  ' TextGadget(4,250,10,240,20,, SS_SIMPLE  )
  
-  
+' check para encender o apagar, sonido de salida de c/pista  
   cbxnum(1) =  CheckBox_New( 60 ,  40, 20, 20, "",, hwndc) 
   cbxnum(2) =  CheckBox_New( 60 ,  60, 20, 20, "",, hwndc)
   cbxnum(3) =  CheckBox_New( 60 ,  80, 20, 20, "",, hwndc)
@@ -901,7 +902,7 @@ If ix < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON cont
 
   SendMessage(GadgetID(4),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
 ' BS_PUSHLIKE se hune el boton al seelccioanrlo
-' CHECK PARA ESCUCHAR SONIDO
+' CHECK PARA ESCUCHAR SONIDO de las ejecuciones desde teclado grabadas
   cbxejec(1) =  CheckBox_New( 380 ,  40, 20, 20, "",, hwndC) 
   cbxejec(2) =  CheckBox_New( 380 ,  60, 20, 20, "",, hwndC)
   cbxejec(3) =  CheckBox_New( 380 ,  80, 20, 20, "",, hwndC)
@@ -942,11 +943,14 @@ If ix < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON cont
 Var IMGP=Load_image(".\recur\Parar.bmp")
 Var IMGG=Load_image(".\recur\Grabar.bmp")
 Var IMGE=Load_image(".\recur\Ejec.bmp")
-GroupGadget(8,450,0,55,40,"")
 
+' pistas de ejec MIDI-IN
+GroupGadget(8,450,0,55,40,"")
 ButtonImageGadget(9,450,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
 ButtonImageGadget(10,480,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
+ButtonImageGadget(14,510,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
 
+' pistas manuales 
 GroupGadget(13,100,0,55,40,"")
 ButtonImageGadget(11,100,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
 ButtonImageGadget(12,130,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
@@ -960,7 +964,7 @@ ButtonImageGadget(12,130,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
 
 
 
-
+' checks para habilitar grabacion en una pista de MIDI-IN
   cbxgrab(1) =  CheckBox_New( 410 ,  40, 20, 20, "",, hwndC) 
   cbxgrab(2) =  CheckBox_New( 410 ,  60, 20, 20, "",, hwndC)
   cbxgrab(3) =  CheckBox_New( 410 ,  80, 20, 20, "",, hwndC)
@@ -1210,8 +1214,10 @@ stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
 abrirRoll=0
 'pistacreada=0
+Dim As Integer k=0
 
 
+'------------
 Do
   COMEDIT = False
 param.titulo ="RollMusic Ctrl V "+ nroversion
@@ -1733,12 +1739,13 @@ Print #1,"1060 abrirRoll=0 entro"
 ' por ahrao iognoramos otros tipsod de mensaje
               rtmidi_in_ignore_types  (midiin(pmTk(ntk).portin ), 1, 2, 4)
               teclado=1 
+              jgrb=0
 '------------hace falta abrir la salida
 Print #1,"abriendo port...."
 Dim k1 As Integer
 
   
-   k1=CInt(pmTk(0).portout)
+   k1=CInt(pmTk(ntk).portout)
     
    Print #1,"midiout ",k1, *nombreOut(k1)
    If InStr(*nombreOut(k1),"Microsoft")>0 Then
@@ -2107,11 +2114,85 @@ Print #1,"-------------------------------------"
          SuenaTodo=3
        EndIf
 '------------------
-      If eventnumber()= 10 Then
+' revisar CheckBox_GetCheck de las ejecuciones
+      If eventnumber()= 10 And GrabarEjec=0 Then ' BOTON GRABAR ROJO
+         jgrb=0:repro=0
+         For k=1 To 32 
+           If CheckBox_GetCheck( cbxgrab(k))= 1 Then 
+              ntoca=k
+             
+           EndIf
+         Next k
+         pmTk(ntoca).MaxPos=0
+' mil negras a I=60 son 192 * mil ticks (16 minutos)
+         ReDim (Toca(ntoca).trk ) (1 To 192000) 
+         Redim  CargaIn (1 To 192000)
+         pmTk(ntoca).portout=0
          SetGadgetstate(9,0)
+         GrabarEjec=1 
+
       EndIf
-      If eventnumber()= 9 Then
+      If eventnumber()= 9 Then ' BOTON STOP NEGRO DE MIDI-IN
          SetGadgetstate(10,0)
+         If GrabarEjec=1 Then
+            Print #1,"STOP:pmTk(ntoca).MaxPos ",pmTk(ntoca).MaxPos
+
+   '         Print #1,"stop MaxPos ",pmTk(ntoca).MaxPos
+            GrabarEjec=0
+            repro=0
+' -------cargamos toca
+
+         Dim As Integer i1=1, j =0
+         k=1
+         Do 
+           if k=pmTk(ntoca).MaxPos+1  Then
+              Exit Do
+           EndIf  
+     '  Print #1,"CargaIn(i1).modo ",CargaIn(i1).modo
+            Select Case  CargaIn(i1).modo
+               Case 144,128
+            Toca(ntoca).trk(k).modo = CargaIn(i1).modo
+            Toca(ntoca).trk(k).nota = CargaIn(i1).nota
+            Toca(ntoca).trk(k).vel  = CargaIn(i1).vel
+                 i1 = i1 +1    
+              If i1=jgrb+1 Then
+                 Exit Do 
+              EndIf           
+           End Select
+           If CargaIn(i1).partes > 0 Then
+           '   Print #1,"CargaIn(i1).partes ",CargaIn(i1).partes
+              For j=1 To CargaIn(i1).partes 
+                k=k+1
+                
+               Toca(ntoca).trk(k).modo = 1 ' ojo, si modo=1 no se envia note on ni off
+               Toca(ntoca).trk(k).nota = 0
+               Toca(ntoca).trk(k).vel  = 0
+            
+              Next j
+           Else
+             k=k+1
+               Toca(ntoca).trk(k).modo = 0 ' ojo, si modo=1 no se envia note on ni off
+               Toca(ntoca).trk(k).nota = 0
+               Toca(ntoca).trk(k).vel  = 0
+                 
+           EndIf
+          k=k+1
+         Loop
+             jgrb=0
+         Else
+            CONTROL1=1  
+         EndIf
+
+'----------------
+      EndIf
+
+      If eventnumber()= 14 And repro=0 Then ' BOTON PLAY VERDE DE MIDI-IN
+            repro=1
+            CONTROL1=0
+            Dim p As Integer Ptr
+            p=@ntoca
+            threadG  = ThreadCreate (@PlayTocaAll, p)
+
       EndIf
 '-------------------------------
       If eventnumber()= 11 Then

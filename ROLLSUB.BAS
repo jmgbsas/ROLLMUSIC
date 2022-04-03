@@ -4546,7 +4546,7 @@ End Sub
 ' error
 errorSub:
   
-Dim As Integer er1, ErrorNumber1, ErrorLine1
+''Dim As Integer  ErrorNumber1, ErrorLine1
 ErrorNumber1 = Err
 ErrorLine1 = Erl
 

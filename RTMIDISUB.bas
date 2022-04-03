@@ -1,3 +1,5 @@
+On  Error GoTo errorrtmidi
+
 Sub sortaudio( col() As vec,cnt As integer)
 
 Dim As Integer a1=0,i1=0,j1=0,indicefinal=0
@@ -153,7 +155,7 @@ Sub noteoff(  note As UByte, canal As UByte,portsal As UByte)
 
  leng=3
 result = send_message (midiout(portsal), p, leng)
-print #1,"EN NOTE OFF nota, portsal ", note, portsal
+'print #1,"EN NOTE OFF nota, portsal ", note, portsal
 
 End Sub
 Sub pedaloff( portsal As UByte) 
@@ -252,7 +254,7 @@ Sub noteon	( note As ubyte, vel As UByte, canal As UByte, portsal As UByte)
  message(3) = vel
  leng=3
 result = send_message (midiout(portsal), p, leng)
-Print #1,"EN NOTE ON nota, portsal ", note, portsal
+'Print #1,"EN NOTE ON nota, portsal ", note, portsal
 End Sub
 '-------------------------------------
 Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
@@ -2641,13 +2643,16 @@ Next i
 End Sub
 '---------------
 Function mycallback ( ByVal deltatime As double, ByVal vec As UByte Ptr, ByVal leng as UInteger<64>, ByVal otro As Any ptr ) as RtMidiCCallback
-
+' en otro podre poner un ptr a Toca...
 Dim As UByte Ptr memoria = vec
 dim i As Integer
 Dim dato1 As UByte
 Dim dato2 As UByte
 Dim dato3 As UByte
-static old_time As Double
+Dim As Integer partes 
+Static old_time As Double
+
+' jgrb global por ahora
 Dim new_time As Double
 /'
   For i =1 To leng
@@ -2658,7 +2663,7 @@ Dim new_time As Double
    Print deltatime
   EndIf
 '/
-'--------------play
+'--------------play de lo que entre
  
     new_time=Timer
     If old_time - new_time > 0.00001 Then
@@ -2670,16 +2675,202 @@ Dim new_time As Double
 
      Select Case  dato1 
          Case 144 ' on
-            noteon dato2,dato3,1,pmTk(ntk).portout 'message(3) ' noter vel canal
+            noteon dato2,dato3,1,pmTk(ntoca).portout 'message(3) ' noter vel canal
 '     Print   dato1;" ";  dato2;" "; dato3
            
          Case 128 'off
-            noteoff dato2,1,pmTk(ntk).portout 'message(2)'
+            noteoff dato2,1,pmTk(ntoca).portout 'message(2)'
 '     Print   dato1;" ";  dato2;" "; dato3
 
      End Select
 
     old_time=new_time
+' tick mas chico es 0.005208325 (ver [TickChco] en RTMIDIDEC)
+' ergo divido deltatime por ese valor y obtengo la cantiad de divisiones
+' que ocupara ese retardo deltatime/TickChico
 
-
+  If GrabarEjec =1 Then ''graba en al pista seleccioanda
+     partes=(deltatime/TickChico) 
+     jgrb += 1
+     CargaIn(jgrb).modo=dato1
+     CargaIn(jgrb).nota=dato2
+     CargaIn(jgrb).vel=dato3
+     If deltatime > 0.00001 Then
+       CargaIn(jgrb).partes=partes
+       pmTk(ntoca).MaxPos=pmTk(ntoca).MaxPos +partes
+     Else
+       CargaIn(jgrb).partes=0
+       pmTk(ntoca).MaxPos=pmTk(ntoca).MaxPos +1
+     EndIf
+    '    Print #1,"partes ",partes
+ 
+  EndIf
 End Function
+'--------------------------------------
+
+'  If GrabarEjec =1 Then ''graba en al pista seleccioanda
+'     partes=(deltatime/TickChico) 
+'     jgrb += 1
+'     Toca(ntoca).trk(jgrb).modo=dato1
+'     Toca(ntoca).trk(jgrb).nota=dato2
+'     Toca(ntoca).trk(jgrb).vel=dato3
+'     If deltatime > 0.00001 Then
+'      '  For i=1 To partes
+'      '    Toca(ntoca).trk(jgrb+i).modo=1 ' marcamos que hay un tick de retardo o duracion
+'      '  Next i ' sino queda en cero 
+'        jgrb=jgrb+partes
+'        Print #1,"partes ",partes
+'     EndIf
+'  EndIf
+
+
+Sub PlayTocaAll(nt As Integer Ptr )
+'////////////////////////////TOCAALL/////////////////////////
+' perfeccionar los eventos deven seguir un patron de tiempo de ticks
+' para c/tick ver si hay un evento si hay enviarlo...el problem ason lso retardos
+' 
+' TOCA UNA SOLA PISTA MIDI-IN GRABADA LA 1
+' PARA TOCAR MAS DE 1 PISTA DEBE RE DISPARAR TODAS AL MISMO TIEMPO
+' N THREADS? O COMO ? SI DISPARO VARIAS Y LAS COORDINO CON EL JGRB COMO
+' HICE CON CURSOR Y LSO PLAY ,,,
+ntoca=*nt
+dim  As long maxgrb=pmTk(ntoca).MaxPos ,j=0,tocatope=0,k=0,partes
+Dim As UByte dato1,dato2, dato3
+Dim As Double timex (1 To 32), deltatime
+         For k=1 To 32 
+           If CheckBox_GetCheck( cbxejec(k))= 1 Then 
+              tocatope += 1
+           EndIf
+         Next k
+
+'--------------play TOCA
+
+'ChangeProgram ( 1, ntoca, 0)
+timex(01)=Timer
+For j=2 To 32 
+ timex(j)=timex(01)
+Next j
+
+For j=1 To 32
+ If pmTk(j).MaxPos > maxgrb Then
+    maxgrb = pmTk(j).MaxPos
+ EndIf
+Next j
+Print #1,"nPLAY VERDE: maxgrb ",maxgrb
+'canal=1 ' por ahora
+portsal=0 ' por ahora
+Print #1,"playtoca ntoca ",ntoca
+Print #1,"playtoca maxgrb ", maxgrb
+Print #1,"playtoca tocatope ", tocatope
+
+
+
+
+For j=1 To maxgrb
+  If CONTROL1 = 1 Then
+     alloff( 1 ,portsal )
+      CONTROL1=0
+      repro=0
+      Exit For
+  EndIf  
+ 
+  For k =1 To tocatope
+    If CheckBox_GetCheck( cbxejec(k))= 1 Then
+       ' tpcar
+    Else
+     Continue For ' saltear no tocar 
+    EndIf 
+    dato1=Toca(k).trk(j).modo
+    dato2=Toca(k).trk(j).nota
+    dato3=Toca(k).trk(j).vel 
+'deltatime=Toca(k).trk(j).delta
+    'partes=deltatime/TickChico
+    
+'    If deltatime > 0.00001 Then
+ '      duracion (time01,deltatime)
+ '   EndIf 
+
+     If  dato1=1 Then ' marcamos con 1 un delta de tick en modo
+         duracion (timex(k),TickChico) ' si es cero no 1 no hay duracion es acorde
+         timex(k)=timex(k)+TickChico
+           
+     EndIf
+     Select Case  dato1 
+         Case 144 ' on
+            noteon dato2,dato3,1, 0 'pmTk(0).portout 'message(3) ' noter vel canal
+           
+         Case 128 'off
+            noteoff dato2,1,0 'pmTk(0).portout 'message(2)'
+            
+     End Select
+ 
+   Next k
+Next j
+repro=0
+Sleep 1
+ThreadDetach (threadG )
+
+End Sub
+'------------------------------old
+Sub PlayToca(nt As Integer Ptr ) ' no l uso mas puedo borrarla....
+' TOCA UNA SOLA PISTA MIDI-IN GRABADA LA 1
+' PARA TOCAR MAS DE 1 PISTA DEBE RE DISPARAR TODAS AL MISMO TIEMPO
+' N THREADS? O COMO ? SI DISPARO VARIAS Y LAS COORDINO CON EL JGRB COMO
+' HICE CON CURSOR Y LSO PLAY ,,,
+ntoca=*nt
+dim  As Integer maxgrb=pmTk(ntoca).MaxPos ,j=0
+Dim As UByte dato1,dato2, dato3
+Dim As Double time01, time02,deltatime
+'--------------play TOCA
+Print #1,"playtoca ntoca ",ntoca
+Print #1,"playtoca maxgrb ", maxgrb
+
+ChangeProgram ( 1, ntoca, 0)
+ For j=1 To maxgrb 
+    time01=Timer
+    dato1=CargaIn(j).modo
+    dato2=CargaIn(j).nota
+    dato3=CargaIn(j).vel 
+    'deltatime=CargaIn(j).delta
+    time02=time01+deltatime
+    If deltatime > 0.00001 Then
+       duracion (time01,deltatime)
+    EndIf 
+
+     Select Case  dato1 
+         Case 144 ' on
+            noteon dato2,dato3,1,pmTk(ntk).portout 'message(3) ' noter vel canal
+           
+         Case 128 'off
+            noteoff dato2,1,pmTk(ntk).portout 'message(2)'
+
+     End Select
+   
+ Next j
+repro=0
+Sleep 1
+ThreadDetach (threadG )
+
+End Sub
+
+' error
+errorrtmidi:
+ 
+Dim As Integer er1, ErrorNumber1, ErrorLine1
+ErrorNumber1 = Err
+ErrorLine1 = Erl
+
+If ErrorNumber1 > 0 And ContadorError < 101 Then
+
+Print #1,"------------------------------------"
+  ContadorError = ContadorError+1
+  Print #1,"ErrorRTMIDI ContadorError ",ContadorError
+  Print #1,"ErrorNumber1 ",ErrorNumber1
+  Print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
+  Print #1,"Error Function: "; *Erfn()
+
+EndIf
+ Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
+
+
+

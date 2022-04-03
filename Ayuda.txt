@@ -173,8 +173,27 @@
 
     16 ) En algun Futuro: exportar a MusicXml o midi para poder interactuar con otros programas.
            Como tambien importar...
-
-    17 ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
+    17 ) MIDI-IN GRABACION: (EN DESARROLLO, 2da parte) version 4550 . 
+         YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN TOCANDO EN UN O CONTROLADOR MIDI EXTERNO o TECLADO externo 
+         real concectado su salida MIDI-OUT  al MIDI-IN de la PC.
+          Para ello no hace falta levantar el Roll Grafico.
+          pasos 
+          a) Dar check a l pista a grabar en la columna 'G' de la 2da lista de pistas. debajo del menu
+          'Cambiar Tiempo....' 
+          b) pulsar el boton Rojo de armado de la pista, c) Ir al menu de Control arriba en Reproducir y elegir
+          "Reproducir MIDI-IN (teclado) por MIDI-OUT" (por ahora solo usa port 0 y patch 1).
+          La grabacion comenzara al llegar la 1er nota midi,,tocar normalmente, para detener l grabacion pulsar 
+          el boton PArar de color negro de esa misma lista y de Ese grupo de 3 botones  (negro rojo verde). 
+          Para seguir grabando otra pista escuchando la anterior:
+          Sacar el chequeo de la pista anterior grabada para que no grabe. Pulsar check en otra pista mientras
+          se da check a la pista anteriormente grabada en columan 'S' para poder escucharla  (sonido).
+          Al escuchar empezar a tocar al unisono cuando se desee. Terminar pulsando Stop boton negro.
+          Luego para escuchar ambas pistas deschequear la pista grabada en 'G', ninguna pista debe quedar con un 
+          check en la columna 'G'. Chequear todas las pistas grabadas en columna 'S', para poder escucharlas.
+          Reproducir todas las pistas grabadas pulsando el boton Verde Reproducir o Play.
+          Todavia no se graba a disco la grabacion,,,probarlo si hay error avisar,,,
+          (falta grabar a disco poder elegir patch, port etc....)
+    18 ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
           o ordenar la ejecucion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
           o ejecutar con otras instancias de RollMusic con o sin Control...(hay muchisimo por hacer...)
     NOTA: si en algun momento se traba el scroll arriba abajo con la rueda del mouse, destrabar la situacion  con 
@@ -239,6 +258,10 @@
         Se puede pasar entre tracks simplemente con el tabulador  o clickeando  la pista en la lista en Control. 
         No se ha conseguido el cambio  de focus a la ventanta del grafico que es un thread distinto, pero ya al dar click
         en la lista cambia en el grafico aunque no ese en el foco.
+        -En menu de Control un test básico de MIDI-IN: En reprodicur elegir "Reproducir MIDI-IN por MII-OUT"
+        Para terminar Usar en el mismo menu "Detener MDI-IN por MIDI-OUT" ..Solo reproduce el sonido
+        del port pro omisión y el sonido por omisión,,(No elegir otro port de salida pro ahroa cancela es un test)
+         
            Notas desarrollo (No se puede cargar un track en el menú del Grafico y 
         darle Reproducir en la GUI por consistencia solo reproducimos en Roll Gráfico, el 
         reproductor en Control es solo para la cancion. Sin embargo el grafico asociado 

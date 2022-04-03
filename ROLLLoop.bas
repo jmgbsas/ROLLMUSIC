@@ -4566,7 +4566,11 @@ Print #1,"------------------------------------"
   ContadorError=ContadorError+1
   Print #1,"ErrorLoop ContadorError ",ContadorError
   Print #1,"ErrorNumber1 ",ErrorNumber1
+If ProgError(ErrorNumber1) ="" Then
+  Print #1,"progerror En MAIN,  on line ";ErrorLine1
+Else
   Print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
+EndIf
   Print #1,"Error Function: "; *Erfn()
   Print #1, "n ",posicion;" posishow "; posishow; " NroCol ";NroCol
   Print #1, "semitono "; nE; " *po "; *po 
