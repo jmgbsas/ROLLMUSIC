@@ -248,7 +248,9 @@ Sub noteon	( note As ubyte, vel As UByte, canal As UByte, portsal As UByte)
 	Else
 	  modo = 144 + canal 
 	EndIf
-	
+	if velmidi > 0 then
+     vel=velmidi
+  EndIf
  message(1) = modo 
  message(2) = note
  message(3) = vel
@@ -1057,14 +1059,14 @@ Sub playAll(Roll As inst) ' play version 2
 Dim As Integer porterror,nousar
 porterror=Err
 
-Dim i1 As integer
+Dim As Integer i1,k1
 ' creoa todos los defaults siempre
  
 
 ' los nombres ya fueron cargados al inicio
-
+If  GrabarPenta=0 Then ' con 1 ya esta abierto
 Print #1,"abriendo port...."
-Dim k1 As Integer
+
 
   
    k1=CInt(pmTk(0).portout)
@@ -1139,7 +1141,7 @@ Dim k1 As Integer
 
 Print #1,"-------------------------------------"
 '''midisal=midiout(0) ' el z
-
+End If
 
 '-------------------------------------------- 
  
@@ -1491,7 +1493,7 @@ finplay=1
 
 '''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 '''fueradefoco=0
-
+if GrabarPenta=0 Then ' nada de off estamos en grabarpenta por teclado
 
    k1=pmTk(0).portout
    Print #1,"midiout ",k1, *nombreOut(k1)
@@ -1502,7 +1504,7 @@ finplay=1
    close_port midiout(k1)
    ''out_free   midiout(k1)
 
-
+EndIf
 
 
 Sleep 20,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
@@ -1892,7 +1894,7 @@ End Select
 
 End Function
 
-Function SumarnR (notaPiano As Integer) As Integer
+Function SumarnR (notaPiano As integer) As integer
 ' dado la NotaPiano encuentro nR el indice del Vector Roll de visualizacion
 ' puedo devolver la octava tambien
 Select Case notaPiano
@@ -1922,6 +1924,38 @@ Select Case notaPiano
 End Select
 
 End Function
+
+Function SumarnRk (notaPiano As ubyte) As ubyte
+' dado la NotaPiano encuentro nR el indice del Vector Roll de visualizacion
+' puedo devolver la octava tambien
+Select Case notaPiano
+   Case 0 To 11
+     SumarnRk=0
+   Case 12 To 23
+     SumarnRk=1
+   Case 24 To 35
+     SumarnRk= 2
+   Case 36 To 47
+     SumarnRk = 3
+   Case 48 To 59
+     SumarnRk =4
+   Case 60 To 71
+     SumarnRk= 5
+   Case 72 To 83
+     SumarnRk=6
+   Case 84 To 95
+     SumarnRk= 7
+   Case 96 To 107
+     SumarnRk=8         
+   Case 108 To 119
+     SumarnRk=9         
+   Case 120 To 131
+     SumarnRk=10         
+       
+End Select
+
+End Function
+
 
 
 Function sumar( ByVal ind As integer) As Integer 
@@ -2645,13 +2679,21 @@ End Sub
 Function mycallback ( ByVal deltatime As double, ByVal vec As UByte Ptr, ByVal leng as UInteger<64>, ByVal otro As Any ptr ) as RtMidiCCallback
 ' en otro podre poner un ptr a Toca...
 Dim As UByte Ptr memoria = vec
-dim i As Integer
-Dim dato1 As UByte
-Dim dato2 As UByte
-Dim dato3 As UByte
-Dim As Integer partes 
-Static old_time As Double
+dato1=*memoria: memoria += 1
+dato2=*memoria: memoria += 1
+dato3=*memoria 
+DURk =deltatime
 
+    If GrabarPenta=1 Then
+       nRk=dato2
+       PianoNota=nRk  
+       
+    EndIf
+
+dim i As Integer
+Dim As Integer partes , traba=0
+Static old_time As Double
+  
 ' jgrb global por ahora
 Dim new_time As Double
 /'
@@ -2665,14 +2707,23 @@ Dim new_time As Double
 '/
 '--------------play de lo que entre
  
+
+
     new_time=Timer
     If old_time - new_time > 0.00001 Then
        duracion (old_time,deltatime)
     EndIf 
-    dato1=*memoria: memoria += 1
-    dato2=*memoria: memoria += 1
-    dato3=*memoria 
-
+'    dato1=*memoria: memoria += 1
+'    dato2=*memoria: memoria += 1
+'    dato3=*memoria 
+'    DURk =deltatime
+'    If GrabarPenta=1 Then
+'       nRk=CInt(dato2)
+'       PianoNota=nRk  
+'     '  Print #1,"PianoNota-> ",nRk 
+'       nRk=nRk + SumarnR(nRk)
+'       
+'    EndIf
      Select Case  dato1 
          Case 144 ' on
             noteon dato2,dato3,1,pmTk(ntoca).portout 'message(3) ' noter vel canal
@@ -2690,8 +2741,15 @@ Dim new_time As Double
 ' que ocupara ese retardo deltatime/TickChico
 
   If GrabarEjec =1 Then ''graba en al pista seleccioanda
+     
      partes=(deltatime/TickChico) 
      jgrb += 1
+     If  kply > 0 And traba=0 And jgrb=1 Then 
+        Print #1,"=====> timex(kply),kply ",timex(kply),kply
+        Print #1,"=====> new_time ", new_time
+        DeltaGrabar=new_time - timex(kply) 
+        traba=1
+     EndIf
      CargaIn(jgrb).modo=dato1
      CargaIn(jgrb).nota=dato2
      CargaIn(jgrb).vel=dato3
@@ -2707,7 +2765,24 @@ Dim new_time As Double
   EndIf
 End Function
 '--------------------------------------
+Sub metronomo ()
+Do
+      'noteon(50,50,1,0)
+      'duracion(Timer, 0.1)
+     ' noteoff(50,1,0)
 
+      noteon(80,60,1,0)
+      noteoff(80,1,0)
+      duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+     If terminar_metronomo=1 Then
+         Exit Do
+     EndIf
+      
+
+Loop  
+
+ threadDetach (threadmetronomo)
+End Sub
 '  If GrabarEjec =1 Then ''graba en al pista seleccioanda
 '     partes=(deltatime/TickChico) 
 '     jgrb += 1
@@ -2734,14 +2809,9 @@ Sub PlayTocaAll(nt As Integer Ptr )
 ' N THREADS? O COMO ? SI DISPARO VARIAS Y LAS COORDINO CON EL JGRB COMO
 ' HICE CON CURSOR Y LSO PLAY ,,,
 ntoca=*nt
-dim  As long maxgrb=pmTk(ntoca).MaxPos ,j=0,tocatope=0,k=0,partes
+dim  As long maxgrb=pmTk(ntoca).MaxPos ,j=0,k=0,partes
 Dim As UByte dato1,dato2, dato3
-Dim As Double timex (1 To 32), deltatime
-         For k=1 To 32 
-           If CheckBox_GetCheck( cbxejec(k))= 1 Then 
-              tocatope += 1
-           EndIf
-         Next k
+'Dim As Double timex (1 To 32), deltatime
 
 '--------------play TOCA
 
@@ -2751,6 +2821,7 @@ For j=2 To 32
  timex(j)=timex(01)
 Next j
 
+''Print #1,"=====> EN PLAY StartPlayejec ",StartPlayejec
 For j=1 To 32
  If pmTk(j).MaxPos > maxgrb Then
     maxgrb = pmTk(j).MaxPos
@@ -2759,7 +2830,7 @@ Next j
 Print #1,"nPLAY VERDE: maxgrb ",maxgrb
 'canal=1 ' por ahora
 portsal=0 ' por ahora
-Print #1,"playtoca ntoca ",ntoca
+
 Print #1,"playtoca maxgrb ", maxgrb
 Print #1,"playtoca tocatope ", tocatope
 
@@ -2774,15 +2845,15 @@ For j=1 To maxgrb
       Exit For
   EndIf  
  
-  For k =1 To tocatope
-    If CheckBox_GetCheck( cbxejec(k))= 1 Then
+  For kply =1 To tocatope
+    If CheckBox_GetCheck( cbxejec(kply))= 1 Then
        ' tpcar
     Else
      Continue For ' saltear no tocar 
     EndIf 
-    dato1=Toca(k).trk(j).modo
-    dato2=Toca(k).trk(j).nota
-    dato3=Toca(k).trk(j).vel 
+    dato1=Toca(kply).trk(j).modo
+    dato2=Toca(kply).trk(j).nota
+    dato3=Toca(kply).trk(j).vel 
 'deltatime=Toca(k).trk(j).delta
     'partes=deltatime/TickChico
     
@@ -2791,8 +2862,8 @@ For j=1 To maxgrb
  '   EndIf 
 
      If  dato1=1 Then ' marcamos con 1 un delta de tick en modo
-         duracion (timex(k),TickChico) ' si es cero no 1 no hay duracion es acorde
-         timex(k)=timex(k)+TickChico
+         duracion (timex(kply),TickChico) ' si es cero no 1 no hay duracion es acorde
+         timex(kply)=timex(kply)+TickChico
            
      EndIf
      Select Case  dato1 
@@ -2804,50 +2875,10 @@ For j=1 To maxgrb
             
      End Select
  
-   Next k
+   Next kply
 Next j
 repro=0
-Sleep 1
-ThreadDetach (threadG )
-
-End Sub
-'------------------------------old
-Sub PlayToca(nt As Integer Ptr ) ' no l uso mas puedo borrarla....
-' TOCA UNA SOLA PISTA MIDI-IN GRABADA LA 1
-' PARA TOCAR MAS DE 1 PISTA DEBE RE DISPARAR TODAS AL MISMO TIEMPO
-' N THREADS? O COMO ? SI DISPARO VARIAS Y LAS COORDINO CON EL JGRB COMO
-' HICE CON CURSOR Y LSO PLAY ,,,
-ntoca=*nt
-dim  As Integer maxgrb=pmTk(ntoca).MaxPos ,j=0
-Dim As UByte dato1,dato2, dato3
-Dim As Double time01, time02,deltatime
-'--------------play TOCA
-Print #1,"playtoca ntoca ",ntoca
-Print #1,"playtoca maxgrb ", maxgrb
-
-ChangeProgram ( 1, ntoca, 0)
- For j=1 To maxgrb 
-    time01=Timer
-    dato1=CargaIn(j).modo
-    dato2=CargaIn(j).nota
-    dato3=CargaIn(j).vel 
-    'deltatime=CargaIn(j).delta
-    time02=time01+deltatime
-    If deltatime > 0.00001 Then
-       duracion (time01,deltatime)
-    EndIf 
-
-     Select Case  dato1 
-         Case 144 ' on
-            noteon dato2,dato3,1,pmTk(ntk).portout 'message(3) ' noter vel canal
-           
-         Case 128 'off
-            noteoff dato2,1,pmTk(ntk).portout 'message(2)'
-
-     End Select
-   
- Next j
-repro=0
+SetGadgetstate(14,0)
 Sleep 1
 ThreadDetach (threadG )
 

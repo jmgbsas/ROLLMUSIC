@@ -229,7 +229,7 @@ EndIf
     '  print #1,"luego de carga i acorde ",i  
 ' cargar en visualizacion con otra sub si es necesario
       Next i
-Print "-------------------------------"
+Print #1, "-------------------------------"
      Next j
      cerrar (ct)
 
@@ -1709,8 +1709,27 @@ If i1<= lim2 Then
         Else    
            print #1,"i1=";i1 ; " SIMPLE cnt= ";cnt
         EndIf  
-  
-        
+' FUNCIONA PERO CANCELA CASI AL FINAL HAY QUE CONTROLAR QUE PLAYTOCAALL NO 
+' MANEJE LOS PUERTOS NI APERTURA NI CIERE Y AJUSTRLE LOS PORT DE SALIDA Y PATCH
+' EN LA EJECUCION DE CANCION SOLO CANCION ABRIRA PUERTOS Y LSO CERRARA
+' EN TODO CASO SI NO ESTA EL PUERTO YA USADO EN CANCION SE AGRAGA A A LISTA 
+' LSO PRT USADOS EN LAS PISTAS MIDI-IN. PARA ELLO DEBEMOS SELECIOANR EL PORT 
+' DE SALIDA DE LA PISTA MIDI-IN E INCORPORARLA A LA LISTA. 	pmTk(ntk)
+' lo usaremos tanto para pistas manuales como de ejecucion para numerar las pistas
+' de MIDI-IN PODRIAMOS EMPEZAR POR 33 Y HASTA 64...-33-PIANO.rje por ejemplo
+' en vez de usar [N] usamos -N- ..PARA SINCRONIZAR JUGAREMOS CON EL TIEMPO DE INICIO
+' TIMER DEL 1ER EVENTO DE CANCION ..Y AL COMENZR A  GRABAR UNA PISTA MIDI-IN
+' GUARDAREMOS EL DELTATIME ENTRE EL INICIO DE LA CANCION Y EL INICIO DE LA ENTRADA
+' MIDI-IN DE ESA FORMA AL REPRODUCIR LA PISTA MIDI -IN SE SINCRONIZARA SU INICIO
+' CON EL DELTA RESPECTO DEL INICIO DE CANCION,,,  
+'       If HAYMIDIIN=TRUE Then
+'            repro=1
+'            CONTROL1=0
+'            Dim p As Integer Ptr
+'            p=@ntoca
+'            threadG  = ThreadCreate (@PlayTocaAll, p)
+'           
+'       EndIf 
         Select Case cnt
           Case 1 
            ' con y sin liga

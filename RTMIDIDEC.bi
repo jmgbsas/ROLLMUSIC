@@ -73,9 +73,59 @@ Dim Shared As float relDur (0 To 182) => {0, _
 7 ,3.5,1.75,0.875,0.4375,0.21875,0.109375,0.0546875,0.02734375, _ '163 171
 2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,0.0208333,0.01041666,0,0} '172 181
 
+Dim Shared As Double durcla (1 To 45, 1 To 2) => { _
+{0.01041666,45},_
+{0.0156250,9},_
+{0.01953125,18},_
+{0.0208333,44},_
+{0.0234375,27},_
+{0.02734375,36},_
+{0.031250,8},_
+{0.0390625,17},_
+{0.041666,43},_
+{0.046875,26},_
+{0.0546875,35},_
+{0.06250,7},_
+{0.078125,16},_
+{0.083333,42},_
+{0.09375,25},_
+{0.109375,34},_
+{0.1250,6},_
+{0.15625,15},_
+{0.166666,41},_
+{0.1875,24},_ 
+{0.21875,33},_
+{0.250,5},_
+{0.3125,14},_
+{0.333333,40},_
+{0.375,23},_
+{0.4375,32},_
+{0.50,4},_
+{0.625,13},_
+{0.666666,39},_
+{0.75,22},_
+{0.875,31},_
+{1.0,3},_
+{1.25,12},_
+{1.333333,38},_
+{1.5,21},_
+{1.75,30},_
+{2,2},_
+{2.5,11},_
+{2.666666,37},_
+{3,20},_ 
+{3.5,29},_
+{4,1},_  
+{5,10} ,_
+{6,19} ,_
+{7,28}}
+
+
+
+
 Dim Shared As Integer play =0,playb=0, portin, numero, numeroFrac,cambioescala=0
 Dim Shared As UInteger portout=0 
-
+Dim Shared As Double numfloat=0
 Static Shared As string listout(), listin ()
 Static Shared As integer listoutAbierto(), listinAbierto ()
 Dim Shared As String *2  listCanal(1 To 16) => {" 1"," 2"," 3"," 4"," 5"," 6"," 7"," 8"," 9","10","11","12","13","14","15","16"}
@@ -132,7 +182,7 @@ Declare sub noteoff( note As UByte, canal As UByte,portsal As UByte )
 Declare Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
 Dim Shared As Integer ligaglobal=0 ', ligaglobalc (1 To 32)
 'Relacion de nR indice de Roll, con nE semitono, para evitar calculos.
-Dim Shared As integer relnRnE(0 To 132) => { _  ' indice de Roll vs nota ..semitono
+Dim Shared As integer relnRnE(0 To 132) => { _  ' notapiano real vs nota ..semitono
 12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1, _
 12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1, _
 12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1, _
@@ -149,3 +199,9 @@ End Type
 Dim Shared guiaEscala  (1 To 100) As PGE ' suponemos  100 cambios de escala en una pista
 ' en la posicion 1 se cargará la escala leida de la pista al inicio
 ' la escal debe guarar los 3 parametros Tipo escala , notaescala y alteracion en un principio basico
+Dim Shared As UByte duras(1 To 3),velmidi=0
+Dim Shared filtro As UByte=0
+Dim Shared As UByte nacordeon (1 To 10),nacordeoff (1 To 10),naco=0,naco2=0,terminar_metronomo=0
+Dim Shared As Integer posiacorde=0
+Declare FUNCTION FiguraEquivalente(DURk As double) As ubyte
+Dim Shared As Integer contcode=0,metronomo_si

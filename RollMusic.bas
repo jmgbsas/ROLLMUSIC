@@ -164,8 +164,8 @@ Dim As GLFWwindow ptr  win
 Dim Shared As Integer pd1, fa1 
 pd1 = GetCurrentProcessId()  
 
-Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As #1
-
+Open "midebug.txt" For Output As #1
+'''Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As #1
 Print #1,"start"
 Print #1,"PID DE ESTE PROCESO ",pd1
 
@@ -330,6 +330,7 @@ estoyEnOctavaOld =desde
 ' --------
 NB => 0 + (desde-1) * 13   ' 39 , Notapiano=36, nR=39 -coincide no sobra nada
 NA => 11 + (hasta-1) * 13  ' 102, Notapiano= 83, nR=89 - no coincide sobra desde
+Print #1,"NB, NA",NB,NA 
 ' sobra desde 90 a 102 inclisive o sea 13 posiciones...
 ' automatiando podemos decier para cualqueir definicion de intervalo de octavas que
 ' CALCULO DE POSICION DE LA INFORMACION DE ACORDES:
@@ -830,7 +831,7 @@ Dim hnro As Integer
  
  ' genial puedo recorrer un array con un pointer!!!!
 '-------
-nroversion="0.4550 desa:tracks de ejecucion por MIDI-IN"
+nroversion="0.4555 en desarrollo:metronomo y entrada por MIDI-IN"
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
 acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version Solo ejecuta las secuencias " + _
  "a base de algoritmos sin una linea conductora de tiempos. Solo se basa en las duraciones de las notas. " + _
@@ -947,14 +948,14 @@ Var IMGE=Load_image(".\recur\Ejec.bmp")
 ' pistas de ejec MIDI-IN
 GroupGadget(8,450,0,55,40,"")
 ButtonImageGadget(9,450,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
-ButtonImageGadget(10,480,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
-ButtonImageGadget(14,510,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
+ButtonImageGadget(10,490,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
+ButtonImageGadget(14,530,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
 
 ' pistas manuales 
 GroupGadget(13,100,0,55,40,"")
 ButtonImageGadget(11,100,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
-ButtonImageGadget(12,130,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
-
+ButtonImageGadget(12,140,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
+ButtonImageGadget(15,180,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
 
 
  'rbparar = RadioButton_New( 450 , 10, 40, 20, "P",BS_LEFTTEXT , hwndC) '65
@@ -1079,7 +1080,7 @@ Negras por minuto	 tempo
   
 MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
 MenuItem(1091,MenName6,"Fijar Repeticiones de un numero de Compases elegido como zona")
-MenuItem(1092,MenName6,"Reproducir MIDI-IN (teclado) por  MIDI-OUT. (test de Input) ")
+MenuItem(1092,MenName6,"Reproducir MIDI-IN (teclado) por  MIDI-OUT.  ")
 MenuItem(1093,MenName6,"Detener Reproduccion MIDI-IN (teclado) por  MIDI-OUT. (test de Input) ")
 
 
@@ -1096,13 +1097,13 @@ MENUITEM(1108,MenName7,"Trabajar con sostenidos (Por omision Sostenidos #)",MF_C
 MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
 MenuItem(1111,MenName7,"Insertar escala libre en la Posicion actual (Pasozona1)")
 MenuItem(1112,MenName7,"Insertar escala Alternativa de la Principal en la Posicion actual (Pasozona1)")
-
+MenuItem(1113,MenName7,"Usar metronomo para Tocar MIDI-IN)",MF_CHECKED)
 MenuItem(1110,MenName8,"Acerca de")
 End If
 ' default de FRACCIOANR autodur 
    usarAcordesIguales=1
    TipoFrac="autodur"
-
+metronomo_si=1
 usarmarcoins=0
 usarmarco=0 
 If com_usarmarco =0 Then
@@ -1708,6 +1709,7 @@ Print #1,"1060 abrirRoll=0 entro"
           '    Dim As Any Ptr thplayC = ThreadCall  playCancion(track())
           '    CONTROL1 = 1
               If Cplay = 0 And MaxPos > 1 Then
+                 GrabarPenta=0:naco=0:naco2=0
                  CPlay=1
                  If NombreCancion > "" Then
                     If play=1 Or playb=1 Then
@@ -1734,101 +1736,11 @@ Print #1,"1060 abrirRoll=0 entro"
              SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1092
-              open_port (midiin(pmTk(ntk).portin ),pmTk(ntk).portin, *nombrein( pmTk(ntk).portin ) )
-              set_callback midiin(pmTk(ntk).portin ), @mycallback, p
-' por ahrao iognoramos otros tipsod de mensaje
-              rtmidi_in_ignore_types  (midiin(pmTk(ntk).portin ), 1, 2, 4)
-              teclado=1 
-              jgrb=0
-'------------hace falta abrir la salida
-Print #1,"abriendo port...."
-Dim k1 As Integer
-
-  
-   k1=CInt(pmTk(ntk).portout)
-    
-   Print #1,"midiout ",k1, *nombreOut(k1)
-   If InStr(*nombreOut(k1),"Microsoft")>0 Then
-     Print #1,"No se usa Microsoft"
-   Else
-     If listoutAbierto( k1) = 0 Then
-        midiout(k1) = rtmidi_out_create_default ( )
-        open_port midiout(k1),k1, nombreOut(k1)
-            porterror=Err 
-        listoutAbierto( k1) = 1
-        Print #1,"abro ",*nombreOut(k1)
-
-    Select Case porterror
-      Case RTMIDI_ERROR_WARNING
-        Print #1, "RTMIDI_ERROR_WARNING"
-
-      Case RTMIDI_ERROR_DEBUG_WARNING
-        Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
-        Close
-        End
-
-      Case RTMIDI_ERROR_UNSPECIFIED
-        Print #1,"RTMIDI_ERROR_UNSPECIFIED"
-        Close
-        End
-
-      Case RTMIDI_ERROR_NO_DEVICES_FOUND
-        Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_DEVICE
-        Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
-        Close
-        End
-
-      Case RTMIDI_ERROR_MEMORY_ERROR
-        Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_PARAMETER
-        Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_USE
-        Print #1,"RTMIDI_ERROR_INVALID_USE"
-        Close
-        End
-
-      Case RTMIDI_ERROR_DRIVER_ERROR
-        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
-        Close
-        End
-
-      Case RTMIDI_ERROR_SYSTEM_ERROR
-        Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
-        Close
-        End
-
-      Case RTMIDI_ERROR_THREAD_ERROR
-        Print #1,"RTMIDI_ERROR_THREAD_ERROR"
-        Close
-        End
-    End Select
-   EndIf
- EndIf 
-
- Print #1,"Port usando en Play teclado ",portout
-Print #1,"-------------------------------------"
-
+             abrirMIDIin=1
 
 '-------------------------------
            Case 1093
-        cancel_callback(midiin(pmTk(ntk).portin ))
-       Dim k1 As Integer
-   k1=pmTk(ntk).portout
-   Print #1,"midiout ",k1, *nombreOut(k1)
-   alloff( pmTk(ntk).canalsalida,k1 )  
-   listoutAbierto(k1)=0
-   close_port midiout(k1)
-   teclado=0
+             abrirMIDIin=2
 '-----------------------------------------------------------------------
            Case 1100 '<======== usar o no, marco de ventana de Roll
 '0 - the menu is active, the checkbox is not selected
@@ -2001,7 +1913,23 @@ Print #1,"-------------------------------------"
                 EndIf 
               Print #1,"1112 Alternativa TIPOESCALA NOTAESCALA ",tipoescala_num, notaescala_num
              EndIf
-            SetForegroundWindow(hwnd)             
+            SetForegroundWindow(hwnd)  
+            Case 1113 ' usar metronomo
+                
+             metronomo_si=GetStateMenu(hmessages,1113)
+              Select Case metronomo_si 
+                     Case  1 
+                    metronomo_si=0
+                    SetStateMenu(hmessages,1113,0)
+                     Case 0
+                    metronomo_si=1
+                    SetStateMenu(hmessages,1113,1)
+
+              End Select
+              SetForegroundWindow(hwnd)
+            Case 1114
+                metronomo_si=0
+                   
          End Select
 '-----------------------------------------------------------------------
        Case eventgadget
@@ -2115,6 +2043,9 @@ Print #1,"-------------------------------------"
        EndIf
 '------------------
 ' revisar CheckBox_GetCheck de las ejecuciones
+
+'//////////////// BOTON ROJO GRABA EJEC //////////////////
+
       If eventnumber()= 10 And GrabarEjec=0 Then ' BOTON GRABAR ROJO
          jgrb=0:repro=0
          For k=1 To 32 
@@ -2123,6 +2054,7 @@ Print #1,"-------------------------------------"
              
            EndIf
          Next k
+         tocatope=tocatope+1
          pmTk(ntoca).MaxPos=0
 ' mil negras a I=60 son 192 * mil ticks (16 minutos)
          ReDim (Toca(ntoca).trk ) (1 To 192000) 
@@ -2132,6 +2064,10 @@ Print #1,"-------------------------------------"
          GrabarEjec=1 
 
       EndIf
+
+'//////////////// BOTON NEGRO STOP EJEC  //////////////////
+
+
       If eventnumber()= 9 Then ' BOTON STOP NEGRO DE MIDI-IN
          SetGadgetstate(10,0)
          If GrabarEjec=1 Then
@@ -2142,8 +2078,20 @@ Print #1,"-------------------------------------"
             repro=0
 ' -------cargamos toca
 
-         Dim As Integer i1=1, j =0
-         k=1
+         Dim As Integer i1=1, j =0, partes
+            If DeltaGrabar > 0 Then
+               Print #1,"DeltaGrabar,ntoca ",DeltaGrabar,ntoca
+               partes=DeltaGrabar/TickChico
+               Print #1,"DeltaGrabar,partes ",DeltaGrabar,partes
+               For k=1 To partes 
+                   Toca(ntoca).trk(k).modo = 1 ' ojo, si modo=1 no se envia note on ni off
+                   Toca(ntoca).trk(k).nota = 0
+                   Toca(ntoca).trk(k).vel  = 0
+               Next k
+               DeltaGrabar=0
+               pmTk(ntoca).MaxPos=pmTk(ntoca).MaxPos+partes
+            EndIf
+
          Do 
            if k=pmTk(ntoca).MaxPos+1  Then
               Exit Do
@@ -2186,6 +2134,8 @@ Print #1,"-------------------------------------"
 '----------------
       EndIf
 
+'//////////////// BOTON VERDE PLAY EJEC //////////////////
+
       If eventnumber()= 14 And repro=0 Then ' BOTON PLAY VERDE DE MIDI-IN
             repro=1
             CONTROL1=0
@@ -2194,9 +2144,15 @@ Print #1,"-------------------------------------"
             threadG  = ThreadCreate (@PlayTocaAll, p)
 
       EndIf
+'//////////////// BOTON ROJO GRABAR EN PENTA //////////////////
+
+      If eventnumber()= 15 Then 
+         GrabarPenta=1
+      EndIf 
 '-------------------------------
       If eventnumber()= 11 Then
          SetGadgetstate(12,0)
+         GrabarPenta=0
 ''      If NombreCancion > "" Then ' detiene todo pista aisalda o cancion 
             If play=1 Or playb=1 Or CPlay=1 Then
                CONTROL1=1 ' DETIENE EL PLAY 

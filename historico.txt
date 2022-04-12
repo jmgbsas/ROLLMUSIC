@@ -1,3 +1,5 @@
+-12-04-2022 MIDI-IN grabacion desde teclado en la edicion manual de ROLL. Metrónomo
+para guia de ritmo. 
 -03-04-2022 [2da etapa] MIDI-IN PORT=0 GRABACION EN VARIAS PISTAS, GRABACION ESCUCHANDO LO GRABADO ANTERIORMENTE
  OK.
 -30-03-2022 [1er etapa] MIDI-IN SIN LEVANTAR ROLL Grafico, habilitar entrada por teclado del sonido default

@@ -247,15 +247,17 @@ Dim As String t2="",t3="",t4=""
 
 ' <=========fin escalas y acordes      
 
-  
+ '' ver si peudo borrar esto 10-04-2022 ÇÇÇÇ
+ 
    If Roll.trk (n,11- semitono  + (*po -1) * 13 ).nota > 0 Or _
       Roll.trk (n,11- semitono +  (*po -1) * 13 ).dur > 0 Then
      ' print #1,"lugar ",11
+'  10-04-2022 verificar si esto sigue funcionando ÇÇÇÇ colocar esapcios
       If COMEDIT=TRUE Then 
          If cursorVert=0 Then  
             If espacio = (semitono +1) Then
                Roll.trk (n, 11-semitono + (hasta -nro) * 13 ).dur = 181
-               Print #1,"esta metiendo espacios?"
+               ''Print #1,"esta metiendo espacios?"
                If fijarEspacio=0 Then
                  espacio=0
                EndIf
@@ -419,6 +421,7 @@ Dim As String t2="",t3="",t4=""
   cairo_move_to(c, 0, lugar )
   cairo_line_to(c, ANCHO - 1, lugar)
   cairo_stroke(c)
+If GrabarPenta=0 Then 'çççç NO ESTABA
   If (mousey <= lugar) And (mousey >= lugarOld ) Then
    nE=semitono + 1 'semitono ahora va desde 0 a 11 usadopor entrada de tecladoy ahroa mouse
    nR=(11-semitono) + (*po -1 ) * 13 ''+ (desde -1)*13 ' indice de la nota en Roll , en algo será util.
@@ -429,6 +432,12 @@ Dim As String t2="",t3="",t4=""
 ''' desèjando nE = 11 -nR   +  (*po -1 ) * 13 + 1
   EndIf
   lugarOld=lugar
+Else 'çççç ELSE NO ESTABA
+   nE=semitono + 1 'semitono ahora va desde 0 a 11 usadopor entrada de tecladoy ahroa mouse
+   nR=(11-semitono) + (*po -1 ) * 13 ''+ (desde -1)*13 ' indice de la nota en Roll , en algo será util.
+   PianoNota= nR - restar (nR)
+
+EndIf
  ' ahora quiero que salga son semitono=12 asi lee las esclas y acordes
  ' o lo ponemos directamente en 12 salir del loop debe ser mas rapido? 
    If semitono =11 Then ' asi no suma 1 a semitono y no pasa a ser 12
@@ -514,9 +523,10 @@ If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
 
  ' si estoy en esta octava ...edicion solo para esa octava segun posicion
  ' del mouse automaticamete iluminar
-
+If GrabarPenta =0 Then
  If ( Penta_y <= mousey) And ((Penta_y + 12 * inc_Penta) >= mousey)  Then
   ' estoy en una octava
+
   estoyEnOctava = *po  '<========== DETERMINACION DE OCTAVA DE TRABAJO
   EnOctava=1
   ' CURSOR
@@ -531,13 +541,22 @@ If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
   cairo_set_source_rgba c, 0, 0, 0, 1
   'cairo_set_line_width(c, 3)
  EndIf
- 
+else
+  
+  If cursorHori=1 And cursorVert=1 Or play=1 Or playb=1  Then
+      cursor(c,posicion,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos 
+  EndIf
+  cairo_set_source_rgba c, 0, 0, 0, 1 
+EndIf 
+
+
 '---------
- 
- If ((Penta_y + 12 * inc_Penta) <= mousey) And ((Penta_y + 14 * inc_Penta) >= mousey)  Then
-  EnOctava = 0
-  estoyEnOctava=90 
- EndIf
+If GrabarPenta=0 Then
+  If ((Penta_y + 12 * inc_Penta) <= mousey) And ((Penta_y + 14 * inc_Penta) >= mousey)  Then
+   EnOctava = 0
+   estoyEnOctava=90 
+  EndIf
+EndIf
  *po = *po -1
  If *po = desde -1 Then  ' 22-09-2021 < estaba mal es = ej 4 a 8 -> 4-1=3 ya ejecuto la 3 me voy 
   *po = 99
@@ -954,65 +973,32 @@ For K=desde To hasta -1 ' queda entre 2 octavas ,corregido  26-01-2022
 
 ' sigue en crea_penta donde al barer el roll va leyendo las escalas auxiliares
 EndIf
-'05-02-2022 usamos threarPenta ya definida global
-' se supone que la direccion es unica y se reusa no se la crea muchas veces
-' es mejor no ¿? zas je 
-    threadPenta = ThreadCall barrePenta (c, Roll )
-    ThreadWait threadPenta
 
+If abrirMIDIin=1 Then ' grabacion desde teclado ...entr mal los valores por ahora
+   abrirMIDIin=0
+              open_port (midiin(pmTk(ntk).portin ),pmTk(ntk).portin, *nombrein( pmTk(ntk).portin ) )
+              set_callback midiin(pmTk(ntk).portin ), @mycallback, p
+' por ahrao iognoramos otros tipsod de mensaje
+              rtmidi_in_ignore_types  (midiin(pmTk(ntk).portin ), 1, 2, 4)
+              teclado=1 
+              jgrb=0
+'------------hace falta abrir la salida
+Print #1,"abriendo port...."
+Dim k1 As Integer
 
-'''  barrePenta (c, Roll )
-  'ThreadWait threadPenta
-   
-  pubi=0
-
-  menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
-'------------------08-02-2022--cambio de dispositivo por ahora solo usa un dispositivo
-' ---ya usaremos mas de uno....muy pronto...   08-02-2022
-/'    
-If portsout <> portout And  cierroport=0  And cargaCancion=0  Then
-   Print #1," ABRIENDO PORT  portsout, nombreport ",portsout, *nombreport 
-   Print #1," postrsout ABIERTO HAST AHORA ",portsout
-   Print #1," nombre del que YA ESTA ABIERTO ",nombreport
-   '''''''' NO CIERRO MAS LOS PORTS close_port(midiout)
- ' como se que puerto cierro ? debo reordar el que abri?
- ' debo permitir abir mas de un port y asciarlo a un apista seleccionada por el usuario
- ' o directamenta cuano lo selecciona se graba en esa pista o el vector pmTk(ntk)
- ' 
- 
-  portsout = portout ' elegido en menu MIDI-OUT
-  nombreport = port_name(midiout, portsout)
-' cierro el puerto que haya abierto
-' no hace falta cerrar solo seleccioanr puerto ¿?   
-'           out_free(midiout) cierro pero no libero
-
-  Print #1,"  VA A ABRIR OTRO PORT portsout, nombreport ",portsout, *nombreport
-  open_port (midiout, portsout, nombreport)
-
-' usamos el instrumento default si hay uno almacenado en la pista
-' pero logico segun el dispositivo y el canal sera diferente el resultado
-  'If Roll.trk(1,NA).inst > 0 Then
-  ' ChangeProgram ( Roll.trk(1,NA).inst , 0)
-  'EndIf
-  Print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
-
-End If       
-'/       
-'----------------APERTURA DE PORTS DE DESPUES DE LA CARG ADE CANCION Y POR MENU----------------
-' -----------PARA UNA PISTA SOLA TAMBIEN.....CARGAPISTA ABRE PORTS TAMBIEN....
-' PERO AL CARGA DE UN ROLL O TRK AISLADO NO LO HACE,,,,       
-/'
-    portout = CInt(pmTk(ntk).portout)  
-If portout >0 And portsout <> portout And  cierroport=0  And cargaCancion=0  Then   
-portsout = portout
-nombreport = port_name(midiout(portout), portout)
-  Print #1,"  VA A ABRIR OTRO PORT portsout, nombreport ",portout, *nombreport
-  If listOutAbierto(portout) = 0 Then ''And CANCIONCARGADA=FALSE  Then
-     midiout(portout) = rtmidi_out_create_default()
-     nombreOut(portout) = port_name(midiout(portout), portout)
-    Print #1, "Abriendo port  " , portout, *nombreOut(portout)
-    open_port (midiout(portout), portout, nombreOut(portout))
-    porterror=Err 
+  
+   k1=CInt(pmTk(ntk).portout)
+    
+   Print #1,"midiout ",k1, *nombreOut(k1)
+   If InStr(*nombreOut(k1),"Microsoft")>0 Then
+     Print #1,"No se usa Microsoft"
+   Else
+     If listoutAbierto( k1) = 0 Then
+        midiout(k1) = rtmidi_out_create_default ( )
+        open_port midiout(k1),k1, nombreOut(k1)
+        Dim As integer    porterror=Err 
+        listoutAbierto( k1) = 1
+        Print #1,"abro ",*nombreOut(k1)
 
     Select Case porterror
       Case RTMIDI_ERROR_WARNING
@@ -1054,7 +1040,7 @@ nombreport = port_name(midiout(portout), portout)
         End
 
       Case RTMIDI_ERROR_DRIVER_ERROR
-        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!
+        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
         Close
         End
 
@@ -1068,18 +1054,38 @@ nombreport = port_name(midiout(portout), portout)
         Close
         End
     End Select
+   EndIf
+ EndIf 
+
+ Print #1,"Port usando en Play teclado ",portout
+Print #1,"-------------------------------------"
+End If
+If abrirMIDIin=2 Then  
+   cancel_callback(midiin(pmTk(ntk).portin ))
+   Dim k1 As Integer
+   k1=pmTk(ntk).portout
+   Print #1,"midiout ",k1, *nombreOut(k1)
+   alloff( pmTk(ntk).canalsalida,k1 )  
+   listoutAbierto(k1)=0
+   close_port midiout(k1)
+   teclado=0
 
 
-  Else
-     Print #1, "port ya abierto " , portout, *nombreOut(portout)
-  EndIf
+endif
 
-  listoutAbierto( portout ) = 1
+'05-02-2022 usamos threarPenta ya definida global
+' se supone que la direccion es unica y se reusa no se la crea muchas veces
+' es mejor no ¿? zas je 
+    threadPenta = ThreadCall barrePenta (c, Roll )
+    ThreadWait threadPenta
 
- '--------------------------------
-EndIf
 
-'/
+'''  barrePenta (c, Roll )
+  'ThreadWait threadPenta
+   
+  pubi=0
+
+  menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
 
     botones(hWnd, c ,cm, ANCHO,ALTO) ' este despues sinocrash
     cairo_stroke(c)
@@ -1689,7 +1695,8 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
 
  Else
    If playb = 0 And play=0 And Cplay=0 And MaxPos > 1 Then ' 23-02-22 ningun play
-      
+      GrabarPenta=0:naco=0:naco2=0
+      SetGadgetstate(15,0) ' 10-04-2022
       print #1,"SPACE call play"
         If  MaxPos > 1 Then 
          '''Dim tlock As Any Ptr = MutexCreate()
@@ -1744,6 +1751,7 @@ deltaip=0:incWheel=0:lockip=0:playloop=0
 
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
+
 ' MAYUSCULAS PARA SOSTENIDOS
 ' Ahora en nota se guarda el semitono 1 a 12...,  DUR guarda la duracion
 If COMEDIT = TRUE Then ' ingreso de notas   
@@ -1882,6 +1890,118 @@ If MultiKey (SC_G) Then
  EndIf
  Exit Do
 EndIf
+'----teclado
+
+ ' If nC=1  Then ' And cnc=0 Then 
+   '  t1k=Timer
+     'nota=RelnRnE(nRk)
+   '  cnc=cnc+1
+   '  cnf=0
+ ' EndIf
+'  If nC=1  And cnc =1 Then 
+'     nota=RelnRnE(nRk)
+'     nF=1     
+'     cnc=0
+'     cnf=0
+'  EndIf
+
+' PONER UN FALG APRA EVITAR EL CALCULO DE SDURA DE ESE MODO NO MUESTRA LOS
+' SILENCIOS
+  If dato1 > 0  And DURk >0   Then 'And cnf=0  Then
+   '  t2k=Timer
+      'contcode = 1 'A CERO al pulsar Edit
+      Print #1," dato1, dato2 =", dato1 ,dato2
+     'DURK=t2k-t1k
+       numfloat=DURk/((60/tiempoPatron) / FactortiempoPatron)
+      ' la duracion debe mantenerse constante por mas que el tempo cambie 
+     ' asi las figuras seran las mismas pero el tempo las tocara mas rapido nada mas
+     ' si toco una negra a 120 no sera una corchea, sera una negra,,,
+    If  numfloat  >= 0.01041666  Then
+					For ii=1 To 45
+					 If numfloat > durcla(ii,1) And numfloat < durcla(ii+1,1) And ii< 45 Then
+					    Print #1, "1) esta entre ",durcla(ii,1), " y ",durcla(ii+1,1), numfloat
+					    numfloat=numfloat-durcla(ii,1)
+             Select Case dato1
+               Case 144
+					     duras(1)=durcla(ii,2)+45
+               Case 128
+					     duras(1)=durcla(ii,2) 
+            End Select 
+					     numduras=1
+					    Exit For
+					 EndIf
+			
+			     Next ii
+			'     Print #1,"----------------------------" 
+						For ii=1 To 45
+						   If numfloat > durcla(ii,1) And numfloat < durcla(ii+1,1) And ii< 45 Then
+						     Print #1,"2) esta entre ",durcla(ii,1), " y ",durcla(ii+1,1),numfloat
+						     numfloat=numfloat-durcla(ii,1)
+             Select Case dato1
+               Case 144
+					     duras(2)=durcla(ii,2)+45
+               Case 128
+					     duras(2)=durcla(ii,2)
+            End Select 
+  	             numduras=2
+
+						     Exit For
+						   End If
+						Next ii
+				'		Print #1,"----------------------------"
+						For ii=1 To 45
+						   If numfloat > durcla(ii,1) And numfloat < durcla(ii+1,1) And ii< 45 Then
+			 			     Print #1,"3) esta entre ",durcla(ii,1), " y ",durcla(ii+1,1),numfloat
+						      numfloat=numfloat-durcla(ii,1)
+             Select Case dato1
+               Case 144
+					     duras(3)=durcla(ii,2)+45
+               Case 128
+					     duras(3)=durcla(ii,2)
+            End Select 
+
+			           numduras=3
+						     Exit For
+						   EndIf
+						Next ii
+         numfloat=0
+
+     Select Case dato1 
+       Case 128   'off
+          Velmidi=0
+        Case 144  ' on
+          Velmidi=dato3 ' guardarla
+
+     End Select
+             If numduras =2 Then
+  	     		       duras(1) = duras(1)+90
+             EndIf		
+             If numduras =3 Then
+  	     		       duras(1) = duras(1)+90
+  	     		       duras(2) = duras(2) +90
+             EndIf		
+
+
+
+						If duras(1) >0 Then
+			         Print #1, figura(duras(1)),
+						EndIf
+						If duras(2) >0 Then
+						   Print #1, figura(duras(2)),
+						EndIf
+						If duras(3) >0 Then
+						   Print #1, figura(duras(3))
+						EndIf
+						DURk=0
+      'dato1=0  
+       '''''If  numduras=0 Then numduras=1 EndIf
+    EndIf   
+  EndIf
+
+' ------------fin teclado
+
+
+
 
 EndIf  ' COMEDIT =true para ingreso de notas 
 
@@ -1926,6 +2046,10 @@ If COMEDIT = TRUE Then
   EndIf
   
 ' fin duracion de notas para entrada normal
+' --------
+
+
+'----------------------------------------
 ' CURSOR MODIFICCION DE NOTAS ergo usamos nota=0 para evitar entrada normal   
   If MultiKey(SC_9) Then 'espacio en edit sin cursor
      DUR = 181:Exit Do
@@ -2114,15 +2238,29 @@ EndIf
 ' al usar iniciodeLectura, pero eso sí, con inicio congelaba el movimiento
 ' del roll ante una entrada de nota hasta el próximo incremento de pantalla
 ' SOLO SEUSAPARAINGRESO DE NOTAS NUEVAS ..VERIFICANDO JMG
-If COMEDIT = TRUE  And nota> 0 And agregarNota=0 And cursorVert=0 And carga=0 And nota <=182  Then ' 182 entra el fin de archivo 
+'Print #1,"llega a Nucleo numduras, nota,nRk  ",numduras,RelnRnE(nRk), nRk
+If numduras=0 Then numduras=1
+Dim As UByte ij=0
+For ij= 1 To numduras
+ If GrabarPenta=1 And duras(ij) > 0 Then
+  DUR=duras(ij)
+  Print #1,"NUCLEO DUR ",DUR
+  nota=RelnRnE(nRk)
+Print #1,"NUCLEO nota ",nota
+  estoyEnOctava = (nRk +nota +1)/13 ' este nRk es notapiano pero no deberia ser nRk indiceRoll???
+  
+ 'controlEdit=0
+ ''octavaEdicion=estoyEnOctava
+EndIf
+If COMEDIT = TRUE  And nota > 0 And agregarNota=0 And cursorVert=0 And carga=0 And nota <=182  Then ' 182 entra el fin de archivo 
  'print #1,"--------------------------------------------------------------"
  'print #1,">>>START NUCLEO-COMPAS VECTOR posn: "; posn; "suma:";acumulado
  'print #1,">>>START NUCLEO-COMPAS PROCESANDU DUR: " ; DUR;_
  '   " nota: ";nota; " figura: ";figura(DUR)
-
-Print #1,"entro nota ",nota 
+Print #1,"entro nota ",  nota;"=";  NotasGuia (nota-1) 'nota 1 a 12 o 0 11 inversa? 
  
- posn=1+InicioDeLectura
+  posn=1+InicioDeLectura
+ 
  'If DUR=0 Then
  ' nota=0
  ' 
@@ -2134,14 +2272,14 @@ Print #1,"entro nota ",nota
  EndIf
   '   print #1,"estoyEnOctava ";estoyEnOctava
  ' And octavaEdicion = estoyEnOctava
- If estoyEnOctava <> 99  And octavaEdicion = estoyEnOctava Then ' estoy en una octava
+ If estoyEnOctava <> 99  And octavaEdicion = estoyEnOctava Or GrabarPenta=1 Then ' estoy en una octava
   '  If indice <= 0 Then
   '      indice = 1
   '  EndIf
   '  If indice >= 128 Then
   '      indice = 128
   '  EndIf
-  If nota > 0 And estoyEnOctava < 99 And estoyEnOctava >=1 Then
+  If nota > 0 And estoyEnOctava < 99 And estoyEnOctava >=1  Or GrabarPenta=1 Then
 
    ' ====>  Control PAgindo Horizontal <=======
    '      kNroCol= Int(posicion/60)
@@ -2150,18 +2288,19 @@ Print #1,"entro nota ",nota
    ' PARA USAR ESTO CON ENTRADA POR MOUSE SOLO DEBO DETERMINAR EL SEMITONO...
    ' y hacer nota=semiotono 1 a 11 con el mouse...el esto es automtico...
    Do ' nota es semitono ahora va de 0 a 11 deborestr 1 a nota
-'  Print #1,"posn, nota, estoyEnOctava ",posn,nota,estoyEnOctava 
+  ' Print #1,"posn, nota, estoyEnOctava ",posn,nota,estoyEnOctava 
+
  ' Print #1,"Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota ",Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota
-    If Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0 Or Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 182 Then
+    If Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0 Or Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 182  Then
        posicion=posn
      '182 el fin de archivo lo puedo pisar para seguir la secuencia
      '      print #1, "ingreso a NUCLEO POSICION=POSN", posicion
      Exit Do
     EndIf
    
-
-     posn = posn + 1
- 
+     
+      posn = posn + 1
+     
 '---control barrido de pantalla columna
     If (posn > NroCol + InicioDeLectura) Then
      InicioDeLectura=InicioDeLectura + NroCol
@@ -2194,6 +2333,10 @@ Print #1,"entro nota ",nota
    ' ESTO ME UBICA EN QUE RENGLON DE LA OCTaVA ESTOY SN USAR EL MOUSE
    ' CON EL MOUSE tambien se hizo
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = nota 'carga visualizacion
+  If  GrabarPenta=1 Then
+   Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).vol = velmidi 'carga visualizacion
+ End If
+
  '  Print #1,"NUCLEO: Posn,nota,EstoyEnOctava ",posn,nota,EstoyEnOctava
    nR=(12-nota) + (estoyEnOctava -1 ) * 13 
    PianoNota= nR - restar (nR)
@@ -2205,7 +2348,7 @@ Print #1,"entro nota ",nota
    'cargo TRACK
    Track(ntk).trk(posn+1,1).dur= 182
 
-   If notaOld > 0 And notaOld <> nota  Then
+   If notaOld > 0 And notaOld <> nota   Then
   '  print #1,"Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota"; _
    '           Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota
     Roll.trk(posn,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).dur = 0 
@@ -2431,6 +2574,7 @@ mel_undo(mel_undo_k).posn = posn
    '  print #1,"Nucleo Error "; rmerr
 
    nota = 0
+
    If DUR= 181 Then
       DUR=0
    EndIf
@@ -2441,14 +2585,14 @@ mel_undo(mel_undo_k).posn = posn
    ' para esa nota 1ero deberia oder moverme arribay bjo con el cursor para
    ' posicionarmeen una nota....ctrl-felcahs verticales ubicaran en cursor
     nota=0
-  EndIf
+  EndIf   ' comentar el endif para teclado
   nota = 0 '18-11-2021
   'print " Roll ", Roll.trk(indice, posicion)
-    
+ 
   ' mostrarla en la t del Roll en el indice correspondiente
   ' ocalculo elindice en cada t y meto la nota o saco en t las otas
   ' del vector Roll pra ello acaa la grabo enRoll
- EndIf
+ EndIf ''comentar el endif para teclado
  '''   calcCompas(posn)
  ' correccion de loop octava jmg09-06-2021 , por ahora hasta encontar 
  ' la causa real preparado el corrector,pero encontre una causa veremos
@@ -2470,7 +2614,14 @@ mel_undo(mel_undo_k).posn = posn
   EndIf 
   nota=0 '18-11-20201
  ''''Exit Do 'kkkk 09-01-22 probando no debe sali rdebe seguir chequeando
+  
 EndIf
+
+Next ij
+
+
+duras(1)=0:duras(2)=0:duras(3)=0
+numduras=0:dato1=0:nRk=0
 ' fin correccion loop
 
 'If COMEDIT=FALSE then
@@ -3050,7 +3201,19 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
      If s3=0 Then
        guardopos=posicion
      EndIf
-     Print #1,"1) s3, guardopos ",s3, guardopos
+     Print #1,"Pulso boton Edit 1) s3, guardopos ",s3, guardopos
+     If  GrabarPenta=1 And metronomo_si=1 Then
+        terminar_metronomo=0
+        Dim As Integer im=0
+        For im=1 To 4  
+            noteon(60,60,1,0)
+            noteoff(60,1,0)
+            duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+        Next im
+        threadmetronomo = ThreadCall metronomo()
+         contcode =0 ' para detectar 1er nota de midiin porque no envia 144 la 1era vez solo 128!!
+         
+     EndIf
      ''mayorDurEnUnaPosicion (posn)
      '' calcCompas(pos)
      s3 = 1
@@ -3062,6 +3225,11 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
         COMEDIT = FALSE '': s3 = 0 ' solo LECTURA 06-12-2021
      '       print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
      'posicion= posicion + curPOS ' estaba mal no va 3-3-21 jmg
+     If  GrabarPenta=1 Or  metronomo_si=0 Then
+ 
+         terminar_metronomo=1
+     EndIf
+
         If play=0 Then
            Print #1,"2) s3, guardopos ",s3, guardopos
            posicion=guardopos
@@ -4049,7 +4217,7 @@ ButtonGadget(2,530,30,50,40," OK ")
      nroClick=1
      cursorVert = 1
      cursorHori = 1
-
+     GrabarPenta=0:naco=0:naco2=0
  '  print #1, "------------------------------------------------------------"
  '  Print  #1,"(1) MultiKey(SC_CONTROL) And (MouseButtons And 2) And COMEDIT=TRUE"
  '  print #1, "sc_CONTROL + MB2 + CE=TRUE <= ESTADO:CALL MENU COMANDO"
@@ -4364,11 +4532,11 @@ ButtonGadget(2,530,30,50,40," OK ")
   
  
  ' ====>>> HABILITAR UNA OCTAVA PARA EDICION CON EL MOUSE 
+If GrabarPenta=0 Then
  If  mousex > ANCHO3div4 And COMEDIT=TRUE Then ' 09-06-2021 para que nochoque con boton EDIT
        octavaEdicion=estoyEnOctava
  EndIf
-
-
+EndIf
 
 
 ' A PARTIR DE ACA FUNCIONA PARA AMBAS CONDICIONES? PERO LO ESTOY USANDO EN FALSE

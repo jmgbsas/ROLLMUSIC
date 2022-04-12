@@ -173,9 +173,10 @@
 
     16 ) En algun Futuro: exportar a MusicXml o midi para poder interactuar con otros programas.
            Como tambien importar...
-    17 ) MIDI-IN GRABACION: (EN DESARROLLO, 2da parte) version 4550 . 
+    17a ) MIDI-IN GRABACION: (EN DESARROLLO, 2da parte) version 4550 . 
          YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN TOCANDO EN UN O CONTROLADOR MIDI EXTERNO o TECLADO externo 
          real concectado su salida MIDI-OUT  al MIDI-IN de la PC.
+         (no se sincronizan por ahora ...todas empeizan dsde cero)
           Para ello no hace falta levantar el Roll Grafico.
           pasos 
           a) Dar check a l pista a grabar en la columna 'G' de la 2da lista de pistas. debajo del menu
@@ -193,6 +194,18 @@
           Reproducir todas las pistas grabadas pulsando el boton Verde Reproducir o Play.
           Todavia no se graba a disco la grabacion,,,probarlo si hay error avisar,,,
           (falta grabar a disco poder elegir patch, port etc....)
+    17b) grabacion directamente sobre Roll, 1era version faltaria que detecte acordes
+           ya lo hizo en algun algoritmo distinto a este , el actual funiona para melodias, tiene
+           un metronomo, si se desea se puede desactivar (menu Opciones, no probado)
+           Como antes en 17a en menu Reproducit, elegir Reproducir MIDI-IN, luego
+           darle al boton rojo de la izquierda de las pistas para grabar, se escuchara 4
+           ticks preparatorio mas graves , luego comienza los ticks mas agudos de grabacion
+           junto al cambio de color del Edit de grabacion (Edicion de Roll como la manual)
+           Al detener como antes la edicion se podra darle play, Para volver a grabar se repite las
+           mismas acciones. deja un archivi debug.txt para estudiarlo. Graba lso silencios
+           con la nota siguiente con sonido. Roll separa algunas notas cuadno la duracion del compas
+          es mayor , pero generalmente no logra el compas exacto...de modo que eliminare creo
+          el calculo del compas y quedara un Roll sin compases.
     18 ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
           o ordenar la ejecucion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
           o ejecutar con otras instancias de RollMusic con o sin Control...(hay muchisimo por hacer...)

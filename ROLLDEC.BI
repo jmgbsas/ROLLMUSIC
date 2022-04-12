@@ -92,6 +92,7 @@ Declare Sub ComboBox()
 Declare Sub grabaprueba()
 Declare Sub borrarColumnasMarcadas()
 Declare Function SumarnR (notaPiano As Integer) As Integer
+Declare Function SumarnRk (notaPiano As ubyte) As ubyte
 Declare Sub salir()
 
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
@@ -103,7 +104,7 @@ Dim Shared As integer pasoZona2=0,nroRep=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, playloop2=0,SelGrupoNota =0,moverZona=0, copiarZona=0
 Dim Shared as ubyte  DUR,nota,notasInsertadas (1 to 1500),notacur
 Dim Shared As String t,t2
-Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert, cursormove
+Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert, cursormove,notaoldmidi
 Dim shared As integer Penta_y, indice, espacio,cursorHori
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
@@ -409,6 +410,7 @@ escala(50).pasos = @(1)
 
 ' 5.7.6.00 tresillos
 espacio=0:notacur=1 '16-05-2021 jmg
+/'
 Dim  Shared figura (1 To 182) As ZString  * 4 => _
 {" O "," P "," I "," L "," F "," E "," X "," H "," W ",_  '  1  9
  " O4"," P4"," I4"," L4"," F4"," E4"," X4"," H4"," W4",_  ' 10 18
@@ -431,6 +433,30 @@ Dim  Shared figura (1 To 182) As ZString  * 4 => _
  "@:+","%:+","&:+","/:+","//:+","{:+","{{:+","#:+","##:+",_  '163 171 
  "3@+","3%+","3&+","3/+","3//+","{3+","3{{+","3#+","3##+", _ '172 180
  "   ","|| " } ' 181 182 - 109 110, son 108 (old 73 74 son 72)
+'/
+Dim  Shared figura (1 To 182) As ZString  * 4 => _
+{" O "," P "," I "," L "," F "," E "," X "," H "," W ",_  '  1  9
+ " O4"," P4"," I4"," L4"," F4"," E4"," X4"," H4"," W4",_  ' 10 18
+ " O*"," P*"," I*"," L*"," F*"," E*"," X*"," H*"," W*",_  ' 19 27
+ " O:"," P:"," I:"," L:"," F:"," E:"," X:"," H:"," W:",_  ' 28 36
+ "3O ","3P ","3I ","3L ","3F ","3E ","3X ","3H ","3W ", _ ' 37 45 
+ "sO ","sP ","sI ","sL ","sF ","sE ","sX ","sH ","sW ",_  ' 46 54 
+ "sO.","sP.","sI.","sL.","sF.","sE.","sX.","sH.","sW.",_  ' 55 63
+ "sO*","sP*","sI*","sL*","sF*","sE*","sX*","sH*","sW*",_  ' 64 72 
+ "sO:","sP:","sI:","sL:","sF:","sE:","sX:","sH:","sW:",_  ' 73 81
+ "s3O","s3P","s3I","s3L","s3F","s3E","s3X","s3H","s3W", _ ' 82 90 
+ " O+"," P+"," I+"," L+"," F+"," E+"," X+"," H+"," W+",_  ' 91 99 
+ "O4+","P4+","I4+","L4+","F4+","E4+","X4+","H4+","W4+",_  ' 100 108
+ "O*+","P*+","I*+","L*+","F*+","E*+","X*+","H*+","W*+",_  ' 109 117 
+ "O:+","P:+","I:+","L:+","F:+","E:+","X:+","H:+","W:+",_  ' 118 126
+ "3O+","3P+","3I+","3L+","3F+","3E+","3X+","3H+","3W+", _ ' 127 135 
+ "sO+","sP+","sI+","sL+","sF+","sE+","sX+","sH+","sW+",_  ' 136 144 
+ "sO4+","sP4+","sI4+","sL4+","sF4+","sE4+","sX4+","sH4+","sW4+",_  '145 153
+ "sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sX*+","sH*+","sW*+", _ '154 162
+ "sO:+","sP:+","sI:+","sL:+","sF:+","sE:+","sX:+","sH:+","sW:+",_  '163 171 
+ "s3O+","s3P+","s3I+","s3L+","s3F+","s3E+","s3X+","s3H+","s3W+", _ '172 180
+ "   ","|| " } ' 181 182 - 109 110, son 108 (old 73 74 son 72)
+
 ' silencios entre  46 a 90 y 136 a 180    
  'los puntillos de tresillos coinciden con elvalor superior
 'ej (3I)*=I=1.. 1/3 tresillo de negra con puntillo = negra
@@ -590,6 +616,11 @@ Dim Shared As Integer ContadorError=0
 
 Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _
 modifmouse, EnOctava,nE,nR,lugarOld, nroClick, posinterna, indCompas,menuabierto=0
+Dim Shared As ubyte nC=0,nF=0,nRk=0, cnc=0,cnf=0
+
+Dim Shared As Double t1k,t2k,DURk,DURK1,DURk2
+Dim Shared As Integer abrirMIDIin=0
+' nC indica 144, nF indica 128
 
 Type poli Field=1 ' para guardar la secuencia
  dur As  UByte =0   ' duracion 
@@ -729,7 +760,7 @@ Dim Shared As Integer  AnchoInicial,AltoInicial
 Common Shared As FLOAT font
 Dim Shared As float  deltaipf=0, lockip=0 
 Dim Shared q As String * 1
-Dim Shared As UByte  indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
+Dim Shared As UByte  ii,numduras=0,indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
 ''Dim Shared escala As float = 1.0
 Dim Shared translado As Integer = 1
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
@@ -809,7 +840,7 @@ common Shared As String NombreCancion,NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista',pistacreada
 Common Shared As cairo_t  Ptr c, c2
 Common Shared surface As Any Ptr
-Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu
+Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu,threadmetronomo
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx
 Common Shared As ubyte patchsal
@@ -868,11 +899,19 @@ Type ejec
 End Type
 
 ReDim Shared Toca (1 To 32) as ejec  ' vector ejecucion real
+Dim Shared As Integer tocatope=0
+Dim Shared As Double StartPlayejec=0
+Dim Shared As Double DeltaGrabar=0
+Dim Shared As Integer kply
+Dim Shared As Double timex(1 To 32)
+Dim Shared As UByte dato1, dato2 , dato3, dato1old,dato4=0 
+Dim Shared  As Double stime1=0, stime2=0, sdura=0
+Dim Shared datot4 As double
 
 ' usaremos xml par aleer y escribir musicxml 
 ' http://xmlsoft.org/examples/index.html
 Dim Shared As String acercade, camino,nroversion
 
-Dim Shared GrabarEjec As Byte =0 
+Dim Shared As UBYTE GrabarEjec=0, GrabarPenta=0  
 
 

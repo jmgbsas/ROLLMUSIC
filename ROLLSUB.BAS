@@ -1661,7 +1661,8 @@ CantTicks=1000 ' vuelvo al original default
    mel_undo_k=0 :ig=0:cnt_acor=0
    Erase mel_undo, undo_acorde,undo_kant_intervalos
 ' FIN BORRO UNDO
-
+nota=0
+   dur=0
 ' se inicia el vector desde 1 hasta 9, se puede achicar las octavas ok.
 ' si ya se habian achicado y quiero agrandar, no se puede, debo borrar el vector.
 ' En la cantidad de posiciones no hay porblema en ambas direcciones. 
@@ -1681,7 +1682,7 @@ CantTicks=1000 ' vuelvo al original default
                ReDim (RollAux.trk) (1 To CantTicks, NB To NA)
                mel_undo_k=0:ig=0:cnt_acor=0
                Erase undo_kant_intervalos,undo_Acorde
-               posn=1
+               posn=0
      '     Else
 '
 '               ReDim Preserve (Roll.trk ) (1 To CantTicks, NB To NA )
@@ -1691,10 +1692,11 @@ CantTicks=1000 ' vuelvo al original default
 '          EndIf
 
           MaxPos = 2 'NroCol
-          posicion=1
+          posicion=0
           curpos=0 
-          notacur=1
+          notacur=0 ' 10-04-2022
           nroCompas=0
+          InicioDeLectura=0
           tres=0:pun=0:sil=0:mas=0:doblepun=0:cuart=0
           tres=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
           SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
@@ -1719,14 +1721,15 @@ CantTicks=1000 ' vuelvo al original default
           print #1,"posn,CantTicks ",posn,CantTicks
           print #1,"NB, NA ",NB,NA
           
-          Dim As Integer r1,i
-          For i=NB To NA 
-            For r1= posn To CantTicks ' POSN +1 TO POSN 24-09-2021 JMG
-                Roll.trk(r1,i).nota=0
-                Roll.trk(r1,i).dur=0 
-             Next r1 
-         Next i           
+       '   Dim As Integer r1,i
+       '   For i=NB To NA 
+       '     For r1= posn To CantTicks ' POSN +1 TO POSN 24-09-2021 JMG
+       '         Roll.trk(r1,i).nota=0
+       '         Roll.trk(r1,i).dur=0 
+       '      Next r1 
+       '  Next i           
 param.Roll = Roll ' por esto reventava al variar octavas se debecargar
+Tracks (ntk , 1,Roll)
 ' de nuevo Roll que quedo en rolldec ahora 405
 End Sub
 ' 
@@ -1929,6 +1932,8 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
          print #1,"hizo click para llamar a playall, maxpos ",maxpos 
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 1 Then
+               GrabarPenta=0:naco=0:naco2=0
+               SetGadgetstate(15,0) ' 10-04-2022
          print #1,"llama a playall"
          thread1 = ThreadCall  playAll(Roll)
          ''''playAll(Roll)
@@ -4534,13 +4539,80 @@ EndIf
  guardpos=posicion
  pasozona1=indicePos
  pasozona2=indicePos
- playAll (roll)
+ playAll (roll)  'PLAYACORDE
  pasozona1=0
  pasozona2=0
  posicion=guardpos
  
 End Sub
+Function FiguraEquivalente(DURk As double) As UByte
+Dim As ubyte i=0,j=0,k=0 ,p1=0,p2=0,p3=0,p4=0,p5=0,p6=0,p7=0
+Dim As Double resta,vabs
+'p1=DURk  ' parte entera detecta hasta 7 negras juntas (O+P+I)
+' comienzo con los valores mas chicos
+'Dim As Integer partes_falta (1 To 20), partes_sobra(1 To 20)
+'Dim As Integer cantPArtes,falta
+' no hace falta el vector!! solo emitir DUR
+FiguraEquivalente=0
+For i=37 To 45  '2.666 etc
+ resta=DURK-relDur(i)
+ vabs = Abs(resta)
+ If vabs <= 0.0001  Then
+    j=j+1 
+    FiguraEquivalente=i
+' si estoy en el borde del compas necesitarre separadur
+'''    separarDur(j,DUR, partes_sobra(),cantSobra,sobra)
+'ahra tengo 
+    Exit Function
+ EndIf
 
+Next i
+
+For i=1 To 9  
+ resta=DURK-relDur(i)
+ vabs = Abs(resta)
+ If vabs <= 0.0001  Then
+    j=j+1 
+    FiguraEquivalente=i
+    Exit Function
+ EndIf
+
+Next i
+
+For i=10 To 18  
+ resta=DURK-relDur(i)
+ vabs = Abs(resta)
+ If vabs <= 0.0001  Then
+    j=j+1 
+    FiguraEquivalente=i
+    Exit Function
+ EndIf
+
+Next i
+
+For i=19 To 27  
+ resta=DURK-relDur(i)
+ vabs = Abs(resta)
+ If vabs <= 0.0001  Then
+    j=j+1 
+    FiguraEquivalente=i
+    Exit Function
+ EndIf
+
+Next i
+
+For i=28 To 36  
+ resta=DURK-relDur(i)
+ vabs = Abs(resta)
+ If vabs <= 0.0001  Then
+    j=j+1 
+    FiguraEquivalente=i
+    Exit Function
+ EndIf
+
+Next i
+
+End Function
 
 
 ' error
