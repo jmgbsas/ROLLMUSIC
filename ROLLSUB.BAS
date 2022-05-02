@@ -1413,10 +1413,10 @@ abrirRoll=2 ' habilita la carga de una cancion
          Open nombre  For Binary Access Read As #ca
       Else
          Sleep 100
-'' NO LEE UN AMIERDA SI ENTRA POR ACA TODO LO QUE TRAE ESTA EN CERO INCREIBLE LA PUTA MADRE!!!
-  '       Print #1,"lee con control de error.. "
+
+         Print #1,"lee con control de error.. "
      If Open (nombre  For Binary Access Read Shared As #ca ) <> 0 Then
-   '     print #1,"Error open cargaARchivo 1387, nombre ",nombre
+        print #1,"Error open cargaARchivo 1387, nombre ",nombre
         Exit Sub
      End If
          
@@ -1448,13 +1448,13 @@ abrirRoll=2 ' habilita la carga de una cancion
      If tipoescala_num_ini =0 Then
         tipoescala_num_ini =1
      EndIf
-  '   Print #1,"tipoescala_num_ini ",tipoescala_num_ini ' 
+     Print #1,"tipoescala_num_ini ",tipoescala_num_ini ' 
      
      x=x1+x2+x3+x4+x5
-     '   print #1,"reconstruccion x pos bin ", x
+        print #1,"reconstruccion x pos bin ", x
      MaxPos=CInt("&B"+x)
      posicion = 1
-     '  print #1,"reconstruccion x pos int ", Posicion
+       print #1,"reconstruccion x pos int ", MaxPos
      
      
      nota=0 '''notaOld
@@ -1467,16 +1467,16 @@ abrirRoll=2 ' habilita la carga de una cancion
      ' crgamos limites Roll de octavas
      Get #ca, , zLim(1,1)
      desde  = CInt(zLim(1,1).nota)
-   '  Print #1,"desde ",desde
+     Print #1,"desde ",desde
      hasta  = CInt(zLim(1,1).dur)
-   '  Print #1,"hasta ",hasta
+     Print #1,"hasta ",hasta
      notaold= CInt(zLim(1,1).pb)
-   '  Print #1,"notaold ",notaold     
+     Print #1,"notaold ",notaold     
      notaescala_num_ini =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
      If notaescala_num_ini = 0 Then
         notaescala_num_ini =1
      EndIf
-   '  Print #1,"notaescala_num_ini ",notaescala_num_ini     
+     Print #1,"notaescala_num_ini ",notaescala_num_ini     
      if  zLim(1,1).pan = 3 Then
          alteracion="sos"
      EndIf    
@@ -1486,10 +1486,10 @@ abrirRoll=2 ' habilita la carga de una cancion
      if  zLim(1,1).pan = 3 Then
          alteracion="sos"
      EndIf
-   '  Print #1,"alteracion ",alteracion
+     Print #1,"alteracion ",alteracion
       
     cadenaes_inicial=""
-    'Print #1,"armarescala desde cargarArchivo"
+   Print #1,"armarescala desde cargarArchivo"
 
     armarescala (cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini, alteracion ,1)
 
@@ -1528,9 +1528,9 @@ abrirRoll=2 ' habilita la carga de una cancion
      Get #ca, ,z3  (1,1)
 
      canalx  = CInt(z3(1,1).inst) ' canal midi cargado en Global si es un track se pasara a info de trck
- '    Print #1,"canalx cargado desde archivo ",canalx
+     Print #1,"canalx cargado desde archivo ",canalx
      portout = CInt(z3(1,1).dur) 
- '    Print #1,"portout cargado desde archivo ",portout
+     Print #1,"portout cargado desde archivo ",portout
      pmTk(0).portout=z3(1,1).dur   ' ubyte  a ubyte
      pmTk(0).canalsalida = z3(1,1).inst ' ubyte a ubyte
      
@@ -1552,7 +1552,7 @@ abrirRoll=2 ' habilita la carga de una cancion
      
      
      ReDim compas(1 To CantTicks)
- '    print #1,"En CargarArchivo NB NA ", NB,NA
+     print #1,"En CargarArchivo NB NA ", NB,NA
      Dim Trabajo (1 To MaxPos, NB To NA) As dat     
      Get #ca, , Trabajo() ' aca levanta tambien el instrumento que se grabo 
      ' CARGA VECTOR ROLL movemos los datos a Roll Y a track 0
@@ -1566,6 +1566,7 @@ abrirRoll=2 ' habilita la carga de una cancion
 Dim As Integer copiado=0
 
  vertical=12+(hasta-2)*13+hasta ' "[NROREP]" de EntrarTeclado
+
      For j = 1 To MaxPos    '11-07-2021
 '      Print #2,"POSICION :";J
       'Print #3,"POSICION :";J
@@ -1595,6 +1596,7 @@ Dim As Integer copiado=0
        EndIf
 ' copia datos de escala, esta repetido en cada octava pero bueno....con una sola
  ' copai estarai bien,,,,
+
       If Trabajo(j,i ).dur= 200  And copiado=0 Then ' solo en 13 copia 1 sola vez ok sigue igual
          
          Track(ntk).trk(j,13).nnn = Trabajo(j,i ).inst ''=CUByte(tipoescala)
@@ -1635,12 +1637,12 @@ Dim As Integer copiado=0
      ' Print #fs, "acorde ",Track(ntk).trk(j,1).acorde
      '  crearsecuencia(Track(), j, ntk )
      Next j
-     
+  
 Close ca
 DUR => 0
 curpos =>1
 ''' carga=0
- ReCalCompas(Roll)      
+ ReCalCompas(Roll)  
  
  
  mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  
@@ -1734,8 +1736,8 @@ Tracks (ntk , 1,Roll)
 End Sub
 ' 
 '
-Sub menugrafico( c0 As cairo_t Ptr,c As cairo_t Ptr ,Cantitems As Integer, text() As String  )
-
+Sub menugrafico( c0 As cairo_t Ptr,Cantitems As Integer, text() As String  )
+'c0 es la superfice de todo roll o c en rolloop
  If savemousex > 0 Or savemousey > 0 Then
   usamousex=savemousex
   usamousey=savemousey
@@ -1792,7 +1794,7 @@ End Sub
 
 '-------------------------------MENU----------
 Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst, ByRef ubiroll As Integer, ByRef ubirtk As Integer )
- ''print #1,"1-menu "
+ print #1,"ENTRO A 1-menu, time, ix ",Time, ix
  Dim As Integer fontOld = font
  font=18 ' ACA AHCE FALTA ESTE TAMAÑO TODO ESTA CALCULADO EN PIXELS PARA QUE ANDE EL MENU
  Dim As cairo_font_extents_t fe   '     font data
@@ -2360,7 +2362,7 @@ EndIf
      "El numero de octavas puede achicarse respecto del inicio",_
      "o agrandar "}
   print #1, "ANTES DE MENUGRAFICO"
-      menugrafico  c0, c, CantItems, text()
+      menugrafico  c0, CantItems, text()
 
     EndIf
 
@@ -2826,7 +2828,7 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
  ReCalCompas(Roll) ' 09-05-2021
 End Sub
 '------------------------------------
-Sub botones(hWnd As HWND, c As cairo_t Ptr, cm As cairo_t Ptr, x As Integer,y As Integer)
+Sub botones(hWnd As HWND,  cm As cairo_t Ptr, x As Integer,y As Integer)
  ' RECTANGULO DE 40 X 40, FONDO ROJO
  Dim As cairo_font_extents_t fe   '     font data
  Dim As cairo_text_extents_t te  '      text size
@@ -3422,26 +3424,8 @@ print #1,"inicia CargaPistasEnCancion"
        print #1,"CARGO PISTAS MAXIMA CANTIDAD TOPE=",tope
        CANCIONCARGADA=TRUE
        ntk=1   ' tab le suma 1 pero si creo pistas estria  mal 05-03-2022 ÇÇÇ
-/'       
-  ' cargo la pista 1
-      ntk=1 ' carga track 1 para mostrarlo
-  ' al terminar de cargar la cancion se posiciona en el track 1 y lo muestra 
-      ' seguimos con carga desde cancion    
-      print #1,"llama a cargar pista 1 con TrackaRoll desde CargaPistaEnCancion"
-  ' aca pasa el ntk en curso a Roll y a track 0, Roll y track 0 van cargados 
-  ' juntos siempre
-      cargaCancion=1 ' me aseguro la carga a  trak 0 TAMBIEN..
-      TrackaRoll (Track() ,ntk, Roll)
-      print #1,"despues de cargar pista 1 TrackaRoll desde CargaPistaEnCancion"
-      nombre=titulos(ntk)
-      Sleep 100
-      print #1,"llama a RecalCompas de pista 1 desde CargaPistaEnCancion"
-      RecalCompas (Roll) 
-       ''' nombre=cadena cadena no tiene la extension
-      '''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0 
-'/
     EndIf
-    '*po = hasta -1
+
 cargaCancion=1 '12-02-2022 mientras carg las pista el 1 indica cargando pistas    
     print #1,"FIN CargaPistasEnCancion no debe calcuar *po ",*po
     print #1,"-------------------------------------------------------"

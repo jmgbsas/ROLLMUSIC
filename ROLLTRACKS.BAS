@@ -1,3 +1,248 @@
+Sub ConversorTocaATecla(pistaToca() As ejec, pistaCargarIn()  As midicod)
+' conesteconversor puedo tomar un Toca llevarlo a formto CargarIn y los datos usados es menor
+' y con ello grabar a archivo...elvector CagarIn()
+ 
+End Sub
+'Sub ConversorTeclaAToca()'
+'End Sub
+/'
+Sub GrabarMidiInnO ( nombre As String, CargaIn() As midicod, pToca() As pEjec )
+    Dim As Long j, n=freefile
+ ' aca laidea es grabarlominimo conCargaIn reconstruyo los Toca() enmemoria
+'  hago la sumatoria de partes de cada vector ladivido por TickChico y obtengo el maxpos
+' pero ese valor y alo tengo en pToca(i)...se que  CargaIn es de mawxpos, de 4000 `porque lodeboponer
+'en pEjec   
+ 
+       If  Open (nombre+".ejec" For Binary Access Write As #n)=0 Then
+           Put #n,,pToca()
+           Put #n,,CargaIn()
+           Close
+       Else
+           Print #1,"Imposible Grabar " + nombre
+      End If
+
+
+End Sub
+'/
+
+Sub GrabarMidiIn ( tocap() As ejec, ntkp As Integer,tocaparam  As ejecparam) 
+    Dim As Long j, n=FreeFile
+    Dim nombre As String
+      nombre =titulos(ntkp+32) ' tiene path , extension y [nro]
+
+      
+      Print #1,"GrabarMidiIn titulos   ", nombre
+      Print #1,"GrabarMidiIn MAXPOS ",tocaparam.maxpos
+      Print #1,"GrabarMidiIn delta ",tocaparam.delta
+      Print #1,"GrabarMidiIn nombre ",tocaparam.nombre
+
+       If  Open (nombre  For Binary Access Write As #n)=0 Then
+           Put #n,,tocaparam
+           Put #n,,tocap()
+       Else
+           Print #1,"Imposible Grabar " + nombre
+      End If
+
+      Close #n
+
+End Sub
+
+Sub CargarMidiIn(nombreMidiIn As String,   ntkp As  long) 
+      Var  f=FreeFile
+      Dim As Integer  j 
+      ' nombre tiene el path y extension esta completo
+     
+  '    pmTk(ntkp+32).MaxPos=N
+ Print #1,"nombreMidiin recibido enCargarMidiIn ",nombreMidiIn
+
+      Dim As Integer ubi1,ubi2 
+      ubi1 = InStrrev(nombreMidiIn,"(")
+      ubi2 =InStrRev (nombreMidiIn,")")
+      ntkp=CInt(Mid(nombreMidiIn,ubi1+1,ubi2-ubi1-1))
+      Print #1,"NTKP ",ntkp
+      If ntkp > 0  Then
+      Else
+         Print #1,"ntkp =0 o distintos"
+         Return
+      EndIf
+      If Fileexists(nombreMidiIn)=0 Then 
+          Print #1,nombreMidiIn;"  not found"
+          Return
+      EndIf 
+      
+ Print #1,"maxgrb en CARGAmidiin ", maxgrb
+      Open nombreMidiIn For Binary Access Read As #f
+            Get #f, ,tocaparam(ntkp)
+             Print #1,"Open nombreMidiIn: tocaparam(ntkp).maxpos ",tocaparam(ntkp).maxpos
+              
+           ReDim (Toca(ntkp).trk ) (1 To maxgrb) 
+            Get #f, ,Toca(ntkp).trk()
+
+Print #1,"ubound ",UBound (Toca(ntkp).trk)
+For j As Integer=1 To tocaparam(ntkp).maxpos
+Print #1, Toca(ntkp).trk(j).modo;" ";Toca(ntkp).trk(j).nota;" ";Toca(ntkp).trk(j).vel
+Next j 
+      Close #f
+'      pmTk(ntkp+32).MaxPos=Toca(ntkp).maxpos
+      ntoca=tocaparam(ntkp).orden
+      
+      Print #1,"CargarIn maxpos,ntkp  ",tocaparam(ntkp).maxpos , ntkp
+      Print #1,"Cargar delta ",tocaparam(ntkp).delta
+      Print #1,"Cargar nombre ",tocaparam(ntkp).nombre
+      Print #1,"Cargar nombre ",tocaparam(ntkp).orden 
+   '  viv.trk()=Toc()
+
+End Sub
+
+Sub CargarPistasEjec (lugar As String, ByRef ntkp As integer)
+' cada vez que cargo borro la info de fechas de pistas anterior
+' para usar esta carga hay que crear un Dir de cancion y abrirlo
+'podra haber pistas trk o ejec o ambas,veremos si se pueden sincronizar   
+ROLLCARGADO=FALSE
+
+GrabarEjec =0: ntoca=0 : arrancaPlay=0 
+''ReDim As Double fechasPistas(1 To 32)
+print #1,"-------------------------------------------------------"
+print #1,"inicia CargaPistasEjec"
+  Dim As String no1, no2
+  Dim As Integer ubi1=0,ubi2=0 
+     Dim As String filenameold
+     ' el Dir me trae lso nombres sin el path de cancion
+     If  lugar ="" Then
+         nombreMidiIn = Dir ("*.ejec")
+     Else
+         nombreMidiIn = Dir (lugar+"\*.ejec")
+     EndIf
+     print #1,"nombreMidiIn encancion > 0 ",nombreMidiIn
+     If nombreMidiIn = "" Then ' no hay ningu archivo dentro del dir de cancion
+        ntkp=1
+        print #1,"dice que no hay archivos "
+        EJECCARGADA=FALSE
+        ' NO HAY NADA QUE CARGAR ESTO NODEPENDE DE ROLL
+        Exit Sub
+     Else
+       ' carga Todos los tracks de cancion en un Loop
+      'busco maxgrb o sea el maxpos de todas las pistas para evitar el redim preserve
+       Dim  fileMidiIn As String
+       If  lugar > "" Then 
+          fileMidiIn=lugar+"\"+nombreMidiIn
+       Else 
+          fileMidiIn=nombreMidiIn
+       EndIf 
+       Var  f=FreeFile
+       maxgrb=0
+       Dim  As Integer nf=0
+       Do While Len(nombreMidiIn) > 0
+           Print #1,"nombreMidiIn loop maxgrb ",nombreMidiIn
+           Print #1,"fileMidiIn loop maxgrb ",fileMidiIn
+
+           nf =nf+ 1
+           Open fileMidiIn For Binary Access Read As #f
+           Get #f, ,tocaparam(nf)
+           Print #1,"tocaparam(nf).maxpos ",tocaparam(nf).maxpos
+           If tocaparam(nf).maxpos > maxgrb Then
+              maxgrb = tocaparam(nf).maxpos
+           EndIf
+           Close #f
+           Sleep  100
+           nombreMidiIn = Dir()
+       If  lugar > "" Then 
+          fileMidiIn=lugar+"\"+nombreMidiIn
+       Else 
+          fileMidiIn=nombreMidiIn
+       EndIf 
+
+
+       Loop
+      Print #1,"MAXIMA LONG DE PISTA EJEC maxgrb, nf ",maxgrb,nf
+      
+'----------------------------
+       Dim  As Integer mayor=1
+       Dim np As Long
+       If  lugar ="" Then
+           nombreMidiIn = Dir ("*.ejec")
+      Else
+          nombreMidiIn = Dir (lugar+"\*.ejec")
+      EndIf
+
+       Do While Len(nombreMidiIn) > 0 ' If len(filename) is 0, exit the loop: no more filenames are left to be read.
+        filenameold=nombreMidiIn
+        print #1, "trabajo con este filename...", filenameOld '[1]AAA.EJEC por ejemplo
+  ' va cargando los track internos, tomando el nro de trackp 
+  ' del nombre del archivo solamente , ergo el usuario puede cambiar el orden
+  ' o poner un trakcp de otra cancion con un numero que no exista [x]
+  '      
+        np=np+1
+       ' Var N=Filelen(nombreMidiIn)\Sizeof(ejec)
+       'Print #1,"CargarMidiIn N LEIDOS",N
+        fileMidiIn=lugar+"\"+filenameOld
+        Print #1,"CargarMidiIn  fileMidiIn ",fileMidiIn
+
+        
+        CargarMidiIn (fileMidiIn,  np)
+ 'durante la cargaTrack el programa va a Rolloop se encuentra con SC_TAB
+ ' y si cargacancion esta en 1 trata de cargar y no lo debe ahcer de modo
+ ' que se ajusta a 0 cargacancion dentro de la rutina veremos 
+               
+        Dim cadena As String
+        ''''cadena= sacarExtension(filenameOld) ' [1]AAA
+        cadena = tocaparam(np).nombre
+         AddListBoxItem(4, cadena,np-1)
+        ntkp=CInt(np)
+      Print #1,"tocaparam(np).maxpos ",tocaparam(np).maxpos
+        pmTk(np+32).MaxPos=tocaparam(np).maxpos
+        
+         Print #1,"pmTk(np+32).MaxPos ",pmTk(np+32).MaxPos
+
+        If tocatope < ntkp Then
+           tocatope=ntkp
+        EndIf
+        titulos(ntkp+32)=nombreMidiIn ' como agregue en titulos la opcion es 1
+        ' como si viniera de linea de comando puedo usar cualquiera o 0
+        pistas (ntkp+32)=nombreMidiIn
+        print #1,"nombre en CargarPistasEjec ,Ntkp ",nombreMidiIn, ntkp
+        Sleep 100
+        nombreMidiIn = Dir()
+       If  lugar > "" Then 
+          fileMidiIn=lugar+"\"+nombreMidiIn
+       Else 
+          fileMidiIn=nombreMidiIn
+       EndIf 
+
+        Print #1,"siguiente ", nombreMidiIn         
+       Loop
+       tocatope=ntkp  ' el nro tope de la lista
+       ntoca=tocatope
+'maxgrb global
+'Dim j As integer
+'For j=1 To ntkp
+' If pmTk(j+32).MaxPos > maxgrb Then
+'    maxgrb = pmTk(j+32).MaxPos
+' EndIf
+'Next j
+' redim detodo¿? nosey si hago unalecturaprevia??mejor
+'For j=1 To ntkp
+' ReDim Preserve (Toca(j).trk ) (1 To maxgrb)
+'Next j
+
+
+
+
+       print #1,"CARGO PISTAS MAXIMA CANTIDAD TOPETOCA=",tocatope
+       Print #1,"UBOUND TOCA ",UBound(Toca(ntkp).trk)
+       EJECCARGADA=TRUE
+       
+    EndIf
+
+''''cargaCancion=1 '12-02-2022 mientras carg las pista el 1 indica cargando pistas    
+    print #1,"FIN CargaPistasEjec"
+    print #1,"-------------------------------------------------------"
+'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
+'mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0 
+      repro=0 ' habilitar play
+End Sub
+
+
 
 Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
 ' solo carga track no lo pasa a Vector de Visualizacion. ntk debe venir informado

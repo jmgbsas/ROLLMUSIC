@@ -1,4 +1,70 @@
 On  Error GoTo errorrtmidi
+function BrowseCallback(byval hWnd as HWND, _
+							byval uMsg as UINT, _ 
+                            byval lParam as LPARAM, _
+                            byval lpData as LPARAM) as long
+
+    select case uMsg 
+    case BFFM_INITIALIZED 
+        SendMessage( hWnd, BFFM_SETSELECTION, -1, lpData ) 
+    
+    case BFFM_SELCHANGED 
+        dim as zstring * MAX_PATH sPath
+      	
+      	if SHGetPathFromIDList( cast( LPCITEMIDLIST, lParam ), sPath) = 0 then 
+            sPath = "Unknown"
+        else 
+            sPath = "PATH: " + sPath
+        end if 
+        
+        SendMessage( hWnd, BFFM_SETSTATUSTEXT, 0, cuint( @sPath ) )
+   end select 
+   
+   function = 0 
+
+end function 
+
+function BrowseForFolder(byval hWnd as HWND, _
+						 byval Prompt as string, _ 
+                         byval Flags as integer, _
+                         byval DefaultFolder as string) as string 
+    
+    dim bi         as BROWSEINFO 
+    dim pidlReturn as LPITEMIDLIST
+    dim pidlStart  as LPITEMIDLIST
+	static sFolder as string 
+
+    CoInitialize( NULL ) 
+    SHGetSpecialFolderLocation( NULL, CSIDL_DRIVES, @pidlStart ) 
+
+    sFolder       	= DefaultFolder
+
+    with bi
+	    .pidlRoot   = pidlStart 
+	    .hwndOwner  = hWnd 
+	    .lpszTitle  = strptr(Prompt)
+	    .ulFlags    = Flags 
+	   	.lpfn       = @BrowseCallback 
+	   	.lParam		= cuint( strptr( sFolder ) )
+	end with
+    
+   	pidlReturn = SHBrowseForFolder( @bi ) 
+   
+   	CoTaskMemFree( pidlStart ) 
+   
+   	if( pidlReturn <> NULL ) Then 
+        dim as zstring * MAX_PATH path
+        SHGetPathFromIDList( pidlReturn, path ) 
+        CoTaskMemFree( pidlReturn ) 
+        function = path    
+    else
+    	function = ""
+    end if 
+    
+    CoUninitialize( ) 
+    
+end function
+
 
 Sub sortaudio( col() As vec,cnt As integer)
 
@@ -2683,7 +2749,7 @@ dato1=*memoria: memoria += 1
 dato2=*memoria: memoria += 1
 dato3=*memoria 
 DURk =deltatime
-
+Dim As Double sumadelta=0
     If GrabarPenta=1 Then
        nRk=dato2
        PianoNota=nRk  
@@ -2696,6 +2762,7 @@ Static old_time As Double
   
 ' jgrb global por ahora
 Dim new_time As Double
+
 /'
   For i =1 To leng
      Print " Byte "; i ; "=", *memoria ;
@@ -2706,11 +2773,11 @@ Dim new_time As Double
   EndIf
 '/
 '--------------play de lo que entre
- 
+ t2call=Timer
 
-
+' velocidad I=240 -> t=60/240=1/4=0,25 la negra, para llegar a W / por 2 6 veces= 0,00390625
     new_time=Timer
-    If old_time - new_time > 0.00001 Then
+    If old_time - new_time > 0.005  Then  ' 0.005208325 eltick maschico
        duracion (old_time,deltatime)
     EndIf 
 '    dato1=*memoria: memoria += 1
@@ -2724,44 +2791,46 @@ Dim new_time As Double
 '       nRk=nRk + SumarnR(nRk)
 '       
 '    EndIf
+' velocidad I=240 -> t=60/240=1/4=0,25 la negra, para llegar a W / por 2 6 veces= 0,00390625
+
      Select Case  dato1 
          Case 144 ' on
-            noteon dato2,dato3,1,pmTk(ntoca).portout 'message(3) ' noter vel canal
+            noteon dato2,dato3,1,pmTk(ntoca+32).portout 'message(3) ' noter vel canal
 '     Print   dato1;" ";  dato2;" "; dato3
            
          Case 128 'off
-            noteoff dato2,1,pmTk(ntoca).portout 'message(2)'
+            noteoff dato2,1,pmTk(ntoca+32).portout 'message(2)'
 '     Print   dato1;" ";  dato2;" "; dato3
 
      End Select
 
     old_time=new_time
-' tick mas chico es 0.005208325 (ver [TickChco] en RTMIDIDEC)
+' tick mas chico es 0.005208325 (ver [TickChico] en RTMIDIDEC)
 ' ergo divido deltatime por ese valor y obtengo la cantiad de divisiones
 ' que ocupara ese retardo deltatime/TickChico
 
   If GrabarEjec =1 Then ''graba en al pista seleccioanda
-     
      partes=(deltatime/TickChico) 
      jgrb += 1
-     If  kply > 0 And traba=0 And jgrb=1 Then 
-        Print #1,"=====> timex(kply),kply ",timex(kply),kply
-        Print #1,"=====> new_time ", new_time
-        DeltaGrabar=new_time - timex(kply) 
-        traba=1
+     If ntoca > 1 And jgrb=1 Then ' detiene la acumulacion de deltatime en PlayTocaAll 
+          arrancaPlay=1
+          Print #1,"arranco play "
      EndIf
-     CargaIn(jgrb).modo=dato1
-     CargaIn(jgrb).nota=dato2
-     CargaIn(jgrb).vel=dato3
-     If deltatime > 0.00001 Then
-       CargaIn(jgrb).partes=partes
-       pmTk(ntoca).MaxPos=pmTk(ntoca).MaxPos +partes
+
+     CargaIn( jgrb).modo=dato1
+     CargaIn( jgrb).nota=dato2
+     CargaIn( jgrb).vel=dato3
+     If deltatime > 0.005  Then '   5mseg  
+       CargaIn( jgrb).partes=partes 'convierto deltatime en tickschico
+       pmTk(ntoca+32).MaxPos=pmTk(ntoca+32).MaxPos +partes
+       tocaparam(ntoca).maxpos=pmTk(ntoca+32).MaxPos
      Else
        CargaIn(jgrb).partes=0
-       pmTk(ntoca).MaxPos=pmTk(ntoca).MaxPos +1
+       pmTk(ntoca+32).MaxPos=pmTk(ntoca+32).MaxPos +1
+       tocaparam(ntoca).maxpos=pmTk(ntoca+32).MaxPos
      EndIf
     '    Print #1,"partes ",partes
- 
+     
   EndIf
 End Function
 '--------------------------------------
@@ -2809,9 +2878,12 @@ Sub PlayTocaAll(nt As Integer Ptr )
 ' N THREADS? O COMO ? SI DISPARO VARIAS Y LAS COORDINO CON EL JGRB COMO
 ' HICE CON CURSOR Y LSO PLAY ,,,
 ntoca=*nt
-dim  As long maxgrb=pmTk(ntoca).MaxPos ,j=0,k=0,partes
-Dim As UByte dato1,dato2, dato3
-'Dim As Double timex (1 To 32), deltatime
+Dim  As long j=0,k=0,partes,cuenta=0,ks(1 To 32)
+Dim As UByte dato1,dato2, dato3 
+' cargo retardos de ejecucion
+For j=1 To 32
+  espera(j)=tocaparam(j).delta ' empieza siemrpe por la 2
+Next j
 
 '--------------play TOCA
 
@@ -2821,22 +2893,27 @@ For j=2 To 32
  timex(j)=timex(01)
 Next j
 
+
+
 ''Print #1,"=====> EN PLAY StartPlayejec ",StartPlayejec
-For j=1 To 32
- If pmTk(j).MaxPos > maxgrb Then
-    maxgrb = pmTk(j).MaxPos
- EndIf
-Next j
+Dim  topeDuranteGrabacion As integer
 Print #1,"nPLAY VERDE: maxgrb ",maxgrb
 'canal=1 ' por ahora
 portsal=0 ' por ahora
 
 Print #1,"playtoca maxgrb ", maxgrb
 Print #1,"playtoca tocatope ", tocatope
+If GrabarEjec=1 Then 
+  If   tocatope >1 Then
+   topeDuranteGrabacion=tocatope-1
+  EndIf
+Else
+   topeDuranteGrabacion=tocatope
 
+EndIf   
+Dim As Integer prox=2 
 
-
-
+Print #1,"REPRODUCIR MIDI-IN CON ", topeDuranteGrabacion, " PISTAS"
 For j=1 To maxgrb
   If CONTROL1 = 1 Then
      alloff( 1 ,portsal )
@@ -2845,26 +2922,27 @@ For j=1 To maxgrb
       Exit For
   EndIf  
  
-  For kply =1 To tocatope
+  For kply =1 To topeDuranteGrabacion
+    
     If CheckBox_GetCheck( cbxejec(kply))= 1 Then
        ' tpcar
     Else
      Continue For ' saltear no tocar 
     EndIf 
+
     dato1=Toca(kply).trk(j).modo
     dato2=Toca(kply).trk(j).nota
-    dato3=Toca(kply).trk(j).vel 
-'deltatime=Toca(k).trk(j).delta
-    'partes=deltatime/TickChico
-    
-'    If deltatime > 0.00001 Then
- '      duracion (time01,deltatime)
- '   EndIf 
+    dato3=Toca(kply).trk(j).vel
 
      If  dato1=1 Then ' marcamos con 1 un delta de tick en modo
          duracion (timex(kply),TickChico) ' si es cero no 1 no hay duracion es acorde
          timex(kply)=timex(kply)+TickChico
-           
+       If  GrabarEjec =1 And ntoca> 1 And arrancaPlay=0 And kply=1 Then
+           tocaparam(ntoca).delta=tocaparam(ntoca).delta+TickChico
+           ''Print #1,"En PlayToca Toca(ntoca).delta ",Toca(ntoca).delta
+           ' retardos respecto del inicio de play y de pista 1, kply=1 
+       EndIf
+
      EndIf
      Select Case  dato1 
          Case 144 ' on
@@ -2880,7 +2958,7 @@ Next j
 repro=0
 SetGadgetstate(14,0)
 Sleep 1
-ThreadDetach (threadG )
+'ThreadDetach (threadG )
 
 End Sub
 

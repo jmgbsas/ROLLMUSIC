@@ -75,6 +75,10 @@
     4) Recalcular Compas <R>. Establece las barras divisorias entre compases.c
     5) Grabar Archivo. (Ctrl-click). Se ha puesto un retardo de 1 segundos si tarda eso es porque se
          ejecutó bien el comando y grabó, porque de otra forma a veces salia sin grabar..
+         Nota:No usar en el nombre de archivo una 'ñ' o caracteres latinos cairo
+         no lo soporta y no mostrará el menu de Roll. (También es una forma de si se desea
+         eliminar el menu en una reproducción, pero si se pulsa en el lugar correcto el menu
+         es funional solo que no se lo puede ver ,,)
     6) Cargar Archivo. click en [Archivo]-> luego en  [*.ROLL] o [+.RTK]. 
        Archivo NUEVO borra el Roll de memoria y comienza de cero. En el menu del grafico de Roll (no control)
        click en [ARchivo] -> ALT-Click [NUEVO]
@@ -173,18 +177,18 @@
 
     16 ) En algun Futuro: exportar a MusicXml o midi para poder interactuar con otros programas.
            Como tambien importar...
-    17a ) MIDI-IN GRABACION: (EN DESARROLLO, 2da parte) version 4550 . 
+    17a ) MIDI-IN GRABACION: (EN DESARROLLO, 2da parte) version 4560 . 
          YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN TOCANDO EN UN O CONTROLADOR MIDI EXTERNO o TECLADO externo 
          real concectado su salida MIDI-OUT  al MIDI-IN de la PC.
-         (no se sincronizan por ahora ...todas empeizan dsde cero)
+         Las pistas suenan tal cual se grabaron sincronizadas respecto de la pista 1.
           Para ello no hace falta levantar el Roll Grafico.
           pasos 
-          a) Dar check a l pista a grabar en la columna 'G' de la 2da lista de pistas. debajo del menu
+          a) Dar check a la pista a grabar en la columna 'G' de la 2da lista de pistas. debajo del menu
           'Cambiar Tiempo....' 
           b) pulsar el boton Rojo de armado de la pista, c) Ir al menu de Control arriba en Reproducir y elegir
           "Reproducir MIDI-IN (teclado) por MIDI-OUT" (por ahora solo usa port 0 y patch 1).
           La grabacion comenzara al llegar la 1er nota midi,,tocar normalmente, para detener l grabacion pulsar 
-          el boton PArar de color negro de esa misma lista y de Ese grupo de 3 botones  (negro rojo verde). 
+          el boton Parar de color negro de esa misma lista y de Ese grupo de 3 botones  (negro rojo verde). 
           Para seguir grabando otra pista escuchando la anterior:
           Sacar el chequeo de la pista anterior grabada para que no grabe. Pulsar check en otra pista mientras
           se da check a la pista anteriormente grabada en columan 'S' para poder escucharla  (sonido).
@@ -192,10 +196,20 @@
           Luego para escuchar ambas pistas deschequear la pista grabada en 'G', ninguna pista debe quedar con un 
           check en la columna 'G'. Chequear todas las pistas grabadas en columna 'S', para poder escucharlas.
           Reproducir todas las pistas grabadas pulsando el boton Verde Reproducir o Play.
-          Todavia no se graba a disco la grabacion,,,probarlo si hay error avisar,,,
-          (falta grabar a disco poder elegir patch, port etc....)
+          Cada  pista se va grabando al dar stop conelnombre entrado de la pista mas unaextension *.ejec
+          masuncominezo similar a laspistas de cancion contracks manuales,,,(01)..(09),en vez de [01...][09] 
+          (falta elegir port de salida de cada pista, por ahora solo toca elpatch 0 que generalmenteesPiano. 
+           falta tambien  sincronizar la ejecucion si se purde.... a una cancion manual etc etc,aunque ticks de midiIn
+           y pasos de manual no estan a tempo, solosepodrasincronizar el  comienzo..massincronizacionrequeriria
+           pasar los tracks maniales a ticks de ejecucion o al reves de ticks a duracion con lo y aecho de ingresar desde
+           teclado en manuales...).
+           c) Se puede usar Crear Cancion y abrir un Directorio de cancion para ubicar una ejecucion de teclado
+              Para ello se procede igual que al crear o usar un directorio de Cancion y luego abrir Pistas Midi en el menu Archivo
+              casi abajo de todo., De ese modo una cancion manual y una ejecucion desde teclado podranestar en un mismo
+              directorio.
+          
     17b) grabacion directamente sobre Roll, 1era version faltaria que detecte acordes
-           ya lo hizo en algun algoritmo distinto a este , el actual funiona para melodias, tiene
+           ya lo hizo en algun algoritmo distinto a este , el actual funciona para melodias, tiene
            un metronomo, si se desea se puede desactivar (menu Opciones, no probado)
            Como antes en 17a en menu Reproducit, elegir Reproducir MIDI-IN, luego
            darle al boton rojo de la izquierda de las pistas para grabar, se escuchara 4

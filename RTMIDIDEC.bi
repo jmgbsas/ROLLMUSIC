@@ -44,13 +44,16 @@ Dim Shared As double FactortiempoPatron=1
 ' tapar otros errores qu el tiempo se calcule com ocero y siga y 
 'se pierda el tiemp anterior supongamso enun espacio en blanco agregado 
 ' en una ligadura pero eso lo prohibimos por ahroa como uso y listo
-' si I=240 -> I=60 *4 -> time X=0,031250 / 4 =0,0078125
+' si I=240 -> I=60 *4 -> time H=0,031250 / 4 =0,0078125
 ' una X a una velocidad de I=240 tiene un tiempo de 0,078125 seg
-' ese seria mi Tick mas chico [TickChco]
+' en la 1er linea de figuras..
+' pero porlalineamas chica 37 a 45 seria mi Tick mas chico [TickChco]
 Static Shared As Double TickChico=0.005208325 ''seg 5 misiseg..
-' sale del valor mas chico en la 8va posicion de la linea 2.666666
-' una negra al ritmo de I=60 tendrá 1/TickChico = 1/0,005208325= 192 partes o ticks
+' sale del valor mas chico en la 8va posicion de la linea 2.666666= o sea 3H=0.0208333
+'y para I=240 es/ 4 ..0.0208333/4 =0,005208325 tresillo de H--
+' un 3H  al ritmo de I=240 tendrá 1/TickChico = 1/0,005208325= 192 partes o ticks
 ' o sea si quiero 1000 negras debere tener 192 mil posiciones....ufff
+'cada negra podria tener 192 partes de 3H..
 Dim Shared As float relDur (0 To 182) => {0, _  
 4 ,2 , 1.0, 0.50,0.250,0.1250 ,0.06250,0.031250,0.0156250, _ ' 1 9 
 5 ,2.5,1.25,0.625,0.3125,0.15625,0.078125,0.0390625,0.01953125,_ ' 10 18

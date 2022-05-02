@@ -1,3 +1,4 @@
+-01-05-2022 ver 0.4560 MIDI-IN guardar ejecuciones por teclado a archivo y poder recuperrarlas
 -12-04-2022 MIDI-IN grabacion desde teclado en la edicion manual de ROLL. Metrónomo
 para guia de ritmo. 
 -03-04-2022 [2da etapa] MIDI-IN PORT=0 GRABACION EN VARIAS PISTAS, GRABACION ESCUCHANDO LO GRABADO ANTERIORMENTE

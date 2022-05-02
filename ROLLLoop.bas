@@ -385,10 +385,10 @@ Dim As String t2="",t3="",t4=""
 '''    Exit For ' sale para saltear las nota=0, dur=0 ¿?, estaba mal creo debo mostrar todo
    EndIf
    'con ic * 40 es + 32 osea ic * 40 + 32
-   
+  
   Next n
 
-
+  
 
 
 
@@ -706,11 +706,12 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
  ' NOOOO ScreenSync  no usar nunca sync desfasa el barrido de cairo y salta
  ' las lineas
    creaPenta (c, Roll )
+
   If *po = 99 Then
      *po = hasta -1 ' 9 po ejemplo
      Exit For
   EndIf
-     cairo_stroke(c)
+     
   Next
   
 
@@ -852,7 +853,7 @@ param.ubirtk=0
  'EndIf
 ' -----------------
 Do
-arranquedo1=Timer
+''arranquedo1=Timer
 
 edity1 = 1 ' botton Edit bordeSup
 edity2 = 50 ' botton Edit bordeInf
@@ -939,7 +940,7 @@ cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nome
 ' insercion en ROLL de la escala en un aposicion dada 
 If cambioescala=1 And pasoZona1 > 0 Then ' creamos una posicion con cambio de escala en pasoZona1
 ' la escala queda vigente hasta el proximo cambio, esto recuerda las notas que se deben usar o para crear acordes
-Print #1,"cAMBIO ESCALA Na,NB, tipoescala, notaescala ", NA,NB,tipoescala_num,notaescala_num
+'Print #1,"cAMBIO ESCALA Na,NB, tipoescala, notaescala ", NA,NB,tipoescala_num,notaescala_num
 ' DEBO CARGAR EN LAS ZONAS DONDE NO HAY NOTAS O SEA ENTRE OCTAVAS TENGO LUGARES SIN USAR ERGO NO HACE FALTA
 ' BORRAR LOS DATOS PUEDO TENER UN CAMBIO DE ESCALA EN DATOS PREVIOS
 ' CUALE SSON ESAS POSICIONES SIN NOTAS..LAS QUE SON MULTIPLO DE 13 SUPONGO
@@ -948,10 +949,10 @@ Print #1,"cAMBIO ESCALA Na,NB, tipoescala, notaescala ", NA,NB,tipoescala_num,no
 
 Dim As Integer k,vacio
 For K=desde To hasta -1 ' queda entre 2 octavas ,corregido  26-01-2022
- Print #1,"CARGO FOR !!! NOTA 30 DUR 200, k, pasozona1, NA ", "K=";K, pasoZona1,NA
+' Print #1,"CARGO FOR !!! NOTA 30 DUR 200, k, pasozona1, NA ", "K=";K, pasoZona1,NA
    vacio= 12 +(k -1) * 13
-   Print #1,"vacio,tipoescala ",vacio, tipoescala
-   Print #1,"vacio,notaescala ",vacio, notaescala
+'   Print #1,"vacio,tipoescala ",vacio, tipoescala
+'   Print #1,"vacio,notaescala ",vacio, notaescala
      Roll.trk(pasozona1, vacio).inst=CUByte(tipoescala)
      Roll.trk(pasozona1, vacio).vol= CUByte(notaescala)
 
@@ -965,7 +966,8 @@ For K=desde To hasta -1 ' queda entre 2 octavas ,corregido  26-01-2022
      If   alteracion="bem" Then
           Roll.trk(pasozona1, vacio).pan = 2 
      EndIf
- Next K  
+ Next K
+  
 ' nota=30 , dur=200 indicara cambio de escala 
    guiaEscala(indEscala).posicion=posicion
    cambioescala=0
@@ -974,122 +976,25 @@ For K=desde To hasta -1 ' queda entre 2 octavas ,corregido  26-01-2022
 ' sigue en crea_penta donde al barer el roll va leyendo las escalas auxiliares
 EndIf
 
-If abrirMIDIin=1 Then ' grabacion desde teclado ...entr mal los valores por ahora
-   abrirMIDIin=0
-              open_port (midiin(pmTk(ntk).portin ),pmTk(ntk).portin, *nombrein( pmTk(ntk).portin ) )
-              set_callback midiin(pmTk(ntk).portin ), @mycallback, p
-' por ahrao iognoramos otros tipsod de mensaje
-              rtmidi_in_ignore_types  (midiin(pmTk(ntk).portin ), 1, 2, 4)
-              teclado=1 
-              jgrb=0
-'------------hace falta abrir la salida
-Print #1,"abriendo port...."
-Dim k1 As Integer
-
-  
-   k1=CInt(pmTk(ntk).portout)
-    
-   Print #1,"midiout ",k1, *nombreOut(k1)
-   If InStr(*nombreOut(k1),"Microsoft")>0 Then
-     Print #1,"No se usa Microsoft"
-   Else
-     If listoutAbierto( k1) = 0 Then
-        midiout(k1) = rtmidi_out_create_default ( )
-        open_port midiout(k1),k1, nombreOut(k1)
-        Dim As integer    porterror=Err 
-        listoutAbierto( k1) = 1
-        Print #1,"abro ",*nombreOut(k1)
-
-    Select Case porterror
-      Case RTMIDI_ERROR_WARNING
-        Print #1, "RTMIDI_ERROR_WARNING"
-
-      Case RTMIDI_ERROR_DEBUG_WARNING
-        Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
-        Close
-        End
-
-      Case RTMIDI_ERROR_UNSPECIFIED
-        Print #1,"RTMIDI_ERROR_UNSPECIFIED"
-        Close
-        End
-
-      Case RTMIDI_ERROR_NO_DEVICES_FOUND
-        Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_DEVICE
-        Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
-        Close
-        End
-
-      Case RTMIDI_ERROR_MEMORY_ERROR
-        Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_PARAMETER
-        Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_USE
-        Print #1,"RTMIDI_ERROR_INVALID_USE"
-        Close
-        End
-
-      Case RTMIDI_ERROR_DRIVER_ERROR
-        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
-        Close
-        End
-
-      Case RTMIDI_ERROR_SYSTEM_ERROR
-        Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
-        Close
-        End
-
-      Case RTMIDI_ERROR_THREAD_ERROR
-        Print #1,"RTMIDI_ERROR_THREAD_ERROR"
-        Close
-        End
-    End Select
-   EndIf
- EndIf 
-
- Print #1,"Port usando en Play teclado ",portout
-Print #1,"-------------------------------------"
-End If
-If abrirMIDIin=2 Then  
-   cancel_callback(midiin(pmTk(ntk).portin ))
-   Dim k1 As Integer
-   k1=pmTk(ntk).portout
-   Print #1,"midiout ",k1, *nombreOut(k1)
-   alloff( pmTk(ntk).canalsalida,k1 )  
-   listoutAbierto(k1)=0
-   close_port midiout(k1)
-   teclado=0
-
-
-endif
 
 '05-02-2022 usamos threarPenta ya definida global
 ' se supone que la direccion es unica y se reusa no se la crea muchas veces
 ' es mejor no ¿? zas je 
-    threadPenta = ThreadCall barrePenta (c, Roll )
-    ThreadWait threadPenta
-
-
+  
+ threadPenta = ThreadCall barrePenta (c, Roll )
+ ThreadWait threadPenta
 '''  barrePenta (c, Roll )
   'ThreadWait threadPenta
    
   pubi=0
 
+  
   menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
-
-    botones(hWnd, c ,cm, ANCHO,ALTO) ' este despues sinocrash
-    cairo_stroke(c)
-    cairo_stroke(cm) ' cm despues de c sino crash
+  cairo_stroke(c)  
+  botones(hWnd, cm, ANCHO,ALTO) ' este despues sinocrash
+  
+  '''cairo_stroke(c)
+  cairo_stroke(cm) ' cm despues de c sino crash
 
   ScreenUnLock()
 EndIf
@@ -1905,9 +1810,9 @@ EndIf
 '     cnf=0
 '  EndIf
 
-' PONER UN FALG APRA EVITAR EL CALCULO DE SDURA DE ESE MODO NO MUESTRA LOS
-' SILENCIOS
-  If dato1 > 0  And DURk >0   Then 'And cnf=0  Then
+' OPCION NO MOSTRAR SILENCIOS,.,,,IF SILENCIO=0 ...
+''filtro1=128 :filtro2=144
+  If dato1 > 0  And DURk >0  And (dato1=filtro1 Or dato1=filtro2) Then 'And cnf=0  Then
    '  t2k=Timer
       'contcode = 1 'A CERO al pulsar Edit
       Print #1," dato1, dato2 =", dato1 ,dato2
@@ -4740,6 +4645,8 @@ Else
   Print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
 EndIf
   Print #1,"Error Function: "; *Erfn()
+  Print #1,"kply ",kply
+/'
   Print #1, "n ",posicion;" posishow "; posishow; " NroCol ";NroCol
   Print #1, "semitono "; nE; " *po "; *po 
   Print #1, "valor1 ",posicion; " valor2 "; 12- nE  + (*po -1)* 13
@@ -4753,7 +4660,7 @@ EndIf
   Print #1, "mensaje, Ermn ", *Ermn, Ermn
   Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2) 
   print #1,"------------------------------------"
-
+'/
 EndIf
  Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
 

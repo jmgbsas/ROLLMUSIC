@@ -34,8 +34,8 @@ common Shared As Integer  ANCHO,ALTO
 Common Shared As FLOAT font
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox
-Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA
-Common Shared As string pathdir,nombre
+Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA
+Common Shared As string pathdir,nombre,nombreMidiIn
 common Shared As String NombreCancion, NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista',pistacreada
 Common Shared As cairo_t  Ptr c, c2
@@ -47,7 +47,7 @@ Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Common Shared  portsal As UByte, patchsal As ubyte
-COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca
+COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp
   
 
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0

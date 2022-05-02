@@ -59,7 +59,7 @@ end Operator
 
 
 'Declare Sub menu (c0 AS cairo_t Ptr,c AS cairo_t Ptr,n As Integer,menuNro As Integer)
-declare Sub botones(hWnd As HWND,c As cairo_t Ptr,cm As cairo_t Ptr,x As Integer,y As integer)
+declare Sub botones(hWnd As HWND,cm As cairo_t Ptr,x As Integer,y As integer)
 'Declare Sub menuAcc (c AS cairo_t Ptr)
 Declare Sub moveresto (ByVal StartInsert As integer,ByRef indaux as Integer, Byref insert As Integer,Byref nota As UByte)
 Declare Sub movedato (ByVal StartInsert As Integer, ByRef indaux As Integer, Byref insert As Integer,Byref nota As ubyte)
@@ -72,7 +72,7 @@ Declare Function KeyPress(Key As Integer) As Integer
 'Declare Function print_text(ByVal x As Integer, ByVal y As Integer, ByRef text As String, _
 '        ByVal font As FT_Face, ByVal size As Integer, ByVal col As UInteger ) As Integer
 Declare Sub separarDur(ByRef j As Integer,ByRef DUR As ubyte,  partes() As Integer,  ByRef cantPartes As Integer, ByRef falta As Integer )
-Declare Sub menugrafico(c0 AS cairo_t Ptr,c As cairo_t Ptr, Cantitems As Integer, items() As String )
+Declare Sub menugrafico(c0 AS cairo_t Ptr, Cantitems As Integer, items() As String )
 Declare Sub CambiarDim(redi As integer)
 ' para IUP textbox 
 Declare Sub dialogoText(cadena As string)
@@ -102,7 +102,8 @@ alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0
 Dim Shared As integer pasoZona2=0,nroRep=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, playloop2=0,SelGrupoNota =0,moverZona=0, copiarZona=0
-Dim Shared as ubyte  DUR,nota,notasInsertadas (1 to 1500),notacur
+Dim Shared as ubyte  DUR,nota,notacur
+ReDim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t,t2
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert, cursormove,notaoldmidi
 Dim shared As integer Penta_y, indice, espacio,cursorHori
@@ -589,9 +590,9 @@ Type rangoOct Field=1
  As UByte   portin   
 End Type
 ' faltaria agregar grabar el nombre del dispositivo ........
-Dim Shared As rangoOct pmTk (0 To 32)
-Dim Shared As String titulos(0 To 32)
-Dim Shared As String pistas (0 To 32)
+Dim Shared As rangoOct pmTk (0 To 64)
+Dim Shared As String titulos(0 To 64)
+Dim Shared As String pistas (0 To 64)
   
 Dim Shared As Integer ContadorError=0   
 ' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido por 8
@@ -834,8 +835,8 @@ Declare Function lugarNota (lugar As integer) As Integer
 
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox, hwndListEjec
-Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA 
-Common Shared As string pathdir,nombre
+Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA 
+Common Shared As string pathdir,nombre,nombreMidiIn
 common Shared As String NombreCancion,NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista',pistacreada
 Common Shared As cairo_t  Ptr c, c2
@@ -845,7 +846,7 @@ Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAu
 Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn
-COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca
+COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
 ''patchsal=Roll.trk(1,1).inst
@@ -886,32 +887,53 @@ Type midicod Field=1
  As UByte  vel
  As Integer partes
 End Type
-Redim shared CargaIn (1 To 192000) As midicod
-
-Type vivo Field=1
+Redim shared CargaIn ( 1 To 4000) As midicod
+' a disco puedo grabarsolo CargaIn para cada ejecucion y al cargarla reconstruir en memoria
+' los Toca,,,,eso es!!! y sumando todas las partes y dividiento por TickChico obtengo 
+' elmaxposy por ende el valor a dimensioar el Toca....
+Type ejec Field=1
  As UByte modo
  As UByte nota
  As UByte vel
 End Type
 
-Type ejec
- As vivo trk(Any)
+Type  ejecparam Field=1
+  As Double        delta  ' entre pistas de ejec
+  As String  * 29 nombre 'de cada Toca
+  As  Integer       maxpos
+  As  UByte         orden   'nro pista ejec   
 End Type
 
-ReDim Shared Toca (1 To 32) as ejec  ' vector ejecucion real
-Dim Shared As Integer tocatope=0
+
+Type vivo Field=1
+  As  ejec    trk  (Any)  
+End Type
+
+
+'Type pEjec Field=1 ' paramejec 
+' As Double delta  ' entre pistas de ejec
+' As Integer maxpos ' de c/Toca
+' As String  nombre 'decada Toca
+' As UByte  orden ' nro orden de pista para cargar,no se si necesario''
+'End Type
+' deberia ahcer dim no redim y usar erase
+ReDim Shared Toca (1 To 32) as vivo  ' vector ejecucion real
+Dim Shared  tocaparam (1 To 32 ) As ejecparam
+
+'ReDim Shared pToca (1 To 32) As pEjec ' parametros
+Dim Shared As Integer tocatope=0,arrancaPlay=0
 Dim Shared As Double StartPlayejec=0
-Dim Shared As Double DeltaGrabar=0
+ReDim Shared As Double   espera (1 To 32)
 Dim Shared As Integer kply
 Dim Shared As Double timex(1 To 32)
-Dim Shared As UByte dato1, dato2 , dato3, dato1old,dato4=0 
+Dim Shared As UByte dato1, dato2 , dato3, dato1old,dato4=0,filtro1,filtro2 
 Dim Shared  As Double stime1=0, stime2=0, sdura=0
 Dim Shared datot4 As double
-
+Dim Shared  As integer maxgrb=0 
 ' usaremos xml par aleer y escribir musicxml 
 ' http://xmlsoft.org/examples/index.html
 Dim Shared As String acercade, camino,nroversion
 
 Dim Shared As UBYTE GrabarEjec=0, GrabarPenta=0  
-
+Dim Shared As Double  t2call=0, t1play=0
 
