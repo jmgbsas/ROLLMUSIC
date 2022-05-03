@@ -178,9 +178,9 @@
     16 ) En algun Futuro: exportar a MusicXml o midi para poder interactuar con otros programas.
            Como tambien importar...
     17a ) MIDI-IN GRABACION: (EN DESARROLLO, 2da parte) version 4560 . 
-         YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN TOCANDO EN UN O CONTROLADOR MIDI EXTERNO o TECLADO externo 
-         real concectado su salida MIDI-OUT  al MIDI-IN de la PC.
-         Las pistas suenan tal cual se grabaron sincronizadas respecto de la pista 1.
+         YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN grabadas mediante laejecucion EN UN O CONTROLADOR MIDI EXTERNO 
+         o TECLADO externo  real concectado su salida MIDI-OUT  al MIDI-IN de la PC.
+         Las pistas se arman tal cual se grabaron sincronizadas respecto de la pista 1.
           Para ello no hace falta levantar el Roll Grafico.
           pasos 
           a) Dar check a la pista a grabar en la columna 'G' de la 2da lista de pistas. debajo del menu
@@ -196,8 +196,11 @@
           Luego para escuchar ambas pistas deschequear la pista grabada en 'G', ninguna pista debe quedar con un 
           check en la columna 'G'. Chequear todas las pistas grabadas en columna 'S', para poder escucharlas.
           Reproducir todas las pistas grabadas pulsando el boton Verde Reproducir o Play.
-          Cada  pista se va grabando al dar stop conelnombre entrado de la pista mas unaextension *.ejec
-          masuncominezo similar a laspistas de cancion contracks manuales,,,(01)..(09),en vez de [01...][09] 
+          Cada  pista se va grabando al dar stop con el nombre entrado de la pista mas una extension *.ejec
+          mas un cominezo similar a las pistas de cancion con tracks manuales,,,(01)..(09),en vez de [01]..[09] 
+          Nota: El orden de las pistas grabadas enarchivo, se puede cambiar cambiando los nombres de archivos, sonara
+          de igual forma. Los retardos entre pistas se transforman en ticks agregados de modo que el retardo ya no se usa mas
+          en la reproduccion.
           (falta elegir port de salida de cada pista, por ahora solo toca elpatch 0 que generalmenteesPiano. 
            falta tambien  sincronizar la ejecucion si se purde.... a una cancion manual etc etc,aunque ticks de midiIn
            y pasos de manual no estan a tempo, solosepodrasincronizar el  comienzo..massincronizacionrequeriria

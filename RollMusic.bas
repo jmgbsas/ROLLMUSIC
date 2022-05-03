@@ -2349,8 +2349,8 @@ Print #1,"-------------------------------------"
             Dim p As Integer Ptr
             p=@ntoca
             t1play=Timer
-            ''threadG  = ThreadCreate (@PlayTocaAll, p)
-              PlayTocaAll(p)
+            threadG  = ThreadCreate (@PlayTocaAll, p)
+             '' PlayTocaAll(p)
       EndIf
 '//////////////// BOTON ROJO GRABAR EN PENTA //////////////////
 
