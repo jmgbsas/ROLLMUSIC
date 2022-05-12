@@ -28,14 +28,22 @@ End Sub
 Sub GrabarMidiIn ( tocap() As ejec, ntkp As Integer,tocaparam  As ejecparam) 
     Dim As Long j, n=FreeFile
     Dim nombre As String
-      nombre =titulos(ntkp+32) ' tiene path , extension y [nro]
-
-      
+      nombre =titulos(ntkp+32) ' no tiene path , extension y [nro]
+      If  NombreCancion > "" Then
+          nombre=NombreCancion+"\"+nombre
+      EndIf
+Print #1,"nombre de archivo con path grabando de ejec",nombre
+      tocaparam.portout=pmTk(ntkp+32).portout
+      tocaparam.patch=pmTk(ntkp+32).patch
+      tocaparam.canal =pmTk(ntkp+32).canalsalida
+   
       Print #1,"GrabarMidiIn titulos   ", nombre
       Print #1,"GrabarMidiIn MAXPOS ",tocaparam.maxpos
       Print #1,"GrabarMidiIn delta ",tocaparam.delta
       Print #1,"GrabarMidiIn nombre ",tocaparam.nombre
-
+      Print #1,"GrabarMidiIn portout ",tocaparam.portout
+      Print #1,"GrabarMidiIn patch ",tocaparam.patch
+      Print #1,"GrabarMidiIn canal ",tocaparam.canal
        If  Open (nombre  For Binary Access Write As #n)=0 Then
            Put #n,,tocaparam
            Put #n,,tocap()
@@ -59,6 +67,10 @@ Sub CargarMidiIn(nombreMidiIn As String,   ntkp As  long)
       ubi1 = InStrrev(nombreMidiIn,"(")
       ubi2 =InStrRev (nombreMidiIn,")")
       ntkp=CInt(Mid(nombreMidiIn,ubi1+1,ubi2-ubi1-1))
+      If  NombreCancion="" Then
+          NombreCancion=Mid(nombreMidiIn,1,ubi1-1)
+      EndIf
+
       Print #1,"NTKP ",ntkp
       If ntkp > 0  Then
       Else
@@ -85,11 +97,20 @@ Next j
       Close #f
 '      pmTk(ntkp+32).MaxPos=Toca(ntkp).maxpos
       ntoca=tocaparam(ntkp).orden
-      
+      pmTk(ntkp+32).portout= tocaparam(ntkp).portout
+      pmTk(ntkp+32).patch = tocaparam(ntkp).patch
+      pmTk(ntkp+32).canalsalida=tocaparam(ntkp).canal
+      ''midiout(portsal)???
       Print #1,"CargarIn maxpos,ntkp  ",tocaparam(ntkp).maxpos , ntkp
       Print #1,"Cargar delta ",tocaparam(ntkp).delta
       Print #1,"Cargar nombre ",tocaparam(ntkp).nombre
       Print #1,"Cargar nombre ",tocaparam(ntkp).orden 
+      Print #1,"Cargar portout ",tocaparam(ntkp).portout
+      Print #1,"Cargar patch ",tocaparam(ntkp).patch
+      Print #1,"Cargar canal ",tocaparam(ntkp).canal
+
+ 
+
    '  viv.trk()=Toc()
 
 End Sub

@@ -300,7 +300,7 @@ Sub ChangeProgram ( instru As UByte,  canal As UByte,portsal As UByte)
 
  leng=2
 result = send_message (midiout(portsal) , p, leng)
-
+Print #1,"resultado de cambiar elpatch ", result
 End Sub
 Sub noteon	( note As ubyte, vel As UByte, canal As UByte, portsal As UByte)
 	' canal 1 
@@ -2878,7 +2878,7 @@ Sub PlayTocaAll(nt As Integer Ptr )
 ' N THREADS? O COMO ? SI DISPARO VARIAS Y LAS COORDINO CON EL JGRB COMO
 ' HICE CON CURSOR Y LSO PLAY ,,,
 ntoca=*nt
-Dim  As long j=0,k=0,partes,cuenta=0,ks(1 To 32)
+Dim  As long j=0,k=0,partes,cuenta=0,ks(1 To 32),pis=0
 Dim As UByte dato1,dato2, dato3 
 ' cargo retardos de ejecucion
 For j=1 To 32
@@ -2913,7 +2913,17 @@ Else
 EndIf   
 Dim As Integer prox=2 
 
-Print #1,"REPRODUCIR MIDI-IN CON ", topeDuranteGrabacion, " PISTAS"
+Print #1,"topeDuranteGrabacion ", topeDuranteGrabacion, " PISTAS"
+ For pis=1 To topeDuranteGrabacion
+      Print #1,"ON patch pis canal ",	 , pis,tocaparam(pis).canal
+      Print #1,"tocaparam(pis).portout ",tocaparam(pis).portout
+      Print #1,"tocaparam(pis).patch ",tocaparam(pis).patch
+
+      ChangeProgram ( tocaparam(pis).patch , tocaparam(pis).canal, tocaparam(pis).portout)	
+
+Next pis
+
+Print #1,"empieza el play de ejec"
 For j=1 To maxgrb
   If CONTROL1 = 1 Then
      alloff( 1 ,portsal )
@@ -2921,7 +2931,7 @@ For j=1 To maxgrb
       repro=0
       Exit For
   EndIf  
- 
+
   For kply =1 To topeDuranteGrabacion
     
     If CheckBox_GetCheck( cbxejec(kply))= 1 Then
@@ -2933,6 +2943,7 @@ For j=1 To maxgrb
     dato1=Toca(kply).trk(j).modo
     dato2=Toca(kply).trk(j).nota
     dato3=Toca(kply).trk(j).vel
+    portsal=pmTk(kply+32).portout '04-05-2022
 
      If  dato1=1 Then ' marcamos con 1 un delta de tick en modo
          duracion (timex(kply),TickChico) ' si es cero no 1 no hay duracion es acorde
@@ -2944,12 +2955,13 @@ For j=1 To maxgrb
        EndIf
 
      EndIf
+' canal pmTk(kply+32).canalsalida 
      Select Case  dato1 
          Case 144 ' on
-            noteon dato2,dato3,1, 0 'pmTk(0).portout 'message(3) ' noter vel canal
+            noteon dato2,dato3,pmTk(kply+32).canalsalida, pmTk(kply+32).portout 'message(3) ' noter vel canal
            
          Case 128 'off
-            noteoff dato2,1,0 'pmTk(0).portout 'message(2)'
+            noteoff dato2,pmTk(kply+32).canalsalida ,pmTk(kply+32).portout 'message(2)'
             
      End Select
  

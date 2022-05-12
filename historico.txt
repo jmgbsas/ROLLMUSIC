@@ -1,3 +1,6 @@
+-11-05-2022 ya se peude seleccionar patch en las pistas de ejecucion de teclado,probado,portodispositivo tambien
+ pero no esta probado...ando con menor tiempo estos updates seran cada semana mas o menso
+-03-05-2022 0.4561 borra listBox de ejecuciones al cargar,asi podemos cargar varias seguidas...
 -01-05-2022 ver 0.4560 MIDI-IN guardar ejecuciones por teclado a archivo y poder recuperrarlas
 -12-04-2022 MIDI-IN grabacion desde teclado en la edicion manual de ROLL. Metrónomo
 para guia de ritmo. 

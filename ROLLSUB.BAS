@@ -3734,7 +3734,13 @@ mitipo=  CInt(tipo)
 
               If mitipo=1 Then
               Print #1,"PORT SELECCIONADO en menu ",portout
-                pmTk(ntk).portout=CUByte(portout)
+              pmTk(ntk).portout=CUByte(portout)
+
+                For  i As Short =1 To 32
+                      If CheckBox_GetCheck( cbxnum(i))= 1  Then
+                           pmTk(i).portout=CUByte(portout)
+                     EndIf
+                Next i
                
               EndIf
               If mitipo=2 Then
@@ -3777,6 +3783,138 @@ mitipo=  CInt(tipo)
 '' fin ruso
 cierroport=0
 End Sub
+
+Sub  selportEjec (ByVal tipo As Any Ptr)  ' list de ruso
+Dim As hwnd haw,hwl
+Dim As Integer mitipo,x0,y0,Posx,Posy 
+ScreenControl GET_WINDOW_POS, x0, y0
+Posx=x0 +50
+Posy=y0 +100
+Dim cad As string
+ 
+''portsout = port_count (midisal)
+' ESTOY ABRIENDO LSO PORT SEGUN LO ELEGIDO CADA VEZ QUE SE ELIJA UNO
+' DEJA DE ESTAR DISPONIBLE PUES YA ESTA ABIERTO, PONDREMOS UN MENSAJE ABIERTO CREO ES MEJOR 
+    If NombreCancion > "" Then
+    Else
+       ntkp=0
+    EndIf
+
+
+
+mitipo=  CInt(tipo)
+'' => desde acaecho con tool del ruso no anda muy bien
+     haw=OpenWindow("MIDI",Posx,Posy,450,400,WS_VISIBLE, WS_EX_TOPMOST )
+     hwl=  ListViewGadget(1,10,10,350,400,,,,32,LVS_SINGLESEL  )
+     listports()
+  
+
+     If mitipo = 1 Then ' out
+       AddListViewColumn(1, "Salidas  MIDI",0,0,250)
+       For aa As Integer=0 To UBound (listout) 
+          If pmTk(ntkp+32).portout = aa Then
+             AddListViewItem(1, "[x] "+listout(aa),0,aa,0)
+          Else
+             AddListViewItem(1, "[ ] "+listout(aa),0,aa,0)
+          EndIf   
+           
+       Next
+
+     EndIf
+     If mitipo = 2 Then ' in entradas
+      
+       AddListViewColumn(1, "Entradas MIDI",0,0,250)
+       For aa As Integer=0 To UBound (listin) 
+          If pmTk(ntk).portin = aa Then
+             AddListViewItem(1, "[x] "+listin(aa),0,aa,0)
+          Else
+             AddListViewItem(1, "[ ] "+listin(aa),0,aa,0)
+          EndIf   
+
+       Next
+
+     EndIf
+
+
+       ButtonGadget(2,380,30,50,40," OK ")
+         #Ifdef __FB_WIN32__
+           SetFocus (hwl) 
+           SetForegroundWindow(haw)
+          #Else
+           gtk_widget_grab_focus(GadgetID(1))
+         #EndIf
+         'menunew=0
+         Do
+
+         Var event= waitEvent
+         If event=EventLBDown Then ' 26-02-2022
+            If EventNumberListView=1 Then
+               If mitipo=1 Then 
+                  portout=GetItemListView
+               EndIf
+               If mitipo=2 Then
+                 portin=GetItemListView
+               EndIf 
+               cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)
+               If  mitipo=1 then           
+                  If InStr(cad,"x") >0  Then
+                     cad="[ ] " +listout(portout) 
+                  Else  
+                     cad="[x] " +listout(portout) 
+                  EndIf
+               EndIf
+               If mitipo=2 Then 
+                  If InStr(cad,"x") >0  Then
+                    cad="[ ] " +listin(portin) 
+                  Else  
+                    cad="[x] " +listin(portin) 
+                  EndIf 
+               EndIf 
+
+               ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
+           EndIf
+        EndIf
+
+          If event=eventgadget Then
+            If eventnumber()=2 And InStr(cad,"x")> 0 Then
+              'menunew=0
+              '''portout = GetItemListView()
+
+              If mitipo=1 Then
+                Print #1,"PORT SELECCIONADO en menu ",portout
+                For  i As Short =1 To 32
+                      If CheckBox_GetCheck( cbxejec(i))= 1  Then
+                          pmTk(i+32).portout=CUByte(portout)
+                     EndIf
+                Next i
+              EndIf
+              If mitipo=2 Then
+                  Print #1,"PORT SELECCIONADO en menu ",portin
+                  pmTk(ntkp+32).portin =CUByte(portin)
+              EndIf
+
+  '            If CANCIONCARGADA=TRUE  Or TRACKCARGADO=TRUE  Then
+  '               If NombreCancion > ""  And MAxPos > 1 Then
+  '                  GrabarRollaTrack(0)
+  '               EndIf
+  '            Else
+  '              If MaxPos > 1  And ROLLCARGADO  Then
+  '               GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
+  '               ' no el undo dolo se debe borrar al ahcer nuevo creo
+  '              EndIf  
+  '            EndIf  
+              Close_Window(haw)
+              Exit Do 
+            End If
+          EndIf 
+  
+          
+         Loop 
+  
+'' fin ruso
+cierroport=0
+End Sub
+
 
 ' 
 Sub  selcanal (ByVal tipo As Any Ptr )  ' list de ruso

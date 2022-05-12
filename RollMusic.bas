@@ -833,7 +833,7 @@ Dim hnro As Integer
  
  ' genial puedo recorrer un array con un pointer!!!!
 '-------
-nroversion="0.4560 en desarrollo:grabar archivos MIDI-IN"
+nroversion="0.4563 :ajuste de parametro en Control- PortSal en tracks y ejecuciones "
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
 acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version Solo ejecuta las secuencias " + _
  "a base de algoritmos sin una linea conductora de tiempos. Solo se basa en las duraciones de las notas. " + _
@@ -1002,6 +1002,56 @@ ButtonImageGadget(15,180,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
   cbxgrab(31) = CheckBox_New( 410 , 640, 20, 20, "",, hwndc)
   cbxgrab(32) = CheckBox_New( 410 , 660, 20, 20, "",, hwndc) 
 
+'---------------------------------------------------------------------
+' port de salida ,Volumen y Paneo para ejecuciones y tracks manuales...
+' solo se da click en 'S' de sonido de la pista y luego uno de estos3 botones..
+' se ajusta asi en una pista de track o ejecucion por vez el port de salida o 
+' midi-out...igual para volumen y paneo,si sequiereajustar mas de uno a la vez
+' simplemente se da click en todos los deseados y elajuste sera el mismo en cada uno
+' o sea S tiene doblefuncion desmutear odar sonido o ajustar alguno de los 3 parametros.  
+ButtonGadget(16,740,0,70,20,"PortSal")
+ButtonGadget(17,810,0,35,20,"Vol")
+ButtonGadget(18,850,0,35,20,"Pan")
+ButtonGadget(19,890,0,50,20,"Patch")
+/' 
+  cbxejecout(1) =  CheckBox_New( 730 ,  40, 20, 20, "",, hwndC) 
+  cbxejecout(2) =  CheckBox_New( 730 ,  60, 20, 20, "",, hwndC)
+  cbxejecout(3) =  CheckBox_New( 730 ,  80, 20, 20, "",, hwndC)
+  cbxejecout(4) =  CheckBox_New( 730 , 100, 20, 20, "",, hwndC)
+  cbxejecout(5) =  CheckBox_New( 730 , 120, 20, 20, "",, hwndC)
+  cbxejecout(6) =  CheckBox_New( 730 , 140, 20, 20, "",, hwndC) 
+  cbxejecout(7) =  CheckBox_New( 730 , 160, 20, 20, "",, hwndC) 
+  cbxejecout(8) =  CheckBox_New( 730 , 180, 20, 20, "",, hwndC)
+  cbxejecout(9) =  CheckBox_New( 730 , 200, 20, 20, "",, hwndC)
+  cbxejecout(10) = CheckBox_New( 730 , 220, 20, 20, "",, hwndC)
+  cbxejecout(11) = CheckBox_New( 730 , 240, 20, 20, "",, hwndC)
+  cbxejecout(12) = CheckBox_New( 730 , 260, 20, 20, "",, hwndC)
+  cbxejecout(13) = CheckBox_New( 730 , 280, 20, 20, "",, hwndC) 
+  cbxejecout(14) = CheckBox_New( 730 , 300, 20, 20, "",, hwndC) 
+  cbxejecout(15) = CheckBox_New( 730 , 320, 20, 20, "",, hwndC)
+  cbxejecout(16) = CheckBox_New( 730 , 340, 20, 20, "",, hwndC)
+  cbxejecout(17) = CheckBox_New( 730 , 360, 20, 20, "",, hwndc)
+  cbxejecout(18) = CheckBox_New( 730 , 380, 20, 20, "",, hwndc)
+  cbxejecout(19) = CheckBox_New( 730 , 400, 20, 20, "",, hwndc) 
+  cbxejecout(20) = CheckBox_New( 730 , 420, 20, 20, "",, hwndc) 
+  cbxejecout(21) = CheckBox_New( 730 , 440, 20, 20, "",, hwndc)
+  cbxejecout(22) = CheckBox_New( 730 , 460, 20, 20, "",, hwndc)
+  cbxejecout(23) = CheckBox_New( 730 , 480, 20, 20, "",, hwndc)
+  cbxejecout(24) = CheckBox_New( 730 , 500, 20, 20, "",, hwndc)
+  cbxejecout(25) = CheckBox_New( 730 , 520, 20, 20, "",, hwndc) 
+  cbxejecout(26) = CheckBox_New( 730 , 540, 20, 20, "",, hwndc) 
+  cbxejecout(27) = CheckBox_New( 730 , 560, 20, 20, "",, hwndc)
+  cbxejecout(28) = CheckBox_New( 730 , 580, 20, 20, "",, hwndc)
+  cbxejecout(29) = CheckBox_New( 730 , 600, 20, 20, "",, hwndc)
+  cbxejecout(30) = CheckBox_New( 730 , 620, 20, 20, "",, hwndc)
+  cbxejecout(31) = CheckBox_New( 730 , 640, 20, 20, "",, hwndc)
+  cbxejecout(32) = CheckBox_New( 730 , 660, 20, 20, "",, hwndc) 
+'/
+
+
+
+
+
 
 '---------------------------
 'StatusBarGadget(1,"StatusBarGadget")
@@ -1029,6 +1079,7 @@ MenuItem(1014,MenName1, "Grabar una Pista rtk a roll TrackaRoll")
 Menubar(MenName1)
 '''MenuItem(1015,MenName1, "Grabar Pistas MIDI-IN")
 MenuItem(1016,MenName1, "Cargar Pistas MIDI-IN")
+MenuItem(1017,MenName1, "Elegir MIDI-OUT o Driver o Port de Salida de pista previamente chequeda en S (sonido)")
 MenuItem(1019,MenName1, "Salir")
 
 
@@ -1440,6 +1491,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
            Case 1016 '<============Cargar MIDI-IN
       Dim As String nombrea,myfil
        print #1,"EN Cargar midi-in nombre ",nombreMidiIn
+       ResetAllListBox(4)
       Dim As String lugar
        If  NombreCancion= "" Then
 lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BIF_USENEWUI, "c:\" )
@@ -1472,7 +1524,11 @@ lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BI
            Next j 
            tocatope=ntoca
       EndIf 
-       
+'-----------------------------------------------------------------------
+            Case 1017 'seleccionar  por SALIDA de lapista ejecucion 
+
+'-----------------------------------------------------------------------
+            Case  1018 ' elegir PATCH si corresponde de la pista de ejecucion 
 
 '-----------------------------------------------------------------------
            Case 1019  ''<============= SALIR TERMINA ROLL
@@ -1786,10 +1842,14 @@ Print #1,"1060 abrirRoll=0 entro"
              abrirMIDIin=1
 'If abrirMIDIin=1 Then ' grabacion desde teclado ...entr mal los valores por ahora
 '   abrirMIDIin=0
-              open_port (midiin(pmTk(ntk+32).portin ),pmTk(ntk+32).portin, *nombrein( pmTk(ntk+32).portin ) )
-              set_callback midiin(pmTk(ntk+32).portin ), @mycallback, p
+'NTK??? vale cero al comienzo ergo es la ultima  ejecucion de trackas ...32+1 sera de ejec
+'' ÇÇÇÇÇ SEGUIRACA AJUSTE DEPORTOUT....05-05-2022
+ ' deberiamos, 1) seleccionar el port de la pista ejec y luego abrir ejecutando esta accion
+' se podra usar mycallback mas de 1 vez en distinto port ? supongo que si,.,,,  
+              open_port (midiin(pmTk(ntkp+32).portin ),pmTk(ntkp+32).portin, *nombrein( pmTk(ntkp+32).portin ) )
+              set_callback midiin(pmTk(ntkp+32).portin ), @mycallback, p
 ' por ahrao iognoramos otros tipsod de mensaje
-              rtmidi_in_ignore_types  (midiin(pmTk(ntk+32).portin ), 1, 2, 4)
+              rtmidi_in_ignore_types  (midiin(pmTk(ntkp+32).portin ), 1, 2, 4)
               teclado=1 
               jgrb=0
 '------------hace falta abrir la salida
@@ -2190,13 +2250,12 @@ Print #1,"-------------------------------------"
 ' revisar CheckBox_GetCheck de las ejecuciones
 
 '//////////////// BOTON ROJO GRABA EJEC //////////////////
-
+' llamar a un list  port y ajustar portout  
       If eventnumber()= 10 And GrabarEjec=0 Then ' BOTON GRABAR ROJO
          jgrb=0:repro=0
          For k=1 To 32 
            If CheckBox_GetCheck( cbxgrab(k))= 1 Then 
               ntoca=k 'ntoca es la  pista ejec que se esta grabando
-             
            EndIf
          Next k
          tocatope=tocatope+1
@@ -2212,6 +2271,8 @@ Print #1,"-------------------------------------"
                      tocaparam(ntoca).maxpos =0
                      tocaparam(ntoca).orden=0
                     tocaparam(ntoca).orden=ntoca
+                    tocaparam(ntoca).patch=0
+                     tocaparam(ntoca).canal=0
          Redim  CargaIn (1 To 4000) 
          pmTk(ntoca+32).portout=0
          SetGadgetstate(9,0)
@@ -2319,6 +2380,11 @@ Print #1,"-------------------------------------"
       Print #1,"PARAMETROS EJEC mapos ",tocaparam(ntoca).maxpos
       Print #1,"PARAMETROS EJEC orden ",tocaparam(ntoca).orden
       Print #1,"PARAMETROS EJEC delta ",tocaparam(ntoca).delta
+      Print #1,"PARAMETROS EJEC portout ",tocaparam(ntoca).portout
+      Print #1,"PARAMETROS EJEC patch ",tocaparam(ntoca).patch
+      Print #1,"PARAMETROS EJEC canal ",tocaparam(ntoca).canal
+
+
       maxgrb=tocap.maxpos
 ' para una sola pista grabada el maxgrb es el maxpos de esa pista
       If  maxgrb > 0 And ntoca > 1 Then
@@ -2332,6 +2398,8 @@ Print #1,"-------------------------------------"
 ' al cargar reconstruyo en memoria igualo todo de nuevo         
           EndIf
       EndIf 
+' si es grabacion nueva tocatope va incrementando apuntando a 1,2,3,4 etc
+' y graba 1 por vez,el ultimo corriente...o actual   
       GrabarMidiIn (toc(), tocatope,tocap)   
          Else
             CONTROL1=1  
@@ -2387,6 +2455,113 @@ Print #1,"-------------------------------------"
          EndIf   
 
       EndIf
+      If  eventnumber()=16 Then ' boton PortSal de track cbxnum o ejec cbxejec
+          Dim As Integer miport =1, pis=0,num=0
+         For k=1 To 32 
+           If CheckBox_GetCheck( cbxejec(k))= 1  Then
+              pis=k
+           EndIf
+         Next k
+         If  pis >=1 Then
+            miport=1   ' seleccion port Salida
+            thread3 = ThreadCreate(@selportEjec(), CPtr(Any Ptr, miport))
+'  preparamos la grabacion por cambio de portsal
+      Dim As ejec toc(1 To tocaparam(pis).maxpos)
+      Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
+      Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
+    
+       For j As Integer =1 To   tocaparam(pis).maxpos
+              toc(j).modo=Toca(pis).trk(j).modo
+              toc(j).nota=Toca(pis).trk(j).nota
+              toc(j).vel=Toca(pis).trk(j).vel
+            Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
+       Next j
+      Dim tocap As ejecparam = tocaparam(pis)
+      Print #1,"PARAMETROS EJEC nombre ",tocaparam(pis).nombre
+      Print #1,"PARAMETROS EJEC mapos ",tocaparam(pis).maxpos
+      Print #1,"PARAMETROS EJEC orden ",tocaparam(pis).orden
+      Print #1,"PARAMETROS EJEC delta ",tocaparam(pis).delta
+      Print #1,"PARAMETROS EJEC portout ",tocaparam(pis).portout
+      Print #1,"PARAMETROS EJEC patch ",tocaparam(pis).patch
+      Print #1,"PARAMETROS EJEC canal ",tocaparam(pis).canal
+
+' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
+      GrabarMidiIn (toc(), pis,tocap)  ' graba solo uno el chequeado en play  
+         EndIf
+''' en base alanterior terminar esta parte que es para pisatas de cancion manual
+'' mas adelante....cuadno termine todo pistas ejec ÇÇÇÇÇÇ
+         For k=1 To 32 
+           If CheckBox_GetCheck( cbxnum(k))= 1  Then
+              num=1
+           EndIf
+         Next k 
+         If  num=1 Then
+              thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))
+         EndIf
+      EndIf
+      If  eventnumber()=17 Then ' VOL
+
+      EndIf 
+      If  eventnumber()=18 Then 'PAN
+
+      EndIf 
+      If  eventnumber()=19 Then 'PATCH o insrumento de un Sinte,,,
+          Dim As Integer instrum =1, pis=0,num=0
+         For k=1 To 32 ' pistas ejec de grabaciondesde teclado
+           If CheckBox_GetCheck( cbxejec(k))= 1  Then
+              pis=k
+           EndIf
+         Next k
+         If  pis >=1 then 
+           selInstORdenNum (instrum)
+            '''thread3 = ThreadCreate(@selInstORdenNum (), CPtr(Any Ptr, instrum))
+           Print #1," pista ejec  nro ",pis
+           tocaparam(pis).patch=CUByte (instrum)
+           pmTk(pis+32).patch=CUByte (instrum)
+           Print #1,"ejecucion patch elegido tocaparam(pis).patch ", tocaparam(pis).patch
+'--------------------------
+' preparamos para grabar la pista por cambio de patch
+
+      Dim As ejec toc(1 To tocaparam(pis).maxpos)
+      Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
+      Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
+    
+       For j As Integer =1 To   tocaparam(pis).maxpos
+              toc(j).modo=Toca(pis).trk(j).modo
+              toc(j).nota=Toca(pis).trk(j).nota
+              toc(j).vel=Toca(pis).trk(j).vel
+            Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
+       Next j
+      Dim tocap As ejecparam = tocaparam(pis)
+      Print #1,"PARAMETROS EJEC nombre ",tocaparam(pis).nombre
+      Print #1,"PARAMETROS EJEC mapos ",tocaparam(pis).maxpos
+      Print #1,"PARAMETROS EJEC orden ",tocaparam(pis).orden
+      Print #1,"PARAMETROS EJEC delta ",tocaparam(pis).delta
+      Print #1,"PARAMETROS EJEC portout ",tocaparam(pis).portout
+      Print #1,"PARAMETROS EJEC patch ",tocaparam(pis).patch
+      Print #1,"PARAMETROS EJEC canal ",tocaparam(pis).canal
+
+' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
+      GrabarMidiIn (toc(), pis,tocap)  ' graba solo uno el chequeado en play  
+
+'---
+         EndIf
+
+'------------------
+         For k=1 To 32 ' pistastrack de cancion
+           If CheckBox_GetCheck( cbxnum(k))= 1  Then
+              num=k
+           EndIf
+         Next k 
+         If  num >=1 Then
+             selInstORdenNum (instrum)
+              '''thread2 = ThreadCreate(@selInstORdenNum(), CPtr(Any Ptr, instrum))
+             pmTk(ntk).patch=CUByte(instrum)
+         EndIf
+
+
+      EndIf 
+
       SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
        Case EventClose  ''<==== SALIR TERMINA ROLL lax de win control???

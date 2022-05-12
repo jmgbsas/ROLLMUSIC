@@ -201,16 +201,18 @@
           Nota: El orden de las pistas grabadas enarchivo, se puede cambiar cambiando los nombres de archivos, sonara
           de igual forma. Los retardos entre pistas se transforman en ticks agregados de modo que el retardo ya no se usa mas
           en la reproduccion.
-          (falta elegir port de salida de cada pista, por ahora solo toca elpatch 0 que generalmenteesPiano. 
-           falta tambien  sincronizar la ejecucion si se purde.... a una cancion manual etc etc,aunque ticks de midiIn
-           y pasos de manual no estan a tempo, solosepodrasincronizar el  comienzo..massincronizacionrequeriria
-           pasar los tracks maniales a ticks de ejecucion o al reves de ticks a duracion con lo y aecho de ingresar desde
+          (falta elegir port de salida de cada pista, por ahora solo toca el patch 0 que generalmente es Piano. 
+           falta tambien  sincronizar la ejecucion si se puede.... a una cancion manual etc etc,aunque ticks de midiIn
+           y pasos de manual no estan a tempo, solo se podra sincronizar el  comienzo..mas sincronizacion requeriria
+           pasar los tracks manuales a ticks de ejecucion o al reves de ticks a duracion con lo ya echo de ingresar desde
            teclado en manuales...).
            c) Se puede usar Crear Cancion y abrir un Directorio de cancion para ubicar una ejecucion de teclado
               Para ello se procede igual que al crear o usar un directorio de Cancion y luego abrir Pistas Midi en el menu Archivo
               casi abajo de todo., De ese modo una cancion manual y una ejecucion desde teclado podranestar en un mismo
               directorio.
-          
+          d) Cambiar PATH de una pista de ejecucion por teclado MIDI-IN. con la pista seleccionada para reproducir como
+             antes pulsar arriba el bootn patch ,deseleccionar el que tenga una X dando click para que quede en blanco
+            luego buscar el instrumento deseado y clickear en el luego pulsar el boton OK
     17b) grabacion directamente sobre Roll, 1era version faltaria que detecte acordes
            ya lo hizo en algun algoritmo distinto a este , el actual funciona para melodias, tiene
            un metronomo, si se desea se puede desactivar (menu Opciones, no probado)

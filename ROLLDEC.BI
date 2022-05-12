@@ -819,7 +819,7 @@ Dim Shared ANCHO3div4 As Integer
 
 '----------------------------
 Dim Shared  As String ProgError(0 To 17)
-Static Shared As HWND cbxnum(1 To 32), cbxejec(1 To 32),cbxgrab(1 To 32),rbparar,rbgrabar
+Static Shared As HWND cbxnum(1 To 32), cbxejec(1 To 32),cbxgrab(1 To 32),rbparar,rbgrabar,cbxejecout(1 To 32)
 Static Shared As Integer sonidoPista(1 To 32)
 static  Shared As Integer SuenaTodo =0, cntsuena=0
 Static Shared  As Integer jgrb=0
@@ -857,7 +857,8 @@ Dim Shared As Integer cual=0, repro=0
 'Common Shared  midiin As   RtMidiInPtr
 'Common Shared  midiout () As  RtMidiOutPtr ' abrir hasta 32 dispositivos
 Dim Shared  midiin  (0 To 15) As  RtMidiInPtr  ' 16 dispo de entrada..mucho no¿?
-Dim Shared  midiout (0 To 31) As  RtMidiOutPtr ' abrir hasta 32 dispositivos
+Dim Shared  midiout (0 To 63) As  RtMidiOutPtr ' abrir hasta 32 dispositivos
+' parece que empieza desde cero 0 to 31 decia...el doble seria 0 to 63
 Dim Shared As Integer teclado=0 ' salida de ejecucion teclado 
 
 Common Shared midisal As RtMidiOutPtr, portsal As ubyte
@@ -901,7 +902,10 @@ Type  ejecparam Field=1
   As Double        delta  ' entre pistas de ejec
   As String  * 29 nombre 'de cada Toca
   As  Integer       maxpos
-  As  UByte         orden   'nro pista ejec   
+  As  UByte         orden   'nro pista ejec
+  As  UByte        portout
+  As  UByte        patch 
+ As   UByte        canal  
 End Type
 
 
