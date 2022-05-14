@@ -1,740 +1,5 @@
-' apertura de ports en play  
-' tiempoPatron a entero no tiene porque ser double, se graba en archivo
-' Se agrego formar acordes aun sin nota en el lugar elegido, se deb eentrar al duracion
-' Triadas desde Tonica completo Mayor Menor Disminuido formacion y play 
-' fix consumo cpu S5=2 y fueradefoco=0 eliminado
-' Funciona Acorde en Tonica triaca,,Ctrl+clik derecho luego seguir con mayor hasta no inversion
-' SE ELIMINO DE 'Q' la configuracion de tamaños, proporciones y font
-' se agrego nverEscalasAuxiliares y nanchofig a RollMusic.ini
-' se agrego en Ver, si se ven o no las Escalas Auxiliares en el grafico
-' TODO MULTIKEY IR PASANDO DE A POCO PROBANDO A E.SCANCODE MULTIKEY ES UNA BASURA REPITE EL COMANDO MIL VECES
-' paso previo para armar acordes: necesitamos poder INGRESAR CAMBIOS DE ESCALA  y guardarlos en la secuencia
-' pero al tocar se saltean como si no existieran,,,al retroceder o avanzar en la secuencia se debe ir actualizando
-' la escala en uso, esto permite al ingresar un acorder construirlo en base a la escala usada en ese tramo.
-' usaremos xml para leer y escribir musicxml e intercambia rocn otros programas
-' antes que midi despue salgun dia haremos midi no se veremos.... 
-' http://xmlsoft.org/examples/index.html
-' YA cierra todas las sesiones de rollmusic desde control
-' futuro grabar mxold y algo mas para conservar el tamaño de la ventana y el tamaño del font
-' usado por el usuario !!!! OK Y AANDA
-' el borrado de columna esta defectuoso hay que dar 0 y luego 12 x en toda la octava para
-' que borre mejor usaremos marcas de zona para borrar.
-' dejo de andar marcado de zonas porque habia un exit do en COMEDIT=False con mousex>50
-' se movio zonas dentro de mousex> 50 y luefo COMEDIT=false volvio a funcionar
- ' se intento usar Byte en vez de Ubyte para usar negativos pero hay qu emodificar mucho
- ' se usara IF variabrlee > 127 par ausar por ejemplo Vol > 127 para indicar escalas...
- ' Esta nota base...es Tonica 3era 5ta 7ma ...
- ' uso ctrl+click para ingresar notas nuevas en Edit, sino al pasar a Ctrl-M u otras acciones
- ' entraba notas no deseadas..
- ' 11-12-2021 redusco la camtidad de partes a 20 partes_falta (1 To 20), partes_sobra(1 To 20)
- ' rooloop 2673 menu contextual acordes desarrollo 06-12-2021
- ' correccion Clcik end EDIT 06-12-2021 s3=0 movido a y > 50 
- ' correccion de abrir nota si menor=mayor no hace nada, allevantar click rompia todo
- ' v23 fraccionar automaticamente en COMEDIT cursor al poner notas menores o 
- ' mayores en duracion a otra nota en acorde existente, tambien armar acordes desde una nota
- ' existente como tonica mayores menores etc,,buscar al tonica si consideramos es una 3era
- ' o una 5ta..
- ' V22 agregamso menu contextual en lectura con click derecho para acordes falta desarrollar
- ' v22  SetStateMenu(hmessages,1102,3) o  SetStateMenu(hmessages,1103,0) check items menu
- ' V22 abrir nota se ajuto final dejaba una columna vacia
- ' V21 SE AJSUTO MOVER LA VENTANA DRAGANDO LA CINTA SUPERIOR FUNCIONA MEJOR
- ' V21 TREADdETACH DE tHEREADlOOP Y THREAD1 PLAY CLOSE PORTS ETC EN EL CIERRE DE CONTROL 
- 'V21 ESTRUCTURO ACORDESONIGUALES Y COLOCO ALLOF EN VARIAS PARTES,Q,FIN PLAY, P.
- ' V19 TOCA BASTANTE BIEN ACORDES IGUALES CON SILENCIOS EN SU FORMACION
- ' Y CALCOMPAS AHROA INCLUYE SILENCIOS 
- ' v14 ...AOI-NUEVO PERFECTO TODOS LOS ACORDES IGUALES EN ACORDES TODAS LAS POSICIONES DBEN ESAR LLENAS
- ' CON NOTAS CON SONIDO O SIN SONIDO PERO TODOS CON LA MISMA CANTIDAD DE NOTAS POR AHORA UNAS PODRAN SONAR
- ' OTRAS NO SEGUIR CON MAS PREUBAS...ANDA OK CON LOS POCOS CASOS QUE TENGO...
- ' V10 FRACCIONADOR divido la nota seleccionada en n partes 
-  ' v8 fix nucle dur=0 nota=181 sino el borrado de notas anda mal
-  ' toda celda debe tener 0,181 nada de 181,181...eso se cambio
-  ' V7 CRASH DE SPACE EN PLAY, Y VER ACORDES DISTINTOS SI SE PUEDE CAMBIAR UNA NOTA LARGA
-  ' EN 2 CORTAS AUTOAMTICAMENTE PARA PONER EN ACORDE OTRAS 2 MAS CHIVAS EL:
-  ' P    ==> L+I* || DISCERNIR (1) |P|     DE (2)| P   |
-  ' L+I      L+I                   |L| I         | L I |
-  ' EL ULTIMO CASO (2) NO SE PUEDE EN ROLL , EL (1) SI
-  ' O SEA QUE EL PROGRAMA AUTOMATICAMNETE PARTA UNA NOTA LARGA COMO P I O ETC
-  ' FRENTE A OTRAS EN ACORDE MAS CHICAS Y UNIDAS O NO...
-  ' V5 CORREGIDO, V6 CORREGIDO OTRAS COSAS,,QUEDA CRASH DE PLAY CON SPACE...
-  ' 08-11 V5 anda mejor qu ela V4 solo que la ligadura I+I+I la toca como I+I
-  ' LE FALTA UNA NEGRA DE DURACION, EL RESTO LO TOCA BIEN!!!
-  ' SIN TOCAR CASI NADA SOLO ELIMINAR EL ANALISIS DE LIGA EN PLAYALL
-  ' SEGUIR CORREGIR CON EL USO DE LSO CAMPOS NUEVOS Y AL TERMINAR 
-  ' ELIMINAR LOS CAMPOS DE VEC QUE NO SE USEN
-' ------------------------------
-'  -Wc -fstack-usage genera un archivo en runtime *.su con el uso del stack
-' por cada funcoin el default total es 1024k, -t 1024 no haria falta colocarlo
-' en la linea de comando
-' https://gcc.gnu.org/onlinedocs/gnat_ugn/index.html#SEC_Contents
-'====> clave DEVF (desarrollo futuro, comentarios en lugares apr adessarrollar mas
-' funcionalidades.)
-' -------------------------------------------------
-#define __FB_WIN64__
-#if defined (__FB_WIN64__) 
-#libpath "C:\msys64\mingw64\lib"
-#else
-#libpath "/usr/lib"
-#endif
-#define EXTCHAR Chr(255)
-
-
-#include "mod_rtmidi_c.bi"
-#Inclib  "rtmidi.dll" 'usa librerias estaticas 
-'#Inclib  "rtmidi"  '''uso al dedeisco rtmidi.dll
-#include "fbthread.bi"
-#include "crt.bi" ' QSORT
- 
-#define WIN_INCLUDEALL
-#include once "windows.bi"
-#include once "win/shlobj.bi"
-
-'#Include Once "/win/commctrl.bi"
-'#Include "crt/stdio.bi"
-#include "file.bi"
-#include "fbgfx.bi" ' se carga antes de windows.bi para evitar duplicates..o conflictos
-'#Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
-#if __FB_LANG__ = "fb"
-Using FB '' Scan code constants are stored in the FB namespace in lang FB
-#endif
-
-' Nota: algun dia si quiero midifile intentar usar una libreria de C pura 
-' C:\IT64\AREAWORKAUX\MIDI-LIBRARY\midilib-master\midilib-master\freeBasic
-
-Sub getfiles(ByRef File As OpenFileName,flag As String, accion As String)
-    Dim As ZString * 2048 SELFILE
-    Dim As String MYFILTER=flag+Chr(0)
-    With File
-  .lStructSize = SizeOf(OpenFileName)
-  .hwndOwner = NULL
-  .hInstance = NULL
-  .lpstrFilter = StrPtr(MYFILTER)
-  .nFilterIndex = 0
-  .lpstrFile = @SELFILE
-  .nMaxFile = 2048
-  .lpstrFileTitle = NULL
-  .nMaxFileTitle = 0
-  .lpstrInitialDir = @"nosuch:\"
-  .lpstrTitle = @"Open"
-  .Flags = 4096
-  .nFileOffset = 0
-  .nFileExtension = 0
-  .lpstrDefExt = NULL
-    End With
-    If accion="open" Then
-    GetOpenFileName(@File)
-    EndIf
-    If accion="save" Then
-    GetSaveFileName(@File)
-    EndIf
-
-End Sub
-' FILE DIALOG adicionales
- 
-'--------
-
-Dim Shared file As OpenFileName
-Dim Shared As String myfilter
-myfilter  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
-'myfilter += "Ini files"+Chr(0)   +"*.ini;*.txt;*.cfg"+Chr(0)
-myfilter += "Rtk  Files"+Chr(0)   +"*.rtk"+Chr(0)
-
-
-Open "AAAAA-test.TXT" For Output As 5
-Dim Shared As Integer abierto=0
-Common Shared  mensaje As Integer 
-'''  end file dialog  
-' para GTK Gtk:list()
-'#Include Once "crt.bi"
-#include once "gtk/gtk.bi"
-
-' This is our data identification string to store data in list items
-Const list_item_data_key ="list_item_data"
-' fin GTK
-' -- INICIO openGL GLFW 3.1.1 
-' habilitamos OPENGL para ver si podemso mostrar la grabacion de ejecucion
-' de entrada por MIDI-IN.
-#Include once "glfw3.bi"
-If glfwInit()=GL_FALSE then
-  print "error: can't init GLFW"
-  beep : sleep : end 1
-end If
-Dim As GLFWwindow ptr  win
-' ----FIN OPENGL 
-
-'===============================
-#include "ROLLDEC.BI"
-Dim Shared As Integer pd1, fa1 
-pd1 = GetCurrentProcessId()  
-
-''Open "midebug.txt" For Output As #1
- Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As #1
-Print #1,"start"
-Print #1,"PID DE ESTE PROCESO ",pd1
-
-
-
-'Open "mivector.txt" For Output As #3
-'Open "miplayall.txt" For Output As #4
-'Open "test-AAAAA.TXT" For Output As #5
-'print #1, "version para ceros!!!!!! "
-'Dim fcon As Integer 
-'fcon=freefile
-'Open cons  for Output As #8
-
-''Open "figuras.txt" For Output As #1
-Print #1,Date;Time
-' secuenciador de 9 octavas estereo, modo Piano Roll,hace uso de
-'letras para las duraciones en vez de rectangulos...
-' edicion modificacion insercion,,,12 eventos c/u con
-'nota, duracion,volumen ,paneo, pitch bend e instrumento
-' version actual front end solamente 1 track...no reproduce
-' no genera midi todavia..
-'-------------
-''
-'=======================
-'--------------
-#include "string.bi"
-#include once "cairo/cairo.bi"
-#include "midiinfo.bi"
-'==============================
-'#Include "NOTAS.bi"
-#include "RTMIDIDEC.bi"
-'==============================
-#include "ROLLCONTROLDEC.bi"
-'=============================
-' iup start
-' SOLO PARA WINDOWS LEE MIDI FILES PERO FALTA FUNCIONES PARA GRABAR!!!
-'---> #Include once "foro/fmidi.bi"
-#include once "fbthread.bi"
-#include "foro/window9.bi"
-
-'#Include "crt/win32/unistd.bi"
-#inclib "ntdll"
-#include "win/ntdef.bi"
-
-Dim Shared fs As Integer 
-fs = FreeFile 
-Open "secuencia.txt" For Output As #fs
-
-Const NEWLINE = !"\n"
-
-'tempo I=160, seri equivalente a O=40 como l maxima cantdad de ticks de O es
-' eldela figura mas pequeña=128 ticks...40 * 128 = 5120 por minuto.
-' Si deseo un secuecnia de CantMin minutos
-tempo=160  ' negra=160
-CantMin=15
-'NotaBaja=1 : NotaAlta=128
-
-Print #1, "__FB_ARGV__ ",__FB_ARGV__
-Print #1, "__FB_ARGC__ ",__FB_ARGC__
-'Dim direp As ZString  Ptr
-'Dim dires As String
-Common Shared As Integer ubirtk, ubiroll
-Print #1,"__FB_ARGC__ ", __FB_ARGC__
-Dim As Integer com_usarmarco =0
-For ix = 0 To __FB_ARGC__
-  Print #1, "arg "; ix; " = '"; Command(ix); "'"''
-
- If ix=1 Then
-  
- ubirtk = InStr (LCase(Command(ix)),".rtk")
- ubiroll=  InStr(LCase(Command(ix)),".roll")
-
- If ubirtk > 0 or ubiroll>0 Then
-   ntk=0 
-   titulos(0)=Command(ix)
- Else
-    desde= CInt(Command(ix))
-'    pmTk(ntk).desde=desde
-   Instancia=1    
- EndIf
- Print #1,"ubirtk ",ubirtk
- Print #1,"ubiroll ",ubiroll
-    'sigue en roolloop principio
- EndIf
- If ix=2 Then
-  hasta= CInt (Command(ix))
- ' pmTk(ntk).hasta=hasta
-    Instancia=2
- EndIf
- 
- If ix=3 Then
-  titu=  (Command(ix))
-     Instancia=3
- EndIf
-
- If ix=4 Then
-  instru=  CUByte (Command(ix))
-     Instancia=4
- EndIf
-
- If ix=5 Then
-  pid1=  CInt (Command(ix))
-     Instancia=5
- EndIf
-
- If ix=6 Then
-  com_usarmarco=  CInt (Command(ix))
-     Instancia=6
- EndIf
-
-Next ix
-'Dim Shared As Integer pd1, fa1 
-
-'pd1 = GetCurrentProcessId()  
-'Open "midebug" + "["+Str(pd1)+"]" + ".txt" For Output As #1
-
-''Open "midebug.txt" For Output As #1
-'Print #1,"start"
-'Print #1,"PID DE ESTE PROCESO ",pd1
-fa1=FreeFile
-Open "procesos.txt" For Append As #fa1
-If pid1=0 And ix < 3 Then
- pid1=pd1
-Else
-  If pid1 <>0 Then
-     Print #fa1,pd1
-  EndIf 
-EndIf 
-Close fa1
-
-Sleep 100
-
-
-If desde = 0 And hasta = 0 Then
- Print #1,"intervalo no dado usando default!"
- desde => 4  ' -> 3  
- hasta => 8  ' -> 6 le debo restar la octava oculta +1
- 
-' internamente no usamos cero , empezamos desde 1 pero en roll se ve tal cual es
-' va desde 0 a 7 ergo de 4 a 8 el default es la eleccion en roll 3 a 7 pero al 7 es de
-' ontrol o sea es de 3 a 6 y la de control no aparece en el grafico...
-' l a3 es al 4t octava y la 6 es al 7ma..pues empieza desde 0 en la visualizacion.
-' asi coincidimos con lo que se usa en piano la ocatava se numera desde 0.. 
- 'pmTk(ntk).desde=desde
- 'pmTk(ntk).hasta=hasta
-EndIf
-' calculo teorico a tiempopatron 160 , pero roollmusic arranca a 120
-CantTicks=cantMin * 128 * tempo/4  ' 76800 ticks...o pasos
-'CantTicks=76800
-CantTicks=1000 ' 3 MINUTOS A NEGRA 160/min=500 Y Q TODAS SEAN FUSA
-' 4000*30=120000 x 16=1920000
-'  
-
-Dim Shared As paso compas (1 To CantTicks) 'cada item es la posicion en donde
-
-desdevector = desde
-hastavector = hasta
-estoyEnOctava =desde
-estoyEnOctavaOld =desde
-' test test el maximo es desde=1...,0 ... hasta=9 ..,115 y el default es 
-'           el default   desde=4..,39 ... hasta=8 ...102 
-' --------
-NB => 0 + (desde-1) * 13   ' 39 , Notapiano=36, nR=39 -coincide no sobra nada
-NA => 11 + (hasta-1) * 13  ' 102, Notapiano= 83, nR=89 - no coincide sobra desde
-Print #1,"NB, NA",NB,NA 
-' sobra desde 90 a 102 inclisive o sea 13 posiciones...
-' automatiando podemos decier para cualqueir definicion de intervalo de octavas que
-' CALCULO DE POSICION DE LA INFORMACION DE ACORDES:
-' sobra desde -> [ 11 + (hasta-2)*13+1 ],  hasta -> [11+ (hasta -1)*13]
-' en este caso default ->11+ 6*13 +1=90  ==> 11 + 7*13=102
-' PARA EL MAxIMO SERIA
-' sobra desde -> [ 11 + (hasta-2)*13+1 ],  hasta -> [11+ (hasta -1)*13]
-' en este caso default 9-2 ->11+ 7*13 +1=103  ==> 11 + 8*13=115
-' O sea maximo desde 103 a 115 son las posiciones libres...
-' vamos a reservar en una posicion dada para la info de acordes por ejemplo en la 
-' maxima 103 para octava0,104 octava1,105 octava2, 106 oct3,107 oc4,108 oct5
-' 109 oct6, 110 oct 7...ergo quedan libres 111,112,113,114,115  
-
-ReDim (Roll.trk ) (1 To CantTicks,NB To NA) ' Roll de trabajo en Pantalla
-
-'Print #1,"instru ",instru
-' ojo debe se NB al reducir octabas NB cambia
-If instru > 0 Then
-  Roll.trk(1,NA).inst = CUByte(instru)
-  patchsal=instru
-EndIf
-'Print #1,"Roll.trk(1,NA).inst ",Roll.trk(1,NA).inst
-'Print #1,"NB ",NB
-'Print #1,"NA ",NA
-
-'Print #1,"desde ",desde
-'Print #1,"hasta ",hasta
-
-param.Roll=Roll
-param.ubiroll=ubiroll
-param.ubirtk=ubirtk
-
-
-Dim  As Integer  ctres=1 ' 5 octavas por track
-Dim As Integer lim1 
-
-lim1=1 ' lim3 vale 25 se reserva el ultimo par avalores de control, no alcanza
-' 26-01-2022 la zona de control debe ser 1 octava mas o sea lim3=25
-ReDim (Track(00).trk ) (1 To CantTicks,1 To lim3) ' lo usa instancia sin cancion
-ReDim (Track(01).trk ) (1 To CantTicks,1 To lim3) ' lo usa sin instancia
-ReDim (Track(02).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(03).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(04).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(05).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(06).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(07).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(08).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(09).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(10).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(11).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(12).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(13).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(14).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(15).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(16).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(17).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(18).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(19).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(20).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(21).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(22).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(23).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(24).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(25).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(26).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(27).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(28).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(29).trk ) (1 To ctres,1 To lim1)
-ReDim (Track(30).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(31).trk ) (1 To Ctres,1 To lim1)
-ReDim (Track(32).trk ) (1 To Ctres,1 To lim1)
-
-' c/u de estos track es redimensionable preserve en la 1era dimension 
-' o sea en las posiciones, lo que debo hacer es cargar estos Tracks
-' con eventos pero para mostrarlso usaria el Roll 
-' suponemos que cada track solo puede tener acordes de hasta 12 notas,1 to lim2
-' en el momento de la carga de Roll cargar tambien Track ¿?
-' creo que no solo debo copiar en el momento antes de grabar o reproducir
-' debere hAcer otro play PlayTracks en donde se ejecutara todos los tracks
-' barriendo la posicion comun a todos y las notas de cada uno EN SINCRONIA CON LA VISUALIZACION!
-' ENTONCES EN PLAYALL RECORRO TRACKS PERO NO EL DE VISUALIZACION,,,,,VEREMOS.,
-
-ReDim (RollAux.trk) ( 1 To CantTicks,NB To NA )
-CantCompas = 40 * CantMin
-' 600 COMPASES DE 32 POSICIONES 14,74 MBYTES , 235 MBYTES 16 TRACKS
-' si  I=160 -> O=40 , 40 compases/min en 15 min=600 compases
-' 600 * 128ticks maximo de H = 76800 ticks
-' 5 min seria / 3 = 200 compases, aprox 5Mbytes *16 = 80 mbytes 16 trcks
-' maso menso funciona pero debo empezar desde cero de vuelta....
-
-
-'''Dim Shared As ubyte Insercion (1 To 128, 1 To 12000)
-' si inserto en un track o canal debo desplazar a todos!!!
-'  de modoque tener una insercion para c7useracrisimo...
-' solo resta usar copia y Redim preserve
-
-' indice notas, fin compas, nota con puntillo o ligadura,
-' se almcena en el heap porque es shared
-' 12k posiciones de 96 notas o 128 con help y espacios ...8.388.608 bytes 8 megas
-/'
-Dim l As Integer
-For l = 1 To 65
-print #1, l;" ";figura(l)
-Next l
-''Close aca estaba habilitado el close humm ah pero esta comentado
-
-End
-'/
-''https://www.freebasic.net/forum/viewtopic.php?t=15127
-'print #1,"NroCol, ancho, anchofig ",NroCol, ANCHO, anchofig
-' ------------ play de usuario - datos por midiin -------------------
-' 16 CANALES DE ENTRADA, PAR AL REPRODUCION O ARMADO
-' SUMAREMOS SIEMRE ENTRE AMBAS FORMAS NO AMS DE 32 PORQUE AL REPRODUCIR
-' SE SUMAN ESTOS 16 , OSEA OUTPUT+INPUT <=32 SINO EN LA REPRODUCCION
-' TENDRIASMO UN MAZIMO DE 32+16=48...Y LA POLIFONIA DE RTMIDI
-   
-ReDim (Toca(01).trk ) (1 To Ctres) 
-ReDim (Toca(02).trk ) (1 To Ctres) 
-ReDim (Toca(03).trk ) (1 To Ctres) 
-ReDim (Toca(04).trk ) (1 To Ctres) 
-ReDim (Toca(05).trk ) (1 To Ctres) 
-ReDim (Toca(06).trk ) (1 To Ctres) 
-ReDim (Toca(07).trk ) (1 To Ctres) 
-ReDim (Toca(08).trk ) (1 To Ctres) 
-ReDim (Toca(09).trk ) (1 To Ctres) 
-ReDim (Toca(10).trk ) (1 To Ctres) 
-ReDim (Toca(11).trk ) (1 To Ctres) 
-ReDim (Toca(12).trk ) (1 To Ctres) 
-ReDim (Toca(13).trk ) (1 To Ctres) 
-ReDim (Toca(14).trk ) (1 To Ctres) 
-ReDim (Toca(15).trk ) (1 To Ctres) 
-ReDim (Toca(16).trk ) (1 To Ctres) 
-ReDim (Toca(17).trk ) (1 To Ctres) 
-ReDim (Toca(18).trk ) (1 To Ctres) 
-ReDim (Toca(19).trk ) (1 To Ctres) 
-ReDim (Toca(20).trk ) (1 To Ctres) 
-ReDim (Toca(21).trk ) (1 To Ctres) 
-ReDim (Toca(22).trk ) (1 To Ctres) 
-ReDim (Toca(23).trk ) (1 To Ctres) 
-ReDim (Toca(24).trk ) (1 To Ctres) 
-ReDim (Toca(25).trk ) (1 To Ctres) 
-ReDim (Toca(26).trk ) (1 To Ctres) 
-ReDim (Toca(27).trk ) (1 To Ctres) 
-ReDim (Toca(28).trk ) (1 To Ctres) 
-ReDim (Toca(28).trk ) (1 To Ctres) 
-ReDim (Toca(30).trk ) (1 To Ctres) 
-ReDim (Toca(31).trk ) (1 To Ctres) 
-ReDim (Toca(32).trk ) (1 To Ctres) 
-
-'1) tomar de midin los eventos
-'2) si como vienen imprimirlos para ir viendo que sale
-'3) luego de verificados los eventos, guardarloe es el vector Toca
-'   colocandole el timestamp con una presicion mayo ra 15 mseg,
-' consideramos I=250  por minuto (240ms) => L=500 (120ms),=>F=1000(60ms)
-' E=2000 (30ms), H=4000 (15ms).
-' usar rtmidi_in_create cdecl alias "rtmidi_in_create" (byval api as RtMidiApi, byval clientName as zstring ptr, byval queueSizeLimit as uinteger) as RtMidiInPtr
-' para modificar el limite de la cola , default 1024 odriamos pasarlo a mas
-' 4096 o 8192 valro tipico ,,,de un buffer
-
-'--------------------------
-Dim As String driver
-
-posmouseOld = 0:posmouse = 0
-COMEDIT = False:resize = False
-po = @octaroll
-*po = hasta -1 ' test 09-09-2021 
-s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0:s8=0
-If font=0 Then 
- font=18
-EndIf
-indaux=0:carga=0
-' -----------------------------------------------------------------------
-' notas redonda (O),blanca(P),negra(I),corchea(C),semicorchea(S), Fusa(F),Semifusa(E)
-' O P I L F E W H 
-' puntillo O* P*  C* elsigno  *
-' -puntillo resta en vez de sumar -O -P -C ...-U
-' -------------------------------------------------------------------------
-BordeSupRoll = Int((ALTO ) /18) ' (1400 )/18 integer = 77
-inc_Penta = Int((ALTO - BordeSupRoll) /(40)) ' 26 double 1330/66 para 1400 resolu
-
-' *******************************************************++
-BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio muestro octava 4 la central C3
-' *************************************************+
-' inc_Penta=separacion de lineas
-'---------------------
-gap1= anchofig* 2315/1000 ' 81 default
-gap2= (914 * gap1) /1000 ' 74 default
-gap3= (519 * gap1) /1000 ' 42 default
-
-'print #1,"gap1 ",gap1
-'---------
-Dim ffini As Integer 
-Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig,sVerCifradoAcordes
-
-ffini=FreeFile
-Open "./RollMusic.ini" For Input As #ffini
-Line Input #ffini, sfont
-Line Input #ffini, smxold
-Line Input #ffini, smyold
-Line Input #ffini, sancho
-Line Input #ffini, salto
-Line Input #ffini, sdeltaip
-Line Input #ffini, sVerEscalasAuxiliares
-Line Input #ffini, sanchofig
-Line Input #ffini, sVerCifradoAcordes
-
-'Print #1,"sfont, smxold, smyold,sANCHO,sALTO..  ",sfont, smxold, smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
-
-cerrar ffini
-Sleep 100
-
-
-nfont=ValInt(sfont)
-nmxold=ValInt(smxold)
-nmyold=ValInt(smyold)
-nancho=ValInt(sancho)
-nalto=ValInt(salto)
-ndeltaip=ValInt(sdeltaip)
-nVerEscalasAuxiliares=ValInt(sVerEscalasAuxiliares)
-nanchofig =ValInt(sanchofig)
-nVerCifradoAcordes=ValInt(sVerCifradoAcordes)
-
-Print #1,"nanchofig " ,nanchofig
-If nfont > 0 Then
-  font=nfont
-EndIf
-If nmxold <> 0 Then
-   mxold=nmxold
-EndIf
-If nmyold <> 0 Then
-   myold=nmyold
-EndIf
-
-If ndeltaip <> 0 Then
-   inc_Penta=ndeltaip
-EndIf
-If nanchofig <> 0 Then
-   anchofig=nanchofig
-   gap1= anchofig* 2315/1000
-   gap2= (914 * gap1) /1000 ' 74 default
-   gap3= (519 * gap1) /1000 ' 42 default
-   NroCol =  (ANCHO / anchofig ) - 4
-   ANCHO3div4 = ANCHO *3 / 4 
-EndIf
-'Print #1,"NROCOL AL INICIO, ANCHO, anchofig ",NroCol, ANCHO, anchofig
-
-'---------
-If mxold=0 And myold=0 Then
-GetMouse mxold,myold, , MouseButtons
-EndIf
-
-posicion = 1 ' comienzo del roll
-'indice   = 1  ' numero de nota al comienzo del programa B8
-espacio = 0
-backspace = 0
-fijarEspacio=0
-
-'--FFT FREE FONT-
-Var Shared ft => FreeType()
-'' Load a font with FreeType
-Common Shared As FT_Face ftface
-FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
-
-' ========== CONTROL DEL NRO DE OCTAVAS MOSTRADO SE PODRA PONER PARA EL USUARIO
-' VER SI SE PUEDE USAR ARRAYS POR PORCIONES
-'----- -FIN
-'----- MIDI MICROSOFT
-'https://docs.microsoft.com/en-us/windows/win32/multimedia/midi-functions
-'DIM CAN As UINT
-'CAN= midiOutGetNumDevs()
-'print #1, "MIDI NUM DEVS ";CAN
- 
-'-----
-' ancho de figura,separaciondelasmismas en pantalla anchofig
-'' ---------------  LOOP 1 ---------------
- On Error Goto errorhandler
-' enviamos esto a una sub ROLLLoop, creaPenta esta al principio y no tiene declare
-' el declare falla si se usa con este tipo de vector udt no se puede usar declare
-'stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
-
-
-'Dim Shared nombreport As ZString Ptr
-'Dim Shared midiout (0 To 3) As  RtMidiOutPtr ' abrir hasta 32 dispositivos
-'Dim Shared midiin As RtMidiInPtr
-'Dim Shared As Integer porterror
-Dim Shared nombreport As ZString Ptr
-
-midiin(0)     = rtmidi_in_create_default()
-midiout(0) = rtmidi_out_create_default()
-
-
-'print #1,"PLAYALL---------->>>>>>>"
-portsout =  port_count (midiout(0))
-portsin  =  port_count(midiin(0))
-Dim i1 As Integer
-Print #1, "portsin  "; portsin
-Print #1, "portsout "; portsout
-
-ReDim  listOutAbierto (0 To portsout)
-ReDim  listInAbierto  (0 To portsin)
-
-'listOutAbierto(0)=1
-listInAbierto(1)=1
-
-Dim Shared nombreOut(0 To portsout) As ZString Ptr
-Dim Shared nombreIn (0 To portsin)  As ZString Ptr
-
-'Dim i1 As integer
-
-'For i= 1 To portsin - 1
-' midiin = rtmidi_in_create_default ( )
-' Print #1,"creando default ",i
-'Next i
-
-For i1 = 0 To portsin -1 
-    nombrein(i1) = port_name(midiin(0), i1)
-    Print #1, *nombrein(i1)
-Next i1  
-Print #1,"-----------------------------"
-For i1 = 0 To portsout -1 
-    nombreOut(i1) = port_name(midiout(0), i1)
-    Print #1, *nombreout(i1)
-Next i1  
-
-'---------------------
-Dim As Long porterror
-open_port midiout(0),0, nombreOut(0)
-    Select Case porterror
-      Case RTMIDI_ERROR_WARNING ' esto da cero ¿? y es eror¿?
-        Print #1, "RTMIDI_ERROR_WARNING",porterror
-      Case RTMIDI_ERROR_DEBUG_WARNING
-        Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
-        Close
-        End
-
-      Case RTMIDI_ERROR_UNSPECIFIED
-        Print #1,"RTMIDI_ERROR_UNSPECIFIED"
-        Close
-        End
-
-      Case RTMIDI_ERROR_NO_DEVICES_FOUND
-        Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_DEVICE
-        Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
-        Close
-        End
-
-      Case RTMIDI_ERROR_MEMORY_ERROR
-        Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_PARAMETER
-        Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_USE
-        Print #1,"RTMIDI_ERROR_INVALID_USE"
-        Close
-        End
-
-      Case RTMIDI_ERROR_DRIVER_ERROR
-        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
-        Close
-        End
-
-      Case RTMIDI_ERROR_SYSTEM_ERROR
-        Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
-        Close
-        End
-
-      Case RTMIDI_ERROR_THREAD_ERROR
-        Print #1,"RTMIDI_ERROR_THREAD_ERROR"
-        Close
-        End
-    End Select
-Sleep 1000
-
-Print #1,"Microsoft No se usa en este programa con este algoritmo es muy inestable"
-Print #1,"-------------------------------------"
-
-close_port midiout(0)
-''=====> nunc ausar mientras el programa funciona out_free   midiout(0)
-'' cerrar y abrir ports pero nunca liberar memoria 
-listOutAbierto(0)=0
-
-
-'Sleep 2000
-
-'For i=0 To portsout -1
-'   Print "midiout ",i, *nombreOut(i)  
-'   close_port midiout(i)
-'   out_free   midiout(i)
-'   Print ,"cierro ",*nombreOut(i)
-'Next i'
-
-'/
 '========================== 
+#Include "ROLLINICIO.BAS"
 #include "WinGUI.bi"
 #include "RTMIDISUB.bas"
 #Include "ROLLTRACKS.bas"
@@ -833,7 +98,7 @@ Dim hnro As Integer
  
  ' genial puedo recorrer un array con un pointer!!!!
 '-------
-nroversion="0.4563 :ajuste de parametro en Control- PortSal en tracks y ejecuciones "
+nroversion="0.4564 :ajuste de parametro en Control- canal en ejecuciones "
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
 acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version Solo ejecuta las secuencias " + _
  "a base de algoritmos sin una linea conductora de tiempos. Solo se basa en las duraciones de las notas. " + _
@@ -846,7 +111,7 @@ acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aire
  "mail:galeanoj2005@gmail.com"
  
 '------------
-Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
+Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8,MenName10
  
 If ix < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON control
   menuabierto=1 ' evita apertura de mas de un menu
@@ -1013,6 +278,7 @@ ButtonGadget(16,740,0,70,20,"PortSal")
 ButtonGadget(17,810,0,35,20,"Vol")
 ButtonGadget(18,850,0,35,20,"Pan")
 ButtonGadget(19,890,0,50,20,"Patch")
+ButtonGadget(20,950,0,50,20,"Canal")
 /' 
   cbxejecout(1) =  CheckBox_New( 730 ,  40, 20, 20, "",, hwndC) 
   cbxejecout(2) =  CheckBox_New( 730 ,  60, 20, 20, "",, hwndC)
@@ -1064,7 +330,8 @@ ButtonGadget(19,890,0,50,20,"Patch")
   MenName5=MenuTitle(hMessages,"Cambiar Tiempo Y Ritmo")
   MenName6=MenuTitle(hMessages,"Reproducir")
   MenName7=MenuTitle(hMessages,"Opciones")
-  MenName8=MenuTitle(hMessages,"Info")
+  MenName8=MenuTitle(hMessages,"Dispositivos")
+  MenName10=MenuTitle(hMessages,"Info")
 
 MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
 MenuItem(1006,MenName1, "Cargar directorio de Cancion con Pistas separados")
@@ -1155,7 +422,19 @@ MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
 MenuItem(1111,MenName7,"Insertar escala libre en la Posicion actual (Pasozona1)")
 MenuItem(1112,MenName7,"Insertar escala Alternativa de la Principal en la Posicion actual (Pasozona1)")
 MenuItem(1113,MenName7,"Usar metronomo para Tocar MIDI-IN)",MF_CHECKED)
-MenuItem(1110,MenName8,"Acerca de")
+
+MenuItem(1200,MenName8,"Na. Crear     Puertos MIDI-IN..en Desa..")
+MenuItem(1201,MenName8,"Na. Abrir      Puertos MIDI-IN")
+MenuItem(1202,MenName8,"Na. Cerrar    Puertos MIDI-IN")
+MenuItem(1203,MenName8,"Na. DesTruir Puertos MIDI-IN")
+Menubar(MenName8)
+MenuItem(1204,MenName8,"Na. Crear     Puertos MIDI-OUT")
+MenuItem(1205,MenName8,"Na. Abrir      Puertos MIDI-OUT")
+MenuItem(1206,MenName8,"Na. Cerrar    Puertos MIDI-OUT")
+MenuItem(1207,MenName8,"Na. DesTruir Puertos MIDI-OUT")
+
+
+MenuItem(2000,MenName10,"Acerca de")
 End If
 ' default de FRACCIOANR autodur 
    usarAcordesIguales=1
@@ -1515,11 +794,8 @@ lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BI
 ' ese numero Toca().orden,si funciona tal vez loaplicariamos a roll (mucho trabajo porahora queda asi) 
  
                    ntoca=j
-'             pmTk(j+32).MaxPos=Toca(j).maxpos
-                   pmTk(j+32).portout=0
- '             If  Toca(j).maxpos > MaxPos Then
- '                  Maxpos=Toca(j).maxpos
- '             EndIf
+                   pmTk(j+32).portout=tocaparam(j).portout
+                   abrirPortoutEjec(j) 
                EndIf 
            Next j 
            tocatope=ntoca
@@ -1853,88 +1129,39 @@ Print #1,"1060 abrirRoll=0 entro"
               teclado=1 
               jgrb=0
 '------------hace falta abrir la salida
-Print #1,"abriendo port...."
+Print #1,"abriendo port....si no se selecciona previamnete toma cero"
 Dim k1 As Integer
-
-  
-   k1=CInt(pmTk(ntk+32).portout)
+ For  i As Short =1 To 32
+    If CheckBox_GetCheck( cbxejec(i))= 1  Then
+        k1=CInt(pmTk(i+32).portout)
     
-   Print #1,"midiout ",k1, *nombreOut(k1)
-   If InStr(*nombreOut(k1),"Microsoft")>0 Then
-     Print #1,"No se usa Microsoft"
-   Else
-     If listoutAbierto( k1) = 0 Then
-        midiout(k1) = rtmidi_out_create_default ( )
-        open_port midiout(k1),k1, nombreOut(k1)
-        Dim As integer    porterror=Err 
-        listoutAbierto( k1) = 1
-        Print #1,"abro ",*nombreOut(k1)
-
-    Select Case porterror
-      Case RTMIDI_ERROR_WARNING
-        Print #1, "RTMIDI_ERROR_WARNING"
-
-      Case RTMIDI_ERROR_DEBUG_WARNING
-        Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
-        Close
-        End
-
-      Case RTMIDI_ERROR_UNSPECIFIED
-        Print #1,"RTMIDI_ERROR_UNSPECIFIED"
-        Close
-        End
-
-      Case RTMIDI_ERROR_NO_DEVICES_FOUND
-        Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_DEVICE
-        Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
-        Close
-        End
-
-      Case RTMIDI_ERROR_MEMORY_ERROR
-        Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_PARAMETER
-        Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_USE
-        Print #1,"RTMIDI_ERROR_INVALID_USE"
-        Close
-        End
-
-      Case RTMIDI_ERROR_DRIVER_ERROR
-        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
-        Close
-        End
-
-      Case RTMIDI_ERROR_SYSTEM_ERROR
-        Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
-        Close
-        End
-
-      Case RTMIDI_ERROR_THREAD_ERROR
-        Print #1,"RTMIDI_ERROR_THREAD_ERROR"
-        Close
-        End
-    End Select
+       Print #1,"midiout ",k1, *nombreOut(k1)
+       If InStr(*nombreOut(k1),"Microsoft")>0 Then
+         Print #1,"No se usa Microsoft"
+       Else
+         If listoutAbierto( k1) = 0 Then
+            midiout(k1) = rtmidi_out_create_default ( )
+            open_port midiout(k1),k1, nombreOut(k1)
+            Dim As integer    porterror=Err 
+            listoutAbierto( k1) = 1
+            Print #1,"abro ",*nombreOut(k1)
+           porterrorsub(porterror) 
+         Else
+              Print #1,"PORT YA ABIERTO"
+            
+         EndIf
+    EndIf 
+ 
+  Print #1,"Port usando en Play teclado ",portout
+ Print #1,"-------------------------------------"
    EndIf
- EndIf 
+ Next i
 
- Print #1,"Port usando en Play teclado ",portout
-Print #1,"-------------------------------------"
-''End If
 
 '-------------------------------
            Case 1093
              abrirMIDIin=2
-   cancel_callback(midiin(pmTk(ntk+32).portin ))
+   cancel_callback(midiin(pmTk(ntkp+32).portin ))
    Dim k1 As Integer
    k1=pmTk(ntk+32).portout
    Print #1,"midiout ",k1, *nombreOut(k1)
@@ -1942,8 +1169,6 @@ Print #1,"-------------------------------------"
    listoutAbierto(k1)=0
    close_port midiout(k1)
    teclado=0
-
-
 
 
 '-----------------------------------------------------------------------
@@ -2076,11 +1301,6 @@ Print #1,"-------------------------------------"
       
             SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
-           Case 1110
-   
-             MessBox ("", acercade)
-            SetForegroundWindow(hwnd)
-'-----------------------------------------------------------------------
            Case 1111 '<========== cambiode escala
              If pasozona1 > 0 Then ' gurdamos en la posicion actual los valores cambiode escala
                 selTipoEscala (tipoescala_num)
@@ -2132,8 +1352,20 @@ Print #1,"-------------------------------------"
 
               End Select
               SetForegroundWindow(hwnd)
-            Case 1114
-                metronomo_si=0
+           Case 1200
+           Case 1201
+           Case 1202
+           Case 1203
+           Case 1204
+           Case 1205
+           Case 1206
+           Case 1207
+
+           Case 2000
+   
+             MessBox ("", acercade)
+            SetForegroundWindow(hwnd)
+'-----------------------------------------------------------------------
                    
          End Select
 '-----------------------------------------------------------------------
@@ -2415,10 +1647,13 @@ Print #1,"-------------------------------------"
             repro=1
             CONTROL1=0
             Dim p As Integer Ptr
-            p=@ntoca
+            p=@ntoca 'ntoca se ajusta en CargarPstasEjec tambien
             t1play=Timer
             threadG  = ThreadCreate (@PlayTocaAll, p)
-             '' PlayTocaAll(p)
+            threadDetach(threadG)
+        '  Print #1,"llama a  PlayTocaAll(p)"
+
+         '   PlayTocaAll(p)
       EndIf
 '//////////////// BOTON ROJO GRABAR EN PENTA //////////////////
 
@@ -2455,39 +1690,71 @@ Print #1,"-------------------------------------"
          EndIf   
 
       EndIf
+' ////////////// PORT SAL EJEC ////////////////
       If  eventnumber()=16 Then ' boton PortSal de track cbxnum o ejec cbxejec
           Dim As Integer miport =1, pis=0,num=0
-         For k=1 To 32 
-           If CheckBox_GetCheck( cbxejec(k))= 1  Then
-              pis=k
-           EndIf
-         Next k
-         If  pis >=1 Then
-            miport=1   ' seleccion port Salida
-            thread3 = ThreadCreate(@selportEjec(), CPtr(Any Ptr, miport))
-'  preparamos la grabacion por cambio de portsal
-      Dim As ejec toc(1 To tocaparam(pis).maxpos)
-      Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
-      Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
-    
-       For j As Integer =1 To   tocaparam(pis).maxpos
-              toc(j).modo=Toca(pis).trk(j).modo
-              toc(j).nota=Toca(pis).trk(j).nota
-              toc(j).vel=Toca(pis).trk(j).vel
-            Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
-       Next j
-      Dim tocap As ejecparam = tocaparam(pis)
-      Print #1,"PARAMETROS EJEC nombre ",tocaparam(pis).nombre
-      Print #1,"PARAMETROS EJEC mapos ",tocaparam(pis).maxpos
-      Print #1,"PARAMETROS EJEC orden ",tocaparam(pis).orden
-      Print #1,"PARAMETROS EJEC delta ",tocaparam(pis).delta
-      Print #1,"PARAMETROS EJEC portout ",tocaparam(pis).portout
-      Print #1,"PARAMETROS EJEC patch ",tocaparam(pis).patch
-      Print #1,"PARAMETROS EJEC canal ",tocaparam(pis).canal
+          For k=1 To 32 
+              If CheckBox_GetCheck( cbxejec(k))= 1  Then
+                pis=k
+             EndIf
+          Next k
+         If  pis >=1 Then 
+             If  tocaparam(pis).nombre  >""  Then
+                 miport=1   ' seleccion port Salida
+                 ntkp=pis
+Dim As Integer k1 = pmTk(pis+32).portout
+Print #1,"antes del cambio k1, listOutAbierto(k1) ", k1, listOutAbierto(k1)
+Print #1,"pmTk(pis+32).portout previo al cambio",pmTk(pis+32).portout
+     ''''     thread3 = ThreadCreate(@selportEjec(), CPtr(Any Ptr, miport))
+         selportEjec(miport,ntkp)
+Print #1,"pmTk(pis+32).portout despues del cambio",pmTk(pis+32).portout
 
-' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
-      GrabarMidiIn (toc(), pis,tocap)  ' graba solo uno el chequeado en play  
+    '  preparamos la grabacion por cambio de portsal
+                Dim As ejec toc(1 To tocaparam(pis).maxpos)
+                Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
+                Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
+              
+                 For j As Integer =1 To   tocaparam(pis).maxpos
+                        toc(j).modo=Toca(pis).trk(j).modo
+                        toc(j).nota=Toca(pis).trk(j).nota
+                        toc(j).vel=Toca(pis).trk(j).vel
+                  '    Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
+                 Next j
+                Dim tocap As ejecparam = tocaparam(pis)
+                Print #1,"PARAMETROS EJEC nombre ",tocaparam(pis).nombre
+                Print #1,"PARAMETROS EJEC mapos ",tocaparam(pis).maxpos
+                Print #1,"PARAMETROS EJEC orden ",tocaparam(pis).orden
+                Print #1,"PARAMETROS EJEC delta ",tocaparam(pis).delta
+                Print #1,"PARAMETROS EJEC portout ",tocaparam(pis).portout
+                Print #1,"PARAMETROS EJEC patch ",tocaparam(pis).patch
+                Print #1,"PARAMETROS EJEC canal ",tocaparam(pis).canal
+    
+    ' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
+               GrabarMidiIn (toc(), pis,tocap)  ' graba solo uno el chequeado en play
+             Else
+               miport=1   ' seleccion port Salida sin pista para tocar teclado
+               ntkp=pis
+               Print #1,"pmTk(pis+32).portout previo al cambio",pmTk(pis+32).portout
+   ''              thread3 = ThreadCreate(@selportEjec(), CPtr(Any Ptr, miport))
+               selportEjec(miport,ntkp)
+               Print #1,"pmTk(pis+32).portout despues del cambio",pmTk(pis+32).portout
+ 
+             EndIf
+Dim k1 As Integer
+' buscamos  elport de esta pista
+Print #1,"pmTk(pis).portout cambiado ",pmTk(pis+32).portout
+   k1=CInt(pmTk(pis+32).portout)
+Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
+         If listOutAbierto(k1)=0 Then  'abrir port
+              midiout(k1) = rtmidi_out_create_default ( )
+              open_port midiout(k1),k1, nombreOut(k1)
+              Dim As integer    porterror=Err 
+              listoutAbierto( k1) = 1
+              Print #1,"abro ",*nombreOut(k1)
+              porterrorsub(porterror)
+      
          EndIf
+         EndIf  
 ''' en base alanterior terminar esta parte que es para pisatas de cancion manual
 '' mas adelante....cuadno termine todo pistas ejec ÇÇÇÇÇÇ
          For k=1 To 32 
@@ -2499,55 +1766,65 @@ Print #1,"-------------------------------------"
               thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))
          EndIf
       EndIf
+'-------------------
       If  eventnumber()=17 Then ' VOL
 
       EndIf 
+'--------------
       If  eventnumber()=18 Then 'PAN
 
       EndIf 
+'----------------
+'////////////////// PATCH EJEC /////////////////////////////
       If  eventnumber()=19 Then 'PATCH o insrumento de un Sinte,,,
-          Dim As Integer instrum =1, pis=0,num=0
-         For k=1 To 32 ' pistas ejec de grabaciondesde teclado
-           If CheckBox_GetCheck( cbxejec(k))= 1  Then
-              pis=k
-           EndIf
-         Next k
-         If  pis >=1 then 
-           selInstORdenNum (instrum)
-            '''thread3 = ThreadCreate(@selInstORdenNum (), CPtr(Any Ptr, instrum))
-           Print #1," pista ejec  nro ",pis
-           tocaparam(pis).patch=CUByte (instrum)
-           pmTk(pis+32).patch=CUByte (instrum)
-           Print #1,"ejecucion patch elegido tocaparam(pis).patch ", tocaparam(pis).patch
+           Dim As Integer instrum =1, pis=0,num=0
+           For k=1 To 32 ' pistas ejec de grabaciondesde teclado
+             If CheckBox_GetCheck( cbxejec(k))= 1  Then
+                pis=k
+             EndIf
+           Next k
+           If  pis >=1 Then  
+                If tocaparam(pis).nombre > ""  Then 
+                   selInstORdenNum (instrum)
+                    '''thread3 = ThreadCreate(@selInstORdenNum (), CPtr(Any Ptr, instrum))
+                   Print #1," pista ejec  nro ",pis
+                   tocaparam(pis).patch=CUByte (instrum)
+                   pmTk(pis+32).patch=CUByte (instrum)
+                   Print #1,"ejecucion patch elegido tocaparam(pis).patch ", tocaparam(pis).patch
 '--------------------------
 ' preparamos para grabar la pista por cambio de patch
 
-      Dim As ejec toc(1 To tocaparam(pis).maxpos)
-      Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
-      Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
-    
-       For j As Integer =1 To   tocaparam(pis).maxpos
-              toc(j).modo=Toca(pis).trk(j).modo
-              toc(j).nota=Toca(pis).trk(j).nota
-              toc(j).vel=Toca(pis).trk(j).vel
-            Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
-       Next j
-      Dim tocap As ejecparam = tocaparam(pis)
-      Print #1,"PARAMETROS EJEC nombre ",tocaparam(pis).nombre
-      Print #1,"PARAMETROS EJEC mapos ",tocaparam(pis).maxpos
-      Print #1,"PARAMETROS EJEC orden ",tocaparam(pis).orden
-      Print #1,"PARAMETROS EJEC delta ",tocaparam(pis).delta
-      Print #1,"PARAMETROS EJEC portout ",tocaparam(pis).portout
-      Print #1,"PARAMETROS EJEC patch ",tocaparam(pis).patch
-      Print #1,"PARAMETROS EJEC canal ",tocaparam(pis).canal
+                  Dim As ejec toc(1 To tocaparam(pis).maxpos)
+                  Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
+                  Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
+                
+                   For j As Integer =1 To   tocaparam(pis).maxpos
+                          toc(j).modo=Toca(pis).trk(j).modo
+                          toc(j).nota=Toca(pis).trk(j).nota
+                          toc(j).vel=Toca(pis).trk(j).vel
+                '        Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
+                   Next j
+                   Dim tocap As ejecparam = tocaparam(pis)
+                   Print #1,"PARAMETROS EJEC nombre ",tocaparam(pis).nombre
+                   Print #1,"PARAMETROS EJEC mapos ",tocaparam(pis).maxpos
+                   Print #1,"PARAMETROS EJEC orden ",tocaparam(pis).orden
+                   Print #1,"PARAMETROS EJEC delta ",tocaparam(pis).delta
+                   Print #1,"PARAMETROS EJEC portout ",tocaparam(pis).portout
+                   Print #1,"PARAMETROS EJEC patch ",tocaparam(pis).patch
+                   Print #1,"PARAMETROS EJEC canal ",tocaparam(pis).canal
 
 ' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
-      GrabarMidiIn (toc(), pis,tocap)  ' graba solo uno el chequeado en play  
-
-'---
+                  GrabarMidiIn (toc(), pis,tocap)  ' graba solo uno el chequeado en play  
+             Else
+                  selInstORdenNum (instrum)
+                   '''thread3 = ThreadCreate(@selInstORdenNum (), CPtr(Any Ptr, instrum))
+                  Print #1," pista ejec  nro ",pis
+                  tocaparam(pis).patch=CUByte (instrum)
+                  pmTk(pis+32).patch=CUByte (instrum)
+                  Print #1,"ejecucion patch elegido tocaparam(pis).patch ", tocaparam(pis).patch
+             EndIf
          EndIf
-
-'------------------
+'                                    
          For k=1 To 32 ' pistastrack de cancion
            If CheckBox_GetCheck( cbxnum(k))= 1  Then
               num=k
@@ -2561,6 +1838,64 @@ Print #1,"-------------------------------------"
 
 
       EndIf 
+'////////////////// CANAL EJEC ///////////////// 
+    If  eventnumber()=20 Then ' CANAL de un synthe por ejemplo
+          Dim As Integer canal =0, pis=0,num=0
+         For k=1 To 32 ' pistas ejec de grabaciondesde teclado
+           If CheckBox_GetCheck( cbxejec(k))= 1  Then
+              pis=k
+           EndIf
+         Next k
+
+         If  pis >=1  Then  
+             If tocaparam(pis).nombre > "" Then 
+                 selcanalEjec (1,pis) ' 1 salida
+                 Print #1," pista ejec  nro ",pis
+                 tocaparam(pis).canal =pmTk(pis+32).canalsalida
+                 Print #1,"ejecucion canal elegido tocaparam(pis).canal ", tocaparam(pis).canal
+    '--------------------------
+    ' preparamos para grabar la pista por cambio de patch
+          
+                Dim As ejec toc(1 To tocaparam(pis).maxpos)
+                Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
+                Print #1,"tocaparam(pis).maxpos),pis ",tocaparam(pis).maxpos, pis
+        
+                For j As Integer =1 To   tocaparam(pis).maxpos
+                     toc(j).modo=Toca(pis).trk(j).modo
+                     toc(j).nota=Toca(pis).trk(j).nota
+                     toc(j).vel=Toca(pis).trk(j).vel
+               '    Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
+               Next j
+               Dim tocap As ejecparam = tocaparam(pis)
+               Print #1,"PARAMETROS EJEC nombre ",tocaparam(pis).nombre
+               Print #1,"PARAMETROS EJEC mapos ",tocaparam(pis).maxpos
+               Print #1,"PARAMETROS EJEC orden ",tocaparam(pis).orden
+               Print #1,"PARAMETROS EJEC delta ",tocaparam(pis).delta
+               Print #1,"PARAMETROS EJEC portout ",tocaparam(pis).portout
+               Print #1,"PARAMETROS EJEC patch ",tocaparam(pis).patch
+               Print #1,"PARAMETROS EJEC canal ",tocaparam(pis).canal
+   
+   ' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
+               GrabarMidiIn (toc(), pis,tocap)  ' graba solo uno el chequeado en play  
+            Else
+                selcanalEjec (1,pis) ' 1 salida
+                Print #1," pista ejec  nro ",pis
+                tocaparam(pis).canal =pmTk(pis+32).canalsalida
+                Print #1,"ejecucion canal elegido tocaparam(pis).canal ", tocaparam(pis).canal
+            EndIf
+         EndIf
+'-----------------------
+         For k=1 To 32 ' pistastrack de cancion
+           If CheckBox_GetCheck( cbxnum(k))= 1  Then
+              num=k
+           EndIf
+         Next k 
+         If  num >=1 Then
+             selcanal (1)
+            
+         EndIf
+
+    EndIf
 
       SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------

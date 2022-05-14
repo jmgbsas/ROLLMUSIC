@@ -58,6 +58,7 @@
        midi , apareceran [] vacios sin seleccionar y [x] seleccionado, antes de seleccionar uno nuevo, se debe 
        deseleccionar el anterior dandole click al que tenga [x] para apasarlo a [] y luego buscar el nuevo
        hacicednolo pasar de [] a [x]. De todos modos solo toma el cambio si la ultima accion dejo una x.
+
     1) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
     2) El espaciado entre lineas se puede cambiar.
     3) Trasponer todo: ALT-T habilita la trasposicion, Q la deshabilita.
@@ -210,9 +211,15 @@
               Para ello se procede igual que al crear o usar un directorio de Cancion y luego abrir Pistas Midi en el menu Archivo
               casi abajo de todo., De ese modo una cancion manual y una ejecucion desde teclado podranestar en un mismo
               directorio.
-          d) Cambiar PATH de una pista de ejecucion por teclado MIDI-IN. con la pista seleccionada para reproducir como
-             antes pulsar arriba el bootn patch ,deseleccionar el que tenga una X dando click para que quede en blanco
-            luego buscar el instrumento deseado y clickear en el luego pulsar el boton OK
+          d) Cambiar PATCH o instrumento de una pista de ejecucion por teclado MIDI-IN. con la pista seleccionada para 
+              reproducir como antes pulsar arriba el boton patch ,deseleccionar el que tenga una X dando click para que quede 
+              en blanco luego buscar el instrumento deseado y clickear en el luego pulsar el boton OK
+          e) Cargar Archivos MIDI-IN tipo cancion de ejecuciones,,En el menu de Archivo si no hay cancion de psitas de Tracks *.trk
+              manuales, usar Cargar Pistas MIDI-IN ,navegar y seleccionar la carpeta que contiene las pistas y dar Enter,
+              Se cargaran las pistas y automaticamente se abren los porrts de salida necesarios grabados en el archivo previamente,
+          f)  En una pista de ejecucion por teclado real se puede cambiar el port de salida todas las veces que se desee, como
+              tambien el PATCH, si corresponde. version 04564. Si el synthe usa canlaes tambien se lo puede cambiar,,
+              (ajustes de Volumeny paneo no implementedo todavia).
     17b) grabacion directamente sobre Roll, 1era version faltaria que detecte acordes
            ya lo hizo en algun algoritmo distinto a este , el actual funciona para melodias, tiene
            un metronomo, si se desea se puede desactivar (menu Opciones, no probado)

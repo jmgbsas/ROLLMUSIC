@@ -3784,7 +3784,7 @@ mitipo=  CInt(tipo)
 cierroport=0
 End Sub
 
-Sub  selportEjec (ByVal tipo As Any Ptr)  ' list de ruso
+Sub  selportEjec (ByVal tipo As Integer,ntkp As Integer )  ' list de ruso
 Dim As hwnd haw,hwl
 Dim As Integer mitipo,x0,y0,Posx,Posy 
 ScreenControl GET_WINDOW_POS, x0, y0
@@ -3810,22 +3810,20 @@ mitipo=  CInt(tipo)
   
 
      If mitipo = 1 Then ' out
-       AddListViewColumn(1, "Salidas  MIDI",0,0,250)
-       For aa As Integer=0 To UBound (listout) 
-          If pmTk(ntkp+32).portout = aa Then
-             AddListViewItem(1, "[x] "+listout(aa),0,aa,0)
-          Else
-             AddListViewItem(1, "[ ] "+listout(aa),0,aa,0)
-          EndIf   
-           
-       Next
-
+       AddListViewColumn(1, Str(UBound (listout)+1 )+" Salidas  MIDI",0,0,250)
+           For aa As Integer=0 To UBound (listout) 
+               If pmTk(ntkp+32).portout = aa  Then 
+                  AddListViewItem(1, "[x] "+listout(aa),0,aa,0)
+               Else
+                 AddListViewItem(1, "[ ] "+listout(aa),0,aa,0)
+               EndIf   
+         Next
      EndIf
      If mitipo = 2 Then ' in entradas
       
-       AddListViewColumn(1, "Entradas MIDI",0,0,250)
+       AddListViewColumn(1, Str(UBound (listin)+1 )+" Entradas MIDI",0,0,250)
        For aa As Integer=0 To UBound (listin) 
-          If pmTk(ntk).portin = aa Then
+          If pmTk(ntkp+32).portin = aa Then
              AddListViewItem(1, "[x] "+listin(aa),0,aa,0)
           Else
              AddListViewItem(1, "[ ] "+listin(aa),0,aa,0)
@@ -3890,19 +3888,12 @@ mitipo=  CInt(tipo)
               EndIf
               If mitipo=2 Then
                   Print #1,"PORT SELECCIONADO en menu ",portin
-                  pmTk(ntkp+32).portin =CUByte(portin)
-              EndIf
-
-  '            If CANCIONCARGADA=TRUE  Or TRACKCARGADO=TRUE  Then
-  '               If NombreCancion > ""  And MAxPos > 1 Then
-  '                  GrabarRollaTrack(0)
-  '               EndIf
-  '            Else
-  '              If MaxPos > 1  And ROLLCARGADO  Then
-  '               GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
-  '               ' no el undo dolo se debe borrar al ahcer nuevo creo
-  '              EndIf  
-  '            EndIf  
+                For  i As Short =1 To 32
+                      If CheckBox_GetCheck( cbxejec(i))= 1  Then
+                         pmTk(i+32).portin =CUByte(portin)
+                      EndIf
+                Next i
+              EndIf  
               Close_Window(haw)
               Exit Do 
             End If
@@ -3941,9 +3932,10 @@ Posy=y0 +100
      
      AddListViewColumn(1, mensaje ,0,0,250)
      For aa As Integer=1 To 16 
-         If pmTk(ntk).canalsalida > 0 And pmTk(ntk).canalsalida = aa Then
+         If pmTk(ntk).canalsalida > 0 And pmTk(ntk).canalsalida = aa -1 Then
                AddListViewItem(1, "[x] "+listCanal(aa),0,aa,0)
-               Print #1,"pmTk(ntk).canalsalida ",pmTk(ntk).canalsalida, 
+               Print #1,"pmTk(ntk).canalsalida ",pmTk(ntk).canalsalida
+               ntk=aa 
          Else
                AddListViewItem(1, "[ ] "+listCanal(aa),0,aa,0)
          EndIf 
@@ -3987,9 +3979,9 @@ Posy=y0 +100
           ' carga de canal MIDI al vector parametros de tracks de cancion
           
                Print #1,"ntk en cambio de canal ntk= ",ntk
-               pmTk(ntk).canalsalida=CUByte(canalx+1) ' sirve para el track cargao actual en cancion
+               pmTk(ntk).canalsalida=CUByte(canalx) ' sirve para el track cargao actual en cancion
             If  MAxPos > 1 Then
-               pmTk(ntk).canalsalida=CUByte(canalx+1)
+               pmTk(ntk).canalsalida=CUByte(canalx)
                If NombreCancion > ""  Or TRACKCARGADO =TRUE Then
                    ' sirve para el track cargao actual en cancion
                      GrabarRollaTrack(0)
@@ -4018,6 +4010,104 @@ If EventNumberListView= 1 Then
    ReplaceTextItemListView(1,canalx,0, Str(canalx)+" x")
 EndIf
 '/                 
+
+End Sub
+'----------------
+Sub  selcanalEjec (ByVal tipo As Any Ptr, ntkp As integer )  ' list de ruso
+Dim As hwnd haw,hwl
+Dim As Integer mitipo, x0,y0,Posx,Posy,cambio=0  
+mitipo=  CInt(tipo)
+'Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
+'' => desde aca echo con tool del ruso no anda muy bien
+ScreenControl GET_WINDOW_POS, x0, y0
+Posx=x0 +50
+Posy=y0 +100
+
+     haw=OpenWindow("CANALES",Posx,Posy,400,400,WS_VISIBLE, WS_EX_TOPMOST )
+     
+     hwl=  ListViewGadget(1,10,10,300,300,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL  )
+     
+     Dim As String mensaje, cad 
+     If mitipo = 1 Then ' out
+      mensaje="Canales Salida"
+     EndIf
+     If mitipo = 2 Then ' in entradas
+      mensaje="Canales Entrada"
+     EndIf 
+     
+     AddListViewColumn(1, mensaje ,0,0,250)
+     For aa As Integer=1 To 16 
+         If pmTk(ntkp+32).canalsalida > 0 And pmTk(ntkp+32).canalsalida = aa -1 Then
+               AddListViewItem(1, "[x] "+listCanal(aa),0,aa,0)
+               Print #1,"pmTk(ntkp+32).canalsalida ",pmTk(ntkp+32).canalsalida, 
+         Else
+               AddListViewItem(1, "[ ] "+listCanal(aa),0,aa,0)
+         EndIf 
+         
+     Next
+ 
+       ButtonGadget(2,330,30,50,40," OK ")
+           SetForegroundWindow(haw)        
+           SetFocus (hwl) 
+
+        '  #Else
+        '   gtk_widget_grab_focus(GadgetID(1))
+        ' #EndIf
+         Do
+
+         Var event= waitEvent
+
+         If event=EventLBDown Then
+            If EventNumberListView=1  Then
+               canalx=GetItemListView
+               cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
+               If InStr(cad,"x")>0 Then
+                 cad="[ ] " +Str(canalx+1)
+               Else  
+                 cad="[x] " +Str(canalx+1)
+               EndIf
+
+              ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
+           EndIf
+        EndIf
+
+          If event=eventgadget Then
+            If eventnumber()=2 And InStr(cad,"x") >0 Then
+            '  canalx = GetItemListView() ' sirve para el roll actual en edicion
+           ' get itme va de 0 a 15 no ahce falta convertir 
+' esto sirve para cambia rdinamicamente el canal midi mientras tocamos, perp tambien
+' si grabamos el archjivo se grabara y pisara la info de midi canal en el archio
+' al cargar el archivo de nuevo se tomara ese canal.              
+
+          
+          ' carga de canal MIDI al vector parametros de tracks de cancion
+          ' canales van de 0 a 15 que sonenelmenu 1 a 16
+              If mitipo=1 Then
+                   Print #1,"CANAL SELECCIONADO en menu ",canalx
+                   For  i As Short =1 To 32
+                         If CheckBox_GetCheck( cbxejec(i))= 1  Then
+                             pmTk(i+32).canalsalida=CUByte(canalx)
+                        EndIf
+                   Next i
+              EndIf
+              If mitipo=2 Then
+                  Print #1,"CANAL SELECCIONADO en menu ",canalx
+                For  i As Short =1 To 32
+                      If CheckBox_GetCheck( cbxejec(i))= 1  Then
+                        pmTk(i+32).canalentrada =CUByte(canalx)
+                      EndIf
+                Next i
+             EndIf          
+               
+               Close_Window(haw)
+               Exit Do 
+            End If
+          EndIf
+            
+         
+         Loop 
+  
+'' fin ruso
 
 End Sub
 

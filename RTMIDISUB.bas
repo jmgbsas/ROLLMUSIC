@@ -1,4 +1,5 @@
 On  Error GoTo errorrtmidi
+
 function BrowseCallback(byval hWnd as HWND, _
 							byval uMsg as UINT, _ 
                             byval lParam as LPARAM, _
@@ -299,7 +300,13 @@ Sub ChangeProgram ( instru As UByte,  canal As UByte,portsal As UByte)
  message(2) = instru
 
  leng=2
-result = send_message (midiout(portsal) , p, leng)
+Print #1,"send_message midiout(portsal) , p, leng ",midiout(portsal) , p, leng
+'On Local Error GoTo  errorcp
+  result = send_message (midiout(portsal) , p, leng) 
+'errorcp:
+'Dim n As Integer = Err
+'  Print #1,"error send_message change program",n
+
 Print #1,"resultado de cambiar elpatch ", result
 End Sub
 Sub noteon	( note As ubyte, vel As UByte, canal As UByte, portsal As UByte)
@@ -1147,61 +1154,7 @@ Print #1,"abriendo port...."
             porterror=Err 
         listoutAbierto( k1) = 1
         Print #1,"abro ",*nombreOut(k1)
-
-    Select Case porterror
-      Case RTMIDI_ERROR_WARNING
-        Print #1, "RTMIDI_ERROR_WARNING"
-
-      Case RTMIDI_ERROR_DEBUG_WARNING
-        Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
-        Close
-        End
-
-      Case RTMIDI_ERROR_UNSPECIFIED
-        Print #1,"RTMIDI_ERROR_UNSPECIFIED"
-        Close
-        End
-
-      Case RTMIDI_ERROR_NO_DEVICES_FOUND
-        Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_DEVICE
-        Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
-        Close
-        End
-
-      Case RTMIDI_ERROR_MEMORY_ERROR
-        Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_PARAMETER
-        Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_USE
-        Print #1,"RTMIDI_ERROR_INVALID_USE"
-        Close
-        End
-
-      Case RTMIDI_ERROR_DRIVER_ERROR
-        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
-        Close
-        End
-
-      Case RTMIDI_ERROR_SYSTEM_ERROR
-        Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
-        Close
-        End
-
-      Case RTMIDI_ERROR_THREAD_ERROR
-        Print #1,"RTMIDI_ERROR_THREAD_ERROR"
-        Close
-        End
-    End Select
+        porterrorsub(porterror)
    EndIf
  EndIf 
 
@@ -2066,12 +2019,7 @@ End Sub
 Sub listports( )
 
 
-'midiin  = rtmidi_in_create_default()  se abre al principio
-'midiout = rtmidi_out_create_default() se abre al principio
-
-'portsin  =  port_count (midiin)
-'portsout =  port_count (midisal)
-Print #1,"LISTPORTS portsout, portsin", portsout, portsin
+'Print #1,"LISTPORTS portsout, portsin", portsout, portsin
 
 ReDim listout(0 To portsout -1)
 ReDim listin (0 To portsin  -1) 
@@ -2090,11 +2038,11 @@ for i = 0 to portsout -1
     nombre = nombreOut(i)
     If InStr(*nombre,"Microsoft") > 0 Then ' microsoft no funa bien
       listout(i) = "Crash No usar Microsoft" 
-      Print #1,"listout(i) ",listout(i)
+ '     Print #1,"listout(i) ",listout(i)
 
     Else
      listout(i) = *nombre
-      Print #1,"listout(i) ",listout(i)
+ '     Print #1,"listout(i) ",listout(i)
     endif
   EndIf  
   If listoutAbierto (i) =1 Then
@@ -2102,18 +2050,11 @@ for i = 0 to portsout -1
     nombre = nombreOut(i)
     If InStr(*nombre,"Microsoft") > 0 Then
       listout(i) = "Crash No usar Microsoft" 
-      Print #1,"listout(i) ",listout(i)
+ '     Print #1,"listout(i) ",listout(i)
 
     Else
-    temp=*nombre
-    Print "temp 1 ",temp
-    temp=temp + aviso
-    Print #1,"temp 2 ",temp
-    *nombre = temp + Chr(0) 
-    Print #1,"nombre 1",*nombre 
-    listout(i) =*nombre
+     listout(i)=*nombreOut(i) +aviso 
     EndIf
-  '  Print #1,"listports salida ocupada ",listout(i)
     
   EndIf  
   
@@ -2133,22 +2074,14 @@ for i = 0 to portsin -1
     endif
   EndIf  
   If listInAbierto (i) =1 Then
-'    lg=Len(*port_name(, i))
     nombre = nombreIn(i)
     If InStr(*nombre,"Microsoft") > 0 Then
       listin(i) = "Crash No usar Microsoft" 
-  '    Print #1,"listin(i) ",listin(i)
 
     Else
-    temp=*nombre
- '   Print "temp 1 ",temp
-    temp=temp + aviso
-'    Print #1,"temp 2 ",temp
-    *nombre = temp + Chr(0) 
-'    Print #1,"nombre 1",*nombre 
-    listin(i) =*nombre
+    listin(i)=*nombreIn(i) +aviso 
+
     EndIf
- '   Print #1,"listports entrada ocupada ",listin(i)
     
   EndIf  
   
@@ -2852,22 +2785,36 @@ Loop
 
  threadDetach (threadmetronomo)
 End Sub
-'  If GrabarEjec =1 Then ''graba en al pista seleccioanda
-'     partes=(deltatime/TickChico) 
-'     jgrb += 1
-'     Toca(ntoca).trk(jgrb).modo=dato1
-'     Toca(ntoca).trk(jgrb).nota=dato2
-'     Toca(ntoca).trk(jgrb).vel=dato3
-'     If deltatime > 0.00001 Then
-'      '  For i=1 To partes
-'      '    Toca(ntoca).trk(jgrb+i).modo=1 ' marcamos que hay un tick de retardo o duracion
-'      '  Next i ' sino queda en cero 
-'        jgrb=jgrb+partes
-'        Print #1,"partes ",partes
-'     EndIf
-'  EndIf
+'--------------------
+Sub abrirPortoutEjec(ntkp As Integer)
+'------------hace falta abrir la salida
+Print #1,"abriendo port...."
+Dim k1 As Integer
 
+  
+   k1=CInt(pmTk(ntkp+32).portout)
+    
+   Print #1,"midiout ",k1, *nombreOut(k1)
+   If InStr(*nombreOut(k1),"Microsoft")>0 Then
+     Print #1,"No se usa Microsoft"
+   Else
+     If listoutAbierto( k1) = 0 Then
+        midiout(k1) = rtmidi_out_create_default ( )
+        open_port midiout(k1),k1, nombreOut(k1)
+        Dim As integer    porterror=Err 
+        listoutAbierto( k1) = 1
+        Print #1,"abro ",*nombreOut(k1)
+        porterrorsub(porterror)
+   Else
+         Print #1,"PORT OUT YA ABIERTO ",listoutAbierto( k1),*nombreout(k1)
+   EndIf
+ EndIf 
 
+ Print #1,"Port usando en Play Ejec teclado ",portout
+Print #1,"-------------------------------------"
+
+End Sub
+'------------------
 Sub PlayTocaAll(nt As Integer Ptr )
 '////////////////////////////TOCAALL/////////////////////////
 ' perfeccionar los eventos deven seguir un patron de tiempo de ticks
@@ -2877,6 +2824,7 @@ Sub PlayTocaAll(nt As Integer Ptr )
 ' PARA TOCAR MAS DE 1 PISTA DEBE RE DISPARAR TODAS AL MISMO TIEMPO
 ' N THREADS? O COMO ? SI DISPARO VARIAS Y LAS COORDINO CON EL JGRB COMO
 ' HICE CON CURSOR Y LSO PLAY ,,,
+Print #1,"PlayTocaAll 1"
 ntoca=*nt
 Dim  As long j=0,k=0,partes,cuenta=0,ks(1 To 32),pis=0
 Dim As UByte dato1,dato2, dato3 
@@ -2884,7 +2832,7 @@ Dim As UByte dato1,dato2, dato3
 For j=1 To 32
   espera(j)=tocaparam(j).delta ' empieza siemrpe por la 2
 Next j
-
+Print #1,"PlayTocaAll 2"
 '--------------play TOCA
 
 'ChangeProgram ( 1, ntoca, 0)
@@ -2893,7 +2841,7 @@ For j=2 To 32
  timex(j)=timex(01)
 Next j
 
-
+Print #1,"PlayTocaAll 3"
 
 ''Print #1,"=====> EN PLAY StartPlayejec ",StartPlayejec
 Dim  topeDuranteGrabacion As integer
@@ -2912,7 +2860,7 @@ Else
 
 EndIf   
 Dim As Integer prox=2 
-
+Print #1,"PlayTocaAll 4"
 Print #1,"topeDuranteGrabacion ", topeDuranteGrabacion, " PISTAS"
  For pis=1 To topeDuranteGrabacion
       Print #1,"ON patch pis canal ",	 , pis,tocaparam(pis).canal
@@ -2970,9 +2918,20 @@ Next j
 repro=0
 SetGadgetstate(14,0)
 Sleep 1
-'ThreadDetach (threadG )
 
+  For kply =1 To topeDuranteGrabacion
+    
+    If CheckBox_GetCheck( cbxejec(kply))= 1 Then
+       ' tpcar
+    Else
+     Continue For ' saltear no tocar 
+    EndIf 
+    portsal=pmTk(kply+32).portout 
+     alloff( pmTk(kply+32).canalsalida,portsal )  
+     allSoundoff( pmTk(kply+32).canalsalida, portsal ) 
+  Next kply
 End Sub
+
 
 ' error
 errorrtmidi:

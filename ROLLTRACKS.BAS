@@ -91,16 +91,16 @@ Sub CargarMidiIn(nombreMidiIn As String,   ntkp As  long)
             Get #f, ,Toca(ntkp).trk()
 
 Print #1,"ubound ",UBound (Toca(ntkp).trk)
-For j As Integer=1 To tocaparam(ntkp).maxpos
-Print #1, Toca(ntkp).trk(j).modo;" ";Toca(ntkp).trk(j).nota;" ";Toca(ntkp).trk(j).vel
-Next j 
+'For j As Integer=1 To tocaparam(ntkp).maxpos
+'Print #1, Toca(ntkp).trk(j).modo;" ";Toca(ntkp).trk(j).nota;" ";Toca(ntkp).trk(j).vel
+'Next j 
       Close #f
 '      pmTk(ntkp+32).MaxPos=Toca(ntkp).maxpos
       ntoca=tocaparam(ntkp).orden
       pmTk(ntkp+32).portout= tocaparam(ntkp).portout
       pmTk(ntkp+32).patch = tocaparam(ntkp).patch
       pmTk(ntkp+32).canalsalida=tocaparam(ntkp).canal
-      ''midiout(portsal)???
+      
       Print #1,"CargarIn maxpos,ntkp  ",tocaparam(ntkp).maxpos , ntkp
       Print #1,"Cargar delta ",tocaparam(ntkp).delta
       Print #1,"Cargar nombre ",tocaparam(ntkp).nombre
@@ -1674,59 +1674,7 @@ For i=1 To tope
             porterror=Err 
         listoutAbierto( k1) = 1
         Print #1,"abro ",*nombreOut(k1)
-    Select Case porterror
-      Case RTMIDI_ERROR_WARNING ' esto da cero ¿? y es eror¿?
-        Print #1, "RTMIDI_ERROR_WARNING",porterror
-      Case RTMIDI_ERROR_DEBUG_WARNING
-        Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
-        Close
-        End
-
-      Case RTMIDI_ERROR_UNSPECIFIED
-        Print #1,"RTMIDI_ERROR_UNSPECIFIED"
-        Close
-        End
-
-      Case RTMIDI_ERROR_NO_DEVICES_FOUND
-        Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_DEVICE
-        Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
-        Close
-        End
-
-      Case RTMIDI_ERROR_MEMORY_ERROR
-        Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_PARAMETER
-        Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
-        Close
-        End
-
-      Case RTMIDI_ERROR_INVALID_USE
-        Print #1,"RTMIDI_ERROR_INVALID_USE"
-        Close
-        End
-
-      Case RTMIDI_ERROR_DRIVER_ERROR
-        Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
-        Close
-        End
-
-      Case RTMIDI_ERROR_SYSTEM_ERROR
-        Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
-        Close
-        End
-
-      Case RTMIDI_ERROR_THREAD_ERROR
-        Print #1,"RTMIDI_ERROR_THREAD_ERROR"
-        Close
-        End
-    End Select
+        porterrorsub(porterror)
 
      Else
         Print #1,"ya abierto ",*nombreOut(k1)

@@ -1,3 +1,17 @@
+-14-05-2022 Ya enuna Ejec una misma pista se puede ir cambiando al port que se desee,,,los va abriendo y dejando
+abiertos pero nunca los vuelve a abrir si estan abiertos. Empezamos el menu Dispositivos, para manejar 
+Midi-In Midi-out. Ojo si los abro manualmente por este menu deberia haber una pista en edicion si se desea que los
+valores se graben en la pista. O sea con una pista nueva conviene abrir los ports desde el Boton [PorSal]. De esa forma
+se graba en el archivos de la pista el valor del PorSal usado. Tambiense grabara  si luego al crear la pista asigno ports
+con ese mismo boton..pero si no se hace no se graba nada en el archivo.
+-13-05-2022 Correccion SelcanalEjec , Selcanal ,SelInstodenNum..etc. Pista Roll y Ejec pueden tocar juntas,lo que pasa
+ es que cuando termina alguna de ellas cierra el portSal y envia SoundOff y corta todo...para que cooxitan no deben
+ hacerlo si esta ejecutando el PlayAll o PlayCancion o PlayTocaAll...solo cuando terminen todas las que esten tocando
+ se enviara el cierre del port y el soundOff...Me parece que no voy a cerrar mas los ports que se abrieron..
+ O sea cuando se abre un PortSal por cualquier causa no se cierra mas,salvo cierre expreso del usuario, ocarga de una cancion
+diferente o pista diferente,creo que deberia agregar como todos lo hacen un menu para abrir ports y cerrar a gusto,,,
+Pero durante la carga de un archivo de ejec o Roll o otra  cancion los ports se deben abrir automaticamente,,,,
+-12-05-2022 allSoundOff agregado al final del play de ejecuciones
 -11-05-2022 ya se peude seleccionar patch en las pistas de ejecucion de teclado,probado,portodispositivo tambien
  pero no esta probado...ando con menor tiempo estos updates seran cada semana mas o menso
 -03-05-2022 0.4561 borra listBox de ejecuciones al cargar,asi podemos cargar varias seguidas...
