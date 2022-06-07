@@ -68,6 +68,9 @@
 ' https://gcc.gnu.org/onlinedocs/gnat_ugn/index.html#SEC_Contents
 '====> clave DEVF (desarrollo futuro, comentarios en lugares apr adessarrollar mas
 ' funcionalidades.)
+'============================================================
+' ROLLMUSIC SECUENCIADOR CON PISTAS DE INGRESO POR PASOS O EJECUCION POR TECLADO  
+'============================================================
 ' -------------------------------------------------
 #define __FB_WIN64__
 #if defined (__FB_WIN64__) 

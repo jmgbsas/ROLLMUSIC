@@ -858,7 +858,7 @@ Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAu
 Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn
-COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca
+COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
 ''patchsal=Roll.trk(1,1).inst

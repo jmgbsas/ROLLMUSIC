@@ -101,7 +101,8 @@ Dim hnro As Integer
  
  ' genial puedo recorrer un array con un pointer!!!!
 '-------
-nroversion="0.4565 :MENU-PORTS, ABRIR-CERRAR-PORTS SALIDA"
+nroversion="0.4566 :.................."
+' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
 acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version Solo ejecuta las secuencias " + _
  "a base de algoritmos sin una linea conductora de tiempos. Solo se basa en las duraciones de las notas. " + _
@@ -436,8 +437,8 @@ MenuItem(1092,MenName6,"Reproducir MIDI-IN (teclado) por  MIDI-OUT.  ")
 MenuItem(1093,MenName6,"Detener Reproduccion MIDI-IN (teclado) por  MIDI-OUT. (test de Input) ")
 
 
-MenuItem(1100,MenName7,"Usar MARCO de Ventana ",MF_UNCHECKED)
-MenuItem(1101,MenName7,"Usar MARCO de Ventana en instancias",MF_UNCHECKED)
+MenuItem(1100,MenName7,"Usar MARCO de Ventana Para el Gráfico",MF_UNCHECKED)
+MenuItem(1101,MenName7,"Usar MARCO de Ventana en instancias Gráficas",MF_UNCHECKED)
 
 MenuItem(1102,MenName7,"Fracciona Acorde [Con <> Duraciones], notas similares en una pista (no hay silencios)",MF_UNCHECKED  )
 MenuItem(1103,MenName7,"Fracciona NOTA o Acorde [CDD], agregando silencios en una pista ",MF_UNCHECKED  )
@@ -451,12 +452,12 @@ MenuItem(1111,MenName7,"Insertar escala libre en la Posicion actual (Pasozona1)"
 MenuItem(1112,MenName7,"Insertar escala Alternativa de la Principal en la Posicion actual (Pasozona1)")
 MenuItem(1113,MenName7,"Usar metronomo para Tocar MIDI-IN)",MF_CHECKED)
 
-MenuItem(1200,MenName8,"Seleccionar Puertos MIDI-IN")
-MenuItem(1201,MenName8,"Na. Abrir      Puertos MIDI-IN")
-MenuItem(1202,MenName8,"Na. Cerrar    Puertos MIDI-IN")
-MenuItem(1203,MenName8,"Na. DesTruir Puertos MIDI-IN")
+MenuItem(1200,MenName8,"Seleccionar Puerto MIDI-IN")
+MenuItem(1201,MenName8,"Na. Abrir      Puerto MIDI-IN")
+MenuItem(1202,MenName8,"Na. Cerrar    Puerto MIDI-IN")
+MenuItem(1203,MenName8,"Na. DesTruir Puerto MIDI-IN")
 Menubar(MenName8)
-MenuItem(1204,MenName8,"Na. Seleccionar Puertos MIDI-OUT")
+MenuItem(1204,MenName8,"Seleccionar Puerto MIDI-OUT")
 MenuItem(1205,MenName8,"Abrir   Puertos MIDI-OUT")
 MenuItem(1206,MenName8,"Cerrar Puertos MIDI-OUT")
 MenuItem(1207,MenName8,"Na. DesTruir Puertos MIDI-OUT")
@@ -1419,9 +1420,8 @@ Print #1,"tocaparam(k).portout ",tocaparam(k).portout
 
               End Select
               SetForegroundWindow(hwnd)
-           Case 1114
-                metronomo_si=0
-           Case 1200 'Crear     Puertos MIDI-IN
+
+           Case 1200 'Seleccionar  Puertos MIDI-IN
 ' seleccion de portin , 2:portin. ntkp:salida
 ' ->  npi: numero port entrada
 ' portsin es la cantidad de ports que hay de entrada
@@ -1445,7 +1445,21 @@ Print #1,"tocaparam(k).portout ",tocaparam(k).portout
 
            Case 1203 'DesTruir Puertos MIDI-IN
 
-           Case 1204 'Crear     Puertos MIDI-OUT
+           Case 1204 'Seleccionar      Puertos MIDI-OUT
+' seleccion de portout , 1:portout. ntkp:salida
+' ->  npo: numero port salida
+' portsin es la cantidad de ports que hay de entrada
+         selportEjec (1,npo )
+         Print #1, "npo ",npo
+                   
+' control de portin ,si hay un track de ejec seleccionado le asignamos este portin
+' podemos asignar muchos a la vez 
+          For i As Short =1 To 32
+             If CheckBox_GetCheck( cbxejec(i))= 1 Then
+                 pmTk(i+32).portout=npo
+             EndIf
+          Next i  
+
 
            Case 1205'Abrir      Puertos MIDI-OUT
 '------------ABRIR PORT DE SALIDA ---<<<<< NO
