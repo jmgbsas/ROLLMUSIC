@@ -300,14 +300,14 @@ Sub ChangeProgram ( instru As UByte,  canal As UByte,portsal As UByte)
  message(2) = instru
 
  leng=2
-Print #1,"send_message midiout(portsal) , p, leng ",midiout(portsal) , p, leng
+'Print #1,"send_message midiout(portsal) , p, leng ",midiout(portsal) , p, leng
 'On Local Error GoTo  errorcp
   result = send_message (midiout(portsal) , p, leng) 
 'errorcp:
 'Dim n As Integer = Err
 '  Print #1,"error send_message change program",n
 
-Print #1,"resultado de cambiar elpatch ", result
+'Print #1,"resultado de cambiar elpatch result patch", result, instru
 End Sub
 Sub noteon	( note As ubyte, vel As UByte, canal As UByte, portsal As UByte)
 	' canal 1 
@@ -328,6 +328,7 @@ Sub noteon	( note As ubyte, vel As UByte, canal As UByte, portsal As UByte)
  message(2) = note
  message(3) = vel
  leng=3
+
 result = send_message (midiout(portsal), p, leng)
 'Print #1,"EN NOTE ON nota, portsal ", note, portsal
 End Sub
@@ -2682,6 +2683,7 @@ dato1=*memoria: memoria += 1
 dato2=*memoria: memoria += 1
 dato3=*memoria 
 DURk =deltatime
+
 Dim As Double sumadelta=0
     If GrabarPenta=1 Then
        nRk=dato2
@@ -2728,11 +2730,13 @@ Dim new_time As Double
 
      Select Case  dato1 
          Case 144 ' on
-            noteon dato2,dato3,1,pmTk(ntoca+32).portout 'message(3) ' noter vel canal
+            'noteon dato2,dato3,1,tocaparam(calltoca).portout 'message(3) ' noter vel canal
+            noteon dato2,dato3,pmTk(calltoca+32).canalsalida, pmTk(calltoca+32).portout
+
 '     Print   dato1;" ";  dato2;" "; dato3
            
          Case 128 'off
-            noteoff dato2,1,pmTk(ntoca+32).portout 'message(2)'
+            noteoff dato2,pmTk(calltoca+32).canalsalida,tocaparam(calltoca).portout 'message(2)'
 '     Print   dato1;" ";  dato2;" "; dato3
 
      End Select
@@ -2786,13 +2790,13 @@ Loop
  threadDetach (threadmetronomo)
 End Sub
 '--------------------
-Sub abrirPortoutEjec(ntkp As Integer)
+Sub abrirPortoutEjec(j As Integer)
 '------------hace falta abrir la salida
 Print #1,"abriendo port...."
 Dim k1 As Integer
 
   
-   k1=CInt(pmTk(ntkp+32).portout)
+   k1=CInt(pmTk(j+32).portout)
     
    Print #1,"midiout ",k1, *nombreOut(k1)
    If InStr(*nombreOut(k1),"Microsoft")>0 Then
@@ -2819,11 +2823,7 @@ Sub PlayTocaAll(nt As Integer Ptr )
 '////////////////////////////TOCAALL/////////////////////////
 ' perfeccionar los eventos deven seguir un patron de tiempo de ticks
 ' para c/tick ver si hay un evento si hay enviarlo...el problem ason lso retardos
-' 
-' TOCA UNA SOLA PISTA MIDI-IN GRABADA LA 1
-' PARA TOCAR MAS DE 1 PISTA DEBE RE DISPARAR TODAS AL MISMO TIEMPO
-' N THREADS? O COMO ? SI DISPARO VARIAS Y LAS COORDINO CON EL JGRB COMO
-' HICE CON CURSOR Y LSO PLAY ,,,
+' TOCA VARIAS PISTAS EJEC 
 Print #1,"PlayTocaAll 1"
 ntoca=*nt
 Dim  As long j=0,k=0,partes,cuenta=0,ks(1 To 32),pis=0
@@ -2871,7 +2871,7 @@ Print #1,"topeDuranteGrabacion ", topeDuranteGrabacion, " PISTAS"
 
 Next pis
 
-Print #1,"empieza el play de ejec"
+Print #1,"empieza el play de ejec, maxgrb, CONTROL1 ", maxgrb,CONTROL1
 For j=1 To maxgrb
   If CONTROL1 = 1 Then
      alloff( 1 ,portsal )
@@ -2879,11 +2879,13 @@ For j=1 To maxgrb
       repro=0
       Exit For
   EndIf  
-
+'''Print #1,"topeDuranteGrabacion ",topeDuranteGrabacion
   For kply =1 To topeDuranteGrabacion
-    
+   ' este cambio de patch anda bien no produceretardo por ahora y se hace cada
+' vez que cambio de pista en un bariddo vertical de una posicion dada
+' verificar esto en play cancion donde creo daba retardo ver,,,,ÇÇÇ 04-06-2022 
     If CheckBox_GetCheck( cbxejec(kply))= 1 Then
-       ' tpcar
+       ChangeProgram ( tocaparam(kply).patch , tocaparam(kply).canal, tocaparam(kply).portout)
     Else
      Continue For ' saltear no tocar 
     EndIf 
@@ -2903,14 +2905,15 @@ For j=1 To maxgrb
        EndIf
 
      EndIf
-' canal pmTk(kply+32).canalsalida 
+ 
+'Print #1,"dato1", dato1
      Select Case  dato1 
          Case 144 ' on
             noteon dato2,dato3,pmTk(kply+32).canalsalida, pmTk(kply+32).portout 'message(3) ' noter vel canal
-           
+           'Print #1,"ON ",dato2,dato3,pmTk(kply+32).canalsalida, pmTk(kply+32).portout
          Case 128 'off
             noteoff dato2,pmTk(kply+32).canalsalida ,pmTk(kply+32).portout 'message(2)'
-            
+           'Print #1,"OFF ",dato2,pmTk(kply+32).canalsalida ,pmTk(kply+32).portout  
      End Select
  
    Next kply

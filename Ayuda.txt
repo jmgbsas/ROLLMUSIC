@@ -10,7 +10,7 @@
        alta prioridad, se hizo un ejecutbel para eso. Un mejo browser de poco consumo es Vivaldi.
 
     II) Opciones Configuracion
-        a) PUERTOS MIDI A USAR.
+        a) PUERTOS MIDI A USAR. en elmenu de Roll Music Grafico
         Desde el Menu Principal -> ALT + posarse sobre ->Opciones->Ctrl+Click->Configuracion->click->MIDI->
         click->MIDI-OUT o MIDI-IN, en la lista de dispositivos de salida o de Entrada
         clickear la deseada y dar Ok.(solo midi Out es funcional)
@@ -23,7 +23,7 @@
         reales, se ve cada tarjeta o sintetizador por software standalone como un port distinto, RtmidiC no 
         vé los port Virtuales en Windows..., pero si se usa un cable midi virtual sí lo ve como por 
         ejemplo LoopBe1.
-        b) Usar Marco o No Usar. 
+        b) Usar Marco o No Usar. en Menu de Control (no el grafico)
         Usando marco es mas facil mover la ventana porque usa el modo nativo de
         windows, pero en esta implementacion no se puede redimensionar la ventana CON EL PROGRAMA EJECUTANDO.
         No usar marco: mover la ventana desde la cinta superior debe hacerse lento para que funcione.
@@ -41,9 +41,9 @@
         de ese modo tomara gran parte de la pantalla y desde ahi se podra achicar de nuevo a gusto. O sea
         siempre se modifica desde un tamaño mayor a menor pero no de menor a mayor mientras se ejecuta el 
         programa.
-        c) Tipo de escala,(mayor (por omision), harmonica, etc)
-        d) Nota de la escala (C (por omision),D,E,Eb,Gb,F#,etc)
-        c) Trabajar con sostenidos (por omision) o bemoles        
+        c) Tipo de escala,(mayor (por omision), harmonica, etc) en Menu de Control (no el grafico)
+        d) Nota de la escala (C (por omision),D,E,Eb,Gb,F#,etc) en Menu de Control (no el grafico)
+        c) Trabajar con sostenidos (por omision) o bemoles  en Menu de Control (no el grafico)      
         Nota: para lso puntos c,d y e, se ejectua el armado de la escala la cual se muestra en el
              extremo superior del Grafico de RollMusic (subir para arriba hasta que aparesca la escala)
 
@@ -58,7 +58,6 @@
        midi , apareceran [] vacios sin seleccionar y [x] seleccionado, antes de seleccionar uno nuevo, se debe 
        deseleccionar el anterior dandole click al que tenga [x] para apasarlo a [] y luego buscar el nuevo
        hacicednolo pasar de [] a [x]. De todos modos solo toma el cambio si la ultima accion dejo una x.
-
     1) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
     2) El espaciado entre lineas se puede cambiar.
     3) Trasponer todo: ALT-T habilita la trasposicion, Q la deshabilita.
@@ -178,14 +177,17 @@
 
     16 ) En algun Futuro: exportar a MusicXml o midi para poder interactuar con otros programas.
            Como tambien importar...
-    17a ) MIDI-IN GRABACION: (EN DESARROLLO, 2da parte) version 4560 . 
+
+    17a ) MIDI-IN GRABACION: (EN DESARROLLO, 2da parte) version 4565 . 
          YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN grabadas mediante laejecucion EN UN O CONTROLADOR MIDI EXTERNO 
          o TECLADO externo  real concectado su salida MIDI-OUT  al MIDI-IN de la PC.
          Las pistas se arman tal cual se grabaron sincronizadas respecto de la pista 1.
           Para ello no hace falta levantar el Roll Grafico.
           pasos 
+
           a) Dar check a la pista a grabar en la columna 'G' de la 2da lista de pistas. debajo del menu
           'Cambiar Tiempo....' 
+
           b) pulsar el boton Rojo de armado de la pista, c) Ir al menu de Control arriba en Reproducir y elegir
           "Reproducir MIDI-IN (teclado) por MIDI-OUT" (por ahora solo usa port 0 y patch 1).
           La grabacion comenzara al llegar la 1er nota midi,,tocar normalmente, para detener l grabacion pulsar 
@@ -207,19 +209,16 @@
            y pasos de manual no estan a tempo, solo se podra sincronizar el  comienzo..mas sincronizacion requeriria
            pasar los tracks manuales a ticks de ejecucion o al reves de ticks a duracion con lo ya echo de ingresar desde
            teclado en manuales...).
+
            c) Se puede usar Crear Cancion y abrir un Directorio de cancion para ubicar una ejecucion de teclado
               Para ello se procede igual que al crear o usar un directorio de Cancion y luego abrir Pistas Midi en el menu Archivo
               casi abajo de todo., De ese modo una cancion manual y una ejecucion desde teclado podranestar en un mismo
               directorio.
-          d) Cambiar PATCH o instrumento de una pista de ejecucion por teclado MIDI-IN. con la pista seleccionada para 
-              reproducir como antes pulsar arriba el boton patch ,deseleccionar el que tenga una X dando click para que quede 
-              en blanco luego buscar el instrumento deseado y clickear en el luego pulsar el boton OK
-          e) Cargar Archivos MIDI-IN tipo cancion de ejecuciones,,En el menu de Archivo si no hay cancion de psitas de Tracks *.trk
-              manuales, usar Cargar Pistas MIDI-IN ,navegar y seleccionar la carpeta que contiene las pistas y dar Enter,
-              Se cargaran las pistas y automaticamente se abren los porrts de salida necesarios grabados en el archivo previamente,
-          f)  En una pista de ejecucion por teclado real se puede cambiar el port de salida todas las veces que se desee, como
-              tambien el PATCH, si corresponde. version 04564. Si el synthe usa canlaes tambien se lo puede cambiar,,
-              (ajustes de Volumeny paneo no implementedo todavia).
+
+          d) Cambiar PATH de una pista de ejecucion por teclado MIDI-IN. con la pista seleccionada para reproducir como
+             antes pulsar arriba el bootn patch ,deseleccionar el que tenga una X dando click para que quede en blanco
+            luego buscar el instrumento deseado y clickear en el luego pulsar el boton OK
+
     17b) grabacion directamente sobre Roll, 1era version faltaria que detecte acordes
            ya lo hizo en algun algoritmo distinto a este , el actual funciona para melodias, tiene
            un metronomo, si se desea se puede desactivar (menu Opciones, no probado)
@@ -232,6 +231,15 @@
            con la nota siguiente con sonido. Roll separa algunas notas cuadno la duracion del compas
           es mayor , pero generalmente no logra el compas exacto...de modo que eliminare creo
           el calculo del compas y quedara un Roll sin compases.
+
+    17c) Cargar archivo grabado con ejecuciones porteclado *.ejec , se puede usar un directorio de cancion
+           "Cargar directorio de cancion.."    o entrar por "Cargar Pistas Midi-in"
+           En ambos casos carga las pistas y abre automaticamente los port MIDI-OUT automaticamente
+           Si se desea entrar a tocas por MIDI-IN se debe abrir el port midi-in previamente seleccionado
+           enmenu Dispositivos "Seleccionar puerto midi-in". Para realizar estas operaciones debeestar seleccionado
+           lapista de ejecucion en la columna 'S'..Luego si se desea pasar a otra pista se cierra el por midi-in
+           en el menu Reproducir , en la opcion Detener Reproduccion MIDI-IN. Y asi sucecivamente siempre
+           se selecciona una pista por vez tanto para abrir como cerrar.
     18 ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
           o ordenar la ejecucion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
           o ejecutar con otras instancias de RollMusic con o sin Control...(hay muchisimo por hacer...)

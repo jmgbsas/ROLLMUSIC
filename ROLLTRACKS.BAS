@@ -26,14 +26,17 @@ End Sub
 '/
 
 Sub GrabarMidiIn ( tocap() As ejec, ntkp As Integer,tocaparam  As ejecparam) 
-    Dim As Long j, n=FreeFile
-    Dim nombre As String
+    Dim As Long j, n=FreeFile,driver=0
+    Dim As String nombre
+     
       nombre =titulos(ntkp+32) ' no tiene path , extension y [nro]
-      If  NombreCancion > "" Then
+      driver=InStr(nombre,":\")
+      If  NombreCancion > "" And driver=0 Then
           nombre=NombreCancion+"\"+nombre
       EndIf
 Print #1,"nombre de archivo con path grabando de ejec",nombre
       tocaparam.portout=pmTk(ntkp+32).portout
+      tocaparam.portin = pmTk(ntkp+32).portin
       tocaparam.patch=pmTk(ntkp+32).patch
       tocaparam.canal =pmTk(ntkp+32).canalsalida
    
@@ -42,6 +45,7 @@ Print #1,"nombre de archivo con path grabando de ejec",nombre
       Print #1,"GrabarMidiIn delta ",tocaparam.delta
       Print #1,"GrabarMidiIn nombre ",tocaparam.nombre
       Print #1,"GrabarMidiIn portout ",tocaparam.portout
+      Print #1,"GrabarMidiIn portin ",tocaparam.portin
       Print #1,"GrabarMidiIn patch ",tocaparam.patch
       Print #1,"GrabarMidiIn canal ",tocaparam.canal
        If  Open (nombre  For Binary Access Write As #n)=0 Then
@@ -55,7 +59,8 @@ Print #1,"nombre de archivo con path grabando de ejec",nombre
 
 End Sub
 
-Sub CargarMidiIn(nombreMidiIn As String,   ntkp As  long) 
+Sub CargarMidiIn(nombreMidiIn As String,   ByRef ntkp As Integer)
+' carga un archivo por cada llamada 
       Var  f=FreeFile
       Dim As Integer  j 
       ' nombre tiene el path y extension esta completo
@@ -98,18 +103,20 @@ Print #1,"ubound ",UBound (Toca(ntkp).trk)
 '      pmTk(ntkp+32).MaxPos=Toca(ntkp).maxpos
       ntoca=tocaparam(ntkp).orden
       pmTk(ntkp+32).portout= tocaparam(ntkp).portout
+      pmTk(ntkp+32).portin= tocaparam(ntkp).portin
       pmTk(ntkp+32).patch = tocaparam(ntkp).patch
       pmTk(ntkp+32).canalsalida=tocaparam(ntkp).canal
       
-      Print #1,"CargarIn maxpos,ntkp  ",tocaparam(ntkp).maxpos , ntkp
+      Print #1,"CargarIn maxpos,np  ",tocaparam(ntkp).maxpos , ntkp
       Print #1,"Cargar delta ",tocaparam(ntkp).delta
       Print #1,"Cargar nombre ",tocaparam(ntkp).nombre
-      Print #1,"Cargar nombre ",tocaparam(ntkp).orden 
+      Print #1,"Cargar orden ",tocaparam(ntkp).orden 
       Print #1,"Cargar portout ",tocaparam(ntkp).portout
+      Print #1,"Cargar portin ",tocaparam(ntkp).portin
       Print #1,"Cargar patch ",tocaparam(ntkp).patch
       Print #1,"Cargar canal ",tocaparam(ntkp).canal
-
- 
+' el ultimo valor de ntkp queda en calltoca... 
+     calltoca=ntkp
 
    '  viv.trk()=Toc()
 
@@ -119,21 +126,30 @@ Sub CargarPistasEjec (lugar As String, ByRef ntkp As integer)
 ' cada vez que cargo borro la info de fechas de pistas anterior
 ' para usar esta carga hay que crear un Dir de cancion y abrirlo
 'podra haber pistas trk o ejec o ambas,veremos si se pueden sincronizar   
+' devuelve el numero de pistas...cargadas
 ROLLCARGADO=FALSE
 
-GrabarEjec =0: ntoca=0 : arrancaPlay=0 
+GrabarEjec =0: ntoca=0 : arrancaPlay=0
+ntkp=0 
 ''ReDim As Double fechasPistas(1 To 32)
 print #1,"-------------------------------------------------------"
-print #1,"inicia CargaPistasEjec"
+print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devuelve ntkp "
   Dim As String no1, no2
   Dim As Integer ubi1=0,ubi2=0 
      Dim As String filenameold
      ' el Dir me trae lso nombres sin el path de cancion
+
      If  lugar ="" Then
          nombreMidiIn = Dir ("*.ejec")
      Else
          nombreMidiIn = Dir (lugar+"\*.ejec")
      EndIf
+' el dir da el orden 01 02 03 pero podria sacarlo de esa cadena 01 02 03 como hago con trakcs
+' pero no hace falta estan ordenados 01 02 03 04 (el usuario debe respetar este orde en un
+' numero de 2 cifras si quiere crear manualmente algo)
+' 1) DETERMINA EL MAXGRB DE LA CANCION MIRANDO EN TODOS LOS ARCHIVOS
+'     PARA AL CARGAR DIMENSIONAR TODOS LOS VECTORES DE CARGA AL MISMO
+'     VALOR MAXIMO 
      print #1,"nombreMidiIn encancion > 0 ",nombreMidiIn
      If nombreMidiIn = "" Then ' no hay ningu archivo dentro del dir de cancion
         ntkp=1
@@ -152,7 +168,9 @@ print #1,"inicia CargaPistasEjec"
        EndIf 
        Var  f=FreeFile
        maxgrb=0
+
        Dim  As Integer nf=0
+
        Do While Len(nombreMidiIn) > 0
            Print #1,"nombreMidiIn loop maxgrb ",nombreMidiIn
            Print #1,"fileMidiIn loop maxgrb ",fileMidiIn
@@ -177,22 +195,22 @@ print #1,"inicia CargaPistasEjec"
        Loop
       Print #1,"MAXIMA LONG DE PISTA EJEC maxgrb, nf ",maxgrb,nf
       
-'----------------------------
+'-2)----------------CARGA LOS DATOS DE CADA PISTA
        Dim  As Integer mayor=1
-       Dim np As Long
        If  lugar ="" Then
            nombreMidiIn = Dir ("*.ejec")
       Else
           nombreMidiIn = Dir (lugar+"\*.ejec")
       EndIf
-
-       Do While Len(nombreMidiIn) > 0 ' If len(filename) is 0, exit the loop: no more filenames are left to be read.
-        filenameold=nombreMidiIn
-        print #1, "trabajo con este filename...", filenameOld '[1]AAA.EJEC por ejemplo
+       Dim np As Long=0
   ' va cargando los track internos, tomando el nro de trackp 
   ' del nombre del archivo solamente , ergo el usuario puede cambiar el orden
   ' o poner un trakcp de otra cancion con un numero que no exista [x]
   '      
+
+       Do While Len(nombreMidiIn) > 0 ' If len(filename) is 0, exit the loop: no more filenames are left to be read.
+        filenameold=nombreMidiIn
+        print #1, "trabajo con este filename...", filenameOld '[1]AAA.EJEC por ejemplo
         np=np+1
        ' Var N=Filelen(nombreMidiIn)\Sizeof(ejec)
        'Print #1,"CargarMidiIn N LEIDOS",N
@@ -200,20 +218,21 @@ print #1,"inicia CargaPistasEjec"
         Print #1,"CargarMidiIn  fileMidiIn ",fileMidiIn
 
         
-        CargarMidiIn (fileMidiIn,  np)
+        CargarMidiIn (fileMidiIn,  ntkp)
  'durante la cargaTrack el programa va a Rolloop se encuentra con SC_TAB
  ' y si cargacancion esta en 1 trata de cargar y no lo debe ahcer de modo
  ' que se ajusta a 0 cargacancion dentro de la rutina veremos 
                
         Dim cadena As String
         ''''cadena= sacarExtension(filenameOld) ' [1]AAA
-        cadena = tocaparam(np).nombre
+        cadena = tocaparam(ntkp).nombre ' este ntkp sale del nombre del archivo el nro ej: (03) 
+' pero la carga usa np que deberia coincidir....o no si borro una pista sinrenombrar 01,03,04 ... borre la (02) 
          AddListBoxItem(4, cadena,np-1)
-        ntkp=CInt(np)
-      Print #1,"tocaparam(np).maxpos ",tocaparam(np).maxpos
-        pmTk(np+32).MaxPos=tocaparam(np).maxpos
+        '''''ntkp=CInt(np) no hace falta
+      Print #1,"tocaparam(ntkp).maxpos ",tocaparam(ntkp).maxpos
+        pmTk(ntkp+32).MaxPos=tocaparam(ntkp).maxpos
         
-         Print #1,"pmTk(np+32).MaxPos ",pmTk(np+32).MaxPos
+         Print #1,"pmTk(ntkp+32).MaxPos ",pmTk(ntkp+32).MaxPos
 
         If tocatope < ntkp Then
            tocatope=ntkp
@@ -1669,7 +1688,7 @@ For i=1 To tope
      Print #1,"No se usa Microsoft"
    Else
      If listoutAbierto( k1) = 0 Then
-        midiout(k1) = rtmidi_out_create_default ( )
+        midiout(k1) = rtmidi_out_create_default ( ) '' es como un new RtMidiOut()
         open_port midiout(k1),k1, nombreOut(k1)
             porterror=Err 
         listoutAbierto( k1) = 1

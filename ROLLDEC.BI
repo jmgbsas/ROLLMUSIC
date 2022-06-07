@@ -56,7 +56,19 @@ end Operator
 
 'Declare Sub RollLoop (c As cairo_t Ptr, Roll As inst)
 'Declare Sub creaPenta (c AS cairo_t Ptr, Roll As inst  )
+' HELP PARA EL PROGRAMA FUTURO...
+'https://www.freebasic.net/forum/viewtopic.php?p=187407&hilit=HtmlHelp#p187407
+'https://www.pinvoke.net/default.aspx/hhctrl.htmlhelp
+#Define HH_DISPLAY_TOPIC 0000 '  extracted from h file.
+#define HH_HELP_CONTEXT  0015
+#Define  HH_DISPLAY_TOC   0001
+#Define  HH_DISPLAY_INDEX 0002
+#Define  HH_DISPLAY_SEARCH 0003
+#Define  HH_CLOSE_ALL  0018
 
+Dim HtmlHelpA As Function (hwndCaller As HWND,pszFile As LPCSTR,uCommand As UINT,dwData As DWORD_PTR) As HWND
+Dim  HTMLHelp As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
+Dim HH_POPUP As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
 
 'Declare Sub menu (c0 AS cairo_t Ptr,c AS cairo_t Ptr,n As Integer,menuNro As Integer)
 declare Sub botones(hWnd As HWND,cm As cairo_t Ptr,x As Integer,y As integer)
@@ -846,7 +858,7 @@ Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAu
 Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn
-COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp
+COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
 ''patchsal=Roll.trk(1,1).inst
@@ -905,7 +917,8 @@ Type  ejecparam Field=1
   As  UByte         orden   'nro pista ejec
   As  UByte        portout
   As  UByte        patch 
- As   UByte        canal  
+ As   UByte        canal
+ As  UByte         portin  
 End Type
 
 

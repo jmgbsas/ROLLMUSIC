@@ -1,3 +1,6 @@
+' esta andando bien seguir verificando 04-06-2022
+' colocar HELP-CONTEXTUAL-POPUP <--- es undirectorio conejemplodecomo poner
+'esos helptipo globito!!!
 '========================== 
 #Include "ROLLINICIO.BAS"
 #include "WinGUI.bi"
@@ -98,7 +101,7 @@ Dim hnro As Integer
  
  ' genial puedo recorrer un array con un pointer!!!!
 '-------
-nroversion="0.4564 :ajuste de parametro en Control- canal en ejecuciones "
+nroversion="0.4565 :MENU-PORTS, ABRIR-CERRAR-PORTS SALIDA"
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
 acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version Solo ejecuta las secuencias " + _
  "a base de algoritmos sin una linea conductora de tiempos. Solo se basa en las duraciones de las notas. " + _
@@ -159,6 +162,31 @@ If ix < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON cont
   cbxnum(31) = CheckBox_New( 60 , 640, 20, 20, "",, hwndc)
   cbxnum(32) = CheckBox_New( 60 , 660, 20, 20, "",, hwndc) 
 
+EVENTc=0
+'  funciona trae el help de freebasic implementar para unhelp futuro...
+Dim As Any Ptr library = DyLibLoad( "hhctrl.ocx" )
+HtmlHelpA = DyLibSymbol( library, "HtmlHelpA" )
+HtmlHelp = DyLibSymbol( library, "HtmlHelp" )
+HH_POPUP = DyLibSymbol( library, "HH_POPUP" )
+
+Dim As HWND hwndTip = CreateWindow(TOOLTIPS_CLASS, NULL, _ 
+                            WS_POPUP OR TTS_NOPREFIX Or TTS_BALLOON,  _
+                            0, 0, 0, 0, NULL, NULL, NULL, NULL)
+Dim As TOOLINFO ti
+    ti.cbSize   = sizeof(ti)
+    ti.uFlags   = TTF_TRANSPARENT Or TTF_CENTERTIP
+    ti.hwnd     = hwndC
+    ti.uId      = 0
+    ti.hinst    = NULL
+    ti.lpszText = LPSTR_TEXTCALLBACK
+
+    GetClientRect(hwndC, @ti.rect)
+
+    SendMessage(hwndTip, TTM_ADDTOOL, 0, @ti )
+
+    SendMessage(hwndTip, TTM_ACTIVATE, 0,  @ti)
+'http://www.forosdelweb.com/f69/archivos-ayuda-chm-con-visual-basic-6-0-a-801611/
+'HTMLHelp(GetDesktopWindow(), "C:\IT64\AREAWORK\ROLLMUSIC-143-MENU-PORTS\hola.txt", HH_DISPLAY_TOPIC, NULL)
 
 
   EVENTc=0
@@ -423,14 +451,14 @@ MenuItem(1111,MenName7,"Insertar escala libre en la Posicion actual (Pasozona1)"
 MenuItem(1112,MenName7,"Insertar escala Alternativa de la Principal en la Posicion actual (Pasozona1)")
 MenuItem(1113,MenName7,"Usar metronomo para Tocar MIDI-IN)",MF_CHECKED)
 
-MenuItem(1200,MenName8,"Na. Crear     Puertos MIDI-IN..en Desa..")
+MenuItem(1200,MenName8,"Seleccionar Puertos MIDI-IN")
 MenuItem(1201,MenName8,"Na. Abrir      Puertos MIDI-IN")
 MenuItem(1202,MenName8,"Na. Cerrar    Puertos MIDI-IN")
 MenuItem(1203,MenName8,"Na. DesTruir Puertos MIDI-IN")
 Menubar(MenName8)
-MenuItem(1204,MenName8,"Na. Crear     Puertos MIDI-OUT")
-MenuItem(1205,MenName8,"Na. Abrir      Puertos MIDI-OUT")
-MenuItem(1206,MenName8,"Na. Cerrar    Puertos MIDI-OUT")
+MenuItem(1204,MenName8,"Na. Seleccionar Puertos MIDI-OUT")
+MenuItem(1205,MenName8,"Abrir   Puertos MIDI-OUT")
+MenuItem(1206,MenName8,"Cerrar Puertos MIDI-OUT")
 MenuItem(1207,MenName8,"Na. DesTruir Puertos MIDI-OUT")
 
 
@@ -795,10 +823,33 @@ lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BI
  
                    ntoca=j
                    pmTk(j+32).portout=tocaparam(j).portout
-                   abrirPortoutEjec(j) 
+                   abrirPortoutEjec(j)
+' en una carga abri los ports de salida pero todavia no los de entrada
+' ergo el mycalback deberia tomar el patch si lo ajusto aca
+'volver
+'          ChangeProgram ( tocaparam(j).patch , tocaparam(j).canal, tocaparam(j).portout)
+'       Print #1,"1016 tocaparam(j).patch ",tocaparam(j).patch
+'       Print #1,"1016 tocaparam(j).canal ",tocaparam(j).canal
+'       Print #1,"1016 tocaparam(j).portout ",tocaparam(j).portout
+'
+'-----------------06-06-2022-- abre portin siempre toca piano no toma el patch!!! no se como 
+'      portin= CInt(tocaparam(j).portin)
+'      If  listinAbierto( portin) = 0 Then
+'              calltoca=j 'para el portout en mycallback
+'              open_port (midiin(portin ), portin, *nombrein( portin ) )
+'              set_callback midiin(portin ), @mycallback, p
+       ' por ahrao iognoramos otros tipsod de mensaje
+'  ignoreTypes(false, false, false);
+ '             rtmidi_in_ignore_types  (midiin(portin ), 1, 2, 4)
+ '             teclado=1 
+ '             listinAbierto( portin) = 1
+ '             jgrb=0
+ '      End If
+'-----------------06-06-2022 fin
                EndIf 
            Next j 
-           tocatope=ntoca
+
+           tocatope=ntkp
       EndIf 
 '-----------------------------------------------------------------------
             Case 1017 'seleccionar  por SALIDA de lapista ejecucion 
@@ -1114,62 +1165,73 @@ Print #1,"1060 abrirRoll=0 entro"
              EndIf
              SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
-           Case 1092
+           Case 1092 ' abrir un midi-in ...con callback
+' no depende del numero de pista de ejecucion,sino del portin solamente,,, 
              abrirMIDIin=1
 'If abrirMIDIin=1 Then ' grabacion desde teclado ...entr mal los valores por ahora
 '   abrirMIDIin=0
 'NTK??? vale cero al comienzo ergo es la ultima  ejecucion de trackas ...32+1 sera de ejec
 '' ÇÇÇÇÇ SEGUIRACA AJUSTE DEPORTOUT....05-05-2022
- ' deberiamos, 1) seleccionar el port de la pista ejec y luego abrir ejecutando esta accion
-' se podra usar mycallback mas de 1 vez en distinto port ? supongo que si,.,,,  
-              open_port (midiin(pmTk(ntkp+32).portin ),pmTk(ntkp+32).portin, *nombrein( pmTk(ntkp+32).portin ) )
-              set_callback midiin(pmTk(ntkp+32).portin ), @mycallback, p
-' por ahrao iognoramos otros tipsod de mensaje
-              rtmidi_in_ignore_types  (midiin(pmTk(ntkp+32).portin ), 1, 2, 4)
+ ' deberiamos, 1) seleccionar el portIN de la pista ejec y luego abrir ejecutando esta accion
+' se podra usar mycallback mas de 1 vez en distinto port ? supongo que si,.,,,
+' SI ya esta abierto el portin no abrirlo por 2da vez...eso requiere controlar la apertura
+' de los portin tambien JMGJMGJMG QUEDA PARA DESPUES AHORA VEREMOS APERTURA
+' Y CIERRE EN DISPOSITIVOS....
+ '----> seguir aca ÇÇÇÇÇÇÇÇ debo
+   
+       For  i As Short =1 To 32
+             If CheckBox_GetCheck( cbxejec(i))= 1  Then
+                portin= CInt(pmTk(i+32).portin)
+                portout= CInt(pmTk(i+32).portout)
+                calltoca= i ' 04-06-2022
+Print #1,"tocaparam(i)patch ",tocaparam(i).patch
+Print #1,"tocaparam(i)canal ",tocaparam(i).canal
+Print #1,"tocaparam(i)portout ",tocaparam(i).portout
+
+              ChangeProgram ( tocaparam(i).patch , tocaparam(i).canal, tocaparam(i).portout)
+                Exit For  ' termina con el 1er seleccionado solo se toma 1 sola accion
+             EndIf
+       Next i
+/' lo bore  de mycallback
+        For k As Short =1 To 32 
+           If CheckBox_GetCheck( cbxejec(k))= 1  Then
+              calltoca=k
+Print #1,"DENTRO DE MYCALLBACK k ",k
+Print #1,"tocaparam(k).patch ",tocaparam(k).patch
+Print #1,"tocaparam(k).canal ",tocaparam(k).canal
+Print #1,"tocaparam(k).portout ",tocaparam(k).portout
+              ChangeProgram ( tocaparam(k).patch , tocaparam(k).canal, tocaparam(k).portout)
+              Exit For
+           EndIf
+         Next k 
+'/
+
+       If  listinAbierto( portin) = 0 Then
+              open_port (midiin(portin ), portin, *nombrein( portin ) )
+              set_callback midiin(portin ), @mycallback, p
+       ' por ahrao iognoramos otros tipsod de mensaje
+              rtmidi_in_ignore_types  (midiin(portin ), 1, 2, 4)
               teclado=1 
+              listinAbierto( portin) = 1
               jgrb=0
-'------------hace falta abrir la salida
-Print #1,"abriendo port....si no se selecciona previamnete toma cero"
-Dim k1 As Integer
- For  i As Short =1 To 32
-    If CheckBox_GetCheck( cbxejec(i))= 1  Then
-        k1=CInt(pmTk(i+32).portout)
-    
-       Print #1,"midiout ",k1, *nombreOut(k1)
-       If InStr(*nombreOut(k1),"Microsoft")>0 Then
-         Print #1,"No se usa Microsoft"
-       Else
-         If listoutAbierto( k1) = 0 Then
-            midiout(k1) = rtmidi_out_create_default ( )
-            open_port midiout(k1),k1, nombreOut(k1)
-            Dim As integer    porterror=Err 
-            listoutAbierto( k1) = 1
-            Print #1,"abro ",*nombreOut(k1)
-           porterrorsub(porterror) 
-         Else
-              Print #1,"PORT YA ABIERTO"
-            
-         EndIf
-    EndIf 
- 
-  Print #1,"Port usando en Play teclado ",portout
- Print #1,"-------------------------------------"
-   EndIf
- Next i
+       End If
 
-
-'-------------------------------
+'----------------------------------------------------
            Case 1093
              abrirMIDIin=2
-   cancel_callback(midiin(pmTk(ntkp+32).portin ))
-   Dim k1 As Integer
-   k1=pmTk(ntk+32).portout
-   Print #1,"midiout ",k1, *nombreOut(k1)
-   alloff( pmTk(ntk+32).canalsalida,k1 )  
-   listoutAbierto(k1)=0
-   close_port midiout(k1)
-   teclado=0
-
+           For  i As Short =1 To 32
+               If CheckBox_GetCheck( cbxejec(i))= 1  Then
+                   cancel_callback(midiin(pmTk(i+32).portin ))
+                   listinAbierto( pmTk(i+32).portin) = 0
+             '      Dim k1 As Integer
+             '      k1=pmTk(i+32).portout
+             '      Print #1,"midiout ",k1, *nombreOut(k1)
+             '      alloff( pmTk(i+32).canalsalida,k1 )  
+             '      listoutAbierto(k1)=0
+             '      close_port midiout(k1)
+                  teclado=0
+              EndIf
+           Next i 
 
 '-----------------------------------------------------------------------
            Case 1100 '<======== usar o no, marco de ventana de Roll
@@ -1301,6 +1363,11 @@ Dim k1 As Integer
       
             SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
+           Case 1110
+   
+             MessBox ("", acercade)
+            SetForegroundWindow(hwnd)
+'-----------------------------------------------------------------------
            Case 1111 '<========== cambiode escala
              If pasozona1 > 0 Then ' gurdamos en la posicion actual los valores cambiode escala
                 selTipoEscala (tipoescala_num)
@@ -1352,14 +1419,79 @@ Dim k1 As Integer
 
               End Select
               SetForegroundWindow(hwnd)
-           Case 1200
-           Case 1201
-           Case 1202
-           Case 1203
-           Case 1204
-           Case 1205
-           Case 1206
-           Case 1207
+           Case 1114
+                metronomo_si=0
+           Case 1200 'Crear     Puertos MIDI-IN
+' seleccion de portin , 2:portin. ntkp:salida
+' ->  npi: numero port entrada
+' portsin es la cantidad de ports que hay de entrada
+         selportEjec (2,npi )
+         Print #1, "npi ",npi
+                   
+' control de portin ,si hay un track de ejec seleccionado le asignamos este portin
+' podemos asignar muchos a la vez 
+          For i As Short =1 To 32
+             If CheckBox_GetCheck( cbxejec(i))= 1 Then
+                 pmTk(i+32).portin=npi
+             EndIf
+          Next i  
+      
+
+           Case 1201 'Abrir      Puertos MIDI-IN
+                                                
+
+              listinAbierto(npi)=1
+           Case 1202'Cerrar    Puertos MIDI-IN
+
+           Case 1203 'DesTruir Puertos MIDI-IN
+
+           Case 1204 'Crear     Puertos MIDI-OUT
+
+           Case 1205'Abrir      Puertos MIDI-OUT
+'------------ABRIR PORT DE SALIDA ---<<<<< NO
+ 
+Print #1,"abriendo port....si no se selecciona previamnete toma cero"
+Dim k1 As Integer
+ For  i As Short =1 To 32
+    If CheckBox_GetCheck( cbxejec(i))= 1  Then
+        k1=CInt(pmTk(i+32).portout)
+        Print #1,"midiout ",k1, *nombreOut(k1)
+        If InStr(*nombreOut(k1),"Microsoft")>0 Then
+           Print #1,"No se usa Microsoft"
+        Else
+           If listoutAbierto( k1) = 0 Then
+              midiout(k1) = rtmidi_out_create_default ( )
+              open_port midiout(k1),k1, nombreOut(k1)
+              Dim As integer    porterror=Err 
+              listoutAbierto( k1) = 1
+              Print #1,"abro ",*nombreOut(k1)
+              porterrorsub(porterror) 
+          Else
+              Print #1,"PORT YA ABIERTO",*nombreOut(k1)
+          EndIf
+      EndIf 
+      Print #1,"Port usando en Play teclado ",portout
+      Print #1,"-------------------------------------"
+
+    ChangeProgram ( pmTk(i+32).patch , pmTk(i+32).canalsalida, pmTk(i+32).portout)
+    EndIf
+ Next i
+
+'-------------------------------
+
+           Case 1206'Cerrar    Puertos MIDI-OUT
+For  i As Short =1 To 32
+    If CheckBox_GetCheck( cbxejec(i))= 1  Then
+        Dim k1 As Integer
+        k1=pmTk(i+32).portout
+        Print #1,"midiout ",k1, *nombreOut(k1)
+        alloff( pmTk(i+32).canalsalida,k1 )  
+        listoutAbierto(k1)=0
+        close_port midiout(k1)
+   EndIf
+Next i 
+
+           Case 1207'DesTruir Puertos MIDI-OUT
 
            Case 2000
    
@@ -1514,9 +1646,9 @@ Dim k1 As Integer
           ntkp=ntoca 
          AddListBoxItem(4, tocaparam(ntoca).nombre,ntoca-1)
          If   NombreCancion >"" Then        
-             Titulos(ntkp+32)=NombreCancion+"\("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
+             Titulos(ntoca+32)=NombreCancion+"\("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
          else
-             Titulos(ntkp+32)="("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
+             Titulos(ntoca+32)="("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
          EndIf
       EndIf
 
@@ -1616,7 +1748,7 @@ Dim k1 As Integer
       Print #1,"PARAMETROS EJEC patch ",tocaparam(ntoca).patch
       Print #1,"PARAMETROS EJEC canal ",tocaparam(ntoca).canal
 
-
+ 
       maxgrb=tocap.maxpos
 ' para una sola pista grabada el maxgrb es el maxpos de esa pista
       If  maxgrb > 0 And ntoca > 1 Then
@@ -1754,7 +1886,7 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
               porterrorsub(porterror)
       
          EndIf
-         EndIf  
+       EndIf  
 ''' en base alanterior terminar esta parte que es para pisatas de cancion manual
 '' mas adelante....cuadno termine todo pistas ejec ÇÇÇÇÇÇ
          For k=1 To 32 
@@ -1777,10 +1909,11 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
 '----------------
 '////////////////// PATCH EJEC /////////////////////////////
       If  eventnumber()=19 Then 'PATCH o insrumento de un Sinte,,,
-           Dim As Integer instrum =1, pis=0,num=0
+           Dim As Integer instrum =0, pis=0,num=0
            For k=1 To 32 ' pistas ejec de grabaciondesde teclado
              If CheckBox_GetCheck( cbxejec(k))= 1  Then
                 pis=k
+                patchsal=CInt(tocaparam(pis).patch)
              EndIf
            Next k
            If  pis >=1 Then  
@@ -1790,6 +1923,8 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
                    Print #1," pista ejec  nro ",pis
                    tocaparam(pis).patch=CUByte (instrum)
                    pmTk(pis+32).patch=CUByte (instrum)
+                   patchsal=instrum
+                   ChangeProgram ( tocaparam(pis).patch , tocaparam(pis).canal, tocaparam(pis).portout)
                    Print #1,"ejecucion patch elegido tocaparam(pis).patch ", tocaparam(pis).patch
 '--------------------------
 ' preparamos para grabar la pista por cambio de patch
@@ -1816,11 +1951,13 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
 ' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
                   GrabarMidiIn (toc(), pis,tocap)  ' graba solo uno el chequeado en play  
              Else
+                  patchsal=1
                   selInstORdenNum (instrum)
                    '''thread3 = ThreadCreate(@selInstORdenNum (), CPtr(Any Ptr, instrum))
                   Print #1," pista ejec  nro ",pis
                   tocaparam(pis).patch=CUByte (instrum)
                   pmTk(pis+32).patch=CUByte (instrum)
+                  ChangeProgram ( tocaparam(pis).patch , tocaparam(pis).canal, tocaparam(pis).portout)
                   Print #1,"ejecucion patch elegido tocaparam(pis).patch ", tocaparam(pis).patch
              EndIf
          EndIf
@@ -1835,7 +1972,6 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
               '''thread2 = ThreadCreate(@selInstORdenNum(), CPtr(Any Ptr, instrum))
              pmTk(ntk).patch=CUByte(instrum)
          EndIf
-
 
       EndIf 
 '////////////////// CANAL EJEC ///////////////// 

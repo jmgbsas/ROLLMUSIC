@@ -1,3 +1,8 @@
+-07-06-2022 MENU-DISPOSITIVOS. ABRE CIERRA MIDI-OUT. Conesta version altocar teclado en una pista seleccionada
+de ejecucion se escuchara el patch selecciondo abriendo el MIDI-IN en menu Reproducir midi-in. PArapasar a otro
+1erose cierra elmidi-in seleccionado,se deseleciona, se selecciona otra pista y se vuelve abrir el midi-in.
+Por hora tocamos en una pista por vez desde midi-in. directorio de cancion 05-05-2022 es una prueba de ejecuciones
+con el port 0 en CoolSfot VirtualMidiSynthcon SF2 FluidR3_GM.SF2 se usa pista 1 y 2 patch 27 y el 3 con 43 creo un cello.
 -14-05-2022 Ya enuna Ejec una misma pista se puede ir cambiando al port que se desee,,,los va abriendo y dejando
 abiertos pero nunca los vuelve a abrir si estan abiertos. Empezamos el menu Dispositivos, para manejar 
 Midi-In Midi-out. Ojo si los abro manualmente por este menu deberia haber una pista en edicion si se desea que los

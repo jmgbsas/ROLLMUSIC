@@ -679,8 +679,8 @@ FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
 'Dim Shared As Integer porterror
 Dim Shared nombreport As ZString Ptr
 
-midiin(0)     = rtmidi_in_create_default()
-midiout(0) = rtmidi_out_create_default()
+midiin(0)     = rtmidi_in_create_default()  ''' new RtMidiIn();
+midiout(0) = rtmidi_out_create_default() ''  new RtMidiOut();
 
 
 'print #1,"PLAYALL---------->>>>>>>"
@@ -692,9 +692,13 @@ Print #1, "portsout "; portsout
 
 ReDim  listOutAbierto (0 To portsout)
 ReDim  listInAbierto  (0 To portsin)
-
-'listOutAbierto(0)=1
-'listInAbierto(1)=1
+' cada midiout o midiin default creado puede ver contar todos los ports disponibles de in o out
+' y ver sus nombres,
+' pero solo pueden abrir un port ocerrarlo. Ergo si quiereo abrir masde1 port
+' defino un vector de midiout u otro de midin,asi puedo abrir masdeun port de out o in
+' estos vectores controlan si estanabiertos o cerrdos los ports de in o out.    
+listOutAbierto(0)=0
+listInAbierto(0)=0
 
 Dim Shared nombreOut(0 To portsout) As ZString Ptr
 Dim Shared nombreIn (0 To portsin)  As ZString Ptr
@@ -715,30 +719,6 @@ For i1 = 0 To portsout -1
     nombreOut(i1) = port_name(midiout(0), i1)
     Print #1, *nombreout(i1)
 Next i1  
+out_free(midiout(0))
 
 '---------------------
-Dim As Integer porterror
-open_port midiout(0),0, nombreOut(0)
-porterrorsub(porterror)
-
-Sleep 1000
-
-Print #1,"Microsoft No se usa en este programa con este algoritmo es muy inestable"
-Print #1,"-------------------------------------"
-
-close_port midiout(0)
-''=====> nunc ausar mientras el programa funciona out_free   midiout(0)
-'' cerrar y abrir ports pero nunca liberar memoria 
-listOutAbierto(0)=0
-
-
-'Sleep 2000
-
-'For i=0 To portsout -1
-'   Print "midiout ",i, *nombreOut(i)  
-'   close_port midiout(i)
-'   out_free   midiout(i)
-'   Print ,"cierro ",*nombreOut(i)
-'Next i'
-
-'/

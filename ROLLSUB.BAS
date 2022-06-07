@@ -3880,6 +3880,7 @@ mitipo=  CInt(tipo)
 
               If mitipo=1 Then
                 Print #1,"PORT SELECCIONADO en menu ",portout
+                Print #1,"Nombre PORT SELECCIONADO  ",listout(portout)
                 For  i As Short =1 To 32
                       If CheckBox_GetCheck( cbxejec(i))= 1  Then
                           pmTk(i+32).portout=CUByte(portout)
@@ -3888,6 +3889,8 @@ mitipo=  CInt(tipo)
               EndIf
               If mitipo=2 Then
                   Print #1,"PORT SELECCIONADO en menu ",portin
+                  Print #1,"Nombre PORT SELECCIONADO  ",listin(portin)
+
                 For  i As Short =1 To 32
                       If CheckBox_GetCheck( cbxejec(i))= 1  Then
                          pmTk(i+32).portin =CUByte(portin)
@@ -4316,15 +4319,20 @@ Dim  As Integer i3
                close_port(midiout(portsal))
                out_free(midiout(portsal))
 
+               portsal = pmTk(i3+32).portout 
+               alloff (pmTk(i3+32).canalsalida, portsal )
+               close_port(midiout(portsal))
+               out_free(midiout(portsal))
+
               Next i3
               ThreadDetach(thread1)              
            EndIf
    If teclado=1 Then
-       cancel_callback(midiin(pmTk(ntk).portin ))
+       cancel_callback(midiin(pmTk(ntkp+32).portin ))
        Dim k1 As Integer
-       k1=pmTk(ntk).portout
+       k1=pmTk(ntkp+32).portout
        Print #1,"midiout ",k1, *nombreOut(k1)
-       alloff( pmTk(ntk).canalsalida,k1 )  
+       alloff( pmTk(ntkp+32).canalsalida,k1 )  
        listoutAbierto(k1)=0
        close_port midiout(k1)
        teclado=0
