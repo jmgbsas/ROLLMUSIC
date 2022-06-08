@@ -1,3 +1,6 @@
+-07-06-2022 no se puede enviar un patch a traves de un cable midi interno como LoopBe Internal MIDI 
+ se anula esa posibilidad en PlayTocaAll sino se bloquea la salida del LoopBe Internal MIDI.
+ Si hubiese otros cables midi internos se deberia agregar ...
 -07-06-2022 correccion portout note off de mycallback entrada teclado, portsal ejec por menu
 -07-06-2022 MENU-DISPOSITIVOS. ABRE CIERRA MIDI-OUT. Conesta version altocar teclado en una pista seleccionada
 de ejecucion se escuchara el patch selecciondo abriendo el MIDI-IN en menu Reproducir midi-in. PArapasar a otro

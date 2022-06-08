@@ -2730,7 +2730,7 @@ Dim new_time As Double
 
      Select Case  dato1 
          Case 144 ' on
-            'noteon dato2,dato3,1,tocaparam(calltoca).portout 'message(3) ' noter vel canal
+
             noteon dato2,dato3,pmTk(calltoca+32).canalsalida, pmTk(calltoca+32).portout
 
 '     Print   dato1;" ";  dato2;" "; dato3
@@ -2862,14 +2862,14 @@ EndIf
 Dim As Integer prox=2 
 Print #1,"PlayTocaAll 4"
 Print #1,"topeDuranteGrabacion ", topeDuranteGrabacion, " PISTAS"
- For pis=1 To topeDuranteGrabacion
-      Print #1,"ON patch pis canal ",	 , pis,tocaparam(pis).canal
-      Print #1,"tocaparam(pis).portout ",tocaparam(pis).portout
-      Print #1,"tocaparam(pis).patch ",tocaparam(pis).patch
-
-      ChangeProgram ( tocaparam(pis).patch , tocaparam(pis).canal, tocaparam(pis).portout)	
-
-Next pis
+ 'For pis=1 To topeDuranteGrabacion
+ '     Print #1,"ON patch pis canal ",	 , pis,tocaparam(pis).canal
+ '     Print #1,"tocaparam(pis).portout ",tocaparam(pis).portout
+ '     Print #1,"tocaparam(pis).patch ",tocaparam(pis).patch
+'
+'      ChangeProgram ( tocaparam(pis).patch , tocaparam(pis).canal, tocaparam(pis).portout)	'
+'
+'Next pis
 
 Print #1,"empieza el play de ejec, maxgrb, CONTROL1 ", maxgrb,CONTROL1
 For j=1 To maxgrb
@@ -2881,11 +2881,21 @@ For j=1 To maxgrb
   EndIf  
 '''Print #1,"topeDuranteGrabacion ",topeDuranteGrabacion
   For kply =1 To topeDuranteGrabacion
-   ' este cambio de patch anda bien no produceretardo por ahora y se hace cada
+   ' este cambio de patch anda bien no produce retardo por ahora y se hace cada
 ' vez que cambio de pista en un bariddo vertical de una posicion dada
-' verificar esto en play cancion donde creo daba retardo ver,,,,ÇÇÇ 04-06-2022 
+' verificar esto en play cancion donde creo daba retardo ver,,,,ÇÇÇ 04-06-2022
+
+' con LoopBe Internal MIDI" no puedo hacer change program si esta conectado
+' ZynAddSubFx... nose si con otro tipo de sintetizador que reciba patch se podrá
+' o solo es problema de LoopBe Internal MIDI seguir probando a ese sinte solo
+' se envia canales , la configuracionde instrumentos y bancos se carga y graba
+' en ZynAddSubFX
     If CheckBox_GetCheck( cbxejec(kply))= 1 Then
-       ChangeProgram ( tocaparam(kply).patch , tocaparam(kply).canal, tocaparam(kply).portout)
+       If  InStr (*nombreOut(tocaparam(kply).portout),"LoopBe Internal MIDI") = 0  Then  
+          ChangeProgram ( tocaparam(kply).patch , tocaparam(kply).canal, tocaparam(kply).portout)
+   '    Else
+   '        ''Print #1,"salteo LoopBe Internal MIDI"
+       EndIf
     Else
      Continue For ' saltear no tocar 
     EndIf 
