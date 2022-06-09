@@ -130,7 +130,7 @@ Dim Shared As Integer play =0,playb=0, portin, numero, numeroFrac,cambioescala=0
 Dim Shared As UInteger portout=0 
 Dim Shared As Double numfloat=0
 Static Shared As string listout(), listin ()
-Static Shared As integer listoutAbierto(), listinAbierto ()
+Static Shared As integer listoutAbierto(), listinAbierto (),listoutCreado(), listinCreado ()
 Dim Shared As String *2  listCanal(1 To 16) => {" 1"," 2"," 3"," 4"," 5"," 6"," 7"," 8"," 9","10","11","12","13","14","15","16"}
 
 

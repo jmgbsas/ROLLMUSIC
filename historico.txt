@@ -1,3 +1,9 @@
+-08-06-2022 control sobre listoutCreado(), listinCreado () 0.4566. Cargar ejecuciones desde
+ Cargar pistas MIDI-IN tenia varios errores. Modificacion se puede seleccionar portsal,patch o canal
+ teniendo un nombre de pista nuevo al apretar grabar ROJO y seleccionado por su puesto, pero
+ sin necesidad de seleccionar 'S' o sea portsal,patch y canal se peuden cambiar con 'S' o 'G' chequeados
+ Se corrigio NombreCancion para este caso agregaba unabarra al final "\" al no entrar por Directorio
+de cancion. (falta mas pruebas supongo)
 -07-06-2022 no se puede enviar un patch a traves de un cable midi interno como LoopBe Internal MIDI 
  se anula esa posibilidad en PlayTocaAll sino se bloquea la salida del LoopBe Internal MIDI.
  Si hubiese otros cables midi internos se deberia agregar ...

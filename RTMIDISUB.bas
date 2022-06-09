@@ -1150,7 +1150,10 @@ Print #1,"abriendo port...."
      Print #1,"No se usa Microsoft"
    Else
      If listoutAbierto( k1) = 0 Then
-        midiout(k1) = rtmidi_out_create_default ( )
+        If listoutCreado( k1)=0 Then
+           midiout(k1) = rtmidi_out_create_default ( )
+           listoutCreado( k1)=1 
+        EndIf 
         open_port midiout(k1),k1, nombreOut(k1)
             porterror=Err 
         listoutAbierto( k1) = 1
@@ -2792,18 +2795,21 @@ End Sub
 '--------------------
 Sub abrirPortoutEjec(j As Integer)
 '------------hace falta abrir la salida
-Print #1,"abriendo port...."
+Print #1,"abrirPortoutEjec abriendo port.... "
 Dim k1 As Integer
 
   
    k1=CInt(pmTk(j+32).portout)
     
-   Print #1,"midiout ",k1, *nombreOut(k1)
+   Print #1,"abrirPortoutEjec midiout ",k1, *nombreOut(k1)
    If InStr(*nombreOut(k1),"Microsoft")>0 Then
      Print #1,"No se usa Microsoft"
    Else
      If listoutAbierto( k1) = 0 Then
-        midiout(k1) = rtmidi_out_create_default ( )
+        If listoutCreado( k1)=0 Then
+           midiout(k1) = rtmidi_out_create_default ( )
+           listoutCreado( k1)=1 
+        EndIf 
         open_port midiout(k1),k1, nombreOut(k1)
         Dim As integer    porterror=Err 
         listoutAbierto( k1) = 1

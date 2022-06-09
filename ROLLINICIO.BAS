@@ -550,7 +550,7 @@ ReDim (Toca(32).trk ) (1 To Ctres)
 '   colocandole el timestamp con una presicion mayo ra 15 mseg,
 ' consideramos I=250  por minuto (240ms) => L=500 (120ms),=>F=1000(60ms)
 ' E=2000 (30ms), H=4000 (15ms).
-' usar rtmidi_in_create cdecl alias "rtmidi_in_create" (byval api as RtMidiApi, byval clientName as zstring ptr, byval queueSizeLimit as uinteger) as RtMidiInPtr
+' PENDIENTE DE ANALISIS SI HAY PROBLEMAS:usar rtmidi_in_create cdecl alias "rtmidi_in_create" (byval api as RtMidiApi, byval clientName as zstring ptr, byval queueSizeLimit as uinteger) as RtMidiInPtr
 ' para modificar el limite de la cola , default 1024 odriamos pasarlo a mas
 ' 4096 o 8192 valro tipico ,,,de un buffer
 
@@ -695,6 +695,9 @@ Print #1, "portsout "; portsout
 
 ReDim  listOutAbierto (0 To portsout)
 ReDim  listInAbierto  (0 To portsin)
+ReDim  listOutCreado (0 To portsout)
+ReDim  listInCreado  (0 To portsin)
+
 ' cada midiout o midiin default creado puede ver contar todos los ports disponibles de in o out
 ' y ver sus nombres,
 ' pero solo pueden abrir un port ocerrarlo. Ergo si quiereo abrir masde1 port
@@ -702,6 +705,8 @@ ReDim  listInAbierto  (0 To portsin)
 ' estos vectores controlan si estanabiertos o cerrdos los ports de in o out.    
 listOutAbierto(0)=0
 listInAbierto(0)=0
+listOutCreado(0) =1 
+listInCreado(0)  =1 
 
 Dim Shared nombreOut(0 To portsout) As ZString Ptr
 Dim Shared nombreIn (0 To portsin)  As ZString Ptr
@@ -722,6 +727,5 @@ For i1 = 0 To portsout -1
     nombreOut(i1) = port_name(midiout(0), i1)
     Print #1, *nombreout(i1)
 Next i1  
-out_free(midiout(0))
 
 '---------------------

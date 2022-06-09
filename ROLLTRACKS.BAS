@@ -30,9 +30,12 @@ Sub GrabarMidiIn ( tocap() As ejec, ntkp As Integer,tocaparam  As ejecparam)
     Dim As String nombre
      
       nombre =titulos(ntkp+32) ' no tiene path , extension y [nro]
+Print #1,"GrabarMidiIn NombreCancion, nombre ",NombreCancion," --- ",nombre
       driver=InStr(nombre,":\")
       If  NombreCancion > "" And driver=0 Then
           nombre=NombreCancion+"\"+nombre
+      Else 
+        Print #1," va a grabar sin path ",nombre
       EndIf
 Print #1,"nombre de archivo con path grabando de ejec",nombre
       tocaparam.portout=pmTk(ntkp+32).portout
@@ -1639,7 +1642,7 @@ End Sub
 
 Sub Resetear ( pmTk() As rangoOct)
 Dim i As Integer
- For i =1 To 32
+ For i =1 To 64  ' agregamos los 32 de ejecuciones 07-06-2022
    pmTk(i).desde=0
    pmTk(i).hasta=0
    pmTk(i).NB =0 
@@ -1688,7 +1691,10 @@ For i=1 To tope
      Print #1,"No se usa Microsoft"
    Else
      If listoutAbierto( k1) = 0 Then
-        midiout(k1) = rtmidi_out_create_default ( ) '' es como un new RtMidiOut()
+        If listoutCreado( k1)=0 Then
+           midiout(k1) = rtmidi_out_create_default ( ) '' es como un new RtMidiOut()
+           listoutCreado( k1)=1 
+        EndIf
         open_port midiout(k1),k1, nombreOut(k1)
             porterror=Err 
         listoutAbierto( k1) = 1

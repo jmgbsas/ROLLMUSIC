@@ -101,18 +101,18 @@ Dim hnro As Integer
  
  ' genial puedo recorrer un array con un pointer!!!!
 '-------
-nroversion="0.4566 :.................."
+nroversion="0.4566 :control sobre Creacion de ports"
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
-acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version Solo ejecuta las secuencias " + _
- "a base de algoritmos sin una linea conductora de tiempos. Solo se basa en las duraciones de las notas. " + _
- "Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
- "o su ejecucion. Programado en OS:Windows7, Proc:AMD Phenom-II Black Edition. " + _
+acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version ejecuta secuencias " + _
+ "entrada por pasos usando algoritmos sin una linea conductora de tiempos, se basa en las duraciones de las notas. " + _
+ "Para entrada por teclado midi usa ticks. Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
+ "manual o por ejecucion. Programado en OS:Windows7, Proc:AMD Phenom-II Black Edition. " + _
  "Usa Cairo como libreria de graficos, Rtmidi como libreria midi, " + _
- "Editor de código FbEdit. Echo en Freebasic como hobby.FreeBASIC Compiler - Version 1.09.0 (2021-12-31), built for win64 (64bit) " + _
+ "Editor de código FbEdit. Echo en Freebasic como hobby. FreeBASIC Compiler - Version 1.09.0 (2021-12-31), built for win64 (64bit) " + _
  "Copyright (C) 2004-2021 The FreeBASIC development team. " +_ 
- "standalone" + _
- "mail:galeanoj2005@gmail.com"
+ "standalone." + _
+ " Consultas: mail:galeanoj2005@gmail.com"
  
 '------------
 Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8,MenName10
@@ -453,14 +453,14 @@ MenuItem(1112,MenName7,"Insertar escala Alternativa de la Principal en la Posici
 MenuItem(1113,MenName7,"Usar metronomo para Tocar MIDI-IN)",MF_CHECKED)
 
 MenuItem(1200,MenName8,"Seleccionar Puerto MIDI-IN")
-MenuItem(1201,MenName8,"Na. Abrir      Puerto MIDI-IN")
-MenuItem(1202,MenName8,"Na. Cerrar    Puerto MIDI-IN")
-MenuItem(1203,MenName8,"Na. DesTruir Puerto MIDI-IN")
+' MenuItem(1201,MenName8,"Na. Abrir      Puerto MIDI-IN")
+' MenuItem(1202,MenName8,"Na. Cerrar    Puerto MIDI-IN")
+' MenuItem(1203,MenName8,"Na. DesTruir Puerto MIDI-IN")
 Menubar(MenName8)
 MenuItem(1204,MenName8,"Seleccionar Puerto MIDI-OUT")
 MenuItem(1205,MenName8,"Abrir   Puertos MIDI-OUT")
 MenuItem(1206,MenName8,"Cerrar Puertos MIDI-OUT")
-MenuItem(1207,MenName8,"Na. DesTruir Puertos MIDI-OUT")
+'MenuItem(1207,MenName8,"Na. DesTruir Puertos MIDI-OUT")
 
 
 MenuItem(2000,MenName10,"Acerca de")
@@ -1181,7 +1181,7 @@ Print #1,"1060 abrirRoll=0 entro"
  '----> seguir aca ÇÇÇÇÇÇÇÇ debo
    
        For  i As Short =1 To 32
-             If CheckBox_GetCheck( cbxejec(i))= 1  Then
+             If CheckBox_GetCheck( cbxejec(i))= 1  Or CheckBox_GetCheck( cbxgrab(i))= 1 Then
                 portin= CInt(pmTk(i+32).portin)
                 portout= CInt(pmTk(i+32).portout)
                 calltoca= i ' 04-06-2022
@@ -1206,8 +1206,14 @@ Print #1,"tocaparam(k).portout ",tocaparam(k).portout
            EndIf
          Next k 
 '/
-
+Print #1,"listinAbierto( portin) ",listinAbierto( portin)
+Print #1,"listInCreado(portin) ",listInCreado(portin) 
        If  listinAbierto( portin) = 0 Then
+              If listInCreado(portin)  = 0 Then
+                 midiin(portin) = rtmidi_in_create_default()
+                 listInCreado(portin)  =1
+             EndIf
+Print #1,"abriendo portin y call back",*nombrein( portin )
               open_port (midiin(portin ), portin, *nombrein( portin ) )
               set_callback midiin(portin ), @mycallback, p
        ' por ahrao iognoramos otros tipsod de mensaje
@@ -1224,12 +1230,6 @@ Print #1,"tocaparam(k).portout ",tocaparam(k).portout
                If CheckBox_GetCheck( cbxejec(i))= 1  Then
                    cancel_callback(midiin(pmTk(i+32).portin ))
                    listinAbierto( pmTk(i+32).portin) = 0
-             '      Dim k1 As Integer
-             '      k1=pmTk(i+32).portout
-             '      Print #1,"midiout ",k1, *nombreOut(k1)
-             '      alloff( pmTk(i+32).canalsalida,k1 )  
-             '      listoutAbierto(k1)=0
-             '      close_port midiout(k1)
                   teclado=0
               EndIf
            Next i 
@@ -1436,13 +1436,9 @@ Print #1,"tocaparam(k).portout ",tocaparam(k).portout
              EndIf
           Next i  
       
-
-           Case 1201 'Abrir      Puertos MIDI-IN
-                                                
-
-              listinAbierto(npi)=1
-           Case 1202'Cerrar    Puertos MIDI-IN
-
+'           Case 1201 'Abrir      Puertos MIDI-IN
+'              listinAbierto(npi)=1
+'           Case 1202'Cerrar    Puertos MIDI-IN
            Case 1203 'DesTruir Puertos MIDI-IN
 
            Case 1204 'Seleccionar      Puertos MIDI-OUT
@@ -1455,7 +1451,7 @@ Print #1,"tocaparam(k).portout ",tocaparam(k).portout
 ' control de portin ,si hay un track de ejec seleccionado le asignamos este portin
 ' podemos asignar muchos a la vez 
           For i As Short =1 To 32
-             If CheckBox_GetCheck( cbxejec(i))= 1 Then
+             If CheckBox_GetCheck( cbxejec(i))= 1 Or CheckBox_GetCheck( cbxgrab(i))= 1 Then
                  pmTk(i+32).portout=npo
              EndIf
           Next i  
@@ -1467,18 +1463,21 @@ Print #1,"tocaparam(k).portout ",tocaparam(k).portout
 Print #1,"abriendo port....si no se selecciona previamnete toma cero"
 Dim k1 As Integer
  For  i As Short =1 To 32
-    If CheckBox_GetCheck( cbxejec(i))= 1  Then
+    If CheckBox_GetCheck( cbxejec(i))= 1  Or CheckBox_GetCheck( cbxgrab(i))= 1 Then
         k1=CInt(pmTk(i+32).portout)
         Print #1,"midiout ",k1, *nombreOut(k1)
         If InStr(*nombreOut(k1),"Microsoft")>0 Then
            Print #1,"No se usa Microsoft"
         Else
            If listoutAbierto( k1) = 0 Then
-              midiout(k1) = rtmidi_out_create_default ( )
+              If listoutCreado( k1) = 0 Then
+                 midiout(k1) = rtmidi_out_create_default ( )
+                 listoutCreado( k1) =1
+              EndIf
               open_port midiout(k1),k1, nombreOut(k1)
-              Dim As integer    porterror=Err 
-              listoutAbierto( k1) = 1
-              Print #1,"abro ",*nombreOut(k1)
+              Dim As integer    porterror=Err
+               listoutAbierto( k1) = 1
+              Print #1,"1205 abro MIDI-OUT ",*nombreOut(k1)
               porterrorsub(porterror) 
           Else
               Print #1,"PORT YA ABIERTO",*nombreOut(k1)
@@ -1629,7 +1628,7 @@ Next i
 
 '//////////////// BOTON ROJO GRABA EJEC //////////////////
 ' llamar a un list  port y ajustar portout  
-      If eventnumber()= 10 And GrabarEjec=0 Then ' BOTON GRABAR ROJO
+     If eventnumber()= 10 And GrabarEjec=0 Then ' BOTON GRABAR ROJO
          jgrb=0:repro=0
          For k=1 To 32 
            If CheckBox_GetCheck( cbxgrab(k))= 1 Then 
@@ -1660,11 +1659,22 @@ Next i
           ntkp=ntoca 
          AddListBoxItem(4, tocaparam(ntoca).nombre,ntoca-1)
          If   NombreCancion >"" Then        
+' sacamos la "\" del final si la tiene 
+              NombreCancion=Trim(NombreCancion)
+              Dim  ls As Short=Len(NombreCancion)
+              If  Mid(NombreCancion, ls, 1)= "\" Then
+                 NombreCancion=Mid(NombreCancion,1, ls-1)
+              EndIf
+ Print #1,"BOTON ROJO NOMBRECANCION ",NombreCancion
+
+' NombreCanciony atiene la \ 
              Titulos(ntoca+32)=NombreCancion+"\("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
          else
              Titulos(ntoca+32)="("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
          EndIf
-      EndIf
+       Print #1,"Titulos(ntoca+32), ntoca ",Titulos(ntoca+32),ntoca 
+
+     EndIf ' end event 10
 
 '//////////////// BOTON NEGRO STOP EJEC  //////////////////
 
@@ -1840,13 +1850,14 @@ Next i
       If  eventnumber()=16 Then ' boton PortSal de track cbxnum o ejec cbxejec
           Dim As Integer miport =1, pis=0,num=0
           For k=1 To 32 
-              If CheckBox_GetCheck( cbxejec(k))= 1  Then
+              If CheckBox_GetCheck( cbxejec(k))= 1 Or CheckBox_GetCheck( cbxgrab(k))= 1 Then
                 pis=k
              EndIf
           Next k
          If  pis >=1 Then 
-             If  tocaparam(pis).nombre  >""  Then
-                 miport=1   ' seleccion port Salida
+      ' Si la pista tiene unnombre y tiene datos de ejecucion
+             If  tocaparam(pis).nombre  >""  And  tocaparam(pis).maxpos > 0 Then
+                 miport=1   ' 1= VA A seleccion port Salida
                  ntkp=pis
 Dim As Integer k1 = pmTk(pis+32).portout
 Print #1,"antes del cambio k1, listOutAbierto(k1) ", k1, listOutAbierto(k1)
@@ -1855,7 +1866,8 @@ Print #1,"pmTk(pis+32).portout previo al cambio",pmTk(pis+32).portout
          selportEjec(miport,ntkp)
 Print #1,"pmTk(pis+32).portout despues del cambio",pmTk(pis+32).portout
 
-    '  preparamos la grabacion por cambio de portsal
+    '  preparamos la grabacion SI HAY DATOS por cambio de portsal
+
                 Dim As ejec toc(1 To tocaparam(pis).maxpos)
                 Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
                 Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
@@ -1877,7 +1889,8 @@ Print #1,"pmTk(pis+32).portout despues del cambio",pmTk(pis+32).portout
     
     ' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
                GrabarMidiIn (toc(), pis,tocap)  ' graba solo uno el chequeado en play
-             Else
+
+             Else ' no hay nombre y/o no hay datos
                miport=1   ' seleccion port Salida sin pista para tocar teclado
                ntkp=pis
                Print #1,"pmTk(pis+32).portout previo al cambio",pmTk(pis+32).portout
@@ -1892,7 +1905,10 @@ Print #1,"pmTk(pis).portout cambiado ",pmTk(pis+32).portout
    k1=CInt(pmTk(pis+32).portout)
 Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
          If listOutAbierto(k1)=0 Then  'abrir port
-              midiout(k1) = rtmidi_out_create_default ( )
+              If listoutCreado( k1)=0 Then
+                 midiout(k1) = rtmidi_out_create_default ( )
+                 listoutCreado( k1)=1
+              EndIf
               open_port midiout(k1),k1, nombreOut(k1)
               Dim As integer    porterror=Err 
               listoutAbierto( k1) = 1
@@ -1925,13 +1941,13 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
       If  eventnumber()=19 Then 'PATCH o insrumento de un Sinte,,,
            Dim As Integer instrum =0, pis=0,num=0
            For k=1 To 32 ' pistas ejec de grabaciondesde teclado
-             If CheckBox_GetCheck( cbxejec(k))= 1  Then
+             If CheckBox_GetCheck( cbxejec(k))= 1  Or CheckBox_GetCheck( cbxgrab(k))= 1 Then
                 pis=k
                 patchsal=CInt(tocaparam(pis).patch)
              EndIf
            Next k
            If  pis >=1 Then  
-                If tocaparam(pis).nombre > ""  Then 
+                If tocaparam(pis).nombre > ""  And  tocaparam(pis).maxpos > 0  Then 
                    selInstORdenNum (instrum)
                     '''thread3 = ThreadCreate(@selInstORdenNum (), CPtr(Any Ptr, instrum))
                    Print #1," pista ejec  nro ",pis
@@ -1944,6 +1960,7 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
 ' preparamos para grabar la pista por cambio de patch
 
                   Dim As ejec toc(1 To tocaparam(pis).maxpos)
+
                   Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
                   Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
                 
@@ -1992,24 +2009,23 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
     If  eventnumber()=20 Then ' CANAL de un synthe por ejemplo
           Dim As Integer canal =0, pis=0,num=0
          For k=1 To 32 ' pistas ejec de grabaciondesde teclado
-           If CheckBox_GetCheck( cbxejec(k))= 1  Then
+           If CheckBox_GetCheck( cbxejec(k))= 1 Or CheckBox_GetCheck( cbxgrab(k))= 1  Then
               pis=k
            EndIf
          Next k
 
          If  pis >=1  Then  
-             If tocaparam(pis).nombre > "" Then 
+             If tocaparam(pis).nombre > ""  And  tocaparam(pis).maxpos > 0  Then 
                  selcanalEjec (1,pis) ' 1 salida
                  Print #1," pista ejec  nro ",pis
                  tocaparam(pis).canal =pmTk(pis+32).canalsalida
                  Print #1,"ejecucion canal elegido tocaparam(pis).canal ", tocaparam(pis).canal
     '--------------------------
     ' preparamos para grabar la pista por cambio de patch
-          
                 Dim As ejec toc(1 To tocaparam(pis).maxpos)
                 Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
                 Print #1,"tocaparam(pis).maxpos),pis ",tocaparam(pis).maxpos, pis
-        
+        ' PREPARAMOS PARA GRABAR A ARCHIVO
                 For j As Integer =1 To   tocaparam(pis).maxpos
                      toc(j).modo=Toca(pis).trk(j).modo
                      toc(j).nota=Toca(pis).trk(j).nota
