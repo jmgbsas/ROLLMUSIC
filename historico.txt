@@ -1,3 +1,4 @@
+-09-06-2022 Habilitar metronomo para grabar ejecuciones por teclado sin entorno grafico. (Boton Rojo)
 -08-06-2022 control sobre listoutCreado(), listinCreado () 0.4566. Cargar ejecuciones desde
  Cargar pistas MIDI-IN tenia varios errores. Modificacion se puede seleccionar portsal,patch o canal
  teniendo un nombre de pista nuevo al apretar grabar ROJO y seleccionado por su puesto, pero

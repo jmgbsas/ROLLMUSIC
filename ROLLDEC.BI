@@ -843,7 +843,7 @@ Declare Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As 
 Declare Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)
 Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As String, orden As integer )
 Declare Function lugarNota (lugar As integer) As Integer
-
+Declare Sub metronomo ()
 
 COMMON Shared As Long eventc
 Common Shared As hwnd hwndC, hwndListBox, hwndListEjec
@@ -853,7 +853,7 @@ common Shared As String NombreCancion,NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista',pistacreada
 Common Shared As cairo_t  Ptr c, c2
 Common Shared surface As Any Ptr
-Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu,threadmetronomo
+Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx
 Common Shared As ubyte patchsal

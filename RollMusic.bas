@@ -101,7 +101,7 @@ Dim hnro As Integer
  
  ' genial puedo recorrer un array con un pointer!!!!
 '-------
-nroversion="0.4566 :control sobre Creacion de ports"
+nroversion="0.4567 :metronomo para grabar Ejecuciones por teclado midi"
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
 acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version ejecuta secuencias " + _
@@ -1673,6 +1673,20 @@ Next i
              Titulos(ntoca+32)="("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
          EndIf
        Print #1,"Titulos(ntoca+32), ntoca ",Titulos(ntoca+32),ntoca 
+'metronomo de 4 pulsos para comenzar a grabar
+     If  GrabarEjec=1 And metronomo_si=1 Then
+        terminar_metronomo=0
+        Dim As Integer im=0
+        For im=1 To 4  
+            noteon(60,60,1,0)
+            noteoff(60,1,0)
+            duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+        Next im
+        threadmetronomo = ThreadCall metronomo()
+         
+     EndIf
+
+
 
      EndIf ' end event 10
 
@@ -1689,6 +1703,8 @@ Next i
             GrabarEjec=0
             repro=0
             arrancaPlay=0
+' terminar cualquier metrono que este funcionando 
+         terminar_metronomo=1
 
 ' -------cargamos toca
           k=0
