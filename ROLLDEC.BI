@@ -107,6 +107,7 @@ Declare Function SumarnR (notaPiano As Integer) As Integer
 Declare Function SumarnRk (notaPiano As ubyte) As ubyte
 Declare Sub salir()
 
+
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
 Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6
 Dim Shared As String RTA, alteracion '',alteracion_str
@@ -710,7 +711,7 @@ End Type
 
 
 Declare Sub Tracks (ByRef nroTrack As integer, ByRef nroCanal As UByte, Roll As inst)
-Dim Shared As Long CONTROL1 = 0
+Dim Shared As Long CONTROL1 = 0,CONTROL2 = 0,CONTROL3 = 0
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Dim Shared As inst Roll ' para visualizar y tocar
  
@@ -852,12 +853,13 @@ Common Shared As string pathdir,nombre,nombreMidiIn
 common Shared As String NombreCancion,NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista',pistacreada
 Common Shared As cairo_t  Ptr c, c2
-Common Shared surface As Any Ptr
+Common Shared As Any Ptr surface,surf2
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo
+Common Shared As Any Ptr thread4, threadGrabamidi
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx
 Common Shared As ubyte patchsal
-Common Shared As Integer  posicion,posicionOld,posn
+Common Shared As Integer  posicion,posicionOld,posn,terminar
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
@@ -934,14 +936,17 @@ End Type
 ' As UByte  orden ' nro orden de pista para cargar,no se si necesario''
 'End Type
 ' deberia ahcer dim no redim y usar erase
-ReDim Shared Toca (1 To 32) as vivo  ' vector ejecucion real
-Dim Shared  tocaparam (1 To 32 ) As ejecparam
+Dim Shared Toca (1 To 32) as vivo  ' vector ejecucion real
+Dim Shared  As vivo toc
+Dim  Shared  tocaparam ( 1 To 32) As ejecparam
+
+'Dim Shared As ejecparam tocap 
 
 'ReDim Shared pToca (1 To 32) As pEjec ' parametros
 Dim Shared As Integer tocatope=0,arrancaPlay=0
 Dim Shared As Double StartPlayejec=0
 ReDim Shared As Double   espera (1 To 32)
-Dim Shared As Integer kply
+Dim Shared As Integer kply,jToca=0
 Dim Shared As Double timex(1 To 32)
 Dim Shared As UByte dato1, dato2 , dato3, dato1old,dato4=0,filtro1,filtro2 
 Dim Shared  As Double stime1=0, stime2=0, sdura=0
@@ -954,3 +959,13 @@ Dim Shared As String acercade, camino,nroversion
 Dim Shared As UBYTE GrabarEjec=0, GrabarPenta=0  
 Dim Shared As Double  t2call=0, t1play=0
 
+Type paramGrabamidi
+  As vivo toc
+  As Integer  tocatope
+  As ejecparam tocap
+End Type
+
+Dim Shared pgmidi As paramGrabamidi
+
+
+Declare Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi)

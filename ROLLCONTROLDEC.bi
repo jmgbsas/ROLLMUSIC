@@ -1,7 +1,7 @@
 Declare Sub EntrarNombreCancion(ByRef NombreCancion As string)
 Declare Sub EntrarNombrePista(ByRef NombrePista As string)
 Declare Sub EntrarTeclado ()
-Declare Sub cerrar(n As integer)
+'''''''Declare Sub cerrar(n As integer)
 Declare Sub seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer)
 Declare Sub reproducir()
 Declare Sub CrearDirCancion (ByRef NombreCancion As string)

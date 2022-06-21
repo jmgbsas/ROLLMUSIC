@@ -99,15 +99,7 @@ EndIf
 Print #1,"armardurFrac  numeroFrac Resultante ", numeroFrac
 End Sub
 
-Sub cerrar (ByVal n As Integer)
-   If n=0 Then
-    print #1,"uso CLOSE ALL"
-    CLOSE
-   Else 
-    Close (n)
-    print #1,"uso Close N"
-   EndIf 
-End Sub
+
 Sub calcCompas( ByRef j As Integer,Roll As inst)
  ' nota:fijarse que pasa con el grupo..1 to 4 de las 64 duraciones
  ' x print #1,"========================================================="
@@ -1405,7 +1397,7 @@ abrirRoll=2 ' habilita la carga de una cancion
           nombre=nombrea   
        EndIf
    print #1,"CArgarArchivo ",nombre    
-   Dim ca As Integer
+
    ca=FreeFile   
  ' print #1,"open nombre en CargaArchivo ",nombre
       If  ubiroll =0 Then
@@ -1416,7 +1408,7 @@ abrirRoll=2 ' habilita la carga de una cancion
 
          Print #1,"lee con control de error.. "
      If Open (nombre  For Binary Access Read Shared As #ca ) <> 0 Then
-        print #1,"Error open cargaARchivo 1387, nombre ",nombre
+        print #1,"Error open cargaARchivo 1419, nombre ",nombre
         Exit Sub
      End If
          
@@ -1635,10 +1627,10 @@ Dim As Integer copiado=0
 ' SE CREA EL CAMPO ACORDE DE POLI DEL TRACK
       Track(ntk).trk(j,1).acorde=ip
      ' Print #fs, "acorde ",Track(ntk).trk(j,1).acorde
-     '  crearsecuencia(Track(), j, ntk )
+     '''  crearsecuencia(Track(), j, ntk )
      Next j
   
-Close ca
+cerrar ca
 DUR => 0
 curpos =>1
 ''' carga=0
@@ -1794,7 +1786,7 @@ End Sub
 
 '-------------------------------MENU----------
 Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst, ByRef ubiroll As Integer, ByRef ubirtk As Integer )
- print #1,"ENTRO A 1-menu, time, ix ",Time, ix
+ 
  Dim As Integer fontOld = font
  font=18 ' ACA AHCE FALTA ESTE TAMAÑO TODO ESTA CALCULADO EN PIXELS PARA QUE ANDE EL MENU
  Dim As cairo_font_extents_t fe   '     font data
@@ -1933,7 +1925,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
         menuNew =0
          print #1,"hizo click para llamar a playall, maxpos ",maxpos 
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
-        If  MaxPos > 1 Then
+        If  MaxPos > 2 Then
                GrabarPenta=0:naco=0:naco2=0
                SetGadgetstate(15,0) ' 10-04-2022
          print #1,"llama a playall"
@@ -2099,6 +2091,7 @@ EndIf
        Sleep 2
       EndIf 
        CargaArchivo(Roll, 0)
+       s5=0 '11-06-2022
        cargaCancion=0
     '   print #1,"nombre cargado en Roll ",nombre
        MenuNew=0
@@ -2131,6 +2124,7 @@ EndIf
 
          'print #1,"carga track veo nombre antes   ",nombre
          CargarTrack (Track() , ntk, 0)
+         s5=0 ' 11-06-2022
          If nombre > "" Then  ' evita crash al cancelar el dialogo 
          '   print #1,"carga track veo nombre despues ",nombre
             ROLLCARGADO=TRUE ' NO PERMITOQUE TRACK(0) SE BORRE
@@ -3154,7 +3148,7 @@ Dim  As Integer npl
        EndIf 
      EndIf   
      print #1,"NOMBRE A GRABAR COMO",nombre
-    Dim ga As Integer 
+ 
     ga=FreeFile 
     Open nombre  For Binary Access write As #ga
   ''''  Open "test-AAAAA.TXT" For Output    As #2
@@ -4327,6 +4321,7 @@ Dim  As Integer i3
               Next i3
               ThreadDetach(thread1)              
            EndIf
+Sleep 10
    If teclado=1 Then
        cancel_callback(midiin(pmTk(ntkp+32).portin ))
        Dim k1 As Integer
@@ -4339,7 +4334,6 @@ Dim  As Integer i3
 
    EndIf
            
-    Dim ffile As Integer
     ffile=FreeFile
 
     Open "./RollMusic.ini" For output As #ffile
@@ -4369,7 +4363,7 @@ Dim  As Integer i3
 
     cerrar ffile
     Sleep 100
- Dim As Integer fk,nroproc, ppp=0
+ Dim As Integer nroproc, ppp=0
 Dim As String linea
 fk=FreeFile
  Open "procesos.txt" For Input As #fk
@@ -4391,7 +4385,7 @@ fk=FreeFile
     
 cerrar fk
 
-Sleep 1000
+Sleep 10
 
     Close 1
 '    cerrar 0
@@ -4528,8 +4522,8 @@ Sub EscalaAlternativa (ByRef tipoescala_alt As integer, byref notaescala_alt As 
 ' la nota de la escala alternativa sale de caminar 3 saltos hacia adelante o atras sobre la escala
 ' cromatica..saltos de 1 semitono, 3 st.-
 ' veo si estoy en sostenidos o bemoles
-Print #1,"EscalaAlternativa tipoescala_num_ini ",tipoescala_num_ini
-Print #1,"EscalaAlternativa notaescala_num_ini ",notaescala_num_ini
+'Print #1,"EscalaAlternativa tipoescala_num_ini ",tipoescala_num_ini
+'Print #1,"EscalaAlternativa notaescala_num_ini ",notaescala_num_ini
 ' ¿y la menro armonica la considero tambien = 2 ?
 If tipoescala_num_ini =2 Or tipoescala_num_ini =3 Or tipoescala_num_ini =4 Then  ' es una escala Menor debo buscar la relativa Mayor
    notaescala_alt=notaescala_num_ini +3  
@@ -4590,7 +4584,9 @@ End Function
 '--------
 Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As String, orden As Integer )
 cadena=""
-
+If tipoesc=0 Then ' 10-06-2022 
+   Exit Sub
+EndIf
 Dim As Integer k3=1,h2,hnro,dif,dif2
 Dim p6 As Byte Ptr
 ' si notaescala es distinto de 1 emepzamos la escala desde esa nota
@@ -4659,7 +4655,7 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
        cnt_acor=cnt_acor +1 
 
        If grado=0 Then grado=1 EndIf
-      Print #1,"Grado ",grado
+  '    Print #1,"Grado ",grado
       Select Case grado
         Case 1  ' es Tonica
 ' grabo la nota Tonica de la melodia  a partir de la cual hago el acorde
@@ -4677,11 +4673,11 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
         ' qu etenga en cuenta todos los casos (formar mayor-> +4 +7)
         ' 1,n=1 es 3,n=2 es 5,n=3 es 7
         Dim As Integer st=0
-        Print #1,"armando acorde ,,indicePos ",indicePos
-        Print #1,"armando acorde ,,RollDur ",RollDur
+  '      Print #1,"armando acorde ,,indicePos ",indicePos
+  '      Print #1,"armando acorde ,,RollDur ",RollDur
         pnr=PianoNota+n1 
         pnr =pnr +SumarnR(pnr) ' es el nR o indice fisico del vector Roll
-        Print #1,"armando acorde 3ta,,nR ",pnr
+  '      Print #1,"armando acorde 3ta,,nR ",pnr
 '------n1 acorde de 2 notas o intervalo
         undo_kant_intervalos(cnt_acor)=1          
         undo_acorde(cnt_acor,1).posn=indicePos
@@ -4701,7 +4697,7 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
         
         Roll.trk(indicePos, pnr).nota=st
 '--------n2 acorde de 3 notas------------------------------------
-        Print #1,"armando acorde ,5ta,nR ",pnr  
+  '      Print #1,"armando acorde ,5ta,nR ",pnr  
 
         pnr=PianoNota+n2
         pnr=pnr + SumarnR(pnr) ' es nR indice del vector Roll
@@ -4722,7 +4718,7 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
 
         Roll.trk(indicePos, pnr).nota=st  
 If n3 <> 0 Then ' es un acorde de 4 notas            
-    Print #1,"armando acorde ,7ta,nR ",pnr
+ '   Print #1,"armando acorde ,7ta,nR ",pnr
         pnr=PianoNota+n3
         pnr=pnr + SumarnR(pnr)
         undo_kant_intervalos(cnt_acor)=3 

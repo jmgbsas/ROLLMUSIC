@@ -1,3 +1,7 @@
+-21-06-2022 se graba una ejec con un roll cargado..es inestable...hace falta mas pruebas.
+ la pista nueva ejecutada se escucha bien con el instrumento elegido.
+-12-06-2022 arrastre de ventana desde cinta perfecto.- Comienso de Syncronizacion cancion y ejec.
+  la sincro funciona solo que todavia no graba el archivo de ejec si hay una cancion o roll cargado,,,
 -09-06-2022 Habilitar metronomo para grabar ejecuciones por teclado sin entorno grafico. (Boton Rojo)
 -08-06-2022 control sobre listoutCreado(), listinCreado () 0.4566. Cargar ejecuciones desde
  Cargar pistas MIDI-IN tenia varios errores. Modificacion se puede seleccionar portsal,patch o canal

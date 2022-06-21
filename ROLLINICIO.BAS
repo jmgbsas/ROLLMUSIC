@@ -132,7 +132,18 @@ Sub getfiles(ByRef File As OpenFileName,flag As String, accion As String)
 
 End Sub
 ' FILE DIALOG adicionales
- 
+'--------
+Sub cerrar (ByVal n As Integer)
+   If n=0 Then
+    print #1,"uso CLOSE ALL"
+    FileFlush (-1)
+    Close 
+   Else 
+    FileFlush (n)
+    Close n
+    print #1,"uso Close N"
+   EndIf 
+End Sub
 '--------
 Sub  porterrorsub(porterror As integer)
           Select Case porterror
@@ -141,52 +152,52 @@ Sub  porterrorsub(porterror As integer)
       
             Case RTMIDI_ERROR_DEBUG_WARNING
               Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
-              Close
+              cerrar 0             
               End
       
             Case RTMIDI_ERROR_UNSPECIFIED
               Print #1,"RTMIDI_ERROR_UNSPECIFIED"
-              Close
+              cerrar 0
               End
       
             Case RTMIDI_ERROR_NO_DEVICES_FOUND
               Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
-              Close
+              cerrar 0
               End
       
             Case RTMIDI_ERROR_INVALID_DEVICE
               Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
-              Close
+              cerrar 0
               End
       
             Case RTMIDI_ERROR_MEMORY_ERROR
               Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
-              Close
+              cerrar 0
               End
       
             Case RTMIDI_ERROR_INVALID_PARAMETER
               Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
-              Close
+              cerrar 0
               End
       
             Case RTMIDI_ERROR_INVALID_USE
               Print #1,"RTMIDI_ERROR_INVALID_USE"
-              Close
+              cerrar 0
               End
       
             Case RTMIDI_ERROR_DRIVER_ERROR
               Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
-              Close
+              cerrar 0
               End
       
             Case RTMIDI_ERROR_SYSTEM_ERROR
               Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
-              Close
+              cerrar 0
               End
       
             Case RTMIDI_ERROR_THREAD_ERROR
               Print #1,"RTMIDI_ERROR_THREAD_ERROR"
-              Close
+              cerrar 0
               End
           End Select
 
@@ -201,7 +212,7 @@ myfilter  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
 myfilter += "Rtk  Files"+Chr(0)   +"*.rtk"+Chr(0)
 
 
-Open "AAAAA-test.TXT" For Output As 5
+''''Open "AAAAA-test.TXT" For Output As 5
 Dim Shared As Integer abierto=0
 Common Shared  mensaje As Integer 
 '''  end file dialog  
@@ -225,11 +236,14 @@ Dim As GLFWwindow ptr  win
 
 '===============================
 #include "ROLLDEC.BI"
-Dim Shared As Integer pd1, fa1 
+
+
+'------------------
+Dim Shared As Long pd1, fa1,ffini,ca,ffile,ct,ga,fk,grt ,ngm
 pd1 = GetCurrentProcessId()  
 
 ''Open "midebug.txt" For Output As #1
- Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As #1
+ Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As 1
 Print #1,"start"
 Print #1,"PID DE ESTE PROCESO ",pd1
 
@@ -274,9 +288,8 @@ Print #1,Date;Time
 #inclib "ntdll"
 #include "win/ntdef.bi"
 
-Dim Shared fs As Integer 
-fs = FreeFile 
-Open "secuencia.txt" For Output As #fs
+ 
+Open "secuencia.txt" For Output As 5
 
 Const NEWLINE = !"\n"
 
@@ -350,7 +363,7 @@ Next ix
 'Print #1,"start"
 'Print #1,"PID DE ESTE PROCESO ",pd1
 fa1=FreeFile
-Open "procesos.txt" For Append As #fa1
+Open "procesos.txt" For Append As fa1
 If pid1=0 And ix < 3 Then
  pid1=pd1
 Else
@@ -358,7 +371,7 @@ Else
      Print #fa1,pd1
   EndIf 
 EndIf 
-Close fa1
+cerrar fa1
 
 Sleep 100
 
@@ -586,7 +599,7 @@ gap3= (519 * gap1) /1000 ' 42 default
 
 'print #1,"gap1 ",gap1
 '---------
-Dim ffini As Integer 
+ 
 Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig,sVerCifradoAcordes
 
 ffini=FreeFile

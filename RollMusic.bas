@@ -1,6 +1,6 @@
 ' esta andando bien seguir verificando 04-06-2022
-' colocar HELP-CONTEXTUAL-POPUP <--- es undirectorio conejemplodecomo poner
-'esos helptipo globito!!!
+' colocar HELP-CONTEXTUAL-POPUP <--- es undirectorio con ejemplo de como poner
+' esos help tipo globito!!!
 '========================== 
 #Include "ROLLINICIO.BAS"
 #include "WinGUI.bi"
@@ -26,19 +26,19 @@
 '>>>>>>portsout = portout
 '>>>>>*nombreport = ""
 ' SE ABRE MAS DE UN PUERTO SI SE DESEA ,,
-' CUADNO TENGA ABIERTO SMAS DE UN PUERTO DEBERE ASIGNAR CIERTOS PUERTOS A CADA PISTA
+' CUANDO TENGA ABIERTO MAS DE UN PUERTO DEBERE ASIGNAR CIERTOS PUERTOS A CADA PISTA
 ' LUEGO EN CADA PISTA PUEDO TENER UN PUERTO O DISPOSITIVO CADA UNO CON SUS 16 CNALES
 ' Y EN CADA CANAL SUS 128 INSTRUMENTOS.,,LUEGO VEREMOS ESO DE LOS BANCOS ETC
    ' nombreport = port_name(midiout, portsout)
     
 ' para abrir un port no hace falta el nombre en el comando ,puede estar en vacio ""
 ' por ello vamos a grabar en el archivo el numero de port , podre abrir solo con el nombre
-' sin el numero de port? el nombr eidentifica mas al dispositivo,,,
+' sin el numero de port? el nombre identifica mas al dispositivo,,,deberé grabarlo
 ' deberia guardar ambos nro port y nombre,,,,ufff
-' i la pc no cambi ade configuracion de hardware lso numeros serian siempre lso mismos
-' par also ports y no haria falta los nombres, pero debo dejar constancia cual era el dispositivo
+' si la pc no cambia de configuracion de hardware los numeros serian siempre lso mismos
+' para los ports y no haria falta los nombres, pero debo dejar constancia cual era el dispositivo
 ' o los dispositivos usados....para poder elegir el port en el menu debo cerrar el port actual
-' y abrir el otor esto de ponerlo en el inicio esta mal
+' y abrir el otro esto de ponerlo en el inicio esta mal
 
 'Print #1,"  VA A ABRIR EL PORT portsout, nombreport ",portsout, *nombreport
 'open_port (midiout, portsout, nombreport)
@@ -101,7 +101,16 @@ Dim hnro As Integer
  
  ' genial puedo recorrer un array con un pointer!!!!
 '-------
-nroversion="0.4567 :metronomo para grabar Ejecuciones por teclado midi"
+' ESTA DANDO SEGMENTACIONFAULT AL GRABAR 2DA PISTA CON CANCION CARGADA
+' AUNQUE YA NO PERMITO BARRER PENTAMIENTRAS GRABA O SEA CONGRABAREJEC=1 
+' SALTA EL BARRIDO DEPENTA Y MENU,,,,,PERO IGUAL REVIENTA AL REPRODUCIR 
+'EL RESULTADO Y NO GRABA ELARCHIVO ??REPETIR TEST 16-06-2022 17:00
+' 1 CARGAR PISTA 1 
+' 2 CARGAR ROLL
+' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
+' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
+' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
+nroversion="0.4568 :Sincronizar play cancion de trks con  play y grabacion de *.ejec..falta probar grabacion" '10-06-2022
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
 acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion gráfica. En esta version ejecuta secuencias " + _
@@ -166,8 +175,8 @@ If ix < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON cont
 EVENTc=0
 '  funciona trae el help de freebasic implementar para unhelp futuro...
 Dim As Any Ptr library = DyLibLoad( "hhctrl.ocx" )
-HtmlHelpA = DyLibSymbol( library, "HtmlHelpA" )
-HtmlHelp = DyLibSymbol( library, "HtmlHelp" )
+HtmlHelpA  = DyLibSymbol( library, "HtmlHelpA" )
+HtmlHelp    = DyLibSymbol( library, "HtmlHelp" )
 HH_POPUP = DyLibSymbol( library, "HH_POPUP" )
 
 Dim As HWND hwndTip = CreateWindow(TOOLTIPS_CLASS, NULL, _ 
@@ -373,8 +382,8 @@ MenuItem(1012,MenName1, "Copia una pista a otra  nueva en cancion")
 MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
 MenuItem(1014,MenName1, "Grabar una Pista rtk a roll TrackaRoll")
 Menubar(MenName1)
-'''MenuItem(1015,MenName1, "Grabar Pistas MIDI-IN")
-MenuItem(1016,MenName1, "Cargar Pistas MIDI-IN")
+MenuItem(1015,MenName1, "MIDI-IN Grabar Pistas ejecucion")
+MenuItem(1016,MenName1, "MIDI-IN Cargar Pistas ejecucion")
 MenuItem(1017,MenName1, "Elegir MIDI-OUT o Driver o Port de Salida de pista previamente chequeda en S (sonido)")
 MenuItem(1019,MenName1, "Salir")
 
@@ -465,6 +474,13 @@ MenuItem(1206,MenName8,"Cerrar Puertos MIDI-OUT")
 
 MenuItem(2000,MenName10,"Acerca de")
 End If
+'1) 1200 SELECCIONAR  PUERTO MIDI-IN
+'2) SELECCIONAR PORTSAL,CANAL,PATCH
+'3) 1092 REPRODUCIR MIDI-IN POR MIDI-OUT
+' YA PUEDO GRABAR -...SELECIONAR PORT OUT Y ABRIR NO USO PARECE... 
+
+
+
 ' default de FRACCIOANR autodur 
    usarAcordesIguales=1
    TipoFrac="autodur"
@@ -538,7 +554,7 @@ End Sub
 ' Dim Shared As String txt
 ' Dim As Any Ptr pt
 ' Dim Shared As Integer ok = 0
-Dim  As Integer Terminar=0, gi = 0
+Dim  As Integer  gi = 0
 
 'Print #1,"ANTES ANCHO , ALTO ", ANCHO, ALTO
 If mxold > 0 Then
@@ -612,8 +628,9 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
  ' Print #1,"cALL rOLLLOOP I) cargaCancion ES 1 SI O SI ",cargaCancion
    If CANCIONCARGADA=True  Then
      ntk=0 '16-03-2022
-    threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-
+      
+      threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1)) 
+    ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
    Else     ''''''''RollLoop ( param) '<--con esto anda
      cargacancion=0
    EndIf 
@@ -627,7 +644,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
        CANCIONCARGADA=False
        ''cargaCancion=0  
        param.encancion=0 
-       Print #1,"cALL rOLLLOOP II) "
+       Print #1,"CALL ROLLLOOP II) "
        threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
        ''RollLoop ( param)
        abrirRoll=0
@@ -642,6 +659,47 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
  ''win = glfwCreateWindow(800,600,"Track OPENGL" )
 '' Dim ta As Any Ptr = threadcall correwin(win,ta)
     Do
+       'If  repro=1 Then ' damos mas recursos si hay play de PlayTocaAll y mas si hay tambien playAll o PlayCancion
+       '    Sleep 10
+      ' EndIf
+        
+         For k=1 To 32 
+           If CheckBox_GetCheck( cbxgrab(k))= 1 And tocaparam(k).nombre="" Then 
+              ntoca=k 'ntoca es la  pista ejec que se esta grabando
+              If tocaparam(ntoca).nombre ="" Then
+                     ReDim (Toca(ntoca).trk ) (1 To 384000)  'I=120
+                                  tocaparam(ntoca).delta=0
+                                  tocaparam(ntoca).nombre =""
+                                  tocaparam(ntoca).maxpos =0
+                                  tocaparam(ntoca).orden=0
+                                  tocaparam(ntoca).orden=ntoca
+                                  tocaparam(ntoca).patch=0
+                                  tocaparam(ntoca).canal=0
+                     Redim  CargaIn (1 To 4000)
+                     EntrarNombrePista  tocaparam(ntoca).nombre
+                     ntkp=ntoca 
+                     AddListBoxItem(4, tocaparam(ntoca).nombre,ntoca-1)
+                     tocatope=ntoca '''tocatope+1
+                     pmTk(ntoca+32).MaxPos=0
+                    If   NombreCancion >"" Then        
+             ' sacamos la "\" del final si la tiene 
+                         NombreCancion=Trim(NombreCancion)
+                         Dim  ls As Short=Len(NombreCancion)
+                         If  Mid(NombreCancion, ls, 1)= "\" Then
+                              NombreCancion=Mid(NombreCancion,1, ls-1)
+                         EndIf
+                         Print #1,"CHECK GRAB NOMBRECANCION ",NombreCancion
+                         Titulos(ntoca+32)=NombreCancion+"\("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
+                  else
+                         Titulos(ntoca+32)="("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
+                  EndIf
+              EndIf
+              Exit For
+          EndIf
+        Next k
+
+           ''Print #1,"Titulos(ntoca+32), ntoca ",Titulos(ntoca+32),ntoca
+
      eventC=WaitEvent()
 'WindowStartDraw(hwndC)
 '  fillrectdraw(40,40,&h888888)
@@ -794,7 +852,49 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
            SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1015 '<========== Grabar MIDI-In aca sera para grabar 
-   ' no se usa para ejecuciones, la grabacion se hace en STOP
+ ' EN ejecuciones, CON CANCION CARGADA NO GRABA NADA, la grabacion se hace en STOP SIN CANCION
+Print 1,"GRABA MIDI IN EN CASE 1015  "
+'--------------------------
+' preparamos para grabar la pista por cambio de patch
+           Dim As Integer  pis=0
+           For k=1 To 32 ' pistas ejec de grabaciondesde teclado
+             If CheckBox_GetCheck( cbxejec(k))= 1  Or CheckBox_GetCheck( cbxgrab(k))= 1 Then
+                pis=k
+                Exit For
+             EndIf
+           Next k
+
+                  reDim  toc.trk(1 To tocaparam(pis).maxpos)
+
+                  Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
+                  Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
+                
+                   For j As Integer =1 To   tocaparam(pis).maxpos
+                          toc.trk(j).modo=Toca(pis).trk(j).modo
+                          toc.trk(j).nota=Toca(pis).trk(j).nota
+                          toc.trk(j).vel=Toca(pis).trk(j).vel
+                '        Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
+                   Next j
+                Dim tocap As ejecparam = tocaparam(pis)
+                Print #1,"PARAMETROS EJEC nombre ",tocap.nombre
+                Print #1,"PARAMETROS EJEC mapos ",tocap.maxpos
+                Print #1,"PARAMETROS EJEC orden ",tocap.orden
+                Print #1,"PARAMETROS EJEC delta ",tocap.delta
+                Print #1,"PARAMETROS EJEC portout ",tocap.portout
+                Print #1,"PARAMETROS EJEC patch ",tocap.patch
+                Print #1,"PARAMETROS EJEC canal ",tocap.canal
+
+
+' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
+pgmidi.toc=toc
+pgmidi.tocatope = tocatope
+pgmidi.tocap = tocap
+'threadGrabamidi=@pgmidi
+GrabarMidiIn(pgmidi)
+'  ThreadCreate (@GrabarMidiIn,CPtr(Any Ptr, threadGrabamidi))
+
+
+
 '-----------------------------------------------------------------------
            Case 1016 '<============Cargar MIDI-IN
       Dim As String nombrea,myfil
@@ -862,26 +962,26 @@ lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BI
            Case 1019  ''<============= SALIR TERMINA ROLL
             terminar=1
              
-            Exit Do
+            Exit Do,Do
 '-----------------------------------------------------------------------
            Case 1020 ' <=========== Entrar Nombre o Título de la Cancion     
                NombreCancion = ""
                pathdir=""
                EntrarNombreCancion(NombreCancion)
-          SetForegroundWindow(hwnd)
+      '    SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1021 ' <=========== Entar Tempo 
              menuOldStr="[TEMPO]"
              nombreArchivo="0"
                thread3= ThreadCall EntrarTeclado()
-              SetForegroundWindow(hwnd)
+      '        SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1025 ' <======== Crear un directorio de Cancion con Pistas separadas
                CrearDirCancion (NombreCancion)
                If NombreCancion > "" Then
                   param.encancion=1
                EndIf    
-          SetForegroundWindow(hwnd)        
+    '      SetForegroundWindow(hwnd)        
 '-----------------------------------------------------------------------
            Case 1028 ' <========== seleccion octavas menores a 1 9 
                seloctava (desde, hasta)
@@ -892,7 +992,7 @@ lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BI
                 param.ubirtk=ubirtk
 
                 posn=0
-          SetForegroundWindow(hwnd)
+     '     SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1031 ' <========  SELECCION DE CANAL DE LA PISTA (10 DRUMS)
 '-----------------------------------------------------------------------               
@@ -917,11 +1017,11 @@ lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BI
             print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
               If CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE Then
-                 If NombreCancion > ""  And MAxPos > 1 Then
+                 If NombreCancion > ""  And MAxPos > 2 Then
                     GrabarRollaTrack(0)
                  EndIf
               Else
-                If MaxPos > 1  And ROLLCARGADO  Then
+                If MaxPos > 2  And ROLLCARGADO  Then
                  GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
                 EndIf  
@@ -930,7 +1030,7 @@ lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BI
 
               MenuNew=0           
               carga=1
-             SetForegroundWindow(hwnd)    
+        '     SetForegroundWindow(hwnd)    
 '-----------------------------------------------------------------------
            Case 1050 ' <=========== seleccion de instrumento por orden Numerico
                selInstORdenNum (instru)
@@ -953,11 +1053,11 @@ lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BI
             Dim As String nombreg
 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
-                 If NombreCancion > ""  And MAxPos > 1 Then
+                 If NombreCancion > ""  And MAxPos >2 Then
                     GrabarRollaTrack(0)
                  EndIf
               Else
-                If MaxPos > 1  And ROLLCARGADO  Then
+                If MaxPos > 2  And ROLLCARGADO  Then
                   'aca graba el roll con Roll.trk(1,NA).inst
                  GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
@@ -966,7 +1066,7 @@ lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BI
 
               MenuNew=0           
               carga=1
-              SetForegroundWindow(hwnd)
+        '      SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1060 ' <========== crea track y reemplaza al existente en la edicion
                'If ntk=0 Then  ' no se cargo ningun track
@@ -1080,14 +1180,14 @@ Print #1,"1060 abrirRoll=0 entro"
                
 ' FALTA CREAR LA PISTA !!! jmg ERO PUEDO USAR UNA PISTA YA CREADA EN 1011
 ' la graba igual desde roll parece pero debe ser en orden
-          SetForegroundWindow(hwnd)            
+       '   SetForegroundWindow(hwnd)            
 '-----------------------------------------------------------------------
            Case 1062 ' <======== crear instancia independiente sin control
  ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
  ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.
              Print #fa1,pd1       
              Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins))
-          SetForegroundWindow(hwnd)
+      '    SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
 '           Case 1063
 ' ThreadDetach(threadloop)
@@ -1139,7 +1239,7 @@ Print #1,"1060 abrirRoll=0 entro"
           
           '    Dim As Any Ptr thplayC = ThreadCall  playCancion(track())
           '    CONTROL1 = 1
-              If Cplay = 0 And MaxPos > 1 Then
+              If Cplay = 0 And MaxPos > 2 Then
                  GrabarPenta=0:naco=0:naco2=0
                  CPlay=1
                  If NombreCancion > "" Then
@@ -1181,15 +1281,14 @@ Print #1,"1060 abrirRoll=0 entro"
  '----> seguir aca ÇÇÇÇÇÇÇÇ debo
    
        For  i As Short =1 To 32
-             If CheckBox_GetCheck( cbxejec(i))= 1  Or CheckBox_GetCheck( cbxgrab(i))= 1 Then
-                portin= CInt(pmTk(i+32).portin)
-                portout= CInt(pmTk(i+32).portout)
+             If  CheckBox_GetCheck( cbxgrab(i))= 1 Then
+                portin  = CInt(tocaparam(i).portin) ' PREVIAMENTE SELECCIONADO
+                portout= CInt(tocaparam(i).portout) ' PREVIAMENTE SELECCIONADO
                 calltoca= i ' 04-06-2022
-Print #1,"tocaparam(i)patch ",tocaparam(i).patch
-Print #1,"tocaparam(i)canal ",tocaparam(i).canal
-Print #1,"tocaparam(i)portout ",tocaparam(i).portout
+                ntoca=i
+                portsal=portout
 
-              ChangeProgram ( tocaparam(i).patch , tocaparam(i).canal, tocaparam(i).portout)
+              ChangeProgram ( 1 , 1, 0)
                 Exit For  ' termina con el 1er seleccionado solo se toma 1 sola accion
              EndIf
        Next i
@@ -1227,7 +1326,7 @@ Print #1,"abriendo portin y call back",*nombrein( portin )
            Case 1093
              abrirMIDIin=2
            For  i As Short =1 To 32
-               If CheckBox_GetCheck( cbxejec(i))= 1  Then
+               If CheckBox_GetCheck( cbxgrab(i))= 1  Then
                    cancel_callback(midiin(pmTk(i+32).portin ))
                    listinAbierto( pmTk(i+32).portin) = 0
                   teclado=0
@@ -1485,8 +1584,8 @@ Dim k1 As Integer
       EndIf 
       Print #1,"Port usando en Play teclado ",portout
       Print #1,"-------------------------------------"
-
-    ChangeProgram ( pmTk(i+32).patch , pmTk(i+32).canalsalida, pmTk(i+32).portout)
+    ChangeProgram ( tocaparam(ntoca).patch, tocaparam(ntoca).canal, tocaparam(ntoca).portout)
+    
     EndIf
  Next i
 
@@ -1633,58 +1732,33 @@ Next i
          For k=1 To 32 
            If CheckBox_GetCheck( cbxgrab(k))= 1 Then 
               ntoca=k 'ntoca es la  pista ejec que se esta grabando
+              calltoca=ntoca 'calltoca se usa en mycallback use otra variable , ver si conviene
+              Exit For
            EndIf
          Next k
-         tocatope=tocatope+1
-         pmTk(ntoca+32).MaxPos=0
-         
+
+        
 ' mil negras a I=60 son 192 * mil ticks (16 minutos a I=60)
 ' a i=240 todo *4---192*4*1000=768000(16min a I=240)
 'la idea es que el usuario grabe a I=60 o I=120 384000
 ' pero cada nota requiere 2 eventos on y off se multiplicaria por 2
-         ReDim (Toca(ntoca).trk ) (1 To 384000)  'I=120
-                     tocaparam(ntoca).delta=0
-                     tocaparam(ntoca).nombre =""
-                     tocaparam(ntoca).maxpos =0
-                     tocaparam(ntoca).orden=0
-                    tocaparam(ntoca).orden=ntoca
-                    tocaparam(ntoca).patch=0
-                     tocaparam(ntoca).canal=0
-         Redim  CargaIn (1 To 4000) 
-         pmTk(ntoca+32).portout=0
+
          SetGadgetstate(9,0)
          GrabarEjec=1
          arrancaPlay=0
-         EntrarNombrePista  tocaparam(ntoca).nombre
-          ntkp=ntoca 
-         AddListBoxItem(4, tocaparam(ntoca).nombre,ntoca-1)
-         If   NombreCancion >"" Then        
-' sacamos la "\" del final si la tiene 
-              NombreCancion=Trim(NombreCancion)
-              Dim  ls As Short=Len(NombreCancion)
-              If  Mid(NombreCancion, ls, 1)= "\" Then
-                 NombreCancion=Mid(NombreCancion,1, ls-1)
-              EndIf
- Print #1,"BOTON ROJO NOMBRECANCION ",NombreCancion
 
-' NombreCanciony atiene la \ 
-             Titulos(ntoca+32)=NombreCancion+"\("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
-         else
-             Titulos(ntoca+32)="("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
-         EndIf
-       Print #1,"Titulos(ntoca+32), ntoca ",Titulos(ntoca+32),ntoca 
 'metronomo de 4 pulsos para comenzar a grabar
-     If  GrabarEjec=1 And metronomo_si=1 Then
-        terminar_metronomo=0
-        Dim As Integer im=0
-        For im=1 To 4  
-            noteon(60,60,1,0)
-            noteoff(60,1,0)
-            duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
-        Next im
-        threadmetronomo = ThreadCall metronomo()
+ '    If  GrabarEjec=1 And metronomo_si=1 Then
+ '       terminar_metronomo=0
+ '       Dim As Integer im=0
+ '       For im=1 To 4  
+ '           noteon(60,60,1,0)
+ '           noteoff(60,1,0)
+ '           duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+ '       Next im
+ '       threadmetronomo = ThreadCall metronomo()
          
-     EndIf
+ '    EndIf
 
 
 
@@ -1705,7 +1779,16 @@ Next i
             arrancaPlay=0
 ' terminar cualquier metrono que este funcionando 
          terminar_metronomo=1
-
+'detiene el play de cancion o roll
+If  play=1 Or playb=1 Then
+  CONTROL1=1 ' DETIENE EL PLAY DE CANCION O ROLL
+   play=0: playb=0 
+  playloop=0:playloop2=0
+  SetGadgetstate(12,0)
+  Sleep 2
+EndIf
+CONTROL2=1
+Sleep 2
 ' -------cargamos toca
           k=0
          Dim As Integer i1=1, j =0, partes, pj
@@ -1727,9 +1810,11 @@ Next i
           k=partes+1
          Do 
            if k=pmTk(ntoca+32).MaxPos+1  Then
+              Print #1," k=pmTk(ntoca+32).MaxPos+1, GrabaMidiIn "
               Exit Do
            EndIf  
      '  Print #1,"CargaIn(i1).modo ",CargaIn(i1).modo
+
             Select Case  CargaIn( i1).modo
                Case 144,128
             Toca(ntoca).trk(k).modo = CargaIn( i1).modo
@@ -1769,24 +1854,26 @@ Next i
 ''        nombreMidiIn=Toca(ntoca).nombre
    'y el path dondeesta? cuadnograbopareceque no 
   ' al cargar si debo afinar eso....   
-      Dim As ejec toc(1 To tocaparam(ntoca).maxpos)
+   ReDim (toc.trk)(1 To tocaparam(ntoca).maxpos)
+
+ 
       Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",ntoca   
       Print #1,"tocaparam(ntoca).maxpos),ntoca ",tocaparam(ntoca).maxpos, ntoca
     
        For j As Integer =1 To   tocaparam(ntoca).maxpos
-              toc(j).modo=Toca(ntoca).trk(j).modo
-              toc(j).nota=Toca(ntoca).trk(j).nota
-              toc(j).vel=Toca(ntoca).trk(j).vel
-            Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
+              toc.trk(j).modo=Toca(ntoca).trk(j).modo
+              toc.trk(j).nota=Toca(ntoca).trk(j).nota
+              toc.trk(j).vel=Toca(ntoca).trk(j).vel
+'''''' VER DATOS            Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
        Next j
-      Dim tocap As ejecparam = tocaparam(ntoca)
-      Print #1,"PARAMETROS EJEC nombre ",tocaparam(ntoca).nombre
-      Print #1,"PARAMETROS EJEC mapos ",tocaparam(ntoca).maxpos
-      Print #1,"PARAMETROS EJEC orden ",tocaparam(ntoca).orden
-      Print #1,"PARAMETROS EJEC delta ",tocaparam(ntoca).delta
-      Print #1,"PARAMETROS EJEC portout ",tocaparam(ntoca).portout
-      Print #1,"PARAMETROS EJEC patch ",tocaparam(ntoca).patch
-      Print #1,"PARAMETROS EJEC canal ",tocaparam(ntoca).canal
+                Dim tocap As ejecparam = tocaparam(ntoca)
+                Print #1,"PARAMETROS EJEC nombre ",tocap.nombre
+                Print #1,"PARAMETROS EJEC mapos ",tocap.maxpos
+                Print #1,"PARAMETROS EJEC orden ",tocap.orden
+                Print #1,"PARAMETROS EJEC delta ",tocap.delta
+                Print #1,"PARAMETROS EJEC portout ",tocap.portout
+                Print #1,"PARAMETROS EJEC patch ",tocap.patch
+                Print #1,"PARAMETROS EJEC canal ",tocap.canal
 
  
       maxgrb=tocap.maxpos
@@ -1803,10 +1890,30 @@ Next i
           EndIf
       EndIf 
 ' si es grabacion nueva tocatope va incrementando apuntando a 1,2,3,4 etc
-' y graba 1 por vez,el ultimo corriente...o actual   
-      GrabarMidiIn (toc(), tocatope,tocap)   
+' y graba 1 por vez,el ultimo corriente...o actual
+Print #1,"STOP: llama a GrabarMidiIn,,,porque  no esta grabando ahora? "   
+' EN ROLLDEC 
+'Type paramGrabamidi
+'  As vivo toc
+'  As Integer  tocatope
+'  As ejecparam tocap'
+'End Type
+
+'EN ROLLDEC ...Dim  Shared  As paramGrabamidi pgmidi
+pgmidi.toc=toc
+pgmidi.tocatope = tocatope
+pgmidi.tocap = tocap
+threadGrabamidi=@pgmidi
+GrabarMidiIn(pgmidi)
+  'ThreadCreate (@GrabarMidiIn,CPtr(Any Ptr, threadGrabamidi))
+
          Else
-            CONTROL1=1  
+            CONTROL2=1
+            If play=1 Or playb=1 Then
+               CONTROL1 =1
+            EndIf   
+            repro=0
+            arrancaPlay=0
          EndIf
 
 
@@ -1814,19 +1921,55 @@ Next i
       EndIf
 
 '//////////////// BOTON VERDE PLAY EJEC //////////////////
-
+' si hay una cancion de pistas trk el el grafico cargada, al dar play debera tocar
+' lacancion y las pistas chequeadas en columna 'S' de las ejecuciones,deese modo
+' sincronizaremos el arranque solamente. Esto se puede usar para escuchar o 
+' al grabar una pista nueva de ejecuciones por uncontrolador midi.,(teclado midi por ej)
+ 
       If eventnumber()= 14 And repro=0 Then ' BOTON PLAY VERDE DE MIDI-IN
             repro=1
+            CONTROL2=0
             CONTROL1=0
             Dim p As Integer Ptr
             p=@ntoca 'ntoca se ajusta en CargarPstasEjec tambien
             t1play=Timer
+' tocar cancion de trakc si esta cargada 
+' son 2 threadas que se inician casi simultanemente pero sin control entre ellos
+' por ahora
+' ACA DEBERIA USAR MUTEX!!! ¿¿¿???
+'''Dim As Any Ptr sync =MutexCreate
+Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
+        If  MaxPos > 2 Then  ''''' And GrabarEjec=1 And repro=1 Then 
+            If CANCIONCARGADA = TRUE And playb=0 Then
+               Print #1,"USANDO PLAYCANCION"
+               playb=1   
+               thread1 = ThreadCall  playCancion(Track())
+            Else
+               If  MaxPos > 2 And  Play=0 Then
+          '        print #1,"llama a playall"
+                   Play=1
+ Print #1,"Va Play All ????,maxpos  ", MaxPos
+                   thread1 = ThreadCall  playAll(Roll)
+               EndIf 
+            EndIf
+       EndIf   
             threadG  = ThreadCreate (@PlayTocaAll, p)
             threadDetach(threadG)
         '  Print #1,"llama a  PlayTocaAll(p)"
 
          '   PlayTocaAll(p)
-      EndIf
+       EndIf
+' test de retardos  de inicio en ejecucion de datos entre playCancion y PlayTocaAll
+' CALCULO DE RETARDO DEL INICIO DE PLAY CANCION RESPECTO PLAYTOCAALL
+'playTocaAll inicio datos:    9751.75934545541
+'playcancion inicio datos:   9751.76207997309
+' 9751,76208744816
+' 9751,75934545541
+'--------------------------
+'       0,00274199275  seg= 2,7 mseg o sea la mitad del Tick (5 mseg)
+'podemos decir que el inicio esta casi sincronizado solo un delta de medio Tick
+
+'----------------------------------------------------------------------------------------------
 '//////////////// BOTON ROJO GRABAR EN PENTA //////////////////
 
       If eventnumber()= 15 Then 
@@ -1848,7 +1991,7 @@ Next i
 
       If eventnumber()= 12 Then
          SetGadgetstate(11,0)
-         If Cplay = 0 And MaxPos > 1 Then
+         If Cplay = 0 And MaxPos > 2 Then
             CPlay=1
             If NombreCancion > "" Then
                If play=1 Or playb=1 Then
@@ -1884,27 +2027,34 @@ Print #1,"pmTk(pis+32).portout despues del cambio",pmTk(pis+32).portout
 
     '  preparamos la grabacion SI HAY DATOS por cambio de portsal
 
-                Dim As ejec toc(1 To tocaparam(pis).maxpos)
+                ReDim  toc.trk(1 To tocaparam(pis).maxpos)
                 Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
                 Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
               
                  For j As Integer =1 To   tocaparam(pis).maxpos
-                        toc(j).modo=Toca(pis).trk(j).modo
-                        toc(j).nota=Toca(pis).trk(j).nota
-                        toc(j).vel=Toca(pis).trk(j).vel
+                        toc.trk(j).modo=Toca(pis).trk(j).modo
+                        toc.trk(j).nota=Toca(pis).trk(j).nota
+                        toc.trk(j).vel=Toca(pis).trk(j).vel
                   '    Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
                  Next j
                 Dim tocap As ejecparam = tocaparam(pis)
-                Print #1,"PARAMETROS EJEC nombre ",tocaparam(pis).nombre
-                Print #1,"PARAMETROS EJEC mapos ",tocaparam(pis).maxpos
-                Print #1,"PARAMETROS EJEC orden ",tocaparam(pis).orden
-                Print #1,"PARAMETROS EJEC delta ",tocaparam(pis).delta
-                Print #1,"PARAMETROS EJEC portout ",tocaparam(pis).portout
-                Print #1,"PARAMETROS EJEC patch ",tocaparam(pis).patch
-                Print #1,"PARAMETROS EJEC canal ",tocaparam(pis).canal
+                Print #1,"PARAMETROS EJEC nombre ",tocap.nombre
+                Print #1,"PARAMETROS EJEC mapos ",tocap.maxpos
+                Print #1,"PARAMETROS EJEC orden ",tocap.orden
+                Print #1,"PARAMETROS EJEC delta ",tocap.delta
+                Print #1,"PARAMETROS EJEC portout ",tocap.portout
+                Print #1,"PARAMETROS EJEC patch ",tocap.patch
+                Print #1,"PARAMETROS EJEC canal ",tocap.canal
     
     ' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
-               GrabarMidiIn (toc(), pis,tocap)  ' graba solo uno el chequeado en play
+
+pgmidi.toc=toc
+pgmidi.tocatope = tocatope
+pgmidi.tocap = tocap
+threadGrabamidi=@pgmidi
+GrabarMidiIn(pgmidi)
+  '''ThreadCreate (@GrabarMidiIn,CPtr(Any Ptr, threadGrabamidi))
+
 
              Else ' no hay nombre y/o no hay datos
                miport=1   ' seleccion port Salida sin pista para tocar teclado
@@ -1963,7 +2113,7 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
              EndIf
            Next k
            If  pis >=1 Then  
-                If tocaparam(pis).nombre > ""  And  tocaparam(pis).maxpos > 0  Then 
+                If tocaparam(pis).nombre > ""  Then ''''And  tocaparam(pis).maxpos > 0  Then 
                    selInstORdenNum (instrum)
                     '''thread3 = ThreadCreate(@selInstORdenNum (), CPtr(Any Ptr, instrum))
                    Print #1," pista ejec  nro ",pis
@@ -1975,30 +2125,37 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
 '--------------------------
 ' preparamos para grabar la pista por cambio de patch
 
-                  Dim As ejec toc(1 To tocaparam(pis).maxpos)
+                  ReDim  toc.trk(1 To tocaparam(pis).maxpos)
 
                   Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
                   Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
                 
                    For j As Integer =1 To   tocaparam(pis).maxpos
-                          toc(j).modo=Toca(pis).trk(j).modo
-                          toc(j).nota=Toca(pis).trk(j).nota
-                          toc(j).vel=Toca(pis).trk(j).vel
+                          toc.trk(j).modo=Toca(pis).trk(j).modo
+                          toc.trk(j).nota=Toca(pis).trk(j).nota
+                          toc.trk(j).vel=Toca(pis).trk(j).vel
                 '        Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
                    Next j
-                   Dim tocap As ejecparam = tocaparam(pis)
-                   Print #1,"PARAMETROS EJEC nombre ",tocaparam(pis).nombre
-                   Print #1,"PARAMETROS EJEC mapos ",tocaparam(pis).maxpos
-                   Print #1,"PARAMETROS EJEC orden ",tocaparam(pis).orden
-                   Print #1,"PARAMETROS EJEC delta ",tocaparam(pis).delta
-                   Print #1,"PARAMETROS EJEC portout ",tocaparam(pis).portout
-                   Print #1,"PARAMETROS EJEC patch ",tocaparam(pis).patch
-                   Print #1,"PARAMETROS EJEC canal ",tocaparam(pis).canal
+                Dim tocap As ejecparam = tocaparam(pis)
+                Print #1,"PARAMETROS EJEC nombre ",tocap.nombre
+                Print #1,"PARAMETROS EJEC mapos ",tocap.maxpos
+                Print #1,"PARAMETROS EJEC orden ",tocap.orden
+                Print #1,"PARAMETROS EJEC delta ",tocap.delta
+                Print #1,"PARAMETROS EJEC portout ",tocap.portout
+                Print #1,"PARAMETROS EJEC patch ",tocap.patch
+                Print #1,"PARAMETROS EJEC canal ",tocap.canal
 
 ' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
-                  GrabarMidiIn (toc(), pis,tocap)  ' graba solo uno el chequeado en play  
+pgmidi.toc=toc
+pgmidi.tocatope = tocatope
+pgmidi.tocap = tocap
+threadGrabamidi=@pgmidi
+GrabarMidiIn(pgmidi)
+  'ThreadCreate (@GrabarMidiIn,CPtr(Any Ptr, threadGrabamidi))
+
              Else
                   patchsal=1
+                  instru=patchsal
                   selInstORdenNum (instrum)
                    '''thread3 = ThreadCreate(@selInstORdenNum (), CPtr(Any Ptr, instrum))
                   Print #1," pista ejec  nro ",pis
@@ -2012,12 +2169,14 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
          For k=1 To 32 ' pistastrack de cancion
            If CheckBox_GetCheck( cbxnum(k))= 1  Then
               num=k
+              instrum=CInt(pmTk(num).patch)
+              Exit For
            EndIf
          Next k 
          If  num >=1 Then
              selInstORdenNum (instrum)
               '''thread2 = ThreadCreate(@selInstORdenNum(), CPtr(Any Ptr, instrum))
-             pmTk(ntk).patch=CUByte(instrum)
+             pmTk(num).patch=CUByte(instrum)
          EndIf
 
       EndIf 
@@ -2038,27 +2197,32 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
                  Print #1,"ejecucion canal elegido tocaparam(pis).canal ", tocaparam(pis).canal
     '--------------------------
     ' preparamos para grabar la pista por cambio de patch
-                Dim As ejec toc(1 To tocaparam(pis).maxpos)
+                ReDim  (toc.trk)(1 To tocaparam(pis).maxpos)
                 Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
                 Print #1,"tocaparam(pis).maxpos),pis ",tocaparam(pis).maxpos, pis
         ' PREPARAMOS PARA GRABAR A ARCHIVO
                 For j As Integer =1 To   tocaparam(pis).maxpos
-                     toc(j).modo=Toca(pis).trk(j).modo
-                     toc(j).nota=Toca(pis).trk(j).nota
-                     toc(j).vel=Toca(pis).trk(j).vel
+                     toc.trk(j).modo=Toca(pis).trk(j).modo
+                     toc.trk(j).nota=Toca(pis).trk(j).nota
+                     toc.trk(j).vel=Toca(pis).trk(j).vel
                '    Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
                Next j
-               Dim tocap As ejecparam = tocaparam(pis)
-               Print #1,"PARAMETROS EJEC nombre ",tocaparam(pis).nombre
-               Print #1,"PARAMETROS EJEC mapos ",tocaparam(pis).maxpos
-               Print #1,"PARAMETROS EJEC orden ",tocaparam(pis).orden
-               Print #1,"PARAMETROS EJEC delta ",tocaparam(pis).delta
-               Print #1,"PARAMETROS EJEC portout ",tocaparam(pis).portout
-               Print #1,"PARAMETROS EJEC patch ",tocaparam(pis).patch
-               Print #1,"PARAMETROS EJEC canal ",tocaparam(pis).canal
+                Dim tocap As ejecparam = tocaparam(pis)
+                Print #1,"PARAMETROS EJEC nombre ",tocap.nombre
+                Print #1,"PARAMETROS EJEC mapos ",tocap.maxpos
+                Print #1,"PARAMETROS EJEC orden ",tocap.orden
+                Print #1,"PARAMETROS EJEC delta ",tocap.delta
+                Print #1,"PARAMETROS EJEC portout ",tocap.portout
+                Print #1,"PARAMETROS EJEC patch ",tocap.patch
+                Print #1,"PARAMETROS EJEC canal ",tocap.canal
    
-   ' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
-               GrabarMidiIn (toc(), pis,tocap)  ' graba solo uno el chequeado en play  
+pgmidi.toc=toc
+pgmidi.tocatope = tocatope
+pgmidi.tocap = tocap
+threadGrabamidi=@pgmidi
+GrabarMidiIn(pgmidi)
+  ''ThreadCreate (@GrabarMidiIn,CPtr(Any Ptr, threadGrabamidi))
+
             Else
                 selcanalEjec (1,pis) ' 1 salida
                 Print #1," pista ejec  nro ",pis
@@ -2079,15 +2243,14 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
 
     EndIf
 
-      SetForegroundWindow(hwnd)
+'      SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
        Case EventClose  ''<==== SALIR TERMINA ROLL lax de win control???
         ''si ponemos aca da asercion de cairo.c 
         terminar=1
-        Exit Do     
+        Exit Do ,Do    
      End Select
-    'SetFocus (hwndc) 
-    
+
    Loop
 '-----------------------------------------------------------------------
   Else
@@ -2098,23 +2261,24 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
       cerrar(0)  
   End If
 '-----------------------------------------------------------------------
-  If terminar=1 Then
-     Exit Do 
-  EndIf
     
 Loop
 '-----------------------------------------------------------------------
-salir() ''<==== SALIR TERMINA ROLL
-Sleep 100
-Kill "procesos.txt"
 
+salir() ''<==== SALIR TERMINA ROLL
+'Sleep 100
+'Kill "procesos.txt"
+FileFlush (-1)
+    cerrar 0
+    cerrar 1
 '----FIN CONTROL-------------------
 '   threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1)) 
 '   ThreadWait threadloop
  
 'RollLoop ( param)
+'Sleep 100
+    End 0
 
-End 0
 
 '---------fin iup---    
 errorhandler:

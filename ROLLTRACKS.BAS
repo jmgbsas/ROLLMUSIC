@@ -25,46 +25,11 @@ Sub GrabarMidiInnO ( nombre As String, CargaIn() As midicod, pToca() As pEjec )
 End Sub
 '/
 
-Sub GrabarMidiIn ( tocap() As ejec, ntkp As Integer,tocaparam  As ejecparam) 
-    Dim As Long j, n=FreeFile,driver=0
-    Dim As String nombre
-     
-      nombre =titulos(ntkp+32) ' no tiene path , extension y [nro]
-Print #1,"GrabarMidiIn NombreCancion, nombre ",NombreCancion," --- ",nombre
-      driver=InStr(nombre,":\")
-      If  NombreCancion > "" And driver=0 Then
-          nombre=NombreCancion+"\"+nombre
-      Else 
-        Print #1," va a grabar sin path ",nombre
-      EndIf
-Print #1,"nombre de archivo con path grabando de ejec",nombre
-      tocaparam.portout=pmTk(ntkp+32).portout
-      tocaparam.portin = pmTk(ntkp+32).portin
-      tocaparam.patch=pmTk(ntkp+32).patch
-      tocaparam.canal =pmTk(ntkp+32).canalsalida
-   
-      Print #1,"GrabarMidiIn titulos   ", nombre
-      Print #1,"GrabarMidiIn MAXPOS ",tocaparam.maxpos
-      Print #1,"GrabarMidiIn delta ",tocaparam.delta
-      Print #1,"GrabarMidiIn nombre ",tocaparam.nombre
-      Print #1,"GrabarMidiIn portout ",tocaparam.portout
-      Print #1,"GrabarMidiIn portin ",tocaparam.portin
-      Print #1,"GrabarMidiIn patch ",tocaparam.patch
-      Print #1,"GrabarMidiIn canal ",tocaparam.canal
-       If  Open (nombre  For Binary Access Write As #n)=0 Then
-           Put #n,,tocaparam
-           Put #n,,tocap()
-       Else
-           Print #1,"Imposible Grabar " + nombre
-      End If
 
-      Close #n
-
-End Sub
 
 Sub CargarMidiIn(nombreMidiIn As String,   ByRef ntkp As Integer)
 ' carga un archivo por cada llamada 
-      Var  f=FreeFile
+
       Dim As Integer  j 
       ' nombre tiene el path y extension esta completo
      
@@ -91,10 +56,11 @@ Sub CargarMidiIn(nombreMidiIn As String,   ByRef ntkp As Integer)
       EndIf 
       
  Print #1,"maxgrb en CARGAmidiin ", maxgrb
+      Var  f=FreeFile
       Open nombreMidiIn For Binary Access Read As #f
             Get #f, ,tocaparam(ntkp)
              Print #1,"Open nombreMidiIn: tocaparam(ntkp).maxpos ",tocaparam(ntkp).maxpos
-              
+           ' maxgrp se calcula en CargarPistasEjec
            ReDim (Toca(ntkp).trk ) (1 To maxgrb) 
             Get #f, ,Toca(ntkp).trk()
 
@@ -102,14 +68,19 @@ Print #1,"ubound ",UBound (Toca(ntkp).trk)
 'For j As Integer=1 To tocaparam(ntkp).maxpos
 'Print #1, Toca(ntkp).trk(j).modo;" ";Toca(ntkp).trk(j).nota;" ";Toca(ntkp).trk(j).vel
 'Next j 
-      Close #f
+      cerrar f
 '      pmTk(ntkp+32).MaxPos=Toca(ntkp).maxpos
       ntoca=tocaparam(ntkp).orden
+      If  ntoca<> ntkp Then
+          Print #1," ERROR EN CARGA NRO ARCHIVO NO COINCIDE CON ORDEN / NTOCA ,NTKP ", ntkp,ntoca
+      EndIf
       pmTk(ntkp+32).portout= tocaparam(ntkp).portout
       pmTk(ntkp+32).portin= tocaparam(ntkp).portin
       pmTk(ntkp+32).patch = tocaparam(ntkp).patch
       pmTk(ntkp+32).canalsalida=tocaparam(ntkp).canal
-      
+      pmTk(ntkp+32).MaxPos=tocaparam(ntkp).maxpos
+
+
       Print #1,"CargarIn maxpos,np  ",tocaparam(ntkp).maxpos , ntkp
       Print #1,"Cargar delta ",tocaparam(ntkp).delta
       Print #1,"Cargar nombre ",tocaparam(ntkp).nombre
@@ -134,6 +105,7 @@ ROLLCARGADO=FALSE
 
 GrabarEjec =0: ntoca=0 : arrancaPlay=0
 ntkp=0 
+s5=0 '11-06-2022
 ''ReDim As Double fechasPistas(1 To 32)
 print #1,"-------------------------------------------------------"
 print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devuelve ntkp "
@@ -169,7 +141,7 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
        Else 
           fileMidiIn=nombreMidiIn
        EndIf 
-       Var  f=FreeFile
+
        maxgrb=0
 
        Dim  As Integer nf=0
@@ -179,13 +151,14 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
            Print #1,"fileMidiIn loop maxgrb ",fileMidiIn
 
            nf =nf+ 1
+           Var  f=FreeFile
            Open fileMidiIn For Binary Access Read As #f
            Get #f, ,tocaparam(nf)
            Print #1,"tocaparam(nf).maxpos ",tocaparam(nf).maxpos
            If tocaparam(nf).maxpos > maxgrb Then
               maxgrb = tocaparam(nf).maxpos
            EndIf
-           Close #f
+           cerrar f
            Sleep  100
            nombreMidiIn = Dir()
        If  lugar > "" Then 
@@ -210,7 +183,7 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
   ' del nombre del archivo solamente , ergo el usuario puede cambiar el orden
   ' o poner un trakcp de otra cancion con un numero que no exista [x]
   '      
-
+        
        Do While Len(nombreMidiIn) > 0 ' If len(filename) is 0, exit the loop: no more filenames are left to be read.
         filenameold=nombreMidiIn
         print #1, "trabajo con este filename...", filenameOld '[1]AAA.EJEC por ejemplo
@@ -337,13 +310,14 @@ ubirtk=0
        Else
           nombre=nombrea   
        EndIf
-    Dim ct As Integer
-    ct=FreeFile
+ 
+
     Dim miroerr As Integer
 '    Print #1,"nombre track ",nombre
  '   print #1,"NTK Y nombre que llego a open en CargaTrack ",ntk ,nombre
     titulos(ntk)=nombre
     
+    ct=FreeFile
     miroerr= ( Open (nombre  For Binary Access Read As #ct ))
      If miroerr <> 0 Then
   '     print #1,"arch track  abrio con error 1307 CargarTrack miroerr, nombre",miroerr, nombre
@@ -677,8 +651,6 @@ End Sub
 Sub ActualizarRollyGrabarPista ()
 ' nombre es global ,,,por ahora...con un Roll único nombre puede ser global
 ' ya que es único y siempre es parte de Roll grafico...
-   Dim grt As Integer
-   grt = FreeFile
    Maxpos=pmTk(ntk).MaxPos
    NB => 0 + (desde-1) * 13   ' 06-03
    NA => 11 + (hasta-1) * 13  ' 
@@ -857,6 +829,9 @@ Next i1
 
 'ÇÇÇ
 ' nombr es global se resuelve en la subrutina que llama a esta
+
+   grt = FreeFile
+
 If Open (nombre  For Binary Access write As #grt ) <> 0 Then
      print #1,"Error open Rollsub 2727, nombre ",nombre
      Exit Sub
@@ -998,7 +973,7 @@ Select Case ext
     CargaArchivo(Roll,1) ' sobreescribe ntk global con 0, carga a Roll y a track(0)
     ntk=Tope  ' recupero ntk 
    ' todos los valores quedaron en ntk=0 
-
+s5=0 '11-06-2022
     nombre= NombreCancion + "\[" + doscifras(ntk) + "]" + nom +".rtk"
     print #1,"GRABANDO PISTA EN CANCION EN ",nombre
     
@@ -1671,7 +1646,7 @@ Sub PlayCancion(Track() As sec)
 '------------apertura e ports
 Dim As Long porterror,nousar
 ' idea para controlar cancion con repeticiones podria usar el track 00 solo para eso control
-
+CONTROL1=0
 
 Dim i1 As integer
 ' creoa todos los defaults siempre
@@ -1679,16 +1654,16 @@ Dim i1 As integer
 
 ' los nombres ya fueron cargados al inicio
 
-Print #1,"abriendo ports...."
+Print #1,"abriendo ports....play cancion"
 
 Dim k1 As Integer
 For i=1 To tope
   
    k1=CInt(pmTk(i).portout)
     
-   Print #1,"midiout ",k1, *nombreOut(k1)
+'   Print #1,"midiout ",k1, *nombreOut(k1)
    If InStr(*nombreOut(k1),"Microsoft")>0 Then
-     Print #1,"No se usa Microsoft"
+ '    Print #1,"No se usa Microsoft"
    Else
      If listoutAbierto( k1) = 0 Then
         If listoutCreado( k1)=0 Then
@@ -1773,14 +1748,14 @@ Dim As Integer result,limsup
  Print #1,"[[[[ PCA CANCION MAXPOS AL COMENZAR ,final]]]",Maxpos,final
 
  For pis=1 To tope
-      Print #1,"ON patch ntk canal ",	Track(ntk).trk(1,1).nnn, ntk,pmTk(pis).canalsalida
+ '     Print #1,"ON patch ntk canal ",	Track(ntk).trk(1,1).nnn, ntk,pmTk(pis).canalsalida
       ChangeProgram ( Track(pis).trk(1,1).nnn, pmTk(pis).canalsalida, pmTk(pis).portout)	
 
       If CheckBox_GetCheck( cbxnum(pis))= 1 Then
-         Print #1,"+++++++pista on ",pis
+ '        Print #1,"+++++++pista on ",pis
          sonidoPista(pis)=1
       Else  
-         Print #1,"+++++++pista off ",pis        
+ '        Print #1,"+++++++pista off ",pis        
          sonidoPista(pis)=0
       EndIf
 
@@ -1792,9 +1767,9 @@ Dim As Integer result,limsup
 
 
 For jply=comienzo To final
-  print #1," ---------------000000000000000000000-----------------"
-  print #1," [[[PCA 0:]]]---START--PASO:[";jply;"] ----------------"
-  print #1," ---------------000000000000000000000-----------------"
+'  print #1," ---------------000000000000000000000-----------------"
+'  print #1," [[[PCA 0:]]]---START--PASO:[";jply;"] ----------------"
+'  print #1," ---------------000000000000000000000-----------------"
   
 ' cambio de inst para la pista, podria poner mas de un instrumento por pista
 ' o por cada nota.. 
@@ -1838,10 +1813,10 @@ kNroCol= Int(jply/NroCol)
    distintos=0
    duraold=0 ' 04-11-2021
   
- For pis =1 To tope ' loop de pistas
+  For pis =1 To tope ' loop de pistas
 
-   print #1,"--loop de pistas---pista NRO :";pis;" --------------------------------"
-   print #1,"  De esta pista MAXPOS ,final",pmTk(pis).MaxPos, final
+ '  print #1,"--loop de pistas---pista NRO :";pis;" --------------------------------"
+ '  print #1,"  De esta pista MAXPOS ,final",pmTk(pis).MaxPos, final
     limsup=UBound (Track(pis).trk,2)
     If limsup < lim2 Then
           Exit For 
@@ -1872,7 +1847,7 @@ kNroCol= Int(jply/NroCol)
 ' la cancion podria tener 12*32tracks = 384 de polifonia, no se si rtmidi lo soporta
 ' info del inst en 1 no en lim2   
 
- Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
+ 'Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
    For i1=1 To lim3   ' coo voy de 1 a lim2 necesito que la info del int este en 1
 If i1<= lim2 Then
      If (Track(pis).trk(jply,i1).nota >= NBpiano) And (Track(pis).trk(jply,i1).nota <= NA) And (Track(pis).trk(jply,i1).dur >=1) And (Track(pis).trk(jply,i1).dur <= 180) Then ' es semitono
@@ -1918,11 +1893,11 @@ If i1<= lim2 Then
          pasoCol(cnt).notapiano=Notapiano
  ' >>>>>>>>>>>>>>>CANAL MIDI y POR SALIDA >>>>>>>>>>>>>>>>>>>>>>>>        
          pasoCol(cnt).canal=pmTk(pis).canalsalida ' 12-02-2022 canal en pasoCol
-         Print #1,"pasocol guarda canal, pista --> ",pasoCol(cnt).canal," estoy en pista ",pis
+ '        Print #1,"pasocol guarda canal, pista --> ",pasoCol(cnt).canal," estoy en pista ",pis
          pasoCol(cnt).port=pmTk(pis).portout
-         Print #1,"pasocol guarda port , pista --> ",pasoCol(cnt).port," estoy en pista ", pis  
+ '        Print #1,"pasocol guarda port , pista --> ",pasoCol(cnt).port," estoy en pista ", pis  
          pasoCol(cnt).pista=pis       
-         Print #1,"pasocol guarda pista  --> ",pasoCol(cnt).pista
+ '        Print #1,"pasocol guarda pista  --> ",pasoCol(cnt).pista
  ' >>>>>>>>>>>>>>>CANAL MIDI >>>>>>>>>>>>>>>>>>>>>>>>         
          
          pasoCol(cnt).tiempoFigura=relDur(pasoCol(cnt).DUR) * tiempoDur * d11
@@ -1943,11 +1918,11 @@ If i1<= lim2 Then
    
      If i1=lim2  And (pis = tope Or pis=32) Then
         ''''  reponer mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
-        If cnt > 1 Then' Acorde
-          print #1,"i1=";i1 ; " ACORDE cnt= ";cnt
-        Else    
-           print #1,"i1=";i1 ; " SIMPLE cnt= ";cnt
-        EndIf  
+ '       If cnt > 1 Then' Acorde
+ '         print #1,"i1=";i1 ; " ACORDE cnt= ";cnt
+ '       Else    
+  '         print #1,"i1=";i1 ; " SIMPLE cnt= ";cnt
+ '       EndIf  
 ' FUNCIONA PERO CANCELA CASI AL FINAL HAY QUE CONTROLAR QUE PLAYTOCAALL NO 
 ' MANEJE LOS PUERTOS NI APERTURA NI CIERE Y AJUSTRLE LOS PORT DE SALIDA Y PATCH
 ' EN LA EJECUCION DE CANCION SOLO CANCION ABRIRA PUERTOS Y LSO CERRARA
@@ -1969,6 +1944,12 @@ If i1<= lim2 Then
 '            threadG  = ThreadCreate (@PlayTocaAll, p)
 '           
 '       EndIf 
+' PARA CALCULO DE RETARDO DEL INICIO DE PLAY CANCION RESPECTO PLAYTOCAALL
+' HABILITAMOS SOLO PARA PRUEBAS
+'If  jply=1 Then
+'  Print #1, "playcancion inicio datos:", Timer
+'EndIf
+'----------------------------------
         Select Case cnt
           Case 1 
            ' con y sin liga
@@ -1984,13 +1965,13 @@ If i1<= lim2 Then
 
             If iguales=1 And distintos=0  Then
                 TipoAcorde=2 ' iguales
-                print #1,"cnt ";cnt;" Acordeiguales "
+           '     print #1,"cnt ";cnt;" Acordeiguales "
                 
                 AcordeIguales pasoCol(),cnt,cntold,vel,tiempoDur,Roll,velpos,pisnota,portsal
                 
             EndIf
             If  distintos=1 Then
-               print #1,"cnt ";cnt;" AcordeDistintos"
+           '    print #1,"cnt ";cnt;" AcordeDistintos"
                 TipoAcorde=3 ' distintos               
                 AcordeDistintos pasoCol(),cnt, cntold,vel,tiempoDur,Roll,velpos,pisnota,portsal
                 
@@ -1999,7 +1980,7 @@ If i1<= lim2 Then
          End Select  
 
         cntold = cnt
-        print #1,"cnt,cntold"; cnt;" ";cntold
+  '      print #1,"cnt,cntold"; cnt;" ";cntold
          
      EndIf
 
@@ -2007,7 +1988,7 @@ EndIf
 '--------
 If i1 > lim2  Then
  If Track(pis).trk(jply,i1).nota = 210 Then
-    Print #1,"210 leido jply",jply
+  '  Print #1,"210 leido jply",jply
     If finfin=0 Or playloop=1 Then
        playloop2=1
        comienzo2=jply
@@ -2015,7 +1996,7 @@ If i1 > lim2  Then
  EndIf
 
  If Track(pis).trk(jply,i1).nota = 211 Then
-    Print #1,"211 leido jply",jply
+  '  Print #1,"211 leido jply",jply
     If finfin=0 Or playloop=1 Then 
        final2=jply
     EndIf
@@ -2049,7 +2030,7 @@ EndIf
 
 ' usando variblkes staticas no hace falta usar esta trampita   
    ''''  reponer mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
-  print #1,"---DOWN -----PISTA:"; pis;" --------------------------------" 
+ ' print #1,"---DOWN -----PISTA:"; pis;" --------------------------------" 
     
  'If playloop=1 And jply= final Then
  '   jply=comienzo
@@ -2064,8 +2045,8 @@ EndIf
 
 
 
-  print #1,"---FIN -----paso:"; jply;" --------------------------------"
-  Print #1,"---FIN---playloop PLAYLOOP2 ",playloop, playloop2
+'  print #1,"---FIN -----paso:"; jply;" --------------------------------"
+'  Print #1,"---FIN---playloop PLAYLOOP2 ",playloop, playloop2
  If playloop=1 And jply= finalloop  Then
     jply=comienzoloop -1
 
@@ -2084,7 +2065,7 @@ EndIf
        EndIf
     EndIf
  EndIf
-
+Sleep 1,1 ' para que corranmas de un thread
 
 Next jply
 
@@ -2113,18 +2094,26 @@ close_port(midiout)
 out_free(midiout)
 '/ 
 SetGadgetstate(12,0)
-
-For i=1 To tope
-   k1=pmTk(i).portout
-   Print #1,"midiout ",k1, *nombreOut(k1)
-   alloff( pmTk(i).canalsalida,k1 )  
-   'out_free   midiout(k1)
-   ''Print #1,"desmarco ",*nombreOut(k1)
-   listoutAbierto(k1)=0
-   close_port midiout(k1)
-'   out_free   midiout(k1)
-   listoutAbierto( k1) = 0
-Next i
+Dim As Integer checkejec=0
+For  iz As Short =1 To 32
+      If CheckBox_GetCheck( cbxejec(iz))= 1  Or CheckBox_GetCheck( cbxgrab(iz))= 1 Then
+          checkejec=1
+      End If
+      Exit For
+Next iz
+if GrabarPenta=0 and GrabarEjec=0 and repro=0 And checkejec=0 Then 
+   For i=1 To tope
+      k1=pmTk(i).portout
+   '   Print #1,"midiout ",k1, *nombreOut(k1)
+      alloff( pmTk(i).canalsalida,k1 )  
+      'out_free   midiout(k1)
+      ''Print #1,"desmarco ",*nombreOut(k1)
+      listoutAbierto(k1)=0
+      close_port midiout(k1)
+   '   out_free   midiout(k1)
+      listoutAbierto( k1) = 0
+   Next i
+EndIf
 ThreadDetach(thread1)
 
 

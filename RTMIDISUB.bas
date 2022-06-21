@@ -399,7 +399,7 @@ If sil=1 And ons=1 Then
 Else
   p1=0  
 EndIf 
- veoPasoCol pasoCol(),CInt(cnt), CInt(cntold)
+'''' NOT DISPLAY  veoPasoCol pasoCol(),CInt(cnt), CInt(cntold)
 ' en .ligaoLD acumulo las ligaduras horizontalmente solo se va a cero en OFF ultimo
 ' en .liga solo determino la liga actual.-
 ' la  liga final de esa nota que este en cero 0 me determina que es el OFF
@@ -557,8 +557,8 @@ Next k1
 
 ' for de NOTEON DE NO LIGADOS, EN NOTEON NO HACE FALTA SORT SOLO EN OFFS"
 
-print #1,"=====> FIN ACORDEON IGUALES O SIMPLE"
-print #1,"=AOI tenia   old_time_on_int ", old_time_on_int
+'print #1,"=====> FIN ACORDEON IGUALES O SIMPLE"
+'print #1,"=AOI tenia   old_time_on_int ", old_time_on_int
 
 End Sub 
 
@@ -567,7 +567,7 @@ Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As
 'print #1,"AOD :]start AcordeOnDistintos cnt,cntold,pis ",cnt,cntold,pis
 'print #1,"-------------------------------------"
 'debug..
- veoPasoCol pasoCol(),CInt(cnt), CInt(cntold)
+' NO DISPLAY  veoPasoCol pasoCol(),CInt(cnt), CInt(cntold)
 
 Dim As UByte i1, liga=0,coff=0,canal
 Dim As Integer tiempoFigura=0, tiempoFiguraSig=0
@@ -600,7 +600,7 @@ Dim As integer nj=jply, durj ' indice del vector roll, dur
 old_time_on=Timer
 'print #1,"AOD: old_time_on ";old_time_on
 
-print #1,"start FOR"
+'print #1,"start FOR"
 For i1=1 To cnt
 'print #1,"for cnt=";i1
 'print #1,"AOD FOR: pasoCol(i1).Dur       ";pasoCol(i1).Dur
@@ -725,7 +725,7 @@ For i1=1 To cnt
  End If
 Next i1
 
-print #1,"FIN AcordeOnDistintos"
+'print #1,"FIN AcordeOnDistintos"
 	
  
 End Sub
@@ -737,7 +737,7 @@ Dim tiempoFigura As Double
 'print #1,"AFI :]========Start AcordeOffIguales cnt,cntold,pis ",cnt,cntold,pis
 'print #1,"-------------------------------------"
 'debug..
- veoPasoCol pasoCol(),CInt(cnt), CInt(cntold)
+' NO DISPLAY  veoPasoCol pasoCol(),CInt(cnt), CInt(cntold)
 
 'aca son iguales ergo lso off caen todo iguales al mismo tiempo
 ' solo que una not aligada hara off en el siguiente paso
@@ -926,9 +926,9 @@ Next i1
 'print #1,"AcordeOFFIguales: liga:", ligaglobal
 'limpiarLigaduras(cnt,pasoCol())
 'print #1,"limpiado AcordeOFFIguales: liga:", ligaglobal
- veoPasoCol pasoCol(),CInt(cnt), CInt(cntold)
+'' NO DISPLAY  veoPasoCol pasoCol(),CInt(cnt), CInt(cntold)
 
-print #1,"AFI 20:FIN AcordeOffIguales o simple"
+'print #1,"AFI 20:FIN AcordeOffIguales o simple"
 End sub
 
 Sub AcordeIguales ( pasoCol() As vec, cnt As UByte,cntold As UByte, vel as UByte, tiempoDur As Double,Roll As inst,velpos As Integer,pis As UByte,portsal As UByte) 
@@ -960,7 +960,7 @@ Sub AcordeOffDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte,tiempo
 'print #1,"--------------------------------------------"
 'print #1,"AFD :]start AcordeOffDistintos cnt,cntold,pis ",cnt,cntold,pis
 'print #1,"-------------------------------------"
- veoPasoCol pasoCol(),CInt(cnt), CInt(cntold)
+' NO DISPLAY veoPasoCol pasoCol(),CInt(cnt), CInt(cntold)
 
 
 Dim  As UByte i1, coff,canal
@@ -1102,7 +1102,7 @@ Next i1
  ' terminar o tener una nota simple unica como final o intermedia ligada
  ' ver que pasa en ese caso como lo solucionamos
  ' 01-07-2021 ACA NUNCA SE BLAQUEA no-> ligaglobal=0  porque corta las ligas largas en un acorde distinto 
-print #1,"FIN AcordeOffDistintos  " 
+'print #1,"FIN AcordeOffDistintos  " 
 
 'print #1,"AcordeOFFDistintos: liga:", ligaglobal
 limpiarLigaduras(cnt,pasoCol())
@@ -1132,22 +1132,22 @@ Sub playAll(Roll As inst) ' play version 2
 'Dim Shared midiin As RtMidiInPtr
 Dim As Integer porterror,nousar
 porterror=Err
-
+CONTROL1=0
 Dim As Integer i1,k1
 ' creoa todos los defaults siempre
  
 
 ' los nombres ya fueron cargados al inicio
 If  GrabarPenta=0 Then ' con 1 ya esta abierto
-Print #1,"abriendo port...."
+Print #1,"abriendo port....play All"
 
 
   
    k1=CInt(pmTk(0).portout)
     
-   Print #1,"midiout ",k1, *nombreOut(k1)
+'   Print #1,"midiout ",k1, *nombreOut(k1)
    If InStr(*nombreOut(k1),"Microsoft")>0 Then
-     Print #1,"No se usa Microsoft"
+'     Print #1,"No se usa Microsoft"
    Else
      If listoutAbierto( k1) = 0 Then
         If listoutCreado( k1)=0 Then
@@ -1157,20 +1157,22 @@ Print #1,"abriendo port...."
         open_port midiout(k1),k1, nombreOut(k1)
             porterror=Err 
         listoutAbierto( k1) = 1
-        Print #1,"abro ",*nombreOut(k1)
+ '       Print #1,"abro ",*nombreOut(k1)
         porterrorsub(porterror)
+   Else
+      Print #1,"pORT SALIDA Y AABIERTO EN PLAYALL"
    EndIf
  EndIf 
 
-Print #1,"-------------------------------------"
-'''midisal=midiout(0) ' el z
+'Print #1,"-------------------------------------"
+'''''''midisal=midiout(0) ' el z
 End If
 
 '-------------------------------------------- 
  
     ''''''''midisal=midiout(pmTk(ntk).portout)
     
-   Print #1,"Port usando en Play All ",portout
+ '  Print #1,"Port usando en Play All ",portout
  ''fueradefoco=1
 indEscala=1 ' inicializamos la guiade escalas a la 1era 
 
@@ -1206,14 +1208,17 @@ playloop2=0
 '  Print #1,"  ajusta CANAL al del archivo canal= ",canal        '
 
 'EndIf
- Print #1,"ON patch ntk canal ",	Roll.trk(1,NA).inst, ntk,pmTk(0).canalsalida
+
+
+' Print #1,"ON patch ntk canal ",	Roll.trk(1,NA).inst, ntk,pmTk(0).canalsalida
+
  ''If Roll.trk(1,NA).inst > 0 Then
     ChangeProgram ( Roll.trk(1,NA).inst, pmTk(0).canalsalida, pmTk(0).portout)	
     patchsal =Roll.trk(1,NA).inst
  '''EndIf
 
-print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
-print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
+'print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
+'print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
 jply=0:curpos=0
 mousex=0
 ' print #1,                    "-----------------------------------------"
@@ -1292,9 +1297,10 @@ EndIf
   iguales=0
   distintos=0
   duraold=0 ' 04-11-2021 jmg
-  print #1," ---------------000000000000000000000-----------------"
-  print #1," (((PALL 0:)))---START--PASO:[";jply;"] ----------------"
-  print #1," ---------------000000000000000000000-----------------"
+'  print #1," ---------------000000000000000000000-----------------"
+'  print #1," (((PALL 0:)))---START--PASO:[";jply;"] ----------------"
+'  print #1," ---------------000000000000000000000-----------------"
+
   '115 a 0
   ' recorre una posicion vertical
   ' envio de instrumetno o CAMBIO de PROGRAMA PATCH 
@@ -1334,20 +1340,20 @@ If i1<= NA-13 Then
       Notapiano= Notapiano - restar (Notapiano)
       'print #1,"PALL 0:VEO LO CORRECTO DE NOTAPIANO "; Notapiano
       dura=Roll.trk(jply, i1).dur '1) I 2) I dur x 1 to 108
-      Print #1,"PALL 1:jply ";jply; "dura ";dura
+'      Print #1,"PALL 1:jply ";jply; "dura ";dura
       cnt=cnt+1
-      Print #1,"PALL 2:paso ";jply;" cnt ";cnt;" notapiano "; Notapiano
+ '     Print #1,"PALL 2:paso ";jply;" cnt ";cnt;" notapiano "; Notapiano
       If cnt=1 Then 
          duraOld=dura
       EndIf
       ' 04-11-2021 usamos reldur para comparar duraciones !!!
       If reldur(duraOld)=reldur(dura)  And cnt > 1 Then
          iguales=1
-         print #1,"PALL 4:cnt ";cnt;" iguales ";iguales
+  '       print #1,"PALL 4:cnt ";cnt;" iguales ";iguales
       EndIf
       If reldur(duraOld)<>reldur(dura)  And cnt > 1 Then
          distintos=1 ' atrapa no importa cuantos elementos tenga el acorde
-         print #1,"PALL 5:cnt ";cnt;" distintos ";distintos
+  '       print #1,"PALL 5:cnt ";cnt;" distintos ";distintos
       EndIf         
 
      
@@ -1359,18 +1365,18 @@ If i1<= NA-13 Then
         'print #1,"PALL 8:pasoCol(cnt).DUR ", pasoCol(cnt).DUR
         ' DURACIONE CON LIGA O SIN LIGA EJ F+ O F 
         If pasoCol(cnt).DUR >= 91 And pasoCol(cnt).DUR <=180 Then
-            print #1,"PALL 9:PALL 0: nota con + es una li DUR R ",pasoCol(cnt).DUR
+   '         print #1,"PALL 9:PALL 0: nota con + es una li DUR R ",pasoCol(cnt).DUR
             pasoCol(cnt).liga =  1
         Else
             pasoCol(cnt).liga =  0   
         EndIf
         ' DURACIOENS SILENCIO O NO sF o sF+
         If (pasoCol(cnt).DUR >= 1 And pasoCol(cnt).DUR <=45) Or (pasoCol(cnt).DUR >= 91 And pasoCol(cnt).DUR <= 135) Then
-            print #1,"PALL 9a:PALL 0: nota tiene audio 1"
+    '        print #1,"PALL 9a:PALL 0: nota tiene audio 1"
             pasoCol(cnt).audio =  1 ' tiene audio
         Else
             pasoCol(cnt).audio =  2 ' no tiene audio, 0 valor no ajustado no se nada
-            print #1,"PALL 9a:PALL 0: nota NO tiene audio 2"  
+     '       print #1,"PALL 9a:PALL 0: nota NO tiene audio 2"  
         EndIf
         
 ' debo saber si la nota anterior con ligaold   
@@ -1386,9 +1392,9 @@ If i1<= NA-13 Then
         'print #1,"PALL 10:Notapiano ",Notapiano
 ' >>>>>>>>>>>>>>>CANAL MIDI y POR SALIDA >>>>>>>>>>>>>>>>>>>>>>>>        
          pasoCol(cnt).canal=pmTk(0).canalsalida ' 12-02-2022 canal en pasoCol
-         Print #1,"pasocol guarda canal, pista --> ",pasoCol(cnt).canal, 
+  '       Print #1,"pasocol guarda canal, pista --> ",pasoCol(cnt).canal, 
          pasoCol(cnt).port=pmTk(0).portout
-         Print #1,"pasocol guarda port , pista --> ",pasoCol(cnt).port   
+  '       Print #1,"pasocol guarda port , pista --> ",pasoCol(cnt).port   
       
  ' >>>>>>>>>>>>>>>CANAL MIDI >>>>>>>>>>>>>>>>>>>>>>>>         
        
@@ -1420,7 +1426,7 @@ If i1<= NA-13 Then
           AcordeIguales pasoCol(),cnt,cntold,vel,tiempoDur,Roll,velpos,0,0
           pasoCol(cnt).notapianoOld    = Notapiano             
           Case Is > 1
-       print #1,"case is > 1"
+  '     print #1,"case is > 1"
             If iguales=1 And distintos=0  Then
                 TipoAcorde=2 ' iguales
   '              print #1,"cnt ";cnt;" call Acordeiguales "
@@ -1445,13 +1451,13 @@ EndIf
 
 If i1 > NA-13 Then
  If Roll.trk(jply,i1).nota = 210 Then
-    Print #1,"210 leido jply",jply
+   ' Print #1,"210 leido jply",jply
     playloop2=1
     comienzo2=jply
  EndIf
 
  If Roll.trk(jply,i1).nota = 211 Then
-    Print #1,"211 leido jply",jply 
+   ' Print #1,"211 leido jply",jply 
     final2=jply
     If cntrepe > 0 Then
       cntrepe -= 1
@@ -1471,7 +1477,7 @@ EndIf
  
   Next i1
   '''  ya no hace falta mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
-  print #1,"---FIN -----paso:"; jply;" --------------------------------" 
+ ' print #1,"---FIN -----paso:"; jply;" --------------------------------" 
   
  
  If playloop=1 And jply= finalloop Then
@@ -1491,7 +1497,7 @@ EndIf
  EndIf
 
  tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
- 
+ Sleep 1,1 ' para que corranmas de un thread
 Next jply
 ''while (PeekMessage(NULL, hwnd, WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE or PM_QS_INPUT))
 ''Wend
@@ -1516,10 +1522,18 @@ finplay=1
 
 '''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 '''fueradefoco=0
-if GrabarPenta=0 Then ' nada de off estamos en grabarpenta por teclado
+Dim As Integer checkejec
+For  iz As Short =1 To 32
+      If CheckBox_GetCheck( cbxejec(iz))= 1  Or CheckBox_GetCheck( cbxgrab(iz))= 1 Then
+          checkejec=1
+      End If
+      Exit For
+Next iz
+if GrabarPenta=0 and GrabarEjec=0 and repro=0 And checkejec=0 Then 
+ ' nada de off estamos en grabarpenta por teclado o Grabar o tocar ejecuciones 
 
    k1=pmTk(0).portout
-   Print #1,"midiout ",k1, *nombreOut(k1)
+  ' Print #1,"midiout ",k1, *nombreOut(k1)
    alloff( pmTk(0).canalsalida,k1 )  
    'out_free   midiout(k1)
    ''Print #1,"desmarco ",*nombreOut(k1)
@@ -1532,7 +1546,7 @@ EndIf
 
 Sleep 20,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
 
-''ThreadDetach(thread1)
+ThreadDetach(thread1) ' 16-06-2022
 
 ' ================================FIN PLAYALL <<=================
 End Sub 
@@ -1670,7 +1684,7 @@ jply=0:curpos=0
 mousex=0
 
 For jply=comienzo To final
-print #1,"-----------------------------------------"
+'print #1,"-----------------------------------------"
  If curpos > NroCol  Then
     curpos=0
     posishow=0
@@ -2009,8 +2023,8 @@ End Sub
 
 Sub duracionokOLD (old_time As Double, tiempoFigura As Double)
 ' retardo puro sin on ni off dejo de andar porque ???
-print #1,"COMIENZA RETARDO En  time :"; old_time
-print #1, "tiempoFigura " , tiempoFigura
+'print #1,"COMIENZA RETARDO En  time :"; old_time
+'print #1, "tiempoFigura " , tiempoFigura
 Dim As Double  endtime 
  
   Do
@@ -2104,7 +2118,7 @@ Sub TrasponerGrupo( cant As Integer, Roll As inst, encancion As Integer)
 ' SOLO TRASPONE DENTRO DE LA MISMA OCTAVA HAY QUE VER SI PODEMOS HACER LO MISMO
 ' QUE CON TRASPONERROLL Y MOVER A OTROS OCTAVAS....
 
-print #1,"ARRANCA TRASPONER GRUPO"
+'print #1,"ARRANCA TRASPONER GRUPO"
 Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,b1=0
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
@@ -2151,7 +2165,7 @@ For jpt = desdet To hastat
                If Roll.trk(jpt,ind).nota > 0 And Roll.trk(jpt,ind).nota <= 13  Then
                   Roll.trk(jpt,i1).nota = 181
                   Roll.trk(jpt,i1).dur  = 0
-                  Print #1,"encontro una nota 13"
+ '                 Print #1,"encontro una nota 13"
                EndIf 
                Roll.trk(jpt,i1).vol  = 0
                Roll.trk(jpt,i1).pan  = 0
@@ -2204,7 +2218,7 @@ Next jpt
 ' de ese modo al dar play se escuch also cambios sino solo quedan en Roll
 ' y el play de cancion no lo registra , solo el play de roll lo registraria
 If encancion > 0 Then
-  print #1,"en trasponer grupo graba track traspuesto"
+ ' print #1,"en trasponer grupo graba track traspuesto"
    Dim As Integer ubi1=0,ubi2=0 
    Dim As String no1,no2
    ubi1=InStr(nombre,"[")
@@ -2225,7 +2239,7 @@ Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,octavaDeAcorde,verticalE
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
 ' cant=(1) si pulso flecha UP
-  Print #1,"ARRANCA  TRASPONER ROLL !!!!!!!!!!!!!!",trasponer
+  'Print #1,"ARRANCA  TRASPONER ROLL !!!!!!!!!!!!!!",trasponer
   If trasponer=0 Then
      Exit Sub
   EndIf
@@ -2399,7 +2413,7 @@ cant = pasoZona2 - pasoZona1 'delta original
 ' sitio donde se copia o mueve indicePos en main (SC_M o SC_C )+ click 
 Dim  As Integer  MaxPosOld=MaxPos
   
-print #1, "MaxPosOld ", MaxPosOld
+'print #1, "MaxPosOld ", MaxPosOld
 ' si movemos a derecha empezamos copiando a la nueva posicion el final de 
 ' la secuencia, luego en la nueva posicion -1 copiamos el final -1
 ' asi desde el final haci aadelante...
@@ -2424,7 +2438,7 @@ print #1,"fin chequeo"
 '/
 If posinueva > Maxpos Then ' movemos a izquierda
 inc=posinueva ' aca inc son los datos copiados 
-print #1,"ENTRA POR IZQUIERDA"
+'print #1,"ENTRA POR IZQUIERDA"
   For jpt=desdet To hastat
        
      For  i1= comienzo To final
@@ -2454,10 +2468,10 @@ print #1,"ENTRA POR IZQUIERDA"
  ' FIN UNDO    
      
   Next jpt
-  print #1,"TERMINO copia a izquierda ",posinueva   
+ ' print #1,"TERMINO copia a izquierda ",posinueva   
 'si la posicion donde copio es mayor a MaxPos, debo llenar el espacio entre MAxPos y 
 'el punto inicial de copia con 0 y 181 para dur y Nota repectivamente
-  print #1,"inicioind  MAxPosOld ",posinueva , MAxPosOld  
+ ' print #1,"inicioind  MAxPosOld ",posinueva , MAxPosOld  
   If posinueva > MAxPosOld Then
 
   ' print #1,"MAxPosOld, inicioind ", MAxPosOld, inicioind
@@ -2474,21 +2488,21 @@ print #1,"ENTRA POR IZQUIERDA"
      Next jpt
 
   EndIf
-  print #1,"--> TERMINO la vuelta de ind a la izquierda", posinueva
+  'print #1,"--> TERMINO la vuelta de ind a la izquierda", posinueva
 ' aca el maxpos deberia achicarse....
 MaxPos=inc +1
 '-------------------------------
 Else ' if ind posiion nueva > pasozona1 movemos a derecha
 '---------------------------------
 
-print #1,"ENTRA POR DERECHA POSINUEVA < MaxPos"
-print #1,"posinueva ",posinueva
-print #1,"MaxPosold ",MaxPosold
-print #1,"posivIEJa ",posivieja ' es pasozona1 inamovible
+'print #1,"ENTRA POR DERECHA POSINUEVA < MaxPos"
+'print #1,"posinueva ",posinueva
+'print #1,"MaxPosold ",MaxPosold
+'print #1,"posivIEJa ",posivieja ' es pasozona1 inamovible
   If posinueva < MaxPos then
     MaxPos=MaxposOld + pasozona2 - pasozona1 +1 ' -1 01-12-21
   EndIf
-print #1,"MaxPos ",MaxPos
+'print #1,"MaxPos ",MaxPos
  
   'hastat=Maxpos
   desdet=posinueva
@@ -2496,8 +2510,8 @@ print #1,"MaxPos ",MaxPos
   hastat=posinueva-pasozona1+pasozona2 +1
   'inc=MaxPosOld
   inc=pasozona1 ' aca inc son lso datos a copiar
-print #1,"hastat ",hastat
-print #1, "desdet,inc ",desdet,inc 
+'print #1,"hastat ",hastat
+'print #1, "desdet,inc ",desdet,inc 
 'print #1,"UBOUND(ROLL,1)", UBOUND (ROLL.TRK,1)
 'print #1,"LBOUND(ROLL,1)", LBound (ROLL.TRK,1)
 'print #1,"UBOUND(ROLL,2)", UBOUND (ROLL.TRK,2)
@@ -2535,11 +2549,11 @@ print #1, "desdet,inc ",desdet,inc
 
  ' FIN UNDO    
   Next jpt
-  print #1,"TERMINO copia a derecha ",posinueva   
+ ' print #1,"TERMINO copia a derecha ",posinueva   
 '---
 'si la posicion donde copio es mayor a MaxPos, debo llenar el espacio entre MAxPos y 
 'el punto inicial de copia con 0 y 181 para dur y Nota repectivamente
-  print #1,"inicioind  MAxPosOld ",posinueva , MAxPosOld  
+ ' print #1,"inicioind  MAxPosOld ",posinueva , MAxPosOld  
   'If posinueva > MAxPosOld Then
 
   ' print #1,"MAxPosOld, inicioind ", MAxPosOld, inicioind
@@ -2556,7 +2570,7 @@ print #1, "desdet,inc ",desdet,inc
  '    Next jpt
 
   'EndIf
-  print #1,"--> TERMINO la vuelta de ind a derecha ", posinueva
+  'print #1,"--> TERMINO la vuelta de ind a derecha ", posinueva
 
 
 '-------
@@ -2604,81 +2618,8 @@ Next jpt
 
 End sub
 ' 06-09-2021 jmg
-Sub crearsecuencia(Track() As sec, posn As Integer, ntk As Integer)
-' ON LISTOS, FALTA LOS OFFS
-'Track(ntk).trk(posn,1) 1 a 12 va la segunda..
-' la melodia se carga todo en (posn,1) el acorde en (posn,x) x=2 a 12
-' recibe una instancia de Track no todo el vector
-' cuadno se carga el acorde se hara un sort del mismo incluido la 
-' nota existente en posicion 1 y se ordenara de menor a mayor de modo que
-' siemrpe resultara facil dar ON a todas al mismo tiempo y luego dar off
-' de menro a mayor, 1er paso para mantener el play de acordes con notas de 
-' distinto tamaño.
-' si el usu ingresa acorde en campo OK se pone 1, sino sera una nota ordinaria 
-' con 0 (eso se hará en sub cursor...) <HACER>
-' acorde irá de 1 a 12 , 1 no hay acorde 12 lo maximo
-' si cargo un roll debo calcualr la Notapiano
-Dim As Integer I,J,cnt
-Dim vecs(1 To 12) As poli
-'Print #fs,"ntk --------------------------",ntk,posn
 '
-
-For i=1 To 12
-'Print #fs, i, Track(ntk).trk(posn,i).nota, Track(ntk).trk(posn,i).dur
-vecs(i).dur = CInt  (Track(ntk).trk(posn,i).dur )
-vecs(i).nota = Track(ntk).trk(posn,i).nota
-vecs(i).vol = Track(ntk).trk(posn,i).vol
-vecs(i).pan = Track(ntk).trk(posn,i).pan
-vecs(i).pb = Track(ntk).trk(posn,i).pb
-
-Next i
-' volumenm cero si dur esta entre 46 a 90 o de 136 a 180
-
-Print #fs,"--------------------------"
-
-    If Track(ntk).trk(posn,1).acorde > 1 Then 
-      cnt= Track(ntk).trk(posn,1).acorde
-      Print #fs,"acorde ",cnt
-      qsort( @vecs(1).dur, cnt, SizeOf(poli), @QCompare )
-'      Print #fs,"despues de sort muestra"
-      For i=1 To cnt
-'        Print #fs, vecs(i).nota,vecs(i).dur
-      Next i
-'      Print #fs,"fin muestra sort "
-    EndIf      
-For i=1 To 12
-Track(ntk).trk(posn,i).dur  = CUByte(vecs(i).dur)
-Track(ntk).trk(posn,i).nota = vecs(i).nota
-Track(ntk).trk(posn,i).vol  = vecs(i).vol
-Track(ntk).trk(posn,i).pan  = vecs(i).pan
-Track(ntk).trk(posn,i).pb   = vecs(i).pb
-
-
-Next i
-' el maximo valor  de estos ticks es 128 la q sigue de semifusa garrapatea
-' y eo maximo de duracion es 1,75 * 128 segun pesoDur=224 ticks
-' ergo a tick lo puedo representar por un UBYTE como siempre
-' SUPONGO ACORDE DE DISTINTAS DURACIONES
- FOR  I= 1 TO 12 'PTrack.trk(posn,I).acorde
-    If Track(ntk).trk(posn,I).nota > 0 And  Track(ntk).trk(posn,I).dur >= 1 And _ 
-       Track(ntk).trk(posn,I).dur <= 180 Then    
-       If posn = 1 Then 
-          Track(ntk).trk(posn,I).tick=0
-       Else   
-          Track(ntk).trk(posn,I).tick=(pesoDur(Track(ntk).trk(posn,I).dur)/d7)*128 + _
-          Track(ntk).trk(posn-1,1).tick
-       EndIf      
-      ' guardar si es > 0 ON, notapiano,vol,pan,pb,inst y guargar tick=0
-       Print #fs,posn;",";"ON,";Track(ntk).trk(posn,I).nota;",";Track(ntk).trk(posn,I).vol; ","; _
-           Track(ntk).trk(posn,I).nnn;",";Track(ntk).trk(posn,I).tick;","; _
-           (Pesodur(Track(ntk).trk(posn,I).dur)/d7)*128;",";Track(ntk).trk(posn,I).dur 
-
-
-    EndIf 
- Next I
-
-End Sub
-'---------------
+'
 Function mycallback ( ByVal deltatime As double, ByVal vec As UByte Ptr, ByVal leng as UInteger<64>, ByVal otro As Any ptr ) as RtMidiCCallback
 ' en otro podre poner un ptr a Toca...
 Dim As UByte Ptr memoria = vec
@@ -2715,7 +2656,7 @@ Dim new_time As Double
 
 ' velocidad I=240 -> t=60/240=1/4=0,25 la negra, para llegar a W / por 2 6 veces= 0,00390625
     new_time=Timer
-    If old_time - new_time > 0.005  Then  ' 0.005208325 eltick maschico
+    If old_time - new_time > 0.005  Then  ' 0.005208325 eltick maschico 5 mseg
        duracion (old_time,deltatime)
     EndIf 
 '    dato1=*memoria: memoria += 1
@@ -2733,13 +2674,14 @@ Dim new_time As Double
 
      Select Case  dato1 
          Case 144 ' on
-
-            noteon dato2,dato3,pmTk(calltoca+32).canalsalida, pmTk(calltoca+32).portout
+ChangeProgram pmTk(tocatope+32).patch,pmTk(tocatope+32).canalsalida ,pmTk(tocatope+32).portout
+            noteon dato2,dato3,pmTk(ntoca+32).canalsalida, pmTk(ntoca+32).portout
 
 '     Print   dato1;" ";  dato2;" "; dato3
            
          Case 128 'off
-            noteoff dato2,pmTk(calltoca+32).canalsalida,pmTk(calltoca+32).portout 'message(2)'
+
+            noteoff dato2,pmTk(ntoca+32).canalsalida,pmTk(ntoca+32).portout 'message(2)'
 '     Print   dato1;" ";  dato2;" "; dato3
 
      End Select
@@ -2754,7 +2696,8 @@ Dim new_time As Double
      jgrb += 1
      If ntoca > 1 And jgrb=1 Then ' detiene la acumulacion de deltatime en PlayTocaAll 
           arrancaPlay=1
-          Print #1,"arranco play "
+          Print #1,"arranco play o sea el usuario empezo a tocar la siguiente pista"
+ 
      EndIf
 
      CargaIn( jgrb).modo=dato1
@@ -2770,11 +2713,141 @@ Dim new_time As Double
        tocaparam(ntoca).maxpos=pmTk(ntoca+32).MaxPos
      EndIf
     '    Print #1,"partes ",partes
-     
+   '  tocaparam(ntoca).portout=pmTk(ntoca+32).portout
+   '  tocaparam(ntoca).portin =pmTk(ntoca+32).portin
+   '  tocaparam(ntoca).canal=pmTk(ntoca+32).canalsalida
+   ' tocaparam(ntoca).patch =pmTk(ntoca+32).patch
+
   EndIf
 End Function
 '--------------------------------------
+Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi)
+' tocap As vivo, ntkp As Integer,tocaparam  As ejecparam  Ptr) 
+    Dim As Long j, driver=0
+    Dim As String nombreg
+    Dim As Integer ngm
+
+      nombreg =titulos(ntkp+32) ' no tiene path , extension y [nro]
+Print #1,"GrabarMidiIn NombreCancion, nombre ",NombreCancion," --- ",nombreg
+      driver=InStr(nombreg,":\")
+      If  NombreCancion > "" And driver=0 Then
+          nombreg=NombreCancion+"\"+nombreg
+      Else 
+        Print #1," va a grabar sin path ",nombreg
+      EndIf
+Print #1,"nombre de archivo con path grabando de ejec",nombreg
+ 
+     par.tocap.portout =pmTk(ntkp+32).portout
+     par.tocap.portin   = pmTk(ntkp+32).portin
+     par.tocap.patch   =pmTk(ntkp+32).patch
+     par.tocap.canal   =pmTk(ntkp+32).canalsalida
+     par.tocap.maxpos   =pmTk(ntkp+32).MaxPos
+   
+      Print #1,"GrabarMidiIn titulos   ", nombreg
+      Print #1,"GrabarMidiIn MAXPOS ",par.tocap.maxpos
+      Print #1,"GrabarMidiIn delta "     ,par.tocap.delta
+      Print #1,"GrabarMidiIn nombre " ,par.tocap.nombre
+      Print #1,"GrabarMidiIn portout " ,par.tocap.portout
+      Print #1,"GrabarMidiIn portin "   ,par.tocap.portin
+      Print #1,"GrabarMidiIn patch "   ,par.tocap.patch
+      Print #1,"GrabarMidiIn canal "   ,par.tocap.canal
+      nombre=Trim(nombreg)
+      ngm=FreeFile 
+Print #1,"GrabaMidiin freefile ngm ",ngm
+    if   Open( nombreg  For Binary Access Write As #ngm)  <> 0 Then
+              Print #1,"Imposible Grabar " + nombreg 
+    Else  
+         Put #ngm,, par.tocap '1ero parametros como siempre o en cabezado
+         Put #ngm,, par.toc.trk()   '2do datos  
+         FileFlush(ngm) 
+    End If
+Print #1,"grabado ARCHIVO ", nombreg
+      Sleep 100
+      Close ngm
+
+
+End Sub
+
+
+
+Sub crearsecuencia(Track() As sec, posn As Integer, ntk As Integer)
+' ON LISTOS, FALTA LOS OFFS
+'Track(ntk).trk(posn,1) 1 a 12 va la segunda..
+' la melodia se carga todo en (posn,1) el acorde en (posn,x) x=2 a 12
+' recibe una instancia de Track no todo el vector
+' cuadno se carga el acorde se hara un sort del mismo incluido la 
+' nota existente en posicion 1 y se ordenara de menor a mayor de modo que
+' siemrpe resultara facil dar ON a todas al mismo tiempo y luego dar off
+' de menro a mayor, 1er paso para mantener el play de acordes con notas de 
+' distinto tamaño.
+' si el usu ingresa acorde en campo OK se pone 1, sino sera una nota ordinaria 
+' con 0 (eso se hará en sub cursor...) <HACER>
+' acorde irá de 1 a 12 , 1 no hay acorde 12 lo maximo
+' si cargo un roll debo calcualr la Notapiano
+Dim As Integer I,J,cnt
+Dim vecs(1 To 12) As poli
+'Print #fs,"ntk --------------------------",ntk,posn
+'
+
+For i=1 To 12
+'Print #fs, i, Track(ntk).trk(posn,i).nota, Track(ntk).trk(posn,i).dur
+vecs(i).dur = CInt  (Track(ntk).trk(posn,i).dur )
+vecs(i).nota = Track(ntk).trk(posn,i).nota
+vecs(i).vol = Track(ntk).trk(posn,i).vol
+vecs(i).pan = Track(ntk).trk(posn,i).pan
+vecs(i).pb = Track(ntk).trk(posn,i).pb
+
+Next i
+' volumenm cero si dur esta entre 46 a 90 o de 136 a 180
+
+'Print #fs,"--------------------------"
+
+    If Track(ntk).trk(posn,1).acorde > 1 Then 
+      cnt= Track(ntk).trk(posn,1).acorde
+ '     Print #fs,"acorde ",cnt
+      qsort( @vecs(1).dur, cnt, SizeOf(poli), @QCompare )
+'      Print #fs,"despues de sort muestra"
+      For i=1 To cnt
+'        Print #fs, vecs(i).nota,vecs(i).dur
+      Next i
+'      Print #fs,"fin muestra sort "
+    EndIf      
+For i=1 To 12
+Track(ntk).trk(posn,i).dur  = CUByte(vecs(i).dur)
+Track(ntk).trk(posn,i).nota = vecs(i).nota
+Track(ntk).trk(posn,i).vol  = vecs(i).vol
+Track(ntk).trk(posn,i).pan  = vecs(i).pan
+Track(ntk).trk(posn,i).pb   = vecs(i).pb
+
+
+Next i
+' el maximo valor  de estos ticks es 128 la q sigue de semifusa garrapatea
+' y eo maximo de duracion es 1,75 * 128 segun pesoDur=224 ticks
+' ergo a tick lo puedo representar por un UBYTE como siempre
+' SUPONGO ACORDE DE DISTINTAS DURACIONES
+ FOR  I= 1 TO 12 'PTrack.trk(posn,I).acorde
+    If Track(ntk).trk(posn,I).nota > 0 And  Track(ntk).trk(posn,I).dur >= 1 And _ 
+       Track(ntk).trk(posn,I).dur <= 180 Then    
+       If posn = 1 Then 
+          Track(ntk).trk(posn,I).tick=0
+       Else   
+          Track(ntk).trk(posn,I).tick=(pesoDur(Track(ntk).trk(posn,I).dur)/d7)*128 + _
+          Track(ntk).trk(posn-1,1).tick
+       EndIf      
+      ' guardar si es > 0 ON, notapiano,vol,pan,pb,inst y guargar tick=0
+       Print #5,posn;",";"ON,";Track(ntk).trk(posn,I).nota;",";Track(ntk).trk(posn,I).vol; ","; _
+           Track(ntk).trk(posn,I).nnn;",";Track(ntk).trk(posn,I).tick;","; _
+           (Pesodur(Track(ntk).trk(posn,I).dur)/d7)*128;",";Track(ntk).trk(posn,I).dur 
+
+
+    EndIf 
+ Next I
+
+End Sub
+'---------------
+
 Sub metronomo ()
+ChangeProgram ( 1, 1, 0)
 Do
       'noteon(50,50,1,0)
       'duracion(Timer, 0.1)
@@ -2853,7 +2926,7 @@ Print #1,"PlayTocaAll 3"
 Dim  topeDuranteGrabacion As integer
 Print #1,"nPLAY VERDE: maxgrb ",maxgrb
 'canal=1 ' por ahora
-portsal=0 ' por ahora
+portsal=0 ' por ahora ???
 
 Print #1,"playtoca maxgrb ", maxgrb
 Print #1,"playtoca tocatope ", tocatope
@@ -2876,12 +2949,13 @@ Print #1,"topeDuranteGrabacion ", topeDuranteGrabacion, " PISTAS"
 '      ChangeProgram ( tocaparam(pis).patch , tocaparam(pis).canal, tocaparam(pis).portout)	'
 '
 'Next pis
+CONTROL2=0
 
-Print #1,"empieza el play de ejec, maxgrb, CONTROL1 ", maxgrb,CONTROL1
-For j=1 To maxgrb
-  If CONTROL1 = 1 Then
-     alloff( 1 ,portsal )
-      CONTROL1=0
+Print #1,"empieza el play de ejec, maxgrb, CONTROL2 ", maxgrb,CONTROL2
+For jToca=1 To maxgrb 
+  If CONTROL2 = 1 Then
+     alloff( 1 ,pmTk(jToca+32).portout )
+      CONTROL2=0
       repro=0
       Exit For
   EndIf  
@@ -2906,9 +2980,9 @@ For j=1 To maxgrb
      Continue For ' saltear no tocar 
     EndIf 
 
-    dato1=Toca(kply).trk(j).modo
-    dato2=Toca(kply).trk(j).nota
-    dato3=Toca(kply).trk(j).vel
+    dato1=Toca(kply).trk(jToca).modo
+    dato2=Toca(kply).trk(jToca).nota
+    dato3=Toca(kply).trk(jToca).vel
     portsal=pmTk(kply+32).portout '04-05-2022
 
      If  dato1=1 Then ' marcamos con 1 un delta de tick en modo
@@ -2921,7 +2995,12 @@ For j=1 To maxgrb
        EndIf
 
      EndIf
- 
+' PARA CALCULO DE RETARDO DEL INICIO DE PLAY CANCION RESPECTO PLAYTOCAALL
+' HABILITAMOS SOLO PARA PRUEBAS ,tenemos 2.7 mseg de retardo ,medio Tick (5mseg)
+' If  jToca=1 Then
+'  Print #1, "playTocaAll inicio datos:", Timer
+'EndIf
+'--------------------------------------
 'Print #1,"dato1", dato1
      Select Case  dato1 
          Case 144 ' on
@@ -2932,8 +3011,10 @@ For j=1 To maxgrb
            'Print #1,"OFF ",dato2,pmTk(kply+32).canalsalida ,pmTk(kply+32).portout  
      End Select
  
-   Next kply
-Next j
+  Next kply
+''''Sleep 1,1 ' para que corranmas de un thread ¿??? 20-06-2022 porque lo puse?
+Next jToca
+''jToca=0
 repro=0
 SetGadgetstate(14,0)
 Sleep 1
@@ -2949,6 +3030,8 @@ Sleep 1
      alloff( pmTk(kply+32).canalsalida,portsal )  
      allSoundoff( pmTk(kply+32).canalsalida, portsal ) 
   Next kply
+
+  
 End Sub
 
 

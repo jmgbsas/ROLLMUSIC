@@ -39,19 +39,20 @@ Common Shared As string pathdir,nombre,nombreMidiIn
 common Shared As String NombreCancion, NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista',pistacreada
 Common Shared As cairo_t  Ptr c, c2
-Common Shared surface As Any Ptr
+Common Shared As Any Ptr surface,surf2 
 Common Shared As FT_Face ftface
 common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu ,threadmetronomo
+Common Shared As Any Ptr thread4
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig
 Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Common Shared  portsal As UByte, patchsal As ubyte
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp, npi,calltoca,npo
-  
+
 
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0
-Common Shared As Integer  posicion,posicionOld,posn
+Common Shared As Integer  posicion,posicionOld,posn,terminar
  posicion=0:posicionOld=0:posn=0
  
 
@@ -96,6 +97,7 @@ Dim Shared As Integer ContadorError=0
 'Dim As Long event=0
 
 #Include "RTMIDIDEC.BI"
+
 
 On  Error GoTo errorControl
 '------
@@ -413,11 +415,8 @@ Sub BorrarPista (titulo As String)
 deleteFileA (StrPtr(titulo))
 
 End Sub
-
 '
-
 '
-
 ' error
 errorControl:
 ProgError(0) = "No error"

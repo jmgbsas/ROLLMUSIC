@@ -178,43 +178,55 @@
     16 ) En algun Futuro: exportar a MusicXml o midi para poder interactuar con otros programas.
            Como tambien importar...
     IV ) USO VENTANA CONTROL PARA GRABAR EJECUCIONES POR TECLADO MIDI,
-    1 ) MIDI-IN GRABACION: (EN DESARROLLO) version 4566 . 
+        NOTA: En ciertas situaciones, Cuando se desea Cerrar el Programa podria ser necesario pulsar 
+                  2 veces el cierre en la ventana de Control. 
+    1 ) MIDI-IN GRABACION: (EN DESARROLLO) version 4568 . 
          YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN grabadas mediante la ejecucion EN UN O CONTROLADOR 
          MIDI EXTERNO  o TECLADO externo  real concectado su salida MIDI-OUT  al MIDI-IN de la PC.
          Las pistas se arman tal cual se grabaron sincronizadas respecto de la pista 1.
           Para ello no hace falta levantar el Roll Grafico.
           Pasos para Grabar 
 
-         a) Dar check a la pista a grabar en la columna 'G' de la 2da lista de pistas. debajo del menu
-          'Cambiar Tiempo....' 
-         b) pulsar el boton Rojo Grabar y armado de la pista, pedirá un nombre de pista (sin extension)
-         c) ajuastar portSal,patch, canal segun sea el instrumento usado de sonidos     
+         a) Dar check a la pista a grabar en la columna 'G' de la 2da lista de pistas. debajo del menu, el programa
+             solicitara un nombre de pista(sin extension ej TEMA-001).   'Cambiar Tiempo....' 
+         b) En menu Control  Dispositivos seleccionar Puerto MIDI-OUT y puerto MIDI-IN desde donde se grabara
+             la entrada midi. Abrir el Puerto MIDI-OUT.
+         c) mantener la seleccion en 'G' pulsar en los botones PortSal, canal y Patch en ese orden para finalmente
+             elegir un instrumento si el dispositivo usa Patchs. (siempre pulsar esos 3 botones en ese orden para cualquier
+             pista nueva) de esa forma se graba en el archivo nuevo de esa pista dichos parametros.
          d) Ir al menu de Control arriba en Reproducir y elegir "Reproducir MIDI-IN (teclado) por MIDI-OUT" 
           La grabacion comenzara al llegar la 1er nota midi,,tocar normalmente, para detener la grabacion pulsar 
           el boton Parar de Color Negro de esa misma lista y de Ese grupo de 3 botones  (negro rojo verde). 
          e) Deschequear la columna 'G' y para escuchar lo grabado chequear la columna 'S' y pulsar el Boton Verde Play.
          f)  Para seguir grabando otra pista escuchando la anterior:
-             Pulsar check en una pista nueva en columna 'G' , elegir PortSal, Patch o Canal segun corresponda.
+             Pulsar check en una pista nueva en columna 'G' (deseleccionar cualquier columna en 'S'), elegir PortSal, Patch 
+             o Canal segun corresponda. (si se usan los mismos ports MIDI-OUT y MIDI-IN no hace falta abrirlos de nuevo,
+             si se usan otros abra que seleccionarlos y abrirlos )
           Se da o mantiene el check en la pista anteriormente grabada en columan 'S' para poder escucharla  (sonido).
-          Al escuchar empezar a tocar al unisono en el momento que se desee. Terminar pulsando Stop boton negro.
+          Al escuchar empezar a tocar al unisono en el momento que se desee en la nueva pista seleccionada con 'G'. 
+          Terminar pulsando Stop boton negro.
           Luego para escuchar ambas pistas deschequear la pista grabada en 'G', ninguna pista debe quedar con un 
           check en la columna 'G'. Chequear todas las pistas grabadas en columna 'S', para poder escucharlas.
           Reproducir todas las pistas grabadas pulsando el boton Verde Reproducir o Play. Tambien se puede 
-         es cuchar 1 sola o mas dejando chequeadas las que se quiere oir y deschequeadas las que no.
+          escuchar 1 sola o mas dejando chequeadas las que se quiere oir y deschequeadas las que no.
           Cada  pista se va grabando al dar stop con el nombre entrado de la pista mas una extension *.ejec
           mas un comienzo similar a las pistas de cancion con tracks manuales,,,(01)..(09),en vez de [01]..[09] 
           Nota: El orden de las pistas grabadas en archivo, se puede cambiar cambiando los nombres de archivos, sonara
           de igual forma. Los retardos entre pistas se transforman en ticks agregados de modo que el retardo ya no se usa mas
           en la reproduccion.
-           (falta tambien  sincronizar la ejecucion si se puede.... a una cancion manual etc etc,aunque ticks de midiIn
-           y pasos de manual no estan a tempo, solo se podra sincronizar el  comienzo..mas sincronizacion requeriria
-           pasar los tracks manuales a ticks de ejecucion o al reves de ticks a duracion con lo ya echo de ingresar desde
-           teclado en manuales..o ir calculando ticks en manual o pasos en Ticks.)
-
+          Se ha  sincronizado solo el comienzo de la ejecucion de una cancion manual junto con las ejecuciones. 
+          Tambien se puede grabar una pista nueva de ejecucion teniendo un Roll o Track o cancion cargado (no eficiente por ahora),
+          se  reproducira la parte manual (roll, track o cancion) ,mientras se graba la nueva pista junto a otras pistas 
+          si las hay, grabadas. (la perfomance baja hay que hacer mas pruebas)
+          Al Cargar Pistas MIDI-IN enelmenude Archivo, se cargan todos los archivos *.ejec existentes en ese directorio
+          y se abren los puertos de salida que usan esos archivos automaticamente,solo resta chequear con 'S' los
+          que se quieran escuchar y darle Reproducir Boton Verde,,,     
          g) Se puede usar Crear Cancion y abrir un Directorio de cancion para ubicar una ejecucion de teclado
               Para ello se procede igual que al crear o usar un directorio de Cancion y luego abrir Pistas Midi en el menu Archivo
               casi abajo de todo., De ese modo una cancion manual y una ejecucion desde teclado podran estar en un mismo
               directorio.
+
+        NOTA: Cuando se desea Cerrar el Programa podria ser necesario pulsar 2 veces el cierre en la ventana de Control.
 
           d) Cambiar PATCH de una pista de ejecucion por teclado MIDI-IN. con la pista seleccionada para reproducir como
              antes pulsar arriba el boton PATCH ,deseleccionar el que tenga una X dando click para que quede en blanco
