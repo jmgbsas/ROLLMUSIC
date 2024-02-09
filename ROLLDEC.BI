@@ -65,6 +65,29 @@ end Operator
 #Define  HH_DISPLAY_INDEX 0002
 #Define  HH_DISPLAY_SEARCH 0003
 #Define  HH_CLOSE_ALL  0018
+Const CHECK_PISTA_ROLL=5
+Const NoGrabar=0
+Const BTN_LIBERADO=0
+Const GrabarPatronaDisco=4
+Const GrabarPistaEjecucion=1
+Const PatronDeEjecucionCompleto=3
+Const LISTA_DE_PISTAS = 3
+Const LISTA_DE_EJECUCIONES   =4
+Const CHECK_SELECCION_EJECUCION=6
+Const CHECK_GRABAR_EJECUCION    = 7
+Const GRUPO_BTNS_MIDI           =8
+Const BTN_MIDI_PARAR        = 9
+Const BTN_MIDI_GRABAR     = 10
+Const BTN_MIDI_EJECUTAR   = 14
+Const GRUPO_BTNS_MANUAL =13
+Const BTN_ROLL_PARAR    = 11
+Const BTN_ROLL_EJECUTAR = 12
+Const BTN_ROLL_GRABAR_MIDI = 15
+Const BTN_PARAM_PORTSAL =16
+Const BTN_PARAM_VOL        = 17
+Const BTN_PARAM_PAN        =18
+Const BTN_PARAM_PATCH    = 19
+Const BTN_PARAM_CANAL    = 20
 
 Dim HtmlHelpA As Function (hwndCaller As HWND,pszFile As LPCSTR,uCommand As UINT,dwData As DWORD_PTR) As HWND
 Dim  HTMLHelp As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
@@ -572,8 +595,9 @@ Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 17500000,8750000,4375000,2187500,1093750,546875,273438,136719,68360, _ '163 171
  6666666,3333333,1666666, 833333, 416666,208333,104166, 52083,26042,0,0 }  '172 182
 
-Dim Shared As String nombreArchivo, TCompas,menuOldStr
-
+Dim Shared As String nombreArchivo, TCompas,menuOldStr, ticksdefault,nombrePatron
+Dim Shared As Integer nroCompasesPatron, nroTicksPatron
+nombreArchivo="" : ticksdefault="240"
 Dim Shared As UByte Vfuerte=120,Vsemifuerte=100,Vdebil=80
 TCompas ="4/4"
 'Dim Shared As Integer MaxPosTrack(0 To 32) ' cada track tendra su max pos
@@ -847,7 +871,7 @@ Declare Function lugarNota (lugar As integer) As Integer
 Declare Sub metronomo ()
 
 COMMON Shared As Long eventc
-Common Shared As hwnd hwndC, hwndListBox, hwndListEjec
+Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA 
 Common Shared As string pathdir,nombre,nombreMidiIn
 common Shared As String NombreCancion,NombrePista
@@ -857,7 +881,7 @@ Common Shared As Any Ptr surface,surf2
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo
 Common Shared As Any Ptr thread4, threadGrabamidi
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
-Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx
+Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx, HabilitarPatrones
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn,terminar
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo
@@ -902,7 +926,7 @@ Type midicod Field=1
  As UByte  vel
  As Integer partes
 End Type
-Redim shared CargaIn ( 1 To 4000) As midicod
+Redim shared CargaIn ( 1 To 384000) As midicod
 ' a disco puedo grabarsolo CargaIn para cada ejecucion y al cargarla reconstruir en memoria
 ' los Toca,,,,eso es!!! y sumando todas las partes y dividiento por TickChico obtengo 
 ' elmaxposy por ende el valor a dimensioar el Toca....
@@ -961,7 +985,7 @@ Dim Shared As Double  t2call=0, t1play=0
 
 Type paramGrabamidi
   As vivo toc
-  As Integer  tocatope
+  ''As Integer  tocatope ''' no hace falta esta estructura solo contiene una pista
   As ejecparam tocap
 End Type
 

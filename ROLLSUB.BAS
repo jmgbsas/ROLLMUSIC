@@ -331,7 +331,7 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
 '------zzz
 
    For noct = desde To hasta -1 ' 01-02-2022
-     For i= 0 To 11 ' gracias a esto anda acordes¿?
+     For i= 0 To 11 ' gracias a esto anda acordesï¿?
        If i= 12-nota And noct = estoyEnOctava Then
          Continue For
        Else    
@@ -452,7 +452,7 @@ On Local Error GoTo errorSepara
    velocidades(j)
   EndIf
  Next k
- ' si sigue es porque falló no hay ninguna figura con esa duracion
+ ' si sigue es porque fallï¿½ no hay ninguna figura con esa duracion
  lb=lb-1
  acumx=0
  ' S print #1,"SEGUIMOS NO SE ENCONTRO FALTA  POSN J "; J
@@ -787,7 +787,7 @@ On Local Error GoTo errorRecal
          If carga=1 Then
  '------zzz
             For noct = desde To hasta
-              For i2= 0 To 11 ' gracias a esto anda acordes¿?
+              For i2= 0 To 11 ' gracias a esto anda acordesï¿?
                  If Roll.trk(j,(i2 +(noct -1) * 13)).nota = 0 Then
                     Roll.trk(j,(i2 +(noct -1) * 13)).nota = 181
                     Roll.trk(j,(i2 +(noct -1) * 13)).dur  = 0
@@ -842,7 +842,7 @@ EndIf
 End Sub
 ' ------
 Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As ubyte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As integer)
-' estoy en Roll el cual es único tengo entonces definido las globales NB y NA por default
+' estoy en Roll el cual es ùnico tengo entonces definido las globales NB y NA por default
 ' recorro la columna
 Dim As Integer i1,j1=0, DurMen,DurMay
 
@@ -1869,7 +1869,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
   ' 0.1 ==> [Archivo]
    If mousex > 46 And mousex< 111 And mousey < 50  Then
     cairo_set_source_rgba c, 0, 1, 0, 1
-     font=18 ' el menu esta diseñqdo para este tamaño 
+     font=18 ' el menu esta diseñado para este tamaño 
     If MouseButtons And 1 Then
      menuNew = 3  ''
     EndIf
@@ -2967,7 +2967,7 @@ End Sub
 Sub EntrarTeclado ()
 
 
-Dim default As String
+Dim As String default, default2
  Dim  As Integer ni
  
 Select Case  menuOldStr 
@@ -2980,7 +2980,7 @@ Select Case  menuOldStr
             Next ni
 
 default=Str(CompasX)
-NombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
+nombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
             compasX=CInt(nombreArchivo)
             If compasX > NroCompas Then
                compasX=Nrocompas
@@ -3006,17 +3006,44 @@ NombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
           EndIf  
 
  Case "[TEMPO]"
-    default=Str(tiempoPatron)
-    Print #1,"llego a TEMPO en entrar tecla",NombreArchivo 
-
-    NombreArchivo = InputBox("Ajuste Tempo" ,"Entre un Tempo ",default)
-      
-    Print #1,"nombreArchivo de click ok",nombreArchivo
-    tiempoPatron= cint(nombreArchivo) '08-01-2022 de doble a int
-    Print #1,">>>>>>>>TIEMPO PATRON NUEVO>>>>>>>>>>,pubi", tiempoPatron,pubi
-    If tiempoPatron = 0 Then
+    
+' debo generar un default para manual 60 y oro para ejecs 240
+   If  EJECCARGADA Then ' cargar lo que hhay aen el archivo
+       If  ticksdefault <> "" Then
+           default2=ticksdefault
+       Else
+            default2=Str(tiempoPatronEjec)
+       EndIf
+       ticksdefault = InputBox("Ajuste Tempo Ejec" ,"Entre un Tempo ",default2)
+       tiempoPatronEjec= cint(ticksdefault) '08-01-2022 de doble a int
+   Else
+       If  ticksdefault<>"" Then
+           default=ticksdefault
+       Else
+          default=Str(tiempoPatron)  ' manual
+       EndIf 
+     ticksdefault = InputBox("Ajuste Tempo Manual" ,"Entre un Tempo ",default)
+      tiempoPatron= cint(ticksdefault) '08-01-2022 de doble a int
+   EndIf
+    Print #1,"llego a TEMPO en entrar tecla",ticksdefault 
+   
+' o sea el default de tiempoPAtron para manual es 60, pero para ejecuciones es 240
+If  EJECCARGADA=FALSE Then
+    If tiempoPatron = 0  Then
        tiempoPatron=60
-    EndIf
+       TickPlay=TickChico ' equivale a 240
+   EndIf
+EndIf
+If  EJECCARGADA = TRUE  Then
+   If tiempoPatronEjec=0 Then
+      tiempoPatronEjec=240
+      ticksdefault="240"
+     TickPlay=TickChico
+  Else 
+     TickPlay=TickChico*240/tiempoPatronEjec
+  EndIf
+EndIf
+
  Case "[FACTOR]"
    default=Str("1.25")
     Print #1,"llego a TEMPO en entrar tecla",NombreArchivo 
@@ -3438,10 +3465,10 @@ Sub GrabarTrack (ntk As integer)  'Error seguro aca nota=181 posicion1
 ' individual sino como el track de 2 dimensiones por lo tanto esta
 ' subruttina debe copiarse a otra y cambiarle el nombre diciendo <<GrabarCancion tipo carpeta>>
 ' como 1er paso deberia pasar de RollaTrack en memoria para que quede el Track
-' en edicion con todo lo modificado en Roll. dEspue sí, grabar el vector
+' en edicion con todo lo modificado en Roll. dEspues sí, grabar el vector
 ' multiple con todos los tracks. Esa serai al forma compacta de grabar una
 ' cancion, OTra forma seria crear una carpeta y grabar todos los tracks o pistas 
-' individualmente y ahi sí usaría esta sub, teniendo en cuenta de que si el track 
+' individualmente y ahi si usaria esta sub, teniendo en cuenta de que si el track 
 ' grabado esta en edicion en Roll 1ero pasar de rollatrack ..
 ' SE SUPONE QUE TODOS LOS VALORES O PARAMETRO SD TRACK EN ESTE MOMENTO 
 ' ESTAN EN LAS VARIABLES SIMPLES ADEMAS DEL VECTOR POR EOS NO HACE FALTA
@@ -3739,7 +3766,7 @@ mitipo=  CInt(tipo)
               EndIf
               If mitipo=2 Then
               Print #1,"PORT SELECCIONADO en menu ",portin
-                pmTk(ntk).portin =CUByte(portin)
+                pmTk(ntk).portin =CUByte(portin )
 
               EndIf
 
@@ -3749,7 +3776,7 @@ mitipo=  CInt(tipo)
                  EndIf
               Else
                 If MaxPos > 1  And ROLLCARGADO  Then
-                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
+                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undoï¿½?
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
                 EndIf  
               EndIf  
@@ -3778,31 +3805,35 @@ mitipo=  CInt(tipo)
 cierroport=0
 End Sub
 
-Sub  selportEjec (ByVal tipo As Integer,ntkp As Integer )  ' list de ruso
+Sub  selportEjec (ByVal tipo As Integer,  ntpk As Integer )  ' list de ruso
+' ntpk numero de track de ejecucion en el que ajustamos el port in
+Print #1,"===> selportEjec "
 Dim As hwnd haw,hwl
-Dim As Integer mitipo,x0,y0,Posx,Posy 
+Dim As Integer mitipo,x0,y0,Posx,Posy  
 ScreenControl GET_WINDOW_POS, x0, y0
 Posx=x0 +50
 Posy=y0 +100
 Dim cad As string
+' el port default de entrada y de salida cuandi envio a rtmidi es el cero fisico 
+' pero para esta logica es el 1, es mejor usar otra variable
  
 ''portsout = port_count (midisal)
 ' ESTOY ABRIENDO LSO PORT SEGUN LO ELEGIDO CADA VEZ QUE SE ELIJA UNO
 ' DEJA DE ESTAR DISPONIBLE PUES YA ESTA ABIERTO, PONDREMOS UN MENSAJE ABIERTO CREO ES MEJOR 
-    If NombreCancion > "" Then
-    Else
-       ntkp=0
-    EndIf
+ '   If NombreCancion > "" Then
+ '   Else
+ '      ntkp=0
+ '   EndIf
 
 
 
-mitipo=  CInt(tipo)
+mitipo=  tipo
 '' => desde acaecho con tool del ruso no anda muy bien
      haw=OpenWindow("MIDI",Posx,Posy,450,400,WS_VISIBLE, WS_EX_TOPMOST )
      hwl=  ListViewGadget(1,10,10,350,400,,,,32,LVS_SINGLESEL  )
      listports()
-  
-
+     Print #1,"portin ", portin
+Print #1, "ntkp ",ntkp
      If mitipo = 1 Then ' out
        AddListViewColumn(1, Str(UBound (listout)+1 )+" Salidas  MIDI",0,0,250)
            For aa As Integer=0 To UBound (listout) 
@@ -3847,6 +3878,7 @@ mitipo=  CInt(tipo)
                If mitipo=2 Then
                  portin=GetItemListView
                EndIf 
+
                cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)
                If  mitipo=1 then           
                   If InStr(cad,"x") >0  Then
@@ -3872,8 +3904,8 @@ mitipo=  CInt(tipo)
               'menunew=0
               '''portout = GetItemListView()
 
-              If mitipo=1 Then
-                Print #1,"PORT SELECCIONADO en menu ",portout
+              If mitipo=1 Then ' PORT SLIDA
+                Print #1,"PORT SELECCIONADO en menu ",portout 
                 Print #1,"Nombre PORT SELECCIONADO  ",listout(portout)
                 For  i As Short =1 To 32
                       If CheckBox_GetCheck( cbxejec(i))= 1  Then
@@ -3881,8 +3913,8 @@ mitipo=  CInt(tipo)
                      EndIf
                 Next i
               EndIf
-              If mitipo=2 Then
-                  Print #1,"PORT SELECCIONADO en menu ",portin
+              If mitipo=2 Then ' PORT ENTRADA
+                  Print #1,"PORT SELECCIONADO en menu ",portin 
                   Print #1,"Nombre PORT SELECCIONADO  ",listin(portin)
 
                 For  i As Short =1 To 32
@@ -3984,7 +4016,7 @@ Posy=y0 +100
                      GrabarRollaTrack(0)
                Else
                   If ROLLCARGADO=TRUE  Then
-                   GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
+                   GrabarArchivo (0) ' graba roll en edicion, borro todo el undoï¿½?
                   ' no el undo dolo se debe borrar al ahcer nuevo creo
                   EndIf  
                EndIf  
@@ -4323,7 +4355,7 @@ Dim  As Integer i3
            EndIf
 Sleep 10
    If teclado=1 Then
-       cancel_callback(midiin(pmTk(ntkp+32).portin ))
+       cancel_callback(midiin(pmTk(ntkp+32).portin))
        Dim k1 As Integer
        k1=pmTk(ntkp+32).portout
        Print #1,"midiout ",k1, *nombreOut(k1)
@@ -4391,7 +4423,7 @@ Sleep 10
 '    cerrar 0
 '    Close
  
-            
+ DeleteObject(Cast(Any Ptr,BRUSH))      
 
 End Sub
 '-------
@@ -4524,7 +4556,7 @@ Sub EscalaAlternativa (ByRef tipoescala_alt As integer, byref notaescala_alt As 
 ' veo si estoy en sostenidos o bemoles
 'Print #1,"EscalaAlternativa tipoescala_num_ini ",tipoescala_num_ini
 'Print #1,"EscalaAlternativa notaescala_num_ini ",notaescala_num_ini
-' ¿y la menro armonica la considero tambien = 2 ?
+' ï¿½y la menro armonica la considero tambien = 2 ?
 If tipoescala_num_ini =2 Or tipoescala_num_ini =3 Or tipoescala_num_ini =4 Then  ' es una escala Menor debo buscar la relativa Mayor
    notaescala_alt=notaescala_num_ini +3  
  

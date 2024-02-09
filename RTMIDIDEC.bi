@@ -34,8 +34,11 @@ Dim Shared msgin  (1 To 8192) As UByte ' message in futuro secuencia veremos si 
 Dim Shared p as UBYTE Ptr = @message(1) 
 Dim size As UInteger<64> 
 'Dim sizeptr As UInteger<64> Ptr = @size
-Dim Shared As UInteger portsin=0, portsout =0
+Dim Shared As UInteger portsin=0, portsout =0 'constantes, 
+'no confundir con portin y portout que son variables
+
 Dim Shared As integer tiempoPatron=60 ' cuantas negras en un minuto default
+Dim Shared As integer tiempoPatronEjec=240
 Dim Shared As Double old_time_on=0,old_time_off=0,old_time_on_int=0,old_time_off_int=0
 Static Shared As Integer jply=0, finplay=0,indEscala=1
 Dim Shared As double FactortiempoPatron=1
@@ -48,12 +51,30 @@ Dim Shared As double FactortiempoPatron=1
 ' una X a una velocidad de I=240 tiene un tiempo de 0,078125 seg
 ' en la 1er linea de figuras..
 ' pero porlalineamas chica 37 a 45 seria mi Tick mas chico [TickChco]
-Static Shared As Double TickChico=0.005208325 ''seg 5 misiseg..
+Static Shared As Double TickPlay=0.005208325 ''seg 5 miliseg.. para I=60
+Static Shared As Double TickChico=0.005208325 ''seg 5 miliseg.. para I=60
+' en la 5ta linea de duracions  0.0208/4 =TickChico a I=240
+' " O "," P "," I "," L "," F "," E "," X "," H "," W ",   <-- la 8 es H
+'2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,[0.0208333] ,0.01041666, _ '37 45
+'"3O ","3P ","3I ","3L ","3F ","3E ","3X ","3H ","3W ", _ ' 37 45
+' es un tresillo de H -> 3H entonces cuantos tresillos de H hay en un compas?
+' 128 * 3= 384 TicksChico
+' el TickChico vale en tiempo 0.0208 a I=60, pero a I=240 vale 1/4 o sea 0.005 mseg aprox
+'  tresillo es dividir la figura en 3 partes,la redonda es 1 compas.
+' en H es la 128 division del compas y esa division dividido por 3 es el tresillo de H
 ' sale del valor mas chico en la 8va posicion de la linea 2.666666= o sea 3H=0.0208333
 'y para I=240 es/ 4 ..0.0208333/4 =0,005208325 tresillo de H--
-' un 3H  al ritmo de I=240 tendrá 1/TickChico = 1/0,005208325= 192 partes o ticks
-' o sea si quiero 1000 negras debere tener 192 mil posiciones....ufff
-'cada negra podria tener 192 partes de 3H..
+' porque 2.6666 es para I=60 y en 240 1/4 veces mas chico...
+' en I=60 que cantidad de TickChico hay en 1 compas ? 4 I = 1 campas
+' 128*3 =  384 Ticks de 3H hay en un compas no impota el tempo o velocidad
+' una negra seran 1/4= 384/4= 96 Ticks ppor negra
+' o sea si quiero 1000 negras debere tener 96 mil posiciones....ufff
+' y si quiero 1000 redondas debere tener 384 mil posiciones. o sea 1000 compases
+'cada negra podria tener 96 partes de 3H..
+' todo esto es a velocidad 240 o sea 240 negras por minuto,c/negra =60/240= 0,25 segundos
+' para determinar un compas por ejemplo a 120 negras  por minuto un compas
+' son 4 negras  o sea durara en segundos 4*60/120=2 seg un compas a 120 dura 2 segundos
+' 1 seg a 240, 4 seg a vel 60, a 90 = 4*60/90= 24/9 = 2,666 segundos 
 Dim Shared As float relDur (0 To 182) => {0, _  
 4 ,2 , 1.0, 0.50,0.250,0.1250 ,0.06250,0.031250,0.0156250, _ ' 1 9 
 5 ,2.5,1.25,0.625,0.3125,0.15625,0.078125,0.0390625,0.01953125,_ ' 10 18

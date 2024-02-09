@@ -33,7 +33,7 @@ Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota
 common Shared As Integer  ANCHO,ALTO
 Common Shared As FLOAT font
 COMMON Shared As Long eventc
-Common Shared As hwnd hwndC, hwndListBox
+Common Shared As hwnd hwndC, hwndListBox, hwndPatronEjec
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA
 Common Shared As string pathdir,nombre,nombreMidiIn
 common Shared As String NombreCancion, NombrePista
@@ -44,7 +44,7 @@ Common Shared As FT_Face ftface
 common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu ,threadmetronomo
 Common Shared As Any Ptr thread4
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig
-Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes
+Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes, HabilitarPatrones
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Common Shared  portsal As UByte, patchsal As ubyte
@@ -266,7 +266,7 @@ end Sub
 
 Sub selInstORdenNum (ByRef instru As integer)
 Dim As hwnd haw,hwl
-Dim As Integer aa ,paso=0,x=0  
+Dim As Integer aa=0 ,paso=0,x=0  
 Dim As String cad
 
  

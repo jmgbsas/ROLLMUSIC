@@ -1170,7 +1170,7 @@ End If
 
 '-------------------------------------------- 
  
-    ''''''''midisal=midiout(pmTk(ntk).portout)
+    ''''''''midisal=midiout(pmTk(ntk).portout -1)
     
  '  Print #1,"Port usando en Play All ",portout
  ''fueradefoco=1
@@ -1529,7 +1529,7 @@ For  iz As Short =1 To 32
       End If
       Exit For
 Next iz
-if GrabarPenta=0 and GrabarEjec=0 and repro=0 And checkejec=0 Then 
+if GrabarPenta=0 and GrabarEjec=NoGrabar and repro=0 And checkejec=0 Then 
  ' nada de off estamos en grabarpenta por teclado o Grabar o tocar ejecuciones 
 
    k1=pmTk(0).portout
@@ -2655,6 +2655,14 @@ Dim new_time As Double
  t2call=Timer
 
 ' velocidad I=240 -> t=60/240=1/4=0,25 la negra, para llegar a W / por 2 6 veces= 0,00390625
+' cuantos ticks en tiempoPatron=60?
+'t de negra= 60/velocidad
+' cant  ticks= t negra/ t ticks= (60/velocidad)/0.005
+' para v=60 = 1/0.005=200 ticks para una negra -> un compas tendra 400 ticks
+' para v=240= (60/240) /0.005= 50 ticks para una negra -> un compas 200 ticks
+'para v=240. ->I=50ticks, L=25,F=12.5, E=6.25, X=3.125
+' sino puedo decir que grabo siempre a la misma velocidad y cambio en la reproduccion..
+
     new_time=Timer
     If old_time - new_time > 0.005  Then  ' 0.005208325 eltick maschico 5 mseg
        duracion (old_time,deltatime)
@@ -2674,14 +2682,13 @@ Dim new_time As Double
 
      Select Case  dato1 
          Case 144 ' on
-ChangeProgram pmTk(tocatope+32).patch,pmTk(tocatope+32).canalsalida ,pmTk(tocatope+32).portout
-            noteon dato2,dato3,pmTk(ntoca+32).canalsalida, pmTk(ntoca+32).portout
+
+            noteon dato2,dato3,pmTk(calltoca+32).canalsalida, pmTk(calltoca+32).portout
 
 '     Print   dato1;" ";  dato2;" "; dato3
            
          Case 128 'off
-
-            noteoff dato2,pmTk(ntoca+32).canalsalida,pmTk(ntoca+32).portout 'message(2)'
+            noteoff dato2,pmTk(calltoca+32).canalsalida,pmTk(calltoca+32).portout 'message(2)'
 '     Print   dato1;" ";  dato2;" "; dato3
 
      End Select
@@ -2691,28 +2698,42 @@ ChangeProgram pmTk(tocatope+32).patch,pmTk(tocatope+32).canalsalida ,pmTk(tocato
 ' ergo divido deltatime por ese valor y obtengo la cantiad de divisiones
 ' que ocupara ese retardo deltatime/TickChico
 
-  If GrabarEjec =1 Then ''graba en al pista seleccioanda
-     partes=(deltatime/TickChico) 
+  If GrabarEjec =GrabarPistaEjecucion Then ''graba en la pista seleccioanda
+     partes=(deltatime/TickChico) ' o cantidad de Ticks 
      jgrb += 1
+     If jgrb=1 And nroCompasesPatron> 0  Then
+' RECUPERO LOS TICKS QUE CONTENDRA EL PATRON, LO BLANQUEO PARA LUEGO
+' ONROLAR SU LLENADO
+         nroTicksPatron =pmTk(ntoca+32).MaxPos 'hay patron 
+         pmTk(ntoca+32).MaxPos=0
+     EndIf
      If ntoca > 1 And jgrb=1 Then ' detiene la acumulacion de deltatime en PlayTocaAll 
           arrancaPlay=1
           Print #1,"arranco play o sea el usuario empezo a tocar la siguiente pista"
  
      EndIf
-
+      
      CargaIn( jgrb).modo=dato1
      CargaIn( jgrb).nota=dato2
      CargaIn( jgrb).vel=dato3
-     If deltatime > 0.005  Then '   5mseg  
-       CargaIn( jgrb).partes=partes 'convierto deltatime en tickschico
-       pmTk(ntoca+32).MaxPos=pmTk(ntoca+32).MaxPos +partes
-       tocaparam(ntoca).maxpos=pmTk(ntoca+32).MaxPos
-     Else
-       CargaIn(jgrb).partes=0
-       pmTk(ntoca+32).MaxPos=pmTk(ntoca+32).MaxPos +1
-       tocaparam(ntoca).maxpos=pmTk(ntoca+32).MaxPos
+     If pmTk(ntoca+32).MaxPos >= nroTicksPatron  Then
+' termino la grabacion del patron no se graba mas en CargaIn
+         GrabarEjec =PatronDeEjecucionCompleto
+     Else 
+   
+' aca vamos a marcar los compases para controlar el numero de ellos las repeticiones
+' las grabaciones encima o reemplazando datos y la creacion  de patrones,
+          If deltatime > 0.005  Then '   5mseg  
+            CargaIn( jgrb).partes=partes ' o nro Ticks, convierto deltatime en tickschico 
+            pmTk(ntoca+32).MaxPos=pmTk(ntoca+32).MaxPos +partes
+            tocaparam(ntoca).maxpos=pmTk(ntoca+32).MaxPos
+          Else
+            CargaIn(jgrb).partes=0
+            pmTk(ntoca+32).MaxPos=pmTk(ntoca+32).MaxPos +1
+            tocaparam(ntoca).maxpos=pmTk(ntoca+32).MaxPos
+          EndIf
      EndIf
-    '    Print #1,"partes ",partes
+    '    Print #1,"partes ",partes wwwww
    '  tocaparam(ntoca).portout=pmTk(ntoca+32).portout
    '  tocaparam(ntoca).portin =pmTk(ntoca+32).portin
    '  tocaparam(ntoca).canal=pmTk(ntoca+32).canalsalida
@@ -2728,7 +2749,8 @@ Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi)
     Dim As Integer ngm
 
       nombreg =titulos(ntkp+32) ' no tiene path , extension y [nro]
-Print #1,"GrabarMidiIn NombreCancion, nombre ",NombreCancion," --- ",nombreg
+     par.tocap.nombre=nombreg
+Print #1,"GrabarMidiIn NombreCancion, nombre sin path",NombreCancion," --- ",nombreg
       driver=InStr(nombreg,":\")
       If  NombreCancion > "" And driver=0 Then
           nombreg=NombreCancion+"\"+nombreg
@@ -2736,13 +2758,14 @@ Print #1,"GrabarMidiIn NombreCancion, nombre ",NombreCancion," --- ",nombreg
         Print #1," va a grabar sin path ",nombreg
       EndIf
 Print #1,"nombre de archivo con path grabando de ejec",nombreg
- 
+ ' carga de parametros:
      par.tocap.portout =pmTk(ntkp+32).portout
-     par.tocap.portin   = pmTk(ntkp+32).portin
+     par.tocap.portin   = pmTk(ntkp+32).portin 
      par.tocap.patch   =pmTk(ntkp+32).patch
      par.tocap.canal   =pmTk(ntkp+32).canalsalida
      par.tocap.maxpos   =pmTk(ntkp+32).MaxPos
-   
+     
+ 
       Print #1,"GrabarMidiIn titulos   ", nombreg
       Print #1,"GrabarMidiIn MAXPOS ",par.tocap.maxpos
       Print #1,"GrabarMidiIn delta "     ,par.tocap.delta
@@ -2751,6 +2774,8 @@ Print #1,"nombre de archivo con path grabando de ejec",nombreg
       Print #1,"GrabarMidiIn portin "   ,par.tocap.portin
       Print #1,"GrabarMidiIn patch "   ,par.tocap.patch
       Print #1,"GrabarMidiIn canal "   ,par.tocap.canal
+      Print #1,"GrabarMidiIn orden "   ,par.tocap.orden 
+
       nombre=Trim(nombreg)
       ngm=FreeFile 
 Print #1,"GrabaMidiin freefile ngm ",ngm
@@ -2764,7 +2789,7 @@ Print #1,"GrabaMidiin freefile ngm ",ngm
 Print #1,"grabado ARCHIVO ", nombreg
       Sleep 100
       Close ngm
-
+'tocatope no lo estoy usando deberia ser el nro de pistas maximo
 
 End Sub
 
@@ -2855,7 +2880,7 @@ Do
 
       noteon(80,60,1,0)
       noteoff(80,1,0)
-      duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+      duracion(Timer, (60/tiempoPatron) / FactortiempoPatron) 'jmgtiempo
      If terminar_metronomo=1 Then
          Exit Do
      EndIf
@@ -2872,7 +2897,7 @@ Print #1,"abrirPortoutEjec abriendo port.... "
 Dim k1 As Integer
 
   
-   k1=CInt(pmTk(j+32).portout)
+   k1=CInt(pmTk(j+32).portout )
     
    Print #1,"abrirPortoutEjec midiout ",k1, *nombreOut(k1)
    If InStr(*nombreOut(k1),"Microsoft")>0 Then
@@ -2903,6 +2928,9 @@ Sub PlayTocaAll(nt As Integer Ptr )
 ' perfeccionar los eventos deven seguir un patron de tiempo de ticks
 ' para c/tick ver si hay un evento si hay enviarlo...el problem ason lso retardos
 ' TOCA VARIAS PISTAS EJEC 
+'TickPlay = TickChico por default si quiero cambiar la velocidad debo cambiar el TickChico
+'o sea se grabasiempre con elTick mas chico que es para veloc=240 y el valor del  tresillo
+' 
 Print #1,"PlayTocaAll 1"
 ntoca=*nt
 Dim  As long j=0,k=0,partes,cuenta=0,ks(1 To 32),pis=0
@@ -2930,7 +2958,7 @@ portsal=0 ' por ahora ???
 
 Print #1,"playtoca maxgrb ", maxgrb
 Print #1,"playtoca tocatope ", tocatope
-If GrabarEjec=1 Then 
+If GrabarEjec=GrabarPistaEjecucion Then 
   If   tocatope >1 Then
    topeDuranteGrabacion=tocatope-1
   EndIf
@@ -2954,7 +2982,9 @@ CONTROL2=0
 Print #1,"empieza el play de ejec, maxgrb, CONTROL2 ", maxgrb,CONTROL2
 For jToca=1 To maxgrb 
   If CONTROL2 = 1 Then
-     alloff( 1 ,pmTk(jToca+32).portout )
+     For kply =1 To topeDuranteGrabacion
+         alloff( 1 ,pmTk( kply +32).portout  )
+     Next  kply
       CONTROL2=0
       repro=0
       Exit For
@@ -2979,17 +3009,17 @@ For jToca=1 To maxgrb
     Else
      Continue For ' saltear no tocar 
     EndIf 
-
+' TickPlay 14-07-2022
     dato1=Toca(kply).trk(jToca).modo
     dato2=Toca(kply).trk(jToca).nota
     dato3=Toca(kply).trk(jToca).vel
     portsal=pmTk(kply+32).portout '04-05-2022
 
      If  dato1=1 Then ' marcamos con 1 un delta de tick en modo
-         duracion (timex(kply),TickChico) ' si es cero no 1 no hay duracion es acorde
-         timex(kply)=timex(kply)+TickChico
-       If  GrabarEjec =1 And ntoca> 1 And arrancaPlay=0 And kply=1 Then
-           tocaparam(ntoca).delta=tocaparam(ntoca).delta+TickChico
+         duracion (timex(kply),TickPlay) ' si es cero no 1 no hay duracion es acorde
+         timex(kply)=timex(kply)+TickPlay 'jmgtiempo
+       If  GrabarEjec =GrabarPistaEjecucion And ntoca> 1 And arrancaPlay=0 And kply=1 Then
+           tocaparam(ntoca).delta=tocaparam(ntoca).delta+TickPlay 'jmgtiempo
            ''Print #1,"En PlayToca Toca(ntoca).delta ",Toca(ntoca).delta
            ' retardos respecto del inicio de play y de pista 1, kply=1 
        EndIf
@@ -3030,11 +3060,106 @@ Sleep 1
      alloff( pmTk(kply+32).canalsalida,portsal )  
      allSoundoff( pmTk(kply+32).canalsalida, portsal ) 
   Next kply
+  If   GrabarEjec =PatronDeEjecucionCompleto Then
+         Dim rta As string
+         rta= inputBox("Guardo esta ejecucion", "SI O NO", "SI") 'JJJJJ SEGUIR ACA
+         rta = UCase(Trim(rta))
+         Select Case  rta 
+              Case  "SI", "S"
+              GrabarEjec = GrabarPatronaDisco ' ORDEN DE GRABAR A DISCO
+         
+         Case  "NO", "N", ""
+              GrabarEjec = NoGrabar ' ORDEN DE  NO GRABAR
+         Case Else
+              GrabarEjec = NoGrabar ' ORDEN DE  NO GRABAR
+       
+         End Select
 
+  EndIf 
   
 End Sub
+Sub VerCompasTicksEjecucion()
+'ver como en unteclado una pantalla queindique compas:tiempo:ticks
+' la cual puede usarse para marcar principio y fin de reproduccion y limites de corte
+' para generar un patron
+
+End Sub
+'-------------------------------------------
+Sub EditarPatronEjecucion()
+
+End Sub
+'-------------------------------------------
+Sub  CrearSecuenciaPatrones()
+' casos psibles 1) tomar una ejecucion exitente y grabarla como patron asi como está
+' 2) cortar la ejecucion y convertirla en patron
+' 3) definir un patron a partir de paramtros como duracion o cantidad de compases.
+' 4) cargar patron en un determinado punto
+' 5) repetir patron, fisicamente (copiar) o logicamente(loop play).
+' 6) ordenar en un plano (una ventana) los  patrones para ejecutar en ese orden y para ello
+'   despues de ordenado pulsar un boton de plasmar la secuencia, que haria unir todos esos 
+'   patrones ordenados toquen en el orden dado , como en la lectuira de una pagina en vez de palabras
+'   patrones.
+' 7) usar el help con el mouse para saber que hay en cada patron saldra un globito con la info
+' ese globito toma la identificacion del patron y muestra su nro, nombre ,instrumento etc,,,
+' 8) usar botones con label que sera un nro y letras como las usadas en canciones A,A,B,B,AA 
+' 9) Poder mover los botones dentro de una grilla que representara el orden deseado de ejecucion
+' 10) para todo esto crear una venta separada que muestre los botones de la ejecuion presente
+'11) poder copiar el resultado del armado de patrones como una pista nueva de ejecuciones
+ ' -------------
+'implementacion ya crea unboton lo mueve y lo deja donde se desea
+' falta un evento que lo selecciones y deseleccione...
+' dragar patrones, crearlos darles nombre grabarlos etc etc  paso a paso 
+'hwndPatronEjec =OpenWindow("PAtrones Ejecucion ",100,100,ANCHOSYSTEM*0.5 ,ALTOSYSTEM*0.5,WS_VISIBLE , WS_EX_NOPARENTNOTIFY  OR WS_EX_ACCEPTFILES Or WS_EX_TOPMOST)
+'ButtonGadget(1,ANCHOSYSTEM*0.5 ,140 ,40 ,40,"[X]")
+' WS_VISIBLE, WS_EX_TOPMOST
+Dim As  Long parar=0
+'#define EventMouseMove &H200
+Type  punto
+As Long x
+As Long y
+End Type
+Dim pun As  punto
+Dim  p As  Any Ptr
+p=@pun
+'' => desde acaecho con tool del ruso no anda muy bien
+hwndPatronEjec=OpenWindow("Patrones Ejecucion",100,50,ANCHOSYSTEM*0.5,ANCHOSYSTEM*0.5,WS_VISIBLE, WS_EX_TOPMOST )
+
+        ButtonGadget(1,ANCHOSYSTEM*0.5 -30,0,20,20,"[X]")
+       '    SetForegroundWindow(hwndPatronEjec)
 
 
+Do
+       Var eventC= waitEvent
+        Select Case  eventC
+              Case EventMouseMove  
+              'If EventKEY And MK_LBUTTON Then
+                   '? "Left Button press AND mousemove"   
+                   '? "MOUSE: " & MouseX & "  " & MouseY
+       If GetCursorPos(p)  And parar=0   then             
+          ScreenToClient(hwndPatronEjec, p)
+          Print #1, "mousex,mousey ", pun.x,pun.y
+          ButtonGadget(2,pun.x,pun.y,40,20,"P-01")
+      EndIf         
+          Case EventLBDown 
+              parar=1
+          Case EventRBDown
+              parar=0
+          Case eventgadget 
+            If eventnumber()=1  Then
+               Close_Window(hwndPatronEjec)
+                  Exit Do
+           End If
+
+          End Select 
+          
+         Loop
+         
+
+
+
+ 
+End Sub
+' ---------------------------------------
 ' error
 errorrtmidi:
  

@@ -871,7 +871,7 @@ stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 ' queda congelado en los 1eros compasaes mostrados al terminar esos procesos mencionados
 ' se se libera la escrituta al grafico...vermeos si sirve para seguirgrabando pistas y reproduciendo 
 ' en mejores condiciones,,,
-If  cargaCancion=1  Or repro=1 Or  GrabarEjec=1 Then
+If  cargaCancion=1  Or repro=1 Or  GrabarEjec=GrabarPistaEjecucion Then
 ' esta cargando cancion 
    'Locate 5,10
    'Print "CARGANDO ...PISTA Nro ", ntk

@@ -1,10 +1,16 @@
+' 149 corregi la entrada de port y salada para las ejecuciones,,, ver si anda para cancion,,,
+' lo importante es que toque en varios lados del codigo el pvalor de portin y portout
+' y hay diferencia en port reales que se envian a rtmidi comenzando en cero y ports logicos para el 
+' programa que empiezan desde 1 ,,,,verificar que todo funciona,,, a lo mejor sonoalgo o talvez
+' anda mejor porque en varios lados se enviaba al fisico el portout sin restarle 1 verificar exhaustivamnete!!!
+' ============================================
 ' apertura de ports en play  
 ' tiempoPatron a entero no tiene porque ser double, se graba en archivo
 ' Se agrego formar acordes aun sin nota en el lugar elegido, se deb eentrar al duracion
 ' Triadas desde Tonica completo Mayor Menor Disminuido formacion y play 
 ' fix consumo cpu S5=2 y fueradefoco=0 eliminado
 ' Funciona Acorde en Tonica triaca,,Ctrl+clik derecho luego seguir con mayor hasta no inversion
-' SE ELIMINO DE 'Q' la configuracion de tamaños, proporciones y font
+' SE ELIMINO DE 'Q' la configuracion de tamaï¿½os, proporciones y font
 ' se agrego nverEscalasAuxiliares y nanchofig a RollMusic.ini
 ' se agrego en Ver, si se ven o no las Escalas Auxiliares en el grafico
 ' TODO MULTIKEY IR PASANDO DE A POCO PROBANDO A E.SCANCODE MULTIKEY ES UNA BASURA REPITE EL COMANDO MIL VECES
@@ -15,7 +21,7 @@
 ' antes que midi despue salgun dia haremos midi no se veremos.... 
 ' http://xmlsoft.org/examples/index.html
 ' YA cierra todas las sesiones de rollmusic desde control
-' futuro grabar mxold y algo mas para conservar el tamaño de la ventana y el tamaño del font
+' futuro grabar mxold y algo mas para conservar el tamaï¿½o de la ventana y el tamaï¿½o del font
 ' usado por el usuario !!!! OK Y AANDA
 ' el borrado de columna esta defectuoso hay que dar 0 y luego 12 x en toda la octava para
 ' que borre mejor usaremos marcas de zona para borrar.
@@ -224,7 +230,8 @@ Common Shared  mensaje As Integer
 Const list_item_data_key ="list_item_data"
 ' fin GTK
 ' -- INICIO openGL GLFW 3.1.1 
-' habilitamos OPENGL para ver si podemso mostrar la grabacion de ejecucion
+/'
+' habilitamos OPENGL para ver si podemso mostrar la grabacion de ejecucion u otra cosa
 ' de entrada por MIDI-IN.
 #Include once "glfw3.bi"
 If glfwInit()=GL_FALSE then
@@ -233,7 +240,7 @@ If glfwInit()=GL_FALSE then
 end If
 Dim As GLFWwindow ptr  win
 ' ----FIN OPENGL 
-
+'/
 '===============================
 #include "ROLLDEC.BI"
 
@@ -294,7 +301,7 @@ Open "secuencia.txt" For Output As 5
 Const NEWLINE = !"\n"
 
 'tempo I=160, seri equivalente a O=40 como l maxima cantdad de ticks de O es
-' eldela figura mas pequeña=128 ticks...40 * 128 = 5120 por minuto.
+' eldela figura mas pequeï¿½a=128 ticks...40 * 128 = 5120 por minuto.
 ' Si deseo un secuecnia de CantMin minutos
 tempo=160  ' negra=160
 CantMin=15
@@ -484,7 +491,7 @@ ReDim (Track(32).trk ) (1 To Ctres,1 To lim1)
 ' o sea en las posiciones, lo que debo hacer es cargar estos Tracks
 ' con eventos pero para mostrarlso usaria el Roll 
 ' suponemos que cada track solo puede tener acordes de hasta 12 notas,1 to lim2
-' en el momento de la carga de Roll cargar tambien Track ¿?
+' en el momento de la carga de Roll cargar tambien Track ï¿½?
 ' creo que no solo debo copiar en el momento antes de grabar o reproducir
 ' debere hAcer otro play PlayTracks en donde se ejecutara todos los tracks
 ' barriendo la posicion comun a todos y las notas de cada uno EN SINCRONIA CON LA VISUALIZACION!
@@ -670,7 +677,7 @@ Var Shared ft => FreeType()
 '' Load a font with FreeType
 Common Shared As FT_Face ftface
 FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
-
+common shared as any ptr BRUSH
 ' ========== CONTROL DEL NRO DE OCTAVAS MOSTRADO SE PODRA PONER PARA EL USUARIO
 ' VER SI SE PUEDE USAR ARRAYS POR PORCIONES
 '----- -FIN
@@ -700,11 +707,11 @@ midiout(0) = rtmidi_out_create_default() ''  new RtMidiOut();
 
 
 'print #1,"PLAYALL---------->>>>>>>"
-portsout =  port_count (midiout(0))
-portsin  =  port_count(midiin(0))
+portsout =  port_count (midiout(0)) ' es una constante
+portsin  =  port_count(midiin(0)) ' es una constante
 Dim i1 As Integer
 Print #1, "portsin  "; portsin
-Print #1, "portsout "; portsout
+Print #1, "portsout ";portsout
 
 ReDim  listOutAbierto (0 To portsout)
 ReDim  listInAbierto  (0 To portsin)
@@ -742,3 +749,6 @@ For i1 = 0 To portsout -1
 Next i1  
 
 '---------------------
+' por omision el programa empieza con portin y portout en 1
+'portin=1
+'portout=1

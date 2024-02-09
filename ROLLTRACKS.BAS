@@ -39,12 +39,13 @@ Sub CargarMidiIn(nombreMidiIn As String,   ByRef ntkp As Integer)
       Dim As Integer ubi1,ubi2 
       ubi1 = InStrrev(nombreMidiIn,"(")
       ubi2 =InStrRev (nombreMidiIn,")")
-      ntkp=CInt(Mid(nombreMidiIn,ubi1+1,ubi2-ubi1-1))
+      ntkp=CInt(Mid(nombreMidiIn,ubi1+1,ubi2-ubi1-1)) ' el orden o nro de la pista sale del nombre
+' pero tambien esta grabado en tocaparam en el archivo
       If  NombreCancion="" Then
           NombreCancion=Mid(nombreMidiIn,1,ubi1-1)
       EndIf
 
-      Print #1,"NTKP ",ntkp
+      Print #1,"NTKP ",ntkp ' oreden o nro de  pista
       If ntkp > 0  Then
       Else
          Print #1,"ntkp =0 o distintos"
@@ -72,7 +73,9 @@ Print #1,"ubound ",UBound (Toca(ntkp).trk)
 '      pmTk(ntkp+32).MaxPos=Toca(ntkp).maxpos
       ntoca=tocaparam(ntkp).orden
       If  ntoca<> ntkp Then
-          Print #1," ERROR EN CARGA NRO ARCHIVO NO COINCIDE CON ORDEN / NTOCA ,NTKP ", ntkp,ntoca
+          Print #1," ALERTA EN CARGA NRO ARCHIVO NO COINCIDE CON ORDEN / NTOCA ,NTKP ", ntkp,ntoca
+          Print #1," SE CAMBIÓ EL NRO DE PISTA EN EL NOMBRE DEL ARCHIVO, NO INFLUYE "
+
       EndIf
       pmTk(ntkp+32).portout= tocaparam(ntkp).portout
       pmTk(ntkp+32).portin= tocaparam(ntkp).portin
@@ -103,7 +106,7 @@ Sub CargarPistasEjec (lugar As String, ByRef ntkp As integer)
 ' devuelve el numero de pistas...cargadas
 ROLLCARGADO=FALSE
 
-GrabarEjec =0: ntoca=0 : arrancaPlay=0
+GrabarEjec =NoGrabar: ntoca=0 : arrancaPlay=0
 ntkp=0 
 s5=0 '11-06-2022
 ''ReDim As Double fechasPistas(1 To 32)
@@ -2101,7 +2104,7 @@ For  iz As Short =1 To 32
       End If
       Exit For
 Next iz
-if GrabarPenta=0 and GrabarEjec=0 and repro=0 And checkejec=0 Then 
+if GrabarPenta=0 and GrabarEjec=NoGrabar and repro=0 And checkejec=0 Then 
    For i=1 To tope
       k1=pmTk(i).portout
    '   Print #1,"midiout ",k1, *nombreOut(k1)
