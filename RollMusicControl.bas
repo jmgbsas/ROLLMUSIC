@@ -416,6 +416,10 @@ deleteFileA (StrPtr(titulo))
 
 End Sub
 '
+Sub  verayuda (  arch As string)
+ 
+End Sub 
+ 
 '
 ' error
 errorControl:

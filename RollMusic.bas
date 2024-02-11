@@ -717,7 +717,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
 '  TextDraw(10,10,NombreCancion,-1,&hff0000)
 'StopDraw
 
-     Select Case EVENTC 
+     Select Case eventC 
        Case EventMenu
   If NombreCancion > "" And S5=0 Then 
      SetForegroundWindow(hwndC)
@@ -2309,7 +2309,11 @@ GrabarMidiIn(pgmidi)  'POR CANAL
     EndIf
 
 '      SetForegroundWindow(hwnd)
-
+       case EventKeyDOWN
+        If EventKEY=VK_F1 Then
+            Shell ("start notepad ayuda.txt")
+       End If
+      
 '-----------------------------------------------------------------------
        Case EventClose  ''<==== SALIR TERMINA ROLL lax de win control???
         ''si ponemos aca da asercion de cairo.c 

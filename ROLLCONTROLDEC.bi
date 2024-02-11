@@ -12,6 +12,7 @@ Declare Function doscifras (NTK As Integer) As String
 Declare Sub copiarATemp ( titulo As String, pista As String)
 Declare Sub GrabarCancion()
 Declare Sub BorrarPista (titulo As String)
+Declare Sub verayuda (  arch As string)
 
 
 'Declare Sub CreaTrack  (ByRef octadesde As Integer , ByRef octahasta As Integer, ByRef instru As Integer, param As pasa )
