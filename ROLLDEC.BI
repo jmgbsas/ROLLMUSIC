@@ -748,7 +748,7 @@ Dim Shared As Integer tipoescala_num = 1, notaescala_num = 1,tipoescala_num_ini=
 Dim Shared As String notas_esc_inicial (1 To 24)
 
 Dim Shared As Integer desdevector,undo_kant_intervalos(1 To 500)
-Dim Shared As Integer hastavector,abrirRoll=0
+Dim Shared As Integer hastavector,abrirRoll=0    
 Dim Shared As String grado_inicial(1 To 24)
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual

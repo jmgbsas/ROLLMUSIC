@@ -111,16 +111,16 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="0.4570  nada nuevo, correciones" ':Patrones de Ejecucion 03-07-2022
+nroversion="0.4571  nada nuevo, correciones" ':Patrones de Ejecucion 03-07-2022
 ' despues de un año de bajones personales veo si me da gan de seguirlo
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
-acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicacion grï¿½fica. En esta version ejecuta secuencias " + _
+acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicación gráfica. En esta version ejecuta secuencias " + _
  "entrada por pasos usando algoritmos sin una linea conductora de tiempos, se basa en las duraciones de las notas. " + _
  "Para entrada por teclado midi usa ticks. Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
- "manual o por ejecucion. Programado en OS:Windows7, Proc:AMD Phenom-II Black Edition. " + _
+ "manual o por ejecucion. OS:Windows 64bits 7,10,y 11, Proc:AMD Phenom-II Black Edition 4 Nucleos. " + _
  "Usa Cairo como libreria de graficos, Rtmidi como libreria midi, " + _
- "Editor de cï¿½digo FbEdit. Echo en Freebasic como hobby. FreeBASIC Compiler - Version 1.09.0 (2021-12-31), built for win64 (64bit) " + _
+ "Editor de código FbEdit. Echo en Freebasic como hobby. FreeBASIC Compiler - Version 1.09.0 (2021-12-31), built for win64 (64bit) " + _
  "Copyright (C) 2004-2021 The FreeBASIC development team. " +_ 
  "standalone." + _
  " Consultas: mail:galeanoj2005@gmail.com"
@@ -267,8 +267,8 @@ ButtonImageGadget(BTN_MIDI_GRABAR,490,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP
 ButtonImageGadget(BTN_MIDI_EJECUTAR,530,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
 
  TextGadget(21,570,12,95,20,"         ")
-' pistas manuales 
-GroupGadget( GRUPO_BTNS_MANUAL,100,0,55,40,"")
+' pistas manuales  PARA CARGAR CANCION DESDE DIRECTORIO PISTAS ECHAS CON ROLL
+GroupGadget( GRUPO_BTNS_MANUAL,100,0,55,40,"") 'play cancion
 ButtonImageGadget(BTN_ROLL_PARAR, 100,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
 ButtonImageGadget(BTN_ROLL_EJECUTAR, 140,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
 ButtonImageGadget(BTN_ROLL_GRABAR_MIDI, 180,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
@@ -348,6 +348,8 @@ ButtonGadget(BTN_PARAM_CANAL,950,0, 50, 20,"Canal")
 
 MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
 MenuItem(1006,MenName1, "Cargar directorio de Cancion con Pistas separados")
+MenuItem(10061,MenName1, "Cargar directorio de Cancion con Pistas separados sin roll")
+
 MenuItem(1007,MenName1, "Grabar Cancion")
 MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
 MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
@@ -604,6 +606,8 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
 'Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
 'Print #1,"iniio lbound roll.trk ", LBound(param.Roll.trk,2)
 'Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
+' abriRoll=1 orden de llamar a Roll grafico
+' abrirRoll=0 no hay orden de abrir Roll
 
   If abrirRoll=1 And cargacancion=1 Then
      abrirRoll=0
@@ -623,10 +627,9 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
       pid1=pd1
    EndIf
  ' Print #1,"cALL rOLLLOOP I) cargaCancion ES 1 SI O SI ",cargaCancion
-   If CANCIONCARGADA=True  Then
+   If CANCIONCARGADA=True   Then
      ntk=0 '16-03-2022
-      
-      threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1)) 
+     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
     ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
    Else     ''''''''RollLoop ( param) '<--con esto anda
      cargacancion=0
@@ -637,7 +640,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
     ''Sleep 200 ' NO HACE FALTA AHORA sin este retardo no le da teimpo al thread de cargar a Roll
     abrirRoll=0
   Else
-    If abrirRoll=1 And cargacancion=0 Then
+    If abrirRoll=1 And cargacancion=0   Then
        CANCIONCARGADA=False
        ''cargaCancion=0  
        param.encancion=0 
@@ -724,13 +727,14 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
   EndIf
          Select Case EventNumber
 
-           Case 1006   '<=========== CARGAR CANCION
-             'cargamso todos los tracks
+           Case 1006, 10061   '<=========== CARGAR CANCION con roll
+             'cargamos todos los tracks
              ' ok anda bien, una vez cagados se permuta en memoria con TAB
              ' o haciedno click en la lista
                nombre=""
-              ROLLCARGADO=False
+              ROLLCARGADO=FALSE 'NINGUN ARCHIVO ROLL CARGADO  
              Sleep 20
+' resetea todo para limpiar y cargar cancion
              If NombreCancion > "" And cargaCancion=0 Then 
                   NombreCancion = ""
                   param.encancion=0
@@ -764,7 +768,8 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
                 nombre=""
                 ntk=0
                ' pistacreada=0
-                CANCIONCARGADA=False
+                CANCIONCARGADA=FALSE
+' toma solo el nombre y path de la cancion no carga las pistas todavia
                 cargarDirectorioCancion(NombreCancion)
                 param.encancion=1
                If abrirRoll=2 Then ' ver rollloop roll esta cargado vengo a cargar cancion de nuevo
@@ -785,12 +790,13 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
              If abrirRoll=0 And NombreCancion > ""  Then
                 abrirRoll=1
                 cargaCancion=1
-                Print #1,"SALE A CARGAR rOLL 1ERA VEZ ABRIRROLL=1 EXIT DO"
+                Print #1,"SALE A CARGAR ROLL POR 1ERA VEZ ABRIRROLL=1 EXIT DO"
                 Exit Do                 
              EndIf
   '           Print #1,"termino 1006 va a abrir Roll"
           SetForegroundWindow(hwnd)
-'-----------------------------------------------------------------------
+
+' ----------------------------------------------------------------------
            Case 1007 '<============ grabar cancion bosquejo
 ' 26-02-2022 desarrollo           
            If CANCIONCARGADA =True  Then
@@ -2046,7 +2052,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
       ' EndIf
       EndIf   
 
-      If eventnumber()= BTN_ROLL_EJECUTAR Then
+      If eventnumber()= BTN_ROLL_EJECUTAR Then ' 13-02-2024 PROBAR BIEN
          SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
          If Cplay = 0 And MaxPos > 2 Then
             CPlay=1
@@ -2063,6 +2069,8 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
 
       EndIf
 ' ////////////// PORT SAL EJEC ////////////////
+' 13-02-2024 ojo salida ejecucion,,, el port sal apunta a selport
+' y creo d eberia apuntar a selportejec!!!!
 ' si todavia no grabe nada tocaparam tendra el nombre y el orden
 ' osea el orden se crea al crear el nombre de la pista
       If  eventnumber()=BTN_PARAM_PORTSAL Then ' boton PortSal de track cbxnum o ejec cbxejec
@@ -2142,15 +2150,18 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
       
          EndIf
        EndIf  
-''' en base alanterior terminar esta parte que es para pisatas de cancion manual
-'' mas adelante....cuadno termine todo pistas ejec 
+''' en base alanterior terminar esta parte que es para pistas de cancion manual
+'' mas adelante....cuando termine todo pistas ejec 
+''para pistas de cancion manual futuro ???pero si ya hay para pistas manual??
          For k=1 To 32 
            If CheckBox_GetCheck( cbxnum(k))= 1  Then
               num=1
            EndIf
          Next k 
          If  num=1 Then
-              thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))
+
+           thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))
+
          EndIf
       EndIf
 '-------------------
@@ -2309,11 +2320,18 @@ GrabarMidiIn(pgmidi)  'POR CANAL
     EndIf
 
 '      SetForegroundWindow(hwnd)
+'////////// PULSAR TECLAS EN VENTANA MODO CONTROL NO GRAFICO DE ROLL /////
        case EventKeyDOWN
-        If EventKEY=VK_F1 Then
-            Shell ("start notepad ayuda.txt")
-       End If
-      
+            Select Case  EventKEY 
+                Case VK_F1 
+                   Shell ("start notepad ayuda.txt")
+                Case VK_SPACE '' HARIA FALTA QUE TOQUE LA CANCION CON
+' SPACE SIN ESTAR EL ROLL CARGADO PRIMERO DEBO PODER CARGAR UN CAQNCION SIN ROLL 
+               ''''' REMEDAR EL BOTON VERDE ??? CHEQUEAR EL BOTON VERDE
+          ''''' NO SE SI ESTA TOCANDO TODA LA CANCION TL VEZ FALTA 
+'''' CARGAR EL SINTETIAZADOR 13-02-2024
+
+            End SELECT
 '-----------------------------------------------------------------------
        Case EventClose  ''<==== SALIR TERMINA ROLL lax de win control???
         ''si ponemos aca da asercion de cairo.c 

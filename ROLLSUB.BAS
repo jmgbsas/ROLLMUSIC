@@ -3658,6 +3658,8 @@ End Sub
 
 
 Sub  selport (ByVal tipo As Any Ptr)  ' list de ruso
+'' PORT DE SALIDA PARA REPRODUCIR UNA CANCION CARGADA
+'' DE ARCHIVO Y CREADA CON ROLL GRAFICO O SEA NO ES EJECUCION REAL 
 Dim As hwnd haw,hwl
 Dim As Integer mitipo,x0,y0,Posx,Posy 
 ScreenControl GET_WINDOW_POS, x0, y0
@@ -3677,7 +3679,7 @@ Dim cad As string
 
 mitipo=  CInt(tipo)
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("MIDI",Posx,Posy,450,400,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("MIDI MANUALES",Posx,Posy,500,400,WS_VISIBLE, WS_EX_TOPMOST )
      hwl=  ListViewGadget(1,10,10,350,400,,,,32,LVS_SINGLESEL  )
      listports()
   
@@ -3709,7 +3711,8 @@ mitipo=  CInt(tipo)
      EndIf
 
 
-       ButtonGadget(2,380,30,50,40," OK ")
+       ButtonGadget(2,380,30,100,40,"CAMBIA")
+       ButtonGadget(3,380,70,100,40,"CANCELA")
          #Ifdef __FB_WIN32__
            SetFocus (hwl) 
            SetForegroundWindow(haw)
@@ -3783,6 +3786,10 @@ mitipo=  CInt(tipo)
               Close_Window(haw)
               Exit Do 
             End If
+            If eventnumber()=3  Then
+               Close_Window(haw)
+               Exit Do 
+            End If 
           EndIf 
   
           
@@ -3829,7 +3836,7 @@ Dim cad As string
 
 mitipo=  tipo
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("MIDI",Posx,Posy,450,400,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("MIDI EJECUCIONES",Posx,Posy,500,400,WS_VISIBLE, WS_EX_TOPMOST )
      hwl=  ListViewGadget(1,10,10,350,400,,,,32,LVS_SINGLESEL  )
      listports()
      Print #1,"portin ", portin
@@ -3859,7 +3866,8 @@ Print #1, "ntkp ",ntkp
      EndIf
 
 
-       ButtonGadget(2,380,30,50,40," OK ")
+       ButtonGadget(2,380,30,100,40,"CAMBIA")
+       ButtonGadget(3,380,70,100,40,"CANCELA")
          #Ifdef __FB_WIN32__
            SetFocus (hwl) 
            SetForegroundWindow(haw)
@@ -3900,32 +3908,36 @@ Print #1, "ntkp ",ntkp
         EndIf
 
           If event=eventgadget Then
-            If eventnumber()=2 And InStr(cad,"x")> 0 Then
+             If eventnumber()=2 And InStr(cad,"x")> 0 Then
               'menunew=0
               '''portout = GetItemListView()
 
-              If mitipo=1 Then ' PORT SLIDA
-                Print #1,"PORT SELECCIONADO en menu ",portout 
-                Print #1,"Nombre PORT SELECCIONADO  ",listout(portout)
-                For  i As Short =1 To 32
-                      If CheckBox_GetCheck( cbxejec(i))= 1  Then
-                          pmTk(i+32).portout=CUByte(portout)
-                     EndIf
-                Next i
-              EndIf
-              If mitipo=2 Then ' PORT ENTRADA
-                  Print #1,"PORT SELECCIONADO en menu ",portin 
-                  Print #1,"Nombre PORT SELECCIONADO  ",listin(portin)
+                If mitipo=1 Then ' PORT SLIDA
+                  Print #1,"PORT SELECCIONADO en menu ",portout 
+                  Print #1,"Nombre PORT SELECCIONADO  ",listout(portout)
+                  For  i As Short =1 To 32
+                        If CheckBox_GetCheck( cbxejec(i))= 1  Then
+                            pmTk(i+32).portout=CUByte(portout)
+                       EndIf
+                  Next i
+                EndIf
+                If mitipo=2 Then ' PORT ENTRADA
+                    Print #1,"PORT SELECCIONADO en menu ",portin 
+                    Print #1,"Nombre PORT SELECCIONADO  ",listin(portin)
 
-                For  i As Short =1 To 32
-                      If CheckBox_GetCheck( cbxejec(i))= 1  Then
-                         pmTk(i+32).portin =CUByte(portin)
-                      EndIf
-                Next i
-              EndIf  
-              Close_Window(haw)
-              Exit Do 
-            End If
+                    For  i As Short =1 To 32
+                        If CheckBox_GetCheck( cbxejec(i))= 1  Then
+                           pmTk(i+32).portin =CUByte(portin)
+                        EndIf
+                    Next i
+                EndIf  
+                Close_Window(haw)
+                Exit Do 
+             End If
+             If eventnumber()=3  Then
+                Close_Window(haw)
+                Exit Do 
+             End If 
           EndIf 
   
           
@@ -3947,7 +3959,7 @@ ScreenControl GET_WINDOW_POS, x0, y0
 Posx=x0 +50
 Posy=y0 +100
 
-     haw=OpenWindow("CANALES",Posx,Posy,400,400,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("CANALES MANUALES",Posx,Posy,500,400,WS_VISIBLE, WS_EX_TOPMOST )
      
      hwl=  ListViewGadget(1,10,10,300,300,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL  )
      
@@ -3971,7 +3983,8 @@ Posy=y0 +100
          
      Next
  
-       ButtonGadget(2,330,30,50,40," OK ")
+       ButtonGadget(2,330,30,100,40,"CAMBIA")
+       ButtonGadget(3,330,80,100,40,"CANCELA")
            SetForegroundWindow(haw)        
            SetFocus (hwl) 
 
@@ -4025,6 +4038,11 @@ Posy=y0 +100
                Close_Window(haw)
                Exit Do 
             End If
+            If eventNumber()= 3 Then
+               Close_Window(haw)
+               Exit Do 
+
+            EndIf
           EndIf
             
          
@@ -4052,7 +4070,7 @@ ScreenControl GET_WINDOW_POS, x0, y0
 Posx=x0 +50
 Posy=y0 +100
 
-     haw=OpenWindow("CANALES",Posx,Posy,400,400,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("CANALES EJECUCION",Posx,Posy,500,400,WS_VISIBLE, WS_EX_TOPMOST )
      
      hwl=  ListViewGadget(1,10,10,300,300,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL  )
      
@@ -4075,7 +4093,8 @@ Posy=y0 +100
          
      Next
  
-       ButtonGadget(2,330,30,50,40," OK ")
+       ButtonGadget(2,330,30,100,40,"CAMBIA")
+       ButtonGadget(3,330,80,100,40,"CANCELA")
            SetForegroundWindow(haw)        
            SetFocus (hwl) 
 
@@ -4131,6 +4150,10 @@ Posy=y0 +100
                Close_Window(haw)
                Exit Do 
             End If
+            If eventNumber()= 3 Then
+               Close_Window(haw)
+               Exit Do 
+            EndIf
           EndIf
             
          

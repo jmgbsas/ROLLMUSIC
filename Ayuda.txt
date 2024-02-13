@@ -10,7 +10,7 @@
        alta prioridad, se hizo un ejecutable para eso. Un mejor browser de poco consumo es Vivaldi.)
 
     II) Opciones Configuracion
-        a) PUERTOS MIDI A USAR. en elmenu de Roll Music Grafico
+        a) PUERTOS MIDI A USAR. en el menu de Roll Music Grafico
         Desde el Menu Principal -> ALT + posarse sobre ->Opciones->Ctrl+Click->Configuracion->click->MIDI->
         click->MIDI-OUT o MIDI-IN, en la lista de dispositivos de salida o de Entrada
         clickear la deseada y dar Ok.(solo midi Out es funcional)

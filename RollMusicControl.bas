@@ -184,13 +184,13 @@ Dim cad As String
 ' la seleccion empieza de 1, no devuelve 0 para el 1er elemento 
  
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("INSTRUMENTOS PATCH",100,50,600,600,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("INSTRUMENTOS PATCH POR ORDEN ALFABETICO",100,50,700,600,WS_VISIBLE, WS_EX_TOPMOST )
      'Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
      ' commctrl.bi modificado
      hwl=  ListViewGadget(1,10,10,500,500,,,,32,LVS_SINGLESEL )
      
      AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
-     AddListViewItem(1, "CLICK EN UN ITEM  Y EN OK",0,aa,0)
+     AddListViewItem(1, "CLICK EN UN ITEM  Y EN CAMBIA",0,aa,0)
 
      instru=CInt(patchsal)
 
@@ -210,8 +210,9 @@ Dim cad As String
        
 
 
-       ButtonGadget(2,530,30,50,40," OK ")
-'       ButtonGadget(3,530,90,50,40,"+Pag")
+       ButtonGadget(2,530,30,100,40,"CAMBIA")
+       ButtonGadget(3,530,80,100,40,"CANCELA")
+
          #Ifdef __FB_WIN64__
            SetFocus (hwl) 
            SetForegroundWindow(haw)
@@ -250,7 +251,11 @@ Dim cad As String
                   Exit Do
               
             End If
+            If eventnumber()=3 Then
+                  Close_Window(haw)
+                  Exit Do
 
+            End If
           EndIf 
   
           
@@ -271,13 +276,13 @@ Dim As String cad
 
  
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("INSTRUMENTOS PATCH",100,50,600,600,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("INSTRUMENTOS PATCH ORDEN NUMERICO",100,50,700,600,WS_VISIBLE, WS_EX_TOPMOST )
      'Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
      ' commctrl.bi modificado
      hwl=  ListViewGadget(1,10,10,500,500,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL )
      
      AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
-     AddListViewItem(1, "CLICK EN UN ITEM  Y EN OK",0,aa,0)
+     AddListViewItem(1, "CLICK EN UN ITEM  Y EN CAMBIA",0,aa,0)
            instru=CInt(patchsal)
        For aa =1 To 127 
            If instru = aa Then
@@ -292,7 +297,8 @@ Dim As String cad
        
 
 
-       ButtonGadget(2,530,30,50,40," OK ")
+       ButtonGadget(2,530,30,100,40,"CAMBIA")
+       ButtonGadget(3,530,80,100,40,"CANCELA")
 '       ButtonGadget(3,530,90,50,40,"+Pag")
          #Ifdef __FB_WIN64__
            SetFocus (hwl) 
@@ -318,13 +324,16 @@ Dim As String cad
 
           If eventC=eventgadget Then
           
-            If eventnumber()=2 And InStr(cad,"x") > 0 Then
+             If eventnumber()=2 And InStr(cad,"x") > 0 Then
                ''Instru = GetItemListView()
-               Print #1,"inst seleccionado numerico ",instru
+                Print #1,"inst seleccionado numerico ",instru
+                Close_Window(haw)
+                Exit Do
+            End If
+            If eventNumber()= 3 Then
                Close_Window(haw)
-                  Exit Do
-           End If
-
+               Exit Do 
+            EndIf
           EndIf 
           Sleep 5  
           
@@ -417,7 +426,10 @@ deleteFileA (StrPtr(titulo))
 End Sub
 '
 Sub  verayuda (  arch As string)
- 
+ ' no hace falta por ahora pero en elfuturo haremos ayuda puntual
+' y esta sera la sub recibira donde se requiere ayuda y se devolvera la ayuda 
+' correspondiente
+
 End Sub 
  
 '
