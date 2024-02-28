@@ -293,9 +293,9 @@ Print #1,Date;Time
 
 '#Include "crt/win32/unistd.bi"
 #inclib "ntdll"
-#include "win/ntdef.bi"
+'''#include "win/ntdef.bi"
 
- 
+' #include once "IUP/iup.bi"
 Open "secuencia.txt" For Output As 5
 
 Const NEWLINE = !"\n"
@@ -749,6 +749,3 @@ For i1 = 0 To portsout -1
 Next i1  
 
 '---------------------
-' por omision el programa empieza con portin y portout en 1
-'portin=1
-'portout=1

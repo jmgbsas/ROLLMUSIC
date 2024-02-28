@@ -706,6 +706,7 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
   ' asi funciona mejor o no? igual debe esperar a que termine el thread
  ' NOOOO ScreenSync  no usar nunca sync desfasa el barrido de cairo y salta
  ' las lineas
+
       creaPenta (c, Roll )
 
   If *po = 99 Then
@@ -938,6 +939,7 @@ Else
      '05-02-2022 usamos threarPenta ya definida global
      ' se supone que la direccion es unica y se reusa no se la crea muchas veces
      ' es mejor no ¿? zas je 
+      
            threadPenta = ThreadCall barrePenta (c, Roll )
            ThreadWait threadPenta
           '''  barrePenta (c, Roll )
@@ -1967,18 +1969,15 @@ EndIf
 
 
 ' ----HELP PRUEBA DE TEXT
- If MultiKey(SC_F1) Then
+If MultiKey(SC_F1) Then
 ' por ahora solo traeremos un texto, luego usaremos llamar
 ' a un archivo de help chm..
-            Shell ("start notepad ayuda.txt")
-
-End If
- 'Shell ("start notepad ayuda.txt")
+ Shell ("start notepad ayuda.txt")
  ' estopodemos hacer ayuda contextual
  '' Define character range
  '.DRAWASTRING CON FONT DEUSUARIO A VECES SEGUN COMO SE COMPILE HACE CERRAR LA APLICACION
  ' ELIMINADO NOUSAR ESE METODO, USAREMOS CAIRO...(para todo veo ....)
-'EndIf
+EndIf
 '
 If MultiKey(SC_R) Then ' recalculo de barras compas a veces no anda ¿? 
  ReDim compas(1 To CantTicks)

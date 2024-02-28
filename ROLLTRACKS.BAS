@@ -206,7 +206,8 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
         ''''cadena= sacarExtension(filenameOld) ' [1]AAA
         cadena = tocaparam(ntkp).nombre ' este ntkp sale del nombre del archivo el nro ej: (03) 
 ' pero la carga usa np que deberia coincidir....o no si borro una pista sinrenombrar 01,03,04 ... borre la (02) 
-         AddListBoxItem(4, cadena,np-1)
+         AddListBoxItem(LISTA_DE_EJECUCIONES, cadena,np-1)
+          Sleep 1                         
         '''''ntkp=CInt(np) no hace falta
       Print #1,"tocaparam(ntkp).maxpos ",tocaparam(ntkp).maxpos
         pmTk(ntkp+32).MaxPos=tocaparam(ntkp).maxpos
@@ -529,8 +530,8 @@ Print #1," patch ntk canal ",	Track(ntk).trk(1,1).nnn, ntk,pmTk(ntk).canalsalida
       print #1,"CargarTrack  fin"  
       print #1,"----------------------------------------------" 
 ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0:ubirtk=0
-mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
-mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0
+'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
+'mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0
  Sleep 100 ' retardo para que se ubiquen lso datos en memoria ¿? parece necesario
 End Sub
 
@@ -964,7 +965,8 @@ Select Case ext
      
     nombre= NombreCancion + "\[" + doscifras(ntk) + "]" + nom +".rtk"
     Dim cadena As String = "[" + doscifras(ntk) + "]" + nom
-    AddListBoxItem(3, cadena)
+    AddListBoxItem(LISTA_DE_PISTAS, cadena)
+    Sleep 1                         
     print #1,"GRABANDO PISTA EN CANCION EN ",nombre
       'si es vacio tomo la ultima
     titulos(ntk)=nombre ' cambiamos el nombre de la pista 
@@ -1052,7 +1054,8 @@ Dim As Integer barra=0,punto=0,ubi3=0,ubi4=0,ntkold=ntk ' el ntk que esta en edi
      
         nombre= NombreCancion + "\[" + doscifras(ntk) + "]" + nom +".rtk"
         Dim cadena As String = "[" + doscifras(ntk) + "]" + nom
-        AddListBoxItem(3, cadena)
+        AddListBoxItem(LISTA_DE_PISTAS, cadena)
+        Sleep 1                          
         print #1,"GRABANDO PISTA EN CANCION EN ",nombre
       'si es vacio tomo la ultima
         titulos(ntk)=nombre

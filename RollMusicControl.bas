@@ -108,7 +108,7 @@ Dim listoctava(1 To 9) As string ={"0","1","2","3","4","5","6","7","8"}
 
 For x= 1 To 2 
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("OCTAVAS",100,50,400,400,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("OCTAVAS",100,50,400,400, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
      hwl=  ListViewGadget(1,10,10,300,400,,,,32,LVS_SINGLESEL  )
     ' listports()
 
@@ -160,7 +160,10 @@ Dim As Integer i
               Exit Do 
             End If
           EndIf 
-  
+          If eventC= EventClose Then
+             Close_Window(haw)
+             Exit Do 
+          EndIf
           
          Loop 
 Next x
@@ -177,14 +180,19 @@ print #1,"OCtahasta ",octahasta
 End Sub
 '---------------------------
 Sub selInstORdenAlfa(ByRef instru As Integer)
+'If ntk =0 Then
+'   Exit Sub
+'EndIf
 Dim As hwnd haw,hwl
-Dim As Integer aa ,paso=0,x=0,i1=0,i2=0  
+Dim As Integer aa ,paso=0,x=0,i1=0,i2=0 ,Posx,Posy ,x0,y0  
 Dim cad As String
-
+ScreenControl GET_WINDOW_POS, x0, y0
+Posx=x0 +50
+Posy=y0 +100
 ' la seleccion empieza de 1, no devuelve 0 para el 1er elemento 
  
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("INSTRUMENTOS PATCH POR ORDEN ALFABETICO",100,50,700,600,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("INSTRUMENTOS PATCH POR ORDEN ALFABETICO",500,Posy,700,600, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
      'Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
      ' commctrl.bi modificado
      hwl=  ListViewGadget(1,10,10,500,500,,,,32,LVS_SINGLESEL )
@@ -211,7 +219,7 @@ Dim cad As String
 
 
        ButtonGadget(2,530,30,100,40,"CAMBIA")
-       ButtonGadget(3,530,80,100,40,"CANCELA")
+
 
          #Ifdef __FB_WIN64__
            SetFocus (hwl) 
@@ -251,13 +259,11 @@ Dim cad As String
                   Exit Do
               
             End If
-            If eventnumber()=3 Then
-                  Close_Window(haw)
-                  Exit Do
-
-            End If
           EndIf 
-  
+          If eventC=EventClose Then
+                  Close_Window(haw)
+                 Exit Do 
+           EndIf          
           
          Loop
          
@@ -270,15 +276,22 @@ print #1,"Str(instru) ", Str(instru)
 end Sub
 
 Sub selInstORdenNum (ByRef instru As integer)
+'If ntk =0 Then
+'   Exit Sub
+'EndIf
 Dim As hwnd haw,hwl
-Dim As Integer aa=0 ,paso=0,x=0  
+Dim As Integer aa=0 ,paso=0,x=0, Posx,Posy ,x0,y0 
 Dim As String cad
+ScreenControl GET_WINDOW_POS, x0, y0
+Posx=x0 +50
+Posy=y0 +100
 
  
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("INSTRUMENTOS PATCH ORDEN NUMERICO",100,50,700,600,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("INSTRUMENTOS PATCH ORDEN NUMERICO",500,Posy,700,600, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
      'Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
      ' commctrl.bi modificado
+Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
      hwl=  ListViewGadget(1,10,10,500,500,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL )
      
      AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
@@ -298,8 +311,7 @@ Dim As String cad
 
 
        ButtonGadget(2,530,30,100,40,"CAMBIA")
-       ButtonGadget(3,530,80,100,40,"CANCELA")
-'       ButtonGadget(3,530,90,50,40,"+Pag")
+
          #Ifdef __FB_WIN64__
            SetFocus (hwl) 
            SetForegroundWindow(haw)
@@ -330,12 +342,11 @@ Dim As String cad
                 Close_Window(haw)
                 Exit Do
             End If
-            If eventNumber()= 3 Then
+          EndIf 
+            If eventC= EventClose Then
                Close_Window(haw)
                Exit Do 
             EndIf
-          EndIf 
-          Sleep 5  
           
          Loop
          

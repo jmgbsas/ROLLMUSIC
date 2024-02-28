@@ -1,6 +1,22 @@
  
 '#Include "foro/window9.bi" no hace falta parece
 
+'extern "c++"
+'#include once "fltk/fl_window.bi"
+'#include once "fltk/fl_button.bi"
+'#include once "fltk/fl_check_button.bi"
+'#include once "fltk/fl_input.bi"
+'#include once "fltk/Fl_Multiline_Output.bi"
+'#include once "fltk/Fl_Radio_Button.bi"
+' #include once "fltk/Fl_Menu_Window.bi"
+'''#include once "fltk/Fl_Table.bi" ' no funca
+' '#include once "fltk/fl_Tree_Item.bi" no funca
+''#include once "fltk/Fl_Table_Row.bi" ' no funca
+'''#include once "fltk/Fl_Choice.bi"  ' no funca
+'''#Include once "fltk/fl_Input_choice.bi"   '' NO FUNCA   
+
+'end extern
+
 On  Error GoTo errorSub
 
 
@@ -3658,8 +3674,6 @@ End Sub
 
 
 Sub  selport (ByVal tipo As Any Ptr)  ' list de ruso
-'' PORT DE SALIDA PARA REPRODUCIR UNA CANCION CARGADA
-'' DE ARCHIVO Y CREADA CON ROLL GRAFICO O SEA NO ES EJECUCION REAL 
 Dim As hwnd haw,hwl
 Dim As Integer mitipo,x0,y0,Posx,Posy 
 ScreenControl GET_WINDOW_POS, x0, y0
@@ -3679,7 +3693,7 @@ Dim cad As string
 
 mitipo=  CInt(tipo)
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("MIDI MANUALES",Posx,Posy,500,400,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("MIDI",500,Posy,500,400, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
      hwl=  ListViewGadget(1,10,10,350,400,,,,32,LVS_SINGLESEL  )
      listports()
   
@@ -3712,7 +3726,7 @@ mitipo=  CInt(tipo)
 
 
        ButtonGadget(2,380,30,100,40,"CAMBIA")
-       ButtonGadget(3,380,70,100,40,"CANCELA")
+' No sepuede poner otro boton porque la lista de pistas que da en blanco para siempre
          #Ifdef __FB_WIN32__
            SetFocus (hwl) 
            SetForegroundWindow(haw)
@@ -3739,6 +3753,7 @@ mitipo=  CInt(tipo)
                      cad="[x] " +listout(portout) 
                   EndIf
                EndIf
+
                If mitipo=2 Then 
                   If InStr(cad,"x") >0  Then
                     cad="[ ] " +listin(portin) 
@@ -3769,7 +3784,7 @@ mitipo=  CInt(tipo)
               EndIf
               If mitipo=2 Then
               Print #1,"PORT SELECCIONADO en menu ",portin
-                pmTk(ntk).portin =CUByte(portin )
+                pmTk(ntk).portin =CUByte(portin)
 
               EndIf
 
@@ -3779,19 +3794,19 @@ mitipo=  CInt(tipo)
                  EndIf
               Else
                 If MaxPos > 1  And ROLLCARGADO  Then
-                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undo�?
+                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undo??
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
                 EndIf  
               EndIf  
               Close_Window(haw)
               Exit Do 
             End If
-            If eventnumber()=3  Then
-               Close_Window(haw)
-               Exit Do 
-            End If 
+
           EndIf 
-  
+          If event=EventClose Then
+              Close_Window(haw)
+               Exit Do 
+          EndIf
           
          Loop 
 ' SendMessage(GadgetID(1), EM_UNDO, 0, 0) 'undo the last edit
@@ -3812,11 +3827,9 @@ mitipo=  CInt(tipo)
 cierroport=0
 End Sub
 
-Sub  selportEjec (ByVal tipo As Integer,  ntpk As Integer )  ' list de ruso
-' ntpk numero de track de ejecucion en el que ajustamos el port in
-Print #1,"===> selportEjec "
+Sub  selportEjec (ByVal tipo As Integer,ntkp As Integer )  ' list de ruso
 Dim As hwnd haw,hwl
-Dim As Integer mitipo,x0,y0,Posx,Posy  
+Dim As Integer mitipo,x0,y0,Posx,Posy 
 ScreenControl GET_WINDOW_POS, x0, y0
 Posx=x0 +50
 Posy=y0 +100
@@ -3827,16 +3840,16 @@ Dim cad As string
 ''portsout = port_count (midisal)
 ' ESTOY ABRIENDO LSO PORT SEGUN LO ELEGIDO CADA VEZ QUE SE ELIJA UNO
 ' DEJA DE ESTAR DISPONIBLE PUES YA ESTA ABIERTO, PONDREMOS UN MENSAJE ABIERTO CREO ES MEJOR 
- '   If NombreCancion > "" Then
- '   Else
- '      ntkp=0
- '   EndIf
+    If NombreCancion > "" Then
+    Else
+       ntkp=0
+    EndIf
 
 
 
-mitipo=  tipo
+mitipo=  CInt(tipo)
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("MIDI EJECUCIONES",Posx,Posy,500,400,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("MIDI EJECUCIONES",500,Posy,500,400,WS_OVERLAPPEDWINDOW Or WS_VISIBLE , WS_EX_TOPMOST )
      hwl=  ListViewGadget(1,10,10,350,400,,,,32,LVS_SINGLESEL  )
      listports()
      Print #1,"portin ", portin
@@ -3867,7 +3880,7 @@ Print #1, "ntkp ",ntkp
 
 
        ButtonGadget(2,380,30,100,40,"CAMBIA")
-       ButtonGadget(3,380,70,100,40,"CANCELA")
+       ''''ButtonGadget(3,380,70,100,40,"CANCELA")
          #Ifdef __FB_WIN32__
            SetFocus (hwl) 
            SetForegroundWindow(haw)
@@ -3931,15 +3944,21 @@ Print #1, "ntkp ",ntkp
                         EndIf
                     Next i
                 EndIf  
+              ' FreeGadget(1)
                 Close_Window(haw)
                 Exit Do 
              End If
              If eventnumber()=3  Then
+              '  FreeGadget(1)
+                Sleep 5
                 Close_Window(haw)
                 Exit Do 
              End If 
           EndIf 
-  
+          If event=EventClose Then
+               Close_Window(haw)
+                Exit Do 
+          EndIf
           
          Loop 
   
@@ -3950,26 +3969,30 @@ End Sub
 
 ' 
 Sub  selcanal (ByVal tipo As Any Ptr )  ' list de ruso
-Dim As hwnd haw,hwl
+'If ntk =0 Then
+'   Exit Sub
+'EndIf
+Dim As hwnd haw, hwl
 Dim As Integer mitipo, x0,y0,Posx,Posy,cambio=0  
 mitipo=  CInt(tipo)
-'Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
+Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 '' => desde aca echo con tool del ruso no anda muy bien
 ScreenControl GET_WINDOW_POS, x0, y0
 Posx=x0 +50
 Posy=y0 +100
 
-     haw=OpenWindow("CANALES MANUALES",Posx,Posy,500,400,WS_VISIBLE, WS_EX_TOPMOST )
-     
+     haw=OpenWindow("CANALES MANUALES",500,Posy,500,400,WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
+
      hwl=  ListViewGadget(1,10,10,300,300,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL  )
+
      
      Dim As String mensaje, cad 
      If mitipo = 1 Then ' out
       mensaje="Canales Salida"
      EndIf
-     If mitipo = 2 Then ' in entradas
-      mensaje="Canales Entrada"
-     EndIf 
+   '  If mitipo = 2 Then ' in entradas   'CANALES DE ENTRADA NO TIENE SENTIDO POR AHORA
+   '   mensaje="Canales Entrada"
+   '  EndIf 
      
      AddListViewColumn(1, mensaje ,0,0,250)
      For aa As Integer=1 To 16 
@@ -3982,15 +4005,18 @@ Posy=y0 +100
          EndIf 
          
      Next
- 
-       ButtonGadget(2,330,30,100,40,"CAMBIA")
-       ButtonGadget(3,330,80,100,40,"CANCELA")
-           SetForegroundWindow(haw)        
-           SetFocus (hwl) 
+   ''''GroupGadget(GRUPO_BTNS_OKCAN ,320,20,130,130,"")
+        ButtonGadget(2,330,30,100,40,"CAMBIA")
 
-        '  #Else
-        '   gtk_widget_grab_focus(GadgetID(1))
-        ' #EndIf
+
+         #Ifdef __FB_WIN32__
+           SetFocus (hwl) 
+           SetForegroundWindow(haw)
+          #Else
+           gtk_widget_grab_focus(GadgetID(1))
+         #EndIf
+
+
          Do
 
          Var event= waitEvent
@@ -4038,12 +4064,12 @@ Posy=y0 +100
                Close_Window(haw)
                Exit Do 
             End If
-            If eventNumber()= 3 Then
-               Close_Window(haw)
+          EndIf
+          If event=EventClose Then
+                  Close_Window(haw)
                Exit Do 
 
-            EndIf
-          EndIf
+           EndIf
             
          
          Loop 
@@ -4070,8 +4096,8 @@ ScreenControl GET_WINDOW_POS, x0, y0
 Posx=x0 +50
 Posy=y0 +100
 
-     haw=OpenWindow("CANALES EJECUCION",Posx,Posy,500,400,WS_VISIBLE, WS_EX_TOPMOST )
-     
+     haw=OpenWindow("CANALES EJECUCION",500,Posy,500,400, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
+     Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
      hwl=  ListViewGadget(1,10,10,300,300,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL  )
      
      Dim As String mensaje, cad 
@@ -4094,7 +4120,7 @@ Posy=y0 +100
      Next
  
        ButtonGadget(2,330,30,100,40,"CAMBIA")
-       ButtonGadget(3,330,80,100,40,"CANCELA")
+       '''ButtonGadget(3,330,80,100,40,"CANCELA")
            SetForegroundWindow(haw)        
            SetFocus (hwl) 
 
@@ -4150,12 +4176,15 @@ Posy=y0 +100
                Close_Window(haw)
                Exit Do 
             End If
-            If eventNumber()= 3 Then
-               Close_Window(haw)
-               Exit Do 
-            EndIf
+''            If eventNumber()= 3 Then
+''               Close_Window(haw)
+''               Exit Do 
+''            EndIf
           EndIf
-            
+           If event=EventClose Then
+                  Close_Window(haw)
+                 Exit Do 
+           EndIf           
          
          Loop 
   
@@ -4446,7 +4475,9 @@ Sleep 10
 '    cerrar 0
 '    Close
  
- DeleteObject(Cast(Any Ptr,BRUSH))      
+' ESTO HACE CNCELAR AL CERRAR DE LA VENTANA DE CONTROL NO USAR
+' 26-02-2024 
+'''DeleteObject(Cast(Any Ptr,BRUSH))      
 
 End Sub
 '-------
@@ -4457,12 +4488,13 @@ tipoescala_num=0
 
  
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("ESCALAS ",100,50,600,600,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("ESCALAS ",100,50,600,600,WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
 '     Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
 ' COSA DE MANDINGA LVS_EX_AUTOSIZECOLUMNS ACA NO LA ENCUENTRA PERO EN LAS OTRAS
 ' SUBRUTINAS LA ENCUENTRA JAJAJAA ANDA PARA LA MIERDA ESTE FB 
 ''Y ESTE NO ES UN MODULO A PARTE ES UN INCLUDE!!!     
      ' commctrl.bi modificado
+Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
      hwl=  ListViewGadget(1,10,10,500,500,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL )
      
      AddListViewColumn(1, "Elegir De 1 a 168 ",0,0,250)
@@ -4494,7 +4526,10 @@ tipoescala_num=0
            End If
 
           EndIf 
-  
+         If eventC= EventClose Then
+               Close_Window(haw)
+               Exit Do 
+          EndIf
           
          Loop
          
@@ -4512,12 +4547,13 @@ notaescala_num=0
 
  
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("ESCALAS ",100,50,500,500,WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("ESCALAS ",100,50,500,500, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
 '     Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
 ' COSA DE MANDINGA LVS_EX_AUTOSIZECOLUMNS ACA NO LA ENCUENTRA PERO EN LAS OTRAS
 ' SUBRUTINAS LA ENCUENTRA JAJAJAA ANDA PARA LA MIERDA ESTE FB 
 ''Y ESTE NO ES UN MODULO A PARTE ES UN INCLUDE!!!     
      ' commctrl.bi modificado
+Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
      hwl=  ListViewGadget(1,10,10,400,350,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL )
      
      AddListViewColumn(1, "Elegir De 1 a 12 ",0,0,250)
@@ -4554,7 +4590,10 @@ notaescala_num=0
            End If
 
           EndIf 
-  
+         If eventC= EventClose Then
+               Close_Window(haw)
+               Exit Do 
+         EndIf
           
          Loop
          

@@ -3,12 +3,11 @@
 #include "RTMIDISUB.bas"
 #Include "ROLLTRACKS.bas"
 #include "ROLLSUB.BAS"
-'===========================
+'========================== 
 ' esta andando bien seguir verificando 04-06-2022
 ' colocar HELP-CONTEXTUAL-POPUP <--- es undirectorio con ejemplo de como poner
 ' esos help tipo globito!!!
-'========================== 
-
+'===========================
  Dim As Integer MenuFlag=0, LoopFlag=0 
 
 '========================== 
@@ -34,7 +33,7 @@
     
 ' para abrir un port no hace falta el nombre en el comando ,puede estar en vacio ""
 ' por ello vamos a grabar en el archivo el numero de port , podre abrir solo con el nombre
-' sin el numero de port? el nombre identifica mas al dispositivo,,,deberï¿½ grabarlo
+' sin el numero de port? el nombre identifica mas al dispositivo,,,deber? grabarlo
 ' deberia guardar ambos nro port y nombre,,,,ufff
 ' si la pc no cambia de configuracion de hardware los numeros serian siempre lso mismos
 ' para los ports y no haria falta los nombres, pero debo dejar constancia cual era el dispositivo
@@ -111,19 +110,18 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="0.4571  nada nuevo, correciones" ':Patrones de Ejecucion 03-07-2022
+nroversion="0.4572  correciones" ':Patrones de Ejecucion 03-07-2022
 ' despues de un año de bajones personales veo si me da gan de seguirlo
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
-acercade = "RollMusic Version "+ nroVersion +" Autor Jose M Galeano, Buenos Aires Argentina 2021-2022.Mi primer aplicación gráfica. En esta version ejecuta secuencias " + _
+acercade = "RollMusic Version "+ nroVersion +" Jose M Galeano, Buenos Aires Argentina 2021-2022, 2024. Ejecuta secuencias " + _
  "entrada por pasos usando algoritmos sin una linea conductora de tiempos, se basa en las duraciones de las notas. " + _
  "Para entrada por teclado midi usa ticks. Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
  "manual o por ejecucion. OS:Windows 64bits 7,10,y 11, Proc:AMD Phenom-II Black Edition 4 Nucleos. " + _
- "Usa Cairo como libreria de graficos, Rtmidi como libreria midi, " + _
- "Editor de código FbEdit. Echo en Freebasic como hobby. FreeBASIC Compiler - Version 1.09.0 (2021-12-31), built for win64 (64bit) " + _
- "Copyright (C) 2004-2021 The FreeBASIC development team. " +_ 
- "standalone." + _
- " Consultas: mail:galeanoj2005@gmail.com"
+ "Usa Cairo como libreria de graficos, Windows9 como GUI y Rtmidi como libreria midi, " + _
+ "Editor de código FbEdit. Echo en Freebasic como hobby. FreeBASIC Compiler - Version 1.10.1 (2023-12-24), built for win64 (64bit) " + _
+" Copyright (C) 2004-2023 The FreeBASIC development team." +_ 
+" Consultas: mail:galeanoj2005@gmail.com"
  
 '------------
 Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8,MenName10
@@ -131,7 +129,7 @@ Static Shared As HMENU MenName31,MenName32
 If ix < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON control
   menuabierto=1 ' evita apertura de mas de un menu
   instancia=0
-  hwndC = OpenWindow("RollMusic Ctrl V "+ nroversion,10,10,ANCHOSYSTEM*0.91 ,ALTOSYSTEM*0.91,,WS_EX_ACCEPTFILES   )
+  hwndC = OpenWindow("RollMusic Ctrl V "+ nroversion,10,10,ANCHOSYSTEM*0.91 ,ALTOSYSTEM*0.91,WS_OVERLAPPEDWINDOW Or WS_VISIBLE,  WS_EX_ACCEPTFILES   )
 ''UpdateInfoXserver()
 Var bitmap = Load_image("fondo.bmp")
 BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
@@ -261,14 +259,14 @@ Var IMGE=Load_image(".\recur\Ejec.bmp")
 SetGadgetColor(CHECK_GRABAR_EJECUCION,cint("&HC0C0C0"),0,1)
 
 ' pistas de ejec MIDI-IN
-GroupGadget(GRUPO_BTNS_MIDI,450,0,55,40,"")
+GroupGadget(GRUPO_BTNS_MIDI,445,0,113,40,"")
 ButtonImageGadget(BTN_MIDI_PARAR,450,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
 ButtonImageGadget(BTN_MIDI_GRABAR,490,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
 ButtonImageGadget(BTN_MIDI_EJECUTAR,530,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
 
  TextGadget(21,570,12,95,20,"         ")
 ' pistas manuales  PARA CARGAR CANCION DESDE DIRECTORIO PISTAS ECHAS CON ROLL
-GroupGadget( GRUPO_BTNS_MANUAL,100,0,55,40,"") 'play cancion
+GroupGadget( GRUPO_BTNS_MANUAL,95,0,113,40,"") 'play cancion
 ButtonImageGadget(BTN_ROLL_PARAR, 100,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
 ButtonImageGadget(BTN_ROLL_EJECUTAR, 140,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
 ButtonImageGadget(BTN_ROLL_GRABAR_MIDI, 180,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
@@ -353,7 +351,7 @@ MenuItem(10061,MenName1, "Cargar directorio de Cancion con Pistas separados sin 
 MenuItem(1007,MenName1, "Grabar Cancion")
 MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
 MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
-MenuItem(1010,MenName1, "Cargar una Pista (rtk ï¿½ roll) externa en Cancion")
+MenuItem(1010,MenName1, "Cargar una Pista (rtk ? roll) externa en Cancion")
 MenuItem(1011,MenName1, "Grabar una Pista de la Cancion con modificaciones, carga pista si no hubiera cargada")
 MenuItem(1012,MenName1, "Copia una pista a otra  nueva en cancion")
 MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
@@ -463,7 +461,7 @@ MenuItem(2000,MenName10,"Acerca de")
 ' LA PRIMERA VEZ QUE EJECUTADEJA TODO AZUL PERO DESPUES SE VA
 ' USA BGR, PARA CONVERTIR UN RGB SIMPLEMENTE 
 ' CAMBIAMOS DE POSICION LA 1ER Y 3ER CIFRA HEX DEL RGB
- MenuBackColor(hMessages,CInt("&hC0C0C0"),1) ' GRIS
+ MenuBackColor(hMessages,CInt("&hC0C0C0"),1) ' GRIS DIFERENCIA
 ' --MenuBackColor(hMessages,CInt("&hA56E3A"),1)
 ' EL COLOR SALE TODO AL REVES SI PONES AZUL SALE MARRON
 ' Y SI PONES MARRON COMO ES EL CASO SALE AZUL JAJAJA
@@ -627,9 +625,10 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
       pid1=pd1
    EndIf
  ' Print #1,"cALL rOLLLOOP I) cargaCancion ES 1 SI O SI ",cargaCancion
-   If CANCIONCARGADA=True   Then
+   If CANCIONCARGADA=True  Then
      ntk=0 '16-03-2022
-     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+      
+      threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1)) 
     ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
    Else     ''''''''RollLoop ( param) '<--con esto anda
      cargacancion=0
@@ -640,7 +639,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
     ''Sleep 200 ' NO HACE FALTA AHORA sin este retardo no le da teimpo al thread de cargar a Roll
     abrirRoll=0
   Else
-    If abrirRoll=1 And cargacancion=0   Then
+    If abrirRoll=1 And cargacancion=0 Then
        CANCIONCARGADA=False
        ''cargaCancion=0  
        param.encancion=0 
@@ -720,7 +719,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
 '  TextDraw(10,10,NombreCancion,-1,&hff0000)
 'StopDraw
 
-     Select Case eventC 
+     Select Case EVENTC 
        Case EventMenu
   If NombreCancion > "" And S5=0 Then 
      SetForegroundWindow(hwndC)
@@ -731,6 +730,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
              'cargamos todos los tracks
              ' ok anda bien, una vez cagados se permuta en memoria con TAB
              ' o haciedno click en la lista
+            '' UseGadgetList(hwndC)
                nombre=""
               ROLLCARGADO=FALSE 'NINGUN ARCHIVO ROLL CARGADO  
              Sleep 20
@@ -1566,7 +1566,7 @@ Print #1,"abriendo portin y call back",*nombrein( portin )
 
            Case 1200 'Seleccionar  Puertos MIDI-IN SOLO PARA PORTS DE EJECUCION POR AHORA
 ' seleccion de portin , 2:portin. ntkp:salida
-' ->  npi: numero port entrada
+' ->  npi: numero port entrada DIFERENCIA PARA ABAJO
 ' portsin es la cantidad de ports que hay de entrada
 ' seleccionamos un port de entrada para cada track de ejecucion
 ' como pensamos por ahora que hay un solo usuario ejecutando ese port se usara para todos 
@@ -2089,6 +2089,7 @@ Dim As Integer k1 = pmTk(pis+32).portout
 Print #1,"antes del cambio k1, listOutAbierto(k1) ", k1, listOutAbierto(k1)
 Print #1,"pmTk(pis+32).portout previo al cambio",pmTk(pis+32).portout
      ''''     thread3 = ThreadCreate(@selportEjec(), CPtr(Any Ptr, miport))
+
          selportEjec(miport,ntkp)
 Print #1,"pmTk(pis+32).portout despues del cambio",pmTk(pis+32).portout
 
@@ -2153,6 +2154,7 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
 ''' en base alanterior terminar esta parte que es para pistas de cancion manual
 '' mas adelante....cuando termine todo pistas ejec 
 ''para pistas de cancion manual futuro ???pero si ya hay para pistas manual??
+'//////////////// SEL PORT DE MANUALES
          For k=1 To 32 
            If CheckBox_GetCheck( cbxnum(k))= 1  Then
               num=1
@@ -2161,7 +2163,7 @@ Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
          If  num=1 Then
 
            thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))
-
+           
          EndIf
       EndIf
 '-------------------

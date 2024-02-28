@@ -1,3 +1,34 @@
+- 26-27-FEB-2024 - VERSION ANTERIOR NO TIENE EL PROBLEMA DE SOLAPAMIENTO
+  de la ventana de seleccion de port sal...chequeando!NO SEPUEDE USAR MAS
+  DE UN BOTON A LA VEZ O NO SE COMO SE HACE,,todas las selecciones se hacen con un boton
+  y cancela cerrando la ventana.
+- 25 feb 2024- probe IUP tampoco sirve no sepuede hacer vectores dinamicos
+  par recorrer con datos de una lista y si defefinem em un scope con VAR
+  no los ve en otro la mezcla de freebasic con iup es una bosta,
+  aunque tuve4 que definir un nro estatico fijo de port de salida
+  al menos FLTK permite avanzar veremos, sino seguiremos buscando otras GUI 
+  o terminare usando forms de windows a lo cual me resisto..(fbgui, glwf etc)
+- 18-02-2024 ERROR: al cargar una cancion y luego tratar de cambiar un port
+  o solo verlo con selport boton portsal, luego de hacerlo y cargar ora cancion
+  la lisbox permanece con los valores anteriores y si eran blancos por usar
+  selport sin inguna cancion, al cargar una cancon sigue en blanco
+  parece que listview no encontre la forma que no afecte a la listbox
+  de la ventana principal,,probe de todo, me canse y la solucion parece
+  usar FLTK. , podria usar una consola pero igual cancela por ya tener 
+  usa pantalla grafica screenres que no permite que haya otra o sino deberia
+  hacerce una libreria *.dll y no tengo ganas,,,,intentamos hacer una listview
+  o listbox con check box para mostrar los ports y el usuario lo seleccione.
+  (comienzo de uso de FLTK!) 
+-14-02-2024 PENDIENTE:en Rollmusic Ctrl la ventana de Control los parametros de cancion
+ su seleccion port patch canal no estan terminados por eso no funcionan bien
+ terminarlos..Tratar de lograr se lo hizo por un instante de que funcione
+ la carga de cancion sin necesidad de levantar el grafico de Roll y podercargar 
+ canciones y escucharlas sin modificarlas ni tener el editor Roll grafico
+ funcionanado...!! Lo logre por un momento pero lo perdi porque no funcionaba 
+ otra parte y cambie y lo perdi no supe bien que es loque lo hizo funcionar,ja
+
+-13-02-2024 correcciones agregar boton cancela en selecciones de parametros
+-12-02-2024 hice compialacion sin debug para enviar un ejecutable tipo release
 -21-06-2022 se graba una ejec con un roll cargado..es inestable...hace falta mas pruebas.
  la pista nueva ejecutada se escucha bien con el instrumento elegido.
 -12-06-2022 arrastre de ventana desde cinta perfecto.- Comienso de Syncronizacion cancion y ejec.

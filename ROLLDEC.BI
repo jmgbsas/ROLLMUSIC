@@ -88,7 +88,7 @@ Const BTN_PARAM_VOL        = 17
 Const BTN_PARAM_PAN        =18
 Const BTN_PARAM_PATCH    = 19
 Const BTN_PARAM_CANAL    = 20
-
+Const GRUPO_BTNS_OKCAN    =21
 Dim HtmlHelpA As Function (hwndCaller As HWND,pszFile As LPCSTR,uCommand As UINT,dwData As DWORD_PTR) As HWND
 Dim  HTMLHelp As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
 Dim HH_POPUP As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
@@ -121,7 +121,8 @@ Declare Sub CargarPistasEnCancion ()
 Declare sub GrabarCopiadePista()
 Declare Sub ImportarPistaExterna()
 
-Declare sub selport(ByVal tipo As any ptr)
+Declare sub selport(ByVal tipo As any Ptr)
+''Declare sub selport(ByVal tipo As integer)
 Declare Sub selcanal(ByVal tipo As Any Ptr)  
 Declare Sub ComboBox()
 Declare Sub grabaprueba()

@@ -2682,13 +2682,14 @@ Dim new_time As Double
 
      Select Case  dato1 
          Case 144 ' on
-
+' DIFERENCIA HABIA UN CHANGGEPROGRAM EN 148
             noteon dato2,dato3,pmTk(calltoca+32).canalsalida, pmTk(calltoca+32).portout
 
 '     Print   dato1;" ";  dato2;" "; dato3
            
          Case 128 'off
             noteoff dato2,pmTk(calltoca+32).canalsalida,pmTk(calltoca+32).portout 'message(2)'
+' DIFERENCIA 
 '     Print   dato1;" ";  dato2;" "; dato3
 
      End Select
