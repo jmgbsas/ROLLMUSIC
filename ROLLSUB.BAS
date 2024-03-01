@@ -1344,7 +1344,9 @@ End Sub
 Sub Tracks ( ByRef ntk As integer, ByRef nroCanal As UByte,Roll As inst)
   ''copia track a Roll en memoria
   ' nrocanal no se usa ,,,,borraremos mas adelante...
+Print #1, "MaxPos <=2 Or pmTK(ntk).maxpos=0 Then " , Maxpos, pmTK(ntk).maxpos 
 If MaxPos <=2 Or pmTK(ntk).maxpos=0 Then
+  Print #1, "Salimos de Tracks sin ahcer nada "
   Exit Sub
 EndIf
 nota=0:dur=0

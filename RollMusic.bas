@@ -110,7 +110,7 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="0.4572  correciones" ':Patrones de Ejecucion 03-07-2022
+nroversion="0.4573 cancion sin roll" ':Patrones de Ejecucion 03-07-2022
 ' despues de un año de bajones personales veo si me da gan de seguirlo
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
@@ -135,7 +135,7 @@ Var bitmap = Load_image("fondo.bmp")
 BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 
   hwndListBox= ListBoxGadget(LISTA_DE_PISTAS,80,40,290,670,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
-
+  SetGadgetFont(LISTA_DE_PISTAS,CINT(LoadFont("consolas bold",13))) 
 ' botton todo o nada , sonido o mudo para todas las pistas
   ButtonGadget(CHECK_PISTA_ROLL, 60,20,20,20,"S")
   SendMessage(GadgetID(LISTA_DE_PISTAS),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
@@ -209,6 +209,7 @@ Dim As TOOLINFO ti
 
 '---------------------------LISTA DE EJECUCIONES------------
   hwndListEjec= ListBoxGadget(LISTA_DE_EJECUCIONES, 430,40,290,670,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
+SetGadgetFont(LISTA_DE_EJECUCIONES,CINT(LoadFont("consolas bold",14)))
 SetGadgetColor(LISTA_DE_EJECUCIONES,cint("&HC0C0C0"),0,1)
   ButtonGadget(CHECK_SELECCION_EJECUCION,380,20,20,20,"S")
 SetGadgetColor(CHECK_SELECCION_EJECUCION,cint("&HC0C0C0"),0,1)
@@ -347,6 +348,7 @@ ButtonGadget(BTN_PARAM_CANAL,950,0, 50, 20,"Canal")
 MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
 MenuItem(1006,MenName1, "Cargar directorio de Cancion con Pistas separados")
 MenuItem(10061,MenName1, "Cargar directorio de Cancion con Pistas separados sin roll")
+MenuItem(10062,MenName1, "Abrir Roll Grafico para una cancion cargada sin Roll")
 
 MenuItem(1007,MenName1, "Grabar Cancion")
 MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
@@ -627,8 +629,12 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
  ' Print #1,"cALL rOLLLOOP I) cargaCancion ES 1 SI O SI ",cargaCancion
    If CANCIONCARGADA=True  Then
      ntk=0 '16-03-2022
-      
-      threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1)) 
+      If  EventNumber = 10061 Then
+          cargaCancion=1 
+          CargarSinRoll () ''' play sin roll 
+      Else
+      threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+      EndIf 
     ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
    Else     ''''''''RollLoop ( param) '<--con esto anda
      cargacancion=0
@@ -644,7 +650,13 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
        ''cargaCancion=0  
        param.encancion=0 
        Print #1,"CALL ROLLLOOP II) "
+       If  EventNumber=10061 Then
+           cargaCancion=1 
+           CargarSinRoll () '''28-02-2024 play sin roll
+       Else
        threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+       EndIf
+
        ''RollLoop ( param)
        abrirRoll=0
     EndIf
@@ -796,6 +808,17 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
   '           Print #1,"termino 1006 va a abrir Roll"
           SetForegroundWindow(hwnd)
 
+         Case 10062
+             Print #1," CASE 10062 abrirRoll=0 And NombreCancion > ", abrirRoll, NombreCancion
+             If abrirRoll=0 And NombreCancion > ""  Then
+                threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))   
+                Print #1,"CARGO ROLL PARA cancion sin roll"
+            ' ES TAN RAPIDO QUE PARECE EJECUTA DOS VECES EL 10062
+            ' AL DEBUGUEAR NO LOA HACE ERGO PONEMOS UN RETARDO 0,1 SEG
+                Sleep 100        
+             EndIf
+   
+
 ' ----------------------------------------------------------------------
            Case 1007 '<============ grabar cancion bosquejo
 ' 26-02-2022 desarrollo           
@@ -914,6 +937,9 @@ GrabarMidiIn(pgmidi)  ' POR 1015
 
 '-----------------------------------------------------------------------
            Case 1016 '<============Cargar MIDI-IN
+' deberia borrar la cancion cargada ??? creo que si totdavia no ejecuta
+' ambas cosas a la vez,,,,,debo almenos poner dos opciones mas
+' borrar cancion cargada y borrar ejecucion cargada
       Dim As String nombrea,myfil
        print #1,"EN Cargar midi-in nombre ",nombreMidiIn
        ResetAllListBox(4)
@@ -1677,7 +1703,7 @@ Next i
          End Select
 '-----------------------------------------------------------------------
        Case eventgadget
-              '   SetForegroundWindow(hwndC)
+     '   SetForegroundWindow(hwndC)
       ' el codigo anterior que traia de disco esta en notas
        If eventnumber()=3 Then  ' VK_LBUTTON ?
          borrapos=0
@@ -1694,7 +1720,7 @@ Next i
           '   setgadgettext(4,item)
               
              item=GetListBoxText(3,GetItemListBox(3))
-             Print #1,"item 1580 ",item
+             Print #1,"item 1580 ",item  ' 28-02-2024 esto aparece en debug sin roll
              If Len (item) < 24 Then
                item = item + String( 40-Len(item),32)
              EndIf
@@ -2051,7 +2077,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
             EndIf 
       ' EndIf
       EndIf   
-
+' ///////////////// BOTON VERDE PLAY CANCION MANUAL ////////  28-02-2024 GUIA
       If eventnumber()= BTN_ROLL_EJECUTAR Then ' 13-02-2024 PROBAR BIEN
          SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
          If Cplay = 0 And MaxPos > 2 Then

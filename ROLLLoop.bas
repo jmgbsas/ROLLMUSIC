@@ -815,7 +815,7 @@ End Select
 If cargacancion=1 Then  
  ' Print #1,"4 ROLLLOOP ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion
 EndIf
-If ubiroll > 0 Then
+If ubiroll > 0 Then  ' CARGA DE ARCHIVOS POR LINEA DE COMANDO DE ROLLMUSIC
  '  Print #1,"cargo archivo desde rollLoop"
    nombre = titulos(0)
  '  Print #1,"nombre",nombre

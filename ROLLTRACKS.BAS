@@ -41,6 +41,8 @@ Sub CargarMidiIn(nombreMidiIn As String,   ByRef ntkp As Integer)
       ubi2 =InStrRev (nombreMidiIn,")")
       ntkp=CInt(Mid(nombreMidiIn,ubi1+1,ubi2-ubi1-1)) ' el orden o nro de la pista sale del nombre
 ' pero tambien esta grabado en tocaparam en el archivo
+' si hay numero en la string au nque no halla parentesis al comienxo y  el numero este
+' al fina lo cualquier parte tomara el numero igual.,,cint descarta las letras,,,
       If  NombreCancion="" Then
           NombreCancion=Mid(nombreMidiIn,1,ubi1-1)
       EndIf
@@ -1741,6 +1743,9 @@ Dim As Integer result,limsup
     finalloop=final
   EndIf
 
+If comienzo = 0 Then  '01-03-2024 play sin roll
+  comienzo= 1 
+End If
 
 
 
@@ -2706,3 +2711,77 @@ ReCalCompas (Roll)
 EndIf
 
 End Sub
+
+Sub CargarSinRoll ()
+ cargaCancion=0 ' para que no entre mas luego de cargada la cancion
+   s5=0  '11-06-2022
+   Erase mel_undo, undo_acorde, undo_kant_intervalos
+   mel_undo_k=0: ig=0:cnt_acor=0
+   ROLLCARGADO = FALSE
+  ' print #1,"--TAB "
+   nota=0
+   dur=0
+  ' print #1,"TAB 1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
+   If clickpista=1 Then
+  '   Print #1,"no incrementea ntk"
+     clickpista=0
+   Else
+     ntk = ntk + 1
+   EndIf
+ '  print #1,"TAB 2- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos  
+   If ntk > 32 Or ntk > tope Then
+     ntk=1 
+  '   print #1,">TAB 2A- 1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos     
+   EndIf
+   nombre= titulos(ntk)
+   If nombre> "" Then
+ '    print #1,"--------------------------"
+ '    print #1,"TAB 3-NTK nombre", ntk,nombre
+ '    print #1,"TAB 3-NTK MAXPOS pmtk(ntk).maxpos  ", maxpos,pmTK(ntk).maxpos
+ '    print #1,"--------------------------"
+   EndIf  
+' evita leer track vacios   
+   If nombre=""  Then ' evita revisar track vacios
+     Do While nombre=""
+        ntk=ntk+1
+        If ntk>32 Or ntk > tope Then
+           ntk=1
+           nombre= titulos(ntk)
+ ' print #1,"TAB 4 - NTK, pmtk(ntk).maxpos  ", ntk,pmTK(ntk).maxpos    
+           Exit Do
+        EndIf
+ 
+        nombre= titulos(ntk)
+     Loop
+  EndIf
+     posicion=0 ' 14.-03-2022
+     MaxPos=pmTk(ntk).MaxPos
+     posn=pmTk(ntk).posn
+     desde=pmTk(ntk).desde
+     hasta=pmTk(ntk).hasta
+     NB=pmTk(ntk).NB
+     NA=pmTk(ntk).NA
+     portout=pmTk(ntk).portout 'solo debe servir para play de pista
+     notaold = CInt(pmTk(ntk).notaold)
+     CantTicks=pmTk(ntk).Ticks
+     patchsal=Track(ntk).trk(1,1).nnn
+' ajusto escala principal durante la conmutacion para cada track visualizado con TAB     
+     notaescala_num_ini=CInt(pmTk(ntk).notaescala) '13-01-2022
+     tipoescala_num_ini= CInt(pmTk(ntk).tipoescala) '13-01-2022
+     cadenaes_inicial="" '13-01-2022
+     armarescala cadenaes_inicial,tipoescala_num_ini,notaescala_num_ini,alteracion,1 '13-01-2022
+' todavia no probado, escala principal para TAB en cada track testeat 13-01-2022     
+' no he grabado las escalas auxiliares en lso Trackc todavia !! 13-01-2022 jjj     
+  '   print #1,"TAB 5- MAXPOS final TAB " ,maxpos
+     
+      
+'
+
+ '  print #1, "TAB 6-NTK nombre", ntk,nombre  
+ '  print #1, "TAB 6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, MaxPos,pmTK(ntk).maxpos
+' copia track a Roll en memoria  
+' el segundo parametro es canal no se usa...lo saco o lo dejo?
+   Tracks (ntk , 1,Roll) ' track , nro,  Canal, copia track a Roll en memoria
+   Sleep 100
+
+End Sub 

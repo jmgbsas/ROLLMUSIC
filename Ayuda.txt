@@ -55,10 +55,55 @@
        en la cinta celeste de arriba en su parte mas derecha entre la mitad y casi hasta el final antes de 
        los botones. rojo, amarillo y verde...Recordar que Opciones se abre pulsando ALT y ubicando el mouse
        encima del label . 
+       Hay 4 cuatro formas de abrir un Roll Grafico, en "crear Pistas manuales" hay dos opciones fuera
+       de una canción:
+       1) "Crea pista aislada con lo elegido y reemplaza la existente en la edicion", 
+        edicion de Roll Grafico esta ventana tiene conexion con la ventana inicial de Control y su 
+        menu principal permite cambiar patch en un instrumento que lo tenga y se ajusta otros parametros 
+        en el mismo menu.
+        Puedo ajustar en este menu lo que deseo antes y despues crear una pista nueva borrando a la que 
+        este cargada,(por ahora no pregunta si queremos grabar la anterior..) 
+        con los parametros deseados, o cambiar los parametros de la pista roll o trk que ya este cargada 
+        en Roll Grafico. 
+        La otra opcion o segunda es 
+       2) "Crea instancia de RollMusic Sin Control alguno con lo elegido"
+        Este Roll Grafico puede abrirse todos los que se desean cada uno sera independiente de
+        la ventana de Control inicial sin poder cambiar patch(por ahora)  ni hacer canciones
+        solo edita una pista .roll o .trk por vez. Podria tener varias pistas en edicion
+        en forma aislada cada una instancia diferente y se puede cerrar sin cerar la de 
+        control ni las demas. Son auxiliares o para editar una sola pista totalmente aislada si
+        se tiene una cancion cargada en el otro modo,.
+        La tercer opcion es crear una pista en la cancion pero para eso la cancion ya debe estar cargada
+        y el Roll Grafico ya estará abierto de modo que no es una apertura directa de Roll gráfico
+        sino una creacion de nueva pista en una canción, 
+       3) "Crea pista en la cancion en edicion, Con lo elegido".
+        La cuarta opcion es, si abrimos una cancion para escucharla nada mas sin levantar el Roll
+        En Menu Archivos "Cargar directorio de cancion con pistas separadas sin Roll"
+        El Roll Grafico no levantara como dice la opcion, si luegoquiero abrirlo, la opcion de abajo 
+        lo abrira. 
+       4) "Abrir Roll Gráfico para una cancion cargada sin Roll"  
+          
        Al abrir una seleccion de puerto port(MIDI-OUT), instrumentos o patch por orden ALfa o numerico, o canales  
        midi , apareceran [] vacios sin seleccionar y [x] seleccionado, antes de seleccionar uno nuevo, se debe 
        deseleccionar el anterior dandole click al que tenga [x] para apasarlo a [] y luego buscar el nuevo
        hacicednolo pasar de [] a [x]. De todos modos solo toma el cambio si la ultima accion dejo una x.
+       En la ventana grafica solo se puede cambiar el canal y el port de salida o dispositivo.
+       Si el instrumento usa patch se lo puede cambiar en la ventana de Control general la ventana inicial
+       no de Roll Grafico, para ello entrar al menu "Crear Pistas manuales" y elegir "cambia instrumento
+       por orden alfabetico" 
+
+       NOTA: LOS BOTONES [PORTSAL] [VOL] [PAN] [PATCH] [CANAL] A LA DERECHA Y ARRIBA DE LA VENTANA DE CONTROL
+       SE USAN PARA EJECUCIONES A TRAVES DE MIDI CON UN TECLADO(si se selecciona con un tilde alguna
+       pista de ejecuciones la segunda en la ventana), PARA PISTAS DE CANCION SI SE MARCA LAS PISTAS
+       DE LA IZQUIERDA, FALTA TESTEAR BIEN, SI FALLA EL AJUSTE LOS PARAMETROS DE LAS PISTAS MANUALES 
+       SI O SI FUNCIONAN DESDE EL MENU CREAR PISTAS MANUALES O POR PORT Y CANAL SOLAMENTE EN LA VENTANA
+       DE ROLL GRAFICO.
+       LA CANCION SE ESCUCHARA PULSANDO EL BOTON VERDE DE LA IZQUIERDA DE LA LISTA
+       DE PISTAS MANUALES Y QUE ESTE SELECCIONADA O CHEQUEADA CON UN TILDE , EL RESTO NO SE ESCUCHARA
+       TANTO DESDE ESE BOOTN O COMO LA BARRA DE ESPACIO EN EL ROLL GRAFICO.
+       TAMBIEN SE PUEDE ESCUCHAR DESDE EL MENU rEPRODUCIR EL CUAL TAMBIEN LO HACES DESDE UNA POSICION
+       DADA O SOLO UN PEDAZO DE LA CANCION,
+
     1) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
     2) El espaciado entre lineas se puede cambiar.
     3) Trasponer todo: ALT-T habilita la trasposicion, Q la deshabilita.
@@ -927,7 +972,9 @@ futuro: (creo me demandará muchos meses  más jeje, no estoy a full y ademas voy 
 - Muy en el futuro algun dia... harmonizacion básica.,,
 - perfeccionamiento de algoritmo de play, play e ,as de un track. grabar en formato midi,
   cargar un midi.
-
+- ORGANIZAR ESTA AYUDA Y HACERL MAS AMENA DISCULPAS...TODO ESTA POR HACERSE Y 
+  PROBARSE ,,,,LLEGARE A ALGO MEJOR ?? NO SE ,,,CADA DIA ES MAS COMPLICADO
+  Y YO CON MENOS TIEMPO,...HARIAN FALTA COLABORADORES DE FB,,,
 
 
 

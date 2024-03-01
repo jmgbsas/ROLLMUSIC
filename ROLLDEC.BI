@@ -994,3 +994,4 @@ Dim Shared pgmidi As paramGrabamidi
 
 
 Declare Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi)
+Declare Sub CargarSinRoll () '28-02-2024

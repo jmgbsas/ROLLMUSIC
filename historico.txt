@@ -1,3 +1,10 @@
+- 28-feb-a 1-mar. Ya cargamos cancion sin roll grafico y lo ejecutamos
+  Y se puede levantar roll grafico despues, por si se desea verlo
+  o modificarlo,, pero una vez abierto no lo  puedo cerrar por ahora 
+  Screenres cierra com 0,0,0,0 como argumeto
+  en un programa aislado pero la superficie de cairo no la puedo destruir
+  queda una ventana negra que no la `puedo eliminar...seguire intentando 
+  ufff...
 - 26-27-FEB-2024 - VERSION ANTERIOR NO TIENE EL PROBLEMA DE SOLAPAMIENTO
   de la ventana de seleccion de port sal...chequeando!NO SEPUEDE USAR MAS
   DE UN BOTON A LA VEZ O NO SE COMO SE HACE,,todas las selecciones se hacen con un boton
