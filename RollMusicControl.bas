@@ -199,8 +199,9 @@ Posy=y0 +100
      
      AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
      AddListViewItem(1, "CLICK EN UN ITEM  Y EN CAMBIA",0,aa,0)
-
-     instru=CInt(patchsal)
+        If patchsal > 0 Then ' ya habia un instrumento es un cambio 
+           instru=CInt(patchsal) 
+       EndIf
 
        For aa =1 To 127 
                i2=InStrrev(NombreInstAlfa(aa)," ")
@@ -275,7 +276,7 @@ print #1,"Str(instru) ", Str(instru)
 
 end Sub
 
-Sub selInstORdenNum (ByRef instru As integer)
+Sub selInstORdenNum (ByRef instru As integer) ' NO TIENE EN CUENTA EL TIPO NI GRABA A DISCO
 'If ntk =0 Then
 '   Exit Sub
 'EndIf
@@ -296,7 +297,9 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
      
      AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
      AddListViewItem(1, "CLICK EN UN ITEM  Y EN CAMBIA",0,aa,0)
-           instru=CInt(patchsal)
+           If patchsal > 0 Then ' ya habia un instrumento es un cambio 
+              instru=CInt(patchsal) ' 
+           EndIf
        For aa =1 To 127 
            If instru = aa Then
               AddListViewItem(1, "[x] "+NombreInst(aa),0,aa,0)

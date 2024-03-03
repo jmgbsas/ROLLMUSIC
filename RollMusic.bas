@@ -322,13 +322,21 @@ ButtonImageGadget(BTN_ROLL_GRABAR_MIDI, 180,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_
 ' midi-out...igual para volumen y paneo,si sequiereajustar mas de uno a la vez
 ' simplemente se da click en todos los deseados y elajuste sera el mismo en cada uno
 ' o sea S tiene doblefuncion desmutear odar sonido o ajustar alguno de los 3 parametros.  
-ButtonGadget(BTN_PARAM_PORTSAL,740,0,70,20,"PortSal")
-ButtonGadget(BTN_PARAM_VOL,   810, 0, 35, 20, "Vol")
-ButtonGadget(BTN_PARAM_PAN,   850, 0, 35, 20,"Pan")
-ButtonGadget(BTN_PARAM_PATCH,890,0, 50, 20,"Patch")
-ButtonGadget(BTN_PARAM_CANAL,950,0, 50, 20,"Canal")
+ButtonGadget(BTN_EJEC_PORTSAL,420,700,70,20,"PortSal")
+ButtonGadget(BTN_EJEC_VOL,   490, 700, 35, 20, "Vol")
+ButtonGadget(BTN_EJEC_PAN,   530, 700, 35, 20,"Pan")
+ButtonGadget(BTN_EJEC_PATCH,570,700, 50, 20,"Patch")
+ButtonGadget(BTN_EJEC_CANAL,620,700, 50, 20,"Canal")
 
 '---------------------------
+ButtonGadget(BTN_ROLL_PORTSAL,70,700,70,20,"PortSal")
+ButtonGadget(BTN_ROLL_VOL,   140, 700, 35, 20, "Vol")
+ButtonGadget(BTN_ROLL_PAN,   180, 700, 35, 20,"Pan")
+ButtonGadget(BTN_ROLL_PATCH,220,700, 50, 20,"Patch")
+ButtonGadget(BTN_ROLL_CANAL,280,700, 50, 20,"Canal")
+
+
+
 'StatusBarGadget(1,"StatusBarGadget")
 
   hMessages=Create_Menu()
@@ -342,7 +350,7 @@ ButtonGadget(BTN_PARAM_CANAL,950,0, 50, 20,"Canal")
   MenName5=MenuTitle(hMessages,"Cambiar Tiempo Y Ritmo")
   MenName6=MenuTitle(hMessages,"Reproducir")
   MenName7=MenuTitle(hMessages,"Opciones")
-  MenName8=MenuTitle(hMessages,"Dispositivos")
+  MenName8=MenuTitle(hMessages,"Puertos de Ejecuciones")
   MenName10=MenuTitle(hMessages,"Info")
 
 MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
@@ -445,14 +453,14 @@ MenuItem(1111,MenName7,"Insertar escala libre en la Posicion actual (Pasozona1)"
 MenuItem(1112,MenName7,"Insertar escala Alternativa de la Principal en la Posicion actual (Pasozona1)")
 MenuItem(1113,MenName7,"Usar metronomo para Tocar MIDI-IN)",MF_CHECKED)
 
-MenuItem(1200,MenName8,"Seleccionar Puerto MIDI-IN")
+MenuItem(1200,MenName8,"Puerto MIDI-IN Ejecucion")
 ' MenuItem(1201,MenName8,"Na. Abrir      Puerto MIDI-IN")
 ' MenuItem(1202,MenName8,"Na. Cerrar    Puerto MIDI-IN")
 ' MenuItem(1203,MenName8,"Na. DesTruir Puerto MIDI-IN")
 Menubar(MenName8)
-MenuItem(1204,MenName8,"Seleccionar Puerto MIDI-OUT")
-MenuItem(1205,MenName8,"Abrir   Puertos MIDI-OUT")
-MenuItem(1206,MenName8,"Cerrar Puertos MIDI-OUT")
+MenuItem(1204,MenName8,"Puerto MIDI-OUT Ejecucion")
+MenuItem(1205,MenName8,"Abrir   Puertos MIDI-OUT Ejecucion")
+MenuItem(1206,MenName8,"Cerrar Puertos MIDI-OUT Ejecucion")
 'MenuItem(1207,MenName8,"Na. DesTruir Puertos MIDI-OUT")
 
 
@@ -1004,9 +1012,8 @@ lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BI
 
 '-----------------------------------------------------------------------
            Case 1019  ''<============= SALIR TERMINA ROLL
-            terminar=1
-             
-            Exit Do,Do
+            terminar=2
+            Exit Do ,Do    
 '-----------------------------------------------------------------------
            Case 1020 ' <=========== Entrar Nombre o Título de la Cancion     
                NombreCancion = ""
@@ -1623,7 +1630,7 @@ Print #1, "1] case 1200 portin, ntkp  ", portin, ntkp
 '           Case 1202'Cerrar    Puertos MIDI-IN
            Case 1203 'DesTruir Puertos MIDI-IN
 
-           Case 1204 'Seleccionar      Puertos MIDI-OUT
+           Case 1204 'Seleccionar      Puertos MIDI-OUT PARA EJECUCIONES
 ' seleccion de portout , 1:portout. ntkp:salida
 ' ->  npo: numero port salida
 ' portsin es la cantidad de ports que hay de entrada
@@ -1644,8 +1651,8 @@ Print #1, "1] case 1200 portin, ntkp  ", portin, ntkp
              EndIf
           Next i  
 
-           Case 1205'Abrir      Puertos MIDI-OUT
-'------------ABRIR PORT DE SALIDA ---<<<<< NO
+           Case 1205'Abrir      Puertos MIDI-OUT EJECUCIONES
+'------------ABRIR PORT DE SALIDA ---<<<<< EJECUCIONES
  
 Print #1,"abriendo port....si no se selecciona previamnete toma cero"
 Dim k1 As Integer
@@ -2057,9 +2064,10 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
 '--------------------------
 '       0,00274199275  seg= 2,7 mseg o sea la mitad del Tick (5 mseg)
 'podemos decir que el inicio esta casi sincronizado solo un delta de medio Tick
-
+'---- OJO ACA ESTAMOS GRABANDO PARANDO Y EJECUTANDO GRABACIONES
+' DEL USUARIO PERO SOBRE ROLL SIN NECESIDAD DE ENTRADA MANULA!!!
 '----------------------------------------------------------------------------------------------
-'//////////////// BOTON ROJO GRABAR EN PENTA //////////////////
+'//////////////// BOTON ROJO GRABAR EN ROLL //////////////////
 
       If eventnumber()= BTN_ROLL_GRABAR_MIDI Then 
          GrabarPenta=1
@@ -2077,7 +2085,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
             EndIf 
       ' EndIf
       EndIf   
-' ///////////////// BOTON VERDE PLAY CANCION MANUAL ////////  28-02-2024 GUIA
+' ///////////////// BOTON VERDE PLAY CANCION ROLL ////////  28-02-2024 GUIA
       If eventnumber()= BTN_ROLL_EJECUTAR Then ' 13-02-2024 PROBAR BIEN
          SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
          If Cplay = 0 And MaxPos > 2 Then
@@ -2094,12 +2102,12 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
          EndIf   
 
       EndIf
+' ---------------- BOTONES PORTSAL VOL PATCH CANAL A LA DERECHA Y ARRIBA ...
+'--------------------------------------------------------------------------------------------
 ' ////////////// PORT SAL EJEC ////////////////
-' 13-02-2024 ojo salida ejecucion,,, el port sal apunta a selport
-' y creo d eberia apuntar a selportejec!!!!
 ' si todavia no grabe nada tocaparam tendra el nombre y el orden
 ' osea el orden se crea al crear el nombre de la pista
-      If  eventnumber()=BTN_PARAM_PORTSAL Then ' boton PortSal de track cbxnum o ejec cbxejec
+      If  eventnumber()=BTN_EJEC_PORTSAL Then ' boton PortSal de track cbxnum o ejec cbxejec
           Dim As Integer miport =1, pis=0,num=0
           For k=1 To 32 
               If CheckBox_GetCheck( cbxejec(k))= 1 Or CheckBox_GetCheck( cbxgrab(k))= 1 Then
@@ -2159,50 +2167,35 @@ GrabarMidiIn(pgmidi) ' por PORSAL
                Print #1,"pmTk(pis+32).portout despues del cambio",pmTk(pis+32).portout
  
              EndIf
-Dim k1 As Integer
+             Dim k1 As Integer
 ' buscamos  elport de esta pista
-Print #1,"pmTk(pis).portout cambiado ",pmTk(pis+32).portout
-   k1=CInt(pmTk(pis+32).portout)
-Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
-         If listOutAbierto(k1)=0 Then  'abrir port
-              If listoutCreado( k1)=0 Then
-                 midiout(k1) = rtmidi_out_create_default ( )
-                 listoutCreado( k1)=1
-              EndIf
-              open_port midiout(k1),k1, nombreOut(k1)
-              Dim As integer    porterror=Err 
-              listoutAbierto( k1) = 1
-              Print #1,"abro ",*nombreOut(k1)
-              porterrorsub(porterror)
-      
-         EndIf
-       EndIf  
-''' en base alanterior terminar esta parte que es para pistas de cancion manual
-'' mas adelante....cuando termine todo pistas ejec 
-''para pistas de cancion manual futuro ???pero si ya hay para pistas manual??
-'//////////////// SEL PORT DE MANUALES
-         For k=1 To 32 
-           If CheckBox_GetCheck( cbxnum(k))= 1  Then
-              num=1
-           EndIf
-         Next k 
-         If  num=1 Then
-
-           thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))
-           
-         EndIf
+             Print #1,"pmTk(pis).portout cambiado ",pmTk(pis+32).portout
+             k1=CInt(pmTk(pis+32).portout)
+             Print #1,"k1 portout, listOutAbierto(k1) ", k1, listOutAbierto(k1)
+             If listOutAbierto(k1)=0 Then  'abrir port
+                If listoutCreado( k1)=0 Then
+                    midiout(k1) = rtmidi_out_create_default ( )
+                    listoutCreado( k1)=1
+                EndIf
+                open_port midiout(k1),k1, nombreOut(k1)
+                Dim As integer    porterror=Err 
+                listoutAbierto( k1) = 1
+               Print #1,"abro ",*nombreOut(k1)
+                porterrorsub(porterror)
+            EndIf
+        EndIf
       EndIf
-'-------------------
-      If  eventnumber()=BTN_PARAM_VOL Then ' VOL
+'--------------  
+      If  eventnumber()=BTN_EJEC_VOL Then ' VOL
 
       EndIf 
 '--------------
-      If  eventnumber()=BTN_PARAM_PAN Then 'PAN
+      If  eventnumber()=BTN_EJEC_PAN Then 'PAN
 
       EndIf 
 '----------------
 '////////////////// PATCH EJEC /////////////////////////////
-      If  eventnumber()=BTN_PARAM_PATCH Then 'PATCH o insrumento de un Sinte,,,
+      If  eventnumber()=BTN_EJEC_PATCH Then 'PATCH o insrumento de un Sinte,,,
 ' si todavia no grabe nada tocaparam tendra el nombre y el orden
 ' o sea el orden se crea al crear el nombre de la pista
 
@@ -2266,23 +2259,11 @@ GrabarMidiIn(pgmidi) ' POR PATCH
                   Print #1,"ejecucion patch elegido tocaparam(pis).patch ", tocaparam(pis).patch
              EndIf
          EndIf
-'                                    
-         For k=1 To 32 ' pistastrack de cancion
-           If CheckBox_GetCheck( cbxnum(k))= 1  Then
-              num=k
-              instrum=CInt(pmTk(num).patch)
-              Exit For
-           EndIf
-         Next k 
-         If  num >=1 Then
-             selInstORdenNum (instrum)
-              '''thread2 = ThreadCreate(@selInstORdenNum(), CPtr(Any Ptr, instrum))
-             pmTk(num).patch=CUByte(instrum)
-         EndIf
-
       EndIf 
+
+
 '////////////////// CANAL EJEC ///////////////// 
-    If  eventnumber()=BTN_PARAM_CANAL Then ' CANAL de un synthe por ejemplo
+    If  eventnumber()=BTN_EJEC_CANAL Then ' CANAL de un synthe por ejemplo
 ' si todavia no grabe nada tocaparam tendra el nombre y el orden
 ' o sea el orden se crea al crear el nombre de la pista
 
@@ -2347,6 +2328,75 @@ GrabarMidiIn(pgmidi)  'POR CANAL
 
     EndIf
 
+''' en base alanterior terminar esta parte que es para pistas de cancion manual
+'' mas adelante....cuando termine todo pistas ejec 
+''para pistas de cancion manual futuro ???pero si ya hay para pistas manual??
+'//////////////// SEL PORT DE ROLL O MANUALES O CANCION
+      If  eventnumber()=BTN_ROLL_PORTSAL  And cierroport= 0 Then
+         Dim As Integer miport =1, pis=0,num=0
+         cierroport=1 ' asi entra una sola vez,,,
+         For k=1 To 32 
+           If CheckBox_GetCheck( cbxnum(k))= 1  Then
+              num=1
+           EndIf
+         Next k
+' miport=1 estamos seleccionadno port de salida , de entrada es 2 midi in
+        If  num=1 Then  ' se chequeop una pista no importa cual
+         thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))
+        EndIf
+            
+     EndIf 
+'-------------------
+'////////////////// BOTON PATCH ROLL O CANCION O MANUAL /////////////////////////////
+' futuro todas estos codigos de  case si son parecidos luego  algun dia 
+' los convertiremos en rutinas,,,JMG RECORDAR...!
+      If  eventnumber()=BTN_ROLL_PATCH Then 'PATCH o insrumento de un Sinte,,,
+' //////// PATCH PARA CANCION PERO NO GRABA A DISCO,,    
+'Print #1,"EN BTN_ROLL_PATCH" 
+         Dim  as Integer num = 0  , instrum =0             
+         For k=1 To 32 ' pistastrack de cancion
+           If CheckBox_GetCheck( cbxnum(k))= 1  Then
+              num=k
+              instrum=CInt(pmTk(num).patch)  'TOMA LO QUE EXISTE EN EL A RCHIVO
+' toma la 1era de arrib  abajo el resto las ignora si hay mas chequeadas
+' y si instrum es > 0 es un cambio
+              Exit For
+           EndIf
+         Next k 
+'         Print #1, "PATCH . num,instrum ", num, instrum
+         If  num >=1 Then
+             selInstORdenNum (instrum)
+              '''thread2 = ThreadCreate(@selInstORdenNum(), CPtr(Any Ptr, instrum))
+ '             Print #1, "patch instrum seleccionado ", instrum
+             pmTk(num).patch=CUByte(instrum)
+             If CANCIONCARGADA =TRUE Then
+             Else
+                      ntk=0
+             EndIf
+            portsal=pmTk(ntk).portout
+ '           Print #1, "patch portsal almacenado, instru ", portsal, instrum
+            Roll.trk(1,NA).inst= CUByte(instrum)
+            Track(ntk).trk(1,1).nnn =CUByte(instrum)
+            Dim As String nombreg
+
+              If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
+                 If NombreCancion > ""  And MAxPos >2 Then
+                    GrabarRollaTrack(0)
+                 EndIf
+              Else
+                If MaxPos > 2  And ROLLCARGADO  Then
+                  'aca graba el roll con Roll.trk(1,NA).inst
+                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undoï¿½?
+                 ' no el undo dolo se debe borrar al ahcer nuevo creo
+                EndIf  
+              EndIf  
+              carga=1 ' control de carga, anula calcompas durante la carga ,,etc
+
+        EndIf
+
+      End If
+
+
 '      SetForegroundWindow(hwnd)
 '////////// PULSAR TECLAS EN VENTANA MODO CONTROL NO GRAFICO DE ROLL /////
        case EventKeyDOWN
@@ -2363,8 +2413,9 @@ GrabarMidiIn(pgmidi)  'POR CANAL
 '-----------------------------------------------------------------------
        Case EventClose  ''<==== SALIR TERMINA ROLL lax de win control???
         ''si ponemos aca da asercion de cairo.c 
-        terminar=1
+        terminar=2
         Exit Do ,Do    
+
      End Select
 
    Loop

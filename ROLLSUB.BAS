@@ -1810,7 +1810,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
  Dim As cairo_font_extents_t fe   '     font data
  Dim As cairo_text_extents_t te  '      text size
  Dim  As Double Ptr xo,yo
- Dim As Double nxo,nyo
+ Dim As Double nxo,nyo 
  'Dim cd As cairo_device_t Ptr
  'Dim cbool as cairo_bool_t
  ' pinta celeste totodo surface 2
@@ -3676,6 +3676,7 @@ End Sub
 
 
 Sub  selport (ByVal tipo As Any Ptr)  ' list de ruso
+' SELECCION DE CASO 1 PORT DE SALIDA OUT, O CASO 2 ENTRADA MIDI IN
 Dim As hwnd haw,hwl
 Dim As Integer mitipo,x0,y0,Posx,Posy 
 ScreenControl GET_WINDOW_POS, x0, y0
@@ -4382,10 +4383,10 @@ End SUB
 Sub salir()
 ' NO PUEDE ESTAR EN MUSICCONTROL.BAS DEBE ESTAR EN ALGUNA PARTE DE ROLLMUSIC PARA QUE FUNCIONE
 Dim  As Integer i3
- ThreadDetach(threadloop)
- DestroyWindow(hWnd)
- cairo_destroy(c)
- cairo_surface_destroy( surface )
+    cairo_destroy(cm)
+    cairo_surface_destroy( surf2 )
+    cairo_destroy(c)
+    cairo_surface_destroy( surface )
 
  ' no usar nunca deallocate falla montonde cosas ni si quiera se puede cerrar
  ' un archivo ni borrarlo una cagada la recomendacion del foro!!!!          
@@ -4412,7 +4413,7 @@ Sleep 10
        cancel_callback(midiin(pmTk(ntkp+32).portin))
        Dim k1 As Integer
        k1=pmTk(ntkp+32).portout
-       Print #1,"midiout ",k1, *nombreOut(k1)
+    '   Print #1,"midiout ",k1, *nombreOut(k1)
        alloff( pmTk(ntkp+32).canalsalida,k1 )  
        listoutAbierto(k1)=0
        close_port midiout(k1)
@@ -4471,16 +4472,17 @@ fk=FreeFile
     
 cerrar fk
 
-Sleep 10
-
-    Close 1
+   Close 1
 '    cerrar 0
 '    Close
  
 ' ESTO HACE CNCELAR AL CERRAR DE LA VENTANA DE CONTROL NO USAR
 ' 26-02-2024 
 '''DeleteObject(Cast(Any Ptr,BRUSH))      
+ThreadDetach(threadloop)
+ DestroyWindow(hWnd)
 
+    End 0
 End Sub
 '-------
 Sub selTipoEscala (ByRef tipoescala_num As integer)

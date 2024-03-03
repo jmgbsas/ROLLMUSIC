@@ -938,10 +938,13 @@ Else
    EndIf
      '05-02-2022 usamos threarPenta ya definida global
      ' se supone que la direccion es unica y se reusa no se la crea muchas veces
-     ' es mejor no ¿? zas je 
-      
+     ' es mejor no ¿? zas je
+' cairo_text en creaPenta hace cancelar la salida desde Ventana Ctrl
+' evitamos escribir a grafico si ya estamso saliendo ,,, 
+        If terminar=0 Then 
            threadPenta = ThreadCall barrePenta (c, Roll )
            ThreadWait threadPenta
+        End If
           '''  barrePenta (c, Roll )
             'ThreadWait threadPenta
              
@@ -1478,9 +1481,10 @@ If MultiKey (SC_F10) Then
  Exit Do
 EndIf
 
-If MultiKey(SC_ESCAPE) Or  terminar=1 Then
+If MultiKey(SC_ESCAPE) Or  Terminar=1 Then
    'ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
    'Dim As hWnd hwnd = Cast(hwnd,IhWnd)
+Terminar=1
 Dim As Integer i3
 
   If MessageBox(hWnd,"¿Fin RollMusic? " ,param.titulo ,4 Or 64) =6 Then
@@ -1537,10 +1541,15 @@ Dim As Integer i3
     Print #ffile,nVerCifradoAcordes, "nVerCifradoAcordes"    
 
     cerrar ffile
-      Sleep 100
+FileFlush (-1)
     cerrar 0
+    cerrar 1
+      Sleep 100
+    
 'Kill "procesos.txt"
     End 0
+ ThreadDetach(threadloop)
+ DestroyWindow(hWnd)
 
   EndIf  
 EndIf
@@ -3183,7 +3192,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
  ''https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-movewindow
  '                           <====== [BOTONES] =======>
  ' 07-08-2021 lugar para test tamaño 10x8
- 
+ ' salir de roll music  unificar jmg 02-03-2024
  If (mousex>=(ANCHO-40-mxold)) And (mousey <= 16) Then
   If  MouseButtons And 1 Then
    If MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","Fin RollMusic",4 Or 64) =6 Then
@@ -3233,6 +3242,9 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
     FileFlush (-1)  
     cerrar 0
 'Kill "procesos.txt"
+ ThreadDetach(threadloop)
+ DestroyWindow(hWnd)
+
     End 0
     
    EndIf

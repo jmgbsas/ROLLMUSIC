@@ -83,12 +83,18 @@ Const GRUPO_BTNS_MANUAL =13
 Const BTN_ROLL_PARAR    = 11
 Const BTN_ROLL_EJECUTAR = 12
 Const BTN_ROLL_GRABAR_MIDI = 15
-Const BTN_PARAM_PORTSAL =16
-Const BTN_PARAM_VOL        = 17
-Const BTN_PARAM_PAN        =18
-Const BTN_PARAM_PATCH    = 19
-Const BTN_PARAM_CANAL    = 20
+Const BTN_EJEC_PORTSAL =16
+Const BTN_EJEC_VOL        = 17
+Const BTN_EJEC_PAN        =18
+Const BTN_EJEC_PATCH    = 19
+Const BTN_EJEC_CANAL    = 20
 Const GRUPO_BTNS_OKCAN    =21
+Const BTN_ROLL_PORTSAL =22
+Const BTN_ROLL_VOL        = 23
+Const BTN_ROLL_PAN        =24
+Const BTN_ROLL_PATCH    = 25
+Const BTN_ROLL_CANAL    = 26
+
 Dim HtmlHelpA As Function (hwndCaller As HWND,pszFile As LPCSTR,uCommand As UINT,dwData As DWORD_PTR) As HWND
 Dim  HTMLHelp As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
 Dim HH_POPUP As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer

@@ -1,3 +1,5 @@
+- PATCH Y PORTSAL EN VENTANA CTRL corregido... a veces cancela al
+  cerrar la ventana Ctrl desde la X superior derecha,,,,
 - 28-feb-a 1-mar. Ya cargamos cancion sin roll grafico y lo ejecutamos
   Y se puede levantar roll grafico despues, por si se desea verlo
   o modificarlo,, pero una vez abierto no lo  puedo cerrar por ahora 
