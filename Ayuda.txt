@@ -55,8 +55,8 @@
        en la cinta celeste de arriba en su parte mas derecha entre la mitad y casi hasta el final antes de 
        los botones. rojo, amarillo y verde...Recordar que Opciones se abre pulsando ALT y ubicando el mouse
        encima del label . 
-       Hay 4 cuatro formas de abrir un Roll Grafico, en "crear Pistas manuales" hay dos opciones fuera
-       de una canción:
+       Hay 5 cuatro formas de abrir un Roll Grafico, 
+       en "crear Pistas manuales" hay dos opciones fuera  de una canción:
        1) "Crea pista aislada con lo elegido y reemplaza la existente en la edicion", 
         edicion de Roll Grafico esta ventana tiene conexion con la ventana inicial de Control y su 
         menu principal permite cambiar patch en un instrumento que lo tenga y se ajusta otros parametros 
@@ -81,10 +81,14 @@
         En Menu Archivos "Cargar directorio de cancion con pistas separadas sin Roll"
         El Roll Grafico no levantara como dice la opcion, si luegoquiero abrirlo, la opcion de abajo 
         lo abrira. 
-       4) "Abrir Roll Gráfico para una cancion cargada sin Roll"  
-           Nota: se puede abrir un directorio de cancion sin Roll esta habilitado y luego
-           si se desea abrirl el roll grafico se usa la opcion mencionada..
-          
+       4) "2.1 Abrir Roll Grafico dependiente de Control si se uso la opcion (2.0) "  
+           Nota: se puede abrir un directorio de cancion sin Roll cargarlo sin Roll Grafico y luego
+           si se desea abrir el roll grafico .
+       5) "2.2 Externo:Abrir un Roll Grafico independiente de Control, si se uso la opcion (2.0) "    
+          En opcion solo se ejecuta con una cancion previamente cargada en 2.0
+          (se impedira equivocarse en otra version anulando el menu)
+
+
        Al abrir una seleccion de puerto port(MIDI-OUT), instrumentos o patch por orden ALfa o numerico, o canales  
        midi , apareceran [] vacios sin seleccionar y [x] seleccionado, antes de seleccionar uno nuevo, se debe 
        deseleccionar el anterior dandole click al que tenga [x] para apasarlo a [] y luego buscar el nuevo

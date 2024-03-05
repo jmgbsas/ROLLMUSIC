@@ -1762,14 +1762,18 @@ End If
  '     Print #1,"ON patch ntk canal ",	Track(ntk).trk(1,1).nnn, ntk,pmTk(pis).canalsalida
       ChangeProgram ( Track(pis).trk(1,1).nnn, pmTk(pis).canalsalida, pmTk(pis).portout)	
 
-      If CheckBox_GetCheck( cbxnum(pis))= 1 Then
+      If instancia=7 Or instancia=107 Then
+          sonidoPista(pis)=1
+      Else 
+      
+          If CheckBox_GetCheck( cbxnum(pis))= 1 Then
  '        Print #1,"+++++++pista on ",pis
-         sonidoPista(pis)=1
-      Else  
+             sonidoPista(pis)=1
+          Else  
  '        Print #1,"+++++++pista off ",pis        
-         sonidoPista(pis)=0
+             sonidoPista(pis)=0
+          EndIf
       EndIf
-
 
  Next pis
 
@@ -2104,7 +2108,11 @@ Sleep 10,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion
 close_port(midiout)
 out_free(midiout)
 '/ 
-SetGadgetstate(12,0)
+If instancia=7 Or instancia= 107 Then 
+Else
+ SetGadgetstate(12,0)
+EndIf
+
 Dim As Integer checkejec=0
 For  iz As Short =1 To 32
       If CheckBox_GetCheck( cbxejec(iz))= 1  Or CheckBox_GetCheck( cbxgrab(iz))= 1 Then

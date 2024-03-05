@@ -3047,7 +3047,10 @@ For jToca=1 To maxgrb
 Next jToca
 ''jToca=0
 repro=0
+If instancia=7 Or instancia= 107 Then
+Else
 SetGadgetstate(14,0)
+EndIf
 Sleep 1
 
   For kply =1 To topeDuranteGrabacion

@@ -321,8 +321,10 @@ For ix = 0 To __FB_ARGC__
   
  ubirtk = InStr (LCase(Command(ix)),".rtk")
  ubiroll=  InStr(LCase(Command(ix)),".roll")
+' esto es por comando interno no fisico con click
+''' ubicancion=InStr(LCase(Command(ix)),"@dir")
 
- If ubirtk > 0 or ubiroll>0 Then
+ If ubirtk > 0 or ubiroll>0  Then
    ntk=0 
    titulos(0)=Command(ix)
  Else
@@ -358,6 +360,12 @@ For ix = 0 To __FB_ARGC__
  If ix=6 Then
   com_usarmarco=  CInt (Command(ix))
      Instancia=6
+ EndIf
+' en 7 diria @dir en la linea de comando  
+' puedo poner basura en todos los otros
+ If ix=7 Then ' ok probado pasa bien el NombreCancion con el path
+  NombreCancion =  Command(ix)
+     Instancia=7
  EndIf
 
 Next ix

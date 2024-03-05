@@ -1945,7 +1945,10 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 2 Then
                GrabarPenta=0:naco=0:naco2=0
+               If instancia=7 Or instancia= 107 Then
+               Else
                SetGadgetstate(15,0) ' 10-04-2022
+               EndIf  
          print #1,"llama a playall"
          thread1 = ThreadCall  playAll(Roll)
          ''''playAll(Roll)
@@ -3433,7 +3436,10 @@ print #1,"inicia CargaPistasEnCancion"
         Dim cadena As String
         cadena= sacarExtension(filenameOld) ' [1]AAA
        ''' If pistacreada=0 Then
+          If instancia=7 Or instancia= 107 Then ' en batch no hay ventana control 
+          Else   
           AddListBoxItem(3, cadena)
+          End If  
        ''' EndIf
         ntk= sacarNtk(filenameold)  ' 1
         If mayor< ntk Then

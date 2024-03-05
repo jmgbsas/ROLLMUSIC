@@ -812,9 +812,10 @@ End Select
 
 ' Print #1,"call roolloop, tipoescala",tipoescala_inicial
 ' Print #1,"call roolloop, notaescala",notaescala_inicial  
-If cargacancion=1 Then  
+'If cargacancion=1 Then SOLO PARA DREBUG
+   
  ' Print #1,"4 ROLLLOOP ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion
-EndIf
+'EndIf
 If ubiroll > 0 Then  ' CARGA DE ARCHIVOS POR LINEA DE COMANDO DE ROLLMUSIC
  '  Print #1,"cargo archivo desde rollLoop"
    nombre = titulos(0)
@@ -849,12 +850,25 @@ EndIf
 param.ubirtk=0
  EndIf
 
-'If ubiroll > 0 Then
- '   CargaArchivo(Roll,ubiroll)
- '   ROLLCARGADO=TRUE
- '   MenuNew=0
- '   ubiroll=0
- 'EndIf
+
+If instancia = 7  Then ' 04-03-2024 LOGRE LEVANTAR CANCION EN UN ROLL EXTERNO
+' CANCELA LA REPRODUCCION DEBERIA HABILITARLA VEREMOS
+ If NombreCancion > ""  Then
+   Print #1, "rollloop instancia ", instancia
+   Print #1, "rollloop NombreCancion ", NombreCancion
+    
+'' carga de cancion porlinea de comandos
+    cargacancion=1 
+    CargarPistasEnCancion ()
+    instancia=107  ' ficticio para que entre al if de TAB pero  que no entre en el resto ni aca
+    param.encancion=1
+    'terminar=1
+      
+ EndIf
+EndIf
+ 
+
+
 ' -----------------
 Do
 ''arranquedo1=Timer
@@ -864,6 +878,9 @@ edity2 = 50 ' botton Edit bordeInf
 
 '' Create a cairo drawing context, using the FB screen as surface.
 '' l originalestba mal sizeof(integer ) es mu chico debe ser 4
+Print #1,"ancho ", ANCHO
+
+
 stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
 ' ---------------------para reducir el consumo de recursos por ahora al tocarpistas MIDI
@@ -980,7 +997,7 @@ Do
 ' ejecutando PlayAll de unsa sola pista...
 
 
-If MultiKey(SC_TAB) And instancia=0 And CANCIONCARGADA And play=0 Or cargaCancion=1 Or clickpista=1 Then
+If MultiKey(SC_TAB) And (instancia=0 Or instancia= 107) And CANCIONCARGADA And play=0 Or cargaCancion=1 Or clickpista=1  Then
    cargaCancion=0 ' para que no entre mas luego de cargada la cancion
    s5=0  '11-06-2022
    Erase mel_undo, undo_acorde, undo_kant_intervalos
@@ -1084,7 +1101,10 @@ EndIf
 If MultiKey (sc_P) And (play=1 Or playb=1 )Then
   CONTROL1=1 ' DETIENE EL PLAY VEREMOS
   playloop=0:playloop2=0
+  If instancia=7 Or instancia= 107 Then 
+  Else
   SetGadgetstate(12,0)
+  EndIf 
 EndIf
 
 If MultiKey(SC_PLUS) Then  '13 , ligadura
@@ -1575,7 +1595,10 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
  Else
    If playb = 0 And play=0 And Cplay=0 And MaxPos > 1 Then ' 23-02-22 ningun play
       GrabarPenta=0:naco=0:naco2=0
-      SetGadgetstate(15,0) ' 10-04-2022
+      If INSTANCIA = 7 Or instancia= 107 Then 
+      Else  
+      SetGadgetstate(BTN_ROLL_GRABAR_MIDI,0) ' 10-04-2022 DE  VENTANA CTROL
+      EndIf
    '   print #1,"SPACE call play"
         If  MaxPos > 1 Then 
          '''Dim tlock As Any Ptr = MutexCreate()

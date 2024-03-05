@@ -1,3 +1,8 @@
+- 04-03-2024
+  Ya Podiamos cargar una cancion sin Roll, y ahora cargar el Roll grafico
+  mediante comando batch y ver toda la cancion eschcuarla entera o por partes
+  en un Roll grafico externo, el cual  se puede cerrar sin que se cierre
+  la ventana de control, arreglo de menu archivo
 - PATCH Y PORTSAL EN VENTANA CTRL corregido... a veces cancela al
   cerrar la ventana Ctrl desde la X superior derecha,,,,
 - 28-feb-a 1-mar. Ya cargamos cancion sin roll grafico y lo ejecutamos
