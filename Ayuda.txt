@@ -87,7 +87,8 @@
        5) "2.2 Externo:Abrir un Roll Grafico independiente de Control, si se uso la opcion (2.0) "    
           En opcion solo se ejecuta con una cancion previamente cargada en 2.0
           (se impedira equivocarse en otra version anulando el menu)
-
+          Se ajusto las habilitaciones y deshabilitaciones de 2.0,2.1,2.2 por menu y codigo
+          para evitar opciones no permitidas..
 
        Al abrir una seleccion de puerto port(MIDI-OUT), instrumentos o patch por orden ALfa o numerico, o canales  
        midi , apareceran [] vacios sin seleccionar y [x] seleccionado, antes de seleccionar uno nuevo, se debe 
@@ -435,7 +436,10 @@
         de nuevo al directorio padre o principal de la cancion,Puedo jugar can Temp y ambos graficos
         para modificar cargar grabar y hacer backups disponibles para undo completo de la pista, ademas del undo
         de ALT-U(melodias) y ALT-BACKSPACE(acordes).
-        
+        Las pistas cargadas de cancion en la primer lista con su roll grafico levantado ademas de 
+        conmutar en el Roll Grafico con TAB, se puede desde la lista seleccionar una conlo cual
+        se iluminara a celeste, luego con flecha arriba abajo navego por las pistas yse veran en
+        el Roll Grafico como si estuviera haciendo TAB.
         
 
     --------------------------------------------------------------------------------------

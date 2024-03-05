@@ -1654,9 +1654,9 @@ curpos =>1
 ''' carga=0
  ReCalCompas(Roll)  
  
- 
- mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  
- mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0
+' 05-03-2024 estos toques virtuales los sacare por ahora  
+           'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  
+          'mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0
  'print #1, "CargaARchivo LBound (Roll.trk,1) ",LBound (Roll.trk,1)
  'print #1, "CargaARchivo LBound (Roll.trk,2) ",LBound (Roll.trk,2)
     
@@ -3474,8 +3474,8 @@ print #1,"inicia CargaPistasEnCancion"
 cargaCancion=1 '12-02-2022 mientras carg las pista el 1 indica cargando pistas    
     print #1,"FIN CargaPistasEnCancion no debe calcuar *po ",*po
     print #1,"-------------------------------------------------------"
-mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
-mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0 
+'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  05-mar-2024 veremos
+'mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0 
       
 End Sub
 

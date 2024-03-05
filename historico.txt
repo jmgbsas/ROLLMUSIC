@@ -1,3 +1,16 @@
+- 05-03-3024 arreglos del meu principal ventana control, habilitar deshabilitar
+  opciones de cara de Roll grafico. Consumo cpu eñevadp se aumento retardos 
+  de nuevo en loops de Ventana Control y RollLoop..Queda probar Grabacion y ejecucion
+  midi por ajustar variable repro=0 en play cancion al final... pensando
+  que afectaba el consumo cpupornocerrar los ports en algunas condiciones de play
+  cancion,,, ¿deberia cerrarlo siempre como antes? queda la duda probar...
+  Algun dia debo probar todas las funciones de Rollmusic ...mucho laburo..
+  por eso sera alfa por mucho tiempo.....por mas que avance lo viejo no se
+  si anda bien ya no lo usé ni se como anda,,,bugs debe haber seguro 
+  otra cosa eso del clickeo virtual del mouse LEFTDOWN y LEFTUP
+  lo comenté no se si afectará ahora...No documente porque lo puse
+  es para que permanesca en pantalla o ejecute lo pedido no estoy seguro
+  no lo comente en el codigo,,,
 - 04-03-2024
   Ya Podiamos cargar una cancion sin Roll, y ahora cargar el Roll grafico
   mediante comando batch y ver toda la cancion eschcuarla entera o por partes

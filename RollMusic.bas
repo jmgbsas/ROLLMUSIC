@@ -121,7 +121,7 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="0.4574 rollGrafico Externo" ':Patrones de Ejecucion 03-07-2022
+nroversion="0.4575 menu y cpu " ':Patrones de Ejecucion 03-07-2022
 ' despues de un año de bajones personales veo si me da gan de seguirlo
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
@@ -145,7 +145,7 @@ If ix < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON cont
 Var bitmap = Load_image("fondo.bmp")
 BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 
-  hwndListBox= ListBoxGadget(LISTA_DE_PISTAS,80,40,290,670,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
+  hwndListBox= ListBoxGadget(LISTA_DE_PISTAS,80,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
   SetGadgetFont(LISTA_DE_PISTAS,CINT(LoadFont("consolas bold",13))) 
 ' botton todo o nada , sonido o mudo para todas las pistas
   ButtonGadget(CHECK_PISTA_ROLL, 60,20,20,20,"S")
@@ -190,36 +190,13 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
   cbxnum(32) = CheckBox_New( 60 , 660, 20, 20, "",, hwndc) 
 
 EVENTc=0
-'  funciona trae el help de freebasic implementar para unhelp futuro...
-Dim As Any Ptr library = DyLibLoad( "hhctrl.ocx" )
-HtmlHelpA  = DyLibSymbol( library, "HtmlHelpA" )
-HtmlHelp    = DyLibSymbol( library, "HtmlHelp" )
-HH_POPUP = DyLibSymbol( library, "HH_POPUP" )
-
-Dim As HWND hwndTip = CreateWindow(TOOLTIPS_CLASS, NULL, _ 
-                            WS_POPUP OR TTS_NOPREFIX Or TTS_BALLOON,  _
-                            0, 0, 0, 0, NULL, NULL, NULL, NULL)
-Dim As TOOLINFO ti
-    ti.cbSize   = sizeof(ti)
-    ti.uFlags   = TTF_TRANSPARENT Or TTF_CENTERTIP
-    ti.hwnd     = hwndC
-    ti.uId      = 0
-    ti.hinst    = NULL
-    ti.lpszText = LPSTR_TEXTCALLBACK
-
-    GetClientRect(hwndC, @ti.rect)
-
-    SendMessage(hwndTip, TTM_ADDTOOL, 0, @ti )
-
-    SendMessage(hwndTip, TTM_ACTIVATE, 0,  @ti)
-'http://www.forosdelweb.com/f69/archivos-ayuda-chm-con-visual-basic-6-0-a-801611/
-'HTMLHelp(GetDesktopWindow(), "C:\IT64\AREAWORK\ROLLMUSIC-143-MENU-PORTS\hola.txt", HH_DISPLAY_TOPIC, NULL)
+' fast? http://www.forosdelweb.com/f69/archivos-ayuda-chm-con-visual-basic-6-0-a-801611/
 
 
   EVENTc=0
 
 '---------------------------LISTA DE EJECUCIONES------------
-  hwndListEjec= ListBoxGadget(LISTA_DE_EJECUCIONES, 430,40,290,670,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
+  hwndListEjec= ListBoxGadget(LISTA_DE_EJECUCIONES, 430,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
 SetGadgetFont(LISTA_DE_EJECUCIONES,CINT(LoadFont("consolas bold",14)))
 SetGadgetColor(LISTA_DE_EJECUCIONES,cint("&HC0C0C0"),0,1)
   ButtonGadget(CHECK_SELECCION_EJECUCION,380,20,20,20,"S")
@@ -333,18 +310,18 @@ ButtonImageGadget(BTN_ROLL_GRABAR_MIDI, 180,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_
 ' midi-out...igual para volumen y paneo,si sequiereajustar mas de uno a la vez
 ' simplemente se da click en todos los deseados y elajuste sera el mismo en cada uno
 ' o sea S tiene doblefuncion desmutear odar sonido o ajustar alguno de los 3 parametros.  
-ButtonGadget(BTN_EJEC_PORTSAL,420,700,70,20,"PortSal")
-ButtonGadget(BTN_EJEC_VOL,   490, 700, 35, 20, "Vol")
-ButtonGadget(BTN_EJEC_PAN,   530, 700, 35, 20,"Pan")
-ButtonGadget(BTN_EJEC_PATCH,570,700, 50, 20,"Patch")
-ButtonGadget(BTN_EJEC_CANAL,620,700, 50, 20,"Canal")
+ButtonGadget(BTN_EJEC_PORTSAL,420,710,70,20,"PortSal")
+ButtonGadget(BTN_EJEC_VOL,   490, 710, 35, 20, "Vol")
+ButtonGadget(BTN_EJEC_PAN,   530, 710, 35, 20,"Pan")
+ButtonGadget(BTN_EJEC_PATCH,  570,710, 50, 20,"Patch")
+ButtonGadget(BTN_EJEC_CANAL,  620,710, 50, 20,"Canal")
 
 '---------------------------
-ButtonGadget(BTN_ROLL_PORTSAL,70,700,70,20,"PortSal")
-ButtonGadget(BTN_ROLL_VOL,   140, 700, 35, 20, "Vol")
-ButtonGadget(BTN_ROLL_PAN,   180, 700, 35, 20,"Pan")
-ButtonGadget(BTN_ROLL_PATCH,220,700, 50, 20,"Patch")
-ButtonGadget(BTN_ROLL_CANAL,280,700, 50, 20,"Canal")
+ButtonGadget(BTN_ROLL_PORTSAL, 70,710,70,20,"PortSal")
+ButtonGadget(BTN_ROLL_VOL,   140, 710, 35, 20, "Vol")
+ButtonGadget(BTN_ROLL_PAN,   180, 710, 35, 20,"Pan")
+ButtonGadget(BTN_ROLL_PATCH,  220,710, 50, 20,"Patch")
+ButtonGadget(BTN_ROLL_CANAL,  280,710, 50, 20,"Canal")
 
 
 
@@ -392,22 +369,25 @@ MenuItem(1020,MenName2, "Nombre o Título (fecha por omision), la cancion es un d
 MenuItem(1021,MenName2, "Tiempo I=60 por omision")
 MenuItem(1022,MenName2, "Na.Ritmo 4/4 por omision")
 MenuItem(1023,MenName2, "Na.Duracion Estimada Min.(Por Omision 3 estimada)")
-MenuItem(1024,MenName2, "Na.Crear Cancion en un solo archivo")
+'MenuItem(1024,MenName2, "Na.Crear Cancion en un solo archivo")
 MenuItem(1025,MenName2, "Crear un directorio de Cancion con Pistas separadas")
-MenuItem(1026,MenName2, "Na.Ver Lista Tracks de la Cancion (Nombre y numero)")
+'MenuItem(1026,MenName2, "Na.Ver Lista Tracks de la Cancion (Nombre y numero)")
 MenuItem(1027,MenName2, "Na.Modificar Nombre de Pistas de Cancion")
 
 
 MenuItem(1028,MenName3, "Cambia Octavas, si rango es mayor al anterior, se borran datos  (0,1,2,3,4,5,6,7,8)")
 MenuItem(1029,MenName3, "Na.Seleccion rango de 3 octava repetidas 2 veces ")
 MenuItem(1030,MenName3, "Na.Octavas de Instrumetnos Estandares")
-MenuItem(1031,MenName3, "Na.Seleccion Canal (futuro se repetira por comodidad...)")
+'MenuItem(1031,MenName3, "Na.Seleccion Canal (futuro se repetira por comodidad...)")
+Menubar(MenName3)
 MenuItem(1040,MenName3, "Cambia Instrumento por orden Alfabetico")
 MenuItem(1050,MenName3, "Cambia Instrumento por orden Numérico")
-MenuItem(1060,MenName3, "Crea pista aislada con lo elegido y reemplaza la existente en la edicion")
-MenuItem(1061,MenName3, "Crear Pista en la Cancion en Edicion, Con lo elegido")
+Menubar(MenName3)
+MenuItem(1060,MenName3, "Crear pista aislada, En Roll dependiente, con lo elegido y reemplaza la existente en la edicion")
+MenuItem(1061,MenName3, "Crear Pista nueva en la Cancion en Edicion, Con lo elegido")
+Menubar(MenName3)
 MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
-MenuItem(1063,MenName3, "Cargar una pista de cancion en RollMusic Grafico")
+'MenuItem(1063,MenName3, "Cargar una pista de cancion en RollMusic Grafico")
 
 'MenuItem(1065,MenName31, "Crear Patrones de Ejecuciones por Teclado",MF_POPUP )
 MenName32=OpenSubmenu(MenName31, "Crear Patrones de Ejecuciones por Teclado" )
@@ -423,12 +403,13 @@ MenuItem(1071,MenName4,"Ver Cifrado de Acordes", MF_CHECKED)
   
 MenuItem(1080,MenName5,"TEMPO, Manual Por omision=60, Ejecucion Tick por omision=5mseg equivale a 240")
 MenuItem(1081,MenName5,"Factor para Aumentar velocidad de ejecucion, No se graba en archivo 1,5 o 0,5 etc")
-MenuItem(1082,MenName5,"Na. TEMPO por nombres, Lento,adagio etc y control fino")
-MenuItem(1083,MenName5,"Na. TEMPO insertar cambio de tempo")
-MenuItem(1084,MenName5,"Na. TEMPO borrar cambio de tempo")
-MenuItem(1085,MenName5,"Na. TEMPO ver marcas de cambio de tempo")
-MenuItem(1086,MenName5,"Na. TEMPO ocultar marcas de tempo")
-MenuItem(1087,MenName5,"Na. TEMPO incremento de tempo gradual alcanzado en N compases")
+
+'MenuItem(1082,MenName5,"Na. TEMPO por nombres, Lento,adagio etc y control fino")
+'MenuItem(1083,MenName5,"Na. TEMPO insertar cambio de tempo")
+'MenuItem(1084,MenName5,"Na. TEMPO borrar cambio de tempo")
+'MenuItem(1085,MenName5,"Na. TEMPO ver marcas de cambio de tempo")
+'MenuItem(1086,MenName5,"Na. TEMPO ocultar marcas de tempo")
+'MenuItem(1087,MenName5,"Na. TEMPO incremento de tempo gradual alcanzado en N compases")
 
 /' futuro agregar limite menor de c/rango con opcion de incrementarlo hasta el tope
   d esu rango 
@@ -456,17 +437,20 @@ MenuItem(1093,MenName6,"Detener Reproduccion MIDI-IN (teclado) por  MIDI-OUT. (t
 
 MenuItem(1100,MenName7,"Usar MARCO de Ventana Para el Gráfico",MF_UNCHECKED)
 MenuItem(1101,MenName7,"Usar MARCO de Ventana en instancias Gráficas",MF_UNCHECKED)
-
+Menubar(MenName7)
 MenuItem(1102,MenName7,"Fracciona Acorde [Con <> Duraciones], notas similares en una pista (no hay silencios)",MF_UNCHECKED  )
 MenuItem(1103,MenName7,"Fracciona NOTA o Acorde [CDD], agregando silencios en una pista ",MF_UNCHECKED  )
 MenuItem(1104,MenName7,"Fracciona [CDD], notas automaticamente en una pista ",MF_CHECKED  )
 MenuItem(1105,MenName7,"No Fraccionar, NO Usar Acordes iguales ", MF_UNCHECKED )
+Menubar(MenName7)
 MENUITEM(1106,MenName7,"Seleccionar TIPO DE ESCALA PRINCIPAL de la PISTA (Por omision Mayor)")
 MENUITEM(1107,MenName7,"Seleccionar NOTA DE LA ESCALA ESCALA PRINCIPAL DE LA PISTA (Por omision C )")
-MENUITEM(1108,MenName7,"Trabajar con sostenidos (Por omision Sostenidos #)",MF_CHECKED )
-MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
 MenuItem(1111,MenName7,"Insertar escala libre en la Posicion actual (Pasozona1)")
 MenuItem(1112,MenName7,"Insertar escala Alternativa de la Principal en la Posicion actual (Pasozona1)")
+Menubar(MenName7)
+MENUITEM(1108,MenName7,"Trabajar con sostenidos (Por omision Sostenidos #)",MF_CHECKED )
+MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
+Menubar(MenName7)
 MenuItem(1113,MenName7,"Usar metronomo para Tocar MIDI-IN)",MF_CHECKED)
 
 MenuItem(1200,MenName8,"Puerto MIDI-IN Ejecucion")
@@ -475,7 +459,7 @@ MenuItem(1200,MenName8,"Puerto MIDI-IN Ejecucion")
 ' MenuItem(1203,MenName8,"Na. DesTruir Puerto MIDI-IN")
 Menubar(MenName8)
 MenuItem(1204,MenName8,"Puerto MIDI-OUT Ejecucion")
-MenuItem(1205,MenName8,"Abrir   Puertos MIDI-OUT Ejecucion")
+MenuItem(1205,MenName8,"Abrir  Puertos MIDI-OUT Ejecucion")
 MenuItem(1206,MenName8,"Cerrar Puertos MIDI-OUT Ejecucion")
 'MenuItem(1207,MenName8,"Na. DesTruir Puertos MIDI-OUT")
 
@@ -533,6 +517,11 @@ End Select
      SetStateMenu(hmessages,1064,1)
      SetStateMenu(hmessages,1065,1)
      SetStateMenu(hmessages,1066,1)
+' AL INICIO DESHABILITADOS 2.1 Y .2.2 AUNQUE AL CLIQUEAR NO PASA NADA
+  SetStateMenu(hmessages,10062,1)
+  SetStateMenu(hmessages,10063,1)
+
+' SE HABILITAN SI USO 2.0 EN SU CASE
 
 'AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS
 
@@ -657,6 +646,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
           cargaCancion=1 
           CargarSinRoll () ''' play sin roll 
       Else
+      EstaBarriendoPenta=1 
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
       EndIf 
     ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
@@ -678,6 +668,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
            cargaCancion=1 
            CargarSinRoll () '''28-02-2024 play sin roll
        Else
+       EstaBarriendoPenta=1
        threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
        EndIf
 
@@ -761,12 +752,27 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
      SetForegroundWindow(hwndC)
   EndIf
          Select Case EventNumber
-
-           Case 1006, 10061   '<=========== CARGAR CANCION con roll
+            'CON ROLL , SIN ROLL
+           Case 1006, 10061   '<=========== CARGAR CANCION con roll, o sin Roll
              'cargamos todos los tracks
              ' ok anda bien, una vez cagados se permuta en memoria con TAB
              ' o haciedno click en la lista
             '' UseGadgetList(hwndC)
+               If EventNumber = 10061 Then
+   ' habiliatmos 2.1 y 2.2 
+                   SetStateMenu(hmessages,10062,0)
+                   SetStateMenu(hmessages,10063,0)
+    'si uso dos veces 10061 no funciona la segunda no carga nada,,, 
+    ' compruebo si roll dependiente esta funcionando 
+                     If  EstaBarriendoPenta=0 Then
+                         ' no funciona dejo habilitado 10061 carga de roll grafico
+                         ' dependiente de control..sol ose puede cargar una vez
+                     Else
+      'funciona debo deshabilitar CARGA DE OTRO ROLL GRAFICO DEPENDIENTE
+      ' SEGUIRA USANDO EL MISMO  
+                         SetStateMenu(hmessages,10062,1) 
+                     EndIf
+               EndIf 
                nombre=""
               ROLLCARGADO=FALSE 'NINGUN ARCHIVO ROLL CARGADO  
              Sleep 20
@@ -837,18 +843,24 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
 ' ESTA NO SE PUEDE CERRAR EL USUARIO LO DEBE SABER
 ' CADA PISTA SE PODRA LEVANTAR UNA POR UNA CON LA OTRAOPCION
 ' SOLO DEBO PASAR LOS PARAMETROS...Y SI MODIFICO ALGO
-' DEBO GRABAR A DISCO Y ENVIAR ORFEN DE RECARGA DE ESA PISTA EN LA CANCION 
+' DEBO GRABAR A DISCO Y ENVIAR ORFEN DE RECARGA DE ESA PISTA EN LA CANCION
+              
              Print #1," CASE 10062 abrirRoll=0 And NombreCancion > ", abrirRoll, NombreCancion
-             If abrirRoll=0 And NombreCancion > ""  Then
+             If NombreCancion > ""  Then
+                EstaBarriendoPenta=1 
                 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))   
                 Print #1,"CARGO ROLL PARA cancion sin roll"
             ' ES TAN RAPIDO QUE PARECE EJECUTA DOS VECES EL 10062
             ' AL DEBUGUEAR NO LOA HACE ERGO PONEMOS UN RETARDO 0,1 SEG
                 Sleep 100        
              EndIf
-   
+ 'No se puede cargar otro roll dependiente ,,,
+            SetStateMenu(hmessages,10062,1)
+' pero deberia poder cargar otor directorio sin roll??
+            SetStateMenu(hmessages,10061,0)
           Case 10063 ' CARGAR CANCION EN UN ROLL SIN VENTANA DE CONTROL
 ' HAY QUE PASA EL NOMBRE DEL DIRECTORIO NADA MAS,,,Y EL PATH
+            
             If NombreCancion > "" Then
                  
                Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + _ 
@@ -2453,7 +2465,7 @@ GrabarMidiIn(pgmidi)  'POR CANAL
         Exit Do ,Do    
 
      End Select
-
+     Sleep 5 ' consume mucha cpu 05-03-2024
    Loop
 '-----------------------------------------------------------------------
   Else
@@ -2464,7 +2476,7 @@ GrabarMidiIn(pgmidi)  'POR CANAL
       cerrar(0)  
   End If
 '-----------------------------------------------------------------------
-
+   
 Loop
 '-----------------------------------------------------------------------
 

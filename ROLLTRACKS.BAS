@@ -2132,9 +2132,10 @@ if GrabarPenta=0 and GrabarEjec=NoGrabar and repro=0 And checkejec=0 Then
    '   out_free   midiout(k1)
       listoutAbierto( k1) = 0
    Next i
-EndIf
-ThreadDetach(thread1)
+EndIf 
 
+ThreadDetach(thread1)
+repro=0 ' 05-03-2024
 
 
 End Sub 

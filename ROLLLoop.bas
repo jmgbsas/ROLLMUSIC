@@ -700,6 +700,7 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
 '------------------
  '''NroCol=(ANCHO / anchofig ) - 4 07-03 lo puse pero no se si ahce cancelar
 '' no no es esto...lo que hace cancelar...
+  
   For i = desde To hasta 
     nro = i 
   ' si ahce falta ejecutar mas de un Penta podremos usar threads
@@ -4603,14 +4604,16 @@ EndIf
 '''EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 ' PODRIA SACARSE LOS MULTIKEY DE SCREEN EVENT PERO NO SE SI ANDAN MEJOR DEBO VERIFICAR
 ' ------------IPC sensado de comando fifo..
-'If fueradefoco=1  And (play = 0) and (playb=0) Then
+If fueradefoco=1  And (play = 0) and (playb=0) Then
 ''   Print #1,"fueradefoco=1"
-'   Sleep 1
-'EndIf
+   Sleep 20
+EndIf
 
-'If s5=2 Then ''se elimino el retardo de 1 mseg frena mucho el scroll ahora 29-12-2021
-' Sleep 1
-'EndIf
+If s5=2 Then ''se elimino el retardo de 1 mseg frena mucho el scroll ahora 29-12-2021
+ Sleep 20
+Else
+ Sleep 5
+EndIf
  
 Loop
 
@@ -4618,14 +4621,16 @@ While InKey <> "": Wend
 
 If fueradefoco=1 And (play = 0) and (playb=0)  Then  '''And  S5<> 1 Then
 '  Print #1,"2 -fueradefoco=1"
-   Sleep 1
+   Sleep 20
 EndIf
 
 If s5=2  Then
    Sleep 20 ' 17-06-2022 cuadno no escribo a pantalla ese 1er loop se lentifica ....tampoco hay 
 ' necesidad de entrar nada por teclado en esa pantalla puedo poner mas retardo
 'lo quedeberia ahcer es no poder mover la pantalla... o reducir su tamaño y al terminar
-' agrandar el tamaño eso podria ser....  
+' agrandar el tamaño eso podria ser....
+Else
+   Sleep 5  
 EndIf
 
 'arranquedo1=Timer - arranquedo1

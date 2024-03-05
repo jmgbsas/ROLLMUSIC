@@ -997,7 +997,8 @@ Type paramGrabamidi
 End Type
 
 Dim Shared pgmidi As paramGrabamidi
-
+Dim Shared As Integer EstaBarriendoPenta=0
 
 Declare Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi)
 Declare Sub CargarSinRoll () '28-02-2024
+
