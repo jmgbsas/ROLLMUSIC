@@ -877,7 +877,7 @@ Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As I
 Declare Function lugarNota (lugar As integer) As Integer
 Declare Sub metronomo ()
 
-COMMON Shared As Long eventc
+COMMON Shared As Long eventc, eventM
 Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA 
 Common Shared As string pathdir,nombre,nombreMidiIn

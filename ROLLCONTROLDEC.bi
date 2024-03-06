@@ -26,7 +26,7 @@ Dim Shared As ubyte GrabarPistaCancion=0
 Dim Shared As Integer  usarmarco= 0 , usarmarcoOld=0,reiniciar=0,usarAcordesIguales=0
 Dim Shared As Integer  usarmarcoins= 0 , usarmarcoOldins=0
 #Include "dir.bi"  
-  
+ 
 
 Dim Shared  NombreInst(1 to 127) As string * 24 => _ 
              { "ACOUSTIC_GRAND_PIANO   1" , _

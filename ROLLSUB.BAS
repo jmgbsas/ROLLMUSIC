@@ -3410,7 +3410,7 @@ Sub CargarPistasEnCancion ()
 ' cada vez que cargo borro la info de fechas de pistas anterior
 ROLLCARGADO=FALSE
 
-
+DisableGadget(LISTA_DE_PISTAS,0) ' HABILITAMOS LISTA DE PISTAS
 ReDim As Double fechasPistas(1 To 32)
 print #1,"-------------------------------------------------------"
 print #1,"inicia CargaPistasEnCancion"
@@ -4388,6 +4388,7 @@ End SUB
 
 Sub salir()
 ' NO PUEDE ESTAR EN MUSICCONTROL.BAS DEBE ESTAR EN ALGUNA PARTE DE ROLLMUSIC PARA QUE FUNCIONE
+eventM=eventrbdown
 Dim  As Integer i3
     cairo_destroy(cm)
     cairo_surface_destroy( surf2 )
@@ -4525,9 +4526,9 @@ Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
          #EndIf
          Do
 
-         Var eventC= waitEvent
+         Var eventEsca= waitEvent
 
-          If eventC=eventgadget Then
+          If eventEsca=eventgadget Then
           
             If eventnumber()=2 Then
                tipoescala_num = GetItemListView()
@@ -4536,7 +4537,7 @@ Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
            End If
 
           EndIf 
-         If eventC= EventClose Then
+         If eventEsca= EventClose Then
                Close_Window(haw)
                Exit Do 
           EndIf
@@ -4589,9 +4590,9 @@ Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
          #EndIf
          Do
 
-         Var eventC= waitEvent
+         Var eventNota= waitEvent
 
-          If eventC=eventgadget Then
+          If eventNota=eventgadget Then
           
             If eventnumber()=2 Then
                notaescala_num = GetItemListView()
@@ -4600,7 +4601,7 @@ Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
            End If
 
           EndIf 
-         If eventC= EventClose Then
+         If eventNota= EventClose Then
                Close_Window(haw)
                Exit Do 
          EndIf

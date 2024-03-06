@@ -3133,8 +3133,8 @@ hwndPatronEjec=OpenWindow("Patrones Ejecucion",100,50,ANCHOSYSTEM*0.5,ANCHOSYSTE
 
 
 Do
-       Var eventC= waitEvent
-        Select Case  eventC
+       Var eventP= waitEvent
+        Select Case  eventP
               Case EventMouseMove  
               'If EventKEY And MK_LBUTTON Then
                    '? "Left Button press AND mousemove"   

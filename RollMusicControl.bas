@@ -32,7 +32,7 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota,compasX
 common Shared As Integer  ANCHO,ALTO
 Common Shared As FLOAT font
-COMMON Shared As Long eventc
+COMMON Shared As Long eventc, eventM
 Common Shared As hwnd hwndC, hwndListBox, hwndPatronEjec
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA
 Common Shared As string pathdir,nombre,nombreMidiIn
@@ -230,8 +230,8 @@ Posy=y0 +100
          #EndIf
          Do
 
-         Var eventC= waitEvent
-         If eventC=EventLBDown Then ' 26-02-2022
+         Var eventAlfa= waitEvent
+         If eventAlfa=EventLBDown Then ' 26-02-2022
             If EventNumberListView=1 Then
                i1 = GetItemListView()
                cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
@@ -244,7 +244,7 @@ Posy=y0 +100
            EndIf
         EndIf
 
-          If eventC=eventgadget Then
+          If eventAlfa=eventgadget Then
           
             If eventnumber()=2 And InStr(cad,"x") >0 Then
                ''i1 = GetItemListView()
@@ -261,7 +261,7 @@ Posy=y0 +100
               
             End If
           EndIf 
-          If eventC=EventClose Then
+          If eventAlfa=EventClose Then
                   Close_Window(haw)
                  Exit Do 
            EndIf          
@@ -323,8 +323,8 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
          #EndIf
          Do
 
-         Var eventC= waitEvent
-         If eventC=EventLBDown Then ' 26-02-2022
+         Var eventNum= waitEvent
+         If eventNum=EventLBDown Then ' 26-02-2022
             If EventNumberListView=1 Then
                instru = GetItemListView()
                cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
@@ -337,7 +337,7 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
            EndIf
         EndIf
 
-          If eventC=eventgadget Then
+          If eventNum=eventgadget Then
           
              If eventnumber()=2 And InStr(cad,"x") > 0 Then
                ''Instru = GetItemListView()
@@ -346,7 +346,7 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
                 Exit Do
             End If
           EndIf 
-            If eventC= EventClose Then
+            If eventNum= EventClose Then
                Close_Window(haw)
                Exit Do 
             EndIf

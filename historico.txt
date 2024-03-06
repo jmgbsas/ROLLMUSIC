@@ -1,3 +1,15 @@
+- 06-03-2024 ya tengo menu popup contextual en lista de pìstas de cancion
+  estos menus popup contextual lo podremos usar en muchos lados,
+  primero se da click izquierdo para seleccionar la lista de Pistas y luego click
+  derecho , no se porque funciona asi porque WM_RBUTTONDOWN selecciona tambien
+  la lista, debe ser porque eventgadget se fija en el click izquierdo
+  del mouse entonces no hay seleccion de la ventna de la lista si no
+  se da primero click izquierdo , y luego al dar click derecho ya estamos
+  con la lista seleccionada ,,,,ufff retorcida la cosa pero lo descubri..
+  Si se da click izquierdo y no derecho luego no se puede cerrar Rollmusic
+  desde menu pero si desde el boton de ventana de cierre o desde Roll Grafico
+  con escape o boton rojo de cierre..
+  LA tool de Rusia se basa en click izquierdo esa es mi conclusion..
 - 05-03-3024 arreglos del meu principal ventana control, habilitar deshabilitar
   opciones de cara de Roll grafico. Consumo cpu eñevadp se aumento retardos 
   de nuevo en loops de Ventana Control y RollLoop..Queda probar Grabacion y ejecucion

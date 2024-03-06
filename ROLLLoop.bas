@@ -879,7 +879,7 @@ edity2 = 50 ' botton Edit bordeInf
 
 '' Create a cairo drawing context, using the FB screen as surface.
 '' l originalestba mal sizeof(integer ) es mu chico debe ser 4
-Print #1,"ancho ", ANCHO
+
 
 
 stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
@@ -1509,6 +1509,7 @@ Terminar=1
 Dim As Integer i3
 
   If MessageBox(hWnd,"¿Fin RollMusic? " ,param.titulo ,4 Or 64) =6 Then
+     eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
     cairo_destroy(cm)
     cairo_surface_destroy( surf2 )
     cairo_destroy(c)
@@ -3220,6 +3221,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
  If (mousex>=(ANCHO-40-mxold)) And (mousey <= 16) Then
   If  MouseButtons And 1 Then
    If MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","Fin RollMusic",4 Or 64) =6 Then
+    eventM=eventrbdown ' por si selecciono algo en lista pistas d e ventana  de control
     Dim As Integer i3  
     cairo_destroy(cm)
     cairo_surface_destroy( surf2 )
@@ -3950,9 +3952,9 @@ ButtonGadget(2,530,30,50,40," OK ")
          #EndIf
          Do
 
-         Var eventC= waitEvent
+         Var eventHaco= waitEvent
 
-          If eventC=eventgadget Then
+          If eventHaco=eventgadget Then
           
             If eventnumber()=2 Then
                'Instru = GetItemListView()

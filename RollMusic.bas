@@ -121,7 +121,7 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="0.4575 menu y cpu " ':Patrones de Ejecucion 03-07-2022
+nroversion="0.4576 menu contextual en desarrollo " ':Patrones de Ejecucion 03-07-2022
 ' despues de un año de bajones personales veo si me da gan de seguirlo
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
@@ -189,11 +189,10 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
   cbxnum(31) = CheckBox_New( 60 , 640, 20, 20, "",, hwndc)
   cbxnum(32) = CheckBox_New( 60 , 660, 20, 20, "",, hwndc) 
 
-EVENTc=0
 ' fast? http://www.forosdelweb.com/f69/archivos-ayuda-chm-con-visual-basic-6-0-a-801611/
 
 
-  EVENTc=0
+  EventC=0
 
 '---------------------------LISTA DE EJECUCIONES------------
   hwndListEjec= ListBoxGadget(LISTA_DE_EJECUCIONES, 430,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
@@ -610,7 +609,8 @@ abrirRoll=0
 'pistacreada=0
 Dim As Integer k=0
 
-
+' //// DESHABILITAR LOS CLICK EN LISTA SI NO HAY CARGADO NADA
+DisableGadget(LISTA_DE_PISTAS,1) 
 '------------
 Do
   COMEDIT = False
@@ -1056,7 +1056,13 @@ lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BI
 
 '-----------------------------------------------------------------------
            Case 1019  ''<============= SALIR TERMINA ROLL
-            terminar=2
+             'eventM=eventrbdown
+             eventM=eventClose
+  ' no funciona si hay loop en listapista por popup menu ,,no hay caso
+  ' ni poniendo end 0.. nada de nada ni engañando forzando eventC a close ni 
+  ' eventM a EVENTRBdown nada de nada, no pasa nunca por aca solo obedece
+  ' a un eventClose en EventC, el cual hay que pulsar dos veces para este caso
+            terminar=1
             Exit Do ,Do    
 '-----------------------------------------------------------------------
            Case 1020 ' <=========== Entrar Nombre o Título de la Cancion     
@@ -1760,13 +1766,67 @@ Next i
        Case eventgadget
      '   SetForegroundWindow(hwndC)
       ' el codigo anterior que traia de disco esta en notas
-       If eventnumber()=3 Then  ' VK_LBUTTON ?
+' TODOS DICEN RUSO Y USA QUE VK_LBUTTON ES 1 PERO CON 1 NO ANDA
+' SIN EMBARGO CON 3 ANDA A VECES..
+
+
+       If eventnumber()=  LISTA_DE_PISTAS  Then  ''' no era 3 es 1 ...Then  ' VK_LBUTTON ?
          borrapos=0
  ' esto servia cuando cargaba solo la lista y no los tracks en 1006
  ' pero ahroa solo deberia hacer switch no cargar de disco sino
  ' directamente cargar Roll desde el numero de track correspondiente
- ' en memoria       
-      '       print #1,"CLICK EN LISTA"
+ ' en memoria  
+' TAMBIE NEXISTE EL WM_RBUTTONDOWN MEZCLAMOS WINDOWS Y WINDOWS9 LA PAPA..
+         If WM_RBUTTONDOWN Then
+              Dim As HMENU hMessages2
+              Dim As Long eventM
+              hMessages2=CreatePopMenu()
+             
+              MenuItem(4001,hMessages2,"1 Menu")
+              MenuItem(4002,hMessages2,"2 Menu")
+               
+              Do
+                 eventM= waitevent()
+                    
+                 If eventM=EventMenu then
+                    Select case EventNumber
+                       Case 4001
+                 '       MessBox("","1 Menu procesado X " + Str(GlobalMouseX))
+                          Exit Do
+                       Case 4002
+                   '     MessBox("","2 Menu procesado Y " + Str (GlobalMouseY))
+                         Exit Do
+                    End Select
+                Else
+                   If eventM=eventrbdown Then
+                     DisplayPopupMenu(hMessages2,,)
+                     Exit Do
+                   EndIf
+                   If eventM=eventClose Then
+                     Exit Do
+                   EndIf
+                       
+
+                EndIf
+             
+              Loop 
+
+  
+              ' saco el foco para que el loop no vuelva a funcionar desactivo
+             DisableGadget(LISTA_DE_PISTAS,1)
+                            
+              
+         EndIf 
+         If WM_LBUTTONDOWN Then
+                '''threadmetronomo = ThreadCall menupopup()
+               ' le doy foco al gadget y ergo al loop activo 
+               DisableGadget(LISTA_DE_PISTAS,0)
+
+        '   no se puededsalir por menu pero si por cierre de  ventana
+        ' principal pulsando dos veces
+
+             print #1,"CLICK lbutton EN LISTA WM==============="
+             Print #1,"COORDENADAS X, Y ", GlobalMouseX,GlobalMouseY 
              ROLLCARGADO=FALSE
              CANCIONCARGADA=TRUE
              Dim item As String
@@ -1795,7 +1855,8 @@ Next i
  ' aca no copia track a Roll
          nombre= titulos(ntk)
       '   Print #1,"ntk, nombre ",ntk, nombre
-
+         EndIf 
+      EndIf    
 '--------------------------------------------------------------
 
    clickpista=1 ' simula SC_TAB el cual carga el track a Roll
@@ -1841,7 +1902,7 @@ Next i
                   
              EndIf
   
-       EndIf
+
 
 '  CUAL PISTA DE ROLL SE ESCUCHA SEGUN LO SELECCIONADO
        If eventnumber()=CHECK_PISTA_ROLL Then
@@ -2479,13 +2540,15 @@ GrabarMidiIn(pgmidi)  'POR CANAL
    
 Loop
 '-----------------------------------------------------------------------
-
-salir() ''<==== SALIR TERMINA ROLL
+''DisableGadget(LISTA_DE_PISTAS,1) ' para que desactive y salga de ahi 
+'' eventM=eventClose
+eventM=eventrbdown
+Sleep 5
+Dim sale As Any Ptr 
+ sale= threadcall salir() ''<==== SALIR TERMINA ROLL
+ '''threadwait (sale)
 'Sleep 100
 'Kill "procesos.txt"
-FileFlush (-1)
-    cerrar 0
-    cerrar 1
 '----FIN CONTROL-------------------
 '   threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1)) 
 '   ThreadWait threadloop
@@ -2533,5 +2596,3 @@ Print #1,"Error Function: "; *Erfn()
 Print #1, "12 -nota +(estoyEnOctava ) * 13) "; ers
 Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
  Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
-
-
