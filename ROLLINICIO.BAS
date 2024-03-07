@@ -621,6 +621,7 @@ ffini=FreeFile
  If  Open ("./RollMusic.ini" For Input As #ffini) <> 0 Then
  ' si no existe la creo
      Open "./RollMusic.ini" For Append As #ffini
+      
  End If
 
 Line Input #ffini, sfont

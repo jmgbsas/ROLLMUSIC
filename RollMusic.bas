@@ -618,7 +618,9 @@ abrirRoll=0
 Dim As Integer k=0, salida=0
 
 ' //// DESHABILITAR LOS CLICK EN LISTA SI NO HAY CARGADO NADA
-DisableGadget(LISTA_DE_PISTAS,1) 
+If ix < 3 Then 
+DisableGadget(LISTA_DE_PISTAS,1)
+End If 
 '------------
 Do
   COMEDIT = False
@@ -805,6 +807,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
 
            CTRL1010 (salida )
            If salida =1 Then 
+              salida=0
               Exit Select
            End If   
           
@@ -825,10 +828,11 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
 '-----------------------------------------------------------------------
            Case 1012 ' <====== Grabar Pista Como, Copia una pista a otra  nueva nueva
    '        print #1,"entro a 1012 Grabar Pista Como, Copia una pista a otra  nueva nueva"
-             Dim  As Integer SALIDA=0
+             
              CTRL1012 (SALIDA)
 
              If SALIDA=1 Then
+                 salida=0
                  Exit Select
              End If 
 '-----------------------------------------------------------------------
@@ -912,17 +916,18 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
         '      SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1060 ' <========== crea track y reemplaza al existente en la edicion
-                Dim As Integer salida=0
                 CTRL1060 salida
                 If salida = 1 Then 
+                   salida=0
                    Exit Do
                 End If
           SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1061 ' <====== crear pista en cancion con lo elegido
-               Dim As Integer SALIDA=0
+
                CTRL1061 (SALIDA)
                If SALIDA = 1 Then
+                  salida=0
                   Exit Select  
                EndIf
                
@@ -935,7 +940,8 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
            Case 1062 ' <======== crear instancia independiente sin control
  ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
  ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.
-             Print #fa1,pd1       
+             Print #fa1,pd1  
+     
              Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins))
       '    SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
@@ -1231,11 +1237,13 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 ' volvemos atras,,,este movimiento es mas duro de trabajar
 ' 07 marzo 2024 ya anda ok el menu contextua landa al deshabilitarse 
 ' el gadget de lista con click derecho luego de este se habilita de nuevo 
-
-      DisableGadget(LISTA_DE_PISTAS,1)  
+      If ix < 3 Then 
+      DisableGadget(LISTA_DE_PISTAS,1)
+      EndIf  
         CTRL_EVENTGADGET() 
-         
+      If ix < 3 Then   
       DisableGadget(LISTA_DE_PISTAS,0)
+      EndIf
 
 '      SetForegroundWindow(hwnd)
 '////////// PULSAR TECLAS EN VENTANA MODO CONTROL NO GRAFICO DE ROLL /////

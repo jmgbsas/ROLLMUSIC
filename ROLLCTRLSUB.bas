@@ -127,7 +127,7 @@ Sub CTRL1007()
 
 End Sub
 
-Sub CTRL1010(salida As INTEGER)
+Sub CTRL1010(ByRef salida As INTEGER)
            ROLLCARGADO=False 
             Dim As String nombreg
             
@@ -148,7 +148,7 @@ Sub CTRL1010(salida As INTEGER)
 
 End Sub
 
-Sub CTRL1012 (SALIDA As Integer)
+Sub CTRL1012 (ByRef SALIDA As Integer)
            ROLLCARGADO=FALSE 
             Dim As String nombreg
             If nombre = "" Then
@@ -353,7 +353,7 @@ Sub CTRL1050 () ' <=========== seleccion de instrumento por orden Numerico
 
 End Sub 
 
-Sub CTRL1060 (SALIDA As INTEGER) ' <========== crea track y reemplaza al existente en la edicion
+Sub CTRL1060 (ByRef SALIDA As INTEGER) ' <========== crea track y reemplaza al existente en la edicion
                'If ntk=0 Then  ' no se cargo ningun track
                '   *po = hasta -1
                '   posn=1
@@ -384,7 +384,7 @@ Print #1,"1060 abrirRoll=0 entro"
 
 End Sub 
 
-Sub CTRL1061 (SALIDA As INTEGER) ' <====== crear pista en cancion con lo elegido
+Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo elegido
 
                ntk = CountItemListBox(3)+ 1
    '            Print #1,"creando Pista nto ",ntk
