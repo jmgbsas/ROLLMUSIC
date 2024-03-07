@@ -20,6 +20,30 @@ Declare Sub selInstORdenAlfa (ByRef instru As Integer)
 Declare Sub selInstORdenNum (ByRef instru As Integer)
 Declare Sub selTipoEscala (ByRef tipoescala As integer)
 Declare Sub selNotaEscala (ByRef notaescala As integer)
+' RUTINAS VENTANAS DE CONTROL =>
+Declare Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
+Declare Sub CTRL1062 (hmessages As hmenu)
+Declare Sub CTRL1063()
+Declare Sub CTRL1007()
+Declare Sub CTRL1010(salida As INTEGER)
+Declare Sub CTRL1012(SALIDA As INTEGER)
+Declare Sub CTRL1015 ()
+Declare Sub CTRL1016 ()
+Declare Sub CTRL1040 ()
+Declare Sub CTRL1050 ()
+Declare Sub CTRL1060 (SALIDA As INTEGER)
+Declare Sub CTRL1068(hmessages As hmenu)
+Declare Sub CTRL1071(hmessages As hmenu)
+Declare Sub CTRL1090 ()
+Declare Sub CTRL1092()
+Declare Sub CTRL1111()
+Declare Sub CTRL1112()
+Declare Sub CTRL1200() 
+Declare Sub CTRL1204()
+Declare Sub CTRL1206()
+Declare Sub CTRL_EVENTGADGET ()
+
+
 
 Dim Shared As ubyte GrabarPistaCancion=0
  

@@ -26,6 +26,7 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include "crt.bi" ' QSORT
 
 
+
 'Var hwnd = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*3/4)
 
 'Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
@@ -49,7 +50,7 @@ Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Common Shared  portsal As UByte, patchsal As ubyte
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp, npi,calltoca,npo
-
+Common SHARED  As Integer EstaBarriendoPenta
 
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0
 Common Shared As Integer  posicion,posicionOld,posn,terminar
@@ -446,6 +447,7 @@ Sub  verayuda (  arch As string)
 
 End Sub 
  
+
 '
 ' error
 errorControl:

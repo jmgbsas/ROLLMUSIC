@@ -892,6 +892,8 @@ Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx, HabilitarPatro
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn,terminar
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo
+Common SHARED  As Integer EstaBarriendoPenta
+
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
 ''patchsal=Roll.trk(1,1).inst
@@ -997,7 +999,7 @@ Type paramGrabamidi
 End Type
 
 Dim Shared pgmidi As paramGrabamidi
-Dim Shared As Integer EstaBarriendoPenta=0
+
 
 Declare Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi)
 Declare Sub CargarSinRoll () '28-02-2024

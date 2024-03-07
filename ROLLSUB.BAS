@@ -4934,7 +4934,11 @@ For i=28 To 36
 Next i
 
 End Function
+'''-///////////// RUTINAS DE VENTANA PRINCIPAL ROLLCONTROL ////////
+''' empezamos a estructurar un poco .....06- marzo 2024
+'' REVISAR DE NUEVO LAS CONDICIONES DE SALIDA DE SELECT O EXIT DO
 
+'---------
 
 ' error
 errorSub:

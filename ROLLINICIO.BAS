@@ -616,9 +616,13 @@ gap3= (519 * gap1) /1000 ' 42 default
 '---------
  
 Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig,sVerCifradoAcordes
-
+Dim openfalla As integer
 ffini=FreeFile
-Open "./RollMusic.ini" For Input As #ffini
+ If  Open ("./RollMusic.ini" For Input As #ffini) <> 0 Then
+ ' si no existe la creo
+     Open "./RollMusic.ini" For Append As #ffini
+ End If
+
 Line Input #ffini, sfont
 Line Input #ffini, smxold
 Line Input #ffini, smyold

@@ -1,3 +1,9 @@
+- 07-03-2024 AGREGAMOS ROLLCTRLSUB ...porque rollsub ya es muy grande, separamos
+  las rutinas, estructuramos y despues parametrizaremos sacando lo mas 
+  posible las globales chicas pero las grandes quedaran globales o algo asi
+  depende de si se pasan por referencia o valor....menu contextual ok, pero
+  no es funcional no se agrego ninguna funcion todavia...
+  Rollmusic,ini si no existe lo crea..
 - 06-03-2024 ya tengo menu popup contextual en lista de pìstas de cancion
   estos menus popup contextual lo podremos usar en muchos lados,
   primero se da click izquierdo para seleccionar la lista de Pistas y luego click
