@@ -99,7 +99,7 @@
        no de Roll Grafico, para ello entrar al menu "Crear Pistas manuales" y elegir "cambia instrumento
        por orden alfabetico" 
 
-       NOTA: LOS BOTONES [PORTSAL] [VOL] [PAN] [PATCH] [CANAL] A LA DERECHA Y ABAJO EN LA 2DA LISTA
+       NOTA: 1) LOS BOTONES [PORTSAL] [VOL] [PAN] [PATCH] [CANAL] A LA DERECHA Y ABAJO EN LA 2DA LISTA
        SE USAN PARA EJECUCIONES A TRAVES DE MIDI CON UN TECLADO(si se selecciona con un tilde alguna
        pista de ejecuciones la segunda en la ventana), PARA PISTAS DE CANCION SI SE MARCA LAS PISTAS
        DE LA IZQUIERDA, se usa el 2do juego de botones debajo de la 1er lista de pistas de cancion.
@@ -109,7 +109,13 @@
        TAMBIEN SE PUEDE ESCUCHAR DESDE EL MENU REPRODUCIR EL CUAL TAMBIEN LO HACES DESDE UNA POSICION
        DADA O SOLO UN PEDAZO DE LA CANCION, (o cada pista en el roll grafico pulsando Ctrl + posarse
        sobre Reproducir arriba en la cinta de menu)
-
+       2) MENU CONTEXTUAL EN LISTA DE PISTAS DE CANCION
+          FUNCIONA ASI: DAR CLICK IZQUIERDO EN UNA PISTA, LUEGO CON flecha arriba
+          y abajo CAMBIA DE PISTA EN ROLL(COMO TAB EN ROLL GRAFICO), 
+          para habilitar el  CLICK DERECHO CONTEXTUAL EN LA PISTA SELECCIONADA
+          CON CLICK IZQUIERDO, DAR ENTER Y LUEGO  CON CLICK DERECHO APARECE 
+          EL MENU CONTEXTIUAL, PARA VOLVER AL INICIO DAR CLICK EN OTRA PISTA 
+          Y TODO COMIENZA DE NUEVO...  
     1) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
     2) El espaciado entre lineas se puede cambiar.
     3) Trasponer todo: ALT-T habilita la trasposicion, Q la deshabilita.

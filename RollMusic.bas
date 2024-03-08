@@ -129,7 +129,7 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="0.4580 contextual ok, Ctrl algo estructurado " ':Patrones de Ejecucion 03-07-2022
+nroversion="0.4582 contextual TERMINADO " ':Patrones de Ejecucion 03-07-2022
 ' despues de un año de bajones personales veo si me da gan de seguirlo
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
@@ -153,7 +153,7 @@ If ix < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON cont
 Var bitmap = Load_image("fondo.bmp")
 BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 
-  hwndListBox= ListBoxGadget(LISTA_DE_PISTAS,80,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
+  hwndListBox= ListBoxGadget(LISTA_DE_PISTAS,80,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT  )
   SetGadgetFont(LISTA_DE_PISTAS,CINT(LoadFont("consolas bold",13))) 
 ' botton todo o nada , sonido o mudo para todas las pistas
   ButtonGadget(CHECK_PISTA_ROLL, 60,20,20,20,"S")
@@ -1237,13 +1237,14 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 ' volvemos atras,,,este movimiento es mas duro de trabajar
 ' 07 marzo 2024 ya anda ok el menu contextua landa al deshabilitarse 
 ' el gadget de lista con click derecho luego de este se habilita de nuevo 
-      If ix < 3 Then 
-      DisableGadget(LISTA_DE_PISTAS,1)
-      EndIf  
+     ' If ix < 3 Then 
+    '  'DisableGadget(LISTA_DE_PISTAS,0)
+    '  EndIf  
         CTRL_EVENTGADGET() 
-      If ix < 3 Then   
-      DisableGadget(LISTA_DE_PISTAS,0)
-      EndIf
+    '  If ix < 3 Then   
+    '  'DisableGadget(LISTA_DE_PISTAS,1)
+    '  EndIf
+           Exit Do
 
 '      SetForegroundWindow(hwnd)
 '////////// PULSAR TECLAS EN VENTANA MODO CONTROL NO GRAFICO DE ROLL /////

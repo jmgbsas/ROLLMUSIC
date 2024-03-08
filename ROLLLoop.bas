@@ -3576,10 +3576,10 @@ EndIf
 
      MenuItem(1100,cancelar,"Salir")
  
-     
+ ' mouse _event win32,,,    
      Do
       event=WaitEvent
-    mouse_event MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0
+    mouse_event MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0  
     sleep 10
     mouse_event MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0
       

@@ -44,6 +44,11 @@ Declare Sub CTRL1204()
 Declare Sub CTRL1206()
 Declare Sub CTRL_EVENTGADGET ()
 
+Const LEFTBUTTON   = 1
+Const MIDDLEBUTTON = 4   ' UNUSED IN THIS DEMO
+Const RIGHTBUTTON  = 2   ' UNUSED IN THIS DEMO
+Const SHOWMOUSE    = 1
+Const HIDEMOUSE    = 0
 
 
 Dim Shared As ubyte GrabarPistaCancion=0

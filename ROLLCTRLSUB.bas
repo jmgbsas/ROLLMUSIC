@@ -757,14 +757,20 @@ Sub CTRL_EVENTGADGET ()
 ' TODOS DICEN RUSO Y USA QUE VK_LBUTTON ES 1 PERO CON 1 NO ANDA
 ' SIN EMBARGO CON 3 ANDA A VECES..
 
-Dim As Integer k=0 
-       If eventnumber()=  LISTA_DE_PISTAS  Then  ''' no era 3 es 1 ...Then  ' VK_LBUTTON ?
-         borrapos=0
- ' esto servia cuando cargaba solo la lista y no los tracks en 1006
- ' pero ahroa solo deberia hacer switch no cargar de disco sino
- ' directamente cargar Roll desde el numero de track correspondiente
- ' en memoria  
+Dim As Integer k=0
+Static As Integer millave
 
+       If eventnumber()=  LISTA_DE_PISTAS Then 
+         
+         borrapos=0
+' MEGUSTO FUNCIONA ASI: DAR CLICK EN UNAPISTA LUEGO CON flecha arriba
+' y abajo CAMBIA DE PISTA EN ROLL, parahabilitar el  CLICK DERECHO CONTEXTUAL
+' DAR ENTER Y LUEGO CLICK DERECHO APARECE EL MENU CONTEXTIUAL, PARA VOLVER
+' AL INICIO DAR CLICK EN OTRAPISTA Y TODO COMIENZ DE NUEVO... 
+'  
+             
+           If MOUSEBUTTONS AND LEFTBUTTON Then 
+                
              print #1,"CLICK lbutton EN LISTA WM==============="
              Print #1,"COORDENADAS X, Y ", GlobalMouseX,GlobalMouseY 
              ROLLCARGADO=FALSE
@@ -779,7 +785,7 @@ Dim As Integer k=0
              EndIf
 
              item=Trim(item)
-      '       Print "item ",item
+             Print "item ",item
              If item > "" Then
              '  Dim nombre1 As String
              '   nombre1= NombreCancion + "\"+item +".rtk"
@@ -791,13 +797,27 @@ Dim As Integer k=0
              ' pero si quiero volver a disco solo debo resetear ubirtk=0
               ntk=sacarNtk(item) ' este ntk no sirve para boorar
  ' aca no copia track a Roll
+              Print #1,"ntk de item ", ntk
               nombre= titulos(ntk)
-      '   Print #1,"ntk, nombre ",ntk, nombre
+
+         Print #1,"ntk, nombre ",ntk, nombre
+                
               EndIf
+              
+          EndIf
+  
+'--------------------------------------------------------------
+
+   clickpista=1 ' no incrementa el ntk que simula SC_TAB, el cual carga el track a Roll
+ 
+'--------------------------------------------------------------
 
 ' /// // // / / /  menu contestual popup 
-' se habilita cuando lista pistas se deshabilita
-
+   
+            
+          If eventnumber()=  LISTA_DE_PISTAS And _
+             WM_VKEYTOITEM And  EventKEY = VK_RETURN Then
+           '  MOUSEBUTTONS  And RIGHTBUTTON Then 
               Dim As HMENU hMessages2
               Dim As Long eventM
               hMessages2=CreatePopMenu()
@@ -805,35 +825,42 @@ Dim As Integer k=0
               MenuItem(4001,hMessages2,"1 Menu")
               MenuItem(4002,hMessages2,"2 Menu")
               Do
-
+                   millave=millave +1  
+                   If millave > 1000 Then
+                      millave=0
+                      Exit Do
+                   EndIf
                  eventM= waitevent()
                     
                  If eventM=EventMenu then
                     Select case EventNumber
                        Case 4001
-                     '     Exit Do
+                          Exit Do
                        Case 4002
-                     '    Exit Do
+                         Exit Do
                     End Select
                  Else
                    If eventM=eventrbdown Then
+                     If ix < 3 Then   
+                        DisableGadget(LISTA_DE_PISTAS,1)
+                     EndIf
+
                      DisplayPopupMenu(hMessages2,,)
+                     If ix < 3 Then   
+                        DisableGadget(LISTA_DE_PISTAS,0)
+                     EndIf
                      Exit Do
                    EndIf
                  EndIf
              
               Loop 
-  
-'--------------------------------------------------------------
-
-   clickpista=1 ' simula SC_TAB el cual carga el track a Roll
- 
+            EndIf
 '--------------------------------------------------------------
 ' este ntk sirve para identificar el ntk del arcchivo t dle vector
 ' pero el ntk de la lista es otro vector y al borrar el indice cambia
 ' debo obtener el indice primero                
 '' esta andando con defectos verlos borrado en la lista LBS_WANTKEYBOARDINPUT
-                If WM_VKEYTOITEM Then '
+            If WM_VKEYTOITEM Then '
        '           print #1,"---------->>> APRETO TEcla ",NTK,NombreCancion
                 If EventKEY = VK_DELETE Then 
        '          print #1,"---------->>> APRETO DELETE ",NTK,NombreCancion
@@ -861,13 +888,16 @@ Dim As Integer k=0
                     borrar=0
                   EndIf
                 EndIf 
- 
+                 
            ' aca no debe leer a disco solo conmutar de track en track
+'------------------------------
+                
+
             EndIf
                                   
          '       Print #1," CLICK EN LISTA FIN "
                   
-             EndIf
+       EndIf
   
 
 
