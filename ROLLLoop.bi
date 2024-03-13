@@ -511,7 +511,7 @@ If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
   cairo_move_to(c, 0, Penta_y + inc_Penta * 28 )
   cairo_show_text(c, t)
 
-  t = "En Lectura navegar a derecha o izquierda con Flecha horizontales, arriba abajo con Flechas Verticales"
+  t = "En Lectura navegar a derecha o izquierda con Flecha horizontales O CTRL IZQ,O CTRL DER MAS RAPIDO, arriba abajo con Flechas Verticales O RePAg AvPAg"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 29 )
   cairo_show_text(c, t)
 
@@ -519,6 +519,9 @@ If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
   cairo_move_to(c, 0, Penta_y + inc_Penta * 30 )
   cairo_show_text(c, t)
 
+  t = "Para ver el Final de la pista pulsar Tecla FIN, principio INICIO,  "
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 31 )
+  cairo_show_text(c, t)
     
  End If
 
