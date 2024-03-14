@@ -826,7 +826,7 @@ If ubiroll > 0 Then  ' CARGA DE ARCHIVOS POR LINEA DE COMANDO DE ROLLMUSIC
  '  Print #1,"nombre",nombre
  '  Print #1,"titulo(0) ",titulos(0)
     cargaArchivo (Roll,ubiroll)
-   s5=0
+   s5=2
    ROLLCARGADO=TRUE
    MenuNew=0
    ubiroll=0
@@ -1105,6 +1105,7 @@ EndIf
 If MultiKey (sc_P) And (play=1 Or playb=1 )Then
   CONTROL1=1 ' DETIENE EL PLAY VEREMOS
   playloop=0:playloop2=0
+  s5=2
   If instancia=7 Or instancia= 107 Then 
   Else
   SetGadgetstate(12,0)
@@ -1368,12 +1369,13 @@ EndIf
 If MultiKey(SC_CONTROL) and MultiKey(SC_L)  Then ' <======== load Roll
   If carga=0 Then
    CargaArchivo(Roll,0)
-s5=0 '11-06-2022
+s5=2 '11-06-2022
   EndIf 
  
 EndIf
 
 If MultiKey(SC_ALT) and MultiKey(SC_L)  Then ' <======== playloop
+  s5=0
   playloop=1 
 EndIf
 '---UNDO ACORDE - O BORRAR ACORDES, debemos borrar cifrado tambien
@@ -1609,13 +1611,13 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
          '''Dim tlock As Any Ptr = MutexCreate()
          If CANCIONCARGADA = TRUE Then
              Print #1,"USANDO PLAYCANCION"
-             playb=1   
+             playb=1 : s5=0    
              thread1 = ThreadCall  playCancion(Track())
              'playCancion(Track())
          Else
            If  MaxPos > 1 Then
       '        print #1,"llama a playall"
-              Play=1
+              Play=1:s5=0
              thread1 = ThreadCall  playAll(Roll)
            EndIf 
 
@@ -2626,6 +2628,7 @@ If (ScreenEvent(@e)) Then
    If e.scancode = SC_P And (Play=1 Or playb=1 ) Then ' 25 anda mejor q con multikey
       CONTROL1=1
       playloop=0:playloop2=0
+      s5=2    
  '''     alloff( 1 ) lo hace el play 
    EndIf
    If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion
@@ -3146,7 +3149,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
            controlEdit=0 'jmg 09-06-2021 
            nota=0
        ''posicion=posicion - NroCol/2
-
+           s5=2
            If posicion < 1 Then
               posicion = 0 ' 20-01-2022 jmg a testear pase a1 y dibuja mal 
            EndIf
@@ -3322,8 +3325,9 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 
 If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  
-  s5=2  ' 04-01-2021 ...comentado el 17-06-2022
- ' Sleep  1  ' reemplazamos el de S5=2 de antes eso daba 1 mseg de retardo veremos si sirve aca
+   s5=2  ' 04-01-2021 ...comentado el 17-06-2022 15-03-2024
+   
+  'Sleep  1  ' reemplazamos el de S5=2 de antes eso daba 1 mseg de retardo veremos si sirve aca
   If s3 = 2 Then  ''06-12-2021 jmg
      s3=0
   EndIf   
@@ -4609,35 +4613,39 @@ EndIf
 '''EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 ' PODRIA SACARSE LOS MULTIKEY DE SCREEN EVENT PERO NO SE SI ANDAN MEJOR DEBO VERIFICAR
 ' ------------IPC sensado de comando fifo..
-If fueradefoco=1  And (play = 0) and (playb=0) Then
+If fueradefoco=1  And (play = 0) and (playb=0) And (Cplay=0) Then
 ''   Print #1,"fueradefoco=1"
    Sleep 20
-EndIf
+Else 
 
-If s5=2 Then ''se elimino el retardo de 1 mseg frena mucho el scroll ahora 29-12-2021
- Sleep 20
-Else
- Sleep 5
-EndIf
- 
+
+  If s5=2 Then ''se elimino el retardo de 1 mseg frena mucho el scroll ahora 29-12-2021
+    Sleep 20
+  Else
+    Sleep 5
+  EndIf
+
+EndIf 
 Loop
 
 While InKey <> "": Wend
 
-If fueradefoco=1 And (play = 0) and (playb=0)  Then  '''And  S5<> 1 Then
+If fueradefoco=1 And (play = 0) and (playb=0) And (Cplay=0) Then  '''And  S5<> 1 Then
 '  Print #1,"2 -fueradefoco=1"
    Sleep 20
-EndIf
+Else 
 
-If s5=2  Then
+
+ If s5=2  Then
    Sleep 20 ' 17-06-2022 cuadno no escribo a pantalla ese 1er loop se lentifica ....tampoco hay 
 ' necesidad de entrar nada por teclado en esa pantalla puedo poner mas retardo
 'lo quedeberia ahcer es no poder mover la pantalla... o reducir su tamaño y al terminar
 ' agrandar el tamaño eso podria ser....
-Else
+ Else
    Sleep 5  
-EndIf
+ EndIf
 
+EndIf
 'arranquedo1=Timer - arranquedo1
 'If  arranquedo1 <= 0.07 Then
 '  Print #1,"arranquedo1 ", arranquedo1

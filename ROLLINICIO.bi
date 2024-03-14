@@ -589,7 +589,7 @@ posmouseOld = 0:posmouse = 0
 COMEDIT = False:resize = False
 po = @octaroll
 *po = hasta -1 ' test 09-09-2021 
-s1=0:s2=0:s3=0:s4=0:s5=0:s6=0:s7=0:s8=0
+s1=0:s2=0:s3=0:s4=0:s5=2:s6=0:s7=0:s8=0
 If font=0 Then 
  font=18
 EndIf

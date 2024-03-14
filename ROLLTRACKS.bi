@@ -110,7 +110,7 @@ ROLLCARGADO=FALSE
 
 GrabarEjec =NoGrabar: ntoca=0 : arrancaPlay=0
 ntkp=0 
-s5=0 '11-06-2022
+s5=2 '11-06-2022
 ''ReDim As Double fechasPistas(1 To 32)
 print #1,"-------------------------------------------------------"
 print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devuelve ntkp "
@@ -2723,7 +2723,7 @@ End Sub
 
 Sub CargarSinRoll ()
  cargaCancion=0 ' para que no entre mas luego de cargada la cancion
-   s5=0  '11-06-2022
+   s5=2  '11-06-2022
    Erase mel_undo, undo_acorde, undo_kant_intervalos
    mel_undo_k=0: ig=0:cnt_acor=0
    ROLLCARGADO = FALSE
