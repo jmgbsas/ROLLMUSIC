@@ -1945,7 +1945,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 2 Then
                GrabarPenta=0:naco=0:naco2=0
-               If instancia=7 Or instancia= 107 Then
+               If instancia=7 Or instancia= 107 Or instancia < 3  Then
                Else
                SetGadgetstate(15,0) ' 10-04-2022
                EndIf  
@@ -3409,7 +3409,7 @@ End Sub
 Sub CargarPistasEnCancion ()
 ' cada vez que cargo borro la info de fechas de pistas anterior
 ROLLCARGADO=FALSE
-If IX< 3 Then
+If instancia=0 Then
   DisableGadget(LISTA_DE_PISTAS,0) ' HABILITAMOS LISTA DE PISTAS
 EndIf
 ReDim As Double fechasPistas(1 To 32)
@@ -3469,6 +3469,7 @@ print #1,"inicia CargaPistasEnCancion"
        tope=mayor  ' el nro tope de la lista
        print #1,"CARGO PISTAS MAXIMA CANTIDAD TOPE=",tope
        CANCIONCARGADA=TRUE
+
        ntk=1   ' tab le suma 1 pero si creo pistas estria  mal 05-03-2022 ÇÇÇ
     EndIf
 
@@ -4461,6 +4462,7 @@ Sleep 10
  Dim As Integer nroproc, ppp=0
 Dim As String linea
 fk=FreeFile
+ 
  Open "procesos.txt" For Input As #fk
  
        ' carga Todos los pid de las instancias
@@ -4490,7 +4492,7 @@ cerrar fk
 ThreadDetach(threadloop)
  DestroyWindow(hWnd)
 
-    End 0
+    'End 0
 End Sub
 '-------
 Sub selTipoEscala (ByRef tipoescala_num As integer)

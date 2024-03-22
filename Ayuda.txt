@@ -238,7 +238,9 @@
       en cada pista para que suene bien se debe usar FraccionarDur o FraccionarAuto por omision de modo de
       alinear las posicion de cada pista entre ellas...Se probara y hara una cancion como prueba 
       mas adelante que suene bien con dsitintos instrumentos.....
-    15) Una instancia sin control puede ejecutarse tambien si asociamos la sextensiones *.roll y *.rtk
+
+    15) Procesos Batch en Explorador de Archivo o en linea de comandos.
+        Una instancia sin control puede ejecutarse tambien si asociamos la sextensiones *.roll y *.rtk
         con Rollmusi.exe. En ese caso al dar doble clik o enter sobre el nombre de una secuencia en el
         explorador, se levantará una sesion de RollMusic sin el Menu de Control. 
         Queda editado el arcivo *.roll o el *.rtk.  En este modo se puede ver la escala previamente 
@@ -246,6 +248,18 @@
         Como tambien si se usa sostenidos o bemoles..
         Nota: en el caso de bemoles la entrada de notas es igual que antes, Si antes May+C era C#
         si uso bemoles será Db, siempre subo un semitono , es solo una convencion.
+       Mas detalles: 
+       RollMuic Solo el Grafico puede ejecutar aislado como se menciono desde el menu de la 
+       Ventana de Inicio de Control. Pero también si en el explorador de archivo asocio las
+       extensiones *.roll y * .rtk a RollMusic.exe, al dar click o doble click en un archivo
+       con esas extendiones , levantara el Grafico con la secuencia cargada lista para escucharse
+       o modificarse. Igualmente se hace con un directorio de cancion pero esta vez
+       usando un BATCH-Cancion.bat, donde se modifica el directorio se guarda el archivo y
+       luego se da doble click al archivo BATCH-Cancion.bat en el Explorador, o si se desea
+       ejecutarlo en una linea de comando cambiar c:\pathCancion  por %1, para que tome cualquier
+       path de directorio en la linea de comandos: cmd.
+
+
 
     16 ) En algun Futuro: exportar a MusicXml o midi para poder interactuar con otros programas.
            Como tambien importar...
@@ -322,7 +336,7 @@
           es mayor , pero generalmente no logra el compas exacto...de modo que eliminare creo
           el calculo del compas y quedara un Roll sin compases.
 
-    17c) Cargar archivo grabado con ejecuciones porteclado *.ejec , se puede usar un directorio de cancion
+    17c) Cargar archivo grabado con ejecuciones por teclado *.ejec , se puede usar un directorio de cancion
            "Cargar directorio de cancion.."    o entrar por "Cargar Pistas Midi-in"
            En ambos casos carga las pistas y abre automaticamente los port MIDI-OUT automaticamente
            Si se desea entrar a tocas por MIDI-IN se debe abrir el port midi-in previamente seleccionado
@@ -344,6 +358,7 @@
           En una instancia sin control o una sesion con Control si no se carga una cancion , tanto 
           barra de espacio como Ctrl+ clik en Reproducir tocaran la secuencia cargada indistintamente, ya que
           como no hay cancion ejecuta lo que haya, el track en edicion.
+
 
     IV) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
         estilo pentagrama-roll una combinacion. Para mi esto es mas Roll de lo que son los otros, dado que en 

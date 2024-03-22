@@ -33,6 +33,7 @@
 
            Case 10063 ' CARGAR CANCION EN UN ROLL SIN VENTANA DE CONTROL
 ' HAY QUE PASA EL NOMBRE DEL DIRECTORIO NADA MAS,,,Y EL PATH
+' era la 1063 antigua
             CTRL1063 ()             
 ' ----------------------------------------------------------------------
            Case 1007 '<============ grabar cancion bosquejo
@@ -180,7 +181,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
            Case 1062 ' <======== crear instancia independiente sin control
  ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
  ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.
-             Print #fa1,pd1  
+             '''Print #fa1,pd1  
      
              Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins))
       '    SetForegroundWindow(hwnd)
@@ -189,7 +190,10 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 ' una pista y tomar los parametros de la cancion cargada de esa pista
 ' y enviarla a un grafico para que la vea o toda la cancion !!! 
 '-----------------------------------------------------------------------
-           Case 1064 ' <========= Nombre del Patrï¿½n
+' //////////////////////  P_A_T_R_O_N_E_S   ////////////////
+'-----------------------------------------------------------------------
+
+           Case 1064 ' <========= Nombre del PatrOn
          Dim As String patronPorOmision
          patronPorOmision=nombrePatron 
          nombrePatron = InputBox("Nombre del Patron Nuevo" ,"Entre un Nombre ",patronPorOmision)
@@ -229,6 +233,25 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
               menuOldStr="[FACTOR]"
               thread3= ThreadCall EntrarTeclado()
           SetForegroundWindow(hwnd)
+'-----------------------------------------------------------------------
+           Case 1082 ' cuadro ayuda tempo 
+            Dim As integer eventimg
+            Dim As HWND hwndimg
+
+            hwndimg=OpenWindow("Cuadro de Tempos Clasicos ",400,100,1000,600)
+             Var HIMAGE=Load_image(".\recur\velocidades.jpg")
+            ButtonImageGadget(1,10,10,1000,600,HIMAGE,  BS_BITMAP) 'FB_BS_PUSHLIKE
+ 
+            Do  
+             eventimg=WaitEvent()
+              If eventimg=EventClose  Then
+                  Close_Window(hwndimg)  
+                   Exit Do
+              EndIf 
+            Loop  
+
+          SetForegroundWindow(hwnd)
+
 '-----------------------------------------------------------------------
            Case 1090 ' Reproducir cancion
                 CTRL1090 ()

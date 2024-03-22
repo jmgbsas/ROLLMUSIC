@@ -108,7 +108,7 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="0.4584 Correcciones" ':FUTURO Patrones de Ejecucion 03-07-2022
+nroversion="0.4585 Correcciones" ':FUTURO Patrones de Ejecucion 03-07-2022
 ' despues de un año de bajones personales veo si me da gan de seguirlo
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
@@ -116,7 +116,7 @@ acercade = "RollMusic Version "+ nroVersion +" Jose M Galeano, Buenos Aires Arge
  "entrada por pasos usando algoritmos sin una linea conductora de tiempos, se basa en las duraciones de las notas. " + _
  "Para entrada por teclado midi usa ticks. Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
  "manual o por ejecucion. OS:Windows 64bits 7,10,y 11, Proc:AMD Phenom-II Black Edition 4 Nucleos. " + _
- "Usa Cairo como libreria de graficos, Windows9 como GUI y Rtmidi como libreria midi, " + _
+ "Usa Cairo como libreria de graficos, Windows9 y WinGUI como GUI, y Rtmidi como libreria midi, " + _
  "Editor de código FbEdit. Echo en Freebasic como hobby. FreeBASIC Compiler - Version 1.10.1 (2023-12-24), built for win64 (64bit) " + _
 " Copyright (C) 2004-2023 The FreeBASIC development team." +_ 
 " Consultas: mail:galeanoj2005@gmail.com"
@@ -257,7 +257,7 @@ abrirRoll=0
 Dim As Integer k=0, salida=0
 
 ' //// DESHABILITAR LOS CLICK EN LISTA SI NO HAY CARGADO NADA
-If ix < 3 Then 
+If instancia =0  Then  ' cuando es online y recien levanta 
 DisableGadget(LISTA_DE_PISTAS,1)
 End If 
 '------------
@@ -285,7 +285,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
      '''lo hace tab-cargaCancion=0
      param.encancion=1
      
-   If pid1=0 And ix < 3 Then
+   If pid1=0 And instancia =0  Then
       pid1=pd1
    EndIf
  ' Print #1,"cALL rOLLLOOP I) cargaCancion ES 1 SI O SI ",cargaCancion
@@ -296,6 +296,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
           CargarSinRoll () ''' play sin roll 
       Else
       EstaBarriendoPenta=1 
+Print #1, "1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOS(0) ", NombreCancion, titulos(0)
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
       EndIf 
     ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
@@ -317,6 +318,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
            cargaCancion=1 
            CargarSinRoll () '''28-02-2024 play sin roll
        Else
+Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreCancion, titulos(0)
        EstaBarriendoPenta=1
        threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
        EndIf
@@ -326,10 +328,10 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
     EndIf
   EndIf
 
-
+Print #1, "IX LLEGA A 337 ANTES LOOP PRINCIPAL " ,  instancia
      
-  If ix < 3 Then 
-    instancia=0
+  If instancia = 0   Then 
+    
 'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
  ''win = glfwCreateWindow(800,600,"Track OPENGL" )
 '' Dim ta As Any Ptr = threadcall correwin(win,ta)
@@ -440,12 +442,16 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
         Exit Do ,Do    
 
      End Select
-     Sleep 5 ' consume mucha cpu 05-03-2024
+     Sleep 5 ' 
    Loop
 '-----------------------------------------------------------------------
   Else
       param.titulo ="RollMusic Editor" ' esto no sale si no hay marco
-  '    Print #1,"cALL rOLLLOOP III)"
+      Print #1,"cALL rOLLLOOP III)"
+Print #1, "3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreCancion, titulos(0)
+      param.ubiroll=ubiroll
+      param.ubirtk=ubirtk
+Print #1, "3 ubiroll ubirtk ", ubiroll,ubirtk
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
       ThreadWait threadloop
       cerrar(0)  
@@ -459,10 +465,12 @@ Loop
 eventM=eventrbdown
 Sleep 5
 Dim sale As Any Ptr 
- sale= threadcall salir() ''<==== SALIR TERMINA ROLL
+ '''sale= threadcall salir() ''<==== SALIR TERMINA ROLL
+salir()
  '''threadwait (sale)
 'Sleep 100
-'Kill "procesos.txt"
+'' 
+Kill "procesos.txt"
 '----FIN CONTROL-------------------
 '   threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1)) 
 '   ThreadWait threadloop

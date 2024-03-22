@@ -79,7 +79,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
 End Sub
 
 Sub CTRL1062 (hmessages As hmenu)
-
+Print #1, "entro por CTRL1062 NOMBRECANCION TITOLOS(0) ", NombreCancion, titulos(0)
              If NombreCancion > ""  Then
                 EstaBarriendoPenta=1 
                 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))   
@@ -96,7 +96,8 @@ Sub CTRL1062 (hmessages As hmenu)
 End Sub 
 
 Sub CTRL1063() 
-
+' esta rutina no se usa mas, ahora se entra por menu archivo
+  Print #1, "entro por CTRL1063 NOMBRECANCION TITOLOS(0) ", NombreCancion, titulos(0)
             If NombreCancion > "" Then
                  
                Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + _ 
@@ -104,7 +105,7 @@ Sub CTRL1063()
               Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins) + " " + _ 
               Str (NombreCancion))   ' @JMG
                 Print #1,"Cargo Cancion en un roll grafico externo" 
-              
+  
                  
             End If
 
@@ -841,12 +842,12 @@ Static As Integer millave
                     End Select
                  Else
                    If eventM=eventrbdown Then
-                     If ix < 3 Then   
+                     If instancia =1  Then   
                         DisableGadget(LISTA_DE_PISTAS,1)
                      EndIf
 
                      DisplayPopupMenu(hMessages2,,)
-                     If ix < 3 Then   
+                     If instancia =1  Then   
                         DisableGadget(LISTA_DE_PISTAS,0)
                      EndIf
                      Exit Do

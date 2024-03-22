@@ -1762,7 +1762,7 @@ End If
  '     Print #1,"ON patch ntk canal ",	Track(ntk).trk(1,1).nnn, ntk,pmTk(pis).canalsalida
       ChangeProgram ( Track(pis).trk(1,1).nnn, pmTk(pis).canalsalida, pmTk(pis).portout)	
 
-      If instancia=7 Or instancia=107 Then
+      If instancia=7 Or instancia=107  Then
           sonidoPista(pis)=1
       Else 
       

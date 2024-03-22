@@ -148,7 +148,7 @@ Dim Shared As Double durcla (1 To 45, 1 To 2) => { _
 
 
 Dim Shared As Integer play =0,playb=0, portin, numero, numeroFrac,cambioescala=0
-Dim Shared As UInteger portout=0 
+Dim Shared As Integer portout=0 
 Dim Shared As Double numfloat=0
 Static Shared As string listout(), listin ()
 Static Shared As integer listoutAbierto(), listinAbierto (),listoutCreado(), listinCreado ()

@@ -50,7 +50,7 @@ Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Common Shared  portsal As UByte, patchsal As ubyte
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp, npi,calltoca,npo
-Common SHARED  As Integer EstaBarriendoPenta
+Common SHARED  As Integer EstaBarriendoPenta, instancia
 
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0
 Common Shared As Integer  posicion,posicionOld,posn,terminar

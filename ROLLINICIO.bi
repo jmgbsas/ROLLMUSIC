@@ -293,9 +293,8 @@ Print #1,Date;Time
 
 '#Include "crt/win32/unistd.bi"
 #inclib "ntdll"
-'''#include "win/ntdef.bi"
 
-' #include once "IUP/iup.bi"
+
 Open "secuencia.txt" For Output As 5
 
 Const NEWLINE = !"\n"
@@ -311,13 +310,13 @@ Print #1, "__FB_ARGV__ ",__FB_ARGV__
 Print #1, "__FB_ARGC__ ",__FB_ARGC__
 'Dim direp As ZString  Ptr
 'Dim dires As String
-Common Shared As Integer ubirtk, ubiroll
+
 Print #1,"__FB_ARGC__ ", __FB_ARGC__
 Dim As Integer com_usarmarco =0
 For ix = 0 To __FB_ARGC__
   Print #1, "arg "; ix; " = '"; Command(ix); "'"''
 
- If ix=1 Then
+ If ix=1 And Command(ix) > "" Then ' deberia entregarme el archjivo el SO pero no lo hace
   
  ubirtk = InStr (LCase(Command(ix)),".rtk")
  ubiroll=  InStr(LCase(Command(ix)),".roll")
@@ -327,6 +326,7 @@ For ix = 0 To __FB_ARGC__
  If ubirtk > 0 or ubiroll>0  Then
    ntk=0 
    titulos(0)=Command(ix)
+   Instancia=1 ' no se condice con el caso real da 2 ???
  Else
     desde= CInt(Command(ix))
 '    pmTk(ntk).desde=desde
@@ -336,39 +336,42 @@ For ix = 0 To __FB_ARGC__
  Print #1,"ubiroll ",ubiroll
     'sigue en roolloop principio
  EndIf
- If ix=2 Then
+ If ix=2 And Command(ix) > "" Then
   hasta= CInt (Command(ix))
  ' pmTk(ntk).hasta=hasta
     Instancia=2
  EndIf
  
- If ix=3 Then
+ If ix=3 And Command(ix) > "" Then
   titu=  (Command(ix))
      Instancia=3
  EndIf
 
- If ix=4 Then
+ If ix=4 And Command(ix) > "" Then
   instru=  CUByte (Command(ix))
      Instancia=4
  EndIf
 
- If ix=5 Then
+ If ix=5 And Command(ix) > "" Then
   pid1=  CInt (Command(ix))
      Instancia=5
  EndIf
 
- If ix=6 Then
+ If ix=6  And Command(ix) > "" Then
   com_usarmarco=  CInt (Command(ix))
      Instancia=6
  EndIf
 ' en 7 diria @dir en la linea de comando  
 ' puedo poner basura en todos los otros
- If ix=7 Then ' ok probado pasa bien el NombreCancion con el path
+ If ix=7 And Command(ix) > "" Then ' ok probado pasa bien el NombreCancion con el path
   NombreCancion =  Command(ix)
      Instancia=7
  EndIf
 
 Next ix
+Print #1, "instancia, ix  ", instancia, ix 
+''SI DESDE CTRL TRAEMOS UN GRAFICO SOLITO ->' Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins))
+
 'Dim Shared As Integer pd1, fa1 
 
 'pd1 = GetCurrentProcessId()  
@@ -379,11 +382,11 @@ Next ix
 'Print #1,"PID DE ESTE PROCESO ",pd1
 fa1=FreeFile
 Open "procesos.txt" For Append As fa1
-If pid1=0 And ix < 3 Then
- pid1=pd1
+If pid1=0   Then ' EMPEZO EL ONLINE SU PID NO HACE FALTA GRABARLO
+  pid1=pd1
 Else
-  If pid1 <>0 Then
-     Print #fa1,pd1
+  If pid1 <>0 Then ' INDICA QUE UN PID1 ARGUMENTO VINO DE UN BATCH O CALL 
+     Print #fa1,pd1 ' GRABA EL PD1 ACTUAL QUE ES LA EJECUCION DEL BATCH
   EndIf 
 EndIf 
 cerrar fa1
@@ -391,7 +394,7 @@ cerrar fa1
 Sleep 100
 
 
-If desde = 0 And hasta = 0 Then
+If desde = 0 And hasta = 0  And instancia=0 Then
  Print #1,"intervalo no dado usando default!"
  desde => 4  ' -> 3  
  hasta => 8  ' -> 6 le debo restar la octava oculta +1

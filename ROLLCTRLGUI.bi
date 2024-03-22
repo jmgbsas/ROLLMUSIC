@@ -1,7 +1,7 @@
 'ROLLCTRLGUI... GUI DE VENTANA DE CONTROL
 Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8,MenName10
 Static Shared As HMENU MenName31,MenName32 
-If ix < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON control
+If instancia < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON control
   menuabierto=1 ' evita apertura de mas de un menu
   instancia=0
   hwndC = OpenWindow("RollMusic Ctrl V "+ nroversion,10,10,ANCHOSYSTEM*0.91 ,ALTOSYSTEM*0.91,WS_OVERLAPPEDWINDOW Or WS_VISIBLE,  WS_EX_ACCEPTFILES   )
@@ -250,7 +250,8 @@ MenuItem(1060,MenName3, "Crear pista aislada, En Roll dependiente, con lo elegid
 MenuItem(1061,MenName3, "Crear Pista nueva en la Cancion en Edicion, Con lo elegido")
 Menubar(MenName3)
 MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
-'MenuItem(1063,MenName3, "Cargar una pista de cancion en RollMusic Grafico")
+' ahora se llama 10063 en menu artchivo 
+
 
 'MenuItem(1065,MenName31, "Crear Patrones de Ejecuciones por Teclado",MF_POPUP )
 MenName32=OpenSubmenu(MenName31, "Crear Patrones de Ejecuciones por Teclado" )
@@ -267,7 +268,7 @@ MenuItem(1071,MenName4,"Ver Cifrado de Acordes", MF_CHECKED)
 MenuItem(1080,MenName5,"TEMPO, Manual Por omision=60, Ejecucion Tick por omision=5mseg equivale a 240")
 MenuItem(1081,MenName5,"Factor para Aumentar velocidad de ejecucion, No se graba en archivo 1,5 o 0,5 etc")
 
-'MenuItem(1082,MenName5,"Na. TEMPO por nombres, Lento,adagio etc y control fino")
+MenuItem(1082,MenName5,"Cuadro Ayuda TEMPO por nombres, Lento,adagio etc y control fino")
 'MenuItem(1083,MenName5,"Na. TEMPO insertar cambio de tempo")
 'MenuItem(1084,MenName5,"Na. TEMPO borrar cambio de tempo")
 'MenuItem(1085,MenName5,"Na. TEMPO ver marcas de cambio de tempo")

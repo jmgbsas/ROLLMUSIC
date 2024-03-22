@@ -740,7 +740,9 @@ Dim As Integer ubiroll,ubirtk,encancion
  ANCHO=param.ancho
  ANCHO3div4 = ANCHO *3 / 4
 
-' print #1,"ubirtk ",ubirtk
+  print #1,"rollLoop ubirtk ",ubirtk
+  print #1,"rollLoop ubiroll ",ubiroll
+
 ' print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 ' print #1,"posicion ", posicion
 ' Print #1,"ancho, alto", ANCHO, ALTO
@@ -765,7 +767,8 @@ Dim As Integer ubiroll,ubirtk,encancion
   '  End If
 'Dim Roll As inst
 ' @Roll(1) = *pRoll  
-Dim As Integer pid = GetCurrentProcessId()' , pid_parent = 0
+'Dim As Integer pid = GetCurrentProcessId()' , pid_parent = 0
+
 ' print #1 ,"pid", pid
 Var surface = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, ALTO, stride)
  c = cairo_create(surface)
@@ -823,14 +826,18 @@ End Select
 If ubiroll > 0 Then  ' CARGA DE ARCHIVOS POR LINEA DE COMANDO DE ROLLMUSIC
  '  Print #1,"cargo archivo desde rollLoop"
    nombre = titulos(0)
- '  Print #1,"nombre",nombre
- '  Print #1,"titulo(0) ",titulos(0)
+   Print #1,"nombre",nombre
+   Print #1,"titulo(0) ",titulos(0)
     cargaArchivo (Roll,ubiroll)
    s5=2
    ROLLCARGADO=TRUE
    MenuNew=0
    ubiroll=0
   param.ubiroll=0
+  portout=CInt(pmTk(0).portout)
+   
+' abrir ports si no estan abiertos 
+   GrabarPenta=0 ' para que en PlayAll abra los ports
 EndIf
 
  If ubirtk > 0 Then ' ya tengo el nommbre en linea de comando
@@ -852,6 +859,9 @@ EndIf
     MenuNew=0
     ubirtk=0
 param.ubirtk=0
+' abrir ports si no estan abiertos 
+   GrabarPenta=0 ' para que en PlayAll abra los ports
+   portout=CInt(pmTk(0).portout)
  EndIf
 
 
@@ -897,7 +907,7 @@ If  cargaCancion=1  Or repro=1 Or  GrabarEjec=GrabarPistaEjecucion Then
    'Locate 5,10
    'Print "CARGANDO ...PISTA Nro ", ntk
    'Sleep 100
- s5=2  
+ s5=2 ' el loop principal necesita menos cpu  
 Else   
 
 '--------------
@@ -1105,8 +1115,8 @@ EndIf
 If MultiKey (sc_P) And (play=1 Or playb=1 )Then
   CONTROL1=1 ' DETIENE EL PLAY VEREMOS
   playloop=0:playloop2=0
-  s5=2
-  If instancia=7 Or instancia= 107 Then 
+  s5=2 ' el loop necesita menos cpu se libera
+  If instancia=7 Or instancia= 107 Or instancia < 3 Then 
   Else
   SetGadgetstate(12,0)
   EndIf 
@@ -1375,7 +1385,7 @@ s5=2 '11-06-2022
 EndIf
 
 If MultiKey(SC_ALT) and MultiKey(SC_L)  Then ' <======== playloop
-  s5=0
+  s5=0  ' un play con grafico necesitamas cpu
   playloop=1 
 EndIf
 '---UNDO ACORDE - O BORRAR ACORDES, debemos borrar cifrado tambien
@@ -1573,7 +1583,7 @@ FileFlush (-1)
     cerrar 1
       Sleep 100
     
-'Kill "procesos.txt"
+'=======> no borrar en salida roll grafico Kill "procesos.txt"
     End 0
  ThreadDetach(threadloop)
  DestroyWindow(hWnd)
@@ -1602,7 +1612,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
  Else
    If playb = 0 And play=0 And Cplay=0 And MaxPos > 1 Then ' 23-02-22 ningun play
       GrabarPenta=0:naco=0:naco2=0
-      If INSTANCIA = 7 Or instancia= 107 Then 
+      If INSTANCIA = 7 Or instancia= 107 Or instancia < 3 Then 
       Else  
       SetGadgetstate(BTN_ROLL_GRABAR_MIDI,0) ' 10-04-2022 DE  VENTANA CTROL
       EndIf
@@ -1611,7 +1621,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
          '''Dim tlock As Any Ptr = MutexCreate()
          If CANCIONCARGADA = TRUE Then
              Print #1,"USANDO PLAYCANCION"
-             playb=1 : s5=0    
+             playb=1 : s5=0 'Necesita mas tiempo de cpu    
              thread1 = ThreadCall  playCancion(Track())
              'playCancion(Track())
          Else
@@ -2583,7 +2593,7 @@ If (ScreenEvent(@e)) Then
   Case EVENT_MOUSE_BUTTON_RELEASE ' obtengoPosicion
    MousePress = 0
    If mousey < 50 And s5=2 Then
-      s5=0
+      s5=0  ' necesita mas tiempo de cpu
       Exit Do ' 07-10-2021
    EndIf
    If mousey < 50 And s3=2 Then ' 20-01-2022
@@ -2628,7 +2638,7 @@ If (ScreenEvent(@e)) Then
    If e.scancode = SC_P And (Play=1 Or playb=1 ) Then ' 25 anda mejor q con multikey
       CONTROL1=1
       playloop=0:playloop2=0
-      s5=2    
+      s5=2 'necesita menos tiempo de procesamiento    
  '''     alloff( 1 ) lo hace el play 
    EndIf
    If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion
@@ -3149,7 +3159,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
            controlEdit=0 'jmg 09-06-2021 
            nota=0
        ''posicion=posicion - NroCol/2
-           s5=2
+           s5=2 ' se requiere menos tiempo de cpu
            If posicion < 1 Then
               posicion = 0 ' 20-01-2022 jmg a testear pase a1 y dibuja mal 
            EndIf
@@ -3194,7 +3204,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
     If  play=0 And playb=0 Then ' durante un play funciona mal esto => se bloquea su uso por ahora
      x1=mouseX: y1=mouseY
     EndIf
-     s5=1
+     s5=1  ' tiemp ointermedio de cpu???
      Exit Do
   EndIf
  ' =========> MOVER VENTANA DRAGAR LA CINTA SUPERIOR con el mouse
@@ -3216,7 +3226,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
     Exit Do
   
   Else
-     s5=0
+     s5=0 'mas tiempo de cpu
     '' Sleep 10
    
   EndIf
@@ -3273,7 +3283,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
     cerrar ffile
     FileFlush (-1)  
     cerrar 0
-'Kill "procesos.txt"
+'''' ====== > no borramos en salida grafico Kill "procesos.txt"
  ThreadDetach(threadloop)
  DestroyWindow(hWnd)
 
@@ -3325,7 +3335,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 
 If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  
-   s5=2  ' 04-01-2021 ...comentado el 17-06-2022 15-03-2024
+   s5=2  ' me nos tiempo de cpu 15-03-2024
    
   'Sleep  1  ' reemplazamos el de S5=2 de antes eso daba 1 mseg de retardo veremos si sirve aca
   If s3 = 2 Then  ''06-12-2021 jmg

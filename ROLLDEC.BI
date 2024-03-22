@@ -810,7 +810,7 @@ Dim Shared As UByte  ii,numduras=0,indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
 Dim Shared translado As Integer = 1
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
 Dim shared As Integer i,  posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
-Dim Shared As Integer octaroll,instancia=0,cierroedit= 0,cierroport=0
+Dim Shared As Integer octaroll,cierroedit= 0,cierroport=0
 Dim Shared As BOOLEAN COMEDIT, resize
 COMEDIT=FALSE
 
@@ -888,11 +888,13 @@ Common Shared As Any Ptr surface,surf2
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo
 Common Shared As Any Ptr thread4, threadGrabamidi
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
-Common Shared As Integer mxold,myold, w,h,grado,trasponer,canalx, HabilitarPatrones
+Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones
+Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn,terminar
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo
 Common SHARED  As Integer EstaBarriendoPenta
+Common Shared As Integer instancia
 
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0

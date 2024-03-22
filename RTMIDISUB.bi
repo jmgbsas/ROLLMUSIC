@@ -1138,12 +1138,13 @@ Dim As Integer i1,k1
  
 
 ' los nombres ya fueron cargados al inicio
-If  GrabarPenta=0 Then ' con 1 ya esta abierto
+If  GrabarPenta=0  Then ' con 1 ya esta abierto
 Print #1,"abriendo port....play All"
 
 
   
    k1=CInt(pmTk(0).portout)
+   portout=k1
     
 '   Print #1,"midiout ",k1, *nombreOut(k1)
    If InStr(*nombreOut(k1),"Microsoft")>0 Then
@@ -1160,13 +1161,14 @@ Print #1,"abriendo port....play All"
  '       Print #1,"abro ",*nombreOut(k1)
         porterrorsub(porterror)
    Else
-      Print #1,"pORT SALIDA Y AABIERTO EN PLAYALL"
+      Print #1,"pORT SALIDA YA ABIERTO EN PLAYALL"
    EndIf
  EndIf 
 
 'Print #1,"-------------------------------------"
 '''''''midisal=midiout(0) ' el z
 End If
+
 
 '-------------------------------------------- 
  
@@ -3047,7 +3049,7 @@ For jToca=1 To maxgrb
 Next jToca
 ''jToca=0
 repro=0
-If instancia=7 Or instancia= 107 Then
+If instancia=7 Or instancia= 107 Or instancia < 3 Then
 Else
 SetGadgetstate(14,0)
 EndIf
@@ -3094,14 +3096,15 @@ Sub EditarPatronEjecucion()
 End Sub
 '-------------------------------------------
 Sub  CrearSecuenciaPatrones()
-' casos psibles 1) tomar una ejecucion exitente y grabarla como patron asi como está
-' 2) cortar la ejecucion y convertirla en patron
-' 3) definir un patron a partir de paramtros como duracion o cantidad de compases.
+' casos posibles 
+' 1) tomar una ejecucion por  midi o pista manual existente y grabarla como FUTURO patron asi como está.
+' 2) cortar la ejecucion o pista manual y convertirla en patron
+' 3) definir un patron a partir de parametros como duracion o cantidad de compases.
 ' 4) cargar patron en un determinado punto
 ' 5) repetir patron, fisicamente (copiar) o logicamente(loop play).
 ' 6) ordenar en un plano (una ventana) los  patrones para ejecutar en ese orden y para ello
 '   despues de ordenado pulsar un boton de plasmar la secuencia, que haria unir todos esos 
-'   patrones ordenados toquen en el orden dado , como en la lectuira de una pagina en vez de palabras
+'   patrones ordenados toquen en el orden dado , como en la lectura de una pagina en vez de palabras
 '   patrones.
 ' 7) usar el help con el mouse para saber que hay en cada patron saldra un globito con la info
 ' ese globito toma la identificacion del patron y muestra su nro, nombre ,instrumento etc,,,
@@ -3109,6 +3112,8 @@ Sub  CrearSecuenciaPatrones()
 ' 9) Poder mover los botones dentro de una grilla que representara el orden deseado de ejecucion
 ' 10) para todo esto crear una venta separada que muestre los botones de la ejecuion presente
 '11) poder copiar el resultado del armado de patrones como una pista nueva de ejecuciones
+' Y SI HACEMOS TODO EN FORMATO TEXTO?? 
+' NRO-PATRON, NRO-PATRON, CORCHETES PARA REPETICON NRO PARA REPETICION
  ' -------------
 'implementacion ya crea unboton lo mueve y lo deja donde se desea
 ' falta un evento que lo selecciones y deseleccione...

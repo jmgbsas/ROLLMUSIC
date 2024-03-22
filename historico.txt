@@ -1,4 +1,9 @@
-- 12-03-2024 0.583 ORGANIZACION DE CODIGO MODULOS E INCLUDES ESTRUCTURACION
+- 22-03-2024 0.4585 CORRECCIONES, batch, click en nombre archivo roll o rtk
+  vuelve a ejecutar y cargar archivos en un roll grafico, batch-cancion.bat
+  ejecuta un batch de una cancion. vuelven a cerrarse todo al cerrar Ventana
+  Control incluso los graficos independientes como antes, ayuda de
+  tempos clasicos solo una imagen no hay todavia automatico.
+- 12-03-2024 0.4583 ORGANIZACION DE CODIGO MODULOS E INCLUDES ESTRUCTURACION
 - 08-03-2024 VERSION 0.4582 contextual TERMINADO 
   FUNCIONA ASI: DAR CLICK EN UNA PISTA LUEGO CON flecha arriba
   y abajo CAMBIA DE PISTA EN ROLL, para habilitar el  CLICK DERECHO CONTEXTUAL
