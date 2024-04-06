@@ -14,10 +14,8 @@
              If abrirRoll=0 And NombreCancion > ""  Then
                 abrirRoll=1
                 cargaCancion=1
-                Print #1,"SALE A CARGAR ROLL POR 1ERA VEZ ABRIRROLL=1 EXIT DO"
                 Exit Do                 
              EndIf
-  '           Print #1,"termino 1006 va a abrir Roll"
           SetForegroundWindow(hwnd)
 
 
@@ -27,7 +25,6 @@
 ' CADA PISTA SE PODRA LEVANTAR UNA POR UNA CON LA OTRAOPCION
 ' SOLO DEBO PASAR LOS PARAMETROS...Y SI MODIFICO ALGO
 ' DEBO GRABAR A DISCO Y ENVIAR ORFEN DE RECARGA DE ESA PISTA EN LA CANCION
-   Print #1," CASE 10062 abrirRoll=0 And NombreCancion > ", abrirRoll, NombreCancion
 
            CTRL1062 (hmessages )
 
@@ -41,10 +38,71 @@
             CTRL1007 ()
 
           SetForegroundWindow(hwnd)
+           Case 1008 '<======= 3.1 Exportar Pista a midi 
+            'usamos un play All adaptado para que escriba texto
+        ' para alimentar a midicomp y con este pasamos a midi
+        ' suponemos acorde de 4 en cada posicion, y cada uno con sus off son 8  
+               ' ReDim miditxt(1 To MaxPos*8)
+             If CIERROPLANO  = 0  Then
+               ' Kill "secuenciaPLAY.txt"
+                MIDIFILEONOFF=HABILITAR
+            
+             EndIf  
 
+              'Exit Select
+ 
+           Case 1009 '<======= 3.2 Exportar Cancion a midi
+            '''IMPOSIBLE EJECUTAR MIDICOMP DESDE ACA 
+            ' NI COM CMD SI EN UN EJECUTABLE APARTE NI CON SYSTEM_
+            ' NI  CON RUN NI SHELL CON ARGUMENTOS SIN ARGUMENTOS LAS 
+            ' MIL MANERAS Y NO HAY CASO SI NEMBARGO POR FUERA
+            ' DESDE MALDITO PROGRAMA ESTUPIDO SI EJECUTA, FREEEBASIC 
+            '  ES UNA PORQUERIA A VECES ES REFACIL PERO CUANDO ALGO NO ANDA
+            ' PERDES DIAS ENTEROS SIN PODEER EN CONTRAR UNA SOLUCION 
+            ' LO DEJARE COMO UNABATCH PARA QUE EL USUARIO SI TIENE 
+            ' GANAS CONVIERTA ELARCHIVO DE MIERDA DE EVENTOS A MID
+            ' CON UNA BAT 
+/'          
+            '  If CIERROPLANO=1 Then    
+               'thread3= ThreadCall boludeo()
+                 Sleep 20
+                Dim As String cadena
+                Dim  As Integer punto= InStr(Nombre,".") 
+                 
+                cadena=Mid(Nombre,1,punto ) 
+                punto=InStrRev (cadena,"\")
+                cadena=Mid(cadena,punto+1)
+If FileExists( cadena+"txt"  ) Then
+  Else
+  End If
+  '''Close 5
+             '   cadena =  cadena + "txt " + cadena + "mid"
+           '  fileflush(midiplano)
+            ' Close #midiplano
+             Sleep 20
+             cadena =  " secuenciaPLAY.txt " + cadena + "mid"
+        
+        shell("cmd /c midicomp.exe -c " + cadena + " > veo.txt")
+
+
+
+  '              Dim result As Integer
+   '             'result = Exec( "midicomp.exe" , cadena )
+   '      cadena =" /c .\TXTTOMIDI.BAT  " + cadena        
+    '             exec ("cmd", cadena)
+              '  If result = -1 Then
+
+              ' End If
+               
+                LA MIERDA MAS GRANDE QUE HE VISTO JAJAJAJAJA
+                 LA PUTA QUE TE PARIO MALDITO FREEBASIC PUTO DE MIERDA 
+              JAJAJAJ
+                
+           '  EndIf 
+'/ 
+            
            Case 1010 '<================ Cargar Pista externa a cancion
 
-   '        Print #1,"entro a 1010 Cargar Pista externa a cancion"
 
            CTRL1010 (salida )
            If salida =1 Then 
@@ -55,9 +113,7 @@
           SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------            
            Case 1011 ' <======= Grabar una Pista de la Cancion con modificaciones, que son tracks
-    '        print #1,"entro a 1011 esto lo hace menu de Roll tambien" '' jmg probar es nuevo...
  ' copiamos logica Rolla Track 
-   '         print #1, "Click Grabando a disco pista modif con GrabarRollaTrack ",nombre
             Dim As String nombreg
             ROLLCARGADO=FALSE 
            If NombreCancion > ""  Then
@@ -68,7 +124,6 @@
           SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1012 ' <====== Grabar Pista Como, Copia una pista a otra  nueva nueva
-   '        print #1,"entro a 1012 Grabar Pista Como, Copia una pista a otra  nueva nueva"
              
              CTRL1012 (SALIDA)
 
@@ -84,7 +139,6 @@
 '-----------------------------------------------------------------------
            Case 1015 '<========== Grabar MIDI-In aca sera para grabar 
  ' EN ejecuciones, CON CANCION CARGADA NO GRABA NADA, la grabacion se hace en STOP SIN CANCION
-Print 1,"GRABA MIDI IN EN CASE 1015  "
 '--------------------------
 ' preparamos para grabar la pista por cambio de patch
            CTRL1015 ()
@@ -157,7 +211,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
         '      SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1060 ' <========== crea track y reemplaza al existente en la edicion
-                CTRL1060 salida
+                CTRL1060 (salida)
                 If salida = 1 Then 
                    salida=0
                    Exit Do
@@ -181,7 +235,6 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
            Case 1062 ' <======== crear instancia independiente sin control
  ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
  ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.
-             '''Print #fa1,pd1  
      
              Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins))
       '    SetForegroundWindow(hwnd)
@@ -364,17 +417,14 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 ' PERO DEBO INDICAR AL PROGRAM QUE SALTEE ESTA COLUMNA CREO CON TENER NOTA=181 Y DUR181
 ' PODRI AINDICAR ESO DEBO PROBARLO Y USAR LSO DEMAS CAMPOS PARA INTRODUCIR ALGUN  CAMBIO               
 '''            Roll.trk(1,NA).vol= CUByte(tipoescala + 127) ' a partir de 128
-''               Print #1,"Roll.trk(1,NA).vol ",Roll.trk(1,NA).vol
 ''               END
 ''               Track(ntk).trk(1,1).vol=CUByte(tipoescala + 127)
               ' grabar el track 
 '' NOTA: LA VARIABLES DE ESCALA DE TODA LA SECUENCIA TIENEN SUBFIJOS _STR O _NUM
 '' LAS QUE SON PARA USO DE ESCLAS EN POSICIONES NO LO TIENEN
-      '      Print #1,"tipo de escala seleccionado ", tipoescala_num_ini
               
 ' -------cadena de escala, construye dsde C hay que hacer las otras esclas
     ' C,D,E,F,G,A,B,Bb,Ab,Gb ver las debo pedir escala y 1er nota desde donde empieza uff
-      '        Print #1,"armarescla desde 1106"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
 ' --------------------------   
@@ -384,8 +434,6 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
               pasozona1=0
               selNotaEscala (notaescala_num_ini)
  
-       '       Print #1, "seleccion de Nota de la escala num  ",notaescala_num
-       '       Print #1,"armarescla desde 1107"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
 
@@ -398,7 +446,6 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
               SetStateMenu(hmessages,1109,0)
             ' si hay nombre de archivo grabar sino no   
       ''        GrabarArchivo()
-       '       Print #1,"armarescla desde 1108"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
           
@@ -409,7 +456,6 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
               alteracion="bem" ' grabado en grabaLim(1,1).pan  = CUByte(2)
               SetStateMenu(hmessages,1108,0)  
               SetStateMenu(hmessages,1109,3) 
-       '       Print #1,"armarescla desde 1109"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
       
@@ -478,7 +524,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 
            Case 1206 'Cerrar    Puertos MIDI-OUT de ejecucion play por el usuario
                CTRL1206()
-
+               
            Case 1207'DesTruir Puertos MIDI-OUT
 
            Case 2000

@@ -1,0 +1,59 @@
+MFile 1 2 1000
+MTrk
+0 Meta SeqName "C:\IT64\AREAWORKAUX\ROLLMUSIC-153-LIMPIO\SECUENCIAS\DISTINTOS-F+SF+SF+F.roll"
+0 Meta Text "Creado por RollMusic"
+0 Tempo 1000000
+0 TimeSig 4/4 24 8
+0 KeySig 0 Major
+0 Meta TrkEnd
+TrkEnd
+MTrk
+0 Meta TrkName "Piano"
+ 0 on  ch=1 n=40 v=120
+ 0 on  ch=1 n=59 v=120
+ 1000 off ch=1 n=59 v=0
+ 1002 on  ch=1 n=59 v=80
+ 2006 off ch=1 n=59 v=0
+ 2006 off ch=1 n=40 v=0
+ 2007 on  ch=1 n=44 v=100
+ 2007 on  ch=1 n=52 v=100
+ 3008 off ch=1 n=44 v=0
+ 3008 off ch=1 n=52 v=0
+ 3010 on  ch=1 n=53 v=80
+ 4011 off ch=1 n=53 v=0
+ 4012 on  ch=1 n=42 v=120
+ 4012 on  ch=1 n=58 v=120
+ 5013 off ch=1 n=58 v=0
+ 5014 on  ch=1 n=57 v=80
+ 6015 off ch=1 n=57 v=0
+ 6015 off ch=1 n=42 v=0
+ 6017 on  ch=1 n=59 v=100
+ 7017 off ch=1 n=59 v=0
+ 7019 on  ch=1 n=48 v=80
+ 7019 on  ch=1 n=52 v=80
+ 7019 on  ch=1 n=57 v=80
+ 7269 off ch=1 n=57 v=0
+ 7524 on  ch=1 n=57 v=80
+ 8021 off ch=1 n=48 v=0
+ 8021 off ch=1 n=52 v=0
+ 8022 off ch=1 n=57 v=0
+ 8025 on  ch=1 n=42 v=120
+ 8025 on  ch=1 n=58 v=120
+ 9025 off ch=1 n=58 v=0
+ 9027 on  ch=1 n=59 v=80
+ 10027 off ch=1 n=59 v=0
+ 10028 off ch=1 n=42 v=0
+ 10030 on  ch=1 n=50 v=100
+ 11030 off ch=1 n=50 v=0
+ 11031 on  ch=1 n=50 v=80
+ 12032 off ch=1 n=50 v=0
+ 12033 on  ch=1 n=42 v=120
+ 12033 on  ch=1 n=59 v=120
+ 13034 off ch=1 n=59 v=0
+ 13035 on  ch=1 n=59 v=80
+ 14036 off ch=1 n=59 v=0
+ 14036 off ch=1 n=42 v=0
+ 14038 on  ch=1 n=55 v=100
+ 15038 off ch=1 n=55 v=0
+ 15056 Meta TrkEnd
+TrkEnd

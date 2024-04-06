@@ -1,15 +1,14 @@
 Una  ejercitacion para ver Cairo.(Estado:Alpha Debug escribe archivos.)
 Un secuenciador que usa letras en vez de rectangulitos...
 Ya funciona puede editarse una sola pista o crear una cancion de hasta 32 pistas.
-Ajustar el instrumento de cada pista o patch, usar uno o mas peurtos de salida MIDI-OUT.
+Ajustar el instrumento de cada pista o patch, usar uno o mas puertos de salida MIDI-OUT.
 Usa las 8 octavas musicales desde C0 a B8 con sostenidos y en vez de figuras musicales 
 o rectangulitos, colocar letras que simbolizan duraciones de notas con la opcion de cambiar 
 insertar etc. Duraciones "O","P","I","L","F","E","X","H" , W, Redonda, blanca,negra,corchea
 semicorchea,fusa y semifusa..Busque las letras mas parecidas a las figuras
 musicales L corchea tiene un palito, F semicorchea tiene 2, E tiene 3 como fusa,
  X 4 semifusa, H 5...
-los silencios se cambiaron son los simbolos @,%,&,/,//,{ ,{{ ,#,## , redonda, blanca, negra
-corceha, semicorchea, fusa, semifusa,...
+los silencios se arman poniendo una s minuscula adelante.
 se entran por teclado del 1 al 8 o por mouse click derecho en Edit Cursor. 
 Es un codigo  algo organizado usa muchas globals.
 Al inicio se puede hacer scroll con flechas arriba abajo,,
@@ -52,17 +51,21 @@ También se puede agregar notas o silencios con puntillo, el mismo procedimeinto 
 pulsando punto (.) antes del nombre de la nota,. Las ligaduras se simbolizan con un + del lado 
 de la conexion con la otra nota (siempre a derecha).
 La aplicacion termina pulsando Escape..o la X en el extremo derecho superior..El ejecutable ha 
-sido escaneado con Antivirus windows defender Spybot and Destroy y MalwareBytes.
-Tiene un menu basico  en la pantalla grafica. REacciona con click o ALT click o Ctrl Click..
+sido escaneado con Antivirus windows defender.
+Tiene un menu basico  en la pantalla grafica. Reacciona con click o ALT click o Ctrl Click..
 Se agrego una ventana que ahora es la de inicio de Control mas indicada para crear una Cancion.
 Se usa un play que solo tiene en cuenta las duraciones de las notas, no hay tiempo, pero algun dia 
 usaré ticks al estilo de archivos midi, para compatibilizar. 
-Es solo un código imperativo sin clase alguna ni constructores ni destructores. 
+Es solo un código imperativo sin clase alguna ni constructores ni destructores.
+(con el OOP, todo se veria engorroso, tal vez lo incorpere a futuro ) 
 Por ahora los instrumentos distintos son a nivel Pista o Track, luego sera tambien a nivel nota,
 volumen , (pitch bend produce mucho retardo dicen). 
 Ya puede grabar tracks  pero solo es el vector de visualizacion comprimido, lo que se
 observa es que en un track o instrumento, el acorde no tendrá mas de 12 notas cuanto mucho, 
-se hará posiblemente dinamico en el futuro. 32 tracks c/u con 12 notas de acorde no existira nunca.
+se hará posiblemente dinamico en el futuro. Tiene 32 tracks (no me da más la pantallita por ahora
+no probe como anda con 32 hasta 8 bien...dependerá de la cpu, pero con 4 nucleos no usa
+nada de CPU la reproduccion sin el grafico, con el grafico llega al 20%) c/u con 12 notas de acorde,
+lo que no existirá nunca.
 Ya se puede cargar un archivo (.Roll) y luego grabarlo en formato track (.trk) y volverlo a cargar
 viendolo en pantalla (se convierte al grabar de Roll a Trk y al cargar de Trk a Roll )
 Debido a eso la columna vertical de la pantalla visual solo tendra 12 notas en cualquier acorde 

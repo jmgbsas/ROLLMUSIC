@@ -8,6 +8,7 @@
        si es necesario. Chrome se cuelga de Explorer en windows 7 como tambien RollMusic.
        RollMusic tiene alta prioridad en el Grafico pero no en el resto. Otra solucion podria ser darle
        alta prioridad, se hizo un ejecutable para eso. Un mejor browser de poco consumo es Vivaldi.)
+       En windows 10 y 11 no tuve problemas. 
 
     II) Opciones Configuracion
         a) PUERTOS MIDI A USAR. en el menu de Roll Music Grafico
@@ -261,12 +262,19 @@
 
 
 
-    16 ) En algun Futuro: exportar a MusicXml o midi para poder interactuar con otros programas.
-           Como tambien importar...
+    16 ) Version 0.4590 una pista a midi, una sola pista ya se puede pasar a midi con un utilitario
+         Rollmusic lo graba plano como txt en secuenciaPLAY.txt y una bat TXTTOMIDI.bat
+         ejecuta el utilitario midicomp -c archivoentrada.txt archivo salida.mid
+         el de entrada tiene nombre  fijo secuenciaPLAY.txt, la bat se puede 
+         editar y modificar segun convenga, on un click sobre la bat o doble
+         click segun la configuracion del Windows, ejecuta el progrma y produce el 
+         archivo.mid ..(algo sencillo y rapido por ahora)
+
+
     IV ) USO VENTANA CONTROL PARA GRABAR EJECUCIONES POR TECLADO MIDI,
         NOTA: En ciertas situaciones, Cuando se desea Cerrar el Programa podria ser necesario pulsar 
                   2 veces el cierre en la ventana de Control. 
-    1 ) MIDI-IN GRABACION: (EN DESARROLLO) version 4568 . 
+    1 ) MIDI-IN GRABACION: 
          YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN grabadas mediante la ejecucion EN UN O CONTROLADOR 
          MIDI EXTERNO  o TECLADO externo  real concectado su salida MIDI-OUT  al MIDI-IN de la PC.
          Las pistas se arman tal cual se grabaron sincronizadas respecto de la pista 1.
@@ -275,12 +283,12 @@
 
          a) Dar check a la pista a grabar en la columna 'G' de la 2da lista de pistas. debajo del menu, el programa
              solicitara un nombre de pista(sin extension ej TEMA-001).   'Cambiar Tiempo....' 
-         b) En menu Control  Dispositivos seleccionar Puerto MIDI-OUT y puerto MIDI-IN desde donde se grabara
-             la entrada midi. Abrir el Puerto MIDI-OUT.
+         b) En menu Control  Puertos de Ejecuciones, seleccionar Puerto MIDI-OUT y puerto MIDI-IN desde donde 
+            se grabara la entrada midi. Abrir el Puerto MIDI-OUT.
          c) mantener la seleccion en 'G' pulsar en los botones PortSal, canal y Patch en ese orden para finalmente
              elegir un instrumento si el dispositivo usa Patchs. (siempre pulsar esos 3 botones en ese orden para cualquier
              pista nueva) de esa forma se graba en el archivo nuevo de esa pista dichos parametros.
-         d) Ir al menu de Control arriba en Reproducir y elegir "Reproducir MIDI-IN (teclado) por MIDI-OUT" 
+         d) Ir al menu de Control, Elegir el submenu Reproducir y elegir "Reproducir MIDI-IN (teclado) por MIDI-OUT" 
           La grabacion comenzara al llegar la 1er nota midi,,tocar normalmente, para detener la grabacion pulsar 
           el boton Parar de Color Negro de esa misma lista y de Ese grupo de 3 botones  (negro rojo verde). 
          e) Deschequear la columna 'G' y para escuchar lo grabado chequear la columna 'S' y pulsar el Boton Verde Play.
@@ -304,46 +312,62 @@
           Tambien se puede grabar una pista nueva de ejecucion teniendo un Roll o Track o cancion cargado (no eficiente por ahora),
           se  reproducira la parte manual (roll, track o cancion) ,mientras se graba la nueva pista junto a otras pistas 
           si las hay, grabadas. (la perfomance baja hay que hacer mas pruebas)
-          Al Cargar Pistas MIDI-IN enelmenude Archivo, se cargan todos los archivos *.ejec existentes en ese directorio
+          Al Cargar Pistas MIDI-IN en el menude Archivo, se cargan todos los archivos *.ejec existentes en ese directorio
           y se abren los puertos de salida que usan esos archivos automaticamente,solo resta chequear con 'S' los
           que se quieran escuchar y darle Reproducir Boton Verde,,,     
          g) Se puede usar Crear Cancion y abrir un Directorio de cancion para ubicar una ejecucion de teclado
-              Para ello se procede igual que al crear o usar un directorio de Cancion y luego abrir Pistas Midi en el menu Archivo
-              casi abajo de todo., De ese modo una cancion manual y una ejecucion desde teclado podran estar en un mismo
-              directorio.
+            Para ello se procede igual que al crear o usar un directorio de Cancion y luego abrir Pistas Midi en el menu Archivo
+            casi abajo de todo., De ese modo una cancion manual y una ejecucion desde teclado podran estar en un mismo
+            directorio.
 
-        NOTA: Cuando se desea Cerrar el Programa podria ser necesario pulsar 2 veces el cierre en la ventana de Control.
-
-          d) Cambiar PATCH de una pista de ejecucion por teclado MIDI-IN. con la pista seleccionada para reproducir como
-             antes pulsar arriba el boton PATCH ,deseleccionar el que tenga una X dando click para que quede en blanco
-            luego buscar el instrumento deseado y clickear en el luego pulsar el boton OK. Lo mismo para PortSAl y Canal
-            Cada cambio se graba en el archivo.
+         h) Cambiar PATCH de una pista de ejecucion por teclado MIDI-IN. con la pista seleccionada para reproducir como
+            antes pulsar abajo el boton PATCH, en la ventana que aparece, deseleccionar el que tenga una X dando click 
+            para que quede en blanco, luego buscar el instrumento deseado y clickear en el, luego pulsar el boton OK. 
+            Lo mismo para PortSAl y Canal, Cada cambio se graba en el archivo.
          Nota: al cargar una ejecucion o grupo de ejecuciones se abren los port de salida automaticamente,
-         Si el usuario no cambio nada todo se reproducira igual, para detectar cambios se podra en el futuro talvez
-         grabar el nombre del dispositivo porque la numeracion de los dispositivospuede cambias si se cambia el 
-        dispositivo default en la PC.
+         Si el usuario no cambio nada todo se reproducira igual, para detectar cambios se podra en el futuro tal vez
+         grabar el nombre del dispositivo porque la numeracion de los dispositivos puede cambiar si se cambia el 
+         dispositivo default en la PC.
 
-    17b) grabacion directamente sobre Roll, 1era version faltaria que detecte acordes
-           ya lo hizo en algun algoritmo distinto a este , el actual funciona para melodias, tiene
+    17b) Grabacion directamente sobre Roll, 1era version faltaria que detecte acordes,
+           (ya lo hizo en algun algoritmo distinto a este), el actual funciona para melodias, tiene
            un metronomo, si se desea se puede desactivar (menu Opciones, no probado)
-           Como antes en 17a en menu Reproducit, elegir Reproducir MIDI-IN, luego
+           Como antes en 17a en menu Reproducir, elegir Reproducir MIDI-IN, luego
            darle al boton rojo de la izquierda de las pistas para grabar, se escuchara 4
            ticks preparatorio mas graves , luego comienza los ticks mas agudos de grabacion
            junto al cambio de color del Edit de grabacion (Edicion de Roll como la manual)
            Al detener como antes la edicion se podra darle play, Para volver a grabar se repite las
-           mismas acciones. deja un archivi debug.txt para estudiarlo. Graba lso silencios
-           con la nota siguiente con sonido. Roll separa algunas notas cuadno la duracion del compas
+           mismas acciones. deja un archivo debug.txt para estudiarlo. Graba los silencios
+           con la nota siguiente con sonido. Roll separa algunas notas cuando la duracion del compas
           es mayor , pero generalmente no logra el compas exacto...de modo que eliminare creo
-          el calculo del compas y quedara un Roll sin compases.
+          el calculo del compas y quedara un Roll sin compases. Cuando se agregue, cuantizacion
+          se podria volver a colocar compases (aunque tal vez podriamos poner barras tipo dientes
+          que indiquen cuando se alcanz o sobrepasa un compas auqneu las notas no esten bien 
+          definidas)
 
-    17c) Cargar archivo grabado con ejecuciones por teclado *.ejec , se puede usar un directorio de cancion
-           "Cargar directorio de cancion.."    o entrar por "Cargar Pistas Midi-in"
+    17c) Cargar archivo grabado con ejecuciones por teclado *.ejec , 
+           entrar en Menu Archivo por 5.1  "Cargar Pistas Midi-in"
            En ambos casos carga las pistas y abre automaticamente los port MIDI-OUT automaticamente
-           Si se desea entrar a tocas por MIDI-IN se debe abrir el port midi-in previamente seleccionado
-           enmenu Dispositivos "Seleccionar puerto midi-in". Para realizar estas operaciones debeestar seleccionado
-           lapista de ejecucion en la columna 'S'..Luego si se desea pasar a otra pista se cierra el por midi-in
-           en el menu Reproducir , en la opcion Detener Reproduccion MIDI-IN. Y asi sucecivamente siempre
-           se selecciona una pista por vez tanto para abrir como cerrar.
+           Si se desea entrar a tocar por MIDI-IN simultaneamente, se debe abrir el port midi-in previamente
+           seleccionado en menu Puertos de Ejecuciones,  "Seleccionar puerto midi-in". Para realizar estas 
+           operaciones debe estar seleccionado la pista de ejecucion en la columna 'S'..Luego si se desea 
+           pasar a otra pista se cierra el por midi-in en el menu Reproducir, en la opcion Detener 
+           Reproduccion MIDI-IN. Y asi sucecivamente siempre se selecciona una pista por vez tanto para abrir
+           como cerrar.
+    17d) Puede reproducirse al mismo tiempo una cancion y una grabacion *.ejec.
+         Se cargan ambas cosas la cancion abriuendo un directorio de cancion, y luego 
+         como antes se carga MIDI-IN Cargar pista ejecucion, Se se lecciona el casillero 
+         de columnas de sonido S en ambas listas, todas las pistas de cancion que se desea
+         se reproduscan y la pista o pistas de ejecuciones,,,
+         Si  se pulsa el boton Verde de la lista de psitas de cancion, se escuchara solo 
+         la cancion, pero si se pulsa el Boton Verde de la lista de pistas de Ejecucion
+         se escuchara ambsa cosas la Cancion cargada y la o las pistas de Ejecucion
+         sincronizadas.. 
+         Si se reproduce solo la cancion el grafico acompañará a la reproduccion
+         Pero para una mejor performance si se reproduce la cancion junto
+         con una o mas ejecuciones, el roll grafico permanecera quieto no
+         se movera ni acompañara la cancion.
+ 
     18 ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
           o ordenar la ejecucion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
           o ejecutar con otras instancias de RollMusic con o sin Control...(hay muchisimo por hacer...)
@@ -365,19 +389,24 @@
         su origen el Roll se hacia con perforaciones en un papel en forma rigida con un tamaño especifico de la 
         nota, RollMusic hace lo mismo, coloca letras de valor especifico rigidos que luego podrán cambiarse.
         Hoy en dia la entrada de midi input puede ir a roll directamente esa es una facilidad pero no es el 
-        verdadero Roll original, en un futuro se ingresará con midi input y quantizará para generar un roll
-        con letras, pero como no hay cuadritos, por ahora, una grabacion desde midi input no será visible 
-        en un 1er momento, solo luego de quantizarla, podrá verse con letras, esa será la diferencia principal 
-        con otros Roll.-O sea podre tener pistas de performance real no visibles hasta tanto no se quanticen.
-        Se las podrá dejar así o quantizarlas si se necesita modificar.
-        Po rotto lado se podrán usar varias instancias del programa pero sin ningun control
+        verdadero Roll original, ya se puede ingresar con midi input y quantizar para generar un roll
+        con letras, pero no hay cuadritos, existen las dos opciones una grabacion desde midi input no visible 
+        que se graba a *.ejec, y otra que vaya a Roll directamente grabandose luego en *.roll 
+        (ya se esta haciendo pero no calcula  compas por ahora), puede verse con letras, esa es la diferencia 
+        principal con otros Roll.O sea puedo tener pistas de performance real no visibles en Roll 
+        hasta tanto no se quanticen y otras que directamente se van cuantizando a medida que se dibujan
+        en el grafico. Las *.ejec se las podrá dejar así o quantizarlas si se necesita modificar(futuro).
+
+        Por otro lado se podrán usar varias instancias del programa pero sin ningun control
         entre ellas todavia, se lo hará más adelante mediante midi.
-        RollMusic.exe levanta ahora 2 pantallas un menu GUI y el grafico habitual.
+        RollMusic.exe puede andar de varias formas , 1) Sin pantalla grafica de Roll, 2) con pantallas de Roll
+        dependiente de Comtrol. 3) Con 1 o mas pantallas graficas, independientes de Control ,con o sin la
+        grafica dependiente de Control. 
           Acciones: elegir octavas, instrumentos, antes de crear el track. Al crearlo
         se borra el cargado anteriormente y se reemplaza por uno nuevo vacio.
         Se agrega Menu de Cancion. 
         Se puede editar o crear primero un track rtk o roll sin haber cargado una cancion, luego se puede cargar
-        una cancion , se borra el roll o rtk enedciion, se carga la cancion y ya no deja cargar pistas fuera de 
+        una cancion , se borra el roll o rtk en edicion, se carga la cancion y ya no deja cargar pistas fuera de 
         la cancion.
         Si se carga la primera vez varias veces un directorio equivocado, se puede seguir hasta cargar uno correcto.
         (tal vez convenga porner en el menu lo tradiconal cerrar cancion abrir cancion, pero por ahora el cierre
@@ -1001,7 +1030,7 @@ futuro: (creo me demandará muchos meses  más jeje, no estoy a full y ademas voy 
   automatico o manual o patron de usuario).
 - Muy en el futuro algun dia... harmonizacion básica.,,
 - perfeccionamiento de algoritmo de play, play e ,as de un track. grabar en formato midi,
-  cargar un midi.
+  cargar un midi. Version 0.4586 comienzo de salida a archivo midi en desarrollo.
 - ORGANIZAR ESTA AYUDA Y HACERL MAS AMENA DISCULPAS...TODO ESTA POR HACERSE Y 
   PROBARSE ,,,,LLEGARE A ALGO MEJOR ?? NO SE ,,,CADA DIA ES MAS COMPLICADO
   Y YO CON MENOS TIEMPO,...HARIAN FALTA COLABORADORES DE FB,,,

@@ -1,3 +1,12 @@
+- 05-04-2024 descarga a txt secuenciasPLAY.txt de una pista a midi en formato
+  texto para convertirlo luego a un archivo.mid con TXTTOMIDI.BAT, que ejecuta
+  el utilitario opne source midicomp.exe el cual lo compile en el 2022
+  desde su fuente en github.
+- 01-04-2024 correcciones varias sobre cancelaciones debido a modificaciones
+  anteriores
+- 29-03-2024 0.4586 correcciones fix Roll grafico independiente cancela en el play.
+  Comienzo de salida a midi usando texto y midicomp.exe, la forma mas rapida y practica
+  (interna algun dia se  hara o nunca las librerias no explican sus parametros)  
 - 22-03-2024 0.4585 CORRECCIONES, batch, click en nombre archivo roll o rtk
   vuelve a ejecutar y cargar archivos en un roll grafico, batch-cancion.bat
   ejecuta un batch de una cancion. vuelven a cerrarse todo al cerrar Ventana

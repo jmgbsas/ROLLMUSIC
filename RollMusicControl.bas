@@ -25,13 +25,19 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #include "fbthread.bi"
 #Include "crt.bi" ' QSORT
 
-
+Type plano 
+  sumatiempo As Integer  'tiempo acumulado de los eventos midis
+  canal      As UByte 
+  estado     As UByte  ' nota on of 
+  nota       As UByte  ' notapiano 
+  vel        As UByte  ' velocidad
+End Type
 
 'Var hwnd = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*3/4)
 
 'Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota,compasX
-common Shared As Integer  ANCHO,ALTO
+common Shared As Integer  ANCHO,ALTO,indicenotas 
 Common Shared As FLOAT font
 COMMON Shared As Long eventc, eventM
 Common Shared As hwnd hwndC, hwndListBox, hwndPatronEjec
@@ -50,7 +56,14 @@ Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Common Shared  portsal As UByte, patchsal As ubyte
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp, npi,calltoca,npo
-Common SHARED  As Integer EstaBarriendoPenta, instancia
+Common SHARED  As Integer EstaBarriendoPenta, instancia,FINALIZAR_ROLLMUSIC, MICROSEGUNDOS_POR_NEGRA
+Common Shared As Double STARTMIDI,TiempoAcumulado
+Common Shared As BOOLEAN MIDIFILEONOFF
+Common Shared As plano miditxt()
+Common Shared As Integer gp
+
+FINALIZAR_ROLLMUSIC=0
+MICROSEGUNDOS_POR_NEGRA=1000000 ' 60 MILLONES / 60 BPM DEFAULT
 
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0
 Common Shared As Integer  posicion,posicionOld,posn,terminar
@@ -175,8 +188,6 @@ EndIf
 If octahasta=0 Then
 octahasta=9
 EndIf
-print #1,"OCtadesde ",octadesde
-print #1,"OCtahasta ",octahasta
 
 End Sub
 '---------------------------
@@ -207,7 +218,6 @@ Posy=y0 +100
        For aa =1 To 127 
                i2=InStrrev(NombreInstAlfa(aa)," ")
                cad=Mid(NombreInstAlfa(aa),i2)
-      '         Print #1,"cadena ",cad
                
      
            If instru = CUByte(ValInt(cad)) Then
@@ -249,13 +259,9 @@ Posy=y0 +100
           
             If eventnumber()=2 And InStr(cad,"x") >0 Then
                ''i1 = GetItemListView()
-               Print #1,"alfa seleccion in", i1
-               Print #1,"NombreInstAlfa ",NombreInstAlfa(i1)
                i2=InStrrev(NombreInstAlfa(i1)," ")
                cad=Mid(NombreInstAlfa(i1),i2)
-               Print #1,"cadena ",cad
                instru = CUByte(ValInt(cad))
-                print #1,"seleccion instrumento alfa instru = ",instru     
                patchsal=instru
                   Close_Window(haw)
                   Exit Do
@@ -272,7 +278,6 @@ Posy=y0 +100
 
 '' fin ruso
 'Return IUP_DEFAULT
-print #1,"Str(instru) ", Str(instru)
   
 
 end Sub
@@ -342,7 +347,6 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
           
              If eventnumber()=2 And InStr(cad,"x") > 0 Then
                ''Instru = GetItemListView()
-                Print #1,"inst seleccionado numerico ",instru
                 Close_Window(haw)
                 Exit Do
             End If
@@ -357,7 +361,6 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 
 '' fin ruso
 'Return IUP_DEFAULT
-print #1,"Str(instru) ", Str(instru)
 
 End Sub
 ' ---------
@@ -382,11 +385,9 @@ If NombreCancion = "" Then
 EndIf
 pathdir = ShellFolder( "Select Folder", "C:\")
 pathdir=pathdir+"\"+NombreCancion
-print #1, "DIRECTORIO CANCION EN ",pathdir
 CreateDir(pathdir)
 SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + pathdir)
 NombreCancion=pathdir
-print #1,"NombreCancion en CrearDirCancion ",NombreCancion
 CANCIONCREADA=TRUE
 CreateDir(pathdir+"\Temp") ' ok
 
@@ -399,7 +400,6 @@ NombreCancion = ShellFolder( "Select Folder", "C:\")
 SetWindowText(hwndC, "RollMusic Cancion: " + NombreCancion)
 
 
-print #1,"cargarDirectorioCancion ", NombreCancion 
 ' aca NombreCancion contiene el path tambien....
 'Sleep 100
 End Sub
@@ -431,7 +431,6 @@ Dim As String destino
 destino=NombreCancion+"\Temp\"+pista
 
 copyFileA (StrPtr(titulo),StrPtr(destino),TRUE)
-print #1,titulo, destino   
 End Sub
 '
 Sub BorrarPista (titulo As String)
@@ -475,15 +474,7 @@ ErrorNumber1 = Err
 ErrorLine1 = Erl
 
 If ErrorNumber1 > 0 And ContadorError < 101 Then
-Print #1,"------------------------------------"
   ContadorError=ContadorError+1
-  Print #1,"ErrorControl ContadorError ",ContadorError
-  Print #1,"ErrorNumber1 ",ErrorNumber1
-  Print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
-  Print #1,"Error Function: "; *Erfn()
-  Print #1, "mensaje, Ermn ", *Ermn, Ermn
-  Print #1,"------------------------------------"
 
 EndIf
- Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
 

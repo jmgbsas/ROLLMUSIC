@@ -212,8 +212,9 @@ MenuItem(10062,MenName1,"2.1 Abrir Roll Grafico dependiente de Control si se uso
 MenuItem(10063,MenName1,"2.2 Externo:Abrir un Roll Grafico independiente de Control, si se uso la opcion (2.0) ")
 Menubar(MenName1)
 MenuItem(1007,MenName1, "3.0 Grabar Cancion")
-'MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
-'MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
+'MenuItem(10071,MenName1, "Na.Grabar Cancion Como")
+MenuItem(1008,MenName1, "3.1 Exportar Pista a midi durante Reproduccion")
+MenuItem(1009,MenName1, "Na.3.2 Exportar Cancion a midi, No desarrollado ")
 Menubar(MenName1)
 MenuItem(1010,MenName1, "4.0 Cargar una Pista (rtk o roll) externa en Cancion")
 MenuItem(1011,MenName1, "4.1 Grabar una Pista de la Cancion con modificaciones, carga pista si no hubiera cargada")
@@ -226,6 +227,7 @@ MenuItem(1016,MenName1, "5.1 MIDI-IN Cargar Pistas ejecucion")
 '''MenuItem(1017,MenName1, "Elegir MIDI-OUT o Driver o Port de Salida de pista previamente chequeda en S (sonido)")
 Menubar(MenName1)
 MenuItem(1019,MenName1, "    Salir")
+
 
 
 MenuItem(1020,MenName2, "Nombre o Título (fecha por omision), la cancion es un directorio")

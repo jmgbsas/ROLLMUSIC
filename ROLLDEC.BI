@@ -7,6 +7,7 @@
 '                  http://www.looknohands.com/chordhouse/piano/
 ' DUDA DE GUITARRISTAS https://www.guitarristas.info/foros/dudas-sobre-conceptos-armonia/239164
 ' code from
+' NtDelayExecution: en el foro FB,...=>
 'https://freebasic.net/forum/viewtopic.php?t=23680
 'Declare sub RtlInitUnicodeString alias "RtlInitUnicodeString"(as PUNICODE_STRING,as PCWSTR)
 'Declare function NtDisplayString alias "NtDisplayString"(as PUNICODE_STRING)as NTSTATUS
@@ -23,7 +24,14 @@ Declare function NtTerminateProcess alias "NtTerminateProcess"(as HANDLE,as NTST
 '    NtDelayExecution(FALSE,@delay) 'so we can see the message
 '    NtTerminateProcess(cast(HANDLE,-1),0)
 'end Sub
-
+'' mas detalle Ntdelay en 
+'' https://forum.powerbasic.com/forum/user-to-user-discussions/source-code/56824-ntdelayexecution-sleep-sleepex-with-higher-resolution-absolute-delay
+'
+' Unlike Sleep()/SleepEx() which take an input in milliseconds, 
+' NtDelayExecution() takes an input in units of 100 nanoseconds.
+'1 millisecond = 1 million (1,000,000) nanoseconds.
+'1 nanosecond = 0.000001 milliseconds.
+'1 nanosecond = 0.000000001 seconds, ie. 1 billionth of 1 second (1 / 1,000,000,000).
 
 extern "C"
 declare function _
@@ -94,6 +102,9 @@ Const BTN_ROLL_VOL        = 23
 Const BTN_ROLL_PAN        =24
 Const BTN_ROLL_PATCH    = 25
 Const BTN_ROLL_CANAL    = 26
+
+Const HABILITAR = TRUE
+Const DESHABILITAR = FALSE 
 
 Dim HtmlHelpA As Function (hwndCaller As HWND,pszFile As LPCSTR,uCommand As UINT,dwData As DWORD_PTR) As HWND
 Dim  HTMLHelp As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
@@ -877,6 +888,9 @@ Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As I
 Declare Function lugarNota (lugar As integer) As Integer
 Declare Sub metronomo ()
 
+
+
+
 COMMON Shared As Long eventc, eventM
 Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA 
@@ -893,8 +907,11 @@ Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn,terminar
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo
-Common SHARED  As Integer EstaBarriendoPenta
-Common Shared As Integer instancia
+Common SHARED As Integer EstaBarriendoPenta
+Common Shared As Integer instancia,FINALIZAR_ROLLMUSIC, MICROSEGUNDOS_POR_NEGRA
+Common Shared As Double STARTMIDI,Tiempoacumulado
+Common Shared As BOOLEAN MIDIFILEONOFF
+Common Shared As Integer gp
 
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
@@ -1005,4 +1022,9 @@ Dim Shared pgmidi As paramGrabamidi
 
 Declare Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi)
 Declare Sub CargarSinRoll () '28-02-2024
+Declare Sub playAll(Roll As inst)
+Declare Sub playAllTXT(Roll As inst)
+
+
+ 
 
