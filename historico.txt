@@ -1,5 +1,6 @@
 - 08-04-2024 exportar a archivo midi con un utilitario midicomp listo
-  deja el archivo midi con el nombre de la pista. Ver 0.4600
+  deja el archivo midi con el nombre de la pista. Ver 0.4600.
+  Ver 0.4610 correccion salida midi por cambio de tempo
 - 05-04-2024 descarga a txt secuenciasPLAY.txt de una pista a midi en formato
   texto para convertirlo luego a un archivo.mid con TXTTOMIDI.BAT, que ejecuta
   el utilitario opne source midicomp.exe el cual lo compile en el 2022

@@ -228,7 +228,7 @@ If MIDIFILEONOFF = HABILITAR Then 'habilito salida midi
    Dim As Double TiempoAcumNew
    Dim T1 As Integer
    TiempoAcumNew= Timer - STARTMIDI
-   T1 =  (TiempoAcumNew * MICROSEGUNDOS_POR_NEGRA)/1000
+   T1 =  TiempoAcumNew * 1000 * tiempoPatron/60
   
    'print #1,"EN NOTE OFF nota, portsal ", note, portsal
    '''Print #1, "Not Cantmicroseg "; note, Cantmicroseg
@@ -398,7 +398,7 @@ If MIDIFILEONOFF = HABILITAR Then  ' habilito escritura a midi
    TiempoAcumNew= Timer - STARTMIDI
  
 
-   T1 =  TiempoAcumNew * MICROSEGUNDOS_POR_NEGRA/1000
+   T1 =  TiempoAcumNew *  1000 * tiempoPatron/60
    
    '   miditxt(indicenotas).sumatiempo = T1
    '   miditxt(indicenotas).canal      = canal
@@ -1995,7 +1995,7 @@ If MIDIFILEONOFF = HABILITAR  Then
    Dim As String NombreTrack
    midiplano=20
    NombreTrack= sacarpath(titulos(ntk)) 
-   Print #midiplano, "MFile 1 2 " + Str (MICROSEGUNDOS_POR_NEGRA/1000)
+   Print #midiplano, "MFile 1 2 " + Str (1000)
    Print #midiplano, "MTrk"
    Print #midiplano, "0 Meta SeqName "; Chr(34);NombreTrack;Chr(34)
    Print #midiplano, "0 Meta Text "; chr(34);"Creado por RollMusic"; chr(34)
@@ -2433,7 +2433,7 @@ If MIDIFILEONOFF = HABILITAR Then
    Dim As Integer T1
 
    TiempoAcumNew= Timer - STARTMIDI
-   T1 =  TiempoAcumNew * MICROSEGUNDOS_POR_NEGRA/1000
+   T1 =  TiempoAcumNew *  1000 * tiempoPatron/60
    ''GrabaMidiPlano()
    Print #midiplano, T1 ;" Meta TrkEnd"
    Print #midiplano, "TrkEnd"

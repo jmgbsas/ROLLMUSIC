@@ -263,6 +263,7 @@
 
 
     16 ) EXPORTAR UNA PISTA A MIDI:
+        -Ver 0.4610 correccion salida midi por cambio de tempo
         -Version 0.4600 el archivo se exporta con el nombre de la pista, la bat no se usa más
          en el programa pero se la puede usar para otras cosas.
          Esta funcion se ejecuta desde La Ventana de RollMusic Control. En el menu Archivo
