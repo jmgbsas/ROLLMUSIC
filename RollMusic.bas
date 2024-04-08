@@ -38,11 +38,16 @@
 ' o los dispositivos usados....para poder elegir el port en el menu debo cerrar el port actual
 ' y abrir el otro esto de ponerlo en el inicio esta mal
 
+'Print #1,"  VA A ABRIR EL PORT portsout, nombreport ",portsout, *nombreport
 'open_port (midiout, portsout, nombreport)
 
+'print #1,"  "
 'If Roll.trk(1,NA).inst > 0 Then
 ' ChangeProgram ( Roll.trk(1,NA).inst , 0)
 'EndIf
+' print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
+'Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
+'Print #1,"INSTANCIA ",instancia
 ' carga de opciones iniciales RollMusic.ini
 
 ''https://www.freebasic.net/forum/viewtopic.php?f=3&t=22821&p=204270&hilit=loop+through+an+array+with+the+pointer#p204270
@@ -59,21 +64,28 @@ Dim As  byte Ptr p5,p6
 Dim hnro As Integer
 ' prueba desarrolllo escalas 
  For g1 =1 To 47
+    Print #1, escala(g1).nombre
     hnro=escala(g1).nropasos 
     p5= escala(g1).pasos 
     For h1 = 1 To hnro -1
      
+     Print #1, *p5;",";  ' impresion de intervalos de la escala
      p5=p5+1 
     Next h1
+    Print #1, *p5
 ' CONSTRUCCION DE LA ESCALA
  Dim As Integer k3=1
    p6= escala(g1).pasos
     For h2 = 1 To hnro -1
      
+     'Print #1,NotasEscala(k3);" " ;  ' impresion de la escala con las notas c c# d  etc
+     Print #1, 12-k3+1;" ";
      k3= *p6 + k3
      
      p6=p6+1 
     Next h2
+    Print #1, 12-k3+1 
+    'Print #1, NotasEscala(k3)
 
  Next g1
  '/
@@ -96,7 +108,7 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="0.4590 una pista a midi" ':FUTURO Patrones de Ejecucion 03-07-2022
+nroversion="0.4600 pista a midi OK" ':FUTURO Patrones de Ejecucion 03-07-2022
 ' despues de un año de bajones personales veo si me da gan de seguirlo
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
@@ -132,6 +144,13 @@ Else
    usarmarco=com_usarmarco  
    usarmarcoOld=usarmarco
 EndIf
+
+'07-04-24
+If com_usarmarco= 4 Then
+ MIDIFILEONOFF=HABILITAR ' habilitamos escritura de eventos midi en el play
+end If
+
+
 ' condicion inicial para ver o no escalas auxiliares en el grafico
 Select Case nVerEscalasAuxiliares
   Case 0             
@@ -169,6 +188,7 @@ End Select
 'rapido o no ventajas y desventajas o hacer un mix com arrays)
 /'
 sub FramebuffersizefunCB GLFWCALLBACK (win As GLFWwindow ptr, w as long, h as long)
+  'print "FramebuffersizefunCB " & w & " x " & h
   glViewport(0,0,w,h)
 end sub
 
@@ -203,12 +223,15 @@ End Sub
 ' Dim Shared As Integer ok = 0
 Dim  As Integer  gi = 0
 
+'Print #1,"ANTES ANCHO , ALTO ", ANCHO, ALTO
 If mxold > 0 Then
 
 'MoveWindow( hWnd , 1, 1 , ANCHO - mxold, ALTO - myold, TRUE )
+'Print #1,"rollmusic.bas 742: ANCHO,nancho ",ANCHO, nancho
   If ANCHO = nancho Then
   ANCHO= nancho -mxold 
   EndIf
+'Print #1,"rollmusic.bas 745: ANCHO resultante  ",ANCHO
 
   AnchoInicial=ANCHO
   If anchofig=0 Then
@@ -232,8 +255,10 @@ EndIf
 stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
 
+'Print #1,"nfont, nmxold, nmyold, nancho,nalto  ",nfont, nmxold, nmyold,nancho,nalto
     param.ancho = ANCHO 
     param.alto = ALTO
+'Print #1,"DESPUES ANCHO , ALTO ", ANCHO, ALTO
 '''mxold=0:myold=0
 
 abrirRoll=0
@@ -248,16 +273,22 @@ End If
 Do
   COMEDIT = False
 param.titulo ="RollMusic Ctrl V "+ nroversion
+'Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
+'Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
+'Print #1,"iniio lbound roll.trk ", LBound(param.Roll.trk,2)
+'Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
 ' abriRoll=1 orden de llamar a Roll grafico
 ' abrirRoll=0 no hay orden de abrir Roll
 
   If abrirRoll=1 And cargacancion=1 Then
      abrirRoll=0
+  '   Print #1," ENTRA A CARGAR PISTAS  cargaCancion = ",cargaCancion
      param.encancion=0
      ResetAllListBox(3)
      Resetear (pmTk()) 
 
       CargarPistasEnCancion ()
+ '   Print #1,"CARGAR PISTAS cargacancion = ",cargaCancion 
      ''CANCIONCARGADA=TRUE
      ROLLCARGADO=False
      '''lo hace tab-cargaCancion=0
@@ -266,6 +297,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
    If pid1=0 And instancia =0  Then
       pid1=pd1
    EndIf
+ ' Print #1,"cALL rOLLLOOP I) cargaCancion ES 1 SI O SI ",cargaCancion
    If CANCIONCARGADA=True  Then
      ntk=0 '16-03-2022
       If  EventNumber = 10061 Then
@@ -273,12 +305,14 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
           CargarSinRoll () ''' play sin roll 
       Else
       EstaBarriendoPenta=1 
+Print #1, "1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOS(0) ", NombreCancion, titulos(0)
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
       EndIf 
     ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
    Else     ''''''''RollLoop ( param) '<--con esto anda
      cargacancion=0
    EndIf 
+ 'Print #1,"ENTRA A CARGAR PISTAS cargaCancion ES 1 SI O SI ",cargaCancion   
     ''''cargacancion=0 esto me ponia en cero antes que lo use el thread!!!!
     ''' RollLoop(param)
     ''Sleep 200 ' NO HACE FALTA AHORA sin este retardo no le da teimpo al thread de cargar a Roll
@@ -288,10 +322,12 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
        CANCIONCARGADA=False
        ''cargaCancion=0  
        param.encancion=0 
+       Print #1,"CALL ROLLLOOP II) "
        If  EventNumber=10061 Then
            cargaCancion=1 
            CargarSinRoll () '''28-02-2024 play sin roll
        Else
+Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreCancion, titulos(0)
        EstaBarriendoPenta=1
        threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
        EndIf
@@ -301,6 +337,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
     EndIf
   EndIf
 
+Print #1, "LLEGA A DO LOOP PRINCIPAL ix es instancia= " ,  instancia
      
   If instancia = 0   Then 
     
@@ -311,19 +348,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
        'If  repro=1 Then ' damos mas recursos si hay play de PlayTocaAll y mas si hay tambien playAll o PlayCancion
        '    Sleep 10
       ' EndIf
-' PARA MIDI PLANO
-/'
- If MIDIFILEONOFF=HABILITAR And CIERROPLANO=0 Then
-  midiplano=FreeFile
-  Open "secuenciaPLAY.txt" For Output As #midiplano
-  CIERROPLANO=3
- EndIf
- If MIDIFILEONOFF=DESHABILITAR And CIERROPLANO=3 Then
-  Close midiplano
-  Shell "midicomp -C secuenciaPLAY.txt " + titulos(0) + ".mid" 
-  CIERROPLANO=0
-EndIf
-'/      
+      
          For k=1 To 32 
            If CheckBox_GetCheck( cbxgrab(k))= 1 And tocaparam(k).nombre="" Then 
               ntoca=k 'ntoca es la  pista ejec que se esta grabando global entera
@@ -363,6 +388,7 @@ EndIf
                          If  Mid(NombreCancion, ls, 1)= "\" Then
                               NombreCancion=Mid(NombreCancion,1, ls-1)
                          EndIf
+                         Print #1,"CHECK GRAB NOMBRECANCION ",NombreCancion
                          Titulos(ntoca+32)=NombreCancion+"\("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
                   else
                          Titulos(ntoca+32)="("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
@@ -372,6 +398,7 @@ EndIf
           EndIf
         Next k
 
+           ''Print #1,"Titulos(ntoca+32), ntoca ",Titulos(ntoca+32),ntoca
 
      eventC=WaitEvent()
 'WindowStartDraw(hwndC)
@@ -429,8 +456,13 @@ EndIf
 '-----------------------------------------------------------------------
   Else
       param.titulo ="RollMusic Editor" ' esto no sale si no hay marco
+      Print #1,"cALL rOLLLOOP III)"
+Print #1, "3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreCancion, titulos(0)
       param.ubiroll=ubiroll
       param.ubirtk=ubirtk
+      param.midionof=usarmarco ' para volcado de midi si o no ,si con 4
+
+Print #1, "3 ubiroll ubirtk ", ubiroll,ubirtk
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
       ThreadWait threadloop
       cerrar(0)  
@@ -454,7 +486,10 @@ Close
 errorhandler:
 Dim As Integer er, ErrorNumber, ErrorLine
 er = Err
+Print #1,"Error  Rollmusic detected ", er, posicion, MaxPos
+Print #1,Erl, Erfn,Ermn,Err
 
+Print #1,"------------------------------------"
 ErrorNumber = Err
 ErrorLine = Erl
 
@@ -479,4 +514,9 @@ ProgError(16) = "return without gosub"
 ProgError(17) = "end of file"
 
 
+Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
+Print #1,"Error Function: "; *Erfn()
 'Dim ers As Integer = 12 - nota +(estoyEnOctava ) * 13 
+Print #1, "12 -nota +(estoyEnOctava ) * 13) "; ers
+Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
+ Print "error number: " + Str( Err ) + " at line: " + Str( Erl )

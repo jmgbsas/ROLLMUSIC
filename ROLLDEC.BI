@@ -749,6 +749,7 @@ Type pasa Field=1
   As Integer ubiroll=0
   As Integer ubirtk=0
   As Integer encancion=0
+  As Integer midionof=0
 End Type
 
 
@@ -887,7 +888,7 @@ Declare Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)
 Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As String, orden As integer )
 Declare Function lugarNota (lugar As integer) As Integer
 Declare Sub metronomo ()
-
+Declare Sub BORRA_SECUENCIA()
 
 
 
@@ -911,7 +912,8 @@ Common SHARED As Integer EstaBarriendoPenta
 Common Shared As Integer instancia,FINALIZAR_ROLLMUSIC, MICROSEGUNDOS_POR_NEGRA
 Common Shared As Double STARTMIDI,Tiempoacumulado
 Common Shared As BOOLEAN MIDIFILEONOFF
-Common Shared As Integer gp
+Common Shared As Integer gp, midiplano
+
 
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0

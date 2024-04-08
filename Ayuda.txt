@@ -262,7 +262,21 @@
 
 
 
-    16 ) Version 0.4590 una pista a midi, una sola pista ya se puede pasar a midi con un utilitario
+    16 ) EXPORTAR UNA PISTA A MIDI:
+        -Version 0.4600 el archivo se exporta con el nombre de la pista, la bat no se usa más
+         en el programa pero se la puede usar para otras cosas.
+         Esta funcion se ejecuta desde La Ventana de RollMusic Control. En el menu Archivo
+         pulsar la entrada "4.5 Cargar pista a exportar a midi durante Reproduccion."
+         Se abre un RollMusic independiente de color pardo arriba en su cinta de menu.
+         Cargar una pista Roll y ejecutarla con la barra de espacio, a medida que reproduce 
+         exporta a midi. Al terminar la ejecucion  ir al menu de Archivoanterior y pulsar
+         la entrada, ahora habilitada, "4.5.1 Exportar pista de 4.5".
+         Para ver tratar de que funcione bien antes de reproducir lapista verificar que
+         en el directorio aparesca un archivo de texto vacio de nombre  secuenciaPLAY.txt,
+         si no es asi, cerrar el Roll Grafico y volver a pulsar 4.5, sino esta habilitado
+         pulsar primero 4.5.1 y luego 4.5 y ver si se creo el archivo vacio.
+
+        -Version 0.4590 una pista a midi, una sola pista ya se puede pasar a midi con un utilitario
          Rollmusic lo graba plano como txt en secuenciaPLAY.txt y una bat TXTTOMIDI.bat
          ejecuta el utilitario midicomp -c archivoentrada.txt archivo salida.mid
          el de entrada tiene nombre  fijo secuenciaPLAY.txt, la bat se puede 
@@ -270,6 +284,7 @@
          click segun la configuracion del Windows, ejecuta el progrma y produce el 
          archivo.mid ..(algo sencillo y rapido por ahora)
 
+        
 
     IV ) USO VENTANA CONTROL PARA GRABAR EJECUCIONES POR TECLADO MIDI,
         NOTA: En ciertas situaciones, Cuando se desea Cerrar el Programa podria ser necesario pulsar 
@@ -1035,7 +1050,10 @@ futuro: (creo me demandará muchos meses  más jeje, no estoy a full y ademas voy 
   PROBARSE ,,,,LLEGARE A ALGO MEJOR ?? NO SE ,,,CADA DIA ES MAS COMPLICADO
   Y YO CON MENOS TIEMPO,...HARIAN FALTA COLABORADORES DE FB,,,
 
-
+NOTA GENERAL: Para compilar estan laslibrerias necesarias en el 
+subdirectorio \RollMusic, que no son necesarias para su ejecucion, esas
+estan junto al ejecutable. Tambie nse encuentra el archivo del proyecto
+de Fbedit.
 
 
 

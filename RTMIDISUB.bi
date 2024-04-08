@@ -1967,7 +1967,16 @@ Sleep 1000
 
 End Sub
 
+Function sacarpath (s As String) As string
 
+Dim n As Integer
+ n= InStrRev (s,"\")
+
+
+ 
+ sacarpath=mid(s,n+1)
+ 
+End Function
 
 '-------------playAll-----21-05-2021-------
 Sub playAll(Roll As inst ) ' play version 2 
@@ -1977,15 +1986,18 @@ Sub playAll(Roll As inst ) ' play version 2
 ' hasta que termine de tocar la nota mas larga.
  ' abrir hasta 32 dispositivos
 'Dim Shared midiin As RtMidiInPtr
-If MIDIFILEONOFF = HABILITAR Then
-   CIERROPLANO=1
+ 
+If MIDIFILEONOFF = HABILITAR  Then 
    MICROSEGUNDOS_POR_NEGRA = 60000000/tiempoPatron ' 60 MILL /BPM
    '' SE AJUSTO A 2000 PARA ESCUCHAR LO MISMO A 60 DSRG POR NEGRA... 500 
    '' NO ESTA CLARO EL  TEMPO EN BPM SON 60 EN TIEMPO 1000000 ,NI 500 NI 1000 NI 2000
    '' FALTRA ENTENDER MAS 
+   Dim As String NombreTrack
+   midiplano=20
+   NombreTrack= sacarpath(titulos(ntk)) 
    Print #midiplano, "MFile 1 2 " + Str (MICROSEGUNDOS_POR_NEGRA/1000)
    Print #midiplano, "MTrk"
-   Print #midiplano, "0 Meta SeqName "; Chr(34);Nombre;Chr(34)
+   Print #midiplano, "0 Meta SeqName "; Chr(34);NombreTrack;Chr(34)
    Print #midiplano, "0 Meta Text "; chr(34);"Creado por RollMusic"; chr(34)
    Print #midiplano, "0 Tempo " + Str (MICROSEGUNDOS_POR_NEGRA)
    Print #midiplano, "0 TimeSig 4/4 24 8"
@@ -2130,6 +2142,7 @@ EndIf
 
  mousex=jply
  If CONTROL1 = 1 Then
+   MIDIFILEONOFF = DESHABILITAR
    If InStr(*nombreOut(portout),"Microsoft") > 0 Then
    Else
      alloff( canal,portsal )
@@ -2425,17 +2438,16 @@ If MIDIFILEONOFF = HABILITAR Then
    Print #midiplano, T1 ;" Meta TrkEnd"
    Print #midiplano, "TrkEnd"
    MIDIFILEONOFF = DESHABILITAR
-   fileflush(midiplano)
-   Close #midiplano
-   Sleep 20
+   cerrar (20)
+
 EndIf
 
 
-Sleep 30,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
+'Sleep 30,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
 ''''Close midiPlano ' secuenciaPLAY.txt
 
 
-
+ThreadWait(thread1) ' 16-06-2022
 ThreadDetach(thread1) ' 16-06-2022
 
 ' ================================FIN PLAYALL <<=================

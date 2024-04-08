@@ -210,18 +210,28 @@ Menubar(MenName1)
 MenuItem(10061,MenName1,"2.0 Abrir directorio de Cancion con Pistas separados con Ventana de Control  sin Roll Grafico")
 MenuItem(10062,MenName1,"2.1 Abrir Roll Grafico dependiente de Control si se uso la opcion (2.0) ")
 MenuItem(10063,MenName1,"2.2 Externo:Abrir un Roll Grafico independiente de Control, si se uso la opcion (2.0) ")
+
 Menubar(MenName1)
 MenuItem(1007,MenName1, "3.0 Grabar Cancion")
 'MenuItem(10071,MenName1, "Na.Grabar Cancion Como")
-MenuItem(1008,MenName1, "3.1 Exportar Pista a midi durante Reproduccion")
-MenuItem(1009,MenName1, "Na.3.2 Exportar Cancion a midi, No desarrollado ")
+
 Menubar(MenName1)
-MenuItem(1010,MenName1, "4.0 Cargar una Pista (rtk o roll) externa en Cancion")
-MenuItem(1011,MenName1, "4.1 Grabar una Pista de la Cancion con modificaciones, carga pista si no hubiera cargada")
-MenuItem(1012,MenName1, "4.2 Copia una pista a otra  nueva en cancion")
-'MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
-MenuItem(1014,MenName1, "4.3 Grabar una Pista rtk a roll TrackaRoll")
+MenuItem(1010,MenName1,  "4.0 Cargar una Pista (rtk o roll) externa en Cancion")
+MenuItem(1011,MenName1,  "4.1 Grabar una Pista de la Cancion con modificaciones, carga pista si no hubiera cargada")
+MenuItem(1012,MenName1,  "4.2 Copia una pista a otra  nueva en cancion")
+''MenuItem(1013,MenName1, "   Exportar Pista a midi")
+MenuItem(1014,MenName1,  "4.3 Grabar una Pista rtk a roll TrackaRoll")
 Menubar(MenName1)
+
+MenuItem(10075,MenName1, "4.4 Cargar Pista (rtk o roll) en Roll aislado ")
+
+Menubar(MenName1)
+
+MenuItem(1008,MenName1,  "4.5   Cargar Pista a Exportar a midi durante Reproduccion")
+MenuItem(1009,MenName1,  "4.5.1 Exportar Pista de 4.5 ")
+
+Menubar(MenName1)
+
 MenuItem(1015,MenName1, "5.0 MIDI-IN Grabar Pistas ejecucion")
 MenuItem(1016,MenName1, "5.1 MIDI-IN Cargar Pistas ejecucion")
 '''MenuItem(1017,MenName1, "Elegir MIDI-OUT o Driver o Port de Salida de pista previamente chequeda en S (sonido)")

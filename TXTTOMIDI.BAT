@@ -12,3 +12,6 @@ rem
 rem midicomp.exe -c secuenciaPLAY.txt %1
 
  midicomp.exe -c secuenciaPLAY.txt archivo.mid
+del /f secuenciaPLAY.txt
+rem touch vacio.txt
+rem copy /Y vacio.txt secuenciaPLAY.txt
