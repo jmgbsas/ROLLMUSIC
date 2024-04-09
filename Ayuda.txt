@@ -270,12 +270,16 @@
          pulsar la entrada "4.5 Cargar pista a exportar a midi durante Reproduccion."
          Se abre un RollMusic independiente de color pardo arriba en su cinta de menu.
          Cargar una pista Roll y ejecutarla con la barra de espacio, a medida que reproduce 
-         exporta a midi. Al terminar la ejecucion  ir al menu de Archivoanterior y pulsar
+         exporta a midi. Al terminar la ejecucion  ir al menu de Archivo anterior y pulsar
          la entrada, ahora habilitada, "4.5.1 Exportar pista de 4.5".
-         Para ver tratar de que funcione bien antes de reproducir lapista verificar que
+         Para tratar de que funcione bien, antes de reproducir la pista, verificar que
          en el directorio aparesca un archivo de texto vacio de nombre  secuenciaPLAY.txt,
          si no es asi, cerrar el Roll Grafico y volver a pulsar 4.5, sino esta habilitado
-         pulsar primero 4.5.1 y luego 4.5 y ver si se creo el archivo vacio.
+         pulsar primero 4.5.1 y luego 4.5 y ver si se creo el archivo vacio. AL final
+         cerrar el Roll Grafico no servirá para otra conversión, porque el archivo 
+         secuencialPLAY.txt solo se crea al levantar el roll Grafico..(limitaciones técnicas 
+         por ahora.) Antes de ejecutar el archivo, se puede cambiar el Tempo, mas rápido o 
+         lento y sin necesidad de grabar se verá reflejado en la ejecucion y el midi exportado.
 
         -Version 0.4590 una pista a midi, una sola pista ya se puede pasar a midi con un utilitario
          Rollmusic lo graba plano como txt en secuenciaPLAY.txt y una bat TXTTOMIDI.bat
