@@ -1649,7 +1649,8 @@ Dim As Integer copiado=0
      ' Print #fs, "acorde ",Track(ntk).trk(j,1).acorde
      '''  crearsecuencia(Track(), j, ntk )
      Next j
-  
+  pmTk(0).patch=Roll.trk(1,NA).inst
+
 cerrar ca
 DUR => 0
 curpos =>1
@@ -2210,7 +2211,10 @@ EndIf
        ubi2=InStr(nombre,"]")
        ubi3=InStr(nombre,".rtk")
        ubi4=InStr(nombre,".roll")
-       If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Then 'graba un track como track
+'PUEDO SACAR UN TRACK Y COPIAR LO FUERA DE CANCION Y MODIFICARLO
+'PARA MODIFICAR LO COMO ARCHIVO COMUN AGREGAMOS And CANCIONCARGADA=TRUE
+' Y SALE POR GrabarArchivo...
+       If ubi1 >0 And ubi2 > 0 Or ubi3 > 0  Then 'graba un track como track
        ' pero como las modificaciones estan en ROLL debo usar GrabarrollaTrack
   Print #1,"2190 menu pierde ntk ??? ",ntk
           GrabarRollaTrack(0) 'ÇÇÇÇÑÑÑÑ
@@ -3191,7 +3195,9 @@ Dim  As Integer npl
        npl= InStr(UCase(nombre),".TRK") 
        If npl > 0 Then
           nombre=Mid(nombre,1,npl-1)
-          print #1,"un trk grabado como roll",nombre   
+          print #1,"un trk grabado como roll",nombre  
+'' y entonces que tengo un roll con extenson trk???
+'' igual lo carga bien nose magia!09-04-2024 MMMM EST Ono esta bien creo... 
        Else
         If InStr(UCase(nombre),".ROLL") = 0 Then
            nombre = nombre +".roll"   

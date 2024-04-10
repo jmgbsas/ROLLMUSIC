@@ -1,3 +1,6 @@
+- 09-04-2024 SE EXPORTA EL PATCH AL MIDI PLANO, SI SE EDITA UNA PISTA 
+  DE UNA CANCION, SIN CARGAR LA CANCION SE DEBE ELIMINAR AL PRINCIPIO
+  DEL NOMBRE LOS CORCHETES Y EL NUMERO [4]NNNNNN.TRK -> NNNNNN.TRK 
 - 08-04-2024 exportar a archivo midi con un utilitario midicomp listo
   deja el archivo midi con el nombre de la pista. Ver 0.4600.
   Ver 0.4610 correccion salida midi por cambio de tempo

@@ -108,7 +108,7 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="Ver 0.4610 correccion salida midi por cambio de tempo" ':FUTURO Patrones de Ejecucion 03-07-2022
+nroversion="Ver 0.4612 export midi pista con patch" ':FUTURO Patrones de Ejecucion 03-07-2022
 ' despues de un año de bajones personales veo si me da gan de seguirlo
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
@@ -285,7 +285,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
   '   Print #1," ENTRA A CARGAR PISTAS  cargaCancion = ",cargaCancion
      param.encancion=0
      ResetAllListBox(3)
-     Resetear (pmTk()) 
+     ResetearCancion (pmTk()) 
 
       CargarPistasEnCancion ()
  '   Print #1,"CARGAR PISTAS cargacancion = ",cargaCancion 

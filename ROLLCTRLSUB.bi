@@ -26,7 +26,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                   NombreCancion = ""
                   param.encancion=0
                   ResetAllListBox(3)
-                  Resetear (pmTk()) 
+                  ResetearCancion (pmTk()) 
                   cargarDirectorioCancion(NombreCancion)
                   CANCIONCARGADA=False
                   ntk=0
@@ -63,7 +63,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                ' por ejemplo tenia solo un roll abierto
                   param.encancion=0
                   ResetAllListBox(3)
-                  Resetear (pmTk()) 
+                  ResetearCancion (pmTk()) 
                   CargarPistasEnCancion ()
                   If tope=0 Then
                     NombreCancion = "" ' directorio fallido

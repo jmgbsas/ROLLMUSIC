@@ -2006,6 +2006,7 @@ If MIDIFILEONOFF = HABILITAR  Then
    Print #midiplano, "TrkEnd"
    Print #midiplano, "MTrk"
    Print #midiplano, "0 Meta TrkName "; Chr(34); "Piano";Chr(34)
+   Print #midiplano, "0 PrCh  ch=";pmTk(0).canalsalida;" "; "p=";Roll.trk(1,NA).inst 
 EndIf
 
 Dim As Integer porterror,nousar

@@ -132,7 +132,7 @@ Declare Sub velocidades(j as integer)
 Declare Sub playthread()
 Declare Sub GrabarArchivo (grabar_como As Integer)
 Declare Sub GrabarTrack   (ntk As integer) ' NO SE ESTA USANDO
-Declare Sub ActualizarRollyGrabarPista ()
+Declare Sub ActualizarRollyGrabarPistaTrack ()
 Declare Sub GrabarRollaTrack (cambiaext As Integer)
 Declare Sub CargarPistasEnCancion ()
 Declare sub GrabarCopiadePista()

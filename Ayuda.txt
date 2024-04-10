@@ -263,6 +263,8 @@
 
 
     16 ) EXPORTAR UNA PISTA A MIDI:
+        -Ver 0.4612 se agrego el patch o numero de instrumento de un sintetizador
+         que los use al volcado de midi plano par exportar a un arhcivi mid.
         -Ver 0.4610 correccion salida midi por cambio de tempo
         -Version 0.4600 el archivo se exporta con el nombre de la pista, la bat no se usa más
          en el programa pero se la puede usar para otras cosas.
@@ -727,7 +729,12 @@
           la cancion.
 
      1.13)  En el mismo menu de 1.11 se puede actualizar una pista con "Grabar una pista de la cancion
-          con midificaciones, igual que se puede ahcer en Roll.
+          con midificaciones, igual que se puede hacer en Roll.
+         - NOTA: SI SE EDITA UNA PISTA DE UNA CANCION, SIN CARGAR LA CANCION, SE DEBE ELIMINAR AL PRINCIPIO
+           DEL NOMBRE DEL ARCHIVO LOS CORCHETES Y EL NUMERO POR EJ: [4]NNNNNN.TRK -> NNNNNN.TRK 
+           SINO EL PROGRAMA LO TRATA COMO PARTE DE UNA CANCION Y EL TRATAMIENTO ES DIFERENTE, NO SE
+           LE AGREGO INTELIGENCIA PARA ESE CASO,,,RENOMBRAR MODIFICAR Y LUEGO OLVER AL NOMBRE ORGIGINAL-
+    
     --------------------------------------------------------------------------------------------
     2.0) Modos de Edicion
 
@@ -970,9 +977,9 @@
     IV) Menu Cancion (en revision)
        -Nueva Cancion: Se tipea en titulo el nombre del directorio que sera el nombre de la cancion.
         Hay opciones todavia no funcionales. Luego en el mismo menu Crear un directorio de Cancion
-        con pistas separadas. Luego en Menu Pistas, elegir las onfiguraciones disponibles  y despues
+        con pistas separadas. Luego en Menu Pistas, elegir las Configuraciones disponibles  y despues
         crear pista aislada con lo elegido y reemplaza a la existente en la edicion. Esta ultima accion
-        crea un roll grafico par aingresar las letras de las notas. luego de terminado, se pasa el Roll
+        crea un roll grafico para ingresar las letras de las notas. luego de terminado, se pasa el Roll
         a una pista de la cancion con Crear Pista en la Cancion en Edicion, con lo elegido es decir
         con el Roll desarrollado previamente. Si se sale y vuelve a entrar se puede recuperar 
         la cancion con el siguiente paso:
@@ -983,7 +990,8 @@
       Al dar click en una pista de la lista y luego otro click sobre el grafico
       se carga la secuencia en Roll de Visualizacion y edcion,o pulasndo TAB se recorera circularmente
       una a una cada Pista.
-    - AL CARGAR UNA CANCION se muestra el TRACK o PISTA 1 . (se debe corregir de nuevo).
+    - AL CARGAR UNA CANCION se muestra el TRACK o PISTA 1 . 
+      
     -------------------------0-0-0------------------------------------
 Notas Tecnicas de desarrollo: 
 

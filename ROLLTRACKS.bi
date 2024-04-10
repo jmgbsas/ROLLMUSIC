@@ -689,10 +689,18 @@ posicion =1
   
 End Sub
 '
-Sub ActualizarRollyGrabarPista ()
+Sub ActualizarRollyGrabarPistaTrack () ' GRABATRACK
 ' nombre es global ,,,por ahora...con un Roll único nombre puede ser global
 ' ya que es único y siempre es parte de Roll grafico...
+' RESULTADO GRABA UN TRACK A ARCHIVO  
+Print #1, "Entra A ActualizarRollyGrabarPistaTrack"
+  
    Maxpos=pmTk(ntk).MaxPos
+    
+   
+   If MessageBox(hWndC,"PODRIA SER LONGITUD DE LA SECUENCIA 0, SAQUE LOS [] DEL NOMBRE","SALIMOS DE LA ACCION ",4 Or 64) = 6 Then
+      Exit Sub
+   End If 
    NB => 0 + (desde-1) * 13   ' 06-03
    NA => 11 + (hasta-1) * 13  ' 
    pmTk(ntk).NB= NB
@@ -957,7 +965,7 @@ End If
      cerrar (grt)
      While InKey <> "": Wend
      Sleep 150
-Print #1,"fin ActualizarRollyGrabarPista"
+Print #1,"fin ActualizarRollyGrabarPistaTrack"
 
 End Sub
 ' ---------------------------
@@ -1098,7 +1106,7 @@ Dim As Integer barra=0,punto=0,ubi3=0,ubi4=0,ntkold=ntk ' el ntk que esta en edi
       'si es vacio tomo la ultima
         titulos(ntk)=nombre
      EndIf
-   ActualizarRollyGrabarPista ()
+   ActualizarRollyGrabarPistaTrack ()
    
 print #1,"FIN GrabarCopiaPista nueva ",ntk
 print #1,"FIN GrabarCopiaPista ,maxpos,posn ",maxpos,posn
@@ -1182,8 +1190,9 @@ Else
 ' el archivo debe existir y estar cargado por eso nombre debe existir sino sale sin hacer nada
    Exit sub
 EndIf
-
-   If ext = ".rtk" Then 
+ '09-04-2024 PARA EVITAR CANCELACION DE MODIFICAR UN ARCHIVO DE CANCION
+' FUERA DE CANCION, SE AGREGA AND ....=TRUE
+   If ext = ".rtk" And CANCIONCARGADA=TRUE Then 
      print #1,"  ntk ", ntk
      print #1,"GRABANDO UPDATE DE PISTA EN CANCION EN ",nombre
    ' veo valore sde track  
@@ -1195,7 +1204,7 @@ EndIf
    EndIf   
 
 ' edsde aca es igual.. 
-  ActualizarRollyGrabarPista () 
+  ActualizarRollyGrabarPistaTrack () 
 
 print #1,"FIN GrabarRollaTrack ,cambiaext ",cambiaext
 print #1,"FIN GrabarRollaTrack ,maxpos,posn ",maxpos,posn
@@ -1220,7 +1229,7 @@ Sub RollaTrack (Track() As sec, ntk As Integer,Roll As inst)
 ' MaxPos es global y lim3 tambien no s eporque -2 debo copiar todo
 Dim As Integer j,i3,i2,i1
 '------------------------------------------
-' basada en ActualizarRollyGrabarPista pero en un solo paso, dejare una aola ? veremos
+' basada en ActualizarRollyGrabarPistaTrack pero en un solo paso, dejare una aola ? veremos
 ReDim (Track(ntk).trk ) (1 To MaxPos,1 To lim3)
    Erase mel_undo, undo_acorde,undo_kant_intervalos  
    mel_undo_k=0: ig=0:cnt_acor=0
@@ -1331,7 +1340,7 @@ Sub RollaTrack_ORIGINAL(Track() As sec, ntk As Integer,Roll As inst)
 ' MaxPos es global y lim3 tambien no s eporque -2 debo copiar todo
 Dim As Integer j,i3,i2,i1,verticalEnOctavaVacia, octavaDeAcorde,vertical
 '------------------------------------------
-' basada en ActualizarRollyGrabarPista pero en un solo paso, dejare una aola ? veremos
+' basada en ActualizarRollyGrabarPistaTrack pero en un solo paso, dejare una aola ? veremos
 ' esto debe hacerse solo al pasar por memoria no al grabar
 ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim3)
    Erase mel_undo, undo_acorde,undo_kant_intervalos  
@@ -1659,7 +1668,7 @@ Sleep 10
 
 End Sub
 
-Sub Resetear ( pmTk() As rangoOct)
+Sub ResetearCancion ( pmTk() As rangoOct)
 Dim i As Integer
  For i =1 To 64  ' agregamos los 32 de ejecuciones 07-06-2022
    pmTk(i).desde=0
