@@ -1,3 +1,25 @@
+- 18-04-2024 4.1 4.2 y 4.3 anda ok, lo unico que faltaba es que al exportar un track a roll
+  quede el patch el canal y el portout,,,el patch se verifico ok...falta ver los otros
+-17 abril se probó  cambiar patch en una pista de cancion en la lista de pista
+ chequeandola. Anda bien, tambien se habia probado cambiar patch en roll grafico
+ para ello uso el menu crear pistas manuales y luego cambia instrumentos por alfa..
+ anda bien. punto 4.0 del menu archivo anda bien --,,,verificar 4.1 4.2 y 4.3 
+-15-04-2024 cargararchivo y grabar archivo para roll ya  se reviso, se reviso 
+ las demas rollatrack trackaroll rolltempatracktemp Tracks... etc
+ NO USAR EN NOMBRE DE CARPETAS NI ARCHIVOS EL SIGNO MENOS "-" COMO SEPARADOR
+ SE PUEDE USAR GUION BAJO "_", sino corta el nombre y no lo procesa.
+-14-04-2024 ROLLSUB.BI EL PATCH NO SE GRABABA NI CARGABA BIEN ESTAMOS REVISANDO..
+ ' ver la carga tambien SEGUIR!!!!
+              graba3(1,1).nota= pmTk(ntk).patch ' 14-04-2024
+-13-04-2024 0.4615 mix de versiones, se tomó lo mejor de cada una en las que anden bien
+  las partes,se recupero que unapista de una cancion pueda reproducirse con ctrl mas click
+  en menu Reproducir del Roll Grafico, con su patch igual que solo chequear en la lista
+  y dar play en boton verde de la izquierda. PEr oentre el patch de ambas reproducciones
+  suele deiferir, y el update del patch lo hacemos en roll grafico, no se si esta
+  correcto porque en Roll Grafico es un roll y Track(0) en la que ambos son copia
+  de un Track de 1 a..n.Al grabar la pisat en Roll con el comand ode arriba Archivo->
+  Ctrl GRabar..hay que verificar que este grabando el Track(0) sobre el Track (n)
+  correspondiente,.,,
 - 09-04-2024 SE EXPORTA EL PATCH AL MIDI PLANO, SI SE EDITA UNA PISTA 
   DE UNA CANCION, SIN CARGAR LA CANCION SE DEBE ELIMINAR AL PRINCIPIO
   DEL NOMBRE LOS CORCHETES Y EL NUMERO [4]NNNNNN.TRK -> NNNNNN.TRK 

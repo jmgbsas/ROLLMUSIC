@@ -38,8 +38,11 @@
 ' ----------------------------------------------------------------------
            Case 1007 '<============ grabar cancion bosquejo
 ' 26-02-2022 desarrollo           
-            CTRL1007 ()
+          'DESHABILITADO CREO ESTA HACIENDO LIO PROBAR Y SEGUIR
+' MAS ADELANTE USANDO UNA COPIA DE CANCION PAR NO DESTRUIR LA ACTUAL
+ ''''' NO HABILITADA   CTRL1007 ()
 
+          SetForegroundWindow(hwnd)
            Case 10075 '<======== ARGAR UNA PISTA A ROLL PARA EXPORAR A MIDI
 ' DE ESTE MODO PODEMOS ENVIAR EL NOMBRE DE LA PISTA AL ROLL AISLADO
 ' Y CONVERTIR A MID CON EL NOMBRE REAL Y N OEL FANTASIA ARCHIVO.MID
@@ -47,7 +50,6 @@
           
         Shell (" start RollMusic.exe "+ nombre)
           SetForegroundWindow(hwnd)
-
 
            Case 1008 '<======= 3.1 Exportar Pista a midi 
  
@@ -58,7 +60,6 @@
  ' no se hara el garbage collector ? le puse time out sleep y tampoco...  
  ' el archivo mid  se llamara siemrpe archivo.mid y el ususario debe renombrarlo
  ' no lo peudo hacer automaticamente,,,,me fallò todo lo que intente,,,
-                   
               
 '  con usarmarcoins=4 indicamos habilitar ESCRITURA MIDI EN EL PLAY
                 
@@ -73,12 +74,9 @@
              SetStateMenu(hmessages,1008,1)
 ' ---------------------------------------------------------------           
            Case 1009 '<======= 3.2 Exportar Cancion a midi
-            
 
                 SetStateMenu(hmessages,1008,0)
                 SetStateMenu(hmessages,1009,1)
-
-        
   
                Print #1, "nombres 1 y 2 "; "secuenciaPLAY.txt archivo.mid" 
                Dim result As Integer
@@ -93,8 +91,6 @@
                Print #1, "Exit code midiconv: "; result
 
 
-
-            
            Case 1010 '<================ Cargar Pista externa a cancion
 
    '        Print #1,"entro a 1010 Cargar Pista externa a cancion"
@@ -198,19 +194,89 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
            Case 1031 ' <========  SELECCION DE CANAL DE LA PISTA (10 DRUMS)
 '-----------------------------------------------------------------------               
            Case 1040 ' <========== seleccion de instrumento por orden Alfabetico
+     '' este da problemas lo tuve que traaer de nuevo ojo
+             ''   CTRL1040
+                 selInstORdenAlfa (instru)
+                If CANCIONCARGADA =TRUE  Then
+               Else
+                  'midisal = midiout(portout)
+                  ntk=0
+                EndIf
+                portsal=pmTk(ntk).portout
+                pmTk(ntk).patch=CUByte(instru)
+ ' los canales van de 0 a 15 (1 a 16) no se si en todos los dispositivos
+ ' van de 0 a 15 o en alguno de 1 a 16 opto por 0 a 15                
+             ''  If pmTk(ntk).canalsalida > 0 Then
+            '      ChangeProgram ( CUByte (instru) , pmTk(ntk).canalsalida,portsal) ' habilito de neuvo 13-02-2022 ï¿½
+             ''  EndIf
+               If instru=0 Then instru=1 EndIf
 
-                CTRL1040
- 
+                Roll.trk(1,NA).inst= CUByte(instru)
+                Track(ntk).trk(1,1).nnn=CUByte(instru)
+              ' grabar la pistacomo en 1011
+            print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
+            Dim As String nombreg
+              If CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE Then
+                 If (NombreCancion > ""  Or TRACKCARGADO =TRUE) And MAxPos > 2 Then
+                   Print #1,"VOY A GrabarRollaTrack(0) DESDE CTRL1040"
+                    GrabarRollaTrack(0)
+                   Sleep 100 
+                 EndIf
+              Else
+                If MaxPos > 2  And ROLLCARGADO  Then
+                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
+                 Sleep 100
+                 ' no el undo dolo se debe borrar al ahcer nuevo creo
+                EndIf  
+              EndIf  
+
+
+              MenuNew=0           
+              carga=1
+
         '     SetForegroundWindow(hwnd)    
 '-----------------------------------------------------------------------
            Case 1050 ' <=========== seleccion de instrumento por orden Numerico
 
-                CTRL1050
+              ''  CTRL1050
+               selInstORdenNum (instru)
+               If CANCIONCARGADA =TRUE Then
+               Else
+                 ' midisal = midiout(portout)
+                 ntk=0
+               EndIf
+             ' no se cuadno funciona esto  si midisal y canal tienen valores 
+             ' la seleccion de instrumento se ahce tanto par auna pista aislada como no
+               portsal=pmTk(ntk).portout
+      '         If pmTk(ntk).canalsalida > 0 Then
+          '         ChangeProgram ( CUByte (instru) , pmTk(ntk).canalsalida,portsal) ' habilito de nuevo
+       '        EndIf
+
+               Roll.trk(1,NA).inst= CUByte(instru)
+               Track(ntk).trk(1,1).nnn =CUByte(instru)
+              ' grabar el track 
+   '         print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
+            Dim As String nombreg
+
+              If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
+                 If NombreCancion > ""  And MAxPos >2 Then
+                    GrabarRollaTrack(0)
+                 EndIf
+              Else
+                If MaxPos > 2  And ROLLCARGADO  Then
+                  'aca graba el roll con Roll.trk(1,NA).inst
+                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undoï¿½?
+                 ' no el undo dolo se debe borrar al ahcer nuevo creo
+                EndIf  
+              EndIf  
+
+              MenuNew=0           
+              carga=1
   
         '      SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1060 ' <========== crea track y reemplaza al existente en la edicion
-                CTRL1060 (salida)
+                CTRL1060 salida
                 If salida = 1 Then 
                    salida=0
                    Exit Do
@@ -274,6 +340,8 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
                CTRL1071(hmessages)
 
           SetForegroundWindow(hwnd)
+            Case 1074 ''<== Parametros de Roll y Track(0) en memoria
+
 '-----------------------------------------------------------------------
            Case 1080 ' tempo
               nombreArchivo="0"
@@ -307,7 +375,19 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 
 '-----------------------------------------------------------------------
            Case 1090 ' Reproducir cancion
-                CTRL1090 ()
+SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
+         If CPlay = 0 And MaxPos > 2 Then
+            CPlay=1
+            If NombreCancion > "" Then
+               If play=1 Or playb=1 Then
+                  CONTROL1=1 ' DETIENE EL PLAY 
+                  playloop=0:playloop2=0
+                  play=0 : playb=0
+                  Sleep 20
+               EndIf 
+               thread1 = ThreadCall  playCancion(Track())
+            EndIf
+         EndIf   
           '    Dim As Any Ptr thplayC = ThreadCall  playCancion(track())
           '    CONTROL1 = 1
  
@@ -531,7 +611,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 
            Case 1206 'Cerrar    Puertos MIDI-OUT de ejecucion play por el usuario
                CTRL1206()
-               
+
            Case 1207'DesTruir Puertos MIDI-OUT
 
            Case 2000

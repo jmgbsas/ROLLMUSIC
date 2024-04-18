@@ -1,6 +1,6 @@
 #Include Once "crt/stdio.bi"
 
-'''On  Error GoTo errorloopbas
+On  Error GoTo errorloopbas
 ''(c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer Ptr, InicioDeLectura As Integer)
 
 Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
@@ -416,7 +416,7 @@ Dim As String t2="",t3="",t4=""
   ' ASI LA OCATVA 3 (-1,0,1) O SEA LA 1 EN PANTALLA B1,C1 EN RELIDAD ES LA OCTAVA
   ' 7..Y B1 TIENE UN VALOR nR=(13-0-2) + (9-7)*13=37 y la PianoNota es 35 
   ' restandole restar(37). Semitono va de arriba hacia abajo de 0 a 11 y
-  ' nE es la nota de carga va de 1 a 12.
+  ' nsE es la nota de carga va de 1 a 12.
   lugar=Penta_y + (semitono +1) * inc_Penta
   cairo_move_to(c, 0, lugar )
   cairo_line_to(c, ANCHO - 1, lugar)
@@ -424,17 +424,17 @@ Dim As String t2="",t3="",t4=""
 
 If GrabarPenta=0 Then 'çççç NO ESTABA
   If (mousey <= lugar) And (mousey >= lugarOld ) Then
-   nE=semitono + 1 'semitono ahora va desde 0 a 11 usadopor entrada de tecladoy ahroa mouse
+   nsE=semitono + 1 'semitono ahora va desde 0 a 11 usadopor entrada de tecladoy ahroa mouse
    nR=(11-semitono) + (*po -1 ) * 13 ''+ (desde -1)*13 ' indice de la nota en Roll , en algo será util.
    If *po=1 Then
       Print #8, "nR octava 1 ",nR
    EndIf
    PianoNota= nR - restar (nR)
-''' desèjando nE = 11 -nR   +  (*po -1 ) * 13 + 1
+''' desèjando nsE = 11 -nR   +  (*po -1 ) * 13 + 1
   EndIf
   lugarOld=lugar
 Else 'çççç ELSE NO ESTABA
-   nE=semitono + 1 'semitono ahora va desde 0 a 11 usadopor entrada de tecladoy ahroa mouse
+   nsE=semitono + 1 'semitono ahora va desde 0 a 11 usadopor entrada de tecladoy ahroa mouse
    nR=(11-semitono) + (*po -1 ) * 13 ''+ (desde -1)*13 ' indice de la nota en Roll , en algo será util.
    PianoNota= nR - restar (nR)
 
@@ -726,6 +726,7 @@ End Sub
 
 'Roll Main Loop ACA NO APARECE EL VECTOR DE ROLL 
 
+
 sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 Dim As Integer ubiroll,ubirtk,encancion
 ' PORACA CANCELA '''' JMGDEBUG
@@ -740,8 +741,8 @@ Dim midionof As Integer
  ANCHO=param.ancho
  ANCHO3div4 = ANCHO *3 / 4
  midionof=param.midionof
- 
-If midionof = 4 Then  ' volcado de midi
+
+ If midionof = 4 Then  ' volcado de midi
     MIDIFILEONOFF=HABILITAR  
  End If 
 
@@ -773,8 +774,7 @@ If midionof = 4 Then  ' volcado de midi
 'Dim Roll As inst
 ' @Roll(1) = *pRoll  
 'Dim As Integer pid = GetCurrentProcessId()' , pid_parent = 0
-      abrirSecuencia(20)
-
+   abrirSecuencia(20)
 ' print #1 ,"pid", pid
 Var surface = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, ALTO, stride)
  c = cairo_create(surface)
@@ -913,7 +913,6 @@ If  cargaCancion=1  Or repro=1 Or  GrabarEjec=GrabarPistaEjecucion Then
    'Locate 5,10
    'Print "CARGANDO ...PISTA Nro ", ntk
    'Sleep 100
-
  s5=2 ' el loop principal necesita menos cpu  
 Else   
 
@@ -1006,6 +1005,7 @@ EndIf
 '' ---------------  LOOP 2 ---------------
 Do 
 
+
 '---------
 'simulamos TAB para cargaCancion=1 cuadno recien se carga la cancion
 ' no permitimos cambio de track durante el play aveces trae problemas
@@ -1015,20 +1015,7 @@ Do
 ' 23-02-2022, lo q debo hacer es no permitir entrar si se esta usando
 '  playAll  play=0 y lo mismo en PlayAll no usar PlayCancion si esta
 ' ejecutando PlayAll de unsa sola pista...
-/' Static  nombreold As String
-Static indnom As Integer
-If nombre <> nombreOld Then
-indnom=0
-EndIf
-If nombre > "" Or nombre <> nombreOld And indnom=0 Then 
-  nombreOld=nombre
-  indnom=1
-  Open "nombre.txt" For Output As 24 
-  print #24, nombre
-  cerrar 24
 
-EndIf
-'/
 
 If MultiKey(SC_TAB) And (instancia=0 Or instancia= 107) And CANCIONCARGADA And play=0 Or cargaCancion=1 Or clickpista=1  Then
    cargaCancion=0 ' para que no entre mas luego de cargada la cancion
@@ -1135,7 +1122,7 @@ If MultiKey (sc_P) And (play=1 Or playb=1 )Then
   CONTROL1=1 ' DETIENE EL PLAY VEREMOS
   playloop=0:playloop2=0
   s5=2 ' el loop necesita menos cpu se libera
-  If instancia=7 Or instancia=6 Or instancia= 107 Or instancia < 3 Then 
+  If instancia=7 Or instancia= 107 Or instancia < 3 Then 
   Else
   SetGadgetstate(12,0)
   EndIf 
@@ -1557,7 +1544,9 @@ Dim As Integer i3
            close_port(midiout(portsal))
            out_free(midiout(portsal))
         Next i3
-        ThreadDetach(thread1)              
+        ThreadDetach(thread1)
+        ThreadDetach(thread2)
+              
      EndIf
     If teclado=1 Then
       cancel_callback(midiin(pmTk(ntk).portin ))
@@ -1571,7 +1560,6 @@ Dim As Integer i3
 
     End If 
 
-    'ffile=FreeFile
     ffile=4
     Open "./RollMusic.ini" For output As #ffile
 
@@ -1624,31 +1612,37 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
  If COMEDIT=TRUE Then
     espacio = 1
     DUR=0
-    nota=notacur ''nE 10-05-2021 00:06 probar de nuevo 
+    nota=notacur ''nsE 10-05-2021 00:06 probar de nuevo 
     If cursorVert =2 Then
       agregarNota = 1
     EndIf
 
  Else
-   If playb = 0 And play=0 And Cplay=0 And MaxPos > 1  Then ' 23-02-22 ningun play
+   If playb = 0 And play=0 And Cplay=0 And MaxPos > 1 Then ' 23-02-22 ningun play
       GrabarPenta=0:naco=0:naco2=0
-      If INSTANCIA = 7 Or instancia=6 Or instancia= 107 Or instancia < 3 Then 
+      If INSTANCIA = 7 Or instancia= 107 Or instancia < 3 Then 
       Else  
-      SetGadgetstate(BTN_ROLL_GRABAR_MIDI,0) ' 10-04-2022 DE  VENTANA CTROL
+     ' SetGadgetstate(BTN_ROLL_GRABAR_MIDI,0) ' 10-04-2022 DE  VENTANA CTROL
       EndIf
    '   print #1,"SPACE call play"
         If  MaxPos > 1 Then 
          '''Dim tlock As Any Ptr = MutexCreate()
          If CANCIONCARGADA = TRUE Then
              Print #1,"USANDO PLAYCANCION"
-             playb=1 : s5=0 'Necesita mas tiempo de cpu    
+             playb=1 : s5=0 'Necesita mas tiempo de cpu
+             threadDetach(thread1)
+             threadDetach(thread2)
+             Sleep 20    
              thread1 = ThreadCall  playCancion(Track())
              'playCancion(Track())
          Else
            If  MaxPos > 1 Then
       '        print #1,"llama a playall"
               Play=1:s5=0
-             thread1 = ThreadCall  playAll(Roll)
+             threadDetach(thread1)
+             threadDetach(thread2)
+             Sleep 20
+             thread2 = ThreadCall  playAll(Roll)
            EndIf 
 
          EndIf
@@ -1670,7 +1664,7 @@ If MultiKey (SC_Q) Then ' con Q se deja de repetir espacios tmbien resetea todo 
 If pasoZona1 > 0 Or pasoZona2 >0 Or pasoNota > 0 Or trasponer=1 Then ' hubo una trasposicion
    correcciondeNotas(Roll) ' para moverZona no se corrige creo por ahora...
 EndIf 
-pun=0:sil=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
+pun=0:silen=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
 SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
 deltaip=0:incWheel=0:lockip=0:playloop=0
 'anchofig=35
@@ -2016,7 +2010,7 @@ If COMEDIT = TRUE Then
 ''  EndIf
 
   If MultiKey(SC_S) Then
-   sil = 1
+   silen = 1
    Exit Do  ' silencio
    ' indicadorde silencio solo para calculo de compas
   EndIf
@@ -2115,7 +2109,7 @@ If COMEDIT = FALSE Then ' construir cifras para copiar Nveces por ejemplo
 ''  EndIf
 
   If MultiKey(SC_S) Then
-   sil = 1
+   silen = 1
    Exit Do  ' silencio
    ' indicadorde silencio solo para calculo de compas
   EndIf
@@ -2361,7 +2355,7 @@ If COMEDIT = TRUE  And nota > 0 And agregarNota=0 And cursorVert=0 And carga=0 A
 ' los bloques de durcion se repiten de a 3, el incr es por bloque
 ' si voy al 2do bloque de 3 el incrdeja de ser 0 y pasa a 27 respectro de la
 ' 1er linea l cargo TRAck como 2da linea
-If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=0 Then 
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR 'era duracion
    Track(ntk).trk(posn,1).dur = DUR
     'DUR nunca se ahce cero solo para espacio ergo si pulso
@@ -2369,7 +2363,7 @@ If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then
    incr=0
 EndIf
 ' CUART   
-If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
+If cuart=1 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=0 Then 
     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 9 'era duracion
     Track(ntk).trk(posn,1).dur = DUR +9
     'DUR nunca se ahce cero solo para espacio ergo si pulso
@@ -2378,110 +2372,110 @@ If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then
 EndIf
 ' PUNTILLO   
 ' 3I* = I = 1 , el puntillo a un 3 suma dando la figura de la q proviene.   
-If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
+If cuart=0 And pun = 1 And doblepun=0 And tres=0 And silen=0 And mas=0 Then 
     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 18 'era dur
     Track(ntk).trk(posn,1).dur = DUR + 18
     incr=0
 EndIf
 'DOBLE PUNTILLO   
-If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=0 Then 
+If cuart=0 And pun = 0 And doblepun=1 And tres=0 And silen=0 And mas=0 Then 
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 27
    Track(ntk).trk(posn,1).dur = DUR + 27
    incr=0
 EndIf
 ' SEGUIR  JMG
-If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=0 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=1 And silen=0 And mas=0 Then 
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 36
    Track(ntk).trk(posn,1).dur = DUR + 36
    incr=0
 EndIf   
 ' -----fin 1er bloque ------------------------
 
-If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=1 And mas=0 Then 
    Roll.trk(posn,(12 -nota +(estoyEnOctava -1) * 13)).dur = DUR + 45 'era dur
    Track(ntk).trk(posn,1).dur = DUR + 45
 '   print #1," NUCLEO GUARDO EN ROLL CON S DUR: ";DUR +27;" figura:";figura(DUR+27) 
    incr=45
 EndIf
 
-If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
+If cuart=1 And pun = 0 And doblepun=0 And tres=0 And silen=1 And mas=0 Then 
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 54
    Track(ntk).trk(posn,1).dur = DUR + 54
    incr=45
 EndIf
 
-If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
+If cuart=0 And pun = 1 And doblepun=0 And tres=0 And silen=1 And mas=0 Then 
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 63
    Track(ntk).trk(posn,1).dur = DUR + 63
    incr=45
 EndIf
-If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=0 Then 
+If cuart=0 And pun = 0 And doblepun=1 And tres=0 And silen=1 And mas=0 Then 
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 72
    Track(ntk).trk(posn,1).dur = DUR + 72
    incr=45
 EndIf
 
-If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=0 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=1 And silen=1 And mas=0 Then 
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 81
    Track(ntk).trk(posn,1).dur = DUR + 81
    incr=45
 EndIf
 
 ' -- fin 2do bloque   
-If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=1 Then 
     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 90
     Track(ntk).trk(posn,1).dur = DUR + 90
     incr=90
 EndIf
 
-If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+If cuart=1 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=1 Then 
     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 99
     Track(ntk).trk(posn,1).dur = DUR + 99
     incr=90
 EndIf
 
-If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+If cuart=0 And pun = 1 And doblepun=0 And tres=0 And silen=0 And mas=1 Then 
     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 108
     Track(ntk).trk(posn,1).dur = DUR + 108
     incr=90
 EndIf
 
-If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=1 Then 
+If cuart=0 And pun = 0 And doblepun=1 And tres=0 And silen=0 And mas=1 Then 
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 117
    Track(ntk).trk(posn,1).dur = DUR + 117
    incr=90
 EndIf
-If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=1 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=1 And silen=0 And mas=1 Then 
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 126
    Track(ntk).trk(posn,1).dur = DUR + 126
    incr=90
 EndIf
 '----- fin 3er bloque   
-If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=1 And mas=1 Then 
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 135
    Track(ntk).trk(posn,1).dur = DUR + 135
    incr=135
 EndIf   
 
-If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+If cuart=1 And pun = 0 And doblepun=0 And tres=0 And silen=1 And mas=1 Then 
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 144
    Track(ntk).trk(posn,1).dur = DUR + 144
    incr=135
 EndIf   
 
-If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+If cuart=0 And pun = 1 And doblepun=0 And tres=0 And silen=1 And mas=1 Then 
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 153
    Track(ntk).trk(posn,1).dur = DUR + 153
    incr=135
 EndIf   
 
-If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=1 Then 
+If cuart=0 And pun = 0 And doblepun=1 And tres=0 And silen=1 And mas=1 Then 
    Roll.trk(posn, (12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 162
    Track(ntk).trk(posn,1).dur = DUR + 162
    incr=135
 EndIf   
 
-If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=1 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=1 And silen=1 And mas=1 Then 
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 171
    Track(ntk).trk(posn,1).dur = DUR + 171
    incr=135
@@ -2503,7 +2497,7 @@ mel_undo(mel_undo_k).posn = posn
  '   Roll.trk((notaOld +(estoyEnOctava -1) * 13),posn).dur = 65
  '   DUR=0
  '  EndIf
-   cuart=0:pun=0:doblepun=0:tres=0:sil=0:mas=0
+   cuart=0:pun=0:doblepun=0:tres=0:silen=0:mas=0
    ' mayorDurEnUnaPosicion (posn) quedo <--defectuoso
      'If DUR >=1 And DUR <= 72 Then
       DUR = Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
@@ -2548,9 +2542,9 @@ mel_undo(mel_undo_k).posn = posn
 ' notan vale 1 para toda la melodia cargada en Edit.
 ' al cargar acorde notan cambiara de 2 a 12
   If  MaxPos > 1 Then
-    crearsecuencia(track(), posn,ntk) 'habilitar cuadno todo ande bie
+   ''' crearsecuencia(track(ntk).trk(), posn,ntk) habilitar cuadno todo ande bie
    ' en pausa secuecnia seria un pasopara crear un archivo midi de 1 track
-   ' o crear un [[[play mas sencillo]] y rapido, PlayAllTXT 
+   ' o crear un [[[play mas sencillo]] y rapido
   EndIf 
   nota=0 '18-11-20201
  ''''Exit Do 'kkkk 09-01-22 probando no debe sali rdebe seguir chequeando
@@ -3149,7 +3143,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
         For im=1 To 4  
             noteon(60,60,1,0,1)
             noteoff(60,1,0,1)
-            duracion(Timer, (60/tiempoPatron) / FactortiempoPatron,0,0,0)
+            duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
         Next im
         threadmetronomo = ThreadCall metronomo()
          contcode =0 ' para detectar 1er nota de midiin porque no envia 144 la 1era vez solo 128!!
@@ -3254,7 +3248,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
  '                           <====== [BOTONES] =======>
  ' 07-08-2021 lugar para test tamaño 10x8
  ' salir de roll music  unificar jmg 02-03-2024
- If (mousex>=(ANCHO-40-mxold)) And (mousey <= 16) Or FINALIZAR_ROLLMUSIC=1 Then
+ If (mousex>=(ANCHO-40-mxold)) And (mousey <= 16) Or FINALIZAR_ROLLMUSIC = 1 Then
   If  MouseButtons And 1 Then
    If MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","Fin RollMusic",4 Or 64) =6 Then
     eventM=eventrbdown ' por si selecciono algo en lista pistas d e ventana  de control
@@ -3271,12 +3265,13 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
           close_port(midiout(portsal))
           out_free(midiout(portsal))
        Next i3
-       ThreadDetach(thread1)              
+       ThreadDetach(thread1)
+       ThreadDetach(thread2)
+              
     EndIf
 
 
-    'ffile=FreeFile
-    ffile=4
+    ffile=5
     Open "./RollMusic.ini" For output As #ffile
 
     If nmxold = 0 Then
@@ -3411,36 +3406,36 @@ EndIf
 ' determinacion de la posicion y duracion en el click del mouse...igual que en Sc_Z
     indicePos=(mousex- gap1 )/anchofig + posishow 
   '  Print #1,"ACORDES: indicePos ",indicePos
-    Rolldur = CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur)
-    Rollnota= CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).nota)
+    Rolldur = CInt(Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).dur)
+    Rollnota= CInt(Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).nota)
     If Rollnota = 0 Or Rollnota=181 Or Rolldur=0 or Rolldur=181 Then ' construimos acorde donde no haya nada
-       Rollnota = nE 
-       Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).nota = CUByte(nE)
-       Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur = CUByte(DUR)
+       Rollnota = nsE 
+       Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).nota = CUByte(nsE)
+       Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).dur = CUByte(DUR)
        Rolldur=DUR
        Vaciodur= TRUE
     EndIf   
     If DUR <> Rolldur And DUR > 0 Then
-       Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur = CUByte(DUR)
+       Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).dur = CUByte(DUR)
        Vaciodur= TRUE ' cambio la duracion se necesita un RecalCompas
        Rolldur=DUR
        DUR=0
     EndIf
  '   Print #1,"ACORDES: Rolldur ",Rolldur
- '   Print #1,"ACORDES: nE ",nE
+ '   Print #1,"ACORDES: nsE ",nsE
  '   Print #1,"ACORDES: nR ",nR
  '   Print #1,"ACORDES: PianoNota del piano ",PianoNota
  '   Print #1,"ACORDES: vovlemos a nR  ",PianoNota + SumarnR(PianoNota)
-' nE,nR y PianoNota se calculan en creaPenta..solo depende de mousey
+' nsE,nR y PianoNota se calculan en creaPenta..solo depende de mousey
 ' aunque de click derecho no importa el mouse y no depende del click 
-' PianoNota=(12-nE +(estoyEnOctava -1) * 13) ' es nR ya lo tengo
+' PianoNota=(12-nsE +(estoyEnOctava -1) * 13) ' es nR ya lo tengo
 ' indice de la nota en el vector = nR,vertical como NA NB
 ' determinacion de la notapiano...
 ' calcualdo en CreaPenta -> PianoNota= nR - restar (nR) esto para el teclado real pero en roll es nR
 ' trabajo con Pianonota y luego convietrto a nR de nuevo...,con Pianonota
 ' para reconvertir volver debo usar SumaNr 
 '---------------------------------------------------
-' PARA GRABAR el acorde en Roll necesito guadar nE (nota) ,el nro octava,
+' PARA GRABAR el acorde en Roll necesito guadar nsE (nota) ,el nro octava,
 ' y acordeNro son 3 numeros...con ellos recosntruyo el acorde y lo escribo arriba 
 ' en la octava y en la posuicon gurdada ej CMayor, Dm7, G7 etc 
 
@@ -3454,11 +3449,11 @@ EndIf
 ' la existencia de un acorde la ponemos en .inst con el nro 201 (solo indica buscar acorde)
 ' de una octava en ocurrencia 12 como las escalas me indica que hay un acorde
 ' o sea pueden subsistir la informacion de un acorde y una escala 77777
-' el resto de la informacion del acorde son nE y acordeNro la poneos en la octava
+' el resto de la informacion del acorde son nsE y acordeNro la poneos en la octava
 ' que no se usa la mas alta que sera diferente segun el tamaño de octavas elegido
 ' que será la octava hasta+1 ahi tenemos 12 posiciones verticales sin usar
-' usamos la correspondiente al nro de octava contando como nE nE=1 octava 1
-' hasta nE=8 tenemos 8 octavas..
+' usamos la correspondiente al nro de octava contando como nsE nsE=1 octava 1
+' hasta nsE=8 tenemos 8 octavas..
 ' CALCULO DE SITIO DONDE GUARDO LA INFO DE ACORDE, EL RANGO ES
 ' COMIENZO 11 + (hasta-2)*13+1   FINAL 11+ (hasta -1)*13  
 ' la octava actual es=estoyEnoctava y debo encontrar en que sitio lo grabare.
@@ -3470,7 +3465,7 @@ EndIf
 ' en el grafico la octava 3 la 1era que es al 4 del rango total empezando de 
 ' la octava 0.Luego el lugar se cuenta desde la octava 'desde' en adelante 
 ' nR=desde
-' calculo nR con nE=0 inicial en default = 12-nE+ (estoyEnOctava -1)*13 =12+39=51
+' calculo nR con nsE=0 inicial en default = 12-nsE+ (estoyEnOctava -1)*13 =12+39=51
 ' nR=51, indice de roll donde pongo la info d ela existencia de acorde en esa octava
 ' ocatva 4 default, es la 3 de la capacidad total. Si quiero poner en la siguietne octava
 ' 12 + 4*13=12+52=64
@@ -3832,7 +3827,7 @@ vacio= 12 +(estoyEnOctava-1)*13 ' vacio lim inferior d ela octava que sobra arri
 ' y solo puede ahber uno de modo que la relacion es 1:1
 ' estoyEOCtava y acordeNro y la RollNota  dan el acorde compelto
 'Dim NotaAcorde As String
-'NotaAcorde=NotasGuia(nE-1) ' c,c#,d,d#..etc
+'NotaAcorde=NotasGuia(nsE-1) ' c,c#,d,d#..etc
 ' 26-01-2022 por choque con escalas cambio inst a pb
  Roll.trk(indicePos, vacio).pb=201  ' codigo de lugar en octavas de roll
 
@@ -3934,29 +3929,29 @@ EndIf
 ' determinacion de la posicion y duracion en el click del mouse...igual que en Sc_Z
     indicePos=(mousex- gap1 )/anchofig + posishow 
   '  Print #1,"ACORDES: indicePos ",indicePos
-    Rolldur = CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur)
-    Rollnota= CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).nota)
+    Rolldur = CInt(Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).dur)
+    Rollnota= CInt(Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).nota)
     If Rollnota = 0 Or Rollnota=181 Or Rolldur=0 or Rolldur=181 Then ' construimos acorde donde no haya nada
-       Rollnota = nE 
-       Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).nota = CUByte(nE)
-       Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur = CUByte(DUR)
+       Rollnota = nsE 
+       Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).nota = CUByte(nsE)
+       Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).dur = CUByte(DUR)
        Rolldur=DUR
        Vaciodur= TRUE
     EndIf   
     If DUR <> Rolldur And DUR > 0 Then
-       Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur = CUByte(DUR)
+       Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).dur = CUByte(DUR)
        Vaciodur= TRUE ' cambio la duracion se necesita un RecalCompas
        Rolldur=DUR
        DUR=0
     EndIf
   '  Print #1,"ACORDES: Rolldur ",Rolldur
-  '  Print #1,"ACORDES: nE ",nE
+  '  Print #1,"ACORDES: nsE ",nsE
   '  Print #1,"ACORDES: nR ",nR
   '  Print #1,"ACORDES: PianoNota del piano ",PianoNota
   '  Print #1,"ACORDES: vovlemos a nR  ",PianoNota + SumarnR(PianoNota)
-' nE,nR y PianoNota se calculan en creaPenta..solo depende de mousey
+' nsE,nR y PianoNota se calculan en creaPenta..solo depende de mousey
 ' aunque de click derecho no importa el mouse y no depende del click 
-'PianoNota=(12-nE +(estoyEnOctava -1) * 13) ' es nR ya lo tengo
+'PianoNota=(12-nsE +(estoyEnOctava -1) * 13) ' es nR ya lo tengo
 ' indice de la nota en el vector = nR,vertical como NA NB
 ' determinacion de la notapiano...
 ' calcualdo en CreaPenta -> PianoNota= nR - restar (nR) esto para el teclado real pero en roll es nR
@@ -4032,8 +4027,8 @@ ButtonGadget(2,530,30,50,40," OK ")
   If MultiKey(SC_CONTROL) And MousePress= 1  Then
      Dim As Integer pasox, pasoy, pasonR
      pasox=(mousex- gap1 )/anchofig  + posishow  
-     pasoy=nE
-     'print #1,"pasoy nE=",pasoy
+     pasoy=nsE
+     'print #1,"pasoy nsE=",pasoy
      If trasponer=1 Then '03-02-2022
        correcciondeNotas(Roll)
      EndIf
@@ -4051,7 +4046,7 @@ ButtonGadget(2,530,30,50,40," OK ")
         Exit Do
      EndIf
      If pasoZona1=pasoZona2 And pasoNota<>pasoy Then 
-        pasoNota=nE
+        pasoNota=nsE
      '   print #1,"pasoNota=",pasoNota
         Exit Do
      Else
@@ -4137,7 +4132,7 @@ ButtonGadget(2,530,30,50,40," OK ")
  If MultiKey(SC_ALT) And MouseButtons And 1  Then 'posiciona el cursor
     ' habilito trasposicion de una sola nota, ejecuta solo con Ctrl-T previo y
     ' las flechas up/down, habilitare dragado tambien 02-07-2021
-'    pasoNota=nE
+'    pasoNota=nsE
    ' Print #1,"MARCAR CON ALT Y 13 UNA NOTA "
     indicePos=(mousex- gap1 )/anchofig + posishow
    ' Print #1,"MARCAR CON ALT Y 13 UNA NOTA ,INDICEPOS",indicePos 
@@ -4210,7 +4205,7 @@ ButtonGadget(2,530,30,50,40," OK ")
           nroClick=2
           If (mousey >= usamousey -120) And  (mousey <= usamousey -100) Then
             modifmouse=1 'borrar =1
-            notacur=nE
+            notacur=nsE
             curpos=(mousex- gap1 )/anchofig
             Exit Do
           EndIf
@@ -4224,7 +4219,7 @@ ButtonGadget(2,530,30,50,40," OK ")
           EndIf
          If (mousey >= usamousey -40) And  (mousey <= usamousey -10) Then
             modifmouse=4 'CAMBIADUR=1 modificar
-            notacur=nE
+            notacur=nsE
             curpos=(mousex- gap1 )/anchofig
             Exit Do
          EndIf
@@ -4247,11 +4242,11 @@ ButtonGadget(2,530,30,50,40," OK ")
    'print #1, "------------------------------------------------------------"
    'print #1, "(3) (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And COMEDIT=TRUE "
    'print #1, " ESTADO: PREPARA COMANDO"
-       notacur=nE
+       notacur=nsE
        curpos= Int((mousex - gap1)/anchofig)
        posishow= curpos  + 1 ' NO CAUSA EL +1 EN MODIF MOUSE 03-03-21-15:10
    'print #1, " savemousex=0 : savemousey=0 ' JMG NUEVA"
-   'print #1, " notacur=nE"
+   'print #1, " notacur=nsE"
    'print #1,"curpos= Int((mousex - 81)/20)"
    'print #1," posishow= curpos + 1"
    'print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
@@ -4299,7 +4294,7 @@ ButtonGadget(2,530,30,50,40," OK ")
        If modifmouse=4 Then ' modificar
          cambiadur=1
          curpos=(mousex- gap1 )/anchofig
-         notacur=nE
+         notacur=nsE
          ayudaNuevaNota=TRUE
          Exit Do
        EndIf
@@ -4330,7 +4325,7 @@ ButtonGadget(2,530,30,50,40," OK ")
    'Print  #1,"COMEDIT=TRUE "
    'print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
          curpos=(mousex- gap1 )/anchofig '01-07-2021
-         notacur=nE
+         notacur=nsE
      ' 15-09-2021 no se puede dar ctrl-m mas alla de Maxpos, no sepuede modifar algo
      ' que no existe o si deberia???    
      ' esto es necesario si no agrego las 500 posiciones al cargar el archivo
@@ -4440,15 +4435,15 @@ ButtonGadget(2,530,30,50,40," OK ")
    EndIf
 
    If ayudaNuevaNota=FALSE And ayudaModif=FALSE Then
-      If DUR > 0 And nE > 0 And nroClick = 1 And modifmouse<> 3 Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
-         nota=nE   ''<== 1er nota ingresada para la duracion y nota elegida
+      If DUR > 0 And nsE > 0 And nroClick = 1 And modifmouse<> 3 Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
+         nota=nsE   ''<== 1er nota ingresada para la duracion y nota elegida
          nroClick=0
  ' print #1, "------------------------------------------------------------"
- ' Print  #1," DUR > 0 And nE > 0 And nroClick = 1 And ayudaNuevaNota=FALSE and COMEDIT=TRUE "
+ ' Print  #1," DUR > 0 And nsE > 0 And nroClick = 1 And ayudaNuevaNota=FALSE and COMEDIT=TRUE "
  ' Print  #1," And ayudaModif=FALSE "
  ' Print  #1," (7) ESTADO INGRESA O MODIFICA 1ER NOTA"
  ' Print  #1," 7-><== 1er nota ingresada para la duracion y nota elegida"
- ' Print  #1," 7->nota=nE   ", nE
+ ' Print  #1," 7->nota=nsE   ", nsE
  ' Print  #1," 7-> nroClick=0"
  ' print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 
@@ -4457,17 +4452,17 @@ ButtonGadget(2,530,30,50,40," OK ")
    If ayudaModif=FALSE And ayudaNuevaNota=FALSE And octavaEdicion = estoyEnOctava Then
      '11-12-2021 uso Ctrl + click para ingresar notas con el mouse sino se ingresa por error
      ' facilmente durante el pasaje de edit a ctrl-m
-     If (mouseButtons And 1) And (DUR > 0) And (nE > 0) And modifmouse<> 3 And MultiKey(SC_CONTROL) Then
+     If (mouseButtons And 1) And (DUR > 0) And (nsE > 0) And modifmouse<> 3 And MultiKey(SC_CONTROL) Then
    'print #1, "------------------------------------------------------------"
-   'Print  #1,"(8) (mouseButtons And 1) And (DUR > 0) And (nE > 0) And ayudaNuevaNota=FALSE "
+   'Print  #1,"(8) (mouseButtons And 1) And (DUR > 0) And (nsE > 0) And ayudaNuevaNota=FALSE "
    'Print  #1,"(8)  And COMEDIT=TRUE And ayudaModif=FALSE"
    'print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
      Dim As Integer posdur= (mousex- gap1 )/anchofig + posishow '01-07-2021
      If posdur >= Maxpos - 1 Then  ' no permite entrar notas con click , antes de maxpos
-       nota=nE ' <=== ingresamos varias notas por mouse del mismo valor
+       nota=nsE ' <=== ingresamos varias notas por mouse del mismo valor
      EndIf
    ' hasta que si vuelva a dar click derecho y aparesca de nuevo el menu de duraciones.
-   '   Print  #1," nota=nE ", nE
+   '   Print  #1," nota=nsE ", nsE
      Exit Do
   EndIf
    EndIf
@@ -4505,7 +4500,7 @@ EndIf
 ' If MultiKey(SC_ALT) And MouseButtons And 1 Then 'posiciona el cursor
 '    ' habilito trasposicion de una sola nota, ejecuta solo con Ctrl-T previo y
 '    ' las flechas up/down, habilitare dragado tambien 02-07-2021
-''    pasoNota=nE
+''    pasoNota=nsE
     
 '    indicePos=(mousex- gap1 )/anchofig + posishow
      
@@ -4582,7 +4577,7 @@ EndIf
  '  =========================================================================
  If MultiKey(SC_Z)  And MouseButtons And 1 Then ''''MousePress = 1 Then
     indicePos=(mousex- gap1 )/anchofig + posishow 
-    Rolldur=CInt(Roll.trk(indicePos,(12-nE +(estoyEnOctava -1) * 13)).dur)
+    Rolldur=CInt(Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).dur)
     pasozona1=0: pasoZona2=0 
   ' ARMADUR USA MOVE EL CUAL SETEA LAS PASOZONA NECESARIAS
   ' ya funciona ok con DUR 
@@ -4690,10 +4685,10 @@ Loop
 End sub
 '
 
-/'
+
 '
 ' error
- errorloopbas:
+errorloopbas:
  
 'Dim As Integer er1, ErrorNumber1, ErrorLine1
 ErrorNumber1 = Err
@@ -4714,20 +4709,20 @@ EndIf
   Print #1,"kply ",kply
 /'
   Print #1, "n ",posicion;" posishow "; posishow; " NroCol ";NroCol
-  Print #1, "semitono "; nE; " *po "; *po 
-  Print #1, "valor1 ",posicion; " valor2 "; 12- nE  + (*po -1)* 13
+  Print #1, "semitono "; nsE; " *po "; *po 
+  Print #1, "valor1 ",posicion; " valor2 "; 12- nsE  + (*po -1)* 13
   Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
   Print #1, "lbound 2 de Roll.trk ", lBound(Roll.trk, 2)   
-  Print #1, "Roll.trk (n,11- nE  + (*po-1) * 13 ).nota", Asc(Str(Roll.trk (posicion,12- nE  + (*po -1)* 13 ).nota))
-  Print #1,"Roll.trk (n,12- nE  + (*po -1)* 13 ).dur ",  Asc(Str(Roll.trk (posicion,12- nE  + (*po -1) * 13 ).dur))
+  Print #1, "Roll.trk (n,11- nsE  + (*po-1) * 13 ).nota", Asc(Str(Roll.trk (posicion,12- nsE  + (*po -1)* 13 ).nota))
+  Print #1,"Roll.trk (n,12- nsE  + (*po -1)* 13 ).dur ",  Asc(Str(Roll.trk (posicion,12- nsE  + (*po -1) * 13 ).dur))
   Print #1,"gap1 + ic * anchofig ",gap1 + ic * anchofig
   Print #1,"desde ";desde;" hasta ";hasta; "hasta-1 ";hasta-1; " *po ";*po
-  Print #1, "nE ";nE; " nR ";nR; " PianoNota ";PianoNota
+  Print #1, "nsE ";nsE; " nR ";nR; " PianoNota ";PianoNota
   Print #1, "mensaje, Ermn ", *Ermn, Ermn
   Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2) 
   print #1,"------------------------------------"
 '/
 EndIf
  Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
-'/
+
 

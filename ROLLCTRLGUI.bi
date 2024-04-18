@@ -1,10 +1,14 @@
 'ROLLCTRLGUI... GUI DE VENTANA DE CONTROL
 Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8,MenName10
 Static Shared As HMENU MenName31,MenName32 
+
 If instancia < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON control
   menuabierto=1 ' evita apertura de mas de un menu
   instancia=0
-  hwndC = OpenWindow("RollMusic Ctrl V "+ nroversion,10,10,ANCHOSYSTEM*0.91 ,ALTOSYSTEM*0.91,WS_OVERLAPPEDWINDOW Or WS_VISIBLE,  WS_EX_ACCEPTFILES   )
+  
+  hwndC = OpenWindow("RollMusic Ctrl V "+ nroversion,10,10,ANCHOSYSTEM*0.91 ,ALTOSYSTEM*0.91, _
+   WS_OVERLAPPEDWINDOW Or WS_VISIBLE ,  WS_EX_ACCEPTFILES   )
+  'CenterWindow(hwndC)
 ''UpdateInfoXserver()
 Var bitmap = Load_image("fondo.bmp")
 BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
@@ -179,7 +183,7 @@ ButtonGadget(BTN_EJEC_PAN,   530, 710, 35, 20,"Pan")
 ButtonGadget(BTN_EJEC_PATCH,  570,710, 50, 20,"Patch")
 ButtonGadget(BTN_EJEC_CANAL,  620,710, 50, 20,"Canal")
 
-'---------------------------
+'---------------------------LISTVIEW ROLL MANUALES
 ButtonGadget(BTN_ROLL_PORTSAL, 70,710,70,20,"PortSal")
 ButtonGadget(BTN_ROLL_VOL,   140, 710, 35, 20, "Vol")
 ButtonGadget(BTN_ROLL_PAN,   180, 710, 35, 20,"Pan")
@@ -210,19 +214,16 @@ Menubar(MenName1)
 MenuItem(10061,MenName1,"2.0 Abrir directorio de Cancion con Pistas separados con Ventana de Control  sin Roll Grafico")
 MenuItem(10062,MenName1,"2.1 Abrir Roll Grafico dependiente de Control si se uso la opcion (2.0) ")
 MenuItem(10063,MenName1,"2.2 Externo:Abrir un Roll Grafico independiente de Control, si se uso la opcion (2.0) ")
-
 Menubar(MenName1)
 MenuItem(1007,MenName1, "3.0 Grabar Cancion")
-'MenuItem(10071,MenName1, "Na.Grabar Cancion Como")
-
+'MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
+'MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
 Menubar(MenName1)
-MenuItem(1010,MenName1,  "4.0 Cargar una Pista (rtk o roll) externa en Cancion")
-MenuItem(1011,MenName1,  "4.1 Grabar una Pista de la Cancion con modificaciones, carga pista si no hubiera cargada")
-MenuItem(1012,MenName1,  "4.2 Copia una pista a otra  nueva en cancion")
-''MenuItem(1013,MenName1, "   Exportar Pista a midi")
-MenuItem(1014,MenName1,  "4.3 Grabar una Pista rtk a roll TrackaRoll")
-Menubar(MenName1)
-
+MenuItem(1010,MenName1, "4.0 Cargar una Pista (rtk o roll) externa en Cancion")
+MenuItem(1011,MenName1, "4.1 Grabar una Pista de la Cancion con modificaciones, carga pista si no hubiera cargada")
+MenuItem(1012,MenName1, "4.2 Copia una pista a otra  nueva en cancion")
+'MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
+MenuItem(1014,MenName1, "4.3 Grabar una Pista rtk a roll TrackaRoll")
 MenuItem(10075,MenName1, "4.4 Cargar Pista (rtk o roll) en Roll aislado ")
 
 Menubar(MenName1)
@@ -230,14 +231,13 @@ Menubar(MenName1)
 MenuItem(1008,MenName1,  "4.5   Cargar Pista a Exportar a midi durante Reproduccion")
 MenuItem(1009,MenName1,  "4.5.1 Exportar Pista de 4.5 ")
 
-Menubar(MenName1)
 
+Menubar(MenName1)
 MenuItem(1015,MenName1, "5.0 MIDI-IN Grabar Pistas ejecucion")
 MenuItem(1016,MenName1, "5.1 MIDI-IN Cargar Pistas ejecucion")
 '''MenuItem(1017,MenName1, "Elegir MIDI-OUT o Driver o Port de Salida de pista previamente chequeda en S (sonido)")
 Menubar(MenName1)
 MenuItem(1019,MenName1, "    Salir")
-
 
 
 MenuItem(1020,MenName2, "Nombre o Título (fecha por omision), la cancion es un directorio")
@@ -274,8 +274,14 @@ MenuItem(1067,MenName31, "Na. Crear Patrones de Ediciones manuales")
 MenuItem(1068,MenName32,"Habilitar Patrones",MF_UNCHECKED)
 
 
-MenuItem(1070,MenName4,"Ver Escalas auxiliares ajustadas", MF_CHECKED)
-MenuItem(1071,MenName4,"Ver Cifrado de Acordes", MF_CHECKED)
+MenuItem(1070,MenName4,"Escalas auxiliares ajustadas", MF_CHECKED)
+MenuItem(1071,MenName4,"Cifrado de Acordes", MF_CHECKED)
+Menubar(MenName4)
+MenuItem(1072,MenName4,"Parametros de un archivo Roll  ")
+MenuItem(1073,MenName4,"Parametros de un archivo Track ")
+MenuItem(1074,MenName4,"Parametros de Roll y Track(0) en memoria")
+MenuItem(1075,MenName4,"Parametros de Track(n) en memoria ")
+
   
 MenuItem(1080,MenName5,"TEMPO, Manual Por omision=60, Ejecucion Tick por omision=5mseg equivale a 240")
 MenuItem(1081,MenName5,"Factor para Aumentar velocidad de ejecucion, No se graba en archivo 1,5 o 0,5 etc")
@@ -353,4 +359,5 @@ MenuItem(2000,MenName10,"Acerca de")
 ' Y SI PONES MARRON COMO ES EL CASO SALE AZUL JAJAJA
 ' PARECE QUE NO ES RGB SINO BGR
 ' O SEA USA BGR NO RGB ,BGR EXISTE
+
 End If

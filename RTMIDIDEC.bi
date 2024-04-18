@@ -8,9 +8,9 @@
 
 
 Declare Function restar (notaRoll As Integer) As Integer
- 
-Declare Sub duracion (old_time As double,tiempoFigura As double, cnt As ubyte, cntold As UByte,i1 as Integer)
-Declare Sub duracionTXT (old_time As Double, tiempoFigura As Double, cnt As ubyte, cntold As UByte,i1 As integer)
+Declare Sub PlayRoll () 
+'declare Sub playAll() 
+Declare Sub duracion (old_time As double,tiempoFigura As double)
 Declare Sub pedaloff(portsal As ubyte)
 Declare Sub allSoundoff(canal As UByte,portsal As ubyte)
 Declare Sub alloff(canal As UByte,portsal As UByte)
@@ -97,7 +97,6 @@ Dim Shared As float relDur (0 To 182) => {0, _
 7 ,3.5,1.75,0.875,0.4375,0.21875,0.109375,0.0546875,0.02734375, _ '163 171
 2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,0.0208333,0.01041666,0,0} '172 181
 
-' como vemos tiene 7 decimales eso esta en el orden de nano segunos
 Dim Shared As Double durcla (1 To 45, 1 To 2) => { _
 {0.01041666,45},_
 {0.0156250,9},_
@@ -145,13 +144,8 @@ Dim Shared As Double durcla (1 To 45, 1 To 2) => { _
 {6,19} ,_
 {7,28}}
 
-' SI UNA NEGRA SON 500 MICRO SEGUNDOS SEGUN SUELEN USAR EN ARCHIVOS MIDI
-' LA DIVISION MAS CHICA MIA SON 0.01041666 * 500 USEG=5,20808 useg
-' LA FIGURA MAS ACHICA SON 5 MICROSEGUNDOS UNA NEGRA 500 MICRO SEGUNSOS
-' LA REDONDA 2000 USEG = 2*10^3* 10^-6= 2 *10^-3 = 2 MILI SEGUNDOS LA REDONDA
-' 1 MILISEGUDO LA BLANCA Y 0,5 MILISEGUNDO LA NEGRA = 500 * 10^-6 = 5*10^2*10^-6
-' 5*10^-4 = 0,5 MILI SEGUNDO
-'
+
+
 
 Dim Shared As Integer play =0,playb=0, portin, numero, numeroFrac,cambioescala=0
 Dim Shared As Integer portout=0 
@@ -163,7 +157,6 @@ Dim Shared As String *2  listCanal(1 To 16) => {" 1"," 2"," 3"," 4"," 5"," 6"," 
 
 Dim Shared As String * 1 cifra 
 Dim Shared As String  digito, digitoFrac
-Dim Shared As Double  Cantmicroseg=0
  
 '----------------------------
 ' PLAY ALL NEW
@@ -202,17 +195,17 @@ Static Shared pasoCol (0 To 384) As vec
 
 Declare Sub noteon	( note As UByte, vel As UByte,canal As UByte,portsal As UByte,i1 As Integer)
 Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal As UByte,tiempoDur As Double,velpos As integer)
- 
+'Declare Sub AcordeIguales ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte,canal As UByte,tiempoDur As double) 
 'Declare Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte,cntold As UByte, canal As UByte)
 'Declare Sub AcordeDistintos ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte, canal As UByte,tiempoDur As double) 
 'Declare Sub AcordeOffDistintos	( pasoCol() As vec , cnt As UByte,cntold As UByte, canal As UByte,tiempoDur As Double)
 'Declare Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As Double)
 'Declare Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As double)
 Declare Function vol (dura As UByte, vel As UByte) As ubyte
-Declare sub noteoff( note As UByte, canal As UByte,portsal As UByte,i1 As integer )
+Declare sub noteoff( note As UByte, canal As UByte,portsal As UByte,i1 As Integer )
 Declare Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
 Dim Shared As Integer ligaglobal=0 ', ligaglobalc (1 To 32)
-'Relacion de nR indice de Roll, con nE semitono, para evitar calculos.
+'Relacion de nR indice de Roll, con nsE semitono, para evitar calculos.
 Dim Shared As integer relnRnE(0 To 132) => { _  ' notapiano real vs nota ..semitono
 12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1, _
 12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1, _

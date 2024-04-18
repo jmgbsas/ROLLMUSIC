@@ -1,4 +1,3 @@
-Declare sub  RollLoop (ByRef param As pasa)
 
 
 Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
@@ -26,7 +25,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                   NombreCancion = ""
                   param.encancion=0
                   ResetAllListBox(3)
-                  ResetearCancion (pmTk()) 
+                  Resetear (pmTk()) 
                   cargarDirectorioCancion(NombreCancion)
                   CANCIONCARGADA=False
                   ntk=0
@@ -63,7 +62,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                ' por ejemplo tenia solo un roll abierto
                   param.encancion=0
                   ResetAllListBox(3)
-                  ResetearCancion (pmTk()) 
+                  Resetear (pmTk()) 
                   CargarPistasEnCancion ()
                   If tope=0 Then
                     NombreCancion = "" ' directorio fallido
@@ -129,8 +128,7 @@ Sub CTRL1007()
 End Sub
 
 Sub CTRL10075 ()
-''''  NO PERMITE crear el archivo  secuenciaPLAY.txt
-''' codigo no usado por ahora 
+
            ROLLCARGADO=False 
             Dim As String nombreg
             
@@ -173,7 +171,7 @@ Sub CTRL1012 (ByRef SALIDA As Integer)
            ROLLCARGADO=FALSE 
             Dim As String nombreg
             If nombre = "" Then
-               getfiles(file,myfilter,"open")
+               getfiles(file,myfilter,"save")
                nombreg=*file.lpstrFile
                If nombreg = "" Then
                   print #1,"exit select por nombreg vacio "
@@ -315,7 +313,7 @@ Sub CTRL1040 () ' <========== seleccion de instrumento por orden Alfabetico
                 Roll.trk(1,NA).inst= CUByte(instru)
                 Track(ntk).trk(1,1).nnn=CUByte(instru)
               ' grabar la pistacomo en 1011
-            print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
+            print #1, "CTRL1040 Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
               If CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE Then
                  If NombreCancion > ""  And MAxPos > 2 Then
@@ -337,6 +335,7 @@ End Sub
 
 Sub CTRL1050 () ' <=========== seleccion de instrumento por orden Numerico
 
+/'
                selInstORdenNum (instru)
                If CANCIONCARGADA =TRUE Then
                Else
@@ -370,7 +369,7 @@ Sub CTRL1050 () ' <=========== seleccion de instrumento por orden Numerico
 
               MenuNew=0           
               carga=1
-
+'/
 
 End Sub 
 
@@ -543,23 +542,79 @@ Sub CTRL1071(hmessages As hmenu)
 
 End Sub
 
-Sub CTRL1090 ()
-             If Cplay = 0 And MaxPos > 2 Then
-                 GrabarPenta=0:naco=0:naco2=0
-                 CPlay=1
-                 If NombreCancion > "" Then
-                    If play=1 Or playb=1 Then
-                       CONTROL1=1 ' DETIENE EL PLAY VEREMOS
-                       playloop=0:playloop2=0
-                       play=0 : playb=0
-                       Sleep 20
-                    EndIf 
-    '                Print #1,"USANDO PLAYCANCION"
-                    thread1 = ThreadCall  playCancion(Track())
-                 EndIf
-              EndIf   
+Sub CTRL1074() '' Parametros de Roll y Track(0) en memoria
+
+'Type dat Field=1
+' nota As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
+' dur As  UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
+' vol As  UByte =0 ' volumen hasta 127 es volumen desde ahi es escala 128 a 255 =127 escalas
+' pan As  UByte =0 ' paneo + o -
+' pb  As  UByte =0 ' pitch bend + o -
+' inst As UByte =0 ' instrumento para cada nota podra ser distinto 1 to 128
+' ' Nota de escala son 12 ..bemol o sostenido son 2
+' ' entonces en 14 numero stengo la info
+' ' 129 -> c,130->c#,131->d...140->B--, 141-sos,142,bemol
+' ''t   As Ulong   '  ticks por ahroa no 
+'End Type
+'' dentro del vol pondremso las escalas
+'' chords http://www.looknohands.com/chordhouse/piano/ ahi hay 168 escalas..!!
+'' en vol tengo desde 129 a 255 para numerar escalas. si faltan puedo usar pan o pb
+'' l aidea es poner en que escala esta cada nota o compas y asi poder tener cambios de escla
+'' y construir los acordes que se quieran construir es esa escala de esea nota o del compas o 
+'' la escala del ultimo cambio...por default la escala sera C mayor.. 
+'Type inst
+' As dat trk(Any, Any)
+'End Type
+'Dim Shared As inst Roll ' para visualizar y tocar
+' Type inst
+' As dat trk(Any, Any)
+'End Type
+
+'Type poli Field=1 ' para guardar la secuencia
+' dur As  UByte =0   ' duracion 
+' dur2 As UByte =0   ' SONIDO ON/OFF 
+' dur3 As UByte =0   '  
+' dur4 As UByte =0   '  
+' dur5 As UByte =0   '  
+' dur6 As UByte =0   '  
+' dur7 As UByte =0   '  
+' dur8 As UByte =0   '  
+'
+' nota As UByte =0 ' en un futuro contendra nota, octava, canal etc 
+' vol As  UByte =0 ' volumen
+' pan As  UByte =0 ' paneo
+' pb  As  UByte =0 ' pitch bend
+' nnn As UByte =0' se usa para escala canal etc 
+' tick As ubyte =0' 128 tiene la redonda *1,75 segun pesoDur, 1 la cuartifusa o garrapatea todavia no la uso
+' acorde  As ubyte =0 ' 1 a 12 , son el se hara el sort    
+'End Type
+' posn As Integer =0' de roll todavia no lo uso para generar secuencia
+' comentarios Para Futuro:
+' tick y posn seria para tener una relacion entre ticks los 128, y la posicin 
+' de roll, o sea  en que posicion o columna esta la nota en Roll
+' acorde, no se si seria necesario quiere indicar si hay o no un acorde
+' una forma de disminuir el algoritmo de lectura posterior....a verlo....
+'Type sec
+' As poli trk(Any, any)
+'End Type
+
+ 
+'ReDim Shared Track  (0 To 32) As sec ' tracks para guardar,.. y tocar 
+'    Roll.Trk(1,i1).nota ' As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
+'    Roll.Trk(1,i1).dur  ' As UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
+'    Roll.Trk(1,i1).vol  ' As UByte =0 ' volumen hasta 127 es volumen desde ahi es escala 128 a 255 =127 escalas
+'    Roll.Trk(1,i1).pan  ' As UByte =0 ' paneo + o -
+'    Roll.Trk(1,i1).pb   ' As UByte =0 ' pitch bend + o -
+'    Roll.Trk(1,i1).inst ' As UByte =0 ' instrumento para cada nota podra ser distinto 1 to 128
+' PUERTO DE SALIDA O DISPOSITIVO
+  '''===>>   pmTk(0).portout      ' ubyte  a ubyte
+' CANA LDE SALIDA EN ESE DISPOSITIVO
+  '''===>   pmTk(0).canalsalida ' ubyte a ubyte
+
+
 
 End Sub
+
 Sub CTRL1092()
 ' abrir un midi-in ...con callback
 ' no depende del numero de pista de ejecucion,sino del portin solamente,,,
@@ -1173,7 +1228,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
           '        print #1,"llama a playall"
                    Play=1
  Print #1,"Va Play All ????,maxpos  ", MaxPos
-                   thread1 = ThreadCall  playAll(Roll)
+                   thread2 = ThreadCall  playAll(Roll)
                EndIf 
             EndIf
        EndIf   
@@ -1225,7 +1280,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
                   play=0 : playb=0
                   Sleep 20
                EndIf 
-               thread1 = ThreadCall  playCancion(Track())
+               thread1 = ThreadCall  PlayCancion(Track())
             EndIf
          EndIf   
 
@@ -1470,7 +1525,7 @@ GrabarMidiIn(pgmidi)  'POR CANAL
          Next k
 ' miport=1 estamos seleccionadno port de salida , de entrada es 2 midi in
         If  num=1 Then  ' se chequeop una pista no importa cual
-         thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))
+         threadsel = ThreadCall selport(miport)
         EndIf
             
      EndIf 
@@ -1485,84 +1540,46 @@ GrabarMidiIn(pgmidi)  'POR CANAL
          For k=1 To 32 ' pistastrack de cancion
            If CheckBox_GetCheck( cbxnum(k))= 1  Then
               num=k
-              instrum=CInt(pmTk(num).patch)  'TOMA LO QUE EXISTE EN EL A RCHIVO
+'              instrum=CInt(pmTk(num).patch)  'TOMA LO QUE EXISTE EN EL A RCHIVO
 ' toma la 1era de arrib  abajo el resto las ignora si hay mas chequeadas
 ' y si instrum es > 0 es un cambio
+             instrum=CInt(Track(k).trk(1,1).nnn) 
+Print #1,"k, instrumento en check ";k,instrum
+              ntk=k 
               Exit For
            EndIf
          Next k 
 '         Print #1, "PATCH . num,instrum ", num, instrum
          If  num >=1 Then
-             selInstORdenNum (instrum)
-              '''thread2 = ThreadCreate(@selInstORdenNum(), CPtr(Any Ptr, instrum))
+             selInstORdenAlfa (instrum)
  '             Print #1, "patch instrum seleccionado ", instrum
-             pmTk(num).patch=CUByte(instrum)
              If CANCIONCARGADA =TRUE Then
-             Else
-                      ntk=0
+              Else
+               ntk=0
              EndIf
+            pmTk(ntk).patch=CUByte(instrum)
+            patchsal=pmTk(ntk).patch
             portsal=pmTk(ntk).portout
+            Track(ntk).trk(1,1).nnn =CUByte(instrum)
+
  '           Print #1, "patch portsal almacenado, instru ", portsal, instrum
             Roll.trk(1,NA).inst= CUByte(instrum)
-            Track(ntk).trk(1,1).nnn =CUByte(instrum)
             Dim As String nombreg
-
-              If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
-                 If NombreCancion > ""  And MAxPos >2 Then
+            If MaxPos > 2 Then 
+              If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Or NombreCancion > "" Then
                     GrabarRollaTrack(0)
-                 EndIf
               Else
-                If MaxPos > 2  And ROLLCARGADO  Then
+                If  ROLLCARGADO  Then
                   'aca graba el roll con Roll.trk(1,NA).inst
                  GrabarArchivo (0) ' graba roll en edicion, borro todo el undo�?
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
                 EndIf  
               EndIf  
               carga=1 ' control de carga, anula calcompas durante la carga ,,etc
-
+            EndIf
         EndIf
 
       End If
 
 
 End Sub 
-Sub boludeo()
-#include "crt/stdlib.bi"
-                 Sleep 20
-                Dim As String cadena
-                Dim  As Integer punto= InStr(Nombre,".") 
-                 
-                cadena=Mid(Nombre,1,punto ) 
-                punto=InStrRev (cadena,"\")
-                cadena=Mid(cadena,punto+1)
-If FileExists( cadena+"txt"  ) Then
-    Print #1, "File found: " & cadena + "txt"
-  Else
-    Print #1, "3 File not found: " & cadena + "txt"
-  End If
-  '''Close 5
-             '   cadena =  cadena + "txt " + cadena + "mid"
-           '  fileflush(midiplano)
-            ' Close #midiplano
-             Sleep 20
-             cadena =  " secuenciaPLAY.txt " + cadena + "mid"
-       system_(".\TESTEXEC.exe " + cadena)
-   
-
-  '              Dim result As Integer
-  '              Print #1, "argumentos  "; cadena
-   '             'result = Exec( "midicomp.exe" , cadena )
-   '      cadena =" /c .\TXTTOMIDI.BAT  " + cadena        
-    '             exec ("cmd", cadena)
-              '  If result = -1 Then
-
-                   Print #1, "ejecutado " , cadena
-              ' End If
-              ' Print #1, "Exit code:"; result
-               
-                
-                
-           '  EndIf 
-
-
-End Sub

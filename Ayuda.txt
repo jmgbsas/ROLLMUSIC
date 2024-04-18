@@ -406,16 +406,16 @@
           como no hay cancion ejecuta lo que haya, el track en edicion.
 
 
-    IV) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
-        estilo pentagrama-roll una combinacion. Para mi esto es mas Roll de lo que son los otros, dado que en 
-        su origen el Roll se hacia con perforaciones en un papel en forma rigida con un tamaño especifico de la 
-        nota, RollMusic hace lo mismo, coloca letras de valor especifico rigidos que luego podrán cambiarse.
+    V)  Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
+        estilo pentagrama-roll una combinacion. En su origen el Roll se hacia con perforaciones en un papel
+        en forma rigida con un tamaño especifico de la nota, RollMusic hace lo mismo, pero coloca letras de
+        valor especifico rigidos que luego podrán cambiarse.
         Hoy en dia la entrada de midi input puede ir a roll directamente esa es una facilidad pero no es el 
         verdadero Roll original, ya se puede ingresar con midi input y quantizar para generar un roll
         con letras, pero no hay cuadritos, existen las dos opciones una grabacion desde midi input no visible 
         que se graba a *.ejec, y otra que vaya a Roll directamente grabandose luego en *.roll 
         (ya se esta haciendo pero no calcula  compas por ahora), puede verse con letras, esa es la diferencia 
-        principal con otros Roll.O sea puedo tener pistas de performance real no visibles en Roll 
+        principal con otros Roll. O sea puedo tener pistas de performance real no visibles en Roll 
         hasta tanto no se quanticen y otras que directamente se van cuantizando a medida que se dibujan
         en el grafico. Las *.ejec se las podrá dejar así o quantizarlas si se necesita modificar(futuro).
 
@@ -465,20 +465,13 @@
         Para terminar Usar en el mismo menu "Detener MDI-IN por MIDI-OUT" ..Solo reproduce el sonido
         del port pro omisión y el sonido por omisión,,(No elegir otro port de salida pro ahroa cancela es un test)
          
-           Notas desarrollo (No se puede cargar un track en el menú del Grafico y 
-        darle Reproducir en la GUI por consistencia solo reproducimos en Roll Gráfico, el 
-        reproductor en Control es solo para la cancion. Sin embargo el grafico asociado 
-        a Control podra reproducir canciones con la barra espaciadora. Para reproducir el Track
-        de cancion solamente, dar Ctrl,no hace falta click,  solo posicionarse sobre [Reproducir] ,  del menu del grafico.- 
-        Sin cancion cargada, la barra espaciadora tambien reproduce el track cargado.
-        Controlar otras instancias o aplicaciones mediante midi creo será
-        más facil que usar sockets(¿? cual sera mas facil y eficiente ? probaremos), 
-        todos estos temas los pruebo durante mi aprendizaje, la madeja de código algun 
-        dia lo limpiare cuando este satisfecho  con el diseño.  Esto seguirá
-        en evolución por que es un hobby de aprendisaje y tendrá paradas por estudio
-        e idas y vueltas. Si me limita mucho el lenguaje podre hacer parches 
-        con otro lenguaje o pasar todo a otro lenguaje similar porque lo que
-        está echo en Cairo se podrá trasladar a cualqueir otro lenguaje, creo... 
+      - Para exportar una pista de una cancion a un archivo Roll para editarlo en una instancia libre
+        se puede hace con la opcion del menu archivo 4.3 Grabar una pista rtk a roll
+        para ello conviene en Roll Grafico situarse en la pista deseada con el tabulador, y en la ventana 
+        de control con el boton S de arriba deseleccionar todo y luego dar click en la misma pista deseada
+        en el Roll Grafico y usar la opcion 4.3 quedara en el mismo direcorio un archivo con el mismo
+        nombre que la pista pero con extension rtk, si le damos doble click o click segun la configuracion
+        del SO y la extension esta asociada a Rollmusic.exe, se levantara un roll grafico con ese arrchivo.
 
       - VARIAS SESIONES DE ROLLMUSIC, detalles.
         El menu de Control permite crear un editor gráfico integrado a dicho Control

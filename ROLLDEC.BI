@@ -7,7 +7,6 @@
 '                  http://www.looknohands.com/chordhouse/piano/
 ' DUDA DE GUITARRISTAS https://www.guitarristas.info/foros/dudas-sobre-conceptos-armonia/239164
 ' code from
-' NtDelayExecution: en el foro FB,...=>
 'https://freebasic.net/forum/viewtopic.php?t=23680
 'Declare sub RtlInitUnicodeString alias "RtlInitUnicodeString"(as PUNICODE_STRING,as PCWSTR)
 'Declare function NtDisplayString alias "NtDisplayString"(as PUNICODE_STRING)as NTSTATUS
@@ -24,14 +23,7 @@ Declare function NtTerminateProcess alias "NtTerminateProcess"(as HANDLE,as NTST
 '    NtDelayExecution(FALSE,@delay) 'so we can see the message
 '    NtTerminateProcess(cast(HANDLE,-1),0)
 'end Sub
-'' mas detalle Ntdelay en 
-'' https://forum.powerbasic.com/forum/user-to-user-discussions/source-code/56824-ntdelayexecution-sleep-sleepex-with-higher-resolution-absolute-delay
-'
-' Unlike Sleep()/SleepEx() which take an input in milliseconds, 
-' NtDelayExecution() takes an input in units of 100 nanoseconds.
-'1 millisecond = 1 million (1,000,000) nanoseconds.
-'1 nanosecond = 0.000001 milliseconds.
-'1 nanosecond = 0.000000001 seconds, ie. 1 billionth of 1 second (1 / 1,000,000,000).
+
 
 extern "C"
 declare function _
@@ -107,8 +99,8 @@ Const HABILITAR = TRUE
 Const DESHABILITAR = FALSE 
 
 Dim HtmlHelpA As Function (hwndCaller As HWND,pszFile As LPCSTR,uCommand As UINT,dwData As DWORD_PTR) As HWND
-Dim  HTMLHelp As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
-Dim HH_POPUP As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
+Dim HTMLHelp  As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
+Dim HH_POPUP  As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
 
 'Declare Sub menu (c0 AS cairo_t Ptr,c AS cairo_t Ptr,n As Integer,menuNro As Integer)
 declare Sub botones(hWnd As HWND,cm As cairo_t Ptr,x As Integer,y As integer)
@@ -132,15 +124,15 @@ Declare Sub velocidades(j as integer)
 Declare Sub playthread()
 Declare Sub GrabarArchivo (grabar_como As Integer)
 Declare Sub GrabarTrack   (ntk As integer) ' NO SE ESTA USANDO
-Declare Sub ActualizarRollyGrabarPistaTrack ()
+Declare Sub ActualizarRollyGrabarPista ()
 Declare Sub GrabarRollaTrack (cambiaext As Integer)
 Declare Sub CargarPistasEnCancion ()
 Declare sub GrabarCopiadePista()
 Declare Sub ImportarPistaExterna()
 
-Declare sub selport(ByVal tipo As any Ptr)
+Declare sub selport(ByVal tipo As Integer)
 ''Declare sub selport(ByVal tipo As integer)
-Declare Sub selcanal(ByVal tipo As Any Ptr)  
+Declare Sub selcanal(ByVal tipo As Integer)  
 Declare Sub ComboBox()
 Declare Sub grabaprueba()
 Declare Sub borrarColumnasMarcadas()
@@ -534,7 +526,7 @@ loopDeThreads=0 ,sefini=0
 Dim Shared As Any Ptr p2,tl1,tl2,tl3,tl4,tl5,tl6,tl7,tl8,tl9,tl10,tl11,tl12 
 
 Dim Shared pun As Integer = 0 'entrada con punto = 1 con puntillo
-Dim Shared sil As Integer = 0 'silencio entrada con s = 1 con silencio
+Dim Shared silen As Integer = 0 'silencio entrada con s = 1 con silencio
 Dim Shared mas As Integer = 0 ' + continuacion o ligadura
 Dim Shared  As Integer incr=0 , entroActrlM =0, salgoDeCtrlM=0
 Dim Shared tres As Integer = 0
@@ -671,7 +663,7 @@ Dim Shared As Integer ContadorError=0
 ' 123 234 345 456 567 678 789 son7 doblepuntilo simple
 
 Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _
-modifmouse, EnOctava,nE,nR,lugarOld, nroClick, posinterna, indCompas,menuabierto=0
+modifmouse, EnOctava,nsE,nR,lugarOld, nroClick, posinterna, indCompas,menuabierto=0
 Dim Shared As ubyte nC=0,nF=0,nRk=0, cnc=0,cnf=0
 
 Dim Shared As Double t1k,t2k,DURk,DURK1,DURk2
@@ -888,9 +880,6 @@ Declare Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)
 Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As String, orden As integer )
 Declare Function lugarNota (lugar As integer) As Integer
 Declare Sub metronomo ()
-Declare Sub BORRA_SECUENCIA()
-
-
 
 COMMON Shared As Long eventc, eventM
 Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec
@@ -900,7 +889,7 @@ common Shared As String NombreCancion,NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista',pistacreada
 Common Shared As cairo_t  Ptr c, c2
 Common Shared As Any Ptr surface,surf2
-Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo
+Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal
 Common Shared As Any Ptr thread4, threadGrabamidi
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones
@@ -908,12 +897,11 @@ Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn,terminar
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo
-Common SHARED As Integer EstaBarriendoPenta
+Common SHARED  As Integer EstaBarriendoPenta
 Common Shared As Integer instancia,FINALIZAR_ROLLMUSIC, MICROSEGUNDOS_POR_NEGRA
 Common Shared As Double STARTMIDI,Tiempoacumulado
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano
-
 
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
@@ -1024,9 +1012,4 @@ Dim Shared pgmidi As paramGrabamidi
 
 Declare Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi)
 Declare Sub CargarSinRoll () '28-02-2024
-Declare Sub playAll(Roll As inst)
-Declare Sub playAllTXT(Roll As inst)
-
-
- 
-
+Declare Sub SetOptionsWindowScroll (iParam As Long)

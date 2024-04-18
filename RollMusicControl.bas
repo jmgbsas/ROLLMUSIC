@@ -37,7 +37,7 @@ End Type
 
 'Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota,compasX
-common Shared As Integer  ANCHO,ALTO,indicenotas 
+common Shared As Integer  ANCHO,ALTO,indicenotas
 Common Shared As FLOAT font
 COMMON Shared As Long eventc, eventM
 Common Shared As hwnd hwndC, hwndListBox, hwndPatronEjec
@@ -48,7 +48,7 @@ Common Shared As Integer cargaCancion, pid1,clickpista',pistacreada
 Common Shared As cairo_t  Ptr c, c2
 Common Shared As Any Ptr surface,surf2 
 Common Shared As FT_Face ftface
-common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu ,threadmetronomo
+common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu ,threadmetronomo,threadsel,threadcanal
 Common Shared As Any Ptr thread4
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig
 Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes, HabilitarPatrones
@@ -67,6 +67,7 @@ Const As BOOLEAN DESHABILITAR = FALSE
 
 FINALIZAR_ROLLMUSIC=0
 MICROSEGUNDOS_POR_NEGRA=1000000 ' 60 MILLONES / 60 BPM DEFAULT
+
 
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0
 Common Shared As Integer  posicion,posicionOld,posn,terminar
@@ -216,10 +217,7 @@ Posy=y0 +100
      
      AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
      AddListViewItem(1, "CLICK EN UN ITEM  Y EN CAMBIA",0,aa,0)
-        If patchsal > 0 Then ' ya habia un instrumento es un cambio 
-           instru=CInt(patchsal) 
-       EndIf
-
+     
        For aa =1 To 127 
                i2=InStrrev(NombreInstAlfa(aa)," ")
                cad=Mid(NombreInstAlfa(aa),i2)
@@ -462,35 +460,6 @@ Sub  verayuda (  arch As string)
 ' correspondiente
 
 End Sub 
-'--------------
-Sub BORRA_SECUENCIA()
-'''If MIDIFILEONOFF=HABILITAR And CIERROPLANO=0 Then
-Dim filename As String = "secuenciaPLAY.txt"
-Dim result As Integer = Kill( filename )
-'Dim pathcadena As ZString Ptr
-'pathcadena=@"./secuenciaPLAY.txt"
-
- 
-'remove(pathcadena ) 
-
-If result <> 0 Then 
-Print #1, "error trying to kill " ; filename ; " !"
-'Else
-' Print #1, "dice  que borro y ahora abre  " ; filename ; " !"
-'  Open "secuenciaPLAY.txt" For Append As midiplano +1
-EndIf   
-   
-''' EndIf
-' PARA MIDI PLANO
-
-  'If MIDIFILEONOFF=DESHABILITAR And CIERROPLANO=3 Then
- ' Close midiplano
- ' Shell "midicomp -C secuenciaPLAY.txt " + titulos(0) + ".mid" 
- ' CIERROPLANO=0
- 'EndIf
-
-End Sub
-
  
 
 '

@@ -3,7 +3,7 @@
 #include "RTMIDISUB.bi"
 #Include "ROLLTRACKS.bi"
 #include "ROLLSUB.bi"
-#Include "ROLLCTRLSUB.Bi"
+''#Include "ROLLCTRLSUB.Bi"
 
 '===========================
  Dim As Integer MenuFlag=0, LoopFlag=0 
@@ -108,7 +108,7 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="Ver 0.4612 export midi pista con patch" ':FUTURO Patrones de Ejecucion 03-07-2022
+nroversion="0.4615 18-04-2024" ':FUTURO Patrones de Ejecucion 03-07-2022
 ' despues de un año de bajones personales veo si me da gan de seguirlo
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
@@ -144,13 +144,6 @@ Else
    usarmarco=com_usarmarco  
    usarmarcoOld=usarmarco
 EndIf
-
-'07-04-24
-If com_usarmarco= 4 Then
- MIDIFILEONOFF=HABILITAR ' habilitamos escritura de eventos midi en el play
-end If
-
-
 ' condicion inicial para ver o no escalas auxiliares en el grafico
 Select Case nVerEscalasAuxiliares
   Case 0             
@@ -173,8 +166,7 @@ End Select
 ' AL INICIO DESHABILITADOS 2.1 Y .2.2 AUNQUE AL CLIQUEAR NO PASA NADA
   SetStateMenu(hmessages,10062,1)
   SetStateMenu(hmessages,10063,1)
-
-  SetStateMenu(hmessages,1009,1)
+  '' habilito grabar cancion punto 2) SetStateMenu(hmessages,1007,1)
 
 ' SE HABILITAN SI USO 2.0 EN SU CASE
 
@@ -269,7 +261,9 @@ Dim As Integer k=0, salida=0
 If instancia =0  Then  ' cuando es online y recien levanta 
 DisableGadget(LISTA_DE_PISTAS,1)
 End If 
-'------------
+'---------------veremos si aca anda mejor despues de roolloop 
+#Include "ROLLCTRLSUB.Bi"
+'----------------
 Do
   COMEDIT = False
 param.titulo ="RollMusic Ctrl V "+ nroversion
@@ -285,7 +279,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
   '   Print #1," ENTRA A CARGAR PISTAS  cargaCancion = ",cargaCancion
      param.encancion=0
      ResetAllListBox(3)
-     ResetearCancion (pmTk()) 
+     Resetear (pmTk()) 
 
       CargarPistasEnCancion ()
  '   Print #1,"CARGAR PISTAS cargacancion = ",cargaCancion 
@@ -337,7 +331,7 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
     EndIf
   EndIf
 
-Print #1, "LLEGA A DO LOOP PRINCIPAL ix es instancia= " ,  instancia
+'Print #1, "IX LLEGA A 337 ANTES LOOP PRINCIPAL " ,  instancia
      
   If instancia = 0   Then 
     
@@ -348,7 +342,7 @@ Print #1, "LLEGA A DO LOOP PRINCIPAL ix es instancia= " ,  instancia
        'If  repro=1 Then ' damos mas recursos si hay play de PlayTocaAll y mas si hay tambien playAll o PlayCancion
        '    Sleep 10
       ' EndIf
-      
+        
          For k=1 To 32 
            If CheckBox_GetCheck( cbxgrab(k))= 1 And tocaparam(k).nombre="" Then 
               ntoca=k 'ntoca es la  pista ejec que se esta grabando global entera
@@ -465,18 +459,21 @@ Print #1, "3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
 Print #1, "3 ubiroll ubirtk ", ubiroll,ubirtk
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
       ThreadWait threadloop
+      threadDetach(threadloop)
+             Sleep 20   
       cerrar(0)  
   End If
 '-----------------------------------------------------------------------
    
 Loop
 '-----------------------------------------------------------------------
+''DisableGadget(LISTA_DE_PISTAS,1) ' para que desactive y salga de ahi 
+'' eventM=eventClose
+''eventM=eventrbdown
 FINALIZAR_ROLLMUSIC = 1
 Sleep 5
 
- 
 salir()
-'' 
 Kill "procesos.txt"
 Close
     End 0

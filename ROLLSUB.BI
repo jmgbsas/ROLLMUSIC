@@ -17,7 +17,7 @@
 
 'end extern
 
-On  Error GoTo errorSub
+'''On  Error GoTo errorSub
 
 
 Sub ArmarDurFrac ()
@@ -25,92 +25,92 @@ Sub ArmarDurFrac ()
 ' si voy al 2do bloque de 3 el incrdeja de ser 0 y pasa a 27 respectro de la
 ' 1er linea l cargo TRAck como 2da linea
 Print #1,"armardurFrac procesa numeroFrac"
-If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=0 Then 
    numeroFrac = DUR 'era duracion
     'DUR nunca se ahce cero solo para espacio ergo si pulso
     ' la misma u otra nota sigue con la misma duracion
 EndIf
 ' CUART   
-If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
+If cuart=1 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=0 Then 
     numeroFrac = DUR + 9 'era duracion
     'DUR nunca se ahce cero solo para espacio ergo si pulso
     ' la misma u otra nota sigue con la misma duracion
 EndIf
 ' PUNTILLO   
 ' 3I* = I = 1 , el puntillo a un 3 suma dando la figura de la q proviene.   
-If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
+If cuart=0 And pun = 1 And doblepun=0 And tres=0 And silen=0 And mas=0 Then 
     numeroFrac = DUR + 18 'era dur
 EndIf
 'DOBLE PUNTILLO   
-If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=0 Then 
+If cuart=0 And pun = 0 And doblepun=1 And tres=0 And silen=0 And mas=0 Then 
    numeroFrac = DUR + 27
 EndIf
 ' SEGUIR  JMG
-If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=0 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=1 And silen=0 And mas=0 Then 
    numeroFrac = DUR + 36
 EndIf   
 ' -----fin 1er bloque ------------------------
 
-If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=1 And mas=0 Then 
    numeroFrac = DUR + 45 'era dur
 EndIf
 
-If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
+If cuart=1 And pun = 0 And doblepun=0 And tres=0 And silen=1 And mas=0 Then 
    numeroFrac = DUR + 54
 EndIf
 
-If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=0 Then 
+If cuart=0 And pun = 1 And doblepun=0 And tres=0 And silen=1 And mas=0 Then 
    numeroFrac = DUR + 63
 EndIf
-If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=0 Then 
+If cuart=0 And pun = 0 And doblepun=1 And tres=0 And silen=1 And mas=0 Then 
    numeroFrac = DUR + 72
 EndIf
 
-If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=0 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=1 And silen=1 And mas=0 Then 
    numeroFrac = DUR + 81
 EndIf
 
 ' -- fin 2do bloque   
-If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=1 Then 
     numeroFrac = DUR + 90
 EndIf
 
-If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+If cuart=1 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=1 Then 
     numeroFrac = DUR + 99
 EndIf
 
-If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+If cuart=0 And pun = 1 And doblepun=0 And tres=0 And silen=0 And mas=1 Then 
     numeroFrac = DUR + 108
 EndIf
 
-If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=1 Then 
+If cuart=0 And pun = 0 And doblepun=1 And tres=0 And silen=0 And mas=1 Then 
    numeroFrac = DUR + 117
 EndIf
-If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=1 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=1 And silen=0 And mas=1 Then 
    numeroFrac = DUR + 126
 EndIf
 '----- fin 3er bloque   
-If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=1 And mas=1 Then 
    numeroFrac = DUR + 135
 EndIf   
 
-If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+If cuart=1 And pun = 0 And doblepun=0 And tres=0 And silen=1 And mas=1 Then 
    numeroFrac = DUR + 144
 EndIf   
 
-If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+If cuart=0 And pun = 1 And doblepun=0 And tres=0 And silen=1 And mas=1 Then 
    numeroFrac = DUR + 153
 EndIf   
 
-If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=1 Then 
+If cuart=0 And pun = 0 And doblepun=1 And tres=0 And silen=1 And mas=1 Then 
    numeroFrac = DUR + 162
 EndIf   
 
-If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=1 Then 
+If cuart=0 And pun = 0 And doblepun=0 And tres=1 And silen=1 And mas=1 Then 
    numeroFrac = DUR + 171
 EndIf   
 ' ---fin 4to bloque -
-   cuart=0:pun=0:doblepun=0:tres=0:sil=0:mas=0
+   cuart=0:pun=0:doblepun=0:tres=0:silen=0:mas=0
 
 Print #1,"armardurFrac  numeroFrac Resultante ", numeroFrac
 End Sub
@@ -432,7 +432,7 @@ On Local Error GoTo errorSepara
  ' S print #1,;" DUR recibido: ";DUR;
  Dim As Integer desder, hastar
 
- ' S print #1,"pun: ";pun;" sil: ";sil;" mas: ";mas; " tres: ";tres
+ ' S print #1,"pun: ";pun;" silen: ";silen;" mas: ";mas; " tres: ";tres
  ' S print #1,"incr: ";incr
 
  ' cuando hago la carga los k son de 1 a 64 no son mas de 1 a 8
@@ -1039,100 +1039,100 @@ On Local Error GoTo errorhand
      DUR=0
  Else
 'desde aca lasnotas se colocan con notacur siemrpe tienen valorde 1 a 12
-  If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
+  If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=0 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR
     incr=0
   EndIf
  
-  If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=0 Then 
+  If cuart=1 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=0 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 9
    incr=0
   EndIf
  
-  If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=0 Then
+  If cuart=0 And pun = 1 And doblepun=0 And tres=0 And silen=0 And mas=0 Then
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 18
    incr=0
   EndIf
  
-  If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=0 Then
+  If cuart=0 And pun = 0 And doblepun=1 And tres=0 And silen=0 And mas=0 Then
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 27
    incr=0
   EndIf 
  
-  If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=0 Then
+  If cuart=0 And pun = 0 And doblepun=0 And tres=1 And silen=0 And mas=0 Then
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 36
    incr=0    
   EndIf
  
-  If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
+  If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=1 And mas=0 Then
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 45
     incr=45
   EndIf
    
-  If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
+  If cuart=1 And pun = 0 And doblepun=0 And tres=0 And silen=1 And mas=0 Then
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 54
     incr=45
   EndIf
-  If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=0 Then
+  If cuart=0 And pun = 1 And doblepun=0 And tres=0 And silen=1 And mas=0 Then
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 63
     incr=45
   EndIf
-  If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=0 Then
+  If cuart=0 And pun = 0 And doblepun=1 And tres=0 And silen=1 And mas=0 Then
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 72
     incr=45
   EndIf
    
-  If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=0 Then 
+  If cuart=0 And pun = 0 And doblepun=0 And tres=1 And silen=1 And mas=0 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 81
     incr=45
   EndIf   
  
-  If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+  If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 90
     incr=90
   EndIf   
  
-  If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+  If cuart=1 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 99
     incr=90
   EndIf 
 
-  If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=0 And mas=1 Then 
+  If cuart=0 And pun = 1 And doblepun=0 And tres=0 And silen=0 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 108
     incr=90
   EndIf
 
-  If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=0 And mas=1 Then 
+  If cuart=0 And pun = 0 And doblepun=1 And tres=0 And silen=0 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 117
     incr=90
   EndIf
 
-  If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=0 And mas=1 Then 
+  If cuart=0 And pun = 0 And doblepun=0 And tres=1 And silen=0 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 126
     incr=90
   EndIf
 '----- fin 3er bloque   
-  If cuart=0 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+  If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=1 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 135
    incr=135
   EndIf   
 
-  If cuart=1 And pun = 0 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+  If cuart=1 And pun = 0 And doblepun=0 And tres=0 And silen=1 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 144
    incr=135
   EndIf   
 
-  If cuart=0 And pun = 1 And doblepun=0 And tres=0 And sil=1 And mas=1 Then 
+  If cuart=0 And pun = 1 And doblepun=0 And tres=0 And silen=1 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 153
    incr=135
   EndIf   
 
-  If cuart=0 And pun = 0 And doblepun=1 And tres=0 And sil=1 And mas=1 Then 
+  If cuart=0 And pun = 0 And doblepun=1 And tres=0 And silen=1 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 162
    incr=135
   EndIf   
 
-  If cuart=0 And pun = 0 And doblepun=0 And tres=1 And sil=1 And mas=1 Then 
+  If cuart=0 And pun = 0 And doblepun=0 And tres=1 And silen=1 And mas=1 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 171
    incr=135
   EndIf   
@@ -1206,7 +1206,7 @@ EndIf
  '-----------------------------------------------------------
  '   vroll= Roll.trk(notacur + (*po) * 13, n + curpos).nota
   cambiadur = 0
-  cuart=0:pun=0:doblepun=0:tres=0:sil=0:mas=0
+  cuart=0:pun=0:doblepun=0:tres=0:silen=0:mas=0
 
   ReCalCompas(Roll) 'organizaCompases() 
   nota = 0
@@ -1342,7 +1342,7 @@ EndIf
 End Sub
 '----------------------------------------
 Sub Tracks ( ByRef ntk As integer, ByRef nroCanal As UByte,Roll As inst)
-  ''copia track a Roll en memoria
+  ''copia track a Roll en memoria 
   ' nrocanal no se usa ,,,,borraremos mas adelante...
 Print #1, "MaxPos <=2 Or pmTK(ntk).maxpos=0 Then " , Maxpos, pmTK(ntk).maxpos 
 If MaxPos <=2 Or pmTK(ntk).maxpos=0 Then
@@ -1356,7 +1356,7 @@ print #1,"EN TRACKS MAXPOS (NTK).MAXPOS ", maxpos, pmTK(ntk).maxpos
 ' usaremso para cambianr de track en Roll y Track(0)
 nombre= titulos(ntk)
 ' evita leer track vacios   
-If nombre=""  Then ' evita revisar track vacios
+If nombre=""  Then ' evita revisar track vacios EN UNA CANCION
  Do While nombre=""
  ntk=ntk+1
  If ntk>32 Then
@@ -1378,10 +1378,10 @@ EndIf
 End Sub
 '--------
 Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
-' PRINCIPALMENTE CARGA ROLL Y LO PASA SIEMPRE A TRACK (0)
-ntk=0 ' Cargar en 2 vectores Roll y carga a Track (0)
+' PRINCIPALMENTE CARGA ROLL Y LO PASA SIEMPRE A TRACK (0) en otra rutina
+ntk=0 ' Cargar en 2 vectores Roll y carga a pmTk(0)
 ' la carga de tracks aislada o la carga de una cancion con sus tracks
-' ira aumentando ntk 
+' ira aumentando ntk, es otra rutina no esta..aca se carga a pmTk(0) no a Track
    '  carga roll
 ' al cargar borro todo el undo    
 abrirRoll=2 ' habilita la carga de una cancion
@@ -1417,8 +1417,7 @@ abrirRoll=2 ' habilita la carga de una cancion
        EndIf
    print #1,"CArgarArchivo ",nombre    
 
-   ''ca=FreeFile
-   ca=4   
+   ca=6   
  ' print #1,"open nombre en CargaArchivo ",nombre
       If  ubiroll =0 Then
 
@@ -1479,10 +1478,14 @@ abrirRoll=2 ' habilita la carga de una cancion
      ' crgamos limites Roll de octavas
      Get #ca, , zLim(1,1)
      desde  = CInt(zLim(1,1).nota)
+     pmTk(ntk).desde=desde
      Print #1,"desde ",desde
      hasta  = CInt(zLim(1,1).dur)
+     pmTk(ntk).hasta =hasta
      Print #1,"hasta ",hasta
      notaold= CInt(zLim(1,1).pb)
+     pmTk(ntk).notaold=zLim(1,1).pb
+
      Print #1,"notaold ",notaold     
      notaescala_num_ini =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
      If notaescala_num_ini = 0 Then
@@ -1499,6 +1502,7 @@ abrirRoll=2 ' habilita la carga de una cancion
          alteracion="sos"
      EndIf
      Print #1,"alteracion ",alteracion
+     
       
     cadenaes_inicial=""
    Print #1,"armarescala desde cargarArchivo"
@@ -1516,14 +1520,18 @@ abrirRoll=2 ' habilita la carga de una cancion
      If tiempoPatron = 0 Then 
         tiempoPatron = 60
      EndIf
-
+' NB Y NA SE DEDUCEN no hace fakta guardarlos
      NB= 0 + (desde-1) * 13
      NA= 11 + (hasta -1)*13
      pmTk(0).notaold = notaold  'notaold es ubyte en pmTk
      pmTk(0).MaxPos = MaxPos
+     pmTk(0).posn = MaxPos -2
+' cargo estos campos nb na pero se los podria eliminar o usar para otra cosa,,,,
+     pmTk(0).NB=NB  
+     pmTk(0).NA=NA
      pmTk(0).desde = desde
      pmTk(0).hasta = hasta
-     pmTk(0).posn = MaxPos -2
+     pmTk(0).posn = MaxPos -2    
 
      'NB => 0 + (desde-1) * 13   ' 27 para 3
      'NA => 11 + (hasta-1) * 13  ' 90 para  7
@@ -1545,8 +1553,15 @@ abrirRoll=2 ' habilita la carga de una cancion
      Print #1,"portout cargado desde archivo ",portout
      pmTk(0).portout=z3(1,1).dur   ' ubyte  a ubyte
      pmTk(0).canalsalida = z3(1,1).inst ' ubyte a ubyte
-     
-     
+     pmTk(0).patch=z3(1,1).nota  ' ubyte a ubyte
+     pmTk(0).portout=portout
+'-----PATCH ----- 14-04-2024
+     patchsal=z3(1,1).nota ' ubyte a ubyte
+     instru= CInt(patchsal) ' integer ubyte
+     Roll.trk(1,NA).inst = patchsal
+
+
+
      Get #ca, ,z4  (1,1)
      Get #ca, ,z5  (1,1)
      Get #ca, ,z6  (1,1)
@@ -1556,13 +1571,7 @@ abrirRoll=2 ' habilita la carga de una cancion
      Get #ca, ,z10 (1,1)
 
 
-
-
-     pmTk(0).NB=NB  ' aunque es un track debe memorizar de que octavas Rol vino
-     pmTk(0).NA=NA
-     pmTk(0).portout=portout
-     
-     
+   
      ReDim compas(1 To CantTicks)
      print #1,"En CargarArchivo NB NA ", NB,NA
      Dim Trabajo (1 To MaxPos, NB To NA) As dat     
@@ -1643,20 +1652,36 @@ Dim As Integer copiado=0
       EndIf
 
 
-     Next i
+      Next i
 ' SE CREA EL CAMPO ACORDE DE POLI DEL TRACK
       Track(ntk).trk(j,1).acorde=ip
      ' Print #fs, "acorde ",Track(ntk).trk(j,1).acorde
      '''  crearsecuencia(Track(), j, ntk )
      Next j
-  pmTk(0).patch=Roll.trk(1,NA).inst
+
+ 
 
 cerrar ca
 DUR => 0
 curpos =>1
 ''' carga=0
  ReCalCompas(Roll)  
- 
+'--------------------------------
+' correccion LLAMAMOS ROLL A TRACK PARA NTK = 0, 14 -04-2024
+' pero no era necesario, total al grabar nunca grabo el track
+' segraba roll a track por si fue modificado..
+' lo importante era revisar que todos los pmTk(0) sean cargados
+' desde Track y pasados al  programa porque el encabezado de roll
+' y track en el archivo son diferentes y la forma de pasarlo es por 
+' memoria usando como intermediario pmTk(0),,al modificar debo modificar 
+' el pmTk(0)... y al grabar pasar de pmTk(0) a encabezado de Roll
+''' NO HACE FALTA ->>> RollaTrack (Track(), 0,Roll)
+
+' SI UNA CANCION ESTA CARGADA Y EDITO UN TRACK n, ESE TRACK ESTA 
+' EN ROLL PERO NO EN TRACK(0) PORQUE NO LO CARGUE, AL GRABAR
+' DEBO USAR ROLL A TRACK AJUSTANDO EL NRO DE TRACK, Y DEBE SER UNA
+' SOBREESCRITURA DEL TRACK N
+
 ' 05-03-2024 estos toques virtuales los sacare por ahora  
            'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  
           'mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0
@@ -1712,7 +1737,7 @@ nota=0
           notacur=0 ' 10-04-2022
           nroCompas=0
           InicioDeLectura=0
-          tres=0:pun=0:sil=0:mas=0:doblepun=0:cuart=0
+          tres=0:pun=0:silen=0:mas=0:doblepun=0:cuart=0
           tres=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
           SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
           
@@ -1944,17 +1969,16 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    '   print #1,"--->entra a reproducir thread1 "
               play=1
         menuNew =0
-         print #1,"hizo click para llamar a playall, maxpos ",maxpos
-         Print #1,"hizo click para llamar a playall, INSTANCIA ",instancia 
+         print #1,"hizo click para llamar a playall, maxpos ",maxpos 
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 2 Then
                GrabarPenta=0:naco=0:naco2=0
-               If instancia=7 Or instancia=6 Or instancia= 107 Or instancia < 3  Then
+               If instancia=7 Or instancia= 107 Or instancia < 3  Then
                Else
-                SetGadgetstate(15,0) ' 10-04-2022
+               SetGadgetstate(15,0) ' 10-04-2022
                EndIf  
          print #1,"llama a playall"
-         thread1 = ThreadCall  playAll(Roll)
+         thread2 = ThreadCall  playAll(Roll)
          ''''playAll(Roll)
          
         EndIf 
@@ -2038,7 +2062,7 @@ EndIf
    t = "      EDIT" + " " +  " Maxpos:" + _
    Str(Maxpos) +" Posicion:" + Str(posicion)+ " Posn:"+Str(posn)+ _
    " Font:" +Str(fontOld) + " EnOct:" + Str(estoyEnOctava) + " nA:"+Str(veonota) + _ 
-   " NP:"+ Str(PianoNota) + " nE:"+Str(nE) + " Curpos:" +Str(curpos) + _
+   " NP:"+ Str(PianoNota) + " nsE:"+Str(nsE) + " Curpos:" +Str(curpos) + _
    " RollDur :"+ Str(RollDur) + " Rollnota:" + Str(RollNota) + _ 
    " Copiar:" + Str(veocopi) +" Col:" +Str(indicePos) + " DUR:"+ Str(Dur) + _ 
    " Nota:"+ Str(nota) + " Mx:" + Str(mousex) + " My:" + Str(mousey) 
@@ -2106,7 +2130,8 @@ EndIf
 
    '===> 3.2 <ABRIR>[*.ROLL] abre roll y automaticamente lo pone
    ' en trak 0 ntk=0
-
+  '14-04-2024 NO LO ESTABA COPIANDO A TRCK 0 SOLO SUS PARAMETROS
+' EN pmtk(0)...corregido en sub cargaarchivo
    If (mousex > 215 And mousex < 269  And mousey < 50 And carga=0 ) Then ' <= ABRIR lee grabaroll.roll
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And carga = 0  Then
@@ -2211,13 +2236,15 @@ EndIf
        ubi2=InStr(nombre,"]")
        ubi3=InStr(nombre,".rtk")
        ubi4=InStr(nombre,".roll")
-'PUEDO SACAR UN TRACK Y COPIAR LO FUERA DE CANCION Y MODIFICARLO
-'PARA MODIFICAR LO COMO ARCHIVO COMUN AGREGAMOS And CANCIONCARGADA=TRUE
-' Y SALE POR GrabarArchivo...
-       If ubi1 >0 And ubi2 > 0 Or ubi3 > 0  Then 'graba un track como track
+       If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Then 'graba un track como track
        ' pero como las modificaciones estan en ROLL debo usar GrabarrollaTrack
   Print #1,"2190 menu pierde ntk ??? ",ntk
-          GrabarRollaTrack(0) 'ÇÇÇÇÑÑÑÑ
+'SI CARGUE UN RTK DESDE ARCHIVO SIEMPRE USO ROLL A  TRACK PORQUE
+' SE PUDO EDITAR EL ROLL VISUAL Y ROLL TENDRA LA ULTIMA MODIFICAION
+' ahora si es una cancion debere grabar a disco con el nrode track correspondiente
+' al track modificado porque el ntk=0 para roll. ademas debere actualizar el track ntk
+' en memoria,,,son dos operaciones,,,
+          GrabarRollaTrack(0) 
            Sleep 1000           
        Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
            GrabarArchivo (0)
@@ -2270,7 +2297,7 @@ EndIf
       '''' dialogoText("Grabar Archivo")
        Dim As String nombreg
        If nombre = "" Then
-          getfiles(file,myfilter,"open")
+          getfiles(file,myfilter,"save")
           nombreg=*file.lpstrFile
           If nombreg = "" Then
              Exit Sub
@@ -2605,7 +2632,7 @@ EndIf
       If MouseButtons And 1 And cierroport = 0 Then
         cierroport=1 
        Dim miport As Integer=1
-       thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))  '' 'GtkListBox()
+       threadsel = ThreadCall selport(miport)  '' 'GtkListBox()
       EndIf ' mousebuttons
   
     Else
@@ -2622,7 +2649,7 @@ EndIf
        Dim miport As Integer=2
        MenuNew=10:Menunro=10
        ' create con argumentos
-       thread2 = ThreadCreate(@selport(), CPtr(Any Ptr, miport))  '' 'GtkListBox()
+       threadsel = ThreadCall selport(miport)  '' 'GtkListBox()
       EndIf ' mousebuttons
     
     Else
@@ -2638,7 +2665,7 @@ EndIf
       If MouseButtons And 1 Then
        Dim ti As Integer
        ti=1 ' seleccion de canales midi de entrada
-       thread2 = ThreadCreate(@selcanal(), CPtr(Any Ptr, ti))
+       threadcanal = ThreadCreate(@selcanal(), CPtr(Any Ptr, ti))
          
        'Print #1,"canal elegido luego del thread2 en menu ",canalx
       EndIf ' mousebuttons
@@ -2691,7 +2718,7 @@ EndIf
       MenuNew=0
      EndIf
   EndIf
-  
+
  'DeAllocate xo: DeAllocate yo
 End Sub
 '----------------------------------------------------------------------
@@ -3058,7 +3085,7 @@ nombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
 ' o sea el default de tiempoPAtron para manual es 60, pero para ejecuciones es 240
 If  EJECCARGADA=FALSE Then
     If tiempoPatron = 0  Then
-       tiempoPatron=60  'BPM
+       tiempoPatron=60
        TickPlay=TickChico ' equivale a 240
    EndIf
 EndIf
@@ -3188,26 +3215,28 @@ Sub GrabarArchivo (grabar_como As Integer)
 ' el que se esta editando o se carga un nuevo archivo
 ' para roll ntk es siemrpe cero
 ntk=0
+Print #1,"GRABAR ARCHIVO: nombre al comienzo "; nombre
 Dim  As Integer npl
      If nombre = "" Then ' backup antes de aumentar el tamaño del vector
         nombre = "Backup"+ Date + ".roll"
      Else
-       npl= InStr(UCase(nombre),".TRK") 
+       npl= InStr(UCase(nombre),".RTK") 
        If npl > 0 Then
           nombre=Mid(nombre,1,npl-1)
-          print #1,"un trk grabado como roll",nombre  
-'' y entonces que tengo un roll con extenson trk???
-'' igual lo carga bien nose magia!09-04-2024 MMMM EST Ono esta bien creo... 
+''' NUNCA ENTRA POR ACA , SOLO SI SE USA ESTA RUTINA SIN
+''' ANALIZAR EL NOMBRE 
+          nombre = nombre +".roll"  
+          print #1,"un trk grabado como roll ",nombre
+              
        Else
-        If InStr(UCase(nombre),".ROLL") = 0 Then
+        If InStr(UCase(nombre),".roll") = 0 Then
            nombre = nombre +".roll"   
         EndIf
        EndIf 
      EndIf   
      print #1,"NOMBRE A GRABAR COMO",nombre
  
-    ''ga=FreeFile
-    ga=4  
+    ga=7 
     Open nombre  For Binary Access write As #ga
   ''''  Open "test-AAAAA.TXT" For Output    As #2
      Dim Trabajo (1 To Maxpos, NB To NA) As dat
@@ -3355,8 +3384,12 @@ Negras por minuto	 tempo
      If instru=0 Then 
         instru=1
      EndIf
-     If instru > 0 Then
+     If instru > 0 And instru <> CInt(pmTk(ntk).patch) Then
        Trabajo(1,NA).inst = CUByte(instru)
+     Else 
+         If instru = CInt(pmTk(ntk).patch) Then
+            Trabajo(1,NA).inst=pmTk(ntk).patch 
+         EndIf
      EndIf
      If CANCIONCARGADA =TRUE Then ' SELECCION DE ISNTRUMENTO CON CANCION CARGADA
         Trabajo(1,NA).inst = Track(ntk).trk(1,1).nnn
@@ -3364,7 +3397,13 @@ Negras por minuto	 tempo
      graba3(1,1).inst =pmTk(ntk).canalsalida ' el CANAL MIDI 1 A 16 QUE ACA VA DE 0 A 15
 
      graba3(1,1).dur = pmTk(ntk).portout
-     
+     ' faltaba el patch!!! por eso habia incongruencias al modificar
+     ' ver la carga tambien SEGUIR!!!!, TAMPOCO ESTABAN NA Y NB
+     graba3(1,1).nota= pmTk(ntk).patch ' 14-04-2024
+     If Roll.trk(1,NA).inst <> pmTk(ntk).patch Then
+        graba3(1,1).nota=Roll.trk(1,NA).inst
+     EndIf
+     ' NB y NA se calcula a partir de desde y hasta no hace falta grabarlos  
      ' ------------------------------------
      ' para seguir poniendo notas nuevas
      ' hacemoslo mismo para l ultima not que se grabo que teng el 182
@@ -3447,7 +3486,7 @@ print #1,"inicia CargaPistasEnCancion"
         Dim cadena As String
         cadena= sacarExtension(filenameOld) ' [1]AAA
        ''' If pistacreada=0 Then
-          If instancia=7 Or instancia=6 Or instancia= 107 Then ' en batch no hay ventana control 
+          If instancia=7 Or instancia= 107 Then ' en batch no hay ventana control 
           Else   
           AddListBoxItem(3, cadena)
           End If  
@@ -3515,8 +3554,7 @@ Sub GrabarTrack (ntk As integer)  'Error seguro aca nota=181 posicion1
  Dim ntknom As String 
  ntknom=titulos(ntk)
  print #1,"  inicia GrabarTrack NUMERO= ",ntk
- ''gt=FreeFile
- gt=4
+ gt=8
  Maxpos=pmTk(ntk).MaxPos
     Open ntknom  For Binary Access write As #gt
      Dim Trabajo (1 To  MAxPos, 1 To lim3 ) As poli
@@ -3644,6 +3682,7 @@ EndIf
 
      graba3(1,1).dur = pmTk(ntk).portout
      graba3(1,1).nnn = pmTk(ntk).canalsalida 
+     graba3(1,1).nota= pmTk(ntk).patch
      Print #1,"grabartrack graba3(1,1).nnn, ntk ",graba3(1,1).nnn , ntk
 
      '  print #1,"MaxPos grabada en Trabajo ",MaxPos
@@ -3674,30 +3713,40 @@ Sub GrabarCancion() ' PENDIENTE GRABAR TODA LA CANCION EN UN SOLO COMANDO
  ' en el momento de borrar se copia a backup y se borra del directorio de cancion
  ' eso si se borro alguna pista. (en vez de borrar mandamos a una carpeta de backup)
  '2) cada pista se graba con GrabarRollaTrack
-Dim As Integer ntkvivo =ntk
 
-  If CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE Then
-     If NombreCancion > ""  And MAxPos > 1 Then
-        GrabarRollaTrack(0)
-     EndIf
-  EndIf
+' punto 2) 
+Dim As Integer i,ntkold
+       ntkold=ntk 
 
+       Dim As Integer ubi1=0,ubi2=0,ubi3=0,ubi4=0 
+       Dim As String no1,no2
 
-Dim i As Integer 
+  For i=0 To tope
+        ntk=i 
+       nombre=titulos(i)
+       ubi1=InStr(nombre,"[")
+       ubi2=InStr(nombre,"]")
+       ubi3=InStr(nombre,".rtk")
+''       ubi4=InStr(nombre,".roll")
+       If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Then 'graba un track como track
+       ' pero como las modificaciones estan en ROLL debo usar GrabarrollaTrack
+  Print #1,"Grabar Cancion   rtk actual   ",ntk
+'SI CARGUE UN RTK DESDE ARCHIVO SIEMPRE USO ROLL A  TRACK PORQUE
+' SE PUDO EDITAR EL ROLL VISUAL Y ROLL TENDRA LA ULTIMA MODIFICAION
+          GrabarRollaTrack(0) 
+           Sleep 1000           
+       EndIf
 
-  For i=1 To tope
-   If i<> ntkvivo Then 
-      GrabarTrack(i)
-   EndIf
   Next i
-  
+  ntk=ntkold
+
 End Sub
 
 
-Sub  selport (ByVal tipo As Any Ptr)  ' list de ruso
+Sub  selport (ByVal mitipo As Integer)  ' list de ruso
 ' SELECCION DE CASO 1 PORT DE SALIDA OUT, O CASO 2 ENTRADA MIDI IN
 Dim As hwnd haw,hwl
-Dim As Integer mitipo,x0,y0,Posx,Posy 
+Dim As Integer x0,y0,Posx,Posy 
 ScreenControl GET_WINDOW_POS, x0, y0
 Posx=x0 +50
 Posy=y0 +100
@@ -3713,7 +3762,7 @@ Dim cad As string
 
 
 
-mitipo=  CInt(tipo)
+
 '' => desde acaecho con tool del ruso no anda muy bien
      haw=OpenWindow("MIDI",500,Posy,500,400, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
      hwl=  ListViewGadget(1,10,10,350,400,,,,32,LVS_SINGLESEL  )
@@ -3990,13 +4039,13 @@ End Sub
 
 
 ' 
-Sub  selcanal (ByVal tipo As Any Ptr )  ' list de ruso
+Sub  selcanal (ByVal mitipo As Integer )  ' list de ruso
 'If ntk =0 Then
 '   Exit Sub
 'EndIf
 Dim As hwnd haw, hwl
-Dim As Integer mitipo, x0,y0,Posx,Posy,cambio=0  
-mitipo=  CInt(tipo)
+Dim As Integer x0,y0,Posx,Posy,cambio=0  
+
 Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 '' => desde aca echo con tool del ruso no anda muy bien
 ScreenControl GET_WINDOW_POS, x0, y0
@@ -4108,10 +4157,10 @@ EndIf
 
 End Sub
 '----------------
-Sub  selcanalEjec (ByVal tipo As Any Ptr, ntkp As integer )  ' list de ruso
+Sub  selcanalEjec (ByVal mitipo As Integer, ntkp As integer )  ' list de ruso
 Dim As hwnd haw,hwl
-Dim As Integer mitipo, x0,y0,Posx,Posy,cambio=0  
-mitipo=  CInt(tipo)
+Dim As Integer  x0,y0,Posx,Posy,cambio=0  
+
 'Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 '' => desde aca echo con tool del ruso no anda muy bien
 ScreenControl GET_WINDOW_POS, x0, y0
@@ -4401,9 +4450,8 @@ End SUB
 
 Sub salir()
 ' NO PUEDE ESTAR EN MUSICCONTROL.BAS DEBE ESTAR EN ALGUNA PARTE DE ROLLMUSIC PARA QUE FUNCIONE
-/'
+eventM=eventrbdown
 Dim  As Integer i3
-
     cairo_destroy(cm)
     cairo_surface_destroy( surf2 )
     cairo_destroy(c)
@@ -4428,6 +4476,8 @@ Dim  As Integer i3
 
               Next i3
               ThreadDetach(thread1)              
+              ThreadDetach(thread2)
+
            EndIf
 Sleep 10
    If teclado=1 Then
@@ -4442,7 +4492,7 @@ Sleep 10
 
    EndIf
            
-    ffile=FreeFile
+    ffile=9
 
     Open "./RollMusic.ini" For output As #ffile
 
@@ -4471,14 +4521,11 @@ Sleep 10
 
     cerrar ffile
     Sleep 100
-'/
-
  Dim As Integer nroproc, ppp=0
 Dim As String linea
-''fk=FreeFile
-fk=4
+fk=10
  
-   If Open ("procesos.txt" For Input As #fk ) = 0 Then 
+ Open "procesos.txt" For Input As #fk
  
        ' carga Todos los pid de las instancias
        Do While Not Eof(fk)
@@ -4494,12 +4541,12 @@ fk=4
         EndIf
         
       Loop      
-     
-      cerrar fk
-   End If
+    
+cerrar fk
+
    Close 1
 '    cerrar 0
-    Close
+'    Close
  
 ' ESTO HACE CNCELAR AL CERRAR DE LA VENTANA DE CONTROL NO USAR
 ' 26-02-2024 
@@ -4760,7 +4807,7 @@ Dim p6 As Byte Ptr
   
 End Sub
 Function lugarNota (lugar As integer) As Integer
-          lugar=nE-lugar
+          lugar=nsE-lugar
         If lugar <= 0 Then
            lugar=lugar + 12
         EndIf            
@@ -4810,7 +4857,7 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
 
         Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
 ' saltos de octava
-        st=nE-n1 
+        st=nsE-n1 
         If st <= 0 Then
            st=st + 12
         EndIf            
@@ -4831,7 +4878,7 @@ Sub armarAcorde(grado As Integer,n1 As integer,n2 As integer,n3 As integer)
         undo_acorde(cnt_acor,2).nota=Roll.trk(indicePos, pnr).nota
 
         Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
-        st=nE-n2 
+        st=nsE-n2 
         If st <= 0 Then
            st=12 + st
         EndIf            
@@ -4851,7 +4898,7 @@ If n3 <> 0 Then ' es un acorde de 4 notas
         undo_acorde(cnt_acor,3).nota=Roll.trk(indicePos, pnr).nota
 
         Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
-        st=nE-n3 
+        st=nsE-n3 
         If st <= 0 Then
            st=12 + st
         EndIf            
@@ -4973,15 +5020,15 @@ If ErrorNumber1 > 0 And ContadorError < 101 Then
   Print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
   Print #1,"Error Function: "; *Erfn()
   Print #1, "n ",posicion;" posishow "; posishow; " NroCol ";NroCol
-  Print #1, "semitono "; nE; " *po "; *po 
-  Print #1, "valor1 ",posicion; " valor2 "; 12- nE  + (*po -1)* 13
+  Print #1, "semitono "; nsE; " *po "; *po 
+  Print #1, "valor1 ",posicion; " valor2 "; 12- nsE  + (*po -1)* 13
   Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
   Print #1, "lbound 2 de Roll.trk ", lBound(Roll.trk, 2)   
-  Print #1, "Roll.trk (n,11- nE  + (*po-1) * 13 ).nota", Asc(Str(Roll.trk (posicion,12- nE  + (*po -1)* 13 ).nota))
-  Print #1,"Roll.trk (n,12- nE  + (*po -1)* 13 ).dur ",  Asc(Str(Roll.trk (posicion,12- nE  + (*po -1) * 13 ).dur))
+  Print #1, "Roll.trk (n,11- nsE  + (*po-1) * 13 ).nota", Asc(Str(Roll.trk (posicion,12- nsE  + (*po -1)* 13 ).nota))
+  Print #1,"Roll.trk (n,12- nsE  + (*po -1)* 13 ).dur ",  Asc(Str(Roll.trk (posicion,12- nsE  + (*po -1) * 13 ).dur))
   Print #1,"gap1 + ic * anchofig ",gap1 + ic * anchofig
   Print #1,"desde ";desde;" hasta ";hasta; "hasta-1 ";hasta-1; " *po ";*po
-  Print #1, "nE ";nE; " nR ";nR; " PianoNota ";PianoNota
+  Print #1, "nsE ";nsE; " nR ";nR; " PianoNota ";PianoNota
   Print #1, "mensaje, Ermn ", *Ermn, Ermn
   Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2) 
   print #1,"------------------------------------"

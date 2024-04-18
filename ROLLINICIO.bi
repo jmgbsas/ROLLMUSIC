@@ -106,13 +106,39 @@
 Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #endif
 
-
+' Nota: algun dia si quiero midifile intentar usar una libreria de C pura 
+' C:\IT64\AREAWORKAUX\MIDI-LIBRARY\midilib-master\midilib-master\freeBasic
 #include Once "rollutil.bi"
 
+'Sub getfiles(ByRef File As OpenFileName,flag As String, accion As String)
+'    Dim As ZString * 2048 SELFILE
+'    Dim As String MYFILTER=flag+Chr(0)
+'    With File
+'  .lStructSize = SizeOf(OpenFileName)
+'  .hwndOwner = NULL
+'  .hInstance = NULL
+'  .lpstrFilter = StrPtr(MYFILTER)
+'  .nFilterIndex = 0
+'  .lpstrFile = @SELFILE
+'  .nMaxFile = 2048
+'  .lpstrFileTitle = NULL
+'  .nMaxFileTitle = 0
+'  .lpstrInitialDir = @"nosuch:\"
+'  .lpstrTitle = @"Open"
+'  .Flags = 4096
+'  .nFileOffset = 0
+'  .nFileExtension = 0
+'  .lpstrDefExt = NULL
+'    End With
+'    If accion="open" Then
+'    GetOpenFileName(@File)
+'    EndIf
+'    If accion="save" Then
+'    GetSaveFileName(@File)
+'    EndIf
+'
+'End Sub
 ' FILE DIALOG adicionales
-
-
-'--------
 Sub  abrirSecuencia(nf As integer) 
    Open "./secuenciaPLAY.txt" For Output Shared As nf
     If Err > 0 Then
@@ -120,20 +146,19 @@ Sub  abrirSecuencia(nf As integer)
    	EndIf
 End  sub 
 
-
+'--------
 Sub cerrar (ByVal n As Integer)
    If n=0 Then
-    print #1," CLOSE ALL"
+    print #1,"uso CLOSE ALL"
     FileFlush (-1)
     Close 
    Else 
     FileFlush (n)
     Close n
-    print #1," Close uno solo "; n
+    print #1,"uso Close N"
    EndIf 
 End Sub
 '--------
-
 Sub  porterrorsub(porterror As integer)
           Select Case porterror
             Case RTMIDI_ERROR_WARNING
@@ -232,8 +257,8 @@ Dim As GLFWwindow ptr  win
 Dim Shared As Long pd1, fa1,ffini,ca,ffile,ct,ga,fk,grt ,ngm
 pd1 = GetCurrentProcessId()  
 
-''''Open "midebug.txt" For Output As #1
-Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As 1
+''Open "midebug.txt" For Output As #1
+ Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As 1
 Print #1,"start"
 Print #1,"PID DE ESTE PROCESO ",pd1
 
@@ -277,22 +302,17 @@ Print #1,Date;Time
 '#Include "crt/win32/unistd.bi"
 #inclib "ntdll"
 
-'midiplano=FreeFile
-'midiplano=3
-'Kill "secuenciaMIDI.txt"
-'Open "secuenciaMIDI.txt" For Output As 5
-''Kill "secuenciaPLAY.txt"
-'''''Open "secuenciaPLAY.txt" For Append As #midiplano
+
+'''Open "secuencia.txt" For Output As 5
 
 Const NEWLINE = !"\n"
 
 'tempo I=160, seri equivalente a O=40 como l maxima cantdad de ticks de O es
 ' eldela figura mas peque�a=128 ticks...40 * 128 = 5120 por minuto.
 ' Si deseo un secuecnia de CantMin minutos
-tempo=160  ' SALO PARA CALCULO DE UNA MAXIMA CAPACIDAD 
+tempo=160  ' negra=160
 CantMin=15
 'NotaBaja=1 : NotaAlta=128
- 
 
 Print #1, "__FB_ARGV__ ",__FB_ARGV__
 Print #1, "__FB_ARGC__ ",__FB_ARGC__
@@ -327,27 +347,27 @@ For ix = 0 To __FB_ARGC__
  If ix=2 And Command(ix) > "" Then
   hasta= CInt (Command(ix))
  ' pmTk(ntk).hasta=hasta
-     Instancia=2
+    Instancia=2
  EndIf
  
  If ix=3 And Command(ix) > "" Then
   titu=  (Command(ix))
-      Instancia=3  
+     Instancia=3
  EndIf
 
  If ix=4 And Command(ix) > "" Then
   instru=  CUByte (Command(ix))
-      Instancia=4 
+     Instancia=4
  EndIf
 
  If ix=5 And Command(ix) > "" Then
   pid1=  CInt (Command(ix))
-      Instancia=5 
+     Instancia=5
  EndIf
 
  If ix=6  And Command(ix) > "" Then
   com_usarmarco=  CInt (Command(ix))
-      Instancia=6 
+     Instancia=6
  EndIf
 ' en 7 diria @dir en la linea de comando  
 ' puedo poner basura en todos los otros
@@ -357,6 +377,7 @@ For ix = 0 To __FB_ARGC__
  EndIf
 
 Next ix
+
 ' uso para volcar midi a text odesde un roll o trk usamos cancion
 ' para pasar solo una pista 
 If NombreCancion > "" Then 
@@ -373,13 +394,17 @@ EndIf
 
 EndIf
 
-
 Print #1, "instancia, ix  ", instancia, ix 
 ''SI DESDE CTRL TRAEMOS UN GRAFICO SOLITO ->' Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins))
 
 'Dim Shared As Integer pd1, fa1 
 
-''fa1=FreeFile
+'pd1 = GetCurrentProcessId()  
+'Open "midebug" + "["+Str(pd1)+"]" + ".txt" For Output As #1
+
+''Open "midebug.txt" For Output As #1
+'Print #1,"start"
+'Print #1,"PID DE ESTE PROCESO ",pd1
 fa1=2
 Open "procesos.txt" For Append As fa1
 If pid1=0   Then ' EMPEZO EL ONLINE SU PID NO HACE FALTA GRABARLO
@@ -394,7 +419,7 @@ cerrar fa1
 Sleep 100
 
 
-If (desde = 0 Or  hasta = 0 ) And (instancia=0 Or instancia=1 ) Then
+If desde = 0 And hasta = 0  And instancia=0 Then
  Print #1,"intervalo no dado usando default!"
  desde => 4  ' -> 3  
  hasta => 8  ' -> 6 le debo restar la octava oculta +1
@@ -619,10 +644,8 @@ gap3= (519 * gap1) /1000 ' 42 default
 '---------
  
 Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig,sVerCifradoAcordes
-Dim openfalla As Integer
- 
-''ffini=FreeFile
-ffini=2
+Dim openfalla As integer
+ffini=3
  If  Open ("./RollMusic.ini" For Input As #ffini) <> 0 Then
  ' si no existe la creo
      Open "./RollMusic.ini" For Append As #ffini
@@ -746,7 +769,6 @@ listInAbierto(0)=0
 listOutCreado(0) =1 
 listInCreado(0)  =1 
 
-
 Dim Shared nombreOut(0 To portsout) As ZString Ptr
 Dim Shared nombreIn (0 To portsin)  As ZString Ptr
 
@@ -760,8 +782,6 @@ End Type
 
 ReDim Shared As plano miditxt()
 Dim Shared As Integer Indicenotas=0
-
- 
 'Dim i1 As integer
 
 'For i= 1 To portsin - 1
@@ -780,4 +800,3 @@ For i1 = 0 To portsout -1
 Next i1  
 
 '---------------------
-
