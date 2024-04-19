@@ -3229,7 +3229,7 @@ Dim  As Integer npl
           print #1,"un trk grabado como roll ",nombre
               
        Else
-        If InStr(UCase(nombre),".roll") = 0 Then
+        If InStr(UCase(nombre),".ROLL") = 0 Then
            nombre = nombre +".roll"   
         EndIf
        EndIf 
