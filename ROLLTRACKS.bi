@@ -454,6 +454,8 @@ Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
      patchsal=pmTk(ntk).patch
      instru=CInt(patchsal) 
 
+
+
  '    print #1,"cargaCancion ",cargacancion
 
      Get #ct, ,graba4  (1,1)
@@ -716,9 +718,12 @@ Print #1, "Entra A ActualizarRollyGrabarPistaTrack"
    NA => 11 + (hasta-1) * 13  ' 
    pmTk(ntk).NB= NB
    pmTk(ntk).NA= NA   
-   print #1,"Maxpos ",MaxPos  
+
+   print #1,"Maxpos , NB, NA, DEsde , hasta ",MaxPos, NB, NA, desde, hasta  
    ' DEFINO UN ROLL DONDE MANDO EL ROLL CARGADO LE SACO LOS DELETE SI HUBO
-   CantTicks=MaxPos+1000
+
+   CantTicks=MaxPos + 1000 ' antes era 1000 me parece mucho no se 
+
    ReDim RollTemp (1 To MaxPos, NB To NA) As dat 
 ' copia en RollTemp el Roll ....que tiene las modificaciones ultimas
    Dim As Integer i1, i2, i3, semitono, borrocol=0, haynota=0,res=0,k=0,final=0
@@ -961,7 +966,7 @@ End If
         tipoescala_num_ini =1
      EndIf
      grabaPos(1,1).nnn = CUByte(tipoescala_num_ini) ' 15-01-2022 - tipoescala en uso
-   If NombreCancion > "" THEN
+   If NombreCancion > "" And ntk > 0 Then
      If CheckBox_GetCheck( cbxnum(ntk))= 1 Then ' sonido on/off 16-03-2022
          grabaPos(1,1).dur2=1
      Else
@@ -1013,8 +1018,13 @@ End If
 Print #1,"fin ActualizarRollyGrabarPista"
 
 End Sub
+
+Sub copiarPmtkAPmtk ( e As Integer, r As Integer) ' emisor a receptor
+
+
+End Sub
 ' ---------------------------
-Sub ImportarPistaExterna()
+Sub ImportarPistaExterna(nombre As String)
 print #1,"---------------------------------------------------------------------------------"
 print #1,"inicia ImportarPistaExterna " 
 Dim As String path, nom,ext
@@ -1027,11 +1037,20 @@ Dim midsal As  RtMidiOutPtr
     path= Mid(nombre,1,barra) ' path
     nom= Mid(nombre,barra+1,punto - 1 -barra) ' nombre archivo sin extension
     ext= LCase(Mid(nombre,punto)) ' contiene el punto .rtk .roll
+
+    Dim haycorchete As Integer
+    haycorchete = InStr(nom,"]")
+    If haycorchete> 0 Then
+       nom = Mid(nom, haycorchete+1)  ' sacamos el [x] si existe
+    EndIf
+
     
     print #1,"extension de la pista importada",ext
-    print #1,"nom nombre sin extension ni path ",nom
+    print #1,"nom nombre sin extension ni path ni [] ",nom
     print #1,"numero de pista tope =",tope
-   tope=tope+1
+
+   tope = tope + 1
+
    If tope <= 32 Then
       ntk=tope
    Else    
@@ -1039,20 +1058,24 @@ Dim midsal As  RtMidiOutPtr
    EndIf
    print #1,"pista nueva importada será ntk=",ntk   
 
-  
+  '
 Select Case ext
- Case ".rtk"
+ Case ".rtk" ' anda bien seguir probando
+' hay que probar ahora modificaciones de los tracks en la cancion
+' si modifico alguno a veces cancela  en el play aunque 
+' la modificacion como notas nuevas lo ahce pero en play cancela
+' se cierrra el progrma lo levant ode nuevo cargo lacancion
+' y las modificaciones quedaron,,
 ' sacar corchetes si lso tiene del nombre y armar de nuevo el nombre
 ' toma el ntk globalmente,,,
   titulos(ntk)=nombre
-  CargarTrack(Track(),ntk,1)
+  CargarTrack(Track(),ntk,1) ' lo carga en ntk nuevo
+' no haria falta cargarlo a roll solo copiar el archivo rtk a cancion
+' aumentar el tope y cargar la lista, pero bueno lo dejamos asi,,, 
+' y track a roll tampoco haria falta eso loa hace al dar TAB...
+
   TrackaRoll (Track(),ntk,Roll) 'carga a roll el track cargado anteriormente
-  ' cambiamos el nombre segun el ntk
-    Dim haycorchete As Integer
-    haycorchete = InStr(nom,"]")
-    If haycorchete> 0 Then
-       nom = Mid(nom, haycorchete+1)  ' sacamos el [x] si existe
-    EndIf
+  ' cambiamos el nombre segun la ext
      
     nombre= NombreCancion + "\[" + doscifras(ntk) + "]" + nom +".rtk"
     Dim cadena As String = "[" + doscifras(ntk) + "]" + nom
@@ -1064,23 +1087,52 @@ Select Case ext
 ' grabar en el directorio de cancion
     GrabarRollaTrack(0) ' graba el roll del rtk a directorio cancion 
       
- Case ".roll"
-    titulos(0)=nombre ' nombre de un roll externo fuera de cancion
+ Case ".roll" ' corregido 20-04-2024
+    titulos(0)=nombre  ''nombre de un roll externo fuera de cancion
     CargaArchivo(Roll,1) ' sobreescribe ntk global con 0, carga a Roll y a track(0)
-    ntk=Tope  ' recupero ntk 
+    
    ' todos los valores quedaron en ntk=0 
 s5=0 '11-06-2022
-    nombre= NombreCancion + "\[" + doscifras(ntk) + "]" + nom +".rtk"
-    print #1,"GRABANDO PISTA EN CANCION EN ",nombre
+   ''ntk=Tope
+   nombre= NombreCancion + "\[" + doscifras(Tope) + "]" + nom +".rtk"
+   Dim cadena As String = "[" + doscifras(Tope) + "]" + nom
+    AddListBoxItem(LISTA_DE_PISTAS, cadena)
+    Sleep 1                          
+   print #1,"GRABANDO PISTA EN CANCION EN ",nombre
     
 'esta en Roll y track (0) debo grabarlo a rtk nuevo ntk en cancion
-    titulos(ntk)=nombre ' cambiamos el nombre de la pista en el ntk nuevo 
+    titulos(Tope)=nombre ' cambiamos el nombre de la pista en el ntk nuevo 
 ' grabar en el directorio de cancion
-    Tope=Tope-1 'retrocedo el tope porque GrabarCopiaPista incrementa 
     'de nuevo el tope, debo estar posicionado en roll y pista 0
-    ntk=0 ' asi apunto o simulo que estoy en ntk=0, será el ntkold  
-    GrabarCopiadePista() ' de 0 a ntk 
-            
+  
+    'necesito copiar el Track(0) al Track(Tope) en memoria esto lo hago ya
+  '''copiar Track 0  A Track Tope  no  convien hace sub creo osi...
+Dim As Integer i1,i2
+
+ReDim  (Track(Tope).trk ) (1 To CantTicks, 1 To lim3)
+
+For i1=1 To pmTk(0).MaxPos 
+  For i2 = 1 To lim3
+  Track(Tope).trk(i1,i2) = Track(0).trk(i1,i2)
+  Next i2
+Next i1
+
+moverPmtkaPmtk(Tope, 0 )
+' observar que ntk vale 0 no se toco   
+
+Sleep 5  
+' copio de track(0) a track(ntk)
+'fallta grabar a disco el track que se obtuvo a partir de un roll en disco
+' grabar track en memoria a Track en disco ,o 
+' grabar Roll en memoria a Track en disco esto es TrackaRoll igual que antes
+' llamo y ntk esta en Tope
+
+GrabarRollaTrack(0)
+
+       
+
+    ' y a disco con su nuevo [xx]  
+           
 End Select 
     
 
@@ -1159,7 +1211,6 @@ print #1,"FIN GrabarCopiaPista ,maxpos,posn ",maxpos,posn
 print #1,"---------------------------------------------------------------------------------"
 
 
-  
 End Sub
 ' ----------------------------------
 Sub GrabarRollaTrack ( cambiaext As Integer ) ' SE USA PARA TODO 
@@ -1229,7 +1280,7 @@ If  nombre > "" Then
         'los datos del rtk de disco estan ahora en memoria en Roll Visual
         ' y en el Track 0 , luego 
       EndIf
- End If
+   End If
    
 ' NOTA: para cambiar un canal de salida midi se debera editar la pista en el editor de Roll
 ' cambiar al canal MIDI deseado y Grabar el archivo como roll y como rtk asi queda el valor
@@ -1922,7 +1973,8 @@ End If
 
  For pis=1 To tope
  '     Print #1,"ON patch ntk canal ",	Track(ntk).trk(1,1).nnn, ntk,pmTk(pis).canalsalida
-      ChangeProgram ( Track(pis).trk(1,1).nnn, pmTk(pis).canalsalida, pmTk(pis).portout)	
+'Track(pis).trk(1,1).nnn
+      ChangeProgram ( pmTk(pis).patch, pmTk(pis).canalsalida, pmTk(pis).portout)	
 
       If instancia=7 Or instancia=107  Then
           sonidoPista(pis)=1

@@ -294,8 +294,7 @@
         
 
     IV ) USO VENTANA CONTROL PARA GRABAR EJECUCIONES POR TECLADO MIDI,
-        NOTA: En ciertas situaciones, Cuando se desea Cerrar el Programa podria ser necesario pulsar 
-                  2 veces el cierre en la ventana de Control. 
+       
     1 ) MIDI-IN GRABACION: 
          YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN grabadas mediante la ejecucion EN UN O CONTROLADOR 
          MIDI EXTERNO  o TECLADO externo  real concectado su salida MIDI-OUT  al MIDI-IN de la PC.
@@ -461,10 +460,17 @@
         Se puede pasar entre tracks simplemente con el tabulador  o clickeando  la pista en la lista en Control. 
         No se ha conseguido el cambio  de focus a la ventanta del grafico que es un thread distinto, pero ya al dar click
         en la lista cambia en el grafico aunque no ese en el foco.
-        -En menu de Control un test básico de MIDI-IN: En reprodicur elegir "Reproducir MIDI-IN por MII-OUT"
+        -En menu de Control un test básico de MIDI-IN: En reproducir elegir "Reproducir MIDI-IN por MII-OUT"
         Para terminar Usar en el mismo menu "Detener MDI-IN por MIDI-OUT" ..Solo reproduce el sonido
-        del port pro omisión y el sonido por omisión,,(No elegir otro port de salida pro ahroa cancela es un test)
-         
+        del port por omisión y el sonido por omisión,,(No elegir otro port de salida por ahroa cancela es un test)
+
+      - CARGAR UN ARCHIVO roll o rtk externo dentro de una Cancion, 
+        ahora funciona mejor ver 0.4616, para esto usar la opcion 4.0 cargar roll o rtk ...,echo esto se 
+        verifica o ajusta el patch y/o el canal dejando solo chequeado la pista incorporada nueva como
+        seleccionad para escucharse. Luego del cambio conviene grabar la cancion con la opcion 3.0 del
+        menu Aachivo. Volver a cargar la cancion,(todavia hay crash o cancelaciones si no se vuelve a cargar
+        la cancion, o cerrar todo y volver a empezar..)
+
       - Para exportar una pista de una cancion a un archivo Roll para editarlo en una instancia libre
         se puede hace con la opcion del menu archivo 4.3 Grabar una pista rtk a roll
         para ello conviene en Roll Grafico situarse en la pista deseada con el tabulador, y en la ventana 

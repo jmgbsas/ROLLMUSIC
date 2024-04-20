@@ -108,7 +108,7 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="0.4615 18-04-2024" ':FUTURO Patrones de Ejecucion 03-07-2022
+nroversion="0.4616 20-04-2024" ':FUTURO Patrones de Ejecucion 03-07-2022
 ' despues de un año de bajones personales veo si me da gan de seguirlo
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
@@ -419,7 +419,9 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
      ' If ix < 3 Then 
     '  'DisableGadget(LISTA_DE_PISTAS,0)
     '  EndIf  
-        CTRL_EVENTGADGET() 
+      CTRL_EVENTGADGET() 
+
+'--------------------------------------------------------
     '  If ix < 3 Then   
     '  'DisableGadget(LISTA_DE_PISTAS,1)
     '  EndIf

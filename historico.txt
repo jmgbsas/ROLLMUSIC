@@ -1,5 +1,9 @@
-- 18-04-2024 4.1 4.2 y 4.3 anda ok, lo unico que faltaba es que al exportar un track a roll
-  quede el patch el canal y el portout,,,el patch se verifico ok...falta ver los otros
+-20-04-2024 v 0.4616, menu archivo 4.0 y 4.3 corregidos, al grabar cancion se recomienda
+ volver a cargarla por ahora ,sino a veces cancela se cae por crash con algunas
+ opciones de ejecucion..(se arregla algo revienta por otro lado ja, hace falta
+ organizar mas el codigo y para metrizar mas o estructurar... de a poco, 
+ sino se está haciendo engorrosa la correccion.. to be continue)
+-18-04-2024 4.1 4.2 y 4.3 anda mejor, 
 -17 abril se probó  cambiar patch en una pista de cancion en la lista de pista
  chequeandola. Anda bien, tambien se habia probado cambiar patch en roll grafico
  para ello uso el menu crear pistas manuales y luego cambia instrumentos por alfa..

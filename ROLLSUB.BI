@@ -1378,10 +1378,10 @@ EndIf
 End Sub
 '--------
 Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
-' PRINCIPALMENTE CARGA ROLL Y LO PASA SIEMPRE A TRACK (0) en otra rutina
-ntk=0 ' Cargar en 2 vectores Roll y carga a pmTk(0)
+' PRINCIPALMENTE CARGA ROLL Y LO PASA SIEMPRE A TRACK (0) 
+ntk=0 ' Cargar en 3 vectores Roll pmTk(0) y Track(0). 
 ' la carga de tracks aislada o la carga de una cancion con sus tracks
-' ira aumentando ntk, es otra rutina no esta..aca se carga a pmTk(0) no a Track
+' ira aumentando ntk, es otra rutina no esta..aca se carga a pmTk(0) y a Track(0)
    '  carga roll
 ' al cargar borro todo el undo    
 abrirRoll=2 ' habilita la carga de una cancion
@@ -1426,14 +1426,15 @@ abrirRoll=2 ' habilita la carga de una cancion
          Sleep 100
 
          Print #1,"lee con control de error.. "
-     If Open (nombre  For Binary Access Read Shared As #ca ) <> 0 Then
-        print #1,"Error open cargaARchivo 1419, nombre ",nombre
-        Exit Sub
-     End If
+         If Open (nombre  For Binary Access Read Shared As #ca ) <> 0 Then
+            print #1,"Error open cargaARchivo 1419, nombre ",nombre
+            Exit Sub
+         End If
          
      ''    Open "temp.roll"  For Binary Access Read As #ca
          ubiroll=0
       EndIf
+
      Dim z (1,1)  As dat
      Dim zLim (1,1) As dat
      Dim z3   (1,1)  As dat ' 04-02-2022 se agregan 48 bytes para info futura 
@@ -1525,26 +1526,29 @@ abrirRoll=2 ' habilita la carga de una cancion
      NA= 11 + (hasta -1)*13
      pmTk(0).notaold = notaold  'notaold es ubyte en pmTk
      pmTk(0).MaxPos = MaxPos
+Print #1,"pmTk(0).MaxPos = MaxPos ";  MaxPos
      pmTk(0).posn = MaxPos -2
 ' cargo estos campos nb na pero se los podria eliminar o usar para otra cosa,,,,
      pmTk(0).NB=NB  
      pmTk(0).NA=NA
      pmTk(0).desde = desde
      pmTk(0).hasta = hasta
-     pmTk(0).posn = MaxPos -2    
+    
 
      'NB => 0 + (desde-1) * 13   ' 27 para 3
      'NA => 11 + (hasta-1) * 13  ' 90 para  7
      ' los 2 vectores deben tener el mismo tamaño ergo si CantTicks
      ' lo agrando trabajo tambien ? mmm no trabajo debe tener el tamaño del disco!
      ' cargamos trabajo datos
-     CantTicks = MaxPos  +1000' jmg 24-09-2021
-     '''ReDim Roll.TRK(1 To cantTicks,NB To NA)
+     CantTicks = MaxPos + 1000 ' jmg 24-09-2021
+     
      pmTk(0).Ticks=CantTicks
      ntk=0
-     CambiarDim(0) ' ya tiene calculo NB y NA Redim Roll y Track con CantTicks
-                   ' y carga de pmTk.NB y NA
-
+'' Redim Roll y TRack ya tiene calculo NB y NA con CantTicks y carga de pmTk.NB y NA
+     repro=1
+     Sleep 5
+     CambiarDim(0) 
+     repro=0
      Get #ca, ,z3  (1,1)
 
      canalx  = CInt(z3(1,1).inst) ' canal midi cargado en Global si es un track se pasara a info de trck
@@ -1574,7 +1578,7 @@ abrirRoll=2 ' habilita la carga de una cancion
    
      ReDim compas(1 To CantTicks)
      print #1,"En CargarArchivo NB NA ", NB,NA
-     Dim Trabajo (1 To MaxPos, NB To NA) As dat     
+     Dim Trabajo (1 To MaxPos, NB To NA) As dat     ''' es un Roll
      Get #ca, , Trabajo() ' aca levanta tambien el instrumento que se grabo 
      ' CARGA VECTOR ROLL movemos los datos a Roll Y a track 0
      ' --------------------------------------------
@@ -3001,6 +3005,7 @@ If redi=1 Then
 Else
      ReDim  (Roll.trk ) ( 1 To CantTicks, NB To NA)
      ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
+     print #1,"FIN CAMBIARDIM  else" 
 EndIf   
 ReDim (RollAux.trk) ( 1 To CantTicks,NB To NA )
  desdevector=desde
@@ -3662,13 +3667,16 @@ Next i1
      grabaPos(1,1).pan  = y4
      grabaPos(1,1).pb   = y5
      grabaPos(1,1).nnn = pmTk(ntk).tipoescala
-If NombreCancion > "" Then
+If  ntk >0 Then
      If CheckBox_GetCheck( cbxnum(ntk))= 1 Then ' sonido on/off 16-03-2022
          print #1,"grabo grabaPos(1,1).dur2=1,, ntk", ntk
          grabaPos(1,1).dur2=1
      Else
          grabaPos(1,1).dur2=0
      EndIf
+Else
+         grabaPos(1,1).dur2=1
+
 EndIf   
      '-----------------------
      grabaLim(1,1).nota = CUByte(pmTk(ntk).desde) 
@@ -3733,12 +3741,18 @@ Dim As Integer i,ntkold
   Print #1,"Grabar Cancion   rtk actual   ",ntk
 'SI CARGUE UN RTK DESDE ARCHIVO SIEMPRE USO ROLL A  TRACK PORQUE
 ' SE PUDO EDITAR EL ROLL VISUAL Y ROLL TENDRA LA ULTIMA MODIFICAION
-          GrabarRollaTrack(0) 
-           Sleep 1000           
+' eso solo para el track que esta siendo visto en pantalla pero
+' los que no se ven ya fueron refrescados , o sea debo
+' grabar Track n a disco y al final grabar rolla track solo para
+'el visual
+          GrabarTrack ntk  
+           Sleep 20           
        EndIf
 
   Next i
-  ntk=ntkold
+
+       ''  GrabarRollaTrack(0)
+  'ntk=ntkold ''??
 
 End Sub
 

@@ -128,7 +128,7 @@ Declare Sub ActualizarRollyGrabarPista ()
 Declare Sub GrabarRollaTrack (cambiaext As Integer)
 Declare Sub CargarPistasEnCancion ()
 Declare sub GrabarCopiadePista()
-Declare Sub ImportarPistaExterna()
+Declare Sub ImportarPistaExterna(nombre As string )
 
 Declare sub selport(ByVal tipo As Integer)
 ''Declare sub selport(ByVal tipo As integer)
@@ -880,6 +880,7 @@ Declare Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)
 Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As String, orden As integer )
 Declare Function lugarNota (lugar As integer) As Integer
 Declare Sub metronomo ()
+Declare Sub moverPmtkaPmtk(r as Integer, e As integer)
 
 COMMON Shared As Long eventc, eventM
 Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec

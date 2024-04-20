@@ -25,6 +25,9 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                   NombreCancion = ""
                   param.encancion=0
                   ResetAllListBox(3)
+                  For i As Integer = 1 To Tope
+                    CheckBox_SetCheck(cbxnum(i),0)
+                  next i 
                   Resetear (pmTk()) 
                   cargarDirectorioCancion(NombreCancion)
                   CANCIONCARGADA=False
@@ -148,6 +151,7 @@ End Sub
 
 Sub CTRL1010(ByRef salida As INTEGER)
            ROLLCARGADO=False 
+           TRACKCARGADO=FALSE
             Dim As String nombreg
             
             getfiles(file,myfilter,"open")
@@ -160,10 +164,10 @@ Sub CTRL1010(ByRef salida As INTEGER)
                nombre=nombreg   
             EndIf
             If NombreCancion > ""  Then 
-               ImportarPistaExterna() ' estoy en cancion importando  una pista rtk
+               ImportarPistaExterna(nombre) ' estoy en cancion importando  una pista rtk
             EndIf   
-          MenuNew=0           
-          carga=1
+          'MenuNew=0           
+          'carga=1
 
 End Sub
 
@@ -827,7 +831,8 @@ Next i
 End Sub
 '' ///////////////////// GADGET //////////////////////////
 
-Sub CTRL_EVENTGADGET ()
+Sub CTRL_EVENTGADGET () '' un case de select es como una sub 
+' tiene su scope
     '   SetForegroundWindow(hwndC)
       ' el codigo anterior que traia de disco esta en notas
 ' TODOS DICEN RUSO Y USA QUE VK_LBUTTON ES 1 PERO CON 1 NO ANDA

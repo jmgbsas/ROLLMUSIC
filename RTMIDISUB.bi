@@ -1381,8 +1381,9 @@ playloop2=0
 ' Print #1,"ON patch ntk canal ",	Roll.trk(1,NA).inst, ntk,pmTk(0).canalsalida
 
  ''If Roll.trk(1,NA).inst > 0 Then
-    ChangeProgram ( Roll.trk(1,NA).inst, pmTk(0).canalsalida, pmTk(0).portout)	
-    patchsal =Roll.trk(1,NA).inst
+     ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, pmTk(0).portout)
+ ''   ChangeProgram ( Roll.trk(1,NA).inst, pmTk(0).canalsalida, pmTk(0).portout)	
+    patchsal =pmTk(0).patch ''Roll.trk(1,NA).inst
  '''EndIf
 
 'print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
