@@ -72,6 +72,9 @@
             Str(pid1) + " "+ Str(usarmarcoins) )
              SetStateMenu(hmessages,1009,0)
              SetStateMenu(hmessages,1008,1)
+           Case 10081
+               usarmarcoins=4
+                CTRL1063 
 ' ---------------------------------------------------------------           
            Case 1009 '<======= 3.2 Exportar Cancion a midi
 

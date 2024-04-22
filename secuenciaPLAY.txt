@@ -1,59 +1,46 @@
 MFile 1 2 1000
 MTrk
-0 Meta SeqName "DISTINTOS-F+SF+SF+F.roll"
+0 Meta SeqName "11-18-2021."
 0 Meta Text "Creado por RollMusic"
-0 Tempo 1000000
+0 Tempo 500000
 0 TimeSig 4/4 24 8
 0 KeySig 0 Major
 0 Meta TrkEnd
 TrkEnd
 MTrk
 0 Meta TrkName "Piano"
- 0 on  ch=1 n=40 v=120
- 0 on  ch=1 n=59 v=120
- 1000 off ch=1 n=59 v=0
- 1002 on  ch=1 n=59 v=80
- 2002 off ch=1 n=59 v=0
- 2002 off ch=1 n=40 v=0
- 2004 on  ch=1 n=44 v=100
- 2004 on  ch=1 n=52 v=100
- 3004 off ch=1 n=44 v=0
- 3005 off ch=1 n=52 v=0
- 3006 on  ch=1 n=53 v=80
- 4007 off ch=1 n=53 v=0
- 4008 on  ch=1 n=42 v=120
- 4008 on  ch=1 n=58 v=120
- 5009 off ch=1 n=58 v=0
- 5010 on  ch=1 n=57 v=80
- 6010 off ch=1 n=57 v=0
- 6011 off ch=1 n=42 v=0
- 6012 on  ch=1 n=59 v=100
- 7013 off ch=1 n=59 v=0
- 7014 on  ch=1 n=48 v=80
- 7014 on  ch=1 n=52 v=80
- 7014 on  ch=1 n=57 v=80
- 7264 off ch=1 n=57 v=0
- 7520 on  ch=1 n=57 v=80
- 8014 off ch=1 n=48 v=0
- 8015 off ch=1 n=52 v=0
- 8015 off ch=1 n=57 v=0
- 8018 on  ch=1 n=42 v=120
- 8018 on  ch=1 n=58 v=120
- 9019 off ch=1 n=58 v=0
- 9020 on  ch=1 n=59 v=80
- 10021 off ch=1 n=59 v=0
- 10021 off ch=1 n=42 v=0
- 10023 on  ch=1 n=50 v=100
- 11023 off ch=1 n=50 v=0
- 11025 on  ch=1 n=50 v=80
- 12025 off ch=1 n=50 v=0
- 12027 on  ch=1 n=42 v=120
- 12027 on  ch=1 n=59 v=120
- 13027 off ch=1 n=59 v=0
- 13029 on  ch=1 n=59 v=80
- 14029 off ch=1 n=59 v=0
- 14030 off ch=1 n=42 v=0
- 14031 on  ch=1 n=55 v=100
- 15032 off ch=1 n=55 v=0
- 15045 Meta TrkEnd
+0 PrCh  ch=1 p=94
+0 PrCh  ch=2 p=20
+0 PrCh  ch=1 p=66
+ 0 on  ch=1 n=64 v=120
+ 0 on  ch=2 n=60 v=120
+ 0 on  ch=1 n=60 v=120
+ 4000 off ch=1 n=64 v=0
+ 4001 off ch=2 n=60 v=0
+ 4002 off ch=1 n=60 v=0
+ 4005 on  ch=1 n=71 v=120
+ 4014 on  ch=2 n=67 v=120
+ 4014 on  ch=1 n=67 v=120
+ 5006 off ch=1 n=71 v=0
+ 5007 off ch=2 n=67 v=0
+ 5008 off ch=1 n=67 v=0
+ 5011 on  ch=1 n=68 v=80
+ 5011 on  ch=2 n=64 v=80
+ 5012 on  ch=1 n=64 v=80
+ 6012 off ch=1 n=68 v=0
+ 6015 off ch=2 n=64 v=0
+ 6016 off ch=1 n=64 v=0
+ 6019 on  ch=1 n=71 v=100
+ 6019 on  ch=2 n=67 v=100
+ 6019 on  ch=1 n=67 v=100
+ 7020 off ch=1 n=71 v=0
+ 7021 off ch=2 n=67 v=0
+ 7022 off ch=1 n=67 v=0
+ 7026 on  ch=1 n=64 v=80
+ 7026 on  ch=2 n=60 v=80
+ 7026 on  ch=1 n=60 v=80
+ 8026 off ch=1 n=64 v=0
+ 8027 off ch=2 n=60 v=0
+ 8028 off ch=1 n=60 v=0
+ 8086 Meta TrkEnd
 TrkEnd

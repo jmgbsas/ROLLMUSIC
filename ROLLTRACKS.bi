@@ -1864,12 +1864,48 @@ End Function
 ' ------------------------------
 
 Sub PlayCancion(Track() As sec)
+Dim i1 As Integer
+
+If MIDIFILEONOFF = HABILITAR  Then 
+   MICROSEGUNDOS_POR_NEGRA = 60000000/tiempoPatron ' 60 MILL /BPM
+   '' SE AJUSTO A 2000 PARA ESCUCHAR LO MISMO A 60 DSRG POR NEGRA... 500 
+   '' NO ESTA CLARO EL  TEMPO EN BPM SON 60 EN TIEMPO 1000000 ,NI 500 NI 1000 NI 2000
+   '' FALTRA ENTENDER MAS 
+   indicenotas=0
+   'Dim As String NombreTrack
+   midiplano=20
+   'NombreTrack= sacarpath(titulos(ntk)) 
+   i1=InStrRev(NombreCancion,"\")
+   dim nc As String 
+
+   nc=Mid(NombreCancion,i1+1) +"."
+ 
+   Print #midiplano, "MFile 1 2 " + Str (1000)
+   Print #midiplano, "MTrk"
+   Print #midiplano, "0 Meta SeqName "; Chr(34);nc;Chr(34)
+   Print #midiplano, "0 Meta Text "; chr(34);"Creado por RollMusic"; chr(34)
+   Print #midiplano, "0 Tempo " + Str (MICROSEGUNDOS_POR_NEGRA)
+   Print #midiplano, "0 TimeSig 4/4 24 8"
+   Print #midiplano, "0 KeySig 0 Major"
+   Print #midiplano, "0 Meta TrkEnd"
+   Print #midiplano, "TrkEnd"
+   Print #midiplano, "MTrk"
+   Print #midiplano, "0 Meta TrkName "; Chr(34); "Piano";Chr(34)
+'''' patchs
+ For i1=1 To tope
+   Print #midiplano, "0 PrCh  ch=";pmTk(i1).canalsalida;" "; "p=";pmTk(i1).patch
+  ''veremos como se pone el portout si se puede pmTk(pis).portout)	
+ Next i1
+i1=0
+
+EndIf
+
+
 '------------apertura e ports
 Dim As Long porterror,nousar
 ' idea para controlar cancion con repeticiones podria usar el track 00 solo para eso control
 CONTROL1=0
 
-Dim i1 As integer
 ' creoa todos los defaults siempre
  
 
@@ -1993,7 +2029,7 @@ End If
 
 
 
-
+STARTMIDI=Timer
 
 For jply=comienzo To final
 '  print #1," ---------------000000000000000000000-----------------"
@@ -2347,6 +2383,21 @@ if GrabarPenta=0 and GrabarEjec=NoGrabar and repro=0 And checkejec=0 Then
       listoutAbierto( k1) = 0
    Next i
 EndIf 
+
+If MIDIFILEONOFF = HABILITAR Then 
+   Dim As Double TiempoAcumNew
+   Dim As Integer T1
+
+   TiempoAcumNew= Timer - STARTMIDI
+   T1 =  TiempoAcumNew *  1000 * tiempoPatron/60
+   ''GrabaMidiPlano()
+   Print #midiplano, T1 ;" Meta TrkEnd"
+   Print #midiplano, "TrkEnd"
+   MIDIFILEONOFF = DESHABILITAR
+   cerrar (20)
+
+EndIf
+Sleep 20,1
 
 ThreadDetach(thread1)
 repro=0 ' 05-03-2024

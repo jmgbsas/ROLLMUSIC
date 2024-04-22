@@ -1,6 +1,6 @@
 'ROLLCTRLGUI... GUI DE VENTANA DE CONTROL
 Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8,MenName10
-Static Shared As HMENU MenName31,MenName32 
+Static Shared As HMENU MenName31,MenName32,MenName18 
 
 If instancia < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON control
   menuabierto=1 ' evita apertura de mas de un menu
@@ -228,8 +228,13 @@ MenuItem(10075,MenName1, "4.4 Cargar Pista (rtk o roll) en Roll aislado ")
 
 Menubar(MenName1)
 
-MenuItem(1008,MenName1,  "4.5   Cargar Pista a Exportar a midi durante Reproduccion")
-MenuItem(1009,MenName1,  "4.5.1 Exportar Pista de 4.5 ")
+MenName18=OpenSubmenu(MenName1, "4.5   Exportar a midi durante Reproduccion")
+MenuItem(1008,MenName18, "Cargar Pista en Roll" )
+MenuItem(10081,MenName18, "Usar Cancion cargada en 2.0 " )
+
+
+
+MenuItem(1009,MenName1,  "4.5.1 Exportar Pista/cancion de 4.5 ")
 
 
 Menubar(MenName1)

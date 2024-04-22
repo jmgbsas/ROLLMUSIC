@@ -1,3 +1,6 @@
+-22-04-2024 V 0.4617 exportar cancion ok con 4.5 previo cargar una cancion.
+ se agrego un "." al final del nombre de la cancion para que sea compatible
+ con un nombre xxxx.rtk , hasta que se cambie rollutil....
 -20-04-2024 v 0.4616, menu archivo 4.0 y 4.3 corregidos, al grabar cancion se recomienda
  volver a cargarla por ahora ,sino a veces cancela se cae por crash con algunas
  opciones de ejecucion..(se arregla algo revienta por otro lado ja, hace falta

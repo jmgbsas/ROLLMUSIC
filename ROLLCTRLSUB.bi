@@ -99,7 +99,7 @@ End Sub
 
 Sub CTRL1063() 
 ' esta rutina no se usa mas, ahora se entra por menu archivo
-  Print #1, "entro por CTRL1063 NOMBRECANCION TITOLOS(0) ", NombreCancion, titulos(0)
+  Print #1, "entro por CTRL1063 NOMBRECANCION TITULOS(0) ", NombreCancion, titulos(0)
             If NombreCancion > "" Then
                  
                Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + _ 
