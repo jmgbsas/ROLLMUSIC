@@ -13,7 +13,6 @@ Public Function midiconv( Nombre1 As String, Nombre2 As string) As Integer Expor
        If n > 0 Then  
           Nombre3=Mid(linea,n+13)
           n=Len(Nombre3)
-          Nombre3=Mid(Nombre3,1,n-1)   
           If Nombre3>"" Then
              Exit Do
           EndIf
@@ -26,17 +25,18 @@ Public Function midiconv( Nombre1 As String, Nombre2 As string) As Integer Expor
     EndIf 
 '--------------------------------------------------
     Dim As String cadena
-    If nombre2 = "archivo.mid" Then 
-       cadena =  " -c  " + Nombre1 + " "+ Nombre2                   
-    Else
-     
-       Dim  As Integer punto= InStr(Nombre2,".") 
-        
-       cadena=Mid(Nombre2,1,punto ) 
+    cadena =  " -c  " + Nombre1 + " "+ Nombre2
+    Dim  As Integer punto= InStr(Nombre2,".") 
+    If punto > 0 Then 
+       cadena=Mid(Nombre2,1,punto -1 )
        punto=InStrRev (cadena,"\")
-       cadena=Mid(cadena,punto+1)
-       cadena =  " -c  " + Nombre1 + " "+ cadena + "mid"
-    EndIf
+       If punto > 0 Then 
+         cadena=Mid(cadena,punto+1)
+       EndIf
+       cadena =  " -c  " + Nombre1 + " "+ cadena + ".mid"
+    Else
+       cadena =  " -c  " + Nombre1 + " "+ Nombre2 + ".mid"
+    EndIf 
                 Dim result As Integer
                 result = Exec( "./midicomp.exe" , cadena )
                Open "salida.txt" For Output As 23

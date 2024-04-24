@@ -199,7 +199,7 @@ Sub CTRL1015 ()
            Dim As Integer  pis=0, K=0
            For k=1 To 32 ' pistas ejec de grabaciondesde teclado
              If CheckBox_GetCheck( cbxejec(k))= 1  Or CheckBox_GetCheck( cbxgrab(k))= 1 Then
-                pis=k
+                pis=k  
                 Exit For
              EndIf
            Next k
@@ -216,14 +216,15 @@ Sub CTRL1015 ()
                 '        Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
                    Next j
  Dim tocap As ejecparam = tocaparam(pis)
-                Print #1,"PARAMETROS EJEC nombre ",tocap.nombre
-                Print #1,"PARAMETROS EJEC mapos ",tocap.maxpos
-                Print #1,"PARAMETROS EJEC orden ",tocap.orden
-                Print #1,"PARAMETROS EJEC delta ",tocap.delta
-                Print #1,"PARAMETROS EJEC portout ",tocap.portout
-                Print #1,"PARAMETROS EJEC patch ",tocap.patch
-                Print #1,"PARAMETROS EJEC canal ",tocap.canal
 
+                Print #1,"PARAMETROS EJEC nombre ",pgmidi.tocap.nombre
+                Print #1,"PARAMETROS EJEC mapos ",pgmidi.tocap.maxpos
+                Print #1,"PARAMETROS EJEC orden ",pgmidi.tocap.orden
+                Print #1,"PARAMETROS EJEC delta ",pgmidi.tocap.delta
+                Print #1,"PARAMETROS EJEC portout ",pgmidi.tocap.portout
+                Print #1,"PARAMETROS EJEC patch ",pgmidi.tocap.patch
+                Print #1,"PARAMETROS EJEC canal ",pgmidi.tocap.canal
+ ntkp=pis 
 
 ' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
 pgmidi.toc=toc
@@ -236,13 +237,73 @@ GrabarMidiIn(pgmidi)  ' POR 1015
 
 End Sub
 
+Sub cargariniciotxt(lugar As String)
+'carga estado de sonido, mudo no, o ejecutando si, de los archivos de ejecucion
+' no los puse en los parámetros me olvidé, no pienso cambiar todo...
+' ademas esta bueno poder configurar desde afuera como texto
+' tal vez lo agregue a la cancion, pero ya tiene todo dentro del archivo
+
+Dim As Integer arch
+Dim As String  estado  
+Var ini=FreeFile
+Print #1,lugar
+ Open lugar+"\inicio.txt" For Input As #ini
+ 
+Do while Not Eof(ini)
+   Input #ini, arch, estado
+   Print #1, arch, estado 
+    If LCase(estado) = "si"  Then
+      CheckBox_SetCheck (cbxejec(arch),1)
+    EndIf
+    If LCase(estado) = "no" Then
+      CheckBox_SetCheck (cbxejec(arch),0)
+    EndIf
+ 
+ Loop
+
+Close #ini
+
+End Sub
+'------------
+Sub grabariniciotxt(lugar As String)
+'carga estado de sonido, mudo no, o ejecutando si, de los archivos de ejecucion
+' no los puse en los parámetros me olvidé, no pienso cambiar todo...
+' ademas esta bueno poder configurar desde afuera como texto
+' tal vez lo agregue a la cancion, pero ya tiene todo dentro del archivo
+
+Dim As Integer arch,i1
+Dim As String  estado  
+Var ini=FreeFile
+Print #1,"grabariniciotxt ", lugar
+ Open lugar+"inicio.txt" For Output As #ini
+ 
+For i1=1 To tocatope
+ 
+    if   CheckBox_getCheck (cbxejec(i1)) = 1 Then
+         estado="si"
+    EndIf
+    if   CheckBox_getCheck (cbxejec(i1)) = 0 Then
+         estado="no"
+    EndIf
+       
+     Print #ini, i1;",";estado 
+Next i1 
+
+Close #ini
+
+End Sub 
+
+
+
+ 
 Sub CTRL1016 ()
 
       Dim As String nombrea,myfil
        print #1,"EN Cargar midi-in nombre ",nombreMidiIn
-       ResetAllListBox(4)
+       ResetAllListBox(LISTA_DE_EJECUCIONES)
+
       Dim As String lugar
-       If  NombreCancion= "" Then
+       If  CANCIONCARGADA=FALSE Then  '23-04-2024
 lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BIF_USENEWUI, "c:\" )
        Else
           lugar=NombreCancion
@@ -295,6 +356,8 @@ lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BI
            tocatope=ntkp
       EndIf 
 
+      cargariniciotxt(lugar) 'para guardar que pista ejec se escucha y cual no
+   
 
 End Sub
 
@@ -1001,7 +1064,7 @@ Static As Integer millave
              SuenaTodo=0
          End Select
          For i=1 To tope 
-            CheckBox_SetCheck(ByVal cbxnum(i), SuenaTodo)
+            CheckBox_SetCheck(cbxnum(i), SuenaTodo)
             cntsuena+=SuenaTodo
           Next i
          SuenaTodo=3
@@ -1068,7 +1131,7 @@ If  play=1 Or playb=1 Then
   CONTROL1=1 ' DETIENE EL PLAY DE CANCION O ROLL
    play=0: playb=0 
   playloop=0:playloop2=0
-  SetGadgetstate(12,0)
+  SetGadgetstate(BTN_ROLL_EJECUTAR,0)
   Sleep 2
 EndIf
 CONTROL2=1
@@ -1211,6 +1274,7 @@ GrabarMidiIn(pgmidi) 'POR STOP aca se graba bien el orden
 ' al grabar una pista nueva de ejecuciones por uncontrolador midi.,(teclado midi por ej)
  
       If eventnumber()= BTN_MIDI_EJECUTAR And repro=0 Or  GrabarEjec =PatronDeEjecucionCompleto Then ' BOTON PLAY VERDE DE MIDI-IN
+         SetGadgetstate(BTN_MIDI_PARAR,BTN_LIBERADO)
             repro=1
             CONTROL2=0
             CONTROL1=0
@@ -1236,13 +1300,18 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
                    thread2 = ThreadCall  playAll(Roll)
                EndIf 
             EndIf
-       EndIf   
-            threadG  = ThreadCreate (@PlayTocaAll, p)
-            threadDetach(threadG)
+        EndIf   
+
+        threadG  = ThreadCreate (@PlayTocaAll, p)
+        'ThreadWait (threadG) '22-04-2024  como andaba si hacia detach? ja
+'        repro=0   
+        'threadDetach(threadG)
         '  Print #1,"llama a  PlayTocaAll(p)"
 
          '   PlayTocaAll(p)
-       EndIf
+        grabariniciotxt(NombreCancion)
+  
+      EndIf
 ' test de retardos  de inicio en ejecucion de datos entre playCancion y PlayTocaAll
 ' CALCULO DE RETARDO DEL INICIO DE PLAY CANCION RESPECTO PLAYTOCAALL
 'playTocaAll inicio datos:    9751.75934545541

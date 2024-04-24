@@ -2930,34 +2930,46 @@ Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi)
     Dim As Long j, driver=0
     Dim As String nombreg
     Dim As Integer ngm
-
-      nombreg =titulos(ntkp+32) ' no tiene path , extension y [nro]
+' y ntkp de donde vien quien lo ajusta? ntkp debe venir informado!!!
+      nombreg =pgmidi.tocap.nombre  ' 23-04-2024
      par.tocap.nombre=nombreg
-Print #1,"GrabarMidiIn NombreCancion, nombre sin path",NombreCancion," --- ",nombreg
+Print #1,"GrabarMidiIn NombreCancion, nombre sin path",NombreCancion, nombreg
+      par.tocap.nombre  =nombreg
       driver=InStr(nombreg,":\")
+      Dim  As Integer barra1, barra2  
       If  NombreCancion > "" And driver=0 Then
-          nombreg=NombreCancion+"\"+nombreg
+           barra1=InStrRev(NombreCancion,"\")
+           barra2=InStr(nombreg,"\")
+           Print #1, "barra1 barra2 ", barra1, barra2
+          If Len(NombreCancion)=barra1  Then
+             If barra2 =0 Then
+                nombreg=NombreCancion+nombreg
+             EndIf
+          EndIf
+          If Len(NombreCancion)>barra1 And barra2=1 Then
+             nombreg=NombreCancion+nombreg
+          EndIf          
       Else 
         Print #1," va a grabar sin path ",nombreg
       EndIf
 Print #1,"nombre de archivo con path grabando de ejec",nombreg
  ' carga de parametros:
      par.tocap.portout =pmTk(ntkp+32).portout
-     par.tocap.portin   = pmTk(ntkp+32).portin 
+     par.tocap.portin  =pmTk(ntkp+32).portin 
      par.tocap.patch   =pmTk(ntkp+32).patch
      par.tocap.canal   =pmTk(ntkp+32).canalsalida
-     par.tocap.maxpos   =pmTk(ntkp+32).MaxPos
-     
+     par.tocap.maxpos  =pmTk(ntkp+32).MaxPos
+      
  
       Print #1,"GrabarMidiIn titulos   ", nombreg
-      Print #1,"GrabarMidiIn MAXPOS ",par.tocap.maxpos
+      Print #1,"GrabarMidiIn MAXPOS ",    par.tocap.maxpos
       Print #1,"GrabarMidiIn delta "     ,par.tocap.delta
-      Print #1,"GrabarMidiIn nombre " ,par.tocap.nombre
-      Print #1,"GrabarMidiIn portout " ,par.tocap.portout
-      Print #1,"GrabarMidiIn portin "   ,par.tocap.portin
-      Print #1,"GrabarMidiIn patch "   ,par.tocap.patch
-      Print #1,"GrabarMidiIn canal "   ,par.tocap.canal
-      Print #1,"GrabarMidiIn orden "   ,par.tocap.orden 
+      Print #1,"GrabarMidiIn nombre " ,   par.tocap.nombre
+      Print #1,"GrabarMidiIn portout " ,  par.tocap.portout
+      Print #1,"GrabarMidiIn portin "   , par.tocap.portin
+      Print #1,"GrabarMidiIn patch "     ,par.tocap.patch
+      Print #1,"GrabarMidiIn canal "     ,par.tocap.canal
+      Print #1,"GrabarMidiIn orden "     ,par.tocap.orden 
 
       nombre=Trim(nombreg)
       ngm=15 
@@ -3229,9 +3241,9 @@ For jToca=1 To maxgrb
 Next jToca
 ''jToca=0
 repro=0
-If instancia=7 Or instancia= 107 Or instancia < 3 Then
+If instancia=7 Or instancia= 107 Then ''' Or instancia < 3 Then
 Else
-SetGadgetstate(14,0)
+SetGadgetstate(BTN_MIDI_EJECUTAR,0)
 EndIf
 Sleep 1
 
@@ -3262,7 +3274,11 @@ Sleep 1
          End Select
 
   EndIf 
-  
+  repro=0
+  Sleep 20,1
+  ThreadDetach threadG
+   
+
 End Sub
 Sub VerCompasTicksEjecucion()
 'ver como en unteclado una pantalla queindique compas:tiempo:ticks

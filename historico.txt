@@ -1,3 +1,11 @@
+-24-04-2023 ya se puede repetir  cargar, exportar a midi, y volver a empezar sin salir del programa
+ ya sea pista o cancion. V 0.4618
+-23-04-2024 se arreglo nombre de Seg en plano txt de midi
+ agregamos un archivo parametro inicio.txt en directorio de ejecuciones 
+ que recuerde que pista estaba sonando y cual muteada.
+ Se puede renombrar una pista cargada de ejecuciones, para ello solo dejar
+ sonando o chequeada esa pista usar el menu archivo 5.2 y luego grabar con 5.0
+ Ejecuciones se puede ncargar y volver a cargar una y otra vez ya se arreglo.
 -22-04-2024 V 0.4617 exportar cancion ok con 4.5 previo cargar una cancion.
  se agrego un "." al final del nombre de la cancion para que sea compatible
  con un nombre xxxx.rtk , hasta que se cambie rollutil....

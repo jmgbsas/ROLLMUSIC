@@ -957,15 +957,25 @@ End Type
 
 Type  ejecparam Field=1
   As Double        delta  ' entre pistas de ejec
-  As String  * 29 nombre 'de cada Toca
-  As  Integer       maxpos
-  As  UByte         orden   'nro pista ejec
+  As String  * 29  nombre 'de cada Toca
+  As  Integer      maxpos
+  As  UByte        orden   'nro pista ejec
   As  UByte        portout
   As  UByte        patch 
- As   UByte        canal
- As  UByte         portin  
+  As  UByte        canal
+  As  UByte        portin
+  '''As  UByte        sonido ' 23-04-2024 1 o 0 lo pondremos dentro de portin
 End Type
 
+
+' faltaba un parametro "sonido" para indicar si esta sonando o no
+' pero si agrego ese param pierdo los archivos que ejecute,,,
+' es necesario guardar que se reproducia o no ??? no me parece
+' tan importante,,, per opodria ser necesario,,per obueno lo agregamos
+' si la fecha del archivo es anterior a esta version usaremos
+' ejecparam para cargar, si la fecha es mayor a la  de esta version
+' usaremos ejecparam2 y listo ... solo debo detectar la fecha del
+' archivo....
 
 Type vivo Field=1
   As  ejec    trk  (Any)  
@@ -982,6 +992,8 @@ End Type
 Dim Shared Toca (1 To 32) as vivo  ' vector ejecucion real
 Dim Shared  As vivo toc
 Dim  Shared  tocaparam ( 1 To 32) As ejecparam
+
+Dim Shared As Integer result =0 
 
 'Dim Shared As ejecparam tocap 
 
@@ -1008,9 +1020,12 @@ Type paramGrabamidi
   As ejecparam tocap
 End Type
 
+
 Dim Shared pgmidi As paramGrabamidi
 
 
 Declare Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi)
+
+
 Declare Sub CargarSinRoll () '28-02-2024
 Declare Sub SetOptionsWindowScroll (iParam As Long)

@@ -1124,7 +1124,7 @@ If MultiKey (sc_P) And (play=1 Or playb=1 )Then
   s5=2 ' el loop necesita menos cpu se libera
   If instancia=7 Or instancia= 107 Or instancia < 3 Then 
   Else
-  SetGadgetstate(12,0)
+  SetGadgetstate(BTN_ROLL_EJECUTAR,0)
   EndIf 
 EndIf
 

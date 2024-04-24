@@ -72,17 +72,23 @@
             Str(pid1) + " "+ Str(usarmarcoins) )
              SetStateMenu(hmessages,1009,0)
              SetStateMenu(hmessages,1008,1)
+             SetStateMenu(hmessages,10081,1)
            Case 10081
                usarmarcoins=4
                 CTRL1063 
+             SetStateMenu(hmessages,1009,0)
+             SetStateMenu(hmessages,1008,1)
+             SetStateMenu(hmessages,10081,1)
+            
 ' ---------------------------------------------------------------           
            Case 1009 '<======= 3.2 Exportar Cancion a midi
 
                 SetStateMenu(hmessages,1008,0)
+                SetStateMenu(hmessages,10081,0)
                 SetStateMenu(hmessages,1009,1)
   
                Print #1, "nombres 1 y 2 "; "secuenciaPLAY.txt archivo.mid" 
-               Dim result As Integer
+               'Dim result As Integer
                 result = midiconv("secuenciaPLAY.txt", "archivo.mid")
 
                 If result = -1 Then
@@ -148,8 +154,16 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
            CTRL1016 ()
 
 '-----------------------------------------------------------------------
-           Case 1017 'seleccionar  por SALIDA de lapista ejecucion 
-
+           Case 1017 'renombrar pista ejecucion
+           Dim As String nomPista   
+           For i1=1 To 32
+               If CheckBox_GetCheck (cbxejec(i1)) =1 Then
+                  nomPista  = InputBox("Nombre de Pista " ,"Entre un nuevo Nombre ",nomPista)
+                  tocaparam(i1).nombre=nompista
+                  SetListBoxItemText(LISTA_DE_EJECUCIONES,nompista,i1-1)
+                   Exit for    
+               EndIf
+           Next i1  
 '-----------------------------------------------------------------------
            Case 1018 ' elegir PATCH si corresponde de la pista de ejecucion 
 
@@ -408,10 +422,13 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
 '-----------------------------------------------------------------------
            Case 1092 ' abrir un midi-in ...con callback
 ' no depende del numero de pista de ejecucion,sino del portin solamente,,,
+' es para tocar en un teclado midi y poder escuchar o grabar
+'Reproducir MIDI-IN (teclado) por  MIDI-OUT. 
              CTRL1092 ()
 
 '----------------------------------------------------
            Case 1093
+'Detener Reproduccion MIDI-IN (teclado) por  MIDI-OUT. (test de Input) 
              abrirMIDIin=2
            For  i As Short =1 To 32
                If CheckBox_GetCheck( cbxgrab(i))= 1  Then

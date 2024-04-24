@@ -78,7 +78,7 @@ Sub CargarMidiIn(nombreMidiIn As String,   ByRef ntkp As Integer)
           NombreCancion=Mid(nombreMidiIn,1,ubi1-1)
       EndIf
 
-      Print #1,"NTKP ",ntkp ' oreden o nro de  pista
+      Print #1,"NTKP ",ntkp ' orden o nro de  pista
       If ntkp > 0  Then
       Else
          Print #1,"ntkp =0 o distintos"
@@ -116,7 +116,6 @@ Print #1,"ubound ",UBound (Toca(ntkp).trk)
       pmTk(ntkp+32).canalsalida=tocaparam(ntkp).canal
       pmTk(ntkp+32).MaxPos=tocaparam(ntkp).maxpos
 
-
       Print #1,"CargarIn maxpos,np  ",tocaparam(ntkp).maxpos , ntkp
       Print #1,"Cargar delta ",tocaparam(ntkp).delta
       Print #1,"Cargar nombre ",tocaparam(ntkp).nombre
@@ -140,7 +139,8 @@ Sub CargarPistasEjec (lugar As String, ByRef ntkp As integer)
 ROLLCARGADO=FALSE
 
 GrabarEjec =NoGrabar: ntoca=0 : arrancaPlay=0
-ntkp=0 
+         ntkp=1 '<================= inicia en 1 y va a devolver ntkp!!
+' ahi estaba el error empieza en 1 no en cero veremos! 
 s5=2 '11-06-2022
 ''ReDim As Double fechasPistas(1 To 32)
 print #1,"-------------------------------------------------------"
@@ -1878,7 +1878,7 @@ If MIDIFILEONOFF = HABILITAR  Then
    i1=InStrRev(NombreCancion,"\")
    dim nc As String 
 
-   nc=Mid(NombreCancion,i1+1) +"."
+   nc=Mid(NombreCancion,i1+1)
  
    Print #midiplano, "MFile 1 2 " + Str (1000)
    Print #midiplano, "MTrk"
@@ -1890,7 +1890,7 @@ If MIDIFILEONOFF = HABILITAR  Then
    Print #midiplano, "0 Meta TrkEnd"
    Print #midiplano, "TrkEnd"
    Print #midiplano, "MTrk"
-   Print #midiplano, "0 Meta TrkName "; Chr(34); "Piano";Chr(34)
+   Print #midiplano, "0 Meta TrkName "; Chr(34); nc ;Chr(34)
 '''' patchs
  For i1=1 To tope
    Print #midiplano, "0 PrCh  ch=";pmTk(i1).canalsalida;" "; "p=";pmTk(i1).patch
@@ -2360,7 +2360,7 @@ out_free(midiout)
 '/ 
 If instancia=7 Or instancia= 107 Then 
 Else
- SetGadgetstate(12,0)
+ SetGadgetstate(BTN_ROLL_EJECUTAR,0)
 EndIf
 
 Dim As Integer checkejec=0

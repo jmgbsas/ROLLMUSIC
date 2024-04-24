@@ -1,0 +1,46 @@
+MFile 1 2 1000
+MTrk
+0 Meta SeqName "11-18-2021"
+0 Meta Text "Creado por RollMusic"
+0 Tempo 500000
+0 TimeSig 4/4 24 8
+0 KeySig 0 Major
+0 Meta TrkEnd
+TrkEnd
+MTrk
+0 Meta TrkName "11-18-2021"
+0 PrCh  ch=1 p=94
+0 PrCh  ch=2 p=20
+0 PrCh  ch=1 p=66
+ 0 on  ch=1 n=64 v=120
+ 0 on  ch=2 n=60 v=120
+ 0 on  ch=1 n=60 v=120
+ 4000 off ch=1 n=64 v=0
+ 4001 off ch=2 n=60 v=0
+ 4002 off ch=1 n=60 v=0
+ 4005 on  ch=1 n=71 v=120
+ 4005 on  ch=2 n=67 v=120
+ 4005 on  ch=1 n=67 v=120
+ 5006 off ch=1 n=71 v=0
+ 5007 off ch=2 n=67 v=0
+ 5008 off ch=1 n=67 v=0
+ 5011 on  ch=1 n=68 v=80
+ 5011 on  ch=2 n=64 v=80
+ 5011 on  ch=1 n=64 v=80
+ 6012 off ch=1 n=68 v=0
+ 6013 off ch=2 n=64 v=0
+ 6014 off ch=1 n=64 v=0
+ 6017 on  ch=1 n=71 v=100
+ 6017 on  ch=2 n=67 v=100
+ 6017 on  ch=1 n=67 v=100
+ 7018 off ch=1 n=71 v=0
+ 7019 off ch=2 n=67 v=0
+ 7020 off ch=1 n=67 v=0
+ 7023 on  ch=1 n=64 v=80
+ 7023 on  ch=2 n=60 v=80
+ 7023 on  ch=1 n=60 v=80
+ 8024 off ch=1 n=64 v=0
+ 8025 off ch=2 n=60 v=0
+ 8026 off ch=1 n=60 v=0
+ 8088 Meta TrkEnd
+TrkEnd

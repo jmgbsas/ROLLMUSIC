@@ -108,7 +108,7 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="0.4617 22-04-2024" ':FUTURO Patrones de Ejecucion 03-07-2022
+nroversion="0.4618 24-04-2024" ':FUTURO Patrones de Ejecucion 03-07-2022
 ' despues de un año de bajones personales veo si me da gan de seguirlo
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
@@ -167,7 +167,11 @@ End Select
   SetStateMenu(hmessages,10062,1)
   SetStateMenu(hmessages,10063,1)
   '' habilito grabar cancion punto 2) SetStateMenu(hmessages,1007,1)
-
+  If result = 0 Then
+  SetStateMenu(hmessages,1009,1)
+  Else
+  SetStateMenu(hmessages,1009,0) ' permitimos un intento mas
+  EndIf
 ' SE HABILITAN SI USO 2.0 EN SU CASE
 
 'AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS
@@ -358,7 +362,9 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
                      If nombrePatron > "" Then
                         tocaparam(ntoca).nombre=nombrePatron
                      Else
-                        EntrarNombrePista  tocaparam(ntoca).nombre
+                      Dim nompista As String
+                        EntrarNombrePista nompista  
+                        tocaparam(ntoca).nombre = Mid (nompista ,1,29)
                      EndIf
                      ntkp=ntoca 
                      AddListBoxItem(4, tocaparam(ntoca).nombre,ntoca-1)

@@ -263,6 +263,7 @@
 
 
     16 ) EXPORTAR UNA PISTA O CANCION A MIDI FORMATO 1:
+        -Ver 0.4618 se puede exportar varias veces sin salir del programa. 
         -Ver 0.4617 cancion se puede exportar cargamos una cancion con 1.0 o 2.0
          luego igual que antes cargamos 4.5 que ahora se llama "Exportara midi durante Reproduccion"
          elegir el submenu de cancion, aparece un Roll en el que se carga la cancion antes elegida
@@ -354,7 +355,35 @@
          grabar el nombre del dispositivo porque la numeracion de los dispositivos puede cambiar si se cambia el 
          dispositivo default en la PC.
 
-    17b) Grabacion directamente sobre Roll, 1era version faltaria que detecte acordes,
+         i) Cargar archivo grabado con ejecuciones por teclado *.ejec , 
+           entrar en Menu Archivo por 5.1  "Cargar Pistas Midi-in"
+           En ambos casos carga las pistas y abre automaticamente los port MIDI-OUT automaticamente
+           Si se desea entrar a tocar por MIDI-IN simultaneamente, se debe abrir el port midi-in previamente
+           seleccionado en menu Puertos de Ejecuciones,  "Seleccionar puerto midi-in". Para realizar estas 
+           operaciones debe estar seleccionado la pista de ejecucion en la columna 'S'..Luego si se desea 
+           pasar a otra pista se cierra el por midi-in en el menu Reproducir, en la opcion Detener 
+           Reproduccion MIDI-IN. Y asi sucecivamente siempre se selecciona una pista por vez tanto para abrir
+           como cerrar.
+         j)  agregamos un archivo parametro inicio.txt en directorio de ejecuciones que recuerde que pista estaba
+            sonando y cual muteada. Se puede renombrar una pista cargada de ejecuciones, para ello solo dejar
+            sonando o chequeada esa pista usar el menu archivo 5.2 y luego grabar con 5.0
+
+
+      2) Puede reproducirse al mismo tiempo una cancion y una grabacion *.ejec.
+         Se cargan ambas cosas la cancion abriendo un directorio de cancion, y luego 
+         como antes se carga MIDI-IN Cargar pista ejecucion, Se selecciona el casillero 
+         de columnas de sonido S en ambas listas, todas las pistas de cancion que se desea
+         se reproduscan y la pista o pistas de ejecuciones,,,
+         Si  se pulsa el boton Verde de la lista de pistas de cancion, se escuchara solo 
+         la cancion, pero si se pulsa el Boton Verde de la lista de pistas de Ejecucion
+         se escuchara ambsa cosas la Cancion cargada y la o las pistas de Ejecucion
+         sincronizadas.. 
+         Si se reproduce solo la cancion el grafico acompañará a la reproduccion
+         Pero para una mejor performance si se reproduce la cancion junto
+         con una o mas ejecuciones, el roll grafico permanecera quieto no
+         se movera ni acompañara la cancion.
+
+       3) Grabacion directamente sobre Roll, 1era version faltaria que detecte acordes,
            (ya lo hizo en algun algoritmo distinto a este), el actual funciona para melodias, tiene
            un metronomo, si se desea se puede desactivar (menu Opciones, no probado)
            Como antes en 17a en menu Reproducir, elegir Reproducir MIDI-IN, luego
@@ -370,30 +399,8 @@
           que indiquen cuando se alcanz o sobrepasa un compas auqneu las notas no esten bien 
           definidas)
 
-    17c) Cargar archivo grabado con ejecuciones por teclado *.ejec , 
-           entrar en Menu Archivo por 5.1  "Cargar Pistas Midi-in"
-           En ambos casos carga las pistas y abre automaticamente los port MIDI-OUT automaticamente
-           Si se desea entrar a tocar por MIDI-IN simultaneamente, se debe abrir el port midi-in previamente
-           seleccionado en menu Puertos de Ejecuciones,  "Seleccionar puerto midi-in". Para realizar estas 
-           operaciones debe estar seleccionado la pista de ejecucion en la columna 'S'..Luego si se desea 
-           pasar a otra pista se cierra el por midi-in en el menu Reproducir, en la opcion Detener 
-           Reproduccion MIDI-IN. Y asi sucecivamente siempre se selecciona una pista por vez tanto para abrir
-           como cerrar.
-    17d) Puede reproducirse al mismo tiempo una cancion y una grabacion *.ejec.
-         Se cargan ambas cosas la cancion abriuendo un directorio de cancion, y luego 
-         como antes se carga MIDI-IN Cargar pista ejecucion, Se se lecciona el casillero 
-         de columnas de sonido S en ambas listas, todas las pistas de cancion que se desea
-         se reproduscan y la pista o pistas de ejecuciones,,,
-         Si  se pulsa el boton Verde de la lista de psitas de cancion, se escuchara solo 
-         la cancion, pero si se pulsa el Boton Verde de la lista de pistas de Ejecucion
-         se escuchara ambsa cosas la Cancion cargada y la o las pistas de Ejecucion
-         sincronizadas.. 
-         Si se reproduce solo la cancion el grafico acompañará a la reproduccion
-         Pero para una mejor performance si se reproduce la cancion junto
-         con una o mas ejecuciones, el roll grafico permanecera quieto no
-         se movera ni acompañara la cancion.
  
-    18 ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
+      V ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
           o ordenar la ejecucion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
           o ejecutar con otras instancias de RollMusic con o sin Control...(hay muchisimo por hacer...)
     NOTA: si en algun momento se traba el scroll arriba abajo con la rueda del mouse, destrabar la situacion  con 
@@ -409,7 +416,7 @@
           como no hay cancion ejecuta lo que haya, el track en edicion.
 
 
-    V)  Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
+     VI) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
         estilo pentagrama-roll una combinacion. En su origen el Roll se hacia con perforaciones en un papel
         en forma rigida con un tamaño especifico de la nota, RollMusic hace lo mismo, pero coloca letras de
         valor especifico rigidos que luego podrán cambiarse.

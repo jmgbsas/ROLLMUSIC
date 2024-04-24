@@ -240,7 +240,7 @@ MenuItem(1009,MenName1,  "4.5.1 Exportar Pista/cancion de 4.5 ")
 Menubar(MenName1)
 MenuItem(1015,MenName1, "5.0 MIDI-IN Grabar Pistas ejecucion")
 MenuItem(1016,MenName1, "5.1 MIDI-IN Cargar Pistas ejecucion")
-'''MenuItem(1017,MenName1, "Elegir MIDI-OUT o Driver o Port de Salida de pista previamente chequeda en S (sonido)")
+MenuItem(1017,MenName1, "5.2 Renombrar Pista ejecucion seleccionada")
 Menubar(MenName1)
 MenuItem(1019,MenName1, "    Salir")
 
