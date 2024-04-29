@@ -678,6 +678,7 @@ nVerEscalasAuxiliares=ValInt(sVerEscalasAuxiliares)
 nanchofig =ValInt(sanchofig)
 nVerCifradoAcordes=ValInt(sVerCifradoAcordes)
 
+
 Print #1,"nanchofig " ,nanchofig
 If nfont > 0 Then
   font=nfont

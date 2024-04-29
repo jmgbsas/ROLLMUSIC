@@ -42,6 +42,13 @@ Common Shared As FLOAT font
 COMMON Shared As Long eventc, eventM
 Common Shared As hwnd hwndC, hwndListBox, hwndPatronEjec
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA
+ROLLCARGADO    = FALSE
+TRACKCARGADO   = FALSE
+CANCIONCARGADA = FALSE
+NADACARGADO    = FALSE
+CANCIONCREADA  = FALSE
+EJECCARGADA    = FALSE
+
 Common Shared As string pathdir,nombre,nombreMidiIn
 common Shared As String NombreCancion, NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista',pistacreada

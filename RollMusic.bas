@@ -108,14 +108,14 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="0.4618 24-04-2024" ':FUTURO Patrones de Ejecucion 03-07-2022
+nroversion="0.4619 " ':FUTURO Patrones de Ejecucion 03-07-2022
 ' despues de un año de bajones personales veo si me da gan de seguirlo
 ' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
 '4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
 acercade = "RollMusic Version "+ nroVersion +" Jose M Galeano, Buenos Aires Argentina 2021-2022, 2024. Ejecuta secuencias " + _
  "entrada por pasos usando algoritmos sin una linea conductora de tiempos, se basa en las duraciones de las notas. " + _
  "Para entrada por teclado midi usa ticks. Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
- "manual o por ejecucion. OS:Windows 64bits 7,10,y 11, Proc:AMD Phenom-II Black Edition 4 Nucleos. " + _
+ "manual o por ejecucion. OS:Windows 64bits, " + _
  "Usa Cairo como libreria de graficos, Windows9 ,WinGUI y Gtk como GUI; Rtmidi como libreria midi, " + _
  "Editor de código FbEdit. Echo en Freebasic como hobby. FreeBASIC Compiler - Version 1.10.1 (2023-12-24), built for win64 (64bit) " + _
 " Copyright (C) 2004-2023 The FreeBASIC development team." +_ 
@@ -266,6 +266,7 @@ If instancia =0  Then  ' cuando es online y recien levanta
 DisableGadget(LISTA_DE_PISTAS,1)
 End If 
 '---------------veremos si aca anda mejor despues de roolloop 
+
 #Include "ROLLCTRLSUB.Bi"
 '----------------
 Do

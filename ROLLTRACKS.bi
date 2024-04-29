@@ -1,32 +1,3 @@
-Sub getfiles(ByRef File As OpenFileName,flag As String, accion As String)
-    Dim As ZString * 2048 SELFILE
-    Dim As String MYFILTER=flag+Chr(0)
-    With File
-  .lStructSize = SizeOf(OpenFileName)
-  .hwndOwner = NULL
-  .hInstance = NULL
-  .lpstrFilter = StrPtr(MYFILTER)
-  .nFilterIndex = 0
-  .lpstrFile = @SELFILE
-  .nMaxFile = 2048
-  .lpstrFileTitle = NULL
-  .nMaxFileTitle = 0
-  .lpstrInitialDir = @"nosuch:\"
-  .lpstrTitle = @"Open"
-  .Flags = 4096
-  .nFileOffset = 0
-  .nFileExtension = 0
-  .lpstrDefExt = NULL
-    End With
-    If accion="open" Then
-    GetOpenFileName(@File)
-    EndIf
-    If accion="save" Then
-    GetSaveFileName(@File)
-    EndIf
-
-End Sub
-
 
 
 Sub ConversorTocaATecla(pistaToca() As ejec, pistaCargarIn()  As midicod)
@@ -324,8 +295,7 @@ cargacancion=0
   '1) cargar pista desde disco y desde Roll puro   
      If ubirtk = 0   Then ' no tengo nombre debo explorar
            myfilter  = "Track Files"+Chr(0)  +"*.rtk"+Chr(0)
-           getfiles(file,myfilter,"open")
-           nombrea=*file.lpstrFile
+           nombrea = OpenFileRequester("","", myfilter)
            ubi1 = InStrrev(nombrea,"[")
            ubi2 =InStrRev (nombrea,"]")
            ntk=CInt(Mid(nombrea,ubi1+1,ubi2-ubi1-1))
@@ -445,7 +415,7 @@ Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
  '    print #1,"CargarTrack  NB Na", pmTk(ntk).NB, pmTk(ntk).NA
      
      Get #ct, ,graba3  (1,1)
-     pmTk(ntk).canalsalida = graba3(1,1).nnn
+     pmTk(ntk).canalsalida = graba3(1,1).nnn  ' as poli es trck
      Print #1,"cargatrack pmTk(ntk).canalsalida, ntk ",pmTk(ntk).canalsalida,ntk
      canalx=graba3(1,1).nnn    
      pmTk(ntk).portout= graba3(1,1).dur
@@ -454,8 +424,8 @@ Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
      patchsal=pmTk(ntk).patch
      instru=CInt(patchsal) 
 
-
-
+     TipoCompas = graba3(1,1).pb  ' 26-04-2024
+     TCompas=Mid(tempoString(TipoCompas),1,4) 
  '    print #1,"cargaCancion ",cargacancion
 
      Get #ct, ,graba4  (1,1)
@@ -994,7 +964,7 @@ End If
      grabaLim(1,1).nnn = CUByte(tiempoPatron)
 ' cargado un Roll desde archivo canalx toma el valor del canal midi de salida del archivo
 
-     graba3(1,1).nnn=pmTk(ntk).canalsalida
+     graba3(1,1).nnn=pmTk(ntk).canalsalida ' es un track as poli
      graba3(1,1).dur=pmTk(ntk).portout 
      graba3(1,1).nota= pmTk(ntk).patch
  
@@ -1876,16 +1846,24 @@ If MIDIFILEONOFF = HABILITAR  Then
    midiplano=20
    'NombreTrack= sacarpath(titulos(ntk)) 
    i1=InStrRev(NombreCancion,"\")
-   dim nc As String 
-
+   dim  As String nc, tiempo 
    nc=Mid(NombreCancion,i1+1)
+  Dim numc As Integer = CInt(pmTk(0).canalsalida) + 1
+' suponemos que en la cancion todos los tracks tienen el mismo tempo
+' luego el tempo  del Roll sera igual al resto usamoes el de roll
+' igual que el plaAll 
+   If TipoCompas <> pmTk(0).tempo And TipoCompas > 0 Then
+      tiempo = tempoString(TipoCompas)
+   Else 
+      tiempo = tempoString (pmTk(0).tempo)
+   EndIf
  
    Print #midiplano, "MFile 1 2 " + Str (1000)
    Print #midiplano, "MTrk"
    Print #midiplano, "0 Meta SeqName "; Chr(34);nc;Chr(34)
    Print #midiplano, "0 Meta Text "; chr(34);"Creado por RollMusic"; chr(34)
    Print #midiplano, "0 Tempo " + Str (MICROSEGUNDOS_POR_NEGRA)
-   Print #midiplano, "0 TimeSig 4/4 24 8"
+   Print #midiplano, "0 TimeSig " + tiempo 
    Print #midiplano, "0 KeySig 0 Major"
    Print #midiplano, "0 Meta TrkEnd"
    Print #midiplano, "TrkEnd"
@@ -1893,7 +1871,7 @@ If MIDIFILEONOFF = HABILITAR  Then
    Print #midiplano, "0 Meta TrkName "; Chr(34); nc ;Chr(34)
 '''' patchs
  For i1=1 To tope
-   Print #midiplano, "0 PrCh  ch=";pmTk(i1).canalsalida;" "; "p=";pmTk(i1).patch
+   Print #midiplano, "0 PrCh  ch=";numc;" "; "p=";pmTk(i1).patch
   ''veremos como se pone el portout si se puede pmTk(pis).portout)	
  Next i1
 i1=0
@@ -2072,7 +2050,7 @@ kNroCol= Int(jply/NroCol)
    If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
       velpos=vdebil
    EndIf
-   
+ '  Print #1," cancon jply velpos "; jply, velpos
    cnt=0
    iguales=0
    distintos=0

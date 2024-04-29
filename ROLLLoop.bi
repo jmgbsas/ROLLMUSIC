@@ -1369,8 +1369,7 @@ If MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
  '  print #1, "Grabando a disco Roll F11 "
    Dim As String nombreg
    If nombre = "" Then
-      getfiles(file,myfilter,"save")
-      nombreg=*file.lpstrFile
+nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
       If nombreg = "" Then
          Exit Do
       Else

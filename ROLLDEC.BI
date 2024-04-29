@@ -541,11 +541,22 @@ Dim Shared cuart As Integer=0 'nro q indica sumarle 1/4 de su valor
 ' ej tecleo 1+.+A=O* en linea A dela octava que sea
 ' ej tecleo s+1+.+A =sO* en A..
 ' tambien en vez de estos simbolos usare los de un pentagrama comun,,,,futuro
-Dim Shared As BOOLEAN ayuda, ayudaNuevaNota, ayudaModif, vuelta,dobleclick
+Dim Shared As BOOLEAN ayuda, ayudaNuevaNota, ayudaModif, vuelta,dobleclick 
 haycompas=0
 dobleclick=>FALSE
 
+Dim Shared TipoCompas As UByte
+Const As UByte Tcompas2_4 = 6
+Const As UByte Tcompas3_4 = 7
+Const As UByte Tcompas4_4 = 8
+Const As UByte Tcompas6_8 = 14
+Const As UByte Tcompas12_8 = 20
+
+TipoCompas=Tcompas4_4
+
 Dim Shared d7 As Integer => 10000000 ' PROBAREMOS CON 12/8 O 6 NEGRAS,,,15 MILL
+Dim Shared d6N As Integer => 15000000 ' 6 negras o 12/8 o 6/4
+Dim Shared d3N    As Integer => 7500000 ' 3 negras 3/4
 Dim Shared d11 As Integer => 100000000000
 Dim Shared d4 As Integer => 10000 'para parametrizar menu roll 
 ' comienza el compas , se calculara dinamicamente,,,según posicion  y la historia anterior
@@ -634,7 +645,8 @@ Type rangoOct Field=1
  As UByte   zona1
  As UByte   zona2
  As UByte   nroRep
- As UByte   portin   
+ As UByte   portin 
+ As UByte   tempo  
 End Type
 ' faltaria agregar grabar el nombre del dispositivo ........
 Dim Shared As rangoOct pmTk (0 To 64)
@@ -671,20 +683,20 @@ Dim Shared As Integer abrirMIDIin=0
 ' nC indica 144, nF indica 128
 
 Type poli Field=1 ' para guardar la secuencia
- dur As  UByte =0   ' duracion 
- dur2 As UByte =0   ' SONIDO ON/OFF 
- dur3 As UByte =0   '  
- dur4 As UByte =0   '  
- dur5 As UByte =0   '  
- dur6 As UByte =0   '  
- dur7 As UByte =0   '  
- dur8 As UByte =0   '  
+ dur   As  UByte =0   ' duracion 
+ dur2  As UByte =0   ' SONIDO ON/OFF 
+ canal As UByte =0   '  
+ dur4  As UByte =0   '  
+ dur5  As UByte =0   '  
+ dur6  As UByte =0   '  
+ dur7  As UByte =0   '  
+ dur8  As UByte =0   '  
 
  nota As UByte =0 ' en un futuro contendra nota, octava, canal etc 
- vol As  UByte =0 ' volumen
- pan As  UByte =0 ' paneo
- pb  As  UByte =0 ' pitch bend
- nnn As UByte =0' se usa para escala canal etc 
+ vol  As  UByte =0 ' volumen
+ pan  As  UByte =0 ' paneo
+ pb   As  UByte =0 ' pitch bend
+ nnn  As UByte =0' se usa para escala canal etc 
  tick As ubyte =0' 128 tiene la redonda *1,75 segun pesoDur, 1 la cuartifusa o garrapatea todavia no la uso
  acorde  As ubyte =0 ' 1 a 12 , son el se hara el sort    
 End Type
@@ -712,9 +724,10 @@ Type dat Field=1
  pan As  UByte =0 ' paneo + o -
  pb  As  UByte =0 ' pitch bend + o -
  inst As UByte =0 ' instrumento para cada nota podra ser distinto 1 to 128
- ' Nota de escala son 12 ..bemol o sostenido son 2
- ' entonces en 14 numero stengo la info
- ' 129 -> c,130->c#,131->d...140->B--, 141-sos,142,bemol
+ ' Nota de escala son 12 ..bemol o sostenido son 2, 1 a 12 sostenidos, 13 a 24 bemoles
+ ' entonces en 24 numeros tengo la info de nota
+ ' octavas son 8 desde 15 a 20 son las octavas, 
+' canal son 16 de 21 a 36 ... etc etc pero no se hizo de esa forma... 
  ''t   As Ulong   '  ticks por ahroa no 
 End Type
 ' dentro del vol pondremso las escalas
@@ -786,7 +799,8 @@ Dim Shared As melodia_undo mel_undo(1 To 5000)
 ' el acorde tiene 1,3,5,7 aca almacenamos 3,5,7 pero no la funamental
 ' esa es el origen donde pulso Ctrl-click derecho, si suponemo teorico
 ' un acorde de 12 notas (raro), son 11 los lugares distintos de la funfamental
-Dim Shared As notas_agregadas  undo_acorde(1 To 500, 0 To 11) ' undo para 1 acorde entrado de hasta 12 notas adicionales  
+Dim Shared As notas_agregadas  undo_acorde(1 To 500, 0 To 11) ' undo para 1 acorde 
+' entrado de hasta 12 notas adicionales  
 ' c/inst puede tocar como una persona hasta 12 notas juntas de acorde
 ' entonces no se justifica tener en un solo instrumento una polifonia mas de 12
 ' ni de 108,,,ergo puedo poner mas trakcs o mas longitud
@@ -966,7 +980,7 @@ Type  ejecparam Field=1
   As  UByte        portin
   '''As  UByte        sonido ' 23-04-2024 1 o 0 lo pondremos dentro de portin
 End Type
-
+'' UFF ME FALTA tiempoPatronEjec DONDE LO GRABO ? A DISCO COMO SONIDO
 
 ' faltaba un parametro "sonido" para indicar si esta sonando o no
 ' pero si agrego ese param pierdo los archivos que ejecute,,,
@@ -1029,3 +1043,5 @@ Declare Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi)
 
 Declare Sub CargarSinRoll () '28-02-2024
 Declare Sub SetOptionsWindowScroll (iParam As Long)
+Declare Sub cargariniciotxt(lugar As String)
+Declare Sub grabariniciotxt(lugar As String)

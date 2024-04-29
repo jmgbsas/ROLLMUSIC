@@ -1,3 +1,4 @@
  1,si
  2,si
  3,si
+ 240,tiempoPatronEjec

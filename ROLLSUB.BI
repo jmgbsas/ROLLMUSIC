@@ -184,6 +184,7 @@ On Local Error GoTo errorCalc
     Compas(j).Posi = 0   
     Compas(j).nro = 0 ' reseteo
     velocidades(j)
+Print #1,"calcompas j Compas(j).nro velpos "; j , Compas(j).nro  
     ' x print #1,"1-calcCompas 3.2 acumulado menor sigue exit sub, carga: ";carga
     Exit Sub
    EndIf
@@ -735,8 +736,8 @@ On Local Error GoTo errorRecal
 '' A ESA SUBRUTINA Y PONERLA EN NUCLEO
        semi => Roll.trk(j,i).nota  
       If valdur > 0 And valdur < 181 And semi >=1 And semi <=12 Then
-       ' print #1, "LECTURA DUR: ";valdur;" EN LA CARGA j: ";j;" i: "; i;" figura ";figura(valdur)
-       ' Print #3, "nota: "; i; " posi: "; j; " dur: ";valdur
+        print #1, "LECTURA DUR: ";valdur;" EN LA CARGA j: ";j;" i: "; i;" figura ";figura(valdur)
+        Print #3, "nota: "; i; " posi: "; j; " dur: ";valdur
        ' las duraciones e repiten cada 45 de modo que no importan los incr
         Select Case valdur
          Case  1   To 45
@@ -751,20 +752,20 @@ On Local Error GoTo errorRecal
         End Select
 
         If  valdur >= tope1 And valdur <=tope2 And tope1 > 0 And tope2> 0 Then
-        ' print #1, "Valdur i ";valdur ; i ; " grupo ";grupo;" figura ";figura(valdur)
-         ' print #1,"i NB ";i,NB
+         print #1, "Valdur i ";valdur ; i ; " grupo ";grupo;" figura ";figura(valdur)
+          print #1,"i NB ";i,NB
          If  cont=0   Then 'mira duraciones
           mayor=pesoDur(valdur):mayorgrupo=grupo
-          '       print #1,"1er mayor "; mayor; " mayorgrupo";mayorgrupo
+                 print #1,"1er mayor "; mayor; " mayorgrupo";mayorgrupo
           cont=1
          EndIf
-         'print #1, "DUR mayor";DUR, mayor
+         Print #1, "DUR mayor";DUR, mayor
          If pesoDUR(valdur) > mayor  Then ' las duraciones cuando mas
           mayor=pesoDur(valdur):mayorgrupo=grupo
-          '        print #1,"Siguientes mayor "; mayor
-          ' print #1, " DUR MAYOR";DUR,mayor
+                  print #1,"Siguientes mayor "; mayor
+           print #1, " DUR MAYOR";DUR,mayor
          EndIf
-         '     print #1,"> i= ";i; " NA= ";NA
+              print #1,"> i= ";i; " NA= ";NA
         EndIf
       EndIf 'jmg OJO OJO
       Dim As Integer iades =(mayorgrupo -1)*45 + 1
@@ -775,11 +776,11 @@ On Local Error GoTo errorRecal
       
        If i=NA -13 Then ' 01-02-2022 vuelta atras
 
-        'print #1,"i=NA i: ";i;" NA: ";NA;" Mayor ";mayor;" grupo:"; mayorgrupo
+        Print #1,"i=NA i: ";i;" NA: ";NA;" Mayor ";mayor;" grupo:"; mayorgrupo
         For ia= iades To iahas ' tresillos es grupo 
          If mayor=pesoDur(ia) Then
           valdur=ia
-        '     print #1, "peso de mayor encontrado valdur ";valdur; "dur ";ia; " grupo ";mayorgrupo
+             print #1, "peso de mayor encontrado valdur ";valdur; "dur ";ia; " grupo ";mayorgrupo
           Exit For   
          EndIf
         Next ia
@@ -798,7 +799,7 @@ On Local Error GoTo errorRecal
          EndIf
          
          if DUR<=180 Then
-         ' print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo;" figura ";figura(durm)
+          print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo;" figura ";figura(durm)
           calcCompas(j,Roll)
          If carga=1 Then
  '------zzz
@@ -813,12 +814,12 @@ On Local Error GoTo errorRecal
 '-------   
          EndIf   
           
-          'print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j).Posi;" figura ";figura(durm)
+          Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j).Posi;" figura ";figura(durm)
           valdur=0
           DUR=0
           mayor=0
          EndIf
-        'Print #3,"==============fin posicion nro: "; j
+        Print #3,"==============fin posicion nro: "; j
        EndIf
        valdur=0:DUR=0
     
@@ -1376,6 +1377,22 @@ EndIf
 
 
 End Sub
+'------
+Function valorFigura(TipoCompas As UByte) As Integer
+
+Select Case TipoCompas
+      Case Tcompas2_4
+        valorFigura= 5000000  
+      Case Tcompas3_4, Tcompas6_8
+        valorFigura=7500000 
+      Case Tcompas4_4
+        valorFigura=10000000
+      Case Tcompas12_8
+        valorFigura=15000000
+End Select
+
+End Function
+
 '--------
 Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
 ' PRINCIPALMENTE CARGA ROLL Y LO PASA SIEMPRE A TRACK (0) 
@@ -1396,9 +1413,8 @@ abrirRoll=2 ' habilita la carga de una cancion
      ''' no usar mas  dialogoText("Cargar Archivo")
      Dim myFil As String
       If ubiroll=0 Then
-         myfil  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
-         getfiles(file,myfil,"open")
-         nombrea=*file.lpstrFile
+nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
+
          titulos(0)=nombrea
       Else
          If ubiroll > 0 Then
@@ -1564,7 +1580,11 @@ Print #1,"pmTk(0).MaxPos = MaxPos ";  MaxPos
      instru= CInt(patchsal) ' integer ubyte
      Roll.trk(1,NA).inst = patchsal
 
-
+     TipoCompas= z3(1,1).pb 
+     TCompas=Mid(tempoString(TipoCompas),1,4)
+ 
+     pmTk(0).tempo = TipoCompas 
+     d7=valorFigura(TipoCompas)
 
      Get #ca, ,z4  (1,1)
      Get #ca, ,z5  (1,1)
@@ -2226,8 +2246,7 @@ EndIf
        Dim As String nombreg
        print #1,"EN Grabar nombre ",nombre
        If nombre = "" Then
-          getfiles(file,myfilter,"save")
-          nombreg=*file.lpstrFile
+nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
           If nombreg = "" Then
              Exit Sub
           Else
@@ -2272,8 +2291,7 @@ EndIf
      '       print #1, "Grabando a disco Roll GRABAR "
        '''''no usar dialogoText("Grabar Archivo")
        Dim As String nombreg
-       getfiles(file,myfilter,"save")
-       nombreg=*file.lpstrFile
+nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
        If nombreg = "" Then
           Exit Sub
        Else
@@ -2301,8 +2319,7 @@ EndIf
       '''' dialogoText("Grabar Archivo")
        Dim As String nombreg
        If nombre = "" Then
-          getfiles(file,myfilter,"save")
-          nombreg=*file.lpstrFile
+ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
           If nombreg = "" Then
              Exit Sub
           Else
@@ -2527,11 +2544,14 @@ EndIf
     If MouseButtons And 1 Then
      d7=10000000
      menuNew= 7
-     If mAXpOS > 2 Then
+     TCompas="4/4 "  ' para mostrar en pantalla  
+     TipoCompas=Tcompas4_4  ' 8 para guardar en disco roll o rtk
+       pmTk(0).tempo = TipoCompas 
+     d7=valorFigura(TipoCompas)
+     If MaxpOS > 2 Then
        ReCalCompas(Roll)
      EndIf
-     TCompas="4/4"
-    MenuNew=0
+    'MenuNew=0
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -2543,10 +2563,11 @@ EndIf
      d7=15000000
      menuNew=7
      TCompas="12/8"
+     TipoCompas=Tcompas12_8  ' 20  
      If mAXpOS > 2 Then
      ReCalCompas(Roll)
      End If
-     MenuNew=0
+     'MenuNew=0
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -2557,16 +2578,53 @@ EndIf
     If MouseButtons And 1 Then
      d7=5000000
      menuNew=7
+     TCompas="2/4 "
+     TipoCompas=Tcompas2_4  ' 6 
+
      If mAXpOS > 2 Then
      ReCalCompas(Roll)
      EndIf
-     TCompas="2/4"
-     MenuNew=0
+     'MenuNew=0
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [2/4]":cairo_show_text(c, t)
+
+  If mousex > 220 And mousex < 270 And mousey < 50  Then  'OPCIONES
+    cairo_set_source_rgba c, 0, 1, 0, 1
+    If MouseButtons And 1 Then
+     d7=7500000
+     menuNew=7
+     TCompas="3/4 "
+     TipoCompas=Tcompas3_4  ' 7
+     If mAXpOS > 2 Then
+     ReCalCompas(Roll)
+     EndIf
+     'MenuNew=0
+    EndIf
+   Else
+    cairo_set_source_rgba c, 1, 1, 1, 1
+   EndIf
+   t=  " [3/4]":cairo_show_text(c, t)
+
+ If mousex > 280 And mousex < 310 And mousey < 50  Then  'OPCIONES
+    cairo_set_source_rgba c, 0, 1, 0, 1
+    If MouseButtons And 1 Then
+     d7=7500000
+     menuNew=7
+     TCompas="6/8 "
+     TipoCompas=Tcompas6_8  ' 7
+     If mAXpOS > 2 Then
+     ReCalCompas(Roll)
+     EndIf
+     'MenuNew=0
+    EndIf
+   Else
+    cairo_set_source_rgba c, 1, 1, 1, 1
+   EndIf
+   t=  " [6/8]":cairo_show_text(c, t)
+
  
  cairo_stroke(c)
 
@@ -3066,43 +3124,37 @@ nombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
           EndIf  
 
  Case "[TEMPO]"
-    
-' debo generar un default para manual 60 y oro para ejecs 240
-   If  EJECCARGADA Then ' cargar lo que hhay aen el archivo
-       If  ticksdefault <> "" Then
-           default2=ticksdefault
-       Else
-            default2=Str(tiempoPatronEjec)
-       EndIf
-       ticksdefault = InputBox("Ajuste Tempo Ejec" ,"Entre un Tempo ",default2)
-       tiempoPatronEjec= cint(ticksdefault) '08-01-2022 de doble a int
-   Else
-       If  ticksdefault<>"" Then
-           default=ticksdefault
-       Else
-          default=Str(tiempoPatron)  ' manual
-       EndIf 
-     ticksdefault = InputBox("Ajuste Tempo Manual" ,"Entre un Tempo ",default)
-      tiempoPatron= cint(ticksdefault) '08-01-2022 de doble a int
-   EndIf
-    Print #1,"llego a TEMPO en entrar tecla",ticksdefault 
-   
-' o sea el default de tiempoPAtron para manual es 60, pero para ejecuciones es 240
+
 If  EJECCARGADA=FALSE Then
     If tiempoPatron = 0  Then
        tiempoPatron=60
-       TickPlay=TickChico ' equivale a 240
+       default="60"
    EndIf
 EndIf
 If  EJECCARGADA = TRUE  Then
    If tiempoPatronEjec=0 Then
       tiempoPatronEjec=240
-      ticksdefault="240"
-     TickPlay=TickChico
-  Else 
-     TickPlay=TickChico*240/tiempoPatronEjec
+      default2="240"
   EndIf
 EndIf
+    
+' debo generar un default para manual 60 y oro para ejecs 240
+   If  EJECCARGADA = TRUE Then ' cargar lo que hhay aen el archivo
+       default2 = Str(tiempoPatronEjec)
+       ticksdefault = InputBox("Ajuste Tempo Ejec" ,"Entre un Tempo ",default2)
+       tiempoPatronEjec= cint(ticksdefault) '08-01-2022 de doble a int
+   Else
+       'If  ticksdefault<>"" Then
+       '    default=ticksdefault
+       'Else
+        default=Str(tiempoPatron)  ' manual
+       'EndIf 
+     ticksdefault = InputBox("Ajuste Tempo Manual" ,"Entre un Tempo ",default)
+      tiempoPatron= cint(ticksdefault) '08-01-2022 de doble a int
+   EndIf
+    Print #1,"tEMPO llego a TEMPO en entrar tecla",ticksdefault 
+   
+' o sea el default de tiempoPAtron para manual es 60, pero para ejecuciones es 240
 
  Case "[FACTOR]"
    default=Str("1.25")
@@ -3167,38 +3219,159 @@ End Sub
 
 
 Sub velocidades(j As integer)
-    If TCompas="4/4" Then
-      If acumulado <= 2500000 Then 'nollego a negra
+ Print #1,"velocidades Tcompas j "; TCompas, j 
+    If TCompas="4/4 " Then ' dividido y subdividido
+      If acumulado <= 1250000 Then ' hasta a corchea
        compas(j).nro = -1 ' fuerte
       EndIf
-      If acumulado > 2500000 And acumulado <= 5000000 Then 'nollego a 2 negra
+      If acumulado > 1250000 And acumulado <= 2500000 Then 'hasta 1 negra
        compas(j).nro = -2 ' debil
       EndIf
-      If acumulado > 5000000 And acumulado <= 7500000 Then 'nollego a 2 negra
-       compas(j).nro = -3 ' semifuerte
-      EndIf
-      If acumulado > 7500000 And acumulado <= 10000000 Then 'nollego a 2 negra
-       compas(j).nro = -2 ' debil
-      EndIf
-      
-     
-      
-    EndIf
-    If TCompas="12/8" Then
-      If acumulado <= 3750000 Then 'nollego a I*
+
+      If acumulado > 2500000 And acumulado <= 3750000 Then 'hasta 1,5 negra
        compas(j).nro = -1 ' fuerte
       EndIf
-      If acumulado > 3750000 And acumulado <= 7500000 Then 'nollego a 2 negra
+      If acumulado > 3750000 And acumulado <= 5000000 Then 'hasta 2 negra
        compas(j).nro = -2 ' debil
       EndIf
-      If acumulado > 7500000 And acumulado <= 11250000 Then 'nollego a 2 negra
+
+      If acumulado > 5000000 And acumulado <= 6250000 Then 'nollego a 2,5 negra
        compas(j).nro = -3 ' semifuerte
       EndIf
-      If acumulado > 11250000 And acumulado <= 15000000 Then 'nollego a 2 negra
-       compas(j).nro = -2 ' semifuerte
+      If acumulado > 6250000 And acumulado <= 7500000 Then 'nollego a 3 negra
+       compas(j).nro = -2 ' debil
       EndIf
+
+      If acumulado > 7500000 And acumulado <= 8750000 Then 'hasta 3,5 negra
+       compas(j).nro = -1 ' fuerte
+      EndIf
+      If acumulado > 8750000 And acumulado <= 10000000 Then 'hasta 4 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+
+
+
+    EndIf
+
+    If TCompas="2/4 " Then 'dividido y subdividido. seria un 6/8 tmbien
+      If acumulado <= 1250000 Then 'nollego a corchea
+       compas(j).nro = -1 ' fuerte
+      EndIf
+      If acumulado > 1250000 And acumulado <= 2500000 Then 'hasta negra
+       compas(j).nro = -2 ' debil
+      EndIf
+
+      If acumulado > 2500000 And acumulado <= 3750000 Then 'hasta 1,5 negra
+       compas(j).nro = -3 ' semi fuerte
+      EndIf
+      If acumulado > 3750000 And acumulado <= 5000000 Then 'hasta 2 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+      Exit Sub
+    EndIf
+
+
+
+
+    If TCompas="3/4 " Then 'dividido y subdividido. seria un 6/8 tmbien
+      Print #1 ,"TCompas=3/4 en velocidades acumulado "; acumulado
+      If acumulado <= 1250000 Then 'nollego a corchea
+       compas(j).nro = -1 ' fuerte
+      EndIf
+      If acumulado > 1250000 And acumulado <= 2500000 Then 'hasta negra
+       compas(j).nro = -2 ' debil
+      EndIf
+
+      If acumulado > 2500000 And acumulado <= 3750000 Then 'hasta 1,5 negra
+       compas(j).nro = -3 ' semi fuerte
+      EndIf
+      If acumulado > 3750000 And acumulado <= 5000000 Then 'hasta 2 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+      If acumulado > 5000000 And acumulado <= 6250000 Then 'hasta 2,5 negra
+       compas(j).nro = -3 ' semi fuerte
+      EndIf
+      If acumulado > 6250000 And acumulado <= 7500000 Then 'hasta 3 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+      Print #1, "velocidades 3/4 compas(j).nro "; compas(j).nro 
+      Exit Sub 
+    EndIf
+
+    If TCompas="6/8 " Then ' dividido.. f d  y subdividido fdd,sfdd  ..?
+      If acumulado <= 1250000 Then ' hasta corchea 
+       compas(j).nro = -1 ' fuerte
+      EndIf
+      If acumulado > 1250000 And acumulado <= 2500000 Then 'hasta 1 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+      If acumulado > 2500000 And acumulado <= 3750000 Then ' hasta 1,5 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+
+
+      If acumulado > 3750000 And acumulado <= 5000000 Then 'hasta 2 negra
+       compas(j).nro = -3 ' semi fuerte
+      EndIf
+      If acumulado > 5000000 And acumulado <= 6250000 Then 'hasta 2,5 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+      If acumulado > 6250000 And acumulado <= 7500000 Then 'hasta 3 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+
+      Exit Sub
      
     EndIf
+
+
+    If TCompas="12/8" Then ' dividido.. f d sf d y subdividido fdd,fdd,sfdd,fdd
+      If acumulado <= 1250000 Then ' hasta corchea 
+       compas(j).nro = -1 ' fuerte
+      EndIf
+      If acumulado > 1250000 And acumulado <= 2500000 Then 'hasta 1 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+      If acumulado > 2500000 And acumulado <= 3750000 Then ' hasta 1,5 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+
+
+      If acumulado > 3750000 And acumulado <= 5000000 Then 'hasta 2 negra
+       compas(j).nro = -1 ' fuerte
+      EndIf
+      If acumulado > 5000000 And acumulado <= 6250000 Then 'hasta 2,5 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+      If acumulado > 6250000 And acumulado <= 7500000 Then 'hasta 3 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+
+
+      If acumulado > 7500000 And acumulado <= 8750000 Then 'hasta 3,5 negra
+       compas(j).nro = -3 ' semifuerte
+      EndIf
+      If acumulado > 8750000 And acumulado <= 10000000 Then 'hasta 4 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+      If acumulado > 10000000 And acumulado <= 11250000 Then 'hasta 4,5 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+
+
+      If acumulado > 11250000 And acumulado <= 12500000 Then 'hasta 5 negra
+       compas(j).nro = -1 ' fuerte
+      EndIf
+      If acumulado > 12500000 And acumulado <= 13750000 Then 'hasta 5,5 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+      If acumulado > 13750000 And acumulado <= 15000000 Then 'hasta 6 negra
+       compas(j).nro = -2 ' debil
+      EndIf
+      Exit Sub
+    EndIf
+
+
 
 End Sub 
 Sub grabaralteracion(ByRef pan As UByte)
@@ -3399,15 +3572,16 @@ Negras por minuto	 tempo
      If CANCIONCARGADA =TRUE Then ' SELECCION DE ISNTRUMENTO CON CANCION CARGADA
         Trabajo(1,NA).inst = Track(ntk).trk(1,1).nnn
      EndIf
-     graba3(1,1).inst =pmTk(ntk).canalsalida ' el CANAL MIDI 1 A 16 QUE ACA VA DE 0 A 15
-
+     graba3(1,1).inst =pmTk(0).canalsalida ' el CANAL MIDI 1 A 16 QUE ACA VA DE 0 A 15
+' es un roll !!
      graba3(1,1).dur = pmTk(ntk).portout
      ' faltaba el patch!!! por eso habia incongruencias al modificar
      ' ver la carga tambien SEGUIR!!!!, TAMPOCO ESTABAN NA Y NB
      graba3(1,1).nota= pmTk(ntk).patch ' 14-04-2024
-     If Roll.trk(1,NA).inst <> pmTk(ntk).patch Then
+     If Roll.trk(1,NA).inst <> pmTk(0).patch Then
         graba3(1,1).nota=Roll.trk(1,NA).inst
      EndIf
+     graba3(1,1).pb = TipoCompas ' 26-04-2024
      ' NB y NA se calcula a partir de desde y hasta no hace falta grabarlos  
      ' ------------------------------------
      ' para seguir poniendo notas nuevas
@@ -3563,8 +3737,28 @@ Sub GrabarTrack (ntk As integer)  'Error seguro aca nota=181 posicion1
  Maxpos=pmTk(ntk).MaxPos
     Open ntknom  For Binary Access write As #gt
      Dim Trabajo (1 To  MAxPos, 1 To lim3 ) As poli
-   'r  Erase Trabajo ' todo a cero par aun array fijo no dinamico
-     Dim grabaPos (1,1)  As poli
+' habiamos expandido poli debemos aprovecharlo 
+'Type poli Field=1 ' para guardar la secuencia
+' dur As  UByte =0   ' duracion 
+' dur2 As UByte =0   ' SONIDO ON/OFF 
+' dur3 As UByte =0   '  
+' dur4 As UByte =0   '  
+' dur5 As UByte =0   '  
+' dur6 As UByte =0   '  
+' dur7 As UByte =0   '  
+' dur8 As UByte =0   '  
+
+' nota As UByte =0 ' en un futuro contendra nota, octava, canal etc 
+' vol As  UByte =0 ' volumen
+' pan As  UByte =0 ' paneo
+' pb  As  UByte =0 ' pitch bend
+' nnn As UByte =0' se usa para escala canal etc 
+' tick As ubyte =0' 128 tiene la redonda *1,75 segun pesoDur, 1 la cuartifusa o garrapatea todavia no la uso
+' acorde  As ubyte =0 ' 1 a 12 , son el se hara el sort    
+'End Type
+
+   'r  Erase Trabajo ' todo a cero para un array fijo no dinamico
+     Dim grabaPos (1,1)  As poli ' 15 ubytes en cada poli 
      Dim grabaLim (1,1)  As poli
      Dim graba3   (1,1)  As poli ' 04-02-2022 se agregan 48 bytes para info futura 
      Dim graba4   (1,1)  As poli 
@@ -3574,7 +3768,9 @@ Sub GrabarTrack (ntk As integer)  'Error seguro aca nota=181 posicion1
      Dim graba8   (1,1)  As poli 
      Dim graba9   (1,1)  As poli 
      Dim graba10  (1,1)  As poli 
-      
+
+   ' Total 150 ubytes en 10 poli 
+   
      Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
 'print #1, "inicio MaxPos "; MaxPos
@@ -3687,14 +3883,16 @@ EndIf
 
      grabaLim(1,1).pan  = pmTk(ntk).alteracion
      grabaLim(1,1).nnn = CUByte(tiempoPatron)
-
+    
      graba3(1,1).dur = pmTk(ntk).portout
-     graba3(1,1).nnn = pmTk(ntk).canalsalida 
+     graba3(1,1).nnn = pmTk(ntk).canalsalida ' as poli son tracks ojo 
      graba3(1,1).nota= pmTk(ntk).patch
      Print #1,"grabartrack graba3(1,1).nnn, ntk ",graba3(1,1).nnn , ntk
 
-     '  print #1,"MaxPos grabada en Trabajo ",MaxPos
+     graba3(1,1).pb = TipoCompas ' 26-04-2024
 
+     '  print #1,"MaxPos grabada en Trabajo ",MaxPos
+     
      Put #gt, ,grabaPos(1,1)
      Put #gt, ,grabaLim(1,1)
      Put #gt, ,graba3  (1,1)
@@ -4081,10 +4279,10 @@ Posy=y0 +100
      
      AddListViewColumn(1, mensaje ,0,0,250)
      For aa As Integer=1 To 16 
-         If pmTk(ntk).canalsalida > 0 And pmTk(ntk).canalsalida = aa -1 Then
+         If  pmTk(ntk).canalsalida = aa -1 Then
                AddListViewItem(1, "[x] "+listCanal(aa),0,aa,0)
                Print #1,"pmTk(ntk).canalsalida ",pmTk(ntk).canalsalida
-               ntk=aa 
+              '''' ntk=aa 
          Else
                AddListViewItem(1, "[ ] "+listCanal(aa),0,aa,0)
          EndIf 
@@ -4109,6 +4307,7 @@ Posy=y0 +100
          If event=EventLBDown Then
             If EventNumberListView=1  Then
                canalx=GetItemListView
+Print #1, "SELCANAL canalx "; canalx
                cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
                If InStr(cad,"x")>0 Then
                  cad="[ ] " +Str(canalx+1)

@@ -134,10 +134,8 @@ Sub CTRL10075 ()
 
            ROLLCARGADO=False 
             Dim As String nombreg
+nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))            
             
-            getfiles(file,myfilter,"open")
-             
-            nombreg=*file.lpstrFile
             If nombreg = "" Then
                Print #1,"exit select por nombreg vacio "
                Exit Sub
@@ -153,9 +151,8 @@ Sub CTRL1010(ByRef salida As INTEGER)
            ROLLCARGADO=False 
            TRACKCARGADO=FALSE
             Dim As String nombreg
+nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
             
-            getfiles(file,myfilter,"open")
-            nombreg=*file.lpstrFile
             If nombreg = "" Then
                Print #1,"exit select por nombreg vacio "
                salida=1 
@@ -175,8 +172,7 @@ Sub CTRL1012 (ByRef SALIDA As Integer)
            ROLLCARGADO=FALSE 
             Dim As String nombreg
             If nombre = "" Then
-               getfiles(file,myfilter,"save")
-               nombreg=*file.lpstrFile
+nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
                If nombreg = "" Then
                   print #1,"exit select por nombreg vacio "
                   SALIDA=1 
@@ -193,6 +189,7 @@ Sub CTRL1012 (ByRef SALIDA As Integer)
 
 
 End Sub
+
 
 Sub CTRL1015 ()
 ' preparamos para grabar la pista por cambio de patch
@@ -231,6 +228,8 @@ pgmidi.toc=toc
 'pgmidi.tocatope = tocatope
 pgmidi.tocap = tocap
 'threadGrabamidi=@pgmidi
+
+ grabariniciotxt (NombreCancion)
 GrabarMidiIn(pgmidi)  ' POR 1015
 '  ThreadCreate (@GrabarMidiIn,CPtr(Any Ptr, threadGrabamidi))
 
@@ -258,8 +257,11 @@ Do while Not Eof(ini)
     If LCase(estado) = "no" Then
       CheckBox_SetCheck (cbxejec(arch),0)
     EndIf
- 
+    If LCase(estado) = "tiempopatronejec" then
+        tiempoPatronEjec=arch
+    EndIf 
  Loop
+
 
 Close #ini
 
@@ -288,6 +290,7 @@ For i1=1 To tocatope
        
      Print #ini, i1;",";estado 
 Next i1 
+Print #ini, tiempoPatronEjec; ","; "tiempoPatronEjec"
 
 Close #ini
 
@@ -1094,19 +1097,23 @@ Static As Integer millave
          SetGadgetstate(BTN_MIDI_GRABAR,BTN_LIBERADO)
          GrabarEjec=GrabarPistaEjecucion
          arrancaPlay=0
-
+' SAQUE EL METRONOMO ???? DEBERIA REPONERLO ,,,,, 26-04-2024 PROBAR
+' CREO QUE LO SAQUE POR MOLESTO....JAJAJA VAMOS A REPONERLO ...
 'metronomo de 4 pulsos para comenzar a grabar
- '    If  GrabarEjec=1 And metronomo_si=1 Then
- '       terminar_metronomo=0
- '       Dim As Integer im=0
- '       For im=1 To 4  
- '           noteon(60,60,1,0)
- '           noteoff(60,1,0)
- '           duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
- '       Next im
- '       threadmetronomo = ThreadCall metronomo()
-             '    EndIf
-
+     If  GrabarEjec=1 And metronomo_si=1 Then
+        terminar_metronomo=0
+        Dim As Integer im=0
+        For im=1 To 4  
+            noteon(60,60,1,0,1)
+            noteoff(60,1,0,1)
+            duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+        Next im
+        threadmetronomo = ThreadCall metronomo()
+        terminar_metronomo=1 ''SOLO DEJAMOS LAS 4 PRIMERAS POR ACA  
+     EndIf
+' O SEA ASI COMOESTA SOLO NOS PREPARA PARA PARA TOCAR Y LUEGO SE CALLA
+' DEBERIA SER OPCIONAL QUE SE CALLE O NO DESPUES DE LOS 4 PRIMEROS
+' 
 
 
      EndIf ' end event 10

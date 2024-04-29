@@ -1,3 +1,15 @@
+- 29-04-2024 se guardo TEMPO en archivos Roll y Rtk. TEMPO fallaba en
+  roll grafico y el menu desaparecia al clickear COMPAS.
+  Se agrego acentos en divisiones y subdiviciones de 2/4 3/4 4/4 6/8 y 12/8
+  se ajusto el tempo en exportar a Midi.Se corrigio canales de Roll, la
+  falta de sonido aleatoriamente al cambiar de  tempo, el plano midi
+  para roll ya incluye el tempo y el NOMBRE DEL dispositivo MIDI OUT.
+  (proximo paso ver si anda con cancion lo mismo, se guir verificando cada
+   funcion....) 
+-26-04-2024 Repuse el metronomo para grabar MIDI solo los 4 pulsos de arranque
+ No logro cambiar el tempo de las grabaciones ejec por teclado sin roll,, 
+ el TickPlay es indistinto si está en cero o un valor enorme,, y la duracion se 
+ puede comentar sin efecto alguno en PlayTocaAll...se deja por ahora,,,
 -24-04-2023 ya se puede repetir  cargar, exportar a midi, y volver a empezar sin salir del programa
  ya sea pista o cancion. V 0.4618
 -23-04-2024 se arreglo nombre de Seg en plano txt de midi
