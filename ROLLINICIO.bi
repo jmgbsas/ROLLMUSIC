@@ -139,12 +139,14 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 '
 'End Sub
 ' FILE DIALOG adicionales
-Sub  abrirSecuencia(nf As integer) 
-   Open "./secuenciaPLAY.txt" For Output Shared As nf
-    If Err > 0 Then
-    		Print #1, "secuenciaPLAY.txt no abre!"
-   	EndIf
-End  sub 
+'Sub  abrirSecuencia(nf As integer) 
+
+'  If  Open ("./secuenciaPLAY.txt" For Output Shared As nf ) <> 0 Then
+'    		Print #1, "secuenciaPLAY.txt no abre!"
+'  Else
+'      Print #1, "secuenciaPLAY.txt abierta!"
+'  EndIf
+'End  sub 
 
 '--------
 Sub cerrar (ByVal n As Integer)
@@ -224,9 +226,10 @@ Dim Shared As String myfilter
 myfilter  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
 'myfilter += "Ini files"+Chr(0)   +"*.ini;*.txt;*.cfg"+Chr(0)
 myfilter += "Rtk  Files"+Chr(0)   +"*.rtk"+Chr(0)
+Dim Shared As Long pd1, fa1,ffini,ca,ffile,ct,ga,grt ,ngm,fk
 
-
-''''Open "AAAAA-test.TXT" For Output As 5
+fk=5
+Open "AAAAA-test.TXT" For Output As #fk
 Dim Shared As Integer abierto=0
 Common Shared  mensaje As Integer 
 '''  end file dialog  
@@ -234,7 +237,9 @@ Common Shared  mensaje As Integer
 '#Include Once "crt.bi"
 #include once "gtk/gtk.bi"
 
-' This is our data identification string to store data in list items
+' This is our data identification string to store data in list item
+Dim  Shared   As String  pathinicio 
+pathinicio = CurDir  
 Const list_item_data_key ="list_item_data"
 ' fin GTK
 ' -- INICIO openGL GLFW 3.1.1 
@@ -254,11 +259,11 @@ Dim As GLFWwindow ptr  win
 
 
 '------------------
-Dim Shared As Long pd1, fa1,ffini,ca,ffile,ct,ga,fk,grt ,ngm
+
 pd1 = GetCurrentProcessId()  
 
-''Open "midebug.txt" For Output As #1
- Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As 1
+Open "midebug.txt" For Output As #1
+'' Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As 1
 Print #1,"start"
 Print #1,"PID DE ESTE PROCESO ",pd1
 

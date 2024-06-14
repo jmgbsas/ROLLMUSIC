@@ -94,7 +94,8 @@ Const BTN_ROLL_VOL        = 23
 Const BTN_ROLL_PAN        =24
 Const BTN_ROLL_PATCH    = 25
 Const BTN_ROLL_CANAL    = 26
-
+Const IMAGE_VEL= 30
+Const IMAGE_FIG = 31
 Const HABILITAR = TRUE
 Const DESHABILITAR = FALSE 
 
@@ -123,6 +124,7 @@ Declare Sub dialogoText(cadena As string)
 Declare Sub velocidades(j as integer)
 Declare Sub playthread()
 Declare Sub GrabarArchivo (grabar_como As Integer)
+Declare Sub abrirSecuencia (nf As integer)
 Declare Sub GrabarTrack   (ntk As integer) ' NO SE ESTA USANDO
 Declare Sub ActualizarRollyGrabarPista ()
 Declare Sub GrabarRollaTrack (cambiaext As Integer)
@@ -130,9 +132,8 @@ Declare Sub CargarPistasEnCancion ()
 Declare sub GrabarCopiadePista()
 Declare Sub ImportarPistaExterna(nombre As string )
 
-Declare sub selport(ByVal tipo As Integer)
-''Declare sub selport(ByVal tipo As integer)
-Declare Sub selcanal(ByVal tipo As Integer)  
+Declare sub selport(ByVal mitipo As Integer)
+Declare Sub selcanal(ByVal mitipo As Integer)  
 Declare Sub ComboBox()
 Declare Sub grabaprueba()
 Declare Sub borrarColumnasMarcadas()
@@ -488,7 +489,7 @@ Dim  Shared figura (1 To 182) As ZString  * 4 => _
  " O:"," P:"," I:"," L:"," F:"," E:"," X:"," H:"," W:",_  ' 28 36
  "3O ","3P ","3I ","3L ","3F ","3E ","3X ","3H ","3W ", _ ' 37 45 
  "sO ","sP ","sI ","sL ","sF ","sE ","sX ","sH ","sW ",_  ' 46 54 
- "sO.","sP.","sI.","sL.","sF.","sE.","sX.","sH.","sW.",_  ' 55 63
+ "sO4","sP4","sI4","sL4","sF4","sE4","sX4","sH4","sW4",_  ' 55 63
  "sO*","sP*","sI*","sL*","sF*","sE*","sX*","sH*","sW*",_  ' 64 72 
  "sO:","sP:","sI:","sL:","sF:","sE:","sX:","sH:","sW:",_  ' 73 81
  "s3O","s3P","s3I","s3L","s3F","s3E","s3X","s3H","s3W", _ ' 82 90 
@@ -505,18 +506,18 @@ Dim  Shared figura (1 To 182) As ZString  * 4 => _
  "   ","|| " } ' 181 182 - 109 110, son 108 (old 73 74 son 72)
 
 ' silencios entre  46 a 90 y 136 a 180    
- 'los puntillos de tresillos coinciden con elvalor superior
-'ej (3I)*=I=1.. 1/3 tresillo de negra con puntillo = negra
+' los puntillos de tresillos coinciden con elvalor superior
+' ej (3I)*=I=1.. 1/3 tresillo de negra con puntillo = negra
 ' (3L)* = L ..1/3 tresillo de corchea con puntillo = corchea
 ' ergo no hace falta simbolos adicionales para tresillos con puntillo
-' elprogram debe reemplazar si se entra tresillo con puntillo por
-'la figura sin puntillo...
-' 4/3 4 fig en espaciode 3 ya lo tenemos por ejemplo 
+' el program debera reemplazar si se entra tresillo con puntillo por
+' la figura sin puntillo...
+' 4/3 4 fig en espacio de 3 ya lo tenemos por ejemplo 
 ' L*L*L*L*=III 
 ' 73 ESPACIO 74 FIN....181 espacio 182 FIN 
 'cambiar 107 por 108, 109 por 110,  109 por 110.
-' ligaduras de notas con + que va a + o - creo qu emenso seria mejor
-' parecido a una pila polos opuestos se atraen je...
+' ligaduras se eligio todas con simbolo + 
+
 Dim Shared As Integer comienzo1, fin1, comienzo2,fin2,PianoNota, _
 loopDeThreads=0 ,sefini=0
 'comienzo1=28:fin1=54
@@ -772,7 +773,7 @@ Dim Shared As Integer tipoescala_num = 1, notaescala_num = 1,tipoescala_num_ini=
 Dim Shared As String notas_esc_inicial (1 To 24)
 
 Dim Shared As Integer desdevector,undo_kant_intervalos(1 To 500)
-Dim Shared As Integer hastavector,abrirRoll=0    
+Dim Shared As Integer hastavector,abrirRoll=0 ,abrirRollCargaMidi=0   
 Dim Shared As String grado_inicial(1 To 24)
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
@@ -881,6 +882,25 @@ Dim Shared ANCHO3div4 As Integer
 
 '----------------------------
 Dim Shared  As String ProgError(0 To 17)
+ProgError(0) = "No error"
+ProgError(1) = "Illegal function call"
+ProgError(2) = "File not found signal"
+ProgError(3) = "File I/O error"
+ProgError(4) = "Out of memory"
+ProgError(5) = "Illegal resume"
+ProgError(6) = "Out of bounds array access"
+ProgError(7) = "Null Pointer Access"
+ProgError(8) = "No privileges"
+ProgError(9) = "interrupted signal"
+ProgError(10) = "illegal instruction signal"
+ProgError(11) = "floating point error signal "
+ProgError(12) = "segmentation violation signal"
+ProgError(13) = "Termination request signal"
+ProgError(14) = "abnormal termination signal"
+ProgError(15) = "quit request signal"
+ProgError(16) = "return without gosub"
+ProgError(17) = "end of file"
+
 Static Shared As HWND cbxnum(1 To 32), cbxejec(1 To 32),cbxgrab(1 To 32),rbparar,rbgrabar,cbxejecout(1 To 32)
 Static Shared As Integer sonidoPista(1 To 32)
 static  Shared As Integer SuenaTodo =0, cntsuena=0
@@ -901,7 +921,7 @@ Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA 
 Common Shared As string pathdir,nombre,nombreMidiIn
 common Shared As String NombreCancion,NombrePista
-Common Shared As Integer cargaCancion, pid1,clickpista',pistacreada
+Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado ',pistacreada
 Common Shared As cairo_t  Ptr c, c2
 Common Shared As Any Ptr surface,surf2
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal
@@ -916,7 +936,7 @@ Common SHARED As Integer EstaBarriendoPenta
 Common Shared As Integer instancia,FINALIZAR_ROLLMUSIC, MICROSEGUNDOS_POR_NEGRA
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
-Common Shared As Integer gp, midiplano
+Common Shared As Integer gp, midiplano,midionof
 
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
@@ -1045,3 +1065,37 @@ Declare Sub CargarSinRoll () '28-02-2024
 Declare Sub SetOptionsWindowScroll (iParam As Long)
 Declare Sub cargariniciotxt(lugar As String)
 Declare Sub grabariniciotxt(lugar As String)
+ 
+
+Type NProc Field=1
+ Mfile       As  UByte
+ Tipo       As UByte
+ Trkname As String
+ valFig     As Integer
+ compas  As string 
+ Tempo   As UByte
+ Meta     As UByte 
+ Mtrk     As  UByte
+ Trkend  As UByte
+ numTrk As  UByte 
+ non      As  UByte
+ noff      As  UByte
+ match   As  ubyte
+ nini      As Integer
+ nfin      As Integer
+ canal     As  UByte
+ dur     As double
+ patch  As UByte
+ pb      As  Short
+ pan    As  Short
+ acum  As  Integer
+ TimeSig as String
+ notacant as Integer
+ nota as UByte
+ volum   As UByte
+ j1    As  Integer
+ i1    As integer
+End Type
+Dim Shared  As  NProc midi (1 To 8000) 
+Declare Sub duraciones (midi() As NProc, k1 As integer) 
+Declare Sub  RefacturarPista() 

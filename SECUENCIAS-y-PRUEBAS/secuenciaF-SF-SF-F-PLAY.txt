@@ -1,0 +1,63 @@
+MFile 1 2 1000
+MTrk
+0 Meta SeqName "DISTINTOS-F-SF+SF-F.roll"
+0 Meta Text "Creado por RollMusic"
+0 Tempo 1000000
+0 TimeSig 3/4 24 8
+0 KeySig 0 Major
+0 Meta TrkEnd
+TrkEnd
+MTrk
+0 Meta 0x09 "CoolSoft MIDIMapper 0"
+0 Meta TrkName "Piano"
+0 PrCh  ch=2 p=1
+ 0 on ch=2 n=40 v=80
+ 0 on ch=2 n=59 v=80
+ 1000 off ch=2 n=59 v=0
+ 1002 on ch=2 n=59 v=80
+ 2002 off ch=2 n=59 v=0
+ 2003 off ch=2 n=40 v=0
+ 2004 on ch=2 n=44 v=80
+ 2004 on ch=2 n=52 v=80
+ 3005 off ch=2 n=44 v=0
+ 3005 off ch=2 n=52 v=0
+ 3007 on ch=2 n=53 v=80
+ 4007 off ch=2 n=53 v=0
+ 4009 on ch=2 n=42 v=80
+ 4009 on ch=2 n=58 v=80
+ 5009 off ch=2 n=58 v=0
+ 5011 on ch=2 n=57 v=80
+ 6011 off ch=2 n=57 v=0
+ 6012 off ch=2 n=42 v=0
+ 6013 on ch=2 n=59 v=80
+ 7014 off ch=2 n=59 v=0
+ 7015 on ch=2 n=48 v=100
+ 7015 on ch=2 n=52 v=100
+ 7015 on ch=2 n=57 v=100
+ 7266 off ch=2 n=57 v=0
+ 7267 on ch= 2 n=57 v=0
+ 7768 off ch=2 n=57 v=0
+ 7769 on ch=2 n=57 v=80
+ 8020 off ch=2 n=57 v=0
+ 8020 off ch=2 n=48 v=0
+ 8021 off ch=2 n=52 v=0
+ 8024 on ch=2 n=42 v=80
+ 8024 on ch=2 n=58 v=80
+ 9024 off ch=2 n=58 v=0
+ 9026 on ch=2 n=59 v=80
+ 10026 off ch=2 n=59 v=0
+ 10027 off ch=2 n=42 v=0
+ 10028 on ch=2 n=50 v=80
+ 11029 off ch=2 n=50 v=0
+ 11030 on ch=2 n=50 v=80
+ 12031 off ch=2 n=50 v=0
+ 12032 on ch=2 n=42 v=80
+ 12032 on ch=2 n=59 v=80
+ 13033 off ch=2 n=59 v=0
+ 13034 on ch=2 n=59 v=80
+ 14035 off ch=2 n=59 v=0
+ 14035 off ch=2 n=42 v=0
+ 14037 on ch=2 n=55 v=80
+ 15037 off ch=2 n=55 v=0
+ 15069 Meta TrkEnd
+TrkEnd

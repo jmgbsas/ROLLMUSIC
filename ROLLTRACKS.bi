@@ -62,7 +62,10 @@ Sub CargarMidiIn(nombreMidiIn As String,   ByRef ntkp As Integer)
       
  Print #1,"maxgrb en CARGAmidiin ", maxgrb
       Var  f=12
-      Open nombreMidiIn For Binary Access Read As #f
+     If  Open (nombreMidiIn For Binary Access Read As #f ) <> 0 Then 
+          Print #1,"No se puede leer  "; nombreMidiIn
+          Exit Sub
+     EndIf  
             Get #f, ,tocaparam(ntkp)
              Print #1,"Open nombreMidiIn: tocaparam(ntkp).maxpos ",tocaparam(ntkp).maxpos
            ' maxgrp se calcula en CargarPistasEjec
@@ -159,7 +162,10 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
 
            nf =nf+ 1
            Var  f=13
-           Open fileMidiIn For Binary Access Read As #f
+           If Open (fileMidiIn For Binary Access Read As #f ) <> 0 Then 
+              Print #1,"No se puede leer fileMidiIn CargarPistasEjec "; fileMidiIn
+              Exit Sub
+           End If
            Get #f, ,tocaparam(nf)
            Print #1,"tocaparam(nf).maxpos ",tocaparam(nf).maxpos
            If tocaparam(nf).maxpos > maxgrb Then
@@ -327,7 +333,7 @@ ubirtk=0
     ct=14
     miroerr= ( Open (nombre  For Binary Access Read As #ct ))
      If miroerr <> 0 Then
-  '     print #1,"arch track  abrio con error 1307 CargarTrack miroerr, nombre",miroerr, nombre
+        print #1,"arch track  abrio con error 1307 CargarTrack miroerr, nombre",miroerr, nombre
        Exit sub
      EndIf
         
@@ -899,7 +905,7 @@ Print #1,"nombre del Track que vamos a grabar 0 o sobrescribir el de cancion "; 
    grt = 11
 
 If Open (nombre  For Binary Access write As #grt ) <> 0 Then
-     print #1,"Error open Rollsub 2727, nombre ",nombre
+     print #1,"Error lectura en ActualizarRollyGrabarPista, nombre "; nombre
      Exit Sub
 End If
  print #1, "nombre tiene el path ",nombre
@@ -1554,6 +1560,7 @@ End Sub
 
 ' ---------------------
 Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst)
+On Local Error Goto fail
 '[[[[[ VER MAS ABAJO JMG 15-01-2022  DEBO COPIAR EL CAMPO DE CONTROL DE LIM3 EL 13 !!!! ]]]]]
 ' al final de todo se los hace  
 ' como es track a Roll se supone que el track ya esta cargado en memoria
@@ -1563,7 +1570,7 @@ Dim As Integer i1,i2,i3,Maxposicion,octavaDeAcorde,verticalEnOctavaVacia,vertica
  ' print #1,"TrackaRoll 1"   
 ''If ubirtk=3 Then ' estoy conmutando de track durante la edicion
 ' si no estoy en cancion el nto va a ntk 0, siemrep uso ntk y el vector de pnTk
-If CANCIONCARGADA=FALSE Then
+If CANCIONCARGADA=FALSE And  NADACARGADO=FALSE Then
    ntk=0
 EndIf
 
@@ -1587,6 +1594,8 @@ nota=0:dur=0
    If NA=0 Or NB=0 Then
      pmTk(ntk).NB => 0 + (pmTk(ntk).desde-1) * 13   
      pmTk(ntk).NA => 11 + (pmTk(ntk).hasta-1) * 13 
+  NB     = pmTk(ntk).NB 'estos no siempre se guardan verificar mejor calcular
+   NA     = pmTk(ntk).NA 'estos no siempre se guardan verificar mejor calcular
    EndIf
    MaxPos = pmTk(ntk).MaxPos
    posn   = pmTk(ntk).posn
@@ -1612,10 +1621,14 @@ nota=0:dur=0
 ' redim de ROLL de Visualizacion , para ello detenemos 
 ' la escritura sobre la pantalla con cargaCancion=1 o repro=1
 repro=1
-Sleep 5 ' para que surja efecto la detencion ,,,   
+Sleep 10 ' para que surja efecto la detencion ,,,   
+  'If  ntk= 0 Then
+ ' Else
+   Erase Roll.trk , compas
    ReDim (Roll.trk ) (1 To CantTicks, NB To NA ) ' 27-02 ÇÇÇ
    ReDim compas(1 To CantTicks)
-   Print #1,"paso el redimde roll"
+ ' End If  
+   Print #1,"paso el redim de roll"
    ' redimensiono track (0)! que estara a la par de roll cargandose
    ' mientras cargo cancion podria ahcer redim a track 0 porque cargo a roll y track(0)
    ' pero como la carga de track es continua en la carga inicial no hace falta
@@ -1659,7 +1672,7 @@ Print #1," pmTk(ntk).MaxPos ",pmTk(ntk).MaxPos
 ' 1) carga de Roll desde track ntk
 vertical=12+(hasta-2)*13+hasta ' "[NROREP]" de EntrarTeclado
 For i2 = 1 To pmTk(ntk).MaxPos 
-   For i1=1 To lim2
+   For i1=1 To lim2 ' porque lim2 y no lim3??? 
       If Track(ntk).trk (i2,i1).nota > 0 and Track(ntk).trk(i2,i1 ).nota <=NA -13 Then '14-03-2022 na-13
       ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
          PianoNota=Track(ntk).trk(i2,i1 ).nota
@@ -1685,7 +1698,7 @@ For i2 = 1 To pmTk(ntk).MaxPos
          Roll.trk(i2,i3).pb   = Track(ntk).trk(i2,i1).pb
          Roll.trk(i2,i3).inst = Track(ntk).trk(i2,i1).nnn
                 
-'''         print #1,"VEO CARGA DE ROLL Roll.trk(i2,i3).dur ",Roll.trk(i2,i3).dur
+         print #1,"VEO CARGA DE ROLL Roll.trk(i2,i3).dur ",Roll.trk(i2,i3).dur
       EndIf
    Next i1
    If i2=pmTk(ntk).MaxPos -1 And Track(ntk).trk (i2,i1).nota > 0 Then
@@ -1756,7 +1769,7 @@ Sleep 5
 ' nota=181 y por ess puede retroceder al cargar notas
 ' esto es necesario si o si al pasar de Track a Roll 05-03 ÇÇÇ
 If Maxpos > 2 Then ''14-03-2022 esto ahceia empezar a grabra en posicion 2
-For i2 = 1 To MaxPos -1  
+For i2 = 1 To MaxPos -1 
   For i1=NB To NA
    If Roll.trk(i2,i1).nota =0 And Roll.trk(i2,i1).dur <>182  Then
       Roll.trk(i2,i1).nota=181
@@ -1781,14 +1794,16 @@ EndIf
 Sleep 5  
 'patch
 Roll.trk(1,NA).inst = Track(ntk).trk(1,1).nnn
+If  ntk <> 0 Then 
 Track(0).trk(1,1).nnn=Track(ntk).trk(1,1).nnn
 
 moverPmtkaPmtk (0, ntk)
-
+End If 
 
 
 Print #1, "TrackaRoll Fin ntk, patch " ; ntk, Roll.trk(1,NA).inst
 repro=0 ' volvemos a dibujar en pantalla...18-04-2024
+cargacancion=0 ' " " 
 Sleep 5
 'hemos copiado el track ntk en el Track(0) que corresponde al Track asociado a Roll.
 '--------------------------------Track(0) fin
@@ -1801,8 +1816,21 @@ SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
 calcCompas(MaxPos,Roll) ' 05-03 
 
   print #1,"TrackaRoll Fin,,maxpos y (ntk).maxpos ", maxpos,pmTk(ntk).MaxPos
-print #1,"----------------------------------------------"
+print #1,"-----------------Fin TrackaRoll-----------------"
 Sleep 10
+
+Exit Sub 
+
+fail:
+ Dim errmsg As String
+ Dim As Long er1 = Err()
+If  er1 > 0 Then
+print #1,"-----------------err TrackaRoll-----------------"
+  errmsg = "TrackaRoll FAIL Error " & Err & _
+           " in function " & *Erfn & _
+           " on line " & Erl & " " & ProgError(er1)
+  Print #1, errmsg
+End If
 
 End Sub
 
@@ -2386,20 +2414,20 @@ End Sub
 Sub FraccionarDur (Track() As sec,Roll As inst, indicePos As Integer, dura As ubyte,nR As Integer, ntk As integer)
 ' npo= notapiano, posi =posicion
 ' DADA una Notapiano selecionada con cursor o click
-' entrar argumento de division con las figiuras 2,3,4,5,6,7
+' entrar argumento de division con las figuras 2,3,4,5,6,7
 ' o sea blanca,negra,corchea,semicorchea, fusa , semifusa
 ' luego reemplazar la Nota elegida por N+ desplazar todo el vector hacia la derecha
-' desde la posicion +1 desde la nota en la cantidad de posiocine snecesarias para
+' desde la posicion +1 desde la nota en la cantidad de posiocines necesarias para
 ' completar al duracion deseada. ej I=F+F+F+F O I=L+L, P=I+I,P=L+L+L+L
 ' ETC. DE ESE MODO DEJO INGRESAR NOTAS MAS CHICAS EN UN PASO DADO SIN MALGASTAR
-' POSICIONES. podriamso ahcer un vector tridimensional o sea en esa columna
-'1) determinar la MAxPos de c/pista (moverpista lo hara autoamticamente)
+' POSICIONES. podriamso hacer un vector tridimensional o sea en esa columna
+'1) determinar la MAxPos de c/pista (moverpista lo hara automaticamente)
 '2) determinar la columna donde esta la nota a expandirse en n fracciones
 '  res la entrada parametro posi
 '3) determinar n segun entrada de usuario fracciones de P,I,L,F,E,W
 ' en RollLoop coocar ctrl+alt+x un if con la cifra que se entra,,,
 '4) DETERMIANR EN CUANTAS PARTES SE FRACCIONA LA NOTA NP (NPARTES)
-' deducirla con al duracion de la nota exsitente en la pista o roll y la 
+' deducirla con lal duracion de la nota exsistente en la pista o roll y la 
 '  cifra introducida por el usuario ej I (2),,,usuario:5 -> I fraccionada como F
 ' seran 4 F hace una I son 4 partes 1 la origial pas de I a F+ y las otras 3
 ' 2 F+ y una final F osea F+F+F+F  
@@ -2407,10 +2435,10 @@ Sub FraccionarDur (Track() As sec,Roll As inst, indicePos As Integer, dura As ub
 ' 6) MOVER EN CADA PISTA NP-1 (3) POSICIONES A LA DERECHA DE LOS DATOS.
 ' 7) DETERMINAR LA NUEVA MAXPOS DE C/PISTA SUMANDOLE NP-1 (3)
 ' FIN
-' USO: COMADNO CTRL+Z ANTES DE PULSAR EL COMANDO SE ESPERA UN NUMERO DE
-' FIGURA A USAR 2,3,4,5,6,7,8=P,I,L,F,E,W,H, O SEA FRACCIONAR EN BALNACAS, NEGRAS
-' CORCHEAS, SEMI CORCHEAS, FUSA, SEMIFUSA,H, LSO TRESILLOS OCUPAN 2 FIGURAS MAS CHICAS
-' ESO SE MANEJA CON ASL NOTAS INTRIDUCIDAS PERO LAS POSICIOENS SIEMRPE SON
+' USO: COMANDO CTRL+Z ANTES DE PULSAR EL COMANDO SE ESPERA UN NUMERO DE
+' FIGURA A USAR 2,3,4,5,6,7,8=P,I,L,F,E,W,H, O SEA FRACCIONAR EN BLANCAS NEGRAS
+' CORCHEAS, SEMI CORCHEAS, FUSA, SEMIFUSA,H, LOS TRESILLOS OCUPAN 2 FIGURAS MAS CHICAS
+' ESO SE MANEJA CON LAS NOTAS INTRIDUCIDAS PERO LAS POSICIOENS SIEMRPE SON
 ' LAS ENUMERADAS...EN ELLAS SE PODRA PONER DURACIONES TIPO TRESILLOS,,,PARA USARLAS
 
 ' tengo dur a cambiar para partirla debera ser mas chica
@@ -2766,7 +2794,7 @@ EndIf
  
 End Sub
 
-Sub AutoFracTodoDur (Track() As sec,Roll As inst, indicePos As Integer, dura As ubyte,nR As Integer, ntk As integer)
+Sub AutoFracTodoDur (Track() As sec,Roll As inst, indicePos As Integer, dura As ubyte,n1 As Integer, ntk As integer)
 ' Automaticamnete tomara la mayor y menor duracion y fraccionara por la menor, sea la menro existente
 ' o la menor incluida la entrada de usuario.
 ' Auto matizacion de FracTodoDur.Esto servira para ambos casos al estar en lectura y quiero
@@ -2776,18 +2804,32 @@ Sub AutoFracTodoDur (Track() As sec,Roll As inst, indicePos As Integer, dura As 
 ' o sea intermedia se contrastara con la menor y asi determinamos cuantas menores van en esa
 ' nota media se llenara con ellas y lo que falta ocmpletar de esa media y hasta las partes de
 ' la mayor se llenaran con silencios de la menor en cuestion
-'----------
+'---------- para poder usar en la rutina para pista completa sin pantalla usaremos nR para separar
+' los casos,,,
 Print #1,">>>> START AutoFracTodoDur "
    Dim As UByte menor, mayor
    Dim As Integer i1men,i1may,posdur
 ' en modo lectura la posicion de una nota en el vector es posdur, la 1er parte es en la pantalla
 ' la 2da posishow es en el vector hasta el inicio de la pantalla 
-   posdur= (mousex- gap1 )/anchofig + posishow
-   Print #1,"posdur ",posdur
-   If posdur < 1 Then ' 08-03-2022 servira?
-      Exit sub
+
+  If  n1 = 0 Then 
+       posdur= (mousex- gap1 )/anchofig + posishow
+       Print #1,"posdur ",posdur
+       If posdur < 1 Then ' 08-03-2022 servira?
+          Exit sub
+       EndIf
+   Else
+Print #1,"--> posishow ", posishow
+    If indicePos < NroCol*3/4  Then '04-02-2022
+      posishow=  1 ''curpos ' decia 1
+  ' valla tatlmente al inicio veremos si es aca jmgjmg
+    Else
+        posishow = indicePos - NroCol/2 '04-02-2022 
+    EndIf
+      posdur=indicePos -1 + posishow ' para midiplano 
    EndIf
-   menoryMayorEnColumna (Roll, posdur,menor,mayor,i1men,i1may)
+ FileFlush (-1)
+  menoryMayorEnColumna (Roll, posdur,menor,mayor,i1men,i1may)
    Print #1,"menoryMayorEnColumna, posdur,menor,mayor,i1men,i1may ", posdur,menor,mayor,i1men,i1may
    If menor=mayor Then  ' 06-12-2021
     Print #1,"menor=mayor  no se procesa Use otra opcion"
@@ -2847,15 +2889,15 @@ print #1,"posinueva ",posinueva
 nroligadas=nroPArtes -1 
 print #1,"nroligadas ",nroligadas
 If numeroFrac <= 90 Then
-indiceligada= numeroFrac + 90 ' indice de la menro o du rde usuario ligada correpsondiente
+   indiceligada= numeroFrac + 90 ' indice de la menor o dur de usuario ligada correpsondiente
 Else
-indiceligada= numeroFrac
+   indiceligada= numeroFrac
 EndIf
 print #1,"indiceligada ",indiceligada
 If numeroFrac <= 90 Then
-indicenoligada=numeroFrac
+   indicenoligada=numeroFrac
 Else
-indicenoligada=numeroFrac -90
+   indicenoligada=numeroFrac -90
 EndIf 
 
 'print #1,"FIGURA A CAMBIAR ",figura(DUR)
@@ -2890,26 +2932,56 @@ dim As Integer otroPesoDur, otronroPartes, indiceLigadasilencio, indiceNoLigadas
 print #1,"MUEVO DESDE POSI ";posiVIEJA;" A POSInueva ";posinueva  
   pasoZona1=indicePos+1
   moverzona=1
+
   moverZonaRoll(posinueva, Roll,posivieja) '16-11-2021
+
   print #1,"NB, NA", NB,NA
  ' si no anda nsE usar
  ' nsE = 11 -nR   +  (EstoyEnOctava -1 ) * 13 + 1 
- Dim As Integer conge=0, divi
+ Dim As Integer conge=0, divi,Notapiano
  'conge=(EstoyEnOctava -1 ) * 13 + 1 
-  For j=NB To NA
+' -----------------------------------------------
+' CASO DE MIDI PLANO EL FLAG ES n1=1 ...
+' If  n1 = 1 Then 
+'i1Mayor  indice en roll de la mayor debo p asarlo a Notapiano
+'   Notapiano= i1May
+'   Notapiano= Notapiano - restar (Notapiano)
+'   EstoyEnOctava=SumarnR(Notapiano) +1  ' para la mayor  
+'   Print #1, "Estoy En Octava midi plano ", EstoyEnOctava 
+' End If
+' EstoyEnOctava para el caso manuel creo estaria mal tambien porque es solo una octabvva
+' fija donde esta el mouse y en pantalla le hago barrer toda la columna luego 
+' Estoy enOctava debe reemplazarse siemrpe  por laformula nueva que 
+' dedudsca la octava mienras barre la columna !!!!
+'--------------------------------------------
+' y que pasa con los otros parametros de Roll, vel etc???
+  For j=NB To NA    ' j es el vector de Roll para obtener Notapiano esta la formula 
      If Roll.trk(posivieja,j).dur >=1 And Roll.trk(posivieja,j).dur <=180 Then
         Select Case Roll.trk(posivieja,j).dur
         Case  dura ' la mayor
-           nsE = 11 -j +  (EstoyEnOctava -1 ) * 13 + 1
+           ' If n1=0 Then
+           '    nsE = 11 -j +  (EstoyEnOctava -1 ) * 13 + 1
+           ' Else
+               nsE = 11 -j +  SumarnR (j - restar(j) )  * 13 + 1  ' midiplano perfecto muesta el semitono
+           ' EndIf
          For i= posivieja To posinueva -1
             If i < posinueva-1 Then
 '            print #1,"DENTRO 1) i, j,nsE ", i,j,nsE
                Roll.trk(i,j).dur = CUByte(indiceligada)
                Roll.trk(i,j).nota= CUByte(nsE)
+               Roll.trk(i,j).vol = Roll.trk(posivieja,j).vol
+               Roll.trk(i,j).pan = Roll.trk(posivieja,j).pan
+               Roll.trk(i,j).pb = Roll.trk(posivieja,j).pb
+               Roll.trk(i,j).inst = Roll.trk(posivieja,j).inst         
             Else
  '           print #1,"DENTRO 2) i, j,nsE ", i,j,nsE
                Roll.trk(i,j).dur = CUByte(indicenoligada)
                Roll.trk(i,j).nota= CUByte(nsE)
+               Roll.trk(i,j).vol = Roll.trk(posivieja,j).vol
+               Roll.trk(i,j).pan = Roll.trk(posivieja,j).pan
+               Roll.trk(i,j).pb = Roll.trk(posivieja,j).pb
+               Roll.trk(i,j).inst = Roll.trk(posivieja,j).inst         
+
             EndIf
         Next i
         Case Else
@@ -2923,13 +2995,20 @@ print #1,"MUEVO DESDE POSI ";posiVIEJA;" A POSInueva ";posinueva
            
            ' indiceligada se usa el mismo 
        ' tengo el nro de partes que se parte esa otra dur del medio ni menorni mayor
-           nsE = 11 -j +  (EstoyEnOctava -1 ) * 13 + 1
+        '   If n1=0  Then 
+         '     nsE = 11 -j +  (EstoyEnOctava -1 ) * 13 + 1  ' estara bien esto???
+         '  Else 
+              nsE = 11 -j +  SumarnR (j - restar(j) ) * 13 + 1 ' midi plano perfecto da el semitono
+         '  EndIf    
           Dim As Integer limparte = posivieja + otronroPartes -1
          For i= posivieja To  limparte ' son todos ligados porque despue ssigu eligado con silencio
 '            print #1,"DENTRO 1) i, j,nsE ", i,j,nsE
                Roll.trk(i,j).dur = CUByte(indiceLigada)
                Roll.trk(i,j).nota= CUByte(nsE)
-            
+              Roll.trk(i,j).vol = Roll.trk(posivieja,j).vol
+               Roll.trk(i,j).pan = Roll.trk(posivieja,j).pan
+               Roll.trk(i,j).pb = Roll.trk(posivieja,j).pb
+               Roll.trk(i,j).inst = Roll.trk(posivieja,j).inst               
          Next i
          
          For i= limparte+1   To posinueva -1
@@ -2937,10 +3016,18 @@ print #1,"MUEVO DESDE POSI ";posiVIEJA;" A POSInueva ";posinueva
 '            print #1,"DENTRO 1) i, j,nsE ", i,j,nsE
                Roll.trk(i,j).dur = CUByte(indiceLigadasilencio)
                Roll.trk(i,j).nota= CUByte(nsE)
+              Roll.trk(i,j).vol = Roll.trk(posivieja,j).vol
+               Roll.trk(i,j).pan = Roll.trk(posivieja,j).pan
+               Roll.trk(i,j).pb = Roll.trk(posivieja,j).pb
+               Roll.trk(i,j).inst = Roll.trk(posivieja,j).inst   
             Else
  '           print #1,"DENTRO 2) i, j,nsE ", i,j,nsE
                Roll.trk(i,j).dur = CUByte( indiceNoLigadasilencio)
                Roll.trk(i,j).nota= CUByte(nsE)
+              Roll.trk(i,j).vol = Roll.trk(posivieja,j).vol
+               Roll.trk(i,j).pan = Roll.trk(posivieja,j).pan
+               Roll.trk(i,j).pb = Roll.trk(posivieja,j).pb
+               Roll.trk(i,j).inst = Roll.trk(posivieja,j).inst   
             EndIf
             
         Next i
@@ -2955,9 +3042,10 @@ If NombreCancion > "" Then
 Else
 ntk=0
 EndIf 
+cargaCancion=1
 ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
 RollaTrack Track(), ntk,Roll
-
+cargaCancion=0
 ReCalCompas (Roll)
 
 EndIf

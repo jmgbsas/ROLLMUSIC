@@ -37,15 +37,19 @@
             CTRL1063 ()             
 ' ----------------------------------------------------------------------
            Case 1007 '<============ grabar cancion bosquejo
-' 26-02-2022 desarrollo           
-          'DESHABILITADO CREO ESTA HACIENDO LIO PROBAR Y SEGUIR
+' 26-02-2022 desarrollo debo probar el codigo echo hace mucho 
+' no se si anda bien          
+'DESHABILITADO CREO ESTA HACIENDO LIO PROBAR Y SEGUIR
 ' MAS ADELANTE USANDO UNA COPIA DE CANCION PAR NO DESTRUIR LA ACTUAL
+' voy a incorporar cargar un midi asi tengo una cancion para probar,,
+
            CTRL1007 ()
 
           SetForegroundWindow(hwnd)
-           Case 10075 '<======== ARGAR UNA PISTA A ROLL PARA EXPORAR A MIDI
+           Case 10075 '<======== CARGAR UNA PISTA A ROLL PARA EXPORAR A MIDI
 ' DE ESTE MODO PODEMOS ENVIAR EL NOMBRE DE LA PISTA AL ROLL AISLADO
 ' Y CONVERTIR A MID CON EL NOMBRE REAL Y N OEL FANTASIA ARCHIVO.MID
+
           CTRL10075 ( ) 
           
         Shell (" start RollMusic.exe "+ nombre)
@@ -54,12 +58,7 @@
            Case 1008 '<======= 3.1 Exportar Pista a midi 
  
                '' CTRL10075 ()
- ' getfiles luego de ejecutarlo no permite que se creen archivos en el 
- ' disco aparentemente,,,,, una cagada no se  como interfiere ya aumente la
- ' memoria y no sirve ni bajarla tampoco , interfiere interfiere y interfier
- ' no se hara el garbage collector ? le puse time out sleep y tampoco...  
- ' el archivo mid  se llamara siemrpe archivo.mid y el ususario debe renombrarlo
- ' no lo peudo hacer automaticamente,,,,me fallò todo lo que intente,,,
+ ' getfiles cambiado gracias a Rusia! ja.. intentaremos hacerlo no tan manual 
               
 '  con usarmarcoins=4 indicamos habilitar ESCRITURA MIDI EN EL PLAY
                 
@@ -151,23 +150,74 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 ' deberia borrar la cancion cargada ??? creo que si totdavia no ejecuta
 ' ambas cosas a la vez,,,,,debo almenos poner dos opciones mas
 ' borrar cancion cargada y borrar ejecucion cargada
-           CTRL1016 ()
+' LA GLOBAL HIJA DE PUTA nombreMidiIn SE BORRA AL REGRESAR DE CTRL1016
+' FREEBASIC ES UNA MIERDA JAJAJAJA!!!!!!!!!!!!!!!!!!!!!!!
+' DEBO USAR UNA VARIABLE AUXILIAR MAS AL PEDO NI MIERDA ES GLOBAL
+           Dim lugar As string 
+           CTRL1016 (lugar)
+ nombreMidiIn = lugar
 
 '-----------------------------------------------------------------------
-           Case 1017 'renombrar pista ejecucion
+           Case 1017 'renombrar pista ejecucion y borrado
            Dim As String nomPista   
            For i1=1 To 32
                If CheckBox_GetCheck (cbxejec(i1)) =1 Then
                   nomPista  = InputBox("Nombre de Pista " ,"Entre un nuevo Nombre ",nomPista)
                   tocaparam(i1).nombre=nompista
+'aca falta que si nompista es "" borrar la pista y mover todo hacia arriba
+' si la pista estaba en el medio,,,FALTA
+                 If Len (nompista) > 0 Then
                   SetListBoxItemText(LISTA_DE_EJECUCIONES,nompista,i1-1)
+                 End If
+
+                 If Len (nompista) = 0 Then
+                  'borrar pista y comprimir lista de ejecs si quedo un hueco..
+DeleteListBoxItem(LISTA_DE_EJECUCIONES,GetItemListBox(LISTA_DE_EJECUCIONES))
+                   comprimirListaEjecs() ' a implementar
+                 EndIf  
                    Exit for    
                EndIf
            Next i1  
 '-----------------------------------------------------------------------
-           Case 1018 ' elegir PATCH si corresponde de la pista de ejecucion 
-
+           Case 1018 '  cargar archivo midi plano con fracturacion 
+       If  abrirRollCargaMidi =0 Then
+           CANCIONCARGADA=False
+           ''cargaCancion=0  
+           param.encancion=0 
+           EstaBarriendoPenta=1
+           threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+       End if
+       ''RollLoop ( param)
+       abrirRollCargaMidi=1 'solo una vez levanta roll grafico
+       Sleep 100
+         nombre="" 
+         Dim As Integer confrac=1 ' con fracturacion
+         cargarMidiPlano (confrac)
+         repro=0  
+        SetForegroundWindow(hwnd)
+           
+             Exit Select  
 '-----------------------------------------------------------------------
+           Case 10181 '  cargar archivo midi plano sin fracturacion 
+       If  abrirRollCargaMidi =0 Then
+           CANCIONCARGADA=False
+           ''cargaCancion=0  
+           param.encancion=0 
+           EstaBarriendoPenta=1
+           threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+       End if
+       ''RollLoop ( param)
+       abrirRollCargaMidi=1 'solo una vez levanta roll grafico
+       Sleep 100
+         nombre="" 
+         Dim As Integer confrac=0 ' sin fracturacion
+         cargarMidiPlano (confrac)
+         repro=0  
+        SetForegroundWindow(hwnd)
+           
+             Exit Select  
+'-----------------------------------------------------------------------
+
            Case 1019  ''<============= SALIR TERMINA ROLL
              'eventM=eventrbdown
              eventM=eventClose
@@ -372,24 +422,6 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
               thread3= ThreadCall EntrarTeclado()
           SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
-           Case 1082 ' cuadro ayuda tempo 
-            Dim As integer eventimg
-            Dim As HWND hwndimg
-
-            hwndimg=OpenWindow("Cuadro de Tempos Clasicos ",400,100,1000,600)
-             Var HIMAGE=Load_image(".\recur\velocidades.jpg")
-            ButtonImageGadget(1,10,10,1000,600,HIMAGE,  BS_BITMAP) 'FB_BS_PUSHLIKE
- 
-            Do  
-             eventimg=WaitEvent()
-              If eventimg=EventClose  Then
-                  Close_Window(hwndimg)  
-                   Exit Do
-              EndIf 
-            Loop  
-
-          SetForegroundWindow(hwnd)
-
 '-----------------------------------------------------------------------
            Case 1090 ' Reproducir cancion
 SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
@@ -639,6 +671,39 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
              MessBox ("", acercade)
             SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
+           Case 2001 ' cuadro ayuda tempo 
+            Dim As integer eventvel
+            Dim As HWND velimg
+
+            velimg=OpenWindow("Cuadro de Tempos Clasicos ",400,100,800,400)
+            ImageGadget(IMAGE_VEL,10,10,1100,600,Load_image(".\recur\velocidades.jpg"))
+            Do  
+             eventvel=WaitEvent()
+              If eventvel=EventClose  Then
+                 Close_Window(velimg)  
+                   Exit Do
+             EndIf 
+            Loop  
+
+          SetForegroundWindow(hwnd)
+'---------------------------------------------------------------------
+          Case 2002  'MUESTRA FIGURAS DISPONIBLES
+          Dim As integer eventFig
+           Dim As HWND Figimg
+
+            Figimg=  OpenWindow("Duraciones de Figuras y sus Teclas",400,100,800,600  )
+            ImageGadget(IMAGE_FIG,10,10,1100,800,Load_image(".\recur\FIGURAS.jpg"))
+           
+ 
+            Do  
+             eventFig=WaitEvent()
+              If eventFig=EventClose  Then
+                  Close_Window(Figimg)  
+                   Exit Do
+              EndIf 
+            Loop  
+
+          SetForegroundWindow(hwnd)
                    
          End Select
 

@@ -137,7 +137,9 @@
          Nota:No usar en el nombre de archivo una 'ñ' o caracteres latinos cairo
          no lo soporta y no mostrará el menu de Roll. (También es una forma de si se desea
          eliminar el menu en una reproducción, pero si se pulsa en el lugar correcto el menu
-         es funional solo que no se lo puede ver ,,)
+         es funional solo que no se lo puede ver ,,) En version 0.4626 se repuso la capacidad de 
+         grabar habia dejado de funcionar. se usa un dialogo de apertura de archivo escribir el nombre
+         y si no existe aparecera un dialogo pequeño para crearlo , aceptar.
     6) Cargar Archivo. click en [Archivo]-> luego en  [*.ROLL] o [+.RTK]. 
        Archivo NUEVO borra el Roll de memoria y comienza de cero. En el menu del grafico de Roll (no control)
        click en [ARchivo] -> ALT-Click [NUEVO]
@@ -799,6 +801,15 @@
          - Estando sobre una octava elegida con el mouse, pulsar una duracion de 1 a 8
            1=O redonda, 2=P blanca, 3=I negra, 4=L corchea, 5=F semicorchea, 6=E fusa,
            7=X semifusa, 8=H garrapatea,  9=espacio,ctrl-0=Fin Secuencia.
+           SI PULSO 3 T X , 3 ES DURACION NEGRA T TRESILLO X COLOCA LA FIGURA SI ES MODO CURSSOR
+           EN MODO EDIT 3T C ERA LA TERCERA PARTE DE UN TRESILLO DE NEGRA EN LA NOTA C DE LA OCTAVA ELEGIDA
+           EN VEZ DE T SE PODRIA PULSAR = . //  = o Left Shift (mayusculas izquierda)AGREGA LA CUARTA PARTE DE 
+           UNA NOTA A SU DURACION 1,25.
+           EL PUNTO . AGREGA LA MITAD A SU DURACION ES EL PUNTILLO 1,5.. Esimbolo + agrega una ligadura
+           o indica que el sonido continua en la nota siguiente. (el + y el * funcionan como ligadura
+           no discrimina el lenguaje entre ambas teclas) hay varias teclas que dan como resultado un cuarto
+           mas el = la , o { segun el teclado. El doble puntillo : es la tecla mayuscula derecha o Right Shift.
+
            En modo Cursor: 0=marcar borrar columna seguido de X.(el borado se ejecuta al guardar
            el archivo y al cargarlo de nuevo, la nota se borra, pero si en esa columna era la unica nota y 
            se desea borrar la columna en ese momento usar ctrl-delete ver 2.5.3).

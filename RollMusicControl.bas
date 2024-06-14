@@ -51,7 +51,7 @@ EJECCARGADA    = FALSE
 
 Common Shared As string pathdir,nombre,nombreMidiIn
 common Shared As String NombreCancion, NombrePista
-Common Shared As Integer cargaCancion, pid1,clickpista',pistacreada
+Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado',pistacreada
 Common Shared As cairo_t  Ptr c, c2
 Common Shared As Any Ptr surface,surf2 
 Common Shared As FT_Face ftface
@@ -67,7 +67,7 @@ Common SHARED  As Integer EstaBarriendoPenta, instancia,FINALIZAR_ROLLMUSIC, MIC
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As plano miditxt()
-Common Shared As Integer gp ,midiplano
+Common Shared As Integer gp ,midiplano,midionof
 
 Const As BOOLEAN HABILITAR = TRUE
 Const As BOOLEAN DESHABILITAR = FALSE
@@ -450,13 +450,15 @@ End Function
 Sub copiarATemp ( titulo As String, pista As String)
 Dim As String destino 
 destino=NombreCancion+"\Temp\"+pista
+Print #1,"en copia titulo", titulo
+Print #1,"en copia pista", pista
 
 copyFileA (StrPtr(titulo),StrPtr(destino),TRUE)
 print #1,titulo, destino   
 End Sub
 '
 Sub BorrarPista (titulo As String)
-
+'Print #1, "me piden borrar ", titulo
 deleteFileA (StrPtr(titulo))
 
 End Sub
@@ -491,11 +493,11 @@ ProgError(15) = "quit request signal"
 ProgError(16) = "return without gosub"
 ProgError(17) = "end of file"
   
-Dim As Integer er1, ErrorNumber1, ErrorLine1
+Dim As Long er1, ErrorNumber1, ErrorLine1
 ErrorNumber1 = Err
 ErrorLine1 = Erl
 
-If ErrorNumber1 > 0 And ContadorError < 101 Then
+If ErrorNumber1 > 1 And ContadorError < 101 Then
 Print #1,"------------------------------------"
   ContadorError=ContadorError+1
   Print #1,"ErrorControl ContadorError ",ContadorError

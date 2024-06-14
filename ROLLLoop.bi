@@ -4,7 +4,10 @@ On  Error GoTo errorloopbas
 ''(c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer Ptr, InicioDeLectura As Integer)
 
 Sub creaPenta (c As cairo_t Ptr, Roll as inst  )
-
+On Local Error Goto fail
+If  repro=1 Or terminar=1 Then
+    Exit Sub
+End If
 'Dim octava As Integer Ptr
 '*po va desde hasta -1 haci aabajo 
 indEscala=1 ' inicializamos la guiade escalas a la 1era 
@@ -153,9 +156,13 @@ Dim As String t2="",t3="",t4=""
   For n = posishow To posishow + NroCol
 
 ' =======> deteccion escalas auxiliares y acordes
+'' Print #1, " 12 + (*po-1) * 13 " ; 12 + (*po-1) * 13
+'' Print #1, " *po , n "; *po, n
+If  NADACARGADO=TRUE Then
+Else
     indfb = CInt(Roll.trk (n, 12 + (*po-1) * 13).dur) ' 103 --dur
     indfa = CInt(Roll.trk (n, 12 + (*po-1) * 13).pb) ' 26-01-2022 103 pb
-    
+ENDIF    
     t="": t2="":t3="":t4=""
     
 ' <====== CIFRADO ACORDE---
@@ -175,7 +182,7 @@ Dim As String t2="",t3="",t4=""
             t3=RTrim(NotasEscala(13-notac)) ' C/ 
             grado = BuscarGrado(t3) ' 4 en escala G
             t3=t3+t4  
-          ' Print #1,"grado ",grado
+   '        Print #1,"grado ",grado
             If ClaseAcorde(aconro).tipo >1  Then
                If ClaseAcorde(aconro).tipo -1 + grado > 0 Then
                   t3=t3+notas_esc_inicial(ClaseAcorde(aconro).tipo -1 + grado)
@@ -198,7 +205,7 @@ Dim As String t2="",t3="",t4=""
 
 
     If indfb = 200 And nVerEscalasAuxiliares=3 Then ' escalas auxiliares o alternativas
-   ''' Print #1,"ENTROA VER ESCAL AAUXILIAR"
+    'Print #1,"ENTROA VER ESCAL AAUXILIAR"
        cairo_set_source_rgba(c, 0, 1, 0, 1) 
        cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
        cairo_line_to(c,gap1 + (ic ) *anchofig , Penta_y + 13.5 * inc_Penta )
@@ -212,13 +219,13 @@ Dim As String t2="",t3="",t4=""
        If  Roll.trk(n, 12  + (*po -1) * 13).pan =2 Then
           t2= NotasEscala2(CInt( notaescala ))
        EndIf
-'           Print #1, "NOTAESCALA ",t2
+     '      Print #1, "NOTAESCALA ",t2
            ' 11-01-2022
        tipoescala=CInt(Roll.trk(n, 12  + (*po -1) * 13).inst)
        If tipoescala=0 Then
           tipoescala=1
        EndIf
-'           Print #1," tipoescala ",tipoescala
+      '     Print #1," tipoescala ",tipoescala
        armarescala cadenaes,tipoescala, notaescala, alteracion,0
 
            ' fin 11-01-2022
@@ -325,7 +332,7 @@ Dim As String t2="",t3="",t4=""
 ' jmg 11-05-2021 1839 end 
 '===== LINEAS DE COMPAS  ==================================
     If n >0 And n < MaxPos  Then 
-    'print #1,"lugar ",14
+ '   Print #1,"lugar ",14
       If Compas(n).Posi = n  Then 
 ' aca tambien tendremos las repeticiones si estan las leemos y la usamos en el play
 ' seri aun loop como hasta ahora pero N veces no infinitas, o sea aca solo
@@ -338,9 +345,9 @@ Dim As String t2="",t3="",t4=""
           t=Str(Compas(n).nro)
           cairo_show_text(c,t)
       EndIf
-     'print #1,"lugar ",16
+  '   Print #1,"lugar ",16
       If n = pasozona1 Or n =pasoZona2 Then '26-06-2021
-     'print #1,"lugar ",17
+   '  Print #1,"lugar ",17
          cairo_move_to(c,gap3 + (ic ) *anchofig +anchofig, Penta_y + 13.5 * inc_Penta )
          t="("+ Str(n) + ")"
          cairo_show_text(c,t)
@@ -426,9 +433,9 @@ If GrabarPenta=0 Then 'çççç NO ESTABA
   If (mousey <= lugar) And (mousey >= lugarOld ) Then
    nsE=semitono + 1 'semitono ahora va desde 0 a 11 usadopor entrada de tecladoy ahroa mouse
    nR=(11-semitono) + (*po -1 ) * 13 ''+ (desde -1)*13 ' indice de la nota en Roll , en algo será util.
-   If *po=1 Then
-      Print #8, "nR octava 1 ",nR
-   EndIf
+ '  If *po=1 Then
+   '   Print #8, "nR octava 1 ",nR
+ '  EndIf
    PianoNota= nR - restar (nR)
 ''' desèjando nsE = 11 -nR   +  (*po -1 ) * 13 + 1
   EndIf
@@ -692,7 +699,16 @@ EndIf
   EndIf
  EndIf
 
+Exit Sub 
 
+fail:
+ Dim errmsg As String
+If  Err > 0 Then
+  errmsg = "FAIL Error " & Err & _
+           " in function " & *Erfn & _
+           " on line " & Erl & " " & ProgError(Err)
+  Print #1, errmsg
+End If
 
 
 End Sub
@@ -730,6 +746,8 @@ End Sub
 sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 Dim As Integer ubiroll,ubirtk,encancion
 ' PORACA CANCELA '''' JMGDEBUG
+abrirRollCargaMidi=2 ' no permite cargar Roll ya esta cargado
+' si  levantamos un plano de midi despues de cargar roll
 Dim midionof As Integer 
  c=param.c
  Roll=param.Roll
@@ -834,7 +852,7 @@ If ubiroll > 0 Then  ' CARGA DE ARCHIVOS POR LINEA DE COMANDO DE ROLLMUSIC
    nombre = titulos(0)
    Print #1,"nombre",nombre
    Print #1,"titulo(0) ",titulos(0)
-    cargaArchivo (Roll,ubiroll)
+    CargaArchivo (Roll,ubiroll)
    s5=2
    ROLLCARGADO=TRUE
    MenuNew=0
@@ -978,7 +996,7 @@ Else
      ' es mejor no ¿? zas je
 ' cairo_text en creaPenta hace cancelar la salida desde Ventana Ctrl
 ' evitamos escribir a grafico si ya estamso saliendo ,,, 
-        If terminar=0 Then 
+        If terminar=0 Or repro=0 Then 
            threadPenta = ThreadCall barrePenta (c, Roll )
            ThreadWait threadPenta
         End If
@@ -1015,7 +1033,6 @@ Do
 ' 23-02-2022, lo q debo hacer es no permitir entrar si se esta usando
 '  playAll  play=0 y lo mismo en PlayAll no usar PlayCancion si esta
 ' ejecutando PlayAll de unsa sola pista...
-
 
 If MultiKey(SC_TAB) And (instancia=0 Or instancia= 107) And CANCIONCARGADA And play=0 Or cargaCancion=1 Or clickpista=1  Then
    cargaCancion=0 ' para que no entre mas luego de cargada la cancion
@@ -1369,7 +1386,7 @@ If MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
  '  print #1, "Grabando a disco Roll F11 "
    Dim As String nombreg
    If nombre = "" Then
-nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
+nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREATEPROMPT)
       If nombreg = "" Then
          Exit Do
       Else
@@ -1494,24 +1511,33 @@ abierto=1
  Dim As Integer oct1, oct2
  oct1= 0 + (EstoyEnOctava-1) * 13 
  oct2 = 11 + (EstoyEnOctava-1)*13
-  Print #5,"vuelco de octava ";EstoyEnOctava; " desde ";oct1;" a ";oct2
+oct1=NB
+oct2=NA
+
+  Print #fk,"vuelco de ARCHIVO COMPELTO ";EstoyEnOctava; " desde ";oct1;" a ";oct2
  For i1 = oct2 To oct1 Step -1
   For i2= 1 To Maxpos
-   result = Format (Roll.trk(i2, i1).nota,"00")
-   Print #5,  result;"-";
+   result = Format (Roll.trk(i2, i1).nota,"000")
+   Print #fk,  result;"-";
   Next i2
-   Print #5,
+   Print #fk,
   For i2= 1 To Maxpos
-   result = Format (Roll.trk(i2, i1).dur,"00")
-   Print #5, result;"-";
+   result = Format (Roll.trk(i2, i1).dur,"000")
+   Print #fk, result;"-";
   Next i2
-  Print #5,
-  Print #5,"------------------------"
+  Print #fk,
+  For i2= 1 To Maxpos
+   result = Format (Roll.trk(i2, i1).vol,"000")
+   Print #fk, result;"-";
+  Next i2
+
+  Print #fk,
+  Print #fk, String (MaxPos,"*")
  Next i1
  While Inkey <> "": Wend
  Sleep 150
-  Print #5,"fin >>>>>>>>>>> "
- cerrar 5
+  Print #fk,"fin >>>>>>>>>>> "
+ cerrar fk
 EndIf
 
 If MultiKey (SC_F10) Then
@@ -1560,8 +1586,9 @@ Dim As Integer i3
     End If 
 
     ffile=4
-    Open "./RollMusic.ini" For output As #ffile
-
+If   Open ("./RollMusic.ini" For output As #ffile ) <> 0 Then
+   Print #1,"No se puede escribir en RollMusic.ini en RollLoop Esc"
+Else
     If nmxold = 0 Then
        nmxold=mxold
        nmyold=myold
@@ -1585,6 +1612,7 @@ Dim As Integer i3
     Print #ffile,nVerCifradoAcordes, "nVerCifradoAcordes"    
 
     cerrar ffile
+End If
 FileFlush (-1)
     cerrar 0
     cerrar 1
@@ -1594,7 +1622,9 @@ FileFlush (-1)
     End 0
  ThreadDetach(threadloop)
  DestroyWindow(hWnd)
-
+  Else
+  Terminar=0
+   Exit Do ' 06-05-2024
   EndIf  
 EndIf
 ' AYUDA =============ESPACIOS MANEJO ===================================
@@ -1855,9 +1885,9 @@ EndIf
 					    Print #1, "1) esta entre ",durcla(ii,1), " y ",durcla(ii+1,1), numfloat
 					    numfloat=numfloat-durcla(ii,1)
              Select Case dato1
-               Case 144
+               Case 144  'on
 					     duras(1)=durcla(ii,2)+45
-               Case 128
+               Case 128 'off
 					     duras(1)=durcla(ii,2) 
             End Select 
 					     numduras=1
@@ -1865,15 +1895,15 @@ EndIf
 					 EndIf
 			
 			     Next ii
-			     Print #1,"----------------------------" 
+			     Print #1,"---------teclado 1-------------------" 
 						For ii=1 To 45
 						   If numfloat > durcla(ii,1) And numfloat < durcla(ii+1,1) And ii< 45 Then
 						     Print #1,"2) esta entre ",durcla(ii,1), " y ",durcla(ii+1,1),numfloat
 						     numfloat=numfloat-durcla(ii,1)
              Select Case dato1
-               Case 144
+               Case 144  'on
 					     duras(2)=durcla(ii,2)+45
-               Case 128
+               Case 128 ' off
 					     duras(2)=durcla(ii,2)
             End Select 
   	             numduras=2
@@ -1881,7 +1911,7 @@ EndIf
 						     Exit For
 						   End If
 						Next ii
-						Print #1,"----------------------------"
+						Print #1,"--------teclado 2 --------------------"
 						For ii=1 To 45
 						   If numfloat > durcla(ii,1) And numfloat < durcla(ii+1,1) And ii< 45 Then
 			 			 '    Print #1,"3) esta entre ",durcla(ii,1), " y ",durcla(ii+1,1),numfloat
@@ -2034,7 +2064,7 @@ EndIf
 If MultiKey(SC_F1) Then
 ' por ahora solo traeremos un texto, luego usaremos llamar
 ' a un archivo de help chm..
- Shell ("start notepad ayuda.txt")
+   Shell ("start notepad " + pathinicio + "\ayuda.txt")
  ' estopodemos hacer ayuda contextual
  '' Define character range
  '.DRAWASTRING CON FONT DEUSUARIO A VECES SEGUN COMO SE COMPILE HACE CERRAR LA APLICACION
@@ -2172,7 +2202,8 @@ EndIf
 ' del roll ante una entrada de nota hasta el próximo incremento de pantalla
 ' SOLO SEUSAPARAINGRESO DE NOTAS NUEVAS ..VERIFICANDO JMG
 'Print #1,"llega a Nucleo numduras, nota,nRk  ",numduras,RelnRnE(nRk), nRk
-If numduras=0 Then numduras=1
+If numduras=0 Then numduras=1 End If
+' fuerza escritura en roll de las notas entradas por midi sobre el nucleo de teclas de roll.
 Dim As UByte ij=0
 For ij= 1 To numduras
  If GrabarPenta=1 And duras(ij) > 0 Then
@@ -2184,7 +2215,7 @@ For ij= 1 To numduras
   
  'controlEdit=0
  ''octavaEdicion=estoyEnOctava
-EndIf
+ EndIf
 If COMEDIT = TRUE  And nota > 0 And agregarNota=0 And cursorVert=0 And carga=0 And nota <=182  Then ' 182 entra el fin de archivo 
  'print #1,"--------------------------------------------------------------"
  'print #1,">>>START NUCLEO-COMPAS VECTOR posn: "; posn; "suma:";acumulado
@@ -3270,9 +3301,10 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
     EndIf
 
 
-    ffile=5
-    Open "./RollMusic.ini" For output As #ffile
-
+    ffile=4
+If  Open ( "./RollMusic.ini" For output As #ffile) <> 0 Then
+   Print #1,"No se puede escribir RollMusic.ini en Boton Cerrar Grafico"
+Else
     If nmxold = 0 Then
        nmxold=mxold
        nmyold=myold
@@ -3296,6 +3328,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
     Print #ffile,nVerCifradoAcordes, "nVerCifradoAcordes"
     FileFlush (ffile)
     cerrar ffile
+EndIf
     FileFlush (-1)  
     cerrar 0
 '''' ====== > no borramos en salida grafico Kill "procesos.txt"
@@ -4593,6 +4626,7 @@ EndIf
        Case "autodur" ' automatico toma la entrada si no la hay toma la menor y mayor fracciona todas las notas
  '   Print #1," entra por autodur"
  '   Print #1,"indicePos, Rolldur, nR, ntk ",indicePos, Rolldur, nR, ntk 
+       nR=0  ' solo se usa para separar los casos ahora, antes no servia hubo que eliminarlo  
           AutoFracTodoDur Track(),Roll,indicePos, Rolldur,nR,ntk  ' 3er version
     End Select    
     MousePress=0  
@@ -4683,17 +4717,60 @@ Loop
 
 End sub
 '
-
+Sub  RefacturarPista() 'automatico
+FileFlush (-1)
+Sleep 100
+Print #1, "====> RefacturarPista() MaxPos " ; MaxPos
+FileFlush (-1)
+Dim  As Integer  j1, i1 
+  'indicePos=(mousex- gap1 )/anchofig + posishow 
+For  j1 = 1 To  MaxPos  -2
+FileFlush (-1)
+   For  i1=NB To NA 
+   ' Rolldur=CInt(Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).dur)
+    Rolldur=CInt(Roll.trk(j1,i1).dur)
+       If  Rolldur = 0 Then
+           Continue  For
+       Else
+Print #1," ===> Rolldur "; Rolldur
+ 
+       EndIf
+    pasozona1=0: pasoZona2=0 
+  ' ARMADUR USA MOVE EL CUAL SETEA LAS PASOZONA NECESARIAS
+  ' ya funciona ok con DUR 
+'    Print #1,"SC_Z indicePos ,Rolldur ",indicePos,Rolldur
+     
+    ''''ArmarDurFrac()
+''NumeroFrac=Rolldur
+numeroFrac=0
+Print #1," NumeroFrac devuelto j1,i1  ", numeroFrac , j1,i1
+'     "autodur" ' automatico toma la entrada si no la hay toma la menor y mayor fracciona todas las notas
+    Print #1," entra por autodur"
+    Dim n1 As Integer 
+    n1=1
+    Print #1,"j1, Rolldur, n1, ntk ", j1 , Rolldur, n1, ntk 
+''nR no se usa para nada eliminarlo .....de la siguiente rutina...
+' adaptar la siguiente rutina esta echa para una columna y
+' define un pasozona o algo asi debo hacer que dependa de
+' un for y vaya tomando columna por columna buscando 
+' cada acorde desigual
+FileFlush (-1)
+     AutoFracTodoDur Track(),Roll,j1, Rolldur,n1,ntk  ' 3er version
+     Rolldur=0 
+  Next i1 
+Next  j1   
+   
+End Sub 
 
 '
 ' error
 errorloopbas:
  
 'Dim As Integer er1, ErrorNumber1, ErrorLine1
-ErrorNumber1 = Err
+ErrorNumber1 = Err()
 ErrorLine1 = Erl
 
-If ErrorNumber1 > 0 And ContadorError < 101 Then
+If ErrorNumber1 > 1 And ContadorError < 101 Then
 
 Print #1,"------------------------------------"
   ContadorError=ContadorError+1
@@ -4721,7 +4798,8 @@ EndIf
   Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2) 
   print #1,"------------------------------------"
 '/
-EndIf
- Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
 
+ Print #1,"RollLoop MODULO error number: " ; ErrorNumber1 ; " at line: " + Str( Erl )
+'
+EndIf
 

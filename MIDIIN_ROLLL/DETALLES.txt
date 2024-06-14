@@ -1,0 +1,25 @@
+ESTOS ARCHIVOS SON LA PRIMERA PRUEBA DE GRABACION DE MIDI IN
+COMO EN EL PUNTO 17b) DE AYUDA.TXT EN 2022 Y 2024
+A MEDIDDA QUE SE TOCA EN EL TECLADO SE VE EN EL MODO EDICION 
+DEL ROLL GRAFICO LAS NOTAS QUE VAN ENTRANDO SIENDO CUANTIFICADAS
+AUTOMATICAMENTE Y APROXIMADAMENTE POR ROLL,,,
+AL FINALIZAR SE GRABA COMO CUALQUIER ARCHIVO ROLL
+--------------------------------------------------------
+COPIA DE 17b)
+
+
+    17b) Grabacion directamente sobre Roll, 1era version faltaria que detecte acordes,
+           (ya lo hizo en algun algoritmo distinto a este), el actual funciona para melodias, tiene
+           un metronomo, si se desea se puede desactivar (menu Opciones, no probado)
+           Como antes en 17a en menu Reproducir, elegir Reproducir MIDI-IN, luego
+           darle al boton rojo de la izquierda de las pistas para grabar, se escuchara 4
+           ticks preparatorio mas graves , luego comienza los ticks mas agudos de grabacion
+           junto al cambio de color del Edit de grabacion (Edicion de Roll como la manual)
+           Al detener como antes la edicion se podra darle play, Para volver a grabar se repite las
+           mismas acciones. deja un archivo debug.txt para estudiarlo. Graba los silencios
+           con la nota siguiente con sonido. Roll separa algunas notas cuando la duracion del compas
+          es mayor , pero generalmente no logra el compas exacto...de modo que eliminare creo
+          el calculo del compas y quedara un Roll sin compases. Cuando se agregue, cuantizacion
+          se podria volver a colocar compases (aunque tal vez podriamos poner barras tipo dientes
+          que indiquen cuando se alcanz o sobrepasa un compas auqneu las notas no esten bien 
+          definidas)

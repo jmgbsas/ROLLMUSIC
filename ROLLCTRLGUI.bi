@@ -1,6 +1,6 @@
 'ROLLCTRLGUI... GUI DE VENTANA DE CONTROL
 Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8,MenName10
-Static Shared As HMENU MenName31,MenName32,MenName18 
+Static Shared As HMENU MenName31,MenName32,MenName18,MenName19 
 
 If instancia < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON control
   menuabierto=1 ' evita apertura de mas de un menu
@@ -13,8 +13,10 @@ If instancia < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic C
 Var bitmap = Load_image("fondo.bmp")
 BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 
-  hwndListBox= ListBoxGadget(LISTA_DE_PISTAS,80,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT  )
+  hwndListBox= ListBoxGadget(LISTA_DE_PISTAS,80,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT Or LBS_NOINTEGRALHEIGHT Or LBS_NOTIFY  )
+
   SetGadgetFont(LISTA_DE_PISTAS,CINT(LoadFont("consolas bold",13))) 
+  GadgetToolTip(LISTA_DE_PISTAS,"Pistas manuales cargadas desde Roll ")
 ' botton todo o nada , sonido o mudo para todas las pistas
   ButtonGadget(CHECK_PISTA_ROLL, 60,20,20,20,"S")
   SendMessage(GadgetID(LISTA_DE_PISTAS),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
@@ -64,10 +66,13 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 
 '---------------------------LISTA DE EJECUCIONES------------
   hwndListEjec= ListBoxGadget(LISTA_DE_EJECUCIONES, 430,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
-SetGadgetFont(LISTA_DE_EJECUCIONES,CINT(LoadFont("consolas bold",14)))
+SetGadgetFont(LISTA_DE_EJECUCIONES,CINT(LoadFont("consolas bold",13)))
+GadgetToolTip(LISTA_DE_EJECUCIONES,"Pistas grabadas desde un teclado midi")
 SetGadgetColor(LISTA_DE_EJECUCIONES,cint("&HC0C0C0"),0,1)
   ButtonGadget(CHECK_SELECCION_EJECUCION,380,20,20,20,"S")
 SetGadgetColor(CHECK_SELECCION_EJECUCION,cint("&HC0C0C0"),0,1)
+
+
 
   SendMessage(GadgetID(LISTA_DE_EJECUCIONES),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
 ' BS_PUSHLIKE se hune el boton al seelccioanrlo
@@ -116,17 +121,29 @@ SetGadgetColor(CHECK_GRABAR_EJECUCION,cint("&HC0C0C0"),0,1)
 
 ' pistas de ejec MIDI-IN
 GroupGadget(GRUPO_BTNS_MIDI,445,0,113,40,"")
+
 ButtonImageGadget(BTN_MIDI_PARAR,450,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
+GadgetToolTip(BTN_MIDI_PARAR,"Parar ejecucion o grabacion midi")
+
 ButtonImageGadget(BTN_MIDI_GRABAR,490,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
+GadgetToolTip(BTN_MIDI_GRABAR,"Grabar midi")
+
 ButtonImageGadget(BTN_MIDI_EJECUTAR,530,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
+GadgetToolTip(BTN_MIDI_EJECUTAR,"Ejecutar Grabacion midi")
 
  TextGadget(21,570,12,95,20,"         ")
 ' pistas manuales  PARA CARGAR CANCION DESDE DIRECTORIO PISTAS ECHAS CON ROLL
 GroupGadget( GRUPO_BTNS_MANUAL,95,0,113,40,"") 'play cancion
-ButtonImageGadget(BTN_ROLL_PARAR, 100,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
-ButtonImageGadget(BTN_ROLL_EJECUTAR, 140,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
-ButtonImageGadget(BTN_ROLL_GRABAR_MIDI, 180,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
+GadgetToolTip(GRUPO_BTNS_MANUAL,"Parar Cancion, Ejecutar Canion, Grabar midi en Roll ")
 
+ButtonImageGadget(BTN_ROLL_PARAR, 100,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
+GadgetToolTip(BTN_ROLL_PARAR,"Parar ejecucion cancion o Grabacion midi sobre Roll")
+
+ButtonImageGadget(BTN_ROLL_EJECUTAR, 140,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
+GadgetToolTip(BTN_ROLL_EJECUTAR,"Ejecutar cancion o Grabacion midi ")
+
+ButtonImageGadget(BTN_ROLL_GRABAR_MIDI, 180,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
+GadgetToolTip(BTN_ROLL_GRABAR_MIDI,"Grabar midi en Roll")
 
 
  'rbparar = RadioButton_New( 450 , 10, 40, 20, "P",BS_LEFTTEXT , hwndC) '65
@@ -224,23 +241,28 @@ MenuItem(1011,MenName1, "4.1 Grabar una Pista de la Cancion con modificaciones, 
 MenuItem(1012,MenName1, "4.2 Copia una pista a otra  nueva en cancion")
 'MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
 MenuItem(1014,MenName1, "4.3 Grabar una Pista rtk a roll TrackaRoll")
-MenuItem(10075,MenName1, "4.4 Cargar Pista (rtk o roll) en Roll aislado ")
+MenuItem(10075,MenName1,"4.4 Cargar Pista (rtk o roll) en Roll aislado ")
 
 Menubar(MenName1)
 
-MenName18=OpenSubmenu(MenName1, "4.5   Exportar a midi durante Reproduccion")
-MenuItem(1008,MenName18, "Cargar Pista en Roll" )
-MenuItem(10081,MenName18, "Usar Cancion cargada en 2.0 " )
+MenName18=OpenSubmenu(MenName1, "4.5 Cargar Pista/Cancion para Exportar a midi durante Reproduccion")
+MenuItem(1008,MenName18, "Cargar Pista en Roll independiente" )
+MenuItem(10081,MenName18,"Usar Cancion cargada en 2.0 " )
 
 
 
-MenuItem(1009,MenName1,  "4.5.1 Exportar Pista/cancion de 4.5 ")
+MenuItem(1009,MenName1,  "4.5.1 Exportar a MIDI Pista/cancion de 4.5 ")
 
 
 Menubar(MenName1)
 MenuItem(1015,MenName1, "5.0 MIDI-IN Grabar Pistas ejecucion")
 MenuItem(1016,MenName1, "5.1 MIDI-IN Cargar Pistas ejecucion")
 MenuItem(1017,MenName1, "5.2 Renombrar Pista ejecucion seleccionada")
+
+MenName19=OpenSubmenu(MenName1, "5.3 INEXACTO Cargar un archivo plano midi")
+MenuItem(1018  ,MenName19, "INEXACTO Con Fracturacion automatica ")
+MenuItem(10181,MenName19, "INEXACTO Sin Fracturacion automatica ")
+
 Menubar(MenName1)
 MenuItem(1019,MenName1, "    Salir")
 
@@ -282,16 +304,16 @@ MenuItem(1068,MenName32,"Habilitar Patrones",MF_UNCHECKED)
 MenuItem(1070,MenName4,"Escalas auxiliares ajustadas", MF_CHECKED)
 MenuItem(1071,MenName4,"Cifrado de Acordes", MF_CHECKED)
 Menubar(MenName4)
-MenuItem(1072,MenName4,"Parametros de un archivo Roll  ")
-MenuItem(1073,MenName4,"Parametros de un archivo Track ")
-MenuItem(1074,MenName4,"Parametros de Roll y Track(0) en memoria")
-MenuItem(1075,MenName4,"Parametros de Track(n) en memoria ")
+MenuItem(1072,MenName4,"Na/Parametros de un archivo Roll  ")
+MenuItem(1073,MenName4,"Na/Parametros de un archivo Track ")
+MenuItem(1074,MenName4,"Na/Parametros de Roll y Track(0) en memoria")
+MenuItem(1075,MenName4,"Na/Parametros de Track(n) en memoria ")
 
   
 MenuItem(1080,MenName5,"TEMPO, Manual Por omision=60, Ejecucion Tick por omision=5mseg equivale a 240")
 MenuItem(1081,MenName5,"Factor para Aumentar velocidad de ejecucion, No se graba en archivo 1,5 o 0,5 etc")
 
-MenuItem(1082,MenName5,"Cuadro Ayuda TEMPO por nombres, Lento,adagio etc y control fino")
+
 'MenuItem(1083,MenName5,"Na. TEMPO insertar cambio de tempo")
 'MenuItem(1084,MenName5,"Na. TEMPO borrar cambio de tempo")
 'MenuItem(1085,MenName5,"Na. TEMPO ver marcas de cambio de tempo")
@@ -352,6 +374,8 @@ MenuItem(1206,MenName8,"Cerrar Puertos MIDI-OUT Ejecucion")
 
 
 MenuItem(2000,MenName10,"Acerca de")
+MenuItem(2001,MenName10,"Cuadro Ayuda TEMPO por nombres, Lento,adagio etc y control fino")
+MenuItem(2002,MenName10,"Cuadro de Figuras de duracion de notas")
 '  MenuBackColor NO FUNCIONA SOLO AL PRINCIPIO
 ' CASA  MENU QUEDA LIMITADO POR BARRAS DE COLOR EN ESTE CASO GRIS
 ' Y LAS LINEAS DE SEPARACION QUEDAN GRIS MAS GRUESAS

@@ -110,7 +110,11 @@ Function Window_Event_Close(ByVal hWnd As HWND, ByRef msg As MSG) As Long
 	'- msg = Message (see Sub WaitEvent)
 	
 	If msg.hwnd = hWnd And msg.message = 161 Then
-		If msg.wParam = 20 Then Return 1 Else Return 0
+		If msg.wParam = 20 Then 
+           Return 1 
+    Else 
+          Return 0
+    EndIf
 	End If
 	
 End Function
@@ -219,8 +223,11 @@ Sub CheckBox_SetCheck(ByVal hWndCheck As HWND, ByVal CheckState As Long)
 	'- hWndCheck = Handle of the checkbox
 	'- CheckState: <> 0 = checked, 0 = unchecked
     
-  If CheckState Then SendMessage(hWndCheck, BM_SETCHECK, BST_CHECKED, 0) Else _
+  If CheckState Then 
+      SendMessage(hWndCheck, BM_SETCHECK, BST_CHECKED, 0) 
+     Else 
     SendMessage(hWndCheck, BM_SETCHECK, BST_UNCHECKED, 0)
+  EndIf   
        
 End Sub
 
@@ -229,9 +236,11 @@ Function CheckBox_GetCheck(ByVal hWndCheck As HWND ) As Long
 	'Request the status of the checkbox. 0 = unchecked, 1 = checked. Parameters:
 	'- hWndCheck = handle of the checkbox
 	
-	If SendMessage(hWndCheck, BM_GETCHECK, 0, 0) = BST_CHECKED Then Return 1 _
-		Else Return 0
-       
+	If SendMessage(hWndCheck, BM_GETCHECK, 0, 0) = BST_CHECKED Then 
+     Return 1 
+	Else 
+     Return 0
+  EndIf     
 End Function
 
 
@@ -265,8 +274,11 @@ Sub RadioButton_SetCheck(ByVal hWndRadio As HWND, ByVal CheckState As Long)
 	'- hWndRadio = handle of the radio buttons
 	'- CheckState: <> 0 = checked, 0 = unchecked  
     
-  If CheckState Then SendMessage(hWndRadio, BM_SETCHECK, BST_CHECKED, 0) Else _
+  If CheckState Then 
+     SendMessage(hWndRadio, BM_SETCHECK, BST_CHECKED, 0) 
+   Else
     SendMessage(hWndRadio, BM_SETCHECK, BST_UNCHECKED, 0)
+  EndIf  
        
 End Sub
 
@@ -275,8 +287,11 @@ Function RadioButton_GetCheck(ByVal hWndRadio As HWND ) As Long
 	'Request the state of the radio buttons. 0 = unchecked, 1 = checked. Parameters:
 	'- hWndRadio = handle of the radio buttons
 	
-	If SendMessage(hWndRadio, BM_GETCHECK, 0, 0) = BST_CHECKED Then Return 1 _
-		Else Return 0
+	If SendMessage(hWndRadio, BM_GETCHECK, 0, 0) = BST_CHECKED    Then 
+    Return 1 
+	Else
+   Return 0
+  EndIf
        
 End Function
 
@@ -549,7 +564,7 @@ Sub ListBox_ReplaceString(ByVal hWndList As HWND, ByVal Index As Long, ByVal Tex
 	'- Text = new Text
 	'- New Data = 32-bit value associated with the list box item 
 	 
-	 If text = "" Then Exit Sub 
+	 If text = "" Then Exit Sub End If  
    SendMessage(hWndList, LB_DELETESTRING, Index, 0)
    Index = SendMessage(hWndList, LB_INSERTSTRING, Index, Cast(LPARAM, Strptr(Text)))
    SendMessage(hWndList, LB_SETITEMDATA, Index, NewData)
@@ -683,7 +698,7 @@ Sub ComboBox_ReplaceString(ByVal hWndCombo As HWND, ByVal Index As Long, ByVal T
    '- Text = new Text
    '- New Data = 32-bit value associated with the combo box item
    
-   If text = "" Then Exit Sub  
+   If text = "" Then Exit Sub  End If
    SendMessage(hWndCombo, CB_DELETESTRING, Index, 0)
    Index = SendMessage(hWndCombo, CB_INSERTSTRING, Index, Cast(LPARAM, Strptr(Text)))
    SendMessage(hWndCombo, CB_SETITEMDATA, Index, NewData)

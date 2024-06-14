@@ -1,3 +1,12 @@
+- 12-06-2024 correcciones dejo de grabar. corregido. canales en roll grafico
+  pantalla negra en algunas ocasiones (corrijo algo y revienta por otro lado  
+  eso por tener varias versiones al mismo tiempo esta es la 0.4626 hay otras...).
+  AutoFracTodoDur no anda bien no se si vale la pena poner mas esfuerzos,,
+  pasaria a cambiar todo con ticks o linea de tiempo.,..
+- 30-04-2024 CARGAR UN MIDI. 1ER METODO LOS QUE EN EL ENCABEZADO
+  EL NUMERO DE TICKS POR CUARTO DE NOTA O NEGRA,, ES COMUN 192.
+  LUEGO LOS INCREMENTOS DE TICKS DARAN LAS DURACIONES DE LAS NOTAS.-
+  ESTOY TRATANDO DE BORRAR LAS EJECUCIONES SEGUIR CON ESA BOLUDES  
 - 29-04-2024 se guardo TEMPO en archivos Roll y Rtk. TEMPO fallaba en
   roll grafico y el menu desaparecia al clickear COMPAS.
   Se agrego acentos en divisiones y subdiviciones de 2/4 3/4 4/4 6/8 y 12/8

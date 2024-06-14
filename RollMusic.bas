@@ -16,8 +16,6 @@
 ' con el mismo Thread para verlo en pantalla. Se veria 1 por vez o si queremos podriamos
 ' ver mas de 1 pero apra eso deberia llamar a roll music mas de una vez 
 ' y eso lo haria desde call roll 
-'----------------
-#include "ROLLMIDI.Bi"
 
 '----------------
 
@@ -108,18 +106,16 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="0.4619 " ':FUTURO Patrones de Ejecucion 03-07-2022
-' despues de un año de bajones personales veo si me da gan de seguirlo
-' usando canal 7 con portout loopbe y ZynAddSubFk parece que no envia el OFF de las notas,,
-'4536-> 1) Repeticion con 1 pista de Track. 2) luego con cancion.- Pendiente
+nroversion="0.4626 " ': midi plano usar fracturar acordes desiguakes version en desarrollo 
 acercade = "RollMusic Version "+ nroVersion +" Jose M Galeano, Buenos Aires Argentina 2021-2022, 2024. Ejecuta secuencias " + _
  "entrada por pasos usando algoritmos sin una linea conductora de tiempos, se basa en las duraciones de las notas. " + _
  "Para entrada por teclado midi usa ticks. Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
  "manual o por ejecucion. OS:Windows 64bits, " + _
  "Usa Cairo como libreria de graficos, Windows9 ,WinGUI y Gtk como GUI; Rtmidi como libreria midi, " + _
- "Editor de código FbEdit. Echo en Freebasic como hobby. FreeBASIC Compiler - Version 1.10.1 (2023-12-24), built for win64 (64bit) " + _
-" Copyright (C) 2004-2023 The FreeBASIC development team." +_ 
-" Consultas: mail:galeanoj2005@gmail.com"
+ "Editor de c digo FbEdit. Echo en Freebasic como hobby. FreeBASIC Compiler - Version 1.09.0 (2021-12-31), built for win64 (64bit) " + _
+" Copyright (C) 2004-2021 The FreeBASIC development team." +_ 
+" Consultas: mail:galeanoj2005@gmail.com. Ultima version sin Ticks. La proxima version usara Ticks y no sera compatible "+_
+" con esta version. La carga de un midi plano se complica es inexacta sin Ticks"
  
 '------------///// GUI GUI GUI  GUI ///////////////
 #include Once "ROLLCTRLGUI.BI"
@@ -167,11 +163,9 @@ End Select
   SetStateMenu(hmessages,10062,1)
   SetStateMenu(hmessages,10063,1)
   '' habilito grabar cancion punto 2) SetStateMenu(hmessages,1007,1)
-  If result = 0 Then
+
   SetStateMenu(hmessages,1009,1)
-  Else
-  SetStateMenu(hmessages,1009,0) ' permitimos un intento mas
-  EndIf
+
 ' SE HABILITAN SI USO 2.0 EN SU CASE
 
 'AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS
@@ -225,7 +219,7 @@ If mxold > 0 Then
 'MoveWindow( hWnd , 1, 1 , ANCHO - mxold, ALTO - myold, TRUE )
 'Print #1,"rollmusic.bas 742: ANCHO,nancho ",ANCHO, nancho
   If ANCHO = nancho Then
-  ANCHO= nancho -mxold 
+      ANCHO= nancho -mxold 
   EndIf
 'Print #1,"rollmusic.bas 745: ANCHO resultante  ",ANCHO
 
@@ -233,7 +227,7 @@ If mxold > 0 Then
   If anchofig=0 Then
     anchofig=ANCHO/45 ' SON 45 COL PERO SE USAN MENOS 41
   EndIf
-  NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
+  NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tama o figuras, nota guia 6 columnas "B_8_[ "
   ANCHO3div4 = ANCHO *3 / 4
   gap1= anchofig* 2315/1000 ' 81 default
   gap2= (914 * gap1) /1000 ' 74 default
@@ -343,13 +337,22 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
 'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
  ''win = glfwCreateWindow(800,600,"Track OPENGL" )
 '' Dim ta As Any Ptr = threadcall correwin(win,ta)
+
     Do
        'If  repro=1 Then ' damos mas recursos si hay play de PlayTocaAll y mas si hay tambien playAll o PlayCancion
        '    Sleep 10
       ' EndIf
-        
-         For k=1 To 32 
-           If CheckBox_GetCheck( cbxgrab(k))= 1 And tocaparam(k).nombre="" Then 
+' *********************************************************************
+' AVISO TRATAR DE USAR SetWindowCallback PARA LIBERAR EL LOOP DE  CARGA
+' ********************************************************************
+' esto solo se debe ejecutar 1) si se cargo ejec, 2) si se creo una ejec 
+      If tocatope < 32  And CANCIONCARGADA=TRUE  Then   
+           
+         For k=1 To tocatope+1
+           
+          If CheckBox_GetCheck( cbxgrab(k))= 1 Then
+             ultimo_chequeado= k 
+             If tocaparam(k).nombre="" And k= tocatope+1 Then 
               ntoca=k 'ntoca es la  pista ejec que se esta grabando global entera
               If tocaparam(ntoca).nombre ="" Then
                      ReDim (Toca(ntoca).trk ) (1 To 384000)  ' 1000 compases
@@ -369,7 +372,7 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
                      EndIf
                      ntkp=ntoca 
                      AddListBoxItem(4, tocaparam(ntoca).nombre,ntoca-1)
-                     tocatope=ntoca '''tocatope+1
+                     tocatope=ntoca 
                      If nombrePatron > "" And nroCompasesPatron > 0 Then
                         pmTk(ntoca+32).MaxPos=nroCompasesPatron  * 384 '' jjjjj
 ' en la 5ta linea de duracions  0.0208/4 =TickChico a I=240
@@ -396,8 +399,13 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
                   EndIf
               EndIf
               Exit For
+             End If 
           EndIf
-        Next k
+         Next k
+ 
+      EndIf 
+' PARA CONVERTIR A MID SI HAY UN PLANO NUEVO
+
 
            ''Print #1,"Titulos(ntoca+32), ntoca ",Titulos(ntoca+32),ntoca
 
@@ -407,12 +415,14 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
 '  TextDraw(10,10,NombreCancion,-1,&hff0000)
 'StopDraw
 
+
      Select Case EVENTC 
        Case EventMenu
 '''' //////////////////////////  EVENT EVENT EVENT /////////
           #Include "ROLLCTRLEVENTMENU.BI"
 '-----------------------------------------------------------------------
        Case eventgadget
+
      '   SetForegroundWindow(hwndC)
       ' el codigo anterior que traia de disco esta en notas
 ' TODOS DICEN RUSO Y USA QUE VK_LBUTTON ES 1 PERO CON 1 NO ANDA
@@ -426,8 +436,10 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
      ' If ix < 3 Then 
     '  'DisableGadget(LISTA_DE_PISTAS,0)
     '  EndIf  
-      CTRL_EVENTGADGET() 
-
+Print #1,"antes  ctrl_eventgadget  nombreMidiIn ", nombreMidiIn
+    '  CTRL_EVENTGADGET()
+   #Include "ROLLCTRLEVENTGADGET.bi"  
+Print #1,"despues de ctrl_eventgadget  nombreMidiIn ", nombreMidiIn
 '--------------------------------------------------------
     '  If ix < 3 Then   
     '  'DisableGadget(LISTA_DE_PISTAS,1)
@@ -439,7 +451,7 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
        case EventKeyDOWN
             Select Case  EventKEY 
                 Case VK_F1 
-                   Shell ("start notepad ayuda.txt")
+                   Shell ("start notepad " + pathinicio + "\ayuda.txt")
                 Case VK_SPACE '' HARIA FALTA QUE TOQUE LA CANCION CON
 ' SPACE SIN ESTAR EL ROLL CARGADO PRIMERO DEBO PODER CARGAR UN CAQNCION SIN ROLL 
                ''''' REMEDAR EL BOTON VERDE ??? CHEQUEAR EL BOTON VERDE
@@ -500,24 +512,6 @@ ErrorNumber = Err
 ErrorLine = Erl
 
 
-ProgError(0) = "No error"
-ProgError(1) = "Illegal function call"
-ProgError(2) = "File not found signal"
-ProgError(3) = "File I/O error"
-ProgError(4) = "Out of memory"
-ProgError(5) = "Illegal resume"
-ProgError(6) = "Out of bounds array access"
-ProgError(7) = "Null Pointer Access"
-ProgError(8) = "No privileges"
-ProgError(9) = "interrupted signal"
-ProgError(10) = "illegal instruction signal"
-ProgError(11) = "floating point error signal "
-ProgError(12) = "segmentation violation signal"
-ProgError(13) = "Termination request signal"
-ProgError(14) = "abnormal termination signal"
-ProgError(15) = "quit request signal"
-ProgError(16) = "return without gosub"
-ProgError(17) = "end of file"
 
 
 Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine

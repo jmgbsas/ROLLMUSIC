@@ -650,6 +650,7 @@ Print #1,"AOI 21X:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapia
  Print #1,"AOI 21E: se usa el time almacenado del apso anterior ",pasoCol(i1).old_timeold 
                     duracion pasoCol(i1).old_timeold/d11, f '25-11
                     portsal=CUByte(pasoCol(i1).port)
+                    canal=pasoCol(i1).canal ' 12 junio 2024
                     noteoff CUByte(pasoCol(i1).notapiano) ,canal,portsal,i1  ' la notapiano es la misma porque esta ligado 
                  EndIf
                  If pasoCol(i1).liga=1 Then
@@ -690,6 +691,14 @@ Print #1,"AOI 21Y VEL "; vel
                 duracion pasoCol(i1).old_time/d11, pasoCol(i1).tiempoFigura/d11
              EndIf
           EndIf
+' ==> 8 junio 2024 LAS NOTAS EN SILENCIO DEBEN TENER SU ON CON V=0 
+          If pasoCol(i1).ligaold =0 And pasoCol(i1).audio =2 Then
+' nota nueva de silencio sin sonido 
+             canal=pasoCol(i1).canal
+             portsal=CUByte(pasoCol(i1).port)
+             noteon CUByte(pasoCol(i1).notapiano),0 ,canal,portsal,i1
+          EndIf
+' fin 8 de junio 2024 anda ok !!!   
      End Select 
          pasoCol(i1).ligaold = pasoCol(i1).ligaold + 1 ' para el proximo paso
   Print #1,"AOI 23:  cantidad Ligaold ==========> ";pasoCol(i1).ligaold
@@ -1397,7 +1406,8 @@ If MIDIFILEONOFF = HABILITAR  Then
    Print #midiplano, "MTrk"
    Print #midiplano, "0 Meta 0x09 "; Chr(34); *nombreOut(0) ;Chr(34)
    Print #midiplano, "0 Meta TrkName "; Chr(34); "Piano";Chr(34)
-   Print #midiplano, "0 PrCh  ch="+ Trim(Str(numc))+ " "; "p=";Roll.trk(1,NA).inst 
+   Print #midiplano, "0 PrCh  ch="+ Trim(Str(numc))+ " "; "p=";Roll.trk(1,NA).inst
+     
 EndIf
  
 ' tiempo es cuantas negras en un minuto tiempoPAtron
@@ -1571,6 +1581,14 @@ EndIf
  If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
     velpos=vdebil
  EndIf
+' AL FRACTURAR COLUMNAS LAS PARTES PUEDE QUEDAR SIN SONIDO AL DAR PLAY AUNQUE
+' LAS NOTA TENGAN SUS VOLUMENES PORQUE ACA SE DA LA VELOCIDAD DE EJECUCION
+' LA CUAL DEBERIA DEPENDER DEL VOL DE LA NOTA TAMBIEN VERIFICAR,,,EN CAL COMPAS O RECAL COMPAS
+ If Compas(jply).nro = 0 Then 
+    velpos=vsemifuerte  ' para midipolano dividiones por partes veremso si se soluciona el sonido
+' en la rutina vol , depende de la dur ajusta vol=0 o vol = velpos... no hay problema con los silencios
+ EndIf
+
    Print #1," PLAYALL  jply velpos "; jply, velpos
 ' ojo con silencios ligados !!!
   cnt=0
@@ -1837,7 +1855,9 @@ If MIDIFILEONOFF = HABILITAR Then
 
 EndIf
 
-Sleep 20,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
+Sleep 100,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion
+
+
 
 ThreadDetach(thread2) ' 16-06-2022
 
@@ -2330,11 +2350,18 @@ End Sub
 Sub listports( )
 
 
-'Print #1,"LISTPORTS portsout, portsin", portsout, portsin
+Print #1,"LISTPORTS portsout, portsin", portsout, portsin
+If  portsin=0 Then
+    portsin=2
+EndIf
+If  portsout=0 Then
+    portsout=2
+EndIf
 
 ReDim listout(0 To portsout -1)
 ReDim listin (0 To portsin  -1) 
 ' saco de la lista los ports ya abiertos
+Print #1,"LISTPORTS despuesde redim "
 
 Dim nombre As ZString ptr
 Dim aviso As String = " Abierto"
@@ -2343,17 +2370,21 @@ Dim lg As Integer
 ' "Output port"
 
 Dim  As Integer i,j
-
+Print #1,"LISTPORTS p portsout "; portsout 
+If  portsout= 0 Then 
+  Print #1,"LISTPORTS portsout 0 "
+  Exit Sub
+EndIf 
 for i = 0 to portsout -1 
   If listoutAbierto (i) =0 Then
     nombre = nombreOut(i)
     If InStr(*nombre,"Microsoft") > 0 Then ' microsoft no funa bien
       listout(i) = "Crash No usar Microsoft" 
- '     Print #1,"listout(i) ",listout(i)
+      Print #1,"listout(i) ",listout(i)
 
     Else
      listout(i) = *nombre
- '     Print #1,"listout(i) ",listout(i)
+      Print #1,"listout(i) ",listout(i)
     endif
   EndIf  
   If listoutAbierto (i) =1 Then
@@ -2361,7 +2392,7 @@ for i = 0 to portsout -1
     nombre = nombreOut(i)
     If InStr(*nombre,"Microsoft") > 0 Then
       listout(i) = "Crash No usar Microsoft" 
- '     Print #1,"listout(i) ",listout(i)
+      Print #1,"listout(i) ",listout(i)
 
     Else
      listout(i)=*nombreOut(i) +aviso 
@@ -2372,31 +2403,36 @@ for i = 0 to portsout -1
 Next
 temp=""
 ' entradas copia
-for i = 0 to portsin -1 
-  If listInAbierto (i) =0 Then
-    nombre = nombreIn(i)
-    If InStr(*nombre,"Microsoft") > 0 Then ' microsoft no funa bien
-      listin(i) = "Crash No usar Microsoft" 
-   '   Print #1,"listin(i) ",listin(i)
-
-    Else
-     listin(i) = *nombre
-   '   Print #1,"listin(i) ",listin(i)
-    endif
-  EndIf  
-  If listInAbierto (i) =1 Then
-    nombre = nombreIn(i)
-    If InStr(*nombre,"Microsoft") > 0 Then
-      listin(i) = "Crash No usar Microsoft" 
-
-    Else
-    listin(i)=*nombreIn(i) +aviso 
-
-    EndIf
+If  UBound (nombreIn,1) > 0 Then
+    for i = 0 to portsin -1 
+      If listInAbierto (i) =0 Then
+        nombre = nombreIn(i)
+        If InStr(*nombre,"Microsoft") > 0 Then ' microsoft no funa bien
+          listin(i) = "Crash No usar Microsoft" 
+          Print #1,"listin(i) micro ",listin(i)
     
-  EndIf  
-  
-Next
+        Else
+         listin(i) = *nombre
+          Print #1,"listin(i)  2 ",listin(i)
+        endif
+      EndIf  
+      If listInAbierto (i) =1 Then
+        nombre = nombreIn(i)
+        If InStr(*nombre,"Microsoft") > 0 Then
+          listin(i) = "Crash No usar Microsoft" 
+    Print #1,"listin(i) micro  2",listin(i)
+        Else
+        
+        listin(i)=*nombreIn(i) +aviso 
+         
+        EndIf
+        
+      EndIf  
+      
+    Next i
+Else
+listin(0)="No hay ports de entrada"
+End If 
 temp=""
 
 
@@ -2670,7 +2706,7 @@ EndIf
 
 End Sub
 
- Sub moverZonaRoll(posinueva As Integer, Roll As inst,posivieja As Integer)
+  Sub moverZonaRoll(posinueva As Integer, Roll As inst,posivieja As Integer)
 ' ind es donde hago el click! no lo modifico uso inc
 ' mueve M + Click la zona a la posicion deseada por el click
 ' o copia c + click en en la posicion deseada   
@@ -2706,32 +2742,32 @@ cant = pasoZona2 - pasoZona1 'delta original
 ' sitio donde se copia o mueve indicePos en main (SC_M o SC_C )+ click 
 Dim  As Integer  MaxPosOld=MaxPos
   
-'print #1, "MaxPosOld ", MaxPosOld
+Print #1, "MaxPosOld ", MaxPosOld
 ' si movemos a derecha empezamos copiando a la nueva posicion el final de 
 ' la secuencia, luego en la nueva posicion -1 copiamos el final -1
 ' asi desde el final haci aadelante...
 ' si movemos a izqierda el reves..
-' o sea lo que está echo es para mover a izquierda donde la posiion destino
+' o sea lo que est  echo es para mover a izquierda donde la posiion destino
 ' el click esta a la izquierda de pasozona1  
 /'
-print #1," chequeo"
+Print #1," chequeo"
 For jpt= 1 To maxpos
   For i1=comienzo To final
        If Roll.trk(jpt,i1).nota < 13 And i1= 67 Then
-        print #1,"Roll.trk(inc,i1).nota ",Roll.trk(inc,i1).nota
-        print #1,"Roll.trk(inc,i1).dur ",Roll.trk(inc,i1).dur
-        print #1,"Roll.trk(jpt,i1).nota ",Roll.trk(jpt,i1).nota
-        print #1,"Roll.trk(jpt,i1).dur ",Roll.trk(jpt,i1).dur
+        Print #1,"Roll.trk(inc,i1).nota ",Roll.trk(inc,i1).nota
+        Print #1,"Roll.trk(inc,i1).dur ",Roll.trk(inc,i1).dur
+        Print #1,"Roll.trk(jpt,i1).nota ",Roll.trk(jpt,i1).nota
+        Print #1,"Roll.trk(jpt,i1).dur ",Roll.trk(jpt,i1).dur
 
        EndIf
 
   Next i1
 Next jpt
-print #1,"fin chequeo"
+Print #1,"fin chequeo"
 '/
 If posinueva > Maxpos Then ' movemos a izquierda
-inc=posinueva ' aca inc son los datos copiados 
-'print #1,"ENTRA POR IZQUIERDA"
+inc=posinueva
+Print #1,"ENTRA POR IZQUIERDA"
   For jpt=desdet To hastat
        
      For  i1= comienzo To final
@@ -2741,7 +2777,7 @@ inc=posinueva ' aca inc son los datos copiados
        Roll.trk(inc,i1).pan  = Roll.trk(jpt,i1).pan
        Roll.trk(inc,i1).pb   = Roll.trk(jpt,i1).pb
        Roll.trk(inc,i1).inst = Roll.trk(jpt,i1).inst
-   '  print #1,"i1,ind Roll.trk(i1,ind).nota ",i1, ind, Roll.trk(ind,i1).nota
+   '  Print #1,"i1,ind Roll.trk(i1,ind).nota ",i1, ind, Roll.trk(ind,i1).nota
        If moverZona=1 Then ' borro original
           Roll.trk(jpt,i1).nota = 181
           Roll.trk(jpt,i1).dur  = 0
@@ -2752,22 +2788,14 @@ inc=posinueva ' aca inc son los datos copiados
        EndIf
      Next i1
      inc=inc+1
- ' UNDO
-   mel_undo_k = mel_undo_k + 1
-
-   mel_undo(mel_undo_k).trk = ntk
-   mel_undo(mel_undo_k).posn = inc
-
- ' FIN UNDO    
-     
   Next jpt
- ' print #1,"TERMINO copia a izquierda ",posinueva   
+  Print #1,"TERMINO copia a izquierda ",posinueva   
 'si la posicion donde copio es mayor a MaxPos, debo llenar el espacio entre MAxPos y 
 'el punto inicial de copia con 0 y 181 para dur y Nota repectivamente
- ' print #1,"inicioind  MAxPosOld ",posinueva , MAxPosOld  
+  Print #1,"inicioind  MAxPosOld ",posinueva , MAxPosOld  
   If posinueva > MAxPosOld Then
 
-  ' print #1,"MAxPosOld, inicioind ", MAxPosOld, inicioind
+  ' Print #1,"MAxPosOld, inicioind ", MAxPosOld, inicioind
      For jpt=MaxPosOld-1 To posinueva -1 
        For  i1= comienzo To final
           Roll.trk(jpt,i1).nota = 181
@@ -2781,37 +2809,34 @@ inc=posinueva ' aca inc son los datos copiados
      Next jpt
 
   EndIf
-  'print #1,"--> TERMINO la vuelta de ind a la izquierda", posinueva
+  Print #1,"--> TERMINO la vuelta de ind a la izquierda", posinueva
 ' aca el maxpos deberia achicarse....
 MaxPos=inc +1
 '-------------------------------
 Else ' if ind posiion nueva > pasozona1 movemos a derecha
 '---------------------------------
 
-'print #1,"ENTRA POR DERECHA POSINUEVA < MaxPos"
-'print #1,"posinueva ",posinueva
-'print #1,"MaxPosold ",MaxPosold
-'print #1,"posivIEJa ",posivieja ' es pasozona1 inamovible
+Print #1,"ENTRA POR DERECHA POSINUEVA < MaxPos"
+Print #1,"posinueva ",posinueva
+Print #1,"MaxPosold ",MaxPosold
+Print #1,"posivIEJa ",posivieja
   If posinueva < MaxPos then
-    MaxPos=MaxposOld + pasozona2 - pasozona1 +1 ' -1 01-12-21
+    MaxPos=MaxposOld + posinueva - posivieja
   EndIf
-'print #1,"MaxPos ",MaxPos
+Print #1,"MaxPos ",MaxPos
  
-  'hastat=Maxpos
-  desdet=posinueva
-  'desdet=posivieja+1 30-01-2022 
-  hastat=posinueva-pasozona1+pasozona2 +1
-  'inc=MaxPosOld
-  inc=pasozona1 ' aca inc son lso datos a copiar
-'print #1,"hastat ",hastat
-'print #1, "desdet,inc ",desdet,inc 
-'print #1,"UBOUND(ROLL,1)", UBOUND (ROLL.TRK,1)
-'print #1,"LBOUND(ROLL,1)", LBound (ROLL.TRK,1)
-'print #1,"UBOUND(ROLL,2)", UBOUND (ROLL.TRK,2)
-'print #1,"LBOUND(ROLL,2)", LBOUND (ROLL.TRK,2)
-'print #1,"inc=posivieja+1 ",inc
+  hastat=Maxpos
+  desdet=posivieja+1
+  inc=MaxPosOld
+Print #1,"hastat ",hastat
+Print #1, "desdet=inc ",desdet
+'Print #1,"UBOUND(ROLL,1)", UBOUND (ROLL.TRK,1)
+'Print #1,"LBOUND(ROLL,1)", LBound (ROLL.TRK,1)
+'Print #1,"UBOUND(ROLL,2)", UBOUND (ROLL.TRK,2)
+'Print #1,"LBOUND(ROLL,2)", LBOUND (ROLL.TRK,2)
+'Print #1,"inc=posivieja+1 ",inc
   '        mAXpOS TO  POSIVIEJA+1          inc=MAxPosOld   
-  For jpt= desdet To hastat
+  For jpt= hastat To desdet Step -1
      For  i1= comienzo To final
        Roll.trk(jpt,i1).nota = Roll.trk(inc,i1).nota
        Roll.trk(jpt,i1).dur  = Roll.trk(inc,i1).dur
@@ -2830,26 +2855,19 @@ Else ' if ind posiion nueva > pasozona1 movemos a derecha
        EndIf
 
      Next i1
-     inc=inc+1
-     If inc = pasozona2+1  Then
+     inc=inc-1
+     If inc < posivieja +1  Then
         Exit For
      EndIf
- ' UNDO
-   mel_undo_k = mel_undo_k + 1
-
-   mel_undo(mel_undo_k).trk = ntk
-   mel_undo(mel_undo_k).posn = jpt
-
- ' FIN UNDO    
   Next jpt
- ' print #1,"TERMINO copia a derecha ",posinueva   
+  Print #1,"TERMINO copia a derecha ",posinueva   
 '---
 'si la posicion donde copio es mayor a MaxPos, debo llenar el espacio entre MAxPos y 
 'el punto inicial de copia con 0 y 181 para dur y Nota repectivamente
- ' print #1,"inicioind  MAxPosOld ",posinueva , MAxPosOld  
+  Print #1,"inicioind  MAxPosOld ",posinueva , MAxPosOld  
   'If posinueva > MAxPosOld Then
 
-  ' print #1,"MAxPosOld, inicioind ", MAxPosOld, inicioind
+  ' Print #1,"MAxPosOld, inicioind ", MAxPosOld, inicioind
   '   For jpt=MaxPosOld To posinueva  
   '     For  i1= comienzo To final
   '        Roll.trk(jpt,i1).nota = 181
@@ -2863,7 +2881,7 @@ Else ' if ind posiion nueva > pasozona1 movemos a derecha
  '    Next jpt
 
   'EndIf
-  'print #1,"--> TERMINO la vuelta de ind a derecha ", posinueva
+  Print #1,"--> TERMINO la vuelta de ind a derecha ", posinueva
 
 
 '-------
@@ -2871,6 +2889,7 @@ EndIf
 If posn < 0 Then posn=0 EndIf
 
 End Sub 
+
 
 Sub correcciondeNotas(Roll As inst)
 
@@ -3040,7 +3059,7 @@ Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi)
 ' tocap As vivo, ntkp As Integer,tocaparam  As ejecparam  Ptr) 
     Dim As Long j, driver=0
     Dim As String nombreg
-    Dim As Integer ngm
+   ' Dim As Integer ngm
 ' y ntkp de donde vien quien lo ajusta? ntkp debe venir informado!!!
       nombreg =pgmidi.tocap.nombre  ' 23-04-2024
      par.tocap.nombre=nombreg
@@ -3053,11 +3072,13 @@ Print #1,"GrabarMidiIn NombreCancion, nombre sin path",NombreCancion, nombreg
            barra2=InStr(nombreg,"\")
            Print #1, "barra1 barra2 ", barra1, barra2
           If Len(NombreCancion)=barra1  Then
+        CreateDir(NombreCancion+"Temp") ' ok
              If barra2 =0 Then
                 nombreg=NombreCancion+nombreg
              EndIf
           EndIf
           If Len(NombreCancion)>barra1 And barra2=1 Then
+           CreateDir(NombreCancion+"\Temp") ' ok
              nombreg=NombreCancion+nombreg
           EndIf          
       Else 
@@ -3086,7 +3107,7 @@ Print #1,"nombre de archivo con path grabando de ejec",nombreg
       ngm=15 
 Print #1,"GrabaMidiin freefile ngm ",ngm
     if   Open( nombreg  For Binary Access Write As #ngm)  <> 0 Then
-              Print #1,"Imposible Grabar " + nombreg 
+              Print #1,"Imposible Grabar midi in" + nombreg 
     Else  
          Put #ngm,, par.tocap '1ero parametros como siempre o en cabezado
          Put #ngm,, par.toc.trk()   '2do datos  
