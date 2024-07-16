@@ -1,0 +1,87 @@
+  Las figuras se dividen 4 grupos, agrupados por tener o no tener los mismos
+  modificadores. En la 1er columna el 1er grupo va desde la 1er linea la redonda, O,
+  a la 5ta linea 1/3 de tresillo de O, 3O y se extiende a la derecha 8 columnas mas hasta w.
+  El 2do grupo, es el mismo grupo anterior pero la representacion de sus silencios, con 
+  una s minuscales antepuesto a la figura. ej sO, sI, sL, etc.
+  El 3er grupo son las notas ligadas para ello se usa un simbolo adicional a la derecha,
+  el +, e indica que la figura se liga a la siguiente.
+  El 4to grupo es el mismo anterior, pero con ligadura + .
+  Cada grupo son 5 lineas; la figura estandar como O P I L F E X H W
+  REDONDA O (4I), BLANCA P (2I), I NEGRA (2L), L CORCHEA(2F),F SEMICORCHEA(2E),
+  E FUSA(2X), X SEMI FUSA(2H), H GARRAPATEA O CUARTI FUSA(2W)
+  (W NO EXISTE EN MUSICA SE AGREGO POR POSIBLE PRESICION.)
+  Cada nota es la mitad de duracion de la anterior de izq a derecha
+  Si la redonda es 1, blanca 1/2, negra 1/4, corchea 1/8, semi corchea 1/16,
+  fusa 1/32, semifusa 1/64, garrapatea o cuarti fusa 1/128,
+  y agregue una W 1/256.
+  Eso de la mitad  se cumple para todas las lineas incluso 1/3 de tresillo
+  (para este programa 3I ES 1/3 DEL TRESILLO ej: DE NEGRA O SEA
+  UN TRESILLO COMPLETO DE MUSICA DE NEGRAS ES |3I 3I 3I|
+  Y  ESAS 3 (3I) VALEN DOS NEGRAS, O SEA un compas de dos negras | I I | = 
+  un compas de 3 (3I) -> |3I 3I 3I|. En un compas 4/4 seria 
+  |I I I I | = |3I 3I 3I  3I 3I 3I|
+
+  O sea  un 1/3 de tresillo de corchea  3L es la mitad de un 1/3 de tresillo de negras 3I
+  Luego 3I = 3L + 3L 
+  podria tener 
+  |3I+3L  3L+3I| = |I  I| La duracion total es la misma pero puedo agrupar 2 tracks en 
+  formato de tresillos formando acordes iguales o sea
+  track 1)   |3L+3L+3L 3L+3L+3L|
+  TRACK 2)   |3L+3L 3L+3L 3L+3L|
+ LUEGO TENGO 6 ACORDES DE IGUALES DURACIONES PERO SUENAN ASI
+  TRACK 1)   | I   I   | ===> |3L+3L+3L 3L+3L+3L|
+  TRACK 2)   | 3I 3I 3I| ===> |3L+3L 3L+3L 3L+3L|
+  Como vemos hay 5 columnas iguales solo que algunas estan ligadas y otras no.
+  El program ejecuta por columna manda toda una columna entera de todos los tracks
+  a ejecutar y luego se construyen los retardos de cada uno segun la ligadura
+  y los silencios que hubiera. Tambien vemos que un tresillo de corcheas es una negra
+  3L+3L+3L= I
+  Es como buscar el valor mas chico comun a ambos tracks. En este caso el 3L 
+  Cada vez que agreguemos un track con figuras mas chicas habra que hacer ese 
+  proceso. Quedan 2 posibilidades: que el programa lo haga automaticamente en el
+  futuro (algo lo hace pero a nivel de track). O al comenzar una cancion
+  se decidira cual será el valor mas chico de duracion a usar. Ej una corchea
+  o una semicorchea o un 3L o un 3F..Si se elige una division chica
+  el programa podria representar cada figura en funcion de la entrada auto-
+  maticamente, ej entrar una negra y la menor elegida es una semicorchea
+  luego al pulsar 1 y luego una letra de nota ejemplo Do (C)
+  el programa podria mostrar   F+F+F+F = I
+  O  si sse elige fusa E+E+E+E+E+E+E+E = I
+  Y en vez de tipear todo eso si se le dice al programa con que division mas 
+  chica trabajaremos, el convertirá la duracion entrada como una suma de esa 
+  division chica, y asi se apreciara mas visualmente las partes. Y el programa
+  ejecutara la cancion con acordes iguales que es lo que hasta ahora ejecuta mejor.
+  y ademas tendremos un buen control de las partes
+  El mismo ejemplo pero con silencios 
+  el programa podria mostrar  sF+sF F+F     = sL L
+  O  si sse elige fusa  sE+sE+sE+sE E+E+E+E = sL L
+
+   Cada negra = 3I+3L 
+   Y en un solo compas de dos negras | I I | entra un tresillo de negras
+   3I 3I 3I  
+  En linea horizontal de izq a derecha pulsar de 1 a 9 para las figuras en un renglon 
+    O   P   I   L   F   E   X   H   W   =>  Luego nada
+    O4  P4  I4  L4  F4  E4  X4  H4  W4  =>   May Izq (+1/4, 4)
+    O*  P*  I*  L*  F*  E*  X*  H*  W*  =>  tecla punto . (+1/2, * puntillo)
+    O:  P:  I:  L:  F:  E:  X:  H:  W:  =>  May Der (+MITAD 
+                                                      + MITAD DE LA MITAD ANTERIOR, : doble puntillo)
+   3O  3P  3I  3L  3F  3E  3X  3H  3W    =>  T o t
+
+   sO  sP  sI  sL  sF  sE  sX  sH  sW    =>  S o s
+   sO4 sP4 sI4 sL4 sF4 sE4 sX4 sH4 sW4   =>  S y luego May Izq .
+   sO* sP* sI* sL* sF* sE* sX* sH* sW*   => S y .
+   sO: sP: sI: sL: sF: sE: sX: sH: sW:   =>  s luego May Derecha
+  s3O s3P s3I s3L s3F s3E s3X s3H s3W   => s T 
+
+    O+  P+  I+  L+  F+  E+  X+  H+  W+  =>  +  
+    O4+ P4+ I4+ L4+ F4+ E4+ X4+ H4+ W4+ => May Izq + 
+    O*+ P*+ I*+ L*+ F*+ E*+ X*+ H*+ W*+ => . luego +
+    O:+ P:+ I:+ L:+ F:+ E:+ X:+ H:+ W:+ => May Der +
+   3O+ 3P+ 3I+ 3L+ 3F+ 3E+ 3X+ 3H+ 3W+  => T +
+
+   sO+ sP+ sI+ sL+ sF+ sE+ sX+ sH+ sW+  => s +
+   sO4+ sP4+ sI4+ sL4+ sF4+ sE4+ sX4+ sH4+ sW4+ => S May Izq + 
+   sO*+ sP*+ sI*+ sL*+ sF*+ sE*+ sX*+ sH*+ sW*+ => s . +
+   sO:+ sP:+ sI:+ sL:+ sF:+ sE:+ sX:+ sH:+ sW:+ => s May Der +
+   s3O+ s3P+ s3I+ s3L+ s3F+ s3E+ s3X+ s3H+ s3W+ => s T +
+                                           ||   => final con  
