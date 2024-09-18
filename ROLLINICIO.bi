@@ -151,68 +151,55 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 '--------
 Sub cerrar (ByVal n As Integer)
    If n=0 Then
-    print #1,"uso CLOSE ALL"
     FileFlush (-1)
     Close 
    Else 
     FileFlush (n)
     Close n
-    print #1,"uso Close N"
    EndIf 
 End Sub
 '--------
 Sub  porterrorsub(porterror As integer)
           Select Case porterror
             Case RTMIDI_ERROR_WARNING
-              Print #1, "RTMIDI_ERROR_WARNING"
       
             Case RTMIDI_ERROR_DEBUG_WARNING
-              Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
               cerrar 0             
               End
       
             Case RTMIDI_ERROR_UNSPECIFIED
-              Print #1,"RTMIDI_ERROR_UNSPECIFIED"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_NO_DEVICES_FOUND
-              Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_INVALID_DEVICE
-              Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_MEMORY_ERROR
-              Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_INVALID_PARAMETER
-              Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_INVALID_USE
-              Print #1,"RTMIDI_ERROR_INVALID_USE"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_DRIVER_ERROR
-              Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_SYSTEM_ERROR
-              Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_THREAD_ERROR
-              Print #1,"RTMIDI_ERROR_THREAD_ERROR"
               cerrar 0
               End
           End Select
@@ -264,21 +251,17 @@ pd1 = GetCurrentProcessId()
 
 Open "midebug.txt" For Output As #1
 '' Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As 1
-Print #1,"start"
-Print #1,"PID DE ESTE PROCESO ",pd1
 
 
 
 'Open "mivector.txt" For Output As #3
 'Open "miplayall.txt" For Output As #4
 'Open "test-AAAAA.TXT" For Output As #5
-'print #1, "version para ceros!!!!!! "
 'Dim fcon As Integer 
 'fcon=freefile
 'Open cons  for Output As #8
 
 ''Open "figuras.txt" For Output As #1
-Print #1,Date;Time
 ' secuenciador de 9 octavas estereo, modo Piano Roll,hace uso de
 'letras para las duraciones en vez de rectangulos...
 ' edicion modificacion insercion,,,12 eventos c/u con
@@ -319,15 +302,11 @@ tempo=160  ' negra=160
 CantMin=15
 'NotaBaja=1 : NotaAlta=128
 
-Print #1, "__FB_ARGV__ ",__FB_ARGV__
-Print #1, "__FB_ARGC__ ",__FB_ARGC__
 'Dim direp As ZString  Ptr
 'Dim dires As String
 
-Print #1,"__FB_ARGC__ ", __FB_ARGC__
 Dim As Integer com_usarmarco =0
 For ix = 0 To __FB_ARGC__
-  Print #1, "arg "; ix; " = '"; Command(ix); "'"''
 
  If ix=1 And Command(ix) > "" Then ' deberia entregarme el archjivo el SO pero no lo hace
   
@@ -345,8 +324,6 @@ For ix = 0 To __FB_ARGC__
 '    pmTk(ntk).desde=desde
    Instancia=1    
  EndIf
- Print #1,"ubirtk ",ubirtk
- Print #1,"ubiroll ",ubiroll
     'sigue en roolloop principio
  EndIf
  If ix=2 And Command(ix) > "" Then
@@ -394,12 +371,9 @@ If ubirtk > 0 or ubiroll>0  Then
    titulos(0)=Command(ix)
    Instancia=1 ' no se condice con el caso real da 2 ???
 EndIf
- Print #1,"ubirtk ",ubirtk
- Print #1,"ubiroll ",ubiroll
 
 EndIf
 
-Print #1, "instancia, ix  ", instancia, ix 
 ''SI DESDE CTRL TRAEMOS UN GRAFICO SOLITO ->' Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins))
 
 'Dim Shared As Integer pd1, fa1 
@@ -408,8 +382,6 @@ Print #1, "instancia, ix  ", instancia, ix
 'Open "midebug" + "["+Str(pd1)+"]" + ".txt" For Output As #1
 
 ''Open "midebug.txt" For Output As #1
-'Print #1,"start"
-'Print #1,"PID DE ESTE PROCESO ",pd1
 fa1=2
 Open "procesos.txt" For Append As fa1
 If pid1=0   Then ' EMPEZO EL ONLINE SU PID NO HACE FALTA GRABARLO
@@ -425,7 +397,6 @@ Sleep 100
 
 
 If desde = 0 And hasta = 0  And instancia=0 Then
- Print #1,"intervalo no dado usando default!"
  desde => 4  ' -> 3  
  hasta => 8  ' -> 6 le debo restar la octava oculta +1
  
@@ -455,7 +426,6 @@ estoyEnOctavaOld =desde
 ' --------
 NB => 0 + (desde-1) * 13   ' 39 , Notapiano=36, nR=39 -coincide no sobra nada
 NA => 11 + (hasta-1) * 13  ' 102, Notapiano= 83, nR=89 - no coincide sobra desde
-Print #1,"NB, NA",NB,NA 
 ' sobra desde 90 a 102 inclisive o sea 13 posiciones...
 ' automatiando podemos decier para cualqueir definicion de intervalo de octavas que
 ' CALCULO DE POSICION DE LA INFORMACION DE ACORDES:
@@ -471,18 +441,12 @@ Print #1,"NB, NA",NB,NA
 
 ReDim (Roll.trk ) (1 To CantTicks,NB To NA) ' Roll de trabajo en Pantalla
 
-'Print #1,"instru ",instru
 ' ojo debe se NB al reducir octabas NB cambia
 If instru > 0 Then
   Roll.trk(1,NA).inst = CUByte(instru)
   patchsal=instru
 EndIf
-'Print #1,"Roll.trk(1,NA).inst ",Roll.trk(1,NA).inst
-'Print #1,"NB ",NB
-'Print #1,"NA ",NA
 
-'Print #1,"desde ",desde
-'Print #1,"hasta ",hasta
 
 param.Roll=Roll
 param.ubiroll=ubiroll
@@ -558,14 +522,12 @@ CantCompas = 40 * CantMin
 /'
 Dim l As Integer
 For l = 1 To 65
-print #1, l;" ";figura(l)
 Next l
 ''Close aca estaba habilitado el close humm ah pero esta comentado
 
 End
 '/
 ''https://www.freebasic.net/forum/viewtopic.php?t=15127
-'print #1,"NroCol, ancho, anchofig ",NroCol, ANCHO, anchofig
 ' ------------ play de usuario - datos por midiin -------------------
 ' 16 CANALES DE ENTRADA, PAR AL REPRODUCION O ARMADO
 ' SUMAREMOS SIEMRE ENTRE AMBAS FORMAS NO AMS DE 32 PORQUE AL REPRODUCIR
@@ -645,7 +607,6 @@ gap1= anchofig* 2315/1000 ' 81 default
 gap2= (914 * gap1) /1000 ' 74 default
 gap3= (519 * gap1) /1000 ' 42 default
 
-'print #1,"gap1 ",gap1
 '---------
  
 Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig,sVerCifradoAcordes
@@ -667,7 +628,6 @@ Line Input #ffini, sVerEscalasAuxiliares
 Line Input #ffini, sanchofig
 Line Input #ffini, sVerCifradoAcordes
 
-'Print #1,"sfont, smxold, smyold,sANCHO,sALTO..  ",sfont, smxold, smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
 
 cerrar ffini
 Sleep 100
@@ -684,7 +644,6 @@ nanchofig =ValInt(sanchofig)
 nVerCifradoAcordes=ValInt(sVerCifradoAcordes)
 
 
-Print #1,"nanchofig " ,nanchofig
 If nfont > 0 Then
   font=nfont
 EndIf
@@ -706,7 +665,6 @@ If nanchofig <> 0 Then
    NroCol =  (ANCHO / anchofig ) - 4
    ANCHO3div4 = ANCHO *3 / 4 
 EndIf
-'Print #1,"NROCOL AL INICIO, ANCHO, anchofig ",NroCol, ANCHO, anchofig
 
 '---------
 If mxold=0 And myold=0 Then
@@ -732,7 +690,6 @@ common shared as any ptr BRUSH
 'https://docs.microsoft.com/en-us/windows/win32/multimedia/midi-functions
 'DIM CAN As UINT
 'CAN= midiOutGetNumDevs()
-'print #1, "MIDI NUM DEVS ";CAN
  
 '-----
 ' ancho de figura,separaciondelasmismas en pantalla anchofig
@@ -753,12 +710,9 @@ midiin(0)     = rtmidi_in_create_default()  ''' new RtMidiIn();
 midiout(0) = rtmidi_out_create_default() ''  new RtMidiOut();
 
 
-'print #1,"PLAYALL---------->>>>>>>"
 portsout =  port_count (midiout(0)) ' es una constante
 portsin  =  port_count(midiin(0)) ' es una constante
 Dim i1 As Integer
-Print #1, "portsin  "; portsin
-Print #1, "portsout ";portsout
 
 ReDim  listOutAbierto (0 To portsout)
 ReDim  listInAbierto  (0 To portsin)
@@ -792,17 +746,13 @@ Dim Shared As Integer Indicenotas=0
 
 'For i= 1 To portsin - 1
 ' midiin = rtmidi_in_create_default ( )
-' Print #1,"creando default ",i
 'Next i
 
 For i1 = 0 To portsin -1 
     nombrein(i1) = port_name(midiin(0), i1)
-    Print #1, *nombrein(i1)
 Next i1  
-Print #1,"-----------------------------"
 For i1 = 0 To portsout -1 
     nombreOut(i1) = port_name(midiout(0), i1)
-    Print #1, *nombreout(i1)
 Next i1  
 
 '---------------------

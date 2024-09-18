@@ -259,9 +259,7 @@ MenuItem(1015,MenName1, "5.0 MIDI-IN Grabar Pistas ejecucion")
 MenuItem(1016,MenName1, "5.1 MIDI-IN Cargar Pistas ejecucion")
 MenuItem(1017,MenName1, "5.2 Renombrar Pista ejecucion seleccionada")
 
-MenName19=OpenSubmenu(MenName1, "5.3 INEXACTO Cargar un archivo plano midi")
-MenuItem(1018  ,MenName19, "INEXACTO Con Fracturacion automatica ")
-MenuItem(10181,MenName19, "INEXACTO Sin Fracturacion automatica ")
+MenuItem(10181,MenName1,"5.3 Cargar un archivo plano midi(puede no ser exacto)")
 
 Menubar(MenName1)
 MenuItem(1019,MenName1, "    Salir")

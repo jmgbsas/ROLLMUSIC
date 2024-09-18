@@ -140,6 +140,7 @@ Declare Sub borrarColumnasMarcadas()
 Declare Function SumarnR (notaPiano As Integer) As Integer
 Declare Function SumarnRk (notaPiano As ubyte) As ubyte
 Declare Sub salir()
+Declare Sub IgualaMidiPlano()
 
 
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
@@ -1080,6 +1081,7 @@ Type NProc Field=1
  numTrk As  UByte 
  non      As  UByte
  noff      As  UByte
+ nligado   As  ubyte
  match   As  ubyte
  nini      As Integer
  nfin      As Integer
@@ -1097,5 +1099,20 @@ Type NProc Field=1
  i1    As integer
 End Type
 Dim Shared  As  NProc midi (1 To 8000) 
-Declare Sub duraciones (midi() As NProc, k1 As integer) 
+Declare Sub duraciones (midi() As NProc, k1 As Integer, k2 As integer) 
 Declare Sub  RefacturarPista() 
+
+ Type lineaSecuencia
+   linea As String
+   indicador As Integer
+ End Type
+' indicadores de type linea
+Const As integer inicioAcorde=     1
+Const As Integer finAcorde   =     2
+Const As Integer inicioSimple=     3
+Const As Integer finSimple   =     4
+
+
+
+
+

@@ -1,0 +1,1644 @@
+en cargar midi plano 
+seguimos procesando  midi plano 
+INPUT MFile 1 2 1000
+queda 1000
+INPUT 0 Meta SeqName "DISTINTOS-F-SF+SF-F.roll"
+k1 midi(k1).numTrk  3       1
+INPUT 0 Tempo 1000000
+INPUT 0 TimeSig 3/4 24 8
+trkend  1
+INPUT 0 Meta TrkName "Piano"
+k1 midi(k1).numTrk  12      2
+_______________________________________
+INPUT  0 on ch=2 n=40 v=80
+entra a ver los ON  k1  14
+nota nini inicial  0
+midi(k1).j1  1
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on40
+vallint hay volumen de on ,k1 80           14
+on midi(k1).numTrk 2
+on midi(k1).nota 40
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               14
+_______________________________________
+INPUT  0 on ch=2 n=59 v=80
+entra a ver los ON  k1  15
+nota nini inicial  0
+razon -1.#IND
+i1 incremento vertical    2
+midi(k1).j1  1
+midi(k1).i1  2
+hay canal de on 2
+nota nro de on59
+vallint hay volumen de on ,k1 80           15
+on midi(k1).numTrk 2
+on midi(k1).nota 59
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               15
+__________________________________
+INPUT  1000 off ch=2 n=59 v=0  A=2
+estamos en un off 
+midi(k1).nini  1000
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    16
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  1000
+nini del on  que machea   0
+resta dur  1000
+encontro un dur h1  1000     15
+bo midi(h1).j1  1
+bo midi(h1).i1  2
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     15
+midi(h1).j1  1
+midi(h1).i1  2
+midi(h1).nota 59
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1000
+ k1 h1 midi(h1).dur  16      15            1
+ midi(k1).dur  1 midi(k1).nota 59
+numfloat       1
+1) esta entre                1             y             1.25          1
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  1     2
+Carga Track nota j1 i1  k1 59              1             2             16
+numduras nota j1 i1 1 59  1  2            duras( 1)3 I 
+nota principio 59  0
+_______________________________________
+INPUT  1002 on ch=2 n=59 v=80
+entra a ver los ON  k1  17
+nota nini inicial  1002
+razon  1.#INF
+ j1 incremento horizontal  2
+midi(k1).j1  2
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on59
+vallint hay volumen de on ,k1 80           17
+on midi(k1).numTrk 0
+on midi(k1).nota 59
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               17
+SALELIGADO  midi(k1).nligado 26
+__________________________________
+INPUT  1000 off ch=2  n=40 v=0 +++
+estamos en un off 
+midi(k1).nini  1000
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    18
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  1000
+nini del on  que machea   0
+resta dur  1000
+encontro un dur h1  1000     14
+bo midi(h1).j1  1
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     14
+midi(h1).j1  1
+midi(h1).i1  1
+midi(h1).nota 40
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1000
+ k1 h1 midi(h1).dur  18      14            1
+ midi(k1).dur  1 midi(k1).nota 40
+numfloat       1
+1) esta entre                1             y             1.25          1
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+LIGADO 
+duras(1)  I+
+ j1, i1  1     1
+Carga Track nota j1 i1  k1 40              1             1             18
+numduras nota j1 i1 1 40  1  1            duras( 1)93 I+
+nota principio 40  0
+_______________________________________
+INPUT  1000 on ch=2  n=40 v=80 +++
+entra a ver los ON  k1  19
+nota nini inicial  1000
+razon  0.001996007984031936
+i1 incremento vertical    2
+midi(k1).j1  2
+midi(k1).i1  2
+hay canal de on 2
+nota nro de on40
+vallint hay volumen de on ,k1 80           19
+on midi(k1).numTrk 0
+on midi(k1).nota 40
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               19
+SALELIGADO  midi(k1).nligado 26
+__________________________________
+INPUT  2002 off ch=2 n=59 v=0
+estamos en un off 
+midi(k1).nini  2002
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    20
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  2002
+nini del on  que machea   1002
+resta dur  1000
+encontro un dur h1  1000     17
+bo midi(h1).j1  2
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     17
+midi(h1).j1  2
+midi(h1).i1  1
+midi(h1).nota 59
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1000
+ k1 h1 midi(h1).dur  20      17            1
+ midi(k1).dur  1 midi(k1).nota 59
+numfloat       1
+1) esta entre                1             y             1.25          1
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  2     1
+Carga Track nota j1 i1  k1 59              2             1             20
+numduras nota j1 i1 1 59  2  1            duras( 1)3 I 
+nota principio 59  0
+__________________________________
+INPUT  2003 off ch=2 n=40 v=0
+estamos en un off 
+midi(k1).nini  2003
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    21
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  2003
+nini del on  que machea   1000
+resta dur  1003
+encontro un dur h1  1003     19
+bo midi(h1).j1  2
+bo midi(h1).i1  2
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     19
+midi(h1).j1  2
+midi(h1).i1  2
+midi(h1).nota 40
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1003
+ k1 h1 midi(h1).dur  21      19            1.003
+ midi(k1).dur  1.003 midi(k1).nota 40
+numfloat       1.003
+1) esta entre                1             y             1.25          1.003
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 26
+ j1, i1  2     2
+Carga Track nota j1 i1  k1 40              2             2             21
+numduras nota j1 i1 1 40  2  2            duras( 1)3 I 
+nota principio 40  0
+_______________________________________
+INPUT  2004 on ch=2 n=44 v=80
+entra a ver los ON  k1  22
+nota nini inicial  2004
+razon  1.004
+ j1 incremento horizontal  3
+midi(k1).j1  3
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on44
+vallint hay volumen de on ,k1 80           22
+on midi(k1).numTrk 0
+on midi(k1).nota 44
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               22
+_______________________________________
+INPUT  2004 on ch=2 n=52 v=80
+entra a ver los ON  k1  23
+nota nini inicial  2004
+razon  0
+i1 incremento vertical    2
+midi(k1).j1  3
+midi(k1).i1  2
+hay canal de on 2
+nota nro de on52
+vallint hay volumen de on ,k1 80           23
+on midi(k1).numTrk 0
+on midi(k1).nota 52
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               23
+__________________________________
+INPUT  3005 off ch=2 n=44 v=0  A=2
+estamos en un off 
+midi(k1).nini  3005
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    24
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  3005
+nini del on  que machea   2004
+resta dur  1001
+encontro un dur h1  1001     22
+bo midi(h1).j1  3
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     22
+midi(h1).j1  3
+midi(h1).i1  1
+midi(h1).nota 44
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1001
+ k1 h1 midi(h1).dur  24      22            1.001
+ midi(k1).dur  1.001 midi(k1).nota 44
+numfloat       1.001
+1) esta entre                1             y             1.25          1.001
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  3     1
+Carga Track nota j1 i1  k1 44              3             1             24
+numduras nota j1 i1 1 44  3  1            duras( 1)3 I 
+nota principio 44  0
+__________________________________
+INPUT  3005 off ch=2 n=52 v=0
+estamos en un off 
+midi(k1).nini  3005
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    25
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  3005
+nini del on  que machea   2004
+resta dur  1001
+encontro un dur h1  1001     23
+bo midi(h1).j1  3
+bo midi(h1).i1  2
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     23
+midi(h1).j1  3
+midi(h1).i1  2
+midi(h1).nota 52
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1001
+ k1 h1 midi(h1).dur  25      23            1.001
+ midi(k1).dur  1.001 midi(k1).nota 52
+numfloat       1.001
+1) esta entre                1             y             1.25          1.001
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  3     2
+Carga Track nota j1 i1  k1 52              3             2             25
+numduras nota j1 i1 1 52  3  2            duras( 1)3 I 
+nota principio 52  0
+_______________________________________
+INPUT  3007 on ch=2 n=53 v=80
+entra a ver los ON  k1  26
+nota nini inicial  3007
+razon  0.5004990019960079
+ j1 incremento horizontal  4
+midi(k1).j1  4
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on53
+vallint hay volumen de on ,k1 80           26
+on midi(k1).numTrk 0
+on midi(k1).nota 53
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               26
+__________________________________
+INPUT  4007 off ch=2 n=53 v=0
+estamos en un off 
+midi(k1).nini  4007
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    27
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  4007
+nini del on  que machea   3007
+resta dur  1000
+encontro un dur h1  1000     26
+bo midi(h1).j1  4
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     26
+midi(h1).j1  4
+midi(h1).i1  1
+midi(h1).nota 53
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1000
+ k1 h1 midi(h1).dur  27      26            1
+ midi(k1).dur  1 midi(k1).nota 53
+numfloat       1
+1) esta entre                1             y             1.25          1
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  4     1
+Carga Track nota j1 i1  k1 53              4             1             27
+numduras nota j1 i1 1 53  4  1            duras( 1)3 I 
+nota principio 53  0
+_______________________________________
+INPUT  4009 on ch=2 n=42 v=80
+entra a ver los ON  k1  28
+nota nini inicial  4009
+razon  0.3332224808779514
+ j1 incremento horizontal  5
+midi(k1).j1  5
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on42
+vallint hay volumen de on ,k1 80           28
+on midi(k1).numTrk 0
+on midi(k1).nota 42
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               28
+_______________________________________
+INPUT  4009 on ch=2 n=58 v=80
+entra a ver los ON  k1  29
+nota nini inicial  4009
+razon  0
+i1 incremento vertical    2
+midi(k1).j1  5
+midi(k1).i1  2
+hay canal de on 2
+nota nro de on58
+vallint hay volumen de on ,k1 80           29
+on midi(k1).numTrk 0
+on midi(k1).nota 58
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               29
+__________________________________
+INPUT  5009 off ch=2 n=58 v=0  A=2
+estamos en un off 
+midi(k1).nini  5009
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    30
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  5009
+nini del on  que machea   4009
+resta dur  1000
+encontro un dur h1  1000     29
+bo midi(h1).j1  5
+bo midi(h1).i1  2
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     29
+midi(h1).j1  5
+midi(h1).i1  2
+midi(h1).nota 58
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1000
+ k1 h1 midi(h1).dur  30      29            1
+ midi(k1).dur  1 midi(k1).nota 58
+numfloat       1
+1) esta entre                1             y             1.25          1
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  5     2
+Carga Track nota j1 i1  k1 58              5             2             30
+numduras nota j1 i1 1 58  5  2            duras( 1)3 I 
+nota principio 58  0
+_______________________________________
+INPUT  5011 on ch=2 n=57 v=80
+entra a ver los ON  k1  31
+nota nini inicial  5011
+razon  0.2499376403093041
+ j1 incremento horizontal  6
+midi(k1).j1  6
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on57
+vallint hay volumen de on ,k1 80           31
+on midi(k1).numTrk 0
+on midi(k1).nota 57
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               31
+SALELIGADO  midi(k1).nligado 26
+__________________________________
+INPUT  5009 off ch=2  n=42 v=0 +++
+estamos en un off 
+midi(k1).nini  5009
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    32
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  5009
+nini del on  que machea   4009
+resta dur  1000
+encontro un dur h1  1000     28
+bo midi(h1).j1  5
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     28
+midi(h1).j1  5
+midi(h1).i1  1
+midi(h1).nota 42
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1000
+ k1 h1 midi(h1).dur  32      28            1
+ midi(k1).dur  1 midi(k1).nota 42
+numfloat       1
+1) esta entre                1             y             1.25          1
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+LIGADO 
+duras(1)  I+
+ j1, i1  5     1
+Carga Track nota j1 i1  k1 42              5             1             32
+numduras nota j1 i1 1 42  5  1            duras( 1)93 I+
+nota principio 42  0
+_______________________________________
+INPUT  5009 on ch=2  n=42 v=80 +++
+entra a ver los ON  k1  33
+nota nini inicial  5009
+razon  0.0003991219317501497
+i1 incremento vertical    2
+midi(k1).j1  6
+midi(k1).i1  2
+hay canal de on 2
+nota nro de on42
+vallint hay volumen de on ,k1 80           33
+on midi(k1).numTrk 0
+on midi(k1).nota 42
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               33
+SALELIGADO  midi(k1).nligado 26
+__________________________________
+INPUT  6011 off ch=2 n=57 v=0
+estamos en un off 
+midi(k1).nini  6011
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    34
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  6011
+nini del on  que machea   5011
+resta dur  1000
+encontro un dur h1  1000     31
+bo midi(h1).j1  6
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     31
+midi(h1).j1  6
+midi(h1).i1  1
+midi(h1).nota 57
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1000
+ k1 h1 midi(h1).dur  34      31            1
+ midi(k1).dur  1 midi(k1).nota 57
+numfloat       1
+1) esta entre                1             y             1.25          1
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  6     1
+Carga Track nota j1 i1  k1 57              6             1             34
+numduras nota j1 i1 1 57  6  1            duras( 1)3 I 
+nota principio 57  0
+__________________________________
+INPUT  6012 off ch=2 n=42 v=0
+estamos en un off 
+midi(k1).nini  6012
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    35
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  6012
+nini del on  que machea   5009
+resta dur  1003
+encontro un dur h1  1003     33
+bo midi(h1).j1  6
+bo midi(h1).i1  2
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     33
+midi(h1).j1  6
+midi(h1).i1  2
+midi(h1).nota 42
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1003
+ k1 h1 midi(h1).dur  35      33            1.003
+ midi(k1).dur  1.003 midi(k1).nota 42
+numfloat       1.003
+1) esta entre                1             y             1.25          1.003
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 26
+ j1, i1  6     2
+Carga Track nota j1 i1  k1 42              6             2             35
+numduras nota j1 i1 1 42  6  2            duras( 1)3 I 
+nota principio 42  0
+_______________________________________
+INPUT  6013 on ch=2 n=59 v=80
+entra a ver los ON  k1  36
+nota nini inicial  6013
+razon  0.2004392094230385
+ j1 incremento horizontal  7
+midi(k1).j1  7
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on59
+vallint hay volumen de on ,k1 80           36
+on midi(k1).numTrk 0
+on midi(k1).nota 59
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               36
+__________________________________
+INPUT  7014 off ch=2 n=59 v=0
+estamos en un off 
+midi(k1).nini  7014
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    37
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  7014
+nini del on  que machea   6013
+resta dur  1001
+encontro un dur h1  1001     36
+bo midi(h1).j1  7
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     36
+midi(h1).j1  7
+midi(h1).i1  1
+midi(h1).nota 59
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1001
+ k1 h1 midi(h1).dur  37      36            1.001
+ midi(k1).dur  1.001 midi(k1).nota 59
+numfloat       1.001
+1) esta entre                1             y             1.25          1.001
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  7     1
+Carga Track nota j1 i1  k1 59              7             1             37
+numduras nota j1 i1 1 59  7  1            duras( 1)3 I 
+nota principio 59  0
+_______________________________________
+INPUT  7015 on ch=2 n=48 v=100
+entra a ver los ON  k1  38
+nota nini inicial  7015
+razon  0.1666389489439548
+ j1 incremento horizontal  8
+midi(k1).j1  8
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on48
+vallint hay volumen de on ,k1 100          38
+on midi(k1).numTrk 0
+on midi(k1).nota 48
+on midi(k1).canal 2
+on midi(k1).volum, k1     100              38
+_______________________________________
+INPUT  7015 on ch=2 n=52 v=100
+entra a ver los ON  k1  39
+nota nini inicial  7015
+razon  0
+i1 incremento vertical    2
+midi(k1).j1  8
+midi(k1).i1  2
+hay canal de on 2
+nota nro de on52
+vallint hay volumen de on ,k1 100          39
+on midi(k1).numTrk 0
+on midi(k1).nota 52
+on midi(k1).canal 2
+on midi(k1).volum, k1     100              39
+_______________________________________
+INPUT  7016 on ch=2 n=57 v=100
+entra a ver los ON  k1  40
+nota nini inicial  7016
+razon  0.0001425516749821811
+i1 incremento vertical    3
+midi(k1).j1  8
+midi(k1).i1  3
+hay canal de on 2
+nota nro de on57
+vallint hay volumen de on ,k1 100          40
+on midi(k1).numTrk 0
+on midi(k1).nota 57
+on midi(k1).canal 2
+on midi(k1).volum, k1     100              40
+__________________________________
+INPUT  7266 off ch=2 n=57 v=0  A=3
+estamos en un off 
+midi(k1).nini  7266
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    41
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  7266
+nini del on  que machea   7016
+resta dur  250
+encontro un dur h1  250      40
+bo midi(h1).j1  8
+bo midi(h1).i1  3
+ bo midi(h1).volum 100
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     40
+midi(h1).j1  8
+midi(h1).i1  3
+midi(h1).nota 57
+midi(h1).volum  100
+negra ===>, midi(h1).dur   1000            250
+ k1 h1 midi(h1).dur  41      40            0.25
+ midi(k1).dur  0.25 midi(k1).nota 57
+numfloat       0.25
+1) esta entre                0.25          y             0.3125        0.25
+duras(1) 5
+5
+ F            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  8     3
+Carga Track nota j1 i1  k1 57              8             3             41
+numduras nota j1 i1 1 57  8  3            duras( 1)5 F 
+nota principio 57  0
+_______________________________________
+INPUT  7267 on ch= 2 n=57 v=0
+entra a ver los ON  k1  42
+nota nini inicial  7267
+razon  0.03577537058152794
+ j1 incremento horizontal  9
+midi(k1).j1  9
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on57
+vallint hay volumen de on ,k1 0            42
+on midi(k1).numTrk 0
+on midi(k1).nota 57
+on midi(k1).canal 2
+on midi(k1).volum, k1     0  42
+SALELIGADO  midi(k1).nligado 26
+__________________________________
+INPUT  7266 off ch=2  n=48 v=0 +++
+estamos en un off 
+midi(k1).nini  7266
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    43
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  7266
+nini del on  que machea   7015
+resta dur  251
+encontro un dur h1  251      38
+bo midi(h1).j1  8
+bo midi(h1).i1  1
+ bo midi(h1).volum 100
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     38
+midi(h1).j1  8
+midi(h1).i1  1
+midi(h1).nota 48
+midi(h1).volum  100
+negra ===>, midi(h1).dur   1000            251
+ k1 h1 midi(h1).dur  43      38            0.251
+ midi(k1).dur  0.251 midi(k1).nota 48
+numfloat       0.251
+1) esta entre                0.25          y             0.3125        0.251
+duras(1) 5
+5
+ F            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+LIGADO 
+duras(1)  F+
+ j1, i1  8     1
+Carga Track nota j1 i1  k1 48              8             1             43
+numduras nota j1 i1 1 48  8  1            duras( 1)95 F+
+nota principio 48  0
+_______________________________________
+INPUT  7266 on ch=2  n=48 v=80 +++
+entra a ver los ON  k1  44
+nota nini inicial  7266
+razon  0.0001376083665886886
+i1 incremento vertical    2
+midi(k1).j1  9
+midi(k1).i1  2
+hay canal de on 2
+nota nro de on48
+vallint hay volumen de on ,k1 80           44
+on midi(k1).numTrk 0
+on midi(k1).nota 48
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               44
+SALELIGADO  midi(k1).nligado 26
+SALELIGADO  midi(k1).nligado 26
+__________________________________
+INPUT  7266 off ch=2  n=52 v=0 +++
+estamos en un off 
+midi(k1).nini  7266
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    45
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  7266
+nini del on  que machea   7015
+resta dur  251
+encontro un dur h1  251      39
+bo midi(h1).j1  8
+bo midi(h1).i1  2
+ bo midi(h1).volum 100
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     39
+midi(h1).j1  8
+midi(h1).i1  2
+midi(h1).nota 52
+midi(h1).volum  100
+negra ===>, midi(h1).dur   1000            251
+ k1 h1 midi(h1).dur  45      39            0.251
+ midi(k1).dur  0.251 midi(k1).nota 52
+numfloat       0.251
+1) esta entre                0.25          y             0.3125        0.251
+duras(1) 5
+5
+ F            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+LIGADO 
+duras(1)  F+
+ j1, i1  8     2
+Carga Track nota j1 i1  k1 52              8             2             45
+numduras nota j1 i1 1 52  8  2            duras( 1)95 F+
+nota principio 52  0
+_______________________________________
+INPUT  7266 on ch=2  n=52 v=80 +++
+entra a ver los ON  k1  46
+nota nini inicial  7266
+razon  0
+i1 incremento vertical    3
+midi(k1).j1  9
+midi(k1).i1  3
+hay canal de on 2
+nota nro de on52
+vallint hay volumen de on ,k1 80           46
+on midi(k1).numTrk 0
+on midi(k1).nota 52
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               46
+SALELIGADO  midi(k1).nligado 26
+__________________________________
+INPUT  7768 off ch=2 n=57 v=0
+estamos en un off 
+midi(k1).nini  7768
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    47
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  7768
+nini del on  que machea   7267
+resta dur  501
+encontro un dur h1  501      42
+bo midi(h1).j1  9
+bo midi(h1).i1  1
+ bo midi(h1).volum 0
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     42
+midi(h1).j1  9
+midi(h1).i1  1
+midi(h1).nota 57
+midi(h1).volum  0
+negra ===>, midi(h1).dur   1000            501
+ k1 h1 midi(h1).dur  47      42            0.501
+ midi(k1).dur  0.501 midi(k1).nota 57
+numfloat       0.501
+1) esta entre                0.5           y             0.625         0.501
+duras(1) 4
+4
+ L            VOLUM=0 
+duras(1) sL 
+PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  9     1
+Carga Track nota j1 i1  k1 57              9             1             47
+numduras nota j1 i1 1 57  9  1            duras( 1)49sL 
+nota principio 57  0
+_______________________________________
+INPUT  7769 on ch=2 n=57 v=80
+entra a ver los ON  k1  48
+nota nini inicial  7769
+razon  0.06922653454445361
+ j1 incremento horizontal  10
+midi(k1).j1  10
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on57
+vallint hay volumen de on ,k1 80           48
+on midi(k1).numTrk 0
+on midi(k1).nota 57
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               48
+SALELIGADO  midi(k1).nligado 26
+__________________________________
+INPUT  7768 off ch=2  n=48 v=0 +++
+estamos en un off 
+midi(k1).nini  7768
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    49
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  7768
+nini del on  que machea   7266
+resta dur  502
+encontro un dur h1  502      44
+bo midi(h1).j1  9
+bo midi(h1).i1  2
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     44
+midi(h1).j1  9
+midi(h1).i1  2
+midi(h1).nota 48
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            502
+ k1 h1 midi(h1).dur  49      44            0.502
+ midi(k1).dur  0.502 midi(k1).nota 48
+numfloat       0.502
+1) esta entre                0.5           y             0.625         0.502
+duras(1) 4
+4
+ L            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 26
+LIGADO 
+duras(1)  L+
+ j1, i1  9     2
+Carga Track nota j1 i1  k1 48              9             2             49
+numduras nota j1 i1 1 48  9  2            duras( 1)94 L+
+nota principio 48  0
+_______________________________________
+INPUT  7768 on ch=2  n=48 v=80 +++
+entra a ver los ON  k1  50
+nota nini inicial  7768
+razon  0.0001287166945552838
+i1 incremento vertical    2
+midi(k1).j1  10
+midi(k1).i1  2
+hay canal de on 2
+nota nro de on48
+vallint hay volumen de on ,k1 80           50
+on midi(k1).numTrk 0
+on midi(k1).nota 48
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               50
+SALELIGADO  midi(k1).nligado 26
+SALELIGADO  midi(k1).nligado 26
+__________________________________
+INPUT  7768 off ch=2  n=52 v=0 +++
+estamos en un off 
+midi(k1).nini  7768
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    51
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  7768
+nini del on  que machea   7266
+resta dur  502
+encontro un dur h1  502      46
+bo midi(h1).j1  9
+bo midi(h1).i1  3
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     46
+midi(h1).j1  9
+midi(h1).i1  3
+midi(h1).nota 52
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            502
+ k1 h1 midi(h1).dur  51      46            0.502
+ midi(k1).dur  0.502 midi(k1).nota 52
+numfloat       0.502
+1) esta entre                0.5           y             0.625         0.502
+duras(1) 4
+4
+ L            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 26
+LIGADO 
+duras(1)  L+
+ j1, i1  9     3
+Carga Track nota j1 i1  k1 52              9             3             51
+numduras nota j1 i1 1 52  9  3            duras( 1)94 L+
+nota principio 52  0
+_______________________________________
+INPUT  7768 on ch=2  n=52 v=80 +++
+entra a ver los ON  k1  52
+nota nini inicial  7768
+razon  0
+i1 incremento vertical    3
+midi(k1).j1  10
+midi(k1).i1  3
+hay canal de on 2
+nota nro de on52
+vallint hay volumen de on ,k1 80           52
+on midi(k1).numTrk 0
+on midi(k1).nota 52
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               52
+SALELIGADO  midi(k1).nligado 26
+SALELIGADO  midi(k1).nligado 21
+__________________________________
+INPUT  7768 off ch=2  v=0 +++
+estamos en un off 
+midi(k1).nini  7768
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    53
+ entro a bo  midi(15).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     13
+midi(h1).j1  0
+midi(h1).i1  0
+midi(h1).nota 0
+midi(h1).volum  0
+_______________________________________
+INPUT  7768 on ch=2  v=80 +++
+entra a ver los ON  k1  54
+nota nini inicial  7768
+razon  0
+i1 incremento vertical    4
+midi(k1).j1  10
+midi(k1).i1  4
+hay canal de on 2
+vallint hay volumen de on ,k1 80           54
+on midi(k1).numTrk 0
+on midi(k1).nota 0
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               54
+SALELIGADO  midi(k1).nligado 21
+__________________________________
+INPUT  8020 off ch=2 n=57 v=0
+estamos en un off 
+midi(k1).nini  8020
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    55
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  8020
+nini del on  que machea   7769
+resta dur  251
+encontro un dur h1  251      48
+bo midi(h1).j1  10
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     48
+midi(h1).j1  10
+midi(h1).i1  1
+midi(h1).nota 57
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            251
+ k1 h1 midi(h1).dur  55      48            0.251
+ midi(k1).dur  0.251 midi(k1).nota 57
+numfloat       0.251
+1) esta entre                0.25          y             0.3125        0.251
+duras(1) 5
+5
+ F            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  10    1
+Carga Track nota j1 i1  k1 57              10            1             55
+numduras nota j1 i1 1 57  10  1           duras( 1)5 F 
+nota principio 57  0
+__________________________________
+INPUT  8020 off ch=2 n=48 v=0
+estamos en un off 
+midi(k1).nini  8020
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    56
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  8020
+nini del on  que machea   7768
+resta dur  252
+encontro un dur h1  252      50
+bo midi(h1).j1  10
+bo midi(h1).i1  2
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     50
+midi(h1).j1  10
+midi(h1).i1  2
+midi(h1).nota 48
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            252
+ k1 h1 midi(h1).dur  56      50            0.252
+ midi(k1).dur  0.252 midi(k1).nota 48
+numfloat       0.252
+1) esta entre                0.25          y             0.3125        0.252
+duras(1) 5
+5
+ F            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 26
+ j1, i1  10    2
+Carga Track nota j1 i1  k1 48              10            2             56
+numduras nota j1 i1 1 48  10  2           duras( 1)5 F 
+nota principio 48  0
+__________________________________
+INPUT  8021 off ch=2 n=52 v=0
+estamos en un off 
+midi(k1).nini  8021
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    57
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  8021
+nini del on  que machea   7768
+resta dur  253
+encontro un dur h1  253      52
+bo midi(h1).j1  10
+bo midi(h1).i1  3
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     52
+midi(h1).j1  10
+midi(h1).i1  3
+midi(h1).nota 52
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            253
+ k1 h1 midi(h1).dur  57      52            0.253
+ midi(k1).dur  0.253 midi(k1).nota 52
+numfloat       0.253
+1) esta entre                0.25          y             0.3125        0.253
+duras(1) 5
+5
+ F            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 26
+ j1, i1  10    3
+Carga Track nota j1 i1  k1 52              10            3             57
+numduras nota j1 i1 1 52  10  3           duras( 1)5 F 
+nota principio 52  0
+_______________________________________
+INPUT  8024 on ch=2 n=42 v=80
+entra a ver los ON  k1  58
+nota nini inicial  8024
+razon  0.0329557157569516
+ j1 incremento horizontal  11
+midi(k1).j1  11
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on42
+vallint hay volumen de on ,k1 80           58
+on midi(k1).numTrk 0
+on midi(k1).nota 42
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               58
+_______________________________________
+INPUT  8024 on ch=2 n=58 v=80
+entra a ver los ON  k1  59
+nota nini inicial  8024
+razon  0
+i1 incremento vertical    2
+midi(k1).j1  11
+midi(k1).i1  2
+hay canal de on 2
+nota nro de on58
+vallint hay volumen de on ,k1 80           59
+on midi(k1).numTrk 0
+on midi(k1).nota 58
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               59
+__________________________________
+INPUT  9024 off ch=2 n=58 v=0  A=2
+estamos en un off 
+midi(k1).nini  9024
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    60
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  9024
+nini del on  que machea   8024
+resta dur  1000
+encontro un dur h1  1000     59
+bo midi(h1).j1  11
+bo midi(h1).i1  2
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     59
+midi(h1).j1  11
+midi(h1).i1  2
+midi(h1).nota 58
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1000
+ k1 h1 midi(h1).dur  60      59            1
+ midi(k1).dur  1 midi(k1).nota 58
+numfloat       1
+1) esta entre                1             y             1.25          1
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  11    2
+Carga Track nota j1 i1  k1 58              11            2             60
+numduras nota j1 i1 1 58  11  2           duras( 1)3 I 
+nota principio 58  0
+_______________________________________
+INPUT  9026 on ch=2 n=59 v=80
+entra a ver los ON  k1  61
+nota nini inicial  9026
+razon  0.1248753738783649
+ j1 incremento horizontal  12
+midi(k1).j1  12
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on59
+vallint hay volumen de on ,k1 80           61
+on midi(k1).numTrk 0
+on midi(k1).nota 59
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               61
+SALELIGADO  midi(k1).nligado 26
+__________________________________
+INPUT  9024 off ch=2  n=42 v=0 +++
+estamos en un off 
+midi(k1).nini  9024
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    62
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  9024
+nini del on  que machea   8024
+resta dur  1000
+encontro un dur h1  1000     58
+bo midi(h1).j1  11
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     58
+midi(h1).j1  11
+midi(h1).i1  1
+midi(h1).nota 42
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1000
+ k1 h1 midi(h1).dur  62      58            1
+ midi(k1).dur  1 midi(k1).nota 42
+numfloat       1
+1) esta entre                1             y             1.25          1
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+LIGADO 
+duras(1)  I+
+ j1, i1  11    1
+Carga Track nota j1 i1  k1 42              11            1             62
+numduras nota j1 i1 1 42  11  1           duras( 1)93 I+
+nota principio 42  0
+_______________________________________
+INPUT  9024 on ch=2  n=42 v=80 +++
+entra a ver los ON  k1  63
+nota nini inicial  9024
+razon  0.0002215820961666297
+i1 incremento vertical    2
+midi(k1).j1  12
+midi(k1).i1  2
+hay canal de on 2
+nota nro de on42
+vallint hay volumen de on ,k1 80           63
+on midi(k1).numTrk 0
+on midi(k1).nota 42
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               63
+SALELIGADO  midi(k1).nligado 26
+__________________________________
+INPUT  10026 off ch=2 n=59 v=0
+estamos en un off 
+midi(k1).nini  10026
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    64
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  10026
+nini del on  que machea   9026
+resta dur  1000
+encontro un dur h1  1000     61
+bo midi(h1).j1  12
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     61
+midi(h1).j1  12
+midi(h1).i1  1
+midi(h1).nota 59
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1000
+ k1 h1 midi(h1).dur  64      61            1
+ midi(k1).dur  1 midi(k1).nota 59
+numfloat       1
+1) esta entre                1             y             1.25          1
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  12    1
+Carga Track nota j1 i1  k1 59              12            1             64
+numduras nota j1 i1 1 59  12  1           duras( 1)3 I 
+nota principio 59  0
+__________________________________
+INPUT  10027 off ch=2 n=42 v=0
+estamos en un off 
+midi(k1).nini  10027
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    65
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  10027
+nini del on  que machea   9024
+resta dur  1003
+encontro un dur h1  1003     63
+bo midi(h1).j1  12
+bo midi(h1).i1  2
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     63
+midi(h1).j1  12
+midi(h1).i1  2
+midi(h1).nota 42
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1003
+ k1 h1 midi(h1).dur  65      63            1.003
+ midi(k1).dur  1.003 midi(k1).nota 42
+numfloat       1.003
+1) esta entre                1             y             1.25          1.003
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 26
+ j1, i1  12    2
+Carga Track nota j1 i1  k1 42              12            2             65
+numduras nota j1 i1 1 42  12  2           duras( 1)3 I 
+nota principio 42  0
+_______________________________________
+INPUT  10028 on ch=2 n=50 v=80
+entra a ver los ON  k1  66
+nota nini inicial  10028
+razon  0.111258865248227
+ j1 incremento horizontal  13
+midi(k1).j1  13
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on50
+vallint hay volumen de on ,k1 80           66
+on midi(k1).numTrk 0
+on midi(k1).nota 50
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               66
+__________________________________
+INPUT  11029 off ch=2 n=50 v=0
+estamos en un off 
+midi(k1).nini  11029
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    67
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  11029
+nini del on  que machea   10028
+resta dur  1001
+encontro un dur h1  1001     66
+bo midi(h1).j1  13
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     66
+midi(h1).j1  13
+midi(h1).i1  1
+midi(h1).nota 50
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1001
+ k1 h1 midi(h1).dur  67      66            1.001
+ midi(k1).dur  1.001 midi(k1).nota 50
+numfloat       1.001
+1) esta entre                1             y             1.25          1.001
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  13    1
+Carga Track nota j1 i1  k1 50              13            1             67
+numduras nota j1 i1 1 50  13  1           duras( 1)3 I 
+nota principio 50  0
+_______________________________________
+INPUT  11030 on ch=2 n=50 v=80
+entra a ver los ON  k1  68
+nota nini inicial  11030
+razon  0.09992022337455125
+ j1 incremento horizontal  14
+midi(k1).j1  14
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on50
+vallint hay volumen de on ,k1 80           68
+on midi(k1).numTrk 0
+on midi(k1).nota 50
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               68
+__________________________________
+INPUT  12031 off ch=2 n=50 v=0
+estamos en un off 
+midi(k1).nini  12031
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    69
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  12031
+nini del on  que machea   11030
+resta dur  1001
+encontro un dur h1  1001     68
+bo midi(h1).j1  14
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     68
+midi(h1).j1  14
+midi(h1).i1  1
+midi(h1).nota 50
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1001
+ k1 h1 midi(h1).dur  69      68            1.001
+ midi(k1).dur  1.001 midi(k1).nota 50
+numfloat       1.001
+1) esta entre                1             y             1.25          1.001
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  14    1
+Carga Track nota j1 i1  k1 50              14            1             69
+numduras nota j1 i1 1 50  14  1           duras( 1)3 I 
+nota principio 50  0
+_______________________________________
+INPUT  12032 on ch=2 n=42 v=80
+entra a ver los ON  k1  70
+nota nini inicial  12032
+razon  0.09084315503173164
+ j1 incremento horizontal  15
+midi(k1).j1  15
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on42
+vallint hay volumen de on ,k1 80           70
+on midi(k1).numTrk 0
+on midi(k1).nota 42
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               70
+_______________________________________
+INPUT  12032 on ch=2 n=59 v=80
+entra a ver los ON  k1  71
+nota nini inicial  12032
+razon  0
+i1 incremento vertical    2
+midi(k1).j1  15
+midi(k1).i1  2
+hay canal de on 2
+nota nro de on59
+vallint hay volumen de on ,k1 80           71
+on midi(k1).numTrk 0
+on midi(k1).nota 59
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               71
+__________________________________
+INPUT  13033 off ch=2 n=59 v=0  A=2
+estamos en un off 
+midi(k1).nini  13033
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    72
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  13033
+nini del on  que machea   12032
+resta dur  1001
+encontro un dur h1  1001     71
+bo midi(h1).j1  15
+bo midi(h1).i1  2
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     71
+midi(h1).j1  15
+midi(h1).i1  2
+midi(h1).nota 59
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1001
+ k1 h1 midi(h1).dur  72      71            1.001
+ midi(k1).dur  1.001 midi(k1).nota 59
+numfloat       1.001
+1) esta entre                1             y             1.25          1.001
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  15    2
+Carga Track nota j1 i1  k1 59              15            2             72
+numduras nota j1 i1 1 59  15  2           duras( 1)3 I 
+nota principio 59  0
+_______________________________________
+INPUT  13034 on ch=2 n=59 v=80
+entra a ver los ON  k1  73
+nota nini inicial  13034
+razon  0.08327792553191489
+ j1 incremento horizontal  16
+midi(k1).j1  16
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on59
+vallint hay volumen de on ,k1 80           73
+on midi(k1).numTrk 0
+on midi(k1).nota 59
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               73
+SALELIGADO  midi(k1).nligado 27
+__________________________________
+INPUT  13033 off ch=2  n=42 v=0 +++
+estamos en un off 
+midi(k1).nini  13033
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    74
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  13033
+nini del on  que machea   12032
+resta dur  1001
+encontro un dur h1  1001     70
+bo midi(h1).j1  15
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     70
+midi(h1).j1  15
+midi(h1).i1  1
+midi(h1).nota 42
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1001
+ k1 h1 midi(h1).dur  74      70            1.001
+ midi(k1).dur  1.001 midi(k1).nota 42
+numfloat       1.001
+1) esta entre                1             y             1.25          1.001
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+LIGADO 
+duras(1)  I+
+ j1, i1  15    1
+Carga Track nota j1 i1  k1 42              15            1             74
+numduras nota j1 i1 1 42  15  1           duras( 1)93 I+
+nota principio 42  0
+_______________________________________
+INPUT  13033 on ch=2  n=42 v=80 +++
+entra a ver los ON  k1  75
+nota nini inicial  13033
+razon  7.672241829062452e-005
+i1 incremento vertical    2
+midi(k1).j1  16
+midi(k1).i1  2
+hay canal de on 2
+nota nro de on42
+vallint hay volumen de on ,k1 80           75
+on midi(k1).numTrk 0
+on midi(k1).nota 42
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               75
+SALELIGADO  midi(k1).nligado 27
+__________________________________
+INPUT  14035 off ch=2 n=59 v=0
+estamos en un off 
+midi(k1).nini  14035
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    76
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  14035
+nini del on  que machea   13034
+resta dur  1001
+encontro un dur h1  1001     73
+bo midi(h1).j1  16
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     73
+midi(h1).j1  16
+midi(h1).i1  1
+midi(h1).nota 59
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1001
+ k1 h1 midi(h1).dur  76      73            1.001
+ midi(k1).dur  1.001 midi(k1).nota 59
+numfloat       1.001
+1) esta entre                1             y             1.25          1.001
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  16    1
+Carga Track nota j1 i1  k1 59              16            1             76
+numduras nota j1 i1 1 59  16  1           duras( 1)3 I 
+nota principio 59  0
+__________________________________
+INPUT  14035 off ch=2 n=42 v=0
+estamos en un off 
+midi(k1).nini  14035
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    77
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  14035
+nini del on  que machea   13033
+resta dur  1002
+encontro un dur h1  1002     75
+bo midi(h1).j1  16
+bo midi(h1).i1  2
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     75
+midi(h1).j1  16
+midi(h1).i1  2
+midi(h1).nota 42
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1002
+ k1 h1 midi(h1).dur  77      75            1.002
+ midi(k1).dur  1.002 midi(k1).nota 42
+numfloat       1.002
+1) esta entre                1             y             1.25          1.002
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 27
+ j1, i1  16    2
+Carga Track nota j1 i1  k1 42              16            2             77
+numduras nota j1 i1 1 42  16  2           duras( 1)3 I 
+nota principio 42  0
+_______________________________________
+INPUT  14037 on ch=2 n=55 v=80
+entra a ver los ON  k1  78
+nota nini inicial  14037
+razon  0.07703521829202793
+ j1 incremento horizontal  17
+midi(k1).j1  17
+midi(k1).i1  1
+hay canal de on 2
+nota nro de on55
+vallint hay volumen de on ,k1 80           78
+on midi(k1).numTrk 0
+on midi(k1).nota 55
+on midi(k1).canal 2
+on midi(k1).volum, k1     80               78
+__________________________________
+INPUT  15037 off ch=2 n=55 v=0
+estamos en un off 
+midi(k1).nini  15037
+midi(k1).volum esvol 0
+ k1 ANTES DE BUSCAR SU ON    79
+ entro a bo  midi(15).volum 80
+buscarsuon encontro match del on en off 
+nini del off en curso  15037
+nini del on  que machea   14037
+resta dur  1000
+encontro un dur h1  1000     78
+bo midi(h1).j1  17
+bo midi(h1).i1  1
+ bo midi(h1).volum 80
+ sale a bo  midi(15).volum 80
+ h1 DESPUES DE BUSCAR ON     78
+midi(h1).j1  17
+midi(h1).i1  1
+midi(h1).nota 55
+midi(h1).volum  80
+negra ===>, midi(h1).dur   1000            1000
+ k1 h1 midi(h1).dur  79      78            1
+ midi(k1).dur  1 midi(k1).nota 55
+numfloat       1
+1) esta entre                1             y             1.25          1
+duras(1) 3
+3
+ I            PORQUE MIERDA NO SALE LIGADO ? midi(k1).nligado 0
+ j1, i1  17    1
+Carga Track nota j1 i1  k1 55              17            1             79
+numduras nota j1 i1 1 55  17  1           duras( 1)3 I 
+nota principio 55  0
+trkend  1
+Finn Proceso 
+j1  17 i1  1
+j1= 1 i1= 1 nota=40 dur=93 vol=80 canal=2
+j1= 1 i1= 2 nota=59 dur=3 vol=80 canal=2
+j1= 2 i1= 1 nota=59 dur=3 vol=80 canal=2
+j1= 2 i1= 2 nota=40 dur=3 vol=80 canal=2
+j1= 3 i1= 1 nota=44 dur=3 vol=80 canal=2
+j1= 3 i1= 2 nota=52 dur=3 vol=80 canal=2
+j1= 4 i1= 1 nota=53 dur=3 vol=80 canal=2
+j1= 5 i1= 1 nota=42 dur=93 vol=80 canal=2
+j1= 5 i1= 2 nota=58 dur=3 vol=80 canal=2
+j1= 6 i1= 1 nota=57 dur=3 vol=80 canal=2
+j1= 6 i1= 2 nota=42 dur=3 vol=80 canal=2
+j1= 7 i1= 1 nota=59 dur=3 vol=80 canal=2
+j1= 8 i1= 1 nota=48 dur=95 vol=100 canal=2
+j1= 8 i1= 2 nota=52 dur=95 vol=100 canal=2
+j1= 8 i1= 3 nota=57 dur=5 vol=100 canal=2
+j1= 9 i1= 1 nota=57 dur=49 vol=0 canal=2
+j1= 9 i1= 2 nota=48 dur=94 vol=80 canal=2
+j1= 9 i1= 3 nota=52 dur=94 vol=80 canal=2
+j1= 10 i1= 1 nota=57 dur=5 vol=80 canal=2
+j1= 10 i1= 2 nota=48 dur=5 vol=80 canal=2
+j1= 10 i1= 3 nota=52 dur=5 vol=80 canal=2
+j1= 11 i1= 1 nota=42 dur=93 vol=80 canal=2
+j1= 11 i1= 2 nota=58 dur=3 vol=80 canal=2
+j1= 12 i1= 1 nota=59 dur=3 vol=80 canal=2
+j1= 12 i1= 2 nota=42 dur=3 vol=80 canal=2
+j1= 13 i1= 1 nota=50 dur=3 vol=80 canal=2
+j1= 14 i1= 1 nota=50 dur=3 vol=80 canal=2
+j1= 15 i1= 1 nota=42 dur=93 vol=80 canal=2
+j1= 15 i1= 2 nota=59 dur=3 vol=80 canal=2
+j1= 16 i1= 1 nota=59 dur=3 vol=80 canal=2
+j1= 16 i1= 2 nota=42 dur=3 vol=80 canal=2
+j1= 17 i1= 1 nota=55 dur=3 vol=80 canal=2
+============> FIN PLANO MIDI <========================

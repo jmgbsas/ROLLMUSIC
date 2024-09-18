@@ -81,11 +81,9 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
 End Sub
 
 Sub CTRL1062 (hmessages As hmenu)
-Print #1, "entro por CTRL1062 NOMBRECANCION TITOLOS(0) ", NombreCancion, titulos(0)
              If NombreCancion > ""  Then
                 EstaBarriendoPenta=1 
                 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))   
-                Print #1,"CARGO ROLL PARA cancion sin roll"
             ' ES TAN RAPIDO QUE PARECE EJECUTA DOS VECES EL 10062
             ' AL DEBUGUEAR NO LOA HACE ERGO PONEMOS UN RETARDO 0,1 SEG
                 Sleep 100        
@@ -99,14 +97,12 @@ End Sub
 
 Sub CTRL1063() 
 ' esta rutina no se usa mas, ahora se entra por menu archivo
-  Print #1, "entro por CTRL1063 NOMBRECANCION TITULOS(0) ", NombreCancion, titulos(0)
             If NombreCancion > "" Then
                  
                Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + _ 
                                      " Track_"+Str(desde)+"_"+Str(hasta) + " "+ _
               Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins) + " " + _ 
               Str (NombreCancion))   ' @JMG
-                Print #1,"Cargo Cancion en un roll grafico externo" 
   
                  
             End If
@@ -154,7 +150,6 @@ Sub CTRL1010(ByRef salida As INTEGER)
 nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
             
             If nombreg = "" Then
-               Print #1,"exit select por nombreg vacio "
                salida=1 
                Exit Sub
             Else
@@ -174,7 +169,6 @@ Sub CTRL1012 (ByRef SALIDA As Integer)
             If nombre = "" Then
 nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREATEPROMPT)
                If nombreg = "" Then
-                  print #1,"exit select por nombreg vacio "
                   SALIDA=1 
                   Exit Sub
                Else
@@ -203,24 +197,14 @@ Sub CTRL1015 ()
 
                   reDim  toc.trk(1 To tocaparam(pis).maxpos)
 
-                  Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
-                  Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
                 
                    For j As Integer =1 To   tocaparam(pis).maxpos
                           toc.trk(j).modo=Toca(pis).trk(j).modo
                           toc.trk(j).nota=Toca(pis).trk(j).nota
                           toc.trk(j).vel=Toca(pis).trk(j).vel
-                '        Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
                    Next j
  Dim tocap As ejecparam = tocaparam(pis)
 
-                Print #1,"PARAMETROS EJEC nombre ",pgmidi.tocap.nombre
-                Print #1,"PARAMETROS EJEC mapos ",pgmidi.tocap.maxpos
-                Print #1,"PARAMETROS EJEC orden ",pgmidi.tocap.orden
-                Print #1,"PARAMETROS EJEC delta ",pgmidi.tocap.delta
-                Print #1,"PARAMETROS EJEC portout ",pgmidi.tocap.portout
-                Print #1,"PARAMETROS EJEC patch ",pgmidi.tocap.patch
-                Print #1,"PARAMETROS EJEC canal ",pgmidi.tocap.canal
  ntkp=pis 
 
 ' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
@@ -245,16 +229,13 @@ Sub cargariniciotxt(lugar As String)
 Dim As Integer arch
 Dim As String  estado  
 Var ini=16
-Print #1,lugar
  If  Open (lugar+"\inicio.txt" For Input As #ini) <> 0 Then 
-     Print #1,"No se puede leer inicio.txt"
     Exit Sub
 End If
 
  
 Do while Not Eof(ini)
    Input #ini, arch, estado
-   Print #1, arch, estado 
     If LCase(estado) = "si"  Then
       CheckBox_SetCheck (cbxejec(arch),1)
     EndIf
@@ -280,9 +261,7 @@ Sub grabariniciotxt(lugar As String)
 Dim As Integer arch,i1
 Dim As String  estado  
 Var ini=17
-Print #1,"grabariniciotxt ", lugar
  If Open (lugar+"inicio.txt" For Output As #ini ) <> 0 Then
-    Print #1,"No se puede escribir en inicio.txt "
     Exit Sub 
  EndIf
 
@@ -307,17 +286,14 @@ End Sub
 
  
 Sub CTRL1016 (ByRef lugar As String)
-Print #1,"1 ctrl1016 lugar nombreMidiIn ",lugar, nombreMidiIn
  
       Dim As String nombrea,myfil
-       print #1,"EN Cargar midi-in nombre ",nombreMidiIn
        ResetAllListBox(LISTA_DE_EJECUCIONES)
 
       
        If  CANCIONCARGADA=FALSE And lugar = "" And nombreMidiIn= "" Then  '23-04-2024
 lugar= BrowseForFolder( NULL, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BIF_USENEWUI, "c:\" )
 nombreMidiIn=lugar
-Print #1," 2 ctrl1016 lugar nombreMidiIn ",nombreMidiIn
        Else
          If CANCIONCARGADA=TRUE Then
           lugar=NombreCancion
@@ -328,7 +304,6 @@ Print #1," 2 ctrl1016 lugar nombreMidiIn ",nombreMidiIn
        EndIf
                 
               'NTKP ES UNA SALIDA DE LA SUB
-Print #1,"3 ctrl1016 lugar nombreMidiIn ",lugar, nombreMidiIn
        CargarPistasEjec lugar, ntkp
   
        Dim j As integer
@@ -347,9 +322,6 @@ Print #1,"3 ctrl1016 lugar nombreMidiIn ",lugar, nombreMidiIn
 ' ergo el mycalback deberia tomar el patch si lo ajusto aca
 'volver
 '          ChangeProgram ( tocaparam(j).patch , tocaparam(j).canal, tocaparam(j).portout)
-'       Print #1,"1016 tocaparam(j).patch ",tocaparam(j).patch
-'       Print #1,"1016 tocaparam(j).canal ",tocaparam(j).canal
-'       Print #1,"1016 tocaparam(j).portout ",tocaparam(j).portout
 '
 '-----------------06-06-2022-- abre portin siempre toca piano no toma el patch!!! no se como 
 '      portin= CInt(tocaparam(j).portin)
@@ -373,7 +345,6 @@ Print #1,"3 ctrl1016 lugar nombreMidiIn ",lugar, nombreMidiIn
 
       cargariniciotxt(lugar) 'para guardar que pista ejec se escucha y cual no
    
-Print #1,"4 ctrl1016 lugar nombreMidiIn ",lugar, nombreMidiIn
 End Sub
 
 Sub CTRL1040 () ' <========== seleccion de instrumento por orden Alfabetico
@@ -395,7 +366,6 @@ Sub CTRL1040 () ' <========== seleccion de instrumento por orden Alfabetico
                 Roll.trk(1,NA).inst= CUByte(instru)
                 Track(ntk).trk(1,1).nnn=CUByte(instru)
               ' grabar la pistacomo en 1011
-            print #1, "CTRL1040 Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
               If CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE Then
                  If NombreCancion > ""  And MAxPos > 2 Then
@@ -434,7 +404,6 @@ Sub CTRL1050 () ' <=========== seleccion de instrumento por orden Numerico
                Roll.trk(1,NA).inst= CUByte(instru)
                Track(ntk).trk(1,1).nnn =CUByte(instru)
               ' grabar el track 
-   '         print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
@@ -467,7 +436,6 @@ Sub CTRL1060 (ByRef SALIDA As INTEGER) ' <========== crea track y reemplaza al e
                   'ChangeProgram ( CUByte (instru) , 0)
                'EndIf   
                If abrirRoll=0 Then
-Print #1,"1060 abrirRoll=0 entro"
                   abrirRoll=1
                   cargacancion=0
                   If reiniciar=1 Then
@@ -479,7 +447,6 @@ Print #1,"1060 abrirRoll=0 entro"
                      reiniciar=1
                      usarmarcoOld=usarmarco
                   EndIf   
-                  Print #1,"sale de 1060 abrirrol,reiniciar, cargacancion ", abrirRoll, reiniciar, cargacancion
                   SALIDA =1
                EndIf
 
@@ -489,9 +456,7 @@ End Sub
 Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo elegido
 
                ntk = CountItemListBox(3)+ 1
-   '            Print #1,"creando Pista nto ",ntk
                If ntk > 32 Then
-                  print #1,"exit select ntk> 32"
                    SALIDA=1 ''Exit Select
                    Exit SUB
                EndIf 
@@ -499,10 +464,7 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
                If instru=0 Then 
                   instru=1
                EndIf
-   '            print #1,"instru en 1061 , toma el ultimo ",instru
                NombrePista=RTrim(Mid(NombreInst(instru), 1,21))
-   '            Print #1, "NombrePista en 1061 sin nro track ",NombrePista
-   '            print #1,"porque se resetea? pathdir",pathdir
                If CANCIONCARGADA=true Or NombreCancion <> "" Then
                  ' armó el nombre de pista nuevo, pero permite modicifar 
                
@@ -514,15 +476,12 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
                 NombrePista = "["+doscifras(ntk)+"]" + NombrePista 
                 
                'EndIf
-    '           print #1, "NombrePista en 1061",NombrePista
                AddListBoxItem(3, NombrePista)
                
               ' crear pista en disco 
                'MaxPos=2
                nombre= NombreCancion+"\"+NombrePista+".rtk"
-    '           print #1,"nombre en 1061",nombre
                CantTicks=1000
-    '           Print #1,"CantTicks ",CantTicks
                
                ''' para cuando las pistas esten juntas en un archivo ->ZGrabarTrack(ntk)
                If ntk=1 Then
@@ -728,23 +687,16 @@ Sub CTRL1092()
         For k As Short =1 To 32 
            If CheckBox_GetCheck( cbxejec(k))= 1  Then
               calltoca=k
-Print #1,"DENTRO DE MYCALLBACK k ",k
-Print #1,"tocaparam(k).patch ",tocaparam(k).patch
-Print #1,"tocaparam(k).canal ",tocaparam(k).canal
-Print #1,"tocaparam(k).portout ",tocaparam(k).portout
               ChangeProgram ( tocaparam(k).patch , tocaparam(k).canal, tocaparam(k).portout)
               Exit For
            EndIf
          Next k 
 '/
-Print #1,"listinAbierto( portin) ",listinAbierto( portin)
-Print #1,"listInCreado(portin) ",listInCreado(portin) 
        If  listinAbierto( portin) = 0 Then
               If listInCreado(portin)  = 0 Then
                  midiin(portin) = rtmidi_in_create_default()
                  listInCreado(portin)  =1
              EndIf
-Print #1,"abriendo portin y call back",*nombrein( portin )
               open_port (midiin(portin ), portin, *nombrein( portin ) )
               set_callback midiin(portin ), @mycallback, p
        ' por ahrao iognoramos otros tipsod de mensaje
@@ -771,7 +723,6 @@ Sub CTRL1111() '<========== cambiode escala
                 If alteracion="bem" Then
                    guiaEscala(indEscala).alteracion=2
                 EndIf 
-              Print #1,"1111 TIPOESCALA NOTAESCALA ",tipoescala_num, notaescala_num
              EndIf
 
 
@@ -794,7 +745,6 @@ Sub CTRL1112() '<========= cambiode a escala Alternativa de la Principal
      If alteracion="bem" Then
         guiaEscala(indEscala).alteracion=2
      EndIf 
-   Print #1,"1112 Alternativa TIPOESCALA NOTAESCALA ",tipoescala_num, notaescala_num
   EndIf
 
 
@@ -816,10 +766,8 @@ Sub CTRL1200()  ' <== Seleccionar  Puertos MIDI-IN SOLO PARA PORTS DE EJECUCION
                  ntkp =i +32 
              EndIf
           Next i  
-Print #1, "1] case 1200 portin, ntkp  ", portin, ntkp
          selportEjec (2,ntkp ) ' fix 13-03-23 enviamos el track es una seleccion para ese track
 ' en esa rutina se ajusta la global npi nuemro  de puerto entrada
-         Print #1, "2] case 1200 portin, ntkp  ", portin, ntkp
                    
 ' control de portin ,si hay un track de ejec seleccionado le asignamos este portin entrado
 ' podemos asignar muchos a la vez 
@@ -844,7 +792,6 @@ Sub CTRL1204() 'Seleccionar      Puertos MIDI-OUT PARA EJECUCIONES
           Next i  
 
          selportEjec (1,ntkp )
-         Print #1, "portout, ntkp ",portout, ntkp
                    
 ' control de portin ,si hay un track de ejec seleccionado le asignamos este portin
 ' podemos asignar muchos a la vez 
@@ -858,15 +805,12 @@ Sub CTRL1204() 'Seleccionar      Puertos MIDI-OUT PARA EJECUCIONES
 End Sub
 Sub CTRL1205 () 'Abrir      Puertos MIDI-OUT EJECUCIONES
 '------------ABRIR PORT DE SALIDA ---<<<<< EJECUCIONES
-Print #1,"abriendo port....si no se selecciona previamnete toma cero"
 
 Dim k1 As Integer
  For  i As Short =1 To 32
     If CheckBox_GetCheck( cbxejec(i))= 1  Or CheckBox_GetCheck( cbxgrab(i))= 1 Then
         k1=CInt(pmTk(i+32).portout)
-        Print #1,"midiout ",k1, *nombreOut(k1)
         If InStr(*nombreOut(k1),"Microsoft")>0 Then
-           Print #1,"No se usa Microsoft"
         Else
            If listoutAbierto( k1) = 0 Then
               If listoutCreado( k1) = 0 Then
@@ -876,14 +820,10 @@ Dim k1 As Integer
               open_port midiout(k1),k1, nombreOut(k1)
               Dim As integer    porterror=Err
                listoutAbierto( k1) = 1
-              Print #1,"1205 abro MIDI-OUT ",*nombreOut(k1)
               porterrorsub(porterror) 
           Else
-              Print #1,"PORT YA ABIERTO",*nombreOut(k1)
           EndIf
       EndIf 
-      Print #1,"Port usando en Play teclado ",portout
-      Print #1,"-------------------------------------"
 ' el portsal de rtmidi empieza desde cero luego le resto 1
     ChangeProgram ( tocaparam(ntoca).patch, tocaparam(ntoca).canal, tocaparam(ntoca).portout-1)
     
@@ -898,7 +838,6 @@ For  i As Short =1 To 32
     If CheckBox_GetCheck( cbxejec(i))= 1  Then
         Dim k1 As Integer
         k1=pmTk(i+32).portout 
-        Print #1,"midiout ",k1, *nombreOut(k1)
         alloff( pmTk(i+32).canalsalida,k1 )  
         listoutAbierto(k1)=0
         close_port midiout(k1)
@@ -918,11 +857,9 @@ Dim tocaparborra (1) As ejecparam
 
     For i1=1 To 32
     If tocaparam(i1).nombre="" And tocatope >= i1 Then
-      Print #1," i1, tocatope,tocaparam(i1).nombre "; i1,tocatope,tocaparam(i1).nombre 
       If i1 <= 32 Then
        For k1= i1+1 To tocatope 
           If tocaparam(k1).nombre >"" Then
-         Print #1,"tocaparam(k1).nombre ,k1 ", tocaparam(k1).nombre, k1  
              Toca (k1-1) = Toca(k1)
              Toca (k1) = Tocaborra(1)
              Tocaparam (k1-1) = Tocaparam(k1)
@@ -930,7 +867,6 @@ Dim tocaparborra (1) As ejecparam
           EndIf
        Next k1
        tocatope=tocatope -1
-       Print #1,"tocatope ", tocatope
       EndIf
        Exit For
     EndIf
@@ -941,24 +877,14 @@ Dim tocaparborra (1) As ejecparam
 For pis = 1 To tocatope 
                   reDim  toc.trk(1 To tocaparam(pis).maxpos)
 
-                  Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
-                  Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
                 
                    For j As Integer =1 To   tocaparam(pis).maxpos
                           toc.trk(j).modo=Toca(pis).trk(j).modo
                           toc.trk(j).nota=Toca(pis).trk(j).nota
                           toc.trk(j).vel=Toca(pis).trk(j).vel
-                '        Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
                    Next j
  Dim tocap As ejecparam = tocaparam(pis)
 
-                Print #1,"PARAMETROS EJEC nombre ",pgmidi.tocap.nombre
-                Print #1,"PARAMETROS EJEC mapos ",pgmidi.tocap.maxpos
-                Print #1,"PARAMETROS EJEC orden ",pgmidi.tocap.orden
-                Print #1,"PARAMETROS EJEC delta ",pgmidi.tocap.delta
-                Print #1,"PARAMETROS EJEC portout ",pgmidi.tocap.portout
-                Print #1,"PARAMETROS EJEC patch ",pgmidi.tocap.patch
-                Print #1,"PARAMETROS EJEC canal ",pgmidi.tocap.canal
  ntkp=pis 
 
 ' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
@@ -977,7 +903,6 @@ Next pis
     Dim As Integer barra = InStrRev(tocaparam(ntoca).nombre,"\")
     Dim  lugar As String   
     lugar=Mid(tocaparam(ntoca).nombre, 1, barra-1)
-    Print #1,"path de carpeta ejec  ", lugar
 
 CTRL1016 (lugar)
 
