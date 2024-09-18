@@ -14,8 +14,10 @@
              If abrirRoll=0 And NombreCancion > ""  Then
                 abrirRoll=1
                 cargaCancion=1
+                Print #1,"SALE A CARGAR ROLL POR 1ERA VEZ ABRIRROLL=1 EXIT DO"
                 Exit Do                 
              EndIf
+  '           Print #1,"termino 1006 va a abrir Roll"
           SetForegroundWindow(hwnd)
 
 
@@ -25,6 +27,7 @@
 ' CADA PISTA SE PODRA LEVANTAR UNA POR UNA CON LA OTRAOPCION
 ' SOLO DEBO PASAR LOS PARAMETROS...Y SI MODIFICO ALGO
 ' DEBO GRABAR A DISCO Y ENVIAR ORFEN DE RECARGA DE ESA PISTA EN LA CANCION
+   Print #1," CASE 10062 abrirRoll=0 And NombreCancion > ", abrirRoll, NombreCancion
 
            CTRL1062 (hmessages )
 
@@ -60,6 +63,7 @@
 '  con usarmarcoins=4 indicamos habilitar ESCRITURA MIDI EN EL PLAY
                 
            ' nombre , hasta, titu, instru ,pid1, usarmarco, nombrecancion
+            Print #1,"Nombre roll a midi ", nombre
 
                usarmarcoins=4            
             Shell (" start RollMusic.exe "+ Str(desde) +" "+ Str(hasta) +  _
@@ -88,12 +92,16 @@
 
                 If result = -1 Then
 
+                   Print #1, "error conv a  archivo.mid"  
                 Else
+                   Print #1, "ok conv a  archivo.mid "  
                 End If
+               Print #1, "Exit code midiconv: "; result
 
 
            Case 1010 '<================ Cargar Pista externa a cancion
 
+   '        Print #1,"entro a 1010 Cargar Pista externa a cancion"
 
            CTRL1010 (salida )
            If salida =1 Then 
@@ -104,7 +112,9 @@
           SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------            
            Case 1011 ' <======= Grabar una Pista de la Cancion con modificaciones, que son tracks
+    '        print #1,"entro a 1011 esto lo hace menu de Roll tambien" '' jmg probar es nuevo...
  ' copiamos logica Rolla Track 
+   '         print #1, "Click Grabando a disco pista modif con GrabarRollaTrack ",nombre
             Dim As String nombreg
             ROLLCARGADO=FALSE 
            If NombreCancion > ""  Then
@@ -115,6 +125,7 @@
           SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1012 ' <====== Grabar Pista Como, Copia una pista a otra  nueva nueva
+   '        print #1,"entro a 1012 Grabar Pista Como, Copia una pista a otra  nueva nueva"
              
              CTRL1012 (SALIDA)
 
@@ -200,8 +211,8 @@ DeleteListBoxItem(LISTA_DE_EJECUCIONES,GetItemListBox(LISTA_DE_EJECUCIONES))
        abrirRollCargaMidi=1 'solo una vez levanta roll grafico
        Sleep 100
          nombre="" 
-         Dim As Integer confrac=0 ' sin fracturacion
-         cargarMidiPlano (confrac)
+         Dim As Integer externo=0 ' sin fracturacion
+         cargarMidiPlano (externo)
          repro=0  
         SetForegroundWindow(hwnd)
            
@@ -271,9 +282,11 @@ DeleteListBoxItem(LISTA_DE_EJECUCIONES,GetItemListBox(LISTA_DE_EJECUCIONES))
                 Roll.trk(1,NA).inst= CUByte(instru)
                 Track(ntk).trk(1,1).nnn=CUByte(instru)
               ' grabar la pistacomo en 1011
+            print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
               If CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE Then
                  If (NombreCancion > ""  Or TRACKCARGADO =TRUE) And MAxPos > 2 Then
+                   Print #1,"VOY A GrabarRollaTrack(0) DESDE CTRL1040"
                     GrabarRollaTrack(0)
                    Sleep 100 
                  EndIf
@@ -310,6 +323,7 @@ DeleteListBoxItem(LISTA_DE_EJECUCIONES,GetItemListBox(LISTA_DE_EJECUCIONES))
                Roll.trk(1,NA).inst= CUByte(instru)
                Track(ntk).trk(1,1).nnn =CUByte(instru)
               ' grabar el track 
+   '         print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
@@ -536,14 +550,17 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
 ' PERO DEBO INDICAR AL PROGRAM QUE SALTEE ESTA COLUMNA CREO CON TENER NOTA=181 Y DUR181
 ' PODRI AINDICAR ESO DEBO PROBARLO Y USAR LSO DEMAS CAMPOS PARA INTRODUCIR ALGUN  CAMBIO               
 '''            Roll.trk(1,NA).vol= CUByte(tipoescala + 127) ' a partir de 128
+''               Print #1,"Roll.trk(1,NA).vol ",Roll.trk(1,NA).vol
 ''               END
 ''               Track(ntk).trk(1,1).vol=CUByte(tipoescala + 127)
               ' grabar el track 
 '' NOTA: LA VARIABLES DE ESCALA DE TODA LA SECUENCIA TIENEN SUBFIJOS _STR O _NUM
 '' LAS QUE SON PARA USO DE ESCLAS EN POSICIONES NO LO TIENEN
+      '      Print #1,"tipo de escala seleccionado ", tipoescala_num_ini
               
 ' -------cadena de escala, construye dsde C hay que hacer las otras esclas
     ' C,D,E,F,G,A,B,Bb,Ab,Gb ver las debo pedir escala y 1er nota desde donde empieza uff
+      '        Print #1,"armarescla desde 1106"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
 ' --------------------------   
@@ -553,6 +570,8 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
               pasozona1=0
               selNotaEscala (notaescala_num_ini)
  
+       '       Print #1, "seleccion de Nota de la escala num  ",notaescala_num
+       '       Print #1,"armarescla desde 1107"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
 
@@ -565,6 +584,7 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
               SetStateMenu(hmessages,1109,0)
             ' si hay nombre de archivo grabar sino no   
       ''        GrabarArchivo()
+       '       Print #1,"armarescla desde 1108"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
           
@@ -575,6 +595,7 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
               alteracion="bem" ' grabado en grabaLim(1,1).pan  = CUByte(2)
               SetStateMenu(hmessages,1108,0)  
               SetStateMenu(hmessages,1109,3) 
+       '       Print #1,"armarescla desde 1109"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
       

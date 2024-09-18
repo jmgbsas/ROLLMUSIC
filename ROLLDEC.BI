@@ -140,7 +140,7 @@ Declare Sub borrarColumnasMarcadas()
 Declare Function SumarnR (notaPiano As Integer) As Integer
 Declare Function SumarnRk (notaPiano As ubyte) As ubyte
 Declare Sub salir()
-Declare Sub IgualaMidiPlano()
+Declare Sub IgualaMidiPlano(externo As integer)
 
 
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 

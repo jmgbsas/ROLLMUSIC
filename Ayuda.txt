@@ -265,6 +265,8 @@
 
 
     16 ) EXPORTAR UNA PISTA O CANCION A MIDI FORMATO 1:
+        - 2024-09-18 0.4631 mejoras en la carga de un plano midi 
+          exportado por Rollmusic.
         -Ver 0.4619 se corrigio y agrego al plano. detalles
          A PARTIR DEL *.ROLL SE CREARON PLANOS TXT Y DESDE EL, 
          EL *.MID CORRESPONDIENTE NOTA:

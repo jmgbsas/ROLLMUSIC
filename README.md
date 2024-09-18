@@ -1,3 +1,5 @@
+Este programa está publicado bajo la licencia GPL.
+(ver carpeta Licences/RollMusic)
 Una  ejercitacion para ver Cairo.(Estado:Alpha Debug escribe archivos.)
 Un secuenciador que usa letras en vez de rectangulitos...
 Ya funciona puede editarse una sola pista o crear una cancion de hasta 32 pistas.

@@ -1,3 +1,5 @@
+- 18-09-2024 cambio a licencia GPL para la version actual y siguientes.
+- 17-09-2024 mejoras en carga de un archivo plano midi generado por RollMusic.
 - 12-06-2024 correcciones dejo de grabar. corregido. canales en roll grafico
   pantalla negra en algunas ocasiones (corrijo algo y revienta por otro lado  
   eso por tener varias versiones al mismo tiempo esta es la 0.4626 hay otras...).

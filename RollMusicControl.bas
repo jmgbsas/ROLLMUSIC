@@ -1,3 +1,36 @@
+'============================================================
+' ROLLMUSIC SECUENCIADOR CON PISTAS DE INGRESO POR PASOS O EJECUCION POR TECLADO  
+'============================================================
+'
+'    RollMusic - Is a Roll Sequencer and Editor with letters as note simbols.
+'    Copyright (c) 2021 Jose M Galeano     
+'
+'    This program is free software; you can redistribute it and/or modify
+'    it under the terms of the GNU General Public License as published by
+'    the Free Software Foundation; either version 2 of the License, or
+'    any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU General Public License for more details.
+'
+'    You should have received a copy of the GNU General Public License along
+'    with this program; if not, write to the Free Software Foundation, Inc.,
+'    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+'
+'    Contact, mail:galeanoj2005@gmail.com
+'
+'    Author: Jose Maria Galeano, 18 September 2024
+'  
+'
+'This General Public License does not permit incorporating your program into
+'proprietary programs.  If your program is a subroutine library, you may
+'consider it more useful to permit linking proprietary applications with the
+'library.  If this is what you want to do, use the GNU Lesser General
+'Public License instead of this License.
+'
+'------------------------------------------------------------------
 ' este es  un modulo no es un include asi se podria hacer mas modulos...
 '  o sacar algunos de include en elmain
 #Define __FB_WIN64__
@@ -199,6 +232,8 @@ EndIf
 If octahasta=0 Then
 octahasta=9
 EndIf
+print #1,"OCtadesde ",octadesde
+print #1,"OCtahasta ",octahasta
 
 End Sub
 '---------------------------
@@ -226,6 +261,7 @@ Posy=y0 +100
        For aa =1 To 127 
                i2=InStrrev(NombreInstAlfa(aa)," ")
                cad=Mid(NombreInstAlfa(aa),i2)
+      '         Print #1,"cadena ",cad
                
      
            If instru = CUByte(ValInt(cad)) Then
@@ -267,9 +303,13 @@ Posy=y0 +100
           
             If eventnumber()=2 And InStr(cad,"x") >0 Then
                ''i1 = GetItemListView()
+               Print #1,"alfa seleccion in", i1
+               Print #1,"NombreInstAlfa ",NombreInstAlfa(i1)
                i2=InStrrev(NombreInstAlfa(i1)," ")
                cad=Mid(NombreInstAlfa(i1),i2)
+               Print #1,"cadena ",cad
                instru = CUByte(ValInt(cad))
+                print #1,"seleccion instrumento alfa instru = ",instru     
                patchsal=instru
                   Close_Window(haw)
                   Exit Do
@@ -286,6 +326,7 @@ Posy=y0 +100
 
 '' fin ruso
 'Return IUP_DEFAULT
+print #1,"Str(instru) ", Str(instru)
   
 
 end Sub
@@ -355,6 +396,7 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
           
              If eventnumber()=2 And InStr(cad,"x") > 0 Then
                ''Instru = GetItemListView()
+                Print #1,"inst seleccionado numerico ",instru
                 Close_Window(haw)
                 Exit Do
             End If
@@ -369,6 +411,7 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 
 '' fin ruso
 'Return IUP_DEFAULT
+print #1,"Str(instru) ", Str(instru)
 
 End Sub
 ' ---------
@@ -393,9 +436,11 @@ If NombreCancion = "" Then
 EndIf
 pathdir = ShellFolder( "Select Folder", "C:\")
 pathdir=pathdir+"\"+NombreCancion
+print #1, "DIRECTORIO CANCION EN ",pathdir
 CreateDir(pathdir)
 SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + pathdir)
 NombreCancion=pathdir
+print #1,"NombreCancion en CrearDirCancion ",NombreCancion
 CANCIONCREADA=TRUE
 CreateDir(pathdir+"\Temp") ' ok
 
@@ -408,6 +453,7 @@ NombreCancion = ShellFolder( "Select Folder", "C:\")
 SetWindowText(hwndC, "RollMusic Cancion: " + NombreCancion)
 
 
+print #1,"cargarDirectorioCancion ", NombreCancion 
 ' aca NombreCancion contiene el path tambien....
 'Sleep 100
 End Sub
@@ -437,11 +483,15 @@ End Function
 Sub copiarATemp ( titulo As String, pista As String)
 Dim As String destino 
 destino=NombreCancion+"\Temp\"+pista
+Print #1,"en copia titulo", titulo
+Print #1,"en copia pista", pista
 
 copyFileA (StrPtr(titulo),StrPtr(destino),TRUE)
+print #1,titulo, destino   
 End Sub
 '
 Sub BorrarPista (titulo As String)
+'Print #1, "me piden borrar ", titulo
 deleteFileA (StrPtr(titulo))
 
 End Sub
@@ -481,7 +531,14 @@ ErrorNumber1 = Err
 ErrorLine1 = Erl
 
 If ErrorNumber1 > 1 And ContadorError < 101 Then
+Print #1,"------------------------------------"
   ContadorError=ContadorError+1
+  Print #1,"ErrorControl ContadorError ",ContadorError
+  Print #1,"ErrorNumber1 ",ErrorNumber1
+  Print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
+  Print #1,"Error Function: "; *Erfn()
+  Print #1, "mensaje, Ermn ", *Ermn, Ermn
+  Print #1,"------------------------------------"
 
 EndIf
  Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
