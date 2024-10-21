@@ -1,6 +1,7 @@
-            If NombreCancion > "" And S5=0 Then 
-               SetForegroundWindow(hwndC)
-            EndIf
+On Error Goto errorhandler
+         If NombreCancion > "" And S5=0 Then 
+            SetForegroundWindow(hwndC)
+         EndIf
          Select Case EventNumber
             'CON ROLL , SIN ROLL
            Case 1006, 10061   '<=========== CARGAR CANCION con roll, o sin Roll
@@ -146,7 +147,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 ' preparamos para grabar la pista por cambio de patch
            CTRL1015 ()
 '-----------------------------------------------------------------------
-           Case 1016 '<============Cargar MIDI-IN
+           Case 1016 '<============Cargar MIDI-IN CARGAR PISTAS DE EJECUCION *.EJEC
 ' deberia borrar la cancion cargada ??? creo que si totdavia no ejecuta
 ' ambas cosas a la vez,,,,,debo almenos poner dos opciones mas
 ' borrar cancion cargada y borrar ejecucion cargada
@@ -199,7 +200,11 @@ DeleteListBoxItem(LISTA_DE_EJECUCIONES,GetItemListBox(LISTA_DE_EJECUCIONES))
            
 '             Exit Select  
 '-----------------------------------------------------------------------
-           Case 10181 '  cargar archivo midi plano sin fracturacion 
+           Case 10181, 1018 '  cargar archivo midi plano sin fracturacion 
+         Dim As Integer externo=0 ' sin fracturacion
+         If EventNumber = 10181 Then externo=0 EndIf
+         If EventNumber = 1018 Then externo=1 EndIf
+ 
        If  abrirRollCargaMidi =0 Then
            CANCIONCARGADA=False
            ''cargaCancion=0  
@@ -211,7 +216,7 @@ DeleteListBoxItem(LISTA_DE_EJECUCIONES,GetItemListBox(LISTA_DE_EJECUCIONES))
        abrirRollCargaMidi=1 'solo una vez levanta roll grafico
        Sleep 100
          nombre="" 
-         Dim As Integer externo=0 ' sin fracturacion
+
          cargarMidiPlano (externo)
          repro=0  
         SetForegroundWindow(hwnd)
@@ -408,7 +413,7 @@ DeleteListBoxItem(LISTA_DE_EJECUCIONES,GetItemListBox(LISTA_DE_EJECUCIONES))
                CTRL1071(hmessages)
 
           SetForegroundWindow(hwnd)
-            Case 1074 ''<== Parametros de Roll y Track(0) en memoria
+           Case 1074 ''<== Parametros de Roll y Track(0) en memoria
 
 '-----------------------------------------------------------------------
            Case 1080 ' tempo
@@ -427,6 +432,7 @@ DeleteListBoxItem(LISTA_DE_EJECUCIONES,GetItemListBox(LISTA_DE_EJECUCIONES))
            Case 1090 ' Reproducir cancion
 SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
          If CPlay = 0 And MaxPos > 2 Then
+            GrabarPenta=0:naco=0:naco2=0 ''dela version F jmgjmg
             CPlay=1
             If NombreCancion > "" Then
                If play=1 Or playb=1 Then
@@ -454,23 +460,33 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
              SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1092 ' abrir un midi-in ...con callback
+'Reproducir MIDI-IN (teclado) por  MIDI-OUT. Abre Puerto MIDI-IN
 ' no depende del numero de pista de ejecucion,sino del portin solamente,,,
 ' es para tocar en un teclado midi y poder escuchar o grabar
-'Reproducir MIDI-IN (teclado) por  MIDI-OUT. 
+'Reproducir MIDI-IN (teclado) por  MIDI-OUT. Abre Puerto MIDI-IN
              CTRL1092 ()
 
 '----------------------------------------------------
            Case 1093
-'Detener Reproduccion MIDI-IN (teclado) por  MIDI-OUT. (test de Input) 
-             abrirMIDIin=2
+'Detener Reproduccion MIDI-IN (teclado) por  MIDI-OUT. (test de Input)
+ 'cierro port de entrada solamente no los out que pueden ser de una pista con datos 
+  ''           abrirMIDIin=2
            For  i As Short =1 To 32
-               If CheckBox_GetCheck( cbxgrab(i))= 1  Then
-                   cancel_callback(midiin(pmTk(i+32).portin )) ' porque lso port fisicos empiezan desde cero
-                   listinAbierto( pmTk(i+32).portin) = 0
+               If CheckBox_GetCheck( cbxgrab(i))= 1   Then
+                   cancel_callback(midiin(tocaparam(i).portin )) ' porque lso port fisicos empiezan desde cero
+                   listinAbierto( tocaparam(i).portin) = 0
                   teclado=0
-              EndIf
-           Next i 
 
+              EndIf
+           Next i
+ ' habilito para grabar en otro port o el mismo solo 
+ ' se debe abrir el por midi in de nuevo si es el mismo 
+ ' se aabre directametne y si es otro se selecciona 1ero otro midi in
+' pero depues del 1er cierre de los port midi in estos menues
+' deben quedar habilitados... solo son par midi-in no afecta a midi-out
+
+             SetStateMenu(hmessages,1092,0)
+             SetStateMenu(hmessages,1093,0)
 '-----------------------------------------------------------------------
            Case 1100 '<======== usar o no, marco de ventana de Roll
 '0 - the menu is active, the checkbox is not selected
@@ -638,20 +654,23 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
 ' los tracks pero probarmos usar distintos solo que no tengo 2 port sanos para probar en este momento 
 ' el port de la tarjeta no anda y estoy entrando por USB midi cable 
 ' portin  'GLOBAL ULTIMO PUERTO IN SELECCIONADO, por omision el cero
-' si solo hay ejecuciones .....
-           CTRL1200 ()
- 
+' si solo hay ejecuciones ...
+' 26-09-2024 ..probaremos port virtuales para grabar
+'  desde otra aplicacion
+           CTRL1200 (hmessages)
+' queda la duda de si debo abrir y cerar puertos midi-in  
       
-'           Case 1201 'Abrir      Puertos MIDI-IN
-'              listinAbierto(npi)=1
-'           Case 1202'Cerrar    Puertos MIDI-IN
-           Case 1203 'DesTruir Puertos MIDI-IN
+           Case 1201 'Abrir      Puertos MIDI-IN
+              listinAbierto(npi)=1
+           Case 1202'Cerrar    Puertos MIDI-IN
+
+'''           Case 1203 'DesTruir Puertos MIDI-IN
 
            Case 1204 'Seleccionar      Puertos MIDI-OUT PARA EJECUCIONES
 ' seleccion de portout , 1:portout. ntkp:salida
 ' ->  npo: numero port salida
 ' portsin es la cantidad de ports que hay de entrada
-            CTRL1204 ()
+            CTRL1204 (hmessages )
  
 
            Case 1205'Abrir      Puertos MIDI-OUT EJECUCIONES
@@ -688,7 +707,7 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
 
           SetForegroundWindow(hwnd)
 '---------------------------------------------------------------------
-          Case 2002  'MUESTRA FIGURAS DISPONIBLES
+           Case 2002  'MUESTRA FIGURAS DISPONIBLES
           Dim As integer eventFig
            Dim As HWND Figimg
 

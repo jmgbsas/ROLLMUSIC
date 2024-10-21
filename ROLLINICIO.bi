@@ -1,42 +1,82 @@
-'============================================================
-' ROLLMUSIC SECUENCIADOR CON PISTAS DE INGRESO POR PASOS O EJECUCION POR TECLADO  
-'============================================================
-'
-'    RollMusic - Is a Roll Sequencer and Editor with letters as note simbols.
-'    Copyright (c) 2021 Jose M Galeano     
-'
-'    This program is free software; you can redistribute it and/or modify
-'    it under the terms of the GNU General Public License as published by
-'    the Free Software Foundation; either version 2 of the License, or
-'    any later version.
-'
-'    This program is distributed in the hope that it will be useful,
-'    but WITHOUT ANY WARRANTY; without even the implied warranty of
-'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'    GNU General Public License for more details.
-'
-'    You should have received a copy of the GNU General Public License along
-'    with this program; if not, write to the Free Software Foundation, Inc.,
-'    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-'
-'    Contact, mail:galeanoj2005@gmail.com
-'
-'    Author: Jose Maria Galeano, 18 September 2024
-'  
-'
-'This General Public License does not permit incorporating your program into
-'proprietary programs.  If your program is a subroutine library, you may
-'consider it more useful to permit linking proprietary applications with the
-'library.  If this is what you want to do, use the GNU Lesser General
-'Public License instead of this License.
-'
-' -----flag compilacion-------------------------
+' 149 corregi la entrada de port y salada para las ejecuciones,,, ver si anda para cancion,,,
+' lo importante es que toque en varios lados del codigo el pvalor de portin y portout
+' y hay diferencia en port reales que se envian a rtmidi comenzando en cero y ports logicos para el 
+' programa que empiezan desde 1 ,,,,verificar que todo funciona,,, a lo mejor sonoalgo o talvez
+' anda mejor porque en varios lados se enviaba al fisico el portout sin restarle 1 verificar exhaustivamnete!!!
+' ============================================
+' apertura de ports en play  
+' tiempoPatron a entero no tiene porque ser double, se graba en archivo
+' Se agrego formar acordes aun sin nota en el lugar elegido, se deb eentrar al duracion
+' Triadas desde Tonica completo Mayor Menor Disminuido formacion y play 
+' fix consumo cpu S5=2 y fueradefoco=0 eliminado
+' Funciona Acorde en Tonica triaca,,Ctrl+clik derecho luego seguir con mayor hasta no inversion
+' SE ELIMINO DE 'Q' la configuracion de tama�os, proporciones y font
+' se agrego nverEscalasAuxiliares y nanchofig a RollMusic.ini
+' se agrego en Ver, si se ven o no las Escalas Auxiliares en el grafico
+' TODO MULTIKEY IR PASANDO DE A POCO PROBANDO A E.SCANCODE MULTIKEY ES UNA BASURA REPITE EL COMANDO MIL VECES
+' paso previo para armar acordes: necesitamos poder INGRESAR CAMBIOS DE ESCALA  y guardarlos en la secuencia
+' pero al tocar se saltean como si no existieran,,,al retroceder o avanzar en la secuencia se debe ir actualizando
+' la escala en uso, esto permite al ingresar un acorder construirlo en base a la escala usada en ese tramo.
+' usaremos xml para leer y escribir musicxml e intercambia rocn otros programas
+' antes que midi despue salgun dia haremos midi no se veremos.... 
+' http://xmlsoft.org/examples/index.html
+' YA cierra todas las sesiones de rollmusic desde control
+' futuro grabar mxold y algo mas para conservar el tama�o de la ventana y el tama�o del font
+' usado por el usuario !!!! OK Y AANDA
+' el borrado de columna esta defectuoso hay que dar 0 y luego 12 x en toda la octava para
+' que borre mejor usaremos marcas de zona para borrar.
+' dejo de andar marcado de zonas porque habia un exit do en COMEDIT=False con mousex>50
+' se movio zonas dentro de mousex> 50 y luefo COMEDIT=false volvio a funcionar
+ ' se intento usar Byte en vez de Ubyte para usar negativos pero hay qu emodificar mucho
+ ' se usara IF variabrlee > 127 par ausar por ejemplo Vol > 127 para indicar escalas...
+ ' Esta nota base...es Tonica 3era 5ta 7ma ...
+ ' uso ctrl+click para ingresar notas nuevas en Edit, sino al pasar a Ctrl-M u otras acciones
+ ' entraba notas no deseadas..
+ ' 11-12-2021 redusco la camtidad de partes a 20 partes_falta (1 To 20), partes_sobra(1 To 20)
+ ' rooloop 2673 menu contextual acordes desarrollo 06-12-2021
+ ' correccion Clcik end EDIT 06-12-2021 s3=0 movido a y > 50 
+ ' correccion de abrir nota si menor=mayor no hace nada, allevantar click rompia todo
+ ' v23 fraccionar automaticamente en COMEDIT cursor al poner notas menores o 
+ ' mayores en duracion a otra nota en acorde existente, tambien armar acordes desde una nota
+ ' existente como tonica mayores menores etc,,buscar al tonica si consideramos es una 3era
+ ' o una 5ta..
+ ' V22 agregamso menu contextual en lectura con click derecho para acordes falta desarrollar
+ ' v22  SetStateMenu(hmessages,1102,3) o  SetStateMenu(hmessages,1103,0) check items menu
+ ' V22 abrir nota se ajuto final dejaba una columna vacia
+ ' V21 SE AJSUTO MOVER LA VENTANA DRAGANDO LA CINTA SUPERIOR FUNCIONA MEJOR
+ ' V21 TREADdETACH DE tHEREADlOOP Y THREAD1 PLAY CLOSE PORTS ETC EN EL CIERRE DE CONTROL 
+ 'V21 ESTRUCTURO ACORDESONIGUALES Y COLOCO ALLOF EN VARIAS PARTES,Q,FIN PLAY, P.
+ ' V19 TOCA BASTANTE BIEN ACORDES IGUALES CON SILENCIOS EN SU FORMACION
+ ' Y CALCOMPAS AHROA INCLUYE SILENCIOS 
+ ' v14 ...AOI-NUEVO PERFECTO TODOS LOS ACORDES IGUALES EN ACORDES TODAS LAS POSICIONES DBEN ESAR LLENAS
+ ' CON NOTAS CON SONIDO O SIN SONIDO PERO TODOS CON LA MISMA CANTIDAD DE NOTAS POR AHORA UNAS PODRAN SONAR
+ ' OTRAS NO SEGUIR CON MAS PREUBAS...ANDA OK CON LOS POCOS CASOS QUE TENGO...
+ ' V10 FRACCIONADOR divido la nota seleccionada en n partes 
+  ' v8 fix nucle dur=0 nota=181 sino el borrado de notas anda mal
+  ' toda celda debe tener 0,181 nada de 181,181...eso se cambio
+  ' V7 CRASH DE SPACE EN PLAY, Y VER ACORDES DISTINTOS SI SE PUEDE CAMBIAR UNA NOTA LARGA
+  ' EN 2 CORTAS AUTOAMTICAMENTE PARA PONER EN ACORDE OTRAS 2 MAS CHIVAS EL:
+  ' P    ==> L+I* || DISCERNIR (1) |P|     DE (2)| P   |
+  ' L+I      L+I                   |L| I         | L I |
+  ' EL ULTIMO CASO (2) NO SE PUEDE EN ROLL , EL (1) SI
+  ' O SEA QUE EL PROGRAMA AUTOMATICAMNETE PARTA UNA NOTA LARGA COMO P I O ETC
+  ' FRENTE A OTRAS EN ACORDE MAS CHICAS Y UNIDAS O NO...
+  ' V5 CORREGIDO, V6 CORREGIDO OTRAS COSAS,,QUEDA CRASH DE PLAY CON SPACE...
+  ' 08-11 V5 anda mejor qu ela V4 solo que la ligadura I+I+I la toca como I+I
+  ' LE FALTA UNA NEGRA DE DURACION, EL RESTO LO TOCA BIEN!!!
+  ' SIN TOCAR CASI NADA SOLO ELIMINAR EL ANALISIS DE LIGA EN PLAYALL
+  ' SEGUIR CORREGIR CON EL USO DE LSO CAMPOS NUEVOS Y AL TERMINAR 
+  ' ELIMINAR LOS CAMPOS DE VEC QUE NO SE USEN
+' ------------------------------
 '  -Wc -fstack-usage genera un archivo en runtime *.su con el uso del stack
-' por cada funcion el default total es 1024k, -t 1024 no haria falta colocarlo
+' por cada funcoin el default total es 1024k, -t 1024 no haria falta colocarlo
 ' en la linea de comando
 ' https://gcc.gnu.org/onlinedocs/gnat_ugn/index.html#SEC_Contents
 '====> clave DEVF (desarrollo futuro, comentarios en lugares apr adessarrollar mas
 ' funcionalidades.)
+'============================================================
+' ROLLMUSIC SECUENCIADOR CON PISTAS DE INGRESO POR PASOS O EJECUCION POR TECLADO  
+'============================================================
 ' -------------------------------------------------
 #define __FB_WIN64__
 #if defined (__FB_WIN64__) 
@@ -124,8 +164,10 @@ End Sub
 Sub  porterrorsub(porterror As integer)
           Select Case porterror
             Case RTMIDI_ERROR_WARNING
-              Print #1, "RTMIDI_ERROR_WARNING"
-      
+              Print #1, "RTMIDI_ERROR_WARNING, sin importancia"
+              'strerror(n as integer) as zstring ptr
+              'Print #1, "sterror"; *strerror (porterror)
+
             Case RTMIDI_ERROR_DEBUG_WARNING
               Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
               cerrar 0             
@@ -179,7 +221,7 @@ Sub  porterrorsub(porterror As integer)
 
 
 End Sub
-
+On Error Goto errorhandler
 
 Dim Shared file As OpenFileName
 Dim Shared As String myfilter
@@ -215,7 +257,9 @@ Dim As GLFWwindow ptr  win
 ' ----FIN OPENGL 
 '/
 '===============================
+Print #1,"ANTES ROLLDEC "
 #include "ROLLDEC.BI"
+Print #1,"DESPUES ROLLDEC "
 
 
 '------------------

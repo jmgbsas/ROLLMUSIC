@@ -39,8 +39,8 @@ Declare Sub CTRL1090 ()
 Declare Sub CTRL1092()
 Declare Sub CTRL1111()
 Declare Sub CTRL1112()
-Declare Sub CTRL1200() 
-Declare Sub CTRL1204()
+Declare Sub CTRL1200(hmessages As hmenu) 
+Declare Sub CTRL1204(hmessages As hmenu)
 Declare Sub CTRL1206()
 Declare Sub CTRL_EVENTGADGET ()
 
@@ -185,8 +185,9 @@ Dim Shared  NombreInst(1 to 127) As string * 24 => _
                "TELEPHONE_RING       124" , _
                "HELICOPTER           125" , _
                "APPLAUSE             126" , _
-               "GUNSHOT              127" }
+               "GUNSHOT              127" } ''' ES EL 127 EN COOLSOFT
 
+        '       "SYNTH DRUM           119" , _ '''ESTE NO EXISTE EN VIRTUAL SYHTH TIENE 127 EN VEZ DE 128 INSTRUMENTOS UFF
 Dim Shared  NombreInstAlfa(1 to 127) as string * 24  => _
              { "ACCORDION             22" , _
                "ACOUSTIC_BASS         33" , _

@@ -21,8 +21,10 @@ Declare Function sumar( ByVal ind As integer) As Integer
 'Declare Sub trasponerGrupo(cant As integer)
 'Declare Sub moverZonaRoll(cant As Integer)
 'Declare Sub correcciondeNotas()
+Declare Sub CTRL1205 ()
 
-Dim Shared message(1 To 21) As UByte ' message output ' puede ser de hasta 1024 bytes 
+common Shared message() As UByte 'cambiado a shred message output ' puede ser de hasta 1024 bytes
+Dim message(1 To 21) As UByte 'agregado
 Dim Shared msgin  (1 To 8192) As UByte ' message in futuro secuencia veremos si ahce falta 
 ' maximo seria para un acorde de 5 por ejemplo
 ' 5 notas + velocidad y canal = 7 bytes...para note on
@@ -31,7 +33,8 @@ Dim Shared msgin  (1 To 8192) As UByte ' message in futuro secuencia veremos si 
 ' 20 mas canal = 21 bytes...maximo 
 ' podriamos agregar presion promedio aftertouch etc pero serin mensajes independientes 
 'Dim errorString As ZString Ptr
-Dim Shared p as UBYTE Ptr = @message(1) 
+Common Shared p as UBYTE Ptr 'cambiado a shared
+p= @message(1) 
 Dim size As UInteger<64> 
 'Dim sizeptr As UInteger<64> Ptr = @size
 Dim Shared As UInteger portsin=0, portsout =0 'constantes, 

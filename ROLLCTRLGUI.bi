@@ -1,4 +1,5 @@
 'ROLLCTRLGUI... GUI DE VENTANA DE CONTROL
+On Error Goto errorhandler
 Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8,MenName10
 Static Shared As HMENU MenName31,MenName32,MenName18,MenName19 
 
@@ -8,6 +9,9 @@ If instancia < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic C
   
   hwndC = OpenWindow("RollMusic Ctrl V "+ nroversion,10,10,ANCHOSYSTEM*0.91 ,ALTOSYSTEM*0.91, _
    WS_OVERLAPPEDWINDOW Or WS_VISIBLE ,  WS_EX_ACCEPTFILES   )
+' cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS cancion
+'cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_E,1016) 'CTRL+E ABRIR PISTAS ejecucion
+
   'CenterWindow(hwndC)
 ''UpdateInfoXserver()
 Var bitmap = Load_image("fondo.bmp")
@@ -123,27 +127,27 @@ SetGadgetColor(CHECK_GRABAR_EJECUCION,cint("&HC0C0C0"),0,1)
 GroupGadget(GRUPO_BTNS_MIDI,445,0,113,40,"")
 
 ButtonImageGadget(BTN_MIDI_PARAR,450,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
-GadgetToolTip(BTN_MIDI_PARAR,"Parar ejecucion o grabacion midi")
+GadgetToolTip(BTN_MIDI_PARAR,"DETENER ejecucion o grabacion midi")
 
 ButtonImageGadget(BTN_MIDI_GRABAR,490,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
-GadgetToolTip(BTN_MIDI_GRABAR,"Grabar midi")
+GadgetToolTip(BTN_MIDI_GRABAR,"GRABAR ejecucion midi")
 
 ButtonImageGadget(BTN_MIDI_EJECUTAR,530,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
-GadgetToolTip(BTN_MIDI_EJECUTAR,"Ejecutar Grabacion midi")
+GadgetToolTip(BTN_MIDI_EJECUTAR,"EJECUTAR Grabacion midi")
 
  TextGadget(21,570,12,95,20,"         ")
 ' pistas manuales  PARA CARGAR CANCION DESDE DIRECTORIO PISTAS ECHAS CON ROLL
 GroupGadget( GRUPO_BTNS_MANUAL,95,0,113,40,"") 'play cancion
-GadgetToolTip(GRUPO_BTNS_MANUAL,"Parar Cancion, Ejecutar Canion, Grabar midi en Roll ")
+GadgetToolTip(GRUPO_BTNS_MANUAL,"DETENER Cancion, Ejecutar Cancion, Grabar midi en Roll ")
 
 ButtonImageGadget(BTN_ROLL_PARAR, 100,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
-GadgetToolTip(BTN_ROLL_PARAR,"Parar ejecucion cancion o Grabacion midi sobre Roll")
+GadgetToolTip(BTN_ROLL_PARAR,"DETENER ejecucion cancion o Grabacion midi sobre Roll")
 
 ButtonImageGadget(BTN_ROLL_EJECUTAR, 140,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
-GadgetToolTip(BTN_ROLL_EJECUTAR,"Ejecutar cancion o Grabacion midi ")
+GadgetToolTip(BTN_ROLL_EJECUTAR,"EJECUTAR cancion Tracks, o Grabacion midi Roll ")
 
 ButtonImageGadget(BTN_ROLL_GRABAR_MIDI, 180,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
-GadgetToolTip(BTN_ROLL_GRABAR_MIDI,"Grabar midi en Roll")
+GadgetToolTip(BTN_ROLL_GRABAR_MIDI,"GRABAR midi en Roll")
 
 
  'rbparar = RadioButton_New( 450 , 10, 40, 20, "P",BS_LEFTTEXT , hwndC) '65
@@ -259,8 +263,8 @@ MenuItem(1015,MenName1, "5.0 MIDI-IN Grabar Pistas ejecucion")
 MenuItem(1016,MenName1, "5.1 MIDI-IN Cargar Pistas ejecucion")
 MenuItem(1017,MenName1, "5.2 Renombrar Pista ejecucion seleccionada")
 
-MenuItem(10181,MenName1,"5.3 Cargar un archivo plano midi(puede no ser exacto)")
-
+MenuItem(10181,MenName1,"5.3 Cargar txt plano midi generado por RollMusic")
+MenuItem(1018 ,MenName1,"5.4 Cargar txt plano midi externo, MUY INEXACTO")
 Menubar(MenName1)
 MenuItem(1019,MenName1, "    Salir")
 
@@ -338,8 +342,8 @@ Negras por minuto	 tempo
   
 MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
 MenuItem(1091,MenName6,"Fijar Repeticiones de un numero de Compases elegido como zona")
-MenuItem(1092,MenName6,"Reproducir MIDI-IN (teclado) por  MIDI-OUT.  ")
-MenuItem(1093,MenName6,"Detener Reproduccion MIDI-IN (teclado) por  MIDI-OUT. (test de Input) ")
+MenuItem(1092,MenName6,"Reproducir MIDI-IN (teclado) por  MIDI-OUT. Abre Puerto MIDI-IN ")
+MenuItem(1093,MenName6,"Detener Reproduccion MIDI-IN (teclado) por  MIDI-OUT. (test de Input) Cierra Puerto MIDI-IN")
 
 
 MenuItem(1100,MenName7,"Usar MARCO de Ventana Para el Gráfico",MF_UNCHECKED)
@@ -360,12 +364,12 @@ MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
 Menubar(MenName7)
 MenuItem(1113,MenName7,"Usar metronomo para Tocar MIDI-IN)",MF_CHECKED)
 
-MenuItem(1200,MenName8,"Puerto MIDI-IN Ejecucion")
-' MenuItem(1201,MenName8,"Na. Abrir      Puerto MIDI-IN")
-' MenuItem(1202,MenName8,"Na. Cerrar    Puerto MIDI-IN")
-' MenuItem(1203,MenName8,"Na. DesTruir Puerto MIDI-IN")
+MenuItem(1200,MenName8,"Seleccion Puerto MIDI-IN Ejecucion")
+'MenuItem(1201,MenName8,"Abrir  Puerto MIDI-IN")
+'MenuItem(1202,MenName8,"Cerrar Puerto MIDI-IN")
+'MenuItem(1203,MenName8,"Na. DesTruir Puerto MIDI-IN")
 Menubar(MenName8)
-MenuItem(1204,MenName8,"Puerto MIDI-OUT Ejecucion")
+MenuItem(1204,MenName8,"Seleccion de Puerto MIDI-OUT Ejecucion")
 MenuItem(1205,MenName8,"Abrir  Puertos MIDI-OUT Ejecucion")
 MenuItem(1206,MenName8,"Cerrar Puertos MIDI-OUT Ejecucion")
 'MenuItem(1207,MenName8,"Na. DesTruir Puertos MIDI-OUT")
@@ -386,5 +390,53 @@ MenuItem(2002,MenName10,"Cuadro de Figuras de duracion de notas")
 ' Y SI PONES MARRON COMO ES EL CASO SALE AZUL JAJAJA
 ' PARECE QUE NO ES RGB SINO BGR
 ' O SEA USA BGR NO RGB ,BGR EXISTE
+''OJO EL MENU "ROLLCTRLGUI.BI" ES REENTRANTE TODO ESTO SE EJECUTA
+'' COMO SI ESTUVIERA EN UN LOOP
+' ERGO TODAS ESTAS CONDICIONES INICIALES SE REPITEN
+' LAS PASAMOS A ROLLCONTROLGUI.BI
+' default de FRACCIOANR autodur 
+   usarAcordesIguales=1
+   TipoFrac="autodur"
+metronomo_si=1
+usarmarcoins=0
+usarmarco=0 
+If com_usarmarco =0 Then
+   usarmarco=0
+   usarmarcoOld=0   
+Else
+   usarmarco=com_usarmarco  
+   usarmarcoOld=usarmarco
+EndIf
+' condicion inicial para ver o no escalas auxiliares en el grafico
+Select Case nVerEscalasAuxiliares
+  Case 0             
+       SetStateMenu(hMessages,1070,0)
+  Case 3
+       SetStateMenu(hMessages,1070,3)
+End Select
+
+' condicion inicial para ver o no cifrado acorde  en el grafico
+Select Case nVerCifradoAcordes
+  Case 0             
+       SetStateMenu(hMessages,1071,0)
+  Case 3
+       SetStateMenu(hMessages,1071,3)
+End Select
+' al inicio por omision patrones deshabilitados
+     SetStateMenu(hmessages,1064,1)
+     SetStateMenu(hmessages,1065,1)
+     SetStateMenu(hmessages,1066,1)
+' AL INICIO DESHABILITADOS 2.1 Y .2.2 AUNQUE AL CLIQUEAR NO PASA NADA
+  SetStateMenu(hmessages,10062,1)
+  SetStateMenu(hmessages,10063,1)
+  '' habilito grabar cancion punto 2) SetStateMenu(hmessages,1007,1)
+
+  SetStateMenu(hmessages,1009,1)
+'' sin seleccionar portin y portout no se permite abrir midiin teclado
+  
+'   Print #1,"deshabilita 1092 y 1093  al inicio >>>>>>>>>>>>>"
+    SetStateMenu(hmessages,1092,1)
+    SetStateMenu(hmessages,1093,1)
+
 
 End If

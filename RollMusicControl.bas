@@ -1,36 +1,3 @@
-'============================================================
-' ROLLMUSIC SECUENCIADOR CON PISTAS DE INGRESO POR PASOS O EJECUCION POR TECLADO  
-'============================================================
-'
-'    RollMusic - Is a Roll Sequencer and Editor with letters as note simbols.
-'    Copyright (c) 2021 Jose M Galeano     
-'
-'    This program is free software; you can redistribute it and/or modify
-'    it under the terms of the GNU General Public License as published by
-'    the Free Software Foundation; either version 2 of the License, or
-'    any later version.
-'
-'    This program is distributed in the hope that it will be useful,
-'    but WITHOUT ANY WARRANTY; without even the implied warranty of
-'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'    GNU General Public License for more details.
-'
-'    You should have received a copy of the GNU General Public License along
-'    with this program; if not, write to the Free Software Foundation, Inc.,
-'    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-'
-'    Contact, mail:galeanoj2005@gmail.com
-'
-'    Author: Jose Maria Galeano, 18 September 2024
-'  
-'
-'This General Public License does not permit incorporating your program into
-'proprietary programs.  If your program is a subroutine library, you may
-'consider it more useful to permit linking proprietary applications with the
-'library.  If this is what you want to do, use the GNU Lesser General
-'Public License instead of this License.
-'
-'------------------------------------------------------------------
 ' este es  un modulo no es un include asi se podria hacer mas modulos...
 '  o sacar algunos de include en elmain
 #Define __FB_WIN64__
@@ -91,7 +58,7 @@ Common Shared As FT_Face ftface
 common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu ,threadmetronomo,threadsel,threadcanal
 Common Shared As Any Ptr thread4
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig
-Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes, HabilitarPatrones
+Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes, HabilitarPatrones,HabilitarMIDIIN
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Common Shared  portsal As UByte, patchsal As ubyte
@@ -101,6 +68,8 @@ Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As plano miditxt()
 Common Shared As Integer gp ,midiplano,midionof
+'common Shared message() As UByte 'cambiado a shred message output ' puede ser de hasta 1024 bytes
+'Dim message(1 To 21) As UByte 'agregado
 
 Const As BOOLEAN HABILITAR = TRUE
 Const As BOOLEAN DESHABILITAR = FALSE
@@ -250,13 +219,13 @@ Posy=y0 +100
 ' la seleccion empieza de 1, no devuelve 0 para el 1er elemento 
  
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("INSTRUMENTOS PATCH POR ORDEN ALFABETICO",500,Posy,700,600, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("PATCH POR ORDEN ALFABETICO CLICK EN UN ITEM  Y EN CAMBIA",500,Posy,700,600, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
      'Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
      ' commctrl.bi modificado
      hwl=  ListViewGadget(1,10,10,500,500,,,,32,LVS_SINGLESEL )
      
      AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
-     AddListViewItem(1, "CLICK EN UN ITEM  Y EN CAMBIA",0,aa,0)
+    '' AddListViewItem(1, "CLICK EN UN ITEM  Y EN CAMBIA",0,aa,0)
      
        For aa =1 To 127 
                i2=InStrrev(NombreInstAlfa(aa)," ")
@@ -288,7 +257,7 @@ Posy=y0 +100
          Var eventAlfa= waitEvent
          If eventAlfa=EventLBDown Then ' 26-02-2022
             If EventNumberListView=1 Then
-               i1 = GetItemListView()
+               i1 = GetItemListView() +1
                cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
                If InStr(cad,"x")>0 Then
                  cad="[ ] " +NombreInstAlfa(i1) 
@@ -336,7 +305,7 @@ Sub selInstORdenNum (ByRef instru As integer) ' NO TIENE EN CUENTA EL TIPO NI GR
 '   Exit Sub
 'EndIf
 Dim As hwnd haw,hwl
-Dim As Integer aa=0 ,paso=0,x=0, Posx,Posy ,x0,y0 
+Dim As Integer aa=0 ,paso=0,x=0, Posx,Posy ,x0,y0,i2 
 Dim As String cad
 ScreenControl GET_WINDOW_POS, x0, y0
 Posx=x0 +50
@@ -344,14 +313,14 @@ Posy=y0 +100
 
  
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("INSTRUMENTOS PATCH ORDEN NUMERICO",500,Posy,700,600, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("PATCH ORDEN NUMERICO CLICK EN UN ITEM  Y EN CAMBIA",500,Posy,700,600, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
      'Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
      ' commctrl.bi modificado
 Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
      hwl=  ListViewGadget(1,10,10,500,500,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL )
      
      AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
-     AddListViewItem(1, "CLICK EN UN ITEM  Y EN CAMBIA",0,aa,0)
+    
            If patchsal > 0 Then ' ya habia un instrumento es un cambio 
               instru=CInt(patchsal) ' 
            EndIf
@@ -381,7 +350,7 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
          Var eventNum= waitEvent
          If eventNum=EventLBDown Then ' 26-02-2022
             If EventNumberListView=1 Then
-               instru = GetItemListView()
+               instru = GetItemListView() +1
                cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
                If InStr(cad,"x")>0 Then
                  cad="[ ] " +NombreInst(instru) 

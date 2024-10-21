@@ -1,85 +1,21 @@
-'============================================================
-' ROLLMUSIC SECUENCIADOR CON PISTAS DE INGRESO POR PASOS O EJECUCION POR TECLADO  
-'============================================================
-'
-'    RollMusic - Is a Roll Sequencer and Editor with letters as note simbols.
-'    Copyright (c) 2021 Jose M Galeano     
-'
-'    This program is free software; you can redistribute it and/or modify
-'    it under the terms of the GNU General Public License as published by
-'    the Free Software Foundation; either version 2 of the License, or
-'    any later version.
-'
-'    This program is distributed in the hope that it will be useful,
-'    but WITHOUT ANY WARRANTY; without even the implied warranty of
-'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'    GNU General Public License for more details.
-'
-'    You should have received a copy of the GNU General Public License along
-'    with this program; if not, write to the Free Software Foundation, Inc.,
-'    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-'
-'    Contact, mail:galeanoj2005@gmail.com
-'
-'    Author: Jose Maria Galeano, 18 September 2024
-'  
-'
-'This General Public License does not permit incorporating your program into
-'proprietary programs.  If your program is a subroutine library, you may
-'consider it more useful to permit linking proprietary applications with the
-'library.  If this is what you want to do, use the GNU Lesser General
-'Public License instead of this License.
-'
-
 #Include "ROLLINICIO.bi"
 #include "WinGUI.bi"
 #include "RTMIDISUB.bi"
 #Include "ROLLTRACKS.bi"
 #include "ROLLSUB.bi"
-''#Include "ROLLCTRLSUB.Bi"
+
 
 '===========================
  Dim As Integer MenuFlag=0, LoopFlag=0 
-
+'Print #1, "ANTES ROLLLOOP"
 '========================== 
 #include "ROllLoop.bi"
-'========================== 
-' aca puedo llamar a varios thread 1 por vez segun el instrumento editado
-' o sea 1 vector de roll distinto para casa Thread o llamar a cada Vector
-' con el mismo Thread para verlo en pantalla. Se veria 1 por vez o si queremos podriamos
-' ver mas de 1 pero apra eso deberia llamar a roll music mas de una vez 
-' y eso lo haria desde call roll 
-
+'==========================
+' NO GRABA BIEN UNA SEGUNDA PISTA DE EJECUCION MIENTRAS ESCUCHO LA ANTERIOR
+' CAD AUNO CON SU PATCH CORRESPONDIENTE ...NUEVO DESAFIO!!! 19-10-2024  
+' comparar con F:\IT64\AREAWORK\ROLLMUSIC-138-INPUT-OK\ que si funciona graba ejecuciones
 '----------------
 
-'>>>>>>portsout = portout
-'>>>>>*nombreport = ""
-' SE ABRE MAS DE UN PUERTO SI SE DESEA ,,
-' CUANDO TENGA ABIERTO MAS DE UN PUERTO DEBERE ASIGNAR CIERTOS PUERTOS A CADA PISTA
-' LUEGO EN CADA PISTA PUEDO TENER UN PUERTO O DISPOSITIVO CADA UNO CON SUS 16 CNALES
-' Y EN CADA CANAL SUS 128 INSTRUMENTOS.,,LUEGO VEREMOS ESO DE LOS BANCOS ETC
-   ' nombreport = port_name(midiout, portsout)
-    
-' para abrir un port no hace falta el nombre en el comando ,puede estar en vacio ""
-' por ello vamos a grabar en el archivo el numero de port , podre abrir solo con el nombre
-' sin el numero de port? el nombre identifica mas al dispositivo,,,deber? grabarlo
-' deberia guardar ambos nro port y nombre,,,,ufff
-' si la pc no cambia de configuracion de hardware los numeros serian siempre lso mismos
-' para los ports y no haria falta los nombres, pero debo dejar constancia cual era el dispositivo
-' o los dispositivos usados....para poder elegir el port en el menu debo cerrar el port actual
-' y abrir el otro esto de ponerlo en el inicio esta mal
-
-'Print #1,"  VA A ABRIR EL PORT portsout, nombreport ",portsout, *nombreport
-'open_port (midiout, portsout, nombreport)
-
-'print #1,"  "
-'If Roll.trk(1,NA).inst > 0 Then
-' ChangeProgram ( Roll.trk(1,NA).inst , 0)
-'EndIf
-' print #1,"ChangeProgram inst ", Roll.trk(1,NA).inst
-'Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
-'Print #1,"INSTANCIA ",instancia
-' carga de opciones iniciales RollMusic.ini
 
 ''https://www.freebasic.net/forum/viewtopic.php?f=3&t=22821&p=204270&hilit=loop+through+an+array+with+the+pointer#p204270
 
@@ -139,7 +75,7 @@ Dim hnro As Integer
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
-nroversion="2024-09-18 0.4631" 
+nroversion="2024-10-18 0.4636" 
 acercade = "RollMusic Version "+ nroVersion +" Jose M Galeano, Buenos Aires Argentina 2021-2022, 2024. Ejecuta secuencias " + _
  "entrada por pasos usando algoritmos sin una linea conductora de tiempos, se basa en las duraciones de las notas. " + _
  "Para entrada por teclado midi usa ticks. Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
@@ -147,56 +83,15 @@ acercade = "RollMusic Version "+ nroVersion +" Jose M Galeano, Buenos Aires Arge
  "Usa Cairo como libreria de graficos, Windows9 ,WinGUI y Gtk como GUI; Rtmidi como libreria midi, " + _
  "Editor de c digo FbEdit. Echo en Freebasic como hobby. FreeBASIC Compiler - Version 1.09.0 (2021-12-31), built for win64 (64bit) " + _
 " Copyright (C) 2004-2021 The FreeBASIC development team." +_ 
-" Consultas: mail:galeanoj2005@gmail.Este programa está publicado bajo la licencia GPL."
+" Consultas: mail:galeanoj2005@gmail.com. Ultima version sin Ticks. La proxima version usara Ticks y no sera compatible "+_
+" con esta version. La carga de un midi plano se complica es inexacta sin Ticks"
  
 '------------///// GUI GUI GUI  GUI ///////////////
+'aca en este menu regresa una y otra vez ergo ejecuta las 
+' condiciones iniciales no es secuencial es por evento
+
 #include Once "ROLLCTRLGUI.BI"
 
-'1) 1200 SELECCIONAR  PUERTO MIDI-IN
-'2) SELECCIONAR PORTSAL,CANAL,PATCH
-'3) 1092 REPRODUCIR MIDI-IN POR MIDI-OUT
-' YA PUEDO GRABAR -...SELECIONAR PORT OUT Y ABRIR NO USO PARECE... 
-
-
-
-' default de FRACCIOANR autodur 
-   usarAcordesIguales=1
-   TipoFrac="autodur"
-metronomo_si=1
-usarmarcoins=0
-usarmarco=0 
-If com_usarmarco =0 Then
-   usarmarco=0
-   usarmarcoOld=0   
-Else
-   usarmarco=com_usarmarco  
-   usarmarcoOld=usarmarco
-EndIf
-' condicion inicial para ver o no escalas auxiliares en el grafico
-Select Case nVerEscalasAuxiliares
-  Case 0             
-       SetStateMenu(hMessages,1070,0)
-  Case 3
-       SetStateMenu(hMessages,1070,3)
-End Select
-
-' condicion inicial para ver o no cifrado acorde  en el grafico
-Select Case nVerCifradoAcordes
-  Case 0             
-       SetStateMenu(hMessages,1071,0)
-  Case 3
-       SetStateMenu(hMessages,1071,3)
-End Select
-' al inicio por omision patrones deshabilitados
-     SetStateMenu(hmessages,1064,1)
-     SetStateMenu(hmessages,1065,1)
-     SetStateMenu(hmessages,1066,1)
-' AL INICIO DESHABILITADOS 2.1 Y .2.2 AUNQUE AL CLIQUEAR NO PASA NADA
-  SetStateMenu(hmessages,10062,1)
-  SetStateMenu(hmessages,10063,1)
-  '' habilito grabar cancion punto 2) SetStateMenu(hmessages,1007,1)
-
-  SetStateMenu(hmessages,1009,1)
 
 ' SE HABILITAN SI USO 2.0 EN SU CASE
 
@@ -292,8 +187,9 @@ If instancia =0  Then  ' cuando es online y recien levanta
 DisableGadget(LISTA_DE_PISTAS,1)
 End If 
 '---------------veremos si aca anda mejor despues de roolloop 
-
+'Print #1, "ANTES ROLLCTRLSUB.Bi"
 #Include "ROLLCTRLSUB.Bi"
+'Print #1, "DESPUES ROLLCTRLSUB.Bi"
 '----------------
 Do
   COMEDIT = False
@@ -369,7 +265,7 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
 'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
  ''win = glfwCreateWindow(800,600,"Track OPENGL" )
 '' Dim ta As Any Ptr = threadcall correwin(win,ta)
-
+ 
     Do
        'If  repro=1 Then ' damos mas recursos si hay play de PlayTocaAll y mas si hay tambien playAll o PlayCancion
        '    Sleep 10
@@ -378,10 +274,10 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
 ' AVISO TRATAR DE USAR SetWindowCallback PARA LIBERAR EL LOOP DE  CARGA
 ' ********************************************************************
 ' esto solo se debe ejecutar 1) si se cargo ejec, 2) si se creo una ejec 
-      If tocatope < 32  And CANCIONCARGADA=TRUE  Then   
-           
+'''      If tocatope < 32  And CANCIONCARGADA=TRUE  Then   
+      If tocatope < 32   Then           
          For k=1 To tocatope+1
-           
+         ' al inicio lim sup del for = 1   
           If CheckBox_GetCheck( cbxgrab(k))= 1 Then
              ultimo_chequeado= k 
              If tocaparam(k).nombre="" And k= tocatope+1 Then 
@@ -399,7 +295,7 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
                         tocaparam(ntoca).nombre=nombrePatron
                      Else
                       Dim nompista As String
-                        EntrarNombrePista nompista  
+                        EntrarNombrePista (nompista)  
                         tocaparam(ntoca).nombre = Mid (nompista ,1,29)
                      EndIf
                      ntkp=ntoca 
@@ -430,6 +326,7 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
                          Titulos(ntoca+32)="("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
                   EndIf
               EndIf
+
               Exit For
              End If 
           EndIf
@@ -450,6 +347,7 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
 
      Select Case EVENTC 
        Case EventMenu
+
 '''' //////////////////////////  EVENT EVENT EVENT /////////
           #Include "ROLLCTRLEVENTMENU.BI"
 '-----------------------------------------------------------------------
@@ -468,15 +366,15 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
      ' If ix < 3 Then 
     '  'DisableGadget(LISTA_DE_PISTAS,0)
     '  EndIf  
-Print #1,"antes  ctrl_eventgadget  nombreMidiIn ", nombreMidiIn
+'Print #1,"antes  ctrl_eventgadget  nombreMidiIn ", nombreMidiIn
     '  CTRL_EVENTGADGET()
    #Include "ROLLCTRLEVENTGADGET.bi"  
-Print #1,"despues de ctrl_eventgadget  nombreMidiIn ", nombreMidiIn
+'Print #1,"despues de ctrl_eventgadget  nombreMidiIn ", nombreMidiIn
 '--------------------------------------------------------
     '  If ix < 3 Then   
     '  'DisableGadget(LISTA_DE_PISTAS,1)
     '  EndIf
-           Exit Do
+'''           Exit Do ''ESTA DEMAS CREO
 
 '      SetForegroundWindow(hwnd)
 '////////// PULSAR TECLAS EN VENTANA MODO CONTROL NO GRAFICO DE ROLL /////
@@ -498,8 +396,8 @@ Print #1,"despues de ctrl_eventgadget  nombreMidiIn ", nombreMidiIn
         Exit Do ,Do    
 
      End Select
-     Sleep 5 ' 
-   Loop
+     ''' NO ESTA EN VERION F Sleep 5 ' 
+    Loop
 '-----------------------------------------------------------------------
   Else
       param.titulo ="RollMusic Editor" ' esto no sale si no hay marco

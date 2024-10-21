@@ -1,4 +1,4 @@
- 
+ On Error Goto errorsub
 '#Include "foro/window9.bi" no hace falta parece
 
 'extern "c++"
@@ -1411,7 +1411,7 @@ End Select
 
 End Function
 Sub sacanumeros( linea As String, cabeza() As Integer)
- Dim As Integer n=Len(linea), i1=0, num, k1=0 
+ Dim As Integer n=Len(linea), i1=0, num, k1=0,i2 
  Dim ch As String * 1 
  Dim res As String
  
@@ -1421,20 +1421,27 @@ Sub sacanumeros( linea As String, cabeza() As Integer)
    If  k1= 2 Then
        linea = Mid(linea, i1)
        k1=k1+1
-       Print #31, "queda "; linea 
-       cabeza(k1)=ValInt(linea)     
+       Print #1, "queda "; linea 
+       cabeza(k1,1)=ValInt(linea)
+       cabeza(k1,2)=i1     
    Else   
         If ch = " " Then
           num=ValInt(res) 
           res=""
           If num> 0 Then
              k1=k1+1
-             cabeza(k1)=num
+             cabeza(k1,1)=num
+             cabeza(k1,2)=i1 -i2
+             i2=0  
           EndIf
+        Else
+         i2=i2+1  
         EndIf
   EndIf  
  Next i1 
-
+For i1=1 To 3
+ Print #1, "cabeza ";i1;" ";cabeza(i1,1);" ";cabeza(i1,2)
+Next i1
 End Sub
 
 Sub buscarsuon (k1 As Integer,  midi() As Nproc, nota As UByte, ByRef h2 As Integer, primeron As integer) 
@@ -1461,7 +1468,7 @@ h2=h1
 Print #31," sale a bo  midi(15).volum "; midi(15).volum
 End Sub
 
-Sub cargarMidiPlano (externo As integer)
+Sub cargarMidiPlano (externo As Integer)
 On Local Error Goto fail
 
 '1) reconstruimos las duraciones de las notas calculando la diferencia de los delta
@@ -1493,9 +1500,12 @@ On Local Error Goto fail
 ' FiguraEquivalente y esa duracion equivalente es la que cargaremos en Track o en un  Roll
 ' creo que en un track es mas facil que es lo que se implemento, luego lo pasaremos a Rol
 ' con TrackARoll ... y lo tendremos en pantalla ...
+Dim CantEventos  As Integer
+IgualaMidiPlano(externo, CantEventos)
 
-IgualaMidiPlano(externo)
 fileflush(-1)
+
+ReDim (Track(00).trk ) (1 To CantEventos, 1 To lim3)
 
 Open "CARGAPLANO.TXT" For Output As 31
 Print #31,"en cargar midi plano "
@@ -1510,11 +1520,11 @@ Print #31, "seguimos procesando  midi plano "
 
 Dim As String linea
 Dim As Integer j1 , i1 ,i2, acumnew,acumold=999, numTrk, trkend,h1,primeronEncontrado
-Dim   As Integer negra,incremento, principio, notacant, diferencia
+Dim As Integer negra,incremento, principio, notacant, diferencia
 Dim As UByte  mfile,esOn,esnota, esch, esvol, canal, nota, _
-                     r1,cantTrk, tipoMidi,inicioTrk, compas,trkname,seqname,durp
+              r1,cantTrk, tipoMidi,inicioTrk, compas,trkname,seqname,durp
 Dim As Double durx, razon
-For j1=1 To  CantTicks 
+For j1=1 To  CantEventos 
   For  i1=1 To  lim3 
 Track(00).trk (j1,i1 ).nota = 181
 Track(00).trk (j1,i1 ).dur = 0
@@ -1527,7 +1537,7 @@ Next j1
 
 'LA CANTIDAD DE NOTAS SU ORDEN Y NUMEROS ESTA PERFECTO
 ' CORREGIR LAS DURACIONES , falta ahora convertir a duraciones de rollmusic
-Dim As Integer cabeza (1 To 3)  
+Dim As Integer cabeza (1 To 3, 1 To 2)  
 
 '''Static As  NProc midi (1 To 8000)   ' 9 octavas serian 108 + 1 de relleno ctrls
 Dim As  Integer k1=0
@@ -1548,10 +1558,10 @@ Dim As  Integer k1=0
     If midi(k1).Mfile > 0 Then
           Print #31, "INPUT "; linea 
           sacanumeros (Mid(linea,6), cabeza() )
-          midi(k1).Tipo= cabeza(1)
-          cantTrk=cabeza(2)
-          midi(k1).valFig=cabeza(3) 'este valor es por una negra no importa que. 
-          negra  = cabeza(3)
+          midi(k1).Tipo= cabeza(1,1)
+          cantTrk=cabeza(2,1)
+          midi(k1).valFig=cabeza(3,1) 'este valor es por una negra no importa que. 
+          negra  = cabeza(3,1)
           'If midi(k1).Tipo=1 Then
           '   Print #31,"cantTrk ",cantTrk
           '   For r1=1 To cantTrk 
@@ -1613,6 +1623,9 @@ Dim As  Integer k1=0
  Print #31, "razon "; razon
                If acumnew=acumold Or  razon <=  0.01 Then
                      i1=i1+1
+                     If i1 > 13 Then
+                       i1=1:j1=j1+1 
+                     End If '22-09-2024
                      midi(k1).i1=i1
                      midi(k1).j1=j1
                    Print #31, "i1 incremento vertical   "; i1
@@ -1721,6 +1734,9 @@ numTrk=0
          For  i2=1 To numduras
            If  duras(i2) > 0  Then 
              Print #31, "duras("; i2 ;")"; duras(i2) ; figura (duras(i2))
+             Print #31,  "h1 ";   h1; " i1 ";i1; " i2 "; i2 
+             Print #31, "midi(h1).j1+principio+i2-1 ";midi(h1).j1+principio+i2-1
+         
                Track(numTrk).trk(midi(h1).j1+principio+i2-1,midi(h1).i1).dur    = duras(i2)
                Track(numTrk).trk(midi(h1).j1+principio+i2-1,midi(h1).i1).vol    = midi(h1).volum
                Track(numTrk).trk(midi(h1).j1+principio+i2-1,midi(h1).i1).nota    = midi(h1).nota
@@ -1837,6 +1853,7 @@ If  Err > 0 Then
            " in function " & *Erfn & _
            " on line " & Erl
   Print #1, errmsg
+
 End If
 
 End Sub 
@@ -1888,8 +1905,81 @@ cntnewoff=i3
 
 End Sub 
 
-Sub IgualaMidiPlano(Externo As Integer)
- 'ULTIMA VERSION 17 SETIEMBRE 2024  EN UN CASO ANDUVO PERFECTO
+Sub  tiempoNegra(linea As String, ByRef tNegra As Integer, ByRef ubicacion As Integer)
+Dim As Integer mfile 
+'MFile 1 2 960 
+Dim As Integer cabeza (1 To 3,1 To 2) 
+mfile = InStr (UCase(linea), "MFILE")
+If mfile > 0 Then ' tomo el valor de la negra
+   sacanumeros (Mid(linea,6), cabeza() )
+   tNegra  = cabeza(3,1)
+Print #1, "tiemponegra  "; tnegra 
+   ubicacion=cabeza(3,2) + 6 -2 ' en linea 
+  Print #1, "tiemponegra ubicacion ";ubicacion
+EndIf
+
+
+End Sub
+Function ConvertirAmil (ByRef L1 As string, ubicacion As Integer, dbg As integer) As String
+L1 = Mid(L1, 1, ubicacion)
+Print #dbg, "ubicacion de Time de negra ",ubicacion
+ConvertirAmil = L1 + "1000"
+Print #dbg, "ConvertirAmil = L1 + 1000";" ";L1 + "1000" 
+End Function 
+
+Function ConvertirAmilTimeEvento (L1 As String ,tNegra As Integer, dbg As integer) As string
+' BUSCO DELTA ENRE L1 Y L2 DEVUELVO L2 QUE SERIA LR EN EL CODIGO QUE LLAMA
+Dim As Integer esoff1, eson1, esch1, esmeta1 ,T1, TR
+ 
+Print #dbg,"ini --------------------------------------"
+
+esch1 =InStr(UCase(L1), " CH=")
+'eson1=InStr(UCase(L1), " ON ")
+'esoff1=InStr(UCase(L1), " OFF ")
+'esmeta1=InStr(UCase(L1), " META ")
+
+Dim As String st1, st2, st3
+
+
+'T1=ValInt (Mid(L1,1, eson1))
+'If T1 > 0 Then
+'  st1 = Mid(L1, eson1) 
+'  ''nuevotime = estimeon*1000/tNegra
+'EndIf
+
+'T2=ValInt (Mid(L2,1, esoff2))
+'If T2 >0 Then
+'  st2 = Mid(L2, esoff2) 
+' ' nuevotime = estimeoff*1000/tNegra
+'EndIf
+Print #dbg, "CATE esch1 "; esch1
+If esch1 > 0 Then 
+   st1 = Mid(L1, 1,esch1-4) ' PARA SACAR NUMERODE TIME
+ '  Print #DBG,"st1 "; st1
+EndIf
+
+T1=ValInt(st1)
+Print #dbg,st1; " CATE T1 ", T1
+
+Dim lx As Integer
+lx=Len(Str(T1))
+
+
+st3=Mid(L1,lx+1)
+TR=T1*1000/tNegra
+Print #DBG,"CATE st3 "; st3
+ConvertirAmilTimeEvento = Str(TR) + " "+st3
+Print #DBG,"CATE L1 MODIF "; Str(TR) + " "+st3
+If T1 =0 Then
+ ConvertirAmilTimeEvento=L1
+EndIf
+
+Print #dbg,"fin --------------------------------------"
+End Function 
+Sub IgualaMidiPlano(externo As Integer, ByRef CantEventos  As Integer)
+' 23 SETIEMBRE 2024, ultima verison carga midi externos, pero
+' con dificultad se asemeja poco a la secuencia original escuchandola
+' NO SIRVE DE MUCHO, CARGA LAS NOTAS PERO HAY QUE CORREGIR MUCHO,,   
 ' Este es un algoritmo secuencial aproximado,que va mirando detectando acordes
 ' y en cada off seguido de un on se fija si hubo N off para N on del
 ' acorde y los off que falta  va agregando pares de on-off de modo de que 
@@ -1924,7 +2014,8 @@ Sub IgualaMidiPlano(Externo As Integer)
 ' L SL L SL
 ' L+ L+ I
 ' NO ES PERFECTO PERO SUENA PARECIDO DEBERA CORREGIRSE 
-
+'PROCESAR SI ENTRA UN ARCHIVO EXERNO CON MFILE 192 O VALOR
+' MAS BAJO QUE 1000 CONVERTIR A 1000
 
 On Local Error Goto fail
 ' para expandir acordes desiguales en iguales
@@ -1968,19 +2059,20 @@ On Local Error Goto fail
 '48    251+    500+  251  <- UNA NOTA ENTERA I AUDIBLE
 ' debemos guardar la duracion mas corta la F en este caso y usarla para todo 251
 ' esto seria para analizar un acorde de 100 notas 
-Dim As String  LOSon     (1 To 100) ' hasta un acorde de 100, para muchas pistas seran mas?
-Dim As String  LOSoff    (1 To 100) ' hasta un acorde de 100, para muchas pistas seran mas?
-Dim As Integer LOStimeon (1 To 100)
-Dim As Integer LOStimeoff(1 To 100),igualado, dbgIgualado 
-Dim As String  LASnotas  (1 To 100) ' string tipo "n=54 "
-Dim As Integer LOSdelta  (1 To 100) 'seria la duracion que da la figura F,L,I etc
+Dim As String  LOSon     (1 To 2000) ' hasta un acorde de 100, para muchas pistas seran mas?
+Dim As String  LOSoff    (1 To 2000) ' hasta un acorde de 100, para muchas pistas seran mas?
+Dim As Integer LOStimeon (1 To 2000)
+Dim As Integer LOStimeoff(1 To 2000),igualado, dbgIgualado,AMIL 
+Dim As String  LASnotas  (1 To 2000) ' string tipo "n=54 "
+Dim As Integer LOSdelta  (1 To 2000) 'seria la duracion que da la figura F,L,I etc
 ' los delta se cargan en cada off 
-Dim As lineaSecuencia secuencia (1 To 1000) 'almacena la secuencia
-Dim As String final (1 To 200) 
-Dim As String comienzo (1 To 200) 
+Dim As lineaSecuencia secuencia (1 To 6000) 'almacena la secuencia
+Dim As String final (1 To 1000) 
+Dim As String comienzo (1 To 1000) 
 
 igualado=34
-dbgIgualado=33 
+dbgIgualado=33
+AMIL=35 
 ' inicioAcorde     1
 ' finAcorde        2
 ' inicioSimple     3
@@ -1990,44 +2082,124 @@ Dim As Integer hayacorde=0
 Open "DEBUG_IGUALADO.TXT" For Output As dbgIgualado
 ''Print dbgIgualado,"en cargar midi plano PARA IGUALAR"
 
-Dim archivomidi As String
+Dim As String archivomidi, L1,L2,L3, DELTA, LR  
 archivomidi = OpenFileRequester("","","secuencias  (*.txt)"+Chr(0) )
+'convertir archivomidi a base negra=1000
+' lo que se debe hace es tomar una linea de eventos con la siguiente
+' a la primera si es la 1 no hacer nada, en la segunda calcular el
+' incremento respecto de la primera que estaria en base 192 por eje, 
+'  y pasarla a negra=1000 por ejemplo si con base negra=192 y la pasamos a 1000
+' si para 192 es 1000, para incremento x es x*1000/192
+Dim As Integer tNegra, ubicacion,STOPCONTINUE
+If externo = 1 Then 
+ Open "AMIL.TXT" For Output As 35 
+ If  Open( archivomidi For Input As 32 ) <> 0 Then
+   Print #dbgIgualado,"error archivo de entrada midi" 
+ Else
+     Do While Not Eof(32)
+          
+        Line Input #32,L1
+        Print #dbgigualado,"L1 :";L1
+        If InStr (UCase(L1), "MFILE") > 0 Then
+           tiempoNegra(L1 , tNegra , ubicacion )
+           L1 = ConvertirAmil (L1, ubicacion, dbgigualado)
+           Print #dbgigualado, "L1 MFILE ";L1
+           Print #35, L1 
+        Else
+          If InStr (UCase(L1), "TRKNAME") > 0 or InStr (UCase(L1), "META") > 0Then 
+          ' COMIENZA LOOPERO SOBRE EVENTOS
+             STOPCONTINUE=1
+'Print #dbgIgualado,"COMIENZA CONVERSION "
+             Print #35,L1
+             Continue Do  
+          Else 
+            If STOPCONTINUE=0 Then
+               Print #35,L1 
+               Continue Do 
+            EndIf
+          EndIf
+        EndIf
+        If STOPCONTINUE=1  Then
+           LR= ConvertirAmilTimeEvento (L1,tNegra,dbgIgualado)
+           Print #dbgIgualado,"LR ";LR
+          ' Print #35,L1
+           Print #35,LR
+        EndIf
+     loop
+ EndIf
+
+  
+     
+  
+
+ FILEFLUSH(-1)
+ Close 35,32
+
+ 'Shell "rename " + archivomidi +" " + archivomidi+"old"
+ 'Shell "rename " + "AMIL.TXT" + " " + archivomidi
+End If
+
+'------------------------------------------------------
+ 
  Open "igualado.txt" For Output As igualado
 ' mandamos todo a vector luego volcaremos a igualado.txt
 
-  Dim linea As String
-  Dim As Integer eson, esoff, esch, esv, esv0, esn,cnton, cnts,cntoff, _
+  
+  Dim As Integer eson, esoff, esch, esv, esv0,esn,cnton, cnts,cntoff, _
       cntnewoff ,i1,g1,g2, estimeon,estimeonOld,esiniacorde, _
-      estimeoff,estimeoffOld,esfinacorde, cierre, cabeza,cntnewoffOld,valv
+      estimeoff,estimeoffOld,esfinacorde, cierre, cabeza,cntnewoffOld,valv, _
+      tempo,MetaTrkEnd
   Dim As String notaon,notaoff 
-
+If externo=1 Then
+  archivomidi="AMIL.TXT"
+EndIf
 If  Open( archivomidi For Input As 32 ) <> 0 Then
-  Print  dbgIgualado,"error archivo de entrada midi" 
+  Print #dbgIgualado,"error archivo de entrada midi" 
 Else
 ''  Open     "secuencia-F-SF+SF-F-PLAY.txt" For Input As 32
   'Print dbgIgualado, "seguimos procesando  midi plano "
 ' BUSCAMOS LOS EVENTOS DE LAS NOTAS
+  Dim As String linea
+  
   Do While Not EOF(32)
      Line Input #32,linea 
-       
-    ' Print #34,linea ; '<=== igualado
-   ' si hay on o off ch= n= v= , es un evento seguro
-     eson =InStr(linea," on ")
-     esoff=InStr(linea," off ")
-     esch =InStr(linea," ch=")
-     esn  =InStr(linea," n=")
-     esv  =InStr(linea," v=")
+
+   tempo=InStr(UCase(linea),"TEMPO")
+   'If externo=1  And tempo >0 Then
+   '   linea=Mid(linea,1,tempo +5) +"500000"
+   'End If 
+   MetaTrkEnd = InStr(UCase(linea), "META TRKEND")
+   If externo=1  And MetaTrkEnd > 0 Then
+      linea=""
+       Continue Do
+   End If 
+
+     eson =InStr(UCase(linea)," ON ")
+     esoff=InStr(UCase(linea)," OFF ")
+     'If esoff > 0 Then
+     '    Print #dbgigualado, "PUTA MADRE EXISTE OFF ";linea
+     'EndIf 
+     esch =InStr(UCase(linea)," CH=")
+     esn  =InStr(UCase(linea)," N=")
+     esv  =InStr(UCase(linea)," V=")
      valv=ValInt(Mid(linea, esv+3,3))
-     esv0 =InStr(linea," v=0")
-     If externo=1 And esv0 > 0 And eson > 0 Then
+     esv0 =InStr(UCase(linea)," V=0")
+     'PRINT #dbgIgualado,"valv ",valv
+   If eson=0 And esoff=0 And esch > 0 Then ''controles no interesan por ahora
+       Print #dbgIgualado,linea 
+       Print #dbgIgualado,"NO PROCESADO" 
+         Continue Do
+   EndIf   
+   ' conversion de on a off para velocidad=0 
+   If externo=1 And esv0 > 0 And eson > 0 Then
      ' cambiamos on por off si v=0 para archivos planos no generados
      ' por RollMusic
+       Print #dbgigualado,"PASANDO A OFF ";linea
         Dim  As String st1, st2
-        st1=Mid(linea,1, eson)
+        st1=Mid(linea,1, eson-1)
         st2=Mid(linea,eson+4)  
         linea=st1+" off " + st2
-     EndIf
-     PRINT #dbgIgualado,"valv ",valv 
+   EndIf
    ' 0) deteccion de acorde por tiempo de on casi igual
      If eson > 0 Then
         cnts=cnts+1
@@ -2046,6 +2218,7 @@ Else
         
      EndIf 
      If esoff > 0 Then
+        Print #dbgigualado,"ENTRA A ESOFF >0"
         cnts=cnts+1
         estimeoff=ValInt (Mid(linea,1, esoff))
         If (estimeoff - estimeoffOld) < 10 Then
@@ -2057,7 +2230,8 @@ Else
         EndIf
         estimeoffOld=estimeoff
         'Print dbgIgualado,"estime "; estime ok
-         secuencia(cnts).linea=linea 
+         secuencia(cnts).linea=linea
+        Print #dbgigualado,secuencia(cnts).linea 
      EndIf 
      If cnts=0 Then
     '     Print #34,linea ; '<=== igualado
@@ -2065,7 +2239,11 @@ Else
           comienzo(cabeza)=linea
      EndIf  
    '1) detectamos eventos de notas
-   If (eson > 0 Or esoff > 0 ) And esch > 0 And esn >0 And esv > 0 Then 
+     If esoff > 0 Then 
+       PRINT #dbgIgualado,"Es un evento de nota OFF "; linea
+       Print #dbgigualado,"esch > 0 And esn >0 And esv > 0";" "; esch;" "; esn;" "; esv   
+     EndIf 
+   If (eson > 0 Or esoff > 0 ) And esch > 0 And esn >0 And esv > 0  Then 
      PRINT #dbgIgualado,"Es un evento de nota"; linea
       If cnton=1 Then
          cntoff=0
@@ -2181,11 +2359,12 @@ Print #dbgIgualado,"ENTRA EL FOR NUEVOS OFF Y ON"
            If (LASnotas(i1) <> notaon  And notaon > "    ") Or _
               (LASnotas(i1) <> notaon  And notaon = "    ") Then
 '''saque And LASnotas(i1)> "    "
+'construye el off dado que viene volcado como un on con v=0
             nuOff=Mid(nuevoOff,1,f1-1) + LASnotas(i1) + " v=0"
    'agrego un on ya que lo apague pero debe seguir
            Print #dbgIgualado,"ENTRO AL IF del FOR"   
             cntoff=cntoff+1
-            f2=InStr(nuOff,"off ")
+            f2=InStr(UCase(nuOff),"OFF ")
             fch=InStr(nuOff,"ch=")
             ch=Mid(nuOff,fch,4)            
             nuOn=Mid(nuOff,1,f2-1) + "on " + ch + " "+ LASnotas(i1) + " v=80"
@@ -2253,6 +2432,8 @@ EndIf
 ' ANTES DE VOLVARLA HAY QUE CORREGIR LOS ERRORES !!
 ' nueva subritina!
  'corregirSecuenciaMidi secuencia(i1),cnts
+
+ CantEventos = cnts
 
 For i1=1 To cabeza
  Print #igualado,comienzo(i1)
@@ -4140,7 +4321,7 @@ End Sub
 
 
 Sub velocidades(j As Integer)
- Print #1,"velocidades Tcompas j "; TCompas, j 
+ 'Print #1,"velocidades Tcompas j "; TCompas, j 
     If TCompas="4/4 " Then ' dividido y subdividido
       If acumulado <= 1250000 Then ' hasta a corchea
        compas(j).nro = -1 ' fuerte
@@ -4195,7 +4376,7 @@ Sub velocidades(j As Integer)
 
 
     If TCompas="3/4 " Then 'dividido y subdividido. seria un 6/8 tmbien
-      Print #1 ,"TCompas=3/4 en velocidades acumulado "; acumulado
+    '  Print #1 ,"TCompas=3/4 en velocidades acumulado "; acumulado
       If acumulado <= 1250000 Then 'nollego a corchea
        compas(j).nro = -1 ' fuerte
       EndIf
@@ -5044,48 +5225,54 @@ Print #1, "selport fin  "
 cierroport=0
 End Sub
 
-Sub  selportEjec (ByVal tipo As Integer,ntkp As Integer )  ' list de ruso
+Sub  selportEjec (ByVal mitipo As Integer, ByVal pis As Integer )  ' list de ruso
+' SELECCION DE CASO 1 PORT DE SALIDA OUT, O CASO 2 ENTRADA MIDI IN
 Dim As hwnd haw,hwl
-Dim As Integer mitipo,x0,y0,Posx,Posy 
+Dim As Integer x0,y0,Posx,Posy 
 ScreenControl GET_WINDOW_POS, x0, y0
 Posx=x0 +50
 Posy=y0 +100
 Dim cad As String
-' el port default de entrada y de salida cuandi envio a rtmidi es el cero fisico 
-' pero para esta logica es el 1, es mejor usar otra variable
  
 ''portsout = port_count (midisal)
 ' ESTOY ABRIENDO LSO PORT SEGUN LO ELEGIDO CADA VEZ QUE SE ELIJA UNO
 ' DEJA DE ESTAR DISPONIBLE PUES YA ESTA ABIERTO, PONDREMOS UN MENSAJE ABIERTO CREO ES MEJOR 
-    If NombreCancion > "" Then
-    Else
-       ntkp=0
-    EndIf
+Print #1, "selport 1 "
+'    If NombreCancion > "" Then
+'    Else
+'       ntkp=0
+'    EndIf
+Print #1, "selport 2 "
 
 
 
-mitipo=  CInt(tipo)
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("MIDI EJECUCIONES",500,Posy,500,400,WS_OVERLAPPEDWINDOW Or WS_VISIBLE , WS_EX_TOPMOST )
-     hwl=  ListViewGadget(1,10,10,350,400,,,,32,LVS_SINGLESEL  )
+     haw=OpenWindow("MIDI",500,Posy,500,400, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
+Print #1, "selport despues open window "
+Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
+    
+     hwl=  ListViewGadget(1,10,10,350,400, LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL  )
+Print #1, "selport despuesde listviewgadget  "
      listports()
-     Print #1,"portin ", portin
-Print #1, "ntkp ",ntkp
-     If mitipo = 1 Then ' out
-       AddListViewColumn(1, Str(UBound (listout)+1 )+" Salidas  MIDI",0,0,250)
-           For aa As Integer=0 To UBound (listout) 
-               If pmTk(ntkp+32).portout = aa  Then 
-                  AddListViewItem(1, "[x] "+listout(aa),0,aa,0)
-               Else
-                 AddListViewItem(1, "[ ] "+listout(aa),0,aa,0)
-               EndIf   
-         Next
+  
+Print #1, "selport 3 ntkp "; ntkp
+     If mitipo = 1 Then ' OUT OUT OUT SALIDA
+       AddListViewColumn(1, "Salidas  MIDI",0,0,250)
+       For aa As Integer=0 To UBound (listout) 
+          If pmTk(pis+32).portout = aa Then
+             AddListViewItem(1, "[x] "+listout(aa),0,aa,0)
+          Else
+             AddListViewItem(1, "[ ] "+listout(aa),0,aa,0)
+          EndIf   
+           
+       Next aa
+
      EndIf
      If mitipo = 2 Then ' in entradas
       
-       AddListViewColumn(1, Str(UBound (listin)+1 )+" Entradas MIDI",0,0,250)
+       AddListViewColumn(1, "Entradas MIDI",0,0,250)
        For aa As Integer=0 To UBound (listin) 
-          If pmTk(ntkp+32).portin = aa Then
+          If pmTk(pis+32).portin = aa Then
              AddListViewItem(1, "[x] "+listin(aa),0,aa,0)
           Else
              AddListViewItem(1, "[ ] "+listin(aa),0,aa,0)
@@ -5095,9 +5282,9 @@ Print #1, "ntkp ",ntkp
 
      EndIf
 
-
+Print #1, "selport 4 "
        ButtonGadget(2,380,30,100,40,"CAMBIA")
-       ''''ButtonGadget(3,380,70,100,40,"CANCELA")
+' No sepuede poner otro boton porque la lista de pistas que da en blanco para siempre
          #Ifdef __FB_WIN32__
            SetFocus (hwl) 
            SetForegroundWindow(haw)
@@ -5116,7 +5303,6 @@ Print #1, "ntkp ",ntkp
                If mitipo=2 Then
                  portin=GetItemListView
                EndIf 
-
                cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)
                If  mitipo=1 Then           
                   If InStr(cad,"x") >0  Then
@@ -5125,6 +5311,7 @@ Print #1, "ntkp ",ntkp
                      cad="[x] " +listout(portout) 
                   EndIf
                EndIf
+
                If mitipo=2 Then 
                   If InStr(cad,"x") >0  Then
                     cad="[ ] " +listin(portin) 
@@ -5138,49 +5325,41 @@ Print #1, "ntkp ",ntkp
         EndIf
 
           If event=eventgadget Then
-             If eventnumber()=2 And InStr(cad,"x")> 0 Then
+            If eventnumber()=2 And InStr(cad,"x")> 0 Then
               'menunew=0
               '''portout = GetItemListView()
 
-                If mitipo=1 Then ' PORT SLIDA
-                  Print #1,"PORT SELECCIONADO en menu ",portout 
-                  Print #1,"Nombre PORT SELECCIONADO  ",listout(portout)
-                  For  i As Short =1 To 32
-                        If CheckBox_GetCheck( cbxejec(i))= 1  Then
-                            pmTk(i+32).portout=CUByte(portout)
-                       EndIf
-                  Next i
-                EndIf
-                If mitipo=2 Then ' PORT ENTRADA
-                    Print #1,"PORT SELECCIONADO en menu ",portin 
-                    Print #1,"Nombre PORT SELECCIONADO  ",listin(portin)
+              If mitipo=1 Then
+              Print #1,"PORT SELECCIONADO en menu ",portout
+              pmTk(pis+32).portout=CUByte(portout)
+              tocaparam(pis).portout=CUByte(portout)
+                  
+              EndIf
+              If mitipo=2 Then
+              pmTk(pis+32).portin=CUByte(portin)
+              tocaparam(pis).portin=CUByte(portin)
 
-                    For  i As Short =1 To 32
-                        If CheckBox_GetCheck( cbxejec(i))= 1  Then
-                           pmTk(i+32).portin =CUByte(portin)
-                        EndIf
-                    Next i
-                EndIf  
-              ' FreeGadget(1)
-                Close_Window(haw)
-                Exit Do 
-             End If
-             If eventnumber()=3  Then
-              '  FreeGadget(1)
-                Sleep 5
-                Close_Window(haw)
-                Exit Do 
-             End If 
+              EndIf
+
+              Close_Window(haw)
+              Exit Do 
+            End If
+
           EndIf 
           If event=EventClose Then
-               Close_Window(haw)
-                Exit Do 
+              Close_Window(haw)
+               Exit Do 
           EndIf
           
          Loop 
+
+
   
 '' fin ruso
+Print #1, "selport fin  "
 cierroport=0
+
+
 End Sub
 
 
@@ -5304,7 +5483,9 @@ EndIf
 
 End Sub
 '----------------
-Sub  selcanalEjec (ByVal mitipo As Integer, ntkp As Integer )  ' list de ruso
+Sub  selcanalEjec (ByVal mitipo As Integer, ByVal pis As Integer )  ' list de ruso
+' 03-10-2024 todavia falla no muestra el canal seleccionado!!
+' REVISAR REVISAR REVISAR JMG
 Dim As hwnd haw,hwl
 Dim As Integer  x0,y0,Posx,Posy,cambio=0  
 
@@ -5328,9 +5509,10 @@ Posy=y0 +100
      
      AddListViewColumn(1, mensaje ,0,0,250)
      For aa As Integer=1 To 16 
-         If pmTk(ntkp+32).canalsalida > 0 And pmTk(ntkp+32).canalsalida = aa -1 Then
+         If pmTk(pis+32).canalsalida = aa -1 Then
                AddListViewItem(1, "[x] "+listCanal(aa),0,aa,0)
-               Print #1,"pmTk(ntkp+32).canalsalida ",pmTk(ntkp+32).canalsalida, 
+               Print #1,"pmTk(pis+32).canalsalida ",pmTk(pis+32).canalsalida
+                
          Else
                AddListViewItem(1, "[ ] "+listCanal(aa),0,aa,0)
          EndIf 
@@ -5374,19 +5556,21 @@ Posy=y0 +100
           
           ' carga de canal MIDI al vector parametros de tracks de cancion
           ' canales van de 0 a 15 que sonenelmenu 1 a 16
-              If mitipo=1 Then
+              If mitipo=1 Then 'salida
                    Print #1,"CANAL SELECCIONADO en menu ",canalx
                    For  i As Short =1 To 32
-                         If CheckBox_GetCheck( cbxejec(i))= 1  Then
+                         If CheckBox_GetCheck( cbxejec(i))= 1 Or CheckBox_GetCheck( cbxgrab(i))= 1 Then
                              pmTk(i+32).canalsalida=CUByte(canalx)
+                             tocaparam(i).canal=CUByte(canalx)
                         EndIf
                    Next i
               EndIf
-              If mitipo=2 Then
+              If mitipo=2 Then ' entrada
                   Print #1,"CANAL SELECCIONADO en menu ",canalx
                 For  i As Short =1 To 32
-                      If CheckBox_GetCheck( cbxejec(i))= 1  Then
+                      If  CheckBox_GetCheck( cbxgrab(i))= 1 Then
                         pmTk(i+32).canalentrada =CUByte(canalx)
+                        tocaparam(i).canalent=CUByte(canalx)
                       EndIf
                 Next i
              EndIf          
@@ -6176,7 +6360,7 @@ Sub duraciones (midi() As NProc, k1 As Integer,k2 As Integer  ) ' 15-05-2024
 'EndIf 
 Dim  i2 As Integer
 ' filtro1 y filtro2 no tiene sentido aca se elimina ...
-' DURk es el delta time  ...son segundos en caso entrada por midi
+' DURk es el deltatime O TIMESTAMP ...son segundos en caso entrada por midi
 ' pero aca ya es el  valor relativo a la duracion de una negra
 ' la negra vale 1 ,puede ser fraccion de negra o mayor...
 'DURk=midi(k1).dur ' lo pasare de nuevo a doble..
@@ -6194,7 +6378,7 @@ Print #31,"numfloat ", numfloat
      ' si toco una negra a 120 no sera una corchea, sera una negra,,,
 dato1=128 ' tomamos los cierres off, si una nota on tiene vol=0 ahi pasariamos a silencios
 ' pero no solo con los off aca es diferente ...revisar el mecanismo de play teclado midi..
-    If  numfloat  > 0.05  Then
+    If  numfloat  > 0.03  Then
 					For i2=1 To 44
 					 If numfloat >= durcla(i2,1) And numfloat < durcla(i2+1,1) And i2< 45 Then
 					    Print #31, "1) esta entre ",durcla(i2,1), " y ",durcla(i2+1,1), numfloat
@@ -6326,7 +6510,7 @@ End Sub
 ' error
 errorSub:
   
-Dim As Long  ErrorNumber1, ErrorLine1
+'Dim As Long  ErrorNumber1, ErrorLine1
 ErrorNumber1 = Err
 ErrorLine1 = Erl
 

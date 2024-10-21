@@ -66,7 +66,7 @@ end Operator
 #Define  HH_DISPLAY_SEARCH 0003
 #Define  HH_CLOSE_ALL  0018
 Const CHECK_PISTA_ROLL=5
-Const NoGrabar=0
+Const HabilitaGrabar=0
 Const BTN_LIBERADO=0
 Const GrabarPatronaDisco=4
 Const GrabarPistaEjecucion=1
@@ -140,7 +140,7 @@ Declare Sub borrarColumnasMarcadas()
 Declare Function SumarnR (notaPiano As Integer) As Integer
 Declare Function SumarnRk (notaPiano As ubyte) As ubyte
 Declare Sub salir()
-Declare Sub IgualaMidiPlano(externo As integer)
+Declare Sub IgualaMidiPlano(externo As integer, ByRef CantEventos  As Integer)
 
 
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
@@ -620,6 +620,8 @@ Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 
 Dim Shared As String nombreArchivo, TCompas,menuOldStr, ticksdefault,nombrePatron
 Dim Shared As Integer nroCompasesPatron, nroTicksPatron
+nroCompasesPatron=0
+nroTicksPatron=0
 nombreArchivo="" : ticksdefault="240"
 Dim Shared As UByte Vfuerte=120,Vsemifuerte=100,Vdebil=80
 TCompas ="4/4"
@@ -651,9 +653,9 @@ Type rangoOct Field=1
  As UByte   tempo  
 End Type
 ' faltaria agregar grabar el nombre del dispositivo ........
-Dim Shared As rangoOct pmTk (0 To 64)
-Dim Shared As String titulos(0 To 64)
-Dim Shared As String pistas (0 To 64)
+Dim Shared As rangoOct pmTk (0 To 65)
+Dim Shared As String titulos(0 To 65)
+Dim Shared As String pistas (0 To 65)
   
 Dim Shared As Integer ContadorError=0   
 ' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido por 8
@@ -681,7 +683,7 @@ modifmouse, EnOctava,nsE,nR,lugarOld, nroClick, posinterna, indCompas,menuabiert
 Dim Shared As ubyte nC=0,nF=0,nRk=0, cnc=0,cnf=0
 
 Dim Shared As Double t1k,t2k,DURk,DURK1,DURk2
-Dim Shared As Integer abrirMIDIin=0
+'Dim Shared As Integer abrirMIDIin=0
 ' nC indica 144, nF indica 128
 
 Type poli Field=1 ' para guardar la secuencia
@@ -829,7 +831,7 @@ Dim Shared As UByte  ii,numduras=0,indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
 ''Dim Shared escala As float = 1.0
 Dim Shared translado As Integer = 1
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
-Dim shared As Integer i,  posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
+Dim shared As Integer   posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
 Dim Shared As Integer octaroll,cierroedit= 0,cierroport=0
 Dim Shared As BOOLEAN COMEDIT, resize
 COMEDIT=FALSE
@@ -928,7 +930,7 @@ Common Shared As Any Ptr surface,surf2
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal
 Common Shared As Any Ptr thread4, threadGrabamidi
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
-Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones
+Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn,terminar
@@ -938,6 +940,7 @@ Common Shared As Integer instancia,FINALIZAR_ROLLMUSIC, MICROSEGUNDOS_POR_NEGRA
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano,midionof
+
 
  MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
@@ -998,6 +1001,7 @@ Type  ejecparam Field=1
   As  UByte        portout
   As  UByte        patch 
   As  UByte        canal
+  As  UByte        canalent
   As  UByte        portin
   '''As  UByte        sonido ' 23-04-2024 1 o 0 lo pondremos dentro de portin
 End Type
@@ -1024,6 +1028,7 @@ End Type
 ' As UByte  orden ' nro orden de pista para cargar,no se si necesario''
 'End Type
 ' deberia ahcer dim no redim y usar erase
+' VECTOR EJECUCION REAL 
 Dim Shared Toca (1 To 32) as vivo  ' vector ejecucion real
 Dim Shared  As vivo toc
 Dim  Shared  tocaparam ( 1 To 32) As ejecparam
