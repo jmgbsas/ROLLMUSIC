@@ -1,5 +1,5 @@
 Declare Sub EntrarNombreCancion(ByRef NombreCancion As string)
-Declare Sub EntrarNombrePista(ByRef NombrePista As string)
+Declare Sub EntrarNombrePista(ByRef NombrePista As String, hwndC as Hwnd)
 Declare Sub EntrarTeclado ()
 '''''''Declare Sub cerrar(n As integer)
 Declare Sub seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer)
@@ -13,7 +13,6 @@ Declare Sub copiarATemp ( titulo As String, pista As String)
 Declare Sub GrabarCancion()
 Declare Sub BorrarPista (titulo As String)
 Declare Sub verayuda (  arch As string)
-
 
 'Declare Sub CreaTrack  (ByRef octadesde As Integer , ByRef octahasta As Integer, ByRef instru As Integer, param As pasa )
 Declare Sub selInstORdenAlfa (ByRef instru As Integer)

@@ -295,7 +295,7 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
                         tocaparam(ntoca).nombre=nombrePatron
                      Else
                       Dim nompista As String
-                        EntrarNombrePista (nompista)  
+                        EntrarNombrePista (nompista, hwndC)  
                         tocaparam(ntoca).nombre = Mid (nompista ,1,29)
                      EndIf
                      ntkp=ntoca 

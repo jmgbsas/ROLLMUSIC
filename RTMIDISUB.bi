@@ -1,4 +1,5 @@
 On  Error GoTo errorrtmidi
+#include once "win/mmsystem.bi" 
 
 function BrowseCallback(byval hWnd as HWND, _
 							byval uMsg as UINT, _ 
@@ -3223,28 +3224,17 @@ End Sub
 
 Sub metronomo ()
 Dim  As integer pista , k
-' tocamos metronomo en la pista que grabamos
-' se supone que portin y portout ya estan abiertos ...veremos
-'i
-For k=1 To 32
- If CheckBox_GetCheck( cbxgrab(k))= 1 Then
-    pista=k
-    Exit For  
- End If 
-Next k
 
 Do
-
-      noteon(80,60,tocaparam(pista).canal,tocaparam(pista).portout,1) '' NOTA VEL ,CANAL, PORTSAL
-      noteoff(80,tocaparam(pista).canal,tocaparam(pista).portout,1)
-      duracion(Timer, (60/tiempoPatron) / FactortiempoPatron) 'jmgtiempo
+   PlaySound(".\recur\RIMSHOT.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
+     duracion(Timer, (60/tiempoPatron) / FactortiempoPatron) 'jmgtiempo
      If terminar_metronomo=1 Then
          Exit Do
      EndIf
       
 
 Loop  
-
+ PlaySound(NULL, NULL, 0)
  threadDetach (threadmetronomo)
 End Sub
 '--------------------

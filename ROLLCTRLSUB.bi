@@ -507,7 +507,7 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
                If CANCIONCARGADA=true Or NombreCancion <> "" Then
                  ' armó el nombre de pista nuevo, pero permite modicifar 
                
-                  EntrarNombrePista(NombrePista)
+                  EntrarNombrePista(NombrePista,hwndC )
                EndIf
                'If NombrePista ="" Then
                ' NombrePista = "["+doscifras(ntk)+"]"+ RTrim(Mid(NombreInst(instru), 1,21))

@@ -16,6 +16,7 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include "foro/window9.bi"
 #Include Once "gtk/gtk.bi"
 '#Include "midiinfo.bi"
+
 #Include "ROLLCONTROLDEC.bi"
 '#include "vbcompat.bi"
 #Include Once "freetype2/freetype.bi"
@@ -127,6 +128,7 @@ Dim Shared As Integer ContadorError=0
 
 
 On  Error GoTo errorControl
+
 '------
 Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer) 
 Dim As hwnd haw,hwl
@@ -427,9 +429,10 @@ print #1,"cargarDirectorioCancion ", NombreCancion
 'Sleep 100
 End Sub
 '
-Sub EntrarNombrePista(ByRef NombrePista As String)
 
-  NombrePista = InputBox("InputBox",,NombrePista)
+Sub EntrarNombrePista(ByRef NombrePista As String,hwndC as Hwnd )
+
+NombrePista = InputBox("Nombre de Pista","",NombrePista,,,hwndC  )
 
 End Sub
 '

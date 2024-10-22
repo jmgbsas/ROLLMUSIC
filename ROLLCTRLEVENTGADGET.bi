@@ -218,7 +218,9 @@ Static As Integer millave
 ' PERO AL GRABAR UNA NUEVA PISTA USA EL PATCH DE LA PRIMERA PISTA 
      If eventnumber()= BTN_MIDI_GRABAR And GrabarEjec=HabilitaGrabar Then ' BOTON GRABAR ROJO
       ' EVENTO 10
-
+'Va a TOCAR 4 PULSOS DEL instrumento elegido si no suena es que
+' no se habilito bien los canales o dispositivo de salida o se equivoco
+' al seleccionar la pista luego advierte de posibles errores
          Print #1,"Entro a btn_midi_grabar EJEC "
          k=0
          jgrb=0
@@ -240,13 +242,17 @@ Static As Integer millave
          arrancaPlay=0
 Print #1,"Nro pista ejec en grabacion ntoca "; ntoca
 Print #1,"metronomo de 4 pulsos para comenzar a grabar EJEC"
-        If  metronomo_si=1 Then
-          Print #1,"Va a TOCAR 4 PULSOS DEL METRONOMO"
+        If  metronomo_si=3 Then
+          Print #1,"Va a TOCAR 4 PULSOS DEL instrumento elegido y luego el metronomo"
            terminar_metronomo=0
            Dim As Integer im=0
-           For im=1 To 4  
+           For im=1 To 4
+             If sonidopista_si=3 Then  
                noteon(60,100,tocaparam(k).canal,tocaparam(k).portout,1) '' NOTA VEL ,CANAL, PORTSAL
                noteoff(60, tocaparam(k).canal,tocaparam(k).portout,1)
+             Else
+               PlaySound(".\recur\INICIO.wav", 0, SND_FILENAME+SND_NODEFAULT + SND_ASYNC )
+             EndIf
                duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
            Next im
            threadmetronomo = ThreadCall metronomo()
@@ -282,16 +288,17 @@ Print #1,"metronomo de 4 pulsos para comenzar a grabar EJEC"
 ' 
       If eventnumber()= BTN_MIDI_PARAR    Then ' BOTON STOP NEGRO DE MIDI-IN
          SetGadgetstate(BTN_MIDI_GRABAR,BTN_LIBERADO)
+           GrabarEjec=HabilitaGrabar
+           terminar_metronomo=1
          If pmTk(ntoca+32).MaxPos > 0 And (GrabarEjec=GrabarPistaEjecucion  Or GrabarEjec=GrabarPatronaDisco ) Then
             Print #1,"STOP:pmTk(ntoca+32).MaxPos ",pmTk(ntoca+32).MaxPos
             tocaparam(ntoca).maxpos=pmTk(ntoca+32).MaxPos
             tocaparam(ntoca).orden=CUByte(ntoca)
    '         Print #1,"stop MaxPos ",pmTk(ntoca).MaxPos
-            GrabarEjec=HabilitaGrabar
             repro=0
             arrancaPlay=0
 ' terminar cualquier metrono que este funcionando 
-         terminar_metronomo=1
+         
 'detiene el play de cancion o roll
          If  play=1 Or playb=1 Then
            CONTROL1=1 ' DETIENE EL PLAY DE CANCION O ROLL
@@ -505,7 +512,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
            abrirRoll=0 'EVITA CARGA ROLL DE MENU PRONCIPAL
         EndIf  
            COMEDIT=TRUE
-           If  metronomo_si=1 Then
+           If  metronomo_si=3 Then
               terminar_metronomo=0
               Dim As Integer im=0
               For im=1 To 4  
@@ -523,6 +530,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
          SetGadgetstate(BTN_ROLL_GRABAR_MIDI , BTN_LIBERADO)
          GrabarPenta=0
          metronomo_si=0
+
          COMEDIT=FALSE  
 ''      If NombreCancion > "" Then ' detiene todo pista aisalda o cancion 
             If play=1 Or playb=1 Or CPlay=1 Then

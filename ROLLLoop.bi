@@ -3175,7 +3175,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
      guardopos=posicion
      
      Print #1,"Pulso boton Edit 1) s3, guardopos ",s3, guardopos
-     If  GrabarPenta=1 And metronomo_si=1 Then
+     If  GrabarPenta=1 And metronomo_si=3 Then
         terminar_metronomo=0
         Dim As Integer im=0
         For im=1 To 4  

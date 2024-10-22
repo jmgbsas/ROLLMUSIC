@@ -362,7 +362,9 @@ Menubar(MenName7)
 MENUITEM(1108,MenName7,"Trabajar con sostenidos (Por omision Sostenidos #)",MF_CHECKED )
 MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
 Menubar(MenName7)
-MenuItem(1113,MenName7,"Usar metronomo para Tocar MIDI-IN)",MF_CHECKED)
+MenuItem(1113,MenName7,"Usar metronomo para Tocar MIDI-IN",MF_CHECKED)
+MenuItem(1114,MenName7,"Usar sonido de pista para pulsos de inicio de grabacion",MF_UNCHECKED)
+
 
 MenuItem(1200,MenName8,"Seleccion Puerto MIDI-IN Ejecucion")
 'MenuItem(1201,MenName8,"Abrir  Puerto MIDI-IN")
@@ -397,7 +399,8 @@ MenuItem(2002,MenName10,"Cuadro de Figuras de duracion de notas")
 ' default de FRACCIOANR autodur 
    usarAcordesIguales=1
    TipoFrac="autodur"
-metronomo_si=1
+metronomo_si=3 'no funciona
+sonidopista_si=0 ' sonido por midi out si
 usarmarcoins=0
 usarmarco=0 
 If com_usarmarco =0 Then

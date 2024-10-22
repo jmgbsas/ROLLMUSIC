@@ -632,15 +632,29 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
             SetForegroundWindow(hwnd)  
 
            Case 1113 ' usar metronomo
-                
+
              metronomo_si=GetStateMenu(hmessages,1113)
               Select Case metronomo_si 
-                     Case  1 
+                     Case  3 
                     metronomo_si=0
                     SetStateMenu(hmessages,1113,0)
                      Case 0
-                    metronomo_si=1
-                    SetStateMenu(hmessages,1113,1)
+                    metronomo_si=3
+                    SetStateMenu(hmessages,1113,3)
+
+              End Select
+              SetForegroundWindow(hwnd)
+
+           Case 1114
+
+             sonidopista_si=GetStateMenu(hmessages,1114)
+              Select Case sonidopista_si 
+                     Case  3 
+                    sonidopista_si=0
+                    SetStateMenu(hmessages,1114,0)
+                     Case 0
+                    sonidopista_si=3
+                    SetStateMenu(hmessages,1114,3)
 
               End Select
               SetForegroundWindow(hwnd)
