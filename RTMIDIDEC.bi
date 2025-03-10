@@ -41,7 +41,7 @@ Dim size As UInteger<64>
 Dim Shared As UInteger portsin=0, portsout =0 'constantes, 
 'no confundir con portin y portout que son variables
 
-Dim Shared As integer tiempoPatron=60 ' cuantas negras en un minuto default
+Dim Shared As integer tiempoPatron=240 ' cuantas negras en un minuto default
 Dim Shared As integer tiempoPatronEjec=240
 Dim Shared As Double old_time_on=0,old_time_off=0,old_time_on_int=0,old_time_off_int=0
 Static Shared As Integer jply=0, finplay=0,indEscala=1
@@ -55,38 +55,39 @@ Dim Shared As double FactortiempoPatron=1
 ' una X a una velocidad de I=240 tiene un tiempo de 0,078125 seg
 ' en la 1er linea de figuras..
 ' pero porlalineamas chica 37 a 45 seria mi Tick mas chico [TickChco]
-Static Shared As Double TickPlay =0.005208325 ''seg 5 miliseg.. para I=240
-Static Shared As Double TickChico=0.005208325 ''seg 5 miliseg.. para I=240
+Static Shared As Double TickPlay =0.01041666 ''seg 5 miliseg.. para I=240
+Static Shared As Double TickChico=0.01041666 ''seg 5 miliseg.. para I=240
 Static shared As Double x3H = 0.0 , resta=0.0
-' en la 5ta linea de duracions  0.0208/4 =TickChico a I=240
-' un tresillo de negra toma 2 negras o sea 2/3 = 0.66666 cada figura del tresillo  y son 3
+' ambos Ticks deberin ser el  valor mas chico de la tabla y es tresillo de W 0.01041666
 
 ' " O "," P "," I "," L "," F "," E "," X "," H "," W ",   <-- la 8 es H
+' I NEGRA, X SEMIFUSA, H GARRAPATEA,
 '2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,[0.0208333] ,0.01041666, _ '37 45
-' 2,66666 / 0,0208333 = 128 (3H) = 3O
-'"3O ","3P ","3I ","3L ","3F ","3E ","3X ","3H ","3W ", _ ' 37 45
-' es un tresillo de H -> 3H entonces cuantos tresillos de H hay en un compas?
-' 128 * 3= 384 TicksChico
-' 0.0208333 / 0,005208325 = 4
-' el TickChico vale en tiempo 0.0208 a I=60, pero a I=240 vale 1/4 o sea 0.005 mseg aprox
-'  tresillo es dividir la figura en 3 partes (*) ,la redonda es 1 compas.
-' en H es la 128 division del compas y esa division dividido por 3 es el tresillo de H
-' sale del valor mas chico en la 8va posicion de la linea 2.666666= o sea 3H=0.0208333
-'y para I=240 es/ 4 ..0.0208333/4 =0,005208325 tresillo de H--
-' porque 2.6666 es para I=60 y en 240 1/4 veces mas chico...
-' en I=60 que cantidad de TickChico hay en 1 compas ? 4 I = 1 campas
-' 128*3 =  384 Ticks de 3H hay en un compas no impota el tempo o velocidad
-' una negra seran 1/4= 384/4= 96 Ticks ppor negra
-' o sea si quiero 1000 negras debere tener 96 mil posiciones....ufff
-' y si quiero 1000 redondas debere tener 384 mil posiciones. o sea 1000 compases
-'cada negra podria tener 96 partes de 3H..
-' todo esto es a velocidad 240 o sea 240 negras por minuto,c/negra =60/240= 0,25 segundos
-' para determinar un compas por ejemplo a 120 negras  por minuto un compas
-' son 4 negras  o sea durara en segundos 4*60/120=2 seg un compas a 120 dura 2 segundos
-' 1 seg a 240, 4 seg a vel 60, a 90 = 4*60/90= 24/9 = 2,666 segundos
-' (*) no, un tresillo toma dos negras y lo divide en 3 partes
-   
-Dim Shared As float relDur (0 To 182) => {0, _  
+' (*)  un tresillo toma dos negras y lo divide en 3 partes
+'La figura musical que sigue a la garrapatea es la semigarrapatea. Ambas son figuras musicales en desuso. 
+'Explicación 
+'    La garrapatea o cuartifusa equivale a 1/128 de redonda.
+'    La semigarrapatea equivale a 1/256 de redonda, es decir, a la mitad de una garrapatea. 
+'
+'Las figuras musicales más usadas son: (7) 
+'Redonda, Blanca, Negra, Corchea, Semicorchea, Fusa, Semifusa.
+' O SEA EL VALOR MAS CHICO USADO ES EL TRESILLO  DE X SEMIFUSA(0.06250) O SEA 0.041666
+' Y CUANTOS DE ESOS EN UN A NEGRA? RESPECTO DE LA NEGRA UNA X ES 1/16, DOS DE ELLAS DIVIDIDO 3
+' ES EL TRESILLO DE X O SEA 2/(16*3)= 1/48 DE LA NEGRA = 0.041666. ESTO PARA MRGRA=1 SEG
+' O SEA TEMPO = 60. PARA UN TEMPO DE 240 TODO SERA 4 VECES MAS CHICO 0.041666/4= 0.01041666
+' POR ESO TOMAMOS DOS VALORES MAS DE TEMPO MAS CHICOS PARA PODER TOCAR UNA SEMIFUSA A 240 DE TEMPO!!
+' en ctrl-m frbo hascer una regla que parta de la nota en que estoy y tenga separaciones de 6
+'--------------------------------------------------------------------------
+' 96  x tresillo desemigarrapaea (0.01041666)= 1     negra
+' 48  x tresillo desemigarrapaea (0.01041666)= 0.5   corchea
+' 24  x tresillo desemigarrapaea (0.01041666)= 0.25  semicorchea
+' 12  x tresillo desemigarrapaea (0.01041666)= 0.125  fusa
+'  6  x tresillo desemigarrapaea (0.01041666)= 0.0625 semifusa
+'-----------------------------------------------------------------
+'  3  x tresillo desemigarrapaea (0.01041666)= 0.03125  garrapatea
+' 1.5 x tresillo desemigarrapaea (0.01041666)= 0.015625 semi garrapatea
+    
+Dim Shared As float relDur (0 To 183) => {0, _  
 4 ,2 , 1.0, 0.50,0.250,0.1250 ,0.06250,0.031250,0.0156250, _ ' 1 9 
 5 ,2.5,1.25,0.625,0.3125,0.15625,0.078125,0.0390625,0.01953125,_ ' 10 18
 6 ,3 , 1.5, 0.75,0.375,0.1875 ,0.09375,0.046875,0.0234375, _ ' 19 27
@@ -106,7 +107,7 @@ Dim Shared As float relDur (0 To 182) => {0, _
 5 ,2.5,1.25,0.625,0.3125,0.15625,0.078125,0.0390625,0.01953125,_ ' 145 153
 6 ,3 , 1.5, 0.75,0.375,0.1875 ,0.09375,0.046875,0.0234375, _ ' 154 162
 7 ,3.5,1.75,0.875,0.4375,0.21875,0.109375,0.0546875,0.02734375, _ '163 171
-2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,0.0208333,0.01041666,0,0} '172 181
+2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,0.0208333,0.01041666,0,0,0} '172 181
 
 Dim Shared As Double durcla (1 To 45, 1 To 2) => { _
 {0.01041666,45},_
@@ -157,7 +158,38 @@ Dim Shared As Double durcla (1 To 45, 1 To 2) => { _
 
 
 
+' DurXTick me da segun la duracion la cantidad de ticks o columnas
+' que dura al principio habra un On y en la columna final un OFF
+' eso solo para las dur no ligadas, hasta la 90.
+' si empieza con una ligada(i+) el off estara en la dur no ligada (L)
+ 'redondeando...3w vale 1 -- 96 * 0,01041666 seg = 1 seg
+' y 3w son 0,01041666 seg si negra = 1 seg en  tempo 60
+Dim Shared As integer DurXTick (0 To 183) => {0, _  ' 0
+ 384, 192, 96 , 48, 24, 12, 6,  3,  2, _      ' 1  9
+ 480, 240, 120, 60, 30, 15, 7,  4,  2, _     ' 10 18
+ 576, 288, 144, 72, 36, 18, 9,  4,  2,_      ' 19 27
+ 672, 336, 168, 84, 42, 21, 10, 5,  3, _     ' 28 36
+ 256, 128, 64 , 32, 16, 8 , 4 , 2 , 1, _     ' 37 45 
+ 384, 192, 96 , 48, 24, 12, 6,  3,  2, _      ' 46 54  
+ 480, 240, 120, 60, 30, 15, 7,  4,  2, _     ' 55 63  
+ 576, 288, 144, 72, 36, 18, 9,  4,  2, _     ' 64 72  
+ 672, 336, 168, 84, 42, 21, 10, 5,  3, _     ' 73 81  
+ 256, 128, 64 , 32, 16, 8 , 4 , 2 , 1, _     ' 82 90   
+ 384, 192, 96 , 48, 24, 12, 6,  3,  2, _      ' 91 99  
+ 480, 240, 120, 60, 30, 15, 7,  4,  2, _     ' 100 108
+ 576, 288, 144, 72, 36, 18, 9,  4,  2, _     ' 109 117
+ 672, 336, 168, 84, 42, 21, 10, 5,  3, _     ' 118 126
+ 256, 128, 64 , 32, 16, 8 , 4 , 2 , 1, _     ' 127 135 
+ 384, 192, 96 , 48, 24, 12, 6,  3,  2, _      ' 136 144
+ 480, 240, 120, 60, 30, 15, 7,  4,  2, _     ' 145 153
+ 576, 288, 144, 72, 36, 18, 9,  4,  2, _     ' 154 162
+ 672, 336, 168, 84, 42, 21, 10, 5,  3, _     ' 163 171
+ 256, 128, 64 , 32, 16, 8 , 4 , 2 , 1, 0,0,0 }   ' 172 183 
 
+' 96 son 1 seg para negra=60 entonces el tick valdra 1/96=10.41666666 mseg es 3W
+' el mas chico son 1 parte o sea 10,41 mseg!! son e ldoble de los 5 mseg que usaba!
+' entonces una negra abarcara 96 columnas 
+' cols en 15 min = 15*60*96= 86400 columnas!
 Dim Shared As Integer play =0,playb=0, portin, numero, numeroFrac,cambioescala=0
 Dim Shared As Integer portout=0 
 Dim Shared As Double numfloat =0
@@ -197,7 +229,8 @@ Type vec
    canal           As Integer
    port            As integer 
    pista           As Integer
-   vol             As integer
+   vol             As Integer
+   onoff           As Integer  '2 on, 1 off
 End Type
 Static Shared pasoCol (0 To 384) As vec
 

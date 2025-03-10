@@ -149,7 +149,7 @@ Declare Sub IgualaMidiPlano(externo As integer, ByRef CantEventos  As Integer)
 
 
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
-Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6
+Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6,notaGuia=1
 Dim Shared As String RTA, alteracion '',alteracion_str
 alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0
@@ -162,7 +162,7 @@ Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert, cursormov
 Dim shared As integer Penta_y, indice, espacio,cursorHori
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
-Dim Shared As Integer octavas,  jc,ic,id,ShowNroCol=0,nro,trak=1,trackold=1
+Dim Shared As Integer octavas,  jc,ic, id,ShowNroCol=0,nro,trak=1,trackold=1
 Dim Shared As Integer ers, borrapos=0,comienza=0, acordeNro=0  
 Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 
@@ -488,7 +488,9 @@ Dim  Shared figura (1 To 182) As ZString  * 4 => _
  "3@+","3%+","3&+","3/+","3//+","{3+","3{{+","3#+","3##+", _ '172 180
  "   ","|| " } ' 181 182 - 109 110, son 108 (old 73 74 son 72)
 '/
-Dim  Shared figura (1 To 182) As ZString  * 4 => _
+' redonda,blanca,negra,corchea, semicorchea,fusa,semifusa,cuartifusa,garrapatea
+' 4      ,2     , 1   ,1/2,   1/4          , 1/8,1/16    ,1/32      , 1/64   
+Dim  Shared figura (1 To 184) As ZString  * 4 => _
 {" O "," P "," I "," L "," F "," E "," X "," H "," W ",_  '  1  9
  " O4"," P4"," I4"," L4"," F4"," E4"," X4"," H4"," W4",_  ' 10 18
  " O*"," P*"," I*"," L*"," F*"," E*"," X*"," H*"," W*",_  ' 19 27
@@ -509,7 +511,7 @@ Dim  Shared figura (1 To 182) As ZString  * 4 => _
  "sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sX*+","sH*+","sW*+", _ '154 162
  "sO:+","sP:+","sI:+","sL:+","sF:+","sE:+","sX:+","sH:+","sW:+",_  '163 171 
  "s3O+","s3P+","s3I+","s3L+","s3F+","s3E+","s3X+","s3H+","s3W+", _ '172 180
- "   ","|| " } ' 181 182 - 109 110, son 108 (old 73 74 son 72)
+ "   "," ||",">> "," - " } ' 181 182 183 184- 109 110, son 108 (old 73 74 son 72)
 
 ' silencios entre  46 a 90 y 136 a 180    
 ' los puntillos de tresillos coinciden con elvalor superior
@@ -599,7 +601,8 @@ dbl_click_time = 0.18
 Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota,compasX
 
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
-Dim Shared As Integer x, y, buttons, res,xscreen,anchofig,gap1,gap2,gap3
+Dim Shared As Integer x, y, buttons, res,xscreen,gap1,gap2,gap3
+common Shared As float anchofig
 Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos=0, curposold, resultado, indicePos
 Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 10000000,5000000,2500000,1250000, 625000,312500,156250, 78125,39063, _ '1  9
@@ -627,12 +630,12 @@ Dim Shared As String nombreArchivo, TCompas,menuOldStr, ticksdefault,nombrePatro
 Dim Shared As Integer nroCompasesPatron, nroTicksPatron
 nroCompasesPatron=0
 nroTicksPatron=0
-nombreArchivo="" : ticksdefault="240"
+nombreArchivo="" : ticksdefault="64"
 Dim Shared As UByte Vfuerte=120,Vsemifuerte=100,Vdebil=80
 TCompas ="4/4"
 'Dim Shared As Integer MaxPosTrack(0 To 32) ' cada track tendra su max pos
 'Dim Shared As Integer posnTrack(0 To 32) ' cada track tendra su posn
-Dim Shared As Integer fueradefoco=0
+Dim Shared As Integer fueradefoco=0 ,onoff=0
 Dim Shared As UByte  tope=0
 Type rangoOct Field=1
  As Integer desde = 0
@@ -694,20 +697,20 @@ Dim Shared As Double notaMidiDurk,notaMidiDurkOld
 ' nC indica 144, nF indica 128
 
 Type poli Field=1 ' para guardar la secuencia
- dur   As  UByte =0   ' duracion 
+ dur   As UByte =0   ' duracion 
  dur2  As UByte =0   ' SONIDO ON/OFF 
  canal As UByte =0   '  
- dur4  As UByte =0   '  
+ onoff As UByte =0   ' nota on=2, nota off=1  
  dur5  As UByte =0   '  
  dur6  As UByte =0   '  
  dur7  As UByte =0   '  
  dur8  As UByte =0   '  
- nota As UByte =0 ' en un futuro contendra nota, octava, canal etc 
- vol  As  UByte =0 ' volumen
- pan  As  UByte =0 ' paneo
- pb   As  UByte =0 ' pitch bend
- nnn  As UByte =0' se usa para escala canal etc 
- tick As ubyte =0' 128 tiene la redonda *1,75 segun pesoDur, 1 la cuartifusa o garrapatea todavia no la uso
+ nota  As UByte =0 ' en un futuro contendra nota, octava, canal etc 
+ vol   As  UByte =0 ' volumen
+ pan   As  UByte =0 ' paneo
+ pb    As  UByte =0 ' pitch bend
+ nnn   As UByte =0 ' se usa para escala canal etc 
+ tick  As ubyte =0 ' 64 tiene la redonda 
  acorde  As ubyte =0 ' 1 a 12 , son el se hara el sort    
 End Type
 ' posn As Integer =0' de roll todavia no lo uso para generar secuencia
@@ -726,14 +729,41 @@ End Type
 ' dejar al octava libre para los cambios dinamicos como cifrado y varias cosas mas
 ' como repeticion , loop etc y aque esta en vez d poner 1 solo bloque pondremos 2 mas
 ' 1ero modificare la grabacion para leer en formato viejo y grabar en el nuevo..
+' DAT ES SOLO VISUAL PARA TOCAR SE USARA MAS TRACK DONDE ESTA EL CAMPO ON OFF
+'Type poli Field=1 ' para guardar la secuencia
+' dur   As UByte =0   ' duracion 
+' dur2  As UByte =0   ' SONIDO ON/OFF 
+' canal As UByte =0   '  
+' dur4  As UByte =0   ' nota on=2, nota off=1 <===CAMPO ON OFF
+' EL ON ES APENAS APARECE LA NOTA EL OFF APARECERA EN LA SECUENCIA Y NO 
+' HABARA QUE CALCULAR NADA,,  
 
 Type dat Field=1
  nota As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
  dur As  UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
  vol As  UByte =0 ' volumen hasta 127 es volumen desde ahi es escala 128 a 255 =127 escalas
- pan As  UByte =0 ' paneo + o -
- pb  As  UByte =0 ' pitch bend + o -
+ pan As  UByte =0 ' alteracion  bemoL o sostenido
+ pb  As  UByte =0 ' acorde 201 202
  inst As UByte =0 ' instrumento para cada nota podra ser distinto 1 to 128
+ onoff As UByte=0 ' 2 on , 1 off
+ 'los archivos no seran compatibles
+''202 ' codigo de exsitencia de cifrado en el cabezado
+' por cada 201 en el INTERESPACIO hay un 202 de una octava de roll , en track solo
+' existe el 202 en el encabezado
+' con esta info reconstruyo el acorde que luego muestro solo en la octava
+' la octava la se por donde esta el 201 no hace falta guardarla, peRo para pasarla a track si
+' hace falta!! 27-01-2022 -. YA INCORPORADO A TRACK
+' Lo maximo que uso son 8 posiciones para las octavas de 0 a 7 o 1 a 8 , como tengo 13
+' posiciones verticales en la ultiam octava me quedan 5 posiciones libres y tambien
+' como la estructura dat tiene 6 (7 ahora) campos me quedan 1 campos en las 8 primeras
+' y todas las 7 en las 5 siguietnes = 46 sitios donde poner informaicon para una posicion dada
+' las repeticiones las colocaremos en la 1era de la posicion libre o sea en este caso 
+' la posicion 98 como si fuera una octava 9 ficticia...las repeticiones no dependen de la
+' octava todas las pisas se repiten al unisono. solo hace falta inforamcion
+' arriba en al octava que no se usa. REVEEER ESTO NO SE ENTIENDE QUE PASA CON EL CAMBIO,,
+
+
+
  ' Nota de escala son 12 ..bemol o sostenido son 2, 1 a 12 sostenidos, 13 a 24 bemoles
  ' entonces en 24 numeros tengo la info de nota
  ' octavas son 8 desde 15 a 20 son las octavas, 
@@ -796,7 +826,8 @@ Type notas_agregadas Field=1
   As Integer posn
   As UByte  dur
   As UByte  nota
-  
+  As UByte  onoff  ' para ticks
+
 End Type
 
 Type melodia_undo Field=1
@@ -827,9 +858,10 @@ Dim Shared As notas_agregadas  undo_acorde(1 To 500, 0 To 11) ' undo para 1 acor
 '============== IMPLEMENTARLO AL FINAL 
 Dim Shared As inst RollAux
 common Shared As Integer  ANCHO,ALTO,ANCHOSYSTEM, ALTOSYSTEM
-Dim Shared As Integer   deltaip=0,scan_alt=0,scan_d=0
+Dim Shared As Integer   deltaip=0,scan_alt=0,scan_d=0,mueveHorizontalmayor50=0
 Dim Shared As Double   BordeSupRoll, inc_Penta,arranqueDo1=0
-Dim Shared As Integer  AnchoInicial,AltoInicial
+Dim Shared As Integer  AnchoInicial,AltoInicial,ibarre
+ibarre=desde   
 Common Shared As FLOAT font
 Dim Shared As float  deltaipf=0, lockip=0 
 Dim Shared q As String * 1
@@ -877,10 +909,122 @@ ANCHO = ANCHO *11/12
 ALTO = (ALTO -25)*11/12
 AnchoInicial=ANCHO
 AltoInicial=ALTO
-anchofig=ANCHO/45 ' SON 45 COL PERO SE USAN MENOS 41
-NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
+anchofig=ANCHO/45 ' decia 700 SON 45 COL PERO SE USAN MENOS 41 JMGJMG
+NroCol =  (ANCHO / anchofig ) + 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
 Dim Shared ANCHO3div4 As Integer 
  ANCHO3div4 = ANCHO *3 / 4
+'vector relacion entre point y pixels
+'6pt   	8 px 	0.5em 	50%
+'7pt 	   9 px 	0.55em 	55%
+'7.5pt 	10px 	0.625em 	62.5%
+'8pt   	11px 	0.7em 	70%
+'9pt 	   12px 	0.75em 	75%
+'10pt 	13px 	0.8em 	80%
+'10.5pt 	14px 	0.875em 	87.5%
+'11pt 	15px 	0.95em 	95%
+'12pt 	16px 	1em 	100%
+'13pt 	17px 	1.05em 	105%
+'13.5pt 	18px 	1.125em 	112.5%
+'14pt 	19px 	1.2em 	120%
+'14.5pt 	20px 	1.25em 	125%
+'15pt 	21px 	1.3em 	130%
+'16pt 	22px 	1.4em 	140%
+'17pt 	23px 	1.45em 	145%
+'18pt 	24px 	1.5em 	150%
+'20pt 	26px 	1.6em 	160%
+'22pt 	29px 	1.8em 	180%
+'24pt 	32px 	2em 	200%
+'26pt 	35px 	2.2em 	220%
+'27pt 	36px 	2.25em 	225%
+'28pt 	37px 	2.3em 	230%
+'29pt 	38px 	2.35em 	235%
+'30pt 	40px 	2.45em 	245%
+'32pt 	42px 	2.55em 	255%
+'34pt 	45px 	2.75em 	275%
+'36pt 	48px  3em 	   300% 	
+'px	1/96 of 1 inch (96px = 1 inch)	font-size: 12px
+'pt	1/72 of 1 inch (72pt = 1 inch)	font-size: 12pt;
+' mis valores
+' font 8  son 5  pixels
+' font 9  son 5.5 px
+' font 10 son 6 px
+'      11     7 
+'      12     7.5
+'      13     7.75   
+'      14     8.75 
+'      15     9.5
+' font 16 son 9.75 pixels 
+' font 18 son 12 pixels
+' font 20 son 13 pixels
+' font 34 som 21.5 pixels
+Dim Shared As float mispx (1 To 30, 1 To 2) => { _ 'mispx (1,1)=5,mispx (1,2)=4
+{5 ,4 } , _
+{6 ,4 } , _
+{7 ,5 } , _
+{8 ,5 } , _
+{9 ,6 } , _
+{10,6 } , _
+{11,7 } , _
+{12,7 } , _
+{13,8 } , _
+{14,9 } , _
+{15,9 } , _
+{16,10} , _
+{17,11} , _
+{18,12} , _
+{19,12} , _
+{20,13} , _
+{21,13} , _
+{22,14} , _
+{23,14} , _
+{24,15} , _
+{25,15} , _
+{26,16} , _
+{27,16} , _
+{28,17} , _
+{29,17} , _
+{30,18} , _
+{31,19} , _
+{32,20} , _
+{33,20} , _
+{34,21} }
+
+Dim Shared As float ptpx(1 To 28, 1 To 2) => { _
+{ 6   , 8  },_
+{ 7   , 9  },_
+{ 7.5 , 10 },_
+{ 8   , 11 },_
+{ 9   , 12 },_
+{ 10  , 13 },_
+{ 10.5, 14 },_
+{ 11  , 15 },_
+{ 12  , 16 },_
+{ 13  , 17 },_
+{ 13.5, 18 },_
+{ 14  , 19 },_
+{ 14.5, 20 },_
+{ 15  , 21 },_
+{ 16  , 22 },_
+{ 17  , 23 },_
+{ 18  , 24 },_
+{ 20  , 26 },_
+{ 22  , 29 },_
+{ 24  , 32 },_
+{ 26  , 35 },_
+{ 27  , 36 },_
+{ 28  , 37 },_
+{ 29  , 38 },_
+{ 30  , 40 },_
+{ 32  , 42 },_
+{ 34  , 45 },_
+{ 36  , 48 } }
+          
+          
+
+
+
+     
+
  
 '--------------------
     
@@ -925,7 +1069,7 @@ Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As I
 Declare Function lugarNota (lugar As integer) As Integer
 Declare Sub metronomo ()
 Declare Sub moverPmtkaPmtk(r as Integer, e As integer)
-
+Common Shared As float nanchofig
 COMMON Shared As Long eventc, eventM
 Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA 
@@ -936,11 +1080,11 @@ Common Shared As cairo_t  Ptr c, c2
 Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal
 Common Shared As Any Ptr thread4, threadGrabamidi
-Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
+Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
-Common Shared As integer ubirtk, ubiroll,trasponer,canalx
+Common Shared As integer ubirtk, ubiroll,trasponer,canalx,saltos
 Common Shared As ubyte patchsal
-Common Shared As Integer  posicion,posicionOld,posn,terminar
+Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo,canalDeGrabacion
 Common SHARED As Integer EstaBarriendoPenta
 Common Shared As Integer instancia,FINALIZAR_ROLLMUSIC, MICROSEGUNDOS_POR_NEGRA
@@ -953,6 +1097,7 @@ Common Shared As Integer gp, midiplano,midionof
  posicion=0:posicionOld=0:posn=0
 ''patchsal=Roll.trk(1,1).inst
 Dim Shared As Any Ptr threadG 
+
 
 ReDim Shared As Integer tt(1 To 32)
 Dim Shared As Integer cual=0, repro=0

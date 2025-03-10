@@ -1,72 +1,3 @@
-' 149 corregi la entrada de port y salada para las ejecuciones,,, ver si anda para cancion,,,
-' lo importante es que toque en varios lados del codigo el pvalor de portin y portout
-' y hay diferencia en port reales que se envian a rtmidi comenzando en cero y ports logicos para el 
-' programa que empiezan desde 1 ,,,,verificar que todo funciona,,, a lo mejor sonoalgo o talvez
-' anda mejor porque en varios lados se enviaba al fisico el portout sin restarle 1 verificar exhaustivamnete!!!
-' ============================================
-' apertura de ports en play  
-' tiempoPatron a entero no tiene porque ser double, se graba en archivo
-' Se agrego formar acordes aun sin nota en el lugar elegido, se deb eentrar al duracion
-' Triadas desde Tonica completo Mayor Menor Disminuido formacion y play 
-' fix consumo cpu S5=2 y fueradefoco=0 eliminado
-' Funciona Acorde en Tonica triaca,,Ctrl+clik derecho luego seguir con mayor hasta no inversion
-' SE ELIMINO DE 'Q' la configuracion de tama�os, proporciones y font
-' se agrego nverEscalasAuxiliares y nanchofig a RollMusic.ini
-' se agrego en Ver, si se ven o no las Escalas Auxiliares en el grafico
-' TODO MULTIKEY IR PASANDO DE A POCO PROBANDO A E.SCANCODE MULTIKEY ES UNA BASURA REPITE EL COMANDO MIL VECES
-' paso previo para armar acordes: necesitamos poder INGRESAR CAMBIOS DE ESCALA  y guardarlos en la secuencia
-' pero al tocar se saltean como si no existieran,,,al retroceder o avanzar en la secuencia se debe ir actualizando
-' la escala en uso, esto permite al ingresar un acorder construirlo en base a la escala usada en ese tramo.
-' usaremos xml para leer y escribir musicxml e intercambia rocn otros programas
-' antes que midi despue salgun dia haremos midi no se veremos.... 
-' http://xmlsoft.org/examples/index.html
-' YA cierra todas las sesiones de rollmusic desde control
-' futuro grabar mxold y algo mas para conservar el tama�o de la ventana y el tama�o del font
-' usado por el usuario !!!! OK Y AANDA
-' el borrado de columna esta defectuoso hay que dar 0 y luego 12 x en toda la octava para
-' que borre mejor usaremos marcas de zona para borrar.
-' dejo de andar marcado de zonas porque habia un exit do en COMEDIT=False con mousex>50
-' se movio zonas dentro de mousex> 50 y luefo COMEDIT=false volvio a funcionar
- ' se intento usar Byte en vez de Ubyte para usar negativos pero hay qu emodificar mucho
- ' se usara IF variabrlee > 127 par ausar por ejemplo Vol > 127 para indicar escalas...
- ' Esta nota base...es Tonica 3era 5ta 7ma ...
- ' uso ctrl+click para ingresar notas nuevas en Edit, sino al pasar a Ctrl-M u otras acciones
- ' entraba notas no deseadas..
- ' 11-12-2021 redusco la camtidad de partes a 20 partes_falta (1 To 20), partes_sobra(1 To 20)
- ' rooloop 2673 menu contextual acordes desarrollo 06-12-2021
- ' correccion Clcik end EDIT 06-12-2021 s3=0 movido a y > 50 
- ' correccion de abrir nota si menor=mayor no hace nada, allevantar click rompia todo
- ' v23 fraccionar automaticamente en COMEDIT cursor al poner notas menores o 
- ' mayores en duracion a otra nota en acorde existente, tambien armar acordes desde una nota
- ' existente como tonica mayores menores etc,,buscar al tonica si consideramos es una 3era
- ' o una 5ta..
- ' V22 agregamso menu contextual en lectura con click derecho para acordes falta desarrollar
- ' v22  SetStateMenu(hmessages,1102,3) o  SetStateMenu(hmessages,1103,0) check items menu
- ' V22 abrir nota se ajuto final dejaba una columna vacia
- ' V21 SE AJSUTO MOVER LA VENTANA DRAGANDO LA CINTA SUPERIOR FUNCIONA MEJOR
- ' V21 TREADdETACH DE tHEREADlOOP Y THREAD1 PLAY CLOSE PORTS ETC EN EL CIERRE DE CONTROL 
- 'V21 ESTRUCTURO ACORDESONIGUALES Y COLOCO ALLOF EN VARIAS PARTES,Q,FIN PLAY, P.
- ' V19 TOCA BASTANTE BIEN ACORDES IGUALES CON SILENCIOS EN SU FORMACION
- ' Y CALCOMPAS AHROA INCLUYE SILENCIOS 
- ' v14 ...AOI-NUEVO PERFECTO TODOS LOS ACORDES IGUALES EN ACORDES TODAS LAS POSICIONES DBEN ESAR LLENAS
- ' CON NOTAS CON SONIDO O SIN SONIDO PERO TODOS CON LA MISMA CANTIDAD DE NOTAS POR AHORA UNAS PODRAN SONAR
- ' OTRAS NO SEGUIR CON MAS PREUBAS...ANDA OK CON LOS POCOS CASOS QUE TENGO...
- ' V10 FRACCIONADOR divido la nota seleccionada en n partes 
-  ' v8 fix nucle dur=0 nota=181 sino el borrado de notas anda mal
-  ' toda celda debe tener 0,181 nada de 181,181...eso se cambio
-  ' V7 CRASH DE SPACE EN PLAY, Y VER ACORDES DISTINTOS SI SE PUEDE CAMBIAR UNA NOTA LARGA
-  ' EN 2 CORTAS AUTOAMTICAMENTE PARA PONER EN ACORDE OTRAS 2 MAS CHIVAS EL:
-  ' P    ==> L+I* || DISCERNIR (1) |P|     DE (2)| P   |
-  ' L+I      L+I                   |L| I         | L I |
-  ' EL ULTIMO CASO (2) NO SE PUEDE EN ROLL , EL (1) SI
-  ' O SEA QUE EL PROGRAMA AUTOMATICAMNETE PARTA UNA NOTA LARGA COMO P I O ETC
-  ' FRENTE A OTRAS EN ACORDE MAS CHICAS Y UNIDAS O NO...
-  ' V5 CORREGIDO, V6 CORREGIDO OTRAS COSAS,,QUEDA CRASH DE PLAY CON SPACE...
-  ' 08-11 V5 anda mejor qu ela V4 solo que la ligadura I+I+I la toca como I+I
-  ' LE FALTA UNA NEGRA DE DURACION, EL RESTO LO TOCA BIEN!!!
-  ' SIN TOCAR CASI NADA SOLO ELIMINAR EL ANALISIS DE LIGA EN PLAYALL
-  ' SEGUIR CORREGIR CON EL USO DE LSO CAMPOS NUEVOS Y AL TERMINAR 
-  ' ELIMINAR LOS CAMPOS DE VEC QUE NO SE USEN
 ' ------------------------------
 '  -Wc -fstack-usage genera un archivo en runtime *.su con el uso del stack
 ' por cada funcoin el default total es 1024k, -t 1024 no haria falta colocarlo
@@ -151,56 +82,70 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 '--------
 Sub cerrar (ByVal n As Integer)
    If n=0 Then
+    print #1,"uso CLOSE ALL"
     FileFlush (-1)
     Close 
    Else 
     FileFlush (n)
     Close n
+    print #1,"uso Close N"
    EndIf 
 End Sub
 '--------
 Sub  porterrorsub(porterror As integer)
           Select Case porterror
             Case RTMIDI_ERROR_WARNING
+              Print #1, "RTMIDI_ERROR_WARNING, sin importancia"
               'strerror(n as integer) as zstring ptr
+              'Print #1, "sterror"; *strerror (porterror)
 
             Case RTMIDI_ERROR_DEBUG_WARNING
+              Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
               cerrar 0             
               End
       
             Case RTMIDI_ERROR_UNSPECIFIED
+              Print #1,"RTMIDI_ERROR_UNSPECIFIED"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_NO_DEVICES_FOUND
+              Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_INVALID_DEVICE
+              Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_MEMORY_ERROR
+              Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_INVALID_PARAMETER
+              Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_INVALID_USE
+              Print #1,"RTMIDI_ERROR_INVALID_USE"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_DRIVER_ERROR
+              Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_SYSTEM_ERROR
+              Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
               cerrar 0
               End
       
             Case RTMIDI_ERROR_THREAD_ERROR
+              Print #1,"RTMIDI_ERROR_THREAD_ERROR"
               cerrar 0
               End
           End Select
@@ -243,7 +188,9 @@ Dim As GLFWwindow ptr  win
 ' ----FIN OPENGL 
 '/
 '===============================
+Print #1,"ANTES ROLLDEC "
 #include "ROLLDEC.BI"
+Print #1,"DESPUES ROLLDEC "
 
 
 '------------------
@@ -252,17 +199,21 @@ pd1 = GetCurrentProcessId()
 
 Open "midebug.txt" For Output As #1
 '' Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As 1
+Print #1,"start"
+Print #1,"PID DE ESTE PROCESO ",pd1
 
 
 
 'Open "mivector.txt" For Output As #3
 'Open "miplayall.txt" For Output As #4
 'Open "test-AAAAA.TXT" For Output As #5
+'print #1, "version para ceros!!!!!! "
 'Dim fcon As Integer 
 'fcon=freefile
 'Open cons  for Output As #8
 
 ''Open "figuras.txt" For Output As #1
+Print #1,Date;Time
 ' secuenciador de 9 octavas estereo, modo Piano Roll,hace uso de
 'letras para las duraciones en vez de rectangulos...
 ' edicion modificacion insercion,,,12 eventos c/u con
@@ -299,15 +250,19 @@ Const NEWLINE = !"\n"
 'tempo I=160, seri equivalente a O=40 como l maxima cantdad de ticks de O es
 ' eldela figura mas peque�a=128 ticks...40 * 128 = 5120 por minuto.
 ' Si deseo un secuecnia de CantMin minutos
-tempo=160  ' negra=160
+tempo=120  ' negra=120
 CantMin=15
 'NotaBaja=1 : NotaAlta=128
 
+Print #1, "__FB_ARGV__ ",__FB_ARGV__
+Print #1, "__FB_ARGC__ ",__FB_ARGC__
 'Dim direp As ZString  Ptr
 'Dim dires As String
 
+Print #1,"__FB_ARGC__ ", __FB_ARGC__
 Dim As Integer com_usarmarco =0
 For ix = 0 To __FB_ARGC__
+  Print #1, "arg "; ix; " = '"; Command(ix); "'"''
 
  If ix=1 And Command(ix) > "" Then ' deberia entregarme el archjivo el SO pero no lo hace
   
@@ -325,6 +280,8 @@ For ix = 0 To __FB_ARGC__
 '    pmTk(ntk).desde=desde
    Instancia=1    
  EndIf
+ Print #1,"ubirtk ",ubirtk
+ Print #1,"ubiroll ",ubiroll
     'sigue en roolloop principio
  EndIf
  If ix=2 And Command(ix) > "" Then
@@ -372,9 +329,12 @@ If ubirtk > 0 or ubiroll>0  Then
    titulos(0)=Command(ix)
    Instancia=1 ' no se condice con el caso real da 2 ???
 EndIf
+ Print #1,"ubirtk ",ubirtk
+ Print #1,"ubiroll ",ubiroll
 
 EndIf
 
+Print #1, "instancia, ix  ", instancia, ix 
 ''SI DESDE CTRL TRAEMOS UN GRAFICO SOLITO ->' Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins))
 
 'Dim Shared As Integer pd1, fa1 
@@ -383,6 +343,8 @@ EndIf
 'Open "midebug" + "["+Str(pd1)+"]" + ".txt" For Output As #1
 
 ''Open "midebug.txt" For Output As #1
+'Print #1,"start"
+'Print #1,"PID DE ESTE PROCESO ",pd1
 fa1=2
 Open "procesos.txt" For Append As fa1
 If pid1=0   Then ' EMPEZO EL ONLINE SU PID NO HACE FALTA GRABARLO
@@ -398,6 +360,7 @@ Sleep 100
 
 
 If desde = 0 And hasta = 0  And instancia=0 Then
+ Print #1,"intervalo no dado usando default!"
  desde => 4  ' -> 3  
  hasta => 8  ' -> 6 le debo restar la octava oculta +1
  
@@ -409,13 +372,28 @@ If desde = 0 And hasta = 0  And instancia=0 Then
  'pmTk(ntk).desde=desde
  'pmTk(ntk).hasta=hasta
 EndIf
-' calculo teorico a tiempopatron 160 , pero roollmusic arranca a 120
-CantTicks=cantMin * 128 * tempo/4  ' 76800 ticks...o pasos
-'CantTicks=76800
-CantTicks=1000 ' 3 MINUTOS A NEGRA 160/min=500 Y Q TODAS SEAN FUSA
-' 4000*30=120000 x 16=1920000
-'  
-
+' calculo teorico a tiempopatron 60, 1 SEG 192 DIVISIONES 
+CantTicks=cantMin * 60 * 96 '  (15 MIN * 60 * 96) = 86400
+' 60 seg * 96 divisiones= 5760 divisiones en 1 min
+' Y 3W LA MENOR FIGURA 3W DE LA 5ta LINEA de tresillos
+' iniciamos vector de 15 minutos=660 segundos
+' como la division mas chica TOMAREMOS la figura tresillo de W,3W de 0,01041666 segundos
+' PARA TEMPO 60 entonces tomaremos el tiempo mas chico en 10.41666 mseg..para negra =1 seg
+' tiempo 60 seg.
+' 1 SEG DE TRACK= 1000/10,41666 = 96 posiciones de 3W,
+' 1min=86400 posiciones 
+' LA CANTIDAD DE TICKS DEBE SER CONSTANTE LUEGO SE TOCARA MAS RAPIDO O NO
+' AJUSTANDO TEMPO Y PAR ESO SE LEERA MAS RAPIDO EL TRACK ..
+' O SEA LA CANTIDAD DE TICKS DEBE SER LA MISMA PARA TODO TEMPO
+' E IGUA A LA DE NEGRA = 96 posiciones
+' CUANDO EL TEMPO SEA 240 ESTAREMOS TOCANDO EL TRACK A MAS VELOCIDAD Y LA 
+' DIVISION MAS CHICA SERA 1/4 DE LA DE 60 O SEA 0.01041666/ 4= 2.6041 mseg
+' ESTARIAMOS HABLANDO DE 2.6 MILI SEGUNDoS LA FIGURA MAS CHICA,,,TFMC
+' LUEGO CUANDO PREGUNTE POR LA FIGURA MAS CHICA SERA TFMC*60/TEMPO !!!
+' ,,para 60 10,41666 mseg, para 120 5,20833 mseg
+' para 240 2,6041 mseg...pero la cantidad de Ticks es fija siempre  igual
+' para un determinado tiempo de track..
+' como tomamos tempo=120 la TMFC sera 5,20833 mseg,
 Dim Shared As paso compas (1 To CantTicks) 'cada item es la posicion en donde
 
 desdevector = desde
@@ -427,6 +405,7 @@ estoyEnOctavaOld =desde
 ' --------
 NB => 0 + (desde-1) * 13   ' 39 , Notapiano=36, nR=39 -coincide no sobra nada
 NA => 11 + (hasta-1) * 13  ' 102, Notapiano= 83, nR=89 - no coincide sobra desde
+Print #1,"NB, NA",NB,NA 
 ' sobra desde 90 a 102 inclisive o sea 13 posiciones...
 ' automatiando podemos decier para cualqueir definicion de intervalo de octavas que
 ' CALCULO DE POSICION DE LA INFORMACION DE ACORDES:
@@ -442,12 +421,18 @@ NA => 11 + (hasta-1) * 13  ' 102, Notapiano= 83, nR=89 - no coincide sobra desde
 
 ReDim (Roll.trk ) (1 To CantTicks,NB To NA) ' Roll de trabajo en Pantalla
 
+'Print #1,"instru ",instru
 ' ojo debe se NB al reducir octabas NB cambia
 If instru > 0 Then
   Roll.trk(1,NA).inst = CUByte(instru)
   patchsal=instru
 EndIf
+'Print #1,"Roll.trk(1,NA).inst ",Roll.trk(1,NA).inst
+'Print #1,"NB ",NB
+'Print #1,"NA ",NA
 
+'Print #1,"desde ",desde
+'Print #1,"hasta ",hasta
 
 param.Roll=Roll
 param.ubiroll=ubiroll
@@ -457,7 +442,10 @@ param.ubirtk=ubirtk
 Dim  As Integer  ctres=1 ' 5 octavas por track
 Dim As Integer lim1 
 
-lim1=1 ' lim3 vale 25 se reserva el ultimo par avalores de control, no alcanza
+' en Rolldec ReDim Shared Track  (0 To 32) As sec ' tracks para guardar,.. y tocar 
+
+lim1=1 ' lim3 vale 25 se reserva el ultimo para valores de control, no alcanza
+''' lim2=12,lim3=25
 ' 26-01-2022 la zona de control debe ser 1 octava mas o sea lim3=25
 ReDim (Track(00).trk ) (1 To CantTicks,1 To lim3) ' lo usa instancia sin cancion
 ReDim (Track(01).trk ) (1 To CantTicks,1 To lim3) ' lo usa sin instancia
@@ -523,12 +511,14 @@ CantCompas = 40 * CantMin
 /'
 Dim l As Integer
 For l = 1 To 65
+print #1, l;" ";figura(l)
 Next l
 ''Close aca estaba habilitado el close humm ah pero esta comentado
 
 End
 '/
 ''https://www.freebasic.net/forum/viewtopic.php?t=15127
+'print #1,"NroCol, ancho, anchofig ",NroCol, ANCHO, anchofig
 ' ------------ play de usuario - datos por midiin -------------------
 ' 16 CANALES DE ENTRADA, PAR AL REPRODUCION O ARMADO
 ' SUMAREMOS SIEMRE ENTRE AMBAS FORMAS NO AMS DE 32 PORQUE AL REPRODUCIR
@@ -604,10 +594,23 @@ BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio muestro octava 4 la cen
 ' *************************************************+
 ' inc_Penta=separacion de lineas
 '---------------------
-gap1= anchofig* 2315/1000 ' 81 default
+'If font >=5 And font <= 34 Then
+'   anchofig= mispx(font-4,2)
+'Else
+'   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
+'EndIf
+
+ 
+   gap1= anchofig* 6 ''2315/1000
+   NroCol =  (ANCHO / anchofig ) + 4
+'   gap2= (914 * gap1) /1000 ' 74 default
+'   gap3= (519 * gap1) /1000 ' 42 default
+
+'''gap1= anchofig* 20 ' 81 default
 gap2= (914 * gap1) /1000 ' 74 default
 gap3= (519 * gap1) /1000 ' 42 default
 
+print #1,"gap1 ",gap1
 '---------
  
 Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig,sVerCifradoAcordes
@@ -629,6 +632,7 @@ Line Input #ffini, sVerEscalasAuxiliares
 Line Input #ffini, sanchofig
 Line Input #ffini, sVerCifradoAcordes
 
+'Print #1,"sfont, smxold, smyold,sANCHO,sALTO..  ",sfont, smxold, smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
 
 cerrar ffini
 Sleep 100
@@ -641,10 +645,11 @@ nancho=ValInt(sancho)
 nalto=ValInt(salto)
 ndeltaip=ValInt(sdeltaip)
 nVerEscalasAuxiliares=ValInt(sVerEscalasAuxiliares)
-nanchofig =ValInt(sanchofig)
+nanchofig =CSng(sanchofig)
 nVerCifradoAcordes=ValInt(sVerCifradoAcordes)
 
 
+Print #1,"nanchofig " ,nanchofig
 If nfont > 0 Then
   font=nfont
 EndIf
@@ -660,12 +665,27 @@ If ndeltaip <> 0 Then
 EndIf
 If nanchofig <> 0 Then
    anchofig=nanchofig
-   gap1= anchofig* 2315/1000
+
+'If font >=5 And font <= 34 Then
+'   anchofig= mispx(font-4,2)
+'Else
+'   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
+'EndIf
+
+   
+'   gap1= anchofig* 6 ''2315/1000
+'   NroCol =  (ANCHO / anchofig ) + 6
+'   gap2= (914 * gap1) /1000 ' 74 default
+'   gap3= (519 * gap1) /1000 ' 42 default
+
+
+   gap1= anchofig*6  ''' porque tanto??
    gap2= (914 * gap1) /1000 ' 74 default
    gap3= (519 * gap1) /1000 ' 42 default
-   NroCol =  (ANCHO / anchofig ) - 4
+   NroCol =  (ANCHO / anchofig ) + 4
    ANCHO3div4 = ANCHO *3 / 4 
 EndIf
+'Print #1,"NROCOL AL INICIO, ANCHO, anchofig ",NroCol, ANCHO, anchofig
 
 '---------
 If mxold=0 And myold=0 Then
@@ -691,6 +711,7 @@ common shared as any ptr BRUSH
 'https://docs.microsoft.com/en-us/windows/win32/multimedia/midi-functions
 'DIM CAN As UINT
 'CAN= midiOutGetNumDevs()
+'print #1, "MIDI NUM DEVS ";CAN
  
 '-----
 ' ancho de figura,separaciondelasmismas en pantalla anchofig
@@ -711,9 +732,12 @@ midiin(0)     = rtmidi_in_create_default()  ''' new RtMidiIn();
 midiout(0) = rtmidi_out_create_default() ''  new RtMidiOut();
 
 
+'print #1,"PLAYALL---------->>>>>>>"
 portsout =  port_count (midiout(0)) ' es una constante
 portsin  =  port_count(midiin(0)) ' es una constante
 Dim i1 As Integer
+Print #1, "portsin  "; portsin
+Print #1, "portsout ";portsout
 
 ReDim  listOutAbierto (0 To portsout)
 ReDim  listInAbierto  (0 To portsin)
@@ -747,13 +771,17 @@ Dim Shared As Integer Indicenotas=0
 
 'For i= 1 To portsin - 1
 ' midiin = rtmidi_in_create_default ( )
+' Print #1,"creando default ",i
 'Next i
 
 For i1 = 0 To portsin -1 
     nombrein(i1) = port_name(midiin(0), i1)
+    Print #1, *nombrein(i1)
 Next i1  
+Print #1,"-----------------------------"
 For i1 = 0 To portsout -1 
     nombreOut(i1) = port_name(midiout(0), i1)
+    Print #1, *nombreout(i1)
 Next i1  
 
 '---------------------

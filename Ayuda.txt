@@ -1,9 +1,9 @@
-    Ayuda Prelimiar Básica RollMusic
-    ================================
-    10-03-2025 ESTA LINEA DE DESARROLLO SE ABANDONA. LA PROXIMA SERA CON LINEA DE TIEMPOS, SE ADAPTARA 
-    DE A POCO CADA UNA DE LAS RUTINAS A LINEA DE TIEMPO SI TIENE SENTIDO, EL RESTO SERAN ELIMINADAS DE
-    A POCO CUANDO NADA DE ELLAS SIRVA.
-
+    Ayuda Prelimiar Básica RollMusic con  0.300 seria RollMusic 0.5000 antigua numeracion
+    ====================================================================================
+     (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, ALGUNAS COSAS YA SE ADAPTARON
+      Y FUNCIONAN BIEN PARA TICKS COMO CREAR UNA MELODIA MANUALMENTE EN ROLLGRAFICO,ACORDES EN MODO LECTURA
+      CON TONICA COMO BASE SOLAMENTE TAL CUAL ESTABA, Y TRASPONER, todo el resto inclusive canciones se
+      revisará y adaptara de a poco  )
     I) INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
        RollMusic.exe y todas los archivos *.dll. 
@@ -55,11 +55,7 @@
     III) USO: (ventana Roll Grafica)
 
     0) Consideraciones generales:
-       Ante todo para desarrollar se muestran variables al Pulsar [Edicion], en ese estado y en cualqueir otro
-       si quiero volver al menu inicial Archivo,Edicion,Ver,Pista,Reproducir etc....simplemente dar un click 
-       en la cinta celeste de arriba en su parte mas derecha entre la mitad y casi hasta el final antes de 
-       los botones. rojo, amarillo y verde...Recordar que Opciones se abre pulsando ALT y ubicando el mouse
-       encima del label . 
+       Ante todo para desarrollar se muestran variables al Pulsar [Edicion], en ese estado y en cualqueir otro si quiero volver al menu inicial Archivo,Edicion,Ver,Pista,Reproducir etc....simplemente dar un click  en la cinta celeste de arriba en su parte mas derecha entre la mitad y casi hasta el final antes de  los botones. rojo, amarillo y verde...Recordar que Opciones se abre pulsando ALT y ubicando el mouse  encima del label . 
        Hay 5 cuatro formas de abrir un Roll Grafico, 
        en "crear Pistas manuales" hay dos opciones fuera  de una canción:
        1) "Crea pista aislada con lo elegido y reemplaza la existente en la edicion", 
@@ -94,7 +90,11 @@
           (se impedira equivocarse en otra version anulando el menu)
           Se ajusto las habilitaciones y deshabilitaciones de 2.0,2.1,2.2 por menu y codigo
           para evitar opciones no permitidas..
-
+       ------------------------------------------------------------------------------------------
+       NOTA: PARA  CERRAR LA VENTANA DE ROLLGRAFICO SIN SALIR DEL PROGRAMA PULSAR CTRL+F4
+       PARA CERRAR LA VENTANA GRAFICA Y EL PROGRAMA CON TECLA ESCAPE APARECE DIALOGO PARA CONFIRMAR CIERRE
+       TAMBIEN SE PUEDE CERRAR CON EL BOTON X ROJO, PERO SE CAMBIARA A CERRAR VENTANA NO EL PROGRAMA.
+       ------------------------------------------------------------------------------------------
        Al abrir una seleccion de puerto port(MIDI-OUT), instrumentos o patch por orden ALfa o numerico, o canales  
        midi , apareceran [] vacios sin seleccionar y [x] seleccionado, antes de seleccionar uno nuevo, se debe 
        deseleccionar el anterior dandole click al que tenga [x] para apasarlo a [] y luego buscar el nuevo
@@ -104,8 +104,8 @@
        no de Roll Grafico, para ello entrar al menu "Crear Pistas manuales" y elegir "cambia instrumento
        por orden alfabetico" 
 
-       NOTA: 1) LOS BOTONES [PORTSAL] [VOL] [PAN] [PATCH] [CANAL] A LA DERECHA Y ABAJO EN LA 2DA LISTA
-       SE USAN PARA EJECUCIONES A TRAVES DE MIDI CON UN TECLADO(si se selecciona con un tilde alguna
+       NOTA: 1) LOS BOTONES [PORTSAL]  [PATCH] [CANAL]  ABAJO DE LAS LISTAS
+       SE USAN A LA DERECHA PARA EJECUCIONES A TRAVES DE MIDI CON UN TECLADO(si se selecciona con un tilde alguna
        pista de ejecuciones la segunda en la ventana), PARA PISTAS DE CANCION SI SE MARCA LAS PISTAS
        DE LA IZQUIERDA, se usa el 2do juego de botones debajo de la 1er lista de pistas de cancion.
        LA CANCION SE ESCUCHARA PULSANDO EL BOTON VERDE DE LA IZQUIERDA DE LA LISTA
@@ -153,7 +153,8 @@
     9) Agregar tracks a cancion.
     10) Conmutar de Pista en una cancion cargada sobre el grafico pulsando TAB.
     11) Borrar pistas de la lista. Delete o supr.
-    12) Abrir NOTA APILADAS en una columna grafica tipo acorde cuya mayor duracion es N 
+    12) ESTA OPCION ERA CUANDO NO SE USABA TICKS SERA ELIMINADO O VEREMOS SI SE PUEDE USAR PARA OTRA COSA:
+          Abrir NOTA APILADAS en una columna grafica tipo acorde cuya mayor duracion es N 
           Esto permite que no sea necesario reescribir toda la secuenica si luego
           de este acorde siguen nmucho mas notas ya escritas,,ahorra tiempo.  
           Ej: I negra. Toda la columna se dividira
@@ -208,7 +209,7 @@
           la nota menor y mayor, y fraccionara empezando por la mayor con al unidad de la menor.
           Es la elegida por el programa por omision. 
           Nota:Ya funciona Fraccionar una nota o acorde en pista de una cancion.
-
+          <---FIN 12)------------SERA ELIMINADO------------------->
     13) Cambiar o agregar una escala a la secuencia (se usara para agregar acordes todavia en desarrollo)
           teniendo una secuencia en edicion:(por omision no hay ninguna escala en la secuencia)
           ESCALA GENERAL DE TODA LA SECUENCIA (es un recordatorio de que escala estoy usando y que notas debo 
@@ -268,9 +269,7 @@
 
 
 
-    16 ) EXPORTAR UNA PISTA O CANCION A MIDI FORMATO 1:
-        - 2024-09-18 0.4631 mejoras en la carga de un plano midi 
-          exportado por Rollmusic.
+    16 ) EXPORTAR UNA PISTA O CANCION A MIDI FORMATO 1: (A VERIFICAR Y HACER DE NUEVO PARA TICKS)
         -Ver 0.4619 se corrigio y agrego al plano. detalles
          A PARTIR DEL *.ROLL SE CREARON PLANOS TXT Y DESDE EL, 
          EL *.MID CORRESPONDIENTE NOTA:
@@ -324,12 +323,16 @@
          editar y modificar segun convenga, on un click sobre la bat o doble
          click segun la configuracion del Windows, ejecuta el progrma y produce el 
          archivo.mid ..(algo sencillo y rapido por ahora)
-
-        
+     17) CAMBIAR PAR TICKS,Importar midi plano txt, si fue generado por RollMusic o externo, en el primer caso
+         funciona mejor, para externo es muy inexacto en cuanto a ritmos las notas serian
+         correctas, pero no su repeticion ni duracion, a veces se escucha algo parecido coherente.
+         La conversion desde ticks a no ticks es compleja, se deja por ahora.
+     18) Mostrar o Ocultar las Notas Guia de Roll Grafico del lado izquierdo. Pulsar H tipo
+         llave si o no.   
 
     IV ) USO VENTANA CONTROL PARA GRABAR EJECUCIONES POR TECLADO MIDI,
        
-    1 ) MIDI-IN GRABACION: 
+    1 ) MIDI-IN GRABACION: <----SERA ELIMINADO POR SER IMPRECISO --->
          YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN grabadas mediante la ejecucion EN UN O CONTROLADOR 
          MIDI EXTERNO  o TECLADO externo  real concectado su salida MIDI-OUT  al MIDI-IN de la PC.
          Las pistas se arman tal cual se grabaron sincronizadas respecto de la pista 1.
@@ -337,12 +340,18 @@
           Pasos para Grabar 
 
          a) Dar check a la pista a grabar en la columna 'G' de la 2da lista de pistas. debajo del menu, el programa
-             solicitara un nombre de pista(sin extension ej TEMA-001).   'Cambiar Tiempo....' 
-         b) En menu Control  Puertos de Ejecuciones, seleccionar Puerto MIDI-OUT y puerto MIDI-IN desde donde 
-            se grabara la entrada midi. Abrir el Puerto MIDI-OUT.
+             solicitara un nombre de pista(sin extension ej (01)-TEMA ).   'Cambiar Tiempo....' 
+             PONER ENTRE PARENTESIS EL NRO DE PISTA (01) (02) ETC ..revisaremos esto... 
+         b) En menu Control  "Puertos de Ejecuciones", seleccionar Puerto MIDI-OUT y puerto MIDI-IN desde donde 
+            se grabara la entrada midi. Abrir el Puerto MIDI-OUT. (para el puerto MIDI-IN hay que marcar con el
+             mouse el nombre de la pista la cual se iluminara, ahora la seleccion es individual sobre el nombre )
+             (lo mismo con el MIDI-IN para grabacion sobre ROLL, iluminar el nombre de la pista, deberemos poner
+              un nombre cosa que debe hacerse hasta ahora se seleccionaba chequeando la casilla de la izquierda) 
+              (***) en modificacion!
          c) mantener la seleccion en 'G' pulsar en los botones PortSal, canal y Patch en ese orden para finalmente
              elegir un instrumento si el dispositivo usa Patchs. (siempre pulsar esos 3 botones en ese orden para cualquier
              pista nueva) de esa forma se graba en el archivo nuevo de esa pista dichos parametros.
+             El canal de salida elige una vez que se halla grabado algo...
          d) Ir al menu de Control, Elegir el submenu Reproducir y elegir "Reproducir MIDI-IN (teclado) por MIDI-OUT" 
           La grabacion comenzara al llegar la 1er nota midi,,tocar normalmente, para detener la grabacion pulsar 
           el boton Parar de Color Negro de esa misma lista y de Ese grupo de 3 botones  (negro rojo verde). 
@@ -394,8 +403,10 @@
            Reproduccion MIDI-IN. Y asi sucecivamente siempre se selecciona una pista por vez tanto para abrir
            como cerrar.
          j)  agregamos un archivo parametro inicio.txt en directorio de ejecuciones que recuerde que pista estaba
-            sonando y cual muteada. Se puede renombrar una pista cargada de ejecuciones, para ello solo dejar
-            sonando o chequeada esa pista usar el menu archivo 5.2 y luego grabar con 5.0
+            sonando y cual muteada. 
+         k) Se puede renombrar una pista cargada de ejecuciones, para ello marcar el nombre  de la pista a
+            renombrar y usar el menu archivo 5.2 (la cual graba automaticamente) y luego grabar con 5.0 aunque 
+            no es necesario la grabacion se ahce automatica en 5.2
 
 
       2) Puede reproducirse al mismo tiempo una cancion y una grabacion *.ejec.
@@ -412,21 +423,50 @@
          con una o mas ejecuciones, el roll grafico permanecera quieto no
          se movera ni acompañara la cancion.
 
-       3) Grabacion directamente sobre Roll, 1era version faltaria que detecte acordes,
-           (ya lo hizo en algun algoritmo distinto a este), el actual funciona para melodias, tiene
-           un metronomo, si se desea se puede desactivar (menu Opciones, no probado)
-           Como antes en 17a en menu Reproducir, elegir Reproducir MIDI-IN, luego
-           darle al boton rojo de la izquierda de las pistas para grabar, se escuchara 4
-           ticks preparatorio mas graves , luego comienza los ticks mas agudos de grabacion
-           junto al cambio de color del Edit de grabacion (Edicion de Roll como la manual)
-           Al detener como antes la edicion se podra darle play, Para volver a grabar se repite las
-           mismas acciones. deja un archivo debug.txt para estudiarlo. Graba los silencios
-           con la nota siguiente con sonido. Roll separa algunas notas cuando la duracion del compas
-          es mayor , pero generalmente no logra el compas exacto...de modo que eliminare creo
-          el calculo del compas y quedara un Roll sin compases. Cuando se agregue, cuantizacion
-          se podria volver a colocar compases (aunque tal vez podriamos poner barras tipo dientes
-          que indiquen cuando se alcanz o sobrepasa un compas auqneu las notas no esten bien 
-          definidas)
+       3) Grabacion de Ejecuciones directamente sobre Roll GRAFICO, 
+          2DA version faltaria que detecte acordes,
+           (ya lo hizo en algun algoritmo distinto a este), el actual funciona para melodias, se anulo
+           el metronomo por ahora, si se desea se puede desactivar (menu Opciones, no probado)
+           Pasos: 
+           ANTE TODO ENCENDER Y CONECTAR EL TECLADO EXTERNO MIDI A LA PC.
+             3a) Chequear en columna S o (G) de la lista de la derecha una pista.
+                 Si se chequea la S no pedira nombre de archivo de ejecuciones la ejecuciom
+                 luego se grabara a un archivo *.roll usando el menu de Roll Grafico.   
+                 Si se chequea una G eso es mas par grabar ejecuciones sin Roll Grafico, pero
+                 igual grabara a Roll, en este cas opodremos grabar a archivo de ejecuciones
+                 y a roll.
+             3a) En puertos de Ejecuciones seleccionar puerto MIDI-IN y MIDI-OT del teclado midi, 
+           sin esas selecciones al inicio en menu Reproducir, "Reproducir MIDI-IN (teclado) POR MIDI-OUT" 
+           estará deshabilitado,  
+             3b) luego al habilitarse, al pie de la lista de ejecuciones (a la derecha) seleccionar el
+           PortSal o Midi-OUT para la ejecucion que se graba, el PATCH y el canal.(ya no es el teclado que va directo)
+             3c) En el menu "Crear Pistas Manuales" elegir el patch o instrumento si no se quiere cambiar
+           dejar el existente seleccionado con [x].
+             3d) En el mismo Menu usar "Crear Pista aislada con ..." para levantar un roll grafico dependiente
+               Esta acción no sera necesaria, si se salta este paso y se pulsa el boton Rojo de Grabacion 
+               directamente en la Lista de la izquierda.  
+             3e) Pulsar arriba en el boton rojo  de las pistas para grabar de la izquierda o 1er lista, 
+           anulado por ahora->(se escuchara 4  ticks preparatorio mas graves , luego comienza los ticks mas agudos de grabacion)
+           pulsar Edit en Roll a color verde  (Edicion de Roll como la manual). Si se ha olvidado levantar el
+           Roll Grafico dependiente, aca se lo levantará. 
+             3f) Tocar en el teclado midi una melodia..
+             3g) Pulsar boton detener de arriba de la 1er lista. Verificar que Roll pase de edicion a lectura
+           sino lo hace pulsar Edit dos veces y verificar que ninguna octava ni el menu esté en color verde.
+           Al detener como antes la edicion se podra darle play, para ello
+             3h) seleccionar o chequear la primer pista (en blanco si no hay cargada ninguna cancion) de la lista de 
+           la izquierda o de cancion. En los botones de abajo de esa lista seleccionar PorSal o midi-out
+           patch o instrumento y el canal. Seguidamente en roll grafico pulsar la barra espaciadora
+           para escuchar lo grabado. Podemos grabar a archivo como .roll usando GUARDAR COMO del menu de Roll
+           grafico. (podriamos levantarlo en otro roll, Crear Instancia de RollMusic Sin control...) 
+           Para volver a grabar se repite las
+           mismas acciones, si usamos los mismos port no haria falta volver a seleccionarlos. 
+           (RollMusic Graba los silencios con la nota siguiente con sonido anteponiendolo. 
+           Roll separa algunas notas cuando la duracion del compas  es mayor , pero generalmente no logra 
+           el compas exacto...de modo que se elimina  el calculo del compas durante la grabacion y quedara un 
+           Roll sin compases o solo uno. Cuando se agregue, cuantizacion al pulsar R tratara de colocar los
+           las barras de compases,  o al menos  barras  tipo dientes   que indiquen cuando se alcanza o sobrepasa
+           un compas aunque no sea exacto ni las notas esten bien ajustadas al compas.
+           (Asi no se usara poder de cpu durante la grabacion)
 
  
       V ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
@@ -1060,9 +1100,103 @@ Notas Tecnicas de desarrollo:
     Si uso GRABAR , lo hara siempre en formato Roll con el nombre que se desee. Y si deseo 
     una copia se usará GRABAR COMO. 
 -------------------------------------------------------------------------
+  Las figuras se dividen 4 grupos, agrupados por tener o no tener los mismos
+  modificadores. En la 1er columna el 1er grupo va desde la 1er linea la redonda, O,
+  a la 5ta linea 1/3 de tresillo de O, 3O y se extiende a la derecha 8 columnas mas hasta w.
+  El 2do grupo, es el mismo grupo anterior pero la representacion de sus silencios, con 
+  una s minuscales antepuesto a la figura. ej sO, sI, sL, etc.
+  El 3er grupo son las notas ligadas para ello se usa un simbolo adicional a la derecha,
+  el +, e indica que la figura se liga a la siguiente.
+  El 4to grupo es el mismo anterior, pero con ligadura + .
+  Cada grupo son 5 lineas; la figura estandar como O P I L F E X H W
+  REDONDA O (4I), BLANCA P (2I), I NEGRA (2L), L CORCHEA(2F),F SEMICORCHEA(2E),
+  E FUSA(2X), X SEMI FUSA(2H), H GARRAPATEA O CUARTI FUSA(2W)
+  (W NO EXISTE EN MUSICA SE AGREGO POR POSIBLE PRESICION.)
+  Cada nota es la mitad de duracion de la anterior de izq a derecha
+  Si la redonda es 1, blanca 1/2, negra 1/4, corchea 1/8, semi corchea 1/16,
+  fusa 1/32, semifusa 1/64, garrapatea o cuarti fusa 1/128,
+  y agregue una W 1/256.
+  Eso de la mitad  se cumple para todas las lineas incluso 1/3 de tresillo
+  (para este programa 3I ES 1/3 DEL TRESILLO ej: DE NEGRA O SEA
+  UN TRESILLO COMPLETO DE MUSICA DE NEGRAS ES |3I 3I 3I|
+  Y  ESAS 3 (3I) VALEN DOS NEGRAS, O SEA un compas de dos negras | I I | = 
+  un compas de 3 (3I) -> |3I 3I 3I|. En un compas 4/4 seria 
+  |I I I I | = |3I 3I 3I  3I 3I 3I|
+
+  O sea  un 1/3 de tresillo de corchea  3L es la mitad de un 1/3 de tresillo de negras 3I
+  Luego 3I = 3L + 3L 
+  podria tener 
+  |3I+3L  3L+3I| = |I  I| La duracion total es la misma pero puedo agrupar 2 tracks en 
+  formato de tresillos formando acordes iguales o sea
+  track 1)   |3L+3L+3L 3L+3L+3L|
+  TRACK 2)   |3L+3L 3L+3L 3L+3L|
+ LUEGO TENGO 6 ACORDES DE IGUALES DURACIONES PERO SUENAN ASI
+  TRACK 1)   | I   I   | ===> |3L+3L+3L 3L+3L+3L|
+  TRACK 2)   | 3I 3I 3I| ===> |3L+3L 3L+3L 3L+3L|
+  Como vemos hay 6 columnas iguales solo que algunas estan ligadas y otras no.
+  El program ejecuta por columna manda toda una columna entera de todos los tracks
+  a ejecutar y luego se construyen los retardos de cada uno segun la ligadura
+  y los silencios que hubiera. Tambien vemos que un tresillo de corcheas es una negra
+  3L+3L+3L= I
+  Es como buscar el valor mas chico comun a ambos tracks. En este caso el 3L 
+  Cada vez que agreguemos un track con figuras mas chicas habra que hacer ese 
+  proceso. 
+  ( Quedan 2 posibilidades para el futuro: que el programa lo haga automaticamente 
+    (algo lo hace pero a nivel de track). O al comenzar una cancion
+  se decidira cual será el valor mas chico de duracion a usar. Ej una corchea
+  o una semicorchea o un 3L o un 3F..Si se elige una division chica
+  el programa podria representar cada figura en funcion de la entrada auto-
+  maticamente, ej entrar una negra y la menor elegida es una semicorchea
+  luego al pulsar 1 y luego una letra de nota ejemplo Do (C)
+  el programa podria mostrar   F+F+F+F = I
+  O  si sse elige fusa E+E+E+E+E+E+E+E = I
+  Y en vez de tipear todo eso si se le dice al programa con que division mas 
+  chica trabajaremos, el convertirá la duracion entrada como una suma de esa 
+  division chica, y asi se apreciara mas visualmente las partes. Y el programa
+  ejecutara la cancion con acordes iguales que es lo que hasta ahora ejecuta mejor.
+  y ademas tendremos un buen control de las partes)
+
+  El mismo ejemplo pero con silencios 
+  el programa podria mostrar  sF+sF F+F     = sL L
+  O  si sse elige fusa  sE+sE+sE+sE E+E+E+E = sL L
+
+   Cada negra = 3I+3L 
+   Y en un solo compas de dos negras | I I | entra un tresillo de negras
+   3I 3I 3I
+
+Entrada por teclado:
+  
+  En linea horizontal de izq a derecha pulsar de 1 a 9 para las figuras en un renglon 
+    O   P   I   L   F   E   X   H   W   =>  Luego nada
+    O4  P4  I4  L4  F4  E4  X4  H4  W4  =>   May Izq (+1/4, 4)
+    O*  P*  I*  L*  F*  E*  X*  H*  W*  =>  tecla punto . (+1/2, * puntillo)
+    O:  P:  I:  L:  F:  E:  X:  H:  W:  =>  May Der (+MITAD 
+                                                      + MITAD DE LA MITAD ANTERIOR, : doble puntillo)
+   3O  3P  3I  3L  3F  3E  3X  3H  3W    =>  T o t
+
+   sO  sP  sI  sL  sF  sE  sX  sH  sW    =>  S o s
+   sO4 sP4 sI4 sL4 sF4 sE4 sX4 sH4 sW4   =>  S y luego May Izq .
+   sO* sP* sI* sL* sF* sE* sX* sH* sW*   => S y .
+   sO: sP: sI: sL: sF: sE: sX: sH: sW:   =>  s luego May Derecha
+  s3O s3P s3I s3L s3F s3E s3X s3H s3W   => s T 
+
+    O+  P+  I+  L+  F+  E+  X+  H+  W+  =>  +  
+    O4+ P4+ I4+ L4+ F4+ E4+ X4+ H4+ W4+ => May Izq + 
+    O*+ P*+ I*+ L*+ F*+ E*+ X*+ H*+ W*+ => . luego +
+    O:+ P:+ I:+ L:+ F:+ E:+ X:+ H:+ W:+ => May Der +
+   3O+ 3P+ 3I+ 3L+ 3F+ 3E+ 3X+ 3H+ 3W+  => T +
+
+   sO+ sP+ sI+ sL+ sF+ sE+ sX+ sH+ sW+  => s +
+   sO4+ sP4+ sI4+ sL4+ sF4+ sE4+ sX4+ sH4+ sW4+ => S May Izq + 
+   sO*+ sP*+ sI*+ sL*+ sF*+ sE*+ sX*+ sH*+ sW*+ => s . +
+   sO:+ sP:+ sI:+ sL:+ sF:+ sE:+ sX:+ sH:+ sW:+ => s May Der +
+   s3O+ s3P+ s3I+ s3L+ s3F+ s3E+ s3X+ s3H+ s3W+ => s T +
+                                           ||   => final con  
+
+-------------------------------------------------------------------------
 TECLAS RAPIDAS borrado revisar y completar
-(DUR,NOTA) 0,181 - permite ingreso de notas en acorde y evita qu eel ingreso de notas
-en modo edit simple use esas posiciones y topme siemrep una nueva al final de la secuencia
+(DUR,NOTA) 0,181 - permite ingreso de notas en acorde y evita que el ingreso de notas
+en modo edit simple use esas posiciones y tome siempre una nueva al final de la secuencia
 sino el program insertaria notas en cualquier lugar o semitono en el que nota=0.
 
  CTRL-M 9 + X = 0,181   (pulsar ctrl-m luego el numero 9 y finalmente X modifica a 0,181
@@ -1085,7 +1219,7 @@ lo que hará que retroceda el cursor a esa posicion y agregue la nota nueva ahi e
 final de la secuencia
 ---------------
 
-futuro: (creo me demandará muchos meses  más jeje, no estoy a full y ademas voy aprendiendo,
+futuro: (creo me demandará muchos meses  , no estoy a full y ademas voy aprendiendo,
  es hobby y estudio basico de freebasic, luego incorporare otro lenguaje, pero que sea compilado
  NIM que ya probé pero le faltaba libreria de win y mingw, algo similar en D, HASKEL lento,
  Rust demasiado estructurado y las librerias mucho tiempo de descarga, compilacion, infierno de versiones
@@ -1111,9 +1245,9 @@ futuro: (creo me demandará muchos meses  más jeje, no estoy a full y ademas voy 
   PROBARSE ,,,,LLEGARE A ALGO MEJOR ?? NO SE ,,,CADA DIA ES MAS COMPLICADO
   Y YO CON MENOS TIEMPO,...HARIAN FALTA COLABORADORES DE FB,,,
 
-NOTA GENERAL: Para compilar estan laslibrerias necesarias en el 
+NOTA GENERAL: Para compilar estan las librerias necesarias en el 
 subdirectorio \RollMusic, que no son necesarias para su ejecucion, esas
-estan junto al ejecutable. Tambie nse encuentra el archivo del proyecto
+estan junto al ejecutable. Tambien se encuentra el archivo del proyecto
 de Fbedit.
 
 

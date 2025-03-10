@@ -373,7 +373,7 @@ Menubar(MenName8)
 MenuItem(1204,MenName8,"Seleccion de Puerto MIDI-OUT Ejecucion")
 MenuItem(1205,MenName8,"Abrir  Puertos MIDI-OUT Ejecucion")
 MenuItem(1206,MenName8,"Cerrar Puertos MIDI-OUT Ejecucion")
-Menuitem(1207,MenName8,"Convertir ejecucion o archivo cargado de *.ejec a *.trk ")
+Menuitem(1207,MenName8,"No usar En desarrollo para ticks:Convertir ejecucion o archivo cargado de *.ejec a *.trk ")
 
 MenuItem(2000,MenName10,"Acerca de")
 MenuItem(2001,MenName10,"Cuadro Ayuda TEMPO por nombres, Lento,adagio etc y control fino")
@@ -446,6 +446,7 @@ End Select
   SetStateMenu(hmessages,1009,1)
 '' sin seleccionar portin y portout no se permite abrir midiin teclado
   
+'   Print #1,"deshabilita 1092 y 1093  al inicio >>>>>>>>>>>>>"
     SetStateMenu(hmessages,1092,1)
     SetStateMenu(hmessages,1093,1)
 

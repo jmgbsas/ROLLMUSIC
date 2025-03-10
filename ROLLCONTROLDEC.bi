@@ -3,7 +3,7 @@ Declare Sub EntrarNombrePista(ByRef NombrePista As String, hwndC as Hwnd)
 Declare Sub EntrarTeclado ()
 '''''''Declare Sub cerrar(n As integer)
 Declare Sub seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer)
-Declare Sub reproducir()
+'Declare Sub reproducir()
 Declare Sub CrearDirCancion (ByRef NombreCancion As string)
 Declare Sub cargarDirectorioCancion (ByRef NombreCancion As string)
 Declare Function sacarNtk (cadena As String) As Integer

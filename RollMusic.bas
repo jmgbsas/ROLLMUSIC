@@ -3,10 +3,13 @@
 #include "RTMIDISUB.bi"
 #Include "ROLLTRACKS.bi"
 #include "ROLLSUB.bi"
+'' perdi control -m ver pòrque o seguir con TICKS01 donde anda
+'' comparar TICKS01 CON 02 03 QUEDO MAL !!!
 '' DEV02
 '' PROBAR FileListBoxItem !!! 15-12-2024
 '===========================
  Dim As Integer MenuFlag=0, LoopFlag=0 
+'Print #1, "ANTES ROLLLOOP"
 '========================== 
 #include "ROllLoop.bi"
 '==========================
@@ -28,21 +31,28 @@ Dim As  byte Ptr p5,p6
 Dim hnro As Integer
 ' prueba desarrolllo escalas 
  For g1 =1 To 47
+    Print #1, escala(g1).nombre
     hnro=escala(g1).nropasos 
     p5= escala(g1).pasos 
     For h1 = 1 To hnro -1
      
+     Print #1, *p5;",";  ' impresion de intervalos de la escala
      p5=p5+1 
     Next h1
+    Print #1, *p5
 ' CONSTRUCCION DE LA ESCALA
  Dim As Integer k3=1
    p6= escala(g1).pasos
     For h2 = 1 To hnro -1
      
+     'Print #1,NotasEscala(k3);" " ;  ' impresion de la escala con las notas c c# d  etc
+     Print #1, 12-k3+1;" ";
      k3= *p6 + k3
      
      p6=p6+1 
     Next h2
+    Print #1, 12-k3+1 
+    'Print #1, NotasEscala(k3)
 
  Next g1
  '/
@@ -54,23 +64,42 @@ Dim hnro As Integer
  ' Entonces para taducir a Roll hago 12-valor+1 . pero par aanalizar y mostrar es valor
  ' ejemplo triada=1,3,5=C,E,G, en Roll seria = 12,10,8
  
- ' puedo recorrer un array con un pointer!!!!
-'------- muchas fallas y algorimos complejos,,ultima version se abandona
-nroversion="2025-01-14 0.4900 Ultima Version sin Ticks" 'melodia de ejcucion y acorde se ve en Roll
-' playAll no lo toca bien los acordes porque nos son de igual duracion
-' pero la representacion grafica andaria ,??,bien?    
-' hemos  convertido las ejecuciones melodicas simples en archivos trk y roll.
-' agregamos los silencios!! veremos un desafio
-acercade = "RollMusic Version "+ nroVersion +" Jose M Galeano, Buenos Aires Argentina 2021-2022, 2024. Ejecuta secuencias " + _
- "entrada por pasos usando algoritmos sin una linea conductora de tiempos, se basa en las duraciones de las notas. " + _
- "Para entrada por teclado midi usa ticks. Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
+ ' genial puedo recorrer un array con un pointer!!!!
+'-------
+' ESTA DANDO SEGMENTACIONFAULT AL GRABAR 2DA PISTA CON CANCION CARGADA
+' AUNQUE YA NO PERMITO BARRER PENTAMIENTRAS GRABA O SEA CONGRABAREJEC=1 
+' SALTA EL BARRIDO DEPENTA Y MENU,,,,,PERO IGUAL REVIENTA AL REPRODUCIR 
+'EL RESULTADO Y NO GRABA ELARCHIVO ??REPETIR TEST 16-06-2022 17:00
+' 1 CARGAR PISTA 1 
+' 2 CARGAR ROLL
+' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
+' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
+' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
+'----------------------------------------------------
+' FUTURO PARA MEJOR PERFORMANCE TRATAR DE USAR THREADPOOLING TP SEGUN LINK
+' https://www.freebasic.net/wiki/ProPgEmulateTlsTp
+'Mean time wasted when running a user task :
+'   either by procedure calling method,
+'   or by various threading methods.
+
+'	  - Using procedure calling method        :   0.000033 ms
+'	  - Using elementary threading method     :   0.146337 ms
+'	  - Using ThreadInitThenMultiStart method :   0.007382 ms
+'	  - Using ThreadPooling method            :   0.006873 ms
+'	  - Using ThreadDispatching method        :   0.007066 ms
+' --------------------------------------------
+nroversion="2025-03-10 TICKS 0.300 cambio numeracion (RollMusic 0.5000)"
+' empieza a andar!! 
+'esta version no será compatible con las anteriores se agrego por ahora
+' un campo nuevo al type dat el onoff ubyte, con 2 indicara on, y con 1 el off 
+acercade = "RollMusic TICKS"+ nroVersion +" Jose M Galeano, Buenos Aires Argentina 2021-2025,. Ejecuta secuencias " + _
+ "entrada por pasos usando algoritmos con ticks de tiempos. " + _
+ "Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
  "manual o por ejecucion. OS:Windows 64bits, " + _
  "Usa Cairo como libreria de graficos, Windows9 ,WinGUI y Gtk como GUI; Rtmidi como libreria midi, " + _
  "Editor de codigo FbEdit. Echo en Freebasic como hobby. FreeBASIC Compiler - Version 1.09.0 (2021-12-31), built for win64 (64bit) " + _
 " Copyright (C) 2004-2021 The FreeBASIC development team." +_ 
-" Consultas: mail:galeanoj2005@gmail.com. (Na, No aplicable, no implementado todavia)."+_
-" ABANDONo ESTA LINEA DE DESARROLLO. AGREGARE LINEA DE TIEMPO Y TICKS. RollMusic Ticks 0.5000."
-
+" Consultas: mail:galeanoj2005@gmail.com. (Na, No aplicable, no implementado todavia"
  
 '------------///// GUI GUI GUI  GUI ///////////////
 
@@ -124,20 +153,23 @@ End Sub
 ' Dim Shared As Integer ok = 0
 Dim  As Integer  gi = 0
 
+'Print #1,"ANTES ANCHO , ALTO ", ANCHO, ALTO
 If mxold > 0 Then
 
 'MoveWindow( hWnd , 1, 1 , ANCHO - mxold, ALTO - myold, TRUE )
+'Print #1,"rollmusic.bas 742: ANCHO,nancho ",ANCHO, nancho
   If ANCHO = nancho Then
       ANCHO= nancho -mxold 
   EndIf
+'Print #1,"rollmusic.bas 745: ANCHO resultante  ",ANCHO
 
   AnchoInicial=ANCHO
   If anchofig=0 Then
-    anchofig=ANCHO/45 ' SON 45 COL PERO SE USAN MENOS 41
+    anchofig=ANCHO/45 ' decia 700 SON 45 COL PERO SE USAN MENOS 41
   EndIf
-  NroCol =  (ANCHO / anchofig ) - 4 ' 20 Tama o figuras, nota guia 6 columnas "B_8_[ "
+  NroCol =  (ANCHO / anchofig ) + 4 ' 20 Tama o figuras, nota guia 6 columnas "B_8_[ "
   ANCHO3div4 = ANCHO *3 / 4
-  gap1= anchofig* 2315/1000 ' 81 default
+  gap1= anchofig* 6 ' porque era tanto 20 ' 81 default
   gap2= (914 * gap1) /1000 ' 74 default
   gap3= (519 * gap1) /1000 ' 42 default
   mxold=0
@@ -153,8 +185,10 @@ EndIf
 stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
 
+'Print #1,"nfont, nmxold, nmyold, nancho,nalto  ",nfont, nmxold, nmyold,nancho,nalto
     param.ancho = ANCHO 
     param.alto = ALTO
+'Print #1,"DESPUES ANCHO , ALTO ", ANCHO, ALTO
 '''mxold=0:myold=0
 
 abrirRoll=0
@@ -168,21 +202,29 @@ If instancia =0  Then  ' cuando es online y recien levanta
 ' CON EL CONTEXTO MANUAL
 End If 
 '---------------veremos si aca anda mejor despues de roolloop 
+'Print #1, "ANTES ROLLCTRLSUB.Bi"
 #Include "ROLLCTRLSUB.Bi"
+'Print #1, "DESPUES ROLLCTRLSUB.Bi"
 '----------------
 Do
   COMEDIT = False
 param.titulo ="RollMusic Ctrl V "+ nroversion
+'Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
+'Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
+'Print #1,"iniio lbound roll.trk ", LBound(param.Roll.trk,2)
+'Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
 ' abriRoll=1 orden de llamar a Roll grafico
 ' abrirRoll=0 no hay orden de abrir Roll
 
   If abrirRoll=1 And cargacancion=1 Then
      abrirRoll=0
+  '   Print #1," ENTRA A CARGAR PISTAS  cargaCancion = ",cargaCancion
      param.encancion=0
      ResetAllListBox(3)
      Resetear (pmTk()) 
 
       CargarPistasEnCancion ()
+ '   Print #1,"CARGAR PISTAS cargacancion = ",cargaCancion 
      ''CANCIONCARGADA=TRUE
      ROLLCARGADO=False
      '''lo hace tab-cargaCancion=0
@@ -191,6 +233,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
    If pid1=0 And instancia =0  Then
       pid1=pd1
    EndIf
+ ' Print #1,"cALL rOLLLOOP I) cargaCancion ES 1 SI O SI ",cargaCancion
    If CANCIONCARGADA=True  Then
      ntk=0 '16-03-2022
       If  EventNumber = 10061 Then
@@ -198,12 +241,14 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
           CargarSinRoll () ''' play sin roll 
       Else
       EstaBarriendoPenta=1 
+Print #1, "1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOS(0) ", NombreCancion, titulos(0)
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
       EndIf 
     ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
    Else     ''''''''RollLoop ( param) '<--con esto anda
      cargacancion=0
    EndIf 
+ 'Print #1,"ENTRA A CARGAR PISTAS cargaCancion ES 1 SI O SI ",cargaCancion   
     ''''cargacancion=0 esto me ponia en cero antes que lo use el thread!!!!
     ''' RollLoop(param)
     ''Sleep 200 ' NO HACE FALTA AHORA sin este retardo no le da teimpo al thread de cargar a Roll
@@ -213,10 +258,12 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
        CANCIONCARGADA=False
        ''cargaCancion=0  
        param.encancion=0 
+       Print #1,"CALL ROLLLOOP II) "
        If  EventNumber=10061 Then
            cargaCancion=1 
            CargarSinRoll () '''28-02-2024 play sin roll
        Else
+Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreCancion, titulos(0)
        EstaBarriendoPenta=1
        threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
        EndIf
@@ -226,6 +273,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
     EndIf
   EndIf
 
+'Print #1, "IX LLEGA A 337 ANTES LOOP PRINCIPAL " ,  instancia
      
   If instancia = 0   Then 
     
@@ -247,6 +295,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
 ' PARA CONVERTIR A MID SI HAY UN PLANO NUEVO
 
 
+           ''Print #1,"Titulos(ntoca+32), ntoca ",Titulos(ntoca+32),ntoca
 
      eventC=WaitEvent()
 'WindowStartDraw(hwndC)
@@ -276,8 +325,10 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
      ' If ix < 3 Then 
     '  'DisableGadget(PISTASROLL,0)
     '  EndIf  
+'Print #1,"antes  ctrl_eventgadget  DirEjecSinBarra ", DirEjecSinBarra
     '  CTRL_EVENTGADGET()
    #Include "ROLLCTRLEVENTGADGET.bi"  
+'Print #1,"despues de ctrl_eventgadget  DirEjecSinBarra ", DirEjecSinBarra
 '--------------------------------------------------------
     '  If ix < 3 Then   
     '  'DisableGadget(PISTASROLL,1)
@@ -358,6 +409,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
                          If  Mid(NombreCancion, ls, 1)= "\" Then
                               NombreCancion=Mid(NombreCancion,1, ls-1)
                          EndIf
+                         Print #1,"CHECK GRAB NOMBRECANCION ",NombreCancion
                          Titulos(ntoca+32)=NombreCancion+"\("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
                   else
                          Titulos(ntoca+32)="("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
@@ -378,10 +430,13 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
 '-----------------------------------------------------------------------
   Else
       param.titulo ="RollMusic Editor" ' esto no sale si no hay marco
+      Print #1,"cALL rOLLLOOP III)"
+Print #1, "3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreCancion, titulos(0)
       param.ubiroll=ubiroll
       param.ubirtk=ubirtk
       param.midionof=usarmarco ' para volcado de midi si o no ,si con 4
 
+Print #1, "3 ubiroll ubirtk ", ubiroll,ubirtk
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
       ThreadWait threadloop
       threadDetach(threadloop)
@@ -408,12 +463,19 @@ Close
 errorhandler:
 Dim As Integer er, ErrorNumber, ErrorLine
 er = Err
+Print #1,"Error  Rollmusic detected ", er, posicion, MaxPos
+Print #1,Erl, Erfn,Ermn,Err
 
+Print #1,"------------------------------------"
 ErrorNumber = Err
 ErrorLine = Erl
 
 
 
 
+Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
+Print #1,"Error Function: "; *Erfn()
 'Dim ers As Integer = 12 - nota +(estoyEnOctava ) * 13 
+Print #1, "12 -nota +(estoyEnOctava ) * 13) "; ers
+Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
  Print "error number: " + Str( Err ) + " at line: " + Str( Erl )

@@ -2,9 +2,43 @@
   Varios intentos de representar en roll grafico las secuencias ejecutadas
   o en vivo. Se complica mucho sin linea de tiempo.. se abandona esta linea
   de desarrollo. Lentamente se esta pasando a linea de tiempo o sea con ticks.
-  a partir de Version 0.5000.
+  a partir de Version 0.5000, que es la TICKS 0.300.
+- 17-10-2024 al introducir grabacion de patrones, se perdio la grabacion de ejecuciones
+  corregido, portsal, patch y canal de pistas de la derecha corregido.
+  Observacion a corregir: si cambio el patch para reproducir una pista, al tocar
+  el midi-in por teclado externo pierde el patch y larga un sonido como pajarito silbando
+  debo chequear G deschequear S y volver a seleccionar el patch y asi funionan ambas cosas
+  con el mismo patch o sea la reproduccion de lo grabado y el tocar el teclado externo
+  para acompañar..fijarse porque ..(antes midi-in era fijo tocaba siempre el piano ahora no)
+<<<asi funcionaba la grabacion en el año 2022 junio ante de tener botones de portsal y abrir port out port in
+1) CHEQUEAR UNA ENTRADA  G PARA GRABACION
+3) SELECCIONAR EN DISPOSITIVOS PUERTOS MIDI-IN MIDI-OUT EN MENU DISPOSITIVOS
+3) DEFINIR PORTSAL PATCH CANAL SELECCIONANDO AUNQUE ESTE BIEN O VACIO, CON LOS BOTONES ARRIBA DERECHA
+4) ABRIR MIDI IN EN MENU REPRODUCIR
+5) PULSAR GRABAR BOTON ROJO, PIDE UN TEXTO EL NOMBRE
+   EMPIEZA LOS 4 TICKS ANTES DE LA GRABACION, LUEGO LOS TICK DE CADA PASO
+6) TOCAR EL TECLADO MIDI EXTERNO
+7) DETENER GRABACION BOTON NEGRO
+8) CHEQUEAR S Y DESCHEQUEAR G EN LA PISTA ELEGIDA DE LA LISTA  DE LA DERCHA
+9) REPRODUCIR LOGRABADO CON BOTON VERDE 
+>>>> ahora pide nombre en el punto 1) al chequear una pista G.
+           en punto 3) si la x seleccionada esta bien no hace falta hacer nada pulsar
+      cerrar ventana no hace flata seleccionar y pulsar cambia, si se modifica seleccionar
+  lo nuevo y pulsar cambia.
+  En 5) no hay ticks de cada paso ... reponerlos
+  El resto igual..
+  ahora en esta version repuse los tick iniciales al pulsar el botn rojo de grabar
+  elimine el metrono debo ver de reponerlo obedeciendo al menu de metronomo si se quiere
+  tenerlo o no. 
+- 22-09-2024 La carga de un midi plano txt generado por Rollmusic es bastante
+  aproximada, pero en el caso de un plano externo es muy inexacto. Se abandona
+  por ahora la conversion del sistema Ticks ampliamente usado al de duraciones
+  como el usada en esta aplicacion es muy compleja y engorrosa. La opcion
+  solo serviria para cargar las notas y luego modificarlas para reconstruir la 
+  secuencia.. no se si es mas facil reconstruir o entrar desde cero.
 - 18-09-2024 cambio a licencia GPL para la version actual y siguientes.
 - 17-09-2024 mejoras en carga de un archivo plano midi generado por RollMusic.
+- 24-07-2024 casi perfecto cargar midi plano(rollmusic)! seguir version 0.4627
 - 12-06-2024 correcciones dejo de grabar. corregido. canales en roll grafico
   pantalla negra en algunas ocasiones (corrijo algo y revienta por otro lado  
   eso por tener varias versiones al mismo tiempo esta es la 0.4626 hay otras...).

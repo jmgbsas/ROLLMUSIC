@@ -24,6 +24,7 @@ Sub ArmarDurFrac ()
 ' los bloques de durcion se repiten de a 3, el incr es por bloque
 ' si voy al 2do bloque de 3 el incrdeja de ser 0 y pasa a 27 respectro de la
 ' 1er linea l cargo TRAck como 2da linea
+Print #1,"armardurFrac procesa numeroFrac"
 FileFlush (-1)
 If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=0 Then 
    numeroFrac = DUR 'era duracion
@@ -112,15 +113,21 @@ EndIf
 ' ---fin 4to bloque -
    cuart=0:pun=0:doblepun=0:tres=0:silen=0:mas=0
 
+Print #1,"armardurFrac  numeroFrac Resultante ", numeroFrac
 FileFlush (-1)
 End Sub
 
 
 Sub calcCompas( ByRef j As Integer, Roll As inst)
  ' nota:fijarse que pasa con el grupo..1 to 4 de las 64 duraciones
+ ' x print #1,"========================================================="
+ ' x print #1,"1-calcCompas j o posn RECIBIDA: "; j
+' 10-02-2025 MARCAMOS LAS POSICIONES QUE NO TIENEN NOTAS PARA NO VIUSALIZARLAS SI SE DESEA
+' 06-03-2025 ticks esbozo de modificacion ver y probar,,,falta muchas pruebsa y
+' modificaciones...
 On Local Error GoTo errorCalc 
 
- Dim As Integer k, i,cantFalta,CantSobra, tengo, falta,sobra, noct
+ Dim As Integer k, i,cantFalta,CantSobra, tengo, falta,sobra, noct, posnoff
 
 
 
@@ -128,23 +135,27 @@ On Local Error GoTo errorCalc
   compas(j).Posi=0
   compas(j).nro = 0
 
+  ' x print #1,"CALCOMPAS-0 DUR=0 COMPAS(J)=0 "
   Exit Sub
  EndIf
  'If DUR=181 Then
  ' Compas(j).Posi=0
  ' Compas(j).nro = 0
 
+ ' ' x print #1,"CALCOMPAS-0 DUR=181 COMPAS(J)=0 "
  ' Exit Sub
  'EndIf
 
-' estonunca seejecuta porque j es 4 nouncaentr con 1!!
+' esto nunca se ejecuta porque j es 4 no un caentr con 1!!
  If j= 1 Then ' 128 es el maximo de ticks de un compas se agregan amspara terminared analizar elcompas
   'Erase (buffCompas_1) no usados pro ahor no son necesarios....
   'Erase (buffCompas_2)
   acumulado=0
   ''erase (compas) 'cada item es la posicion en donde
+  ' x print #1,"J=1 comienzo calcCompas "
   jc=j
  EndIf
+ ' x print #1,"1-calcCompas 2"
  If jc > 128 Then
   id=1
   ' procesar el resto que sobra luego de 129 en el buffer 2
@@ -153,10 +164,12 @@ On Local Error GoTo errorCalc
  '11-12-2021 redusco la camtidad de partes a 20
  '---------------------------------------------
  Dim As Integer partes_falta (1 To 20), partes_sobra(1 To 20) 
+ ' x print #1,"1-calcCompas 3, DUR: ";DUR; " j: "; j; " figura: ";figura(DUR)
   
  For k=1 To 180
   If DUR=k   Then
    acumulado =acumulado +pesoDur(k)
+   ' x print #1,"acumulado / k / PEsoDur "; acumulado, k , pesoDur(k);" figura ";figura(DUR)
    If Abs(d7 -acumulado) < 10 Then
       acumulado = d7
    EndIf
@@ -164,16 +177,22 @@ On Local Error GoTo errorCalc
     Compas(j).Posi = j
     nroCompas = nroCompas+1
     Compas(j).nro = nroCompas
+    ' x print #1,"acumulado ";acumulado
+    ' x print #1,"Compas(j) , j: ";Compas(j).Posi;" "; j
 
     acumulado=0
     jc=1
+    ' x print #1,"1-calcCompas 3.1 exit sub acumulado=0 ";acumulado
     Exit Sub
    EndIf
 
    If acumulado < d7  And j > 0 Then
+    ' x print #1, "j que hace cancelar ";j
     Compas(j).Posi = 0   
     Compas(j).nro = 0 ' reseteo
     velocidades(j)
+'Print #1,"calcompas j Compas(j).nro velpos "; j , Compas(j).nro  
+    ' x print #1,"1-calcCompas 3.2 acumulado menor sigue exit sub, carga: ";carga
     Exit Sub
    EndIf
    ' cuando cargamos desde disco aca nunca es necesario pasar pues
@@ -185,31 +204,48 @@ On Local Error GoTo errorCalc
    EndIf
 
    Dim z1 As Integer
+   ' x print #1,"1-calcCompas acumulado 3.3 >d7  ";acumulado; " carga: ";carga
    If acumulado > d7 And carga =0 Then
+    ' x print #1,"acumulado > d7 :";acumulado
     tengo= acumulado - pesoDUR(DUR)
+    ' x print #1,"tengo "; tengo
     falta=d7 - tengo
+    ' x print #1,"falta ";falta
     sobra=acumulado -d7
+    ' x print #1,"sobra "; sobra
     '       Dim ultimafigura As Integer=0
     separarDur(j,DUR, partes_falta(),cantFalta,falta)
+    ' x print #1,"||||| CantFalta ";CantFalta
     If CantFalta > 100 Then
+     ' x print #1, "ERROR CANTFALTA > 100 ";CantFalta
      Exit Sub
     EndIf
     For z1 = 1 To CantFalta
+     ' x print #1, " ";partes_falta(z1);" ";figura(partes_falta(z1));
     Next z1
+    ' x print #1,
     separarDur(j,DUR, partes_sobra(),cantSobra,sobra)
+    ' x print #1,"||||| CantSobra ";CantSobra
     If CantSobra > 100 Then
+     ' x print #1, "ERROR CANTSOBRA > 100 ";CantSobra
      Exit Sub
     EndIf
 
     For z1 = 1 To CantSobra
+     ' x print #1, " ";partes_sobra(z1);" "; figura(partes_sobra(z1));
     Next z1
+    ' x print #1,
+    ' x print #1,"HAGO  DUR=0 BUENO.pero el sobra va a acum.."
     'preparo el acumulado de Falta ntes de reemplazar
   '  acumulado=pesoDur(partes_sobra(CantSobra))  'jmg 30-3-21
+  '  ' x print #1,"acumulado sobra ";acumulado 
    EndIf
+   ' x print #1,"1-calcCompas 3.4"
    '  EndIf
    Exit For
   EndIf
  Next k
+ ' x print #1,"1-calcCompas 4  ingreso a REEMPLAZO EN ROLL de las durciones y notas"
 
  acumulado=tengo
  ' la ultima nota a cortar se ha cargado es la quese reemplaza de este modo
@@ -221,17 +257,38 @@ On Local Error GoTo errorCalc
  ' aradeterminar compas. En Nucleo se busc siemrep la not que este en 0
  ' ergo parareemplazardebo borrar el contenido o reemplazarlo
  If CantFalta > 0 And carga= 0 Then  ' empezamos el reemplazo en el vector desde posn
+  ' x print #1,"Recordar posn empieza en 0 "
+  ' x print #1,"REEMPLAZO Cantfalta ";CantFalta
   For k=1 To CantFalta '
    If partes_falta(k)>= 1 And partes_falta(k) <=90 Then
     partes_falta(k)=partes_falta(k) + 90 ' comienzan los + ligados
    EndIf
- 
+
+
+   ' x print #1,"k,partes_falta(k), FIGURA ", k, partes_falta(k), figura(partes_falta(k))
+   ' x print #1,"POSICION reemplazada: ";posn
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = partes_falta(k)
-   
+      
    If carga=0 Then ''no hce nada en la carga
     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = notaold
    EndIf
-   Roll.trk(posn+1,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
+
+   posnoff=posn+ DurXTick(partes_falta(k)) '06-03-2025 ticks
+'raro aca debo poner laprimera con onoff=2 y ligada y el resto ligada hasta el final
+' unasimple sin ligar que puede estar antes odespues de la separacion del compas,,,uff
+   If k=1 Then
+     Roll.trk(posnoff,(12-nota +(estoyEnOctava -1) * 13)).dur = 0 ' esto seria para la ultima parte 
+     Roll.trk(posnoff,(12-nota +(estoyEnOctava -1) * 13)).onoff = 0 ' esto seria para la ultima parte
+
+     Roll.trk(posnoff+6,(12-nota +(estoyEnOctava -1) * 13)).dur = 181 ' esto seria para la ultima parte
+
+   EndIf
+   If k=CantFalta Then
+     Roll.trk(posnoff,(12-nota +(estoyEnOctava -1) * 13)).dur = 183 ' esto seria para la ultima parte 
+     Roll.trk(posnoff,(12-nota +(estoyEnOctava -1) * 13)).onoff = 1 ' esto seria para la ultima parte
+
+     Roll.trk(posnoff+6,(12-nota +(estoyEnOctava -1) * 13)).dur = 182 ' esto seria para la ultima parte
+   EndIf 
    If notaOld > 0 And notaOld <> nota Then
     Roll.trk(posn,(notaOld-1 +(estoyEnOctava -1) * 13)).dur = 181
    EndIf
@@ -243,6 +300,7 @@ On Local Error GoTo errorCalc
        Else    
        
          If Roll.trk(posn,(i +(noct -1) * 13)).nota = 0 Then
+         '   ' x print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
             Roll.trk(posn,(i +(noct -1) * 13)).nota = 181
             Roll.trk(posn,(i +(noct -1) * 13)).dur  = 0
          EndIf
@@ -259,24 +317,30 @@ On Local Error GoTo errorCalc
       nroCompas=nroCompas+1
       Compas(posn).nro = nroCompas
 
+      ' x print #1, "Hay compas en posn ";posn
       acumulado=0
-   posn=Posn+1
+   posn=posnoff+1
    posicion = posn
    MaxPos= Posicion
  
+   ' x print #1,"acumulado falta: ";acumulado; " posn: ";posn
    
+   ' x print #1,"d7 ";d7
 
       Exit For 
    Else
       compas(posn).Posi= 0
       Compas(posn).nro = -2
    
+      ' x print #1,"No Hay compas todavia en posn ";posn
    EndIf
 
-   posn=Posn+1
+   posn=posnoff+1
    posicion = posn
    MaxPos= Posicion 
 
+   ' x print #1,"acumulado falta: ";acumulado; " posn: ";posn
+   ' x print #1,"d7 ";d7
 
 
   Next k
@@ -285,18 +349,25 @@ On Local Error GoTo errorCalc
 
 CantFalta=0
 acumulado=0 ' se supone termino el compas sino habra que forzarlo.... 
+ ' x print #1,"1-calcCompas 5 carga: ";carga
  If cantSobra > 0 And carga=0 Then
+  ' x print #1,"REEMPLAZO CantSobra ";CantSobra
   For k=1 To CantSobra
    If k < CantSobra Then ' le agrega >, continuacion
+      ' x print #1,"k ,partes_sobra(k),figura ";k;" ";partes_sobra(k),figura(partes_sobra(k))
+      ' x print #1,"posicion reemplazada: ";posn
       If partes_sobra(k)>= 1 And partes_sobra(k) <=90 Then
          partes_sobra(k)=partes_sobra(k) + 90 ' empieza ligados +
       EndIf
    EndIf
    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = partes_sobra(k)
+   posnoff=posn+DurXTick(partes_sobra(k))
    If carga=0 Then
     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = notaold
    EndIf
-   Roll.trk(posn+1,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
+   Roll.trk(posnoff,(12-nota +(estoyEnOctava -1) * 13)).onoff = 0
+   Roll.trk(posnoff,(12-nota +(estoyEnOctava -1) * 13)).dur = 183
+   Roll.trk(posnoff+6,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
    If notaOld > 0 And notaOld <> nota Then
     Roll.trk(posn,(notaOld-1 +(estoyEnOctava -1) * 13)).dur = 181
 
@@ -310,6 +381,7 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
        Else    
        
          If Roll.trk(posn,(i +(noct -1) * 13)).nota = 0 Then
+         '   ' x print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
             Roll.trk(posn,(i +(noct -1) * 13)).nota = 181
             Roll.trk(posn,(i +(noct -1) * 13)).dur  = 0
          EndIf
@@ -319,7 +391,11 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
 '-------   
    
    
+   ' x print #1,"ERROR==> ACUMULADO: " ;acumulado
+   ' x print #1, "vlor buscdo de k: ";k
+   ' x print #1,"partes_sobra(k) ";partes_sobra(k)
    acumulado=acumulado + pesoDur(partes_sobra(k)) ' para el siguiente compas..�?.
+   ' x print #1,"ERROR==> ACUMULADO: " ;acumulado
    If k= CantSobra Then
     CantSobra=0
     Exit For
@@ -329,6 +405,7 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
    MaxPos= Posicion
 
   Next k
+  ' x print #1,"1-calcCompas 6"
   
  EndIf
  cantSobra=0
@@ -336,19 +413,30 @@ acumulado=0 ' se supone termino el compas sino habra que forzarlo....
  Erase partes_falta
  Erase partes_sobra
   ' fin compases
+ ' x print #1,"1-calcCompas 7 carga: ";carga
 ' error
 Exit Sub 
 errorCalc:
 Dim As long er1
 er1 = Err()  
+Print #1, "er1 sos boludo o te hafces freebasic "; er1 
 If er1 > 0 Then
+Print #1,"Error Calc detected ", er1, " posicion ";posicion; " maxpos";MaxPos;" curpos ";curpos
+Print #1,"desde ";desde;" hasta ";hasta; "hasta-1 ";hasta-1; " *po ";*po
 
+'Print #1,"*po ";*po;" semitono ";i
+'Print #1,Erl, Erfn,Ermn,Err
+Print #1,"---------------err calccompas---------------------"
 'ErrorNumber1 = Err
 'ErrorLine1 = Erl
 'Dim As String ProgError1(0 To 17)
 
 
+Print #1,"ERROR = ";ProgError(er1); " on line ";Erl
+Print #1,"Error Function: "; *Erfn()
 'ers= 11 -i  +(*po) * 13
+'Print #1, "11 - semitono  +(*po) * 13)  "; ers; "semitono  ";i
+'Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
 EndIf
 
  
@@ -359,14 +447,20 @@ Sub separarDur(ByRef j As Integer, ByRef DUR As UByte,partes() As Integer, ByRef
 
 On Local Error GoTo errorSepara
 
+ ' S print #1,"1-Separadur "
  Dim As Integer lb,lu,k,tengo,sobra, falta1,acumx
+ ' S print #1,"EN SEPARADUR-------------------------------------------------"
  lb=LBound(partes)
  lu=UBound(partes)
  'dim integer ultimafigura= partes(CantPartes)
 
  falta1=falta
+ ' S print #1,"FALTA RECIBIDO: ";FALTA1
+ ' S print #1,;" DUR recibido: ";DUR;
  Dim As Integer desder, hastar
 
+ ' S print #1,"pun: ";pun;" silen: ";silen;" mas: ";mas; " tres: ";tres
+ ' S print #1,"incr: ";incr
 
  ' cuando hago la carga los k son de 1 a 64 no son mas de 1 a 8
         Select Case DUR
@@ -390,6 +484,7 @@ On Local Error GoTo errorSepara
    nroCompas = nroCompas+1
    Compas(j).nro = nroCompas
 
+   ' S print #1,"falta encontrado DUR ";k;" figura:";figura(k); " parte:";lb
    CantPartes =lb
    acumulado=0
    falta=0
@@ -403,10 +498,13 @@ On Local Error GoTo errorSepara
  ' si sigue es porque fall� no hay ninguna figura con esa duracion
  lb=lb-1
  acumx=0
+ ' S print #1,"SEGUIMOS NO SE ENCONTRO FALTA  POSN J "; J
+ ' S print #1,"absoluto de falta1 original "; falta1
  falta1=Abs(falta1)
  
  'If falta1 >= 15000000 Then
 
+ ' ' S print #1,"Caso de falla falta1 > 15000000 revisar codigo"
  ' Exit Sub
 
  'Else
@@ -418,10 +516,12 @@ Dim CUENTA As Integer
    For k=28+incr To 36+incr 
     If  falta1 > pesoDur(k)  Then
      lb += 1
+     ' S print #1,"dur k incr";k,incr
      If lb > lu Then
       Exit Do
      EndIf
      partes(lb)=k
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO >9a16 PArte;";lb; " figura:";figura(k); " parte:";lb
      falta1=falta1-pesoDur(k)
      acumx=pesoDur(k)
      Exit For
@@ -433,6 +533,7 @@ Dim CUENTA As Integer
      EndIf
      partes(lb) = k
      acumx = acumx + pesoDur(k)
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO =9a16 ";lb; " figura:";figura(k); " parte:";lb
      Exit For
     EndIf
 
@@ -441,10 +542,12 @@ Dim CUENTA As Integer
    For k=19+incr To 27+incr
     If  falta1 > pesoDur(k)  Then
      lb += 1
+     ' S print #1,"dur k incr";k,incr
      If lb > lu Then
       Exit Do
      EndIf
      partes(lb)=k
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO >9a16 PArte;";lb; " figura:";figura(k); " parte:";lb
      falta1=falta1-pesoDur(k)
      acumx=pesoDur(k)
      Exit For
@@ -456,6 +559,7 @@ Dim CUENTA As Integer
      EndIf
      partes(lb) = k
      acumx = acumx + pesoDur(k)
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO =9a16 ";lb; " figura:";figura(k); " parte:";lb
      Exit For
     EndIf
 
@@ -465,10 +569,12 @@ Dim CUENTA As Integer
    For k=10+incr To 18+incr
     If  falta1 > pesoDur(k)  Then
      lb += 1
+     ' S print #1,"dur k incr";k,incr
      If lb > lu Then
       Exit Do
      EndIf
      partes(lb)=k
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO >9a16 PArte;";lb; " figura:";figura(k); " parte:";lb
      falta1=falta1-pesoDur(k)
      acumx=pesoDur(k)
      Exit For
@@ -480,6 +586,7 @@ Dim CUENTA As Integer
      EndIf
      partes(lb) = k
      acumx = acumx + pesoDur(k)
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO =9a16 ";lb; " figura:";figura(k); " parte:";lb
      Exit For
     EndIf
 
@@ -494,6 +601,7 @@ Dim CUENTA As Integer
       Exit Do
      EndIf
      partes(lb)=k
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO >1A8 ";lb; " figura:";figura(k); " parte:";lb
      falta1=falta1-pesoDur(k)
      acumx=pesoDur(k)
      Exit For
@@ -506,6 +614,7 @@ Dim CUENTA As Integer
      EndIf
      partes(lb) = k
      acumx = acumx + pesoDur(k)
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO = 1a8";lb;" figura:";figura(k); " parte:";lb
      Exit For
     EndIf
    Next k
@@ -513,10 +622,12 @@ Dim CUENTA As Integer
    For k=37+incr To 45+incr ' tresillos
     If  falta1 > pesoDur(k)  Then
      lb += 1
+     ' S print #1,"dur k incr";k,incr
      If lb > lu Then
       Exit Do
      EndIf
      partes(lb)=k
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO >19a27 PArte;";lb; " figura:";figura(k); " parte:";lb
      falta1=falta1-pesoDur(k)
      acumx=pesoDur(k)
      Exit For
@@ -528,15 +639,18 @@ Dim CUENTA As Integer
      EndIf
      partes(lb) = k
      acumx = acumx + pesoDur(k)
+     ' S print #1,"FALTA1 ENCONTRO PEDAZO =19a27 ";lb; " figura:";figura(k); " parte:";lb
      Exit For
     EndIf
 
    Next k
    
    If acumx=falta Or lb > lu Then
+    ' S print #1,"FALTA1 FIN EN ";lb; " figura "; figura(K) ;" ACUMX";acumx
     Exit Do
    EndIf
    If falta1 < 40000 Then
+    ' S print #1,">> falta1 es H/2..NO DEBERIA DAR ESTO AHORA ";falta1
     Exit Do
    EndIf
    If CUENTA = 100 Then
@@ -545,12 +659,15 @@ Dim CUENTA As Integer
       Exit Do
    EndIf   
   Loop
+  ' S print #1,"ACUMX SEPARADUR ";acumx
  EndIf
 
  'EndIf
 
  CantPartes =lb
 
+ ' S print #1, "CANT PARTES LB, CantPartes "; LB;" "; CantPartes
+ ' S print #1,"ACUMX  ";ACUMX
 '' error local
 Exit Sub 
 
@@ -559,31 +676,42 @@ errorSepara:
 Dim As Integer er1, ErrorNumber1, ErrorLine1
 er1 = Err
 If er1 > 0 Then
+Print #1,"Error Separa detected ", er1, " posicion ";posicion; " maxpos";MaxPos;" curpos ";curpos
+Print #1,"desde ";desde;" hasta ";hasta; "hasta-1 ";hasta-1; " *po-1 ";*po-1;" *po+1 ";*po+1
 Dim As Integer valor1, valor2
 
 
+Print #1,"*po ";*po 
+Print #1,Erl, Erfn,Ermn,Err
+Print #1,"------------------------------------"
 ErrorNumber1 = Err()
 ErrorLine1 = Erl
 'Dim As String ProgError1(0 To 17)
 
 
+Print #1,"ERROR = ";ProgError(ErrorNumber1); " on line ";ErrorLine1
+Print #1,"Error Function: "; *Erfn()
 'ers= 11 -semitono +(*po) * 13
 
 
+Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
 EndIf
 
 
 End Sub
 
 Sub mayorDurEnUnaPosicion (ByRef posn As Integer)
+ Print #1,"1-MayorDurEnUnaPosicion  "
  Dim As Integer i, j,mayor,ia ,valdur
  mayor=1
  j = posn
  For i= NB To NA -13
   valdur => Roll.trk(j,i).dur
   If  valdur >= 1 And valdur <=181 Then
+    Print #1, "DUR mayor ";DUR, mayor
    If pesoDUR(valdur) > mayor  Then ' las duraciones cuando mas
     mayor=pesoDur(valdur)
+    ' print #1, " DUR MAYOR";DUR,mayor
    EndIf
    If i=NA -13 Then
 
@@ -592,21 +720,23 @@ Sub mayorDurEnUnaPosicion (ByRef posn As Integer)
       valdur=ia
      EndIf
     Next ia
+   ' print #1,"          J, valdur Mayor: "; J, valdur
     DUR=valdur
     calcCompas(j, Roll)
+'    print #1,"ABRIR compas(j) ";compas(j).Posi; " j :"; j
 
    EndIf
   EndIf
  Next i
- ''  DUR=0
-
+ 
  ' fin compases
 
 End Sub
 
 '-----------
 Sub ReCalCompas(Roll As inst)
-
+Dim DURI As Integer ' 28-02-2025 DUR SE HACE CERO EN LA CARGA ESTAMOS SACANDO LOS CEROS
+DURI=DUR 
 On Local Error GoTo errorRecal
 
 'If MaxPos=0 Then ' 23-03-2022 ���
@@ -617,6 +747,7 @@ On Local Error GoTo errorRecal
      carga=1 ' no es lo mismo calcCompas con cargar o procesando
      Dim As Integer i,j , mayor,ia,valdur,cont, semi,i2
      cont=0
+     'print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
      Dim As Integer tope1, tope2, grupo, mayorgrupo, noct
      For j = 1 To MaxPos -2
       'Print #2,"POSICION :";J
@@ -635,7 +766,8 @@ On Local Error GoTo errorRecal
 '' A ESA SUBRUTINA Y PONERLA EN NUCLEO
        semi => Roll.trk(j,i).nota  
       If valdur > 0 And valdur < 181 And semi >=1 And semi <=12 Then
-        Print #3, "nota: "; i; " posi: "; j; " dur: ";valdur
+   '     Print #1, "LECTURA DUR: ";valdur;" EN LA CARGA j: ";j;" i: "; i;" figura ";figura(valdur)
+   '     Print #3, "nota: "; i; " posi: "; j; " dur: ";valdur
        ' las duraciones e repiten cada 45 de modo que no importan los incr
         Select Case valdur
          Case  1   To 45
@@ -650,13 +782,20 @@ On Local Error GoTo errorRecal
         End Select
 
         If  valdur >= tope1 And valdur <=tope2 And tope1 > 0 And tope2> 0 Then
+       '  Print #1, "Valdur i ";valdur ; i ; " grupo ";grupo;" figura ";figura(valdur)
+        '  Print #1,"i NB ";i,NB
          If  cont=0   Then 'mira duraciones
           mayor=pesoDur(valdur):mayorgrupo=grupo
+      '           Print #1,"1er mayor "; mayor; " mayorgrupo";mayorgrupo
           cont=1
          EndIf
+         Print #1, "DUR mayor";DUR, mayor
          If pesoDUR(valdur) > mayor  Then ' las duraciones cuando mas
           mayor=pesoDur(valdur):mayorgrupo=grupo
+     '             Print #1,"Siguientes mayor "; mayor
+     '      Print #1, " DUR MAYOR";DUR,mayor
          EndIf
+     '         Print #1,"> i= ";i; " NA= ";NA
         EndIf
       EndIf 'jmg OJO OJO
       Dim As Integer iades =(mayorgrupo -1)*45 + 1
@@ -667,26 +806,30 @@ On Local Error GoTo errorRecal
       
        If i=NA -13 Then ' 01-02-2022 vuelta atras
 
+    '    Print #1,"i=NA i: ";i;" NA: ";NA;" Mayor ";mayor;" grupo:"; mayorgrupo
         For ia= iades To iahas ' tresillos es grupo 
          If mayor=pesoDur(ia) Then
           valdur=ia
+     '        Print #1, "peso de mayor encontrado valdur ";valdur; "dur ";ia; " grupo ";mayorgrupo
           Exit For   
          EndIf
         Next ia
-        DUR=valdur
-      '  If DUR >180  Then ' <- esto nunca se ejecuta creo se filtra antes...
+        DURI=valdur
+      '  If DURI >180  Then ' <- esto nunca se ejecuta creo se filtra antes...
+      '    print #1,"ERROR NO SE PUEDE PASAR DUR"
       '    compas(j).Posi=0
       '    Compas(j).nro = 0
 '
  '       Else
         Dim durm As Integer
-         If DUR >181 Or DUR=0 Then
+         If DURI >181 Or DUR=0 Then
             durm=181
          Else
-            durm=DUR   
+            durm=DURI   
          EndIf
          
-         If DUR<=180 Then
+         If DURI<=180 Then
+     '     Print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo;" figura ";figura(durm)
           calcCompas(j,Roll)
          If carga=1 Then
  '------zzz
@@ -701,18 +844,19 @@ On Local Error GoTo errorRecal
 '-------   
          EndIf   
           
+          'Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j).Posi;" figura ";figura(durm)
           valdur=0
-          DUR=0
+          DURI=0
           mayor=0
          EndIf
-        Print #3,"==============fin posicion nro: "; j
+      '  Print #3,"==============fin posicion nro: "; j
        EndIf
-       valdur=0:DUR=0
+       valdur=0:DURI=0
     
       Next i
       
      Next j
-     DUR => 0
+     DURI => 0
     '' curpos =>0
      carga=0  ' <======= control de Carga
 '' error local
@@ -721,16 +865,26 @@ errorRecal:
   
 Dim As long er1
 er1 = Err()
+Print #1, "er1 "; er1
 If  er1 > 0 Then
+ Print #1,"Error Recal detected "; er1;  " posicion ";posicion; " maxpos";MaxPos;" curpos ";curpos
+ Print #1,"desde ";desde;" hasta ";hasta; "hasta-1 ";hasta-1; " *po-1 ";*po-1;" *po+1 ";*po+1
  'Dim As Integer valor1, valor2
  'valor2= i2 +(noct -1) * 13
 
+ 'Print #1,"*po ";*po;" semitono ";i2; " i2 ";valor1 
+ 'Print #1,Erl, Erfn,Ermn,Err
+ Print #1,"---------------err recalcompas---------------------"
  'ErrorNumber1 = Err
  'ErrorLine1 = Erl
 ' Dim As String ProgError1(0 To 17)
 
 
+ Print #1,"ERROR = ";ProgError(er1); " on line ";Erl
+ Print #1,"Error Function: "; *Erfn()
 'ers= i2 +(noct -1) * 13
+'Print #1, "(i2 +(noct -1) * 13) "; ers; " semitono "; i2
+' Print #1, "ubound dimension 2 de Roll.trk ", UBound(Roll.trk, 2)
 End If
 
 
@@ -739,9 +893,12 @@ End Sub
 Sub menoryMayorEnColumna (Roll As inst, ejex As Integer, ByRef menor As UByte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As Integer)
 ' estoy en Roll el cual es �nico tengo entonces definido las globales NB y NA por default
 ' recorro la columna
+Print #1,"ENTRA menoryMayorEnColumna ejex NB NA "; ejex ; " " ; NB;" "; NA
 If  ejex = 0 Then
+  Print #1,"ejex es cero no se procesa" 
     Exit Sub
 Else
+  Print #1,"ejex  posdur "; ejex
 End If 
 Dim As Integer i1,j1=0, DurMen,DurMay
 
@@ -749,12 +906,17 @@ Dim As Integer i1,j1=0, DurMen,DurMay
 FileFlush (-1)
     If Roll.trk(ejex,i1).nota >=1 And Roll.trk(ejex,i1).nota <=12 Then 
      If Roll.trk(ejex,i1).dur >=1 And Roll.trk(ejex,i1).dur <= 180 Then
+        Print #1,"=> VEO DATOS i1,nota,dur ", i1, Roll.trk(ejex,i1).nota,Roll.trk(ejex,i1).dur
         j1=j1+1
         If j1=1 Then
            menor=Roll.trk(ejex,i1).dur
+           Print #1,"menor inicial ", menor
            DurMen = pesoDur(menor)
+           Print #1,"DurMen inicial ", DurMen
            mayor=Roll.trk(ejex,i1).dur
+           Print #1,"mayor inicial ", mayor
            DurMay = pesoDur(mayor)
+           Print #1,"DurMay inicial ", DurMay
            i1may=i1
            i1men=i1
            
@@ -762,12 +924,16 @@ FileFlush (-1)
         If j1 > 1 Then
            If DurMen > pesoDur(Roll.trk(ejex,i1).dur) Then
               DurMen = pesoDur(Roll.trk(ejex,i1).dur)
+              Print #1,"DurMen sig ", DurMen
               menor=Roll.trk(ejex,i1).dur
+              Print #1,"menor sig ", menor
               i1men=i1
            EndIf 
            If DurMay < pesoDur(Roll.trk(ejex,i1).dur) Then
               DurMay = pesoDur(Roll.trk(ejex,i1).dur)
+              Print #1,"DurMmay sig ", DurMay              
               mayor=Roll.trk(ejex,i1).dur
+              Print #1,"mayor sig ", mayor
              i1may=i1
            EndIf
           
@@ -776,9 +942,11 @@ FileFlush (-1)
     EndIf      
   Next i1
 
+Print #1,"encontro menor y mayor ", menor, mayor, "En columna ",ejex
 Dim As Integer notapMay, notapMen
 notapMay=i1may -restar(i1may)
 notapMen=i1men -restar(i1men)
+Print #1,"Notapiano menor,mayor ", notapMen, notapMay
 i1may=notapMay
 i1men=notapMen 
 ' ejex es fijo es al columna en analis y origen del  fraccionamiento
@@ -787,22 +955,21 @@ End Sub
 
 ''========================= C U R S O R ============
 Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As inst)
+
+
+ 'print #1,"1-cursor "
  cairo_set_source_rgba c, 1, 1, 0.2, 1
  Dim Wc As Integer
 On Local Error GoTo errorhand 
-
-'Dim sobra As Integer
-'     sobra=MAXPOS - n -curpos
-'  if sobra > 0 Then
-'     curpos =curpos -sobra
-'  EndIf
+Dim As Integer posnarranca
+Dim  As Integer nroPartesNota
     
  'If play=1 Or playb=1 Then
-     wc=3*anchofig/4 '31-01-2022 23-02 tapaba la figura
+     wc=anchofig '31-01-2022 23-02 tapaba la figura
  'Else
  '    wc=inc_penta
  'EndIf 
- 'cairo_set_line_width(c, 1)
+ 'cairo_set_line_width(c, 1) 'descomentado en la 02
  'EL CURSOR PARA UNA linea dada o nota se coloca inc_Penta mas abajo
  ' para B 38.5 27 notaold=1  <- actualizar please
  ' para C 38.5 25 notold=12
@@ -815,26 +982,32 @@ On Local Error GoTo errorhand
  '   'curpos=(mousex- gap1 )/35 ' 01-07-2021
  '   curpos=curposold
  'EndIf
- 'curposold=curpos
+ 'curposold=curpos 
  
  If cursorVert=1 Or cursorVert= 2 Then  ' vertical COMEDIT=TRUE
-
+  
+  
   cairo_move_to  (c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
-  cairo_rectangle(c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  ,wc ,inc_Penta) '13-07-2021 inc_penta/2 por inc_penta
+  cairo_rectangle(c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  ,wc*6 ,inc_Penta) '13-07-2021 inc_penta/2 por inc_penta
   cairo_move_to  (c, gap1 + (curpos)*anchofig , Penta_y  )
   cairo_line_to  (c, gap1 + (curpos)*anchofig , Penta_y + (notacur-1) * inc_Penta  +inc_Penta )
  
   RollDur=Roll.trk(n + curpos,12 - notacur + (*po-1) * 13 ).dur
-
+  
   RollNota=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota
+'' para ver el estado del onoff en la posicion elegida notacur
+     onoff=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff
+
  EndIf
  If cursorVert= 0 And cursorHori=0 Then
   If notacur=1 Then
+   'print #1,"notaold en cursor ";notaold
    notaOld=notacur
+   'print #1,"notaold en cursor laigualo a 1 ";notaold
    'notacur=0
   EndIf
-  cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
-  cairo_rectangle(c,gap1 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , wc,inc_Penta)
+  cairo_move_to  (c,gap1 + (curpos)*anchofig , Penta_y + (notaOld-1) * inc_Penta  )
+  cairo_rectangle(c,gap1 + (curpos)*anchofig , Penta_y + (notaOld-1) * inc_Penta  , wc/4,inc_Penta)
 
  EndIf
  If cursorHori=1 Or cursorHori = 2 Then
@@ -852,7 +1025,7 @@ On Local Error GoTo errorhand
   EndIf
   
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).dur = 0
-  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).nota = 0
+  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).nota = 181
 
   borrar = 0
   ''calcCompas(n) ''mayorDurEnUnaPosicion (n)
@@ -869,6 +1042,8 @@ On Local Error GoTo errorhand
  ' QU ESON MAYORES A LA MENOR PERO MENORES A LA MAYOR ,,,,
   '=============================================================================
  If (cursorHori=1 Or cursorVert = 1) And cambiadur= 1 Then
+
+
   ' debo cambiar esa nota por su equivalente silencio
   '1ero se pulsa la nueva duracion y luego la X porque aca se anula luego elflag cambiadur
   'y la dUR debe tener un valor antes de esto
@@ -890,7 +1065,14 @@ On Local Error GoTo errorhand
   ' en posicion con 190 saltar esa posicion y restar 1 a la posicion final.
   ' se ahce ya de ambasformas usando delete tambiense borra online
   
-   
+' DEBO RECREAR TODO LO DE NUCLEO ACA PARA TICKS 
+  Dim posn1 As Integer
+  Dim As Integer durant,posoffdurant
+  durant=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur
+  Print #1,"durant anterior ";durant
+  posoffdurant=n+ curpos + DurXTick(durant) -1
+  Print #1,"posoffdurant anterior ";posoffdurant
+  
  If DUR=181 Then
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 0
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =181   ' 5.7.2
@@ -899,6 +1081,7 @@ On Local Error GoTo errorhand
  ElseIf DUR=182 Then ' borrado 
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 182
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =181   ' 5.7.2
+  '   print #1,"FINDE SECUENCIA !!"
      cambiadur = 0
      DUR=0
  ElseIf DUR=0 Then ' borrado
@@ -907,7 +1090,7 @@ On Local Error GoTo errorhand
      cambiadur = 0
      DUR=0
  Else
-'desde aca lasnotas se colocan con notacur siemrpe tienen valorde 1 a 12
+'desde aca las notas se colocan con notacur siemrpe tienen valorde 1 a 12
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=0 Then 
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR
     incr=0
@@ -1005,10 +1188,186 @@ On Local Error GoTo errorhand
     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR + 171
    incr=135
   EndIf   
-  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur  ' 5.7.2    
+  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur  ' 5.7.2  
+
  EndIf
 
+''''' =>>> agregado ticks aca no hay fin de secuencia se pone 181 en vez de 182
+Print #1,"LLEGANOTA y DUR ",notacur;"  DUR "; DUR
+  If notacur > 0 And DUR > 0 Then
+'Print #1,"LLEGA NOTA ",notacur
+     posn1=n+curpos
+  
+     If DUR <= 90 Then 'caso 1) no ligado, I, L, W etc, viene algo que termina
+   '     Print #1,"DUR <= 90 "
+        If posnOffOld > 0 Then ' caso 4) llego un caso 2) ligado y luego un 1) no ligado
+    '       Print #1,"DUR <= 90 posnOffOld > 0 "
+           Roll.trk(posnOffOld,(12-notacur +(estoyEnOctava -1) * 13)).onoff=0 'sigue
+           Track(ntk).trk(posnOffOld,1).onoff = 0 'sigue la duracion
+           Track(ntk).trk(posn1,1).nota = notacur
+           Track(ntk).trk(posn1,1).onoff = 0
+           posnOff=posn1 + DurXTick(DUR) 'nuevo off porque dura mas
+     '      Print #1,"posn1, DUR, DurXTick(DUR) "; posn1, " ";DUR;" " ;DurXTick(DUR)
+           Track(ntk).trk(posnOff,1).nota = 183 'notacur
+           Track(ntk).trk(posnOff,1).onoff = 1 '
+           Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).onoff=1 'termina
+           Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).nota=183 'notacur 'termina
 
+           Roll.trk(posnOff+1,(12-notacur +(estoyEnOctava -1) * 13)).dur = 181
+           Track(ntk).trk(posnOff+1,1).dur= 181
+
+
+           posnOffOld=0 
+        Else '==> PROBADO  TESTEADO 1a) viene una nota on y termina 
+' si modifico el valor de algo existente debo eliminar el off  de la duracion anterior!
+      '      Print #1,"DUR <= 90 posnOffOld = 0 "
+            posnarranca=posn1 
+            posnOff=posn1 + DurXTick(DUR) ' caso 1) nada entes nada despues
+ ' vemos si sobreescribimos una nota on          
+           If  Roll.trk(posn1,(12-notacur +(estoyEnOctava -1) * 13)).onoff=2 Then
+' buscar su terminacion
+           Print #1,"habia nota a anterior"   
+           Print #1,"encontro el fin anterior y lo borro" 
+          ' borrando
+           Roll.trk(posoffdurant,(12-notacur +(estoyEnOctava -1) * 13)).dur=181
+           Roll.trk(posoffdurant,(12-notacur +(estoyEnOctava -1) * 13)).nota=0
+       
+           EndIf
+      '     Print #1,"caso 1a) posn1, DUR, DurXTick(DUR), posnOff "; posn1, " ";DUR;" " ;DurXTick(DUR);" ";posnOff
+           posnOffOld=0
+       ''For j As Integer=posn+6 To posnoff-6
+       ''  Roll.trk(j,(12-notacur +(estoyEnOctava -1) * 13)).dur=184
+       ''Next j
+
+          Roll.trk(posn1,(12-notacur +(estoyEnOctava -1) * 13)).onoff=2
+          Roll.trk(posn1,(12-notacur +(estoyEnOctava -1) * 13)).nota=notacur
+          Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).onoff=1
+          Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).nota=183 ''notacur
+          Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).dur=183
+      '    Print #1," puso nota 183 en posnOff ";posnOff  '97
+          Track(ntk).trk(posn1,1).nota = notacur
+          Track(ntk).trk(posn1,1).onoff = 2
+          Track(ntk).trk(posnOff,1).nota = 183 ''notacur
+          Track(ntk).trk(posnOff,1).dur = 183
+          Track(ntk).trk(posnOff,1).onoff = 1  
+
+          Roll.trk(posnOff+1,(12-notacur +(estoyEnOctava -1) * 13)).dur = 181
+          Track(ntk).trk(posnOff+1,1).dur= 181
+
+    
+        EndIf
+        nroPartesNota=DurXTick(DUR)
+     Else ' caso 2) la nota ligada n+ 
+       ' Print #1,"DUR > 90 "
+     If posnOffOld > 0 Then 'caso 4 o 5 vino una n+ yluego n+ otra ligada o no
+     '  Print #1,"DUR > 90 posnOffOld > 0 "
+       Roll.trk(posnOffOld,(12-notacur +(estoyEnOctava -1) * 13)).onoff=0
+       Track(ntk).trk(posnOffOld,1).onoff = 0 'sigue la duracion
+       posnOff=posnOffOld + DurXTick(DUR)
+     ' ' posn=posnOff
+      ' If (posn > NroCol + InicioDeLectura) Then
+      '  InicioDeLectura=InicioDeLectura + NroCol
+      ' EndIf
+      '' MaxPos=Posn +1 
+      '' pmTk(ntk).posn=posn
+      '' pmTk(ntk).MaxPos=MaxPos
+
+       posnOffOld=0
+      
+     Else
+      ' Print #1,"DUR > 90 posnOffOld = 0 "
+       posnOff=posn1 + DurXTick(DUR) ' caso 1) nada entes nada despues
+       posnOffOld=0
+       Roll.trk(posn1,(12-notacur +(estoyEnOctava -1) * 13)).onoff=0
+       Roll.trk(posn1,(12-notacur +(estoyEnOctava -1) * 13)).nota=notacur
+       Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).onoff=1
+       Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).nota=183 ''notacur
+       Track(ntk).trk(posn1,1).nota = notacur
+       Track(ntk).trk(posn1,1).onoff = 0
+       Track(ntk).trk(posnOff,1).nota = 183 ''notacur
+       Track(ntk).trk(posnOff,1).onoff = 1
+ 
+       posnOffOld=0
+     
+    EndIf
+     nroPartesNota=DurXTick(DUR)
+      
+     EndIf
+' ajuste de valores para lugares vacios sin notas en todo el intervalo x con cambio de octava
+' esto tenia sentido para pisar el 182 fin de secuencia, si habia una nota nueva y que no esta en la misma
+' octava  que la nota anterior, pero aca no hay carga  secuencial esto es modificacion,,,
+' creo que esto lo podemos eliminar pero si la modificacion es elmininar una nota podria tener sentido.
+      If nroPartesNota > 0 Then
+      For kk As Integer = posnarranca To posnarranca + nroPartesNota-1 
+        If notaOld > 0 And notaOld <> notacur   Then
+         Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).dur = 0 
+         Roll.trk(kk,(12-notaOld  +(estoyEnOctava    -1) * 13)).dur = 0 
+         Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota = 181
+         Roll.trk(kk,(12-notaOld  +(estoyEnOctava    -1) * 13)).nota = 181
+        EndIf
+      Next kk
+' ajuste de valores para lugares vacios sin notas en todas las columnas x
+      Dim As Integer noct,i ''oclog = 8 - (estoyEnOctava-1)
+   ' barre solo vertical no la posicion 
+      For noct = desde To hasta
+      For i= 0 To 11 ' gracias a esto anda acordes..
+        If i= 12 - nota  And noct = estoyEnOctava  Then 
+          Continue For
+        Else    
+        ' semitono ahora va de 0 a 11 para Roll -> i-1 21-07-2021 jmg
+        ' si estoy en fin de sec 182-> nota=0 dur=182 pero aca no se inserta se modifica se pone 181
+        ' no hay fin nuevo
+         For ll As Integer = posnarranca To posnarranca + nroPArtesNota  -1
+          If Roll.trk(ll,(i +(noct -1) * 13)).nota = 0 And Roll.trk(ll,(i +(noct -1) * 13)).nota < 182  Then ' no borra 182
+          '   print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
+             Roll.trk(ll,(i +(noct -1) * 13)).nota = 181
+             Roll.trk(ll,(i +(noct -1) * 13)).dur  = 0''
+ 
+          EndIf
+          Next ll
+        EndIf
+      Next i
+      Next noct
+  ' para track permitir acordes no tiene sentido!!
+      For i=1 To lim2
+      For ll As Integer = posnarranca To posnarranca + nroPArtesNota -1
+          If Track(ntk).trk(ll,i).nota = 0 And Track(ntk).trk(ll,i).dur <182    Then
+          '   print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
+             Track(ntk).trk(ll,i).nota = 181
+             Track(ntk).trk(ll,i).dur  = 0
+ 
+          EndIf
+         Next ll  
+      Next i
+
+
+     nroPartesNota=0
+     EndIf 
+
+      notacur=0 'sino entra en nucleo o repite sin fin !!!
+      notaold=notacur
+      DUR=0
+  EndIf 
+''' fin agregado ticks
+  cambiadur = 0
+  cuart=0:pun=0:doblepun=0:tres=0:silen=0:mas=0
+
+ ''''no hara falta con ticks ReCalCompas(Roll) 'organizaCompases() 
+  ' fin nuevaversion
+  'Print #1,"SALE cursor CAMBIADUR  ",Timer
+''TARDA 20 SEG EN CAMBIAR UNA NOTA!!!!
+  DUR=0 ' AGREGADO 2 MAR 2025
+  Exit Sub
+ EndIf ' fin ctrl-m cursor 
+ 
+
+
+
+
+' EN LA VERSION TICKS AHORA FALTA QUE COLOQUE ONOFF 2 O 1 Y HAGA TODO COMO NUCLEO DESDE ACA
+' ORDENAMOS QUE NUCLEO SE EJECUTE UNA VEZ COMO SI HUBIEROM PUESTO LA NOTA MANUALMENTE
+'-------------------------------------------------------------------------------------
+ 
 ' EN UNA COLUMNA BUSCO LA DURACION MENOR Y LA MAYOR incluido LA DE ENTRADA NUEVA.
 ' TOMO LA MENOR DE TODAS INCLUSO LA ENTRADA Y FRACCIONO TODAS LAS NOTAS DE LA COLUMNA
 ' En TANTAS PARTES TENGA CADA FIGURA DE ESA MENOR. PARA ELLO TOMARE LA MAYOR Y LA PARTIRE
@@ -1018,68 +1377,17 @@ On Local Error GoTo errorhand
 '  
  '-----------------------------------------------------------
  ' ADAPTAR BIEN PARA CURSOR POR AHORA NO SE USA PONEMOS 3
-If usarAcordesIguales = 3 Then ' empeiza Fraccionador..
- ' determino la duracion menor y mayor incluida la de entrada ya cargada
- ' en Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur
-   Dim As UByte menor, mayor
-   Dim As Integer i1men,i1may,j
-   menoryMayorEnColumna (Roll, n+curpos,menor,mayor,i1men,i1may)
-' saco la info para usar Fraccionador...pero ojo fraccionador solo reemplaza a notas
-' de igual duracion no de distintas, debere hacer un nuevo fraccionador ? o generalizo
-' el existente y lo parametrizo   
-' tengo menor mayor, ergo debo dividir a mayor en varias partes de menor con 
-' Fraccionador, una ve zecho eso puede haber duraciones intemedias que no sean
-' ni menor ni mayor, pero se deben dividir en varias menores hast aalcanzar al
-' valro que tiene. ejempo tengo una negra I, una corchea L y una blanca P
-' I
-' L
-' P
-' ----> el resultado debe ser el siguiente: I=2L, P=4L,L=L
-' L+  L+  sL+ sL
-' L+ sL+ sL+ sL
-' L+  L+   L+  L
-'---------------
-'ERGO 1ERO DETERMINO LAS PARTES DE P COMO HACE FRACCIONADOR DESDE LA CIFRA O FIG MENOR L
-' DEBO LLENAR 3 POSICIONES ADICIONALES COMO HACE FRACCIONADOR, EN EL CASO DE QUE 
-' LA DURACION SE COMPLETE ANTES EL RESTO SE LLENA CON SILENCIOS DE LA FIGURA MENOR
-' durfig=CInt(cifra) de aca uso la global cifra para simular la entrada de usuario para la menor
-' l aduracion menor la debo converir en 1 a 9 ...
-' mm debo probar para duracione smayores a 9 
-    numeroFrac = CInt(menor) ' simulamos la entrada por el usuario DE LA DURACION DUR
-    ' CON LA QUE FRACCIONAREMOS
+'If usarAcordesIguales = 3 Then ' empeiza Fraccionador..
+'   Dim As UByte menor, mayor
+'   Dim As Integer i1men,i1may,j
+'   menoryMayorEnColumna (Roll, n+curpos,menor,mayor,i1men,i1may)
+'   Print #1,"En Cursor: menor,mayor,i1men,i1may ",menor,mayor,i1men,i1may
+'    numeroFrac = CInt(menor) ' simulamos la entrada por el usuario DE LA DURACION DUR
+'    Print #1,"Cursor: numeroFrac ", numeroFrac
+'   FracTodoDur Track(),Roll,indicePos, mayor,nR,ntk
 
-
-  ''FraccionarDur Track(),Roll,n + curpos,mayor,nR,ntk
-  FracTodoDur Track(),Roll,indicePos, mayor,nR,ntk
-  
-' RollaTrack
-  RollaTrack Track(), 0,Roll 
-  
- 
-EndIf
-' ---------luego de cambiado el valor de una nota  o ingresado una nueva
-' donde no habia nada debo verificar si estoy en un posible acorde de iguales
-'  if   esAcordeIguales(devolver intervalo horizontal deSde hasta) then
-   ' un cilco for  desde hasta posicion de modificacio
-   ' si no hay nota poner silencios ligados menos el que esta pegado a la
-   ' nota nueva...
-   ' si hay msa espacio luego de la nota modificada si son espacios
-   ' colocar silencioas, lo problematico es que hay que hacerlo a nivel 
-   ' pista y a nivel cancion ����� PENDIENTE JMG AUTOMATIZAR
-   ' EL LLANDAO DE ACORDES IGUALES CON SILENCIOS --22 02 2022
-
-'  endif 
-
- '-----------------------------------------------------------
- '   vroll= Roll.trk(notacur + (*po) * 13, n + curpos).nota
-  cambiadur = 0
-  cuart=0:pun=0:doblepun=0:tres=0:silen=0:mas=0
-
-  ReCalCompas(Roll) 'organizaCompases() 
-  nota = 0
-
-  ' fin nuevaversion
- EndIf
+'   RollaTrack Track(), 0,Roll 
+'endif
  ' ===> PROCESO INSERT
  If (cursorHori=1 Or cursorVert = 1) And insert= 2 Then
 
@@ -1092,18 +1400,23 @@ EndIf
   If notacur=1 Then  ' 1 POR 0 JMG <- aca ingreso nota aunqne no haya..
    notacur=notaOld  'cual toma ? es donde esta el cursor ?
   EndIf
+  ' print #1, "Entra a Cursor con insert 2 notacur: ", notacur
   ' StartInsert esglobal,posicion de inicio de la insercion cuando  pulsamos
   ' la tecla insert se guarda la posicion de inicio desde ahi habra reemplzos
   ' usando la posicion comun n
   ' hasta que se pulse FINose alcance el FIN (66)
+  ' print #1, "call a movedato con indaux ",indaux
   ' n es StartInsert fijo no se modifica mas
   movedato (n + curpos,indaux, insert,notacur + (*po-1) * 13 ) 'antes de reemplazarlo xxx
+ '  print #1, "regreso de movedato con indaux ",indaux
   ' param : posicion comienzo (fijo), indice incremental para el aux
   ' ,insert comando habilitado = 1
   'luego reemplazo
+  ' print #1, "inserta DUR, en ROLL n,nota,posicion ",DUR,n,(notacur + (*po) * 13),n
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR ' reemplazo con lo nuevo
   'vdur=Roll.trk(notacur + (*po) * 13, n+curpos).dur
   ' SI LA NOTA  NO EXITIA LA agrega...osea sirve para acordes tambien
+  'print #1, "carga notacur en ROLL n,nota calculada ", n,(notacur + (*po) * 13)
 
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur ' 5.7.3
   'vroll= Roll.trk(notacur + (*po) * 13, n + curpos).nota
@@ -1112,6 +1425,7 @@ EndIf
   ' antes de reemplazarla
   insert=1  ' habilita de nuevo la tecla I deingreso de insercion en un lugar
   'elegido con cursor
+ ' print #1, "insert 1 ",insert
 
  EndIf
  'proceso modificar Nuevo secunci limpia terminda en NroCol ,con
@@ -1146,7 +1460,7 @@ If cursorHori=1 And vdur>0 And copiar=3 Then
       Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = vdur
       copiar=0
       vdur=0:vnota=0
-      ReCalCompas(Roll)
+    '''  ReCalCompas(Roll)
    EndIf 
 EndIf
 If nro=0 Then ' error al subir mucho mira despues del and el estupido 
@@ -1167,22 +1481,38 @@ If cursorHori=1 Then ' 17-09-2021 faltaba condicion de modificacion !!
   EndIf
 EndIf
 ' modelo para poner control de errores en subrutinas lo dejo de modelito
+
+
 Exit Sub 
  errorhand:
   
 Dim As long er1, ErrorNumber1, ErrorLine1
 er1 = Err()
 If er1 > 0 Then
+ Print #1,"Error Cursor detected ", er1, " posicion ";posicion; " maxpos";MaxPos;" curpos ";curpos
+ Print #1,"desde ";desde;" hasta ";hasta; "hasta-1 ";hasta-1; " *po-1 ";*po-1;" *po+1 ";*po+1
+ Print #1, "NB "; NB; " NA ";NA; " n ="; n
+ Print #1, "LBound (Roll.trk,1) ",LBound (Roll.trk,1)
+ Print #1, "LBound (Roll.trk,2) ",LBound (Roll.trk,2)
+ Print #1, "UBound (Roll.trk,1) ",UBound (Roll.trk,1)
+ Print #1, "UBound (Roll.trk,2) ",UBound (Roll.trk,2)
  
-Dim As Integer valor1 , valor2
-valor2=12 - notacur + (*po) * 13
-valor1 = n + curpos
-ErrorNumber1 = Err
-ErrorLine1 = Erl
+ Dim As Integer valor1 , valor2
+ valor2=12 - notacur + (*po) * 13
+ valor1 = n + curpos
+ Print #1,"*po ";*po;" notacur ";notacur; " indice1 ";valor1; " indice2 ";valor2
+ Print #1,Erl, Erfn,Ermn,Err
+ Print #1,"------------------------------------"
+ ErrorNumber1 = Err
+ ErrorLine1 = Erl
 'Dim As String ProgError1(0 To 17)
 
 
-ers= 12 -notacur +(*po) * 13
+ Print #1,"ERROR = ";ProgError(ErrorNumber1); " on line ";ErrorLine1
+ Print #1,"Error Function: "; *Erfn()
+ ers= 12 -notacur +(*po) * 13
+ Print #1, "12 - notacur +(*po) * 13) "; ers; "notacur ";notacur
+ Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
 EndIf
 
  
@@ -1193,11 +1523,14 @@ Sub Tracks ( ByRef ntk As Integer, ByRef nroCanal As UByte,Roll As inst)
   ''copia track a Roll en memoria 
   ' nrocanal no se usa ,,,,borraremos mas adelante...
 
+Print #1, "MaxPos <=2 Or pmTK(ntk).maxpos=0 Then " , Maxpos, pmTK(ntk).maxpos 
 If MaxPos <=2 Or pmTK(ntk).maxpos=0 Then
+  Print #1, "Salimos de Tracks sin ahcer nada "
   Exit Sub
 EndIf
 
 nota=0:dur=0
+Print #1,"EN TRACKS MAXPOS (NTK).MAXPOS ", maxpos, pmTK(ntk).maxpos
  ' sizeof array de ubytepr almcenar el pentagrama roll
  'Notas ( 1 To 65536, 1 To 128) as UByte
 ' usaremso para cambianr de track en Roll y Track(0)
@@ -1215,7 +1548,10 @@ If nombre=""  Then ' evita revisar track vacios EN UNA CANCION
 Else   
  
 TrackaRoll (Track(), ntk,Roll ) ' no usa ubirtk
-ReCalCompas(Roll) 
+Print #1,"Tracks  ntk cargado, nombre ",ntk, nombre
+Print #1,"llama a RecalCompas para ntk,maxpos, .maxpos ",ntk,maxpos,pmTk(ntk).MaxPos
+'''ReCalCompas(Roll) 
+Print #1,"MAXPOS DESPUES DE RECALCOMPAS ", maxpos, pmTK(ntk).maxpos
 EndIf
 
 
@@ -1246,6 +1582,7 @@ Sub sacanumeros( linea As String, cabeza() As Integer)
    If  k1= 2 Then
        linea = Mid(linea, i1)
        k1=k1+1
+       Print #1, "queda "; linea 
        cabeza(k1,1)=ValInt(linea)
        cabeza(k1,2)=i1     
    Else   
@@ -1264,6 +1601,7 @@ Sub sacanumeros( linea As String, cabeza() As Integer)
   EndIf  
  Next i1 
 For i1=1 To 3
+ Print #1, "cabeza ";i1;" ";cabeza(i1,1);" ";cabeza(i1,2)
 Next i1
 End Sub
 
@@ -1634,7 +1972,8 @@ TrackaRoll (Track(),ntk,Roll)
 cargaCancion=0
 repro=0
 Sleep 5
-ReCalCompas (Roll)
+'''ReCalCompas (Roll)
+          '  print #1,"despues RecalCompas veo nombre ",nombre
             MenuNew=0
             carga=1 ' <======= control de Carga 
             TRACKCARGADO=TRUE
@@ -1652,6 +1991,8 @@ cerrar 30
 cerrar 31
 Sleep 20
 SetGadgetText(21,"EXIT SUB " )
+Print #1, "============================="
+Print #1," llama a REfacturarPista "
 ' REFACTURAR ACA FUNCIONA BIEN COMO EL ORIGINAL MANUAL 31-05-2024
 ' LO QUE PASA ES QUE LA FUNCION AUTOMATICA ANDA MAL INSERTA MUCHA COLUMNA 
 ' EN BLANCO O BORRA COLUMNAS AL INSERTAR... TAREA CORREGIR
@@ -1672,6 +2013,7 @@ If  Err > 0 Then
   errmsg = "FAIL Error " & Err & _
            " in function " & *Erfn & _
            " on line " & Erl
+  Print #1, errmsg
 
 End If
 
@@ -1732,7 +2074,9 @@ mfile = InStr (UCase(linea), "MFILE")
 If mfile > 0 Then ' tomo el valor de la negra
    sacanumeros (Mid(linea,6), cabeza() )
    tNegra  = cabeza(3,1)
+Print #1, "tiemponegra  "; tnegra 
    ubicacion=cabeza(3,2) + 6 -2 ' en linea 
+  Print #1, "tiemponegra ubicacion ";ubicacion
 EndIf
 
 
@@ -2295,6 +2639,7 @@ abrirRoll=2 ' habilita la carga de una cancion
 ' FIN BORRO UNDO
    
    
+'   Print #1,"ubiroll en CA ",ubiroll
      
      Dim As String x,x1,x2,x3,x4,x5,nombrea
      ''' no usar mas  dialogoText("Cargar Archivo")
@@ -2318,14 +2663,18 @@ nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
        Else
           nombre=nombrea   
        EndIf
+   Print #1,"CArgarArchivo ",nombre    
 
    ca=6   
+ ' print #1,"open nombre en CargaArchivo ",nombre
       If  ubiroll =0 Then
           If   Open (nombre  For Binary Access Read As #ca ) <> 0 Then
+              Print #1, "No se puede leer en 1620 "; nombre 
           EndIf
       Else
          Sleep 100
          If Open (nombre  For Binary Access Read Shared As #ca ) <> 0 Then
+            Print #1,"Error open cargaArchivo en 1627, nombre ",nombre
             Exit Sub
          End If
          
@@ -2346,6 +2695,7 @@ nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
      
      
 
+     'Print #1,"posicion lectura en ca ", Seek(ca)  
 '     Seek ca,1
      Get #ca, , z(1,1)
      x1=Bin(z(1,1).nota,4) 
@@ -2357,11 +2707,14 @@ nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
      If tipoescala_num_ini =0 Then
         tipoescala_num_ini =1
      EndIf
+     Print #1,"tipoescala_num_ini ",tipoescala_num_ini ' 
      
      x=x1+x2+x3+x4+x5
+        Print #1,"reconstruccion x pos bin ", x
      MaxPos=CInt("&B"+x)
      posicion = 1
-     
+       Print #1,"reconstruccion x pos int ", MaxPos
+     ''' ditrvr oNroCol=MaxPos ' 11-02-2025     
      
      nota=0 '''notaOld
      inicioDeLectura=0' Int(Maxpos/NroCol)
@@ -2374,15 +2727,19 @@ nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
      Get #ca, , zLim(1,1)
      desde  = CInt(zLim(1,1).nota)
      pmTk(ntk).desde=desde
+     Print #1,"desde ",desde
      hasta  = CInt(zLim(1,1).dur)
      pmTk(ntk).hasta =hasta
+     Print #1,"hasta ",hasta
      notaold= CInt(zLim(1,1).pb)
      pmTk(ntk).notaold=zLim(1,1).pb
 
+     Print #1,"notaold ",notaold     
      notaescala_num_ini =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
      If notaescala_num_ini = 0 Then
         notaescala_num_ini =1
      EndIf
+     Print #1,"notaescala_num_ini ",notaescala_num_ini     
      If  zLim(1,1).pan = 3 Then
          alteracion="sos"
      EndIf    
@@ -2392,9 +2749,11 @@ nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
      If  zLim(1,1).pan = 3 Then
          alteracion="sos"
      EndIf
+     Print #1,"alteracion ",alteracion
      
       
     cadenaes_inicial=""
+   Print #1,"armarescala desde cargarArchivo"
 
     armarescala (cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini, alteracion ,1)
 
@@ -2414,6 +2773,7 @@ nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
      NA= 11 + (hasta -1)*13
      pmTk(0).notaold = notaold  'notaold es ubyte en pmTk
      pmTk(0).MaxPos = MaxPos
+Print #1,"pmTk(0).MaxPos = MaxPos ";  MaxPos
      pmTk(0).posn = MaxPos -2
 ' cargo estos campos nb na pero se los podria eliminar o usar para otra cosa,,,,
      pmTk(0).NB=NB  
@@ -2439,7 +2799,9 @@ nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
      Get #ca, ,z3  (1,1)
 
      canalx  = CInt(z3(1,1).inst) ' canal midi cargado en Global si es un track se pasara a info de trck
+     Print #1,"canalx cargado desde archivo ",canalx
      portout = CInt(z3(1,1).dur) 
+     Print #1,"portout cargado desde archivo ",portout
      pmTk(0).portout=z3(1,1).dur   ' ubyte  a ubyte
      pmTk(0).canalsalida = z3(1,1).inst ' ubyte a ubyte
      pmTk(0).patch=z3(1,1).nota  ' ubyte a ubyte
@@ -2466,6 +2828,7 @@ nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
 
    
      ReDim compas(1 To CantTicks)
+     Print #1,"En CargarArchivo NB NA ", NB,NA
      Dim Trabajo (1 To MaxPos, NB To NA) As dat     ''' es un Roll
      Get #ca, , Trabajo() ' aca levanta tambien el instrumento que se grabo 
      ' CARGA VECTOR ROLL movemos los datos a Roll Y a track 0
@@ -2475,6 +2838,7 @@ nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
      carga=1 ' no es lo mismo calcCompas con cargar o procesando
      Dim As Integer i,j , mayor,ia,valdur,cont, semi,i3,verticalEnOctavaVacia,octavaDeAcorde,vertical
      cont=0
+ '    print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
 Dim As Integer copiado=0
 
  vertical=12+(hasta-2)*13+hasta ' "[NROREP]" de EntrarTeclado
@@ -2491,6 +2855,8 @@ Dim As Integer copiado=0
        If Trabajo (j,i).nota >= 1 And Trabajo (j,i).nota <=12 And  Trabajo (j,i).dur >=1 And Trabajo (j,i).dur <= 180  Then
          ip+=1
          If ip >12 Then
+  '            print #1,"error  ip > 12,ip, Tr,j,i ",ip, Trabajo (j,i).dur,j,i
+   '           print #1,"saltamos linea vertical vamos a otra posicion"
               Exit For
          EndIf      
          Notapiano= i 
@@ -2515,6 +2881,8 @@ Dim As Integer copiado=0
          Track(ntk).trk(j,13).nota = Trabajo(j,i ).nota ' = 30
          Track(ntk).trk(j,13).dur  = Trabajo(j,i ).dur  ' = 200
          Track(ntk).trk(j,13).pan = Trabajo(j,i ).pan
+   '      Print #1,"RollaTrack copia var de control inst ",Track(ntk).trk(j,13).inst
+   '      Print #1,"RollaTrack copia var de control vol ",Track(ntk).trk(j,13).vol
          copiado=1 
       EndIf
 ' copiar campso de acordes a Track(ntk)       
@@ -2552,7 +2920,20 @@ cerrar ca
 DUR => 0
 curpos =>1
 ''' carga=0
- ReCalCompas(Roll)  
+   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
+'If font >=5 And font <= 34 Then
+'   anchofig= mispx(font-4,2)
+'Else
+'   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
+'EndIf
+
+'   NroCol =  (ANCHO / anchofig ) + 4 '6
+   gap1= anchofig* 6 ' porque era tanto 20
+   NroCol =  (ANCHO / anchofig ) + 4 '6
+   gap2= (914 * gap1) /1000 ' 74 default
+   gap3= (519 * gap1) /1000 ' 42 default
+
+''' ReCalCompas(Roll)  
 '--------------------------------
 ' correccion LLAMAMOS ROLL A TRACK PARA NTK = 0, 14 -04-2024
 ' pero no era necesario, total al grabar nunca grabo el track
@@ -2572,7 +2953,11 @@ curpos =>1
 ' 05-03-2024 estos toques virtuales los sacare por ahora  
            'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  
           'mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0
+ 'print #1, "CargaARchivo LBound (Roll.trk,1) ",LBound (Roll.trk,1)
+ 'print #1, "CargaARchivo LBound (Roll.trk,2) ",LBound (Roll.trk,2)
     
+ 'print #1, "CargaARchivo UBound (Roll.trk,1) ",UBound (Roll.trk,1)
+ 'print #1, "CargaARchivo UBound (Roll.trk,2) ",UBound (Roll.trk,2)
   Sleep 10
   ROLLCARGADO=TRUE
 End Sub
@@ -2593,10 +2978,13 @@ nota=0
           NB => 0 + (desde-1) * 13   ' 39 para 4
           NA => 11 + (hasta-1) * 13  ' 102 para  8
        '   If desdevector > desde Or hastavector < hasta Then ' si se amplia el rango
+               Print #1,"entro a redimiensionar vector por octavas"
                Erase  Roll.trk, Track(ntk).trk, RollAux.trk, mel_undo,undo_acorde,undo_kant_intervalos
                 ig=0:cnt_acor=0  
                desdevector= desde
                hastavector= hasta
+               Print #1,"Runtime desde hasta ",desde ,hasta
+               Print #1,"Runtime NB NA ",NB ,NA
                ReDim (Roll.trk ) (1 To CantTicks, NB To NA )
                ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim3)
                ReDim compas(1 To CantTicks)
@@ -2639,6 +3027,8 @@ nota=0
              nombre = ""
              ntk=ntk+1
           EndIf
+          Print #1,"posn,CantTicks ",posn,CantTicks
+          Print #1,"NB, NA ",NB,NA
           
        '   Dim As Integer r1,i
        '   For i=NB To NA 
@@ -2683,7 +3073,7 @@ Sub menugrafico( c0 As cairo_t Ptr,Cantitems As Integer, text() As String  )
   cairo_text_extents( c0, text(i), @extents )
   cairo_show_text( c0, text(i) )
  Next i
-'/
+
 
  ' <= control-m O P
  '          If cursorVert=0 Or cursorHori=0 then
@@ -2701,6 +3091,7 @@ Sub menugrafico( c0 As cairo_t Ptr,Cantitems As Integer, text() As String  )
  '  EndIf
 
  ' EndIf
+
  If savemousex=0 Or savemousey=0 Then
   savemousex=mousex
   savemousey=mousey
@@ -2714,8 +3105,8 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 
  On Local Error Goto fail
 
- Dim As Integer fontOld = font
- font=18 ' ACA AHCE FALTA ESTE TAMAnO TODO ESTA CALCULADO EN PIXELS PARA QUE ANDE EL MENU
+ Dim As float fonti
+ fonti=18 ' ACA AHCE FALTA ESTE TAMAnO TODO ESTA CALCULADO EN PIXELS PARA QUE ANDE EL MENU
  Dim As cairo_font_extents_t fe   '     font data
  Dim As cairo_text_extents_t te  '      text size
  Dim  As Double Ptr xo,yo
@@ -2735,7 +3126,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
  cairo_set_source_rgba(c, 1, 1, 1, 1) ' blanco letras
 
  cairo_select_font_face (c, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
- cairo_set_font_size (c, font)
+ cairo_set_font_size (c, fonti)
 
  '---encendido de edit
  Var t = ""
@@ -2775,6 +3166,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    Dim muestra As String ' nombre tambien se usa en cancion
    If NombreCancion > "" And titulos(ntk) > "" And ROLLCARGADO=FALSE Then
       nombre = titulos(ntk)
+     ' Print #1,"en menu nombre ",nombre
    EndIf
    Dim ps As Integer
    If NombreCancion > "" Then
@@ -2787,13 +3179,14 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
      SetWindowText(hwndC, "RollMusic Path archivo: " + camino)
    EndIf
    
-   muestra=Str(PianoNota) + " "+ muestra   + "ANCHO "+ Str(ANCHO)+ " Mx:" + Str(mousex) + " My:" + Str(mousey) 'xxxx Str (BordeSupRoll)
-   
+   muestra=Str(PianoNota) + " "+ muestra   + "ANCHO "+ Str(ANCHO)+ " Mx:" + Str(mousex) + " My:" + Str(mousey) +   " NroCol "+Str(NroCol) 
+'xxxx Str (BordeSupRoll)
+
 
  Select Case menuNro
   Case 0
   ' 0.1 ==> [Archivo]
-   If mousex > 46 And mousex< 111 And mousey < 50  Then
+   If mousex > 46 And mousex< 111 And mousey < 50   Then
     cairo_set_source_rgba c, 0, 1, 0, 1
      font=18 ' el menu esta dise�ado para este tama�o 
     If MouseButtons And 1 Then
@@ -2801,6 +3194,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
+
    EndIf
    carga=0
    t = "       [Archivo]":cairo_show_text(c, t)
@@ -2816,14 +3210,16 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
+   ' print #1, "INVESTIGO COMEDIT ENTRO X CLICK EN SUB S3, menuNro: ",S3, menuNro
    t=  " [Edicion]":cairo_show_text(c, t)
 
 ' 0.3 ===> [Ver] pondremos aca ver una posicion dada de la secuecnia
 ' entrando el numero.
-   If mousex > 232 And mousex< 258 And mousey < 50 Then
+   If MultiKey(sc_Control) And (mousex > 232 And mousex< 258 And mousey < 50) Then
      cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
          menuOldStr="[Ver]"
+         Print #1,"voy a menu 8 desde ver"
          menuNew=8
       EndIf 
    Else
@@ -2844,8 +3240,10 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    If MultiKey(sc_Control) And (mousex > 355 And mousex< 451 And mousey < 50 And play=0 And playb=0 And Cplay=0   ) Then
     cairo_set_source_rgba c, 0, 1, 0, 1
      While InKey<>"" :Wend
+   '   print #1,"--->entra a reproducir thread1 "
               play=1
         menuNew =0
+         Print #1,"hizo click para llamar a playall, maxpos ",maxpos 
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 2 Then
                GrabarPenta=0:naco=0:naco2=0
@@ -2853,10 +3251,12 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
                Else
                SetGadgetstate(15,0) ' 10-04-2022
                EndIf  
+         Print #1,"llama a playall"
          thread2 = ThreadCall  playAll(Roll)
          ''''playAll(Roll)
          
         EndIf 
+   '     print #1,"--->paso llamada a thread1 "
     ''    menuNew = 4 por hora sin elecciones
 
    Else
@@ -2874,7 +3274,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
  '0.7  ===> [Opciones]  '25-07-2021
    If  MultiKey(SC_ALT) And mousex > 483 And mousex< 561 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
-        Sleep 100
+        Sleep 20
         menuNew=5
         
    Else
@@ -2933,13 +3333,16 @@ If copi >0 Then
    veocopi=copi
 EndIf   
 
+
    t = "      EDIT" + " " +  " Maxpos:" + _
-   Str(Maxpos) +" Posicion:" + Str(posicion)+ " Posn:"+Str(posn)+ _
-   " Font:" +Str(fontOld) + " EnOct:" + Str(estoyEnOctava) + " nA:"+Str(veonota) + _ 
+   Str(Maxpos) +" Posi:" + Str(posicion)+ " Posn:"+Str(posn)+ _
+   " Font:" +Str(font) + " Oct:" + Str(estoyEnOctava) + " nA:"+Str(veonota) + _ 
    " NP:"+ Str(PianoNota) + " nsE:"+Str(nsE) + " Curpos:" +Str(curpos) + _
    " RollDur :"+ Str(RollDur) + " Rollnota:" + Str(RollNota) + _ 
-   " Copiar:" + Str(veocopi) +" Col:" +Str(indicePos) + " DUR:"+ Str(Dur) + _ 
-   " Nota:"+ Str(nota) + " Mx:" + Str(mousex) + " My:" + Str(mousey) 
+   " Copia:" + Str(veocopi) +" Col:" +Str(indicePos) + " DUR:"+ Str(Dur) + _ 
+   " Nota:"+ Str(nota) + " ONOFF:" + Str(onoff)
+
+'''" Mx:" + Str(mousex) + " My:" + Str(mousey) 
   ' + "Desde:" + Str(y1) + "Hasta:" +Str(y2)
    /' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +
 '/
@@ -2973,7 +3376,7 @@ EndIf
   Else
     cairo_set_source_rgba c, 1, 1, 1, 1    
   EndIf  
- 
+ '' VUELVE menu grafico Rollmusic cinta AL INICIO....
   If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
      If MouseButtons And 1 Then
       MenuNew=0
@@ -3017,11 +3420,13 @@ EndIf
        CargaArchivo(Roll, 0)
        s5=0 '11-06-2022
        cargaCancion=0
+    '   print #1,"nombre cargado en Roll ",nombre
        MenuNew=0
        carga=1  ' <======= control de Carga
        ROLLCARGADO=TRUE ' aunque este en cancion puedo cargar un roll
     EndIf
    Else
+   ' print #1,"else de *ROLL CARGA, mousex ", carga, mousex, mousey
     carga=0   
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
@@ -3044,12 +3449,16 @@ EndIf
             Sleep 2
          EndIf 
 
+         'print #1,"carga track veo nombre antes   ",nombre
          CargarTrack (Track() , ntk, 0)
          s5=0 ' 11-06-2022
          If nombre > "" Then  ' evita crash al cancelar el dialogo 
+         '   print #1,"carga track veo nombre despues ",nombre
             ROLLCARGADO=TRUE ' NO PERMITOQUE TRACK(0) SE BORRE
             TrackaRoll (Track() , ntk , Roll)
-            ReCalCompas (Roll)
+          '  print #1,"TrackaRollcarga rtk veo nombre ",nombre 
+          '''  ReCalCompas (Roll)
+          '  print #1,"despues RecalCompas veo nombre ",nombre
             MenuNew=0
             carga=1 ' <======= control de Carga 
             TRACKCARGADO=TRUE
@@ -3073,10 +3482,13 @@ EndIf
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And carga = 0 Then
       ' GRABAR A MIDI PLANO aca no funciona
+'        Print #1,"1) A MIDI PLANO DESDE MENU ROLL"
         ''''abrirSecuencia(20)
  '       midionof = 4
+ '       Print #1,"2) A MIDI PLANO DESDE MENU ROLL"
  '       MIDIFILEONOFF = HABILITAR 
  '       AMIDI=1
+  '     Print #1,"3) A MIDI PLANO DESDE MENU ROLL" 
     EndIf
     MenuNew=0
     
@@ -3094,6 +3506,7 @@ EndIf
      If MouseButtons And 1    Then
       cairo_set_source_rgba c,1,0,0,1
        Dim As String nombreg
+       Print #1,"EN Grabar nombre ",nombre
        If nombre = "" Then
 nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREATEPROMPT)
           If nombreg = "" Then
@@ -3110,6 +3523,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
        ubi4=InStr(nombre,".roll")
        If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Then 'graba un track como track
        ' pero como las modificaciones estan en ROLL debo usar GrabarrollaTrack
+  Print #1,"2190 menu pierde ntk ??? ",ntk
 'SI CARGUE UN RTK DESDE ARCHIVO SIEMPRE USO ROLL A  TRACK PORQUE
 ' SE PUDO EDITAR EL ROLL VISUAL Y ROLL TENDRA LA ULTIMA MODIFICAION
 ' ahora si es una cancion debere grabar a disco con el nrode track correspondiente
@@ -3136,6 +3550,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
    If MultiKey(sc_Control) And mousex > 608 And mousex < 743  And mousey < 50  And carga=0 Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 Then
+     '       print #1, "Grabando a disco Roll GRABAR "
        '''''no usar dialogoText("Grabar Archivo")
        Dim As String nombreg
 nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREATEPROMPT)
@@ -3162,6 +3577,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
    If MultiKey(sc_Control) And mousex > 778 And mousex < 912  And mousey < 50  And carga=0 Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 Then
+       Print #1, "Click Grabando a disco Roll a Track ",nombre
       '''' dialogoText("Grabar Archivo")
        Dim As String nombreg
        If nombre = "" Then
@@ -3277,6 +3693,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
      "y la capacidad de Octavas. A mas Octavas mas memoria usada", _
      "El numero de octavas puede achicarse respecto del inicio",_
      "o agrandar "}
+  Print #1, "ANTES DE MENUGRAFICO"
       menugrafico  c0, CantItems, text()
 
     EndIf
@@ -3363,6 +3780,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
      cairo_set_source_rgba c, 1, 0, 0, 1
      NB => 0 + (desde-1) * 13   ' 39 para 4
      NA => 11 + (hasta-1) * 13  ' 102 para  8
+  '   print #1,"NB,NA,DESDE,HASTA ";NB,NA,desde,hasta
      CambiarDim(1)
      MaxPos = 2 'NroCol
      posicion=1:posn=0
@@ -3374,6 +3792,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
 
      redimensionar=1
      RTA="REDIMENSION VISUAL y FISICA OK"
+   '  print #1, RTA
       MenuNew=0
     EndIf
    Else
@@ -3391,9 +3810,9 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
      TipoCompas=Tcompas4_4  ' 8 para guardar en disco roll o rtk
        pmTk(0).tempo = TipoCompas 
      d7=valorFigura(TipoCompas)
-     If MaxpOS > 2 Then
-       ReCalCompas(Roll)
-     EndIf
+     'If MaxpOS > 2 Then
+     '''  ReCalCompas(Roll)
+     'EndIf
     'MenuNew=0
     EndIf
    Else
@@ -3407,9 +3826,9 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
      menuNew=7
      TCompas="12/8"
      TipoCompas=Tcompas12_8  ' 20  
-     If mAXpOS > 2 Then
-     ReCalCompas(Roll)
-     End If
+     'If mAXpOS > 2 Then
+     'ReCalCompas(Roll)
+     'End If
      'MenuNew=0
     EndIf
    Else
@@ -3424,9 +3843,9 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
      TCompas="2/4 "
      TipoCompas=Tcompas2_4  ' 6 
 
-     If mAXpOS > 2 Then
-     ReCalCompas(Roll)
-     EndIf
+    ' If mAXpOS > 2 Then
+    ' ReCalCompas(Roll)
+    ' EndIf
      'MenuNew=0
     EndIf
    Else
@@ -3441,9 +3860,9 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
      menuNew=7
      TCompas="3/4 "
      TipoCompas=Tcompas3_4  ' 7
-     If mAXpOS > 2 Then
-     ReCalCompas(Roll)
-     EndIf
+     'If mAXpOS > 2 Then
+     'ReCalCompas(Roll)
+     'EndIf
      'MenuNew=0
     EndIf
    Else
@@ -3458,9 +3877,9 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
      menuNew=7
      TCompas="6/8 "
      TipoCompas=Tcompas6_8  ' 7
-     If mAXpOS > 2 Then
-     ReCalCompas(Roll)
-     EndIf
+  '   If mAXpOS > 2 Then
+  '   ReCalCompas(Roll)
+  '   EndIf
      'MenuNew=0
     EndIf
    Else
@@ -3473,12 +3892,14 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
 
 
   Case 8
+ Print #1,"entro a menu 8 desde ver"
 
       Select Case  menuOldStr
           Case "[Ver]" 
           nombreArchivo="0"
          
           If pubi =0 Then
+           Print #1,"voy a EntrarTEcla desde ver menu8"
             menunew=0
             thread3= ThreadCall EntrarTeclado()
              pubi=1
@@ -3487,6 +3908,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
           Case "[TEMPO]" 
           nombreArchivo="0"
           
+          Print #1,">>>>>>>>TIEMPO PATRON viejo>>>>>>>>>>,PUBI ", tiempoPatron,pubi
       
           If pubi =0 Then
              menunew=0
@@ -3546,6 +3968,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
     t = "             [MIDI-OUT]"
     cairo_show_text(c,t)
     If mousex > 200 And mousex < 300  And mousey < 50  Then ' <= NUEVO
+     '''        Print #1,"ENTRO POR EL MIDIIN !!!!!!!"
     cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1   And cierroport = 0 Then
        cierroport=1 
@@ -3563,6 +3986,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
 
   Case 11
 
+
      If mousex > 40 And mousex < 190  And mousey < 50 Then 'And listaMIDI = 0 Then ' <= NUEVO
       cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
@@ -3570,6 +3994,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
        ti=1 ' seleccion de canales midi de entrada
        threadcanal = ThreadCreate(@selcanal(), CPtr(Any Ptr, ti))
          
+       'Print #1,"canal elegido luego del thread2 en menu ",canalx
       EndIf ' mousebuttons
       MenuNew=9
 
@@ -3598,23 +4023,23 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
    cairo_show_text(c, t)
    cairo_stroke(c)
   EndIf
- ' ayuda
- If ayuda = TRUE Then
-  Var  cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
-  Dim As String  text => "HOLA SOY TU AYUDA!"
-
-  Dim As cairo_text_extents_t extents
-
-  If mousey < 50 Then
-   cairo_set_font_face( c, cface )
-   cairo_set_font_size( c, 36 )
-   cairo_text_extents( c, text, @extents )
-   cairo_move_to( c, mousex, mousey )
-   cairo_set_source_rgba( c, 1, 1, 1, 1.0 )
-   cairo_show_text( c, text )
-  EndIf
- EndIf
- font=fontOld
+ ' ayuda NO SWE USA 
+ 'If ayuda = TRUE Then
+ ' Var  cface => cairo_ft_font_face_create_for_ft_face( ftface, 0 )
+ ' Dim As String  text => "HOLA SOY TU AYUDA!"
+'
+ ' Dim As cairo_text_extents_t extents
+'
+' If mousey < 50 Then
+'   cairo_set_font_face( c, cface )
+'   cairo_set_font_size( c, 36 )
+'   cairo_text_extents( c, text, @extents )
+'   cairo_move_to( c, mousex, mousey )
+'   cairo_set_source_rgba( c, 1, 1, 1, 1.0 )
+'   cairo_show_text( c, text )
+'  EndIf
+' EndIf
+ cairo_set_font_size (c, font)
    If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
      If MouseButtons And 1 Then
       MenuNew=0
@@ -3631,6 +4056,7 @@ If  er1 > 0 Then
   errmsg = "FAIL Error " & er1 & _
            " in function " & *Erfn & _
            " on line " & Erl & " " & ProgError(er1)
+  Print #1, errmsg
 End If
 
 End Sub
@@ -3644,6 +4070,7 @@ Sub movedato (ByVal n As Integer, ByRef indaux As Integer,ByRef  insert As Integ
  ' y por ende empieza por 1 no se guarda esun auxiliar...
  '
  indaux = indaux + 1 ' indaux auxiliar SC_INSERT INICIALIZA EN 0
+ ' print #1, "----EN MOVEDATO indaux, nota: ",indaux , nota
  'notas gurdadas para luego usar en proceso CORRECCION
  notins = notins + 1
  notasInsertadas (notins) = nota  ' ENTRADA POR TECLADO ANTES DE PULSAR INSERT
@@ -3656,6 +4083,11 @@ Sub movedato (ByVal n As Integer, ByRef indaux As Integer,ByRef  insert As Integ
   RollAux.trk(indaux,i1)= Roll.trk(n, i1 ) 'xxx  n ya contiene curpos
  Next i1
  ' movio la nota queestaba antes de pulsar insert
+ 'print #1, "EN MOVEDATO carga RollAux.trk con valores viejos de roll"
+ 'print #1,"RollAux.trk(nota,indaux) nota,indaux " ,nota,indaux
+ 'print #1,"Roll.trk(nota,n) nota,n, curpos" ,nota,n, curpos
+ 'print #1,"duracion cargda RollAux.trk(nota,indaux).dur: ", RollAux.trk(nota,indaux).dur
+ 'print #1,"nota  cargda RollAux.trk(nota,indaux).nota : ", RollAux.trk(nota,indaux).nota
  'vamos reemplazando los eventos y sobreescribiendo con los nuevos pero
  '  los viejos se van guardando para desplazarlos a la derecha.
  ' RollAux.trk tendra lo viejo, notas insertdas lo nuevo
@@ -3666,8 +4098,11 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
  Dim As Integer indpos,lastPosRollReemplzada,s,t,k,i
  lastPosRollReemplzada=posicion + curpos
  indpos=posicion + curpos'indice posicion partimos de ultima posicion global reemplazada
+ '   print #1, "EN MOVERESTO, indaux,StartInsert: ",indaux ,StartInsert
  ' ultima posicion movida a aux  es indaux (indaux POSICION DE AUX) JMG
  Dim As Integer lastIndAuxporInsercion = indaux
+ 'print #1, "moveresto inicio: indaux,indpos,posicion :", indaux,indpos,posicion
+ 'print #1, "entra Loop, indaux,StartInsert,indpos: ",indaux,StartInsert ,indpos
  Dim As Integer cantInserciones = indaux ' o notins el indaux continua en movedata las inserciones nuevas
  ' durante lascuales se movio los valores viejso a aux pero quedaron
  ' losnuevos en Roll. que no debo opisar
@@ -3678,21 +4113,28 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
   indpos=indpos+1 ' empezamos de la siguiente no reemplazada y seguimos al final
   ''suponemos que posicion=indpos era la posicion de ultima reemplazada
   indaux=indaux+1 'nosubicamos en 1er posicon libre en aux para recibir el resto
+  'print #1,"antes del FOR Roll,RollAux.trk.. indpos,indaux ", indpos,indaux
   ' debemos barrer solo la octava? no porque puede haber otras octavas cargadas
   For s= NB To NA 'barremos todas las notas verticalmente para una misma posicion
    If Roll.trk(indpos, s).dur = 182 Or indpos=MaxPos Then ' fin de datos de Roll
     RollAux.trk(indaux, s) = Roll.trk(indpos, s)
     insert= 4 ' fin de llenado de almacenamiento auxiliar
+  '      print #1,"sale moveresto encontro 182 fin, indaux :" ,indaux
     Exit Do
    EndIf
    RollAux.trk(indaux, s) = Roll.trk(indpos, s)
    If s=1 Then
+  '    print #1, "luego de la copia a AUX del resto "
    EndIf
    If (Roll.trk(indpos, s).dur <>181  And Roll.trk(indpos, s).nota <> 181) _
     And (Roll.trk(indpos, s).dur > 0 Or Roll.trk(indpos, s).nota > 0)    Then
+   '    print #1, "Roll.trk(";s,indpos;").nota ",Roll.trk(s,indpos).nota
+   '    print #1, "Roll.trk(";s,indpos; ").dur ",Roll.trk(s,indpos).dur
    EndIf
    If (RollAux.trk(indaux, s).dur <> 181 And RollAux.trk(indaux, s).nota <> 181) _
     And (RollAux.trk(indaux, s).dur > 0 Or RollAux.trk(indaux,s).nota > 0)    Then
+   '    print #1, "RollAux.trk(";s,indaux; ").nota ",RollAux.trk(s,indaux).nota
+   '    print #1, "RollAux.trk(";s,indaux; ").dur ",RollAux.trk(s,indaux).dur
    EndIf
 
   Next s
@@ -3704,27 +4146,39 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
  ' el 66 lo muevo??? sino debo hcer indaux = indaux -1
  ' indaux=indaux - 1 no le resto 1 copio el 66...el fin se corre
 
+' print #1, "StartInsert: " ,StartInsert '  ya se le sumo curpos
  If insert = 4 Then 'movemos de nuevo todo el aux completo a Roll desde
   ' laultimainsercion o sea Startindice +
+ ' print #1, "insert 4 movemos Aux a ROLL indaux maximos elementos en Aux: ",indaux
   t = StartInsert + cantInserciones ' xxx  OK
 
+ ' print #1, "posicion, posn "; posicion, posn
   For k = 1 To indaux ' todo el auxiliar SUMA ROLL REEMPLAZADO + NOREEMPLAZADO
+ '  print #1, "k auxiliar "; k
    For s=NB To NA  ' todos los semitonos 96
     Roll.trk(t,s) = RollAux.trk(k,s)
     If s=1 Then
+ '    print #1, "luego de la  copia A ROLL "
     EndIf
     If (Roll.trk(t,s).dur <> 181 And Roll.trk(t,s).nota <> 181) _
      And (Roll.trk(t, s).dur > 0 Or Roll.trk(t, s).nota > 0)    Then
+   '    print #1, "I) Roll.trk(";s,t;")nota,s,t : ", Roll.trk(s,t).nota, s, t
+   '    print #1, "I) Roll.trk(";s,t;")dur, s,t : ", Roll.trk(s,t).dur,s,t
     EndIf
     If (RollAux.trk(k, s).dur <> 181 And RollAux.trk(k, s).nota <> 181) _
      And (RollAux.trk(k, s).dur > 0 Or RollAux.trk(k, s).nota > 0)    Then
+   '    print #1, "II) RollAux.trk(";s,k;").dur ", RollAux.trk(s,k).dur
+   '    print #1, "II) RollAux.trk(";s,k;").nota ", RollAux.trk(s,k).nota
     EndIf
    Next s
    t=t+1
   Next k
+ ' print #1, "Valor despues de END insercion, posicion, posn "; posicion, posn
   '' posicion = MaxPos con posn es suficiente,sino se va al tramo final
   posn = MaxPos
+'  print #1, "usamos MxPos pra posicion, posn "; posicion, posn
   '' esto jode porque con insert=0 entra y dej aind= 0' final del ciclo
+ ' print #1 ,"final ciclo moveresto a AUX"
 
   For s = NB To NA
    For k=  StartInsert To MaxPos ' gracias a esto anda acordes
@@ -3737,6 +4191,7 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
   ' nota en 181 y durciones en  0. bueno hor determinamos donde y cuanto se inserto.
   ' estos son los valores  StartInsert y cantInserciones.
   ' StartInsert es de Roll antesdela insercion
+'  print #1, "==> valor de nota antes de CORRECCION: ",nota
 
   ' aca revisamos el Roll solo la parte insertada , encada insercion en Roll
   ' esa posiicon se corresponde al de notas insertadas biunivocmente,,
@@ -3758,7 +4213,7 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
   Next k
  EndIf
  insert=0
- ReCalCompas(Roll) ' 09-05-2021
+ ''ReCalCompas(Roll) ' 09-05-2021
 End Sub
 '------------------------------------
 Sub botones(hWnd As HWND,  cm As cairo_t Ptr, x As Integer,y As Integer)
@@ -3830,6 +4285,7 @@ Sub botones(hWnd As HWND,  cm As cairo_t Ptr, x As Integer,y As Integer)
 End Sub
 '
 Sub organizaCompases()
+' print #1,"1-organiza Compases "
  Dim j As Integer
  For j = 1 To MAxPos
   mayorDurEnUnaPosicion (j)
@@ -3875,6 +4331,8 @@ Sub CambiarDim(redi As Integer)
 
 ' hacemos un redim preserve por default
      *po=hasta-1
+     Print #1,"CambiarDim desde ";desde;" hasta ";hasta;" *po ";*po;" NB ";NB;" NA ";NA
+     Print #1,"CantTicks ";CantTicks
      
 If redi=1 Then 
      ReDim  Preserve (Roll.trk ) ( 1 To CantTicks, NB To NA)
@@ -3882,11 +4340,13 @@ If redi=1 Then
 Else
      ReDim  (Roll.trk ) ( 1 To CantTicks, NB To NA)
      ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
+     Print #1,"FIN CAMBIARDIM  else" 
 EndIf   
 ReDim (RollAux.trk) ( 1 To CantTicks,NB To NA )
  desdevector=desde
  hastavector=hasta
  
+Print #1,"FIN CAMBIARDIM "
 
 
 
@@ -3928,9 +4388,13 @@ nombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
     '        EndIf
           If compasX >=1 Then       
             Dim ni As Integer
+            Print #1,"NroCompas: ", NroCompas
+            Print #1,"CompasX: ", CompasX
             For ni=1 To MaxPos
+            Print #1,"ni: ,posi, nro Compas ", ni, Compas(ni).Posi, Compas(ni).nro
                If Compas(ni).nro = compasX Then
                   posicion = Compas(ni).Posi
+                  Print #1,"encontro : ", CompasX
                   Exit For
                EndIf
             Next ni
@@ -3973,15 +4437,19 @@ EndIf
      ticksdefault = InputBox("Ajuste Tempo Manual" ,"Entre un Tempo ",default)
       tiempoPatron= ValInt(ticksdefault) '08-01-2022 de doble a int
    EndIf
+    Print #1,"tEMPO llego a TEMPO en entrar tecla",ticksdefault 
    
 ' o sea el default de tiempoPAtron para manual es 60, pero para ejecuciones es 240
 
  Case "[FACTOR]"
    default=Str("1.25")
+    Print #1,"llego a TEMPO en entrar tecla",NombreArchivo 
 
     NombreArchivo = InputBox("Ajuste Factor Tempo " ,"Entre un Factor ",default)
       
+    Print #1,"nombreArchivo de click ok",nombreArchivo
     FactortiempoPatron= CDbl(nombreArchivo) '08-01-2022 de doble a int
+    Print #1,">>>>>>>>Factor TIEMPO PATRON NUEVO>>>>>>>", FactortiempoPatron
  Case "[NROREP]"
   default=Str("2")
   NombreArchivo = InputBox("Repeticiones " ,"Cantidad entera ",default)
@@ -4002,6 +4470,7 @@ EndIf
 ' 12+7*13
   Dim As Integer vertical=0 ' elvalor minimo 
   vertical=12+(hasta-2)*13+hasta ' para 9 -> 112
+  'Print #1,"ajustado repeind ",vertical  98
   Roll.trk(pasozona1,vertical).nota = 210 ' comienza repeticion en pasozona1
 ' ajusto comienzo= pasozona1...
 ' al llear pasozona2 en el mismo lugar pongo le nro de repeticiones
@@ -4035,6 +4504,7 @@ End Sub
 
 
 Sub velocidades(j As Integer)
+ 'Print #1,"velocidades Tcompas j "; TCompas, j 
     If TCompas="4/4 " Then ' dividido y subdividido
       If acumulado <= 1250000 Then ' hasta a corchea
        compas(j).nro = -1 ' fuerte
@@ -4089,6 +4559,7 @@ Sub velocidades(j As Integer)
 
 
     If TCompas="3/4 " Then 'dividido y subdividido. seria un 6/8 tmbien
+    '  Print #1 ,"TCompas=3/4 en velocidades acumulado "; acumulado
       If acumulado <= 1250000 Then 'nollego a corchea
        compas(j).nro = -1 ' fuerte
       EndIf
@@ -4108,6 +4579,7 @@ Sub velocidades(j As Integer)
       If acumulado > 6250000 And acumulado <= 7500000 Then 'hasta 3 negra
        compas(j).nro = -2 ' debil
       EndIf
+      Print #1, "velocidades 3/4 compas(j).nro "; compas(j).nro 
       Exit Sub 
     EndIf
 
@@ -4206,6 +4678,7 @@ Sub GrabarArchivo (grabar_como As Integer)
 ' el que se esta editando o se carga un nuevo archivo
 ' para roll ntk es siemrpe cero
 ntk=0
+Print #1,"GRABAR ARCHIVO: nombre al comienzo "; nombre
 Dim  As Integer npl
      If nombre = "" Then ' backup antes de aumentar el tama�o del vector
         nombre = "Backup"+ Date + ".roll"
@@ -4216,6 +4689,7 @@ Dim  As Integer npl
 ''' NUNCA ENTRA POR ACA , SOLO SI SE USA ESTA RUTINA SIN
 ''' ANALIZAR EL NOMBRE 
           nombre = nombre +".roll"  
+          Print #1,"un trk grabado como roll ",nombre
               
        Else
         If InStr(UCase(nombre),".ROLL") = 0 Then
@@ -4223,9 +4697,11 @@ Dim  As Integer npl
         EndIf
        EndIf 
      EndIf   
+     Print #1,"NOMBRE A GRABAR COMO",nombre
  
     ga=7 
     If  Open (nombre  For Binary Access write As #ga ) <> 0 Then 
+        Print #1,"No se puede escribir "; nombre
     Else
   ''''  Open "test-AAAAA.TXT" For Output    As #2
      Dim Trabajo (1 To Maxpos, NB To NA) As dat
@@ -4253,6 +4729,7 @@ Dim  As Integer npl
 ' las flechas podre ingresar notas mas a al izquierda de drums,,,                                        
      Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
+'print #1, "inicio MaxPos "; MaxPos
  For i2 = 1 To MaxPos
      For i1 = NB To NA
        If Roll.trk(i2,i1 ).nota=190 And Roll.trk(i2,i1 ).dur=190 Then
@@ -4304,9 +4781,15 @@ Next i1
 MaxPos=k+1
 
 
+'print #1, "final MaxPos "; MaxPos
+'print #1,"---------------------------------------- K= "; K
 '  For i1 = NB To NA
+'  print #1,i1;"|";
 '    For i2 = 1 To MaxPos
+'       print #1,Trabajo(i1,i2).nota;"*";Trabajo(i1,i2).dur;"|";
 '    Next i2
+'    print #1,
+'   print #1,"------------------------------------------" 
 '  Next i1
   
  '''Shell "NOTEPAD test-AAAAA.TXT" 
@@ -4316,30 +4799,36 @@ MaxPos=k+1
     
      
      x= Bin(MaxPos,20)
+     '    print #1,"Posicion ",Posicion
      'Print "string representando ", x
      a1=Mid(x,1,4)
      a2=Mid(x,5,4)
      a3=Mid(x,9,4)
      a4=Mid(x,13,4)
      a5=Mid(x,17,4)
+     '    print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
 
      y1= CUByte("&B"+a1)
      y2= CUByte("&B"+a2)
      y3= CUByte("&B"+a3)
      y4= CUByte("&B"+a4)
      y5= CUByte("&B"+a5)
+     '    print #1, "y1,y2,y3,y4", y1,y2,y3,y4
      ' grabamos maxpos en 5 ubyte y notaold (1 a 12 no notapiano)
      grabaPos(1,1).nota = y1
      grabaPos(1,1).dur  = y2
      grabaPos(1,1).vol  = y3
      grabaPos(1,1).pan  = y4
      grabaPos(1,1).pb   = y5
+Print #1,"grabando tipoescala_num_ini en el archivo ",tipoescala_num_ini 
      grabaPos(1,1).inst = CUByte(tipoescala_num_ini) ' 20-12-2021 - tipoescala en uso
     '-----------------------
      grabaLim(1,1).nota = CUByte(desde) 
      grabaLim(1,1).dur  = CUByte(hasta)
      grabaLim(1,1).pb   = CUByte(notaold)
+Print #1,"grabando notaescala_num_ini en el archivo ",notaescala_num_ini
      grabaLim(1,1).vol  = CUByte(notaescala_num_ini) ' notadeescala 20-12-2021
+Print #1,"grabando alteracion en el archivo ",alteracion
      grabaralteracion (grabaLim(1,1).pan)
      grabaLim(1,1).inst = CUByte(tiempoPatron) '08-01-2022 hasta 256 sera suficiente�?
 /' 
@@ -4393,6 +4882,7 @@ Negras por minuto	 tempo
 '     For i = NB To NA
 '      If Roll.trk(i,posicion+1).dur = 182 Then
 '       notafinal= Roll.trk(i,posicion).nota
+       '        print #1, "ENCONTRO NOTA FINAL ", notafinal
        '        Print "ENCONTRO NOTA FINAL ", notafinal
        ' esten la posiciond ela ultimanotapero grasoerror
        ' o seaque no tiene duracion solo el 182
@@ -4402,11 +4892,13 @@ Negras por minuto	 tempo
 '     Next i
 '    Next j
 '     grabaPos(1,1).pb = notafinal
+ '    print #1,"****))) nota final y dur final "; notafinal,Roll.trk(i,posicion+1).dur
      '****))) nota final y dur final  0   0
      ' no existe mas 182 no se graba enningun lado q raro
      ' Grabacion de Trabajo
      ' ------------------------------------
 
+     '  print #1,"MaxPos grabada en Trabajo ",MaxPos
 
      Put #ga, ,grabaPos(1,1)
      Put #ga, ,grabaLim(1,1)
@@ -4448,13 +4940,17 @@ If instancia=0 Then
   DisableGadget(PISTASROLL,0) ' HABILITAMOS LISTA DE PISTAS
 EndIf
 ReDim As Double fechasPistas(1 To 32)
+Print #1,"-------------------------------------------------------"
+Print #1,"inicia CargaPistasEnCancion"
   Dim As String no1, no2
   Dim As Integer ubi1=0,ubi2=0 
      Dim As String filename, filenameold
      ' el Dir me trae lso nombres sin el path de cancion
      filename = Dir (NombreCancion+"\*.rtk")
+     Print #1,"filename encancion > 0 ",filename
      If filename = "" Then ' no hay ningu archivo dentro del dir de cancion
         ntk=1
+        Print #1,"dice que no hay archivos "
         CANCIONCARGADA=FALSE
         ' NO HAY NADA QUE CARGAR
         abrirRoll=2 ' habilita otro camino para cargar pistas
@@ -4464,6 +4960,7 @@ ReDim As Double fechasPistas(1 To 32)
        Dim  As Integer mayor=1
        Do While Len(filename) > 0 ' If len(filename) is 0, exit the loop: no more filenames are left to be read.
         filenameold=filename
+        Print #1, "trabajo con este filename...", filenameOld '[1]AAA.rtk por ejemplo
         Dim cadena As String
         cadena= sacarExtension(filenameOld) ' [1]AAA
        ''' If pistacreada=0 Then
@@ -4485,6 +4982,7 @@ ReDim As Double fechasPistas(1 To 32)
         titulos(ntk)=nombre ' como agregue en titulos la opcion es 1
         ' como si viniera de lie ad ecomadno puedo usar cualquiera o 0
         pistas (ntk)=filename
+        Print #1,"nombre en CargarPistasEnCancion ,Numpista",nombre, ntk
          'se carga track nada mas si dialogo simualmos un ubirtk>0 (1)
         CargarTrack  (Track() , ntk, 1) ' se cargo a track x nada mas
  'durante la cargaTrack el programa va a Rolloop se encuentra con SC_TAB
@@ -4496,12 +4994,15 @@ ReDim As Double fechasPistas(1 To 32)
                 
        Loop
        tope=mayor  ' el nro tope de la lista
+       Print #1,"CARGO PISTAS MAXIMA CANTIDAD TOPE=",tope
        CANCIONCARGADA=TRUE
 
        ntk=1   ' tab le suma 1 pero si creo pistas estria  mal 05-03-2022 ���
     EndIf
 
 cargaCancion=1 '12-02-2022 mientras carg las pista el 1 indica cargando pistas    
+    Print #1,"FIN CargaPistasEnCancion no debe calcuar *po ",*po
+    Print #1,"-------------------------------------------------------"
 'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  05-mar-2024 veremos
 'mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0 
       
@@ -4509,6 +5010,7 @@ End Sub
 
 ' ---------------------------------
 Sub GrabarTrack (ntk As Integer)  'Error seguro aca nota=181 posicion1
+' SIRVE  COMO ESTA PARA TICKS YA QUE POLI YA LE PUSE  ONOFF
 ' solo util para Grabar Cancion en sus track independietnes
 ' toma todos los valores de pmTk(ntk)
 ' Graba cancion en sus archivo sde tracks independientes...
@@ -4527,11 +5029,14 @@ Sub GrabarTrack (ntk As Integer)  'Error seguro aca nota=181 posicion1
 ' SACARLAS DESDE EL VACTOR ADEMAS EL TRACK PUDO HABER TENIDO MODIFICACIONES
 ' EL VECTOR ESTARA CON PARAM VIEJOS
  Dim gt As Integer
+ Print #1,"---------------------------------------------------------------------------------"
  Dim ntknom As String 
  ntknom=titulos(ntk)
+ Print #1,"  inicia GrabarTrack NUMERO= ",ntk
  gt=8
  Maxpos=pmTk(ntk).MaxPos
     If  Open (ntknom  For Binary Access write As #gt ) <> 0 Then
+        Print #1,"No se puede Grabar Trk "; ntknom
         Exit Sub
     EndIf
 
@@ -4572,6 +5077,7 @@ Sub GrabarTrack (ntk As Integer)  'Error seguro aca nota=181 posicion1
    
      Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
+'print #1, "inicio MaxPos "; MaxPos
  For i2 = 1 To MaxPos
      For i1 = 1 To lim2
        If Track(ntk).trk(i2,i1 ).nota=190 And Track(ntk).trk(i2,i1 ).dur=190 Then
@@ -4621,9 +5127,15 @@ Next i1
 
 
 
+'print #1, "final MaxPos "; MaxPos
+'print #1,"---------------------------------------- K= "; K
 '  For i1 = NB To NA
+'  print #1,i1;"|";
 '    For i2 = 1 To MaxPos
+'       print #1,Trabajo(i1,i2).nota;"*";Trabajo(i1,i2).dur;"|";
 '    Next i2
+'    print #1,
+'   print #1,"------------------------------------------" 
 '  Next i1
   
  '''Shell "NOTEPAD test-AAAAA.TXT" 
@@ -4633,18 +5145,21 @@ Next i1
      
      
      x= Bin(MaxPos,20)
+     '    print #1,"Posicion ",Posicion
      'Print "string representando ", x
      a1=Mid(x,1,4)
      a2=Mid(x,5,4)
      a3=Mid(x,9,4)
      a4=Mid(x,13,4)
      a5=Mid(x,17,4)
+     '    print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
 
      y1= CUByte("&B"+a1)
      y2= CUByte("&B"+a2)
      y3= CUByte("&B"+a3)
      y4= CUByte("&B"+a4)
      y5= CUByte("&B"+a5)
+     '    print #1, "y1,y2,y3,y4", y1,y2,y3,y4
      ' grabamos maxpos en 4 ubyte
      grabaPos(1,1).nota = y1
      grabaPos(1,1).dur  = y2
@@ -4654,6 +5169,7 @@ Next i1
      grabaPos(1,1).nnn = pmTk(ntk).tipoescala
 If  ntk >0 Then
      If CheckBox_GetCheck( cbxnum(ntk))= 1 Then ' sonido on/off 16-03-2022
+         Print #1,"grabo grabaPos(1,1).dur2=1,, ntk", ntk
          grabaPos(1,1).dur2=1
      Else
          grabaPos(1,1).dur2=0
@@ -4675,9 +5191,11 @@ EndIf
      graba3(1,1).dur = pmTk(ntk).portout
      graba3(1,1).nnn = pmTk(ntk).canalsalida ' as poli son tracks ojo 
      graba3(1,1).nota= pmTk(ntk).patch
+     Print #1,"grabartrack graba3(1,1).nnn, ntk ",graba3(1,1).nnn , ntk
 
      graba3(1,1).pb = TipoCompas ' 26-04-2024
 
+     '  print #1,"MaxPos grabada en Trabajo ",MaxPos
      
      Put #gt, ,grabaPos(1,1)
      Put #gt, ,grabaLim(1,1)
@@ -4694,6 +5212,8 @@ EndIf
      cerrar (gt)
      While InKey <> "": Wend
      Sleep 150
+Print #1,"---------------------------------------------------------------------------------"
+Print #1,"  Fin GrabarTrack "
 End Sub
 
 ' ---------------------------------
@@ -4720,6 +5240,7 @@ Dim As Integer i,ntkold
 ''       ubi4=InStr(nombre,".roll")
        If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Then 'graba un track como track
        ' pero como las modificaciones estan en ROLL debo usar GrabarrollaTrack
+  Print #1,"Grabar Cancion   rtk actual   ",ntk
 'SI CARGUE UN RTK DESDE ARCHIVO SIEMPRE USO ROLL A  TRACK PORQUE
 ' SE PUDO EDITAR EL ROLL VISUAL Y ROLL TENDRA LA ULTIMA MODIFICAION
 ' eso solo para el track que esta siendo visto en pantalla pero
@@ -4750,20 +5271,25 @@ Dim cad As String
 ''portsout = port_count (midisal)
 ' ESTOY ABRIENDO LSO PORT SEGUN LO ELEGIDO CADA VEZ QUE SE ELIJA UNO
 ' DEJA DE ESTAR DISPONIBLE PUES YA ESTA ABIERTO, PONDREMOS UN MENSAJE ABIERTO CREO ES MEJOR 
+Print #1, "selport 1 "
     If NombreCancion > "" Then
     Else
        ntk=0
     EndIf
+Print #1, "selport 2 "
 
 
 
 '' => desde acaecho con tool del ruso no anda muy bien
      haw=OpenWindow("MIDI",500,Posy,500,400, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
+Print #1, "selport despues open window "
 Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
     
      hwl=  ListViewGadget(1,10,10,350,400, LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL  )
+Print #1, "selport despuesde listviewgadget  "
      listports()
   
+Print #1, "selport 3 ntk "; ntk
      If mitipo = 1 Then ' out
        AddListViewColumn(1, "Salidas  MIDI",0,0,250)
        For aa As Integer=0 To UBound (listout) 
@@ -4790,6 +5316,7 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 
      EndIf
 
+Print #1, "selport 4 "
        ButtonGadget(2,380,30,100,40,"CAMBIA")
 ' No sepuede poner otro boton porque la lista de pistas que da en blanco para siempre
          #Ifdef __FB_WIN32__
@@ -4837,6 +5364,7 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
               '''portout = GetItemListView()
 
               If mitipo=1 Then
+              Print #1,"PORT SELECCIONADO en menu ",portout
               pmTk(ntk).portout=CUByte(portout)
 
    '             For  i As Short =1 To 32
@@ -4847,6 +5375,7 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
                
               EndIf
               If mitipo=2 Then
+              Print #1,"PORT SELECCIONADO en menu ",portin
                 pmTk(ntk).portin =CUByte(portin)
 
               EndIf
@@ -4876,6 +5405,7 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 
   
 '' fin ruso
+Print #1, "selport fin  "
 cierroport=0
 End Sub
 
@@ -4891,20 +5421,25 @@ Dim cad As String
 ''portsout = port_count (midisal)
 ' ESTOY ABRIENDO LSO PORT SEGUN LO ELEGIDO CADA VEZ QUE SE ELIJA UNO
 ' DEJA DE ESTAR DISPONIBLE PUES YA ESTA ABIERTO, PONDREMOS UN MENSAJE ABIERTO CREO ES MEJOR 
+Print #1, "selport 1 "
 '    If NombreCancion > "" Then
 '    Else
 '       ntkp=0
 '    EndIf
+Print #1, "selport 2 "
 
 
 
 '' => desde acaecho con tool del ruso no anda muy bien
      haw=OpenWindow("MIDI",500,Posy,500,400, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
+Print #1, "selport despues open window "
 Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
     
      hwl=  ListViewGadget(1,10,10,350,400, LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL  )
+Print #1, "selport despuesde listviewgadget  "
      listports()
   
+Print #1, "selport 3 ntkp "; ntkp
      If mitipo = 1 Then ' OUT OUT OUT SALIDA
        AddListViewColumn(1, "Salidas  MIDI",0,0,250)
        For aa As Integer=0 To UBound (listout) 
@@ -4931,6 +5466,7 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 
      EndIf
 
+Print #1, "selport 4 "
        ButtonGadget(2,380,30,100,40,"CAMBIA")
 ' No sepuede poner otro boton porque la lista de pistas que da en blanco para siempre
          #Ifdef __FB_WIN32__
@@ -4978,6 +5514,7 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
               '''portout = GetItemListView()
 
               If mitipo=1 Then
+              Print #1,"PORT SELECCIONADO en menu ",portout
               pmTk(pis+32).portout=CUByte(portout)
               tocaparam(pis).portout=CUByte(portout)
                   
@@ -5003,6 +5540,7 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 
   
 '' fin ruso
+Print #1, "selport fin  "
 cierroport=0
 
 
@@ -5040,6 +5578,7 @@ Posy=y0 +100
      For aa As Integer=1 To 16 
          If  pmTk(ntk).canalsalida = aa -1 Then
                AddListViewItem(1, "[x] "+listCanal(aa),0,aa,0)
+               Print #1,"pmTk(ntk).canalsalida ",pmTk(ntk).canalsalida
               '''' ntk=aa 
          Else
                AddListViewItem(1, "[ ] "+listCanal(aa),0,aa,0)
@@ -5065,6 +5604,7 @@ Posy=y0 +100
          If event=EventLBDown Then
             If EventNumberListView=1  Then
                canalx=GetItemListView
+Print #1, "SELCANAL canalx "; canalx
                cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
                If InStr(cad,"x")>0 Then
                  cad="[ ] " +Str(canalx+1)
@@ -5087,6 +5627,7 @@ Posy=y0 +100
           
           ' carga de canal MIDI al vector parametros de tracks de cancion
           
+               Print #1,"ntk en cambio de canal ntk= ",ntk
                pmTk(ntk).canalsalida=CUByte(canalx) ' sirve para el track cargao actual en cancion
             If  MAxPos > 1 Then
                pmTk(ntk).canalsalida=CUByte(canalx)
@@ -5154,6 +5695,7 @@ Posy=y0 +100
      For aa As Integer=1 To 16 
          If pmTk(pis+32).canalsalida = aa -1 Then
                AddListViewItem(1, "[x] "+listCanal(aa),0,aa,0)
+               Print #1,"pmTk(pis+32).canalsalida ",pmTk(pis+32).canalsalida
                 
          Else
                AddListViewItem(1, "[ ] "+listCanal(aa),0,aa,0)
@@ -5199,6 +5741,7 @@ Posy=y0 +100
           ' carga de canal MIDI al vector parametros de tracks de cancion
           ' canales van de 0 a 15 que sonenelmenu 1 a 16
               If mitipo=1 Then 'salida
+                   Print #1,"CANAL SELECCIONADO en menu ",canalx
                    For  i As Short =1 To 32
                          If CheckBox_GetCheck( cbxejec(i))= 1 Or CheckBox_GetCheck( cbxgrab(i))= 1 Then
                              pmTk(i+32).canalsalida=CUByte(canalx)
@@ -5207,6 +5750,7 @@ Posy=y0 +100
                    Next i
               EndIf
               If mitipo=2 Then ' entrada
+                  Print #1,"CANAL SELECCIONADO en menu ",canalx
                 For  i As Short =1 To 32
                       If  CheckBox_GetCheck( cbxgrab(i))= 1 Then
                         pmTk(i+32).canalentrada =CUByte(canalx)
@@ -5269,6 +5813,7 @@ Loop
 End Sub
  
 Sub grabaprueba()
+Print #1,"MAxPos inicio ", MAxPos
      Dim Trabajo (1 To Maxpos, NB To NA) As dat
      Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0
 'eliminar columnas marcadas al grabar disco
@@ -5280,6 +5825,7 @@ Sub grabaprueba()
        EndIf
        If Roll.trk(i2,i1 ).nota >=1 And Roll.trk(i2,i1 ).nota<=12 Then
           haynota=1 ' atrapa al menso 1 caso
+          Print #1, Roll.trk(i2,i1 ).nota;"*";Roll.trk(i2,i1 ).dur;"|";
        EndIf
        
        If i1= NA And haynota=1 Then ' sihay unasola notaen la columna no borro
@@ -5296,6 +5842,7 @@ Sub grabaprueba()
         For i1 = NB To NA
           Trabajo(k, i1)=Roll.trk(i2,i1 )
           If Trabajo(k, i1).nota >=1 And Trabajo(k, i1).nota<=12 Then
+          Print #1,"C:"; Trabajo(k, i1).nota;"*";Trabajo(k, i1).dur;"|";
           EndIf  
         Next i1
       
@@ -5304,8 +5851,11 @@ Sub grabaprueba()
       EndIf
       
       borrocol=0:res=0:haynota=0
+      Print #1,
  Next i2
 '-------------------------
+ Print #1,"MAxPos Final ", MAxPos
+Print #1,"------------------------------------------"
 For i1 = NB To NA
     For i2 = 1 To MaxPos
      If Trabajo(i2,i1).nota = 181 Then 
@@ -5321,8 +5871,12 @@ For i1 = NB To NA
         Trabajo(i2,i1).dur = 0
      EndIf
 '     If Trabajo(i1,i2).nota >=1 And Trabajo(i1,i2).nota<=12 Then  
+'       print #1, Trabajo(i1,i2).nota;"*";Trabajo(i1,i2).dur;"|";
 '     EndIf  
+     Print #1, Trabajo(i2,i1).nota;"*";Trabajo(i2,i1).dur;"|";
     Next i2
+    Print #1,
+   Print #1, "------------------------------------------" 
 Next i1
 'shell"notepad midebug.txt"
 Exit Sub 
@@ -5340,12 +5894,15 @@ Sub borrarColumnasMarcadas()
 ' ZONA O COLUMNA SI SE SUPERPONEN LAS MARCAS DE ZONA 2 CLICKS SOBRE LA MISMA COLUMNA
 ' O UNA SOLO CLIK MEJOR,,,,
 ' pasoZona1 pasoZona2 
+Print #1," BORRACOLUMNASMARCADAS"
 
 Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,delta=0
 If pasoZona1 > 0 Or (pasoZona1 > 0 And pasoZona2 > 0) Then
 ' metodo nuevo ok
+  Print #1,"pasoZona1 pasoZona2 ",pasoZona1, pasoZona2
   
   If pasoZona1 > 0 And pasoZona2 = 0 Then ' borrado de esa columna ok
+    Print #1,"entra por pasoZona1  "
     For k=pasoZona1 To MAxpos 
      For i1 = NB To NA
          Roll.trk(k, i1)=Roll.trk(k+1,i1 )
@@ -5355,6 +5912,7 @@ If pasoZona1 > 0 Or (pasoZona1 > 0 And pasoZona2 > 0) Then
   EndIf
   
   If pasoZona1 > 0 And pasoZona2 > 0 Then ' borrado del rango del paso ok
+    Print #1,"entra por pasoZona1 y 2  "
     delta=pasoZona2 - pasoZona1
     For k=pasoZona1 To MAxpos 
      For i1 = NB To NA
@@ -5441,6 +5999,7 @@ Sleep 10
        cancel_callback(midiin(pmTk(ntkp+32).portin))
        Dim k1 As Integer
        k1=pmTk(ntkp+32).portout
+    '   Print #1,"midiout ",k1, *nombreOut(k1)
        alloff( pmTk(ntkp+32).canalsalida,k1 )  
        listoutAbierto(k1)=0
        close_port midiout(k1)
@@ -5451,6 +6010,7 @@ Sleep 10
     ffile=4
 
     If Open ("./RollMusic.ini" For Output As #ffile) <> 0 Then
+       Print #1, "No se puede escribir RollMusic.ini en Salir"
     Else 
          If nmxold = 0 Then
             nmxold=mxold
@@ -5489,7 +6049,12 @@ fa1=2
        Do While Not EOF(fa1)
         Line Input #fa1, linea
         nroproc=CInt(linea)
+        ' -print #1, "trabajo con este proceso..", linea 
+        ' -print #1,"SE SuPONE PID1 PRINCIPAL NO MATAR ",pid1
+        ' -print #1,"pid1 <> nroproc ",pid1, nroproc
+        Print #1,"pid1 , nroproc ",pid1, nroproc
         If pid1 <> nroproc  Then
+          Print #1,"terminar pid ", linea
           WINEXEC ("C:\WINDOWS\SYSTEM32\taskkill /PID "+ linea + " /T /F ",00)        
         EndIf
         
@@ -5566,6 +6131,7 @@ Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
 
 '' fin ruso
 'Return IUP_DEFAULT
+Print #1,"Str(tipoescala_num) ", Str(tipoescala_num)
 
 End Sub
 '----
@@ -5629,6 +6195,7 @@ Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
 
 '' fin ruso
 'Return IUP_DEFAULT
+Print #1,"Str(notaescala_num) ", Str(notaescala_num)
 
 
 End Sub
@@ -5644,6 +6211,8 @@ Sub EscalaAlternativa (ByRef tipoescala_alt As Integer, ByRef notaescala_alt As 
 ' la nota de la escala alternativa sale de caminar 3 saltos hacia adelante o atras sobre la escala
 ' cromatica..saltos de 1 semitono, 3 st.-
 ' veo si estoy en sostenidos o bemoles
+'Print #1,"EscalaAlternativa tipoescala_num_ini ",tipoescala_num_ini
+'Print #1,"EscalaAlternativa notaescala_num_ini ",notaescala_num_ini
 ' �y la menro armonica la considero tambien = 2 ?
 If tipoescala_num_ini =2 Or tipoescala_num_ini =3 Or tipoescala_num_ini =4 Then  ' es una escala Menor debo buscar la relativa Mayor
    notaescala_alt=notaescala_num_ini +3  
@@ -5690,11 +6259,13 @@ EndIf
 ' al salir de aca graba en el vector Roll esta escala...
 End Sub
 Function BuscarGrado(t3 As String) As Integer
+  'Print #1,"=>busca grado entrada nrocromatico ",t3 
   t3=Trim(t3)
 Dim iz As Integer
   For iz= 1 To 12
      If t3 = Trim(grado_inicial (iz)) Then
         BuscarGrado=iz
+   '     Print #1,"t3, grado encontrado ",t3, iz 
         Exit For
      EndIf
   Next iz
@@ -5708,12 +6279,15 @@ EndIf
 Dim As Integer k3=1,h2,hnro,dif,dif2
 Dim p6 As Byte Ptr
 ' si notaescala es distinto de 1 emepzamos la escala desde esa nota
+  ' Print #1,"tipo escala que llego a armar escala ",tipoesc
    p6= escala(tipoesc).pasos
    
    hnro=escala(tipoesc).nropasos 
+   'Print #1,"notaescala llego a armarescala ",notaesc
    If notaesc >= 1 Then
      k3=notaesc 
    EndIf
+   ' Print #1,"k3 inicial=",k3
     For h2 = 1 To hnro 
      If altera="bem" Then
         cadena = cadena + NotasEscalaArmado2(k3) + " "   ' impresion de la escala con las notas c c# d  etc
@@ -5735,13 +6309,19 @@ Dim p6 As Byte Ptr
         EndIf
      EndIf
       k3= *p6 + k3
+    ' Print #1,"h2, k3",h2, k3
      p6=p6+1
  '    If orden=1 Then 
+ '       Print #1,"h2 notas_esc_inicial(h2) ",h2, notas_esc_inicial(h2)
+ '       Print #1,"grado_inicial(h2) ",grado_inicial(h2)
+ '       Print #1,"h2 notas_esc_inicial(h2+hnro) ",h2+hnro, notas_esc_inicial(h2+hnro)
+ '       Print #1,"grado_inicial(h2) ",grado_inicial(h2+hnro)
         
 '     EndIf
     Next h2
     
     
+  'Print #1,"Final cadena de escala armada ",cadena
  
   
 End Sub
@@ -5760,12 +6340,14 @@ Sub armarAcorde(grado As Integer,n1 As Integer,n2 As Integer,n3 As Integer)
   ' para mayo4      n1=4 y n2=7
   ' para menor      n1=3 y n2=7
   ' para disminuido n1=3 y n2=6
+Dim As Integer acoposoff=0
   scan_alt=0
        cnt_acor=cnt_acor +1 
 
        If grado=0 Then grado=1 EndIf
+  '    Print #1,"Grado ",grado
       Select Case grado
-        Case 1  ' es Tonica
+        Case 1  ' es Tonica PROBADO OK!, FALTA VER POSICION EN EL CALL
 ' grabo la nota Tonica de la melodia  a partir de la cual hago el acorde
         undo_kant_intervalos(cnt_acor)=0          
         undo_acorde(cnt_acor,0).posn=indicePos ' shared global
@@ -5781,14 +6363,18 @@ Sub armarAcorde(grado As Integer,n1 As Integer,n2 As Integer,n3 As Integer)
         ' qu etenga en cuenta todos los casos (formar mayor-> +4 +7)
         ' 1,n=1 es 3,n=2 es 5,n=3 es 7
         Dim As Integer st=0
+  '      Print #1,"armando acorde ,,indicePos ",indicePos
+  '      Print #1,"armando acorde ,,RollDur ",RollDur
         pnr=PianoNota+n1 
         pnr =pnr +SumarnR(pnr) ' es el nR o indice fisico del vector Roll
+  '      Print #1,"armando acorde 3ta,,nR ",pnr
 '------n1 acorde de 2 notas o intervalo
         undo_kant_intervalos(cnt_acor)=1          
         undo_acorde(cnt_acor,1).posn=indicePos
         undo_acorde(cnt_acor,1).pn=pnr ' se almacena elindice fisico del vector Roll
         undo_acorde(cnt_acor,1).dur=Roll.trk(indicePos, pnr).dur
         undo_acorde(cnt_acor,1).nota=Roll.trk(indicePos, pnr).nota
+        undo_acorde(cnt_acor,1).nota=Roll.trk(indicePos, pnr).onoff
 
         Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
 ' saltos de octava
@@ -5801,7 +6387,23 @@ Sub armarAcorde(grado As Integer,n1 As Integer,n2 As Integer,n3 As Integer)
         EndIf            
         
         Roll.trk(indicePos, pnr).nota=st
+        Roll.trk(indicePos, pnr).onoff=2
+        acoposoff=indicePos + DurXTick(RollDur)
+
+        Roll.trk(acoposoff, pnr).onoff=1
+        Roll.trk(acoposoff, pnr).dur=183
+        Roll.trk(acoposoff, pnr).nota=183
+       posn=acoposOff +1
+       MaxPos=acoposoff +6 ' la figura tiene 5 posiciones si pongo 1 o 2  se pisa
+       pmTk(ntk).posn=posn
+       pmTk(ntk).MaxPos=MaxPos
+       notaOld = nota
+       posnOffOld=0 
+
+
+         
 '--------n2 acorde de 3 notas------------------------------------
+  '      Print #1,"armando acorde ,5ta,nR ",pnr  
 
         pnr=PianoNota+n2
         pnr=pnr + SumarnR(pnr) ' es nR indice del vector Roll
@@ -5810,6 +6412,7 @@ Sub armarAcorde(grado As Integer,n1 As Integer,n2 As Integer,n3 As Integer)
         undo_acorde(cnt_acor,2).pn=pnr
         undo_acorde(cnt_acor,2).dur=Roll.trk(indicePos, pnr).dur
         undo_acorde(cnt_acor,2).nota=Roll.trk(indicePos, pnr).nota
+        undo_acorde(cnt_acor,1).nota=Roll.trk(indicePos, pnr).onoff
 
         Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
         st=nsE-n2 
@@ -5821,7 +6424,16 @@ Sub armarAcorde(grado As Integer,n1 As Integer,n2 As Integer,n3 As Integer)
         EndIf            
 
         Roll.trk(indicePos, pnr).nota=st  
+        Roll.trk(indicePos, pnr).onoff=2
+
+        Roll.trk(acoposoff, pnr).onoff=1
+        Roll.trk(acoposoff, pnr).dur=183
+        Roll.trk(acoposoff, pnr).nota=183
+
+
+
 If n3 <> 0 Then ' es un acorde de 4 notas            
+ '   Print #1,"armando acorde ,7ta,nR ",pnr
         pnr=PianoNota+n3
         pnr=pnr + SumarnR(pnr)
         undo_kant_intervalos(cnt_acor)=3 
@@ -5829,6 +6441,7 @@ If n3 <> 0 Then ' es un acorde de 4 notas
         undo_acorde(cnt_acor,3).pn=pnr
         undo_acorde(cnt_acor,3).dur=Roll.trk(indicePos, pnr).dur
         undo_acorde(cnt_acor,3).nota=Roll.trk(indicePos, pnr).nota
+        undo_acorde(cnt_acor,1).nota=Roll.trk(indicePos, pnr).onoff
 
         Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
         st=nsE-n3 
@@ -5839,19 +6452,26 @@ If n3 <> 0 Then ' es un acorde de 4 notas
            st=st -12 
         EndIf            
 
-        Roll.trk(indicePos, pnr).nota=st  
+        Roll.trk(indicePos, pnr).nota=st
+        Roll.trk(indicePos, pnr).onoff=2
+       
+
+        Roll.trk(acoposoff, pnr).onoff=1
+        Roll.trk(acoposoff, pnr).dur=183
+        Roll.trk(acoposoff, pnr).nota=183
+  
 
 EndIf
-             Case 3
-             Case 5
-             Case 7
-             Case 4
-             Case 6
-             Case 9
-             Case 11
+        Case 3 ' es la 3era futuro hasta aca estaba desarrollado a antes trateremos de que funcione lo que estaba ahora para ticks
+        Case 5 ' es la 5ta
+        Case 7 ' es la 7ma
+        Case 4
+        Case 6
+        Case 9
+        Case 11
       End Select       
  If Vaciodur Then
-    ReCalCompas (Roll)
+'    ReCalCompas (Roll)
     Vaciodur=FALSE
  EndIf
  Dim As Integer guardpos
@@ -5997,6 +6617,7 @@ dato1=128 ' tomamos los cierres off, si una nota on tiene vol=0 ahi pasariamos a
 					 EndIf
 			
 			   Next i2
+			  '   Print #1,"---------duraciones 1---------------" 
    EndIf
    If  numfloat  > 0.08  Then ' para que entren tresillos chicos pero no todos
  					For i2=1 To 44
@@ -6016,8 +6637,10 @@ dato1=128 ' tomamos los cierres off, si una nota on tiene vol=0 ahi pasariamos a
 						   End If
 						Next i2
    
+					'	Print #1,"-----------duraciones 2-----------------"
 						For i2=1 To 44
 						   If numfloat >= durcla(i2,1) And numfloat < durcla(i2+1,1) And i2< 45 Then
+			 			 '    Print #1,"3) esta entre ",durcla(i2,1), " y ",durcla(i2+1,1),numfloat
 						      numfloat=numfloat-durcla(i2,1)
              Select Case dato1
       '         Case 144
@@ -6107,6 +6730,7 @@ If  Err > 0 Then
   errmsg = "FAIL Error duraciones " & Err & _
            " in function " & *Erfn & _
            " on line " & Erl & " " & ProgError(Err)
+  Print #1, errmsg
 End If
 
 
@@ -6126,7 +6750,25 @@ ErrorNumber1 = Err
 ErrorLine1 = Erl
 
 If ErrorNumber1 > 1 And ContadorError < 101 Then
+ Print #1,"------------------------------------"
   ContadorError=ContadorError+1
+  Print #1,"ErrorSub ContadorError ",ContadorError
+  Print #1,"ErrorNumber1 ",ErrorNumber1
+  Print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
+  Print #1,"Error Function: "; *Erfn()
+  Print #1, "n ",posicion;" posishow "; posishow; " NroCol ";NroCol
+  Print #1, "semitono "; nsE; " *po "; *po 
+  Print #1, "valor1 ",posicion; " valor2 "; 12- nsE  + (*po -1)* 13
+  Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
+  Print #1, "lbound 2 de Roll.trk ", LBound(Roll.trk, 2)   
+  Print #1, "Roll.trk (n,11- nsE  + (*po-1) * 13 ).nota", Asc(Str(Roll.trk (posicion,12- nsE  + (*po -1)* 13 ).nota))
+  Print #1,"Roll.trk (n,12- nsE  + (*po -1)* 13 ).dur ",  Asc(Str(Roll.trk (posicion,12- nsE  + (*po -1) * 13 ).dur))
+  Print #1,"gap1 + ic * anchofig ",gap1 + ic * anchofig
+  Print #1,"desde ";desde;" hasta ";hasta; "hasta-1 ";hasta-1; " *po ";*po
+  Print #1, "nsE ";nsE; " nR ";nR; " PianoNota ";PianoNota
+  Print #1, "mensaje, Ermn ", *Ermn, Ermn
+  Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2) 
+  Print #1,"------------------------------------"
 
 EndIf
  Print "error number: " + Str( Err ) + " at line: " + Str( Erl )

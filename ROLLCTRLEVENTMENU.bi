@@ -15,8 +15,10 @@ On Error Goto errorhandler
              If abrirRoll=0 And NombreCancion > ""  Then
                 abrirRoll=1
                 cargaCancion=1
+                Print #1,"SALE A CARGAR ROLL POR 1ERA VEZ ABRIRROLL=1 EXIT DO"
                 Exit Do                 
              EndIf
+  '           Print #1,"termino 1006 va a abrir Roll"
           SetForegroundWindow(hwnd)
 
 
@@ -26,6 +28,7 @@ On Error Goto errorhandler
 ' CADA PISTA SE PODRA LEVANTAR UNA POR UNA CON LA OTRAOPCION
 ' SOLO DEBO PASAR LOS PARAMETROS...Y SI MODIFICO ALGO
 ' DEBO GRABAR A DISCO Y ENVIAR ORFEN DE RECARGA DE ESA PISTA EN LA CANCION
+   Print #1," CASE 10062 abrirRoll=0 And NombreCancion > ", abrirRoll, NombreCancion
 
            CTRL1062 (hmessages )
 
@@ -61,6 +64,7 @@ On Error Goto errorhandler
 '  con usarmarcoins=4 indicamos habilitar ESCRITURA MIDI EN EL PLAY
                 
            ' nombre , hasta, titu, instru ,pid1, usarmarco, nombrecancion
+            Print #1,"Nombre roll a midi ", nombre
 
                usarmarcoins=4            
             Shell (" start RollMusic.exe "+ Str(desde) +" "+ Str(hasta) +  _
@@ -89,12 +93,16 @@ On Error Goto errorhandler
 
                 If result = -1 Then
 
+                   Print #1, "error conv a  archivo.mid"  
                 Else
+                   Print #1, "ok conv a  archivo.mid "  
                 End If
+               Print #1, "Exit code midiconv: "; result
 
 
            Case 1010 '<================ Cargar Pista externa a cancion
 
+   '        Print #1,"entro a 1010 Cargar Pista externa a cancion"
 
            CTRL1010 (salida )
            If salida =1 Then 
@@ -105,7 +113,9 @@ On Error Goto errorhandler
           SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------            
            Case 1011 ' <======= Grabar una Pista de la Cancion con modificaciones, que son tracks
+    '        print #1,"entro a 1011 esto lo hace menu de Roll tambien" '' jmg probar es nuevo...
  ' copiamos logica Rolla Track 
+   '         print #1, "Click Grabando a disco pista modif con GrabarRollaTrack ",nombre
             Dim As String nombreg
             ROLLCARGADO=FALSE 
            If NombreCancion > ""  Then
@@ -116,6 +126,7 @@ On Error Goto errorhandler
           SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1012 ' <====== Grabar Pista Como, Copia una pista a otra  nueva nueva
+   '        print #1,"entro a 1012 Grabar Pista Como, Copia una pista a otra  nueva nueva"
              
              CTRL1012 (SALIDA)
 
@@ -154,6 +165,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
          Exit Select 
 '-----------------------------------------------------------------------
            Case 1017 'renombrar pista ejecucion y borrado
+           Print #1,"Case 1017 "
          '  If PISTASEJECSELECCIONADA=0 Then
          '     Exit Select 'ASEGURAMOS UNA SELECCION SINO TOMARA SIEMPRE LA PISTA 1
          '  EndIf 
@@ -165,17 +177,21 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
            Dim As Integer nroPista
            nroPista=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
 
+           Print #1,"Case 1017  nroPista ";nroPista       
            nomPista  = InputBox("Nombre de Pista " ,"Entre un nuevo Nombre ",nomPista)
            nompista=Trim(nompista)  
 'aca falta que si nompista es "" borrar la pista y mover todo hacia arriba
 ' si la pista estaba en el medio,,,FALTA
           If Len (nompista) > 0 Then
+             Print #1,"Case 1017 calcula len  ";
             SetListBoxItemText(PISTASEJECUCIONES,nompista,nroPista-1) ' i1-1
             Dim As String nombreviejo
             nombreviejo=tocaparam(nroPista).nombre
+            Print #1,"nombreviejo "; nombreviejo   
             tocaparam(nroPista).nombre=nompista
             Dim tocap As ejecparam = tocaparam(nroPista)
             ReDim toc.trk(1 To tocap.maxpos)
+            Print #1,"tocap.maxpos ";tocap.maxpos
             For j As Integer =1 To   tocap.maxpos
               toc.trk(j).modo=Toca(nroPista).trk(j).modo
               toc.trk(j).nota=Toca(nroPista).trk(j).nota
@@ -199,15 +215,21 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
             Else
               NewName = nompista
             EndIf
+            Print #1,"Case 1017 OldName ";OldName
+            Print #1,"Case 1017 NewName ";NewName
             
+ Print #1,DirEjecSinBarra+"\"+"("+doscifras(nroPista)+")"+OldName, DirEjecSinBarra+"\"+"("+doscifras(nroPista)+")"+NewName
     result = Name( DirEjecSinBarra+"\"+"("+doscifras(nroPista)+")"+OldName, DirEjecSinBarra+"\"+"("+doscifras(nroPista)+")"+ NewName )
             Sleep 100
             If 0 <> result Then 
+              Print #1, "error renaming " & oldname & " to " & newname, result 
             Else
              
             '  Var RTA= Kill (DirEjecSinBarra+"\"+"("+doscifras(nroPista)+")"+OldName)
             '  If RTA > 0 Then
+            '      Print #1, "error BORRANDO ";DirEjecSinBarra+"\"+OldName    
             '  Else
+            '      Print #1,"BORRO OLDNAME ";DirEjecSinBarra+"\"+OldName  
                  GrabarMidiIn(pgmidi,nroPista)
             '  EndIf
              
@@ -216,6 +238,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
           If Len (nompista) = 0 Then
            'borrar pista y comprimir lista de ejecs si quedo un hueco..
            DeleteListBoxItem(PISTASEJECUCIONES, nroPista-1)
+           Print #1,"comprimir listas ejec"
            ''no hace falta lalista comprime automaticamente!!
            '' solo hay que borar de disco y renombrar!!! 
           comprimirListaEjecs(nroPista)
@@ -334,9 +357,11 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
                 Roll.trk(1,NA).inst= CUByte(instru)
                 Track(ntk).trk(1,1).nnn=CUByte(instru)
               ' grabar la pistacomo en 1011
+            print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
               If CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE Then
                  If (NombreCancion > ""  Or TRACKCARGADO =TRUE) And MAxPos > 2 Then
+                   Print #1,"VOY A GrabarRollaTrack(0) DESDE CTRL1040"
                     GrabarRollaTrack(0)
                    Sleep 100 
                  EndIf
@@ -373,6 +398,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
                Roll.trk(1,NA).inst= CUByte(instru)
                Track(ntk).trk(1,1).nnn =CUByte(instru)
               ' grabar el track 
+   '         print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
@@ -605,14 +631,17 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
 ' PERO DEBO INDICAR AL PROGRAM QUE SALTEE ESTA COLUMNA CREO CON TENER NOTA=181 Y DUR181
 ' PODRI AINDICAR ESO DEBO PROBARLO Y USAR LSO DEMAS CAMPOS PARA INTRODUCIR ALGUN  CAMBIO               
 '''            Roll.trk(1,NA).vol= CUByte(tipoescala + 127) ' a partir de 128
+''               Print #1,"Roll.trk(1,NA).vol ",Roll.trk(1,NA).vol
 ''               END
 ''               Track(ntk).trk(1,1).vol=CUByte(tipoescala + 127)
               ' grabar el track 
 '' NOTA: LA VARIABLES DE ESCALA DE TODA LA SECUENCIA TIENEN SUBFIJOS _STR O _NUM
 '' LAS QUE SON PARA USO DE ESCLAS EN POSICIONES NO LO TIENEN
+      '      Print #1,"tipo de escala seleccionado ", tipoescala_num_ini
               
 ' -------cadena de escala, construye dsde C hay que hacer las otras esclas
     ' C,D,E,F,G,A,B,Bb,Ab,Gb ver las debo pedir escala y 1er nota desde donde empieza uff
+      '        Print #1,"armarescla desde 1106"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
 ' --------------------------   
@@ -622,6 +651,8 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
               pasozona1=0
               selNotaEscala (notaescala_num_ini)
  
+       '       Print #1, "seleccion de Nota de la escala num  ",notaescala_num
+       '       Print #1,"armarescla desde 1107"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
 
@@ -634,6 +665,7 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
               SetStateMenu(hmessages,1109,0)
             ' si hay nombre de archivo grabar sino no   
       ''        GrabarArchivo()
+       '       Print #1,"armarescla desde 1108"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
           
@@ -644,6 +676,7 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
               alteracion="bem" ' grabado en grabaLim(1,1).pan  = CUByte(2)
               SetStateMenu(hmessages,1108,0)  
               SetStateMenu(hmessages,1109,3) 
+       '       Print #1,"armarescla desde 1109"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
       
@@ -730,7 +763,7 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
            Case 1206 'Cerrar    Puertos MIDI-OUT de ejecucion play por el usuario
                CTRL1206()
 
-           Case 1207 ' CONVERTIR EJECS SELECCIONADA EN TRK 
+           Case 1207 ' CONVERTIR EJECS SELECCIONADA EN TRK en desarrollo para ticks
              threadG  = ThreadCreate (@CTRL1207) 
 
            Case 2000
