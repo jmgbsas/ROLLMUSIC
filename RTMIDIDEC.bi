@@ -35,6 +35,7 @@ Dim Shared msgin  (1 To 8192) As UByte ' message in futuro secuencia veremos si 
 'Dim errorString As ZString Ptr
 Common Shared p as UBYTE Ptr 'cambiado a shared
 p= @message(1) 
+Common Shared pp As Integer Ptr 'para callback futuros datos usuario
 Dim size As UInteger<64> 
 'Dim sizeptr As UInteger<64> Ptr = @size
 Dim Shared As UInteger portsin=0, portsout =0 'constantes, 
@@ -159,7 +160,7 @@ Dim Shared As Double durcla (1 To 45, 1 To 2) => { _
 
 Dim Shared As Integer play =0,playb=0, portin, numero, numeroFrac,cambioescala=0
 Dim Shared As Integer portout=0 
-Dim Shared As Double numfloat=0
+Dim Shared As Double numfloat =0
 Static Shared As string listout(), listin ()
 Static Shared As integer listoutAbierto(), listinAbierto (),listoutCreado(), listinCreado ()
 Dim Shared As String *2  listCanal(1 To 16) => {" 1"," 2"," 3"," 4"," 5"," 6"," 7"," 8"," 9","10","11","12","13","14","15","16"}
@@ -233,9 +234,41 @@ End Type
 Dim Shared guiaEscala  (1 To 100) As PGE ' suponemos  100 cambios de escala en una pista
 ' en la posicion 1 se cargará la escala leida de la pista al inicio
 ' la escal debe guarar los 3 parametros Tipo escala , notaescala y alteracion en un principio basico
-Dim Shared As UByte duras(1 To 3),velmidi=0
+Type partesdura
+ As UByte nota 
+ As UByte dura
+ As UByte onoff ' on 1, off 0
+ As UByte velmidi
+ As UByte nRk 
+End Type
+
+Dim Shared  duras(1 To 24, 1 To 3) As partesdura
+Dim Shared duramidi (1 To 3) As UByte
+Dim shared As UByte velmidi=0
+' duras (x,y) , (x) las notas que pueden almacenarse de un acorde 12 (on+off)
+' (y) las 3 duraciones como max ligadas para cada nota.
 Dim Shared filtro As UByte=0
 Dim Shared As UByte nacordeon (1 To 10),nacordeoff (1 To 10),naco=0,naco2=0,terminar_metronomo=0
 Dim Shared As Integer posiacorde=0
 Declare FUNCTION FiguraEquivalente(DURk As double) As ubyte
 Dim Shared As Integer contcode=0,metronomo_si,sonidopista_si
+
+Type notacallback
+  As UByte nota 
+  As UByte dato1
+  As UByte vel
+  As Double durk
+  As Integer partes
+End Type
+Dim Shared  As notacallback notamidi ( 1 To 24) 
+Dim Shared  As Double  durafig(1 To 24)
+Type midicod Field=1
+ As UByte modo ' dato1
+ As UByte nota 
+ As UByte  vel
+ As Integer partes 
+End Type
+
+Redim shared CargaIn ( 1 To 384000) As midicod
+'''Redim shared CargaInRoll ( 1 To 384000) As midicod
+

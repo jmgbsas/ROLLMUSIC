@@ -1,5 +1,9 @@
     Ayuda Prelimiar Básica RollMusic
     ================================
+    10-03-2025 ESTA LINEA DE DESARROLLO SE ABANDONA. LA PROXIMA SERA CON LINEA DE TIEMPOS, SE ADAPTARA 
+    DE A POCO CADA UNA DE LAS RUTINAS A LINEA DE TIEMPO SI TIENE SENTIDO, EL RESTO SERAN ELIMINADAS DE
+    A POCO CUANDO NADA DE ELLAS SIRVA.
+
     I) INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
        RollMusic.exe y todas los archivos *.dll. 

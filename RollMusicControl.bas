@@ -46,11 +46,11 @@ Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO
 ROLLCARGADO    = FALSE
 TRACKCARGADO   = FALSE
 CANCIONCARGADA = FALSE
-NADACARGADO    = FALSE
+NADACARGADO    = TRUE
 CANCIONCREADA  = FALSE
 EJECCARGADA    = FALSE
 
-Common Shared As string pathdir,nombre,nombreMidiIn
+Common Shared As string pathdir,nombre,DirEjecSinBarra
 common Shared As String NombreCancion, NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado',pistacreada
 Common Shared As cairo_t  Ptr c, c2
@@ -59,11 +59,11 @@ Common Shared As FT_Face ftface
 common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu ,threadmetronomo,threadsel,threadcanal
 Common Shared As Any Ptr thread4
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig
-Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes, HabilitarPatrones,HabilitarMIDIIN
+Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Common Shared  portsal As UByte, patchsal As ubyte
-COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp, npi,calltoca,npo
+COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp, npi,calltoca,npo,canalDeGrabacion
 Common SHARED  As Integer EstaBarriendoPenta, instancia,FINALIZAR_ROLLMUSIC, MICROSEGUNDOS_POR_NEGRA
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
@@ -203,8 +203,6 @@ EndIf
 If octahasta=0 Then
 octahasta=9
 EndIf
-print #1,"OCtadesde ",octadesde
-print #1,"OCtahasta ",octahasta
 
 End Sub
 '---------------------------
@@ -232,7 +230,6 @@ Posy=y0 +100
        For aa =1 To 127 
                i2=InStrrev(NombreInstAlfa(aa)," ")
                cad=Mid(NombreInstAlfa(aa),i2)
-      '         Print #1,"cadena ",cad
                
      
            If instru = CUByte(ValInt(cad)) Then
@@ -274,13 +271,9 @@ Posy=y0 +100
           
             If eventnumber()=2 And InStr(cad,"x") >0 Then
                ''i1 = GetItemListView()
-               Print #1,"alfa seleccion in", i1
-               Print #1,"NombreInstAlfa ",NombreInstAlfa(i1)
                i2=InStrrev(NombreInstAlfa(i1)," ")
                cad=Mid(NombreInstAlfa(i1),i2)
-               Print #1,"cadena ",cad
                instru = CUByte(ValInt(cad))
-                print #1,"seleccion instrumento alfa instru = ",instru     
                patchsal=instru
                   Close_Window(haw)
                   Exit Do
@@ -297,7 +290,6 @@ Posy=y0 +100
 
 '' fin ruso
 'Return IUP_DEFAULT
-print #1,"Str(instru) ", Str(instru)
   
 
 end Sub
@@ -367,7 +359,6 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
           
              If eventnumber()=2 And InStr(cad,"x") > 0 Then
                ''Instru = GetItemListView()
-                Print #1,"inst seleccionado numerico ",instru
                 Close_Window(haw)
                 Exit Do
             End If
@@ -382,7 +373,6 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 
 '' fin ruso
 'Return IUP_DEFAULT
-print #1,"Str(instru) ", Str(instru)
 
 End Sub
 ' ---------
@@ -407,11 +397,9 @@ If NombreCancion = "" Then
 EndIf
 pathdir = ShellFolder( "Select Folder", "C:\")
 pathdir=pathdir+"\"+NombreCancion
-print #1, "DIRECTORIO CANCION EN ",pathdir
 CreateDir(pathdir)
 SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + pathdir)
 NombreCancion=pathdir
-print #1,"NombreCancion en CrearDirCancion ",NombreCancion
 CANCIONCREADA=TRUE
 CreateDir(pathdir+"\Temp") ' ok
 
@@ -421,10 +409,10 @@ Sub cargarDirectorioCancion (ByRef NombreCancion As string)
 ''Dim pathdir As string
     SetForegroundWindow(hwndc)
 NombreCancion = ShellFolder( "Select Folder", "C:\")
+'' PROBAR FileListBoxItem !!!
 SetWindowText(hwndC, "RollMusic Cancion: " + NombreCancion)
 
 
-print #1,"cargarDirectorioCancion ", NombreCancion 
 ' aca NombreCancion contiene el path tambien....
 'Sleep 100
 End Sub
@@ -432,7 +420,9 @@ End Sub
 
 Sub EntrarNombrePista(ByRef NombrePista As String,hwndC as Hwnd )
 
+
 NombrePista = InputBox("Nombre de Pista","",NombrePista,,,hwndC  )
+
 
 End Sub
 '
@@ -455,15 +445,11 @@ End Function
 Sub copiarATemp ( titulo As String, pista As String)
 Dim As String destino 
 destino=NombreCancion+"\Temp\"+pista
-Print #1,"en copia titulo", titulo
-Print #1,"en copia pista", pista
 
 copyFileA (StrPtr(titulo),StrPtr(destino),TRUE)
-print #1,titulo, destino   
 End Sub
 '
 Sub BorrarPista (titulo As String)
-'Print #1, "me piden borrar ", titulo
 deleteFileA (StrPtr(titulo))
 
 End Sub
@@ -503,14 +489,7 @@ ErrorNumber1 = Err
 ErrorLine1 = Erl
 
 If ErrorNumber1 > 1 And ContadorError < 101 Then
-Print #1,"------------------------------------"
   ContadorError=ContadorError+1
-  Print #1,"ErrorControl ContadorError ",ContadorError
-  Print #1,"ErrorNumber1 ",ErrorNumber1
-  Print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
-  Print #1,"Error Function: "; *Erfn()
-  Print #1, "mensaje, Ermn ", *Ermn, Ermn
-  Print #1,"------------------------------------"
 
 EndIf
  Print "error number: " + Str( Err ) + " at line: " + Str( Erl )

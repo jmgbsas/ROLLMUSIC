@@ -60,25 +60,26 @@
    Y en un solo compas de dos negras | I I | entra un tresillo de negras
    3I 3I 3I  
   En linea horizontal de izq a derecha pulsar de 1 a 9 para las figuras en un renglon 
+    [tecla (duracion agregada,simbolo agregado) ], (un solo + es ligadura)
     O   P   I   L   F   E   X   H   W   =>  Luego nada
     O4  P4  I4  L4  F4  E4  X4  H4  W4  =>   May Izq (+1/4, 4)
     O*  P*  I*  L*  F*  E*  X*  H*  W*  =>  tecla punto . (+1/2, * puntillo)
     O:  P:  I:  L:  F:  E:  X:  H:  W:  =>  May Der (+MITAD 
-                                                      + MITAD DE LA MITAD ANTERIOR, : doble puntillo)
-   3O  3P  3I  3L  3F  3E  3X  3H  3W    =>  T o t
-
+                                            + MITAD DE LA MITAD ANTERIOR, : doble puntillo)
+   3O  3P  3I  3L  3F  3E  3X  3H  3W    =>  T o t (tresillos)
+   Silencios (s) ej: sI
    sO  sP  sI  sL  sF  sE  sX  sH  sW    =>  S o s
-   sO4 sP4 sI4 sL4 sF4 sE4 sX4 sH4 sW4   =>  S y luego May Izq .
+   sO4 sP4 sI4 sL4 sF4 sE4 sX4 sH4 sW4   =>  S y luego May Izq 
    sO* sP* sI* sL* sF* sE* sX* sH* sW*   => S y .
    sO: sP: sI: sL: sF: sE: sX: sH: sW:   =>  s luego May Derecha
   s3O s3P s3I s3L s3F s3E s3X s3H s3W   => s T 
-
+    Duraciones Ligadas continuan en el simbolo contiguo: ej: I+I=P
     O+  P+  I+  L+  F+  E+  X+  H+  W+  =>  +  
     O4+ P4+ I4+ L4+ F4+ E4+ X4+ H4+ W4+ => May Izq + 
     O*+ P*+ I*+ L*+ F*+ E*+ X*+ H*+ W*+ => . luego +
     O:+ P:+ I:+ L:+ F:+ E:+ X:+ H:+ W:+ => May Der +
    3O+ 3P+ 3I+ 3L+ 3F+ 3E+ 3X+ 3H+ 3W+  => T +
-
+   Silencion ligados:
    sO+ sP+ sI+ sL+ sF+ sE+ sX+ sH+ sW+  => s +
    sO4+ sP4+ sI4+ sL4+ sF4+ sE4+ sX4+ sH4+ sW4+ => S May Izq + 
    sO*+ sP*+ sI*+ sL*+ sF*+ sE*+ sX*+ sH*+ sW*+ => s . +

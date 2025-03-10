@@ -65,15 +65,15 @@ end Operator
 #Define  HH_DISPLAY_INDEX 0002
 #Define  HH_DISPLAY_SEARCH 0003
 #Define  HH_CLOSE_ALL  0018
-Const CHECK_PISTA_ROLL=5
+Const BOTON_PISTA_ROLL=5
 Const HabilitaGrabar=0
 Const BTN_LIBERADO=0
 Const GrabarPatronaDisco=4
 Const GrabarPistaEjecucion=1
-Const PatronDeEjecucionCompleto=3
-Const LISTA_DE_PISTAS = 3
-Const LISTA_DE_EJECUCIONES   =4
-Const CHECK_SELECCION_EJECUCION=6
+Const PatronDeEjecucionCompleto=32
+Const PISTASROLL = 3
+Const PISTASEJECUCIONES   =4
+Const BOTON_SELECCION_EJECUCION =6
 Const CHECK_GRABAR_EJECUCION    = 7
 Const GRUPO_BTNS_MIDI           =8
 Const BTN_MIDI_PARAR        = 9
@@ -98,6 +98,11 @@ Const IMAGE_VEL= 30
 Const IMAGE_FIG = 31
 Const HABILITAR = TRUE
 Const DESHABILITAR = FALSE 
+Const SI=1
+Const NO=0
+
+Dim Shared As Integer PISTASEJECSELECCIONADA=0
+Dim Shared As Integer PISTASROLLSELECCIONADA=0
 
 Dim HtmlHelpA As Function (hwndCaller As HWND,pszFile As LPCSTR,uCommand As UINT,dwData As DWORD_PTR) As HWND
 Dim HTMLHelp  As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
@@ -682,7 +687,9 @@ Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _
 modifmouse, EnOctava,nsE,nR,lugarOld, nroClick, posinterna, indCompas,menuabierto=0
 Dim Shared As ubyte nC=0,nF=0,nRk=0, cnc=0,cnf=0
 
-Dim Shared As Double t1k,t2k,DURk,DURK1,DURk2
+Dim Shared As Double t1k,t2k,DURK,DURK1,DURk2, DURKOLD,DURK144, DURK128,DURK144old, DURK128old,cont144, cont128,huboerror=0
+
+Dim Shared As Double notaMidiDurk,notaMidiDurkOld
 'Dim Shared As Integer abrirMIDIin=0
 ' nC indica 144, nF indica 128
 
@@ -695,7 +702,6 @@ Type poli Field=1 ' para guardar la secuencia
  dur6  As UByte =0   '  
  dur7  As UByte =0   '  
  dur8  As UByte =0   '  
-
  nota As UByte =0 ' en un futuro contendra nota, octava, canal etc 
  vol  As  UByte =0 ' volumen
  pan  As  UByte =0 ' paneo
@@ -827,7 +833,8 @@ Dim Shared As Integer  AnchoInicial,AltoInicial
 Common Shared As FLOAT font
 Dim Shared As float  deltaipf=0, lockip=0 
 Dim Shared q As String * 1
-Dim Shared As UByte  ii,numduras=0,indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8 ',s9
+Dim Shared As UByte  ii,indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8
+Dim Shared As UByte numdurasmidi( 1 To 24)
 ''Dim Shared escala As float = 1.0
 Dim Shared translado As Integer = 1
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
@@ -907,7 +914,7 @@ ProgError(17) = "end of file"
 Static Shared As HWND cbxnum(1 To 32), cbxejec(1 To 32),cbxgrab(1 To 32),rbparar,rbgrabar,cbxejecout(1 To 32)
 Static Shared As Integer sonidoPista(1 To 32)
 static  Shared As Integer SuenaTodo =0, cntsuena=0
-Static Shared  As Integer jgrb=0
+Static Shared  As Integer jgrb=0, jgrbRoll
 Declare Sub PlayCancion(Track() As sec)
 Declare Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst)
 Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
@@ -922,19 +929,19 @@ Declare Sub moverPmtkaPmtk(r as Integer, e As integer)
 COMMON Shared As Long eventc, eventM
 Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA 
-Common Shared As string pathdir,nombre,nombreMidiIn
+Common Shared As string pathdir,nombre,DirEjecSinBarra
 common Shared As String NombreCancion,NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado ',pistacreada
 Common Shared As cairo_t  Ptr c, c2
-Common Shared As Any Ptr surface,surf2
+Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal
 Common Shared As Any Ptr thread4, threadGrabamidi
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nanchofig,nVerCifradoAcordes
-Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN
+Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn,terminar
-COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo
+COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo,canalDeGrabacion
 Common SHARED As Integer EstaBarriendoPenta
 Common Shared As Integer instancia,FINALIZAR_ROLLMUSIC, MICROSEGUNDOS_POR_NEGRA
 Common Shared As Double STARTMIDI
@@ -952,7 +959,7 @@ Dim Shared As Integer cual=0, repro=0
 'Common Shared  midiin As   RtMidiInPtr
 'Common Shared  midiout () As  RtMidiOutPtr ' abrir hasta 32 dispositivos
 Dim Shared  midiin  (0 To 15) As  RtMidiInPtr  ' 16 dispo de entrada..mucho no¿?
-Dim Shared  midiout (0 To 63) As  RtMidiOutPtr ' abrir hasta 32 dispositivos
+Dim Shared  midiout (0 To 15) As  RtMidiOutPtr ' abrir hasta 16 dispositivos DE SALIDA
 ' parece que empieza desde cero 0 to 31 decia...el doble seria 0 to 63
 Dim Shared As Integer teclado=0 ' salida de ejecucion teclado 
 
@@ -977,13 +984,6 @@ Dim Shared  As pasa param ', param2
     param.encancion=0
     p1=@param
 
-Type midicod Field=1
- As UByte modo
- As UByte nota
- As UByte  vel
- As Integer partes
-End Type
-Redim shared CargaIn ( 1 To 384000) As midicod
 ' a disco puedo grabarsolo CargaIn para cada ejecucion y al cargarla reconstruir en memoria
 ' los Toca,,,,eso es!!! y sumando todas las partes y dividiento por TickChico obtengo 
 ' elmaxposy por ende el valor a dimensioar el Toca....
@@ -1031,7 +1031,9 @@ End Type
 ' VECTOR EJECUCION REAL 
 Dim Shared Toca (1 To 32) as vivo  ' vector ejecucion real
 Dim Shared  As vivo toc
-Dim  Shared  tocaparam ( 1 To 32) As ejecparam
+' tocaparam son los parametros de la ejecucion y se graban al principio
+' de un archivo ejec, luegog se graban los datods de las pistas de ejec midi
+Dim  Shared  tocaparam ( 0 To 32) As ejecparam 
 
 Dim Shared As Integer result =0 
 
@@ -1040,19 +1042,19 @@ Dim Shared As Integer result =0
 'ReDim Shared pToca (1 To 32) As pEjec ' parametros
 Dim Shared As Integer tocatope=0,arrancaPlay=0
 Dim Shared As Double StartPlayejec=0
-ReDim Shared As Double   espera (1 To 32)
+'ReDim Shared As Double   espera (1 To 32)
 Dim Shared As Integer kply,jToca=0
 Dim Shared As Double timex(1 To 32)
 Dim Shared As UByte dato1, dato2 , dato3, dato1old,dato4=0,filtro1,filtro2 
 Dim Shared  As Double stime1=0, stime2=0, sdura=0
 Dim Shared datot4 As double
-Dim Shared  As integer maxgrb=0 
+Dim Shared  As integer maxgrb=0,maxcarga=0 
 ' usaremos xml par aleer y escribir musicxml 
 ' http://xmlsoft.org/examples/index.html
 Dim Shared As String acercade, camino,nroversion
 
 Dim Shared As UBYTE GrabarEjec=0, GrabarPenta=0  
-Dim Shared As Double  t2call=0, t1play=0
+Dim Shared As Double Tiempodelta=0, Tiemposilencio=0
 
 Type paramGrabamidi
   As vivo toc
@@ -1064,7 +1066,7 @@ End Type
 Dim Shared pgmidi As paramGrabamidi
 
 
-Declare Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi)
+Declare Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi, pis As integer)
 
 
 Declare Sub CargarSinRoll () '28-02-2024
@@ -1074,34 +1076,34 @@ Declare Sub grabariniciotxt(lugar As String)
  
 
 Type NProc Field=1
- Mfile       As  UByte
- Tipo       As UByte
- Trkname As String
- valFig     As Integer
- compas  As string 
- Tempo   As UByte
+ Mfile    As UByte
+ Tipo     As UByte
+ Trkname  As String
+ valFig   As Integer
+ compas   As string 
+ Tempo    As UByte
  Meta     As UByte 
- Mtrk     As  UByte
- Trkend  As UByte
- numTrk As  UByte 
- non      As  UByte
- noff      As  UByte
- nligado   As  ubyte
- match   As  ubyte
- nini      As Integer
- nfin      As Integer
- canal     As  UByte
- dur     As double
- patch  As UByte
- pb      As  Short
- pan    As  Short
- acum  As  Integer
- TimeSig as String
+ Mtrk     As UByte
+ Trkend   As UByte
+ numTrk   As UByte 
+ non      As UByte
+ noff     As UByte
+ nligado  As UByte
+ match    As UByte
+ nini     As Integer
+ nfin     As Integer
+ canal    As UByte
+ dur      As double
+ patch    As UByte
+ pb       As Short
+ pan      As Short
+ acum     As Integer
+ TimeSig  As String
  notacant as Integer
- nota as UByte
- volum   As UByte
- j1    As  Integer
- i1    As integer
+ nota     As UByte
+ volum    As UByte
+ j1       As Integer
+ i1       As integer
 End Type
 Dim Shared  As  NProc midi (1 To 8000) 
 Declare Sub duraciones (midi() As NProc, k1 As Integer, k2 As integer) 
@@ -1116,8 +1118,15 @@ Const As integer inicioAcorde=     1
 Const As Integer finAcorde   =     2
 Const As Integer inicioSimple=     3
 Const As Integer finSimple   =     4
+Dim Shared  As Integer contid=0
 
-
-
+Type mididat ' la duracion total de una nota se acumulara en duron en estado 2
+ indice    As Integer
+ estado    As UByte  ' on = 2, off=1
+ nota      As UByte
+ deltatime As Double
+ vel       As UByte
+ duron     As Double
+End Type
 
 

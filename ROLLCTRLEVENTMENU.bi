@@ -15,10 +15,8 @@ On Error Goto errorhandler
              If abrirRoll=0 And NombreCancion > ""  Then
                 abrirRoll=1
                 cargaCancion=1
-                Print #1,"SALE A CARGAR ROLL POR 1ERA VEZ ABRIRROLL=1 EXIT DO"
                 Exit Do                 
              EndIf
-  '           Print #1,"termino 1006 va a abrir Roll"
           SetForegroundWindow(hwnd)
 
 
@@ -28,7 +26,6 @@ On Error Goto errorhandler
 ' CADA PISTA SE PODRA LEVANTAR UNA POR UNA CON LA OTRAOPCION
 ' SOLO DEBO PASAR LOS PARAMETROS...Y SI MODIFICO ALGO
 ' DEBO GRABAR A DISCO Y ENVIAR ORFEN DE RECARGA DE ESA PISTA EN LA CANCION
-   Print #1," CASE 10062 abrirRoll=0 And NombreCancion > ", abrirRoll, NombreCancion
 
            CTRL1062 (hmessages )
 
@@ -64,7 +61,6 @@ On Error Goto errorhandler
 '  con usarmarcoins=4 indicamos habilitar ESCRITURA MIDI EN EL PLAY
                 
            ' nombre , hasta, titu, instru ,pid1, usarmarco, nombrecancion
-            Print #1,"Nombre roll a midi ", nombre
 
                usarmarcoins=4            
             Shell (" start RollMusic.exe "+ Str(desde) +" "+ Str(hasta) +  _
@@ -93,16 +89,12 @@ On Error Goto errorhandler
 
                 If result = -1 Then
 
-                   Print #1, "error conv a  archivo.mid"  
                 Else
-                   Print #1, "ok conv a  archivo.mid "  
                 End If
-               Print #1, "Exit code midiconv: "; result
 
 
            Case 1010 '<================ Cargar Pista externa a cancion
 
-   '        Print #1,"entro a 1010 Cargar Pista externa a cancion"
 
            CTRL1010 (salida )
            If salida =1 Then 
@@ -113,9 +105,7 @@ On Error Goto errorhandler
           SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------            
            Case 1011 ' <======= Grabar una Pista de la Cancion con modificaciones, que son tracks
-    '        print #1,"entro a 1011 esto lo hace menu de Roll tambien" '' jmg probar es nuevo...
  ' copiamos logica Rolla Track 
-   '         print #1, "Click Grabando a disco pista modif con GrabarRollaTrack ",nombre
             Dim As String nombreg
             ROLLCARGADO=FALSE 
            If NombreCancion > ""  Then
@@ -126,7 +116,6 @@ On Error Goto errorhandler
           SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1012 ' <====== Grabar Pista Como, Copia una pista a otra  nueva nueva
-   '        print #1,"entro a 1012 Grabar Pista Como, Copia una pista a otra  nueva nueva"
              
              CTRL1012 (SALIDA)
 
@@ -142,6 +131,8 @@ On Error Goto errorhandler
 '-----------------------------------------------------------------------
            Case 1015 '<========== Grabar MIDI-In aca sera para grabar 
  ' EN ejecuciones, CON CANCION CARGADA NO GRABA NADA, la grabacion se hace en STOP SIN CANCION
+ ' solo graba la pista checkeada en columna G de Ejecuciones, no hace nada
+ ' si ninguna pista G esta seleccionada
 Print 1,"GRABA MIDI IN EN CASE 1015  "
 '--------------------------
 ' preparamos para grabar la pista por cambio de patch
@@ -149,36 +140,92 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 '-----------------------------------------------------------------------
            Case 1016 '<============Cargar MIDI-IN CARGAR PISTAS DE EJECUCION *.EJEC
 ' deberia borrar la cancion cargada ??? creo que si totdavia no ejecuta
-' ambas cosas a la vez,,,,,debo almenos poner dos opciones mas
+' ambas cosas a la vez,,,,,debo al menos poner dos opciones mas
 ' borrar cancion cargada y borrar ejecucion cargada
-' LA GLOBAL HIJA DE PUTA nombreMidiIn SE BORRA AL REGRESAR DE CTRL1016
-' FREEBASIC ES UNA MIERDA JAJAJAJA!!!!!!!!!!!!!!!!!!!!!!!
+' LA GLOBAL HIJA DE PUTA DirEjecSinBarra SE BORRA AL REGRESAR DE CTRL1016
 ' DEBO USAR UNA VARIABLE AUXILIAR MAS AL PEDO NI MIERDA ES GLOBAL
+' corregir: al cargar archivos de ejecucion no se puede seguir agregando
+' pistas de ejecucion en forma correcta revisar 29-11-2024, debo recrear
+' el estado final de todas las variables, de cuando se grabaron las secuencias,,,
            Dim lugar As string 
+           
            CTRL1016 (lugar)
- nombreMidiIn = lugar
-
+           DirEjecSinBarra = lugar
+         Exit Select 
 '-----------------------------------------------------------------------
            Case 1017 'renombrar pista ejecucion y borrado
+         '  If PISTASEJECSELECCIONADA=0 Then
+         '     Exit Select 'ASEGURAMOS UNA SELECCION SINO TOMARA SIEMPRE LA PISTA 1
+         '  EndIf 
            Dim As String nomPista   
-           For i1=1 To 32
-               If CheckBox_GetCheck (cbxejec(i1)) =1 Then
-                  nomPista  = InputBox("Nombre de Pista " ,"Entre un nuevo Nombre ",nomPista)
-                  tocaparam(i1).nombre=nompista
+' VAMOS A USAR GetItemListBox PARA NO NECESITAR DESCHEQUEAR LO CUAL
+' ES ENGORROSO LO MISMO HAREMOS PARA PORT OUT IN ETC RECORRER LSO CHECK
+' NO ES UN METODO COMODO PARA EL USUARIO QUEDEBE DEJAR SOLO UN CHECK Y BORRAR
+' EL RESTO..
+           Dim As Integer nroPista
+           nroPista=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
+
+           nomPista  = InputBox("Nombre de Pista " ,"Entre un nuevo Nombre ",nomPista)
+           nompista=Trim(nompista)  
 'aca falta que si nompista es "" borrar la pista y mover todo hacia arriba
 ' si la pista estaba en el medio,,,FALTA
-                 If Len (nompista) > 0 Then
-                  SetListBoxItemText(LISTA_DE_EJECUCIONES,nompista,i1-1)
-                 End If
+          If Len (nompista) > 0 Then
+            SetListBoxItemText(PISTASEJECUCIONES,nompista,nroPista-1) ' i1-1
+            Dim As String nombreviejo
+            nombreviejo=tocaparam(nroPista).nombre
+            tocaparam(nroPista).nombre=nompista
+            Dim tocap As ejecparam = tocaparam(nroPista)
+            ReDim toc.trk(1 To tocap.maxpos)
+            For j As Integer =1 To   tocap.maxpos
+              toc.trk(j).modo=Toca(nroPista).trk(j).modo
+              toc.trk(j).nota=Toca(nroPista).trk(j).nota
+              toc.trk(j).vel=Toca(nroPista).trk(j).vel
+            Next j
+            pgmidi.toc   = toc
+            pgmidi.tocap = tocap
+          
 
-                 If Len (nompista) = 0 Then
-                  'borrar pista y comprimir lista de ejecs si quedo un hueco..
-DeleteListBoxItem(LISTA_DE_EJECUCIONES,GetItemListBox(LISTA_DE_EJECUCIONES))
-                   comprimirListaEjecs() ' a implementar
-                 EndIf  
-                   Exit for    
-               EndIf
-           Next i1  
+            Dim OldName As String
+            Dim NewName As String
+            Dim result As Integer 
+      
+            OldName = nombreviejo
+            If InStr(OldName,"ejec")=0 Then
+              OldName = OldName+".ejec"
+            EndIf
+      
+            If InStr(nompista,"ejec")=0 Then
+              NewName = nompista+".ejec"
+            Else
+              NewName = nompista
+            EndIf
+            
+    result = Name( DirEjecSinBarra+"\"+"("+doscifras(nroPista)+")"+OldName, DirEjecSinBarra+"\"+"("+doscifras(nroPista)+")"+ NewName )
+            Sleep 100
+            If 0 <> result Then 
+            Else
+             
+            '  Var RTA= Kill (DirEjecSinBarra+"\"+"("+doscifras(nroPista)+")"+OldName)
+            '  If RTA > 0 Then
+            '  Else
+                 GrabarMidiIn(pgmidi,nroPista)
+            '  EndIf
+             
+            End If
+          EndIf
+          If Len (nompista) = 0 Then
+           'borrar pista y comprimir lista de ejecs si quedo un hueco..
+           DeleteListBoxItem(PISTASEJECUCIONES, nroPista-1)
+           ''no hace falta lalista comprime automaticamente!!
+           '' solo hay que borar de disco y renombrar!!! 
+          comprimirListaEjecs(nroPista)
+' =========>>>>> corregir  comprimirListaEjecs(nroPista)
+' anda mal, para que los datos que queden en el vector sean tal cual como 
+' lo deja la lista o sea sacar el agujero de la pista 2 si se ha borrado
+' la 2 y en el lugar de la 2 poner los datos de la 3 y tocatope restarle 1
+' y borrar los datos de la 3 , luego si  se puede renombrar la 3 a 2
+          EndIf  
+
 '-----------------------------------------------------------------------
 '           Case 1018 '  cargar archivo midi plano con fracturacion
 ' NOSE USA PRO AHORA  
@@ -287,11 +334,9 @@ DeleteListBoxItem(LISTA_DE_EJECUCIONES,GetItemListBox(LISTA_DE_EJECUCIONES))
                 Roll.trk(1,NA).inst= CUByte(instru)
                 Track(ntk).trk(1,1).nnn=CUByte(instru)
               ' grabar la pistacomo en 1011
-            print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
               If CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE Then
                  If (NombreCancion > ""  Or TRACKCARGADO =TRUE) And MAxPos > 2 Then
-                   Print #1,"VOY A GrabarRollaTrack(0) DESDE CTRL1040"
                     GrabarRollaTrack(0)
                    Sleep 100 
                  EndIf
@@ -328,7 +373,6 @@ DeleteListBoxItem(LISTA_DE_EJECUCIONES,GetItemListBox(LISTA_DE_EJECUCIONES))
                Roll.trk(1,NA).inst= CUByte(instru)
                Track(ntk).trk(1,1).nnn =CUByte(instru)
               ' grabar el track 
-   '         print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
@@ -352,9 +396,10 @@ DeleteListBoxItem(LISTA_DE_EJECUCIONES,GetItemListBox(LISTA_DE_EJECUCIONES))
                 CTRL1060 salida
                 If salida = 1 Then 
                    salida=0
+          SetForegroundWindow(hwnd)
                    Exit Do
                 End If
-          SetForegroundWindow(hwnd)
+
 '-----------------------------------------------------------------------
            Case 1061 ' <====== crear pista en cancion con lo elegido
 
@@ -475,19 +520,13 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
                If CheckBox_GetCheck( cbxgrab(i))= 1   Then
                    cancel_callback(midiin(tocaparam(i).portin )) ' porque lso port fisicos empiezan desde cero
                    listinAbierto( tocaparam(i).portin) = 0
+                   close_port (midiin(tocaparam(i).portin))
                   teclado=0
 
               EndIf
            Next i
- ' habilito para grabar en otro port o el mismo solo 
- ' se debe abrir el por midi in de nuevo si es el mismo 
- ' se aabre directametne y si es otro se selecciona 1ero otro midi in
-' pero depues del 1er cierre de los port midi in estos menues
-' deben quedar habilitados... solo son par midi-in no afecta a midi-out
 
-             SetStateMenu(hmessages,1092,0)
-             SetStateMenu(hmessages,1093,0)
-'-----------------------------------------------------------------------
+ '-----------------------------------------------------------------------
            Case 1100 '<======== usar o no, marco de ventana de Roll
 '0 - the menu is active, the checkbox is not selected
 '1 - the menu item is unavailable, grayed out
@@ -566,17 +605,14 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
 ' PERO DEBO INDICAR AL PROGRAM QUE SALTEE ESTA COLUMNA CREO CON TENER NOTA=181 Y DUR181
 ' PODRI AINDICAR ESO DEBO PROBARLO Y USAR LSO DEMAS CAMPOS PARA INTRODUCIR ALGUN  CAMBIO               
 '''            Roll.trk(1,NA).vol= CUByte(tipoescala + 127) ' a partir de 128
-''               Print #1,"Roll.trk(1,NA).vol ",Roll.trk(1,NA).vol
 ''               END
 ''               Track(ntk).trk(1,1).vol=CUByte(tipoescala + 127)
               ' grabar el track 
 '' NOTA: LA VARIABLES DE ESCALA DE TODA LA SECUENCIA TIENEN SUBFIJOS _STR O _NUM
 '' LAS QUE SON PARA USO DE ESCLAS EN POSICIONES NO LO TIENEN
-      '      Print #1,"tipo de escala seleccionado ", tipoescala_num_ini
               
 ' -------cadena de escala, construye dsde C hay que hacer las otras esclas
     ' C,D,E,F,G,A,B,Bb,Ab,Gb ver las debo pedir escala y 1er nota desde donde empieza uff
-      '        Print #1,"armarescla desde 1106"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
 ' --------------------------   
@@ -586,8 +622,6 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
               pasozona1=0
               selNotaEscala (notaescala_num_ini)
  
-       '       Print #1, "seleccion de Nota de la escala num  ",notaescala_num
-       '       Print #1,"armarescla desde 1107"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
 
@@ -600,7 +634,6 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
               SetStateMenu(hmessages,1109,0)
             ' si hay nombre de archivo grabar sino no   
       ''        GrabarArchivo()
-       '       Print #1,"armarescla desde 1108"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
           
@@ -611,7 +644,6 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
               alteracion="bem" ' grabado en grabaLim(1,1).pan  = CUByte(2)
               SetStateMenu(hmessages,1108,0)  
               SetStateMenu(hmessages,1109,3) 
-       '       Print #1,"armarescla desde 1109"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
       
@@ -671,10 +703,10 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
 ' si solo hay ejecuciones ...
 ' 26-09-2024 ..probaremos port virtuales para grabar
 '  desde otra aplicacion
-           CTRL1200 (hmessages)
+           CTRL1200 (hmessages) 'check eliminado
 ' queda la duda de si debo abrir y cerar puertos midi-in  
       
-           Case 1201 'Abrir      Puertos MIDI-IN
+           Case 1201 'Abrir      Puertos MIDI-IN 'es 1092
               listinAbierto(npi)=1
            Case 1202'Cerrar    Puertos MIDI-IN
 
@@ -698,7 +730,8 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
            Case 1206 'Cerrar    Puertos MIDI-OUT de ejecucion play por el usuario
                CTRL1206()
 
-           Case 1207'DesTruir Puertos MIDI-OUT
+           Case 1207 ' CONVERTIR EJECS SELECCIONADA EN TRK 
+             threadG  = ThreadCreate (@CTRL1207) 
 
            Case 2000
    
@@ -738,7 +771,47 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
             Loop  
 
           SetForegroundWindow(hwnd)
-                   
-         End Select
+'-----------------------------------------------------------------------
+           Case 2500 ' abrir un midi-in ...con callback
+'Reproducir MIDI-IN (teclado) por  MIDI-OUT. Abre Puerto MIDI-IN
+' para Roll no depende del numero de pista de ejecucion,sino del portin solamente,,,
+' es para tocar en un teclado midi y poder escuchar o grabar
+'Reproducir MIDI-IN (teclado) por  MIDI-OUT. Abre Puerto MIDI-IN
+             GrabarPenta=0
+             CTRL2500 ()
+          SetForegroundWindow(hwnd)
+'----------------------------------------------------
+           Case 2501
+'Detener Reproduccion MIDI-IN (teclado) por  MIDI-OUT. (test de Input)
+ 'cierro port de entrada solamente no los out que pueden ser de una pista con datos 
+  ''           abrirMIDIin=2
+           For  i As Short =1 To 32
+               If CheckBox_GetCheck( cbxnum(i))= 1   Then
+                   cancel_callback(midiin(pmTk(i).portin )) ' porque lso port fisicos empiezan desde cero
+                   listinAbierto( pmTk(i).portin) = 0
+                   close_port (midiin(pmTk(i).portin))
+                  teclado=0
+
+              EndIf
+           Next i
 
 ' ---------------------------------------------
+          Case 2502 'Seleccionar  Puertos MIDI-IN PARA ROLL
+           GrabarPenta=0
+           CTRL2502 (hmessages)
+' ---------------------------------------------
+          Case 2504 'Seleccionar  Puertos MIDI-OUT PARA ROLL
+           GrabarPenta=0
+           CTRL2504 ()
+' ---------------------------------------------
+          Case 2505 'Abrir   Puertos MIDI-OUT PARA ROLL
+           GrabarPenta=0
+           CTRL2505 ()
+
+' ---------------------------------------------
+          Case 2506 'Cerrar   Puertos MIDI-OUT PARA ROLL
+           CTRL2506 ()
+
+         End Select
+
+      

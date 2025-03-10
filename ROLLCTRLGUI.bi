@@ -1,7 +1,7 @@
 'ROLLCTRLGUI... GUI DE VENTANA DE CONTROL
 On Error Goto errorhandler
 Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8,MenName10
-Static Shared As HMENU MenName31,MenName32,MenName18,MenName19 
+Static Shared As HMENU MenName31,MenName32,MenName18,MenName19,MenName30 
 
 If instancia < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON control
   menuabierto=1 ' evita apertura de mas de un menu
@@ -17,18 +17,18 @@ If instancia < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic C
 Var bitmap = Load_image("fondo.bmp")
 BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 
-  hwndListBox= ListBoxGadget(LISTA_DE_PISTAS,80,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT Or LBS_NOINTEGRALHEIGHT Or LBS_NOTIFY  )
-
-  SetGadgetFont(LISTA_DE_PISTAS,CINT(LoadFont("consolas bold",13))) 
-  GadgetToolTip(LISTA_DE_PISTAS,"Pistas manuales cargadas desde Roll ")
+  hwndListBox= ListBoxGadget(PISTASROLL,80,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT Or LBS_NOINTEGRALHEIGHT Or LBS_NOTIFY  )
+  GadgetToolTip(PISTASROLL,"Pistas de Cancion con Tracks manuales cargados desde un archivo o creados en una cancion" )
+  SetGadgetFont(PISTASROLL,CINT(LoadFont("consolas bold",13))) 
+'  GadgetToolTip(PISTASROLL,"Pistas manuales cargadas desde Roll ")
 ' botton todo o nada , sonido o mudo para todas las pistas
-  ButtonGadget(CHECK_PISTA_ROLL, 60,20,20,20,"S")
-  SendMessage(GadgetID(LISTA_DE_PISTAS),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
+  ButtonGadget(BOTON_PISTA_ROLL, 60,20,20,20,"S")
+  SendMessage(GadgetID(PISTASROLL),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
  ' TextGadget(4,250,10,240,20,, SS_SIMPLE  )
  ' 04-02-2023
 
-  SetGadgetColor(LISTA_DE_PISTAS,cint("&HC0C0C0"),0,1)
-  SetGadgetColor(CHECK_PISTA_ROLL,cint("&HC0C0C0"),0,1)
+  SetGadgetColor(PISTASROLL,CInt("&HC0C0C0"),0,1)
+  SetGadgetColor(BOTON_PISTA_ROLL,cint("&HC0C0C0"),0,1)
 ' check para encender o apagar, sonido de salida de c/pista  
   cbxnum(1) =  CheckBox_New( 60 ,  40, 20, 20, "",, hwndc) 
   cbxnum(2) =  CheckBox_New( 60 ,  60, 20, 20, "",, hwndc)
@@ -69,53 +69,53 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
   EventC=0
 
 '---------------------------LISTA DE EJECUCIONES------------
-  hwndListEjec= ListBoxGadget(LISTA_DE_EJECUCIONES, 430,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT )
-SetGadgetFont(LISTA_DE_EJECUCIONES,CINT(LoadFont("consolas bold",13)))
-GadgetToolTip(LISTA_DE_EJECUCIONES,"Pistas grabadas desde un teclado midi")
-SetGadgetColor(LISTA_DE_EJECUCIONES,cint("&HC0C0C0"),0,1)
-  ButtonGadget(CHECK_SELECCION_EJECUCION,380,20,20,20,"S")
-SetGadgetColor(CHECK_SELECCION_EJECUCION,cint("&HC0C0C0"),0,1)
+  hwndListEjec= ListBoxGadget(PISTASEJECUCIONES, 430,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT Or LBS_NOINTEGRALHEIGHT Or LBS_NOTIFY  )
+SetGadgetFont(PISTASEJECUCIONES,CINT(LoadFont("consolas bold",13)))
+GadgetToolTip(PISTASEJECUCIONES,"Pistas grabadas desde un teclado midi")
+SetGadgetColor(PISTASEJECUCIONES,cint("&HC0C0C0"),0,1)
+  ButtonGadget(BOTON_SELECCION_EJECUCION ,410,20,20,20,"S")
+SetGadgetColor(BOTON_SELECCION_EJECUCION ,cint("&HC0C0C0"),0,1)
 
+  
 
-
-  SendMessage(GadgetID(LISTA_DE_EJECUCIONES),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
+  SendMessage(GadgetID(PISTASEJECUCIONES),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
 ' BS_PUSHLIKE se hune el boton al seelccioanrlo
 ' CHECK PARA ESCUCHAR SONIDO de las ejecuciones desde teclado grabadas
-  cbxejec(1) =  CheckBox_New( 380 ,  40, 20, 20, "",, hwndC) 
-  cbxejec(2) =  CheckBox_New( 380 ,  60, 20, 20, "",, hwndC)
-  cbxejec(3) =  CheckBox_New( 380 ,  80, 20, 20, "",, hwndC)
-  cbxejec(4) =  CheckBox_New( 380 , 100, 20, 20, "",, hwndC)
-  cbxejec(5) =  CheckBox_New( 380 , 120, 20, 20, "",, hwndC)
-  cbxejec(6) =  CheckBox_New( 380 , 140, 20, 20, "",, hwndC) 
-  cbxejec(7) =  CheckBox_New( 380 , 160, 20, 20, "",, hwndC) 
-  cbxejec(8) =  CheckBox_New( 380 , 180, 20, 20, "",, hwndC)
-  cbxejec(9) =  CheckBox_New( 380 , 200, 20, 20, "",, hwndC)
-  cbxejec(10) = CheckBox_New( 380 , 220, 20, 20, "",, hwndC)
-  cbxejec(11) = CheckBox_New( 380 , 240, 20, 20, "",, hwndC)
-  cbxejec(12) = CheckBox_New( 380 , 260, 20, 20, "",, hwndC)
-  cbxejec(13) = CheckBox_New( 380 , 280, 20, 20, "",, hwndC) 
-  cbxejec(14) = CheckBox_New( 380 , 300, 20, 20, "",, hwndC) 
-  cbxejec(15) = CheckBox_New( 380 , 320, 20, 20, "",, hwndC)
-  cbxejec(16) = CheckBox_New( 380 , 340, 20, 20, "",, hwndC)
-  cbxejec(17) = CheckBox_New( 380 , 360, 20, 20, "",, hwndc)
-  cbxejec(18) = CheckBox_New( 380 , 380, 20, 20, "",, hwndc)
-  cbxejec(19) = CheckBox_New( 380 , 400, 20, 20, "",, hwndc) 
-  cbxejec(20) = CheckBox_New( 380 , 420, 20, 20, "",, hwndc) 
-  cbxejec(21) = CheckBox_New( 380 , 440, 20, 20, "",, hwndc)
-  cbxejec(22) = CheckBox_New( 380 , 460, 20, 20, "",, hwndc)
-  cbxejec(23) = CheckBox_New( 380 , 480, 20, 20, "",, hwndc)
-  cbxejec(24) = CheckBox_New( 380 , 500, 20, 20, "",, hwndc)
-  cbxejec(25) = CheckBox_New( 380 , 520, 20, 20, "",, hwndc) 
-  cbxejec(26) = CheckBox_New( 380 , 540, 20, 20, "",, hwndc) 
-  cbxejec(27) = CheckBox_New( 380 , 560, 20, 20, "",, hwndc)
-  cbxejec(28) = CheckBox_New( 380 , 580, 20, 20, "",, hwndc)
-  cbxejec(29) = CheckBox_New( 380 , 600, 20, 20, "",, hwndc)
-  cbxejec(30) = CheckBox_New( 380 , 620, 20, 20, "",, hwndc)
-  cbxejec(31) = CheckBox_New( 380 , 640, 20, 20, "",, hwndc)
-  cbxejec(32) = CheckBox_New( 380 , 660, 20, 20, "",, hwndc) 
+  cbxejec(1) =  CheckBox_New( 410 ,  40, 20, 20, "",, hwndC) 
+  cbxejec(2) =  CheckBox_New( 410 ,  60, 20, 20, "",, hwndC)
+  cbxejec(3) =  CheckBox_New( 410 ,  80, 20, 20, "",, hwndC)
+  cbxejec(4) =  CheckBox_New( 410 , 100, 20, 20, "",, hwndC)
+  cbxejec(5) =  CheckBox_New( 410 , 120, 20, 20, "",, hwndC)
+  cbxejec(6) =  CheckBox_New( 410 , 140, 20, 20, "",, hwndC) 
+  cbxejec(7) =  CheckBox_New( 410 , 160, 20, 20, "",, hwndC) 
+  cbxejec(8) =  CheckBox_New( 410 , 180, 20, 20, "",, hwndC)
+  cbxejec(9) =  CheckBox_New( 410 , 200, 20, 20, "",, hwndC)
+  cbxejec(10) = CheckBox_New( 410 , 220, 20, 20, "",, hwndC)
+  cbxejec(11) = CheckBox_New( 410 , 240, 20, 20, "",, hwndC)
+  cbxejec(12) = CheckBox_New( 410 , 260, 20, 20, "",, hwndC)
+  cbxejec(13) = CheckBox_New( 410 , 280, 20, 20, "",, hwndC) 
+  cbxejec(14) = CheckBox_New( 410 , 300, 20, 20, "",, hwndC) 
+  cbxejec(15) = CheckBox_New( 410 , 320, 20, 20, "",, hwndC)
+  cbxejec(16) = CheckBox_New( 410 , 340, 20, 20, "",, hwndC)
+  cbxejec(17) = CheckBox_New( 410 , 360, 20, 20, "",, hwndc)
+  cbxejec(18) = CheckBox_New( 410 , 380, 20, 20, "",, hwndc)
+  cbxejec(19) = CheckBox_New( 410 , 400, 20, 20, "",, hwndc) 
+  cbxejec(20) = CheckBox_New( 410 , 420, 20, 20, "",, hwndc) 
+  cbxejec(21) = CheckBox_New( 410 , 440, 20, 20, "",, hwndc)
+  cbxejec(22) = CheckBox_New( 410 , 460, 20, 20, "",, hwndc)
+  cbxejec(23) = CheckBox_New( 410 , 480, 20, 20, "",, hwndc)
+  cbxejec(24) = CheckBox_New( 410 , 500, 20, 20, "",, hwndc)
+  cbxejec(25) = CheckBox_New( 410 , 520, 20, 20, "",, hwndc) 
+  cbxejec(26) = CheckBox_New( 410 , 540, 20, 20, "",, hwndc) 
+  cbxejec(27) = CheckBox_New( 410 , 560, 20, 20, "",, hwndc)
+  cbxejec(28) = CheckBox_New( 410 , 580, 20, 20, "",, hwndc)
+  cbxejec(29) = CheckBox_New( 410 , 600, 20, 20, "",, hwndc)
+  cbxejec(30) = CheckBox_New( 410 , 620, 20, 20, "",, hwndc)
+  cbxejec(31) = CheckBox_New( 410 , 640, 20, 20, "",, hwndc)
+  cbxejec(32) = CheckBox_New( 410 , 660, 20, 20, "",, hwndc) 
 '---------------------------------------------------------
 ' CHECK PARA GRABAR O SEA ARMA LA PISTA PARA RECIBIR DATOS MIDI-IN
-  ButtonGadget(CHECK_GRABAR_EJECUCION,410,20,20,20,"G")  
+  ButtonGadget(CHECK_GRABAR_EJECUCION,380,20,20,20,"G")  
  ' ButtonGadget(8,450,0,100,30,"PARAR",BS_RADIOBUTTON )
  ' ButtonGadget(9,580,0,120,30,"GRABAR",BS_RADIOBUTTON  )
 Var IMGP=Load_image(".\recur\Parar.bmp")
@@ -158,38 +158,38 @@ GadgetToolTip(BTN_ROLL_GRABAR_MIDI,"GRABAR midi en Roll")
 
 
 ' checks para habilitar grabacion en una pista de MIDI-IN
-  cbxgrab(1) =  CheckBox_New( 410 ,  40, 20, 20, "",, hwndC) 
-  cbxgrab(2) =  CheckBox_New( 410 ,  60, 20, 20, "",, hwndC)
-  cbxgrab(3) =  CheckBox_New( 410 ,  80, 20, 20, "",, hwndC)
-  cbxgrab(4) =  CheckBox_New( 410 , 100, 20, 20, "",, hwndC)
-  cbxgrab(5) =  CheckBox_New( 410 , 120, 20, 20, "",, hwndC)
-  cbxgrab(6) =  CheckBox_New( 410 , 140, 20, 20, "",, hwndC) 
-  cbxgrab(7) =  CheckBox_New( 410 , 160, 20, 20, "",, hwndC) 
-  cbxgrab(8) =  CheckBox_New( 410 , 180, 20, 20, "",, hwndC)
-  cbxgrab(9) =  CheckBox_New( 410 , 200, 20, 20, "",, hwndC)
-  cbxgrab(10) = CheckBox_New( 410 , 220, 20, 20, "",, hwndC)
-  cbxgrab(11) = CheckBox_New( 410 , 240, 20, 20, "",, hwndC)
-  cbxgrab(12) = CheckBox_New( 410 , 260, 20, 20, "",, hwndC)
-  cbxgrab(13) = CheckBox_New( 410 , 280, 20, 20, "",, hwndC) 
-  cbxgrab(14) = CheckBox_New( 410 , 300, 20, 20, "",, hwndC) 
-  cbxgrab(15) = CheckBox_New( 410 , 320, 20, 20, "",, hwndC)
-  cbxgrab(16) = CheckBox_New( 410 , 340, 20, 20, "",, hwndC)
-  cbxgrab(17) = CheckBox_New( 410 , 360, 20, 20, "",, hwndc)
-  cbxgrab(18) = CheckBox_New( 410 , 380, 20, 20, "",, hwndc)
-  cbxgrab(19) = CheckBox_New( 410 , 400, 20, 20, "",, hwndc) 
-  cbxgrab(20) = CheckBox_New( 410 , 420, 20, 20, "",, hwndc) 
-  cbxgrab(21) = CheckBox_New( 410 , 440, 20, 20, "",, hwndc)
-  cbxgrab(22) = CheckBox_New( 410 , 460, 20, 20, "",, hwndc)
-  cbxgrab(23) = CheckBox_New( 410 , 480, 20, 20, "",, hwndc)
-  cbxgrab(24) = CheckBox_New( 410 , 500, 20, 20, "",, hwndc)
-  cbxgrab(25) = CheckBox_New( 410 , 520, 20, 20, "",, hwndc) 
-  cbxgrab(26) = CheckBox_New( 410 , 540, 20, 20, "",, hwndc) 
-  cbxgrab(27) = CheckBox_New( 410 , 560, 20, 20, "",, hwndc)
-  cbxgrab(28) = CheckBox_New( 410 , 580, 20, 20, "",, hwndc)
-  cbxgrab(29) = CheckBox_New( 410 , 600, 20, 20, "",, hwndc)
-  cbxgrab(30) = CheckBox_New( 410 , 620, 20, 20, "",, hwndc)
-  cbxgrab(31) = CheckBox_New( 410 , 640, 20, 20, "",, hwndc)
-  cbxgrab(32) = CheckBox_New( 410 , 660, 20, 20, "",, hwndc) 
+  cbxgrab(1) =  CheckBox_New( 380 ,  40, 20, 20, "",, hwndC) 
+  cbxgrab(2) =  CheckBox_New( 380 ,  60, 20, 20, "",, hwndC)
+  cbxgrab(3) =  CheckBox_New( 380 ,  80, 20, 20, "",, hwndC)
+  cbxgrab(4) =  CheckBox_New( 380 , 100, 20, 20, "",, hwndC)
+  cbxgrab(5) =  CheckBox_New( 380 , 120, 20, 20, "",, hwndC)
+  cbxgrab(6) =  CheckBox_New( 380 , 140, 20, 20, "",, hwndC) 
+  cbxgrab(7) =  CheckBox_New( 380 , 160, 20, 20, "",, hwndC) 
+  cbxgrab(8) =  CheckBox_New( 380 , 180, 20, 20, "",, hwndC)
+  cbxgrab(9) =  CheckBox_New( 380 , 200, 20, 20, "",, hwndC)
+  cbxgrab(10) = CheckBox_New( 380 , 220, 20, 20, "",, hwndC)
+  cbxgrab(11) = CheckBox_New( 380 , 240, 20, 20, "",, hwndC)
+  cbxgrab(12) = CheckBox_New( 380 , 260, 20, 20, "",, hwndC)
+  cbxgrab(13) = CheckBox_New( 380 , 280, 20, 20, "",, hwndC) 
+  cbxgrab(14) = CheckBox_New( 380 , 300, 20, 20, "",, hwndC) 
+  cbxgrab(15) = CheckBox_New( 380 , 320, 20, 20, "",, hwndC)
+  cbxgrab(16) = CheckBox_New( 380 , 340, 20, 20, "",, hwndC)
+  cbxgrab(17) = CheckBox_New( 380 , 360, 20, 20, "",, hwndc)
+  cbxgrab(18) = CheckBox_New( 380 , 380, 20, 20, "",, hwndc)
+  cbxgrab(19) = CheckBox_New( 380 , 400, 20, 20, "",, hwndc) 
+  cbxgrab(20) = CheckBox_New( 380 , 420, 20, 20, "",, hwndc) 
+  cbxgrab(21) = CheckBox_New( 380 , 440, 20, 20, "",, hwndc)
+  cbxgrab(22) = CheckBox_New( 380 , 460, 20, 20, "",, hwndc)
+  cbxgrab(23) = CheckBox_New( 380 , 480, 20, 20, "",, hwndc)
+  cbxgrab(24) = CheckBox_New( 380 , 500, 20, 20, "",, hwndc)
+  cbxgrab(25) = CheckBox_New( 380 , 520, 20, 20, "",, hwndc) 
+  cbxgrab(26) = CheckBox_New( 380 , 540, 20, 20, "",, hwndc) 
+  cbxgrab(27) = CheckBox_New( 380 , 560, 20, 20, "",, hwndc)
+  cbxgrab(28) = CheckBox_New( 380 , 580, 20, 20, "",, hwndc)
+  cbxgrab(29) = CheckBox_New( 380 , 600, 20, 20, "",, hwndc)
+  cbxgrab(30) = CheckBox_New( 380 , 620, 20, 20, "",, hwndc)
+  cbxgrab(31) = CheckBox_New( 380 , 640, 20, 20, "",, hwndc)
+  cbxgrab(32) = CheckBox_New( 380 , 660, 20, 20, "",, hwndc) 
 
 '---------------------------------------------------------------------
 ' port de salida ,Volumen y Paneo para ejecuciones y tracks manuales...
@@ -198,18 +198,18 @@ GadgetToolTip(BTN_ROLL_GRABAR_MIDI,"GRABAR midi en Roll")
 ' midi-out...igual para volumen y paneo,si sequiereajustar mas de uno a la vez
 ' simplemente se da click en todos los deseados y elajuste sera el mismo en cada uno
 ' o sea S tiene doblefuncion desmutear odar sonido o ajustar alguno de los 3 parametros.  
-ButtonGadget(BTN_EJEC_PORTSAL,420,710,70,20,"PortSal")
-ButtonGadget(BTN_EJEC_VOL,   490, 710, 35, 20, "Vol")
-ButtonGadget(BTN_EJEC_PAN,   530, 710, 35, 20,"Pan")
-ButtonGadget(BTN_EJEC_PATCH,  570,710, 50, 20,"Patch")
-ButtonGadget(BTN_EJEC_CANAL,  620,710, 50, 20,"Canal")
+ButtonGadget(BTN_EJEC_PORTSAL,420,730,70,20,"PortSal")
+'ButtonGadget(BTN_EJEC_VOL,   490, 730, 35, 20, "Vol")
+'ButtonGadget(BTN_EJEC_PAN,   530, 730, 35, 20,"Pan")
+ButtonGadget(BTN_EJEC_PATCH,  570,730, 50, 20,"Patch")
+ButtonGadget(BTN_EJEC_CANAL,  620,730, 50, 20,"Canal")
 
 '---------------------------LISTVIEW ROLL MANUALES
-ButtonGadget(BTN_ROLL_PORTSAL, 70,710,70,20,"PortSal")
-ButtonGadget(BTN_ROLL_VOL,   140, 710, 35, 20, "Vol")
-ButtonGadget(BTN_ROLL_PAN,   180, 710, 35, 20,"Pan")
-ButtonGadget(BTN_ROLL_PATCH,  220,710, 50, 20,"Patch")
-ButtonGadget(BTN_ROLL_CANAL,  280,710, 50, 20,"Canal")
+ButtonGadget(BTN_ROLL_PORTSAL, 70,730,70,20,"PortSal")
+'ButtonGadget(BTN_ROLL_VOL,   140, 730, 35, 20, "Vol")
+'ButtonGadget(BTN_ROLL_PAN,   180, 730, 35, 20,"Pan")
+ButtonGadget(BTN_ROLL_PATCH,  220,730, 50, 20,"Patch")
+ButtonGadget(BTN_ROLL_CANAL,  280,730, 50, 20,"Canal")
 
 
 
@@ -217,13 +217,14 @@ ButtonGadget(BTN_ROLL_CANAL,  280,710, 50, 20,"Canal")
 
   hMessages=Create_Menu()
 
-  MenName1=MenuTitle(hMessages,"Archivo")
-  MenName2=MenuTitle(hMessages,"Nueva Cancion")
-  MenName3=MenuTitle(hMessages,"Crear Pistas Manuales")
-  MenName31=MenuTitle(hMessages,"Crear Patrones")
+  MenName1=MenuTitle(hMessages, "Archivo")
+  MenName2=MenuTitle(hMessages, "Nueva Cancion")
+  MenName3=MenuTitle(hMessages, "Pistas Manuales")
+  
+  'MenName31=MenuTitle(hMessages,"Patrones")
 
   MenName4=MenuTitle(hMessages,"Ver")
-  MenName5=MenuTitle(hMessages,"Cambiar Tiempo Y Ritmo")
+  MenName5=MenuTitle(hMessages,"Tiempo Y Ritmo")
   MenName6=MenuTitle(hMessages,"Reproducir")
   MenName7=MenuTitle(hMessages,"Opciones")
   MenName8=MenuTitle(hMessages,"Puertos de Ejecuciones")
@@ -259,8 +260,8 @@ MenuItem(1009,MenName1,  "4.5.1 Exportar a MIDI Pista/cancion de 4.5 ")
 
 
 Menubar(MenName1)
-MenuItem(1015,MenName1, "5.0 MIDI-IN Grabar Pistas ejecucion")
-MenuItem(1016,MenName1, "5.1 MIDI-IN Cargar Pistas ejecucion")
+MenuItem(1015,MenName1, "5.0 Grabar a Disco, Pista Nueva MIDI-IN ejecucion")
+MenuItem(1016,MenName1, "5.1 Cargar de Disco Pistas MIDI-IN ejecucion")
 MenuItem(1017,MenName1, "5.2 Renombrar Pista ejecucion seleccionada")
 
 MenuItem(10181,MenName1,"5.3 Cargar txt plano midi generado por RollMusic")
@@ -295,21 +296,21 @@ MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo 
 
 
 'MenuItem(1065,MenName31, "Crear Patrones de Ejecuciones por Teclado",MF_POPUP )
-MenName32=OpenSubmenu(MenName31, "Crear Patrones de Ejecuciones por Teclado" )
-MenuItem(1064,MenName32,"Nombre del Patron")
-MenuItem(1065,MenName32,"Numero de Compases del Patron")
-MenuItem(1066,MenName32,"Crear Secuencia de  Patrones insertados")
-MenuItem(1067,MenName31, "Na. Crear Patrones de Ediciones manuales")
-MenuItem(1068,MenName32,"Habilitar Patrones",MF_UNCHECKED)
+'MenName32=OpenSubmenu(MenName31, "Na/Crear Patrones de Ejecuciones por Teclado" )
+'MenuItem(1064,MenName32,"Nombre del Patron")
+'MenuItem(1065,MenName32,"Numero de Compases del Patron")
+'MenuItem(1066,MenName32,"Crear Secuencia de  Patrones insertados")
+'MenuItem(1067,MenName31, "Na. Crear Patrones de Ediciones manuales")
+'MenuItem(1068,MenName32,"Habilitar Patrones",MF_UNCHECKED)
 
 
 MenuItem(1070,MenName4,"Escalas auxiliares ajustadas", MF_CHECKED)
 MenuItem(1071,MenName4,"Cifrado de Acordes", MF_CHECKED)
 Menubar(MenName4)
-MenuItem(1072,MenName4,"Na/Parametros de un archivo Roll  ")
-MenuItem(1073,MenName4,"Na/Parametros de un archivo Track ")
-MenuItem(1074,MenName4,"Na/Parametros de Roll y Track(0) en memoria")
-MenuItem(1075,MenName4,"Na/Parametros de Track(n) en memoria ")
+'MenuItem(1072,MenName4,"Na/Parametros de un archivo Roll  ")
+'MenuItem(1073,MenName4,"Na/Parametros de un archivo Track ")
+'MenuItem(1074,MenName4,"Na/Parametros de Roll y Track(0) en memoria")
+'MenuItem(1075,MenName4,"Na/Parametros de Track(n) en memoria ")
 
   
 MenuItem(1080,MenName5,"TEMPO, Manual Por omision=60, Ejecucion Tick por omision=5mseg equivale a 240")
@@ -342,8 +343,8 @@ Negras por minuto	 tempo
   
 MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
 MenuItem(1091,MenName6,"Fijar Repeticiones de un numero de Compases elegido como zona")
-MenuItem(1092,MenName6,"Reproducir MIDI-IN (teclado) por  MIDI-OUT. Abre Puerto MIDI-IN ")
-MenuItem(1093,MenName6,"Detener Reproduccion MIDI-IN (teclado) por  MIDI-OUT. (test de Input) Cierra Puerto MIDI-IN")
+MenuItem(1092,MenName6,"Abre y Reproduce Puerto MIDI-IN Ejecucion teclado por  MIDI-OUT.")
+MenuItem(1093,MenName6,"Cierra Puerto MIDI-IN Ejecucion.")
 
 
 MenuItem(1100,MenName7,"Usar MARCO de Ventana Para el Gráfico",MF_UNCHECKED)
@@ -367,19 +368,27 @@ MenuItem(1114,MenName7,"Usar sonido de pista para pulsos de inicio de grabacion"
 
 
 MenuItem(1200,MenName8,"Seleccion Puerto MIDI-IN Ejecucion")
-'MenuItem(1201,MenName8,"Abrir  Puerto MIDI-IN")
-'MenuItem(1202,MenName8,"Cerrar Puerto MIDI-IN")
-'MenuItem(1203,MenName8,"Na. DesTruir Puerto MIDI-IN")
+
 Menubar(MenName8)
 MenuItem(1204,MenName8,"Seleccion de Puerto MIDI-OUT Ejecucion")
 MenuItem(1205,MenName8,"Abrir  Puertos MIDI-OUT Ejecucion")
 MenuItem(1206,MenName8,"Cerrar Puertos MIDI-OUT Ejecucion")
-'MenuItem(1207,MenName8,"Na. DesTruir Puertos MIDI-OUT")
-
+Menuitem(1207,MenName8,"Convertir ejecucion o archivo cargado de *.ejec a *.trk ")
 
 MenuItem(2000,MenName10,"Acerca de")
 MenuItem(2001,MenName10,"Cuadro Ayuda TEMPO por nombres, Lento,adagio etc y control fino")
 MenuItem(2002,MenName10,"Cuadro de Figuras de duracion de notas")
+
+'MenuItem(2502,MenName30,"Seleccion Puerto MIDI-IN ROLL")
+'MenuItem(2504,MenName30,"Seleccion Puerto MIDI-OUT ROLL")
+'MenuItem(2505,MenName30,"Abrir  Puerto  MIDI-OUT ROLL")
+'MenuItem(2506,MenName30,"Cerrar Puertos MIDI-OUT ROLL")
+'Menubar(MenName30)
+'MenuItem(2500,MenName30,"Abre   Puerto MIDI-IN Sobre Roll")
+'MenuItem(2501,MenName30,"Cierra Puerto MIDI-IN Sobre Roll")
+
+
+
 '  MenuBackColor NO FUNCIONA SOLO AL PRINCIPIO
 ' CASA  MENU QUEDA LIMITADO POR BARRAS DE COLOR EN ESTE CASO GRIS
 ' Y LAS LINEAS DE SEPARACION QUEDAN GRIS MAS GRUESAS
@@ -437,9 +446,11 @@ End Select
   SetStateMenu(hmessages,1009,1)
 '' sin seleccionar portin y portout no se permite abrir midiin teclado
   
-'   Print #1,"deshabilita 1092 y 1093  al inicio >>>>>>>>>>>>>"
     SetStateMenu(hmessages,1092,1)
     SetStateMenu(hmessages,1093,1)
+
+    SetStateMenu(hmessages,2500,1)
+    SetStateMenu(hmessages,2501,1)
 
 
 End If

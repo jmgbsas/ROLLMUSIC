@@ -1,3 +1,8 @@
+- 10-03-2025 Ultima Version 0.4900 incompleta sin Ticks... se abandona
+  Varios intentos de representar en roll grafico las secuencias ejecutadas
+  o en vivo. Se complica mucho sin linea de tiempo.. se abandona esta linea
+  de desarrollo. Lentamente se esta pasando a linea de tiempo o sea con ticks.
+  a partir de Version 0.5000.
 - 18-09-2024 cambio a licencia GPL para la version actual y siguientes.
 - 17-09-2024 mejoras en carga de un archivo plano midi generado por RollMusic.
 - 12-06-2024 correcciones dejo de grabar. corregido. canales en roll grafico
