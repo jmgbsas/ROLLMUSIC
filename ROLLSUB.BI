@@ -2921,13 +2921,6 @@ DUR => 0
 curpos =>1
 ''' carga=0
    anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
-'If font >=5 And font <= 34 Then
-'   anchofig= mispx(font-4,2)
-'Else
-'   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
-'EndIf
-
-'   NroCol =  (ANCHO / anchofig ) + 4 '6
    gap1= anchofig* 6 ' porque era tanto 20
    NroCol =  (ANCHO / anchofig ) + 4 '6
    gap2= (914 * gap1) /1000 ' 74 default
@@ -3163,7 +3156,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
  ' y asi funciona ..(en ningun lado se ajusta a cero salvo al inicio fuera del
  ' loop.....
  t=" "
-   Dim muestra As String ' nombre tambien se usa en cancion
+   Dim As String muestra = " " ' nombre tambien se usa en cancion
    If NombreCancion > "" And titulos(ntk) > "" And ROLLCARGADO=FALSE Then
       nombre = titulos(ntk)
      ' Print #1,"en menu nombre ",nombre
@@ -4403,11 +4396,6 @@ nombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
  Case "[TEMPO]"
 
 
-
-
-
-
-
 If  EJECCARGADA=FALSE Then
     If tiempoPatron = 0  Then
        tiempoPatron=60
@@ -4498,6 +4486,12 @@ EndIf
 ' HACEMOS LO MISMO PARA EL TRACK ntk en edicion ya sea nto= en caso de Roll puro o pista ntk
 ' en edicion
 ' Track(ntk).trk=
+  Case "[SEPARA]"
+
+   default=Str(intervalo-1)  
+   intervaloTxt = InputBox("Ajuste Separacion Notas en pantalla " ,"Entre un Intervalo ",default)
+   intervalo= ValInt(intervaloTxt) +1 '19-03-2025 
+
 End Select
 
 End Sub

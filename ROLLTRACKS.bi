@@ -1608,7 +1608,7 @@ nota=0:dur=0
 'copia a variables de Roll desde track
    desde  = pmTk(ntk).desde
    hasta  = pmTk(ntk).hasta
-   Print #1,"hasta 1054 TracjaRoll ",hasta 
+ '  Print #1,"hasta 1054 TracjaRoll ",hasta 
    NB     = pmTk(ntk).NB 'estos no siempre se guardan verificar mejor calcular
    NA     = pmTk(ntk).NA 'estos no siempre se guardan verificar mejor calcular
    If NA=0 Or NB=0 Then
@@ -1628,16 +1628,16 @@ nota=0:dur=0
       Dim As String mensajito
        mensajito="el patch no esta bien almacenado en Track "+ Str(ntk) + " patchsal " + Str(patchsal)   
        '''messbox "Track inconsistente", mensajito
-       Print #1, "patch MAL en Track "+ Str(ntk) + " en pmTk" + Str(patchsal); " EN TRK "; Track(ntk).trk(1,1).nnn    
+   '    Print #1, "patch MAL en Track "+ Str(ntk) + " en pmTk" + Str(patchsal); " EN TRK "; Track(ntk).trk(1,1).nnn    
    EndIf
-   print #1,"TrackaRoll ntk, desde, hasta, MaxPos ", ntk, desde,hasta,MaxPos
-   Print #1,"TrackaRoll ntk patchsal canalx portout: "; ntk, patchsal, canalx, portout
+  ' print #1,"TrackaRoll ntk, desde, hasta, MaxPos ", ntk, desde,hasta,MaxPos
+  ' Print #1,"TrackaRoll ntk patchsal canalx portout: "; ntk, patchsal, canalx, portout
    desdevector=desde
    hastavector=hasta
    estoyEnOctava =desde
    estoyEnOctavaOld =desde
    CantTicks = MaxPos + 1000
-   print #1,"TrackaRoll, NB, NA, CantTricks", NB,NA, CantTicks
+   'print #1,"TrackaRoll, NB, NA, CantTricks", NB,NA, CantTicks
 ' redim de ROLL de Visualizacion , para ello detenemos 
 ' la escritura sobre la pantalla con cargaCancion=1 o repro=1
 repro=1
@@ -1648,7 +1648,7 @@ Sleep 10 ' para que surja efecto la detencion ,,,
    ReDim (Roll.trk ) (1 To CantTicks, NB To NA ) ' 27-02 ÇÇÇ
    ReDim compas(1 To CantTicks)
  ' End If  
-   Print #1,"paso el redim de roll"
+   'Print #1,"paso el redim de roll"
    ' redimensiono track (0)! que estara a la par de roll cargandose
    ' mientras cargo cancion podria ahcer redim a track 0 porque cargo a roll y track(0)
    ' pero como la carga de track es continua en la carga inicial no hace falta
@@ -1719,7 +1719,7 @@ For i2 = 1 To pmTk(ntk).MaxPos
          Roll.trk(i2,i3).inst = Track(ntk).trk(i2,i1).nnn
          Roll.trk(i2,i3).onoff = Track(ntk).trk(i2,i1).onoff
                 
-         print #1,"VEO CARGA DE ROLL Roll.trk(i2,i3).dur ",Roll.trk(i2,i3).dur
+         ''print #1,"VEO CARGA DE ROLL Roll.trk(i2,i3).dur ",Roll.trk(i2,i3).dur
       EndIf
    Next i1
    If i2=pmTk(ntk).MaxPos -1 And Track(ntk).trk (i2,i1).nota > 0 Then

@@ -1,3 +1,19 @@
+- 19-03-2025 RollMusic Con Ticks primera etapa se va adaptando las funciones
+  se puede insertas notas manualmente y modificarlas en Ctrl-M.
+  Traspone funciona para toda la secuencia, falta verificar por zonas,
+  Acordes funciona lo que funcionaba antes, que todavia esta incompleto.
+  Algo de performance, se puede ajustar la separacion de notas en el grafico
+  La pantalla del grafico se cierra sin cerrar el programa algo ya agregado
+  a la ultima version de RollMusic sin Ticks. Ya se puede pasar una ejecucion
+  midi real a pantalla grafica desde un archivo *.ejec. la opcion esta habilitada
+  Solo se carga la ejec o el directorio de ejec. Luego se selecciona una sola
+  ejecucion se abre el Roll Grafico y se ejecuta la opcion del menu
+  Las notas se marcan como " N " no hay cuantizacion todavia es un Roll exacto
+  de la ejecucion como todos los Roll que existen solo se usa esta representacion
+  " N    >>" donde N es el comienzo y >> la finalizacion de la nota.
+  En Ctrl-M se podra ver la indicacion onoff, onoff=2 sera el on o comienzo de la nota
+  y onoff=1 la finalizacion. 
+
 - 10-03-2025 Ultima Version 0.4900 incompleta sin Ticks... se abandona
   Varios intentos de representar en roll grafico las secuencias ejecutadas
   o en vivo. Se complica mucho sin linea de tiempo.. se abandona esta linea

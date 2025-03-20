@@ -484,6 +484,10 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
                CTRL1071(hmessages)
 
           SetForegroundWindow(hwnd)
+           Case 1072
+              menuOldStr="[SEPARA]"
+              thread3= ThreadCall EntrarTeclado()
+
            Case 1074 ''<== Parametros de Roll y Track(0) en memoria
 
 '-----------------------------------------------------------------------
@@ -764,7 +768,8 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
                CTRL1206()
 
            Case 1207 ' CONVERTIR EJECS SELECCIONADA EN TRK en desarrollo para ticks
-             threadG  = ThreadCreate (@CTRL1207) 
+             CTRL1207()
+             ''threadG  = ThreadCreate (@CTRL1207) 
 
            Case 2000
    

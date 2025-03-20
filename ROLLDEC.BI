@@ -149,7 +149,7 @@ Declare Sub IgualaMidiPlano(externo As integer, ByRef CantEventos  As Integer)
 
 
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
-Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6,notaGuia=1
+Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6,notaGuia=0
 Dim Shared As String RTA, alteracion '',alteracion_str
 alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0
@@ -163,7 +163,7 @@ Dim shared As integer Penta_y, indice, espacio,cursorHori
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic, id,ShowNroCol=0,nro,trak=1,trackold=1
-Dim Shared As Integer ers, borrapos=0,comienza=0, acordeNro=0  
+Dim Shared As Integer ers, borrapos=0,comienza=0, acordeNro=0,resumen=0  
 Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
 
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
@@ -490,7 +490,7 @@ Dim  Shared figura (1 To 182) As ZString  * 4 => _
 '/
 ' redonda,blanca,negra,corchea, semicorchea,fusa,semifusa,cuartifusa,garrapatea
 ' 4      ,2     , 1   ,1/2,   1/4          , 1/8,1/16    ,1/32      , 1/64   
-Dim  Shared figura (1 To 184) As ZString  * 4 => _
+Dim  Shared figura (1 To 185) As ZString  * 4 => _
 {" O "," P "," I "," L "," F "," E "," X "," H "," W ",_  '  1  9
  " O4"," P4"," I4"," L4"," F4"," E4"," X4"," H4"," W4",_  ' 10 18
  " O*"," P*"," I*"," L*"," F*"," E*"," X*"," H*"," W*",_  ' 19 27
@@ -511,8 +511,10 @@ Dim  Shared figura (1 To 184) As ZString  * 4 => _
  "sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sX*+","sH*+","sW*+", _ '154 162
  "sO:+","sP:+","sI:+","sL:+","sF:+","sE:+","sX:+","sH:+","sW:+",_  '163 171 
  "s3O+","s3P+","s3I+","s3L+","s3F+","s3E+","s3X+","s3H+","s3W+", _ '172 180
- "   "," ||",">> "," - " } ' 181 182 183 184- 109 110, son 108 (old 73 74 son 72)
-
+ "   "," ||",">> "," - "," N " } ' 181 182 183 184 185- 109 110, son 108 (old 73 74 son 72)
+' la 185 la pondremos como 1er etapa de pasar  de ejecucion a Roll
+' indicara una nota pero no sabemos su duracion, 2da etapa le pondremos
+' una duracion cuantificada,,,
 ' silencios entre  46 a 90 y 136 a 180    
 ' los puntillos de tresillos coinciden con elvalor superior
 ' ej (3I)*=I=1.. 1/3 tresillo de negra con puntillo = negra
@@ -626,7 +628,7 @@ Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 17500000,8750000,4375000,2187500,1093750,546875,273438,136719,68360, _ '163 171
  6666666,3333333,1666666, 833333, 416666,208333,104166, 52083,26042,0,0 }  '172 182
 
-Dim Shared As String nombreArchivo, TCompas,menuOldStr, ticksdefault,nombrePatron
+Dim Shared As String nombreArchivo, TCompas,menuOldStr, ticksdefault,nombrePatron, intervaloTxt
 Dim Shared As Integer nroCompasesPatron, nroTicksPatron
 nroCompasesPatron=0
 nroTicksPatron=0
@@ -688,11 +690,11 @@ Dim Shared As Integer ContadorError=0
 
 Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _
 modifmouse, EnOctava,nsE,nR,lugarOld, nroClick, posinterna, indCompas,menuabierto=0
-Dim Shared As ubyte nC=0,nF=0,nRk=0, cnc=0,cnf=0
+Dim Shared As ubyte nC=0,nF=0,nRk=0, cnc=0,cnf=0,lockfont=0, lockhoriz=0
 
 Dim Shared As Double t1k,t2k,DURK,DURK1,DURk2, DURKOLD,DURK144, DURK128,DURK144old, DURK128old,cont144, cont128,huboerror=0
 
-Dim Shared As Double notaMidiDurk,notaMidiDurkOld
+Dim Shared As Double notaMidiDurk,notaMidiDurkOld,penta2=0
 'Dim Shared As Integer abrirMIDIin=0
 ' nC indica 144, nF indica 128
 
@@ -1263,10 +1265,11 @@ Const As integer inicioAcorde=     1
 Const As Integer finAcorde   =     2
 Const As Integer inicioSimple=     3
 Const As Integer finSimple   =     4
-Dim Shared  As Integer contid=0
+Dim Shared  As Integer contid=0,separaenuno=0, intervalo=2 '  default 2 que es 1 separacion de notas
 
 Type mididat ' la duracion total de una nota se acumulara en duron en estado 2
- indice    As Integer
+ indiceX    As Integer
+ indiceY    As integer
  estado    As UByte  ' on = 2, off=1
  nota      As UByte
  deltatime As Double

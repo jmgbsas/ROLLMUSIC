@@ -1049,86 +1049,150 @@ End Sub
 Sub CTRL1207() 'NUEVA PARA TICKS
 On Local Error Goto fail
 
-Dim  As Integer pis ,i1,on1, off1,cuentatick,j1
- pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
+Dim  As Integer pis 
+pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
  
- If pis =0 Then
+If pis =0 Then
   Exit Sub
- EndIf
+EndIf
 
 Dim As String  nombreTrack
-Dim As Integer maxposTrack, candado, arranque,delta,i2
+Dim As Integer c144,c128
+Dim As Integer i1,i2,i3,j1,on1, off1,cuentatick,maxposTrack, n1,n1old
+
 Dim As Double  Tick5mseg = 0.005208325 'seg 5 miliseg.. para I=240
 Dim As UByte   dato1,dato2, dato3
 Dim As Double  mitimer=0,deltatime=0
-Dim As UByte monitornota
+Dim As UByte   monitornota
 
-Dim As mididat flujo (1 To tocaparam(pis).maxpos)
+'Dim As mididat flujo (1 To tocaparam(pis).maxpos)
 
 nombreTrack=tocaparam(pis).nombre
 maxposTrack=tocaparam(pis).maxpos
-
-
+Print #1,"nombreTrack ";nombreTrack
+Print #1,"maxposTrack ";maxposTrack
+'deberia definir maxposTrack+6 pero ya pongo as capacidad por si se quiere cargar mas notas
 ReDim (Track(0).trk ) (1 To maxposTrack*2 ,1 To lim3)
-ReDim Roll.trk (1 To maxposTrack*2, NB To NA) As dat
-
-
-For i1=1 To maxposTrack 
 
 
 
-    dato1=Toca(pis).trk(i1).modo
-    dato2=Toca(pis).trk(i1).nota
-    dato3=Toca(pis).trk(i1).vel
-     
+i1=0
+Do 
+   i1=i1+1
+  dato1=Toca(pis).trk(i1).modo
+  dato2=Toca(pis).trk(i1).nota
+  dato3=Toca(pis).trk(i1).vel
 
+  Select Case  dato1
+        Case 1
+      n1=n1+1
+ '     deltatime=deltatime +Tick5mseg ' milisegundos PARA USAR DurXtick
+ '     cuentatick=cuentatick+1  'es i1 para moverme en la pantalla esa cantidad de ticks
 
-     Select Case  dato1
-         Case 1
-      deltatime=deltatime +Tick5mseg ' milisegundos PARA USAR DurXtick
-      cuentatick=cuentatick+1  'para moverme en la pantalla esa cantidad de ticks
       Track(0).trk(i1,1).onoff=0
       Track(0).trk(i1,1).nota=0 'es PianoNota
       Track(0).trk(i1,1).vol=0
       Track(0).trk(i1,1).dur=0
- 
-         Case 144 ' on
-         'noteon dato2,dato3,tocaparam(pis).canal, tocaparam(pis).portout, 1 'message(3) ' noter vel canal
-      Track(0).trk(i1,1).onoff=2
-      Track(0).trk(i1,1).nota=dato2 'es PianoNota
-      Track(0).trk(i1,1).vol=dato3
-      Track(0).trk(i1,1).dur=0 'no conosco todavia la duracion
-           flujo(i1).estado=2
-           flujo(i1).nota=dato2
-           flujo(i1).vel=dato3
-           flujo(i1).indice=i1 
-           i2=i1
-         Case 128 'off
-           Track(0).trk(i1,j1).onoff=1
-           Track(0).trk(i1,j1).nota=dato2 'es PianoNota
-           Track(0).trk(i1,j1).vol=dato3
-           Track(0).trk(i1,j1).dur=0 'puedo calcular la duracion aproximada
-           flujo(i1).estado=1
-           flujo(i1).nota=dato2
-           flujo(i1).vel=dato3
-           flujo(i1).indice=i1 
-           flujo(i1).deltatime=deltatime
-           deltatime=0
-           
-           ' duracion aproximada
-           Dim pasos As Integer
-           For k1 As Integer =1 To 180
-             pasos = DurXTick(k1)
-             If pasos <= cuentatick*1.01 and pasos >= cuentatick * 0.90 Then
-              Track(0).trk(i2,1).dur=pasos ''hay q ubicar i2
-' vale para melodia falta para acorde  
-             EndIf 
-           Next k1
-           cuentatick=0 
-     End Select
- 
-Next i1
+   
 
+'           flujo(i1).estado=0
+'           flujo(i1).nota=0
+'           flujo(i1).vel=0
+'           flujo(i1).indiceX=i1
+
+       Case 144 ' on
+         If n1=n1old Then 
+            i2=i2+1
+         Else
+            i2=1 
+         EndIf
+      Track(0).trk(i1,i2).onoff=2
+      Track(0).trk(i1,i2).nota=dato2 'es PianoNota
+      Track(0).trk(i1,i2).vol=dato3  'velocidad
+      Track(0).trk(i1,i2).dur=185 ' " N " no conosco todavia la duracion
+'           flujo(i1).estado=2
+'           flujo(i1).nota=dato2
+'           flujo(i1).vel=dato3
+'           flujo(i1).indiceX =i1
+'           flujo(i1).indiceY =i2
+       n1old=n1
+         Case 128 'off
+           If n1=n1old Then 
+              i2=i2+1
+           Else
+              i2=1 
+           EndIf
+
+           Track(0).trk(i1,i2).onoff=1
+           Track(0).trk(i1,i2).nota=dato2 'es PianoNota
+           Track(0).trk(i1,i2).vol=dato3
+           Track(0).trk(i1,i2).dur=183 
+           n1old=n1
+'           flujo(i1).estado=1
+'           flujo(i1).nota=dato2
+'           flujo(i1).vel=dato3
+'           flujo(i1).indice=i1 
+'           flujo(i1).deltatime=deltatime
+'           deltatime=0
+           
+'           ' duracion aproximada
+'           Dim pasos As Integer
+'           For k1 As Integer =1 To 180
+'             pasos = DurXTick(k1)
+'             If pasos <= cuentatick*1.01 and pasos >= cuentatick * 0.90 Then
+'              Track(0).trk(i2,1).dur=pasos ''hay q ubicar i2
+' vale para melodia falta para acorde  
+'             EndIf 
+'           Next k1
+'           cuentatick=0 
+     End Select
+     
+ ' casillas de columna sin dato se resetean   
+  For j1=1 To lim2 ' decia lim2 porque,,
+    If Track(0).trk(i1,j1).nota = 0 And Track(0).trk(i1,j1).dur <182    Then
+       Track(0).trk(i1,j1).nota = 181
+       Track(0).trk(i1,j1).dur  = 0
+      ' Track(0).trk(i1,j1).canal = 0
+      ' Track(0).trk(i1,j1).vol  = 0
+
+    EndIf
+  Next j1
+
+  If  i1=maxposTrack Then
+     For i1=maxposTrack To maxposTrack +6
+        For j1=1 To lim2 ' decia lim2 porque,,
+          If Track(0).trk(i1,j1).nota = 0 And Track(0).trk(i1,j1).dur <182    Then
+           Track(0).trk(i1,j1).nota = 181
+           Track(0).trk(i1,j1).dur  = 0
+       '    Track(0).trk(i1,j1).canal = 0
+       '    Track(0).trk(i1,j1).vol  = 0
+          EndIf
+        Next j1
+     Next i1
+
+  i1=i1-1  ' +6 sino quedaria en +7
+      Track(0).trk(i1,1).onoff=0
+      Track(0).trk(i1,1).nota=0 'es PianoNota
+      Track(0).trk(i1,1).vol=0
+      Track(0).trk(i1,1).dur=182
+
+     Exit Do
+  EndIf
+
+Loop
+
+titulos(0)=nombreTrack
+pmTk(0).MaxPos = maxposTrack +6 '''tocaparam(pis).maxpos
+pmTk(0).desde = 4
+pmTk(0).hasta = 8
+pmTk(0).posn=1
+pmTk(ntk).canalsalida=tocaparam(pis).canal
+pmTk(ntk).portout=tocaparam(pis).portout
+pmTk(ntk).patch=tocaparam(pis).patch
+Track(ntk).trk(1,1).nnn =tocaparam(pis).patch
+
+TrackaRoll (Track(), 0 , Roll)
+ROLLCARGADO=TRUE
 
 
 
@@ -1137,7 +1201,7 @@ Exit Sub
 fail:
  Dim errmsg As String
 If  Err > 0 Then
-  errmsg = "FAIL Error CTRL1207" & Err & _
+  errmsg = "FAIL Error CTRL1207 " & Err & _
            " in function " & *Erfn & _
            " on line " & Erl & " " & ProgError(Err)
   Print #1, errmsg
@@ -1237,7 +1301,7 @@ For i1=1 To maxposTrack
          'noteon dato2,dato3,tocaparam(pis).canal, tocaparam(pis).portout, 1 'message(3) ' noter vel canal
          tot1=tot1+1
           on1=on1+1
-         flujo(tot1).indice=tot1   
+         flujo(tot1).indiceX=tot1   
          flujo(tot1).estado=2
          flujo(tot1).nota=dato2
          flujo(tot1).vel=dato3
@@ -1254,7 +1318,7 @@ For i1=1 To maxposTrack
          flujo(tot1).nota=dato2
          flujo(tot1).vel=dato3
          delta= deltatime*1000
-         flujo(tot1).indice=tot1 
+         flujo(tot1).indiceX=tot1 
         Print #1, "OFF ";delta; "nota "; dato2 ; " vel "; dato3
          flujo(tot1).deltatime=deltatime
          deltatime=0

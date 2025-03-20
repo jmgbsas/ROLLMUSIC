@@ -88,7 +88,7 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="2025-03-10 TICKS 0.300 cambio numeracion (RollMusic 0.5000)"
+nroversion="2025-03-19 TICKS 0.303 Separacion de Notas y un poco de performance"
 ' empieza a andar!! 
 'esta version no será compatible con las anteriores se agrego por ahora
 ' un campo nuevo al type dat el onoff ubyte, con 2 indicara on, y con 1 el off 
@@ -450,7 +450,7 @@ Loop
 ''DisableGadget(PISTASROLL,1) ' para que desactive y salga de ahi 
 '' eventM=eventClose
 ''eventM=eventrbdown
-FINALIZAR_ROLLMUSIC = 1
+'FINALIZAR_ROLLMUSIC = 1
 Sleep 5
 
 salir()

@@ -306,6 +306,8 @@ MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo 
 
 MenuItem(1070,MenName4,"Escalas auxiliares ajustadas", MF_CHECKED)
 MenuItem(1071,MenName4,"Cifrado de Acordes", MF_CHECKED)
+MenuItem(1072,MenName4,"Separacion de Notas en pantalla de 1 en adelante  ")
+
 Menubar(MenName4)
 'MenuItem(1072,MenName4,"Na/Parametros de un archivo Roll  ")
 'MenuItem(1073,MenName4,"Na/Parametros de un archivo Track ")

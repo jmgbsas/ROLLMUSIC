@@ -1637,7 +1637,7 @@ EndIf
 
 If i1<= NA-13 Then
 ' el off ya anda 01-03-2025!!! agfegamos al final del if el 183 para que pase
-   If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12  And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Or Roll.trk(jply, i1).dur <= 183 Then ' es semitono
+   If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12  And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Or Roll.trk(jply, i1).dur <= 183 Or Roll.trk(jply, i1).dur <= 185 Then ' es semitono
      ' por mas que achique en octavas, Notapiano se calcula respecto del nro 
      ' completo de octavas del piano ergo 115 es fijo siempre mientras
         
@@ -1705,9 +1705,9 @@ If i1<= NA-13 Then
   '       Print #1,"pasocol guarda port , pista --> ",pasoCol(cnt).port   
       
  ' >>>>>>>>>>>>>>>CANAL MIDI >>>>>>>>>>>>>>>>>>>>>>>>         
-        If pasoCol(cnt).DUR <> 183 Then ' el off ya anda 01-03-2025!!!
-        pasoCol(cnt).tiempoFigura    = relDur(pasoCol(cnt).DUR) * tiempoDur * d11
-        EndIf
+  '      If pasoCol(cnt).DUR <> 183 Then ' el off ya anda 01-03-2025!!!
+  '      pasoCol(cnt).tiempoFigura    = relDur(pasoCol(cnt).DUR) * tiempoDur * d11
+  '      EndIf
         pasoCol(cnt).i1    = i1 'posicion vertical en el vector real
   '      pasoCol(cnt).i1old = i1 'posicion vertical en el vector real
         'print #1,"PALL 11: posicion vertical en el vector real ",i1

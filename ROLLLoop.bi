@@ -16,7 +16,7 @@ End If
 '''Print #1,"creaPenta; *po , desde "; *po, desde 
 indEscala=1 ' inicializamos la guiade escalas a la 1erwa 
 Dim As String t2="",t3="",t4=""
-
+ 
  Dim As cairo_font_extents_t fe   '     font data
  Dim As cairo_text_extents_t te  '      text size
  Dim As Integer semitono,n,indf,indfa,indfb,k,indnota,verticalEnOctavaVacia,k1
@@ -40,7 +40,6 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
  
  cairo_select_font_face (c, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL)
  cairo_set_font_size (c, font)
- 
 
  ' ======== NOTAS  =========
  ' cuando hago click en Edit el fondo cambia en main para edicion
@@ -131,7 +130,8 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
  EndIf
 
 
-  
+ lockhoriz=0 ' teclas der izquierda controles 
+ lockfont=0
  Dim As Integer lugar=0, sitio
  lugarOld=Penta_y
 ' |||||||||||| --------- FOR SEMITONO -------------------
@@ -157,7 +157,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
     t = NotasGuia(semitono) + Str(*po -1) + "_["
   EndIf
   cairo_move_to(c, 0, Penta_y + (semitono+1) * inc_Penta- 6)
-  If notaGuia=1 Then '5 feb 2025
+  If notaGuia=0 Then '5 feb 2025
      cairo_show_text(c, t)
   EndIf
   t= ""
@@ -168,7 +168,9 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
   
 ' ||||||||=============== FOR NUCLEO ========================>>>>>>>>>>>>>>>>
   For n = posishow To posishow + NroCol 
-
+   If posishow + NroCol > CantTicks Then
+      Exit For
+   EndIf
 ' =======> deteccion escalas auxiliares y acordes
 '' Print #1, " 12 + (*po-1) * 13 " ; 12 + (*po-1) * 13
 '' Print #1, " *po , n "; *po, n
@@ -270,7 +272,7 @@ EndIf
     EndIf
 
   
-' t no puede quedar en un scope dsitinto se hace shared    
+' t no puede quedar en un scope distinto se hace shared    
        ' apenas usas t2 o t3 hay que borrarlas sino se pudre todo raro
     If t2 >"" Then
       cairo_show_text(c, t2)
@@ -330,7 +332,7 @@ EndIf
      indf= CInt(Roll.trk (n, 11- semitono + (*po-1) * 13).dur)
 
   '  print #1,"lugar ",13
-    If (indf >= 1 And indf <= 184)  Then ' 13-05-2021 11
+    If (indf >= 1 And indf <= 185)  Then ' 12-03-2025 185=N roll sin duraciones
     Else
        indf=181
     EndIf ' t no puede quedar en un scope dsitinto se hace shared    
@@ -338,7 +340,15 @@ EndIf
      ' Print #1,"UN 183 DETECTADO EN CREAPENTA, n ";n 
      '''  cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono+1 ) * inc_Penta - 4) 
     ''EndIf
-     t= figura(indf)
+     If indf=181 And resumen=1 Then
+        separaenuno=separaenuno +1
+        If separaenuno=intervalo Then
+           separaenuno=0 
+           Continue For
+        EndIf
+     Else
+        t= figura(indf)
+     EndIf
 ''Print #1,"n, figura(indf) " ;n, figura(indf)
 '     cairo_show_text(c, t)
 '     cairo_stroke(c)
@@ -363,7 +373,7 @@ EndIf
   '       curpos=curpos - kNroCol * NroCol
   '    EndIf
 
-       cursor(c,n,nro,Roll)
+      cursor(c,n,nro,Roll)
       cairo_set_source_rgba(c, 1, 1, 1, 1)
     EndIf
 
@@ -786,7 +796,8 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
  ' NOOOO ScreenSync  no usar nunca sync desfasa el barrido de cairo y salta
  ' las lineas
 
-      creaPenta (c, Roll )
+     creaPenta (c, Roll )
+     
 
     If *po = 99 Or *po=3 Then
        *po = hasta -1 ' 8 por ejemplo => *po=7
@@ -796,7 +807,7 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
      
   Next
   
-
+ 
   
 End Sub
 
@@ -981,7 +992,7 @@ EndIf
 
 Dim  As UByte   huboerror  
 Dim  As integer contid=0 ' 1 to 24 maximo son 12 on y 12 off en acorde
-Dim  As Integer nroPartesNota
+Dim  As Integer nroPartesNota,nnn=0
 ' -----------------
 
 edity1 = 1 ' botton Edit bordeSup
@@ -1010,6 +1021,7 @@ Else
 
 '--------------
    '''' If  terminar=0 And GrabarEjec=0 Then  '16-06-2022
+        
         ScreenLock()
           cairo_set_source_rgba c, 0, 0, 0, 1
           cairo_paint(c)
@@ -1068,11 +1080,12 @@ Else
      ' se supone que la direccion es unica y se reusa no se la crea muchas veces
      ' es mejor no ¿? zas je
 ' cairo_text en creaPenta hace cancelar la salida desde Ventana Ctrl
-' evitamos escribir a grafico si ya estamso saliendo ,,, 
-        If terminar=0 Or repro=0 Then 
+' evitamos escribir a grafico si ya estamso saliendo ,,,
+  
+        If (terminar=0 Or repro=0) Then  'And (Timer - penta2 > 0.030) Then 
            threadPenta = ThreadCall barrePenta (c, Roll )
            ThreadWait threadPenta
-        End If
+ 
              
             pubi=0
            menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
@@ -1080,6 +1093,8 @@ Else
            botones(hWnd, cm, ANCHO,ALTO) ' este despues sinocrash
        
            cairo_stroke(cm) ' cm despues de c sino crash
+        EndIf
+      ScreenSync  
       ScreenUnLock()
 
 
@@ -1088,6 +1103,7 @@ EndIf
 
 
 '' ---------------  LOOP 2 ---------------
+Do
 Do 
 'Print #1,"1051 do 2, ROOLLOOP DESDE "; desde
 
@@ -1257,26 +1273,45 @@ If  MultiKey(SC_MINUS)  Then
 EndIf
 
 ' UNA NEGRA SON 96, CORCHEA 48, SEMICORCHEA 24, FUSA 12, NOS MOVEMOS CON FUSA EN TICKS00
-If MultiKey(SC_CONTROL) Then 
+If MultiKey(SC_CONTROL) And lockhoriz=0 Then 
  If MultiKey (SC_RIGHT) Then
-    posicion=posicion + 24 ' UNA corchea ''NroCol*2
-    If posicion > MaxPos Then
-      posicion = MaxPos
+   If COMEDIT = FALSE Then
+     posicion=posicion + 24 ' UNA corchea ''NroCol*2
+     If posicion > MaxPos Then
+       posicion = MaxPos
+     EndIf
+     posishow=posicion
+     lockhoriz=1
+     Exit Do
+   Else
+     curpos= curpos + 1 ' mueve cursor cuando Roll se detiene (posicion)
+      If curpos > NroCol  Then
+        curpos = NroCol
+      EndIf
     EndIf
-    posishow=posicion
-    Exit Do
+    Sleep 100
  EndIf    
 EndIf
 
-If MultiKey(SC_CONTROL) Then 
+If MultiKey(SC_CONTROL) And lockhoriz=0 Then 
   If  MultiKey (SC_LEFT) Then
-   posicion=posicion - 24' UNA corchea ''NroCol*2
-   If posicion < 1 Then
+    If COMEDIT = FALSE Then
+      posicion=posicion - 24' UNA corchea ''NroCol*2
+      If posicion < 1 Then
       posicion = 1
+      EndIf
+      posishow=posicion
+      lockhoriz=1
+      Exit Do
+   Else
+      curpos= curpos - 1 ' mueve cursor cuando Roll se detiene (posicion)
+      If curpos > NroCol  Then
+         curpos = NroCol
+      EndIf
+
    EndIf
-   posishow=posicion
-   Exit Do 
-  EndIf
+   Sleep 100   
+   EndIf
 EndIf
 
 If MultiKey(SC_ALT) And MultiKey(SC_F12) Then
@@ -1315,6 +1350,7 @@ If MultiKey(SC_DOWN) Then  ' el screenevent me pone trasponer en 1 la puta e.sca
      If notacur > 12 Then
       notacur=1
      EndIf
+      Sleep 100
       Exit Do
     EndIf
     If cursorVert=0 Then 
@@ -1363,6 +1399,7 @@ If MultiKey (SC_UP) Then
      If notacur < 1 Then
       notacur=12
      EndIf
+      Sleep 100
      Exit Do
     EndIf
 
@@ -1385,7 +1422,7 @@ EndIf
  If  mouseY > 50 And MultiKey(SC_RIGHT)   Then ' <======== RIGHT
  
      If COMEDIT = FALSE Then
-        posicion = posicion + 1 ' UNA semi FUSA 
+        posicion = posicion + 1 ' UNA corchea  
         kNroCol= Int(posicion/NroCol)
         If  (kNroCol > 0) And (posicion = NroCol * kNroCol) And (posicion < MaxPos)Then
            iniciodelectura = iniciodelectura +  NroCol
@@ -1406,7 +1443,7 @@ EndIf
     '    If posicion + curpos > MaxPos -1  Then 'ojo esto jmg
     '       curpos = MaxPos -1 - posicion 
     '    EndIf
-
+        
      EndIf
      Sleep 100
     Exit Do
@@ -1447,24 +1484,27 @@ EndIf
      If curpos < 0 Then
         curpos = 0
      EndIf
-     Sleep 100
+     
   EndIf
-    
+    Sleep 100
     Exit Do
  EndIf
 
- If MultiKey(SC_H) Then
+ If MultiKey(SC_H) And notaGuia=0 Then
 'switch prende apaga las notas Guia al costado izquierdo de Roll Grafico
-   If notaGuia = 1 Then
-      notaGuia=0
-   Else
       notaGuia=1  
-   EndIf
+    Sleep 200
       Exit Do
   EndIf
 
+If MultiKey(SC_H) And notaGuia=1 Then
+'switch prende apaga las notas Guia al costado izquierdo de Roll Grafico
+      notaGuia=0  
+    Sleep 200
+      Exit Do
+  EndIf
 
-If MultiKey (SC_F2)  Then
+If MultiKey (SC_F2)  And lockfont=0 Then
 ' escala = escala - 0.01
    
    anchofig=anchofig - 1
@@ -1492,6 +1532,19 @@ If MultiKey (SC_F2)  Then
    EndIf    
    nanchofig=anchofig
    font=font - 0.5
+   Sleep 50
+   If font < 5 And font >0  Then
+    font=18
+    DUR => 0
+   curpos =>1
+   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
+   gap1= anchofig* 6 ' porque era tanto 20
+   NroCol =  (ANCHO / anchofig ) + 4 '6
+   gap2= (914 * gap1) /1000 ' 74 default
+   gap3= (519 * gap1) /1000 ' 42 default
+
+   EndIf
+   
 '   dim as integer figancho 
 '   for t1 as Integer = 1 to 30  
 '   figancho=mispx(t1, 2)
@@ -1500,10 +1553,11 @@ If MultiKey (SC_F2)  Then
 '   endif
 '   next t1
    ANCHO3div4 = ANCHO *3 / 4
+   lockfont=1
   Exit Do
 EndIf
 
-If MultiKey (SC_F3)  Then
+If MultiKey (SC_F3)  And lockfont=0 Then
    anchofig=anchofig + 1
    gap1= anchofig * 6 ' era porque tanto 20 '81 default
    gap1=gap1 - 1
@@ -1541,6 +1595,10 @@ If MultiKey (SC_F3)  Then
 '       anchofig = 175
 '   EndIf    
    font=font+0.5  
+   If font > 50 Then
+      font=50
+   EndIf 
+   lockfont=1
    nanchofig=anchofig
    ANCHO3div4 = ANCHO *3 / 4
  Exit Do
@@ -1650,7 +1708,7 @@ verticalEnOctavaVacia= 12 + (hasta-2)*13 + n0 - desde ' 90 + 6 - 4=92
          ig=0
       EndIf
       scan_alt=1
-Print #1,"15-sleep ";Timer
+
       Sleep 100
    EndIf
    While InKey <> "": Wend
@@ -1684,7 +1742,7 @@ Dim As Integer ik=0,ij=0,im
      
      MaxPos=MaxPos-1
      mel_undo_k=mel_undo_k -1
-Print #1,"16-sleep ";Timer
+
      Sleep 100
    EndIf
    
@@ -1734,27 +1792,37 @@ oct2=NA
   Print #fk, String (MaxPos,"*")
  Next i1
  While Inkey <> "": Wend
-Print #1,"17-sleep ";Timer
+
  Sleep 150
   Print #fk,"fin >>>>>>>>>>> "
  cerrar fk
 EndIf
 
-If MultiKey (SC_F9) Then
+If MultiKey (SC_F9) And lockfont=0 Then
  font = font - 0.5
  gap1=gap1 + 3
- If font < 5  Then
-  font=5 
+ If font < 5 And font >0  Then
+   font=18
+   DUR => 0
+   curpos =>1
+   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
+   gap1= anchofig* 6 ' porque era tanto 20
+   NroCol =  (ANCHO / anchofig ) + 4 '6
+   gap2= (914 * gap1) /1000 ' 74 default
+   gap3= (519 * gap1) /1000 ' 42 default
+
  EndIf
+ lockfont=1
  Exit Do
 EndIf
 
-If MultiKey (SC_F10) Then
+If MultiKey (SC_F10) And lockfont=0 Then
  font = font + 0.5
  gap1 = gap1 + 3
- If font > 36 Then
-  font=36 ' pisa la 1er duracion mas de ahi....
+ If font > 50 Then
+  font=50 ' pisa la 1er duracion mas de ahi....
  EndIf
+ lockfont=1
  Exit Do
 EndIf
 '6pt   	8px 	0.5em 	50%
@@ -1792,19 +1860,13 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_F4)  Then
 ''ACA LOGRAMOS CERRAR LA PANTALLA DE ROLL GRAFICO!!!
 '' SIN ERMINAR EL PROGRAMA GFX_NULL ES LO QUE HACE POSIBLE ESTO
 '' NO DESTRUIR NADA Y SEPUEDE VOLVER A USAR
-'' CERRAROM EL GRAFICO PERO EL GRAFICO ES UNICO,,,,
+'' CERRAMOS EL GRAFICO, PERO EL GRAFICO ES UNICO,,,,
 
 Dim As Integer i3
 
   If MessageBox(hWnd,"¿CERRAR GRAFICO ? " ,param.titulo ,4 Or 64) =6 Then
      eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
-    'NO cairo_destroy(cm)
-    'NO cairo_surface_destroy( surf2 )
-    'NO cairo_destroy(c)
-    'NO cairo_surface_destroy( surface )
-    'NO FT_Done_Face( ftface )
      If play=1 Or playb=1 Then
-      '''alloff (canal)
         For i3 = 1 To tope
            portsal = pmTk(i3).portout 
            allSoundoff (pmTk(i3).canalsalida,portsal )
@@ -1819,7 +1881,6 @@ Dim As Integer i3
       cancel_callback(midiin(pmTk(ntk).portin ))
       Dim k1 As Integer
       k1=pmTk(ntk).portout
-   '   Print #1,"midiout ",k1, *nombreOut(k1)
       alloff( pmTk(ntk).canalsalida,k1 )  
       listoutAbierto(k1)=0
       close_port midiout(k1)
@@ -1827,18 +1888,8 @@ Dim As Integer i3
 
     End If 
 
-'    ffile=4
 FileFlush (-1)
-'    cerrar 0
-'    cerrar 1
-'      Sleep 100
     
-'=======> no borrar en salida roll grafico Kill "procesos.txt"
-'    End 0
- 'ThreadDetach(threadloop)
- 'DestroyWindow(hWnd)
-
-   ''ScreenRes ANCHO, ALTO, 24 ,1, GFX_NULL
    SCREEN 0, , , &h80000000 
  ''https://www.freebasic.net/forum/viewtopic.php?t=26963
 
@@ -1852,86 +1903,21 @@ FileFlush (-1)
   EndIf  
 EndIf
 
+'--------------------------------------
 If MultiKey(SC_ESCAPE) Or  Terminar=1 Then
-   'ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
-   'Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-Terminar=1
-Dim As Integer i3
-
-  If MessageBox(hWnd,"¿Fin RollMusic? " ,param.titulo ,4 Or 64) =6 Then
-     eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
-    cairo_destroy(cm)
-    cairo_surface_destroy( surf2 )
-    cairo_destroy(c)
-    cairo_surface_destroy( surface )
-    FT_Done_Face( ftface )
-     If play=1 Or playb=1 Then
-      '''alloff (canal)
-        For i3 = 1 To tope
-           portsal = pmTk(i3).portout 
-           allSoundoff (pmTk(i3).canalsalida,portsal )
-           close_port(midiout(portsal))
-           out_free(midiout(portsal))
-        Next i3
-        ThreadDetach(thread1)
-        ThreadDetach(thread2)
-              
-     EndIf
-    If teclado=1 Then
-      cancel_callback(midiin(pmTk(ntk).portin ))
-      Dim k1 As Integer
-      k1=pmTk(ntk).portout
-   '   Print #1,"midiout ",k1, *nombreOut(k1)
-      alloff( pmTk(ntk).canalsalida,k1 )  
-      listoutAbierto(k1)=0
-      close_port midiout(k1)
-      out_free(midiout(k1))
-
-    End If 
-
-    ffile=4
-If   Open ("./RollMusic.ini" For output As #ffile ) <> 0 Then
-   Print #1,"No se puede escribir en RollMusic.ini en RollLoop Esc"
-Else
-    If nmxold = 0 Then
-       nmxold=mxold
-       nmyold=myold
-    EndIf   
-    If nancho=0 Then
-       nancho=ANCHO
-       nalto =ALTO
-    EndIf    
-    If ndeltaip=0 Then
-       ndeltaip=inc_Penta
-    EndIf
-    nanchofig=anchofig
-    Print #ffile,font , " font"
-    Print #ffile,nmxold, " mxold "
-    Print #ffile,nmyold, " myold"
-    Print #ffile,nANCHO, " ANCHO"
-    Print #ffile,nALTO, " ALTO"
-    Print #ffile,ndeltaip, " inc_Penta"
-    Print #ffile,nVerEscalasAuxiliares, "nVerEscalasAuxiliares"
-    Print #ffile,nanchofig, "nanchofig"
-    Print #ffile,nVerCifradoAcordes, "nVerCifradoAcordes"    
-
-    cerrar ffile
-End If
-FileFlush (-1)
-    cerrar 0
-    cerrar 1
-Print #1,"18-sleep ";Timer
-      Sleep 100
-    
-'=======> no borrar en salida roll grafico Kill "procesos.txt"
+Sleep 5
+  If MessageBox(hWnd,"¿TERMINA PROGRAMA ROLLMUSIC ? " ,param.titulo ,4 Or 64) =6 Then
+    salir()
+    Kill "procesos.txt"
+    Close
     End 0
- ThreadDetach(threadloop)
- DestroyWindow(hWnd)
   Else
-  Terminar=0
-   Exit Do ' 06-05-2024
-  EndIf  
+    Terminar=0
+    Exit Do ' 06-05-2024
+  EndIf
 EndIf
+
+
 ' AYUDA =============ESPACIOS MANEJO ===================================
 ' repetir espacios con barra+ALTGRAF..luego la nota correspondiente
 '================================================================
@@ -2016,6 +2002,8 @@ deltaip=0:incWheel=0:lockip=0:playloop=0
  nota=0
  DUR=0
 '''''' alloff( 1 ) no ahce falta aca para eso esta P
+' terminar version reducida de la secuencia
+ resumen=0
 
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
@@ -2498,6 +2486,7 @@ If COMEDIT = FALSE Then ' construir cifras para copiar Nveces por ejemplo
  If MultiKey(SC_HOME) Then
      posicion=1
      posishow=posicion
+     Exit Do
  EndIf
  If MultiKey(SC_CONTROL) And MultiKey(SC_HOME) Then
   'TODA LA SECUENCIA ENTRA EN UN PANTALLA
@@ -2513,8 +2502,13 @@ If COMEDIT = FALSE Then ' construir cifras para copiar Nveces por ejemplo
    gap2= (914 * gap1) /1000 ' 74 default
    gap3= (519 * gap1) /1000 ' 42 default
 
+   Exit Do
 
+ EndIf
 
+ If MultiKey(sc_j) And resumen=0 Then
+    resumen=1
+    Exit Do
  EndIf
 
  If MultiKey(SC_END) Then
@@ -2522,6 +2516,7 @@ If COMEDIT = FALSE Then ' construir cifras para copiar Nveces por ejemplo
       posicion=MaxPos - NroCol*3/4
   '  EndIf
     posishow=posicion
+    Exit Do
  EndIf
       
 ' ESTE LLAMADO ACTUA EN COMEDIT=FALSE Y CON pasoZona 1 y/o 2 
@@ -2529,6 +2524,7 @@ If COMEDIT = FALSE Then ' construir cifras para copiar Nveces por ejemplo
   ' BORRAR COLUMNA UTOMATICO LUEGO DE BORRAR NOTAS CON 0 Y X
   ' no anda bien 12-12-2021 se cambia a marcar por zona columna o columnas
      borrarColumnasMarcadas()
+     Exit Do
   EndIf
 
 
@@ -3282,8 +3278,8 @@ If (ScreenEvent(@e)) Then
            fueradefoco=0
        Else     ' fuera de y sin play reducimos consumo CPU
            Print #1,"1-sleep "; timer
-           Sleep 20 '12-06-2022 lo puse denuevo
-           fueradefoco=1
+         '  Sleep 20 '12-06-2022 lo puse denuevo
+         '  fueradefoco=1
        EndIf
 
  ' 23-08-21 CPU consumo fuera de foco
@@ -3293,7 +3289,7 @@ If (ScreenEvent(@e)) Then
        Else     ' fuera de y sin play reducimos consumo CPU
         '  Print #1,"2-sleep ";timer
         '   Sleep 20 '12-06-2022 lo puse denuevo
-        '   fueradefoco=1
+            fueradefoco=1
        EndIf
   Case EVENT_MOUSE_BUTTON_PRESS
 ' el help de freebasic esta mal dice que button left es 0 y es 1 !!!! joder pero anda mejor 
@@ -3592,13 +3588,13 @@ EndIf
      EndIf
      Exit Do
     EndIf
-'    If cursorVert = 1 Then
-'     notacur=notacur-1
-'     If notacur < 1 Then
-'      notacur=12
-'     EndIf
-'     Exit Do
-'    EndIf
+    If cursorVert = 1 Then
+     notacur=notacur-1
+     If notacur < 1 Then
+      notacur=12
+     EndIf
+     Exit Do
+    EndIf
    EndIf
 
    If e.scancode = 80 Then  ' <===== SC_DOWN repeat
@@ -3612,12 +3608,12 @@ EndIf
         trasponerGrupo ( -1, Roll,encancion)
         Exit Do 
      EndIf 
- '   If cursorVert=1 Then
- '      notacur = notacur + 1
- '      If notacur > 12 Then
- '        notacur=1
- '      EndIf
- '   EndIf
+    If cursorVert=1 Then
+       notacur = notacur + 1
+       If notacur > 12 Then
+         notacur=1
+       EndIf
+    EndIf
     If cursorVert=0 Then
        If s1=0 Then
          s1=1
@@ -3633,7 +3629,7 @@ EndIf
    EndIf
  
 '   If e.scancode = 75 Then ' <=====  SC_LEFT repeat
-'       posicion=posicion - 96 'NroCol
+'       posicion=posicion - 1 'NroCol
 '       If posicion < 1 Then
 '          posicion = 1
 '       EndIf
@@ -3642,7 +3638,7 @@ EndIf
 '    EndIf
 
 '    If e.scancode = 77 Then ' <======= SC_RIGHT repeat
-'        posicion=posicion + 96 ' Nrocol
+'        posicion=posicion + 1 ' Nrocol
 '        If posicion > MaxPos Then
 '           posicion = MaxPos
 '        EndIf
@@ -3900,7 +3896,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
     cairo_destroy(c)
     cairo_surface_destroy( surface )
 ''''    FT_Done_Face( ftface )
-Print #1,"3-sleep ";Timer
+
      Sleep 1
      Exit Sub 
   EndIf 
@@ -3920,17 +3916,17 @@ Print #1,"3-sleep ";Timer
  EndIf
 ' 12-07-2021 mousex > 70  
  If  s5= 0 And mouseX > 450 And mousex < (ANCHO -70 - mxold) And  usarmarco=0 and mousey < 50 Then
-     Sleep 20 '12-06-2022
+     Sleep 20 '12-06-2022 15-03-2025 decia 20
     If  play=0 And playb=0 Then ' durante un play funciona mal esto => se bloquea su uso por ahora
      x1=mouseX: y1=mouseY
     EndIf
-     s5=1  ' tiemp ointermedio de cpu???
+     s5=1  ' tiempo intermedio de cpu???
      Exit Do
  EndIf
  ' =========> MOVER VENTANA DRAGAR LA CINTA SUPERIOR con el mouse
  ' And menuNro= 1  '''348  (2* ANCHO/3)
  If MouseButtons And 1 And S5=1 And mouseX > 450  And mousex < (ANCHO -70 - mxold) And  usarmarco = 0 AND mousey < 50 Then
-     Sleep 20  '12-06-2022
+     Sleep 20  '12-06-2022 15-03-2025 decia 20
     If  play=0 And playb=0 Then ' durante un play funciona mal esto => se bloquea su uso por ahora   
        x2=mouseX
        y2=mouseY
@@ -3946,75 +3942,61 @@ Print #1,"3-sleep ";Timer
   
   Else
      s5=0 'mas tiempo de cpu
-    '' Sleep 10
+'   Print #1,"sleep s5 3867 ",timer
+ 
    
   EndIf
  ''https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-movewindow
  '                           <====== [BOTONES] =======>
  ' 07-08-2021 lugar para test tamaño 10x8
  ' salir de roll music  unificar jmg 02-03-2024
- If (mousex>=(ANCHO-40-mxold)) And (mousey <= 16) Or FINALIZAR_ROLLMUSIC = 1 Then
+ If (mousex>=(ANCHO-40-mxold)) And (mousey <= 16)  Then
   If  MouseButtons And 1 Then
-   If MessageBox(hWnd,"¿SEGURO FINALIZA? (puede usar  Escape tambien)","Fin RollMusic",4 Or 64) =6 Then
-    eventM=eventrbdown ' por si selecciono algo en lista pistas d e ventana  de control
-    Dim As Integer i3  
-    cairo_destroy(cm)
-    cairo_surface_destroy( surf2 )
-    cairo_destroy(c)
-    cairo_surface_destroy( surface )
-    FT_Done_Face( ftface )
-    If play=1 Or playb=1 Then
-       For i3 = 1 To tope
-          portsal = pmTk(i3).portout 
-          allSoundoff (pmTk(i3).canalsalida,portsal )
-          close_port(midiout(portsal))
-          out_free(midiout(portsal))
-       Next i3
-       ThreadDetach(thread1)
-       ThreadDetach(thread2)
+''ACA LOGRAMOS CERRAR LA PANTALLA DE ROLL GRAFICO!!!
+'' SIN ERMINAR EL PROGRAMA GFX_NULL ES LO QUE HACE POSIBLE ESTO
+'' NO DESTRUIR NADA Y SEPUEDE VOLVER A USAR
+'' CERRAMOS EL GRAFICO, PERO EL GRAFICO ES UNICO,,,,
+
+Dim As Integer i3
+
+  If MessageBox(hWnd,"¿CERRAR GRAFICO ? " ,param.titulo ,4 Or 64) =6 Then
+     eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
+     If play=1 Or playb=1 Then
+        For i3 = 1 To tope
+           portsal = pmTk(i3).portout 
+           allSoundoff (pmTk(i3).canalsalida,portsal )
+           close_port(midiout(portsal))
+           out_free(midiout(portsal))
+        Next i3
+        ThreadDetach(thread1)
+        ThreadDetach(thread2)
               
-    EndIf
+     EndIf
+    If teclado=1 Then
+      cancel_callback(midiin(pmTk(ntk).portin ))
+      Dim k1 As Integer
+      k1=pmTk(ntk).portout
+      alloff( pmTk(ntk).canalsalida,k1 )  
+      listoutAbierto(k1)=0
+      close_port midiout(k1)
+      out_free(midiout(k1))
+    End If 
 
+   FileFlush (-1)
+   SCREEN 0, , , &h80000000 
 
-    ffile=4
-If  Open ( "./RollMusic.ini" For output As #ffile) <> 0 Then
-   Print #1,"No se puede escribir RollMusic.ini en Boton Cerrar Grafico"
-Else
-    If nmxold = 0 Then
-       nmxold=mxold
-       nmyold=myold
-    EndIf   
-    If nancho=0 Then
-       nancho=ANCHO
-       nalto =ALTO
-    EndIf    
-    If ndeltaip=0 Then
-       ndeltaip=inc_Penta
-    EndIf
-    nanchofig=anchofig
-    Print #ffile,font , " font"
-    Print #ffile,nmxold, " mxold "
-    Print #ffile,nmyold, " myold"
-    Print #ffile,nANCHO, " ANCHO"
-    Print #ffile,nALTO, " ALTO"
-    Print #ffile,ndeltaip, " inc_Penta"
-    Print #ffile,nVerEscalasAuxiliares, "nVerEscalasAuxiliares"
-    Print #ffile,nanchofig, "nanchofig"
-    Print #ffile,nVerCifradoAcordes, "nVerCifradoAcordes"
-    FileFlush (ffile)
-    cerrar ffile
-EndIf
-    FileFlush (-1)  
-    cerrar 0
-'''' ====== > no borramos en salida grafico Kill "procesos.txt"
- ThreadDetach(threadloop)
- DestroyWindow(hWnd)
+   abrirRoll=0
+   reiniciar=1
+  Exit Sub
 
-    End 0
-    
-   EndIf
+  Else
+  Terminar=0
+   Exit Do ' 06-05-2024
+  EndIf  
+
   EndIf
  EndIf
+
 ' ======> F7  BOTON - 
  If (mousex>=(ANCHO-40-mxold)) And (mousey > 17) And (mousey < 32) Then
   If  MouseButtons And 1 Then
@@ -4058,7 +4040,7 @@ EndIf
 
 If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  
-   s5=0 '''2  ' me nos tiempo de cpu 15-03-2024
+   s5=2  ' me nos tiempo de cpu 15-03-2024
    
   '''Sleep  1  ' reemplazamos el de S5=2 de antes eso daba 1 mseg de retardo veremos si sirve aca
   If s3 = 2 Then  ''06-12-2021 jmg
@@ -4322,7 +4304,7 @@ EndIf
      Do
       event=WaitEvent
     mouse_event MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0
-    Print #1,"6-sleep ";Timer  
+      
     sleep 10
     mouse_event MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0
       
@@ -4718,8 +4700,8 @@ ButtonGadget(2,530,30,50,40," OK ")
             End If
 
           EndIf
-Print #1,"7-sleep ";Timer 
-          Sleep 5  
+
+          Sleep 1  
           
          Loop
          
@@ -5344,46 +5326,34 @@ EndIf
 '                     <===  FIN    O P I L F E W H
 
 ' ------------IPC sensado de comando fifo..
-'If fueradefoco=1  And (play = 0) and (playb=0) And (Cplay=0) Then
-''   Print #1,"fueradefoco=1"
-'Print #1,"8-sleep ";Timer
-'   ''Sleep 20
-'Else 
 
 
-  If s5=2 Then ''se elimino el retardo de 1 mseg frena mucho el scroll ahora 29-12-2021
-Print #1,"9-sleep ";Timer
-    Sleep 10 'jmgjmg
-  Else
-    Sleep 1 
-  EndIf
 
-'''EndIf
 
 Exit Do ' este exit do hace que ande el menu!!!
 ' o sea nunca loopea solo una vez!!
 
+
  
 Loop
+nnn=nnn+1
+If nnn=20 And MAXPOS < 800 Then ' que loopee mas en el lop mas interno solo salga menos al loop externo
+   nnn=0
+  Exit Do
+EndIf
+If nnn=100 And MAXPOS > 800 Then ' que loopee mas en el lop mas interno solo salga menos al loop externo
+   nnn=0
+  Exit Do
+EndIf
 
+If fueradefoco=1  And (play = 0) and (playb=0) And (Cplay=0) Then
+
+   Sleep 1 ' ESTO HACE QUE LA CINTA CORRA SUAVE
+EndIf
+
+Loop
 While InKey <> "": Wend
 
-'If fueradefoco=1 And (play = 0) and (playb=0) And (Cplay=0) Then  '''And  S5<> 1 Then
-'  Print #1,"2 -fueradefoco=1"
-'Print #1,"10-sleep ";Timer
-'  ' Sleep 20
-'Else 
-
-
- If s5=2  Then
-   Print #1,"11-sleep ";Timer
-   Sleep 10 ' 17-06-2022 cuadno no escribo a pantalla ese 1er loop se lentifica ....tampoco hay 
-' necesidad de entrar nada por teclado en esa pantalla puedo poner mas retardo
-'lo quedeberia ahcer es no poder mover la pantalla... o reducir su tamaño y al terminar
-' agrandar el tamaño eso podria ser....
- EndIf
-
-'''EndIf
 
 Loop
 

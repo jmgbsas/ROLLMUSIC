@@ -407,6 +407,13 @@
          k) Se puede renombrar una pista cargada de ejecuciones, para ello marcar el nombre  de la pista a
             renombrar y usar el menu archivo 5.2 (la cual graba automaticamente) y luego grabar con 5.0 aunque 
             no es necesario la grabacion se ahce automatica en 5.2
+         l) En el Menu de control, El menu VER contiene el ajuste de separacion de notas
+            en el gráfico, esto acorta o alarga la imagen no afecta a la reproduccion de la secuencia
+            Para ello pulsar la tecla <j> y se habilita por default una separacion de 1 entre notas
+            , para eliminar la separacion pulsar Q. Para ajustar otra separacion
+            en el MEnu VER como se mencionò, tiene un subitem Separacion de notas , al pulsar
+            aparece un dialogo para entrar un numero. de 1 en adelante... etc. 
+
 
 
       2) Puede reproducirse al mismo tiempo una cancion y una grabacion *.ejec.
