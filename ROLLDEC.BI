@@ -606,6 +606,7 @@ Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota
 Dim Shared As Integer x, y, buttons, res,xscreen,gap1,gap2,gap3
 common Shared As float anchofig
 Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos=0, curposold, resultado, indicePos
+' este pesodur lo deberia cambiar a ticks
 Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 10000000,5000000,2500000,1250000, 625000,312500,156250, 78125,39063, _ '1  9
 12500000,6250000,3125000,1562500, 781250,390625,195313, 97656,48828, _ '10 18
@@ -690,7 +691,7 @@ Dim Shared As Integer ContadorError=0
 
 Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _
 modifmouse, EnOctava,nsE,nR,lugarOld, nroClick, posinterna, indCompas,menuabierto=0
-Dim Shared As ubyte nC=0,nF=0,nRk=0, cnc=0,cnf=0,lockfont=0, lockhoriz=0
+Dim Shared As ubyte nC=0,nF=0,nRk=0, cnc=0,cnf=0,lockfont=0, lockhoriz=1
 
 Dim Shared As Double t1k,t2k,DURK,DURK1,DURk2, DURKOLD,DURK144, DURK128,DURK144old, DURK128old,cont144, cont128,huboerror=0
 
@@ -819,7 +820,7 @@ Dim Shared As String grado_inicial(1 To 24)
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
 'Dim Shared As Integer lim2=12, ctres=CantTicks
-Declare Sub calcCompas( ByRef j As Integer,Roll As inst)
+Declare Sub calcCompas(Roll As inst)
 
 Dim Shared As Integer lim2=12,mel_undo_k=0,lim3=25,cnt_acor=0,ig=0
 Dim Shared As Boolean Vaciodur=FALSE

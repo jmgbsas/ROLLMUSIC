@@ -1598,15 +1598,15 @@ EndIf
 ' en la rutina vol , depende de la dur ajusta vol=0 o vol = velpos... no hay problema con los silencios
  EndIf
 
-   Print #1," PLAYALL  jply velpos "; jply, velpos
+'   Print #1," PLAYALL  jply velpos "; jply, velpos
 ' ojo con silencios ligados !!!
   cnt=0
   iguales=0
   distintos=0
   duraold=0 ' 04-11-2021 jmg
-  print #1," ---------------000000000000000000000-----------------"
-  print #1," (((PALL 0:)))---START--PASO:[";jply;"] ----------------"
-  print #1," ---------------000000000000000000000-----------------"
+'  print #1," ---------------000000000000000000000-----------------"
+'  print #1," (((PALL 0:)))---START--PASO:[";jply;"] ----------------"
+'  print #1," ---------------000000000000000000000-----------------"
 
   '115 a 0
   ' recorre una posicion vertical
@@ -1722,9 +1722,9 @@ If i1<= NA-13 Then
 
     '''' ya nohace falta     mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
          If cnt > 1 Then' Acorde
-            print #1,"i1=NA=";i1 ; " ACORDE cnt= ";cnt
+'            print #1,"i1=NA=";i1 ; " ACORDE cnt= ";cnt
          Else    
-            print #1,"i1=NA=";i1 ; " SIMPLE cnt= ";cnt
+'            print #1,"i1=NA=";i1 ; " SIMPLE cnt= ";cnt
          EndIf  
 
          Select Case cnt
@@ -1737,10 +1737,10 @@ If i1<= NA-13 Then
          vel= CUByte(vol( pasoCol(cnt).DUR, velpos))
           If Roll.trk(jply, pasoCol(cnt).i1 ).onoff = 2 Then
             noteon CUByte(pasoCol(cnt).notapiano),vel,canal,portsal,cnt
-         Print #1,"note on para la notapiano ";pasoCol(cnt).notapiano
+'         Print #1,"note on para la notapiano ";pasoCol(cnt).notapiano
           EndIf
           If Roll.trk(jply, pasoCol(cnt).i1).onoff = 1 Then
-            Print #1,"note off para la notapiano ";pasoCol(cnt).notapiano
+'            Print #1,"note off para la notapiano ";pasoCol(cnt).notapiano
             noteoff CUByte(pasoCol(cnt).notapiano),canal,portsal,cnt
           EndIf    
     
@@ -1756,12 +1756,12 @@ If i1<= NA-13 Then
          portsal=CUByte(pasoCol(k1).port)
          vel= CUByte(vol( pasoCol(k1).DUR, velpos))
           If Roll.trk(jply, pasoCol(k1).i1).onoff = 2 Then
-            Print #1, "noteon CUByte(pasoCol(k1).notapiano),vel,canal,portsal,k1 "; CUByte(pasoCol(k1).notapiano),vel,canal,portsal,k1
+'            Print #1, "noteon CUByte(pasoCol(k1).notapiano),vel,canal,portsal,k1 "; CUByte(pasoCol(k1).notapiano),vel,canal,portsal,k1
             noteon CUByte(pasoCol(k1).notapiano),vel,canal,portsal,k1
           EndIf
 ' el off ya anda 01-03-2025!!! 
           If Roll.trk(jply, pasoCol(k1).i1).onoff = 1 Then
-           Print #1, "noteoff CUByte(pasoCol(k1).notapiano),canal,portsal,k1 "; CUByte(pasoCol(k1).notapiano),canal,portsal,k1 
+'           Print #1, "noteoff CUByte(pasoCol(k1).notapiano),canal,portsal,k1 "; CUByte(pasoCol(k1).notapiano),canal,portsal,k1 
             noteoff CUByte(pasoCol(k1).notapiano),canal,portsal,k1
           EndIf    
               '  AcordeIguales pasoCol(),cnt,cntold,vel,tiempoDur,Roll,velpos,0,0

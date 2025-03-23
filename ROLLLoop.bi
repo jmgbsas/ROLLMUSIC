@@ -147,55 +147,48 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
  
        cairo_set_source_rgba(c, 1, 1, 1, 1)
    EndIf
-  font= font - 2 ' achicamos notas giuas
-  cairo_set_font_size (c, font)
+
+   If notaGuia=0 Then '5 feb 2025 
+     font= font - 2 ' achicamos notas guias
+     cairo_set_font_size (c, font)
 ''  t = NotasGuia(semitono) + Str(*octava) + "_[" 
 '' cairo_move_to(c, 0, Penta_y + semitono * inc_Penta- 6)
-  If alteracion="bem" Then
-     t = NotasGuia2(semitono) + Str(*po -1) + "_["
-  Else 
-    t = NotasGuia(semitono) + Str(*po -1) + "_["
-  EndIf
-  cairo_move_to(c, 0, Penta_y + (semitono+1) * inc_Penta- 6)
-  If notaGuia=0 Then '5 feb 2025
+     If alteracion="bem" Then
+       t = NotasGuia2(semitono) + Str(*po -1) + "_["
+     Else 
+       t = NotasGuia(semitono) + Str(*po -1) + "_["
+     EndIf
+     cairo_move_to(c, 0, Penta_y + (semitono+1) * inc_Penta- 6)
+  
      cairo_show_text(c, t)
-  EndIf
-  t= ""
-  ic=0 'indice cursor 'donde se dibujara la duracion
-  n=0:indf=0:indfa=0:indfb=0
-  font= font + 2  'vuelve al valor anterior...
-  cairo_set_font_size (c, font)
+     font= font + 2  'vuelve al valor anterior...
+     cairo_set_font_size (c, font)
+
+   EndIf
+   t= ""
+   ic=0 'indice cursor 'donde se dibujara la duracion
+   n=0:indf=0:indfa=0:indfb=0
   
 ' ||||||||=============== FOR NUCLEO ========================>>>>>>>>>>>>>>>>
   For n = posishow To posishow + NroCol 
-   If posishow + NroCol > CantTicks Then
-      Exit For
-   EndIf
+     If posishow + NroCol > CantTicks Then
+        Exit For
+     EndIf
 ' =======> deteccion escalas auxiliares y acordes
 '' Print #1, " 12 + (*po-1) * 13 " ; 12 + (*po-1) * 13
 '' Print #1, " *po , n "; *po, n
 
-If  NADACARGADO=TRUE Then
-indfa=0
-indfb=0
+     If  NADACARGADO=TRUE Then
+        indfa=0
+        indfb=0
 ''indnota=0
-Else
+     Else
 
     indfb = CInt(Roll.trk (n, 12 + (*po-1) * 13).dur) ' 103 --dur
     indfa = CInt(Roll.trk (n, 12 + (*po-1) * 13).pb) ' 26-01-2022 103 pb
 ''    indnota =CInt(Roll.trk (n,11- semitono  + (*po -1) * 13 ).nota) 
-EndIf    
-    t="": t2="":t3="":t4=""
-' esto no jode al adelanto de pantalla en control m
-'    If k1>0 Then
-'       k1=k1-1
-'       Continue For
-'      
-'    EndIf     
-'    If indnota >=1 And indnota <=180 Then
-'       k1=DurXTick(indnota) / 2
-'       '''k1=2 'salto 2 divido por dos los eventos       
-'    EndIf
+     EndIf    
+     t="": t2="":t3="":t4=""
     
 ' <====== CIFRADO ACORDE---
 
@@ -289,7 +282,7 @@ EndIf
  ' *po llega a 3 y cancela porque baja a 3?
 '  ESCRITURA DE NOTAS: ------->
 
- If Roll.trk (n,11- semitono  + (*po -1) * 13 ).nota > 0 Or Roll.trk (n,11- semitono +  (*po -1) * 13 ).dur > 0 Then
+ If Roll.trk (n,11- semitono  + (*po -1) * 13 ).nota > 0  Then ''Or Roll.trk (n,11- semitono +  (*po -1) * 13 ).dur > 0 Then
      ' print #1,"lugar ",11
 '  10-04-2022 verificar si esto sigue funcionando ÇÇÇÇ colocar esapcios
       If COMEDIT=TRUE Then 
@@ -334,7 +327,7 @@ EndIf
   '  print #1,"lugar ",13
     If (indf >= 1 And indf <= 185)  Then ' 12-03-2025 185=N roll sin duraciones
     Else
-       indf=181
+        indf=181
     EndIf ' t no puede quedar en un scope dsitinto se hace shared    
     ''If Roll.trk (n, 11- semitono + (*po-1) * 13).dur=183 Then '26-feb2025
      ' Print #1,"UN 183 DETECTADO EN CREAPENTA, n ";n 
@@ -347,39 +340,22 @@ EndIf
            Continue For
         EndIf
      Else
+       If indf = 181 Then
+        t= "    "
+       Else
         t= figura(indf)
+       EndIf
      EndIf
-''Print #1,"n, figura(indf) " ;n, figura(indf)
-'     cairo_show_text(c, t)
-'     cairo_stroke(c)
-'     cairo_set_source_rgba(c, 1, 1, 1, 1)
  ' ////////dar color al font en una determinada posicion durante el play
-    If n<=jply + 3 And n<=jply - 3 And repro=0 Then 
+    If n<=jply + 2 And n<=jply - 2 And repro=0 Then 
        cairo_set_source_rgba(c,1,0,1,1)
     EndIf
-    cairo_show_text(c, t)
- ' ' jmg 11-05-2021 1839 start
-    If  n=jply And ( play =1 Or playb=1 Or Cplay=1 ) And repro=0 Then ' repro 17-06-2022
-        
-      ShowNroCol= Int(n/posishow) 
-      If ShowNroCol = 0 Then
-         curpos= n  - 1 
-      Else
-         curpos= n  - posishow 
-      EndIf
-'--------------------------------comentado jmgjmg18feb n ojo de a ctrl-m
-   
-  '   If (kNroCol > 0) And (posicion = NroCol * kNroCol) And (posicion < MaxPos) Then
-  '       curpos=curpos - kNroCol * NroCol
-  '    EndIf
-
-      cursor(c,n,nro,Roll)
-      cairo_set_source_rgba(c, 1, 1, 1, 1)
+    If indf <> 181 Then ' esto acelera un monton 
+      cairo_show_text(c, t)
     EndIf
-
-' jmg 11-05-2021 1839 end 
+' se elimina el cursos con las notas coloreadas durante el play es suficiente 
 '===== LINEAS DE COMPAS  ==================================
-    If n >0 And n < MaxPos  Then 
+     If n >0 And n < MaxPos  Then 
  '   Print #1,"lugar ",14
       If Compas(n).Posi = n  Then
         ' ic=ic+1 
@@ -425,17 +401,7 @@ EndIf
      EndIf
 
     cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono +1)* inc_Penta - 6)
-    ic =ic+1
-'   Else ' revisar es extraño que funcione porque n esta dentro del tramo de arriba  Maxpos-1 < Maxpos zas
-'      If n= MaxPos Then ' indicador de final de secuencia
-         'cairo_move_to(c,gap1/4 + (ic ) *anchofig , Penta_y)
-'         cairo_move_to(c,gap1/4 + (ic ) *anchofig , Penta_y + 12 * inc_Penta )
-'         t=Str("*")
-'         cairo_show_text(c,t)
-        ' cairo_move_to(c,gap1 + (ic ) *anchofig +anchofig , Penta_y)
-        ' cairo_move_to(c,gap2 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta )
-        
-''    EndIf  
+    ic =ic+1 ' adelanta una posicion ???
 
 
   
@@ -807,7 +773,6 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
      
   Next
   
- 
   
 End Sub
 
@@ -851,11 +816,11 @@ Dim midionof As Integer
 ' 07-02-2025 CAMBIAMOS DE 32 BITS A 24 PARECE ANDA ALGO MAS RAPIDO¿?
 ' anda con los 3 drivers OpenGL DirectX y GDI ....
 Dim resultado As Long
-     ScreenControl  SET_DRIVER_NAME, "Direct2D" ''' "GDI"
+     ScreenControl  SET_DRIVER_NAME, "GDI" '''"Direct2D" ''' 
      If usarmarco= 3 then
-        resultado = ScreenRes ( ANCHO, ALTO ,32 ,1 , GFX_HIGH_PRIORITY)
+        resultado = ScreenRes ( ANCHO, ALTO ,24 ,2 , GFX_HIGH_PRIORITY)
      Else
-        resultado = ScreenRes (ANCHO, ALTO, 32 ,1, GFX_NO_FRAME Or GFX_HIGH_PRIORITY)
+        resultado = ScreenRes (ANCHO, ALTO, 24 ,2, GFX_NO_FRAME Or GFX_HIGH_PRIORITY)
      EndIf
  '    print #1,"param.titulo ",param.titulo
      WindowTitle param.titulo
@@ -879,6 +844,7 @@ Var surface = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB
  c = cairo_create(surface)
 Var surf2 = cairo_image_surface_create_for_data(ScreenPtr(), CAIRO_FORMAT_ARGB32, ANCHO, 50, stride)
  cm = cairo_create(surf2)
+
 /' AL CARGAR OCTAVAS MENOS QUE 1 9 SEGUIMOS EL DESDE E INCREMENTAMOS O DECEMENTAMON INC_pENTA
 1 A 2  64 UP
 2 A 3 54 UP
@@ -956,7 +922,7 @@ EndIf
       TrackaRoll (Track(),0,Roll) ' ntk=0
 Print #1," desde 892 ";desde
   '    print #1,"TrackaRollcarga rtk veo nombre ", titulos(0)
-    '''  RecalCompas (Roll)
+      RecalCompas (Roll)
       TRACKCARGADO=TRUE
       ubirtk=0
     Else
@@ -998,11 +964,13 @@ Dim  As Integer nroPartesNota,nnn=0
 edity1 = 1 ' botton Edit bordeSup
 edity2 = 50 ' botton Edit bordeInf
 
+''''stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 Do
 ''arranquedo1=Timer
 
 '' Create a cairo drawing context, using the FB screen as surface.
 '' l originalestba mal sizeof(integer ) es mu chico debe ser 4
+'' esto solo ejecutar si hay cambio de tamaño!!
 
 stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
@@ -1022,7 +990,8 @@ Else
 '--------------
    '''' If  terminar=0 And GrabarEjec=0 Then  '16-06-2022
         
-        ScreenLock()
+        
+      ScreenLock()
           cairo_set_source_rgba c, 0, 0, 0, 1
           cairo_paint(c)
           cairo_set_line_width(c, 1)
@@ -1081,8 +1050,11 @@ Else
      ' es mejor no ¿? zas je
 ' cairo_text en creaPenta hace cancelar la salida desde Ventana Ctrl
 ' evitamos escribir a grafico si ya estamso saliendo ,,,
+    
   
-        If (terminar=0 Or repro=0) Then  'And (Timer - penta2 > 0.030) Then 
+      EndIf
+        If (terminar=0 Or repro=0)  Then 
+       
            threadPenta = ThreadCall barrePenta (c, Roll )
            ThreadWait threadPenta
  
@@ -1093,13 +1065,16 @@ Else
            botones(hWnd, cm, ANCHO,ALTO) ' este despues sinocrash
        
            cairo_stroke(cm) ' cm despues de c sino crash
+       ScreenSync
+
+
         EndIf
-      ScreenSync  
-      ScreenUnLock()
+    
+      
 
-
-
-EndIf
+      ScreenUnLock() 
+   
+    
 
 
 '' ---------------  LOOP 2 ---------------
@@ -1272,6 +1247,12 @@ If  MultiKey(SC_MINUS)  Then
 
 EndIf
 
+If MultiKey(SC_ALT)   Then 
+ If MultiKey (SC_RIGHT) Then
+ 'SALTA  DE NOTA A NOTA
+  
+ EndIf
+EndIf
 ' UNA NEGRA SON 96, CORCHEA 48, SEMICORCHEA 24, FUSA 12, NOS MOVEMOS CON FUSA EN TICKS00
 If MultiKey(SC_CONTROL) And lockhoriz=0 Then 
  If MultiKey (SC_RIGHT) Then
@@ -1490,19 +1471,7 @@ EndIf
     Exit Do
  EndIf
 
- If MultiKey(SC_H) And notaGuia=0 Then
-'switch prende apaga las notas Guia al costado izquierdo de Roll Grafico
-      notaGuia=1  
-    Sleep 200
-      Exit Do
-  EndIf
 
-If MultiKey(SC_H) And notaGuia=1 Then
-'switch prende apaga las notas Guia al costado izquierdo de Roll Grafico
-      notaGuia=0  
-    Sleep 200
-      Exit Do
-  EndIf
 
 If MultiKey (SC_F2)  And lockfont=0 Then
 ' escala = escala - 0.01
@@ -1534,7 +1503,7 @@ If MultiKey (SC_F2)  And lockfont=0 Then
    font=font - 0.5
    Sleep 50
    If font < 5 And font >0  Then
-    font=18
+    font=18 *3/5
     DUR => 0
    curpos =>1
    anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
@@ -1606,7 +1575,9 @@ EndIf
 '----------
 ' SIZE ANCHO F5
 ' F5 SCANCODE 63 , F6 64
+' CAIRO TIENE UNA FUNCION DE ESCALA QUE LA DESCARTE VOLVER A VER ESO
 If  MultiKey (SC_F5)   Then
+ 
  If COMEDIT = FALSE Then
 '  escala = escala - 0.01
 '  translado = translado - 100
@@ -1626,8 +1597,15 @@ If  MultiKey (SC_F6)  Then
  Exit Do
 EndIf
 
-
-
+ If MultiKey(SC_H) And notaGuia=0 Then
+' apaga las notas Guia al costado izquierdo de Roll Grafico
+' para encender pulsar Q
+      notaGuia=1
+      Exit Do
+ EndIf
+ If MultiKey(SC_K)  Then
+     notaguia=0 'vuelve las notas guia
+ EndIf
 ' PRUEBAS DE GRABACION DEL VECTOR ROLL es sencillo porque grabo todo
 ' o cargo todo,,
 ' https://www.freebasic.net/forum/viewtopic.php?f=2&t=26636&p=246435&hilit=array+load+save#p246435
@@ -1980,6 +1958,8 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
 EndIf
 
 If MultiKey (SC_Q) Then ' con Q se deja de repetir espacios tmbien resetea todo ls banderas de notas
+'aca puedo hacer unselect case de lo que quiero resettear
+''  Select Case Reset 
  If fijarEspacio=99 Then
   fijarEspacio=0
  EndIf
@@ -2003,8 +1983,9 @@ deltaip=0:incWheel=0:lockip=0:playloop=0
  DUR=0
 '''''' alloff( 1 ) no ahce falta aca para eso esta P
 ' terminar version reducida de la secuencia
- resumen=0
-
+ resumen=0 ' quita separacion de notas
+ 
+  
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
 
@@ -2506,7 +2487,7 @@ If COMEDIT = FALSE Then ' construir cifras para copiar Nveces por ejemplo
 
  EndIf
 
- If MultiKey(sc_j) And resumen=0 Then
+ If MultiKey(SC_J) And resumen=0 Then
     resumen=1
     Exit Do
  EndIf
@@ -3527,7 +3508,7 @@ EndIf
       posn=posishow
       Roll.trk(MaxPos,nR).dur=182 '  jmg no sera not1=182 ?
       Roll.trk(MaxPos,nR).nota=0
-     ''' ReCalCompas(Roll)
+      ReCalCompas(Roll)
       backspace=0
       DUR=0
       nota=0
@@ -3545,7 +3526,7 @@ EndIf
      ' ,insert comando habilitado = 1
      '  insert 3 fin reemplazos comienzo de move total
      insert=0:indaux=0
-    ''' ReCalCompas(Roll) '''''calcCompas(posn) '' mayorDurEnUnaPosicion (posn)
+     ReCalCompas(Roll) '''''calcCompas(posn) '' mayorDurEnUnaPosicion (posn)
     EndIf
    EndIf
 
@@ -3628,23 +3609,27 @@ EndIf
     Exit Do
    EndIf
  
-'   If e.scancode = 75 Then ' <=====  SC_LEFT repeat
-'       posicion=posicion - 1 'NroCol
-'       If posicion < 1 Then
-'          posicion = 1
-'       EndIf
-'       posishow=posicion
-'      Exit Do
-'    EndIf
+   If e.scancode = 75 Then ' <=====  SC_LEFT repeat
+      If COMEDIT = FALSE Then 
+       posicion=posicion - 1 'NroCol
+       If posicion < 1 Then
+          posicion = 1
+       EndIf
+       posishow=posicion
+      Exit Do
+      End If  
+    EndIf
 
-'    If e.scancode = 77 Then ' <======= SC_RIGHT repeat
-'        posicion=posicion + 1 ' Nrocol
-'        If posicion > MaxPos Then
-'           posicion = MaxPos
-'        EndIf
-'        posishow=posicion
-'        Exit Do
-'    EndIf
+    If e.scancode = 77 Then ' <======= SC_RIGHT repeat
+       If COMEDIT = FALSE Then
+        posicion=posicion + 1 ' Nrocol
+        If posicion > MaxPos Then
+           posicion = MaxPos
+        EndIf
+        posishow=posicion
+        Exit Do
+       EndIf 
+    EndIf
 
    If e.scancode = &h41 Then ' <============ SC_F7
 
@@ -5352,7 +5337,9 @@ If fueradefoco=1  And (play = 0) and (playb=0) And (Cplay=0) Then
 EndIf
 
 Loop
-While InKey <> "": Wend
+'While InKey <> "": Wend
+'podria reemplazarse por REset(0) ???
+Reset (0)
 
 
 Loop

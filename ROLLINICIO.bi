@@ -683,7 +683,7 @@ If nanchofig <> 0 Then
    gap2= (914 * gap1) /1000 ' 74 default
    gap3= (519 * gap1) /1000 ' 42 default
    NroCol =  (ANCHO / anchofig ) + 4
-   ANCHO3div4 = ANCHO *3 / 4 
+   ANCHO3div4 = ANCHO * 3/4 
 EndIf
 'Print #1,"NROCOL AL INICIO, ANCHO, anchofig ",NroCol, ANCHO, anchofig
 

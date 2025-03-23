@@ -261,7 +261,7 @@ Type PGE  ' parametros guia escala
  tipoescala As Integer
  notaescala As Integer
  alteracion As Integer ' 3=sos, 2 bem
- posicion   As integer
+ posicion   As Integer 
 End Type
 
 Dim Shared guiaEscala  (1 To 100) As PGE ' suponemos  100 cambios de escala en una pista

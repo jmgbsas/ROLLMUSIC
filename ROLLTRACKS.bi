@@ -1834,7 +1834,7 @@ nroCompas=0
 tres=0:pun=0:silen=0:mas=0:doblepun=0:cuart=0
 tres=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
 SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
-calcCompas(MaxPos,Roll) ' 05-03 
+'calcCompas(MaxPos,Roll) ' 05-03 
 
   print #1,"TrackaRoll Fin,,maxpos y (ntk).maxpos ", maxpos,pmTk(ntk).MaxPos
 print #1,"-----------------Fin TrackaRoll-----------------"
@@ -2721,7 +2721,7 @@ EndIf
 ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
 RollaTrack Track(), ntk,Roll
 
-'''ReCalCompas (Roll)
+RecalCompas (Roll)
    
 '-----------------------------------------   
  '     moverRoll 
@@ -2809,7 +2809,7 @@ EndIf
 ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
 RollaTrack Track(), ntk,Roll
 
-'''ReCalCompas (Roll)
+RecalCompas (Roll)
 
 EndIf
  
@@ -3067,7 +3067,7 @@ cargaCancion=1
 ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
 RollaTrack Track(), ntk,Roll
 cargaCancion=0
-'''ReCalCompas (Roll)
+ReCalCompas (Roll)
 
 EndIf
 

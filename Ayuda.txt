@@ -51,6 +51,7 @@
         c) Trabajar con sostenidos (por omision) o bemoles  en Menu de Control (no el grafico)      
         Nota: para los puntos c,d y e, se ejectua el armado de la escala la cual se muestra en el
              extremo superior del Grafico de RollMusic (subir para arriba hasta que aparesca la escala)
+        NOTA: En el modo lectura, cuando haya mas separacion entre notas en el gráfico, mas lento será el tiempo de respuesta al pulsar una tecla. Si se pasa a separacion de notas 1 la velocidad de respuesta será  mas rapida . 
 
     III) USO: (ventana Roll Grafica)
 
@@ -323,10 +324,10 @@
          editar y modificar segun convenga, on un click sobre la bat o doble
          click segun la configuracion del Windows, ejecuta el progrma y produce el 
          archivo.mid ..(algo sencillo y rapido por ahora)
-     17) CAMBIAR PAR TICKS,Importar midi plano txt, si fue generado por RollMusic o externo, en el primer caso
+     17) CAMBIAR PARA TICKS,(Importar midi plano txt, si fue generado por RollMusic o externo, en el primer caso
          funciona mejor, para externo es muy inexacto en cuanto a ritmos las notas serian
          correctas, pero no su repeticion ni duracion, a veces se escucha algo parecido coherente.
-         La conversion desde ticks a no ticks es compleja, se deja por ahora.
+         La conversion desde ticks a no ticks es compleja, se deja por ahora.)
      18) Mostrar o Ocultar las Notas Guia de Roll Grafico del lado izquierdo. Pulsar H tipo
          llave si o no.   
 
@@ -407,13 +408,6 @@
          k) Se puede renombrar una pista cargada de ejecuciones, para ello marcar el nombre  de la pista a
             renombrar y usar el menu archivo 5.2 (la cual graba automaticamente) y luego grabar con 5.0 aunque 
             no es necesario la grabacion se ahce automatica en 5.2
-         l) En el Menu de control, El menu VER contiene el ajuste de separacion de notas
-            en el gráfico, esto acorta o alarga la imagen no afecta a la reproduccion de la secuencia
-            Para ello pulsar la tecla <j> y se habilita por default una separacion de 1 entre notas
-            , para eliminar la separacion pulsar Q. Para ajustar otra separacion
-            en el MEnu VER como se mencionò, tiene un subitem Separacion de notas , al pulsar
-            aparece un dialogo para entrar un numero. de 1 en adelante... etc. 
-
 
 
       2) Puede reproducirse al mismo tiempo una cancion y una grabacion *.ejec.
@@ -632,7 +626,13 @@
         e interlineado inc_penta. Si se cambia de resolucion la pantalla del monitor se
         deberá hacer lo mismo. Tambien se podria editar a mano RollMusic.ini con la aplicacion 
         apagada.
-        
+      - Sacar o poner notas guia del borde izquierdo de RollGrafico "B_5_[" . teclas H y K respectivamente.
+      - En el Menu de control, El menu VER contiene el ajuste de separacion de notas
+        en el gráfico, esto acorta o alarga la imagen no afecta a la reproduccion de la secuencia
+        Para ello pulsar la tecla <j> y se habilita por omision una separacion de 1 entre notas,
+        para eliminar la separacion pulsar Q. Para ajustar otra separacion, en el MEnu VER como se mencionó, tiene un subitem Separacion de notas , al pulsar aparece un dialogo para entrar
+        un numero. de 1 en adelante... etc. 
+
     1.1)   El espaciado entre lineas se puede cambiar:
        Pulsar y mantener la tecla control. Girando la rueda del mouse
        en la direccion  hacia afuera abre el espacio  entre lineas, hacia 

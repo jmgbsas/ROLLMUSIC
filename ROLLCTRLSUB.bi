@@ -791,7 +791,7 @@ Print #1,"abriendo portin y call back",*nombrein( portin1092 )
 
 End Sub
 
-Sub CTRL1111() '<========== cambiode escala
+Sub CTRL1111() '<========== cambiode escala MUSICAL
              If pasozona1 > 0 Then ' gurdamos en la posicion actual los valores cambiode escala
                 selTipoEscala (tipoescala_num)
                 selNotaEscala (notaescala_num) 
@@ -812,7 +812,7 @@ Sub CTRL1111() '<========== cambiode escala
 
 End Sub
 
-Sub CTRL1112() '<========= cambiode a escala Alternativa de la Principal
+Sub CTRL1112() '<========= cambiode a escala MUSICAL Alternativa de la Principal
 
   If pasozona1 > 0 Then ' gurdamos en la posicion actual los valores cambiode escala
      Dim As String notastr

@@ -118,7 +118,54 @@ FileFlush (-1)
 End Sub
 
 
-Sub calcCompas( ByRef j As Integer, Roll As inst)
+Sub RecalCompas( Roll As inst) ' Nuevo para ticks
+ On Local Error GoTo errorCalc 
+
+ Dim As Integer i,j,k,negra=96, multi,kj,kp, cntcompas,cntnegra,com, compas4cuartos= 4*negra
+  compas(1).Posi=0
+  compas(1).nro = 0
+For j=1 To MaxPos-2
+  kj=kj+1
+  Select Case kj
+    Case compas4cuartos
+     cntcompas=cntcompas+1
+  compas(j).Posi=j
+  compas(j).nro = cntcompas
+      KJ=0
+  End Select
+ ' kp=kp+1
+ ' Select Case kp
+ '   Case negra
+ '    cntnegra=cntnegra+1
+ ' compas(j).Posi=j
+ ' compas(j).nro = cntnegra
+ '     kp=0
+ ' End Select
+
+
+Next j
+
+Exit Sub 
+errorCalc:
+Dim As long er1
+er1 = Err()  
+Print #1, "er1 sos bolu o te haces freebasic "; er1 
+If er1 > 0 Then
+Print #1,"Error Calc detected ", er1, " posicion ";posicion; " maxpos";MaxPos;" curpos ";curpos
+Print #1,"desde ";desde;" hasta ";hasta; "hasta-1 ";hasta-1; " *po ";*po
+
+Print #1,"---------------err calccompas---------------------"
+
+Print #1,"ERROR = ";ProgError(er1); " on line ";Erl
+Print #1,"Error Function: "; *Erfn()
+EndIf
+
+ 
+ 
+End Sub
+' ======================================================================
+
+Sub calcCompasOLD( ByRef j As Integer, Roll As inst)
  ' nota:fijarse que pasa con el grupo..1 to 4 de las 64 duraciones
  ' x print #1,"========================================================="
  ' x print #1,"1-calcCompas j o posn RECIBIDA: "; j
@@ -722,7 +769,7 @@ Sub mayorDurEnUnaPosicion (ByRef posn As Integer)
     Next ia
    ' print #1,"          J, valdur Mayor: "; J, valdur
     DUR=valdur
-    calcCompas(j, Roll)
+'    calcCompas(j, Roll)
 '    print #1,"ABRIR compas(j) ";compas(j).Posi; " j :"; j
 
    EndIf
@@ -734,161 +781,6 @@ Sub mayorDurEnUnaPosicion (ByRef posn As Integer)
 End Sub
 
 '-----------
-Sub ReCalCompas(Roll As inst)
-Dim DURI As Integer ' 28-02-2025 DUR SE HACE CERO EN LA CARGA ESTAMOS SACANDO LOS CEROS
-DURI=DUR 
-On Local Error GoTo errorRecal
-
-'If MaxPos=0 Then ' 23-03-2022 ���
-'   Exit Sub
-'EndIf
-   nroCompas = 0
-
-     carga=1 ' no es lo mismo calcCompas con cargar o procesando
-     Dim As Integer i,j , mayor,ia,valdur,cont, semi,i2
-     cont=0
-     'print #1,"ABRIR MAXPOS ,NB,NA ";MAxPos, NB,NA
-     Dim As Integer tope1, tope2, grupo, mayorgrupo, noct
-     For j = 1 To MaxPos -2
-      'Print #2,"POSICION :";J
-      'Print #3,"POSICION :";J
-      cont=0
-      For i= NB To NA -13 ' 01-02-2022  
-      If Roll.trk(j,i).pb = 202 Or Roll.trk(j,i).pb=201 Or Roll.trk(j,i).dur=200  Then
-         Continue For
-      EndIf
-       valdur => Roll.trk(j,i).dur ' de 1 a 180
-       ' al cargr tenemos 4 grupos de 16 de duraciones identicas que se repiten
-       ' 1-45,46-90,91-135,136-180 , el indicemeindicaa cual grupo pertenece, y
-       'en que rango buscar
-  '     mayorgrupo=0
-''DE LO QUE SIGUE DEBO EXTRCTAR MAYOR ENUNA POSCION Y COPIARLO
-'' A ESA SUBRUTINA Y PONERLA EN NUCLEO
-       semi => Roll.trk(j,i).nota  
-      If valdur > 0 And valdur < 181 And semi >=1 And semi <=12 Then
-   '     Print #1, "LECTURA DUR: ";valdur;" EN LA CARGA j: ";j;" i: "; i;" figura ";figura(valdur)
-   '     Print #3, "nota: "; i; " posi: "; j; " dur: ";valdur
-       ' las duraciones e repiten cada 45 de modo que no importan los incr
-        Select Case valdur
-         Case  1   To 45
-          tope1=1:tope2=45:grupo=1:incr=0
-         Case  46  To  90
-          tope1=46:tope2=90:grupo=2:incr=45
-         Case  91  To  135
-          tope1=91:tope2=135:grupo=3:incr=90
-         Case  136  To  180
-          tope1=136:tope2=180:grupo=4:incr=135
-        ' POR ESTO NOANDABA SILENCIOS LO LIMITE ANTES Continue For,For V19 incluimos silencios en recaocompas!!!
-        End Select
-
-        If  valdur >= tope1 And valdur <=tope2 And tope1 > 0 And tope2> 0 Then
-       '  Print #1, "Valdur i ";valdur ; i ; " grupo ";grupo;" figura ";figura(valdur)
-        '  Print #1,"i NB ";i,NB
-         If  cont=0   Then 'mira duraciones
-          mayor=pesoDur(valdur):mayorgrupo=grupo
-      '           Print #1,"1er mayor "; mayor; " mayorgrupo";mayorgrupo
-          cont=1
-         EndIf
-         Print #1, "DUR mayor";DUR, mayor
-         If pesoDUR(valdur) > mayor  Then ' las duraciones cuando mas
-          mayor=pesoDur(valdur):mayorgrupo=grupo
-     '             Print #1,"Siguientes mayor "; mayor
-     '      Print #1, " DUR MAYOR";DUR,mayor
-         EndIf
-     '         Print #1,"> i= ";i; " NA= ";NA
-        EndIf
-      EndIf 'jmg OJO OJO
-      Dim As Integer iades =(mayorgrupo -1)*45 + 1
-      If mayorgrupo=0 Then '05-07-2021
-        iades=0
-      EndIf
-      Dim As Integer iahas = mayorgrupo * 45 
-      
-       If i=NA -13 Then ' 01-02-2022 vuelta atras
-
-    '    Print #1,"i=NA i: ";i;" NA: ";NA;" Mayor ";mayor;" grupo:"; mayorgrupo
-        For ia= iades To iahas ' tresillos es grupo 
-         If mayor=pesoDur(ia) Then
-          valdur=ia
-     '        Print #1, "peso de mayor encontrado valdur ";valdur; "dur ";ia; " grupo ";mayorgrupo
-          Exit For   
-         EndIf
-        Next ia
-        DURI=valdur
-      '  If DURI >180  Then ' <- esto nunca se ejecuta creo se filtra antes...
-      '    print #1,"ERROR NO SE PUEDE PASAR DUR"
-      '    compas(j).Posi=0
-      '    Compas(j).nro = 0
-'
- '       Else
-        Dim durm As Integer
-         If DURI >181 Or DUR=0 Then
-            durm=181
-         Else
-            durm=DURI   
-         EndIf
-         
-         If DURI<=180 Then
-     '     Print #1,"ABRIR IN:  J: "; J; " DUR: "; valdur;" GRUPO: "; mayorgrupo;" figura ";figura(durm)
-          calcCompas(j,Roll)
-         If carga=1 Then
- '------zzz
-            For noct = desde To hasta
-              For i2= 0 To 11 ' gracias a esto anda acordes
-                 If Roll.trk(j,(i2 +(noct -1) * 13)).nota = 0 Then
-                    Roll.trk(j,(i2 +(noct -1) * 13)).nota = 181
-                    Roll.trk(j,(i2 +(noct -1) * 13)).dur  = 0
-                 EndIf
-              Next i2
-            Next noct
-'-------   
-         EndIf   
-          
-          'Print #1,"ABRIR OUT: J: "; J; " compas(j): " ;compas(j).Posi;" figura ";figura(durm)
-          valdur=0
-          DURI=0
-          mayor=0
-         EndIf
-      '  Print #3,"==============fin posicion nro: "; j
-       EndIf
-       valdur=0:DURI=0
-    
-      Next i
-      
-     Next j
-     DURI => 0
-    '' curpos =>0
-     carga=0  ' <======= control de Carga
-'' error local
-Exit Sub 
-errorRecal:
-  
-Dim As long er1
-er1 = Err()
-Print #1, "er1 "; er1
-If  er1 > 0 Then
- Print #1,"Error Recal detected "; er1;  " posicion ";posicion; " maxpos";MaxPos;" curpos ";curpos
- Print #1,"desde ";desde;" hasta ";hasta; "hasta-1 ";hasta-1; " *po-1 ";*po-1;" *po+1 ";*po+1
- 'Dim As Integer valor1, valor2
- 'valor2= i2 +(noct -1) * 13
-
- 'Print #1,"*po ";*po;" semitono ";i2; " i2 ";valor1 
- 'Print #1,Erl, Erfn,Ermn,Err
- Print #1,"---------------err recalcompas---------------------"
- 'ErrorNumber1 = Err
- 'ErrorLine1 = Erl
-' Dim As String ProgError1(0 To 17)
-
-
- Print #1,"ERROR = ";ProgError(er1); " on line ";Erl
- Print #1,"Error Function: "; *Erfn()
-'ers= i2 +(noct -1) * 13
-'Print #1, "(i2 +(noct -1) * 13) "; ers; " semitono "; i2
-' Print #1, "ubound dimension 2 de Roll.trk ", UBound(Roll.trk, 2)
-End If
-
-
-End Sub
 ' ------
 Sub menoryMayorEnColumna (Roll As inst, ejex As Integer, ByRef menor As UByte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As Integer)
 ' estoy en Roll el cual es �nico tengo entonces definido las globales NB y NA por default
@@ -1028,7 +920,7 @@ Dim  As Integer nroPartesNota
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).nota = 181
 
   borrar = 0
-  ''calcCompas(n) ''mayorDurEnUnaPosicion (n)
+ ''' calcCompas(n) ''mayorDurEnUnaPosicion (n)
  EndIf
  ' ==========================================================================
  ' << CAMBIADUR TAMBIEN INGRESA NOTA NUEVA Y DURACION DONDE NO HABIA >>
@@ -1460,7 +1352,7 @@ If cursorHori=1 And vdur>0 And copiar=3 Then
       Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = vdur
       copiar=0
       vdur=0:vnota=0
-    '''  ReCalCompas(Roll)
+      ReCalCompas(Roll)
    EndIf 
 EndIf
 If nro=0 Then ' error al subir mucho mira despues del and el estupido 
@@ -1550,7 +1442,7 @@ Else
 TrackaRoll (Track(), ntk,Roll ) ' no usa ubirtk
 Print #1,"Tracks  ntk cargado, nombre ",ntk, nombre
 Print #1,"llama a RecalCompas para ntk,maxpos, .maxpos ",ntk,maxpos,pmTk(ntk).MaxPos
-'''ReCalCompas(Roll) 
+ReCalCompas(Roll) 
 Print #1,"MAXPOS DESPUES DE RECALCOMPAS ", maxpos, pmTK(ntk).maxpos
 EndIf
 
@@ -1972,7 +1864,7 @@ TrackaRoll (Track(),ntk,Roll)
 cargaCancion=0
 repro=0
 Sleep 5
-'''ReCalCompas (Roll)
+ReCalCompas (Roll)
           '  print #1,"despues RecalCompas veo nombre ",nombre
             MenuNew=0
             carga=1 ' <======= control de Carga 
@@ -2926,7 +2818,7 @@ curpos =>1
    gap2= (914 * gap1) /1000 ' 74 default
    gap3= (519 * gap1) /1000 ' 42 default
 
-''' ReCalCompas(Roll)  
+ReCalCompas(Roll)  
 '--------------------------------
 ' correccion LLAMAMOS ROLL A TRACK PARA NTK = 0, 14 -04-2024
 ' pero no era necesario, total al grabar nunca grabo el track
@@ -3181,7 +3073,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
   ' 0.1 ==> [Archivo]
    If mousex > 46 And mousex< 111 And mousey < 50   Then
     cairo_set_source_rgba c, 0, 1, 0, 1
-     font=18 ' el menu esta dise�ado para este tama�o 
+     ''font=18 ' el menu esta dise�ado para este tama�o 
     If MouseButtons And 1 Then
      menuNew = 3  ''
     EndIf
@@ -3450,7 +3342,7 @@ EndIf
             ROLLCARGADO=TRUE ' NO PERMITOQUE TRACK(0) SE BORRE
             TrackaRoll (Track() , ntk , Roll)
           '  print #1,"TrackaRollcarga rtk veo nombre ",nombre 
-          '''  ReCalCompas (Roll)
+            ReCalCompas (Roll)
           '  print #1,"despues RecalCompas veo nombre ",nombre
             MenuNew=0
             carga=1 ' <======= control de Carga 
@@ -4206,7 +4098,7 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
   Next k
  EndIf
  insert=0
- ''ReCalCompas(Roll) ' 09-05-2021
+ RecalCompas(Roll) ' 09-05-2021
 End Sub
 '------------------------------------
 Sub botones(hWnd As HWND,  cm As cairo_t Ptr, x As Integer,y As Integer)
@@ -6465,7 +6357,7 @@ EndIf
         Case 11
       End Select       
  If Vaciodur Then
-'    ReCalCompas (Roll)
+    ReCalCompas (Roll)
     Vaciodur=FALSE
  EndIf
  Dim As Integer guardpos

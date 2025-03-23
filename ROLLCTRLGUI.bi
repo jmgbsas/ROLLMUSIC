@@ -217,18 +217,18 @@ ButtonGadget(BTN_ROLL_CANAL,  280,730, 50, 20,"Canal")
 
   hMessages=Create_Menu()
 
-  MenName1=MenuTitle(hMessages, "Archivo")
-  MenName2=MenuTitle(hMessages, "Nueva Cancion")
-  MenName3=MenuTitle(hMessages, "Pistas Manuales")
+  MenName1=MenuTitle(hMessages, "ARCHIVO")
+  MenName2=MenuTitle(hMessages, "NUEVA CANCION")
+  MenName3=MenuTitle(hMessages, "PISTAS MANUALES")
   
   'MenName31=MenuTitle(hMessages,"Patrones")
 
-  MenName4=MenuTitle(hMessages,"Ver")
-  MenName5=MenuTitle(hMessages,"Tiempo Y Ritmo")
-  MenName6=MenuTitle(hMessages,"Reproducir")
-  MenName7=MenuTitle(hMessages,"Opciones")
-  MenName8=MenuTitle(hMessages,"Puertos de Ejecuciones")
-  MenName10=MenuTitle(hMessages,"Info")
+  MenName4=MenuTitle(hMessages,"VER")
+  MenName5=MenuTitle(hMessages,"TIEMPO Y RITMO")
+  MenName6=MenuTitle(hMessages,"REPRODUCIR")
+  MenName7=MenuTitle(hMessages,"OPCIONES")
+  MenName8=MenuTitle(hMessages,"PUERTOS DE EJECUCION")
+  MenName10=MenuTitle(hMessages,"INFO")
 
 ''MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
 MenuItem(1006,MenName1, "1.0 Cargar directorio de Cancion con Pistas separados con Ventana de Control y Roll Grafico")
@@ -260,14 +260,14 @@ MenuItem(1009,MenName1,  "4.5.1 Exportar a MIDI Pista/cancion de 4.5 ")
 
 
 Menubar(MenName1)
-MenuItem(1015,MenName1, "5.0 Grabar a Disco, Pista Nueva MIDI-IN ejecucion")
-MenuItem(1016,MenName1, "5.1 Cargar de Disco Pistas MIDI-IN ejecucion")
-MenuItem(1017,MenName1, "5.2 Renombrar Pista ejecucion seleccionada")
+MenuItem(1015,MenName1, "5.0 GRABAR PISTA EJECUCION MIDI-IN")
+MenuItem(1016,MenName1, "5.1 CARGAR PISTAS EJECUCION MIDI-IN")
+MenuItem(1017,MenName1, "5.2 RENOMBRAR PISTA EJECUCION SELECCIONADA")
 
 MenuItem(10181,MenName1,"5.3 Cargar txt plano midi generado por RollMusic")
 MenuItem(1018 ,MenName1,"5.4 Cargar txt plano midi externo, MUY INEXACTO")
 Menubar(MenName1)
-MenuItem(1019,MenName1, "    Salir")
+MenuItem(1019,MenName1, "    SALIR")
 
 
 MenuItem(1020,MenName2, "Nombre o Título (fecha por omision), la cancion es un directorio")
@@ -315,7 +315,7 @@ Menubar(MenName4)
 'MenuItem(1075,MenName4,"Na/Parametros de Track(n) en memoria ")
 
   
-MenuItem(1080,MenName5,"TEMPO, Manual Por omision=60, Ejecucion Tick por omision=5mseg equivale a 240")
+MenuItem(1080,MenName5,"TEMPO, Por omision=60, Ejecucion Tick por omision=5mseg equivale a 240")
 MenuItem(1081,MenName5,"Factor para Aumentar velocidad de ejecucion, No se graba en archivo 1,5 o 0,5 etc")
 
 
@@ -351,11 +351,11 @@ MenuItem(1093,MenName6,"Cierra Puerto MIDI-IN Ejecucion.")
 
 MenuItem(1100,MenName7,"Usar MARCO de Ventana Para el Gráfico",MF_UNCHECKED)
 MenuItem(1101,MenName7,"Usar MARCO de Ventana en instancias Gráficas",MF_UNCHECKED)
-Menubar(MenName7)
-MenuItem(1102,MenName7,"Fracciona Acorde [Con <> Duraciones], notas similares en una pista (no hay silencios)",MF_UNCHECKED  )
-MenuItem(1103,MenName7,"Fracciona NOTA o Acorde [CDD], agregando silencios en una pista ",MF_UNCHECKED  )
-MenuItem(1104,MenName7,"Fracciona [CDD], notas automaticamente en una pista ",MF_CHECKED  )
-MenuItem(1105,MenName7,"No Fraccionar, NO Usar Acordes iguales ", MF_UNCHECKED )
+'Menubar(MenName7)
+'MenuItem(1102,MenName7,"Fracciona Acorde [Con <> Duraciones], notas similares en una pista (no hay silencios)",MF_UNCHECKED  )
+'MenuItem(1103,MenName7,"Fracciona NOTA o Acorde [CDD], agregando silencios en una pista ",MF_UNCHECKED  )
+'MenuItem(1104,MenName7,"Fracciona [CDD], notas automaticamente en una pista ",MF_CHECKED  )
+'MenuItem(1105,MenName7,"No Fraccionar, NO Usar Acordes iguales ", MF_UNCHECKED )
 Menubar(MenName7)
 MENUITEM(1106,MenName7,"Seleccionar TIPO DE ESCALA PRINCIPAL de la PISTA (Por omision Mayor)")
 MENUITEM(1107,MenName7,"Seleccionar NOTA DE LA ESCALA ESCALA PRINCIPAL DE LA PISTA (Por omision C )")
