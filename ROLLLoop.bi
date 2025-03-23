@@ -353,7 +353,22 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
     If indf <> 181 Then ' esto acelera un monton 
       cairo_show_text(c, t)
     EndIf
-' se elimina el cursos con las notas coloreadas durante el play es suficiente 
+' se elimina el cursos con las notas coloreadas durante el play es suficiente
+ ' ' jmg 11-05-2021 1839 start
+    If  n<=jply + 2 And n<=jply - 2 And ( play =1 Or playb=1 Or Cplay=1 ) And repro=0 Then ' repro 17-06-2022
+        
+      ShowNroCol= Int(n/posishow) 
+      If ShowNroCol = 0 Then
+         curpos= n  - 1 
+      Else
+         curpos= n  - posishow 
+      EndIf
+
+     '''  cursor(c,n,nro,Roll)
+      cairo_set_source_rgba(c, 1, 1, 1, 1)
+    EndIf
+
+' jmg 11-05-2021 1839 end  
 '===== LINEAS DE COMPAS  ==================================
      If n >0 And n < MaxPos  Then 
  '   Print #1,"lugar ",14

@@ -1,4 +1,4 @@
-- 23-03-2025 TICKS 0.305 lineas de compas y velocidad de navegacion
+- 23-03-2025 TICKS 0.305 lineas de compas y velocidad de navegacion, correcciones
 - 20-03-2025 TICKS 0.304 sacar o poner notas guia. teclas H y K respectivamente
 - 19-03-2025 RollMusic Con Ticks primera etapa se va adaptando las funciones
   se puede insertas notas manualmente y modificarlas en Ctrl-M.
