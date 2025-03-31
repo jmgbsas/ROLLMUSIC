@@ -130,7 +130,7 @@ Declare Sub velocidades(j as integer)
 Declare Sub playthread()
 Declare Sub GrabarArchivo (grabar_como As Integer)
 Declare Sub abrirSecuencia (nf As integer)
-Declare Sub GrabarTrack   (ntk As integer) ' NO SE ESTA USANDO
+Declare Sub GrabarTrack   (ntk As integer) 
 Declare Sub ActualizarRollyGrabarPista ()
 Declare Sub GrabarRollaTrack (cambiaext As Integer)
 Declare Sub CargarPistasEnCancion ()
@@ -661,7 +661,10 @@ Type rangoOct Field=1
  As UByte   zona2
  As UByte   nroRep
  As UByte   portin 
- As UByte   tempo  
+ As Ushort  tipoCompas
+ As UByte   ejec
+ As UByte    vol
+ As Integer  tempo ' 240 60 etc
 End Type
 ' faltaria agregar grabar el nombre del dispositivo ........
 Dim Shared As rangoOct pmTk (0 To 65)
@@ -704,7 +707,7 @@ Type poli Field=1 ' para guardar la secuencia
  dur2  As UByte =0   ' SONIDO ON/OFF 
  canal As UByte =0   '  
  onoff As UByte =0   ' nota on=2, nota off=1  
- dur5  As UByte =0   '  
+ ejec  As UByte =0   ' marca viene de un ejec=1, no viene de ejec=0 
  dur6  As UByte =0   '  
  dur7  As UByte =0   '  
  dur8  As UByte =0   '  
@@ -739,17 +742,27 @@ End Type
 ' canal As UByte =0   '  
 ' dur4  As UByte =0   ' nota on=2, nota off=1 <===CAMPO ON OFF
 ' EL ON ES APENAS APARECE LA NOTA EL OFF APARECERA EN LA SECUENCIA Y NO 
-' HABARA QUE CALCULAR NADA,,  
+' HABARA QUE CALCULAR NADA,,
+' REDEFINE USHORT muevo a este type el tempo, luego puedo copiar sus partes
+' a pan y pb y poder reconstruir ..es un redefine de cobol!
+  
+Union aUshort
+ ST As UShort
+   Type
+    pan As UByte
+    pb As UByte
+   End Type
+End Union
 
 Type dat Field=1
- nota As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
- dur As  UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
- vol As  UByte =0 ' volumen hasta 127 es volumen desde ahi es escala 128 a 255 =127 escalas
- pan As  UByte =0 ' alteracion  bemoL o sostenido
- pb  As  UByte =0 ' acorde 201 202
- inst As UByte =0 ' instrumento para cada nota podra ser distinto 1 to 128
- onoff As UByte=0 ' 2 on , 1 off
- 'los archivos no seran compatibles
+ nota  As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
+ dur   As UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
+ vol   As UByte =0 ' volumen hasta 127 es volumen desde ahi es escala 128 a 255 =127 escalas
+ pan   As UByte =0 ' alteracion  bemoL o sostenido
+ pb    As UByte =0 ' acorde 201 202
+ inst  As UByte =0 ' instrumento para cada nota podra ser distinto 1 to 128
+ onoff As UByte =0 ' 2 on , 1 off
+End Type
 ''202 ' codigo de exsitencia de cifrado en el cabezado
 ' por cada 201 en el INTERESPACIO hay un 202 de una octava de roll , en track solo
 ' existe el 202 en el encabezado
@@ -757,14 +770,15 @@ Type dat Field=1
 ' la octava la se por donde esta el 201 no hace falta guardarla, peRo para pasarla a track si
 ' hace falta!! 27-01-2022 -. YA INCORPORADO A TRACK
 ' Lo maximo que uso son 8 posiciones para las octavas de 0 a 7 o 1 a 8 , como tengo 13
-' posiciones verticales en la ultiam octava me quedan 5 posiciones libres y tambien
-' como la estructura dat tiene 6 (7 ahora) campos me quedan 1 campos en las 8 primeras
-' y todas las 7 en las 5 siguietnes = 46 sitios donde poner informaicon para una posicion dada
+' posiciones verticales en la ultima octava, me quedan 5 posiciones libres (13-8) y tambien
+' como la estructura dat tiene 6 (8 ahora) campos me quedan 7 campos en las 8 primeras ,acorde solo
+' usa una la pb (201 202)=56
+' y todas las 8 en las 5 siguietnes = 40 , +56 = 96 sitios donde poner informaicon para una posicion dada
 ' las repeticiones las colocaremos en la 1era de la posicion libre o sea en este caso 
 ' la posicion 98 como si fuera una octava 9 ficticia...las repeticiones no dependen de la
-' octava todas las pisas se repiten al unisono. solo hace falta inforamcion
+' octava todas las pistas se repiten al unisono. solo hace falta inforamcion
 ' arriba en al octava que no se usa. REVEEER ESTO NO SE ENTIENDE QUE PASA CON EL CAMBIO,,
-
+' ---------
 
 
  ' Nota de escala son 12 ..bemol o sostenido son 2, 1 a 12 sostenidos, 13 a 24 bemoles
@@ -772,13 +786,29 @@ Type dat Field=1
  ' octavas son 8 desde 15 a 20 son las octavas, 
 ' canal son 16 de 21 a 36 ... etc etc pero no se hizo de esa forma... 
  ''t   As Ulong   '  ticks por ahroa no 
-End Type
+
+' dentro del vol pondre mos las escalas
+' chords http://www.looknohands.com/chordhouse/piano/ ahi hay 168 escalas..!!
+' en vol tengo desde 129 a 255 para numerar escalas. si faltan puedo usar pan o pb
+' la idea es poner en que escala esta cada nota o compas y asi poder tener cambios de escala
+' y construir los acordes que se quieran construir en esa escala de esea nota o del compas o 
+' la escala del ultimo cambio...por default la escala sera C mayor..la 129
+' Nombre de Nota de la escala C,C#,..B son 12 129 a 140, ocupara una posicion
+' de tick la mas chica usada es 6 asi que un retardo de 1 o 2 no afectara
+' o veo de saltar esos datos no tomandolo como tick sino de control 
+'''--------------------------------- nota vieja ----- ver si sirve 
+ ' Nota de escala son 12 ..bemol o sostenido son 2
+ ' entonces en 14 numeros tengo la info
+ ' 129 -> c,130->c#,131->d...140->B--, 141-sos,142,bemol
+ ''t   As Ulong   '  ticks por ahroa no 
+
 ' dentro del vol pondremso las escalas
 ' chords http://www.looknohands.com/chordhouse/piano/ ahi hay 168 escalas..!!
 ' en vol tengo desde 129 a 255 para numerar escalas. si faltan puedo usar pan o pb
 ' l aidea es poner en que escala esta cada nota o compas y asi poder tener cambios de escla
 ' y construir los acordes que se quieran construir es esa escala de esea nota o del compas o 
 ' la escala del ultimo cambio...por default la escala sera C mayor.. 
+' ---------------------------------fin nota vieja --------------- 
 Type inst
  As dat trk(Any, Any)
 End Type
@@ -1140,7 +1170,7 @@ Type ejec Field=1
  As UByte nota
  As UByte vel
 End Type
-
+' en ejecparam faltaria el tempo! lo puedo grbar en Roll y luego en trk cuadno convierto!
 Type  ejecparam Field=1
   As Double        delta  ' entre pistas de ejec
   As String  * 29  nombre 'de cada Toca

@@ -61,6 +61,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
 ' toma solo el nombre y path de la cancion no carga las pistas todavia
                 cargarDirectorioCancion(NombreCancion)
                 param.encancion=1
+                Print #1," abrirRoll ";abrirRoll
                If abrirRoll=2 Then ' ver rollloop roll esta cargado vengo a cargar cancion de nuevo
                ' por ejemplo tenia solo un roll abierto
                   param.encancion=0
@@ -158,7 +159,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
                salida=1 
                Exit Sub
             Else
-               nombre=nombreg   
+               nombre=nombreg ' tiene el path de navegacion   
             EndIf
             If NombreCancion > ""  Then 
                ImportarPistaExterna(nombre) ' estoy en cancion importando  una pista rtk
@@ -266,7 +267,12 @@ Do while Not Eof(ini)
     EndIf
     If LCase(estado) = "tiempopatronejec" then
         tiempoPatronEjec=arch
+    EndIf
+    If LCase(estado) = "maxgrb" then
+        maxgrb=arch
+        maxcarga=maxgrb
     EndIf 
+ 
  Loop
 
 
@@ -283,6 +289,8 @@ Sub grabariniciotxt(lugar As String)
 Dim As Integer arch,i1
 Dim As String  estado  
 Var ini=17
+'si lugar o nombre cancion es vacio graba en el directorio corriente
+
 Print #1,"grabariniciotxt ", lugar
  If Open (lugar+"inicio.txt" For Output As #ini ) <> 0 Then
     Print #1,"No se puede escribir en inicio.txt "
@@ -301,6 +309,7 @@ For i1=1 To tocatope
      Print #ini, i1;",";estado 
 Next i1 
 Print #ini, tiempoPatronEjec; ","; "tiempoPatronEjec"
+Print #ini, maxgrb;","; "maxgrb"
 
 Close #ini
 
@@ -476,18 +485,17 @@ Sub CTRL1050 () ' <=========== seleccion de instrumento por orden Numerico
 End Sub 
 
 Sub CTRL1060 (ByRef SALIDA As INTEGER) ' <========== crea track y reemplaza al existente en la edicion
-               'If ntk=0 Then  ' no se cargo ningun track
-               '   *po = hasta -1
-               '   posn=1
-               '   Nuevo(Roll,1 )
-               '   posn=0
+'CONDICIONES INICIALES PARA UBICAR EL GRAFICO 30-03-2025
+'----------------------------------------------------
+BordeSupRoll = Int((ALTO ) /18) ' (1400 )/18 integer = 77
+inc_Penta = Int((ALTO - BordeSupRoll) /(40)) ' 26 double 1330/66 para 1400 resolu
+BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio
+'---------------------------------------------- 
                   instruOld=instru
                   Roll.trk(1,NA).inst= CUByte(instru)
                   Track(ntk).trk(1,1).nnn= CUByte(instru)
-                  'ChangeProgram ( CUByte (instru) , 0)
-               'EndIf   
                If abrirRoll=0 Then
-Print #1,"1060 abrirRoll=0 entro"
+      Print #1,"1060 abrirRoll=0 entro"
                   abrirRoll=1
                   cargacancion=0
                   If reiniciar=1 Then
@@ -499,7 +507,7 @@ Print #1,"1060 abrirRoll=0 entro"
                      reiniciar=1
                      usarmarcoOld=usarmarco
                   EndIf   
-                  Print #1,"sale de 1060 abrirrol,reiniciar, cargacancion ", abrirRoll, reiniciar, cargacancion
+      Print #1,"sale de 1060 abrirrol,reiniciar, cargacancion ", abrirRoll, reiniciar, cargacancion
                   SALIDA =1
                EndIf
 
@@ -1048,10 +1056,10 @@ End Sub
 
 Sub CTRL1207() 'NUEVA PARA TICKS
 On Local Error Goto fail
-
+' volcamos tempo a Roll el temp oajsutado por el usario tirmpoPatron
 Dim  As Integer pis 
 pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
- 
+ Print #1,"pista que va a convertir ";pis
 If pis =0 Then
   Exit Sub
 EndIf
@@ -1071,6 +1079,7 @@ nombreTrack=tocaparam(pis).nombre
 maxposTrack=tocaparam(pis).maxpos
 Print #1,"nombreTrack ";nombreTrack
 Print #1,"maxposTrack ";maxposTrack
+
 'deberia definir maxposTrack+6 pero ya pongo as capacidad por si se quiere cargar mas notas
 ReDim (Track(0).trk ) (1 To maxposTrack*2 ,1 To lim3)
 
@@ -1164,6 +1173,7 @@ Do
           If Track(0).trk(i1,j1).nota = 0 And Track(0).trk(i1,j1).dur <182    Then
            Track(0).trk(i1,j1).nota = 181
            Track(0).trk(i1,j1).dur  = 0
+
        '    Track(0).trk(i1,j1).canal = 0
        '    Track(0).trk(i1,j1).vol  = 0
           EndIf
@@ -1183,17 +1193,24 @@ Loop
 
 titulos(0)=nombreTrack
 pmTk(0).MaxPos = maxposTrack +6 '''tocaparam(pis).maxpos
-pmTk(0).desde = 4
-pmTk(0).hasta = 8
+pmTk(0).desde = 4  'VER SI TOMAMOS LA Q ELIGE EL USUARIO
+pmTk(0).hasta = 8  ' " " " " " " 
 pmTk(0).posn=1
 pmTk(ntk).canalsalida=tocaparam(pis).canal
 pmTk(ntk).portout=tocaparam(pis).portout
 pmTk(ntk).patch=tocaparam(pis).patch
+pmTk(ntk).tipocompas =TipoCompas
+pmTk(ntk).tempo = tempo 
+
 Track(ntk).trk(1,1).nnn =tocaparam(pis).patch
+
+Track(ntk).trk(1,1).ejec = 1 ' marca indica que esta secuencia viene de una ejecucion
 
 TrackaRoll (Track(), 0 , Roll)
 ROLLCARGADO=TRUE
+' grabamos el Track a disco tambien
 
+nombre=nombreTrack  ' TERMINARA EN EJEC 26-03-2025
 
 
 Exit Sub 
@@ -1209,443 +1226,6 @@ End If
 
 End Sub
 
-Sub CTRL1207OLD()
-'CONVIERTE UNA PISTA DE EJECUCION SELECCIONADA EN PISTA TRK SIN TICKS
-' y luego la idea es solo tocarla con playTocaAll o sea, verlo en rollgrafico 
-' pero el play lo hace playTocaAll para mostrar usa trk pero para tocar Tocar()
-' usa siempre el track(0)
-' 14-01-2024 agregar silencios
-On Local Error Goto fail
- 
-Dim  As Integer pis ,i1,on1, off1,tot1
- pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
- 
- If pis =0 Then
-  Exit Sub
- EndIf
-
-Dim As String  nombreTrack
-Dim As Integer maxposTrack, candado, arranque,delta
-Dim As Double  Tick5mseg = 0.005208325 'seg 5 miliseg.. para I=240
-Dim As UByte   dato1,dato2, dato3
-Dim As Double  mitimer=0,deltatime=0
-Dim As UByte monitornota
-
-
-Dim As mididat flujo (1 To tocaparam(pis).maxpos)
-
-nombreTrack=tocaparam(pis).nombre
-maxposTrack=tocaparam(pis).maxpos
-'ReDim (Track(0).trk ) (1 To tocaparam(pis).maxpos,1 To lim3)
-'ReDim Roll.trk (1 To tocaparam(pis).maxpos, NB To NA) As dat
-
-'pasar notas y duraciones a partir de las pistas de ejecucion
-' donde estan los datos? buscamos en PlayTocaAll dos metodos
-' pasar con PlayTocaAll a archivo midi y luego levantarlo
-' pero levantarlo no anda bien, pasaremos directo a ver q sale
-
-' hacemos un play de una sola pista, si toca bien la trataremos 
-' de pasar a track
-' YA HACE PLAY OK, LUEGO AHORA DEBO PASAR A DURACIONES DE ROLL
-
-'Dim  As long j=0,k=0,partes,cuenta=0
- 
-'--------------play TOCA
-tocaparam(pis).delta=0
-
-'ChangeProgram ( 1, ntoca, 0)
-' todas las pistas empiezan en el mismo Timer
-
-
-portsal=0 ' por ahora ???
-
-Print #1,"playtoca maxpos ", tocaparam(pis).maxpos
-
-'estado ' on = 2, off=1
-'''TickPlay=TickChico*tiempoPatronEjec/240
-' no hay caso no cambia nada el play deberia modificar los datos ???
-' los tiempos son fijos la unica forma seria cambiar sus valores
-' lo que debo hcer es restar una cantidad de ticks fijos a cada
-' timex(kply)  por ejemplo timex(kply) - xcant * tickchico
-' timex(kply) +  x3H * Tickchico
- 
- 'usaremos tocaparam(pis).delta para tratr de ver la duracion de cada nota
-' pasarlo a duracion de Track y guardarla...
-
-ChangeProgram ( tocaparam(pis).patch , tocaparam(pis).canal, tocaparam(pis).portout)
-portsal=tocaparam(pis).portout
-
-mitimer=Timer
-'flujo(tot1).indice=tot1  me dara el indice de los eventos 144 y 128
-'flujo se pasara a trk y  se grabara no se si siempre o solo temporal
-' debo poner la info de TOca resumida en TRK y para tocar debo deducir
-' toca o reconstruirla a  partir de trk
-For i1=1 To maxposTrack 
-
-
-
-    dato1=Toca(pis).trk(i1).modo
-    dato2=Toca(pis).trk(i1).nota
-    dato3=Toca(pis).trk(i1).vel
-     
-
-     If  dato1=1 Then ' marcamos con 1 un delta de tick en modo
-       '  duracion (mitimer ,Tick5mseg) ' si es cero no 1 no hay duracion es acorde
-       '  mitimer = mitimer  + Tick5mseg
-         deltatime=deltatime +Tick5mseg ' milisegundos
- 
-     EndIf
-
-     Select Case  dato1 
-         Case 144 ' on
-         'noteon dato2,dato3,tocaparam(pis).canal, tocaparam(pis).portout, 1 'message(3) ' noter vel canal
-         tot1=tot1+1
-          on1=on1+1
-         flujo(tot1).indiceX=tot1   
-         flujo(tot1).estado=2
-         flujo(tot1).nota=dato2
-         flujo(tot1).vel=dato3
-         delta= deltatime*1000
-         Print #1, "ON "; delta;" "; "nota: "; dato2 ; " vel "; dato3           
-         flujo(tot1).deltatime=deltatime
-         deltatime=0
-
-         Case 128 'off
-         'noteoff dato2,tocaparam(pis).canal ,tocaparam(pis).portout,1 'message(2)'
-         tot1=tot1+1
-         off1=off1+1 
-         flujo(tot1).estado=1
-         flujo(tot1).nota=dato2
-         flujo(tot1).vel=dato3
-         delta= deltatime*1000
-         flujo(tot1).indiceX=tot1 
-        Print #1, "OFF ";delta; "nota "; dato2 ; " vel "; dato3
-         flujo(tot1).deltatime=deltatime
-         deltatime=0
-     End Select
- 
-Next i1
-
-Print #1,"cantidad de estados on + off ";tot1
-Print #1,"cantidad de estados on       ";on1
-Print #1,"cantidad de estados      off ";off1
-Dim As Integer  ciclo=0, pasociclo=0
-
-For i1=1 To tot1
- If i1=1 Then ' el delta que venga es silencio
-   flujo(i1).vel=0
- EndIf
- delta=flujo(i1).deltatime*1000    
- 
-'ciclo de cierre de todos los on con su off
-         Select Case flujo(i1).estado
-              Case 2 
-                ciclo=ciclo+1
-                pasociclo=ciclo
-              Case 1 
-                ciclo=ciclo-1
-  
-         End Select
-
-' estado 2 nota 64  5375 1
-' estado 2 nota 62  734  2
-' estado 1 nota 64  130  1
-' estado 2 nota 60  333  2
-' estado 1 nota 62  120  1
-' estado 2 nota 59  365  2
-' estado 1 nota 60  62   1
-' estado 2 nota 57  365  2
-' estado 1 nota 59  62   1
-' estado 1 nota 57  464  0-------------(1)-
-' estado 2 nota 79  2042 1
-' estado 2 nota 77  458  2
-' estado 1 nota 79  99   1
-' estado 2 nota 76  437  2
-' estado 1 nota 77  130  1
-' estado 2 nota 74  365  2
-' estado 1 nota 76  57   1
-' estado 1 nota 74  604  0--------------(1)
-' estado 2 nota 83  1130 1  <-vel=0
-' estado 1 nota 83  52   0 ..............
-' estado 2 nota 83  193  1  <-vel>0  (2)
-' estado 1 nota 83  385  0 .............
-' estado 2 nota 83  120  1
-' estado 1 nota 83  406  0 .............
-' estado 2 nota 83  130  1
-' estado 1 nota 83  359  0
-' estado 2 nota 83  156  1
-' estado 1 nota 83  1021 0
-' estado 2 nota 76  1370 1
-' estado 1 nota 76  583  0
-' estado 2 nota 76  125  1
-' estado 1 nota 76  802  0
-' estado 2 nota 74  812  1
-' estado 2 nota 76  448  2
-' estado 1 nota 74  94   1
-' estado 2 nota 77  375  2
-' estado 1 nota 76  104  1
-' estado 2 nota 76  260  2
-' estado 1 nota 77  109  1
-' estado 2 nota 74  307  2
-' estado 1 nota 76  125  1
-
-'(1)  comienzo despues de un ciclo (0), puede haber un vel=0
-
- If ciclo=0 And (i1+1 <= maxposTrack ) And (i1+2 <= maxposTrack ) And flujo(i1+1).estado=2 _ 
-    And flujo(i1).nota <> flujo(i1+1).nota And flujo(i1+2).estado=1 Then 
-    flujo(i1+1).vel=0
- EndIf
-
-' If ciclo=0 And flujo(i1+1).estado=2 And flujo(i1+2).estado=2 _ '' Then ' todos los on tienen su correspondiente off y lo que tengo es un silencio
-'      And (i1+1 <= maxposTrack ) And (i1+2 <= maxposTrack ) Then
- ' tiene velocidad      
- '   flujo(i1+1).vel=flujo(i1).vel
-' EndIf  
- Print #1, " estado ";flujo(i1).estado; " nota ";flujo(i1).nota;" ";delta ;  " vel "; flujo(i1).vel  
-
-Next i1
-
-'proceso posterior
-
-' ----------------------
-Print #1," -----------CALCULO NOTA DUR ----ANDA OK----------"
-Dim As Integer k1=0, knotaoff,topmax=0, indices(1 To 5000) ' 5000 notas
-Dim As UByte notaoff,notaon
-Dim As Double notadur=0
-' miro los estados 1 off y de ahi retrocedo hasta el estado 2 de la misma nota
-Do While k1 < tot1
-
-  k1=k1+1
-'  Print #1, "k1 ";k1
-  If flujo(k1).estado = 1 Then 'encontro un on,busco su on hacia atras y acumulo deltatime 
-     knotaoff=k1 
-     notaoff=flujo(k1).nota
-     notadur=flujo(k1).deltatime
-     Do 
-      k1=k1-1
-      If flujo(k1).nota=notaoff And flujo(k1).estado=2 Then ' encontro el on
-         flujo(k1).duron=notadur  
-         Print #1,"estado ";flujo(k1).estado;  " nota ";flujo(k1).nota;" duron ";flujo(k1).duron; " deltatime "; flujo(k1).deltatime  
-         topmax=topmax+1
-         indices(topmax)=k1 
-         k1=knotaoff 
-         notadur=0 
-         Exit Do
-      EndIf 
-      If flujo(k1).nota<>notaoff  Then
-         notadur=notadur+flujo(k1).deltatime
-      EndIf 
-     Loop 
-  EndIf 
-Loop
-' tengo el indice de flujo que ser el orden de las notas y su on off
-' tengo las dur en mseg
-'PERO ESTE DUR EN MSEG DEBE CONERTIRSE AL DUR DE ROLL QUE VA DE 0 A 182
-' VECTOR RELDUR O DURCLA... una vez que tengo esa dur y la nota puedo 
-' empezar a cargar track(0), las notas se apilaran acorde, si la distancia entre
-' notas es menor o igual a 5  mseg...luego el vector flujo tendra marcada
-' cada nota on con 144 y terminara en 128 en roll grafico pondremos los 144
-' uno al lado del otro con la figura correspondiente a la duracion o sumas
-' de figuras ligadas para representar la duracion total de esa nota,
-'luego par escuchar tengo el playtocaall y para ver el rollgrafico y ambos se
-' sincronizaran con los eventos 144 que sera cada columna del Roll, al flujo
-' ya le puse un indice y con ese se puede sincronizar mejor..
-' y al fin veremos un roll exacto a como se escucha el vector flujo.
-' luego vendra el desafio de modificar o entrar datos estos debe nreflejarse
-' tanto en el Roll o track como en el Toca. dato1 son los 5msg el tick
-' si quiero achicar el valor dato1=1 que indica un tck de retardo se 
-'podra eliminar tantos como reduccion de tamaño. PAr aaumentar el tamaño
-' habra que insertar datos con dato1=1 y mover todo hacia adelante del resto
-' y renumerar si se insertan notas adicionales en ese cado se coloca un nuevo
-' 144 muchos datos1=1 para representar la duracion y el evento 128 para finalizar
-' de modo que lo toque bien en el play. 
-' CARGA DE TRK(0) YA CREADA
-
-ReDim (Track(0).trk ) (1 To topmax*4 ,1 To lim3)
-ReDim Roll.trk (1 To topmax*4, NB To NA) As dat
-
-
-Dim As UByte durbyte=0
-Dim As Integer cntN=0, z=1,k2
-k1=0 
-k2=0
-
- Do 
-  k1=k1+1 'el de indices
- 
-' acorde detectamos deltatime < 0.005 y apilamos las notas en track
-
-  If k1 >= 2 Then
-     If flujo(indices(k1)).deltatime < 0.01041666 And flujo(indices(k1-1)).nota > 0 And _
-        flujo(indices(k1)).nota>0 and flujo(indices(k1)).estado=2  And flujo(indices(k1-1)).estado=2  Then  ' suponemos acorde
-        Print #1,"acorde  de notas en k1 ";k1; " notas ";flujo(indices(k1-1)).nota;" -> ";flujo(indices(k1)).nota
-        z=z+1
-        Track(0).trk(cntN,z).nota= flujo(indices(k1)).nota ' es la Pianonota 
-        Track(0).trk(cntN,z).vol = flujo(indices(k1)).vel
-      ' la dur debe caer en la misma k2 no avanzar   
-     Else
-        z=1
-        k2=k2+1 ' para el track puede tener por cada k1 varios k2 al abrir la duracion
-        Print #1, "====>  contador k2 "; k2
-        Track(0).trk(k2,1).nota= flujo(indices(k1)).nota ' es la Pianonota
-        Track(0).trk(k2,1).vol = flujo(indices(k1)).vel
-        cntN=k2
-     EndIf 
-  Else
-     z=1
-     k2=k2+1 
-     Print #1, "====>  contador k2 "; k2
-     Track(0).trk(k2,1).nota= flujo(indices(k1)).nota ' es la Pianonota
-     Track(0).trk(k2,1).vol = flujo(indices(k1)).vel
-     cntN=k2
-  EndIf 
-
-  
-    
-
-''' NO SIRVE => durbyte = FiguraEquivalente(flujo(indices(k1)).duron)
-Dim  As Integer aa=1,bb=0
-' a los lencios menores a I les doy sonido pero debo ligarlos al siguiete
-For aa  = 1 To 2 
-    ''aa=1 SILENCIO
-   If aa=1 And flujo(indices(k1)).deltatime  > 0.01041666  And flujo(indices(k1)).estado=2  Then ' silencio
-     Print #1,"PASO POR AA=1 bb ";bb
-     Erase midi
-     midi(k1).dur = flujo(indices(k1)).deltatime
-     midi(k1).nota = flujo(indices(k1)).nota
-     midi(k1).volum = flujo(indices(k1)).vel 'mas q silencio un retardo  con audio
-     bb = 1
-     
-   EndIf 
-   If aa=2 Then
-
-     Print #1,"PASO POR AA=2 bb ";bb
-      If bb=1 Then   
-        k2=k2+1
-        cntN=k2
-     Track(0).trk(k2,1).nota= flujo(indices(k1)).nota ' es la Pianonota
-     Track(0).trk(k2,1).vol = flujo(indices(k1)).vel
-
-        bb=0 
-      EndIf
-     Erase midi
-     midi(k1).dur = flujo(indices(k1)).duron
-     midi(k1).nota = flujo(indices(k1)).nota
-     midi(k1).volum =  flujo(indices(k1)).vel
-   EndIf
-Print #1 , "midi(k1).dur "; midi(k1).dur
-Print #1 , "midi(k1).nota "; midi(k1).nota
-Print #1 , "midi(k1).volum "; midi(k1).volum
-
-Erase duramidi
-      duraciones midi(),k1,k1 
-   If aa=1 Then '''And flujo(indices(k1)).deltatime  <= 1  Then  'SILENCIOS LE DAMOS AUDIO Y LO LIGAMOS A LA NOTA ON REAL
-' pero se podria pasar esto vale para silencion chicos <= F
-      duramidi(1)=duramidi(1)+90
-   EndIf
- 
-'' aa=1 silencios audibles y aa=2 notas audibles
-   If duramidi(2) >0 And aa =2 Then
-      duramidi(1)=duramidi(1)+90
-   EndIf
-   If duramidi(3) >0 And aa =2 Then
-      duramidi(2)=duramidi(2)+90
-   EndIf
-
-'	If duramidi(1) >0 Then
-'        Print #1, "veo ";duramidi(1); " "; figura(duramidi(1))
-'	EndIf
-'	If duramidi(2) >0 Then
-'       Print #1, "veo ";duramidi(2);" "; figura(duramidi(2))
-'	EndIf
-'	If duramidi(3) >0 Then
-'      Print #1, "veo ";duramidi(3); " "; figura(duramidi(3))
-'	EndIf
-   
-Print #1,"----------carga track en k2 ";k2      
-
- If duramidi(1) > 0 Then ' encontro una figura equivalente
-   If z > 1 Then 
-     Track(0).trk(cntN,z).dur  = duramidi(1)
-   Else 
-     Track(0).trk(k2,1).dur  = duramidi(1)
-   EndIf
-    Print #1,"FIG 1 EQUIV k2 ";k2; " "; figura(duramidi(1))
- EndIf
-
- If duramidi(2) > 0 Then ' encontro una figura equivalente
-   k2=k2+1  
-   If z > 1 Then
-     Track(0).trk(cntN+1,z).dur  = duramidi(2)
-     Track(0).trk(cntN+1,z).nota = Track(0).trk(cntN,z).nota 
-     Track(0).trk(cntN+1,z).vol  = Track(0).trk(cntN,z).vol
-   Else
-     Track(0).trk(k2,1).dur  = duramidi(2)
-     Track(0).trk(k2,1).nota  = Track(0).trk(k2-1,1).nota
-     Track(0).trk(k2,1).vol  = Track(0).trk(k2-1,1).vol 
-   EndIf 
-    Print #1,"FIG 2 EQUIV k2 ";k2; " ";figura(duramidi(2))
- EndIf
-
- If duramidi(3) > 0 Then ' encontro una figura equivalente
-   k2=k2+1  
-   If z=2 Then 
-     Track(0).trk(cntN+2,z).dur  = duramidi(3)
-     Track(0).trk(cntN+2,z).nota =Track(0).trk(cntN,z).nota
-     Track(0).trk(cntN+2,z).vol  =Track(0).trk(cntN,z).vol
-   Else
-     Track(0).trk(k2,1).dur  = duramidi(3)
-     Track(0).trk(k2,1).nota =Track(0).trk(k2-1,1).nota
-     Track(0).trk(k2,1).vol  =Track(0).trk(k2-1,1).vol
-   EndIf
-    Print #1,"FIG EQUIV k2 "; k2; " ";figura(duramidi(3))
- EndIf
-  Track(0).trk(k2+1,1).dur= 182
-
-  For i1=1 To lim2 ' decia lim2 porque,,
-    If Track(0).trk(k2,i1).nota = 0 And Track(0).trk(k2,i1).dur <182    Then
-       Track(0).trk(k2,i1).nota = 181
-       Track(0).trk(k2,i1).dur  = 0
-       Track(0).trk(k2,i1).canal = 0
-       Track(0).trk(k2,i1).vol  = 0
-
-    EndIf
-  Next i1
-Next aa
-
-
-
- If k1 = topmax  Then
-    Exit Do
- EndIf
-Loop 
-     
-
-titulos(0)=nombreTrack
-pmTk(0).MaxPos = k2 +2 '''tocaparam(pis).maxpos
-pmTk(0).desde = 4
-pmTk(0).hasta = 8
-pmTk(0).posn=1
-pmTk(ntk).canalsalida=tocaparam(pis).canal
-pmTk(ntk).portout=tocaparam(pis).portout
-pmTk(ntk).patch=tocaparam(pis).patch
-Track(ntk).trk(1,1).nnn =tocaparam(pis).patch
-
-TrackaRoll (Track(), 0 , Roll)
-ROLLCARGADO=TRUE
-
-Exit Sub 
-
-fail:
- Dim errmsg As String
-If  Err > 0 Then
-  errmsg = "FAIL Error CTRL1207" & Err & _
-           " in function " & *Erfn & _
-           " on line " & Erl & " " & ProgError(Err)
-  Print #1, errmsg
-End If   
-
-End Sub 
 
 Sub CTRL2500()
 ' abrir un midi-in ...con callback para Roll

@@ -809,7 +809,9 @@ Dim midionof As Integer
  ubiroll=param.ubiroll 
  ubirtk=param.ubirtk
  encancion=param.encancion
+If NombreCancion > "" Then
  abrirRoll=4
+EndIf
  ALTO=param.alto
  ANCHO=param.ancho
  ANCHO3div4 = ANCHO *3 / 4

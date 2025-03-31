@@ -120,14 +120,24 @@ End Sub
 
 Sub RecalCompas( Roll As inst) ' Nuevo para ticks
  On Local Error GoTo errorCalc 
-
+' velocidades para 4/4 reposicion par ticks
+' lso tiempos de una comaps son 96, 192, 288, 384
  Dim As Integer i,j,k,negra=96, multi,kj,kp, cntcompas,cntnegra,com, compas4cuartos= 4*negra
+
   compas(1).Posi=0
   compas(1).nro = 0
 For j=1 To MaxPos-2
   kj=kj+1
   Select Case kj
-    Case compas4cuartos
+    Case   1 To  96
+   compas(kj).nro = -1
+    Case  97 To  192 
+   compas(kj).nro = -2
+    Case 193  To 288 
+   compas(kj).nro = -3
+    Case 289 To 383
+   compas(kj).nro = -4
+    Case compas4cuartos '384
      cntcompas=cntcompas+1
   compas(j).Posi=j
   compas(j).nro = cntcompas
@@ -1441,9 +1451,9 @@ Else
  
 TrackaRoll (Track(), ntk,Roll ) ' no usa ubirtk
 Print #1,"Tracks  ntk cargado, nombre ",ntk, nombre
-Print #1,"llama a RecalCompas para ntk,maxpos, .maxpos ",ntk,maxpos,pmTk(ntk).MaxPos
-ReCalCompas(Roll) 
-Print #1,"MAXPOS DESPUES DE RECALCOMPAS ", maxpos, pmTK(ntk).maxpos
+''Print #1,"llama a RecalCompas para ntk,maxpos, .maxpos ",ntk,maxpos,pmTk(ntk).MaxPos
+''ReCalCompas(Roll) 
+''Print #1,"MAXPOS DESPUES DE RECALCOMPAS ", maxpos, pmTK(ntk).maxpos
 EndIf
 
 
@@ -1627,7 +1637,7 @@ Dim As  Integer k1=0
     tempo=InStr (UCase(linea), "TEMPO")
     If tempo > 0 Then 
        Print #31, "INPUT "; linea 
-       tempo=ValInt(Mid(linea, tempo+6))
+       tempo=ValInt(Mid(linea, tempo+6)) '' mas 6 ????
       ' Print #31,"tempo "; tempo 
     End If
 
@@ -2574,28 +2584,28 @@ nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
          ubiroll=0
       EndIf
 
-     Dim z (1,1)  As dat
-     Dim zLim (1,1) As dat
-     Dim z3   (1,1)  As dat ' 04-02-2022 se agregan 48 bytes para info futura 
-     Dim z4   (1,1)  As dat 
-     Dim z5   (1,1)  As dat 
-     Dim z6   (1,1)  As dat 
-     Dim z7   (1,1)  As dat 
-     Dim z8   (1,1)  As dat 
-     Dim z9   (1,1)  As dat 
-     Dim z10  (1,1)  As dat 
+     Dim z    As dat
+     Dim zLim As dat
+     Dim z3   As dat ' 04-02-2022 se agregan 48 bytes para info futura 
+     Dim z4   As dat 
+     Dim z5   As dat 
+     Dim z6   As dat 
+     Dim z7   As dat 
+     Dim z8   As dat 
+     Dim z9   As dat 
+     Dim z10  As dat 
      
      
 
      'Print #1,"posicion lectura en ca ", Seek(ca)  
 '     Seek ca,1
-     Get #ca, , z(1,1)
-     x1=Bin(z(1,1).nota,4) 
-     x2=Bin(z(1,1).dur,4) 
-     x3=Bin(z(1,1).vol,4) 
-     x4=Bin(z(1,1).pan,4) 
-     x5=Bin(z(1,1).pb,4) 
-     tipoescala_num_ini =CInt( Z(1,1).inst) ' 20-12-2021 - tipoescala en uso
+     Get #ca, , z
+     x1=Bin(z.nota,4) 
+     x2=Bin(z.dur,4) 
+     x3=Bin(z.vol,4) 
+     x4=Bin(z.pan,4) 
+     x5=Bin(z.pb,4) 
+     tipoescala_num_ini =CInt( Z.inst) ' 20-12-2021 - tipoescala en uso
      If tipoescala_num_ini =0 Then
         tipoescala_num_ini =1
      EndIf
@@ -2616,29 +2626,29 @@ nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
      
      If posn < 0 Then posn=0 EndIf
      ' crgamos limites Roll de octavas
-     Get #ca, , zLim(1,1)
-     desde  = CInt(zLim(1,1).nota)
+     Get #ca, , zLim
+     desde  = CInt(zLim.nota)
      pmTk(ntk).desde=desde
      Print #1,"desde ",desde
-     hasta  = CInt(zLim(1,1).dur)
+     hasta  = CInt(zLim.dur)
      pmTk(ntk).hasta =hasta
      Print #1,"hasta ",hasta
-     notaold= CInt(zLim(1,1).pb)
-     pmTk(ntk).notaold=zLim(1,1).pb
+     notaold= CInt(zLim.pb)
+     pmTk(ntk).notaold=zLim.pb
 
      Print #1,"notaold ",notaold     
-     notaescala_num_ini =CInt(zLim(1,1).vol) ' notadeescala 20-12-2021
+     notaescala_num_ini =CInt(zLim.vol) ' notadeescala 20-12-2021
      If notaescala_num_ini = 0 Then
         notaescala_num_ini =1
      EndIf
      Print #1,"notaescala_num_ini ",notaescala_num_ini     
-     If  zLim(1,1).pan = 3 Then
+     If  zLim.pan = 3 Then
          alteracion="sos"
      EndIf    
-     If  zLim(1,1).pan = 2 Then
+     If  zLim.pan = 2 Then
          alteracion="bem"
      EndIf 
-     If  zLim(1,1).pan = 3 Then
+     If  zLim.pan = 3 Then
          alteracion="sos"
      EndIf
      Print #1,"alteracion ",alteracion
@@ -2653,12 +2663,13 @@ nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
 ' carga de escala en guia de escala
     guiaEscala(1).tipoescala=tipoescala_num_ini '13-01-2022 faltaba ini
     guiaEscala(1).notaescala=notaescala_num_ini
-    guiaEscala(1).alteracion =CInt(zLim(1,1).pan)
+    guiaEscala(1).alteracion =CInt(zLim.pan)
     guiaEscala(1).posicion=1
 
-    tiempoPatron=CInt(zLim(1,1).inst)
+'''    tiempoPatron=CInt(zLim(1,1).inst) no alcanzaba
+
      If tiempoPatron = 0 Then 
-        tiempoPatron = 60
+        tiempoPatron = 240
      EndIf
 ' NB Y NA SE DEDUCEN no hace fakta guardarlos
      NB= 0 + (desde-1) * 13
@@ -2688,34 +2699,39 @@ Print #1,"pmTk(0).MaxPos = MaxPos ";  MaxPos
      Sleep 5
      CambiarDim(0) 
      repro=0
-     Get #ca, ,z3  (1,1)
+     Get #ca, ,z3  
 
-     canalx  = CInt(z3(1,1).inst) ' canal midi cargado en Global si es un track se pasara a info de trck
+     canalx  = CInt(z3.inst) ' canal midi cargado en Global si es un track se pasara a info de trck
      Print #1,"canalx cargado desde archivo ",canalx
-     portout = CInt(z3(1,1).dur) 
+     portout = CInt(z3.dur) 
      Print #1,"portout cargado desde archivo ",portout
-     pmTk(0).portout=z3(1,1).dur   ' ubyte  a ubyte
-     pmTk(0).canalsalida = z3(1,1).inst ' ubyte a ubyte
-     pmTk(0).patch=z3(1,1).nota  ' ubyte a ubyte
+     pmTk(0).portout=z3.dur   ' ubyte  a ubyte
+     pmTk(0).canalsalida = z3.inst ' ubyte a ubyte
+     pmTk(0).patch=z3.nota  ' ubyte a ubyte
      pmTk(0).portout=portout
 '-----PATCH ----- 14-04-2024
-     patchsal=z3(1,1).nota ' ubyte a ubyte
+     patchsal=z3.nota ' ubyte a ubyte
      instru= CInt(patchsal) ' integer ubyte
      Roll.trk(1,NA).inst = patchsal
 
-     TipoCompas= z3(1,1).pb 
+     TipoCompas= z3.pb 
      TCompas=Mid(tempoString(TipoCompas),1,4)
  
-     pmTk(0).tempo = TipoCompas 
+     pmTk(0).tipocompas = TipoCompas 
      d7=valorFigura(TipoCompas)
 
-     Get #ca, ,z4  (1,1)
-     Get #ca, ,z5  (1,1)
-     Get #ca, ,z6  (1,1)
-     Get #ca, ,z7  (1,1)
-     Get #ca, ,z8  (1,1)
-     Get #ca, ,z9  (1,1)
-     Get #ca, ,z10 (1,1)
+     Get #ca, ,z4  
+     Get #ca, ,z5  
+     Get #ca, ,z6  
+     Get #ca, ,z7  
+     Get #ca, ,z8  
+     Get #ca, ,z9  
+     Get #ca, ,z10 
+Dim mit As aUshort
+'con estos dos campos puedo reconstruir tiempoPatron
+ mit.pan = z4.pan
+ mit.pb  = z4.pb
+ tiempoPatron = mit.st
 
 
    
@@ -2759,7 +2775,7 @@ Dim As Integer copiado=0
          Track(ntk).trk(j,ip).vol  => Trabajo (j,i).vol
          Track(ntk).trk(j,ip).pan  => Trabajo (j,i).pan       
          Track(ntk).trk(j,ip).pb   => Trabajo (j,i).pb
-         Track(ntk).trk(j,ip).nnn => Trabajo (j,NA).inst
+         Track(ntk).trk(j,ip).nnn => Trabajo (j,NA).inst 'inst en todos lados???
          'Print #fs,"notapiano,ntk", Track(ntk).trk(j,ip).nota,ntk,Track(ntk).trk(j,ip).dur
        EndIf
 ' copia datos de escala, esta repetido en cada octava pero bueno....con una sola
@@ -2806,7 +2822,10 @@ Dim As Integer copiado=0
      '''  crearsecuencia(Track(), j, ntk )
      Next j
 
- 
+ Roll.trk(1,NA).pan = z4.pan
+ Roll.trk(1,NA).pb  = z4.pb
+' falta ver que pasa con Track con el tempo....
+
 
 cerrar ca
 DUR => 0
@@ -3458,9 +3477,10 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
 
 '-----------------------------
   '===> 3.3.1 [ROLL=>RTK] SC_F11 COPIA 
-  
-   If MultiKey(sc_Control) And mousex > 778 And mousex < 912  And mousey < 50  And carga=0 Then ' <=
+ ' CONVIERTE DESDE UN ROLL CARGADO O DE DISCO DEBE ESTAR NOMBRE <> "" 
+   If MultiKey(sc_Control) And mousex > 729 And mousex < 880  And mousey < 50  And carga=0 Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
+    Print #1,"ENTRO A ROLL A TRACK"
      If MouseButtons And 1 Then
        Print #1, "Click Grabando a disco Roll a Track ",nombre
       '''' dialogoText("Grabar Archivo")
@@ -3468,22 +3488,24 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
        If nombre = "" Then
  nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREATEPROMPT)
           If nombreg = "" Then
+            Print #1,"NOMBREG VACIO "
              Exit Sub
           Else
              nombre=nombreg   
           EndIf
        EndIf
 ''''       grabaprueba()
-       Dim As Integer esroll, esrtk 
+       Dim As Integer esroll, esrtk , esejec 
        esroll=InStr(LCase(nombre),".roll")
-       esrtk =InStr(LCase(nombre),".rtk")        
+       esrtk =InStr(LCase(nombre),".rtk") 
+       esejec=InStr(LCase(nombre),".ejec")       
 '   GrabarRollaTRack aca graba con [00] adelante, pues no es comando de cancion
 ' la pista de cancion van de 1 a 32 la pista 00 es el track asociado a Roll sin cancion 
         If esrtk >0 Then ' update de un track con o sin cancion
            GrabarRollaTrack(0)
         EndIf  
         ' convierte roll a track comun le abtepone [00] y rtk al final
-        If esroll > 0 Then ' con o sin cancion
+        If esroll > 0 Or esejec >0 Then ' con o sin cancion
            GrabarRollaTrack(1) ' el 0 no lo toma es indiferente
         EndIf
         MenuNew=0           ' por formato de TRack anteponiendo[0]
@@ -3693,7 +3715,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
      menuNew= 7
      TCompas="4/4 "  ' para mostrar en pantalla  
      TipoCompas=Tcompas4_4  ' 8 para guardar en disco roll o rtk
-       pmTk(0).tempo = TipoCompas 
+       pmTk(0).tipocompas = TipoCompas 
      d7=valorFigura(TipoCompas)
      'If MaxpOS > 2 Then
      '''  ReCalCompas(Roll)
@@ -4591,16 +4613,16 @@ Dim  As Integer npl
     Else
   ''''  Open "test-AAAAA.TXT" For Output    As #2
      Dim Trabajo (1 To Maxpos, NB To NA) As dat
-     Dim grabaPos (1,1)  As dat
-     Dim grabaLim (1,1)  As dat 
-     Dim graba3   (1,1)  As dat ' 04-02-2022 se agregan 48 bytes para info futura 
-     Dim graba4   (1,1)  As dat 
-     Dim graba5   (1,1)  As dat 
-     Dim graba6   (1,1)  As dat 
-     Dim graba7   (1,1)  As dat 
-     Dim graba8   (1,1)  As dat 
-     Dim graba9   (1,1)  As dat 
-     Dim graba10  (1,1)  As dat 
+     Dim grabaPos   As dat
+     Dim grabaLim   As dat 
+     Dim graba3     As dat ' 04-02-2022 se agregan 48 bytes para info futura 
+     Dim graba4     As dat 
+     Dim graba5     As dat 
+     Dim graba6     As dat 
+     Dim graba7     As dat 
+     Dim graba8     As dat 
+     Dim graba9     As dat 
+     Dim graba10    As dat 
 ' en bloque graba3 vamos a colocar nro de canal 1 a 16
 '                                   port midi de salida
 '                                   port midi de entrada
@@ -4701,22 +4723,36 @@ MaxPos=k+1
      y5= CUByte("&B"+a5)
      '    print #1, "y1,y2,y3,y4", y1,y2,y3,y4
      ' grabamos maxpos en 5 ubyte y notaold (1 a 12 no notapiano)
-     grabaPos(1,1).nota = y1
-     grabaPos(1,1).dur  = y2
-     grabaPos(1,1).vol  = y3
-     grabaPos(1,1).pan  = y4
-     grabaPos(1,1).pb   = y5
+     grabaPos.nota = y1
+     grabaPos.dur  = y2
+     grabaPos.vol  = y3
+     grabaPos.pan  = y4
+     grabaPos.pb   = y5
 Print #1,"grabando tipoescala_num_ini en el archivo ",tipoescala_num_ini 
-     grabaPos(1,1).inst = CUByte(tipoescala_num_ini) ' 20-12-2021 - tipoescala en uso
+     grabaPos.inst = CUByte(tipoescala_num_ini) ' 20-12-2021 - tipoescala en uso
     '-----------------------
-     grabaLim(1,1).nota = CUByte(desde) 
-     grabaLim(1,1).dur  = CUByte(hasta)
-     grabaLim(1,1).pb   = CUByte(notaold)
+     grabaLim.nota = CUByte(desde) 
+     grabaLim.dur  = CUByte(hasta)
+     grabaLim.pb   = CUByte(notaold)
 Print #1,"grabando notaescala_num_ini en el archivo ",notaescala_num_ini
-     grabaLim(1,1).vol  = CUByte(notaescala_num_ini) ' notadeescala 20-12-2021
+     grabaLim.vol  = CUByte(notaescala_num_ini) ' notadeescala 20-12-2021
 Print #1,"grabando alteracion en el archivo ",alteracion
-     grabaralteracion (grabaLim(1,1).pan)
-     grabaLim(1,1).inst = CUByte(tiempoPatron) '08-01-2022 hasta 256 sera suficiente�?
+     grabaralteracion (grabaLim.pan)
+''no le da 
+'''     grabaLim.inst = CUByte(tiempoPatron) '08-01-2022 hasta 256 sera suficiente�?
+' el tiempoPatron no alcanza 256 30-03-2025 
+' el tiempoPatron al pasar de ejec a Roll lo dejo aca
+Dim mit As aUshort
+mit.st = tiempoPatron
+'con estos dos campos puedo reconstruir tiempoPatron y poner los aca
+'Roll.trk(1,NA).pan = mit.pan
+'Roll.trk(1,NA).pb  = mit.pb
+' al grabar a disco debo usar otros campos el grabaLim no alcanza
+' usaremos el graba4 
+  graba4.pan = mit.pan
+  graba4.pb  = mit.pb
+'---------------------------
+
 /' 
 Negras por minuto	 tempo
 40-43	Grave
@@ -4745,16 +4781,16 @@ Negras por minuto	 tempo
      If CANCIONCARGADA =TRUE Then ' SELECCION DE ISNTRUMENTO CON CANCION CARGADA
         Trabajo(1,NA).inst = Track(ntk).trk(1,1).nnn
      EndIf
-     graba3(1,1).inst =pmTk(0).canalsalida ' el CANAL MIDI 1 A 16 QUE ACA VA DE 0 A 15
+     graba3.inst =pmTk(0).canalsalida ' el CANAL MIDI 1 A 16 QUE ACA VA DE 0 A 15
 ' es un roll !!
-     graba3(1,1).dur = pmTk(ntk).portout
+     graba3.dur = pmTk(ntk).portout
      ' faltaba el patch!!! por eso habia incongruencias al modificar
      ' ver la carga tambien SEGUIR!!!!, TAMPOCO ESTABAN NA Y NB
-     graba3(1,1).nota= pmTk(ntk).patch ' 14-04-2024
+     graba3.nota= pmTk(ntk).patch ' 14-04-2024
      If Roll.trk(1,NA).inst <> pmTk(0).patch Then
-        graba3(1,1).nota=Roll.trk(1,NA).inst
+        graba3.nota=Roll.trk(1,NA).inst
      EndIf
-     graba3(1,1).pb = TipoCompas ' 26-04-2024
+     graba3.pb = TipoCompas ' 26-04-2024
      ' NB y NA se calcula a partir de desde y hasta no hace falta grabarlos  
      ' ------------------------------------
      ' para seguir poniendo notas nuevas
@@ -4786,16 +4822,16 @@ Negras por minuto	 tempo
 
      '  print #1,"MaxPos grabada en Trabajo ",MaxPos
 
-     Put #ga, ,grabaPos(1,1)
-     Put #ga, ,grabaLim(1,1)
-     Put #ga, ,graba3  (1,1)
-     Put #ga, ,graba4  (1,1)
-     Put #ga, ,graba5  (1,1)
-     Put #ga, ,graba6  (1,1)
-     Put #ga, ,graba7  (1,1)
-     Put #ga, ,graba8  (1,1)
-     Put #ga, ,graba9  (1,1)
-     Put #ga, ,graba10 (1,1)
+     Put #ga, ,grabaPos
+     Put #ga, ,grabaLim
+     Put #ga, ,graba3  
+     Put #ga, ,graba4   ' aca esta tiempoPatron
+     Put #ga, ,graba5  
+     Put #ga, ,graba6  
+     Put #ga, ,graba7  
+     Put #ga, ,graba8  
+     Put #ga, ,graba9  
+     Put #ga, ,graba10 
                
      Put #ga, ,Trabajo()
      cerrar(ga)
@@ -4856,9 +4892,11 @@ Print #1,"inicia CargaPistasEnCancion"
           End If  
        ''' EndIf
         ntk= sacarNtk(filenameold)  ' 1
+       Print #1,"sacarNtk ntk "; ntk
         If mayor< ntk Then
            mayor=ntk
         EndIf
+ 
   ' va cargando los track internos, tomando el nro de track 
   ' del nombre del archivo solamente , ergo el usuario puede cambiar el orden
   ' o poner un trakck de otra cancion con un numero que no exista [x]
@@ -4948,16 +4986,16 @@ Sub GrabarTrack (ntk As Integer)  'Error seguro aca nota=181 posicion1
 'End Type
 
    'r  Erase Trabajo ' todo a cero para un array fijo no dinamico
-     Dim grabaPos (1,1)  As poli ' 15 ubytes en cada poli 
-     Dim grabaLim (1,1)  As poli
-     Dim graba3   (1,1)  As poli ' 04-02-2022 se agregan 48 bytes para info futura 
-     Dim graba4   (1,1)  As poli 
-     Dim graba5   (1,1)  As poli 
-     Dim graba6   (1,1)  As poli 
-     Dim graba7   (1,1)  As poli 
-     Dim graba8   (1,1)  As poli 
-     Dim graba9   (1,1)  As poli 
-     Dim graba10  (1,1)  As poli 
+     Dim grabaPos   As poli ' 15 ubytes en cada poli 
+     Dim grabaLim   As poli
+     Dim graba3     As poli ' 04-02-2022 se agregan 48 bytes para info futura 
+     Dim graba4     As poli 
+     Dim graba5     As poli 
+     Dim graba6     As poli 
+     Dim graba7     As poli 
+     Dim graba8     As poli 
+     Dim graba9     As poli 
+     Dim graba10    As poli 
 
    ' Total 150 ubytes en 10 poli 
    
@@ -5047,52 +5085,57 @@ Next i1
      y5= CUByte("&B"+a5)
      '    print #1, "y1,y2,y3,y4", y1,y2,y3,y4
      ' grabamos maxpos en 4 ubyte
-     grabaPos(1,1).nota = y1
-     grabaPos(1,1).dur  = y2
-     grabaPos(1,1).vol  = y3
-     grabaPos(1,1).pan  = y4
-     grabaPos(1,1).pb   = y5
-     grabaPos(1,1).nnn = pmTk(ntk).tipoescala
+     grabaPos.nota = y1
+     grabaPos.dur  = y2
+     grabaPos.vol  = y3
+     grabaPos.pan  = y4
+     grabaPos.pb   = y5
+     grabaPos.nnn = pmTk(ntk).tipoescala
 If  ntk >0 Then
      If CheckBox_GetCheck( cbxnum(ntk))= 1 Then ' sonido on/off 16-03-2022
          Print #1,"grabo grabaPos(1,1).dur2=1,, ntk", ntk
-         grabaPos(1,1).dur2=1
+         grabaPos.dur2=1
      Else
-         grabaPos(1,1).dur2=0
+         grabaPos.dur2=0
      EndIf
 Else
-         grabaPos(1,1).dur2=1
+         grabaPos.dur2=1
 
 EndIf   
      '-----------------------
-     grabaLim(1,1).nota = CUByte(pmTk(ntk).desde) 
-     grabaLim(1,1).dur  = CUByte(pmTk(ntk).hasta)
-     grabaLim(1,1).pb   = CUByte(pmTk(ntk).notaold) 
-     grabaLim(1,1).vol  = CUByte(pmTk(ntk).notaescala) ''   CUByte(notaescala_num_ini) ' notadeescala 20-12-2021     
+     grabaLim.nota = CUByte(pmTk(ntk).desde) 
+     grabaLim.dur  = CUByte(pmTk(ntk).hasta)
+     grabaLim.pb   = CUByte(pmTk(ntk).notaold) 
+     grabaLim.vol  = CUByte(pmTk(ntk).notaescala) ''   CUByte(notaescala_num_ini) ' notadeescala 20-12-2021     
 
 
-     grabaLim(1,1).pan  = pmTk(ntk).alteracion
-     grabaLim(1,1).nnn = CUByte(tiempoPatron)
+     grabaLim.pan  = pmTk(ntk).alteracion
+     grabaLim.nnn = CUByte(tiempoPatron)
     
-     graba3(1,1).dur = pmTk(ntk).portout
-     graba3(1,1).nnn = pmTk(ntk).canalsalida ' as poli son tracks ojo 
-     graba3(1,1).nota= pmTk(ntk).patch
-     Print #1,"grabartrack graba3(1,1).nnn, ntk ",graba3(1,1).nnn , ntk
+     graba3.dur = pmTk(ntk).portout
+     graba3.nnn = pmTk(ntk).canalsalida ' as poli son tracks ojo 
+     graba3.nota= pmTk(ntk).patch
+     Print #1,"grabartrack graba3.nnn, ntk ",graba3.nnn , ntk
 
-     graba3(1,1).pb = TipoCompas ' 26-04-2024
+     graba3.pb = TipoCompas ' 26-04-2024
 
      '  print #1,"MaxPos grabada en Trabajo ",MaxPos
+Dim mit As aUshort
+mit.ST = tiempoPatron
+graba4.pan= mit.pan
+graba4.pb = mit.pb
+
      
-     Put #gt, ,grabaPos(1,1)
-     Put #gt, ,grabaLim(1,1)
-     Put #gt, ,graba3  (1,1)
-     Put #gt, ,graba4  (1,1)
-     Put #gt, ,graba5  (1,1)
-     Put #gt, ,graba6  (1,1)
-     Put #gt, ,graba7  (1,1)
-     Put #gt, ,graba8  (1,1)
-     Put #gt, ,graba9  (1,1)
-     Put #gt, ,graba10 (1,1)
+     Put #gt, ,grabaPos
+     Put #gt, ,grabaLim
+     Put #gt, ,graba3  
+     Put #gt, ,graba4  
+     Put #gt, ,graba5  
+     Put #gt, ,graba6  
+     Put #gt, ,graba7  
+     Put #gt, ,graba8  
+     Put #gt, ,graba9  
+     Put #gt, ,graba10 
      
      Put #gt, ,Trabajo() ' ACA DEBERIA QUEDAR EL CAMPO ACORDE !!
      cerrar (gt)

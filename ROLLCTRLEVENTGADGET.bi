@@ -222,14 +222,6 @@ Static As Integer millave
 '-------------------------------------------------------
 '//////////////// BOTON ROJO COMIENZO GRABACION EJEC ////////////////// O PATRON
 '---------------------------------------------------------------------
-' YA funciona estamos comparando con 
-'F:\IT64\AREAWORK\ROLLMUSIC-138-INPUT-OK\ que si funciona graba ejecuciones
-' pero es distinto no tien menu dispositicos o ejecuciones
-' llamar a un list  port y ajustar portout
-' NO GRABA BIEN UNA SEGUNDA PISTA MIENTRAS ESCUCHO LA ANTERIOR
-' CAD AUNO CON SU PATCH CORRESPONDIENTE ...NUEVO DESAFIO!!! 
-'GRABA BIEN CADA INST CON SUPATCH SEESCUCHA VIEN AL REPRODUCIR
-' PERO AL GRABAR UNA NUEVA PISTA USA EL PATCH DE LA PRIMERA PISTA 
      If eventnumber()= BTN_MIDI_GRABAR And GrabarEjec=HabilitaGrabar Then ' BOTON GRABAR ROJO
       ' EVENTO 10
          Print #1,"Entro a btn_midi_grabar EJEC "
@@ -447,6 +439,8 @@ Static As Integer millave
 'threadGrabamidi=@pgmidi
         GrabarMidiIn(pgmidi,ntoca) 'POR STOP aca se graba bien el orden
   'ThreadCreate (@GrabarMidiIn,CPtr(Any Ptr, threadGrabamidi))
+'grabamos parametros
+            grabariniciotxt(NombreCancion)
 
          Else
            CONTROL2=1

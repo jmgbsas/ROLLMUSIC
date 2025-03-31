@@ -1,3 +1,15 @@
+- 30-03-2025 play de una sola pista se compacto ya no usa vectores auxiliares;
+  en ejecuciones convertidas a roll se usa el volumen de cada nota tal cual se ejecuto;
+  en roll manual y solo en 4/4 como antes (falta el resto) se ajusto tiempos fuertes y debiles
+  en rangos de negra o sea 96 ticks. Al iniciar de nuevo un grafico se ajusta la posicion como en
+  el inicio. Se guarda y recupera el tiempoPatron usado por el usuario a archivo rtk  y roll.
+- 28-03-2025 correccion de cargatrack si no hay cancion es siempre nro track ntk=0
+  recorrer todo verticalmente y despues enviar notas on off esta por verse podriamos 
+  eliminarlo y a medida que recorremos verticalmente el vector enviamos los noteon y .
+  Usamos volumen de las ejecuciones si la secuencia viene  de una conversion desde ejec.
+  si no usamos la prefabricada.(mas adelante permitiremos corregis o cambiar  estos volumenes
+  genericamente para todos los compases o en algunos en particular)
+- 26-03-2025  todos los Roll covertidos de un grupo de ejec deben tener la misma longitud
 - 23-03-2025 TICKS 0.305 lineas de compas y velocidad de navegacion, correcciones
 - 20-03-2025 TICKS 0.304 sacar o poner notas guia. teclas H y K respectivamente
 - 19-03-2025 RollMusic Con Ticks primera etapa se va adaptando las funciones
@@ -21,6 +33,11 @@
   o en vivo. Se complica mucho sin linea de tiempo.. se abandona esta linea
   de desarrollo. Lentamente se esta pasando a linea de tiempo o sea con ticks.
   a partir de Version 0.5000, que es la TICKS 0.300.
+- 06-03-2025 Se puede trasponer toda la secuencia de ticks  
+- 01-03-2025 seguimos pruebas de play con ticks convertir ejec a Roll colocamos una N en 
+  las notaas pues no sabemos la duracion  
+- 08-02-2025 test de play con ticks ,anda bien cargamos las duraciones desde teclado
+  figuras de letras, Funcion DurxTicks ayuda a pasar de duracion a ticks por cada duracion de nota
 - 17-10-2024 al introducir grabacion de patrones, se perdio la grabacion de ejecuciones
   corregido, portsal, patch y canal de pistas de la derecha corregido.
   Observacion a corregir: si cambio el patch para reproducir una pista, al tocar

@@ -88,7 +88,7 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="2025-03-23 TICKS 0.306 correcciones "
+nroversion="2025-03-28 TICKS 0.307 "
 ' empieza a andar!! 
 'esta version no será compatible con las anteriores se agrego por ahora
 ' un campo nuevo al type dat el onoff ubyte, con 2 indicara on, y con 1 el off 

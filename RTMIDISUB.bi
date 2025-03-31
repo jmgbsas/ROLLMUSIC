@@ -1379,7 +1379,10 @@ Function tempoString (t As ubyte) As String  ' para imprimir en archivo midi txt
 End Function 
 '-------------playAll-----08-02-2025-------
 Sub playAll(Roll As inst) ' play version 3 CON TICKS
-' 21:50 08-02-2025 anduvo con notas simples!! 
+'<<< 30-03-2025 anda ok para roll desde ejec o Roll desde entrada manual >>>>
+' en manual las velocidades son una sola semi fuerte, hasta que compas pueda 
+'volver a poner fuerte debil semifuerte debil... no se si podre
+' es un desafio nuevo  
 On Local Error Goto fail
 
 If MIDIFILEONOFF = HABILITAR  Then 
@@ -1389,10 +1392,10 @@ If MIDIFILEONOFF = HABILITAR  Then
    '' FALTRA ENTENDER MAS 
    indicenotas=0
    Dim As String NombreTrack, tiempo 
-   If TipoCompas <> pmTk(0).tempo And TipoCompas > 0 Then
+   If TipoCompas <> pmTk(0).tipocompas And TipoCompas > 0 Then
       tiempo = tempoString(TipoCompas)
    Else 
-      tiempo = tempoString (pmTk(0).tempo)
+      tiempo = tempoString (pmTk(0).tipocompas)
    EndIf
    midiplano=20
    Dim numc As Integer = CInt(pmTk(0).canalsalida) + 1
@@ -1478,36 +1481,17 @@ xmouse = mousex
 ymouse = mousey
 
 Dim As Double start
-Dim as Integer cnt=0, cntold=0,cpar=0,nj, durj,tiempoFiguraSig
+Dim as Integer cpar=0,nj, durj,tiempoFiguraSig
 Dim As UByte dura=0,duraold=0
 Dim As Integer liga=0,notapiano=0,old_notapiano=0, iguales=0, distintos=0
 Dim leng As UInteger <8>
 Dim result As Integer
 playloop2=0
-' ==============> AJUSTE DE CANAL MIDI PARA UN ARCHIVO ROLL AISLADO <===========
-
-'If canalx > 0 Then
-'  Print #1,">>>>>> canal elegido  en menu o de achivo ",canalx  
-'  canal = CUByte(canalx) 
-  ' RECORDAR CANALX EN SELECCION VA DE 0 A 15 no hace falta convertir
- 
-'  pmTk(0).canalsalida=canal 
-        
-'Else
-'  canal = pmTk(0).canalsalida  '12-02-2022
-'  
-'  Print #1,"  ajusta CANAL al del archivo canal= ",canal        '
-
-'EndIf
 
 
-' Print #1,"ON patch ntk canal ",	Roll.trk(1,NA).inst, ntk,pmTk(0).canalsalida
 
- ''If Roll.trk(1,NA).inst > 0 Then
      ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, pmTk(0).portout)
- ''   ChangeProgram ( Roll.trk(1,NA).inst, pmTk(0).canalsalida, pmTk(0).portout)	
     patchsal =pmTk(0).patch ''Roll.trk(1,NA).inst
- '''EndIf
 
 'print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
 'print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
@@ -1516,7 +1500,7 @@ mousex=0
 ' print #1,                    "-----------------------------------------"
 comienzo=posicion
 
-cntold=0
+
 If pasoZona1 > 0 Then
  comienzo=pasoZona1
  comienzoloop=comienzo
@@ -1527,14 +1511,6 @@ If pasoZona2 > 0 Then
  finalloop=final
 EndIf
 
-' If jply=1 And Roll.trk(1,NA).inst > 0 Then
-'   ChangeProgram ( Roll.trk(1,NA).inst , 0)
-'    print #1,"ChangeProgram jply", Roll.trk(1,NA).inst
-  ''        On Error GoTo labelerror 
-' End If 
-'        canal = pmTk(0).canalsalida  '12-02-2022
-'        Print #1,"  ajusta CANAL ",canal        
-'        portsal= pmTk(0).portout
 STARTMIDI=Timer
 old_time_on=STARTMIDI
 Print #1,"old_time_on "; old_time_on
@@ -1543,101 +1519,78 @@ Dim As Double  tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
 
+Print #1,"VEO marca ejec enb onoff Roll.trk(1,NA).onoff   "; Roll.trk(1,NA).onoff
+Print #1,"VEO Track(0).trk(1,1).ejec "; Track(0).trk(1,1).ejec 
+' ======================= FOR JPLY PLAYALL =======================
+Print #1,"cominzo final "; comienzo , final
+
 For jply=comienzo To final
 
-' If Roll.trk(1,NA).inst > 0 And jply=1 Then
-'       ChangeProgram ( Roll.trk(1,NA).inst , 0)
-' EndIf
-
-kNroCol= Int(jply/NroCol)
-If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < MaxPos)Then
-   posicion=jply
-   curpos=0
-   SetMouse xmouse, ymouse
-EndIf
+  kNroCol= Int(jply/NroCol)
+  If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < MaxPos)Then
+     posicion=jply
+     curpos=0
+     SetMouse xmouse, ymouse
+  EndIf
 
 
- mousex=jply * anchofig '<=== jmgjmg
- If CONTROL1 = 1 Then
-   If InStr(*nombreOut(portout),"Microsoft") > 0 Then
-   Else
-     alloff( canal,portsal )
-   EndIf  
+  mousex=jply * anchofig '<=== jmgjmg ' ver esto andaba bien en Roll sin ticks sin el anchofig
+  If CONTROL1 = 1 Then
+    If InStr(*nombreOut(portout),"Microsoft") > 0 Then
+    Else
+      alloff( pmTk(0).canalsalida,pmTk(0).portout )
+    EndIf  
       CONTROL1=0
       Exit For
- EndIf  
+  EndIf  
 ' puede pasar que el maxpos sea menro al final de la secuencia porque se agrego espacio
- If jply=MaxPos Then
-   If InStr(*nombreOut(portout),"Microsoft") > 0 Then
-   Else
-    alloff( canal,portsal)
-   EndIf 
-    Exit For
- EndIf
+  If jply=MaxPos Then
+    If InStr(*nombreOut(portout),"Microsoft") > 0 Then
+    Else
+       alloff( pmTk(0).canalsalida,pmTk(0).portout)
+    EndIf 
+      Exit For
+  EndIf
+' no se si eliminarlo esto Compas no se si almacena los -1 -2 etc
+If Roll.trk(1,NA).onoff = 1 Then
+ 'usar la velocidad de grabacion.,,
+Else
 
- If Compas(jply).nro = -1 Then
+  If Compas(jply).nro = -1 Then
     velpos=vfuerte
- EndIf
- If Compas(jply).nro = -2 Then
+  EndIf
+  If Compas(jply).nro = -2 Then
     velpos=vdebil
- EndIf
- If Compas(jply).nro = -3 Then
+  EndIf
+  If Compas(jply).nro = -3 Then
     velpos=vsemifuerte
- EndIf
- If Compas(jply).nro = -4 Then
+  EndIf
+  If Compas(jply).nro = -4 Then
     velpos=vdebil
- EndIf
- If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
+  EndIf
+  If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
     velpos=vdebil
- EndIf
-' AL FRACTURAR COLUMNAS LAS PARTES PUEDE QUEDAR SIN SONIDO AL DAR PLAY AUNQUE
-' LAS NOTA TENGAN SUS VOLUMENES PORQUE ACA SE DA LA VELOCIDAD DE EJECUCION
-' LA CUAL DEBERIA DEPENDER DEL VOL DE LA NOTA TAMBIEN VERIFICAR,,,EN CAL COMPAS O RECAL COMPAS
- If Compas(jply).nro = 0 Then 
+  EndIf
+
+  If Compas(jply).nro = 0 Then 
     velpos=vsemifuerte  ' para midipolano dividiones por partes veremso si se soluciona el sonido
 ' en la rutina vol , depende de la dur ajusta vol=0 o vol = velpos... no hay problema con los silencios
- EndIf
-
-'   Print #1," PLAYALL  jply velpos "; jply, velpos
-' ojo con silencios ligados !!!
-  cnt=0
-  iguales=0
-  distintos=0
-  duraold=0 ' 04-11-2021 jmg
+  EndIf
+EndIf
 '  print #1," ---------------000000000000000000000-----------------"
 '  print #1," (((PALL 0:)))---START--PASO:[";jply;"] ----------------"
 '  print #1," ---------------000000000000000000000-----------------"
 
-  '115 a 0
-  ' recorre una posicion vertical
-  ' envio de instrumetno o CAMBIO de PROGRAMA PATCH 
   
-  ' ============================== 18-08-2021 funciono!!!!
-  ' anda mejor qu ela V4 solo que la ligadura I+I+I la toca como I+I
-  ' LE FALTA UNA NEGRA DE DURACION, EL RESTO LO TOCA BIEN!!!
-  ' SIN TOCAR CASI NADA SOLO ELIMINAR EL ANALISIS DE LIGA EN PLAYALL
-  ' SEGUIR CORREGIR CON EL USO DE LSO CAMPOS NUEVOS Y AL TERMINAR 
-  ' ELIMINAR LOS CAMPOS DE VEC QUE NO SE USEN
-  '=========================================================================
-  ' ACA BUSCO SI EN UN PARAMETRO DADO FIJO SOLO DEPENDIENTE DE CUAL ES LA ULTIMA OCTAVA ,
-  ' SI LA POSICION ACTUAL ENTRE NA-13 Y HASTA NA TIENE UN COMADNO DE REPETICION 
-  ' DE COMPASES Y SI LO HAY CONDICIONO EL PLAY DE MAS ABAJO..
-  ' If Roll() tiene inicio derepetiiocn then
-  ' simular un pasozona1 pero con repeticion ponemo sun comienzo de loop
-  ' al llegar a donde este el pasozona2 no sindicara la cantiad de repetiicones y fin del
-  ' loop o sea determinamoe el final del loop y sacmaos el factor N de numeros de repeticiones
-  ' con un contado rdescndente y al final se ahce comienzo y final = 0 y la secuencia
-  ' seguira el play del resto... 
+' ============= For NB To NA ===============
   For i1=NB To NA 
-    'print #1,"Roll.trk(jply, i1).nota ",Roll.trk(jply, i1).nota
-    'print #1,"Roll.trk(jply, i1).DUR ",Roll.trk(jply, i1).dur
-  ' If Roll.trk(jply, i1).dur = 182 or Roll.trk(jply, i1).nota=182  Then
-  '      Continue For 
-  ' EndIf 
-
+' poner la velocidad original  del ejec si viene de una ejec
+' si es manual la velocidad se calcula como esta aca resta ver como identificar que
+' viene deuna ejec debo poner una marca
 If i1<= NA-13 Then
-' el off ya anda 01-03-2025!!! agfegamos al final del if el 183 para que pase
-   If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12  And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Or Roll.trk(jply, i1).dur <= 183 Or Roll.trk(jply, i1).dur <= 185 Then ' es semitono
+' el off ya anda 01-03-2025!!! agregamos al final del if el 183 para que pase
+
+    If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12  And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Or Roll.trk(jply, i1).dur <= 183 Or Roll.trk(jply, i1).dur <= 185 then 
      ' por mas que achique en octavas, Notapiano se calcula respecto del nro 
      ' completo de octavas del piano ergo 115 es fijo siempre mientras
         
@@ -1647,132 +1600,36 @@ If i1<= NA-13 Then
       ' en menu podemos hacer lo mismo RollNota con off podemos sacar la nota de Notapiano
       Notapiano= Notapiano - restar (Notapiano)
       'print #1,"PALL 0:VEO LO CORRECTO DE NOTAPIANO "; Notapiano
-      dura=Roll.trk(jply, i1).dur '1) I 2) I dur x 1 to 108
-'      Print #1,"PALL 1:jply ";jply; "dura ";dura
-      cnt=cnt+1
- '     Print #1,"PALL 2:paso ";jply;" cnt ";cnt;" notapiano "; Notapiano
-      If cnt=1 Then 
-         duraOld=dura
-      EndIf
-      ' 04-11-2021 usamos reldur para comparar duraciones !!!
-      If reldur(duraOld)=reldur(dura)  And cnt > 1 Then
-         iguales=1
-  '       print #1,"PALL 4:cnt ";cnt;" iguales ";iguales
-      EndIf
-      If reldur(duraOld)<>reldur(dura)  And cnt > 1 Then
-         distintos=1 ' atrapa no importa cuantos elementos tenga el acorde
-  '       print #1,"PALL 5:cnt ";cnt;" distintos ";distintos
-      EndIf         
-
-     
-      '+++++++++
-  
- '       Print #1,"PALL 7:-> cnt"; cnt 
-        pasoCol(cnt).DUR    =dura
- '       pasoCol(cnt).DURold =dura
- '       Print #1,"PALL 8:pasoCol(cnt).DUR velpos ", pasoCol(cnt).DUR,velpos
-        ' DURACIONE CON LIGA O SIN LIGA EJ F+ O F 
-        If pasoCol(cnt).DUR >= 91 And pasoCol(cnt).DUR <=180 Then
-   '         print #1,"PALL 9:PALL 0: nota con + es una li DUR R ",pasoCol(cnt).DUR
-            pasoCol(cnt).liga =  1 'si es la primera debe tener sonido!!!
-        Else
-            pasoCol(cnt).liga =  0   
-        EndIf
-        ' DURACIOENS SILENCIO O NO sF o sF+
-        If (pasoCol(cnt).DUR >= 1 And pasoCol(cnt).DUR <=45) Or (pasoCol(cnt).DUR >= 91 And pasoCol(cnt).DUR <= 135) Then
-    '        print #1,"PALL 9a:PALL 0: nota tiene audio 1"
-            pasoCol(cnt).audio =  1 ' tiene audio
-        Else
-            pasoCol(cnt).audio =  2 ' no tiene audio, 0 valor no ajustado no se nada
-     '       print #1,"PALL 9a:PALL 0: nota NO tiene audio 2"  
-        EndIf
-        
-' debo saber si la nota anterior con ligaold   
-' tenia audio o era silencio porque si era silencio y la actual tiene audio debo 
-' enviar un noteon en la nota actual ver en subrutinas, donde pongo audioOld? al final de los acordes?
-' no al final de cada nota, porque el analis de acorde es vertical, pero el de 
-' audio es horizontal se agrega el old en el ON de cada tipo de acorde, como figuraold
-' o sea que sea la misma posicion horizontal i1 me garantiza que es la misma nota nsE
-' que estan ligadas, puede ser que la anterior este ligada pero sin audio y la 
-' actual que recibe la ligadura tenga audio => envio el noteon
-' en que momento cargo la i1old? al final
-        pasoCol(cnt).notapiano = Notapiano 
-        'print #1,"PALL 10:Notapiano ",Notapiano
-' >>>>>>>>>>>>>>>CANAL MIDI y POR SALIDA >>>>>>>>>>>>>>>>>>>>>>>>        
-         pasoCol(cnt).canal=pmTk(0).canalsalida ' 12-02-2022 canal en pasoCol
-  '       Print #1,"pasocol guarda canal, pista --> ",pasoCol(cnt).canal, 
-         pasoCol(cnt).port=pmTk(0).portout
-  '       Print #1,"pasocol guarda port , pista --> ",pasoCol(cnt).port   
-      
- ' >>>>>>>>>>>>>>>CANAL MIDI >>>>>>>>>>>>>>>>>>>>>>>>         
-  '      If pasoCol(cnt).DUR <> 183 Then ' el off ya anda 01-03-2025!!!
-  '      pasoCol(cnt).tiempoFigura    = relDur(pasoCol(cnt).DUR) * tiempoDur * d11
-  '      EndIf
-        pasoCol(cnt).i1    = i1 'posicion vertical en el vector real
-  '      pasoCol(cnt).i1old = i1 'posicion vertical en el vector real
-        'print #1,"PALL 11: posicion vertical en el vector real ",i1
-        'print #1,"PALL 12:pasoCol(cnt).tiempoFigura ",pasoCol(cnt).tiempoFigura
-      ' 20-06-2021 eliminado duraold=dura repetido    
-        '' vel= vol( dura, velpos) 02-11-2021
+      dura=Roll.trk(jply, i1).dur ' es una N 185 la duracion son lso ticks hasael off 1
 ' llegamos al final de la Columna
-        pasoCol(cnt).vol=velpos
+      portsal=pmTk(0).portout
+      canal=pmTk(0).canalsalida
+
+      If Roll.trk(1, NA).onoff=1  Then
+        'Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
+        vel=Roll.trk(jply, i1).vol
+      Else
+        vel=velpos
+        'Print #1,"2 velpos vel ";velpos, vel
+      EndIf
+       If Roll.trk(jply, i1).onoff =2 Then
+            Print #1,"noteon CUByte(Notapiano),vel,canal,portsal  ";CUByte(Notapiano),vel,canal,portsal
+            noteon CUByte(Notapiano),vel,canal,portsal,1
+       EndIf
+       If Roll.trk(jply, i1).onoff= 1 Then
+Print #1,"noteoff CUByte(Notapiano),canal,portsal,1 "; CUByte(Notapiano),canal,portsal
+           noteoff CUByte(Notapiano),canal,portsal,1
+      EndIf    
+
+
      '  Print #1, "PLAYALL AcordeOnIguales velpos ", velpos 
    EndIf   
-      If i1=NA -13  Then 'And cnt >= 1 Then ' envio noteoff 1) no entra
+' YA BARRIO TODA LA COLUMNA AHORA ENVIA LOS NOTEON Y NOTEOFF
+' PERO LOS PODRIA HABER ENVIADO A MEDIDA QUE RECORRO NO NECESITO UN VECTOR DE 
+' ACUMULAICON AHORA,,, creo!! habra necesidad de procesar algo antes de enviar
+' losnoteon y noteoff? talvez por ahora lo dejoa asi mas adelante veo de si
+' eliminar el control de simple y acorde....!!! 28-03-2025 
 
-    '''' ya nohace falta     mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
-         If cnt > 1 Then' Acorde
-'            print #1,"i1=NA=";i1 ; " ACORDE cnt= ";cnt
-         Else    
-'            print #1,"i1=NA=";i1 ; " SIMPLE cnt= ";cnt
-         EndIf  
-
-         Select Case cnt
-          Case 1 
- 'print #1, "PALL 24:call Notesimple cntold, vel, canal, tiempodur",  cntold, vel, canal,tiempoDur
- ' 04-11-2021 cnt por cntold ....aca|
-          TipoAcorde=1 ' simple
-         canal=pasoCol(cnt).canal
-         portsal=CUByte(pasoCol(cnt).port)
-         vel= CUByte(vol( pasoCol(cnt).DUR, velpos))
-          If Roll.trk(jply, pasoCol(cnt).i1 ).onoff = 2 Then
-            noteon CUByte(pasoCol(cnt).notapiano),vel,canal,portsal,cnt
-'         Print #1,"note on para la notapiano ";pasoCol(cnt).notapiano
-          EndIf
-          If Roll.trk(jply, pasoCol(cnt).i1).onoff = 1 Then
-'            Print #1,"note off para la notapiano ";pasoCol(cnt).notapiano
-            noteoff CUByte(pasoCol(cnt).notapiano),canal,portsal,cnt
-          EndIf    
-    
-        ''  AcordeIguales pasoCol(),cnt,cntold,vel,tiempoDur,Roll,velpos,0,0
-          
-          pasoCol(cnt).notapianoOld    = Notapiano             
-          Case Is > 1
-  '     print #1,"case is > 1"
-           Dim As Integer k1=0
-          For k1= 1 To cnt 
-  '              print #1,"cnt ";cnt;" call Acordeiguales "
-            canal=pasoCol(k1).canal
-         portsal=CUByte(pasoCol(k1).port)
-         vel= CUByte(vol( pasoCol(k1).DUR, velpos))
-          If Roll.trk(jply, pasoCol(k1).i1).onoff = 2 Then
-'            Print #1, "noteon CUByte(pasoCol(k1).notapiano),vel,canal,portsal,k1 "; CUByte(pasoCol(k1).notapiano),vel,canal,portsal,k1
-            noteon CUByte(pasoCol(k1).notapiano),vel,canal,portsal,k1
-          EndIf
-' el off ya anda 01-03-2025!!! 
-          If Roll.trk(jply, pasoCol(k1).i1).onoff = 1 Then
-'           Print #1, "noteoff CUByte(pasoCol(k1).notapiano),canal,portsal,k1 "; CUByte(pasoCol(k1).notapiano),canal,portsal,k1 
-            noteoff CUByte(pasoCol(k1).notapiano),canal,portsal,k1
-          EndIf    
-              '  AcordeIguales pasoCol(),cnt,cntold,vel,tiempoDur,Roll,velpos,0,0
-         Next k1   
-         End Select  
-
-        cntold = cnt
- 'print #1,"cantidad de elementos Acorde actual y anterior cnt,cntold"; cnt;" ";cntold
-        
-        
-      EndIf
 EndIf  
 
 If i1 > NA-13 Then
@@ -1898,7 +1755,7 @@ If  Err > 0 Then
   errmsg = "FAIL PlayAll Error " & Err & _
            " in function " & *Erfn & _
            " on line " & Erl & " " & ProgError(Err)
-  Print #1, errmsg
+  Print #1, errmsg ,"jply ", jply, "i1 ";i1
 EndIf
 
 
@@ -1930,333 +1787,17 @@ End Function
 
 
 ' ----------------------
- Sub PlayRoll ( ) ' 1er play version 0 
-' tiempo es cuantas negras en un minuto tiempoPAtron
-' los acrodes se tocan con la duracion de la nota mas larga que lo compone 
-Dim As Double tiempoDUR, tiempoFigura=0
-tiempoDUR=(60/tiempoPatron) / FactortiempoPatron'60 seg/ cuantas negras enun minuto
 
-'''midiin  = rtmidi_in_create_default()
-'midiout = rtmidi_out_create_default()
-
-
-'''portsin  =  port_count (midiin)
-'portsout =  port_count (midiout)
-'print #1, "portsin  "; portsin
-'print #1, "portsout "; portsout
-'Dim nombrez As ZString Ptr ' nombre local
-
-'print #1,""
-'print #1, "Output port"
-
-'Dim i As INTeger
-'for i = 0 to portsout -1 
-'    nombrez = port_name(midiout, i)
-'    print #1, *nombre
-'Next   
-'print #1, ""
-'print #1, "Input port "
-
-'For i = 0 to  portsin -1  
-'    nombre = port_name(midiin, i)
-'    print #1, *nombre
-'Next
-
-Dim leng As UInteger <8>
-Dim  As Integer result ,i
-
-'portsout = portout
-'*nombrez = ""
-
-'open_port (midiout,portsout, nombrez)
-
-'Sleep 50
-'nota, velocidad,canal 
-' nR=semitono + (*po) * 13
-
-'noteOn 64,87,1
-'leng = 3
-'Sleep 1500
-''nota, canal
-'noteoff  64,1
-' 1er intento: dado queel procesamientoesmuy veloz,se supone, tocar
-'notas en acorde seria lo mismo que tocarlos secuencialmente uno tras otro
-' solo los retardos intercalados diferenciaran acordes de notas simples
-' luego para tocar copiaremos todo a un bufer o array secuencial,cual
-'es la nota mas veloz? una W con negra=160 por ejemplo..
-'Negra160= 60/160 segundos=6/16=3/8=0,375 seg 
-'                            O  = 1500      mseg.
-'                            P  = 750       mseg
-'                            I  = 375       mseg.
-' la corchea L sera la mitad L  = 187       mseg
-' semicorchea F              F  =  93,75    mseg
-' fusa                       E  =  46,875   mseg
-' semifusa                   H  =  23,4375  mseg
-'                            W  =  11,71875 mseg
-' ergo si toco 4 5 6 notas a la vez secuecnialmente talvez el timepo
-' en ejecutarlo es muy rapido y pareceria un acorde ¿? ok o no¿?
-' bueno en realidad las pongo juntas en el buffer y luego las separo en
-' el menssage para send_message....peroel tiempo q tardo enponerlo es
-' masqu eenviarlo diretamente
-Dim As Integer final=MaxPos  , comienzo=1, notapiano, canal=1,vel=100,j
-Dim As Integer con=0,tiempo,ioff,cx=0
-Dim As UByte  dura=0,maxdur=0,durb
-Dim As Integer non(1 To 180), liga=0,x=0, durval (1 To 45), silencio, fin, inicio
-Dim As float durl
-' la velocidad por ahor l ponemos fija = 100, el canaltmbien 1
-   '   noteon 64, vel, canal
-   '   Sleep 1500
-   '   noteoff 64,canal
-'nR=(13-semitono) + (*po) * 13    
-' mientras j no cambie se acumula el acorde
-' se va enviando elon a cada nota a medida que se la recorre
-' se toma su duracion para enviarle luego el off a cada una ellos 
-' envian menso off ver esa tecnica...yo enviare todos por ahora
-' el timer que se dejara transcurrir para envier el off
-' dependera de la duracion de cada nota,,,
-Dim As Integer jcompas = 0, velpos =0
-Dim As Double tinicio   
-
-'print #1,"comienzo play ==========> "
-' FUTURO: JMG EN CALCOMPAS EN EL VECTOR Compas debere marcar 
-' en el con numeros lso tiempos feurtes semifertes y debiles
-' ej:partodo el tiempo de negra=1 en 4/4 todas esas figuras son fuertes
-' valor en compas(n)= -1
-' en negra=2 todas las iguras q lo componenen son debiles compas(n)= -2
-' en negra=3 todas son semifuertes compas(n)=-3
-' en negra=4 todas son debiles. -2
-'luego segun el valor de compas voy cambiando
-' si compas(n) = posn es debil -2
-'Shell "sendmidi.exe ch 1"
- 'cursorVert = 1
- 'cursorHori = 1
- 'agregarNota=0
- 'menuMouse = 0
- 'COMEDIT=TRUE
-'Dim As tEvent Ptr newEvent
-jply=0:curpos=0
-mousex=0
-
-For jply=comienzo To final
-'print #1,"-----------------------------------------"
- If curpos > NroCol  Then
-    curpos=0
-    posishow=0
- EndIf
-
- mousex=jply
- If CONTROL1 = 1 Then
-  ' allSoundoff( canal,portsal )
-   alloff( canal,portsal)
-   CONTROL1=0
-   Exit For
- EndIf  
-
- If Compas(jply).nro = -1 Then
-    velpos=vfuerte
- EndIf
- If Compas(jply).nro = -2 Then
-    velpos=vdebil
- EndIf
- If Compas(jply).nro = -3 Then
-    velpos=vsemifuerte
- EndIf
- If Compas(jply).nro = -4 Then
-    velpos=vdebil
- EndIf
- If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
-    velpos=vdebil
- EndIf
-' ojo con silencios ligados !!!
- 
-  For i=NA To NB Step -1 
-    
-   If (Roll.trk(jply,i).nota >= 1) And Roll.trk(jply,i).nota <= 12 _
-      And Roll.trk(jply,i).dur >=1 And Roll.trk(jply,i ).dur <= 180 Then ' es semitono 
-      Notapiano= NA - i 
-      Notapiano= Notapiano - restar (Notapiano)
-      dura=Roll.trk(jply, i).dur '1) I 2) I dur x 1 to 108
-
-
-
-      If durb > 0 Then ' 1 to 108
-'      print #1,"durb> 0, i, j ";durb,i,j
-         durl=relDur(durb)+relDur(dura)  '2) P
-' si durb ya era silencio su continuacion sera silencio tambien solo
-' hace falta analizar la 1era parte para saber si suena o en que grupo caera
-' la suma nunca caera en otro grupo silencio nosera, y '+' tampoco si era
-' el1er grupo por ejemplo 1 a 27       
-
-    '     Select Case durb
-    '        Case  1 To  45 
-    '       '  silencio=0
-    '         inicio=1:fin=45
-    '        Case  91 To 135
-    '       '  silencio=0
-    '         inicio=91:fin=135
-    '        Case  37 To  90 
-    '       '  silencio=1
-    '         inicio=37:fin=90
-    '        Case  136 To 180 
-    '       '  silencio=1
-    '         inicio=136:fin=180
-'
- '        End Select          
-         For x= 1 To 45  ' el resto de durciones se repiten   
-           If durl=reldur(x) Then
-              dura=x ' válido hasta duraciones de 7 negras relativas
-              exit For
-           EndIf 
-         Next x
-     ' print #1,"dura + durb "; dura   
-         liga=1
-         durb=0
-         durl=0
-      EndIf   
-      If dura >= 91 And dura <=180 Then ' se suma la duración al siguiente
-         durb=dura  ' 1) I+, 2) no entra
-        ' print #1,"entro nota ligada "; dura, figura(dura)
-      EndIf   
-      If con=0 Then
-        maxdur=dura  ' 1) I, 2) P
-      '  print #1, jply; " con=0 atrapa dura maxdura ";dura, maxdur
-         con = 1
-      EndIf
-      'vel=Roll.trk(i,j).vel
-      ' etc...
-' SACAR ESTO TOCAR ACORDE CADA ELEMENTO CON SU DURACION        
-      If relDur(dura) > relDur(maxdur) Then ' esto lo debo sacar y tocar todas las notas con su duracion
-         maxdur= dura ' 1) I, 2) P cuantoms chica dur es mas grnde en relidd
-     ' print #1,jply;"if dura-figura "; dura, figura(dura)
-     ' print #1,jply;"if cambio Maxdur-figura "; Maxdur, figura(Maxdur)
-      Else    
-        '' notacur=i
-     ' print #1,jply;"else dura-figura "; dura, figura(dura)
-     ' print #1,jply;"sigue igual else Maxdur-figura "; Maxdur, figura(Maxdur)
-
-      EndIf 
-      If liga=0 Then  
-       ' print #1,"liga=0 "
-        vel=vol(maxdur,velpos)
-       
- ' SI ELUSUARIO GRABA VELOCIDADES DEBO USARESA NO LA DEFAULT !!! JMG
- ' Y NO SACRLA MAAX DURACION TOCAR TODAS CON SU DURCION Y VELOCIDAD!!!       
-  ''      canal=pasoCol(i1).canal
-        portsal=pmTk(ntk).portout
-        noteon notapiano, vel, canal,portsal,1 ' 1) G
- 
-        cx = cx + 1   ' 1) 1
-        non (cx) = notapiano '1) G
-       ' print #1, "ON==>  notapiano, vel, canal ";notapiano, vel, canal
-       ' print #1,"cx ";cx 
-      ''''''  Sleep 1,1
-        old_time_on=Timer
-      Else
-       ' print #1,"liga=1 no se envia noteon " 
-        liga=0 
-      EndIf 
-   EndIf
-
-   If i=NB And durb = 0 Then ' envio noteoff 1) no entra
- ''Sleep segun duracion o Timer de la q mas dura o para cada uno
-      ' tiempoPatron input al redimsub
-   ' print #1,"i=NB=";i," maxdur=";maxdur;  
- '   If maxdur > 0 And maxdur <= 182 Then
-      ' print #1, figura(maxdur)
- '   Else 
-      ' print #1, "No se puede mostrar"  
- '   EndIf   
-    
-  ''''   duracion (maxdur)
-'''' DURACION  
-
- If maxdur >= 1 And maxdur<= 180 Then 
-    tiempoFigura = relDur(maxdur)*tiempoDUR
- 
- '  print #1, "tiempoFigura ";tiempoFigura  
-   Do
-
- ' Sleep 1,1
- ' sleep5dm()
-' -------------sleep5fm 
-    Dim As Double start,final
-    start=Timer
-    Do
-'      If (Timer-start) > 0.0001 Then ' 0.1 MILESIMA DE PRESICION DE DURACION
-'        Exit Do
-'      EndIf
-       Sleep 2  
-    Loop
-
-   Loop Until (Timer - old_time_on) >= tiempoFigura
- EndIf 
-' ---------------     
-' FIN DURACION 
-' ACA ODRIA ORDENAR LAS DURACIONE DE MENORA MAYOR CALCULARLSO INCREMENTOS
-' DAR EL OFF SECUENCIALMENTE SEPARADOS POR DURACIONES INCREMENTALES IGAUL
-'A A LDIFERENCIA DE TAMALÑO EJ SI ELACRODE ES DE NEGRAY BLNCA, 1ERO
-' SE EJEUCTA LA DURCION DE 1 NEGRA SE DA EL OFF DELA MISMA,LUEGO
-' PARA LA BLANCA SE RESTA UNA NEGRA MAS, Q ES LA DIFERENCIA CON LA ANTERIOR
-' SE EJECUTA UNA DURCION DE NEGRA ADICIONAL Y SE ENVIA ELOFF DE LA BLANCA     
-   '  print #1," cantidad cx de off ";cx
-     
-     For ioff=1 To cx
-     portsal=pmTk(ntk).portout  
-     noteoff non(ioff),canal,portsal,1
-
-    ' print #1, "OFF==>   non(ioff),  canal "; non(ioff),canal
-     Next ioff
- '    print #1,"pasó for de off .."
- '    print #1," ==============> fin paso...j"; j   
-   EndIf 
-  Next i
-
-'  print #1,"COMIENZA OTRA  POSICION O J ======"; j
-  If durb=0 Then
-   cx=0
-  EndIf
-  con=0 
-  maxdur=0 '13-05-2021 16:08
-'https://www.freebasic.net/forum/viewtopic.php?t=19174  
-  'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
-  mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
-Next jply
-jply=0:curpos=0
-Sleep 1,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion
-For i=0 To portsout -1 
- close_port(midiout(i))
- out_free(midiout(i))
-Next i 
-
-play=0 
-playb=0
-mousey=100 'otra mas para evitar rentrar a play en menu
-finplay=1
-'if finplay=1 Then
- ThreadDetach(thread2)
-'  finplay=0
-'   Endif   
-
-' velocidades a incorporar
-'pppp   8
-'ppp   20
-'pp    31
-' p    42
-'mp    53
-'mf    64
-' f    80
-'ff    96
-'fff  112
-'ffff 127
 'http://www.music-software-development.com/music-sdk.html
 'http://www.ccarh.org/courses/253/handout/midiprotocol/
 ' KARAOKEUSA WIN API https://www.freebasic.net/forum/viewtopic.php?t=25312
 'For it to run equally on 32/64 bit's FBC, you'll probably have to:
 '- replace all *Integer* with *Long* as a first step (fixed 32bit INT-Type) since,
 '*Integer* on 64bit FBC, becomes a 64bit variable, which isn't wanted.
-' LIBRARY MIDI DLL
+'------------------------
+' LIBRARY MIDI DLL CARGA EJECUTA MIDI KARAOKE LICENCIA LPGL SE PUEDE USAR COMO LIB
 'https://freebasic.net/forum/viewtopic.php?f=14&t=26725
-End sub
+
 Function restar (notaRoll As Integer) As Integer
 ' sale Notapiano dsde el nR indice vector,tambien sale la octava -> restar(i1) +1 
 Select Case notaroll
@@ -3333,7 +2874,7 @@ End Function
 '--------------------------------------
 Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi,i1 As integer)
 On Local Error Goto fail
-
+' tengo que grabar el tempo 
 ' tocap As vivo, ntkp As Integer,tocaparam  As ejecparam  Ptr) 
     Dim As Long j, driver=0
     Dim As String  nombreg
@@ -3552,6 +3093,9 @@ End Sub
 '------------------
 Sub PlayTocaAll(nt As Integer Ptr )
 On Local Error Goto fail
+' las pistas fueron cargadas en un vector redim de 384000 no uso el maxgrb habria que 
+' usarlo y ponerlo como se debe,,,usar un redim de mzgrb el probel aes que maxgrb se pisaba
+' en cargarmidiin ahora se arreglo veo si anda ,,,probar
 '////////////////////////////TOCAALL/////////////////////////
 ' perfeccionar los eventos deven seguir un patron de tiempo de ticks
 ' para c/tick ver si hay un evento si hay enviarlo...el problem ason lso retardos
@@ -3622,7 +3166,10 @@ Dim resta  As Double
 '************************************************************************
  
 Print #1,"playTocaAll jToca=maxgrb, kply=topeDuranteGrabacion ";maxgrb, topeDuranteGrabacion
-For jToca=1 To maxgrb 
+'los archivos de ejec tienen distintas longitudes al cargarlos se normaliza a la mayor
+' volvimos aponer maxgrb en el redim ver como funciona porque teniamos un 384 mil
+' deberiamos hacer el redim con un % mas 2 por ejemplo asi estamos con 2 veremos
+For jToca=1 To maxgrb ' se calcula al cargr los archivos de ejec 
   If CONTROL2 = 1 Then
      For kply =1 To topeDuranteGrabacion
          alloff( 1 ,pmTk( kply +32).portout  )

@@ -11,6 +11,8 @@ If instancia < 3 And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic C
    WS_OVERLAPPEDWINDOW Or WS_VISIBLE ,  WS_EX_ACCEPTFILES   )
 ' cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS cancion
 'cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_E,1016) 'CTRL+E ABRIR PISTAS ejecucion
+'' ------TIPS AYUDA EN LA BARRA DE ESTADO
+   StatusBarGadget(33,"Tips de ayuda" )
 
   'CenterWindow(hwndC)
 ''UpdateInfoXserver()
@@ -254,7 +256,7 @@ MenName18=OpenSubmenu(MenName1, "4.5 Cargar Pista/Cancion para Exportar a midi d
 MenuItem(1008,MenName18, "Cargar Pista en Roll independiente" )
 MenuItem(10081,MenName18,"Usar Cancion cargada en 2.0 " )
 
-
+    
 
 MenuItem(1009,MenName1,  "4.5.1 Exportar a MIDI Pista/cancion de 4.5 ")
 
@@ -270,28 +272,28 @@ Menubar(MenName1)
 MenuItem(1019,MenName1, "    SALIR")
 
 
-MenuItem(1020,MenName2, "Nombre o Título (fecha por omision), la cancion es un directorio")
-MenuItem(1021,MenName2, "Tiempo I=60 por omision")
-MenuItem(1022,MenName2, "Na.Ritmo 4/4 por omision")
-MenuItem(1023,MenName2, "Na.Duracion Estimada Min.(Por Omision 3 estimada)")
+MenuItem(1020,MenName2, "1.0 Nombre o Título (fecha por omision), la cancion es un directorio")
+MenuItem(1021,MenName2, "2.0 Tiempo I=60 por omision")
+MenuItem(1022,MenName2, "3.0 Na.Ritmo 4/4 por omision")
+MenuItem(1023,MenName2, "4.0 Na.Duracion Estimada Min.(Por Omision 3 estimada)")
 'MenuItem(1024,MenName2, "Na.Crear Cancion en un solo archivo")
-MenuItem(1025,MenName2, "Crear un directorio de Cancion con Pistas separadas")
+MenuItem(1025,MenName2, "5.0 Crear un directorio de Cancion con Pistas separadas")
 'MenuItem(1026,MenName2, "Na.Ver Lista Tracks de la Cancion (Nombre y numero)")
-MenuItem(1027,MenName2, "Na.Modificar Nombre de Pistas de Cancion")
+MenuItem(1027,MenName2, "6.0 Na.Modificar Nombre de Pistas de Cancion")
 
 
-MenuItem(1028,MenName3, "Cambia Octavas, si rango es mayor al anterior, se borran datos  (0,1,2,3,4,5,6,7,8)")
-MenuItem(1029,MenName3, "Na.Seleccion rango de 3 octava repetidas 2 veces ")
-MenuItem(1030,MenName3, "Na.Octavas de Instrumetnos Estandares")
+MenuItem(1028,MenName3, "1.0 Cambia Octavas, si rango es mayor al anterior, se borran datos  (0,1,2,3,4,5,6,7,8)")
+MenuItem(1029,MenName3, "2.0 Na.Seleccion rango de 3 octava repetidas 2 veces ")
+MenuItem(1030,MenName3, "3.0 Na.Octavas de Instrumetnos Estandares")
 'MenuItem(1031,MenName3, "Na.Seleccion Canal (futuro se repetira por comodidad...)")
 Menubar(MenName3)
-MenuItem(1040,MenName3, "Cambia Instrumento por orden Alfabetico")
-MenuItem(1050,MenName3, "Cambia Instrumento por orden Numérico")
+MenuItem(1040,MenName3, "4.0 Cambia Instrumento por orden Alfabetico")
+MenuItem(1050,MenName3, "5.0 Cambia Instrumento por orden Numérico")
 Menubar(MenName3)
-MenuItem(1060,MenName3, "Crear pista aislada, En Roll dependiente, con lo elegido y reemplaza la existente en la edicion")
-MenuItem(1061,MenName3, "Crear Pista nueva en la Cancion en Edicion, Con lo elegido")
+MenuItem(1060,MenName3, "6.0 Crear pista aislada, En Roll dependiente, con lo elegido y reemplaza la existente en la edicion")
+MenuItem(1061,MenName3, "7.0 Crear Pista nueva en la Cancion en Edicion, Con lo elegido")
 Menubar(MenName3)
-MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
+MenuItem(1062,MenName3, "8.0 Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
 ' ahora se llama 10063 en menu artchivo 
 
 
@@ -304,9 +306,9 @@ MenuItem(1062,MenName3, "Crear Instancia de RollMusic Sin Control alguno Con lo 
 'MenuItem(1068,MenName32,"Habilitar Patrones",MF_UNCHECKED)
 
 
-MenuItem(1070,MenName4,"Escalas auxiliares ajustadas", MF_CHECKED)
-MenuItem(1071,MenName4,"Cifrado de Acordes", MF_CHECKED)
-MenuItem(1072,MenName4,"Separacion de Notas en pantalla de 1 en adelante  ")
+MenuItem(1070,MenName4,"1.0 Escalas auxiliares ajustadas", MF_CHECKED)
+MenuItem(1071,MenName4,"2.0 Cifrado de Acordes", MF_CHECKED)
+MenuItem(1072,MenName4,"3.0 Separacion de Notas en pantalla de 1 en adelante  ")
 
 Menubar(MenName4)
 'MenuItem(1072,MenName4,"Na/Parametros de un archivo Roll  ")
@@ -315,8 +317,8 @@ Menubar(MenName4)
 'MenuItem(1075,MenName4,"Na/Parametros de Track(n) en memoria ")
 
   
-MenuItem(1080,MenName5,"TEMPO, Por omision=60, Ejecucion Tick por omision=5mseg equivale a 240")
-MenuItem(1081,MenName5,"Factor para Aumentar velocidad de ejecucion, No se graba en archivo 1,5 o 0,5 etc")
+MenuItem(1080,MenName5,"1.0 TEMPO, Por omision=60, Ejecucion Tick por omision=5mseg equivale a 240")
+MenuItem(1081,MenName5,"2.0 Factor para Aumentar velocidad de ejecucion, No se graba en archivo 1,5 o 0,5 etc")
 
 
 'MenuItem(1083,MenName5,"Na. TEMPO insertar cambio de tempo")
@@ -343,43 +345,43 @@ Negras por minuto	 tempo
 '/    
 
   
-MenuItem(1090,MenName6,"Reproducir desde la posicion o en el rango ajustado")
-MenuItem(1091,MenName6,"Fijar Repeticiones de un numero de Compases elegido como zona")
-MenuItem(1092,MenName6,"Abre y Reproduce Puerto MIDI-IN Ejecucion teclado por  MIDI-OUT.")
-MenuItem(1093,MenName6,"Cierra Puerto MIDI-IN Ejecucion.")
+MenuItem(1090,MenName6,"1.0 Reproducir desde la posicion o en el rango ajustado")
+MenuItem(1091,MenName6,"2.0 Fijar Repeticiones de un numero de Compases elegido como zona")
+MenuItem(1092,MenName6,"3.0 Abre y Reproduce Puerto MIDI-IN Ejecucion teclado por  MIDI-OUT.")
+MenuItem(1093,MenName6,"4.0 Cierra Puerto MIDI-IN Ejecucion.")
 
 
-MenuItem(1100,MenName7,"Usar MARCO de Ventana Para el Gráfico",MF_UNCHECKED)
-MenuItem(1101,MenName7,"Usar MARCO de Ventana en instancias Gráficas",MF_UNCHECKED)
+MenuItem(1100,MenName7,"1.0 Usar MARCO de Ventana Para el Gráfico",MF_UNCHECKED)
+MenuItem(1101,MenName7,"2.0  Usar MARCO de Ventana en instancias Gráficas",MF_UNCHECKED)
 'Menubar(MenName7)
 'MenuItem(1102,MenName7,"Fracciona Acorde [Con <> Duraciones], notas similares en una pista (no hay silencios)",MF_UNCHECKED  )
 'MenuItem(1103,MenName7,"Fracciona NOTA o Acorde [CDD], agregando silencios en una pista ",MF_UNCHECKED  )
 'MenuItem(1104,MenName7,"Fracciona [CDD], notas automaticamente en una pista ",MF_CHECKED  )
 'MenuItem(1105,MenName7,"No Fraccionar, NO Usar Acordes iguales ", MF_UNCHECKED )
 Menubar(MenName7)
-MENUITEM(1106,MenName7,"Seleccionar TIPO DE ESCALA PRINCIPAL de la PISTA (Por omision Mayor)")
-MENUITEM(1107,MenName7,"Seleccionar NOTA DE LA ESCALA ESCALA PRINCIPAL DE LA PISTA (Por omision C )")
-MenuItem(1111,MenName7,"Insertar escala libre en la Posicion actual (Pasozona1)")
-MenuItem(1112,MenName7,"Insertar escala Alternativa de la Principal en la Posicion actual (Pasozona1)")
+MENUITEM(1106,MenName7,"3.0 Seleccionar TIPO DE ESCALA PRINCIPAL de la PISTA (Por omision Mayor)")
+MENUITEM(1107,MenName7,"4.0 Seleccionar NOTA DE LA ESCALA ESCALA PRINCIPAL DE LA PISTA (Por omision C )")
+MenuItem(1111,MenName7,"5.0 Insertar escala libre en la Posicion actual (Pasozona1)")
+MenuItem(1112,MenName7,"6.0 Insertar escala Alternativa de la Principal en la Posicion actual (Pasozona1)")
 Menubar(MenName7)
-MENUITEM(1108,MenName7,"Trabajar con sostenidos (Por omision Sostenidos #)",MF_CHECKED )
-MENUITEM(1109,MenName7,"Trabajar con bemoles ",MF_UNCHECKED )
+MENUITEM(1108,MenName7,"7.0 Trabajar con sostenidos (Por omision Sostenidos #)",MF_CHECKED )
+MENUITEM(1109,MenName7,"8.0 Trabajar con bemoles ",MF_UNCHECKED )
 Menubar(MenName7)
-MenuItem(1113,MenName7,"Usar metronomo para Tocar MIDI-IN",MF_CHECKED)
-MenuItem(1114,MenName7,"Usar sonido de pista para pulsos de inicio de grabacion",MF_UNCHECKED)
+MenuItem(1113,MenName7,"9.0 Usar metronomo para Tocar MIDI-IN",MF_CHECKED)
+MenuItem(1114,MenName7,"10.0 Usar sonido de pista para pulsos de inicio de grabacion",MF_UNCHECKED)
 
 
-MenuItem(1200,MenName8,"Seleccion Puerto MIDI-IN Ejecucion")
+MenuItem(1200,MenName8,"1.0 Seleccion Puerto MIDI-IN Ejecucion")
 
 Menubar(MenName8)
-MenuItem(1204,MenName8,"Seleccion de Puerto MIDI-OUT Ejecucion")
-MenuItem(1205,MenName8,"Abrir  Puertos MIDI-OUT Ejecucion")
-MenuItem(1206,MenName8,"Cerrar Puertos MIDI-OUT Ejecucion")
-Menuitem(1207,MenName8,"No usar En desarrollo para ticks:Convertir ejecucion o archivo cargado de *.ejec a *.trk ")
+MenuItem(1204,MenName8,"2.0 1Seleccion de Puerto MIDI-OUT Ejecucion")
+MenuItem(1205,MenName8,"3.0 Abrir  Puertos MIDI-OUT Ejecucion")
+MenuItem(1206,MenName8,"4.0 Cerrar Puertos MIDI-OUT Ejecucion")
+Menuitem(1207,MenName8,"5.0 Convertir ejecucion o archivo cargado de *.ejec a *.roll")
 
-MenuItem(2000,MenName10,"Acerca de")
-MenuItem(2001,MenName10,"Cuadro Ayuda TEMPO por nombres, Lento,adagio etc y control fino")
-MenuItem(2002,MenName10,"Cuadro de Figuras de duracion de notas")
+MenuItem(2000,MenName10,"1.0 Acerca de")
+MenuItem(2001,MenName10,"2.0 Cuadro Ayuda TEMPO por nombres, Lento,adagio etc y control fino")
+MenuItem(2002,MenName10,"3.0 Cuadro de Figuras de duracion de notas")
 
 'MenuItem(2502,MenName30,"Seleccion Puerto MIDI-IN ROLL")
 'MenuItem(2504,MenName30,"Seleccion Puerto MIDI-OUT ROLL")
@@ -388,7 +390,6 @@ MenuItem(2002,MenName10,"Cuadro de Figuras de duracion de notas")
 'Menubar(MenName30)
 'MenuItem(2500,MenName30,"Abre   Puerto MIDI-IN Sobre Roll")
 'MenuItem(2501,MenName30,"Cierra Puerto MIDI-IN Sobre Roll")
-
 
 
 '  MenuBackColor NO FUNCIONA SOLO AL PRINCIPIO

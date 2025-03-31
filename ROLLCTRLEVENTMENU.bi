@@ -2,6 +2,7 @@ On Error Goto errorhandler
          If NombreCancion > "" And S5=0 Then 
             SetForegroundWindow(hwndC)
          EndIf
+
          Select Case EventNumber
             'CON ROLL , SIN ROLL
            Case 1006, 10061   '<=========== CARGAR CANCION con roll, o sin Roll
@@ -9,9 +10,10 @@ On Error Goto errorhandler
              ' ok anda bien, una vez cagados se permuta en memoria con TAB
              ' o haciedno click en la lista
             '' UseGadgetList(hwndC)
-         
+              StatusBarGadget(33,"1.0 ROLL GRAFICO NO DEBE ESTAR LEVANTADO, SI LO ESTÁ CIERRE PRIMERO EL GRAFICO BUSQUE LA CARPETA Y ACEPTE" )
+
               CTRL100610061 (hMessages , Tope )
-             
+              StatusBarGadget(33," " )             
              If abrirRoll=0 And NombreCancion > ""  Then
                 abrirRoll=1
                 cargaCancion=1

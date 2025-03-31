@@ -85,35 +85,6 @@ Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff
  
 
 
-Type dat Field=1
- nota As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
- dur As  UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
- vol As  UByte =0 ' volumen hasta 127 es volumen desde ahi es escala 128 a 255 =127 escalas
- pan As  UByte =0 ' paneo + o -
- pb  As  UByte =0 ' pitch bend + o -
- inst As UByte =0 ' instrumento para cada nota podra ser distinto 1 to 128
- ' Nota de escala son 12 ..bemol o sostenido son 2
- ' entonces en 14 numero stengo la info
- ' 129 -> c,130->c#,131->d...140->B--, 141-sos,142,bemol
- ''t   As Ulong   '  ticks por ahroa no 
-End Type
-' dentro del vol pondremso las escalas
-' chords http://www.looknohands.com/chordhouse/piano/ ahi hay 168 escalas..!!
-' en vol tengo desde 129 a 255 para numerar escalas. si faltan puedo usar pan o pb
-' l aidea es poner en que escala esta cada nota o compas y asi poder tener cambios de escla
-' y construir los acordes que se quieran construir es esa escala de esea nota o del compas o 
-' la escala del ultimo cambio...por default la escala sera C mayor.. 
-
-
-
-
-'Type esc1 
-'  nombre   As String
-'  nropasos As Integer
-'  pasos    As Byte Ptr   
-'End Type
-
-'common shared as esc1 ptr pescala
   trasponer=0
 
 '-------------
@@ -420,8 +391,8 @@ End Sub
 Sub cargarDirectorioCancion (ByRef NombreCancion As string)
 ''Dim pathdir As string
     SetForegroundWindow(hwndc)
-NombreCancion = ShellFolder( "Select Folder", "C:\")
-'' PROBAR FileListBoxItem !!!
+NombreCancion = ShellFolder( "Seleccionar Carpeta de Cancion", "C:\")
+
 SetWindowText(hwndC, "RollMusic Cancion: " + NombreCancion)
 
 
@@ -440,11 +411,19 @@ NombrePista = InputBox("Nombre de Pista","",NombrePista,,,hwndC  )
 End Sub
 '
 Function sacarNtk (item As String) As Integer
-Dim As Integer ubi1,ubi2
+Print #1," sacarNtk strin g que llega nombre pista ";item
+Dim As Integer ubi1=0,ubi2=0
  ubi1 = InStr(item,"[")
  ubi2 = InStr (item,"]")
- sacarntk=CInt(Mid(item,ubi1+1,ubi2-ubi1-1))
+If ubi1=0 Then
+ ubi1 = InStr(item,"(")
+EndIf
+If ubi2=0 Then
+ ubi2 = InStr(item,")")
+EndIf
 
+ sacarntk=CInt(Mid(item,ubi1+1,ubi2-ubi1-1))
+ 
 End Function
 '
 Function sacarExtension(file As string) As String
