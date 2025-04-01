@@ -1422,17 +1422,17 @@ EndIf
 End Sub
 '----------------------------------------
 Sub Tracks ( ByRef ntk As Integer, ByRef nroCanal As UByte,Roll As inst)
-  ''copia track a Roll en memoria 
+  ''copia track a Roll en memoria , revision para Ticks 31-03-2025 ok queda igual
   ' nrocanal no se usa ,,,,borraremos mas adelante...
 
-Print #1, "MaxPos <=2 Or pmTK(ntk).maxpos=0 Then " , Maxpos, pmTK(ntk).maxpos 
+Print #1, ">>>> TRACKS: MaxPos <=2 Or pmTK(ntk).maxpos=0 Then " , Maxpos, pmTK(ntk).maxpos 
 If MaxPos <=2 Or pmTK(ntk).maxpos=0 Then
   Print #1, "Salimos de Tracks sin ahcer nada "
   Exit Sub
 EndIf
 
 nota=0:dur=0
-Print #1,"EN TRACKS MAXPOS (NTK).MAXPOS ", maxpos, pmTK(ntk).maxpos
+Print #1,">>>> TRACKS MAXPOS (NTK).MAXPOS ", maxpos, pmTK(ntk).maxpos
  ' sizeof array de ubytepr almcenar el pentagrama roll
  'Notas ( 1 To 65536, 1 To 128) as UByte
 ' usaremso para cambianr de track en Roll y Track(0)
@@ -1450,7 +1450,7 @@ If nombre=""  Then ' evita revisar track vacios EN UNA CANCION
 Else   
  
 TrackaRoll (Track(), ntk,Roll ) ' no usa ubirtk
-Print #1,"Tracks  ntk cargado, nombre ",ntk, nombre
+Print #1,">>>> Tracks  ntk cargado, nombre ",ntk, nombre
 ''Print #1,"llama a RecalCompas para ntk,maxpos, .maxpos ",ntk,maxpos,pmTk(ntk).MaxPos
 ''ReCalCompas(Roll) 
 ''Print #1,"MAXPOS DESPUES DE RECALCOMPAS ", maxpos, pmTK(ntk).maxpos
@@ -2581,7 +2581,7 @@ nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
          End If
          
      ''    Open "temp.roll"  For Binary Access Read As #ca
-         ubiroll=0
+         ubiroll=2
       EndIf
 
      Dim z    As dat
@@ -4310,20 +4310,20 @@ nombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
  Case "[TEMPO]"
 
 
-If  EJECCARGADA=FALSE Then
-    If tiempoPatron = 0  Then
-       tiempoPatron=60
-       default="60"
-   EndIf
-EndIf
-If  EJECCARGADA = TRUE  Then
+'If  EJECCARGADA=FALSE Then
+'    If tiempoPatron = 0  Then
+'       tiempoPatron=60
+'       default="60"
+'   EndIf
+'EndIf
+'If  EJECCARGADA = TRUE  Then
    If tiempoPatronEjec=0 Then
       tiempoPatronEjec=240
       tiempoPatron=240
       default="240"
       default2="240"
   EndIf
-EndIf
+''EndIf
     
 ' debo generar un default para manual 60 y oro para ejecs 240
    If  EJECCARGADA = TRUE And ROLLCARGADO=FALSE Then ' cargar lo que hhay aen el archivo
@@ -4338,6 +4338,7 @@ EndIf
        'EndIf 
      ticksdefault = InputBox("Ajuste Tempo Manual" ,"Entre un Tempo ",default)
       tiempoPatron= ValInt(ticksdefault) '08-01-2022 de doble a int
+      pmTk(ntk).tiempopatron = tiempopatron
    EndIf
     Print #1,"tEMPO llego a TEMPO en entrar tecla",ticksdefault 
    
@@ -5110,7 +5111,7 @@ EndIf
 
 
      grabaLim.pan  = pmTk(ntk).alteracion
-     grabaLim.nnn = CUByte(tiempoPatron)
+   ''''  grabaLim.nnn = CUByte(tiempoPatron)
     
      graba3.dur = pmTk(ntk).portout
      graba3.nnn = pmTk(ntk).canalsalida ' as poli son tracks ojo 

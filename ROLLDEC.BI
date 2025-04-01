@@ -664,7 +664,7 @@ Type rangoOct Field=1
  As Ushort  tipoCompas
  As UByte   ejec
  As UByte    vol
- As Integer  tempo ' 240 60 etc
+ As Integer  tiempopatron ' 240 60 etc
 End Type
 ' faltaria agregar grabar el nombre del dispositivo ........
 Dim Shared As rangoOct pmTk (0 To 65)

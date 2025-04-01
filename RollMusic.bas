@@ -88,11 +88,15 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="2025-03-28 TICKS 0.307 "
-' empieza a andar!! 
-'esta version no será compatible con las anteriores se agrego por ahora
+nroversion="TICKS 0.308 2025-03-31  los track rtk de ejec se arman bien con patch y tiempoPatron"
+' los tracks convertidos desde una ejec suenan bien indivudualmente
+' falta ahora el playCancion. Luego haremos un paso que convierta todos los tracks
+' de ejecucion en rtk con solo un click, tambien podremos agregar la converison a
+' rtk de una sola ejec sin pasar por la carga en roll. 
+' ---------------------------------------------------------------------
+' esta version no será compatible con las anteriores de rollmusic sin ticks se agrego por ahora
 ' un campo nuevo al type dat el onoff ubyte, con 2 indicara on, y con 1 el off 
-acercade = "RollMusic TICKS"+ nroVersion +" Jose M Galeano, Buenos Aires Argentina 2021-2025,. Ejecuta secuencias " + _
+acercade = "RollMusic "+ nroVersion +" Jose M Galeano, Buenos Aires Argentina 2021-2025,. Ejecuta secuencias " + _
  "entrada por pasos usando algoritmos con ticks de tiempos. " + _
  "Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
  "manual o por ejecucion. OS:Windows 64bits, " + _
@@ -349,10 +353,9 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
 
             End SELECT
 '-----------------------------------------------------------------------
-       Case EventClose  ''<==== SALIR TERMINA ROLL lax de win control???
+       Case EventClose  ''<==== SALIR TERMINA ROLL la X de win control
 ' no lo usamos 
-        ''si ponemos aca da asercion de cairo.c 
-        terminar=2
+
         Exit Do ,Do    
 
        Case Else   
@@ -423,8 +426,11 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
  
       EndIf 
 
-
      End Select
+      If terminar=3 Then '31-03-025
+         Exit Do,Do
+      EndIf  
+
      ''' NO ESTA EN VERION F Sleep 5 ' 
     Loop
 '-----------------------------------------------------------------------

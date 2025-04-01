@@ -941,7 +941,7 @@ Print #1," desde 892 ";desde
   '    print #1,"TrackaRollcarga rtk veo nombre ", titulos(0)
       RecalCompas (Roll)
       TRACKCARGADO=TRUE
-      ubirtk=0
+      ubirtk=2
     Else
       TRACKCARGADO=FALSE
     EndIf
@@ -1123,12 +1123,13 @@ If MultiKey(SC_TAB) And (instancia=0 Or instancia= 107) And CANCIONCARGADA And p
   ' print #1,"--TAB "
    nota=0
    dur=0
-  ' print #1,"TAB 1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
+   print #1,"TAB 1- NTK,MAXPOS, pmtk(ntk).maxpos  clickpista ", ntk,maxpos,pmTK(ntk).maxpos, clickpista
    If clickpista=1 Then
-  '   Print #1,"no incrementea ntk"
+     Print #1,"no incrementea ntk"
      clickpista=0
    Else
      ntk = ntk + 1
+     Print #1,"Incrementea ntk"
    EndIf
  '  print #1,"TAB 2- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos  
    If ntk > 32 Or ntk > tope Then
@@ -1136,11 +1137,11 @@ If MultiKey(SC_TAB) And (instancia=0 Or instancia= 107) And CANCIONCARGADA And p
   '   print #1,">TAB 2A- 1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos     
    EndIf
    nombre= titulos(ntk)
-   If nombre> "" Then
- '    print #1,"--------------------------"
- '    print #1,"TAB 3-NTK nombre", ntk,nombre
- '    print #1,"TAB 3-NTK MAXPOS pmtk(ntk).maxpos  ", maxpos,pmTK(ntk).maxpos
- '    print #1,"--------------------------"
+   If nombre > "" Then
+     print #1,"--------------------------"
+     print #1,"TAB 3-NTK nombre", ntk,nombre
+     print #1,"TAB 3-NTK MAXPOS pmtk(ntk).maxpos  ", maxpos,pmTK(ntk).maxpos
+     print #1,"--------------------------"
    EndIf  
 ' evita leer track vacios   
    If nombre=""  Then ' evita revisar track vacios
@@ -1887,7 +1888,9 @@ FileFlush (-1)
     
    SCREEN 0, , , &h80000000 
  ''https://www.freebasic.net/forum/viewtopic.php?t=26963
-
+   If ubirtk =2 Or ubiroll = 2 Then
+      End 0 ''31-03-25 si entro por linea de comando es 2 
+   EndIf
    abrirRoll=0
    reiniciar=1
   Exit Sub
@@ -1901,15 +1904,15 @@ EndIf
 '--------------------------------------
 If MultiKey(SC_ESCAPE) Or  Terminar=1 Then
 Sleep 5
-  If MessageBox(hWnd,"¿TERMINA PROGRAMA ROLLMUSIC ? " ,param.titulo ,4 Or 64) =6 Then
-    salir()
-    Kill "procesos.txt"
-    Close
-    End 0
-  Else
-    Terminar=0
-    Exit Do ' 06-05-2024
-  EndIf
+    If  MessageBox(hWnd,"¿TERMINA PROGRAMA ROLLMUSIC ? " ,param.titulo ,4 Or 64) =6 Then
+       salir()
+       Kill "procesos.txt"
+       Close
+       End 0
+    Else
+       Terminar=0
+       Exit Do ' 06-05-2024
+    EndIf
 EndIf
 
 

@@ -1200,7 +1200,7 @@ pmTk(ntk).canalsalida=tocaparam(pis).canal
 pmTk(ntk).portout=tocaparam(pis).portout
 pmTk(ntk).patch=tocaparam(pis).patch
 pmTk(ntk).tipocompas =TipoCompas
-pmTk(ntk).tempo = tempo 
+pmTk(ntk).tiempopatron = tiempopatron 
 
 Track(ntk).trk(1,1).nnn =tocaparam(pis).patch
 

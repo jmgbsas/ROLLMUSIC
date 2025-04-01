@@ -64,8 +64,7 @@ Static As Integer millave
 ' /// // // / / /  menu contextual popup 
    
             
-          If eventnumber()=  PISTASROLL And  WM_VKEYTOITEM And  EventKEY = VK_RETURN Then
-           '  MOUSEBUTTONS  And RIGHTBUTTON Then 
+          If eventnumber()=  PISTASROLL And  WM_VKEYTOITEM And  EventKEY = VK_RETURN  Then
               Dim As HMENU hMessages2
               Dim As Long eventM
               hMessages2=CreatePopMenu()

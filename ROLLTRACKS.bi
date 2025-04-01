@@ -322,27 +322,27 @@ cargacancion=0
            nombrea = OpenFileRequester("","", myfilter)
            ubi1 = InStrrev(nombrea,"[")
            ubi2 =InStrRev (nombrea,"]")
-If ubi1=0 Then
-      ubi1 = InStrrev(nombrea,"(")
-EndIf
-If ubi2=0 Then
-      ubi2 = InStrrev(nombrea,")")
-EndIf
-If NombreCancion = "" Then 
-   ntk=0
-Else 
-   ntk=CInt(Mid(nombrea,ubi1+1,ubi2-ubi1-1))
-EndIf      '
+           If ubi1=0 Then
+              ubi1 = InStrrev(nombrea,"(")
+           EndIf
+           If ubi2=0 Then
+              ubi2 = InStrrev(nombrea,")")
+           EndIf
+           If NombreCancion = "" Then 
+              ntk=0
+           Else 
+              ntk=CInt(Mid(nombrea,ubi1+1,ubi2-ubi1-1))
+           EndIf      '
      Else
   '2)  carga *.rtk de linea de comando doble clik o de cancion ¿de cancion ojo?  
        If ubirtk > 0 Then 
         '  print #1,"ubirtk > 0 carga de disco o cancion ",ubirtk
           nombrea=titulos(ntk) ' ya venia el nombre
-          ubirtk=0
+          ubirtk=2 '31-0325
        EndIf   
      EndIf
  'Print #1,"paso 1era parte ,nombrea ",nombrea    
-ubirtk=0
+ ''''''' ubirtk=0 '''???? 31-03-2025
        If nombrea = "" Then
       ' print #1, "cargaTrack exit sub"
        nombre=""
@@ -481,7 +481,7 @@ Dim mit As aUshort
 mit.pan = graba4.pan
 mit.pb  = graba4.pb
 tiempoPatron=mit.ST
-
+pmTk(ntk).tiempopatron=tiempoPatron
      If tiempoPatron = 0 Then 
         tiempoPatron = 240
      EndIf
@@ -1240,6 +1240,8 @@ If  nombre > "" Then
          pmTk(ntk).portout=portout
          pmTk(ntk).patch= Roll.trk(1,NA).inst
          pmTk(ntk).ejec = Roll.trk(1,NA).onoff
+         pmTk(ntk).tiempopatron = tiempoPatron
+
          patchsal=pmTk(0).patch
          instru=CInt(patchsal) 
         'los datos del rtk de disco estan ahora en memoria en Roll Visual
@@ -1542,7 +1544,10 @@ pmTk(r).zona1=pmTk(e).zona1
 pmTk(r).zona2=pmTk(e).zona2
 pmTk(r).nroRep=pmTk(e).nroRep
 pmTk(r).portin=pmTk(e).portin
-
+pmTk(r).tiempopatron=pmTk(e).tiempopatron
+pmTk(r).TipoCompas=pmTk(e).TipoCompas
+pmTk(r).ejec=pmTk(e).ejec
+pmTk(r).vol=pmTk(e).vol
 
 End Sub
 
@@ -1597,7 +1602,9 @@ nota=0:dur=0
    patchsal=Track(ntk).trk(1,1).nnn 'ubyte ambos
    ejec=Track(ntk).trk(1,1).ejec ' ejec
    pmTk(ntk).ejec = Track(ntk).trk(1,1).ejec ' ejec
-   pmTk(ntk).tempo = tiempoPatron 
+   tiempoPatron =   pmTk(ntk).tiempopatron
+  
+
    If pmTk(ntk).patch <> patchsal Then
       pmTk(ntk).patch=patchsal
       Dim As String mensajito

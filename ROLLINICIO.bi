@@ -250,7 +250,7 @@ Const NEWLINE = !"\n"
 'tempo I=160, seri equivalente a O=40 como l maxima cantdad de ticks de O es
 ' eldela figura mas peque�a=128 ticks...40 * 128 = 5120 por minuto.
 ' Si deseo un secuecnia de CantMin minutos
-tempo=120  ' negra=120
+tempo=121  ' negra=120
 CantMin=15
 'NotaBaja=1 : NotaAlta=128
 

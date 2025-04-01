@@ -1,3 +1,5 @@
+- 31-03-2025 se corrigio la terminacion de Rollmusic con o sin grafico de todas las 3 formas posibles sin errores. Con escape en el Grafico, con la X de la ventana de control y con Salir del menu de archivos. La conversion de una ejec a rtk pasando por la carga en el grafico a roll por memoria y luego grabando como rtk (ROLL=RTK) a archivo, anda bien mantiene el patch y el tiempopatron. Ejecutable en debug.,,,
+
 - 30-03-2025 play de una sola pista se compacto ya no usa vectores auxiliares;
   en ejecuciones convertidas a roll se usa el volumen de cada nota tal cual se ejecuto;
   en roll manual y solo en 4/4 como antes (falta el resto) se ajusto tiempos fuertes y debiles

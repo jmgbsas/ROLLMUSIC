@@ -303,8 +303,9 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
   ' ni poniendo end 0.. nada de nada ni engañando forzando eventC a close ni 
   ' eventM a EVENTRBdown nada de nada, no pasa nunca por aca solo obedece
   ' a un eventClose en EventC, el cual hay que pulsar dos veces para este caso
-            terminar=1
-            Exit Do ,Do    
+            terminar=3
+            Exit Select
+               
 '-----------------------------------------------------------------------
            Case 1020 ' <=========== Entrar Nombre o Título de la Cancion     
                NombreCancion = ""
@@ -421,12 +422,22 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
         '      SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1060 ' <========== crea track y reemplaza al existente en la edicion
+             If NombreCancion = "" Then
                 CTRL1060 salida
                 If salida = 1 Then 
                    salida=0
           SetForegroundWindow(hwnd)
                    Exit Do
                 End If
+             EndIf
+             If NombreCancion > "" Then
+                EstaBarriendoPenta=1 
+                threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))   
+                Print #1,"CARGO ROLL PARA cancion porque se cerro el grafio antes"
+                Sleep 100
+                 SetForegroundWindow(hwnd)
+                   Exit Do
+             EndIf
 
 '-----------------------------------------------------------------------
            Case 1061 ' <====== crear pista en cancion con lo elegido
