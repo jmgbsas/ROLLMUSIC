@@ -1381,8 +1381,7 @@ End Function
 Sub playAll(Roll As inst) ' play version 3 CON TICKS
 '<<< 30-03-2025 anda ok para roll desde ejec o Roll desde entrada manual >>>>
 ' en manual las velocidades son una sola semi fuerte, hasta que compas pueda 
-'volver a poner fuerte debil semifuerte debil... no se si podre
-' es un desafio nuevo  
+
 On Local Error Goto fail
 
 If MIDIFILEONOFF = HABILITAR  Then 
@@ -1751,13 +1750,14 @@ Exit Sub
 
 fail:
  Dim errmsg As String
+FileFlush (-1)
 If  Err > 0 Then
   errmsg = "FAIL PlayAll Error " & Err & _
            " in function " & *Erfn & _
            " on line " & Erl & " " & ProgError(Err)
   Print #1, errmsg ,"jply ", jply, "i1 ";i1
 EndIf
-
+End 0
 
 ' ================================FIN PLAYALL <<=================
 End Sub 

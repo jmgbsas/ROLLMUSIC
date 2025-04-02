@@ -146,8 +146,7 @@ Declare Function SumarnR (notaPiano As Integer) As Integer
 Declare Function SumarnRk (notaPiano As ubyte) As ubyte
 Declare Sub salir()
 Declare Sub IgualaMidiPlano(externo As integer, ByRef CantEventos  As Integer)
-
-
+ 
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
 Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6,notaGuia=0
 Dim Shared As String RTA, alteracion '',alteracion_str
@@ -1249,8 +1248,8 @@ Declare Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi, pis As integer)
 
 Declare Sub CargarSinRoll () '28-02-2024
 Declare Sub SetOptionsWindowScroll (iParam As Long)
-Declare Sub cargariniciotxt(lugar As String)
-Declare Sub grabariniciotxt(lugar As String)
+Declare Sub cargariniciotxt(lugar As String,ejecutar As ubyte)
+Declare Sub grabariniciotxt(lugar As String, ejecutar As ubyte)
  
 
 Type NProc Field=1
@@ -1296,6 +1295,9 @@ Const As integer inicioAcorde=     1
 Const As Integer finAcorde   =     2
 Const As Integer inicioSimple=     3
 Const As Integer finSimple   =     4
+Const As UByte   EJECUCION   =     1
+Const As UByte   CANCION     =     2
+
 Dim Shared  As Integer contid=0,separaenuno=0, intervalo=2 '  default 2 que es 1 separacion de notas
 
 Type mididat ' la duracion total de una nota se acumulara en duron en estado 2

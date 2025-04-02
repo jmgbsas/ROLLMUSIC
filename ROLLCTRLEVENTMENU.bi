@@ -529,7 +529,9 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
                   play=0 : playb=0
                   Sleep 20
                EndIf 
+
                thread1 = ThreadCall  playCancion(Track())
+grabariniciotxt(NombreCancion, CANCION)
             EndIf
          EndIf   
           '    Dim As Any Ptr thplayC = ThreadCall  playCancion(track())

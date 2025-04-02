@@ -28,12 +28,14 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                   For i As Integer = 1 To Tope
                     CheckBox_SetCheck(cbxnum(i),0)
                   next i 
-                  Resetear (pmTk()) 
+                  Resetear (pmTk())
                   cargarDirectorioCancion(NombreCancion)
+           
                   CANCIONCARGADA=False
                   ntk=0
                   If Tope >0 Then ' tenia datos se supone q pudo abrir Roll y abrirRoll=0
                      CargarPistasEnCancion ()
+                     cargariniciotxt(NombreCancion, CANCION)
                      If tope=0 Then  ' directorio fallido
                         NombreCancion = ""
                         cargacancion=0
@@ -60,6 +62,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                 CANCIONCARGADA=FALSE
 ' toma solo el nombre y path de la cancion no carga las pistas todavia
                 cargarDirectorioCancion(NombreCancion)
+                
                 param.encancion=1
                 Print #1," abrirRoll ";abrirRoll
                If abrirRoll=2 Then ' ver rollloop roll esta cargado vengo a cargar cancion de nuevo
@@ -68,6 +71,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                   ResetAllListBox(3)
                   Resetear (pmTk()) 
                   CargarPistasEnCancion ()
+                  cargariniciotxt(NombreCancion, CANCION)
                   If tope=0 Then
                     NombreCancion = "" ' directorio fallido
                   EndIf
@@ -233,14 +237,14 @@ pgmidi.toc=toc
 pgmidi.tocap = tocap
 'threadGrabamidi=@pgmidi
 
- grabariniciotxt (NombreCancion)
+ grabariniciotxt (NombreCancion,EJECUCION)
 GrabarMidiIn(pgmidi,pis)  ' POR 1015
 '  ThreadCreate (@GrabarMidiIn,CPtr(Any Ptr, threadGrabamidi))
 
 
 End Sub
 
-Sub cargariniciotxt(lugar As String)
+Sub cargariniciotxt(lugar As String, ejecutar As UByte)
 'carga estado de sonido, mudo no, o ejecutando si, de los archivos de ejecucion
 ' no los puse en los parámetros me olvidé, no pienso cambiar todo...
 ' ademas esta bueno poder configurar desde afuera como texto
@@ -255,32 +259,58 @@ Print #1,lugar
     Exit Sub
 End If
 
- 
-Do while Not Eof(ini)
-   Input #ini, arch, estado
-   Print #1, arch, estado 
-    If LCase(estado) = "si"  Then
-      CheckBox_SetCheck (cbxejec(arch),1)
-    EndIf
-    If LCase(estado) = "no" Then
-      CheckBox_SetCheck (cbxejec(arch),0)
-    EndIf
-    If LCase(estado) = "tiempopatronejec" then
+If ejecutar=EJECUCION Then  
+  Do while Not Eof(ini)
+     Input #ini, arch, estado
+     Print #1, arch, estado 
+     If LCase(estado) = "si"  Then
+       CheckBox_SetCheck (cbxejec(arch),1)
+     EndIf
+     If LCase(estado) = "no" Then
+       CheckBox_SetCheck (cbxejec(arch),0)
+     EndIf
+     If LCase(estado) = "tiempopatronejec" then
         tiempoPatronEjec=arch
-    EndIf
-    If LCase(estado) = "maxgrb" then
+     EndIf
+     If LCase(estado) = "maxgrb" then
         maxgrb=arch
         maxcarga=maxgrb
-    EndIf 
+     EndIf 
  
- Loop
+   Loop
 
 
-Close #ini
+   Close #ini
+End If
+
+If ejecutar=CANCION Then  
+  Print #1,"entro a cancion en cargar inicio "
+  Do while Not Eof(ini)
+     Input #ini, arch, estado
+     Print #1, arch, estado 
+     If LCase(estado) = "si"  Then
+       CheckBox_SetCheck (cbxnum(arch),1)
+     EndIf
+     If LCase(estado) = "no" Then
+       CheckBox_SetCheck (cbxnum(arch),0)
+     EndIf
+     If LCase(estado) = "tiempopatronejec" then
+        tiempoPatronEjec=arch
+     EndIf
+     If LCase(estado) = "maxpos" then
+        maxpos=arch
+       '' maxcarga=maxgrb
+     EndIf 
+ 
+   Loop
+
+
+   Close #ini
+End If
 
 End Sub
 '------------
-Sub grabariniciotxt(lugar As String)
+Sub grabariniciotxt(lugar As String, ejecutar As UByte)
 'carga estado de sonido, mudo no, o ejecutando si, de los archivos de ejecucion
 ' no los puse en los parámetros me olvidé, no pienso cambiar todo...
 ' ademas esta bueno poder configurar desde afuera como texto
@@ -292,10 +322,11 @@ Var ini=17
 'si lugar o nombre cancion es vacio graba en el directorio corriente
 
 Print #1,"grabariniciotxt ", lugar
- If Open (lugar+"inicio.txt" For Output As #ini ) <> 0 Then
+ If Open (lugar+"\inicio.txt" For Output As #ini ) <> 0 Then
     Print #1,"No se puede escribir en inicio.txt "
     Exit Sub 
  EndIf
+If ejecutar=EJECUCION Then
 
 For i1=1 To tocatope
  
@@ -310,6 +341,25 @@ For i1=1 To tocatope
 Next i1 
 Print #ini, tiempoPatronEjec; ","; "tiempoPatronEjec"
 Print #ini, maxgrb;","; "maxgrb"
+End If
+
+If ejecutar=CANCION Then
+
+  For i1=1 To tope
+ 
+    if   CheckBox_getCheck (cbxnum(i1)) = 1 Then
+         estado="si"
+    EndIf
+    if   CheckBox_getCheck (cbxnum(i1)) = 0 Then
+         estado="no"
+    EndIf
+       
+     Print #ini, i1;",";estado 
+  Next i1 
+  Print #ini, tiempoPatronEjec; ","; "tiempoPatronEjec"
+  Print #ini, maxpos;","; "maxpos"
+
+End If
 
 Close #ini
 
@@ -399,7 +449,7 @@ Print #1,"3 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
       ntoca=ntkp
       tocatope=ntkp
       GrabarEjec=0
-      cargariniciotxt(lugar) 'para guardar que pista ejec se escucha y cual no
+      cargariniciotxt(lugar, EJECUCION) 'para guardar que pista ejec se escucha y cual no
    
 Print #1,"4 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
  
@@ -1498,7 +1548,7 @@ pgmidi.toc=toc
 pgmidi.tocap = tocap
 'threadGrabamidi=@pgmidi
 
- grabariniciotxt (NombreCancion)
+ grabariniciotxt (NombreCancion, EJECUCION)
 GrabarMidiIn(pgmidi,pis)  ' POR 1015 comprimir listas
 
 

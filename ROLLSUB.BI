@@ -4909,7 +4909,9 @@ Print #1,"inicia CargaPistasEnCancion"
         pistas (ntk)=filename
         Print #1,"nombre en CargarPistasEnCancion ,Numpista",nombre, ntk
          'se carga track nada mas si dialogo simualmos un ubirtk>0 (1)
-        CargarTrack  (Track() , ntk, 1) ' se cargo a track x nada mas
+' chequeamos que todos los maxpos sean iguales sino se corrige
+        CargarTrack  (Track() , ntk, 1 ) ' se cargo a track x nada mas
+
  'durante la cargaTrack el programa va a Rolloop se encuentra con SC_TAB
  ' y si cargacancion esta en 1 trata de cargar y no lo debe ahcer de modo
  ' que se ajusta a 0 cargacancion dentro de la rutina veremos 

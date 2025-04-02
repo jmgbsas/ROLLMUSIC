@@ -439,7 +439,7 @@ Static As Integer millave
         GrabarMidiIn(pgmidi,ntoca) 'POR STOP aca se graba bien el orden
   'ThreadCreate (@GrabarMidiIn,CPtr(Any Ptr, threadGrabamidi))
 'grabamos parametros
-            grabariniciotxt(NombreCancion)
+            grabariniciotxt(NombreCancion, EJECUCION)
 
          Else
            CONTROL2=1
@@ -475,8 +475,10 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
         If  MaxPos > 2 Then  ''''' And GrabarEjec=1 And repro=1 Then 
             If CANCIONCARGADA = TRUE And playb=0 Then
                Print #1,"USANDO PLAYCANCION"
-               playb=1   
+               playb=1
+                  
                thread1 = ThreadCall  playCancion(Track())
+               grabariniciotxt(NombreCancion, CANCION)
             Else
                If  MaxPos > 2 And  Play=0 Then
           '        print #1,"llama a playall"
@@ -486,6 +488,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
                EndIf 
             EndIf
         EndIf   
+        
 
         threadG  = ThreadCreate (@PlayTocaAll, p)
         'ThreadWait (threadG) '22-04-2024  como andaba si hacia detach? ja
@@ -494,7 +497,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
         '  Print #1,"llama a  PlayTocaAll(p)"
 
          '   PlayTocaAll(p)
-        grabariniciotxt(NombreCancion)
+
   
       EndIf
 ' test de retardos  de inicio en ejecucion de datos entre playCancion y PlayTocaAll
@@ -550,6 +553,8 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
       If eventnumber()= BTN_ROLL_PARAR And GrabarPenta=1 Then
          SetGadgetstate(BTN_ROLL_EJECUTAR, BTN_LIBERADO)
          SetGadgetstate(BTN_ROLL_GRABAR_MIDI , BTN_LIBERADO)
+         CONTROL1 = 1
+         CONTROL2 = 1
          GrabarPenta=0
 Print #1, "542 GrabarPenta=0"
          metronomo_si=0
@@ -579,7 +584,9 @@ Print #1, "542 GrabarPenta=0"
                   play=0 : playb=0
                   Sleep 20
                EndIf 
+               
                thread1 = ThreadCall  PlayCancion(Track())
+               grabariniciotxt(NombreCancion, CANCION)
             Else
                thread1 = ThreadCall  PlayAll(Roll)
             EndIf
@@ -1009,7 +1016,7 @@ Print #1,"k, canalsalida  ";k, canalx
          Dim As Integer pista
          Static As Integer cuantos
          If cuantos > 0 Then
-            cargariniciotxt (DirEjecSinBarra)
+            cargariniciotxt (DirEjecSinBarra, EJECUCION )
             cuantos=0
          Else  
  

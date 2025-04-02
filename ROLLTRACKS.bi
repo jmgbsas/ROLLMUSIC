@@ -292,7 +292,7 @@ End Sub
 
 
 
-Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer)
+Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer) '', ByRef check As UByte)
 ' solo carga track no lo pasa a Vector de Visualizacion. ntk debe venir informado
 ' para cargar desde disco un track se usa esta sub y luego TrackaRoll para verlo
 ' y editarlo, ubirtk es si al carga se hace por argv desde el explorer en disco
@@ -370,15 +370,7 @@ cargacancion=0
      x3=Bin(grabaPos.vol,4)
      x4=Bin(grabaPos.pan,4)
      x5=Bin(grabaPos.pb,4)
-     tipoescala_num_ini =CInt( grabaPos.nnn ) ' 20-12-2021 - tipoescala en uso
-     If tipoescala_num_ini=0 Then
-        tipoescala_num_ini=1
-     EndIf
-     pmTk(ntk).tipoescala=grabaPos.nnn
-     pmTk(ntk).ejec=grabaPos.nnn
-     
- 
-  '   Print #1,"Carga Track tipoescala_num_ini ",tipoescala_num_ini
+
      x=x1+x2+x3+x4+x5
    '     print #1,"reconstruccion x pos bin ", x
      'toda carga de track se guarda en pmTk sea ntk=0 u otro valor   
@@ -404,6 +396,23 @@ Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
   Print #1,"CantTicks "; CantTicks
      'es un get trabajo debe ser exactamente MAxPos
    '       Print #1,"llego a 2 antes de redim "
+  '   If  check = 1 Then 
+  '       check = 0
+  '       cerrar (ct)
+  '       Exit Sub
+  '   End If
+
+
+
+     tipoescala_num_ini =CInt( grabaPos.nnn ) ' 20-12-2021 - tipoescala en uso
+     If tipoescala_num_ini=0 Then
+        tipoescala_num_ini=1
+     EndIf
+     pmTk(ntk).tipoescala=grabaPos.nnn
+     pmTk(ntk).ejec=grabaPos.nnn
+     
+ 
+  '   Print #1,"Carga Track tipoescala_num_ini ",tipoescala_num_ini
 
      ReDim Trabajo  (1 To CantTicks,1 To lim3) As poli
 Print #1,"NombreCancion,nomobre, CantTicks ";NombreCancion,nombre, CantTicks 
@@ -1015,8 +1024,8 @@ Dim midsal As  RtMidiOutPtr
    print #1,"pista nueva importada será ntk=",ntk   
 'si importamos de un directorio de ejecuciones donde se grabó por omision
 ' los roll o trk entonces existira el archivo inicio.txt
-cargariniciotxt(NombreCancion)
-SetGadgetText(21, Str(maxcarga))
+cargariniciotxt(NombreCancion, CANCION)
+SetGadgetText(21, Str(maxpos))
 
 
   '
@@ -1090,8 +1099,8 @@ Sleep 5
 
 GrabarRollaTrack(0)
 
-cargariniciotxt(NombreCancion)
-SetGadgetText(21, Str(maxcarga))
+cargariniciotxt(NombreCancion,CANCION)
+SetGadgetText(21, Str(maxpos))
        
 
     ' y a disco con su nuevo [xx]  
@@ -1561,7 +1570,7 @@ On Local Error Goto fail
 ' como es track a Roll se supone que el track ya esta cargado en memoria
 ' y esta sub pasa de Track ntk, a Roll Visual y track 0 
 ' o sea copia track ntk a Roll en memoria
-Dim As Integer i1,i2,i3,Maxposicion,octavaDeAcorde,verticalEnOctavaVacia,vertical,ejec
+Dim As Integer i1,i2,i3,Maxposicion,octavaDAcorde,verticalEnOctavaVacia,vertical,ejec
  ' print #1,"TrackaRoll 1"   
 ''If ubirtk=3 Then ' estoy conmutando de track durante la edicion
 ' si no estoy en cancion el nto va a ntk 0, siemrep uso ntk y el vector de pnTk
@@ -1896,11 +1905,15 @@ Function doscifras (NTK As Integer) As String
   EndIf
   doscifras=cifra
 End Function
-' ------------------------------
-
+' ----------------------------------------
+'               P L A Y   C A N C I O N 
+'------------------------------------------
 Sub PlayCancion(Track() As sec)
 'psarlo a Ticks!!!
 Dim i1 As Integer
+
+
+Sleep 10
 
 If MIDIFILEONOFF = HABILITAR  Then 
    MICROSEGUNDOS_POR_NEGRA = 60000000/tiempoPatron ' 60 MILL /BPM
@@ -1942,11 +1955,11 @@ i1=0
 EndIf
 
 
-'------------apertura e ports
+'------------apertura de ports
 Dim As Long porterror,nousar
 ' idea para controlar cancion con repeticiones podria usar el track 00 solo para eso control
 CONTROL1=0
-
+CONTROL2=0
 ' creoa todos los defaults siempre
  
 
@@ -1997,14 +2010,17 @@ Dim As Integer comienzo=1, final=MaxPos, vel=100,velpos =0,cntrepe=0,final2=0,co
 ' ojo si cambioaamos por mas octavas debo cambiar, igual el nro de tracks 32 
 ''Dim pasoCol (0 To 384) As vec  ' entrada de durciones a medida que barro una columna
 '------------determinamos el MAxPos de toda la cancion o sea la pista de mayor longitud
-mayor=pmTk(portout).MaxPos
+mayor=pmTk(1).MaxPos
 For i0=1 To Tope 
- If mayor < pmTk(i0).MaxPos Then
+Print #1,"CANCION ntk MAXPOS "; pmTk(i0).MaxPos
+ If mayor < pmTk(i0).MaxPos Then 
     mayor=pmTk(i0).MaxPos
  EndIf   
 Next i0
+ Print #1,"CANCION ntk MAXPOS "; ntk, mayor  
 
-final=mayor
+Print #1,"cancion tiempoPatron ";tiempoPatron
+final=mayor -2
 
 xmouse=mousex
 ymouse=mousey
@@ -2014,7 +2030,7 @@ Dim as Integer cnt=0, cntold=0,cpar=0,dura=0,duraOld=0,nj, durj,tiempoFiguraSig
 Dim As Integer liga=0,Notapiano=0,old_notapiano=0, iguales=0, distintos=0
 Dim leng As UInteger <8>
 Dim As Integer result,limsup
-
+Dim As UByte canal=0 
 ' tope es la maxima capacidad de tracks usada , lso tracks son contiguos
 ' si se borra un track queda sin usar eso hay que verlo...JMG ..
 ' por ahora solo proceso los que tengan lim2 o si llegamos a tope 
@@ -2040,8 +2056,7 @@ End If
 STARTMIDI=Timer
 old_time_on=STARTMIDI
 Print #1,"old_time_on "; old_time_on
-Dim As Double  tickUsuario=0.01041666 * 480/tiempoPatron
-'las ejec estan en 480!!! ver eso cuadno grabo porque esta a 480!!
+Dim As Double  tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
@@ -2061,7 +2076,7 @@ Print #1,"TickUsuario "; tickUsuario
  '     Print #1,"ON patch ntk canal ",	Track(ntk).trk(1,1).nnn, ntk,pmTk(pis).canalsalida
 'Track(pis).trk(1,1).nnn
       ChangeProgram ( pmTk(pis).patch, pmTk(pis).canalsalida, pmTk(pis).portout)	
-
+' reveeer esto de sonido ,,,,,
       If instancia=7 Or instancia=107  Then
           sonidoPista(pis)=1
       Else 
@@ -2112,7 +2127,18 @@ kNroCol= Int(jply/NroCol)
       Exit For
    EndIf  
 ' puede pasar que el maxpos sea menro al final de la secuencia porque se agrego espacio
- 
+ '  Print #1," cancon jply velpos "; jply, velpos
+  
+  For pis =1 To tope ' loop de pistas rtk
+    If CheckBox_GetCheck( cbxnum(pis))= 1 Then
+       ' tocar
+    Else
+     Continue For ' saltear no tocar 
+    EndIf 
+
+ If Track(pis).trk(1,1).ejec = 1 Then ' VIENE DE UNA EJEC
+ 'usar la velocidad de grabacion DE LA EJEC.,,
+ Else
    If Compas(jply).nro = -1 Then
      velpos=vfuerte
    EndIf
@@ -2128,13 +2154,11 @@ kNroCol= Int(jply/NroCol)
    If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
       velpos=vdebil
    EndIf
- '  Print #1," cancon jply velpos "; jply, velpos
-   cnt=0
-   iguales=0
-   distintos=0
-   duraold=0 ' 04-11-2021
-  
-  For pis =1 To tope ' loop de pistas
+   If Compas(jply).nro = 0 Then 
+    velpos=vsemifuerte  ' para midipolano divisones por partes veremso si se soluciona el sonido
+' en la rutina vol , depende de la dur ajusta vol=0 o vol = velpos... no hay problema con los silencios
+   EndIf
+ EndIf
 
  '  print #1,"--loop de pistas---pista NRO :";pis;" --------------------------------"
  '  print #1,"  De esta pista MAXPOS ,final",pmTk(pis).MaxPos, final
@@ -2169,152 +2193,52 @@ kNroCol= Int(jply/NroCol)
 ' info del inst en 1 no en lim2   
 
  'Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
+If jply <= pmTk(pis).MaxPos Then ' tocamos una pista mientras que tenga datos 
    For i1=1 To lim3   ' coo voy de 1 a lim2 necesito que la info del int este en 1
-If i1<= lim2 Then
-     If (Track(pis).trk(jply,i1).nota >= NBpiano) And (Track(pis).trk(jply,i1).nota <= NA) And (Track(pis).trk(jply,i1).dur >=1) And (Track(pis).trk(jply,i1).dur <= 180) Or Track(pis).trk(jply, i1).dur <= 183 Or Track(pis).trk(jply, i1).dur <= 185 Then ' es semitono
+   If i1<= lim2  And (pis <= tope Or pis<=32) Then
+    ''' (Track(pis).trk(jply,i1).nota >= NBpiano) And 
+    ''' (Track(pis).trk(jply,i1).nota <= NA) And 
+    ''' (Track(pis).trk(jply,i1).dur >=1) And 
+    ''' (Track(pis).trk(jply,i1).dur <= 180) Or 
+    ''' Track(pis).trk(jply, i1).dur <= 183 Or 
+    ''' Track(pis).trk(jply, i1).dur <= 185 Then ' es semitono
+      If (Track(pis).trk(jply,i1).nota >= NBpiano) And (Track(pis).trk(jply,i1).nota <= NA) And (Track(pis).trk(jply,i1).dur >=1) And (Track(pis).trk(jply,i1).dur <= 180) Or Track(pis).trk(jply, i1).dur <= 183 Or Track(pis).trk(jply, i1).dur <= 185 Then ' es semitono
          Notapiano = CInt(Track(pis).trk(jply,i1).nota)
-'         print #1,"Notapiano ",Notapiano
-'         print #1,"i1,NBpiano,NApiano ",i1,NBpiano,NApiano
-'       print #1,"VEO LO CORRECTO DE NOTAPIANO "; Notapiano
-         dura=Track(pis).trk(jply,i1).dur ' el dur de track esta en integer
-'      print #1,"jply ";jply; "dura ";dura
-         cnt=cnt+1
-   '   print #1,"paso ";jply;" cnt ";cnt;" notapiano "; Notapiano
-        If cnt=1 Then 
-           duraOld=dura
-        EndIf
-       ' usamos reldur() para comparar dura y con cnt>1 tiene sentido
-       If reldur(duraOld)=reldur(dura) And cnt > 1  Then
-          iguales=1
-'          print #1,"cnt ";cnt;" iguales ";iguales
-       EndIf
-       If reldur(duraOld)<>reldur(dura) And cnt > 1 Then
-          distintos=1
- '         print #1,"cnt ";cnt;" distintos ";distintos
-       EndIf         
-
-'        print #1,"-> cnt"; cnt 
-         pasoCol(cnt).DUR =dura
-'         pasoCol(cnt).DURold =dura
-'         print #1,"pasoCol(cnt).DUR ", pasoCol(cnt).DUR 
-         If pasoCol(cnt).DUR >= 91 And pasoCol(cnt).DUR <=180 Then
-'            print #1,"nota con + es una liga"
-            pasoCol(cnt).liga    =  1
-         Else   
-            pasoCol(cnt).liga  = 0
-         EndIf
-        ' DURACIOENS SILENCIO O NO sF o sF+
-        If (pasoCol(cnt).DUR >= 1 And pasoCol(cnt).DUR <=45) Or (pasoCol(cnt).DUR >= 91 And pasoCol(cnt).DUR <= 135) Then
-          '  print #1,"PALL 9a:PALL 0: nota tiene audio"
-            pasoCol(cnt).audio =  1 ' tiene audio
-        Else
-            pasoCol(cnt).audio =  2 ' no tiene audio, 0 valor no ajustado no se nada  
-        EndIf
-
-         pasoCol(cnt).notapiano=Notapiano
- ' >>>>>>>>>>>>>>>CANAL MIDI y POR SALIDA >>>>>>>>>>>>>>>>>>>>>>>>        
-         pasoCol(cnt).canal=pmTk(pis).canalsalida ' 12-02-2022 canal en pasoCol
- '        Print #1,"pasocol guarda canal, pista --> ",pasoCol(cnt).canal," estoy en pista ",pis
-         pasoCol(cnt).port=pmTk(pis).portout
- '        Print #1,"pasocol guarda port , pista --> ",pasoCol(cnt).port," estoy en pista ", pis  
-         pasoCol(cnt).pista=pis       
- '        Print #1,"pasocol guarda pista  --> ",pasoCol(cnt).pista
- ' >>>>>>>>>>>>>>>CANAL MIDI >>>>>>>>>>>>>>>>>>>>>>>>         
-         
-         pasoCol(cnt).tiempoFigura=relDur(pasoCol(cnt).DUR) * tiempoDur * d11
-         pasoCol(cnt).i1 = i1 'posicion vertical en el vector real
-  '       pasoCol(cnt).i1Old = i1 'posicion vertical en el vector real
-         If sonidoPista(pis)=1 Then
-            pasoCol(cnt).vol=velpos
+         portsal=pmTk(pis).portout
+         canal=pmTk(pis).canalsalida
+         If Track(ntk).trk(1,1).ejec = 1 Then
+        'Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
+          vel=Track(pis).trk(jply,i1).vol
          Else
-            pasoCol(cnt).vol=0
-         EndIf   
-      ' 20-06-2021 eliminado duraold=dura repetido 
-     '' ??VER SI SAO DE ACA INST Y VEL 
-        ' If sonidoPista(pis)=1 Then
-  
-         ''vel=CUByte(vol( dura, velpos))
-     EndIf
+          If sonidoPista(pis)=1 Then
+          Else
+            vel=0
+          EndIf   
+         EndIf
+      EndIf
 ' llegamos al final de la Columna
-   
+      If Track(pis).trk(jply,i1).onoff =2 Then
+        noteon CUByte(Notapiano),vel,canal,portsal,1
+      EndIf
+      If Track(pis).trk(jply,i1).onoff= 1 Then
+        noteoff CUByte(Notapiano),canal,portsal,1
+      EndIf    
+   EndIf
+
      If i1=lim2  And (pis = tope Or pis=32) Then
-        ''''  reponer mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
- '       If cnt > 1 Then' Acorde
- '         print #1,"i1=";i1 ; " ACORDE cnt= ";cnt
- '       Else    
-  '         print #1,"i1=";i1 ; " SIMPLE cnt= ";cnt
- '       EndIf  
-' FUNCIONA PERO CANCELA CASI AL FINAL HAY QUE CONTROLAR QUE PLAYTOCAALL NO 
-' MANEJE LOS PUERTOS NI APERTURA NI CIERE Y AJUSTRLE LOS PORT DE SALIDA Y PATCH
-' EN LA EJECUCION DE CANCION SOLO CANCION ABRIRA PUERTOS Y LSO CERRARA
-' EN TODO CASO SI NO ESTA EL PUERTO YA USADO EN CANCION SE AGRAGA A A LISTA 
-' LSO PRT USADOS EN LAS PISTAS MIDI-IN. PARA ELLO DEBEMOS SELECIOANR EL PORT 
-' DE SALIDA DE LA PISTA MIDI-IN E INCORPORARLA A LA LISTA. 	pmTk(ntk)
-' lo usaremos tanto para pistas manuales como de ejecucion para numerar las pistas
-' de MIDI-IN PODRIAMOS EMPEZAR POR 33 Y HASTA 64...-33-PIANO.rje por ejemplo
-' en vez de usar [N] usamos -N- ..PARA SINCRONIZAR JUGAREMOS CON EL TIEMPO DE INICIO
-' TIMER DEL 1ER EVENTO DE CANCION ..Y AL COMENZR A  GRABAR UNA PISTA MIDI-IN
-' GUARDAREMOS EL DELTATIME ENTRE EL INICIO DE LA CANCION Y EL INICIO DE LA ENTRADA
-' MIDI-IN DE ESA FORMA AL REPRODUCIR LA PISTA MIDI -IN SE SINCRONIZARA SU INICIO
-' CON EL DELTA RESPECTO DEL INICIO DE CANCION,,,  
-'       If HAYMIDIIN=TRUE Then
-'            repro=1
-'            CONTROL1=0
-'            Dim p As Integer Ptr
-'            p=@ntoca
-'            threadG  = ThreadCreate (@PlayTocaAll, p)
-'           
-'       EndIf 
-' PARA CALCULO DE RETARDO DEL INICIO DE PLAY CANCION RESPECTO PLAYTOCAALL
-' HABILITAMOS SOLO PARA PRUEBAS
-'If  jply=1 Then
-'  Print #1, "playcancion inicio datos:", Timer
-'EndIf
 '----------------------------------
-        Select Case cnt
-          Case 1 
-           ' con y sin liga
-           ' INCLUYE LIGADOS O NO LIGADOS
-' print #1, "SIMPLE COM ACORDES IGUALES cntold, vel, tiempodur",  cntold, vel, tiempoDur
-  ' cnt por cntold 04-11-2021           
-  ''    noteSimple  pasoCol(), cnt, vel, canal,tiempoDur,velpos
-         TipoAcorde=1 ' simple   
-         AcordeIguales pasoCol(), cnt, cntold, vel,tiempoDur,Roll,velpos,pisnota,portsal
-         pasoCol(cnt).notapianoOld    = Notapiano             
-                     
-          Case Is > 1
 
-            If iguales=1 And distintos=0  Then
-                TipoAcorde=2 ' iguales
-           '     print #1,"cnt ";cnt;" Acordeiguales "
-                
-                AcordeIguales pasoCol(),cnt,cntold,vel,tiempoDur,Roll,velpos,pisnota,portsal
-                
-            EndIf
-            If  distintos=1 Then
-           '    print #1,"cnt ";cnt;" AcordeDistintos"
-                TipoAcorde=3 ' distintos               
-                AcordeDistintos pasoCol(),cnt, cntold,vel,tiempoDur,Roll,velpos,pisnota,portsal
-                
-            EndIf
-            
-         End Select  
 
-        cntold = cnt
-  '      print #1,"cnt,cntold"; cnt;" ";cntold
-         
      EndIf
-
-EndIf
 '--------
-If i1 > lim2  Then
- If Track(pis).trk(jply,i1).nota = 210 Then
+   If i1 > lim2  Then
+     If Track(pis).trk(jply,i1).nota = 210 Then
   '  Print #1,"210 leido jply",jply
-    If finfin=0 Or playloop=1 Then
+     If finfin=0 Or playloop=1 Then
        playloop2=1
        comienzo2=jply
-    EndIf
- EndIf
+     EndIf
+   EndIf
 
  If Track(pis).trk(jply,i1).nota = 211 Then
   '  Print #1,"211 leido jply",jply
@@ -2343,7 +2267,7 @@ EndIf
 
 
    Next i1
-
+EndIf
 
 
 
@@ -2358,12 +2282,14 @@ EndIf
  '   'posicion=comienzo
  'EndIf
  
- tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
+ ''tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
 
    
 
   Next pis
 
+     duracion (old_time_on ,tickUsuario) ' si es cero no 1 no hay duracion es acorde
+     old_time_on=old_time_on + tickUsuario 'jmgtiempo
 
 
 '  print #1,"---FIN -----paso:"; jply;" --------------------------------"
@@ -2453,11 +2379,25 @@ If MIDIFILEONOFF = HABILITAR Then
    cerrar (20)
 
 EndIf
+
+
 Sleep 20,1
 
-ThreadDetach(thread1)
-repro=0 ' 05-03-2024
+Exit Sub
 
+fail:
+ Dim errmsg As String
+FileFlush (-1)
+If  Err > 0 Then
+  errmsg = "FAIL PlayAll Error " & Err & _
+           " in function " & *Erfn & _
+           " on line " & Erl & " " & ProgError(Err)
+  Print #1, errmsg ,"jply ", jply, "i1 ";i1
+EndIf
+
+'''''ThreadDetach(thread1)
+repro=0 ' 05-03-2024
+End 0
 
 End Sub 
 

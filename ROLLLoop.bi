@@ -965,6 +965,7 @@ If instancia = 7  Then ' 04-03-2024 LOGRE LEVANTAR CANCION EN UN ROLL EXTERNO
 '' carga de cancion porlinea de comandos
     cargacancion=1 
     CargarPistasEnCancion ()
+    cargariniciotxt(NombreCancion, CANCION)
     instancia=107  ' ficticio para que entre al if de TAB pero  que no entre en el resto ni aca
     param.encancion=1
     'terminar=1
@@ -1074,8 +1075,6 @@ Else
        
            threadPenta = ThreadCall barrePenta (c, Roll )
            ThreadWait threadPenta
- 
-             
             pubi=0
            menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
            cairo_stroke(c)  
@@ -1952,9 +1951,12 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
              playb=1 : s5=0 'Necesita mas tiempo de cpu
              threadDetach(thread1)
              threadDetach(thread2)
+             
              Sleep 100    
-             thread1 = ThreadCall  playCancion(Track())
-             'playCancion(Track())
+             thread1 = ThreadCall  PlayCancion(Track())
+             grabariniciotxt(NombreCancion, CANCION)
+             FileFlush (-1)
+
          Else
            If  MaxPos > 1 Then
       '        print #1,"llama a playall"
@@ -3353,6 +3355,7 @@ If (ScreenEvent(@e)) Then
        
    If e.scancode = SC_P And (Play=1 Or playb=1 ) Then ' 25 anda mejor q con multikey
       CONTROL1=1
+      CONTROL2=1
       playloop=0:playloop2=0
       s5=2 'necesita menos tiempo de procesamiento    
  '''     alloff( 1 ) lo hace el play 

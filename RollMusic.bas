@@ -88,9 +88,11 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.308 2025-03-31  los track rtk de ejec se arman bien con patch y tiempoPatron"
+nroversion="TICKS 0.309 2025-04-01  playCancion en desarrollo"
 ' los tracks convertidos desde una ejec suenan bien indivudualmente
-' falta ahora el playCancion. Luego haremos un paso que convierta todos los tracks
+' PLAYcANCION YA ANDA FALTA CONTROL DE BOTONES PLAY Y DETENER SINCRONIZAR
+' LAS DISTINTAS OPCIONES BOTON VERDE EN LISTA ROLL TECLA P SPACE ETC.
+'  Luego haremos un paso que convierta todos los tracks
 ' de ejecucion en rtk con solo un click, tambien podremos agregar la converison a
 ' rtk de una sola ejec sin pasar por la carga en roll. 
 ' ---------------------------------------------------------------------
@@ -228,6 +230,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
      Resetear (pmTk()) 
 
       CargarPistasEnCancion ()
+      cargariniciotxt(NombreCancion, CANCION)
  '   Print #1,"CARGAR PISTAS cargacancion = ",cargaCancion 
      ''CANCIONCARGADA=TRUE
      ROLLCARGADO=False
