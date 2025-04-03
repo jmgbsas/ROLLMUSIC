@@ -5966,7 +5966,7 @@ Sleep 10
          Print #ffile,nVerEscalasAuxiliares, "nVerEscalasAuxiliares"
          Print #ffile,nanchofig, "nanchofig"
          Print #ffile,nVerCifradoAcordes, "nVerCifradoAcordes"
-     
+         
          cerrar ffile
          Sleep 100
     EndIf
@@ -6002,10 +6002,8 @@ Sleep 100
 ' ESTO HACE CNCELAR AL CERRAR DE LA VENTANA DE CONTROL NO USAR
 ' 26-02-2024 
 '''DeleteObject(Cast(Any Ptr,BRUSH))      
-ThreadDetach(threadloop)
- DestroyWindow(hWnd)
-
-    'End 0
+ 
+ SCREEN 0, , , &h80000000
 End Sub
 '-------
 Sub selTipoEscala (ByRef tipoescala_num As Integer)

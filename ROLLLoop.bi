@@ -1210,6 +1210,7 @@ EndIf
 
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE ?
+'vuelve a COMEDIT=FALSE
  cursorVert = 0
  cursorHori = 0
  agregarNota = 0
@@ -1217,13 +1218,13 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE 
  '' notadur=0
 EndIf
 
-If MultiKey (sc_P) And (play=1 Or playb=1 )Then
+If MultiKey (sc_P) Then  ''''And (play=1 Or playb=1 Or Cplay=1 )Then
   CONTROL1=1 ' DETIENE EL PLAY VEREMOS
   playloop=0:playloop2=0
   s5=2 ' el loop necesita menos cpu se libera
   If instancia=7 Or instancia= 107 Or instancia < 3 Then 
   Else
-  SetGadgetstate(BTN_ROLL_EJECUTAR,0)
+  SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
   EndIf 
 EndIf
 

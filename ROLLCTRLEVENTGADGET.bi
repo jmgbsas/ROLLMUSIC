@@ -306,11 +306,11 @@ Static As Integer millave
 ' terminar cualquier metrono que este funcionando 
          terminar_metronomo=1
 'detiene el play de cancion o roll
-         If  play=1 Or playb=1 Then
+         If  play=1 Or playb=1 Or Cplay=1 Then
            CONTROL1=1 ' DETIENE EL PLAY DE CANCION O ROLL
             play=0: playb=0 
-           playloop=0:playloop2=0
-           SetGadgetstate(BTN_ROLL_EJECUTAR,0)
+           playloop=0:playloop2=0:Cplay=0
+           SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
            Sleep 2
          EndIf
          CONTROL2=1
@@ -550,11 +550,9 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
          GrabarPenta=1 ' redundante ,,, 
       EndIf 
 '-------------------------------
-      If eventnumber()= BTN_ROLL_PARAR And GrabarPenta=1 Then
+      If eventnumber()= BTN_ROLL_PARAR And (GrabarPenta=1 Or Cplay=1) Then
          SetGadgetstate(BTN_ROLL_EJECUTAR, BTN_LIBERADO)
          SetGadgetstate(BTN_ROLL_GRABAR_MIDI , BTN_LIBERADO)
-         CONTROL1 = 1
-         CONTROL2 = 1
          GrabarPenta=0
 Print #1, "542 GrabarPenta=0"
          metronomo_si=0
@@ -562,10 +560,13 @@ Print #1, "542 GrabarPenta=0"
          COMEDIT=FALSE  
 ''      If NombreCancion > "" Then ' detiene todo pista aisalda o cancion 
             If play=1 Or playb=1 Or CPlay=1 Then
-               CONTROL1=1 ' DETIENE EL PLAY 
+               CONTROL1=1 ' DETIENE EL PLAY
+               CONTROL2=1    
                playloop=0:playloop2=0
                play=0 : playb=0:CPlay=0
                Sleep 20
+               threadDetach (thread2)
+               threadDetach (thread1)
             EndIf 
       ' EndIf
       EndIf
@@ -579,13 +580,16 @@ Print #1, "542 GrabarPenta=0"
             CPlay=1
             If NombreCancion > "" Then
                If play=1 Or playb=1 Then
-                  CONTROL1=1 ' DETIENE EL PLAY 
+                  CONTROL1=1 ' DETIENE EL PLAY SI ESTA TOCANDO 
+                  CONTROL2=1 ' DETIENE LOS EJEC SI ESTAN TOCANDO
                   playloop=0:playloop2=0
                   play=0 : playb=0
+                  threaddetach (thread2)
+                  threaddetach (thread1)
                   Sleep 20
                EndIf 
                
-               thread1 = ThreadCall  PlayCancion(Track())
+               thread2 = ThreadCall  PlayCancion(Track())
                grabariniciotxt(NombreCancion, CANCION)
             Else
                thread1 = ThreadCall  PlayAll(Roll)

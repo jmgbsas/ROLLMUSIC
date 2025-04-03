@@ -376,7 +376,7 @@ Sub CrearDirCancion (Byref NombreCancion As string)
 If NombreCancion = "" Then
    NombreCancion= Date
 EndIf
-pathdir = ShellFolder( "Select Folder", "C:\")
+pathdir = ShellFolder( "Select Folder", CurDir())
 pathdir=pathdir+"\"+NombreCancion
 print #1, "DIRECTORIO CANCION EN ",pathdir
 CreateDir(pathdir)
@@ -391,7 +391,7 @@ End Sub
 Sub cargarDirectorioCancion (ByRef NombreCancion As string)
 ''Dim pathdir As string
     SetForegroundWindow(hwndc)
-NombreCancion = ShellFolder( "Seleccionar Carpeta de Cancion", "C:\")
+NombreCancion = ShellFolder( "Seleccionar Carpeta de Cancion", CurDir())
 
 SetWindowText(hwndC, "RollMusic Cancion: " + NombreCancion)
 
@@ -497,3 +497,4 @@ Print #1,"------------------------------------"
 EndIf
  Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
 
+FileFlush (-1)

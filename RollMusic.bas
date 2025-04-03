@@ -470,6 +470,7 @@ Close
 
 '---------fin iup---    
 errorhandler:
+
 Dim As Integer er, ErrorNumber, ErrorLine
 er = Err
 Print #1,"Error  Rollmusic detected ", er, posicion, MaxPos
@@ -488,3 +489,4 @@ Print #1,"Error Function: "; *Erfn()
 Print #1, "12 -nota +(estoyEnOctava ) * 13) "; ers
 Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
  Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
+FileFlush (-1)

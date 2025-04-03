@@ -1868,6 +1868,7 @@ Sleep 10
 Exit Sub 
 
 fail:
+FileFlush (-1)
  Dim errmsg As String
  Dim As Long er1 = Err()
 If  er1 > 0 Then
@@ -2109,15 +2110,7 @@ For jply=comienzo To final
   
 ' cambio de inst para la pista, podria poner mas de un instrumento por pista
 ' o por cada nota.. 
-' VER DE PONER LOS INSTRUMENTOS EN TRACK  
-kNroCol= Int(jply/NroCol)
-   If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < final)Then
-     posicion=jply
-     curpos=0
-     SetMouse xmouse, ymouse
-   EndIf
-' decia mousex=jply nada mas
-   mousex=jply * anchofig '<=== jmgjmg ojo sera esto que se mueve mal el cursor sobre la secuencia?
+' VER DE PONER LOS INSTRUMENTOS EN TRACK
    If CONTROL1 = 1 Then
       For i3 = 1 To tope
        portsal=CInt(pmTk(i3).portout) 
@@ -2126,6 +2119,15 @@ kNroCol= Int(jply/NroCol)
       CONTROL1=0
       Exit For
    EndIf  
+  
+kNroCol= Int(jply/NroCol)
+   If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < final)Then
+     posicion=jply
+     curpos=0
+     SetMouse xmouse, ymouse
+   EndIf
+' decia mousex=jply nada mas
+   mousex=jply * anchofig '<=== jmgjmg ojo sera esto que se mueve mal el cursor sobre la secuencia?
 ' puede pasar que el maxpos sea menro al final de la secuencia porque se agrego espacio
  '  Print #1," cancon jply velpos "; jply, velpos
   
@@ -2326,8 +2328,8 @@ jply=0:curpos=0
 ' 11-06-2021 se volvio a colocar 1 seg retardo para no escuchar un corte abrubto
 ' al final, por ahroa no parpadea mas veremos.... 
  
-playb=0
-Cplay=0 ' ontrol de play cancion si fue desde control
+
+Cplay=0 ' Control de play cancion si fue desde control
 mousey=100 'otra mas para evitar rentrar a play en menu
 finplay=1
 
