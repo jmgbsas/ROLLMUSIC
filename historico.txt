@@ -1,3 +1,6 @@
+- 07-04-2025 0.310 sinc playcancion, ejecuciones se convierten todas con un solo click sin pasar por rollgrafico
+  En el menu puertos ejecucion, el item
+    6.0 Convertir todas las ejecuciones *.ejec seleccionadas para que toquen columna [S] a *.rtk y los grabe a disco")
 - 02-04-2025 0.309 playcancion sincronizados faltan pruebas con ejec cargado. curdir em folders-
   terminacion del programa sin errores mas ajustes.
 - 01-04-2025 0.308 PLAYcANCION YA FUNCIONA FALTA SINCROCINAR LOS BOTONES Y TECLAS DE PLAY Y STOP

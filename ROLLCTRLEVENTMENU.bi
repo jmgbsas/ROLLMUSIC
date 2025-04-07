@@ -422,16 +422,15 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
         '      SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1060 ' <========== crea track y reemplaza al existente en la edicion
-             If NombreCancion = "" Then
+             If NombreCancion = ""  Then
                 CTRL1060 salida
                 If salida = 1 Then 
                    salida=0
-          SetForegroundWindow(hwnd)
+                   SetForegroundWindow(hwnd)
                    Exit Do
                 End If
              EndIf
-             If NombreCancion > "" Then
-                EstaBarriendoPenta=1 
+             If NombreCancion > ""  Then
                 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))   
                 Print #1,"CARGO ROLL PARA cancion porque se cerro el grafio antes"
                 Sleep 100
@@ -531,7 +530,7 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
                EndIf 
 
                thread1 = ThreadCall  playCancion(Track())
-grabariniciotxt(NombreCancion, CANCION)
+              grabariniciotxt(NombreCancion, CANCION)
             EndIf
          EndIf   
           '    Dim As Any Ptr thplayC = ThreadCall  playCancion(track())
@@ -783,9 +782,13 @@ grabariniciotxt(NombreCancion, CANCION)
                CTRL1206()
 
            Case 1207 ' CONVERTIR EJECS SELECCIONADA EN TRK en desarrollo para ticks
-             CTRL1207()
-             ''threadG  = ThreadCreate (@CTRL1207) 
-
+             Dim As Integer pis=0
+             CTRL1207(pis)
+           grabariniciotxt(NombreCancion, EJECUCION)
+           Case 1208
+       ' buscamos cuales estan seleccionadas en boton check de escuchar pista la primera  
+              CTRL1208( )
+          grabariniciotxt(NombreCancion, EJECUCION)
            Case 2000
    
              MessBox ("", acercade)

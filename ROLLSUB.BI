@@ -1489,7 +1489,7 @@ Sub sacanumeros( linea As String, cabeza() As Integer)
        cabeza(k1,2)=i1     
    Else   
         If ch = " " Then
-          num=ValInt(res) 
+          num=ValInt(res) ''' ojo res es integer como global no afecta
           res=""
           If num> 0 Then
              k1=k1+1
@@ -3498,7 +3498,8 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
        Dim As Integer esroll, esrtk , esejec 
        esroll=InStr(LCase(nombre),".roll")
        esrtk =InStr(LCase(nombre),".rtk") 
-       esejec=InStr(LCase(nombre),".ejec")       
+       esejec=InStr(LCase(nombre),".ejec") ' es unroll que viene de ejec solo en el nombre
+' no es que termine en ejec, el nombre del rool contine ejec en el nombre       
 '   GrabarRollaTRack aca graba con [00] adelante, pues no es comando de cancion
 ' la pista de cancion van de 1 a 32 la pista 00 es el track asociado a Roll sin cancion 
         If esrtk >0 Then ' update de un track con o sin cancion
@@ -5996,12 +5997,6 @@ cerrar fa1
 EndIf
  cerrar 1
 Sleep 100
-'    cerrar 0
-'    Close
- 
-' ESTO HACE CNCELAR AL CERRAR DE LA VENTANA DE CONTROL NO USAR
-' 26-02-2024 
-'''DeleteObject(Cast(Any Ptr,BRUSH))      
  
  SCREEN 0, , , &h80000000
 End Sub

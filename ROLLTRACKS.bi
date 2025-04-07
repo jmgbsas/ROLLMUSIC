@@ -59,17 +59,17 @@ Sub CargarMidiIn(DirEjecSinBarra As String,   ByRef ntkp As Integer)
           EndIf
            tocaparam(ntkp)=tocaparamaux  ' aca copia el maxpos particual de la pista
          'limpio numeros parentesis y signos - si lso tiene
-           Dim As Integer abrep,cierrap, menos
-           abrep=InStr(tocaparam(ntkp).nombre,"(")
-           cierrap=InStr(tocaparam(ntkp).nombre,")")
-           menos=InStr(tocaparam(ntkp).nombre,"-")
-           If menos=cierrap+1 Then
-             tocaparam(ntkp).nombre=Mid(tocaparam(ntkp).nombre,menos+1)
-           Else 
-              If cierrap > 0 Then
-                 tocaparam(ntkp).nombre=Mid(tocaparam(ntkp).nombre,cierrap+1)
-              EndIf  
-           EndIf
+          ' Dim As Integer abrep,cierrap, menos
+          ' abrep=InStr(tocaparam(ntkp).nombre,"(")
+          ' cierrap=InStr(tocaparam(ntkp).nombre,")")
+          ' menos=InStr(tocaparam(ntkp).nombre,"-")
+          ' If menos=cierrap+1 Then
+          '   tocaparam(ntkp).nombre=Mid(tocaparam(ntkp).nombre,menos+1)
+          ' Else 
+          '    If cierrap > 0 Then
+          '       tocaparam(ntkp).nombre=Mid(tocaparam(ntkp).nombre,cierrap+1)
+          '    EndIf  
+          ' EndIf
           
             Get #f, ,Toca(ntkp).trk()
 
@@ -117,7 +117,7 @@ Sub CargarPistasEjec (lugar As String, ByRef ntkp As integer)
 ' devuelve el numero de pistas...cargadas
 ' y fija la maxgrb o la maxpos de todas las pistas ejec
 ROLLCARGADO=FALSE
-
+Print #1,"LUGAR RECIBIDO, ntkp ";lugar ,ntkp
 GrabarEjec =HabilitaGrabar: ntoca=0 : arrancaPlay=0
          ntkp=1 '<================= inicia en 1 y va a devolver ntkp!!
 ' ahi estaba el error empieza en 1 no en cero veremos! 
@@ -753,7 +753,7 @@ Sub ActualizarRollyGrabarPista ()
 '  OJO GRABAR TIEMPOPATRON ACA EN TRACK A DISCO 30-03-2025 ok
 ' Y EN DOS LADOS MAS EN LA COPIA EN MEMORIA NO SE PUEDE NO ESTAN LOS ENCABEZADOS
 ' EN GRABARTRACK QUE USA CANCION TAMBIEN ok
-Print #1, "Entra A ActualizarRollyGrabarPistaTrack"
+Print #1, "Entra A ActualizarRollyGrabarPistaTrack ntk q llega ";ntk
    Maxpos=pmTk(ntk).MaxPos
    NB => 0 + (desde-1) * 13   ' 06-03
    NA => 11 + (hasta-1) * 13  ' 
@@ -764,8 +764,8 @@ Print #1, "Entra A ActualizarRollyGrabarPistaTrack"
    ' DEFINO UN ROLL DONDE MANDO EL ROLL CARGADO LE SACO LOS DELETE SI HUBO
 
    CantTicks=MaxPos + 1000 ' antes era 1000 me parece mucho no se 
-
-   ReDim RollTemp (1 To MaxPos, NB To NA) As dat 
+   Print #1,"ActualizarRollyGrabarPista CantTicks REdim ";CantTicks
+   ReDim RollTemp (1 To CantTicks, NB To NA) As dat 
 ' copia en RollTemp el Roll ....que tiene las modificaciones ultimas
    Dim As Integer i1, i2, i3, semitono, borrocol=0, haynota=0,res=0,k=0,final=0
   'eliminar columnas marcadas al grabar disco, 0 + X
@@ -1185,7 +1185,7 @@ print #1,"----------------------------------------------------------------------
 
 End Sub
 ' ----------------------------------
-Sub GrabarRollaTrack ( cambiaext As Integer ) ' SE USA PARA TODO 
+Sub GrabarRollaTrack ( cambiaext As Integer  ) ' SE USA PARA TODO 
 ' las 3 1eras funciones pueden hacerce en roll sin problemas..roll lo deduce
 ' de la entrada y las variables globales. la 4ta no, debe llamarse desde Control
 '1) Convierte y Graba un Roll cargado de disco, como Track [00] fuera de cancion. conversion
@@ -1204,6 +1204,7 @@ print #1,"inicia GrabarRollaTrack, cambiaext ",cambiaext
    Dim As Integer barra=0,punto=0,ubi3=0,ubi4=0,ntkold=ntk ' el ntk que esta en edicion 
 '' cambia de nombre de roll a track, si tengo una cancion en edcion
 ' y quiero un roll nuevo no conviene hacerlo aca si hay cancion no se usa
+   Print #1,"nombre que llega a GrabarRollaTrack "; nombre
     barra=InStrRev(nombre,"\")
     punto=InStrRev(nombre,".")
     path= Mid(nombre,1,barra) ' path
@@ -1217,12 +1218,24 @@ print #1,"inicia GrabarRollaTrack, cambiaext ",cambiaext
 If  nombre > "" Then
    ' graba roll a rtk en cancion 0 o 1 
 'ele ejec viene de cargar un ejec en roll pero queda con su nombre terminado en ejec no se lo cambia
-   If cambiaext > 0   And (ext =".roll" Or ext =".ejec") Then ' convertir
+   If cambiaext > 0   And (ext =".roll" Or ext=".ejec") Then ' convertir
       If NombreCancion > "" Then
       Else
-        ntk=0
+        ntk=0 ' con .ejec  se guimos con ntk 0 asi funcionaba bien
       EndIf 
-      nombre=path +"[00]"+nom +".rtk" 'path + 0 + rtk por default si no hay cancion
+
+      
+      If ext=".ejec" Then
+         Dim As Integer abrecor, cierracor
+         cierracor=InStr(nom,")")
+         Mid(nom,1,1)="["
+         Mid(nom,cierracor,1)="]" 
+         path=DirEjecSinBarra+"\"
+         nombre=path + nom +".rtk" 'path + 0 + rtk por default si no hay cancion
+      ' cancion,,
+      Else
+         nombre=path +"[00]"+nom +".rtk" 'path + 0 + rtk por default si no hay cancion
+      EndIf
       print #1,"armado de nombre roll a trk[00]",nombre
    
         ' guardo los valores de Roll cargado en el track nuevo [00]
@@ -2389,17 +2402,19 @@ Exit Sub
 
 fail:
  Dim errmsg As String
-FileFlush (-1)
+
 If  Err > 0 Then
   errmsg = "FAIL PlayAll Error " & Err & _
            " in function " & *Erfn & _
            " on line " & Erl & " " & ProgError(Err)
   Print #1, errmsg ,"jply ", jply, "i1 ";i1
-EndIf
+
+  FileFlush (-1)
 
 '''''ThreadDetach(thread1)
-repro=0 ' 05-03-2024
-End 0
+  repro=0 ' 05-03-2024
+  End 0
+EndIf
 
 End Sub 
 

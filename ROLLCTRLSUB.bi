@@ -1104,15 +1104,24 @@ Dim pis As Integer
 
 End Sub
 
-Sub CTRL1207() 'NUEVA PARA TICKS
+Sub CTRL1207(pis As integer ) 'NUEVA PARA TICKS convertir .ejec a .roll
+' copia 1ero a Track(0) la correspondiente a Roll 
+' luego en memoria convierte a Roll y lo muestra en el grafico 
+' pero no graba nada a disco,,,
+' ahora le pasamos el nro de pista , si no le pasamos nada usa el codigo viejo
+' y toma el item de la lista box seleccionada 
 On Local Error Goto fail
+
 ' volcamos tempo a Roll el temp oajsutado por el usario tirmpoPatron
-Dim  As Integer pis 
-pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
- Print #1,"pista que va a convertir ";pis
-If pis =0 Then
-  Exit Sub
+If pis=0 Then ' no vino nada de la otra rutina invocante....ctrl1208 
+  pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
+  Print #1,"pista que va a convertir ";pis
+  If pis =0 Then
+    Exit Sub
+  EndIf
+
 EndIf
+ 
 
 Dim As String  nombreTrack
 Dim As Integer c144,c128
@@ -1125,10 +1134,12 @@ Dim As UByte   monitornota
 
 'Dim As mididat flujo (1 To tocaparam(pis).maxpos)
 
+
 nombreTrack=tocaparam(pis).nombre
 maxposTrack=tocaparam(pis).maxpos
 Print #1,"nombreTrack ";nombreTrack
 Print #1,"maxposTrack ";maxposTrack
+MaxPos=maxposTrack
 
 'deberia definir maxposTrack+6 pero ya pongo as capacidad por si se quiere cargar mas notas
 ReDim (Track(0).trk ) (1 To maxposTrack*2 ,1 To lim3)
@@ -1246,15 +1257,15 @@ pmTk(0).MaxPos = maxposTrack +6 '''tocaparam(pis).maxpos
 pmTk(0).desde = 4  'VER SI TOMAMOS LA Q ELIGE EL USUARIO
 pmTk(0).hasta = 8  ' " " " " " " 
 pmTk(0).posn=1
-pmTk(ntk).canalsalida=tocaparam(pis).canal
-pmTk(ntk).portout=tocaparam(pis).portout
-pmTk(ntk).patch=tocaparam(pis).patch
-pmTk(ntk).tipocompas =TipoCompas
-pmTk(ntk).tiempopatron = tiempopatron 
+pmTk(0).canalsalida=tocaparam(pis).canal
+pmTk(0).portout=tocaparam(pis).portout
+pmTk(0).patch=tocaparam(pis).patch
+pmTk(0).tipocompas =TipoCompas
+pmTk(0).tiempopatron = tiempopatron 
 
-Track(ntk).trk(1,1).nnn =tocaparam(pis).patch
+Track(0).trk(1,1).nnn =tocaparam(pis).patch
 
-Track(ntk).trk(1,1).ejec = 1 ' marca indica que esta secuencia viene de una ejecucion
+Track(0).trk(1,1).ejec = 1 ' marca indica que esta secuencia viene de una ejecucion
 
 TrackaRoll (Track(), 0 , Roll)
 ROLLCARGADO=TRUE
@@ -1275,8 +1286,27 @@ If  Err > 0 Then
 End If   
 
 End Sub
+'----------------------------------------
+Sub CTRL1208() 'NUEVA PARA TICKS convertir .ejec a .rtk
+Dim k1 As Integer
+For k1=1 To tocatope  
 
+  if   CheckBox_getCheck (cbxejec(k1)) = 1 Then
+       Print #1,"1 LLAMA A CTRL1207 "
+       CTRL1207(k1) ' aca tengo a Roll de  esa ejec cargado
+       Print #1,"2 SALIO DE CTRL1207"
+' debo ejecutar grabar Roll=>rtk de grafico para volcar ese roll a disco
+       nombre=titulos(0)
+       Print #1,"3 nombre ejec iluminado a convertir "; nombre 
 
+       GrabarRollaTrack(1)          
+  EndIf
+
+Next k1
+        
+Print #1, "4 SALIO DE CTRL1208 "
+End Sub
+'-----------------------------------------------
 Sub CTRL2500()
 ' abrir un midi-in ...con callback para Roll
 ' usamos los ports con SelPort los de Roll

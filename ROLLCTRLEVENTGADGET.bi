@@ -489,7 +489,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
             EndIf
         EndIf   
         
-
+        grabariniciotxt(NombreCancion, EJECUCION) 
         threadG  = ThreadCreate (@PlayTocaAll, p)
         'ThreadWait (threadG) '22-04-2024  como andaba si hacia detach? ja
 '        repro=0   

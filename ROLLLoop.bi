@@ -804,11 +804,15 @@ Dim As Integer ubiroll,ubirtk,encancion
 abrirRollCargaMidi=2 ' no permite cargar Roll ya esta cargado
 ' si  levantamos un plano de midi despues de cargar roll
 Dim midionof As Integer 
+'NO BORRAR VECTOR ROLL SI TIENE DATOS:
+If MaxPos <=6 Then ' no borra Roll cuando cierro y abro el grafico pero tengo datos
  c=param.c
  Roll=param.Roll
  ubiroll=param.ubiroll 
  ubirtk=param.ubirtk
  encancion=param.encancion
+EndIf
+
 If NombreCancion > "" Then
  abrirRoll=4
 EndIf
@@ -879,6 +883,10 @@ inc_Penta = Int((ALTO -1) /40) - deltaip
 'nro_penta = ((ALTO - 1)- BordeSupRoll)/(inc_Penta * 4)
 
 ' Print nro_penta
+
+                BordeSupRoll = Int((ALTO ) /18) 
+                inc_Penta = Int((ALTO - BordeSupRoll) /(40))
+                BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio muestro octava 4 la central C3
 
 Select Case desde
     Case 1
@@ -1854,7 +1862,7 @@ EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_F4)  Then
 ''ACA LOGRAMOS CERRAR LA PANTALLA DE ROLL GRAFICO!!!
-'' SIN ERMINAR EL PROGRAMA GFX_NULL ES LO QUE HACE POSIBLE ESTO
+'' SIN TERMINAR EL PROGRAMA GFX_NULL ES LO QUE HACE POSIBLE ESTO
 '' NO DESTRUIR NADA Y SEPUEDE VOLVER A USAR
 '' CERRAMOS EL GRAFICO, PERO EL GRAFICO ES UNICO,,,,
 
@@ -1862,7 +1870,7 @@ Dim As Integer i3
 
   If MessageBox(hWnd,"¿CERRAR GRAFICO ? " ,param.titulo ,4 Or 64) =6 Then
      eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
-     If play=1 Or playb=1 Then
+     If play=1 Or playb=1 Then 'detenemos los play
         For i3 = 1 To tope
            portsal = pmTk(i3).portout 
            allSoundoff (pmTk(i3).canalsalida,portsal )
@@ -1873,7 +1881,7 @@ Dim As Integer i3
         ThreadDetach(thread2)
               
      EndIf
-    If teclado=1 Then
+    If teclado=1 Then ' detenemos los midi in
       cancel_callback(midiin(pmTk(ntk).portin ))
       Dim k1 As Integer
       k1=pmTk(ntk).portout
@@ -1891,8 +1899,11 @@ FileFlush (-1)
    If ubirtk =2 Or ubiroll = 2 Then
       End 0 ''31-03-25 si entro por linea de comando es 2 
    EndIf
-   abrirRoll=0
-   reiniciar=1
+   If MaxPos > 2 Then 
+   Else
+     abrirRoll=0
+     reiniciar=1
+   EndIf
   Exit Sub
 
   Else
@@ -3992,10 +4003,15 @@ Dim As Integer i3
     End If 
 
    FileFlush (-1)
-   SCREEN 0, , , &h80000000 
-
-   abrirRoll=0
-   reiniciar=1
+   Screen 0, , , &h80000000
+   If Maxpos > 2 Then
+     '''''EstaBarriendoPenta=1 
+     Terminar=0
+   Else
+    abrirRoll=0
+    reiniciar=1
+   EndIf
+   
   Exit Sub
 
   Else
@@ -5379,6 +5395,7 @@ print #1,"-----------------err ROLLLOOP-----------------"
            " in function " & *Erfn & _
            " on line " & Erl & " " & ProgError(er1)
   Print #1, errmsg
+  FileFlush (-1)
 End If
 
 

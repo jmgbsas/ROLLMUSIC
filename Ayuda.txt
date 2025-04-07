@@ -408,8 +408,14 @@
          k) Se puede renombrar una pista cargada de ejecuciones, para ello marcar el nombre  de la pista a
             renombrar y usar el menu archivo 5.2 (la cual graba automaticamente) y luego grabar con 5.0 aunque 
             no es necesario la grabacion se ahce automatica en 5.2
-
-
+         l) Convertir  una pista ejec a Roll grafico. se usa la opcion 5.0 del meenu puertso ejecucion
+            previa,emte se ilumina la pista previamente con click y se levanta un Roll Grafico. (si se lo cierra vuelve a crgar
+             ya no pierde los datos)
+            Convertir todas las pistas ejec  con unsolo click a archivos rtk para una cancion con tracks.
+            En el menu puertos ejecucion, el item
+           <<<6.0 Convertir todas las ejecuciones *.ejec seleccionadas para que toquen columna [S] a *.rtk y los grabe a disco") >>
+            para es ose cargan las ejecuciones en 5.1 de archivo , se selecciona las pistas ejec a convertir y se da click
+            en la opcion 6.0 del menu  Puestos Ejecucion 
       2) Puede reproducirse al mismo tiempo una cancion y una grabacion *.ejec.
          Se cargan ambas cosas la cancion abriendo un directorio de cancion, y luego 
          como antes se carga MIDI-IN Cargar pista ejecucion, Se selecciona el casillero 

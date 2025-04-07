@@ -20,7 +20,7 @@ Var bitmap = Load_image("fondo.bmp")
 BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 
   hwndListBox= ListBoxGadget(PISTASROLL,80,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT Or LBS_NOINTEGRALHEIGHT Or LBS_NOTIFY  )
-  GadgetToolTip(PISTASROLL,"Pistas de Cancion con Tracks manuales cargados desde un archivo o creados en una cancion" )
+  GadgetToolTip(PISTASROLL,"Pistas de Cancion con Tracks manuales cargados desde un archivo o creados en una cancion o convertidos e importados desde ejecucion real midi" )
   SetGadgetFont(PISTASROLL,CINT(LoadFont("consolas bold",13))) 
 '  GadgetToolTip(PISTASROLL,"Pistas manuales cargadas desde Roll ")
 ' botton todo o nada , sonido o mudo para todas las pistas
@@ -377,7 +377,9 @@ Menubar(MenName8)
 MenuItem(1204,MenName8,"2.0 1Seleccion de Puerto MIDI-OUT Ejecucion")
 MenuItem(1205,MenName8,"3.0 Abrir  Puertos MIDI-OUT Ejecucion")
 MenuItem(1206,MenName8,"4.0 Cerrar Puertos MIDI-OUT Ejecucion")
-Menuitem(1207,MenName8,"5.0 Convertir ejecucion o archivo cargado de *.ejec a *.roll")
+Menuitem(1207,MenName8,"5.0 Convertir una pista iluminada de ejecucion o archivo cargado de *.ejec a *.roll en memoria y lo cargue en Roll Grafico previamente abierto.")
+Menuitem(1208,MenName8,"6.0 Convertir todas las ejecuciones *.ejec seleccionadas para que toquen columna [S] a *.rtk y los grabe a disco")
+
 
 MenuItem(2000,MenName10,"1.0 Acerca de")
 MenuItem(2001,MenName10,"2.0 Cuadro Ayuda TEMPO por nombres, Lento,adagio etc y control fino")
