@@ -88,7 +88,7 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.310 2025-04-07  CONVERSION DE EJECS EN UN PASO.CIERRE Y APERTURA DE GRAFICO CON DATOS"
+nroversion="TICKS 0.310 FIX, ORGANIZACION PULIDO"
 ' revisar mañana que cuando cierro el rollgrafico no pierda los datos eso
 ' lo habia logrado ver en las versiones de 309 cual lo hacia y si lo perdi hacer
 ' de nuevo ,,
@@ -241,7 +241,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
   '   Print #1," ENTRA A CARGAR PISTAS  cargaCancion = ",cargaCancion
      param.encancion=0
      ResetAllListBox(3)
-     Resetear (pmTk()) 
+     Resetear () 
 
       CargarPistasEnCancion ()
       cargariniciotxt(NombreCancion, CANCION)
@@ -262,7 +262,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
           CargarSinRoll () ''' play sin roll 
       Else
       EstaBarriendoPenta=1 
-Print #1, "1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOS(0) ", NombreCancion, titulos(0)
+Print #1, "1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
       EndIf 
     ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
@@ -284,7 +284,7 @@ Print #1, "1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOS(0) ", NombreC
            cargaCancion=1 
            CargarSinRoll () '''28-02-2024 play sin roll
        Else
-Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreCancion, titulos(0)
+Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
        EstaBarriendoPenta=1
        threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
        EndIf
@@ -316,7 +316,7 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
 ' PARA CONVERTIR A MID SI HAY UN PLANO NUEVO
 
 
-           ''Print #1,"Titulos(ntoca+32), ntoca ",Titulos(ntoca+32),ntoca
+           ''Print #1,"TitulosEj(ntoca), ntoca ",TitulosEj(ntoca),ntoca
 
      eventC=WaitEvent()
 'WindowStartDraw(hwndC)
@@ -371,10 +371,18 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
             End SELECT
 '-----------------------------------------------------------------------
        Case EventClose  ''<==== SALIR TERMINA ROLL la X de win control
-' no lo usamos 
-
-        Exit Do ,Do    
-
+           If play=1 Or playb=1 Or Cplay=1 Then 'rollLroop esta levantando en play
+              CONTROL1=1   ' si hay algun play los manda  a detener
+              CONTROL2=1
+              terminar=1 ' va a usar SC_ESCAPE para terminar         
+              Exit Do
+           Else  ' rollLoop se cerro el grafico no tengo el sc_escape, se supone que no hay play pero podria haberlo 
+              CONTROL1=1   ' si hay algun play los manda  a detener
+              CONTROL2=1
+              terminar=2 ' aca veo como salgo
+              Exit Do
+           EndIf
+ 
        Case Else   
 ' aca muevo lo de check detectara el evento desconocido   
 ' de check del grab de ejecucion que no es un gadget de window9
@@ -411,7 +419,7 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
                      AddListBoxItem(PISTASEJECUCIONES, "("+ doscifras(ntoca)+")"+tocaparam(ntoca).nombre,ntoca-1)
                      tocatope=ntoca 
                      If nombrePatron > "" And nroCompasesPatron > 0 Then
-                        pmTk(ntoca+32).MaxPos=nroCompasesPatron  * 384 '' jjjjj
+                        pmEj(ntoca).MaxPos=nroCompasesPatron  * 384 '' jjjjj
 ' en la 5ta linea de duracions  0.0208/4 =TickChico a I=240
 ' " O "," P "," I "," L "," F "," E "," X "," H "," W ",   <-- la 8 es H
 '2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,[0.0208333] ,0.01041666, _ '37 45
@@ -420,7 +428,7 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
 ' 128 * 3= 384 TicksChico
 ' el TickChico vale en tiempo 0.0208 a I=60, pero a I=240 vale 1/4 o sea 0.005 seg, o 5 mseg aprox
                      Else
-                        pmTk(ntoca+32).MaxPos=0
+                        pmEj(ntoca).MaxPos=0
                      EndIf
                     If   NombreCancion >"" Then        
              ' sacamos la "\" del final si la tiene 
@@ -430,9 +438,9 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
                               NombreCancion=Mid(NombreCancion,1, ls-1)
                          EndIf
                          Print #1,"CHECK GRAB NOMBRECANCION ",NombreCancion
-                         Titulos(ntoca+32)=NombreCancion+"\("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
+                         TitulosEj(ntoca)=NombreCancion+"\("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
                   else
-                         Titulos(ntoca+32)="("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
+                         TitulosEj(ntoca)="("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
                   EndIf
               EndIf
 
@@ -444,9 +452,6 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
       EndIf 
 
      End Select
-      If terminar=3 Then '31-03-025
-         Exit Do,Do
-      EndIf  
 
      ''' NO ESTA EN VERION F Sleep 5 ' 
     Loop
@@ -454,7 +459,7 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreC
   Else
       param.titulo ="RollMusic Editor" ' esto no sale si no hay marco
       Print #1,"cALL rOLLLOOP III)"
-Print #1, "3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOS(0) ", NombreCancion, titulos(0)
+Print #1, "3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
       param.ubiroll=ubiroll
       param.ubirtk=ubirtk
       param.midionof=usarmarco ' para volcado de midi si o no ,si con 4
@@ -467,19 +472,18 @@ Print #1, "3 ubiroll ubirtk ", ubiroll,ubirtk
       cerrar(0)  
   End If
 '-----------------------------------------------------------------------
-   
+      If terminar=2 then
+       salir()
+       Kill "procesos.txt"
+       Close
+       End 0
+     EndIf 
 Loop
-'-----------------------------------------------------------------------
+''-----------------------------------------------------------------------
 ''DisableGadget(PISTASROLL,1) ' para que desactive y salga de ahi 
 '' eventM=eventClose
 ''eventM=eventrbdown
-'FINALIZAR_ROLLMUSIC = 1
-Sleep 5
 
-salir()
-Kill "procesos.txt"
-Close
-    End 0
 
 
 '---------fin iup---    
@@ -489,13 +493,9 @@ Dim As Integer er, ErrorNumber, ErrorLine
 er = Err
 Print #1,"Error  Rollmusic detected ", er, posicion, MaxPos
 Print #1,Erl, Erfn,Ermn,Err
-
 Print #1,"------------------------------------"
 ErrorNumber = Err
 ErrorLine = Erl
-
-
-
 
 Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
 Print #1,"Error Function: "; *Erfn()

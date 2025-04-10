@@ -666,9 +666,12 @@ Type rangoOct Field=1
  As Integer  tiempopatron ' 240 60 etc
 End Type
 ' faltaria agregar grabar el nombre del dispositivo ........
-Dim Shared As rangoOct pmTk (0 To 65)
-Dim Shared As String titulos(0 To 65)
-Dim Shared As String pistas (0 To 65)
+Dim Shared As rangoOct pmTk (0 To 32)
+Dim Shared As rangoOct pmEj (1 To 32)
+Dim Shared As String titulosTk(0 To 32)
+Dim Shared As String pistasTk (0 To 32)
+Dim Shared As String titulosEj(1 To 32)
+Dim Shared As String pistasEj (1 To 32)
   
 Dim Shared As Integer ContadorError=0   
 ' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido por 8
@@ -1119,7 +1122,7 @@ Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo,canalDeGrabacion
 Common SHARED As Integer EstaBarriendoPenta
-Common Shared As Integer instancia,FINALIZAR_ROLLMUSIC, MICROSEGUNDOS_POR_NEGRA
+Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano,midionof
@@ -1298,7 +1301,7 @@ Const As Integer finSimple   =     4
 Const As UByte   EJECUCION   =     1
 Const As UByte   CANCION     =     2
 
-Dim Shared  As Integer contid=0,separaenuno=0, intervalo=2 '  default 2 que es 1 separacion de notas
+Dim Shared  As Integer contid=0,separaenuno=0, intervalo=2 ,llave33=0'  default 2 que es 1 separacion de notas
 
 Type mididat ' la duracion total de una nota se acumulara en duron en estado 2
  indiceX    As Integer

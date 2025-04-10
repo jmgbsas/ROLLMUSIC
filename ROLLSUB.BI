@@ -1436,7 +1436,7 @@ Print #1,">>>> TRACKS MAXPOS (NTK).MAXPOS ", maxpos, pmTK(ntk).maxpos
  ' sizeof array de ubytepr almcenar el pentagrama roll
  'Notas ( 1 To 65536, 1 To 128) as UByte
 ' usaremso para cambianr de track en Roll y Track(0)
-nombre= titulos(ntk)
+nombre= titulosTk(ntk)
 ' evita leer track vacios   
 If nombre=""  Then ' evita revisar track vacios EN UNA CANCION
  Do While nombre=""
@@ -1446,7 +1446,7 @@ If nombre=""  Then ' evita revisar track vacios EN UNA CANCION
     Exit Do
  EndIf
  Loop
-  nombre= titulos(ntk)
+  nombre= titulosTk(ntk)
 Else   
  
 TrackaRoll (Track(), ntk,Roll ) ' no usa ubirtk
@@ -1856,7 +1856,7 @@ pmTk(ntk).posn = 0
 pmTk(ntk).patch=1
 pmTk(ntk).portout=0
 posn=0
-titulos(ntk)=nombre
+titulosTk(ntk)=nombre
 posicion=1
 DUR => 0
 curpos =>0
@@ -2549,12 +2549,12 @@ abrirRoll=2 ' habilita la carga de una cancion
       If ubiroll=0 Then
 nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
 
-         titulos(0)=nombrea
+         titulosTk(0)=nombrea
       Else
          If ubiroll > 0 Then
-'           *file.lpstrFile=titulos(0)
+'           *file.lpstrFile=titulosTk(0)
 '            fclose(file.lpstrFile)
-            nombrea=Trim(titulos(0))
+            nombrea=Trim(titulosTk(0))
           EndIf      
       EndIf
 '  nombrea="DESAFIO-LIGA-ACORDES-EN-1-NOTA.ROLL" ' para debug sino no funciona
@@ -2918,8 +2918,8 @@ nota=0
              nombre = ""
              Dim i As Integer
              For i=1 To 32
-               titulos(i)= "" ' borro toda la lista si habia de cancion anterior
-               pistas(i)="" 
+               titulosTk(i)= "" ' borro toda la lista si habia de cancion anterior
+               pistasTk(i)="" 
              Next i
              tope=0
           EndIf
@@ -3068,8 +3068,8 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
  ' loop.....
  t=" "
    Dim As String muestra = " " ' nombre tambien se usa en cancion
-   If NombreCancion > "" And titulos(ntk) > "" And ROLLCARGADO=FALSE Then
-      nombre = titulos(ntk)
+   If NombreCancion > "" And titulosTk(ntk) > "" And ROLLCARGADO=FALSE Then
+      nombre = titulosTk(ntk)
      ' Print #1,"en menu nombre ",nombre
    EndIf
    Dim ps As Integer
@@ -4905,9 +4905,9 @@ Print #1,"inicia CargaPistasEnCancion"
   '      
          ' cargamos un track simulamos como linea de cmd o cancion cargada
         nombre=NombreCancion+"\"+filename
-        titulos(ntk)=nombre ' como agregue en titulos la opcion es 1
+        titulosTk(ntk)=nombre ' como agregue en titulos la opcion es 1
         ' como si viniera de lie ad ecomadno puedo usar cualquiera o 0
-        pistas (ntk)=filename
+        pistasTk (ntk)=filename
         Print #1,"nombre en CargarPistasEnCancion ,Numpista",nombre, ntk
          'se carga track nada mas si dialogo simualmos un ubirtk>0 (1)
 ' chequeamos que todos los maxpos sean iguales sino se corrige
@@ -4959,7 +4959,7 @@ Sub GrabarTrack (ntk As Integer)  'Error seguro aca nota=181 posicion1
  Dim gt As Integer
  Print #1,"---------------------------------------------------------------------------------"
  Dim ntknom As String 
- ntknom=titulos(ntk)
+ ntknom=titulosTk(ntk)
  Print #1,"  inicia GrabarTrack NUMERO= ",ntk
  gt=8
  Maxpos=pmTk(ntk).MaxPos
@@ -5152,7 +5152,7 @@ End Sub
 ' ---------------------------------
 '---------------------
 Sub GrabarCancion() ' PENDIENTE GRABAR TODA LA CANCION EN UN SOLO COMANDO
- '1) recorro titulos(ntk) los titulos que quedan se graban, los otros se borran o
+ '1) recorro titulosTk(ntk) los titulos que quedan se graban, los otros se borran o
  ' en el momento de borrar se copia a backup y se borra del directorio de cancion
  ' eso si se borro alguna pista. (en vez de borrar mandamos a una carpeta de backup)
  '2) cada pista se graba con GrabarRollaTrack
@@ -5166,7 +5166,7 @@ Dim As Integer i,ntkold
 
   For i=0 To tope
         ntk=i 
-       nombre=titulos(i)
+       nombre=titulosTk(i)
        ubi1=InStr(nombre,"[")
        ubi2=InStr(nombre,"]")
        ubi3=InStr(nombre,".rtk")
@@ -5376,7 +5376,7 @@ Print #1, "selport 3 ntkp "; ntkp
      If mitipo = 1 Then ' OUT OUT OUT SALIDA
        AddListViewColumn(1, "Salidas  MIDI",0,0,250)
        For aa As Integer=0 To UBound (listout) 
-          If pmTk(pis+32).portout = aa Then
+          If pmEj(pis).portout = aa Then
              AddListViewItem(1, "[x] "+listout(aa),0,aa,0)
           Else
              AddListViewItem(1, "[ ] "+listout(aa),0,aa,0)
@@ -5389,7 +5389,7 @@ Print #1, "selport 3 ntkp "; ntkp
       
        AddListViewColumn(1, "Entradas MIDI",0,0,250)
        For aa As Integer=0 To UBound (listin) 
-          If pmTk(pis+32).portin = aa Then
+          If pmEj(pis).portin = aa Then
              AddListViewItem(1, "[x] "+listin(aa),0,aa,0)
           Else
              AddListViewItem(1, "[ ] "+listin(aa),0,aa,0)
@@ -5448,12 +5448,12 @@ Print #1, "selport 4 "
 
               If mitipo=1 Then
               Print #1,"PORT SELECCIONADO en menu ",portout
-              pmTk(pis+32).portout=CUByte(portout)
+              pmEj(pis).portout=CUByte(portout)
               tocaparam(pis).portout=CUByte(portout)
                   
               EndIf
               If mitipo=2 Then
-              pmTk(pis+32).portin=CUByte(portin)
+              pmEj(pis).portin=CUByte(portin)
               tocaparam(pis).portin=CUByte(portin)
 
               EndIf
@@ -5626,9 +5626,9 @@ Posy=y0 +100
      
      AddListViewColumn(1, mensaje ,0,0,250)
      For aa As Integer=1 To 16 
-         If pmTk(pis+32).canalsalida = aa -1 Then
+         If pmEj(pis).canalsalida = aa -1 Then
                AddListViewItem(1, "[x] "+listCanal(aa),0,aa,0)
-               Print #1,"pmTk(pis+32).canalsalida ",pmTk(pis+32).canalsalida
+               Print #1,"pmEj(pis).canalsalida ",pmEj(pis).canalsalida
                 
          Else
                AddListViewItem(1, "[ ] "+listCanal(aa),0,aa,0)
@@ -5677,7 +5677,7 @@ Posy=y0 +100
                    Print #1,"CANAL SELECCIONADO en menu ",canalx
                    For  i As Short =1 To 32
                          If CheckBox_GetCheck( cbxejec(i))= 1 Or CheckBox_GetCheck( cbxgrab(i))= 1 Then
-                             pmTk(i+32).canalsalida=CUByte(canalx)
+                             pmEj(i).canalsalida=CUByte(canalx)
                              tocaparam(i).canal=CUByte(canalx)
                         EndIf
                    Next i
@@ -5686,7 +5686,7 @@ Posy=y0 +100
                   Print #1,"CANAL SELECCIONADO en menu ",canalx
                 For  i As Short =1 To 32
                       If  CheckBox_GetCheck( cbxgrab(i))= 1 Then
-                        pmTk(i+32).canalentrada =CUByte(canalx)
+                        pmEj(i).canalentrada =CUByte(canalx)
                         tocaparam(i).canalent=CUByte(canalx)
                       EndIf
                 Next i
@@ -5898,6 +5898,7 @@ End Sub
 
 Sub salir()
 ' NO PUEDE ESTAR EN MUSICCONTROL.BAS DEBE ESTAR EN ALGUNA PARTE DE ROLLMUSIC PARA QUE FUNCIONE
+
 eventM=eventrbdown
 Dim  As Integer i3
     cairo_destroy(cm)
@@ -5915,10 +5916,10 @@ Dim  As Integer i3
                portsal = pmTk(i3).portout 
                alloff (pmTk(i3).canalsalida, portsal )
                close_port(midiout(portsal))
-               out_free(midiout(portsal))
+               out_free(midiout(portsal))'
 
-               portsal = pmTk(i3+32).portout 
-               alloff (pmTk(i3+32).canalsalida, portsal )
+               portsal = pmEj(i3).portout 
+               alloff (pmEj(i3).canalsalida, portsal )
                close_port(midiout(portsal))
                out_free(midiout(portsal))
 
@@ -5927,19 +5928,20 @@ Dim  As Integer i3
               ThreadDetach(thread2)
 
            EndIf
-Sleep 10
+
+'Sleep 10
    If teclado=1 Then
-       cancel_callback(midiin(pmTk(ntkp+32).portin))
-       Dim k1 As Integer
-       k1=pmTk(ntkp+32).portout
+      cancel_callback(midiin(pmEj(ntkp).portin))
+     Dim k1 As Integer
+       k1=pmEj(ntkp).portout
     '   Print #1,"midiout ",k1, *nombreOut(k1)
-       alloff( pmTk(ntkp+32).canalsalida,k1 )  
+       alloff( pmEj(ntkp).canalsalida,k1 )  
        listoutAbierto(k1)=0
        close_port midiout(k1)
        teclado=0
 
    EndIf
-           
+
     ffile=4
 
     If Open ("./RollMusic.ini" For Output As #ffile) <> 0 Then
@@ -5979,6 +5981,7 @@ fa1=2
    Print #1,"procesos.txt error al leer  "
  Else
        ' carga Todos los pid de las instancias
+
        Do While Not EOF(fa1)
         Line Input #fa1, linea
         nroproc=CInt(linea)
@@ -5992,13 +5995,26 @@ fa1=2
         EndIf
         
       Loop      
-    
-cerrar fa1
-EndIf
- cerrar 1
-Sleep 100
+    cerrar fa1
+ EndIf
+
+
+''''''' Screen 0 ''', , ,  GFX_SCREEN_EXIT '''&h80000000
+ThreadDetach(threadloop)
+Screen 0
+DestroyWindow(hWnd)
+
+''''Sleep 100
  
- SCREEN 0, , , &h80000000
+ 'NO ESTA DEFINIDO en  FBGFX.INI ,&h80000000
+' UNA MIERDA COMO ESTA ESCRITO LE FALTA CONSTANTES , KEYS ETC HAY QUE HACER UNA PROPIA
+' EN EL HELP EXISTE.. ME ENTERE DESPUES DE 3 AÑOS ,,,JAJAJAJA
+' SI SE USA &H80000000  QUE ADEMAS DE CERRAR LA VENTANA GRAFICA CERRARIA LA CONSOLA
+' SI LO HUBIERA,,,,ESO HACE CANCELAR SI PRIMERO HAGO PLAY DE UNA CANCION Y LUEGO CIERRO
+' LA VENTANA,,,PER CON SOLO SCREEN 0 CIERA SOLO EL GRAFICO Y NO CANCELA DESPUES DE
+' ESCUCHAR UNA CANCION.... OTRA CAGADA SUPERADA A LOS TUMBOS!! AL FINAL PARA GRAFICOS
+' ES BUENO QUE NO ESTE DEFINIDA LA CONSTANTE PORQUE HACE MIERDA EL PROGRAMA,,,
+
 End Sub
 '-------
 Sub selTipoEscala (ByRef tipoescala_num As Integer)

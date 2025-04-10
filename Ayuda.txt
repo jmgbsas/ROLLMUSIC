@@ -14,6 +14,13 @@
        alta prioridad, se hizo un ejecutable para eso. Un mejor browser de poco consumo es Vivaldi.)
        En windows 10 y 11 no tuve problemas. 
 
+       SALIR DEL PROGRAMA O DEL GRAFICO: terminaciones posibles, 
+       de la ventana grafica se sale con la X derecha arriba de lgrafico, detiene el play si esta andando
+       y cierra el grafico no termina el programa,, si se desea terminar el  programa se usa tecla escape si esta tocando pide pulsar de nuevo escape. Y de la ventana de control se sale con su X o salir 
+       del menu de archivo; tambien si esta tocanco detiene el play y sale,,
+       puede pasar que al cerrar y abrir el grafico ya no funcione el ESC para terminar el programa pero
+       se puede usar las terminaciones de la ventana de control...(mas pruebas ? posiblemente)
+
     II) Opciones Configuracion
         a) PUERTOS MIDI A USAR. en el menu de Roll Music Grafico
         Desde el Menu Principal -> ALT + posarse sobre ->Opciones->Ctrl+Click->Configuracion->click->MIDI->
@@ -408,14 +415,12 @@
          k) Se puede renombrar una pista cargada de ejecuciones, para ello marcar el nombre  de la pista a
             renombrar y usar el menu archivo 5.2 (la cual graba automaticamente) y luego grabar con 5.0 aunque 
             no es necesario la grabacion se ahce automatica en 5.2
-         l) Convertir  una pista ejec a Roll grafico. se usa la opcion 5.0 del meenu puertso ejecucion
-            previa,emte se ilumina la pista previamente con click y se levanta un Roll Grafico. (si se lo cierra vuelve a crgar
-             ya no pierde los datos)
-            Convertir todas las pistas ejec  con unsolo click a archivos rtk para una cancion con tracks.
+         l) Convertir  una pista ejec a Roll grafico. se usa la opcion 5.0 del meenu puertos ejecucion,
+            previamente se ilumina la pista  con click y se levanta un Roll Grafico. (si se lo cierra vuelve a crgar ya no pierde los datos)
+            Convertir todas las pistas ejec  con un solo click a archivos rtk para una cancion con tracks.
             En el menu puertos ejecucion, el item
            <<<6.0 Convertir todas las ejecuciones *.ejec seleccionadas para que toquen columna [S] a *.rtk y los grabe a disco") >>
-            para es ose cargan las ejecuciones en 5.1 de archivo , se selecciona las pistas ejec a convertir y se da click
-            en la opcion 6.0 del menu  Puestos Ejecucion 
+            para eso se cargan las ejecuciones en 5.1 de archivo , se selecciona las pistas ejec a convertir y se da click en la opcion 6.0 del menu  Puestos Ejecucion .
       2) Puede reproducirse al mismo tiempo una cancion y una grabacion *.ejec.
          Se cargan ambas cosas la cancion abriendo un directorio de cancion, y luego 
          como antes se carga MIDI-IN Cargar pista ejecucion, Se selecciona el casillero 

@@ -47,7 +47,7 @@ Static As Integer millave
               ntk=sacarNtk(item) ' este ntk no sirve para boorar
  ' aca no copia track a Roll
               Print #1,"ntk de item ", ntk
-              nombre= titulos(ntk)
+              nombre= titulosTk(ntk)
 
          Print #1,"ntk, nombre ",ntk, nombre
                 
@@ -115,11 +115,11 @@ Static As Integer millave
                      borrar=2
                      DeleteListBoxItem(3,GetItemListBox(3))
         '            print #1,"LISTABOX EventKeyDown borrar ntk",ntk
-         '           print #1,"LISTBOX  titulos(ntk)= ",titulos(ntk)
-                    copiarATemp (titulos(ntk),pistas(ntk))
-                    BorrarPista (titulos(ntk))
-                    titulos(ntk)=""
-                    pistas(ntk)=""
+         '           print #1,"LISTBOX  titulosTk(ntk)= ",titulosTk(ntk)
+                    copiarATemp (titulosTk(ntk),pistasTk(ntk))
+                    BorrarPista (titulosTk(ntk))
+                    titulosTk(ntk)=""
+                    pistasTk(ntk)=""
                     pmTk(ntk).desde=0
                     pmTk(ntk).hasta=0
                     pmTk(ntk).NB=0
@@ -296,10 +296,11 @@ Static As Integer millave
 ' 
       If eventnumber()= BTN_MIDI_PARAR    Then ' BOTON STOP NEGRO DE MIDI-IN
          SetGadgetstate(BTN_MIDI_GRABAR,BTN_LIBERADO)
-         If pmTk(ntoca+32).MaxPos > 0 And (GrabarEjec=GrabarPistaEjecucion  Or GrabarEjec=GrabarPatronaDisco ) Then
-            Print #1,"STOP:pmTk(ntoca+32).MaxPos ",pmTk(ntoca+32).MaxPos
-            tocaparam(ntoca).maxpos=pmTk(ntoca+32).MaxPos
-       '         Print #1,"stop MaxPos ",pmTk(ntoca).MaxPos
+         Print #1,"ntoca en BTN_MIDI_PARAR "; ntoca
+         If pmEj(ntoca).MaxPos > 0 And (GrabarEjec=GrabarPistaEjecucion  Or GrabarEjec=GrabarPatronaDisco ) Then
+            Print #1,"STOP:pmEj(ntoca).MaxPos ",pmEj(ntoca).MaxPos
+            tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos
+       '         Print #1,"stop MaxPos ",pmEj(ntoca).MaxPos
             GrabarEjec=HabilitaGrabar
             repro=0
             arrancaPlay=0
@@ -324,8 +325,8 @@ Static As Integer millave
              partes=tocaparam(ntoca).delta/TickChico
              Print #1,"//////STOP 305: numero de partes de retardo ",partes 
              k=partes
-             pmTk(ntoca+32).MaxPos=pmTk(ntoca+32).MaxPos+partes
-'             Toca(ntoca).maxpos=pmTk(ntoca+32).MaxPos
+             pmEj(ntoca).MaxPos=pmEj(ntoca).MaxPos+partes
+'             Toca(ntoca).maxpos=pmEj(ntoca).MaxPos
 '             print #1,"STOP Toca(ntoca).maxpos, ntoca ",Toca(ntoca).maxpos,ntoca
              For pj=1 To partes 
                Toca(ntoca).trk(pj).modo = 1 ' ojo, si modo=1 no se envia note on ni off
@@ -336,8 +337,8 @@ Static As Integer millave
          EndIf
           k=partes+1
          Do 
-           if k=pmTk(ntoca+32).MaxPos+1  Then
-              Print #1," k=pmTk(ntoca+32).MaxPos+1, GrabaMidiIn "
+           if k=pmEj(ntoca).MaxPos+1  Then
+              Print #1," k=pmEj(ntoca).MaxPos+1, GrabaMidiIn "
               Exit Do
            EndIf  
      '  Print #1,"CargaIn(i1).modo ",CargaIn(i1).modo
@@ -415,7 +416,7 @@ Static As Integer millave
               maxgrb=tocap.maxpos
 '------------adapto la grabacion anterior a mayo rlongitud              
                ReDim  Preserve (Toca(ntoca-1).trk) (1 To maxgrb)
-''''           pmTk(ntoca-1 +32).MaxPos=maxgrb ' conservo la long original
+''''           pmEj(ntoca-1 ).MaxPos=maxgrb ' conservo la long original
 ' el asunto es que igualo las  longitudes para que no reviente el play, pero
 ' mantengo las longitudes para menor espacio en disco al grabar
 ' al cargar reconstruyo en memoria igualo todo de nuevo         
@@ -563,7 +564,6 @@ Print #1, "542 GrabarPenta=0"
                CONTROL1=1 ' DETIENE EL PLAY
                CONTROL2=1    
                playloop=0:playloop2=0
-               play=0 : playb=0:CPlay=0
                Sleep 20
                threadDetach (thread2)
                threadDetach (thread1)
@@ -583,7 +583,6 @@ Print #1, "542 GrabarPenta=0"
                   CONTROL1=1 ' DETIENE EL PLAY SI ESTA TOCANDO 
                   CONTROL2=1 ' DETIENE LOS EJEC SI ESTAN TOCANDO
                   playloop=0:playloop2=0
-                  play=0 : playb=0
                   threaddetach (thread2)
                   threaddetach (thread1)
                   Sleep 20
@@ -632,7 +631,7 @@ Print #1, "542 GrabarPenta=0"
              If  tocaparam(pis).nombre  >""  And  tocaparam(pis).maxpos > 0 Then
                  miport=1   ' 1= VA A seleccion port Salida
                  ntkp=pis
-               Dim As Integer k1 = pmTk(pis+32).portout
+               Dim As Integer k1 = pmEj(pis).portout
                Print #1,"antes del cambio k1, listOutAbierto(k1) ", k1, listOutAbierto(k1)
                Print #1,"tocaparam(pis).portout previo al cambio",tocaparam(pis).portout
      ''''     thread3 = ThreadCreate(@selportEjec(), CPtr(Any Ptr, miport))
@@ -735,7 +734,7 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
                     '''thread3 = ThreadCreate(@selInstORdenNum (), CPtr(Any Ptr, instrum))
                    Print #1," pista ejec  nro ",pis
                    tocaparam(pis).patch=CUByte (instrum)
-                   pmTk(pis+32).patch=CUByte (instrum)
+                   pmEj(pis).patch=CUByte (instrum)
                    ''patchsal=instrum
                    ChangeProgram ( tocaparam(pis).patch , tocaparam(pis).canal, tocaparam(pis).portout)
                    Print #1,"ejecucion patch elegido tocaparam(pis).patch ", tocaparam(pis).patch
@@ -773,22 +772,8 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
                 pgmidi.tocap = tocap
                 threadGrabamidi=@pgmidi
                 GrabarMidiIn(pgmidi,pis) ' POR PATCH
-  'ThreadCreate (@GrabarMidiIn,CPtr(Any Ptr, threadGrabamidi))
-
-           '  Else
-           '       patchsal=1
-           '       instru=patchsal
-           '       selInstORdenNum (instrum)
-                   '''thread3 = ThreadCreate(@selInstORdenNum (), CPtr(Any Ptr, instrum))
-           '       Print #1," pista ejec  nro ",pis
-           ''       tocaparam(pis).patch=CUByte (instrum)
-            '      pmTk(pis+32).patch=CUByte (instrum)
-            '      ChangeProgram ( tocaparam(pis).patch , tocaparam(pis).canal, tocaparam(pis).portout)
-            '      Print #1,"ejecucion patch elegido tocaparam(pis).patch ", tocaparam(pis).patch
-           '  EndIf
              EndIf
            EndIf 
-    ''   EndIf
       EndIf 
 
 
@@ -851,21 +836,9 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
              Else
                 selcanalEjec (1,pis) ' 1 salida
                 Print #1," pista ejec  nro ",pis
-                ''tocaparam(pis).canal =pmTk(pis+32).canalsalida
-                Print #1,"ejecucion canal 0 a 15 elegido ", pmTk(pis+32).canalsalida
+                Print #1,"ejecucion canal 0 a 15 elegido ", pmEj(pis).canalsalida
              EndIf
            EndIf
-      '  EndIf
-'-----------------------
-  '       For k=1 To 32 ' pistastrack de cancion PARA QUE??
-  '         If CheckBox_GetCheck( cbxnum(k))= 1  Then
-  '            num=k
-  '         EndIf
-  '       Next k 
-  '       If  num >=1 Then
-  '           selcanal (1)  '''ESTO ES PARA ROLL SACAR CREO JMGJMG
-  '          
-  '       EndIf
 
     EndIf
 

@@ -273,7 +273,7 @@ For ix = 0 To __FB_ARGC__
 
  If ubirtk > 0 or ubiroll>0  Then
    ntk=0 
-   titulos(0)=Command(ix)
+   titulosTk(0)=Command(ix)
    Instancia=1 ' no se condice con el caso real da 2 ???
  Else
     desde= CInt(Command(ix))
@@ -326,7 +326,7 @@ If NombreCancion > "" Then
 
 If ubirtk > 0 or ubiroll>0  Then
    ntk=0 
-   titulos(0)=Command(ix)
+   titulosTk(0)=Command(ix)
    Instancia=1 ' no se condice con el caso real da 2 ???
 EndIf
  Print #1,"ubirtk ",ubirtk

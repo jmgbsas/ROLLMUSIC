@@ -1381,7 +1381,7 @@ End Function
 Sub playAll(Roll As inst) ' play version 3 CON TICKS
 '<<< 30-03-2025 anda ok para roll desde ejec o Roll desde entrada manual >>>>
 ' en manual las velocidades son una sola semi fuerte, hasta que compas pueda 
-
+llave33=0
 On Local Error Goto fail
 
 If MIDIFILEONOFF = HABILITAR  Then 
@@ -1398,7 +1398,7 @@ If MIDIFILEONOFF = HABILITAR  Then
    EndIf
    midiplano=20
    Dim numc As Integer = CInt(pmTk(0).canalsalida) + 1
-   NombreTrack= sacarpath(titulos(ntk)) 
+   NombreTrack= sacarpath(titulosTk(ntk)) 
    Print #midiplano, "MFile 1 2 " + Str (1000)
    Print #midiplano, "MTrk"
    Print #midiplano, "0 Meta SeqName "; Chr(34);NombreTrack;Chr(34)
@@ -1699,6 +1699,7 @@ jply=0:curpos=0
 ' al final, por ahroa no parpadea mas veremos.... 
 play=0 
 playb=0
+llave33=2
 
 mousey=100 'otra mas para evitar rentrar a play en menu
 SetMouse xmouse, ymouse
@@ -2835,8 +2836,8 @@ Dim As Integer partes , traba=0
      If jgrb=1 And nroCompasesPatron> 0  Then
 ' RECUPERO LOS TICKS QUE CONTENDRA EL PATRON, LO BLANQUEO PARA LUEGO
 ' ONROLAR SU LLENADO
-         nroTicksPatron =pmTk(ntoca+32).MaxPos 'hay patron 
-         pmTk(ntoca+32).MaxPos=0
+         nroTicksPatron =pmEj(ntoca).MaxPos 'hay patron 
+         pmEj(ntoca).MaxPos=0
          tocaparam(ntoca).maxpos=0
      EndIf
      If ntoca > 1 And jgrb=1 Then ' detiene la acumulacion de deltatime en PlayTocaAll 
@@ -2848,7 +2849,7 @@ Dim As Integer partes , traba=0
      CargaIn( jgrb).nota=dato2
      CargaIn( jgrb).vel=dato3
  
-     If pmTk(ntoca+32).MaxPos >= nroTicksPatron And nroTicksPatron > 0   Then
+     If pmEj(ntoca).MaxPos >= nroTicksPatron And nroTicksPatron > 0   Then
 ' termino la grabacion del patron no se graba mas en CargaIn
         Print #1, "ENTRO POR PATRON"  
          GrabarEjec =PatronDeEjecucionCompleto
@@ -2858,13 +2859,13 @@ Dim As Integer partes , traba=0
 ' las grabaciones encima o reemplazando datos y la creacion  de patrones,
           If deltatime > 0.005  Then '   5mseg  
             CargaIn( jgrb).partes=partes ' o nro Ticks, convierto deltatime en tickschico 
-            pmTk(ntoca+32).MaxPos=pmTk(ntoca+32).MaxPos +partes
-            tocaparam(ntoca).maxpos=pmTk(ntoca+32).MaxPos
+            pmEj(ntoca).MaxPos=pmEj(ntoca).MaxPos +partes
+            tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos
           Else
           Print #1,"PARTES 0000" ' ENTRA UNA SOLA VEZ, casi no se usa??
             CargaIn(jgrb).partes=0
-            pmTk(ntoca+32).MaxPos=pmTk(ntoca+32).MaxPos +1
-            tocaparam(ntoca).maxpos=pmTk(ntoca+32).MaxPos  
+            pmEj(ntoca).MaxPos=pmEj(ntoca).MaxPos +1
+            tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos  
           EndIf
      EndIf
 
@@ -2914,7 +2915,7 @@ On Local Error Goto fail
 
 Print #1,"nombre de archivo  grabando de ejec",nombreg
  ' carga de parametros:
-Print #1, "GrabarMidiIn pmTk(ntkp+32).MaxPos ";pmTk(ntkp+32).MaxPos
+Print #1, "GrabarMidiIn pmEj(ntkp).MaxPos ";pmEj(ntkp).MaxPos
 Print #1, "GrabarMidiIn pgmidi.tocap.maxpos "; pgmidi.tocap.maxpos
 
      
@@ -3065,7 +3066,7 @@ Print #1,"abrirPortoutEjec abriendo port.... "
 Dim k1 As Integer
 
   
-   k1=CInt(pmTk(j+32).portout )
+   k1=CInt(pmEj(j).portout )
     
    Print #1,"abrirPortoutEjec midiout ",k1, *nombreOut(k1)
    If InStr(*nombreOut(k1),"Microsoft")>0 Then
@@ -3172,7 +3173,7 @@ Print #1,"playTocaAll jToca=maxgrb, kply=topeDuranteGrabacion ";maxgrb, topeDura
 For jToca=1 To maxgrb ' se calcula al cargr los archivos de ejec 
   If CONTROL2 = 1 Then
      For kply =1 To topeDuranteGrabacion
-         alloff( 1 ,pmTk( kply +32).portout  )
+         alloff( 1 ,pmEj( kply).portout  )
      Next  kply
       CONTROL2=0
       repro=0
@@ -3206,7 +3207,7 @@ For jToca=1 To maxgrb ' se calcula al cargr los archivos de ejec
     dato1=Toca(kply).trk(jToca).modo
     dato2=Toca(kply).trk(jToca).nota
     dato3=Toca(kply).trk(jToca).vel
-    portsal=pmTk(kply+32).portout '04-05-2022
+    portsal=pmEj(kply).portout '04-05-2022
 
      If  dato1=1 Then ' marcamos con 1 un delta de tick en modo
          duracion (timex(kply) ,TickPlay) ' si es cero no 1 no hay duracion es acorde
@@ -3230,10 +3231,10 @@ For jToca=1 To maxgrb ' se calcula al cargr los archivos de ejec
      Select Case  dato1 
          Case 144 ' on
             noteon dato2,dato3,tocaparam(kply).canal, tocaparam(kply).portout, 1 'message(3) ' noter vel canal
-           'Print #1,"ON ",dato2,dato3,pmTk(kply+32).canalsalida, pmTk(kply+32).portout
+           'Print #1,"ON ",dato2,dato3,pmEj(kply).canalsalida, pmEj(kply).portout
          Case 128 'off
             noteoff dato2,tocaparam(kply).canal ,tocaparam(kply).portout,1 'message(2)'
-           'Print #1,"OFF ",dato2,pmTk(kply+32).canalsalida ,pmTk(kply+32).portout  
+           'Print #1,"OFF ",dato2,pmEj(kply).canalsalida ,pmEj(kply).portout  
      End Select
  
   Next kply

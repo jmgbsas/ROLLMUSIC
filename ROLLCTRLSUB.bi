@@ -28,7 +28,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                   For i As Integer = 1 To Tope
                     CheckBox_SetCheck(cbxnum(i),0)
                   next i 
-                  Resetear (pmTk())
+                  Resetear ()
                   cargarDirectorioCancion(NombreCancion)
            
                   CANCIONCARGADA=False
@@ -69,7 +69,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                ' por ejemplo tenia solo un roll abierto
                   param.encancion=0
                   ResetAllListBox(3)
-                  Resetear (pmTk()) 
+                  Resetear () 
                   CargarPistasEnCancion ()
                   cargariniciotxt(NombreCancion, CANCION)
                   If tope=0 Then
@@ -86,7 +86,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
 End Sub
 
 Sub CTRL1062 (hmessages As hmenu)
-Print #1, "entro por CTRL1062 NOMBRECANCION TITULOS(0) ", NombreCancion, titulos(0)
+Print #1, "entro por CTRL1062 NOMBRECANCION TITULOSTK(0) ", NombreCancion, titulosTk(0)
              If NombreCancion > ""  Then
                 EstaBarriendoPenta=1 
                 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))   
@@ -104,7 +104,7 @@ End Sub
 
 Sub CTRL1063() 
 ' esta rutina no se usa mas, ahora se entra por menu archivo
-  Print #1, "entro por CTRL1063 NOMBRECANCION TITULOS(0) ", NombreCancion, titulos(0)
+  Print #1, "entro por CTRL1063 NOMBRECANCION TITULOSTK(0) ", NombreCancion, titulosTk(0)
             If NombreCancion > "" Then
                  
                Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + _ 
@@ -280,7 +280,7 @@ If ejecutar=EJECUCION Then
    Loop
 
 
-   Close #ini
+   Cerrar (ini)
 End If
 
 If ejecutar=CANCION Then  
@@ -305,7 +305,7 @@ If ejecutar=CANCION Then
    Loop
 
 
-   Close #ini
+   cerrar (ini) 
 End If
 
 End Sub
@@ -414,12 +414,12 @@ Print #1,"3 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
 ' ese numero Toca().orden,si funciona tal vez loaplicariamos a roll (mucho trabajo porahora queda asi) 
  
                 ntoca=j
-                pmTk(j+32).portout=tocaparam(j).portout
-                pmTk(j+32).MaxPos=tocaparam(j).maxpos
-                pmTk(j+32).portin=tocaparam(j).portin
-                pmTk(j+32).patch=tocaparam(j).patch
-                pmTk(j+32).canalsalida=tocaparam(j).canal
-                pmTk(j+32).canalentrada=tocaparam(j).canalent
+                pmEj(j).portout=tocaparam(j).portout
+                pmEj(j).MaxPos=tocaparam(j).maxpos
+                pmEj(j).portin=tocaparam(j).portin
+                pmEj(j).patch=tocaparam(j).patch
+                pmEj(j).canalsalida=tocaparam(j).canal
+                pmEj(j).canalentrada=tocaparam(j).canalent
 
                 abrirPortoutEjec(j)
 ' en una carga abri los ports de salida pero todavia no los de entrada
@@ -613,7 +613,7 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
                NB => 0 + (desde-1) * 13   
                NA => 11 + (hasta-1) * 13  
 
-               titulos(ntk)=nombre
+               titulosTk(ntk)=nombre
                pmTk(ntk).desde=desde
                pmTk(ntk).hasta=hasta
                pmTk(ntk).NB=NB
@@ -811,7 +811,7 @@ Dim As UByte portin1092, portout1092
              'instru, canal, portsal abre ahora distinto para cada pista
 ' el portin y portout podrian ser los mismos pero igual hay que seleccionarlos antes
 ' debo cambiar por toaparam ??? es lo mismo ambos se cargaen el la seleccion
-' con el mismo valor pmTk(i+32).xxx=tocaparam(i).xxx
+' con el mismo valor pmEj(i).xxx=tocaparam(i).xxx
               ChangeProgram ( tocaparam(i).patch  , tocaparam(i).canal, portout1092)
                 Exit For  ' termina con el 1er seleccionado solo se toma 1 sola accion
              EndIf
@@ -928,8 +928,8 @@ If PISTASEJECSELECCIONADA=1 Then
   selportEjec (miport,pis ) ' fix 13-03-23 enviamos el track es una seleccion para ese track
   Print #1, "2] case 1200 portin, ntkp  ", portin, ntkp
                    
-  pmTk(pis+32).portin=CUByte(portin) ' evitamos el cero
-  tocaparam(pis).portin=pmTk(pis+32).portin 
+  pmEj(pis).portin=CUByte(portin) ' evitamos el cero
+  tocaparam(pis).portin=pmEj(pis).portin 
   ntoca=pis '20-12-2024
 EndIf
 
@@ -989,7 +989,7 @@ EndIf
 ' podemos asignar muchos a la vez (lalista de la izquiera va de 1 a 32
 ' lalista de la derecha de 33 a 64 para tener todo en un solo  vector
 ' pmtk )
-                 pmTk(pis+32).portout=CUByte(portout)
+                 pmEj(pis).portout=CUByte(portout)
                  tocaparam(pis).portout=CUByte(portout)
           HabilitarMIDIIN = HabilitarMIDIIN + 1
       If HabilitarMIDIIN=2 Then
@@ -1025,7 +1025,7 @@ Dim As Integer k1=0,k2=0,pis=0
                ''  ntkp =pis
 
         k1=CInt(tocaparam(pis).portout)
-        k2=CInt(pmTk(pis+32).portout)
+        k2=CInt(pmEj(pis).portout)
 If k1 <> k2 Then ' algo anda mal
   Print #1, "inconsistencias k1<>k2 en port out no se cierra nada"
   Exit Sub
@@ -1095,9 +1095,9 @@ Dim pis As Integer
 
 
         Dim k1 As Integer
-        k1=pmTk(pis+32).portout 
+        k1=pmEj(pis).portout 
         Print #1,"midiout ",k1, *nombreOut(k1)
-        alloff( pmTk(pis+32).canalsalida,k1 )  
+        alloff( pmEj(pis).canalsalida,k1 )  
         listoutAbierto(k1)=0
         close_port midiout(k1)
 
@@ -1252,7 +1252,7 @@ Do
 
 Loop
 
-titulos(0)=nombreTrack
+titulosTk(0)=nombreTrack
 pmTk(0).MaxPos = maxposTrack +6 '''tocaparam(pis).maxpos
 pmTk(0).desde = 4  'VER SI TOMAMOS LA Q ELIGE EL USUARIO
 pmTk(0).hasta = 8  ' " " " " " " 
@@ -1296,7 +1296,7 @@ For k1=1 To tocatope
        CTRL1207(k1) ' aca tengo a Roll de  esa ejec cargado
        Print #1,"2 SALIO DE CTRL1207"
 ' debo ejecutar grabar Roll=>rtk de grafico para volcar ese roll a disco
-       nombre=titulos(0)
+       nombre=titulosTk(0)
        Print #1,"3 nombre ejec iluminado a convertir "; nombre 
 
        GrabarRollaTrack(1)          
@@ -1496,7 +1496,7 @@ Sub CTRL2506() 'Cerrar    Puertos MIDI-OUT de roll
 Dim k1 As Integer
 
 For  i As Short =1 To 32
-   If  titulos(i) > "" Then
+   If  titulosTk(i) > "" Then
         k1=pmTk(i).portout 
         Print #1,"midiout ",k1, *nombreOut(k1)
         alloff( pmTk(i).canalsalida,k1 )  

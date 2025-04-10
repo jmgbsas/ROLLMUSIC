@@ -296,16 +296,27 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
              Exit Select  
 '-----------------------------------------------------------------------
 
-           Case 1019  ''<============= SALIR TERMINA ROLL
+           Case 1019  ''<============= Archivo->SALIR, control TERMINA ROLL
              'eventM=eventrbdown
-             eventM=eventClose
+            
   ' no funciona si hay loop en listapista por popup menu ,,no hay caso
   ' ni poniendo end 0.. nada de nada ni engañando forzando eventC a close ni 
   ' eventM a EVENTRBdown nada de nada, no pasa nunca por aca solo obedece
   ' a un eventClose en EventC, el cual hay que pulsar dos veces para este caso
-            terminar=3
-            Exit Select
-               
+           
+           If play=1 Or playb=1 Or Cplay=1 Then 'rollLroop esta levantando en play
+              CONTROL1=1   ' si hay algun play los manda  a detener
+              CONTROL2=1
+              terminar=1 ' va a usar SC_ESCAPE para terminar         
+              Exit Do
+           Else  ' rollLoop se cerro el grafico no tengo el sc_escape, se supone que no hay play pero podria haberlo 
+              CONTROL1=1   ' si hay algun play los manda  a detener
+              CONTROL2=1
+              terminar=2 ' aca veo como salgo
+              Exit Do
+           EndIf
+     
+                  
 '-----------------------------------------------------------------------
            Case 1020 ' <=========== Entrar Nombre o Título de la Cancion     
                NombreCancion = ""

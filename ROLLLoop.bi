@@ -7,7 +7,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
 
 
 On Local Error Goto fail
-If  repro=1 Or terminar=1 Then
+If  repro=1  Or terminar=1  Then
     Exit Sub
 End If
 
@@ -922,9 +922,9 @@ End Select
 
 If ubiroll > 0 Then  ' CARGA DE ARCHIVOS POR LINEA DE COMANDO DE ROLLMUSIC
  '  Print #1,"cargo archivo desde rollLoop"
-   nombre = titulos(0)
+   nombre = titulosTk(0)
    Print #1,"nombre",nombre
-   Print #1,"titulo(0) ",titulos(0)
+   Print #1,"tituloTk(0) ",titulosTk(0)
     CargaArchivo (Roll,ubiroll)
    s5=2
    ROLLCARGADO=TRUE
@@ -939,14 +939,14 @@ If ubiroll > 0 Then  ' CARGA DE ARCHIVOS POR LINEA DE COMANDO DE ROLLMUSIC
 EndIf
 
  If ubirtk > 0 Then ' ya tengo el nommbre en linea de comando
-  '  print #1,"carga track desde linea de comando,  nombre antes   ",titulos(0)
-    nombre = titulos(0)
+  '  print #1,"carga track desde linea de comando,  nombre antes   ",titulosTk(0)
+    nombre = titulosTk(0)
     CargarTrack (Track() , 0, ubirtk ) ' ntk=0
     If nombre > ""  Then '16-01-2022 crach si se cancela la carga
-  '    print #1,"carga track veo nombre despues ", titulos(0)
+  '    print #1,"carga track veo nombre despues ", titulosTk(0)
       TrackaRoll (Track(),0,Roll) ' ntk=0
 Print #1," desde 892 ";desde
-  '    print #1,"TrackaRollcarga rtk veo nombre ", titulos(0)
+  '    print #1,"TrackaRollcarga rtk veo nombre ", titulosTk(0)
       RecalCompas (Roll)
       TRACKCARGADO=TRUE
       ubirtk=2
@@ -954,7 +954,7 @@ Print #1," desde 892 ";desde
       TRACKCARGADO=FALSE
     EndIf
 
-  '  print #1,"despues RecalCompas veo nombre ", titulos(0)
+  '  print #1,"despues RecalCompas veo nombre ", titulosTk(0)
     MenuNew=0
     ubirtk=0
    param.ubirtk=0
@@ -976,7 +976,7 @@ If instancia = 7  Then ' 04-03-2024 LOGRE LEVANTAR CANCION EN UN ROLL EXTERNO
     cargariniciotxt(NombreCancion, CANCION)
     instancia=107  ' ficticio para que entre al if de TAB pero  que no entre en el resto ni aca
     param.encancion=1
-    'terminar=1
+    
       
  EndIf
 EndIf
@@ -1143,7 +1143,7 @@ If MultiKey(SC_TAB) And (instancia=0 Or instancia= 107) And CANCIONCARGADA And p
      ntk=1 
   '   print #1,">TAB 2A- 1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos     
    EndIf
-   nombre= titulos(ntk)
+   nombre= titulosTk(ntk)
    If nombre > "" Then
      print #1,"--------------------------"
      print #1,"TAB 3-NTK nombre", ntk,nombre
@@ -1156,12 +1156,12 @@ If MultiKey(SC_TAB) And (instancia=0 Or instancia= 107) And CANCIONCARGADA And p
         ntk=ntk+1
         If ntk>32 Or ntk > tope Then
            ntk=1
-           nombre= titulos(ntk)
+           nombre= titulosTk(ntk)
  ' print #1,"TAB 4 - NTK, pmtk(ntk).maxpos  ", ntk,pmTK(ntk).maxpos    
            Exit Do
         EndIf
  
-        nombre= titulos(ntk)
+        nombre= titulosTk(ntk)
      Loop
   EndIf
      posicion=0 ' 14.-03-2022
@@ -1228,8 +1228,10 @@ EndIf
 
 If MultiKey (sc_P) Then  ''''And (play=1 Or playb=1 Or Cplay=1 )Then
   CONTROL1=1 ' DETIENE EL PLAY VEREMOS
+  CONTROL2=1
   playloop=0:playloop2=0
   s5=2 ' el loop necesita menos cpu se libera
+  '''terminar=1
   If instancia=7 Or instancia= 107 Or instancia < 3 Then 
   Else
   SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
@@ -1866,21 +1868,22 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_F4)  Then
 '' NO DESTRUIR NADA Y SEPUEDE VOLVER A USAR
 '' CERRAMOS EL GRAFICO, PERO EL GRAFICO ES UNICO,,,,
 
-Dim As Integer i3
-
-  If MessageBox(hWnd,"¿CERRAR GRAFICO ? " ,param.titulo ,4 Or 64) =6 Then
-     eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
-     If play=1 Or playb=1 Then 'detenemos los play
-        For i3 = 1 To tope
-           portsal = pmTk(i3).portout 
-           allSoundoff (pmTk(i3).canalsalida,portsal )
-           close_port(midiout(portsal))
-           out_free(midiout(portsal))
-        Next i3
-        ThreadDetach(thread1)
-        ThreadDetach(thread2)
+     If play=1 Or playb=1 Or Cplay=1 Then 'detenemos los play
+       MessBox("","(2)Detenga el play primero ")
+       SetForegroundWindow(hwnd)
+         Terminar=0
+         Exit Do 
               
      EndIf
+
+
+Dim As Integer i3
+
+  If MessageBox(hWnd,"¿CERRAR GRAFICO ? " ,param.titulo ,4 Or 64) =6  Then
+     eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
+      ' va a usar sc_p para para r el play y vuelve 
+     
+    terminar=3
     If teclado=1 Then ' detenemos los midi in
       cancel_callback(midiin(pmTk(ntk).portin ))
       Dim k1 As Integer
@@ -1894,7 +1897,7 @@ Dim As Integer i3
 
 FileFlush (-1)
     
-   SCREEN 0, , , &h80000000 
+   SCREEN 0 ''', , ,  GFX_SCREEN_EXIT '' &h80000000 
  ''https://www.freebasic.net/forum/viewtopic.php?t=26963
    If ubirtk =2 Or ubiroll = 2 Then
       End 0 ''31-03-25 si entro por linea de comando es 2 
@@ -1914,7 +1917,23 @@ EndIf
 
 '--------------------------------------
 If MultiKey(SC_ESCAPE) Or  Terminar=1 Then
-Sleep 5
+    Sleep 5
+
+     If terminar=0 And (play=1 Or playb=1 Or Cplay=1)   Then 'detenemos los play
+       MessBox("","Deteniendo play pulse escape de nuevo ")
+        SetForegroundWindow(hwnd)
+        Terminar=0
+        CONTROL1=1 
+        CONTROL2=1
+        TERMINAR=3 
+         Exit Do  ' REINICIO DETENIENDO LOS PLAY Y AL PULSAR OTRO ESCAPE ENTRA EL DIALOGO
+     EndIf
+  If terminar=1 Then
+        salir()
+       Kill "procesos.txt"
+       Close
+       End 0
+  Else   
     If  MessageBox(hWnd,"¿TERMINA PROGRAMA ROLLMUSIC ? " ,param.titulo ,4 Or 64) =6 Then
        salir()
        Kill "procesos.txt"
@@ -1924,6 +1943,7 @@ Sleep 5
        Terminar=0
        Exit Do ' 06-05-2024
     EndIf
+  EndIf
 EndIf
 
 
@@ -3365,13 +3385,12 @@ If (ScreenEvent(@e)) Then
 
   Case EVENT_KEY_PRESS    ' <======== KEY PRESS PULSO
        
-   If e.scancode = SC_P And (Play=1 Or playb=1 ) Then ' 25 anda mejor q con multikey
+   If e.scancode = SC_P   Then ' 25 anda mejor q con multikey
       CONTROL1=1
       CONTROL2=1
       playloop=0:playloop2=0
       s5=2 'necesita menos tiempo de procesamiento    
- '''     alloff( 1 ) lo hace el play 
-   EndIf
+    EndIf
    If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion
 
     If trasponer=1 And SelGrupoNota=0 Then
@@ -3970,53 +3989,52 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
  '                           <====== [BOTONES] =======>
  ' 07-08-2021 lugar para test tamaño 10x8
  ' salir de roll music  unificar jmg 02-03-2024
- If (mousex>=(ANCHO-40-mxold)) And (mousey <= 16)  Then
-  If  MouseButtons And 1 Then
+ If (mousex>=(ANCHO-40-mxold)) And (mousey <= 16)  Then 'LA X DE LA VENTANA GRAFICA
+  If  MouseButtons And 1  Then
 ''ACA LOGRAMOS CERRAR LA PANTALLA DE ROLL GRAFICO!!!
 '' SIN ERMINAR EL PROGRAMA GFX_NULL ES LO QUE HACE POSIBLE ESTO
 '' NO DESTRUIR NADA Y SEPUEDE VOLVER A USAR
 '' CERRAMOS EL GRAFICO, PERO EL GRAFICO ES UNICO,,,,
 
 Dim As Integer i3
-
-  If MessageBox(hWnd,"¿CERRAR GRAFICO ? " ,param.titulo ,4 Or 64) =6 Then
-     eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
-     If play=1 Or playb=1 Then
-        For i3 = 1 To tope
-           portsal = pmTk(i3).portout 
-           allSoundoff (pmTk(i3).canalsalida,portsal )
-           close_port(midiout(portsal))
-           out_free(midiout(portsal))
-        Next i3
-        ThreadDetach(thread1)
-        ThreadDetach(thread2)
-              
+     If play=1 Or playb=1 Or Cplay=1 Then
+       'MessBox( "","Detenga el play primero ")
+       'SetForegroundWindow(hwnd)
+       '  Terminar=2
+       '  Exit Do
+        CONTROL1=1
+        CONTROL2=1 
      EndIf
-    If teclado=1 Then
-      cancel_callback(midiin(pmTk(ntk).portin ))
-      Dim k1 As Integer
-      k1=pmTk(ntk).portout
-      alloff( pmTk(ntk).canalsalida,k1 )  
-      listoutAbierto(k1)=0
-      close_port midiout(k1)
-      out_free(midiout(k1))
-    End If 
 
-   FileFlush (-1)
-   Screen 0, , , &h80000000
-   If Maxpos > 2 Then
+
+  If MessageBox(hWnd,"¿CERRAR GRAFICO ? " ,param.titulo ,4 Or 64) =6  Then
+     eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
+     ''''terminar=3
+     If teclado=1 Then
+        cancel_callback(midiin(pmTk(ntk).portin ))
+        Dim k1 As Integer
+        k1=pmTk(ntk).portout
+        alloff( pmTk(ntk).canalsalida,k1 )  
+        listoutAbierto(k1)=0
+        close_port midiout(k1)
+        out_free(midiout(k1))
+     End If 
+
+     FileFlush (-1)
+     Screen 0 ''', , ,  GFX_SCREEN_EXIT '''&h80000000
+     If Maxpos > 2 Then
      '''''EstaBarriendoPenta=1 
-     Terminar=0
-   Else
-    abrirRoll=0
-    reiniciar=1
-   EndIf
+        Terminar=0
+     Else
+        abrirRoll=0
+        reiniciar=1
+     EndIf
    
-  Exit Sub
+     Exit Sub
 
   Else
-  Terminar=0
-   Exit Do ' 06-05-2024
+     Terminar=0
+     Exit Do ' 06-05-2024
   EndIf  
 
   EndIf

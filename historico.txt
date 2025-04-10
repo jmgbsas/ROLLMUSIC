@@ -1,3 +1,10 @@
+- 10-04-2025 pmTk se separo en 2 pmTk para tracks y pmEj para ejecuciones,, se corrigio la terminacion
+  del programa y la ventana grafica, de la ventana grafica se sale con la X derecha arriba de lgrafico
+  detiene el play si esta andando y cierra el grafico no termina el programa,, si se desea terminar el
+  programa se usa tecla escape si esta tocando pide pulsar de nuevo escape. Y de laventanad e control
+  se sale con su X o salir del menu de archivo tambien si esta tocanco detiene el play y sale,,
+  puede pasar que al cerrar y abrir el grafico ya no funcione el ESC par terminar el programa pero
+  se puede usar las terminaciones de la ventana de control...(mas pruebas ? posiblemente)
 - 07-04-2025 0.310 sinc playcancion, ejecuciones se convierten todas con un solo click sin pasar por rollgrafico
   En el menu puertos ejecucion, el item
     6.0 Convertir todas las ejecuciones *.ejec seleccionadas para que toquen columna [S] a *.rtk y los grabe a disco")

@@ -15,7 +15,7 @@ Sub CargarMidiIn(DirEjecSinBarra As String,   ByRef ntkp As Integer)
       Dim As Integer  j 
       ' nombre tiene el path y extension esta completo
      
-  '    pmTk(ntkp+32).MaxPos=N
+  '    pmEj(ntkp).MaxPos=N
  Print #1,"DirEjecSinBarra recibido enCargarMidiIn ",DirEjecSinBarra
 
       Dim As Integer ubi1,ubi2 
@@ -80,19 +80,19 @@ Print #1,"ubound ",UBound (Toca(ntkp).trk)
       ' cerrar f
        cerrar 12
           
-'      pmTk(ntkp+32).MaxPos=Toca(ntkp).maxpos
+'      pmEj(ntkp).MaxPos=Toca(ntkp).maxpos
       ntoca=tocaparam(ntkp).orden
 '      If  ntoca<> ntkp Then
 '          Print #1," ALERTA EN CARGA NRO ARCHIVO NO COINCIDE CON ORDEN / NTOCA ,NTKP ", ntkp,ntoca
 '          Print #1," SE CAMBIÓ EL NRO DE PISTA EN EL NOMBRE DEL ARCHIVO, NO INFLUYE "
 '
 '      EndIf
-      pmTk(ntkp+32).portout= tocaparam(ntkp).portout
-      pmTk(ntkp+32).portin= tocaparam(ntkp).portin
-      pmTk(ntkp+32).patch = tocaparam(ntkp).patch
-      pmTk(ntkp+32).canalsalida=tocaparam(ntkp).canal
-      pmTk(ntkp+32).MaxPos=tocaparam(ntkp).maxpos
-      pmTk(ntkp+32).canalentrada=tocaparam(ntkp).canalent
+      pmEj(ntkp).portout= tocaparam(ntkp).portout
+      pmEj(ntkp).portin= tocaparam(ntkp).portin
+      pmEj(ntkp).patch = tocaparam(ntkp).patch
+      pmEj(ntkp).canalsalida=tocaparam(ntkp).canal
+      pmEj(ntkp).MaxPos=tocaparam(ntkp).maxpos
+      pmEj(ntkp).canalentrada=tocaparam(ntkp).canalent
 
 
       Print #1,"CargarIn maxpos,np  ",tocaparam(ntkp).maxpos , ntkp
@@ -180,12 +180,12 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
            cerrar f
          ntkp=tocaparam(nf).orden
 
-         pmTk(ntkp+32).portout= tocaparam(nf).portout
-         pmTk(ntkp+32).portin = tocaparam(nf).portin
-         pmTk(ntkp+32).patch  = tocaparam(nf).patch
-         pmTk(ntkp+32).canalsalida =tocaparam(nf).canal
-         pmTk(ntkp+32).MaxPos      =tocaparam(nf).maxpos
-         pmTk(ntkp+32).canalentrada=tocaparam(nf).canalent
+         pmEj(ntkp).portout= tocaparam(nf).portout
+         pmEj(ntkp).portin = tocaparam(nf).portin
+         pmEj(ntkp).patch  = tocaparam(nf).patch
+         pmEj(ntkp).canalsalida =tocaparam(nf).canal
+         pmEj(ntkp).MaxPos      =tocaparam(nf).maxpos
+         pmEj(ntkp).canalentrada=tocaparam(nf).canalent
            Sleep  100
            DirEjecSinBarra = Dir() 'trae el siguiente nombre de archivo en el directorio
 
@@ -238,16 +238,16 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
           Sleep 1                         
         '''''ntkp=CInt(np) no hace falta
       Print #1,"tocaparam(ntkp).maxpos ",tocaparam(ntkp).maxpos
-        pmTk(ntkp+32).MaxPos=tocaparam(ntkp).maxpos
+        pmEj(ntkp).MaxPos=tocaparam(ntkp).maxpos
         
-         Print #1,"pmTk(ntkp+32).MaxPos ",pmTk(ntkp+32).MaxPos
+         Print #1,"pmEj(ntkp).MaxPos ",pmEj(ntkp).MaxPos
 
         If tocatope < ntkp Then
            tocatope=ntkp
         EndIf
-        titulos(ntkp+32)=DirEjecSinBarra ' como agregue en titulos la opcion es 1
+        titulosEj(ntkp)=DirEjecSinBarra ' como agregue en titulos la opcion es 1
         ' como si viniera de linea de comando puedo usar cualquiera o 0
-        pistas (ntkp+32)=DirEjecSinBarra
+        pistasEj(ntkp)=DirEjecSinBarra
         print #1,"nombre en CargarPistasEjec ,Ntkp ",DirEjecSinBarra, ntkp
         Sleep 100
         DirEjecSinBarra = Dir()
@@ -337,7 +337,7 @@ cargacancion=0
   '2)  carga *.rtk de linea de comando doble clik o de cancion ¿de cancion ojo?  
        If ubirtk > 0 Then 
         '  print #1,"ubirtk > 0 carga de disco o cancion ",ubirtk
-          nombrea=titulos(ntk) ' ya venia el nombre
+          nombrea=titulosTk(ntk) ' ya venia el nombre
           ubirtk=2 '31-0325
        EndIf   
      EndIf
@@ -355,7 +355,7 @@ cargacancion=0
     Dim miroerr As Integer
 '    Print #1,"nombre track ",nombre
  '   print #1,"NTK Y nombre que llego a open en CargaTrack ",ntk ,nombre
-    titulos(ntk)=nombre
+    titulosTk(ntk)=nombre
     
     ct=14
     miroerr= ( Open (nombre  For Binary Access Read As #ct ))
@@ -1038,7 +1038,7 @@ Select Case ext
 ' y las modificaciones quedaron,,
 ' sacar corchetes si lso tiene del nombre y armar de nuevo el nombre
 ' toma el ntk globalmente,,,
-  titulos(ntk)=nombre
+  titulosTk(ntk)=nombre
   CargarTrack(Track(),ntk,1) ' lo carga en ntk nuevo
 ' no haria falta cargarlo a roll solo copiar el archivo rtk a cancion
 ' aumentar el tope y cargar la lista, pero bueno lo dejamos asi,,, 
@@ -1053,12 +1053,12 @@ Select Case ext
     Sleep 1                         
     print #1,"GRABANDO PISTA EN CANCION EN ",nombre
       'si es vacio tomo la ultima
-    titulos(ntk)=nombre ' cambiamos el nombre de la pista 
+    titulosTk(ntk)=nombre ' cambiamos el nombre de la pista 
 ' grabar en el directorio de cancion
     GrabarRollaTrack(0) ' graba el roll del rtk a directorio cancion 
       
  Case ".roll" ' corregido 20-04-2024
-    titulos(0)=nombre  ''nombre de un roll externo fuera de cancion
+    titulosTk(0)=nombre  ''nombre de un roll externo fuera de cancion
     CargaArchivo(Roll,1) ' sobreescribe ntk global con 0, carga a Roll y a track(0)
     
    ' todos los valores quedaron en ntk=0 
@@ -1071,7 +1071,7 @@ s5=0 '11-06-2022
    print #1,"GRABANDO PISTA EN CANCION EN ",nombre
     
 'esta en Roll y track (0) debo grabarlo a rtk nuevo ntk en cancion
-    titulos(Tope)=nombre ' cambiamos el nombre de la pista en el ntk nuevo 
+    titulosTk(Tope)=nombre ' cambiamos el nombre de la pista en el ntk nuevo 
 ' grabar en el directorio de cancion
     'de nuevo el tope, debo estar posicionado en roll y pista 0
   
@@ -1173,7 +1173,7 @@ Dim As Integer barra=0,punto=0,ubi3=0,ubi4=0,ntkold=ntk ' el ntk que esta en edi
         Sleep 1                          
         print #1,"GRABANDO PISTA EN CANCION EN ",nombre
       'si es vacio tomo la ultima
-        titulos(ntk)=nombre
+        titulosTk(ntk)=nombre
      EndIf
    ActualizarRollyGrabarPista ()
    
@@ -1592,9 +1592,9 @@ If CANCIONCARGADA=FALSE And  NADACARGADO=TRUE Then
 EndIf
 
 print #1,"-------------ARRANCA TRACKAROLL---------------------------------"
-print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulos(ntk)
+print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulosTk(ntk)
 print #1,"(ntk).maxpos ", pmTk(ntk).MaxPos
-nombre=titulos(ntk)
+nombre=titulosTk(ntk)
 
 
 '0) Si se pula delete o Supr estando en Roll Visual, se iran borando de memoria
@@ -1894,9 +1894,9 @@ End If
 
 End Sub
 
-Sub Resetear ( pmTk() As rangoOct)
+Sub Resetear ( )
 Dim i As Integer
- For i =1 To 64  ' agregamos los 32 de ejecuciones 07-06-2022
+ For i =1 To 32  ' agregamos los 32 de ejecuciones 07-06-2022
    pmTk(i).desde=0
    pmTk(i).hasta=0
    pmTk(i).NB =0 
@@ -1906,9 +1906,54 @@ Dim i As Integer
    pmTk(i).notaold=0
    pmTk(i).Ticks=0
    pmTk(i).portout=0
-   titulos(i)=""          
+   titulosTk(i)=""
+   pmTk(i).patch=0
+   pmTk(i).notaescala=0
+   pmTk(i).tipoescala=0
+   pmTk(i).alteracion=0  ' sos 3, bem 2
+   pmTk(i).fechasPistas=0
+   pmTk(i).canalsalida=0
+   pmTk(i).canalentrada=0
+   pmTk(i).zona1=0
+   pmTk(i).zona2=0
+   pmTk(i).nroRep=0
+   pmTk(i).portin=0 
+   pmTk(i).tipoCompas=0
+   pmTk(i).ejec=0
+   pmTk(i).vol=0
+   pmTk(i).tiempopatron=0 ' 240 60 etc
+
+
+
+   pmEj(i).desde=0
+   pmEj(i).hasta=0
+   pmEj(i).NB =0 
+   pmEj(i).NA=0
+   pmEj(i).MaxPos=0
+   pmEj(i).posn=0
+   pmEj(i).notaold=0
+   pmEj(i).Ticks=0
+   pmEj(i).portout=0
+   titulosEj(i)=""
+   pmEj(i).patch=0
+   pmEj(i).notaescala=0
+   pmEj(i).tipoescala=0
+   pmEj(i).alteracion=0  ' sos 3, bem 2
+   pmEj(i).fechasPistas=0
+   pmEj(i).canalsalida=0
+   pmEj(i).canalentrada=0
+   pmEj(i).zona1=0
+   pmEj(i).zona2=0
+   pmEj(i).nroRep=0
+   pmEj(i).portin=0 
+   pmEj(i).tipoCompas=0
+   pmEj(i).ejec=0
+   pmEj(i).vol=0
+   pmEj(i).tiempopatron=0 ' 240 60 etc
+
  next i
  ntk=0
+
 End Sub 
 Function doscifras (NTK As Integer) As String
   Dim cifra As String 
@@ -1926,7 +1971,7 @@ Sub PlayCancion(Track() As sec)
 'psarlo a Ticks!!!
 Dim i1 As Integer
 
-
+llave33=0
 Sleep 10
 
 If MIDIFILEONOFF = HABILITAR  Then 
@@ -2124,12 +2169,12 @@ For jply=comienzo To final
 ' cambio de inst para la pista, podria poner mas de un instrumento por pista
 ' o por cada nota.. 
 ' VER DE PONER LOS INSTRUMENTOS EN TRACK
-   If CONTROL1 = 1 Then
+   If CONTROL2 = 1 Then
       For i3 = 1 To tope
        portsal=CInt(pmTk(i3).portout) 
        alloff(pmTk(i3).canalsalida,portsal) 
       Next i3
-      CONTROL1=0
+      CONTROL2=0
       Exit For
    EndIf  
   
@@ -2343,6 +2388,9 @@ jply=0:curpos=0
  
 
 Cplay=0 ' Control de play cancion si fue desde control
+playb=0
+play=0
+llave33=2
 mousey=100 'otra mas para evitar rentrar a play en menu
 finplay=1
 
@@ -3080,7 +3128,7 @@ Sub CargarSinRoll ()
      ntk=1 
   '   print #1,">TAB 2A- 1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos     
    EndIf
-   nombre= titulos(ntk)
+   nombre= titulosTk(ntk)
    If nombre> "" Then
  '    print #1,"--------------------------"
  '    print #1,"TAB 3-NTK nombre", ntk,nombre
@@ -3093,12 +3141,12 @@ Sub CargarSinRoll ()
         ntk=ntk+1
         If ntk>32 Or ntk > tope Then
            ntk=1
-           nombre= titulos(ntk)
+           nombre= titulosTk(ntk)
  ' print #1,"TAB 4 - NTK, pmtk(ntk).maxpos  ", ntk,pmTK(ntk).maxpos    
            Exit Do
         EndIf
  
-        nombre= titulos(ntk)
+        nombre= titulosTk(ntk)
      Loop
   EndIf
      posicion=0 ' 14.-03-2022

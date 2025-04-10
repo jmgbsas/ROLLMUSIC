@@ -64,7 +64,7 @@ Common Shared As integer ubirtk, ubiroll,trasponer,canalx,saltos
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Common Shared  portsal As UByte, patchsal As ubyte
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp, npi,calltoca,npo,canalDeGrabacion
-Common SHARED  As Integer EstaBarriendoPenta, instancia,FINALIZAR_ROLLMUSIC, MICROSEGUNDOS_POR_NEGRA
+Common SHARED  As Integer EstaBarriendoPenta, instancia,MICROSEGUNDOS_POR_NEGRA
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As plano miditxt()
@@ -75,7 +75,7 @@ Common Shared As Integer gp ,midiplano,midionof
 Const As BOOLEAN HABILITAR = TRUE
 Const As BOOLEAN DESHABILITAR = FALSE
 
-FINALIZAR_ROLLMUSIC=0
+
 MICROSEGUNDOS_POR_NEGRA=1000000 ' 60 MILLONES / 60 BPM DEFAULT
 
 
