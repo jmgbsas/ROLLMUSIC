@@ -3473,7 +3473,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
     carga=0
     cairo_set_source_rgba c,1,1,1,1
    EndIf
-   t = " [GRABAR COMO]" : cairo_show_text(c,t) :t= ""
+   't = " [A OTRO ROLL]" : cairo_show_text(c,t) :t= ""
 
 '-----------------------------
   '===> 3.3.1 [ROLL=>RTK] SC_F11 COPIA 

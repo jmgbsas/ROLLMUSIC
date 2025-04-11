@@ -925,12 +925,11 @@ If ubiroll > 0 Then  ' CARGA DE ARCHIVOS POR LINEA DE COMANDO DE ROLLMUSIC
    nombre = titulosTk(0)
    Print #1,"nombre",nombre
    Print #1,"tituloTk(0) ",titulosTk(0)
-    CargaArchivo (Roll,ubiroll)
+    CargaArchivo (Roll,ubiroll) ' aca ajusta ubiroll a 2
    s5=2
    ROLLCARGADO=TRUE
    MenuNew=0
-   ubiroll=0
-  param.ubiroll=0
+  param.ubiroll=ubiroll ' vale 2
   portout=CInt(pmTk(0).portout)
    
 ' abrir ports si no estan abiertos 
@@ -1869,11 +1868,12 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_F4)  Then
 '' CERRAMOS EL GRAFICO, PERO EL GRAFICO ES UNICO,,,,
 
      If play=1 Or playb=1 Or Cplay=1 Then 'detenemos los play
-       MessBox("","(2)Detenga el play primero ")
-       SetForegroundWindow(hwnd)
-         Terminar=0
-         Exit Do 
-              
+      ' MessBox("","(2)Detenga el play primero ")
+      ' SetForegroundWindow(hwnd)
+      '   Terminar=0
+      '   Exit Do 
+        CONTROL1=1
+        CONTROL2=1       
      EndIf
 
 
@@ -1900,9 +1900,14 @@ FileFlush (-1)
    SCREEN 0 ''', , ,  GFX_SCREEN_EXIT '' &h80000000 
  ''https://www.freebasic.net/forum/viewtopic.php?t=26963
    If ubirtk =2 Or ubiroll = 2 Then
-      End 0 ''31-03-25 si entro por linea de comando es 2 
+       salir()
+       Kill "procesos.txt"
+       Close
+       End 0 ''31-03-25 si entro por linea de comando es 2 
    EndIf
-   If MaxPos > 2 Then 
+   If MaxPos > 2 Then
+     abrirRoll=4 
+     Terminar=3
    Else
      abrirRoll=0
      reiniciar=1
@@ -4005,7 +4010,14 @@ Dim As Integer i3
         CONTROL1=1
         CONTROL2=1 
      EndIf
-
+  If ubirtk > 0 or ubiroll > 0 Then ' valen 2
+  Print #1," termina Roll tambien pues es un grafico independiente"
+       salir()
+       Kill "procesos.txt"
+       Close
+       End 0
+     ''Exit Do 
+  EndIf
 
   If MessageBox(hWnd,"¿CERRAR GRAFICO ? " ,param.titulo ,4 Or 64) =6  Then
      eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
@@ -4023,8 +4035,10 @@ Dim As Integer i3
      FileFlush (-1)
      Screen 0 ''', , ,  GFX_SCREEN_EXIT '''&h80000000
      If Maxpos > 2 Then
-     '''''EstaBarriendoPenta=1 
-        Terminar=0
+      
+        Terminar=3  ' para que no barra la pantalla 
+        abrirRoll=4 'con 4 puede reabrir la ventana con los datos cargados
+     
      Else
         abrirRoll=0
         reiniciar=1
@@ -5414,6 +5428,8 @@ print #1,"-----------------err ROLLLOOP-----------------"
            " on line " & Erl & " " & ProgError(er1)
   Print #1, errmsg
   FileFlush (-1)
+  Close
+  End 0
 End If
 
 

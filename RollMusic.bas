@@ -88,19 +88,11 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.310 FIX, ORGANIZACION PULIDO"
+nroversion="TICKS cierra y abre grafico tracks sin cancion "
 ' revisar mañana que cuando cierro el rollgrafico no pierda los datos eso
 ' lo habia logrado ver en las versiones de 309 cual lo hacia y si lo perdi hacer
 ' de nuevo ,,
 ' trabajos mediatos:
-' 1 ) Haremos un paso que convierta todos los tracks
-' de ejecucion .ejec que hayan en el Dir, a .rtk con solo un click, tambien podremos agregar la converison a
-' rtk de una sola ejec sin pasar por la carga en roll. falló anduvo un rato y se cagó
-' empezar de nuevo...todo esta para Track(0) y si adapto a ntk> 0 se  va todo a la miercoles
-
-' las pistas *.ejec a ser convertidas usaran la misma seleccion que para el play
-' E lusuario movera los rtk al directorio de cancion creado o se le pedira 
-' el directorio de cancion para moverlos ahi...ese será version 0.310
 ' 2) Vendra version 0.311 que verá si funcionan la seleccion de zonas o partes
 ' de la secuencia para trasponer copiar insertar etc,,,, 
 ' 3) la repeticion de zonas en el play, insertar espacios fin de secuencia 

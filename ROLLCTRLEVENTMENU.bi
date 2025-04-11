@@ -433,20 +433,24 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
         '      SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1060 ' <========== crea track y reemplaza al existente en la edicion
-             If NombreCancion = ""  Then
-                CTRL1060 salida
-                If salida = 1 Then 
-                   salida=0
-                   SetForegroundWindow(hwnd)
-                   Exit Do
-                End If
-             EndIf
-             If NombreCancion > ""  Then
+             If NombreCancion > ""  Or (abrirRoll=4 And Terminar=3 )Then
+                Terminar=0 ' para que empiece a barrer la pantalla
+                Print #1,"1 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
                 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))   
-                Print #1,"CARGO ROLL PARA cancion porque se cerro el grafio antes"
+                Print #1,"2 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
                 Sleep 100
                  SetForegroundWindow(hwnd)
                    Exit Do
+             Else
+                If NombreCancion = ""  Then
+                  CTRL1060 salida
+                  If salida = 1 Then 
+                    salida=0
+                    SetForegroundWindow(hwnd)
+                    Exit Do
+                  End If
+               EndIf
+
              EndIf
 
 '-----------------------------------------------------------------------

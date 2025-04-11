@@ -44,7 +44,7 @@ Dim Shared As UInteger portsin=0, portsout =0 'constantes,
 Dim Shared As integer tiempoPatron=240 ' cuantas negras en un minuto default
 Dim Shared As integer tiempoPatronEjec=240
 Dim Shared As Double old_time_on=0,old_time_off=0,old_time_on_int=0,old_time_off_int=0
-Static Shared As Integer jply=0, finplay=0,indEscala=1
+Static Shared As Integer jply=0, indEscala=1
 Dim Shared As double FactortiempoPatron=1
 'elpatron esla negra ej I=60 ergo todo sera relativo A la negra q dura 1 seg
 ' 09-06-2021 agregue 0 en relDur para evitar cancelaciones pero ojo puede 

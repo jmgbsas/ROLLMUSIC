@@ -1971,7 +1971,7 @@ Sub PlayCancion(Track() As sec)
 'psarlo a Ticks!!!
 Dim i1 As Integer
 
-llave33=0
+
 Sleep 10
 
 If MIDIFILEONOFF = HABILITAR  Then 
@@ -2390,9 +2390,9 @@ jply=0:curpos=0
 Cplay=0 ' Control de play cancion si fue desde control
 playb=0
 play=0
-llave33=2
+
 mousey=100 'otra mas para evitar rentrar a play en menu
-finplay=1
+
 
 '''  reponer mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 

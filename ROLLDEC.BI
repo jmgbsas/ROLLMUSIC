@@ -1301,7 +1301,7 @@ Const As Integer finSimple   =     4
 Const As UByte   EJECUCION   =     1
 Const As UByte   CANCION     =     2
 
-Dim Shared  As Integer contid=0,separaenuno=0, intervalo=2 ,llave33=0'  default 2 que es 1 separacion de notas
+Dim Shared  As Integer contid=0,separaenuno=0, intervalo=2 '  default 2 que es 1 separacion de notas
 
 Type mididat ' la duracion total de una nota se acumulara en duron en estado 2
  indiceX    As Integer

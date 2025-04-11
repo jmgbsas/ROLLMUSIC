@@ -1381,7 +1381,7 @@ End Function
 Sub playAll(Roll As inst) ' play version 3 CON TICKS
 '<<< 30-03-2025 anda ok para roll desde ejec o Roll desde entrada manual >>>>
 ' en manual las velocidades son una sola semi fuerte, hasta que compas pueda 
-llave33=0
+
 On Local Error Goto fail
 
 If MIDIFILEONOFF = HABILITAR  Then 
@@ -1492,8 +1492,8 @@ playloop2=0
      ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, pmTk(0).portout)
     patchsal =pmTk(0).patch ''Roll.trk(1,NA).inst
 
-'print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
-'print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
+Print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
+print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
 jply=0:curpos=0
 mousex=0
 ' print #1,                    "-----------------------------------------"
@@ -1519,9 +1519,9 @@ Dim As Double  tickUsuario=0.01041666 * 240/tiempoPatron
 Print #1,"TickUsuario "; tickUsuario
 
 Print #1,"VEO marca ejec enb onoff Roll.trk(1,NA).onoff   "; Roll.trk(1,NA).onoff
-Print #1,"VEO Track(0).trk(1,1).ejec "; Track(0).trk(1,1).ejec 
+'Print #1,"VEO Track(0).trk(1,1).ejec "; Track(0).trk(1,1).ejec 
 ' ======================= FOR JPLY PLAYALL =======================
-Print #1,"cominzo final "; comienzo , final
+Print #1,"cominzo final control1 "; comienzo , final, control1
 
 For jply=comienzo To final
 
@@ -1540,6 +1540,7 @@ For jply=comienzo To final
       alloff( pmTk(0).canalsalida,pmTk(0).portout )
     EndIf  
       CONTROL1=0
+      Print #1,"mefui de playall"
       Exit For
   EndIf  
 ' puede pasar que el maxpos sea menro al final de la secuencia porque se agrego espacio
@@ -1577,7 +1578,7 @@ Else
   EndIf
 EndIf
 '  print #1," ---------------000000000000000000000-----------------"
-'  print #1," (((PALL 0:)))---START--PASO:[";jply;"] ----------------"
+  print #1," (((PALL 0:)))---TICK NRO:[";jply;"] ----------------"
 '  print #1," ---------------000000000000000000000-----------------"
 
   
@@ -1611,6 +1612,7 @@ If i1<= NA-13 Then
         vel=velpos
         'Print #1,"2 velpos vel ";velpos, vel
       EndIf
+
        If Roll.trk(jply, i1).onoff =2 Then
             Print #1,"noteon CUByte(Notapiano),vel,canal,portsal  ";CUByte(Notapiano),vel,canal,portsal
             noteon CUByte(Notapiano),vel,canal,portsal,1
@@ -1699,11 +1701,11 @@ jply=0:curpos=0
 ' al final, por ahroa no parpadea mas veremos.... 
 play=0 
 playb=0
-llave33=2
+
 
 mousey=100 'otra mas para evitar rentrar a play en menu
-SetMouse xmouse, ymouse
-finplay=1
+''SetMouse xmouse, ymouse
+
 
 '''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 
