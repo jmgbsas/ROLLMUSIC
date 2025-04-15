@@ -21,9 +21,9 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
               ROLLCARGADO=FALSE 'NINGUN ARCHIVO ROLL CARGADO  
              Sleep 20
 ' resetea todo para limpiar y cargar cancion
-             If NombreCancion > "" And cargaCancion=0 Then 
+             If NombreCancion > "" And cargaCancion=NO_CARGAR_PUEDE_DIBUJAR Then 
                   NombreCancion = ""
-                  param.encancion=0
+                  param.encancion=SIN_CANCION
                   ResetAllListBox(3)
                   For i As Integer = 1 To Tope
                     CheckBox_SetCheck(cbxnum(i),0)
@@ -38,20 +38,20 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                      cargariniciotxt(NombreCancion, CANCION)
                      If tope=0 Then  ' directorio fallido
                         NombreCancion = ""
-                        cargacancion=0
-                        param.encancion=0
-                        abrirRoll=2 ' roll ya esta abierto abre mas abajo
+                        cargacancion=NO_CARGAR_PUEDE_DIBUJAR
+                        param.encancion=SIN_CANCION 
+                        abrirRoll=CARGAR_MAS_PISTAS_O_CANCION ' roll ya esta abierto abre mas abajo
                      Else
-                        cargacancion=1
-                        param.encancion=1
-                        abrirRoll=3 ' para evitar que abra rolloop de nuevo
+                        cargacancion=CARGAR_NO_PUEDE_DIBUJAR
+                        param.encancion=CON_CANCION
+                        abrirRoll=EVITAR_LLAMAR_ROLLLOOP_DE_NUEVO ' para evitar que abra rolloop de nuevo
                      EndIf
 
                   Else
                   ' si Tope=0 no cargo nada ni abrio roll posiblemente
                      NombreCancion = "" ' serai como una carga inicial...  
-                     cargaCancion=1
-                     abrirRoll=0 ' para que abra rolloop nunca abrio tal vez
+                     cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
+                     abrirRoll=NO_CARGAR ' para que abra rolloop nunca abrio tal vez
                   EndIf   
 
              EndIf
@@ -63,11 +63,11 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
 ' toma solo el nombre y path de la cancion no carga las pistas todavia
                 cargarDirectorioCancion(NombreCancion)
                 
-                param.encancion=1
+                param.encancion=CON_CANCION
                 Print #1," abrirRoll ";abrirRoll
-               If abrirRoll=2 Then ' ver rollloop roll esta cargado vengo a cargar cancion de nuevo
+               If abrirRoll=CARGAR_MAS_PISTAS_O_CANCION Then ' ver rollloop roll esta cargado vengo a cargar cancion de nuevo
                ' por ejemplo tenia solo un roll abierto
-                  param.encancion=0
+                  param.encancion=SIN_CANCION
                   ResetAllListBox(3)
                   Resetear () 
                   CargarPistasEnCancion ()
@@ -76,7 +76,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                     NombreCancion = "" ' directorio fallido
                   EndIf
                   CANCIONCARGADA=True
-                  param.encancion=1
+                  param.encancion=CON_CANCION
 
                EndIf
              EndIf
@@ -127,7 +127,7 @@ Sub CTRL1007()
           If NombreCancion > ""  Then
              GrabarCancion()
           EndIf
-          MenuNew=0           
+          MenuNew=MENU_INICIAL           
           carga=1
               
        EndIf
@@ -189,7 +189,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
            If NombreCancion > ""  Then 
               GrabarCopiadePista() ' estoy en cancion copiando una pista desde otra pista
            EndIf   
-          MenuNew=0           
+          MenuNew=MENU_INICIAL           
           carga=1
 
 
@@ -488,7 +488,7 @@ Sub CTRL1040 () ' <========== seleccion de instrumento por orden Alfabetico
               EndIf  
 
 
-              MenuNew=0           
+              MenuNew=MENU_INICIAL           
               carga=1
 
 
@@ -544,10 +544,10 @@ BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio
                   instruOld=instru
                   Roll.trk(1,NA).inst= CUByte(instru)
                   Track(ntk).trk(1,1).nnn= CUByte(instru)
-               If abrirRoll=0 Then
-      Print #1,"1060 abrirRoll=0 entro"
-                  abrirRoll=1
-                  cargacancion=0
+               If abrirRoll=NO_CARGAR Then
+      Print #1,"1060 abrirRoll=NO_CARGAR_ROLL entro"
+                  abrirRoll=CARGAR
+                  cargacancion=NO_CARGAR_PUEDE_DIBUJAR
                   If reiniciar=1 Then
                      ThreadDetach(threadloop)
                      usarmarcoOld=usarmarco
@@ -633,15 +633,15 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
                tope=ntk
                *po = hasta -1
                GrabarTrack(ntk)
-               abrirRoll=0
+               abrirRoll=NO_CARGAR
                If ntk=1 Then 
-                  abrirRoll=1
-                  cargacancion=0
+                  abrirRoll=CARGAR
+                  cargacancion=NO_CARGAR_PUEDE_DIBUJAR
                   CANCIONCARGADA=TRUE
                EndIf
                If ntk>=2 Then
-                 cargacancion=1
-                 abrirRoll=0
+                 cargacancion=CARGAR_NO_PUEDE_DIBUJAR
+                 abrirRoll=NO_CARGAR
                  CANCIONCARGADA=FALSE
                EndIf
 

@@ -282,7 +282,7 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
        
     EndIf
 
-''''cargaCancion=1 '12-02-2022 mientras carg las pista el 1 indica cargando pistas    
+''''cargaCancion=CARGAR_NO_PUEDE_DIBUJAR '12-02-2022 mientras carg las pista el 1 indica cargando pistas    
     print #1,"FIN CargaPistasEjec"
     print #1,"-------------------------------------------------------"
 'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
@@ -297,7 +297,8 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer) 
 ' para cargar desde disco un track se usa esta sub y luego TrackaRoll para verlo
 ' y editarlo, ubirtk es si al carga se hace por argv desde el explorer en disco
 'abrirRoll=0  
-cargacancion=0
+cargacancion=NO_CARGAR_PUEDE_DIBUJAR 'PUEDE DIBUJAR PORQUE NO HAY REDIM  DE ROLL
+' NO CARGAR CANCION PORQUE SON TRACKS...Y ACA CARGAMOS UN SOLO TRACK..
 ''TRACKCARGADO =FALSE ' CONTROL DE TRACK(0)
   print #1,"----------------------------------------------"
   print #1,"1) CargarTrack nombre, ntk= ", nombre , ntk  
@@ -512,7 +513,7 @@ pmTk(ntk).tiempopatron=tiempoPatron
  ' grabara a Track(0), los tracks 1 a 32 son exclusivos de Cancion.
  ' SI la cancion ya está cargada o no hay cancion ajusto al ambiente los parametros
  ' cargados de ese track puntual, puede ser 0 u otro track
-     If cargaCancion=0  Then ' termino la carga de cancion es otro evento despues carga de un track aislado¿?
+     If cargaCancion=NO_CARGAR_PUEDE_DIBUJAR  Then ' termino la carga de cancion es otro evento despues carga de un track aislado¿?
         NB=pmTk(ntk).NB  ' por ejemplo cargar un track clickeado en lista
         NA=pmTk(ntk).NA
         desde=pmTk(ntk).desde
@@ -1647,8 +1648,7 @@ nota=0:dur=0
      CantTicks = maxgrb * 2 ' pongo mas por siquiere grabar mas datos
    EndIf
    'print #1,"TrackaRoll, NB, NA, CantTricks", NB,NA, CantTicks
-' redim de ROLL de Visualizacion , para ello detenemos 
-' la escritura sobre la pantalla con cargaCancion=1 o repro=1
+' redim de ROLL de Visualizacion , para ello  
 repro=1
 Sleep 10 ' para que surja efecto la detencion ,,,   
   'If  ntk= 0 Then
@@ -1819,7 +1819,7 @@ EndIf
 ' 2)  pasar lso datos del Track(x) a Track(0)!! si es cancion
 ' el redim esta arriba
 Print #1,"cargaCancion DEBE SER 1 ",cargaCancion 
-If cargaCancion=1 Or CANCIONCARGADA=TRUE Then ' MIENTRAS HAYA MAS DE UN TRACK O SEA UNA CANCION  
+If cargaCancion=CARGAR_NO_PUEDE_DIBUJAR Or CANCIONCARGADA=TRUE Then ' MIENTRAS HAYA MAS DE UN TRACK O SEA UNA CANCION  
  For i1=1 To pmTk(ntk).MaxPos 
   For i2 = 1 To lim3
   Track(0).trk(i1,i2) = Track(ntk).trk(i1,i2)
@@ -1862,7 +1862,7 @@ End If
 
 Print #1, "TrackaRoll Fin ntk, patch " ; ntk, Roll.trk(1,NA).inst
 repro=0 ' volvemos a dibujar en pantalla...18-04-2024
-cargacancion=0 ' " " 
+cargacancion=NO_CARGAR_PUEDE_DIBUJAR ' " " 
 Sleep 5
 'hemos copiado el track ntk en el Track(0) que corresponde al Track asociado a Roll.
 '--------------------------------Track(0) fin
@@ -3097,10 +3097,10 @@ If NombreCancion > "" Then
 Else
 ntk=0
 EndIf 
-cargaCancion=1
+cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
 ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
 RollaTrack Track(), ntk,Roll
-cargaCancion=0
+cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
 ReCalCompas (Roll)
 
 EndIf
@@ -3108,7 +3108,7 @@ EndIf
 End Sub
 
 Sub CargarSinRoll ()
- cargaCancion=0 ' para que no entre mas luego de cargada la cancion
+ cargaCancion=NO_CARGAR_PUEDE_DIBUJAR ' para que no entre mas luego de cargada la cancion
    s5=2  '11-06-2022
    Erase mel_undo, undo_acorde, undo_kant_intervalos
    mel_undo_k=0: ig=0:cnt_acor=0

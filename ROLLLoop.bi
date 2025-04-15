@@ -814,7 +814,7 @@ If MaxPos <=6 Then ' no borra Roll cuando cierro y abro el grafico pero tengo da
 EndIf
 
 If NombreCancion > "" Then
- abrirRoll=4
+ abrirRoll=REABRIR_ROLL_CON_DATOS_CARGADOS
 EndIf
  ALTO=param.alto
  ANCHO=param.ancho
@@ -915,7 +915,7 @@ End Select
 
 ' Print #1,"call roolloop, tipoescala",tipoescala_inicial
 ' Print #1,"call roolloop, notaescala",notaescala_inicial  
-'If cargacancion=1 Then SOLO PARA DREBUG
+'If cargacancion=CARGAR_NO_PUEDE_DIBUJAR Then SOLO PARA DREBUG
    
  ' Print #1,"4 ROLLLOOP ENTRA A CARGAR PISTAS 1ERA VEZ cargaCancion ES 1 SI O SI ",cargaCancion
 'EndIf
@@ -928,7 +928,7 @@ If ubiroll > 0 Then  ' CARGA DE ARCHIVOS POR LINEA DE COMANDO DE ROLLMUSIC
     CargaArchivo (Roll,ubiroll) ' aca ajusta ubiroll a 2
    s5=2
    ROLLCARGADO=TRUE
-   MenuNew=0
+   MenuNew=MENU_INICIAL
   param.ubiroll=ubiroll ' vale 2
   portout=CInt(pmTk(0).portout)
    
@@ -954,7 +954,7 @@ Print #1," desde 892 ";desde
     EndIf
 
   '  print #1,"despues RecalCompas veo nombre ", titulosTk(0)
-    MenuNew=0
+    MenuNew=MENU_INICIAL
     ubirtk=0
    param.ubirtk=0
 ' abrir ports si no estan abiertos 
@@ -970,11 +970,11 @@ If instancia = 7  Then ' 04-03-2024 LOGRE LEVANTAR CANCION EN UN ROLL EXTERNO
    Print #1, "rollloop NombreCancion ", NombreCancion
     
 '' carga de cancion porlinea de comandos
-    cargacancion=1 
+    cargacancion=CARGAR_NO_PUEDE_DIBUJAR 
     CargarPistasEnCancion ()
     cargariniciotxt(NombreCancion, CANCION)
     instancia=107  ' ficticio para que entre al if de TAB pero  que no entre en el resto ni aca
-    param.encancion=1
+    param.encancion=CON_CANCION
     
       
  EndIf
@@ -1004,7 +1004,7 @@ stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 ' queda congelado en los 1eros compasaes mostrados al terminar esos procesos mencionados
 ' se se libera la escrituta al grafico...vermeos si sirve para seguirgrabando pistas y reproduciendo 
 ' en mejores condiciones,,,
-If  cargaCancion=1  Or repro=1 Or  GrabarEjec=GrabarPistaEjecucion Then
+If  cargaCancion=CARGAR_NO_PUEDE_DIBUJAR  Or repro=1 Or  GrabarEjec=GrabarPistaEjecucion Then
 ' esta cargando cancion 
    'Locate 5,10
    'Print "CARGANDO ...PISTA Nro ", ntk
@@ -1106,7 +1106,7 @@ Do
 'Print #1,"1051 do 2, ROOLLOOP DESDE "; desde
 
 '---------
-'simulamos TAB para cargaCancion=1 cuando recien se carga la cancion
+'simulamos TAB para cargaCancion=CARGAR_NO_PUEDE_DIBUJAR cuando recien se carga la cancion
 ' no permitimos cambio de track durante el play aveces trae problemas
 ' por la apertura de ports hay que analizar, no deberia el play de cancion
 ' solo usar los tracks y lo visual es solo Roll 
@@ -1117,11 +1117,11 @@ Do
 'Print #1,"1062  DO2 ROOLLOOP DESDE GrabarPenta "; desde,GrabarPenta
 
 
-If MultiKey(SC_TAB) And (instancia=0 Or instancia= 107) And CANCIONCARGADA And play=0 Or cargaCancion=1 Or clickpista=1   Then
+If MultiKey(SC_TAB) And (instancia=0 Or instancia= 107) And CANCIONCARGADA And play=0 Or cargaCancion=CARGAR_NO_PUEDE_DIBUJAR Or clickpista=1   Then
    If GrabarPenta=1 Then     'sale sin procesar
    Else   
 
-   cargaCancion=0 ' para que no entre mas luego de cargada la cancion
+   cargaCancion=NO_CARGAR_PUEDE_DIBUJAR ' para que no entre mas luego de cargada la cancion
    s5=0  '11-06-2022
    Erase mel_undo, undo_acorde, undo_kant_intervalos
    mel_undo_k=0: ig=0:cnt_acor=0
@@ -1906,10 +1906,10 @@ FileFlush (-1)
        End 0 ''31-03-25 si entro por linea de comando es 2 
    EndIf
    If MaxPos > 2 Then
-     abrirRoll=4 
+     abrirRoll=REABRIR_ROLL_CON_DATOS_CARGADOS 
      Terminar=3
    Else
-     abrirRoll=0
+     abrirRoll=NO_CARGAR
      reiniciar=1
    EndIf
   Exit Sub
@@ -2009,7 +2009,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
 
         EndIf   
       
-      menunew=0
+      menunew=MENU_INICIAL
    EndIf
    
  EndIf  
@@ -2345,7 +2345,7 @@ EndIf
 
 ' ----------INGRESO DE DURACIONES DE NOTAS -------------
 If COMEDIT = TRUE Then  
- If (menuNew = 2 Or menuNro=2) Then  
+ If (menuNew = PARAMETROS_ROLL Or menuNro=PARAMETROS_ROLL) Then  
   If MultiKey(SC_1) Then
    DUR = 1 :Exit Do
   EndIf
@@ -3359,7 +3359,7 @@ If (ScreenEvent(@e)) Then
   Case EVENT_MOUSE_WHEEL      ' <<<=== MOUSE WHEEL
    ' new position & e.z
       
-    If cargaCancion=1 Then ' 10-10-2021 durante al carga de cancion deshabilitamos
+    If cargaCancion=CARGAR_NO_PUEDE_DIBUJAR Then ' 10-10-2021 durante al carga de cancion deshabilitamos
        Exit Do
     EndIf   
    posmouse = e.z
@@ -3848,12 +3848,12 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
   
  ' ====> TRABAJO CON MOUSEX Y MOUSEY 
  '------------------------------------------------------------------- 
- If cargacancion=0  Then ' evita flickr por carga de cancion
+ If cargacancion=NO_CARGAR_PUEDE_DIBUJAR  Then ' evita flickr por carga de cancion
    GetMouse mouseX, mouseY, , MouseButtons   ' <=======  CLICK EVENTOS
  EndIf
 '------- MENU CLICK EDIT PARA ENTRAR EN COMEDIT = TRUE EDICION
  If (mouseY >= edity1 ) And (mouseY <= edity2) Then
-  If (mouseX >= 36) And (mouseX <= 70) And (menuNew=2 Or menuNro=2)  Then
+  If (mouseX >= 36) And (mouseX <= 70) And (menuNew=PARAMETROS_ROLL Or menuNro=PARAMETROS_ROLL)  Then
   ' =====> EDIT <===
    'SI ADEMS SEUSA CTRL-M SEPUEDE modificar ,agregr acordes e insertar
    ' 1 o varias notas en forma horizontal siemrpe la misma nota
@@ -4037,10 +4037,10 @@ Dim As Integer i3
      If Maxpos > 2 Then
       
         Terminar=3  ' para que no barra la pantalla 
-        abrirRoll=4 'con 4 puede reabrir la ventana con los datos cargados
+        abrirRoll=REABRIR_ROLL_CON_DATOS_CARGADOS 'con 4 puede reabrir la ventana con los datos cargados
      
      Else
-        abrirRoll=0
+        abrirRoll=NO_CARGAR
         reiniciar=1
      EndIf
    
@@ -4859,7 +4859,7 @@ ButtonGadget(2,530,30,50,40," OK ")
  EndIf 
  ' 26-01-2022 espaciado de lineas (2) movido desde 2713 afecta a acordes
 
- If MultiKey(SC_CONTROL) And lockip=1 And cargacancion=0  Then
+ If MultiKey(SC_CONTROL) And lockip=1 And cargacancion=NO_CARGAR_PUEDE_DIBUJAR  Then
     If incWheel < 0 Then
        deltaipf=deltaipf + 1
     EndIf
@@ -5369,7 +5369,7 @@ EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
  
 ' ------------------------------------------------------------------
-If MouseButtons And 1  And cargacancion=0 Then
+If MouseButtons And 1  And cargacancion=NO_CARGAR_PUEDE_DIBUJAR Then
    old_btn_press_time = new_btn_press_time
    new_btn_press_time = Timer
    If ((new_btn_press_time - old_btn_press_time) < dbl_click_time) Then

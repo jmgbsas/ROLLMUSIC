@@ -14,10 +14,10 @@ On Error Goto errorhandler
 
               CTRL100610061 (hMessages , Tope )
               StatusBarGadget(33," " )             
-             If abrirRoll=0 And NombreCancion > ""  Then
-                abrirRoll=1
-                cargaCancion=1
-                Print #1,"SALE A CARGAR ROLL POR 1ERA VEZ ABRIRROLL=1 EXIT DO"
+             If abrirRoll=NO_CARGAR And NombreCancion > ""  Then
+                abrirRoll=CARGAR
+                cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
+                Print #1,"SALE A CARGAR ROLL POR 1ERA VEZ ABRIRROLL=CARGAR_ROLL EXIT DO"
                 Exit Do                 
              EndIf
   '           Print #1,"termino 1006 va a abrir Roll"
@@ -30,7 +30,7 @@ On Error Goto errorhandler
 ' CADA PISTA SE PODRA LEVANTAR UNA POR UNA CON LA OTRAOPCION
 ' SOLO DEBO PASAR LOS PARAMETROS...Y SI MODIFICO ALGO
 ' DEBO GRABAR A DISCO Y ENVIAR ORFEN DE RECARGA DE ESA PISTA EN LA CANCION
-   Print #1," CASE 10062 abrirRoll=0 And NombreCancion > ", abrirRoll, NombreCancion
+   Print #1," CASE 10062 abrirRoll=NO_CARGAR_ROLL And NombreCancion > ", abrirRoll, NombreCancion
 
            CTRL1062 (hmessages )
 
@@ -123,7 +123,7 @@ On Error Goto errorhandler
            If NombreCancion > ""  Then
               GrabarRollaTrack(0)
            EndIf
-          MenuNew=0           
+          MenuNew=MENU_INICIAL           
           carga=1
           SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
@@ -280,7 +280,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
        If  abrirRollCargaMidi =0 Then
            CANCIONCARGADA=False
            ''cargaCancion=0  
-           param.encancion=0 
+           param.encancion=SIN_CANCION 
            EstaBarriendoPenta=1
            threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
        End if
@@ -333,7 +333,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
            Case 1025 ' <======== Crear un directorio de Cancion con Pistas separadas
                CrearDirCancion (NombreCancion)
                If NombreCancion > "" Then
-                  param.encancion=1
+                  param.encancion=CON_CANCION
                EndIf    
     '      SetForegroundWindow(hwnd)        
 '-----------------------------------------------------------------------
@@ -388,7 +388,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
               EndIf  
 
 
-              MenuNew=0           
+              MenuNew=MENU_INICIAL           
               carga=1
 
         '     SetForegroundWindow(hwnd)    
@@ -427,13 +427,13 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
                 EndIf  
               EndIf  
 
-              MenuNew=0           
+              MenuNew=MENU_INICIAL           
               carga=1
   
         '      SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1060 ' <========== crea track y reemplaza al existente en la edicion
-             If NombreCancion > ""  Or (abrirRoll=4 And Terminar=3 )Then
+             If NombreCancion > ""  Or (abrirRoll=REABRIR_ROLL_CON_DATOS_CARGADOS And Terminar=3 )Then
                 Terminar=0 ' para que empiece a barrer la pantalla
                 Print #1,"1 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
                 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))   

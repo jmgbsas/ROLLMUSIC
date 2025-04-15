@@ -22,7 +22,7 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
   hwndListBox= ListBoxGadget(PISTASROLL,80,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT Or LBS_NOINTEGRALHEIGHT Or LBS_NOTIFY  )
   GadgetToolTip(PISTASROLL,"Pistas de Cancion con Tracks manuales cargados desde un archivo o creados en una cancion o convertidos e importados desde ejecucion real midi" )
   SetGadgetFont(PISTASROLL,CINT(LoadFont("consolas bold",13))) 
-'  GadgetToolTip(PISTASROLL,"Pistas manuales cargadas desde Roll ")
+
 ' botton todo o nada , sonido o mudo para todas las pistas
   ButtonGadget(BOTON_PISTA_ROLL, 60,20,20,20,"S")
   SendMessage(GadgetID(PISTASROLL),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels

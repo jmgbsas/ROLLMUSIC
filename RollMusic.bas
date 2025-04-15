@@ -3,19 +3,12 @@
 #include "RTMIDISUB.bi"
 #Include "ROLLTRACKS.bi"
 #include "ROLLSUB.bi"
-'' perdi control -m ver pòrque o seguir con TICKS01 donde anda
-'' comparar TICKS01 CON 02 03 QUEDO MAL !!!
-'' DEV02
-'' PROBAR FileListBoxItem !!! 15-12-2024
 '===========================
  Dim As Integer MenuFlag=0, LoopFlag=0 
 'Print #1, "ANTES ROLLLOOP"
 '========================== 
 #include "ROllLoop.bi"
 '==========================
-' comparar con F:\IT64\AREAWORK\ROLLMUSIC-138-INPUT-OK\ que si funciona graba ejecuciones
-'----------------
-
 
 ''https://www.freebasic.net/forum/viewtopic.php?f=3&t=22821&p=204270&hilit=loop+through+an+array+with+the+pointer#p204270
 
@@ -88,13 +81,11 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS cierra y abre grafico tracks sin cancion "
-' revisar mañana que cuando cierro el rollgrafico no pierda los datos eso
-' lo habia logrado ver en las versiones de 309 cual lo hacia y si lo perdi hacer
-' de nuevo ,,
+nroversion="TICKS 0.311 Algunas ConstanteS "
 ' trabajos mediatos:
 ' 2) Vendra version 0.311 que verá si funcionan la seleccion de zonas o partes
-' de la secuencia para trasponer copiar insertar etc,,,, 
+' de la secuencia para trasponer copiar insertar etc,,,, REEMPLAZAMOS NUMEROS
+' POR CONSTANTES CON SIGNIFICADOS
 ' 3) la repeticion de zonas en el play, insertar espacios fin de secuencia 
 '    Borrar zonas ,cambiar notas insertar notas, mover nota horizontalmente
 '    verticalmente ya lo hace con zona y trasponer...podriamos ahcer el move
@@ -203,7 +194,7 @@ stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 'Print #1,"DESPUES ANCHO , ALTO ", ANCHO, ALTO
 '''mxold=0:myold=0
 
-abrirRoll=0
+abrirRoll=NO_CARGAR
 'pistacreada=0
 Dim As Integer k=0, salida=0
 
@@ -224,14 +215,14 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
 'Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 'Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
 'Print #1,"iniio lbound roll.trk ", LBound(param.Roll.trk,2)
-'Print #1, "abrirRoll=1 And cargacancion=1 ",abrirRoll,cargacancion
+'Print #1, "abrirRoll=1 And cargacancion=CARGAR_NO_PUEDE_DIBUJAR ",abrirRoll,cargacancion
 ' abriRoll=1 orden de llamar a Roll grafico
-' abrirRoll=0 no hay orden de abrir Roll
+' abrirRoll=NO_CARGAR_ROLL no hay orden de abrir Roll 0
 
-  If abrirRoll=1 And cargacancion=1 Then
-     abrirRoll=0
+  If abrirRoll=CARGAR And cargacancion=CARGAR_NO_PUEDE_DIBUJAR Then
+     abrirRoll=NO_CARGAR
   '   Print #1," ENTRA A CARGAR PISTAS  cargaCancion = ",cargaCancion
-     param.encancion=0
+     param.encancion=SIN_CANCION
      ResetAllListBox(3)
      Resetear () 
 
@@ -241,7 +232,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
      ''CANCIONCARGADA=TRUE
      ROLLCARGADO=False
      '''lo hace tab-cargaCancion=0
-     param.encancion=1
+     param.encancion=CON_CANCION
      
    If pid1=0 And instancia =0  Then
       pid1=pd1
@@ -250,7 +241,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
    If CANCIONCARGADA=True  Then
      ntk=0 '16-03-2022
       If  EventNumber = 10061 Then
-          cargaCancion=1 
+          cargaCancion=CARGAR_NO_PUEDE_DIBUJAR 
           CargarSinRoll () ''' play sin roll 
       Else
       EstaBarriendoPenta=1 
@@ -259,21 +250,21 @@ Print #1, "1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", Nombr
       EndIf 
     ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
    Else     ''''''''RollLoop ( param) '<--con esto anda
-     cargacancion=0
+     cargacancion=NO_CARGAR_PUEDE_DIBUJAR
    EndIf 
  'Print #1,"ENTRA A CARGAR PISTAS cargaCancion ES 1 SI O SI ",cargaCancion   
     ''''cargacancion=0 esto me ponia en cero antes que lo use el thread!!!!
     ''' RollLoop(param)
     ''Sleep 200 ' NO HACE FALTA AHORA sin este retardo no le da teimpo al thread de cargar a Roll
-    abrirRoll=0
+    abrirRoll=NO_CARGAR
   Else
-    If abrirRoll=1 And cargacancion=0 Then
+    If abrirRoll=CARGAR And cargacancion=NO_CARGAR_PUEDE_DIBUJAR Then
        CANCIONCARGADA=False
        ''cargaCancion=0  
-       param.encancion=0 
+       param.encancion=SIN_CANCION 
        Print #1,"CALL ROLLLOOP II) "
        If  EventNumber=10061 Then
-           cargaCancion=1 
+           cargaCancion=CARGAR_NO_PUEDE_DIBUJAR 
            CargarSinRoll () '''28-02-2024 play sin roll
        Else
 Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
@@ -282,7 +273,7 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", Nombr
        EndIf
 
        ''RollLoop ( param)
-       abrirRoll=0
+       abrirRoll=NO_CARGAR
     EndIf
   EndIf
 

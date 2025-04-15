@@ -100,6 +100,27 @@ Const HABILITAR = TRUE
 Const DESHABILITAR = FALSE 
 Const SI=1
 Const NO=0
+Const CARGAR = 1
+Const NO_CARGAR =0 
+Const CARGAR_MAS_PISTAS_O_CANCION = 2
+Const REABRIR_ROLL_CON_DATOS_CARGADOS=4
+Const NO_CARGAR_PUEDE_DIBUJAR =0 
+Const CARGAR_NO_PUEDE_DIBUJAR =1
+Const EVITAR_LLAMAR_ROLLLOOP_DE_NUEVO = 3 
+Const CON_CANCION = 1
+Const SIN_CANCION = 0
+'------menu grafico
+Const MENU_INICIAL = 0
+Const COMANDOS_ARCHIVO = 3
+Const PARAMETROS_ROLL = 2
+Const OPCIONES_MENU = 5
+Const AJUSTE_OCTAVAS = 6
+Const PARAMETROS_SECUENCIA = 8
+Const AJUSTE_OCTAVAS = 6
+Const TIPO_DE_COMPAS = 7
+Const CONFIGURACION = 9
+Const SEL_MIDI = 10
+Const NRO_CANAL = 11
 
 Dim Shared As Integer PISTASEJECSELECCIONADA=0
 Dim Shared As Integer PISTASROLLSELECCIONADA=0
@@ -847,7 +868,7 @@ Dim Shared As Integer tipoescala_num = 1, notaescala_num = 1,tipoescala_num_ini=
 Dim Shared As String notas_esc_inicial (1 To 24)
 
 Dim Shared As Integer desdevector,undo_kant_intervalos(1 To 500)
-Dim Shared As Integer hastavector,abrirRoll=0 ,abrirRollCargaMidi=0   
+Dim Shared As Integer hastavector,abrirRoll=NO_CARGAR ,abrirRollCargaMidi=0   
 Dim Shared As String grado_inicial(1 To 24)
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
@@ -1152,7 +1173,7 @@ trasponer=0
 pid1=0
 
 
-cargaCancion=0
+cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
 Dim Shared  As pasa param ', param2 
     param.c= c
     param.Roll = Roll
@@ -1161,7 +1182,7 @@ Dim Shared  As pasa param ', param2
     param.alto = ALTO
     param.ubiroll=0
     param.ubirtk=0
-    param.encancion=0
+    param.encancion=SIN_CANCION
     p1=@param
 
 ' a disco puedo grabarsolo CargaIn para cada ejecucion y al cargarla reconstruir en memoria

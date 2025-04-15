@@ -1863,7 +1863,7 @@ curpos =>0
 patchsal=1
 Track(ntk).trk(1,1).nnn=1 
 Track(ntk).trk(MaxPos,1).dur  =182 
-cargacancion=1
+cargacancion=CARGAR_NO_PUEDE_DIBUJAR
 MaxPos=pmTk(ntk).MaxPos 
 pmTk(ntk).posn=pmTk(ntk).MaxPos - 2
 ROLLCARGADO=TRUE
@@ -1871,12 +1871,12 @@ numdurasmidi(1)=0
 Erase duras
 
 TrackaRoll (Track(),ntk,Roll)
-cargaCancion=0
+cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
 repro=0
 Sleep 5
 ReCalCompas (Roll)
           '  print #1,"despues RecalCompas veo nombre ",nombre
-            MenuNew=0
+            MenuNew=MENU_INICIAL
             carga=1 ' <======= control de Carga 
             TRACKCARGADO=TRUE
             ROLLCARGADO=FALSE
@@ -2535,7 +2535,7 @@ ntk=0 ' Cargar en 3 vectores Roll pmTk(0) y Track(0).
 ' pmTk(0) y a Track(0)
 '  carga roll
 ' al cargar borro todo el undo    
-abrirRoll=2 ' habilita la carga de una cancion
+abrirRoll=CARGAR_MAS_PISTAS_O_CANCION ' habilita la carga de una cancion
    mel_undo_k=0 :ig=0:cnt_acor=0
    Erase mel_undo, undo_acorde,undo_kant_intervalos
 ' FIN BORRO UNDO
@@ -3088,13 +3088,13 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 
 
  Select Case menuNro
-  Case 0
+  Case MENU_INICIAL '0
   ' 0.1 ==> [Archivo]
    If mousex > 46 And mousex< 111 And mousey < 50   Then
     cairo_set_source_rgba c, 0, 1, 0, 1
      ''font=18 ' el menu esta dise�ado para este tama�o 
     If MouseButtons And 1 Then
-     menuNew = 3  ''
+     menuNew = COMANDOS_ARCHIVO  ''
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -3108,7 +3108,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
     cairo_set_source_rgba c, 0, 1, 0, 1
     '''If MouseButtons And 1 Then
     If MouseButtons And 1 Then  ' funciona mejor ? veremos...
-     menuNew=2
+     menuNew=PARAMETROS_ROLL
      cierroedit= 0 ' habilita EDIT de nuevo
     EndIf
    Else
@@ -3124,7 +3124,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
       If MouseButtons And 1 Then
          menuOldStr="[Ver]"
          Print #1,"voy a menu 8 desde ver"
-         menuNew=8
+         menuNew=PARAMETROS_SECUENCIA '8
       EndIf 
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -3146,7 +3146,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
      While InKey<>"" :Wend
    '   print #1,"--->entra a reproducir thread1 "
               play=1
-        menuNew =0
+        menuNew =MENU_INICIAL
          Print #1,"hizo click para llamar a playall, maxpos ",maxpos 
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 2 Then
@@ -3179,7 +3179,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    If  MultiKey(SC_ALT) And mousex > 483 And mousex< 561 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
         Sleep 20
-        menuNew=5
+        menuNew=OPCIONES_MENU '5
         
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -3203,13 +3203,13 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 
    cairo_stroke(c)
   Case 1
-  '1.1
+  '1.1 ELIMINADO SU USO 
    
    t=  "      <MENU=(<=|=>)>/<VENTANA=(MOVER=DRAGAR CINTA)(POSICON NORMAL,SUBE/BAJA BORDE INFERIOR=F7-F8)> "
    
-  Case 2 ' para posicionar  en pantalla NO BORRAR. <= EDIT MENU
+  Case PARAMETROS_ROLL ''2 ' para posicionar  en pantalla NO BORRAR. <= EDIT MENU
  
-   menuNew=2
+   menuNew=PARAMETROS_ROLL
    
    cairo_move_to(c, 0, 36 )
    If COMEDIT= TRUE   Then
@@ -3256,7 +3256,7 @@ EndIf
 
    cairo_stroke(c)
 
-   menuNew=2
+   menuNew=PARAMETROS_ROLL
   ' ============================================================= 
   ' BORRAR HACIA Derecha y Ajustar MaxPos a la posicion actual en Edit Lectura
   '====================================================== 
@@ -3283,13 +3283,13 @@ EndIf
  '' VUELVE menu grafico Rollmusic cinta AL INICIO....
   If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
      If MouseButtons And 1 Then
-      MenuNew=0
+      MenuNew=MENU_INICIAL
      EndIf
   EndIf
 
   
 
-  Case 3 ' ==========================> caso 3
+  Case COMANDOS_ARCHIVO '3  ==========================> caso 3
    '   t = " [NUEVO] [ABRIR] [GRABAR] [GRABAR COMO] [EXPORTAR] [CERRAR] [SALIR] "
 
    '===> 3.1 [NUEVO]
@@ -3300,7 +3300,7 @@ EndIf
          'If dobleclick Then
             Nuevo(Roll,1)
             Sleep 50
-            MenuNew=0
+            MenuNew=MENU_INICIAL
          'EndIf
          
       EndIf 
@@ -3323,9 +3323,9 @@ EndIf
       EndIf 
        CargaArchivo(Roll, 0)
        s5=0 '11-06-2022
-       cargaCancion=0
+       cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
     '   print #1,"nombre cargado en Roll ",nombre
-       MenuNew=0
+       MenuNew=MENU_INICIAL
        carga=1  ' <======= control de Carga
        ROLLCARGADO=TRUE ' aunque este en cancion puedo cargar un roll
     EndIf
@@ -3363,11 +3363,11 @@ EndIf
           '  print #1,"TrackaRollcarga rtk veo nombre ",nombre 
             ReCalCompas (Roll)
           '  print #1,"despues RecalCompas veo nombre ",nombre
-            MenuNew=0
+            MenuNew=MENU_INICIAL
             carga=1 ' <======= control de Carga 
             TRACKCARGADO=TRUE
             ROLLCARGADO=FALSE
-            cargaCancion=0
+            cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
          EndIf
 
      Else
@@ -3394,7 +3394,7 @@ EndIf
  '       AMIDI=1
   '     Print #1,"3) A MIDI PLANO DESDE MENU ROLL" 
     EndIf
-    MenuNew=0
+    MenuNew=MENU_INICIAL
     
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -3441,7 +3441,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
        EndIf
          carga=1
          lockip=2 ' habilita mouse 28-08-2021
-        MenuNew=3  '  sera aca ? jjjj decia menunew=0
+        MenuNew=COMANDOS_ARCHIVO  '  sera aca ? jjjj decia menunew=0
        
     EndIf
    Else
@@ -3466,7 +3466,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
         
        GrabarArchivo(1)
           lockip=2 ' habilita mouse 28-08-2021
-       MenuNew=0
+       MenuNew=MENU_INICIAL
        carga=1   
     EndIf
    Else
@@ -3509,7 +3509,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
         If esroll > 0 Or esejec >0 Then ' con o sin cancion
            GrabarRollaTrack(1) ' el 0 no lo toma es indiferente
         EndIf
-        MenuNew=0           ' por formato de TRack anteponiendo[0]
+        MenuNew=MENU_INICIAL  ' por formato de TRack anteponiendo[0]
         carga=1
     EndIf
    Else
@@ -3534,17 +3534,17 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
 '----
    If mousex > 330 And mousey < 50 And mousex < ANCHO-50 Then
     If MouseButtons And 1 Then
-       MenuNew=0
+       MenuNew=MENU_INICIAL
     EndIf
    EndIf
    
-
-  Case 5 ' OPCIONES MENU, [COMPAS] [OCTAVAS] [TEMPO] [CONFIGURACION]
+'------------------------------------------------------
+  Case OPCIONES_MENU '5  OPCIONES MENU, [COMPAS] [OCTAVAS] [TEMPO] [CONFIGURACION]
 
   If mousex > 38 And mousex < 120 And mousey < 50  Then  'COMPAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
-     menuNew= 7
+     menuNew= TIPO_DE_COMPAS
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -3553,7 +3553,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
   If mousex > 130 And mousex < 235 And mousey < 50  Then  'OCTAVAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
-     menuNew=6
+     menuNew=OCTAVAS
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -3564,7 +3564,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
     If MouseButtons And 1 Then
      menuOldStr="[TEMPO]"
      
-     menuNew=8
+     menuNew=PARAMETROS_SECUENCIA
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -3574,7 +3574,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
   If MultiKey(sc_Control) And mousex > 354 And mousex < 514 And mousey < 50  Then  'OCTAVAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
-     menuNew=9
+     menuNew=CONFIGURACION ''9
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -3583,8 +3583,8 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
    t=  " [CONFIGURACION]": cairo_show_text(c, t)
  cairo_stroke(c)
  
-
-  Case 6 'OPCIONES => OCTAVAS
+'----------------------------------------------------------------------
+  Case AJUSTE_OCTAVAS '6 OPCIONES => OCTAVAS
    
 ' ===> 6.1 [OCTAVAS DESDE   - / + ] 
    If mousex > 38 And mousex< 123 And mousey < 50  Then ' OCTAVAS LABEL
@@ -3701,19 +3701,21 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
      redimensionar=1
      RTA="REDIMENSION VISUAL y FISICA OK"
    '  print #1, RTA
-      MenuNew=0
+      MenuNew=MENU_INICIAL
     EndIf
    Else
   '  cairo_set_source_rgba c, 1, 1, 1, 1
    
    EndIf
    t = "  [REDIMENSIONAR]<-NO BORRA DATOS" + RTA
-   Case 7
+'----------------------------------------------------------
+   Case TIPO_DE_COMPAS ' 7
+
    If mousex > 38 And mousex < 90 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=10000000
-     menuNew= 7
+     menuNew= TIPO_DE_COMPAS
      TCompas="4/4 "  ' para mostrar en pantalla  
      TipoCompas=Tcompas4_4  ' 8 para guardar en disco roll o rtk
        pmTk(0).tipocompas = TipoCompas 
@@ -3731,7 +3733,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=15000000
-     menuNew=7
+     menuNew=TIPO_DE_COMPAS
      TCompas="12/8"
      TipoCompas=Tcompas12_8  ' 20  
      'If mAXpOS > 2 Then
@@ -3747,7 +3749,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=5000000
-     menuNew=7
+     menuNew=TIPO_DE_COMPAS
      TCompas="2/4 "
      TipoCompas=Tcompas2_4  ' 6 
 
@@ -3765,7 +3767,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=7500000
-     menuNew=7
+     menuNew=TIPO_DE_COMPAS
      TCompas="3/4 "
      TipoCompas=Tcompas3_4  ' 7
      'If mAXpOS > 2 Then
@@ -3782,7 +3784,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=7500000
-     menuNew=7
+     menuNew=TIPO_DE_COMPAS
      TCompas="6/8 "
      TipoCompas=Tcompas6_8  ' 7
   '   If mAXpOS > 2 Then
@@ -3798,8 +3800,8 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
  
  cairo_stroke(c)
 
-
-  Case 8
+'-----------------------------------------------------
+  Case PARAMETROS_SECUENCIA ''8
  Print #1,"entro a menu 8 desde ver"
 
       Select Case  menuOldStr
@@ -3808,7 +3810,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
          
           If pubi =0 Then
            Print #1,"voy a EntrarTEcla desde ver menu8"
-            menunew=0
+            menunew=MENU_INICIAL
             thread3= ThreadCall EntrarTeclado()
              pubi=1
           EndIf
@@ -3819,22 +3821,22 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
           Print #1,">>>>>>>>TIEMPO PATRON viejo>>>>>>>>>>,PUBI ", tiempoPatron,pubi
       
           If pubi =0 Then
-             menunew=0
+             menunew=MENU_INICIAL
                
              thread3= ThreadCall EntrarTeclado()
             pubi=1   
           EndIf
 
       End Select
-    menunew=0
+    menunew=MENU_INICIAL
    
-
-   Case 9
+'-----------------------------------------------------
+   Case CONFIGURACION ''9
   ' [MIDI] [CANALES]
     If mousex > 42 And mousex < 90  And mousey < 50  Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
-         menunew=10 
+         '''menunew=MIDI '10 
       EndIf ' mousebuttons
            
     Else
@@ -3846,7 +3848,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
    If mousex > 120 And mousex < 190  And mousey < 50 Then 
      cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 Then
-        menunew=11 ' NRO CANALES 
+        menunew=NRO_CANAL '' 11  NRO CANALES 
         
      EndIf ' mousebuttons
    
@@ -3857,20 +3859,21 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
     t = " [CANALES]":cairo_show_text(c,t)
 
    cairo_stroke(c)
- Case 10
+'------------------------------------------------------
+ Case SEL_MIDI ''' 10
   '[MIDI-OUT] [MIDI-IN]
     If mousex > 90 And mousex < 190  And mousey < 50  Then ' <= NUEVO
        cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 And cierroport = 0 Then
         cierroport=1 
        Dim miport As Integer=1
-       MenuNew=10
+       MenuNew=SEL_MIDI '' 10
        threadsel = ThreadCreate(@selport(), CPtr(Any Ptr, miport))
       EndIf ' mousebuttons
   
     Else
       cairo_set_source_rgba c, 1, 1, 1, 1
-      MenuNew=10
+      MenuNew=SEL_MIDI '' 10
     EndIf
 
     t = "             [MIDI-OUT]"
@@ -3881,18 +3884,18 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
       If MouseButtons And 1   And cierroport = 0 Then
        cierroport=1 
        Dim miport As Integer=2
-       MenuNew=10
+       MenuNew=SEL_MIDI ''10
        ' create con argumentos
        threadsel = ThreadCreate(@selport(), CPtr(Any Ptr, miport)) '' 'GtkListBox()
       EndIf ' mousebuttons
     
     Else
       cairo_set_source_rgba c, 1, 1, 1, 1
-          MenuNew=10
+          MenuNew=SEL_MIDI ''10
     EndIf
     t = " [MIDI-IN]":cairo_show_text(c,t):t=""
-
-  Case 11
+'-------------------------------------------
+  Case NRO_CANAL ''11
 
 
      If mousex > 40 And mousex < 190  And mousey < 50 Then 'And listaMIDI = 0 Then ' <= NUEVO
@@ -3904,11 +3907,11 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
          
        'Print #1,"canal elegido luego del thread2 en menu ",canalx
       EndIf ' mousebuttons
-      MenuNew=9
+      MenuNew=CONFIGURACION '9
 
      Else
       cairo_set_source_rgba c, 1, 1, 1, 1
-      MenuNew=9
+      MenuNew=CONFIGURACION '9
      EndIf
 
      t = "      Seleccione un canal"
@@ -3950,7 +3953,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
  cairo_set_font_size (c, font)
    If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
      If MouseButtons And 1 Then
-      MenuNew=0
+      MenuNew=MENU_INICIAL
      EndIf
   EndIf
 
@@ -4877,7 +4880,7 @@ Print #1,"inicia CargaPistasEnCancion"
         Print #1,"dice que no hay archivos "
         CANCIONCARGADA=FALSE
         ' NO HAY NADA QUE CARGAR
-        abrirRoll=2 ' habilita otro camino para cargar pistas
+        abrirRoll=CARGAR_MAS_PISTAS_O_CANCION ' habilita otro camino para cargar pistas
         Exit Sub
      Else
        ' carga Todos los tracks de cancion en un Loop
@@ -4928,7 +4931,7 @@ Print #1,"inicia CargaPistasEnCancion"
        ntk=1   ' tab le suma 1 pero si creo pistas estria  mal 05-03-2022 ���
     EndIf
 
-cargaCancion=1 '12-02-2022 mientras carg las pista el 1 indica cargando pistas    
+cargaCancion=CARGAR_NO_PUEDE_DIBUJAR '12-02-2022 mientras carg las pista el 1 indica cargando pistas    
     Print #1,"FIN CargaPistasEnCancion no debe calcuar *po ",*po
     Print #1,"-------------------------------------------------------"
 'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  05-mar-2024 veremos

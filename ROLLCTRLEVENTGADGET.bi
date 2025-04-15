@@ -528,7 +528,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
           threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
           SetForegroundWindow(hwnd)
        ''RollLoop ( param)
-           abrirRoll=0 'EVITA CARGA ROLL DE MENU PRONCIPAL
+           abrirRoll=NO_CARGAR 'EVITA CARGA ROLL DE MENU PRONCIPAL
         EndIf  
 ' SI EL USUARIO ABRE ROLL MANUALMENTE ..Y LEDA UN CLICK A EDIT
            COMEDIT=TRUE
