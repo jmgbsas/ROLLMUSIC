@@ -118,7 +118,7 @@ Sub CargarPistasEjec (lugar As String, ByRef ntkp As integer)
 ' y fija la maxgrb o la maxpos de todas las pistas ejec
 ROLLCARGADO=FALSE
 Print #1,"LUGAR RECIBIDO, ntkp ";lugar ,ntkp
-GrabarEjec =HabilitaGrabar: ntoca=0 : arrancaPlay=0
+GrabarEjec =HabilitaGrabar: ntoca=0 : arrancaPlay=NO
          ntkp=1 '<================= inicia en 1 y va a devolver ntkp!!
 ' ahi estaba el error empieza en 1 no en cero veremos! 
 s5=2 '11-06-2022 control de pantalla
@@ -287,7 +287,7 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
     print #1,"-------------------------------------------------------"
 'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
 'mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0 
-      repro=0 ' habilitar play
+      Parar_De_Dibujar=NO ' habilitar play
 End Sub
 
 
@@ -1649,7 +1649,7 @@ nota=0:dur=0
    EndIf
    'print #1,"TrackaRoll, NB, NA, CantTricks", NB,NA, CantTicks
 ' redim de ROLL de Visualizacion , para ello  
-repro=1
+Parar_De_Dibujar=SI
 Sleep 10 ' para que surja efecto la detencion ,,,   
   'If  ntk= 0 Then
  ' Else
@@ -1861,7 +1861,7 @@ End If
 
 
 Print #1, "TrackaRoll Fin ntk, patch " ; ntk, Roll.trk(1,NA).inst
-repro=0 ' volvemos a dibujar en pantalla...18-04-2024
+Parar_De_Dibujar=NO ' volvemos a dibujar en pantalla...18-04-2024
 cargacancion=NO_CARGAR_PUEDE_DIBUJAR ' " " 
 Sleep 5
 'hemos copiado el track ntk en el Track(0) que corresponde al Track asociado a Roll.
@@ -2017,8 +2017,8 @@ EndIf
 '------------apertura de ports
 Dim As Long porterror,nousar
 ' idea para controlar cancion con repeticiones podria usar el track 00 solo para eso control
-CONTROL1=0
-CONTROL2=0
+PARAR_PLAY_MANUAL=NO
+PARAR_PLAY_EJEC=NO
 ' creoa todos los defaults siempre
  
 
@@ -2136,7 +2136,7 @@ Print #1,"TickUsuario "; tickUsuario
 'Track(pis).trk(1,1).nnn
       ChangeProgram ( pmTk(pis).patch, pmTk(pis).canalsalida, pmTk(pis).portout)	
 ' reveeer esto de sonido ,,,,,
-      If instancia=7 Or instancia=107  Then
+      If instancia=ARG7_NOMBRECANCION Or instancia=ARG107_FICTICIO  Then
           sonidoPista(pis)=1
       Else 
       
@@ -2169,12 +2169,12 @@ For jply=comienzo To final
 ' cambio de inst para la pista, podria poner mas de un instrumento por pista
 ' o por cada nota.. 
 ' VER DE PONER LOS INSTRUMENTOS EN TRACK
-   If CONTROL2 = 1 Then
+   If PARAR_PLAY_EJEC = SI Then
       For i3 = 1 To tope
        portsal=CInt(pmTk(i3).portout) 
        alloff(pmTk(i3).canalsalida,portsal) 
       Next i3
-      CONTROL2=0
+      PARAR_PLAY_EJEC=NO
       Exit For
    EndIf  
   
@@ -2294,15 +2294,15 @@ If jply <= pmTk(pis).MaxPos Then ' tocamos una pista mientras que tenga datos
    If i1 > lim2  Then
      If Track(pis).trk(jply,i1).nota = 210 Then
   '  Print #1,"210 leido jply",jply
-     If finfin=0 Or playloop=1 Then
-       playloop2=1
+     If finfin=0 Or playloop=SI Then
+       playloop2=SI
        comienzo2=jply
      EndIf
    EndIf
 
  If Track(pis).trk(jply,i1).nota = 211 Then
   '  Print #1,"211 leido jply",jply
-    If finfin=0 Or playloop=1 Then 
+    If finfin=0 Or playloop=SI Then 
        final2=jply
     EndIf
     If cntrepe > 0 Then
@@ -2354,16 +2354,16 @@ EndIf
 
 '  print #1,"---FIN -----paso:"; jply;" --------------------------------"
 '  Print #1,"---FIN---playloop PLAYLOOP2 ",playloop, playloop2
- If playloop=1 And jply= finalloop  Then
+ If playloop=SI And jply= finalloop  Then
     jply=comienzoloop -1
 
  EndIf
- If playloop2=1 And jply= final2    Then
-    if finfin=0  Or playloop=1 Then
+ If playloop2=SI And jply= final2    Then
+    if finfin=0  Or playloop=SI Then
        jply=comienzo2 -1
     EndIf
     If final2=finalloop Then 
-       If playloop=1 Then
+       If playloop=SI Then
          jply=comienzoloop -1
        Else
          final=Mayor 
@@ -2387,9 +2387,9 @@ jply=0:curpos=0
 ' al final, por ahroa no parpadea mas veremos.... 
  
 
-Cplay=0 ' Control de play cancion si fue desde control
-playb=0
-play=0
+Cplay=NO ' Control de play cancion si fue desde control
+playb=NO
+play=NO
 
 mousey=100 'otra mas para evitar rentrar a play en menu
 
@@ -2403,7 +2403,7 @@ Sleep 10,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion
 close_port(midiout)
 out_free(midiout)
 '/ 
-If instancia=7 Or instancia= 107 Then 
+If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Then 
 Else
  SetGadgetstate(BTN_ROLL_EJECUTAR,0)
 EndIf
@@ -2415,7 +2415,7 @@ For  iz As Short =1 To 32
       End If
       Exit For
 Next iz
-if GrabarPenta=0 and GrabarEjec=HabilitaGrabar and repro=0 And checkejec=0 Then 
+if GrabarPenta=0 and GrabarEjec=HabilitaGrabar and Parar_De_Dibujar=NO And checkejec=0 Then 
    For i=1 To tope
       k1=pmTk(i).portout
    '   Print #1,"midiout ",k1, *nombreOut(k1)
@@ -2460,7 +2460,7 @@ If  Err > 0 Then
   FileFlush (-1)
 
 '''''ThreadDetach(thread1)
-  repro=0 ' 05-03-2024
+  Parar_De_Dibujar=NO ' 05-03-2024
   End 0
 EndIf
 

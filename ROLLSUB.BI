@@ -1847,7 +1847,7 @@ nombre="CARGAPLANO"
 
 ntk=0
 NADACARGADO=TRUE
-repro=1
+Parar_De_Dibujar=SI
 pmTk(ntk).desde = 2
 pmTk(ntk).hasta = 8
 pmTk(ntk).MaxPos = j1+principio +2
@@ -1872,7 +1872,7 @@ Erase duras
 
 TrackaRoll (Track(),ntk,Roll)
 cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
-repro=0
+Parar_De_Dibujar=NO
 Sleep 5
 ReCalCompas (Roll)
           '  print #1,"despues RecalCompas veo nombre ",nombre
@@ -2695,10 +2695,10 @@ Print #1,"pmTk(0).MaxPos = MaxPos ";  MaxPos
      pmTk(0).Ticks=CantTicks
      ntk=0
 '' Redim Roll y TRack ya tiene calculo NB y NA con CantTicks y carga de pmTk.NB y NA
-     repro=1
+     Parar_De_Dibujar=SI
      Sleep 5
      CambiarDim(0) 
-     repro=0
+     Parar_De_Dibujar=NO
      Get #ca, ,z3  
 
      canalx  = CInt(z3.inst) ' canal midi cargado en Global si es un track se pasara a info de trck
@@ -3141,17 +3141,17 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    t=  " [Pista]":cairo_show_text(c, t)
    ' ------------------------------------------
 ' 0.5 ===> [Reproducir]
-   If MultiKey(sc_Control) And (mousex > 355 And mousex< 451 And mousey < 50 And play=0 And playb=0 And Cplay=0   ) Then
+   If MultiKey(sc_Control) And (mousex > 355 And mousex< 451 And mousey < 50 And play=NO And playb=NO And Cplay=NO   ) Then
     cairo_set_source_rgba c, 0, 1, 0, 1
      While InKey<>"" :Wend
    '   print #1,"--->entra a reproducir thread1 "
-              play=1
+              play=SI
         menuNew =MENU_INICIAL
          Print #1,"hizo click para llamar a playall, maxpos ",maxpos 
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 2 Then
                GrabarPenta=0:naco=0:naco2=0
-               If instancia=7 Or instancia= 107 Or instancia < 3  Then
+               If instancia=ARG7_NOMBRECANCION Or instancia=ARG107_FICTICIO  Or instancia < ARG3_TITU  Then
                Else
                SetGadgetstate(15,0) ' 10-04-2022
                EndIf  
@@ -3316,9 +3316,9 @@ EndIf
    If (mousex > 215 And mousex < 269  And mousey < 50 And carga=0 ) Then ' <= ABRIR lee grabaroll.roll
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And carga = 0  Then
-      If play=1 Or playb=1 Then
-       CONTROL1=1 ' DETIENE EL PLAY VEREMOS
-       playloop=0:playloop2=0
+      If play=SI Or playb=SI Then
+       PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
+       playloop=NO:playloop2=NO
        Sleep 2
       EndIf 
        CargaArchivo(Roll, 0)
@@ -3347,9 +3347,9 @@ EndIf
      EndIf 
       cairo_set_source_rgba c, 0, 1, 0, 1
       If (MouseButtons And 1 And carga=0) Then
-         If play=1 Or playb=1 Then
-            CONTROL1=1 ' DETIENE EL PLAY VEREMOS
-            playloop=0:playloop2=0
+         If play=SI Or playb=SI Then
+            PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
+            playloop=NO:playloop2=NO
             Sleep 2
          EndIf 
 
@@ -4863,7 +4863,7 @@ End  Sub
 Sub CargarPistasEnCancion ()
 ' cada vez que cargo borro la info de fechas de pistas anterior
 ROLLCARGADO=FALSE
-If instancia=0 Then
+If instancia=ARG0_EN_LINEA Then
   DisableGadget(PISTASROLL,0) ' HABILITAMOS LISTA DE PISTAS
 EndIf
 ReDim As Double fechasPistas(1 To 32)
@@ -4891,7 +4891,7 @@ Print #1,"inicia CargaPistasEnCancion"
         Dim cadena As String
         cadena= sacarExtension(filenameOld) ' [1]AAA
        ''' If pistacreada=0 Then
-          If instancia=7 Or instancia= 107 Then ' en batch no hay ventana control 
+          If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Then ' en batch no hay ventana control 
           Else   
           AddListBoxItem(PISTASROLL, cadena)
           End If  
@@ -5912,7 +5912,7 @@ Dim  As Integer i3
  ' no usar nunca deallocate falla montonde cosas ni si quiera se puede cerrar
  ' un archivo ni borrarlo una cagada la recomendacion del foro!!!!          
             FT_Done_Face( ftface ) ' 04-05-2024 ESTO DIO ERROR UNA VEZ PERO SE EQUIVOCO EL DEBUGUER
-           If play=1 Or playb=1 Then
+           If play=SI Or playb=SI Then
               '''alloff (canal)
               
               For i3 = 1 To tope

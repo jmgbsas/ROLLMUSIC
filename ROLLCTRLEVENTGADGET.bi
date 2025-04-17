@@ -88,12 +88,12 @@ Static As Integer millave
                     End Select
                  Else
                    If eventM=eventrbdown Then
-                     If instancia =1  Then   
+                     If instancia =ARG1_1_TITULO  Then   
                         DisableGadget(PISTASROLL,1)
                      EndIf
 
                      DisplayPopupMenu(hMessages2,,)
-                     If instancia =1  Then   
+                     If instancia =ARG1_1_TITULO  Then   
                         DisableGadget(PISTASROLL,0)
                      EndIf
                      Exit Do
@@ -225,7 +225,7 @@ Static As Integer millave
       ' EVENTO 10
          Print #1,"Entro a btn_midi_grabar EJEC "
          k=0
-         jgrb=0:repro=0 'impide el play  o lo resetea
+         jgrb=0:Parar_De_Dibujar=NO 'impide el play  o lo resetea
 
         '  If PISTASEJECSELECCIONADA=0 Then
         '      Exit Select 
@@ -256,7 +256,7 @@ Static As Integer millave
 
         SetGadgetstate(BTN_MIDI_GRABAR,BTN_LIBERADO)
         GrabarEjec=GrabarPistaEjecucion
-        arrancaPlay=0
+        arrancaPlay=NO
        Print #1,"Nro pista ejec en grabacion ntoca "; ntoca
        Print #1,"metronomo de 4 pulsos para comenzar a grabar EJEC"
         If  metronomo_si=3 Then
@@ -276,9 +276,9 @@ Static As Integer millave
         EndIf 
         If tocatope > 1 Then ' toco pistas ejec mientras grabo
 'la que se esta grabando debe estar deseleccionada en S 
-           repro=1 
-           CONTROL2=0 'HABILITA TOCAR EJECS
-           CONTROL1=0 ' HABILITA TOCAS CANCION
+           Parar_De_Dibujar=SI 
+           PARAR_PLAY_EJEC=NO 'HABILITA TOCAR EJECS
+           PARAR_PLAY_MANUAL=NO ' HABILITA TOCAS CANCION
            Dim p As Integer Ptr
            p=@tocatope
            threadG  = ThreadCreate (@PlayTocaAll, p)
@@ -302,19 +302,19 @@ Static As Integer millave
             tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos
        '         Print #1,"stop MaxPos ",pmEj(ntoca).MaxPos
             GrabarEjec=HabilitaGrabar
-            repro=0
-            arrancaPlay=0
-' terminar cualquier metrono que este funcionando 
-         terminar_metronomo=1
+            Parar_De_Dibujar=NO
+            arrancaPlay=NO
+'' terminar cualquier metrono que este funcionando 
+         terminar_metronomo=SI
 'detiene el play de cancion o roll
-         If  play=1 Or playb=1 Or Cplay=1 Then
-           CONTROL1=1 ' DETIENE EL PLAY DE CANCION O ROLL
-            play=0: playb=0 
-           playloop=0:playloop2=0:Cplay=0
+         If  play=SI Or playb=SI Or Cplay=SI Then
+           PARAR_PLAY_MANUAL=1 ' DETIENE EL PLAY DE CANCION O ROLL
+            play=NO: playb=NO 
+           playloop=NO:playloop2=NO:Cplay=NO
            SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
            Sleep 2
          EndIf
-         CONTROL2=1
+         PARAR_PLAY_EJEC=SI ' DE EJEC??
          Sleep 2
 ' -------cargamos toca
          k=0 
@@ -443,12 +443,12 @@ Static As Integer millave
             grabariniciotxt(NombreCancion, EJECUCION)
 
          Else
-           CONTROL2=1
-            If play=1 Or playb=1 Then
-               CONTROL1 =1
+           PARAR_PLAY_EJEC=SI
+            If play=SI Or playb=SI Then
+               PARAR_PLAY_MANUAL =SI
             EndIf   
-            repro=0
-            arrancaPlay=0
+            Parar_De_Dibujar=NO
+            arrancaPlay=NO
          EndIf
 '----------------
       EndIf
@@ -459,11 +459,11 @@ Static As Integer millave
 ' sincronizaremos el arranque solamente. Esto se puede usar para escuchar o 
 ' al grabar una pista nueva de ejecuciones por uncontrolador midi.,(teclado midi por ej)
  
-      If eventnumber()= BTN_MIDI_EJECUTAR And repro=0 Or  GrabarEjec =PatronDeEjecucionCompleto Then ' BOTON PLAY VERDE DE MIDI-IN
+      If eventnumber()= BTN_MIDI_EJECUTAR And Parar_De_Dibujar=NO Or  GrabarEjec =PatronDeEjecucionCompleto Then ' BOTON PLAY VERDE DE MIDI-IN
          SetGadgetstate(BTN_MIDI_PARAR,BTN_LIBERADO)
-            repro=1
-            CONTROL2=0
-            CONTROL1=0
+            Parar_De_Dibujar=SI
+            PARAR_PLAY_EJEC=NO
+            PARAR_PLAY_MANUAL=NO
             Dim p As Integer Ptr
             p=@ntoca 'ntoca se ajusta en CargarPstasEjec tambien
             
@@ -473,7 +473,7 @@ Static As Integer millave
 ' ACA DEBERIA USAR MUTEX!!! ���???
 '''Dim As Any Ptr sync =MutexCreate
 Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
-        If  MaxPos > 2 Then  ''''' And GrabarEjec=1 And repro=1 Then 
+        If  MaxPos > 2 Then  ''''' And GrabarEjec=1 And Parar_De_Dibujar=1 Then 
             If CANCIONCARGADA = TRUE And playb=0 Then
                Print #1,"USANDO PLAYCANCION"
                playb=1
@@ -481,9 +481,9 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
                thread1 = ThreadCall  playCancion(Track())
                grabariniciotxt(NombreCancion, CANCION)
             Else
-               If  MaxPos > 2 And  Play=0 Then
+               If  MaxPos > 2 And  Play=NO Then
           '        print #1,"llama a playall"
-                   Play=1
+                   Play=SI
  Print #1,"Va Play All ????,maxpos  ", MaxPos
                    thread2 = ThreadCall  playAll(Roll)
                EndIf 
@@ -493,7 +493,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
         grabariniciotxt(NombreCancion, EJECUCION) 
         threadG  = ThreadCreate (@PlayTocaAll, p)
         'ThreadWait (threadG) '22-04-2024  como andaba si hacia detach? ja
-'        repro=0   
+'        Parar_De_Dibujar=0   
         'threadDetach(threadG)
         '  Print #1,"llama a  PlayTocaAll(p)"
 
@@ -551,7 +551,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
          GrabarPenta=1 ' redundante ,,, 
       EndIf 
 '-------------------------------
-      If eventnumber()= BTN_ROLL_PARAR And (GrabarPenta=1 Or Cplay=1) Then
+      If eventnumber()= BTN_ROLL_PARAR And (GrabarPenta=SI Or Cplay=SI) Then
          SetGadgetstate(BTN_ROLL_EJECUTAR, BTN_LIBERADO)
          SetGadgetstate(BTN_ROLL_GRABAR_MIDI , BTN_LIBERADO)
          GrabarPenta=0
@@ -560,10 +560,10 @@ Print #1, "542 GrabarPenta=0"
          terminar_metronomo=1
          COMEDIT=FALSE  
 ''      If NombreCancion > "" Then ' detiene todo pista aisalda o cancion 
-            If play=1 Or playb=1 Or CPlay=1 Then
-               CONTROL1=1 ' DETIENE EL PLAY
-               CONTROL2=1    
-               playloop=0:playloop2=0
+            If play=SI Or playb=SI Or CPlay=SI Then
+               PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY
+               PARAR_PLAY_EJEC=SI    
+               playloop=NO:playloop2=NO
                Sleep 20
                threadDetach (thread2)
                threadDetach (thread1)
@@ -576,13 +576,13 @@ Print #1, "542 GrabarPenta=0"
          SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
          SetGadgetstate(BTN_ROLL_GRABAR_MIDI , BTN_LIBERADO)
          terminar_metronomo=1
-         If CPlay = 0 And MaxPos > 2 Then
-            CPlay=1
+         If CPlay = NO And MaxPos > 2 Then
+            CPlay=SI
             If NombreCancion > "" Then
-               If play=1 Or playb=1 Then
-                  CONTROL1=1 ' DETIENE EL PLAY SI ESTA TOCANDO 
-                  CONTROL2=1 ' DETIENE LOS EJEC SI ESTAN TOCANDO
-                  playloop=0:playloop2=0
+               If play=SI Or playb=SI Then
+                  PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY SI ESTA TOCANDO 
+                  PARAR_PLAY_EJEC=SI ' DETIENE LOS EJEC SI ESTAN TOCANDO
+                  playloop=NO:playloop2=NO
                   threaddetach (thread2)
                   threaddetach (thread1)
                   Sleep 20
@@ -919,7 +919,7 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
             pmTk(ntk).patch=CUByte(instrum)
             patchsal=pmTk(ntk).patch
             portsal=pmTk(ntk).portout
-            If GrabarPenta=0 And playb=0 And play=0 Then
+            If GrabarPenta=NO And playb=NO And play=NO Then
               Track(ntk).trk(1,1).nnn =CUByte(instrum)
             EndIf
  '           Print #1, "patch portsal almacenado, instru ", portsal, instrum

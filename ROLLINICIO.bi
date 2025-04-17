@@ -188,9 +188,9 @@ Dim As GLFWwindow ptr  win
 ' ----FIN OPENGL 
 '/
 '===============================
-Print #1,"ANTES ROLLDEC "
+''Print #1,"ANTES ROLLDEC "
 #include "ROLLDEC.BI"
-Print #1,"DESPUES ROLLDEC "
+''Print #1,"DESPUES ROLLDEC "
 
 
 '------------------
@@ -274,11 +274,11 @@ For ix = 0 To __FB_ARGC__
  If ubirtk > 0 or ubiroll>0  Then
    ntk=0 
    titulosTk(0)=Command(ix)
-   Instancia=1 ' no se condice con el caso real da 2 ???
+   Instancia=ARG1_1_TITULO ' no se condice con el caso real da 2 ???
  Else
     desde= CInt(Command(ix))
 '    pmTk(ntk).desde=desde
-   Instancia=1    
+   Instancia=ARG1_2_DESDE     
  EndIf
  Print #1,"ubirtk ",ubirtk
  Print #1,"ubiroll ",ubiroll
@@ -287,33 +287,33 @@ For ix = 0 To __FB_ARGC__
  If ix=2 And Command(ix) > "" Then
   hasta= CInt (Command(ix))
  ' pmTk(ntk).hasta=hasta
-    Instancia=2
+    Instancia=ARG2_HASTA 
  EndIf
  
  If ix=3 And Command(ix) > "" Then
   titu=  (Command(ix))
-     Instancia=3
+     Instancia=ARG3_TITU 
  EndIf
 
  If ix=4 And Command(ix) > "" Then
   instru=  CUByte (Command(ix))
-     Instancia=4
+     Instancia=ARG4_INSTRU 
  EndIf
 
  If ix=5 And Command(ix) > "" Then
   pid1=  CInt (Command(ix))
-     Instancia=5
+     Instancia=ARG5_PID1
  EndIf
 
  If ix=6  And Command(ix) > "" Then
   com_usarmarco=  CInt (Command(ix))
-     Instancia=6
+     Instancia=ARG6_USARMARCO
  EndIf
 ' en 7 diria @dir en la linea de comando  
 ' puedo poner basura en todos los otros
  If ix=7 And Command(ix) > "" Then ' ok probado pasa bien el NombreCancion con el path
   NombreCancion =  Command(ix)
-     Instancia=7
+     Instancia=ARG7_NOMBRECANCION
  EndIf
 
 Next ix
@@ -324,13 +324,13 @@ If NombreCancion > "" Then
  ubirtk = InStr (LCase(Command(7)),".rtk")
  ubiroll=  InStr(LCase(Command(7)),".roll")
 
-If ubirtk > 0 or ubiroll>0  Then
-   ntk=0 
-   titulosTk(0)=Command(ix)
-   Instancia=1 ' no se condice con el caso real da 2 ???
-EndIf
- Print #1,"ubirtk ",ubirtk
- Print #1,"ubiroll ",ubiroll
+  If ubirtk > 0 or ubiroll>0  Then
+     ntk=0 
+     titulosTk(0)=Command(1) ' DECIA IX  ERROR? 15-04-2025
+     Instancia=ARG1_1_TITULO ' PUEDE SER desde TAMBIEN
+  EndIf
+    Print #1,"ubirtk ",ubirtk
+    Print #1,"ubiroll ",ubiroll
 
 EndIf
 
@@ -359,7 +359,7 @@ cerrar fa1
 Sleep 100
 
 
-If desde = 0 And hasta = 0  And instancia=0 Then
+If desde = 0 And hasta = 0  And instancia=ARG0_EN_LINEA Then
  Print #1,"intervalo no dado usando default!"
  desde => 4  ' -> 3  
  hasta => 8  ' -> 6 le debo restar la octava oculta +1

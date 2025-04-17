@@ -190,7 +190,10 @@ Dim Shared As integer DurXTick (0 To 185) => {0, _  ' 0
 ' el mas chico son 1 parte o sea 10,41 mseg!! son e ldoble de los 5 mseg que usaba!
 ' entonces una negra abarcara 96 columnas 
 ' cols en 15 min = 15*60*96= 86400 columnas!
-Dim Shared As Integer play =0,playb=0, portin, numero, numeroFrac,cambioescala=0
+Const NO=0 ''ESTA CONSTANTE ESTA DUPLICADA Y EL COMPILADOR NO SE DA CUENTA JAJAJAJA
+' ME DA ERROR EN EL USO DE LOS SIGUIENTES NO,,,, MAL EL COMPILADOR AMBOS DEC SON INCLUDE
+' Y ROLLDEC ESTA ANTES QUE ESTE... CHANNN
+Dim Shared As Integer play= NO,playb = NO, portin, numero, numeroFrac,cambioescala=0
 Dim Shared As Integer portout=0 
 Dim Shared As Double numfloat =0
 Static Shared As string listout(), listin ()

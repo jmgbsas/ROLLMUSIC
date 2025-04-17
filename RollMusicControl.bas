@@ -74,12 +74,12 @@ Common Shared As Integer gp ,midiplano,midionof
 
 Const As BOOLEAN HABILITAR = TRUE
 Const As BOOLEAN DESHABILITAR = FALSE
-
+Const NO=0
 
 MICROSEGUNDOS_POR_NEGRA=1000000 ' 60 MILLONES / 60 BPM DEFAULT
 
 
- MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0
+ MaxPos=2:ntk=0:CPlay=NO: guardopos=0:ntktab=0
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff
  posicion=0:posicionOld=0:posn=0
  

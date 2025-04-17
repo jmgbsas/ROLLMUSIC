@@ -81,7 +81,7 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.311 Algunas ConstanteS "
+nroversion="TICKS 0.312 Algunas ConstanteS "
 ' trabajos mediatos:
 ' 2) Vendra version 0.311 que verá si funcionan la seleccion de zonas o partes
 ' de la secuencia para trasponer copiar insertar etc,,,, REEMPLAZAMOS NUMEROS
@@ -199,7 +199,7 @@ abrirRoll=NO_CARGAR
 Dim As Integer k=0, salida=0
 
 ' //// DESHABILITAR LOS CLICK EN LISTA SI NO HAY CARGADO NADA
-If instancia =0  Then  ' cuando es online y recien levanta 
+If instancia =ARG0_EN_LINEA  Then  ' cuando es online y recien levanta 
 'DisableGadget(PISTASROLL,1) 25-10-2024 SWE HABILITA PARA QUE SE  VEA
 ' EL MENSAJE DE AYUDA EN EL CUERPO DE LA LISTA PERO CREO PRODUCIA UN PROBLEMA
 ' CON EL CONTEXTO MANUAL
@@ -234,7 +234,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
      '''lo hace tab-cargaCancion=0
      param.encancion=CON_CANCION
      
-   If pid1=0 And instancia =0  Then
+   If pid1=0 And instancia =ARG0_EN_LINEA  Then
       pid1=pd1
    EndIf
  ' Print #1,"cALL rOLLLOOP I) cargaCancion ES 1 SI O SI ",cargaCancion
@@ -279,14 +279,14 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", Nombr
 
 'Print #1, "IX LLEGA A 337 ANTES LOOP PRINCIPAL " ,  instancia
      
-  If instancia = 0   Then 
+  If instancia = ARG0_EN_LINEA   Then 
     
 'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
  ''win = glfwCreateWindow(800,600,"Track OPENGL" )
 '' Dim ta As Any Ptr = threadcall correwin(win,ta)
  
     Do
-       'If  repro=1 Then ' damos mas recursos si hay play de PlayTocaAll y mas si hay tambien playAll o PlayCancion
+       'If  Parar_De_Dibujar=1 Then ' damos mas recursos si hay play de PlayTocaAll y mas si hay tambien playAll o PlayCancion
        '    Sleep 10
       ' EndIf
 ' *********************************************************************
@@ -354,15 +354,15 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", Nombr
             End SELECT
 '-----------------------------------------------------------------------
        Case EventClose  ''<==== SALIR TERMINA ROLL la X de win control
-           If play=1 Or playb=1 Or Cplay=1 Then 'rollLroop esta levantando en play
-              CONTROL1=1   ' si hay algun play los manda  a detener
-              CONTROL2=1
-              terminar=1 ' va a usar SC_ESCAPE para terminar         
+           If play=SI Or playb=SI Or Cplay=SI Then 'rollLroop esta levantando en play
+              PARAR_PLAY_MANUAL=SI   ' si hay algun play los manda  a detener
+              PARAR_PLAY_EJEC=SI
+              terminar=TERMINAR_POR_ESCAPE ' 1 va a usar SC_ESCAPE para terminar         
               Exit Do
            Else  ' rollLoop se cerro el grafico no tengo el sc_escape, se supone que no hay play pero podria haberlo 
-              CONTROL1=1   ' si hay algun play los manda  a detener
-              CONTROL2=1
-              terminar=2 ' aca veo como salgo
+              PARAR_PLAY_MANUAL=SI   ' si hay algun play los manda  a detener
+              PARAR_PLAY_EJEC=SI
+              terminar=TERMINAR_POR_LOOP_PRINCIPAL ' aca veo como salgo
               Exit Do
            EndIf
  
@@ -455,7 +455,7 @@ Print #1, "3 ubiroll ubirtk ", ubiroll,ubirtk
       cerrar(0)  
   End If
 '-----------------------------------------------------------------------
-      If terminar=2 then
+      If terminar=TERMINAR_POR_LOOP_PRINCIPAL Then  ' 2
        salir()
        Kill "procesos.txt"
        Close

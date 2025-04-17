@@ -121,7 +121,23 @@ Const TIPO_DE_COMPAS = 7
 Const CONFIGURACION = 9
 Const SEL_MIDI = 10
 Const NRO_CANAL = 11
-
+'-----------------instancias
+Const ARG0_EN_LINEA = 0
+Const ARG1_1_TITULO = 1
+Const ARG1_2_DESDE = 1
+Const ARG2_HASTA = 2
+Const ARG3_TITU = 3
+Const ARG4_INSTRU = 4
+Const ARG5_PID1 = 5
+Const ARG6_USARMARCO = 6
+Const ARG7_NOMBRECANCION = 7
+Const ARG107_FICTICIO = 107
+'----------------------------------
+Const TERMINAR_POR_ESCAPE =1
+Const NO_TERMINAR_BARRE_PANTALLA = 0
+Const TERMINAR_POR_LOOP_PRINCIPAL = 2
+Const NO_TERMINAR_CON_DATOS_CARGADOS  = 3 
+'--------------------------------------
 Dim Shared As Integer PISTASEJECSELECCIONADA=0
 Dim Shared As Integer PISTASROLLSELECCIONADA=0
 
@@ -855,7 +871,7 @@ End Type
 
 
 Declare Sub Tracks (ByRef nroTrack As integer, ByRef nroCanal As UByte, Roll As inst)
-Dim Shared As Long CONTROL1 = 0,CONTROL2 = 0,CONTROL3 = 0
+Dim Shared As Long PARAR_PLAY_MANUAL = NO,PARAR_PLAY_EJEC = NO,CONTROL3 = NO
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Dim Shared As inst Roll ' para visualizar y tocar
  
@@ -1149,23 +1165,21 @@ Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano,midionof
 
 
- MaxPos=2:ntk=0:CPlay=0: guardopos=0:ntktab=0 : ntoca=0
+ MaxPos=2:ntk=0:CPlay=NO: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
 ''patchsal=Roll.trk(1,1).inst
 Dim Shared As Any Ptr threadG 
 
 
 ReDim Shared As Integer tt(1 To 32)
-Dim Shared As Integer cual=0, repro=0
-'Common Shared  midiin As   RtMidiInPtr
-'Common Shared  midiout () As  RtMidiOutPtr ' abrir hasta 32 dispositivos
+Dim Shared As Integer cual=0, Parar_De_Dibujar=NO
 Dim Shared  midiin  (0 To 15) As  RtMidiInPtr  ' 16 dispo de entrada..mucho no¿?
 Dim Shared  midiout (0 To 15) As  RtMidiOutPtr ' abrir hasta 16 dispositivos DE SALIDA
 ' parece que empieza desde cero 0 to 31 decia...el doble seria 0 to 63
 Dim Shared As Integer teclado=0 ' salida de ejecucion teclado 
 
 Common Shared midisal As RtMidiOutPtr, portsal As ubyte
-'''Dim Shared midisal As RtMidiOutPtr, portsal As ubyte
+
 Dim Shared as boolean vieneDeListport=FALSE
 
 'Common Shared As Any Ptr thplayC

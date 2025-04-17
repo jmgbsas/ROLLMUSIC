@@ -267,7 +267,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 '         nombre="" 
 '         Dim As Integer confrac=1 ' con fracturacion
 '         cargarMidiPlano (confrac)
-'         repro=0  
+'         Parar_De_Dibujar=0  
 '        SetForegroundWindow(hwnd)
            
 '             Exit Select  
@@ -290,7 +290,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
          nombre="" 
 
          cargarMidiPlano (externo)
-         repro=0  
+         Parar_De_Dibujar=NO  
         SetForegroundWindow(hwnd)
            
              Exit Select  
@@ -304,15 +304,15 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
   ' eventM a EVENTRBdown nada de nada, no pasa nunca por aca solo obedece
   ' a un eventClose en EventC, el cual hay que pulsar dos veces para este caso
            
-           If play=1 Or playb=1 Or Cplay=1 Then 'rollLroop esta levantando en play
-              CONTROL1=1   ' si hay algun play los manda  a detener
-              CONTROL2=1
-              terminar=1 ' va a usar SC_ESCAPE para terminar         
+           If play=SI Or playb=SI Or Cplay=SI Then 'rollLroop esta levantando en play
+              PARAR_PLAY_MANUAL=SI   ' si hay algun play los manda  a detener
+              PARAR_PLAY_EJEC=SI
+              terminar=TERMINAR_POR_ESCAPE ' 1 va a usar SC_ESCAPE para terminar         
               Exit Do
            Else  ' rollLoop se cerro el grafico no tengo el sc_escape, se supone que no hay play pero podria haberlo 
-              CONTROL1=1   ' si hay algun play los manda  a detener
-              CONTROL2=1
-              terminar=2 ' aca veo como salgo
+              PARAR_PLAY_MANUAL=SI   ' si hay algun play los manda  a detener
+              PARAR_PLAY_EJEC=SI
+              terminar=TERMINAR_POR_LOOP_PRINCIPAL ' aca veo como salgo
               Exit Do
            EndIf
      
@@ -433,8 +433,8 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
         '      SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1060 ' <========== crea track y reemplaza al existente en la edicion
-             If NombreCancion > ""  Or (abrirRoll=REABRIR_ROLL_CON_DATOS_CARGADOS And Terminar=3 )Then
-                Terminar=0 ' para que empiece a barrer la pantalla
+             If NombreCancion > ""  Or (abrirRoll=REABRIR_ROLL_CON_DATOS_CARGADOS And Terminar=NO_TERMINAR_CON_DATOS_CARGADOS )Then
+                Terminar=NO_TERMINAR_BARRE_PANTALLA ' 0 para que empiece a barrer la pantalla
                 Print #1,"1 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
                 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))   
                 Print #1,"2 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
@@ -533,14 +533,14 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 '-----------------------------------------------------------------------
            Case 1090 ' Reproducir cancion
 SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
-         If CPlay = 0 And MaxPos > 2 Then
+         If CPlay = NO And MaxPos > 2 Then
             GrabarPenta=0:naco=0:naco2=0 ''dela version F jmgjmg
-            CPlay=1
+            CPlay=SI
             If NombreCancion > "" Then
-               If play=1 Or playb=1 Then
-                  CONTROL1=1 ' DETIENE EL PLAY 
-                  playloop=0:playloop2=0
-                  play=0 : playb=0
+               If play=SI Or playb=SI Then
+                  PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY 
+                  playloop=NO:playloop2=NO
+                  play=NO : playb=NO
                   Sleep 20
                EndIf 
 
@@ -549,7 +549,7 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
             EndIf
          EndIf   
           '    Dim As Any Ptr thplayC = ThreadCall  playCancion(track())
-          '    CONTROL1 = 1
+          '    PARAR_PLAY_MANUAL = 1
  
              SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------

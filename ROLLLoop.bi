@@ -7,7 +7,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
 
 
 On Local Error Goto fail
-If  repro=1  Or terminar=1  Then
+If  Parar_De_Dibujar=SI  Or terminar=TERMINAR_POR_ESCAPE  Then
     Exit Sub
 End If
 
@@ -347,7 +347,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
        EndIf
      EndIf
  ' ////////dar color al font en una determinada posicion durante el play
-    If n<=jply + 2 And n<=jply - 2 And repro=0 Then 
+    If n<=jply + 2 And n<=jply - 2 And Parar_De_Dibujar=NO Then 
        cairo_set_source_rgba(c,1,0,1,1)
     EndIf
     If indf <> 181 Then ' esto acelera un monton 
@@ -355,7 +355,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
     EndIf
 ' se elimina el cursos con las notas coloreadas durante el play es suficiente
  ' ' jmg 11-05-2021 1839 start
-    If  n<=jply + 2 And n<=jply - 2 And ( play =1 Or playb=1 Or Cplay=1 ) And repro=0 Then ' repro 17-06-2022
+    If  n<=jply + 2 And n<=jply - 2 And ( play =SI Or playb=SI Or Cplay=SI ) And Parar_De_Dibujar=NO Then ' Parar_De_Dibujar 17-06-2022
         
       ShowNroCol= Int(n/posishow) 
       If ShowNroCol = 0 Then
@@ -580,7 +580,7 @@ If GrabarPenta =0 Then
   ' CURSOR
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
   ' Or (cursorHori=2 And cursorVert=2 paa hbilitar ctrl-N
-  If cursorHori=1 And cursorVert=1 Or play=1 Or playb=1  Then
+  If cursorHori=SI And cursorVert=SI Or play=SI Or playb=SI  Then
       cursor(c,posicion,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos 
       ' se ilumina en posicion 0 
   EndIf
@@ -593,7 +593,7 @@ If GrabarPenta =0 Then
  EndIf
 else
   
-  If cursorHori=1 And cursorVert=1 Or play=1 Or playb=1  Then
+  If cursorHori=SI And cursorVert=SI Or play=SI Or playb=SI  Then
       cursor(c,posicion,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos 
   EndIf
   
@@ -963,7 +963,7 @@ Print #1," desde 892 ";desde
  EndIf
 
 
-If instancia = 7  Then ' 04-03-2024 LOGRE LEVANTAR CANCION EN UN ROLL EXTERNO
+If instancia = ARG7_NOMBRECANCION  Then ' 04-03-2024 LOGRE LEVANTAR CANCION EN UN ROLL EXTERNO
 ' CANCELA LA REPRODUCCION DEBERIA HABILITARLA VEREMOS
  If NombreCancion > ""  Then
    Print #1, "rollloop instancia ", instancia
@@ -973,7 +973,7 @@ If instancia = 7  Then ' 04-03-2024 LOGRE LEVANTAR CANCION EN UN ROLL EXTERNO
     cargacancion=CARGAR_NO_PUEDE_DIBUJAR 
     CargarPistasEnCancion ()
     cargariniciotxt(NombreCancion, CANCION)
-    instancia=107  ' ficticio para que entre al if de TAB pero  que no entre en el resto ni aca
+    instancia=ARG107_FICTICIO  ' ficticio para que entre al if de TAB pero  que no entre en el resto ni aca
     param.encancion=CON_CANCION
     
       
@@ -1004,7 +1004,7 @@ stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 ' queda congelado en los 1eros compasaes mostrados al terminar esos procesos mencionados
 ' se se libera la escrituta al grafico...vermeos si sirve para seguirgrabando pistas y reproduciendo 
 ' en mejores condiciones,,,
-If  cargaCancion=CARGAR_NO_PUEDE_DIBUJAR  Or repro=1 Or  GrabarEjec=GrabarPistaEjecucion Then
+If  cargaCancion=CARGAR_NO_PUEDE_DIBUJAR  Or Parar_De_Dibujar=SI Or  GrabarEjec=GrabarPistaEjecucion Then
 ' esta cargando cancion 
    'Locate 5,10
    'Print "CARGANDO ...PISTA Nro ", ntk
@@ -1078,7 +1078,7 @@ Else
     
   
       EndIf
-        If (terminar=0 Or repro=0)  Then 
+        If (terminar=NO_TERMINAR_BARRE_PANTALLA Or Parar_De_Dibujar=NO)  Then 
        
            threadPenta = ThreadCall barrePenta (c, Roll )
            ThreadWait threadPenta
@@ -1117,7 +1117,7 @@ Do
 'Print #1,"1062  DO2 ROOLLOOP DESDE GrabarPenta "; desde,GrabarPenta
 
 
-If MultiKey(SC_TAB) And (instancia=0 Or instancia= 107) And CANCIONCARGADA And play=0 Or cargaCancion=CARGAR_NO_PUEDE_DIBUJAR Or clickpista=1   Then
+If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CANCIONCARGADA And play=NO Or cargaCancion=CARGAR_NO_PUEDE_DIBUJAR Or clickpista=1   Then
    If GrabarPenta=1 Then     'sale sin procesar
    Else   
 
@@ -1226,12 +1226,12 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE 
 EndIf
 
 If MultiKey (sc_P) Then  ''''And (play=1 Or playb=1 Or Cplay=1 )Then
-  CONTROL1=1 ' DETIENE EL PLAY VEREMOS
-  CONTROL2=1
-  playloop=0:playloop2=0
+  PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
+  PARAR_PLAY_EJEC=SI
+  playloop=NO:playloop2=NO
   s5=2 ' el loop necesita menos cpu se libera
   '''terminar=1
-  If instancia=7 Or instancia= 107 Or instancia < 3 Then 
+  If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then 
   Else
   SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
   EndIf 
@@ -1867,13 +1867,13 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_F4)  Then
 '' NO DESTRUIR NADA Y SEPUEDE VOLVER A USAR
 '' CERRAMOS EL GRAFICO, PERO EL GRAFICO ES UNICO,,,,
 
-     If play=1 Or playb=1 Or Cplay=1 Then 'detenemos los play
+     If play=SI Or playb=SI Or Cplay=SI Then 'detenemos los play
       ' MessBox("","(2)Detenga el play primero ")
       ' SetForegroundWindow(hwnd)
       '   Terminar=0
       '   Exit Do 
-        CONTROL1=1
-        CONTROL2=1       
+        PARAR_PLAY_MANUAL=SI
+        PARAR_PLAY_EJEC=SI       
      EndIf
 
 
@@ -1883,7 +1883,7 @@ Dim As Integer i3
      eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
       ' va a usar sc_p para para r el play y vuelve 
      
-    terminar=3
+    terminar=NO_TERMINAR_CON_DATOS_CARGADOS
     If teclado=1 Then ' detenemos los midi in
       cancel_callback(midiin(pmTk(ntk).portin ))
       Dim k1 As Integer
@@ -1907,7 +1907,7 @@ FileFlush (-1)
    EndIf
    If MaxPos > 2 Then
      abrirRoll=REABRIR_ROLL_CON_DATOS_CARGADOS 
-     Terminar=3
+     Terminar=NO_TERMINAR_CON_DATOS_CARGADOS
    Else
      abrirRoll=NO_CARGAR
      reiniciar=1
@@ -1915,25 +1915,24 @@ FileFlush (-1)
   Exit Sub
 
   Else
-  Terminar=0
+  Terminar=NO_TERMINAR_BARRE_PANTALLA
    Exit Do ' 06-05-2024
   EndIf  
 EndIf
 
 '--------------------------------------
-If MultiKey(SC_ESCAPE) Or  Terminar=1 Then
+If MultiKey(SC_ESCAPE) Or  Terminar=TERMINAR_POR_ESCAPE Then
     Sleep 5
 
-     If terminar=0 And (play=1 Or playb=1 Or Cplay=1)   Then 'detenemos los play
+     If terminar=NO_TERMINAR_BARRE_PANTALLA And (play=SI Or playb=SI Or Cplay=SI)   Then 'detenemos los play
        MessBox("","Deteniendo play pulse escape de nuevo ")
         SetForegroundWindow(hwnd)
-        Terminar=0
-        CONTROL1=1 
-        CONTROL2=1
-        TERMINAR=3 
+        PARAR_PLAY_MANUAL=SI 
+        PARAR_PLAY_EJEC=SI
+        TERMINAR=NO_TERMINAR_CON_DATOS_CARGADOS '3 
          Exit Do  ' REINICIO DETENIENDO LOS PLAY Y AL PULSAR OTRO ESCAPE ENTRA EL DIALOGO
      EndIf
-  If terminar=1 Then
+  If terminar=TERMINAR_POR_ESCAPE Then
         salir()
        Kill "procesos.txt"
        Close
@@ -1945,7 +1944,7 @@ If MultiKey(SC_ESCAPE) Or  Terminar=1 Then
        Close
        End 0
     Else
-       Terminar=0
+       Terminar=NO_TERMINAR_BARRE_PANTALLA
        Exit Do ' 06-05-2024
     EndIf
   EndIf
@@ -1972,10 +1971,10 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
     EndIf
 
  Else
-   If playb = 0 And play=0 And Cplay=0 And MaxPos > 1 Then ' 23-02-22 ningun play
+   If playb = NO And play=NO And Cplay=NO And MaxPos > 1 Then ' 23-02-22 ningun play
       GrabarPenta=0
       naco=0:naco2=0
-      If INSTANCIA = 7 Or instancia= 107 Or instancia < 3 Then 
+      If INSTANCIA = ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then 
       Else  
      ' SetGadgetstate(BTN_ROLL_GRABAR_MIDI,0) ' 10-04-2022 DE  VENTANA CTROL
        SetGadgetstate(15,0) ' 20-02-2025 
@@ -1985,7 +1984,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
          
          If CANCIONCARGADA = TRUE Then
              Print #1,"USANDO PLAYCANCION"
-             playb=1 : s5=0 'Necesita mas tiempo de cpu
+             playb=SI : s5=NO 'Necesita mas tiempo de cpu
              threadDetach(thread1)
              threadDetach(thread2)
              
@@ -1997,7 +1996,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
          Else
            If  MaxPos > 1 Then
       '        print #1,"llama a playall"
-              Play=1:s5=0
+              Play=SI:s5=NO
              threadDetach(thread1)
              threadDetach(thread2)
              Sleep 100
@@ -3314,8 +3313,8 @@ If (ScreenEvent(@e)) Then
   Case EVENT_WINDOW_GOT_FOCUS
        fueradefoco=0
   Case EVENT_WINDOW_LOST_FOCUS
-       If play = 1 Or playb=1 Then ' fuera pero en play
-           fueradefoco=0
+       If play = SI Or playb=SI Then ' fuera pero en play
+           fueradefoco=NO
        Else     ' fuera de y sin play reducimos consumo CPU
            Print #1,"1-sleep "; timer
          '  Sleep 20 '12-06-2022 lo puse denuevo
@@ -3324,12 +3323,12 @@ If (ScreenEvent(@e)) Then
 
  ' 23-08-21 CPU consumo fuera de foco
   Case EVENT_MOUSE_EXIT ' mouse fuera de pantalla del programa  
-       If play = 1 Or playb=1 Then ' fuera pero en play
-           fueradefoco=0
+       If play = SI Or playb=SI Then ' fuera pero en play
+           fueradefoco=NO
        Else     ' fuera de y sin play reducimos consumo CPU
         '  Print #1,"2-sleep ";timer
         '   Sleep 20 '12-06-2022 lo puse denuevo
-            fueradefoco=1
+            fueradefoco=SI
        EndIf
   Case EVENT_MOUSE_BUTTON_PRESS
 ' el help de freebasic esta mal dice que button left es 0 y es 1 !!!! joder pero anda mejor 
@@ -3391,9 +3390,9 @@ If (ScreenEvent(@e)) Then
   Case EVENT_KEY_PRESS    ' <======== KEY PRESS PULSO
        
    If e.scancode = SC_P   Then ' 25 anda mejor q con multikey
-      CONTROL1=1
-      CONTROL2=1
-      playloop=0:playloop2=0
+      PARAR_PLAY_MANUAL=SI
+      PARAR_PLAY_EJEC=SI
+      playloop=NO:playloop2=NO
       s5=2 'necesita menos tiempo de procesamiento    
     EndIf
    If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion
@@ -3904,7 +3903,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
         If  GrabarPenta=1 Or  metronomo_si=0 Then
          terminar_metronomo=1
         EndIf
-        If play=0 Then
+        If play=NO Then
           ' Print #1,"2) s3, guardopos ",s3, guardopos
 ''           posicion=guardopos
        '''posicion = posicion + curpos ' 15-09-2021 jmgjmg ok mejoró 
@@ -3961,7 +3960,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 ' 12-07-2021 mousex > 70  
  If  s5= 0 And mouseX > 450 And mousex < (ANCHO -70 - mxold) And  usarmarco=0 and mousey < 50 Then
      Sleep 20 '12-06-2022 15-03-2025 decia 20
-    If  play=0 And playb=0 Then ' durante un play funciona mal esto => se bloquea su uso por ahora
+    If  play=NO And playb=NO Then ' durante un play funciona mal esto => se bloquea su uso por ahora
      x1=mouseX: y1=mouseY
     EndIf
      s5=1  ' tiempo intermedio de cpu???
@@ -3971,7 +3970,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
  ' And menuNro= 1  '''348  (2* ANCHO/3)
  If MouseButtons And 1 And S5=1 And mouseX > 450  And mousex < (ANCHO -70 - mxold) And  usarmarco = 0 AND mousey < 50 Then
      Sleep 20  '12-06-2022 15-03-2025 decia 20
-    If  play=0 And playb=0 Then ' durante un play funciona mal esto => se bloquea su uso por ahora   
+    If  play=NO And playb=NO Then ' durante un play funciona mal esto => se bloquea su uso por ahora   
        x2=mouseX
        y2=mouseY
        x0=x0+x2-x1 
@@ -4002,13 +4001,13 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 '' CERRAMOS EL GRAFICO, PERO EL GRAFICO ES UNICO,,,,
 
 Dim As Integer i3
-     If play=1 Or playb=1 Or Cplay=1 Then
+     If play=SI Or playb=SI Or Cplay=SI Then
        'MessBox( "","Detenga el play primero ")
        'SetForegroundWindow(hwnd)
        '  Terminar=2
        '  Exit Do
-        CONTROL1=1
-        CONTROL2=1 
+        PARAR_PLAY_MANUAL=SI
+        PARAR_PLAY_EJEC=SI 
      EndIf
   If ubirtk > 0 or ubiroll > 0 Then ' valen 2
   Print #1," termina Roll tambien pues es un grafico independiente"
@@ -4036,7 +4035,7 @@ Dim As Integer i3
      Screen 0 ''', , ,  GFX_SCREEN_EXIT '''&h80000000
      If Maxpos > 2 Then
       
-        Terminar=3  ' para que no barra la pantalla 
+        Terminar=NO_TERMINAR_CON_DATOS_CARGADOS '3  para que no barra la pantalla 
         abrirRoll=REABRIR_ROLL_CON_DATOS_CARGADOS 'con 4 puede reabrir la ventana con los datos cargados
      
      Else
@@ -4047,7 +4046,7 @@ Dim As Integer i3
      Exit Sub
 
   Else
-     Terminar=0
+     Terminar=NO_TERMINAR_BARRE_PANTALLA
      Exit Do ' 06-05-2024
   EndIf  
 
@@ -5403,7 +5402,7 @@ If nnn=100 And MAXPOS > 800 Then ' que loopee mas en el lop mas interno solo sal
   Exit Do
 EndIf
 
-If fueradefoco=1  And (play = 0) and (playb=0) And (Cplay=0) Then
+If fueradefoco=SI  And (play = NO) and (playb=NO) And (Cplay=NO) Then
 
    Sleep 1 ' ESTO HACE QUE LA CINTA CORRA SUAVE
 EndIf

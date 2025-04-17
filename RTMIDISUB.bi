@@ -1423,7 +1423,7 @@ EndIf
 'Dim Shared midiin As RtMidiInPtr
 Dim As Integer porterror,nousar
 porterror=Err
-CONTROL1=0
+PARAR_PLAY_MANUAL=0
 Dim As Integer i1,k1
 ' creoa todos los defaults siempre
  
@@ -1485,7 +1485,7 @@ Dim As UByte dura=0,duraold=0
 Dim As Integer liga=0,notapiano=0,old_notapiano=0, iguales=0, distintos=0
 Dim leng As UInteger <8>
 Dim result As Integer
-playloop2=0
+playloop2=NO
 
 
 
@@ -1521,7 +1521,7 @@ Print #1,"TickUsuario "; tickUsuario
 Print #1,"VEO marca ejec enb onoff Roll.trk(1,NA).onoff   "; Roll.trk(1,NA).onoff
 'Print #1,"VEO Track(0).trk(1,1).ejec "; Track(0).trk(1,1).ejec 
 ' ======================= FOR JPLY PLAYALL =======================
-Print #1,"cominzo final control1 "; comienzo , final, control1
+Print #1,"cominzo final PARAR_PLAY_MANUAL "; comienzo , final, PARAR_PLAY_MANUAL
 
 For jply=comienzo To final
 
@@ -1534,12 +1534,12 @@ For jply=comienzo To final
 
 
   mousex=jply * anchofig '<=== jmgjmg ' ver esto andaba bien en Roll sin ticks sin el anchofig
-  If CONTROL1 = 1 Then
+  If PARAR_PLAY_MANUAL = 1 Then
     If InStr(*nombreOut(portout),"Microsoft") > 0 Then
     Else
       alloff( pmTk(0).canalsalida,pmTk(0).portout )
     EndIf  
-      CONTROL1=0
+      PARAR_PLAY_MANUAL=0
       Print #1,"mefui de playall"
       Exit For
   EndIf  
@@ -1636,7 +1636,7 @@ EndIf
 If i1 > NA-13 Then
  If Roll.trk(jply,i1).nota = 210 Then
    ' Print #1,"210 leido jply",jply
-    playloop2=1
+    playloop2=SI
     comienzo2=jply
  EndIf
 
@@ -1666,13 +1666,13 @@ EndIf
      old_time_on=old_time_on + tickUsuario 'jmgtiempo
    
  
- If playloop=1 And jply= finalloop Then
+ If playloop=SI And jply= finalloop Then
     jply=comienzoloop -1
  EndIf
- If playloop2=1 And jply= final2 Then
+ If playloop2=SI And jply= final2 Then
     jply=comienzo2 -1
     If final2=finalloop Then 
-       If playloop=1 Then
+       If playloop=SI Then
          jply=comienzoloop -1
        Else
          final=MaxPos
@@ -1699,8 +1699,8 @@ posicion=comienzo
 jply=0:curpos=0
 ' 11-06-2021 se volvio a colocar 1 seg retardo para no escuchar un corte abrubto
 ' al final, por ahroa no parpadea mas veremos.... 
-play=0 
-playb=0
+play=NO 
+playb=NO
 
 
 mousey=100 'otra mas para evitar rentrar a play en menu
@@ -1716,7 +1716,7 @@ For  iz As Short =1 To 32
       End If
       Exit For
 Next iz
-if GrabarPenta=0 and GrabarEjec=HabilitaGrabar and repro=0 And checkejec=0 Then 
+if GrabarPenta=0 and GrabarEjec=HabilitaGrabar and Parar_De_Dibujar=NO And checkejec=0 Then 
  ' nada de off estamos en grabarpenta por teclado o Grabar o tocar ejecuciones 
 
    k1=pmTk(0).portout
@@ -2574,7 +2574,7 @@ partes=delta/TickChico
 ' ENTRE EVENTOS
      jgrbRoll += 1
      If jgrbRoll=1 Then ' detiene la acumulacion de timestamp en PlayTocaAll 
-        arrancaPlay=1
+        arrancaPlay=SI
         Print #1,"arranco play o sea el usuario empezo a tocar la siguiente pista"
  
      EndIf
@@ -2842,8 +2842,8 @@ Dim As Integer partes , traba=0
          pmEj(ntoca).MaxPos=0
          tocaparam(ntoca).maxpos=0
      EndIf
-     If ntoca > 1 And jgrb=1 Then ' detiene la acumulacion de deltatime en PlayTocaAll 
-          arrancaPlay=1
+     If ntoca > 1 And jgrb=SI Then ' detiene la acumulacion de deltatime en PlayTocaAll 
+          arrancaPlay=SI
  
      EndIf
       
@@ -3156,7 +3156,7 @@ Print #1,"topeDuranteGrabacion ", topeDuranteGrabacion, " PISTAS"
 '      ChangeProgram ( tocaparam(pis).patch , tocaparam(pis).canal, tocaparam(pis).portout)	'
 '
 'Next pis
-CONTROL2=0
+PARAR_PLAY_EJEC=NO
 '''TickPlay=TickChico*tiempoPatronEjec/240
 ' no hay caso no cambia nada el play deberia modificar los datos ???
 ' los tiempos son fijos la unica forma seria cambiar sus valores
@@ -3165,7 +3165,7 @@ CONTROL2=0
 ' timex(kply) +  x3H * Tickchico
 Dim resta  As Double 
 '************************************************************************
- Print #1,"empieza el play de ejec, maxgrb, CONTROL2 ", maxgrb,CONTROL2
+ Print #1,"empieza el play de ejec, maxgrb, PARAR_PLAY_EJEC ", maxgrb,PARAR_PLAY_EJEC
 '************************************************************************
  
 Print #1,"playTocaAll jToca=maxgrb, kply=topeDuranteGrabacion ";maxgrb, topeDuranteGrabacion
@@ -3173,12 +3173,12 @@ Print #1,"playTocaAll jToca=maxgrb, kply=topeDuranteGrabacion ";maxgrb, topeDura
 ' volvimos aponer maxgrb en el redim ver como funciona porque teniamos un 384 mil
 ' deberiamos hacer el redim con un % mas 2 por ejemplo asi estamos con 2 veremos
 For jToca=1 To maxgrb ' se calcula al cargr los archivos de ejec 
-  If CONTROL2 = 1 Then
+  If PARAR_PLAY_EJEC = SI Then
      For kply =1 To topeDuranteGrabacion
          alloff( 1 ,pmEj( kply).portout  )
      Next  kply
-      CONTROL2=0
-      repro=0
+      PARAR_PLAY_EJEC=NO
+      Parar_De_Dibujar=NO
       Exit For
   EndIf  
 ''Print #1,"topeDuranteGrabacion ",topeDuranteGrabacion
@@ -3243,8 +3243,8 @@ For jToca=1 To maxgrb ' se calcula al cargr los archivos de ejec
 ''''Sleep 1,1 ' para que corranmas de un thread ¿??? 20-06-2022 porque lo puse?
 Next jToca
 ''jToca=0
-repro=0
-If instancia=7 Or instancia= 107 Then ''' Or instancia < 3 Then
+Parar_De_Dibujar=NO
+If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Then ''' Or instancia < 3 Then
 ' las instancias son formas de cargar roll
 Else
 SetGadgetstate(BTN_MIDI_EJECUTAR,0)
@@ -3278,7 +3278,7 @@ Sleep 1
          End Select
 
   EndIf 
-  repro=0
+  Parar_De_Dibujar=NO
   Sleep 20,1
   ThreadDetach threadG
 Exit Sub 
