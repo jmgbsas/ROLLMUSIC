@@ -416,9 +416,11 @@ MenuItem(2002,MenName10,"3.0 Cuadro de Figuras de duracion de notas")
 metronomo_si=3 'no funciona
 sonidopista_si=0 ' sonido por midi out si
 usarmarcoins=0
-usarmarco=0 
+usarmarco=0 'con marco  
 If com_usarmarco =0 Then
-   usarmarco=0
+   usarmarco=0 'valor por omision sin frame o marco de screenres
+' el frame de screenres no permite cambiar tamaño ni cerrar con el grafico de Rollmusic
+' es incomodo, y sin marco mover la ventana puede tener segun el caso alguna vibracion horizontal
    usarmarcoOld=0   
 Else
    usarmarco=com_usarmarco  

@@ -464,7 +464,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 
 If GrabarPenta=0 Then 'çççç NO ESTABA
   If (mousey <= lugar) And (mousey >= lugarOld ) Then
-   nsE=semitono + 1 'semitono ahora va desde 0 a 11 usadopor entrada de tecladoy ahroa mouse
+   nsE=semitono + 1 'semitono ahora va desde 0 a 11 usado por entrada de teclado y ahroa mouse
    nR=(11-semitono) + (*po -1 ) * 13 ''+ (desde -1)*13 ' indice de la nota en Roll , en algo será util.
  '  If *po=1 Then
    '   Print #8, "nR octava 1 ",nR
@@ -1342,14 +1342,21 @@ EndIf
 
 ' 03-02-2022 screen event me pone con su 80 trasponer=1 hace una asignacion !!!
 If MultiKey(SC_DOWN) Then  ' el screenevent me pone trasponer en 1 la puta e.scancode = 80 Then  ' <===== SC_DOWN pulso
-     If trasponer=1 And SelGrupoNota=0 Then
+     If trasponer =1 And SelGrupoNota=0  Then
         'print #1,"0 pulso down screenevent TRASPONER con multikey!"
-       trasponerRoll ( -1,Roll,encancion)
+       If s6=0  Then
+          s6=1   
+         trasponerRoll ( -1,Roll,encancion)
+       EndIf   
+
        Exit Do
      EndIf 
-     If trasponer=1 And SelGrupoNota=1 Then
+     If trasponer =1 And SelGrupoNota=1 Then
        'print #1,"1 pulso down screenevent TRASPONER"
+       If s6=0  Then
+         s6=1 
        trasponerGrupo ( -1,Roll,encancion)
+       EndIf  
        Exit Do
      EndIf 
      
@@ -1379,15 +1386,19 @@ EndIf
 
 If MultiKey (SC_UP) Then
     If trasponer=1 And SelGrupoNota=0 Then
-             ' Print #1,"3 TRASPONER !!!!!!!!!!!!!!", trasponer
-     trasponerRoll ( 1,Roll,encancion)
-     Exit Do
+      If s6=0  Then
+         s6=1
+        trasponerRoll ( 1,Roll,encancion)
+      EndIf
+      Exit Do
     EndIf
     If trasponer = 1 And SelGrupoNota=1 Then
-             ' Print #1,"4 TRASPONER !!!!!!!!!!!!!!",trasponer
-     trasponerGrupo ( 1, Roll,encancion)
+       If s6=0  Then
+          s6=1 
+         trasponerGrupo ( 1, Roll,encancion)
+       EndIf  
 
-     Exit Do 
+       Exit Do 
     EndIf 
 
     If cursorVert= 0 Then
@@ -3395,40 +3406,40 @@ If (ScreenEvent(@e)) Then
       playloop=NO:playloop2=NO
       s5=2 'necesita menos tiempo de procesamiento    
     EndIf
-   If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion
+  ' If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion'
+  '
+  '  If trasponer=1 And SelGrupoNota=0 Then
+   '          ' Print #1,"3 TRASPONER !!!!!!!!!!!!!!", trasponer
+   '  trasponerRoll ( 1,Roll,encancion)
+    ' Exit Do
+  '  EndIf
+  '  If trasponer = 1 And SelGrupoNota=1 Then
+  '           ' Print #1,"4 TRASPONER !!!!!!!!!!!!!!",trasponer
+  '   trasponerGrupo ( 1, Roll,encancion)''
+'
+ '    Exit Do 
+  '  EndIf 
 
-    If trasponer=1 And SelGrupoNota=0 Then
-             ' Print #1,"3 TRASPONER !!!!!!!!!!!!!!", trasponer
-     trasponerRoll ( 1,Roll,encancion)
-     Exit Do
-    EndIf
-    If trasponer = 1 And SelGrupoNota=1 Then
-             ' Print #1,"4 TRASPONER !!!!!!!!!!!!!!",trasponer
-     trasponerGrupo ( 1, Roll,encancion)
+'    If cursorVert= 0 Then
+'     If s2=0 Then
+'      s2=1
+'         'print #1,"pulso UP r 1 inc_penta"
+'      BordeSupRoll = BordeSupRoll +   inc_Penta
+''     EndIf
+'     If BordeSupRoll >= AltoInicial * 0.5  Then
+'      BordeSupRoll =  AltoInicial * 0.5
+'     EndIf
 
-     Exit Do 
-    EndIf 
-
-    If cursorVert= 0 Then
-     If s2=0 Then
-      s2=1
-         'print #1,"pulso UP r 1 inc_penta"
-      BordeSupRoll = BordeSupRoll +   inc_Penta
-     EndIf
-     If BordeSupRoll >= AltoInicial * 0.5  Then
-      BordeSupRoll =  AltoInicial * 0.5
-     EndIf
-
-     Exit Do
-    EndIf
-    If cursorVert=1 Or cursorVert=2 Then
-     notacur=notacur-1
-     If notacur < 1 Then
-      notacur=12
-     EndIf
-     Exit Do
-    EndIf
-   EndIf
+'     Exit Do
+'    EndIf
+'    If cursorVert=1 Or cursorVert=2 Then
+'     notacur=notacur-1
+'     If notacur < 1 Then
+'      notacur=12
+'     EndIf
+'     Exit Do
+'    EndIf
+'   EndIf
 
    If e.scancode = &h41 Then ' <======= SC_F7
     If COMEDIT = FALSE Then
@@ -3608,14 +3619,6 @@ EndIf
   Case EVENT_KEY_REPEAT
    If e.scancode = 72  Then ' <======= SC_UP
 
-      If trasponer=1 And SelGrupoNota=0 Then
-         trasponerRoll ( 1,Roll,encancion)
-         Exit Do
-      EndIf
-      If trasponer=1 And SelGrupoNota=1 Then
-        trasponerGrupo ( 1, Roll,encancion)
-        Exit Do 
-      EndIf 
     If cursorVert = 0 Then
      If s2=0 Then
       s2=1
@@ -3638,15 +3641,6 @@ EndIf
 
    If e.scancode = 80 Then  ' <===== SC_DOWN repeat
 
-     If trasponer=1 And SelGrupoNota=0 Then
-     '   Print #1,"0 TRASPONER !!!!!!!!!!!!!!",trasponer
-         trasponerRoll ( -1,Roll,encancion)
-         Exit Do
-     EndIf
-     If trasponer=1 And SelGrupoNota=1 Then
-        trasponerGrupo ( -1, Roll,encancion)
-        Exit Do 
-     EndIf 
     If cursorVert=1 Then
        notacur = notacur + 1
        If notacur > 12 Then
@@ -4769,12 +4763,12 @@ ButtonGadget(2,530,30,50,40," OK ")
  ' lockip=0   ' 10-12-2021 wheel no se movia ***JMG OJO JODE INTERLINEADO VER MAS COMENTADO
 
 ' ========================================================  
-' SELECCION DE ZONA PARA TRASPONER, VOLUMEN, INSTRUMENTO, ETC ETC
+' SELECCION DE ZONA PARA TRASPONER NOTAS
 ' SOLO SELECCIONO PASO DESDE HASTA y/o NOTA. 
 ' usaremos tambien (en desarrollo futuro) para borrar un intervalo ya sea de 
 ' la octava elegida o todas las octavas o desde una nota hasta otra ....¿?
 ' clave DEVF (desarrollo futuro)
-' esto funciona solo en modo lectura asi que lomovere ahi
+' esto funciona solo en modo lectura asi que lo movere ahi
 
   If MultiKey(SC_CONTROL) And MousePress= 1  Then
      Dim As Integer pasox, pasoy, pasonR
@@ -5406,9 +5400,12 @@ If fueradefoco=SI  And (play = NO) and (playb=NO) And (Cplay=NO) Then
 
    Sleep 1 ' ESTO HACE QUE LA CINTA CORRA SUAVE
 EndIf
+While InKey <> "": Wend
+'podria reemplazarse por REset(0) ???
+Reset (0)
 
 Loop
-'While InKey <> "": Wend
+While InKey <> "": Wend
 'podria reemplazarse por REset(0) ???
 Reset (0)
 

@@ -596,7 +596,7 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
              Select Case usarmarco
                Case 0             
                   SetStateMenu(hMessages,1100,3)
-                  usarmarco=3
+                  usarmarco= 3
                Case 3
                   SetStateMenu(hMessages,1100,0)
                   usarmarco=0

@@ -141,7 +141,7 @@
         Nota de desarrollo: Ctrl-T se disparaba solo despues de cambiar el interlineado, pulsaba flecha abajo y 
        empezaba a trasponer sin haber pulsado CTRL-T, ergo se cambio a ALT-T, ¿inconsistencia de la union de cairo
        con freebasic? podria ser, o el uso de threads, no se, se cambió y listo.(dejo sentado los errores
-       porque investigar o pedir ayuda es muy engorroso hasta te tratan de ataque cibernetico jajaja...
+       porque investigar o pedir ayuda es muy engorroso hasta te tratan de ataque cibernetico jajaja...forros
 
     4) Recalcular Compas pulsando <R>. Establece las barras divisorias entre compases.c
     5) Grabar Archivo. (Ctrl-click). Se ha puesto un retardo de 1 segundos si tarda eso es porque se
@@ -655,15 +655,16 @@
     1.2)  Trasponer todo: ALT-T habilita la trasposicion, Q la deshabilita.
        una vez habilitada con Flecha-UP sube de a un semitono con cada pulso
        Con Flecha-Down baja un semitono can cada pulso.
-       Seleccion de Zona para una accion:
+       [  Seleccion de Zona para una accion:
        Ctrl-Click en la 1er posicion de la zona, otro Ctrl-click en la segunda
        posicion, terminar al selecion con Q (borra todas las acciones).
+       (NO DAR CLICK SOBRE UNA NOTA)  ]
     
        Trasponer una Zona: seleccionar la zona deseada y luego igual que 
-       Trasponer todo, solo que esta vez la acion solo se ejecuta en la zona
+       Trasponer todo, solo que esta vez la accion solo se ejecuta en la zona
        elegida como antes terminar la seleccion y la trasposicion pulsando Q.
-       Trasponer una columna de notas: el segundo Ctrl-Click hacerlo en la misma
-       columna deseada,
+       Trasponer una columna de notas: el segundo Ctrl-Click de seleccion de zona hacerlo en 
+       la misma columna deseada,
     
        Trasponer una sola nota: el 3er Ctrl-click hacerlo sobre la nota. 
        Trasponer 1 o mas notas al azar en Grupo: pulsar ALT+Click en cada nota

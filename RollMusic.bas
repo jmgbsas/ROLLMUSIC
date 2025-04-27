@@ -81,11 +81,11 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.312 Algunas ConstanteS "
+nroversion="TICKS 0.313 SELECCION ZONAS, trasponer "
 ' trabajos mediatos:
-' 2) Vendra version 0.311 que verá si funcionan la seleccion de zonas o partes
-' de la secuencia para trasponer copiar insertar etc,,,, REEMPLAZAMOS NUMEROS
-' POR CONSTANTES CON SIGNIFICADOS
+' 1) Vendra version 0.311 REEMPLAZAMOS NUMEROS POR CONSTANTES CON SIGNIFICADOS 
+' 2) ver si funcionan la seleccion de zonas o partes
+' de la secuencia para trasponer copiar insertar etc,,,,
 ' 3) la repeticion de zonas en el play, insertar espacios fin de secuencia 
 '    Borrar zonas ,cambiar notas insertar notas, mover nota horizontalmente
 '    verticalmente ya lo hace con zona y trasponer...podriamos ahcer el move
@@ -445,7 +445,7 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", Nombr
 Print #1, "3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
       param.ubiroll=ubiroll
       param.ubirtk=ubirtk
-      param.midionof=usarmarco ' para volcado de midi si o no ,si con 4
+      param.midionof=usarmarco '  para volcado de midi si o no ,si con 4
 
 Print #1, "3 ubiroll ubirtk ", ubiroll,ubirtk
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))

@@ -124,7 +124,7 @@ Const NRO_CANAL = 11
 '-----------------instancias
 Const ARG0_EN_LINEA = 0
 Const ARG1_1_TITULO = 1
-Const ARG1_2_DESDE = 1
+Const ARG1_2_DESDE = 1 
 Const ARG2_HASTA = 2
 Const ARG3_TITU = 3
 Const ARG4_INSTRU = 4
@@ -547,7 +547,7 @@ Dim  Shared figura (1 To 185) As ZString  * 4 => _
  "sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sX*+","sH*+","sW*+", _ '154 162
  "sO:+","sP:+","sI:+","sL:+","sF:+","sE:+","sX:+","sH:+","sW:+",_  '163 171 
  "s3O+","s3P+","s3I+","s3L+","s3F+","s3E+","s3X+","s3H+","s3W+", _ '172 180
- "   "," ||",">> "," - "," N " } ' 181 182 183 184 185- 109 110, son 108 (old 73 74 son 72)
+ "   "," ||",">> "," - "," N " } '181 185 , son 185 
 ' la 185 la pondremos como 1er etapa de pasar  de ejecucion a Roll
 ' indicara una nota pero no sabemos su duracion, 2da etapa le pondremos
 ' una duracion cuantificada,,,

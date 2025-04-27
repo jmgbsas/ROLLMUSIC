@@ -3238,10 +3238,10 @@ If copi >0 Then
 EndIf   
 
 
-   t = "      EDIT" + " " +  " Maxpos:" + _
-   Str(Maxpos) +" Posi:" + Str(posicion)+ " Posn:"+Str(posn)+ _
-   " Font:" +Str(font) + " Oct:" + Str(estoyEnOctava) + " nA:"+Str(veonota) + _ 
-   " NP:"+ Str(PianoNota) + " nsE:"+Str(nsE) + " Curpos:" +Str(curpos) + _
+   t = "      EDIT" + " " +  " Maxp:" + _
+   Str(Maxpos) +" Psi:" + Str(posicion)+ " Psn:"+Str(posn)+ _
+   " Fnt:" +Str(font) + " Oct:" + Str(estoyEnOctava) + " nA:"+Str(veonota) + _ 
+   " NP:"+ Str(PianoNota) + " nsE:"+Str(nsE) + " Curps:" +Str(curpos) + _
    " RollDur :"+ Str(RollDur) + " Rollnota:" + Str(RollNota) + _ 
    " Copia:" + Str(veocopi) +" Col:" +Str(indicePos) + " DUR:"+ Str(Dur) + _ 
    " Nota:"+ Str(nota) + " ONOFF:" + Str(onoff)

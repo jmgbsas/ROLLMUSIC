@@ -2023,11 +2023,301 @@ temp=""
 
 
 End Sub
+' SUBRUTINAS PARA TRASPONER ADICIONALES PARA TICKS
+Sub BuscoFinalNota   (Roll As inst, hastat As integer, jpt As integer, i1 As integer, ByRef jpt3 As integer, cant As integer)
+
+Dim As Integer kx, ky
+Print #1,"Entra Busco OFF del ON recibido,, hastat ,jpt,  i1 ",hastat, jpt, i1
+' el on si esta en el intervalo se mueve si o si 
+' solo debo detectar 1ero que el off esta fuera del intervalo y 2do ir mas halla
+' en contrar el off y trasponerlo junto al ON que se mueve si o si,
+
+Dim ind As Integer
+jpt3=0
+
+   If cant > 0 Then  ' UP  
+      ind = i1 + cant 
+      ind = ind + sumar(ind)
+   EndIf
+   If cant < 0 Then  ' DOWN  
+      ind = i1 + cant 
+      ind = ind - sumar(ind)
+   EndIf
+
+ For kx =jpt+1 To Maxpos  '' + una redonda ?? 96*4
+
+  If  Roll.trk (kx,i1).onoff = 1 Then '''And Roll.trk (kx,i1).dur > 0 Then
+      Print #1,"//encontro un OFF// jpt3 i1  ";kx,i1  
+      jpt3=kx
+    If jpt3 <= hastat Then
+      Print #1,"Encontro OFF  dentro del rango jpt3 i1 ",jpt3,i1
+    Else 
+    Print #1,"Encontro OFF fuera del rango jpt3 i1 ",jpt3,i1 
+    EndIf
+      Exit Sub
+  EndIf
+ Next kx 
+
+
+
+End Sub
+'--------------
+Sub BuscoComienzoNota(Roll As inst, desdet As Integer, jpt As Integer, i1 As Integer, ByRef jpt2 As Integer, cant As integer  )
+'buscamos onoff=2 , dada la posicion de un onoff=1 dentro del rango
+'jpt, i1  es la posicion de entrada del onoff=1
+'jpt2 , i2 la salida si existe de onoff=2 ,si existe todo se traspone
+' jpt es el eje x horizontal, i1 el vertical
+' barremos el horizontal desde jpt hacia valores mas pequeños vamos a la izquierda
+' O PODEMOS IR DESDE IZQUIERDA HASTA EL OFF 1 ES IGUAL
+Dim As Integer kx, ky
+Print #1,"Entra Busco ON  desdet ,jpt,  i1 ",desdet, jpt, i1
+'Print #1,"puta porque mierda no encontaras onof 2???? !!!!"
+Dim ind As Integer
+jpt2=0
+   If cant > 0 Then  ' UP  
+      ind = i1 + cant 
+      ind = ind + sumar(ind)
+   EndIf
+   If cant < 0 Then  ' DOWN  
+      ind = i1 + cant 
+      ind = ind - sumar(ind)
+   EndIf
+
+ For kx =desdet To jpt   
+  ' Print #1,"kx ";kx;" onoff i1 "; Roll.trk (kx,i1).onoff,i1
+  ' If Roll.trk (kx,i1).onoff > 0 Then
+  '    Print #1,"kx Roll.trk (kx,i1).onoff ";kx;" ";Roll.trk (kx,i1).onoff
+  '    Print #1,"kx Roll.trk (kx,i1).dur   ";kx;" ";Roll.trk (kx,i1).dur
+  ' EndIf
+
+  If  Roll.trk (kx,ind).onoff = 2 Then '''And Roll.trk (kx,i1).dur > 0 Then
+      Print #1,"//encontro un ON// jpt2 i1  ";kx,i1  
+      jpt2=kx
+      Exit For
+  EndIf
+ Next kx 
+
+Print #1,"sale Busco ON  jpt2 i1 ",jpt2,i1 
+End Sub
+
+Sub moverDatosenY (Roll As inst, jpt As Integer, i1 As Integer,cant As integer)
+Dim ind As integer
+   If cant > 0 Then  ' UP  
+      ind = i1 + cant 
+      ind = ind + sumar(ind)
+   EndIf
+   If cant < 0 Then  ' DOWN  
+      ind = i1 + cant 
+      ind = ind - sumar(ind)
+   EndIf
+
+
+Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
+Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
+Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
+Roll.trk(jpt,ind).pan  = Roll.trk(jpt,i1).pan
+Roll.trk(jpt,ind).pb   = Roll.trk(jpt,i1).pb
+Roll.trk(jpt,ind).inst = Roll.trk(jpt,i1).inst
+Roll.trk(jpt,ind).onoff = Roll.trk(jpt,i1).onoff
+
+   Roll.trk(jpt,i1).nota = 181
+   Roll.trk(jpt,i1).dur  = 0
+   Roll.trk(jpt,i1).vol  = 0
+   Roll.trk(jpt,i1).pan  = 0
+   Roll.trk(jpt,i1).pb   = 0
+   Roll.trk(jpt,i1).inst = 0
+   Roll.trk(jpt,i1).onoff = 0
+  
+
+End Sub
+
+'---------
+Sub trasponerRoll( cant As Integer, Roll As inst, encancion As integer)
+On Local Error Goto failtraspo
+'AJSUTADO DE NUEVO 11-09-2021 CON EL NUEVO ALGORITMO DE OCTAVAS
+' adaptado para ticks 06-03-2025
+'-----------------------------------------------
+' PARA TICKS DEBO IDENTIFICAR ELONOFF=2 MOVERLO CON SU CORRESPONDIENTE ONOFF=1
+' SI HAY UN ONOFF=1 O SEA FIN DE NOTA, Y NO ESTA EL COMIENZO DE LA NOTA DENTRO DEL
+' GRUPO O ZONA, ESA NOTA NO SE MUEVE!!
+' EL INTERVALO DE ZONA COMENZARA EN UNA POSICION O TICKS=X Y FINALIZARA EN OTRA TICKS=Y
+' EL ALGORITMO SOLO NECESITA CORREGIR LOS FINALES DE NOTA,SERIA SI ENCUENTRO UN FINAL
+' ONOFF=1 Y ME MUEVO HACIA ATRAS BUSCANDO HORIZONTALMENTE UN ONOFF=2 DE COMIEZNO DE ESA NOTA
+' ENTONCES SE MUEVE EL FINAL.. SI NO LO ENCUENTRO ESE ONOFF=1 NO SE MUEVE,,
+' AL REVES SI TENGO UN ONOFF=2 COMIENZO DENTRO DEL RANGO SE MUEVE AUNQUE SU ONOFF=1 O 
+'FINAL ESTE FUERA DEL RANGO, PARA ESO DEBO BUSCAR EL ONOFF=1 DE ESA NOTA AUNQUE ESTE MAS 
+' HALLA DEL PASOZONA2 O FINAL DEL GRUPO Y MOVERLO,,,
+' CONSTRUIR UNA RUTINA QUE BUSQUE COMIENZO DE NOTA SI LE LLEGA UN ONOFF1 Y SI LE LLEGA
+' UN COMIENZO ONOFF2 QUE BUSQUE SU ONOFF1 Y VER SI ESTA DENTRO DEL GRUPO Y EN CASO QUE NO LO 
+' ESTE MOVERLO DE TODAS FORMAS AUNQUE ESTE MAS HALLA DEL RANGO.  
+'------------------------------------------------
+' 1) FUNCIONA BUSCAR EL ON A IZQUIERDA DADO UN OFF 1 O SEA OFF. <--- LISTO
+' 2) AHORA FALTA BUSCAR UN OFF 1 A DERECHA DADO UN OFF 2 O SEA ON, EN ESTE  CASO SI LO ENCUENTRO
+'    QUE SE FUE DEL INTERVALO A LA DERECHA SOLO DEBO AGRANDAR EL INTERVALO A LA DERECHA HASTA
+'    ALCANZAR ESE OFF, PERO PODRIAN ENTRAR OTRAS NOTAS. LUEGO SOLO DEBO MOVER ESE  OFF
+'    EXCLUSIVAMENTE,,!!
+
+Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,octavaDeAcorde,verticalEnOctavaVacia  
+
+' NA ES EL MAYOR VALOR NUMERICO, 
+' NB EL MENOR VALOR NUMERICO
+' cant=(1) si pulso flecha UP
+  Print #1,"ARRANCA  TRASPONER ROLL !!!!!!!!!!!!!!",trasponer
+  If trasponer=0 Then
+     Exit Sub
+  EndIf
+  
+If cant < 0 Then ' DOWN
+ comienzo= NB
+ final = NA  -13 '30-01-2022 NA->NA -13
+ inc= 1
+EndIf
+If cant > 0 Then 'UP
+ comienzo= NA -13
+ final = NB  
+ inc=  -1
+EndIf
+Dim As Integer desdet, hastat
+If pasoZona1 > 0 Then 
+   desdet = pasoZona1
+Else
+   desdet=1   
+EndIf   
+If pasoZona2 > 0 Then 
+   hastat = pasoZona2
+Else
+   hastat= MaxPos   
+EndIf   
+Print #1, " desdet hastat comienzo final "; desdet, hastat, comienzo, final  
+Dim  As Integer jpt3, jpt2 , i2 'posicion del onoff=2 inicio nota
+Dim As Integer  k2, k2fin, oldjpt,oldind 
+For jpt = desdet To hastat  ' eje x posiciones horizontal
+  For i1= comienzo To final Step inc ' indice roll nR vertical
+     If cant > 0 Then  ' UP  
+        ind = i1 + cant 
+        ind = ind + sumar(ind)
+     EndIf
+     If cant < 0 Then  ' DOWN  
+        ind = i1 + cant 
+        ind = ind - sumar(ind)
+     EndIf
+' las notas son nro de semitono 1 a 12 (en crearPenta van de 0 a 11)
+    '''Print #1, "jpt,i1 "; jpt,i1
+
+    If ( (Roll.trk(jpt,i1).nota >= 0) And Roll.trk(jpt,i1).dur <= 185 ) _
+        OR (Roll.trk(jpt,i1).dur >=0 And Roll.trk(jpt,i1).dur <= 185 ) _
+      Or  Roll.trk(jpt,i1).onoff > 0       Then ' es semitono
+       If Roll.trk(jpt, i1).pb = 201 Then '' cuando traspongo muevo el cifrado ...¿?
+           octavaDeAcorde=1+ (i1-12)/13
+           verticalEnOctavaVacia= 12 + (hasta-2)*13 + octavaDeAcorde - desde  
+           If cant> 0 Then 
+             Roll.trk(jpt, verticalEnOctavaVacia).nota=Roll.trk(jpt, verticalEnOctavaVacia).nota - 1
+           Else
+             Roll.trk(jpt, verticalEnOctavaVacia).nota=Roll.trk(jpt, verticalEnOctavaVacia).nota + 1
+           EndIf
+           Continue For
+       EndIf  
+  
+       If ind >= NB And ind <= NA  -13 Then '' vertical
+          If  pasoNota=0  Then    ' no se clickeo sobre una nota especifica 
+            ' >> 183, N 185 (para ejec si no 1, 2,3,4,5,6,7,8,9)
+             'Print #1,"ENTRO POR PASONOTA=0 "
+' para mover un off 1 si su on esta en el intervalo, sino no se mueve
+             If  Roll.trk(jpt,i1).onoff = 1   Then
+              ' busco en el intervalo a izquierda si no alcanzo a  ver el on dentro del intervalo no se mueve el off
+                BuscoComienzoNota(Roll, desdet, jpt, i1 , jpt2,cant )
+                if jpt2 > 0 And jpt2 >= desdet Then
+                   moverDatosenY (Roll, jpt,i1,cant) ' esta en el intervalo se mueve el off 1
+                   jpt2=0
+                EndIf
+             EndIf
+' para mover  un off 2 q esta en rango y su off 1 aunque este fuera de rango
+             If  Roll.trk(jpt,i1).onoff = 2  Then
+                 moverDatosenY (Roll, jpt,i1,cant)
+                 BuscoFinalNota(Roll, hastat, jpt, i1 , jpt3,cant )
+               If jpt3 > 0 and jpt3 > hastat Then ' muevo el off fuera de intevalo
+                  Print #1,"Hay jpt3 > 0 EL ON  TIENE SU OFF fuera DEL INTERVALO SE MUEVE EL OFF dur, nota ";Roll.trk(jpt3,i1).dur; Roll.trk(jpt3,i1).nota
+                  moverDatosenY (Roll, jpt3,i1,cant)
+                  jpt3=0 
+               EndIf  
+             EndIf
+              
+          Else ' se clickeo sobre una nota especifica en el caso de que sea una sola columna 
+            Print #1,"3 ENTRO POR PASONOTA=ROLL.. "
+            If pasoNota = Roll.trk(jpt,i1).nota And (Roll.trk(jpt,ind).nota=0 Or Roll.trk(jpt,ind).nota=181 )  Then
+               moverDatosenY (Roll, jpt,i1,cant)
+                             
+            Else                
+             Print #1,"4 ENTRO POR PASONOTA=ROLL ELSE "
+               If Roll.trk(jpt,ind).nota >=1 And Roll.trk(jpt,ind).nota <=12  Then
+                   If cant > 0 Then  ' UP  
+                   ind = ind+cant 
+                      ind = ind + sumar(ind)
+                   EndIf
+                   If cant < 0 Then  ' DOWN  
+                      ind = ind + cant 
+                      ind = ind - sumar(ind)
+                   EndIf
+
+                  if ind > NA -13Then
+                     ind=NA -13
+                  EndIf
+                  If ind < NB Then
+                     ind=NB
+                  EndIf
+               moverDatosenY (Roll, jpt,i1,cant)
+
+               EndIf
+            EndIf      
+          EndIf    
+       EndIf
+    EndIf
+  Next i1
+Next jpt
+
+''trasponer=0   
+' para trasponer tracks debo grabar lo cual copia a track los cambios
+' de ese modo al dar play se escucha los cambios sino solo quedan en Roll
+' y el play de cancion no lo registra , solo el play de roll lo registraria
+If encancion > 0 Then
+   Dim As Integer ubi1=0,ubi2=0 
+   Dim As String no1,no2
+   ubi1=InStr(nombre,"[")
+   ubi2=InStr(nombre,"]")
+   If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
+       GrabarRollaTrack(0)
+   EndIf
+EndIf       
+
+Exit Sub
+
+failtraspo:
+ Dim errmsg As String
+ Dim As Long er1 = Err()
+If  er1 > 0 Then
+print #1,"-----------------err trasponerroll-----------------"
+  errmsg = "TRASPONERROOLL FAIL Error " & Err & _
+           " in function " & *Erfn & _
+           " on line " & Erl & " " & ProgError(er1)
+  Print #1, errmsg
+  PRINT #1, " jpt i1 jpt2 i2 ";  jpt, i1, jpt2, i2 
+  FileFlush (-1)
+  Close
+  End 0
+End If
+
+
+End Sub
+
+'-----------------------------
 Sub trasponerGrupo( cant As Integer, Roll As inst, encancion As Integer)
-' ANDA BIEN, ES EQUIVALENT EEMPEIZA EN EL EXTREMO QUE ATACA BAJANDO LA POSICION
+' Que es: el grupo es una seleccion puntual de notas que van a trasponerse se clickea 
+' cada una y el resto no se toca...
+' 
+' ANDA BIEN, ES EQUIVALENTE EMPIEZA EN EL EXTREMO QUE ATACA BAJANDO LA POSICION
 ' DE LA COPIA ES LO MISMO PERO INVERTIDO FUNCIONA IGUAL, LO IMPORTANE DEL CAMBIO
 ' FUE EN LA SUBRUTUNA SUMAR COMO EL VECTOR EMPIEZA DE CERO 0, EL ESPACIO ENTRE
-' OCTAVAS NO QUEDA MULTIPLO DE 13 ERGO LE SUMO 1 AHORA,,,ANTES DE AHCER EL MOD 13
+' OCTAVAS NO QUEDA MULTIPLO DE 13 ERGO LE SUMO 1 AHORA,,,ANTES DE HACER EL MOD 13
 ' 31-01-2022 CORREGIDO EN BASE A tRASPONERROLL SEGUN OCTAVA NUEVA TIENE SOLO UN 
 ' SOLO TRASPONE DENTRO DE LA MISMA OCTAVA HAY QUE VER SI PODEMOS HACER LO MISMO
 ' QUE CON TRASPONERROLL Y MOVER A OTROS OCTAVAS....
@@ -2065,7 +2355,7 @@ For jpt = desdet To hastat
         ind = ind - sumar(ind)
      EndIf
    
-    If ( (Roll.trk(jpt, i1).nota >= 0) And Roll.trk(jpt, i1).nota <= 183 ) _
+    If ( (Roll.trk(jpt, i1).nota >= 0) And Roll.trk(jpt, i1).nota <= 185 ) _
        OR (Roll.trk(jpt, i1).dur >=0 And Roll.trk(jpt, i1).dur <= 183 ) Then ' es semitono
        
        If ind >= NB And ind <= NA -13 Then
@@ -2108,26 +2398,26 @@ For jpt = desdet To hastat
                      ind=NB
                   EndIf
                   b1=1
- ' CON ESTE IF SE CORRIGE QU ENOMUEVA OTRA COSA QUE LAS NOTAS CON 13
+ ' CON ESTE IF SE CORRIGE QUE NO MUEVA OTRA COSA QUE LAS NOTAS CON 13
  ' PERO TODAVIA SOLO MUEVE DENTRO DE UNA OCTAVA NO VA MAS HALLA-....                 
-   If Roll.trk(jpt,ind).nota > 0 And Roll.trk(jpt,ind).nota <= 13  Then '31-01-2022    
-                  Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
-                  Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
-                  Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
-                  Roll.trk(jpt,ind).pan  = Roll.trk(jpt,i1).pan
-                  Roll.trk(jpt,ind).pb   = Roll.trk(jpt,i1).pb
-                  Roll.trk(jpt,ind).inst = Roll.trk(jpt,i1).inst
-                  Roll.trk(jpt,ind).onoff = Roll.trk(jpt,i1).onoff
+                  If Roll.trk(jpt,ind).nota > 0 And Roll.trk(jpt,ind).nota <= 13 Or Roll.trk(jpt,ind).dur=183  Then '31-01-2022    
+                    Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
+                    Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
+                    Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
+                    Roll.trk(jpt,ind).pan  = Roll.trk(jpt,i1).pan
+                    Roll.trk(jpt,ind).pb   = Roll.trk(jpt,i1).pb
+                    Roll.trk(jpt,ind).inst = Roll.trk(jpt,i1).inst
+                    Roll.trk(jpt,ind).onoff = Roll.trk(jpt,i1).onoff
 
-                  Roll.trk(jpt,i1).nota = 181
-                  Roll.trk(jpt,i1).dur  = 0
-                  Roll.trk(jpt,i1).vol  = 0
-                  Roll.trk(jpt,i1).pan  = 0
-                  Roll.trk(jpt,i1).pb   = 0
-                  Roll.trk(jpt,i1).inst = 0
-                  Roll.trk(jpt,i1).onoff = 0
+                    Roll.trk(jpt,i1).nota = 181
+                    Roll.trk(jpt,i1).dur  = 0
+                    Roll.trk(jpt,i1).vol  = 0
+                    Roll.trk(jpt,i1).pan  = 0
+                    Roll.trk(jpt,i1).pb   = 0
+                    Roll.trk(jpt,i1).inst = 0
+                    Roll.trk(jpt,i1).onoff = 0
 
-   EndIf                
+                  EndIf                
                EndIf
             EndIf      
        EndIf
@@ -2150,162 +2440,6 @@ EndIf
 
 
 ''trasponer=0   
-End Sub
-'---------
-Sub trasponerRoll( cant As Integer, Roll As inst, encancion As integer)
-'AJSUTADO DE NUEVO 11-09-2021 CON EL NUEVO ALGORITMO DE OCTAVAS
-' adaptado para ticks 06-03-2025
-Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,octavaDeAcorde,verticalEnOctavaVacia  
-
-' NA ES EL MAYOR VALOR NUMERICO, 
-' NB EL MENOR VALOR NUMERICO
-' cant=(1) si pulso flecha UP
-  Print #1,"ARRANCA  TRASPONER ROLL !!!!!!!!!!!!!!",trasponer
-  If trasponer=0 Then
-     Exit Sub
-  EndIf
-  
-If cant < 0 Then ' DOWN
- comienzo= NB
- final = NA  -13 '30-01-2022 NA->NA -13
- inc= 1
-EndIf
-If cant > 0 Then 'UP
- comienzo= NA -13
- final = NB  
- inc=  -1
-EndIf
-Dim As Integer desdet, hastat
-If pasoZona1 > 0 Then 
-   desdet = pasoZona1
-Else
-   desdet=1   
-EndIf   
-If pasoZona2 > 0 Then 
-   hastat = pasoZona2
-Else
-   hastat= MaxPos   
-EndIf   
-
-For jpt = desdet To hastat  ' eje x posiciones
-  For i1= comienzo To final Step inc ' indice roll nR vertical
-     If cant > 0 Then  ' UP  
-        ind = i1 + cant 
-        ind = ind + sumar(ind)
-     EndIf
-     If cant < 0 Then  ' DOWN  
-        ind = i1 + cant 
-        ind = ind - sumar(ind)
-     EndIf
-   
-    If ( (Roll.trk(jpt,i1).nota >= 0) And Roll.trk(jpt,i1).nota <= 183 ) _
-       OR (Roll.trk(jpt,i1).dur >=0 And Roll.trk(jpt,i1).dur <= 183 ) Then ' es semitono
-       If Roll.trk(jpt, i1).pb = 201 Then '' cuando traspongo muevo el cifrado ...¿?
-           octavaDeAcorde=1+ (i1-12)/13
-           verticalEnOctavaVacia= 12 + (hasta-2)*13 + octavaDeAcorde - desde  
-           If cant> 0 Then 
-             Roll.trk(jpt, verticalEnOctavaVacia).nota=Roll.trk(jpt, verticalEnOctavaVacia).nota - 1
-           Else
-             Roll.trk(jpt, verticalEnOctavaVacia).nota=Roll.trk(jpt, verticalEnOctavaVacia).nota + 1
-           EndIf
-           Continue For
-       EndIf  
-  
-       If ind >= NB And ind <= NA  -13 Then
-          If  pasoNota=0  Then    
-             Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
-             Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
-             Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
-             Roll.trk(jpt,ind).pan  = Roll.trk(jpt,i1).pan
-             Roll.trk(jpt,ind).pb   = Roll.trk(jpt,i1).pb
-             Roll.trk(jpt,ind).inst = Roll.trk(jpt,i1).inst
-             Roll.trk(jpt,ind).onoff = Roll.trk(jpt,i1).onoff
-
-             If Roll.trk(jpt,ind).nota > 0 And Roll.trk(jpt,ind).nota <= 12  Then
-                Roll.trk(jpt,i1).nota = 181
-                Roll.trk(jpt,i1).dur  = 0
-             EndIf 
-             Roll.trk(jpt,i1).vol  = 0
-             Roll.trk(jpt,i1).pan  = 0
-             Roll.trk(jpt,i1).pb   = 0
-             Roll.trk(jpt,i1).inst = 0
-             Roll.trk(jpt,i1).onoff = 0
-
-          Else
-            If pasoNota = Roll.trk(jpt,i1).nota And (Roll.trk(jpt,ind).nota=0 Or Roll.trk(jpt,ind).nota=181 )  Then
-               Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
-               Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
-               Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
-               Roll.trk(jpt,ind).pan  = Roll.trk(jpt,i1).pan
-               Roll.trk(jpt,ind).pb   = Roll.trk(jpt,i1).pb
-               Roll.trk(jpt,ind).inst = Roll.trk(jpt,i1).inst
-               Roll.trk(jpt,ind).onoff = Roll.trk(jpt,i1).onoff
-
-               If Roll.trk(jpt,ind).nota > 0 And Roll.trk(jpt,ind).nota <= 12  Then
-                  Roll.trk(jpt,i1).nota = 181
-                  Roll.trk(jpt,i1).dur  = 0
-               EndIf 
-               Roll.trk(jpt,i1).vol  = 0
-               Roll.trk(jpt,i1).pan  = 0
-               Roll.trk(jpt,i1).pb   = 0
-               Roll.trk(jpt,i1).inst = 0
-               Roll.trk(jpt,i1).onoff = 0
-                              
-            Else                
-               If Roll.trk(jpt,ind).nota >=1 And Roll.trk(jpt,ind).nota <=12  Then
-                   If cant > 0 Then  ' UP  
-                   ind = ind+cant 
-                      ind = ind + sumar(ind)
-                   EndIf
-                   If cant < 0 Then  ' DOWN  
-                      ind = ind + cant 
-                      ind = ind - sumar(ind)
-                   EndIf
-
-                  if ind > NA -13Then
-                     ind=NA -13
-                  EndIf
-                  If ind < NB Then
-                     ind=NB
-                  EndIf
-                  Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
-                  Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
-                  Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
-                  Roll.trk(jpt,ind).pan  = Roll.trk(jpt,i1).pan
-                  Roll.trk(jpt,ind).pb   = Roll.trk(jpt,i1).pb
-                  Roll.trk(jpt,ind).inst = Roll.trk(jpt,i1).inst
-                  Roll.trk(jpt,ind).onoff = Roll.trk(jpt,i1).onoff
-
-                  Roll.trk(jpt,i1).nota = 181
-                  Roll.trk(jpt,i1).dur  = 0
-                  Roll.trk(jpt,i1).vol  = 0
-                  Roll.trk(jpt,i1).pan  = 0
-                  Roll.trk(jpt,i1).pb   = 0
-                  Roll.trk(jpt,i1).inst = 0
-                  Roll.trk(jpt,i1).onoff = 0
-
-               EndIf
-            EndIf      
-          EndIf    
-       EndIf
-    EndIf
-  Next i1
-Next jpt
-
-''trasponer=0   
-' para trasponer tracks debo grabar lo cual copia a track los cambios
-' de ese modo al dar play se escucha los cambios sino solo quedan en Roll
-' y el play de cancion no lo registra , solo el play de roll lo registraria
-If encancion > 0 Then
-   Dim As Integer ubi1=0,ubi2=0 
-   Dim As String no1,no2
-   ubi1=InStr(nombre,"[")
-   ubi2=InStr(nombre,"]")
-   If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
-       GrabarRollaTrack(0)
-   EndIf
-EndIf       
-
 End Sub
 
   Sub moverZonaRoll(posinueva As Integer, Roll As inst,posivieja As Integer)

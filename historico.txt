@@ -1,3 +1,4 @@
+- 27-04-1015 Seleccion por Zonas, Trasponer 
 - 16-04-2025 Algunas Constantes para eliminar el hardcodeo
 - 10-04-2025 pmTk se separo en 2 pmTk para tracks y pmEj para ejecuciones,, se corrigio la terminacion
   del programa y la ventana grafica, de la ventana grafica se sale con la X derecha arriba de lgrafico
