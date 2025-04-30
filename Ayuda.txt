@@ -16,7 +16,8 @@
 
        SALIR DEL PROGRAMA O DEL GRAFICO: terminaciones posibles, 
        de la ventana grafica se sale con la X derecha arriba de lgrafico, detiene el play si esta andando
-       y cierra el grafico no termina el programa,, si se desea terminar el  programa se usa tecla escape si esta tocando pide pulsar de nuevo escape. Y de la ventana de control se sale con su X o salir 
+       y cierra el grafico no termina el programa,, si se desea terminar el  programa se usa tecla escape 
+       si esta tocando pide pulsar de nuevo escape. Y de la ventana de control se sale con su X o salir 
        del menu de archivo; tambien si esta tocanco detiene el play y sale,,
        puede pasar que al cerrar y abrir el grafico ya no funcione el ESC para terminar el programa pero
        se puede usar las terminaciones de la ventana de control...(mas pruebas ? posiblemente)
@@ -63,7 +64,11 @@
     III) USO: (ventana Roll Grafica)
 
     0) Consideraciones generales:
-       Ante todo para desarrollar se muestran variables al Pulsar [Edicion], en ese estado y en cualqueir otro si quiero volver al menu inicial Archivo,Edicion,Ver,Pista,Reproducir etc....simplemente dar un click  en la cinta celeste de arriba en su parte mas derecha entre la mitad y casi hasta el final antes de  los botones. rojo, amarillo y verde...Recordar que Opciones se abre pulsando ALT y ubicando el mouse  encima del label . 
+       Ante todo para desarrollar se muestran variables al Pulsar [Edicion], o ALT-E, en ese estado y en cualquier
+       otro si quiero volver al menu inicial Archivo,Edicion,Ver,Pista,Reproducir etc....
+       dar un click  en la cinta celeste de arriba en su parte mas derecha entre la mitad y casi hasta el final
+       antes de  los botones. rojo, amarillo y verde..y mas rapido pulsar ALT-M.
+       Recordar que Opciones se abre pulsando ALT y ubicando el mouse  encima del label . 
        Hay 5 cuatro formas de abrir un Roll Grafico, 
        en "crear Pistas manuales" hay dos opciones fuera  de una canción:
        1) "Crea pista aislada con lo elegido y reemplaza la existente en la edicion", 
@@ -836,19 +841,30 @@
     --------------------------------------------------------------------------------------------
     2.0) Modos de Edicion
 
-    2.1) MODO EDIT insercion NOTAS NUEVAS POR TECLADO (click en menu [EDICION] luego en EDIT cambiara a color verde y la octava seleccionada tambien)
-         Para salir de EDIT pulsar de nuevo EDIT volvera a blanco la letra EDIT.
+    2.1) MODO EDIT insercion NOTAS NUEVAS POR TECLADO (click en menu [EDICION] luego otror click en EDIT y cambiara
+         a color verde y la octava seleccionada tambien)  Para salir de EDIT pulsar de nuevo EDIT volvera a blanco 
+         la letra EDIT, si se da click de nuevo en EDIT no volvera a edicion verde. Para volver al menu inicial dar 
+         click al final de la cinta superior del menu y puede comenzar todo el ciclo de nuevo.
+
+
     2.1.1) Entrada por teclado de PC.
     2.1.2) Entrada por mouse y teclado de PC.
   
-    2.2) MODO EDIT CURSOR ( En MODO EDIT pulsar CTRL+M O dar CTRL+click derecho
-         en modo mouse)
-    Nota: en este modo la pantella se congela solo edita lo que se ve, LAS FLECHAS DER IZQ  MUEVE EL CURSOR 
-    PERO NO LA SECUENCIA. Si los cursores aparecen muy lejos del lugar de operacion deseado dar un click 
-    derecho en la posicion deseada y los cursores se moveran a esa posición. Mover los cursores con flecha 
-    arriba abajo para ajustar al semitono deseado en esa posicion, o 
-    derecha izquierda para cambiar de posicion. SI DESEO ADELANTAR LA PANTALLA puedo usar Ctrl-Flecha Der
-    Ctrl-Flecha Izq. Al dejar de pulsar Ctrl las flechas solo moveran el cursor nuevamente.
+    2.2) MODO EDIT CURSOR modificar notas existentes o llenar con notas nuevas espacios vacios ( En MODO EDIT verde 
+    pulsar CTRL+M O dar CTRL+click derecho en modo mouse para insertar notas con click)
+    Con CTRL+M las notas se entras por teclado como en MODO EDIT pero la zona de la secuencia esta fija no se alarga 
+    ni acorta la secuencia. Con CTRL+M el cursor se posicionara en la columna donde esté apuntando el mouse, Se
+    puede repetir CTRL+M cada vez que quiera mover el cursor rapido.
+
+    Nota: en este modo la pantalla se congela solo edita lo que se ve, LAS FLECHAS DER IZQ  MUEVE EL CURSOR 
+    PERO NO LA SECUENCIA. Si los cursores aparecen muy lejos del lugar de operacion deseado dar un CTRL+M 
+    estando el mouse en donde se quiere editar. Si se usa click derecho en la posicion deseada el cursor se moveran 
+    a esa posición como si fuera un CTRL+M para salir dar CTRL+P y un click en cualqueir lado. 
+    La introduccion por el menu de mouse esta insertando al final de la secuencia agregando notas al final de la secuencia
+    no usar es inestable por ahora. Mover los cursores con flecha arriba abajo para ajustar al semitono deseado en esa posicion, o 
+    derecha izquierda para cambiar de posicion. SI DESEO ADELANTAR LA SECUENCIA  congelada aun en CTRL+M puedo usar 
+    ALT-Flecha Der y ALT-Flecha Izq. (Incrementos de 1/100) Al dejar de pulsar Ctrl las flechas solo moveran el cursor nuevamente,
+    en el tramo de secuencia nuevo y congelado.
 
     2.3) Modificacion.
     2.4) Copiar 1 nota.
@@ -857,7 +873,7 @@
    ------------------------------------------------------------------------------------------   
     2.0) Modos de Edición.
     2.1) MODO EDIT 
-    2.1.1) Entrada por Teclado
+    2.1.1) Entrada por Teclado O Entrada secuencial siempre al final de la misma va agregando notas.
          - Pasar a Edicion clickendo [Edicion], aparecera la cinta Edit.
          - Dar click a Edit, Edit cambiara a verde y toda la linea, la octava donde se trabaje se pondra de  
            color verde indicando la octava elegida. Para confirmar que la octava sea la elegida si aun no se
@@ -866,7 +882,8 @@
          - Estando sobre una octava elegida con el mouse, pulsar una duracion de 1 a 8
            1=O redonda, 2=P blanca, 3=I negra, 4=L corchea, 5=F semicorchea, 6=E fusa,
            7=X semifusa, 8=H garrapatea,  9=espacio,ctrl-0=Fin Secuencia.
-           SI PULSO 3 T X , 3 ES DURACION NEGRA T TRESILLO X COLOCA LA FIGURA SI ES MODO CURSSOR
+           SI PULSO 3, T, X : 3 ES DURACION NEGRA T TRESILLO X COLOCA LA FIGURA AL FINAL DE LA SECUENCIA-
+           
            EN MODO EDIT 3T C ERA LA TERCERA PARTE DE UN TRESILLO DE NEGRA EN LA NOTA C DE LA OCTAVA ELEGIDA
            EN VEZ DE T SE PODRIA PULSAR = . //  = o Left Shift (mayusculas izquierda)AGREGA LA CUARTA PARTE DE 
            UNA NOTA A SU DURACION 1,25.
@@ -889,7 +906,15 @@
          - Pero si se está editando una octava y se desea pasar rapido a otra octava, simplemete
            se pasa el mouse por encima del extremo DERECHO de la octava en el extremo final derecho
            y se estara editando esa nueva octava  no pudiendo hacerlo en la de antes eso evita errores de entrada.
-
+           EN MODO CURSOR la nota agregada es sobre un tramo de secuencia elegido y congelado podre poner notas
+           EN UN ESPACIO VACIO o SI ES SOBRE UNA NOTA EXISTENTE LA MODIFICARA POR EJEMPLO SU DURACION.
+           El cursor en edicion en MODO CURSOR para modificar, permanece en el semitono ultimo donde se 
+           modifico, puedo cambiar por distintas duraciones en el mismo lugar sin moverme y sin pulsar X
+           con la primera vez que se pulse X para modificar permite modificar varias veces la misma nota sin
+           mover el cursosr o posicion, lo mismo pasara si me muevo a otra nota con el cursor siemrpe que no 
+           se use Ctrl-M para ubicar el cursor , luego si voy a otra nota no hara falta tampoco pulsar x 
+           solo la duracion y la nota sera modificada.
+ 
            UNDO SEPARADO DE MELODIAS Y ACORDES, (ALT-U de melodias funcina tambien al copiar una zona N veces
            tambieb va borrardo por columna, ALT-U es undo completo de octava por columna, no se usa en entrada
            de acordes pue ssino borraria las notas del acorde insetados y la nota de la melodia base seleccionada)

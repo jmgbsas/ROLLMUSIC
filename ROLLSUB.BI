@@ -888,7 +888,7 @@ Dim  As Integer nroPartesNota
  
  If cursorVert=1 Or cursorVert= 2 Then  ' vertical COMEDIT=TRUE
   
-  
+   
   cairo_move_to  (c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
   cairo_rectangle(c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  ,wc*6 ,inc_Penta) '13-07-2021 inc_penta/2 por inc_penta
   cairo_move_to  (c, gap1 + (curpos)*anchofig , Penta_y  )
@@ -899,6 +899,8 @@ Dim  As Integer nroPartesNota
   RollNota=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota
 '' para ver el estado del onoff en la posicion elegida notacur
      onoff=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff
+  
+     notaold=notacur ' wwwwwwwwwwwwwwwww
 
  EndIf
  If cursorVert= 0 And cursorHori=0 Then
@@ -913,14 +915,23 @@ Dim  As Integer nroPartesNota
 
  EndIf
  If cursorHori=1 Or cursorHori = 2 Then
+ ' If notacur=1 Then
+   'print #1,"notaold en cursor ";notaold
+ '  notaOld=notacur
+   'print #1,"notaold en cursor laigualo a 1 ";notaold
+   'notacur=0
+ ' EndIf
+
   cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
   cairo_rectangle(c,gap1 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , wc,inc_Penta)
 
  EndIf
+ 
  If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
 ' HABILITAR NOTA AL PONER EN CERO SE PUEDE USAR EN EDIT COMUN
 ''' If  borrar= 1 Then ' 
   cairo_set_source_rgba c, 1, 0, 0.2, 1
+  
   Dim dursaved As Integer
   If notacur=1 Then ' 1 POR 0 JMG
    notacur=notaOld 
@@ -928,8 +939,9 @@ Dim  As Integer nroPartesNota
   
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).dur = 0
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).nota = 181
-
+  
   borrar = 0
+  Sleep 100
  ''' calcCompas(n) ''mayorDurEnUnaPosicion (n)
  EndIf
  ' ==========================================================================
@@ -943,15 +955,13 @@ Dim  As Integer nroPartesNota
  ' EN LAS PARTES CORRESPONDIENTES DE LA MENOR, LUEGO DE ESO SIGO FRACCIONANDO LAS OTRAS
  ' QU ESON MAYORES A LA MENOR PERO MENORES A LA MAYOR ,,,,
   '=============================================================================
- If (cursorHori=1 Or cursorVert = 1) And cambiadur= 1 Then
-
+ If (cursorHori=1 Or cursorVert = 1) And cambiadur= 1 Then ''Ctrl-M
+' ok ya BORRA OFF ANTERIOR! corregido, queda por arreglar corsor vuelve a semitono 1
+' uff
 
   ' debo cambiar esa nota por su equivalente silencio
-  '1ero se pulsa la nueva duracion y luego la X porque aca se anula luego elflag cambiadur
+  '1ero se pulsa la nueva duracion y luego la X porque aca se anula luego el flag cambiadur
   'y la dUR debe tener un valor antes de esto
-  'If notacur=1 Then  ' 1 PO 0 JMG <- aca ingreso nota aunqne no haya?
-  ' notacur=notaOld   ' ESTO DABA EL LIO DE LA NOTA B 
-  'EndIf
   '  Roll.trk(notacur + (*po) * 13, n + curpos).dur = DUR
   '  vdur=Roll.trk(notacur + (*po) * 13, n +curpos).dur
   '  ' SI LA NOTA  NO EXITIA LA agrega
@@ -966,14 +976,31 @@ Dim  As Integer nroPartesNota
   ' la forma facil de borrar seria grabar a disco cuando se est�
   ' en posicion con 190 saltar esa posicion y restar 1 a la posicion final.
   ' se ahce ya de ambasformas usando delete tambiense borra online
-  
+  '''If notacur=1 Then  ' 1 POR 0 JMG <- aca ingreso nota aunqne no haya..
+    
+  '''EndIf
+     If notaold > 0 Then 'wwwwwwwwwwwwww 
+        notacur=notaold
+        notaold=0
+     EndIf
+ 
+
 ' DEBO RECREAR TODO LO DE NUCLEO ACA PARA TICKS 
   Dim posn1 As Integer
-  Dim As Integer durant,posoffdurant
+  Dim As Integer durant,posoffdurant=0
   durant=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur
-  Print #1,"durant anterior ";durant
-  posoffdurant=n+ curpos + DurXTick(durant) -1
+  Print #1,"CURSOR BORRADO DE OFF 1 DE LA NOTA "
+  Print #1,"durant anterior a cambiar, n ";"dur= ";durant," n= ";n
+  Print #1,"Curpos ";curpos
+  posoffdurant=n + curpos + DurXTick(durant) -1
   Print #1,"posoffdurant anterior ";posoffdurant
+' BORRADO --nuevo 28 abril si no anda usar este 
+  Roll.trk(posoffdurant, 12 - notacur + (*po-1) * 13).dur=181
+  Roll.trk(posoffdurant, 12 - notacur + (*po-1) * 13).nota=0
+  Roll.trk(posoffdurant, 12 - notacur + (*po-1) * 13).onoff=0
+  notaold=12 - notacur + (*po-1) * 13
+'----------------------
+
   
  If DUR=181 Then
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 0
@@ -1099,7 +1126,7 @@ Print #1,"LLEGANOTA y DUR ",notacur;"  DUR "; DUR
   If notacur > 0 And DUR > 0 Then
 'Print #1,"LLEGA NOTA ",notacur
      posn1=n+curpos
-  
+     
      If DUR <= 90 Then 'caso 1) no ligado, I, L, W etc, viene algo que termina
    '     Print #1,"DUR <= 90 "
         If posnOffOld > 0 Then ' caso 4) llego un caso 2) ligado y luego un 1) no ligado
@@ -1108,7 +1135,7 @@ Print #1,"LLEGANOTA y DUR ",notacur;"  DUR "; DUR
            Track(ntk).trk(posnOffOld,1).onoff = 0 'sigue la duracion
            Track(ntk).trk(posn1,1).nota = notacur
            Track(ntk).trk(posn1,1).onoff = 0
-           posnOff=posn1 + DurXTick(DUR) 'nuevo off porque dura mas
+           posnOff=posn1 + DurXTick(DUR) -1 'nuevo off porque dura mas -1 estaba mal
      '      Print #1,"posn1, DUR, DurXTick(DUR) "; posn1, " ";DUR;" " ;DurXTick(DUR)
            Track(ntk).trk(posnOff,1).nota = 183 'notacur
            Track(ntk).trk(posnOff,1).onoff = 1 '
@@ -1124,16 +1151,16 @@ Print #1,"LLEGANOTA y DUR ",notacur;"  DUR "; DUR
 ' si modifico el valor de algo existente debo eliminar el off  de la duracion anterior!
       '      Print #1,"DUR <= 90 posnOffOld = 0 "
             posnarranca=posn1 
-            posnOff=posn1 + DurXTick(DUR) ' caso 1) nada entes nada despues
+            posnOff=posn1 + DurXTick(DUR) -1' caso 1) nada entes nada despues
  ' vemos si sobreescribimos una nota on          
            If  Roll.trk(posn1,(12-notacur +(estoyEnOctava -1) * 13)).onoff=2 Then
 ' buscar su terminacion
-           Print #1,"habia nota a anterior"   
-           Print #1,"encontro el fin anterior y lo borro" 
-          ' borrando
-           Roll.trk(posoffdurant,(12-notacur +(estoyEnOctava -1) * 13)).dur=181
-           Roll.trk(posoffdurant,(12-notacur +(estoyEnOctava -1) * 13)).nota=0
-       
+          ' Print #1,"habia nota a anterior"   
+          ' Print #1,"encontro el fin anterior y lo borro" 
+          ' borrando...NO BORRA 
+         '  Roll.trk(posoffdurant,(12-notacur +(estoyEnOctava -1) * 13)).dur=181
+         '  Roll.trk(posoffdurant,(12-notacur +(estoyEnOctava -1) * 13)).nota=0
+         '  Roll.trk(posoffdurant,(12-notacur +(estoyEnOctava -1) * 13)).onoff=0
            EndIf
       '     Print #1,"caso 1a) posn1, DUR, DurXTick(DUR), posnOff "; posn1, " ";DUR;" " ;DurXTick(DUR);" ";posnOff
            posnOffOld=0
@@ -1165,7 +1192,7 @@ Print #1,"LLEGANOTA y DUR ",notacur;"  DUR "; DUR
      '  Print #1,"DUR > 90 posnOffOld > 0 "
        Roll.trk(posnOffOld,(12-notacur +(estoyEnOctava -1) * 13)).onoff=0
        Track(ntk).trk(posnOffOld,1).onoff = 0 'sigue la duracion
-       posnOff=posnOffOld + DurXTick(DUR)
+       posnOff=posnOffOld + DurXTick(DUR) -1
      ' ' posn=posnOff
       ' If (posn > NroCol + InicioDeLectura) Then
       '  InicioDeLectura=InicioDeLectura + NroCol
@@ -1244,10 +1271,10 @@ Print #1,"LLEGANOTA y DUR ",notacur;"  DUR "; DUR
 
 
      nroPartesNota=0
-     EndIf 
-
-      notacur=0 'sino entra en nucleo o repite sin fin !!!
-      notaold=notacur
+     EndIf
+      notaold=12-notacur +(estoyEnOctava -1) * 13 
+''      notacur=0 'sino entra en nucleo o repite sin fin !!!
+      
       DUR=0
   EndIf 
 ''' fin agregado ticks
@@ -1259,6 +1286,10 @@ Print #1,"LLEGANOTA y DUR ",notacur;"  DUR "; DUR
   'Print #1,"SALE cursor CAMBIADUR  ",Timer
 ''TARDA 20 SEG EN CAMBIAR UNA NOTA!!!!
   DUR=0 ' AGREGADO 2 MAR 2025
+  '''notaold=12-notacur +(estoyEnOctava -1) * 13  'wwwwwww
+  ''notaold=Penta_y + (notacur-1) * inc_Penta
+  
+  notacur=0
   Exit Sub
  EndIf ' fin ctrl-m cursor 
  
@@ -1334,7 +1365,7 @@ Print #1,"LLEGANOTA y DUR ",notacur;"  DUR "; DUR
  ' nombre de letra pulsada en vez de X CTRL-N
  ' ====> MODIFICAR con ctrl-n
  If (cursorHori=2 Or cursorVert = 2) And agregarNota=1  And nota> 0 Then
- 
+ ''COMPLETAR PARA TICKS !!! 29-04-2025
   Roll.trk(n + curpos, 12-notacur + (*po-1) * 13).dur = DUR
   ' SI LA NOTA  NO EXITIA LA agrega
   Roll.trk(n + curpos, 12-notacur + (*po-1) * 13).nota = nota  ' 5.7.3.4
@@ -1366,7 +1397,7 @@ If cursorHori=1 And vdur>0 And copiar=3 Then
    EndIf 
 EndIf
 If nro=0 Then ' error al subir mucho mira despues del and el estupido 
-nro=1 'jmg 16-05-2021 notcur nodeberi empezar desde 0
+nro=1 'jmg 16-05-2021 notcur no deberia empezar desde 0
 EndIf
 If notacur=0 Then
   notacur=1
@@ -3240,8 +3271,8 @@ EndIf
 
    t = "      EDIT" + " " +  " Maxp:" + _
    Str(Maxpos) +" Psi:" + Str(posicion)+ " Psn:"+Str(posn)+ _
-   " Fnt:" +Str(font) + " Oct:" + Str(estoyEnOctava) + " nA:"+Str(veonota) + _ 
-   " NP:"+ Str(PianoNota) + " nsE:"+Str(nsE) + " Curps:" +Str(curpos) + _
+   " Fnt:" +Str(font) + " Oct:" + Str(estoyEnOctava) + _ 
+   " PN:"+ Str(PianoNota) + " nsE:"+Str(nsE) + " Curpos:" +Str(curpos) + _
    " RollDur :"+ Str(RollDur) + " Rollnota:" + Str(RollNota) + _ 
    " Copia:" + Str(veocopi) +" Col:" +Str(indicePos) + " DUR:"+ Str(Dur) + _ 
    " Nota:"+ Str(nota) + " ONOFF:" + Str(onoff)
@@ -3251,7 +3282,7 @@ EndIf
    /' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +
 '/
    '''   " modifmouse:" + Str(modifmouse) + " usamousey:" + Str(usamousey) + " usamousex:"+ Str(usamousex) + _
-
+'" nA:"+Str(veonota)
    cairo_show_text(c,t)
 
    cairo_stroke(c)
@@ -3915,7 +3946,15 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREAT
      EndIf
 
      t = "      Seleccione un canal"
-      
+  '------------
+  Case 12  ' edit por teclado
+    cairo_set_source_rgba c, 0, 1, 0, 1
+    '''If MouseButtons And 1 Then
+     menuNew=PARAMETROS_ROLL
+     cierroedit= 0 ' habilita EDIT de nuevo
+   ' print #1, "INVESTIGO COMEDIT ENTRO X CLICK EN SUB S3, menuNro: ",S3, menuNro
+ '  t=  " [Edicion]":cairo_show_text(c, t)
+     
  End Select
  ' Si nodoy Stroke los show text van apendendo al final como un print;
 

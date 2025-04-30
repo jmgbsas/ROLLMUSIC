@@ -1,3 +1,14 @@
+- 29-04-2025 0.315 corregido MIDIFICAR NOTAS NO SE BORRABA EL OFF=1 ANTERIOR
+  El cursor en edicion para modificar permanece en el semitono ultimo donde se 
+  modifico, puedo cambiar por distints duraciones de notas sin pulsar X
+  con el primero basta y sin usar Ctrl-M para ubicar el cursor si voy a otra nota
+  no hara falta tampoco pulsar x solo la duracion y la nota modificara su duracion.
+  Se agregaron teclas rápidas ALT-M para mostrar el menu inicial y ALT-E para ir
+  a la previa de edicion mostrando los parametros.
+  Error detectado a corregir si se introducen notas nuevas en acorde por ejemplo
+  y luego se las borra, las notas desapareceran y en MODO CURSOR no se veran sus 
+  parametros como RollDur y el nro de  semitono RollNota. Pero las notas permaneces
+  y al tocar con play suenan,,podria quedar sus valores en la zona de arriba de acordes.
 - 27-04-1015 Seleccion por Zonas, Trasponer 
 - 16-04-2025 Algunas Constantes para eliminar el hardcodeo
 - 10-04-2025 pmTk se separo en 2 pmTk para tracks y pmEj para ejecuciones,, se corrigio la terminacion

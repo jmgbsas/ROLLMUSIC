@@ -38,6 +38,7 @@ End Type
 
 'Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
 Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota,compasX
+
 common Shared As Integer  ANCHO,ALTO,indicenotas
 Common Shared As FLOAT font,nanchofig,anchofig
 COMMON Shared As Long eventc, eventM

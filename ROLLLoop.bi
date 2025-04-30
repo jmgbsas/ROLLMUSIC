@@ -19,11 +19,11 @@ Dim As String t2="",t3="",t4=""
  
  Dim As cairo_font_extents_t fe   '     font data
  Dim As cairo_text_extents_t te  '      text size
- Dim As Integer semitono,n,indf,indfa,indfb,k,indnota,verticalEnOctavaVacia,k1
+ Dim As Integer semitono,indf,indfa,indfb,k,indnota,verticalEnOctavaVacia,k1
 verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 
  Dim As UByte code,repe
- Dim As Integer notac, aconro, grado,repeind
+ Dim As Integer n,notac, aconro, grado,repeind
  repeind=12+(hasta-2)*13+hasta 
 'Print #1,"creaPenta ajustado repeind ",repeind  98 para 4 a 8
  ' VERSION 3 DEBO FORMAR LA OCTAVACOMPLET 12 SONIDOS
@@ -112,6 +112,11 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
  'Dim As Integer delta
  'delta=NroCol
 
+' posishow es el inicio fijo de la posicion en el vector desde donde se leen los datos para 
+' mostrarlos en pantalla y es fijo para cada barrido
+' ic es para el barrido automatico de pantalla para mostrar el contenido del intervalo elegido
+' para mostrar.
+' curpos es para el usuario para moverse sobre el intervalo
 
  If cursorVert=0 And COMEDIT=TRUE  Then  
     If posicion < NroCol*3/4  Then '04-02-2022
@@ -166,7 +171,11 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 
    EndIf
    t= ""
-   ic=0 'indice cursor 'donde se dibujara la duracion
+   ic=0 'indice para  dibujar las duraciones y notas en pantalla automatico
+   
+' no depende de las fle4chas es el barrido automatico de CrearPenta para mostrar
+' lo que hay en este pedazo de secuencia, otra cosa es cursor que es voluntario
+' para que el usuario se ubique en esos datos en el vector
    n=0:indf=0:indfa=0:indfb=0
   
 ' ||||||||=============== FOR NUCLEO ========================>>>>>>>>>>>>>>>>
@@ -246,7 +255,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
        EndIf
      '      Print #1, "NOTAESCALA ",t2
            ' 11-01-2022
-       tipoescala=CInt(Roll.trk(n, 12  + (*po -1) * 13).inst)
+       tipoescala=CInt(Roll.trk(si, 12  + (*po -1) * 13).inst)
        If tipoescala=0 Then
           tipoescala=1
        EndIf
@@ -306,21 +315,22 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
                EndIf
             EndIf   
          EndIf
-     ' BORRADO LIBRE NO MARCA SOLO BLANCO habilita para usar nota=0    
-         If cursorVert=1 And Borrar=1 Then  
-            If ((n - inicioDeLectura)=curpos)  Then
-               Roll.trk (semitono + (*po) * 13, n ).dur = 0
-               Roll.trk (semitono + (*po) * 13, n ).nota = 0
-               If fijarEspacio=0 Then
-                  Borrar=0
-               EndIf
-            EndIf   
-         EndIf
+     ' BORRADO LIBRE NO MARCA SOLO BLANCO habilita para usar nota=0    cancela con ticks
+     '    If cursorVert=1 And Borrar=1 Then  
+     '       If ((n - inicioDeLectura)=curpos)  Then
+     '          Roll.trk (semitono + (*po) * 13, n ).dur = 0
+     '          Roll.trk (semitono + (*po) * 13, n ).nota = 0
+     '          If fijarEspacio=0 Then
+     '             Borrar=0
+     '          EndIf
+     '       EndIf   
+     '    EndIf
       EndIf    
 ' FIGURA ESCRITURA DE NOTAS, CAIRO SE MUEVE EN X CON ic...  anchofig*2 domingo
+' y solo pinta cada loop de izq a derecha partiendo siempre de 1 
 '-------------------------------------------------------------------
       cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono+1 ) * inc_Penta - 4)
-  '''    curpos=ic 'jmgjmg18feb
+  
   '  print #1,"lugar ",12
      indf= CInt(Roll.trk (n, 11- semitono + (*po-1) * 13).dur)
 
@@ -361,7 +371,8 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
       If ShowNroCol = 0 Then
          curpos= n  - 1 
       Else
-         curpos= n  - posishow 
+         curpos= n  - posishow ' posishow es el lugar x en el vector desde donde se leen los datos
+' se supone que n esta moviendose barrieno en x
       EndIf
 
      '''  cursor(c,n,nro,Roll)
@@ -417,12 +428,12 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 
     cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono +1)* inc_Penta - 6)
     ic =ic+1 ' adelanta una posicion ???
-
-
+    
   
 '''    Exit For ' sale para saltear las nota=0, dur=0 ¿?, estaba mal creo debo mostrar todo
  Else
    ic=ic+1
+   
  EndIf
    'con ic * 40 es + 32 osea ic * 40 + 32
   
@@ -1029,6 +1040,9 @@ Else
           If s6 = 1 Then
            s6=0
           EndIf
+          If s7 = 1 Then
+           s7=0
+          EndIf
 
 
           inc_Penta = Int((ALTO -1) /40) - deltaip
@@ -1204,8 +1218,29 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar co
  menuMouse = 0
  nota=0
  DUR=0
-
+ curpos= Int((mousex - gap1)/anchofig)
+ 
 EndIf
+
+If MultiKey(SC_ALT) And MultiKey(SC_M) Then ' menu Roll inicial
+  menunew=0
+  menunro=0
+  COMEDIT=FALSE
+  cursorVert = 0
+  cursorHori = 0
+  agregarNota=0
+  menuMouse = 0
+  nota=0
+  DUR=0
+  
+EndIf
+
+If MultiKey(SC_ALT) And MultiKey(SC_E) Then ' edicion Roll
+  menunew=12
+  menunro=12
+EndIf
+
+
 If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
  nota=0
  cursorVert = 2
@@ -1274,12 +1309,27 @@ If  MultiKey(SC_MINUS)  Then
 
 EndIf
 
-If MultiKey(SC_ALT)   Then 
+If MultiKey(SC_ALT)   Then '' mover pantalla a derecha en cualquier modo edicion aun CTRL-M 
  If MultiKey (SC_RIGHT) Then
- 'SALTA  DE NOTA A NOTA
-  
+    posicion=posicion + NroCol/100
+    If posicion > MaxPos Then
+      posicion = MaxPos
+    EndIf
+    posishow=posicion
  EndIf
 EndIf
+
+If MultiKey(SC_ALT)   Then '' mover pantalla a derecha en cualquier modo edicion aun CTRL-M 
+ If MultiKey (SC_LEFT) Then
+    posicion=posicion - NroCol/100
+    If posicion < 1 Then
+      posicion = 1
+    EndIf
+    posishow=posicion
+ EndIf
+EndIf
+
+
 ' UNA NEGRA SON 96, CORCHEA 48, SEMICORCHEA 24, FUSA 12, NOS MOVEMOS CON FUSA EN TICKS00
 If MultiKey(SC_CONTROL) And lockhoriz=0 Then 
  If MultiKey (SC_RIGHT) Then
@@ -2431,7 +2481,24 @@ If COMEDIT = TRUE Then
   EndIf
 
  EndIf 
- ' ojo ver q no haYa  exit do antes !!!!!
+   If multikey(SC_DELETE) Then ''cambia a silencio o nada le suma 16+16 ver eso
+      If s7=0 Then
+         s7=1   
+        If borrar=1 Then
+          borrar=0
+          Exit Do
+       EndIf  
+      EndIf
+      If s7=0 Then
+         s7=1 
+       If borrar=0 Then
+          borrar=1
+          Exit Do
+       EndIf 
+      EndIf 
+   EndIf 
+
+ ' ojo ver q no haYa  exit do antes !!!!! ?????
 EndIf 
 
 
@@ -3488,17 +3555,17 @@ If (ScreenEvent(@e)) Then
    ''  EndIf
 ' -------------------------------
  
-   If e.scancode = 83 Then '<====== SC_DELETE cambia a silencio o nada le suma 16+16 ver eso
+'   If e.scancode = 83 Then '<====== SC_DELETE cambia a silencio o nada le suma 16+16 ver eso
    
-        If borrar=1 Then
-          borrar=0
-          Exit Do
-       EndIf   
-       If borrar=0 Then
-          borrar=1
-          Exit Do
-       EndIf  
-   EndIf 
+'        If borrar=1 Then
+'          borrar=0
+'          Exit Do
+'       EndIf   
+'       If borrar=0 Then
+'          borrar=1
+'          Exit Do
+'       EndIf  
+'   EndIf 
 '-------------
 If e.scancode = SC_PAGEDOWN Then  ' PAGEDOWN 81
  'If s1=0 Then
@@ -4954,7 +5021,7 @@ ButtonGadget(2,530,30,50,40," OK ")
           If (mousey >= usamousey -120) And  (mousey <= usamousey -100) Then
             modifmouse=1 'borrar =1
             notacur=nsE
-            curpos=(mousex- gap1 )/anchofig
+            curpos=Int((mousex- gap1 )/anchofig)
             Exit Do
           EndIf
           If (mousey >= usamousey -100) And  (mousey <= usamousey -70) Then
@@ -4968,7 +5035,7 @@ ButtonGadget(2,530,30,50,40," OK ")
          If (mousey >= usamousey -40) And  (mousey <= usamousey -10) Then
             modifmouse=4 'CAMBIADUR=1 modificar
             notacur=nsE
-            curpos=(mousex- gap1 )/anchofig
+            curpos=Int((mousex- gap1 )/anchofig)
             Exit Do
          EndIf
 
@@ -4976,13 +5043,13 @@ ButtonGadget(2,530,30,50,40," OK ")
      EndIf
     EndIf
  ' <===========   MODIFICACIONES INSERCION
- ' por ahor ainsercion con mouse funciona igual que con keys
- ' perola duracion entrpro tecldonos e porqu enotoma l demouse.
- ' luegode la 1erinsercion con solo click izquierdo repito otra insercion
- ' en lineahorizontal siqueiro otraduracion debere elegirotracon teclado
- ' elcursor seguira al click izq por elcalculo de cursor en este comando
- ' finalmente se usalatecla END para finalizar todas las inserciones.
- ' debere agregr un nuevo comando END paraahcerlo con elmouse....
+ ' por ahora insercion con mouse funciona igual que con keys
+ ' pero la duracion entra por teclado no se porque no toma la de mouse.
+ ' luego de la 1er insercion con solo click izquierdo repito otra insercion
+ ' en linea horizontal si quiero otra duracion debere elegir otra con teclado
+ ' el cursor seguira al click izq por el calculo de cursor en este comando
+ ' finalmente se usa la tecla END para finalizar todas las inserciones.
+ ' debere agregr un nuevo comando END para hacerlo con el mouse....
    If   ayudaModif=FALSE Then
      If (mouseButtons And 1 )  And nroClick = 2  Then
        savemousex=0 : savemousey=0 ' 
@@ -5041,7 +5108,7 @@ ButtonGadget(2,530,30,50,40," OK ")
        EndIf
        If modifmouse=4 Then ' modificar
          cambiadur=1
-         curpos=(mousex- gap1 )/anchofig
+         curpos=Int((mousex- gap1 )/anchofig)
          notacur=nsE
          ayudaNuevaNota=TRUE
          Exit Do
@@ -5072,7 +5139,7 @@ ButtonGadget(2,530,30,50,40," OK ")
    'Print  #1,"  nroClick=1"
    'Print  #1,"COMEDIT=TRUE "
    'print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
-         curpos=(mousex- gap1 )/anchofig '01-07-2021
+         curpos=Int((mousex- gap1 )/anchofig) '01-07-2021
          notacur=nsE
      ' 15-09-2021 no se puede dar ctrl-m mas alla de Maxpos, no sepuede modifar algo
      ' que no existe o si deberia???    

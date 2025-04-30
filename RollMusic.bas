@@ -81,16 +81,23 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.313 SELECCION ZONAS, trasponer "
-' trabajos mediatos:
-' 1) Vendra version 0.311 REEMPLAZAMOS NUMEROS POR CONSTANTES CON SIGNIFICADOS 
+nroversion="TICKS 0.315 corregido MIDIFICAR NOTAS SE BORRA EL OFF ANTERIOR y otras "
+' luego de modificar el cursor salta al primer semitono uff falla
+' cosas realizadas en 315 incluye 314
+' c) TICKS 0.315 corregido MIDIFICAR NOTAS SE BORRA EL OFF ANTERIOR  
+' b)se repuso mover secuencia con ALT-Der ALt-Izq aun en CTRL-M
+' a)se posiciona el cursor en donde apunta el mouse al dar CTRL+M las veces que se desee.
+' ERROR: al borrar notas desaparecen todos sus parametros no se las ven, pero siguen
+' sonando con play...a corregir en 316! 
+' trabajos futuros mediatos:
+' 1) en CTrl-M al modificar una nota a valor mas chico o grande los off 1 quedan no se borran
 ' 2) ver si funcionan la seleccion de zonas o partes
-' de la secuencia para trasponer copiar insertar etc,,,,
+' de la secuencia para copiar insertar etc,,,,
 ' 3) la repeticion de zonas en el play, insertar espacios fin de secuencia 
 '    Borrar zonas ,cambiar notas insertar notas, mover nota horizontalmente
-'    verticalmente ya lo hace con zona y trasponer...podriamos ahcer el move
+'    verticalmente ya lo hace con zona y trasponer...podriamos hacer el move
 '    con ctrl mouse como hacia cakewalk. mover en maza una zona seleccionandola
-'    con el mouse o borrandola don delete...algo se hace con zona pero seria
+'    con el mouse o borrandola con delete...algo se hace con zona pero seria
 '    mas elegante con mouse 
 ' ---------------------------------------------------------------------
 ' esta version no será compatible con las anteriores de rollmusic sin ticks se agrego por ahora
