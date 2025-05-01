@@ -81,8 +81,9 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.315 corregido MIDIFICAR NOTAS SE BORRA EL OFF ANTERIOR y otras "
-' luego de modificar el cursor salta al primer semitono uff falla
+nroversion="TICKS 0.316 fix borrado de notas incluye a onoff corregido  "
+' queda para 317 organizar borrado de notas o culumnas en ctrl-m ctrl-n
+' findesecuencia etc dejar algo mas consizo y bien testeado,, 
 ' cosas realizadas en 315 incluye 314
 ' c) TICKS 0.315 corregido MIDIFICAR NOTAS SE BORRA EL OFF ANTERIOR  
 ' b)se repuso mover secuencia con ALT-Der ALt-Izq aun en CTRL-M

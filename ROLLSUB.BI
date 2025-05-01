@@ -939,7 +939,7 @@ Dim  As Integer nroPartesNota
   
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).dur = 0
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).nota = 181
-  
+  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).onoff = 0
   borrar = 0
   Sleep 100
  ''' calcCompas(n) ''mayorDurEnUnaPosicion (n)
@@ -955,7 +955,7 @@ Dim  As Integer nroPartesNota
  ' EN LAS PARTES CORRESPONDIENTES DE LA MENOR, LUEGO DE ESO SIGO FRACCIONANDO LAS OTRAS
  ' QU ESON MAYORES A LA MENOR PERO MENORES A LA MAYOR ,,,,
   '=============================================================================
- If (cursorHori=1 Or cursorVert = 1) And cambiadur= 1 Then ''Ctrl-M
+ If (cursorHori=1 Or cursorVert = 1) And cambiadur= 1 Then ''Ctrl-M y pulso X
 ' ok ya BORRA OFF ANTERIOR! corregido, queda por arreglar corsor vuelve a semitono 1
 ' uff
 
@@ -976,10 +976,7 @@ Dim  As Integer nroPartesNota
   ' la forma facil de borrar seria grabar a disco cuando se est�
   ' en posicion con 190 saltar esa posicion y restar 1 a la posicion final.
   ' se ahce ya de ambasformas usando delete tambiense borra online
-  '''If notacur=1 Then  ' 1 POR 0 JMG <- aca ingreso nota aunqne no haya..
-    
-  '''EndIf
-     If notaold > 0 Then 'wwwwwwwwwwwwww 
+     If notaold > 0 Then 
         notacur=notaold
         notaold=0
      EndIf
@@ -1005,17 +1002,21 @@ Dim  As Integer nroPartesNota
  If DUR=181 Then
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 0
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =181   ' 5.7.2
+     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
      cambiadur = 0
      DUR=0
  ElseIf DUR=182 Then ' borrado 
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 182
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =181   ' 5.7.2
+     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
+
   '   print #1,"FINDE SECUENCIA !!"
      cambiadur = 0
      DUR=0
  ElseIf DUR=0 Then ' borrado
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 190
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =190   ' 5.7.2
+     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
      cambiadur = 0
      DUR=0
  Else
@@ -1251,6 +1252,7 @@ Print #1,"LLEGANOTA y DUR ",notacur;"  DUR "; DUR
           '   print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
              Roll.trk(ll,(i +(noct -1) * 13)).nota = 181
              Roll.trk(ll,(i +(noct -1) * 13)).dur  = 0''
+             Roll.trk(ll,(i +(noct -1) * 13)).onoff  = 0''
  
           EndIf
           Next ll
@@ -1264,7 +1266,7 @@ Print #1,"LLEGANOTA y DUR ",notacur;"  DUR "; DUR
           '   print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
              Track(ntk).trk(ll,i).nota = 181
              Track(ntk).trk(ll,i).dur  = 0
- 
+             Track(ntk).trk(ll,i).onoff  = 0
           EndIf
          Next ll  
       Next i

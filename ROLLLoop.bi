@@ -291,13 +291,15 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
  ' *po llega a 3 y cancela porque baja a 3?
 '  ESCRITURA DE NOTAS: ------->
 
- If Roll.trk (n,11- semitono  + (*po -1) * 13 ).nota > 0  Then ''Or Roll.trk (n,11- semitono +  (*po -1) * 13 ).dur > 0 Then
+ If Roll.trk (n,11- semitono  + (*po -1) * 13 ).nota > 0  Or Roll.trk (n,11- semitono +  (*po -1) * 13 ).dur > 0 Or Roll.trk (n,11- semitono +  (*po -1) * 13 ).onoff > 0 Then
      ' print #1,"lugar ",11
 '  10-04-2022 verificar si esto sigue funcionando ÇÇÇÇ colocar esapcios
       If COMEDIT=TRUE Then 
          If cursorVert=0 Then  
-            If espacio = (semitono +1) Then
+            If espacio = 1 Then '''= (semitono +1) Then
                Roll.trk (n, 11-semitono + (hasta -nro) * 13 ).dur = 181
+               Roll.trk (n, 11-semitono + (hasta -nro) * 13 ).nota = 0
+               Roll.trk (n, 11-semitono + (hasta -nro) * 13 ).onoff = 0
                ''Print #1,"esta metiendo espacios?"
                If fijarEspacio=0 Then
                  espacio=0
@@ -308,23 +310,26 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 ' ((n - inicioDeLectura)=curpos) y moviendoelcursor derecha izquierda
 ' en ctrl-m borra todo de una!! implementarlo...        
          If cursorVert=1 Then  
-            If (espacio = semitono +1 ) And ((n - inicioDeLectura)=curpos)  Then
+            If (espacio > 0  ) Then ''And ((n - inicioDeLectura)=curpos)  Then 'semitono +1
                Roll.trk (n,11-semitono + (*po-1) * 13 ).dur = 181
+               Roll.trk (n,11-semitono + (*po-1) * 13 ).nota = 0
+               Roll.trk (n,11-semitono + (*po-1) * 13 ).onoff = 0
                If fijarEspacio=0 Then
                   espacio=0
                EndIf
             EndIf   
          EndIf
      ' BORRADO LIBRE NO MARCA SOLO BLANCO habilita para usar nota=0    cancela con ticks
-     '    If cursorVert=1 And Borrar=1 Then  
-     '       If ((n - inicioDeLectura)=curpos)  Then
-     '          Roll.trk (semitono + (*po) * 13, n ).dur = 0
-     '          Roll.trk (semitono + (*po) * 13, n ).nota = 0
-     '          If fijarEspacio=0 Then
-     '             Borrar=0
-     '          EndIf
-     '       EndIf   
-     '    EndIf
+         If cursorVert=1 And Borrar=1 Then  
+            If ((n - inicioDeLectura)=curpos)  Then
+               Roll.trk (n,semitono + (*po) * 13 ).dur = 181
+               Roll.trk (n,semitono + (*po) * 13 ).nota = 0
+               Roll.trk (n,semitono + (*po) * 13 ).onoff = 0
+               If fijarEspacio=0 Then
+                  Borrar=0
+               EndIf
+            EndIf   
+         EndIf
       EndIf    
 ' FIGURA ESCRITURA DE NOTAS, CAIRO SE MUEVE EN X CON ic...  anchofig*2 domingo
 ' y solo pinta cada loop de izq a derecha partiendo siempre de 1 
@@ -1824,7 +1829,7 @@ EndIf
 
 
 If MultiKey (SC_F12) And abierto=0 Then
-'''archivo test-AAAAA.TXT
+'''archivo AAAAA-test.TXT
 
 abierto=1
  Dim As Integer i1, i2
@@ -1838,24 +1843,31 @@ oct1=NB
 oct2=NA
 
   Print #fk,"vuelco de ARCHIVO COMPELTO ";EstoyEnOctava; " desde ";oct1;" a ";oct2
- For i1 = oct2 To oct1 Step -1
-  For i2= 1 To Maxpos
+ For i1 = 50 To 80 ''Step -1
+  'For i2= 1 To Maxpos
+   For i2= 200 To 300 
    result = Format (Roll.trk(i2, i1).nota,"000")
    Print #fk,  result;"-";
   Next i2
    Print #fk,
-  For i2= 1 To Maxpos
+  For i2= 200 To 300
    result = Format (Roll.trk(i2, i1).dur,"000")
    Print #fk, result;"-";
   Next i2
   Print #fk,
-  For i2= 1 To Maxpos
+  For i2= 200 To 300
    result = Format (Roll.trk(i2, i1).vol,"000")
    Print #fk, result;"-";
   Next i2
+Print #fk,
+  For i2= 200 To 300
+   result = Format (Roll.trk(i2, i1).onoff,"000")
+   Print #fk, result;"-";
+  Next i2
+
 
   Print #fk,
-  Print #fk, String (MaxPos,"*")
+  Print #fk, String (8,"*")
  Next i1
  While Inkey <> "": Wend
 
@@ -2438,7 +2450,8 @@ If COMEDIT = TRUE Then
 
 
 '----------------------------------------
-' CURSOR MODIFICCION DE NOTAS ergo usamos nota=0 para evitar entrada normal   
+' CURSOR MODIFICCION DE NOTAS ergo usamos nota=0 para evitar entrada normal 
+' REVISAR REVISAR REVISAR JMG JMG JMG WWWWWWWWWWWWWWWWWWW  
   If MultiKey(SC_9) Then 'espacio en edit sin cursor
      DUR = 181:Exit Do
      nota=0
@@ -2481,7 +2494,7 @@ If COMEDIT = TRUE Then
   EndIf
 
  EndIf 
-   If multikey(SC_DELETE) Then ''cambia a silencio o nada le suma 16+16 ver eso
+   If multikey(SC_DELETE) Then ''cambia a silencio o nada le suma 16+16 ver eso!!!!!!!
       If s7=0 Then
          s7=1   
         If borrar=1 Then

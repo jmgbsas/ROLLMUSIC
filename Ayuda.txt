@@ -1009,13 +1009,17 @@
          nuevo. Se puede seguir a otras posiciones, dando ENTER seguirá copiando.
    
 
-    2.5) Borrar 1 Nota,borrar 1 columna o un rango de columnas:
+    2.5) Borrar 1 Nota,borrar 1 columna o un rango de columnas: JMGJMG revisar todo 
+         hay inconsistencias al borrar una nota en ctrl-m con 9 y x si muevo el cursor
+         borra las siguientes. y si entro una nota al mover el cursor pone mas notas iguales ojo!
+         serviria para hacer un acorde pero para nota no !!!   
     2.5.1) BORRAR NOTA EN CTRL-N UBICANDO EL CURSOR SOBRE LA NOTA
            Y LUEGO PULSAR ESPACIO.PARA CADA NOTA SE DEBE HACER LO MISMO
            UBICAR CURSOR PULSAR ESPACIO.
     2.5.2) Para Borrar una nota pero dejar su espacio usar-> Pulsar 9 luego X en cada nota a limpiar
-              Se deberepetir el pulso de 9 para cada nota, por ahora no repite si se pulsa X solamente
-              intriduce un codigo para borrar columna que por ahora no se usa. (siguietne Nota)
+           Se debe repetir el pulso de 9 para cada nota, por ahora no repite si se pulsa X solamente
+           introduce un codigo para borrar columna que por ahora no se usa. (siguietne Nota)
+
            Nota: Revision No usar este modo de borrado -> (BORRAR EN CTRL-M O CURSOR UBICAR EL CURSOR 
            SOBRE LA NOTA PULSAR ESPACIO  Y LUEGO X PARA MODIFICAR..SE PUEDE SEGUIR 
           BORRARNDO OTRAS NOTAS  UBICANDO EL CURSOR Y SOLO CON X REPITE LA ULTIMA NOTA 
