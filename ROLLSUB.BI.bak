@@ -855,44 +855,30 @@ i1men=notapMen
   FileFlush (-1)
 End Sub
 
-Sub BuscarNota (ctrl As Integer, ByRef cur1 As Integer,ncur As Integer) ' en cursor cambiadur u otras el programa se posicionara en la nota mas cercana
+Sub BuscarNota (ctrl As Integer, n As Integer, ByRef cur1 As Integer,ncur As Integer) ' en cursor cambiadur u otras el programa se posicionara en la nota mas cercana
 ' decidiremos cuanotos ticks de acercamiento en un principio 10
 ' posn1=n+curpos  es x , notacur es y, barreemos un cuadrado ¡ 1 1 semitono y + - 10 curpos
-If ctrl= 0 Then ' ctrl es cambiadur solo procesa con 1 para evitar otras modificaciones se ajusta en cursor()
+If ctrl= 1 Then ' ctrl es cambiadur solo procesa con 1 para evitar otras modificaciones se ajusta en cursor()
   Exit Sub
 EndIf
 Dim As Integer x,x1, x2, y, y1, y2, posn1
-x1=cur1 - 10
-x2=cur1 + 10
-y1=ncur - 1
-y2=ncur + 1
-If y1 < 1 Then y1=1 EndIf
-If y2 > 12 Then y2=12 EndIf
+x1=curpos -10
+x2=curpos +10
+y1=notacur + 1
+y2=notacur - 1
 
-Print #1," x1 x2 "; x1, x2
-Print #1," y1 y2 "; y1, y2
 For x= x1 To x2  'curpos
  For y=y1 To y2  ' notacur
-    posn1 = posishow + x
-
-
-Print #1,"POSN1 ";posn1
-Print #1,"POSISHOW  ";posishow
-Print #1,"POSIcion  ";posicion
-Print #1,"curpos  ";curpos
-Print #1,"----------------------------------------"
-  
+    posn1 = posicion + x  
     If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 2 Then
 ' encontro ubicacion de nota
      cur1=x
      ncur=y
- Print #1,"ENCONTRAMOS ON 2 EN CURPOS, NOTACUR "; cur1, ncur
     Exit Sub 
     EndIf
  Next y
 Next x
- Print #1,"NO ENCONTRAMOS UNA MIERDA "
- trasponer=0
+ 
 End Sub
 
 ''========================= C U R S O R ============
@@ -900,7 +886,6 @@ Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As in
 'trasponer=0 ' NO SEPORQUE MIERDA SE PONE EN 1
 ' n deberia ser posishow 
  'print #1,"1-cursor "
-trasponer=0
  cairo_set_source_rgba c, 1, 1, 0.2, 1
  Dim Wc As Integer
 On Local Error GoTo errorhand 
@@ -926,10 +911,10 @@ Dim  As Integer nroPartesNota
  '   curpos=curposold
  'EndIf
  'curposold=curpos 
- '''''''curpos= posishow +algo -posishow
-
+ 
  If cursorVert=1 Or cursorVert= 2 Then  ' vertical COMEDIT=TRUE o Ctrl-N
-  trasponer=0
+  
+  
   cairo_move_to  (c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
   cairo_rectangle(c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  ,wc*6 ,inc_Penta) '13-07-2021 inc_penta/2 por inc_penta
   cairo_move_to  (c, gap1 + (curpos)*anchofig , Penta_y  )
@@ -972,17 +957,15 @@ Dim  As Integer nroPartesNota
  If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
 ' HABILITAR NOTA AL PONER EN CERO SE PUEDE USAR EN EDIT COMUN
 ''' If  borrar= 1 Then ' 
-trasponer=0
   cairo_set_source_rgba c, 1, 0, 0.2, 1
   
   Dim dursaved As Integer
   If notacur=1 Then ' 1 POR 0 JMG
    notacur=notaOld 
   EndIf
-
-
-
-'  Print #1,"n + curpos, 12 - notacur + (*po-1) * 13 ", n+curpos, 12 - notacur + (*po-1) * 13
+Print #1,"Borrar 1 ctrl-m curpos *po, n "; curpos, * po, n
+Print #1,"posishow ", posishow
+  Print #1,"n + curpos, 12 - notacur + (*po-1) * 13 ", n+curpos, 12 - notacur + (*po-1) * 13
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).dur = 0
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).nota = 181
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).onoff = 0
@@ -1008,32 +991,6 @@ trasponer=0
  If (cursorHori=1 Or cursorVert = 1) And cambiadur= 1 And octavaEdicion=estoyEnOctava Then ''Ctrl-M y pulso X
      cambiadur=0
      trasponer=0
-Print #1,"CAMBIADUR 1 ENTRA  "
-Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyEnOctava -1) * 13)).onoff
-  If Roll.trk(n + curpos, (12-notacur +(estoyEnOctava -1) * 13)).onoff <>  2 Then
-     Print #1,"ENTRO A LLAMAR A BUCONOTA "
-     cambiadur=1
-     Print #1," ANTES BUCONOTA curpos notacur "; curpos, notacur
-
-     BuscarNota (cambiadur, curpos ,notacur )
-     Print #1," DESPUES BUCONOTA curpos notacur "; curpos, notacur
-     cambiadur=0
-     cairo_move_to  (c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
-     cairo_rectangle(c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  ,wc*6 ,inc_Penta) '13-07-2021 inc_penta/2 por inc_penta
-     cairo_move_to  (c, gap1 + (curpos)*anchofig , Penta_y  )
-     cairo_line_to  (c, gap1 + (curpos)*anchofig , Penta_y + (notacur-1) * inc_Penta  +inc_Penta )
-     RollDur=Roll.trk(n + curpos,12 - notacur + (*po-1) * 13 ).dur
-     RollNota=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota
-'' para ver el estado del onoff en la posicion elegida notacur
-     onoff=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff
-
-     notaold=notacur 
-
-     cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
-     cairo_rectangle(c,gap1 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , wc,inc_Penta)
-
-  EndIf  
-
   ' debo cambiar esa nota por su equivalente silencio
   '1ero se pulsa la nueva duracion y luego la X porque aca se anula luego el flag cambiadur
   'y la dUR debe tener un valor antes de esto
@@ -1053,10 +1010,10 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
   ' se ahce ya de ambasformas usando delete tambiense borra online
   If notaold > 0 Then 
      notacur=notaold
-    '' notaold=0
+     notaold=0
   EndIf
-'-------------------------------
-  notaold=notacur 
+'------------------------------- 
+  BuscarNota (cambiadur, n , curpos ,notacur )   
   cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
   cairo_rectangle(c,gap1 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , wc,inc_Penta)
 '-------------------------------
@@ -1073,10 +1030,10 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
   Roll.trk(posoffdurant, 12 - notacur + (*po-1) * 13).dur=181
   Roll.trk(posoffdurant, 12 - notacur + (*po-1) * 13).nota=0
   Roll.trk(posoffdurant, 12 - notacur + (*po-1) * 13).onoff=0
-  
+  notaold=notacur
 '----------------------
 
-  trasponer=0
+  
  If DUR=181 Then
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 0
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =181   ' 5.7.2
@@ -1202,10 +1159,9 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
 
 ''''' =>>> agregado ticks aca no hay fin de secuencia se pone 181 en vez de 182
 Print #1,"LLEGANOTA y DUR ",notacur;"  DUR "; DUR
-trasponer=0
   If notacur > 0 And DUR > 0 Then
 'Print #1,"LLEGA NOTA ",notacur
-     posn1=n+curpos ' posishow + curpos
+     posn1=n+curpos
      
      If DUR <= 90 Then 'caso 1) no ligado, I, L, W etc, viene algo que termina
    '     Print #1,"DUR <= 90 "
@@ -1370,14 +1326,13 @@ trasponer=0
   '''notaold=12-notacur +(estoyEnOctava -1) * 13  'wwwwwww
   ''notaold=Penta_y + (notacur-1) * inc_Penta
   
- ''' notacur=0
+  notacur=0
   Exit Sub
  Else
    If cambiadur= 1 And octavaEdicion <> estoyEnOctava Then
   '  reseteo de valores de cambio para que no escriba la modificacion que se hizo en otra
   '  octava en la octava nueva al seleccionarla 03-05-2025 perfecto
-      '''notacur=0: notaOld=0 : 
-      cambiadur=0  
+      notacur=0: notaOld=0 : cambiadur=0  
    EndIf 
  EndIf ' fin ctrl-m  modificacion
  
@@ -3346,9 +3301,9 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 indicePos=(mousex- gap1 )/anchofig + posishow 
 Dim As Integer veonota, veocopi 
 ' indicePos < MaxPos fix 02-09-21
-'If indicePos >gap1 And nR <=(NA -13) And indicePos < MaxPos Then
-'   veonota=Roll.trk(indicePos, nR).nota ' NA-nr cambiado a nR jmg 
-'EndIf
+If indicePos >gap1 And nR <=(NA -13) And indicePos < MaxPos Then
+   veonota=Roll.trk(indicePos, nR).nota ' NA-nr cambiado a nR jmg 
+EndIf
 If copiar >0 Then
    veocopi=copiar
 EndIf   

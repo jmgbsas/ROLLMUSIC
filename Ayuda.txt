@@ -104,9 +104,9 @@
           Se ajusto las habilitaciones y deshabilitaciones de 2.0,2.1,2.2 por menu y codigo
           para evitar opciones no permitidas..
        ------------------------------------------------------------------------------------------
-       NOTA: PARA  CERRAR LA VENTANA DE ROLLGRAFICO SIN SALIR DEL PROGRAMA PULSAR CTRL+F4
-       PARA CERRAR LA VENTANA GRAFICA Y EL PROGRAMA CON TECLA ESCAPE APARECE DIALOGO PARA CONFIRMAR CIERRE
-       TAMBIEN SE PUEDE CERRAR CON EL BOTON X ROJO, PERO SE CAMBIARA A CERRAR VENTANA NO EL PROGRAMA.
+       NOTA: PARA  CERRAR LA VENTANA DE ROLLGRAFICO SIN SALIR DEL PROGRAMA PULSAR CTRL+F4 O EL BOTON X
+      ARRIBA A LA DERECHA.  PARA CERRAR LA VENTANA GRAFICA Y EL PROGRAMA, CON TECLA ESCAPE APARECE DIALOGO
+      PARA CONFIRMAR CIERRE TOTAL DEL PROGRAMA. 
        ------------------------------------------------------------------------------------------
        Al abrir una seleccion de puerto port(MIDI-OUT), instrumentos o patch por orden ALfa o numerico, o canales  
        midi , apareceran [] vacios sin seleccionar y [x] seleccionado, antes de seleccionar uno nuevo, se debe 
@@ -952,16 +952,21 @@
          Modificar por teclado
 
        Elegir por teclado la duracion pulsando 1 a 8 (9, espacio, 0 fin secuencia )
-       posicionar el cursor con teclas ( arriba abajo derecha izquierda)
-       sobre la nota deseada en la octava elegida, pulsar X, se cambiara la duracion
-       a la deseaada
+       posicionar el cursor con teclas ( arriba abajo derecha izquierda) +10 -10 y +1 -1 semitono,
+       no hace falta ubicar exactamente la posicion, el programa busca el onoff=2 que se puede ver 
+       en la cinta en el ultimo parametro arriba de Edit ------>.
+       Sobre la nota deseada o muy cerca de ella y en la octava elegida, pulsar X, se cambiara la duracion
+       a la deseaada. No se permite modificar otra ocatava para hacerlo mover el cursor a la otra octava
+       y desplazar el mouse por arriba del fina de la octava, las notas guias se pondran verde indicando
+       octava seleccionada.
      
-       Entrar o Modificar por teclado 2da opción Ctrl-N
+      ( Entrar o Modificar por teclado 2da opción Ctrl-N [esta opcion en Ticks veremos si la dejamo 
+       pora hora parece que no funciona]
        Elegir por teclado duracion 1 a 9 o por click derecho aparece el menu contextual 
        de duraciones. Posicionarse en una posicion con las teclas de flechas, y luego pulsar
        la nota en teclado. O dar click  con el mouse en cualqueir lado que se desee, sin
        usar las flechas de teclado.
-       De Ctrl-N (se sale con ctrl-p tambien)
+       De Ctrl-N (se sale con ctrl-p tambien) )
 
     2.3.1) En ambos modos se puede entrar acordes, condicion inicial: haber entrado una melodia
            o notas base del acorde. Por ahora es entrada nota por nota apiladas, arriba o abajo 

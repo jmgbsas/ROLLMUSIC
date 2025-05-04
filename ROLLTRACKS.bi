@@ -319,8 +319,10 @@ cargacancion=NO_CARGAR_PUEDE_DIBUJAR 'PUEDE DIBUJAR PORQUE NO HAY REDIM  DE ROLL
      Dim As String x,x1,x2,x3,x4,x5,nombrea
   '1) cargar pista desde disco y desde Roll puro   
      If ubirtk = 0   Then ' no tengo nombre debo explorar
-           myfilter  = "Track Files"+Chr(0)  +"*.rtk"+Chr(0)
+           myfilter  = "Track files (*.rtk)"+Chr(0)+"*.rtk"+Chr(0)
            nombrea = OpenFileRequester("","", myfilter)
+Sleep 100
+
            ubi1 = InStrrev(nombrea,"[")
            ubi2 =InStrRev (nombrea,"]")
            If ubi1=0 Then
@@ -3004,9 +3006,9 @@ print #1,"MUEVO DESDE POSI ";posiVIEJA;" A POSInueva ";posinueva
 '   EstoyEnOctava=SumarnR(Notapiano) +1  ' para la mayor  
 '   Print #1, "Estoy En Octava midi plano ", EstoyEnOctava 
 ' End If
-' EstoyEnOctava para el caso manuel creo estaria mal tambien porque es solo una octabvva
+' EstoyEnOctava para el caso manual creo estaria mal tambien porque es solo una octava
 ' fija donde esta el mouse y en pantalla le hago barrer toda la columna luego 
-' Estoy enOctava debe reemplazarse siemrpe  por laformula nueva que 
+' Estoy enOctava debe reemplazarse siemrpe  por la formula nueva que 
 ' dedudsca la octava mienras barre la columna !!!!
 '--------------------------------------------
 ' y que pasa con los otros parametros de Roll, vel etc???

@@ -1,3 +1,11 @@
+- 03-05-1015 0.317 : en CTRL-M al pasar de octava elegida y modificada a otra octava
+  elegida ingresaba la ultima modificacion de la octava anterior se corrigio
+  se agrego cambiadur= 1 And octavaEdicion=estoyEnOctava
+  Se volvio a corregir el borrado del off=1 al cambiar la duracion de una nota
+  El programa se encarga de buscar la nota ON mas cercana barriendo en horizontal -10 +10 ticks
+  y en vertical -1 +1 en semitonos. de modo que no es necesario estar tratando de darle justo a la nota
+  mirando si su onoff=2
+- 01-05-2025 0.316 fix borrado de notas incluye a onoff corregido.  
 - 29-04-2025 0.315 corregido MIDIFICAR NOTAS NO SE BORRABA EL OFF=1 ANTERIOR
   El cursor en edicion para modificar permanece en el semitono ultimo donde se 
   modifico, puedo cambiar por distints duraciones de notas sin pulsar X

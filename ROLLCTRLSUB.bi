@@ -139,7 +139,8 @@ Sub CTRL10075 ()
 
            ROLLCARGADO=False 
             Dim As String nombreg
-nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))            
+nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0)+"*.roll;*.rtk"+Chr(0))
+Sleep 100            
 ' viva rusia lo hace sencillo....al win api..
             
             If nombreg = "" Then
@@ -156,8 +157,8 @@ Sub CTRL1010(ByRef salida As INTEGER)
            ROLLCARGADO=False 
            TRACKCARGADO=FALSE
             Dim As String nombreg
-nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0))
-            
+nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0)+"*.roll;*.rtk"+Chr(0))
+  Sleep 100          
             If nombreg = "" Then
                Print #1,"exit select por nombreg vacio "
                salida=1 
@@ -177,7 +178,8 @@ Sub CTRL1012 (ByRef SALIDA As Integer)
            ROLLCARGADO=FALSE 
             Dim As String nombreg
             If nombre = "" Then
-nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREATEPROMPT)
+nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0) +"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
+Sleep 100
                If nombreg = "" Then
                   print #1,"exit select por nombreg vacio "
                   SALIDA=1 

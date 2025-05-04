@@ -55,8 +55,8 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 ' cairo_set_source_rgba(c, 1, 1, 1, 1)
 'EndIf
 ' --preubas de encabezado donde pondremos mas informaicon y tal vez menues botoes etc
-
- Penta_y = BordeSupRoll + 14 * ( inc_Penta ) *( nro -1)
+' nro numero octava
+ Penta_y = BordeSupRoll + 14 * ( inc_Penta ) *( nro -1) 'nro esta en el for de barrepenta
 '--------------------------
  t=" ESCALA: "+ UCase(tipoescala_inicial) + " [" +cadenaes_inicial +"] "
   cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - inc_Penta)
@@ -296,7 +296,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 '  10-04-2022 verificar si esto sigue funcionando ÇÇÇÇ colocar esapcios
       If COMEDIT=TRUE Then 
          If cursorVert=0 Then  
-            If espacio = 1 Then '''= (semitono +1) Then
+            If espacio = (semitono +1) Then
                Roll.trk (n, 11-semitono + (hasta -nro) * 13 ).dur = 181
                Roll.trk (n, 11-semitono + (hasta -nro) * 13 ).nota = 0
                Roll.trk (n, 11-semitono + (hasta -nro) * 13 ).onoff = 0
@@ -310,7 +310,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 ' ((n - inicioDeLectura)=curpos) y moviendoelcursor derecha izquierda
 ' en ctrl-m borra todo de una!! implementarlo...        
          If cursorVert=1 Then  
-            If (espacio > 0  ) Then ''And ((n - inicioDeLectura)=curpos)  Then 'semitono +1
+            If (espacio =semitono +1  ) And ((n - inicioDeLectura)=curpos)  Then 'semitono +1
                Roll.trk (n,11-semitono + (*po-1) * 13 ).dur = 181
                Roll.trk (n,11-semitono + (*po-1) * 13 ).nota = 0
                Roll.trk (n,11-semitono + (*po-1) * 13 ).onoff = 0
@@ -319,12 +319,26 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
                EndIf
             EndIf   
          EndIf
-     ' BORRADO LIBRE NO MARCA SOLO BLANCO habilita para usar nota=0    cancela con ticks
+' un buen forma de borrar facil y rpido seria usando
+' ((n - inicioDeLectura)=curpos) y moviendoelcursor derecha izquierda
+' en ctrl-m borra todo de una!! implementarlo...        
+         If cursorVert=1 Then  
+            If (espacio = semitono +1 ) And ((n - inicioDeLectura)=curpos)  Then
+               Roll.trk (n,11-semitono + (*po-1) * 13 ).dur = 181
+               Roll.trk (n,11-semitono + (*po-1) * 13 ).nota = 0
+               Roll.trk (n,11-semitono + (*po-1) * 13 ).onoff = 0
+               If fijarEspacio=0 Then
+                  espacio=0
+               EndIf
+            EndIf   
+         EndIf
+
+     ' BORRADO LIBRE NO MARCA SOLO BLANCO habilita para usar nota=0  ,,,??? 
          If cursorVert=1 And Borrar=1 Then  
             If ((n - inicioDeLectura)=curpos)  Then
-               Roll.trk (n,semitono + (*po) * 13 ).dur = 181
-               Roll.trk (n,semitono + (*po) * 13 ).nota = 0
-               Roll.trk (n,semitono + (*po) * 13 ).onoff = 0
+               Roll.trk (n,11-semitono + (*po) * 13 ).dur = 181
+               Roll.trk (n,11-semitono + (*po) * 13 ).nota = 0
+               Roll.trk (n,11- semitono + (*po) * 13 ).onoff = 0
                If fijarEspacio=0 Then
                   Borrar=0
                EndIf
@@ -365,7 +379,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
     If n<=jply + 2 And n<=jply - 2 And Parar_De_Dibujar=NO Then 
        cairo_set_source_rgba(c,1,0,1,1)
     EndIf
-    If indf <> 181 Then ' esto acelera un monton 
+    If indf <> 181 Then ' esto acelera un monton 181 es vacio espacio no hay nada pra mostrar
       cairo_show_text(c, t)
     EndIf
 ' se elimina el cursos con las notas coloreadas durante el play es suficiente
@@ -597,7 +611,8 @@ If GrabarPenta =0 Then
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
   ' Or (cursorHori=2 And cursorVert=2 paa hbilitar ctrl-N
   If cursorHori=SI And cursorVert=SI Or play=SI Or playb=SI  Then
-      cursor(c,posicion,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos 
+      cursor(c,posishow,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos
+''      cursor(c,posicion,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos 
       ' se ilumina en posicion 0 
   EndIf
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
@@ -610,7 +625,8 @@ If GrabarPenta =0 Then
 else
   
   If cursorHori=SI And cursorVert=SI Or play=SI Or playb=SI  Then
-      cursor(c,posicion,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos 
+      cursor(c,posishow,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos 
+      '''cursor(c,posicion,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos
   EndIf
   
    cairo_set_source_rgba c, 0, 0, 0, 1
@@ -1252,7 +1268,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
  cursorHori = 2
  agregarNota= 1
  DUR=0
- 
+ curpos= Int((mousex - gap1)/anchofig)
 EndIf
 
 
@@ -1415,11 +1431,12 @@ If MultiKey(SC_DOWN) Then  ' el screenevent me pone trasponer en 1 la puta e.sca
        Exit Do
      EndIf 
      
-    If cursorVert=1 Or cursorVert=2 Then
+    If cursorVert=1 Or cursorVert=2 Then 'ctrl-m o ctrl-n
      notacur = notacur + 1
      If notacur > 12 Then
       notacur=1
      EndIf
+     cambiadur=0 
       Sleep 100
       Exit Do
     EndIf
@@ -1473,6 +1490,7 @@ If MultiKey (SC_UP) Then
      If notacur < 1 Then
       notacur=12
      EndIf
+     cambiadur=0  
       Sleep 100
      Exit Do
     EndIf
@@ -1710,7 +1728,8 @@ If MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
  '  print #1, "Grabando a disco Roll F11 "
    Dim As String nombreg
    If nombre = "" Then
-nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0), OFN_CREATEPROMPT)
+nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0) +"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
+Sleep 100
       If nombreg = "" Then
          Exit Do
       Else
@@ -2885,7 +2904,7 @@ If COMEDIT = TRUE  And nota > 0 And agregarNota=0 And cursorVert=0 And carga=0 A
          '   print #1,"^^^^ cambia 0 en i";i; "octava "; noct 
             Roll.trk(posn,(i +(noct -1) * 13)).nota = 181
             Roll.trk(posn,(i +(noct -1) * 13)).dur  = 0
-
+            Roll.trk(posn,(i +(noct -1) * 13)).onoff  = 0
          EndIf
         ' If Roll.trk((i +(noct -1) * 13),posn).nota = 182 And posn<>MaxPos Then
         ' print #1,"^^^^ cambia 182 en i";i ; "octava "; noct
@@ -3073,7 +3092,7 @@ Dim As Integer DURAUX=Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
        Track(ntk).trk(posnOffOld,1).onoff = 0 'sigue la duracion
        Track(ntk).trk(posn,1).nota = PianoNota
        Track(ntk).trk(posn,1).onoff = 2
-       posnOff=posn + DurXTick(DURAUX) 'nuevo off porque dura mas
+       posnOff=posn + DurXTick(DURAUX) -1'nuevo off porque dura mas
        Roll.trk(posnOff,(12-nota +(estoyEnOctava -1) * 13)).onoff=1
        Roll.trk(posnOff,(12-nota +(estoyEnOctava -1) * 13)).nota=183
        Roll.trk(posnOff,(12-nota +(estoyEnOctava -1) * 13)).dur=183
@@ -3146,7 +3165,7 @@ Dim As Integer DURAUX=Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
 
 
        Track(ntk).trk(posnOffOld,1).onoff = 0 'sigue la duracion se borra el 1
-       posnOff=posnOffOld + DurXTick(DURAUX)
+       posnOff=posnOffOld + DurXTick(DURAUX) -1
        
        ' ponemos el onoff 1 por si no se carga el siguiente pero en la carga de lsiguiente se
        ' borrar el onoff 1
@@ -3173,7 +3192,7 @@ Dim As Integer DURAUX=Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
        
     Else
        Print #1," OK! CASO 2B) nota ligada sin historia DUR > 90 posnOffOld = 0 "
-       posnOff=posn + DurXTick(DURAUX) ' caso 1) nada entes ligada despues
+       posnOff=posn + DurXTick(DURAUX) -1 ' caso 1) nada entes ligada despues
        posnOffOld=0
        posnarranca=posn
        Roll.trk(posnOff,(12-nota +(estoyEnOctava -1) * 13)).onoff=1
@@ -3211,8 +3230,10 @@ Dim As Integer DURAUX=Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
 '   Print #1,"A) Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota ";Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota 
 '   Print #1,"A) Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota ";Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota 
         Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota = 181
+        Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).onoff = 0
 '   Print #1,"B)Roll.trk(kk,(12-notaOld  +(estoyEnOctava -1) * 13)).nota ";Roll.trk(kk,(12-notaOld  +(estoyEnOctava -1) * 13)).nota 
         Roll.trk(kk,(12-notaOld  +(estoyEnOctava    -1) * 13)).nota = 181
+        Roll.trk(kk,(12-notaOld  +(estoyEnOctava    -1) * 13)).onoff = 0
        EndIf
   Next kk
 
@@ -3486,7 +3507,7 @@ If (ScreenEvent(@e)) Then
       playloop=NO:playloop2=NO
       s5=2 'necesita menos tiempo de procesamiento    
     EndIf
-  ' If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion'
+   If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion'
   '
   '  If trasponer=1 And SelGrupoNota=0 Then
    '          ' Print #1,"3 TRASPONER !!!!!!!!!!!!!!", trasponer
@@ -3500,18 +3521,18 @@ If (ScreenEvent(@e)) Then
  '    Exit Do 
   '  EndIf 
 
-'    If cursorVert= 0 Then
-'     If s2=0 Then
-'      s2=1
-'         'print #1,"pulso UP r 1 inc_penta"
-'      BordeSupRoll = BordeSupRoll +   inc_Penta
-''     EndIf
-'     If BordeSupRoll >= AltoInicial * 0.5  Then
-'      BordeSupRoll =  AltoInicial * 0.5
-'     EndIf
+    If cursorVert= 0 Then
+     If s2=0 Then
+      s2=1
+         'print #1,"pulso UP r 1 inc_penta"
+      BordeSupRoll = BordeSupRoll +   inc_Penta
+     EndIf
+     If BordeSupRoll >= AltoInicial * 0.5  Then
+      BordeSupRoll =  AltoInicial * 0.5
+     EndIf
 
-'     Exit Do
-'    EndIf
+     Exit Do
+    EndIf
 '    If cursorVert=1 Or cursorVert=2 Then
 '     notacur=notacur-1
 '     If notacur < 1 Then
@@ -3519,7 +3540,7 @@ If (ScreenEvent(@e)) Then
 '     EndIf
 '     Exit Do
 '    EndIf
-'   EndIf
+   EndIf
 
    If e.scancode = &h41 Then ' <======= SC_F7
     If COMEDIT = FALSE Then
@@ -3611,7 +3632,7 @@ EndIf
     'corrige nota cambia duracion o agrega nota nueva, acorde melodia
     ' solo debe funcionar con CTRL-M
     If cursorVert=1 Then ' ver cursorVert2 archivo nuevo con espacios....sirve??
-     cambiadur = 1    ' usando 1 a 8 para silencio esta delete
+     cambiadur = 1    ' usando 1 a 8,, para silencios esta delete verificarlo!! 03-05-2025
     EndIf
     Exit Do
    EndIf
@@ -3697,7 +3718,7 @@ EndIf
 
    ' ------------------PULSAR MUCHO TIEMPO <====== REPEAT------
   Case EVENT_KEY_REPEAT
-   If e.scancode = 72  Then ' <======= SC_UP
+If e.scancode = 72  Then ' <======= SC_UP
 
     If cursorVert = 0 Then
      If s2=0 Then
@@ -3721,12 +3742,12 @@ EndIf
 
    If e.scancode = 80 Then  ' <===== SC_DOWN repeat
 
-    If cursorVert=1 Then
-       notacur = notacur + 1
-       If notacur > 12 Then
-         notacur=1
-       EndIf
-    EndIf
+    'If cursorVert=1 Then
+    '   notacur = notacur + 1
+    '   If notacur > 12 Then
+    '     notacur=1
+    '   EndIf
+    'EndIf
     If cursorVert=0 Then
        If s1=0 Then
          s1=1
@@ -3928,7 +3949,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
  If (mouseY >= edity1 ) And (mouseY <= edity2) Then
   If (mouseX >= 36) And (mouseX <= 70) And (menuNew=PARAMETROS_ROLL Or menuNro=PARAMETROS_ROLL)  Then
   ' =====> EDIT <===
-   'SI ADEMS SEUSA CTRL-M SEPUEDE modificar ,agregr acordes e insertar
+   'SI ADEMAS SE USA CTRL-M SE PUEDE modificar ,agregar acordes e insertar
    ' 1 o varias notas en forma horizontal siemrpe la misma nota
    ' para acorde usar modificar SC_X
    menuMouse = 0

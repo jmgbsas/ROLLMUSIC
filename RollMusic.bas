@@ -81,8 +81,12 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.316 fix borrado de notas incluye a onoff corregido  "
-' queda para 317 organizar borrado de notas o culumnas en ctrl-m ctrl-n
+nroversion="TICKS 0.317 Teclas de borado de nota fin secuencia etc consistencias "
+' 317 que se hizo: en CTRL-M al pasar de octava elegida y modificada a otra octava
+' elegida ingresaba la ultima modificacion de la octava anterior se corrigio
+' BuscarNota nueva sub para que si estamos cerca de una nota el progrma se situe sobre ella
+' automaticamente evitando el esfuerzo de encontrarla mas en vistas reducidas ,,
+' queda para 318 organizar borrado de notas o culumnas en ctrl-m ctrl-n
 ' findesecuencia etc dejar algo mas consizo y bien testeado,, 
 ' cosas realizadas en 315 incluye 314
 ' c) TICKS 0.315 corregido MIDIFICAR NOTAS SE BORRA EL OFF ANTERIOR  
