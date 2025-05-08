@@ -610,7 +610,7 @@ If GrabarPenta =0 Then
   ' CURSOR
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
   ' Or (cursorHori=2 And cursorVert=2 paa hbilitar ctrl-N
-  If cursorHori=SI And cursorVert=SI Or play=SI Or playb=SI  Then
+  If cursorHori=SI And cursorVert=SI Or play=SI Or playb=SI  Or cursorHori=2 And cursorVert=2 Then
       cursor(c,posishow,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos
 ''      cursor(c,posicion,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos 
       ' se ilumina en posicion 0 
@@ -1267,8 +1267,10 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
  cursorVert = 2
  cursorHori = 2
  agregarNota= 1
+ menuMouse = 0
  DUR=0
  curpos= Int((mousex - gap1)/anchofig)
+
 EndIf
 
 

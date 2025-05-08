@@ -927,6 +927,13 @@ Dim  As Integer nroPartesNota
  'EndIf
  'curposold=curpos 
  '''''''curpos= posishow +algo -posishow
+'---------------CTRL-N ..................
+'ctrl-n: usaremos el mismo codigo de ctrl-m solo que la nota se entra por nombre la X que es cambiadur=1 se
+' establece desde el principio no hace falta pulsarla
+ If (cursorHori=2 Or cursorVert = 2) And agregarNota=1  And nota > 0 Then
+  notacur=nota 
+  cambiadur=1
+ EndIf
 
  If cursorVert=1 Or cursorVert= 2 Then  ' vertical COMEDIT=TRUE o Ctrl-N
   trasponer=0
@@ -1005,9 +1012,16 @@ trasponer=0
 ' 03-05-2025 ok aorafalta borrar la nota y cambiadur=0 si cambio de octava con el mouse
 ' pero no la seleccione con el mouse hasta el final 
 
- If (cursorHori=1 Or cursorVert = 1) And cambiadur= 1 And octavaEdicion=estoyEnOctava Then ''Ctrl-M y pulso X
+ If cambiadur= 1  Then ''Ctrl-M y pulso X
      cambiadur=0
      trasponer=0
+   If (cursorHori=1 Or cursorVert = 1)  And octavaEdicion<>estoyEnOctava Then ' PARA ctrl-M SOLO CAMBIA UNA OCTAVA POR VEZ
+       Exit Sub
+   EndIf
+   If (cursorHori=2 Or cursorVert = 2)  And nota = 0 Then ' PARA ctrl-M SOLO CAMBIA UNA OCTAVA POR VEZ
+       Exit Sub
+   EndIf
+
 Print #1,"CAMBIADUR 1 ENTRA  "
 Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyEnOctava -1) * 13)).onoff
   If Roll.trk(n + curpos, (12-notacur +(estoyEnOctava -1) * 13)).onoff <>  2 Then
@@ -1199,15 +1213,16 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur  ' 5.7.2  
 
  EndIf
-
+Dim As UBYTE DURX = Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur
+ 
 ''''' =>>> agregado ticks aca no hay fin de secuencia se pone 181 en vez de 182
 Print #1,"LLEGANOTA y DUR ",notacur;"  DUR "; DUR
 trasponer=0
-  If notacur > 0 And DUR > 0 Then
+  If notacur > 0 And DURX > 0 Then
 'Print #1,"LLEGA NOTA ",notacur
      posn1=n+curpos ' posishow + curpos
      
-     If DUR <= 90 Then 'caso 1) no ligado, I, L, W etc, viene algo que termina
+     If DURX <= 90 Then 'caso 1) no ligado, I, L, W etc, viene algo que termina
    '     Print #1,"DUR <= 90 "
         If posnOffOld > 0 Then ' caso 4) llego un caso 2) ligado y luego un 1) no ligado
     '       Print #1,"DUR <= 90 posnOffOld > 0 "
@@ -1215,7 +1230,7 @@ trasponer=0
            Track(ntk).trk(posnOffOld,1).onoff = 0 'sigue la duracion
            Track(ntk).trk(posn1,1).nota = notacur
            Track(ntk).trk(posn1,1).onoff = 0
-           posnOff=posn1 + DurXTick(DUR) -1 'nuevo off porque dura mas -1 estaba mal
+           posnOff=posn1 + DurXTick(DURX) -1 'nuevo off porque dura mas -1 estaba mal
      '      Print #1,"posn1, DUR, DurXTick(DUR) "; posn1, " ";DUR;" " ;DurXTick(DUR)
            Track(ntk).trk(posnOff,1).nota = 183 'notacur
            Track(ntk).trk(posnOff,1).onoff = 1 '
@@ -1231,7 +1246,7 @@ trasponer=0
 ' si modifico el valor de algo existente debo eliminar el off  de la duracion anterior!
       '      Print #1,"DUR <= 90 posnOffOld = 0 "
             posnarranca=posn1 
-            posnOff=posn1 + DurXTick(DUR) -1' caso 1) nada entes nada despues
+            posnOff=posn1 + DurXTick(DURX) -1' caso 1) nada entes nada despues
  ' vemos si sobreescribimos una nota on          
            If  Roll.trk(posn1,(12-notacur +(estoyEnOctava -1) * 13)).onoff=2 Then
 ' buscar su terminacion
@@ -1265,14 +1280,14 @@ trasponer=0
 
     
         EndIf
-        nroPartesNota=DurXTick(DUR)
+        nroPartesNota=DurXTick(DURX)
      Else ' caso 2) la nota ligada n+ 
        ' Print #1,"DUR > 90 "
      If posnOffOld > 0 Then 'caso 4 o 5 vino una n+ yluego n+ otra ligada o no
      '  Print #1,"DUR > 90 posnOffOld > 0 "
        Roll.trk(posnOffOld,(12-notacur +(estoyEnOctava -1) * 13)).onoff=0
        Track(ntk).trk(posnOffOld,1).onoff = 0 'sigue la duracion
-       posnOff=posnOffOld + DurXTick(DUR) -1
+       posnOff=posnOffOld + DurXTick(DURX) -1
      ' ' posn=posnOff
       ' If (posn > NroCol + InicioDeLectura) Then
       '  InicioDeLectura=InicioDeLectura + NroCol
@@ -1285,7 +1300,7 @@ trasponer=0
       
      Else
       ' Print #1,"DUR > 90 posnOffOld = 0 "
-       posnOff=posn1 + DurXTick(DUR) -1 ' caso 1) nada entes nada despues
+       posnOff=posn1 + DurXTick(DURX) -1 ' caso 1) nada entes nada despues
        posnOffOld=0
        Roll.trk(posn1,(12-notacur +(estoyEnOctava -1) * 13)).onoff=0
        Roll.trk(posn1,(12-notacur +(estoyEnOctava -1) * 13)).nota=notacur
@@ -1299,7 +1314,7 @@ trasponer=0
        posnOffOld=0
      
     EndIf
-     nroPartesNota=DurXTick(DUR)
+     nroPartesNota=DurXTick(DURX)
       
      EndIf
 ' ajuste de valores para lugares vacios sin notas en todo el intervalo x con cambio de octava
@@ -1359,7 +1374,7 @@ trasponer=0
       DUR=0
   EndIf 
 ''' fin agregado ticks
-  cambiadur = 0
+  cambiadur = 0: nota=0
   cuart=0:pun=0:doblepun=0:tres=0:silen=0:mas=0
 
  ''''no hara falta con ticks ReCalCompas(Roll) 'organizaCompases() 
@@ -1372,14 +1387,7 @@ trasponer=0
   
  ''' notacur=0
   Exit Sub
- Else
-   If cambiadur= 1 And octavaEdicion <> estoyEnOctava Then
-  '  reseteo de valores de cambio para que no escriba la modificacion que se hizo en otra
-  '  octava en la octava nueva al seleccionarla 03-05-2025 perfecto
-      '''notacur=0: notaOld=0 : 
-      cambiadur=0  
-   EndIf 
- EndIf ' fin ctrl-m  modificacion
+ EndIf ' fin ctrl-m  modificacion Y CTRL-N AGREGAR NOTA CON NOMBRE DE NOTA
  
 
 
@@ -1452,14 +1460,27 @@ trasponer=0
  'proceso modificar Nuevo secunci limpia terminda en NroCol ,con
  ' nombre de letra pulsada en vez de X CTRL-N
  ' ====> MODIFICAR con ctrl-n
- If (cursorHori=2 Or cursorVert = 2) And agregarNota=1  And nota> 0 Then
- ''COMPLETAR PARA TICKS !!! 29-04-2025
-  Roll.trk(n + curpos, 12-notacur + (*po-1) * 13).dur = DUR
-  ' SI LA NOTA  NO EXITIA LA agrega
-  Roll.trk(n + curpos, 12-notacur + (*po-1) * 13).nota = nota  ' 5.7.3.4
-   ReCalCompas(Roll) 
-   nota=0
- EndIf
+' If (cursorHori=2 Or cursorVert = 2) And agregarNota=1  And nota> 0 Then
+' ''COMPLETAR PARA TICKS !!! 29-04-2025
+''' nunca consideró notas ligadas, opcion Ctrl-M es mas completa
+'' solo agrega  notas sin ligar y tal vez en cualquier octava probrmos usando  (*po-1) en vez de (EstoyEnOctava -1)
+'  Dim posn1 As Integer
+'  posn1=n + curpos
+'  posnOff=posn1 + DurXTick(DUR) -1
+'  notacur=nota 
+
+
+'  ' SI LA NOTA  NO EXITIA LA agrega (lo hacia al final de la secuencia pero no al medio??)
+' Roll.trk(posn1,  (12-notacur +(*po-1) * 13)).dur=DUR
+' Roll.trk(posn1,  (12-notacur +(*po-1) * 13)).nota=nota
+' Roll.trk(posn1,  (12-notacur +(*po-1) * 13)).onoff=2
+' Roll.trk(posnOff,(12-notacur +(*po-1) * 13)).onoff=1
+' Roll.trk(posnOff,(12-notacur +(*po-1) * 13)).nota=183
+' Roll.trk(posnOff,(12-notacur +(*po-1) * 13)).dur=183
+
+ '  ReCalCompas(Roll) 
+ '  nota=0
+ 'EndIf
  ' VEMOS QUE HACE ESTA FUNCION SI SIRVE
  ''cairo_surface_get_device_offset
  cairo_stroke(c) ' aca el stroke da el amarillo y no jode a teclas - + con saltos!

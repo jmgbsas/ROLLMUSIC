@@ -81,7 +81,16 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.317 Teclas de borado de nota fin secuencia etc consistencias "
+nroversion="TICKS 0.318 CTRL-N fix es como CTRL-M pero las notas son por nombre CDEFGAB "
+' 318 FUNCIONAN NOTAS CON PUNTILLO PROBADO, Y EL RESTO TRESILLO ETC SUPONGO TAMBIEN  SE PROBARA
+' 318 CTRL-N fix es como CTRL-M pero las notas son por nombre CDEFGAB, no tiene la 
+' restriccion de octava puede colocarse nota en cualqueir octava sin tener que seleccionarse
+' posicionando el cursor al final de pantalla de la octava, no entra notas ligadas por ahora.
+' habria que copiar toda la logica para nota ligada o hacer una funcion que haga los
+' dos casos en uno notacur lo da las teclas UP y Down en la otra el nombre de la nota
+' creo que si dejare un solo codigo con esa opcion diferente ,,,y listo no se si
+' hacer una sub para clarificar codigo,,,,no resulto insistire ? el codigo de ctrl-m anda
+' ok tratare de no tocarlo 
 ' 317 que se hizo: en CTRL-M al pasar de octava elegida y modificada a otra octava
 ' elegida ingresaba la ultima modificacion de la octava anterior se corrigio
 ' BuscarNota nueva sub para que si estamos cerca de una nota el progrma se situe sobre ella
