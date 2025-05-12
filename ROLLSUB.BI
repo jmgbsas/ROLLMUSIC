@@ -976,7 +976,7 @@ Dim  As Integer nroPartesNota
 
  EndIf
  
- If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then
+ If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then 'ctrl-M selecion  de nota con flechas y posicion
 ' HABILITAR NOTA AL PONER EN CERO SE PUEDE USAR EN EDIT COMUN
 ''' If  borrar= 1 Then ' 
 trasponer=0

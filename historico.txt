@@ -1,3 +1,4 @@
+- 11-05-2025 0.319 saltamos de nota en nota con (Mayuscula izquierda) + flechas der o izquierda
 - 08-05-2025 0.318 TICKS 0.318 CTRL-N fix es como CTRL-M pero las notas son por nombre CDEFGAB "
   318 FUNCIONAN NOTAS CON PUNTILLO PROBADO, Y EL RESTO TRESILLO ETC SUPONGO TAMBIEN  SE PROBARA.
 - 03-05-2025 0.317 : en CTRL-M al pasar de octava elegida y modificada a otra octava

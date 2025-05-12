@@ -379,7 +379,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
     If n<=jply + 2 And n<=jply - 2 And Parar_De_Dibujar=NO Then 
        cairo_set_source_rgba(c,1,0,1,1)
     EndIf
-    If indf <> 181 Then ' esto acelera un monton 181 es vacio espacio no hay nada pra mostrar
+    If indf <> 181 Then ' esto acelera un monton 181 es vacio espacio no hay nada para mostrar
       cairo_show_text(c, t)
     EndIf
 ' se elimina el cursos con las notas coloreadas durante el play es suficiente
@@ -808,7 +808,7 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
   ' asi funciona mejor o no? igual debe esperar a que termine el thread
  ' NOOOO ScreenSync  no usar nunca sync desfasa el barrido de cairo y salta
  ' las lineas
-
+     ScreenSync ' a ver si aca es mejor....
      creaPenta (c, Roll )
      
 
@@ -869,11 +869,14 @@ EndIf
 ' 07-02-2025 CAMBIAMOS DE 32 BITS A 24 PARECE ANDA ALGO MAS RAPIDO¿?
 ' anda con los 3 drivers OpenGL DirectX y GDI ....
 Dim resultado As Long
-     ScreenControl  SET_DRIVER_NAME, "GDI" '''"Direct2D" ''' 
+     ScreenControl  SET_DRIVER_NAME, "GDI" '''"Direct2D" '''
+' LOS PIXELS ESTABAN EN 24 LO LLEVE A 16 VEMOS SI ANDA MAS RAPDIO Y CONSERVA TODO 
+' SAQUE 2 PAGINAS A 1 NO USO MAS QUE UNA PAGINA PARA DIBUJAR
+ 'si usara dos paginas podria ser mas rapido?
      If usarmarco= 3 then
-        resultado = ScreenRes ( ANCHO, ALTO ,24 ,2 , GFX_HIGH_PRIORITY)
+        resultado = ScreenRes ( ANCHO, ALTO ,24 ,1 , GFX_HIGH_PRIORITY)
      Else
-        resultado = ScreenRes (ANCHO, ALTO, 24 ,2, GFX_NO_FRAME Or GFX_HIGH_PRIORITY)
+        resultado = ScreenRes (ANCHO, ALTO, 24 ,1, GFX_NO_FRAME Or GFX_HIGH_PRIORITY)
      EndIf
  '    print #1,"param.titulo ",param.titulo
      WindowTitle param.titulo
@@ -1064,6 +1067,9 @@ Else
           If s7 = 1 Then
            s7=0
           EndIf
+          If s8 = 1 Then
+           s8=0
+          EndIf
 
 
           inc_Penta = Int((ALTO -1) /40) - deltaip
@@ -1114,7 +1120,7 @@ Else
   
       EndIf
         If (terminar=NO_TERMINAR_BARRE_PANTALLA Or Parar_De_Dibujar=NO)  Then 
-       
+          ' ScreenSync
            threadPenta = ThreadCall barrePenta (c, Roll )
            ThreadWait threadPenta
             pubi=0
@@ -1123,7 +1129,7 @@ Else
            botones(hWnd, cm, ANCHO,ALTO) ' este despues sinocrash
        
            cairo_stroke(cm) ' cm despues de c sino crash
-       ScreenSync
+      '' ScreenSync iria antes de dibujar segun el help
 
 
         EndIf
@@ -1233,7 +1239,7 @@ Print #1,"14-sleep ";Timer
 EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar con Insert y I
- cursorVert = 1
+ cursorVert = 1 
  cursorHori = 1
  agregarNota=0
  menuMouse = 0
@@ -1365,7 +1371,7 @@ If MultiKey(SC_CONTROL) And lockhoriz=0 Then
      lockhoriz=1
      Exit Do
    Else
-     curpos= curpos + 1 ' mueve cursor cuando Roll se detiene (posicion)
+     curpos= curpos + 24 ' mueve cursor cuando Roll se detiene (posicion)
       If curpos > NroCol  Then
         curpos = NroCol
       EndIf
@@ -1373,6 +1379,48 @@ If MultiKey(SC_CONTROL) And lockhoriz=0 Then
     Sleep 100
  EndIf    
 EndIf
+
+If MultiKey(SC_LSHIFT) And MultiKey(SC_RIGHT) Then
+' AVANZAR DE ONOFF=2 A OTRO POSTERIOR
+Print #1,"AVANZA O NO AVANZA AL ONOFF2 ?"
+Dim As Integer  x1, y1, xdesde, xllegada
+
+If S8=0 Then
+   S8=1 
+     If COMEDIT=FALSE Then
+        xdesde=posicion
+     EndIf
+     If COMEDIT=TRUE Then
+        xdesde=curpos +1
+     EndIf
+
+   For x1= xdesde +1 To MaxPos
+      For y1 = NB To NA-13
+         If Roll.trk(x1, y1).onoff = 2 Then
+            xllegada=x1
+            onoff=2   
+''Print #1,"AVANZAO AL ONOFF2 "
+            Exit For,For
+         Else
+            onoff=0
+         EndIf        
+      Next y1 
+   Next x1
+     If COMEDIT=FALSE Then
+        posicion=xllegada
+     EndIf
+     If COMEDIT=TRUE Then
+        curpos=xllegada - 1
+        If curpos > Maxpos Then
+           curpos = MaxPos
+        EndIf
+     EndIf
+
+   menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
+EndIf
+ Exit Do
+EndIf
+
 
 If MultiKey(SC_CONTROL) And lockhoriz=0 Then 
   If  MultiKey (SC_LEFT) Then
@@ -1385,7 +1433,7 @@ If MultiKey(SC_CONTROL) And lockhoriz=0 Then
       lockhoriz=1
       Exit Do
    Else
-      curpos= curpos - 1 ' mueve cursor cuando Roll se detiene (posicion)
+      curpos= curpos - 24 ' mueve cursor cuando Roll se detiene (posicion)
       If curpos > NroCol  Then
          curpos = NroCol
       EndIf
@@ -1394,6 +1442,47 @@ If MultiKey(SC_CONTROL) And lockhoriz=0 Then
    Sleep 100   
    EndIf
 EndIf
+'''RECETA el codigo de LAS TECLAS COMPUESTAS de Multikey DEBEN ESTAR ANTES DEL codigo de las SIMPLES!!!!
+'hagamos esto para cursor tambien...
+If MultiKey(SC_LSHIFT) And MultiKey(SC_LEFT) Then
+' RETROCEDER A IZQ DE ONOFF=2 A OTRO ONOFF=2 ANTERIOR !!! 
+  Dim As Integer  x1, y1, xdesde, xllegada
+  If S8=0 Then
+     S8=1 
+     If COMEDIT=FALSE Then
+        xdesde=posicion
+     EndIf
+     If COMEDIT=TRUE Then
+        xdesde=curpos
+     EndIf
+
+     For x1= xdesde-1 To 1 Step -1
+       For y1 = NB To NA-13
+         If Roll.trk(x1, y1).onoff = 2 Then
+            onoff=2
+            xllegada=x1 
+            Exit For,For
+         Else
+            onoff=0 
+         EndIf        
+       Next y1 
+     Next x1
+     If COMEDIT=FALSE Then
+        posicion=xllegada
+     EndIf
+     If COMEDIT=TRUE Then
+        curpos=xllegada -1
+        If curpos < 0 Then
+           curpos = 0
+        EndIf
+     EndIf
+
+     menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
+  EndIf
+    Exit Do    
+EndIf
+
+
 
 If MultiKey(SC_ALT) And MultiKey(SC_F12) Then
   saltos=saltos + 1
@@ -1514,9 +1603,15 @@ EndIf
 
   'kNroCol cantidad scroll de NrocOL)
  If  mouseY > 50 And MultiKey(SC_RIGHT)   Then ' <======== RIGHT
+    Print #1,"ENTRA POR ACA SOLO ???"
+        If DUR > 0 Then 
+           deltax=  DurXTick(DUR) ' 1 a 9 solamente
+        Else
+           deltax = 1
+        EndIf
  
      If COMEDIT = FALSE Then
-        posicion = posicion + 1 ' UNA corchea  
+        posicion = posicion + deltax ' UN Tick  
         kNroCol= Int(posicion/NroCol)
         If  (kNroCol > 0) And (posicion = NroCol * kNroCol) And (posicion < MaxPos)Then
            iniciodelectura = iniciodelectura +  NroCol
@@ -1527,10 +1622,9 @@ EndIf
         If posicion > MaxPos -1  Then
            posicion = MaxPos -1
         EndIf
-        ''mueveHorizontalmayor50=1
-      ''  menuNew=2
+
      Else
-        curpos= curpos + 1 ' mueve cursor cuando Roll se detiene (posicion)
+        curpos= curpos + deltax ' mueve cursor cuando Roll se detiene (posicion)
         If curpos > NroCol  Then
           curpos = NroCol
         EndIf
@@ -1539,7 +1633,8 @@ EndIf
     '    EndIf
         
      EndIf
-     Sleep 100
+    menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
+     Sleep 50
     Exit Do
     
  EndIf
@@ -1556,11 +1651,16 @@ EndIf
  ' Exit Do
  'EndIf
  If  MultiKey(SC_LEFT) And mouseY > 50   Then
+        If DUR > 0 Then 
+           deltax=  DurXTick(DUR) ' 1 a 9 solamente
+        Else
+           deltax=1
+        EndIf
 
   'MOVER ROLL IZQUIERDA NO CURSOR
   If COMEDIT = FALSE Then
      Dim kNroCol As Integer ' cntidad de scroll de 66
-     posicion = posicion - 1 ' UNA semi FUSA
+     posicion = posicion - deltax ' UNA semi FUSA
      kNroCol= Int(posicion/NroCol)
      If  kNroCol > 0 And (posicion = NroCol*kNroCol)  Then
          iniciodelectura = iniciodelectura - NroCol
@@ -1574,13 +1674,15 @@ EndIf
      ''mueveHorizontalmayor50=1
      '' menuNew=2
   Else
-     curpos = curpos - 1 ' <=== MOVER CURSOR IZQ
+
+     curpos = curpos - deltax ' <=== MOVER CURSOR IZQ
      If curpos < 0 Then
         curpos = 0
      EndIf
      
   EndIf
-    Sleep 100
+menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
+    Sleep 50
     Exit Do
  EndIf
 
@@ -2438,6 +2540,8 @@ EndIf
 
 ' ----------INGRESO DE DURACIONES DE NOTAS -------------
 If COMEDIT = TRUE Then  
+' PORQUE LA CONDICION PARAMETROS_ROLL? PARA ESTAR EN COMMEDIT TRUE ES CONDICION ESTAR
+' EN PARAMETROS_ROOL ES REDUNDATE CREO.....PUEDO ESTAR EL PARAMETROS_ROLL Y EN COMEDIT FALSE 
  If (menuNew = PARAMETROS_ROLL Or menuNro=PARAMETROS_ROLL) Then  
   If MultiKey(SC_1) Then
    DUR = 1 :Exit Do
@@ -2515,25 +2619,36 @@ If COMEDIT = TRUE Then
   EndIf
 
  EndIf 
-   If multikey(SC_DELETE) Then ''cambia a silencio o nada le suma 16+16 ver eso!!!!!!!
+ ' este delete esta fuera porque podra ser usado con cualquier comedit 
+' y en la ventana de control o sea la del menu inicial  no el grafico.
+ If multikey(SC_DELETE) Then ''cambia a silencio o nada le suma 16+16 ver eso!!!!!!!
+    Screenbuffer = ScreenPtr()
+    If (Screenbuffer = 0) Then
+' lugar  donde poner algo para ventana de control
+    Else 
       If s7=0 Then
          s7=1   
-        If borrar=1 Then
-          borrar=0
-          Exit Do
-       EndIf  
+         If borrar=1 Then
+            borrar=0
+            Exit Do
+         EndIf  
       EndIf
       If s7=0 Then
          s7=1 
-       If borrar=0 Then
-          borrar=1
-          Exit Do
-       EndIf 
+        If borrar=0 Then
+           borrar=1
+           Exit Do
+        EndIf 
       EndIf 
-   EndIf 
+   EndIf
+ EndIf
+' EL SALTO POR OMISION SERA EL  QUE ELIJA EL USUARIO CON LA DURACION DE 1 A 8 O 0
+' PARA VOLVER A 1  
+ 'preparamos las teclas para saltar desde un onoff=2 al proximo
+
 
  ' ojo ver q no haYa  exit do antes !!!!! ?????
-EndIf 
+EndIf ' COMMEDIT TRUE CTRL-M
 
 
 ' ----HELP PRUEBA DE TEXT
@@ -3765,8 +3880,14 @@ If e.scancode = 72  Then ' <======= SC_UP
    EndIf
  
    If e.scancode = 75 Then ' <=====  SC_LEFT repeat
+        If DUR > 0 Then 
+           deltax=  DurXTick(DUR) ' 1 a 9 solamente
+        Else
+           deltax=1
+        EndIf
+
       If COMEDIT = FALSE Then 
-       posicion=posicion - 1 'NroCol
+       posicion=posicion - deltax 'NroCol
        If posicion < 1 Then
           posicion = 1
        EndIf
@@ -3775,16 +3896,23 @@ If e.scancode = 72  Then ' <======= SC_UP
       End If  
     EndIf
 
-    If e.scancode = 77 Then ' <======= SC_RIGHT repeat
-       If COMEDIT = FALSE Then
-        posicion=posicion + 1 ' Nrocol
-        If posicion > MaxPos Then
-           posicion = MaxPos
-        EndIf
-        posishow=posicion
-        Exit Do
-       EndIf 
-    EndIf
+ '   If e.scancode = 77 Then ' <======= SC_RIGHT repeat
+ '       
+ '      If COMEDIT = FALSE Then
+ '       If DUR > 0 Then 
+ '          deltax=  DurXTick(DUR) ' 1 a 9 solamente
+ '       Else
+ '          deltax =1 
+ '       EndIf
+ '       
+ '       posicion=posicion + deltax ' Nrocol
+ '       If posicion > MaxPos Then
+ '          posicion = MaxPos
+ '       EndIf
+ '       posishow=posicion
+ '       Exit Do
+ '      EndIf 
+ '   EndIf
 
    If e.scancode = &h41 Then ' <============ SC_F7
 
@@ -3948,9 +4076,10 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
    GetMouse mouseX, mouseY, , MouseButtons   ' <=======  CLICK EVENTOS
  EndIf
 '------- MENU CLICK EDIT PARA ENTRAR EN COMEDIT = TRUE EDICION
- If (mouseY >= edity1 ) And (mouseY <= edity2) Then
+' COMEDIT TRUE PARA INGRESO DE NOTAS NUEVAS TIENE cursorVert=0 Y cursorHori=0
+ If (mouseY >= edity1 ) And (mouseY <= edity2) Then ' entre 1 y 50 de y
   If (mouseX >= 36) And (mouseX <= 70) And (menuNew=PARAMETROS_ROLL Or menuNro=PARAMETROS_ROLL)  Then
-  ' =====> EDIT <===
+  ' =====> EDIT <=== de para metros color blanco solo para ver parametros
    'SI ADEMAS SE USA CTRL-M SE PUEDE modificar ,agregar acordes e insertar
    ' 1 o varias notas en forma horizontal siemrpe la misma nota
    ' para acorde usar modificar SC_X
@@ -3966,7 +4095,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
    If MouseButtons And 1 And cierroedit= 0 Then ' no se si funciona mejor lo dejaremos un tiempo
       cierroedit=1 ' no permite modificar mas que una vez
     If s3 = 0  Then
-     COMEDIT = TRUE 
+     COMEDIT = TRUE  ' EDIT SE PONE EN VERDE PARA ENTRAR NOTAS NUEVAS AL FINAL DE LA SECUENCIA
      '       print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
       ''font = 18 SACAMOS AHORA ESTO LO MANEJA MENU  
     ''' curpos=0 JMGJMG25FEB
@@ -3983,7 +4112,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
         Next im
         threadmetronomo = ThreadCall metronomo()
          contcode =0 ' para detectar 1er nota de midiin porque no envia 144 la 1era vez solo 128!!
-         ''COMEDIT=TRUE 
+          
      EndIf
      ''mayorDurEnUnaPosicion (posn)
      '' calcCompas(pos)
@@ -3992,7 +4121,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
      posishow=posicion
      Exit Do
     Else
-     If s3=1 Then  
+     If s3=1 Then ' VIENE DE COMEDIT=TRUE PASAMOA A FALSE  
         COMEDIT = FALSE '': s3 = 0 ' solo LECTURA 06-12-2021
      '       print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
      'posicion= posicion + curPOS ' estaba mal no va 3-3-21 jmg
@@ -4014,8 +4143,8 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
            EndIf
          '  posishow=posicion
         EndIf
-        s3=2
-        
+        s3=2 '1) EDIT PARAMETROS,2) UNCLICK VERDE ENTRA NOTAS NUEVAS COMEDIT=TRUE,3) OTRO CLICK COMEDIT=FALSE S3=2 
+        ' VOVLEMOS A MOSTRAR LOS PARAMETROS, PERO YA NO SE PUEDE VOLVER A COMEDIT=TRUE SOLO A MENU PRINCIPAL CON alt_m
         Exit Do
      EndIf
     EndIf
@@ -4977,7 +5106,8 @@ ButtonGadget(2,530,30,50,40," OK ")
    ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click'
  EndIf
 
-
+' TRASPOSICION DE UNA SOLA NOTA MARCANDOLA CON NOTA=13
+'========================================================= 
  If MultiKey(SC_ALT) And MouseButtons And 1  Then 'posiciona el cursor
     ' habilito trasposicion de una sola nota, ejecuta solo con Ctrl-T previo y
     ' las flechas up/down, habilitare dragado tambien 02-07-2021

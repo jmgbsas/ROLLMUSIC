@@ -164,7 +164,7 @@ Dim Shared As Double durcla (1 To 45, 1 To 2) => { _
 ' si empieza con una ligada(i+) el off estara en la dur no ligada (L)
  'redondeando...3w vale 1 -- 96 * 0,01041666 seg = 1 seg
 ' y 3w son 0,01041666 seg si negra = 1 seg en  tempo 60
-Dim Shared As integer DurXTick (0 To 185) => {0, _  ' 0
+Dim Shared As integer DurXTick (0 To 185) => {0, _  ' 0 cambiado a 1 9-05-2025
  384, 192, 96 , 48, 24, 12, 6,  3,  2, _      ' 1  9
  480, 240, 120, 60, 30, 15, 7,  4,  2, _     ' 10 18
  576, 288, 144, 72, 36, 18, 9,  4,  2,_      ' 19 27

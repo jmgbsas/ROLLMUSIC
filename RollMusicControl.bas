@@ -55,7 +55,9 @@ Common Shared As string pathdir,nombre,DirEjecSinBarra
 common Shared As String NombreCancion, NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado',pistacreada
 Common Shared As cairo_t  Ptr c, c2
-Common Shared As Any Ptr surface,surf2 
+Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer
+Screenbuffer=0
+
 Common Shared As FT_Face ftface
 common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu ,threadmetronomo,threadsel,threadcanal
 Common Shared As Any Ptr thread4
@@ -73,6 +75,7 @@ Common Shared As Integer gp ,midiplano,midionof
 'common Shared message() As UByte 'cambiado a shred message output ' puede ser de hasta 1024 bytes
 'Dim message(1 To 21) As UByte 'agregado
 
+
 Const As BOOLEAN HABILITAR = TRUE
 Const As BOOLEAN DESHABILITAR = FALSE
 Const NO=0
@@ -81,9 +84,9 @@ MICROSEGUNDOS_POR_NEGRA=1000000 ' 60 MILLONES / 60 BPM DEFAULT
 
 
  MaxPos=2:ntk=0:CPlay=NO: guardopos=0:ntktab=0
-Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff
+Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff,deltax,deltay
  posicion=0:posicionOld=0:posn=0
- 
+deltax=1 
 
 
   trasponer=0

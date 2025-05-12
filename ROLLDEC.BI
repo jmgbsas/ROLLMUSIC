@@ -642,6 +642,7 @@ Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota
 Dim Shared As Integer x, y, buttons, res,xscreen,gap1,gap2,gap3
 common Shared As float anchofig
 Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos=0, curposold, resultado, indicePos
+resultado=0
 ' este pesodur lo deberia cambiar a ticks
 Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 10000000,5000000,2500000,1250000, 625000,312500,156250, 78125,39063, _ '1  9
@@ -1149,21 +1150,22 @@ Common Shared As string pathdir,nombre,DirEjecSinBarra
 common Shared As String NombreCancion,NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado ',pistacreada
 Common Shared As cairo_t  Ptr c, c2
-Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi
+Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer
+Screenbuffer=0
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal
 Common Shared As Any Ptr thread4, threadGrabamidi
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,saltos
 Common Shared As ubyte patchsal
-Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff
+Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo,canalDeGrabacion
 Common SHARED As Integer EstaBarriendoPenta
 Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano,midionof
-
+deltax=1
 
  MaxPos=2:ntk=0:CPlay=NO: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0

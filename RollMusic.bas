@@ -81,32 +81,21 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.318 CTRL-N fix es como CTRL-M pero las notas son por nombre CDEFGAB "
-' 318 FUNCIONAN NOTAS CON PUNTILLO PROBADO, Y EL RESTO TRESILLO ETC SUPONGO TAMBIEN  SE PROBARA
-' 318 CTRL-N fix es como CTRL-M pero las notas son por nombre CDEFGAB, no tiene la 
-' restriccion de octava puede colocarse nota en cualqueir octava sin tener que seleccionarse
-' posicionando el cursor al final de pantalla de la octava, no entra notas ligadas por ahora.
-' habria que copiar toda la logica para nota ligada o hacer una funcion que haga los
-' dos casos en uno notacur lo da las teclas UP y Down en la otra el nombre de la nota
-' creo que si dejare un solo codigo con esa opcion diferente ,,,y listo no se si
-' hacer una sub para clarificar codigo,,,,no resulto insistire ? el codigo de ctrl-m anda
-' ok tratare de no tocarlo 
-' 317 que se hizo: en CTRL-M al pasar de octava elegida y modificada a otra octava
-' elegida ingresaba la ultima modificacion de la octava anterior se corrigio
-' BuscarNota nueva sub para que si estamos cerca de una nota el progrma se situe sobre ella
-' automaticamente evitando el esfuerzo de encontrarla mas en vistas reducidas ,,
-' queda para 318 organizar borrado de notas o culumnas en ctrl-m ctrl-n
-' findesecuencia etc dejar algo mas consizo y bien testeado,, 
-' cosas realizadas en 315 incluye 314
-' c) TICKS 0.315 corregido MIDIFICAR NOTAS SE BORRA EL OFF ANTERIOR  
-' b)se repuso mover secuencia con ALT-Der ALt-Izq aun en CTRL-M
-' a)se posiciona el cursor en donde apunta el mouse al dar CTRL+M las veces que se desee.
-' ERROR: al borrar notas desaparecen todos sus parametros no se las ven, pero siguen
-' sonando con play...a corregir en 316! 
+nroversion="TICKS 0.319 Usamos Flecha (izq o Der) + (Mayuscula izquierda) para saltar de ON en ON o sea onof=2 "
+' implementado con flechas izq o der + left shift mayuscula izquierda,,!
+' saltamos hasta el proximo onoff =2 tanto a derecha como izquierda
+' eso seria mas logico no necesitamos poner las duraicones en los off=1
+' entonces solo necesitramos un do loop en cada pulso de tecla izq derecha que pare
+' en el proximo onoff=2, y para usar esa opcion que el usuario lo pueda elegir
+' saltar de nota en nota o no hacerlo! eso lo podriamos colocar en un boton en la ventana
+' de control.. o con shift 
+'-------------------------------------
+' queda para 320 organizar borrado de notas o culumnas en ctrl-m ctrl-n
+' fin de secuencia etc dejar algo mas consizo y bien testeado,, 
 ' trabajos futuros mediatos:
-' 1) en CTrl-M al modificar una nota a valor mas chico o grande los off 1 quedan no se borran
+' 1) reveer borrar nota insertar nota...¿borrar dejando un hueco o achicando la secuencia?
 ' 2) ver si funcionan la seleccion de zonas o partes
-' de la secuencia para copiar insertar etc,,,,
+' de la secuencia para copiar insertar etc,,,,para trasponer ya lo hace bien
 ' 3) la repeticion de zonas en el play, insertar espacios fin de secuencia 
 '    Borrar zonas ,cambiar notas insertar notas, mover nota horizontalmente
 '    verticalmente ya lo hace con zona y trasponer...podriamos hacer el move
@@ -115,7 +104,11 @@ nroversion="TICKS 0.318 CTRL-N fix es como CTRL-M pero las notas son por nombre 
 '    mas elegante con mouse 
 ' ---------------------------------------------------------------------
 ' esta version no será compatible con las anteriores de rollmusic sin ticks se agrego por ahora
-' un campo nuevo al type dat el onoff ubyte, con 2 indicara on, y con 1 el off 
+' un campo nuevo al type dat el onoff ubyte, con 2 indicara on, y con 1 el off
+' ----------------
+' para saber si   ROLLGRAFICO ESTA LEVANTADO O NO, USAMOS Screenbuffer !!!!!
+' FUTURO APLICARLO CUANDO SEA NECESARIO 09-05-2025
+'------------------- 
 acercade = "RollMusic "+ nroVersion +" Jose M Galeano, Buenos Aires Argentina 2021-2025,. Ejecuta secuencias " + _
  "entrada por pasos usando algoritmos con ticks de tiempos. " + _
  "Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _

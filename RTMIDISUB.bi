@@ -2367,7 +2367,7 @@ For jpt = desdet To hastat
                Roll.trk(jpt,ind).pb   = Roll.trk(jpt,i1).pb
                Roll.trk(jpt,ind).inst = Roll.trk(jpt,i1).inst
                Roll.trk(jpt,ind).onoff = Roll.trk(jpt,i1).onoff
-
+' ACA BORRA CUALQUIER NOTA INCLUSO LAS MARCADAS  CON 13 ALT + CLICK PARA MOVER O TRASPONER LAS 13
                If Roll.trk(jpt,ind).nota > 0 And Roll.trk(jpt,ind).nota <= 13  Then
                   Roll.trk(jpt,i1).nota = 181
                   Roll.trk(jpt,i1).dur  = 0

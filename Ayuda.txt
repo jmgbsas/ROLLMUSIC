@@ -59,7 +59,9 @@
         c) Trabajar con sostenidos (por omision) o bemoles  en Menu de Control (no el grafico)      
         Nota: para los puntos c,d y e, se ejectua el armado de la escala la cual se muestra en el
              extremo superior del Grafico de RollMusic (subir para arriba hasta que aparesca la escala)
-        NOTA: En el modo lectura, cuando haya mas separacion entre notas en el gráfico, mas lento será el tiempo de respuesta al pulsar una tecla. Si se pasa a separacion de notas 1 la velocidad de respuesta será  mas rapida . 
+        NOTA: En el modo lectura, cuando haya mas separacion entre notas en el gráfico, mas lento será el tiempo 
+        de respuesta al pulsar una tecla. Si se pasa a separacion de notas 1 la velocidad de respuesta será  
+        mas rapida . 
 
     III) USO: (ventana Roll Grafica)
 
@@ -68,7 +70,31 @@
        otro si quiero volver al menu inicial Archivo,Edicion,Ver,Pista,Reproducir etc....
        dar un click  en la cinta celeste de arriba en su parte mas derecha entre la mitad y casi hasta el final
        antes de  los botones. rojo, amarillo y verde..y mas rapido pulsar ALT-M.
-       Recordar que Opciones se abre pulsando ALT y ubicando el mouse  encima del label . 
+       Recordar que Opciones se abre pulsando ALT y ubicando el mouse  encima del label.
+       En modo lectura para mover la secuencia se usan las flechas Der Izq, la cantidad de ticks de avance o retroceso.
+       Se hara por diferentes formas
+       pueden ser:  
+         - POR DURACION DE NOTA, pulsando una duracion de 1 a 9, (el 0 es un solo Tick) y los modificadores
+       para puntillo 1 + 1/2 (.), tresillo 2/3 (t), 1 + 1/4 (no existe en musica) (May Izq,LShift), 
+       doble puntillo 1 + 3/4 (May Der, RShift) y las ligaduras que permite unir dos duraciones cualesquiera (+)
+       Se sulele usar hasta Semifusa...
+       Redonda  Blanca  Negra  Corchea  SemiCorchea  Fusa Semifusa  Garrapatea SemiGarrapatea
+       384,     192,    96 ,   48,      24,          12,  6,        3,         2  Nota Simple
+       480,     240,    120,   60,      30,          15,  7,        4,         2  Nota + 1/4 de nota
+       576,     288,    144,   72,      36,          18,  9,        4,         2  Nota + 1/2 de Nota (puntillo)
+       672,     336,    168,   84,      42,          21,  10,       5,         3  Nota + 3/4 ed Nota (doble puntillo)
+       256,     128,    64 ,   32,      16,          8 ,  4 ,       2 ,        1  Nota que pertenece a un tresillo
+
+       Asi vemos por ejemplo La negra son 96 ticks, la negra con puntillo 144 ticks, el tresillo de negra 64
+       La redonda son 4 negras 384, etc
+         - Otra forma es ALT+ Flecha DErecha o Izq, SE MOVERA 1/100 de la cantidad de ticks que entre en la pantalla
+           NroCol/100
+         - Ctrl + Flecha Derecha o Izq, se movera en semicorcheas.
+         - Mayuscula Izquierda mas flecha derecha, va saltando hacia derecha por los comienzos  de las notas
+           onoff=2 en los parametros de arriba.
+         - Mayuscula Izquierda mas flecha izquierda, va saltando hacia izquierda por los  comienzos  de las notas
+           onoff=2 en los parametros de arriba.
+
        Hay 5 cuatro formas de abrir un Roll Grafico, 
        en "crear Pistas manuales" hay dos opciones fuera  de una canción:
        1) "Crea pista aislada con lo elegido y reemplaza la existente en la edicion", 
@@ -329,7 +355,7 @@
          por ahora.) Antes de ejecutar el archivo, se puede cambiar el Tempo, mas rápido o 
          lento y sin necesidad de grabar se verá reflejado en la ejecucion y el midi exportado.
 
-        -Version 0.4590 una pista a midi, una sola pista ya se puede pasar a midi con un utilitario
+        - En Revision Version 0.4590 una pista a midi, una sola pista ya se puede pasar a midi con un utilitario
          Rollmusic lo graba plano como txt en secuenciaPLAY.txt y una bat TXTTOMIDI.bat
          ejecuta el utilitario midicomp -c archivoentrada.txt archivo salida.mid
          el de entrada tiene nombre  fijo secuenciaPLAY.txt, la bat se puede 
@@ -646,8 +672,9 @@
       - En el Menu de control, El menu VER contiene el ajuste de separacion de notas
         en el gráfico, esto acorta o alarga la imagen no afecta a la reproduccion de la secuencia
         Para ello pulsar la tecla <j> y se habilita por omision una separacion de 1 entre notas,
-        para eliminar la separacion pulsar Q. Para ajustar otra separacion, en el MEnu VER como se mencionó, tiene un subitem Separacion de notas , al pulsar aparece un dialogo para entrar
-        un numero. de 1 en adelante... etc. 
+        para eliminar la separacion pulsar Q. Para ajustar otra separacion, en el Menu VER como se mencionó, 
+        tiene un subitem Separacion de notas , al pulsar aparece un dialogo para entrar un numero. de 1 en 
+        adelante... etc. 
 
     1.1)   El espaciado entre lineas se puede cambiar:
        Pulsar y mantener la tecla control. Girando la rueda del mouse
