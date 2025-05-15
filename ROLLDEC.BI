@@ -1164,9 +1164,11 @@ Common SHARED As Integer EstaBarriendoPenta
 Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
-Common Shared As Integer gp, midiplano,midionof
+Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, intervalo '  default 2 que es 1 separacion de notas
 deltax=1
-
+contid=0
+separaenuno=0
+intervalo=2 '  default 2 que es 1 separacion de notas
  MaxPos=2:ntk=0:CPlay=NO: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
 ''patchsal=Roll.trk(1,1).inst
@@ -1338,7 +1340,7 @@ Const As Integer finSimple   =     4
 Const As UByte   EJECUCION   =     1
 Const As UByte   CANCION     =     2
 
-Dim Shared  As Integer contid=0,separaenuno=0, intervalo=2 '  default 2 que es 1 separacion de notas
+
 
 Type mididat ' la duracion total de una nota se acumulara en duron en estado 2
  indiceX    As Integer

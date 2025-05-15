@@ -4437,7 +4437,8 @@ Select Case  menuOldStr
             Next ni
 
 default=Str(CompasX)
-nombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
+nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTILINE + ES_AUTOVSCROLL,0 )
+  
             compasX=CInt(nombreArchivo)
             If compasX > NroCompas Then
                compasX=Nrocompas
@@ -4483,7 +4484,7 @@ nombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
 ' debo generar un default para manual 60 y oro para ejecs 240
    If  EJECCARGADA = TRUE And ROLLCARGADO=FALSE Then ' cargar lo que hhay aen el archivo
        default2 = Str(tiempoPatronEjec)
-       ticksdefault = InputBox("Ajuste Tempo Ejec" ,"Entre un Tempo ",default2)
+       ticksdefault = InputBoxJmg("Ajuste Tempo Ejec" ,"Entre un Tempo ",default2, ES_MULTILINE + ES_AUTOVSCROLL,0  )
        tiempoPatronEjec= CInt(ticksdefault) '08-01-2022 de doble a int
    Else
        'If  ticksdefault<>"" Then
@@ -4491,7 +4492,7 @@ nombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
        'Else
         default=Str(tiempoPatron)  ' manual
        'EndIf 
-     ticksdefault = InputBox("Ajuste Tempo Manual" ,"Entre un Tempo ",default)
+     ticksdefault = InputBoxJmg("Ajuste Tempo Manual" ,"Entre un Tempo ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
       tiempoPatron= ValInt(ticksdefault) '08-01-2022 de doble a int
       pmTk(ntk).tiempopatron = tiempopatron
    EndIf
@@ -4503,14 +4504,14 @@ nombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
    default=Str("1.25")
     Print #1,"llego a TEMPO en entrar tecla",NombreArchivo 
 
-    NombreArchivo = InputBox("Ajuste Factor Tempo " ,"Entre un Factor ",default)
+    NombreArchivo = InputBoxJmg("Ajuste Factor Tempo " ,"Entre un Factor ",default, ES_MULTILINE + ES_AUTOVSCROLL,0  )
       
     Print #1,"nombreArchivo de click ok",nombreArchivo
     FactortiempoPatron= CDbl(nombreArchivo) '08-01-2022 de doble a int
     Print #1,">>>>>>>>Factor TIEMPO PATRON NUEVO>>>>>>>", FactortiempoPatron
  Case "[NROREP]"
   default=Str("2")
-  NombreArchivo = InputBox("Repeticiones " ,"Cantidad entera ",default)
+  NombreArchivo = InputBoxJmg("Repeticiones " ,"Cantidad entera ",default, ES_MULTILINE + ES_AUTOVSCROLL ,0 )
 ' en este momento inserto al repeticion 
 ' Lo maximo que uso son 8 posiciones para los acrodes de las octavas de 0 a 7 o 1 a 8,
 ' como tengo 13 posiciones verticales en la ultima octava me quedan 5 posiciones libres 
@@ -4559,7 +4560,7 @@ nombreArchivo=InputBox("IR A COMPAS" ,"Entre una posicion", default)
   Case "[SEPARA]"
 
    default=Str(intervalo-1)  
-   intervaloTxt = InputBox("Ajuste Separacion Notas en pantalla " ,"Entre un Intervalo ",default)
+   intervaloTxt = InputBoxJmg("Ajuste Separacion Notas en pantalla " ,"Entre un Intervalo ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
    intervalo= ValInt(intervaloTxt) +1 '19-03-2025 
 
 End Select

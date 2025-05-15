@@ -180,7 +180,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
            nroPista=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
 
            Print #1,"Case 1017  nroPista ";nroPista       
-           nomPista  = InputBox("Nombre de Pista " ,"Entre un nuevo Nombre ",nomPista)
+           nomPista  = InputBoxJmg("Nombre de Pista " ,"Entre un nuevo Nombre ",nomPista , ES_MULTILINE + ES_AUTOVSCROLL, 0 )
            nompista=Trim(nompista)  
 'aca falta que si nompista es "" borrar la pista y mover todo hacia arriba
 ' si la pista estaba en el medio,,,FALTA
@@ -486,13 +486,13 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
            Case 1064 ' <========= Nombre del PatrOn
          Dim As String patronPorOmision
          patronPorOmision=nombrePatron 
-         nombrePatron = InputBox("Nombre del Patron Nuevo" ,"Entre un Nombre ",patronPorOmision)
+         nombrePatron = InputBoxJmg("Nombre del Patron Nuevo" ,"Entre un Nombre ",patronPorOmision, ES_MULTILINE + ES_AUTOVSCROLL,0  )
          
 '-----------------------------------------------------------------------
            Case 1065 ' <========== numero de compases del patron
          Dim As String nroCompasesPatronOmision
          nroCompasesPatronOmision=Str(nroCompasesPatron) 
-         nroCompasesPatron = CInt(InputBox("Numero de Compases del Patron" ,"Entre un Numero ",nroCompasesPatronOmision))
+         nroCompasesPatron = CInt(InputBoxJmg("Numero de Compases del Patron" ,"Entre un Numero ",nroCompasesPatronOmision, ES_MULTILINE + ES_AUTOVSCROLL,0  ))
 
 '-----------------------------------------------------------------------
 

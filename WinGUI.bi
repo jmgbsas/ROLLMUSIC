@@ -5,7 +5,7 @@
 ' Created on January 28, 2016 (in German)
 ' Latest changes on January 7, 2018
 '===============================================================================
-
+'
 'I thank following FreeBASIC community members for their code contributions:
 ' - RNBW: Control_SetFont, ComboBox
 ' - Josep Roca: WaitEvent and WS_TABSTOP style
@@ -14,7 +14,7 @@
 'freebasic.net  
 '--------------------------------------------------------------------------
 ' JMG 13-03-2022 MODIFICADO PARA QUE NO CHOQUE CON LO QUE YA USA EL PROGRAMA
-' me esta gustando mas que la windows9.bi 
+' me gustando tanto como windows9.bi 
 '--------------------------------------------------------------------------
 #Include Once "windows.bi"
 

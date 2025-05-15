@@ -26,6 +26,7 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #include "fbthread.bi"
 #Include "crt.bi" ' QSORT
 
+Declare Function InputBoxJmg(ByRef Caption As USTRING, ByRef Message As USTRING, ByRef DefaultString As USTRING, ByVal flag As Integer, ByVal flag2 As Integer, hParentWin as Hwnd = 0) As USTRING
 Type plano 
   sumatiempo As Integer  'tiempo acumulado de los eventos midis
   canal      As UByte 
@@ -71,7 +72,8 @@ Common SHARED  As Integer EstaBarriendoPenta, instancia,MICROSEGUNDOS_POR_NEGRA
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As plano miditxt()
-Common Shared As Integer gp ,midiplano,midionof
+Common Shared As Integer gp ,midiplano,midionof,contid,separaenuno0, intervalo
+
 'common Shared message() As UByte 'cambiado a shred message output ' puede ser de hasta 1024 bytes
 'Dim message(1 To 21) As UByte 'agregado
 
@@ -365,7 +367,7 @@ End Sub
 '------------
 Sub EntrarNombreCancion(ByRef NombreCancion As string)
   NombreCancion=Date
-  NombreCancion = InputBox("InputBox",,NombreCancion)
+  NombreCancion = InputBoxJmg("InputBox","",NombreCancion, ES_MULTILINE + ES_AUTOVSCROLL, 0)
   If NombreCancion ="" Then
     SetWindowText(hwndC, "RollMusic Control")
   Else
@@ -409,7 +411,7 @@ End Sub
 Sub EntrarNombrePista(ByRef NombrePista As String,hwndC as Hwnd )
 
 
-NombrePista = InputBox("Nombre de Pista","",NombrePista,,,hwndC  )
+NombrePista = InputBoxJmg("Nombre de Pista","",NombrePista, ES_MULTILINE + ES_AUTOVSCROLL , 0,hwndC  )
 
 
 End Sub

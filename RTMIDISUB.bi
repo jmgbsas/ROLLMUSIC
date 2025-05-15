@@ -3398,7 +3398,8 @@ Sleep 1
   Next kply
   If   GrabarEjec =PatronDeEjecucionCompleto Then
          Dim rta As string
-         rta= inputBox("Guardo esta ejecucion", "SI O NO", "SI") 'JJJJJ SEGUIR ACA
+         rta= inputBoxJmg("Guardo esta ejecucion", "SI O NO", "SI", ES_MULTILINE + ES_AUTOVSCROLL,0  )
+'( USTRING, Message , DefaultString, flag ,  flag2, hParentWin as Hwnd = 0) 
          rta = UCase(Trim(rta))
          Select Case  rta 
               Case  "SI", "S"

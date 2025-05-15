@@ -41,34 +41,6 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 ' C:\IT64\AREAWORKAUX\MIDI-LIBRARY\midilib-master\midilib-master\freeBasic
 #include Once "rollutil.bi"
 
-'Sub getfiles(ByRef File As OpenFileName,flag As String, accion As String)
-'    Dim As ZString * 2048 SELFILE
-'    Dim As String MYFILTER=flag+Chr(0)
-'    With File
-'  .lStructSize = SizeOf(OpenFileName)
-'  .hwndOwner = NULL
-'  .hInstance = NULL
-'  .lpstrFilter = StrPtr(MYFILTER)
-'  .nFilterIndex = 0
-'  .lpstrFile = @SELFILE
-'  .nMaxFile = 2048
-'  .lpstrFileTitle = NULL
-'  .nMaxFileTitle = 0
-'  .lpstrInitialDir = @"nosuch:\"
-'  .lpstrTitle = @"Open"
-'  .Flags = 4096
-'  .nFileOffset = 0
-'  .nFileExtension = 0
-'  .lpstrDefExt = NULL
-'    End With
-'    If accion="open" Then
-'    GetOpenFileName(@File)
-'    EndIf
-'    If accion="save" Then
-'    GetSaveFileName(@File)
-'    EndIf
-'
-'End Sub
 ' FILE DIALOG adicionales
 'Sub  abrirSecuencia(nf As integer) 
 
@@ -152,6 +124,7 @@ Sub  porterrorsub(porterror As integer)
 
 
 End Sub
+
 On Error Goto errorhandler
 
 Dim Shared file As OpenFileName
@@ -785,3 +758,84 @@ For i1 = 0 To portsout -1
 Next i1  
 
 '---------------------
+' inputbox de window9 no usa el return para la salida o fin del box modifique el input box
+' y tengo mi InputBoxJmg
+
+Type InputBoxJmg_ 'basado en InputBox de windows9, para que detecte CR 13
+	As MSG msg
+	As HWND hWnd,hwnd1,hwnd2,hwnd3
+	#ifdef UNICODE
+		As WString*1024 mess
+	#else	
+		As String*1024 mess
+	#EndIf 
+	As BOOL flag
+	as DEVMODE dm(0)
+	As HFONT font,font1
+	As Integer size
+End Type
+
+Function InputBoxJmg(ByRef Caption As USTRING, ByRef Message As USTRING, ByRef DefaultString As USTRING, ByVal flag As Integer, ByVal flag2 As Integer, hParentWin as Hwnd = 0) As USTRING
+' Autor:JMG modificacion windows9 inputBox ...experimental si anda bien al vez de incropore
+' a windows9 y avisamos si quieren usarlo  
+	Dim InputBoxJmg_ As InputBoxJmg_
+	InputBoxJmg_.dm(0).dmSize = sizeof(DEVMODE)
+	EnumDisplaySettings( 0, ENUM_CURRENT_SETTINGS, @InputBoxJmg_.dm(0))
+	#ifdef UNICODE
+		InputBoxJmg_.hWnd  = CreateWindowEx(0, "#32770", *Caption, WS_TILED Or WS_VISIBLE, InputBox_.dm(0).dmPelsWidth/2-155, InputBox_.dm(0).dmPelsHeight/2-70, 310, 130, 0, 0, 0, 0 )
+		InputBoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", *DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 25, InputBox_.hwnd,0,0,0)
+		InputBoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, 106, 65, 80, 25, InputBox_.hwnd,0,0,0)
+		InputBoxJmg_.hWnd3 = CreateWindowEx(0, "Static", *Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, InputBox_.hwnd,0,0,0)  	
+	#else	
+		InputBoxJmg_.hWnd  = CreateWindowEx(0, "#32770", Caption, WS_TILED Or WS_VISIBLE, InputBoxJmg_.dm(0).dmPelsWidth/2-155, InputBoxJmg_.dm(0).dmPelsHeight/2-70, 310, 130, 0, 0, 0, 0 )
+		InputBoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 25, InputBoxJmg_.hwnd,0,0,0)
+		InputBoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, 106, 65, 80, 25, InputBoxJmg_.hwnd,0,0,0)
+		InputBoxJmg_.hWnd3 = CreateWindowEx(0, "Static", Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, InputBoxJmg_.hwnd,0,0,0)  	
+	#EndIf
+	
+	InputBoxJmg_.size  = -MulDiv(10, GetDeviceCaps(CreateDC("DISPLAY",0,0,0), LOGPIXELSY), 72)
+	InputBoxJmg_.font  = CreateFont(InputBoxJmg_.size,0,0,0,0,1,0,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH Or FF_DONTCARE,"Times New Roman")
+	SendMessage(InputBoxJmg_.hWnd3,WM_SETFONT,Cast(WPARAM,InputBoxJmg_.font),0)
+	InputBoxJmg_.font1 = CreateFont(InputBoxJmg_.size,0,0,0,0,0,0,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH Or FF_DONTCARE,"Times New Roman")
+	SendMessage(InputBoxJmg_.hWnd2,WM_SETFONT,Cast(WPARAM,InputBoxJmg_.font1),0)
+	SendMessage(InputBoxJmg_.hWnd1,WM_SETFONT,Cast(WPARAM,InputBoxJmg_.font1),0)
+	
+	While GetMessage(@InputBoxJmg_.msg, 0, 0, 0 )
+		TranslateMessage(@InputBoxJmg_.msg )
+		DispatchMessage(@InputBoxJmg_.msg )
+' el windows pone el 13 CR al principio de la cadena sin que se lo pidan,por eso esta en posicion 1
+' y al final una pelotudes en fin, claro para multiline va pero no para una linea pero
+' solo asi funciona el CR 13 usando multiline, hay que dar dos return
+  SetFocus (InputBoxJmg_.hWnd1)
+		Select Case InputBoxJmg_.msg.hwnd
+			Case InputBoxJmg_.hWnd1 ' CAJA ENTRADA CLIENTE
+				Select Case InputBoxJmg_.msg.message
+					Case WM_KEYDOWN
+                   SendMessage(InputBoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@InputBoxJmg_.mess))
+				       Dim as USTRING sRet = InputBoxJmg_.mess
+ 				       Function = sRet
+                   Dim As String * 1 F1,F2
+                   Dim As Integer LL=Len(sRET)
+                   F1=Mid (sRET,1)
+                   F2=Mid (sRET,LL-1)
+
+                   If Asc(F1) =13 Or Asc(F2) =13 Then
+ 		   		       DestroyWindow(InputBoxJmg_.hWnd)
+					       InputBoxJmg_.flag=0
+					       Exit Function
+                   EndIf
+           End Select
+        Case InputBoxJmg_.hWnd2 ' boton ok
+          Select Case InputBoxJmg_.msg.message
+              Case WM_LBUTTONDOWN
+  						SendMessage(InputBoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@InputBoxJmg_.mess))
+						dim as USTRING sRet = InputBoxJmg_.mess
+						Function = sRet
+						DestroyWindow(InputBoxJmg_.hWnd)'
+						InputBoxJmg_.flag=0
+						Exit Function
+          End Select
+      End Select 
+	Wend
+End Function
+

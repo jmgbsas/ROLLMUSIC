@@ -81,7 +81,7 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.319 Usamos Flecha (izq o Der) + (Mayuscula izquierda) para saltar de ON en ON o sea onof=2 "
+'nroversion="TICKS 0.320 experimental InputBoxJmg basado en windows9 para reaccionar el Enter no solo click "
 ' implementado con flechas izq o der + left shift mayuscula izquierda,,!
 ' saltamos hasta el proximo onoff =2 tanto a derecha como izquierda
 ' eso seria mas logico no necesitamos poner las duraicones en los off=1

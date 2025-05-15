@@ -178,7 +178,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 ' para que el usuario se ubique en esos datos en el vector
    n=0:indf=0:indfa=0:indfb=0
   
-' ||||||||=============== FOR NUCLEO ========================>>>>>>>>>>>>>>>>
+' ||||||||=============== FOR TICKS ========================>>>>>>>>>>>>>>>>
   For n = posishow To posishow + NroCol 
      If posishow + NroCol > CantTicks Then
         Exit For
@@ -363,10 +363,15 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
      '''  cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono+1 ) * inc_Penta - 4) 
     ''EndIf
      If indf=181 And resumen=1 Then
-        separaenuno=separaenuno +1
-        If separaenuno=intervalo Then
-           separaenuno=0 
-           Continue For
+        If intervalo > 0 Then
+           separaenuno=separaenuno +1
+           If separaenuno=intervalo Then ' ESTO ACHICA CON INTERVALO 4 O 5 YA SE APILA TODO AL PRINCIPIO
+              separaenuno=0 
+           Else
+              Continue For ' ESTO ACHICA 
+           EndIf
+        Else
+           
         EndIf
      Else
        If indf = 181 Then

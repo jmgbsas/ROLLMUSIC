@@ -15,10 +15,10 @@
        En windows 10 y 11 no tuve problemas. 
 
        SALIR DEL PROGRAMA O DEL GRAFICO: terminaciones posibles, 
-       de la ventana grafica se sale con la X derecha arriba de lgrafico, detiene el play si esta andando
+       de la ventana grafica se sale con la X derecha arriba del grafico, detiene el play si esta andando
        y cierra el grafico no termina el programa,, si se desea terminar el  programa se usa tecla escape 
        si esta tocando pide pulsar de nuevo escape. Y de la ventana de control se sale con su X o salir 
-       del menu de archivo; tambien si esta tocanco detiene el play y sale,,
+       del menu de archivo; tambien si esta tocando detiene el play y sale,,
        puede pasar que al cerrar y abrir el grafico ya no funcione el ESC para terminar el programa pero
        se puede usar las terminaciones de la ventana de control...(mas pruebas ? posiblemente)
 
@@ -62,6 +62,10 @@
         NOTA: En el modo lectura, cuando haya mas separacion entre notas en el gráfico, mas lento será el tiempo 
         de respuesta al pulsar una tecla. Si se pasa a separacion de notas 1 la velocidad de respuesta será  
         mas rapida . 
+        En las ventanas de entrada por teclado de algun parametro po parte del usuario se agrego
+        poder terminar el diálogo con tecla Intro (denominadas tambien Return o Enter), no  solo
+        click en boton ok. Hay que dar dos pulsos de Intro el 1ero guarda y borra el dato de la vista 
+        y el segundo termina el dialogo.(en prueba ...)
 
     III) USO: (ventana Roll Grafica)
 
