@@ -96,6 +96,7 @@ Const BTN_ROLL_PATCH    = 25
 Const BTN_ROLL_CANAL    = 26
 Const IMAGE_VEL= 30
 Const IMAGE_FIG = 31
+Const BARRA_DE_ESTADO = 33
 Const HABILITAR = TRUE
 Const DESHABILITAR = FALSE 
 Const SI=1
@@ -938,7 +939,7 @@ ibarre=desde
 Common Shared As FLOAT font
 Dim Shared As float  deltaipf=0, lockip=0 
 Dim Shared q As String * 1
-Dim Shared As UByte  ii,indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8
+Dim Shared As UByte  ii,indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8, s9
 Dim Shared As UByte numdurasmidi( 1 To 24)
 ''Dim Shared escala As float = 1.0
 Dim Shared translado As Integer = 1
@@ -1156,15 +1157,16 @@ Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1
 Common Shared As Any Ptr thread4, threadGrabamidi
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
-Common Shared As integer ubirtk, ubiroll,trasponer,canalx,saltos
+Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo,canalDeGrabacion
 Common SHARED As Integer EstaBarriendoPenta
-Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA
+Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA, VerMenu
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, intervalo '  default 2 que es 1 separacion de notas
+VerMenu=1
 deltax=1
 contid=0
 separaenuno=0

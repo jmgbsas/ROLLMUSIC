@@ -64,11 +64,11 @@ common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1
 Common Shared As Any Ptr thread4
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares
 Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
-Common Shared As integer ubirtk, ubiroll,trasponer,canalx,saltos
+Common Shared As integer ubirtk, ubiroll,trasponer,canalx
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Common Shared  portsal As UByte, patchsal As ubyte
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp, npi,calltoca,npo,canalDeGrabacion
-Common SHARED  As Integer EstaBarriendoPenta, instancia,MICROSEGUNDOS_POR_NEGRA
+Common SHARED  As Integer EstaBarriendoPenta, instancia,MICROSEGUNDOS_POR_NEGRA,VerMenu
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As plano miditxt()

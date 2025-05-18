@@ -888,6 +888,7 @@ Dim resultado As Long
      ScreenControl GET_WINDOW_POS, x0, y0
      ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
      hwnd = Cast(hwnd,IhWnd)
+     
   ' datos recibidos   
 '  print #1,"datos recibidos en rooloop nombre ", nombre
 '  print #1,"datos recibidos en rooloop desde,hasta ", desde, hasta
@@ -1060,22 +1061,12 @@ Else
           cairo_set_source_rgba c, 0, 0, 0, 1
           cairo_paint(c)
           cairo_set_line_width(c, 1)
-          If s1 = 1 Then
-           s1= 0
-          EndIf
-          If s2 = 1 Then
-           s2=0
-          EndIf
-          If s6 = 1 Then
-           s6=0
-          EndIf
-          If s7 = 1 Then
-           s7=0
-          EndIf
-          If s8 = 1 Then
-           s8=0
-          EndIf
-
+          If s1 = 1 Then   s1=0    EndIf
+          If s2 = 1 Then   s2=0    EndIf
+          If s6 = 1 Then   s6=0    EndIf
+          If s7 = 1 Then   s7=0    EndIf
+          If s8 = 1 Then   s8=0    EndIf
+          If s9 = 1 Then   s9=0    EndIf
 
           inc_Penta = Int((ALTO -1) /40) - deltaip
 ' ----------------------------------------------------------------------------
@@ -1125,17 +1116,15 @@ Else
   
       EndIf
         If (terminar=NO_TERMINAR_BARRE_PANTALLA Or Parar_De_Dibujar=NO)  Then 
-          ' ScreenSync
            threadPenta = ThreadCall barrePenta (c, Roll )
            ThreadWait threadPenta
             pubi=0
-           menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
-           cairo_stroke(c)  
-           botones(hWnd, cm, ANCHO,ALTO) ' este despues sinocrash
-       
-           cairo_stroke(cm) ' cm despues de c sino crash
-      '' ScreenSync iria antes de dibujar segun el help
-
+           If VerMenu=1 Then
+             menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
+             cairo_stroke(c)
+             botones(hWnd, cm, ANCHO,ALTO) ' este despues sinocrash
+             cairo_stroke(cm) ' cm despues de c sino crash
+           EndIf
 
         EndIf
     
@@ -1250,11 +1239,12 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar co
  menuMouse = 0
  nota=0
  DUR=0
+ trasponer=0
  curpos= Int((mousex - gap1)/anchofig)
  
 EndIf
 
-If MultiKey(SC_ALT) And MultiKey(SC_M) Then ' menu Roll inicial
+If MultiKey(SC_ALT) And MultiKey(SC_M)  Then ' menu Roll inicial
   menunew=0
   menunro=0
   COMEDIT=FALSE
@@ -1264,12 +1254,26 @@ If MultiKey(SC_ALT) And MultiKey(SC_M) Then ' menu Roll inicial
   menuMouse = 0
   nota=0
   DUR=0
-  
+  trasponer=0
+  VerMenu=SI
+EndIf
+
+If MultiKey(SC_LSHIFT) And MultiKey(SC_M)  Then ' ver  menu durante play por eje para cambiar patch
+  If s9=0 Then
+     s9=1
+     If VerMenu=SI Then
+        VerMenu=NO
+     Else
+        VerMenu=SI
+     EndIf
+     Sleep 100 
+  EndIf
 EndIf
 
 If MultiKey(SC_ALT) And MultiKey(SC_E) Then ' edicion Roll
   menunew=12
   menunro=12
+ trasponer=0
 EndIf
 
 
@@ -1280,6 +1284,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
  agregarNota= 1
  menuMouse = 0
  DUR=0
+ trasponer=0
  curpos= Int((mousex - gap1)/anchofig)
 
 EndIf
@@ -1291,15 +1296,24 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE 
  cursorHori = 0
  agregarNota = 0
  menuMouse = 0
+ trasponer=0
  '' notadur=0
 EndIf
+If MultiKey(SC_LSHIFT) And MultiKey(SC_V)   Then ' ver parametros roll durente play
+'ver parametros durante play
+  If play=SI Or playb=SI Or Cplay=SI Then
+     VerMenu=SI
+     menuNro= PARAMETROS_ROLL
+     menuNew = menuNro ' PARA EVITAR QUE CAMBIE DE MENU
+  EndIf 
 
-If MultiKey (sc_P) Then  ''''And (play=1 Or playb=1 Or Cplay=1 )Then
+EndIf
+If MultiKey (SC_P) Then  ''''And (play=1 Or playb=1 Or Cplay=1 )Then
   PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
   PARAR_PLAY_EJEC=SI
   playloop=NO:playloop2=NO
   s5=2 ' el loop necesita menos cpu se libera
-  '''terminar=1
+  trasponer=0
   If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then 
   Else
   SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
@@ -1490,19 +1504,9 @@ EndIf
 
 
 If MultiKey(SC_ALT) And MultiKey(SC_F12) Then
-  saltos=saltos + 1
-  'NroCol=NroCol*1.1
-  If saltos >=96 Then
-     saltos  =96
-  EndIf
 
 EndIf
 If MultiKey(SC_ALT) And MultiKey(SC_F11) Then
-  saltos=saltos -1
-  'NroCol=NroCol*0.9 
-  If saltos < 0 Then
-     saltos = 0
-  EndIf
 
 EndIf
 
@@ -1837,8 +1841,8 @@ If MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
  '  print #1, "Grabando a disco Roll F11 "
    Dim As String nombreg
    If nombre = "" Then
-nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0) +"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
-Sleep 100
+      nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0) +"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
+      Sleep 100
       If nombreg = "" Then
          Exit Do
       Else
@@ -2064,7 +2068,7 @@ EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_F4)  Then
 ''ACA LOGRAMOS CERRAR LA PANTALLA DE ROLL GRAFICO!!!
-'' SIN TERMINAR EL PROGRAMA GFX_NULL ES LO QUE HACE POSIBLE ESTO
+'' SIN TERMINAR EL PROGRAMA  LO QUE HACE POSIBLE ESTO, es screen 0 en realidad
 '' NO DESTRUIR NADA Y SEPUEDE VOLVER A USAR
 '' CERRAMOS EL GRAFICO, PERO EL GRAFICO ES UNICO,,,,
 
@@ -2618,8 +2622,9 @@ If COMEDIT = TRUE Then
   EndIf
 
   If MultiKey(SC_CONTROL) And MultiKey(SC_DELETE) Then
-  ' BORRAR COLUMNA UTOMATICO LUEGO DE BORRAR NOTAS CON 0 Y X
+  ' BORRAR COLUMNA AUTOMATICO LUEGO DE BORRAR NOTAS CON 0 Y X
   ' no anda bien 12-12-2021 se cambia a marcar por zona columna o columnas
+  ' lo marcad ocon espacio y x se marca con 190,190
      borrarColumnasMarcadas()
   EndIf
 
@@ -4190,7 +4195,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
  EndIf
 ' 12-07-2021 mousex > 70  
  If  s5= 0 And mouseX > 450 And mousex < (ANCHO -70 - mxold) And  usarmarco=0 and mousey < 50 Then
-     Sleep 20 '12-06-2022 15-03-2025 decia 20
+     Sleep 5 '12-06-2022 15-03-2025 decia 20
     If  play=NO And playb=NO Then ' durante un play funciona mal esto => se bloquea su uso por ahora
      x1=mouseX: y1=mouseY
     EndIf
@@ -4200,7 +4205,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
  ' =========> MOVER VENTANA DRAGAR LA CINTA SUPERIOR con el mouse
  ' And menuNro= 1  '''348  (2* ANCHO/3)
  If MouseButtons And 1 And S5=1 And mouseX > 450  And mousex < (ANCHO -70 - mxold) And  usarmarco = 0 AND mousey < 50 Then
-     Sleep 20  '12-06-2022 15-03-2025 decia 20
+     Sleep 5  '12-06-2022 15-03-2025 decia 20
     If  play=NO And playb=NO Then ' durante un play funciona mal esto => se bloquea su uso por ahora   
        x2=mouseX
        y2=mouseY
@@ -4227,7 +4232,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
  If (mousex>=(ANCHO-40-mxold)) And (mousey <= 16)  Then 'LA X DE LA VENTANA GRAFICA
   If  MouseButtons And 1  Then
 ''ACA LOGRAMOS CERRAR LA PANTALLA DE ROLL GRAFICO!!!
-'' SIN ERMINAR EL PROGRAMA GFX_NULL ES LO QUE HACE POSIBLE ESTO
+'' SIN ERMINAR EL PROGRAMA screen 0 ES LO QUE HACE POSIBLE ESTO
 '' NO DESTRUIR NADA Y SEPUEDE VOLVER A USAR
 '' CERRAMOS EL GRAFICO, PERO EL GRAFICO ES UNICO,,,,
 
@@ -5636,7 +5641,7 @@ EndIf
 
 If fueradefoco=SI  And (play = NO) and (playb=NO) And (Cplay=NO) Then
 
-   Sleep 1 ' ESTO HACE QUE LA CINTA CORRA SUAVE
+   Sleep 5 ' ESTO HACE QUE LA CINTA CORRA SUAVE
 EndIf
 While InKey <> "": Wend
 'podria reemplazarse por REset(0) ???

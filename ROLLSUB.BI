@@ -987,13 +987,30 @@ trasponer=0
    notacur=notaOld 
   EndIf
 
-
+  BuscarNota (borrar, curpos ,notacur )
 
 '  Print #1,"n + curpos, 12 - notacur + (*po-1) * 13 ", n+curpos, 12 - notacur + (*po-1) * 13
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).dur = 0
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).nota = 181
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).onoff = 0
   borrar = 0
+'------------------------
+     Print #1," DESPUES DE BUSCONOTA curpos notacur "; curpos, notacur
+     borrar=0
+     cairo_move_to  (c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
+     cairo_rectangle(c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  ,wc*6 ,inc_Penta) '13-07-2021 inc_penta/2 por inc_penta
+     cairo_move_to  (c, gap1 + (curpos)*anchofig , Penta_y  )
+     cairo_line_to  (c, gap1 + (curpos)*anchofig , Penta_y + (notacur-1) * inc_Penta  +inc_Penta )
+     RollDur=Roll.trk(n + curpos,12 - notacur + (*po-1) * 13 ).dur
+     RollNota=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota
+'' para ver el estado del onoff en la posicion elegida notacur
+     onoff=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff
+
+     notaold=notacur  ' hará falta ??? puede traer problemas,,,en cambiadur 
+
+     cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
+     cairo_rectangle(c,gap1 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , wc,inc_Penta)
+'-----------------------
   Sleep 100
  ''' calcCompas(n) ''mayorDurEnUnaPosicion (n)
  EndIf
@@ -1060,9 +1077,9 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
   ' ------------------------------------
   ' nueva verion con puntillo o silencio
   ' ------------------------------------
-  'si en una columna todas las notas son 0,181 y sihay un 190 en dur
+  'si en una columna todas las notas son 0,181 y si hay un 190 en dur
   ' y nota esa columna se elimina,,,,,implementar 12-05-2021 implementado se uso 190
-  ' la forma facil de borrar seria grabar a disco cuando se estï¿½
+  ' la forma facil de borrar seria grabar a disco cuando se esta
   ' en posicion con 190 saltar esa posicion y restar 1 a la posicion final.
   ' se ahce ya de ambasformas usando delete tambiense borra online
   If notaold > 0 Then 
@@ -4808,7 +4825,7 @@ Dim  As Integer npl
           haynota=1 ' atrapa al menso 1 caso
        EndIf
        
-       If i1= NA And haynota=1 Then ' sihay unasola notaen la columna no borro
+       If i1= NA And haynota=1 Then ' si hay una sola nota en la columna no borro
          res=0 ' no borrar
        Else
           If borrocol = 1 Then
@@ -5973,12 +5990,14 @@ Exit Sub
 End Sub
 '
 Sub borrarColumnasMarcadas()
-' toda columna en una posicion que tengasolo 190 en su nota y durcion
-' sera eliminada y todaslas demas desplazadas a izquierda,.
+' toda columna en una posicion que tenga solo 190 en su nota y duracion
+' sera eliminada y todas las demas desplazadas a izquierda,.
 ' es trabajoso hay que pulsar 0 y dar x en tola la columna 
 ' anda ok , igualmente implementare por zona 
 ' pregunto si las zonas estan marcadas uso ese emtodo y sino uso el metodo viejo
+
 '<====== METODO NUEVO POR ZONAS ===> sI ESTAN MARCADAS Y PULSO CTRL-DELETE SE BORRA TODA ESA
+
 ' ZONA O COLUMNA SI SE SUPERPONEN LAS MARCAS DE ZONA 2 CLICKS SOBRE LA MISMA COLUMNA
 ' O UNA SOLO CLIK MEJOR,,,,
 ' pasoZona1 pasoZona2 

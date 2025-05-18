@@ -1,5 +1,35 @@
 
 On Error Goto errorhandler
+Sub CTRL1003 ()
+   Dim As String nombreg
+   If nombre = "" Then
+      nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0) +"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
+      Sleep 100
+      If nombreg = "" Then
+         Exit SUB
+      Else
+         nombre=nombreg   
+      EndIf
+   EndIf
+   GrabarArchivo(0)
+
+End Sub
+
+Sub CTRL10031 ()
+   Dim As String nombreg
+   If nombre = "" Then
+      nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0) +"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
+      Sleep 100
+      If nombreg = "" Then
+         Exit SUB
+      Else
+         nombre=nombreg   
+      EndIf
+   EndIf
+   GrabarArchivo(0)
+
+End Sub
+
 Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
 
                If EventNumber = 10061 Then

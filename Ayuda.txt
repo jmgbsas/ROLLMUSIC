@@ -21,6 +21,10 @@
        del menu de archivo; tambien si esta tocando detiene el play y sale,,
        puede pasar que al cerrar y abrir el grafico ya no funcione el ESC para terminar el programa pero
        se puede usar las terminaciones de la ventana de control...(mas pruebas ? posiblemente)
+       Durante el play o ejecucion de una secuencia se apaga el menu para mas espacio visual y
+       menor trabajo de dibujo o sea cpu. Si quiero ver el menu pulsar Mayuscula izquierda + M
+       al pulsar  de nuevo deja de verse el menu. Con ALT+M se vera siempre el menu.
+       Si quiero ver los parametros de Roll Shift+V
 
     II) Opciones Configuracion
         a) PUERTOS MIDI A USAR. en el menu de Roll Music Grafico
@@ -1045,21 +1049,28 @@
          nuevo. Se puede seguir a otras posiciones, dando ENTER seguirá copiando.
    
 
-    2.5) Borrar 1 Nota,borrar 1 columna o un rango de columnas: JMGJMG revisar todo 
-         hay inconsistencias al borrar una nota en ctrl-m con 9 y x si muevo el cursor
-         borra las siguientes. y si entro una nota al mover el cursor pone mas notas iguales ojo!
-         serviria para hacer un acorde pero para nota no !!!   
+    2.5) Borrar 1 Nota,borrar 1 columna o un rango de columnas: 
+          Ubicar el cursor con ctrl-m y flechas acercarse al comienzo de la nota, no es
+          necesario estar justo sobre la nota, que se verifica si onoff=2 arriba en la cinta azul
+          El programa busca automaticamente el comienzo de una nota, pulsar X y se borrará.
+          Si me muevo a otra nota y pulso X de nuevo borrara esa nota tambien hasta que se pulse
+          otro numero entre 0 a 9, el 9 es para borrar nota..
+          ( y si entro una nota al mover el cursor pone mas notas iguales ojo!
+         serviria para hacer un acorde pero para nota no !!!  ver ) 
     2.5.1) BORRAR NOTA EN CTRL-N UBICANDO EL CURSOR SOBRE LA NOTA
            Y LUEGO PULSAR ESPACIO.PARA CADA NOTA SE DEBE HACER LO MISMO
            UBICAR CURSOR PULSAR ESPACIO.
     2.5.2) Para Borrar una nota pero dejar su espacio usar-> Pulsar 9 luego X en cada nota a limpiar
-           Se debe repetir el pulso de 9 para cada nota, por ahora no repite si se pulsa X solamente
-           introduce un codigo para borrar columna que por ahora no se usa. (siguietne Nota)
-
+           No se debe repetir el pulso de 9 para cada nota, por ahora repite si se pulsa X solamente.
+           El metodo de borrado con espacio y X marca con 190,190 a nota y duracicon y esos lugares
+           de nota o columna se eliminan al grabar el archivo..o sea los huecos se eliminan,
+           para borrar y dejar un espacio se usa 9 mas X...el espacio no lo usaremos por ahora
+           o haremos que contraiga la secuencia,antes de grabar.
            Nota: Revision No usar este modo de borrado -> (BORRAR EN CTRL-M O CURSOR UBICAR EL CURSOR 
            SOBRE LA NOTA PULSAR ESPACIO  Y LUEGO X PARA MODIFICAR..SE PUEDE SEGUIR 
           BORRARNDO OTRAS NOTAS  UBICANDO EL CURSOR Y SOLO CON X REPITE LA ULTIMA NOTA 
-          EN ESTE CASO ESPACIO.)
+          EN ESTE CASO ESPACIO.)  A VECES AL DAR CTRL-P SE DISPARA ALT-T Y HACE UNA TRASPOSICION JA
+          VEREMOS MUY RARO
 
     2.5.3) Revision No usar -> (Borrado de columna o posicion, en Modo Cursor modificar cada nota en cualquier
        columna pulsando una vez 0 y luego X en los 12 semitonos para modificar toda la octava  

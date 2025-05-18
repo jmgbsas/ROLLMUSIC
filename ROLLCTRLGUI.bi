@@ -12,8 +12,8 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
 ' cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS cancion
 'cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_E,1016) 'CTRL+E ABRIR PISTAS ejecucion
 '' ------TIPS AYUDA EN LA BARRA DE ESTADO
-   StatusBarGadget(33,"Tips de ayuda" )
-
+   StatusBarGadget(BARRA_DE_ESTADO,"Tips de ayuda" )
+ 
   'CenterWindow(hwndC)
 ''UpdateInfoXserver()
 Var bitmap = Load_image("fondo.bmp")

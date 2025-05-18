@@ -1383,7 +1383,7 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 ' en manual las velocidades son una sola semi fuerte, hasta que compas pueda 
 
 On Local Error Goto fail
-
+VerMenu=0
 If MIDIFILEONOFF = HABILITAR  Then 
    MICROSEGUNDOS_POR_NEGRA = 60000000/tiempoPatron ' 60 MILL /BPM
    '' SE AJUSTO A 2000 PARA ESCUCHAR LO MISMO A 60 DSRG POR NEGRA... 500 
@@ -1742,7 +1742,7 @@ If MIDIFILEONOFF = HABILITAR Then
    cerrar (20)
 
 EndIf
-
+VerMenu=1
 Sleep 100,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion
 
 

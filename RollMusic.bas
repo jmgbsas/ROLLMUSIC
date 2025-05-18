@@ -81,19 +81,18 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.320 experimental InputBoxJmg basado en windows9 para reaccionar el Enter no solo click "
-' implementado con flechas izq o der + left shift mayuscula izquierda,,!
-' saltamos hasta el proximo onoff =2 tanto a derecha como izquierda
-' eso seria mas logico no necesitamos poner las duraicones en los off=1
-' entonces solo necesitramos un do loop en cada pulso de tecla izq derecha que pare
-' en el proximo onoff=2, y para usar esa opcion que el usuario lo pueda elegir
-' saltar de nota en nota o no hacerlo! eso lo podriamos colocar en un boton en la ventana
-' de control.. o con shift 
+nroversion="TICKS 0.321 ELIMINAR MENU DE ROLL DURANTE PLAY, con opcion de volver a mostralo "
+' 321 correcion dragado de ventana Roll desde cinta, saltaba. Se bajaron los sleep a 5
 '-------------------------------------
-' queda para 320 organizar borrado de notas o culumnas en ctrl-m ctrl-n
+' queda para 322 organizar borrado de notas o culumnas en ctrl-m ctrl-n
 ' fin de secuencia etc dejar algo mas consizo y bien testeado,, 
 ' trabajos futuros mediatos:
 ' 1) reveer borrar nota insertar nota...¿borrar dejando un hueco o achicando la secuencia?
+'   modo CURSOR: borrar con 9 y X lo hace bien ya lo corregi..agregue buscar la
+'   nota cuando este cerca para facilitar el posicionamiento.Si me
+' muevo a otro inico de nota y le doy x borra tambien conservando el 9 creo que deberia
+' poner nota=0 para sacar el 9 ...¿? conviene o no? lo dejamos asi por ahora. 
+'  Borrado de columna con 9 y X? no hay creo , esoses de zonas   
 ' 2) ver si funcionan la seleccion de zonas o partes
 ' de la secuencia para copiar insertar etc,,,,para trasponer ya lo hace bien
 ' 3) la repeticion de zonas en el play, insertar espacios fin de secuencia 

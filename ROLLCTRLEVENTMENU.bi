@@ -10,10 +10,10 @@ On Error Goto errorhandler
              ' ok anda bien, una vez cagados se permuta en memoria con TAB
              ' o haciedno click en la lista
             '' UseGadgetList(hwndC)
-              StatusBarGadget(33,"1.0 ROLL GRAFICO NO DEBE ESTAR LEVANTADO, SI LO ESTÁ CIERRE PRIMERO EL GRAFICO BUSQUE LA CARPETA Y ACEPTE" )
+              StatusBarGadget(BARRA_DE_ESTADO,"1.0 ROLL GRAFICO NO DEBE ESTAR LEVANTADO, SI LO ESTÁ CIERRE PRIMERO EL GRAFICO BUSQUE LA CARPETA Y ACEPTE" )
 
               CTRL100610061 (hMessages , Tope )
-              StatusBarGadget(33," " )             
+              StatusBarGadget(BARRA_DE_ESTADO," " )             
              If abrirRoll=NO_CARGAR And NombreCancion > ""  Then
                 abrirRoll=CARGAR
                 cargaCancion=CARGAR_NO_PUEDE_DIBUJAR

@@ -1,3 +1,10 @@
+- 18-05-2025 Eliminamos dibujar el menu durante el play , arrastrar la ventana o cerrarla sigue
+  funcionando no depende del menu.
+  Durante el play o ejecucion de una secuencia se apaga el menu para mas espacio visual y
+  menor trabajo de dibujo o sea cpu. Si quiero ver el menu pulsar Mayuscula izquierda + M
+  al pulsar  de nuevo deja de verse el menu. Con ALT+M se vera siempre el menu.
+ Si quiero ver los parametros de Roll Shift+V
+
 - 14-05-2025 0.320 InputBoxJmg basado en windows9 acepta tecla Return o Intro o Enter para cerrar
   el dialogo ademas de click ok...
 - 11-05-2025 0.319 saltamos de nota en nota con (Mayuscula izquierda) + flechas der o izquierda

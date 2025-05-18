@@ -548,7 +548,7 @@ posmouseOld = 0:posmouse = 0
 COMEDIT = False:resize = False
 po = @octaroll
 *po = hasta -1 ' test 09-09-2021 
-s1=0:s2=0:s3=0:s4=0:s5=2:s6=0:s7=0:s8=0
+s1=0:s2=0:s3=0:s4=0:s5=2:s6=0:s7=0:s8=0:s9=0
 If font=0 Then 
  font=18
 EndIf
@@ -812,18 +812,20 @@ Function InputBoxJmg(ByRef Caption As USTRING, ByRef Message As USTRING, ByRef D
 				Select Case InputBoxJmg_.msg.message
 					Case WM_KEYDOWN
                    SendMessage(InputBoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@InputBoxJmg_.mess))
+                
 				       Dim as USTRING sRet = InputBoxJmg_.mess
  				       Function = sRet
+                
                    Dim As String * 1 F1,F2
                    Dim As Integer LL=Len(sRET)
-                   F1=Mid (sRET,1)
-                   F2=Mid (sRET,LL-1)
+                   F1=Mid (sRET,1) 'el primero
+                   F2=Mid (sRET,LL-1) ' el ultimo ascii
 
                    If Asc(F1) =13 Or Asc(F2) =13 Then
  		   		       DestroyWindow(InputBoxJmg_.hWnd)
 					       InputBoxJmg_.flag=0
 					       Exit Function
-                   EndIf
+                  EndIf
            End Select
         Case InputBoxJmg_.hWnd2 ' boton ok
           Select Case InputBoxJmg_.msg.message
