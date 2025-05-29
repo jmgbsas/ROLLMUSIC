@@ -1414,7 +1414,8 @@ If MIDIFILEONOFF = HABILITAR  Then
    Print #midiplano, "0 PrCh  ch="+ Trim(Str(numc))+ " "; "p=";Roll.trk(1,NA).inst
      
 EndIf
- 
+ '''''View Print 1 To 4
+
 ' tiempo es cuantas negras en un minuto tiempoPAtron
 ' PLAY mas avanzado en un mismo acorde si son de distinta duracion
 ' sus notas se toca cada una con su propia duracion,el corde no termina
@@ -1523,7 +1524,11 @@ Print #1,"VEO marca ejec enb onoff Roll.trk(1,NA).onoff   "; Roll.trk(1,NA).onof
 ' ======================= FOR JPLY PLAYALL =======================
 Print #1,"cominzo final PARAR_PLAY_MANUAL "; comienzo , final, PARAR_PLAY_MANUAL
 
+
 For jply=comienzo To final
+''Print "*******************************************************************"
+''Print "AL TERMINAR EL PLAY APARECE EL MENU. CON SHIFT-M APARECERA DE NUEVO"
+''Print "******************************************************************"
 
   kNroCol= Int(jply/NroCol)
   If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < MaxPos)Then

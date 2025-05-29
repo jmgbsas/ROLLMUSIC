@@ -1,3 +1,6 @@
+- 29-05-2025 0.322 REVISION DE COLORES DE EDICION Y ALGUNOS COMANDOS DE EDICION 2) 2.1.1 2.1.2
+  COLORES DE LINEA COMPLETOS REPOSICION.
+  ADAPTACION A TICKS SE AAGREGA ONOFF EN ALGUNOS COMANDOS faltan mas comandos
 - 18-05-2025 Eliminamos dibujar el menu durante el play , arrastrar la ventana o cerrarla sigue
   funcionando no depende del menu.
   Durante el play o ejecucion de una secuencia se apaga el menu para mas espacio visual y

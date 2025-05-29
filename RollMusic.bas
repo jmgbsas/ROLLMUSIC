@@ -81,18 +81,31 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.321 ELIMINAR MENU DE ROLL DURANTE PLAY, con opcion de volver a mostralo "
-' 321 correcion dragado de ventana Roll desde cinta, saltaba. Se bajaron los sleep a 5
+nroversion="TICKS 0.322 REVISION DE COLORES Y ALGUNOS COMANDOS DE EDICION "
+' se corrigio ctrl-m y ctrln y con colores distintos rojo y azul, verde ingreso notas normal
+' 322 correcion dragado de ventana Roll desde cinta, saltaba. Se bajaron los sleep a 5
 '-------------------------------------
-' queda para 322 organizar borrado de notas o culumnas en ctrl-m ctrl-n
-' fin de secuencia etc dejar algo mas consizo y bien testeado,, 
+' 322 listo: modificar e insertar  notas en ctrl-m y ctrl-n verificado y anotado en ayuda.txt.
+' al modificar puedo borrar con la duracion 9 que inserta blancos.
+' 322 implemetar ctrl-m 1, ctrl-N 2 y ctrl-O 3 
+' cursorVert = 0 +  cursorHori = 0 + COMEDIT=FALSE  LECTURA
+' cursorVert = 0 +  cursorHori = 0 + COMEDIT=TRUE   ENTRADA DE NOTA MANUAL SIEMPRE AL FINAL DE LA SECUENCIA
+' cursorVert = 1 +  cursorHori = 1 + COMEDIT=TRUE   CTRL-M MODIFICACION INSERCION CON X AL FINAL
+' cursorVert = 0 +  cursorHori = 2 + COMEDIT=TRUE   CTRL-N MODIFICACION INSERCION SIN X CON NOTA CDEFGAB
+' FALTA:cursorVert = 3 +  cursorHori = 0 + COMEDIT=TRUE   CTRL-O MODIFICACION DE COLUMNAS O ACORDES 
+
+' REVEER: si tiene  sentido Borrar nota si ya lo hace modificar y luego insertar
+' fin de secuencia eso se hace en ctrl-m o ctrl-n si pulsamos ctrl-0 (||)
+ 
+' Si inserto la duracion 0 no debo buscar el comienzo de nota? podriamos simular en dos pasos
+' insertar una nota cualquiera y luego modificarla con 0 vemos,,,
 ' trabajos futuros mediatos:
 ' 1) reveer borrar nota insertar nota...¿borrar dejando un hueco o achicando la secuencia?
 '   modo CURSOR: borrar con 9 y X lo hace bien ya lo corregi..agregue buscar la
 '   nota cuando este cerca para facilitar el posicionamiento.Si me
 ' muevo a otro inico de nota y le doy x borra tambien conservando el 9 creo que deberia
 ' poner nota=0 para sacar el 9 ...¿? conviene o no? lo dejamos asi por ahora. 
-'  Borrado de columna con 9 y X? no hay creo , esoses de zonas   
+'  Borrado de columna con 9 y X? no hay creo , eso es de zonas   
 ' 2) ver si funcionan la seleccion de zonas o partes
 ' de la secuencia para copiar insertar etc,,,,para trasponer ya lo hace bien
 ' 3) la repeticion de zonas en el play, insertar espacios fin de secuencia 

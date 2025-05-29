@@ -855,11 +855,11 @@ i1men=notapMen
   FileFlush (-1)
 End Sub
 
-Sub BuscarNota (ctrl As Integer, ByRef cur1 As Integer,ncur As Integer) ' en cursor cambiadur u otras el programa se posicionara en la nota mas cercana
+Function BuscarNota (ctrl As Integer, ByRef cur1 As Integer,ncur As Integer) As Integer ' en cursor cambiadur u otras el programa se posicionara en la nota mas cercana
 ' decidiremos cuanotos ticks de acercamiento en un principio 10
 ' posn1=n+curpos  es x , notacur es y, barreemos un cuadrado ¡ 1 1 semitono y + - 10 curpos
 If ctrl= 0 Then ' ctrl es cambiadur solo procesa con 1 para evitar otras modificaciones se ajusta en cursor()
-  Exit Sub
+  Exit Function
 EndIf
 Dim As Integer x,x1, x2, y, y1, y2, posn1
 x1=cur1 - 10
@@ -868,32 +868,36 @@ y1=ncur - 1
 y2=ncur + 1
 If y1 < 1 Then y1=1 EndIf
 If y2 > 12 Then y2=12 EndIf
+If x1 < 1 Then x1=1 EndIf
+If x2 > NroCol Then x2=NroCol EndIf
 
-Print #1," x1 x2 "; x1, x2
-Print #1," y1 y2 "; y1, y2
+'Print #1," x1 x2 "; x1, x2
+'Print #1," y1 y2 "; y1, y2
 For x= x1 To x2  'curpos
  For y=y1 To y2  ' notacur
     posn1 = posishow + x
 
 
-Print #1,"POSN1 ";posn1
-Print #1,"POSISHOW  ";posishow
-Print #1,"POSIcion  ";posicion
-Print #1,"curpos  ";curpos
-Print #1,"----------------------------------------"
+'Print #1,"POSN1 ";posn1
+'Print #1,"POSISHOW  ";posishow
+'Print #1,"POSIcion  ";posicion
+'Print #1,"curpos  ";curpos
+'Print #1,"----------------------------------------"
   
     If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 2 Then
 ' encontro ubicacion de nota
      cur1=x
      ncur=y
- Print #1,"ENCONTRAMOS ON 2 EN CURPOS, NOTACUR "; cur1, ncur
-    Exit Sub 
+ 'Print #1,"ENCONTRAMOS ON 2 EN CURPOS, NOTACUR "; cur1, ncur
+    BuscarNota=0 ' ok
+    Exit Function 
     EndIf
  Next y
 Next x
  Print #1,"NO ENCONTRAMOS UNA MIERDA "
+ BuscarNota=1 ' error
  trasponer=0
-End Sub
+End Function
 
 ''========================= C U R S O R ============
 Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As inst)
@@ -930,12 +934,13 @@ Dim  As Integer nroPartesNota
 '---------------CTRL-N ..................
 'ctrl-n: usaremos el mismo codigo de ctrl-m solo que la nota se entra por nombre la X que es cambiadur=1 se
 ' establece desde el principio no hace falta pulsarla
- If (cursorHori=2 Or cursorVert = 2) And agregarNota=1  And nota > 0 Then
+ If cursorHori=2  And agregarNota=1  And nota > 0 Then 'ctrl-n ch cambiado hoy
   notacur=nota 
+  octavaEdicion=estoyEnOctava ' modifico en cualquier octava
   cambiadur=1
  EndIf
 
- If cursorVert=1 Or cursorVert= 2 Then  ' vertical COMEDIT=TRUE o Ctrl-N
+ If cursorHori=1 Or cursorHori= 2 Then  ' vertical ctrl-m o Ctrl-N ch
   trasponer=0
   cairo_move_to  (c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
   cairo_rectangle(c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  ,wc*6 ,inc_Penta) '13-07-2021 inc_penta/2 por inc_penta
@@ -952,7 +957,7 @@ Dim  As Integer nroPartesNota
      notaold=notacur 
 
  EndIf
- If cursorVert= 0 And cursorHori=0 Then
+ If cursorVert= 0 And cursorHori=0 Then ' lectura y comedit=true
   If notacur=1 Then
    'print #1,"notaold en cursor ";notaold
    notaOld=notacur
@@ -963,7 +968,7 @@ Dim  As Integer nroPartesNota
   cairo_rectangle(c,gap1 + (curpos)*anchofig , Penta_y + (notaOld-1) * inc_Penta  , wc/4,inc_Penta)
 
  EndIf
- If cursorHori=1 Or cursorHori = 2 Then
+ If cursorHori=1 Or cursorHori = 2 Then 'ctrl-m y ctrl-n 
  ' If notacur=1 Then
    'print #1,"notaold en cursor ";notaold
  '  notaOld=notacur
@@ -975,10 +980,12 @@ Dim  As Integer nroPartesNota
   cairo_rectangle(c,gap1 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , wc,inc_Penta)
 
  EndIf
- 
- If (cursorHori=1 Or cursorVert = 1) And borrar= 1 Then 'ctrl-M selecion  de nota con flechas y posicion
+'-----------------------
+' BORRAR CON DELETE: (EN VEZ DE 9)
+'------------------------
+ If (cursorHori=1 Or cursorHori = 2) And borrar= 1 Then 'ctrl-M selecion  de nota con flechas y posicion
 ' HABILITAR NOTA AL PONER EN CERO SE PUEDE USAR EN EDIT COMUN
-''' If  borrar= 1 Then ' 
+' ch lo habilitamos para control-n tambien
 trasponer=0
   cairo_set_source_rgba c, 1, 0, 0.2, 1
   
@@ -987,8 +994,10 @@ trasponer=0
    notacur=notaOld 
   EndIf
 
-  BuscarNota (borrar, curpos ,notacur )
-
+  If BuscarNota (borrar, curpos ,notacur ) = 1 Then
+     borrar=0
+     Exit sub
+  EndIf
 '  Print #1,"n + curpos, 12 - notacur + (*po-1) * 13 ", n+curpos, 12 - notacur + (*po-1) * 13
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).dur = 0
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).nota = 181
@@ -1032,11 +1041,11 @@ trasponer=0
  If cambiadur= 1  Then ''Ctrl-M y pulso X
      cambiadur=0
      trasponer=0
-   If (cursorHori=1 Or cursorVert = 1)  And octavaEdicion<>estoyEnOctava Then ' PARA ctrl-M SOLO CAMBIA UNA OCTAVA POR VEZ
-       Exit Sub
+   If (cursorHori=1 and cursorVert = 1)  And octavaEdicion<>estoyEnOctava Then ' PARA ctrl-M SOLO CAMBIA UNA OCTAVA POR VEZ
+       Exit Sub  'cursorVert = 1 es solo ctrl-m 
    EndIf
-   If (cursorHori=2 Or cursorVert = 2)  And nota = 0 Then ' PARA ctrl-M SOLO CAMBIA UNA OCTAVA POR VEZ
-       Exit Sub
+   If cursorHori=2   And nota = 0 Then ' PARA ctrl-N cambia en todas las octavas libremente
+       Exit Sub  ' se usaria en ctrl-n???
    EndIf
 
 Print #1,"CAMBIADUR 1 ENTRA  "
@@ -1046,7 +1055,10 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
      cambiadur=1
      Print #1," ANTES BUCONOTA curpos notacur "; curpos, notacur
 
-     BuscarNota (cambiadur, curpos ,notacur )
+     If BuscarNota (cambiadur, curpos ,notacur ) And cursorVert = 1 Then
+        cambiadur=0 ' si busconota da error 1 deberia salir sin hacer nada, para ctrl-N no va salir
+        Exit Sub ' sale para ctrl-m proque solo modifico notas existentes
+     EndIf 
      Print #1," DESPUES BUCONOTA curpos notacur "; curpos, notacur
      cambiadur=0
      cairo_move_to  (c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
@@ -1109,8 +1121,8 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
 
   trasponer=0
  If DUR=181 Then
-     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 0
-     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =181   ' 5.7.2
+     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 181
+     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =0   ' 5.7.2
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
      cambiadur = 0
      DUR=0
@@ -1119,15 +1131,23 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =181   ' 5.7.2
      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
 
-  '   print #1,"FINDE SECUENCIA !!"
+  '   print #1,"FINDE SECUENCIA !!" debo calcular el maxpos
+     Maxpos=n+curpos ' en el caso que partimos de una secuencia vacia sin datos
+' quedaria rellenar los espacios vacios con nota=181 y dur=0 creo
      cambiadur = 0
      DUR=0
  ElseIf DUR=0 Then ' borrado
-     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 190
-     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =190   ' 5.7.2
-     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
+     If Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur =190 Or _ 
+        Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =190 Then
+        Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur =181
+        Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota=0
+     Else
+        Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 190
+        Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =190   ' 5.7.2
+     EndIf  
      cambiadur = 0
      DUR=0
+     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
  Else
 'desde aca las notas se colocan con notacur siemrpe tienen valorde 1 a 12
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=0 Then 
@@ -1385,9 +1405,17 @@ trasponer=0
 
      nroPartesNota=0
      EndIf
-      notaold=12-notacur +(estoyEnOctava -1) * 13 
-''      notacur=0 'sino entra en nucleo o repite sin fin !!!
-      
+      notaold=12-notacur +(estoyEnOctava -1) * 13
+'''---- OJO ESTO NO ESTBA -----------      
+      If cursorHori=2 Then ' wwwwwwwwwwwwww curcial 
+' necesario en ctrl-n sino borra la nota, el cursor salta arriba pero no importa 
+' el cursor lo mueve verticalmente el nombre de la nota 
+'PERO en ctrl-m Hori=1 no borra la nota pero no mantiene la ultima posicion del 
+' cursor salta arriba  
+         notacur=0 'volvemos a poner sino entra en nucleo o repite sin fin !!! podria ser esto
+         notaOld=0 
+      EndIf
+'''---FIN ESTO NO ESTABA.............      
       DUR=0
   EndIf 
 ''' fin agregado ticks
@@ -1463,13 +1491,16 @@ trasponer=0
   'vdur=Roll.trk(notacur + (*po) * 13, n+curpos).dur
   ' SI LA NOTA  NO EXITIA LA agrega...osea sirve para acordes tambien
   'print #1, "carga notacur en ROLL n,nota calculada ", n,(notacur + (*po) * 13)
-
+  Dim As Integer posnOff=n + curpos + DurXTick(DUR) -1 
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur ' 5.7.3
+  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff = 2
+  Roll.trk(posnOff, 12 - notacur + (*po-1) * 13).onoff = 1  
+
   'vroll= Roll.trk(notacur + (*po) * 13, n + curpos).nota
   ' TODO IGUAL A cambiadur = 1 deberia andar ,,,,lunica diff es
   ' que se cargala nota en roll,<- pero 1ero debo guardar la nota de Roll en aux
   ' antes de reemplazarla
-  insert=1  ' habilita de nuevo la tecla I deingreso de insercion en un lugar
+  insert=1  ' habilita de nuevo la tecla I de ingreso de insercion en un lugar
   'elegido con cursor
  ' print #1, "insert 1 ",insert
 
@@ -1504,7 +1535,12 @@ trasponer=0
 
 'If Roll.trk(notacur + (*po) * 13, n+curpos).dur >= 1 And _ 
 '   Roll.trk(notacur + (*po) * 13, n+curpos).dur <= 181 Then
-   If cursorHori=1 And vdur=0 And vnota=0 And copiar=1 Then
+   If cursorHori=1 And vdur=0 And vnota=0 And copiar=1 Then ' ctrl-m
+    If  BuscarNota (1, curpos ,notacur ) = 1 Then
+        copiar=0 
+        Exit Sub
+    EndIf
+
       vnota=notacur 
       vdur =Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur  ' 5.7.3
        copiar=2
@@ -1513,10 +1549,13 @@ trasponer=0
 
 'If Roll.trk(notacur + (*po) * 13, n+curpos).dur  < 1  And _  
 '   Roll.trk(notacur + (*po) * 13, n+curpos).dur   > 180 Then
-If cursorHori=1 And vdur>0 And copiar=3 Then
+If cursorHori=1 And vdur>0 And copiar=3 Then ' ctrl-m
+   posnOff=n + curpos + DurXTick(vdur) -1   
    If notacur<> vnota And MultiKey (SC_ENTER) Then 
       Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur 
       Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = vdur
+      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff = 2
+      Roll.trk(posnOff, 12 - notacur + (*po-1) * 13).onoff = 1  
       copiar=0
       vdur=0:vnota=0
       ReCalCompas(Roll)
@@ -1534,7 +1573,7 @@ EndIf
 ' y n + curpos supera los 39 termina en 67 
 ' si hago curpos=0 funciona pero lso cuadraditos no avanzan
 ' ergo salto esto en play y listo deberi aestar condicionado oara edicion eso es
-If cursorHori=1 Then ' 17-09-2021 faltaba condicion de modificacion !! 
+If cursorHori=1 Then ' ctrl-m 17-09-2021 faltaba condicion de modificacion !! 
   If copiar=3 And (Roll.trk(n + curpos, 12 -notacur + (*po-1) * 13).dur = vdur) And notacur = vnota Then
      copiar=0:vdur=0:vnota=0
   EndIf
@@ -2770,14 +2809,15 @@ Sleep 100
      
      x=x1+x2+x3+x4+x5
         Print #1,"reconstruccion x pos bin ", x
-     MaxPos=CInt("&B"+x)
+     MaxPos=CInt("&B"+x) ' EN GRABAR ARCHICO MaxPos incluye a la ultima posoff + 6 y ahi esta el 182
      posicion = 1
        Print #1,"reconstruccion x pos int ", MaxPos
      ''' ditrvr oNroCol=MaxPos ' 11-02-2025     
      
      nota=0 '''notaOld
      inicioDeLectura=0' Int(Maxpos/NroCol)
-     posn=Maxpos- 2
+     posn=Maxpos- 6  ' no  seria -6 ? decia -2 ahora ticks es -6 es donde termina el ultimo off
+     ' maspos es esa posn +6 =MaxPos
      
      
      
@@ -2834,13 +2874,13 @@ Sleep 100
      pmTk(0).notaold = notaold  'notaold es ubyte en pmTk
      pmTk(0).MaxPos = MaxPos
 Print #1,"pmTk(0).MaxPos = MaxPos ";  MaxPos
-     pmTk(0).posn = MaxPos -2
+     pmTk(0).posn = MaxPos -6
 ' cargo estos campos nb na pero se los podria eliminar o usar para otra cosa,,,,
      pmTk(0).NB=NB  
      pmTk(0).NA=NA
      pmTk(0).desde = desde
      pmTk(0).hasta = hasta
-     pmTk(0).posn = MaxPos -2
+     pmTk(0).posn = MaxPos -6
 
      'NB => 0 + (desde-1) * 13   ' 27 para 3
      'NA => 11 + (hasta-1) * 13  ' 90 para  7
@@ -3243,8 +3283,15 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    muestra=Str(PianoNota) + " "+ muestra   + "ANCHO "+ Str(ANCHO)+ " Mx:" + Str(mousex) + " My:" + Str(mousey) +   " NroCol "+Str(NroCol) 
 'xxxx Str (BordeSupRoll)
 
-
+' //////////////////////////////////////////////////////////////////
+  If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
+     If MouseButtons And 1 Then
+      MenuNew=MENU_INICIAL
+     EndIf
+  EndIf
+ 
  Select Case menuNro
+' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   Case MENU_INICIAL '0
   ' 0.1 ==> [Archivo]
    If mousex > 46 And mousex< 111 And mousey < 50   Then
@@ -3280,7 +3327,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
      cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
          menuOldStr="[Ver]"
-         Print #1,"voy a menu 8 desde ver"
+        ' Print #1,"voy a menu 8 desde ver"
          menuNew=PARAMETROS_SECUENCIA '8
       EndIf 
    Else
@@ -3304,7 +3351,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    '   print #1,"--->entra a reproducir thread1 "
               play=SI
         menuNew =MENU_INICIAL
-         Print #1,"hizo click para llamar a playall, maxpos ",maxpos 
+        ' Print #1,"hizo click para llamar a playall, maxpos ",maxpos 
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 2 Then
                GrabarPenta=0:naco=0:naco2=0
@@ -3312,7 +3359,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
                Else
                SetGadgetstate(15,0) ' 10-04-2022
                EndIf  
-         Print #1,"llama a playall"
+        ' Print #1,"llama a playall"
          thread2 = ThreadCall  playAll(Roll)
          ''''playAll(Roll)
          
@@ -3353,17 +3400,24 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    
-
    t=  " [Ayuda] "+ muestra :cairo_show_text(c, t)
-
-
-
    cairo_stroke(c)
+
+  '' VUELVE menu grafico Rollmusic cinta AL INICIO....
+  If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
+     If MouseButtons And 1 Then
+      MenuNew=MENU_INICIAL
+     EndIf
+  EndIf
+
+
+
+' *********************************************************************************
   Case 1
   '1.1 ELIMINADO SU USO 
    
    t=  "      <MENU=(<=|=>)>/<VENTANA=(MOVER=DRAGAR CINTA)(POSICON NORMAL,SUBE/BAJA BORDE INFERIOR=F7-F8)> "
-   
+' ****************************************************************************************   
   Case PARAMETROS_ROLL ''2 ' para posicionar  en pantalla NO BORRAR. <= EDIT MENU
  
    menuNew=PARAMETROS_ROLL
@@ -3394,7 +3448,7 @@ If copi >0 Then
    veocopi=copi
 EndIf   
 
-
+If parametros=0  Then
    t = "      EDIT" + " " +  " Maxp:" + _
    Str(Maxpos) +" Psi:" + Str(posicion)+ " Psn:"+Str(posn)+ _
    " Fnt:" +Str(font) + " Oct:" + Str(estoyEnOctava) + _ 
@@ -3402,7 +3456,14 @@ EndIf
    " RollDur :"+ Str(RollDur) + " Rollnota:" + Str(RollNota) + _ 
    " Copia:" + Str(veocopi) +" Col:" +Str(indicePos) + " DUR:"+ Str(Dur) + _ 
    " Nota:"+ Str(nota) + " ONOFF:" + Str(onoff)
+EndIf
+If parametros=1 Then
+   t = "      EDIT" + " " + " Curpos:" +Str(curpos) + _
+   " RollDur :"+ Str(RollDur) + " Rollnota:" + Str(RollNota) + _ 
+   " modifmouse:" + Str(modifmouse) + " usamousey:" + Str(usamousey) + " usamousex:"+ Str(usamousex) + _ 
+   " Mx:" + Str(mousex) + " My:" + Str(mousey) 
 
+EndIf
 '''" Mx:" + Str(mousex) + " My:" + Str(mousey) 
   ' + "Desde:" + Str(y1) + "Hasta:" +Str(y2)
    /' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +
@@ -3437,15 +3498,14 @@ EndIf
   Else
     cairo_set_source_rgba c, 1, 1, 1, 1    
   EndIf  
- '' VUELVE menu grafico Rollmusic cinta AL INICIO....
+   '' VUELVE menu grafico Rollmusic cinta AL INICIO....
   If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
      If MouseButtons And 1 Then
       MenuNew=MENU_INICIAL
      EndIf
   EndIf
-
   
-
+'*******************************************************************
   Case COMANDOS_ARCHIVO '3  ==========================> caso 3
    '   t = " [NUEVO] [ABRIR] [GRABAR] [GRABAR COMO] [EXPORTAR] [CERRAR] [SALIR] "
 
@@ -3686,7 +3746,13 @@ Sleep 100
  '    MenuNew=0
  '   EndIf
  '  EndIf
-   
+   '' VUELVE menu grafico Rollmusic cinta AL INICIO....
+  If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
+     If MouseButtons And 1 Then
+      MenuNew=MENU_INICIAL
+     EndIf
+  EndIf
+  
 
   Case 4  ' <======= COMO REPRODUCUIR
    cairo_set_source_rgba c,1,1,1,1
@@ -4086,6 +4152,13 @@ Sleep 100
      
  End Select
  ' Si nodoy Stroke los show text van apendendo al final como un print;
+
+  '' VUELVE menu grafico Rollmusic cinta AL INICIO....
+  If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
+     If MouseButtons And 1 Then
+      MenuNew=MENU_INICIAL
+     EndIf
+  EndIf
 
   cairo_show_text(c, t)
   cairo_stroke(c)
@@ -4812,7 +4885,7 @@ Dim  As Integer npl
      Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
 'print #1, "inicio MaxPos "; MaxPos
- For i2 = 1 To MaxPos
+ For i2 = 1 To MaxPos  'incluye a +6 es ultimo off +6
      For i1 = NB To NA
        If Roll.trk(i2,i1 ).nota=190 And Roll.trk(i2,i1 ).dur=190 Then
           borrocol= 1 'Atrapa al menso un caso

@@ -139,6 +139,9 @@ Const NO_TERMINAR_BARRE_PANTALLA = 0
 Const TERMINAR_POR_LOOP_PRINCIPAL = 2
 Const NO_TERMINAR_CON_DATOS_CARGADOS  = 3 
 '--------------------------------------
+Const CTRL_M = 1 ' PUEDE HABER UN 1 0 o 0 1  o 2 0 ?
+Const CTRL_N = 2
+
 Dim Shared As Integer PISTASEJECSELECCIONADA=0
 Dim Shared As Integer PISTASROLLSELECCIONADA=0
 
@@ -975,6 +978,7 @@ Dim Shared As String TipoFrac ' para fraccionar notas segun estilo deseado
 ' ergo la negra se representa comienzo en 1 fin en 32-33 o sea empeiza en 1
 ' y termina en el comienzo de 33.
 '---------------------
+
 ANCHO = GetSystemMetrics(SM_CXSCREEN)
 ALTO = GetSystemMetrics(SM_CYSCREEN)
 ANCHOSYSTEM=ANCHO
@@ -1157,7 +1161,8 @@ Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1
 Common Shared As Any Ptr thread4, threadGrabamidi
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
-Common Shared As integer ubirtk, ubiroll,trasponer,canalx
+Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros
+parametros=0
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo,canalDeGrabacion

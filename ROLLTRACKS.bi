@@ -1832,7 +1832,7 @@ Sleep 5
 'patch
 
 ' redefinir tiempoPatron
-'Union aUshort
+'Union aUshort ' es unredefine de cobol
 ' ST As UShort
 '   Type
 '    pan As UByte
@@ -1840,7 +1840,7 @@ Sleep 5
 '   End Type
 'End Union
 
-Dim mit As aUshort
+Dim mit As aUshort 'redefine de cobol
 mit.st = tiempoPatron
 'con estos dos campos puedo reconstruir tiempoPatron
 Roll.trk(1,NA).pan = mit.pan

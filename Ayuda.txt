@@ -877,9 +877,9 @@
     2.0) Modos de Edicion
 
     2.1) MODO EDIT insercion NOTAS NUEVAS POR TECLADO (click en menu [EDICION] luego otror click en EDIT y cambiara
-         a color verde y la octava seleccionada tambien)  Para salir de EDIT pulsar de nuevo EDIT volvera a blanco 
-         la letra EDIT, si se da click de nuevo en EDIT no volvera a edicion verde. Para volver al menu inicial dar 
-         click al final de la cinta superior del menu y puede comenzar todo el ciclo de nuevo.
+         a color verde. La octava seleccionada con un click izquierdo tambien)  Para salir de EDIT pulsar de nuevo EDIT 
+         volvera a blanco la letra EDIT, si se da click de nuevo en EDIT no volvera a edicion verde. Para volver al menu 
+         inicial dar click al final de la cinta superior del menu o ALT-M, y comenzará el ciclo de nuevo.
 
 
     2.1.1) Entrada por teclado de PC.
@@ -908,24 +908,47 @@
    ------------------------------------------------------------------------------------------   
     2.0) Modos de Edición.
     2.1) MODO EDIT 
+         - Pasar a Edicion clickendo [Edicion], aparecera la cinta Edit con parametros.
+         - Dar click a Edit, Edit cambiara a verde, lugo click izquierdo de nuevo en la octava elegida y la zona de trabajo 
+           se pondra de color verde tambien. Solo dando click izquierdo sobre una octava se la podrá modificar. 
     2.1.1) Entrada por Teclado O Entrada secuencial siempre al final de la misma va agregando notas.
-         - Pasar a Edicion clickendo [Edicion], aparecera la cinta Edit.
-         - Dar click a Edit, Edit cambiara a verde y toda la linea, la octava donde se trabaje se pondra de  
-           color verde indicando la octava elegida. Para confirmar que la octava sea la elegida si aun no se
-           ingreso notas por teclado es mover el cursor hasta el extremo derecho de la pantalla y eso cambiara
-           a verde el color confirmando que la octava a sido elegida para edicion.
-         - Estando sobre una octava elegida con el mouse, pulsar una duracion de 1 a 8
-           1=O redonda, 2=P blanca, 3=I negra, 4=L corchea, 5=F semicorchea, 6=E fusa,
-           7=X semifusa, 8=H garrapatea,  9=espacio,ctrl-0=Fin Secuencia.
-           SI PULSO 3, T, X : 3 ES DURACION NEGRA T TRESILLO X COLOCA LA FIGURA AL FINAL DE LA SECUENCIA-
            
-           EN MODO EDIT 3T C ERA LA TERCERA PARTE DE UN TRESILLO DE NEGRA EN LA NOTA C DE LA OCTAVA ELEGIDA
-           EN VEZ DE T SE PODRIA PULSAR = . //  = o Left Shift (mayusculas izquierda)AGREGA LA CUARTA PARTE DE 
-           UNA NOTA A SU DURACION 1,25.
-           EL PUNTO . AGREGA LA MITAD A SU DURACION ES EL PUNTILLO 1,5.. Esimbolo + agrega una ligadura
-           o indica que el sonido continua en la nota siguiente. (el + y el * funcionan como ligadura
-           no discrimina el lenguaje entre ambas teclas) hay varias teclas que dan como resultado un cuarto
-           mas el = la , o { segun el teclado. El doble puntillo : es la tecla mayuscula derecha o Right Shift.
+         - EDICION CON TECLADO Estando sobre una octava elegida con el mouse, pulsar una duracion de 1 a 8
+           Y LUEGO LA NOTA EN CIFRADO INGLES (CDEFGAB).
+           1=O redonda, 2=P blanca, 3=I negra, 4=L corchea, 5=F semicorchea, 6=E fusa,
+           7=X semifusa, 8=H garrapatea.  La última nota ingresada sera seguida por el fin de secuencia automaticamente ||,
+           [pero si se necesita colocarlo seria con Ctrl-0  esto funcionara en modo EDIT CURSOR para modificar una secuencia 
+            previamente ingresada por este  método. ( 9=espacio,ctrl-0=Fin Secuencia)]
+           SI PULSO 3,T, NOTA : 3 ES DURACION NEGRA T TRESILLO NOTA,  COLOCA UN TRESILLO DE LA FIGURA Y PARA ESA NOTA 
+           AL FINAL DE LA SECUENCIA- (si uso duraciones por mosuse con click derecho tambien se pulsara 3T y luego la duracion
+           con click derecho en el meno grafico)  
+           
+           EN MODO EDIT PULSAR-> 3TC será LA TERCERA PARTE DE UN TRESILLO DE NEGRA, EN LA NOTA C DE LA OCTAVA ELEGIDA
+           EN VEZ DE T SE PODRIA PULSAR 
+            .. el punto (.) AGREGA LA MITAD A SU DURACION ES EL PUNTILLO 1,5 ej  I* negra con puntillo
+            .. el signo (=) o (mayuscula izquierda o el * )+ duracion + NOTA, se agrega 1/4 de nota. Ej I4
+               O sea el signo (=) ó el (Left Shift) (mayusculas izquierda) AGREGA LA CUARTA PARTE DE UNA NOTA A SU DURACION 1,25.
+               ej 4*F pondra L+ en F
+                  *4G pondra L+ en G
+                  =4B pondra L4 en B (4=B no funciona, solo debe estar antes de la duracion)
+                  =4D pondra L4 en D
+                  4+F pondra L+ en F  o sea (+ y *) actuan ambos como ligadura..antes o despues de la duracion
+                  +4F pondra L+ en F  " " "
+                  May Izq + 4 + B pondra L4 en B (tambien funciona con MAy Derecha)
+                  4 + May Izq + F pondra L4 en F (o saa cualquier mayuscula funciona antes o despues de la duracion)
+           
+           .. El simbolo + agrega una ligadura, indica que el sonido continua en la nota siguiente. 
+              (el + y el * funcionan como ligadura  no discrimina el lenguaje entre ambas teclas) 
+           .. El doble puntillo de un pentagrama (:) usamos la coma (,)  Ej; (3,C) pondrá I: en nota C 
+                 
+    2.1.2) Entrada Por mouse y Teclado 
+           estando habilitada una octava como en 2.1) se hace click derecho en cualquier lugar de la octava elegida,
+           aparece un menu de comadno y duraciones contextual gráfica, el comando permite entrar a Ctrl-M, modo de modificacion de 
+           notas ya entradas, se da click izquierdo a la duracion deseada (O,P,I,L,F,E, x, H) del menu y luego se da click sobre 
+           la nota deseada en la linea en pantalla, PARA FINALIZAR se pulsa X,el progrma buscara la ubicacion exacta del 
+           comienzo de la nota y la modificara, se puede seguir usando la misma duracion dando click a otras notas
+           con la misma duracion sin neceidad de traer de nuevo el menu contextual de notas. 
+           Otra forma es entrar la duracion por teclado ubicar antes o despues la nota con click y luego X.
 
            En modo Cursor: 0=marcar borrar columna seguido de X.(el borado se ejecuta al guardar
            el archivo y al cargarlo de nuevo, la nota se borra, pero si en esa columna era la unica nota y 
@@ -962,15 +985,7 @@
            Nota de Undo: dar pulsos cortos a ALT-U o ALT-BACKSPACE, podria borrar mas de 1 item por vez..
            (queda por mejorar...pulsar primero la tecla Backspace  o retroceso y sin levantar dar un pulso rapido a ALT, 
             soltar ALT y luego soltar retroceso. lo mismo para U)
-    2.1.2) Entrada Por mouse y Teclado 
-           estando habilitada una octava como en 2) se hace click derecho aparece un menu de
-           notas contextual se da click izquierdo a la deseada del menu y luego se da click sobre la nota deseada 
-           en la linea en pantalla, se puede seguir usando la misma duracion dando ctrl-click a otras notas con la 
-           misma duracion sin neceidad de traer de nuevo el menu contextual de notas. (observar que la 1er nota 
-           luego de elegir del menu contextual es solo con Click de mouse izquierdo, despues son con Ctrl-clik 
-           si se usa la misma duracion.
-           Otra forma es entrar la duracion por teclado y la nota con Ctrl-click (se agrego Ctrl para evitar
-           errores de entradas)
+
 
     II) MODO CURSOR O MODIFICACION SOLO EN LA PANTALLA SELECCIONADA O CONGELADA, SIN AVANCE DE LA 
         SECUENCIA O SIN AVANCE DE PANTALLA CON FLECHAS DER O IZQ. LAS FLECHAS MUEVEN EL CURSOR
@@ -984,24 +999,37 @@
        dar Ctrl+click derecho del mouse,aprece un menu click en Modificar, luego
        dar click en la posicion elegida y modificara la duracion de la posicion. 
 
-         Modificar por teclado
+   >> Modificar o agregar nota nueva posicionandose con flechas + pulso duracion + X
+         ó posicionarse con click derecho en el lugar que se desee elegir una duracion y luego pulsar X.
+         [No Olvidar luego de haber dado Ctrl-M, seleccionar la octava a modificar pasando el mouse por encima 
+          del final derecho de la pantalla donde termina el tramo de secuencia ]  
 
-       Elegir por teclado la duracion pulsando 1 a 8 (9, espacio, 0 fin secuencia )
-       posicionar el cursor con teclas ( arriba abajo derecha izquierda) +10 -10 y +1 -1 semitono,
-       no hace falta ubicar exactamente la posicion, el programa busca el onoff=2 que se puede ver 
-       en la cinta en el ultimo parametro arriba de Edit ------>.
-       Sobre la nota deseada o muy cerca de ella y en la octava elegida, pulsar X, se cambiara la duracion
-       a la deseaada. No se permite modificar otra ocatava para hacerlo mover el cursor a la otra octava
-       y desplazar el mouse por arriba del fina de la octava, las notas guias se pondran verde indicando
-       octava seleccionada.
-     
-      ( Entrar o Modificar por teclado 2da opción Ctrl-N [esta opcion en Ticks veremos si la dejamo 
-       pora hora parece que no funciona]
-       Elegir por teclado duracion 1 a 9 o por click derecho aparece el menu contextual 
-       de duraciones. Posicionarse en una posicion con las teclas de flechas, y luego pulsar
-       la nota en teclado. O dar click  con el mouse en cualqueir lado que se desee, sin
-       usar las flechas de teclado.
-       De Ctrl-N (se sale con ctrl-p tambien) )
+       - Ctrl-M Modificar una nota existente o insertar una neuva pulsando X al final para ejecutar: 
+         elegir por teclado la duracion nueva pulsando 1 a 8 
+         (9, espacio borrado, 0 fin secuencia ) posicionar el cursor con teclas en posicion vertical en el 
+         semitono o nota deseada, y en posicion horizonal ( derecha izquierda +10 -10 ), no hace falta ubicar 
+         exactamente la posicion, el programa busca el comienzo de la nota que es un onoff=2 que se puede ver  en la 
+         cinta azul arriba en el ultimo parametro de Edit ------>. Cuando se vea onoff=2 confirma que 
+         estuvo sobre la nota deseada o muy cerca de ella (+10, -10 posiciones horiontal ) y en la 
+         octava elegida, pulsar X, se cambiara la duracion a la deseaada. 
+         No se permite modificar otra octava, para hacerlo mover el mouse a la otra octava
+         y desplazarlo hacia la derecha por arriba hasta final de la octava, las notas guias se pondran 
+         verde indicando  octava seleccionada. Se puede usar el mouse con menu contextual con click derecho del 
+         mouse para seleccionar duracion y lugar deseado e ingresa nota nueva con la duracion elegida  
+         (reemplaza posicionarse con flechas y duracion por pulsar numeros 1 a 9, pero al final se debe usar X
+          para que se ejecute la insercion nueva)
+         (el menu contextual tambien mostrara ctrl-M o Ctrl-P par entrar o salir de Ctrl-M.
+
+       - Ctrl-N Modificar una nota existene o insertar una nueva  SIN PULSAR X al final.
+         Insertar: Elegir por teclado duracion 1 a 9 (9 borra pone espacio) y pulsar la nota CDEFGAB insertando una nota nueva
+         en el semitono elegido con letra CDEFGAB y la poscion horizontal obtenida con las flechas.
+         O usar click derecho para reemplazr la duracion por teclado (1 a 8) con el menu grafico de duraciones, luego al elegir
+         una duracion de ese menu con click izquierdo,se insertara la nota nueva sin necesidad de pulsar X en la posicion
+         en que se dio click derecho. 
+         Lo mismo pasa para modificar, posicionarse con click derecho sobre la nota a modificar
+         elegir una duracion y darle click izquierdo sobre ese menu grafico y la nota se modificará buscando su comienzo, 
+         si no se está justo sobre el comienzo de la nota a modificar en mas menos 10 posiciones. 
+         De Ctrl-N (se sale con ctrl-p tambien) )
 
     2.3.1) En ambos modos se puede entrar acordes, condicion inicial: haber entrado una melodia
            o notas base del acorde. Por ahora es entrada nota por nota apiladas, arriba o abajo 
