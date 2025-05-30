@@ -81,8 +81,10 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.322 REVISION DE COLORES Y ALGUNOS COMANDOS DE EDICION "
-' se corrigio ctrl-m y ctrln y con colores distintos rojo y azul, verde ingreso notas normal
+nroversion="TICKS 0.323 borrado de un intervalo de secuencia seleccionado por zona "
+' llegue hasta 2.5.4 de ayuda.txt, lo anterior se verifico el borrado de notas y columnas
+' borrado de zona ok 
+' se corrigio ctrl-m y ctrl-n y con colores distintos rojo y azul, verde ingreso notas normal
 ' 322 correcion dragado de ventana Roll desde cinta, saltaba. Se bajaron los sleep a 5
 '-------------------------------------
 ' 322 listo: modificar e insertar  notas en ctrl-m y ctrl-n verificado y anotado en ayuda.txt.

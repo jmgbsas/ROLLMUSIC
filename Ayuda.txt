@@ -910,7 +910,9 @@
     2.1) MODO EDIT 
          - Pasar a Edicion clickendo [Edicion], aparecera la cinta Edit con parametros.
          - Dar click a Edit, Edit cambiara a verde, lugo click izquierdo de nuevo en la octava elegida y la zona de trabajo 
-           se pondra de color verde tambien. Solo dando click izquierdo sobre una octava se la podrá modificar. 
+           se pondra de color verde tambien. Solo dando 1 o 2 clicks izquierdo sobre una octava se la podrá modificar. 
+           La octava pasará a ser toda de otro color cuando este bien seleccionada, ctrl-M rojo medio marron,
+           ctrl-N azul.
     2.1.1) Entrada por Teclado O Entrada secuencial siempre al final de la misma va agregando notas.
            
          - EDICION CON TECLADO Estando sobre una octava elegida con el mouse, pulsar una duracion de 1 a 8
@@ -943,14 +945,17 @@
                  
     2.1.2) Entrada Por mouse y Teclado 
            estando habilitada una octava como en 2.1) se hace click derecho en cualquier lugar de la octava elegida,
-           aparece un menu de comadno y duraciones contextual gráfica, el comando permite entrar a Ctrl-M, modo de modificacion de 
-           notas ya entradas, se da click izquierdo a la duracion deseada (O,P,I,L,F,E, x, H) del menu y luego se da click sobre 
-           la nota deseada en la linea en pantalla, PARA FINALIZAR se pulsa X,el progrma buscara la ubicacion exacta del 
-           comienzo de la nota y la modificara, se puede seguir usando la misma duracion dando click a otras notas
-           con la misma duracion sin neceidad de traer de nuevo el menu contextual de notas. 
+           aparece un menu de comando y duraciones contextual gráfica, el comando permite entrar a Ctrl-M, modo de 
+           modificacion de notas ya entradas, se da click izquierdo a la duracion deseada (O,P,I,L,F,E, x, H) del menu y 
+           luego se da click sobre la nota deseada en la linea en pantalla, PARA FINALIZAR se pulsa X,el progrma buscara 
+           la ubicacion exacta del comienzo de la nota y la modificara, se puede seguir usando la misma duracion dando click 
+           a otras notas con la misma duracion sin neceidad de traer de nuevo el menu contextual de notas. 
            Otra forma es entrar la duracion por teclado ubicar antes o despues la nota con click y luego X.
+           NOTA si se borro una nota con CTRL-9 para que se borre al grabar por ejemplo toda una columna,,,
+           aparecerá un 0 como simbolo de que se borrara, si quiero borrar esa marca se hace en cTRL-N, porque
+           en ctri-M se busca comienzo de nota no un borrar 0.
 
-           En modo Cursor: 0=marcar borrar columna seguido de X.(el borado se ejecuta al guardar
+           En modo Cursor: 0=marcar borrar columna seguido de X.(el borrado se ejecuta al guardar
            el archivo y al cargarlo de nuevo, la nota se borra, pero si en esa columna era la unica nota y 
            se desea borrar la columna en ese momento usar ctrl-delete ver 2.5.3).
            Luego pulsar una nota en alfabeto americano C,D,E,F,G,A,B, o las mimsas notas
@@ -1077,35 +1082,32 @@
          nuevo. Se puede seguir a otras posiciones, dando ENTER seguirá copiando.
    
 
-    2.5) Borrar 1 Nota,borrar 1 columna o un rango de columnas: 
-          Ubicar el cursor con ctrl-m y flechas acercarse al comienzo de la nota, no es
+    2.5) Borrar 1 Nota,       borrar 1 columna o un rango de columnas: 
+          Borrar 1 Nota Dejando su espacio  
+          Ubicar el cursor con ctrl-M y flechas acercarse al comienzo de la nota, no es
           necesario estar justo sobre la nota, que se verifica si onoff=2 arriba en la cinta azul
-          El programa busca automaticamente el comienzo de una nota, pulsar X y se borrará.
+          El programa busca automaticamente el comienzo de una nota si el cursor est cerca, luego pulsar 0
+          y  seguidamente pulsar X y se borrará.
           Si me muevo a otra nota y pulso X de nuevo borrara esa nota tambien hasta que se pulse
-          otro numero entre 0 a 9, el 9 es para borrar nota..
-          ( y si entro una nota al mover el cursor pone mas notas iguales ojo!
-         serviria para hacer un acorde pero para nota no !!!  ver ) 
-    2.5.1) BORRAR NOTA EN CTRL-N UBICANDO EL CURSOR SOBRE LA NOTA
-           Y LUEGO PULSAR ESPACIO.PARA CADA NOTA SE DEBE HACER LO MISMO
-           UBICAR CURSOR PULSAR ESPACIO.
-    2.5.2) Para Borrar una nota pero dejar su espacio usar-> Pulsar 9 luego X en cada nota a limpiar
-           No se debe repetir el pulso de 9 para cada nota, por ahora repite si se pulsa X solamente.
-           El metodo de borrado con espacio y X marca con 190,190 a nota y duracicon y esos lugares
-           de nota o columna se eliminan al grabar el archivo..o sea los huecos se eliminan,
-           para borrar y dejar un espacio se usa 9 mas X...el espacio no lo usaremos por ahora
-           o haremos que contraiga la secuencia,antes de grabar.
-           Nota: Revision No usar este modo de borrado -> (BORRAR EN CTRL-M O CURSOR UBICAR EL CURSOR 
-           SOBRE LA NOTA PULSAR ESPACIO  Y LUEGO X PARA MODIFICAR..SE PUEDE SEGUIR 
-          BORRARNDO OTRAS NOTAS  UBICANDO EL CURSOR Y SOLO CON X REPITE LA ULTIMA NOTA 
-          EN ESTE CASO ESPACIO.)  A VECES AL DAR CTRL-P SE DISPARA ALT-T Y HACE UNA TRASPOSICION JA
-          VEREMOS MUY RARO
+          otro numero entre 0 a 8, el 0 es para borrar nota..
 
-    2.5.3) Revision No usar -> (Borrado de columna o posicion, en Modo Cursor modificar cada nota en cualquier
-       columna pulsando una vez 0 y luego X en los 12 semitonos para modificar toda la octava  
-       en la posicion elegida, luego de terminado de marcar toda la posicion 
-       ahi mismo sin salir de Cursor pulsando Ctrl-Delete o Ctrl-Supr,se borrarra la/s posiciones marcadas,)
-       (NO BORRA COLUMNA dejo de andar pero si borra posiciones, par aposiciones mejor usar 2.5.2...20-01-2022, revisar)
-       USAR-> En Modo lectura marcando Zonas, Borrar 1 sola columna: 
+     2.5.1) BORRAR NOTA EN CTRL-N UBICANDO EL CURSOR SOBRE LA NOTA
+           Y LUEGO PULSAR 0 Y LUEGO EL NOMBRE DE LA NOTA CDEFGAB SE PUEDE REPETIR COMO ANTES
+           SIN PULSAR EL 0 SOBRE OTRAS NOTAS.
+    2.5.2) Para Borrar una nota pero SIN dejar su espacio usar-> Pulsar CTRL-9 luego X en cada nota a limpiar
+           No se debe repetir el pulso de 9 para cada nota, por ahora repite si se da click sobre las
+           proximas notas y se pulsa X solamente.
+           El metodo de borrado con CTRL-9 y X marca con 190,190 la nota y duracicon y esos lugares
+           EN PANTALLA SE VEN COMO 0 (CERO). AL SALIR DE CTRL-M O CTRL-N y VOLVER AL MODO LECTURA
+           SE BORRA LA COLUMA CON CTRL-DEL o ctrl-Supr. si se marca una sola nota y la columna tenia
+           solo esa nota, se borra la columna de lo contrario no se elimina. Si se marcan todas las 
+           notas en la misma columna o Tick la columna de ese Tick se elimina todos los datos se mueve
+           un lugar a la izquierda. Ctrl-DEL borra en la sesion de sesion. Si no se borra en la sesion
+           algrabar el archivo y luego cargarlo se borraran las columnas marcadas y tengan uno omas 0 en
+           esa columna y ninguna nota normal.
+           para borrar y dejar un espacio se usa 0 mas X...
+
+    2.5.3)  En Modo lectura marcando Zonas, Borrar 1 sola columna: 
           Marcar solo una columna con Ctrl-click igual que play, y luego pulso Ctrl-delete(anda ok 20-01-2022).
           Borrar varias columnas: marcar la zona a borrar con 2 ctrl-clik en 2 posiciones distintas
           Toda esa regin entre ambas marcas se borraran al pulzar Ctrl-delete. o supr.

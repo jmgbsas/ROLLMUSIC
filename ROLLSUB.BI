@@ -856,8 +856,11 @@ i1men=notapMen
 End Sub
 
 Function BuscarNota (ctrl As Integer, ByRef cur1 As Integer,ncur As Integer) As Integer ' en cursor cambiadur u otras el programa se posicionara en la nota mas cercana
+'SOLO SIRVE PARA APLICAR EN CURSOR COMEDIT=TRUE, HBRIA QUE HACER OTRA PARA FALSE
+' Y FUERA DE CURSOR SI HACE FALTA POR AHORA NO
 ' decidiremos cuanotos ticks de acercamiento en un principio 10
 ' posn1=n+curpos  es x , notacur es y, barreemos un cuadrado ¡ 1 1 semitono y + - 10 curpos
+' BUSCA OFF 1 O 2 y 190
 If ctrl= 0 Then ' ctrl es cambiadur solo procesa con 1 para evitar otras modificaciones se ajusta en cursor()
   Exit Function
 EndIf
@@ -884,8 +887,10 @@ For x= x1 To x2  'curpos
 'Print #1,"curpos  ";curpos
 'Print #1,"----------------------------------------"
   
-    If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 2 Then
-' encontro ubicacion de nota
+    If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 2 Or _
+       Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1 Or _ 
+       Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur = 190   Then
+' encontro ubicacion de nota ,o final sec o un 190 borrar
      cur1=x
      ncur=y
  'Print #1,"ENCONTRAMOS ON 2 EN CURPOS, NOTACUR "; cur1, ncur
@@ -981,11 +986,12 @@ Dim  As Integer nroPartesNota
 
  EndIf
 '-----------------------
-' BORRAR CON DELETE: (EN VEZ DE 9)
+' BORRAR CON DELETE: (EN VEZ DE 0)
 '------------------------
- If (cursorHori=1 Or cursorHori = 2) And borrar= 1 Then 'ctrl-M selecion  de nota con flechas y posicion
+ If (cursorHori=1 Or cursorHori = 2) And borrar= 1  Then 'ctrl-M selecion  de nota con flechas y posicion
 ' HABILITAR NOTA AL PONER EN CERO SE PUEDE USAR EN EDIT COMUN
 ' ch lo habilitamos para control-n tambien
+' OJO NO BORRA EL ONOFF=1!!! PONERLO
 trasponer=0
   cairo_set_source_rgba c, 1, 0, 0.2, 1
   
@@ -993,11 +999,12 @@ trasponer=0
   If notacur=1 Then ' 1 POR 0 JMG
    notacur=notaOld 
   EndIf
+' buscanota onoff=2 o fin secuencia 182 o borrar futuro al grabar 190
+    If BuscarNota (borrar, curpos ,notacur ) = 1 Then
+       borrar=0
+       Exit sub
+    EndIf
 
-  If BuscarNota (borrar, curpos ,notacur ) = 1 Then
-     borrar=0
-     Exit sub
-  EndIf
 '  Print #1,"n + curpos, 12 - notacur + (*po-1) * 13 ", n+curpos, 12 - notacur + (*po-1) * 13
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).dur = 0
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).nota = 181
@@ -1137,17 +1144,18 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
      cambiadur = 0
      DUR=0
  ElseIf DUR=0 Then ' borrado
-     If Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur =190 Or _ 
-        Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =190 Then
-        Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur =181
-        Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota=0
-     Else
-        Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = 190
-        Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota =190   ' 5.7.2
-     EndIf  
-     cambiadur = 0
-     DUR=0
-     Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur =181
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota=0
+    cambiadur = 0
+    DUR=0
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
+ ElseIf DUR=190  Then ' marcamos para borrar al grabar CTRL-9
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur =190
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota=190
+    cambiadur = 0
+    DUR=0
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
+
  Else
 'desde aca las notas se colocan con notacur siemrpe tienen valorde 1 a 12
   If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=0 Then 
@@ -6065,47 +6073,122 @@ End Sub
 Sub borrarColumnasMarcadas()
 ' toda columna en una posicion que tenga solo 190 en su nota y duracion
 ' sera eliminada y todas las demas desplazadas a izquierda,.
-' es trabajoso hay que pulsar 0 y dar x en tola la columna 
+' es trabajoso hay que pulsar ctrl-9 y dar x en toda la columna 
 ' anda ok , igualmente implementare por zona 
 ' pregunto si las zonas estan marcadas uso ese emtodo y sino uso el metodo viejo
 
 '<====== METODO NUEVO POR ZONAS ===> sI ESTAN MARCADAS Y PULSO CTRL-DELETE SE BORRA TODA ESA
-
+' por columna un solo click es medio dificil debo acomodar el click con busconota
+' y no tiene sentido las notas en Tick ocupan varios ticks no solo uno solo seria
+' el caso de un acorde apilados exactamente todos en un mismo tick,,,
+' pero igual es un intervalo de tick de modo que se descarta una columna sola 
 ' ZONA O COLUMNA SI SE SUPERPONEN LAS MARCAS DE ZONA 2 CLICKS SOBRE LA MISMA COLUMNA
 ' O UNA SOLO CLIK MEJOR,,,,
 ' pasoZona1 pasoZona2 
 Print #1," BORRACOLUMNASMARCADAS"
-
+' PARA TICVKS DEBO PRIMERO BORRAR LAS NOTAS EN ESE INTERVALOS QUE TENGAN UN OFF=2
+' Y BORRAR SU OFF=1. LOS OFF=1 QUE NO  TENGAN SU OFF=2 NO SE BORRARAN.
+' LUEGO COMO SE QUE SE BORRARON LAS NOTAS AL COPIAR Y SOBREESCRIBIR SOLO HACERLO
+' SI NO ES UN OFF=1 O SEA LOS OFF=1 QUEDAN SIN PISAR
 Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,delta=0
 If pasoZona1 > 0 Or (pasoZona1 > 0 And pasoZona2 > 0) Then
 ' metodo nuevo ok
   Print #1,"pasoZona1 pasoZona2 ",pasoZona1, pasoZona2
-  
+' ESTO SERA DIFICIL DE EJECUTAR DEBERIA BUSCAR NOTA, BORRAR LA JUNTO A U OFF=1
+' Y NO BORRAR NINGUN OFF=1 QUE NO SEA DE ESA NOTA Y EL INTERVALO BORRADO SERIA DESDE
+' CUALQUIER OFF1 QUE QUEDE DENTRO DE LA DURACION  DE LA NOTA BORRADA HASTA UN PROXIMO OFF2
+ 
+/' metodo descartado  
   If pasoZona1 > 0 And pasoZona2 = 0 Then ' borrado de esa columna ok
     Print #1,"entra por pasoZona1  "
-    For k=pasoZona1 To MAxpos 
+    For k=pasoZona1 To Maxpos 
      For i1 = NB To NA
          Roll.trk(k, i1)=Roll.trk(k+1,i1 )
      Next i1
     Next k
     pasoZona1=0
   EndIf
-  
+'/
+' BORRADO DE ZONA: BORRAR LAS NOTAS CUYO OFF=2 ESTE DENTRO DEL RANGO, LUEGO
+' COPIAR TODO LO QUE SIGUE DESDE  EL COMIENZO DEL RANGO, SI HAY UN OFF1 NO 
+' SOBREESCRIBIRLO SALVO QUE COINCIDA UN OFF1 EXISTENTE CON UN OFF2 COPIADO EN
+' ESE CASO EL OFF2 SOBREESCRIBE AL OFF1. LISTO  anda ok!!! 30-05-2025  
   If pasoZona1 > 0 And pasoZona2 > 0 Then ' borrado del rango del paso ok
     Print #1,"entra por pasoZona1 y 2  "
     delta=pasoZona2 - pasoZona1
-    For k=pasoZona1 To MAxpos 
+    Dim  As Integer posnOff,DURX 
+
+    For k=pasoZona1 To pasoZona2
+    'borrar notas completas en el intervalo para todo el intervalo  
      For i1 = NB To NA
-         Roll.trk(k, i1)=Roll.trk(k+delta+1,i1 )
+     'borrar notas completas en el intervalo para esa columna
+        
+         If Roll.trk(k, i1).onoff=2  Then 'borrar nota
+            DURX=Roll.trk(k, i1 ).dur
+            posnOff =k + DurXTick(DURX) -1
+            Roll.trk(k, i1 ).dur = 0
+            Roll.trk(k, i1).nota = 181
+            Roll.trk(k, i1).onoff = 0
+            Print #1,"dur POSNoFF "; DURX, posnOff   
+'busco onoff=1 puede estar mas 1 o menos 1 segun la version en la que se hizo el .roll
+' LO EXTIENDO A +2 -2, SIEMRPE SERA ASI EN EL FUTURO SERA EXACTO N OHABRA ZRCHIVOS VIEJOS DE ROLL
+            Roll.trk(posnOff -2, i1).onoff = 0
+            Roll.trk(posnOff -2, i1).dur  = 0
+            Roll.trk(posnOff -1, i1).onoff = 0
+            Roll.trk(posnOff -1, i1).dur = 0
+            Roll.trk(posnOff   , i1).onoff = 0
+            Roll.trk(posnOff   , i1).dur = 0
+            Roll.trk(posnOff +1, i1).onoff = 0
+            Roll.trk(posnOff +1, i1).dur = 0
+            Roll.trk(posnOff +2, i1).onoff = 0
+            Roll.trk(posnOff +2, i1).dur = 0
+
+         EndIf
      Next i1
+' copiar lo que seguia al princio del intervalo pero sin pisar los onoff=1 que quedaron
+    Next k
+
+     Dim As Integer k2=pasoZona1, lim
+     lim = maxpos -6 - delta
+
+    For k=pasoZona2 To MaxPos -6
+     k2=k2+1
+     If k2= lim Then
+        Exit For
+     EndIf
+     For i1 = NB To NA
+         If Roll.trk(k2, i1).onoff=0 Then   
+           Roll.trk(k2, i1)=Roll.trk(k,i1 )
+           Roll.trk(k,i1 ).dur =181
+           Roll.trk(k,i1 ).nota =0
+           Roll.trk(k,i1 ).onoff =0
+           Roll.trk(k,i1 ).pb =0
+           Roll.trk(k,i1 ).vol =0
+           Roll.trk(k,i1 ).pan =0
+           Roll.trk(k,i1 ).inst =0
+           
+         ElseIf Roll.trk(k2, i1).onoff=1 And  Roll.trk(k,i1 ).onoff=2   Then
+           Roll.trk(k2, i1)=Roll.trk(k,i1 )
+           Roll.trk(k,i1 ).dur =181
+           Roll.trk(k,i1 ).nota =0
+           Roll.trk(k,i1 ).onoff =0
+           Roll.trk(k,i1 ).pb =0
+           Roll.trk(k,i1 ).vol =0
+           Roll.trk(k,i1 ).pan =0
+           Roll.trk(k,i1 ).inst =0
+           
+     
+         EndIf
+     Next i1  
+     
     Next k
   
-  
      pasoZona1=0 :pasoZona1=0
+     MaxPos=MaxPos - delta -1
   EndIf
   
 Else
-' <====METODO VIEJO ======>
+' <====METODO VIEJO ======> tal vez lo descarte probaremos 30-05-2025
 
 For i2 = 1 To MaxPos
      For i1 = NB To NA
@@ -6117,11 +6200,12 @@ For i2 = 1 To MaxPos
        EndIf
        
        If i1= NA Then 
-        If haynota=1 Then ' sihay unasola notaen la columna no borro
+        If haynota=1 Then ' si hay una sola nota en la columna no borro
          res=0 ' no borrar
         Else
           If borrocol = 1 Then
              res=1  
+             MaxPos=MaxPos -1
           EndIf  
         EndIf
        EndIf             

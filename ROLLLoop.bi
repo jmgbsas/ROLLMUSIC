@@ -143,7 +143,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
  For semitono = 0 To 11
    If COMEDIT = TRUE  and estoyEnOctava = *po  Then ''+ 1  Then
  'COLORES DISTINTOS PARA CTRL-M CTRL-N
-     If octavaEdicion=estoyEnOctava Then
+     If  OCTAVAFIJA=octavaEdicion Then 'octavaEdicion=estoyEnOctava
         if cursorHori=0 And cursorVert=0 Then ' edit normal ingreso nots nuevas
            cairo_set_source_rgba(c, 0, 1, 0.5, 1) ' verde brillante
         EndIf
@@ -288,6 +288,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
       cairo_show_text(c, t2)
       t2=""
     EndIf
+' NO PISAR COLOR DE OCTAVA SELECCIONADA
      If octavaEdicion<>estoyEnOctava Then ' 28-05-2025 REPOSICION COLORES DE LINEA COMPLETOS
       cairo_set_source_rgba(c, 1, 1, 1, 1)
      EndIf 
@@ -362,7 +363,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
      indf= CInt(Roll.trk (n, 11- semitono + (*po-1) * 13).dur)
 
   '  print #1,"lugar ",13
-    If (indf >= 1 And indf <= 185)  Then ' 12-03-2025 185=N roll sin duraciones
+    If (indf >= 1 And indf <= 185) Or indf=190  Then ' 12-03-2025 185=N roll sin duraciones
     Else
         indf=181
     EndIf ' t no puede quedar en un scope dsitinto se hace shared    
@@ -618,8 +619,9 @@ EndIf
 If GrabarPenta =0 Then
  If ( Penta_y <= mousey) And ((Penta_y + 12 * inc_Penta) >= mousey)  Then
   ' estoy en una octava
-
-  estoyEnOctava = *po  '<========== DETERMINACION DE OCTAVA DE TRABAJO
+  If MouseButtons And 1 Then
+     estoyEnOctava = *po  '<========== DETERMINACION DE OCTAVA DE TRABAJO
+  EndIf
   EnOctava=1
   ' CURSOR
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
@@ -1131,6 +1133,7 @@ Else
            ThreadWait threadPenta
             pubi=0
            If VerMenu=1 Then
+             GetMouse mouseX, mouseY, , MouseButtons  
              menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
              cairo_stroke(c)
              botones(hWnd, cm, ANCHO,ALTO) ' este despues sinocrash
@@ -1254,6 +1257,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar co
  curpos= Int((mousex - gap1)/anchofig)
  notacur=nsE
  parametros=0
+ lockip=1
 EndIf
 
 If MultiKey(SC_ALT) And MultiKey(SC_M)  Then ' menu Roll inicial
@@ -1300,6 +1304,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
  trasponer=0
  curpos= Int((mousex - gap1)/anchofig)
  parametros=0
+ lockip=1
 EndIf
 
 
@@ -1313,6 +1318,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE 
  '' notadur=0
  nota=0
  DUR=0
+ lockip=2
 EndIf
 
 If MultiKey(SC_LSHIFT) And MultiKey(SC_V)   Then ' ver parametros roll durente play
@@ -1442,10 +1448,10 @@ If MultiKey(SC_CONTROL) And lockhoriz=0 Then
 EndIf
 
 If MultiKey(SC_LSHIFT) And MultiKey(SC_RIGHT) Then
-' AVANZAR DE ONOFF=2 A OTRO POSTERIOR
+' AVANZAR DE ONOFF=2 A OTRO POSTERIOR o un onoff=1  o un 190
 Print #1,"AVANZA O NO AVANZA AL ONOFF2 ?"
 Dim As Integer  x1, y1, xdesde, xllegada
-
+' salta en onoff=2 onoff=1 o dur=190 para ver los errores escondidos
 If S8=0 Then
    S8=1 
      If COMEDIT=FALSE Then
@@ -1457,9 +1463,9 @@ If S8=0 Then
 
    For x1= xdesde +1 To MaxPos
       For y1 = NB To NA-13
-         If Roll.trk(x1, y1).onoff = 2 Then
+         If Roll.trk(x1, y1).onoff = 2 Or Roll.trk(x1, y1).onoff = 1 Or Roll.trk(x1, y1).dur = 190 Then
             xllegada=x1
-            onoff=2   
+            onoff=2   ' parametro a mostrar
 ''Print #1,"AVANZAO AL ONOFF2 "
             Exit For,For
          Else
@@ -1476,7 +1482,7 @@ If S8=0 Then
            curpos = MaxPos
         EndIf
      EndIf
-
+  GetMouse mouseX, mouseY, , MouseButtons
    menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
 EndIf
  Exit Do
@@ -1519,8 +1525,8 @@ If MultiKey(SC_LSHIFT) And MultiKey(SC_LEFT) Then
 
      For x1= xdesde-1 To 1 Step -1
        For y1 = NB To NA-13
-         If Roll.trk(x1, y1).onoff = 2 Then
-            onoff=2
+         If Roll.trk(x1, y1).onoff = 2 Or Roll.trk(x1, y1).onoff = 1 Or Roll.trk(x1, y1).dur = 190 Then
+            onoff=2 ' parametro a mostrar
             xllegada=x1 
             Exit For,For
          Else
@@ -1537,7 +1543,7 @@ If MultiKey(SC_LSHIFT) And MultiKey(SC_LEFT) Then
            curpos = 0
         EndIf
      EndIf
-
+    GetMouse mouseX, mouseY, , MouseButtons
      menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
   EndIf
     Exit Do    
@@ -2227,7 +2233,7 @@ EndIf
 
 ' MAYUSCULAS PARA SOSTENIDOS
 ' Ahora en nota se guarda el semitono 1 a 12...,  DUR guarda la duracion
-If COMEDIT = TRUE Then ' ingreso de notas   
+If COMEDIT=TRUE Then ' ingreso de notas   
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_A)  Then ' A#
  nota= 2
@@ -2521,7 +2527,7 @@ EndIf
 ' ----------------------FIN NOTAS-------------------------
 
 ' ----------INGRESO DE DURACIONES DE NOTAS -------------
-If COMEDIT = TRUE Then  
+If COMEDIT=TRUE Then  
 ' PORQUE LA CONDICION PARAMETROS_ROLL? PARA ESTAR EN COMMEDIT TRUE ES CONDICION ESTAR
 ' EN PARAMETROS_ROOL ES REDUNDATE CREO.....PUEDO ESTAR EL PARAMETROS_ROLL Y EN COMEDIT FALSE 
  If (menuNew = PARAMETROS_ROLL Or menuNro=PARAMETROS_ROLL) Then  
@@ -2552,13 +2558,14 @@ If COMEDIT = TRUE Then
    DUR = 8:Exit Do
   EndIf
   
-' fin duracion de notas para entrada normal
-' --------
-
-
 '----------------------------------------
 ' CURSOR MODIFICCION DE NOTAS ergo usamos nota=0 para evitar entrada normal 
 ' REVISAR REVISAR REVISAR JMG JMG JMG WWWWWWWWWWWWWWWWWWW  
+  If MultiKey(SC_CONTROL) And MultiKey(SC_9) Then 'espacio en edit sin cursor
+     DUR = 190:Exit Do
+     nota=0
+  EndIf
+
   If MultiKey(SC_9) Then 'espacio en edit sin cursor
      DUR = 181:Exit Do
      nota=0
@@ -2569,7 +2576,7 @@ If COMEDIT = TRUE Then
      nota=0
      Exit Do
   EndIf
-  If MultiKey(SC_0) Then ' pone despues 190
+  If MultiKey(SC_0) Then 
      nota=0
      DUR = 0:Exit Do
   EndIf
@@ -2605,25 +2612,21 @@ If COMEDIT = TRUE Then
  ' este delete esta fuera porque podra ser usado con cualquier comedit 
 ' y en la ventana de control o sea la del menu inicial  no el grafico.
  If multikey(SC_DELETE) Then ''cambia a silencio o nada le suma 16+16 ver eso!!!!!!!
-    Screenbuffer = ScreenPtr()
-    If (Screenbuffer = 0) Then
-' lugar  donde poner algo para ventana de control
-    Else 
       If s7=0 Then
-         s7=1   
          If borrar=1 Then
             borrar=0
+            s7=1
             Exit Do
          EndIf  
       EndIf
       If s7=0 Then
-         s7=1 
         If borrar=0 Then
            borrar=1
+           s7=1 
            Exit Do
         EndIf 
-      EndIf 
-   EndIf
+      EndIf
+     Sleep 50 
  EndIf
 ' EL SALTO POR OMISION SERA EL  QUE ELIJA EL USUARIO CON LA DURACION DE 1 A 8 O 0
 ' PARA VOLVER A 1  
@@ -2650,7 +2653,7 @@ If MultiKey(SC_R) Then ' recalculo de barras compas a veces no anda ¿?
  ReCalCompas(Roll) ' jmg 01-04-21 
 EndIf
 
-If COMEDIT = FALSE Then ' construir cifras para copiar Nveces por ejemplo
+If COMEDIT=FALSE Then ' construir cifras para copiar Nveces por ejemplo
  ' 
 
  If MultiKey(SC_1) Then
@@ -2770,7 +2773,7 @@ If COMEDIT = FALSE Then ' construir cifras para copiar Nveces por ejemplo
       
 ' ESTE LLAMADO ACTUA EN COMEDIT=FALSE Y CON pasoZona 1 y/o 2 
   If MultiKey(SC_CONTROL) And MultiKey(SC_DELETE) Then
-  ' BORRAR COLUMNA UTOMATICO LUEGO DE BORRAR NOTAS CON 0 Y X
+  ' BORRAR COLUMNA UTOMATICO LUEGO DE BORRAR NOTAS CON ctrl-9 Y X
   ' no anda bien 12-12-2021 se cambia a marcar por zona columna o columnas
      borrarColumnasMarcadas()
      Exit Do
@@ -2836,7 +2839,7 @@ If Tiempodelta > 0 And GrabarPenta = 1 Then
    DUR=TiempoDelta
 EndIf
 
-If COMEDIT = TRUE  And nota > 0 And agregarNota=0 And cursorVert=0 And cursorHori=0 And carga=0 And nota <=182   Then ' 182 entra el fin de archivo 
+If COMEDIT=TRUE  And nota > 0 And agregarNota=0 And cursorVert=0 And cursorHori=0 And carga=0 And nota <=182   Then ' 182 entra el fin de archivo 
 ' agregue cambiadur para que entre las modificaciones de cursor en ticks
  Print #1,"--------------------------------------------------------------"
 ' Print #1,">>>START NUCLEO-COMPAS VECTOR posn: "; posn; "suma:";acumulado
@@ -3668,7 +3671,7 @@ If (ScreenEvent(@e)) Then
    EndIf
 '------------------------------------------------
    If e.scancode = &h41 Then ' <======= SC_F7
-    If COMEDIT = FALSE Then
+    If COMEDIT=FALSE Then
      ' MOVE VENTANA
      h=ALTO
      ScreenControl GET_WINDOW_POS, x0, y0
@@ -3686,7 +3689,7 @@ If (ScreenEvent(@e)) Then
    EndIf
 '---------------------------------------------------
    If e.scancode = &h42  Then ' <==== F8
-    If COMEDIT = FALSE Then
+    If COMEDIT=FALSE Then
      ' MOVE VENTANA
      Dim As Integer w,h
      h=ALTO
@@ -3821,13 +3824,13 @@ EndIf
    EndIf
 '-------------------------------------------------------------------------------------
  If e.scancode = SC_LEFT Then
-    If DUR > 0 Then 
-       deltax=  DurXTick(DUR) ' 1 a 9 solamente ,9 vale 0,  0 vale 1 jeje
+    If DUR > 0 And DUR <= 180 Then 
+       deltax=  DurXTick(DUR) 
     Else
        deltax=1
     EndIf
   'MOVER ROLL IZQUIERDA NO CURSOR
-    If COMEDIT = FALSE Then
+    If COMEDIT=FALSE Then
       Dim kNroCol As Integer ' cntidad de scroll de 66
       posicion = posicion - deltax ' UNA semi FUSA
       kNroCol= Int(posicion/NroCol)
@@ -3850,6 +3853,7 @@ EndIf
      EndIf
      
   EndIf
+ GetMouse mouseX, mouseY, , MouseButtons
   menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
     Exit Do
 
@@ -3858,13 +3862,13 @@ EndIf
 '----------------------------------------------------------------
 If e.scancode = SC_RIGHT Then
     Print #1,"ENTRA POR ACA SOLO ???"
-      If DUR > 0 Then 
+      If DUR > 0 And DUR <= 180 Then 
          deltax=  DurXTick(DUR) ' 1 a 9 solamente
       Else
          deltax = 1 'si dur=0 => delta = 1 se mueve de a un tick!
       EndIf
 
-     If COMEDIT = FALSE Then
+     If COMEDIT=FALSE Then
         posicion = posicion + deltax ' UN Tick  
         kNroCol= Int(posicion/NroCol)
         If  (kNroCol > 0) And (posicion = NroCol * kNroCol) And (posicion < MaxPos)Then
@@ -3886,6 +3890,7 @@ If e.scancode = SC_RIGHT Then
         EndIf
         
      EndIf
+   GetMouse mouseX, mouseY, , MouseButtons
    menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
     Exit Do
 EndIf  
@@ -3937,13 +3942,13 @@ EndIf
    EndIf
 '----------------------------------------------------------
    If e.scancode = 75 Then ' <=====  SC_LEFT repeat
-    If DUR > 0 Then 
+    If DUR > 0 And DUR <= 180 Then 
        deltax=  DurXTick(DUR) ' 1 a 9 solamente
     Else
        deltax=1
     EndIf
   'MOVER ROLL IZQUIERDA NO CURSOR
-    If COMEDIT = FALSE Then
+    If COMEDIT=FALSE Then
       Dim kNroCol As Integer ' cntidad de scroll de 66
       posicion = posicion - deltax ' UNA semi FUSA
       kNroCol= Int(posicion/NroCol)
@@ -3967,6 +3972,7 @@ EndIf
         EndIf
 '    EndIf
   EndIf
+  GetMouse mouseX, mouseY, , MouseButtons
   menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
     Exit Do
 
@@ -3974,13 +3980,13 @@ EndIf
    EndIf
 
     If e.scancode = 77 Then ' <======= SC_RIGHT repeat
-          If DUR > 0 Then 
+          If DUR > 0 And DUR <= 180 Then 
              deltax=  DurXTick(DUR) ' 1 a 9 solamente
           Else
              deltax = 1 'si dur=0 => delta = 1 se mueve de a un tick!
           EndIf
 
-     If COMEDIT = FALSE Then
+     If COMEDIT=FALSE Then
         posicion = posicion + deltax ' UN Tick  
         kNroCol= Int(posicion/NroCol)
         If  (kNroCol > 0) And (posicion = NroCol * kNroCol) And (posicion < MaxPos)Then
@@ -4003,7 +4009,8 @@ EndIf
               curpos = NroCol
            EndIf
 ''      EndIf         
-     EndIf   
+     EndIf
+    GetMouse mouseX, mouseY, , MouseButtons   
      menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
      Exit Do
  
@@ -4011,7 +4018,7 @@ EndIf
 
    If e.scancode = &h41 Then ' <============ SC_F7
 
-    If COMEDIT = FALSE Then
+    If COMEDIT=FALSE Then
      ' MOVE VENTANA
      h=ALTO
      ScreenControl GET_WINDOW_POS, x0, y0
@@ -4031,7 +4038,7 @@ EndIf
    EndIf
 
    If e.scancode = &h42  Then ' <============  F8
-    If COMEDIT = FALSE Then
+    If COMEDIT=FALSE Then
 
      ' MOVE VENTANA
      Dim As Integer w,h
@@ -4210,7 +4217,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
    If MouseButtons And 1 And cierroedit= 0 Then ' no se si funciona mejor lo dejaremos un tiempo
       cierroedit=1 ' no permite modificar mas que una vez
     If s3 = 0  Then
-     COMEDIT = TRUE  ' EDIT SE PONE EN VERDE PARA ENTRAR NOTAS NUEVAS AL FINAL DE LA SECUENCIA
+     COMEDIT=TRUE  ' EDIT SE PONE EN VERDE PARA ENTRAR NOTAS NUEVAS AL FINAL DE LA SECUENCIA
      '       print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
       ''font = 18 SACAMOS AHORA ESTO LO MANEJA MENU  
     ''' curpos=0 JMGJMG25FEB
@@ -4237,7 +4244,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
      Exit Do
     Else
      If s3=1 Then ' VIENE DE COMEDIT=TRUE PASAMOA A FALSE  
-        COMEDIT = FALSE '': s3 = 0 ' solo LECTURA 06-12-2021
+        COMEDIT=FALSE '': s3 = 0 ' solo LECTURA 06-12-2021
      '       print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
      'posicion= posicion + curPOS ' estaba mal no va 3-3-21 jmg
           
@@ -5265,7 +5272,7 @@ ButtonGadget(2,530,30,50,40," OK ")
           If RollDur >0 And (cursorHori=1 Or cursorHori=2) Then
              DUR=RollDur
           EndIf
-
+          OCTAVAFIJA=octavaEdicion
      EndIf
          cierroedit=0
 '---- MENU INSERCIONES NOTAS CON MENU DE MOUSE

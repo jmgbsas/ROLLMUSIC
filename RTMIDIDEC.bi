@@ -184,7 +184,7 @@ Dim Shared As integer DurXTick (0 To 185) => {0, _  ' 0 cambiado a 1 9-05-2025
  480, 240, 120, 60, 30, 15, 7,  4,  2, _     ' 145 153
  576, 288, 144, 72, 36, 18, 9,  4,  2, _     ' 154 162
  672, 336, 168, 84, 42, 21, 10, 5,  3, _     ' 163 171
- 256, 128, 64 , 32, 16, 8 , 4 , 2 , 1, 0,0,0,0,0 }   ' 172 183 
+ 256, 128, 64 , 32, 16, 8 , 4 , 2 , 1, 0,0,0,0,0 }   ' 172 185 
 
 ' 96 son 1 seg para negra=60 entonces el tick valdra 1/96=10.41666666 mseg es 3W
 ' el mas chico son 1 parte o sea 10,41 mseg!! son e ldoble de los 5 mseg que usaba!
