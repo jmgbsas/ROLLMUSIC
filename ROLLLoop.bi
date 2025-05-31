@@ -654,7 +654,7 @@ EndIf
 If GrabarPenta=0 Then
   If ((Penta_y + 12 * inc_Penta) <= mousey) And ((Penta_y + 14 * inc_Penta) >= mousey)  Then
    EnOctava = 0
-   estoyEnOctava=90 
+   estoyEnOctava=90 ' esto dio error corregido 
   EndIf
 EndIf
 
@@ -2885,13 +2885,17 @@ If COMEDIT=TRUE  And nota > 0 And agregarNota=0 And cursorVert=0 And cursorHori=
 '    Print #1,"Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota ",Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota
 '    Print #1,"Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur ",Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
 ' deberia agregar aca nota=181???
-    If Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0 Or Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 182   Then
-       posicion=posn
+
+    If estoyEnOctava=90 Then ' entre dos octavas en 654 de RollLoop GrabarPenta=0 se ajusta a 90
+       Exit Do,Do
+    Else
+      If Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0 Or Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 182   Then
+         posicion=posn
      '182 el fin de archivo lo puedo pisar para seguir la secuencia O EL 183 fin del evento ojo!!!
-        print #1, "ingreso a NUCLEO POSICION=POSN", posicion
-     Exit Do
+         print #1, "ingreso a NUCLEO POSICION=POSN", posicion
+        Exit Do
+      EndIf
     EndIf
-   
      If HabilitarMIDIIN =0 And  GrabarPenta=0  Then
       posn = posn + 1
       Print #1,"LOOP DO posn = posn + 1 ";posn 

@@ -949,33 +949,44 @@
               (el + y el * funcionan como ligadura  no discrimina el lenguaje entre ambas teclas) 
            .. El doble puntillo de un pentagrama (:) usamos la coma (,)  Ej; (3,C) pondrá I: en nota C 
                  
-    2.1.2) Entrada Por mouse y Teclado 
+    2.1.2) Entrada Normal Por mouse y Teclado (secuencia nueva o agragar al final de una existente)
            Con menu de duraciones gráfico:
            estando habilitada una octava como en 2.1) se hace click derecho en cualquier lugar de la octava elegida,
-           aparece un menu de comando y duraciones contextual gráfica, el comando permite entrar a Ctrl-M, modo de 
-           modificacion de notas ya entradas, se da click izquierdo a la duracion deseada (O,P,I,L,F,E, x, H) del menu y 
-           luego se da click sobre la nota deseada en la linea en pantalla, PARA FINALIZAR se pulsa X,el progrma buscara 
-           la ubicacion exacta del comienzo de la nota y la modificara, se puede seguir usando la misma duracion dando click 
-           a otras notas con la misma duracion sin neceidad de traer de nuevo el menu contextual de notas. 
-           Otra forma es entrar la duracion por teclado ubicar antes o despues la nota con click y luego X.
-           NOTA si se borro una nota con CTRL-9 para que se borre al grabar por ejemplo toda una columna,,,
-           aparecerá un 0 como simbolo de que se borrara, si quiero borrar esa marca se hace en cTRL-N, porque
-           en ctri-M se busca comienzo de nota no un borrar 0. 
+           aparece un menu de comando y duraciones contextual gráfica, el comando permite entrar a Ctrl-M pero este no es
+           el caso, estamos en modo de modificacion de notas ya entradas, solo queremos notas nuevas al final de la secuencia, 
+           se da click izquierdo a la duracion deseada (O,P,I,L,F,E, x, H) del menu grafico sobre la posicion deseada 
+           (no hace falta pulsar el nombre de la nota solo ubicarse sobre ella ), yaaparecera la nota y asi para ingresar 
+           mas naotas
 
-           En modo Cursor: 0=marcar borrar columna seguido de X.(el borrado se ejecuta al guardar
-           el archivo y al cargarlo de nuevo, la nota se borra, pero si en esa columna era la unica nota y 
-           se desea borrar la columna en ese momento usar ctrl-delete ver 2.5.3).
+    2.2    Modo Edit Cursor: estando en EDIT Normal en estado color verde para ingresar nuevas notas podemos pasar
+           a modificar la secuencia previamente entrada para cambiar su duracion ctrl-M, y/o agregar tambien notas nuevas dentro de
+           la zona elegida Ctrl-N. 
+           ctrl-M sera de color algo rojizo , Ctrl-N de color azul.
+           Ctrl-M solo modificaciones. Las modificaciones se hace ubicando el cursor con TEclado o mouse.
+           Con TEclado se ubica el cursor con flechas o con click izquierdo del mouse, mas rapido, se pulsa una duracion 1 a 8 
            Luego pulsar una nota en alfabeto americano C,D,E,F,G,A,B, o las mimsas notas
            pero sostenido usando Ctrl-C, ctrl-D ..etc.
            Si repetimos la misma duracion en diferentes nota subsiguientes, basta pulsar las 
-           notas siguientes sin introducir duracion.Todo quedara escrito solo en la octava 
-           elegida no se podra escribir en otras octavas de arriba o abajo. 
+           notas siguientes sin introducir duracion ubicando la prozima nota con click o teclado.
+           Todo quedara escrito solo en la octava  elegida no se podra escribir en otras octavas de arriba o abajo. 
            Para ello un modo lento es, salimos de edicion pulsando Edit, cambiara de color 
-           de verde a blanco. Luego repetir elproceso pero eligiendo otra octava posicionando
-           el mouse sobre   esa octava deseada.
-         - Pero si se está editando una octava y se desea pasar rapido a otra octava, simplemete
-           se pasa el mouse por encima del extremo DERECHO de la octava en el extremo final derecho
-           y se estara editando esa nueva octava  no pudiendo hacerlo en la de antes eso evita errores de entrada.
+           de verde a blanco. Luego repetir el proceso pero eligiendo otra octava posicionando
+           el mouse sobre  esa octava deseada. Pero mas rapido es dar click izquierdo reiteraas veces sobre la nueva 
+           octava hasta  que seponga verde eso indicara que ya esta seleccionada.
+           Luego se pulsa X, la ubicacion del cursosr no debe ser exacta (+10 -10 posiciones en horizontal) el programa buscara el 
+           comienzo de la nota mirando su parametro onoff=2 que se puede ver arriba en la cinta del menu cuando esta en Edit....
+           Si pulsamos 0 y luego X borra la nota. Si pulso Ctrl-9 y luego X marca una nota para borrar, coloca un 0 en pantalla 
+           (parametros 190 en nota y duracion) si es unica esa nota se borrara la columna al grabar el archivo y luego cargarlo 
+           o en Modo Lectura pulsando Ctrl-delete . si en esa columna hay mas notas y se marco solo una
+           la columna no se borrara se debe nmarcar todas las notas en 0 en Ctrl-M y luego dar Ctrl-delete en Modo LEctura. 
+           Ese metodo es viejo laborioso en cuanto al teclado. Otra forma mejor es marcar la zona en modo lectura directamente
+           y dar ctrl-delete se boraran las notas cuyo comienzo este dentro de la zona marcara y se desplazarn los datos
+           ocupando la zona eliminada.
+
+          -----> lo que sigue hay que modificar...hacer un update es una ayuda vieja , el update de ticks se hara a medida
+           que se vaya adaptando  las funciones que existian antes de incluir Ticks.<-----------
+
+
            EN MODO CURSOR la nota agregada es sobre un tramo de secuencia elegido y congelado podre poner notas
            EN UN ESPACIO VACIO o SI ES SOBRE UNA NOTA EXISTENTE LA MODIFICARA POR EJEMPLO SU DURACION.
            El cursor en edicion en MODO CURSOR para modificar, permanece en el semitono ultimo donde se 
