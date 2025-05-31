@@ -143,7 +143,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
  For semitono = 0 To 11
    If COMEDIT = TRUE  and estoyEnOctava = *po  Then ''+ 1  Then
  'COLORES DISTINTOS PARA CTRL-M CTRL-N
-     If  OCTAVAFIJA=octavaEdicion Then 'octavaEdicion=estoyEnOctava
+     If  OCTAVAFIJA=octavaEdicion Or OctavaEdicion=EstoyenOctava Then 'octavaEdicion=estoyEnOctava
         if cursorHori=0 And cursorVert=0 Then ' edit normal ingreso nots nuevas
            cairo_set_source_rgba(c, 0, 1, 0.5, 1) ' verde brillante
         EndIf
@@ -5266,14 +5266,19 @@ ButtonGadget(2,530,30,50,40," OK ")
  ' MENU CONTEXTUAL O MOVER CURSOR A UNA POSICION
  '******************************************************
  If  COMEDIT=TRUE  Then
-     If MouseButtons And 1 Then 
+       If  (cursorHori=1 Or CursorHori=2) then
+         If MouseButtons And 1 Then 
             notacur=nsE
             curpos=Int((mousex- gap1 )/anchofig)
-          If RollDur >0 And (cursorHori=1 Or cursorHori=2) Then
-             DUR=RollDur
-          EndIf
-          OCTAVAFIJA=octavaEdicion
-     EndIf
+            If RollDur >0 And (cursorHori=1 Or cursorHori=2) Then
+               DUR=RollDur
+            EndIf
+            OCTAVAFIJA=octavaEdicion
+         EndIf
+       Else   
+          octavaEdicion = EstoyEnOctava 
+          
+       EndIf
          cierroedit=0
 '---- MENU INSERCIONES NOTAS CON MENU DE MOUSE
     If  MultiKey(SC_CONTROL) And (MouseButtons And 2)  Then
