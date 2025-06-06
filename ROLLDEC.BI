@@ -198,8 +198,8 @@ Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, playloop2=0,SelG
 Dim Shared as ubyte  DUR,nota,notacur
 ReDim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t,t2
-Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld,cursorVert, cursormove,notaoldmidi
-Dim shared As integer Penta_y, indice, espacio,cursorHori
+Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld, cursormove,notaoldmidi
+Dim shared As integer Penta_y, indice, espacio
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic, id,ShowNroCol=0,nro,trak=1,trackold=1
@@ -613,7 +613,7 @@ Dim Shared d4 As Integer => 10000 'para parametrizar menu roll
 ' comienza el compas , se calculara dinamicamente,,,según posicion  y la historia anterior
 ' del mismo array (acumulado, nro Compas, posicion)
 Dim Shared As Integer TipoAcorde=0 '1 simple,2 acordes iguales, 3 acorde  distintos
-espacio=0:cursorVert=0:borrar=0:cambiadur=0:InicioDeLectura=0
+espacio=0:borrar=0:cambiadur=0:InicioDeLectura=0
 menuAccion=0:insert=0:agregarNota=0:octavas=0
 ' Const LEFTBUTTON = 1 
 ' Const MIDDLEBUTTON = 4 
@@ -645,7 +645,7 @@ Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen,gap1,gap2,gap3
 common Shared As float anchofig
-Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos=0, curposold, resultado, indicePos
+Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos=0, curposold, resultado, indicePos,curpos1
 resultado=0
 ' este pesodur lo deberia cambiar a ticks
 Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
@@ -948,9 +948,15 @@ Dim Shared As UByte numdurasmidi( 1 To 24)
 Dim Shared translado As Integer = 1
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
 Dim shared As Integer   posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
-Dim Shared As Integer octaroll,cierroedit= 0,cierroport=0
-Dim Shared As BOOLEAN COMEDIT, resize
-COMEDIT=FALSE
+Dim Shared As Integer octaroll,cierroedit= 0,cierroport=0,COMEDIT
+Dim Shared As BOOLEAN  resize
+Const As Integer LECTURA=1 ' 0 0
+Const As Integer ENTRADA_NOTAS=2 ' 0 0 
+Const As Integer MODIFICACION_INSERCION=3  '1 1 
+Const As Integer SOLO_MODIFICACION=4 ' 0 2
+Const As Integer MODIFICACION_COLUMNA=5
+
+COMEDIT=LECTURA
 
 Dim Shared po As Integer Ptr
 Dim Shared e As EVENT

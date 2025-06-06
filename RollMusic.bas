@@ -81,7 +81,7 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.323 fix estoyEnOctava=90 cancelaba  "
+nroversion="TICKS 0.324 Variables claras en Edicion"
 ' llegue hasta 2.5.4 de ayuda.txt, lo anterior se verifico el borrado de notas y columnas
 ' borrado de zona ok 
 ' se corrigio ctrl-m y ctrl-n y con colores distintos rojo y azul, verde ingreso notas normal
@@ -93,7 +93,7 @@ nroversion="TICKS 0.323 fix estoyEnOctava=90 cancelaba  "
 ' cursorVert = 0 +  cursorHori = 0 + COMEDIT=FALSE  LECTURA
 ' cursorVert = 0 +  cursorHori = 0 + COMEDIT=TRUE   ENTRADA DE NOTA MANUAL SIEMPRE AL FINAL DE LA SECUENCIA
 ' cursorVert = 1 +  cursorHori = 1 + COMEDIT=TRUE   CTRL-M MODIFICACION INSERCION CON X AL FINAL
-' cursorVert = 0 +  cursorHori = 2 + COMEDIT=TRUE   CTRL-N MODIFICACION INSERCION SIN X CON NOTA CDEFGAB
+' cursorVert = 0 +  cursorHori = 2 + COMEDIT=TRUE   CTRL-N SOLO_MODIFICACION  SIN X CON NOTA CDEFGAB
 ' FALTA:cursorVert = 3 +  cursorHori = 0 + COMEDIT=TRUE   CTRL-O MODIFICACION DE COLUMNAS O ACORDES 
 
 ' REVEER: si tiene  sentido Borrar nota si ya lo hace modificar y luego insertar
@@ -238,7 +238,7 @@ End If
 'Print #1, "DESPUES ROLLCTRLSUB.Bi"
 '----------------
 Do
-  COMEDIT = False
+  COMEDIT=LECTURA
 param.titulo ="RollMusic Ctrl V "+ nroversion
 'Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
 'Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)

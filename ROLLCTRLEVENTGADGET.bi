@@ -530,8 +530,8 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
        ''RollLoop ( param)
            abrirRoll=NO_CARGAR 'EVITA CARGA ROLL DE MENU PRONCIPAL
         EndIf  
-' SI EL USUARIO ABRE ROLL MANUALMENTE ..Y LEDA UN CLICK A EDIT
-           COMEDIT=TRUE
+' SI EL USUARIO ABRE ROLL MANUALMENTE ..Y LEDA UN CLICK A EDICION Y LUEGO A EDIT
+           COMEDIT=ENTRADA_NOTAS
            SetForegroundWindow(hwnd) 
         If  metronomo_si=3 Then
           Print #1,"Va a TOCAR 4 PULSOS DEL instrumento elegido y luego el metronomo"
@@ -558,7 +558,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
 Print #1, "542 GrabarPenta=0"
          metronomo_si=0
          terminar_metronomo=1
-         COMEDIT=FALSE  
+         COMEDIT=LECTURA  
 ''      If NombreCancion > "" Then ' detiene todo pista aisalda o cancion 
             If play=SI Or playb=SI Or CPlay=SI Then
                PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY
@@ -572,7 +572,7 @@ Print #1, "542 GrabarPenta=0"
       EndIf
    
 ' ///////////////// BOTON VERDE PLAY CANCION ROLL ////////  28-02-2024 GUIA
-      If eventnumber()= BTN_ROLL_EJECUTAR And COMEDIT=FALSE Then ' 13-02-2024 PROBAR BIEN
+      If eventnumber()= BTN_ROLL_EJECUTAR And COMEDIT=LECTURA Then ' 13-02-2024 PROBAR BIEN
          SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
          SetGadgetstate(BTN_ROLL_GRABAR_MIDI , BTN_LIBERADO)
          terminar_metronomo=1

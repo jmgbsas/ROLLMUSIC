@@ -856,7 +856,7 @@ i1men=notapMen
 End Sub
 
 Function BuscarNota (ctrl As Integer, ByRef cur1 As Integer,ncur As Integer) As Integer ' en cursor cambiadur u otras el programa se posicionara en la nota mas cercana
-'SOLO SIRVE PARA APLICAR EN CURSOR COMEDIT=TRUE, HBRIA QUE HACER OTRA PARA FALSE
+'SOLO SIRVE PARA APLICAR EN CURSOR COMEDIT=TRUE, HBRIA QUE HACER OTRA PARA LECTURA
 ' Y FUERA DE CURSOR SI HACE FALTA POR AHORA NO
 ' decidiremos cuanotos ticks de acercamiento en un principio 10
 ' posn1=n+curpos  es x , notacur es y, barreemos un cuadrado ¡ 1 1 semitono y + - 10 curpos
@@ -939,13 +939,13 @@ Dim  As Integer nroPartesNota
 '---------------CTRL-N ..................
 'ctrl-n: usaremos el mismo codigo de ctrl-m solo que la nota se entra por nombre la X que es cambiadur=1 se
 ' establece desde el principio no hace falta pulsarla
- If cursorHori=2  And agregarNota=1  And nota > 0 Then 'ctrl-n ch cambiado hoy
+ If  COMEDIT=SOLO_MODIFICACION  And agregarNota=1  And nota > 0 Then 'ctrl-n ch cambiado hoy
   notacur=nota 
   octavaEdicion=estoyEnOctava ' modifico en cualquier octava
   cambiadur=1
  EndIf
 
- If cursorHori=1 Or cursorHori= 2 Then  ' vertical ctrl-m o Ctrl-N ch
+ If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=SOLO_MODIFICACION Then  ' vertical ctrl-m o Ctrl-N ch
   trasponer=0
   cairo_move_to  (c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
   cairo_rectangle(c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  ,wc*6 ,inc_Penta) '13-07-2021 inc_penta/2 por inc_penta
@@ -962,7 +962,7 @@ Dim  As Integer nroPartesNota
      notaold=notacur 
 
  EndIf
- If cursorVert= 0 And cursorHori=0 Then ' lectura y comedit=true
+ If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS  Then ' lectura y comedit=true
   If notacur=1 Then
    'print #1,"notaold en cursor ";notaold
    notaOld=notacur
@@ -973,7 +973,7 @@ Dim  As Integer nroPartesNota
   cairo_rectangle(c,gap1 + (curpos)*anchofig , Penta_y + (notaOld-1) * inc_Penta  , wc/4,inc_Penta)
 
  EndIf
- If cursorHori=1 Or cursorHori = 2 Then 'ctrl-m y ctrl-n 
+ If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=SOLO_MODIFICACION Then 'ctrl-m y ctrl-n 
  ' If notacur=1 Then
    'print #1,"notaold en cursor ";notaold
  '  notaOld=notacur
@@ -988,7 +988,7 @@ Dim  As Integer nroPartesNota
 '-----------------------
 ' BORRAR CON DELETE: (EN VEZ DE 0)
 '------------------------
- If (cursorHori=1 Or cursorHori = 2) And borrar= 1  Then 'ctrl-M selecion  de nota con flechas y posicion
+ If (COMEDIT=MODIFICACION_INSERCION Or COMEDIT=SOLO_MODIFICACION) And borrar= 1  Then 'ctrl-M selecion  de nota con flechas y posicion
 ' HABILITAR NOTA AL PONER EN CERO SE PUEDE USAR EN EDIT COMUN
 ' ch lo habilitamos para control-n tambien
 ' OJO NO BORRA EL ONOFF=1!!! PONERLO
@@ -1048,10 +1048,10 @@ trasponer=0
  If cambiadur= 1  Then ''Ctrl-M y pulso X
      cambiadur=0
      trasponer=0
-   If (cursorHori=1 and cursorVert = 1)  And octavaEdicion<>estoyEnOctava Then ' PARA ctrl-M SOLO CAMBIA UNA OCTAVA POR VEZ
+   If COMEDIT=MODIFICACION_INSERCION   And octavaEdicion<>estoyEnOctava Then ' PARA ctrl-M SOLO CAMBIA UNA OCTAVA POR VEZ
        Exit Sub  'cursorVert = 1 es solo ctrl-m 
    EndIf
-   If cursorHori=2   And nota = 0 Then ' PARA ctrl-N cambia en todas las octavas libremente
+   If  COMEDIT=SOLO_MODIFICACION   And nota = 0 Then ' PARA ctrl-N cambia en todas las octavas libremente
        Exit Sub  ' se usaria en ctrl-n???
    EndIf
 
@@ -1062,7 +1062,7 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
      cambiadur=1
      Print #1," ANTES BUCONOTA curpos notacur "; curpos, notacur
 
-     If BuscarNota (cambiadur, curpos ,notacur ) And cursorVert = 1 Then
+     If BuscarNota (cambiadur, curpos ,notacur ) And COMEDIT=MODIFICACION_INSERCION  Then
         cambiadur=0 ' si busconota da error 1 deberia salir sin hacer nada, para ctrl-N no va salir
         Exit Sub ' sale para ctrl-m proque solo modifico notas existentes
      EndIf 
@@ -1415,7 +1415,7 @@ trasponer=0
      EndIf
       notaold=12-notacur +(estoyEnOctava -1) * 13
 '''---- OJO ESTO NO ESTBA -----------      
-      If cursorHori=2 Then ' wwwwwwwwwwwwww curcial 
+      If COMEDIT=SOLO_MODIFICACION Then ' wwwwwwwwwwwwww curcial 
 ' necesario en ctrl-n sino borra la nota, el cursor salta arriba pero no importa 
 ' el cursor lo mueve verticalmente el nombre de la nota 
 'PERO en ctrl-m Hori=1 no borra la nota pero no mantiene la ultima posicion del 
@@ -1471,7 +1471,7 @@ trasponer=0
 '   RollaTrack Track(), 0,Roll 
 'endif
  ' ===> PROCESO INSERT
- If (cursorHori=1 Or cursorVert = 1) And insert= 2 Then 'ctrl-m insert
+ If COMEDIT=MODIFICACION_INSERCION  And insert= 2 Then 'ctrl-m insert
 
   ' insertar  nota
   'ESTANDO EN UNA NOTA ELEGIDA POR EL CURSOR
@@ -1503,7 +1503,7 @@ trasponer=0
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur ' 5.7.3
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff = 2
   Roll.trk(posnOff, 12 - notacur + (*po-1) * 13).onoff = 1  
-
+  Roll.trk(posnOff, 12 - notacur + (*po-1) * 13).DUR = 183
   'vroll= Roll.trk(notacur + (*po) * 13, n + curpos).nota
   ' TODO IGUAL A cambiadur = 1 deberia andar ,,,,lunica diff es
   ' que se cargala nota en roll,<- pero 1ero debo guardar la nota de Roll en aux
@@ -1543,7 +1543,7 @@ trasponer=0
 
 'If Roll.trk(notacur + (*po) * 13, n+curpos).dur >= 1 And _ 
 '   Roll.trk(notacur + (*po) * 13, n+curpos).dur <= 181 Then
-   If cursorHori=1 And vdur=0 And vnota=0 And copiar=1 Then ' ctrl-m
+   If COMEDIT=MODIFICACION_INSERCION And vdur=0 And vnota=0 And copiar=1 Then ' ctrl-m
     If  BuscarNota (1, curpos ,notacur ) = 1 Then
         copiar=0 
         Exit Sub
@@ -1557,13 +1557,14 @@ trasponer=0
 
 'If Roll.trk(notacur + (*po) * 13, n+curpos).dur  < 1  And _  
 '   Roll.trk(notacur + (*po) * 13, n+curpos).dur   > 180 Then
-If cursorHori=1 And vdur>0 And copiar=3 Then ' ctrl-m
+If COMEDIT=MODIFICACION_INSERCION And vdur>0 And copiar=3 Then ' ctrl-m
    posnOff=n + curpos + DurXTick(vdur) -1   
    If notacur<> vnota And MultiKey (SC_ENTER) Then 
       Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur 
       Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = vdur
       Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff = 2
-      Roll.trk(posnOff, 12 - notacur + (*po-1) * 13).onoff = 1  
+      Roll.trk(posnOff, 12 - notacur + (*po-1) * 13).onoff = 1
+      Roll.trk(posnOff, 12 - notacur + (*po-1) * 13).DUR = 183  
       copiar=0
       vdur=0:vnota=0
       ReCalCompas(Roll)
@@ -1581,7 +1582,7 @@ EndIf
 ' y n + curpos supera los 39 termina en 67 
 ' si hago curpos=0 funciona pero lso cuadraditos no avanzan
 ' ergo salto esto en play y listo deberi aestar condicionado oara edicion eso es
-If cursorHori=1 Then ' ctrl-m 17-09-2021 faltaba condicion de modificacion !! 
+If COMEDIT=MODIFICACION_INSERCION  Then ' ctrl-m 17-09-2021 faltaba condicion de modificacion !! 
   If copiar=3 And (Roll.trk(n + curpos, 12 -notacur + (*po-1) * 13).dur = vdur) And notacur = vnota Then
      copiar=0:vdur=0:vnota=0
   EndIf
@@ -3431,7 +3432,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    menuNew=PARAMETROS_ROLL
    
    cairo_move_to(c, 0, 36 )
-   If COMEDIT= TRUE   Then
+   If COMEDIT<>LECTURA   Then
     cairo_set_source_rgba c,0,1,0,1
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -3924,7 +3925,9 @@ Sleep 100
      NA => 11 + (hasta-1) * 13  ' 102 para  8
   '   print #1,"NB,NA,DESDE,HASTA ";NB,NA,desde,hasta
      CambiarDim(1)
-     MaxPos = 2 'NroCol
+     If MaxPos=0 Then
+       MaxPos = 2 'NroCol
+     EndIf
      posicion=1:posn=0
      curpos=0
      notacur=1
@@ -4256,9 +4259,10 @@ End Sub
 '--------------------------
 Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef insert As Integer, ByRef nota As UByte)
  Dim As Integer indpos,lastPosRollReemplzada,s,t,k,i
- lastPosRollReemplzada=posicion + curpos
+ lastPosRollReemplzada=posicion + curpos 
  indpos=posicion + curpos'indice posicion partimos de ultima posicion global reemplazada
- '   print #1, "EN MOVERESTO, indaux,StartInsert: ",indaux ,StartInsert
+ 
+    print #1, "EN MOVERESTO, indaux,StartInsert: ",indaux ,StartInsert
  ' ultima posicion movida a aux  es indaux (indaux POSICION DE AUX) JMG
  Dim As Integer lastIndAuxporInsercion = indaux
  'print #1, "moveresto inicio: indaux,indpos,posicion :", indaux,indpos,posicion
@@ -4272,7 +4276,7 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
   'indpos ya se le sumo curpos... COPIAMOS A AUX EL RESTO DE ROLL NO MODIFICADO COMPLETA
   indpos=indpos+1 ' empezamos de la siguiente no reemplazada y seguimos al final
   ''suponemos que posicion=indpos era la posicion de ultima reemplazada
-  indaux=indaux+1 'nosubicamos en 1er posicon libre en aux para recibir el resto
+  indaux=indaux +1
   'print #1,"antes del FOR Roll,RollAux.trk.. indpos,indaux ", indpos,indaux
   ' debemos barrer solo la octava? no porque puede haber otras octavas cargadas
   For s= NB To NA 'barremos todas las notas verticalmente para una misma posicion
@@ -4493,13 +4497,17 @@ Sub CambiarDim(redi As Integer)
      *po=hasta-1
      Print #1,"CambiarDim desde ";desde;" hasta ";hasta;" *po ";*po;" NB ";NB;" NA ";NA
      Print #1,"CantTicks ";CantTicks
-     
+     '''CantTicks=CantTicks +  DurXTick(DUR) -1
 If redi=1 Then 
      ReDim  Preserve (Roll.trk ) ( 1 To CantTicks, NB To NA)
      ReDim  Preserve (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
+     ReDim  Preserve compas(1 To CantTicks)
+
 Else
      ReDim  (Roll.trk ) ( 1 To CantTicks, NB To NA)
      ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
+     ReDim  compas(1 To CantTicks)
+
      Print #1,"FIN CAMBIARDIM  else" 
 EndIf   
 ReDim (RollAux.trk) ( 1 To CantTicks,NB To NA )

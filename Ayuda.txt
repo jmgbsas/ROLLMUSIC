@@ -886,27 +886,42 @@
            Es el MODO EDIT, 1) pulsar [Edicion], aparece "Edit" más parámetros a la derecha en el mismo color blanco.
            2) El MODO EDIT se consigue al dar click en la palabra "Edit" anterior, dar click hasta que se ponga en color verde
            puede tardar mantener presionado 1 o 2 segundos, dar un click lento o rapido según la PC. Entrar duraciones
-           y nombres de notas por taclado. (ver mas abajo detalle)
-    2.1.2) Entrada por mouse y teclado de PC. Como en 2.1.1 llegar a Edit verde. luego click derecho del mouse y aparece el menu
-           luego click izq para elegir  alguna duracion. [NO PULSAR CTRL-M sino se pasara a modificacion color rojo] 
-           si hubo un error de entrada pasar a ctrl-m y se podra modificar una nota ingresada anterior mente.
+           y nombres de notas por taclado. (ver mas abajo detalle) Ej 3C y aparecera la nota. Si sequiere sacar la
+           guia de notas del lado izquierdo pulsar H y para volver a verlo J.
+    2.1.2) Entrada por mouse . Como en 2.1.1 llegar a Edit verde. luego click derecho del mouse y aparece el menu
+           luego click izq para elegir  alguna duracion y la nota se dibujara, solo se usa el mouse. 
+           [NO PULSAR CTRL-M sino se pasara a modificacion color rojo] si hubo un error de entrada pasar a ctrl-m 
+            y se podra modificar una nota ingresada anterior mente.
             
     2.2) MODO EDIT CURSOR Ctrl-M Solo modificar notas existentes no se ingresan notas nuevas en espacios vacios.
-        En MODO EDIT verde pulsar CTRL+M O dar CTRL+click derecho en modo mouse para modificar notas con click.
-    Con CTRL+M las notas se entran por teclado como en MODO EDIT y con X se modifica, pero la zona de la secuencia esta fija no se alarga 
-    ni acorta la secuencia. Con CTRL+M el cursor se posicionara en el lugar donde se de click izquierdo , Se
-    puede repetir la modificaion con la misma duracion cada vez que quiera mover el cursor rapido o dar click izquierdo en otra nota deseada
-    y luego X para cambiar.
+        En MODO EDIT verde pulsar CTRL+M (O dar CTRL+click derecho en modo mouse y lugo click izquiedo sobre Ctrl-M en el menu grafico).
+    Con teclas CTRL+M las notas se pueden entrar por teclado como en MODO EDIT el cursosr se posiciona con las flechas y con X se 
+    ejecuta la modificacion previamente se pulsa una duracion 1 a 8. La zona de la secuencia esta fija no se alarga ni acorta la secuencia. 
+    En CTRL+M se puede usar el mouse en vez de las flechas, el cursor se posicionara en el lugar donde se de click derecho. 
+    ahi elegir una duracion del menu grafico la posicion se movera un poco lugo dar click izquierdo de nuevo sobre lanota y luego X. 
+    Se puede repetir la modificaion con la misma duracion cada vez que quiera
+    para eso mover el cursor rapido o dar click izquierdo en  otra nota deseada y luego X para cambiar.
+    Si se sale de foco o  sea se pasa a otra ventana o otra octava se puede pierde la secuencia y ´podria volver a 
+    el color verde o sea podria salirse de ctrl-m y habrá que empezar de nuevo Ctrl-m, click derecho menu elegir duracion X, 
+    click +x en todas las notas que se requiera el cambio (a veces lo hace bien es un bug que no se exploro por ahora)
 
     Nota: en este modo la pantalla se congela solo edita lo que se ve, LAS FLECHAS DER IZQ  MUEVE EL CURSOR 
     PERO NO LA SECUENCIA . Si los cursores aparecen muy lejos del lugar de operacion deseado dar un CTRL+M estando 
     el mouse en donde se quiere editar o directamente click izquierdo. Si se usa click derecho en la posicion deseada el cursor se moveran 
-    a esa posición y mostrara el menu de duraciones con lclick izquierdo no parece el menu solo cambia la posicion. 
+    a esa posición y mostrara el menu de duraciones, con click izquierdo no parece el menu solo cambia la posicion. 
     Para salir dar CTRL+P y un click en cualqueir lado. 
-     El Cursor se mueve con flecha arriba abajo para ajustar al semitono deseado en esa posicion, o 
-    derecha izquierda para cambiar de posicion. SI DESEO ADELANTAR LA SECUENCIA  congelada aun en CTRL+M o ctrl-N puedo usar 
-    ALT-Flecha Der y ALT-Flecha Izq. (Incrementos de 1/100) Al dejar de pulsar Ctrl las flechas solo moveran el cursor nuevamente,
+    SI DESEO ADELANTAR LA SECUENCIA  congelada aun en CTRL+M o ctrl-N puedo usar 
+    ALT-Flecha Der y ALT-Flecha Izq. (Incrementos de 1/100) Al dejar de pulsar Alt, las flechas solo moveran el cursor nuevamente,
     en el tramo de secuencia nuevo y congelado.
+    Para mover el cursos con flechas ademas se puede ajustar el tamaño del salto  pulsando previamente
+    una duracion si pulso 3 saltara en duraciones de negra I o sea 96 ticks. Si deseo avanzar o retroceder
+    entre los comienzos o finales de las notas pulsar May (izquierda o der )+ flecha izq o der, tambien se detendrá el salto
+    si hay un codigo 190 de eliminacion de posible columna.(o sea onoff=2 onoff=1 o dur=190). Si quiero 
+    volver a un tick por salto pulsar 0 (1 a 8 son duraciones), 0 sera en este caso un Tick y luego pulsar
+    las flechas der o izq. 
+     En el caso de usar solo teclado, el Cursor se mueve con flecha arriba abajo para ajustar al semitono deseado en esa posicion, o 
+    derecha izquierda para cambiar de posicion. 
+
     2.3) Modificar en Ctrl-N
     2.4) Copiar 1 nota.
     2.5) Borrar 1 Nota, Borrar 1 columna o un rango de columnas:
@@ -934,7 +949,7 @@
            EN MODO EDIT PULSAR-> 3TC será LA TERCERA PARTE DE UN TRESILLO DE NEGRA, EN LA NOTA C DE LA OCTAVA ELEGIDA
            EN VEZ DE T SE PODRIA PULSAR 
             .. el punto (.) AGREGA LA MITAD A SU DURACION ES EL PUNTILLO 1,5 ej  I* negra con puntillo
-            .. el signo (=) o (mayuscula izquierda o el * )+ duracion + NOTA, se agrega 1/4 de nota. Ej I4
+            .. el signo (=) o (mayuscula izquierda  )+ duracion + NOTA, se agrega 1/4 de nota. Ej I4
                O sea el signo (=) ó el (Left Shift) (mayusculas izquierda) AGREGA LA CUARTA PARTE DE UNA NOTA A SU DURACION 1,25.
                ej 4*F pondra L+ en F
                   *4G pondra L+ en G
@@ -955,10 +970,10 @@
            aparece un menu de comando y duraciones contextual gráfica, el comando permite entrar a Ctrl-M pero este no es
            el caso, estamos en modo de modificacion de notas ya entradas, solo queremos notas nuevas al final de la secuencia, 
            se da click izquierdo a la duracion deseada (O,P,I,L,F,E, x, H) del menu grafico sobre la posicion deseada 
-           (no hace falta pulsar el nombre de la nota solo ubicarse sobre ella ), yaaparecera la nota y asi para ingresar 
-           mas naotas
+           (no hace falta pulsar el nombre de la nota solo ubicarse sobre ella ), y aparecera la nota y asi para ingresar 
+           mas notas
 
-    2.2    Modo Edit Cursor: estando en EDIT Normal en estado color verde para ingresar nuevas notas podemos pasar
+    2.2)   Modo Edit Cursor: estando en EDIT Normal en estado color verde para ingresar nuevas notas podemos pasar
            a modificar la secuencia previamente entrada para cambiar su duracion ctrl-M, y/o agregar tambien notas nuevas dentro de
            la zona elegida Ctrl-N. 
            ctrl-M sera de color algo rojizo , Ctrl-N de color azul.
@@ -983,19 +998,16 @@
            y dar ctrl-delete se boraran las notas cuyo comienzo este dentro de la zona marcara y se desplazarn los datos
            ocupando la zona eliminada.
 
-          -----> lo que sigue hay que modificar...hacer un update es una ayuda vieja , el update de ticks se hara a medida
-           que se vaya adaptando  las funciones que existian antes de incluir Ticks.<-----------
-
 
            EN MODO CURSOR la nota agregada es sobre un tramo de secuencia elegido y congelado podre poner notas
-           EN UN ESPACIO VACIO o SI ES SOBRE UNA NOTA EXISTENTE LA MODIFICARA POR EJEMPLO SU DURACION.
+           EN UN ESPACIO VACIO (ctrl-N)o SI ES SOBRE UNA NOTA EXISTENTE LA MODIFICARA (ctrl-m o Ctrl-N) POR EJEMPLO SU DURACION.
            El cursor en edicion en MODO CURSOR para modificar, permanece en el semitono ultimo donde se 
-           modifico, puedo cambiar por distintas duraciones en el mismo lugar sin moverme y sin pulsar X
-           con la primera vez que se pulse X para modificar permite modificar varias veces la misma nota sin
-           mover el cursosr o posicion, lo mismo pasara si me muevo a otra nota con el cursor siemrpe que no 
-           se use Ctrl-M para ubicar el cursor , luego si voy a otra nota no hara falta tampoco pulsar x 
-           solo la duracion y la nota sera modificada.
- 
+           modifico, puedo cambiar por distintas duraciones en el mismo lugar sin moverme y pulsando X, lo mismo pasara si 
+           me muevo a otra nota con el cursor siempre que no se use Ctrl-M para ubicar el cursor, luego si voy a otra nota no hara 
+           falta pulsar la duracion si es la misma per osi X. Para ubicar me sobre otra nota tambien puedo usar 
+           click izquierdo del mouse posicionarse sobre otra nota y dar X , tomara la ultima duracion pulsada.
+
+           |--- lo que sigue es ayuda vieja en revision para Ticks no se modifico para su uso ocn Ticks---> 
            UNDO SEPARADO DE MELODIAS Y ACORDES, (ALT-U de melodias funcina tambien al copiar una zona N veces
            tambieb va borrardo por columna, ALT-U es undo completo de octava por columna, no se usa en entrada
            de acordes pue ssino borraria las notas del acorde insetados y la nota de la melodia base seleccionada)
@@ -1015,14 +1027,18 @@
         NO LA PANTALLA. NO PERMITE MODIFICAR LA LONGITUD DE LA SECUECNIA 
         (en modo lectura se están agregando modificaciones en masa con modificacion
         de la longitud de la secuencia mover copiar trasponer etc)
-
+        |--- lo anterios es ayuda vieja en revision para Ticks no se modifico para su uso ocn Ticks---> 
 
     2.3)   - Ctrl-N Modificar una nota existene o insertar una nueva  SIN PULSAR X al final.
-         Insertar: Elegir por teclado duracion 1 a 8 (0 borra pone espacio) y pulsar la nota CDEFGAB insertando una nota nueva
-         en el semitono elegido con letra CDEFGAB y la poscion horizontal obtenida con las flechas.
+         Insertar en lugar vacio de una columna elegida ya sea por flechas o con un click DERECHO. 
+         Elegir por teclado duracion 1 a 8 (0 borra pone espacio) y pulsar la nota CDEFGAB insertara 
+         una nota nueva  en el semitono elegido vacio con letra CDEFGAB, si habia una nota previa la modificara.
          O usar click derecho para reemplazr la duracion por teclado (1 a 8) con el menu grafico de duraciones, luego al elegir
          una duracion de ese menu con click izquierdo,se insertara la nota nueva sin necesidad de pulsar X en la posicion
-         en que se dio click derecho. 
+         en que se dio click derecho.(esta andando mal se mueve a adonde esta la posicion de la duracion en el menu)
+/////////////////////////// tarea de hoy corregir lo anterior !!! ////////////
+
+ 
          Lo mismo pasa para modificar, posicionarse con click derecho sobre la nota a modificar
          elegir una duracion y darle click izquierdo sobre ese menu grafico y la nota se modificará buscando su comienzo, 
          si no se está justo sobre el comienzo de la nota a modificar en mas menos 10 posiciones. 
