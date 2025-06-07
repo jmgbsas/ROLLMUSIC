@@ -81,7 +81,7 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.324 Variables claras en Edicion"
+nroversion="TICKS 0.324 Fix estados de edicion por cambio en Variables Edicion"
 ' llegue hasta 2.5.4 de ayuda.txt, lo anterior se verifico el borrado de notas y columnas
 ' borrado de zona ok 
 ' se corrigio ctrl-m y ctrl-n y con colores distintos rojo y azul, verde ingreso notas normal

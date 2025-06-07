@@ -1310,7 +1310,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE 
  agregarNota = 0
  menuMouse = 0
  trasponer=0
- '' notadur=0
+ 
  nota=0
  DUR=0
  lockip=2
@@ -4202,7 +4202,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
    ' para acorde usar modificar SC_X
    menuMouse = 0
    ' ------ 04-03-21 aca siempre es edicin nueva no modificcion, o solo lectura
-   COMEDIT=ENTRADA_NOTAS
+   ' no se indica nada en comedit
    agregarNota = 0
    menuMouse = 0
    carga=0
