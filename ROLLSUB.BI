@@ -963,23 +963,15 @@ Dim  As Integer nroPartesNota
 
  EndIf
  If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS  Then ' lectura y comedit=true
+  
   If notacur=1 Then
-   'print #1,"notaold en cursor ";notaold
    notaOld=notacur
-   'print #1,"notaold en cursor laigualo a 1 ";notaold
-   'notacur=0
   EndIf
   cairo_move_to  (c,gap1 + (curpos)*anchofig , Penta_y + (notaOld-1) * inc_Penta  )
   cairo_rectangle(c,gap1 + (curpos)*anchofig , Penta_y + (notaOld-1) * inc_Penta  , wc/4,inc_Penta)
 
  EndIf
  If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=SOLO_MODIFICACION Then 'ctrl-m y ctrl-n 
- ' If notacur=1 Then
-   'print #1,"notaold en cursor ";notaold
- '  notaOld=notacur
-   'print #1,"notaold en cursor laigualo a 1 ";notaold
-   'notacur=0
- ' EndIf
 
   cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
   cairo_rectangle(c,gap1 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , wc,inc_Penta)
@@ -1471,7 +1463,7 @@ trasponer=0
 '   RollaTrack Track(), 0,Roll 
 'endif
  ' ===> PROCESO INSERT
- If COMEDIT=MODIFICACION_INSERCION  And insert= 2 Then 'ctrl-m insert
+ If COMEDIT=MODIFICACION_INSERCION  And insert=2 Then 'ctrl-m insert
 
   ' insertar  nota
   'ESTANDO EN UNA NOTA ELEGIDA POR EL CURSOR
@@ -1482,19 +1474,20 @@ trasponer=0
   If notacur=1 Then  ' 1 POR 0 JMG <- aca ingreso nota aunqne no haya..
    notacur=notaOld  'cual toma ? es donde esta el cursor ?
   EndIf
-  ' print #1, "Entra a Cursor con insert 2 notacur: ", notacur
+   print #1, "Entra a Cursor con insert 2 notacur: ", notacur
   ' StartInsert esglobal,posicion de inicio de la insercion cuando  pulsamos
   ' la tecla insert se guarda la posicion de inicio desde ahi habra reemplzos
   ' usando la posicion comun n
-  ' hasta que se pulse FINose alcance el FIN (66)
-  ' print #1, "call a movedato con indaux ",indaux
+  ' hasta que se pulse FIN o se alcance el FIN (66)
+indaux=0
+   print #1, "call a movedato con indaux ",indaux
   ' n es StartInsert fijo no se modifica mas
-  movedato (n + curpos,indaux, insert,notacur + (*po-1) * 13 ) 'antes de reemplazarlo xxx
- '  print #1, "regreso de movedato con indaux ",indaux
+nota=notacur + (*po-1) * 13
+  
   ' param : posicion comienzo (fijo), indice incremental para el aux
   ' ,insert comando habilitado = 1
   'luego reemplazo
-  ' print #1, "inserta DUR, en ROLL n,nota,posicion ",DUR,n,(notacur + (*po) * 13),n
+   print #1, "inserta DUR, en ROLL n,nota,posicion ",DUR,n,(notacur + (*po) * 13),n
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR ' reemplazo con lo nuevo
   'vdur=Roll.trk(notacur + (*po) * 13, n+curpos).dur
   ' SI LA NOTA  NO EXITIA LA agrega...osea sirve para acordes tambien
@@ -1508,10 +1501,10 @@ trasponer=0
   ' TODO IGUAL A cambiadur = 1 deberia andar ,,,,lunica diff es
   ' que se cargala nota en roll,<- pero 1ero debo guardar la nota de Roll en aux
   ' antes de reemplazarla
-  insert=1  ' habilita de nuevo la tecla I de ingreso de insercion en un lugar
+  '''insert=1  ' habilita de nuevo la tecla I de ingreso de insercion en un lugar
   'elegido con cursor
  ' print #1, "insert 1 ",insert
-
+  '' insert=0 ' solo inserto una nota por ahora
  EndIf
  'proceso modificar Nuevo secunci limpia terminda en NroCol ,con
  ' nombre de letra pulsada en vez de X CTRL-N
@@ -1543,6 +1536,7 @@ trasponer=0
 
 'If Roll.trk(notacur + (*po) * 13, n+curpos).dur >= 1 And _ 
 '   Roll.trk(notacur + (*po) * 13, n+curpos).dur <= 181 Then
+' ===> PROCESO COPIAR
    If COMEDIT=MODIFICACION_INSERCION And vdur=0 And vnota=0 And copiar=1 Then ' ctrl-m
     If  BuscarNota (1, curpos ,notacur ) = 1 Then
         copiar=0 
@@ -2896,8 +2890,9 @@ Print #1,"pmTk(0).MaxPos = MaxPos ";  MaxPos
      ' los 2 vectores deben tener el mismo tamaï¿½o ergo si CantTicks
      ' lo agrando trabajo tambien ? mmm no trabajo debe tener el tamaï¿½o del disco!
      ' cargamos trabajo datos
-     CantTicks = MaxPos + 1000 ' jmg 24-09-2021
-     
+     If CantTicks - MaxPos < 2000 Then
+     CantTicks = CantTicks + 18000 ' jmg 24-09-2021
+     EndIf  
      pmTk(0).Ticks=CantTicks
      ntk=0
 '' Redim Roll y TRack ya tiene calculo NB y NA con CantTicks y carga de pmTk.NB y NA
@@ -3075,7 +3070,7 @@ End Sub
 
 '
 Sub Nuevo(Roll As inst,borraNombre As Integer)
-CantTicks=1000 ' vuelvo al original default
+CantTicks=86400 ' vuelvo al original default 15 min *60*96
 ' borro todo el undo
    mel_undo_k=0 :ig=0:cnt_acor=0
    Erase mel_undo, undo_acorde,undo_kant_intervalos
@@ -4156,6 +4151,7 @@ Sleep 100
   Case 12  ' edit por teclado
     cairo_set_source_rgba c, 0, 1, 0, 1
     '''If MouseButtons And 1 Then
+     COMEDIT=ENTRADA_NOTAS
      menuNew=PARAMETROS_ROLL
      cierroedit= 0 ' habilita EDIT de nuevo
    ' print #1, "INVESTIGO COMEDIT ENTRO X CLICK EN SUB S3, menuNro: ",S3, menuNro
@@ -4168,6 +4164,7 @@ Sleep 100
   If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
      If MouseButtons And 1 Then
       MenuNew=MENU_INICIAL
+      cierroedit= 0
      EndIf
   EndIf
 
@@ -4223,84 +4220,130 @@ If  er1 > 0 Then
 End If
 
 End Sub
-'----------------------------------------------------------------------
-' menuacc estaba
-'--------------------------
-Sub movedato (ByVal n As Integer, ByRef indaux As Integer,ByRef  insert As Integer, ByRef nota As UByte)
-
- ' OJO n ya entra conla suma de curpos
- ' indaux parte de cero es el indaux para el auxiliar que se ha borrado
- ' y por ende empieza por 1 no se guarda esun auxiliar...
- '
- indaux = indaux + 1 ' indaux auxiliar SC_INSERT INICIALIZA EN 0
- ' print #1, "----EN MOVEDATO indaux, nota: ",indaux , nota
- 'notas gurdadas para luego usar en proceso CORRECCION
- notins = notins + 1
- notasInsertadas (notins) = nota  ' ENTRADA POR TECLADO ANTES DE PULSAR INSERT
- 'LA DURACION NO HACE FALTA PARA CONTROL,QUEDARA EN ROLL
- 'muevo datos QUE SERAN remplazados al auxiliar PARA ESA POSICION
- Dim As Integer i1,i2 ' no movemos solo el indice <nota> sino todas las notas!
- ' INDAUX PARTE DE 1 Y SE Va INCREMENTANDO CON CADA PULSO SOLO DE  I...
-
- For i1 = NB To NA
-  RollAux.trk(indaux,i1)= Roll.trk(n, i1 ) 'xxx  n ya contiene curpos
- Next i1
- ' movio la nota queestaba antes de pulsar insert
- 'print #1, "EN MOVEDATO carga RollAux.trk con valores viejos de roll"
- 'print #1,"RollAux.trk(nota,indaux) nota,indaux " ,nota,indaux
- 'print #1,"Roll.trk(nota,n) nota,n, curpos" ,nota,n, curpos
- 'print #1,"duracion cargda RollAux.trk(nota,indaux).dur: ", RollAux.trk(nota,indaux).dur
- 'print #1,"nota  cargda RollAux.trk(nota,indaux).nota : ", RollAux.trk(nota,indaux).nota
- 'vamos reemplazando los eventos y sobreescribiendo con los nuevos pero
- '  los viejos se van guardando para desplazarlos a la derecha.
- ' RollAux.trk tendra lo viejo, notas insertdas lo nuevo
-End Sub
 
 '--------------------------
-Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef insert As Integer, ByRef nota As UByte)
- Dim As Integer indpos,lastPosRollReemplzada,s,t,k,i
- lastPosRollReemplzada=posicion + curpos 
- indpos=posicion + curpos'indice posicion partimos de ultima posicion global reemplazada
- 
+Sub moveresto ()
+' parametro nota no se usa podriamos borrarlo.
+' entra con insert=3....y pasa pòr  4
+ Dim As Integer indpos,s,t,k,i, fininsert, moverDesde,moverDesdeOld
+'StartInsert posicion + curpos'indice posicion partimos de ultima posicion global reemplazada
+ ' indpos es la ultima cantidad de ticks hasta el comienzo de la ultima nota insertada
+indaux=0
     print #1, "EN MOVERESTO, indaux,StartInsert: ",indaux ,StartInsert
  ' ultima posicion movida a aux  es indaux (indaux POSICION DE AUX) JMG
- Dim As Integer lastIndAuxporInsercion = indaux
- 'print #1, "moveresto inicio: indaux,indpos,posicion :", indaux,indpos,posicion
- 'print #1, "entra Loop, indaux,StartInsert,indpos: ",indaux,StartInsert ,indpos
- Dim As Integer cantInserciones = indaux ' o notins el indaux continua en movedata las inserciones nuevas
+ Dim As Integer  cntoff1,cntoff2,corrimiento,insercion
+ 
+ Print #1, "moveresto inicio: indaux,indpos,posicion :", indaux,indpos,posicion
+ Print #1, "entra Loop StartInsert: ", StartInsert 
+ Print #1, "duracion insertada DUR "; DUR
+ ' o notins el indaux continua en movedata las inserciones nuevas
+ 
+' antes cantInserciones=indaux porque el nro  de posiciones coincidia con la posicion de la nota
+' ahora una nota ocupara muchas posiciones ticks!,, y cada nota tiene su propio nro de 
+' ticks DurXTick(DUR), necesito la duracion de cada nota entrada
  ' durante lascuales se movio los valores viejso a aux pero quedaron
  ' losnuevos en Roll. que no debo opisar
  '1) COPIAMOS A AUX EL RESTO DE ROLL
- Do
+  CantTicks=86400 'default 15 minutos * 60 * 96
+  CantTicks=CantTicks+DurXTick(DUR)
+  Print #1,"CantTicks=CantTicks+DurXTick(DUR) ", CantTicks  
+  CambiarDim(1)  ' nuevo pipipipipi
+' tickInsertados no indica el inicio correcto desde donde mover
+' debo buscar el primer onoff=2 que no sea de las notas insertadas ydesde ahi sera el inicio
+' ese onoff=2 deberá estar durante la duracion de la nota insertada o despues
+'        I        >>         se mueve a derechas despues del fin de L 
+'    L     >>                nota insertada no se mueve
+'I      >>                   no se mueve
+'--------la L se inserta al dar Fin END debe moverse  asi
+'            I        >>   comienza despues del fin de L
+'    L     >>              queda igual 
+'I      >>                 queda igual
+'---------- o sea solo si es un ON (onoff=2) de la nota se mueve
+' los onoff=1 de la insertada y cualquier otro que este antes de  que termine la duracion
+' de la nota insertada no se moverán.
+StartInsert=posicion+ curpos
+indpos=StartInsert
+fininsert=StartInsert + DurXTick(DUR) -1
+' 1) COPIA AL AUX LOS ON OFF=2 QUE ESTEN MAS ADELANTE QUE EL ONOFF=2 INSERTADO Y TODO LO QUE SIGUE
+' 2) SI HAY UN ONOFF=1 CUYO ONOFF2 ESTA ANTES DEL ONOFF=2 INSERTADO NO SE MUEVE < startinsert
+' 3) SI HAY UN ONOFF=2 QUE ESTA DENTRO DE LA DURACION DE LA NOTA INSERTADA SE MUEVE
+moverDesde=0
+moverDesdeOld=0
+'1)
+For s=NB To NA     
+  For i= StartInsert +1 To fininsert
+      If Roll.trk(i, s).onOff=2 Then
+         If moverDesde =0  Then
+            moverDesde=i  ' desde aca se mueve los datos SEGUN 1) primer onoff2
+            insercion=moverdesde-StartInsert ' didstancia entre el insert y el porimer onoff=2
+            corrimiento=insercion+DurXTick(DUR)
+            Exit for
+         EndIf
+      EndIf
+  Next i
+Next s    
 
-  'indpos ya se le sumo curpos... COPIAMOS A AUX EL RESTO DE ROLL NO MODIFICADO COMPLETA
-  indpos=indpos+1 ' empezamos de la siguiente no reemplazada y seguimos al final
+  indpos=moverdesde -1  ' porque despues incrementamos  en 1
+' si hay un off=1 se lo debe copiar entonces copio desde ese off=1
+' si le sumo a indpos los ticks de la ultima duracion tengo el final de la insericon
+
+  Print #1, "FINAL insercion indpos + DurxTck(DUR) ", indpos
+Dim notadeoff1 As UByte
+Dim As Integer p1=0, p2=0 ,off1nosemueve=0
+ Do
+ 
+  'indpos ya se le sumo curpos y DurxTick... COPIAMOS A AUX EL RESTO DE ROLL NO MODIFICADO COMPLETA
+  indpos=indpos + 1 ' empezamos de la siguiente no reemplazada y seguimos al final
   ''suponemos que posicion=indpos era la posicion de ultima reemplazada
-  indaux=indaux +1
-  'print #1,"antes del FOR Roll,RollAux.trk.. indpos,indaux ", indpos,indaux
+  ''' old indaux=indaux +1
+  indaux=indaux +1  'nos ubicamos en 1er posicon libre en aux para recibir el resto
+  'Print #1,"antes del FOR Roll,RollAux.trk.. indpos,indaux ", indpos,indaux
   ' debemos barrer solo la octava? no porque puede haber otras octavas cargadas
   For s= NB To NA 'barremos todas las notas verticalmente para una misma posicion
+   
    If Roll.trk(indpos, s).dur = 182 Or indpos=MaxPos Then ' fin de datos de Roll
     RollAux.trk(indaux, s) = Roll.trk(indpos, s)
-    insert= 4 ' fin de llenado de almacenamiento auxiliar
-  '      print #1,"sale moveresto encontro 182 fin, indaux :" ,indaux
+    insert=4 ' fin de llenado de almacenamiento auxiliar
+        print #1,"sale moveresto encontro 182 fin, indaux :" ,indaux
     Exit Do
    EndIf
-   RollAux.trk(indaux, s) = Roll.trk(indpos, s)
-   If s=1 Then
-  '    print #1, "luego de la copia a AUX del resto "
+    
+'copia al Aux
+' 2) SI HAY UN ONOFF=1 CUYO ONOFF ESTA ANTES DEL ONOFF=2 INSERTADO NO SE MUEVE
+' indpos es moverdesde
+off1nosemueve=0 ' se mueve
+   If Roll.trk(indpos, s).ONOFF=1  And indpos > moverdesde Then ' se mueve
+      ' la nota y el dur valen 183 deberia poner el valor de la nota para matchear??
+      ' asi igualo notas , el off1 no tiene nota cargada en el vector aparentemente
+      ' pero si la tiene es la vertical del vector,,como es unica en el barrido
+      ' cualquier onoff=2 sera su origen no hace falta otra cosa
+      For p2= indpos To  1 Step -1 'busco el onof=2
+          If  Roll.trk(p2, s).onOff=2 Then ''encontre el onoff2
+             Print #1," Roll.trk(p2, s).nota ",Roll.trk(p2, s).nota
+             Print #1," onoff=2,p2  ",Roll.trk(p2, s).onoff, p2
+             p1=p2
+             If p1 < moverdesde Then 
+                off1nosemueve=1  ' no se mueve el off1 porque  su off2 esta antes del sartinsert
+                Print #1,"no se mueve ", Roll.trk(indpos, s).onoff
+             Else ' >=
+                off1nosemueve=0  'se mueve el off1 
+             EndIf  
+             Exit For 
+          EndIf 
+      Next p2  
+         
    EndIf
-   If (Roll.trk(indpos, s).dur <>181  And Roll.trk(indpos, s).nota <> 181) _
-    And (Roll.trk(indpos, s).dur > 0 Or Roll.trk(indpos, s).nota > 0)    Then
-   '    print #1, "Roll.trk(";s,indpos;").nota ",Roll.trk(s,indpos).nota
-   '    print #1, "Roll.trk(";s,indpos; ").dur ",Roll.trk(s,indpos).dur
-   EndIf
-   If (RollAux.trk(indaux, s).dur <> 181 And RollAux.trk(indaux, s).nota <> 181) _
-    And (RollAux.trk(indaux, s).dur > 0 Or RollAux.trk(indaux,s).nota > 0)    Then
-   '    print #1, "RollAux.trk(";s,indaux; ").nota ",RollAux.trk(s,indaux).nota
-   '    print #1, "RollAux.trk(";s,indaux; ").dur ",RollAux.trk(s,indaux).dur
-   EndIf
-
+   If off1nosemueve=0 Then ' se mueve
+       RollAux.trk(indaux, s) = Roll.trk(indpos, s) ' INCLUYE A 3)
+       Roll.trk(indpos, s).nota=0
+       Roll.trk(indpos, s).dur=181
+       Roll.trk(indpos, s).pb=0
+       Roll.trk(indpos, s).vol=0
+       Roll.trk(indpos, s).onOff=0
+       Roll.trk(indpos, s).inst=0
+       Roll.trk(indpos, s).pan=0
+    EndIf
+    
   Next s
 
   'posicion + curpos tiene la ultima posicion de entrada o reemplazo
@@ -4311,29 +4354,19 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
  ' indaux=indaux - 1 no le resto 1 copio el 66...el fin se corre
 
 ' print #1, "StartInsert: " ,StartInsert '  ya se le sumo curpos
- If insert = 4 Then 'movemos de nuevo todo el aux completo a Roll desde
-  ' laultimainsercion o sea Startindice +
- ' print #1, "insert 4 movemos Aux a ROLL indaux maximos elementos en Aux: ",indaux
-  t = StartInsert + cantInserciones ' xxx  OK
-
- ' print #1, "posicion, posn "; posicion, posn
+ If insert=4 Then 'movemos de nuevo todo el aux completo a Roll desde
+  ' la ultima insercion o sea Startindice +
+  Print #1," CantTicks ", CantTicks
+  print #1, "insert 4 movemos Aux a ROLL indaux maximos elementos en Aux: ",indaux
+ TicksInsertados= DurXTick(DUR)
+  t = fininsert + insercion ' + 1  xxx  OK
+  Print #1,"t,StartInsert, TicksInsertados ", t, StartInsert,  TicksInsertados
+  print #1, "posicion, posn "; posicion, posn
+'copia al auxiliar
   For k = 1 To indaux ' todo el auxiliar SUMA ROLL REEMPLAZADO + NOREEMPLAZADO
- '  print #1, "k auxiliar "; k
+   ''print #1, "k auxiliar "; k
    For s=NB To NA  ' todos los semitonos 96
     Roll.trk(t,s) = RollAux.trk(k,s)
-    If s=1 Then
- '    print #1, "luego de la  copia A ROLL "
-    EndIf
-    If (Roll.trk(t,s).dur <> 181 And Roll.trk(t,s).nota <> 181) _
-     And (Roll.trk(t, s).dur > 0 Or Roll.trk(t, s).nota > 0)    Then
-   '    print #1, "I) Roll.trk(";s,t;")nota,s,t : ", Roll.trk(s,t).nota, s, t
-   '    print #1, "I) Roll.trk(";s,t;")dur, s,t : ", Roll.trk(s,t).dur,s,t
-    EndIf
-    If (RollAux.trk(k, s).dur <> 181 And RollAux.trk(k, s).nota <> 181) _
-     And (RollAux.trk(k, s).dur > 0 Or RollAux.trk(k, s).nota > 0)    Then
-   '    print #1, "II) RollAux.trk(";s,k;").dur ", RollAux.trk(s,k).dur
-   '    print #1, "II) RollAux.trk(";s,k;").nota ", RollAux.trk(s,k).nota
-    EndIf
    Next s
    t=t+1
   Next k
@@ -4346,7 +4379,7 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
 
   For s = NB To NA
    For k=  StartInsert To MaxPos ' gracias a esto anda acordes
-    If Roll.trk(k, s).nota = 0 Then
+    If Roll.trk(k, s).nota = 0 And Roll.trk(k, s).onOff = 0 And Roll.trk(k, s).dur <> 183 Then
      Roll.trk(k ,s ).nota = 181
     EndIf
    Next k
@@ -4365,19 +4398,23 @@ Sub moveresto (ByVal StartInsert As Integer, ByRef indaux As Integer, ByRef inse
   ' PERO PARA DISTINTAS POSICIONES HABRA MAS NOTAS INSERTADAS UNICAS SI SE DESEA
   ' LUEGO CON PROBRSI LA NO TA EN ROLL ES IGUAL O DISTINA A LA INSERTADA SE PUEDEN
   ' BORRAR LAS DISTINTAS..Y EL ORDEN ES EL MISMO...SEGUN POSICION..
-  Dim i As Integer
-  For k= StartInsert To StartInsert + cantInserciones -1 ' OK PARA 1 INSERCION ES SOLO EN STRTINSERT
-   i = i + 1
-   For s= NB To NA
-    If s <> notasInsertadas (i) Then
-     Roll.trk(k, s).nota = 181
-     Roll.trk(k, s).dur  = 0
-    EndIf
-   Next s
-  Next k
+'  Dim i As Integer
+'  For k= StartInsert To StartInsert + TicksInsertados -1 ' OK PARA 1 INSERCION ES SOLO EN STRTINSERT
+'   i = i + 1
+'   For s= NB To NA
+'    If s <> notasInsertadas (i) Or Roll.trk(k, s).onOff=0 Then
+'     Roll.trk(k, s).nota = 181
+'     Roll.trk(k, s).dur  = 0
+'    EndIf
+'   Next s
+'  Next k
  EndIf
  insert=0
+ indaux=0
  RecalCompas(Roll) ' 09-05-2021
+ TicksInsertados=0
+ StartInsert=0
+ fininsert=0
 End Sub
 '------------------------------------
 Sub botones(hWnd As HWND,  cm As cairo_t Ptr, x As Integer,y As Integer)

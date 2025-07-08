@@ -631,7 +631,7 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
                'MaxPos=2
                nombre= NombreCancion+"\"+NombrePista+".rtk"
     '           print #1,"nombre en 1061",nombre
-               CantTicks=1000
+               CantTicks=86400 '15 min
     '           Print #1,"CantTicks ",CantTicks
                
                ''' para cuando las pistas esten juntas en un archivo ->ZGrabarTrack(ntk)

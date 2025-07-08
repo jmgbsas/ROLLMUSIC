@@ -925,7 +925,7 @@
     2.3) Modificar en Ctrl-N
     2.4) Copiar 1 nota.
     2.5) Borrar 1 Nota, Borrar 1 columna o un rango de columnas:
-    2.6) Insertar Notas.
+    2.6) Insertar Notas, abriendo la secuencia, agregando espacio para esa nota.
    ------------------------------------------------------------------------------------------   
     2.0) Modos de Edición.
     2.1) MODO EDIT 
@@ -1129,21 +1129,23 @@
        La secuencia completa queda fuera de pantalla a la izquierda. Luego para verla entera
        pulsar Inicio o navegar a la izquierda con flecha izquierda o ctrl+izquierda.,
 
-    2.6) Insertar Notas:
-        - posicionar el cursor en la posicion y lugar de la nota a insertar, debe ser en la misma columna
-          que será desplazada a la derecha junto con toda la secuencia  luego de la inserición.
-        - 1) presionar la tecla Insert.
-        - 2) elegir duracion y luego posicionarse en el semitono deseado moviendo cursores arriba abajo, puede ser
-          encima de una nota existente , luego pulsar la letra 'I' y aparecera la duracion elegida en el semitono elegido
-          si habia otra duración lo reemplazará visualmente pero no se borrará. seguir haciendo lo mismo
-          elegir otra duracion ubicar el cursor con la condicion de cambiar de posicion puede ser
-          el mismo semitono u otro, la condicion es que nunca forme o inserte un acorde. (Los acordes se arman
-          manualmente fuera del proceso de insercion, en el modo cursor en una columna que ya exita una nota previa, 
-          modificando los semitonos vacios de esa columna, nos ubicamos en un semitono pulsamos duracion y 
-          X para modificar.) 
-        - Terminada la insercion de notas nuevas  pulsar la tecla 'Fin' y toda la secuencia desde el punto de insericon 
-          se moverá a derecha según sean la cantidad de posiciones insertadas y las notas nuevas  quedarán insertadas
-          en la secuencia.
+    2.6) Insertar Una Nota: (agrega espacio abriendo la secuencia no es agregar nota en un vacio ya existene eso ya lo
+           hace en modificar)
+        - preparacion CLICK IZQUIERDO EN [Edicion] del menu de lgrafico,  verificar que se ponga en verde.
+          y aparesca EDIT. Click sobre EDIT hasta que se ponga en verde.
+          Click izquierdo en la octava a usar hasta que se ponga en verde.  Sobre el punto a insertar y hacerlo rapido,
+          pulsar Ctrl-M cambiara a marron la octava. Luego, 
+        - Corregir la posicion del cursor si es necesario, con flechas izq der arriba abajo.
+          (si los saltos son chicos o grandes se modifica la cantidad de saltos pulsando tambien 0 a 1, 0 es una posicion
+           9 a 1 la cantidad de  posiciones de una  figura dada) 
+           la columna  de insercion será desplazada a la derecha junto con toda la secuencia  en la duracion de la nota 
+           insertada .
+          1) presiona  la duracion deseada 1 a 9...
+          2) presionar la tecla Insert.
+          3) luego pulsar la letra 'I' y aparecera la Nota nueva con su duracion elegida en el semitono elegido
+            si habia otra duración lo reemplazará si es exacta la posicion. 
+          4) Presionar la tecla FIN o END segun el teclado. y la secuencia se abrira desplazandose a la derecha de la
+             nota insertada
        
 
     III) 

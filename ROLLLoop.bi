@@ -1247,7 +1247,11 @@ Print #1,"14-sleep ";Timer
 EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar con Insert y I
- COMEDIT=MODIFICACION_INSERCION 
+ If COMEDIT<>LECTURA Then
+    COMEDIT=MODIFICACION_INSERCION
+ EndIf
+
+  
  agregarNota=0
  menuMouse = 0 ' INICIA EL MENU CONTEXTUAL PARA IMPRIMIR LOS LABELS DEL MENU
  nota=0
@@ -1270,6 +1274,7 @@ If MultiKey(SC_ALT) And MultiKey(SC_M)  Then ' menu Roll inicial
   trasponer=0
   VerMenu=SI
   parametros=0
+  cierroedit= 0
 EndIf
 
 If MultiKey(SC_LSHIFT) And MultiKey(SC_M)  Then ' ver  menu durante play por eje para cambiar patch
@@ -1288,12 +1293,26 @@ If MultiKey(SC_ALT) And MultiKey(SC_E) Then ' edicion Roll
   menunew=12
   menunro=12
   trasponer=0
+ If COMEDIT<>LECTURA Then
+    COMEDIT=ENTRADA_NOTAS
+ EndIf
+ agregarNota = 0
+ menuMouse = 0
+ nota=0
+ DUR=0
+ lockip=2
+
+
 EndIf
 
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
+ If COMEDIT<>LECTURA Then
+    COMEDIT=SOLO_MODIFICACION
+ EndIf
+
  nota=0
- COMEDIT=SOLO_MODIFICACION
+
  agregarNota= 1
  menuMouse = 0
  DUR=0
@@ -1306,14 +1325,19 @@ EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE ?
 'vuelve a COMEDIT=ENTRADA_NOTAS PUES ES UN SOLO PASO ATRAS
- COMEDIT=ENTRADA_NOTAS
+ cierroedit= 0
+ cierroedit= 0
+ If COMEDIT<>LECTURA Then
+    COMEDIT=ENTRADA_NOTAS
+ EndIf
  agregarNota = 0
  menuMouse = 0
  trasponer=0
- 
  nota=0
  DUR=0
  lockip=2
+ cierroedit= 0
+ cierroedit= 0
 EndIf
 
 If MultiKey(SC_LSHIFT) And MultiKey(SC_V)   Then ' ver parametros roll durente play
@@ -2754,10 +2778,9 @@ If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
     Exit Do
  EndIf
 
- If MultiKey(SC_END) Then
-  '  If MaxPos >= NroCol then
-      posicion=MaxPos - NroCol*3/4
-  '  EndIf
+ If MultiKey(SC_END)  Then
+     posicion=MaxPos - NroCol*3/4
+  
     posishow=posicion
     Exit Do
  EndIf
@@ -2772,7 +2795,7 @@ If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
 
 
  
-EndIf
+EndIf ''' fin sc_END en lectura
 
  
 ' --------------------------[NUCLEO]---------------------------
@@ -2915,11 +2938,11 @@ If COMEDIT=ENTRADA_NOTAS  And nota > 0 And agregarNota=0  And carga=0 And nota <
   '  pmTk(ntk).MaxPos=MaxPos
 
 
-'--- AUMENTO DE CAPACIDAD DEL VECTOR EN 4000 POSICIONES 
+'--- AUMENTO DE CAPACIDAD DEL VECTOR EN 18000 POSICIONES  3 min 
     If CantTicks - MaxPos < 2000 Then
        print #1,"hace backup....." ' si no hay nombre usa fecha"
        '''GrabarArchivo(1) ''hacer un backup !!! 
-      CantTicks=CantTicks + 17280 ' incremento el tamaño en 17280 posiciones =3 min
+      CantTicks=CantTicks + 18000 ' incremento el tamaño en 18000 posiciones =3 min
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
       ReDim Preserve compas(1 To CantTicks)
       ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
@@ -3752,21 +3775,19 @@ EndIf
     EndIf
     Exit Do
    EndIf
-   ' para insertar en cada iten de Roll cda vez queingreso nota al final
-   ' comunmente se agregara 182 ? 66 para indicar fin de datos..y loindicaremos
-   'con FIN por ahora para visualizarlo
+
 '-----------------------------------------------------------------------
-   If e.scancode = SC_INSERT And insert=0  Then '34 <===== SC_INSERT
+   If e.scancode = SC_INSERT And insert=0  Then '34 <===== SC_INSERT con comedit=true
     ' solo valido con CTRL-M
-    If COMEDIT=MODIFICACION_INSERCION And insert = 0 Then
+    If COMEDIT=MODIFICACION_INSERCION Then
      ' solo tiene sentido insertar en lo echo y en cursor libre
-     insert=1 ' comienzo hbilitotel I para insertr nota por nota
+     insert=1 ' comienzo hbilito el I para insertr nota por nota
      indaux=0
    '  print #1,">>>SC_INSERT ajust STARTINSERT ", StartInsert
-     If indaux=0 Then ' no haria falta todas las demas inserciones se deben
+   '  If indaux=0 Then ' no haria falta todas las demas inserciones se deben
       'hacer con I no volver a repetir SC_INSERT sino se pulso SC_END
-      StartInsert = posicion + curpos  ' guardo sin modificar el comienzo xxx ok
-     EndIf
+   '   StartInsert = posicion + curpos  ' guardo sin modificar el comienzo xxx ok
+   '  EndIf
    '  print #1,">>>SC_INSERT  despues ajuste STARTINSERT ", StartInsert
      '''Erase (RollAux.trk) ' borro lo que habia en el auxiliar
      ReDim (RollAux.trk) ( 1 To CantTicks, NB To NA )
@@ -3779,17 +3800,22 @@ EndIf
    EndIf
 '------------------------------------------------------------
    If e.scancode = SC_I And insert=1 And COMEDIT=MODIFICACION_INSERCION Then
-    insert= 2 ' habilito cursor para que ingrese
+    insert=2 ' habilito cursor para que ingrese
   '  print #1, "-----SC_I -> insert,indaux : ",insert,indaux
    EndIf
 '------------------------------------------------------------------
    If e.scancode = SC_END Then ' mueve insercion, podria usarse para ELIMINAR Probar
-    If backspace=1 Then
+    If backspace=1 Then ' BORRA HASTA EL FINAL
       Dim As Integer i, y
       For y=posishow To MaxPos
         For i=NB To NA 
-        Roll.trk(y,i).nota=0
-        Roll.trk(y,i).dur=0
+          Roll.trk(y,i).nota=0
+          Roll.trk(y,i).dur=0
+          Roll.trk(y,i).onoff=0
+          Roll.trk(y,i).pan=0
+          Roll.trk(y,i).vol=0
+          Roll.trk(y,i).pb=0
+          Roll.trk(y,i).inst=0
         Next i
       Next y
       MaxPos=posishow+1 'jmg 03-04-2021
@@ -3804,12 +3830,15 @@ EndIf
     EndIf
   '01-07-2021 hubo una cancelacion en ctrl-m al pulsar FIN en el teclado con 
   ' con And insert=2 se soluicona pero no se si es funcional para el insert verificar    
-    If COMEDIT=MODIFICACION_INSERCION  Then ' solo válido con Ctrl-M 30-06-2021 
+    If COMEDIT=MODIFICACION_INSERCION And insert=2 Then ' solo válido con Ctrl-M 30-06-2021 
      ' no mas reemplazos
-     insert=3
-   '  print #1, "-----SC_END StartInsert,indaux,insert,nota: ",StartInsert,indaux,insert,nota
-   '  print #1,"indaux no deberia valer cero !!!! es global "
-     moveresto (StartInsert,indaux, insert,nota)
+     insert=3 
+     'la duracion DUR no hace falta guardarla va cambiando pero almacenando em
+    'Cantinserciones con sus ticks mas adelante en el proceso DurXTick(DUR)
+     print #1, "-----SC_END StartInsert,indaux,insert,nota: ",StartInsert,indaux,insert,nota
+     print #1,"indaux no deberia valer cero !!!! es global "
+     
+     moveresto ()
      '  param : posicion comienzo (fijo), indice incremental para el aux
      ' ,insert comando habilitado = 1
      '  insert 3 fin reemplazos comienzo de move total
@@ -4200,9 +4229,10 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
    'SI ADEMAS SE USA CTRL-M SE PUEDE modificar ,agregar acordes e insertar
    ' 1 o varias notas en forma horizontal siemrpe la misma nota
    ' para acorde usar modificar SC_X
+   
    menuMouse = 0
    ' ------ 04-03-21 aca siempre es edicin nueva no modificcion, o solo lectura
-   ' no se indica nada en comedit
+   ' no hay ningun tipo de edicion todavia
    agregarNota = 0
    menuMouse = 0
    carga=0
@@ -4212,7 +4242,8 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
       cierroedit=1 ' no permite modificar mas que una vez
     If s3 = 0  Then
      COMEDIT=ENTRADA_NOTAS  ' EDIT SE PONE EN VERDE PARA ENTRAR NOTAS NUEVAS AL FINAL DE LA SECUENCIA
-     '       print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
+            
+        'print #1, "INVESTIGO COMEDIT ENTRO X TRUE EN MAIN S3: ",S3
       ''font = 18 SACAMOS AHORA ESTO LO MANEJA MENU  
     ''' curpos=0 JMGJMG25FEB
      '''guardopos=posicion
@@ -4239,7 +4270,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
     Else
      If s3=1 Then ' VIENE DE COMEDIT=TRUE PASAMOA A FALSE  
         COMEDIT=LECTURA '': s3 = 0 ' solo LECTURA 06-12-2021
-     '       print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
+        print #1, "INVESTIGO COMEDIT ENTRO X FALSE EN MAIN S3: ",S3
      'posicion= posicion + curPOS ' estaba mal no va 3-3-21 jmg
           
         If  GrabarPenta=1 Or  metronomo_si=0 Then
@@ -5401,7 +5432,7 @@ ButtonGadget(2,530,30,50,40," OK ")
        If modifmouse=3  Then
           If COMEDIT=MODIFICACION_INSERCION Then ' solo vlido con Ctrl-M
              insert=3
-             moveresto (StartInsert,indaux, insert,nota)
+             moveresto ()
              insert=0:indaux=0
           EndIf
           nroClick=0 ' no permite entrar mas por insercion
@@ -5681,17 +5712,17 @@ EndIf
  '  print #1,"DELTA ",delta
     Dim As Integer nuevaspos
     nuevaspos= indicePos + delta * numero
- '   print #1,"NuevaPos,,", nuevaspos
+    print #1,"NuevaPos,,", nuevaspos
       
-    If CantTicks - MaxPos < nuevaspos  Then
+    If CantTicks  < nuevaspos  Then
      '  GrabarArchivo(1) ''hacer un backup !!! 
-      CantTicks= nuevaspos + 2 ' incremento el tamaño en 1000 posiciones =1 min
- '     print #1,"incremento final de CantTick ", CantTicks 
+      CantTicks= nuevaspos + 18000 ' incremento el tamaño en 1000 posiciones =1 min
+      print #1,"incremento final de CantTick ", CantTicks 
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
       ReDim Preserve compas(1 To CantTicks)
       ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
       ReDim Preserve (Track(ntk).trk)(1 To CantTicks,1 To lim3)
- '     print #1,"Redim exitoso"
+      print #1,"Redim exitoso"
     EndIf
  'print #1,"va a copiar FOR lz,numero de veces ",numero
 '---

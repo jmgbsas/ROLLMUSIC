@@ -152,8 +152,8 @@ Dim HH_POPUP  As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uComm
 'Declare Sub menu (c0 AS cairo_t Ptr,c AS cairo_t Ptr,n As Integer,menuNro As Integer)
 declare Sub botones(hWnd As HWND,cm As cairo_t Ptr,x As Integer,y As integer)
 'Declare Sub menuAcc (c AS cairo_t Ptr)
-Declare Sub moveresto (ByVal StartInsert As integer,ByRef indaux as Integer, Byref insert As Integer,Byref nota As UByte)
-Declare Sub movedato (ByVal StartInsert As Integer, ByRef indaux As Integer, Byref insert As Integer,Byref nota As ubyte)
+Declare Sub moveresto ()
+Declare Sub movedato ()
 'Declare sub calcCompas(ByRef j As Integer)
 Declare Sub mayorDurEnUnaPosicion (ByRef posn as integer)
 Declare Sub organizaCompases()
@@ -204,7 +204,7 @@ Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
 Dim Shared As Integer octavas,  jc,ic, id,ShowNroCol=0,nro,trak=1,trackold=1
 Dim Shared As Integer ers, borrapos=0,comienza=0, acordeNro=0,resumen=0  
-Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0
+Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0,TicksInsertados
 
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
@@ -645,7 +645,7 @@ Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen,gap1,gap2,gap3
 common Shared As float anchofig
-Dim Shared as Integer StartInsert,indaux,NroCol, carga, curpos=0, curposold, resultado, indicePos,curpos1
+Dim Shared as Integer StartInsert,indaux=0,NroCol, carga, curpos=0, curposold, resultado, indicePos,curpos1
 resultado=0
 ' este pesodur lo deberia cambiar a ticks
 Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108

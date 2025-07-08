@@ -766,7 +766,7 @@ Print #1, "Entra A ActualizarRollyGrabarPistaTrack ntk q llega ";ntk
    print #1,"Maxpos , NB, NA, DEsde , hasta ",MaxPos, NB, NA, desde, hasta  
    ' DEFINO UN ROLL DONDE MANDO EL ROLL CARGADO LE SACO LOS DELETE SI HUBO
 
-   CantTicks=MaxPos + 1000 ' antes era 1000 me parece mucho no se 
+   CantTicks=MaxPos + 18000 ' antes era 1000 me parece mucho no se 
    Print #1,"ActualizarRollyGrabarPista CantTicks REdim ";CantTicks
    ReDim RollTemp (1 To CantTicks, NB To NA) As dat 
 ' copia en RollTemp el Roll ....que tiene las modificaciones ultimas
@@ -1643,7 +1643,7 @@ nota=0:dur=0
    hastavector=hasta
    estoyEnOctava =desde
    estoyEnOctavaOld =desde
-   CantTicks = MaxPos + 1000
+   CantTicks = MaxPos + 18000
 ' si se carga roll o trk que fueron convertidos desde un ejec
 ' maxgrb y maxcarga deben ser iguales y >0
    If maxgrb>0 And maxgrb=maxcarga Then '26-03-2025 todos los roll deben ser de igual maxpos

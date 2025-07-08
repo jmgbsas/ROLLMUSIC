@@ -81,7 +81,13 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.324 Fix estados de edicion por cambio en Variables Edicion"
+nroversion="TICKS 0.325 insertar notas en Ctrl-M "
+' 0.324 se corrigio los click sobre EDIT para pasar de edicion a lectura habia dejado de andar
+' anda bienm 0.324 ...ahora estamos corrigiendo pipipipi insertar en Ctrl-M
+' la idea es que si ponemos una nota de duracion DUR todo se mueva en esa DUR no en
+' una sola posicion antes habia una posicion por nota y se insertaba una sola posicion
+' ahora se insertan tantas posiciones como tenga la duracion ej una L son 48 posiciones 
+' hay que sumarle DurXTick(DUR) -1 de alguna forma seguir!!!! 
 ' llegue hasta 2.5.4 de ayuda.txt, lo anterior se verifico el borrado de notas y columnas
 ' borrado de zona ok 
 ' se corrigio ctrl-m y ctrl-n y con colores distintos rojo y azul, verde ingreso notas normal
