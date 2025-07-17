@@ -1,3 +1,4 @@
+- 17-07-2025 0.326 insertar notas en Ctrl-N con menu contextual grafico
 - 08-07-2025 insert de una nota con apertura de secuencia, o sea la secuencia se abre en el espacio
   ocupadoo por la nueva nota , no es modificar un espacio vacio con una nota nueva eso ya lo hacia.
 - 31-05-2025 varios fix a 0.323
