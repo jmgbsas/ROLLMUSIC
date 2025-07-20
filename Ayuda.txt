@@ -1,8 +1,8 @@
     Ayuda Prelimiar Básica RollMusic con  0.300 seria RollMusic 0.5000 antigua numeracion
     ====================================================================================
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, ALGUNAS COSAS YA SE ADAPTARON
-      Y FUNCIONAN BIEN PARA TICKS COMO CREAR UNA MELODIA MANUALMENTE EN ROLLGRAFICO,ACORDES EN MODO LECTURA
-      CON TONICA COMO BASE SOLAMENTE TAL CUAL ESTABA, Y TRASPONER, todo el resto inclusive canciones se
+      Y FUNCIONAN BIEN PARA TICKS COMO CREAR UNA MELODIA MANUALMENTE EN ROLLGRAFICO,ACORDES TRIADA MAYOR 
+      EN MODO LECTURA CON TONICA, 3ERA o 5TA COMO BASE, Y TRASPONER, todo el resto inclusive canciones se
       revisará y adaptara de a poco  )
     I) INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
@@ -766,18 +766,18 @@
          la nota en donde se da el click, o si no hay nada usando la duracion pulsada (1,2,3,4,5,6,7,8).
          Si existe la nota y se desea cambiar su duracion , pulsando una duracion antes de usar el comando 
          se reemplazará la duración existente y se armará un acorde con esa nueva duración. 
-         Para ello damos Ctrl-Click derecho (Nota: se recomienda pulsar 1ero clik derecho y luego Ctrl, 
-         por que podria haber interferencia con inerlineado que es Ctrl-wheel de mouse o ruedita subir bajar, 
-         se minimizo el efecto pero lso comandos son parecidos)  sobre la nota a convertir en acorde..y 
+         Para ello damos Ctrl-Click derecho,  sobre la nota a convertir en acorde..y 
          aparece un menu contextual (el cual ya es funcional, no totalmente, triadas cuaternarias etc, 1era o 2da inversion etc)
-         Ya funciona 3 Notas ->Mayor ->Noinversion (es una triadas Mayor cuya Tonica es la nota elegida, 
+         Ya funciona Triada 3 Notas->Mayor o Menor//fundamental, 1era inversion y segunda inversion 
          dar Ctrl+click derecho sobre la nota navegar como se indica al comienzo llegar a No inversion y ahi dar 
          click izquierdo, soltar click , soltar ctrl apenas salga el menu o al final es indiferente. 
          (el menu que aparece se sincroniza con la ventana de Roll pero no pertenece a ella, es un menu flotante 
          puede haber  situaciones en que no esté posicionada la [X] justo encima de la nota pero 
          funciona igual pues la posicion exacta de la nota lo da el clik ) .
-         Funciona tambien 1era Inversion y 2da inversion de triadas mayores, menores, disminuidas y aumentada.
-         Luego de insertado el acorde automatico inmediatamente se escucha el mismo y si se desea borrarlo y 
+         Funciona y se corrigio para Ticks 1era Inversion y 2da inversion de triadas mayores, menores.
+         Luego de insertado el acorde automatico inmediatamente se escucha el mismo 
+         [[ no se corrigio para TICKS todavia lo que sigue ]]
+         [[[y si se desea borrarlo y 
          volver a la condicion  anterior se pulsará Alt-U. Se puede tocar la pista o un pedazo de ella
          antes de borrar el acorde y si luego si se quiere se puede eliminar el ultimo acorde ingresado 
          como se dijo con ALt-U. 
@@ -791,7 +791,7 @@
          construye un acorde mayor eso es todo. Entonces si bajo una nota B de la escala Mayor C
          un semitono y lo uso como raiz de Acorde MAyor estare construyendo el bVII de la nota B o sea 
          del VII grado de la escala de C Mayor. Y asi par acualqueir escala.
-         Lo mismo sucede con el bVIIMaj7, se bajaa un semitono la nota y se crea un Maj7.
+         Lo mismo sucede con el bVIIMaj7, se bajaa un semitono la nota y se crea un Maj7. ]]]
     1.8) Crear Canción.
 
           En RollNusic Control usar 'Nueva Cancion' del menu (lo que diga Na es no aplicable todavia
@@ -965,7 +965,7 @@
               (el + y el * funcionan como ligadura  no discrimina el lenguaje entre ambas teclas) 
            .. El doble puntillo de un pentagrama (:) usamos la coma (,)  Ej; (3,C) pondrá I: en nota C 
                  
-    2.1.2) Entrada Normal Por mouse y Teclado (secuencia nueva o agragar al final de una existente)
+    2.1.2) Entrada Normal Por mouse y Teclado color Verde (secuencia nueva o agragar al final de una existente)
            Con menu de duraciones gráfico:
            estando habilitada una octava como en 2.1) se hace click derecho en cualquier lugar de la octava elegida,
            aparece un menu de comando y duraciones contextual gráfica, el comando permite entrar a Ctrl-M pero este no es
@@ -974,11 +974,15 @@
            (no hace falta pulsar el nombre de la nota solo ubicarse sobre ella ), y aparecera la nota y asi para ingresar 
            mas notas
 
-    2.2)   Modo Edit Cursor: 
-                  Estando en EDIT Normal en estado color verde para Modficar o ingresar nuevas notas podemos pasar
+    2.2)   Modo Edit Cursor (marron ctrl-M o azul ctrl-N): 
+            LA ZONA DE SECUENCIA SELECCIONADA PERMANECE CONGELADA, SIN AVANCE DE LA 
+            SECUENCIA O SIN AVANCE DE PANTALLA CON FLECHAS DER O IZQ. LAS FLECHAS MUEVEN EL CURSOR
+            NO LA PANTALLA. NO PERMITE MODIFICAR LA LONGITUD DE LA SECUECNIA 
+            SI SE NECESITA MOVER LA ZONA EDITADA SE PUEDE USAR ALT-DER O ALT-IZQ. LO HARA EN INCREMENTOS DE COLUMNAS EN UN ANCHO/100
+              Estando en EDIT Normal en estado color verde, para Modficar o ingresar nuevas notas podemos pasar
            a modificar la secuencia previamente entrada para cambiar su duracion ctrl-M, y/o agregar tambien notas nuevas dentro de
            la zona elegida Ctrl-N. 
-           ctrl-M sera de color algo rojizo , Ctrl-N de color azul.
+           ctrl-M sera de color algo rojizo marronado , Ctrl-N de color azul.
            EN MODO CURSOR la nota agregada es sobre un tramo de secuencia elegido y congelado podre poner notas
            EN UN ESPACIO VACIO (con ctrl-N) o SI ES SOBRE UNA NOTA EXISTENTE LA MODIFICARA (ctrl-m o Ctrl-N) POR EJEMPLO SU DURACION.
            El cursor en edicion en MODO CURSOR para modificar ctrl-M, permanece en el semitono ultimo donde se 
@@ -987,6 +991,7 @@
            falta pulsar la duracion si es la misma pero si X para ejecutar el cambio. 
            Para ubicar me sobre otra nota tambien puedo usar click izquierdo del mouse posicionarse sobre otra nota y dar X , 
            tomara la ultima duracion pulsada.
+
 
     2.2.1)         
 
@@ -1035,66 +1040,22 @@
          <   soltar ALT y luego soltar retroceso. lo mismo para U)
 
 
-    II) MODO CURSOR O MODIFICACION SOLO EN LA PANTALLA SELECCIONADA O CONGELADA, SIN AVANCE DE LA 
-        SECUENCIA O SIN AVANCE DE PANTALLA CON FLECHAS DER O IZQ. LAS FLECHAS MUEVEN EL CURSOR
-        NO LA PANTALLA. NO PERMITE MODIFICAR LA LONGITUD DE LA SECUECNIA 
-        (en modo lectura se están agregando modificaciones en masa con modificacion
-        de la longitud de la secuencia mover copiar trasponer etc)
-        |--- lo anterios es ayuda vieja en revision para Ticks no se modifico para su uso ocn Ticks---> 
-
     2.3)   - Ctrl-N Modificar una nota existene o insertar una nueva  SIN PULSAR X al final.
-         Insertar en lugar vacio de una columna elegida ya sea por flechas o con un click DERECHO. 
-         Elegir por teclado duracion 1 a 8 (0 borra pone espacio) y pulsar la nota CDEFGAB insertara 
+         Por Teclado: 
+           Ubicar un lugar vacio de una columna elegida ya sea por flechas o con un click IZQUIERDO. 
+         Elegir por teclado duracion 1 a 8 (0 borra pone espacio) y pulsar la nota CDEFGAB, insertara 
          una nota nueva  en el semitono elegido vacio con letra CDEFGAB, si habia una nota previa la modificara. ok
-         aca anda mal
-         O usar click derecho para reemplazr la duracion por teclado (1 a 8) con el menu grafico de duraciones, luego al elegir
+         Por Mouse:
+            Usar click derecho para ubicar el lugar y traer el menu grafico de duraciones en ese punto,luego al elegir
          una duracion de ese menu con click izquierdo,se insertara la nota nueva sin necesidad de pulsar X en la posicion
          en que se dio click derecho. ok
-  
          Lo mismo pasa para modificar, posicionarse con click derecho sobre la nota a modificar
          elegir una duracion y darle click izquierdo sobre ese menu grafico y la nota se modificará buscando su comienzo, 
          si no se está justo sobre el comienzo de la nota a modificar en mas menos 10 posiciones. 
          De Ctrl-N (se sale con ctrl-p tambien) )
-   LA AYUDA ESTA EN REVISION ================================
-    2.3.1) ESTO se vera para Ticks si sirve corresponde a Rollmusic sin Ticks se borrara 
-           En ambos modos se puede entrar acordes, condicion inicial: haber entrado una melodia
-           o notas base del acorde. Por ahora es entrada nota por nota apiladas, arriba o abajo 
-           en una misma posicion. si se entran acordes con silencios por ahroa se hacen asi
-           sF+sF+F+F
-           F+ F+F+F
-           F+ F+F+F
-           por ahora esto no es correcto, no sonara igual que antes,hace falta los silencios 
-           al principio. (se corregirá más adelante )
-                F+F
-           F+ F+F+F
-           F+ F+F+F
-           como se resulve por posicion y tenemos lo siguiente
-           I
-           P
-           esto sonara bien por acordes distintos cosa que todavia no se desarrollo mas.
-           pero si queremos entras 2 figuras reemplazando la negra I , debemos partir en 2 la blanca
-           por ejemplo:
-           L L
-           I+I
-           o mejor que las partes sean todas iguales. Lo que permitira ubicar mas exactamente donde se 
-           desea la corchea L, al comienzo del 1er tiempo y tercer
-           L+sL+ L+sL
-           L+ L+ L+ L
-           De esa foram solo se usa AcordesIguales que esta mejor desarrollado. Cada posicion es un acorde
-           de iguales duraicones. Las posibilidades son muchas se seguira testeando.
-           Por ejemplo sin uniones o ligaduras que veremos si suena igual.
-           L sL  L sL
-           L+ L+ L+ L
-           Suenan parecidos pero es correcto el 1ero todo ligado. Los caminso del algoritmo son
-           distintos se corregirá para que suenen igual...En el 2do caso usa Acordes Iguales tmbien,
-           pero no hay ligaduras en la 1er linea superior, ergo usa otros caminos que se deben corregir
-           parece que los retardos son  mayores.
-           Ergo la apertira para acordes por ahora funciona mas correcto con ligaduras en todas las lineas
-           halla o no silencios, y sin esapcio sen blanco donde no se queira sonido se usara un silencio 
-           ligado (+) ej:sI+ o sL+ o sF+ etc.
 
 
-    2.4) Copiar nota en modo Cursor.
+    2.4) Copiar nota en modo Cursor. <--- revisando
        - En EDIT Cursor [ Edit + Ctrl_M] ó [Edit + Ctrl + clicK derecho + seleccion
          gráfica de ctrl-M]   
          Movemos el cursor grafico (cuadrado) con teclas izq der hasta posicionarse en
@@ -1112,7 +1073,7 @@
           Si me muevo a otra nota y pulso X de nuevo borrara esa nota tambien hasta que se pulse
           otro numero entre 0 a 8, el 0 es para borrar nota..
 
-     2.5.1) BORRAR NOTA EN CTRL-N UBICANDO EL CURSOR SOBRE LA NOTA
+    2.5.1) BORRAR NOTA EN CTRL-N UBICANDO EL CURSOR SOBRE LA NOTA
            Y LUEGO PULSAR 0 Y LUEGO EL NOMBRE DE LA NOTA CDEFGAB SE PUEDE REPETIR COMO ANTES
            SIN PULSAR EL 0 SOBRE OTRAS NOTAS.
     2.5.2) Para Borrar una nota pero SIN dejar su espacio usar-> Pulsar CTRL-9 luego X en cada nota a limpiar

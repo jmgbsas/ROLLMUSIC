@@ -619,7 +619,7 @@ EndIf
 If GrabarPenta =0 Then
  If ( Penta_y <= mousey) And ((Penta_y + 12 * inc_Penta) >= mousey)  Then
   ' estoy en una octava
-  If MouseButtons And 1 Then
+  If MouseButtons And 1 Or MouseButtons And 2 Then
      estoyEnOctava = *po  '<========== DETERMINACION DE OCTAVA DE TRABAJO
   EndIf
   EnOctava=1
@@ -3561,7 +3561,7 @@ If (ScreenEvent(@e)) Then
        If play = SI Or playb=SI Then ' fuera pero en play
            fueradefoco=NO
        Else     ' fuera de y sin play reducimos consumo CPU
-           Print #1,"1-sleep "; timer
+           'Print #1,"1-sleep "; timer
          '  Sleep 20 '12-06-2022 lo puse denuevo
            fueradefoco=1
        EndIf
@@ -4490,18 +4490,20 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  ' todo se armara segun la escala elegida previamente...el cual pasmos a desarrollar...16-12-2021
  
  If COMEDIT=LECTURA Then
+    copiar=0
 
 ' para ingreser automatico acordes a partir de una TONICA futuro--01-12-2021  
 ' ---------- INGRESO ACORDES SIN EDICION CON MENU DE MOUSE
     If MultiKey(SC_CONTROL) And MouseButtons And 2 Then 'yyy
-        Print #1,"entro al menu acordes"
-    
-    pasoZona1=0:pasoZona2=0
-     Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2,May6,Sus2
-     Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dom7,Dis7,Mayor9,Menor9,Dis9, notabase,Aum,Menor7b5,Dom75a     
-     Dim As HMENU bVII,bVIIMaj7
-     Dim As Integer event,Posx,Posy 
-    ScreenControl GET_WINDOW_POS, x0, y0
+       Print #1,"entro al menu acordes"
+       If DUR=0 Then Exit Do EndIf
+
+       pasoZona1=0:pasoZona2=0
+       Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2,May6,Sus2
+       Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dom7,Dis7,Mayor9,Menor9,Dis9, notabase,Aum,Menor7b5,Dom75a     
+       Dim As HMENU bVII,bVIIMaj7
+       Dim As Integer event,Posx,Posy 
+  ''  ScreenControl GET_WINDOW_POS, x0, y0
    ' Print #1,"x0 ,y0 en menu contextual " ,x0,y0
    ' Print #1,"mousex ,mousey en menu contextual ", mousex,mousey
    ' Print #1,"Posx ,Posy en menu contextual ", Posx ,Posy
@@ -4513,34 +4515,25 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
 ' set a WH_GETMESSAGE hook with that thread id and then process the command messages 
 ' in your hook function. chino basico je                                                                  'WS_THICKFRAME
 Dim As hwnd haco
-Posx=x0 +mousex -anchofig
-Posy=y0 +mousey -40
-If mousex -anchofig > (ANCHO-mxold)* 3/5 Then
-  Posx=x0+(ANCHO-mxold)* 3/5
-EndIf
-If mousey -40 > (ALTO-myold) *3/5 Then
-  Posy=y0+(ALTO-myold)*3/5
-EndIf  
+Posx=mousex
+Posy=mousey 
 ' determinacion de la posicion y duracion en el click del mouse...igual que en Sc_Z
 ''' ESTE INDICEPOS NO ME CONVENCE antes decia mousex -gap1 y daba negativo
-    indicePos=mousex/anchofig + posishow 
-    Print #1,"ACORDES: indicePos ",indicePos
+    Print #1,"gap1 deberia ser 9 ", gap1
+    indicePos=mousex/anchofig + posishow -gap1
+    ''''estoyEnOctava = *po '17-07-2025 ссссссссссссссссс
+'' en lectura anda PianoNota
+    estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 
+    Print #1,"ACORDES: indicePos,estoyEnOctava ",indicePos ,estoyEnOctava
+' dur anterior en vector a modificar  
     Rolldur = CInt(Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).dur)
     Rollnota= CInt(Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).nota)
-    If Rollnota = 0 Or Rollnota=181 Or Rolldur=0 or Rolldur=181 Then ' construimos acorde donde no haya nada
-       Rollnota = nsE 
-       Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).nota = CUByte(nsE)
-       Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).dur = CUByte(DUR)
-       Rolldur=DUR
-       Vaciodur= TRUE
-       Print #1,"Rolldur, nota  "; RollDur , nota 
-    EndIf   
-    If DUR <> Rolldur And DUR > 0 Then 
-       Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).dur = CUByte(DUR)
-       Vaciodur= TRUE ' cambio la duracion se necesita un RecalCompas
-       Rolldur=DUR
-       DUR=0
-    EndIf
+    Rollnota = nsE 
+    Rolldur=DUR
+    Vaciodur= TRUE
+    Print #1,"Rolldur, nota  "; RollDur , Rollnota
+ 
+    DUR=0
  '   Print #1,"ACORDES: Rolldur ",Rolldur
  '   Print #1,"ACORDES: nsE ",nsE
  '   Print #1,"ACORDES: nR ",nR
@@ -4595,8 +4588,10 @@ EndIf
 ' un salto de 12 y es al 13 si cuento desde 1 en vez de 0
 ' la ocatava siguietne empieza en 12 +13=25 
 ' 0,12,25,38,51,64,77,90,103, como vemos salta en 12 
-'----------------  
-     haco = OpenWindow("",Posx ,Posy,anchofig*2,60,WS_VISIBLE Or WS_THICKFRAME  , WS_EX_TOPMOST Or WS_EX_TOOLWINDOW )''Or WS_EX_TRANSPARENT  )
+'---------------- 
+Print #1,"1 ) maxpos antes de ventana acordes ", Maxpos 
+      
+     haco = OpenWindow("",Posx ,Posy,anchofig*20,60,WS_VISIBLE Or WS_THICKFRAME  , WS_EX_TOPMOST Or WS_EX_TOOLWINDOW )''Or WS_EX_TRANSPARENT  )
      UpdateInfoXserver()    
      WindowStartDraw(haco)
        fillrectdraw(6,6,&hffffff) '  ERA 2,2 CON TICKS PASAMOS A 5 MNIMO TAMAСO
@@ -4728,47 +4723,46 @@ EndIf
         
 
      MenuItem(1100,cancelar,"Salir")
- 
+         DisplayPopupMenu(hpopup1, GlobalMouseX,GlobalMouseY)
+  
  ' mouse _event win32,,,    
      Do
       event=WaitEvent
-    mouse_event MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0
-      
-    sleep 10
-    mouse_event MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0
-      
+       
       If event=EventMenu then
        Select case EventNumber
 ' TRIADAS   
          Case 1001
-       'NO INVERSION Mayor   C E G
-      armarAcorde(grado ,4, 7, 0) ' mayor 4, 7
+       'NO INVERSION Mayor   C E G ok
+      armarAcorde(1 ,4, 7, 0) ' mayor 4, 7
       acordeNro=1
+Print #1,"2 ) maxpos despues case 1001 de ventana acordes ", Maxpos
+ 
          Case 1002      
-        '1ERA INVERSION MAYOR  E G C
-      armarAcorde(grado ,-5, -8, 0)
+        '1ERA INVERSION MAYOR  E G C ok
+      armarAcorde(1 ,3, 8, 0)
       acordeNro=2
-      
+
          Case 1003
-        ' 2DA INVERSION MAYOR  G C E
-      armarAcorde(grado ,4, -5, 0)
+        ' 2DA INVERSION MAYOR  G C E ok
+      armarAcorde(1 ,5, 9, 0)
       acordeNro=3
 ' -----------------
          Case 1004 ' Menores <------------No inversion
-      armarAcorde(grado ,3, 7, 0) ' menor 3,7 C, Eb, G
+      armarAcorde(1 ,3, 7, 0) ' menor 3,7 C, Eb, G ok
       acordeNro=4  
          Case 1005
-      armarAcorde(grado ,-5, -9, 0) ' Eb, G ,C ' menor 1era inversion
+      armarAcorde(1 ,4, 9, 0) ' Eb, G ,C ' menor 1era inversion ok
       acordeNro=5 
          Case 1006
-      armarAcorde(grado ,3, -5, 0) ' G ,C , Eb' menor 2da inversion
+      armarAcorde(1 ,5, 8, 0) ' G ,C , Eb' menor 2da inversion ok
 
 ' -----------disminuida
          Case 1007
-      armarAcorde(grado ,3, 6, 0) ' disminuida 3,6 C,Eb,Gb
+      armarAcorde(9 ,3, 6, 0) ' disminuida 3,6 C,Eb,Gb
       acordeNro=7
          Case 1008 ' 
-      armarAcorde(grado ,-4, -9, 0) '  Eb, Gb, C dism 1era inv
+      armarAcorde(11 ,-4, -9, 0) '  Eb, Gb, C dism 1era inv
       acordeNro=8
          Case 1009
       armarAcorde(grado ,3, -4, 0) '  Gb, C , Eb dism 2da inv
@@ -4933,7 +4927,7 @@ EndIf
          Case 1052  
             grado=13
          Case 1100 ' es Salir
-         
+            
        End Select
 ' grabacion en Roll y track
 Dim As INTEGER vacio
@@ -5010,21 +5004,21 @@ If nota7ma <> 0 Then
         nota7ma= lugarNota(nota7ma)
 EndIf
 '/
+           DUR=0   
            Delete_Menu (hpopup1)            
            Close_Window(hpopup1)
            Close_Window(haco)
            Exit Do 
-       
-      ElseIf event=eventrbdown Then
-          DisplayPopupMenu(hpopup1, GlobalMouseX,GlobalMouseY)
+               
       EndIf
  
      Loop  
-        
+       Print #1,"EXIT LOOP 3 ) maxpos fin acordes  ", Maxpos 
     EndIf
 '=========================================================================    
 ' [[[[18-01-2022 menu alternativo con las 58 formas de acorde jjj
 '  cambiar todo los popup menus por solamente un scroll ...futuro]]] 
+/'
     If MultiKey(SC_LSHIFT) And MouseButtons And 2 Then 'yyy
 
 
@@ -5136,7 +5130,7 @@ ButtonGadget(2,530,30,50,40," OK ")
          
      
     EndIf     
-    
+'/    
    s2=0 :s1= 0 ' 10-12-2021 wheel no se movia ** ES SUFICIENTE??? CUANDO NO SE MOVIA?? 
    '                      RECORDDAR TEST CASE
  ' lockip=0   ' 10-12-2021 wheel no se movia ***JMG OJO JODE INTERLINEADO VER MAS COMENTADO
@@ -5392,17 +5386,17 @@ ButtonGadget(2,530,30,50,40," OK ")
      If (mouseButtons And 1 )  And nroClick = 2  Then
        savemousex=0 : savemousey=0 ' 
    ' ESTADO: PREPARA COMANDO
-   Print #1, "------------------------------------------------------------"
-   Print #1, "(3) (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And COMEDIT=TRUE "
-   Print #1, " ESTADO: PREPARA COMANDO"
+  ' Print #1, "------------------------------------------------------------"
+  ' Print #1, "(3) (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And COMEDIT=TRUE "
+  ' Print #1, " ESTADO: PREPARA COMANDO"
        notacur=nsE
        curpos= Int((mousex - gap1)/anchofig)
        posishow= curpos  + 1 ' NO CAUSA EL +1 EN MODIF MOUSE 03-03-21-15:10
-   Print #1, " savemousex=0 : savemousey=0 ' JMG NUEVA"
-   Print #1, " notacur=nsE"
-   Print #1,"curpos= Int((mousex - 81)/20)"
-   Print #1," posishow= curpos + 1"
-   Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
+  ' Print #1, " savemousex=0 : savemousey=0 ' JMG NUEVA"
+  ' Print #1, " notacur=nsE"
+  ' Print #1,"curpos= Int((mousex - 81)/20)"
+  ' Print #1," posishow= curpos + 1"
+  ' Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 
        If modifmouse=1 Then  ' anda ok 27 02 2021
           BORRAR=1
@@ -5779,7 +5773,7 @@ EndIf
      Exit Do
  EndIf
  
-EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
+ EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 '  ' <=== fin if mouseY > 50, delimitacion de area o superficie

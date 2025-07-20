@@ -81,7 +81,7 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="TICKS 0.326 insertar notas en Ctrl-N con menu contextual grafico "
+nroversion="TICKS 0.327 agregar Acorde Triada Mayor en Lectura fix"
 ' 0.324 se corrigio los click sobre EDIT para pasar de edicion a lectura habia dejado de andar
 ' anda bienm 0.324 ...ahora estamos corrigiendo pipipipi insertar en Ctrl-M
 ' la idea es que si ponemos una nota de duracion DUR todo se mueva en esa DUR no en

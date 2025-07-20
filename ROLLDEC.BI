@@ -901,9 +901,9 @@ Dim Shared As Boolean Vaciodur=FALSE
 Type notas_agregadas Field=1
   As Integer pn ' pianoNota
   As Integer posn
-  As UByte  dur
-  As UByte  nota
-  As UByte  onoff  ' para ticks
+  As UByte   dur
+  As UByte   nota
+  As UByte   onoff  ' para ticks
 
 End Type
 

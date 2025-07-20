@@ -858,15 +858,21 @@ End Sub
 Function BuscarNota (ctrl As Integer, ByRef cur1 As Integer,ncur As Integer) As Integer ' en cursor cambiadur u otras el programa se posicionara en la nota mas cercana
 'SOLO SIRVE PARA APLICAR EN CURSOR COMEDIT=TRUE, HBRIA QUE HACER OTRA PARA LECTURA
 ' Y FUERA DE CURSOR SI HACE FALTA POR AHORA NO
+' hace falta para acordes en lectura no le doy pie con bola todavia!!!! 19-07-2025
 ' decidiremos cuanotos ticks de acercamiento en un principio 10
 ' posn1=n+curpos  es x , notacur es y, barreemos un cuadrado ¡ 1 1 semitono y + - 10 curpos
 ' BUSCA OFF 1 O 2 y 190
+Print #1,"ENTRA A BISCANOTA CUR1 "; cur1; " ncur "; ncur
 If ctrl= 0 Then ' ctrl es cambiadur solo procesa con 1 para evitar otras modificaciones se ajusta en cursor()
   Exit Function
 EndIf
-Dim As Integer x,x1, x2, y, y1, y2, posn1
-x1=cur1 - 10
-x2=cur1 + 10
+Dim As Integer x,x1, x2, y, y1, y2,posn1
+
+Dim As String s1,s2,s3,s4,s5,s6,s7,s8
+
+x1=cur1 - 20
+x2=cur1 + 20
+
 y1=ncur - 1
 y2=ncur + 1
 If y1 < 1 Then y1=1 EndIf
@@ -878,21 +884,24 @@ If x2 > NroCol Then x2=NroCol EndIf
 'Print #1," y1 y2 "; y1, y2
 For x= x1 To x2  'curpos
  For y=y1 To y2  ' notacur
-    posn1 = posishow + x
-
-
+    posn1 = posicion+ x 'este deberia ser siempre ¿?
 'Print #1,"POSN1 ";posn1
 'Print #1,"POSISHOW  ";posishow
 'Print #1,"POSIcion  ";posicion
 'Print #1,"curpos  ";curpos
 'Print #1,"----------------------------------------"
-  
+     Print #1," x posn1 "; x, posn1; " estoyEnOctava ";estoyEnOctava; " y ";y
+         
+    
     If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 2 Or _
        Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1 Or _ 
        Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur = 190   Then
 ' encontro ubicacion de nota ,o final sec o un 190 borrar
-     cur1=x
+        Print #1,"encontro onoff posn1 "; Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff, posn1
+     cur1=posn1-posicion
      ncur=y
+    
+
  'Print #1,"ENCONTRAMOS ON 2 EN CURPOS, NOTACUR "; cur1, ncur
     BuscarNota=0 ' ok
     Exit Function 
@@ -900,6 +909,8 @@ For x= x1 To x2  'curpos
  Next y
 Next x
  Print #1,"NO ENCONTRAMOS UNA MIERDA "
+
+ FileFlush(-1)
  BuscarNota=1 ' error
  trasponer=0
 End Function
@@ -6657,82 +6668,104 @@ Sub armarAcorde(grado As Integer,n1 As Integer,n2 As Integer,n3 As Integer)
   ' para mayo4      n1=4 y n2=7
   ' para menor      n1=3 y n2=7
   ' para disminuido n1=3 y n2=6
-Dim As Integer acoposoff=0
-  scan_alt=0
-       cnt_acor=cnt_acor +1 
 
-       If grado=0 Then grado=1 EndIf
-  '    Print #1,"Grado ",grado
-      Select Case grado
-        Case 1  ' es Tonica PROBADO OK!, FALTA VER POSICION EN EL CALL
-' grabo la nota Tonica de la melodia  a partir de la cual hago el acorde
-        undo_kant_intervalos(cnt_acor)=0          
-        undo_acorde(cnt_acor,0).posn=indicePos ' shared global
-        Dim pnr As Integer
-        pnr=PianoNota+SumarnR(PianoNota)
-        undo_acorde(cnt_acor,0).pn=pnr ' se almacena elindice fisico del vector Roll
-        undo_acorde(cnt_acor,0).dur=Roll.trk(indicePos, pnr).dur
-        undo_acorde(cnt_acor,0).nota=Roll.trk(indicePos, pnr).nota
+Dim As Integer acoposoff=0, resultado,acoposOffNew
+   scan_alt=0
+   cnt_acor=cnt_acor +1 
+   If grado=0 Then grado=1 EndIf ' todo pasa por grado 1 por ahora triadas
 
+   Print #1,"Grado ",grado
+   Print #1, "mousex ";mousex, "anchofig "; anchofig; "gap1 ";gap1
 
+   curpos=(mousex -gap1)/anchofig '''19-07-2025
+   Print #1, "curpos o Col "; curpos 
+   notacur=nsE
+   Print #1,"notacur "; notacur  
+   resultado= BuscarNota (1,curpos, notacur)  
+   If resultado = 1 Then
+      Print #1,"BuscarNota sin resultados curpos notacur ",curpos,notacur
+   Else
+      ''indicePos=curpos + posishow ''- gap1/anchofig
+      indicePos= curpos + posishow 
+      Print #1, "indicePos, notacur, curpos,posishow ",indicePos, notacur,curpos, posishow
+      Print #1,"encontro onoff 2 " ,Roll.trk(indicePos, PianoNota+SumarnR(PianoNota)).onoff 
+                
+  EndIf
+  Dim As Integer st=0
+  Dim pnr As Integer
         ' armar acorde notapiano, Notapiano+4, NotaPiano+7=la anterior +3
         ' haremos todo a mano luego algun dia un algoritmo si es necesario,.,,
         ' qu etenga en cuenta todos los casos (formar mayor-> +4 +7)
-        ' 1,n=1 es 3,n=2 es 5,n=3 es 7
-        Dim As Integer st=0
-  '      Print #1,"armando acorde ,,indicePos ",indicePos
-  '      Print #1,"armando acorde ,,RollDur ",RollDur
-        pnr=PianoNota+n1 
-        pnr =pnr +SumarnR(pnr) ' es el nR o indice fisico del vector Roll
-  '      Print #1,"armando acorde 3ta,,nR ",pnr
-'------n1 acorde de 2 notas o intervalo
-        undo_kant_intervalos(cnt_acor)=1          
+        '  n=o es 1 tonica ,n=1 es 3,n=2 es 5,n=3 es 7
+''FALTA MUCHO LABURO SI LA DURACION ES IGUAL A UNA ROOT EXISTENTE NO SE TOCA EL ONOFF 1
+'' SI ES DISTINRA SE BORRA EL ONOFF 1 Y SE CREA UNO NUEVO
+'' SI NO HAY NOTA FUNDAMENTAL ES VACIO SE CREA LA TONICA SE COLOCA SU ONOFF2 Y ONOFF1
+'' L UNDO LO DEJAMOS PARA EL FINAL NOS CONCENTRAMOS EN QUE SE ARME BIEN 
+      Select Case grado
+        Case 1  ' es Tonica PROBADO OK!, FALTA VER POSICION EN EL CALL
+' grabo la nota Tonica de la melodia  a partir de la cual hago el acorde
+        Print #1,"ENTRA POR GRADO 1 ACORDE SIN INVERSION TONICA"
+      'TONICA:---------------------------
+        pnr=PianoNota+SumarnR(PianoNota)    
+
+        undo_kant_intervalos(cnt_acor)=0  ' tonica no hay intervalo es ella sola          
+        undo_acorde(cnt_acor,0).posn=indicePos ' shared global la old actual ¿¿?
+        undo_acorde(cnt_acor,0).pn=pnr ' se almacena elindice fisico del vector Roll
+        undo_acorde(cnt_acor,0).dur=Roll.trk(indicePos, pnr).dur 'old PUEDE SER 0 O 181
+        undo_acorde(cnt_acor,0).nota=Roll.trk(indicePos, pnr).nota 'old 
+        undo_acorde(cnt_acor,0).onoff=Roll.trk(indicePos, pnr).onoff ''' PUEDE SER 2 Ó 0 NADA
+' posicion  anterior del off 1
+        If Roll.trk(indicePos, pnr).dur > 0 And Roll.trk(indicePos, pnr).dur <> 181 Then
+           acoposOff=indicePos + DurXTick  ( Roll.trk(indicePos, pnr).dur ) -1
+        Else
+           acoposOff=0 ' porque no hay nota es vacio 
+        EndIf
+        Roll.trk(indicePos, pnr).dur=CUByte(RollDur) ' CARGAMOS LA DUR DEL USUARIO QUE SERA IGUAL
+' posiicon nueva del off 1
+        acoposOffNew=indicePos + DurXTick (RollDur) -1
+' O DISTINTA A LA QUE EXISTIA EM ESE LUGAR
+' saltos de octava
+        st=nsE '  tonica 
+Print #1,"armando acorde ,TONICA ",st
+
+       posn=acoposOff +1
+       If posn > MaxPos Then 
+          MaxPos=posn +6 ' la figura tiene 5 posiciones si pongo 1 o 2  se pisa
+          pmTk(ntk).MaxPos=MaxPos
+       EndIf 
+      If  acoposOffNew <> acoposOff And acoposOff > 0 Then
+        Roll.trk(acoposoff, pnr).onoff=0
+        Roll.trk(acoposoff, pnr).dur=181
+        Roll.trk(acoposoff, pnr).nota=0
+      EndIf
+        Roll.trk(acoposoffNew, pnr).onoff=1
+        Roll.trk(acoposoffNew, pnr).dur=183
+        Roll.trk(acoposoffNew, pnr).nota=183
+       
+      
+       pmTk(ntk).posn=posn
+       notaOld = nota
+       posnOffOld=0 
+
+
+        
+'--------n1 acorde de 3 notas------------------------------------
+  '      Print #1,"armando acorde ,5ta,nR ",pnr  
+
+        pnr=PianoNota+n1 ' TERCERA
+        pnr=pnr + SumarnR(pnr) ' es nR indice del vector Roll
+
+        undo_kant_intervalos(cnt_acor)=1
         undo_acorde(cnt_acor,1).posn=indicePos
-        undo_acorde(cnt_acor,1).pn=pnr ' se almacena elindice fisico del vector Roll
+        undo_acorde(cnt_acor,1).pn=pnr
         undo_acorde(cnt_acor,1).dur=Roll.trk(indicePos, pnr).dur
         undo_acorde(cnt_acor,1).nota=Roll.trk(indicePos, pnr).nota
         undo_acorde(cnt_acor,1).nota=Roll.trk(indicePos, pnr).onoff
 
         Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
-' saltos de octava
-        st=nsE-n1 
-        If st <= 0 Then
-           st=st + 12
-        EndIf            
-        If st >= 12 Then
-           st=st -12 
-        EndIf            
         
-        Roll.trk(indicePos, pnr).nota=st
-        Roll.trk(indicePos, pnr).onoff=2
-        acoposoff=indicePos + DurXTick(RollDur) -1
-
-        Roll.trk(acoposoff, pnr).onoff=1
-        Roll.trk(acoposoff, pnr).dur=183
-        Roll.trk(acoposoff, pnr).nota=183
-       posn=acoposOff +1
-       MaxPos=acoposoff +6 ' la figura tiene 5 posiciones si pongo 1 o 2  se pisa
-       pmTk(ntk).posn=posn
-       pmTk(ntk).MaxPos=MaxPos
-       notaOld = nota
-       posnOffOld=0 
-
-
-         
-'--------n2 acorde de 3 notas------------------------------------
-  '      Print #1,"armando acorde ,5ta,nR ",pnr  
-
-        pnr=PianoNota+n2
-        pnr=pnr + SumarnR(pnr) ' es nR indice del vector Roll
-        undo_kant_intervalos(cnt_acor)=2
-        undo_acorde(cnt_acor,2).posn=indicePos
-        undo_acorde(cnt_acor,2).pn=pnr
-        undo_acorde(cnt_acor,2).dur=Roll.trk(indicePos, pnr).dur
-        undo_acorde(cnt_acor,2).nota=Roll.trk(indicePos, pnr).nota
-        undo_acorde(cnt_acor,1).nota=Roll.trk(indicePos, pnr).onoff
-
-        Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
-        st=nsE-n2 
+        st=nsE + n1 '''-n2
+Print #1,"armando acorde ,3ERA,nR ",st 
         If st <= 0 Then
            st=12 + st
         EndIf            
@@ -6743,25 +6776,61 @@ Dim As Integer acoposoff=0
         Roll.trk(indicePos, pnr).nota=st  
         Roll.trk(indicePos, pnr).onoff=2
 
-        Roll.trk(acoposoff, pnr).onoff=1
-        Roll.trk(acoposoff, pnr).dur=183
-        Roll.trk(acoposoff, pnr).nota=183
+        Roll.trk(acoposoffNew, pnr).onoff=1
+        Roll.trk(acoposoffNew, pnr).dur=183
+        Roll.trk(acoposoffNew, pnr).nota=183
+       
+
+
+
+'--------n2 acorde de 3 notas------------------------------------
+
+        pnr=PianoNota+n2 ' QUINTA
+        pnr=pnr + SumarnR(pnr) ' es nR indice del vector Roll
+
+        undo_kant_intervalos(cnt_acor)=2
+        undo_acorde(cnt_acor,2).posn=indicePos
+        undo_acorde(cnt_acor,2).pn=pnr
+        undo_acorde(cnt_acor,2).dur=Roll.trk(indicePos, pnr).dur
+        undo_acorde(cnt_acor,2).nota=Roll.trk(indicePos, pnr).nota
+        undo_acorde(cnt_acor,2).nota=Roll.trk(indicePos, pnr).onoff
+
+        Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
+        st=nsE + n2 '''-n2 
+Print #1,"armando acorde ,5ta ",st
+        If st <= 0 Then
+           st=12 + st
+        EndIf            
+        If st >= 12 Then
+           st=st -12 
+        EndIf            
+
+        Roll.trk(indicePos, pnr).nota=st  
+        Roll.trk(indicePos, pnr).onoff=2
+
+
+        Roll.trk(acoposoffNew, pnr).onoff=1
+        Roll.trk(acoposoffNew, pnr).dur=183
+        Roll.trk(acoposoffNew, pnr).nota=183
+       
 
 
 
 If n3 <> 0 Then ' es un acorde de 4 notas            
- '   Print #1,"armando acorde ,7ta,nR ",pnr
         pnr=PianoNota+n3
         pnr=pnr + SumarnR(pnr)
+
         undo_kant_intervalos(cnt_acor)=3 
         undo_acorde(cnt_acor,3).posn=indicePos
         undo_acorde(cnt_acor,3).pn=pnr
         undo_acorde(cnt_acor,3).dur=Roll.trk(indicePos, pnr).dur
         undo_acorde(cnt_acor,3).nota=Roll.trk(indicePos, pnr).nota
-        undo_acorde(cnt_acor,1).nota=Roll.trk(indicePos, pnr).onoff
+        undo_acorde(cnt_acor,3).nota=Roll.trk(indicePos, pnr).onoff
 
         Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
-        st=nsE-n3 
+        st=nsE+n3 
+    Print #1,"armando acorde ,7ta,nR ",pnr
+
         If st <= 0 Then
            st=12 + st
         EndIf            
@@ -6771,12 +6840,12 @@ If n3 <> 0 Then ' es un acorde de 4 notas
 
         Roll.trk(indicePos, pnr).nota=st
         Roll.trk(indicePos, pnr).onoff=2
+
+        Roll.trk(acoposoffNew, pnr).onoff=1
+        Roll.trk(acoposoffNew, pnr).dur=183
+        Roll.trk(acoposoffNew, pnr).nota=183
        
 
-        Roll.trk(acoposoff, pnr).onoff=1
-        Roll.trk(acoposoff, pnr).dur=183
-        Roll.trk(acoposoff, pnr).nota=183
-  
 
 EndIf
         Case 3 ' es la 3era futuro hasta aca estaba desarrollado a antes trateremos de que funcione lo que estaba ahora para ticks
@@ -6786,19 +6855,21 @@ EndIf
         Case 6
         Case 9
         Case 11
-      End Select       
+      End Select   
+      grado=0    
  If Vaciodur Then
     ReCalCompas (Roll)
     Vaciodur=FALSE
  EndIf
  Dim As Integer guardpos
  guardpos=posicion
- pasozona1=indicePos
- pasozona2=indicePos
+ pasozona1=indicePos -10 
+ pasozona2=indicePos +DurXTick(RollDur)
  playAll (roll)  'PLAYACORDE
  pasozona1=0
  pasozona2=0
  posicion=guardpos
+ RollDur=0:DUR=0
  
 End Sub
 Function FiguraEquivalente(DURk As Double) As UByte
