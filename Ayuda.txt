@@ -766,6 +766,10 @@
          la nota en donde se da el click, o si no hay nada usando la duracion pulsada (1,2,3,4,5,6,7,8).
          Si existe la nota y se desea cambiar su duracion , pulsando una duracion antes de usar el comando 
          se reemplazará la duración existente y se armará un acorde con esa nueva duración. 
+         NOTA:la nota seleccioanda formara parte del acorde si es una 1er inversion de C E G, seria E G C
+         pero como la nota no la quiero mover si es el C entonces E y G deben estar abajo del C en esta clase
+         de 1er inversion LA NOTA NUNCA SE MUEVE en una 1er inversion estara al tope , en una segunda inversion
+         G C E quedara en el medio..
          Para ello damos Ctrl-Click derecho,  sobre la nota a convertir en acorde..y 
          aparece un menu contextual (el cual ya es funcional, no totalmente, triadas cuaternarias etc, 1era o 2da inversion etc)
          Ya funciona Triada 3 Notas->Mayor o Menor//fundamental, 1era inversion y segunda inversion 

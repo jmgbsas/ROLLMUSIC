@@ -4550,7 +4550,7 @@ Posy=mousey
 '---------------------------------------------------
 ' PARA GRABAR el acorde en Roll necesito guadar nsE (nota) ,el nro octava,
 ' y acordeNro son 3 numeros...con ellos recosntruyo el acorde y lo escribo arriba 
-' en la octava y en la posuicon gurdada ej CMayor, Dm7, G7 etc 
+' en la octava y en la posicion gurdada ej CMayor, Dm7, G7 etc 
 
 
     ' haco = OpenWindow("Acordes", x0+Posx ,y0+Posy,40,40,WS_VISIBLE Or WS_THICKFRAME , WS_EX_TOPMOST ) 'Or WS_EX_TRANSPARENT  )
@@ -4725,7 +4725,8 @@ Print #1,"1 ) maxpos antes de ventana acordes ", Maxpos
      MenuItem(1100,cancelar,"Salir")
          DisplayPopupMenu(hpopup1, GlobalMouseX,GlobalMouseY)
   
- ' mouse _event win32,,,    
+ ' mouse _event win32,,,
+   grado=1    
      Do
       event=WaitEvent
        
@@ -4740,89 +4741,89 @@ Print #1,"2 ) maxpos despues case 1001 de ventana acordes ", Maxpos
  
          Case 1002      
         '1ERA INVERSION MAYOR  E G C ok
-      armarAcorde(1 ,3, 8, 0)
+      armarAcorde(1 ,-5, -8, 0)
       acordeNro=2
 
          Case 1003
         ' 2DA INVERSION MAYOR  G C E ok
-      armarAcorde(1 ,5, 9, 0)
+      armarAcorde(1 ,4, -5, 0)
       acordeNro=3
 ' -----------------
          Case 1004 ' Menores <------------No inversion
       armarAcorde(1 ,3, 7, 0) ' menor 3,7 C, Eb, G ok
       acordeNro=4  
          Case 1005
-      armarAcorde(1 ,4, 9, 0) ' Eb, G ,C ' menor 1era inversion ok
+      armarAcorde(1 ,-5, -9, 0) ' Eb, G ,C ' menor 1era inversion ok
       acordeNro=5 
          Case 1006
-      armarAcorde(1 ,5, 8, 0) ' G ,C , Eb' menor 2da inversion ok
+      armarAcorde(1 ,3, -5, 0) ' G ,C , Eb' menor 2da inversion ok
 
 ' -----------disminuida
          Case 1007
-      armarAcorde(9 ,3, 6, 0) ' disminuida 3,6 C,Eb,Gb
+      armarAcorde(1 ,3, 6, 0) ' disminuida 3,6 C,Eb,Gb
       acordeNro=7
          Case 1008 ' 
-      armarAcorde(11 ,-4, -9, 0) '  Eb, Gb, C dism 1era inv
+      armarAcorde(1 ,-4, -9, 0) '  Eb, Gb, C dism 1era inv
       acordeNro=8
          Case 1009
-      armarAcorde(grado ,3, -4, 0) '  Gb, C , Eb dism 2da inv
+      armarAcorde(1 ,3, -4, 0) '  Gb, C , Eb dism 2da inv
       acordeNro=9
 ' ------------aumentada
          Case 1010
        'NO INVERSION Mayor   C E G#
-      armarAcorde(grado ,4, 8, 0) ' mayor 4, 7
+      armarAcorde(1 ,4, 8, 0) ' mayor 4, 7
       acordeNro=10
 
          Case 1011
         '1ERA INVERSION MAYOR  E G C ..-8 -4 0
-      armarAcorde(grado ,-4, -8, 0)
+      armarAcorde(1 ,-4, -8, 0)
       acordeNro=11       
 
          Case 1012
         ' 2DA INVERSION MAYOR  G C E  -4 0 4
-      armarAcorde(grado ,4, -4, 0)
+      armarAcorde(1 ,4, -4, 0)
       acordeNro=12
      
       
 ' -------------FIN TRIADAS --mas abajo estasn las sus2 son triadas tambien
 ' Cuaternario 
          Case 1013 ' mayor 7 no inversion
-      armarAcorde(grado ,4, 7, 11) ' mayor 4, 7,11 C,E,G,B
+      armarAcorde(1 ,4, 7, 11) ' mayor 4, 7,11 C,E,G,B
       acordeNro=13   
          Case 1014 ' mayor 7 1er inversion E,G,B,C
-      armarAcorde(grado , -8, -5, -1)       
+      armarAcorde(1 , -8, -5, -1)       
       acordeNro=14
          Case 1015 ' MAYOR 7 2da inv G,B,C,E 
-      armarAcorde(grado , -5, -1, 4)
+      armarAcorde(1 , -5, -1, 4)
       acordeNro=15     
          Case 1016 'mayor 7 3era inversion B,C,E,G
-      armarAcorde(grado , -1, 4, 7)
+      armarAcorde(1 , -1, 4, 7)
       acordeNro=16
 ' --Menor 7 o m7--------------      
          Case 1017
-      armarAcorde grado ,3, 7, 10 ' menor 3,7,10  ej D:  D, F, A, C
+      armarAcorde 1 ,3, 7, 10 ' menor 3,7,10  ej D:  D, F, A, C
       acordeNro=17           
          Case 1018
-      armarAcorde grado , -9, -5, -2 ' F, A ,C, D ' menor 1era inversion
+      armarAcorde 1 , -9, -5, -2 ' F, A ,C, D ' menor 1era inversion
       acordeNro=18     
          Case 1019
-      armarAcorde grado ,-5, -2, 3 ' A ,C , D, F  ' menor 2da inversion
+      armarAcorde 1 ,-5, -2, 3 ' A ,C , D, F  ' menor 2da inversion
       acordeNro=19           
          Case 1020
-      armarAcorde grado , -2, 3, 7 ' C , D, F, A ' menor 3era inversion
+      armarAcorde 1 , -2, 3, 7 ' C , D, F, A ' menor 3era inversion
       acordeNro=20      
 '---Menor7 b5  m7b5 o 
          Case 1021
-      armarAcorde grado ,3, 6, 10 ' menor 3,7,10  ej D:  D, F, Ab, C
+      armarAcorde 1 ,3, 6, 10 ' menor 3,7,10  ej D:  D, F, Ab, C
       acordeNro=21           
          Case 1022
-      armarAcorde grado , -9, -6, -2 ' F, Ab ,C, D ' menor 1era inversion
+      armarAcorde 1 , -9, -6, -2 ' F, Ab ,C, D ' menor 1era inversion
       acordeNro=22     
          Case 1023
-      armarAcorde grado ,-6, -2, 3 ' Ab ,C , D, F  ' menor 2da inversion
+      armarAcorde 1 ,-6, -2, 3 ' Ab ,C , D, F  ' menor 2da inversion
       acordeNro=23           
          Case 1024
-      armarAcorde grado , -2, 3, 6 ' C , D, F, Ab ' menor 3era inversion
+      armarAcorde 1 , -2, 3, 6 ' C , D, F, Ab ' menor 3era inversion
       acordeNro=24      
 
 ' ----Dom7 o 7 ---------------           
