@@ -772,14 +772,19 @@
          G C E quedara en el medio..
          Para ello damos Ctrl-Click derecho,  sobre la nota a convertir en acorde..y 
          aparece un menu contextual (el cual ya es funcional, no totalmente, triadas cuaternarias etc, 1era o 2da inversion etc)
-         Ya funciona Triada 3 Notas->Mayor o Menor//fundamental, 1era inversion y segunda inversion 
+         Ya funciona 3 Notas y 4 Notas ->Mayor o Menor//fundamental, 1era inversion y segunda inversion 
          dar Ctrl+click derecho sobre la nota navegar como se indica al comienzo llegar a No inversion y ahi dar 
          click izquierdo, soltar click , soltar ctrl apenas salga el menu o al final es indiferente. 
          (el menu que aparece se sincroniza con la ventana de Roll pero no pertenece a ella, es un menu flotante 
          puede haber  situaciones en que no esté posicionada la [X] justo encima de la nota pero 
          funciona igual pues la posicion exacta de la nota lo da el clik ) .
-         Funciona y se corrigio para Ticks 1era Inversion y 2da inversion de triadas mayores, menores.
+         Funciona y se corrigio para Ticks acordes 1era Inversion y 2da inversion de 3 o 4 notas mayores, menores.
          Luego de insertado el acorde automatico inmediatamente se escucha el mismo 
+         NOTA:si no se entra duracion y  se da click derecho sobre una nota toma su valor de duracion y 
+              muestra el menu par elegir el acorde..Luego esa duraicon no se borra y podra usarse para nuevos acordes
+              en donde no haya notas para dar click derecho. Si se ingresa una duracion nueva tomara esa hasta el
+              proximo ingreso de duracion, la duracion cargada previamente tendra proridad sobre  otra nota nueva seleccionada
+
          [[ no se corrigio para TICKS todavia lo que sigue ]]
          [[[y si se desea borrarlo y 
          volver a la condicion  anterior se pulsará Alt-U. Se puede tocar la pista o un pedazo de ella

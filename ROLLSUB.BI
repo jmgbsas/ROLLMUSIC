@@ -6856,7 +6856,7 @@ EndIf
         Case 9
         Case 11
       End Select   
-      grado=0    
+     '' grado=0    
  If Vaciodur Then
     ReCalCompas (Roll)
     Vaciodur=FALSE
@@ -6869,7 +6869,8 @@ EndIf
  pasozona1=0
  pasozona2=0
  posicion=guardpos
- RollDur=0:DUR=0
+ RollDur=0
+ '''DUR=0
  
 End Sub
 Function FiguraEquivalente(DURk As Double) As UByte

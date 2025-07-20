@@ -4496,7 +4496,7 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
 ' ---------- INGRESO ACORDES SIN EDICION CON MENU DE MOUSE
     If MultiKey(SC_CONTROL) And MouseButtons And 2 Then 'yyy
        Print #1,"entro al menu acordes"
-       If DUR=0 Then Exit Do EndIf
+       '''''If DUR=0 Then Exit Do EndIf
 
        pasoZona1=0:pasoZona2=0
        Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2,May6,Sus2
@@ -4520,20 +4520,51 @@ Posy=mousey
 ' determinacion de la posicion y duracion en el click del mouse...igual que en Sc_Z
 ''' ESTE INDICEPOS NO ME CONVENCE antes decia mousex -gap1 y daba negativo
     Print #1,"gap1 deberia ser 9 ", gap1
-    indicePos=mousex/anchofig + posishow -gap1
+    indicePos=(mousex-gap1)/anchofig + posishow '''-gap1
     ''''estoyEnOctava = *po '17-07-2025 ссссссссссссссссс
 '' en lectura anda PianoNota
     estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 
     Print #1,"ACORDES: indicePos,estoyEnOctava ",indicePos ,estoyEnOctava
-' dur anterior en vector a modificar  
+' dur anterior en vector a modificar 
+ 'si se da click sobre una nota hay que buiscar su comienzo
+   curpos=(mousex -gap1)/anchofig '''19-07-2025
+  '' curpos=indicePos - posishow      
+   Print #1, "curpos o Col "; curpos 
+   notacur=nsE
+   Print #1,"notacur "; notacur  
+   resultado= BuscarNota (1,curpos, notacur)  
+   If resultado = 1 Then
+      Print #1,"BuscarNota sin resultados curpos notacur ",curpos,notacur
+   Else
+      indicePos=curpos + posishow 
+      Print #1, "indicePos, notacur, curpos,posishow ",indicePos, notacur,curpos, posishow
+      Print #1,"encontro onoff 2 " ,Roll.trk(indicePos, PianoNota+SumarnR(PianoNota)).onoff 
+                
+   EndIf
+
+'--------------------------------------------- 
     Rolldur = CInt(Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).dur)
     Rollnota= CInt(Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).nota)
-    Rollnota = nsE 
-    Rolldur=DUR
-    Vaciodur= TRUE
-    Print #1,"Rolldur, nota  "; RollDur , Rollnota
+
+    If Rollnota = 0 Or Rollnota=181 Or Rolldur=0 or Rolldur=181 Then ' construimos acorde donde no haya nada
+       Rollnota = nsE 
+       Rolldur = DUR
+       Vaciodur= TRUE
+    EndIf   
+    If DUR <> Rolldur And DUR > 0  Then
+       Vaciodur= TRUE ' cambio la duracion se necesita un RecalCompas
+       Rolldur=DUR
+    EndIf 
+    If DUR=0 And RollDur > 0 Then
+           DUR=RollDur    
+    EndIf
+    If DUR=0 And RollDur = 0 Then
+          Exit Do     
+    EndIf
+
+
  
-    DUR=0
+   '''' DUR=0
  '   Print #1,"ACORDES: Rolldur ",Rolldur
  '   Print #1,"ACORDES: nsE ",nsE
  '   Print #1,"ACORDES: nR ",nR
@@ -5005,7 +5036,7 @@ If nota7ma <> 0 Then
         nota7ma= lugarNota(nota7ma)
 EndIf
 '/
-           DUR=0   
+          '''' DUR=0   
            Delete_Menu (hpopup1)            
            Close_Window(hpopup1)
            Close_Window(haco)
