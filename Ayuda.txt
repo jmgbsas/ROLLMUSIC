@@ -1,9 +1,8 @@
     Ayuda Prelimiar Básica RollMusic con  0.300 seria RollMusic 0.5000 antigua numeracion
     ====================================================================================
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, ALGUNAS COSAS YA SE ADAPTARON
-      Y FUNCIONAN BIEN PARA TICKS COMO CREAR UNA MELODIA MANUALMENTE EN ROLLGRAFICO,ACORDES TRIADA MAYOR 
-      EN MODO LECTURA CON TONICA, 3ERA o 5TA COMO BASE, Y TRASPONER, todo el resto inclusive canciones se
-      revisará y adaptara de a poco  )
+      Y FUNCIONAN BIEN PARA TICKS COMO CREAR UNA MELODIA MANUALMENTE EN ROLLGRAFICO,ACORDES TRIADA BASE
+      Y 1ERA INVERSION.
     I) INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
        RollMusic.exe y todas los archivos *.dll. 
@@ -778,7 +777,11 @@
          (el menu que aparece se sincroniza con la ventana de Roll pero no pertenece a ella, es un menu flotante 
          puede haber  situaciones en que no esté posicionada la [X] justo encima de la nota pero 
          funciona igual pues la posicion exacta de la nota lo da el clik ) .
-         Funciona y se corrigio para Ticks acordes 1era Inversion y 2da inversion de 3 o 4 notas mayores, menores.
+         Funciona y se corrigio para Ticks acordes 1era Inversion y 2da inversion de 3 notas mayores cuya
+         nota seleccionada en la secuencia es Tonica, 3era, 4ta, 5ta,6ta, 7ma y 9na,(se muestra un menu para seleccionar
+         si la nota elegida es Tonica, 3,4,5,6,7 o 9na..
+         menores solo la base. De 4 notas solo la base o sea que la elegida es nota tonica y no es invertida.
+           
          Luego de insertado el acorde automatico inmediatamente se escucha el mismo 
          NOTA:si no se entra duracion y  se da click derecho sobre una nota toma su valor de duracion y 
               muestra el menu par elegir el acorde..Luego esa duraicon no se borra y podra usarse para nuevos acordes

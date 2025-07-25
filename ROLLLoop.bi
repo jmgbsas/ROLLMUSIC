@@ -1916,7 +1916,8 @@ Else
    scan_alt=0
 
 EndIf   
-' melodia  
+' ////////////////// UNDO ACORDE O NOTAS ENTRADAS MELODIA ///////////////
+' DEBEMOS VER CUANDO BORRAR LOS VALORES GURADADOS, O AL GRABAR, CREO QUE NUNCA DURANTE LA SESION
 If MultiKey(SC_ALT)  And MultiKey(SC_U) And scan_alt=0  Then '<=== undo melodia
 Dim As Integer ik=0,ij=0,im  
    If mel_undo_k > 0  Then ' borra de a uno desde final  a adelante
@@ -1933,8 +1934,12 @@ Dim As Integer ik=0,ij=0,im
          For ij=NB To NA -13' evitamos borrado decontroles de acorde 01-02-2022
             Roll.trk(mel_undo(ik).posn, ij).nota =0
             Roll.trk(mel_undo(ik).posn, ij).dur  =0
-           ' Track(ntk).trk(mel_undo(ik).posn,1).nota=0
-           ' Track(ntk).trk(mel_undo(ik).posn,1).dur=0
+            Roll.trk(mel_undo(ik).posn, ij).vol  =0
+            Roll.trk(mel_undo(ik).posn, ij).pan  =0
+            Roll.trk(mel_undo(ik).posn, ij).pb  =0
+            Roll.trk(mel_undo(ik).posn, ij).inst =0
+            Roll.Trk(mel_undo(ik).posn, ij).onoff=0
+
          Next ij 
      
      MaxPos=MaxPos-1
@@ -3585,7 +3590,7 @@ If (ScreenEvent(@e)) Then
   Case EVENT_MOUSE_BUTTON_PRESS
 ' el help de freebasic esta mal dice que button left es 0 y es 1 !!!! joder pero anda mejor 
       ' If e.button = 0 Then
-          MousePress = 1
+      '    MousePress = 1 ???
       ' EndIf
       ' If e.button = 2 Then  ' queda pro probar
       '    MousePress = 2
@@ -3600,7 +3605,7 @@ If (ScreenEvent(@e)) Then
  ' ====================EVENT_MOUSE_BUTTON_RELEASE =========================== 
  ' ********************************************************************************
   Case EVENT_MOUSE_BUTTON_RELEASE ' obtengoPosicion
-   MousePress = 0
+  '' MousePress = 0
    If mousey < 50 And s5=2 Then
       s5=0  ' necesita mas tiempo de cpu
       Exit Do ' 07-10-2021
@@ -4490,20 +4495,23 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
  ' todo se armara segun la escala elegida previamente...el cual pasmos a desarrollar...16-12-2021
  
  If COMEDIT=LECTURA Then
+
     copiar=0
 
 ' para ingreser automatico acordes a partir de una TONICA futuro--01-12-2021  
 ' ---------- INGRESO ACORDES SIN EDICION CON MENU DE MOUSE
     If MultiKey(SC_CONTROL) And MouseButtons And 2 Then 'yyy
+'////////////////////// MENU ACORDES ////////////////////////////////
+
        Print #1,"entro al menu acordes"
-       '''''If DUR=0 Then Exit Do EndIf
+
 
        pasoZona1=0:pasoZona2=0
        Dim As HMENU hpopup1, cancelar,notas3,notas4,notas5,Noinversion,inversion1, inversion2,May6,Sus2
        Dim As HMENU Mayor,Menor,Dis,Mayor7,Menor7,Dom7,Dis7,Mayor9,Menor9,Dis9, notabase,Aum,Menor7b5,Dom75a     
        Dim As HMENU bVII,bVIIMaj7
-       Dim As Integer event,Posx,Posy 
-  ''  ScreenControl GET_WINDOW_POS, x0, y0
+       Dim As Integer event,Posx,Posy
+    ScreenControl GET_WINDOW_POS, x0, y0
    ' Print #1,"x0 ,y0 en menu contextual " ,x0,y0
    ' Print #1,"mousex ,mousey en menu contextual ", mousex,mousey
    ' Print #1,"Posx ,Posy en menu contextual ", Posx ,Posy
@@ -4517,10 +4525,16 @@ If  mouseY > 50 Then '<=== delimitacion de area de trabajo
 Dim As hwnd haco
 Posx=mousex
 Posy=mousey 
+MousexNotaElegida=Posx
+PianoNotaElegida=PianoNota
+'Print #1, "mousex nota original ";mousex
+'Print #1, "PianoNota original ";PianoNota
+'Print #1, "nsE otiginal "; nsE
 ' determinacion de la posicion y duracion en el click del mouse...igual que en Sc_Z
-''' ESTE INDICEPOS NO ME CONVENCE antes decia mousex -gap1 y daba negativo
     Print #1,"gap1 deberia ser 9 ", gap1
-    indicePos=(mousex-gap1)/anchofig + posishow '''-gap1
+    indicePos=(mousex-gap1)/anchofig + posishow
+'Print #1,"indicePos original ",indicePos
+ 
     ''''estoyEnOctava = *po '17-07-2025 ñññññññññññññññññ
 '' en lectura anda PianoNota
     estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 
@@ -4529,15 +4543,16 @@ Posy=mousey
  'si se da click sobre una nota hay que buiscar su comienzo
    curpos=(mousex -gap1)/anchofig '''19-07-2025
   '' curpos=indicePos - posishow      
-   Print #1, "curpos o Col "; curpos 
+   Print #1, "1 curpos o Col "; curpos 
    notacur=nsE
+   nsEelegida=nsE
    Print #1,"notacur "; notacur  
    resultado= BuscarNota (1,curpos, notacur)  
    If resultado = 1 Then
       Print #1,"BuscarNota sin resultados curpos notacur ",curpos,notacur
    Else
       indicePos=curpos + posishow 
-      Print #1, "indicePos, notacur, curpos,posishow ",indicePos, notacur,curpos, posishow
+      Print #1, "(I)indicePos, notacur, curpos,posishow ",indicePos, notacur,curpos, posishow
       Print #1,"encontro onoff 2 " ,Roll.trk(indicePos, PianoNota+SumarnR(PianoNota)).onoff 
                 
    EndIf
@@ -4545,7 +4560,7 @@ Posy=mousey
 '--------------------------------------------- 
     Rolldur = CInt(Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).dur)
     Rollnota= CInt(Roll.trk(indicePos,(12-nsE +(estoyEnOctava -1) * 13)).nota)
-
+   
     If Rollnota = 0 Or Rollnota=181 Or Rolldur=0 or Rolldur=181 Then ' construimos acorde donde no haya nada
        Rollnota = nsE 
        Rolldur = DUR
@@ -4618,9 +4633,61 @@ Posy=mousey
 ' Na empieza en 0,(0,1,2,3,4,5,6,7,8,9,10,11) son 12 la proxima es 12 y hubo 
 ' un salto de 12 y es al 13 si cuento desde 1 en vez de 0
 ' la ocatava siguietne empieza en 12 +13=25 
-' 0,12,25,38,51,64,77,90,103, como vemos salta en 12 
+' 0,12,25,38,51,64,77,90,103, como vemos salta en 12
+' LA NOTA SELECCIONADA SERA UNA TONICA, 3ERA,5TA, 6,7,9,11 ETC
+'Print #1,"indicePos original ",indicePos
+
+Dim As HWND hwndOpc
+hwndOpc=OpenWindow("",Posx,Posy-100,200,240,WS_OVERLAPPEDWINDOW Or WS_VISIBLE)
+'' faltaria en un futuro ver acordes cerrados y abertos pero eso es mas un trabajo del
+' usuario podran mover las notas del acorde formado , verificar el movimiento de 
+' notas individuales ,, MOVER UNA TRASPOSICION SEMITONO A SEMITONO HASTA LLEGAR A SU POSICION
+' UNA OCTAVA MAS ARRIBA O MAS ABAJO, LA TECNICA PODRIA SER ESA PONER UNA OPCION DE SUBIR O BAJAR
+' UNA OCTAVA CADA NOTA SELECCIONADA INDIVIDUALMENTE,
+
+Dim As Integer res=0,i1, evento
+
+ TextGadget  (0,10,10,180,30, "LA NOTA ELEGIDA ES..",SS_CENTER)
+
+ CheckBoxGadget( 1,10 ,  40, 90, 20, "Tonica")',, hwndOpc) 
+ CheckBoxGadget( 2,10 ,  60, 90, 20, "3era")',, hwndOpc)
+ CheckBoxGadget( 3,10 ,  80, 90, 20, "4ta")',, hwndOpc) 'sus
+ CheckBoxGadget( 4,10 , 100, 90, 20, "5ta")',, hwndOpc)
+ CheckBoxGadget( 5,10 , 120, 90, 20, "6ta")',, hwndOpc)
+ CheckBoxGadget( 6,10 , 140, 90, 20, "7ma")',, hwndOpc) 
+ CheckBoxGadget( 7,10 , 160, 90, 20, "9na")',, hwndOpc) 
+' EN UNA MELODIA GENERALMENTE SUS NOTAS SON SIEMPRE LA NOTA MAS ALTA DE UN ACORDE
+' ERGO SE SUELE USAR LA 1ER INVERSION COMUNMENTE DONDE LA FUNDAMENTAL PASA AL TOPE.  
+Do
+  evento=WaitEvent()
+   If evento= eventclose  Then
+      Exit Do
+   EndIf  
+   If evento=eventgadget Then
+      For i1=1 To 7
+        if   EventNumber()=i1 Then
+         Print #1,"seleccion de Funcion ", i1
+         res=i1
+         Exit For 
+        EndIf
+      
+      Next i1 
+
+     If i1 > 0 Then 
+        Close_Window(hwndOpc)
+        Exit Do  
+     EndIf
+  EndIf
+Loop
+
+   
+'Print #1,"seleccionado res "; res
+'Print #1, "nsEelegida "; nsEelegida
+'Print #1,"1 MousexNotaElegida"; MousexNotaElegida
+'Print #1, "PianoNotaElegida "; PianoNotaElegida
+
 '---------------- 
-Print #1,"1 ) maxpos antes de ventana acordes ", Maxpos 
+''Print #1,"1 ) maxpos antes de ventana acordes ", MaxPos 
       
      haco = OpenWindow("",Posx ,Posy,anchofig*20,60,WS_VISIBLE Or WS_THICKFRAME  , WS_EX_TOPMOST Or WS_EX_TOOLWINDOW )''Or WS_EX_TRANSPARENT  )
      UpdateInfoXserver()    
@@ -4629,11 +4696,12 @@ Print #1,"1 ) maxpos antes de ventana acordes ", Maxpos
        TextDraw(6,6,"[X]",&hffffff)
      StopDraw
      hpopup1 =CreatePopMenu()
-  
-     notas3   =OpenSubMenu(hpopup1,"3 Notas") 'triadas
-     notas4   =OpenSubMenu(hpopup1,"4 Notas") ' septimas
-     notas5   =OpenSubMenu(hpopup1,"5 Notas") ' novenas ...once 13 
-     notabase =OpenSubMenu(hpopup1,"Esta Nota Base...") ' si la nota elegida será Tonica 3era 5ta etc
+
+
+     notas3   =OpenSubMenu(hpopup1," Acorde 3 Notas") 'triadas
+     notas4   =OpenSubMenu(hpopup1," Acorde 4 Notas") ' septimas
+     notas5   =OpenSubMenu(hpopup1," Acorde 5 Notas") ' novenas ...once 13 
+     notabase =OpenSubMenu(hpopup1," Esta Nota Base es ...") ' si la nota elegida será Tonica 3era 5ta etc
      cancelar =OpenSubMenu(hpopup1,"<-Cancelar->")
           
      Mayor=OpenSubMenu(notas3,"Mayor, ")
@@ -4735,7 +4803,7 @@ Print #1,"1 ) maxpos antes de ventana acordes ", Maxpos
 
  '    MenuItem (1046,notabase,"Es Tonica")
 ' aca puedo decir que la base tonica es la nota del click, Notapiano
-' nuevo campp grado 1,2,3,4,5,6,7.8.9.10,11,12
+' nuevo campp  1,2,3,4,5,6,7.8.9.10,11,12
              
      Menuitem (1047,notabase,"Es 3era ")
         
@@ -4754,150 +4822,205 @@ Print #1,"1 ) maxpos antes de ventana acordes ", Maxpos
         
 
      MenuItem(1100,cancelar,"Salir")
-         DisplayPopupMenu(hpopup1, GlobalMouseX,GlobalMouseY)
-  
+     
+    DisplayPopupMenu(hpopup1, GlobalMouseX,GlobalMouseY)
+
  ' mouse _event win32,,,
-   grado=1    
+      
+Print #1,"indicePos por aca  ",indicePos
+ Print #1,"2 MousexNotaElegida"; MousexNotaElegida
      Do
       event=WaitEvent
-       
+      If event=eventclose Then
+         Delete_Menu (hpopup1)            
+         Close_Window(hpopup1)
+         Close_Window(haco)
+
+          Exit Do
+      EndIf   
+      If WM_VKEYTOITEM And  EventKEY = VK_ESCAPE Then
+         Delete_Menu (hpopup1)            
+         Close_Window(hpopup1)
+         Close_Window(haco)
+
+          Exit Do
+      EndIf
       If event=EventMenu then
        Select case EventNumber
 ' TRIADAS   
          Case 1001
-       'NO INVERSION Mayor   C E G ok
-      armarAcorde(1 ,4, 7, 0) ' mayor 4, 7
+       'NO INVERSION Mayor   C-> E-> G ok  apilando hacia arriba desde C, C es la nota mas baja
+'Print #1,"3 MousexNotaElegida"; MousexNotaElegida
+      Select Case res '''ACORDES MAYORES SIN INVERTIR  terminado
+         Case 1  ' la nota es la tonica
+           armarAcorde(res ,4, 7, 0) ' [C]->E->G mayor 4, 7 ,  (3era, 5ta,0) hacia arriba
+         Case 2  ' es la 3era y no invertida 
+           armarAcorde(res ,-4, 3, 0) ' C <- [E] -> G mayor -4, 3 ,  
+         Case 3 '  es la 4ta sus4 suspendida remplaza la 3era y no invertida
+           armarAcorde(res , -5, 2, 0) '  C <- [F] <- G mayor -5, 2 ,
+         Case 4 '  es la 5ta y no invertida 
+           armarAcorde(res , -3, -7, 0) ' C <- E <- [G] mayor -4, 3 ,  DE QUINTA BAJO A 3ERA Y LUEGO TONICA 
+         Case 5 '  es la 6ta del acorde mayor
+           armarAcorde(res , -5, -9, 0) ' C<-E<-[A]  DE 6TA BAJO A 3ERA Y LUEGO TONICA
+         Case 6  ' es la 7ma
+           armarAcorde(res , -5, -11, 0) ' C<-E<-[B] ' DE 7MA BAJO A 3ERA Y LUEGO TONICA
+         Case 7  ' ES LA   NOVENA 9NA  
+           armarAcorde(res , -10, -2, 0) ' C<-E<-[D] ' DE 9NA BAJO A 3ERA Y LUEGO TONIA
+      End Select
       acordeNro=1
-Print #1,"2 ) maxpos despues case 1001 de ventana acordes ", Maxpos
+'Print #1,"2 ) maxpos despues case 1001 de ventana acordes ", Maxpos
  
-         Case 1002      
-        '1ERA INVERSION MAYOR  E G C ok
-      armarAcorde(1 ,-5, -8, 0)
+         Case 1002   '''ACORDES MAYORES 1ERA INVERSION   
+      Select Case res  
+         Case 1 ' la nota es la tonica  E G [C] ok  C es la mas aguda tonica en este 
+                'caso y para abajo viene 1ero la 5ta y luego la 3era
+           armarAcorde(res ,-8, -5, 0) '' hacia abajo podria poner 3era -8, 5ta -5, 0 
+         Case 2 ' la nota es la 3era en una invertida  [E] G C ok  E es la mas grave en este caso y 
+                  'para arriba vienen 1ero la 5ta y luego la tonica
+           armarAcorde(res ,3, 8, 0) '' hacia abajo podria poner 3era -8, 5ta -5, 0 
+         Case 3 ' la nota es la 4ta en una invertida  [D] G C ok  D la 4ta es la mas grave en este 
+                'caso y para arriba vienen 1ero la 5ta y luego la tonica
+           armarAcorde(res ,10, 5, 0) '' hacia arriba podria poner tonica  10, 5ta 5, 0 
+         Case 4 ' la nota es la 5ta  de una mayor invertida  E<- [G]-> C ok , G es la 5ta esta en el medio  
+                  'para arriba viene 1ero la tonica y para abajo la tercera se pasa 3era, tonica,0
+           armarAcorde(res ,-3, 5, 0)  
+         Case 5 '  es la 6ta del acorde mayor invertida E [A] C
+           armarAcorde(res , -5, 3, 0) ' E<-[A]->C   3ERA -5 Y LUEGO TONICA +3
+         Case 6  ' es la 7ma en un acorde mayor invertido , latonica la mas aguda el C 
+           armarAcorde(res , -7, 1, 0) ' E<-[B]->C ' DE 7MA BAJO A 3ERA -7, Y LUEGO subo a TONICA +1
+
+         Case 7  ' ES LA   NOVENA 9NA de un mayor invertido  
+           armarAcorde(res , -10, 10, 0) ' E<-[D]->C ' DE 9NA BAJO A 3ERA Y LUEGO TONIA , acorde muy abierto
+
+
+
+
+      End Select 
       acordeNro=2
 
          Case 1003
-        ' 2DA INVERSION MAYOR  G C E ok
-      armarAcorde(1 ,4, -5, 0)
+        ' 2DA INVERSION MAYOR  G C E ok  5ta  -5 <- C -> 4  3era
+      armarAcorde(res ,4, -5, 0)
       acordeNro=3
 ' -----------------
          Case 1004 ' Menores <------------No inversion
-      armarAcorde(1 ,3, 7, 0) ' menor 3,7 C, Eb, G ok
+      armarAcorde(res ,3, 7, 0) ' menor 3,7 C, Eb, G ok
       acordeNro=4  
          Case 1005
-      armarAcorde(1 ,-5, -9, 0) ' Eb, G ,C ' menor 1era inversion ok
+      armarAcorde(res ,-9, -5, 0) ' Eb, G ,C ' menor 1era inversion ok
       acordeNro=5 
          Case 1006
-      armarAcorde(1 ,3, -5, 0) ' G ,C , Eb' menor 2da inversion ok
+      armarAcorde(res ,3, -5, 0) ' G ,C , Eb' menor 2da inversion ok
 
 ' -----------disminuida
          Case 1007
-      armarAcorde(1 ,3, 6, 0) ' disminuida 3,6 C,Eb,Gb
+      armarAcorde(res ,3, 6, 0) ' disminuida 3,6 C,Eb,Gb
       acordeNro=7
          Case 1008 ' 
-      armarAcorde(1 ,-4, -9, 0) '  Eb, Gb, C dism 1era inv
+      armarAcorde(res ,-9, -4, 0) '  Eb, Gb, C dism 1era inv
       acordeNro=8
          Case 1009
-      armarAcorde(1 ,3, -4, 0) '  Gb, C , Eb dism 2da inv
+      armarAcorde(res ,3, -4, 0) '  Gb, C , Eb dism 2da inv
       acordeNro=9
 ' ------------aumentada
          Case 1010
        'NO INVERSION Mayor   C E G#
-      armarAcorde(1 ,4, 8, 0) ' mayor 4, 7
+      armarAcorde(res ,4, 8, 0) ' mayor 4, 7
       acordeNro=10
 
          Case 1011
-        '1ERA INVERSION MAYOR  E G C ..-8 -4 0
-      armarAcorde(1 ,-4, -8, 0)
+        '1ERA INVERSION MAYOR  E G# C ..-8 -4 0
+      armarAcorde(res ,-8, -4, 0)
       acordeNro=11       
 
          Case 1012
-        ' 2DA INVERSION MAYOR  G C E  -4 0 4
-      armarAcorde(1 ,4, -4, 0)
+        ' 2DA INVERSION MAYOR  G# C E  -4 0 4
+      armarAcorde(res ,4, -4, 0)
       acordeNro=12
      
       
 ' -------------FIN TRIADAS --mas abajo estasn las sus2 son triadas tambien
 ' Cuaternario 
          Case 1013 ' mayor 7 no inversion
-      armarAcorde(1 ,4, 7, 11) ' mayor 4, 7,11 C,E,G,B
+      armarAcorde(res ,4, 7, 11) ' mayor 4, 7,11 C,E,G,B
       acordeNro=13   
          Case 1014 ' mayor 7 1er inversion E,G,B,C
-      armarAcorde(1 , -8, -5, -1)       
+      armarAcorde(res , -8, -5, -1)       
       acordeNro=14
          Case 1015 ' MAYOR 7 2da inv G,B,C,E 
-      armarAcorde(1 , -5, -1, 4)
+      armarAcorde(res , -5, -1, 4)
       acordeNro=15     
          Case 1016 'mayor 7 3era inversion B,C,E,G
-      armarAcorde(1 , -1, 4, 7)
+      armarAcorde(res , -1, 4, 7)
       acordeNro=16
 ' --Menor 7 o m7--------------      
          Case 1017
-      armarAcorde 1 ,3, 7, 10 ' menor 3,7,10  ej D:  D, F, A, C
+      armarAcorde res ,3, 7, 10 ' menor 3,7,10  ej D:  D, F, A, C
       acordeNro=17           
          Case 1018
-      armarAcorde 1 , -9, -5, -2 ' F, A ,C, D ' menor 1era inversion
+      armarAcorde res , -9, -5, -2 ' F, A ,C, D ' menor 1era inversion
       acordeNro=18     
          Case 1019
-      armarAcorde 1 ,-5, -2, 3 ' A ,C , D, F  ' menor 2da inversion
+      armarAcorde res ,-5, -2, 3 ' A ,C , D, F  ' menor 2da inversion
       acordeNro=19           
          Case 1020
-      armarAcorde 1 , -2, 3, 7 ' C , D, F, A ' menor 3era inversion
+      armarAcorde res , -2, 3, 7 ' C , D, F, A ' menor 3era inversion
       acordeNro=20      
 '---Menor7 b5  m7b5 o 
          Case 1021
-      armarAcorde 1 ,3, 6, 10 ' menor 3,7,10  ej D:  D, F, Ab, C
+      armarAcorde res ,3, 6, 10 ' menor 3,7,10  ej D:  D, F, Ab, C
       acordeNro=21           
          Case 1022
-      armarAcorde 1 , -9, -6, -2 ' F, Ab ,C, D ' menor 1era inversion
+      armarAcorde res , -9, -6, -2 ' F, Ab ,C, D ' menor 1era inversion
       acordeNro=22     
          Case 1023
-      armarAcorde 1 ,-6, -2, 3 ' Ab ,C , D, F  ' menor 2da inversion
+      armarAcorde res ,-6, -2, 3 ' Ab ,C , D, F  ' menor 2da inversion
       acordeNro=23           
          Case 1024
-      armarAcorde 1 , -2, 3, 6 ' C , D, F, Ab ' menor 3era inversion
+      armarAcorde res , -2, 3, 6 ' C , D, F, Ab ' menor 3era inversion
       acordeNro=24      
 
 ' ----Dom7 o 7 ---------------           
          Case 1025              
-      armarAcorde  grado, 4, 7, 10 ' 7   C(0),E(4),G(7),Bb(10)  0,4,7,10  sin inversion
+      armarAcorde  res, 4, 7, 10 ' 7   C(0),E(4),G(7),Bb(10)  0,4,7,10  sin inversion
       acordeNro=25 
          Case 1026              
-      armarAcorde  grado,-8,-5,-2 ' E(-8),G(-5),Bb(-2),C(0)   1era inversion
+      armarAcorde  res,-8,-5,-2 ' E(-8),G(-5),Bb(-2),C(0)   1era inversion
       acordeNro=26   
          Case 1027
-      armarAcorde  grado,-5,-2, 4           'G(-5) Bb(-2) C E(4) 2da inversion
+      armarAcorde  res,-5,-2, 4           'G(-5) Bb(-2) C E(4) 2da inversion
       acordeNro=27      
          Case 1028
-      armarAcorde  grado,-2, 4, 7         'Bb(-2) C E(4) G(7) 3ERA INVERSION
+      armarAcorde  res,-2, 4, 7         'Bb(-2) C E(4) G(7) 3ERA INVERSION
       acordeNro=28
 ' ----Dom7a o 7#5 7+5 ---------------           
          Case 1029              
-      armarAcorde  grado, 4, 8, 10 ' 7   C(0),E(4),Ab(8),Bb(10)  0,4,7,10  sin inversion
+      armarAcorde  res, 4, 8, 10 ' 7   C(0),E(4),Ab(8),Bb(10)  0,4,7,10  sin inversion
       acordeNro=29 
          Case 1030              
-      armarAcorde  grado,-8,-4,-2 ' E(-8),Ab(-4),Bb(-2),C(0)   1era inversion
+      armarAcorde  res,-8,-4,-2 ' E(-8),Ab(-4),Bb(-2),C(0)   1era inversion
       acordeNro=30   
          Case 1031
-      armarAcorde  grado,-4,-2, 4   'Ab(-4) Bb(-2) C E(4) 2da inversion
+      armarAcorde  res,-4,-2, 4   'Ab(-4) Bb(-2) C E(4) 2da inversion
       acordeNro=31      
          Case 1032
-      armarAcorde  grado,-2, 4, 8   'Bb(-2) C E(4) Ab(8) 3ERA INVERSION
+      armarAcorde  res,-2, 4, 8   'Bb(-2) C E(4) Ab(8) 3ERA INVERSION
       acordeNro=32
 
 
 '---Dis7-------------------------
            
          Case 1033
-      armarAcorde grado ,3, 6, 9 ' DIS 3,6,9  ej D:  C, Eb, Gb, A
+      armarAcorde res ,3, 6, 9 ' DIS 3,6,9  ej D:  C, Eb, Gb, A
       acordeNro=33           
          Case 1034
-      armarAcorde grado , -9, -6, -3 ' Eb, Gb ,A, C ' DIS 1era inversion
+      armarAcorde res , -9, -6, -3 ' Eb, Gb ,A, C ' DIS 1era inversion
       acordeNro=34     
          Case 1035
-      armarAcorde grado ,-6, -3, 3 ' Gb ,A , C, Eb  ' Dis 2da inversion
+      armarAcorde res ,-6, -3, 3 ' Gb ,A , C, Eb  ' Dis 2da inversion
       acordeNro=35           
          Case 1036
-      armarAcorde grado , -3, 3, 6 ' A , C, Eb, Gb ' Dis 3era inversion
+      armarAcorde res , -3, 3, 6 ' A , C, Eb, Gb ' Dis 3era inversion
       acordeNro=36      
 '---------------------Mayor 6ta ' CEGA , C-A INTERVALO DE 6TA 
 'https://javi29clases.blogspot.com/2012/07/acordes-mayores-con-sexta-6-en-piano.html
@@ -4906,42 +5029,42 @@ Print #1,"2 ) maxpos despues case 1001 de ventana acordes ", Maxpos
 'inversión desde su 5ta: 5ta justa, 6ta,  Tónica y su 3ra Mayor
 'inversión desde su 6ta: 6ta,  Tónica,   su 3ra Mayor y su 5ta justa        
          Case 1037 ' 
-      armarAcorde grado ,4,7,9   ' C,E,G,A ....C6
+      armarAcorde res ,4,7,9   ' C,E,G,A ....C6
       acordeNro=37   
          Case 1038 ' 1ERA INVERSION  
-      armarAcorde grado ,-3,-5,-8   ' E,G,A,C ...C6/E E-C INTERVALO DE 6TA
+      armarAcorde res ,-3,-5,-8   ' E,G,A,C ...C6/E E-C INTERVALO DE 6TA
       acordeNro=38   
 
          Case 1039 ' 2DA INV 
-      armarAcorde grado ,-3,-5,4   ' G,A,C,E ...C6/G G-E INT 6TA
+      armarAcorde res ,-3,-5,4   ' G,A,C,E ...C6/G G-E INT 6TA
       acordeNro=39   
 
          Case 1040 '3ERA INV
 'https://javi29clases.blogspot.com/2012/07/acordes-mayores-con-sexta-6-en-guitarra.html          
-      armarAcorde grado ,-3,4,7   ' A,C,E,G ...C6/A =Am7, Am7/C=C6  
+      armarAcorde res ,-3,4,7   ' A,C,E,G ...C6/A =Am7, Am7/C=C6  
       acordeNro=40   
 '--------------------------------
 ' -----------------------Sus2 triada
          Case 1041   'Sus2,"No inv")  ' triada
-      armarAcorde(grado ,2, 7, 0) ' CSus2
+      armarAcorde(res ,2, 7, 0) ' CSus2 C D G
       acordeNro=41
          
-         Case 1042  ' Sus2,"1era inv o 6")  ' triada
-      armarAcorde(grado ,-5, -10, 0) 'Csus2/D
+         Case 1042  ' Sus2,"1era inv o 6")  ' triada  D G C
+      armarAcorde(res ,-10, -5, 0) 'Csus2/D
       acordeNro=42
 
-         Case 1043 'Sus2,"2da inv")  ' triada
-      armarAcorde(grado ,-5, 2, 0) 'Csus2/G
+         Case 1043 'Sus2,"2da inv")  ' triada G C D
+      armarAcorde(res , 2, -5, 0) 'Csus2/G
       acordeNro=43
 '--------------fin sus2 triada
 ' Acodes No Diatonicos https://guitarmonia.es/los-acordes-bvii-y-bviimaj7/
-' bVII bemol septimo grado triada
-         Case 1044 
-      armarAcorde(grado ,-5, -8, 0)
-      acordeNro=44
+' bVII bemol septimo grado triada 1ERA INVERSION
+         Case 1044 '' B, D ,F -> Bb, D, F -> D, F, Bb  (GRADO, 5TA, 3ERA) Bb semitono mas alto
+      armarAcorde(res ,-8, -5, 0)                                    '  F  5 semi tono abajo 
+      acordeNro=44                                                     '  D  8 semitono abajo
 
          Case 1045  
-      armarAcorde(grado ,-5, -8, -1) ' 1era inversion  Bb y A juntos...¿? o -13
+      armarAcorde(res ,-5, -8, -1) ' 1era inversion  Bb y A juntos...¿? o -13
       acordeNro=45
            
          Case 1046 
@@ -4949,17 +5072,20 @@ Print #1,"2 ) maxpos despues case 1001 de ventana acordes ", Maxpos
          Case 1047  
 
          Case 1048  
-            grado=5
-         Case 1049  
-            grado=7
-         Case 1050  
-            grado=9
-         Case 1051  
-            grado=11
-         Case 1052  
-            grado=13
-         Case 1100 ' es Salir
             
+         Case 1049  
+            
+         Case 1050  
+            
+         Case 1051  
+            
+         Case 1052  
+            
+         Case 1100 ' es Salir
+         Delete_Menu (hpopup1)            
+         Close_Window(hpopup1)
+         Close_Window(haco)
+
        End Select
 ' grabacion en Roll y track
 Dim As INTEGER vacio
@@ -5036,11 +5162,11 @@ If nota7ma <> 0 Then
         nota7ma= lugarNota(nota7ma)
 EndIf
 '/
-          '''' DUR=0   
-           Delete_Menu (hpopup1)            
-           Close_Window(hpopup1)
-           Close_Window(haco)
-           Exit Do 
+    '''' DUR=0   
+         Delete_Menu (hpopup1)            
+         Close_Window(hpopup1)
+         Close_Window(haco)
+         Exit Do 
                
       EndIf
  
@@ -5175,7 +5301,7 @@ ButtonGadget(2,530,30,50,40," OK ")
 ' clave DEVF (desarrollo futuro)
 ' esto funciona solo en modo lectura asi que lo movere ahi
 
-  If MultiKey(SC_CONTROL) And MousePress= 1  Then
+  If MultiKey(SC_CONTROL) And MouseButtons= 1  Then '24-07-2025 Mousepress detecta mouse encima sin hacer ckick no sirve aca
      Dim As Integer pasox, pasoy, pasonR
      pasox=(mousex- gap1 )/anchofig  + posishow  
      pasoy=nsE
@@ -5790,7 +5916,7 @@ EndIf
        nR=0  ' solo se usa para separar los casos ahora, antes no servia hubo que eliminarlo  
           AutoFracTodoDur Track(),Roll,indicePos, Rolldur,nR,ntk  ' 3er version
     End Select    
-    MousePress=0  
+''    MousePress=0   
  EndIf
  If MultiKey(SC_LSHIFT)  Then ' :
       cuart=1 

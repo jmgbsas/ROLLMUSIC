@@ -81,7 +81,9 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion=" 0.327 agregar Acorde Triada Mayor en Lectura fix3"
+nroversion=" 0.328 MENU CONTEXTUAL EN LECTURA PARA FORMAR ACORDES"
+' Funciona Triadas cuya nota elegida es Tonica, 3era, 4ta, 5ta,6ta, 7ma y 9na ", para menores
+' y traiadas o de 4 notas solo funciona la Tonica.,
 ' 0.324 se corrigio los click sobre EDIT para pasar de edicion a lectura habia dejado de andar
 ' anda bienm 0.324 ...ahora estamos corrigiendo pipipipi insertar en Ctrl-M
 ' la idea es que si ponemos una nota de duracion DUR todo se mueva en esa DUR no en

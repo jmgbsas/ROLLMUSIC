@@ -1,3 +1,7 @@
+- 24-07-2025 0.328 Funciona Crea Triadas cuya nota elegida es Tonica, 3era, 4ta, 5ta,6ta, 7ma y 9na 
+   Sin invertir o con 1era inversion. 
+   para menores y traiadas  de 4 notas solo funciona que sea Tonica y win invertir.
+
 - 10-07-2025 0.327 Fix de insercion de acordes en modo Lectura para Triada Mayor y Menor
 - 17-07-2025 0.326 insertar notas en Ctrl-N con menu contextual grafico
 - 08-07-2025 insert de una nota con apertura de secuencia, o sea la secuencia se abre en el espacio

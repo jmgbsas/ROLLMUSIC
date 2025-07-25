@@ -3528,7 +3528,7 @@ EndIf
    If mousex > 42 And mousex < 110  And mousey < 50  Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
     
-        If MultiKey(SC_ALT) And MousePress=1 Then
+        If MultiKey(SC_ALT) And MouseButtons=1 Then
          'If dobleclick Then
             Nuevo(Roll,1)
             Sleep 50
@@ -6389,7 +6389,8 @@ fa1=2
 ''''''' Screen 0 ''', , ,  GFX_SCREEN_EXIT '''&h80000000
 ThreadDetach(threadloop)
 Screen 0
-DestroyWindow(hWnd)
+Close_Window(hwnd)
+''DestroyWindow(hWnd)
 
 ''''Sleep 100
  
@@ -6668,27 +6669,28 @@ Sub armarAcorde(grado As Integer,n1 As Integer,n2 As Integer,n3 As Integer)
   ' para mayo4      n1=4 y n2=7
   ' para menor      n1=3 y n2=7
   ' para disminuido n1=3 y n2=6
-
+'Print #1,"4 MousexNotaElegida"; MousexNotaElegida
 Dim As Integer acoposoff=0, resultado,acoposOffNew
    scan_alt=0
    cnt_acor=cnt_acor +1 
    If grado=0 Then grado=1 EndIf ' todo pasa por grado 1 por ahora triadas
 
-   Print #1,"Grado ",grado
-   Print #1, "mousex ";mousex, "anchofig "; anchofig; "gap1 ";gap1
+'   Print #1,"Grado ",grado
 
-   curpos=(mousex -gap1)/anchofig '''19-07-2025
-   Print #1, "curpos o Col "; curpos 
-   notacur=nsE
-   Print #1,"notacur "; notacur  
+'   Print #1, "5 mousex ";MousexNotaElegida, "anchofig "; anchofig; "gap1 ";gap1
+
+   curpos=(MousexNotaElegida -gap1)/anchofig '''19-07-2025
+'   Print #1, "2 curpos o Col "; curpos 
+   notacur=nsEelegida
+'   Print #1,"notacur "; notacur  
    resultado= BuscarNota (1,curpos, notacur)  
    If resultado = 1 Then
-      Print #1,"BuscarNota sin resultados curpos notacur ",curpos,notacur
+'      Print #1,"BuscarNota sin resultados curpos notacur ",curpos,notacur
    Else
       ''indicePos=curpos + posishow ''- gap1/anchofig
       indicePos= curpos + posishow 
-      Print #1, "indicePos, notacur, curpos,posishow ",indicePos, notacur,curpos, posishow
-      Print #1,"encontro onoff 2 " ,Roll.trk(indicePos, PianoNota+SumarnR(PianoNota)).onoff 
+'      Print #1, "(2)indicePos, notacur, curpos,posishow ",indicePos, notacur,curpos, posishow
+'      Print #1,"encontro onoff 2 " ,Roll.trk(indicePos, PianoNotaElegida+SumarnR(PianoNotaElegida)).onoff 
                 
   EndIf
   Dim As Integer st=0
@@ -6701,12 +6703,12 @@ Dim As Integer acoposoff=0, resultado,acoposOffNew
 '' SI ES DISTINRA SE BORRA EL ONOFF 1 Y SE CREA UNO NUEVO
 '' SI NO HAY NOTA FUNDAMENTAL ES VACIO SE CREA LA TONICA SE COLOCA SU ONOFF2 Y ONOFF1
 '' L UNDO LO DEJAMOS PARA EL FINAL NOS CONCENTRAMOS EN QUE SE ARME BIEN 
-      Select Case grado
-        Case 1  ' es Tonica PROBADO OK!, FALTA VER POSICION EN EL CALL
+      Select Case grado ' la nota elegida sera la Tonica del acorde
+        Case 1 To 7  ' es Tonica PROBADO OK!, 
 ' grabo la nota Tonica de la melodia  a partir de la cual hago el acorde
-        Print #1,"ENTRA POR GRADO 1 ACORDE SIN INVERSION TONICA"
+'        Print #1,"ENTRA POR GRADO 1 ACORDE SIN INVERSION TONICA"
       'TONICA:---------------------------
-        pnr=PianoNota+SumarnR(PianoNota)    
+        pnr=PianoNotaElegida+SumarnR(PianoNotaElegida)    
 
         undo_kant_intervalos(cnt_acor)=0  ' tonica no hay intervalo es ella sola          
         undo_acorde(cnt_acor,0).posn=indicePos ' shared global la old actual ¿¿?
@@ -6725,8 +6727,8 @@ Dim As Integer acoposoff=0, resultado,acoposOffNew
         acoposOffNew=indicePos + DurXTick (RollDur) -1
 ' O DISTINTA A LA QUE EXISTIA EM ESE LUGAR
 ' saltos de octava
-        st=nsE '  tonica 
-Print #1,"armando acorde ,TONICA ",st
+        st=nsEelegida '  tonica 
+'Print #1,"armando acorde ,TONICA ",st
 
        posn=acoposOff +1
        If posn > MaxPos Then 
@@ -6752,7 +6754,7 @@ Print #1,"armando acorde ,TONICA ",st
 '--------n1 acorde de 3 notas------------------------------------
   '      Print #1,"armando acorde ,5ta,nR ",pnr  
 
-        pnr=PianoNota+n1 ' TERCERA
+        pnr=PianoNotaElegida+n1 ' TERCERA ya no es la pianonota de la nota elegida 
         pnr=pnr + SumarnR(pnr) ' es nR indice del vector Roll
 
         undo_kant_intervalos(cnt_acor)=1
@@ -6764,8 +6766,8 @@ Print #1,"armando acorde ,TONICA ",st
 
         Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
         
-        st=nsE + n1 '''-n2
-Print #1,"armando acorde ,3ERA,nR ",st 
+        st=nsEelegida + n1 '''-n2
+'Print #1,"armando acorde ,3ERA,nR ",st 
         If st <= 0 Then
            st=12 + st
         EndIf            
@@ -6785,7 +6787,7 @@ Print #1,"armando acorde ,3ERA,nR ",st
 
 '--------n2 acorde de 3 notas------------------------------------
 
-        pnr=PianoNota+n2 ' QUINTA
+        pnr=PianoNotaElegida+n2 ' QUINTA
         pnr=pnr + SumarnR(pnr) ' es nR indice del vector Roll
 
         undo_kant_intervalos(cnt_acor)=2
@@ -6796,8 +6798,8 @@ Print #1,"armando acorde ,3ERA,nR ",st
         undo_acorde(cnt_acor,2).nota=Roll.trk(indicePos, pnr).onoff
 
         Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
-        st=nsE + n2 '''-n2 
-Print #1,"armando acorde ,5ta ",st
+        st=nsEelegida + n2 '''-n2 
+'Print #1,"armando acorde ,5ta ",st
         If st <= 0 Then
            st=12 + st
         EndIf            
@@ -6817,7 +6819,7 @@ Print #1,"armando acorde ,5ta ",st
 
 
 If n3 <> 0 Then ' es un acorde de 4 notas            
-        pnr=PianoNota+n3
+        pnr=PianoNotaElegida+n3
         pnr=pnr + SumarnR(pnr)
 
         undo_kant_intervalos(cnt_acor)=3 
@@ -6828,8 +6830,8 @@ If n3 <> 0 Then ' es un acorde de 4 notas
         undo_acorde(cnt_acor,3).nota=Roll.trk(indicePos, pnr).onoff
 
         Roll.trk(indicePos, pnr).dur=CUByte(RollDur)
-        st=nsE+n3 
-    Print #1,"armando acorde ,7ta,nR ",pnr
+        st=nsEelegida+n3 
+'    Print #1,"armando acorde ,7ta,nR ",pnr
 
         If st <= 0 Then
            st=12 + st
@@ -6848,13 +6850,6 @@ If n3 <> 0 Then ' es un acorde de 4 notas
 
 
 EndIf
-        Case 3 ' es la 3era futuro hasta aca estaba desarrollado a antes trateremos de que funcione lo que estaba ahora para ticks
-        Case 5 ' es la 5ta
-        Case 7 ' es la 7ma
-        Case 4
-        Case 6
-        Case 9
-        Case 11
       End Select   
      '' grado=0    
  If Vaciodur Then

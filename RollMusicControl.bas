@@ -43,7 +43,7 @@ Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota
 common Shared As Integer  ANCHO,ALTO,indicenotas
 Common Shared As FLOAT font,nanchofig,anchofig
 COMMON Shared As Long eventc, eventM
-Common Shared As hwnd hwndC, hwndListBox, hwndPatronEjec
+Common Shared As hwnd hwndC, hwndListBox, hwndPatronEjec,hwndTipoAcorde
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA
 ROLLCARGADO    = FALSE
 TRACKCARGADO   = FALSE
@@ -64,7 +64,7 @@ common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1
 Common Shared As Any Ptr thread4
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares
 Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
-Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros
+Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,MousexNotaElegida,PianoNotaElegida,nsEelegida
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 Common Shared  portsal As UByte, patchsal As ubyte
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp, npi,calltoca,npo,canalDeGrabacion

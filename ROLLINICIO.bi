@@ -20,7 +20,7 @@
 
 #include "mod_rtmidi_c.bi"
 #Inclib  "rtmidi.dll" 'usa librerias estaticas 
-'#Inclib  "rtmidi"  '''uso al dedeisco rtmidi.dll
+
 #include "fbthread.bi"
 #include "crt.bi" ' QSORT
  
@@ -125,6 +125,8 @@ Sub  porterrorsub(porterror As integer)
 
 End Sub
 
+'------------------
+
 On Error Goto errorhandler
 
 Dim Shared file As OpenFileName
@@ -161,12 +163,6 @@ Dim As GLFWwindow ptr  win
 ' ----FIN OPENGL 
 '/
 '===============================
-''Print #1,"ANTES ROLLDEC "
-#include "ROLLDEC.BI"
-''Print #1,"DESPUES ROLLDEC "
-
-
-'------------------
 
 pd1 = GetCurrentProcessId()  
 
@@ -199,6 +195,11 @@ Print #1,Date;Time
 '--------------
 #include "string.bi"
 #include once "cairo/cairo.bi"
+''Print #1,"ANTES ROLLDEC "
+#include "ROLLDEC.BI"
+''Print #1,"DESPUES ROLLDEC "
+'------------------
+
 #include "midiinfo.bi"
 '==============================
 '#Include "NOTAS.bi"

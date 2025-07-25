@@ -620,7 +620,7 @@ menuAccion=0:insert=0:agregarNota=0:octavas=0
 ' Const RIGHTBUTTON = 2 
 ' Const SHOWMOUSE = 1
 ' Const HIDEMOUSE = 0 
-Dim Shared As Integer MousePress = 0, MouseMove=0 '02-07-2021
+Dim Shared As Integer MousePress = 0, MouseMove=0 '02-07-2021 no sirven
 Type mouse
  As Integer res
  As Integer x
@@ -1173,7 +1173,7 @@ Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo,canalDeGrabacion
 Common SHARED As Integer EstaBarriendoPenta
-Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA, VerMenu
+Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA, VerMenu,MousexNotaElegida,PianoNotaElegida,nsEelegida
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, intervalo '  default 2 que es 1 separacion de notas
