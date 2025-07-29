@@ -1589,12 +1589,12 @@ If MultiKey(SC_DOWN) Then  ' el screenevent me pone trasponer en 1 la puta e.sca
        'print #1,"1 pulso down screenevent TRASPONER"
        If s6=0  Then
          s6=1 
-       trasponerGrupo ( -1,Roll,encancion)
+       trasponerGrupo ( -1,Roll,encancion,0,0)
        EndIf  
        Exit Do
      EndIf 
      
-    If COMEDIT=MODIFICACION_INSERCION  Or COMEDIT=MODIFICACION_COLUMNA Then 'ctrl-m o ctrl-o, ctrl-n no
+    If COMEDIT=MODIFICACION_INSERCION  Or COMEDIT=MODIFICACION_COLUMNA And trasponer= 0 Then 'ctrl-m o ctrl-o, ctrl-n no
      notacur = notacur + 1
      If notacur > 12 Then
       notacur=1
@@ -1603,7 +1603,7 @@ If MultiKey(SC_DOWN) Then  ' el screenevent me pone trasponer en 1 la puta e.sca
       Sleep 100
       Exit Do
     EndIf
-    If COMEDIT<>MODIFICACION_INSERCION Then 
+    If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS  And trasponer=0 Then 
        If s1=0 Then
           s1=1
         'print #1,"pulso down screenevent"
@@ -1631,13 +1631,13 @@ While InKey <> "": Wend
     If trasponer = 1 And SelGrupoNota=1 Then
        If s6=0  Then
           s6=1 
-         trasponerGrupo ( 1, Roll,encancion)
+         trasponerGrupo ( 1, Roll,encancion,0,0)
        EndIf  
 While InKey <> "": Wend
        Exit Do 
     EndIf 
 
-    If COMEDIT<>MODIFICACION_INSERCION Then
+    If (COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS)  And trasponer=0 Then
      If s2=0 Then
       s2=1
          'print #1,"pulso UP r 1 inc_penta"
@@ -1649,13 +1649,13 @@ While InKey <> "": Wend
 While InKey <> "": Wend     
      Exit Do
     EndIf
-    If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=MODIFICACION_COLUMNA Then ' no se usa con ctrl-n,pero si en ctrl-m 1 y ctrl-o 3 futuro columna
+    If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=MODIFICACION_COLUMNA And trasponer= 0 Then ' no se usa con ctrl-n,pero si en ctrl-m 1 y ctrl-o 3 futuro columna
      notacur=notacur-1
      If notacur < 1 Then
       notacur=12
      EndIf
      cambiadur=0  
-      Sleep 100
+      Sleep 50
 While InKey <> "": Wend
      Exit Do
     EndIf
@@ -3614,7 +3614,24 @@ If (ScreenEvent(@e)) Then
       s3=0
       Exit Do       
    EndIf
+   If mousey > 50 And SelGrupoNota=2 And( MouseButtons And 1) Then
+     'vemos si se clickeo un lugar vacio lo que indicara el fin del grupo y el
+     'lugar donde se transportara las notas
+    indicePos=(mousex- gap1 )/anchofig + posishow
+    mouseyOld=mousey
+    estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 
+    curpos=(mousex -gap1)/anchofig '''19-07-2025
+    notacur=nsE
+    resultado= BuscarNota (1,curpos, notacur)
   
+   If resultado = 1 Then
+      Print #1,"ES UN LUGAR VACION FIN DE GRUPO  ",curpos,notacur
+      SelGrupoNota=3
+    EndIf
+
+
+    
+    EndIf
  ' ********************************************************************************
  ' ============================== MOUSE WHEEL =========================== 
  ' ********************************************************************************
@@ -3672,7 +3689,7 @@ If (ScreenEvent(@e)) Then
 '
  '    Exit Do 
   '  EndIf 
-    If COMEDIT<>MODIFICACION_INSERCION Then ' incluye ctrl-n que puede cambiar en todas las octavas
+    If (COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS)  And trasponer=0 Then ' incluye ctrl-n que puede cambiar en todas las octavas
      If s2=0 Then
       s2=1
          'print #1,"pulso UP r 1 inc_penta"
@@ -3928,7 +3945,7 @@ EndIf
 ' **********************************************************************************
   Case EVENT_KEY_REPEAT
    If e.scancode = 72  Then ' <======= SC_UP
-    If COMEDIT<>MODIFICACION_INSERCION Then
+    If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS  And trasponer=0 Then
      If s2=0 Then
       s2=1
     '     print #1,"pulso UP screenevent 2 inc_Penta"
@@ -3939,7 +3956,7 @@ EndIf
      EndIf
      Exit Do
     EndIf
-    If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=MODIFICACION_COLUMNA Then
+    If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=MODIFICACION_COLUMNA And trasponer= 0 Then
      notacur=notacur-1  ' funcionara con ctrl-m y ctrl-o pero no para ctrl-N
      If notacur < 1 Then
       notacur=12
@@ -3956,7 +3973,7 @@ EndIf
     '     notacur=1
     '   EndIf
     'EndIf
-    If COMEDIT<>MODIFICACION_INSERCION Then
+    If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS  And trasponer=0 Then
        If s1=0 Then
          s1=1
        print #1,"pulso down screeevent"
@@ -4535,7 +4552,7 @@ PianoNotaElegida=PianoNota
     indicePos=(mousex-gap1)/anchofig + posishow
 'Print #1,"indicePos original ",indicePos
  
-    ''''estoyEnOctava = *po '17-07-2025 ссссссссссссссссс
+    ''''estoyEnOctava = *po '17-07-2025 
 '' en lectura anda PianoNota
     estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 
     Print #1,"ACORDES: indicePos,estoyEnOctava ",indicePos ,estoyEnOctava
@@ -4547,6 +4564,7 @@ PianoNotaElegida=PianoNota
    notacur=nsE
    nsEelegida=nsE
    Print #1,"notacur "; notacur  
+
    resultado= BuscarNota (1,curpos, notacur)  
    If resultado = 1 Then
       Print #1,"BuscarNota sin resultados curpos notacur ",curpos,notacur
@@ -4657,7 +4675,8 @@ Dim As Integer res=0,i1, evento
  CheckBoxGadget( 6,10 , 140, 90, 20, "7ma")',, hwndOpc) 
  CheckBoxGadget( 7,10 , 160, 90, 20, "9na")',, hwndOpc) 
 ' EN UNA MELODIA GENERALMENTE SUS NOTAS SON SIEMPRE LA NOTA MAS ALTA DE UN ACORDE
-' ERGO SE SUELE USAR LA 1ER INVERSION COMUNMENTE DONDE LA FUNDAMENTAL PASA AL TOPE.  
+' ERGO SE SUELE USAR LA 1ER INVERSION COMUNMENTE DONDE LA FUNDAMENTAL PASA AL TOPE. 
+' PERO ACA GENERAMOS MAS POSIBILIDADES QUE LA NOTA DE LA SECUENCIA SEA UNA 3ERA 57A 4TA,7MA 9NA 
 Do
   evento=WaitEvent()
    If evento= eventclose  Then
@@ -4700,17 +4719,18 @@ Loop
 
      notas3   =OpenSubMenu(hpopup1," Acorde 3 Notas") 'triadas
      notas4   =OpenSubMenu(hpopup1," Acorde 4 Notas") ' septimas
-     notas5   =OpenSubMenu(hpopup1," Acorde 5 Notas") ' novenas ...once 13 
+     notas5   =OpenSubMenu(hpopup1," Acorde 5 Notas") ' novenas ...once 13 COMPLETAS 
      notabase =OpenSubMenu(hpopup1," Esta Nota Base es ...") ' si la nota elegida serб Tonica 3era 5ta etc
      cancelar =OpenSubMenu(hpopup1,"<-Cancelar->")
-          
+
+' 3 NOTAS -------------------------------->          
      Mayor=OpenSubMenu(notas3,"Mayor, ")
      Menor=OpenSubMenu(notas3,"Menor, m")
      Dis  =OpenSubMenu(notas3,"Dis, є")
      Aum  =OpenSubMenu(notas3,"Aum, +")
      Sus2 =OpenSubMenu(notas3,"Sus2  ")
      bVII =OpenSubMenu(notas3,"bVII = Mayor bajar base 1 semitono ")
-     
+' 4 NOTAS -------------------------------->     
      Mayor7   =OpenSubMenu(notas4,"May7")
      Menor7   =OpenSubMenu(notas4,"Menor7, m7,-7")
      Menor7b5 =OpenSubMenu(notas4,"Menor7b5, m7(b5),-7(b5)")
@@ -4718,15 +4738,17 @@ Loop
      Dom75a   =OpenSubMenu(notas4,"Dominante +7, 7#5, 7+5")
      Dis7     =OpenSubMenu(notas4,"Dis 7,o є7")
      May6     =OpenSubMenu(notas4,"May 6,o (6)")
-     
+'      
+'5 NOTAS --------------------------------->
      Mayor9=OpenSubMenu(notas5,"Mayor 9, 9")
      Menor9=OpenSubMenu(notas5,"Menor 9, -9")
      Dis9  =OpenSubMenu(notas5,"Dis 9, є9")
 
+' Deberia hacer un algoritmico para evitar tanto desarrollo de posibilidades?, datos que tengo para el algoritmo
+' la nota elegida, si es mayor menor etc, si es acorde base, o 1era inv o 2da inv,,
 
-
-     MenuItem (1001,Mayor,"No inv") 'triada
-     Menuitem (1002,Mayor,"1era inv o 6") 'triada
+     MenuItem (1001,Mayor,"No inv")       'triada -> 7 CASOS TONICA, 3ERA,4TA,5TA,67A, 7MA,9NA LISTO
+     Menuitem (1002,Mayor,"1era inv o 6") 'triada -> 7 CASOS TONICA, 3ERA,4TA,5TA,67A, 7MA,9NA LISTO
      Menuitem (1003,Mayor,"2da inv")  ' triada
 
      MenuItem (1004,Menor,"No inv")  ' triada
@@ -4878,9 +4900,9 @@ Print #1,"indicePos por aca  ",indicePos
          Case 2 ' la nota es la 3era en una invertida  [E] G C ok  E es la mas grave en este caso y 
                   'para arriba vienen 1ero la 5ta y luego la tonica
            armarAcorde(res ,3, 8, 0) '' hacia abajo podria poner 3era -8, 5ta -5, 0 
-         Case 3 ' la nota es la 4ta en una invertida  [D] G C ok  D la 4ta es la mas grave en este 
+         Case 3 ' la nota es la 4ta en una invertida  [F] G C ok  F la 4ta es la mas grave en este 
                 'caso y para arriba vienen 1ero la 5ta y luego la tonica
-           armarAcorde(res ,10, 5, 0) '' hacia arriba podria poner tonica  10, 5ta 5, 0 
+           armarAcorde(res ,7, 2, 0) '' hacia arriba podria poner tonica  7, 5ta 2, 0 
          Case 4 ' la nota es la 5ta  de una mayor invertida  E<- [G]-> C ok , G es la 5ta esta en el medio  
                   'para arriba viene 1ero la tonica y para abajo la tercera se pasa 3era, tonica,0
            armarAcorde(res ,-3, 5, 0)  
@@ -4892,24 +4914,65 @@ Print #1,"indicePos por aca  ",indicePos
          Case 7  ' ES LA   NOVENA 9NA de un mayor invertido  
            armarAcorde(res , -10, 10, 0) ' E<-[D]->C ' DE 9NA BAJO A 3ERA Y LUEGO TONIA , acorde muy abierto
 
-
-
-
       End Select 
       acordeNro=2
 
-         Case 1003
+         Case 1003 ' TRIADA SEGUNDA INVERSION listo
         ' 2DA INVERSION MAYOR  G C E ok  5ta  -5 <- C -> 4  3era
-      armarAcorde(res ,4, -5, 0)
+      Select Case res  
+         Case 1 ' la nota es la tonica en un  acorde en 2da inversion  G [C]  E ok  C es la del medio en este 
+                'caso y para abajo viene 1ero la 5ta y luego para arriba la 3era
+           armarAcorde(res ,4, -5, 0) '' ESTABA -- listo
+         Case 2 ' la nota es la 3era en una 2da invertida   G C [E] ok  E es la mas aguda en este caso y 
+                  'para abajo vienen 1ero la 5ta y luego la tonica
+           armarAcorde(res ,-9, -4, 0) '' hacia abajo podria poner 3era -8, 5ta -5, 0 listo 
+         Case 3 ' la nota es la 4ta en una 2da invertida   G C [F] ok  F la 4ta es la mas aguda en este 
+                'caso y para abajo vienen 1ero la 5ta y luego la tonica
+           armarAcorde(res ,-5 ,-10, 0) '' hacia abajo podria poner tonica  -5, 5ta -10, 0 
+
+         Case 4 ' la nota es la 5ta  de una mayor 2da invertida   [G]-> C-> E ok , G es la 5ta esta la mas baja  
+                  'para arriba viene 1ero la tonica y luego la tercera 
+           armarAcorde(res ,9, 5, 0)  '' 9 para llegar a la 3era E. 5  para llegar a la tonica C listo
+         Case 5 '  es la 6ta del acorde mayor 2da invercion [A] C E
+           armarAcorde(res , 3, 7, 0) ' [A]->C->E  TONICA +3, 3era 7
+         Case 6  ' es la 7ma en un acorde mayor 2da invercion, latonica la mas aguda el C 
+           armarAcorde(res , 1, 5, 0) ' [B]->C-E ' DE 7MA arriba tonica 1, 3era  
+
+         Case 7  ' ES LA   NOVENA 9NA de un mayor 2da inversion, o sea tomo una 2da inversion y de ella la 9na  
+           armarAcorde(res , 10,14,0) ' [D]->C->E ' DE 9NA arriba TONICA , y luego 3era acorde muy abierto
+
+      End Select 
+
+
       acordeNro=3
 ' -----------------
-         Case 1004 ' Menores <------------No inversion
-      armarAcorde(res ,3, 7, 0) ' menor 3,7 C, Eb, G ok
+         Case 1004 ' Menores <------------No inversion LISTO
+      Select Case res '''ACORDES MENORES SIN INVERTIR listo   
+         Case 1  ' la nota es la tonica
+          armarAcorde(res ,3, 7, 0) ' menor 3,7 ..C, Eb, G ok
+         Case 2  ' es la 3era y no invertida 
+           armarAcorde(res,-3, 4,0) ' C <- [Eb] -> G menor -3, 4  ok  
+         Case 3 '  es la 4ta sus4 suspendida remplaza la 3era y no invertida 4ta justa 2.5 tonos o 5 semitonos
+           armarAcorde(res ,-5 , 2, 0) '  C <- [F] <- G menor -5, 2 , ? Eb-> F seria 4ta
+' es igual que para mayor es unica tanto para mayor como menor
+         Case 4 '  es la 5ta y no invertida de una menor
+           armarAcorde(res ,-4 ,-7 , 0) ' C <- Eb <- [G] mayor -4, 3 ,  DE QUINTA BAJO A 3ERA Y LUEGO TONICA 
+         Case 5 '  es la 6ta del acorde menor
+           armarAcorde(res ,-6 , -9, 0) ' C<-Eb<-[A]  DE 6TA BAJO A 3ERA Y LUEGO TONICA
+         Case 6  ' es la 7ma de un acorde menor
+           armarAcorde(res ,-8 ,-11 , 0) ' C<-Eb<-[B] ' DE 7MA BAJO A 3ERA Y LUEGO TONICA sin la 5ta
+         Case 7  ' ES LA   NOVENA 9NA de una menor  
+           armarAcorde(res ,-11 ,-2 , 0) ' C<-Eb<-[D] ' DE 9NA BAJO A 3ERA Y LUEGO TONIA
+      End Select
+
+
       acordeNro=4  
-         Case 1005
+'-----------------------------SEGUIR DESDE ACA -------------
+
+         Case 1005  ' MENORES 1ERA INVERSION TRIADA
       armarAcorde(res ,-9, -5, 0) ' Eb, G ,C ' menor 1era inversion ok
       acordeNro=5 
-         Case 1006
+         Case 1006 ' MENORES 2DA INVERSION TRIADA
       armarAcorde(res ,3, -5, 0) ' G ,C , Eb' menor 2da inversion ok
 
 ' -----------disminuida
@@ -5405,23 +5468,86 @@ ButtonGadget(2,530,30,50,40," OK ")
    ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click'
  EndIf
 
-' TRASPOSICION DE UNA SOLA NOTA MARCANDOLA CON NOTA=13
+' TRASPOSICION DE UNA SOLA NOTA MARCANDOLA CON NOTA= nota +12
 '========================================================= 
- If MultiKey(SC_ALT) And MouseButtons And 1  Then 'posiciona el cursor 
+
+' tratremos de ahcerlo solo arrastrando el mouse!
+ If MultiKey(SC_ALT) And MouseButtons And 1 And trasponer=1 Then 'posiciona el cursor 
     ' habilito trasposicion de una sola nota, ejecuta solo con Ctrl-T previo y
     ' las flechas up/down, habilitare dragado tambien 02-07-2021
 '    pasoNota=nsE
-   ' Print #1,"MARCAR CON ALT Y 13 UNA NOTA "
+   ' Print #1,"MARCAR CON ALT Y nota +12 en UNA NOTA "
     indicePos=(mousex- gap1 )/anchofig + posishow
+    mouseyOld=mousey
+'---------------------------para ticks nuevo codigo-----------------
+   estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 
+    Print #1,"idicePos,estoyEnOctava ",indicePos ,estoyEnOctava
+   curpos=(mousex -gap1)/anchofig '''19-07-2025
+  '' curpos=indicePos - posishow      
+   Print #1, "1 curpos o Col "; curpos 
+   notacur=nsE
+   ''nsEelegida=nsE
+   Print #1,"notacur "; notacur  
+ 
+   resultado= BuscarNota (1,curpos, notacur)
+  
+   If resultado = 1 Then
+      Print #1,"BuscarNota sin resultados en mover una nota curpos notacur ",curpos,notacur
+   Else
+      indicePos=curpos + posishow 
+      Print #1, "(I)indicePos, notacur, curpos,posishow ",indicePos, notacur,curpos, posishow
+      Print #1,"encontro onoff 2 " ,Roll.trk(indicePos, PianoNota+SumarnR(PianoNota)).onoff 
+'------------------------------------------------------------------    
    ' Print #1,"MARCAR CON ALT Y 13 UNA NOTA ,INDICEPOS",indicePos 
-' grupo de notas seleccionadas poniendo un 13 en nota
-   Roll.trk(indicePos,nR ).nota = 13 ' marcamos para mover 
+'    grupo de notas seleccionadas poniendo un 13 en nota
+     RollNotaOld=RollNota
+     nR=PianoNota + SumarnR(PianoNota)
+     Print #1,"nota off2 encontrada Roll.trk(indicePos,nR ).nota ";Roll.trk(indicePos,nR ).nota
+     Roll.trk(indicePos,nR ).nota = Roll.trk(indicePos,nR ).nota + 12 ' marcamos para mover 13 a 24
+     Print #1,"nota off2 SUMADA 12  Roll.trk(indicePos,nR ).nota ";Roll.trk(indicePos,nR ).nota
+     If SelGrupoNota=0  Then ' primer nota clickeada 
+        nROld=nR
+        indicePosOld=indicePos ' sera la primer nota del grupo el X1 desde
+     Else
+        indicePosUltimaGrupo=indicePos 
+     EndIf
+     RollDurOld=CInt(Roll.trk(indicePos,nR ).dur)
+     onoff=CInt(Roll.trk(indicePos,nR ).onoff)
+     trasponer=2 ' no deja entrar  de nuevo
+     
+''' tener en cuenta que nR=(12-nsE) + (estoyEnOctava -1 ) * 13
+'entonces cone lmouse podria mover la nota grafica ponindo la dur en la nueva
+'posion nR y borrandola de la nr Old lo mismo con el off1 off2 y el resto!!
+
   ' Print #1,"MARCAR CON ALT Y 13   nR ", nR
-   SelGrupoNota =1
-   ' el valor correcot lo repone la sub correcionnotas
+     SelGrupoNota =1
+'( note As ubyte, vel As UByte, canal As UByte, portsal As UByte,i1 As Integer)
+     abrirPortoutEjec(100)
+     noteon(cubyte(PianoNota),60,1,0,1)
+     noteoff(60,1,0,1)
+     ' duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+      duracion(Timer, relDur(RollDurOld) ) 
+   ' el valor correcto lo repone la sub correcionnotas
    ' luego puedo mover 1 sola nota o todas las marcadas con 13  
-        
+   EndIf     
  EndIf 
+
+ If (SelGrupoNota=1 ) And  nR <> nROld Or  SelGrupoNota=3 Then
+      Print #1, "nROld, nR, nROld-nR "; nROld, nR,nROld-nR 
+     If  SelGrupoNota=3 Then 
+         '' es X1= IndicePosOld=X1
+         '' es X2 = indicePos  
+         trasponerGrupo ( nR-nROld , Roll,encancion, indicePosOld, indicePosUltimaGrupo )
+         SelGrupoNota=0
+     Else
+         SelGrupoNota=2 ' asi solo ejecuta una sola vez
+     EndIf
+     trasponer=1
+ EndIf
+''  lurgo al detectar RELEASE del click izquierdo 
+''   If mousey > 50 And SelGrupoNota=2 And( MouseButtons And 1) Then
+''      SelGrupoNota=3
+''   EndIf
 
 
  '-------------------- ERROR DE 10-12-2021
@@ -5446,11 +5572,13 @@ ButtonGadget(2,530,30,50,40," OK ")
      If  (COMEDIT=MODIFICACION_INSERCION  Or COMEDIT=SOLO_MODIFICACION) then
         If MouseButtons And 1 Then 
             notacur=nsE
-            curpos=Int((mousex- gap1 )/anchofig)
+            curpos=Int((mousex- gap1 )/anchofig) ' no lo toma 27-07-2025
+            indicePos = curpos + posishow '27-07-2025
+
              If curposOld=0 Then  '''   VER JMG ==>>>>  
                 curposOld = curpos
              Else
-                curpos=curposOld ' '2.3 de ayuda corregido
+             '''   curpos=curposOld ' '2.3 de ayuda corregido 27-07-2025
              EndIf
           '  Print #1," 0) Primer click izq curpos curposOld "; curpos, curposOld  
             If RollDur >0 And (COMEDIT=MODIFICACION_INSERCION  Or COMEDIT=SOLO_MODIFICACION) Then
@@ -5770,6 +5898,7 @@ ButtonGadget(2,530,30,50,40," OK ")
   ' Print  #1,"(8)  And COMEDIT<>LECTURA And ayudaModif=FALSE"
        Print #1,"3 posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
        Dim As Integer posdur= (mousex- gap1 )/anchofig + posishow '01-07-2021
+       curpos =(mousex- gap1 )/anchofig ' 27-07-2025
        If posdur >= Maxpos - 1 Then  ' no permite entrar notas con click , antes de maxpos
         nota=nsE ' <=== ingresamos varias notas por mouse del mismo valor
        EndIf

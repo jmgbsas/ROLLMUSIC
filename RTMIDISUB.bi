@@ -581,7 +581,7 @@ Print #1,"AOI 14Y:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapia
 Print #1,"AOI 16A:pasoCol(i1).notapiano, tiempo FiguraOld ", pasoCol(i1).notapiano,pasoCol(i1).tiempoFiguraOld         
 Print #1,"AOI 17:  ligado,old_time ";pasoCol(i1).old_time    
 
-     pasoCol(i1).tiempoFigura= reldur(pasoCol(i1).DUR) * tiempoDUR * d11
+     pasoCol(i1).tiempoFigura= relDur(pasoCol(i1).DUR) * tiempoDUR * d11
      If pasoCol(i1).tiempoFiguraOld =0  Then
       ' tiene sonido la 1er nota de un aligadura larga
         'vel= CUByte(vol( pasoCol(i1).DUR, velpos)) ' 28-04-2024 comento 
@@ -2315,10 +2315,12 @@ End If
 End Sub
 
 '-----------------------------
-Sub trasponerGrupo( cant As Integer, Roll As inst, encancion As Integer)
+Sub trasponerGrupo( cant As Integer, Roll As inst, encancion As Integer,X1 As Integer , X2 As Integer)
+' POR AHORA HICE QUE MUEVA SOLO UN ONOFF2, SI AGRANDO EN X Y LE DOY CLICK A VARIOS
+' VOLVERA A GRUPO PERO OVERIA TODO A UN MISMA LINEA.,,,PIERDE EL SENTIDO ,,,,MMM
 ' Que es: el grupo es una seleccion puntual de notas que van a trasponerse se clickea 
 ' cada una y el resto no se toca...
-' 
+' cant-> cantidad de saltos en vertical Y
 ' ANDA BIEN, ES EQUIVALENTE EMPIEZA EN EL EXTREMO QUE ATACA BAJANDO LA POSICION
 ' DE LA COPIA ES LO MISMO PERO INVERTIDO FUNCIONA IGUAL, LO IMPORTANE DEL CAMBIO
 ' FUE EN LA SUBRUTUNA SUMAR COMO EL VECTOR EMPIEZA DE CERO 0, EL ESPACIO ENTRE
@@ -2328,28 +2330,31 @@ Sub trasponerGrupo( cant As Integer, Roll As inst, encancion As Integer)
 ' QUE CON TRASPONERROLL Y MOVER A OTROS OCTAVAS....
 
 'print #1,"ARRANCA TRASPONER GRUPO"
-Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,b1=0
+Dim As Integer Xj=1, ind=1,i1=1, Y1 , Y2, inc,b1=0
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
 ' cant=(-1) si pulso flecha DOWN
 If cant < 0 Then ' DOWN
- comienzo= NB 
- final = NA -13  
+ Y1= NB 
+ Y2 = NA -13  
  inc= 1
 EndIf
 If cant > 0 Then 'UP
- comienzo= NA -13
- final = NB  
+ Y1= NA -13
+ Y2 = NB  
  inc=  -1
 EndIf
 
-Dim As Integer desdet, hastat
-   desdet=1   
-   hastat= MaxPos   
-pasoNota=13 ' es 12 25 38 en el vector real 
+
+If X1=0 Then   X1=1 EndIf   
+If X2=0 Then   X2= MaxPos EndIf   
+Print #1,"trasponerGrupo X1 "; X1
+Print #1,"trasponerGrupo X2 "; X2
+
+'''pasoNota=13 ' es 12 25 38 en el vector real 
 ' 30-01-2022 CORREGIDO en base a la verion ROLLMUSIC-0.1.0.0.0-U-TRACKS 
-For jpt = desdet To hastat  
-  For i1= comienzo To final Step inc
+For Xj = X1 To X2  
+  For i1= Y1 To Y2 Step inc
      If cant > 0 Then  ' UP  
         ind = i1 + cant 
         ind = ind + sumar(ind)
@@ -2360,32 +2365,32 @@ For jpt = desdet To hastat
         ind = ind - sumar(ind)
      EndIf
    
-    If ( (Roll.trk(jpt, i1).nota >= 0) And Roll.trk(jpt, i1).nota <= 185 ) _
-       OR (Roll.trk(jpt, i1).dur >=0 And Roll.trk(jpt, i1).dur <= 183 ) Then ' es semitono
-       
+      If (Roll.trk(Xj, i1).nota > 12 And Roll.trk(Xj, i1).nota < 25) And (Roll.trk(Xj, i1).dur <> 183)Then 
        If ind >= NB And ind <= NA -13 Then
-            If pasoNota = Roll.trk(jpt,i1).nota And (Roll.trk(jpt,ind).nota=0 Or Roll.trk(jpt,ind).nota=181 )  Then
-               Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
-               Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
-               Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
-               Roll.trk(jpt,ind).pan  = Roll.trk(jpt,i1).pan
-               Roll.trk(jpt,ind).pb   = Roll.trk(jpt,i1).pb
-               Roll.trk(jpt,ind).inst = Roll.trk(jpt,i1).inst
-               Roll.trk(jpt,ind).onoff = Roll.trk(jpt,i1).onoff
-' ACA BORRA CUALQUIER NOTA INCLUSO LAS MARCADAS  CON 13 ALT + CLICK PARA MOVER O TRASPONER LAS 13
-               If Roll.trk(jpt,ind).nota > 0 And Roll.trk(jpt,ind).nota <= 13  Then
-                  Roll.trk(jpt,i1).nota = 181
-                  Roll.trk(jpt,i1).dur  = 0
- '                 Print #1,"encontro una nota 13"
-               EndIf 
-               Roll.trk(jpt,i1).vol  = 0
-               Roll.trk(jpt,i1).pan  = 0
-               Roll.trk(jpt,i1).pb   = 0
-               Roll.trk(jpt,i1).inst = 0
-               Roll.trk(jpt,i1).onoff = 0
+           pasoNota=Roll.trk(Xj,i1).nota
+            If Roll.trk(Xj,i1).nota > 12 And Roll.trk(Xj,i1).nota < 24   And (Roll.trk(Xj,ind).nota=0 Or Roll.trk(Xj,ind).nota=181 )  Then
+               Roll.trk(Xj,ind).nota =  Roll.trk(Xj,i1).nota - 12
+               Roll.trk(Xj,ind).dur  =  Roll.trk(Xj,i1).dur
+               Roll.trk(Xj,ind).vol  =  Roll.trk(Xj,i1).vol
+               Roll.trk(Xj,ind).pan  =  Roll.trk(Xj,i1).pan
+               Roll.trk(Xj,ind).pb   =  Roll.trk(Xj,i1).pb
+               Roll.trk(Xj,ind).inst =  Roll.trk(Xj,i1).inst
+               Roll.trk(Xj,ind).onoff = Roll.trk(Xj,i1).onoff
+     abrirPortoutEjec(100)
+     noteon(cubyte(PianoNota),60,1,0,1)
+     noteoff(60,1,0,1)
+     ''duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+     duracion(Timer, relDur(Roll.trk(Xj,ind).dur) )
+               Roll.trk(Xj,i1).nota = 181
+               Roll.trk(Xj,i1).dur  = 0
+               Roll.trk(Xj,i1).vol  = 0
+               Roll.trk(Xj,i1).pan  = 0
+               Roll.trk(Xj,i1).pb   = 0
+               Roll.trk(Xj,i1).inst = 0
+               Roll.trk(Xj,i1).onoff = 0
                               
             Else                
-               If Roll.trk(jpt,ind).nota >=1 And Roll.trk(jpt,ind).nota <=12  Then
+               'If Roll.trk(Xj,ind).nota >=1 And Roll.trk(Xj,ind).nota <=12  Then
                    If cant > 0 Then  ' UP  
                       ind = ind + cant 
                       ind = ind + sumar(ind)
@@ -2402,33 +2407,11 @@ For jpt = desdet To hastat
                   If ind < NB Then
                      ind=NB
                   EndIf
-                  b1=1
- ' CON ESTE IF SE CORRIGE QUE NO MUEVA OTRA COSA QUE LAS NOTAS CON 13
- ' PERO TODAVIA SOLO MUEVE DENTRO DE UNA OCTAVA NO VA MAS HALLA-....                 
-                  If Roll.trk(jpt,ind).nota > 0 And Roll.trk(jpt,ind).nota <= 13 Or Roll.trk(jpt,ind).dur=183  Then '31-01-2022    
-                    Roll.trk(jpt,ind).nota = Roll.trk(jpt,i1).nota
-                    Roll.trk(jpt,ind).dur  = Roll.trk(jpt,i1).dur
-                    Roll.trk(jpt,ind).vol  = Roll.trk(jpt,i1).vol
-                    Roll.trk(jpt,ind).pan  = Roll.trk(jpt,i1).pan
-                    Roll.trk(jpt,ind).pb   = Roll.trk(jpt,i1).pb
-                    Roll.trk(jpt,ind).inst = Roll.trk(jpt,i1).inst
-                    Roll.trk(jpt,ind).onoff = Roll.trk(jpt,i1).onoff
-
-                    Roll.trk(jpt,i1).nota = 181
-                    Roll.trk(jpt,i1).dur  = 0
-                    Roll.trk(jpt,i1).vol  = 0
-                    Roll.trk(jpt,i1).pan  = 0
-                    Roll.trk(jpt,i1).pb   = 0
-                    Roll.trk(jpt,i1).inst = 0
-                    Roll.trk(jpt,i1).onoff = 0
-
-                  EndIf                
-               EndIf
             EndIf      
        EndIf
-    EndIf
+      EndIf   
   Next i1
-Next jpt
+Next Xj
 ' para trasponer tracks debo grabar lo cual copia a track los cambios
 ' de ese modo al dar play se escuch also cambios sino solo quedan en Roll
 ' y el play de cancion no lo registra , solo el play de roll lo registraria
@@ -2656,17 +2639,35 @@ For jpt = desdet To hastat
      If ( (Roll.trk(jpt,i1).nota >= 0) And (Roll.trk(jpt,i1).nota <= 13 ) )  Then ' es semitono
            'print #1,"Roll.trk(i1,jpt).nota ",Roll.trk(i1,jpt).nota
            'print #1, "i1",i1
-           i2= i1 - restar (i1)
-          ' print #1, "i2",i2
+           i2= i1 - restar (i1) 'Notapiano en funcion del indice del vector nR=i1  
+          ' print #1, "i2",i2 ''Notapiano
           ' print #1,"relnRNe (i2) ",relnRNe (i2)
           ' print #1,"---------------"   
-          If  Roll.trk(jpt,i1).nota <> relnRNe (i2) Then 
-              Roll.trk(jpt,i1).nota = relnRNe (i2)
+          If  Roll.trk(jpt,i1).nota <> relnRnE (i2) Then 
+              Roll.trk(jpt,i1).nota = relnRnE (i2)
           EndIf    
     EndIf
   Next i1
 Next jpt
 
+' Notapiano=nR - restar(nR) no sirve de mucho 
+' como llego de mousey a nR? kkkkkkkkkkkkk
+'BordeSupRoll = BordeSupRoll -  inc_Penta
+'inc_Penta = Int((ALTO - BordeSupRoll) /(40))
+'Penta_y = BordeSupRoll + 14 * ( inc_Penta ) *( nro -1) ES GLOBAL
+'Penta_y + (notacur-1) * inc_Penta 
+'lugar=Penta_y + (semitono +1) * inc_Penta  ''ES MOUSEY!!
+' LUEGO SI TENGO MOUSEY 
+' nR=12 - notacur + (*po-1) * 13 'NOTACUR ES nsE 
+' con saber nsE y la po octava saco nR indice vector Roll !!
+' nsE=semitono + 1 'semitono ahora va desde 0 a 11 usado por entrada de teclado y ahroa mouse
+'   nR=(11-semitono) + (*po -1 ) * 13
+' osea semitono=nsE -1
+'    nR=(11- nse  +1) + (*po -1 ) * 13 = 12 - nsE + (*po-1)*13
+'   nR= 12 - nsE + (*po-1)*13
+'   nR=(12-nota) + (estoyEnOctava -1 ) * 13 
+'   PianoNota= nR - restar (nR)
+' nR=(12-nsE) + (estoyEnOctava -1 ) * 13 !!
 
 
 End sub
@@ -3206,9 +3207,11 @@ Sub abrirPortoutEjec(j As Integer)
 Print #1,"abrirPortoutEjec abriendo port.... "
 Dim k1 As Integer
 
-  
-   k1=CInt(pmEj(j).portout )
-    
+   If j=100 Then ' para tocar una sola nota y saltarl los portout 
+     k1=0
+   Else
+     k1=CInt(pmEj(j).portout )
+   EndIf 
    Print #1,"abrirPortoutEjec midiout ",k1, *nombreOut(k1)
    If InStr(*nombreOut(k1),"Microsoft")>0 Then
      Print #1,"No se usa Microsoft"

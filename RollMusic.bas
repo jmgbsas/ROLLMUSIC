@@ -81,7 +81,11 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion=" 0.328 MENU CONTEXTUAL EN LECTURA PARA FORMAR ACORDES"
+nroversion="0.329 POSICIONAR CURSOR CLICK IZQ MOUSE EN CTRL-M CTR-N, + ACORDES EN LECTURA, TRASPONER 1 o MAS NOTAS CON MOUSE"
+' FALTA TERMINAR TRASPONER 1 NOTA OFF2 CON MOUSE ANDA PERO FALTA MOVER OFF1 Y A VECES NO MUEVE OFF2 SI
+' HAY UN OFF1 ABAJO , PUEDE MOVER LOS OFF1, SI SEPARA OFF2 DE OFF1 VERICALMETENE MOVIENDO EL OFF1 ENTONCES
+' PUEDO MOVER EL OFF2 PERO MUEVE AMBOS O SEA HAY UE LIMITAR EL MOVE VERTICALMENTE !!
+''nroversion=" 0.330 MAS ACORDES FUNCIONALES EN MODO LECTURA"
 ' Funciona Triadas cuya nota elegida es Tonica, 3era, 4ta, 5ta,6ta, 7ma y 9na ", para menores
 ' y traiadas o de 4 notas solo funciona la Tonica.,
 ' 0.324 se corrigio los click sobre EDIT para pasar de edicion a lectura habia dejado de andar

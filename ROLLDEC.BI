@@ -640,12 +640,12 @@ End Type
 Dim shared As mouse m
 Dim Shared As Double old_btn_press_time, new_btn_press_time,dbl_click_time,redimensionar=0
 dbl_click_time = 0.18
-Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota,compasX
+Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota,compasX,RollDurOld,RollNotaOld
 
 ''Declare Function MessageBox Alias "MessageBoxW"(n1 As Integer,s1 As Wstring,s2 As Wstring,MB As Integer) As Integer:Sleep 1
 Dim Shared As Integer x, y, buttons, res,xscreen,gap1,gap2,gap3
 common Shared As float anchofig
-Dim Shared as Integer StartInsert,indaux=0,NroCol, carga, curpos=0, curposold, resultado, indicePos,curpos1
+Dim Shared as Integer StartInsert,indaux=0,NroCol, carga, curpos=0, curposold, resultado, indicePos,curpos1, mouseyOld,indicePosOld,indicePosUltimaGrupo
 resultado=0
 ' este pesodur lo deberia cambiar a ticks
 Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
@@ -737,7 +737,7 @@ Dim Shared As Integer ContadorError=0
 ' 123 234 345 456 567 678 789 son7 doblepuntilo simple
 
 Dim Shared As Integer menuMouse, savemousex, savemousey, usamousex, usamousey, _
-modifmouse, EnOctava,nsE,nR,lugarOld, nroClick, posinterna, indCompas,menuabierto=0
+modifmouse, EnOctava,nsE,nR,lugarOld, nroClick, posinterna, indCompas,menuabierto=0,nROld
 Dim Shared As ubyte nC=0,nF=0,nRk=0, cnc=0,cnf=0,lockfont=0, lockhoriz=1
 
 Dim Shared As Double t1k,t2k,DURK,DURK1,DURk2, DURKOLD,DURK144, DURK128,DURK144old, DURK128old,cont144, cont128,huboerror=0

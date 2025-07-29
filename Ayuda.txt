@@ -691,7 +691,7 @@
        usada anterior deja de funcionar, mover el scroll con las flechas eso habilita de nuevo
        la rueda del mouse.
 
-    1.2)  Trasponer todo: ALT-T habilita la trasposicion, Q la deshabilita.
+    1.2)  Trasponer todo CON TECLAS SOLAMENTE: ALT-T habilita la trasposicion, Q la deshabilita.
        una vez habilitada con Flecha-UP sube de a un semitono con cada pulso
        Con Flecha-Down baja un semitono can cada pulso.
        [  Seleccion de Zona para una accion:
@@ -724,7 +724,15 @@
        una numero N (1,3,15,etc)), antes de C+click , copia N veces esa zona una al lado de la otra 
        (copia en masa). Undo con ALT-U va borrando por columna de por vez  todas las octavas de la pista.
 
+    1.2.1 ) Trasponer una NOTA o un Grupo de Notas con teclas y Clicks de Mouse:
+           a) Dar ALT-T como antes habilita la trasposicion
+           b) Dar ALT + click sobre la nota a trasportar, si se desea mas notas seguir dando
+              ALT+Click sobre otras notas. Cada nota sonara confirmando la operacion correcta de seleccion
+           c) Finalmente dar click adonde se desea trasponer,sera un lugar vacio de notas no importa 
+              la posicion horizontal no debe ser exacta pero si cual semitono se elige o nota.
+           d) terminar pulsando Q para finalizar.
 
+       
     1.3) Recalcular Compas <R>: para ver rápido si las notas ingresadas forman un compás completo normalmente
        el compás recalcula la posicon de las barras separadoras automaticamente, sino satisface esa condición
        no las muestra, hay procesos en que no se hace automatico sino con otras operaciones siguientes, en esos

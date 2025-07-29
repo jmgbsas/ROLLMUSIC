@@ -38,7 +38,7 @@ End Type
 'Var hwnd = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*3/4)
 
 'Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
-Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota,compasX
+Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota,compasX,RollDurOld,RollNotaOld
 
 common Shared As Integer  ANCHO,ALTO,indicenotas
 Common Shared As FLOAT font,nanchofig,anchofig

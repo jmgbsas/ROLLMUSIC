@@ -22,6 +22,7 @@ Declare Function sumar( ByVal ind As integer) As Integer
 'Declare Sub moverZonaRoll(cant As Integer)
 'Declare Sub correcciondeNotas()
 Declare Sub CTRL1205 ()
+Declare Sub abrirPortoutEjec(j As Integer)
 
 common Shared message() As UByte 'cambiado a shred message output ' puede ser de hasta 1024 bytes
 Dim message(1 To 21) As UByte 'agregado

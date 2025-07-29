@@ -892,10 +892,9 @@ For x= x1 To x2  'curpos
 'Print #1,"----------------------------------------"
      Print #1," x posn1 "; x, posn1; " estoyEnOctava ";estoyEnOctava; " y ";y
          
-    
-    If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 2 Or _
-       Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1 Or _ 
-       Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur = 190   Then
+      ''' Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1 Or _    
+    If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 2  Or _
+        Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur = 190   Then
 ' encontro ubicacion de nota ,o final sec o un 190 borrar
         Print #1,"encontro onoff posn1 "; Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff, posn1
      cur1=posn1-posicion
@@ -951,13 +950,23 @@ Dim  As Integer nroPartesNota
 'ctrl-n: usaremos el mismo codigo de ctrl-m solo que la nota se entra por nombre la X que es cambiadur=1 se
 ' establece desde el principio no hace falta pulsarla
  If  COMEDIT=SOLO_MODIFICACION  And agregarNota=1  And nota > 0 Then 'ctrl-n ch cambiado hoy
+  If MouseButtons And 1 Then
+     curpos= Int((mousex - gap1)/anchofig) '27-07-2025
+     nota=nsE
+  EndIf
+
   notacur=nota 
   octavaEdicion=estoyEnOctava ' modifico en cualquier octava
   cambiadur=1
+
  EndIf
 
  If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=SOLO_MODIFICACION Then  ' vertical ctrl-m o Ctrl-N ch
   trasponer=0
+    If MouseButtons And 1 Then
+      curpos= Int((mousex - gap1)/anchofig) '27-07-2025
+      notacur=nsE
+    EndIf
   cairo_move_to  (c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
   cairo_rectangle(c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  ,wc*6 ,inc_Penta) '13-07-2021 inc_penta/2 por inc_penta
   cairo_move_to  (c, gap1 + (curpos)*anchofig , Penta_y  )
@@ -974,6 +983,10 @@ Dim  As Integer nroPartesNota
 
  EndIf
  If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS  Then ' lectura y comedit=true
+    If MouseButtons And 1 Then
+      curpos= Int((mousex - gap1)/anchofig) '27-07-2025
+      notacur=nsE
+    EndIf
   
   If notacur=1 Then
    notaOld=notacur
@@ -982,8 +995,12 @@ Dim  As Integer nroPartesNota
   cairo_rectangle(c,gap1 + (curpos)*anchofig , Penta_y + (notaOld-1) * inc_Penta  , wc/4,inc_Penta)
 
  EndIf
- If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=SOLO_MODIFICACION Then 'ctrl-m y ctrl-n 
-
+ If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=SOLO_MODIFICACION Then 'ctrl-m y ctrl-n
+     If MouseButtons And 1 Then 
+       curpos= Int((mousex - gap1)/anchofig) '27-07-2025
+       notacur=nsE
+       notaOld=nsE
+     EndIf
   cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
   cairo_rectangle(c,gap1 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , wc,inc_Penta)
 
@@ -1065,7 +1082,7 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
      cambiadur=1
      Print #1," ANTES BUCONOTA curpos notacur "; curpos, notacur
 
-     If BuscarNota (cambiadur, curpos ,notacur ) And COMEDIT=MODIFICACION_INSERCION  Then
+     If BuscarNota (cambiadur, curpos ,notacur )=1 And COMEDIT=MODIFICACION_INSERCION  Then
         cambiadur=0 ' si busconota da error 1 deberia salir sin hacer nada, para ctrl-N no va salir
         Exit Sub ' sale para ctrl-m proque solo modifico notas existentes
      EndIf 
@@ -4079,7 +4096,7 @@ Sleep 100
     If mousex > 42 And mousex < 90  And mousey < 50  Then ' <= NUEVO
     cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
-         '''menunew=MIDI '10 
+         menunew=SEL_MIDI '10 
       EndIf ' mousebuttons
            
     Else
@@ -4111,7 +4128,8 @@ Sleep 100
         cierroport=1 
        Dim miport As Integer=1
        MenuNew=SEL_MIDI '' 10
-       threadsel = ThreadCreate(@selport(), CPtr(Any Ptr, miport))
+       '''' error noandaba threadsel = ThreadCreate(@selport(), CPtr(Any Ptr, miport))
+       threadsel = ThreadCall selport(miport)  '' 'GtkListBox()
       EndIf ' mousebuttons
   
     Else
@@ -4128,8 +4146,10 @@ Sleep 100
        cierroport=1 
        Dim miport As Integer=2
        MenuNew=SEL_MIDI ''10
+       Menunro=SEL_MIDI
        ' create con argumentos
-       threadsel = ThreadCreate(@selport(), CPtr(Any Ptr, miport)) '' 'GtkListBox()
+       '''threadsel = ThreadCreate(@selport(), CPtr(Any Ptr, miport)) '' 'GtkListBox()
+       threadsel = ThreadCall selport(miport)  '' 'GtkListBox()
       EndIf ' mousebuttons
     
     Else
@@ -4146,8 +4166,8 @@ Sleep 100
       If MouseButtons And 1 Then
        Dim ti As Integer
        ti=1 ' seleccion de canales midi de entrada
-       threadcanal = ThreadCreate(@selcanal(), CPtr(Any Ptr, ti))
-         
+       'threadcanal = ThreadCreate(@selcanal(), CPtr(Any Ptr, ti))
+        threadcanal = ThreadCall selcanal(ti) 
        'Print #1,"canal elegido luego del thread2 en menu ",canalx
       EndIf ' mousebuttons
       MenuNew=CONFIGURACION '9
@@ -6682,7 +6702,9 @@ Dim As Integer acoposoff=0, resultado,acoposOffNew
    curpos=(MousexNotaElegida -gap1)/anchofig '''19-07-2025
 '   Print #1, "2 curpos o Col "; curpos 
    notacur=nsEelegida
-'   Print #1,"notacur "; notacur  
+'   Print #1,"notacur "; notacur
+   indicePos=curpos+posishow  
+
    resultado= BuscarNota (1,curpos, notacur)  
    If resultado = 1 Then
 '      Print #1,"BuscarNota sin resultados curpos notacur ",curpos,notacur
