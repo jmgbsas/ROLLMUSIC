@@ -2161,7 +2161,7 @@ On Local Error Goto failtraspo
 '    QUE SE FUE DEL INTERVALO A LA DERECHA SOLO DEBO AGRANDAR EL INTERVALO A LA DERECHA HASTA
 '    ALCANZAR ESE OFF, PERO PODRIAN ENTRAR OTRAS NOTAS. LUEGO SOLO DEBO MOVER ESE  OFF
 '    EXCLUSIVAMENTE,,!!
-
+''' pasoNota se ajusta en SELECCION DE ZONA PARA TRASPONER NOTAS, Ctrl click izq
 Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,octavaDeAcorde,verticalEnOctavaVacia  
 
 ' NA ES EL MAYOR VALOR NUMERICO, 
@@ -2330,7 +2330,7 @@ Sub trasponerGrupo( cant As Integer, Roll As inst, encancion As Integer,X1 As In
 ' QUE CON TRASPONERROLL Y MOVER A OTROS OCTAVAS....
 
 'print #1,"ARRANCA TRASPONER GRUPO"
-Dim As Integer Xj=1, ind=1,i1=1, Y1 , Y2, inc,b1=0
+Dim As Integer Xj=1, ind=1,i1=1, Y1 , Y2, inc,b1=0, marca,jpt3
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
 ' cant=(-1) si pulso flecha DOWN
@@ -2351,7 +2351,7 @@ If X2=0 Then   X2= MaxPos EndIf
 Print #1,"trasponerGrupo X1 "; X1
 Print #1,"trasponerGrupo X2 "; X2
 
-'''pasoNota=13 ' es 12 25 38 en el vector real 
+
 ' 30-01-2022 CORREGIDO en base a la verion ROLLMUSIC-0.1.0.0.0-U-TRACKS 
 For Xj = X1 To X2  
   For i1= Y1 To Y2 Step inc
@@ -2367,8 +2367,8 @@ For Xj = X1 To X2
    
       If (Roll.trk(Xj, i1).nota > 12 And Roll.trk(Xj, i1).nota < 25) And (Roll.trk(Xj, i1).dur <> 183)Then 
        If ind >= NB And ind <= NA -13 Then
-           pasoNota=Roll.trk(Xj,i1).nota
-            If Roll.trk(Xj,i1).nota > 12 And Roll.trk(Xj,i1).nota < 24   And (Roll.trk(Xj,ind).nota=0 Or Roll.trk(Xj,ind).nota=181 )  Then
+           marca=Roll.trk(Xj,i1).nota
+            If marca > 12 And marca < 24   And (Roll.trk(Xj,ind).nota=0 Or Roll.trk(Xj,ind).nota=181 )  Then
                Roll.trk(Xj,ind).nota =  Roll.trk(Xj,i1).nota - 12
                Roll.trk(Xj,ind).dur  =  Roll.trk(Xj,i1).dur
                Roll.trk(Xj,ind).vol  =  Roll.trk(Xj,i1).vol
@@ -2376,6 +2376,14 @@ For Xj = X1 To X2
                Roll.trk(Xj,ind).pb   =  Roll.trk(Xj,i1).pb
                Roll.trk(Xj,ind).inst =  Roll.trk(Xj,i1).inst
                Roll.trk(Xj,ind).onoff = Roll.trk(Xj,i1).onoff
+' ----MOVER EL OFF1 EN BASE AL  OFF2 Y SU DURACION, mueve para la ultima nota corregir!!!
+               BuscoFinalNota(Roll, X2, Xj, i1 , jpt3,cant )
+               If jpt3 > 0 Then ''And jpt3 > X2 Then ' muevo el off fuera de intevalo
+                  Print #1,"Hay jpt3 > 0 EL ON  TIENE SU OFF fuera DEL INTERVALO SE MUEVE EL OFF dur, nota ";Roll.trk(jpt3,i1).dur; Roll.trk(jpt3,i1).nota
+                  moverDatosenY (Roll, jpt3,i1,cant)
+                  jpt3=0 
+               EndIf  
+'---------------
      abrirPortoutEjec(100)
      noteon(cubyte(PianoNota),60,1,0,1)
      noteoff(60,1,0,1)
@@ -2388,7 +2396,7 @@ For Xj = X1 To X2
                Roll.trk(Xj,i1).pb   = 0
                Roll.trk(Xj,i1).inst = 0
                Roll.trk(Xj,i1).onoff = 0
-                              
+                            
             Else                
                'If Roll.trk(Xj,ind).nota >=1 And Roll.trk(Xj,ind).nota <=12  Then
                    If cant > 0 Then  ' UP  
