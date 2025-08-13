@@ -81,8 +81,7 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="0.329  FIX MOVER OFF1 EN TRASPONER CON MOUSE"
-' FALTA EN LA TRASPOSICION CON MOUSE 1 O MAS GRUPO MOVER LOS OFF1 !!
+nroversion="0.330 mas creacion de acordes en lectura, nroacorde en la nota en ctrl-m"
 ' HAY UN OFF1 ABAJO , PUEDE MOVER LOS OFF1, SI SEPARA OFF2 DE OFF1 VERICALMETENE MOVIENDO EL OFF1 ENTONCES
 ' PUEDO MOVER EL OFF2 PERO MUEVE AMBOS O SEA HAY UE LIMITAR EL MOVE VERTICALMENTE !!
 ''nroversion=" 0.330 MAS ACORDES FUNCIONALES EN MODO LECTURA"

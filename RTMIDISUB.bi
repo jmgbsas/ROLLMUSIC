@@ -219,14 +219,14 @@ Sub noteoff(  note As UByte, canal As UByte,portsal As UByte,i1 As Integer)
  message(2) = 123 ' 123 all note off, 124 omni mode off, 125, omni mode on, 126 mono mode on, 127 poly mode on
  message(3) = 0  
 '/	
-'indicenotas=indicenotas + 1
+
 If MIDIFILEONOFF = HABILITAR Then 'habilito salida midi
    Dim As Double TiempoAcumNew
    Dim As Integer T1 
    TiempoAcumNew= Timer - STARTMIDI
    T1 =  TiempoAcumNew * 1000 * tiempoPatron/60
    Dim cadenacanal As String = " off ch="+Trim(Str(canal+1))
-   'print #1,"EN NOTE OFF nota, portsal ", note, portsal
+   print #1,"EN NOTE OFF nota, portsal ", note, portsal
    '''Print #1, "Not Cantmicroseg "; note, Cantmicroseg
    ' NOTE PLAY DURACION LO DICTAMINA EL OFF
     Print #midiPlano, T1  ;
@@ -353,9 +353,8 @@ Sub noteon	( note As ubyte, vel As UByte, canal As UByte, portsal As UByte,i1 As
  leng=3
 
 result = send_message (midiout(portsal), p, leng)
-'Print #1,"EN NOTE ON nota, portsal ", note, portsal
+Print #1,"EN NOTE ON nota, portsal ", note, portsal
 
-'indicenotas=indicenotas + 1
 If MIDIFILEONOFF = HABILITAR Then  ' habilito escritura a midi 
    
    Dim As Double TiempoAcumNew
@@ -365,24 +364,20 @@ If MIDIFILEONOFF = HABILITAR Then  ' habilito escritura a midi
   Dim cadenacanal As String = " on ch="+Trim(Str(canal+1))
    T1 =  TiempoAcumNew *  1000 * tiempoPatron/60
    
-   '   miditxt(indicenotas).sumatiempo = T1
-   '   miditxt(indicenotas).canal      = canal
-   '   miditxt(indicenotas).estado     = 1
-   '   miditxt(indicenotas).nota       = note
 
   
-   If pasoCol(i1).audio = 1 Then
+'   If pasoCol(i1).audio = 1 Then
       Print #midiPlano, T1; 
       Print #midiPlano, cadenacanal;" n=";note;" v=";vel
       ''miditxt (indicenotas).vel        = vel
  
-   EndIf
-   If pasoCol(i1).audio = 2 Then
-      Print #midiPlano, T1; 
-      Print #midiPlano," on"; " ch=";canal+1;" n=";note;" v=0"
-     '' miditxt (indicenotas).vel        = 0
-      
-   EndIf
+'   EndIf
+'   If pasoCol(i1).audio = 2 Then
+'      Print #midiPlano, T1; 
+'      Print #midiPlano," on"; " ch=";canal+1;" n=";note;" v=0"
+'     '' miditxt (indicenotas).vel        = 0
+'      
+'   EndIf
 
 
 
@@ -1583,7 +1578,7 @@ Else
   EndIf
 EndIf
 '  print #1," ---------------000000000000000000000-----------------"
-  print #1," (((PALL 0:)))---TICK NRO:[";jply;"] ----------------"
+'  print #1," (((PALL 0:)))---TICK NRO:[";jply;"] ----------------"
 '  print #1," ---------------000000000000000000000-----------------"
 
   
@@ -2167,7 +2162,7 @@ Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,octavaDeAcorde,verticalE
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
 ' cant=(1) si pulso flecha UP
-  Print #1,"ARRANCA  TRASPONER ROLL !!!!!!!!!!!!!!",trasponer
+ ' Print #1,"ARRANCA  TRASPONER ROLL !!!!!!!!!!!!!!",trasponer
   If trasponer=0 Then
      Exit Sub
   EndIf
@@ -2193,7 +2188,7 @@ If pasoZona2 > 0 Then
 Else
    hastat= MaxPos   
 EndIf   
-Print #1, " desdet hastat comienzo final "; desdet, hastat, comienzo, final  
+'Print #1, " desdet hastat comienzo final "; desdet, hastat, comienzo, final  
 Dim  As Integer jpt3, jpt2 , i2 'posicion del onoff=2 inicio nota
 Dim As Integer  k2, k2fin, oldjpt,oldind 
 For jpt = desdet To hastat  ' eje x posiciones horizontal
@@ -2206,7 +2201,7 @@ For jpt = desdet To hastat  ' eje x posiciones horizontal
         ind = i1 + cant 
         ind = ind - sumar(ind)
      EndIf
-' las notas son nro de semitono 1 a 12 (en crearPenta van de 0 a 11)
+' las notas son nro de semitono 1 a 12 (en creaPenta van de 0 a 11)
     '''Print #1, "jpt,i1 "; jpt,i1
 
     If ( (Roll.trk(jpt,i1).nota >= 0) And Roll.trk(jpt,i1).dur <= 185 ) _
@@ -2241,19 +2236,19 @@ For jpt = desdet To hastat  ' eje x posiciones horizontal
                  moverDatosenY (Roll, jpt,i1,cant)
                  BuscoFinalNota(Roll, hastat, jpt, i1 , jpt3,cant )
                If jpt3 > 0 and jpt3 > hastat Then ' muevo el off fuera de intevalo
-                  Print #1,"Hay jpt3 > 0 EL ON  TIENE SU OFF fuera DEL INTERVALO SE MUEVE EL OFF dur, nota ";Roll.trk(jpt3,i1).dur; Roll.trk(jpt3,i1).nota
+'                  Print #1,"Hay jpt3 > 0 EL ON  TIENE SU OFF fuera DEL INTERVALO SE MUEVE EL OFF dur, nota ";Roll.trk(jpt3,i1).dur; Roll.trk(jpt3,i1).nota
                   moverDatosenY (Roll, jpt3,i1,cant)
                   jpt3=0 
                EndIf  
              EndIf
               
           Else ' se clickeo sobre una nota especifica en el caso de que sea una sola columna 
-            Print #1,"3 ENTRO POR PASONOTA=ROLL.. "
+'            Print #1,"3 ENTRO POR PASONOTA=ROLL.. "
             If pasoNota = Roll.trk(jpt,i1).nota And (Roll.trk(jpt,ind).nota=0 Or Roll.trk(jpt,ind).nota=181 )  Then
                moverDatosenY (Roll, jpt,i1,cant)
                              
             Else                
-             Print #1,"4 ENTRO POR PASONOTA=ROLL ELSE "
+'             Print #1,"4 ENTRO POR PASONOTA=ROLL ELSE "
                If Roll.trk(jpt,ind).nota >=1 And Roll.trk(jpt,ind).nota <=12  Then
                    If cant > 0 Then  ' UP  
                    ind = ind+cant 
@@ -2329,8 +2324,9 @@ Sub trasponerGrupo( cant As Integer, Roll As inst, encancion As Integer,X1 As In
 ' SOLO TRASPONE DENTRO DE LA MISMA OCTAVA HAY QUE VER SI PODEMOS HACER LO MISMO
 ' QUE CON TRASPONERROLL Y MOVER A OTROS OCTAVAS....
 
-'print #1,"ARRANCA TRASPONER GRUPO"
-Dim As Integer Xj=1, ind=1,i1=1, Y1 , Y2, inc,b1=0, marca,jpt3
+print #1,"ARRANCA TRASPONER GRUPO"; cant
+Dim As Integer  Xj, ind,i1=1, Y1 , Y2, inc,b1=0, marca,jpt3
+ 
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
 ' cant=(-1) si pulso flecha DOWN
@@ -2350,6 +2346,8 @@ If X1=0 Then   X1=1 EndIf
 If X2=0 Then   X2= MaxPos EndIf   
 Print #1,"trasponerGrupo X1 "; X1
 Print #1,"trasponerGrupo X2 "; X2
+Print #1,"trasponerGrupo Y1 "; Y1
+Print #1,"trasponerGrupo Y2 "; Y2
 
 
 ' 30-01-2022 CORREGIDO en base a la verion ROLLMUSIC-0.1.0.0.0-U-TRACKS 
@@ -2364,12 +2362,15 @@ For Xj = X1 To X2
         ind = i1+cant 
         ind = ind - sumar(ind)
      EndIf
-   
+     '' Print #1,"Xj , i1 "; Xj;" ",i1
       If (Roll.trk(Xj, i1).nota > 12 And Roll.trk(Xj, i1).nota < 25) And (Roll.trk(Xj, i1).dur <> 183)Then 
        If ind >= NB And ind <= NA -13 Then
            marca=Roll.trk(Xj,i1).nota
             If marca > 12 And marca < 24   And (Roll.trk(Xj,ind).nota=0 Or Roll.trk(Xj,ind).nota=181 )  Then
                Roll.trk(Xj,ind).nota =  Roll.trk(Xj,i1).nota - 12
+               indXjreset=indXjreset+1
+
+                Xjreset(indXjreset,1)=Xj : Xjreset(indXjreset,2)=ind 
                Roll.trk(Xj,ind).dur  =  Roll.trk(Xj,i1).dur
                Roll.trk(Xj,ind).vol  =  Roll.trk(Xj,i1).vol
                Roll.trk(Xj,ind).pan  =  Roll.trk(Xj,i1).pan
@@ -2379,16 +2380,16 @@ For Xj = X1 To X2
 ' ----MOVER EL OFF1 EN BASE AL  OFF2 Y SU DURACION, mueve para la ultima nota corregir!!!
                BuscoFinalNota(Roll, X2, Xj, i1 , jpt3,cant )
                If jpt3 > 0 Then ''And jpt3 > X2 Then ' muevo el off fuera de intevalo
-                  Print #1,"Hay jpt3 > 0 EL ON  TIENE SU OFF fuera DEL INTERVALO SE MUEVE EL OFF dur, nota ";Roll.trk(jpt3,i1).dur; Roll.trk(jpt3,i1).nota
+ '                 Print #1,"Hay jpt3 > 0 EL ON  TIENE SU OFF fuera DEL INTERVALO SE MUEVE EL OFF dur, nota ";Roll.trk(jpt3,i1).dur; Roll.trk(jpt3,i1).nota
                   moverDatosenY (Roll, jpt3,i1,cant)
                   jpt3=0 
                EndIf  
 '---------------
-     abrirPortoutEjec(100)
-     noteon(cubyte(PianoNota),60,1,0,1)
-     noteoff(60,1,0,1)
-     ''duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
-     duracion(Timer, relDur(Roll.trk(Xj,ind).dur) )
+'     abrirPortoutEjec(100)
+'     noteon(cubyte(PianoNota),60,1,0,1)
+'     noteoff(60,1,0,1)
+'     ''duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+'     duracion(Timer, relDur(Roll.trk(Xj,ind).dur) )
                Roll.trk(Xj,i1).nota = 181
                Roll.trk(Xj,i1).dur  = 0
                Roll.trk(Xj,i1).vol  = 0

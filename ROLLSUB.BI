@@ -890,18 +890,18 @@ For x= x1 To x2  'curpos
 'Print #1,"POSIcion  ";posicion
 'Print #1,"curpos  ";curpos
 'Print #1,"----------------------------------------"
-     Print #1," x posn1 "; x, posn1; " estoyEnOctava ";estoyEnOctava; " y ";y
+'     Print #1," x posn1 "; x, posn1; " estoyEnOctava ";estoyEnOctava; " y ";y
          
       ''' Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1 Or _    
     If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 2  Or _
         Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur = 190   Then
 ' encontro ubicacion de nota ,o final sec o un 190 borrar
-        Print #1,"encontro onoff posn1 "; Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff, posn1
+'        Print #1,"encontro onoff posn1 "; Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff, posn1
      cur1=posn1-posicion
      ncur=y
     
 
- 'Print #1,"ENCONTRAMOS ON 2 EN CURPOS, NOTACUR "; cur1, ncur
+ Print #1,"ENCONTRAMOS ON 2 EN CURPOS, NOTACUR "; cur1, ncur
     BuscarNota=0 ' ok
     Exit Function 
     EndIf
@@ -977,8 +977,8 @@ Dim  As Integer nroPartesNota
   
   RollNota=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota
 '' para ver el estado del onoff en la posicion elegida notacur
-     onoff=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff
-  
+     onoff=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff)
+     acordeNro=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).pb)
      notaold=notacur 
 
  EndIf
@@ -1040,8 +1040,8 @@ trasponer=0
      RollDur=Roll.trk(n + curpos,12 - notacur + (*po-1) * 13 ).dur
      RollNota=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota
 '' para ver el estado del onoff en la posicion elegida notacur
-     onoff=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff
-
+     onoff=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff)
+     acordeNro=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).pb)
      notaold=notacur  ' hará falta ??? puede traer problemas,,,en cambiadur 
 
      cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
@@ -1095,8 +1095,8 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
      RollDur=Roll.trk(n + curpos,12 - notacur + (*po-1) * 13 ).dur
      RollNota=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota
 '' para ver el estado del onoff en la posicion elegida notacur
-     onoff=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff
-
+     onoff=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff)
+     acordeNro=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).pb)
      notaold=notacur 
 
      cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
@@ -3487,7 +3487,7 @@ If parametros=0  Then
    " PN:"+ Str(PianoNota) + " nsE:"+Str(nsE) + " Curpos:" +Str(curpos) + _
    " RollDur :"+ Str(RollDur) + " Rollnota:" + Str(RollNota) + _ 
    " Copia:" + Str(veocopi) +" Col:" +Str(indicePos) + " DUR:"+ Str(Dur) + _ 
-   " Nota:"+ Str(nota) + " ONOFF:" + Str(onoff)
+   " Nota:"+ Str(nota) + " ONOFF:" + Str(onoff) + " ACOR:" + Str(acordeNro)
 EndIf
 If parametros=1 Then
    t = "      EDIT" + " " + " Curpos:" +Str(curpos) + _
@@ -6708,6 +6708,7 @@ Dim As Integer acoposoff=0, resultado,acoposOffNew
    resultado= BuscarNota (1,curpos, notacur)  
    If resultado = 1 Then
 '      Print #1,"BuscarNota sin resultados curpos notacur ",curpos,notacur
+       Exit sub
    Else
       ''indicePos=curpos + posishow ''- gap1/anchofig
       indicePos= curpos + posishow 
@@ -6725,6 +6726,13 @@ Dim As Integer acoposoff=0, resultado,acoposOffNew
 '' SI ES DISTINRA SE BORRA EL ONOFF 1 Y SE CREA UNO NUEVO
 '' SI NO HAY NOTA FUNDAMENTAL ES VACIO SE CREA LA TONICA SE COLOCA SU ONOFF2 Y ONOFF1
 '' L UNDO LO DEJAMOS PARA EL FINAL NOS CONCENTRAMOS EN QUE SE ARME BIEN 
+'------------------------------------------------------------------
+'Guardamos el nro de acorde en la nota origen que tiene el onoff2 de 1 a 255 un ubyte
+pnr=PianoNotaElegida+SumarnR(PianoNotaElegida)
+Print #1,"indicePos, pnr) ";indicePos, pnr
+
+Roll.trk(indicePos, pnr).pb=CUByte(acordeNro)
+
       Select Case grado ' la nota elegida sera la Tonica del acorde
         Case 1 To 7  ' es Tonica PROBADO OK!, 
 ' grabo la nota Tonica de la melodia  a partir de la cual hago el acorde
@@ -6873,7 +6881,8 @@ If n3 <> 0 Then ' es un acorde de 4 notas
 
 EndIf
       End Select   
-     '' grado=0    
+     '' grado=0   
+ 
  If Vaciodur Then
     ReCalCompas (Roll)
     Vaciodur=FALSE

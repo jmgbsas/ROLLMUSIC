@@ -194,7 +194,7 @@ Dim Shared As String RTA, alteracion '',alteracion_str
 alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0,OCTAVAFIJA
 Dim Shared As integer pasoZona2=0,nroRep=0
-Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, playloop2=0,SelGrupoNota =0,moverZona=0, copiarZona=0
+Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, playloop2=0,SelGrupoNota =0,moverZona=0, copiarZona=0,SelGrupoNotaT =0
 Dim Shared as ubyte  DUR,nota,notacur
 ReDim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t,t2
@@ -646,6 +646,7 @@ Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota
 Dim Shared As Integer x, y, buttons, res,xscreen,gap1,gap2,gap3
 common Shared As float anchofig
 Dim Shared as Integer StartInsert,indaux=0,NroCol, carga, curpos=0, curposold, resultado, indicePos,curpos1, mouseyOld,indicePosOld,indicePosUltimaGrupo
+Dim Shared As Integer  Xjreset(1 To 100, 1 To 2),indXjreset=0,indXjresetOld  
 resultado=0
 ' este pesodur lo deberia cambiar a ticks
 Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108

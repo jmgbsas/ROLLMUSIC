@@ -66,9 +66,10 @@ On Error Goto errorhandler
 '  con usarmarcoins=4 indicamos habilitar ESCRITURA MIDI EN EL PLAY
                 
            ' nombre , hasta, titu, instru ,pid1, usarmarco, nombrecancion
-            Print #1,"Nombre roll a midi ", nombre
+            
 
                usarmarcoins=4            
+Print #1,"usarmarcoins ", usarmarcoins
             Shell (" start RollMusic.exe "+ Str(desde) +" "+ Str(hasta) +  _
             " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " + _ 
             Str(pid1) + " "+ Str(usarmarcoins) )
