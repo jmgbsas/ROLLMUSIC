@@ -1,3 +1,8 @@
+- 14-08-2025 Fix Cifrado vuelve a  verse dando click en la octava. Pulsar GRABAR se pone verde para 
+  confirmar que  se termino de grabar. finales de nota de >> a > , final de secuencia se borra a ingresar
+  notas igulas, permanecia el || en cada nota igual. (veremos si separamos mas eñ fimal > de una nota
+  de lco,iiemzo de otra nueva )
+- 13-08-2025 timeout de 10 seg cierre de venanita de eleccion de construccion de acorde en modo lectura
 - 13-08-2025 Se agregaron armado de mas acordes en LEctura y el Nro de acorde en la nota elegida
   que por ahora se puede  ver en Ctrlm junto a onoff=2 Acor=5
 - 29-07-2025 0.329 POSICIONAR CURSOR EN UNA POSICION DANDO CLICK IZQ DEL MOUSE EN CTRL-M YCTR-N,

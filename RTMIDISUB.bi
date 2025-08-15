@@ -353,7 +353,7 @@ Sub noteon	( note As ubyte, vel As UByte, canal As UByte, portsal As UByte,i1 As
  leng=3
 
 result = send_message (midiout(portsal), p, leng)
-Print #1,"EN NOTE ON nota, portsal ", note, portsal
+''Print #1,"EN NOTE ON nota, portsal ", note, portsal
 
 If MIDIFILEONOFF = HABILITAR Then  ' habilito escritura a midi 
    
@@ -1508,16 +1508,16 @@ EndIf
 
 STARTMIDI=Timer
 old_time_on=STARTMIDI
-Print #1,"old_time_on "; old_time_on
+''Print #1,"old_time_on "; old_time_on
 Dim As Double  tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
 
-Print #1,"VEO marca ejec enb onoff Roll.trk(1,NA).onoff   "; Roll.trk(1,NA).onoff
+''Print #1,"VEO marca ejec enb onoff Roll.trk(1,NA).onoff   "; Roll.trk(1,NA).onoff
 'Print #1,"VEO Track(0).trk(1,1).ejec "; Track(0).trk(1,1).ejec 
 ' ======================= FOR JPLY PLAYALL =======================
-Print #1,"cominzo final PARAR_PLAY_MANUAL "; comienzo , final, PARAR_PLAY_MANUAL
+''Print #1,"cominzo final PARAR_PLAY_MANUAL "; comienzo , final, PARAR_PLAY_MANUAL
 
 
 For jply=comienzo To final
@@ -1618,7 +1618,7 @@ If i1<= NA-13 Then
             noteon CUByte(Notapiano),vel,canal,portsal,1
        EndIf
        If Roll.trk(jply, i1).onoff= 1 Then
-Print #1,"noteoff CUByte(Notapiano),canal,portsal,1 "; CUByte(Notapiano),canal,portsal
+''Print #1,"noteoff CUByte(Notapiano),canal,portsal,1 "; CUByte(Notapiano),canal,portsal
            noteoff CUByte(Notapiano),canal,portsal,1
       EndIf    
 
@@ -2660,7 +2660,7 @@ For jpt = desdet To hastat
 Next jpt
 
 ' Notapiano=nR - restar(nR) no sirve de mucho 
-' como llego de mousey a nR? kkkkkkkkkkkkk
+' como llego de mousey a nR? 
 'BordeSupRoll = BordeSupRoll -  inc_Penta
 'inc_Penta = Int((ALTO - BordeSupRoll) /(40))
 'Penta_y = BordeSupRoll + 14 * ( inc_Penta ) *( nro -1) ES GLOBAL

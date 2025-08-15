@@ -81,7 +81,7 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="0.330 mas creacion de acordes en lectura, nroacorde en la nota en ctrl-m"
+nroversion="0.331 FIX CIFRADO, XONFIRMACION DE GRABAR EN VERDE EN GRAFICO Y OTROS"
 ' HAY UN OFF1 ABAJO , PUEDE MOVER LOS OFF1, SI SEPARA OFF2 DE OFF1 VERICALMETENE MOVIENDO EL OFF1 ENTONCES
 ' PUEDO MOVER EL OFF2 PERO MUEVE AMBOS O SEA HAY UE LIMITAR EL MOVE VERTICALMENTE !!
 ''nroversion=" 0.330 MAS ACORDES FUNCIONALES EN MODO LECTURA"
@@ -298,7 +298,8 @@ Print #1, "1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", Nombr
     abrirRoll=NO_CARGAR
   Else
     If abrirRoll=CARGAR And cargacancion=NO_CARGAR_PUEDE_DIBUJAR Then
-       CANCIONCARGADA=False
+       CANCIONCARGADA=FALSE
+       NADACARGADO=TRUE
        ''cargaCancion=0  
        param.encancion=SIN_CANCION 
        Print #1,"CALL ROLLLOOP II) "

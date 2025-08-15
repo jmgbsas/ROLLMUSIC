@@ -195,7 +195,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 '' Print #1, " 12 + (*po-1) * 13 " ; 12 + (*po-1) * 13
 '' Print #1, " *po , n "; *po, n
 
-     If  NADACARGADO=TRUE Then
+     If  NADACARGADO=TRUE  Then
         indfa=0
         indfb=0
 ''indnota=0
@@ -210,6 +210,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 ' <====== CIFRADO ACORDE---
 
     If indfa=201 And nVerCifradoAcordes=3 Then  
+     
        cairo_set_source_rgba(c, 1, 1, 1, 1)
        cairo_move_to(c,gap1 + (ic ) *anchofig , Penta_y)
 
@@ -224,11 +225,11 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
             t3=RTrim(NotasEscala(13-notac)) ' C/ 
             grado = BuscarGrado(t3) ' 4 en escala G
             t3=t3+t4  
-   '        Print #1,"grado ",grado
+        ''   Print #1,"grado ",grado
             If ClaseAcorde(aconro).tipo >1  Then
                If ClaseAcorde(aconro).tipo -1 + grado > 0 Then
                   t3=t3+notas_esc_inicial(ClaseAcorde(aconro).tipo -1 + grado)
-             ' Print #1,"t3=t3+notas_esc_inicial(ClaseAcorde(aconro).tipo -1 + grado) ",t3
+         ''     Print #1,"t3=t3+notas_esc_inicial(ClaseAcorde(aconro).tipo -1 + grado) ",t3
                EndIf 
             EndIf
         EndIf
@@ -982,6 +983,7 @@ If ubiroll > 0 Then  ' CARGA DE ARCHIVOS POR LINEA DE COMANDO DE ROLLMUSIC
     CargaArchivo (Roll,ubiroll) ' aca ajusta ubiroll a 2
    s5=2
    ROLLCARGADO=TRUE
+   NADACARGADO=FALSE
    MenuNew=MENU_INICIAL
   param.ubiroll=ubiroll ' vale 2
   portout=CInt(pmTk(0).portout)
@@ -1002,6 +1004,7 @@ EndIf
   '    print #1,"TrackaRollcarga rtk veo nombre ", titulosTk(0)
       RecalCompas (Roll)
       TRACKCARGADO=TRUE
+      NADACARGADO=FALSE
       ubirtk=2
     Else
       TRACKCARGADO=FALSE
@@ -1576,7 +1579,7 @@ EndIf
 
 ' 03-02-2022 screen event me pone con su 80 trasponer=1 hace una asignacion !!!
 If MultiKey(SC_DOWN) Then  ' el screenevent me pone trasponer en 1 la puta e.scancode = 80 Then  ' <===== SC_DOWN pulso
-Print #1,"trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo "; trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo
+''Print #1,"trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo "; trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo
 
 ' lareponemos
 ' volver a ajustar el semitono ultimo de roll restando 12
@@ -1870,8 +1873,9 @@ If MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
  ' luego 12000 posiicones si estuviera todo completo serian 9216000 bytes
  ' y grabo..9mbytes, seria 1 Track,,295 mbytes para 32 tracks
  '  print #1, "Grabando a disco Roll F11 "
+ If  MessageBox(hWnd,"¿GRABAR ARCHIVO CON F11 ? " ,param.titulo ,4 Or 64) =6 Then
    Dim As String nombreg
-   If nombre = "" Then
+   If nombre = "" Then 
       nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0) +"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
       Sleep 100
       If nombreg = "" Then
@@ -1881,7 +1885,9 @@ If MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
       EndIf
    EndIf
    GrabarArchivo(0)
-   
+ Else
+   Exit Do 
+ EndIf  
 EndIf
 ' cargar Roll y MaxPos de disco
 
@@ -2959,13 +2965,13 @@ If COMEDIT=ENTRADA_NOTAS  And nota > 0 And agregarNota=0  And carga=0 And nota <
       If Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0 Or Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 182   Then
          posicion=posn
      '182 el fin de archivo lo puedo pisar para seguir la secuencia O EL 183 fin del evento ojo!!!
-         print #1, "ingreso a NUCLEO POSICION=POSN", posicion
+      '   print #1, "ingreso a NUCLEO POSICION=POSN", posicion
         Exit Do
       EndIf
     EndIf
      If HabilitarMIDIIN =0 And  GrabarPenta=0  Then
       posn = posn + 1
-      Print #1,"LOOP DO posn = posn + 1 ";posn 
+     ' Print #1,"LOOP DO posn = posn + 1 ";posn 
      EndIf
 
      If HabilitarMIDIIN > 0  And GrabarPenta=1  Then 
@@ -3033,19 +3039,15 @@ If COMEDIT=ENTRADA_NOTAS  And nota > 0 And agregarNota=0  And carga=0 And nota <
    'cargo TRACK
    ' despues de la duracion Track(ntk).trk(posn+1,1).dur= 182
 
-   If notaOld > 0 And notaOld <> nota   Then
-  '  print #1,"Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota"; _
-   '           Roll.trk((notaOld +(estoyEnOctava    -1) * 13),posn).nota
-    Roll.trk(posn,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).dur = 0 '''' deberia ser 181 blanco como mierda uso esto?
-    Roll.trk(posn,(12-notaOld  +(estoyEnOctava    -1) * 13)).dur = 0 
-    Roll.trk(posn,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota = 181
-    Roll.trk(posn,(12-notaOld  +(estoyEnOctava    -1) * 13)).nota = 181
+  '''' If notaOld > 0 And notaOld <> nota   Then
+   If notaOld > 0 And nota > 0    Then
+  ' ACA  BORRA  EL 182 SI AUN LA NOTA ACTUAL ENTRADA ES IGUAL A LA ANTERIOR PERO NO FUNCA  
+
+    Roll.trk(posnOff+6,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).dur = 0 '''' deberia ser 181 blanco como mierda uso esto?
+    Roll.trk(posnOff+6,(12-notaOld  +(estoyEnOctava    -1) * 13)).dur = 0 
+    Roll.trk(posnOff+6,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota = 181
+    Roll.trk(posnOff+6,(12-notaOld  +(estoyEnOctava    -1) * 13)).nota = 181
  
-    
- '   print #1,"(notaOld +(estoyEnOctava  -1) * 13)"; notaOld +(estoyEnOctava  -1) * 13
- '   print #1,"posn ";posn
- '   print #1,"notaold";notaold
- '   print #1,"nota";nota
     '''ojo probar todo inserciones x  etc    endif
    EndIf
    ' cargamos Roll entonces Duracion no lo mostrara como "./."
@@ -4700,7 +4702,8 @@ hwndOpc=OpenWindow("",Posx,Posy-100,200,240,WS_OVERLAPPEDWINDOW Or WS_VISIBLE)
 ' UNA OCTAVA MAS ARRIBA O MAS ABAJO, LA TECNICA PODRIA SER ESA PONER UNA OPCION DE SUBIR O BAJAR
 ' UNA OCTAVA CADA NOTA SELECCIONADA INDIVIDUALMENTE,
 
-Dim As Integer res=0,i1, evento
+Dim As Integer res=0,i1, evento, salidaTotal=0
+Dim As Double  inicio, retardo
 
  TextGadget  (0,10,10,180,30, "LA NOTA ELEGIDA ES..",SS_CENTER)
 
@@ -4714,9 +4717,13 @@ Dim As Integer res=0,i1, evento
 ' EN UNA MELODIA GENERALMENTE SUS NOTAS SON SIEMPRE LA NOTA MAS ALTA DE UN ACORDE
 ' ERGO SE SUELE USAR LA 1ER INVERSION COMUNMENTE DONDE LA FUNDAMENTAL PASA AL TOPE. 
 ' PERO ACA GENERAMOS MAS POSIBILIDADES QUE LA NOTA DE LA SECUENCIA SEA UNA 3ERA 57A 4TA,7MA 9NA 
+inicio=Timer
 Do
   evento=WaitEvent()
+
    If evento= eventclose  Then
+      Close_Window(hwndOpc)
+      salidaTotal=1
       Exit Do
    EndIf  
    If evento=eventgadget Then
@@ -4733,9 +4740,21 @@ Do
         Close_Window(hwndOpc)
         Exit Do  
      EndIf
-  EndIf
+  
+   EndIf
+   retardo=Timer
+   If retardo-inicio > 10 Then ' le damos 10 segundos para decidir y/o mover la ventanita
+      Close_Window(hwndOpc)
+      salidaTotal=1
+      Exit Do
+    
+   EndIf 
 Loop
-
+if salidaTotal=1 Then
+   exit Do
+Else
+   salidaTotal=0
+EndIf
    
 'Print #1,"seleccionado res "; res
 'Print #1, "nsEelegida "; nsEelegida
@@ -5484,8 +5503,9 @@ vacio= 12 +(estoyEnOctava-1)*13 ' vacio lim inferior d ela octava que sobra arri
 'Dim NotaAcorde As String
 'NotaAcorde=NotasGuia(nsE-1) ' c,c#,d,d#..etc
 ' 26-01-2022 por choque con escalas cambio inst a pb
+''Print #1,"CARGO EN .PB EL 201 ,VACIO,indicePos nVerCifradoAcordes "; vacio, indicePos,nVerCifradoAcordes
  Roll.trk(indicePos, vacio).pb=201  ' codigo de lugar en octavas de roll
-
+NADACARGADO=FALSE
 
 ' CALCULO DE POSICION DE LA INFORMACION DE ACORDES:
 ' sobra desde -> [ 11 + (hasta-2)*13+1 ],  hasta -> [11+ (hasta -1)*13]

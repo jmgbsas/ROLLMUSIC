@@ -61,7 +61,8 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                   Resetear ()
                   cargarDirectorioCancion(NombreCancion)
            
-                  CANCIONCARGADA=False
+                  CANCIONCARGADA=FALSE
+                  NADACARGADO=TRUE
                   ntk=0
                   If Tope >0 Then ' tenia datos se supone q pudo abrir Roll y abrirRoll=0
                      CargarPistasEnCancion ()
@@ -90,6 +91,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                 ntk=0
                ' pistacreada=0
                 CANCIONCARGADA=FALSE
+                NADACARGADO=TRUE
 ' toma solo el nombre y path de la cancion no carga las pistas todavia
                 cargarDirectorioCancion(NombreCancion)
                 
@@ -107,7 +109,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                   EndIf
                   CANCIONCARGADA=True
                   param.encancion=CON_CANCION
-
+                  NADACARGADO=FALSE
                EndIf
              EndIf
              
@@ -154,6 +156,7 @@ Sub CTRL1007()
        If CANCIONCARGADA =True  Then
            Dim As String nombreg
            ROLLCARGADO=False 
+           NADACARGADO=FALSE
           If NombreCancion > ""  Then
              GrabarCancion()
           EndIf
@@ -169,7 +172,7 @@ Sub CTRL10075 ()
 
            ROLLCARGADO=False 
             Dim As String nombreg
-nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0)+"*.roll;*.rtk"+Chr(0))
+nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0)+"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
 Sleep 100            
 ' viva rusia lo hace sencillo....al win api..
             
@@ -187,7 +190,7 @@ Sub CTRL1010(ByRef salida As INTEGER)
            ROLLCARGADO=False 
            TRACKCARGADO=FALSE
             Dim As String nombreg
-nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0)+"*.roll;*.rtk"+Chr(0))
+nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0)+"*.roll;*.rtk"+Chr(0),OFN_CREATEPROMPT)
   Sleep 100          
             If nombreg = "" Then
                Print #1,"exit select por nombreg vacio "
@@ -509,6 +512,7 @@ Sub CTRL1040 () ' <========== seleccion de instrumento por orden Alfabetico
             print #1, "CTRL1040 Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
               If CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE Then
+                 NADACARGADO=FALSE  
                  If NombreCancion > ""  And MAxPos > 2 Then
                     GrabarRollaTrack(0)
                  EndIf
@@ -670,11 +674,13 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
                   abrirRoll=CARGAR
                   cargacancion=NO_CARGAR_PUEDE_DIBUJAR
                   CANCIONCARGADA=TRUE
+                  NADACARGADO=FALSE
                EndIf
                If ntk>=2 Then
                  cargacancion=CARGAR_NO_PUEDE_DIBUJAR
                  abrirRoll=NO_CARGAR
                  CANCIONCARGADA=FALSE
+                 NADACARGADO=TRUE
                EndIf
 
  
@@ -1301,6 +1307,7 @@ Track(0).trk(1,1).ejec = 1 ' marca indica que esta secuencia viene de una ejecuc
 
 TrackaRoll (Track(), 0 , Roll)
 ROLLCARGADO=TRUE
+NADACARGADO=FALSE
 ' grabamos el Track a disco tambien
 
 nombre=nombreTrack  ' TERMINARA EN EJEC 26-03-2025

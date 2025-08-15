@@ -229,12 +229,12 @@ End Type
 ' Para Mostrar Acordes en Roll
 Dim Shared ClaseAcorde(1 To 100) As claseac => _
 {("       ",1,1) ,("/      ",2,3) ,("/      ",3,5) ,("m      ",4,1) ,("m/     ",5,3) ,("m/     ",6,5), _
- ("º      ",7,1) ,("º/     ",8,3) ,("º/     ",9,5) ,("+      ",10,1),("+/     ",11,3),("+/     ",12,5), _
+ ("d      ",7,1) ,("d/     ",8,3) ,("d/     ",9,5) ,("+      ",10,1),("+/     ",11,3),("+/     ",12,5), _
  ("Maj7   ",13,1),("Maj7/  ",14,3),("Maj7/  ",15,5),("Maj7/  ",16,7),("m7     ",17,1),("m7/    ",18,3),_ 
  ("m7/    ",19,5),("m7/    ",19,7),("m7(b5) ",21,1),("m7(b5)/",22,3),("m7(b5)/",23,5),("m7(b5)/",24,7), _   
  ("7      ",25,1),("7/     ",26,3),("7/     ",27,5),("7/     ",28,7), _
  ("7+     ",29,1),("7+/    ",30,3),("7+/    ",31,5),("7+/    ",32,7), _
- ("º7     ",33,1),("º7/    ",34,3),("º7/    ",35,5),("º7/    ",36.7), _ 
+ ("d7     ",33,1),("d7/    ",34,3),("d7/    ",35,5),("d7/    ",36.7), _ 
  ("(6)    ",37,1),("(6)/   ",38,3),("(6)/   ",39,5),("(6)/   ",40,7), _ 
  ("Sus2   ",41,1),("Sus2/  ",42,3),("Sus2/  ",43,5)}
 'Dim Shared deltanota(1 To 43) As Integer => _
@@ -551,7 +551,7 @@ Dim  Shared figura (1 To 190) As ZString  * 4 => _
  "sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sX*+","sH*+","sW*+", _ '154 162
  "sO:+","sP:+","sI:+","sL:+","sF:+","sE:+","sX:+","sH:+","sW:+",_  '163 171 
  "s3O+","s3P+","s3I+","s3L+","s3F+","s3E+","s3X+","s3H+","s3W+", _ '172 180
- "   "," ||",">> "," - "," N ","   ","   ","   ","  "," 0 " } '181 185 , son 185, ahora 190 
+ "   "," ||",">  "," - "," N ","   ","   ","   ","  "," 0 " } '181 185 , son 185, ahora 190 
 ' la 185 la pondremos como 1er etapa de pasar  de ejecucion a Roll
 ' indicara una nota pero no sabemos su duracion, 2da etapa le pondremos
 ' una duracion cuantificada,,,
@@ -1171,7 +1171,7 @@ Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDI
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros
 parametros=0
 Common Shared As ubyte patchsal
-Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay
+Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay,guardaposnOffOld
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo,canalDeGrabacion
 Common SHARED As Integer EstaBarriendoPenta
 Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA, VerMenu,MousexNotaElegida,PianoNotaElegida,nsEelegida

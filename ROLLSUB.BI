@@ -924,7 +924,7 @@ trasponer=0
  Dim Wc As Integer
 On Local Error GoTo errorhand 
 Dim As Integer posnarranca
-Dim  As Integer nroPartesNota
+Dim  As Integer nroPartesNota,verticalEnOctavaVacia
     
  'If play=1 Or playb=1 Then
      wc=anchofig '31-01-2022 23-02 tapaba la figura
@@ -978,8 +978,12 @@ Dim  As Integer nroPartesNota
   RollNota=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota
 '' para ver el estado del onoff en la posicion elegida notacur
      onoff=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff)
-     acordeNro=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).pb)
-     notaold=notacur 
+   ''' verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde
+   ''  acordeNro=CInt(Roll.trk(n,verticalEnOctavaVacia ).dur) 'acordenro
+' este pb es de la nota en si , el otro pb esta en verticalEnOctava el 201 y 202
+' pero puedo usar este o unificar
+    acordeNro=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).pb) 'acordenro
+    notaold=notacur 
 
  EndIf
  If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS  Then ' lectura y comedit=true
@@ -1042,6 +1046,8 @@ trasponer=0
 '' para ver el estado del onoff en la posicion elegida notacur
      onoff=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff)
      acordeNro=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).pb)
+     '''verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde
+     '''acordeNro=CInt(Roll.trk(n,verticalEnOctavaVacia ).dur) 'acordenro
      notaold=notacur  ' hará falta ??? puede traer problemas,,,en cambiadur 
 
      cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
@@ -1097,6 +1103,8 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
 '' para ver el estado del onoff en la posicion elegida notacur
      onoff=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff)
      acordeNro=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).pb)
+'''     verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde
+'''    acordeNro=CInt(Roll.trk(n,verticalEnOctavaVacia ).dur) 'acordenro
      notaold=notacur 
 
      cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
@@ -2072,7 +2080,7 @@ ntk=0
 nombre="CARGAPLANO"
 
 ntk=0
-NADACARGADO=TRUE
+NADACARGADO=FALSE
 Parar_De_Dibujar=SI
 pmTk(ntk).desde = 2
 pmTk(ntk).hasta = 8
@@ -2988,10 +2996,10 @@ Dim As Integer copiado=0
        Roll.TRK(j,i)  => Trabajo (j,i)    
 ' 06-09-2021 carga track en ntk=0 
       
-      
-       If Trabajo (j,i).nota >= 1 And Trabajo (j,i).nota <=12 And  Trabajo (j,i).dur >=1 And Trabajo (j,i).dur <= 180  Then
+                                                        ' 12 a 13   
+       If Trabajo (j,i).nota >= 1 And Trabajo (j,i).nota <=13 And  Trabajo (j,i).dur >=1 And Trabajo (j,i).dur <= 202  Then
          ip+=1
-         If ip >12 Then
+         If ip >13 Then 
   '            print #1,"error  ip > 12,ip, Tr,j,i ",ip, Trabajo (j,i).dur,j,i
    '           print #1,"saltamos linea vertical vamos a otra posicion"
               Exit For
@@ -3093,6 +3101,8 @@ ReCalCompas(Roll)
  'print #1, "CargaARchivo UBound (Roll.trk,2) ",UBound (Roll.trk,2)
   Sleep 10
   ROLLCARGADO=TRUE
+NADACARGADO=FALSE
+nVerCifradoAcordes=3 'POR OMISION MUESTRA ACORDES
 End Sub
 ' ------------------------------------------
 
@@ -3652,15 +3662,15 @@ EndIf
    t = " [ ----- ]>":cairo_show_text(c,t)
 
    
-  '===> 3.3[GRABAR] SC_F11 COPIA
+  '===> 3.3[GRABAR] 
 ' graba el roll a roll y el track a track..
-   If (MultiKey(sc_Control) And mousex > 504 And mousex < 573  And mousey < 50) And carga=0 Then ' <=
+   If (MultiKey(sc_Control) And mousex > 470 And mousex < 573  And mousey < 50) And carga=0 Then ' <=
     cairo_set_source_rgba c, 1, 0.5, 0, 1
      If MouseButtons And 1    Then
       cairo_set_source_rgba c,1,0,0,1
        Dim As String nombreg
        Print #1,"EN Grabar nombre ",nombre
-       If nombre = "" Then
+       If nombre = "" Then 
  nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0)+"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
  Sleep 100
           If nombreg = "" Then
@@ -3684,10 +3694,13 @@ EndIf
 ' al track modificado porque el ntk=0 para roll. ademas debere actualizar el track ntk
 ' en memoria,,,son dos operaciones,,,
           GrabarRollaTrack(0) 
-           Sleep 1000           
+          cairo_set_source_rgba c,1,1,1,1
+          cairo_set_source_rgba c, 0, 1, 0, 1
+           Sleep 1000,1           
        Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
            GrabarArchivo (0)
-           Sleep 1000 
+           cairo_set_source_rgba c, 0, 1, 0, 1 
+           Sleep 1000,1 
        EndIf
          carga=1
          lockip=2 ' habilita mouse 28-08-2021
@@ -4919,7 +4932,7 @@ Sub GrabarArchivo (grabar_como As Integer)
 ntk=0
 Print #1,"GRABAR ARCHIVO: nombre al comienzo "; nombre
 Dim  As Integer npl
-     If nombre = "" Then ' backup antes de aumentar el tamaï¿½o del vector
+     If nombre = "" Then ' backup antes de aumentar el tamano del vector
         nombre = "Backup"+ Date + ".roll"
      Else
        npl= InStr(UCase(nombre),".RTK") 
@@ -4977,8 +4990,8 @@ Dim  As Integer npl
        If Roll.trk(i2,i1 ).dur=182 Then ' 26-06-2021 copiar final archivo
           final= 1 'Atrapa el final
        EndIf
-
-       If Roll.trk(i2,i1 ).nota >=1 And Roll.trk(i2,i1 ).nota<=12 Then
+' extendemos a semitono ficticio 13 donde esta acorde a ver si lo recupera
+       If Roll.trk(i2,i1 ).nota >=1 And Roll.trk(i2,i1 ).nota<=13 Then
           haynota=1 ' atrapa al menso 1 caso
        EndIf
        
@@ -5253,7 +5266,7 @@ Print #1,"inicia CargaPistasEnCancion"
        tope=mayor  ' el nro tope de la lista
        Print #1,"CARGO PISTAS MAXIMA CANTIDAD TOPE=",tope
        CANCIONCARGADA=TRUE
-
+       NADACARGADO=FALSE
        ntk=1   ' tab le suma 1 pero si creo pistas estria  mal 05-03-2022 ï¿½ï¿½ï¿½
     EndIf
 
@@ -6690,6 +6703,7 @@ Sub armarAcorde(grado As Integer,n1 As Integer,n2 As Integer,n3 As Integer)
   ' para menor      n1=3 y n2=7
   ' para disminuido n1=3 y n2=6
 'Print #1,"4 MousexNotaElegida"; MousexNotaElegida
+nVerCifradoAcordes=3
 Dim As Integer acoposoff=0, resultado,acoposOffNew
    scan_alt=0
    cnt_acor=cnt_acor +1 
@@ -6731,7 +6745,7 @@ Dim As Integer acoposoff=0, resultado,acoposOffNew
 pnr=PianoNotaElegida+SumarnR(PianoNotaElegida)
 Print #1,"indicePos, pnr) ";indicePos, pnr
 
-Roll.trk(indicePos, pnr).pb=CUByte(acordeNro)
+ Roll.trk(indicePos, pnr).pb=CUByte(acordeNro) ' nuevo para ticks el otro acordeNro es aconro 
 
       Select Case grado ' la nota elegida sera la Tonica del acorde
         Case 1 To 7  ' es Tonica PROBADO OK!, 

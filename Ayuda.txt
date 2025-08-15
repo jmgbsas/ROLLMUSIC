@@ -283,13 +283,13 @@
 
     4) Recalcular Compas pulsando <R>. Establece las barras divisorias entre compases.c
     5) Grabar Archivo. (Ctrl-click). Se ha puesto un retardo de 1 segundos si tarda eso es porque se
-         ejecutó bien el comando y grabó, porque de otra forma a veces salia sin grabar..
-         Nota:No usar en el nombre de archivo una 'ñ' o caracteres latinos cairo
-         no lo soporta y no mostrará el menu de Roll. (También es una forma de si se desea
-         eliminar el menu en una reproducción, pero si se pulsa en el lugar correcto el menu
-         es funional solo que no se lo puede ver ,,) En version 0.4626 se repuso la capacidad de 
-         grabar habia dejado de funcionar. se usa un dialogo de apertura de archivo escribir el nombre
-         y si no existe aparecera un dialogo pequeño para crearlo , aceptar.
+       ejecutó bien el comando y grabó ademas pasa a color verde por un instante, porque de otra forma a veces 
+       salia sin grabar..
+       Nota:No usar en el nombre de archivo una 'ñ' o caracteres latinos cairo
+       no lo soporta y no mostrará el menu de Roll. (También es una forma de si se desea
+       eliminar el menu en una reproducción, pero si se pulsa en el lugar correcto el menu
+       es funional solo que no se lo puede ver ,,) se usa un dialogo de apertura de archivo escribir el nombre
+       y si no existe aparecera un dialogo pequeño para crearlo , aceptar.
     6) Cargar Archivo. click en [Archivo]-> luego en  [*.ROLL] o [+.RTK]. 
        Archivo NUEVO borra el Roll de memoria y comienza de cero. En el menu del grafico de Roll (no control)
        click en [ARchivo] -> ALT-Click [NUEVO]
@@ -868,7 +868,8 @@
        independiente del archivo cargado solo depende del inicio RollMusic.ini. Se agregaran otros 
        parametros convenientes en el futuro. Colores, escalas deseadas etc etc.
 
-    1.7 ) (En desarrollo), Entrar un acorde a partir de una Nota de la secuencia o si no hay nada tambien, usando
+    1.7 ) INGRESO DE ACORDES EN MODO LECTURA.
+         Entrar un acorde a partir de una Nota de la secuencia o si no hay nada tambien, usando
          la nota en donde se da el click, o si no hay nada usando la duracion pulsada (1,2,3,4,5,6,7,8).
          Si existe la nota y se desea cambiar su duracion , pulsando una duracion antes de usar el comando 
          se reemplazará la duración existente y se armará un acorde con esa nueva duración. 
@@ -878,6 +879,9 @@
          G C E quedara en el medio..
          Para ello damos Ctrl-Click derecho,  sobre la nota a convertir en acorde..y 
          aparece un menu contextual (el cual ya es funcional, no totalmente, triadas cuaternarias etc, 1era o 2da inversion etc)
+         aL pie de laventana de control avisa si es funcional lo elegido.
+         El primer menu es para ajustar si la nota elegida es la fundamental , 3ra, 4ta,5ta, 6ta, 7ma,9na.
+         Si no se elige nada a los 10 segundos se cierra el menu. Se sale con el bobot de cierre como cualquier vantana.
          Ya funciona 3 Notas y 4 Notas ->Mayor o Menor//fundamental, 1era inversion y segunda inversion 
          dar Ctrl+click derecho sobre la nota navegar como se indica al comienzo llegar a No inversion y ahi dar 
          click izquierdo, soltar click , soltar ctrl apenas salga el menu o al final es indiferente. 
@@ -888,7 +892,8 @@
          nota seleccionada en la secuencia es Tonica, 3era, 4ta, 5ta,6ta, 7ma y 9na,(se muestra un menu para seleccionar
          si la nota elegida es Tonica, 3,4,5,6,7 o 9na..
          menores solo la base. De 4 notas solo la base o sea que la elegida es nota tonica y no es invertida.
-           
+         Se muestra el Cifrado arriba de cada octava al dar click sobre ella. Si memuevo a otra octava se apaga.
+         En la ventana de Control en el menu Ver exciste la opcion de mostrar o no mostrar el Cifrado  
          Luego de insertado el acorde automatico inmediatamente se escucha el mismo 
          NOTA:si no se entra duracion y  se da click derecho sobre una nota toma su valor de duracion y 
               muestra el menu par elegir el acorde..Luego esa duraicon no se borra y podra usarse para nuevos acordes

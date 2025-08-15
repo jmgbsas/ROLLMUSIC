@@ -320,7 +320,7 @@ cargacancion=NO_CARGAR_PUEDE_DIBUJAR 'PUEDE DIBUJAR PORQUE NO HAY REDIM  DE ROLL
   '1) cargar pista desde disco y desde Roll puro   
      If ubirtk = 0   Then ' no tengo nombre debo explorar
            myfilter  = "Track files (*.rtk)"+Chr(0)+"*.rtk"+Chr(0)
-           nombrea = OpenFileRequester("","", myfilter)
+           nombrea = OpenFileRequester("","", myfilter, OFN_CREATEPROMPT)
 Sleep 100
 
            ubi1 = InStrrev(nombrea,"[")
@@ -3115,6 +3115,7 @@ Sub CargarSinRoll ()
    Erase mel_undo, undo_acorde, undo_kant_intervalos
    mel_undo_k=0: ig=0:cnt_acor=0
    ROLLCARGADO = FALSE
+   
   ' print #1,"--TAB "
    nota=0
    dur=0

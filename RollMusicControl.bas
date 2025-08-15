@@ -86,7 +86,7 @@ MICROSEGUNDOS_POR_NEGRA=1000000 ' 60 MILLONES / 60 BPM DEFAULT
 
 
  MaxPos=2:ntk=0:CPlay=NO: guardopos=0:ntktab=0
-Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff,deltax,deltay
+Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff,deltax,deltay,guardaguardaposnOffOld
  posicion=0:posicionOld=0:posn=0
 deltax=1 
 
@@ -390,6 +390,7 @@ SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + pathdir)
 NombreCancion=pathdir
 print #1,"NombreCancion en CrearDirCancion ",NombreCancion
 CANCIONCREADA=TRUE
+NADACARGADO=FALSE
 CreateDir(pathdir+"\Temp") ' ok
 
 End Sub
