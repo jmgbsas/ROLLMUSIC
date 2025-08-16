@@ -1,3 +1,6 @@
+- 16-08-2025 0.332 Aviso de MIDI-OUT INEXISTENTE ajuste a 1 y otros.
+  Al cargar archivos en otro dispositivo que tenga pocos port de salida al dar play cancelaba.
+  cargar ROLL solo muestra los .roll evita cancelaciones si se carga un .rtk
 - 14-08-2025 Fix Cifrado vuelve a  verse dando click en la octava. Pulsar GRABAR se pone verde para 
   confirmar que  se termino de grabar. finales de nota de >> a > , final de secuencia se borra a ingresar
   notas igulas, permanecia el || en cada nota igual. (veremos si separamos mas eñ fimal > de una nota

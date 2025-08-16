@@ -472,11 +472,21 @@ Print #1,"NombreCancion,nomobre, CantTicks ";NombreCancion,nombre, CantTicks
      Print #1,"cargatrack pmTk(ntk).canalsalida, ntk ",pmTk(ntk).canalsalida,ntk
      canalx=graba3.nnn    
      pmTk(ntk).portout= graba3.dur
+Print #1,"PORTOUT, NTK "; pmTk(ntk).portout, ntk 
      portout = CInt(graba3.dur)
+    If portsout <= portout Then
+ 'portsout cantidad de port fisicos o dispositivos empieza por 1 2 3 etc"
+  '  portout parte de 0 o sea 0 1 2 3 '
+  ' un portout 2 significa 2 dispositivos 1 2 
+  ' luego si portsout = 2  then portout maximo es 1
+    MessageBox( null, "MIDI-OUT "+ Str(portout)+ " INEXISTENTE CAMBIELO", "Se cambia a 1", MB_OK )
+    portout = 0
+    pmTk(ntk).portout=0
+   EndIf
      pmTk(ntk).patch= graba3.nota
      patchsal=pmTk(ntk).patch
      instru=CInt(patchsal) 
-
+Print #1, "instru ";instru
      TipoCompas = graba3.pb  ' 26-04-2024
      TCompas=Mid(tempoString(TipoCompas),1,4) 
  '    print #1,"cargaCancion ",cargacancion
@@ -1893,7 +1903,7 @@ print #1,"-----------------err TrackaRoll-----------------"
            " on line " & Erl & " " & ProgError(er1)
   Print #1, errmsg
 End If
-
+FileFlush (-1)
 End Sub
 
 Sub Resetear ( )
@@ -1971,6 +1981,7 @@ End Function
 '------------------------------------------
 Sub PlayCancion(Track() As sec)
 'psarlo a Ticks!!!
+On Local Error GoTo PlayCancionError
 Dim i1 As Integer
 
 
@@ -2035,7 +2046,8 @@ For i=1 To tope
     
 '   Print #1,"midiout ",k1, *nombreOut(k1)
    If InStr(*nombreOut(k1),"Microsoft")>0 Then
- '    Print #1,"No se usa Microsoft"
+    Print #1,"No se usa Microsoft"
+    Exit sub
    Else
      If listoutAbierto( k1) = 0 Then
         If listoutCreado( k1)=0 Then
@@ -2450,7 +2462,7 @@ Sleep 20,1
 
 Exit Sub
 
-fail:
+PlayCancionError:
  Dim errmsg As String
 
 If  Err > 0 Then

@@ -2782,7 +2782,7 @@ abrirRoll=CARGAR_MAS_PISTAS_O_CANCION ' habilita la carga de una cancion
      ''' no usar mas  dialogoText("Cargar Archivo")
      Dim myFil As String
       If ubiroll=0 Then
-   nombrea = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0)+"*.roll;*.rtk"+Chr(0))
+   nombrea = OpenFileRequester("","","Roll files (*.roll)"+Chr(0)+"*.roll"+Chr(0))
 Sleep 100
          titulosTk(0)=nombrea
       Else
@@ -2790,7 +2790,7 @@ Sleep 100
 '           *file.lpstrFile=titulosTk(0)
 '            fclose(file.lpstrFile)
             nombrea=Trim(titulosTk(0))
-          EndIf      
+         EndIf      
       EndIf
 '  nombrea="DESAFIO-LIGA-ACORDES-EN-1-NOTA.ROLL" ' para debug sino no funciona
 '  nombrea="test-acordes-iguales01.roll"
@@ -2806,12 +2806,12 @@ Sleep 100
  ' print #1,"open nombre en CargaArchivo ",nombre
       If  ubiroll =0 Then
           If   Open (nombre  For Binary Access Read As #ca ) <> 0 Then
-              Print #1, "No se puede leer en 1620 "; nombre 
+              Print #1, "No se puede leer  "; nombre 
           EndIf
       Else
          Sleep 100
          If Open (nombre  For Binary Access Read Shared As #ca ) <> 0 Then
-            Print #1,"Error open cargaArchivo en 1627, nombre ",nombre
+            Print #1,"Error open cargaArchivo , nombre ",nombre
             Exit Sub
          End If
          
@@ -2941,8 +2941,20 @@ Print #1,"pmTk(0).MaxPos = MaxPos ";  MaxPos
      canalx  = CInt(z3.inst) ' canal midi cargado en Global si es un track se pasara a info de trck
      Print #1,"canalx cargado desde archivo ",canalx
      portout = CInt(z3.dur) 
-     Print #1,"portout cargado desde archivo ",portout
      pmTk(0).portout=z3.dur   ' ubyte  a ubyte
+     Print #1,"portout cargado desde archivo ",portout
+    If portsout <= portout Then
+ 'portsout cantidad de port fisicos o dispositivos empieza por 1 2 3 etc"
+  '  portout parte de 0 o sea 0 1 2 3 '
+  ' un portout 2 significa 2 dispositivos 1 2 
+  ' luego si portsout = 2  then portout maximo es 1
+MessageBox( null, "MIDI-OUT "+ Str(portout)+ " INEXISTENTE CAMBIELO", "Se cambia a 1", MB_OK )
+    portout = 0
+    pmTk(0).portout=0
+   EndIf
+
+
+     
      pmTk(0).canalsalida = z3.inst ' ubyte a ubyte
      pmTk(0).patch=z3.nota  ' ubyte a ubyte
      pmTk(0).portout=portout
