@@ -288,7 +288,7 @@ MenuItem(1030,MenName3, "3.0 Na.Octavas de Instrumetnos Estandares")
 'MenuItem(1031,MenName3, "Na.Seleccion Canal (futuro se repetira por comodidad...)")
 Menubar(MenName3)
 MenuItem(1040,MenName3, "4.0 Cambia Instrumento por orden Alfabetico")
-MenuItem(1050,MenName3, "5.0 Cambia Instrumento por orden Numérico")
+MenuItem(1050,MenName3, "5.0 Cambia Instrumento por orden Numérico" )
 Menubar(MenName3)
 MenuItem(1060,MenName3, "6.0 Crear pista aislada, En Roll dependiente, con lo elegido y reemplaza la existente en la edicion")
 MenuItem(1061,MenName3, "7.0 Crear Pista nueva en la Cancion en Edicion, Con lo elegido")
@@ -459,6 +459,6 @@ End Select
 
     SetStateMenu(hmessages,2500,1)
     SetStateMenu(hmessages,2501,1)
-
+    SetStateMenu(hmessages,1050,1)
 
 End If

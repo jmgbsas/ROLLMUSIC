@@ -1,6 +1,35 @@
 
 On Error Goto errorhandler
+Sub LLAMA_GRABAR_ROLL()
+               '      Print #1," nombre,  ANTES DE LLAMAR GRABARROLL " ;nombre
+                     Dim  As Integer errorgrabr=3,intentos=0,length=0
+' MODELITO DE MANEJO DE ERROR ESTUPIDO DE  ARCHIVO PELOTUDO JAJAJ 
+'en general requiere dos intentos para grabar, sino deja el archivo vacio un plomo de mierda
+' el errorgrabar no sirve de nada porque puede venir en 0 pero el archivo vacio
+                     Do      
+                       intentos=intentos +1
+                       If intentos > 5  Or length > 0 Then ' 5 INTENTOS MAXIMO
+                         Exit Do
+                       Else
+                         errorgrabr= GrabarRoll ()
+                      length = FileLen(nombre)
+                     Print #1,"tamaño archivo ",length
+ 
+                       EndIf  
+  
+ 
+ 
+                 ' no el undo dolo se debe borrar al ahcer nuevo creo
+                     Loop 
+                     Print #1,"NUMERO DE INTENTOS AL GRABAR ROLL "; intentos -1
+                     Print #1,"error final "; errorgrabr
+                     Print #1,"tamaño archivo ",length
+                  
+               
+
+End Sub
 Sub CTRL1003 ()
+'' NOSE USA
    Dim As String nombreg
    If nombre = "" Then
       nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0) +"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
@@ -11,11 +40,15 @@ Sub CTRL1003 ()
          nombre=nombreg   
       EndIf
    EndIf
-   GrabarArchivo(0)
+nombre=nombreg
+'' GrabarRoll()
+   LLAMA_GRABAR_ROLL()
+  Sleep 1000,1 
 
 End Sub
 
 Sub CTRL10031 ()
+' NO SE USA
    Dim As String nombreg
    If nombre = "" Then
       nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0) +"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
@@ -26,8 +59,9 @@ Sub CTRL10031 ()
          nombre=nombreg   
       EndIf
    EndIf
-   GrabarArchivo(0)
-
+   ''''GrabarRoll()
+ LLAMA_GRABAR_ROLL()
+   Sleep 1000,1 
 End Sub
 
 Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
@@ -315,7 +349,7 @@ If ejecutar=EJECUCION Then
    Loop
 
 
-   Cerrar (ini)
+   CLOSE ini
 End If
 
 If ejecutar=CANCION Then  
@@ -340,7 +374,7 @@ If ejecutar=CANCION Then
    Loop
 
 
-   cerrar (ini) 
+   Close ini 
 End If
 
 End Sub
@@ -499,7 +533,7 @@ Sub CTRL1040 () ' <========== seleccion de instrumento por orden Alfabetico
                   ntk=0
                 EndIf
                 portsal=pmTk(ntk).portout
-                
+                pmTk(ntk).patch=CUByte(instru)               
  ' los canales van de 0 a 15 (1 a 16) no se si en todos los dispositivos
  ' van de 0 a 15 o en alguno de 1 a 16 opto por 0 a 15                
              ''  If pmTk(ntk).canalsalida > 0 Then
@@ -511,14 +545,18 @@ Sub CTRL1040 () ' <========== seleccion de instrumento por orden Alfabetico
               ' grabar la pistacomo en 1011
             print #1, "CTRL1040 Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
-              If CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE Then
+              If (CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE) And ROLLCARGADO=FALSE Then
                  NADACARGADO=FALSE  
                  If NombreCancion > ""  And MAxPos > 2 Then
                     GrabarRollaTrack(0)
                  EndIf
               Else
                 If MaxPos > 2  And ROLLCARGADO  Then
-                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
+                  Print #1," nombre, nombreg ANTES DE LLAMAR GRABARROLL " ;nombre,nombreg  
+                   
+                 ''''GrabarRoll () ' graba roll en edicion, borro todo el undo¿?
+                 LLAMA_GRABAR_ROLL()
+                 Sleep 1000,1 
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
                 EndIf  
               EndIf  
@@ -559,7 +597,7 @@ Sub CTRL1050 () ' <=========== seleccion de instrumento por orden Numerico
               Else
                 If MaxPos > 2  And ROLLCARGADO  Then
                   'aca graba el roll con Roll.trk(1,NA).inst
-                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undoï¿½?
+                 GrabarRoll () ' graba roll en edicion, borro todo el undoï¿½?
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
                 EndIf  
               EndIf  

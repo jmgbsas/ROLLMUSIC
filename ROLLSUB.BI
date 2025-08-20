@@ -712,7 +712,7 @@ Dim CUENTA As Integer
    EndIf
    If CUENTA = 100 Then
       ' S print "FALTA: ";falta;" Falta1: "; falta1
-      cerrar 0
+      Close 0
       Exit Do
    EndIf   
   Loop
@@ -2123,8 +2123,8 @@ EndIf
 '--------------------------------------------------
  Print #31, "============> FIN PLANO MIDI <========================
 
-cerrar 30
-cerrar 31
+Close 30
+Close 31
 Sleep 20
 SetGadgetText(21,"EXIT SUB " )
 Print #1, "============================="
@@ -3076,7 +3076,13 @@ Dim As Integer copiado=0
 ' falta ver que pasa con Track con el tempo....
 
 
-cerrar ca
+
+If Close (6) <> 0 Then
+  Print #1, "NO SE CERROR EL ARCHIVO CARGADO "; nombre
+Else
+  Print #1, "Bien CERRADO EL ARCHIVO CARGADO "; nombre
+EndIf
+Sleep 1000,1 
 DUR => 0
 curpos =>1
 ''' carga=0
@@ -3114,7 +3120,7 @@ ReCalCompas(Roll)
   Sleep 10
   ROLLCARGADO=TRUE
 NADACARGADO=FALSE
-nVerCifradoAcordes=3 'POR OMISION MUESTRA ACORDES
+nVerCifradoAcordes=3 'POR OMISION MUESTRA ACORDES AL DAR CLICK EN UNA OCTAVA
 End Sub
 ' ------------------------------------------
 
@@ -3710,7 +3716,7 @@ EndIf
           cairo_set_source_rgba c, 0, 1, 0, 1
            Sleep 1000,1           
        Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
-           GrabarArchivo (0)
+           GrabarRoll ()
            cairo_set_source_rgba c, 0, 1, 0, 1 
            Sleep 1000,1 
        EndIf
@@ -3740,7 +3746,8 @@ Sleep 100
          nombre=nombreg   
        EndIf
         
-       GrabarArchivo(1)
+       GrabarRoll()
+       Sleep 1000,1   
           lockip=2 ' habilita mouse 28-08-2021
        MenuNew=MENU_INICIAL
        carga=1   
@@ -4935,16 +4942,18 @@ Sub grabaralteracion(ByRef pan As UByte)
 
 End Sub
 
-Sub GrabarArchivo (grabar_como As Integer)
+Function  GrabarRoll ()  As Integer
+
+On Local Error GoTo sale
 ' GRABA ARCHIVOS CON EXTENSION Y FORMATO *.ROLL
 ' el borrado de undo solo se deberia ahcer si se crea un archivo nuevo y se borra
 ' O SI EL USUARIO VACIA EL UNDO BOTON O MENU QUE HARA FALTA
 ' el que se esta editando o se carga un nuevo archivo
 ' para roll ntk es siemrpe cero
 ntk=0
-Print #1,"GRABAR ARCHIVO: nombre al comienzo "; nombre
-Dim  As Integer npl
-     If nombre = "" Then ' backup antes de aumentar el tamano del vector
+Print #1,"GRABAR ARCHIVO: nombre y nombreg al comienzo "; nombre
+Dim  As Integer npl, length
+     If nombre = ""  Then ' backup antes de aumentar el tamano del vector
         nombre = "Backup"+ Date + ".roll"
      Else
        npl= InStr(UCase(nombre),".RTK") 
@@ -4964,9 +4973,13 @@ Dim  As Integer npl
      Print #1,"NOMBRE A GRABAR COMO",nombre
  
     ga=7 
-    If  Open (nombre  For Binary Access write As #ga ) <> 0 Then 
-        Print #1,"No se puede escribir "; nombre
+    If  Open (nombre  For Binary Access write As #ga ) > 0 Then   
+    
+        Print #1,"No se puede escribir error "; nombre, GrabarRoll  
+        Close ga
+        Sleep 1000,1 
     Else
+   Print #1,"Se puede escribir en "; nombre
   ''''  Open "test-AAAAA.TXT" For Output    As #2
      Dim Trabajo (1 To Maxpos, NB To NA) As dat
      Dim grabaPos   As dat
@@ -5045,7 +5058,7 @@ Next i1
 MaxPos=k+1
 
 
-'print #1, "final MaxPos "; MaxPos
+Print #1, "final MaxPos "; MaxPos
 'print #1,"---------------------------------------- K= "; K
 '  For i1 = NB To NA
 '  print #1,i1;"|";
@@ -5109,21 +5122,6 @@ mit.st = tiempoPatron
   graba4.pb  = mit.pb
 '---------------------------
 
-/' 
-Negras por minuto	 tempo
-40-43	Grave
-44-47	Largo
-48-51	Larghetto
-52-54	Adagio
-55-65	Andante
-66-69	Andantino
-70-95	Moderato
-96-112	Allegretto
-113-120	Allegro
-121-140	Vivace
-141-175	Presto
-176-208	Prestissimo
-'/    
      If instru=0 Then 
         instru=1
      EndIf
@@ -5155,33 +5153,13 @@ Negras por minuto	 tempo
      ' en dur tomamosla nota y esala grabamos en pb o ins
      ' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
      ' -------------------------------------
-'    Dim As Integer i,j,notafinal
-'    For j = 1 To MaxPos
-'     For i = NB To NA
-'      If Roll.trk(i,posicion+1).dur = 182 Then
-'       notafinal= Roll.trk(i,posicion).nota
-       '        print #1, "ENCONTRO NOTA FINAL ", notafinal
-       '        Print "ENCONTRO NOTA FINAL ", notafinal
-       ' esten la posiciond ela ultimanotapero grasoerror
-       ' o seaque no tiene duracion solo el 182
-       ' esta mal ...
-'       Exit For
-'      EndIf
-'     Next i
-'    Next j
-'     grabaPos(1,1).pb = notafinal
- '    print #1,"****))) nota final y dur final "; notafinal,Roll.trk(i,posicion+1).dur
-     '****))) nota final y dur final  0   0
-     ' no existe mas 182 no se graba enningun lado q raro
-     ' Grabacion de Trabajo
-     ' ------------------------------------
-
      '  print #1,"MaxPos grabada en Trabajo ",MaxPos
-
+Print #1,"grabando las partes del archivo "; nombre
+''' graba4   ' aca esta tiempoPatron
      Put #ga, ,grabaPos
      Put #ga, ,grabaLim
      Put #ga, ,graba3  
-     Put #ga, ,graba4   ' aca esta tiempoPatron
+     Put #ga, ,graba4
      Put #ga, ,graba5  
      Put #ga, ,graba6  
      Put #ga, ,graba7  
@@ -5190,17 +5168,34 @@ Negras por minuto	 tempo
      Put #ga, ,graba10 
                
      Put #ga, ,Trabajo()
-     cerrar(ga)
-
+     
+     Close ga
     End If  ' del open ga archivo
 
      While InKey <> "": Wend
-     Sleep 150
+     Sleep 1000,1
      
 If nombre = "Backup"+ Date + ".roll" Then
    nombre=""
 EndIf
-End Sub
+length = FileLen(nombre)
+If length = 0 Then
+  GrabarRoll=4 ' mi error por tamaño 
+EndIf
+Exit Function 
+
+sale:
+ Dim errmsg As String
+If  Err > 0 Then
+  Close ga
+  Sleep 1000,1  
+  GrabarRoll=Err
+  errmsg = "FAIL Error GrabarRoll " & Err & _
+           " in function " & *Erfn & _
+           " on line " & Erl & " " & ProgError(Err)
+  Print #1, errmsg
+End If
+End Function
 '
 Sub  abrirSecuencia(nf As Integer) 
 
@@ -5496,7 +5491,7 @@ graba4.pb = mit.pb
      Put #gt, ,graba10 
      
      Put #gt, ,Trabajo() ' ACA DEBERIA QUEDAR EL CAMPO ACORDE !!
-     cerrar (gt)
+     Close gt
      While InKey <> "": Wend
      Sleep 150
 Print #1,"---------------------------------------------------------------------------------"
@@ -5673,8 +5668,10 @@ Print #1, "selport 4 "
                  EndIf
               Else
                 If MaxPos > 1  And ROLLCARGADO  Then
-                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undo??
+                 
+                 GrabarRoll () ' graba roll en edicion, borro todo el undo??
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
+                 Sleep 1000,1 
                 EndIf  
               EndIf  
               Close_Window(haw)
@@ -5923,8 +5920,9 @@ Print #1, "SELCANAL canalx "; canalx
                      GrabarRollaTrack(0)
                Else
                   If ROLLCARGADO=TRUE  Then
-                   GrabarArchivo (0) ' graba roll en edicion, borro todo el undoï¿½?
+                     GrabarRoll () ' graba roll en edicion, borro todo el undoï¿½?
                   ' no el undo dolo se debe borrar al ahcer nuevo creo
+                   Sleep 1000,1 
                   EndIf  
                EndIf  
             End If  
@@ -6402,7 +6400,7 @@ Dim  As Integer i3
          Print #ffile,nanchofig, "nanchofig"
          Print #ffile,nVerCifradoAcordes, "nVerCifradoAcordes"
          
-         cerrar ffile
+         Close ffile
          Sleep 100
     EndIf
  Dim As Integer nroproc, ppp=0
@@ -6427,7 +6425,7 @@ fa1=2
         EndIf
         
       Loop      
-    cerrar fa1
+    Close fa1
  EndIf
 
 

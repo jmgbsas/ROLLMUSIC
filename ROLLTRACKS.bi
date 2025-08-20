@@ -78,7 +78,7 @@ Print #1,"ubound ",UBound (Toca(ntkp).trk)
 'Print #1, Toca(ntkp).trk(j).modo;" ";Toca(ntkp).trk(j).nota;" ";Toca(ntkp).trk(j).vel
 'Next j 
       ' cerrar f
-       cerrar 12
+       Close 12
           
 '      pmEj(ntkp).MaxPos=Toca(ntkp).maxpos
       ntoca=tocaparam(ntkp).orden
@@ -177,7 +177,7 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
            If tocaparam(nf).maxpos > maxgrb Then
               maxgrb = tocaparam(nf).maxpos
            EndIf
-           cerrar f
+           Close f
          ntkp=tocaparam(nf).orden
 
          pmEj(ntkp).portout= tocaparam(nf).portout
@@ -588,7 +588,7 @@ print #1,"cargartrack maxpos, ntk  :", pmTk(ntk).MaxPos, ntk
       Next i
 'Print #1, "-------------------------------"
      Next j
-     cerrar (ct)
+     cLOSE ct
 
  Track(ntk).trk(1,1).ejec=pmTk(ntk).ejec
 
@@ -989,7 +989,7 @@ graba4.pb = mit.pb
      Put #grt, ,graba10 
      
      Put #grt, ,TrkTemp()
-     cerrar (grt)
+     cLOSE grt
      While InKey <> "": Wend
      Sleep 150
 Print #1,"fin ActualizarRollyGrabarPista"
@@ -2453,7 +2453,7 @@ If MIDIFILEONOFF = HABILITAR Then
    Print #midiplano, T1 ;" Meta TrkEnd"
    Print #midiplano, "TrkEnd"
    MIDIFILEONOFF = DESHABILITAR
-   cerrar (20)
+   Close 20
 
 EndIf
 

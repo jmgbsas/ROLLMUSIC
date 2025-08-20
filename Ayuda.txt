@@ -246,9 +246,13 @@
        deseleccionar el anterior dandole click al que tenga [x] para apasarlo a [] y luego buscar el nuevo
        hacicednolo pasar de [] a [x]. De todos modos solo toma el cambio si la ultima accion dejo una x.
        En la ventana grafica solo se puede cambiar el canal y el port de salida o dispositivo.
+
        Si el instrumento usa patch se lo puede cambiar en la ventana de Control general la ventana inicial
        no de Roll Grafico, para ello entrar al menu "Crear Pistas manuales" y elegir "cambia instrumento
-       por orden alfabetico" 
+       por orden alfabetico". Tambien el PATCH de un instrumento se puede cambiar en un Roll cargado sin cancion
+       con el boton PATCH de la izquierda parte inferior que cambiaria para los tracks de una cancion. Pero
+       tambien funciona para un Roll cargado sin cancon no es necesario dar check en ninguna
+       pista.
 
        NOTA: 1) LOS BOTONES [PORTSAL]  [PATCH] [CANAL]  ABAJO DE LAS LISTAS
        SE USAN A LA DERECHA PARA EJECUCIONES A TRAVES DE MIDI CON UN TECLADO(si se selecciona con un tilde alguna

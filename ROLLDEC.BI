@@ -169,7 +169,7 @@ Declare Sub CambiarDim(redi As integer)
 Declare Sub dialogoText(cadena As string)
 Declare Sub velocidades(j as integer)
 Declare Sub playthread()
-Declare Sub GrabarArchivo (grabar_como As Integer)
+Declare Function GrabarRoll () As integer
 Declare Sub abrirSecuencia (nf As integer)
 Declare Sub GrabarTrack   (ntk As integer) 
 Declare Sub ActualizarRollyGrabarPista ()

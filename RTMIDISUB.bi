@@ -1739,7 +1739,7 @@ If MIDIFILEONOFF = HABILITAR Then
    Print #midiplano, T1 ;" Meta TrkEnd"
    Print #midiplano, "TrkEnd"
    MIDIFILEONOFF = DESHABILITAR
-   cerrar (20)
+   cLOSE 20
 
 EndIf
 VerMenu=1
@@ -2510,6 +2510,8 @@ Print #1,"ENTRA POR IZQUIERDA"
        Roll.trk(inc,i1).pan  = Roll.trk(jpt,i1).pan
        Roll.trk(inc,i1).pb   = Roll.trk(jpt,i1).pb
        Roll.trk(inc,i1).inst = Roll.trk(jpt,i1).inst
+       Roll.trk(inc,i1).onoff = Roll.trk(jpt,i1).onoff
+
    '  Print #1,"i1,ind Roll.trk(i1,ind).nota ",i1, ind, Roll.trk(ind,i1).nota
        If moverZona=1 Then ' borro original
           Roll.trk(jpt,i1).nota = 181
@@ -2518,6 +2520,7 @@ Print #1,"ENTRA POR IZQUIERDA"
           Roll.trk(jpt,i1).pan  = 0
           Roll.trk(jpt,i1).pb   = 0
           Roll.trk(jpt,i1).inst = 0
+          Roll.trk(jpt,i1).onoff = 0
        EndIf
      Next i1
      inc=inc+1
@@ -2537,8 +2540,8 @@ Print #1,"ENTRA POR IZQUIERDA"
           Roll.trk(jpt,i1).pan  = 0
           Roll.trk(jpt,i1).pb   = 0
           Roll.trk(jpt,i1).inst = 0
-  
-       Next i1
+          Roll.trk(jpt,i1).onoff = 0
+        Next i1
      Next jpt
 
   EndIf
@@ -2577,6 +2580,7 @@ Print #1, "desdet=inc ",desdet
        Roll.trk(jpt,i1).pan  = Roll.trk(inc,i1).pan
        Roll.trk(jpt,i1).pb   = Roll.trk(inc,i1).pb
        Roll.trk(jpt,i1).inst = Roll.trk(inc,i1).inst
+       Roll.trk(jpt,i1).onoff = Roll.trk(inc,i1).onoff
 
        If moverZona=1 Then ' borro original
           Roll.trk(inc,i1).nota = 181
@@ -2585,6 +2589,7 @@ Print #1, "desdet=inc ",desdet
           Roll.trk(inc,i1).pan  = 0
           Roll.trk(inc,i1).pb   = 0
           Roll.trk(inc,i1).inst = 0
+          Roll.trk(inc,i1).onoff = 0
        EndIf
 
      Next i1

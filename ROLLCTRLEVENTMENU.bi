@@ -140,7 +140,10 @@ Print #1,"usarmarcoins ", usarmarcoins
 '-----------------------------------------------------------------------
            Case 1014  ' <============= TRACK A ROLL
            TrackaRoll (Track(), ntk , Roll ) ' no usa ubirtk
-           GrabarArchivo(0)
+          
+           '''GrabarRoll()
+           LLAMA_GRABAR_ROLL()
+           Sleep 1000,1 
            SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1015 '<========== Grabar MIDI-In aca sera para grabar 
@@ -353,49 +356,70 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 '-----------------------------------------------------------------------               
            Case 1040 ' <========== seleccion de instrumento por orden Alfabetico
      '' este da problemas lo tuve que traaer de nuevo ojo
-             ''   CTRL1040
-                 selInstORdenAlfa (instru)
+        ''        CTRL1040
+               selInstORdenAlfa (instru)
                 If CANCIONCARGADA =TRUE  Then
-               Else
+                Else
                   'midisal = midiout(portout)
                   ntk=0
                 EndIf
                 portsal=pmTk(ntk).portout
-                pmTk(ntk).patch=CUByte(instru)
+                pmTk(ntk).patch=CUByte(instru)               
  ' los canales van de 0 a 15 (1 a 16) no se si en todos los dispositivos
  ' van de 0 a 15 o en alguno de 1 a 16 opto por 0 a 15                
              ''  If pmTk(ntk).canalsalida > 0 Then
             '      ChangeProgram ( CUByte (instru) , pmTk(ntk).canalsalida,portsal) ' habilito de neuvo 13-02-2022 ï¿½
              ''  EndIf
                If instru=0 Then instru=1 EndIf
-
                 Roll.trk(1,NA).inst= CUByte(instru)
                 Track(ntk).trk(1,1).nnn=CUByte(instru)
               ' grabar la pistacomo en 1011
-            print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
-            Dim As String nombreg
-              If CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE Then
-                 If (NombreCancion > ""  Or TRACKCARGADO =TRUE) And MAxPos > 2 Then
-                   Print #1,"VOY A GrabarRollaTrack(0) DESDE CTRL1040"
+                print #1, "CTRL1040 Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
+                
+                If (CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE) And ROLLCARGADO=FALSE Then
+                   NADACARGADO=FALSE  
+                   If NombreCancion > ""  And MAxPos > 2 Then
                     GrabarRollaTrack(0)
-                   Sleep 100 
-                 EndIf
-              Else
-                If MaxPos > 2  And ROLLCARGADO  Then
-                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undo¿?
-                 Sleep 100
+                   EndIf
+                Else
+                  If MaxPos > 2  And ROLLCARGADO=TRUE  Then
+                    LLAMA_GRABAR_ROLL()
+               /'      Print #1," nombre,  ANTES DE LLAMAR GRABARROLL " ;nombre
+                     Dim  As Integer errorgrabr=3,intentos=0,length=0
+' MODELITO DE MANEJO DE ERROR ESTUPIDO DE  ARCHIVO PELOTUDO JAJAJ 
+'en general requiere dos intentos para grabar, sino deja el archivo vacio un plomo de mierda
+' el errorgrabar no sirve de nada porque puede venir en 0 pero el archivo vacio
+                     Do      
+                       intentos=intentos +1
+                       If intentos > 5  Or length > 0 Then ' 5 INTENTOS MAXIMO
+                         Exit Do
+                       Else
+                         errorgrabr= GrabarRoll ()
+                      length = FileLen(nombre)
+                     Print #1,"tamaño archivo ",length
+ 
+                       EndIf  
+  
+ 
+ 
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
-                EndIf  
-              EndIf  
-
-
+                     Loop 
+                     Print #1,"NUMERO DE INTENTOS AL GRABAR ROLL "; intentos -1
+                     Print #1,"error final "; errorgrabr
+                     Print #1,"tamaño archivo ",length
+                  
+             
+' FIN MODELITO DE MANEJO DE ERROR ESTUPIDO DE ARCHIVO PELOTUDO 
+'/
+                 EndIf 
+             EndIf  
               MenuNew=MENU_INICIAL           
               carga=1
 
         '     SetForegroundWindow(hwnd)    
 '-----------------------------------------------------------------------
            Case 1050 ' <=========== seleccion de instrumento por orden Numerico
-
+           ' NO FUNCIONA
               ''  CTRL1050
                selInstORdenNum (instru)
                If CANCIONCARGADA =TRUE Then
@@ -418,13 +442,11 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
                  If NombreCancion > ""  And MAxPos >2 Then
-                    GrabarRollaTrack(0)
+                    GrabarRollaTrack(0) ' ???? cancelara???
                  EndIf
               Else
                 If MaxPos > 2  And ROLLCARGADO  Then
-                  'aca graba el roll con Roll.trk(1,NA).inst
-                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undoï¿½?
-                 ' no el undo dolo se debe borrar al ahcer nuevo creo
+                   LLAMA_GRABAR_ROLL()
                 EndIf  
               EndIf  
 
@@ -697,8 +719,10 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
               alteracion="sos" ' grabado en grabaLim(1,1).pan  = CUByte(3)
               SetStateMenu(hmessages,1108,3)  
               SetStateMenu(hmessages,1109,0)
-            ' si hay nombre de archivo grabar sino no   
-      ''        GrabarArchivo()
+            ' si hay nombre de archivo grabar sino no
+                 
+              '''GrabarRoll()
+              LLAMA_GRABAR_ROLL()
        '       Print #1,"armarescla desde 1108"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)

@@ -898,20 +898,20 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
 '              instrum=CInt(pmTk(num).patch)  'TOMA LO QUE EXISTE EN EL A RCHIVO
 ' toma la 1era de arrib  abajo el resto las ignora si hay mas chequeadas
 ' y si instrum es > 0 es un cambio
-             
-            instrum=CInt(Track(k).trk(1,1).nnn) 
-    Print #1,"k, instrumento en check ";k,instrum
-            ntk=k 
-              
-        ' EndIf
+            If  ROLLCARGADO  Then
+            Else 
+              instrum=CInt(Track(k).trk(1,1).nnn) 
+          Print #1,"k, instrumento en check ";k,instrum
+             ntk=k 
+            EndIf
          
         Else
            ntk=0:num=1
         EndIf  
-'         Print #1, "PATCH . num,instrum ", num, instrum
+         Print #1, "PATCH . num,instrum ", num, instrum
          If  num >=1 Then
              selInstORdenAlfa (instrum)
- '             Print #1, "patch instrum seleccionado ", instrum
+              Print #1, "patch instrum seleccionado ", instrum
              If CANCIONCARGADA =TRUE Then
              Else
                ntk=0
@@ -922,7 +922,7 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
             If GrabarPenta=NO And playb=NO And play=NO Then
               Track(ntk).trk(1,1).nnn =CUByte(instrum)
             EndIf
- '           Print #1, "patch portsal almacenado, instru ", portsal, instrum
+            Print #1, "patch portsal almacenado, instru ", portsal, instrum
             Roll.trk(1,NA).inst= CUByte(instrum)
 
             Dim As String nombreg
@@ -930,10 +930,11 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Or NombreCancion > "" Then
                     GrabarRollaTrack(0)
               Else
-                If  ROLLCARGADO  Then
+                If  ROLLCARGADO=TRUE Then
                   'aca graba el roll con Roll.trk(1,NA).inst
-                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undo�?
-                 ' no el undo dolo se debe borrar al ahcer nuevo creo
+                  LLAMA_GRABAR_ROLL()
+                 Sleep 1000,1   
+
                 EndIf  
               EndIf  
               carga=1 ' control de carga, anula calcompas durante la carga ,,etc
@@ -978,8 +979,10 @@ Print #1,"k, canalsalida  ";k, canalx
               Else
                 If  ROLLCARGADO  Then
 '                  'aca graba el roll con Roll.trk(1,NA).inst
-                 GrabarArchivo (0) ' graba roll en edicion, borro todo el undo�?
-'                 ' no el undo dolo se debe borrar al ahcer nuevo creo
+                 nombre=nombreg
+                 LLAMA_GRABAR_ROLL()
+                 Sleep 1000,1 
+                 ' no el undo dolo se debe borrar al ahcer nuevo creo
                 EndIf  
               EndIf  
               carga=1 ' control de carga, anula calcompas durante la carga ,,etc

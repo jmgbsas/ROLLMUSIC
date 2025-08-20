@@ -1884,7 +1884,10 @@ If MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
          nombre=nombreg   
       EndIf
    EndIf
-   GrabarArchivo(0)
+
+   GrabarRoll()
+   
+   Sleep 1000,1 
  Else
    Exit Do 
  EndIf  
@@ -2047,7 +2050,7 @@ Print #fk,
 
  Sleep 150
   Print #fk,"fin >>>>>>>>>>> "
- cerrar fk
+ Close fk
 EndIf
 
 If MultiKey (SC_F9) And lockfont=0 Then
@@ -3000,7 +3003,9 @@ If COMEDIT=ENTRADA_NOTAS  And nota > 0 And agregarNota=0  And carga=0 And nota <
 '--- AUMENTO DE CAPACIDAD DEL VECTOR EN 18000 POSICIONES  3 min 
     If CantTicks - MaxPos < 2000 Then
        print #1,"hace backup....." ' si no hay nombre usa fecha"
-       '''GrabarArchivo(1) ''hacer un backup !!! 
+       
+       GrabarRoll() ''hacer un backup !!!
+       Sleep 1000,1  
       CantTicks=CantTicks + 18000 ' incremento el tamaño en 18000 posiciones =3 min
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
       ReDim Preserve compas(1 To CantTicks)
@@ -6313,7 +6318,7 @@ EndIf
     Exit Do
  EndIf 
 
- If copiarZona=0 And MouseButtons  And 1 And MultiKey(SC_C)   Then  'mover Zona 
+ If copiarZona=0 And MouseButtons  And 1 And MultiKey(SC_C)   Then  'copiar  Zona 
 ' usamos la seleccion de Zona y luego movemos la zona a una posicion dada
    ' print #1,"entra a copiar "
     nota=0
@@ -6340,7 +6345,9 @@ EndIf
  '   print #1,"NuevaPos,,", nuevaspos
       
     If CantTicks  < nuevaspos  Then
-     '  GrabarArchivo(1) ''hacer un backup !!! 
+       
+       GrabarRoll() ''hacer un backup !!!
+       Sleep 1000,1   
       CantTicks= nuevaspos + 18000 ' incremento el tamaño en 1000 posiciones =1 min
 '      print #1,"incremento final de CantTick ", CantTicks 
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)

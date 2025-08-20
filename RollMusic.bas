@@ -81,7 +81,7 @@ Dim hnro As Integer
 '	  - Using ThreadPooling method            :   0.006873 ms
 '	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="0.332 Aviso de MIDI-OUT INEXISTENTE ajuste a 1 y otros"
+nroversion="0.333 GrabarRoll fix archivo vacio para cambio de PATCH "
 ' HAY UN OFF1 ABAJO , PUEDE MOVER LOS OFF1, SI SEPARA OFF2 DE OFF1 VERICALMETENE MOVIENDO EL OFF1 ENTONCES
 ' PUEDO MOVER EL OFF2 PERO MUEVE AMBOS O SEA HAY UE LIMITAR EL MOVE VERTICALMENTE !!
 ''nroversion=" 0.330 MAS ACORDES FUNCIONALES EN MODO LECTURA"
@@ -492,7 +492,7 @@ Print #1, "3 ubiroll ubirtk ", ubiroll,ubirtk
       ThreadWait threadloop
       threadDetach(threadloop)
              Sleep 20   
-      cerrar(0)  
+      Close 0  
   End If
 '-----------------------------------------------------------------------
       If terminar=TERMINAR_POR_LOOP_PRINCIPAL Then  ' 2

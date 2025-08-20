@@ -52,17 +52,6 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 'End  sub 
 
 '--------
-Sub cerrar (ByVal n As Integer)
-   If n=0 Then
-    print #1,"uso CLOSE ALL"
-    FileFlush (-1)
-    Close 
-   Else 
-    FileFlush (n)
-    Close n
-    print #1,"uso Close N"
-   EndIf 
-End Sub
 '--------
 Sub  porterrorsub(porterror As integer)
           Select Case porterror
@@ -73,52 +62,52 @@ Sub  porterrorsub(porterror As integer)
 
             Case RTMIDI_ERROR_DEBUG_WARNING
               Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
-              cerrar 0             
+              Close 0             
               End
       
             Case RTMIDI_ERROR_UNSPECIFIED
               Print #1,"RTMIDI_ERROR_UNSPECIFIED"
-              cerrar 0
+              Close  0
               End
       
             Case RTMIDI_ERROR_NO_DEVICES_FOUND
               Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
-              cerrar 0
+              Close 0
               End
       
             Case RTMIDI_ERROR_INVALID_DEVICE
               Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
-              cerrar 0
+              Close 0
               End
       
             Case RTMIDI_ERROR_MEMORY_ERROR
               Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
-              cerrar 0
+              Close  0
               End
       
             Case RTMIDI_ERROR_INVALID_PARAMETER
               Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
-              cerrar 0
+              Close 0
               End
       
             Case RTMIDI_ERROR_INVALID_USE
               Print #1,"RTMIDI_ERROR_INVALID_USE"
-              cerrar 0
+              Close  0
               End
       
             Case RTMIDI_ERROR_DRIVER_ERROR
               Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
-              cerrar 0
+              Close 0
               End
       
             Case RTMIDI_ERROR_SYSTEM_ERROR
               Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
-              cerrar 0
+              Close 0
               End
       
             Case RTMIDI_ERROR_THREAD_ERROR
               Print #1,"RTMIDI_ERROR_THREAD_ERROR"
-              cerrar 0
+              Close 0
               End
           End Select
 
@@ -328,7 +317,7 @@ Else
      Print #fa1,pd1 ' GRABA EL PD1 ACTUAL QUE ES LA EJECUCION DEL BATCH
   EndIf 
 EndIf 
-cerrar fa1
+Close fa1
 
 Sleep 100
 
@@ -608,7 +597,8 @@ Line Input #ffini, sVerCifradoAcordes
 
 'Print #1,"sfont, smxold, smyold,sANCHO,sALTO..  ",sfont, smxold, smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
 
-cerrar ffini
+CLOSE ffini
+
 Sleep 100
 
 
