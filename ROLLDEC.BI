@@ -187,6 +187,7 @@ Declare Function SumarnR (notaPiano As Integer) As Integer
 Declare Function SumarnRk (notaPiano As ubyte) As ubyte
 Declare Sub salir()
 Declare Sub IgualaMidiPlano(externo As integer, ByRef CantEventos  As Integer)
+Declare Sub LLAMA_GRABAR_ROLL()
  
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
 Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6,notaGuia=0

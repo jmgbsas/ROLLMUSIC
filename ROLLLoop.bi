@@ -1885,8 +1885,8 @@ If MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
       EndIf
    EndIf
 
-   GrabarRoll()
-   
+   '''GrabarRoll()
+    LLAMA_GRABAR_ROLL()
    Sleep 1000,1 
  Else
    Exit Do 
@@ -3003,8 +3003,8 @@ If COMEDIT=ENTRADA_NOTAS  And nota > 0 And agregarNota=0  And carga=0 And nota <
 '--- AUMENTO DE CAPACIDAD DEL VECTOR EN 18000 POSICIONES  3 min 
     If CantTicks - MaxPos < 2000 Then
        print #1,"hace backup....." ' si no hay nombre usa fecha"
-       
-       GrabarRoll() ''hacer un backup !!!
+       LLAMA_GRABAR_ROLL()
+       ''GrabarRoll() ''hacer un backup !!!
        Sleep 1000,1  
       CantTicks=CantTicks + 18000 ' incremento el tamaño en 18000 posiciones =3 min
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
@@ -6345,8 +6345,8 @@ EndIf
  '   print #1,"NuevaPos,,", nuevaspos
       
     If CantTicks  < nuevaspos  Then
-       
-       GrabarRoll() ''hacer un backup !!!
+       LLAMA_GRABAR_ROLL()
+       '''GrabarRoll() ''hacer un backup !!!
        Sleep 1000,1   
       CantTicks= nuevaspos + 18000 ' incremento el tamaño en 1000 posiciones =1 min
 '      print #1,"incremento final de CantTick ", CantTicks 

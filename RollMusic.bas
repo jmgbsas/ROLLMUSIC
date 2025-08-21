@@ -10,45 +10,6 @@
 #include "ROllLoop.bi"
 '==========================
 
-''https://www.freebasic.net/forum/viewtopic.php?f=3&t=22821&p=204270&hilit=loop+through+an+array+with+the+pointer#p204270
-
-'Dim As Integer  tilde1102=MF_UNCHECKED,tilde1103=MF_UNCHECKED  
-'Dim As Integer anchoK, altoK
-'anchoK = GetSystemMetrics(SM_CXSCREEN)
-'altoK = GetSystemMetrics(SM_CYSCREEN)
-'-------------
-/'
-Dim As Integer g1, h1,h2
-Dim As  byte Ptr p5,p6
-
-Dim hnro As Integer
-' prueba desarrolllo escalas 
- For g1 =1 To 47
-    Print #1, escala(g1).nombre
-    hnro=escala(g1).nropasos 
-    p5= escala(g1).pasos 
-    For h1 = 1 To hnro -1
-     
-     Print #1, *p5;",";  ' impresion de intervalos de la escala
-     p5=p5+1 
-    Next h1
-    Print #1, *p5
-' CONSTRUCCION DE LA ESCALA
- Dim As Integer k3=1
-   p6= escala(g1).pasos
-    For h2 = 1 To hnro -1
-     
-     'Print #1,NotasEscala(k3);" " ;  ' impresion de la escala con las notas c c# d  etc
-     Print #1, 12-k3+1;" ";
-     k3= *p6 + k3
-     
-     p6=p6+1 
-    Next h2
-    Print #1, 12-k3+1 
-    'Print #1, NotasEscala(k3)
-
- Next g1
- '/
  ' ahora debo traducir las notas a notas de Roll e incorporarlas al vector
  ' las notas  en Roll van de 0 a 11 para el indice son los semitonos, pero se cargan 
  ' los valores 1 a 12. En Roll C=12 ...B=1 ergo si la escala dice 12=B debe ser 1
@@ -69,38 +30,10 @@ Dim hnro As Integer
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
-' FUTURO PARA MEJOR PERFORMANCE TRATAR DE USAR THREADPOOLING TP SEGUN LINK
-' https://www.freebasic.net/wiki/ProPgEmulateTlsTp
-'Mean time wasted when running a user task :
-'   either by procedure calling method,
-'   or by various threading methods.
-
-'	  - Using procedure calling method        :   0.000033 ms
-'	  - Using elementary threading method     :   0.146337 ms
-'	  - Using ThreadInitThenMultiStart method :   0.007382 ms
-'	  - Using ThreadPooling method            :   0.006873 ms
-'	  - Using ThreadDispatching method        :   0.007066 ms
 ' --------------------------------------------
-nroversion="0.333 GrabarRoll fix archivo vacio para cambio de PATCH "
-' HAY UN OFF1 ABAJO , PUEDE MOVER LOS OFF1, SI SEPARA OFF2 DE OFF1 VERICALMETENE MOVIENDO EL OFF1 ENTONCES
-' PUEDO MOVER EL OFF2 PERO MUEVE AMBOS O SEA HAY UE LIMITAR EL MOVE VERTICALMENTE !!
-''nroversion=" 0.330 MAS ACORDES FUNCIONALES EN MODO LECTURA"
-' Funciona Triadas cuya nota elegida es Tonica, 3era, 4ta, 5ta,6ta, 7ma y 9na ", para menores
-' y traiadas o de 4 notas solo funciona la Tonica.,
-' 0.324 se corrigio los click sobre EDIT para pasar de edicion a lectura habia dejado de andar
-' anda bienm 0.324 ...ahora estamos corrigiendo pipipipi insertar en Ctrl-M
-' la idea es que si ponemos una nota de duracion DUR todo se mueva en esa DUR no en
-' una sola posicion antes habia una posicion por nota y se insertaba una sola posicion
-' ahora se insertan tantas posiciones como tenga la duracion ej una L son 48 posiciones 
-' hay que sumarle DurXTick(DUR) -1 de alguna forma seguir!!!! 
-' llegue hasta 2.5.4 de ayuda.txt, lo anterior se verifico el borrado de notas y columnas
-' borrado de zona ok 
-' se corrigio ctrl-m y ctrl-n y con colores distintos rojo y azul, verde ingreso notas normal
-' 322 correcion dragado de ventana Roll desde cinta, saltaba. Se bajaron los sleep a 5
-'-------------------------------------
-' 322 listo: modificar e insertar  notas en ctrl-m y ctrl-n verificado y anotado en ayuda.txt.
-' al modificar puedo borrar con la duracion 9 que inserta blancos.
-' 322 implemetar ctrl-m 1, ctrl-N 2 y ctrl-O 3 
+nroversion="0.334 fix cambiar y Grabar Roll con botones canal y Portsal de pistas de Cancion o Roll sin cancion"
+' 0.334 requiere mas pruebas con cancion cargada la prueba que se hizo fue solo con un roll cargado
+' sin cancion,,
 ' cursorVert = 0 +  cursorHori = 0 + COMEDIT=FALSE  LECTURA
 ' cursorVert = 0 +  cursorHori = 0 + COMEDIT=TRUE   ENTRADA DE NOTA MANUAL SIEMPRE AL FINAL DE LA SECUENCIA
 ' cursorVert = 1 +  cursorHori = 1 + COMEDIT=TRUE   CTRL-M MODIFICACION INSERCION CON X AL FINAL

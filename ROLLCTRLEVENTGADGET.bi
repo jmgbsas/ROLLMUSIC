@@ -858,20 +858,9 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
        '     PISTASROLLSELECCIONADA=0
             pis=GetItemListBox(PISTASROLLSELECCIONADA) +1 ' DEVUELVE A PARTIR DE CERO
             ntk=pis
-            If pis=0 Then
-              num=0 
-              Exit Select
-            Else
-              ntk=pis
-              num=1   
-            EndIf
-
-
 ' miport=1 estamos seleccionadno port de salida , de entrada es 2 midi in
-            If  num=1 Then  ' se chequeop una pista no importa cual
-             threadsel = ThreadCreate(@selport(), CPtr(Any Ptr, miport))
-            EndIf
-      '  EndIf    
+         '   If  num > 0 Then  ' se chequeop una pista no importa cual
+            threadsel = ThreadCreate(@selport(), CPtr(Any Ptr, miport))
      EndIf 
 '-------------------
 '////////////////// BOTON PATCH ROLL O CANCION O MANUAL /////////////////////////////
@@ -954,7 +943,7 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
             k=GetItemListBox(PISTASROLL) +1 ' DEVUELVE A PARTIR DE CERO
   
             If K=0 Then 
-              Exit Select
+              ntk=0
             EndIf
       '   EndIf    
             num=k
@@ -965,13 +954,14 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
 Print #1,"k, canalsalida  ";k, canalx
            ntk=k 
 '         Print #1, "PATCH . num,instrum ", num, instrum
-         If  num >=1 Then
+
              selcanal (1) 'canal salida mitipo=!
  '             Print #1, "patch instrum seleccionado ", instrum
              If CANCIONCARGADA =TRUE Then
               Else
                ntk=0
              EndIf
+            pmTk(ntk).canalsalida=canalx
             Dim As String nombreg
             If MaxPos > 2 Then 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Or NombreCancion > "" Then
@@ -979,7 +969,6 @@ Print #1,"k, canalsalida  ";k, canalx
               Else
                 If  ROLLCARGADO  Then
 '                  'aca graba el roll con Roll.trk(1,NA).inst
-                 nombre=nombreg
                  LLAMA_GRABAR_ROLL()
                  Sleep 1000,1 
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
@@ -987,7 +976,7 @@ Print #1,"k, canalsalida  ";k, canalx
               EndIf  
               carga=1 ' control de carga, anula calcompas durante la carga ,,etc
             EndIf
-         EndIf
+
 
 
       EndIf

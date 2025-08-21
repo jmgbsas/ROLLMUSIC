@@ -3716,7 +3716,8 @@ EndIf
           cairo_set_source_rgba c, 0, 1, 0, 1
            Sleep 1000,1           
        Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
-           GrabarRoll ()
+           ''''GrabarRoll ()
+           LLAMA_GRABAR_ROLL()
            cairo_set_source_rgba c, 0, 1, 0, 1 
            Sleep 1000,1 
        EndIf
@@ -3746,7 +3747,8 @@ Sleep 100
          nombre=nombreg   
        EndIf
         
-       GrabarRoll()
+       ''GrabarRoll()
+       LLAMA_GRABAR_ROLL()
        Sleep 1000,1   
           lockip=2 ' habilita mouse 28-08-2021
        MenuNew=MENU_INICIAL
@@ -5575,7 +5577,7 @@ Print #1, "selport 3 ntk "; ntk
      If mitipo = 1 Then ' out
        AddListViewColumn(1, "Salidas  MIDI",0,0,250)
        For aa As Integer=0 To UBound (listout) 
-          If pmTk(ntk).portout = aa Then
+          If pmTk(ntk).portout = aa  Then
              AddListViewItem(1, "[x] "+listout(aa),0,aa,0)
           Else
              AddListViewItem(1, "[ ] "+listout(aa),0,aa,0)
@@ -5588,7 +5590,7 @@ Print #1, "selport 3 ntk "; ntk
       
        AddListViewColumn(1, "Entradas MIDI",0,0,250)
        For aa As Integer=0 To UBound (listin) 
-          If pmTk(ntk).portin = aa Then
+          If pmTk(ntk).portin = aa  Then
              AddListViewItem(1, "[x] "+listin(aa),0,aa,0)
           Else
              AddListViewItem(1, "[ ] "+listin(aa),0,aa,0)
@@ -5668,8 +5670,8 @@ Print #1, "selport 4 "
                  EndIf
               Else
                 If MaxPos > 1  And ROLLCARGADO  Then
-                 
-                 GrabarRoll () ' graba roll en edicion, borro todo el undo??
+                 LLAMA_GRABAR_ROLL()
+                 '''GrabarRoll () ' graba roll en edicion, borro todo el undo??
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
                  Sleep 1000,1 
                 EndIf  
@@ -5920,7 +5922,8 @@ Print #1, "SELCANAL canalx "; canalx
                      GrabarRollaTrack(0)
                Else
                   If ROLLCARGADO=TRUE  Then
-                     GrabarRoll () ' graba roll en edicion, borro todo el undo�?
+                    LLAMA_GRABAR_ROLL()
+                   ''  GrabarRoll () ' graba roll en edicion, borro todo el undo�?
                   ' no el undo dolo se debe borrar al ahcer nuevo creo
                    Sleep 1000,1 
                   EndIf  
