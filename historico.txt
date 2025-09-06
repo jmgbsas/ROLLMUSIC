@@ -1,3 +1,7 @@
+- 06-09-2025 Mover zona se perfecciono mueve los off de los on dentro de la  zona y no mueve
+  los off cuyos on estan fuera de la zona elegida. Se repuso Guardar como.Para volver al menu principal
+  en Roll grafico basta pasar el mouse por encima de la cinta de arriba del menu en su parte derecha
+  sin necesidad de dar click cosa que la hacia muy lenta, 0.335
 - 20-08-2025 GrabarRoll dejaba el archivo vacio al usarlo fuera del entorno Grafico de Roll
   fix para PATCH tanto en menu principal como en boton PATH de lista de tracks, usaos esa lista
   en bañncopara cambiar patch tambien de un Roll unico en ntk=0

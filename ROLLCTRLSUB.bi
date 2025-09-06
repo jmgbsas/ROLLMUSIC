@@ -431,7 +431,7 @@ If ejecutar=CANCION Then
 End If
 
 Close #ini
-
+FileFlush (ini)
 End Sub 
 
 '--------------------------

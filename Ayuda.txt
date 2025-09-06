@@ -144,7 +144,7 @@
         windows, pero en esta implementacion no se puede redimensionar la ventana CON EL PROGRAMA EJECUTANDO.
         No usar marco: la ventana se puede mover desde la cinta superior.
         Tiene la ventaja que se puede redimensionar la ventana en forma vertical con -/+ en la esquina
-        superior derecha y con reize <> en la esquina superior izquierda. Cuando se usa marco no redimensiona 
+        superior derecha y con resize <> en la esquina superior izquierda. Cuando se usa marco no redimensiona 
         la ventana pero sí  achica o agranda el interlineado. Al no usar marco ademas de cambiar el interlineado 
         haciendo mas juntas las lineas levanta el borde superior con - y lo baja con +. 
         Pulsando <> en la esquina superior izquierda  y dragando con el mouse desde el costado izquierdo de la 
@@ -819,7 +819,8 @@
        Mover una zona: igual que antes se selecciona las 2  posiciones de la zona a mover
        o puede ser que las 2 posiciones coincidan (movimiento de columna). Luego
        pulsar M + Click en la posicion donde se requiera mover, puede estar antes de la zona o despues
-       antes del final de la secuencia o despues del final de la secuencia.
+       antes del final de la secuencia o despues del final de la secuencia. (ya funciona para Ticks
+       el mover mas halla del finde secuenica)
        Nota si movemos una zona en blanco agregara una zona en blanco donde se requiera o borrara
        la zona superponiendo la zona en blanco sobre la region en donde se mueve,
 
@@ -1007,7 +1008,8 @@
     2.1) MODO EDIT insercion NOTAS NUEVAS POR TECLADO (click en menu [EDICION] luego otror click en EDIT y cambiara
          a color verde. La octava seleccionada con un click izquierdo tambien)  Para salir de EDIT pulsar de nuevo EDIT 
          volvera a blanco la letra EDIT, si se da click de nuevo en EDIT no volvera a edicion verde. Para volver al menu 
-         inicial dar click al final de la cinta superior del menu o ALT-M, y comenzará el ciclo de nuevo.
+         inicial posarse el mouse al final de la cinta superior del menu o ALT-M,no hace falta dar click, y comenzará 
+         el ciclo de nuevo.
 
 
     2.1.1) Entrada por teclado de PC.

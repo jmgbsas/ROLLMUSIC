@@ -31,7 +31,10 @@
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.334 fix cambiar y Grabar Roll con botones canal y Portsal de pistas de Cancion o Roll sin cancion"
+nroversion="0.335 mover zona de notas, Guardar Como "
+' NOTAS ON APILADAS AL FINAL PARA MOVER ZONA ok fix
+' VOLVER AL MENU PRINCIPAL CON SOLO POSAR EL MENU  AL FINAL DE LA CINTA AZUL DE ARRIBA
+' GRABAR COMO  REPOSICION ok fix
 ' 0.334 requiere mas pruebas con cancion cargada la prueba que se hizo fue solo con un roll cargado
 ' sin cancion,,
 ' cursorVert = 0 +  cursorHori = 0 + COMEDIT=FALSE  LECTURA

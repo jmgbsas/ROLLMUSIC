@@ -1805,13 +1805,17 @@ fileflush(-1)
 
 ReDim (Track(00).trk ) (1 To CantEventos, 1 To lim3)
 
-Open "CARGAPLANO.TXT" For Output As 31
+If Open ( "CARGAPLANO.TXT" For Output As 31) <> 0 Then
+   Print #1,"ERROR ABRIR CARGAPLANO.TXT "
+   Exit Sub
+EndIf 
 Print #31,"en cargar midi plano "
 
 
 If  Open( "igualado.txt" For Input As 30 ) <> 0 Then
 'If Open( "secuencia-F-SF+SF-F-PLAY.txt" For Input As 30 ) <> 0 then
-  Print  #31,"error archivo igualado  midi" 
+  Print  #31,"error archivo igualado  midi"
+  Exit Sub 
 Else
 Print #31, "seguimos procesando  midi plano "
 
@@ -2122,7 +2126,8 @@ EndIf
 
 '--------------------------------------------------
  Print #31, "============> FIN PLANO MIDI <========================
-
+FileFlush (30)
+FileFlush (31)
 Close 30
 Close 31
 Sleep 20
@@ -2376,9 +2381,10 @@ AMIL=35
 ' finSimple        4
 Dim As Integer hayacorde=0
 
-Open "DEBUG_IGUALADO.TXT" For Output As dbgIgualado
-''Print dbgIgualado,"en cargar midi plano PARA IGUALAR"
-
+If Open ("DEBUG_IGUALADO.TXT" For Output As dbgIgualado) <> 0 Then
+   Print dbgIgualado,"ERR en GUARDAE DEBUG_IGUALADO.TXT "
+   Exit Sub
+EndIf
 Dim As String archivomidi, L1,L2,L3, DELTA, LR  
 archivomidi = OpenFileRequester("","","secuencias  (*.txt)"+Chr(0) +"*.txt"+Chr(0) )
 Sleep 100
@@ -2390,9 +2396,14 @@ Sleep 100
 ' si para 192 es 1000, para incremento x es x*1000/192
 Dim As Integer tNegra, ubicacion,STOPCONTINUE
 If externo = 1 Then 
- Open "AMIL.TXT" For Output As 35 
+ If Open ("AMIL.TXT" For Output As 35) <> 0 Then
+     Print #1,"ERROR ABRIR PARA SALIDA DE AMIL.TXT "
+     Exit Sub 
+ EndIf 
+
  If  Open( archivomidi For Input As 32 ) <> 0 Then
-   Print #dbgIgualado,"error archivo de entrada midi" 
+   Print #dbgIgualado,"error archivo de entrada midi"
+   Exit Sub  
  Else
      Do While Not Eof(32)
           
@@ -2439,7 +2450,10 @@ End If
 
 '------------------------------------------------------
  
- Open "igualado.txt" For Output As igualado
+ If Open ("igualado.txt" For Output As igualado) <> 0 Then
+     Print #1,"err salida en igualado.txt"
+     Exit Sub
+ EndIf
 ' mandamos todo a vector luego volcaremos a igualado.txt
 
   
@@ -2452,7 +2466,8 @@ If externo=1 Then
   archivomidi="AMIL.TXT"
 EndIf
 If  Open( archivomidi For Input As 32 ) <> 0 Then
-  Print #dbgIgualado,"error archivo de entrada midi" 
+  Print #dbgIgualado,"error archivo de entrada midi"
+  Exit Sub 
 Else
 ''  Open     "secuencia-F-SF+SF-F-PLAY.txt" For Input As 32
   'Print dbgIgualado, "seguimos procesando  midi plano "
@@ -2769,7 +2784,8 @@ ntk=0 ' Cargar en 3 vectores Roll pmTk(0) y Track(0).
 ' ira aumentando ntk, es otra rutina no esta..aca se carga a 
 ' pmTk(0) y a Track(0)
 '  carga roll
-' al cargar borro todo el undo    
+' al cargar borro todo el undo 
+ResetVariables=TRUE   
 abrirRoll=CARGAR_MAS_PISTAS_O_CANCION ' habilita la carga de una cancion
    mel_undo_k=0 :ig=0:cnt_acor=0
    Erase mel_undo, undo_acorde,undo_kant_intervalos
@@ -3078,7 +3094,7 @@ Dim As Integer copiado=0
 
 
 If Close (6) <> 0 Then
-  Print #1, "NO SE CERROR EL ARCHIVO CARGADO "; nombre
+  Print #1, "NO SE CERRO EL ARCHIVO CARGADO "; nombre
 Else
   Print #1, "Bien CERRADO EL ARCHIVO CARGADO "; nombre
 EndIf
@@ -3682,7 +3698,7 @@ EndIf
    
   '===> 3.3[GRABAR] 
 ' graba el roll a roll y el track a track..
-   If (MultiKey(sc_Control) And mousex > 470 And mousex < 573  And mousey < 50) And carga=0 Then ' <=
+   If (MultiKey(sc_Control) And mousex > 450 And mousex < 530  And mousey < 50) And carga=0 Then ' <=
     cairo_set_source_rgba c, 1, 0.5, 0, 1
      If MouseButtons And 1    Then
       cairo_set_source_rgba c,1,0,0,1
@@ -3732,38 +3748,10 @@ EndIf
    EndIf
    t = "[GRABAR]": cairo_show_text(c,t) :t= ""
 
-  '===> 3.3[GRABAR COMO] SC_F11 COPIA 
-   If MultiKey(sc_Control) And mousex > 608 And mousex < 743  And mousey < 50  And carga=0 Then ' <=
-    cairo_set_source_rgba c, 0, 1, 0, 1
-     If MouseButtons And 1 Then
-     '       print #1, "Grabando a disco Roll GRABAR "
-       '''''no usar dialogoText("Grabar Archivo")
-       Dim As String nombreg
-nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0)+"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
-Sleep 100
-       If nombreg = "" Then
-          Exit Sub
-       Else
-         nombre=nombreg   
-       EndIf
-        
-       ''GrabarRoll()
-       LLAMA_GRABAR_ROLL()
-       Sleep 1000,1   
-          lockip=2 ' habilita mouse 28-08-2021
-       MenuNew=MENU_INICIAL
-       carga=1   
-    EndIf
-   Else
-    carga=0
-    cairo_set_source_rgba c,1,1,1,1
-   EndIf
-   't = " [A OTRO ROLL]" : cairo_show_text(c,t) :t= ""
-
 '-----------------------------
   '===> 3.3.1 [ROLL=>RTK] SC_F11 COPIA 
  ' CONVIERTE DESDE UN ROLL CARGADO O DE DISCO DEBE ESTAR NOMBRE <> "" 
-   If MultiKey(sc_Control) And mousex > 729 And mousex < 880  And mousey < 50  And carga=0 Then ' <=
+   If MultiKey(sc_Control) And mousex > 570 And mousex < 700  And mousey < 50  And carga=0 Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
     Print #1,"ENTRO A ROLL A TRACK"
      If MouseButtons And 1 Then
@@ -3806,6 +3794,34 @@ Sleep 100
 
    t = " [ROLL=>TRK(0)]" : cairo_show_text(c,t) :t= ""
 
+  '===> 3.3[GRABAR COMO] SC_F11 COPIA 
+   If MultiKey(sc_Control) And mousex > 720 And mousex < 850  And mousey < 50  And carga=0 Then ' <=
+    cairo_set_source_rgba c, 0, 1, 0, 1
+     If MouseButtons And 1 Then
+     '       print #1, "Grabando a disco Roll GRABAR "
+       '''''no usar dialogoText("Grabar Archivo")
+       Dim As String nombreg
+nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0)+"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
+Sleep 100
+       If nombreg = "" Then
+          Exit Sub
+       Else
+         nombre=nombreg   
+       EndIf
+        
+       ''GrabarRoll()
+       LLAMA_GRABAR_ROLL()
+       Sleep 1000,1   
+          lockip=2 ' habilita mouse 28-08-2021
+       MenuNew=MENU_INICIAL
+       carga=1   
+    EndIf
+   Else
+    carga=0
+    cairo_set_source_rgba c,1,1,1,1
+   EndIf
+   t = " [A OTRO ROLL]" : cairo_show_text(c,t) :t= ""
+
 
  '  If mousex > 941 And mousey < 50 Then
  '   If MouseButtons And 1 Then
@@ -3813,10 +3829,10 @@ Sleep 100
  '   EndIf
  '  EndIf
    '' VUELVE menu grafico Rollmusic cinta AL INICIO....
-  If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
-     If MouseButtons And 1 Then
+  If mousex > 900 And mousey < 50 And mousex < ANCHO-50 Then
+    '' If MouseButtons And 1 Then
       MenuNew=MENU_INICIAL
-     EndIf
+   ''  EndIf
   EndIf
   
 
@@ -4979,10 +4995,12 @@ Dim  As Integer npl, length
     
         Print #1,"No se puede escribir error "; nombre, GrabarRoll  
         Close ga
-        Sleep 1000,1 
+        Sleep 1000,1
+        Exit Function
     Else
    Print #1,"Se puede escribir en "; nombre
   ''''  Open "test-AAAAA.TXT" For Output    As #2
+FileFlush (ga)
      Dim Trabajo (1 To Maxpos, NB To NA) As dat
      Dim grabaPos   As dat
      Dim grabaLim   As dat 
@@ -5157,6 +5175,7 @@ mit.st = tiempoPatron
      ' -------------------------------------
      '  print #1,"MaxPos grabada en Trabajo ",MaxPos
 Print #1,"grabando las partes del archivo "; nombre
+FileFlush (7)
 ''' graba4   ' aca esta tiempoPatron
      Put #ga, ,grabaPos
      Put #ga, ,grabaLim
@@ -5173,7 +5192,7 @@ Print #1,"grabando las partes del archivo "; nombre
      
      Close ga
     End If  ' del open ga archivo
-
+FileFlush (7)
      While InKey <> "": Wend
      Sleep 1000,1
      
@@ -5480,7 +5499,7 @@ mit.ST = tiempoPatron
 graba4.pan= mit.pan
 graba4.pb = mit.pb
 
-     
+     FileFlush (gt)
      Put #gt, ,grabaPos
      Put #gt, ,grabaLim
      Put #gt, ,graba3  
@@ -5494,6 +5513,7 @@ graba4.pb = mit.pb
      
      Put #gt, ,Trabajo() ' ACA DEBERIA QUEDAR EL CAMPO ACORDE !!
      Close gt
+   FileFlush (gt)
      While InKey <> "": Wend
      Sleep 150
 Print #1,"---------------------------------------------------------------------------------"
@@ -6379,6 +6399,8 @@ Dim  As Integer i3
 
     If Open ("./RollMusic.ini" For Output As #ffile) <> 0 Then
        Print #1, "No se puede escribir RollMusic.ini en Salir"
+       Close ffile
+       Exit Sub 
     Else 
          If nmxold = 0 Then
             nmxold=mxold
@@ -6402,16 +6424,19 @@ Dim  As Integer i3
          Print #ffile,nVerEscalasAuxiliares, "nVerEscalasAuxiliares"
          Print #ffile,nanchofig, "nanchofig"
          Print #ffile,nVerCifradoAcordes, "nVerCifradoAcordes"
-         
+        FileFlush (ffile)         
          Close ffile
          Sleep 100
     EndIf
+
  Dim As Integer nroproc, ppp=0
 Dim As String linea
 fa1=2
  
  If Open ("procesos.txt" For Input As #fa1) <> 0 Then
    Print #1,"procesos.txt error al leer  "
+   Close fa1
+   Exit Sub
  Else
        ' carga Todos los pid de las instancias
 
@@ -6428,7 +6453,9 @@ fa1=2
         EndIf
         
       Loop      
+FileFlush (fa1)
     Close fa1
+
  EndIf
 
 

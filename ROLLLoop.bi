@@ -2265,9 +2265,10 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
  Exit Do
 EndIf
 
-If MultiKey (SC_Q) Then ' con Q se deja de repetir espacios tmbien resetea todo ls banderas de notas
+If MultiKey (SC_Q) Or ResetVariables Then ' con Q se deja de repetir espacios tmbien resetea todo ls banderas de notas
 'aca puedo hacer unselect case de lo que quiero resettear
 ''  Select Case Reset 
+If ResetVariables=TRUE Then ResetVariables=FALSE endif
  If fijarEspacio=99 Then
   fijarEspacio=0
  EndIf
@@ -6311,6 +6312,7 @@ EndIf
  If MultiKey(SC_M) And MouseButtons  And 1 And moverZona=0 Then  'mover Zona 
 ' usamos la seleccion de Zona y luego movemos la zona a una posicion dada
     indicePos=(mousex- gap1 )/anchofig + posishow
+    Print #1,"000000>>>> indicePos es posinueva en click+ M ",indicePos 
     moverZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
     If pasozona1 =0 Then pasozona1=1 EndIf
     moverZonaRoll(indicePos,Roll,pasozona1)

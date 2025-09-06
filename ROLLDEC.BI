@@ -899,7 +899,7 @@ Dim Shared As String grado_inicial(1 To 24)
 Declare Sub calcCompas(Roll As inst)
 
 Dim Shared As Integer lim2=12,mel_undo_k=0,lim3=25,cnt_acor=0,ig=0
-Dim Shared As Boolean Vaciodur=FALSE
+Dim Shared As Boolean Vaciodur=FALSE,ResetVariables=FALSE
 Type notas_agregadas Field=1
   As Integer pn ' pianoNota
   As Integer posn

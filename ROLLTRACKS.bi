@@ -974,7 +974,7 @@ Dim mit As aUshort
 mit.ST = tiempoPatron
 graba4.pan= mit.pan
 graba4.pb = mit.pb
- 
+ FileFlush (grt)
      '-----------------------------
      print #1,"etapa final puts"
      Put #grt, ,grabaPos
@@ -990,6 +990,7 @@ graba4.pb = mit.pb
      
      Put #grt, ,TrkTemp()
      cLOSE grt
+FileFlush (grt)
      While InKey <> "": Wend
      Sleep 150
 Print #1,"fin ActualizarRollyGrabarPista"
