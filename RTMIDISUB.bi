@@ -2638,7 +2638,7 @@ Print #1,"-------------------------------------------------------"
         '      TOPE=1
         '   EndIf 
          cntoff=cntoff+1
-         Print #1, "CNTOFF ";  cntoff
+         'Print #1, "CNTOFF ";  cntoff
 
            If moverZona=1 Then ' borro off1 original
              Roll.trk(jpt3,i1).nota = 181
@@ -2770,8 +2770,8 @@ Else ' if posicionnueva < maxpos movemos a derecha
   hastat=Maxpos ' debo copiar al reves desde los datos del final de la secuecnia hasta la posnueva
   desdet=posinueva + cant 'posivieja+1 ' pasozona1 +1
   inc=MaxPosOld
-  Print #1,"hastat ",hastat
-  Print #1, "desdet=inc ",desdet
+  'Print #1,"hastat ",hastat
+  'Print #1, "desdet=inc ",desdet
 'Print #1,"UBOUND(ROLL,1)", UBOUND (ROLL.TRK,1)
 'Print #1,"LBOUND(ROLL,1)", LBound (ROLL.TRK,1)
 'Print #1,"UBOUND(ROLL,2)", UBOUND (ROLL.TRK,2)

@@ -1053,7 +1053,7 @@
     derecha izquierda para cambiar de posicion. 
 
     2.3) Modificar en Ctrl-N
-    2.4) Copiar 1 nota.
+    2.4) Copiar 1 nota. ok
     2.5) Borrar 1 Nota, Borrar 1 columna o un rango de columnas:
     2.6) Insertar Notas, abriendo la secuencia, agregando espacio para esa nota.
    ------------------------------------------------------------------------------------------   
@@ -1185,13 +1185,17 @@
          De Ctrl-N (se sale con ctrl-p tambien) )
 
 
-    2.4) Copiar nota en modo Cursor. <--- revisando
-       - En EDIT Cursor [ Edit + Ctrl_M] ó [Edit + Ctrl + clicK derecho + seleccion
-         gráfica de ctrl-M]   
+    2.4) Copiar nota en modo Cursor. (0.336 ya funciona bien en CTRL-N)
+       - En EDIT Cursor [ Edit + Ctrl_N] ó [Edit + Ctrl + clicK derecho + seleccion
+         gráfica de ctrl-N]   
          Movemos el cursor grafico (cuadrado) con teclas izq der hasta posicionarse en
-         la nota a copiar ,se da ENTER eso copia la duracion de la nota, luego 
-         movemos el cursor sobre el sitio donde queremos copiar y pulsamos ENTER de 
-         nuevo. Se puede seguir a otras posiciones, dando ENTER seguirá copiando.
+         la nota a copiar o con click izq de mouse seleccionando una nota,se da ENTER sobre
+         la nota manteniendo presionado hasta ver arriba ONOFF=2 o ver que el cursor se mueve 
+         y detecta el ON, esto copia la duracion de la nota, luego 
+         movemos el cursor sobre el sitio vacio donde queremos copiar con flechas o con click
+         izquierdo de mouse y presionamos CTRL-ENTER hasta que aparesca la copia  
+         nueva. Se puede seguir a otras posiciones, dando CTRL-ENTER seguirá copiando.
+         Para copiar otra nota se debe resetear pulsando Q.
    
 
     2.5) Borrar 1 Nota,       borrar 1 columna o un rango de columnas: 

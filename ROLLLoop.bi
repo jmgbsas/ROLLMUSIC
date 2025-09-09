@@ -147,10 +147,10 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
         if COMEDIT=ENTRADA_NOTAS Then ' edit normal ingreso nots nuevas
            cairo_set_source_rgba(c, 0, 1, 0.5, 1) ' verde brillante
         EndIf
-        if COMEDIT=MODIFICACION_INSERCION Then 'ctrl-m modificacion con X O MOUSE
+        if COMEDIT=SOLO_MODIFICACION Then 'ctrl-m modificacion con X O MOUSE
            cairo_set_source_rgba(c, 1, 0.8, 0.5, 1) 'rojo ?
         EndIf
-        if COMEDIT=SOLO_MODIFICACION Then ' ctrl-n modificacion con nombre nota
+        if COMEDIT=MODIFICACION_INSERCION Then ' ctrl-n modificacion con nombre nota
            cairo_set_source_rgba(c, 0.5, 0.8, 1, 1) 'celeste
         EndIf
      Else 
@@ -319,21 +319,8 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 ' un buen forma de borrar facil y rpido seria usando
 ' ((n - inicioDeLectura)=curpos) y moviendoelcursor derecha izquierda
 ' en ctrl-m borra todo de una!! implementarlo...        
-         If COMEDIT=MODIFICACION_INSERCION  Then  ' ctrl m
+         If COMEDIT=SOLO_MODIFICACION  Or COMEDIT=MODIFICACION_INSERCION Then  ' ctrl m
             If (espacio =semitono +1  ) And ((n - inicioDeLectura)=curpos)  Then 'semitono +1
-               Roll.trk (n,11-semitono + (*po-1) * 13 ).dur = 181
-               Roll.trk (n,11-semitono + (*po-1) * 13 ).nota = 0
-               Roll.trk (n,11-semitono + (*po-1) * 13 ).onoff = 0
-               If fijarEspacio=0 Then
-                  espacio=0
-               EndIf
-            EndIf   
-         EndIf
-' un buen forma de borrar facil y rpido seria usando
-' ((n - inicioDeLectura)=curpos) y moviendoelcursor derecha izquierda
-' en ctrl-m borra todo de una!! implementarlo...        
-         If COMEDIT=MODIFICACION_INSERCION  Then  
-            If (espacio = semitono +1 ) And ((n - inicioDeLectura)=curpos)  Then
                Roll.trk (n,11-semitono + (*po-1) * 13 ).dur = 181
                Roll.trk (n,11-semitono + (*po-1) * 13 ).nota = 0
                Roll.trk (n,11-semitono + (*po-1) * 13 ).onoff = 0
@@ -344,7 +331,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
          EndIf
 
      ' BORRADO LIBRE NO MARCA SOLO BLANCO habilita para usar nota=0  ,,,??? 
-         If COMEDIT=MODIFICACION_INSERCION  And Borrar=1 Then  
+         If (COMEDIT=SOLO_MODIFICACION Or COMEDIT=MODIFICACION_INSERCION)  And Borrar=1 Then  
             If ((n - inicioDeLectura)=curpos)  Then
                Roll.trk (n,11-semitono + (*po) * 13 ).dur = 181
                Roll.trk (n,11-semitono + (*po) * 13 ).nota = 0
@@ -627,7 +614,7 @@ If GrabarPenta =0 Then
   ' CURSOR
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
   ' Or (cursorHori=2 And cursorVert=2 paa hbilitar ctrl-N
-  If COMEDIT=MODIFICACION_INSERCION  Or COMEDIT=SOLO_MODIFICACION   Or play=SI Or playb=SI   Then ' ctrl-m y ctrl-n ch
+  If COMEDIT=SOLO_MODIFICACION  Or COMEDIT=MODIFICACION_INSERCION   Or play=SI Or playb=SI   Then ' ctrl-m y ctrl-n ch
       cursor(c,posishow,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos
 ''      cursor(c,posicion,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos 
       ' se ilumina en posicion 0 
@@ -641,7 +628,7 @@ If GrabarPenta =0 Then
  EndIf
 else
   
-  If COMEDIT=MODIFICACION_INSERCION  Or play=SI Or playb=SI  Then ' solo ctrl-m ?
+  If COMEDIT=SOLO_MODIFICACION Or play=SI Or playb=SI  Then ' solo ctrl-m ?
       cursor(c,posishow,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos 
       '''cursor(c,posicion,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos
   EndIf
@@ -666,7 +653,7 @@ EndIf
  EndIf
  '           ================  MENUES CONTEXTUALES GRAFICOS PARA MOUSE ==================
  If ayudaModif=TRUE  And COMEDIT<>LECTURA Then
-  If  COMEDIT=MODIFICACION_INSERCION  Then 'solo ctrl-m
+  If  COMEDIT=SOLO_MODIFICACION  Then 'solo ctrl-m
    'print #1,".............SUBRUTINA........................................."
    'print #1,"(9) ESTADO MUESTRA MENU COMANDOS"
    'print #1,"ayudaModif=TRUE  And COMEDIT=TRUE And (cursorVert = 1 or  cursorHori = 1 )"
@@ -1083,7 +1070,7 @@ Else
           If s7 = 1 Then   s7=0 EndIf
           If s8 = 1 Then   s8=0 EndIf
           If s9 = 1 Then   s9=0 EndIf
-
+        
           inc_Penta = Int((ALTO -1) /40) - deltaip
 ' ----------------------------------------------------------------------------
           cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nomeafecta
@@ -1251,7 +1238,7 @@ EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar con Insert y I
  If COMEDIT<>LECTURA Then
-    COMEDIT=MODIFICACION_INSERCION
+    COMEDIT=SOLO_MODIFICACION
  EndIf
 
   
@@ -1311,7 +1298,7 @@ EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
  If COMEDIT<>LECTURA Then
-    COMEDIT=SOLO_MODIFICACION
+    COMEDIT=MODIFICACION_INSERCION
  EndIf
 
  nota=0
@@ -2216,7 +2203,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
     espacio = 1
     DUR=0
     nota=notacur ''nsE 10-05-2021 00:06 probar de nuevo 
-    If COMEDIT=SOLO_MODIFICACION Then  ' ctrl-n
+    If COMEDIT=MODIFICACION_INSERCION Then  ' ctrl-n
       agregarNota = 1
     EndIf
 
@@ -2306,6 +2293,9 @@ deltaip=0:incWheel=0:lockip=0:playloop=0:s6=0:s1=0:indicePosOld=0 :indicePosUlti
 '''''' alloff( 1 ) no ahce falta aca para eso esta P
 ' terminar version reducida de la secuencia
  resumen=0 ' quita separacion de notas
+      copiar=0
+      vdur=0:vnota=0
+
  EndIf
 ' ----------------------INGRESO NOTAS-------------------------
 
@@ -2324,7 +2314,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_A)  Then ' A#
  '    if nota<> notaold THEN ' stnd by nola usare
  '       espacio=0
  '    EndIf
- If COMEDIT=SOLO_MODIFICACION Then
+ If COMEDIT=MODIFICACION_INSERCION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2335,7 +2325,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_C)   Then ' C#
  If espacio > 0 Then
   espacio=11
  EndIf
- If COMEDIT=SOLO_MODIFICACION Then
+ If COMEDIT=MODIFICACION_INSERCION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2346,7 +2336,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_D)  Then ' D#
  If espacio > 0 Then
   espacio=9
  EndIf
- If COMEDIT=SOLO_MODIFICACION Then
+ If COMEDIT=MODIFICACION_INSERCION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2357,7 +2347,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_F) Then ' F#
  If espacio > 0 Then
   espacio=6
  EndIf
- If COMEDIT=SOLO_MODIFICACION Then
+ If COMEDIT=MODIFICACION_INSERCION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2368,7 +2358,7 @@ If  MultiKey(SC_CONTROL) And MultiKey(SC_G)  Then ' G#
  If espacio > 0 Then
   espacio=4
  EndIf
- If COMEDIT=SOLO_MODIFICACION Then
+ If COMEDIT=MODIFICACION_INSERCION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2379,7 +2369,7 @@ If MultiKey (SC_A) Then
  If espacio > 0 Then
   espacio=3
  EndIf
- If COMEDIT=SOLO_MODIFICACION Then
+ If COMEDIT=MODIFICACION_INSERCION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2387,7 +2377,7 @@ EndIf
 
 If MultiKey (SC_B) Then
  nota = 1
- If COMEDIT=SOLO_MODIFICACION Then
+ If COMEDIT=MODIFICACION_INSERCION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2398,7 +2388,7 @@ If MultiKey (SC_C) Then
  If espacio > 0  Then
   espacio=12
  EndIf
- If COMEDIT=SOLO_MODIFICACION Then
+ If COMEDIT=MODIFICACION_INSERCION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2409,7 +2399,7 @@ If MultiKey (SC_D) Then
  If espacio > 0 Then
   espacio=10
  EndIf
- If COMEDIT=SOLO_MODIFICACION Then
+ If COMEDIT=MODIFICACION_INSERCION Then
   agregarNota = 1
  EndIf
  Exit Do 
@@ -2420,7 +2410,7 @@ If MultiKey (SC_E) Then
  If espacio > 0 Then
   espacio=8
  EndIf
- If COMEDIT=SOLO_MODIFICACION Then
+ If COMEDIT=MODIFICACION_INSERCION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2431,7 +2421,7 @@ If MultiKey (SC_F) Then
  If espacio >  0 Then
   espacio=7
  EndIf
- If COMEDIT=SOLO_MODIFICACION Then
+ If COMEDIT=MODIFICACION_INSERCION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2442,7 +2432,7 @@ If MultiKey (SC_G) Then
  If espacio >  0 Then
   espacio=5
  EndIf
- If COMEDIT=SOLO_MODIFICACION  Then
+ If COMEDIT=MODIFICACION_INSERCION  Then
   agregarNota=1
  EndIf
  Exit Do
@@ -3837,7 +3827,7 @@ EndIf
    If e.scancode = SC_X Then ' 81 <==== SC_X ...fix
     'corrige nota cambia duracion o agrega nota nueva, acorde melodia
     ' solo debe funcionar con CTRL-M
-    If COMEDIT=MODIFICACION_INSERCION Then ' ver cursorVert2 archivo nuevo con espacios....sirve??
+    If COMEDIT=SOLO_MODIFICACION Then ' ver cursorVert2 archivo nuevo con espacios....sirve??
      cambiadur = 1    ' usando 1 a 8,, para silencios esta delete verificarlo!! 03-05-2025
     EndIf
     Exit Do
@@ -5917,7 +5907,7 @@ ButtonGadget(2,530,30,50,40," OK ")
  ' MENU CONTEXTUAL O MOVER CURSOR A UNA POSICION
  '******************************************************
  If  COMEDIT<>LECTURA  Then
-     If  (COMEDIT=MODIFICACION_INSERCION  Or COMEDIT=SOLO_MODIFICACION) then
+     If  (COMEDIT=SOLO_MODIFICACION  Or COMEDIT=MODIFICACION_INSERCION) then
         If MouseButtons And 1 Then 
             notacur=nsE
             curpos=Int((mousex- gap1 )/anchofig) ' no lo toma 27-07-2025
@@ -5929,7 +5919,7 @@ ButtonGadget(2,530,30,50,40," OK ")
              '''   curpos=curposOld ' '2.3 de ayuda corregido 27-07-2025
              EndIf
           '  Print #1," 0) Primer click izq curpos curposOld "; curpos, curposOld  
-            If RollDur >0 And (COMEDIT=MODIFICACION_INSERCION  Or COMEDIT=SOLO_MODIFICACION) Then
+            If RollDur >0 And (COMEDIT=SOLO_MODIFICACION  Or COMEDIT=MODIFICACION_INSERCION) Then
                DUR=RollDur
             EndIf
             OCTAVAFIJA=octavaEdicion
@@ -6185,9 +6175,9 @@ ButtonGadget(2,530,30,50,40," OK ")
        If mousey >= usamousey +30  And mousey <= usamousey + 44 Then
      If mousex >= usamousex -55 And mousex<= usamousex +102 Then
       ' ESTADO:SELECCION  CTRL-M
-      COMEDIT=MODIFICACION_INSERCION : agregarNota=0:  menuMouse = 0
+      COMEDIT=SOLO_MODIFICACION : agregarNota=0:  menuMouse = 0
       ''  ayudaModif=TRUE jmg elmenu no debe aparecer hasta dar ctrl-click derecho
-     ' Print #1,"6 ctrl-M ->COMEDIT=MODIFICACION_INSERCION : agregarNota=0:  menuMouse = 0 "
+     ' Print #1,"6 ctrl-M ->COMEDIT=SOLO_MODIFICACION : agregarNota=0:  menuMouse = 0 "
      ' Print #1,"6-> ayudaModif=TRUE"
       Exit Do
      EndIf
@@ -6258,10 +6248,13 @@ ButtonGadget(2,530,30,50,40," OK ")
 
    If MultiKey (SC_ENTER) And copiar=0 Then
       copiar=1
+'Print #1,"ENPIEZA   COPIAR 1 ", copiar,Timer
    EndIf 
 
    If MultiKey (SC_ENTER) And copiar=2 Then
+ 'Print #1," SIGUE con COPIAR 2  "; copiar,Timer
       copiar=3
+ 'Print #1,"copiar es 3 ",copiar
    EndIf 
 
  EndIf ' FIN <========COMEDIT<>LECTURA

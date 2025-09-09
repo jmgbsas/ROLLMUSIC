@@ -954,8 +954,8 @@ Dim Shared As Integer octaroll,cierroedit= 0,cierroport=0,COMEDIT
 Dim Shared As BOOLEAN  resize
 Const As Integer LECTURA=1 ' 0 0
 Const As Integer ENTRADA_NOTAS=2 ' 0 0 
-Const As Integer MODIFICACION_INSERCION=3  '1 1 
-Const As Integer SOLO_MODIFICACION=4 ' 0 2
+Const As Integer SOLO_MODIFICACION=3  '1 1 
+Const As Integer MODIFICACION_INSERCION=4 ' 0 2
 Const As Integer MODIFICACION_COLUMNA=5
 
 COMEDIT=LECTURA

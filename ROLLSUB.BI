@@ -901,15 +901,15 @@ For x= x1 To x2  'curpos
      ncur=y
     
 
- Print #1,"ENCONTRAMOS ON 2 EN CURPOS, NOTACUR "; cur1, ncur
+ 'Print #1,"ENCONTRAMOS ON 2 EN CURPOS, NOTACUR "; cur1, ncur
     BuscarNota=0 ' ok
     Exit Function 
     EndIf
  Next y
 Next x
- Print #1,"NO ENCONTRAMOS UNA MIERDA "
+ 'Print #1,"NO ENCONTRAMOS UNA MIERDA "
 
- FileFlush(-1)
+ 'FileFlush(-1)
  BuscarNota=1 ' error
  trasponer=0
 End Function
@@ -949,7 +949,7 @@ Dim  As Integer nroPartesNota,verticalEnOctavaVacia
 '---------------CTRL-N ..................
 'ctrl-n: usaremos el mismo codigo de ctrl-m solo que la nota se entra por nombre la X que es cambiadur=1 se
 ' establece desde el principio no hace falta pulsarla
- If  COMEDIT=SOLO_MODIFICACION  And agregarNota=1  And nota > 0 Then 'ctrl-n ch cambiado hoy
+ If  COMEDIT=MODIFICACION_INSERCION  And agregarNota=1  And nota > 0 Then 'ctrl-n ch cambiado hoy
   If MouseButtons And 1 Then
      curpos= Int((mousex - gap1)/anchofig) '27-07-2025
      nota=nsE
@@ -961,7 +961,7 @@ Dim  As Integer nroPartesNota,verticalEnOctavaVacia
 
  EndIf
 
- If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=SOLO_MODIFICACION Then  ' vertical ctrl-m o Ctrl-N ch
+ If COMEDIT=SOLO_MODIFICACION Or COMEDIT=MODIFICACION_INSERCION Then  ' vertical ctrl-m o Ctrl-N ch
   trasponer=0
     If MouseButtons And 1 Then
       curpos= Int((mousex - gap1)/anchofig) '27-07-2025
@@ -1012,7 +1012,7 @@ Dim  As Integer nroPartesNota,verticalEnOctavaVacia
 '-----------------------
 ' BORRAR CON DELETE: (EN VEZ DE 0)
 '------------------------
- If (COMEDIT=MODIFICACION_INSERCION Or COMEDIT=SOLO_MODIFICACION) And borrar= 1  Then 'ctrl-M selecion  de nota con flechas y posicion
+ If (COMEDIT=SOLO_MODIFICACION Or COMEDIT=MODIFICACION_INSERCION) And borrar= 1  Then 'ctrl-M selecion  de nota con flechas y posicion
 ' HABILITAR NOTA AL PONER EN CERO SE PUEDE USAR EN EDIT COMUN
 ' ch lo habilitamos para control-n tambien
 ' OJO NO BORRA EL ONOFF=1!!! PONERLO
@@ -1071,14 +1071,14 @@ trasponer=0
 ' 03-05-2025 ok aorafalta borrar la nota y cambiadur=0 si cambio de octava con el mouse
 ' pero no la seleccione con el mouse hasta el final 
 
- If cambiadur= 1  Then ''Ctrl-M y pulso X
+ If cambiadur= 1  Then ''Ctrl-M y pulso X O CTRL-N MAS NOTA
      cambiadur=0
      trasponer=0
-   If COMEDIT=MODIFICACION_INSERCION   And octavaEdicion<>estoyEnOctava Then ' PARA ctrl-M SOLO CAMBIA UNA OCTAVA POR VEZ
+   If COMEDIT=SOLO_MODIFICACION   And octavaEdicion<>estoyEnOctava Then ' PARA ctrl-M SOLO CAMBIA UNA OCTAVA POR VEZ
        Exit Sub  'cursorVert = 1 es solo ctrl-m 
    EndIf
-   If  COMEDIT=SOLO_MODIFICACION   And nota = 0 Then ' PARA ctrl-N cambia en todas las octavas libremente
-       Exit Sub  ' se usaria en ctrl-n???
+   If  COMEDIT=MODIFICACION_INSERCION   And nota = 0 Then ' PARA ctrl-N cambia en todas las octavas libremente
+       Exit Sub  ' SALE DE  ctrl-n
    EndIf
 
 Print #1,"CAMBIADUR 1 ENTRA  "
@@ -1088,7 +1088,7 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
      cambiadur=1
      Print #1," ANTES BUCONOTA curpos notacur "; curpos, notacur
 
-     If BuscarNota (cambiadur, curpos ,notacur )=1 And COMEDIT=MODIFICACION_INSERCION  Then
+     If BuscarNota (cambiadur, curpos ,notacur )=1 And COMEDIT=SOLO_MODIFICACION  Then
         cambiadur=0 ' si busconota da error 1 deberia salir sin hacer nada, para ctrl-N no va salir
         Exit Sub ' sale para ctrl-m proque solo modifico notas existentes
      EndIf 
@@ -1443,7 +1443,7 @@ trasponer=0
      EndIf
       notaold=12-notacur +(estoyEnOctava -1) * 13
 '''---- OJO ESTO NO ESTBA -----------      
-      If COMEDIT=SOLO_MODIFICACION Then ' wwwwwwwwwwwwww curcial 
+      If COMEDIT=MODIFICACION_INSERCION Then ' wwwwwwwwwwwwww curcial 
 ' necesario en ctrl-n sino borra la nota, el cursor salta arriba pero no importa 
 ' el cursor lo mueve verticalmente el nombre de la nota 
 'PERO en ctrl-m Hori=1 no borra la nota pero no mantiene la ultima posicion del 
@@ -1574,6 +1574,7 @@ nota=notacur + (*po-1) * 13
 '   Roll.trk(notacur + (*po) * 13, n+curpos).dur <= 181 Then
 ' ===> PROCESO COPIAR
    If COMEDIT=MODIFICACION_INSERCION And vdur=0 And vnota=0 And copiar=1 Then ' ctrl-m
+    'Print #1,"copiar 1 timer ",timer
     If  BuscarNota (1, curpos ,notacur ) = 1 Then
         copiar=0 
         Exit Sub
@@ -1582,22 +1583,29 @@ nota=notacur + (*po-1) * 13
       vnota=notacur 
       vdur =Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur  ' 5.7.3
        copiar=2
+    'Print #1,"copiar 2 timer ",timer
+
    EndIf
 'EndIf
 
 'If Roll.trk(notacur + (*po) * 13, n+curpos).dur  < 1  And _  
 '   Roll.trk(notacur + (*po) * 13, n+curpos).dur   > 180 Then
-If COMEDIT=MODIFICACION_INSERCION And vdur>0 And copiar=3 Then ' ctrl-m
+'Print #1,"==>VEO COMEDIT VDUR COPIA NOTACUR VNOTA "; comedit, vdur, copiar, notacur, vnota
+If COMEDIT=MODIFICACION_INSERCION And vdur>0 And copiar=3 Then ' ctrl-N
+    'Print #1,"copiar 3 timer ",timer
+
    posnOff=n + curpos + DurXTick(vdur) -1   
-   If notacur<> vnota And MultiKey (SC_ENTER) Then 
+''   If notacur<> vnota  And MultiKey(SC_CONTROL) And MultiKey (SC_ENTER) Then 
+   If MultiKey(SC_CONTROL) And MultiKey (SC_ENTER) Then
+'Print #1,"INSERTA COPIA "
       Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur 
       Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = vdur
       Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff = 2
       Roll.trk(posnOff, 12 - notacur + (*po-1) * 13).onoff = 1
       Roll.trk(posnOff, 12 - notacur + (*po-1) * 13).DUR = 183  
-      copiar=0
-      vdur=0:vnota=0
-      ReCalCompas(Roll)
+     ' copiar=0
+     ' vdur=0:vnota=0
+     '' ReCalCompas(Roll)
    EndIf 
 EndIf
 If nro=0 Then ' error al subir mucho mira despues del and el estupido 
@@ -1612,8 +1620,9 @@ EndIf
 ' y n + curpos supera los 39 termina en 67 
 ' si hago curpos=0 funciona pero lso cuadraditos no avanzan
 ' ergo salto esto en play y listo deberi aestar condicionado oara edicion eso es
-If COMEDIT=MODIFICACION_INSERCION  Then ' ctrl-m 17-09-2021 faltaba condicion de modificacion !! 
+If COMEDIT=MODIFICACION_INSERCION  Then ' ctrl-N 17-09-2021 faltaba condicion de modificacion !! 
   If copiar=3 And (Roll.trk(n + curpos, 12 -notacur + (*po-1) * 13).dur = vdur) And notacur = vnota Then
+     'Print #1,"termina copiar 3 lo pone a cero ",copiar,timer
      copiar=0:vdur=0:vnota=0
   EndIf
 EndIf

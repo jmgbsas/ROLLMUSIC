@@ -298,7 +298,7 @@ If NombreCancion > "" Then
 EndIf
 
 Print #1, "instancia, ix  ", instancia, ix 
-''SI DESDE CTRL TRAEMOS UN GRAFICO SOLITO ->' Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins))
+''SI DESDE CTRL TRAEMOS UN GRAFICO MODIFICACION_INSERCION ->' Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins))
 
 'Dim Shared As Integer pd1, fa1 
 

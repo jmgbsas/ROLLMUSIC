@@ -31,7 +31,7 @@
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.335 mover zona de notas, Guardar Como "
+nroversion="0.336 Copiar en CTRL-N funciona mantener apretado el ENTER 2 o 3 segundos, ayuda 2.4) "
 ' NOTAS ON APILADAS AL FINAL PARA MOVER ZONA ok fix
 ' VOLVER AL MENU PRINCIPAL CON SOLO POSAR EL MENU  AL FINAL DE LA CINTA AZUL DE ARRIBA
 ' GRABAR COMO  REPOSICION ok fix
@@ -39,8 +39,8 @@ nroversion="0.335 mover zona de notas, Guardar Como "
 ' sin cancion,,
 ' cursorVert = 0 +  cursorHori = 0 + COMEDIT=FALSE  LECTURA
 ' cursorVert = 0 +  cursorHori = 0 + COMEDIT=TRUE   ENTRADA DE NOTA MANUAL SIEMPRE AL FINAL DE LA SECUENCIA
-' cursorVert = 1 +  cursorHori = 1 + COMEDIT=TRUE   CTRL-M MODIFICACION INSERCION CON X AL FINAL
-' cursorVert = 0 +  cursorHori = 2 + COMEDIT=TRUE   CTRL-N SOLO_MODIFICACION  SIN X CON NOTA CDEFGAB
+' cursorVert = 1 +  cursorHori = 1 + COMEDIT=TRUE   CTRL-M SOLO_MODIFICACION  CON X AL FINAL
+' cursorVert = 0 +  cursorHori = 2 + COMEDIT=TRUE   CTRL-N MODIFICACION_INSERCION SIN X CON NOTA CDEFGAB
 ' FALTA:cursorVert = 3 +  cursorHori = 0 + COMEDIT=TRUE   CTRL-O MODIFICACION DE COLUMNAS O ACORDES 
 
 ' REVEER: si tiene  sentido Borrar nota si ya lo hace modificar y luego insertar

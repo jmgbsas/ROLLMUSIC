@@ -1,3 +1,7 @@
+- 09-09-2025 copiar una nota 2.4 de ayuda. En CTRL-N pues solo ahi se inserta notas nuevas
+  en espacios vacios. Se presiona enter sobre una nota hasta que aparece ONOFF=2 o e vea que
+  el curos se movio, luego en otro sito se presiona CTRL_ENTER hasta que aparesca la copia
+  se puede repetir en otros lugares. Para resetear y copiar otra nota se pulsa Q. 
 - 06-09-2025 Mover zona se perfecciono mueve los off de los on dentro de la  zona y no mueve
   los off cuyos on estan fuera de la zona elegida. Se repuso Guardar como.Para volver al menu principal
   en Roll grafico basta pasar el mouse por encima de la cinta de arriba del menu en su parte derecha
