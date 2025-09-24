@@ -31,7 +31,8 @@
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.336 Copiar en CTRL-N funciona mantener apretado el ENTER 2 o 3 segundos, ayuda 2.4) "
+nroversion="0.337 Copiar un grupo de Notas N veces antes o despues del fin de secuencia (2.4.1) "
+''nroversion="0.336 Copiar en CTRL-N funciona mantener apretado el ENTER 2 o 3 segundos, ayuda 2.4) "
 ' NOTAS ON APILADAS AL FINAL PARA MOVER ZONA ok fix
 ' VOLVER AL MENU PRINCIPAL CON SOLO POSAR EL MENU  AL FINAL DE LA CINTA AZUL DE ARRIBA
 ' GRABAR COMO  REPOSICION ok fix

@@ -2590,7 +2590,8 @@ Else ' FRACCIONAR LA PISTA CARGADA
 print #1,"MUEVO DESDE POSI ";posiVIEJA;" A POSInueva ";posinueva  
   pasoZona1=indicePos+1
   moverzona=1
-  moverZonaRoll(posinueva, Roll,posivieja) '16-11-2021
+  Dim D1 As Integer 
+  moverZonaRoll(posinueva, Roll,posivieja, D1) '16-11-2021
   print #1,"NB, NA", NB,NA
  ' si no anda nsE usar
  ' nsE = 11 -nR   +  (EstoyEnOctava -1 ) * 13 + 1 
@@ -2702,7 +2703,8 @@ Dim As Integer otroPesoDur, otronroPartes, indiceLigadasilencio, indiceNoLigadas
 print #1,"MUEVO DESDE POSI ";posiVIEJA;" A POSInueva ";posinueva  
   pasoZona1=indicePos+1
   moverzona=1
-  moverZonaRoll(posinueva, Roll,posivieja) '16-11-2021
+  Dim D1 As Integer
+  moverZonaRoll(posinueva, Roll,posivieja,D1) '16-11-2021
   print #1,"NB, NA", NB,NA
  ' si no anda nsE usar
  ' nsE = 11 -nR   +  (EstoyEnOctava -1 ) * 13 + 1 
@@ -2790,7 +2792,8 @@ dim As Integer otroPesoDur, otronroPartes, indiceLigadasilencio, indiceNoLigadas
 print #1,"MUEVO DESDE POSI ";posiVIEJA;" A POSInueva ";posinueva  
   pasoZona1=indicePos+1
   moverzona=1
-  moverZonaRoll(posinueva, Roll,posivieja) '16-11-2021
+  Dim D1 As Integer
+  moverZonaRoll(posinueva, Roll,posivieja,D1) '16-11-2021
   print #1,"NB, NA", NB,NA
  ' si no anda nsE usar
  ' nsE = 11 -nR   +  (EstoyEnOctava -1 ) * 13 + 1 
@@ -3002,8 +3005,8 @@ dim As Integer otroPesoDur, otronroPartes, indiceLigadasilencio, indiceNoLigadas
 print #1,"MUEVO DESDE POSI ";posiVIEJA;" A POSInueva ";posinueva  
   pasoZona1=indicePos+1
   moverzona=1
-
-  moverZonaRoll(posinueva, Roll,posivieja) '16-11-2021
+  Dim D1 As Integer
+  moverZonaRoll(posinueva, Roll,posivieja, D1) '16-11-2021
 
   print #1,"NB, NA", NB,NA
  ' si no anda nsE usar

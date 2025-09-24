@@ -6308,7 +6308,8 @@ EndIf
     Print #1,"000000>>>> indicePos es posinueva en click+ M ",indicePos 
     moverZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
     If pasozona1 =0 Then pasozona1=1 EndIf
-    moverZonaRoll(indicePos,Roll,pasozona1)
+    Dim d1 As Integer
+    moverZonaRoll(indicePos,Roll,pasozona1, d1)
    ''' curpos=posishow-1 ' 26-10-2021 jmg
     Exit Do
  EndIf 
@@ -6327,7 +6328,8 @@ EndIf
     copiarZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
     If numero=0 Then
   '  print #1,"entra a copiar numero 0"
-       moverZonaRoll(indicePos,Roll,pasozona1)
+     Dim D1 As Integer
+       moverZonaRoll(indicePos,Roll,pasozona1,D1)
     Else
   '   print #1,"entra por Else numero > 0"
        Dim As short lz=0,delta
@@ -6353,10 +6355,10 @@ EndIf
     EndIf
  'print #1,"va a copiar FOR lz,numero de veces ",numero
 '---
-    
+    Dim D1 As Integer
        For lz = 1 To numero
-          moverZonaRoll(indicePos,Roll,pasozona1)
-          indicePos=indicePos + delta
+          moverZonaRoll(indicePos,Roll,pasozona1, D1)
+          indicePos=indicePos + delta + D1 '''kkkkkk
           
        Next lz 
     EndIf

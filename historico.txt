@@ -1,3 +1,4 @@
+- 24-09-2025 copiar un grupo de notas N veces despues o antes del fin de cecuencia
 - 09-09-2025 copiar una nota 2.4 de ayuda. En CTRL-N pues solo ahi se inserta notas nuevas
   en espacios vacios. Se presiona enter sobre una nota hasta que aparece ONOFF=2 o e vea que
   el curos se movio, luego en otro sito se presiona CTRL_ENTER hasta que aparesca la copia

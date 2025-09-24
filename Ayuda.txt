@@ -1054,6 +1054,7 @@
 
     2.3) Modificar en Ctrl-N
     2.4) Copiar 1 nota. ok
+    2.4.1) Copiar un grupo de Notas antes o despues del final de la secuencia. En modo lectura.
     2.5) Borrar 1 Nota, Borrar 1 columna o un rango de columnas:
     2.6) Insertar Notas, abriendo la secuencia, agregando espacio para esa nota.
    ------------------------------------------------------------------------------------------   
@@ -1196,7 +1197,13 @@
          izquierdo de mouse y presionamos CTRL-ENTER hasta que aparesca la copia  
          nueva. Se puede seguir a otras posiciones, dando CTRL-ENTER seguirá copiando.
          Para copiar otra nota se debe resetear pulsando Q.
-   
+
+    2.4.1) Copiar un grupo de Notas despues o antes final de la secuencia (0.337)
+           En el modo lectura seleccionar la zona a copiar con Ctrl-click en inicio y final de la
+           parte de la secuencia a copiar. Pulsar fin si se desea ubicar el fin de la secuenica
+           si  se desea copiar mas de una vez entrar el numero de copias pulsando los numeros, puede ser 
+           de 2 o mas cifras, luego pulsar C en el teclado e inmediatamente dar click en donde se desea el
+           comienzo de la copia.
 
     2.5) Borrar 1 Nota,       borrar 1 columna o un rango de columnas: 
           Borrar 1 Nota Dejando su espacio  
@@ -1238,7 +1245,7 @@
 
     2.6) Insertar Una Nota: (agrega espacio abriendo la secuencia no es agregar nota en un vacio ya existene eso ya lo
            hace en modificar)
-        - preparacion CLICK IZQUIERDO EN [Edicion] del menu de lgrafico,  verificar que se ponga en verde.
+        - preparacion CLICK IZQUIERDO EN [Edicion] del menu del grafico,  verificar que se ponga en verde.
           y aparesca EDIT. Click sobre EDIT hasta que se ponga en verde.
           Click izquierdo en la octava a usar hasta que se ponga en verde.  Sobre el punto a insertar y hacerlo rapido,
           pulsar Ctrl-M cambiara a marron la octava. Luego, 
