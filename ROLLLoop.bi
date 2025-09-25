@@ -2673,7 +2673,7 @@ If COMEDIT<>LECTURA Then  'TERMINA EN 2628
   ' BORRAR COLUMNA AUTOMATICO LUEGO DE BORRAR NOTAS CON 0 Y X
   ' no anda bien 12-12-2021 se cambia a marcar por zona columna o columnas
   ' lo marcad ocon espacio y x se marca con 190,190
-     borrarColumnasMarcadas()
+     borrarColumnasMarcadas() 'podria reemplazarse por borrarZona
   EndIf
 
  EndIf 
@@ -2845,9 +2845,12 @@ If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
      borrarColumnasMarcadas()
      Exit Do
   EndIf
-
-
- 
+ If multikey(SC_DELETE) Then ''cambia a silencio o nada le suma 16+16 ver eso!!!!!!!
+      If pasozona1 > 0 And pasozona2 > 0 Then
+          borrarZona()
+          Exit Do
+      EndIf
+ EndIf  
 EndIf ''' fin sc_END en lectura
 
  

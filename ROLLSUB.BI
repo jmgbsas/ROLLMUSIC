@@ -6201,7 +6201,12 @@ Exit Sub
 
 End Sub
 '
-Sub borrarColumnasMarcadas()
+Sub borrarColumnasMarcadas() '<============ ES COMPLEJO cambiarlo basandonos en 
+'   borrarZona
+
+' ESTO DEBERIA BORRARLO CREO borrarZona anda bien solo  con pulsar delete 
+' no hace falta ctrl-delete ni marcar nada
+
 ' toda columna en una posicion que tenga solo 190 en su nota y duracion
 ' sera eliminada y todas las demas desplazadas a izquierda,.
 ' es trabajoso hay que pulsar ctrl-9 y dar x en toda la columna 

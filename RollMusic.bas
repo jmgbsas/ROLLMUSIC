@@ -31,8 +31,10 @@
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.337 fix movia mas off1 fuera de la zona "
-'' proximo "0.338 LINEA DE COMANDOS "
+nroversion="0.338 borra zona con nota o acorde o grupo de notas, con delete en modo lectura 2.5.3"
+' 0.339 revisar borrarColumnasMarcadas() en modo modificar y tratar de usar borrarZona que anda mejor
+' DE ESA FORMA SE PODRA BORRAR UNA COLUMNA SOLA ANDA MAL PARA UNA SOLA COLUMNA EN TICK
+''"0.340 LINEA DE COMANDOS "
 ''nroversion="0.336 Copiar en CTRL-N funciona mantener apretado el ENTER 2 o 3 segundos, ayuda 2.4) "
 ' NOTAS ON APILADAS AL FINAL PARA MOVER ZONA ok fix
 ' VOLVER AL MENU PRINCIPAL CON SOLO POSAR EL MENU  AL FINAL DE LA CINTA AZUL DE ARRIBA

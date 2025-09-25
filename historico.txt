@@ -1,3 +1,5 @@
+- 25-09-2025 0.338 . ayuda 2.5.3, En modo lectura Borrar nota o columna . Borrar zona.
+  Marcar zona y luego pulsar delete.
 - 25-09-2025 0.337 FIX movia ademas del off1 de un ON en zona , a todo otro off1 que halla hasta el final
 - 24-09-2025 copiar un grupo de notas N veces despues o antes del fin de cecuencia
 - 09-09-2025 copiar una nota 2.4 de ayuda. En CTRL-N pues solo ahi se inserta notas nuevas

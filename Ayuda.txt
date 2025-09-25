@@ -1056,7 +1056,7 @@
     2.4) Copiar 1 nota. ok
     2.4.1) Copiar un grupo de Notas antes o despues del final de la secuencia. En modo lectura. (C+Click)
     2.4.2) Mover un grupo de notas (M +Click)
-    2.5) Borrar 1 Nota, Borrar 1 columna o un rango de columnas:
+    2.5) Borrar 1 Nota, Borrar 1 columna o un rango de columnas o zona
     2.6) Insertar Notas, abriendo la secuencia, agregando espacio para esa nota.
    ------------------------------------------------------------------------------------------   
     2.0) Modos de Edición.
@@ -1210,7 +1210,7 @@
            dar M + Click en un lugar mas halla del fina de la secuencia y se la movera completa
            dejando un vacio delante igual a la longitud original de la secuencia.
 
-    2.5) Borrar 1 Nota,       borrar 1 columna o un rango de columnas: 
+    2.5) En Ctrl-M Borrar 1 Nota, borrar 1 columna o un rango de columnas o zona: 
           Borrar 1 Nota Dejando su espacio  
           Ubicar el cursor con ctrl-M y flechas acercarse al comienzo de la nota, no es
           necesario estar justo sobre la nota, que se verifica si onoff=2 arriba en la cinta azul
@@ -1235,10 +1235,12 @@
            esa columna y ninguna nota normal.
            para borrar y dejar un espacio se usa 0 mas X...
 
-    2.5.3)  En Modo lectura marcando Zonas, Borrar 1 sola columna: 
-          Marcar solo una columna con Ctrl-click igual que play, y luego pulso Ctrl-delete(anda ok 20-01-2022).
+    2.5.3)  En Modo lectura marcando Zonas, Borrar 1 sola nota o columna o zona : (0.338)
+          Marcar solo una columna o nota con Ctrl-click un poco antes y depues de la nota, 
+          y luego pulso delete ,todas las notas ON en esa zona delgada se borraran, si la zona
+          es muy delgada y solo abarca un solo ON solo borrara una sola nota con su off tambien. 
           Borrar varias columnas: marcar la zona a borrar con 2 ctrl-clik en 2 posiciones distintas
-          Toda esa regin entre ambas marcas se borraran al pulzar Ctrl-delete. o supr.
+          Toda esa regin entre ambas marcas se borraran al pulzar delete o supr.
     2.5.4) Borrar Hasta el Final, Mover la secuencia de forma que la nota final deseada este en 
        la posicion 1 con flechas derecha izquierda, luego dar click en Edicion, aparece la 
        cinta arriba de EDIT pero todavia en color blanco , no verde, aparece MaxPos=nn

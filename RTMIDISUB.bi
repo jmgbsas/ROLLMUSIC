@@ -2150,7 +2150,59 @@ Roll.trk(jpt,ind).onoff = Roll.trk(jpt,i1).onoff
   
 
 End Sub
+'------------
+ Sub borrarZona()
+ Dim As Integer jpt, i1
+' falta no borrar los off1 que no tiene su on dentro de la zona y borar los off1 que esten fuer
+' y  su on dentro
+'Print #1,"entro a borrazona"
+Dim As Integer jpt2,jpt3, dura
+ For jpt=pasozona2 To pasozona1 Step -1
+   For i1=NB To NA
+'COPIADO DE MOVERZONAROLL
+'-------------
+      If Roll.trk(jpt,i1).onoff = 1  Then 
+         jpt2=1 
+         BuscoComienzoNota    Roll, pasozona1, jpt , i1 ,  jpt2 , 0
+         If jpt2 = 0  Then ' no borra off1 cuyo on esta fuera de zona
+              Continue For 
+         EndIf
+      EndIf
 
+       If Roll.trk(jpt,i1).onoff = 2 And jpt > pasozona1 And jpt < pasozona2  Then 
+        'busco si su off1 esta en el rango si no lo esta lo muevo tambien
+Print #1,"-------------------------------------------------------"
+         Print #1,"ENTRO A UN OFF2 ON BUSCO SU OFF1 FUERA DE ZONA A DERECHA"   
+         jpt3=1 
+         dura=Roll.trk(jpt,i1).dur
+         BuscoFinalNota    Roll, pasozona2, jpt , i1 ,  jpt3 , 0,dura
+
+         If jpt3 > 1  Then 
+          'borro el off1
+           Roll.trk(jpt3,i1).nota = 181
+           Roll.trk(jpt3,i1).dur  = 0
+           Roll.trk(jpt3,i1).vol  = 0
+           Roll.trk(jpt3,i1).pan  = 0
+           Roll.trk(jpt3,i1).pb   = 0
+           Roll.trk(jpt3,i1).inst = 0
+           Roll.trk(jpt3,i1).onoff = 0
+         EndIf
+       EndIf
+
+'-----------------------
+      Roll.trk(jpt,i1).nota = 181
+      Roll.trk(jpt,i1).dur  = 0
+      Roll.trk(jpt,i1).vol  = 0
+      Roll.trk(jpt,i1).pan  = 0
+      Roll.trk(jpt,i1).pb   = 0
+      Roll.trk(jpt,i1).inst = 0
+      Roll.trk(jpt,i1).onoff = 0
+   Next i1
+ Next jpt
+   
+pasozona1=0: pasozona2=0
+'Print #1,"CHAU llama a borrazona" 
+ End Sub
 '---------
 Sub trasponerRoll( cant As Integer, Roll As inst, encancion As Integer)
 On Local Error GoTo failtraspo
