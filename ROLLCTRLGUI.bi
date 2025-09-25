@@ -136,8 +136,11 @@ GadgetToolTip(BTN_MIDI_GRABAR,"GRABAR ejecucion midi")
 
 ButtonImageGadget(BTN_MIDI_EJECUTAR,530,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
 GadgetToolTip(BTN_MIDI_EJECUTAR,"EJECUTAR Grabacion midi")
-
- TextGadget(21,570,12,95,20,"         ")
+''''''''''''''''''''''''''''''''''TEXTOS
+ TextGadget(TEXT_TOPE,570,12,95,20,"         ")
+ StringGadget(LINEA_COMANDO,670,12,300,20,"SE USARA PARA LINEA DE COMANDO 0.338",ES_UPPERCASE,ES_LEFT )
+ ButtonGadget(OK,990,12,40,20,"OK")
+'---------------------------------------------------
 ' pistas manuales  PARA CARGAR CANCION DESDE DIRECTORIO PISTAS ECHAS CON ROLL
 GroupGadget( GRUPO_BTNS_MANUAL,95,0,113,40,"") 'play cancion
 GadgetToolTip(GRUPO_BTNS_MANUAL,"DETENER Cancion, Ejecutar Cancion, Grabar midi en Roll ")

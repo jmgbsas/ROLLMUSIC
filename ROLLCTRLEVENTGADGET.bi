@@ -409,7 +409,7 @@ Static As Integer millave
          Else
             maxcarga=maxgrb 
          EndIf
-         SetGadgetText(21, Str(maxcarga)) 
+         SetGadgetText(TEXT_TOPE, Str(maxcarga)) 
 ' para una sola pista grabada el maxgrb es el maxpos de esa pista
          If  maxgrb > 0 And ntoca > 1 Then
            If  maxgrb <  tocap.maxpos Then ' para cada pista se define tocap de nuevo  
@@ -997,4 +997,9 @@ Print #1,"k, canalsalida  ";k, canalx
            Next pista
          EndIf
       EndIf 
-
+   
+      If eventnumber()= OK   Then
+         comando=GetGadgetText(LINEA_COMANDO)
+ ' MENU DE COMANDOS
+         threadCmd = ThreadCall  ejecutarComando (comando)
+      EndIf

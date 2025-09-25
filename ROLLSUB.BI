@@ -2066,18 +2066,18 @@ numTrk=0
          EndIf
          numdurasmidi(1)=0
     EndIf
-    SetGadgetText(21,"Proc "+ Str (k1))
+    SetGadgetText(TEXT_TOPE,"Proc "+ Str (k1))
   Loop
 '
 ' listo lo grueso estaria veremos como funciona 1er aprox
   Print #31,"Finn Proceso "
 ntk=0
-  SetGadgetText(21,"FIN Proceso 1" )
+  SetGadgetText(TEXT_TOPE,"FIN Proceso 1" )
   Dim As Integer  k2,k3
   Print #31, "j1 "; j1; " i1 ";i1
  ' For r1=1 To cantTrk 
        For  k2=1 To j1+principio
-           SetGadgetText(21,"Proc j "+ Str (k2))
+           SetGadgetText(TEXT_TOPE,"Proc j "+ Str (k2))
           For  k3 =1 To  lim3 
               If  Track(ntk).trk(k2,k3).nota > 0 And Track(ntk).trk(k2,k3).nota <  181 Then
  Print #31, "j1=";k2;" i1=";k3; " nota="; Track(ntk).trk(k2,k3).nota; " dur=" ;  Track(ntk).trk(k2,k3).dur; " vol=";Track(ntk).trk(k2,k3).vol;" canal=";Track(ntk).trk(k2,k3).canal  
@@ -2088,7 +2088,7 @@ ntk=0
 
  
  'Next r1  
- SetGadgetText(21,"FIN TOTAL" )
+ SetGadgetText(TEXT_TOPE,"FIN TOTAL" )
 
 nombre="CARGAPLANO"
 
@@ -2140,7 +2140,7 @@ FileFlush (31)
 Close 30
 Close 31
 Sleep 20
-SetGadgetText(21,"EXIT SUB " )
+SetGadgetText(TEXT_TOPE,"EXIT SUB " )
 Print #1, "============================="
 Print #1," llama a REfacturarPista "
 ' REFACTURAR ACA FUNCIONA BIEN COMO EL ORIGINAL MANUAL 31-05-2024

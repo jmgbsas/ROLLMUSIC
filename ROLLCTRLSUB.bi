@@ -735,7 +735,7 @@ Sub CTRL1068(hmessages As hmenu)
                     SetStateMenu(hmessages,1064,1)
                     SetStateMenu(hmessages,1065,1)
                     SetStateMenu(hmessages,1066,1)
-                    SetGadgetText(21,"        ")
+                    SetGadgetText(TEXT_TOPE,"        ")
                      Case 0
                     HabilitarPatrones=3
                     SetStateMenu(hmessages,1068,3)
@@ -743,7 +743,7 @@ Sub CTRL1068(hmessages As hmenu)
                     SetStateMenu(hmessages,1065,0)
                     SetStateMenu(hmessages,1066,0)
 
-                    SetGadgetText(21,"PATRONES")
+                    SetGadgetText(TEXT_TOPE,"PATRONES")
               End Select
 
 
@@ -1703,3 +1703,10 @@ Function bmp_load( ByRef filename As Const String ) As Any Ptr
 
 End Function
 
+Sub ejecutarComando (comando As String)
+  Print #1, "TEXTO ENTRADO POR LINEA DE COMANDOS "; comando
+  If  InStr(comando,"AJUS") > 0 Or InStr(comando,"AJUST") > 0 Or InStr(comando,"AJUSTAR")> 0 Then
+   Print #1, "QUIERE AJUSTAR "; comando
+
+  EndIf    
+End Sub

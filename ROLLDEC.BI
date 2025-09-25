@@ -97,6 +97,9 @@ Const BTN_ROLL_CANAL    = 26
 Const IMAGE_VEL= 30
 Const IMAGE_FIG = 31
 Const BARRA_DE_ESTADO = 33
+Const TEXT_TOPE =34
+Const LINEA_COMANDO=35
+Const OK = 36
 Const HABILITAR = TRUE
 Const DESHABILITAR = FALSE 
 Const SI=1
@@ -206,6 +209,8 @@ Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,
 Dim Shared As Integer octavas,  jc,ic, id,ShowNroCol=0,nro,trak=1,trackold=1
 Dim Shared As Integer ers, borrapos=0,comienza=0, acordeNro=0,resumen=0  
 Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0,TicksInsertados
+Common  Shared As String comando
+ 
 
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
@@ -1156,7 +1161,7 @@ Declare Function lugarNota (lugar As integer) As Integer
 Declare Sub metronomo ()
 Declare Sub moverPmtkaPmtk(r as Integer, e As integer)
 Common Shared As float nanchofig
-COMMON Shared As Long eventc, eventM
+COMMON Shared As Long eventc, eventM , eventK
 Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA 
 Common Shared As string pathdir,nombre,DirEjecSinBarra
@@ -1166,7 +1171,7 @@ Common Shared As cairo_t  Ptr c, c2
 Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer
 Screenbuffer=0
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal
-Common Shared As Any Ptr thread4, threadGrabamidi
+Common Shared As Any Ptr thread4, threadGrabamidi, threadCmd
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros

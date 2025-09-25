@@ -31,7 +31,8 @@
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.337 Copiar un grupo de Notas N veces antes o despues del fin de secuencia (2.4.1) "
+nroversion="0.337 fix movia mas off1 fuera de la zona "
+'' proximo "0.338 LINEA DE COMANDOS "
 ''nroversion="0.336 Copiar en CTRL-N funciona mantener apretado el ENTER 2 o 3 segundos, ayuda 2.4) "
 ' NOTAS ON APILADAS AL FINAL PARA MOVER ZONA ok fix
 ' VOLVER AL MENU PRINCIPAL CON SOLO POSAR EL MENU  AL FINAL DE LA CINTA AZUL DE ARRIBA
@@ -327,7 +328,6 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", Nombr
                ''''' REMEDAR EL BOTON VERDE ??? CHEQUEAR EL BOTON VERDE
           ''''' NO SE SI ESTA TOCANDO TODA LA CANCION TL VEZ FALTA 
 '''' CARGAR EL SINTETIAZADOR 13-02-2024
-
             End SELECT
 '-----------------------------------------------------------------------
        Case EventClose  ''<==== SALIR TERMINA ROLL la X de win control

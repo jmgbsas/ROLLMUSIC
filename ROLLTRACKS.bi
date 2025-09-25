@@ -199,7 +199,7 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
        Loop
       Print #1,"MAXIMA LONG DE PISTA EJEC maxgrb, nf ",maxgrb,nf
       maxcarga=maxgrb 
-      SetGadgetText(21, Str(maxcarga))
+      SetGadgetText(TEXT_TOPE, Str(maxcarga))
 'termino con  todoslos archivos si llamo de nuevo con argumento
 ' empieza de nuevo       
 '-2)----------------CARGA LOS DATOS DE CADA PISTA
@@ -1039,7 +1039,7 @@ Dim midsal As  RtMidiOutPtr
 'si importamos de un directorio de ejecuciones donde se grabó por omision
 ' los roll o trk entonces existira el archivo inicio.txt
 cargariniciotxt(NombreCancion, CANCION)
-SetGadgetText(21, Str(maxpos))
+SetGadgetText(TEXT_TOPE, Str(maxpos))
 
 
   '
@@ -1114,7 +1114,7 @@ Sleep 5
 GrabarRollaTrack(0)
 
 cargariniciotxt(NombreCancion,CANCION)
-SetGadgetText(21, Str(maxpos))
+SetGadgetText(TEXT_TOPE, Str(maxpos))
        
 
     ' y a disco con su nuevo [xx]  

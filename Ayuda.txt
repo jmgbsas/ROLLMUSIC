@@ -1054,7 +1054,8 @@
 
     2.3) Modificar en Ctrl-N
     2.4) Copiar 1 nota. ok
-    2.4.1) Copiar un grupo de Notas antes o despues del final de la secuencia. En modo lectura.
+    2.4.1) Copiar un grupo de Notas antes o despues del final de la secuencia. En modo lectura. (C+Click)
+    2.4.2) Mover un grupo de notas (M +Click)
     2.5) Borrar 1 Nota, Borrar 1 columna o un rango de columnas:
     2.6) Insertar Notas, abriendo la secuencia, agregando espacio para esa nota.
    ------------------------------------------------------------------------------------------   
@@ -1204,6 +1205,10 @@
            si  se desea copiar mas de una vez entrar el numero de copias pulsando los numeros, puede ser 
            de 2 o mas cifras, luego pulsar C en el teclado e inmediatamente dar click en donde se desea el
            comienzo de la copia.
+    2.4.2) Mover un grupo de notas igual que 2.4.1 per oen vez de usar C + click se debe usar M + Click.
+           Nota si se desea mover toda la secuencia mas halla del final de la misma, directamnete
+           dar M + Click en un lugar mas halla del fina de la secuencia y se la movera completa
+           dejando un vacio delante igual a la longitud original de la secuencia.
 
     2.5) Borrar 1 Nota,       borrar 1 columna o un rango de columnas: 
           Borrar 1 Nota Dejando su espacio  

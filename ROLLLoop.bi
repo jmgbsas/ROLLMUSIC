@@ -5701,7 +5701,10 @@ ButtonGadget(2,530,30,50,40," OK ")
   If MultiKey(SC_CONTROL) And MouseButtons= 1  Then '24-07-2025 Mousepress detecta mouse encima sin hacer ckick no sirve aca
      SelGrupoNotaT=2:indXjreset=0 ''
      Dim As Integer pasox, pasoy, pasonR
-     pasox=(mousex- gap1 )/anchofig  + posishow  
+     pasox=(mousex- gap1 )/anchofig  + posishow
+     If pasox <=0 Then
+        pasox=1
+     EndIf 
      pasoy=nsE
      'print #1,"pasoy nsE=",pasoy
      If trasponer=1 Then '03-02-2022
