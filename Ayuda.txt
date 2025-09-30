@@ -66,32 +66,32 @@
        TRACK 1)   | I   I   | ===> |3L+3L+3L 3L+3L+3L|
        TRACK 2)   | 3I 3I 3I| ===> |3L+3L 3L+3L 3L+3L|
        Como vemos hay 6 columnas iguales solo que algunas estan ligadas y otras no.
-       El program ejecuta por columna manda toda una columna entera de todos los tracks
+       (El ultimo parrafo anterior apunta a la version anterior de RollMusic sin Ticks pero
+        la explicacion de duraciones es válida para ticks )
+
+       Version anterior de RollMusic =>[ El program ejecuta por columna manda toda una columna entera de todos los tracks
        a ejecutar y luego se construyen los retardos de cada uno segun la ligadura
        y los silencios que hubiera. Tambien vemos que un tresillo de corcheas es una negra
        3L+3L+3L= I
        Es como buscar el valor mas chico comun a ambos tracks. En este caso el 3L 
        Cada vez que agreguemos un track con figuras mas chicas habra que hacer ese 
-       proceso. 
-       ( Quedan 2 posibilidades para el futuro: que el programa lo haga automaticamente 
-      (algo lo hace pero a nivel de track). O al comenzar una cancion
-       se decidira cual será el valor mas chico de duracion a usar. Ej una corchea
-       o una semicorchea o un 3L o un 3F..Si se elige una division chica
-       el programa podria representar cada figura en funcion de la entrada auto-
-       maticamente, ej entrar una negra y la menor elegida es una semicorchea
-       luego al pulsar 1 y luego una letra de nota ejemplo Do (C)
+       proceso.] (RollMusic Anterior)
+
+       En la version con ticks actual todo se envia al controlador midi como venga y nada mas.
+       Algunas equivalencias 
        el programa podria mostrar   F+F+F+F = I
        O  si sse elige fusa E+E+E+E+E+E+E+E = I
        Y en vez de tipear todo eso si se le dice al programa con que division mas 
        chica trabajaremos, el convertirá la duracion entrada como una suma de esa 
-       division chica, y asi se apreciara mas visualmente las partes. Y el programa
-       ejecutara la cancion con acordes iguales que es lo que hasta ahora ejecuta mejor.
-       y ademas tendremos un buen control de las partes)
+       division chica, y asi se apreciara mas visualmente las partes.
+       podriamos tener un mejor control de las partes o lalinea visual de una melodia
 
       El mismo ejemplo pero con silencios 
       el programa podria mostrar  sF+sF F+F     = sL L
       O  si sse elige fusa  sE+sE+sE+sE E+E+E+E = sL L
-
+      [Fraccionar no es necesaario en Ticks pero si  se usa podremos ver bien la pila de sonidos
+      y sus duraciones especificas, hay que probarlos en ticks como anda esto era de la version
+      anterior y aca se complica...]
        Cada negra = 3I+3L 
        Y en un solo compas de dos negras | I I | entra un tresillo de negras
        3I 3I 3I
@@ -303,63 +303,7 @@
     9) Agregar tracks a cancion.
     10) Conmutar de Pista en una cancion cargada sobre el grafico pulsando TAB.
     11) Borrar pistas de la lista. Delete o supr.
-    12) ESTA OPCION ERA CUANDO NO SE USABA TICKS SERA ELIMINADO O VEREMOS SI SE PUEDE USAR PARA OTRA COSA:
-          Abrir NOTA APILADAS en una columna grafica tipo acorde cuya mayor duracion es N 
-          Esto permite que no sea necesario reescribir toda la secuenica si luego
-          de este acorde siguen nmucho mas notas ya escritas,,ahorra tiempo.  
-          Ej: I negra. Toda la columna se dividira
-          en varias posiciona a nivel Pista con la duracion seleccionada previamente
-          con la duracion correspondiente que se usa normalmente para duracion de nota.
-          Ej: 5 (F), luego pulsar  'Z' y sin levantar esa pulsacion luego dar enseguida Click 
-          en la nota con el mouse, o sea la secuencia es 'Z + Click mouse'.Luego pulsar Q
-          ya que aparecerán marcas de seleccion de zona. Nueva version: si no se ingresa duración
-          toma la menor si es un acorde distinto (o sea formado por notas de distinta duracion.
-          El z+Click puede ser en cualquier parte de la columna, no necesariamente sobre una figura
-          o letra musical. 
-          Ej; acorde columna P L I. En este caso todas las duraciones de la columna se dividiran 
-              en 4 notas  ligadas L+..L , y rellenando con silencios
-          P  ----> L+  L+  L+  L
-          L  ----> L+ sL+ sL+ sL
-          I  ----> L+  L+ sL+ sL
-           (una s adelante de la durcion indica un silencio de esa duracion)
-          de ese modo tenemos un acorde distinto ligado cuyos componentes son AcordesIguales y se tocara
-          con Acordesiguales, sino se usa esta funcion se tocará con AcordesDistintos. En el caso de
-          distintos todas las notas empiezan al mismo tiempo solo que c/u tiene distinta duracion.
-          La ejecucion en los casos probados funciona..
-          Pero si se desea que haya retardos en el inicio de alguna nota pero luego se superpongan los sonidos
-          formando acordes la forma de hacerlo es usar AcordesIguales a traves de esta funcion 'z+click'
-          asi luego se podrá cambiar el acorde fraccionado, por ejemplo a 
-          > L+  L+  L+  L  ---> L+  L+  L+  L
-          > L+ sL+ sL+ sL  ---> sL+ L+ sL+ sL
-          > L+  L+ sL+ sL  ---> sL+ L+ L+  sL
-          donde las notas L e I iniciales comienzan despues de la P con un retardo de L (sL+)
-          seria algo asi 
-             P
-               L
-               I
-          L e I se tocan despues de P.. y logramos al dividir todas las notas
-          en partes igual a la mas pequeña, L en este caso, poder silenciar
-          partes de cualqueir nota. de ese modo las 3notas pueden ejecutrse
-          a distinto tiempo. pasando  de un acorde donde todas las notas
-          atacan al mismo tiempo a otro que tiene una o mas notas que empiezan antes
-          o  despues, sin nececidad de reescribir toda la secuencia.
-          En la secuencia se insertan  3 posiciones adicionales en ese punto.
-          Hay 2 opciones más, en el menu de opciones, aparecen 4,  la ultima es No fraccionar,
-          Por omisión está chequeado usar automatico, la 3era, la descripta anteriormente.
-          Las otras 2 siempre requieren la entrada de una duracion por el usuario que será la unidad
-          con la que se fraccionará.
-          La 1era fracciona la nota elegida al dar 'z+click' y cualquier otra de la misma duracion, las
-          demas notas no se modifican.
-          La 2da fracciona todas las notas encontradas y agrega silencios en las mas cortas.
-          La 3era es la descripta al principio, puede o no recibir duracion del usuario, sino la
-          recibe, toma la menor duracion del acorde y lo convierte en unidad de fraccion. Luego fracciona
-          con esa duracion a todas las notas agregando silencios en las mas cortas. 
-          En este caso la ventaja adicional es que no hace falta dar click sobre ninguna nota, solo es necesario
-          que el click sea en esa columna en cualquier linea puede no existir nota, la funcion buscara
-          la nota menor y mayor, y fraccionara empezando por la mayor con al unidad de la menor.
-          Es la elegida por el programa por omision. 
-          Nota:Ya funciona Fraccionar una nota o acorde en pista de una cancion.
-          <---FIN 12)------------SERA ELIMINADO------------------->
+
     13) Cambiar o agregar una escala a la secuencia (se usara para agregar acordes todavia en desarrollo)
           teniendo una secuencia en edicion:(por omision no hay ninguna escala en la secuencia)
           ESCALA GENERAL DE TODA LA SECUENCIA (es un recordatorio de que escala estoy usando y que notas debo 
@@ -478,7 +422,7 @@
          correctas, pero no su repeticion ni duracion, a veces se escucha algo parecido coherente.
          La conversion desde ticks a no ticks es compleja, se deja por ahora.)
      18) Mostrar o Ocultar las Notas Guia de Roll Grafico del lado izquierdo. Pulsar H tipo
-         llave si o no.   
+         llave si o no pulsar K.   
 
     IV ) USO VENTANA CONTROL PARA GRABAR EJECUCIONES POR TECLADO MIDI,
        
@@ -578,6 +522,7 @@
          se movera ni acompañara la cancion.
 
        3) Grabacion de Ejecuciones directamente sobre Roll GRAFICO, 
+         ( no se revisó su funcionamiento en Ticks todavia...)
           2DA version faltaria que detecte acordes,
            (ya lo hizo en algun algoritmo distinto a este), el actual funciona para melodias, se anulo
            el metronomo por ahora, si se desea se puede desactivar (menu Opciones, no probado)
@@ -742,8 +687,8 @@
         para modificar cargar grabar y hacer backups disponibles para undo completo de la pista, ademas del undo
         de ALT-U(melodias) y ALT-BACKSPACE(acordes).
         Las pistas cargadas de cancion en la primer lista con su roll grafico levantado ademas de 
-        conmutar en el Roll Grafico con TAB, se puede desde la lista seleccionar una conlo cual
-        se iluminara a celeste, luego con flecha arriba abajo navego por las pistas yse veran en
+        conmutar en el Roll Grafico con TAB, se puede desde la lista seleccionar una con lo cual
+        se iluminara a celeste, luego con flecha arriba abajo navego por las pistas y se veran en
         el Roll Grafico como si estuviera haciendo TAB.
         
 
@@ -845,15 +790,15 @@
        partiendo  la ultima nota y lo reemplaza por  notas ligadas una parte en el compas actual y el resto en el siguiente.
 
     1.4) Grabar Archivo Roll [Archivo]->[Grabar]: 
-       Si se marcaron columnas para borrar con <dur, nota> = 190,190 , se borran pero no se elimina el espapcio 
+       [Si se marcaron columnas para borrar con <dur, nota> = 190,190 , se borran pero no se elimina el espapcio 
        que dejan, al grabar se eliminarán automaticamente, con esta opción mientras se edita solo marcamos 
-       lo que no queremos. Para eliminar directamente en ese momento ,usaremos Delete o Supr. 
+       lo que no queremos en Ctrl-M. Para eliminar directamente en ese momento usamos  Delete o Supr. 
        Grabar Archivo Track o Pista Trk, se usa ROLLaTrack y graba siempre al mismo
-       nombre en roll pero anteponiendo [00], [00]nombreRoll.Trk.
+       nombre en roll pero anteponiendo [00], [00]nombreRoll.Trk.Si queremos usar este track en una cancion
         Si cargue un .roll y se modifica, se graba el mismo  .roll, si cargue un track rtk se graba como rtk.
        Si estamos en cancion y uso Grabar, se graba la pista rtk en cancion una actualizacion. (las canciones
        son siemrpe un grupo de .rtk nunca .roll en una carpeta en esta version, tal vez en el futuro
-       se grabe todo como un unico archivoque incluy atodos los tracks, pero en carpeta es mas manuable
+       se grabe todo como un unico archivo que incluya todos los tracks, pero en carpeta es mas manuable
        para hace rcambios por fuera del programa como nombres orden reemplazo de un trakc facilmente sin
        depender del programa, el programa cargara la infromacion de nombre nro de track todo desde los nombres
        de los archivos lo que da una cierta libertad podria mezclar o reusar tracks de otras canciones facilmente, todo
@@ -905,14 +850,14 @@
               en donde no haya notas para dar click derecho. Si se ingresa una duracion nueva tomara esa hasta el
               proximo ingreso de duracion, la duracion cargada previamente tendra proridad sobre  otra nota nueva seleccionada
 
-         [[ no se corrigio para TICKS todavia lo que sigue ]]
-         [[[y si se desea borrarlo y 
+         [ no se corrigio para TICKS todavia lo que sigue ]
+         [y si se desea borrarlo y 
          volver a la condicion  anterior se pulsará Alt-U. Se puede tocar la pista o un pedazo de ella
          antes de borrar el acorde y si luego si se quiere se puede eliminar el ultimo acorde ingresado 
-         como se dijo con ALt-U. 
+         como se dijo con ALt-U. ]
          Se agrego acordes cuaternarios mayores y menor 7,Menor7b5,Dom7,Dom75a,Dis7, todos fundamental 
          1era, 2da y 3era inversion para cuatriadas, grado 1 (la nota elegida es la fundamental).
-         Acordes No Diatonicos: en una melodia existente si se toma la 1er inverion como fundamental del 
+         [Acordes No Diatonicos: en una melodia existente si se toma la 1er inverion como fundamental del 
          acorde, la nota de la melodia debe ser el VII grado disminuido en un bemol o semitono o sea
          en escala de C(C,D,E,F,G,A,B), para usar el acorde bVII deberai tener en la melodia una nota
          Bb o lo que es lo mismo A#. A partir de ahi uso la construccion de la 1era inversion de bVII
@@ -920,7 +865,7 @@
          construye un acorde mayor eso es todo. Entonces si bajo una nota B de la escala Mayor C
          un semitono y lo uso como raiz de Acorde MAyor estare construyendo el bVII de la nota B o sea 
          del VII grado de la escala de C Mayor. Y asi par acualqueir escala.
-         Lo mismo sucede con el bVIIMaj7, se bajaa un semitono la nota y se crea un Maj7. ]]]
+         Lo mismo sucede con el bVIIMaj7, se baja un semitono la nota y se crea un Maj7. ]
     1.8) Crear Canción.
 
           En RollNusic Control usar 'Nueva Cancion' del menu (lo que diga Na es no aplicable todavia
@@ -1012,47 +957,55 @@
          el ciclo de nuevo.
 
 
-    2.1.1) Entrada por teclado de PC.
-           Es el MODO EDIT, 1) pulsar [Edicion], aparece "Edit" más parámetros a la derecha en el mismo color blanco.
+    2.1.1) Entrada secuenCial por teclado de PC.
+           FORMA RÁPIDA DE ENTRAR NOTAS ES LLEGAR A MODO EDIT CON ALT-E
+           Es el MODO EDIT, 
+           1) pulsar [Edicion], aparece "Edit" más parámetros a la derecha en el mismo color blanco.
            2) El MODO EDIT se consigue al dar click en la palabra "Edit" anterior, dar click hasta que se ponga en color verde
            puede tardar mantener presionado 1 o 2 segundos, dar un click lento o rapido según la PC. Entrar duraciones
-           y nombres de notas por taclado. (ver mas abajo detalle) Ej 3C y aparecera la nota. Si sequiere sacar la
-           guia de notas del lado izquierdo pulsar H y para volver a verlo J.
-    2.1.2) Entrada por mouse . Como en 2.1.1 llegar a Edit verde. luego click derecho del mouse y aparece el menu
+           y nombres de notas por taclado. (ver mas abajo detalle) Ej 3C y aparecera la nota (una negra C). Si sequiere sacar la
+           guia de notas del lado izquierdo pulsar H y para volver a verlo pulsar K.
+    2.1.2) Entrada secuencial por mouse . 
+            Como en 2.1.1 llegar a Edit verde. luego click derecho del mouse y aparece el menu
            luego click izq para elegir  alguna duracion y la nota se dibujara, solo se usa el mouse. 
            [NO PULSAR CTRL-M sino se pasara a modificacion color rojo] si hubo un error de entrada pasar a ctrl-m 
             y se podra modificar una nota ingresada anterior mente.
             
-    2.2) MODO EDIT CURSOR Ctrl-M Solo modificar notas existentes no se ingresan notas nuevas en espacios vacios.
-        En MODO EDIT verde pulsar CTRL+M (O dar CTRL+click derecho en modo mouse y lugo click izquiedo sobre Ctrl-M en el menu grafico).
-    Con teclas CTRL+M las notas se pueden entrar por teclado como en MODO EDIT el cursosr se posiciona con las flechas y con X se 
-    ejecuta la modificacion previamente se pulsa una duracion 1 a 8. La zona de la secuencia esta fija no se alarga ni acorta la secuencia. 
-    En CTRL+M se puede usar el mouse en vez de las flechas, el cursor se posicionara en el lugar donde se de click derecho. 
-    ahi elegir una duracion del menu grafico la posicion se movera un poco lugo dar click izquierdo de nuevo sobre lanota y luego X. 
+    2.2) MODIFICACION NOTA EXISTENTE O AGREGAR NUEVA
+         MODO EDIT CURSOR Ctrl-M Modificar notas existentes O se ingresan notas nuevas en espacios vacios.
+        En MODO EDIT verde pulsar CTRL+M .
+    Con teclas CTRL+M las notas se pueden entrar por teclado como en MODO EDIT el cursosr se posiciona con las flechas SOBRE UNA NOTA 
+    y con X se ejecuta la modificacion, previamente se pulsa una duracion 1 a 8. 
+       La zona de la secuencia esta fija no se alarga ni acorta la secuencia. 
+    En CTRL+M se puede usar el mouse en vez de las flechas, se da click derecho SOBRE LA NOTA, aparecera el menu grafico de duraciones,
+    ahi elegir una duracion del menu grafico con click izquierdo, luego X. 
     Se puede repetir la modificaion con la misma duracion cada vez que quiera
     para eso mover el cursor rapido o dar click izquierdo en  otra nota deseada y luego X para cambiar.
-    Si se sale de foco o  sea se pasa a otra ventana o otra octava se puede pierde la secuencia y ´podria volver a 
-    el color verde o sea podria salirse de ctrl-m y habrá que empezar de nuevo Ctrl-m, click derecho menu elegir duracion X, 
-    click +x en todas las notas que se requiera el cambio (a veces lo hace bien es un bug que no se exploro por ahora)
-
-    Nota: en este modo la pantalla se congela solo edita lo que se ve, LAS FLECHAS DER IZQ  MUEVE EL CURSOR 
+    Si se sale de foco o  sea se pasa a otra ventana o otra octava podria volver a color verde o sea podria salirse de ctrl-m y 
+    dando click sobre la octava volvemos a ctrl-m
+    click +x en todas las notas que se requiera el cambio (a veces lo hace bien es un bug que no se exploro bien por ahora)
+    Si se quiere pasar a otra octava en ctrl-m dar reiterados clic izquierdo hasta que se ponga de color rojizo la octava
+    seleccionada.
+    Nota: 
+      En este modo de modificacion, la pantalla se congela solo edita lo que se ve, LAS FLECHAS DER IZQ  MUEVE EL CURSOR 
     PERO NO LA SECUENCIA . Si los cursores aparecen muy lejos del lugar de operacion deseado dar un CTRL+M estando 
-    el mouse en donde se quiere editar o directamente click izquierdo. Si se usa click derecho en la posicion deseada el cursor se moveran 
-    a esa posición y mostrara el menu de duraciones, con click izquierdo no parece el menu solo cambia la posicion. 
-    Para salir dar CTRL+P y un click en cualqueir lado. 
-    SI DESEO ADELANTAR LA SECUENCIA  congelada aun en CTRL+M o ctrl-N puedo usar 
+    el mouse en donde se quiere editar o directamente click izquierdo. Si se usa click derecho en la posicion deseada el cursor 
+    se movera a esa posición y mostrara el menu de duraciones, con click izquierdo no parece el menu solo cambia la posicion. 
+      Para salir dar CTRL+P y un click en cualqueir lado. 
+      SI DESEO MOVERME EN LA SECUENCIA Y SALIR DEL congelamiento aun en CTRL+M o ctrl-N puedo usar 
     ALT-Flecha Der y ALT-Flecha Izq. (Incrementos de 1/100) Al dejar de pulsar Alt, las flechas solo moveran el cursor nuevamente,
     en el tramo de secuencia nuevo y congelado.
-    Para mover el cursos con flechas ademas se puede ajustar el tamaño del salto  pulsando previamente
+      Para mover el cursos con flechas ademas se puede ajustar el tamaño del salto  pulsando previamente
     una duracion si pulso 3 saltara en duraciones de negra I o sea 96 ticks. Si deseo avanzar o retroceder
     entre los comienzos o finales de las notas pulsar May (izquierda o der )+ flecha izq o der, tambien se detendrá el salto
     si hay un codigo 190 de eliminacion de posible columna.(o sea onoff=2 onoff=1 o dur=190). Si quiero 
-    volver a un tick por salto pulsar 0 (1 a 8 son duraciones), 0 sera en este caso un Tick y luego pulsar
-    las flechas der o izq. 
+    volver a un tick por salto pulsar 9 (1 a 8 son duraciones), 0 sera en este caso un Tick y luego pulsar
+    las flechas der o izq, 2 ticks 9, [384, 192, 96 , 48, 24, 12, 6,  3,  2 ] ( 1 a 9 )
+    1 es la redonda 384 ticks..
      En el caso de usar solo teclado, el Cursor se mueve con flecha arriba abajo para ajustar al semitono deseado en esa posicion, o 
     derecha izquierda para cambiar de posicion. 
 
-    2.3) Modificar en Ctrl-N
+    2.3) Modificar en Ctrl-M (en un espacio vacio si quiero agragar final de secuencia || pulsar Ctrl-0 como duracion)
     2.4) Copiar 1 nota. ok
     2.4.1) Copiar un grupo de Notas antes o despues del final de la secuencia. En modo lectura. (C+Click)
     2.4.2) Mover un grupo de notas (M +Click)
@@ -1066,6 +1019,10 @@
            se pondra de color verde tambien. Solo dando 1 o 2 clicks izquierdo sobre una octava se la podrá modificar. 
            La octava pasará a ser toda de otro color cuando este bien seleccionada, ctrl-M rojo medio marron,
            ctrl-N azul.
+         NOTA: PARA ACELERAR, CON SOLO PULSAR ALT-E EJECUTAREMOS LOS PASOS PARA ENTRADA DE NOTAS
+               SECUENCIALES O SEA
+              - Pasar a Edicion clickendo [Edicion], aparecera la cinta Edit con parametros.
+              - Dar click a Edit, Edit cambiara a verde
     2.1.1) Entrada por Teclado O Entrada secuencial siempre al final de la misma va agregando notas.
            
          - EDICION CON TECLADO Estando sobre una octava elegida con el mouse, pulsar una duracion de 1 a 8
@@ -1099,62 +1056,86 @@
                  
     2.1.2) Entrada Normal Por mouse y Teclado color Verde (secuencia nueva o agragar al final de una existente)
            Con menu de duraciones gráfico:
-           estando habilitada una octava como en 2.1) se hace click derecho en cualquier lugar de la octava elegida,
+           estando habilitada una octava como en 2.1) se hace click derecho en EL SEMITONO QUE DESEAMOS 
+           EN LA OCTAVA ELEGIDA,
            aparece un menu de comando y duraciones contextual gráfica, el comando permite entrar a Ctrl-M pero este no es
            el caso, estariamos en modo de modificacion de notas ya entradas, solo queremos ENTRAR notas nuevas al final de 
            la secuencia, se da click izquierdo a la duracion deseada (O,P,I,L,F,E, X, H) del menu grafico sobre la posicion deseada 
-           (no hace falta pulsar el nombre de la nota solo ubicarse sobre ella ), y aparecera la nota y asi para ingresar 
-           mas notas
+           (no hace falta pulsar el nombre ), y aparecera la nota y asi para ingresar  mas notas SECUECNIALES UNA DETRAS 
+           DE OTRA. SI SEDESEA APILAR NOTAS (acordes por ejemplo o desfasadas pero superpuestas ) EN EL MISMO TIEMPO USAR CTRL-M
 
-    2.2)   Modo Edit Cursor (marron ctrl-M o azul ctrl-N): 
+    2.2)   Modo Edit Cursor (marron ctrl-M o azul ctrl-N) generalidades:
+           Obtencion: 
+               Estando en 2.1.2 en color verde pulsar CTRL-M en teclado o con CLICK DERECHO CUANDO APARECE EL MENU
+           DE DURACIONES TAMBIEN APARECE EL LABEL CTRL-M clicK izquierdo del mouse SOBRE CTRL-M
+           Y PASAMOS A CTRL-M MARRON. Para ir a Ctrl-N pulsar CTRL-N en teclado. 
+           CTRL-N solo modificara notas existentes. CTRL-M ademas insertara notas nuevas en espacios vacios existentes.
             LA ZONA DE SECUENCIA SELECCIONADA PERMANECE CONGELADA, SIN AVANCE DE LA 
             SECUENCIA O SIN AVANCE DE PANTALLA CON FLECHAS DER O IZQ. LAS FLECHAS MUEVEN EL CURSOR
             NO LA PANTALLA. NO PERMITE MODIFICAR LA LONGITUD DE LA SECUECNIA 
             SI SE NECESITA MOVER LA ZONA EDITADA SE PUEDE USAR ALT-DER O ALT-IZQ. LO HARA EN INCREMENTOS DE COLUMNAS EN UN ANCHO/100
-              Estando en EDIT Normal en estado color verde, para Modficar o ingresar nuevas notas podemos pasar
-           a modificar la secuencia previamente entrada para cambiar su duracion ctrl-M, y/o agregar tambien notas nuevas dentro de
-           la zona elegida Ctrl-N. 
-           ctrl-M sera de color algo rojizo marronado , Ctrl-N de color azul.
-           EN MODO CURSOR la nota agregada es sobre un tramo de secuencia elegido y congelado podre poner notas
-           EN UN ESPACIO VACIO (con ctrl-N) o SI ES SOBRE UNA NOTA EXISTENTE LA MODIFICARA (ctrl-m o Ctrl-N) POR EJEMPLO SU DURACION.
+              Estando en EDIT Normal en estado color verde, podemos Modficar o ingresar nuevas notas. 
+           Para modificar las duraciones de las notas de una secuencia previamente entrada, usamos ctrl-M O CTRL-N, y para agregar 
+           notas nuevas dentro de la zona elegida usar Ctrl-M. (o CTRL+mouse click derecho Y CLICK EN CTRL-M)
+           ctrl-M sera de color algo rojizo marronado , Ctrl-N de color azul celeste.
+           EN MODO CURSOR una nota agregada se hace sobre un tramo de secuencia elegido y congelado, podre poner notas
+           EN UN ESPACIO VACIO (con ctrl-M) o SI ES SOBRE UNA NOTA EXISTENTE LA MODIFICARA (ctrl-M o Ctrl-N) POR EJEMPLO SU DURACION.
            El cursor en edicion en MODO CURSOR para modificar ctrl-M, permanece en el semitono ultimo donde se 
            modifico, puedo cambiar por distintas duraciones en el mismo lugar sin moverme y pulsando X, lo mismo pasara si 
            me muevo a otra nota con el cursor siempre que no se use Ctrl-M para ubicar el cursor, luego si voy a otra nota no hara 
            falta pulsar la duracion si es la misma pero si X para ejecutar el cambio. 
-           Para ubicar me sobre otra nota tambien puedo usar click izquierdo del mouse posicionarse sobre otra nota y dar X , 
-           tomara la ultima duracion pulsada.
+           Para ubicarme sobre otra nota tambien puedo usar click izquierdo del mouse posicionarse sobre otra nota y dar X , 
+           y tomara la ultima duracion pulsada.
 
 
-    2.2.1)         
+    2.2.1)  Ctrl-N solo modificaciones: 
 
-           Ctrl-M solo modificaciones: 
-              Las modificaciones se hacen ubicando el cursor con TEclado o mouse.
+            Las modificaciones se hacen ubicando el cursor con flechas del Teclado arriba aabajo dercha izquierda, o con 
+            un click izquierdo del mouse. La ultima duracion permaneces si se quiere usar la misma duracion en varias notas
+            Ubicarse en la columna donde esta la nota a modificar no hace falta estar sobre la nota, luego pulsar duracion
+            y luego la nota, y la nota en esa columna existente cambiara su duracion a la elegida. 
+            Con mouse dar clic kderecho en cualquier parte ya sea semitono o columna , aparece el menude duraicones
+            dar click en la  duracion deseada y luego click sobre la nota a cambiar.
+            (EL MENU DE COMANDOS POR MOUSE FALTA ARREGLARLO CTRL + CLICK DERECHO ESTANDO EN ENTRADA_NOTAS SECUENCIALES
+             con ctrl+ clic derecho siempre va a ctrl-m y muestra el menu de comandos el cual no se usa hasta un fix)
     2.2.1.1)
            Con TEclado: 
-              Se ubica el cursor con flechas o con click izquierdo del mouse, mas rapido, se pulsa una duracion 1 a 8 
-           Luego pulsar una nota en alfabeto americano C,D,E,F,G,A,B, o las mimsas notas pero sostenido usando Ctrl-C, ctrl-D ..etc.
-           Si repetimos la misma duracion en diferentes nota subsiguientes, basta pulsar las 
-           notas siguientes sin introducir duracion ubicando la proxima nota con click o teclado.
-           Todo quedara escrito solo en la octava  elegida no se podra escribir en otras octavas de arriba o abajo. 
-           Para ello un modo lento es, salimos de edicion pulsando Edit, cambiara de color 
-           de verde a blanco. Luego repetir el proceso pero eligiendo otra octava posicionando
-           el mouse sobre  esa octava deseada. Pero mas rapido es dar click izquierdo reiteraas veces sobre la nueva 
-           octava hasta  que seponga verde eso indicara que ya esta seleccionada.
-           Luego se pulsa X, la ubicacion del cursosr no debe ser exacta (+10 -10 posiciones en horizontal) el programa buscara el 
+              Se ubica el cursor con flechas o con click izquierdo del mouse, mas rapido, sobre una nota a modificar, el programa
+           automaticemente buscará el ON (onoff=2 arriba en la cinta azul, se vera como el cursor se mueva solo buscando el ON)
+           luego se se pulsa una duracion 1 a 8. 
+              Luego se pulsa X, la ubicacion del cursosr no debe ser exacta (+10 -10 posiciones en horizontal) el programa buscara el 
            comienzo de la nota mirando su parametro onoff=2 que se puede ver arriba en la cinta del menu cuando esta en Edit....
            Si pulsamos 0 y luego X borra la nota. Si pulso Ctrl-9 y luego X marca una nota para borrar, coloca un 0 en pantalla 
            (parametros 190 en nota y duracion) si es unica esa nota se borrara la columna al grabar el archivo y luego cargarlo 
-           o en Modo Lectura pulsando Ctrl-delete . si en esa columna hay mas notas y se marco solo una
+           o en Modo Lectura pulsando Ctrl-delete. Si en esa columna hay mas notas y se marco solo una
            la columna no se borrara se debe marcar todas las notas en 0 en Ctrl-M y luego dar Ctrl-delete en Modo LEctura. 
            Ese metodo es viejo laborioso en cuanto al teclado. Otra forma mejor es marcar la zona en modo lectura directamente
-           y dar ctrl-delete se boraran las notas cuyo comienzo este dentro de la zona marcara y se desplazarn los datos
+           y dar ctrl-delete se boraran las notas cuyo comienzo este dentro de la zona marcada y se desplazarn los datos
            ocupando la zona eliminada.
+               Si queremos cambiar otra nota con la misma duracion, basta ubicarse sobre la nota siguiete con teclado o mouse
+           como se dijo antes, sin introducir duracion y luego pulsar en el teclado X, que es la orden de modificar.
+           Todo quedara escrito solo en la octava  elegida no se podra escribir en otras octavas de arriba o abajo. 
+               Para ello un modo lento es, salimos de edicion pulsando ctrl-P luego en el menu click en Edit, cambiara de color 
+           de verde a blanco. Luego repetir el proceso inicial pero eligiendo otra octava posicionando
+           el mouse sobre  esa octava deseada. 
+               Pero mas rapido es dar click izquierdo reiteraas veces sobre la nueva 
+           octava hasta  que se ponga marron eso indicara que ya esta seleccionada y en estado Ctrl-M.
+           (para CTRL-N funciona tambien). Tambien observar que para pasar de CTRL-M a N o viceversa basta pulsar el control
+           o sea si estoy en M pulsar Ctrl-N y estare en N y viceversa.     
+
     2.2.1.2)
-           Con mouse:
-           Este modo usa mouse y tecla X como antaes para ejecucion final. Con el click derecho del mouse accedo al 
+           Con mouse: resumen
+           Este modo usa mouse y tecla X como antes para ejecucion final. Con el click derecho del mouse accedo al 
            menu grafico contextual de duraciones (aplicable tambien en Ctrl-N), el click derecho se debe hacer sobre la
-           nota a modificar, luego en el menu se da click izquierdo en la duracion deseada P,I,L, etc y luego la tecla X
+           nota a modificar en ctrl-m(en ctrl-N  no hace falta), En ctrl-N luego en el menu se da click izquierdo en la duracion deseada P,I,L, etc y luego la tecla X
            ejecutará el cambio de la nota.
+
+    2.2.2) CTRL-N con mouse
+           Estando en CTRL-N (pulsando CTRL-N despues de estar en una octava en verde),
+           Buscar una nota a modificar o lugar donde insertar dar Mouse click derecho en cualquier parte de la octava
+           aparece el menu grafico de duraciones, luego dar click en la Duracion. SI QUIERO BORRAR POR UN ERROR
+           PULSAR 0 Y EL NOMBRE DE LA NOTA. Para cambiar otras notas con la misma duracion seguir dando click sobre
+           las notas deseadas.
 
 
            |--- lo que sigue UNDO es ayuda vieja en revision para Ticks no se modifico para su uso con Ticks todavia---> 
@@ -1172,24 +1153,21 @@
          <   soltar ALT y luego soltar retroceso. lo mismo para U)
 
 
-    2.3)   - Ctrl-N Modificar una nota existene o insertar una nueva  SIN PULSAR X al final.
+    2.3)   - Ctrl-N Modificar una nota existene o insertar una nueva SIN PULSAR X al final, solo se pulsa
+         la duracion de la nota y el nombre de la nota CDEFGAB, el cursor debe estar en la columna deseada no importa 
+         el semitono de la octava eso lo dará el nombre de la nota.
          Por Teclado: 
            Ubicar un lugar vacio de una columna elegida ya sea por flechas o con un click IZQUIERDO. 
          Elegir por teclado duracion 1 a 8 (0 borra pone espacio) y pulsar la nota CDEFGAB, insertara 
          una nota nueva  en el semitono elegido vacio con letra CDEFGAB, si habia una nota previa la modificara. ok
          Por Mouse:
-            Usar click derecho para ubicar el lugar y traer el menu grafico de duraciones en ese punto,luego al elegir
-         una duracion de ese menu con click izquierdo,se insertara la nota nueva sin necesidad de pulsar X en la posicion
-         en que se dio click derecho. ok
-         Lo mismo pasa para modificar, posicionarse con click derecho sobre la nota a modificar
-         elegir una duracion y darle click izquierdo sobre ese menu grafico y la nota se modificará buscando su comienzo, 
-         si no se está justo sobre el comienzo de la nota a modificar en mas menos 10 posiciones. 
-         De Ctrl-N (se sale con ctrl-p tambien) )
+            Usar click derecho para traer el menu grafico de duraciones en esa octava,  elegir
+         una duracion de ese menu con click izquierdo. Dar click sobre la nota y esta cambiara a esa duracion, esto
+         ocurre para la 1er nota cambiada, en las demas hay que dar click en la columna y luego pulsar el nombre de la nota. 
 
 
-    2.4) Copiar nota en modo Cursor. (0.336 ya funciona bien en CTRL-N)
-       - En EDIT Cursor [ Edit + Ctrl_N] ó [Edit + Ctrl + clicK derecho + seleccion
-         gráfica de ctrl-N]   
+    2.4) Copiar nota en modo Cursor. (0.336 ya funciona bien en CTRL-M)
+       - En EDIT Cursor [ Edit + Ctrl_M] o ALT-E y luego CTRL-M o click derecho de mouse y luego click en ctrl-m. 
          Movemos el cursor grafico (cuadrado) con teclas izq der hasta posicionarse en
          la nota a copiar o con click izq de mouse seleccionando una nota,se da ENTER sobre
          la nota manteniendo presionado hasta ver arriba ONOFF=2 o ver que el cursor se mueve 
@@ -1200,7 +1178,7 @@
          Para copiar otra nota se debe resetear pulsando Q.
 
     2.4.1) Copiar un grupo de Notas despues o antes final de la secuencia (0.337)
-           En el modo lectura seleccionar la zona a copiar con Ctrl-click en inicio y final de la
+           En el MODO LECTURA seleccionar la zona a copiar con Ctrl-click en inicio y final de la
            parte de la secuencia a copiar. Pulsar fin si se desea ubicar el fin de la secuenica
            si  se desea copiar mas de una vez entrar el numero de copias pulsando los numeros, puede ser 
            de 2 o mas cifras, luego pulsar C en el teclado e inmediatamente dar click en donde se desea el
@@ -1211,18 +1189,41 @@
            dejando un vacio delante igual a la longitud original de la secuencia.
 
     2.5) En Ctrl-M Borrar 1 Nota, borrar 1 columna o un rango de columnas o zona: 
-          Borrar 1 Nota Dejando su espacio  
+    2.5.1) Borrar 1 Nota Dejando su espacio  
           Ubicar el cursor con ctrl-M y flechas acercarse al comienzo de la nota, no es
           necesario estar justo sobre la nota, que se verifica si onoff=2 arriba en la cinta azul
           El programa busca automaticamente el comienzo de una nota si el cursor esta cerca, luego pulsar 0
           y  seguidamente pulsar X y se borrará.
           Si me muevo a otra nota y pulso X de nuevo borrara esa nota tambien hasta que se pulse
-          otro numero entre 0 a 8, el 0 es para borrar nota..
+          otro numero entre 1 a 8 para modificar la duracion, el 0 es para borrar nota..
 
-    2.5.1) BORRAR NOTA EN CTRL-N UBICANDO EL CURSOR SOBRE LA NOTA
+    2.5.2) BORRAR NOTA EN CTRL-N UBICANDO EL CURSOR SOBRE LA NOTA o su columna.
            Y LUEGO PULSAR 0 Y LUEGO EL NOMBRE DE LA NOTA CDEFGAB SE PUEDE REPETIR COMO ANTES
            SIN PULSAR EL 0 SOBRE OTRAS NOTAS.
-    2.5.2) Para Borrar una nota pero SIN dejar su espacio usar-> Pulsar CTRL-9 luego X en cada nota a limpiar
+    2.5.3)  En Modo lectura Borrar notas dejando su espacio marcando Zonas, Borrar 1 sola nota o columna 
+            o zona : (0.338)
+          Marcar solo una columna o nota con Ctrl-click un poco antes y depues de la nota, 
+          y luego pulso delete ,todas las notas ON en esa zona delgada se borraran, si la zona
+          es muy delgada y solo abarca un solo ON solo borrara una sola nota con su off tambien. 
+          Borrar varias columnas: marcar la zona a borrar con 2 ctrl-clik en 2 posiciones distintas
+          Toda esa regin entre ambas marcas se borraran al pulzar delete o supr. No se tocaran
+          lso ON fuera de la zona que terminen en la zona y si se borrara los on con su off1 que
+          termine fuera de la zona
+    2.5.4)  En modo lectura borrar notas sin dejar su espacio o sea la secuencia podria achicarse.
+            Igual que antes pero luego de seleccionar la zona pulsar Ctrl-delete o supr en el teclado.
+   
+    2.5.5) TAREA=> Funciona pero para ticks hay  que corregir no borrar los off1 de un on antes de la posicion actual
+        y agregar fin de secuencia al final....seguir mañana
+        Borrar Hasta el Final, Mover la secuencia de forma que la nota final deseada este en 
+       la posicion 1 con flechas derecha izquierda, luego dar click en Edicion, aparece la 
+       cinta arriba de EDIT pero todavia en color blanco , no verde, aparece MaxPos=nn
+       posarse con el mouse sobre MaxPos y dar ALT, se borrara desde la posicion actual en adelante 
+       siendo la posicion actual la 1er columna del grafico en la que posicionamos la secuencia 
+       y ademas sera el nuevo final.
+       La secuencia completa queda fuera de pantalla a la izquierda. Luego para verla entera
+       pulsar Inicio o navegar a la izquierda con flecha izquierda o ctrl+izquierda.,
+
+    2.5.6) Para Borrar una nota pero SIN dejar su espacio usar-> Pulsar CTRL-9 luego X en cada nota a limpiar
            No se debe repetir el pulso de 9 para cada nota, por ahora repite si se da click sobre las
            proximas notas y se pulsa X solamente.
            El metodo de borrado con CTRL-9 y X marca con 190,190 la nota y duracicon y esos lugares
@@ -1234,22 +1235,6 @@
            algrabar el archivo y luego cargarlo se borraran las columnas marcadas y tengan uno omas 0 en
            esa columna y ninguna nota normal.
            para borrar y dejar un espacio se usa 0 mas X...
-
-    2.5.3)  En Modo lectura marcando Zonas, Borrar 1 sola nota o columna o zona : (0.338)
-          Marcar solo una columna o nota con Ctrl-click un poco antes y depues de la nota, 
-          y luego pulso delete ,todas las notas ON en esa zona delgada se borraran, si la zona
-          es muy delgada y solo abarca un solo ON solo borrara una sola nota con su off tambien. 
-          Borrar varias columnas: marcar la zona a borrar con 2 ctrl-clik en 2 posiciones distintas
-          Toda esa regin entre ambas marcas se borraran al pulzar delete o supr.
-    2.5.4) Borrar Hasta el Final, Mover la secuencia de forma que la nota final deseada este en 
-       la posicion 1 con flechas derecha izquierda, luego dar click en Edicion, aparece la 
-       cinta arriba de EDIT pero todavia en color blanco , no verde, aparece MaxPos=nn
-       posarse con el mouse sobre MaxPos y dar ALT, se borrara desde la posicion actual en adelante 
-       siendo la posicion actual la 1er columna del grafico en la que posicionamos la secuencia 
-       y ademas sera el nuevo final.
-       La secuencia completa queda fuera de pantalla a la izquierda. Luego para verla entera
-       pulsar Inicio o navegar a la izquierda con flecha izquierda o ctrl+izquierda.,
-
     2.6) Insertar Una Nota: (agrega espacio abriendo la secuencia no es agregar nota en un vacio ya existene eso ya lo
            hace en modificar)
         - preparacion CLICK IZQUIERDO EN [Edicion] del menu del grafico,  verificar que se ponga en verde.
@@ -1368,7 +1353,7 @@ sino el program insertaria notas en cualquier lugar o semitono en el que nota=0.
  CTRL-M 9 + X = 0,181   (pulsar ctrl-m luego el numero 9 y finalmente X modifica a 0,181
 se puede observar arriba en la cinta en colr verde ->  Rolldur:0 Rollnota:181
  CTRL-N SPACE 
- 
+ CTRL-0 fin de secuecnia, ||
 ------------
 - marcar borrado de columna, al grabar y luego cargar desaparecen esas columnas
 (DUR,NOTA) 190,190 MARCAR: DUR,NOTA se obtiene pulsando en cualquier semitono de la columna
@@ -1407,10 +1392,15 @@ futuro: (creo me demandará muchos meses  , no estoy a full y ademas voy aprendie
 - Muy en el futuro algun dia... harmonizacion básica.,,
 - perfeccionamiento de algoritmo de play, play e ,as de un track. grabar en formato midi,
   cargar un midi. Version 0.4586 comienzo de salida a archivo midi en desarrollo.
-- ORGANIZAR ESTA AYUDA Y HACERL MAS AMENA DISCULPAS...TODO ESTA POR HACERSE Y 
+- ORGANIZAR ESTA AYUDA Y HACERLA MAS AMENA DISCULPAS...TODO ESTA POR HACERSE Y 
   PROBARSE ,,,,LLEGARE A ALGO MEJOR ?? NO SE ,,,CADA DIA ES MAS COMPLICADO
   Y YO CON MENOS TIEMPO,...HARIAN FALTA COLABORADORES DE FB,¿?,, no creo les guste
-  el espagueti de mi código jaja
+  el espagueti de mi código jaja. 
+- Usar bancos? no tengo instrumentos con bankos para probar.. 
+  tal vez con instrumentos virtuales puede ser, enviar banco, pero se ajusta en el instrumento virtual
+  podria almacenarlo y enviarlo.
+- Exportar a midi en Ticks....tal vez sera mucho mas facil con Ticks y a lo mejor podria usar
+  una libreria para grabar y cargar ya que estan en formato para ticks.
 
 ------------------------------------------------------------------------------------------
   NOTA PARA COMPILAR ROLLMUSIC: Para compilar estan las librerias necesarias en el 

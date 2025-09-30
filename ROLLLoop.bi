@@ -147,10 +147,10 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
         if COMEDIT=ENTRADA_NOTAS Then ' edit normal ingreso nots nuevas
            cairo_set_source_rgba(c, 0, 1, 0.5, 1) ' verde brillante
         EndIf
-        if COMEDIT=SOLO_MODIFICACION Then 'ctrl-m modificacion con X O MOUSE
+        if COMEDIT=MODIFICACION_INSERCION Then 'ctrl-m modificacion con X O MOUSE
            cairo_set_source_rgba(c, 1, 0.8, 0.5, 1) 'rojo ?
         EndIf
-        if COMEDIT=MODIFICACION_INSERCION Then ' ctrl-n modificacion con nombre nota
+        if COMEDIT=SOLO_MODIFICACION Then ' ctrl-n modificacion con nombre nota
            cairo_set_source_rgba(c, 0.5, 0.8, 1, 1) 'celeste
         EndIf
      Else 
@@ -612,13 +612,11 @@ If GrabarPenta =0 Then
   EndIf
   EnOctava=1
   ' CURSOR
-  '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
-  ' Or (cursorHori=2 And cursorVert=2 paa hbilitar ctrl-N
-  If COMEDIT=SOLO_MODIFICACION  Or COMEDIT=MODIFICACION_INSERCION   Or play=SI Or playb=SI   Then ' ctrl-m y ctrl-n ch
+  If COMEDIT=SOLO_MODIFICACION or COMEDIT=MODIFICACION_INSERCION  Or play=SI Or playb=SI   Then ' ctrl-m y ctrl-n ch
       cursor(c,posishow,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos
-''      cursor(c,posicion,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos 
-      ' se ilumina en posicion 0 
   EndIf
+
+
   '''' cairo_stroke(c) ESTOS STROKE HACEN QUE SALTE LA PANTALLACON - +
   'PERO PIERDO EL COLOR MARILLO DEL CURSOR
   
@@ -628,8 +626,9 @@ If GrabarPenta =0 Then
  EndIf
 else
   
-  If COMEDIT=SOLO_MODIFICACION Or play=SI Or playb=SI  Then ' solo ctrl-m ?
-      cursor(c,posishow,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos 
+  If COMEDIT=SOLO_MODIFICACION   Or play=SI Or playb=SI  Then ' solo ctrl-m ?
+      cursor(c,posishow,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos
+ '' YA PROBADO 
       '''cursor(c,posicion,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos
   EndIf
   
@@ -652,11 +651,11 @@ EndIf
    Exit Sub
  EndIf
  '           ================  MENUES CONTEXTUALES GRAFICOS PARA MOUSE ==================
- If ayudaModif=TRUE  And COMEDIT<>LECTURA Then
-  If  COMEDIT=SOLO_MODIFICACION  Then 'solo ctrl-m
+ If ArmarMenuModif=TRUE  And COMEDIT<>LECTURA Then
+  If  COMEDIT=MODIFICACION_INSERCION  Then 'solo ctrl-m
    'print #1,".............SUBRUTINA........................................."
    'print #1,"(9) ESTADO MUESTRA MENU COMANDOS"
-   'print #1,"ayudaModif=TRUE  And COMEDIT=TRUE And (cursorVert = 1 or  cursorHori = 1 )"
+   'print #1,"ArmarMenuModif=TRUE  And COMEDIT=TRUE And (cursorVert = 1 or  cursorHori = 1 )"
    'print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
    If savemousex > 0 Or savemousey > 0 Then
     usamousex=savemousex
@@ -721,7 +720,7 @@ EndIf
 
   EndIf
  EndIf
- If ayudaNuevaNota=TRUE  And COMEDIT<>LECTURA And vuelta=FALSE Then
+ If SeleccionarNuevaNota=TRUE  And COMEDIT<>LECTURA And VolverEntradaDatos=FALSE Then
   ' SI SE SELECCIONA INSERTAR O MODIFICAR Y DUR=0 THEN IMPRIMIR
   ' "ELIJA ANTES UNA DURACION"
   'print #1,".............SUBRUTINA........................................."
@@ -972,6 +971,7 @@ If ubiroll > 0 Then  ' CARGA DE ARCHIVOS POR LINEA DE COMANDO DE ROLLMUSIC
    ROLLCARGADO=TRUE
    NADACARGADO=FALSE
    MenuNew=MENU_INICIAL
+   cierroedit= 0
   param.ubiroll=ubiroll ' vale 2
   portout=CInt(pmTk(0).portout)
    
@@ -999,6 +999,7 @@ EndIf
 
   '  print #1,"despues RecalCompas veo nombre ", titulosTk(0)
     MenuNew=MENU_INICIAL
+    cierroedit= 0
     ubirtk=0
    param.ubirtk=0
 ' abrir ports si no estan abiertos 
@@ -1238,7 +1239,8 @@ EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar con Insert y I
  If COMEDIT<>LECTURA Then
-    COMEDIT=SOLO_MODIFICACION
+    modifmouse=3
+    COMEDIT=MODIFICACION_INSERCION
  EndIf
 
   
@@ -1252,6 +1254,24 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar co
  parametros=0
  lockip=1
 EndIf
+
+'If MultiKey(SC_CONTROL) And MouseButtons And 1  Then ' modificar con X o insertar con Insert y I
+' If COMEDIT<>LECTURA Then
+'    COMEDIT=MODIFICACION_INSERCION 
+' EndIf
+
+  
+' agregarNota=0
+' menuMouse = 0 ' INICIA EL MENU CONTEXTUAL PARA IMPRIMIR LOS LABELS DEL MENU
+' nota=0
+' DUR=0
+' trasponer=0
+' curpos= Int((mousex - gap1)/anchofig)
+' notacur=nsE
+' parametros=0
+' lockip=1
+'EndIf
+
 
 If MultiKey(SC_ALT) And MultiKey(SC_M)  Then ' menu Roll inicial
   menunew=0
@@ -1298,7 +1318,7 @@ EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
  If COMEDIT<>LECTURA Then
-    COMEDIT=MODIFICACION_INSERCION
+    COMEDIT=SOLO_MODIFICACION
  EndIf
 
  nota=0
@@ -1315,7 +1335,6 @@ EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE ?
 'vuelve a COMEDIT=ENTRADA_NOTAS PUES ES UN SOLO PASO ATRAS
- cierroedit= 0
  cierroedit= 0
  If COMEDIT<>LECTURA Then
     COMEDIT=ENTRADA_NOTAS
@@ -2246,6 +2265,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
         EndIf   
       
       menunew=MENU_INICIAL
+      cierroedit= 0
    EndIf
    
  EndIf  
@@ -2314,7 +2334,10 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_A)  Then ' A#
  '    if nota<> notaold THEN ' stnd by nola usare
  '       espacio=0
  '    EndIf
- If COMEDIT=MODIFICACION_INSERCION Then
+'========================================================================
+' AGREGARNOTA=1 IMPIDE LA ENTRADA DE NOTAS POR EL NUCLEO AUTOMATICAMENTE
+'======================================================================
+ If COMEDIT=SOLO_MODIFICACION  Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2325,7 +2348,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_C)   Then ' C#
  If espacio > 0 Then
   espacio=11
  EndIf
- If COMEDIT=MODIFICACION_INSERCION Then
+ If COMEDIT=SOLO_MODIFICACION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2336,7 +2359,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_D)  Then ' D#
  If espacio > 0 Then
   espacio=9
  EndIf
- If COMEDIT=MODIFICACION_INSERCION Then
+ If COMEDIT=SOLO_MODIFICACION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2347,7 +2370,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_F) Then ' F#
  If espacio > 0 Then
   espacio=6
  EndIf
- If COMEDIT=MODIFICACION_INSERCION Then
+ If COMEDIT=SOLO_MODIFICACION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2358,7 +2381,7 @@ If  MultiKey(SC_CONTROL) And MultiKey(SC_G)  Then ' G#
  If espacio > 0 Then
   espacio=4
  EndIf
- If COMEDIT=MODIFICACION_INSERCION Then
+ If COMEDIT=SOLO_MODIFICACION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2369,7 +2392,7 @@ If MultiKey (SC_A) Then
  If espacio > 0 Then
   espacio=3
  EndIf
- If COMEDIT=MODIFICACION_INSERCION Then
+ If COMEDIT=SOLO_MODIFICACION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2377,7 +2400,7 @@ EndIf
 
 If MultiKey (SC_B) Then
  nota = 1
- If COMEDIT=MODIFICACION_INSERCION Then
+ If COMEDIT=SOLO_MODIFICACION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2388,7 +2411,7 @@ If MultiKey (SC_C) Then
  If espacio > 0  Then
   espacio=12
  EndIf
- If COMEDIT=MODIFICACION_INSERCION Then
+ If COMEDIT=SOLO_MODIFICACION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2399,7 +2422,7 @@ If MultiKey (SC_D) Then
  If espacio > 0 Then
   espacio=10
  EndIf
- If COMEDIT=MODIFICACION_INSERCION Then
+ If COMEDIT=SOLO_MODIFICACION Then
   agregarNota = 1
  EndIf
  Exit Do 
@@ -2410,7 +2433,7 @@ If MultiKey (SC_E) Then
  If espacio > 0 Then
   espacio=8
  EndIf
- If COMEDIT=MODIFICACION_INSERCION Then
+ If COMEDIT=SOLO_MODIFICACION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2421,7 +2444,7 @@ If MultiKey (SC_F) Then
  If espacio >  0 Then
   espacio=7
  EndIf
- If COMEDIT=MODIFICACION_INSERCION Then
+ If COMEDIT=SOLO_MODIFICACION Then
   agregarNota = 1
  EndIf
  Exit Do
@@ -2432,7 +2455,7 @@ If MultiKey (SC_G) Then
  If espacio >  0 Then
   espacio=5
  EndIf
- If COMEDIT=MODIFICACION_INSERCION  Then
+ If COMEDIT=SOLO_MODIFICACION  Then
   agregarNota=1
  EndIf
  Exit Do
@@ -2909,7 +2932,8 @@ If Tiempodelta > 0 And GrabarPenta = 1 Then
    DUR=TiempoDelta
 EndIf
 
-If COMEDIT=ENTRADA_NOTAS  And nota > 0 And agregarNota=0  And carga=0 And nota <=182   Then ' 182 entra el fin de archivo 
+If COMEDIT=ENTRADA_NOTAS  And nota > 0 And agregarNota=0  And carga=0 And nota <=182   Then ' 182 entra el fin de archivo
+curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N se debe resetear 
 ' agregue cambiadur para que entre las modificaciones de cursor en ticks
  Print #1,"--------------------------------------------------------------"
 ' Print #1,">>>START NUCLEO-COMPAS VECTOR posn: "; posn; "suma:";acumulado
@@ -3830,7 +3854,10 @@ EndIf
    If e.scancode = SC_X Then ' 81 <==== SC_X ...fix
     'corrige nota cambia duracion o agrega nota nueva, acorde melodia
     ' solo debe funcionar con CTRL-M
-    If COMEDIT=SOLO_MODIFICACION Then ' ver cursorVert2 archivo nuevo con espacios....sirve??
+      If nroClick=DesplegarMenuModifClickDerecho Then 
+         curpos=curposClickDErecho
+      EndIf
+    If COMEDIT=MODIFICACION_INSERCION Then ' ver cursorVert2 archivo nuevo con espacios....sirve??
      cambiadur = 1    ' usando 1 a 8,, para silencios esta delete verificarlo!! 03-05-2025
     EndIf
     Exit Do
@@ -5701,7 +5728,7 @@ ButtonGadget(2,530,30,50,40," OK ")
 ' clave DEVF (desarrollo futuro)
 ' esto funciona solo en modo lectura asi que lo movere ahi
 
-  If MultiKey(SC_CONTROL) And MouseButtons= 1  Then '24-07-2025 Mousepress detecta mouse encima sin hacer ckick no sirve aca
+  If MultiKey(SC_CONTROL) And MouseButtons= 1  Then 
      SelGrupoNotaT=2:indXjreset=0 ''
      Dim As Integer pasox, pasoy, pasonR
      pasox=(mousex- gap1 )/anchofig  + posishow
@@ -5913,12 +5940,16 @@ ButtonGadget(2,530,30,50,40," OK ")
  ' MENU CONTEXTUAL O MOVER CURSOR A UNA POSICION
  '******************************************************
  If  COMEDIT<>LECTURA  Then
-     If  (COMEDIT=SOLO_MODIFICACION  Or COMEDIT=MODIFICACION_INSERCION) then
+     If  COMEDIT=MODIFICACION_INSERCION  Then
         If MouseButtons And 1 Then 
             notacur=nsE
-            curpos=Int((mousex- gap1 )/anchofig) ' no lo toma 27-07-2025
+            If curposClickDerecho=0 Then
+               curpos=Int((mousex- gap1 )/anchofig) ' no lo toma 27-07-2025
+            Else
+               curpos=curposClickDerecho '268-09-2025 wwwkkk
+            EndIf   
             indicePos = curpos + posishow '27-07-2025
-
+            
              If curposOld=0 Then  '''   VER JMG ==>>>>  
                 curposOld = curpos
              Else
@@ -5930,20 +5961,21 @@ ButtonGadget(2,530,30,50,40," OK ")
             EndIf
             OCTAVAFIJA=octavaEdicion
         EndIf
-    Else   
+     Else   'ENTRADA_NOTAS 
           octavaEdicion = EstoyEnOctava 
           
-    EndIf
+     EndIf
          cierroedit=0
-'---- MENU INSERCIONES NOTAS CON MENU DE MOUSE
-    If  MultiKey(SC_CONTROL) And (MouseButtons And 2)  Then
-   ' trae un menu contextual solo con ctrl-m  previo <==== menu borrar insertar modificar
+'---- MENU INSERCIONES NOTAS CON MENU DE MOUSE --no funca 
+  If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=ENTRADA_NOTAS Or COMEDIT=SOLO_MODIFICACION Then 
+    If  MultiKey(SC_CONTROL) And (MouseButtons And 2)  Then 
+   ' trae un menu contextual solo con ctrl-M  previo <==== menu borrar insertar modificar
    ' ESTADO:CALL MENU COMANDO
    ' aparece en ctrl-n tambien
-     ayudaModif=TRUE
-     ayudaNuevaNota=FALSE
+     ArmarMenuModif=TRUE
+     SeleccionarNuevaNota=FALSE
      menuMouse = 0
-     nroClick=1
+     nroClick=DesplegarMenuModifClickDerecho 
      curposOld=curpos ' GUARDO LA POSICION DEL CURSOR DE LA NOTA DONDE SE DESPLEGO EL MENU  
      COMEDIT=MODIFICACION_INSERCION
      GrabarPenta=0
@@ -5951,10 +5983,10 @@ ButtonGadget(2,530,30,50,40," OK ")
  '  print #1, "------------------------------------------------------------"
  '  Print  #1,"(1) MultiKey(SC_CONTROL) And (MouseButtons And 2) And COMEDIT<>LECTURA"
  '  print #1, "sc_CONTROL + MB2 + CE=TRUE <= ESTADO:CALL MENU COMANDO"
- '  Print  #1, " ayudaModif=TRUE"
- '  Print  #1," ayudaNuevaNota=FALSE"
+ '  Print  #1, " ArmarMenuModif=TRUE"
+ '  Print  #1," SeleccionarNuevaNota=FALSE"
  '  Print  #1," menuMouse = 0"
- '  Print  #1," nroClick=1 "
+ '  Print  #1," nroClick=DesplegarMenuModifClickDerecho  "
    
  '  print #1,"0) inicio ,posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
  
@@ -5962,24 +5994,24 @@ ButtonGadget(2,530,30,50,40," OK ")
      Exit Do
     EndIf
  
-    If  ayudaNuevaNota=FALSE And ayudaModif=TRUE Then 'ESTADO: seleccionar comando
-     If (mouseButtons And 1 )  And nroClick = 1  Then
-        ayudaModif=FALSE
+    If  SeleccionarNuevaNota=FALSE And ArmarMenuModif=TRUE Then 'ESTADO: seleccionar comando
+     If (mouseButtons And 1 )  And nroClick = DesplegarMenuModifClickDerecho  Then
+        ArmarMenuModif=FALSE
         menumouse=0
         posinterna=0
-        COMEDIT=MODIFICACION_INSERCION 'solo cntrl-m el viejo
+        COMEDIT=MODIFICACION_INSERCION 'CTRL-M 
     ' print #1, "------------------------------------------------------------"
-    ' Print  #1,"(2) (mouseButtons And 1 ) And ayudaModif=TRUE And nroClick = 1 And COMEDIT=TRUE "
-    ' Print  #1,  "And ayudaNuevaNota=FALSE "
+    ' Print  #1,"(2) (mouseButtons And 1 ) And ArmarMenuModif=TRUE And nroClick = DesplegarMenuModifClickDerecho And COMEDIT=TRUE "
+    ' Print  #1,  "And SeleccionarNuevaNota=FALSE "
     ' Print  #1,"ESTADO: seleccionar comando "
-    ' Print  #1," ayudaModif=FALSE"
+    ' Print  #1," ArmarMenuModif=FALSE"
     ' Print  #1," menumouse=0"
     ' Print  #1," posinterna=0"
     ' print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 
    ' Necesitamos mostrar el menu todavia  savemousex=0 : savemousey=0
-       If nroClick = 1 Then 'seleccionamos verticalmente ,,,,
-          nroClick=2
+   'seleccionamos verticalmente ,,,,
+          nroClick=SeleccionarComandoClickIzquierdo
           If (mousey >= usamousey -120) And  (mousey <= usamousey -100) Then
             modifmouse=1 'borrar =1
             notacur=nsE
@@ -6001,7 +6033,7 @@ ButtonGadget(2,530,30,50,40," OK ")
             Exit Do
          EndIf
 
-       EndIf
+   
      EndIf
     EndIf
  ' <===========   MODIFICACIONES INSERCION
@@ -6012,12 +6044,12 @@ ButtonGadget(2,530,30,50,40," OK ")
  ' el cursor seguira al click izq por el calculo de cursor en este comando
  ' finalmente se usa la tecla END para finalizar todas las inserciones.
  ' debere agregr un nuevo comando END para hacerlo con el mouse....
-   If   ayudaModif=FALSE Then
-     If (mouseButtons And 1 )  And nroClick = 2  Then
+   If   ArmarMenuModif=FALSE Then
+     If (mouseButtons And 1 )  And nroClick=SeleccionarComandoClickIzquierdo  Then
        savemousex=0 : savemousey=0 ' 
    ' ESTADO: PREPARA COMANDO
   ' Print #1, "------------------------------------------------------------"
-  ' Print #1, "(3) (mouseButtons And 1 ) and ayudaModif=FALSE And nroClick = 2 And COMEDIT=TRUE "
+  ' Print #1, "(3) (mouseButtons And 1 ) and ArmarMenuModif=FALSE And nroClick=SeleccionarComandoClickIzquierdo  And COMEDIT=TRUE "
   ' Print #1, " ESTADO: PREPARA COMANDO"
        notacur=nsE
        curpos= Int((mousex - gap1)/anchofig)
@@ -6030,7 +6062,7 @@ ButtonGadget(2,530,30,50,40," OK ")
 
        If modifmouse=1 Then  ' anda ok 27 02 2021
           BORRAR=1
-          ayudaNuevaNota=TRUE
+          SeleccionarNuevaNota=TRUE
           Exit Do
        EndIf
        If modifmouse=2 And insert= 0 Then
@@ -6065,7 +6097,7 @@ ButtonGadget(2,530,30,50,40," OK ")
           EndIf
           nroClick=0 ' no permite entrar mas por insercion
           modifmouse=0
-          ayudaNuevaNota=TRUE
+          SeleccionarNuevaNota=TRUE
     ' acomoda los compases  <======= organiza Compases
         '''  ReCalCompas(Roll) ' organizaCompases()
     ' fin compases
@@ -6074,7 +6106,7 @@ ButtonGadget(2,530,30,50,40," OK ")
          cambiadur=1
          curpos=Int((mousex- gap1 )/anchofig)
          notacur=nsE
-         ayudaNuevaNota=TRUE
+         SeleccionarNuevaNota=TRUE
          Exit Do
        EndIf
      EndIf
@@ -6083,29 +6115,30 @@ ButtonGadget(2,530,30,50,40," OK ")
  '                     <=== INICIO  O P I L F E W H
 ' aca funciona mal toma la posicion del click izquierdo al elegir una duracion 
 ' y mueve el cursor no lo deberia mover !!!!
-   If (MouseButtons And 2)  Then ''<=== menu de duraciones para seleccionar con click
+   If (MouseButtons And 2)   Then ''<=== menu de duraciones para seleccionar con click
    ' el resto del code en CreaPenta(), para toda edicion las duraciones 1 a 8 en letras
-     ayudaNuevaNota=TRUE 'ESTADO: CALL MENU DURACIONES O CTRL-M
-     ayudaModif =FALSE
+     SeleccionarNuevaNota=TRUE 'ESTADO: CALL MENU DURACIONES O CTRL-M
+     ArmarMenuModif =FALSE
      savemousex=0 : savemousey=0 ''ACA NO ¿?
-     vuelta=FALSE
+     VolverEntradaDatos=FALSE
      menuMouse = 0
 
-     nroClick=1
+     nroClick=DesplegarMenuModifClickDerecho 
 '   Print #1, "------------------------------------------------------------"
 '   Print #1,"(MouseButtons And 2) and COMEDIT<>LECTURA"
 '    Print  #1,"(4) ESTADO: CALL MENU DURACIONES O CTRL-M"
-'   Print  #1," ayudaNuevaNota=TRUE "
-'   Print  #1," ayudaModif =FALSE"
+'   Print  #1," SeleccionarNuevaNota=TRUE "
+'   Print  #1," ArmarMenuModif =FALSE"
 '   Print  #1," savemousex=0 : savemousey=0 "
-'   Print  #1,"  vuelta=FALSE"
+'   Print  #1,"  VolverEntradaDatos=FALSE"
 '   Print  #1,"  menuMouse = 0"
 '   Print  #1,"  DUR=0"
-'   Print  #1,"  nroClick=1"
+'   Print  #1,"  nroClick=DesplegarMenuModifClickDerecho "
  '  Print  #1,"COMEDIT<>LECTURA "
  ''  Print #1,"4 posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
 ' esto mueve el cursor conde se abrira el menu grafico esta bien.,..
          curpos=Int((mousex- gap1 )/anchofig) '01-07-2021
+         curposClickDErecho=curpos
          curposold = curpos
             Print #2," 2) 2do click izq curpos curposOld "; curpos, curposOld 
          notacur=nsE
@@ -6123,7 +6156,7 @@ ButtonGadget(2,530,30,50,40," OK ")
      ''   print #1,"mousex ",mousex
      '   print #1,"LINEA 2784 TE CAMBIEN MOUSEX ",mousex
      '   '''savemousex=mousex '''ESTO NO SE PORQU ELO PUSE SACANDO
-     '   ayudaNuevaNota=FALSE
+     '   SeleccionarNuevaNota=FALSE
      'EndIf   
        
     Exit Do
@@ -6131,62 +6164,84 @@ ButtonGadget(2,530,30,50,40," OK ")
  
  ' YA VUELVE OK
  '******************************************************************************
-'>>>>>>>>>>>>>>>> EJECUCION COMANDOS MENU GRAFICO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+'>>>>>>>>> EJECUCION COMANDOS MENU GRAFICO COMEDIT=MODIFICACION_INSERCION<<<<<<<
 '*******************************************************************************
-
- If  ayudaModif=FALSE Then
-   If (mouseButtons And 1 ) And  COMEDIT=MODIFICACION_INSERCION  And modifmouse <> 3 Then ' ESTADO: SELECCIONA VUELTA CTRL-P
+' SEPULSO CTRL-P Y  CON ESTO SE VUELVE ,,FIX CON COMEDIT<>LECTURA SE PUEDE USAR CON CTRL-M Y ENTRADA_NOTAS. (CTRL-N NO LO USO NO SE SI PONERLO) 
+ If  ArmarMenuModif=FALSE Then
+   If (mouseButtons And 1 ) And  COMEDIT<>LECTURA  And modifmouse <> 3 Then ' ESTADO: SELECCIONA VolverEntradaDatos CTRL-P
    'Print #1, "------------------------------------------------------------"
    'Print  #1,"(5) MB1  And AModif=FALSE And CE=TRUE  And CVert = 1 "
-   'Print  #1,"5->ESTADO: SELECCIONA VUELTA CTRL-P"
-   'Print  #1,"  vuelta=TRUE"
+   'Print  #1,"5->ESTADO: SELECCIONA VolverEntradaDatos CTRL-P"
+   'Print  #1,"  VolverEntradaDatos=TRUE"
    'Print #1,"posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
-' LA VUELTA ES UN SOLO PASO A ENTRADA_DATOS 
-     vuelta=TRUE
+' LA VolverEntradaDatos ES UN SOLO PASO A ENTRADA_DATOS
+     VolverEntradaDatos=TRUE
      If mousey <= usamousey -40  And mousey >= usamousey -60 Then
        If mousex >= usamousex -64 And mousex<= usamousex +86 Then
           COMEDIT=ENTRADA_NOTAS: agregarNota=0:  menuMouse = 0
-          ayudaModif=FALSE
+          ArmarMenuModif=FALSE
           savemousex=0 : savemousey=0
           nroClick=0
           modifmouse=0
           nota=0 ' jmg 03-03-21 22:28 sino le sumaba 1 a Posicion
      ' y trataba de insertarla.....como nota nueva
     ' Print  #1,"5-> ctrl-p=> cursorVert = 0: cursorHori = 0: agregarNota=0:  menuMouse = 0"
-    ' Print  #1,"5-> ayudaModif=FALSE    savemousex=0 : savemousey=0  nroClick=0"
+    ' Print  #1,"5-> ArmarMenuModif=FALSE    savemousex=0 : savemousey=0  nroClick=0"
+ 
          Exit Do
        EndIf
      EndIf
    EndIf
  EndIf
- If ayudaModif=FALSE And ayudaNuevaNota=TRUE Then ' ESTADO : SELECCIONA DURACION O CTRL-M
-   If (mouseButtons And 1 )  And nroClick = 1  Then
-       ayudaNuevaNota=FALSE
+ If ArmarMenuModif=FALSE And SeleccionarNuevaNota=TRUE Then ' ESTADO : SELECCIONA DURACION O CTRL-M o CTRL-P
+   If (mouseButtons And 1 )  And nroClick = DesplegarMenuModifClickDerecho  Then
+       SeleccionarNuevaNota=FALSE
        savemousex=0 : savemousey=0
        menuMouse = 0
   ' Print #1, "------------------------------------------------------------"
-  ' Print  #1,"(6) (mouseButtons And 1 ) And ayudaNuevaNota=TRUE And nroClick = 1 And COMEDIT<>LECTURA "
-  ' Print   #1," 6->And ayudaModif=FALSE Then ' ESTADO : SELECCIONA DURACION O CTRL-M"
-  ' Print  #1,"(6)MB1  +d ANN=TRUE + NClick = 1 + CE=TRUE + ayudaModif=FALSE"
+  ' Print  #1,"(6) (mouseButtons And 1 ) And SeleccionarNuevaNota=TRUE And nroClick = DesplegarMenuModifClickDerecho And COMEDIT<>LECTURA "
+  ' Print   #1," 6->And ArmarMenuModif=FALSE Then ' ESTADO : SELECCIONA DURACION O CTRL-M"
+  ' Print  #1,"(6)MB1  +d ANN=TRUE + NClick = 1 + CE=TRUE + ArmarMenuModif=FALSE"
   ' Print  #1,"(6)ESTADO : SELECCIONA DURACION O CTRL-M , nroClick ", nroClick
-  ' Print  #1," 6 out-> ayudaNuevaNota=FALSE"
+  ' Print  #1," 6 out-> SeleccionarNuevaNota=FALSE"
   ' Print  #1,"  savemousex=0 : savemousey=0"
   ' Print  #1,"  menuMouse = 0"
-       Print #1,"1 posicion curpos curposold MaxPos,posn ", posicion, curpos, curposold, MaxPos,posn
+  '     Print #1,"1 posicion curpos curposold MaxPos,posn ", posicion, curpos, curposold, MaxPos,posn
 
    ' ACA SERA LA ENTRADA POR MOUSE, DUR SALDRÁ DE LA ELECCION DEL MENU DE DURACION
    ' QUE APARECE CON CLICK DERCHO UBICAMOS LA POSICION RELATIVA Y OBTENEMOS LA DURACION
    ' EN EL 1ER CLICK IZQUIERDO, EN EL 2DO CLICK IZQUIERDO ENVIAMOS NOTA Y DURACION
-     If  nroClick =1  Then ' determinmos duracion clickeada o seleccionada graficamente
-       If mousey >= usamousey +30  And mousey <= usamousey + 44 Then
-     If mousex >= usamousex -55 And mousex<= usamousex +102 Then
-      ' ESTADO:SELECCION  CTRL-M
-      COMEDIT=SOLO_MODIFICACION : agregarNota=0:  menuMouse = 0
-      ''  ayudaModif=TRUE jmg elmenu no debe aparecer hasta dar ctrl-click derecho
-     ' Print #1,"6 ctrl-M ->COMEDIT=SOLO_MODIFICACION : agregarNota=0:  menuMouse = 0 "
-     ' Print #1,"6-> ayudaModif=TRUE"
-      Exit Do
-     EndIf
+  ' determinmos duracion clickeada o seleccionada graficamente
+       nroClick=ObtenerDuracion1erClickIzquierdo
+       If mousey >= usamousey +30  And mousey <= usamousey + 44 Then 'CTRL-M
+         If mousex >= usamousex -55 And mousex<= usamousex +102 Then
+          ' ESTADO:SELECCION  CTRL-M
+   '    Print #1,"mmmmmm MOUSEY ";mousey, "usamousey ";usamousey
+            COMEDIT=MODIFICACION_INSERCION : modifmouse=3
+            agregarNota=0:  menuMouse = 0
+      ''  ArmarMenuModif=TRUE jmg elmenu no debe aparecer hasta dar ctrl-click derecho
+    '  Print #1,"6 ctrl-M ->COMEDIT=MODIFICACION_INSERCION : agregarNota=0:  menuMouse = 0 "
+    '  Print #1,"6-> ArmarMenuModif=TRUE"
+           Exit Do
+         EndIf
+       EndIf
+    '   Print #1,"ppppp MOUSEY ";mousey, "usamousey ";usamousey
+       If mousey <= usamousey -30  And mousey >= usamousey - 60 Then 'CTRL-P
+         If mousex >= usamousex -55 And mousex<= usamousex +102 Then
+          ' ESTADO:SELECCION  CTRL-P
+            COMEDIT=ENTRADA_NOTAS : modifmouse=0
+            agregarNota=0:  menuMouse = 0
+            cierroedit= 0
+            trasponer=0
+            nota=0
+            DUR=0
+            lockip=2
+             
+      ''  ArmarMenuModif=TRUE jmg elmenu no debe aparecer hasta dar ctrl-click derecho
+    '  Print #1,"6A ctrl-P ->COMEDIT=ENTRADA_DATOS : agregarNota=0:  menuMouse = 0 "
+    '  Print #1,"6A-> ArmarMenuModif=TRUE"
+           Exit Do
+         EndIf
        EndIf
 
        If mousex >= usamousex -100 And  mousex <= usamousex -80 Then ' O en -90
@@ -6213,18 +6268,19 @@ ButtonGadget(2,530,30,50,40," OK ")
        If mousex >= usamousex +110 And  mousex <= usamousex +130 Then ' H en +120
         DUR=8
        EndIf
-       curpos=curposOld ' REPONEMOS EL CURPOS AL DE LA NOTA A MODIFICAR 
-     EndIf
+       curpos=curposClickDErecho ' REPONEMOS EL CURPOS AL DE LA NOTA A MODIFICAR 
+
    EndIf
+   curpos=curposClickDErecho
  EndIf
 
-   If ayudaNuevaNota=FALSE And ayudaModif=FALSE Then
-      If DUR > 0 And nsE > 0 And nroClick = 1 And modifmouse<> 3 Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
+   If SeleccionarNuevaNota=FALSE And ArmarMenuModif=FALSE Then
+      If DUR > 0 And nsE > 0 And nroClick=ObtenerDuracion1erClickIzquierdo  And modifmouse<> 3 Then ' ESTADO INGRESA O MODIFICA 1ER NOTA
          nota=nsE   ''<== 1er nota ingresada para la duracion y nota elegida
          nroClick=0
  ' print #1, "------------------------------------------------------------"
- ' Print  #1," DUR > 0 And nsE > 0 And nroClick = 1 And ayudaNuevaNota=FALSE and COMEDIT<>LECTURA "
- ' Print  #1," And ayudaModif=FALSE "
+ ' Print  #1," DUR > 0 And nsE > 0 And nroClick=DesplegarMenuModifClickDerecho And SeleccionarNuevaNota=FALSE and COMEDIT<>LECTURA "
+ ' Print  #1," And ArmarMenuModif=FALSE "
  ' Print  #1," (7) ESTADO INGRESA O MODIFICA 1ER NOTA"
  ' Print  #1," 7-><== 1er nota ingresada para la duracion y nota elegida"
  ' Print  #1," 7->nota=nsE   ", nsE
@@ -6232,24 +6288,31 @@ ButtonGadget(2,530,30,50,40," OK ")
          Print #1,"2 posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
       EndIf
    EndIf
-   If ayudaModif=FALSE And ayudaNuevaNota=FALSE And octavaEdicion = estoyEnOctava Then
+   If ArmarMenuModif=FALSE And SeleccionarNuevaNota=FALSE And octavaEdicion = estoyEnOctava Then
      '11-12-2021 uso Ctrl + click para ingresar notas con el mouse sino se ingresa por error
      ' facilmente durante el pasaje de edit a ctrl-m
      'LUGAR DONDE SE PODRIA REPETIR EL CAMBIODE NOTA CON UNA DURACION PREVIA
      If (mouseButtons And 1) And (DUR > 0) And (nsE > 0) And modifmouse<> 3 And MultiKey(SC_CONTROL) Then
   ' Print #1, "------------------------------------------------------------"
-  ' Print  #1,"(8) (mouseButtons And 1) And (DUR > 0) And (nsE > 0) And ayudaNuevaNota=FALSE "
-  ' Print  #1,"(8)  And COMEDIT<>LECTURA And ayudaModif=FALSE"
+  ' Print  #1,"(8) (mouseButtons And 1) And (DUR > 0) And (nsE > 0) And SeleccionarNuevaNota=FALSE "
+  ' Print  #1,"(8)  And COMEDIT<>LECTURA And ArmarMenuModif=FALSE"
        Print #1,"3 posicion curpos MaxPos,posn ", posicion, curpos, MaxPos,posn
        Dim As Integer posdur= (mousex- gap1 )/anchofig + posishow '01-07-2021
-       curpos =(mousex- gap1 )/anchofig ' 27-07-2025
+       If curposClickDErecho > 0 Then
+          curpos=curposClickDErecho '26-09-2025
+       Else   
+          curpos =(mousex- gap1 )/anchofig ' 27-07-2025
+       EndIf
        If posdur >= Maxpos - 1 Then  ' no permite entrar notas con click , antes de maxpos
-        nota=nsE ' <=== ingresamos varias notas por mouse del mismo valor
+        nota=nsE ' <=== ingresamos varias notas por mouse del mismo valor o duracion antes elegida
        EndIf
    ' hasta que si vuelva a dar click derecho y aparesca de nuevo el menu de duraciones.
        Print  #1," nota=nsE ", nsE
        Exit Do
      EndIf
+     If DUR=0 Then
+        curpos =(mousex- gap1 )/anchofig ' 27-07-2025
+     EndIf 
    EndIf
 
    If MultiKey (SC_ENTER) And copiar=0 Then
@@ -6262,8 +6325,8 @@ ButtonGadget(2,530,30,50,40," OK ")
       copiar=3
  'Print #1,"copiar es 3 ",copiar
    EndIf 
-
- EndIf ' FIN <========COMEDIT<>LECTURA
+  EndIf ' FINN COMEDIT=MODIFICACION_INSERCION
+EndIf ' FIN <========COMEDIT<>LECTURA
  ' menu contextual
  
 ' You'd have to get the thread id of the graphics window (GetWindowThreadProcessId), 

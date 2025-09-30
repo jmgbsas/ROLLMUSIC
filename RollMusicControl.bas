@@ -45,6 +45,7 @@ Common Shared As FLOAT font,nanchofig,anchofig
 COMMON Shared As Long eventc, eventM
 Common Shared As hwnd hwndC, hwndListBox, hwndPatronEjec,hwndTipoAcorde
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA
+Common  Shared As String comando
 ROLLCARGADO    = FALSE
 TRACKCARGADO   = FALSE
 CANCIONCARGADA = FALSE
@@ -61,7 +62,7 @@ Screenbuffer=0
 
 Common Shared As FT_Face ftface
 common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu ,threadmetronomo,threadsel,threadcanal
-Common Shared As Any Ptr thread4
+Common Shared As Any Ptr thread4, threadCmd
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares
 Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,MousexNotaElegida,PianoNotaElegida,nsEelegida

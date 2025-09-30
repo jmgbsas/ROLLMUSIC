@@ -31,7 +31,12 @@
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.338 borra zona con nota o acorde o grupo de notas, con delete en modo lectura 2.5.3"
+nroversion="0.339 CTRL-M CTRL-N CORRECCIONES VARIAS. CON CTRL-DELETE EN LECTURA SE BORRA NOTAS Y SU ESPACIO EN UNA ZONA ELEGIDA"
+' ctrl-n Y ctrl-m CON TECLADO OK, FIX DE MENU CONTEXTUAL PARA SALIR CLICK EN CTRL-P O ENTRAR CLICK CTRL-M
+' CON MENU GRAFICO REVISAR TODO, CLICK DERECHO YA NO ANDA BIEN DESASTRE! VER
+' CTRL-M MODIFICA INSERTA ETC..CTRL-N SOLO MODIFICA CON NOMBRE ALGO EXISTENTE
+' para borrar sacando el espacio es con ctrl-delete funciona tambien 2.5.3 ok
+' TAREA=> (EN AYUDA )borrar desde posiciocn actual al final corregir mañana 2.5.4 
 ' 0.339 revisar borrarColumnasMarcadas() en modo modificar y tratar de usar borrarZona que anda mejor
 ' DE ESA FORMA SE PODRA BORRAR UNA COLUMNA SOLA ANDA MAL PARA UNA SOLA COLUMNA EN TICK
 ''"0.340 LINEA DE COMANDOS "

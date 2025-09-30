@@ -949,10 +949,14 @@ Dim  As Integer nroPartesNota,verticalEnOctavaVacia
 '---------------CTRL-N ..................
 'ctrl-n: usaremos el mismo codigo de ctrl-m solo que la nota se entra por nombre la X que es cambiadur=1 se
 ' establece desde el principio no hace falta pulsarla
- If  COMEDIT=MODIFICACION_INSERCION  And agregarNota=1  And nota > 0 Then 'ctrl-n ch cambiado hoy
-  If MouseButtons And 1 Then
-     curpos= Int((mousex - gap1)/anchofig) '27-07-2025
-     nota=nsE
+ If  COMEDIT=SOLO_MODIFICACION  And agregarNota=1  And nota > 0 Then 'ctrl-n ch cambiado hoy
+  If MouseButtons And 1 Then '''YA PROBADO
+     If curposClickDerecho >0 Then
+        curpos=curposClickDerecho
+     Else  
+        curpos= Int((mousex - gap1)/anchofig) '27-07-2025
+     EndIf
+     nota=nsE 
   EndIf
 
   notacur=nota 
@@ -1071,14 +1075,16 @@ trasponer=0
 ' 03-05-2025 ok aorafalta borrar la nota y cambiadur=0 si cambio de octava con el mouse
 ' pero no la seleccione con el mouse hasta el final 
 
- If cambiadur= 1  Then ''Ctrl-M y pulso X O CTRL-N MAS NOTA
+ If cambiadur= 1  Then ''Ctrl-M y pulso X O CTRL-N MAS NOTA TERMINA 28-09-2025 EN 1467
      cambiadur=0
      trasponer=0
-   If COMEDIT=SOLO_MODIFICACION   And octavaEdicion<>estoyEnOctava Then ' PARA ctrl-M SOLO CAMBIA UNA OCTAVA POR VEZ
+     curposClickDErecho=0 ' ya noquiero que vuelva a la posicion donde se dio click derecho
+' sino n odeja cambiar otras notas en un ucrpos nuevo OK!
+   If COMEDIT=MODIFICACION_INSERCION   And octavaEdicion<>estoyEnOctava Then ' PARA ctrl-M SOLO CAMBIA UNA OCTAVA POR VEZ
        Exit Sub  'cursorVert = 1 es solo ctrl-m 
    EndIf
-   If  COMEDIT=MODIFICACION_INSERCION   And nota = 0 Then ' PARA ctrl-N cambia en todas las octavas libremente
-       Exit Sub  ' SALE DE  ctrl-n
+   If  COMEDIT=SOLO_MODIFICACION And nota = 0 Then ' PARA ctrl-N cambia en todas las octavas libremente
+       Exit Sub  ' SALE DE  ctrl-n, CTRL-M LA NOTA SALE DE NSE EL CLICK DEL CURSOR O FLECHAS
    EndIf
 
 Print #1,"CAMBIADUR 1 ENTRA  "
@@ -1088,9 +1094,11 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
      cambiadur=1
      Print #1," ANTES BUCONOTA curpos notacur "; curpos, notacur
 
-     If BuscarNota (cambiadur, curpos ,notacur )=1 And COMEDIT=SOLO_MODIFICACION  Then
-        cambiadur=0 ' si busconota da error 1 deberia salir sin hacer nada, para ctrl-N no va salir
-        Exit Sub ' sale para ctrl-m proque solo modifico notas existentes
+     If BuscarNota (cambiadur, curpos ,notacur )=1  Then
+        If COMEDIT=SOLO_MODIFICACION  Then
+           cambiadur=0 ' si busconota da error 1 deberia salir sin hacer nada, para ctrl-M no va salir   
+           Exit Sub ' sale para ctrl-N proque solo modifico notas existentes
+        EndIf
      EndIf 
      Print #1," DESPUES BUCONOTA curpos notacur "; curpos, notacur
      cambiadur=0
@@ -1443,30 +1451,20 @@ trasponer=0
      EndIf
       notaold=12-notacur +(estoyEnOctava -1) * 13
 '''---- OJO ESTO NO ESTBA -----------      
-      If COMEDIT=MODIFICACION_INSERCION Then ' wwwwwwwwwwwwww curcial 
+      If COMEDIT=SOLO_MODIFICACION Then ' wwwwwwwwwwwwww crucial 
 ' necesario en ctrl-n sino borra la nota, el cursor salta arriba pero no importa 
 ' el cursor lo mueve verticalmente el nombre de la nota 
 'PERO en ctrl-m Hori=1 no borra la nota pero no mantiene la ultima posicion del 
 ' cursor salta arriba  
-         notacur=0 'volvemos a poner sino entra en nucleo o repite sin fin !!! podria ser esto
-         notaOld=0 
+      notacur=0 'volvemos a poner sino entra en nucleo o repite sin fin !!! podria ser esto
+       notaOld=0 
       EndIf
-'''---FIN ESTO NO ESTABA.............      
-      DUR=0
+   
   EndIf 
 ''' fin agregado ticks
   cambiadur = 0: nota=0
   cuart=0:pun=0:doblepun=0:tres=0:silen=0:mas=0
 
- ''''no hara falta con ticks ReCalCompas(Roll) 'organizaCompases() 
-  ' fin nuevaversion
-  'Print #1,"SALE cursor CAMBIADUR  ",Timer
-''TARDA 20 SEG EN CAMBIAR UNA NOTA!!!!
-  DUR=0 ' AGREGADO 2 MAR 2025
-  '''notaold=12-notacur +(estoyEnOctava -1) * 13  'wwwwwww
-  ''notaold=Penta_y + (notacur-1) * inc_Penta
-  
- ''' notacur=0
   Exit Sub
  EndIf ' fin ctrl-m  modificacion Y CTRL-N AGREGAR NOTA CON NOMBRE DE NOTA
  
@@ -2124,6 +2122,7 @@ Sleep 5
 ReCalCompas (Roll)
           '  print #1,"despues RecalCompas veo nombre ",nombre
             MenuNew=MENU_INICIAL
+            cierroedit= 0
             carga=1 ' <======= control de Carga 
             TRACKCARGADO=TRUE
             ROLLCARGADO=FALSE
@@ -3369,10 +3368,9 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 'xxxx Str (BordeSupRoll)
 
 ' //////////////////////////////////////////////////////////////////
-  If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
-     If MouseButtons And 1 Then
+  If mousex > ANCHO/2 And mousey < 50 And mousex < ANCHO-50 Then
       MenuNew=MENU_INICIAL
-     EndIf
+      cierroedit= 0
   EndIf
  
  Select Case menuNro
@@ -3436,6 +3434,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    '   print #1,"--->entra a reproducir thread1 "
               play=SI
         menuNew =MENU_INICIAL
+        cierroedit= 0
         ' Print #1,"hizo click para llamar a playall, maxpos ",maxpos 
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
         If  MaxPos > 2 Then
@@ -3489,10 +3488,9 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    cairo_stroke(c)
 
   '' VUELVE menu grafico Rollmusic cinta AL INICIO....
-  If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
-     If MouseButtons And 1 Then
+  If mousex > ANCHO/2 And mousey < 50 And mousex < ANCHO-50 Then
       MenuNew=MENU_INICIAL
-     EndIf
+      cierroedit= 0
   EndIf
 
 
@@ -3584,10 +3582,9 @@ EndIf
     cairo_set_source_rgba c, 1, 1, 1, 1    
   EndIf  
    '' VUELVE menu grafico Rollmusic cinta AL INICIO....
-  If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
-     If MouseButtons And 1 Then
+  If mousex > ANCHO/2 And mousey < 50 And mousex < ANCHO-50 Then
       MenuNew=MENU_INICIAL
-     EndIf
+      cierroedit= 0
   EndIf
   
 '*******************************************************************
@@ -3603,6 +3600,7 @@ EndIf
             Nuevo(Roll,1)
             Sleep 50
             MenuNew=MENU_INICIAL
+            cierroedit= 0
          'EndIf
          
       EndIf 
@@ -3628,6 +3626,7 @@ EndIf
        cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
     '   print #1,"nombre cargado en Roll ",nombre
        MenuNew=MENU_INICIAL
+       cierroedit= 0
        carga=1  ' <======= control de Carga
        ROLLCARGADO=TRUE ' aunque este en cancion puedo cargar un roll
     EndIf
@@ -3666,6 +3665,7 @@ EndIf
             ReCalCompas (Roll)
           '  print #1,"despues RecalCompas veo nombre ",nombre
             MenuNew=MENU_INICIAL
+            cierroedit= 0
             carga=1 ' <======= control de Carga 
             TRACKCARGADO=TRUE
             ROLLCARGADO=FALSE
@@ -3697,7 +3697,7 @@ EndIf
   '     Print #1,"3) A MIDI PLANO DESDE MENU ROLL" 
     EndIf
     MenuNew=MENU_INICIAL
-    
+    cierroedit= 0
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
     carga=0  ' <======= control de Carga
@@ -3793,6 +3793,7 @@ EndIf
            GrabarRollaTrack(1) ' el 0 no lo toma es indiferente
         EndIf
         MenuNew=MENU_INICIAL  ' por formato de TRack anteponiendo[0]
+        cierroedit= 0
         carga=1
     EndIf
    Else
@@ -3823,6 +3824,7 @@ Sleep 100
        Sleep 1000,1   
           lockip=2 ' habilita mouse 28-08-2021
        MenuNew=MENU_INICIAL
+       cierroedit= 0
        carga=1   
     EndIf
    Else
@@ -3838,10 +3840,9 @@ Sleep 100
  '   EndIf
  '  EndIf
    '' VUELVE menu grafico Rollmusic cinta AL INICIO....
-  If mousex > 900 And mousey < 50 And mousex < ANCHO-50 Then
-    '' If MouseButtons And 1 Then
+  If mousex > ANCHO/2 And mousey < 50 And mousex < ANCHO-50 Then
       MenuNew=MENU_INICIAL
-   ''  EndIf
+      cierroedit= 0
   EndIf
   
 
@@ -3849,10 +3850,9 @@ Sleep 100
    cairo_set_source_rgba c,1,1,1,1
    t=  "      [Desde Inicio][Desde Esta Posicion] [Volumen / + / - /] No habilitado"
 '----
-   If mousex > 330 And mousey < 50 And mousex < ANCHO-50 Then
-    If MouseButtons And 1 Then
+   If mousex > ANCHO/2 And mousey < 50 And mousex < ANCHO-50 Then
        MenuNew=MENU_INICIAL
-    EndIf
+       cierroedit= 0
    EndIf
    
 '------------------------------------------------------
@@ -4021,6 +4021,7 @@ Sleep 100
      RTA="REDIMENSION VISUAL y FISICA OK"
    '  print #1, RTA
       MenuNew=MENU_INICIAL
+      cierroedit= 0
     EndIf
    Else
   '  cairo_set_source_rgba c, 1, 1, 1, 1
@@ -4130,6 +4131,7 @@ Sleep 100
           If pubi =0 Then
            Print #1,"voy a EntrarTEcla desde ver menu8"
             menunew=MENU_INICIAL
+            cierroedit= 0
             thread3= ThreadCall EntrarTeclado()
              pubi=1
           EndIf
@@ -4141,14 +4143,14 @@ Sleep 100
       
           If pubi =0 Then
              menunew=MENU_INICIAL
-               
+             cierroedit= 0  
              thread3= ThreadCall EntrarTeclado()
             pubi=1   
           EndIf
 
       End Select
     menunew=MENU_INICIAL
-   
+    cierroedit= 0
 '-----------------------------------------------------
    Case CONFIGURACION ''9
   ' [MIDI] [CANALES]
@@ -4251,11 +4253,9 @@ Sleep 100
  ' Si nodoy Stroke los show text van apendendo al final como un print;
 
   '' VUELVE menu grafico Rollmusic cinta AL INICIO....
-  If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
-     If MouseButtons And 1 Then
+  If mousex > ANCHO/2 And mousey < 50 And mousex < ANCHO-50 Then
       MenuNew=MENU_INICIAL
       cierroedit= 0
-     EndIf
   EndIf
 
   cairo_show_text(c, t)
@@ -4290,10 +4290,9 @@ Sleep 100
 '  EndIf
 ' EndIf
  cairo_set_font_size (c, font)
-   If mousex > 500 And mousey < 50 And mousex < ANCHO-50 Then
-     If MouseButtons And 1 Then
+   If mousex > ANCHO/2 And mousey < 50 And mousex < ANCHO-50 Then
       MenuNew=MENU_INICIAL
-     EndIf
+      cierroedit= 0
   EndIf
 
  'DeAllocate xo: DeAllocate yo
@@ -4376,7 +4375,9 @@ Next s
   indpos=moverdesde -1  ' porque despues incrementamos  en 1
 ' si hay un off=1 se lo debe copiar entonces copio desde ese off=1
 ' si le sumo a indpos los ticks de la ultima duracion tengo el final de la insericon
-
+'--------------
+  If indpos <=0 Then Exit Sub EndIf '30-09-2025
+'------------------------- 
   Print #1, "FINAL insercion indpos + DurxTck(DUR) ", indpos
 Dim notadeoff1 As UByte
 Dim As Integer p1=0, p2=0 ,off1nosemueve=0
@@ -6222,11 +6223,13 @@ Sub borrarColumnasMarcadas() '<============ ES COMPLEJO cambiarlo basandonos en
 ' O UNA SOLO CLIK MEJOR,,,,
 ' pasoZona1 pasoZona2 
 Print #1," BORRACOLUMNASMARCADAS"
-' PARA TICVKS DEBO PRIMERO BORRAR LAS NOTAS EN ESE INTERVALOS QUE TENGAN UN OFF=2
+' PARA TICKS DEBO PRIMERO BORRAR LAS NOTAS EN ESE INTERVALO QUE TENGAN UN OFF=2
 ' Y BORRAR SU OFF=1. LOS OFF=1 QUE NO  TENGAN SU OFF=2 NO SE BORRARAN.
 ' LUEGO COMO SE QUE SE BORRARON LAS NOTAS AL COPIAR Y SOBREESCRIBIR SOLO HACERLO
 ' SI NO ES UN OFF=1 O SEA LOS OFF=1 QUEDAN SIN PISAR
 Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,delta=0
+' 1) se ajusta una zona de trabajo es el caso que debe usarse mejor siemrpe seleccionar
+' una zona que contenga a la zona que incluye a la nota aislada en lo posible
 If pasoZona1 > 0 Or (pasoZona1 > 0 And pasoZona2 > 0) Then
 ' metodo nuevo ok
   Print #1,"pasoZona1 pasoZona2 ",pasoZona1, pasoZona2
@@ -6267,7 +6270,7 @@ If pasoZona1 > 0 Or (pasoZona1 > 0 And pasoZona2 > 0) Then
             Roll.trk(k, i1).onoff = 0
             Print #1,"dur POSNoFF "; DURX, posnOff   
 'busco onoff=1 puede estar mas 1 o menos 1 segun la version en la que se hizo el .roll
-' LO EXTIENDO A +2 -2, SIEMRPE SERA ASI EN EL FUTURO SERA EXACTO N OHABRA ZRCHIVOS VIEJOS DE ROLL
+' LO EXTIENDO A +2 -2, SIEMRPE SERA ASI EN EL FUTURO SERA EXACTO NO HABRA ARCHIVOS VIEJOS DE ROLL
             Roll.trk(posnOff -2, i1).onoff = 0
             Roll.trk(posnOff -2, i1).dur  = 0
             Roll.trk(posnOff -1, i1).onoff = 0
@@ -6324,8 +6327,9 @@ If pasoZona1 > 0 Or (pasoZona1 > 0 And pasoZona2 > 0) Then
   EndIf
   
 Else
-' <====METODO VIEJO ======> tal vez lo descarte probaremos 30-05-2025
-
+' <====METODO VIEJO ======> NO USAR MARCAS CTRL 9 tal vez lo descarte probaremos 30-05-2025
+' est parte es para pazosona1=0 y pasozona2=0
+' 1) NO se ajusta una zona de trabajo
 For i2 = 1 To MaxPos
      For i1 = NB To NA
        If Roll.trk(i2,i1 ).nota=190 And Roll.trk(i2,i1 ).dur=190 Then

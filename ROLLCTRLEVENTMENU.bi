@@ -124,7 +124,8 @@ Print #1,"usarmarcoins ", usarmarcoins
            If NombreCancion > ""  Then
               GrabarRollaTrack(0)
            EndIf
-          MenuNew=MENU_INICIAL           
+          MenuNew=MENU_INICIAL
+          cierroedit= 0           
           carga=1
           SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
@@ -413,7 +414,8 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 '/
                  EndIf 
              EndIf  
-              MenuNew=MENU_INICIAL           
+              MenuNew=MENU_INICIAL
+              cierroedit= 0           
               carga=1
 
         '     SetForegroundWindow(hwnd)    
@@ -450,7 +452,8 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
                 EndIf  
               EndIf  
 
-              MenuNew=MENU_INICIAL           
+              MenuNew=MENU_INICIAL
+              cierroedit= 0           
               carga=1
   
         '      SetForegroundWindow(hwnd)

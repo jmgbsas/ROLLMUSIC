@@ -194,7 +194,8 @@ Sub CTRL1007()
           If NombreCancion > ""  Then
              GrabarCancion()
           EndIf
-          MenuNew=MENU_INICIAL           
+          MenuNew=MENU_INICIAL
+          cierroedit= 0           
           carga=1
               
        EndIf
@@ -258,7 +259,8 @@ Sleep 100
            If NombreCancion > ""  Then 
               GrabarCopiadePista() ' estoy en cancion copiando una pista desde otra pista
            EndIf   
-          MenuNew=MENU_INICIAL           
+          MenuNew=MENU_INICIAL
+          cierroedit= 0           
           carga=1
 
 
@@ -562,7 +564,8 @@ Sub CTRL1040 () ' <========== seleccion de instrumento por orden Alfabetico
               EndIf  
 
 
-              MenuNew=MENU_INICIAL           
+              MenuNew=MENU_INICIAL
+              cierroedit= 0           
               carga=1
 
 

@@ -144,7 +144,10 @@ Const NO_TERMINAR_CON_DATOS_CARGADOS  = 3
 '--------------------------------------
 Const CTRL_M = 1 ' PUEDE HABER UN 1 0 o 0 1  o 2 0 ?
 Const CTRL_N = 2
-
+Const ObtenerDuracion1erClickIzquierdo=3
+Const DesplegarMenuModifClickDerecho =1
+Const SeleccionarComandoClickIzquierdo = 2
+'----------------------------------------------------
 Dim Shared As Integer PISTASEJECSELECCIONADA=0
 Dim Shared As Integer PISTASROLLSELECCIONADA=0
 
@@ -598,7 +601,7 @@ Dim Shared cuart As Integer=0 'nro q indica sumarle 1/4 de su valor
 ' ej tecleo 1+.+A=O* en linea A dela octava que sea
 ' ej tecleo s+1+.+A =sO* en A..
 ' tambien en vez de estos simbolos usare los de un pentagrama comun,,,,futuro
-Dim Shared As BOOLEAN ayuda, ayudaNuevaNota, ayudaModif, vuelta,dobleclick 
+Dim Shared As BOOLEAN ayuda, SeleccionarNuevaNota, ArmarMenuModif, VolverEntradaDatos,dobleclick 
 haycompas=0
 dobleclick=>FALSE
 
@@ -652,7 +655,7 @@ Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota
 Dim Shared As Integer x, y, buttons, res,xscreen,gap1,gap2,gap3
 common Shared As float anchofig
 Dim Shared as Integer StartInsert,indaux=0,NroCol, carga, curpos=0, curposold, resultado, indicePos,curpos1, mouseyOld,indicePosOld,indicePosUltimaGrupo
-Dim Shared As Integer  Xjreset(1 To 100, 1 To 2),indXjreset=0,indXjresetOld  
+Dim Shared As Integer  Xjreset(1 To 100, 1 To 2),indXjreset=0,indXjresetOld,curposClickDErecho,curposClickIzquierdo  
 resultado=0
 ' este pesodur lo deberia cambiar a ticks
 Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
