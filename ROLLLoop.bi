@@ -856,7 +856,7 @@ EndIf
  ANCHO3div4 = ANCHO *3 / 4
  midionof=param.midionof
 
-
+Print #1,"//////////////midionof ";midionof
  If midionof = 4 Then  ' volcado de midi
     MIDIFILEONOFF=HABILITAR  
  End If 
@@ -2227,10 +2227,12 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
     EndIf
 
  Else
+   
    If playb = NO And play=NO And Cplay=NO And MaxPos > 1 Then ' 23-02-22 ningun play
       GrabarPenta=0
       naco=0:naco2=0
-      If INSTANCIA = ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then 
+       Print #1,"====> INSTANCIA ";INSTANCIA 
+      If INSTANCIA = ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia <= ARG4_INSTRU  Then '04-10-2025 
       Else  
      ' SetGadgetstate(BTN_ROLL_GRABAR_MIDI,0) ' 10-04-2022 DE  VENTANA CTROL
        SetGadgetstate(15,0) ' 20-02-2025 
@@ -2256,6 +2258,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
              threadDetach(thread1)
              threadDetach(thread2)
              Sleep 100
+ 
              thread2 = ThreadCall  playAll(Roll)
            EndIf 
 

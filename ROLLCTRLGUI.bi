@@ -426,8 +426,14 @@ If com_usarmarco =0 Then
 ' es incomodo, y sin marco mover la ventana puede tener segun el caso alguna vibracion horizontal
    usarmarcoOld=0   
 Else
-   usarmarco=com_usarmarco  
-   usarmarcoOld=usarmarco
+   If com_usarmarco = 6 Then
+      usarmarco=com_usarmarco
+      usarmarcoOld=usarmarco
+   EndIf
+   If com_usarmarco = 4 Then 
+      usarmarcoins=com_usarmarco '04-10-2025
+      Print #1,"//// recibido por logica usarmarcoins "; usarmarcoins  
+   EndIf  
 EndIf
 ' condicion inicial para ver o no escalas auxiliares en el grafico
 Select Case nVerEscalasAuxiliares

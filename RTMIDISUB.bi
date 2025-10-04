@@ -1385,7 +1385,8 @@ If MIDIFILEONOFF = HABILITAR  Then
    '' NO ESTA CLARO EL  TEMPO EN BPM SON 60 EN TIEMPO 1000000 ,NI 500 NI 1000 NI 2000
    '' FALTRA ENTENDER MAS 
    indicenotas=0
-   Dim As String NombreTrack, tiempo 
+   Dim As String NombreTrack, tiempo
+ 
    If TipoCompas <> pmTk(0).tipocompas And TipoCompas > 0 Then
       tiempo = tempoString(TipoCompas)
    Else 
@@ -1394,6 +1395,7 @@ If MIDIFILEONOFF = HABILITAR  Then
    midiplano=20
    Dim numc As Integer = CInt(pmTk(0).canalsalida) + 1
    NombreTrack= sacarpath(titulosTk(ntk)) 
+
    Print #midiplano, "MFile 1 2 " + Str (1000)
    Print #midiplano, "MTrk"
    Print #midiplano, "0 Meta SeqName "; Chr(34);NombreTrack;Chr(34)
@@ -1427,7 +1429,6 @@ Dim As Integer i1,k1
 ' los nombres ya fueron cargados al inicio
 If  GrabarPenta=0  Then ' con 1 ya esta abierto
 Print #1,"abriendo port....play All"
-
 
   
    k1=CInt(pmTk(0).portout)
@@ -1518,7 +1519,6 @@ Print #1,"TickUsuario "; tickUsuario
 'Print #1,"VEO Track(0).trk(1,1).ejec "; Track(0).trk(1,1).ejec 
 ' ======================= FOR JPLY PLAYALL =======================
 ''Print #1,"cominzo final PARAR_PLAY_MANUAL "; comienzo , final, PARAR_PLAY_MANUAL
-
 
 For jply=comienzo To final
 ''Print "*******************************************************************"
@@ -1753,13 +1753,15 @@ Exit Sub
 
 fail:
  Dim errmsg As String
-FileFlush (-1)
+
 If  Err > 0 Then
   errmsg = "FAIL PlayAll Error " & Err & _
            " in function " & *Erfn & _
            " on line " & Erl & " " & ProgError(Err)
   Print #1, errmsg ,"jply ", jply, "i1 ";i1
 EndIf
+FileFlush (-1)
+
 End 0
 
 ' ================================FIN PLAYALL <<=================

@@ -68,7 +68,8 @@ On Error Goto errorhandler
            ' nombre , hasta, titu, instru ,pid1, usarmarco, nombrecancion
             
 
-               usarmarcoins=4            
+               usarmarcoins=4   
+                        
 Print #1,"usarmarcoins ", usarmarcoins
             Shell (" start RollMusic.exe "+ Str(desde) +" "+ Str(hasta) +  _
             " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " + _ 

@@ -1,0 +1,41 @@
+MFile 1 2 1000
+MTrk
+0 Meta SeqName "ROLL-05-SEP.roll"
+0 Meta Text "Creado por RollMusic"
+0 Tempo 250000
+0 TimeSig 4/4 24 8
+0 KeySig 0 Major
+0 Meta TrkEnd
+TrkEnd
+MTrk
+0 Meta 0x09 "CoolSoft MIDIMapper 0"
+0 Meta TrkName "Piano"
+0 PrCh  ch=3 p=8
+ 49 on ch=3 n=60 v=120
+ 4007 off ch=3 n=60 v=0
+ 4049 on ch=3 n=62 v=80
+ 6007 on ch=3 n=67 v=80
+ 8007 off ch=3 n=62 v=0
+ 8049 on ch=3 n=64 v=100
+ 9964 off ch=3 n=67 v=0
+ 10925 on ch=3 n=60 v=100
+ 12007 off ch=3 n=64 v=0
+ 12049 on ch=3 n=65 v=80
+ 13675 on ch=3 n=63 v=80
+ 14882 off ch=3 n=60 v=0
+ 16006 off ch=3 n=65 v=0
+ 16049 on ch=3 n=67 v=100
+ 17632 off ch=3 n=63 v=0
+ 20007 off ch=3 n=67 v=0
+ 20049 on ch=3 n=69 v=100
+ 24006 off ch=3 n=69 v=0
+ 24049 on ch=3 n=71 v=100
+ 28006 off ch=3 n=71 v=0
+ 28049 on ch=3 n=60 v=100
+ 32006 off ch=3 n=60 v=0
+ 32049 on ch=3 n=62 v=100
+ 36007 off ch=3 n=62 v=0
+ 36049 on ch=3 n=64 v=100
+ 40006 off ch=3 n=64 v=0
+ 42134 Meta TrkEnd
+TrkEnd

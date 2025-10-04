@@ -31,21 +31,10 @@
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.339 CTRL-M CTRL-N CORRECCIONES VARIAS. CON CTRL-DELETE EN LECTURA SE BORRA NOTAS Y SU ESPACIO EN UNA ZONA ELEGIDA"
-' ctrl-n Y ctrl-m CON TECLADO OK, FIX DE MENU CONTEXTUAL PARA SALIR CLICK EN CTRL-P O ENTRAR CLICK CTRL-M
-' CON MENU GRAFICO REVISAR TODO, CLICK DERECHO YA NO ANDA BIEN DESASTRE! VER
-' CTRL-M MODIFICA INSERTA ETC..CTRL-N SOLO MODIFICA CON NOMBRE ALGO EXISTENTE
-' para borrar sacando el espacio es con ctrl-delete funciona tambien 2.5.3 ok
-' TAREA=> (EN AYUDA )borrar desde posiciocn actual al final corregir mañana 2.5.4 
-' 0.339 revisar borrarColumnasMarcadas() en modo modificar y tratar de usar borrarZona que anda mejor
-' DE ESA FORMA SE PODRA BORRAR UNA COLUMNA SOLA ANDA MAL PARA UNA SOLA COLUMNA EN TICK
-''"0.340 LINEA DE COMANDOS "
-''nroversion="0.336 Copiar en CTRL-N funciona mantener apretado el ENTER 2 o 3 segundos, ayuda 2.4) "
-' NOTAS ON APILADAS AL FINAL PARA MOVER ZONA ok fix
-' VOLVER AL MENU PRINCIPAL CON SOLO POSAR EL MENU  AL FINAL DE LA CINTA AZUL DE ARRIBA
-' GRABAR COMO  REPOSICION ok fix
-' 0.334 requiere mas pruebas con cancion cargada la prueba que se hizo fue solo con un roll cargado
-' sin cancion,,
+nroversion="0.340 exportar midi fix para ticks para usar midiconv"
+' perfeccionar la salida plana midi con mas opciones de grabacion de parametros
+' mas adelante intentaremos desarrollar la escritura de archivos midi sin pasar por planos...
+' se desarrolla por fuera y luego  se insertara
 ' cursorVert = 0 +  cursorHori = 0 + COMEDIT=FALSE  LECTURA
 ' cursorVert = 0 +  cursorHori = 0 + COMEDIT=TRUE   ENTRADA DE NOTA MANUAL SIEMPRE AL FINAL DE LA SECUENCIA
 ' cursorVert = 1 +  cursorHori = 1 + COMEDIT=TRUE   CTRL-M SOLO_MODIFICACION  CON X AL FINAL
@@ -429,7 +418,11 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", Nombr
 Print #1, "3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
       param.ubiroll=ubiroll
       param.ubirtk=ubirtk
-      param.midionof=usarmarco '  para volcado de midi si o no ,si con 4
+      If usarmarcoins > 0 Then
+      param.midionof=usarmarcoins '  para volcado de midi si o no ,si con 4
+      Else
+       param.midionof=usarmarco
+      EndIf 
 
 Print #1, "3 ubiroll ubirtk ", ubiroll,ubirtk
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))

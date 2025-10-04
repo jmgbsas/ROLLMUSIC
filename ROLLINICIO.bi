@@ -270,7 +270,8 @@ For ix = 0 To __FB_ARGC__
 
  If ix=6  And Command(ix) > "" Then
   com_usarmarco=  CInt (Command(ix))
-     Instancia=ARG6_USARMARCO
+     Instancia=com_usarmarco ''''ARG6_USARMARCO 04-10-2025
+     Print #1,"///////recibi en com "; com_usarmarco  
  EndIf
 ' en 7 diria @dir en la linea de comando  
 ' puedo poner basura en todos los otros
@@ -280,8 +281,16 @@ For ix = 0 To __FB_ARGC__
  EndIf
 
 Next ix
+   If com_usarmarco = 6 Then
+      usarmarco=com_usarmarco
+      usarmarcoOld=usarmarco
+   EndIf
+   If com_usarmarco = 4 Then 
+      usarmarcoins=com_usarmarco '04-10-2025
+      Print #1,"//// inicio recibido por logica usarmarcoins "; usarmarcoins  
+   EndIf  
 
-' uso para volcar midi a text odesde un roll o trk usamos cancion
+' uso para volcar midi a text o desde un roll o trk usamos cancion
 ' para pasar solo una pista 
 If NombreCancion > "" Then 
  ubirtk = InStr (LCase(Command(7)),".rtk")

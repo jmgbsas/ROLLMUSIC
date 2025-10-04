@@ -363,7 +363,8 @@
 
 
 
-    16 ) EXPORTAR UNA PISTA O CANCION A MIDI FORMATO 1: (A VERIFICAR Y HACER DE NUEVO PARA TICKS)
+    16 ) EXPORTAR UNA PISTA O CANCION A MIDI FORMATO 1: 
+        -ver 0.340 funciona para ticks como antes muy basico
         -Ver 0.4619 se corrigio y agrego al plano. detalles
          A PARTIR DEL *.ROLL SE CREARON PLANOS TXT Y DESDE EL, 
          EL *.MID CORRESPONDIENTE NOTA:
