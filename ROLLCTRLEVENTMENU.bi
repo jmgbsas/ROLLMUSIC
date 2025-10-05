@@ -87,9 +87,6 @@ Print #1,"usarmarcoins ", usarmarcoins
 ' ---------------------------------------------------------------           
            Case 1009 '<======= 3.2 Exportar Cancion a midi
 
-                SetStateMenu(hmessages,1008,0)
-                SetStateMenu(hmessages,10081,0)
-                SetStateMenu(hmessages,1009,1)
   
                Print #1, "nombres 1 y 2 "; "secuenciaPLAY.txt archivo.mid" 
                'Dim result As Integer
@@ -102,6 +99,9 @@ Print #1,"usarmarcoins ", usarmarcoins
                    Print #1, "ok conv a  archivo.mid "  
                 End If
                Print #1, "Exit code midiconv: "; result
+                SetStateMenu(hmessages,1008,0)
+                SetStateMenu(hmessages,10081,0)
+                SetStateMenu(hmessages,1009,1)
 
 
            Case 1010 '<================ Cargar Pista externa a cancion

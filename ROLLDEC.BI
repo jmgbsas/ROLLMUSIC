@@ -1375,4 +1375,11 @@ Type mididat ' la duracion total de una nota se acumulara en duron en estado 2
  duron     As Double
 End Type
 
+Type miditxtsalida 
+  pista As UByte
+  datos (1 To 30000) As String * 50  
+End Type
+Common Shared As miditxtsalida MidiDatos()
 
+ReDim  Shared NroEventoPista(1 ) As Integer
+  

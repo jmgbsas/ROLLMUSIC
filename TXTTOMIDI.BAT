@@ -9,6 +9,6 @@ rem generado por rollmusic, agregar el nombre del convertido
 rem aca o usar una variavle para ejecutarlo %1 en lineas de comandos CMD.exe
 rem o cambiar %1 por el nombre de la salida con extendion mid
 rem midicomp.exe -c secuenciaPLAY.txt archivo.mid
- midicomp.exe -c secuenciaPLAY.txt %1
+ midicomp.exe -c secuenciaPLAY.txt %1.mid
 
 

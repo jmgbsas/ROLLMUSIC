@@ -364,60 +364,37 @@
 
 
     16 ) EXPORTAR UNA PISTA O CANCION A MIDI FORMATO 1: 
-        -ver 0.340 funciona para ticks como antes muy basico
-        -Ver 0.4619 se corrigio y agrego al plano. detalles
-         A PARTIR DEL *.ROLL SE CREARON PLANOS TXT Y DESDE EL, 
-         EL *.MID CORRESPONDIENTE NOTA:
-         SI AL CARGAR UN ROLL O RTK NO SE VEN LAS LINEAS DE CAMPASES
-         SIGNIFICA QUE NO ESTA AJUSTADO EL TEMPO EN EL ARCHIVO
-         AJUSTAR EL TEMPO EN EL MENU GRAFICO DE ROLL, ALT + CLICK EN 
-         [OPCIONES]-> LUEGO CLICK EN [COMPAS]--> CLICK PARA ELEGIR 
-         [4/4], [3/4], ETC, LUEGO GRABAR EL ARCHIVO -- CLICK, ARCHIVO-> 
-         CTRL+CLICK, [GRABAR], VERIFICAR EL CANAL Y EL MIDI OUT:
-         CANAL ..ALT+CLICK [OPCIONES]--> CTRL `CLICK CONFIGURACION--> 
-         CLICK EN [CANALES]  O [MIDI],
-         SI EL CANAL ESTA BIEN, CERRAR LA VENTANA DESDE EL BOTON SUPERIOR 
-         DERECHO x .-
-         SI SE DESEA CAMBIAR, DAR UN CLICK AL CANAL NO DESEADO, LA [X] 
-         DESAPARECERA. Y LUEGO DAR CLICK EN EL CANAL DESEADO, APARECERA 
-         UNA [X], LUEGO PULSAR EL BOTON CAMBIA, CERRAR LA VENTANA DESDE 
-         EL BOTON X SUPERIOR DERECHO..
-         LO MISMO PARA EL MIDI, CLICK MIDI-> ELEGIR MIDI-OUT O MIDI-IN, 
-         EL MIDI-OUT SERA LA SALIDA HACIA UN SINTETIZADOR VIRTUAL O UN 
-         CABLE MIDI VIRTUAL, COMO LOOPMIDI O UN USB MIDI CABLE REAL ETC.
-         ver carpeta \SECUENCIAS-y-PRUEBAS\MIDI-CREADA 
-        -Ver 0.4618 se puede exportar varias veces sin salir del programa. 
-        -Ver 0.4617 cancion se puede exportar cargamos una cancion con 1.0 o 2.0
-         luego igual que antes cargamos 4.5 que ahora se llama "Exportara midi durante Reproduccion"
-         elegir el submenu de cancion, aparece un Roll en el que se carga la cancion antes elegida
-         reproducirla pulsando Espacio. Al finalizar usar el menu igual que antes 4.5.1 de Archivo.
-        -Ver 0.4612 se agrego el patch o numero de instrumento de un sintetizador
-         que los use al volcado de midi plano par exportar a un arhcivi mid.
-        -Ver 0.4610 correccion salida midi por cambio de tempo
-        -Version 0.4600 el archivo se exporta con el nombre de la pista, la bat no se usa más
-         en el programa pero se la puede usar para otras cosas.
-         Esta funcion se ejecuta desde La Ventana de RollMusic Control. En el menu Archivo
-         pulsar la entrada "4.5 Cargar pista a exportar a midi durante Reproduccion."
-         Se abre un RollMusic independiente de color pardo arriba en su cinta de menu.
-         Cargar una pista Roll y ejecutarla con la barra de espacio, a medida que reproduce 
-         exporta a midi. Al terminar la ejecucion  ir al menu de Archivo anterior y pulsar
-         la entrada, ahora habilitada, "4.5.1 Exportar pista de 4.5".
-         Para tratar de que funcione bien, antes de reproducir la pista, verificar que
-         en el directorio aparesca un archivo de texto vacio de nombre  secuenciaPLAY.txt,
-         si no es asi, cerrar el Roll Grafico y volver a pulsar 4.5, sino esta habilitado
-         pulsar primero 4.5.1 y luego 4.5 y ver si se creo el archivo vacio. AL final
-         cerrar el Roll Grafico no servirá para otra conversión, porque el archivo 
-         secuencialPLAY.txt solo se crea al levantar el roll Grafico..(limitaciones técnicas 
-         por ahora.) Antes de ejecutar el archivo, se puede cambiar el Tempo, mas rápido o 
-         lento y sin necesidad de grabar se verá reflejado en la ejecucion y el midi exportado.
-
-        - En Revision Version 0.4590 una pista a midi, una sola pista ya se puede pasar a midi con un utilitario
+         LOS NOMBRES DE LAS PISTAS NO DEBEN PASAR DE 25 CARACTERES
+         Pista: 
+         En menu archivo en 4.5 elecir "cargar pista en un roll independiente"
+         Luego de cargado dale play hasta que termine. AL terminar se puede  cerrar
+         el  Roll independiente. Elegir 4.5.1 que queda habilitado "Exportar a midi una 
+         pista o cancion de 4.5"
+         Quedaran los archivos SecuenciaPlay.txt (es un auxiliar que no cambia  de nombre y se
+         sobreecribe cada vez que se usa el play para  exportar)
+         Cancion:
+         Usar 4.5 pero usar la otra opcion "Usar cancion cargada en 2.0"
+         Se carga la cancion en un Roll independiente, darle play con espacio
+         hasta el final. Luego usar 4.5.1 del menu como antes, y deja el archivo *.mid
+         cuyo noombre es el de la cancion. 
+         Uso de una .bat 
+          Si se quiere cambiar el plano SecuenciaPLAY.txt a mano con un editor de texto
+         se puede hacer y volver a generar el *.mid
          Rollmusic lo graba plano como txt en secuenciaPLAY.txt y una bat TXTTOMIDI.bat
          ejecuta el utilitario midicomp -c archivoentrada.txt archivo salida.mid
-         el de entrada tiene nombre  fijo secuenciaPLAY.txt, la bat se puede 
-         editar y modificar segun convenga, on un click sobre la bat o doble
+         ( midicomp.exe -c secuenciaPLAY.txt %1.mid ) %1 es el argumento espera un nombre
+         como archivo.mid
+         el de entrada tiene nombre  fijo secuenciaPLAY.txt escrito en la bat, 
+         ejecuar la bat en una linea de comando de sos con un nombre de salida
+         la bat le agrega *.mid.
+         la bat se puede editar y modificar segun convenga, on un click sobre la bat o doble
          click segun la configuracion del Windows, ejecuta el progrma y produce el 
-         archivo.mid ..(algo sencillo y rapido por ahora)
+         archivo.mid ..
+
+         A PARTIR DEL *.ROLL SE CREA UN PLANOS TXT Y DESDE EL, 
+         EL *.MID CORRESPONDIENTE NOTA:
+
+
      17) CAMBIAR PARA TICKS,(Importar midi plano txt, si fue generado por RollMusic o externo, en el primer caso
          funciona mejor, para externo es muy inexacto en cuanto a ritmos las notas serian
          correctas, pero no su repeticion ni duracion, a veces se escucha algo parecido coherente.

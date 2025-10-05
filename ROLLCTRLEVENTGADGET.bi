@@ -265,8 +265,8 @@ Static As Integer millave
            Dim As Integer im=0
            For im=1 To 4
              If sonidopista_si=3 Then  
-               noteon(60,100,tocaparam(k).canal,tocaparam(k).portout,1) '' NOTA VEL ,CANAL, PORTSAL
-               noteoff(60, tocaparam(k).canal,tocaparam(k).portout,1)
+               noteon(60,100,tocaparam(k).canal,tocaparam(k).portout,1,1) '' NOTA VEL ,CANAL, PORTSAL
+               noteoff(60, tocaparam(k).canal,tocaparam(k).portout,1,1)
              Else
                PlaySound(".\recur\INICIO.wav", 0, SND_FILENAME+SND_NODEFAULT + SND_ASYNC )
              EndIf
@@ -539,8 +539,8 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
            Dim As Integer im=0
            For im=1 To 4
              If sonidopista_si=3 Then  
-               noteon(60,100,tocaparam(k).canal,tocaparam(k).portout,1) '' NOTA VEL ,CANAL, PORTSAL
-               noteoff(60, tocaparam(k).canal,tocaparam(k).portout,1)
+               noteon(60,100,tocaparam(k).canal,tocaparam(k).portout,1,1) '' NOTA VEL ,CANAL, PORTSAL
+               noteoff(60, tocaparam(k).canal,tocaparam(k).portout,1,1)
              Else
                PlaySound(".\recur\INICIO.wav", 0, SND_FILENAME+SND_NODEFAULT + SND_ASYNC )
              EndIf

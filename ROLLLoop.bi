@@ -2639,7 +2639,6 @@ If COMEDIT<>LECTURA Then  'TERMINA EN 2628
   EndIf
   If MultiKey(SC_5) Then
    DUR = 5
-   'print #1,"DUR ",DUR
    Exit Do
   EndIf
   If MultiKey(SC_6) Then
@@ -4341,10 +4340,11 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
      Print #1,"Pulso boton Edit 1) s3, guardopos ",s3, guardopos
      If  GrabarPenta=1 And metronomo_si=3 Then
         terminar_metronomo=0
+        
         Dim As Integer im=0
         For im=1 To 4  
-            noteon(60,60,1,0,1)
-            noteoff(60,1,0,1)
+            noteon(60,60,1,0,1,1)
+            noteoff(60,1,0,1,1)
             duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
         Next im
         threadmetronomo = ThreadCall metronomo()
@@ -5850,6 +5850,7 @@ ButtonGadget(2,530,30,50,40," OK ")
    ' Print #1,"MARCAR CON ALT Y nota +12 en UNA NOTA "
     indicePos=(mousex- gap1 )/anchofig + posishow
     mouseyOld=mousey
+
 '---------------------------para ticks nuevo codigo-----------------
    estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 
     Print #1,"idicePos,estoyEnOctava ",indicePos ,estoyEnOctava
@@ -5895,8 +5896,8 @@ ButtonGadget(2,530,30,50,40," OK ")
 
 '( note As ubyte, vel As UByte, canal As UByte, portsal As UByte,i1 As Integer)
      abrirPortoutEjec(100)
-     noteon(cubyte(PianoNota),60,1,0,1)
-     noteoff(60,1,0,1)
+     noteon(cubyte(PianoNota),60,1,0,1,1)
+     noteoff(60,1,0,1,1)
      ' duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
       duracion(Timer, relDur(RollDurOld) ) 
    ' el valor correcto lo repone la sub correcionnotas

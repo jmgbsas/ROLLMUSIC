@@ -35,6 +35,7 @@ Dim Shared msgin  (1 To 8192) As UByte ' message in futuro secuencia veremos si 
 ' podriamos agregar presion promedio aftertouch etc pero serin mensajes independientes 
 'Dim errorString As ZString Ptr
 Common Shared p as UBYTE Ptr 'cambiado a shared
+
 p= @message(1) 
 Common Shared pp As Integer Ptr 'para callback futuros datos usuario
 Dim size As UInteger<64> 
@@ -239,9 +240,7 @@ End Type
 Static Shared pasoCol (0 To 384) As vec
 
 
-
-
-Declare Sub noteon	( note As UByte, vel As UByte,canal As UByte,portsal As UByte,i1 As Integer)
+Declare Sub noteon	( note As UByte, vel As UByte,canal As UByte,portsal As UByte,i1 As Integer,NroEventoPista As Integer )
 Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal As UByte,tiempoDur As Double,velpos As integer)
 'Declare Sub AcordeIguales ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte,canal As UByte,tiempoDur As double) 
 'Declare Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte,cntold As UByte, canal As UByte)
@@ -250,7 +249,7 @@ Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal
 'Declare Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As Double)
 'Declare Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As double)
 Declare Function vol (dura As UByte, vel As UByte) As ubyte
-Declare sub noteoff( note As UByte, canal As UByte,portsal As UByte,i1 As Integer )
+Declare sub noteoff( note As UByte, canal As UByte,portsal As UByte,i1 As Integer,NroEventoPista As Integer )
 Declare Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
 Dim Shared As Integer ligaglobal=0 ', ligaglobalc (1 To 32)
 'Relacion de nR indice de Roll, con nsE semitono, para evitar calculos.

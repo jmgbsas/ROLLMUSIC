@@ -31,8 +31,9 @@
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.340 exportar midi fix para ticks para usar midiconv"
-' perfeccionar la salida plana midi con mas opciones de grabacion de parametros
+nroversion="0.341 Generar archivo *.mid para una cancion ok"
+' chequear formatos 0 y 1 del archivo midi en el 1 hay un track sin notas y de referencia de tiempos
+' yo creo que estoy generando en formato 0 verificarlo
 ' mas adelante intentaremos desarrollar la escritura de archivos midi sin pasar por planos...
 ' se desarrolla por fuera y luego  se insertara
 ' cursorVert = 0 +  cursorHori = 0 + COMEDIT=FALSE  LECTURA

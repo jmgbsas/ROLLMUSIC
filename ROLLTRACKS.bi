@@ -1740,9 +1740,9 @@ For i2 = 1 To pmTk(ntk).MaxPos
          Roll.trk(i2,i3).pb   = Track(ntk).trk(i2,i1).pb
          Roll.trk(i2,i3).inst = Track(ntk).trk(i2,i1).nnn
          Roll.trk(i2,i3).onoff = Track(ntk).trk(i2,i1).onoff
-If Roll.trk(i2,i3).onoff = 2 Or Roll.trk(i2,i3).onoff =1 Then
-  Print #1,"TrackARoll Roll.trk(i2,i3).vol, onoff ";Roll.trk(i2,i3).vol, Roll.trk(i2,i3).onoff
-EndIf
+'If Roll.trk(i2,i3).onoff = 2 Or Roll.trk(i2,i3).onoff =1 Then
+'  Print #1,"TrackARoll Roll.trk(i2,i3).vol, onoff ";Roll.trk(i2,i3).vol, Roll.trk(i2,i3).onoff
+'EndIf
                 
          ''print #1,"VEO CARGA DE ROLL Roll.trk(i2,i3).dur ",Roll.trk(i2,i3).dur
       EndIf
@@ -1983,9 +1983,10 @@ End Function
 Sub PlayCancion(Track() As sec)
 'psarlo a Ticks!!!
 On Local Error GoTo PlayCancionError
-Dim i1 As Integer
+Dim  As Integer i1,NroEvento
 
-
+ReDim  MidiDatos (1 To tope) As miditxtsalida 
+ReDim  NroEventoPista(1 To tope )
 Sleep 10
 
 If MIDIFILEONOFF = HABILITAR  Then 
@@ -1993,6 +1994,14 @@ If MIDIFILEONOFF = HABILITAR  Then
    '' SE AJUSTO A 2000 PARA ESCUCHAR LO MISMO A 60 DSRG POR NEGRA... 500 
    '' NO ESTA CLARO EL  TEMPO EN BPM SON 60 EN TIEMPO 1000000 ,NI 500 NI 1000 NI 2000
    '' FALTRA ENTENDER MAS 
+'' el formato 1 tiene la cabeza como track 1 el resto son los siguientes tracks
+'' aca saldra en formato 0 todo mezclado..luego se nescitaria
+'' sumar los canales diferentes ch=1, ch=2 la suma da el nro de tracks -1
+'' luego volcar en otro archivo separado la cabeza y luego los Mtrk para cada canal
+'' y asi obtendre el formato 1. o sea luego de generar secuenciaPlay.txt e3n formato 0
+'' debo reconstruir en otro txt el formato 1 y ese archivo se convertira a *.mid
+'' haremos una cosa secuenciaplay.txt sera el formato 1 necesito otro archivo intermedio
+ 
    indicenotas=0
    'Dim As String NombreTrack
    midiplano=20
@@ -2007,7 +2016,7 @@ If MIDIFILEONOFF = HABILITAR  Then
 
       tiempo = tempoString(TipoCompas)
  
-   Print #midiplano, "MFile 1 2 " + Str (1000)
+   Print #midiplano, "MFile 1 "+Str(tope+1)+" " + Str (1000)
    Print #midiplano, "MTrk"
    Print #midiplano, "0 Meta SeqName "; Chr(34);nc;Chr(34)
    Print #midiplano, "0 Meta Text "; chr(34);"Creado por RollMusic"; chr(34)
@@ -2016,14 +2025,19 @@ If MIDIFILEONOFF = HABILITAR  Then
    Print #midiplano, "0 KeySig 0 Major"
    Print #midiplano, "0 Meta TrkEnd"
    Print #midiplano, "TrkEnd"
-   Print #midiplano, "MTrk"
-   Print #midiplano, "0 Meta TrkName "; Chr(34); nc ;Chr(34)
+'   Print #midiplano, "0 Meta TrkName "; Chr(34); nc ;Chr(34)
 '''' patchs
- For i1=1 To tope
-   Print #midiplano, "0 PrCh  ch=";numc;" "; "p=";pmTk(i1).patch
+' For i1=1 To tope
+'   Print #midiplano, "0 PrCh  ch=";numc;" "; "p=";pmTk(i1).patch
   ''veremos como se pone el portout si se puede pmTk(pis).portout)	
- Next i1
-i1=0
+' Next i1
+'i1=0
+'preparo vector de datos txt a grabar
+
+  Dim As Integer p1
+  For p1 =1 To tope
+        MidiDatos(p1).pista=p1        
+  Next p1
 
 EndIf
 
@@ -2147,6 +2161,19 @@ Print #1,"TickUsuario "; tickUsuario
  Print #1," PCA CANCION MAXPOS AL COMENZAR ,final tope ",Maxpos,final,tope
 
  For pis=1 To tope
+' escribimos salidamidi
+    If MIDIFILEONOFF = HABILITAR  Then 
+       MidiDatos(pis).datos(1)="MTrk"
+       Dim ii As Integer   
+       ii=InStrRev(titulosTk(pis),"\")
+       dim  As String ncii, tiempo 
+       ncii=Mid(titulosTk(pis),ii+1)
+       MidiDatos(pis).datos(2)= "0 Meta TrkName "+ Chr(34) + ncii + Chr(34) 
+'''' patchs
+       MidiDatos(pis).datos(3)= "0 PrCh  ch=" + Str(CInt(pmTk(pis).canalsalida) + 1)+ " p="+Str(pmTk(pis).patch)
+  ''veremos como se pone el portout si se puede pmTk(pis).portout)	
+       NroEventoPista(pis)=3
+    EndIf
  '     Print #1,"ON patch ntk canal ",	Track(ntk).trk(1,1).nnn, ntk,pmTk(pis).canalsalida
 'Track(pis).trk(1,1).nnn
       ChangeProgram ( pmTk(pis).patch, pmTk(pis).canalsalida, pmTk(pis).portout)	
@@ -2208,32 +2235,35 @@ kNroCol= Int(jply/NroCol)
     If CheckBox_GetCheck( cbxnum(pis))= 1 Then
        ' tocar
     Else
-     Continue For ' saltear no tocar 
+     If MIDIFILEONOFF = HABILITAR Then
+     Else
+        Continue For ' saltear no tocar
+     EndIf 
     EndIf 
 
- If Track(pis).trk(1,1).ejec = 1 Then ' VIENE DE UNA EJEC
- 'usar la velocidad de grabacion DE LA EJEC.,,
- Else
-   If Compas(jply).nro = -1 Then
-     velpos=vfuerte
-   EndIf
-   If Compas(jply).nro = -2 Then
-      velpos=vdebil
-   EndIf
-   If Compas(jply).nro = -3 Then
-      velpos=vsemifuerte
-   EndIf
-   If Compas(jply).nro = -4 Then
-      velpos=vdebil
-   EndIf
-   If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
-      velpos=vdebil
-   EndIf
-   If Compas(jply).nro = 0 Then 
-    velpos=vsemifuerte  ' para midipolano divisones por partes veremso si se soluciona el sonido
-' en la rutina vol , depende de la dur ajusta vol=0 o vol = velpos... no hay problema con los silencios
-   EndIf
- EndIf
+    If Track(pis).trk(1,1).ejec = 1 Then ' VIENE DE UNA EJEC
+    'usar la velocidad de grabacion DE LA EJEC.,,
+    Else
+      If Compas(jply).nro = -1 Then
+        velpos=vfuerte
+      EndIf
+      If Compas(jply).nro = -2 Then
+         velpos=vdebil
+      EndIf
+      If Compas(jply).nro = -3 Then
+         velpos=vsemifuerte
+      EndIf
+      If Compas(jply).nro = -4 Then
+         velpos=vdebil
+      EndIf
+      If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
+         velpos=vdebil
+      EndIf
+      If Compas(jply).nro = 0 Then 
+        velpos=vsemifuerte  ' para midipolano divisones por partes veremso si se soluciona el sonido
+   ' en la rutina vol , depende de la dur ajusta vol=0 o vol = velpos... no hay problema con los silencios
+      EndIf
+    EndIf
 
  '  print #1,"--loop de pistas---pista NRO :";pis;" --------------------------------"
  '  print #1,"  De esta pista MAXPOS ,final",pmTk(pis).MaxPos, final
@@ -2268,37 +2298,35 @@ kNroCol= Int(jply/NroCol)
 ' info del inst en 1 no en lim2   
 
  'Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
-If jply <= pmTk(pis).MaxPos Then ' tocamos una pista mientras que tenga datos 
-   For i1=1 To lim3   ' coo voy de 1 a lim2 necesito que la info del int este en 1
-   If i1<= lim2  And (pis <= tope Or pis<=32) Then
-    ''' (Track(pis).trk(jply,i1).nota >= NBpiano) And 
-    ''' (Track(pis).trk(jply,i1).nota <= NA) And 
-    ''' (Track(pis).trk(jply,i1).dur >=1) And 
-    ''' (Track(pis).trk(jply,i1).dur <= 180) Or 
-    ''' Track(pis).trk(jply, i1).dur <= 183 Or 
-    ''' Track(pis).trk(jply, i1).dur <= 185 Then ' es semitono
-      If (Track(pis).trk(jply,i1).nota >= NBpiano) And (Track(pis).trk(jply,i1).nota <= NA) And (Track(pis).trk(jply,i1).dur >=1) And (Track(pis).trk(jply,i1).dur <= 180) Or Track(pis).trk(jply, i1).dur <= 183 Or Track(pis).trk(jply, i1).dur <= 185 Then ' es semitono
-         Notapiano = CInt(Track(pis).trk(jply,i1).nota)
-         portsal=pmTk(pis).portout
-         canal=pmTk(pis).canalsalida
-         If Track(ntk).trk(1,1).ejec = 1 Then
-        'Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
-          vel=Track(pis).trk(jply,i1).vol
-         Else
-          If sonidoPista(pis)=1 Then
-          Else
-            vel=0
-          EndIf   
+   If jply <= pmTk(pis).MaxPos Then ' tocamos una pista mientras que tenga datos 
+     For i1=1 To lim3   ' coo voy de 1 a lim2 necesito que la info del int este en 1
+       If i1<= lim2  And (pis <= tope Or pis<=32) Then
+         If (Track(pis).trk(jply,i1).nota >= NBpiano) And (Track(pis).trk(jply,i1).nota <= NA) And (Track(pis).trk(jply,i1).dur >=1) And (Track(pis).trk(jply,i1).dur <= 180) Or Track(pis).trk(jply, i1).dur <= 183 Or Track(pis).trk(jply, i1).dur <= 185 Then ' es semitono
+            Notapiano = CInt(Track(pis).trk(jply,i1).nota)
+            portsal=pmTk(pis).portout
+            canal=pmTk(pis).canalsalida
+            If Track(ntk).trk(1,1).ejec = 1 Then
+          'Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
+              vel=Track(pis).trk(jply,i1).vol
+            Else
+              If sonidoPista(pis)=1 Then
+              Else
+               vel=0
+              EndIf   
+            EndIf
          EndIf
-      EndIf
 ' llegamos al final de la Columna
-      If Track(pis).trk(jply,i1).onoff =2 Then
-        noteon CUByte(Notapiano),vel,canal,portsal,1
-      EndIf
-      If Track(pis).trk(jply,i1).onoff= 1 Then
-        noteoff CUByte(Notapiano),canal,portsal,1
-      EndIf    
-   EndIf
+         If Track(pis).trk(jply,i1).onoff =2 Then
+            NroEventoPista(pis) = NroEventoPista(pis) + 1
+            NroEvento=NroEventoPista(pis) 
+            noteon CUByte(Notapiano),vel,canal,portsal,pis,NroEvento
+         EndIf
+         If Track(pis).trk(jply,i1).onoff= 1 Then
+            NroEventoPista(pis)=NroEventoPista(pis) +1
+            NroEvento=NroEventoPista(pis)
+            noteoff CUByte(Notapiano),canal,portsal,pis,NroEvento
+         EndIf    
+       EndIf
 
      If i1=lim2  And (pis = tope Or pis=32) Then
 '----------------------------------
@@ -2306,74 +2334,54 @@ If jply <= pmTk(pis).MaxPos Then ' tocamos una pista mientras que tenga datos
 
      EndIf
 '--------
-   If i1 > lim2  Then
-     If Track(pis).trk(jply,i1).nota = 210 Then
+     If i1 > lim2  Then
+       If Track(pis).trk(jply,i1).nota = 210 Then
   '  Print #1,"210 leido jply",jply
-     If finfin=0 Or playloop=SI Then
-       playloop2=SI
-       comienzo2=jply
+       If finfin=0 Or playloop=SI Then
+         playloop2=SI
+         comienzo2=jply
+       EndIf
+     EndIf
+
+     If Track(pis).trk(jply,i1).nota = 211 Then
+     '  Print #1,"211 leido jply",jply
+        If finfin=0 Or playloop=SI Then 
+           final2=jply
+        EndIf
+        If cntrepe > 0 Then
+           cntrepe -= 1
+        Else
+          If finfin=0 Or playloop=1 Then
+             cntrepe=Track(pis).trk(jply,i1).vol ' nro repeticiones en vertical +1
+          EndIf
+        EndIf
+        If cntrepe =0 Then
+           final2=Mayor 
+           finfin=1
+           If finalloop > 0 Then
+              final2=finalloop
+           EndIf
+        EndIf 
      EndIf
    EndIf
 
- If Track(pis).trk(jply,i1).nota = 211 Then
-  '  Print #1,"211 leido jply",jply
-    If finfin=0 Or playloop=SI Then 
-       final2=jply
-    EndIf
-    If cntrepe > 0 Then
-      cntrepe -= 1
-    Else
-      If finfin=0 Or playloop=1 Then
-         cntrepe=Track(pis).trk(jply,i1).vol ' nro repeticiones en vertical +1
-      EndIf
-    EndIf
-    If cntrepe =0 Then
-       final2=Mayor 
-       finfin=1
-       If finalloop > 0 Then
-           final2=finalloop
-       EndIf
-    EndIf 
- EndIf
-EndIf
 
-
-
-
-
-   Next i1
-EndIf
-
-
-
-'--------
-
-' usando variblkes staticas no hace falta usar esta trampita   
-   ''''  reponer mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
- ' print #1,"---DOWN -----PISTA:"; pis;" --------------------------------" 
-    
- 'If playloop=1 And jply= final Then
- '   jply=comienzo
- '   'posicion=comienzo
- 'EndIf
- 
- ''tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
-
-   
+     Next i1
+   EndIf
 
   Next pis
 
-     duracion (old_time_on ,tickUsuario) ' si es cero no 1 no hay duracion es acorde
-     old_time_on=old_time_on + tickUsuario 'jmgtiempo
+  duracion (old_time_on ,tickUsuario) ' si es cero no 1 no hay duracion es acorde
+  old_time_on=old_time_on + tickUsuario 'jmgtiempo
 
 
 '  print #1,"---FIN -----paso:"; jply;" --------------------------------"
 '  Print #1,"---FIN---playloop PLAYLOOP2 ",playloop, playloop2
- If playloop=SI And jply= finalloop  Then
+  If playloop=SI And jply= finalloop  Then
     jply=comienzoloop -1
 
- EndIf
- If playloop2=SI And jply= final2    Then
+  EndIf
+  If playloop2=SI And jply= final2    Then
     if finfin=0  Or playloop=SI Then
        jply=comienzo2 -1
     EndIf
@@ -2386,12 +2394,39 @@ EndIf
          jply=final2 
        EndIf
     EndIf
- EndIf
-Sleep 1,1 ' para que corranmas de un thread
+  EndIf
+  Sleep 1,1 ' para que corranmas de un thread
 
 Next jply
 
+If MIDIFILEONOFF = HABILITAR Then 
+    Dim As Double TiempoAcumNew
+     Dim As Integer T1
+     TiempoAcumNew= Timer - STARTMIDI
+     T1 =  TiempoAcumNew *  1000 * tiempoPatron/60
+     'las terminaciones de cada pista 
+     For pis=1 To tope
+       NroEventoPista(pis) = NroEventoPista(pis) + 1
+       NroEvento=NroEventoPista(pis) 
+       MidiDatos(pis).datos(NroEvento)= Str(T1) + " Meta TrkEnd"
+       NroEventoPista(pis) = NroEventoPista(pis) + 1
+       NroEvento=NroEventoPista(pis) 
+       MidiDatos(pis).datos(NroEvento)="TrkEnd"
+     Next pis
+     MIDIFILEONOFF = DESHABILITAR
+   '''  Close 20 ' el midiplano 
+EndIf
+'volcar misDatos a SecuenciaPlay.txt
+ Dim k4 As Integer
+ For pis=1 To tope
+    For k4=1 To NroEventoPista(pis)
+        Print #midiplano,MidiDatos(pis).datos(k4)
+    Next k4
+ Next pis
 
+ Close 20 ' cierra SecuemciaPlay.txt
+  
+'
 posicion=comienzo
 'posishow=posicion + 20
 'posishow=posicion - 20
@@ -2444,19 +2479,6 @@ if GrabarPenta=0 and GrabarEjec=HabilitaGrabar and Parar_De_Dibujar=NO And check
    Next i
 EndIf 
 
-If MIDIFILEONOFF = HABILITAR Then 
-   Dim As Double TiempoAcumNew
-   Dim As Integer T1
-
-   TiempoAcumNew= Timer - STARTMIDI
-   T1 =  TiempoAcumNew *  1000 * tiempoPatron/60
-   ''GrabaMidiPlano()
-   Print #midiplano, T1 ;" Meta TrkEnd"
-   Print #midiplano, "TrkEnd"
-   MIDIFILEONOFF = DESHABILITAR
-   Close 20
-
-EndIf
 
 
 Sleep 20,1

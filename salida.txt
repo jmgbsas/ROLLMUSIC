@@ -1,0 +1,1 @@
+Exit code: 0   -c  secuenciaPLAY.txt "CORREGIDO".mid
