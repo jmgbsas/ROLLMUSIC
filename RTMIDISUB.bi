@@ -760,7 +760,7 @@ If i1<= NA-13 Then
        If Roll.trk(jply, i1).onoff =2 Then
             NroEventoPista(1)= NroEventoPista(1) +1
             NroEvento=NroEventoPista(1)
-            Print #1,"noteon CUByte(Notapiano),vel,canal,portsal  ";CUByte(Notapiano),vel,canal,portsal
+'            Print #1,"noteon CUByte(Notapiano),vel,canal,portsal  ";CUByte(Notapiano),vel,canal,portsal
             noteon CUByte(Notapiano),vel,canal,portsal,1,NroEvento
        EndIf
        If Roll.trk(jply, i1).onoff= 1 Then

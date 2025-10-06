@@ -1,3 +1,5 @@
+- 06-10-2025 otros fix para mid de archivos de cancion. F2/F3 ACHIVA/EXPANDE HORIZONTALMENTE SIN
+  TOCAR EL FONT. F9/F10 ACHICA/AGRANDA EL TAMAÑO DEL FONT DEL GRAFICO
 - 05-10-2025  0.341 Generar archivo *.mid para una cancion con Ticks ok"
 - 04-10-2025 Fix exportar a midi con midiconv para ticks
 - 30-09-2025 0.339 CTRL-M CTRL-N, M MOFIFICA E INSERTA COMO ANTES, Y N SOLO MODIFICA NOTA EXISTENTE 
@@ -125,7 +127,8 @@
   " N    >>" donde N es el comienzo y >> la finalizacion de la nota.
   En Ctrl-M se podra ver la indicacion onoff, onoff=2 sera el on o comienzo de la nota
   y onoff=1 la finalizacion. 
-
+============================================================================================
+============================================================================================
 - 10-03-2025 Ultima Version 0.4900 incompleta sin Ticks... se abandona
   Varios intentos de representar en roll grafico las secuencias ejecutadas
   o en vivo. Se complica mucho sin linea de tiempo.. se abandona esta linea

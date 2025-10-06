@@ -298,7 +298,8 @@
        Archivo NUEVO borra el Roll de memoria y comienza de cero. En el menu del grafico de Roll (no control)
        click en [ARchivo] -> ALT-Click [NUEVO]
         
-    7) Tamaño Font. f2-f3, f9-f10
+    7) ACHICAR/EXPANDIR EL GRAFICO DE LA  SECUENCIA CON F2/F3 SIN CAMBIAR EL FONT.
+       ACHICAR /EXPANDIR EL TAMAÑO DEL FONT CON F9/F10 SIN CAMBIAR TAMAÑO HORIZONTAL.
     8) Crear Canción.
     9) Agregar tracks a cancion.
     10) Conmutar de Pista en una cancion cargada sobre el grafico pulsando TAB.
@@ -789,7 +790,8 @@
     1.6) Tamaño Font  F9 disminuye <-> F10 aumenta font solamente no la proporcionalidad.
        La edicion en el diseño original se hacia en font=18 (al cual se vuelve al pulsar 'q') y actualmente 
        en otros tamaños, se cambio para trabajar a distintos tamaños de font y  proporcionlidad. ESTE CAMBIO 
-       SE HACE PULSANDO F2  ó F3 para disminuir o agrandar la proporcionalidad includio el font. 
+       SE HACE PULSANDO F2  ó F3 para disminuir o agrandar la proporcionalidad SIN INCLUI EL FONT Y COMO RESULTADO
+       SE CONTRAE O ALARGA HORIZONTALMENTE LA SECUENCIA EN EL GRAFICO . 
        Se recomiendo usar font 18 que es el valor para el cual es mas optimo la edicion, pero funciona bien 
        desde Font 15 a más de 20 sin problemas. Se puede jugar con la proporcionalidad F2/F3 y luego ajustar
        el font solamente con F9/F10. Los ajustes se graban en RollMusic.ini para otra sesion futura 

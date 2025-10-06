@@ -73,7 +73,7 @@ Common SHARED  As Integer EstaBarriendoPenta, instancia,MICROSEGUNDOS_POR_NEGRA,
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As plano miditxt()
-Common Shared As Integer gp ,midiplano,midionof,contid,separaenuno0, intervalo
+Common Shared As Integer gp ,midiplano,midionof,contid,separaenuno0, interva
 
 'common Shared message() As UByte 'cambiado a shred message output ' puede ser de hasta 1024 bytes
 'Dim message(1 To 21) As UByte 'agregado

@@ -4793,9 +4793,9 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
 ' Track(ntk).trk=
   Case "[SEPARA]"
 
-   default=Str(intervalo-1)  
+   default=Str(interva)  
    intervaloTxt = InputBoxJmg("Ajuste Separacion Notas en pantalla " ,"Entre un Intervalo ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
-   intervalo= ValInt(intervaloTxt) +1 '19-03-2025 
+   interva= ValInt(intervaloTxt)  '19-03-2025 
 
 End Select
 

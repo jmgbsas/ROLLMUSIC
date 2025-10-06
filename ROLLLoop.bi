@@ -360,9 +360,9 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
      '''  cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono+1 ) * inc_Penta - 4) 
     ''EndIf
      If indf=181 And resumen=1 Then
-        If intervalo > 0 Then
+        If interva > 0 Then
            separaenuno=separaenuno +1
-           If separaenuno=intervalo Then ' ESTO ACHICA CON INTERVALO 4 O 5 YA SE APILA TODO AL PRINCIPIO
+           If separaenuno=interva Then ' ESTO ACHICA CON INTERVALO 4 O 5 YA SE APILA TODO AL PRINCIPIO
               separaenuno=0 
            Else
               Continue For ' ESTO ACHICA 
@@ -813,7 +813,7 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
  ' las lineas
      ScreenSync ' a ver si aca es mejor....
      creaPenta (c, Roll )
-     
+      
 
     If *po = 99 Or *po=3 Then
        *po = hasta -1 ' 8 por ejemplo => *po=7
@@ -832,6 +832,7 @@ End Sub
 sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 On Local Error Goto fail
 ' 15-02-2026
+
 
 
 Dim As Integer ubiroll,ubirtk,encancion
@@ -1401,37 +1402,47 @@ If MultiKey(SC_PLUS) Then  '13 , ligadura
  Exit Do
 EndIf
 
-If  MultiKey(SC_KEYPADPLUS) Then '78
-
-   Dim As Integer w,h
-   h=ALTO
-   ALTO = ALTO + inc_Penta
-   If ALTO >= altoInicial - 1  Then
-    ALTO = altoInicial  - 1
-   EndIf
-   MoveWindow( hWnd , X0, (Y0+ALTO-h)\2, ANCHO - mxold,ALTO, TRUE )
-
- Exit Do
-
+If  MultiKey(SC_CONTROL) And  MultiKey(SC_MINUS) Then
+'ACHICAR LA PANTALLA HORIZONTALMENTE COMO LO HACEMOS
+'DEBO ACHICAR LA SEPARACION DE LOS ELEMENTOS
+anchofig=anchofig-1
+Exit Do
+EndIf
+If  MultiKey(SC_CONTROL) And  MultiKey(SC_KEYPADPLUS) Then
+'AGRANDAR LA PANTALLA HORIZONTALMENTE COMO LO HACEMOS
+'DEBO ACHICAR LA SEPARACION DE LOS ELEMENTOS
+anchofig=anchofig+1
+Exit Do
 EndIf
 
-If  MultiKey(SC_MINUS)  Then
-   h=ALTO
-   ScreenControl GET_WINDOW_POS, x0, y0
-   ALTO = ALTO - inc_Penta
-   If ALTO <= ALTO * 0.3 Then
-    ALTO =  ALTO * 0.3
-   EndIf
+'If  MultiKey(SC_KEYPADPLUS) Then '78
+
+'   Dim As Integer w,h
+'   h=ALTO
+'   ALTO = ALTO + inc_Penta
+'   If ALTO >= altoInicial - 1  Then
+'    ALTO = altoInicial  - 1
+'   EndIf
+'   MoveWindow( hWnd , X0, (Y0+ALTO-h)\2, ANCHO - mxold,ALTO, TRUE )
+
+' Exit Do
+
+'EndIf
+
+'If  MultiKey(SC_MINUS)  Then
+'   h=ALTO
+'   ScreenControl GET_WINDOW_POS, x0, y0
+'   ALTO = ALTO - inc_Penta
+'   If ALTO <= ALTO * 0.3 Then
+'    ALTO =  ALTO * 0.3
+'   EndIf
    '    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
    '    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
-     MoveWindow( hWnd , X0 , (Y0+h-ALTO)\2, ANCHO - mxold,ALTO, TRUE )
+'     MoveWindow( hWnd , X0 , (Y0+h-ALTO)\2, ANCHO - mxold,ALTO, TRUE )
 
-    Exit Do
+'    Exit Do
 
-
- Exit Do
-
-EndIf
+'EndIf
 
 If MultiKey(SC_ALT)   Then '' mover pantalla a derecha en cualquier modo edicion aun CTRL-M 
  If MultiKey (SC_RIGHT) Then
@@ -1739,8 +1750,8 @@ EndIf
 
 If MultiKey (SC_F2)  And lockfont=0 Then
 ' escala = escala - 0.01
-   
-   anchofig=anchofig - 1
+      
+   anchofig=anchofig - 0.1
    gap1= anchofig * 6  ' porque tanto era 20
    gap1 = gap1 + 8 
    gap2= (914 * gap1) /1000 ' 74 default
@@ -1749,88 +1760,26 @@ If MultiKey (SC_F2)  And lockfont=0 Then
    NroCol =  (ANCHO / anchofig ) + 4
 
  
-'   If NroCol > MaxPos Then
-'      NroCol=MaxPos
-'      anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
-'   EndIf
-
- '  If MaxPos > 100 Then
- '   ' NroCol =  (MaxPos/ anchofig ) - 4
- '  EndIf
-   'If NroCol < 800 Then
-   '   NroCol = 800
-   'endif 
    If  anchofig < 1 Then
        anchofig = 1
    EndIf    
    nanchofig=anchofig
-   font=font - 0.5
-   Sleep 50
-   If font < 5 And font >0  Then
-    font=18 *3/5
-    DUR => 0
-   curpos =>1
-   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
-   gap1= anchofig* 6 ' porque era tanto 20
-   NroCol =  (ANCHO / anchofig ) + 4 '6
-   gap2= (914 * gap1) /1000 ' 74 default
-   gap3= (519 * gap1) /1000 ' 42 default
-
-   EndIf
+  
    
-'   dim as integer figancho 
-'   for t1 as Integer = 1 to 30  
-'   figancho=mispx(t1, 2)
-'   if figancho=anchofig then
-'      font=t1
-'   endif
-'   next t1
    ANCHO3div4 = ANCHO *3 / 4
    lockfont=1
   Exit Do
 EndIf
 
 If MultiKey (SC_F3)  And lockfont=0 Then
-   anchofig=anchofig + 1
+   anchofig=anchofig + 0.1
    gap1= anchofig * 6 ' era porque tanto 20 '81 default
    gap1=gap1 - 1
    gap2= (914 * gap1) /1000 ' 74 default
    gap3= (519 * gap1) /1000 ' 42 default
-
+   
    NroCol =  (ANCHO / anchofig ) + 4
 
- '  If NroCol > MaxPos Then
- '     NroCol=MaxPos
- '     anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
- '  EndIf
-  ' If MaxPos > 100 Then
-    ' NroCol =  (MaxPos/ anchofig ) - 4
-  ' EndIf
-
-'   If NroCol < 800 Then
-'      NroCol = 800
-'   endif 
-
-'->
-
-'   nanchofig=anchofig
-
-'   Dim As Integer figancho 
-'   For t1 As Integer = 1 To 30  
-'   figancho=mispx(t1, 2)
-'   If figancho=anchofig Then
-'      font=t1
-'   EndIf
-'   Next t1
-
-
-'   If  anchofig > 175 Then
-'       anchofig = 175
-'   EndIf    
-   font=font+0.5  
-   If font > 50 Then
-      font=50
-   EndIf 
    lockfont=1
    nanchofig=anchofig
    ANCHO3div4 = ANCHO *3 / 4
@@ -2060,29 +2009,23 @@ Print #fk,
 EndIf
 
 If MultiKey (SC_F9) And lockfont=0 Then
- font = font - 0.5
- gap1=gap1 + 3
+ font = font - 0.25
  If font < 5 And font >0  Then
-   font=18
+   font=5
    DUR => 0
    curpos =>1
-   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
-   gap1= anchofig* 6 ' porque era tanto 20
-   NroCol =  (ANCHO / anchofig ) + 4 '6
-   gap2= (914 * gap1) /1000 ' 74 default
-   gap3= (519 * gap1) /1000 ' 42 default
-
  EndIf
+
  lockfont=1
  Exit Do
 EndIf
 
 If MultiKey (SC_F10) And lockfont=0 Then
- font = font + 0.5
- gap1 = gap1 + 3
+ font = font + 0.25
  If font > 50 Then
   font=50 ' pisa la 1er duracion mas de ahi....
  EndIf
+
  lockfont=1
  Exit Do
 EndIf
@@ -2835,14 +2778,16 @@ If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
  EndIf
  If MultiKey(SC_CONTROL) And MultiKey(SC_HOME) Then
   'TODA LA SECUENCIA ENTRA EN UN PANTALLA
-   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
+ Dim nrofig As Integer
+
+  anchofig =(ANCHO- gap1 )/(MaxPos-posishow)
 ' If font >=5 And font <= 34 Then
 '   anchofig= mispx(font-4,2)
 'Else
 '   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
 'EndIf
 
-   NroCol =  (ANCHO / anchofig ) + 4
+   ''NroCol =  (ANCHO / anchofig ) + 4
    gap1= anchofig* 6 ' porque era tanto 20
    gap2= (914 * gap1) /1000 ' 74 default
    gap3= (519 * gap1) /1000 ' 42 default
@@ -2855,6 +2800,11 @@ If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
     resumen=1
     Exit Do
  EndIf
+ If MultiKey(SC_L) And resumen=1 Then
+    resumen=0
+    Exit Do
+ EndIf
+
 
  If MultiKey(SC_END)  Then
      posicion=MaxPos - NroCol*3/4
@@ -3632,7 +3582,7 @@ If (ScreenEvent(@e)) Then
 '===========================EVENT_WINDOW_GOT_FOCUS================================
 ' ********************************************************************************
   Case EVENT_WINDOW_GOT_FOCUS
-       fueradefoco=0
+       fueradefoco=NO
 
 ' ********************************************************************************
 '===========================EVENT_WINDOW_LOST_FOCUS=====================================
@@ -3643,7 +3593,7 @@ If (ScreenEvent(@e)) Then
        Else     ' fuera de y sin play reducimos consumo CPU
            'Print #1,"1-sleep "; timer
          '  Sleep 20 '12-06-2022 lo puse denuevo
-           fueradefoco=1
+           fueradefoco=SI
        EndIf
 
 ' ********************************************************************************
@@ -4422,7 +4372,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
  EndIf
 ' 12-07-2021 mousex > 70  
  If  s5= 0 And mouseX > 450 And mousex < (ANCHO -70 - mxold) And  usarmarco=0 and mousey < 50 Then
-     Sleep 5 '12-06-2022 15-03-2025 decia 20
+    Sleep 5 '12-06-2022 15-03-2025 decia 20
     If  play=NO And playb=NO Then ' durante un play funciona mal esto => se bloquea su uso por ahora
      x1=mouseX: y1=mouseY
     EndIf
@@ -6519,7 +6469,7 @@ If nnn=100 And MAXPOS > 800 Then ' que loopee mas en el lop mas interno solo sal
   Exit Do
 EndIf
 
-If fueradefoco=SI  And (play = NO) and (playb=NO) And (Cplay=NO) Then
+If fueradefoco=NO  And (play = NO) and (playb=NO) And (Cplay=NO) Then
 
    Sleep 5 ' ESTO HACE QUE LA CINTA CORRA SUAVE
 EndIf

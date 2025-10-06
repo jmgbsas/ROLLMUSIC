@@ -31,7 +31,7 @@
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.341 Generar archivo *.mid para una cancion ok"
+nroversion="0.342 fix *.mid para una cancion ok y F2/F3 achica/agranda horizontalmente, f9/f10 solo font "
 ' chequear formatos 0 y 1 del archivo midi en el 1 hay un track sin notas y de referencia de tiempos
 ' yo creo que estoy generando en formato 0 verificarlo
 ' mas adelante intentaremos desarrollar la escritura de archivos midi sin pasar por planos...
@@ -184,6 +184,7 @@ End If
 'Print #1, "DESPUES ROLLCTRLSUB.Bi"
 '----------------
 Do
+
   COMEDIT=LECTURA
 param.titulo ="RollMusic Ctrl V "+ nroversion
 'Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
