@@ -919,7 +919,7 @@ Print #1,"abriendo portin y call back",*nombrein( portin1092 )
               open_port (midiin(portin1092 ), portin1092, *nombrein( portin1092 ) )
               set_callback midiin(portin1092 ), @mycallback, p
        ' por ahrao iognoramos otros tipsod de mensaje
-              rtmidi_in_ignore_types  (midiin(portin1092 ), 1, 2, 4)
+''              rtmidi_in_ignore_types  (midiin(portin1092 ), 1, 2, 4)
               teclado=1 
               listinAbierto( portin1092) = 1
               jgrb=0
@@ -1421,8 +1421,8 @@ Print #1,"listInCreado(portin2500) ",listInCreado(portin2500)
 Print #1,"abriendo portin y call back",*nombrein( portin2500 )
               open_port (midiin(portin2500 ), portin2500, *nombrein( portin2500 ) )
               set_callback midiin(portin2500 ), @RollCallback, pp
-       ' por ahrao iognoramos otros tipsod de mensaje
-              rtmidi_in_ignore_types  (midiin(portin2500 ), 1, 2, 4)
+       ' por ahrao iognoramos otros tipsod de mensaje los sysex!!
+         ''     rtmidi_in_ignore_types  (midiin(portin2500 ), 1, 2, 4)
               teclado=1 
               listinAbierto( portin2500) = 1
               jgrb=0

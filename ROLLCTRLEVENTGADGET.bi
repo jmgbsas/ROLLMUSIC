@@ -862,6 +862,14 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
          '   If  num > 0 Then  ' se chequeop una pista no importa cual
             threadsel = ThreadCreate(@selport(), CPtr(Any Ptr, miport))
      EndIf 
+'-------------------------------------------------------
+      If  eventnumber()=BTN_ROLL_PAN Then 'PAN  REPRODUCCION HACIA LOS LADOS DERECHA IZQUIERDA,,,
+          
+          threadpan=threadCall SelPan(GlobalPan)
+''el paneo no funciona con fluidsynth o no se como se envia
+   '''       Paneo (GlobalPan,pmTk(ntk).canalsalida,pmTk(ntk).portout)
+          pmTk(ntk).pan =Globalpan
+      EndIf
 '-------------------
 '////////////////// BOTON PATCH ROLL O CANCION O MANUAL /////////////////////////////
 ' futuro todas estos codigos de  case si son parecidos luego  algun dia 

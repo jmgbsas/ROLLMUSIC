@@ -78,6 +78,10 @@ Common Shared As Integer gp ,midiplano,midionof,contid,separaenuno0, interva
 'common Shared message() As UByte 'cambiado a shred message output ' puede ser de hasta 1024 bytes
 'Dim message(1 To 21) As UByte 'agregado
 
+Dim Shared As HWND velimg, Figimg, FigVol
+Const IMAGE_VEL= 30
+Const IMAGE_FIG1 = 31
+Const IMAGE_FIG2 = 32
 
 Const As BOOLEAN HABILITAR = TRUE
 Const As BOOLEAN DESHABILITAR = FALSE
@@ -106,6 +110,117 @@ Dim Shared As Integer ContadorError=0
 
 
 On  Error GoTo errorControl
+Sub CuadroVel()
+         velimg=OpenWindow("Cuadro de Tempos Clasicos ",400,100,800,400)
+         ImageGadget(IMAGE_VEL,10,10,1100,600,Load_image(".\recur\velocidades.jpg"),0,SS_BITMAP )
+         #Ifdef __FB_WIN64__
+          SetFocus (velimg) 
+         SetForegroundWindow(velimg)
+         #Else
+            gtk_widget_grab_focus(GadgetID(IMAGE_VEL))
+         #EndIf
+          
+        
+           Do 
+              Var eventVel= waitEvent()
+              If eventVel=EventClose Then
+                 Close_Window(velimg)
+                 Exit Do 
+              EndIf
+           Loop   
+
+
+End Sub
+Sub CuadroDur()
+               Figimg=  OpenWindow("Duraciones de Figuras y sus Teclas",200,50,1300,900  )
+               ImageGadget(IMAGE_FIG1,10,10,1100,800,Load_image(".\recur\FIGURAS.jpg"))
+               #Ifdef __FB_WIN64__
+                SetFocus (Figimg) 
+               SetForegroundWindow(Figimg)
+               #Else
+                 gtk_widget_grab_focus(GadgetID(IMAGE_FIG1))
+               #EndIf
+          
+           Do 
+              Var eventDur= waitEvent
+              If eventDur=EventClose Then
+                 Close_Window(Figimg)
+                 Exit Do 
+              EndIf
+
+           Loop   
+
+End Sub 
+Sub CuadroVol()
+               FigVol=  OpenWindow("Volumen tipicos en partituras ",800,100,400,600  )
+               ImageGadget(IMAGE_FIG2,10,10,1100,800,Load_image(".\recur\VOLUMEN.jpg"))
+               #Ifdef __FB_WIN64__
+                SetFocus (FigVol) 
+               SetForegroundWindow(FigVol)
+               #Else
+                  gtk_widget_grab_focus(GadgetID(IMAGE_FIG2))
+               #EndIf
+          
+          
+           Do      
+              Var eventVol= waitEvent
+              If eventVol=EventClose Then
+                 Close_Window(FigVol)
+                 
+              EndIf
+           Loop
+   
+
+End Sub
+'---------
+Sub SelPan (ByRef Paneo As ubyte)
+Var hwndpan=OpenWindow("",300,500,1050,150)
+ButtonGadget(1,20,20,60,25,"Aplicar")
+TrackBarGadget(2,20,60,1000,40,0,127)
+TextGadget(3,200,20,30,20)
+
+Do
+   var event=WaitEvent()
+   If event=EventGadget Then
+      Select case EventNumber
+         Case 2
+            Paneo=GetTrackBarPos(2) 
+       Print #1,"PAN SELECCIONADO ->> "; Paneo
+            SetGadgetText(3,Str(Paneo))
+              
+         Case 1
+            Close_window (hwndpan) 
+      End Select
+   EndIf
+Loop
+
+
+End Sub
+'---------
+Sub SelEco (ByRef rever As ubyte)
+Var hwndeco=OpenWindow("",300,500,1050,150)
+ButtonGadget(1,20,20,60,25,"Aplicar")
+TrackBarGadget(2,20,60,1000,40,0,127)
+TextGadget(3,200,20,30,20)
+
+Do
+   var event=WaitEvent()
+   If event=EventGadget Then
+      Select case EventNumber
+         Case 2
+            rever=GetTrackBarPos(2) 
+       Print #1,"ECO SELECCIONADO ->> "; rever
+            SetGadgetText(3,Str(rever))
+              
+         Case 1
+            Close_window (hwndeco) 
+      End Select
+   EndIf
+Loop
+
+
+End Sub
+'------
 
 '------
 Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer) 
@@ -118,24 +233,25 @@ For x= 1 To 2
      haw=OpenWindow("OCTAVAS",100,50,400,400, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
      hwl=  ListViewGadget(1,10,10,300,400,,,,32,LVS_SINGLESEL  )
     ' listports()
-
+     GadgetToolTip(1,"Dos Columnas la derecha es la numeracion de RollMusic, la izquierda la que se suele usar." )
+  
   If paso=0 Then
-       AddListViewColumn(1, "Elegir Desde ",0,0,250)
+       AddListViewColumn(1, "Elegir Octava Desde ",0,0,250)
        For aa =1 To 9 
-           AddListViewItem(1, listoctava(aa)+" "+Str(aa),0,aa,0)
+           AddListViewItem(1, listoctava(aa)+"-"+Str(aa),0,aa,0)
        Next
        
   EndIf   
   If paso=1 Then  
-       AddListViewColumn(1, "Elegir Hasta ",0,0,250)
+       AddListViewColumn(1, "Elegir Octava Hasta ",0,0,250)
        For aa =1 To 9 
-           AddListViewItem(1, listoctava(aa)+" "+Str(aa),0,aa,0)
+           AddListViewItem(1, listoctava(aa)+"-"+Str(aa),0,aa,0)
        Next
   EndIf
 
 
        ButtonGadget(2,330,30,50,40," OK ")
-       
+       GadgetToolTip(2,"Al dar OK el Rango de Octavas elegido sera el usado por el Grafico")
          #Ifdef __FB_WIN64__
            SetFocus (hwl) 
            SetForegroundWindow(haw)
@@ -203,7 +319,7 @@ Posy=y0 +100
      'Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
      ' commctrl.bi modificado
      hwl=  ListViewGadget(1,10,10,500,500,,,,32,LVS_SINGLESEL )
-     
+ GadgetToolTip(1,"Seleccionar instrumento por nombre, deseleccionar el que este seleccionado y luego seleccionar otro y pulsar CAMBIA." )    
      AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
     '' AddListViewItem(1, "CLICK EN UN ITEM  Y EN CAMBIA",0,aa,0)
      

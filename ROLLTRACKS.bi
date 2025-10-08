@@ -2414,18 +2414,16 @@ If MIDIFILEONOFF = HABILITAR Then
        MidiDatos(pis).datos(NroEvento)="TrkEnd"
      Next pis
      MIDIFILEONOFF = DESHABILITAR
-   '''  Close 20 ' el midiplano 
-EndIf
-'volcar misDatos a SecuenciaPlay.txt
- Dim k4 As Integer
- For pis=1 To tope
-    For k4=1 To NroEventoPista(pis)
-        Print #midiplano,MidiDatos(pis).datos(k4)
-    Next k4
- Next pis
-
- Close 20 ' cierra SecuemciaPlay.txt
-  
+      'volcar misDatos a SecuenciaPlay.txt
+       Dim k4 As Integer
+       For pis=1 To tope
+          For k4=1 To NroEventoPista(pis)
+              Print #midiplano,MidiDatos(pis).datos(k4)
+          Next k4
+       Next pis
+      
+       Close 20 ' cierra SecuemciaPlay.txt FIX ERROR 07-10-2025
+EndIf  
 '
 posicion=comienzo
 'posishow=posicion + 20

@@ -376,7 +376,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
                 Roll.trk(1,NA).inst= CUByte(instru)
                 Track(ntk).trk(1,1).nnn=CUByte(instru)
               ' grabar la pistacomo en 1011
-                print #1, "CTRL1040 Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
+                print #1, "CTRL1040 Grabando inst a disco, instru ",nombre,instru
                 
                 If (CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE) And ROLLCARGADO=FALSE Then
                    NADACARGADO=FALSE  
@@ -458,6 +458,16 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
               carga=1
   
         '      SetForegroundWindow(hwnd)
+           Case 1051 ' PANEO DE UN CANAL 
+              
+             threadpan=threadCall SelPan(Globalpan)
+             pmTk(ntk).pan =Globalpan
+             '''Paneo (GlobalPan,pmTk(ntk).canalsalida,pmTk(ntk).portout)
+           Case 1052 ' REVERVERACION DE UN CANAL 
+              
+             threadeco=threadCall SelEco(Globaleco)
+             pmTk(ntk).eco =Globaleco
+   
 '-----------------------------------------------------------------------
            Case 1060 ' <========== crea track y reemplaza al existente en la edicion
              If NombreCancion > ""  Or (abrirRoll=REABRIR_ROLL_CON_DATOS_CARGADOS And Terminar=NO_TERMINAR_CON_DATOS_CARGADOS )Then
@@ -838,40 +848,19 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
              MessBox ("", acercade)
             SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
-           Case 2001 ' cuadro ayuda tempo 
-            Dim As integer eventvel
-            Dim As HWND velimg
+           Case 2001 ' cuadros ayuda tempo, figuras duracion, volumen
+             threadVel = ThreadCall CuadroVel ()
+             threadDetach threadVel  
+           Case 2002 ' cuadros ayuda tempo, figuras duracion, volumen
+           threadDur = ThreadCall  CuadroDur ()
+           threadDetach threadDur 
+           Case 2003 ' cuadros ayuda tempo, figuras duracion, volumen
+           threadVol = ThreadCall  CuadroVol ()
+           threadDetach threadVol 
 
-            velimg=OpenWindow("Cuadro de Tempos Clasicos ",400,100,800,400)
-            ImageGadget(IMAGE_VEL,10,10,1100,600,Load_image(".\recur\velocidades.jpg"))
-            Do  
-             eventvel=WaitEvent()
-              If eventvel=EventClose  Then
-                 Close_Window(velimg)  
-                   Exit Do
-             EndIf 
-            Loop  
-
-          SetForegroundWindow(hwnd)
-'---------------------------------------------------------------------
-           Case 2002  'MUESTRA FIGURAS DISPONIBLES
-          Dim As integer eventFig
-           Dim As HWND Figimg
-
-            Figimg=  OpenWindow("Duraciones de Figuras y sus Teclas",400,100,800,600  )
-            ImageGadget(IMAGE_FIG,10,10,1100,800,Load_image(".\recur\FIGURAS.jpg"))
-           
- 
-            Do  
-             eventFig=WaitEvent()
-              If eventFig=EventClose  Then
-                  Close_Window(Figimg)  
-                   Exit Do
-              EndIf 
-            Loop  
-
-          SetForegroundWindow(hwnd)
+         '' SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
+
            Case 2500 ' abrir un midi-in ...con callback
 'Reproducir MIDI-IN (teclado) por  MIDI-OUT. Abre Puerto MIDI-IN
 ' para Roll no depende del numero de pista de ejecucion,sino del portin solamente,,,

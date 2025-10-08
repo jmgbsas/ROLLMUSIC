@@ -147,7 +147,7 @@ Sub omnion( note As UByte, canal As UByte, portsal As UByte)
 	Dim modo As UByte
 	Dim leng As UInteger <8>
 	Dim result As Integer
-	
+	'ESUN CONTROL CHANGE 176 Y VA HASTA EL 191
   If canal = 0 Then  ' 0xB0 = 11x16 = 176
 		 modo = 176 ' 0xB0 + 0 = 176 +0 = 176 
 	Else
@@ -294,14 +294,14 @@ Sub alloff(canal As UByte, portsal As UByte )
 '	 MIDI.sendControlChange(123,0,c);
 'CC( 123, velosity 0, channel number)
  message(1) = modo 
- message(2) = 0
+ message(2) = 0     'VALUE BYTE NO USADO 0
  message(3) = canal
  leng=3
 result = send_message (midiout(portsal), p, leng)
 
 End Sub
 Sub ChangeProgram ( instru As UByte,  canal As UByte,portsal As UByte)
-
+'CAMBIO PATCH 
 	Dim modo As UByte
 	Dim leng As UInteger <8>
 	Dim result As Integer ' canal 0 to 15 canal 0 es el 1
@@ -311,9 +311,9 @@ Sub ChangeProgram ( instru As UByte,  canal As UByte,portsal As UByte)
 	  modo = 192 + canal 
 	EndIf
 	' funciona!!!! se manda al inicio PERO SOLO me funcioan con todas las octavas ver por que
- message(1) = modo 
- message(2) = instru
-
+ message(1) = modo  'SEGUN EL CANAL EL MODO INDICA CHANGUE PATCH
+ message(2) = instru ' EL PATCH ENVIADO COMO VALUE O DATA BYTE
+' EL MESSAGE 3 NO SE USA EL PORTOUT NO DEPENDE DE ELLO  
  leng=2
 'Print #1,"send_message midiout(portsal) , p, leng ",midiout(portsal) , p, leng
 'On Local Error GoTo  errorcp
@@ -323,6 +323,28 @@ Sub ChangeProgram ( instru As UByte,  canal As UByte,portsal As UByte)
 '  Print #1,"error send_message change program",n
 
 'Print #1,"resultado de cambiar elpatch result patch", result, instru
+' PARA PAN 
+'PAN_CONTROLLER = 10
+'final int PAN_CONTROLLER = 10; 
+'// Pan to Center:
+'channel.controlChange(PAN_CONTROLLER, 64);
+
+'// Pan hard left:
+'channel.controlChange(PAN_CONTROLLER, 0);
+
+'// Pan hard right:
+'channel.controlChange(PAN_CONTROLLER, 127);
+
+'// "Active stereo", Jimi-Hendrix-style
+'// sweep from almost-full left to almost-full right:
+'for (int position = 8; position < 127; position += 8) {
+'    channel.controlChange(PAN_CONTROLLER, position);
+'    try {
+'        Thread.sleep(500);
+'    } catch (InterruptedException e) {
+'    }
+'}
+
 End Sub
 Sub noteon	( note As UByte, vel As UByte, canal As UByte, portsal As UByte,i1 As Integer, NroEvento As Integer )
 	' canal 1 
@@ -366,6 +388,123 @@ If MIDIFILEONOFF = HABILITAR Then  ' habilito escritura a midi
 EndIf
 End Sub
 '-------------------------------------
+Sub Paneo (PAN As UByte,  canal As UByte,portsal As UByte)
+'u nmidi player https://www.majorgeeks.com/files/details/soundfont_midi_player.html
+'https://www.majorgeeks.com/ PARA DESCARGAR USAR GREEK
+'CAMBIO PANEO 
+''Controller parameter:   Par <ch> <con> <val> ????
+'' ej     0 Par ch=3 c=10 v=127  <--- al princpio
+''    12010 Par ch=3 c=10 v=1  <--- en el medio
+''    32010 Par ch=3 c=10 v=127
+''PAN_CONTROLLER=10 podriamoas usar esta constante
+	Dim modo As UByte
+	Dim leng As UInteger <8>
+	Dim result As Integer ' canal 0 to 15 canal 0 es el 1
+	If canal = 0 Then  ' 
+		 modo = 176 '  
+	Else
+	  modo = 176 + canal 
+	EndIf
+''https://coolsoft.altervista.org/en/forum/post/520
+'the same feature should be applied to MIDI controller 
+' 93 (sustain) and its SysEx: F0 43 10 4C 02 01 2C 40 F7
+'-----
+'rEVERB The default value of 40 you are referring is actually 0x40 (decimal 64) 
+'and can be considered 50% as the range is 00..0x7F (decimal 00..127). 
+'But this value is NOT the same as the reverb controller value (MIDI controller 91).
+'-------------
+'Regarding BASSMIDI reverb and chorus defaults the situation is more complicated. 
+'But from a programming point of view your situation is simpler. 
+'The default value of 40 you are referring is actually 0x40 (decimal 64) and can be considered 
+' 50% as the range is 00..0x7F (decimal 00..127). But this value is NOT the same as the 
+' reverb controller value (MIDI controller 91).
+
+'These 2 values are independent from each other. The default value 0x40 can be changed 
+' or set only with SysEx: F0 43 10 4C 02 01 0C 40 F7.
+' F0 43 10 4C 02 01 0C [40] F7.
+'And the midi controller message 91 is interpreted as a value WITHIN this range.
+'So if you send a midi controller message 91 with value 127, that is interpreted as a reverb of 0x40.
+' But if you change the reverb level to eg. 1 with SysEx: F0 43 10 4C 02 01 0C 01 F7
+'F0 43 10 4C 02 01 0C [01] F7 
+'then midi controller message 91 with value 127 will be equal to Reverb level 1.
+' ENTONCES LA CICFRA 8 01 0 40 ME DA LA REVERB!!!??
+'So you should not worry about user feedback since you change only the SysEx param within your program and that cannot be changed with midi controller messages.
+' 0xf0 SYSEX 240
+' para SYS EX OTRA RUTINA
+'' {240,127,127,4,1,127,127,127} 
+''{0xF0, 0x7F, 0x7F, 0x04, 0x01, 0x7F, 0x7F, 0xF7};
+'' SysEx: F0 43 10 4C 02 01 0C 40 F7. para reverv
+'' cuando se escribe a un archivo despues de F0 se pone un numero que dice
+'' cuantos bytes son el mensaje
+'message(1) = 240  'sysex
+'message(2) = 67
+'message(3) = 16
+'message(4) = 76
+'message(5) = 2  
+'message(6) = 12
+'message(7) = 127 ''maximo valor  de reverv , medio es 64
+'message(8) = 247
+  
+' Print #1,"CAMBIANDO PANEO PAN, CANAL, PORTSAL ", PAN, canal, portsal
+ 'message(3) = PAN  ' EL PAN ENVIADO COMO VALUE O DATA BYTE
+' EL MESSAGE 3 NO SE USA EL PORTOUT NO DEPENDE DE ELLO  
+' leng=8
+'Print #1,"send_message midiout(portsal) , p, leng ",midiout(portsal) , p, leng
+'On Local Error GoTo  errorcp
+'  result = send_message (midiout(portsal) , p, leng)
+
+ message(1) = modo  'SEGUN EL CANAL EL MODO INDICA CHANGUE PAN
+ message(2) = 10  ' 10 es el paneo 
+ message(3) = PAN ' cantidad de paneo
+  
+ ''Print #1,"CAMBIANDO PANEO PAN, CANAL, PORTSAL ", PAN, canal, portsal
+ 'message(3) = PAN  ' EL PAN ENVIADO COMO VALUE O DATA BYTE
+' EL MESSAGE 3 NO SE USA EL PORTOUT NO DEPENDE DE ELLO  
+ leng=3
+'Print #1,"send_message midiout(portsal) , p, leng ",midiout(portsal) , p, leng
+'On Local Error GoTo  errorcp
+  result = send_message (midiout(portsal) , p, leng) 
+'errorcp:
+'Dim n As Integer = Err
+'  Print #1,"error send_message change program",n
+
+'Print #1,"resultado de cambiar elpatch result patch", result, instru
+
+'// "Active stereo", Jimi-Hendrix-style
+'// sweep from almost-full left to almost-full right:
+'for (int position = 8; position < 127; position += 8) {
+'    channel.controlChange(PAN_CONTROLLER, position);
+'    try {
+'        Thread.sleep(500);
+'    } catch (InterruptedException e) {
+'    }
+'}
+
+End Sub
+Sub Eco (rever As UByte,  canal As UByte,portsal As UByte)
+'CAMBIO PANEO 
+''Controller parameter:   Par <ch> <con> <val>
+'' ej     0 Par ch=3 c=10 v=127  <--- al princpio
+''    12010 Par ch=3 c=10 v=1  <--- en el medio
+''    32010 Par ch=3 c=10 v=127
+''PAN_CONTROLLER=10 podriamoas usar esta constante
+	Dim modo As UByte
+	Dim leng As UInteger <8>
+	Dim result As Integer ' canal 0 to 15 canal 0 es el 1
+	If canal = 0 Then  ' 
+		 modo = 176  
+	Else
+	  modo = 176 + canal 
+	EndIf
+	
+ message(1) = modo  'SEGUN EL CANAL EL MODO INDICA CONTROL CHANGUE 
+ message(2) = 91   'indica CONTROL DE reververacion O ECO
+ message(3) = rever  ' cantidad de reververacion
+ leng=3
+  result = send_message (midiout(portsal) , p, leng) 
+
+End Sub
+'-------------------------------------------
 Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
 Dim i1 As UByte
 Dim noHay As Integer=0
@@ -513,7 +652,7 @@ End Function
 Sub playAll(Roll As inst) ' play version 3 CON TICKS
 '<<< 30-03-2025 anda ok para roll desde ejec o Roll desde entrada manual >>>>
 ' en manual las velocidades son una sola semi fuerte, hasta que compas pueda 
-
+ntk=0
 On Local Error GoTo fail
 '''VerMenu=0
 '''  Print #midiplano, "0 Meta TrkName "; Chr(34); "Piano";Chr(34)
@@ -629,16 +768,18 @@ Dim result As Integer
 playloop2=NO
 
 
-
+    
+    Paneo (Globalpan, pmTk(0).canalsalida,pmTk(0).portout)
+    Eco   (Globaleco,  pmTk(0).canalsalida,pmTk(0).portout)    
      ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, pmTk(0).portout)
     patchsal =pmTk(0).patch ''Roll.trk(1,NA).inst
-
+    
 Print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
 Print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
 jply=0:curpos=0
 mousex=0
 ' print #1,                    "-----------------------------------------"
-comienzo=posicion
+comienzo=posicion 
 
 
 If pasoZona1 > 0 Then

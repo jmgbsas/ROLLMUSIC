@@ -3,6 +3,14 @@ Declare Sub EntrarNombrePista(ByRef NombrePista As String, hwndC as Hwnd)
 Declare Sub EntrarTeclado ()
 '''''''Declare Sub cerrar(n As integer)
 Declare Sub seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer)
+Declare Sub SelPan (ByRef Paneo As ubyte)
+Declare Sub SelEco (ByRef Rever As ubyte)
+
+Declare Sub CuadroVel ()
+Declare Sub CuadroDur ()
+Declare Sub CuadroVol ()
+
+Dim Shared As Integer cuentauxiliares=0
 'Declare Sub reproducir()
 Declare Sub CrearDirCancion (ByRef NombreCancion As string)
 Declare Sub cargarDirectorioCancion (ByRef NombreCancion As string)

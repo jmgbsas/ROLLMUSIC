@@ -26,6 +26,7 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 ' botton todo o nada , sonido o mudo para todas las pistas
   ButtonGadget(BOTON_PISTA_ROLL, 60,20,20,20,"S")
   SendMessage(GadgetID(PISTASROLL),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
+  GadgetToolTip(BOTON_PISTA_ROLL,"Seleccion de Pista Roll de una camcion, para reproduccion o cambio parametros")
  ' TextGadget(4,250,10,240,20,, SS_SIMPLE  )
  ' 04-02-2023
 
@@ -77,7 +78,7 @@ GadgetToolTip(PISTASEJECUCIONES,"Pistas grabadas desde un teclado midi")
 SetGadgetColor(PISTASEJECUCIONES,cint("&HC0C0C0"),0,1)
   ButtonGadget(BOTON_SELECCION_EJECUCION ,410,20,20,20,"S")
 SetGadgetColor(BOTON_SELECCION_EJECUCION ,cint("&HC0C0C0"),0,1)
-
+GadgetToolTip(BOTON_SELECCION_EJECUCION,"Seleccion de Pista para reproducir o cambiar parametros")
   
 
   SendMessage(GadgetID(PISTASEJECUCIONES),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
@@ -117,7 +118,8 @@ SetGadgetColor(BOTON_SELECCION_EJECUCION ,cint("&HC0C0C0"),0,1)
   cbxejec(32) = CheckBox_New( 410 , 660, 20, 20, "",, hwndc) 
 '---------------------------------------------------------
 ' CHECK PARA GRABAR O SEA ARMA LA PISTA PARA RECIBIR DATOS MIDI-IN
-  ButtonGadget(CHECK_GRABAR_EJECUCION,380,20,20,20,"G")  
+  ButtonGadget(CHECK_GRABAR_EJECUCION,380,20,20,20,"G")
+  GadgetToolTip(CHECK_GRABAR_EJECUCION,"Seleccion de Pista a grabar desde un teclado midi o loopmidi, pide un nombre")
  ' ButtonGadget(8,450,0,100,30,"PARAR",BS_RADIOBUTTON )
  ' ButtonGadget(9,580,0,120,30,"GRABAR",BS_RADIOBUTTON  )
 Var IMGP=Load_image(".\recur\Parar.bmp")
@@ -204,15 +206,15 @@ GadgetToolTip(BTN_ROLL_GRABAR_MIDI,"GRABAR midi en Roll")
 ' simplemente se da click en todos los deseados y elajuste sera el mismo en cada uno
 ' o sea S tiene doblefuncion desmutear odar sonido o ajustar alguno de los 3 parametros.  
 ButtonGadget(BTN_EJEC_PORTSAL,420,730,70,20,"PortSal")
-'ButtonGadget(BTN_EJEC_VOL,   490, 730, 35, 20, "Vol")
-'ButtonGadget(BTN_EJEC_PAN,   530, 730, 35, 20,"Pan")
+ButtonGadget(BTN_EJEC_VOL,   490, 730, 35, 20, "Vol")
+ButtonGadget(BTN_EJEC_PAN,   530, 730, 35, 20,"Pan")
 ButtonGadget(BTN_EJEC_PATCH,  570,730, 50, 20,"Patch")
 ButtonGadget(BTN_EJEC_CANAL,  620,730, 50, 20,"Canal")
 
 '---------------------------LISTVIEW ROLL MANUALES
 ButtonGadget(BTN_ROLL_PORTSAL, 70,730,70,20,"PortSal")
-'ButtonGadget(BTN_ROLL_VOL,   140, 730, 35, 20, "Vol")
-'ButtonGadget(BTN_ROLL_PAN,   180, 730, 35, 20,"Pan")
+ButtonGadget(BTN_ROLL_VOL,   140, 730, 35, 20, "Vol")
+ButtonGadget(BTN_ROLL_PAN,   180, 730, 35, 20,"Pan")
 ButtonGadget(BTN_ROLL_PATCH,  220,730, 50, 20,"Patch")
 ButtonGadget(BTN_ROLL_CANAL,  280,730, 50, 20,"Canal")
 
@@ -286,12 +288,16 @@ MenuItem(1027,MenName2, "6.0 Na.Modificar Nombre de Pistas de Cancion")
 
 
 MenuItem(1028,MenName3, "1.0 Cambia Octavas, si rango es mayor al anterior, se borran datos  (0,1,2,3,4,5,6,7,8)")
-MenuItem(1029,MenName3, "2.0 Na.Seleccion rango de 3 octava repetidas 2 veces ")
-MenuItem(1030,MenName3, "3.0 Na.Octavas de Instrumetnos Estandares")
+MenuItem(1029,MenName3, "1.1 Na.Seleccion rango de 3 octava repetidas 2 veces ")
+MenuItem(1030,MenName3, "1.2 Na.Octavas de Instrumetnos Estandares")
 'MenuItem(1031,MenName3, "Na.Seleccion Canal (futuro se repetira por comodidad...)")
 Menubar(MenName3)
-MenuItem(1040,MenName3, "4.0 Cambia Instrumento por orden Alfabetico")
-MenuItem(1050,MenName3, "5.0 Cambia Instrumento por orden Numérico" )
+MenuItem(1040,MenName3, "2.0 Cambia Instrumento por orden Alfabetico")
+MenuItem(1050,MenName3, "2.1 Cambia Instrumento por orden Numérico" )
+MenuItem(1051,MenName3, "2.3 Cambia PAN de un Canal" )
+MenuItem(1052,MenName3, "2.4 Cambia REVERVERACCION  de un Canal" )
+
+
 Menubar(MenName3)
 MenuItem(1060,MenName3, "6.0 Crear pista aislada, En Roll dependiente, con lo elegido y reemplaza la existente en la edicion")
 MenuItem(1061,MenName3, "7.0 Crear Pista nueva en la Cancion en Edicion, Con lo elegido")
@@ -387,6 +393,7 @@ Menuitem(1208,MenName8,"6.0 Convertir todas las ejecuciones *.ejec seleccionadas
 MenuItem(2000,MenName10,"1.0 Acerca de")
 MenuItem(2001,MenName10,"2.0 Cuadro Ayuda TEMPO por nombres, Lento,adagio etc y control fino")
 MenuItem(2002,MenName10,"3.0 Cuadro de Figuras de duracion de notas")
+MenuItem(2003,MenName10,"4.0 Cuadro de valores de Volumen tipicos")
 
 'MenuItem(2502,MenName30,"Seleccion Puerto MIDI-IN ROLL")
 'MenuItem(2504,MenName30,"Seleccion Puerto MIDI-OUT ROLL")
@@ -468,6 +475,6 @@ End Select
 
     SetStateMenu(hmessages,2500,1)
     SetStateMenu(hmessages,2501,1)
-    SetStateMenu(hmessages,1050,1)
+    ''SetStateMenu(hmessages,1050,1)
 
 End If

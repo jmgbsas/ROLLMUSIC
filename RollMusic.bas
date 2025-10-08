@@ -31,7 +31,8 @@
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.342 fix *.mid para una cancion ok y F2/F3 achica/agranda horizontalmente, f9/f10 solo font "
+nroversion="0.344 fIX STOP PLAY, Y Prueba de PANEO y ECO solo manual en menu ya se volcara a archivo roll y trk como  midi file"
+'"0.344 control de PANEO salida izquierda derecha de sonido o intermedio, grabacion del paneo de entrada y ajuste del mismo "
 ' chequear formatos 0 y 1 del archivo midi en el 1 hay un track sin notas y de referencia de tiempos
 ' yo creo que estoy generando en formato 0 verificarlo
 ' mas adelante intentaremos desarrollar la escritura de archivos midi sin pasar por planos...

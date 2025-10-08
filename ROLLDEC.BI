@@ -94,12 +94,11 @@ Const BTN_ROLL_VOL        = 23
 Const BTN_ROLL_PAN        =24
 Const BTN_ROLL_PATCH    = 25
 Const BTN_ROLL_CANAL    = 26
-Const IMAGE_VEL= 30
-Const IMAGE_FIG = 31
 Const BARRA_DE_ESTADO = 33
 Const TEXT_TOPE =34
 Const LINEA_COMANDO=35
 Const OK = 36
+
 Const HABILITAR = TRUE
 Const DESHABILITAR = FALSE 
 Const SI=1
@@ -716,6 +715,8 @@ Type rangoOct Field=1
  As UByte   ejec
  As UByte    vol
  As Integer  tiempopatron ' 240 60 etc
+ As UByte   pan
+ As UByte   eco
 End Type
 ' faltaria agregar grabar el nombre del dispositivo ........
 Dim Shared As rangoOct pmTk (0 To 32)
@@ -975,6 +976,7 @@ Dim Shared rmerr As Integer
 Dim Shared cm As cairo_t  Ptr
 Dim Shared c3 As cairo_t  Ptr
 Dim Shared As Integer stride, IhWnd,Mhwnd,Style,desktopwidth,desktopheight,creapista=0
+
 Dim Shared comienzo As Integer = 0
 'ScreenControl  SET_DRIVER_NAME,"GDI"
 Dim Shared As hWnd hwnd,hwndMenu 
@@ -1174,7 +1176,7 @@ Common Shared As cairo_t  Ptr c, c2
 Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer
 Screenbuffer=0
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal
-Common Shared As Any Ptr thread4, threadGrabamidi, threadCmd
+Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadVol,threadpan,threadeco
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros
@@ -1382,4 +1384,4 @@ End Type
 Common Shared As miditxtsalida MidiDatos()
 
 ReDim  Shared NroEventoPista(1 ) As Integer
-  
+Dim Shared As UByte Globalpan, Globaleco   
