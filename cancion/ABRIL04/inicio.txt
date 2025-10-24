@@ -1,6 +1,0 @@
- 1,si
- 2,si
- 3,si
- 4,si
- 240,tiempoPatronEjec
- 3784,maxpos

@@ -65,6 +65,7 @@ end Operator
 #Define  HH_DISPLAY_INDEX 0002
 #Define  HH_DISPLAY_SEARCH 0003
 #Define  HH_CLOSE_ALL  0018
+/'
 Const BOTON_PISTA_ROLL=5
 Const HabilitaGrabar=0
 Const BTN_LIBERADO=0
@@ -147,6 +148,7 @@ Const ObtenerDuracion1erClickIzquierdo=3
 Const DesplegarMenuModifClickDerecho =1
 Const SeleccionarComandoClickIzquierdo = 2
 '----------------------------------------------------
+'/
 Dim Shared As Integer PISTASEJECSELECCIONADA=0
 Dim Shared As Integer PISTASROLLSELECCIONADA=0
 
@@ -689,7 +691,7 @@ TCompas ="4/4"
 'Dim Shared As Integer MaxPosTrack(0 To 32) ' cada track tendra su max pos
 'Dim Shared As Integer posnTrack(0 To 32) ' cada track tendra su posn
 Dim Shared As Integer fueradefoco=0 ,onoff=0
-Dim Shared As UByte  tope=0
+
 Type rangoOct Field=1
  As Integer desde = 0
  As Integer hasta =0
@@ -711,7 +713,7 @@ Type rangoOct Field=1
  As UByte   zona2
  As UByte   nroRep
  As UByte   portin 
- As Ushort  tipoCompas
+ As UByte  tipoCompas
  As UByte   ejec
  As UByte    vol
  As Integer  tiempopatron ' 240 60 etc
@@ -757,22 +759,22 @@ Dim Shared As Double notaMidiDurk,notaMidiDurkOld,penta2=0
 'Dim Shared As Integer abrirMIDIin=0
 ' nC indica 144, nF indica 128
 
-Type poli Field=1 ' para guardar la secuencia
- dur   As UByte =0   ' duracion 
- dur2  As UByte =0   ' SONIDO ON/OFF 
- canal As UByte =0   '  
- onoff As UByte =0   ' nota on=2, nota off=1  
- ejec  As UByte =0   ' marca viene de un ejec=1, no viene de ejec=0 
- dur6  As UByte =0   '  
- dur7  As UByte =0   '  
- dur8  As UByte =0   '  
- nota  As UByte =0 ' en un futuro contendra nota, octava, canal etc 
- vol   As  UByte =0 ' volumen
- pan   As  UByte =0 ' paneo
- pb    As  UByte =0 ' pitch bend
- nnn   As UByte =0 ' se usa para escala canal etc 
- tick  As ubyte =0 ' 64 tiene la redonda 
- acorde  As ubyte =0 ' 1 a 12 , son el se hara el sort    
+Type poli Field=1 ' para guardar la secuencia EN Tacks 15 bytes
+ dur    As UByte =0   ' duracion 
+ sonido   As UByte =0   ' SONIDO ON/OFF ? se usa?
+ canal  As UByte =0   '  
+ onoff  As UByte =0   ' nota on=2, nota off=1  
+ ejec   As UByte =0   ' marca viene de un ejec=1, no viene de ejec=0 
+ eco    As UByte =0   ' era dur6  
+ patch   As UByte =0   '  
+ nanchofig As UByte =0   '  
+ nota   As UByte =0 ' en un futuro contendra nota, octava, canal etc 
+ vol    As UByte =0 ' volumen
+ pan    As UByte =0 ' paneo
+ pb     As UByte =0 ' pitch bend
+ nnn    As UByte =0 ' se usa para escala canal etc 
+ tick   As UByte =0 ' 64 tiene la redonda 
+ acorde As UByte =0 ' 1 a 12 , son el se hara el sort    
 End Type
 ' posn As Integer =0' de roll todavia no lo uso para generar secuencia
 ' comentarios Para Futuro:
@@ -804,12 +806,12 @@ End Type
 Union aUshort
  ST As UShort
    Type
-    pan As UByte
-    pb As UByte
+    tp1 As UByte
+    tp2 As UByte
    End Type
 End Union
-
-Type dat Field=1
+' campos de roll datos secuencia 
+Type datsec Field=1
  nota  As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
  dur   As UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
  vol   As UByte =0 ' volumen hasta 127 es volumen desde ahi es escala 128 a 255 =127 escalas
@@ -818,6 +820,82 @@ Type dat Field=1
  inst  As UByte =0 ' instrumento para cada nota podra ser distinto 1 to 128
  onoff As UByte =0 ' 2 on , 1 off
 End Type
+
+' datos roll encabezado 70 BYTES, solo campos ubyte
+Type rolldat Field=1 'con esto se define roll tendra pan,vol,nota,dur,pb,inst variables
+ x1    As UByte =0  'z.nota
+ x2    As UByte =0  'z.dur
+ x3    As UByte =0  'z.vol
+ x4    As UByte =0  'z.pan
+ x5    As UByte =0  'z.pb
+ tipoescala_num_ini As UByte 'z.inst
+   librezonoff As UByte ' z.onoff----------- 7
+ desde   As UByte =0 'zlim.nota 
+ hasta   As UByte =0 'zlim.dur
+ notaescala_num_ini As UByte =0   ' zlim.vol 
+ alteracion As UByte =0   'zlim.pan
+ notaold  As UByte =0 ' zlim.pb   
+ canalx   As UByte =0 'zlim.inst 
+ ejec    As UByte =0 'zlim.onoff ---- 14 xxxxx nuevo
+ patch    As  UByte =0 'z3.nota
+ portout As   UByte =0  'z3.dur
+ nanchofig  As UByte  =0   'z3.vol nanchofig*10 cuando lo uso lo dividopo 10
+   librez3pan    As UByte =0  'z3.pan
+ TipoCompas  As UByte =0 'z3.pb
+ canalsalida As UByte =0 'z3.inst
+   librez3onoff     As UByte =0 'z3.onoff --- 21
+   librez4nota As UByte =0  'z4.nota
+   librez4dur As UByte =0  'z4.dur
+   librez4vol As UByte =0  'z4.vol
+ tiempoPatron1 As UByte=0 'z4.pan
+ tiempoPatron2 As UByte=0 'z4.pb
+   librez4inst As UByte =0 'z4.inst
+   librez4onoff As UByte =0 'z4.onoff ---28
+ eco    As UByte =0       'z5.eco  
+ pan    As UByte =0       'z5.pan
+   librecanalsalida  As UByte =0 'z5.canalsalida repetido
+   libreportout     As UByte =0 'z5.portout repetido
+   librepatch       As UByte =0 'z5.patch repetido
+ pitchbend   As UByte =0 'z5.pitchbend
+ vibrato   As UByte =0   'z5.vibrato ---35
+'---vienen 35 ubyte
+ mas1 As UByte =0
+ mas2 As UByte =0
+ mas3 As UByte =0
+ mas4 As UByte =0
+ mas5 As UByte =0
+ mas6 As UByte =0
+ mas7 As UByte =0
+ mas8 As UByte =0
+ mas9 As UByte =0
+ mas10 As UByte =0
+ mas11 As UByte =0
+ mas12 As UByte =0
+ mas13 As UByte =0
+ mas14 As UByte =0
+ mas15 As UByte =0
+ mas16 As UByte =0
+ mas17 As UByte =0
+ mas18 As UByte =0
+ mas19 As UByte =0
+ mas20 As UByte =0
+ mas21 As UByte =0
+ mas22 As UByte =0
+ mas23 As UByte =0
+ mas24 As UByte =0
+ mas25 As UByte =0
+ mas26 As UByte =0
+ mas27 As UByte =0
+ mas28 As UByte =0
+ mas29 As UByte =0
+ mas30 As UByte =0
+ mas31 As UByte =0
+ mas32 As UByte =0
+ mas33 As UByte =0
+ mas34 As UByte =0
+ mas35 As UByte =0 
+End Type ' tambien se usa para el encabezado
+' el encabezado deberia ser distintos todos
 ''202 ' codigo de exsitencia de cifrado en el cabezado
 ' por cada 201 en el INTERESPACIO hay un 202 de una octava de roll , en track solo
 ' existe el 202 en el encabezado
@@ -865,7 +943,7 @@ End Type
 ' la escala del ultimo cambio...por default la escala sera C mayor.. 
 ' ---------------------------------fin nota vieja --------------- 
 Type inst
- As dat trk(Any, Any)
+ As datsec trk(Any, Any)
 End Type
 
 Type paso Field=1
@@ -1158,44 +1236,13 @@ Static Shared  As Integer jgrb=0, jgrbRoll
 Declare Sub PlayCancion(Track() As sec)
 Declare Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst)
 Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
-Declare Sub ReCalCompas(Roll As inst)
+Declare Sub ReCalCompas()
 Declare Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As ubyte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As integer)
 Declare Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)
 Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As String, orden As integer )
 Declare Function lugarNota (lugar As integer) As Integer
 Declare Sub metronomo ()
 Declare Sub moverPmtkaPmtk(r as Integer, e As integer)
-Common Shared As float nanchofig
-COMMON Shared As Long eventc, eventM , eventK
-Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec
-Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA 
-Common Shared As string pathdir,nombre,DirEjecSinBarra
-common Shared As String NombreCancion,NombrePista
-Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado ',pistacreada
-Common Shared As cairo_t  Ptr c, c2
-Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer
-Screenbuffer=0
-Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal
-Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadVol,threadpan,threadeco
-Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes
-Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
-Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros
-parametros=0
-Common Shared As ubyte patchsal
-Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay,guardaposnOffOld
-COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo,canalDeGrabacion
-Common SHARED As Integer EstaBarriendoPenta
-Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA, VerMenu,MousexNotaElegida,PianoNotaElegida,nsEelegida
-Common Shared As Double STARTMIDI
-Common Shared As BOOLEAN MIDIFILEONOFF
-Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, interva '  default 2 que es 1 separacion de notas
-VerMenu=1
-deltax=1
-contid=0
-separaenuno=0
-interva=3 '  default 3 para ticks desplazamineto zoom horizontal 
- MaxPos=2:ntk=0:CPlay=NO: guardopos=0:ntktab=0 : ntoca=0
- posicion=0:posicionOld=0:posn=0
 ''patchsal=Roll.trk(1,1).inst
 Dim Shared As Any Ptr threadG 
 
@@ -1384,4 +1431,5 @@ End Type
 Common Shared As miditxtsalida MidiDatos()
 
 ReDim  Shared NroEventoPista(1 ) As Integer
-Dim Shared As UByte Globalpan, Globaleco   
+
+   

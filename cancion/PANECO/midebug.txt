@@ -1,0 +1,63 @@
+start
+PID DE ESTE PROCESO          2848
+05-04-202516:08:27
+__FB_ARGV__   304969840
+__FB_ARGC__    2
+__FB_ARGC__    2
+arg  0 = 'C:\IT64\AREA\ROLLMUSIC-RUN\RollMusic.exe'
+arg  1 = 'C:\IT64\AREA\TICKS0317\cancion\ABRIL04\PIANOLA.roll'
+ubirtk         0
+ubiroll        47
+arg  2 = ''
+instancia, ix                1             3
+uso Close N
+NB, NA        -13           -2
+gap1           196
+uso Close N
+nanchofig      1.507756
+portsin  5
+portsout 8
+USB Midi Cable 0
+loopMIDI Port 1
+loopMIDI Port 1 2
+loopMIDI Port 2 3
+loopMIDI Port 3 4
+-----------------------------
+CoolSoft MIDIMapper 0
+Microsoft GS Wavetable Synth 1
+VirtualMIDISynth #1 2
+USB Midi Cable 3
+loopMIDI Port 4
+loopMIDI Port 1 5
+loopMIDI Port 2 6
+loopMIDI Port 3 7
+cALL rOLLLOOP III)
+3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0)                        C:\IT64\AREA\TICKS0317\cancion\ABRIL04\PIANOLA.roll
+3 ubiroll ubirtk             47            0
+rollLoop ubirtk              0
+rollLoop ubiroll             47
+secuenciaPLAY.txt abierta!
+nombre        C:\IT64\AREA\TICKS0317\cancion\ABRIL04\PIANOLA.roll
+tituloTk(0)   C:\IT64\AREA\TICKS0317\cancion\ABRIL04\PIANOLA.roll
+CArgarArchivo               C:\IT64\AREA\TICKS0317\cancion\ABRIL04\PIANOLA.roll
+tipoescala_num_ini           1
+reconstruccion x pos bin    00000000111011001010
+reconstruccion x pos int     3786
+desde          4
+hasta          8
+notaold        1
+notaescala_num_ini           1
+alteracion    sos
+armarescala desde cargarArchivo
+pmTk(0).MaxPos = MaxPos  3786
+CambiarDim desde  4 hasta  8 *po  7 NB  39 NA  102
+CantTicks  4786
+FIN CAMBIARDIM  else
+FIN CAMBIARDIM 
+canalx cargado desde archivo               0
+portout cargado desde archivo              2
+En CargarArchivo NB NA       39            102
+uso Close N
+ termina Roll tambien pues es un grafico independiente
+uso Close N
+uso Close N

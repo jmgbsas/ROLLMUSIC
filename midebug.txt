@@ -1,0 +1,35 @@
+start
+PID DE ESTE PROCESO          2012
+10-24-202500:45:35
+__FB_ARGV__   305875584
+__FB_ARGC__    1
+__FB_ARGC__    1
+arg  0 = 'C:\IT64\AREA\ROLLMUSIC-0345-OK\RollMusic.exe'
+arg  1 = ''
+instancia, ix                0             2
+intervalo no dado usando default!
+NB, NA         39            102
+gap1           196
+nanchofig      1.6
+portsin  5
+portsout 8
+USB Midi Cable 0
+loopMIDI Port 1
+loopMIDI Port 1 2
+loopMIDI Port 2 3
+loopMIDI Port 3 4
+-----------------------------
+CoolSoft MIDIMapper 0
+Microsoft GS Wavetable Synth 1
+VirtualMIDISynth #1 2
+USB Midi Cable 3
+loopMIDI Port 4
+loopMIDI Port 1 5
+loopMIDI Port 2 6
+loopMIDI Port 3 7
+1060 abrirRoll=NO_CARGAR_ROLL entro
+sale de 1060 abrirrol,reiniciar, cargacancion            1             1             0
+CALL ROLLLOOP II) 
+///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0)                     
+//////////////midionof  0
+secuenciaPLAY.txt abierta!

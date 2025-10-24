@@ -219,7 +219,7 @@ Static As Integer millave
 '------------------
 ' revisar CheckBox_GetCheck de las ejecuciones
 '-------------------------------------------------------
-'//////////////// BOTON ROJO COMIENZO GRABACION EJEC ////////////////// O PATRON
+'//////////////// BOTON ROJO COMIENZO GRABACION MIDI EJEC ////////////////// O PATRON
 '---------------------------------------------------------------------
      If eventnumber()= BTN_MIDI_GRABAR And GrabarEjec=HabilitaGrabar Then ' BOTON GRABAR ROJO
       ' EVENTO 10
@@ -525,6 +525,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
         IF abrirRollCargaMidi=0 Then 'EVITA CARGA ROLL DESDE ACA 2 VECES
 ' TAMBIEN USADO EN CARGA MIDI
           Print #1,"cALL rOLLLOOP II) por grabar midi "
+          
           threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
           SetForegroundWindow(hwnd)
        ''RollLoop ( param)
@@ -565,8 +566,8 @@ Print #1, "542 GrabarPenta=0"
                PARAR_PLAY_EJEC=SI    
                playloop=NO:playloop2=NO
                Sleep 20
-               threadDetach (thread2)
-               threadDetach (thread1)
+               'threadDetach (thread2)
+               'threadDetach (thread1)
             EndIf 
       ' EndIf
       EndIf
@@ -583,8 +584,8 @@ Print #1, "542 GrabarPenta=0"
                   PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY SI ESTA TOCANDO 
                   PARAR_PLAY_EJEC=SI ' DETIENE LOS EJEC SI ESTAN TOCANDO
                   playloop=NO:playloop2=NO
-                  threaddetach (thread2)
-                  threaddetach (thread1)
+                  'threaddetach (thread2)
+                  'threaddetach (thread1)
                   Sleep 20
                EndIf 
                
@@ -865,10 +866,10 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
 '-------------------------------------------------------
       If  eventnumber()=BTN_ROLL_PAN Then 'PAN  REPRODUCCION HACIA LOS LADOS DERECHA IZQUIERDA,,,
           
-          threadpan=threadCall SelPan(GlobalPan)
+          threadpan=threadCall SelPan(Globalpan)
 ''el paneo no funciona con fluidsynth o no se como se envia
    '''       Paneo (GlobalPan,pmTk(ntk).canalsalida,pmTk(ntk).portout)
-          pmTk(ntk).pan =Globalpan
+          Print #1,"sel pan Globalpan, ntk ",Globalpan,ntk  
       EndIf
 '-------------------
 '////////////////// BOTON PATCH ROLL O CANCION O MANUAL /////////////////////////////
@@ -994,6 +995,7 @@ Print #1,"k, canalsalida  ";k, canalx
          Static As Integer cuantos
          If cuantos > 0 Then
             cargariniciotxt (DirEjecSinBarra, EJECUCION )
+            RecalCompas()   
             cuantos=0
          Else  
  

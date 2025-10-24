@@ -65,7 +65,6 @@ Sub CTRL10031 ()
 End Sub
 
 Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
-
                If EventNumber = 10061 Then
    ' habiliatmos 2.1 y 2.2 
                    SetStateMenu(hmessages,10062,0)
@@ -86,6 +85,12 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
              Sleep 20
 ' resetea todo para limpiar y cargar cancion
              If NombreCancion > "" And cargaCancion=NO_CARGAR_PUEDE_DIBUJAR Then 
+                If CerrarGraficodesdeCtrl=0 Then
+                   CerrarGraficodesdeCtrl=1
+                   Sleep 20
+                   CerrarGraficodesdeCtrl=0
+                EndIf
+
                   NombreCancion = ""
                   param.encancion=SIN_CANCION
                   ResetAllListBox(3)
@@ -101,15 +106,18 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                   If Tope >0 Then ' tenia datos se supone q pudo abrir Roll y abrirRoll=0
                      CargarPistasEnCancion ()
                      cargariniciotxt(NombreCancion, CANCION)
+                     RecalCompas()
+                     abrirRoll=EVITAR_LLAMAR_ROLLLOOP_DE_NUEVO
+                     terminar=NO_TERMINAR_BARRE_PANTALLA
                      If tope=0 Then  ' directorio fallido
                         NombreCancion = ""
                         cargacancion=NO_CARGAR_PUEDE_DIBUJAR
                         param.encancion=SIN_CANCION 
                         abrirRoll=CARGAR_MAS_PISTAS_O_CANCION ' roll ya esta abierto abre mas abajo
-                     Else
-                        cargacancion=CARGAR_NO_PUEDE_DIBUJAR
-                        param.encancion=CON_CANCION
-                        abrirRoll=EVITAR_LLAMAR_ROLLLOOP_DE_NUEVO ' para evitar que abra rolloop de nuevo
+                     'Else
+                     '   cargacancion=CARGAR_NO_PUEDE_DIBUJAR
+                     '   param.encancion=CON_CANCION
+                     '   abrirRoll=EVITAR_LLAMAR_ROLLLOOP_DE_NUEVO ' para evitar que abra rolloop de nuevo
                      EndIf
 
                   Else
@@ -118,7 +126,7 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                      cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
                      abrirRoll=NO_CARGAR ' para que abra rolloop nunca abrio tal vez
                   EndIf   
-
+                 CerrarGraficodesdeCtrl=0
              EndIf
              If NombreCancion = "" Then
                 nombre=""
@@ -138,12 +146,11 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                   Resetear () 
                   CargarPistasEnCancion ()
                   cargariniciotxt(NombreCancion, CANCION)
+                  RecalCompas() 
                   If tope=0 Then
                     NombreCancion = "" ' directorio fallido
                   EndIf
-                  CANCIONCARGADA=True
-                  param.encancion=CON_CANCION
-                  NADACARGADO=FALSE
+                 
                EndIf
              EndIf
              
@@ -154,7 +161,7 @@ End Sub
 Sub CTRL1062 (hmessages As hmenu)
 Print #1, "entro por CTRL1062 NOMBRECANCION TITULOSTK(0) ", NombreCancion, titulosTk(0)
              If NombreCancion > ""  Then
-                EstaBarriendoPenta=1 
+                EstaBarriendoPenta=1
                 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))   
                 Print #1,"CARGO ROLL PARA cancion sin roll"
             ' ES TAN RAPIDO QUE PARECE EJECUTA DOS VECES EL 10062
@@ -343,9 +350,10 @@ If ejecutar=EJECUCION Then
      If LCase(estado) = "tiempopatronejec" then
         tiempoPatronEjec=arch
      EndIf
-     If LCase(estado) = "maxgrb" then
+     If LCase(estado) = "maxpos" then
         maxgrb=arch
         maxcarga=maxgrb
+        
      EndIf 
  
    Loop
@@ -369,8 +377,8 @@ If ejecutar=CANCION Then
         tiempoPatronEjec=arch
      EndIf
      If LCase(estado) = "maxpos" then
-        maxpos=arch
-       '' maxcarga=maxgrb
+        maxposTope=arch
+        Maxpos=maxposTope
      EndIf 
  
    Loop
@@ -411,6 +419,7 @@ For i1=1 To tocatope
      Print #ini, i1;",";estado 
 Next i1 
 Print #ini, tiempoPatronEjec; ","; "tiempoPatronEjec"
+If MaxPosTope > maxgrb Then maxgrb=MaxPosTope
 Print #ini, maxgrb;","; "maxgrb"
 End If
 
@@ -428,7 +437,7 @@ If ejecutar=CANCION Then
      Print #ini, i1;",";estado 
   Next i1 
   Print #ini, tiempoPatronEjec; ","; "tiempoPatronEjec"
-  Print #ini, maxpos;","; "maxpos"
+  Print #ini, MaxposTope;","; "Maxpos"
 
 End If
 

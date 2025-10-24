@@ -184,18 +184,16 @@ Print #1,Date;Time
 '--------------
 #include "string.bi"
 #include once "cairo/cairo.bi"
-''Print #1,"ANTES ROLLDEC "
-#include "ROLLDEC.BI"
-''Print #1,"DESPUES ROLLDEC "
-'------------------
-
-#include "midiinfo.bi"
+#Include "midiinfo.bi"
 '==============================
 '#Include "NOTAS.bi"
-#include "RTMIDIDEC.bi"
 '==============================
-#include "ROLLCONTROLDEC.bi"
+#include "ROLLGLOBALDEC.bi"
 '=============================
+#include "ROLLDEC.BI"
+#include "RTMIDIDEC.bi"
+'=============================
+
 ' iup start
 ' SOLO PARA WINDOWS LEE MIDI FILES PERO FALTA FUNCIONES PARA GRABAR!!!
 '---> #Include once "foro/fmidi.bi"

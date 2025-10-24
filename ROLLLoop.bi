@@ -25,6 +25,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
  Dim As UByte code,repe
  Dim As Integer n,notac, aconro, grado,repeind
  repeind=12+(hasta-2)*13+hasta 
+
 'Print #1,"creaPenta ajustado repeind ",repeind  98 para 4 a 8
  ' VERSION 3 DEBO FORMAR LA OCTAVACOMPLET 12 SONIDOS
  ' v4 ponemos maslineas de separacion par q toda duricon este en espacios
@@ -351,7 +352,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
      indf= CInt(Roll.trk (n, 11- semitono + (*po-1) * 13).dur)
 
   '  print #1,"lugar ",13
-    If (indf >= 1 And indf <= 185) Or indf=190  Then ' 12-03-2025 185=N roll sin duraciones
+    If (indf >= 1 And indf <= 180) Or indf=182 Or indf=183 Or indf=184 Or indf=185 Or indf=190  Then ' 12-03-2025 185=N roll sin duraciones
     Else
         indf=181
     EndIf ' t no puede quedar en un scope dsitinto se hace shared    
@@ -528,80 +529,95 @@ EndIf
  ' y hacer nota=semiotono 1 a 11 con el mouse...el resto es automtico...
 ' nro=hasta significa que ya dibujo la octava 9, luego puede seguir dibujando
 ' hacia abajo, la ayuda 
-/'
- If *po = desde Then ' termino 9 octavas o la NA y ahora  + ayuda...
+' screenevent keyrelease manda deltax=0
+If *po = desde Then 
+  If (play=SI Or playb=SI Or Cplay=SI)  Then
+    cairo_set_font_size (c, font)
+    t= "Si pulsar ESC se detiene el play y no puede dar play de nuevo busque el dialogo De Detencion de Play y pulse Aceptar" 
+    cairo_move_to(c, 0, Penta_y + inc_Penta * 15  )
+    cairo_show_text(c, t)
+  EndIf
+  If (play=NO and playb=NO and Cplay=NO)  Then
+    If  menuNro=MENU_INICIAL Then
+       t = "SI CARGA UN .RTK Y LO MODIFICA PARA GRABARLO USE [ROLL=>TRACK(0)], SI CARGO UN ROLL USE [GRABAR] "
+       cairo_move_to(c, 0, Penta_y + inc_Penta * 15 )
+       cairo_show_text(c, t)
+    EndIf
+  EndIf
+EndIf 
+ If *po = desde And COMEDIT=LECTURA And (playb=NO AND Cplay=NO And play=NO And deltaz=0 )Then ' termino 9 octavas o la NA y ahora  + ayuda...
   cairo_set_font_size (c, font)
   'cairo_select_font_face (c, "Georgia",CAIRO_FONT_SLANT_NORMAL , CAIRO_FONT_WEIGHT_BOLD)
   t= "Flecha Abajo/Arriba o ruedita del mouse, scroll de las octavas en la ventana. F1 Ayuda Notepad "
-  cairo_move_to(c, 0, Penta_y + inc_Penta * 15  )
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 16  )
   cairo_show_text(c, t)
 
-  t = "F9/F10 achica/agranda el  font de las notas guia,F2/F3 proporcion "
-  cairo_move_to(c, 0, Penta_y + inc_Penta * 16 )
-  cairo_show_text(c, t)
-
-  t = "Entrar Notas Click en [Edicion] en Menu, otro Click en Edit para modificar, otro Click en Edit deja de editar,ESC TERMINA LA APP"
+  t = "F9/F10 achica/agranda el  font de las notas "
   cairo_move_to(c, 0, Penta_y + inc_Penta * 17 )
   cairo_show_text(c, t)
 
-  t = "En modificacion o Edit: CTRL-M o CTRL-N pasa al MODO CURSOR para reemplazar insertar borrar notas, para volver a Edit Ctrl-P"
+  t = "Entrar Notas Click en [Edicion] en Menu, otro Click en Edit para modificar, otro Click en Edit deja de editar,ESC TERMINA LA APP"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 18 )
   cairo_show_text(c, t)
 
-  t = "-/+ achica/agranda el area y altura de las octavas dentro de la ventana "
+  t = "En modificacion o Edit: CTRL-M o CTRL-N pasa al MODO CURSOR para reemplazar insertar borrar notas, para volver a Edit Ctrl-P"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 19 )
   cairo_show_text(c, t)
 
-  t = "AvPag/RePag scroll de las octavas mas rapido "
+  t = "-/+ achica/agranda el area y altura de las octavas dentro de la ventana "
   cairo_move_to(c, 0, Penta_y + inc_Penta * 20 )
+  cairo_show_text(c, t)
+
+  t = "AvPag/RePag scroll de las octavas mas rapido "
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 21 )
   cairo_show_text(c, t)
   
   t = "Ctrl-Click en [Reproducir] Play con scroll e iluminacion de notas, o barra espaciadora"
-  cairo_move_to(c, 0, Penta_y + inc_Penta * 21 )
-  cairo_show_text(c, t)
-
-  t = "Configuracion, Tempo. Port Salida MIDI-OUT,Canales"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 22 )
   cairo_show_text(c, t)
 
-  t = "Pulsar F1 Para Un Notepad Con Ayuda Preliminar mas detallada, puede estar incompleta y no ser lo ultimo"
+  t = "Configuracion, Tempo. Port Salida MIDI-OUT,Canales"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 23 )
   cairo_show_text(c, t)
 
-  t = "En el menu algunos funcionan con Ctrl-clik otros con click solamente o ALT"
+  t = "Pulsar F1 Para Un Notepad Con Ayuda Preliminar mas detallada, puede estar incompleta y no ser lo ultimo"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 24 )
   cairo_show_text(c, t)
 
-  t = "En modificacion o Edit, se pasa de una octava a otra para editarla, deslizando el mouse hasta el extremo derecho de la octava deseada, eso iluminara las lines de verde"
+  t = "En el menu algunos funcionan con Ctrl-clik otros con click solamente o ALT"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 25 )
   cairo_show_text(c, t)
 
-  t = "la octava en edicion. (No hay vocales acentuadas, Cairo, la libreria grafica usada, no las maneja con font simples)"
+  t = "En modificacion o Edit, se pasa de una octava a otra para editarla, deslizando el mouse hasta el extremo derecho de la octava deseada, eso iluminara las lines de verde"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 26 )
   cairo_show_text(c, t)
 
-  t = "F2/F3 comprime - expande horizontalmente la secuencia proporcionalmente, se puede editar tambien"
+  t = "la octava en edicion. (No hay vocales acentuadas, Cairo, la libreria grafica usada, no las maneja con font simples)"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 27 )
   cairo_show_text(c, t)
 
-  t = "En Edit entrar notas: 1) duracion 1 a 9, luego el nombre CDEFGAB o Ctrl+ nombre para sostenidos "
+  t = "F2/F3 comprime - expande horizontalmente la secuencia proporcionalmente, se puede editar tambien"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 28 )
   cairo_show_text(c, t)
 
-  t = "En Lectura navegar a derecha o izquierda con Flecha horizontales O CTRL IZQ,O CTRL DER MAS RAPIDO, arriba abajo con Flechas Verticales O RePAg AvPAg"
+  t = "En Edit entrar notas: 1) duracion 1 a 9, luego el nombre CDEFGAB o Ctrl+ nombre para sostenidos "
   cairo_move_to(c, 0, Penta_y + inc_Penta * 29 )
   cairo_show_text(c, t)
 
-  t = "En Lectura seleccionar zona entre 2 posiciones,con Ctrl+Click en cualquier parte de la posicion deseada de la octava deseada, repetir hacia derecha para la 2da posicion "
+  t = "En Lectura navegar a derecha o izquierda con Flecha horizontales O CTRL IZQ,O CTRL DER MAS RAPIDO, arriba abajo con Flechas Verticales O RePAg AvPAg"
   cairo_move_to(c, 0, Penta_y + inc_Penta * 30 )
   cairo_show_text(c, t)
 
-  t = "Para ver el Final de la pista pulsar Tecla FIN, principio INICIO,  "
+  t = "En Lectura seleccionar zona entre 2 posiciones,con Ctrl+Click en cualquier parte de la posicion deseada de la octava deseada, repetir hacia derecha para la 2da posicion "
   cairo_move_to(c, 0, Penta_y + inc_Penta * 31 )
   cairo_show_text(c, t)
-    
+
+  t = "Para ver el Final de la pista pulsar Tecla FIN, principio INICIO,  "
+  cairo_move_to(c, 0, Penta_y + inc_Penta * 32 )
+  cairo_show_text(c, t)
  End If
 '/
+
  ' si estoy en esta octava ...edicion solo para esa octava segun posicion
  ' del mouse automaticamete iluminar
 If GrabarPenta =0 Then
@@ -624,6 +640,7 @@ If GrabarPenta =0 Then
   
   'cairo_set_line_width(c, 3)
  EndIf
+ 
 else
   
   If COMEDIT=SOLO_MODIFICACION   Or play=SI Or playb=SI  Then ' solo ctrl-m ?
@@ -651,7 +668,8 @@ EndIf
    Exit Sub
  EndIf
  '           ================  MENUES CONTEXTUALES GRAFICOS PARA MOUSE ==================
- If ArmarMenuModif=TRUE  And COMEDIT<>LECTURA Then
+If  COMEDIT<>LECTURA Then 
+ If ArmarMenuModif=TRUE   Then
   If  COMEDIT=MODIFICACION_INSERCION  Then 'solo ctrl-m
    'print #1,".............SUBRUTINA........................................."
    'print #1,"(9) ESTADO MUESTRA MENU COMANDOS"
@@ -720,7 +738,7 @@ EndIf
 
   EndIf
  EndIf
- If SeleccionarNuevaNota=TRUE  And COMEDIT<>LECTURA And VolverEntradaDatos=FALSE Then
+ If SeleccionarNuevaNota=TRUE   And VolverEntradaDatos=FALSE Then
   ' SI SE SELECCIONA INSERTAR O MODIFICAR Y DUR=0 THEN IMPRIMIR
   ' "ELIJA ANTES UNA DURACION"
   'print #1,".............SUBRUTINA........................................."
@@ -775,7 +793,7 @@ EndIf
    savemousey=mousey
   EndIf
  EndIf
-
+EndIf
 Exit Sub 
 
 fail:
@@ -785,6 +803,9 @@ If  Err > 0 Then
            " in function " & *Erfn & _
            " on line " & Erl & " " & ProgError(Err)
   Print #1, errmsg
+Print #1,"repeind ",repeind
+Print #1,"hasta ",hasta
+Print #1,"12+(hasta-2)*13+hasta ",12+(hasta-2)*13+hasta
 Print #1,"Roll.trk (n,11- semitono  + (*po -1) * 13 ).nota > 0 Or       Roll.trk (n,11- semitono +  (*po -1) * 13 ).dur > 0 Then"
 Print #1, "n ,semitono, *po ",n, semitono, *po
 Print #1, "11- semitono ", 11-semitono
@@ -990,7 +1011,7 @@ EndIf
       TrackaRoll (Track(),0,Roll) ' ntk=0
 'Print #1," desde 892 ";desde
   '    print #1,"TrackaRollcarga rtk veo nombre ", titulosTk(0)
-      RecalCompas (Roll)
+      RecalCompas ()
       TRACKCARGADO=TRUE
       NADACARGADO=FALSE
       ubirtk=2
@@ -1021,7 +1042,7 @@ If instancia = ARG7_NOMBRECANCION  Then ' 04-03-2024 LOGRE LEVANTAR CANCION EN U
     cargariniciotxt(NombreCancion, CANCION)
     instancia=ARG107_FICTICIO  ' ficticio para que entre al if de TAB pero  que no entre en el resto ni aca
     param.encancion=CON_CANCION
-    
+    RecalCompas()
       
  EndIf
 EndIf
@@ -1121,6 +1142,7 @@ Else
   
       EndIf
         If (terminar=NO_TERMINAR_BARRE_PANTALLA Or Parar_De_Dibujar=NO)  Then 
+'''''       Print #1,"DESDE HASTA ", desde , hasta 
            threadPenta = ThreadCall barrePenta (c, Roll )
            ThreadWait threadPenta
             pubi=0
@@ -1213,8 +1235,15 @@ If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) 
      NA=pmTk(ntk).NA
      portout=pmTk(ntk).portout 'solo debe servir para play de pista
      notaold = CInt(pmTk(ntk).notaold)
-     CantTicks=pmTk(ntk).Ticks
+     CantTicks=pmTk(ntk).MaxPos +6 ' o Ticks
+If Track(ntk).trk(1,1).nnn > 0 Then
      patchsal=Track(ntk).trk(1,1).nnn
+Else 
+     patchsal=pmTk(ntk).patch
+EndIf
+     Globalpan=pmTk(ntk).pan
+     Globaleco=pmTk(ntk).eco
+
 ' ajusto escala principal durante la conmutacion para cada track visualizado con TAB     
      notaescala_num_ini=CInt(pmTk(ntk).notaescala) '13-01-2022
      tipoescala_num_ini= CInt(pmTk(ntk).tipoescala) '13-01-2022
@@ -1365,6 +1394,7 @@ If MultiKey (SC_P) Then
       PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
       PARAR_PLAY_EJEC=SI
       playloop=NO:playloop2=NO
+      play=NO:Cplay=no:playb=No
       s5=2 ' el loop necesita menos cpu se libera
       trasponer=0
       If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then 
@@ -1597,7 +1627,7 @@ EndIf
 ' 03-02-2022 screen event me pone con su 80 trasponer=1 hace una asignacion !!!
 If MultiKey(SC_DOWN) Then  ' el screenevent me pone trasponer en 1 la puta e.scancode = 80 Then  ' <===== SC_DOWN pulso
 ''Print #1,"trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo "; trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo
-
+ deltaz=1
 ' lareponemos
 ' volver a ajustar el semitono ultimo de roll restando 12
 If s7=0  Then
@@ -1661,6 +1691,7 @@ While InKey <> "": Wend
 EndIf
 
 If MultiKey (SC_UP) Then
+ deltaz=1
  If s8=0  Then
     s8=1
 
@@ -2029,6 +2060,31 @@ If MultiKey (SC_F10) And lockfont=0 Then
  lockfont=1
  Exit Do
 EndIf
+
+If  CerrarGraficodesdeCtrl =1 Then
+eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
+' va a usar sc_p para para r el play y vuelve 
+     
+    terminar=NO_TERMINAR_CON_DATOS_CARGADOS
+    terminar=NO_TERMINAR_CON_DATOS_CARGADOS
+    CerrarGraficodesdeCtrl =2
+    If teclado=1 Then ' detenemos los midi in
+      cancel_callback(midiin(pmTk(ntk).portin ))
+      Dim k1 As Integer
+      k1=pmTk(ntk).portout
+      alloff( pmTk(ntk).canalsalida,k1 )  
+      listoutAbierto(k1)=0
+      close_port midiout(k1)
+      out_free(midiout(k1))
+
+    End If 
+    
+   SCREEN 0 ''', , ,  GFX_SCREEN_EXIT '' &h80000000 
+ ''https://www.freebasic.net/forum/viewtopic.php?t=26963
+Exit Sub
+
+EndIf
+
 '6pt   	8px 	0.5em 	50%
 '7pt 	   9px 	0.55em 	55%
 '7.5pt 	10px 	0.625em 	62.5%
@@ -2060,7 +2116,7 @@ EndIf
 'px	1/96 of 1 inch (96px = 1 inch)	font-size: 12px
 'pt	1/72 of 1 inch (72pt = 1 inch)	font-size: 12pt;
 
-If MultiKey(SC_CONTROL) And MultiKey(SC_F4)  Then
+If MultiKey(SC_CONTROL) And MultiKey(SC_F4)  Or CerrarGraficodesdeCtrl =1 Then
 ''ACA LOGRAMOS CERRAR LA PANTALLA DE ROLL GRAFICO!!!
 '' SIN TERMINAR EL PROGRAMA  LO QUE HACE POSIBLE ESTO, es screen 0 en realidad
 '' NO DESTRUIR NADA Y SEPUEDE VOLVER A USAR
@@ -2072,13 +2128,15 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_F4)  Then
       '   Terminar=0
       '   Exit Do 
         PARAR_PLAY_MANUAL=SI
-        PARAR_PLAY_EJEC=SI       
+        PARAR_PLAY_EJEC=SI
+      playloop=NO:playloop2=NO
+       
      EndIf
 
 
 Dim As Integer i3
-
-  If MessageBox(hWnd,"¿CERRAR GRAFICO ? " ,param.titulo ,4 Or 64) =6  Then
+ 
+  If MessageBox(hWnd,"¿CERRAR GRAFICO ? " ,param.titulo ,4 Or 64) =6   Then
      eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
       ' va a usar sc_p para para r el play y vuelve 
      
@@ -2121,13 +2179,25 @@ EndIf
 
 '--------------------------------------
 If MultiKey(SC_ESCAPE) Or  Terminar=TERMINAR_POR_ESCAPE Then
+If play=SI Or playb=SI Or Cplay=SI Then
+   If PARAR_PLAY_MANUAL=NO Or  PARAR_PLAY_EJEC=NO THEN
+        PARAR_PLAY_MANUAL=SI 
+        PARAR_PLAY_EJEC=SI
+        playloop=NO:playloop2=NO
+        Sleep 100
+        Exit Do
+  EndIf
+EndIf
     Sleep 5
 
      If terminar=NO_TERMINAR_BARRE_PANTALLA And (play=SI Or playb=SI Or Cplay=SI)   Then 'detenemos los play
-       MessBox("","Deteniendo play pulse escape de nuevo ")
-        SetForegroundWindow(hwnd)
+       MessBox("DETENCION DE PLAY ","Deteniendo play pulse Aceptar y luego escape de nuevo ",MB_OK )
+        If play=SI Or playb=SI Or Cplay=SI Then
         PARAR_PLAY_MANUAL=SI 
         PARAR_PLAY_EJEC=SI
+        playloop=NO:playloop2=NO
+        StatusBarGadget(BARRA_DE_ESTADO,"Si no ve la ventana de dialogo busquela y pulse Aceptar" )
+        EndIf     
         TERMINAR=NO_TERMINAR_CON_DATOS_CARGADOS '3 
          Exit Do  ' REINICIO DETENIENDO LOS PLAY Y AL PULSAR OTRO ESCAPE ENTRA EL DIALOGO
      EndIf
@@ -2161,6 +2231,9 @@ EndIf
 
 ' ============== E S P A C I O ========
 If MultiKey(SC_SPACE)  Then 'barra espacio
+   PARAR_PLAY_MANUAL=NO
+   PARAR_PLAY_EJEC=SI
+   playloop=NO:playloop2=NO
  If COMEDIT<>LECTURA Then
     espacio = 1
     DUR=0
@@ -2182,13 +2255,9 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
       EndIf
    '   print #1,"SPACE call play"
         If  MaxPos > 1 Then 
-         
-         If CANCIONCARGADA = TRUE Then
+         If CANCIONCARGADA = TRUE And Cplay=NO Then
          '    Print #1,"USANDO PLAYCANCION"
-             playb=SI : s5=NO 'Necesita mas tiempo de cpu
-             threadDetach(thread1)
-             threadDetach(thread2)
-             
+             Cplay=SI : s5=NO 'Necesita mas tiempo de cpu
              Sleep 100    
              thread1 = ThreadCall  PlayCancion(Track())
              grabariniciotxt(NombreCancion, CANCION)
@@ -2197,9 +2266,7 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
          Else
            If  MaxPos > 1 Then
       '        print #1,"llama a playall"
-              Play=SI:s5=NO
-             threadDetach(thread1)
-             threadDetach(thread2)
+              Playb=SI:s5=NO 
              Sleep 100
  
              thread2 = ThreadCall  playAll(Roll)
@@ -2686,7 +2753,7 @@ EndIf
 '
 If MultiKey(SC_R) Then ' recalculo de barras compas a veces no anda ¿? 
  ReDim compas(1 To CantTicks)
- ReCalCompas(Roll) ' jmg 01-04-21 
+ ReCalCompas() ' jmg 01-04-21 
 EndIf
 
 If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
@@ -2976,7 +3043,7 @@ curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N 
        LLAMA_GRABAR_ROLL()
        ''GrabarRoll() ''hacer un backup !!!
        Sleep 1000,1  
-      CantTicks=CantTicks + 18000 ' incremento el tamaño en 18000 posiciones =3 min
+      CantTicks=CantTicks + 10000 ' incremento el tamaño en 18000 posiciones =3 min
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
       ReDim Preserve compas(1 To CantTicks)
       ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
@@ -3226,6 +3293,9 @@ EndIf
 '' EN LAS NOTAS LIGADAS PONEMOS TODO 183 >>, ONOFF 1, 182 ||, AUNQUE SE QUE NO VAN AYUDA A SABER QUE 
 '' EL ENGANCHE ES CORRECTO LIGADO Y SI EL USU NO PONE LA SIGUIENTE NOTA QUEDA
 '' COMO UNA NOTA SIMPLE SIN LIGAR AUNQUE ESTE MAL PERO HABRA UN OFF PARA EL SONIDO
+'' NOTA IMPORTANTE: Notapiano en Roll saldrá de la posicion en el vector
+'' luego no hace falta cargar la nota ..estoy poniendo 183 la verdad podria poner la nota,,
+'' En track si deberia poner la nota para el off1! vermos
 Dim As Integer DURAUX=Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
   If DURAUX <= 90 Then 'caso 1) no ligado, I, L, W etc, viene algo que termina
     Print #1,"1) DUR <= 90 "
@@ -3249,7 +3319,7 @@ Dim As Integer DURAUX=Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
        Roll.trk(posnOff,(12-nota +(estoyEnOctava -1) * 13)).dur=183
 
        Print #1,"posn, DUR, DurXTick(DUR), posnoff "; posn, " ";DURAUX;" " ;DurXTick(DUR); " ";posnoff
-       Track(ntk).trk(posnOff,1).nota = 183
+       Track(ntk).trk(posnOff,1).nota = PianoNota '''14-10-025
        Track(ntk).trk(posnOff,1).dur = 183
        Track(ntk).trk(posnOff,1).onoff = 1
        posn=posnOff +1
@@ -3283,7 +3353,7 @@ Dim As Integer DURAUX=Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
        Print #1," 1B2) puso nota 183 en posnOff ";posnOff  '97
        Track(ntk).trk(posn,1).nota = PianoNota
        Track(ntk).trk(posn,1).onoff = 2
-       Track(ntk).trk(posnOff,1).nota = 183
+       Track(ntk).trk(posnOff,1).nota = PianoNota
        Track(ntk).trk(posnOff,1).dur = 183
        Track(ntk).trk(posnOff,1).onoff = 1
 
@@ -3325,7 +3395,7 @@ Dim As Integer DURAUX=Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
        Roll.trk(posnOff,(12-nota +(estoyEnOctava -1) * 13)).nota=183
        Roll.trk(posnOff,(12-nota +(estoyEnOctava -1) * 13)).dur=183
        Track(ntk).trk(posnOff,1).onoff = 1 
-       Track(ntk).trk(posnOff,1).nota = 183 
+       Track(ntk).trk(posnOff,1).nota = PianoNota 
        Track(ntk).trk(posnOff,1).dur = 183
        
        posn=posnOff +1
@@ -3353,7 +3423,7 @@ Dim As Integer DURAUX=Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
 
        Track(ntk).trk(posn,1).nota = PianoNota
        Track(ntk).trk(posn,1).onoff = 2
-       Track(ntk).trk(posnOff,1).nota = 183
+       Track(ntk).trk(posnOff,1).nota = PianoNota
        Track(ntk).trk(posnOff,1).dur = 183
 
        Track(ntk).trk(posnOff,1).onoff = 1
@@ -3662,7 +3732,9 @@ If (ScreenEvent(@e)) Then
  ' ********************************************************************************
   Case EVENT_MOUSE_WHEEL      ' <<<=== MOUSE WHEEL
    ' new position & e.z
-      
+     If comedit <> LECTURA Or play=SI Or playb=SI Or Cplay=SI Then 
+        deltaz=1 ' no mostrar ayuda al pie del grafico roll
+     EndIf 
     If cargaCancion=CARGAR_NO_PUEDE_DIBUJAR Then ' 10-10-2021 durante al carga de cancion deshabilitamos
        Exit Do
     EndIf   
@@ -3698,11 +3770,12 @@ If (ScreenEvent(@e)) Then
       PARAR_PLAY_MANUAL=SI
       PARAR_PLAY_EJEC=SI
       playloop=NO:playloop2=NO
+      play=NO:Cplay=no:playb=No
       s5=2 'necesita menos tiempo de procesamiento    
    EndIf
 '-------------------------------------------------------------------
    If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion'
-  '
+    deltaz=1
     If (COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS)  And trasponer=0 Then ' incluye ctrl-n que puede cambiar en todas las octavas
         If s2=0 Then
           s2=1
@@ -3785,6 +3858,7 @@ If (ScreenEvent(@e)) Then
 '   EndIf 
 '------------------------------------------------------
 If e.scancode = SC_PAGEDOWN Then  ' PAGEDOWN 81 'FUNCIONARIA EN TODOS LOS COMEDIT
+  deltaz=1
   BordeSupRoll = BordeSupRoll - inc_Penta * 11
   If BordeSupRoll <= - AltoInicial * 2.8 Then
      BordeSupRoll =  - AltoInicial * 2.8
@@ -3793,6 +3867,7 @@ If e.scancode = SC_PAGEDOWN Then  ' PAGEDOWN 81 'FUNCIONARIA EN TODOS LOS COMEDI
 EndIf
 '---------------------------------------------------
 If e.scancode= SC_PAGEUP Then  'PAGEUP 
+  deltaz=1
   BordeSupRoll = BordeSupRoll + inc_Penta * 11
 
  If BordeSupRoll >= AltoInicial * 0.5  Then
@@ -3861,7 +3936,7 @@ EndIf
       posn=posishow
       Roll.trk(MaxPos,nR).dur=182 '  jmg 
       Roll.trk(MaxPos,nR).nota=0
-      ReCalCompas(Roll)
+      ReCalCompas()
       backspace=0
       DUR=0
       nota=0
@@ -3882,11 +3957,12 @@ EndIf
      ' ,insert comando habilitado = 1
      '  insert 3 fin reemplazos comienzo de move total
      insert=0:indaux=0
-     ReCalCompas(Roll) '''''calcCompas(posn) '' mayorDurEnUnaPosicion (posn)
+     RecalCompas() '''''calcCompas(posn) '' mayorDurEnUnaPosicion (posn)
     EndIf
    EndIf
 '-------------------------------------------------------------------------------------
  If e.scancode = SC_LEFT Then
+    deltaz=1
     If DUR > 0 And DUR <= 180 Then 
        deltax=  DurXTick(DUR) 
     Else
@@ -3925,6 +4001,7 @@ EndIf
 '----------------------------------------------------------------
 If e.scancode = SC_RIGHT Then
     ''Print #1,"ENTRA POR ACA SOLO ???"
+      deltaz=1  
       If DUR > 0 And DUR <= 180 Then 
          deltax=  DurXTick(DUR) ' 1 a 9 solamente
       Else
@@ -3962,6 +4039,7 @@ EndIf
 ' **********************************************************************************
   Case EVENT_KEY_REPEAT
    If e.scancode = 72  Then ' <======= SC_UP
+      deltaz=1
     If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS  And trasponer=0 Then
      If s2=0 Then
       s2=1
@@ -3983,7 +4061,7 @@ EndIf
    EndIf
 '----------------------------------------------------------
    If e.scancode = 80 Then  ' <===== SC_DOWN repeat
-
+      deltaz=1
     'If cursorVert=1 Then
     '   notacur = notacur + 1
     '   If notacur > 12 Then
@@ -4005,6 +4083,7 @@ EndIf
    EndIf
 '----------------------------------------------------------
    If e.scancode = 75 Then ' <=====  SC_LEFT repeat
+     deltaz=1
     If DUR > 0 And DUR <= 180 Then 
        deltax=  DurXTick(DUR) ' 1 a 9 solamente
     Else
@@ -4043,6 +4122,7 @@ EndIf
    EndIf
 
     If e.scancode = 77 Then ' <======= SC_RIGHT repeat
+          deltaz=1
           If DUR > 0 And DUR <= 180 Then 
              deltax=  DurXTick(DUR) ' 1 a 9 solamente
           Else
@@ -4200,7 +4280,7 @@ EndIf
 ' -----------
   ' arriba de todo ponemos deteccion de teclas sin exit do para que siga.. 
        scan_alt=1
-
+       deltaz=0
 '---------------------------------------
 
 
@@ -4420,7 +4500,9 @@ Dim As Integer i3
        '  Terminar=2
        '  Exit Do
         PARAR_PLAY_MANUAL=SI
-        PARAR_PLAY_EJEC=SI 
+        PARAR_PLAY_EJEC=SI
+      playloop=NO:playloop2=NO
+ 
      EndIf
   If ubirtk > 0 or ubiroll > 0 Then ' valen 2
   Print #1," termina Roll tambien pues es un grafico independiente"
@@ -6053,7 +6135,7 @@ ButtonGadget(2,530,30,50,40," OK ")
           modifmouse=0
           SeleccionarNuevaNota=TRUE
     ' acomoda los compases  <======= organiza Compases
-        '''  ReCalCompas(Roll) ' organizaCompases()
+        '''  RecalCompas() ' organizaCompases()
     ' fin compases
        EndIf
        If modifmouse=4 Then ' modificar
@@ -6469,7 +6551,7 @@ If nnn=100 And MAXPOS > 800 Then ' que loopee mas en el lop mas interno solo sal
   Exit Do
 EndIf
 
-If fueradefoco=NO  And (play = NO) and (playb=NO) And (Cplay=NO) Then
+If fueradefoco=SI  And (play = NO) and (playb=NO) And (Cplay=NO) Then
 
    Sleep 5 ' ESTO HACE QUE LA CINTA CORRA SUAVE
 EndIf

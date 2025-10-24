@@ -118,15 +118,18 @@ FileFlush (-1)
 End Sub
 
 
-Sub RecalCompas( Roll As inst) ' Nuevo para ticks
+Sub RecalCompas() ' Nuevo para ticks
  On Local Error GoTo errorCalc 
 ' velocidades para 4/4 reposicion par ticks
 ' lso tiempos de una comaps son 96, 192, 288, 384
- Dim As Integer i,j,k,negra=96, multi,kj,kp, cntcompas,cntnegra,com, compas4cuartos= 4*negra
-
+ Dim As Integer i,j,k,negra=96, multi,kj,kp, cntcompas,cntnegra,com, compas4cuartos= 4*negra,MAXI
+ If CANCIONCARGADA=TRUE Then
+    MAXI=MaxPosTope 
+ EndIf
+ ReDim compas(1 To MAXI)
   compas(1).Posi=0
   compas(1).nro = 0
-For j=1 To MaxPos-2
+For j=1 To MAXI-2
   kj=kj+1
   Select Case kj
     Case   1 To  96
@@ -1313,7 +1316,7 @@ trasponer=0
            Track(ntk).trk(posn1,1).onoff = 0
            posnOff=posn1 + DurXTick(DURX) -1 'nuevo off porque dura mas -1 estaba mal
      '      Print #1,"posn1, DUR, DurXTick(DUR) "; posn1, " ";DUR;" " ;DurXTick(DUR)
-           Track(ntk).trk(posnOff,1).nota = 183 'notacur
+           Track(ntk).trk(posnOff,1).nota = PianoNota 'notacur
            Track(ntk).trk(posnOff,1).onoff = 1 '
            Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).onoff=1 'termina
            Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).nota=183 'notacur 'termina
@@ -1352,7 +1355,7 @@ trasponer=0
       '    Print #1," puso nota 183 en posnOff ";posnOff  '97
           Track(ntk).trk(posn1,1).nota = notacur
           Track(ntk).trk(posn1,1).onoff = 2
-          Track(ntk).trk(posnOff,1).nota = 183 ''notacur
+          Track(ntk).trk(posnOff,1).nota = PianoNota ''notacur
           Track(ntk).trk(posnOff,1).dur = 183
           Track(ntk).trk(posnOff,1).onoff = 1  
 
@@ -1389,7 +1392,7 @@ trasponer=0
        Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).nota=183 ''notacur
        Track(ntk).trk(posn1,1).nota = notacur
        Track(ntk).trk(posn1,1).onoff = 0
-       Track(ntk).trk(posnOff,1).nota = 183 ''notacur
+       Track(ntk).trk(posnOff,1).nota = PianoNota ''notacur
        Track(ntk).trk(posnOff,1).onoff = 1
  
        posnOffOld=0
@@ -1561,7 +1564,7 @@ nota=notacur + (*po-1) * 13
 ' Roll.trk(posnOff,(12-notacur +(*po-1) * 13)).nota=183
 ' Roll.trk(posnOff,(12-notacur +(*po-1) * 13)).dur=183
 
- '  ReCalCompas(Roll) 
+ '  ReCalCompas() 
  '  nota=0
  'EndIf
  ' VEMOS QUE HACE ESTA FUNCION SI SIRVE
@@ -1603,7 +1606,7 @@ If COMEDIT=MODIFICACION_INSERCION And vdur>0 And copiar=3 Then ' ctrl-N
       Roll.trk(posnOff, 12 - notacur + (*po-1) * 13).DUR = 183  
      ' copiar=0
      ' vdur=0:vnota=0
-     '' ReCalCompas(Roll)
+     '' ReCalCompas()
    EndIf 
 EndIf
 If nro=0 Then ' error al subir mucho mira despues del and el estupido 
@@ -1694,7 +1697,7 @@ Else
 TrackaRoll (Track(), ntk,Roll ) ' no usa ubirtk
 Print #1,">>>> Tracks  ntk cargado, nombre ",ntk, nombre
 ''Print #1,"llama a RecalCompas para ntk,maxpos, .maxpos ",ntk,maxpos,pmTk(ntk).MaxPos
-''ReCalCompas(Roll) 
+RecalCompas() 
 ''Print #1,"MAXPOS DESPUES DE RECALCOMPAS ", maxpos, pmTK(ntk).maxpos
 EndIf
 
@@ -2119,7 +2122,7 @@ TrackaRoll (Track(),ntk,Roll)
 cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
 Parar_De_Dibujar=NO
 Sleep 5
-ReCalCompas (Roll)
+ReCalCompas ()
           '  print #1,"despues RecalCompas veo nombre ",nombre
             MenuNew=MENU_INICIAL
             cierroedit= 0
@@ -2786,7 +2789,9 @@ End Sub
 
 '--------
 Sub CargaArchivo(Roll As inst, ByRef ubiroll As Integer)
-' PRINCIPALMENTE CARGA ROLL Y LO PASA SIEMPRE A TRACK (0) 
+' PRINCIPALMENTE CARGA ROLL Y LO PASA SIEMPRE A TRACK (0)
+
+On Local Error GoTo saledeaca 
 ntk=0 ' Cargar en 3 vectores Roll pmTk(0) y Track(0). 
 ' la carga de tracks aislada o la carga de una cancion con sus tracks
 ' ira aumentando ntk, es otra rutina no esta..aca se carga a 
@@ -2796,6 +2801,7 @@ ntk=0 ' Cargar en 3 vectores Roll pmTk(0) y Track(0).
 ResetVariables=TRUE   
 abrirRoll=CARGAR_MAS_PISTAS_O_CANCION ' habilita la carga de una cancion
    mel_undo_k=0 :ig=0:cnt_acor=0
+
    Erase mel_undo, undo_acorde,undo_kant_intervalos
 ' FIN BORRO UNDO
    
@@ -2828,6 +2834,7 @@ Sleep 100
 
    ca=6   
  ' print #1,"open nombre en CargaArchivo ",nombre
+
       If  ubiroll =0 Then
           If   Open (nombre  For Binary Access Read As #ca ) <> 0 Then
               Print #1, "No se puede leer  "; nombre 
@@ -2842,29 +2849,33 @@ Sleep 100
      ''    Open "temp.roll"  For Binary Access Read As #ca
          ubiroll=2
       EndIf
+'cada dat tiene 7 bytes son 70 bytes, vamos a generar un type
+' encabezado de 70 bytes para que sea compatible con los archivos actuales
+' rolldat 
+     Dim dat As rolldat
 
-     Dim z    As dat
-     Dim zLim As dat
-     Dim z3   As dat ' 04-02-2022 se agregan 48 bytes para info futura 
-     Dim z4   As dat 
-     Dim z5   As dat 
-     Dim z6   As dat 
-     Dim z7   As dat 
-     Dim z8   As dat 
-     Dim z9   As dat 
-     Dim z10  As dat 
+'     Dim zLim As dat
+'     Dim z3   As dat  
+'     Dim z4   As dat 
+'     Dim z5   As dat 
+'     Dim z6   As dat 
+'     Dim z7   As dat 
+'     Dim z8   As dat 
+'     Dim z9   As dat 
+'     Dim z10  As dat 
      
      
 
      'Print #1,"posicion lectura en ca ", Seek(ca)  
 '     Seek ca,1
-     Get #ca, , z
-     x1=Bin(z.nota,4) 
-     x2=Bin(z.dur,4) 
-     x3=Bin(z.vol,4) 
-     x4=Bin(z.pan,4) 
-     x5=Bin(z.pb,4) 
-     tipoescala_num_ini =CInt( Z.inst) ' 20-12-2021 - tipoescala en uso
+     Get #ca, , dat
+     x1=Bin(dat.x1,4) 
+     x2=Bin(dat.x2,4) 
+     x3=Bin(dat.x3,4) 
+     x4=Bin(dat.x4,4) 
+     x5=Bin(dat.x5,4)
+ 
+     tipoescala_num_ini =CInt( dat.tipoescala_num_ini) ' 20-12-2021 - tipoescala en uso
      If tipoescala_num_ini =0 Then
         tipoescala_num_ini =1
      EndIf
@@ -2886,34 +2897,57 @@ Sleep 100
      
      If posn < 0 Then posn=0 EndIf
      ' crgamos limites Roll de octavas
-     Get #ca, , zLim
-     desde  = CInt(zLim.nota)
-     pmTk(ntk).desde=desde
+'carga en la pista ntk, si ntk es cero coincide y se puede cargar solo en cero
+     desde  = CInt(dat.desde) 'Variable global
      Print #1,"desde ",desde
-     hasta  = CInt(zLim.dur)
-     pmTk(ntk).hasta =hasta
+     hasta  = CInt(dat.hasta) ' global
      Print #1,"hasta ",hasta
-     notaold= CInt(zLim.pb)
-     pmTk(ntk).notaold=zLim.pb
+     notaold= CInt(dat.notaold) 'global
 
-     Print #1,"notaold ",notaold     
-     notaescala_num_ini =CInt(zLim.vol) ' notadeescala 20-12-2021
+     Print #1,"notaold ",notaold
+     If dat.nanchofig > 0 Then
+        nanchofig  = cdbl(dat.nanchofig)/10
+     EndIf     
+     notaescala_num_ini =CInt(dat.notaescala_num_ini) ' global notadeescala 20-12-2021
      If notaescala_num_ini = 0 Then
         notaescala_num_ini =1
      EndIf
      Print #1,"notaescala_num_ini ",notaescala_num_ini     
-     If  zLim.pan = 3 Then
-         alteracion="sos"
+     If  dat.alteracion = 3 Then
+         alteracion="sos" 'global
      EndIf    
-     If  zLim.pan = 2 Then
+     If  dat.alteracion = 2 Then
          alteracion="bem"
      EndIf 
-     If  zLim.pan = 3 Then
-         alteracion="sos"
-     EndIf
-     Print #1,"alteracion ",alteracion
+     Print #1,"alteracion ",alteracion 'Global
+    pmTk(ntk).eco = dat.eco
+    Globaleco=dat.eco  
+    pmTk(ntk).ejec =  dat.ejec 
+          
+Dim mit As aUshort
+'con estos dos campos puedo reconstruir tiempoPatron
+ mit.tp1 = dat.tiempoPatron1
+ mit.tp2 = dat.tiempoPatron2
+ tiempoPatron = mit.st
+
      
-      
+     pmTk(ntk).desde=desde    ' pmtk
+     pmTk(ntk).hasta =hasta
+     pmTk(ntk).MaxPos =MaxPos
+     pmTk(ntk).posn =posn
+     pmTk(ntk).notaold=dat.notaold
+     pmTk(ntk).alteracion=dat.alteracion
+     pmTk(ntk).notaescala=dat.notaescala_num_ini
+     pmTk(ntk).tipoescala=dat.tipoescala_num_ini
+     pmTk(ntk).tiempopatron=tiempoPatron
+     pmTk(ntk).portout=dat.portout
+     pmTk(ntk).canalsalida = dat.canalsalida ' ubyte a ubyte
+     pmTk(ntk).tipoCompas = dat.tipoCompas
+
+     pmTk(ntk).pan = dat.pan
+     Globalpan=CInt(dat.pan)
+Print #1,"/////--Cargar Arch pan Globalpan,pmtk, ntk ",Globalpan,pmTk(ntk).pan,ntk
+     canalx=CInt(dat.canalsalida)
     cadenaes_inicial=""
    Print #1,"armarescala desde cargarArchivo"
 
@@ -2921,9 +2955,9 @@ Sleep 100
 
     tipoescala_inicial=escala(tipoescala_num_ini).nombre ' 13-01-2022 faltaba ini
 ' carga de escala en guia de escala
-    guiaEscala(1).tipoescala=tipoescala_num_ini '13-01-2022 faltaba ini
-    guiaEscala(1).notaescala=notaescala_num_ini
-    guiaEscala(1).alteracion =CInt(zLim.pan)
+    guiaEscala(1).tipoescala=CInt(tipoescala_num_ini) '13-01-2022 faltaba ini
+    guiaEscala(1).notaescala=CInt(notaescala_num_ini)
+    guiaEscala(1).alteracion =CInt(dat.alteracion) ' 3 sostenido , o 2 bemoles
     guiaEscala(1).posicion=1
 
 '''    tiempoPatron=CInt(zLim(1,1).inst) no alcanzaba
@@ -2934,7 +2968,16 @@ Sleep 100
 ' NB Y NA SE DEDUCEN no hace fakta guardarlos
      NB= 0 + (desde-1) * 13
      NA= 11 + (hasta -1)*13
-     pmTk(0).notaold = notaold  'notaold es ubyte en pmTk
+' hay valores que los ajusto en ntk y en 0.. si ntk fuese distinto de cero
+' si cargo un roll aisaldo es todo 0 y ntk=0 pero en una cancion si cargo
+' un roll en una pista cargo a roll pero sus valores irarn en un track ntk
+' de la pista correspondiente poque ntk sera >  0si estoy en una pista cualqueira de
+' una cancion y para ello cargo en ntk de la pista > 0 y en ntk=0 para el
+' roll grafico...Cada vez que una pista de camcion de ve en roll visual
+' todos los valores de ntk  de esa pista se copian a ntk=0 ademas de los 
+' datos de notas de la secuencia (ver TAB). Entonces aca al cargar si estamos
+' en un atrack de cancion lso valores siemrpe van a dos lados ntk=0 y nrk=pista 
+     pmTk(0).notaold = dat.notaold ''notaold  'notaold es ubyte en pmTk
      pmTk(0).MaxPos = MaxPos
 Print #1,"pmTk(0).MaxPos = MaxPos ";  MaxPos
      pmTk(0).posn = MaxPos -6
@@ -2951,21 +2994,22 @@ Print #1,"pmTk(0).MaxPos = MaxPos ";  MaxPos
      ' lo agrando trabajo tambien ? mmm no trabajo debe tener el tama�o del disco!
      ' cargamos trabajo datos
      If CantTicks - MaxPos < 2000 Then
-     CantTicks = CantTicks + 18000 ' jmg 24-09-2021
+        CantTicks = CantTicks + 2000 ' jmg 24-09-2021
      EndIf  
      pmTk(0).Ticks=CantTicks
+     pmTk(ntk).Ticks=CantTicks
      ntk=0
 '' Redim Roll y TRack ya tiene calculo NB y NA con CantTicks y carga de pmTk.NB y NA
      Parar_De_Dibujar=SI
      Sleep 5
      CambiarDim(0) 
      Parar_De_Dibujar=NO
-     Get #ca, ,z3  
+  
 
-     canalx  = CInt(z3.inst) ' canal midi cargado en Global si es un track se pasara a info de trck
+     canalx  = CInt(dat.canalx) ' canal midi cargado en Global si es un track se pasara a info de trck
      Print #1,"canalx cargado desde archivo ",canalx
-     portout = CInt(z3.dur) 
-     pmTk(0).portout=z3.dur   ' ubyte  a ubyte
+     portout = CInt(dat.portout) 
+     pmTk(0).portout=dat.portout   ' ubyte  a ubyte
      Print #1,"portout cargado desde archivo ",portout
     If portsout <= portout Then
  'portsout cantidad de port fisicos o dispositivos empieza por 1 2 3 etc"
@@ -2975,43 +3019,43 @@ Print #1,"pmTk(0).MaxPos = MaxPos ";  MaxPos
 MessageBox( null, "MIDI-OUT "+ Str(portout)+ " INEXISTENTE CAMBIELO", "Se cambia a 1", MB_OK )
     portout = 0
     pmTk(0).portout=0
+    pmTk(ntk).portout=0
    EndIf
 
 
      
-     pmTk(0).canalsalida = z3.inst ' ubyte a ubyte
-     pmTk(0).patch=z3.nota  ' ubyte a ubyte
+     pmTk(0).canalsalida = dat.canalsalida ' ubyte a ubyte
      pmTk(0).portout=portout
+     pmTk(0).pan = dat.pan
 '-----PATCH ----- 14-04-2024
-     patchsal=z3.nota ' ubyte a ubyte
+     pmTk(0).patch=dat.patch  ' ubyte a ubyte
+     patchsal=dat.patch ' ubyte a ubyte
      instru= CInt(patchsal) ' integer ubyte
-     Roll.trk(1,NA).inst = patchsal
-
-     TipoCompas= z3.pb 
-     TCompas=Mid(tempoString(TipoCompas),1,4)
- 
-     pmTk(0).tipocompas = TipoCompas 
-     d7=valorFigura(TipoCompas)
-
-     Get #ca, ,z4  
-     Get #ca, ,z5  
-     Get #ca, ,z6  
-     Get #ca, ,z7  
-     Get #ca, ,z8  
-     Get #ca, ,z9  
-     Get #ca, ,z10 
-Dim mit As aUshort
-'con estos dos campos puedo reconstruir tiempoPatron
- mit.pan = z4.pan
- mit.pb  = z4.pb
- tiempoPatron = mit.st
 
 
-   
+     TipoCompas= dat.TipoCompas 
+     TCompas=Mid(tempoString(TipoCompas),1,4) ' string
+    
+     pmTk(0).tipoCompas = TipoCompas 
+     d7=valorFigura(TipoCompas) ''===> ojo d7 se usaba en ROllMusic sin Ticks para dividir
+' todo eso servia para cambiar de compas y cortar y liga notas con ticks no creo tenga sentido
+' porque la division de compases en CreaPenta es ahora por ticks y si una nota pasa de compas
+' la division de compas no se ve afectada solo depende de la cantidad de ticks definida para un compas
+' 
+'     Get #ca, ,z4  
+'     Get #ca, ,z5  
+'     Get #ca, ,z6  
+'     Get #ca, ,z7  
+'     Get #ca, ,z8  
+'     Get #ca, ,z9  
+'     Get #ca, ,z10 
+
      ReDim compas(1 To CantTicks)
      Print #1,"En CargarArchivo NB NA ", NB,NA
-     Dim Trabajo (1 To MaxPos, NB To NA) As dat     ''' es un Roll
-     Get #ca, , Trabajo() ' aca levanta tambien el instrumento que se grabo 
+     Dim Trabajo (1 To MaxPos, NB To NA) As datsec     ''' es un Roll
+ 
+     Get #ca, , Trabajo() ' aca levanta tambien el instrumento que se grabo
+ 
      ' CARGA VECTOR ROLL movemos los datos a Roll Y a track 0
      ' --------------------------------------------
      ' Roll y Track tendran 500 posiciones mas que trabajo el archivo de disco
@@ -3095,10 +3139,50 @@ Dim As Integer copiado=0
      '''  crearsecuencia(Track(), j, ntk )
      Next j
 
- Roll.trk(1,NA).pan = z4.pan
- Roll.trk(1,NA).pb  = z4.pb
 ' falta ver que pasa con Track con el tempo....
+If Roll.trk(1,NA).inst > 0 Then ' convertimos 
+   patchsal=Roll.trk(1,NA).inst
+   dat.patch=Roll.trk(1,NA).inst
+   Roll.trk(1,NA).inst=0
+   instru=CInt(dat.patch)
 
+   pmTk(ntk).patch=patchsal
+   pmTk(0).patch=patchsal
+
+Else
+  If dat.patch > 0 Then
+    patchsal=dat.patch
+    instru=CInt(dat.patch)
+
+    pmTk(ntk).patch=patchsal
+    pmTk(0).patch=patchsal
+  EndIf
+EndIf
+
+'If Roll.trk(1,NA).onoff =1 Then
+'   pmTk(ntk).ejec=1
+'   pmTk(0).ejec=1
+'   dat.ejec=1
+'   Roll.trk(1,NA).onoff=0
+'EndIf
+
+Dim tip As aUshort
+Dim As Integer tiempoPatronNA
+'con estos dos campos puedo reconstruir tiempoPatron
+ tip.tp1 = Roll.trk(1,NA).pan
+ tip.tp2 = Roll.trk(1,NA).pb
+ tiempoPatronNA = tip.st
+
+
+If  tiempoPatronNA > 0  Then
+  dat.tiempoPatron1=Roll.trk(1,NA).pan 
+  dat.tiempoPatron2=Roll.trk(1,NA).pb 
+  Roll.trk(1,NA).pan=0  ' borramos para convertir
+  Roll.trk(1,NA).pb=0
+  pmTk(ntk).tiempopatron=tiempoPatronNA
+  pmTk(0).tiempopatron=tiempoPatronNA 
+EndIf
+ 
 
 
 If Close (6) <> 0 Then
@@ -3116,7 +3200,7 @@ curpos =>1
    gap2= (914 * gap1) /1000 ' 74 default
    gap3= (519 * gap1) /1000 ' 42 default
 
-ReCalCompas(Roll)  
+  RecalCompas()  
 '--------------------------------
 ' correccion LLAMAMOS ROLL A TRACK PARA NTK = 0, 14 -04-2024
 ' pero no era necesario, total al grabar nunca grabo el track
@@ -3145,6 +3229,23 @@ ReCalCompas(Roll)
   ROLLCARGADO=TRUE
 NADACARGADO=FALSE
 nVerCifradoAcordes=3 'POR OMISION MUESTRA ACORDES AL DAR CLICK EN UNA OCTAVA
+
+Exit Sub
+
+saledeaca:
+ Dim errmsg As String
+If  Err > 0 Then
+  Close (6)
+  Sleep 1000,1  
+
+  errmsg = "FAIL Error CargarArchivo " & Err & _
+           " in function " & *Erfn & _
+           " on line " & Erl & " " & ProgError(Err)
+  Print #1, errmsg
+  
+  
+End If
+
 End Sub
 ' ------------------------------------------
 
@@ -3432,7 +3533,6 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
     cairo_set_source_rgba c, 0, 1, 0, 1
      While InKey<>"" :Wend
    '   print #1,"--->entra a reproducir thread1 "
-              play=SI
         menuNew =MENU_INICIAL
         cierroedit= 0
         ' Print #1,"hizo click para llamar a playall, maxpos ",maxpos 
@@ -3446,7 +3546,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
         ' Print #1,"llama a playall"
          thread2 = ThreadCall  playAll(Roll)
          ''''playAll(Roll)
-         
+         play=SI         
         EndIf 
    '     print #1,"--->paso llamada a thread1 "
     ''    menuNew = 4 por hora sin elecciones
@@ -3657,12 +3757,13 @@ EndIf
          'print #1,"carga track veo nombre antes   ",nombre
          CargarTrack (Track() , ntk, 0)
          s5=0 ' 11-06-2022
+         
          If nombre > "" Then  ' evita crash al cancelar el dialogo 
          '   print #1,"carga track veo nombre despues ",nombre
             ROLLCARGADO=TRUE ' NO PERMITOQUE TRACK(0) SE BORRE
             TrackaRoll (Track() , ntk , Roll)
           '  print #1,"TrackaRollcarga rtk veo nombre ",nombre 
-            ReCalCompas (Roll)
+            RecalCompas ()
           '  print #1,"despues RecalCompas veo nombre ",nombre
             MenuNew=MENU_INICIAL
             cierroedit= 0
@@ -4041,7 +4142,7 @@ Sleep 100
        pmTk(0).tipocompas = TipoCompas 
      d7=valorFigura(TipoCompas)
      'If MaxpOS > 2 Then
-     '''  ReCalCompas(Roll)
+     '''  ReCalCompas()
      'EndIf
     'MenuNew=0
     EndIf
@@ -4057,7 +4158,7 @@ Sleep 100
      TCompas="12/8"
      TipoCompas=Tcompas12_8  ' 20  
      'If mAXpOS > 2 Then
-     'ReCalCompas(Roll)
+     'ReCalCompas()
      'End If
      'MenuNew=0
     EndIf
@@ -4074,7 +4175,7 @@ Sleep 100
      TipoCompas=Tcompas2_4  ' 6 
 
     ' If mAXpOS > 2 Then
-    ' ReCalCompas(Roll)
+    ' ReCalCompas()
     ' EndIf
      'MenuNew=0
     EndIf
@@ -4091,7 +4192,7 @@ Sleep 100
      TCompas="3/4 "
      TipoCompas=Tcompas3_4  ' 7
      'If mAXpOS > 2 Then
-     'ReCalCompas(Roll)
+     'ReCalCompas()
      'EndIf
      'MenuNew=0
     EndIf
@@ -4108,7 +4209,7 @@ Sleep 100
      TCompas="6/8 "
      TipoCompas=Tcompas6_8  ' 7
   '   If mAXpOS > 2 Then
-  '   ReCalCompas(Roll)
+  '   ReCalCompas()
   '   EndIf
      'MenuNew=0
     EndIf
@@ -4502,7 +4603,7 @@ off1nosemueve=0 ' se mueve
  EndIf
  insert=0
  indaux=0
- RecalCompas(Roll) ' 09-05-2021
+ RecalCompas() ' 09-05-2021
  TicksInsertados=0
  StartInsert=0
  fininsert=0
@@ -5011,17 +5112,8 @@ Dim  As Integer npl, length
    Print #1,"Se puede escribir en "; nombre
   ''''  Open "test-AAAAA.TXT" For Output    As #2
 FileFlush (ga)
-     Dim Trabajo (1 To Maxpos, NB To NA) As dat
-     Dim grabaPos   As dat
-     Dim grabaLim   As dat 
-     Dim graba3     As dat ' 04-02-2022 se agregan 48 bytes para info futura 
-     Dim graba4     As dat 
-     Dim graba5     As dat 
-     Dim graba6     As dat 
-     Dim graba7     As dat 
-     Dim graba8     As dat 
-     Dim graba9     As dat 
-     Dim graba10    As dat 
+     Dim Trabajo (1 To Maxpos, NB To NA) As datsec
+     Dim dat   As rolldat  ''es el z de cargar archivo
 ' en bloque graba3 vamos a colocar nro de canal 1 a 16
 '                                   port midi de salida
 '                                   port midi de entrada
@@ -5121,35 +5213,39 @@ Print #1, "final MaxPos "; MaxPos
      y4= CUByte("&B"+a4)
      y5= CUByte("&B"+a5)
      '    print #1, "y1,y2,y3,y4", y1,y2,y3,y4
-     ' grabamos maxpos en 5 ubyte y notaold (1 a 12 no notapiano)
-     grabaPos.nota = y1
-     grabaPos.dur  = y2
-     grabaPos.vol  = y3
-     grabaPos.pan  = y4
-     grabaPos.pb   = y5
+     ' grabamos maxpos en 5 ubyte  (1 a 12 no notapiano)
+'==============GRABAPOS
+     dat.x1 = y1
+     dat.x2  = y2
+     dat.x3  = y3
+     dat.x4  = y4
+     dat.x5   = y5
 Print #1,"grabando tipoescala_num_ini en el archivo ",tipoescala_num_ini 
-     grabaPos.inst = CUByte(tipoescala_num_ini) ' 20-12-2021 - tipoescala en uso
+     dat.tipoescala_num_ini = CUByte(tipoescala_num_ini) ' 20-12-2021 - tipoescala en uso
+''''QUEDO LIBRE grabaPos.onoff
     '-----------------------
-     grabaLim.nota = CUByte(desde) 
-     grabaLim.dur  = CUByte(hasta)
-     grabaLim.pb   = CUByte(notaold)
+'==============GRABALIM
+     dat.desde = CUByte(desde) 
+     dat.hasta  = CUByte(hasta)
 Print #1,"grabando notaescala_num_ini en el archivo ",notaescala_num_ini
-     grabaLim.vol  = CUByte(notaescala_num_ini) ' notadeescala 20-12-2021
+     dat.notaescala_num_ini  = CUByte(notaescala_num_ini) ' notadeescala 20-12-2021
 Print #1,"grabando alteracion en el archivo ",alteracion
-     grabaralteracion (grabaLim.pan)
+     grabaralteracion (dat.alteracion)
+     ' ------------------------------------
+     ' para seguir poniendo notas nuevas:
+     ' hacemos lo mismo para la ultima nota que se grabo que tenga el 182
+     ' esa es la papa recorremos todas las dur de las notas en donde este el 182
+     ' en dur tomamos la nota y esa la grabamos en pb o ins
+     ' cuando la cargamos lo hacemos en notaold !!!! y Vuala!!!
+     ' -------------------------------------
+     dat.notaold   = CUByte(notaold)
+     dat.nanchofig = CUByte(nanchofig*10)
 ''no le da 
 '''     grabaLim.inst = CUByte(tiempoPatron) '08-01-2022 hasta 256 sera suficiente�?
-' el tiempoPatron no alcanza 256 30-03-2025 
+' el tiempoPatron no alcanza 256 30-03-2025<--antes de poner onoff 
 ' el tiempoPatron al pasar de ejec a Roll lo dejo aca
-Dim mit As aUshort
-mit.st = tiempoPatron
-'con estos dos campos puedo reconstruir tiempoPatron y poner los aca
-'Roll.trk(1,NA).pan = mit.pan
-'Roll.trk(1,NA).pb  = mit.pb
-' al grabar a disco debo usar otros campos el grabaLim no alcanza
-' usaremos el graba4 
-  graba4.pan = mit.pan
-  graba4.pb  = mit.pb
+''''===> QUEDADN LIBRES grabaLim.inst
+''''===>               grabaLim.onoff este no estaba antes
 '---------------------------
 
      If instru=0 Then 
@@ -5165,38 +5261,67 @@ mit.st = tiempoPatron
      If CANCIONCARGADA =TRUE Then ' SELECCION DE ISNTRUMENTO CON CANCION CARGADA
         Trabajo(1,NA).inst = Track(ntk).trk(1,1).nnn
      EndIf
-     graba3.inst =pmTk(0).canalsalida ' el CANAL MIDI 1 A 16 QUE ACA VA DE 0 A 15
-' es un roll !!
-     graba3.dur = pmTk(ntk).portout
+'=============GRABA3===============================================
+'===>>graba3
      ' faltaba el patch!!! por eso habia incongruencias al modificar
      ' ver la carga tambien SEGUIR!!!!, TAMPOCO ESTABAN NA Y NB
-     graba3.nota= pmTk(ntk).patch ' 14-04-2024
-     If Roll.trk(1,NA).inst <> pmTk(0).patch Then
-        graba3.nota=Roll.trk(1,NA).inst
-     EndIf
-     graba3.pb = TipoCompas ' 26-04-2024
+     dat.patch= pmTk(ntk).patch ' 14-04-2024 o sea inst
+        If Roll.trk(1,NA).inst <> pmTk(0).patch And Roll.trk(1,NA).inst > 0 Then
+           dat.patch=Roll.trk(1,NA).inst
+' asi reupero los patch o inst  de archivos roll viejos
+'***************************************************
+' o sea a partir  de ahora deberia usar graba3.inst !!!
+'****************************************************
+        EndIf
+     dat.portout = pmTk(ntk).portout ''EL DISPOSITIVO
+     dat.eco = Globaleco
+     pmTk(ntk).eco=Globaleco   
+Print #1,"///----grabar ECO GlobalECO,pmtk, ntk ",Globaleco,pmTk(ntk).eco,ntk
+     dat.ejec = pmTk(ntk).ejec ' xxxx nuevo  
+''===> libres graba3.pan
+     dat.pan =Globalpan
+     pmTk(ntk).pan=Globalpan  
+Print #1,"///----GrabaRoll pan Globalpan,pmtk, ntk ",Globalpan,pmTk(ntk).pan,ntk
+     dat.TipoCompas = TipoCompas ' 26-04-2024
      ' NB y NA se calcula a partir de desde y hasta no hace falta grabarlos  
-     ' ------------------------------------
-     ' para seguir poniendo notas nuevas
-     ' hacemoslo mismo para l ultima not que se grabo que teng el 182
-     ' esa es lapapa recorremos todas las dur de las notas en donde este el 182
-     ' en dur tomamosla nota y esala grabamos en pb o ins
-     ' cuadno la cargamos lo ahcemos en notaold !!!! y Vuala!!!
-     ' -------------------------------------
      '  print #1,"MaxPos grabada en Trabajo ",MaxPos
+     dat.canalx=canalx 'el canal global
+     dat.canalsalida =pmTk(0).canalsalida ' el CANAL MIDI 1 A 16 QUE ACA VA DE 0 A 15
+     ' EL CANAL DEL DISPOSITIVO canalsalida
+     ' el canalx globa lcuando selecciono un canal se pasa a pmtk
+     ' y deberian ser iguales salvo que se cargue un roll yel canalx tenia
+     ' otro valor en ese caso hay que cambiar canalx
+     If dat.canalx  <> dat.canalsalida Then
+        Print #1,"canalx canalsalida distinto ",dat.canalx, dat.canalsalida
+     EndIf 
+
+' es un roll !!
+'===> libre grabar3.onoff
+
+'============> graba4
+' usaremos el graba4 
+'''===> libres 
+' nota 
+' dur  
+' vol  
+Dim mit As aUshort
+mit.st = tiempoPatron
+'con estos dos campos puedo reconstruir tiempoPatron y poner los aca? no
+'Roll.trk(1,NA).pan = mit.pan
+'Roll.trk(1,NA).pb  = mit.pb
+' tratare de sacar todo lo que haya en 1,NA podria usarse algun dia como notas
+  dat.tiempoPatron1 = mit.tp1
+  dat.tiempoPatron2  = mit.tp2
+'''===> libres el resto
+' inst 
+' onoff 
+' por compatibilidad hacia atras dejo asi no muevo a grabaLim
+
+
 Print #1,"grabando las partes del archivo "; nombre
 FileFlush (7)
 ''' graba4   ' aca esta tiempoPatron
-     Put #ga, ,grabaPos
-     Put #ga, ,grabaLim
-     Put #ga, ,graba3  
-     Put #ga, ,graba4
-     Put #ga, ,graba5  
-     Put #ga, ,graba6  
-     Put #ga, ,graba7  
-     Put #ga, ,graba8  
-     Put #ga, ,graba9  
-     Put #ga, ,graba10 
+     Put #ga, ,dat
                
      Put #ga, ,Trabajo()
      
@@ -5478,12 +5603,12 @@ Next i1
 If  ntk >0 Then
      If CheckBox_GetCheck( cbxnum(ntk))= 1 Then ' sonido on/off 16-03-2022
          Print #1,"grabo grabaPos(1,1).dur2=1,, ntk", ntk
-         grabaPos.dur2=1
+         grabaPos.sonido=1
      Else
-         grabaPos.dur2=0
+         grabaPos.sonido=0
      EndIf
 Else
-         grabaPos.dur2=1
+         grabaPos.sonido=1
 
 EndIf   
      '-----------------------
@@ -5502,12 +5627,12 @@ EndIf
      Print #1,"grabartrack graba3.nnn, ntk ",graba3.nnn , ntk
 
      graba3.pb = TipoCompas ' 26-04-2024
-
+     graba3.nanchofig = CUByte(nanchofig*10)
      '  print #1,"MaxPos grabada en Trabajo ",MaxPos
 Dim mit As aUshort
 mit.ST = tiempoPatron
-graba4.pan= mit.pan
-graba4.pb = mit.pb
+graba4.pan= mit.tp1
+graba4.pb = mit.tp2
 
      FileFlush (gt)
      Put #gt, ,grabaPos
@@ -5679,7 +5804,10 @@ Print #1, "selport 4 "
 
               If mitipo=1 Then
               Print #1,"PORT SELECCIONADO en menu ",portout
+' sieditamos un track de una camcion modificamos en el track ntk
+' y en el nt=0 de edicion para probar aisladamente
               pmTk(ntk).portout=CUByte(portout)
+              pmTk(0).portout=CUByte(portout)
 
    '             For  i As Short =1 To 32
     '                  If CheckBox_GetCheck( cbxnum(i))= 1  Then
@@ -5691,7 +5819,7 @@ Print #1, "selport 4 "
               If mitipo=2 Then
               Print #1,"PORT SELECCIONADO en menu ",portin
                 pmTk(ntk).portin =CUByte(portin)
-
+                pmTk(0).portin =CUByte(portin)
               EndIf
 
               If CANCIONCARGADA=TRUE  Or TRACKCARGADO=TRUE  Then
@@ -5945,8 +6073,10 @@ Print #1, "SELCANAL canalx "; canalx
           
                Print #1,"ntk en cambio de canal ntk= ",ntk
                pmTk(ntk).canalsalida=CUByte(canalx) ' sirve para el track cargao actual en cancion
+               pmTk(0).canalsalida=CUByte(canalx) ' sirve para el track cargado actual Roll de edicion
             If  MAxPos > 1 Then
                pmTk(ntk).canalsalida=CUByte(canalx)
+               pmTk(0).canalsalida=CUByte(canalx)
                If NombreCancion > ""  Or TRACKCARGADO =TRUE Then
                    ' sirve para el track cargao actual en cancion
                      GrabarRollaTrack(0)
@@ -6095,6 +6225,248 @@ Posy=y0 +100
 '' fin ruso
 
 End Sub
+'''---------
+Sub SelPan (ByRef Pan2 As ubyte)
+Var hwndpan=OpenWindow("",300,500,850,150)
+ButtonGadget(1,20,20,60,25,"Aplicar")
+TrackBarGadget(2,20,60,800,40,0,127)
+TextGadget(3,200,20,30,20)
+SetTrackBarPos(2,CLng(pmTk(ntk).pan))
+Do
+   var event=WaitEvent()
+   If event=EventGadget Then
+      Select case EventNumber
+         Case 2
+            Pan2=CUByte(GetTrackBarPos(2))
+              pmTk(ntk).pan=Pan2
+              pmTk(0).pan=Pan2
+       Print #1,"PAN SELECCIONADO ->> "; Pan2
+            SetGadgetText(3,Str(Pan2))
+              
+         Case 1
+            Close_window (hwndpan)
+            Exit Do
+      End Select
+   EndIf
+   If event=Eventclose Then
+        Close_window (hwndpan)
+        Exit Do 
+   EndIf
+Loop
+
+
+End Sub
+'---------
+Sub SelEco (ByRef rever As ubyte)
+Var hwndeco=OpenWindow("",300,500,1050,150)
+ButtonGadget(1,20,20,60,25,"Aplicar")
+TrackBarGadget(2,20,60,1000,40,0,127)
+TextGadget(3,200,20,30,20)
+SetTrackBarPos(2,Clng(pmTk(ntk).eco))
+Do
+   var event=WaitEvent()
+   If event=EventGadget Then
+      Select case EventNumber
+         Case 2
+            rever=GetTrackBarPos(2)
+            pmTk(ntk).eco=rever
+            pmTk(0).eco=rever 
+       Print #1,"ECO SELECCIONADO ->> "; rever
+            SetGadgetText(3,Str(rever))
+              
+         Case 1
+            Close_window (hwndeco)
+            Exit Do 
+      End Select
+   EndIf
+   If event=Eventclose Then
+        Close_window (hwndeco)
+        Exit Do 
+   EndIf
+
+Loop
+
+
+End Sub
+'------
+Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer) 
+Dim As hwnd haw,hwl
+Dim As Integer aa ,pasoc=0,x  
+Dim listoctava(1 To 9) As string ={"0","1","2","3","4","5","6","7","8"}
+
+For x= 1 To 2 
+'' => desde acaecho con tool del ruso no anda muy bien
+     haw=OpenWindow("OCTAVAS",100,50,400,400, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
+     hwl=  ListViewGadget(1,10,10,300,400,,,,32,LVS_SINGLESEL  )
+    ' listports()
+     GadgetToolTip(1,"Dos Columnas la derecha es la numeracion de RollMusic, la izquierda la que se suele usar." )
+  
+  If pasoc=0 Then
+       AddListViewColumn(1, "Elegir Octava Desde ",0,0,250)
+       For aa =1 To 9 
+           AddListViewItem(1, listoctava(aa)+"-"+Str(aa),0,aa,0)
+       Next
+       
+  EndIf   
+  If pasoc=1 Then  
+       AddListViewColumn(1, "Elegir Octava Hasta ",0,0,250)
+       For aa =1 To 9 
+           AddListViewItem(1, listoctava(aa)+"-"+Str(aa),0,aa,0)
+       Next
+  EndIf
+
+
+       ButtonGadget(2,330,30,50,40," OK ")
+       GadgetToolTip(2,"Al dar OK el Rango de Octavas elegido sera el usado por el Grafico")
+         #Ifdef __FB_WIN64__
+           SetFocus (hwl) 
+           SetForegroundWindow(haw)
+          #Else
+           gtk_widget_grab_focus(GadgetID(1))
+         #EndIf
+         'menunew=0
+Dim As Integer i
+         Do
+
+         Var eventC= waitEvent
+
+          If eventC=eventgadget Then
+            If eventnumber()=2 Then
+'              menunew=0
+              If pasoc=0 Then
+                 Octadesde = GetItemListView()
+                 Octadesde=Octadesde+1
+                 pmTk(ntk).desde=CUByte(Octadesde)
+                 pmTk(0).desde=CUByte(Octadesde)
+              EndIf   
+              If pasoc=1 Then
+                 Octahasta = GetItemListView()
+                 Octahasta=octahasta+1 
+                 pmTk(ntk).hasta=CUByte(Octahasta)
+                 pmTk(0).hasta=CUByte(Octahasta)
+ 
+              EndIf   
+
+              Close_Window(haw)
+              pasoc=1
+              Exit Do 
+            End If
+          EndIf 
+          If eventC= EventClose Then
+             Close_Window(haw)
+             Exit Do 
+          EndIf
+          
+         Loop 
+Next x
+'' fin ruso
+If octadesde=0 Then
+octadesde=1
+EndIf
+If octahasta=0 Then
+octahasta=9
+EndIf
+print #1,"OCtadesde ",octadesde
+print #1,"OCtahasta ",octahasta
+
+End Sub
+'--------------------------
+'---------------------------
+Sub selInstORdenAlfa(ByRef instru As Integer)
+'If ntk =0 Then
+'   Exit Sub
+'EndIf
+Dim As hwnd haw,hwl
+Dim As Integer aa ,x=0,i1=0,i2=0 ,Posx,Posy ,x0,y0  
+Dim cad As String
+ScreenControl GET_WINDOW_POS, x0, y0
+Posx=x0 +50
+Posy=y0 +100
+' la seleccion empieza de 1, no devuelve 0 para el 1er elemento 
+ 
+'' => desde acaecho con tool del ruso no anda muy bien
+     haw=OpenWindow("PATCH POR ORDEN ALFABETICO CLICK EN UN ITEM  Y EN CAMBIA",500,Posy,700,600, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
+     'Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
+     ' commctrl.bi modificado
+     hwl=  ListViewGadget(1,10,10,500,500,,,,32,LVS_SINGLESEL )
+ GadgetToolTip(1,"Seleccionar instrumento por nombre, deseleccionar el que este seleccionado y luego seleccionar otro y pulsar CAMBIA." )    
+     AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
+    '' AddListViewItem(1, "CLICK EN UN ITEM  Y EN CAMBIA",0,aa,0)
+     
+       For aa =1 To 127 
+               i2=InStrrev(NombreInstAlfa(aa)," ")
+               cad=Mid(NombreInstAlfa(aa),i2)
+      '         Print #1,"cadena ",cad
+               
+     
+           If instru = CUByte(ValInt(cad)) Then
+              AddListViewItem(1, "[x] "+NombreInstAlfa(aa),0,aa,0)
+           Else
+              AddListViewItem(1, "[ ] "+NombreInstAlfa(aa),0,aa,0) 
+           EndIf
+           
+       Next
+       
+
+
+       ButtonGadget(2,530,30,100,40,"CAMBIA")
+
+
+         #Ifdef __FB_WIN64__
+           SetFocus (hwl) 
+           SetForegroundWindow(haw)
+          #Else
+           gtk_widget_grab_focus(GadgetID(1))
+         #EndIf
+         Do
+
+         Var eventAlfa= waitEvent
+         If eventAlfa=EventLBDown Then ' 26-02-2022
+            If EventNumberListView=1 Then
+               i1 = GetItemListView() +1
+               cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
+               If InStr(cad,"x")>0 Then
+                 cad="[ ] " +NombreInstAlfa(i1) 
+               Else  
+                 cad="[x] " +NombreInstAlfa(i1) 
+               EndIf
+               ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
+           EndIf
+        EndIf
+
+          If eventAlfa=eventgadget Then
+          
+            If eventnumber()=2 And InStr(cad,"x") >0 Then
+               ''i1 = GetItemListView()
+               Print #1,"alfa seleccion in", i1
+               Print #1,"NombreInstAlfa ",NombreInstAlfa(i1)
+               i2=InStrrev(NombreInstAlfa(i1)," ")
+               cad=Mid(NombreInstAlfa(i1),i2)
+               Print #1,"cadena ",cad
+               instru = CUByte(ValInt(cad))
+               pmTk(ntk).patch=CUByte(instru)
+               pmTk(0).patch=CUByte(instru)
+                print #1,"seleccion instrumento alfa instru = ",instru     
+               patchsal=instru
+                  Close_Window(haw)
+                  Exit Do
+              
+            End If
+          EndIf 
+          If eventAlfa=EventClose Then
+                  Close_Window(haw)
+                 Exit Do 
+           EndIf          
+          
+         Loop
+         
+
+'' fin ruso
+'Return IUP_DEFAULT
+print #1,"Str(instru) ", Str(instru)
+  
+
+end Sub
 
 '-------------------
 Sub ComboBox() ' lo deje de usar pero veo si sirve para algo en el futuro
@@ -6132,7 +6504,7 @@ End Sub
  
 Sub grabaprueba()
 Print #1,"MAxPos inicio ", MAxPos
-     Dim Trabajo (1 To Maxpos, NB To NA) As dat
+     Dim Trabajo (1 To Maxpos, NB To NA) As datsec
      Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0
 'eliminar columnas marcadas al grabar disco
  For i2 = 1 To MaxPos
@@ -6536,6 +6908,8 @@ Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
           
             If eventnumber()=2 Then
                tipoescala_num = GetItemListView()
+               pmTk(ntk).tipoescala=CUByte(tipoescala_num)
+               pmTk(0).tipoescala=CUByte(tipoescala_num)
                   Close_Window(haw)
                   Exit Do
            End If
@@ -6600,6 +6974,8 @@ Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
           
             If eventnumber()=2 Then
                notaescala_num = GetItemListView()
+               pmTk(ntk).notaescala=CUByte(notaescala_num)
+               pmTk(0).notaescala=CUByte(notaescala_num)
                   Close_Window(haw)
                   Exit Do
            End If
@@ -6956,7 +7332,7 @@ EndIf
      '' grado=0   
  
  If Vaciodur Then
-    ReCalCompas (Roll)
+    ReCalCompas ()
     Vaciodur=FALSE
  EndIf
  Dim As Integer guardpos

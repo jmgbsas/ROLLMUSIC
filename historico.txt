@@ -1,3 +1,5 @@
+- 23-10-25 0.345 parametro pan y eco en pista aislada o cancion, legibilidad del codigo, mas fixes.
+  eco y pan se grabarn usando 	[ROLL=>TRACK]. Varios fixes carga de cancion re entrante.
 - 06-10-2025 otros fix para mid de archivos de cancion. F2/F3 ACHIVA/EXPANDE HORIZONTALMENTE SIN
   TOCAR EL FONT. F9/F10 ACHICA/AGRANDA EL TAMAÑO DEL FONT DEL GRAFICO
 - 05-10-2025  0.341 Generar archivo *.mid para una cancion con Ticks ok"

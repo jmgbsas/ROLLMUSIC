@@ -461,18 +461,21 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
            Case 1051 ' PANEO DE UN CANAL 
               
              threadpan=threadCall SelPan(Globalpan)
-             pmTk(ntk).pan =Globalpan
+
+Print #1,"///----SEL 1051 pan Globalpan ",Globalpan
              '''Paneo (GlobalPan,pmTk(ntk).canalsalida,pmTk(ntk).portout)
            Case 1052 ' REVERVERACION DE UN CANAL 
               
              threadeco=threadCall SelEco(Globaleco)
-             pmTk(ntk).eco =Globaleco
+
+Print #1,"///----SEL 1053 ECO GlobalECO,pmtk, ntk ",Globaleco
    
 '-----------------------------------------------------------------------
            Case 1060 ' <========== crea track y reemplaza al existente en la edicion
              If NombreCancion > ""  Or (abrirRoll=REABRIR_ROLL_CON_DATOS_CARGADOS And Terminar=NO_TERMINAR_CON_DATOS_CARGADOS )Then
                 Terminar=NO_TERMINAR_BARRE_PANTALLA ' 0 para que empiece a barrer la pantalla
                 Print #1,"1 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
+
                 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))   
                 Print #1,"2 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
                 Sleep 100

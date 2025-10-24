@@ -17,7 +17,7 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include Once "gtk/gtk.bi"
 '#Include "midiinfo.bi"
 
-#Include "ROLLCONTROLDEC.bi"
+#Include "ROLLGLOBALDEC.bi"
 '#include "vbcompat.bi"
 #Include Once "freetype2/freetype.bi"
 #Include once  "file.bi"
@@ -35,48 +35,12 @@ Type plano
   vel        As UByte  ' velocidad
 End Type
 
-'Var hwnd = OpenWindow("RollMusic Control",10,10,ancho*3/4,alto*3/4)
-
-'Dim As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8
-Common shared As Integer menuNro, menuNew, desde , hasta, rango,RollDur,RollNota,compasX,RollDurOld,RollNotaOld
-
-common Shared As Integer  ANCHO,ALTO,indicenotas
-Common Shared As FLOAT font,nanchofig,anchofig
-COMMON Shared As Long eventc, eventM
-Common Shared As hwnd hwndC, hwndListBox, hwndPatronEjec,hwndTipoAcorde
-Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA
-Common  Shared As String comando
 ROLLCARGADO    = FALSE
 TRACKCARGADO   = FALSE
 CANCIONCARGADA = FALSE
 NADACARGADO    = TRUE
 CANCIONCREADA  = FALSE
 EJECCARGADA    = FALSE
-
-Common Shared As string pathdir,nombre,DirEjecSinBarra
-common Shared As String NombreCancion, NombrePista
-Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado',pistacreada
-Common Shared As cairo_t  Ptr c, c2
-Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer
-Screenbuffer=0
-
-Common Shared As FT_Face ftface
-common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu ,threadmetronomo,threadsel,threadcanal
-Common Shared As Any Ptr thread4, threadCmd
-Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares
-Common Shared As Integer mxold,myold, w,h,grado,nVerCifradoAcordes, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
-Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,MousexNotaElegida,PianoNotaElegida,nsEelegida
-common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
-Common Shared  portsal As UByte, patchsal As ubyte
-COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp, npi,calltoca,npo,canalDeGrabacion
-Common SHARED  As Integer EstaBarriendoPenta, instancia,MICROSEGUNDOS_POR_NEGRA,VerMenu
-Common Shared As Double STARTMIDI
-Common Shared As BOOLEAN MIDIFILEONOFF
-Common Shared As plano miditxt()
-Common Shared As Integer gp ,midiplano,midionof,contid,separaenuno0, interva
-
-'common Shared message() As UByte 'cambiado a shred message output ' puede ser de hasta 1024 bytes
-'Dim message(1 To 21) As UByte 'agregado
 
 Dim Shared As HWND velimg, Figimg, FigVol
 Const IMAGE_VEL= 30
@@ -91,13 +55,13 @@ MICROSEGUNDOS_POR_NEGRA=1000000 ' 60 MILLONES / 60 BPM DEFAULT
 
 
  MaxPos=2:ntk=0:CPlay=NO: guardopos=0:ntktab=0
+/'
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff,deltax,deltay,guardaguardaposnOffOld
  posicion=0:posicionOld=0:posn=0
+
 deltax=1 
-
-
-  trasponer=0
-
+trasponer=0
+'/
 '-------------
 
 
@@ -173,228 +137,8 @@ Sub CuadroVol()
 
 End Sub
 '---------
-Sub SelPan (ByRef Paneo As ubyte)
-Var hwndpan=OpenWindow("",300,500,1050,150)
-ButtonGadget(1,20,20,60,25,"Aplicar")
-TrackBarGadget(2,20,60,1000,40,0,127)
-TextGadget(3,200,20,30,20)
-
-Do
-   var event=WaitEvent()
-   If event=EventGadget Then
-      Select case EventNumber
-         Case 2
-            Paneo=GetTrackBarPos(2) 
-       Print #1,"PAN SELECCIONADO ->> "; Paneo
-            SetGadgetText(3,Str(Paneo))
-              
-         Case 1
-            Close_window (hwndpan) 
-      End Select
-   EndIf
-Loop
-
-
-End Sub
-'---------
-Sub SelEco (ByRef rever As ubyte)
-Var hwndeco=OpenWindow("",300,500,1050,150)
-ButtonGadget(1,20,20,60,25,"Aplicar")
-TrackBarGadget(2,20,60,1000,40,0,127)
-TextGadget(3,200,20,30,20)
-
-Do
-   var event=WaitEvent()
-   If event=EventGadget Then
-      Select case EventNumber
-         Case 2
-            rever=GetTrackBarPos(2) 
-       Print #1,"ECO SELECCIONADO ->> "; rever
-            SetGadgetText(3,Str(rever))
-              
-         Case 1
-            Close_window (hwndeco) 
-      End Select
-   EndIf
-Loop
-
-
-End Sub
-'------
 
 '------
-Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer) 
-Dim As hwnd haw,hwl
-Dim As Integer aa ,paso=0,x  
-Dim listoctava(1 To 9) As string ={"0","1","2","3","4","5","6","7","8"}
-
-For x= 1 To 2 
-'' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("OCTAVAS",100,50,400,400, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
-     hwl=  ListViewGadget(1,10,10,300,400,,,,32,LVS_SINGLESEL  )
-    ' listports()
-     GadgetToolTip(1,"Dos Columnas la derecha es la numeracion de RollMusic, la izquierda la que se suele usar." )
-  
-  If paso=0 Then
-       AddListViewColumn(1, "Elegir Octava Desde ",0,0,250)
-       For aa =1 To 9 
-           AddListViewItem(1, listoctava(aa)+"-"+Str(aa),0,aa,0)
-       Next
-       
-  EndIf   
-  If paso=1 Then  
-       AddListViewColumn(1, "Elegir Octava Hasta ",0,0,250)
-       For aa =1 To 9 
-           AddListViewItem(1, listoctava(aa)+"-"+Str(aa),0,aa,0)
-       Next
-  EndIf
-
-
-       ButtonGadget(2,330,30,50,40," OK ")
-       GadgetToolTip(2,"Al dar OK el Rango de Octavas elegido sera el usado por el Grafico")
-         #Ifdef __FB_WIN64__
-           SetFocus (hwl) 
-           SetForegroundWindow(haw)
-          #Else
-           gtk_widget_grab_focus(GadgetID(1))
-         #EndIf
-         'menunew=0
-Dim As Integer i
-         Do
-
-         Var eventC= waitEvent
-
-          If eventC=eventgadget Then
-            If eventnumber()=2 Then
-'              menunew=0
-              If paso=0 Then
-                 Octadesde = GetItemListView()
-                 octadesde=octadesde+1
-
-              EndIf   
-              If paso=1 Then
-                 Octahasta = GetItemListView()
-                 Octahasta=octahasta+1 
- 
-              EndIf   
-
-              Close_Window(haw)
-              paso=1
-              Exit Do 
-            End If
-          EndIf 
-          If eventC= EventClose Then
-             Close_Window(haw)
-             Exit Do 
-          EndIf
-          
-         Loop 
-Next x
-'' fin ruso
-If octadesde=0 Then
-octadesde=1
-EndIf
-If octahasta=0 Then
-octahasta=9
-EndIf
-print #1,"OCtadesde ",octadesde
-print #1,"OCtahasta ",octahasta
-
-End Sub
-'---------------------------
-Sub selInstORdenAlfa(ByRef instru As Integer)
-'If ntk =0 Then
-'   Exit Sub
-'EndIf
-Dim As hwnd haw,hwl
-Dim As Integer aa ,paso=0,x=0,i1=0,i2=0 ,Posx,Posy ,x0,y0  
-Dim cad As String
-ScreenControl GET_WINDOW_POS, x0, y0
-Posx=x0 +50
-Posy=y0 +100
-' la seleccion empieza de 1, no devuelve 0 para el 1er elemento 
- 
-'' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("PATCH POR ORDEN ALFABETICO CLICK EN UN ITEM  Y EN CAMBIA",500,Posy,700,600, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
-     'Var LVS_EX_AUTOSIZECOLUMNS=&h10000000
-     ' commctrl.bi modificado
-     hwl=  ListViewGadget(1,10,10,500,500,,,,32,LVS_SINGLESEL )
- GadgetToolTip(1,"Seleccionar instrumento por nombre, deseleccionar el que este seleccionado y luego seleccionar otro y pulsar CAMBIA." )    
-     AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
-    '' AddListViewItem(1, "CLICK EN UN ITEM  Y EN CAMBIA",0,aa,0)
-     
-       For aa =1 To 127 
-               i2=InStrrev(NombreInstAlfa(aa)," ")
-               cad=Mid(NombreInstAlfa(aa),i2)
-      '         Print #1,"cadena ",cad
-               
-     
-           If instru = CUByte(ValInt(cad)) Then
-              AddListViewItem(1, "[x] "+NombreInstAlfa(aa),0,aa,0)
-           Else
-              AddListViewItem(1, "[ ] "+NombreInstAlfa(aa),0,aa,0) 
-           EndIf
-           
-       Next
-       
-
-
-       ButtonGadget(2,530,30,100,40,"CAMBIA")
-
-
-         #Ifdef __FB_WIN64__
-           SetFocus (hwl) 
-           SetForegroundWindow(haw)
-          #Else
-           gtk_widget_grab_focus(GadgetID(1))
-         #EndIf
-         Do
-
-         Var eventAlfa= waitEvent
-         If eventAlfa=EventLBDown Then ' 26-02-2022
-            If EventNumberListView=1 Then
-               i1 = GetItemListView() +1
-               cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
-               If InStr(cad,"x")>0 Then
-                 cad="[ ] " +NombreInstAlfa(i1) 
-               Else  
-                 cad="[x] " +NombreInstAlfa(i1) 
-               EndIf
-               ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
-           EndIf
-        EndIf
-
-          If eventAlfa=eventgadget Then
-          
-            If eventnumber()=2 And InStr(cad,"x") >0 Then
-               ''i1 = GetItemListView()
-               Print #1,"alfa seleccion in", i1
-               Print #1,"NombreInstAlfa ",NombreInstAlfa(i1)
-               i2=InStrrev(NombreInstAlfa(i1)," ")
-               cad=Mid(NombreInstAlfa(i1),i2)
-               Print #1,"cadena ",cad
-               instru = CUByte(ValInt(cad))
-                print #1,"seleccion instrumento alfa instru = ",instru     
-               patchsal=instru
-                  Close_Window(haw)
-                  Exit Do
-              
-            End If
-          EndIf 
-          If eventAlfa=EventClose Then
-                  Close_Window(haw)
-                 Exit Do 
-           EndIf          
-          
-         Loop
-         
-
-'' fin ruso
-'Return IUP_DEFAULT
-print #1,"Str(instru) ", Str(instru)
-  
-
-end Sub
 
 Sub selInstORdenNum (ByRef instru As integer) ' NO TIENE EN CUENTA EL TIPO NI GRABA A DISCO
 'If ntk =0 Then

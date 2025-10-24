@@ -704,7 +704,10 @@ EndIf
 'Dim Shared midiin As RtMidiInPtr
 Dim As Integer porterror,nousar
 porterror=Err
-PARAR_PLAY_MANUAL=0
+PARAR_PLAY_MANUAL=NO
+PARAR_PLAY_EJEC=NO    
+playloop=NO:playloop2=NO
+
 Dim As Integer i1,k1
 ' creoa todos los defaults siempre
  
@@ -731,9 +734,9 @@ Print #1,"abriendo port....play All"
         listoutAbierto( k1) = 1
  '       Print #1,"abro ",*nombreOut(k1)
         porterrorsub(porterror)
-   Else
+     Else
       Print #1,"pORT SALIDA YA ABIERTO EN PLAYALL"
-   EndIf
+     EndIf
  EndIf 
 
 'Print #1,"-------------------------------------"
@@ -769,8 +772,8 @@ playloop2=NO
 
 
     
-    Paneo (Globalpan, pmTk(0).canalsalida,pmTk(0).portout)
-    Eco   (Globaleco,  pmTk(0).canalsalida,pmTk(0).portout)    
+    Paneo (pmTk(0).pan, pmTk(0).canalsalida,pmTk(0).portout)
+    Eco   (pmTk(0).eco,  pmTk(0).canalsalida,pmTk(0).portout)    
      ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, pmTk(0).portout)
     patchsal =pmTk(0).patch ''Roll.trk(1,NA).inst
     
@@ -819,12 +822,12 @@ For jply=comienzo To final
 
 
   mousex=jply * anchofig '<=== jmgjmg ' ver esto andaba bien en Roll sin ticks sin el anchofig
-  If PARAR_PLAY_MANUAL = 1 Then
+  If PARAR_PLAY_MANUAL = SI Then
     If InStr(*nombreOut(portout),"Microsoft") > 0 Then
     Else
       alloff( pmTk(0).canalsalida,pmTk(0).portout )
     EndIf  
-      PARAR_PLAY_MANUAL=0
+      PARAR_PLAY_MANUAL=NO
       Print #1,"mefui de playall"
       Exit For
   EndIf  
@@ -837,6 +840,9 @@ For jply=comienzo To final
       Exit For
   EndIf
 ' no se si eliminarlo esto Compas no se si almacena los -1 -2 etc
+''Print #1,"Roll.trk(1,NA).onoff si es uno sin sonido!! ",Roll.trk(1,NA).onoff
+''Print #1,"pmTk(ntk).ejec  sonido!! ",pmTk(ntk).ejec
+
 If Roll.trk(1,NA).onoff = 1 Then
  'usar la velocidad de grabacion.,,
 Else
@@ -884,31 +890,31 @@ If i1<= NA-13 Then
       '**** tampoco haria falta en el on pero  si es necesario para la visualizacion >>>>>
       ' en menu podemos hacer lo mismo RollNota con off podemos sacar la nota de Notapiano
       Notapiano= Notapiano - restar (Notapiano)
-      'print #1,"PALL 0:VEO LO CORRECTO DE NOTAPIANO "; Notapiano
+      ''Print #1,"PALL 0:VEO LO CORRECTO DE NOTAPIANO "; Notapiano
       dura=Roll.trk(jply, i1).dur ' es una N 185 la duracion son lso ticks hasael off 1
 ' llegamos al final de la Columna
       portsal=pmTk(0).portout
       canal=pmTk(0).canalsalida
 
       If Roll.trk(1, NA).onoff=1  Then
-        'Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
+       ' Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
         vel=Roll.trk(jply, i1).vol
       Else
         vel=velpos
-        'Print #1,"2 velpos vel ";velpos, vel
+''        Print #1,"2 velpos vel ";velpos, vel
       EndIf
 
        If Roll.trk(jply, i1).onoff =2 Then
             NroEventoPista(1)= NroEventoPista(1) +1
             NroEvento=NroEventoPista(1)
-'            Print #1,"noteon CUByte(Notapiano),vel,canal,portsal  ";CUByte(Notapiano),vel,canal,portsal
+            ''Print #1,"noteon CUByte(Notapiano),vel,canal,portsal  ";CUByte(Notapiano),vel,canal,portsal
             noteon CUByte(Notapiano),vel,canal,portsal,1,NroEvento
        EndIf
        If Roll.trk(jply, i1).onoff= 1 Then
             NroEventoPista(1)= NroEventoPista(1) +1
             NroEvento=NroEventoPista(1)
 
-''Print #1,"noteoff CUByte(Notapiano),canal,portsal,1 "; CUByte(Notapiano),canal,portsal
+'''Print #1,"noteoff CUByte(Notapiano),canal,portsal,1 "; CUByte(Notapiano),canal,portsal
            noteoff CUByte(Notapiano),canal,portsal,1,NroEvento
       EndIf    
 
@@ -925,13 +931,13 @@ EndIf
 
 If i1 > NA-13 Then
  If Roll.trk(jply,i1).nota = 210 Then
-   ' Print #1,"210 leido jply",jply
+    Print #1,"210 leido jply",jply
     playloop2=SI
     comienzo2=jply
  EndIf
 
  If Roll.trk(jply,i1).nota = 211 Then
-   ' Print #1,"211 leido jply",jply 
+    Print #1,"211 leido jply",jply 
     final2=jply
     If cntrepe > 0 Then
       cntrepe -= 1
@@ -1010,10 +1016,10 @@ If GrabarPenta=0 And GrabarEjec=HabilitaGrabar And Parar_De_Dibujar=NO And check
  ' nada de off estamos en grabarpenta por teclado o Grabar o tocar ejecuciones 
 
    k1=pmTk(0).portout
-  ' Print #1,"midiout ",k1, *nombreOut(k1)
+   Print #1,"midiout ",k1, *nombreOut(k1)
    alloff( pmTk(0).canalsalida,k1 )  
    'out_free   midiout(k1)
-   ''Print #1,"desmarco ",*nombreOut(k1)
+   Print #1,"desmarco ",*nombreOut(k1)
    listoutAbierto(k1)=0
    close_port midiout(k1)
    ''out_free   midiout(k1)

@@ -403,7 +403,7 @@
      18) Mostrar o Ocultar las Notas Guia de Roll Grafico del lado izquierdo. Pulsar H tipo
          llave si o no pulsar K.   
 
-    IV ) USO VENTANA CONTROL PARA GRABAR EJECUCIONES POR TECLADO MIDI,
+    IV ) USO VENTANA CONTROL, ENTRE VARIAS COSAS  GRABA EJECUCIONES POR TECLADO MIDI,
        
     1 ) MIDI-IN GRABACION: 
          YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN grabadas mediante la ejecucion EN UN O CONTROLADOR 
@@ -545,7 +545,11 @@
            las barras de compases,  o al menos  barras  tipo dientes   que indiquen cuando se alcanza o sobrepasa
            un compas aunque no sea exacto ni las notas esten bien ajustadas al compas.
            (Asi no se usara poder de cpu durante la grabacion)
-
+      4)   EFECTOS. Dada una pista .rtk abierta en Roll grafico de una cancion o un Roll aislado .roll  
+           Se puede naplicar hasta ahora dos efectos, paneo derecha izauierda y reverberacion o eco.
+           Para ellos se agregaron en el menu PISTAS MANUALES A puntos 2.3 y 2.4 donde se los puede ajustar
+           por cada pista, para grabarla a archivo hacerlo con [ROLL==>TRACK(0)] Hará una actualziacion
+           del archivo rtk correspondiente a una cancion. Si es un Roll aislado usar [GRABAR] 
  
       V ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
           o ordenar la ejecucion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones

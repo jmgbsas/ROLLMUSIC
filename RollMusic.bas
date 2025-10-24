@@ -31,7 +31,8 @@
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.344 fIX STOP PLAY, Y Prueba de PANEO y ECO solo manual en menu ya se volcara a archivo roll y trk como  midi file"
+nroversion="0.345 parametro pan y eco, legibilidad del codigo, mas fixes"
+' solo cancela con PANTESTECO.roll nuevisima version con datroll
 '"0.344 control de PANEO salida izquierda derecha de sonido o intermedio, grabacion del paneo de entrada y ajuste del mismo "
 ' chequear formatos 0 y 1 del archivo midi en el 1 hay un track sin notas y de referencia de tiempos
 ' yo creo que estoy generando en formato 0 verificarlo
@@ -209,7 +210,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
      ROLLCARGADO=False
      '''lo hace tab-cargaCancion=0
      param.encancion=CON_CANCION
-     
+     RecalCompas()
    If pid1=0 And instancia =ARG0_EN_LINEA  Then
       pid1=pd1
    EndIf
@@ -221,7 +222,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
           CargarSinRoll () ''' play sin roll 
       Else
       EstaBarriendoPenta=1 
-Print #1, "1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
+Print #1, "///1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
       EndIf 
     ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
@@ -244,7 +245,7 @@ Print #1, "1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", Nombr
            cargaCancion=CARGAR_NO_PUEDE_DIBUJAR 
            CargarSinRoll () '''28-02-2024 play sin roll
        Else
-Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
+Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
        EstaBarriendoPenta=1
        threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
        EndIf
@@ -348,7 +349,9 @@ Print #1, "2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", Nombr
 ' si uso LBDown no funciona bien debo clickear dos veces no se aviva
 ' en este lugar podrian ir todos los eventos sobre la ventana que no son
 '  de window9
-          
+      If terminar=TERMINAR_POR_LOOP_PRINCIPAL Then
+         Exit Do
+      EndIf     
       If tocatope < 32   Then           
          For k=1 To tocatope+1
          ' al inicio lim sup del for = 1   
@@ -427,7 +430,7 @@ Print #1, "3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", Nombr
        param.midionof=usarmarco
       EndIf 
 
-Print #1, "3 ubiroll ubirtk ", ubiroll,ubirtk
+Print #1, "///3 ubiroll ubirtk ", ubiroll,ubirtk
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
       ThreadWait threadloop
       threadDetach(threadloop)
