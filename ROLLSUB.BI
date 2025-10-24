@@ -123,8 +123,11 @@ Sub RecalCompas() ' Nuevo para ticks
 ' velocidades para 4/4 reposicion par ticks
 ' lso tiempos de una comaps son 96, 192, 288, 384
  Dim As Integer i,j,k,negra=96, multi,kj,kp, cntcompas,cntnegra,com, compas4cuartos= 4*negra,MAXI
+
  If CANCIONCARGADA=TRUE Then
-    MAXI=MaxPosTope 
+    MAXI=MaxPosTope
+ Else
+    MAXI=Maxpos 
  EndIf
  ReDim compas(1 To MAXI)
   compas(1).Posi=0

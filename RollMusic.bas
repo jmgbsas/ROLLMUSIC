@@ -31,7 +31,7 @@
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.345 parametro pan y eco, legibilidad del codigo, mas fixes"
+nroversion="0.345 Fix para un archivo .roll o rtk sin cancion gafico mal"
 ' solo cancela con PANTESTECO.roll nuevisima version con datroll
 '"0.344 control de PANEO salida izquierda derecha de sonido o intermedio, grabacion del paneo de entrada y ajuste del mismo "
 ' chequear formatos 0 y 1 del archivo midi en el 1 hay un track sin notas y de referencia de tiempos
