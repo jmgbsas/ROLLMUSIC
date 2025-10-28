@@ -238,7 +238,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
         indfa=0
       EndIf   
     Else
-      t3="":t4=""
+    ''  t3="":t4="" ''esto borraba el final de la secuencia!
       indfa=0
     EndIf
 ' =======> fin cifrado acordes----    
