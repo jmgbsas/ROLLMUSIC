@@ -352,7 +352,8 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
      indf= CInt(Roll.trk (n, 11- semitono + (*po-1) * 13).dur)
 
   '  print #1,"lugar ",13
-    If (indf >= 1 And indf <= 180) Or indf=182 Or indf=183 Or indf=184 Or indf=185 Or indf=190  Then ' 12-03-2025 185=N roll sin duraciones
+    
+    If (indf >= 1 And indf <= 185) Or indf=190  Then ' OLD REPUESTO12-03-2025 185=N roll sin duraciones
     Else
         indf=181
     EndIf ' t no puede quedar en un scope dsitinto se hace shared    

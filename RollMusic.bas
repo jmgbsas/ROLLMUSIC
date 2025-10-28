@@ -31,7 +31,7 @@
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.346 implementar chorus o coro"
+nroversion="0.346 Fix en play al final de una secuencia se borraban las notas"
 ' todo implementado pero ha yuna falla al grabar a ROLL a TRACK no graba el patch
 ' verificar!!!
 ' solo cancela con PANTESTECO.roll nuevisima version con datroll

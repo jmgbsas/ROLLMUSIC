@@ -2069,7 +2069,7 @@ curpos =>1
    gap2= (914 * gap1) /1000 ' 74 default
    gap3= (519 * gap1) /1000 ' 42 default
    
-   NroCol =  (ANCHO / anchofig ) + 4
+  '' NroCol =  (ANCHO / anchofig ) + 4
 
    lockfont=1
    nanchofig=anchofig
