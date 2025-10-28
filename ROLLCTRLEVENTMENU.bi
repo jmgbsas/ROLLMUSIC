@@ -468,7 +468,13 @@ Print #1,"///----SEL 1051 pan Globalpan ",Globalpan
               
              threadeco=threadCall SelEco(Globaleco)
 
-Print #1,"///----SEL 1053 ECO GlobalECO,pmtk, ntk ",Globaleco
+Print #1,"///----SEL 1052 ECO GlobalECO ",Globaleco
+
+           Case 1053 ' REVERVERACION DE UN CANAL 
+              
+             threadcoro=threadCall Selcoro(Globalcoro)
+
+Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
    
 '-----------------------------------------------------------------------
            Case 1060 ' <========== crea track y reemplaza al existente en la edicion

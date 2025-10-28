@@ -481,29 +481,49 @@ Sub Paneo (PAN As UByte,  canal As UByte,portsal As UByte)
 '}
 
 End Sub
+
 Sub Eco (rever As UByte,  canal As UByte,portsal As UByte)
 'CAMBIO PANEO 
 ''Controller parameter:   Par <ch> <con> <val>
 '' ej     0 Par ch=3 c=10 v=127  <--- al princpio
 ''    12010 Par ch=3 c=10 v=1  <--- en el medio
 ''    32010 Par ch=3 c=10 v=127
-''PAN_CONTROLLER=10 podriamoas usar esta constante
+''PAN_CONTROLLER=10 podriamoas usar esta constante 91 hexadecimal= 144 + 16=160
 	Dim modo As UByte
 	Dim leng As UInteger <8>
 	Dim result As Integer ' canal 0 to 15 canal 0 es el 1
 	If canal = 0 Then  ' 
-		 modo = 176  
+		 modo = 176   ' B0
 	Else
 	  modo = 176 + canal 
 	EndIf
 	
  message(1) = modo  'SEGUN EL CANAL EL MODO INDICA CONTROL CHANGUE 
- message(2) = 91   'indica CONTROL DE reververacion O ECO
+ message(2) = 91   'indica CONTROL DE reververacion O ECO ALGUNOS DICEN 
  message(3) = rever  ' cantidad de reververacion
  leng=3
   result = send_message (midiout(portsal) , p, leng) 
 
 End Sub
+Sub Chorus (Coro As UByte,  canal As UByte,portsal As UByte)
+'CAMBIO chorus
+	Dim modo As UByte
+	Dim leng As UInteger <8>
+	Dim result As Integer ' canal 0 to 15 canal 0 es el 1
+	If canal = 0 Then  ' 
+		 modo = 176   ' B0 -> para todos los efectos
+	Else
+	  modo = 176 + canal 
+	EndIf
+	
+ message(1) = modo  'SEGUN EL CANAL EL MODO INDICA CONTROL CHANGUE 
+ message(2) = 93  'indica CONTROL DE chorus 
+ message(3) = coro  ' cantidad de CHORUS
+ leng=3
+  result = send_message (midiout(portsal) , p, leng) 
+
+End Sub
+
 '-------------------------------------------
 Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
 Dim i1 As UByte
@@ -773,7 +793,9 @@ playloop2=NO
 
     
     Paneo (pmTk(0).pan, pmTk(0).canalsalida,pmTk(0).portout)
-    Eco   (pmTk(0).eco,  pmTk(0).canalsalida,pmTk(0).portout)    
+    Eco   (pmTk(0).eco,  pmTk(0).canalsalida,pmTk(0).portout)
+    Chorus(pmTk(0).coro,  pmTk(0).canalsalida,pmTk(0).portout)
+     
      ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, pmTk(0).portout)
     patchsal =pmTk(0).patch ''Roll.trk(1,NA).inst
     

@@ -1818,14 +1818,14 @@ fileflush(-1)
 
 ReDim (Track(00).trk ) (1 To CantEventos, 1 To lim3)
 
-If Open ( "CARGAPLANO.TXT" For Output As 31) <> 0 Then
+If Open ( ROLLDIR+"CARGAPLANO.TXT" For Output As 31) <> 0 Then
    Print #1,"ERROR ABRIR CARGAPLANO.TXT "
    Exit Sub
 EndIf 
 Print #31,"en cargar midi plano "
 
 
-If  Open( "igualado.txt" For Input As 30 ) <> 0 Then
+If  Open( ROLLDIR+"igualado.txt" For Input As 30 ) <> 0 Then
 'If Open( "secuencia-F-SF+SF-F-PLAY.txt" For Input As 30 ) <> 0 then
   Print  #31,"error archivo igualado  midi"
   Exit Sub 
@@ -2395,7 +2395,7 @@ AMIL=35
 ' finSimple        4
 Dim As Integer hayacorde=0
 
-If Open ("DEBUG_IGUALADO.TXT" For Output As dbgIgualado) <> 0 Then
+If Open (ROLLDIR+"DEBUG_IGUALADO.TXT" For Output As dbgIgualado) <> 0 Then
    Print dbgIgualado,"ERR en GUARDAE DEBUG_IGUALADO.TXT "
    Exit Sub
 EndIf
@@ -2410,12 +2410,12 @@ Sleep 100
 ' si para 192 es 1000, para incremento x es x*1000/192
 Dim As Integer tNegra, ubicacion,STOPCONTINUE
 If externo = 1 Then 
- If Open ("AMIL.TXT" For Output As 35) <> 0 Then
+ If Open (ROLLDIR+"AMIL.TXT" For Output As 35) <> 0 Then
      Print #1,"ERROR ABRIR PARA SALIDA DE AMIL.TXT "
      Exit Sub 
  EndIf 
 
- If  Open( archivomidi For Input As 32 ) <> 0 Then
+ If  Open( ROLLDIR + archivomidi For Input As 32 ) <> 0 Then
    Print #dbgIgualado,"error archivo de entrada midi"
    Exit Sub  
  Else
@@ -2464,7 +2464,7 @@ End If
 
 '------------------------------------------------------
  
- If Open ("igualado.txt" For Output As igualado) <> 0 Then
+ If Open (ROLLDIR + "igualado.txt" For Output As igualado) <> 0 Then
      Print #1,"err salida en igualado.txt"
      Exit Sub
  EndIf
@@ -2479,7 +2479,7 @@ End If
 If externo=1 Then
   archivomidi="AMIL.TXT"
 EndIf
-If  Open( archivomidi For Input As 32 ) <> 0 Then
+If  Open( ROLLDIR + archivomidi For Input As 32 ) <> 0 Then
   Print #dbgIgualado,"error archivo de entrada midi"
   Exit Sub 
 Else
@@ -2926,6 +2926,11 @@ Sleep 100
     pmTk(ntk).eco = dat.eco
     Globaleco=dat.eco  
     pmTk(ntk).ejec =  dat.ejec 
+
+    pmTk(ntk).pan = dat.pan
+    Globalpan=dat.pan
+    pmTk(ntk).coro = dat.coro
+    Globalcoro=dat.coro
           
 Dim mit As aUshort
 'con estos dos campos puedo reconstruir tiempoPatron
@@ -2947,8 +2952,7 @@ Dim mit As aUshort
      pmTk(ntk).canalsalida = dat.canalsalida ' ubyte a ubyte
      pmTk(ntk).tipoCompas = dat.tipoCompas
 
-     pmTk(ntk).pan = dat.pan
-     Globalpan=CInt(dat.pan)
+     
 Print #1,"/////--Cargar Arch pan Globalpan,pmtk, ntk ",Globalpan,pmTk(ntk).pan,ntk
      canalx=CInt(dat.canalsalida)
     cadenaes_inicial=""
@@ -3194,6 +3198,10 @@ Else
   Print #1, "Bien CERRADO EL ARCHIVO CARGADO "; nombre
 EndIf
 Sleep 1000,1 
+nroCompas=0
+tres=0:pun=0:silen=0:mas=0:doblepun=0:cuart=0
+tres=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
+SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
 DUR => 0
 curpos =>1
 ''' carga=0
@@ -5256,6 +5264,7 @@ Print #1,"grabando alteracion en el archivo ",alteracion
      EndIf
      If instru > 0 And instru <> CInt(pmTk(ntk).patch) Then
        Trabajo(1,NA).inst = CUByte(instru)
+       pmTk(ntk).patch=CUByte(instru)
      Else 
          If instru = CInt(pmTk(ntk).patch) Then
             Trabajo(1,NA).inst=pmTk(ntk).patch 
@@ -5283,7 +5292,10 @@ Print #1,"///----grabar ECO GlobalECO,pmtk, ntk ",Globaleco,pmTk(ntk).eco,ntk
      dat.ejec = pmTk(ntk).ejec ' xxxx nuevo  
 ''===> libres graba3.pan
      dat.pan =Globalpan
-     pmTk(ntk).pan=Globalpan  
+     pmTk(ntk).pan=Globalpan 
+     dat.coro=Globalcoro
+     pmTk(ntk).coro=Globalcoro 
+  
 Print #1,"///----GrabaRoll pan Globalpan,pmtk, ntk ",Globalpan,pmTk(ntk).pan,ntk
      dat.TipoCompas = TipoCompas ' 26-04-2024
      ' NB y NA se calcula a partir de desde y hasta no hace falta grabarlos  
@@ -5358,10 +5370,10 @@ End Function
 '
 Sub  abrirSecuencia(nf As Integer) 
 
-  If  Open ("./secuenciaPLAY.txt" For Output Shared As nf ) <> 0 Then
-    		Print #1, "secuenciaPLAY.txt no abre!"
+  If  Open (ROLLDIR +"secuenciaPLAY.txt" For Output Shared As nf ) <> 0 Then
+    		Print #1, ROLLDIR +"secuenciaPLAY.txt no abre!"
   Else
-      Print #1, "secuenciaPLAY.txt abierta!"
+      Print #1, ROLLDIR+"secuenciaPLAY.txt abierta!"
   EndIf
 End  Sub 
 '
@@ -5626,7 +5638,19 @@ EndIf
     
      graba3.dur = pmTk(ntk).portout
      graba3.nnn = pmTk(ntk).canalsalida ' as poli son tracks ojo 
-     graba3.nota= pmTk(ntk).patch
+   If NombreCancion > "" And ntk > 0 Then
+     If CheckBox_GetCheck( cbxnum(ntk))= 1 Then ' sonido on/off 16-03-2022
+         graba3.sonido=1
+     Else
+         graba3.sonido=0
+     EndIf
+   EndIf
+     graba3.ejec =pmTk(ntk).ejec
+     graba3.eco=pmTk(ntk).eco
+     graba3.patch=pmTk(ntk).patch
+     graba3.pan =pmTk(ntk).pan
+     graba3.canal =pmTk(ntk).coro
+
      Print #1,"grabartrack graba3.nnn, ntk ",graba3.nnn , ntk
 
      graba3.pb = TipoCompas ' 26-04-2024
@@ -6292,6 +6316,38 @@ Loop
 
 End Sub
 '------
+Sub Selcoro (ByRef coro As ubyte)
+Var hwndcoro=OpenWindow("",300,500,1050,150)
+ButtonGadget(1,20,20,60,25,"Aplicar")
+TrackBarGadget(2,20,60,1000,40,0,127)
+TextGadget(3,200,20,30,20)
+SetTrackBarPos(2,Clng(pmTk(ntk).coro))
+Do
+   var event=WaitEvent()
+   If event=EventGadget Then
+      Select case EventNumber
+         Case 2
+            coro=GetTrackBarPos(2)
+            pmTk(ntk).coro=coro
+            pmTk(0).coro=coro 
+       Print #1,"CHORUS SELECCIONADO ->> "; coro
+            SetGadgetText(3,Str(coro))
+              
+         Case 1
+            Close_window (hwndcoro)
+            Exit Do 
+      End Select
+   EndIf
+   If event=Eventclose Then
+        Close_window (hwndcoro)
+        Exit Do 
+   EndIf
+
+Loop
+
+
+End Sub
+'-------
 Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer) 
 Dim As hwnd haw,hwl
 Dim As Integer aa ,pasoc=0,x  
@@ -6790,7 +6846,7 @@ Dim  As Integer i3
 
     ffile=4
 
-    If Open ("./RollMusic.ini" For Output As #ffile) <> 0 Then
+    If Open (ROLLDIR +"RollMusic.ini" For Output As #ffile) <> 0 Then
        Print #1, "No se puede escribir RollMusic.ini en Salir"
        Close ffile
        Exit Sub 
@@ -6824,11 +6880,10 @@ Dim  As Integer i3
 
  Dim As Integer nroproc, ppp=0
 Dim As String linea
-fa1=2
  
- If Open ("procesos.txt" For Input As #fa1) <> 0 Then
+ If Open (ROLLDIR+"procesos.txt" For Input As 2) <> 0 Then
    Print #1,"procesos.txt error al leer  "
-   Close fa1
+   Close 2
    Exit Sub
  Else
        ' carga Todos los pid de las instancias

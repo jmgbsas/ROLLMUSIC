@@ -548,7 +548,7 @@ Common Shared As cairo_t  Ptr c, c2
 Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer
 Screenbuffer=0
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal
-Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadVol,threadpan,threadeco
+Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadVol,threadpan,threadeco,threadcoro
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros
@@ -571,9 +571,9 @@ interva=3 '  default 3 para ticks desplazamineto zoom horizontal
  posicion=0:posicionOld=0:posn=0
  
 trasponer=0
-common Shared As UByte Globalpan, Globaleco,CerrarGraficodesdeCtrl
+common Shared As UByte Globalpan, Globaleco,Globalcoro, CerrarGraficodesdeCtrl
 CerrarGraficodesdeCtrl=0
 COMMON Shared As UByte  Tope
 Tope=0
-
+Common Shared As String ROLLDIR
 

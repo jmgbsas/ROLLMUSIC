@@ -533,7 +533,7 @@ EndIf
 If *po = desde Then 
   If (play=SI Or playb=SI Or Cplay=SI)  Then
     cairo_set_font_size (c, font)
-    t= "Si pulsar ESC se detiene el play y no puede dar play de nuevo busque el dialogo De Detencion de Play y pulse Aceptar" 
+    t= "Si pulsar una vez ESC se detiene el play y puede dar play de nuevo ,dos veces pregunta para terminar RollMusic " 
     cairo_move_to(c, 0, Penta_y + inc_Penta * 15  )
     cairo_show_text(c, t)
   EndIf
@@ -1243,6 +1243,7 @@ Else
 EndIf
      Globalpan=pmTk(ntk).pan
      Globaleco=pmTk(ntk).eco
+     Globalcoro=pmTk(ntk).coro
 
 ' ajusto escala principal durante la conmutacion para cada track visualizado con TAB     
      notaescala_num_ini=CInt(pmTk(ntk).notaescala) '13-01-2022

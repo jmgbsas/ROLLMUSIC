@@ -179,7 +179,7 @@ Declare Sub playthread()
 Declare Function GrabarRoll () As integer
 Declare Sub abrirSecuencia (nf As integer)
 Declare Sub GrabarTrack   (ntk As integer) 
-Declare Sub ActualizarRollyGrabarPista ()
+Declare Sub ActualizarRollyGrabarPistaTrk ()
 Declare Sub GrabarRollaTrack (cambiaext As Integer)
 Declare Sub CargarPistasEnCancion ()
 Declare sub GrabarCopiadePista()
@@ -718,7 +718,8 @@ Type rangoOct Field=1
  As UByte    vol
  As Integer  tiempopatron ' 240 60 etc
  As UByte   pan
- As UByte   eco
+ As UByte   Eco
+ As UByte   Coro
 End Type
 ' faltaria agregar grabar el nombre del dispositivo ........
 Dim Shared As rangoOct pmTk (0 To 32)
@@ -853,7 +854,7 @@ Type rolldat Field=1 'con esto se define roll tendra pan,vol,nota,dur,pb,inst va
    librez4onoff As UByte =0 'z4.onoff ---28
  eco    As UByte =0       'z5.eco  
  pan    As UByte =0       'z5.pan
-   librecanalsalida  As UByte =0 'z5.canalsalida repetido
+ coro   As UByte =0 'z5.canalsalida repetido
    libreportout     As UByte =0 'z5.portout repetido
    librepatch       As UByte =0 'z5.patch repetido
  pitchbend   As UByte =0 'z5.pitchbend

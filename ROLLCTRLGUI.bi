@@ -296,7 +296,7 @@ MenuItem(1040,MenName3, "2.0 Cambia Instrumento por orden Alfabetico")
 MenuItem(1050,MenName3, "2.1 Cambia Instrumento por orden Numérico" )
 MenuItem(1051,MenName3, "2.3 Cambia PAN de un Canal" )
 MenuItem(1052,MenName3, "2.4 Cambia REVERVERACCION  de un Canal" )
-
+MenuItem(1053,MenName3, "2.5 Cambia CHORUS  de un Canal" )
 
 Menubar(MenName3)
 MenuItem(1060,MenName3, "6.0 Crear pista aislada, En Roll dependiente, con lo elegido y reemplaza la existente en la edicion")

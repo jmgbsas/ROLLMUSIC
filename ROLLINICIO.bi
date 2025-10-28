@@ -126,7 +126,7 @@ myfilter += "Rtk  Files"+Chr(0)   +"*.rtk"+Chr(0)
 Dim Shared As Long pd1, fa1,ffini,ca,ffile,ct,ga,grt ,ngm,fk
 
 fk=5
-Open "AAAAA-test.TXT" For Output As #fk
+Open CurDir+"\AAAAA-test.TXT" For Output As #fk
 Dim Shared As Integer abierto=0
 Common Shared  mensaje As Integer 
 '''  end file dialog  
@@ -155,7 +155,7 @@ Dim As GLFWwindow ptr  win
 
 pd1 = GetCurrentProcessId()  
 
-Open "midebug.txt" For Output As #1
+Open CurDir+"\midebug.txt" For Output As #1
 '' Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As 1
 Print #1,"start"
 Print #1,"PID DE ESTE PROCESO ",pd1
@@ -315,8 +315,10 @@ Print #1, "instancia, ix  ", instancia, ix
 ''Open "midebug.txt" For Output As #1
 'Print #1,"start"
 'Print #1,"PID DE ESTE PROCESO ",pd1
+ROLLDIR=CurDir+"\"
+Print #1,ROLLDIR
 fa1=2
-Open "procesos.txt" For Append As fa1
+Open ROLLDIR+"procesos.txt" For Append As fa1
 If pid1=0   Then ' EMPEZO EL ONLINE SU PID NO HACE FALTA GRABARLO
   pid1=pd1
 Else
@@ -586,9 +588,9 @@ print #1,"gap1 ",gap1
 Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig,sVerCifradoAcordes
 Dim openfalla As integer
 ffini=3
- If  Open ("./RollMusic.ini" For Input As #ffini) <> 0 Then
+ If  Open (ROLLDIR + "RollMusic.ini" For Input As #ffini) <> 0 Then
  ' si no existe la creo
-     Open "./RollMusic.ini" For Append As #ffini
+     Open ROLLDIR + "RollMusic.ini" For Append As #ffini
       
  End If
 
