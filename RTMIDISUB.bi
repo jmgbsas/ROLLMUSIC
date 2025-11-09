@@ -711,7 +711,7 @@ If MIDIFILEONOFF = HABILITAR  Then
    Print #midiplano, "MTrk"
    Print #midiplano, "0 Meta 0x09 "; Chr(34); *nombreOut(0) ;Chr(34)
    Print #midiplano, "0 Meta TrkName "; Chr(34); "Piano";Chr(34)
-   Print #midiplano, "0 PrCh  ch="+ Trim(Str(numc))+ " "; "p=";Roll.trk(1,NA).inst
+   Print #midiplano, "0 PrCh  ch="+ Trim(Str(numc))+ " "; "p=";pmTk(0).patch
      
 EndIf
  '''''View Print 1 To 4
@@ -775,12 +775,10 @@ indEscala=1 ' inicializamos la guiade escalas a la 1era
 Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
 tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '60 seg/ cuantas negras enun minuto
 'Dim As Integer i1 
-Dim As Integer i2,i3,i4,i5,j ,xmouse, ymouse,RepeIni,RepeFin,finalloop=0,comienzoloop=0
-Dim As Integer comienzo=1, final=MaxPos,velpos =0,cntrepe,final2=0,comienzo2=0
+Dim As Integer i2,i3,i4,i5,j ,RepeIni,RepeFin,finalloop=0,comienzoloop=0
+Dim As Integer comienzo=1, final=pmTk(0).MaxPos,velpos =0,cntrepe,final2=0,comienzo2=0
 Dim As UByte canal=0,vel=90 
 ' canal 0 es el 1 van d0 a 15
-xmouse = mousex
-ymouse = mousey
 
 Dim As Double start
 Dim As Integer cpar=0,nj, durj,tiempoFiguraSig
@@ -795,14 +793,13 @@ playloop2=NO
     Paneo (pmTk(0).pan, pmTk(0).canalsalida,pmTk(0).portout)
     Eco   (pmTk(0).eco,  pmTk(0).canalsalida,pmTk(0).portout)
     Chorus(pmTk(0).coro,  pmTk(0).canalsalida,pmTk(0).portout)
-     
-     ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, pmTk(0).portout)
-    patchsal =pmTk(0).patch ''Roll.trk(1,NA).inst
+    ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, pmTk(0).portout)
+    patchsal =pmTk(0).patch 
     
 Print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
 Print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
 jply=0:curpos=0
-mousex=0
+
 ' print #1,                    "-----------------------------------------"
 comienzo=posicion 
 
@@ -839,11 +836,11 @@ For jply=comienzo To final
   If (kNroCol > 0) And (jply = NroCol * kNroCol) And (jply < MaxPos)Then
      posicion=jply
      curpos=0
-     SetMouse xmouse, ymouse
+ 
   EndIf
 
 
-  mousex=jply * anchofig '<=== jmgjmg ' ver esto andaba bien en Roll sin ticks sin el anchofig
+  
   If PARAR_PLAY_MANUAL = SI Then
     If InStr(*nombreOut(portout),"Microsoft") > 0 Then
     Else
@@ -865,10 +862,10 @@ For jply=comienzo To final
 ''Print #1,"Roll.trk(1,NA).onoff si es uno sin sonido!! ",Roll.trk(1,NA).onoff
 ''Print #1,"pmTk(ntk).ejec  sonido!! ",pmTk(ntk).ejec
 
-If Roll.trk(1,NA).onoff = 1 Then
- 'usar la velocidad de grabacion.,,
+If pmTk(0).ejec =1 Or Roll.trk(1,NA).onoff = 1 Then
+ Print #1,"ARCHIVO DATOS EJECUCION POR TECLADO "
 Else
-
+Print #1,"ARCHIVO DATOS EDICION MANUAL "
   If Compas(jply).nro = -1 Then
     velpos=vfuerte
   EndIf
@@ -918,7 +915,7 @@ If i1<= NA-13 Then
       portsal=pmTk(0).portout
       canal=pmTk(0).canalsalida
 
-      If Roll.trk(1, NA).onoff=1  Then
+      If pmTk(0).ejec=1  Then ''''Roll.trk(1, NA).onoff=1  Then
        ' Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
         vel=Roll.trk(jply, i1).vol
       Else
@@ -1021,10 +1018,6 @@ play=NO
 playb=NO
 
 
-mousey=100 'otra mas para evitar rentrar a play en menu
-''SetMouse xmouse, ymouse
-
-
 '''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 
 Dim As Integer checkejec
@@ -1083,8 +1076,6 @@ If  Err > 0 Then
   Print #1, errmsg ,"jply ", jply, "i1 ";i1
 EndIf
 FileFlush (-1)
-
-End 0
 
 ' ================================FIN PLAYALL <<=================
 End Sub 
@@ -1558,7 +1549,7 @@ Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,octavaDeAcorde,verticalE
 ' NA ES EL MAYOR VALOR NUMERICO, 
 ' NB EL MENOR VALOR NUMERICO
 ' cant=(1) si pulso flecha UP
- ' Print #1,"ARRANCA  TRASPONER ROLL !!!!!!!!!!!!!!",trasponer
+  Print #1,"ARRANCA  TRASPONER ROLL !!!!!!!!!!!!!!",trasponer
   If trasponer=0 Then
      Exit Sub
   EndIf
@@ -1584,7 +1575,7 @@ If pasoZona2 > 0 Then
 Else
    hastat= MaxPos   
 EndIf   
-'Print #1, " desdet hastat comienzo final "; desdet, hastat, comienzo, final  
+Print #1, " desdet hastat comienzo final "; desdet, hastat, comienzo, final  
 Dim  As Integer jpt3, jpt2 , i2 'posicion del onoff=2 inicio nota
 Dim As Integer  k2, k2fin, oldjpt,oldind 
 For jpt = desdet To hastat  ' eje x posiciones horizontal
@@ -1699,7 +1690,7 @@ Print #1,"-----------------err trasponerroll-----------------"
   Print #1, " jpt i1 jpt2 i2 ";  jpt, i1, jpt2, i2 
   FileFlush (-1)
   Close
-  End 0
+  
 End If
 
 
@@ -3003,7 +2994,7 @@ End Sub
 Sub PlayTocaAll(nt As Integer Ptr )
 On Local Error GoTo fail
 ' las pistas fueron cargadas en un vector redim de 384000 no uso el maxgrb habria que 
-' usarlo y ponerlo como se debe,,,usar un redim de mzgrb el probel aes que maxgrb se pisaba
+' usarlo y ponerlo como se debe,,,usar un redim de maxgrb el probel aes que maxgrb se pisaba
 ' en cargarmidiin ahora se arreglo veo si anda ,,,probar
 '////////////////////////////TOCAALL/////////////////////////
 ' perfeccionar los eventos deven seguir un patron de tiempo de ticks

@@ -1,0 +1,86 @@
+start
+PID DE ESTE PROCESO          580
+10-31-202515:09:44
+__FB_ARGV__   306602320
+__FB_ARGC__    2
+__FB_ARGC__    2
+arg  0 = 'C:\IT64\AREA\ROLLMUSIC_RUN\RollMusic.exe'
+arg  1 = 'C:\IT64\AREA\ROLLMUSIC\[00]ROLL-05-SEP.rtk'
+ubirtk         39
+ubiroll        0
+arg  2 = ''
+instancia, ix                1             3
+C:\IT64\AREA\ROLLMUSIC\
+NB, NA        -13           -2
+gap1           196
+nanchofig      1.832645
+portsin  5
+portsout 8
+USB Midi Cable 0
+loopMIDI Port 1
+loopMIDI Port 1 2
+loopMIDI Port 2 3
+loopMIDI Port 3 4
+-----------------------------
+CoolSoft MIDIMapper 0
+Microsoft GS Wavetable Synth 1
+VirtualMIDISynth #1 2
+USB Midi Cable 3
+loopMIDI Port 4
+loopMIDI Port 1 5
+loopMIDI Port 2 6
+loopMIDI Port 3 7
+cALL rOLLLOOP III)
+3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0)                        C:\IT64\AREA\ROLLMUSIC\[00]ROLL-05-SEP.rtk
+///3 ubiroll ubirtk          0             39
+//////////////midionof  0
+C:\IT64\AREA\ROLLMUSIC\secuenciaPLAY.txt abierta!
+----------------------------------------------
+1) CargarTrack nombre, ntk=               C:\IT64\AREA\ROLLMUSIC\[00]ROLL-05-SEP.rtk               0
+1) UBIRTK QUE LLEGA          39
+ABRE TRK DE NOMBRE C:\IT64\AREA\ROLLMUSIC\[00]ROLL-05-SEP.rtk
+MaxPos ntk     1017          0
+CantTicks  2017
+OJO VALORA EJEC pmTk(ntk).ejec            0
+NombreCancion,nomobre, CantTicks          C:\IT64\AREA\ROLLMUSIC\[00]ROLL-05-SEP.rtk               2017
+ntk desde, hasta             0             4             8
+Carga Track notaescala_num_ini             1
+cargatrack pmTk(ntk).canalsalida, ntk     0              0
+PORTOUT, NTK 0               0
+///CARGA TRACK PATCH         1
+2 instru en cargar track  1
+cargartrack maxpos, ntk  :   1017          0
+CLOSE ct CERRO TRK NRO ct    0             14
+ patch ntk canal            0              0            0
+CargarTrack  fin
+----------------------------------------------
+CARGATRACK ntk,VEO EJEC pmTk(ntk).ejec  0 0
+CARGATRACK ntk,VEO EJEC Track(ntk).trk(1,1).ejec  0     0
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        0            C:\IT64\AREA\ROLLMUSIC\[00]ROLL-05-SEP.rtk
+(ntk).maxpos   1017
+instru en TrackaRoll         1
+CANCION NO CARGADA EN TRACKAROLL
+ROLL NO CARGADO EN TRACKAROLL, maxpos      1017
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             1017
+1106 en trackaRoll numero de track ntk     0
+ubound (Track(ntk).trk,2)    25
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar for de copia de TrackaRoll
+ pmTk(ntk).MaxPos            1017
+ ///maxpos-1, nota           1017          69
+ ///maxpos     1017
+cargaCancion DEBE SER 1      0
+EJEC Roll.trk(1,NA).onoff 0
+TrackaRoll Fin ntk, patch  0              0
+TrackaRoll Fin,,maxpos y (ntk).maxpos      1017          1017
+-----------------Fin TrackaRoll-----------------
+====> INSTANCIA  1
+abriendo port....play All
+RTMIDI_ERROR_WARNING, sin importancia
+comienzo playaLL ==========> tiempoPatron =              240           FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          0.25
+TickUsuario  0.01041666
+midiout        0            CoolSoft MIDIMapper 0
+desmarco      CoolSoft MIDIMapper 0

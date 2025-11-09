@@ -201,9 +201,10 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
         indfb=0
 ''indnota=0
      Else
-
+   If n <= pmTk(0).MaxPos Then
     indfb = CInt(Roll.trk (n, 12 + (*po-1) * 13).dur) ' 103 --dur
     indfa = CInt(Roll.trk (n, 12 + (*po-1) * 13).pb) ' 26-01-2022 103 pb
+   EndIf
 ''    indnota =CInt(Roll.trk (n,11- semitono  + (*po -1) * 13 ).nota) 
      EndIf    
      t="": t2="":t3="":t4=""
@@ -301,7 +302,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
   
  ' *po llega a 3 y cancela porque baja a 3?
 '  ESCRITURA DE NOTAS: ------->
-
+If n <= pmTk(0).MaxPos Then
  If Roll.trk (n,11- semitono  + (*po -1) * 13 ).nota > 0  Or Roll.trk (n,11- semitono +  (*po -1) * 13 ).dur > 0 Or Roll.trk (n,11- semitono +  (*po -1) * 13 ).onoff > 0 Then
      ' print #1,"lugar ",11
 '  10-04-2022 verificar si esto sigue funcionando ÇÇÇÇ colocar esapcios
@@ -381,7 +382,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
      EndIf
  ' ////////dar color al font en una determinada posicion durante el play
     If n<=jply + 2 And n<=jply - 2 And Parar_De_Dibujar=NO Then 
-       cairo_set_source_rgba(c,1,0,1,1)
+       cairo_set_source_rgba(c,1,0,1,1) 'me4dio violeta
     EndIf
     If indf <> 181 Then ' esto acelera un monton 181 es vacio espacio no hay nada para mostrar
       cairo_show_text(c, t)
@@ -405,20 +406,21 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 ' jmg 11-05-2021 1839 end  
 '===== LINEAS DE COMPAS  ==================================
      If n >0 And n < MaxPos  Then 
- '   Print #1,"lugar ",14
-      If Compas(n).Posi = n  Then
+      '''Print #1,"lugar n ",n, MaxPos
+      '' fileflush(-1)
+  '''' kiki   If Compas(n).Posi = n  Then
         ' ic=ic+1 
 ' aca tambien tendremos las repeticiones si estan las leemos y la usamos en el play
 ' seri aun loop como hasta ahora pero N veces no infinitas, o sea aca solo
 ' grabo las N veces y comienzo de loop y en el final grabare fin loop 
     ' print #1,"lugar ",15
-          cairo_move_to(c,gap1 + (ic ) *anchofig +anchofig , Penta_y)
-          cairo_line_to(c,gap1 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta )
+ '''' kiki        cairo_move_to(c,gap1 + (ic ) *anchofig +anchofig , Penta_y)
+ '''kiki         cairo_line_to(c,gap1 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta )
       '    print #1, "|";
-          cairo_move_to(c,gap2 + (ic ) *anchofig +anchofig, Penta_y + 12.5 * inc_Penta )
-          t=Str(Compas(n).nro)
-          cairo_show_text(c,t)
-      EndIf
+ ''' kiki        cairo_move_to(c,gap2 + (ic ) *anchofig +anchofig, Penta_y + 12.5 * inc_Penta )
+'''  kiki        t=Str(Compas(n).nro)
+'''  kiki        cairo_show_text(c,t)
+'''  kiki    EndIf
   '   Print #1,"lugar ",16
       If n = pasozona1 Or n =pasoZona2 Then '26-06-2021
    '  Print #1,"lugar ",17
@@ -458,11 +460,10 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
    ic=ic+1
    
  EndIf
+EndIf
    'con ic * 40 es + 32 osea ic * 40 + 32
   
   Next n
-
-  
 
 
 
@@ -833,11 +834,11 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
   ' asi funciona mejor o no? igual debe esperar a que termine el thread
  ' NOOOO ScreenSync  no usar nunca sync desfasa el barrido de cairo y salta
  ' las lineas
-     ScreenSync ' a ver si aca es mejor....
+    '' ScreenSync ' a ver si aca es mejor....
      creaPenta (c, Roll )
       
 
-    If *po = 99 Or *po=3 Then
+    If *po = 99 then ''''saco esto no se porque 03-11-2025 Or *po=3 Then
        *po = hasta -1 ' 8 por ejemplo => *po=7
        
        Exit For
@@ -1006,10 +1007,11 @@ EndIf
  If ubirtk > 0 Then ' ya tengo el nommbre en linea de comando
   '  print #1,"carga track desde linea de comando,  nombre antes   ",titulosTk(0)
     nombre = titulosTk(0)
+
     CargarTrack (Track() , 0, ubirtk ) ' ntk=0
     If nombre > ""  Then '16-01-2022 crach si se cancela la carga
   '    print #1,"carga track veo nombre despues ", titulosTk(0)
-      TrackaRoll (Track(),0,Roll) ' ntk=0
+      TrackaRoll (Track(),0,Roll,"ubirtk>0") ' ntk=0
 'Print #1," desde 892 ";desde
   '    print #1,"TrackaRollcarga rtk veo nombre ", titulosTk(0)
       RecalCompas ()
@@ -1044,7 +1046,7 @@ If instancia = ARG7_NOMBRECANCION  Then ' 04-03-2024 LOGRE LEVANTAR CANCION EN U
     instancia=ARG107_FICTICIO  ' ficticio para que entre al if de TAB pero  que no entre en el resto ni aca
     param.encancion=CON_CANCION
     RecalCompas()
-      
+    clickpista=SI 'abre tab una sola vez seposiciona en psita 1  
  EndIf
 EndIf
  
@@ -1058,7 +1060,7 @@ edity1 = 1 ' botton Edit bordeSup
 edity2 = 50 ' botton Edit bordeInf
 
 ''''stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
-Do
+Do ' nro 1 1060
 ''arranquedo1=Timer
 
 '' Create a cairo drawing context, using the FB screen as surface.
@@ -1094,7 +1096,7 @@ Else
           If s7 = 1 Then   s7=0 EndIf
           If s8 = 1 Then   s8=0 EndIf
           If s9 = 1 Then   s9=0 EndIf
-        
+          If s10 = 1 Then   s10=0 EndIf
           inc_Penta = Int((ALTO -1) /40) - deltaip
 ' ----------------------------------------------------------------------------
           cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nomeafecta
@@ -1165,8 +1167,8 @@ Else
 
 
 '' ---------------  LOOP 2 ---------------
-Do
-Do 
+Do '  lo sacamos 
+Do  ' do nro 2
 'Print #1,"1051 do 2, ROOLLOOP DESDE "; desde
 
 '---------
@@ -1181,38 +1183,47 @@ Do
 'Print #1,"1062  DO2 ROOLLOOP DESDE GrabarPenta "; desde,GrabarPenta
 
 
-If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CANCIONCARGADA And play=NO Or cargaCancion=CARGAR_NO_PUEDE_DIBUJAR Or clickpista=1   Then
+If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CANCIONCARGADA And play=NO  Or clickpista=1   Then
+'SACAMOS Or cargaCancion=CARGAR_NO_PUEDE_DIBUJAR LA CARGA TRACKA ROLL DE ACA NO LA NECESITAMOS
    If GrabarPenta=1 Then     'sale sin procesar
    Else   
-
+''SC_TAB USA NTK GLOBAL PERO AL CARGAR O COPIAR UNNU EVO TRACK SE NECESITA OTRO NOMBRE
+' PARA APUNTAR A NTK ntkcarga por ejemplo
    cargaCancion=NO_CARGAR_PUEDE_DIBUJAR ' para que no entre mas luego de cargada la cancion
    s5=0  '11-06-2022
    Erase mel_undo, undo_acorde, undo_kant_intervalos
    mel_undo_k=0: ig=0:cnt_acor=0
    ROLLCARGADO = FALSE
-  ' print #1,"--TAB "
+   print #1,"--TAB "
    nota=0
    dur=0
- '  print #1,"TAB 1- NTK,MAXPOS, pmtk(ntk).maxpos  clickpista ", ntk,maxpos,pmTK(ntk).maxpos, clickpista
+   print #1,"TAB 1- NTK,MAXPOS, pmtk(ntk).maxpos  clickpista ", ntk,maxpos,pmTK(ntk).maxpos, clickpista
    If clickpista=1 Then
- '    Print #1,"no incrementea ntk"
+     Print #1,"no incrementea ntk, EL NTK SALE DEL NOMBRE  DE LA PISTA"
      clickpista=0
+     ntkTAB=ntk ' UN NTK QUE VIENE DEL CLICK EN UNAPISTA DE PISTAROLL
+     nombre=titulosTk(ntk)
+    Print #1,"TAB1.1 ntk, ntkTAB, nombre, POR CLICK PISTA ", ntk,ntkTAB, nombre 
    Else
      ntk = ntk + 1
-  '   Print #1,"Incrementea ntk"
+     ntkTAB=ntk
+     nombre= titulosTk(ntk)
+     Print #1,"Incrementa ntk, nombre ", ntk ,nombre
    EndIf
- '  print #1,"TAB 2- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos  
-   If ntk > 32 Or ntk > tope Then
-     ntk=1 
-  '   print #1,">TAB 2A- 1- NTK,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos     
+ 
+  If nombre > "" Then
+     print #1,"--------------------------"
+     print #1,"TAB 2-NTK nombre", ntk,nombre
+     print #1,"TAB 3-NTK MAXPOS pmtk(ntk).maxpos  ", maxpos,pmTK(ntk).maxpos
+     print #1,"--------------------------"
+   EndIf 
+  If ntk > 32 Or ntk > tope Then
+     ntk=0 
+     print #1,">TAB 2A- 1- NTK=0 empieza el circulo,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
+     Exit Do      
    EndIf
-   nombre= titulosTk(ntk)
- '  If nombre > "" Then
- '    print #1,"--------------------------"
- '    print #1,"TAB 3-NTK nombre", ntk,nombre
- '    print #1,"TAB 3-NTK MAXPOS pmtk(ntk).maxpos  ", maxpos,pmTK(ntk).maxpos
- '    print #1,"--------------------------"
- '  EndIf  
+   
+   
 ' evita leer track vacios   
    If nombre=""  Then ' evita revisar track vacios
      Do While nombre=""
@@ -1226,22 +1237,28 @@ If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) 
  
         nombre= titulosTk(ntk)
      Loop
+     ntkTAB=ntk  
   EndIf
-     posicion=0 ' 14.-03-2022
+
+     posicion=1 ' 14.-03-2022
      MaxPos=pmTk(ntk).MaxPos
      posn=pmTk(ntk).posn
+Print #1," TAB POSN, NTK ", posn,ntk
+  '   psn=pmTk(ntk).posn
      desde=pmTk(ntk).desde
      hasta=pmTk(ntk).hasta
      NB=pmTk(ntk).NB
      NA=pmTk(ntk).NA
      portout=pmTk(ntk).portout 'solo debe servir para play de pista
      notaold = CInt(pmTk(ntk).notaold)
-     CantTicks=pmTk(ntk).MaxPos +6 ' o Ticks
-If Track(ntk).trk(1,1).nnn > 0 Then
-     patchsal=Track(ntk).trk(1,1).nnn
-Else 
+
+
+'If Track(ntk).trk(1,1).nnn > 0 Then
+'     patchsal=Track(ntk).trk(1,1).nnn
+'Else 
      patchsal=pmTk(ntk).patch
-EndIf
+     instru=CInt(patchsal)   
+'EndIf
      Globalpan=pmTk(ntk).pan
      Globaleco=pmTk(ntk).eco
      Globalcoro=pmTk(ntk).coro
@@ -1253,19 +1270,20 @@ EndIf
      armarescala cadenaes_inicial,tipoescala_num_ini,notaescala_num_ini,alteracion,1 '13-01-2022
 ' todavia no probado, escala principal para TAB en cada track testeat 13-01-2022     
 ' no he grabado las escalas auxiliares en lso Trackc todavia !! 13-01-2022 jjj     
-  '   print #1,"TAB 5- MAXPOS final TAB " ,maxpos
+     print #1,"TAB 5- MAXPOS final TAB " ,maxpos
      
       
 '
 
- '  print #1, "TAB 6-NTK nombre", ntk,nombre  
- '  print #1, "TAB 6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, MaxPos,pmTK(ntk).maxpos
-' copia track a Roll en memoria  
+   print #1, "TAB 6-NTK nombre", ntk,nombre  
+   print #1, "TAB 6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, MaxPos,pmTK(ntk).maxpos
+' copia track(NTK) a Roll VISUAL en memoria que no se usa en playcancion  
 ' el segundo parametro es canal no se usa...lo saco o lo dejo?
-   Tracks (ntk , 1,Roll) ' track , nro,  Canal, copia track a Roll en memoria
-'Print #1,"14-sleep ";Timer
-   Sleep 100
- '  Print #1,"TAB 7- instancia, maspos ",instancia, maxpos
+  Tracks (ntk , 1,Roll) ' track , nro,  Canal, copia track a Roll en memoria
+
+Print #1,"14-sleep ";Timer
+    'Sleep 100
+    Print #1,"TAB 7- instancia, maspos ",instancia, maxpos
    EndIf
 EndIf
 
@@ -1645,7 +1663,7 @@ If s7=0  Then
   indXjreset=0
 EndIf
      
-     If (trasponer=1 Or trasponer=2 )And SelGrupoNotaT=2 And indicePosOld=0 And  indicePosUltimaGrupo=0 Then
+     If trasponer=3 Or (trasponer=1 Or trasponer=2 )And SelGrupoNotaT=2 And indicePosOld=0 And  indicePosUltimaGrupo=0 Then
         Print #1,"0 pulso down screenevent TRASPONER con multikey!"
        If s6=0  Then
           s6=1
@@ -1655,7 +1673,7 @@ EndIf
       While InKey <> "": Wend
        Exit Do
      EndIf 
-     If (trasponer=1 Or trasponer=2) And SelGrupoNotaT=2 And indicePosOld >0  And  indicePosUltimaGrupo > 0 Then
+     If  (trasponer=1 Or trasponer=2) And SelGrupoNotaT=2 And indicePosOld >0  And  indicePosUltimaGrupo > 0 Then
        Print #1,"1 pulso down screenevent TRASPONER"
        If s6=0  Then
          s6=1 
@@ -1667,7 +1685,7 @@ EndIf
 '    If SelGrupoNota=2 Then 
 '       SelGrupoNota=4 
 '    EndIf   
-    If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS  And trasponer=0 Then 
+    If (COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS)  And trasponer=0 Then 
        If s1=0 Then
           s1=1
         'print #1,"pulso down screenevent"
@@ -1707,8 +1725,8 @@ indXjresetOld=indXjreset
 indXjreset=0
 EndIf
 
-Print #1,"trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo "; trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo
-    If (trasponer=1 Or trasponer=2) And SelGrupoNotaT=2 And indicePosOld=0 And  indicePosUltimaGrupo=0 Then
+''''Print #1,"trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo "; trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo
+    If trasponer=3 or (trasponer=1 Or trasponer=2) And SelGrupoNotaT=2 And indicePosOld=0 And  indicePosUltimaGrupo=0 Then
       If s6=0  Then
          s6=1
         Print #1," UP USA trasponerRoll "
@@ -1717,7 +1735,7 @@ Print #1,"trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo "; traspo
 While InKey <> "": Wend
       Exit Do
     EndIf
-    If (trasponer = 1 Or trasponer=2) And SelGrupoNotaT=2 And indicePosOld> 0 And  indicePosUltimaGrupo >0 Then
+    If  (trasponer = 1 Or trasponer=2) And SelGrupoNotaT=2 And indicePosOld> 0 And  indicePosUltimaGrupo >0 Then
        If s6=0  Then
           s6=1 
           Print #1," UP USA trasponerGrupo "  
@@ -2123,7 +2141,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_F4)  Or CerrarGraficodesdeCtrl =1 Then
 '' SIN TERMINAR EL PROGRAMA  LO QUE HACE POSIBLE ESTO, es screen 0 en realidad
 '' NO DESTRUIR NADA Y SEPUEDE VOLVER A USAR
 '' CERRAMOS EL GRAFICO, PERO EL GRAFICO ES UNICO,,,,
-
+Print #1,"//////CTRL-F4 PASO POR ACA ESTA MIERDA DESPUES DE TERMINAR EL PLAY DE CANCION??"
      If play=SI Or playb=SI Or Cplay=SI Then 'detenemos los play
       ' MessBox("","(2)Detenga el play primero ")
       ' SetForegroundWindow(hwnd)
@@ -2232,10 +2250,10 @@ EndIf
 '--
 
 ' ============== E S P A C I O ========
-If MultiKey(SC_SPACE)  Then 'barra espacio
-   PARAR_PLAY_MANUAL=NO
-   PARAR_PLAY_EJEC=SI
-   playloop=NO:playloop2=NO
+If MultiKey(SC_SPACE)    Then 'barra espacio
+'   PARAR_PLAY_MANUAL=SI
+'   PARAR_PLAY_EJEC=SI
+'   playloop=NO:playloop2=NO
  If COMEDIT<>LECTURA Then
     espacio = 1
     DUR=0
@@ -2256,28 +2274,23 @@ If MultiKey(SC_SPACE)  Then 'barra espacio
        SetGadgetstate(15,0) ' 20-02-2025 
       EndIf
    '   print #1,"SPACE call play"
-        If  MaxPos > 1 Then 
-         If CANCIONCARGADA = TRUE And Cplay=NO Then
-         '    Print #1,"USANDO PLAYCANCION"
+Print #1,"CANCIONCARGADA = TRUE And Cplay=NO  ",CANCIONCARGADA, Cplay  
+         If CANCIONCARGADA = TRUE  And Cplay=NO Then
+             Print #1,"USANDO PLAYCANCION"
              Cplay=SI : s5=NO 'Necesita mas tiempo de cpu
-             Sleep 100    
+       '      Sleep 100
              thread1 = ThreadCall  PlayCancion(Track())
              grabariniciotxt(NombreCancion, CANCION)
              FileFlush (-1)
 
-         Else
-           If  MaxPos > 1 Then
-      '        print #1,"llama a playall"
+         EndIf
+         If   Cplay=NO And  CANCIONCARGADA = FALSE Then
+              print #1,"llama a playall"
               Playb=SI:s5=NO 
-             Sleep 100
- 
-             thread2 = ThreadCall  playAll(Roll)
-           EndIf 
-
+       '       Sleep 100
+              thread2 = ThreadCall  playAll(Roll)
          EndIf
 
-
-        EndIf   
       
       menunew=MENU_INICIAL
       cierroedit= 0
@@ -2667,7 +2680,8 @@ If COMEDIT<>LECTURA Then  'TERMINA EN 2628
 ' CURSOR MODIFICCION DE NOTAS ergo usamos nota=0 para evitar entrada normal 
 ' REVISAR REVISAR REVISAR JMG JMG JMG WWWWWWWWWWWWWWWWWWW  
   If MultiKey(SC_CONTROL) And MultiKey(SC_9) Then 'espacio en edit sin cursor
-     DUR = 190:Exit Do
+     ''DUR = 190 ELIMINAMOS EL 190
+     Exit Do
      nota=0
   EndIf
 
@@ -2754,8 +2768,8 @@ If MultiKey(SC_F1) Then
 EndIf
 '
 If MultiKey(SC_R) Then ' recalculo de barras compas a veces no anda ¿? 
- ReDim compas(1 To CantTicks)
- ReCalCompas() ' jmg 01-04-21 
+ '''ReDim compas(1 To MaxPos)
+ RecalCompas() ' jmg 01-04-21 
 EndIf
 
 If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
@@ -2994,7 +3008,7 @@ curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N 
    '       Roll.trk((nota +(estoyEnOctava -1) * 13),posn).nota
    ' PARA USAR ESTO CON ENTRADA POR MOUSE SOLO DEBO DETERMINAR EL SEMITONO...
    ' y hacer nota=semiotono 1 a 11 con el mouse...el esto es automtico...
-   Do ' nota es semitono ahora va de 0 a 11 deborestr 1 a nota
+   Do ' nota es semitono ahora va de 0 a 11 debo restar 1 a nota
   ' Print #1,"posn, nota, estoyEnOctava ",posn,nota,estoyEnOctava 
 
 '    Print #1,"Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota ",Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota
@@ -3776,28 +3790,28 @@ If (ScreenEvent(@e)) Then
       s5=2 'necesita menos tiempo de procesamiento    
    EndIf
 '-------------------------------------------------------------------
-   If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion'
-    deltaz=1
-    If (COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS)  And trasponer=0 Then ' incluye ctrl-n que puede cambiar en todas las octavas
-        If s2=0 Then
-          s2=1
-         'print #1,"pulso UP r 1 inc_penta"
-          BordeSupRoll = BordeSupRoll +   inc_Penta
-        EndIf
-        If BordeSupRoll >= AltoInicial * 0.5  Then
-          BordeSupRoll =  AltoInicial * 0.5
-        EndIf
-        Exit Do
-
-    EndIf
-'    If cursorVert=1 Or cursorVert=2 Then
-'     notacur=notacur-1
-'     If notacur < 1 Then
-'      notacur=12
-'     EndIf
-'     Exit Do
-'    EndIf
-   EndIf
+''   If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion'
+''    deltaz=1
+''    If (COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS)  And trasponer=0 Then ' incluye ctrl-n que puede cambiar en todas las octavas
+''        If s2=0 Then
+''          s2=1
+''         'print #1,"pulso UP r 1 inc_penta"
+''          BordeSupRoll = BordeSupRoll +   inc_Penta
+''        EndIf
+''        If BordeSupRoll >= AltoInicial * 0.5  Then
+''          BordeSupRoll =  AltoInicial * 0.5
+''        EndIf
+''        Exit Do'
+''
+''    EndIf
+''''    If cursorVert=1 Or cursorVert=2 Then
+''''     notacur=notacur-1
+''''     If notacur < 1 Then
+''''      notacur=12
+''''     EndIf
+''''     Exit Do
+''''    EndIf
+'   EndIf
 '------------------------------------------------
    If e.scancode = &h41 Then ' <======= SC_F7
     If COMEDIT=LECTURA Then
@@ -4040,7 +4054,7 @@ EndIf
 '=============PULSAR MUCHO TIEMPO ======= REPEAT ==================================================
 ' **********************************************************************************
   Case EVENT_KEY_REPEAT
-   If e.scancode = 72  Then ' <======= SC_UP
+   If e.scancode = 72  And trasponer= 0 Then ' <======= SC_UP
       deltaz=1
     If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS  And trasponer=0 Then
      If s2=0 Then
@@ -4053,7 +4067,7 @@ EndIf
      EndIf
      Exit Do
     EndIf
-    If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=MODIFICACION_COLUMNA And trasponer= 0 Then
+    If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=MODIFICACION_COLUMNA  Then
      notacur=notacur-1  ' funcionara con ctrl-m y ctrl-o pero no para ctrl-N
      If notacur < 1 Then
       notacur=12
@@ -4062,7 +4076,7 @@ EndIf
     EndIf
    EndIf
 '----------------------------------------------------------
-   If e.scancode = 80 Then  ' <===== SC_DOWN repeat
+   If e.scancode = 80 And trasponer= 0 Then  ' <===== SC_DOWN repeat
       deltaz=1
     'If cursorVert=1 Then
     '   notacur = notacur + 1
@@ -4070,7 +4084,7 @@ EndIf
     '     notacur=1
     '   EndIf
     'EndIf
-    If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS  And trasponer=0 Then
+    If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS   Then
        If s1=0 Then
          s1=1
        print #1,"pulso down screeevent"
@@ -4514,6 +4528,8 @@ Dim As Integer i3
        End 0
      ''Exit Do 
   EndIf
+Print #1,"//////PASO POR ACA ESTA MIERDA DESPUES DE TERMINAR EL PLAY DE CANCION??"
+FILEFLUSH(-1)
 
   If MessageBox(hWnd,"¿CERRAR GRAFICO ? " ,param.titulo ,4 Or 64) =6  Then
      eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
@@ -5865,14 +5881,22 @@ ButtonGadget(2,530,30,50,40," OK ")
 
  EndIf 
  If  MultiKey(SC_ALT) And (SC_O)Then
-
+' por zona no esta andando bien revisar 
       If trasponer=0  Then
          trasponer= 1
        EndIf  
    ' ojo con los Exit Do si por defautl entra al if y hace exit do 
    ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click'
  EndIf
+If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion sin rango con mouse
 
+      If trasponer=0  Then
+         trasponer= 3
+       EndIf  
+   ' ojo con los Exit Do si por defautl entra al if y hace exit do 
+   ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click'
+ EndIf
+ 
 ' TRASPOSICION DE UNA SOLA NOTA MARCANDOLA CON NOTA= nota +12
 '========================================================= 
 
@@ -6452,12 +6476,12 @@ EndIf
        LLAMA_GRABAR_ROLL()
        '''GrabarRoll() ''hacer un backup !!!
        Sleep 1000,1   
-      CantTicks= nuevaspos + 18000 ' incremento el tamaño en 1000 posiciones =1 min
+  ''    CantTicks= nuevaspos + 18000 ' incremento el tamaño en 1000 posiciones =1 min
 '      print #1,"incremento final de CantTick ", CantTicks 
-      ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
-      ReDim Preserve compas(1 To CantTicks)
-      ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
-      ReDim Preserve (Track(ntk).trk)(1 To CantTicks,1 To lim3)
+      ReDim Preserve (Roll.trk ) (1 To nuevaspos + 18000,NB To NA)
+      ReDim Preserve compas(1 To nuevaspos + 18000)
+      ReDim Preserve (RollAux.trk) (1 To nuevaspos + 18000, NB To NA)
+      ReDim Preserve (Track(ntk).trk)(1 To nuevaspos + 18000,1 To lim3)
 '      print #1,"Redim exitoso"
     EndIf
  'print #1,"va a copiar FOR lz,numero de veces ",numero
@@ -6513,7 +6537,7 @@ EndIf
      Exit Do
  EndIf
  
- EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
+EndIf    '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
 '  ' <=== fin if mouseY > 50, delimitacion de area o superficie
@@ -6542,7 +6566,7 @@ Exit Do ' este exit do hace que ande el menu!!!
 
 
  
-Loop
+Loop 'do nro 2 1168
 nnn=nnn+1
 If nnn=20 And MAXPOS < 800 Then ' que loopee mas en el lop mas interno solo salga menos al loop externo
    nnn=0
@@ -6559,15 +6583,15 @@ If fueradefoco=SI  And (play = NO) and (playb=NO) And (Cplay=NO) Then
 EndIf
 While InKey <> "": Wend
 'podria reemplazarse por REset(0) ???
-Reset (0)
+'Reset (0)
 
-Loop
+Loop 'do  1167 lo sacamos 
 While InKey <> "": Wend
 'podria reemplazarse por REset(0) ???
-Reset (0)
+'Reset (0)
 
 
-Loop
+Loop 'do 1060 nro 1
 
 Exit Sub 
 
@@ -6582,7 +6606,7 @@ print #1,"-----------------err ROLLLOOP-----------------"
   Print #1, errmsg
   FileFlush (-1)
   Close
-  End 0
+  End Err
 End If
 
 

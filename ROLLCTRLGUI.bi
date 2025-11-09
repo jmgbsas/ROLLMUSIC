@@ -1,5 +1,5 @@
 'ROLLCTRLGUI... GUI DE VENTANA DE CONTROL
-On Error Goto errorhandler
+
 Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8,MenName10
 Static Shared As HMENU MenName31,MenName32,MenName18,MenName19,MenName30 
 
@@ -18,8 +18,15 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
 ''UpdateInfoXserver()
 Var bitmap = Load_image("fondo.bmp")
 BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
+''LBS_EXTENDEDSEL seleccion extendida por ahora no va
+''LBS_NOINTEGRALHEIGHT
+''LBS_DISABLENOSCROLL 
+''LBS_NOTIFY
+'' LBS_MULTIPLESEL 
+ hwndListBox= ListBoxGadget(PISTASROLL,80,40,290,685,LBS_NOINTEGRALHEIGHT Or LBS_DISABLENOSCROLL or  WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT Or  LBS_SORT  Or LBS_NOTIFY Or LBS_HASSTRINGS)
 
-  hwndListBox= ListBoxGadget(PISTASROLL,80,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT Or LBS_NOINTEGRALHEIGHT Or LBS_NOTIFY  )
+ DisableGadget(PISTASROLL,0)
+
   GadgetToolTip(PISTASROLL,"Pistas de Cancion con Tracks manuales cargados desde un archivo o creados en una cancion o convertidos e importados desde ejecucion real midi" )
   SetGadgetFont(PISTASROLL,CINT(LoadFont("consolas bold",13))) 
 
@@ -248,7 +255,7 @@ MenuItem(1007,MenName1, "3.0 Grabar Cancion")
 'MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
 'MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
 Menubar(MenName1)
-MenuItem(1010,MenName1, "4.0 Cargar una Pista (rtk o roll) externa en Cancion")
+MenuItem(1010,MenName1, "4.0 Cargar una Pista (rtk) externa en Cancion")
 MenuItem(1011,MenName1, "4.1 Grabar una Pista de la Cancion con modificaciones, carga pista si no hubiera cargada")
 MenuItem(1012,MenName1, "4.2 Copia una pista a otra  nueva en cancion")
 'MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
@@ -329,7 +336,6 @@ Menubar(MenName4)
 MenuItem(1080,MenName5,"1.0 TEMPO, Por omision=60, Ejecucion Tick por omision=5mseg equivale a 240")
 MenuItem(1081,MenName5,"2.0 Factor para Aumentar velocidad de ejecucion, No se graba en archivo 1,5 o 0,5 etc")
 
-
 'MenuItem(1083,MenName5,"Na. TEMPO insertar cambio de tempo")
 'MenuItem(1084,MenName5,"Na. TEMPO borrar cambio de tempo")
 'MenuItem(1085,MenName5,"Na. TEMPO ver marcas de cambio de tempo")
@@ -383,7 +389,7 @@ MenuItem(1114,MenName7,"10.0 Usar sonido de pista para pulsos de inicio de graba
 MenuItem(1200,MenName8,"1.0 Seleccion Puerto MIDI-IN Ejecucion")
 
 Menubar(MenName8)
-MenuItem(1204,MenName8,"2.0 1Seleccion de Puerto MIDI-OUT Ejecucion")
+MenuItem(1204,MenName8,"2.0 Seleccion de Puerto MIDI-OUT Ejecucion")
 MenuItem(1205,MenName8,"3.0 Abrir  Puertos MIDI-OUT Ejecucion")
 MenuItem(1206,MenName8,"4.0 Cerrar Puertos MIDI-OUT Ejecucion")
 Menuitem(1207,MenName8,"5.0 Convertir una pista iluminada de ejecucion o archivo cargado de *.ejec a *.roll en memoria y lo cargue en Roll Grafico previamente abierto.")
@@ -476,5 +482,7 @@ End Select
     SetStateMenu(hmessages,2500,1)
     SetStateMenu(hmessages,2501,1)
     ''SetStateMenu(hmessages,1050,1)
+SetStateMenu(hmessages,1007,1) ' por ahopra no funciona bien requiere mucho trabajpo
+SetStateMenu(hmessages,1007,1) ' por ahopra no funciona bien requiere mucho trabajpo
 
 End If

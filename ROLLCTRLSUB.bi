@@ -1,5 +1,4 @@
 
-On Error Goto errorhandler
 Sub LLAMA_GRABAR_ROLL()
                '      Print #1," nombre,  ANTES DE LLAMAR GRABARROLL " ;nombre
                      Dim  As Integer errorgrabr=3,intentos=0,length=0
@@ -109,15 +108,18 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                      RecalCompas()
                      abrirRoll=EVITAR_LLAMAR_ROLLLOOP_DE_NUEVO
                      terminar=NO_TERMINAR_BARRE_PANTALLA
+                     CANCIONCARGADA = TRUE
+                     clickpista=SI 'abre tab una sola vez seposiciona en psita 1
                      If tope=0 Then  ' directorio fallido
                         NombreCancion = ""
+                        CANCIONCARGADA = FALSE
                         cargacancion=NO_CARGAR_PUEDE_DIBUJAR
                         param.encancion=SIN_CANCION 
                         abrirRoll=CARGAR_MAS_PISTAS_O_CANCION ' roll ya esta abierto abre mas abajo
-                     'Else
-                     '   cargacancion=CARGAR_NO_PUEDE_DIBUJAR
-                     '   param.encancion=CON_CANCION
-                     '   abrirRoll=EVITAR_LLAMAR_ROLLLOOP_DE_NUEVO ' para evitar que abra rolloop de nuevo
+                     Else
+                        cargacancion=CARGAR_NO_PUEDE_DIBUJAR
+                        param.encancion=CON_CANCION
+                        abrirRoll=EVITAR_LLAMAR_ROLLLOOP_DE_NUEVO ' para evitar que abra rolloop de nuevo
                      EndIf
 
                   Else
@@ -145,8 +147,10 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                   ResetAllListBox(3)
                   Resetear () 
                   CargarPistasEnCancion ()
+                  CANCIONCARGADA = TRUE
                   cargariniciotxt(NombreCancion, CANCION)
                   RecalCompas() 
+                  clickpista=SI 'abre tab una sola vez seposiciona en psita 1
                   If tope=0 Then
                     NombreCancion = "" ' directorio fallido
                   EndIf
@@ -250,9 +254,13 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0)+"*.roll;*.
 End Sub
 
 Sub CTRL1012 (ByRef SALIDA As Integer)
+           print #1,"//////////////////////////////////////////////////////////////////////////"
+           Print #1,"             EN CTRL1012"
+           print #1,"//////////////////////////////////////////////////////////////////////////"
+FILEFLUSH(-1)
            ROLLCARGADO=FALSE 
             Dim As String nombreg
-            If nombre = "" Then
+            If nombre = "" And NombreCancion = "" Then
 nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0) +"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
 Sleep 100
                If nombreg = "" Then
@@ -263,7 +271,11 @@ Sleep 100
                   nombre=nombreg   
                EndIf
            EndIf
+Print #1,"CTRL1012 NombreCancion ",NombreCancion
            If NombreCancion > ""  Then 
+              CANCIONCARGADA =TRUE
+cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
+FILEFLUSH(-1)
               GrabarCopiadePista() ' estoy en cancion copiando una pista desde otra pista
            EndIf   
           MenuNew=MENU_INICIAL
@@ -350,7 +362,7 @@ If ejecutar=EJECUCION Then
      If LCase(estado) = "tiempopatronejec" then
         tiempoPatronEjec=arch
      EndIf
-     If LCase(estado) = "maxpos" then
+     If LCase(estado) = "maxpos" then ''' decia "maxgrb"
         maxgrb=arch
         maxcarga=maxgrb
         
@@ -551,8 +563,8 @@ Sub CTRL1040 () ' <========== seleccion de instrumento por orden Alfabetico
             '      ChangeProgram ( CUByte (instru) , pmTk(ntk).canalsalida,portsal) ' habilito de neuvo 13-02-2022 �
              ''  EndIf
                If instru=0 Then instru=1 EndIf
-                Roll.trk(1,NA).inst= CUByte(instru)
-                Track(ntk).trk(1,1).nnn=CUByte(instru)
+                pmTk(0).patch=CUByte(instru)
+                pmTk(ntk).patch=CUByte(instru)
               ' grabar la pistacomo en 1011
             print #1, "CTRL1040 Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
@@ -628,8 +640,8 @@ inc_Penta = Int((ALTO - BordeSupRoll) /(40)) ' 26 double 1330/66 para 1400 resol
 BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio
 '---------------------------------------------- 
                   instruOld=instru
-                  Roll.trk(1,NA).inst= CUByte(instru)
-                  Track(ntk).trk(1,1).nnn= CUByte(instru)
+                  pmTk(0).patch=CUByte(instru)
+                  pmTk(ntk).patch=CUByte(instru)
                If abrirRoll=NO_CARGAR Then
       Print #1,"1060 abrirRoll=NO_CARGAR_ROLL entro"
                   abrirRoll=CARGAR
@@ -653,7 +665,8 @@ End Sub
 Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo elegido
 
                ntk = CountItemListBox(PISTASROLL)+ 1
-   '            Print #1,"creando Pista nto ",ntk
+               Tope=ntk
+               Print #1,"//creando Pista nueva ",ntk
                If ntk > 32 Then
                   print #1,"exit select ntk> 32"
                    SALIDA=1 ''Exit Select
@@ -664,7 +677,8 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
                   instru=1
                EndIf
    '            print #1,"instru en 1061 , toma el ultimo ",instru
-               NombrePista=RTrim(Mid(NombreInst(instru), 1,21))
+               
+           NombrePista=RTrim(Mid(NombreInst(instru), 1,21))
    '            Print #1, "NombrePista en 1061 sin nro track ",NombrePista
    '            print #1,"porque se resetea? pathdir",pathdir
                If CANCIONCARGADA=true Or NombreCancion <> "" Then
@@ -685,11 +699,11 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
                'MaxPos=2
                nombre= NombreCancion+"\"+NombrePista+".rtk"
     '           print #1,"nombre en 1061",nombre
-               CantTicks=86400 '15 min
-    '           Print #1,"CantTicks ",CantTicks
                
+    '           Print #1,"CantTicks ",CantTicks
+               Tope=Tope+1
                ''' para cuando las pistas esten juntas en un archivo ->ZGrabarTrack(ntk)
-               If ntk=1 Then
+               If ntk=Tope And Tope > 2 Then
                   ReDim (Roll.trk ) (1 To CantTicks,NB To NA)
                   ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim3)
                Else
@@ -705,18 +719,12 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
                pmTk(ntk).NB=NB
                pmTk(ntk).NA=NA                  
                pmTk(ntk).MaxPos=2
-               pmTk(ntk).posn=0
+               pmTk(ntk).posn=2
                pmTk(ntk).notaold=0                  
-               pmTk(ntk).Ticks=4000
+               pmTk(ntk).Ticks=MaxPos
                ' usamos encancion=1 para grabar dentro de la cancion
-
-               NombrePista="" 
                posicion=1
-               posn=0
-               MaxPos=2
-               nota=0
-               dur=0
-               tope=ntk
+               posn=2
                *po = hasta -1
                GrabarTrack(ntk)
                abrirRoll=NO_CARGAR
@@ -1344,7 +1352,7 @@ titulosTk(0)=nombreTrack
 pmTk(0).MaxPos = maxposTrack +6 '''tocaparam(pis).maxpos
 pmTk(0).desde = 4  'VER SI TOMAMOS LA Q ELIGE EL USUARIO
 pmTk(0).hasta = 8  ' " " " " " " 
-pmTk(0).posn=1
+pmTk(0).posn=2
 pmTk(0).canalsalida=tocaparam(pis).canal
 pmTk(0).portout=tocaparam(pis).portout
 pmTk(0).patch=tocaparam(pis).patch
@@ -1352,10 +1360,10 @@ pmTk(0).tipocompas =TipoCompas
 pmTk(0).tiempopatron = tiempopatron 
 
 Track(0).trk(1,1).nnn =tocaparam(pis).patch
-
+pmTk(0).patch=tocaparam(pis).patch ' 06-11-2025
 Track(0).trk(1,1).ejec = 1 ' marca indica que esta secuencia viene de una ejecucion
-
-TrackaRoll (Track(), 0 , Roll)
+pmTk(0).ejec=1 ' 06-11-2025
+TrackaRoll (Track(), 0 , Roll,"CTRL1207")
 ROLLCARGADO=TRUE
 NADACARGADO=FALSE
 ' grabamos el Track a disco tambien

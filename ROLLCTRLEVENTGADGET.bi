@@ -1,7 +1,10 @@
-On Error Goto errorhandler
+DisableGadget(PISTASROLL,0)
+
 ' include DE ROLLMUSIC.BAS, EVENTC, eventgadget
 ' tiene su scope
-    '   SetForegroundWindow(hwndC)
+
+       SetForegroundWindow(hwndC) 'kiki
+
       ' el codigo anterior que traia de disco esta en notas
 ' TODOS DICEN RUSO Y USA QUE VK_LBUTTON ES 1 PERO CON 1 NO ANDA
 ' SIN EMBARGO CON 3 ANDA A VECES..
@@ -19,6 +22,11 @@ Static As Integer millave
 '  
              
           If MOUSEBUTTONS AND LEFTBUTTON  Then 
+'--------------------------------------------------------------
+ 'SIMULA TAB AL DAR CLICK EN UN ITEM UNAPISTA DE ROLL EN LA LISTA
+      clickpista=1 ' no incrementa el ntk que simula SC_TAB, el cual carga el track a Roll
+            
+'--------------------------------------------------------------
                 
              print #1,"CLICK lbutton EN LISTA WM==============="
              Print #1,"COORDENADAS X, Y ", GlobalMouseX,GlobalMouseY 
@@ -27,14 +35,14 @@ Static As Integer millave
              Dim item As String
              Dim As Integer ubi1,ubi2
               
-             item=GetListBoxText(3,GetItemListBox(3))
+             item=GetListBoxText(PISTASROLL,GetItemListBox(PISTASROLL))
              Print #1,"item 1580 ",item  ' 28-02-2024 esto aparece en debug sin roll
              If Len (item) < 24 Then
                item = item + String( 40-Len(item),32)
              EndIf
 
              item=Trim(item)
-             Print "item ",item
+
              If item > "" Then
              '  Dim nombre1 As String
              '   nombre1= NombreCancion + "\"+item +".rtk"
@@ -54,12 +62,8 @@ Static As Integer millave
               EndIf
               
           EndIf
+' ESTO NO VA ES DE MENU And eventNumber <> 1010 And EventNumber<> 1012
   
-'--------------------------------------------------------------
-
-   clickpista=1 ' no incrementa el ntk que simula SC_TAB, el cual carga el track a Roll
- 
-'--------------------------------------------------------------
 
 ' /// // // / / /  menu contextual popup 
    
@@ -185,7 +189,7 @@ Static As Integer millave
        '     PISTASEJECSELECCIONADA=0
        EndIf
 
-
+       
 '  CUAL PISTA DE ROLL SE ESCUCHA SEGUN LO SELECCIONADO
 ' este es otro metodo para seleccionar todas las pistas cargadas
 ' y hacer que suenen o deseleccionarlas yque no suene ninguna
@@ -194,7 +198,8 @@ Static As Integer millave
 ' siemrpe que haya una cancion cargada .. es un boton de todo o nada
 ' solo si cancion esta cargada...BOTON "S"
        If eventnumber()=BOTON_PISTA_ROLL And CANCIONCARGADA=TRUE Then
-        Dim i As integer
+        disablegadget(PISTASROLL,0)
+         Dim i As integer
          If cntsuena =0 Then
             SuenaTodo=0
          EndIf
@@ -705,6 +710,9 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
       EndIf 
 '--------------
       If  eventnumber()=BTN_EJEC_PAN Then 'PAN futuro
+          menuOldStr="[PAN]"
+          threadpan=threadCall EntrarTeclado()
+          Print #1,"sel pan Globalpan, ntk ",Globalpan,ntk  
 
       EndIf 
 '----------------
@@ -866,9 +874,7 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
 '-------------------------------------------------------
       If  eventnumber()=BTN_ROLL_PAN Then 'PAN  REPRODUCCION HACIA LOS LADOS DERECHA IZQUIERDA,,,
           
-          threadpan=threadCall SelPan(Globalpan)
-''el paneo no funciona con fluidsynth o no se como se envia
-   '''       Paneo (GlobalPan,pmTk(ntk).canalsalida,pmTk(ntk).portout)
+          threadpan=threadCall EntrarTeclado()
           Print #1,"sel pan Globalpan, ntk ",Globalpan,ntk  
       EndIf
 '-------------------
@@ -898,7 +904,11 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
 ' y si instrum es > 0 es un cambio
             If  ROLLCARGADO  Then
             Else 
-              instrum=CInt(Track(k).trk(1,1).nnn) 
+              instrum=pmTk(0).patch  'CInt(Track(k).trk(1,1).nnn)
+        If instrum=0 Then
+            pmTk(ntk).patch= CUByte(instrum)
+            pmTk(0).patch= CUByte(instrum)
+        EndIf   
           Print #1,"k, instrumento en check ";k,instrum
              ntk=k 
             EndIf
@@ -915,21 +925,22 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
                ntk=0
              EndIf
             pmTk(ntk).patch=CUByte(instrum)
+            pmTk(0).patch= CUByte(instrum)
             patchsal=pmTk(ntk).patch
             portsal=pmTk(ntk).portout
             If GrabarPenta=NO And playb=NO And play=NO Then
-              Track(ntk).trk(1,1).nnn =CUByte(instrum)
+               pmTk(ntk).patch=CUByte(instrum)
             EndIf
             Print #1, "patch portsal almacenado, instru ", portsal, instrum
-            Roll.trk(1,NA).inst= CUByte(instrum)
-
+            pmTk(ntk).patch= CUByte(instrum)
+            pmTk(0).patch= CUByte(instrum)
             Dim As String nombreg
             If MaxPos > 2 Then 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Or NombreCancion > "" Then
                     GrabarRollaTrack(0)
               Else
                 If  ROLLCARGADO=TRUE Then
-                  'aca graba el roll con Roll.trk(1,NA).inst
+                  'aca graba el roll con patch 
                   LLAMA_GRABAR_ROLL()
                  Sleep 1000,1   
 
@@ -977,7 +988,7 @@ Print #1,"k, canalsalida  ";k, canalx
                     GrabarRollaTrack(0)
               Else
                 If  ROLLCARGADO  Then
-'                  'aca graba el roll con Roll.trk(1,NA).inst
+'                  'aca graba el roll con patch
                  LLAMA_GRABAR_ROLL()
                  Sleep 1000,1 
                  ' no el undo dolo se debe borrar al ahcer nuevo creo

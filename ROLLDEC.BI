@@ -179,7 +179,7 @@ Declare Sub playthread()
 Declare Function GrabarRoll () As integer
 Declare Sub abrirSecuencia (nf As integer)
 Declare Sub GrabarTrack   (ntk As integer) 
-Declare Sub ActualizarRollyGrabarPistaTrk ()
+Declare Sub ActualizarRollyGrabarPistaTrk (funcion As string)
 Declare Sub GrabarRollaTrack (cambiaext As Integer)
 Declare Sub CargarPistasEnCancion ()
 Declare sub GrabarCopiadePista()
@@ -698,7 +698,7 @@ Type rangoOct Field=1
  As Integer NB =0
  As Integer NA =0
  As Integer MaxPos =0
- As Integer posn =0 
+ As Integer posn =2 
  As UByte   notaold=0 
  As Integer Ticks =0
  As UByte   patch
@@ -804,13 +804,6 @@ End Type
 ' REDEFINE USHORT muevo a este type el tempo, luego puedo copiar sus partes
 ' a pan y pb y poder reconstruir ..es un redefine de cobol!
   
-Union aUshort
- ST As UShort
-   Type
-    tp1 As UByte
-    tp2 As UByte
-   End Type
-End Union
 ' campos de roll datos secuencia 
 Type datsec Field=1
  nota  As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
@@ -968,6 +961,7 @@ End Type
 Declare Sub Tracks (ByRef nroTrack As integer, ByRef nroCanal As UByte, Roll As inst)
 Dim Shared As Long PARAR_PLAY_MANUAL = NO,PARAR_PLAY_EJEC = NO,CONTROL3 = NO
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
+CantTicks=CantMin * 60 *96 ''86400  ' 96*15*60 96 ticks una negra, 15 minutos, 60 segundos
 Dim Shared As inst Roll ' para visualizar y tocar
  
 ReDim Shared Track  (0 To 32) As sec ' tracks para guardar,.. y tocar 
@@ -979,7 +973,7 @@ Dim Shared As Integer tipoescala_num = 1, notaescala_num = 1,tipoescala_num_ini=
 Dim Shared As String notas_esc_inicial (1 To 24)
 
 Dim Shared As Integer desdevector,undo_kant_intervalos(1 To 500)
-Dim Shared As Integer hastavector,abrirRoll=NO_CARGAR ,abrirRollCargaMidi=0   
+Dim Shared As Integer hastavector,abrirRoll=NO_CARGAR '',abrirRollCargaMidi=0   
 Dim Shared As String grado_inicial(1 To 24)
 ' memorias de Tracks..por ahora igual que Roll de trabajo luego veremos si achicamos
 ' mas parecido a midi.,,,,8 tracks ocupasn 0,544 giga 32 1,8 gigas de memoria virtual
@@ -1032,7 +1026,7 @@ ibarre=desde
 Common Shared As FLOAT font
 Dim Shared As float  deltaipf=0, lockip=0 
 Dim Shared q As String * 1
-Dim Shared As UByte  ii,indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8, s9
+Dim Shared As UByte  ii,indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8, s9,s10
 Dim Shared As UByte numdurasmidi( 1 To 24)
 ''Dim Shared escala As float = 1.0
 Dim Shared translado As Integer = 1
@@ -1235,7 +1229,7 @@ Static Shared As Integer sonidoPista(1 To 32)
 static  Shared As Integer SuenaTodo =0, cntsuena=0
 Static Shared  As Integer jgrb=0, jgrbRoll
 Declare Sub PlayCancion(Track() As sec)
-Declare Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst)
+Declare Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst,funcion As string)
 Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
 Declare Sub ReCalCompas()
 Declare Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As ubyte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As integer)
@@ -1433,4 +1427,11 @@ Common Shared As miditxtsalida MidiDatos()
 
 ReDim  Shared NroEventoPista(1 ) As Integer
 
+Union aUshort
+ ST As UShort
+   Type
+    tp1 As UByte
+    tp2 As UByte
+   End Type
+End Union
    

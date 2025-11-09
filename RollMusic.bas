@@ -9,7 +9,7 @@
 '========================== 
 #include "ROllLoop.bi"
 '==========================
-
+On Error Goto errorhandler
  ' ahora debo traducir las notas a notas de Roll e incorporarlas al vector
  ' las notas  en Roll van de 0 a 11 para el indice son los semitonos, pero se cargan 
  ' los valores 1 a 12. En Roll C=12 ...B=1 ergo si la escala dice 12=B debe ser 1
@@ -31,7 +31,29 @@
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.346 Fix en play al final de una secuencia se borraban las notas"
+nroversion="0.347 VARIOS Fix CARGAR PISTAS PAN ECO CORO NUMERICOS,OKAT EJEC Y MANUAL JUNTOS SIN TAB"
+' crear o cargar nueva pista en cancion andaba mal, VERIFICAR CON LOS CAMBIOS NUEVOS
+' queda  por revisar
+' 1) AL GRABAR EN ROLL UNA PISTA RTK SOBREESCRIBE CON LOS DATOS o al cambiar algun parametro
+' haria grabacion automatica (creo que las grabaciones automaticas las eliminare)
+' DE OTRA AL USAR GRABAR,   CON ROLL=>TRACK parece que bien.. ARREGLAR GRABAR detectanto formato.
+' 2) NUEVO PROBLEMA OK 347 AHORA MIENTRAS HACE PLAY SI CHEQUEO O DESCHEQUEO PISTAS EN CONTROL
+' PARA APAGAR UNA PISTA Y ENCENDER OTRA EL PLAY SE CONGELA VER ESO QUEDA LAS NOTAS
+' EN ON ....era por diferentes pistas si todas son ejec anda bien,,
+' PUDE COMPATIBILIZAR UN POCO SIN CONGELAR AL PONER EL MISMO Tiempo patRON 0.005
+' EN EL PLAYCANCION.como en grabar ejec.ES LO QUE TIENE LA GRABACION POR TECLADO. COMPATIBILICE LOS CANTTICKS 
+' EL POSN A VECES VENIA EN CERO AJUSTE PARA QUE NO SEA CERO VERIFICAR QUE SEA
+' EN LA CARGA MAXPOS -6. 
+'3)-> AL dar PLAY ANDA LAS PISTAS MANUAL CON EJEC JUNTAS,PERO AL DAR TAB SE CONGELA EL PLAY
+'4)  otro problemas el volumen ,roll sigue bien porque se fija en si Roll(1).onof=1
+' entonces toma Roll(1).vol.Se arreglo tocando REalCompas.. Es momento de hacerarchivos nuevos
+' y cambianr en todos lados el control del vol entre ejecs y mauales y todo el resto
+' patch coro pan olvidar el metodo viejo de poner la info en los extremos del vector
+'5) ECO,PAN U CORO SE ELIMINO EL TRACKBAR FUNCIONAMAL IMPIDE SELECCIONAR PISTAS EN
+' LISTA DE ROLL, SE REEMPLAZO POR SELECCION NUMERICA
+'----------------------------------
+' ALT O  tyrasponer=1 por zona  ya esta ok. 
+' ctrl-O trasponer=3  traspone todo se habilito ok
 ' todo implementado pero ha yuna falla al grabar a ROLL a TRACK no graba el patch
 ' verificar!!!
 ' solo cancela con PANTESTECO.roll nuevisima version con datroll
@@ -226,6 +248,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
       EstaBarriendoPenta=1 
 Print #1, "///1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+      clickpista=SI 'abre tab una sola vez seposiciona en psita 1 
       EndIf 
     ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
    Else     ''''''''RollLoop ( param) '<--con esto anda
@@ -288,14 +311,13 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
 'StopDraw
 
 
-     Select Case EVENTC 
+     Select Case eventC 
        Case EventMenu
-
 '''' //////////////////////////  EVENT EVENT EVENT /////////
           #Include "ROLLCTRLEVENTMENU.BI"
 '-----------------------------------------------------------------------
        Case eventgadget
-
+        DisableGadget(3,0)
      '   SetForegroundWindow(hwndC)
       ' el codigo anterior que traia de disco esta en notas
 ' TODOS DICEN RUSO Y USA QUE VK_LBUTTON ES 1 PERO CON 1 NO ANDA

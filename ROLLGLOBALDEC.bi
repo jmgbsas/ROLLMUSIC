@@ -537,6 +537,7 @@ Dim Shared  IndiceInstAlfa(1 to 127) as integer   => _
                 116, _
                 14  }
 
+
 Common Shared As float nanchofig
 COMMON Shared As Long eventc, eventM , eventK
 Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec
@@ -551,16 +552,18 @@ Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1
 Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadVol,threadpan,threadeco,threadcoro
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
-Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros
+Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi
 parametros=0
+abrirRollCargaMidi=0
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay,deltaz,guardaposnOffOld
-COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntktab,ntoca,ntkp,npi,calltoca,npo,canalDeGrabacion
+COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntoca,ntkp,npi,calltoca,npo,canalDeGrabacion,ntkcarga,ntkTAB
 Common SHARED As Integer EstaBarriendoPenta
 Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA, VerMenu,MousexNotaElegida,PianoNotaElegida,nsEelegida
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
-Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, interva '  default 2 que es 1 separacion de notas
+Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, interva ,valorpan '  default 2 que es 1 separacion de notas
+Common Shared As Integer valoreco, valorcoro
 VerMenu=1
 deltax=1
 deltaz=0 ' muestra ayuda al pie del grafico
@@ -569,7 +572,10 @@ separaenuno=0
 interva=3 '  default 3 para ticks desplazamineto zoom horizontal 
  MaxPos=2:ntk=0:CPlay=NO: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
- 
+valorpan=64  
+valoreco=64  
+valorcoro=64  
+
 trasponer=0
 common Shared As UByte Globalpan, Globaleco,Globalcoro, CerrarGraficodesdeCtrl
 CerrarGraficodesdeCtrl=0

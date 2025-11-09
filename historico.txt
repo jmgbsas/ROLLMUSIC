@@ -1,3 +1,31 @@
+- 09-11-2025 FALTA MUCHO TESTEO...
+' "0.347 VARIOS Fixes..
+'  CARGAR PISTAS PAN ECO CORO NUMERICOS,OK EJEC Y MANUAL JUNTOS SIN TAB"
+' crear o cargar nueva pista en cancion andaba mal, VERIFICAR CON LOS CAMBIOS NUEVOS
+' queda  por revisar
+' 1) AL GRABAR EN ROLL UNA PISTA RTK SOBREESCRIBE CON LOS DATOS o al cambiar algun parametro
+' haria grabacion automatica (creo que las grabaciones automaticas las eliminare)
+' DE OTRA AL USAR GRABAR,   CON ROLL=>TRACK parece que bien.. ARREGLAR GRABAR que detectan formato.
+' 2) NUEVO PROBLEMA OK 347 AHORA MIENTRAS HACE PLAY SI CHEQUEO O DESCHEQUEO PISTAS EN CONTROL
+' PARA APAGAR UNA PISTA Y ENCENDER OTRA EL PLAY SE CONGELA VER ESO QUEDA LAS NOTAS
+' EN ON ....era por diferentes pistas si todas son ejec anda bien,,
+' PUDE COMPATIBILIZAR UN POCO SIN CONGELAR AL PONER EL MISMO Tiempo patRON 0.005
+' EN EL PLAYCANCION.como en grabar ejec.ES LO QUE TIENE LA GRABACION POR TECLADO. COMPATIBILICE LOS CANTTICKS 
+' EL POSN A VECES VENIA EN CERO AJUSTE PARA QUE NO SEA CERO VERIFICAR QUE SEA
+' EN LA CARGA MAXPOS -6.
+' PROBLEMAS ACTUALES 
+'3)-> AL dar PLAY ANDA LAS PISTAS MANUAL CON EJEC JUNTAS,PERO AL DAR TAB SE CONGELA EL PLAY
+'4)   el volumen ,roll sigue bien porque se fija en si Roll(1).onof=1
+' entonces toma Roll(1).vol.Se arreglo tocando REalCompas.. Es momento de hacer archivos nuevos
+' y cambianr en todos lados el control del vol entre ejecs y manuales y todo el resto
+' patch coro pan olvidar el metodo viejo de poner la info en los extremos del vector, ahora todo ira en el encabezado.
+'5) ECO,PAN U CORO SE ELIMINO EL TRACKBAR FUNCIONA MAL IMPIDE SELECCIONAR PISTAS EN
+' LISTA DE ROLL, SE REEMPLAZO POR SELECCION NUMERICA
+'----------------------------------
+' ALT O  tyrasponer=1 por zona  ya esta ok. 
+' ctrl-O trasponer=3  traspone todo se habilito ok
+' todo implementado pero ha yuna falla al grabar a ROLL a TRACK no graba el patch
+----------------------------------------------------------------------
 - 27-10-2025 0.346 implementar chorus o coro en menu pistas manuales 2.5
 - 23-10-25 0.345 parametro pan y eco en pista aislada o cancion, legibilidad del codigo, mas fixes.
   eco y pan se grabarn usando 	[ROLL=>TRACK]. Varios fixes carga de cancion re entrante.

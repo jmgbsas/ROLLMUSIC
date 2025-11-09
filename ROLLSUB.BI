@@ -122,6 +122,7 @@ Sub RecalCompas() ' Nuevo para ticks
  On Local Error GoTo errorCalc 
 ' velocidades para 4/4 reposicion par ticks
 ' lso tiempos de una comaps son 96, 192, 288, 384
+clickpista=0
  Dim As Integer i,j,k,negra=96, multi,kj,kp, cntcompas,cntnegra,com, compas4cuartos= 4*negra,MAXI
 
  If CANCIONCARGADA=TRUE Then
@@ -129,26 +130,39 @@ Sub RecalCompas() ' Nuevo para ticks
  Else
     MAXI=Maxpos 
  EndIf
- ReDim compas(1 To MAXI)
+Print #1,"En Recalcompas MAXI ",MAXI
+fileflush(-1)
+Sleep 50
+ ReDim compas(1 To 2*MAXI)
+Sleep 50
+MaxPos=MAXI
+If CantTicks < MAXI Then
+  CantTicks=MAXI
+EndIf
   compas(1).Posi=0
   compas(1).nro = 0
 For j=1 To MAXI-2
   kj=kj+1
   Select Case kj
     Case   1 To  96
-   compas(kj).nro = -1
+   compas(j).nro = -1
+   compas(j).Posi=j
     Case  97 To  192 
-   compas(kj).nro = -2
+   compas(j).nro = -2
+   compas(j).Posi=j
     Case 193  To 288 
-   compas(kj).nro = -3
+   compas(j).nro = -3
+   compas(j).Posi=j
     Case 289 To 383
-   compas(kj).nro = -4
+   compas(j).nro = -4
+   compas(j).Posi=j
     Case compas4cuartos '384
      cntcompas=cntcompas+1
   compas(j).Posi=j
   compas(j).nro = cntcompas
       KJ=0
   End Select
+
  ' kp=kp+1
  ' Select Case kp
  '   Case negra
@@ -161,19 +175,24 @@ For j=1 To MAXI-2
 
 Next j
 
+Print #1,"fin RecalCompas ok "
+fileflush(-1)
+Sleep 5
+
 Exit Sub 
 errorCalc:
 Dim As long er1
 er1 = Err()  
-Print #1, "er1 sos bolu o te haces freebasic "; er1 
 If er1 > 0 Then
-Print #1,"Error Calc detected ", er1, " posicion ";posicion; " maxpos";MaxPos;" curpos ";curpos
+Print #1,"Error ReCalcompas detected ", er1, " posicion ";posicion; " maxpos";MaxPos;" curpos ";curpos
 Print #1,"desde ";desde;" hasta ";hasta; "hasta-1 ";hasta-1; " *po ";*po
 
 Print #1,"---------------err calccompas---------------------"
 
 Print #1,"ERROR = ";ProgError(er1); " on line ";Erl
 Print #1,"Error Function: "; *Erfn()
+fileflush(-1)
+
 EndIf
 
  
@@ -874,7 +893,7 @@ If ctrl= 0 Then ' ctrl es cambiadur solo procesa con 1 para evitar otras modific
 EndIf
 Dim As Integer x,x1, x2, y, y1, y2,posn1
 
-Dim As String s1,s2,s3,s4,s5,s6,s7,s8
+'Dim As String s1,s2,s3,s4,s5,s6,s7,s8,s10
 
 x1=cur1 - 20
 x2=cur1 + 20
@@ -1068,15 +1087,8 @@ trasponer=0
  EndIf
  ' ==========================================================================
  ' << CAMBIADUR TAMBIEN INGRESA NOTA NUEVA Y DURACION DONDE NO HABIA >>
- ' << SOBREESCRIBE >> aca si usarAcordesIguales=1 debo hacer el FraccionaDur automatico
- ' si tengo notas en acorde preexistentes de menor, igual  o mayor valor de duracion.
- ' tambien deberï¿½ Fraccionar ---TAREA FUTURA---- FUTURO
- ' EN UNA COLUMNA BUSCO LA DURACION MENOR Y LA MAYOR COMPARO CON LA DE ENTRADA NUEVA.
- ' TOMO LA MENOR DE TODAS INCLUSO LA ENTRADA Y FRACCIONO TODAS LAS NOTAS DE LA COLUMNA
- ' ES TANTAS PARTES TENGA CADA FIGURA DE ESA MENOR. PARA ELLO TOMARE LA MAYOR Y AL PARTIRE
- ' EN LAS PARTES CORRESPONDIENTES DE LA MENOR, LUEGO DE ESO SIGO FRACCIONANDO LAS OTRAS
- ' QU ESON MAYORES A LA MENOR PERO MENORES A LA MAYOR ,,,,
-  '=============================================================================
+ ' << SOBREESCRIBE >> 
+   '=============================================================================
 ' octavaEdicion=estoyEnOctava  para que solo modifique en la octava seleccionada 
 ' 03-05-2025 ok aorafalta borrar la nota y cambiadur=0 si cambio de octava con el mouse
 ' pero no la seleccione con el mouse hasta el final 
@@ -1672,7 +1684,7 @@ End Sub
 Sub Tracks ( ByRef ntk As Integer, ByRef nroCanal As UByte,Roll As inst)
   ''copia track a Roll en memoria , revision para Ticks 31-03-2025 ok queda igual
   ' nrocanal no se usa ,,,,borraremos mas adelante...
-
+clickpista=0
 Print #1, ">>>> TRACKS: MaxPos <=2 Or pmTK(ntk).maxpos=0 Then " , Maxpos, pmTK(ntk).maxpos 
 If MaxPos <=2 Or pmTK(ntk).maxpos=0 Then
   Print #1, "Salimos de Tracks sin ahcer nada "
@@ -1685,7 +1697,8 @@ Print #1,">>>> TRACKS MAXPOS (NTK).MAXPOS ", maxpos, pmTK(ntk).maxpos
  'Notas ( 1 To 65536, 1 To 128) as UByte
 ' usaremso para cambianr de track en Roll y Track(0)
 nombre= titulosTk(ntk)
-' evita leer track vacios   
+' evita leer track vacios esto ya lo hace TAB otra vez no
+/'   
 If nombre=""  Then ' evita revisar track vacios EN UNA CANCION
  Do While nombre=""
  ntk=ntk+1
@@ -1696,13 +1709,12 @@ If nombre=""  Then ' evita revisar track vacios EN UNA CANCION
  Loop
   nombre= titulosTk(ntk)
 Else   
- 
-TrackaRoll (Track(), ntk,Roll ) ' no usa ubirtk
+'/
+' funcion saltoTAB indica que no calcule los tamaños ancho de figura 
+TrackaRoll (Track(), ntk,Roll,"saltoTAB" ) ' no usa ubirtk
 Print #1,">>>> Tracks  ntk cargado, nombre ",ntk, nombre
-''Print #1,"llama a RecalCompas para ntk,maxpos, .maxpos ",ntk,maxpos,pmTk(ntk).MaxPos
-RecalCompas() 
-''Print #1,"MAXPOS DESPUES DE RECALCOMPAS ", maxpos, pmTK(ntk).maxpos
-EndIf
+
+'''EndIf
 
 
 End Sub
@@ -2103,16 +2115,16 @@ pmTk(ntk).desde = 2
 pmTk(ntk).hasta = 8
 pmTk(ntk).MaxPos = j1+principio +2
 MaxPos = k2
-pmTk(ntk).posn = 0
+pmTk(ntk).posn = 2
 pmTk(ntk).patch=1
 pmTk(ntk).portout=0
-posn=0
+posn=2
 titulosTk(ntk)=nombre
 posicion=1
 DUR => 0
 curpos =>0
 patchsal=1
-Track(ntk).trk(1,1).nnn=1 
+pmTk(ntk).patch=1 
 Track(ntk).trk(MaxPos,1).dur  =182 
 cargacancion=CARGAR_NO_PUEDE_DIBUJAR
 MaxPos=pmTk(ntk).MaxPos 
@@ -2121,7 +2133,7 @@ ROLLCARGADO=TRUE
 numdurasmidi(1)=0
 Erase duras
 
-TrackaRoll (Track(),ntk,Roll)
+TrackaRoll (Track(),ntk,Roll,"cargarMidiPlano")
 cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
 Parar_De_Dibujar=NO
 Sleep 5
@@ -2793,6 +2805,7 @@ End Sub
 '--------
 Sub CargaArchivo(Roll As inst, ByRef ubiroll As Integer)
 ' PRINCIPALMENTE CARGA ROLL Y LO PASA SIEMPRE A TRACK (0)
+' los datos se carga ntambien a pmTk(0) el cual es comun a Roll y Track(0)
 
 On Local Error GoTo saledeaca 
 ntk=0 ' Cargar en 3 vectores Roll pmTk(0) y Track(0). 
@@ -2909,7 +2922,10 @@ Sleep 100
 
      Print #1,"notaold ",notaold
      If dat.nanchofig > 0 Then
+        If nanchofig > 0 And nanchofig < dat.nanchofig Then
+        Else   
         nanchofig  = cdbl(dat.nanchofig)/10
+        EndIf   
      EndIf     
      notaescala_num_ini =CInt(dat.notaescala_num_ini) ' global notadeescala 20-12-2021
      If notaescala_num_ini = 0 Then
@@ -2939,18 +2955,18 @@ Dim mit As aUshort
  tiempoPatron = mit.st
 
      
-     pmTk(ntk).desde=desde    ' pmtk
-     pmTk(ntk).hasta =hasta
-     pmTk(ntk).MaxPos =MaxPos
-     pmTk(ntk).posn =posn
-     pmTk(ntk).notaold=dat.notaold
-     pmTk(ntk).alteracion=dat.alteracion
-     pmTk(ntk).notaescala=dat.notaescala_num_ini
-     pmTk(ntk).tipoescala=dat.tipoescala_num_ini
-     pmTk(ntk).tiempopatron=tiempoPatron
-     pmTk(ntk).portout=dat.portout
-     pmTk(ntk).canalsalida = dat.canalsalida ' ubyte a ubyte
-     pmTk(ntk).tipoCompas = dat.tipoCompas
+     pmTk(0).desde=desde    ' pmtk
+     pmTk(0).hasta =hasta
+     pmTk(0).MaxPos =MaxPos
+     pmTk(0).posn =posn
+     pmTk(0).notaold=dat.notaold
+     pmTk(0).alteracion=dat.alteracion
+     pmTk(0).notaescala=dat.notaescala_num_ini
+     pmTk(0).tipoescala=dat.tipoescala_num_ini
+     pmTk(0).tiempopatron=tiempoPatron
+     pmTk(0).portout=dat.portout
+     pmTk(0).canalsalida = dat.canalsalida ' ubyte a ubyte
+     pmTk(0).tipoCompas = dat.tipoCompas
 
      
 Print #1,"/////--Cargar Arch pan Globalpan,pmtk, ntk ",Globalpan,pmTk(ntk).pan,ntk
@@ -3004,7 +3020,6 @@ Print #1,"pmTk(0).MaxPos = MaxPos ";  MaxPos
         CantTicks = CantTicks + 2000 ' jmg 24-09-2021
      EndIf  
      pmTk(0).Ticks=CantTicks
-     pmTk(ntk).Ticks=CantTicks
      ntk=0
 '' Redim Roll y TRack ya tiene calculo NB y NA con CantTicks y carga de pmTk.NB y NA
      Parar_De_Dibujar=SI
@@ -3152,16 +3167,12 @@ If Roll.trk(1,NA).inst > 0 Then ' convertimos
    dat.patch=Roll.trk(1,NA).inst
    Roll.trk(1,NA).inst=0
    instru=CInt(dat.patch)
-
-   pmTk(ntk).patch=patchsal
    pmTk(0).patch=patchsal
 
 Else
   If dat.patch > 0 Then
     patchsal=dat.patch
     instru=CInt(dat.patch)
-
-    pmTk(ntk).patch=patchsal
     pmTk(0).patch=patchsal
   EndIf
 EndIf
@@ -3490,7 +3501,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
   Case MENU_INICIAL '0
   ' 0.1 ==> [Archivo]
    If mousex > 46 And mousex< 111 And mousey < 50   Then
-    cairo_set_source_rgba c, 0, 1, 0, 1
+    cairo_set_source_rgba c, 0, 1, 0, 1 ' verde
      ''font=18 ' el menu esta diseï¿½ado para este tamaï¿½o 
     If MouseButtons And 1 Then
      menuNew = COMANDOS_ARCHIVO  ''
@@ -3772,7 +3783,7 @@ EndIf
          If nombre > "" Then  ' evita crash al cancelar el dialogo 
          '   print #1,"carga track veo nombre despues ",nombre
             ROLLCARGADO=TRUE ' NO PERMITOQUE TRACK(0) SE BORRE
-            TrackaRoll (Track() , ntk , Roll)
+            TrackaRoll (Track() , ntk , Roll,"menuGraficoCargaTrack")
           '  print #1,"TrackaRollcarga rtk veo nombre ",nombre 
             RecalCompas ()
           '  print #1,"despues RecalCompas veo nombre ",nombre
@@ -3825,7 +3836,7 @@ EndIf
       cairo_set_source_rgba c,1,0,0,1
        Dim As String nombreg
        Print #1,"EN Grabar nombre ",nombre
-       If nombre = "" Then 
+       If nombre = "" And titulosTk(ntk) = "" Then 
  nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0)+"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
  Sleep 100
           If nombreg = "" Then
@@ -3834,13 +3845,15 @@ EndIf
              nombre=nombreg   
           EndIf
        EndIf
+
        Dim As Integer ubi1=0,ubi2=0,ubi3=0,ubi4=0 
        Dim As String no1,no2
        ubi1=InStr(nombre,"[")
        ubi2=InStr(nombre,"]")
        ubi3=InStr(nombre,".rtk")
        ubi4=InStr(nombre,".roll")
-       If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Then 'graba un track como track
+
+       If ubi1 >0 And ubi2 > 0 And ubi3 > 0 Then 'graba un track como track
        ' pero como las modificaciones estan en ROLL debo usar GrabarrollaTrack
   Print #1,"2190 menu pierde ntk ??? ",ntk
 'SI CARGUE UN RTK DESDE ARCHIVO SIEMPRE USO ROLL A  TRACK PORQUE
@@ -3849,14 +3862,14 @@ EndIf
 ' al track modificado porque el ntk=0 para roll. ademas debere actualizar el track ntk
 ' en memoria,,,son dos operaciones,,,
           GrabarRollaTrack(0) 
-          cairo_set_source_rgba c,1,1,1,1
-          cairo_set_source_rgba c, 0, 1, 0, 1
-           Sleep 1000,1           
+    ''kiki     cairo_set_source_rgba c,1,1,1,1
+         cairo_set_source_rgba c, 0, 1, 0, 1
+           Sleep 500,1           
        Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
            ''''GrabarRoll ()
            LLAMA_GRABAR_ROLL()
-           cairo_set_source_rgba c, 0, 1, 0, 1 
-           Sleep 1000,1 
+        cairo_set_source_rgba c, 0, 1, 0, 1 
+           Sleep 500,1 
        EndIf
          carga=1
          lockip=2 ' habilita mouse 28-08-2021
@@ -4122,7 +4135,7 @@ Sleep 100
      If MaxPos=0 Then
        MaxPos = 2 'NroCol
      EndIf
-     posicion=1:posn=0
+     posicion=1:posn=2
      curpos=0
      notacur=1
      nota=0 
@@ -4259,7 +4272,8 @@ Sleep 100
              thread3= ThreadCall EntrarTeclado()
             pubi=1   
           EndIf
-
+         Case "[PAN]","[CORO]","[ECO]"
+          threadpan=threadCall EntrarTeclado() ''SelPan(Globalpan)
       End Select
     menunew=MENU_INICIAL
     cierroedit= 0
@@ -4575,7 +4589,7 @@ off1nosemueve=0 ' se mueve
   Next k
  ' print #1, "Valor despues de END insercion, posicion, posn "; posicion, posn
   '' posicion = MaxPos con posn es suficiente,sino se va al tramo final
-  posn = MaxPos
+  posn = MaxPos -6
 '  print #1, "usamos MxPos pra posicion, posn "; posicion, posn
   '' esto jode porque con insert=0 entra y dej aind= 0' final del ciclo
  ' print #1 ,"final ciclo moveresto a AUX"
@@ -4774,7 +4788,7 @@ Dim As String default, default2
  Dim  As Integer ni
  
 Select Case  menuOldStr 
-      Case  "[Ver]" 
+ Case  "[Ver]" 
             For ni=1 To MaxPos
                If Compas(ni).Posi = posicion Then
                   compasX = Compas(ni).nro
@@ -4903,11 +4917,40 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
 ' HACEMOS LO MISMO PARA EL TRACK ntk en edicion ya sea nto= en caso de Roll puro o pista ntk
 ' en edicion
 ' Track(ntk).trk=
-  Case "[SEPARA]"
+ Case "[SEPARA]"
+ Case "[PAN]"
+'' NO SE PUEDE USAR UN TRACKBAR DESCONFIGURA LA SELECION DE PISTASROLL Y SE QUEDA
+'' CLAVADA EN UNA PISTA AZUL Y LA OTRA PASA A BLANCA UNA CHOTADA NO SE COMOMIERDA SE SOLUCIONA
+'' PROBE DETODO HASTA LO INIMAGINABLE JAJAJ 09-11-2025
+'' MI ENTRA TECLADO ES LA POSTA PARA ENTRAR DESDE TECLADO Y CON ENTER 
+'' FALTARIA AGREGARLE CON MOUSE QUE FUNCIONE EL ACEPTAR
+   default=Str(valorpan)  
+   intervaloTxt = InputBoxJmg("Ajuste Numerico de PAN 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+   valorpan= ValInt(intervaloTxt)  '19-03-2025 
+   pmTk(ntk).pan=CUByte(valorpan)
+   pmTk(0).pan=CUByte(valorpan)
+   Print #1,"PAN SELECCIONADO ->> "; valorpan
+   Globalpan=CUByte(valorpan)
+  SetGadgetText(3,Str(valorpan))
+ Case "[CORO]"
+   default=Str(valorcoro)  
+   intervaloTxt = InputBoxJmg("Ajuste Numerico de CORO/Chorus 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+   valorcoro= ValInt(intervaloTxt)  '19-03-2025 
+   pmTk(ntk).coro=CUByte(valorcoro)
+   pmTk(0).coro=CUByte(valorcoro)
+   Print #1,"PAN SELECCIONADO ->> "; valorcoro
+   Globalcoro=CUByte(valorcoro)
+  SetGadgetText(3,Str(valorcoro))
 
-   default=Str(interva)  
-   intervaloTxt = InputBoxJmg("Ajuste Separacion Notas en pantalla " ,"Entre un Intervalo ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
-   interva= ValInt(intervaloTxt)  '19-03-2025 
+  Case "[ECO]"
+   default=Str(valoreco)  
+   intervaloTxt = InputBoxJmg("Ajuste Numerico de ECOR 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+   valoreco= ValInt(intervaloTxt)  '19-03-2025 
+   pmTk(ntk).eco=CUByte(valoreco)
+   pmTk(0).eco=CUByte(valoreco)
+   Print #1,"ECO SELECCIONADO ->> "; valoreco
+   Globaleco=CUByte(valoreco)
+  SetGadgetText(3,Str(valoreco))
 
 End Select
 
@@ -5227,10 +5270,10 @@ Print #1, "final MaxPos "; MaxPos
      ' grabamos maxpos en 5 ubyte  (1 a 12 no notapiano)
 '==============GRABAPOS
      dat.x1 = y1
-     dat.x2  = y2
-     dat.x3  = y3
-     dat.x4  = y4
-     dat.x5   = y5
+     dat.x2 = y2
+     dat.x3 = y3
+     dat.x4 = y4
+     dat.x5 = y5
 Print #1,"grabando tipoescala_num_ini en el archivo ",tipoescala_num_ini 
      dat.tipoescala_num_ini = CUByte(tipoescala_num_ini) ' 20-12-2021 - tipoescala en uso
 ''''QUEDO LIBRE grabaPos.onoff
@@ -5263,28 +5306,16 @@ Print #1,"grabando alteracion en el archivo ",alteracion
         instru=1
      EndIf
      If instru > 0 And instru <> CInt(pmTk(ntk).patch) Then
-       Trabajo(1,NA).inst = CUByte(instru)
        pmTk(ntk).patch=CUByte(instru)
-     Else 
-         If instru = CInt(pmTk(ntk).patch) Then
-            Trabajo(1,NA).inst=pmTk(ntk).patch 
-         EndIf
      EndIf
      If CANCIONCARGADA =TRUE Then ' SELECCION DE ISNTRUMENTO CON CANCION CARGADA
-        Trabajo(1,NA).inst = Track(ntk).trk(1,1).nnn
+       pmTk(ntk).patch=CUByte(instru)   
      EndIf
 '=============GRABA3===============================================
 '===>>graba3
      ' faltaba el patch!!! por eso habia incongruencias al modificar
      ' ver la carga tambien SEGUIR!!!!, TAMPOCO ESTABAN NA Y NB
      dat.patch= pmTk(ntk).patch ' 14-04-2024 o sea inst
-        If Roll.trk(1,NA).inst <> pmTk(0).patch And Roll.trk(1,NA).inst > 0 Then
-           dat.patch=Roll.trk(1,NA).inst
-' asi reupero los patch o inst  de archivos roll viejos
-'***************************************************
-' o sea a partir  de ahora deberia usar graba3.inst !!!
-'****************************************************
-        EndIf
      dat.portout = pmTk(ntk).portout ''EL DISPOSITIVO
      dat.eco = Globaleco
      pmTk(ntk).eco=Globaleco   
@@ -5380,6 +5411,8 @@ End  Sub
 Sub CargarPistasEnCancion ()
 ' cada vez que cargo borro la info de fechas de pistas anterior
 ROLLCARGADO=FALSE
+
+ntk=0
 If instancia=ARG0_EN_LINEA Then
   DisableGadget(PISTASROLL,0) ' HABILITAMOS LISTA DE PISTAS
 EndIf
@@ -5393,7 +5426,7 @@ Print #1,"inicia CargaPistasEnCancion"
      filename = Dir (NombreCancion+"\*.rtk")
      Print #1,"filename encancion > 0 ",filename
      If filename = "" Then ' no hay ningu archivo dentro del dir de cancion
-        ntk=1
+        ntk=0
         Print #1,"dice que no hay archivos "
         CANCIONCARGADA=FALSE
         ' NO HAY NADA QUE CARGAR
@@ -5431,6 +5464,7 @@ Print #1,"inicia CargaPistasEnCancion"
         Print #1,"nombre en CargarPistasEnCancion ,Numpista",nombre, ntk
          'se carga track nada mas si dialogo simualmos un ubirtk>0 (1)
 ' chequeamos que todos los maxpos sean iguales sino se corrige
+        
         CargarTrack  (Track() , ntk, 1 ) ' se cargo a track x nada mas
 
  'durante la cargaTrack el programa va a Rolloop se encuentra con SC_TAB
@@ -5441,16 +5475,17 @@ Print #1,"inicia CargaPistasEnCancion"
         filename = Dir()
                 
        Loop
-       tope=mayor  ' el nro tope de la lista
+       Tope=mayor  ' el nro tope de la lista
        Print #1,"CARGO PISTAS MAXIMA CANTIDAD TOPE=",tope
        CANCIONCARGADA=TRUE
        NADACARGADO=FALSE
-       ntk=1   ' tab le suma 1 pero si creo pistas estria  mal 05-03-2022 ï¿½ï¿½ï¿½
+       ntk=0   ' tab le suma 1 pero si creo pistas estria  mal 05-03-2022 ï¿½ï¿½ï¿½
     EndIf
-
+ntk=1
 cargaCancion=CARGAR_NO_PUEDE_DIBUJAR '12-02-2022 mientras carg las pista el 1 indica cargando pistas    
     Print #1,"FIN CargaPistasEnCancion no debe calcuar *po ",*po
     Print #1,"-------------------------------------------------------"
+clickpista=SI 'abre tab una sola vez y se posiciona en pista 1
 'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  05-mar-2024 veremos
 'mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0 
       
@@ -5655,13 +5690,14 @@ EndIf
 
      graba3.pb = TipoCompas ' 26-04-2024
      graba3.nanchofig = CUByte(nanchofig*10)
-     '  print #1,"MaxPos grabada en Trabajo ",MaxPos
+       print #1,"MaxPos grabada en Trabajo ",MaxPos
 Dim mit As aUshort
 mit.ST = tiempoPatron
 graba4.pan= mit.tp1
 graba4.pb = mit.tp2
+Print #1,"PASO GRABA4 tiempo patron elimino fileflush vermos"
+  ''   FileFlush (gt)
 
-     FileFlush (gt)
      Put #gt, ,grabaPos
      Put #gt, ,grabaLim
      Put #gt, ,graba3  
@@ -5713,7 +5749,9 @@ Dim As Integer i,ntkold
 ' los que no se ven ya fueron refrescados , o sea debo
 ' grabar Track n a disco y al final grabar rolla track solo para
 'el visual
-          GrabarTrack ntk  
+            GrabarRollaTrack (0) ' nuevo deberia ser asi sin cambiar estencion 0
+ 
+        '''   GrabarTrack ntk  tenia esto cual va 
            Sleep 20           
        EndIf
 
@@ -6253,36 +6291,6 @@ Posy=y0 +100
 
 End Sub
 '''---------
-Sub SelPan (ByRef Pan2 As ubyte)
-Var hwndpan=OpenWindow("",300,500,850,150)
-ButtonGadget(1,20,20,60,25,"Aplicar")
-TrackBarGadget(2,20,60,800,40,0,127)
-TextGadget(3,200,20,30,20)
-SetTrackBarPos(2,CLng(pmTk(ntk).pan))
-Do
-   var event=WaitEvent()
-   If event=EventGadget Then
-      Select case EventNumber
-         Case 2
-            Pan2=CUByte(GetTrackBarPos(2))
-              pmTk(ntk).pan=Pan2
-              pmTk(0).pan=Pan2
-       Print #1,"PAN SELECCIONADO ->> "; Pan2
-            SetGadgetText(3,Str(Pan2))
-              
-         Case 1
-            Close_window (hwndpan)
-            Exit Do
-      End Select
-   EndIf
-   If event=Eventclose Then
-        Close_window (hwndpan)
-        Exit Do 
-   EndIf
-Loop
-
-
-End Sub
 '---------
 Sub SelEco (ByRef rever As ubyte)
 Var hwndeco=OpenWindow("",300,500,1050,150)
@@ -6315,38 +6323,6 @@ Loop
 
 
 End Sub
-'------
-Sub Selcoro (ByRef coro As ubyte)
-Var hwndcoro=OpenWindow("",300,500,1050,150)
-ButtonGadget(1,20,20,60,25,"Aplicar")
-TrackBarGadget(2,20,60,1000,40,0,127)
-TextGadget(3,200,20,30,20)
-SetTrackBarPos(2,Clng(pmTk(ntk).coro))
-Do
-   var event=WaitEvent()
-   If event=EventGadget Then
-      Select case EventNumber
-         Case 2
-            coro=GetTrackBarPos(2)
-            pmTk(ntk).coro=coro
-            pmTk(0).coro=coro 
-       Print #1,"CHORUS SELECCIONADO ->> "; coro
-            SetGadgetText(3,Str(coro))
-              
-         Case 1
-            Close_window (hwndcoro)
-            Exit Do 
-      End Select
-   EndIf
-   If event=Eventclose Then
-        Close_window (hwndcoro)
-        Exit Do 
-   EndIf
-
-Loop
-
-
-End Sub
 '-------
 Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer) 
 Dim As hwnd haw,hwl
@@ -6359,18 +6335,25 @@ For x= 1 To 2
      hwl=  ListViewGadget(1,10,10,300,400,,,,32,LVS_SINGLESEL  )
     ' listports()
      GadgetToolTip(1,"Dos Columnas la derecha es la numeracion de RollMusic, la izquierda la que se suele usar." )
-  
   If pasoc=0 Then
        AddListViewColumn(1, "Elegir Octava Desde ",0,0,250)
        For aa =1 To 9 
-           AddListViewItem(1, listoctava(aa)+"-"+Str(aa),0,aa,0)
+          If  desde = aa  Then
+           AddListViewItem(1, "[x] "+listoctava(aa)+"-"+Str(aa),0,aa,0)
+          Else  
+           AddListViewItem(1, "[ ] " +listoctava(aa)+"-"+Str(aa),0,aa,0)
+          EndIf  
        Next
        
   EndIf   
-  If pasoc=1 Then  
+  If pasoc=1 Then 'HASTA  
        AddListViewColumn(1, "Elegir Octava Hasta ",0,0,250)
-       For aa =1 To 9 
-           AddListViewItem(1, listoctava(aa)+"-"+Str(aa),0,aa,0)
+       For aa =1 To 9
+           If  hasta = aa  Then
+             AddListViewItem(1, "[x] "+listoctava(aa)+"-"+Str(aa),0,aa,0)
+           Else  
+             AddListViewItem(1, "[ ] " +listoctava(aa)+"-"+Str(aa),0,aa,0)
+           EndIf  
        Next
   EndIf
 

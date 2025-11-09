@@ -1,7 +1,7 @@
-    Ayuda Prelimiar Básica RollMusic con  0.300 seria RollMusic 0.5000 antigua numeracion
+    Ayuda Prelimiar Básica RollMusic   0.347 seria RollMusic con Ticks
     ====================================================================================
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, ALGUNAS COSAS YA SE ADAPTARON
-      Y FUNCIONAN BIEN PARA TICKS )
+      Y FUNCIONAN BIEN PARA TICKS . version 0.347, falta mucho testeo-.. )
 
      INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
@@ -1265,11 +1265,7 @@
     III) 
 
          1) Play o Ejecutar: Ultima versión en un acorde cada nota se ejecuta con su correspondiente 
-            duracion si hay diferentes duraciones en un mismo acorde..
-         Se ha probado   
-           - ligadura unica entre 3 notas seguidas.
-           - ligadura de 2 acordes en todas las notas o alguna/s sean estos
-             con todas sus duraciones iguales o diferentes.
+            duracion si hay diferentes duraciones en un mismo acorde. PARA Roll con Ticks.
           PLAY EN EL EDITOR
             Para dar play se puede usar la barra espaciadora o Ctrl click en [Reproducir], 
          para detener el play pulsar P.  En el 1er caso la barra espaciadora ejecuta la 
@@ -1327,7 +1323,11 @@
       con las notas de la secuencia. Todos las pistas se cargan, pero no en visualizacion.   
       Al dar click en una pista de la lista y luego otro click sobre el grafico
       se carga la secuencia en Roll de Visualizacion y edcion,o pulasndo TAB se recorera circularmente
-      una a una cada Pista.
+      una a una cada Pista. DURANTE EL PLAY SE PODRA VER LAS DISTINTAS PISTA SI TODAS ELLAS SON DE TIPO
+      EJECUCION, O TODAS MANUALES, JUNTARLAS TRAE INCOMPATIBILIDADES NO RESUELTAS. NO USAR TAB DURANTE
+      UN PLAY DE CANCION CON MEZCLA DE SECUENCAS DE EJECUCIONES Y SECUENCIAS DE EDICIONES MANUALRES.
+      AL GRABAR UNA MODIFICACION DE UNA PISTA USAR [ROLL=>TRACK].  
+      ([GRABAR] puede detectar si es un roll o un rtk , no lo esta grabando bien,,se corregira.)
     - AL CARGAR UNA CANCION se muestra el TRACK o PISTA 1 . 
       
     -------------------------0-0-0------------------------------------

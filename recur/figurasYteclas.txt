@@ -25,36 +25,13 @@
   Luego 3I = 3L + 3L 
   podria tener 
   |3I+3L  3L+3I| = |I  I| La duracion total es la misma pero puedo agrupar 2 tracks en 
-  formato de tresillos formando acordes iguales o sea
+  formato de tresillos formando acordes iguales o sea 
   track 1)   |3L+3L+3L 3L+3L+3L|
   TRACK 2)   |3L+3L 3L+3L 3L+3L|
+  Esto ya no es valido en RollMusic con Ticks no hace falta ahcer estas construcciones
  LUEGO TENGO 6 ACORDES DE IGUALES DURACIONES PERO SUENAN ASI
   TRACK 1)   | I   I   | ===> |3L+3L+3L 3L+3L+3L|
   TRACK 2)   | 3I 3I 3I| ===> |3L+3L 3L+3L 3L+3L|
-  Como vemos hay 5 columnas iguales solo que algunas estan ligadas y otras no.
-  El program ejecuta por columna manda toda una columna entera de todos los tracks
-  a ejecutar y luego se construyen los retardos de cada uno segun la ligadura
-  y los silencios que hubiera. Tambien vemos que un tresillo de corcheas es una negra
-  3L+3L+3L= I
-  Es como buscar el valor mas chico comun a ambos tracks. En este caso el 3L 
-  Cada vez que agreguemos un track con figuras mas chicas habra que hacer ese 
-  proceso. Quedan 2 posibilidades: que el programa lo haga automaticamente en el
-  futuro (algo lo hace pero a nivel de track). O al comenzar una cancion
-  se decidira cual será el valor mas chico de duracion a usar. Ej una corchea
-  o una semicorchea o un 3L o un 3F..Si se elige una division chica
-  el programa podria representar cada figura en funcion de la entrada auto-
-  maticamente, ej entrar una negra y la menor elegida es una semicorchea
-  luego al pulsar 1 y luego una letra de nota ejemplo Do (C)
-  el programa podria mostrar   F+F+F+F = I
-  O  si sse elige fusa E+E+E+E+E+E+E+E = I
-  Y en vez de tipear todo eso si se le dice al programa con que division mas 
-  chica trabajaremos, el convertirá la duracion entrada como una suma de esa 
-  division chica, y asi se apreciara mas visualmente las partes. Y el programa
-  ejecutara la cancion con acordes iguales que es lo que hasta ahora ejecuta mejor.
-  y ademas tendremos un buen control de las partes
-  El mismo ejemplo pero con silencios 
-  el programa podria mostrar  sF+sF F+F     = sL L
-  O  si sse elige fusa  sE+sE+sE+sE E+E+E+E = sL L
 
    Cada negra = 3I+3L 
    Y en un solo compas de dos negras | I I | entra un tresillo de negras

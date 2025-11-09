@@ -1,8 +1,8 @@
-On Error Goto errorhandler
+
          If NombreCancion > "" And S5=0 Then 
             SetForegroundWindow(hwndC)
          EndIf
-
+Print #1," ROLLCTRLMENU EventNumber !!! ", EventNumber
          Select Case EventNumber
             'CON ROLL , SIN ROLL
            Case 1006, 10061   '<=========== CARGAR CANCION con roll, o sin Roll
@@ -21,8 +21,7 @@ On Error Goto errorhandler
                 Exit Do                 
              EndIf
   '           Print #1,"termino 1006 va a abrir Roll"
-          SetForegroundWindow(hwnd)
-
+         'kiki SetForegroundWindow(hwnd)
 
            Case 10062
 ' LO ABRE ACA PERO ES DEPENDIENTE DE LA VENTANA  DE CONTROL 
@@ -37,7 +36,7 @@ On Error Goto errorhandler
            Case 10063 ' CARGAR CANCION EN UN ROLL SIN VENTANA DE CONTROL
 ' HAY QUE PASA EL NOMBRE DEL DIRECTORIO NADA MAS,,,Y EL PATH
 ' era la 1063 antigua
-            CTRL1063 ()             
+            CTRL1063 ()  
 ' ----------------------------------------------------------------------
            Case 1007 '<============ grabar cancion bosquejo
 ' 26-02-2022 desarrollo debo probar el codigo echo hace mucho 
@@ -130,9 +129,12 @@ Print #1,"usarmarcoins ", usarmarcoins
           carga=1
           SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
-           Case 1012 ' <====== Grabar Pista Como, Copia una pista a otra  nueva nueva
-   '        print #1,"entro a 1012 Grabar Pista Como, Copia una pista a otra  nueva nueva"
-             
+           Case 1012 ' <======  Copia una pista a otra  nueva nueva
+           print #1,"//////////////////////////////////////////////////////////////////////////"
+           print #1,"///====>>>entro a 1012 Grabar Pista Como, Copia una pista a otra  nueva nueva"
+           print #1,"//////////////////////////////////////////////////////////////////////////"
+             FILEFLUSH(-1)
+             CANCIONCARGADA =TRUE
              CTRL1012 (SALIDA)
 
              If SALIDA=1 Then
@@ -141,7 +143,7 @@ Print #1,"usarmarcoins ", usarmarcoins
              End If 
 '-----------------------------------------------------------------------
            Case 1014  ' <============= TRACK A ROLL
-           TrackaRoll (Track(), ntk , Roll ) ' no usa ubirtk
+           TrackaRoll (Track(), ntk , Roll,"case104" ) ' no usa ubirtk
           
            '''GrabarRoll()
            LLAMA_GRABAR_ROLL()
@@ -351,7 +353,7 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
                 param.ubiroll=ubiroll
                 param.ubirtk=ubirtk
 
-                posn=0
+                posn=1
      '     SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1031 ' <========  SELECCION DE CANAL DE LA PISTA (10 DRUMS)
@@ -373,8 +375,8 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
             '      ChangeProgram ( CUByte (instru) , pmTk(ntk).canalsalida,portsal) ' habilito de neuvo 13-02-2022 �
              ''  EndIf
                If instru=0 Then instru=1 EndIf
-                Roll.trk(1,NA).inst= CUByte(instru)
-                Track(ntk).trk(1,1).nnn=CUByte(instru)
+                pmTk(ntk).patch=CUByte(instru)
+                pmTk(0).patch=CUByte(instru) 
               ' grabar la pistacomo en 1011
                 print #1, "CTRL1040 Grabando inst a disco, instru ",nombre,instru
                 
@@ -437,8 +439,8 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
           '         ChangeProgram ( CUByte (instru) , pmTk(ntk).canalsalida,portsal) ' habilito de nuevo
        '        EndIf
 
-               Roll.trk(1,NA).inst= CUByte(instru)
-               Track(ntk).trk(1,1).nnn =CUByte(instru)
+               pmTk(0).patch=CUByte(instru)
+               pmTk(ntk).patch=CUByte(instru)
               ' grabar el track 
    '         print #1, "Click Grabando inst a disco pista con GrabarRollaTrack(0) ",nombre
             Dim As String nombreg
@@ -458,21 +460,30 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
               carga=1
   
         '      SetForegroundWindow(hwnd)
-           Case 1051 ' PANEO DE UN CANAL 
-              
-             threadpan=threadCall SelPan(Globalpan)
-
+           Case 1051 ' PANEO DE UN CANAL
+             If abrirRollCargaMidi=2 Then
+                SetForegroundWindow(hwnd)
+                Sleep 2 
+             EndIf
+            menuOldStr="[PAN]" 
+            threadpan=threadCall EntrarTeclado()
 Print #1,"///----SEL 1051 pan Globalpan ",Globalpan
              '''Paneo (GlobalPan,pmTk(ntk).canalsalida,pmTk(ntk).portout)
            Case 1052 ' REVERVERACION DE UN CANAL 
               
              threadeco=threadCall SelEco(Globaleco)
-
+             If abrirRollCargaMidi=2 Then
+             SetForegroundWindow(hwnd)
+             EndIf  
 Print #1,"///----SEL 1052 ECO GlobalECO ",Globaleco
 
-           Case 1053 ' REVERVERACION DE UN CANAL 
-              
-             threadcoro=threadCall Selcoro(Globalcoro)
+           Case 1053 ' CORO /CHORUS  
+             If abrirRollCargaMidi=2 Then
+                SetForegroundWindow(hwnd)
+                Sleep 2 
+             EndIf
+            menuOldStr="[CORO]" 
+            threadpan=threadCall EntrarTeclado()              
 
 Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
    
@@ -568,13 +579,17 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
               nombreArchivo="0"
               menuOldStr="[TEMPO]"
               thread3= ThreadCall EntrarTeclado()
-          SetForegroundWindow(hwnd)
+             If abrirRollCargaMidi=2 Then
+             SetForegroundWindow(hwnd)
+             EndIf   
 '-----------------------------------------------------------------------
            Case 1081 ' factor de multi tempo
               nombreArchivo="0"
               menuOldStr="[FACTOR]"
               thread3= ThreadCall EntrarTeclado()
-          SetForegroundWindow(hwnd)
+             If abrirRollCargaMidi=2 Then
+             SetForegroundWindow(hwnd)
+             EndIf  
 '-----------------------------------------------------------------------
 '-----------------------------------------------------------------------
            Case 1090 ' Reproducir cancion
@@ -596,8 +611,9 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
          EndIf   
           '    Dim As Any Ptr thplayC = ThreadCall  playCancion(track())
           '    PARAR_PLAY_MANUAL = 1
- 
+             If abrirRollCargaMidi=2 Then
              SetForegroundWindow(hwnd)
+             EndIf 
 '-----------------------------------------------------------------------
            Case 1091 ' <=========== Repeticiones de un nro de compases
              If pasoZona1 > 0 And pasoZona2 > 0  Then
@@ -607,7 +623,9 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
              Else
                MessBox ("Repeticiones", "Debe entrar una zona de campases, Ctrl-clik en comienzo y Ctrl-click final")
              EndIf
+             If abrirRollCargaMidi=2 Then
              SetForegroundWindow(hwnd)
+             EndIf 
 '-----------------------------------------------------------------------
            Case 1092 ' abrir un midi-in ...con callback
 'Reproducir MIDI-IN (teclado) por  MIDI-OUT. Abre Puerto MIDI-IN
@@ -647,7 +665,9 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
                   SetStateMenu(hMessages,1100,0)
                   usarmarco=0
              End Select
-          SetForegroundWindow(hwnd)
+             If abrirRollCargaMidi=2 Then
+             SetForegroundWindow(hwnd)
+             EndIf
 '-----------------------------------------------------------------------
            Case 1101 ' marco o no marco par ainstancias
 '0 - the menu is active, the checkbox is not selected
@@ -664,7 +684,9 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
                   SetStateMenu(hMessages,1101,0)
                   usarmarcoins=0
              End Select
+             If abrirRollCargaMidi=2 Then
             SetForegroundWindow(hwnd)
+             EndIf 
 '-----------------------------------------------------------------------
            Case 1102
                  usarAcordesIguales=1
@@ -673,7 +695,9 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
                  SetStateMenu(hmessages,1103,0)
                  SetStateMenu(hmessages,1104,0)
                  SetStateMenu(hmessages,1105,0)
-            SetForegroundWindow(hwnd)
+             If abrirRollCargaMidi=2 Then
+             SetForegroundWindow(hwnd)
+             EndIf
 '-----------------------------------------------------------------------
            Case 1103
                  usarAcordesIguales=1
@@ -682,7 +706,9 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
                  SetStateMenu(hmessages,1103,3)
                  SetStateMenu(hmessages,1104,0)
                  SetStateMenu(hmessages,1105,0)
-            SetForegroundWindow(hwnd)
+             If abrirRollCargaMidi=2 Then
+             SetForegroundWindow(hwnd)
+             EndIf 
 '-----------------------------------------------------------------------
            Case 1104
                  usarAcordesIguales=1
@@ -691,7 +717,9 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
                  SetStateMenu(hmessages,1103,0)
                  SetStateMenu(hmessages,1104,3)
                  SetStateMenu(hmessages,1105,0)
-            SetForegroundWindow(hwnd)                 
+             If abrirRollCargaMidi=2 Then
+            SetForegroundWindow(hwnd)
+            EndIf                 
 '-----------------------------------------------------------------------
            Case 1105
                  usarAcordesIguales=0
@@ -699,7 +727,9 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
                  SetStateMenu(hmessages,1103,0)
                  SetStateMenu(hmessages,1104,0)
                  SetStateMenu(hmessages,1105,3)
-            SetForegroundWindow(hwnd)                 
+             If abrirRollCargaMidi=2 Then
+             SetForegroundWindow(hwnd)
+             EndIf                  
 '-----------------------------------------------------------------------
            Case 1106 ' <======== escala de la secuencia, similar a la de instrumentos
                pasozona1=0
@@ -723,8 +753,10 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
       '        Print #1,"armarescla desde 1106"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
-' --------------------------   
-            SetForegroundWindow(hwnd)
+' --------------------------
+             If abrirRollCargaMidi=2 Then
+             SetForegroundWindow(hwnd)
+             EndIf 
 '-----------------------------------------------------------------------
            Case 1107 ' <======== usamos sostenidos o bemoles ???
               pasozona1=0
@@ -734,8 +766,9 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
        '       Print #1,"armarescla desde 1107"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
-
-            SetForegroundWindow(hwnd)
+             If abrirRollCargaMidi=2 Then
+             SetForegroundWindow(hwnd)
+             EndIf
 '-----------------------------------------------------------------------
            Case 1108 '<======= alteraciones sotenidos o bemoles
               pasozona1=0
@@ -749,8 +782,9 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
        '       Print #1,"armarescla desde 1108"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
-          
-            SetForegroundWindow(hwnd)
+             If abrirRollCargaMidi=2 Then
+             SetForegroundWindow(hwnd)
+             EndIf
 ' --------------------------   
            Case 1109 ' <======== alteraciones sotenidos o bemoles
               pasozona1=0
@@ -760,23 +794,28 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
        '       Print #1,"armarescla desde 1109"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
-      
-            SetForegroundWindow(hwnd)
+             If abrirRollCargaMidi=2 Then
+             SetForegroundWindow(hwnd)
+             EndIf 
 '-----------------------------------------------------------------------
            Case 1110
    
              MessBox ("", acercade)
-            SetForegroundWindow(hwnd)
+             If abrirRollCargaMidi=2 Then
+             SetForegroundWindow(hwnd)
+             EndIf
 '-----------------------------------------------------------------------
            Case 1111 '<========== cambiode escala
               CTRL1111 ()
- 
-            SetForegroundWindow(hwnd)             
+             If abrirRollCargaMidi=2 Then
+            SetForegroundWindow(hwnd)
+            EndIf              
 '-----------------------------------------------------------------------
            Case 1112 '<========= cambiode a escala Alternativa de la Principal
-              CTRL1112() 
+              CTRL1112()
+             If abrirRollCargaMidi=2 Then
             SetForegroundWindow(hwnd)  
-
+            EndIf  
            Case 1113 ' usar metronomo
 
              metronomo_si=GetStateMenu(hmessages,1113)
@@ -789,8 +828,9 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
                     SetStateMenu(hmessages,1113,3)
 
               End Select
+             If abrirRollCargaMidi=2 Then
               SetForegroundWindow(hwnd)
-
+             EndIf
            Case 1114
 
              sonidopista_si=GetStateMenu(hmessages,1114)
@@ -803,8 +843,9 @@ SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
                     SetStateMenu(hmessages,1114,3)
 
               End Select
+             If abrirRollCargaMidi=2 Then
               SetForegroundWindow(hwnd)
-
+             EndIf
            Case 1200 'Seleccionar  Puertos MIDI-IN SOLO PARA PORTS DE EJECUCION POR AHORA
 ' seleccion de portin , 2:portin. ntkp:salida
 ' ->  npi: numero port entrada DIFERENCIA PARA ABAJO

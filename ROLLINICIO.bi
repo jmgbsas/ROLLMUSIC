@@ -31,7 +31,7 @@
 '#Include Once "/win/commctrl.bi"
 '#Include "crt/stdio.bi"
 #include "file.bi"
-#include "fbgfx.bi" ' se carga antes de windows.bi para evitar duplicates..o conflictos
+#include "fbgfxjmg.bi" ' se carga antes de windows.bi para evitar duplicates..o conflictos
 '#Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
 #if __FB_LANG__ = "fb"
 Using FB '' Scan code constants are stored in the FB namespace in lang FB
@@ -345,7 +345,7 @@ If desde = 0 And hasta = 0  And instancia=ARG0_EN_LINEA Then
  'pmTk(ntk).hasta=hasta
 EndIf
 ' calculo teorico a tiempopatron 60, 1 SEG 192 DIVISIONES 
-CantTicks=cantMin * 60 * 96 '  (15 MIN * 60 * 96) = 86400
+ CantTicks=cantMin * 60 * 96 '  (15 MIN * 60 * 96) = 86400
 ' 60 seg * 96 divisiones= 5760 divisiones en 1 min
 ' Y 3W LA MENOR FIGURA 3W DE LA 5ta LINEA de tresillos
 ' iniciamos vector de 15 minutos=660 segundos
@@ -366,7 +366,7 @@ CantTicks=cantMin * 60 * 96 '  (15 MIN * 60 * 96) = 86400
 ' para 240 2,6041 mseg...pero la cantidad de Ticks es fija siempre  igual
 ' para un determinado tiempo de track..
 ' como tomamos tempo=120 la TMFC sera 5,20833 mseg,
-Dim Shared As paso compas (1 To CantTicks) 'cada item es la posicion en donde
+ReDim Shared As paso compas (1 To MaxPos) 'cada item es la posicion en donde
 
 desdevector = desde
 hastavector = hasta
@@ -395,8 +395,8 @@ ReDim (Roll.trk ) (1 To CantTicks,NB To NA) ' Roll de trabajo en Pantalla
 
 'Print #1,"instru ",instru
 ' ojo debe se NB al reducir octabas NB cambia
-If instru > 0 Then
-  Roll.trk(1,NA).inst = CUByte(instru)
+If instru > 0 Then ''
+  pmTk(0).patch=CUByte(instru)
   patchsal=instru
 EndIf
 'Print #1,"Roll.trk(1,NA).inst ",Roll.trk(1,NA).inst
@@ -547,7 +547,7 @@ posmouseOld = 0:posmouse = 0
 COMEDIT=LECTURA:resize = False
 po = @octaroll
 *po = hasta -1 ' test 09-09-2021 
-s1=0:s2=0:s3=0:s4=0:s5=2:s6=0:s7=0:s8=0:s9=0
+s1=0:s2=0:s3=0:s4=0:s5=2:s6=0:s7=0:s8=0:s9=0:s10=0
 If font=0 Then 
  font=18
 EndIf
@@ -563,6 +563,7 @@ inc_Penta = Int((ALTO - BordeSupRoll) /(40)) ' 26 double 1330/66 para 1400 resol
 
 ' *******************************************************++
 BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio muestro octava 4 la central C3
+
 ' *************************************************+
 ' inc_Penta=separacion de lineas
 '---------------------
@@ -620,8 +621,12 @@ ndeltaip=ValInt(sdeltaip)
 nVerEscalasAuxiliares=ValInt(sVerEscalasAuxiliares)
 nanchofig =CSng(sanchofig)
 nVerCifradoAcordes=ValInt(sVerCifradoAcordes)
-
-
+If nfont > 20 Or nfont < 10 Then
+   nfont = 18
+EndIf
+If nanchofig > 5 Then
+   nanchofig = 1.5
+EndIf  
 Print #1,"nanchofig " ,nanchofig
 If nfont > 0 Then
   font=nfont
@@ -782,14 +787,14 @@ Function InputBoxJmg(ByRef Caption As USTRING, ByRef Message As USTRING, ByRef D
 	InputBoxJmg_.dm(0).dmSize = sizeof(DEVMODE)
 	EnumDisplaySettings( 0, ENUM_CURRENT_SETTINGS, @InputBoxJmg_.dm(0))
 	#ifdef UNICODE
-		InputBoxJmg_.hWnd  = CreateWindowEx(0, "#32770", *Caption, WS_TILED Or WS_VISIBLE, InputBox_.dm(0).dmPelsWidth/2-155, InputBox_.dm(0).dmPelsHeight/2-70, 310, 130, 0, 0, 0, 0 )
+		InputBoxJmg_.hWnd  = CreateWindowEx(0, "#32770", *Caption, WS_TILED Or WS_VISIBLE, InputBox_.dm(0).dmPelsWidth/2-155, InputBox_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
 		InputBoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", *DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, InputBox_.hwnd,0,0,0)
-		InputBoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, 106, 65, 80, 25, InputBox_.hwnd,0,0,0)
+		InputBoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, 106, 100, 90, 25, InputBox_.hwnd,0,0,0)
 		InputBoxJmg_.hWnd3 = CreateWindowEx(0, "Static", *Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, InputBox_.hwnd,0,0,0)  	
 	#else	
-		InputBoxJmg_.hWnd  = CreateWindowEx(0, "#32770", Caption, WS_TILED Or WS_VISIBLE, InputBoxJmg_.dm(0).dmPelsWidth/2-155, InputBoxJmg_.dm(0).dmPelsHeight/2-70, 310, 130, 0, 0, 0, 0 )
+		InputBoxJmg_.hWnd  = CreateWindowEx(0, "#32770", Caption, WS_TILED Or WS_VISIBLE, InputBoxJmg_.dm(0).dmPelsWidth/2-155, InputBoxJmg_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
 		InputBoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, InputBoxJmg_.hwnd,0,0,0)
-		InputBoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, 106, 65, 80, 25, InputBoxJmg_.hwnd,0,0,0)
+		InputBoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, 106, 100, 90, 25, InputBoxJmg_.hwnd,0,0,0)
 		InputBoxJmg_.hWnd3 = CreateWindowEx(0, "Static", Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, InputBoxJmg_.hwnd,0,0,0)  	
 	#EndIf
 	
@@ -830,10 +835,10 @@ Function InputBoxJmg(ByRef Caption As USTRING, ByRef Message As USTRING, ByRef D
         Case InputBoxJmg_.hWnd2 ' boton ok
           Select Case InputBoxJmg_.msg.message
               Case WM_LBUTTONDOWN
-  						SendMessage(InputBoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@InputBoxJmg_.mess))
+  			SendMessage(InputBoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@InputBoxJmg_.mess))
 						dim as USTRING sRet = InputBoxJmg_.mess
 						Function = sRet
-						DestroyWindow(InputBoxJmg_.hWnd)'
+						DestroyWindow(InputBoxJmg_.hWnd)
 						InputBoxJmg_.flag=0
 						Exit Function
           End Select
