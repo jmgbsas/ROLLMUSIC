@@ -13,7 +13,8 @@ Print #1," ROLLCTRLMENU EventNumber !!! ", EventNumber
               StatusBarGadget(BARRA_DE_ESTADO,"1.0 ROLL GRAFICO NO DEBE ESTAR LEVANTADO, SI LO ESTÁ CIERRE PRIMERO EL GRAFICO BUSQUE LA CARPETA Y ACEPTE" )
 
               CTRL100610061 (hMessages , Tope )
-              StatusBarGadget(BARRA_DE_ESTADO," " )             
+ 
+StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIONES DE TECLADO CON MANUALES, SE CONGELARA LA SECUENCIA" )           
              If abrirRoll=NO_CARGAR And NombreCancion > ""  Then
                 abrirRoll=CARGAR
                 cargaCancion=CARGAR_NO_PUEDE_DIBUJAR

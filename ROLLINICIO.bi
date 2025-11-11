@@ -783,6 +783,9 @@ End Type
 Function InputBoxJmg(ByRef Caption As USTRING, ByRef Message As USTRING, ByRef DefaultString As USTRING, ByVal flag As Integer, ByVal flag2 As Integer, hParentWin as Hwnd = 0) As USTRING
 ' Autor:JMG modificacion windows9 inputBox ...experimental si anda bien al vez de incropore
 ' a windows9 y avisamos si quieren usarlo  
+Dim As Integer mix, miy
+Dim As mouse m
+ 
 	Dim InputBoxJmg_ As InputBoxJmg_
 	InputBoxJmg_.dm(0).dmSize = sizeof(DEVMODE)
 	EnumDisplaySettings( 0, ENUM_CURRENT_SETTINGS, @InputBoxJmg_.dm(0))
@@ -826,7 +829,7 @@ Function InputBoxJmg(ByRef Caption As USTRING, ByRef Message As USTRING, ByRef D
                    F1=Mid (sRET,1) 'el primero
                    F2=Mid (sRET,LL-1) ' el ultimo ascii
 
-                   If Asc(F1) =13 Or Asc(F2) =13 Then
+                   If Asc(F2) =13 Then
  		   		       DestroyWindow(InputBoxJmg_.hWnd)
 					       InputBoxJmg_.flag=0
 					       Exit Function

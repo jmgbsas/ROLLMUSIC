@@ -817,7 +817,7 @@ EndIf
 STARTMIDI=Timer
 old_time_on=STARTMIDI
 ''Print #1,"old_time_on "; old_time_on
-Dim As Double  tickUsuario=0.01041666 * 240/tiempoPatron
+Dim As Double  tickUsuario=0.005 * 240/tiempoPatron '''tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
@@ -826,7 +826,7 @@ Print #1,"TickUsuario "; tickUsuario
 'Print #1,"VEO Track(0).trk(1,1).ejec "; Track(0).trk(1,1).ejec 
 ' ======================= FOR JPLY PLAYALL =======================
 ''Print #1,"cominzo final PARAR_PLAY_MANUAL "; comienzo , final, PARAR_PLAY_MANUAL
-
+Dim As float ajuste=1.0
 For jply=comienzo To final
 ''Print "*******************************************************************"
 ''Print "AL TERMINAR EL PLAY APARECE EL MENU. CON SHIFT-M APARECERA DE NUEVO"
@@ -861,25 +861,27 @@ For jply=comienzo To final
 ' no se si eliminarlo esto Compas no se si almacena los -1 -2 etc
 ''Print #1,"Roll.trk(1,NA).onoff si es uno sin sonido!! ",Roll.trk(1,NA).onoff
 ''Print #1,"pmTk(ntk).ejec  sonido!! ",pmTk(ntk).ejec
-
+  ajuste = pmTk(0).vol/127
+' o sea pmTk(0).vol es el ajuste se lo pasa como una fraccion del maximo rango 127
 If pmTk(0).ejec =1 Or Roll.trk(1,NA).onoff = 1 Then
- Print #1,"ARCHIVO DATOS EJECUCION POR TECLADO "
+' Print #1,"   UN ARCHIVO CON DATOS DE EJECUCION POR TECLADO CONVERTIDOS A ROLL"
 Else
-Print #1,"ARCHIVO DATOS EDICION MANUAL "
+'Print #1,"ARCHIVO DATOS EDICION MANUAL "
+ 
   If Compas(jply).nro = -1 Then
-    velpos=vfuerte
+    velpos=vfuerte * ajuste
   EndIf
   If Compas(jply).nro = -2 Then
-    velpos=vdebil
+    velpos=vdebil  * ajuste
   EndIf
   If Compas(jply).nro = -3 Then
-    velpos=vsemifuerte
+    velpos=vsemifuerte * ajuste
   EndIf
   If Compas(jply).nro = -4 Then
-    velpos=vdebil
+    velpos=vdebil * ajuste
   EndIf
   If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
-    velpos=vdebil
+    velpos=vdebil * ajuste
   EndIf
 
   If Compas(jply).nro = 0 Then 
@@ -891,7 +893,9 @@ EndIf
 '  print #1," (((PALL 0:)))---TICK NRO:[";jply;"] ----------------"
 '  print #1," ---------------000000000000000000000-----------------"
 
-  
+'Si el usuario ajusta el volumen del parametro de la pista
+'se calcula un factor de ajuste, debo guardas el ajuste en pmtk y en el archivo
+' luego levantarlo pasarlo a pmtk
 ' ============= For NB To NA ===============
   For i1=NB To NA 
 ' poner la velocidad original  del ejec si viene de una ejec
@@ -917,7 +921,8 @@ If i1<= NA-13 Then
 
       If pmTk(0).ejec=1  Then ''''Roll.trk(1, NA).onoff=1  Then
        ' Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
-        vel=Roll.trk(jply, i1).vol
+        vel=Roll.trk(jply, i1).vol  * ajuste
+
       Else
         vel=velpos
 ''        Print #1,"2 velpos vel ";velpos, vel

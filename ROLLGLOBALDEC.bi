@@ -92,6 +92,11 @@ Const BARRA_DE_ESTADO = 33
 Const TEXT_TOPE =34
 Const LINEA_COMANDO=35
 Const OK = 36
+Const BTN_ROLL_ECO =37
+Const BTN_EJEC_ECO = 38
+Const BTN_ROLL_CORO =39
+Const BTN_EJEC_CORO = 40
+
 
 Const HABILITAR = TRUE
 Const DESHABILITAR = FALSE 
@@ -549,7 +554,7 @@ Common Shared As cairo_t  Ptr c, c2
 Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer
 Screenbuffer=0
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal
-Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadVol,threadpan,threadeco,threadcoro
+Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi
@@ -563,7 +568,7 @@ Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA, VerMenu,MousexNotaEl
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, interva ,valorpan '  default 2 que es 1 separacion de notas
-Common Shared As Integer valoreco, valorcoro
+Common Shared As Integer valoreco, valorcoro,valorvol
 VerMenu=1
 deltax=1
 deltaz=0 ' muestra ayuda al pie del grafico
@@ -573,13 +578,16 @@ interva=3 '  default 3 para ticks desplazamineto zoom horizontal
  MaxPos=2:ntk=0:CPlay=NO: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
 valorpan=64  
-valoreco=64  
-valorcoro=64  
+valoreco=0  
+valorcoro=0
+valorvol=90
+  
 
 trasponer=0
-common Shared As UByte Globalpan, Globaleco,Globalcoro, CerrarGraficodesdeCtrl
+common Shared As UByte Globalpan, Globaleco,Globalcoro, CerrarGraficodesdeCtrl,Globalvol
 CerrarGraficodesdeCtrl=0
 COMMON Shared As UByte  Tope
 Tope=0
 Common Shared As String ROLLDIR
-
+Common Shared As UByte Vfuerte,Vsemifuerte,Vdebil
+Vfuerte=120:Vsemifuerte=100:Vdebil=80

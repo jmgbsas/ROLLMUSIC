@@ -2927,6 +2927,7 @@ Sleep 100
         nanchofig  = cdbl(dat.nanchofig)/10
         EndIf   
      EndIf     
+     pmTk(ntk).vol = dat.vol
      notaescala_num_ini =CInt(dat.notaescala_num_ini) ' global notadeescala 20-12-2021
      If notaescala_num_ini = 0 Then
         notaescala_num_ini =1
@@ -4918,39 +4919,76 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
 ' en edicion
 ' Track(ntk).trk=
  Case "[SEPARA]"
- Case "[PAN]"
+ Case "[PAN]","[PANEJEC]"
 '' NO SE PUEDE USAR UN TRACKBAR DESCONFIGURA LA SELECION DE PISTASROLL Y SE QUEDA
 '' CLAVADA EN UNA PISTA AZUL Y LA OTRA PASA A BLANCA UNA CHOTADA NO SE COMOMIERDA SE SOLUCIONA
 '' PROBE DETODO HASTA LO INIMAGINABLE JAJAJ 09-11-2025
 '' MI ENTRA TECLADO ES LA POSTA PARA ENTRAR DESDE TECLADO Y CON ENTER 
-'' FALTARIA AGREGARLE CON MOUSE QUE FUNCIONE EL ACEPTAR
-   default=Str(valorpan)  
+'' FALTARIA AGREGARLE CON MOUSE QUE FUNCIONE EL ACEPTAR listo funciona  con 2 enter y mouse ok
+   default=Str(pmTk(ntk).pan)  
    intervaloTxt = InputBoxJmg("Ajuste Numerico de PAN 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
-   valorpan= ValInt(intervaloTxt)  '19-03-2025 
+   valorpan= ValInt(intervaloTxt)  '19-03-2025
+   If menuOldStr = "[PAN]" Then 
    pmTk(ntk).pan=CUByte(valorpan)
    pmTk(0).pan=CUByte(valorpan)
+   EndIf
+   If menuOldStr = "[PANEJEC]" Then
+     If ntkp=0 Then ntkp=1 EndIf 
+      pmEj(ntkp).pan=CUByte(valorpan) 
+   EndIf
+
    Print #1,"PAN SELECCIONADO ->> "; valorpan
    Globalpan=CUByte(valorpan)
   SetGadgetText(3,Str(valorpan))
- Case "[CORO]"
+ Case "[CORO]","[COROEJEC]"
    default=Str(valorcoro)  
    intervaloTxt = InputBoxJmg("Ajuste Numerico de CORO/Chorus 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
-   valorcoro= ValInt(intervaloTxt)  '19-03-2025 
-   pmTk(ntk).coro=CUByte(valorcoro)
-   pmTk(0).coro=CUByte(valorcoro)
+   valorcoro= ValInt(intervaloTxt)  '19-03-2025
+   If menuOldStr="[CORO]" Then  
+     pmTk(ntk).coro=CUByte(valorcoro)
+     pmTk(0).coro=CUByte(valorcoro)
+   EndIf
+   If menuOldStr="[COROEJEC]" Then
+     If ntkp=0 Then ntkp=1 EndIf  
+     pmEj(ntkp).coro=CUByte(valorcoro)
+   EndIf
+
    Print #1,"PAN SELECCIONADO ->> "; valorcoro
    Globalcoro=CUByte(valorcoro)
   SetGadgetText(3,Str(valorcoro))
 
-  Case "[ECO]"
-   default=Str(valoreco)  
-   intervaloTxt = InputBoxJmg("Ajuste Numerico de ECOR 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
-   valoreco= ValInt(intervaloTxt)  '19-03-2025 
-   pmTk(ntk).eco=CUByte(valoreco)
-   pmTk(0).eco=CUByte(valoreco)
+  Case "[ECO]","[ECOEJEC]"
+   default=Str(pmTk(ntk).eco)  
+   intervaloTxt = InputBoxJmg("Ajuste Numerico de ECO 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+   valoreco= ValInt(intervaloTxt)  '19-03-2025
+   If menuOldStr="[ECO]" Then 
+     pmTk(ntk).eco=CUByte(valoreco)
+     pmTk(0).eco=CUByte(valoreco)
+   EndIf
+   If menuOldStr="[ECOEJEC]" Then 
+     If ntkp=0 Then ntkp=1 endif   
+     pmEj(ntkp).eco=CUByte(valoreco)
+   EndIf
+
    Print #1,"ECO SELECCIONADO ->> "; valoreco
    Globaleco=CUByte(valoreco)
   SetGadgetText(3,Str(valoreco))
+    Case "[VOL]","[VOLEJEC]"
+   default=Str(pmTk(ntk).vol)  
+   intervaloTxt = InputBoxJmg("Ajuste Numerico de VOL 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+   valorvol= ValInt(intervaloTxt)  '19-03-2025
+   If menuOldStr="[VOL]" Then 
+     pmTk(ntk).vol=CUByte(valorvol)
+     pmTk(0).vol=CUByte(valorvol)
+   EndIf
+   If menuOldStr="[VOLEJEC]" Then 
+     If ntkp=0 Then ntkp=1 endif   
+     pmEj(ntkp).vol=CUByte(valorvol)
+   EndIf
+
+   Print #1," VOLUMEN AJUSTADOO ->> "; valorvol
+   Globalvol=CUByte(valorvol)
+  SetGadgetText(3,Str(valorvol))
 
 End Select
 
@@ -5145,11 +5183,12 @@ Dim  As Integer npl, length
 ''' NUNCA ENTRA POR ACA , SOLO SI SE USA ESTA RUTINA SIN
 ''' ANALIZAR EL NOMBRE 
           nombre = nombre +".roll"  
-          Print #1,"un trk grabado como roll ",nombre
-              
+          Print #1,"NO, es un trk grabado como roll ",nombre ' sin sentido
+          Exit Function    
        Else
         If InStr(UCase(nombre),".ROLL") = 0 Then
-           nombre = nombre +".roll"   
+           'seria nombre="" pero se toma como backup odeberia preguntar por un nombre nuevo 
+           nombre = nombre +".roll"  'un nombre sin extension no creo ocurra solo si es nuevo y no hay nombre 
         EndIf
        EndIf 
      EndIf   
@@ -5294,6 +5333,7 @@ Print #1,"grabando alteracion en el archivo ",alteracion
      ' -------------------------------------
      dat.notaold   = CUByte(notaold)
      dat.nanchofig = CUByte(nanchofig*10)
+     dat.vol = pmTk(ntk).vol
 ''no le da 
 '''     grabaLim.inst = CUByte(tiempoPatron) '08-01-2022 hasta 256 sera suficiente�?
 ' el tiempoPatron no alcanza 256 30-03-2025<--antes de poner onoff 
@@ -5685,8 +5725,8 @@ EndIf
      graba3.patch=pmTk(ntk).patch
      graba3.pan =pmTk(ntk).pan
      graba3.canal =pmTk(ntk).coro
-
-     Print #1,"grabartrack graba3.nnn, ntk ",graba3.nnn , ntk
+     graba3.vol = pmTk(ntk).vol
+     Print #1,"grabartrack graba3.vol, ntk ",graba3.vol , ntk
 
      graba3.pb = TipoCompas ' 26-04-2024
      graba3.nanchofig = CUByte(nanchofig*10)
@@ -5765,6 +5805,8 @@ End Sub
 
 Sub  selport (ByVal mitipo As integer)  ' list de ruso
 ' SELECCION DE CASO 1 PORT DE SALIDA OUT, O CASO 2 ENTRADA MIDI IN
+' PARA EJEC usamos selportEjec
+
 Dim As hwnd haw,hwl
 Dim As Integer x0,y0,Posx,Posy 
 ScreenControl GET_WINDOW_POS, x0, y0
@@ -5792,7 +5834,7 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
      hwl=  ListViewGadget(1,10,10,350,400, LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL  )
 Print #1, "selport despuesde listviewgadget  "
      listports()
-  
+'lsitports y listout son para ports y eso es comun para roll rtk y ejec  
 Print #1, "selport 3 ntk "; ntk
      If mitipo = 1 Then ' out
        AddListViewColumn(1, "Salidas  MIDI",0,0,250)
@@ -5866,39 +5908,44 @@ Print #1, "selport 4 "
             If eventnumber()=2 And InStr(cad,"x")> 0 Then
               'menunew=0
               '''portout = GetItemListView()
-
+' faltan tipos 3 y 4 para ejec..
               If mitipo=1 Then
               Print #1,"PORT SELECCIONADO en menu ",portout
-' sieditamos un track de una camcion modificamos en el track ntk
-' y en el nt=0 de edicion para probar aisladamente
+' si editamos un track de una cancion modificamos en el track ntk
+' y en el nt=0 de edicion o sea roll visual y track(0) , track(0) solo pertenece a Roll
               pmTk(ntk).portout=CUByte(portout)
               pmTk(0).portout=CUByte(portout)
-
-   '             For  i As Short =1 To 32
-    '                  If CheckBox_GetCheck( cbxnum(i))= 1  Then
-   '                    pmTk(i).portout=CUByte(portout)
-   '                  EndIf
-   '             Next i
-               
+' MODIFICACION EN MASA SI VARISAPISTAS SE PASAN A OTRO DISPOSITIVO
+' SE LOS HARA EN LOS CHEQUEADOS
+               For  i As Short =1 To 32
+                     If CheckBox_GetCheck( cbxnum(i))= 1  Then
+                      pmTk(i).portout=CUByte(portout)
+                    EndIf
+               Next i
               EndIf
+
               If mitipo=2 Then
               Print #1,"PORT SELECCIONADO en menu ",portin
                 pmTk(ntk).portin =CUByte(portin)
                 pmTk(0).portin =CUByte(portin)
               EndIf
 
-              If CANCIONCARGADA=TRUE  Or TRACKCARGADO=TRUE  Then
-                 If NombreCancion > ""  And MAxPos > 1 Then
-                    GrabarRollaTrack(0)
-                 EndIf
-              Else
-                If MaxPos > 1  And ROLLCARGADO  Then
-                 LLAMA_GRABAR_ROLL()
+'=> NO VAMOS A GRABAR AUTOMATICO AL CAMBIAR UN PARAMETRO ESO ES DESICION DEL USUARIO
+' TAL VEZ PODRIA SER UNA OPCION, SI LA OPCION ES SI , GRABAREMOS, PERO EL CAMBIO DE
+' PARAMETROS ES UNA PRUEBA HASTA DECIDIR QUE ESTA BIEN, ENTONCES EL USUARIO DEBERIA GRABAR
+'              If CANCIONCARGADA=TRUE  Or TRACKCARGADO=TRUE  Then
+'                 If NombreCancion > ""  And MAxPos > 1 Then
+'                    GrabarRollaTrack(0)
+'                 EndIf
+'              Else
+'                If MaxPos > 1  And ROLLCARGADO  Then
+' NO VAMOS A GRABAR AUTOMATICO AL CAMBIAR UN PARAMETRO ESO ES DESICION DEL USUARIO  
+'             LLAMA_GRABAR_ROLL()
                  '''GrabarRoll () ' graba roll en edicion, borro todo el undo??
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
-                 Sleep 1000,1 
-                EndIf  
-              EndIf  
+'                 Sleep 1000,1 
+'                EndIf  
+'              EndIf  
               Close_Window(haw)
               Exit Do 
             End If
@@ -5948,7 +5995,7 @@ Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
 Print #1, "selport despuesde listviewgadget  "
      listports()
   
-Print #1, "selport 3 ntkp "; ntkp
+Print #1, "selport 3 ntkp global, pis parametro es lo mismo  "; ntkp, pis
      If mitipo = 1 Then ' OUT OUT OUT SALIDA
        AddListViewColumn(1, "Salidas  MIDI",0,0,250)
        For aa As Integer=0 To UBound (listout) 
@@ -6291,8 +6338,52 @@ Posy=y0 +100
 
 End Sub
 '''---------
+function sizeMIO() As Integer
+   Static As Integer r,g,b
+   Dim As Integer selR=GetScrollGadgetPos(1),selG=GetScrollGadgetPos(2),selB=GetScrollGadgetPos(3)
+   If r<>selR Or g<>selG Or b<>selB Then
+      r=selR : g=selG : b=selB
+      SetGadgetText(4,Str(r)):SetGadgetText(5,Str(g)):SetGadgetText(6,Str(b))
+      SetGadgetColor(7,BGR(r,g,b),0,1)
+   EndIf
+   Return TRUE
+End Function
+
+Sub SELMIERDA()
+'probamos deusar scrollbar ScrollBarGadget
+' anda barbaro ELLA SOLA,..pero igual INTERFIERE CON LA SELECCION DE PISTAS 
+' EN LA LISTA DE PISTAS ROLL UNA CANCION
+' NO SIRVE PARA UNA MIERDA JAJAJAJA O SEGURO NO LA SEUSAR EN MI CONTEXTO
+' YO ESTOY CONTROLANDO AL GRAFICO DE ROLLL AL DAR CLICK A UNA PISTA Y SE COMPORTA
+' COMO EL TAB CAMBIO DE PISTA EN EL GRAFICO ,,PERO SI USO CUALQUIER GADGET ESPECIAL
+' PARA AJUSTAR EL VALOR DEL PARAMETRO SE CAGA LA SELECCION DE PISTA UN FIASCO,,
+
+Dim As HWND hw
+Dim As Integer ev
+
+hw=OpenWindow("TESTCOLOR",10,10,370,140): CenterWindow(hw)
+ScrollBarGadget(1,10,10,200,20,0,255):SetGadgetColor(1,&hff,1,3) 'R
+ScrollBarGadget(2,10,40,200,20,0,255):SetGadgetColor(2,&hff00,1,3) 'G
+ScrollBarGadget(3,10,70,200,20,0,255):SetGadgetColor(3,&hff0000,1,3)'B
+TextGadget(4,220,10,30,20,Str(GetScrollGadgetPos(1)),SS_CENTER):SetGadgetColor(4,0,&hff,2) 'R
+TextGadget(5,220,40,30,20,Str(GetScrollGadgetPos(2)),SS_CENTER):SetGadgetColor(5,0,&hff00,2) 'G
+TextGadget(6,220,70,30,20,Str(GetScrollGadgetPos(3)),SS_CENTER):SetGadgetColor(6,0,&hff0000,2) 'B
+TextGadget(7,260,10,80,80):SetGadgetColor(7,0,0,1)
+
+
+SetTimer(hw,1,20,Cast(Any Ptr,@sizeMIO))
+
+Do
+   ev=WaitEvent
+Loop Until ev=EventClose
+
+
+ End Sub
 '---------
 Sub SelEco (ByRef rever As ubyte)
+
+'ESTE GADGET TAMBIEN INTERFIERE EN LA SELECCION DE PISTA DESDE VENTANA DE CONTROL
+' OTRA MIERDA,,,
 Var hwndeco=OpenWindow("",300,500,1050,150)
 ButtonGadget(1,20,20,60,25,"Aplicar")
 TrackBarGadget(2,20,60,1000,40,0,127)
@@ -6320,7 +6411,6 @@ Do
    EndIf
 
 Loop
-
 
 End Sub
 '-------

@@ -27,7 +27,9 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 
  DisableGadget(PISTASROLL,0)
 
-  GadgetToolTip(PISTASROLL,"Pistas de Cancion con Tracks manuales cargados desde un archivo o creados en una cancion o convertidos e importados desde ejecucion real midi" )
+  GadgetToolTip(PISTASROLL,"Pistas de Cancion con Tracks manuales cargados desde un archivo o creados en una " _
+  "cancion o convertidos e importados desde ejecucion real midi.Nota: NO USAR TAB DURANTE UN PLAY SI MEZCLA " _
+ "EJECUCIONES DE TECLADO CONVERTIDA A TRACK, CON MANUALES, SE CONGELARA EL PLAY" )
   SetGadgetFont(PISTASROLL,CINT(LoadFont("consolas bold",13))) 
 
 ' botton todo o nada , sonido o mudo para todas las pistas
@@ -211,20 +213,24 @@ GadgetToolTip(BTN_ROLL_GRABAR_MIDI,"GRABAR midi en Roll")
 ' se ajusta asi en una pista de track o ejecucion por vez el port de salida o 
 ' midi-out...igual para volumen y paneo,si sequiereajustar mas de uno a la vez
 ' simplemente se da click en todos los deseados y elajuste sera el mismo en cada uno
-' o sea S tiene doblefuncion desmutear odar sonido o ajustar alguno de los 3 parametros.  
-ButtonGadget(BTN_EJEC_PORTSAL,420,730,70,20,"PortSal")
-ButtonGadget(BTN_EJEC_VOL,   490, 730, 35, 20, "Vol")
-ButtonGadget(BTN_EJEC_PAN,   530, 730, 35, 20,"Pan")
-ButtonGadget(BTN_EJEC_PATCH,  570,730, 50, 20,"Patch")
-ButtonGadget(BTN_EJEC_CANAL,  620,730, 50, 20,"Canal")
+' o sea S tiene doblefuncion desmutear odar sonido o ajustar alguno de los 3 parametros.
+' parametros x, y, w,h  
+ButtonGadget(BTN_EJEC_PORTSAL,410,730, 70, 20,"PortSal")
+ButtonGadget(BTN_EJEC_VOL,    480,730, 35, 20, "Vol")
+ButtonGadget(BTN_EJEC_PAN,    520,730, 35, 20,"Pan")
+ButtonGadget(BTN_EJEC_PATCH,  560,730, 50, 20,"Patch")
+ButtonGadget(BTN_EJEC_CANAL,  610,730, 50, 20,"Canal")
+ButtonGadget(BTN_EJEC_ECO,    670,730, 35, 20,"Eco")
+ButtonGadget(BTN_EJEC_CORO,   410,750, 45, 20,"Coro")
 
 '---------------------------LISTVIEW ROLL MANUALES
-ButtonGadget(BTN_ROLL_PORTSAL, 70,730,70,20,"PortSal")
-ButtonGadget(BTN_ROLL_VOL,   140, 730, 35, 20, "Vol")
-ButtonGadget(BTN_ROLL_PAN,   180, 730, 35, 20,"Pan")
-ButtonGadget(BTN_ROLL_PATCH,  220,730, 50, 20,"Patch")
-ButtonGadget(BTN_ROLL_CANAL,  280,730, 50, 20,"Canal")
-
+ButtonGadget(BTN_ROLL_PORTSAL,60,730, 70, 20,"PortSal")
+ButtonGadget(BTN_ROLL_VOL,   130,730, 35, 20, "Vol")
+ButtonGadget(BTN_ROLL_PAN,   170,730, 35, 20,"Pan")
+ButtonGadget(BTN_ROLL_PATCH, 210,730, 50, 20,"Patch")
+ButtonGadget(BTN_ROLL_CANAL, 270,730, 50, 20,"Canal")
+ButtonGadget(BTN_ROLL_ECO,   330,730, 35, 20,"Eco")
+ButtonGadget(BTN_ROLL_CORO,  60 ,750, 45, 20,"Coro")
 
 
 'StatusBarGadget(1,"StatusBarGadget")

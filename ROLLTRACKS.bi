@@ -383,7 +383,7 @@ Sleep 100
      pmTk(ntk).MaxPos=CInt("&B"+x)
 
        If ntk >0 Then
-          MaxposTope=384600 '''pmTk(ntk).MaxPos 
+          MaxposTope=84600 '''pmTk(ntk).MaxPos 
        EndIf
 Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
 ' AL CONVERTIR UN EJEC A ROLL Y LUEGO A NTK QUEDA EL NTK=1
@@ -391,7 +391,7 @@ Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
 ' ENTONCES AL CONVERTIR ROLL A TRACK SI ES UN EJEC AJUSTAR NTK=0 
      MaxPos=pmTk(ntk).MaxPos
      If ntk >0 And MaxposTope < MaxPos Then
-        MaxposTope=384600 ''pmTk(ntk).MaxPos 
+        MaxposTope=84600 ''pmTk(ntk).MaxPos 
      EndIf
    
    '  print #1,"pmTk(ntk).MaxPos ", pmtk(ntk).MaxPos
@@ -510,6 +510,7 @@ Print #1,"PORTOUT, NTK "; pmTk(ntk).portout, ntk
      If graba3.nanchofig > 0 Then
        nanchofig  = cdbl(graba3.nanchofig)/10
      EndIf 
+     pmTk(ntk).vol = graba3.vol
     If portsout <= portout Then
  'portsout cantidad de port fisicos o dispositivos empieza por 1 2 3 etc"
   '  portout parte de 0 o sea 0 1 2 3 '
@@ -924,7 +925,7 @@ pmTk(ntk).MaxPos=MaxPos
 pmTk(ntk).eco=Globaleco
 pmTk(ntk).pan=Globalpan
 pmTk(ntk).coro=Globalcoro
-
+pmTk(ntk).vol =Globalvol
 ''.ejec?
 pmTk(ntk).posn=posn
 Print #1,"MaxPos, posn ",MaxPos,posn
@@ -1095,7 +1096,7 @@ End If
      graba3.patch=pmTk(ntk).patch
      graba3.nanchofig=CUByte(nanchofig*10)
      graba3.canal=pmTk(ntk).coro
-
+     graba3.vol = pmTk(ntk).vol
 Print #1,"graba3.patch ActualizarRollyGrabarPistaTrk ",graba3.patch
 ' en graba4 ponemos tiempoPatron en los mismos campos que en Roll asi
 ' aunque nada que ver es compatible poli tiene mas campos sisusar pero bueno
@@ -1147,10 +1148,6 @@ End If
 
 End Sub
 
-Sub copiarPmtkAPmtk ( e As Integer, r As Integer) ' emisor a receptor
-
-
-End Sub
 ' ---------------------------
 Sub ImportarPistaExterna(nombre As String)
 print #1,"---------------------------------------------------------------------------------"
@@ -1251,7 +1248,7 @@ For i1=1 To pmTk(0).MaxPos
   Next i2
 Next i1
 
-moverPmtkaPmtk(Tope, 0 )
+copiarPmtkaPmtk(Tope, 0 )
 ' observar que ntk vale 0 no se toco   
 
 Sleep 5  
@@ -1320,7 +1317,7 @@ EntrarNombrePista (pistanueva, hwndC)
 CANCIONCARGADA =TRUE
      If CANCIONCARGADA =TRUE  Then ' copia track en otro track
      print #1,"copia PmtkaPmtk NTKTAB a NTKCARGA ", ntkTAB,ntkcarga
-     moverPmtkaPmtk(ntkcarga, ntkold) 'ya se cargo maxpos!!!
+     copiarPmtkaPmtk(ntkcarga, ntkold) 'ya se cargo maxpos!!!
    print #1,"hizo copia de parametros de trackold en new"
 
 Print #1,"//redim pmTk(ntkTAB).MaxPos origen NTKOLD ", pmTk(ntkTAB).MaxPos
@@ -1600,6 +1597,21 @@ For i1=1 To MAxPos ' de Roll que deberia ser el PmTk(ntk).maxpos....verificar
     Next i2
 Next i1
 pmTk(ntk).MaxPos=MaxPos
+'copio a track ntk,los parametros en Roll 0
+' recive, entrega
+copiarPmtkaPmtk(ntk,0)
+
+ '  Print #1,"hasta 1054 TracjaRoll ",hasta 
+If pmTk(0).patch > 0 Then
+   pmTk(ntk).patch=pmTk(0).patch
+EndIf
+' como Roll edita se deben llenar las Globales
+' para tomar las ultimas modificaciones en ROLL
+' cuando modifico se guarda en la Global y en plTk no haria falta!
+pmTk(ntk).eco=Globaleco
+pmTk(ntk).pan=Globalpan
+pmTk(ntk).coro=Globalcoro
+pmTk(ntk).vol=Globalvol
 
 ' son 2 copias no se si sera algo lento y ma suso de memoria veremos sino lo volveremos 
 ' a copia dulpicada por diferente estructuras no se borra lo anterio por backup
@@ -1677,7 +1689,7 @@ End Sub
 ' ESTE ROLL A TRACK ES EL ORIGINAL LA MITAD DE TIEMPO PARA AHCER TAB
 ' DEBO PROBAR CON 2 TRACKS MUY PESADOS 
 
-Sub moverPmtkaPmtk(r as Integer, e As integer)
+Sub copiarPmtkaPmtk(r as Integer, e As integer)
 
 pmTk(r).desde=pmTk(e).desde
 pmTk(r).hasta=pmTk(e).hasta
@@ -1692,12 +1704,6 @@ If NB=0 Or NA=0 Then
   pmTk(e).NA=NA
 EndIf 
 
-If pmTk(e).NB =0 Then
-
-EndIf
-If pmTk(e).NA =0 Then
-
-EndIf
 
 pmTk(r).MaxPos=pmTk(e).MaxPos
 If pmTk(e).posn = 0 Then
@@ -1763,59 +1769,32 @@ nombre=titulosTk(ntk)
 ' de lso tracks borados y sus numeros no usados [x].
 
 nota=0:dur=0
+' ESTA COPIA DE PARAMETROS DESDE TRACK A ROLL LA REEMPLAZAREMOS POR COPIARPMTKA PMTK
+' CHEQUEAMOS SI ES ASI.....
 'copia a variables de Roll desde track
-   desde  = pmTk(ntk).desde
-pmTk(0).desde=pmTk(ntk).desde
-   hasta  = pmTk(ntk).hasta
-pmTk(0).hasta=pmTk(ntk).hasta
+copiarPmtkaPmtk(0,ntk)
+desde  = pmTk(ntk).desde
+hasta  = pmTk(ntk).hasta
  '  Print #1,"hasta 1054 TracjaRoll ",hasta 
-   NB     = pmTk(ntk).NB 'estos no siempre se guardan verificar mejor calcular
-   NA     = pmTk(ntk).NA 'estos no siempre se guardan verificar mejor calcular
-pmTk(0).NB=NB
-pmTk(0).NA=NA
-   If NA=0 Or NB=0 Then
-     pmTk(ntk).NB => 0 + (pmTk(ntk).desde-1) * 13   
-     pmTk(ntk).NA => 11 + (pmTk(ntk).hasta-1) * 13 
-     NB     = pmTk(ntk).NB 'estos no siempre se guardan verificar mejor calcular
-     NA     = pmTk(ntk).NA 'estos no siempre se guardan verificar mejor calcular
-pmTk(0).NB=pmTk(ntk).NB
-pmTk(0).NA=pmTk(ntk).NA
-
-   EndIf
-   MaxPos = pmTk(ntk).MaxPos
-pmTk(0).MaxPos=pmTk(ntk).MaxPos
-If pmTk(ntk).posn =0 Then
- pmTk(ntk).posn=pmTk(ntk).MaxPos -6
-EndIf
-pmTk(0).posn=pmTk(ntk).posn
+MaxPos = pmTk(ntk).MaxPos
 posn  = pmTk(ntk).posn
-
-   notaOld= CInt(pmTk(ntk).notaold)
-pmTk(0).notaold=pmTk(ntk).notaold
-   canalx= CInt(pmTk(ntk).canalsalida)
-pmTk(0).canalsalida=pmTk(ntk).canalsalida
-   portout=CInt(pmTk(ntk).portout)
-pmTk(0).portout=pmTk(ntk).portout
-
-   Globalpan=pmTk(ntk).pan
-pmTk(0).pan=pmTk(ntk).pan
-
-   Globaleco=pmTk(ntk).eco
-pmTk(0).eco=pmTk(ntk).eco
-
-   Globalcoro=pmTk(ntk).coro
-pmTk(0).coro=pmTk(ntk).coro
-
-   If pmTk(ntk).patch > 0 Then
-      patchsal=pmTk(ntk).patch
-      pmTk(0).patch=pmTk(ntk).patch
-      instru=CInt(patchsal)
-   EndIf
+notaOld= CInt(pmTk(ntk).notaold)
+canalx= CInt(pmTk(ntk).canalsalida)
+portout=CInt(pmTk(ntk).portout)
+If pmTk(ntk).patch > 0 Then
+   patchsal=pmTk(ntk).patch
+   pmTk(0).patch=pmTk(ntk).patch
+   instru=CInt(patchsal)
+EndIf
    Print #1,"instru en TrackaRoll ",instru
-   If pmTk(ntk).ejec > 0 Then
-      pmTk(0).ejec=pmTk(ntk).ejec   
-   EndIf
-
+If pmTk(ntk).ejec > 0 And pmTk(ntk).ejec=0 Then
+   pmTk(0).ejec=pmTk(ntk).ejec   
+EndIf
+' como Roll edita se deben llenar las Globales
+Globaleco=pmTk(ntk).eco
+Globalpan=pmTk(ntk).pan
+Globalcoro=pmTk(ntk).coro
+Globalvol=pmTk(ntk).vol
 ' a partir de esta carga todo parametro ira a pmTk.. y toda la logica no
 ' debe usar mas los campos que no sean pmTk...
    tiempoPatron =   pmTk(ntk).tiempopatron
@@ -2155,7 +2134,9 @@ Dim i As Integer
    pmTk(i).ejec=0
    pmTk(i).vol=0
    pmTk(i).tiempopatron=0 ' 240 60 etc
-
+   pmTk(i).pan=64
+   pmTk(i).Eco=0
+   pmTk(i).Coro=0
 
 
    pmEj(i).desde=0
@@ -2183,6 +2164,9 @@ Dim i As Integer
    pmEj(i).ejec=0
    pmEj(i).vol=0
    pmEj(i).tiempopatron=0 ' 240 60 etc
+   pmEj(i).pan=64
+   pmEj(i).Eco=0
+   pmEj(i).Coro=0
 
  next i
  ntk=0
@@ -2368,7 +2352,7 @@ End If
 STARTMIDI=Timer
 old_time_on=STARTMIDI
 Print #1,"old_time_on "; old_time_on
-Dim As Double  tickUsuario=0.005 ''''tickUsuario=0.01041666 * 240/tiempoPatron
+Dim As Double  tickUsuario=0.005 * 240/tiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
@@ -2383,7 +2367,8 @@ Print #1,"TickUsuario "; tickUsuario
 ' ajustar el instrumento de la pista cada vez que cambie la pista.
 
  Print #1," PCA CANCION MAXPOS AL COMENZAR ,final tope ",Maxpos,final,tope
-
+Dim As float ajuste=1.0
+''//////////////// PISTA //////////////
  For pis=1 To tope
 ' escribimos salidamidi
     If MIDIFILEONOFF = HABILITAR  Then 
@@ -2454,6 +2439,8 @@ kNroCol= Int(jply/NroCol)
      posicion=jply
      curpos=0
    EndIf
+
+
  '  Print #1," cancon jply velpos "; jply, velpos
 ''' /////////////////////// L O O P DE P I S T A S /////////////////////////////////// 
 '''/// BARRE VERTICALMENTE LAS PISTAS PARA CADA POSICION HORIZONTAL medio rebuscado al dope creo..////
@@ -2471,27 +2458,29 @@ kNroCol= Int(jply/NroCol)
         Continue For ' saltear no tocar
       EndIf 
     EndIf 
-
+    ajuste=pmTk(pis).vol/127
+Print #1,"PISTA AJUSTE ",pis, ajuste
     If Track(pis).trk(1,1).ejec = 1 Or pmTk(pis).ejec = 1 Then ' VIENE DE UNA EJEC
-    'usar la velocidad de grabacion DE LA EJEC.,,
+        
     Else
+
       If Compas(jply).nro = -1 Then
-        velpos=vfuerte
+        velpos=vfuerte * ajuste
       EndIf
       If Compas(jply).nro = -2 Then
-         velpos=vdebil
+         velpos=vdebil * ajuste
       EndIf
       If Compas(jply).nro = -3 Then
-         velpos=vsemifuerte
+         velpos=vsemifuerte * ajuste
       EndIf
       If Compas(jply).nro = -4 Then
-         velpos=vdebil
+         velpos=vdebil * ajuste
       EndIf
       If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
-         velpos=vdebil
+         velpos=vdebil * ajuste
       EndIf
       If Compas(jply).nro = 0 Then 
-        velpos=vsemifuerte  ' para midipolano divisones por partes veremso si se soluciona el sonido
+        velpos=vsemifuerte * ajuste ' para midipolano divisones por partes veremso si se soluciona el sonido
    ' en la rutina vol , depende de la dur ajusta vol=0 o vol = velpos... no hay problema con los silencios
       EndIf
     EndIf
@@ -2539,11 +2528,11 @@ kNroCol= Int(jply/NroCol)
             If sonidoPista(pis)=1 Then
                If Track(ntk).trk(1,1).ejec = 1 Or pmTk(pis).ejec=1 Then
           'Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
-                  vel=Track(pis).trk(jply,i1).vol
+                  vel=Track(pis).trk(jply,i1).vol * ajuste
                Else
                   vel=VelPos
-                  If vel=0 Then vel=90 EndIf
-               EndIf  
+               EndIf
+             '''  If vel=0 Then vel=64 EndIf  
             Else
                alloff( pmTk(pis).canalsalida,CInt(pmTk(pis).portout) )
                vel=0

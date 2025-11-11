@@ -1009,10 +1009,10 @@ Sub CTRL1200(hmessages As hmenu) ' PORTIN EJEC
 Dim As Integer miport =2, pis=0,num=0,k
 If PISTASEJECSELECCIONADA=1 Then
   For k=1 To 32 
-    If CheckBox_GetCheck( cbxgrab(k))= 1  Then
+    If CheckBox_GetCheck( cbxgrab(k))= 1  Then ' TOMA LA PRIMERA Y SE VA
        ntoca=k
        pis=k
-       Exit For
+       Exit For ' TOMA LA PRIMERA Y SE VA PERO SI TENGO MAS SELECCIONADAS selportEjec LAS CAMBIARA
     EndIf
   Next k
   
@@ -1033,10 +1033,10 @@ EndIf
 
 If PISTASROLLSELECCIONADA=1 Then
    For k=1 To 32 
-     If  CheckBox_GetCheck( cbxnum(k))= 1  Then
-       ntoca=k
+     If  CheckBox_GetCheck( cbxnum(k))= 1  Then 
+       ntk=k
        pis=k
-       Exit For
+       Exit For ' TOMA LA PRIMERA Y SE VA PERO SI TENGO MAS SELECCIONADAS selport LAS CAMBIARA
      EndIf
    Next k
 
@@ -1044,10 +1044,10 @@ If PISTASROLLSELECCIONADA=1 Then
    If pis=0 Then 
     Exit Sub
    EndIf
-   selportEjec (miport,pis )
+   selport (miport ) ' 10-11-2025 apuntaba a ejec corregido
    pmTk(pis).portin=CUByte(portin) ' evitamos el cero
    Print #1,"PIS, pmTk(pis).portin ";PIS, pmTk(pis).portin
-   ntoca=pis
+   ntk=pis
 EndIf
 
   HabilitarMIDIIN = HabilitarMIDIIN + 1

@@ -1,3 +1,5 @@
+- 11-11-2025 varios fixes en grbacion de archivos, nuevos  controles Eco Coro Volumen probados para cancion de tracks
+  lista izquierda. Volumen se puede ajustar por pista para cancion o pista aislada.
 - 09-11-2025 FALTA MUCHO TESTEO...
 ' "0.347 VARIOS Fixes..
 '  CARGAR PISTAS PAN ECO CORO NUMERICOS,OK EJEC Y MANUAL JUNTOS SIN TAB"

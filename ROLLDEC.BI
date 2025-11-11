@@ -686,7 +686,7 @@ Dim Shared As Integer nroCompasesPatron, nroTicksPatron
 nroCompasesPatron=0
 nroTicksPatron=0
 nombreArchivo="" : ticksdefault="64"
-Dim Shared As UByte Vfuerte=120,Vsemifuerte=100,Vdebil=80
+
 TCompas ="4/4"
 'Dim Shared As Integer MaxPosTrack(0 To 32) ' cada track tendra su max pos
 'Dim Shared As Integer posnTrack(0 To 32) ' cada track tendra su posn
@@ -720,6 +720,7 @@ Type rangoOct Field=1
  As UByte   pan
  As UByte   Eco
  As UByte   Coro
+ As Integer ajuste
 End Type
 ' faltaria agregar grabar el nombre del dispositivo ........
 Dim Shared As rangoOct pmTk (0 To 32)
@@ -834,7 +835,7 @@ Type rolldat Field=1 'con esto se define roll tendra pan,vol,nota,dur,pb,inst va
  patch    As  UByte =0 'z3.nota
  portout As   UByte =0  'z3.dur
  nanchofig  As UByte  =0   'z3.vol nanchofig*10 cuando lo uso lo dividopo 10
-   librez3pan    As UByte =0  'z3.pan
+ vol As UByte = 90 '''' librez3pan    As UByte =0  'z3.pan
  TipoCompas  As UByte =0 'z3.pb
  canalsalida As UByte =0 'z3.inst
    librez3onoff     As UByte =0 'z3.onoff --- 21
@@ -1237,7 +1238,7 @@ Declare Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)
 Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As String, orden As integer )
 Declare Function lugarNota (lugar As integer) As Integer
 Declare Sub metronomo ()
-Declare Sub moverPmtkaPmtk(r as Integer, e As integer)
+Declare Sub copiarPmtkaPmtk(r as Integer, e As integer)
 ''patchsal=Roll.trk(1,1).inst
 Dim Shared As Any Ptr threadG 
 

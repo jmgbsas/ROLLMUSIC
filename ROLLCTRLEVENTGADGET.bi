@@ -28,15 +28,15 @@ Static As Integer millave
             
 '--------------------------------------------------------------
                 
-             print #1,"CLICK lbutton EN LISTA WM==============="
-             Print #1,"COORDENADAS X, Y ", GlobalMouseX,GlobalMouseY 
+           '  print #1,"CLICK lbutton EN LISTA WM==============="
+           '  Print #1,"COORDENADAS X, Y ", GlobalMouseX,GlobalMouseY 
              ''' ROLLCARGADO=FALSE
              '' porque CANCIONCARGADA=TRUE
              Dim item As String
              Dim As Integer ubi1,ubi2
               
              item=GetListBoxText(PISTASROLL,GetItemListBox(PISTASROLL))
-             Print #1,"item 1580 ",item  ' 28-02-2024 esto aparece en debug sin roll
+           '  Print #1,"item 1580 ",item  ' 28-02-2024 esto aparece en debug sin roll
              If Len (item) < 24 Then
                item = item + String( 40-Len(item),32)
              EndIf
@@ -54,10 +54,10 @@ Static As Integer millave
              ' pero si quiero volver a disco solo debo resetear ubirtk=0
               ntk=sacarNtk(item) ' este ntk no sirve para boorar
  ' aca no copia track a Roll
-              Print #1,"ntk de item ", ntk
+           '   Print #1,"ntk de item ", ntk
               nombre= titulosTk(ntk)
 
-         Print #1,"ntk, nombre ",ntk, nombre
+      '   Print #1,"ntk, nombre ",ntk, nombre
                 
               EndIf
               
@@ -706,15 +706,30 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
       EndIf
 '--------------  
       If  eventnumber()=BTN_EJEC_VOL Then ' VOL futuro
+          menuOldStr="[VOLEJEC]"
+          threadvol=threadCall EntrarTeclado()
 
       EndIf 
 '--------------
       If  eventnumber()=BTN_EJEC_PAN Then 'PAN futuro
-          menuOldStr="[PAN]"
+          menuOldStr="[PANEJEC]"
           threadpan=threadCall EntrarTeclado()
-          Print #1,"sel pan Globalpan, ntk ",Globalpan,ntk  
+          Print #1,"sel pan Globalpan, ntkp ",Globalpan,ntkp  
 
       EndIf 
+      If  eventnumber()=BTN_EJEC_ECO Then 'PAN futuro
+          menuOldStr="[ECOEJEC]"
+          threadpan=threadCall EntrarTeclado()
+          Print #1,"sel pan Globaleco, ntkp ",Globaleco,ntkp  
+
+      EndIf 
+      If  eventnumber()=BTN_EJEC_CORO Then 'PAN futuro
+          menuOldStr="[COROEJEC]"
+          threadpan=threadCall EntrarTeclado()
+          Print #1,"sel pan Globalcoro, ntk ",Globalcoro,ntkp  
+
+      EndIf 
+
 '----------------
 '////////////////// PATCH EJEC /////////////////////////////
       If  eventnumber()=BTN_EJEC_PATCH Then 'PATCH o insrumento de un Sinte,,,
@@ -873,10 +888,28 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
      EndIf 
 '-------------------------------------------------------
       If  eventnumber()=BTN_ROLL_PAN Then 'PAN  REPRODUCCION HACIA LOS LADOS DERECHA IZQUIERDA,,,
-          
+          menuOldStr="[PAN]"
           threadpan=threadCall EntrarTeclado()
           Print #1,"sel pan Globalpan, ntk ",Globalpan,ntk  
       EndIf
+      If  eventnumber()=BTN_ROLL_ECO Then 'ECO ,,
+          menuOldStr="[ECO]"
+          threadeco=threadCall EntrarTeclado()
+          ''Print #1,"sel pan Globalpan, ntk ",Globalpan,ntk  
+      EndIf
+      If  eventnumber()=BTN_ROLL_CORO Then 'CORO ,,
+          menuOldStr="[CORO]"
+          threadcoro=threadCall EntrarTeclado()
+          ''Print #1,"sel pan Globalpan, ntk ",Globalpan,ntk  
+      EndIf
+      If  eventnumber()=BTN_ROLL_VOL Then ' VOL futuro
+          menuOldStr="[VOL]"
+          threadvol=threadCall EntrarTeclado()
+
+      EndIf 
+
+  
+        
 '-------------------
 '////////////////// BOTON PATCH ROLL O CANCION O MANUAL /////////////////////////////
 ' futuro todas estos codigos de  case si son parecidos luego  algun dia 
@@ -905,13 +938,13 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
             If  ROLLCARGADO  Then
             Else 
               instrum=pmTk(0).patch  'CInt(Track(k).trk(1,1).nnn)
-        If instrum=0 Then
-            pmTk(ntk).patch= CUByte(instrum)
-            pmTk(0).patch= CUByte(instrum)
-        EndIf   
-          Print #1,"k, instrumento en check ";k,instrum
-             ntk=k 
-            EndIf
+              If instrum=0 Then
+                 pmTk(ntk).patch= CUByte(instrum)
+                pmTk(0).patch= CUByte(instrum)
+              EndIf   
+              Print #1,"k, instrumento en check ";k,instrum
+              ntk=k 
+           EndIf
          
         Else
            ntk=0:num=1

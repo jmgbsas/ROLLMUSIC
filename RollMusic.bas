@@ -31,7 +31,7 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.347 VARIOS Fix CARGAR PISTAS PAN ECO CORO NUMERICOS,OKAT EJEC Y MANUAL JUNTOS SIN TAB"
+nroversion="0.348 ..controles de pista de rolls,vol eco coro "
 ' crear o cargar nueva pista en cancion andaba mal, VERIFICAR CON LOS CAMBIOS NUEVOS
 ' queda  por revisar
 ' 1) AL GRABAR EN ROLL UNA PISTA RTK SOBREESCRIBE CON LOS DATOS o al cambiar algun parametro
