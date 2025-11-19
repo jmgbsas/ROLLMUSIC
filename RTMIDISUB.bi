@@ -2773,19 +2773,22 @@ Dim As Integer partes , traba=0
 End Function
 
 '--------------------------------------
-Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi,i1 As Integer)
+Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi,i1 As Integer) ' I1 PISTA
+'' ya Graba en version 2
+''' i1 nro de pista pis
+'' deberemos leer en verion1 y dos distinguiendo  con fecha=now
 On Local Error GoTo fail
 ' tengo que grabar el tempo 
 ' tocap As vivo, ntkp As Integer,tocaparam  As ejecparam  Ptr) 
     Dim As Long j, driver=0
-    Dim As String  nombreg
+    Dim As String  nombreg,nombreconpath
 ' y ntkp de donde vien quien lo ajusta? ntkp debe venir informado!!!
      pathdir=GetPathPart( DirEjecSinBarra)
 
      nombreg =pgmidi.tocap.nombre  ' 23-04-2024
      par.tocap=tocaparam(i1)
-     
- Print #1,"GrabarMidiIn NombreCancion, nombre sin path",NombreCancion, nombreg
+     par.tocap2=tocaparam2(i1)
+ Print #1,"///=> GrabarMidiIn NombreCancion, nombre sin path, PISTA ",NombreCancion, nombreg,   i1
      
       driver=InStr(pathdir,":\")
       Dim  As Integer barra1, barra2  
@@ -2794,23 +2797,24 @@ On Local Error GoTo fail
            barra2=InStr(nombreg,"\")
            Print #1, "barra1 barra2 ", barra1, barra2
           If Len(NombreCancion)=barra1  Then
-        CreateDir(NombreCancion+"Temp") ' ok
+            CreateDir(NombreCancion+"Temp") ' ok
              If barra2 =0 Then
-                nombreg=NombreCancion+nombreg
+                nombreconpath=NombreCancion+nombreg
              EndIf
           EndIf
           If Len(NombreCancion)>barra1 And barra2=1 Then
            CreateDir(NombreCancion+"\Temp") ' ok
-             nombreg=NombreCancion+nombreg
+             nombreconpath=NombreCancion+nombreg
           EndIf          
-      Else 
-        Print #1," va a grabar sin path ",nombreg
-        If InStr(nombreg,"(")=0 Then
-           nombreg="("+ doscifras(CInt(pgmidi.tocap.orden))+")"+nombreg  
-        EndIf
-      EndIf
-      If InStr (nombreg,"ejec") = 0 Then
-        nombreg=nombreg+".ejec" '"18-10-2024
+      Else
+          Dim kp1 As Integer
+          Dim As String cadenaf= LCase(nombreg) 
+          kp1=InStr(nombreg,".ejec")
+         If kp1=0 Then
+            cadenaf=nombreg+".ejec"
+         EndIf
+         nombreconpath=NombreCancion+"\"+cadenaf
+         Print #1," va a grabar con path ",nombreconpath
       EndIf
 
 Print #1,"nombre de archivo  grabando de ejec",nombreg
@@ -2824,34 +2828,81 @@ Print #1, "GrabarMidiIn pgmidi.tocap.maxpos "; pgmidi.tocap.maxpos
      
      nombreg=Trim(nombreg)
      par.tocap.nombre  =nombreg
-      Print #1,"GrabarMidiIn titulos   ", nombreg
-      Print #1,"GrabarMidiIn MAXPOS ",    par.tocap.maxpos
-      Print #1,"GrabarMidiIn delta "     ,par.tocap.delta
-      Print #1,"GrabarMidiIn nombre " ,   par.tocap.nombre
-      Print #1,"GrabarMidiIn portout " ,  par.tocap.portout
-      Print #1,"GrabarMidiIn portin "   , par.tocap.portin
-      Print #1,"GrabarMidiIn patch "     ,par.tocap.patch
-      Print #1,"GrabarMidiIn canal "     ,par.tocap.canal
-      Print #1,"GrabarMidiIn orden "     ,par.tocap.orden 
+'      Print #1,"GrabarMidiIn titulos   ", nombreg
+'      Print #1,"GrabarMidiIn MAXPOS ",    par.tocap.maxpos
+'      Print #1,"GrabarMidiIn delta "     ,par.tocap.delta
+'      Print #1,"GrabarMidiIn nombre " ,   par.tocap.nombre
+'      Print #1,"GrabarMidiIn portout " ,  par.tocap.portout
+'      Print #1,"GrabarMidiIn portin "   , par.tocap.portin
+'      Print #1,"GrabarMidiIn patch "     ,par.tocap.patch
+'      Print #1,"GrabarMidiIn canal "     ,par.tocap.canal
+'      Print #1,"GrabarMidiIn orden "     ,par.tocap.orden 
       maxgrb=par.tocap.maxpos '27-11-2024
      Print #1,"GrabarMidiIn maxgrb" ;maxgrb
       
       ngm=15 
 Print #1,"GrabaMidiin freefile ngm ",ngm
-    If   Open( nombreg  For Binary Access Write As #ngm)  <> 0 Then
+
+    If   Open( nombreconpath  For Binary Access Write As #ngm)  <> 0 Then
               Print #1,"Imposible Grabar midi in" + nombreg 
     Else  
-    Dim tocaparamaux As ejecparam
-    tocaparamaux=tocaparam(i1) 
-    tocaparamaux.nombre=nombreg
+      tocaparamCabeza(i1).fecha=Now
+      tocaparamCabeza(i1).autor=""
+      tocaparamCabeza(i1).version=2
+' todods los otros  campos de tocaparam se llenaron antes    
+      tocaparam(i1).nombre=nombreg
+ 
+
+   
+    tocaparam2(i1).sonido        =pmEj(i1).sonido        
+    tocaparam2(i1).pan           =pmEj(i1).pan           
+    tocaparam2(i1).Eco           =pmEj(i1).Eco           
+    tocaparam2(i1).coro          =pmEj(i1).coro   
+Print #1,"QUE CORO DE MIERDA GRABO ? ", tocaparam2(i1).coro       
+    tocaparam2(i1).vibrato       =pmEj(i1).vibrato ''' nu
+    tocaparam2(i1).ejec          =pmEj(i1).ejec          
+    tocaparam2(i1).canalx        =pmEj(i1).canalx        
+    tocaparam2(i1).canalsalida   =pmEj(i1).canalsalida    
+    tocaparam2(i1).vol           =pmEj(i1).vol           
+    tocaparam2(i1).TipoCompas    =pmEj(i1).TipoCompas
+         If tiempoPatronEjec = 0  And pmEj(i1).tiempoPatron=0 Then 
+            tiempoPatronEjec = 240
+            pmEj(i1).tiempoPatron=240
+         EndIf    
+         If tiempoPatronEjec > 0  And pmEj(i1).tiempoPatron >0 Then 
+            If tiempoPatronEjec <> pmEj(i1).tiempoPatron Then
+               pmEj(i1).tiempoPatron= tiempoPatronEjec
+            EndIf
+         EndIf    
+'verificar como se cambi tiempo patron en ejec
+    Dim mit As aUshort
+    mit.ST =pmEj(i1).tiempoPatron
+    tocaparam2(i1).tiempoPatron1 = mit.tp1
+    tocaparam2(i1).tiempoPatron2 = mit.tp2  
+    tocaparam2(i1).pitchbend     = pmEj(i1).pitchbend      
+ 
+   Dim tocaparamaux0 As ejeccabeza
+    tocaparamaux0=tocaparamCabeza(i1) 
+ 
+    Dim tocaparamaux1 As ejecparam
+    tocaparamaux1=tocaparam(i1)
+    tocaparamaux1.nombre=nombreg
+
+    Dim tocaparamaux2 As ejecparam2
+    tocaparamaux2=tocaparam2(i1)
+
+
 FileFlush (ngm)
-         Put #ngm,, tocaparamaux '1ero parametros como siempre o en cabezado
+     
+         Put #ngm,, tocaparamaux0 '1ero encabezado
+         Put #ngm,, tocaparamaux1      '2do parametros version 1
+         Put #ngm,, tocaparamaux2     '3ero parametros adicionales version2 
          Put #ngm,, Toca(i1).trk()   '2do datos  
          FileFlush(ngm) 
     End If
-Print #1,"grabado ARCHIVO ", nombreg
+Print #1,"grabado ARCHIVO, ¿GRABO Toca(i1).trk() ??? ", nombreconpath
       Sleep 100
-      Close ngm
+      Close 15
 FileFlush (ngm)
 'tocatope no lo estoy usando deberia ser el nro de pistas maximo
 Exit Sub 
@@ -3039,7 +3090,7 @@ portsal=0 ' por ahora ???
 
 Print #1,"playtoca maxgrb ", maxgrb
 Print #1,"playtoca tocatope ", tocatope
-If GrabarEjec=GrabarPistaEjecucion Then 
+If GrabarEjec=GrabarpistaEjecucion Then 
   If   tocatope >1 Then
    topeDuranteGrabacion=tocatope-1
    Print #1,"tocatope -1 "; topeDuranteGrabacion 
@@ -3070,12 +3121,13 @@ Dim resta  As Double
 '************************************************************************
  Print #1,"empieza el play de ejec, maxgrb, PARAR_PLAY_EJEC ", maxgrb,PARAR_PLAY_EJEC
 '************************************************************************
- 
+ Dim As float ajuste=1
 Print #1,"playTocaAll jToca=maxgrb, kply=topeDuranteGrabacion ";maxgrb, topeDuranteGrabacion
 'los archivos de ejec tienen distintas longitudes al cargarlos se normaliza a la mayor
 ' volvimos aponer maxgrb en el redim ver como funciona porque teniamos un 384 mil
 ' deberiamos hacer el redim con un % mas 2 por ejemplo asi estamos con 2 veremos
-For jToca=1 To maxgrb ' se calcula al cargr los archivos de ejec 
+'
+For jToca=1 To maxgrb ' se calcula al cargr los archivos de ejec EJE X POSICION O TIEMPO
   If PARAR_PLAY_EJEC = SI Then
      For kply =1 To topeDuranteGrabacion
          alloff( 1 ,pmEj( kply).portout  )
@@ -3087,9 +3139,10 @@ For jToca=1 To maxgrb ' se calcula al cargr los archivos de ejec
 ''Print #1,"topeDuranteGrabacion ",topeDuranteGrabacion
 
 
-  For kply =1 To topeDuranteGrabacion
+  For kply =1 To topeDuranteGrabacion ' PISTAS
+
    ' este cambio de patch anda bien no produce retardo por ahora y se hace cada
-' vez que cambio de pista en un bariddo vertical de una posicion dada
+' vez que cambio de kply en un bariddo vertical de una posicion dada
 ' verificar esto en play cancion donde creo daba retardo ver,,,,ÇÇÇ 04-06-2022
 
 ' con LoopBe Internal MIDI" no puedo hacer change program si esta conectado
@@ -3097,10 +3150,18 @@ For jToca=1 To maxgrb ' se calcula al cargr los archivos de ejec
 ' o solo es problema de LoopBe Internal MIDI seguir probando a ese sinte solo
 ' se envia canales , la configuracionde instrumentos y bancos se carga y graba
 ' en ZynAddSubFX
+   ajuste = pmEj(kply).vol/127
+''If ajuste < 1 Then
+''   Print #1,"pmEj(kply).vol , ajuste ",pmEj(kply).vol,ajuste
+''EndIf 
     If CheckBox_GetCheck( cbxejec(kply))= 1 Then
        If  InStr (*nombreOut(tocaparam(kply).portout),"LoopBe Internal MIDI") = 0  Then  
           ChangeProgram ( tocaparam(kply).patch , tocaparam(kply).canal, tocaparam(kply).portout)
-         ' Print #1,"CHANGE KPLY, .canal, .portout) "; kply, tocaparam(kply).canal, tocaparam(kply).portout 
+          Paneo (tocaparam2(kply).pan, tocaparam(kply).canal,tocaparam(kply).portout)
+          Eco   (tocaparam2(kply).eco, tocaparam(kply).canal,tocaparam(kply).portout) 
+          Chorus(tocaparam2(kply).coro,tocaparam(kply).canal,tocaparam(kply).portout)
+
+         ' Print #1,"CHANGE kply, .canal, .portout) "; kply, tocaparam(kply).canal, tocaparam(kply).portout 
        EndIf
     Else
        Continue For ' saltear no tocar 
@@ -3112,16 +3173,23 @@ For jToca=1 To maxgrb ' se calcula al cargr los archivos de ejec
     dato1=Toca(kply).trk(jToca).modo
     dato2=Toca(kply).trk(jToca).nota
     dato3=Toca(kply).trk(jToca).vel
+''If dato1 = 144 Then 
+ '' Print #1,"pista playtoca, dato3 que viene ",kply, dato3
+''EndIf
     portsal=pmEj(kply).portout '04-05-2022
+    dato3=CUByte(dato3 * ajuste) ' ajustamos volumen desde control
+''If dato1 = 144 Then 
+''  Print #1,"pista playtoca, dato3 ajustado ",kply, dato3
+''EndIf
 
      If  dato1=1 Then ' marcamos con 1 un delta de tick en modo
          duracion (timex(kply) ,TickPlay) ' si es cero no 1 no hay duracion es acorde
          timex(kply)=timex(kply) + TickPlay 'jmgtiempo
          
-       If  GrabarEjec =GrabarPistaEjecucion And ntoca > 1 And arrancaPlay=0 And kply=1 Then
+       If  GrabarEjec =GrabarpistaEjecucion And ntoca > 1 And arrancaPlay=0 And kply=1 Then
      '.....????       tocaparam(ntoca).delta=tocaparam(ntoca).delta+TickPlay  'jmgtiempo
          '  Print #1,"En PlayToca Toca(calltoca).delta ",Tocaparam(calltoca).delta
-           ' retardos respecto del inicio de play y de pista 1, kply=1 
+           ' retardos respecto del inicio de play y de kply 1, kply=1 
        EndIf
 
      EndIf

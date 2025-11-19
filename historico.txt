@@ -1,3 +1,8 @@
+- 19-11-2025 ENCABEZADO DE EJECS VERSION 1
+  "0.349 ARCHIVOS EJECS V2, LEE V1 GRABA V2. PARAMETROS EN EJEC ECO,VOL,PAN,CORO"
+  LEE Y GRABA A DISCO ARCHIVOS EJECS EN VERSION 2 Y V1. FALTA PROCESAR LA CONVERSION A .roll
+  y luego a .rtk y mas tarde a midi..LOS PARA METROS ESTARAN EN LAS EJECS PERO POR AHORA
+  no es seguro que se exporten a Roll ni a rtk..
 - 11-11-2025 varios fixes en grbacion de archivos, nuevos  controles Eco Coro Volumen probados para cancion de tracks
   lista izquierda. Volumen se puede ajustar por pista para cancion o pista aislada.
 - 09-11-2025 FALTA MUCHO TESTEO...

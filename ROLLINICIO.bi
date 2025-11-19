@@ -349,11 +349,15 @@ EndIf
 ' 60 seg * 96 divisiones= 5760 divisiones en 1 min
 ' Y 3W LA MENOR FIGURA 3W DE LA 5ta LINEA de tresillos
 ' iniciamos vector de 15 minutos=660 segundos
-' como la division mas chica TOMAREMOS la figura tresillo de W,3W de 0,01041666 segundos
-' PARA TEMPO 60 entonces tomaremos el tiempo mas chico en 10.41666 mseg..para negra =1 seg
+' como la division mas chica TOMAREMOS la figura tresillo/2 de W,3W de 0,01041666/2 segundos
+' PARA EJEC YA TENIA EN 0.005 O SEA 5 MSEG
+' PARA TEMPO 60 entonces tomaremos el tiempo mas chico en 5 mseg..para negra =1 seg
 ' tiempo 60 seg.
-' 1 SEG DE TRACK= 1000/10,41666 = 96 posiciones de 3W,
-' 1min=86400 posiciones 
+' 1 SEG DE TRACK= 1000/5 = 200 posiciones QUE ES LA MITAD DE 3W,
+' 1min=12000 posiciones . LA NEGRA TENDRIA 200 POSICIONES. PARA TEMPO=60
+' PARA TEMPO 120 ..500/5 =100 POSICIONES, PARA TEMPO 240 250/5 = 50 POSICIONES..
+' USAREMOS EN VEZ DE 100 96 PARA T=120,UEGO PARA TEMPO 60 SERAN 192 POASICIONES
+' PARA TEMPO 120 96 POSICIONES, PARA 240  48 POSICIONES 
 ' LA CANTIDAD DE TICKS DEBE SER CONSTANTE LUEGO SE TOCARA MAS RAPIDO O NO
 ' AJUSTANDO TEMPO Y PAR ESO SE LEERA MAS RAPIDO EL TRACK ..
 ' O SEA LA CANTIDAD DE TICKS DEBE SER LA MISMA PARA TODO TEMPO
@@ -779,8 +783,8 @@ Type InputBoxJmg_ 'basado en InputBox de windows9, para que detecte CR 13
 	As HFONT font,font1
 	As Integer size
 End Type
-
-Function InputBoxJmg(ByRef Caption As USTRING, ByRef Message As USTRING, ByRef DefaultString As USTRING, ByVal flag As Integer, ByVal flag2 As Integer, hParentWin as Hwnd = 0) As USTRING
+'---------------
+Function InputBoxJmg(ByRef Caption As STRING, ByRef Message As STRING, ByRef DefaultString As USTRING, ByVal flag As Integer, ByVal flag2 As Integer, hParentWin as Hwnd = 0) As STRING
 ' Autor:JMG modificacion windows9 inputBox ...experimental si anda bien al vez de incropore
 ' a windows9 y avisamos si quieren usarlo  
 Dim As Integer mix, miy
@@ -821,7 +825,7 @@ Dim As mouse m
 					Case WM_KEYDOWN
                    SendMessage(InputBoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@InputBoxJmg_.mess))
                 
-				       Dim as USTRING sRet = InputBoxJmg_.mess
+				       Dim as UString sRet = InputBoxJmg_.mess
  				       Function = sRet
                 
                    Dim As String * 1 F1,F2
@@ -830,6 +834,8 @@ Dim As mouse m
                    F2=Mid (sRET,LL-1) ' el ultimo ascii
 
                    If Asc(F2) =13 Then
+                      Dim As Integer d13=instr(InputBoxJmg_.mess,F2)
+                      Mid(InputBoxJmg_.mess,d13)=""  
  		   		       DestroyWindow(InputBoxJmg_.hWnd)
 					       InputBoxJmg_.flag=0
 					       Exit Function
@@ -839,7 +845,7 @@ Dim As mouse m
           Select Case InputBoxJmg_.msg.message
               Case WM_LBUTTONDOWN
   			SendMessage(InputBoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@InputBoxJmg_.mess))
-						dim as USTRING sRet = InputBoxJmg_.mess
+						dim as UString sRet = InputBoxJmg_.mess
 						Function = sRet
 						DestroyWindow(InputBoxJmg_.hWnd)
 						InputBoxJmg_.flag=0

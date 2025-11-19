@@ -12,19 +12,18 @@ DisableGadget(PISTASROLL,0)
 Dim As Integer k=0
 Static As Integer millave
 
-       If eventnumber()=  PISTASROLL And GrabarPenta=0 And CANCIONCARGADA=TRUE Then 
+   If eventnumber()=  PISTASROLL And GrabarPenta=0 And CANCIONCARGADA=TRUE Then 
          
-         borrapos=0
+  ''        borrapos=0   ' no se usa
 ' ME GUSTO FUNCIONA ASI: DAR CLICK EN UNA PISTA LUEGO CON flecha arriba
 ' y abajo CAMBIA DE PISTA EN ROLL, para habilitar el  CLICK DERECHO CONTEXTUAL
 ' DAR ENTER Y LUEGO CLICK DERECHO APARECE EL MENU CONTEXTIUAL, PARA VOLVER
 ' AL INICIO DAR CLICK EN OTRA PISTA Y TODO COMIENZA DE NUEVO... 
 '  
-             
-          If MOUSEBUTTONS AND LEFTBUTTON  Then 
+            
 '--------------------------------------------------------------
  'SIMULA TAB AL DAR CLICK EN UN ITEM UNAPISTA DE ROLL EN LA LISTA
-      clickpista=1 ' no incrementa el ntk que simula SC_TAB, el cual carga el track a Roll
+         clickpista=1 ' no incrementa el ntk que simula SC_TAB, el cual carga el track a Roll
             
 '--------------------------------------------------------------
                 
@@ -32,18 +31,17 @@ Static As Integer millave
            '  Print #1,"COORDENADAS X, Y ", GlobalMouseX,GlobalMouseY 
              ''' ROLLCARGADO=FALSE
              '' porque CANCIONCARGADA=TRUE
-             Dim item As String
-             Dim As Integer ubi1,ubi2
+         Dim item As String
+         Dim As Integer ubi1,ubi2
               
-             item=GetListBoxText(PISTASROLL,GetItemListBox(PISTASROLL))
-           '  Print #1,"item 1580 ",item  ' 28-02-2024 esto aparece en debug sin roll
+         item=GetListBoxText(PISTASROLL,GetItemListBox(PISTASROLL))
+        '  Print #1,"item 1580 ",item  ' 28-02-2024 esto aparece en debug sin roll
+         If item > "" Then
              If Len (item) < 24 Then
                item = item + String( 40-Len(item),32)
              EndIf
 
              item=Trim(item)
-
-             If item > "" Then
              '  Dim nombre1 As String
              '   nombre1= NombreCancion + "\"+item +".rtk"
              '   print #1," NUEVO eventgadget click en lista nombre", nombre1
@@ -52,23 +50,22 @@ Static As Integer millave
              ' donde se lo saca del nombre por lotanto devuelve el numero de ntk
              ' despues dela rutina,cargarTrack pone a 0 lineadecomadno=0
              ' pero si quiero volver a disco solo debo resetear ubirtk=0
-              ntk=sacarNtk(item) ' este ntk no sirve para boorar
+             ''' ntk=sacarNtk(item) ' este ntk no sirve para boorar
+           ntk=GetItemListBox(PISTASROLL)+1  '''sacarNtk(item) 
  ' aca no copia track a Roll
            '   Print #1,"ntk de item ", ntk
               nombre= titulosTk(ntk)
-
       '   Print #1,"ntk, nombre ",ntk, nombre
-                
-              EndIf
-              
-          EndIf
+   EndIf          
+
+             
 ' ESTO NO VA ES DE MENU And eventNumber <> 1010 And EventNumber<> 1012
   
 
 ' /// // // / / /  menu contextual popup 
    
             
-          If eventnumber()=  PISTASROLL And  WM_VKEYTOITEM And  EventKEY = VK_RETURN  Then
+      If eventnumber()=  PISTASROLL And  WM_VKEYTOITEM And  EventKEY = VK_RETURN  Then
               Dim As HMENU hMessages2
               Dim As Long eventM
               hMessages2=CreatePopMenu()
@@ -105,13 +102,13 @@ Static As Integer millave
                  EndIf
              
               Loop 
-          EndIf
+      EndIf
 '--------------------------------------------------------------
 ' este ntk sirve para identificar el ntk del archivo t del vector
 ' pero el ntk de la lista es otro vector y al borrar el indice cambia
 ' debo obtener el indice primero                
 '' esta andando con defectos verlos borrado en la lista LBS_WANTKEYBOARDINPUT
-            If WM_VKEYTOITEM Then '
+     If WM_VKEYTOITEM Then '
        '           print #1,"---------->>> APRETO TEcla ",NTK,NombreCancion
                 If EventKEY = VK_DELETE Then 
        '          print #1,"---------->>> APRETO DELETE ",NTK,NombreCancion
@@ -144,50 +141,47 @@ Static As Integer millave
 '------------------------------
                 
 
-            EndIf
+     EndIf
                                   
          '       Print #1," CLICK EN LISTA FIN "
-       EndIf
+  EndIf
 
-       If eventnumber()=  PISTASROLL And GrabarPenta=1 Then
+  If eventnumber()=  PISTASROLL And GrabarPenta=1 Then
           PISTASROLLSELECCIONADA=1  
-       EndIf
+  EndIf
 
-       If eventnumber()=  PISTASEJECUCIONES Then
-             Print #1, "eventnumbre PISTASEJECSELECCIONADA ";eventnumber()
-             PISTASEJECSELECCIONADA=1
-       '     If WM_VKEYTOITEM Then '
-       '           print #1,"---------->>> APRETO TEcla ntoca ",ultimo_chequeado
-       '         If EventKEY = VK_DELETE Then 
-       '          print #1,"---------->>> APRETO DELETE ntoca",ultimo_chequeado
-       '           If tocatope > 0  Then
-       '              DeleteListBoxItem(PISTASEJECUCIONES,GetItemListBox(PISTASEJECUCIONES))
-       '             print #1,"LISTABOX EventKeyDown borrar ntoca",ultimo_chequeado
-       '             If ultimo_chequeado > 0 Then 
-       '                print #1,"LISTBOX  nombre= ",tocaparam(ultimo_chequeado).nombre
-       '                copiarATemp (DirEjecSinBarra+"\"+ tocaparam(ultimo_chequeado).nombre,tocaparam(ultimo_chequeado).nombre)
-       '             ' podria hacer usado titulos(ultimo_chequeado +32)
-       '            Print #1,"titulos(ultimo_chequeado +32) ", titulos(ultimo_chequeado +32)
+'-----------------------------------------------------
 
-       '             BorrarPista (DirEjecSinBarra+"\"+tocaparam(ultimo_chequeado).nombre)
-       '             comprimirListaEjecs()
-       '             ntoca = ntoca - 1
-       '             ntkp=ntoca
-       '             tocatope=ntoca 
-       '             EndIf 
-       '             Sleep 10
-       '           EndIf
-   ' Print #1,"path de carpeta ejec  ", DirEjecSinBarra
-    '            EndIf 
-                 
-           ' aca no debe leer a disco solo conmutar de track en track
+  If eventnumber()=  PISTASEJECUCIONES Then
+''' ESTE MOUSEBUTTONS AND LEFTBUTTON NO FUNCIONA !!! LA PUTA MADRE 
+'''''          If MOUSEBUTTONS AND LEFTBUTTON  Then 
+                
+             print #1,"CLICK lbutton EN LISTA EJECUCIONES ==========="
+             Dim item As String
+             Dim As Integer ubi1,ubi2
+              
+             item=GetListBoxText(PISTASEJECUCIONES,GetItemListBox(PISTASEJECUCIONES))
+ If item > "" Then 
+             If Len (item) < 24 Then
+               item = item + String( 40-Len(item),32)
+             EndIf
+             Print #1,"ITEM pista ",item
+             item=Trim(item)
+
+     
+              ntkp=GetItemListBox(PISTASEJECUCIONES)+1  '''sacarNtk(item) 
+               nombre= titulosEj(ntkp)
+              Print #1,"//////ntkp seleccionado el la lista ",ntkp               
+     
+EndIf              
+''''          EndIf
+' ESTO NO VA ES DE MENU And eventNumber <> 1010 And EventNumber<> 1012
+
+'''             PISTASEJECSELECCIONADA=1
 '------------------------------
                 
 
-     '       EndIf
-       'Else
-       '     PISTASEJECSELECCIONADA=0
-       EndIf
+  EndIf
 
        
 '  CUAL PISTA DE ROLL SE ESCUCHA SEGUN LO SELECCIONADO
@@ -301,9 +295,9 @@ Static As Integer millave
 ' 
       If eventnumber()= BTN_MIDI_PARAR    Then ' BOTON STOP NEGRO DE MIDI-IN
          SetGadgetstate(BTN_MIDI_GRABAR,BTN_LIBERADO)
-         Print #1,"ntoca en BTN_MIDI_PARAR "; ntoca
+         'Print #1,"ntoca en BTN_MIDI_PARAR "; ntoca
          If pmEj(ntoca).MaxPos > 0 And (GrabarEjec=GrabarPistaEjecucion  Or GrabarEjec=GrabarPatronaDisco ) Then
-            Print #1,"STOP:pmEj(ntoca).MaxPos ",pmEj(ntoca).MaxPos
+           ' Print #1,"STOP:pmEj(ntoca).MaxPos ",pmEj(ntoca).MaxPos
             tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos
        '         Print #1,"stop MaxPos ",pmEj(ntoca).MaxPos
             GrabarEjec=HabilitaGrabar
@@ -328,7 +322,7 @@ Static As Integer millave
 ' este delta no se usa para nada creo 03-12-2024
          If  tocaparam(ntoca).delta > 0 And ntoca >1 Then
              partes=tocaparam(ntoca).delta/TickChico
-             Print #1,"//////STOP 305: numero de partes de retardo ",partes 
+       '      Print #1,"//////STOP 305: numero de partes de retardo ",partes 
              k=partes
              pmEj(ntoca).MaxPos=pmEj(ntoca).MaxPos+partes
 '             Toca(ntoca).maxpos=pmEj(ntoca).MaxPos
@@ -400,13 +394,13 @@ Static As Integer millave
 '''''' VER DATOS            Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
          Next j
          Dim tocap As ejecparam = tocaparam(ntoca)
-                Print #1,"PARAMETROS EJEC nombre ",tocap.nombre
-                Print #1,"PARAMETROS EJEC mapos ",tocap.maxpos
-                Print #1,"PARAMETROS EJEC orden ",tocap.orden
-                Print #1,"PARAMETROS EJEC delta ",tocap.delta
-                Print #1,"PARAMETROS EJEC portout ",tocap.portout
-                Print #1,"PARAMETROS EJEC patch ",tocap.patch
-                Print #1,"PARAMETROS EJEC canal ",tocap.canal
+      '          Print #1,"PARAMETROS EJEC nombre ",tocap.nombre
+      '          Print #1,"PARAMETROS EJEC mapos ",tocap.maxpos
+      '          Print #1,"PARAMETROS EJEC orden ",tocap.orden
+      '          Print #1,"PARAMETROS EJEC delta ",tocap.delta
+      '          Print #1,"PARAMETROS EJEC portout ",tocap.portout
+      '          Print #1,"PARAMETROS EJEC patch ",tocap.patch
+      '          Print #1,"PARAMETROS EJEC canal ",tocap.canal
 
          
              maxgrb=tocap.maxpos
@@ -658,19 +652,22 @@ Print #1, "542 GrabarPenta=0"
                   '    Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
                  Next j
     Dim tocap As ejecparam = tocaparam(pis)
-                Print #1,"portsal PARAMETROS EJEC nombre ",tocap.nombre
-                Print #1,"PARAMETROS EJEC mapos ",tocap.maxpos
-                Print #1,"PARAMETROS EJEC orden ",tocap.orden
-                Print #1,"PARAMETROS EJEC delta ",tocap.delta
-                Print #1,"PARAMETROS EJEC portout ",tocap.portout
-                Print #1,"PARAMETROS EJEC patch ",tocap.patch
-                Print #1,"PARAMETROS EJEC canal ",tocap.canal
+    Dim tocap2 As ejecparam2 = tocaparam2(pis)
+
+       '         Print #1,"portsal PARAMETROS EJEC nombre ",tocap.nombre
+       '         Print #1,"PARAMETROS EJEC mapos ",tocap.maxpos
+       '         Print #1,"PARAMETROS EJEC orden ",tocap.orden
+       '         Print #1,"PARAMETROS EJEC delta ",tocap.delta
+       '         Print #1,"PARAMETROS EJEC portout ",tocap.portout
+       '         Print #1,"PARAMETROS EJEC patch ",tocap.patch
+       '         Print #1,"PARAMETROS EJEC canal ",tocap.canal
     
     ' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
 
-                pgmidi.toc=toc
+                pgmidi.toc=toc  'datos secuencia
 'pgmidi.tocatope = tocatope
                pgmidi.tocap = tocap
+               pgmidi.tocap2 = tocap2
                threadGrabamidi=@pgmidi
                GrabarMidiIn(pgmidi,pis) ' por PORSAL
   '''ThreadCreate (@GrabarMidiIn,CPtr(Any Ptr, threadGrabamidi))
@@ -706,6 +703,13 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
       EndIf
 '--------------  
       If  eventnumber()=BTN_EJEC_VOL Then ' VOL futuro
+            Dim As Integer pis
+            pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
+            'cntpis=GetSelCountListBox(PISTASEJECUCIONES,@vec(0)) +1
+            Print #1,"en BTN_EJEC_VOL pis ";pis  
+            If pis=0 Then ' o cntpis=0
+              Exit Select
+            EndIf
           menuOldStr="[VOLEJEC]"
           threadvol=threadCall EntrarTeclado()
 
@@ -754,7 +758,7 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
 
            If  pis >=1 Then  
           '   If tocaparam(pis).nombre > ""  Then ''''And  tocaparam(pis).maxpos > 0  Then 
-                   selInstORdenNum (instrum)
+                   selInstORdenAlfa (instrum)
                     '''thread3 = ThreadCreate(@selInstORdenNum (), CPtr(Any Ptr, instrum))
                    Print #1," pista ejec  nro ",pis
                    tocaparam(pis).patch=CUByte (instrum)
@@ -782,13 +786,13 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
                 '        Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
                    Next j
                 Dim tocap As ejecparam = tocaparam(pis)
-                Print #1,"patch ejec PARAMETROS EJEC nombre ",tocap.nombre
-                Print #1,"patch ejec PARAMETROS EJEC mapos ",tocap.maxpos
-                Print #1,"patch ejec PARAMETROS EJEC orden ",tocap.orden
-                Print #1,"PARAMETROS EJEC delta ",tocap.delta
-                Print #1,"PARAMETROS EJEC portout ",tocap.portout
-                Print #1,"PARAMETROS EJEC patch ",tocap.patch
-                Print #1,"PARAMETROS EJEC canal ",tocap.canal
+         '       Print #1,"patch ejec PARAMETROS EJEC nombre ",tocap.nombre
+         '       Print #1,"patch ejec PARAMETROS EJEC mapos ",tocap.maxpos
+         '       Print #1,"patch ejec PARAMETROS EJEC orden ",tocap.orden
+         '       Print #1,"PARAMETROS EJEC delta ",tocap.delta
+         '       Print #1,"PARAMETROS EJEC portout ",tocap.portout
+         '       Print #1,"PARAMETROS EJEC patch ",tocap.patch
+         '       Print #1,"PARAMETROS EJEC canal ",tocap.canal
 
 ' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
                 pgmidi.toc=toc
@@ -842,13 +846,13 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
            '''  Print #1, toc.trk(j).modo;" ";toc.trk(j).nota;" ";toc.trk(j).vel
                Next j
    Dim tocap As ejecparam = tocaparam(pis)
-                Print #1,"PARAMETROS EJEC nombre ",tocap.nombre
-                Print #1,"PARAMETROS EJEC mapos ",tocap.maxpos
-                Print #1,"PARAMETROS EJEC orden ",tocap.orden
-                Print #1,"PARAMETROS EJEC delta ",tocap.delta
-                Print #1,"PARAMETROS EJEC portout ",tocap.portout
-                Print #1,"PARAMETROS EJEC patch ",tocap.patch
-                Print #1,"PARAMETROS EJEC canal ",tocap.canal
+   '             Print #1,"PARAMETROS EJEC nombre ",tocap.nombre
+   '             Print #1,"PARAMETROS EJEC mapos ",tocap.maxpos
+   '             Print #1,"PARAMETROS EJEC orden ",tocap.orden
+   '             Print #1,"PARAMETROS EJEC delta ",tocap.delta
+   '             Print #1,"PARAMETROS EJEC portout ",tocap.portout
+   '             Print #1,"PARAMETROS EJEC patch ",tocap.patch
+   '             Print #1,"PARAMETROS EJEC canal ",tocap.canal
    
 pgmidi.toc=toc
 'pgmidi.tocatope = tocatope

@@ -111,6 +111,9 @@ Const CARGAR_NO_PUEDE_DIBUJAR =1
 Const EVITAR_LLAMAR_ROLLLOOP_DE_NUEVO = 3 
 Const CON_CANCION = 1
 Const SIN_CANCION = 0
+Const NO_AGREGAR =1
+Const AGREGAR =0
+
 '------menu grafico
 Const MENU_INICIAL = 0
 Const COMANDOS_ARCHIVO = 3
@@ -586,7 +589,7 @@ valorvol=90
 trasponer=0
 common Shared As UByte Globalpan, Globaleco,Globalcoro, CerrarGraficodesdeCtrl,Globalvol
 CerrarGraficodesdeCtrl=0
-COMMON Shared As UByte  Tope
+COMMON Shared As Integer  Tope,TopeEjec
 Tope=0
 Common Shared As String ROLLDIR
 Common Shared As UByte Vfuerte,Vsemifuerte,Vdebil

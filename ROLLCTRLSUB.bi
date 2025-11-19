@@ -311,20 +311,24 @@ Sub CTRL1015 ()
                 '        Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
                    Next j
  Dim tocap As ejecparam = tocaparam(pis)
+ Dim tocap2 As ejecparam2 = tocaparam2(pis)
 
-                Print #1,"PARAMETROS EJEC nombre ",pgmidi.tocap.nombre
-                Print #1,"PARAMETROS EJEC mapos ",pgmidi.tocap.maxpos
-                Print #1,"PARAMETROS EJEC orden ",pgmidi.tocap.orden
-                Print #1,"PARAMETROS EJEC delta ",pgmidi.tocap.delta
+                Print #1,"PARAMETROS EJEC nombre " ,pgmidi.tocap.nombre
+                Print #1,"PARAMETROS EJEC maxpos " ,pgmidi.tocap.maxpos
+                Print #1,"PARAMETROS EJEC orden "  ,pgmidi.tocap.orden
+                Print #1,"PARAMETROS EJEC delta "  ,pgmidi.tocap.delta
                 Print #1,"PARAMETROS EJEC portout ",pgmidi.tocap.portout
-                Print #1,"PARAMETROS EJEC patch ",pgmidi.tocap.patch
-                Print #1,"PARAMETROS EJEC canal ",pgmidi.tocap.canal
+                Print #1,"PARAMETROS EJEC patch "  ,pgmidi.tocap.patch
+                Print #1,"PARAMETROS EJEC canal "  ,pgmidi.tocap.canal
+' ntkp global
  ntkp=pis 
 
-' aca es diferente elchequeo me da el nro de la pista, en estecaso =eje
+' aca es diferente el chequeo me da el nro de la pista, en este caso =eje
 pgmidi.toc=toc
 'pgmidi.tocatope = tocatope
 pgmidi.tocap = tocap
+pgmidi.tocap2 = tocap2
+
 'threadGrabamidi=@pgmidi
 
  grabariniciotxt (NombreCancion,EJECUCION)
@@ -494,10 +498,10 @@ Print #1,"1 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
        EndIf         
               'NTKP ES UNA SALIDA DE LA SUB
 Print #1,"3 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
-       CargarPistasEjec lugar, ntkp
+       CargarPistasEjec lugar, TopeEjec
 '' EJECCARGADA quedo en true en la sub CargarPistasEjec  
        Dim j As integer
-           For  j=1 To ntkp
+           For  j=1 To TopeEjec
              If tocaparam(j).nombre > "" Then
 'nombre debe estar sin extension,las ejecuciones tienen un orden estricto
 ' vamos a tenerque igualar la cantidad de ticks en todas las pistas de modo
@@ -538,8 +542,8 @@ Print #1,"3 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
 '-----------------06-06-2022 fin
              EndIf   
           Next j 
-      ntoca=ntkp
-      tocatope=ntkp
+      ntoca=TopeEjec
+      tocatope=TopeEjec ' TopeEjec aca es el tope maxi, no la variable dinamica
       GrabarEjec=0
       cargariniciotxt(lugar, EJECUCION) 'para guardar que pista ejec se escucha y cual no
    

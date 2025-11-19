@@ -152,7 +152,7 @@ Print #1,"usarmarcoins ", usarmarcoins
            SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1015 '<========== Grabar MIDI-In aca sera para grabar 
- ' EN ejecuciones, CON CANCION CARGADA NO GRABA NADA, la grabacion se hace en STOP SIN CANCION
+ ' EN ejecuciones, CON CANCION CARGADA NO GRABA NADA(reveer esto), la grabacion se hace en STOP SIN CANCION
  ' solo graba la pista checkeada en columna G de Ejecuciones, no hace nada
  ' si ninguna pista G esta seleccionada
 Print 1,"GRABA MIDI IN EN CASE 1015  "
@@ -176,7 +176,8 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
          Exit Select 
 '-----------------------------------------------------------------------
            Case 1017 'renombrar pista ejecucion y borrado
-           Print #1,"Case 1017 "
+           Print #1,"Case 1017 GRABA UNO SOLO O TODOS??? NO ES UN LOOP PORQUE HACE LOOP?"
+Print #1,"**********************************************************************"
          '  If PISTASEJECSELECCIONADA=0 Then
          '     Exit Select 'ASEGURAMOS UNA SELECCION SINO TOMARA SIEMPRE LA PISTA 1
          '  EndIf 
@@ -186,20 +187,23 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 ' NO ES UN METODO COMODO PARA EL USUARIO QUEDEBE DEJAR SOLO UN CHECK Y BORRAR
 ' EL RESTO..
            Dim As Integer nroPista
+           Dim As String  nroPistaTxt 
            nroPista=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
 
            Print #1,"Case 1017  nroPista ";nroPista       
-           nomPista  = InputBoxJmg("Nombre de Pista " ,"Entre un nuevo Nombre ",nomPista , ES_MULTILINE + ES_AUTOVSCROLL, 0 )
-           nompista=Trim(nompista)  
+           nomPista  = InputBox("Nombre de Pista " ,"Entre un nuevo Nombre ",nomPista , , 0 )
+           nomPista = Trim(nomPista)
+
 'aca falta que si nompista es "" borrar la pista y mover todo hacia arriba
 ' si la pista estaba en el medio,,,FALTA
-          If Len (nompista) > 0 Then
-             Print #1,"Case 1017 calcula len  ";
+          If Len (nomPista) > 0 Then
+             Print #1,"Case 1017 calcula len  "; Len (nomPista)
             SetListBoxItemText(PISTASEJECUCIONES,nompista,nroPista-1) ' i1-1
             Dim As String nombreviejo
             nombreviejo=tocaparam(nroPista).nombre
             Print #1,"nombreviejo "; nombreviejo   
             tocaparam(nroPista).nombre=nompista
+            pgmidi.tocap.nombre=nompista ''<== le puso el nombre nuevo y entonces??
             Dim tocap As ejecparam = tocaparam(nroPista)
             ReDim toc.trk(1 To tocap.maxpos)
             Print #1,"tocap.maxpos ";tocap.maxpos
@@ -210,27 +214,25 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
             Next j
             pgmidi.toc   = toc
             pgmidi.tocap = tocap
-          
+    Print #1,"ctrl1017 rename pgmidi.tocap.nombre ",pgmidi.tocap.nombre      
 
             Dim OldName As String
             Dim NewName As String
             Dim result As Integer 
       
             OldName = nombreviejo
-            If InStr(OldName,"ejec")=0 Then
-              OldName = OldName+".ejec"
-            EndIf
       
-            If InStr(nompista,"ejec")=0 Then
-              NewName = nompista+".ejec"
+            If InStr(LCase(nompista),".ejec")=0 Then
+              NewName = nompista + ".ejec"
             Else
               NewName = nompista
             EndIf
-            Print #1,"Case 1017 OldName ";OldName
-            Print #1,"Case 1017 NewName ";NewName
+            Print #1,"Case 1017 OldName ",OldName
+            Print #1,"Case 1017 NewName ",NewName
             
- Print #1,DirEjecSinBarra+"\"+"("+doscifras(nroPista)+")"+OldName, DirEjecSinBarra+"\"+"("+doscifras(nroPista)+")"+NewName
-    result = Name( DirEjecSinBarra+"\"+"("+doscifras(nroPista)+")"+OldName, DirEjecSinBarra+"\"+"("+doscifras(nroPista)+")"+ NewName )
+ Print #1,DirEjecSinBarra+"\"+OldName, DirEjecSinBarra+"\"+NewName
+ result = Name( DirEjecSinBarra+"\"+OldName, DirEjecSinBarra+"\"+ NewName )
+
             Sleep 100
             If 0 <> result Then 
               Print #1, "error renaming " & oldname & " to " & newname, result 
@@ -240,19 +242,20 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
             '  If RTA > 0 Then
             '      Print #1, "error BORRANDO ";DirEjecSinBarra+"\"+OldName    
             '  Else
-            '      Print #1,"BORRO OLDNAME ";DirEjecSinBarra+"\"+OldName  
+            '      Print #1,"BORRO OLDNAME ";DirEjecSinBarra+"\"+OldName
+              
                  GrabarMidiIn(pgmidi,nroPista)
             '  EndIf
              
             End If
           EndIf
           If Len (nompista) = 0 Then
-           'borrar pista y comprimir lista de ejecs si quedo un hueco..
+           Print #1,"'borrar pista y comprimir lista de ejecs si quedo un hueco.."
            DeleteListBoxItem(PISTASEJECUCIONES, nroPista-1)
            Print #1,"comprimir listas ejec"
            ''no hace falta lalista comprime automaticamente!!
            '' solo hay que borar de disco y renombrar!!! 
-          comprimirListaEjecs(nroPista)
+  '''REPONER KILOMBO POR AHORA        comprimirListaEjecs(nroPista)
 ' =========>>>>> corregir  comprimirListaEjecs(nroPista)
 ' anda mal, para que los datos que queden en el vector sean tal cual como 
 ' lo deja la lista o sea sacar el agujero de la pista 2 si se ha borrado

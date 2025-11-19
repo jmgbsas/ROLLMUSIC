@@ -974,7 +974,7 @@ Dim  As Integer nroPartesNota,verticalEnOctavaVacia
 '---------------CTRL-N ..................
 'ctrl-n: usaremos el mismo codigo de ctrl-m solo que la nota se entra por nombre la X que es cambiadur=1 se
 ' establece desde el principio no hace falta pulsarla
- If  COMEDIT=SOLO_MODIFICACION  And agregarNota=1  And nota > 0 Then 'ctrl-n ch cambiado hoy
+ If  COMEDIT=SOLO_MODIFICACION  And agregarNota=NO_AGREGAR  And nota > 0 Then 'ctrl-n ch cambiado hoy
   If MouseButtons And 1 Then '''YA PROBADO
      If curposClickDerecho >0 Then
         curpos=curposClickDerecho
@@ -4847,6 +4847,7 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
        default2 = Str(tiempoPatronEjec)
        ticksdefault = InputBoxJmg("Ajuste Tempo Ejec" ,"Entre un Tempo ",default2, ES_MULTILINE + ES_AUTOVSCROLL,0  )
        tiempoPatronEjec= CInt(ticksdefault) '08-01-2022 de doble a int
+       pmEj(ntkp).tiempopatron = tiempoPatronEjec
    Else
        'If  ticksdefault<>"" Then
        '    default=ticksdefault
@@ -4865,14 +4866,14 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
    default=Str("1.25")
     Print #1,"llego a TEMPO en entrar tecla",NombreArchivo 
 
-    NombreArchivo = InputBoxJmg("Ajuste Factor Tempo " ,"Entre un Factor ",default, ES_MULTILINE + ES_AUTOVSCROLL,0  )
+    nombreArchivo = InputBoxJmg("Ajuste Factor Tempo " ,"Entre un Factor ",default, ES_MULTILINE + ES_AUTOVSCROLL,0  )
       
     Print #1,"nombreArchivo de click ok",nombreArchivo
     FactortiempoPatron= CDbl(nombreArchivo) '08-01-2022 de doble a int
     Print #1,">>>>>>>>Factor TIEMPO PATRON NUEVO>>>>>>>", FactortiempoPatron
  Case "[NROREP]"
   default=Str("2")
-  NombreArchivo = InputBoxJmg("Repeticiones " ,"Cantidad entera ",default, ES_MULTILINE + ES_AUTOVSCROLL ,0 )
+  nombreArchivo = InputBoxJmg("Repeticiones " ,"Cantidad entera ",default, ES_MULTILINE + ES_AUTOVSCROLL ,0 )
 ' en este momento inserto al repeticion 
 ' Lo maximo que uso son 8 posiciones para los acrodes de las octavas de 0 a 7 o 1 a 8,
 ' como tengo 13 posiciones verticales en la ultima octava me quedan 5 posiciones libres 
@@ -4895,7 +4896,7 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
 ' ajusto comienzo= pasozona1...
 ' al llear pasozona2 en el mismo lugar pongo le nro de repeticiones
   Roll.trk(pasozona2,vertical).nota = 211' indica final de repeticion
-  Roll.trk(pasozona2,vertical).vol = CUByte(NombreArchivo) ' nro de repeticiones
+  Roll.trk(pasozona2,vertical).vol = CUByte(nombreArchivo) ' nro de repeticiones
 ' ajusto final=pasozona2 
 ' creo un contador que vaya disminuyendo su valor con cada repeticion  
   pasozona1=0:pasozona2=0
@@ -4925,65 +4926,103 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
 '' PROBE DETODO HASTA LO INIMAGINABLE JAJAJ 09-11-2025
 '' MI ENTRA TECLADO ES LA POSTA PARA ENTRAR DESDE TECLADO Y CON ENTER 
 '' FALTARIA AGREGARLE CON MOUSE QUE FUNCIONE EL ACEPTAR listo funciona  con 2 enter y mouse ok
+   If menuOldStr="[PANEJEC]" Then
+       default=Str(pmEj(ntkp).pan)
+   Else
+       default=Str(pmTk(ntk).pan)
+   EndIf
+
    default=Str(pmTk(ntk).pan)  
    intervaloTxt = InputBoxJmg("Ajuste Numerico de PAN 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
    valorpan= ValInt(intervaloTxt)  '19-03-2025
    If menuOldStr = "[PAN]" Then 
-   pmTk(ntk).pan=CUByte(valorpan)
-   pmTk(0).pan=CUByte(valorpan)
+     If ntk=0 Then Exit Select  EndIf
+      pmTk(ntk).pan=CUByte(valorpan)
+      pmTk(0).pan=CUByte(valorpan)
    EndIf
    If menuOldStr = "[PANEJEC]" Then
-     If ntkp=0 Then ntkp=1 EndIf 
+     If ntkp=0 Then Exit Select  EndIf
       pmEj(ntkp).pan=CUByte(valorpan) 
+      tocaparam2(ntkp).pan=CUByte(valorpan)
    EndIf
 
    Print #1,"PAN SELECCIONADO ->> "; valorpan
    Globalpan=CUByte(valorpan)
   SetGadgetText(3,Str(valorpan))
  Case "[CORO]","[COROEJEC]"
-   default=Str(valorcoro)  
+   If menuOldStr="[COROEJEC]" Then
+       default=Str(pmEj(ntkp).coro)
+   Else
+       default=Str(pmTk(ntk).coro)
+   EndIf
+   
    intervaloTxt = InputBoxJmg("Ajuste Numerico de CORO/Chorus 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
    valorcoro= ValInt(intervaloTxt)  '19-03-2025
-   If menuOldStr="[CORO]" Then  
+   If menuOldStr="[CORO]" Then
+     If ntk=0 Then Exit Select  EndIf
+     
      pmTk(ntk).coro=CUByte(valorcoro)
      pmTk(0).coro=CUByte(valorcoro)
    EndIf
    If menuOldStr="[COROEJEC]" Then
-     If ntkp=0 Then ntkp=1 EndIf  
+     If ntkp=0 Then Exit Select EndIf  
      pmEj(ntkp).coro=CUByte(valorcoro)
+     tocaparam2(ntkp).coro=CUByte(valorcoro) 
    EndIf
 
-   Print #1,"PAN SELECCIONADO ->> "; valorcoro
+   Print #1,"CORO SELECCIONADO ->> "; valorcoro
    Globalcoro=CUByte(valorcoro)
   SetGadgetText(3,Str(valorcoro))
 
   Case "[ECO]","[ECOEJEC]"
-   default=Str(pmTk(ntk).eco)  
+   
+   If menuOldStr="[ECOEJEC]" Then
+       default=Str(pmEj(ntkp).eco)
+   Else
+       default=Str(pmTk(ntk).eco)
+   EndIf
    intervaloTxt = InputBoxJmg("Ajuste Numerico de ECO 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
    valoreco= ValInt(intervaloTxt)  '19-03-2025
-   If menuOldStr="[ECO]" Then 
+   If menuOldStr="[ECO]" Then
      pmTk(ntk).eco=CUByte(valoreco)
      pmTk(0).eco=CUByte(valoreco)
    EndIf
    If menuOldStr="[ECOEJEC]" Then 
-     If ntkp=0 Then ntkp=1 endif   
+     If ntkp=0 Then Exit Select  EndIf
      pmEj(ntkp).eco=CUByte(valoreco)
+     tocaparam2(ntkp).eco = CUByte(valoreco)
    EndIf
 
    Print #1,"ECO SELECCIONADO ->> "; valoreco
    Globaleco=CUByte(valoreco)
   SetGadgetText(3,Str(valoreco))
     Case "[VOL]","[VOLEJEC]"
-   default=Str(pmTk(ntk).vol)  
-   intervaloTxt = InputBoxJmg("Ajuste Numerico de VOL 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
-   valorvol= ValInt(intervaloTxt)  '19-03-2025
    If menuOldStr="[VOL]" Then 
-     pmTk(ntk).vol=CUByte(valorvol)
-     pmTk(0).vol=CUByte(valorvol)
+      If pmTk(ntk).vol=0 Then 
+        default=Str(90)
+      Else 
+        default=Str(pmTk(ntk).vol) 
+      EndIf
+      intervaloTxt = InputBoxJmg("Ajuste Numerico de VOL 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+      valorvol= ValInt(intervaloTxt)  '19-03-2025
+      pmTk(ntk).vol=CUByte(valorvol)
+      pmTk(0).vol=CUByte(valorvol)
+
    EndIf
+
    If menuOldStr="[VOLEJEC]" Then 
-     If ntkp=0 Then ntkp=1 endif   
-     pmEj(ntkp).vol=CUByte(valorvol)
+      If pmEj(ntkp).vol=0 Then 
+        default=Str(90)
+        tocaparam2(ntkp).vol=90 
+      Else 
+        default=Str(pmEj(ntkp).vol) 
+      EndIf
+       intervaloTxt = InputBoxJmg("Ajuste Numerico de VOL 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+      valorvol= ValInt(intervaloTxt)  '19-03-2025
+      If ntkp=0 Then Exit Select  EndIf   
+      pmEj(ntkp).vol=CUByte(valorvol)
+      tocaparam2(ntkp).vol=CUByte(valorvol)
+      Print #1,"NTKP EN VOLEJEC SEL, pmEj(ntkp).vol ", ntkp, pmEj(ntkp).vol
    EndIf
 
    Print #1," VOLUMEN AJUSTADOO ->> "; valorvol

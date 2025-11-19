@@ -31,7 +31,18 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.348 ..controles de pista de rolls,vol eco coro "
+nroversion="0.349 ARCHIVOS EJECS V2, LEE V1 GRABA V2. PARAMETROS EN EJEC ECO,VOL,PAN,CORO"
+'  VER AHORA EL RENAME...Y GRABACION A DISCO,ok,GRABA Y LEVANTA EN VERSION 2 y 1 DE ARCHIVOS EJEC. 
+' ARREGLAR Y LISTO ok..JUGAREMOS  CON LOS PARAMETROS PAN ECO ETC SOBRE EJEC DIRECTAMENTE ok!!
+' 1310 de rolldec seguir nuevo metodo de reconocer versiones con la f echa en un double now
+' acordarse de probar el track bar ahora con elcambio de eliminacion de mouseebitton
+' SEGUIR EN ROLLTRACKS LINEA 224
+' ARREGLE PMEJ VOLUMEN DE EJECUCIONES Y DEPASO ENCONTRE QUE IF MOUSEBUTTON AND LEFTBUTTON
+' NO FUNCIONA Y ESE DEBE SER EL PROBLEMA TAL VEZ DEL PROBLEMA DE PISTA ROLL QUE DEJABA
+' DE FUNCIONAR EL CONTROL SOBRE TAB DE LA PISTA EN EL GRAFICO!!!
+' YA INDEPENDICE EL NRO DE PISTA DEL ORDEN ..NO NECESITO ORDEN EN LAS EJECUCIONES
+' LUEGO PUEDO ELIMINAR EL NUMERO (1) (2) ETC 
+' ------ VER LO MISMO DE LOS NUMEROS EN ROLL
 ' crear o cargar nueva pista en cancion andaba mal, VERIFICAR CON LOS CAMBIOS NUEVOS
 ' queda  por revisar
 ' 1) AL GRABAR EN ROLL UNA PISTA RTK SOBREESCRIBE CON LOS DATOS o al cambiar algun parametro

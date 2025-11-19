@@ -8,136 +8,181 @@ End Sub
 
 '------------
 
-Sub CargarMidiIn(DirEjecSinBarra As String,   ByRef ntkp As Integer)
+Sub CargarMidiIn(fileMidiIn As String,   ByVal ntkp As Integer, byval version As Integer)
+'[ carga un archivo en cada llamada ]
 ' carga un archivo por cada llamada, ntkp el nro de trak o pista de ejecucion
- 
+' la entrada DirEjecSinBarra recibido enCargarMidiIn CONTIENE EL PATCH NO SERIA 
+' NTKP ES POR VALOR PASA ELNUMERO DE ARCHIVO DEL LOOP DE CARGARPISTASJECS
 
       Dim As Integer  j 
       ' nombre tiene el path y extension esta completo
      
   '    pmEj(ntkp).MaxPos=N
- Print #1,"DirEjecSinBarra recibido enCargarMidiIn ",DirEjecSinBarra
-
-      Dim As Integer ubi1,ubi2 
-      ubi1 = InStrrev(DirEjecSinBarra,"(")
-      ubi2 =InStrRev (DirEjecSinBarra,")")
-      ntkp=CInt(Mid(DirEjecSinBarra,ubi1+1,ubi2-ubi1-1)) ' el orden o nro de la pista sale del nombre
+ Print #1,"fileMidiIn recibido enCargarMidiIn ",fileMidiIn ' TIENE PATH
+ Print #1,"NombreCancion  ",NombreCancion
+     
+      Dim As Integer ubi1 ',ubi2 
+      ubi1 = InStrrev(fileMidiIn,"\")
+ '     ubi2 =InStrRev (DirEjecSinBarra,")")
+ '     ntkp=CInt(Mid(DirEjecSinBarra,ubi1+1,ubi2-ubi1-1)) ' el orden o nro de la pista sale del nombre
 ' pero tambien esta grabado en tocaparam en el archivo
 ' si hay numero en la string aunque no halla parentesis al comienxo y  el numero este
 ' al fina lo cualquier parte tomara el numero igual.,,cint descarta las letras,,,
   '    If ubi1=0 Or ubi2=0 And ntkp=0 Then
   '       ntkp=1 'corregimos despues
   '    EndIf  
+'''NombreCancion CONTENDRA EL PATH CON LA BARRA AL FINAL
       If  NombreCancion="" And ubi1 > 0 Then
-          NombreCancion=Mid(DirEjecSinBarra,1,ubi1-1)
+          NombreCancion=Mid(fileMidiIn,1,ubi1)
       EndIf
 
 
-      If Fileexists(DirEjecSinBarra)=0 Then 
-          Print #1,DirEjecSinBarra;"  not found"
+      If Fileexists(fileMidiIn)=0 Then 
+          Print #1,fileMidiIn;"  not found"
           Return
       EndIf 
       
  Print #1,"maxgrb en CARGAmidiin ", maxgrb
       Var  f=12
-     If  Open (DirEjecSinBarra For Binary Access Read As #f ) <> 0 Then 
-          Print #1,"No se puede leer  "; DirEjecSinBarra
+     If  Open (fileMidiIn For Binary Access Read As #f ) <> 0 Then 
+          Print #1,"No se puede leer  "; fileMidiIn
           Exit Sub
      EndIf  
-            Dim tocaparamaux As ejecparam 
-            Get #f, ,tocaparamaux 'parametros de una ejecucion
-             Print #1,"Open DirEjecSinBarra: tocaparam(ntkp).maxpos ",tocaparam(ntkp).maxpos
-             maxpos=tocaparamaux.maxpos ' 28-11-2024 ,,ACA LAPISA ESTA MAL
-           ' maxgrp se calcula en CargarPistasEjec pero no la usa usa un valor fijo 384000
-            ReDim (Toca(ntkp).trk ) (1 To 2*maxgrb) ''
-         '' ReDim (Toca(ntkp).trk ) (1 To 384000)  ' 1000 compases  28-11-2024
-          If ntkp<> tocaparamaux.orden Then
-             ntkp=tocaparamaux.orden
-             Print #1,"NTKP ",ntkp 'orden o nro pista
-          Else  
-             Print #1,"NTKP ELSE",ntkp 'orden o nro pista
-          EndIf
-           tocaparam(ntkp)=tocaparamaux  ' aca copia el maxpos particual de la pista
-         'limpio numeros parentesis y signos - si lso tiene
-          ' Dim As Integer abrep,cierrap, menos
-          ' abrep=InStr(tocaparam(ntkp).nombre,"(")
-          ' cierrap=InStr(tocaparam(ntkp).nombre,")")
-          ' menos=InStr(tocaparam(ntkp).nombre,"-")
-          ' If menos=cierrap+1 Then
-          '   tocaparam(ntkp).nombre=Mid(tocaparam(ntkp).nombre,menos+1)
-          ' Else 
-          '    If cierrap > 0 Then
-          '       tocaparam(ntkp).nombre=Mid(tocaparam(ntkp).nombre,cierrap+1)
-          '    EndIf  
-          ' EndIf
-          
-            Get #f, ,Toca(ntkp).trk()
+         ''   Dim tocaparamaux As ejecparam
+         ''   Dim tocaparamaux2 As ejecparam2 
+         ''   Get #f, ,tocaparamaux 'parametros de una ejecucion
+     If version= 2 Then 
+         Get #f, ,tocaparamCabeza(ntkp) ' DEERMIONA SI ES VERSION VIEJA O NUEVA
+         Print #1,"' VERSION 2 NUEVA leo lo siguiente"
+         Get #f, ,tocaparam(ntkp)  ' EN VER2 HABRA UNA CABEZA Y LUEGO TOCAPARAM Y TOCAPARAM2
+         Get #f, ,tocaparam2(ntkp)
+'---------------------         
+     Else '''versiosn vieja  
+         Get #f, ,tocaparam(ntkp)
+     EndIf
+' tocaparam  YA SE CARGO ANTES falta tocaparam2 lo neuvo 
 
-Print #1,"ubound ",UBound (Toca(ntkp).trk)
-'For j As Integer=1 To tocaparam(ntkp).maxpos
-'Print #1, Toca(ntkp).trk(j).modo;" ";Toca(ntkp).trk(j).nota;" ";Toca(ntkp).trk(j).vel
-'Next j 
+      If version=2  Then
+' movemos lo nuevo y viejo
+Print #1,"ESTAMOS EN VERION 2 !!!!"
+         pmEj(ntkp).sonido       = tocaparam2(ntkp).sonido        
+         pmEj(ntkp).pan          = tocaparam2(ntkp).pan           
+         pmEj(ntkp).Eco          = tocaparam2(ntkp).Eco           
+         pmEj(ntkp).coro         = tocaparam2(ntkp).coro
+Print #1,"QUE CORO DE MIERDA LEYO ? ", tocaparam2(ntkp).coro          
+         pmEj(ntkp).vibrato      = tocaparam2(ntkp).vibrato
+         tocaparam2(ntkp).ejec   = 1 
+         pmEj(ntkp).ejec         = tocaparam2(ntkp).ejec          
+         pmEj(ntkp).canalx       = tocaparam2(ntkp).canalx        
+         pmEj(ntkp).canalsalida  = tocaparam2(ntkp).canalsalida   
+         pmEj(ntkp).vol          = tocaparam2(ntkp).vol 
+Print #1,"//tocaparam2(ntkp).vol cargado ",tocaparam2(ntkp).vol          
+         If pmEj(ntkp).vol=0 Then
+            pmEj(ntkp).vol=127
+Print #1,"---ajusto a 127 tocaparam2(ntkp).vol !!"
+         EndIf  
+         pmEj(ntkp).TipoCompas    = tocaparam2(ntkp).TipoCompas
+
+         Dim mit As aUshort
+         mit.tp1 = tocaparam2(ntkp).tiempoPatron1
+         mit.tp2  = tocaparam2(ntkp).tiempoPatron2
+         tiempoPatron=mit.ST
+         If tiempoPatron = 0 Then 
+            tiempoPatron = 240
+         EndIf
+         pmEj(ntkp).tiempoPatron=tiempoPatron    
+         pmEj(ntkp).pitchbend     = tocaparam2(ntkp).pitchbend     
+  ELSE             
+  Print #1,"ESTAMOS EN VERION 1 !!!!"
+'EN VERSION 1 NO LEE LA PARTE 2 DE ENCABEZADO ERGO FALTARIA VOLUMEN Y TIEMPOPATRON EJEC
+      If pmEj(ntkp).vol=0 Then
+         pmEj(ntkp).vol=127
+      EndIf  
+      If tiempoPatron = 0 Then 
+         tiempoPatron = 240
+      EndIf
+ EndIf
+      pmEj(ntkp).ejec =1 'SIEMPRE PORQUE ES EJECUCION VIVA
+'------------------------------------------
+      Print #1,"Open DirEjecSinBarra: tocaparam(ntkp).maxpos ",tocaparam(ntkp).maxpos
+  ''maxpos es de cancion mxgrp de ejecucion aca maxpos no se debe usar nunca
+  ''''    maxpos=tocaparam(ntkp).maxpos ' 28-11-2024 ,,ACA LAPISA ESTA MAL
+      nombre=tocaparam(ntkp).nombre
+      maxpos=0
+    ' maxgrp se calcula en CargarPistasEjec pero no la usa usa un valor fijo 384000
+Print #1,"////////redimendsiona a 2*maxgrb ",2*maxgrb
+' se redimensionas todos iguales a 2*maxgrb         
+      ReDim (Toca(ntkp).trk ) (1 To 2*maxgrb) ''
+'----------nuevo orden dinamico
+      tocaparam(ntkp).orden=ntkp 
+       Get #f, ,Toca(ntkp).trk()
+
+'Print #1,"ubound ",UBound (Toca(ntkp).trk)
+''For j As Integer=1 To tocaparam(ntkp).maxpos
+''Print #1, Toca(ntkp).trk(j).modo;" ";Toca(ntkp).trk(j).nota;" ";Toca(ntkp).trk(j).vel
+''Next j 
       ' cerrar f
        Close 12
           
 '      pmEj(ntkp).MaxPos=Toca(ntkp).maxpos
       ntoca=tocaparam(ntkp).orden
-'      If  ntoca<> ntkp Then
-'          Print #1," ALERTA EN CARGA NRO ARCHIVO NO COINCIDE CON ORDEN / NTOCA ,NTKP ", ntkp,ntoca
-'          Print #1," SE CAMBIÓ EL NRO DE PISTA EN EL NOMBRE DEL ARCHIVO, NO INFLUYE "
-'
-'      EndIf
-      pmEj(ntkp).portout= tocaparam(ntkp).portout
-      pmEj(ntkp).portin= tocaparam(ntkp).portin
-      pmEj(ntkp).patch = tocaparam(ntkp).patch
-      pmEj(ntkp).canalsalida=tocaparam(ntkp).canal
-      pmEj(ntkp).MaxPos=tocaparam(ntkp).maxpos
-      pmEj(ntkp).canalentrada=tocaparam(ntkp).canalent
+    
 
-
-      Print #1,"CargarIn maxpos,np  ",tocaparam(ntkp).maxpos , ntkp
-      Print #1,"Cargar delta ",tocaparam(ntkp).delta
-      Print #1,"Cargar nombre ",tocaparam(ntkp).nombre
-      Print #1,"Cargar orden ",tocaparam(ntkp).orden 
-      Print #1,"Cargar portout ",tocaparam(ntkp).portout
-      Print #1,"Cargar portin ",tocaparam(ntkp).portin
-      Print #1,"Cargar patch ",tocaparam(ntkp).patch
-      Print #1,"Cargar canal ",tocaparam(ntkp).canal
+'      Print #1,"CargarIn maxpos,np  ",tocaparam(ntkp).maxpos , ntkp
+'      Print #1,"Cargar delta ",tocaparam(ntkp).delta
+'      Print #1,"Cargar nombre ",tocaparam(ntkp).nombre
+'      Print #1,"Cargar orden ",tocaparam(ntkp).orden 
+'      Print #1,"Cargar portout ",tocaparam(ntkp).portout
+'      Print #1,"Cargar portin ",tocaparam(ntkp).portin
+'      Print #1,"Cargar patch ",tocaparam(ntkp).patch
+'      Print #1,"Cargar canal ",tocaparam(ntkp).canal
 ' el ultimo valor de ntkp queda en calltoca... 
-     calltoca=ntkp
+   '  calltoca=ntkp no se usa
 
    '  viv.trk()=Toc()
 
 End Sub
 
-Sub CargarPistasEjec (lugar As String, ByRef ntkp As integer)
+Sub CargarPistasEjec (lugar As String, ByRef ntkp As Integer)
+' devuelve ntkp topeejec!!
+' lugar es el path de  la carpeta seleccionada 
 ' cada vez que cargo borro la info de fechas de pistas anterior
 ' para usar esta carga hay que crear un Dir de cancion y abrirlo
 'podra haber pistas trk o ejec o ambas,veremos si se pueden sincronizar   
 ' devuelve el numero de pistas...cargadas
 ' y fija la maxgrb o la maxpos de todas las pistas ejec
+'NTKP ES EL TOPE al terkminar el procedimiento ntkp=nf
+' no deberia grabar mas el nombre  de la pista,el nombre sera la del archivo
+'asi el ussuario puede renombrarlo a su gusto...y no hay q ue hacer lio de renombrar
+' dentro ni usar rename que anda para la mierda ,,,vsmos a guardar siempre el nombre
+' del archivo en disco a la estructura para consultar durante el proceso 
+' o sea si luego de cargar y procesar queremos grabar usaremos el nombre de la parm
+' o el que esta en la lista visual. Lo que conviene HACER ES CARGAR DE DISCO
+' EN VECTOR PARAM GUARDARLO SIN PATH PERO CON LA EXTENSION *.EJEC
+' EN LA LISTA COLOCARLO SIN LA EXTENSION. Y AL GRABAR AGREGARLE EL PATCH AL NOMBRE 
+' EN EL PARAM...LOS NOMBRES DE LA LISTA NO SE USAN,,,
 ROLLCARGADO=FALSE
-Print #1,"LUGAR RECIBIDO, ntkp ";lugar ,ntkp
+Print #1,"LUGAR RECIBIDO, ntkp maximo ";lugar ,ntkp
+TopeEjec=ntkp
 GrabarEjec =HabilitaGrabar: ntoca=0 : arrancaPlay=NO
-         ntkp=1 '<================= inicia en 1 y va a devolver ntkp!!
+Dim As Integer version
+''''         ntkp=1 '<================= inicia en 1 y va a devolver ntkp!!
 ' ahi estaba el error empieza en 1 no en cero veremos! 
 s5=2 '11-06-2022 control de pantalla
 ''ReDim As Double fechasPistas(1 To 32)
 print #1,"-------------------------------------------------------"
 print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devuelve ntkp "
-  Dim As String no1, no2
   Dim As Integer ubi1=0,ubi2=0 
      Dim As String filenameold
-     ' el Dir me trae lso nombres sin el path de cancion
+     ' el Dir me trae lso nombres sin el path de cancion, EL PATH POSTA COMPLETO ES NOMBRECANCION
 
      If  lugar ="" Then
          DirEjecSinBarra = Dir ("*.ejec")
      Else
          DirEjecSinBarra = Dir (lugar+"\*.ejec")
      EndIf
-' el dir da el orden 01 02 03 pero podria sacarlo de esa cadena 01 02 03 como hago con trakcs
-' pero no hace falta estan ordenados 01 02 03 04 (el usuario debe respetar este orde en un
-' numero de 2 cifras si quiere crear manualmente algo)
+' el dir da el orden DE CARGA POR ALFABETO PARA ELPLAY NO IMPORTA EL ORDEN DE CARGA YA  SE HA PROBADO
+'
 ' 1) DETERMINA EL MAXGRB DE LA CANCION MIRANDO EN TODOS LOS ARCHIVOS
 '     PARA AL CARGAR DIMENSIONAR TODOS LOS VECTORES DE CARGA AL MISMO
 '     VALOR MAXIMO 
@@ -161,10 +206,10 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
 
 
        Dim  As Integer nf=0
-'PREVIAMENTE OBTIENE EL MAXGRB PARA REDIMENSIONAR LOS VECTORES A CARGAR  
+' OBTIENE EL MAXGRB PARA REDIMENSIONAR LOS VECTORES A CARGAR  
        Do While Len(DirEjecSinBarra) > 0
-           Print #1,"DirEjecSinBarra loop maxgrb ",DirEjecSinBarra
-           Print #1,"fileMidiIn loop maxgrb ",fileMidiIn
+           Print #1,"DirEjecSinBarra maxgrb ",DirEjecSinBarra
+           Print #1,"fileMidiIn  maxgrb ",fileMidiIn
 
            nf =nf+ 1
            Var  f=13
@@ -172,20 +217,57 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
               Print #1,"No se puede leer fileMidiIn CargarPistasEjec "; fileMidiIn
               Exit Sub
            End If
-           Get #f, ,tocaparam(nf)
+           Get #f, ,tocaparamCabeza(nf) ' DETERMIONA SI ES VERSION VIEJA O NUEVA
+           Dim fecha1 As String 
+           fecha1 =Format (tocaparamCabeza(nf).fecha ,"ddddd")
+           Print #1, "fecha1 ",fecha1
+           Print #1, "tocaparamCabeza(nf).fecha",tocaparamCabeza(nf).fecha
+ 'cantidad de dias desde 30 dic 1899,1900 a 2025 son 125 años
+ ' 125 * 365 = 45625
+          If IsDate(fecha1) <> 0 And  tocaparamCabeza(nf).fecha > 45000 Then
+             Print #1,"cargando archivo ejec version 2"  '' corre ok
+             ' VERSION 2 NUEVA leo lo siguiente
+             version=2     
+             Get #f, ,tocaparam(nf)  ' EN VER2 HABRA UNA CABEZA Y LUEGO TOCAPARAM Y TOCAPARAM2
+          Else
+             Close f
+             Sleep 50
+             Open fileMidiIn For Binary Access Read As #f
+             Print #1,"cargando archivo ejec version 1"
+             version=1   
+             Get #f, ,tocaparam(nf)
+          EndIf
+' CON EJEC2 tocaparam0 tendra otros datos a definir y recien empieza
+' lso datos de antes mas nuevos en tocaparam y tocaparam2 e l 2 aca no hace falta solo quereemos maxpos
+' para obtener el maxgrb de todas las pistas   
+'---------------------------
+' solo interesa la 1er parte del ejecparam porque tine el maxpos
            Print #1,"tocaparam(nf).maxpos ",tocaparam(nf).maxpos
+
            If tocaparam(nf).maxpos > maxgrb Then
               maxgrb = tocaparam(nf).maxpos
            EndIf
            Close f
-         ntkp=tocaparam(nf).orden
+         Print #1," ORDEN DE LECTURA EJEC nf ", nf
+         Print #1,"PARA FILEMIDIIN  ",FILEMIDIIN
+          tocaparam(nf).orden=nf
 
-         pmEj(ntkp).portout= tocaparam(nf).portout
-         pmEj(ntkp).portin = tocaparam(nf).portin
-         pmEj(ntkp).patch  = tocaparam(nf).patch
-         pmEj(ntkp).canalsalida =tocaparam(nf).canal
-         pmEj(ntkp).MaxPos      =tocaparam(nf).maxpos
-         pmEj(ntkp).canalentrada=tocaparam(nf).canalent
+'------------------------------------------------------------------------------------------------
+         pmEj(nf).portout= tocaparam(nf).portout
+         pmEj(nf).portin = tocaparam(nf).portin
+         pmEj(nf).patch  = tocaparam(nf).patch
+         pmEj(nf).canalsalida =tocaparam(nf).canal
+         pmEj(nf).MaxPos      =tocaparam(nf).maxpos
+         pmEj(nf).canalentrada=tocaparam(nf).canalent
+         pmEj(nf).orden      =tocaparam(nf).orden
+         Dim k1 As Integer
+         k1=InStr(DirEjecSinBarra,".")
+         Dim As String nomSinExt
+         nomSinExt= Mid(DirEjecSinBarra,1,k1-1)         
+         tocaparam(nf).nombre=nomSinExt  ' SOLO EL NOMBRE DEL ARCHIVO MAXIMA LONGITUD 29, almacena
+         titulosEj(nf)=fileMidiIn ' temporario completo con extension y path
+         pistasEj(nf) =fileMidiIn
+  
            Sleep  100
            DirEjecSinBarra = Dir() 'trae el siguiente nombre de archivo en el directorio
 
@@ -197,12 +279,19 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
 
 
        Loop
-      Print #1,"MAXIMA LONG DE PISTA EJEC maxgrb, nf ",maxgrb,nf
+   
+      tocatope=nf
+      TopeEjec=nf   
+      ntoca=tocatope
+
+      Print #1,"MAXIMA LONG DE PISTA maxgrb y cant de pistas  nf ",maxgrb,nf
       maxcarga=maxgrb 
       SetGadgetText(TEXT_TOPE, Str(maxcarga))
 'termino con  todoslos archivos si llamo de nuevo con argumento
-' empieza de nuevo       
+' empieza de nuevo  
+'*********************************************************************     
 '-2)----------------CARGA LOS DATOS DE CADA PISTA
+'*******************************************************************
        Dim  As Integer mayor=1
        If  lugar ="" Then
            DirEjecSinBarra = Dir ("*.ejec")
@@ -225,30 +314,21 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
         Print #1,"CargarMidiIn  fileMidiIn ",fileMidiIn
 
         
-        CargarMidiIn (fileMidiIn,  ntkp)
- 'durante la cargaTrack el programa va a Rolloop se encuentra con SC_TAB
- ' y si cargacancion esta en 1 trata de cargar y no lo debe ahcer de modo
- ' que se ajusta a 0 cargacancion dentro de la rutina veremos 
-               
+        CargarMidiIn (fileMidiIn,  np,version)  
+                
         Dim cadena As String
         ''''cadena= sacarExtension(filenameOld) ' [1]AAA
-        cadena = tocaparam(ntkp).nombre ' este ntkp sale del nombre del archivo el nro ej: (03) 
+        cadena = tocaparam(np).nombre ' este ntkp sale del nombre del archivo el nro ej: (03) 
 ' pero la carga usa np que deberia coincidir....o no si borro una pista sinrenombrar 01,03,04 ... borre la (02) 
          AddListBoxItem(PISTASEJECUCIONES, cadena,np-1)
           Sleep 1                         
         '''''ntkp=CInt(np) no hace falta
-      Print #1,"tocaparam(ntkp).maxpos ",tocaparam(ntkp).maxpos
-        pmEj(ntkp).MaxPos=tocaparam(ntkp).maxpos
+      Print #1,"tocaparam(ntkp).maxpos ",tocaparam(np).maxpos
+        pmEj(np).MaxPos=tocaparam(np).maxpos
         
-         Print #1,"pmEj(ntkp).MaxPos ",pmEj(ntkp).MaxPos
+         Print #1,"pmEj(ntkp).MaxPos ",pmEj(np).MaxPos
 
-        If tocatope < ntkp Then
-           tocatope=ntkp
-        EndIf
-        titulosEj(ntkp)=DirEjecSinBarra ' como agregue en titulos la opcion es 1
-        ' como si viniera de linea de comando puedo usar cualquiera o 0
-        pistasEj(ntkp)=DirEjecSinBarra
-        print #1,"nombre en CargarPistasEjec ,Ntkp ",DirEjecSinBarra, ntkp
+        print #1,"nombre en CargarPistasEjec ,Ntkp ",DirEjecSinBarra, np
         Sleep 100
         DirEjecSinBarra = Dir()
        If  lugar > "" Then 
@@ -259,25 +339,11 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
 
         Print #1,"siguiente ", DirEjecSinBarra         
        Loop
-       tocatope=ntkp  ' el nro tope de la lista
-       ntoca=tocatope
-'maxgrb global
-'Dim j As integer
-'For j=1 To ntkp
-' If pmTk(j+32).MaxPos > maxgrb Then
-'    maxgrb = pmTk(j+32).MaxPos
-' EndIf
-'Next j
-' redim detodo¿? nosey si hago unalecturaprevia??mejor
-'For j=1 To ntkp
-' ReDim Preserve (Toca(j).trk ) (1 To maxgrb)
-'Next j
-
 
 
 
        print #1,"CARGO PISTAS MAXIMA CANTIDAD TOPETOCA=",tocatope
-       Print #1,"UBOUND TOCA ",UBound(Toca(ntkp).trk)
+       Print #1,"UBOUND TOCA ",UBound(Toca(np).trk)
        EJECCARGADA=TRUE
        
     EndIf
@@ -2459,7 +2525,7 @@ kNroCol= Int(jply/NroCol)
       EndIf 
     EndIf 
     ajuste=pmTk(pis).vol/127
-Print #1,"PISTA AJUSTE ",pis, ajuste
+''''Print #1,"PISTA AJUSTE ",pis, ajuste
     If Track(pis).trk(1,1).ejec = 1 Or pmTk(pis).ejec = 1 Then ' VIENE DE UNA EJEC
         
     Else

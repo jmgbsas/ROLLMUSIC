@@ -721,12 +721,17 @@ Type rangoOct Field=1
  As UByte   Eco
  As UByte   Coro
  As Integer ajuste
+ As UByte   sonido
+ As UByte   vibrato
+ As UByte   canalx
+ As UByte   pitchbend
+ As UByte   orden
 End Type
 ' faltaria agregar grabar el nombre del dispositivo ........
 Dim Shared As rangoOct pmTk (0 To 32)
 Dim Shared As rangoOct pmEj (1 To 32)
 Dim Shared As String titulosTk(0 To 32)
-Dim Shared As String pistasTk (0 To 32)
+Dim Shared As String pistasTk (0 To 32) ' titulos temporarios en el proceso de borradod e pistas en la lista
 Dim Shared As String titulosEj(1 To 32)
 Dim Shared As String pistasEj (1 To 32)
   
@@ -1274,26 +1279,137 @@ Dim Shared  As pasa param ', param2
 ' a disco puedo grabarsolo CargaIn para cada ejecucion y al cargarla reconstruir en memoria
 ' los Toca,,,,eso es!!! y sumando todas las partes y dividiento por TickChico obtengo 
 ' elmaxposy por ende el valor a dimensioar el Toca....
+' este tipo de ejec lo podrmos ampliar si hace falta....tal vez no la estructura
+' se reusa con modo para notas sysex efectos y mas no  creo tener que modificarla 
 Type ejec Field=1
  As UByte modo
  As UByte nota
  As UByte vel
 End Type
 ' en ejecparam faltaria el tempo! lo puedo grbar en Roll y luego en trk cuadno convierto!
-Type  ejecparam Field=1
-  As Double        delta  ' entre pistas de ejec
-  As String  * 29  nombre 'de cada Toca
-  As  Integer      maxpos
-  As  UByte        orden   'nro pista ejec
+' EN LA VERSWION NUEVA GRABARE ejecparam y ejecparam2. pero antes para indicar esto
+' grabare un indicador de version 2  una string * 6 "ejec2 "
+' entonces leo uan string  de 6 bytes si dice ejec2  es lanueva sino es vieja, con la nuevaa
+' retrocedo hago seeek 0 y empiezo a leer de nuevo con ejecparm y luego ejecparm2.. si
+' Si es vieja los 6 bytes seran de un double...
+#include "datetime.bi"
+''Dim FECHA AS double  ' como detectar que fecha o delta es fecha
+'' de esta forma distingo version vieja 1 de la nueva 2
+''FECHA=Now  '''Date
+''Dim fecha1 As String
+''fecha1 =Format (fecha ,"ddddd")
+''Print fecha1 
+''Dim result As Long
+''result= ISDATE(FECHA1)
+'' If result <> 0  THEN
+'' PRINT "SI LO ES" ===> prueba que fecha es fecha!!
+''ELSE
+'' PRINT "NO LO ES"
+''ENDIF
+
+' => Now es una Dateserial
+Type ejeccabeza Field=1  ' 45 bytes 
+ As Double fecha '6 se carga con Now antes de grabar
+ As String * 29  autor '29
+ As UByte version  '1 se ira incrementando en 1 cada vez que se grabe
+ As UByte mas1  'sobran 9 bytes para futuro
+ As UByte mas2
+ As UByte mas3
+ As UByte mas4
+ As UByte mas5
+ As UByte mas6
+ As UByte mas7
+ As UByte mas8
+ As UByte mas9
+End Type
+Type  ejecparam Field=1  'son 45 bytes ORIGINAL 
+  As Double        delta  ' entre pistas de ejec 6 byes
+  As String  * 29  nombre 'de cada Toca         29 bytes
+  As  Integer      maxpos  '                     4 bytes              
+  As  UByte        orden   'nro pista ejec       1 btye indicara si hay mas datos de encabezado con valor=0
   As  UByte        portout
   As  UByte        patch 
   As  UByte        canal
   As  UByte        canalent
   As  UByte        portin
-  '''As  UByte        sonido ' 23-04-2024 1 o 0 lo pondremos dentro de portin
 End Type
-'' UFF ME FALTA tiempoPatronEjec DONDE LO GRABO ? A DISCO COMO SONIDO
+' EN TRACKS Y ROLL NO ALMACENAMOS EL NOMBRE PARA ASOCIAR EL ORDEN CON EL NOMBRE
+' EN EJEC IMPORTA COMO UBICAMOS LOS DATOS LA PISTA 1 SE TOCA PRIMER OLUEGO LA 2 
+' Y ASI PROQUE ENTRE ELLAS HAY UN RETARDO DE COMIENZO, TALVEZ SI CAMBIO EL ORDEN
+' NO PASA NADA DEBO VER LA LOGICA DE PLAY DE EJECUIOCNES COMO LA IMPLEMENTE
+' SI ES RIGIDA O NO IMPORTA EL ORDEN,,,LUEGO WGUIMOS CON ESTAS ESTRUCTURAS
+Type  ejecparam2 Field=1  'son 25 bytes mas para llegar a los 70 
+  As UByte   sonido
+  As UByte   pan
+  As UByte   Eco
+  As UByte   coro
+  As UByte   vibrato ''' nuevo hay que ver los codigos
+  As UByte   ejec
+  As UByte   canalx
+  As UByte  canalsalida 
+  As UByte   vol
+  As UByte  TipoCompas
+  As UByte  tiempoPatron1 
+  As UByte   tiempoPatron2 
+  As UByte  pitchbend
+''' 12 bytes mas 
+ mas1 As UByte =0
+ mas2 As UByte =0
+ mas3 As UByte =0
+ mas4 As UByte =0
+ mas5 As UByte =0
+ mas6 As UByte =0
+ mas7 As UByte =0
+ mas8 As UByte =0
+ mas9 As UByte =0
+ mas10 As UByte =0
+ mas11 As UByte =0
+ mas12 As UByte =0
+End Type
+/'
+Type ejecparamNuevo
+  As Double        delta  ' entre pistas de ejec 6 byes
+  As String  * 29  nombre 'de cada Toca         29 bytes
+  As  Integer      maxpos  '                     4 bytes              
+  As  UByte        orden   'nro pista ejec       1 btye indicara si hay mas datos de encabezado con valor=0
+  As  UByte        portout
+  As  UByte        patch 
+  As  UByte        canal
+  As  UByte        canalent
+  As  UByte        portin
+'-------------------
+  As UByte   sonido
+  As UByte   pan
+  As UByte   Eco
+  As UByte   coro
+  As UByte   vibrato ''' nuevo hay que ver los codigos
+  As UByte   ejec
+  As UByte   canalx
+  As UByte  canalsalida 
+  As UByte   vol
+  As UByte  TipoCompas
+  As UByte  tiempoPatron1 
+  As UByte   tiempoPatron2 
+  As UByte  pitchbend
+''' 12 bytes mas 
+ mas1 As UByte =0
+ mas2 As UByte =0
+ mas3 As UByte =0
+ mas4 As UByte =0
+ mas5 As UByte =0
+ mas6 As UByte =0
+ mas7 As UByte =0
+ mas8 As UByte =0
+ mas9 As UByte =0
+ mas10 As UByte =0
+ mas11 As UByte =0
+ mas12 As UByte =0
 
+
+End Type
+'/
+
+'' UFF ME FALTA tiempoPatronEjec DONDE LO GRABO ? A DISCO COMO SONIDO
 ' faltaba un parametro "sonido" para indicar si esta sonando o no
 ' pero si agrego ese param pierdo los archivos que ejecute,,,
 ' es necesario guardar que se reproducia o no ??? no me parece
@@ -1302,6 +1418,22 @@ End Type
 ' ejecparam para cargar, si la fecha es mayor a la  de esta version
 ' usaremos ejecparam2 y listo ... solo debo detectar la fecha del
 ' archivo....
+' faltan todos los efectos posible en encabezado 
+' -----solucion...
+' hare dos tipos de encabezado el viejo y el nuevo
+' 1) para detectar el nuevo tipo pondremos en ordeb=0 pista 0 nunca podra existir
+' de modo que indicara nuevo tipo de encabezado. si Orden > 0 es el tipo de encabezado
+' viejo y solo una struct o UT sera leida el resto son datos de secuencia
+' 2) Todos los otros campos se usaran para otra cosa respetando el tamaño de bytes
+' podrian ser fecha y hora de creacion, tiempopatron, tiempoCompas, volumen inicial dela pista
+' pan, eco,coro iniciales de la pista, canalsalida, canalx, vibrato ,pitchbend etc
+' para todo le pondremos 70 bytes total como los rtk. para ellos definimos un nuevo tye
+' no usamos type anidado porque lso nombres se harian muy largos y puntos por todos lados
+' proceso: 
+'  leemos ejecparam el viejo si orden> 0 termino siguen los datos
+'  si orden venia en cero 0, es nuevo formato 
+' leemos lo que falta del nuevo type con ejecparamNuevo
+
 
 Type vivo Field=1
   As  ejec    trk  (Any)  
@@ -1320,7 +1452,11 @@ Dim Shared Toca (1 To 32) as vivo  ' vector ejecucion real
 Dim Shared  As vivo toc
 ' tocaparam son los parametros de la ejecucion y se graban al principio
 ' de un archivo ejec, luegog se graban los datods de las pistas de ejec midi
+Dim  Shared  tocaparamCabeza ( 0 To 32) As ejeccabeza
 Dim  Shared  tocaparam ( 0 To 32) As ejecparam 
+Dim Shared   tocaparam2 (0 To 32) As ejecparam2
+'''Dim  Shared  tocaparamNuevo ( 0 To 32) As ejecparamNuevo
+ 
 
 Dim Shared As Integer result =0 
 
@@ -1347,6 +1483,7 @@ Type paramGrabamidi
   As vivo toc
   ''As Integer  tocatope ''' no hace falta esta estructura solo contiene una pista
   As ejecparam tocap
+  As ejecparam2 tocap2 ' nuevo
 End Type
 
 
@@ -1362,13 +1499,13 @@ Declare Sub cargariniciotxt(lugar As String,ejecutar As ubyte)
 Declare Sub grabariniciotxt(lugar As String, ejecutar As ubyte)
  
 
-Type NProc Field=1
+Type NProc Field=1 ''' NOTA CAMBIAR TEMPO POR 2 BYTES DE TIEMPOPATRON
  Mfile    As UByte
  Tipo     As UByte
  Trkname  As String
  valFig   As Integer
  compas   As string 
- Tempo    As UByte
+ Tempo    As UByte  'le deberiamos poner 2 bytes como tiempopatron?
  Meta     As UByte 
  Mtrk     As UByte
  Trkend   As UByte
@@ -1435,4 +1572,11 @@ Union aUshort
     tp2 As UByte
    End Type
 End Union
-   
+
+Union Encabezado
+ cabeza As String * 6
+   Type
+    delta As Double
+   End Type
+End Union
+declare Function Otroinputbox(message As String) As String   

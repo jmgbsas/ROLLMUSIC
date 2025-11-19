@@ -1294,7 +1294,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar co
  EndIf
 
   
- agregarNota=0
+ agregarNota=AGREGAR
  menuMouse = 0 ' INICIA EL MENU CONTEXTUAL PARA IMPRIMIR LOS LABELS DEL MENU
  nota=0
  DUR=0
@@ -1327,7 +1327,7 @@ If MultiKey(SC_ALT) And MultiKey(SC_M)  Then ' menu Roll inicial
   menunew=0
   menunro=0
   COMEDIT=LECTURA
-  agregarNota=0
+  agregarNota=AGREGAR
   menuMouse = 0
   nota=0
   DUR=0
@@ -1356,7 +1356,7 @@ If MultiKey(SC_ALT) And MultiKey(SC_E) Then ' edicion Roll
  If COMEDIT<>LECTURA Then
     COMEDIT=ENTRADA_NOTAS
  EndIf
- agregarNota = 0
+ agregarNota = AGREGAR
  menuMouse = 0
  nota=0
  DUR=0
@@ -1373,7 +1373,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_N)  Then 'modificar con nombre de nota
 
  nota=0
 
- agregarNota= 1
+ agregarNota= AGREGAR
  menuMouse = 0
  DUR=0
  trasponer=0
@@ -1389,7 +1389,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE 
  If COMEDIT<>LECTURA Then
     COMEDIT=ENTRADA_NOTAS
  EndIf
- agregarNota = 0
+ agregarNota = AGREGAR
  menuMouse = 0
  trasponer=0
  nota=0
@@ -2259,7 +2259,7 @@ If MultiKey(SC_SPACE)    Then 'barra espacio
     DUR=0
     nota=notacur ''nsE 10-05-2021 00:06 probar de nuevo 
     If COMEDIT=MODIFICACION_INSERCION Then  ' ctrl-n
-      agregarNota = 1
+      agregarNota = NO_AGREGAR
     EndIf
 
  Else
@@ -2334,7 +2334,7 @@ deltaip=0:incWheel=0:lockip=0:playloop=0:s6=0:s1=0:indicePosOld=0 :indicePosUlti
  NroCol =  (ANCHO / anchofig ) + 4
  '''cursorVert = 0 EL COMEDIT DEBE SEGUIR EL MISMO SE MODIFICA CON CTRL-P O ALT-M O TECLAS
  '''cursorHori = 0
- agregarNota=0
+ agregarNota=AGREGAR
  menuMouse = 0
  nota=0
  DUR=0
@@ -2366,7 +2366,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_A)  Then ' A#
 ' AGREGARNOTA=1 IMPIDE LA ENTRADA DE NOTAS POR EL NUCLEO AUTOMATICAMENTE
 '======================================================================
  If COMEDIT=SOLO_MODIFICACION  Then
-  agregarNota = 1
+  agregarNota = NO_AGREGAR
  EndIf
  Exit Do
 EndIf
@@ -2377,7 +2377,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_C)   Then ' C#
   espacio=11
  EndIf
  If COMEDIT=SOLO_MODIFICACION Then
-  agregarNota = 1
+  agregarNota = NO_AGREGAR
  EndIf
  Exit Do
 EndIf
@@ -2388,7 +2388,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_D)  Then ' D#
   espacio=9
  EndIf
  If COMEDIT=SOLO_MODIFICACION Then
-  agregarNota = 1
+  agregarNota = NO_AGREGAR
  EndIf
  Exit Do
 EndIf
@@ -2399,7 +2399,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_F) Then ' F#
   espacio=6
  EndIf
  If COMEDIT=SOLO_MODIFICACION Then
-  agregarNota = 1
+  agregarNota = NO_AGREGAR
  EndIf
  Exit Do
 EndIf
@@ -2410,7 +2410,7 @@ If  MultiKey(SC_CONTROL) And MultiKey(SC_G)  Then ' G#
   espacio=4
  EndIf
  If COMEDIT=SOLO_MODIFICACION Then
-  agregarNota = 1
+  agregarNota = NO_AGREGAR
  EndIf
  Exit Do
 EndIf
@@ -2421,7 +2421,7 @@ If MultiKey (SC_A) Then
   espacio=3
  EndIf
  If COMEDIT=SOLO_MODIFICACION Then
-  agregarNota = 1
+  agregarNota = NO_AGREGAR
  EndIf
  Exit Do
 EndIf
@@ -2429,7 +2429,7 @@ EndIf
 If MultiKey (SC_B) Then
  nota = 1
  If COMEDIT=SOLO_MODIFICACION Then
-  agregarNota = 1
+  agregarNota = NO_AGREGAR
  EndIf
  Exit Do
 EndIf
@@ -2440,7 +2440,7 @@ If MultiKey (SC_C) Then
   espacio=12
  EndIf
  If COMEDIT=SOLO_MODIFICACION Then
-  agregarNota = 1
+  agregarNota = NO_AGREGAR
  EndIf
  Exit Do
 EndIf
@@ -2451,7 +2451,7 @@ If MultiKey (SC_D) Then
   espacio=10
  EndIf
  If COMEDIT=SOLO_MODIFICACION Then
-  agregarNota = 1
+  agregarNota = NO_AGREGAR
  EndIf
  Exit Do 
 EndIf
@@ -2462,7 +2462,7 @@ If MultiKey (SC_E) Then
   espacio=8
  EndIf
  If COMEDIT=SOLO_MODIFICACION Then
-  agregarNota = 1
+  agregarNota = NO_AGREGAR
  EndIf
  Exit Do
 EndIf
@@ -2473,7 +2473,7 @@ If MultiKey (SC_F) Then
   espacio=7
  EndIf
  If COMEDIT=SOLO_MODIFICACION Then
-  agregarNota = 1
+  agregarNota = NO_AGREGAR
  EndIf
  Exit Do
 EndIf
@@ -2484,7 +2484,7 @@ If MultiKey (SC_G) Then
   espacio=5
  EndIf
  If COMEDIT=SOLO_MODIFICACION  Then
-  agregarNota=1
+  agregarNota=NO_AGREGAR
  EndIf
  Exit Do
 EndIf
@@ -2967,7 +2967,7 @@ If Tiempodelta > 0 And GrabarPenta = 1 Then
    DUR=TiempoDelta
 EndIf
 
-If COMEDIT=ENTRADA_NOTAS  And nota > 0 And agregarNota=0  And carga=0 And nota <=182   Then ' 182 entra el fin de archivo
+If COMEDIT=ENTRADA_NOTAS  And nota > 0 And agregarNota=AGREGAR  And carga=0 And nota <=182   Then ' 182 entra el fin de archivo
 curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N se debe resetear 
 ' agregue cambiadur para que entre las modificaciones de cursor en ticks
  Print #1,"--------------------------------------------------------------"
@@ -4368,7 +4368,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
    menuMouse = 0
    ' ------ 04-03-21 aca siempre es edicin nueva no modificcion, o solo lectura
    ' no hay ningun tipo de edicion todavia
-   agregarNota = 0
+   agregarNota = AGREGAR
    menuMouse = 0
    carga=0
    '-----fin 2609 referencia de busqueda
@@ -6240,7 +6240,7 @@ If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion si
      VolverEntradaDatos=TRUE
      If mousey <= usamousey -40  And mousey >= usamousey -60 Then
        If mousex >= usamousex -64 And mousex<= usamousex +86 Then
-          COMEDIT=ENTRADA_NOTAS: agregarNota=0:  menuMouse = 0
+          COMEDIT=ENTRADA_NOTAS: agregarNota=AGREGAR:  menuMouse = 0
           ArmarMenuModif=FALSE
           savemousex=0 : savemousey=0
           nroClick=0
@@ -6280,7 +6280,7 @@ If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion si
           ' ESTADO:SELECCION  CTRL-M
    '    Print #1,"mmmmmm MOUSEY ";mousey, "usamousey ";usamousey
             COMEDIT=MODIFICACION_INSERCION : modifmouse=3
-            agregarNota=0:  menuMouse = 0
+            agregarNota=AGREGAR:  menuMouse = 0
       ''  ArmarMenuModif=TRUE jmg elmenu no debe aparecer hasta dar ctrl-click derecho
     '  Print #1,"6 ctrl-M ->COMEDIT=MODIFICACION_INSERCION : agregarNota=0:  menuMouse = 0 "
     '  Print #1,"6-> ArmarMenuModif=TRUE"
@@ -6292,7 +6292,7 @@ If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion si
          If mousex >= usamousex -55 And mousex<= usamousex +102 Then
           ' ESTADO:SELECCION  CTRL-P
             COMEDIT=ENTRADA_NOTAS : modifmouse=0
-            agregarNota=0:  menuMouse = 0
+            agregarNota=AGREGAR:  menuMouse = 0
             cierroedit= 0
             trasponer=0
             nota=0

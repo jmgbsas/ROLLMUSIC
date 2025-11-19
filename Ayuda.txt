@@ -1,7 +1,7 @@
-    Ayuda Prelimiar Básica RollMusic   0.347 seria RollMusic con Ticks
+    Ayuda Prelimiar Básica RollMusic   0.346 seria RollMusic con Ticks
     ====================================================================================
-     (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, ALGUNAS COSAS YA SE ADAPTARON
-      Y FUNCIONAN BIEN PARA TICKS . version 0.347, falta mucho testeo-.. )
+     (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
+      Y FUNCIONAN BIEN PARA TICKS . version 0.349, falta mucho testeo-.. )
 
      INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
@@ -498,19 +498,24 @@
            operaciones debe estar seleccionado la pista de ejecucion en la columna 'S'..Luego si se desea 
            pasar a otra pista se cierra el por midi-in en el menu Reproducir, en la opcion Detener 
            Reproduccion MIDI-IN. Y asi sucecivamente siempre se selecciona una pista por vez tanto para abrir
-           como cerrar.
+           como cerrar. (Nota, el formato del encabezado de los archivos cambió. El programa lee en formato 1 o 2
+           y al grabar ya queda en version 2. Se notará como lo hacia antes que la segunda vez que se graba 
+           cualquier archivo .ejec su tamaño se reduce bastante, elimina lo innecesario.) 
          j)  agregamos un archivo parametro inicio.txt en directorio de ejecuciones que recuerde que pista estaba
             sonando y cual muteada. 
          k) Se puede renombrar una pista cargada de ejecuciones, para ello marcar el nombre  de la pista a
-            renombrar y usar el menu archivo 5.2 (la cual graba automaticamente) y luego grabar con 5.0 aunque 
-            no es necesario la grabacion se ahce automatica en 5.2
+            renombrar con click izquierdo de lmouse hasta que se ilumine y usar el menu archivo 5.2 
+            (la cual graba automaticamente) y luego si hay mas modificaciones posteriores en lapista grabar 
+            con 5.0, no es necesario durante un rename la grabacion se hace automatica en 5.2
          l) Convertir  una pista ejec a Roll grafico. se usa la opcion 5.0 del meenu puertos ejecucion,
             previamente se ilumina la pista  con click y se levanta un Roll Grafico. (si se lo cierra vuelve a crgar ya no pierde los datos)
             Convertir todas las pistas ejec  con un solo click a archivos rtk para una cancion con tracks.
-            En el menu puertos ejecucion, el item
+            En el menu puertos ejecucion, el item 
            <<<6.0 Convertir todas las ejecuciones *.ejec seleccionadas para que toquen columna [S] a *.rtk y los grabe a disco") >>
-            para eso se cargan las ejecuciones en 5.1 de archivo , se selecciona las pistas ejec a convertir y se da click en la opcion 6.0 del menu  Puestos Ejecucion .
+            para eso se cargan las ejecuciones en 5.1 de archivo , se selecciona las pistas ejec a convertir y se da click en la opcion 
+            6.0 del menu  Puestos Ejecucion . --> VERIFICAR CON VERSION 2 DE ENCABEZADO 0.349
       2) Puede reproducirse al mismo tiempo una cancion y una grabacion *.ejec.
+         ( no se revisó su funcionamiento en Ticks todavia...)
          Se cargan ambas cosas la cancion abriendo un directorio de cancion, y luego 
          como antes se carga MIDI-IN Cargar pista ejecucion, Se selecciona el casillero 
          de columnas de sonido S en ambas listas, todas las pistas de cancion que se desea
@@ -576,6 +581,8 @@
            del archivo rtk correspondiente a una cancion. Si es un Roll aislado usar [GRABAR] 
            El volumen de cada pista de una cancion de la lista de la izquierda se puede ajustar. Todo efecto
            antes de cerrar los archivos se podrá guardad en Roll Grafico con {ROLL=>TRACK]
+           EFECTOS EN ARCHIVOS EJEC: YA FUNCIONAN AJUSTAR, GRABAR A DISCO LEER DE DISCO,
+           ( FALTA EXPORTAR Y REVISAR QUE ESTOS EFECTOS SE PUEDAN LLEVAR A UN ROLL Y A UN RTK 0.349
 
       V ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
           o ordenar la ejecucion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones

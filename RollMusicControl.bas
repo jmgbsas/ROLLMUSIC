@@ -274,12 +274,20 @@ Sub EntrarNombrePista(ByRef NombrePista As String,hwndC as Hwnd )
 
 
 NombrePista = InputBoxJmg("Nombre de Pista","",NombrePista, ES_MULTILINE + ES_AUTOVSCROLL , 0,hwndC  )
-
+Dim As String limpio, a1
+Dim I As Integer
+For I=1 To Len(NombrePista)
+  a1=Mid(NombrePista,i,1)
+  If a1<> Chr(13) And a1<> Chr(10) Then
+   limpio=limpio+a1
+  EndIf
+Next I
+NombrePista=limpio
 
 End Sub
 '
 Function sacarNtk (item As String) As Integer
-Print #1," sacarNtk strin g que llega nombre pista ";item
+Print #1," sacarNtk string que llega nombre pista ";item
 Dim As Integer ubi1=0,ubi2=0
  ubi1 = InStr(item,"[")
  ubi2 = InStr (item,"]")
