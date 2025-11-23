@@ -1,4 +1,4 @@
-    Ayuda Prelimiar Básica RollMusic   0.346 seria RollMusic con Ticks
+    Ayuda Prelimiar Básica RollMusic   0.350 seria RollMusic con Ticks
     ====================================================================================
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
       Y FUNCIONAN BIEN PARA TICKS . version 0.349, falta mucho testeo-.. )
@@ -260,6 +260,33 @@
           (se impedira equivocarse en otra version anulando el menu)
           Se ajusto las habilitaciones y deshabilitaciones de 2.0,2.1,2.2 por menu y codigo
           para evitar opciones no permitidas..
+       6) EJECUCION DE UNA SECUENCIA DE ENTRADA MANUAL *.ROLL: Pulsar la barra espaciadora, se escuchara todas las pistas cargadas
+          de cancion Roll salvo las que NO esten chequeadas en [S] en la lista o PistasRoll.
+          Estando una cancion cargada de *.Roll si quiero escuchar una sola pista en Roll Grafico en vez de
+          barra espacio usar un CTRL sobre Reproducir en el menu del Grafico. O traforma es dejar 
+          seleccionada esa sola pista en la lista de pistas de Roll a la izquierda de la Ventana de Control
+          y pulsar barra de espacio o dar click al boton Verde encima de la lista  de Pistas de Rolls   
+       6.1) EJECUCION DE UNA SECUENCIA DE EJECUCION MIDI *.ejec: dar click sobre el boton Verde de la lista de 
+            ejecuciones de la derecha de la Ventana de Control. Se escucharan solo las que esten seleccionadas
+            en columna [S]
+            "1.0 Cargar directorio de Cancion con Pistas separados con Ventana de Control y Roll Grafico")
+            "2.0 Abrir directorio de Cancion con Pistas separados con Ventana de Control  sin Roll Grafico")
+
+       6.2) Cargar CANCION y Cargar Ejecuciones Sumadas (todos los archivos ejec y rtk estaran en carpetas
+            diferntes puede nser solo subcarpetas distintas)
+            - Cargar primero la cancion con o sin grafico (si se uso sin grafico luego debe abrilo ).
+              1.0 o 2.0 del menu de Caontrol.
+            - Cargar la secuencias midi ejecutadas desde teclado, menu archivo 5.1
+              "5.1 CARGAR PISTAS EJECUCION MIDI-IN")
+
+            Luego en el Grafico de Roll pulsar la barra espaciadora, se escucharan la cancion junto a las ejecuciones.
+            detener pulsando la tecla 'P'
+            Si quiero escuchar solo la cancion manuales, lista izquieda, pulsar el BOTON Verde de Cancion en lista 
+            de manuales. Detener con boton Negro. o tecla P
+            Si quiero escuchar solo las ejecuciones midi pulsar el BOTON Verde de Ejecucione Cancion.
+            Detener con su boton negro o la tecla P.
+            
+              
        ------------------------------------------------------------------------------------------
        NOTA: PARA  CERRAR LA VENTANA DE ROLLGRAFICO SIN SALIR DEL PROGRAMA PULSAR CTRL+F4 O EL BOTON X
       ARRIBA A LA DERECHA.  PARA CERRAR LA VENTANA GRAFICA Y EL PROGRAMA, CON TECLA ESCAPE APARECE DIALOGO
@@ -295,6 +322,7 @@
           CON CLICK IZQUIERDO, DAR ENTER Y LUEGO  CON CLICK DERECHO APARECE 
           EL MENU CONTEXTIUAL, PARA VOLVER AL INICIO DAR CLICK EN OTRA PISTA 
           Y TODO COMIENZA DE NUEVO...  
+********************************************************************************************************
     1) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
     2) El espaciado entre lineas se puede cambiar.
     3) Trasponer todo: ALT-T habilita la trasposicion, Q la deshabilita.
@@ -433,6 +461,8 @@
          YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN grabadas mediante la ejecucion EN UN O CONTROLADOR 
          MIDI EXTERNO  o TECLADO externo  real concectado su salida MIDI-OUT  al MIDI-IN de la PC.
          Las pistas se arman tal cual se grabaron sincronizadas respecto de la pista 1.
+         (debido a los pequeños cambios en reproduccion de listas de pistas de ambos tipos, falta verificar
+          que las grabaciones por teclado sigan funcionando bien...test en la proxima version)
           Para ello no hace falta levantar el Roll Grafico.
           Pasos para Grabar 
 

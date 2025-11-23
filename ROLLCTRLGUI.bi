@@ -29,7 +29,7 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 
   GadgetToolTip(PISTASROLL,"Pistas de Cancion con Tracks manuales cargados desde un archivo o creados en una " _
   "cancion o convertidos e importados desde ejecucion real midi.Nota: NO USAR TAB DURANTE UN PLAY SI MEZCLA " _
- "EJECUCIONES DE TECLADO CONVERTIDA A TRACK, CON MANUALES, SE CONGELARA EL PLAY" )
+ "EJECUCIONES DE TECLADO CONVERTIDA A TRACK, CON MANUALES, SE CONGELARA EL PLAY POR AHORA" )
   SetGadgetFont(PISTASROLL,CINT(LoadFont("consolas bold",13))) 
 
 ' botton todo o nada , sonido o mudo para todas las pistas
@@ -83,7 +83,7 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 '---------------------------LISTA DE EJECUCIONES------------
   hwndListEjec= ListBoxGadget(PISTASEJECUCIONES, 430,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT Or LBS_NOINTEGRALHEIGHT Or LBS_NOTIFY  )
 SetGadgetFont(PISTASEJECUCIONES,CINT(LoadFont("consolas bold",13)))
-GadgetToolTip(PISTASEJECUCIONES,"Pistas grabadas desde un teclado midi")
+GadgetToolTip(PISTASEJECUCIONES,"Pistas de cancion grabadas desde un teclado midi")
 SetGadgetColor(PISTASEJECUCIONES,cint("&HC0C0C0"),0,1)
   ButtonGadget(BOTON_SELECCION_EJECUCION ,410,20,20,20,"S")
 SetGadgetColor(BOTON_SELECCION_EJECUCION ,cint("&HC0C0C0"),0,1)
@@ -280,9 +280,9 @@ MenuItem(1009,MenName1,  "4.5.1 Exportar a MIDI Pista/cancion de 4.5 ")
 
 
 Menubar(MenName1)
-MenuItem(1015,MenName1, "5.0 GRABAR PISTA EJECUCION MIDI-IN")
+MenuItem(1015,MenName1, "5.0 GRABAR PISTAS SELECCIONADAS EN  (G) DE EJECUCION MIDI-IN")
 MenuItem(1016,MenName1, "5.1 CARGAR PISTAS EJECUCION MIDI-IN")
-MenuItem(1017,MenName1, "5.2 RENOMBRAR PISTA EJECUCION SELECCIONADA")
+MenuItem(1017,MenName1, "5.2 RENOMBRAR PISTA EJECUCION SELECCIONADA EN (S)")
 
 MenuItem(10181,MenName1,"5.3 Cargar txt plano midi generado por RollMusic")
 MenuItem(1018 ,MenName1,"5.4 Cargar txt plano midi externo, MUY INEXACTO")
@@ -366,7 +366,7 @@ Negras por minuto	 tempo
 '/    
 
   
-MenuItem(1090,MenName6,"1.0 Reproducir desde la posicion o en el rango ajustado")
+''MenuItem(1090,MenName6,"1.0 Reproducir desde la posicion o en el rango ajustado")
 MenuItem(1091,MenName6,"2.0 Fijar Repeticiones de un numero de Compases elegido como zona")
 MenuItem(1092,MenName6,"3.0 Abre y Reproduce Puerto MIDI-IN Ejecucion teclado por  MIDI-OUT.")
 MenuItem(1093,MenName6,"4.0 Cierra Puerto MIDI-IN Ejecucion.")

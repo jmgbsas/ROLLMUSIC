@@ -275,7 +275,7 @@ EndIf
         EndIf 
         If tocatope > 1 Then ' toco pistas ejec mientras grabo
 'la que se esta grabando debe estar deseleccionada en S 
-           Parar_De_Dibujar=SI 
+'''           Parar_De_Dibujar=SI kokito 
            PARAR_PLAY_EJEC=NO 'HABILITA TOCAR EJECS
            PARAR_PLAY_MANUAL=NO ' HABILITA TOCAS CANCION
            Dim p As Integer Ptr
@@ -295,26 +295,19 @@ EndIf
 ' 
       If eventnumber()= BTN_MIDI_PARAR    Then ' BOTON STOP NEGRO DE MIDI-IN
          SetGadgetstate(BTN_MIDI_GRABAR,BTN_LIBERADO)
-         'Print #1,"ntoca en BTN_MIDI_PARAR "; ntoca
-         If pmEj(ntoca).MaxPos > 0 And (GrabarEjec=GrabarPistaEjecucion  Or GrabarEjec=GrabarPatronaDisco ) Then
-           ' Print #1,"STOP:pmEj(ntoca).MaxPos ",pmEj(ntoca).MaxPos
-            tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos
+         Print #1,"ntoca en BTN_MIDI_PARAR "; ntoca
+         If GrabarEjec=GrabarPistaEjecucion Then
+            If pmEj(ntoca).MaxPos > 0 And (GrabarEjec=GrabarPistaEjecucion  Or GrabarEjec=GrabarPatronaDisco ) Then
+              Print #1,"//STOP:pmEj(ntoca).MaxPos, GrabarEjec ",pmEj(ntoca).MaxPos,GrabarEjec
+              tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos
        '         Print #1,"stop MaxPos ",pmEj(ntoca).MaxPos
-            GrabarEjec=HabilitaGrabar
-            Parar_De_Dibujar=NO
-            arrancaPlay=NO
+              GrabarEjec=HabilitaGrabar
+              Parar_De_Dibujar=NO
+              arrancaPlay=NO
 '' terminar cualquier metrono que este funcionando 
-         terminar_metronomo=SI
+             terminar_metronomo=SI
 'detiene el play de cancion o roll
-         If  play=SI Or playb=SI Or Cplay=SI Then
-           PARAR_PLAY_MANUAL=1 ' DETIENE EL PLAY DE CANCION O ROLL
-            play=NO: playb=NO 
-           playloop=NO:playloop2=NO:Cplay=NO
-           SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
-           Sleep 2
-         EndIf
-         PARAR_PLAY_EJEC=SI ' DE EJEC??
-         Sleep 2
+             Sleep 2
 ' -------cargamos toca
          k=0 
          Dim As Integer i1=1, j =0, partes, pj
@@ -423,35 +416,36 @@ EndIf
          EndIf 
 ' si es grabacion nueva tocatope va incrementando apuntando a 1,2,3,4 etc
 ' y graba 1 por vez,el ultimo corriente...o actual
-        Print #1,"STOP: llama a GrabarMidiIn,,,porque  no esta grabando ahora? "   
-' EN ROLLDEC 
-'Type paramGrabamidi
-'  As vivo toc
-'  As Integer  tocatope
-'  As ejecparam tocap'
-'End Type
+        Print #1,"//STOP: llama a GrabarMidiIn,,,porque  no esta grabando ahora? "   
 
-'EN ROLLDEC ...Dim  Shared  As paramGrabamidi pgmidi
         pgmidi.toc=toc 'pgmidi es global
-'pgmidi.tocatope = tocatope
         pgmidi.tocap = tocap ' dentro esta orden  ubyte
-'threadGrabamidi=@pgmidi
         GrabarMidiIn(pgmidi,ntoca) 'POR STOP aca se graba bien el orden
-  'ThreadCreate (@GrabarMidiIn,CPtr(Any Ptr, threadGrabamidi))
-'grabamos parametros
             grabariniciotxt(NombreCancion, EJECUCION)
 
-         Else
-           PARAR_PLAY_EJEC=SI
-            If play=SI Or playb=SI Then
-               PARAR_PLAY_MANUAL =SI
-            EndIf   
-            Parar_De_Dibujar=NO
-            arrancaPlay=NO
-         EndIf
+            EndIf
 '----------------
+         Else 
+           If  playEj=SI Then
+               PARAR_PLAY_EJEC=SI ' DETIENE EL PLAY DE CANCION O ROLL
+               playEj=NO  
+               playloop=NO:playloop2=NO:Cplay=NO
+               SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
+               For i3 As Integer  = 1 To TopeEjec
+                 portsal=CInt(pmEj(i3).portout) 
+                 alloff(pmEj(i3).canalsalida,portsal) 
+                 allSoundoff( pmEj(i3).canalsalida, portsal )
+               Next i3
+               Parar_De_Dibujar=NO
+               Exit Select  
+           Else
+              If playEj=NO And GrabarEjec=DesHabilitaGrabar Then
+                 Exit Select  
+              EndIf     
+           EndIf
+ 
+         EndIf
       EndIf
-
 '//////////////// BOTON VERDE PLAY EJEC //////////////////
 ' si hay una cancion de pistas trk el el grafico cargada, al dar play debera tocar
 ' lacancion y las pistas chequeadas en columna 'S' de las ejecuciones,deese modo
@@ -459,10 +453,11 @@ EndIf
 ' al grabar una pista nueva de ejecuciones por uncontrolador midi.,(teclado midi por ej)
  
       If eventnumber()= BTN_MIDI_EJECUTAR And Parar_De_Dibujar=NO Or  GrabarEjec =PatronDeEjecucionCompleto Then ' BOTON PLAY VERDE DE MIDI-IN
+         SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_PRESIONADO)
          SetGadgetstate(BTN_MIDI_PARAR,BTN_LIBERADO)
-            Parar_De_Dibujar=SI
-            PARAR_PLAY_EJEC=NO
-            PARAR_PLAY_MANUAL=NO
+            Parar_De_Dibujar=NO
+'            PARAR_PLAY_EJEC=NO
+'            PARAR_PLAY_MANUAL=NO
             Dim p As Integer Ptr
             p=@ntoca 'ntoca se ajusta en CargarPstasEjec tambien
             
@@ -471,26 +466,28 @@ EndIf
 ' por ahora
 ' ACA DEBERIA USAR MUTEX!!! ���???
 '''Dim As Any Ptr sync =MutexCreate
-Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
-        If  MaxPos > 2 Then  ''''' And GrabarEjec=1 And Parar_De_Dibujar=1 Then 
-            If CANCIONCARGADA = TRUE And playb=0 Then
-               Print #1,"USANDO PLAYCANCION"
-               playb=1
-                  
-               thread1 = ThreadCall  playCancion(Track())
-               grabariniciotxt(NombreCancion, CANCION)
-            Else
-               If  MaxPos > 2 And  Play=NO Then
-          '        print #1,"llama a playall"
-                   Play=SI
- Print #1,"Va Play All ????,maxpos  ", MaxPos
-                   thread2 = ThreadCall  playAll(Roll)
-               EndIf 
-            EndIf
-        EndIf   
-        
+Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",maxgrb
+        If  maxgrb > 2 And playEj=NO Then  ''''' And GrabarEjec=1 And Parar_De_Dibujar=1 Then
+             playEj=SI  
+'            If CANCIONCARGADA = TRUE And playb=0 Then
+'               Print #1,"USANDO PLAYCANCION"
+'               playb=1
+'               grabariniciotxt(NombreCancion, CANCION)
+'               thread1 = ThreadCall  playCancion(Track())
+'            Else
+'               If  MaxPos > 2 And  Play=NO Then
+'          '        print #1,"llama a playall"
+'                   Play=SI
+' Print #1,"Va Play All ????,maxpos  ", MaxPos
+'                   thread2 = ThreadCall  playAll(Roll)
+'               EndIf 
+'            EndIf
+'        EndIf   
+       
+        threadG = ThreadCall  PlayTocaAll (p)
         grabariniciotxt(NombreCancion, EJECUCION) 
-        threadG  = ThreadCreate (@PlayTocaAll, p)
+
+        'threadG  = ThreadCreate (@PlayTocaAll, p)
         'ThreadWait (threadG) '22-04-2024  como andaba si hacia detach? ja
 '        Parar_De_Dibujar=0   
         'threadDetach(threadG)
@@ -498,7 +495,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
 
          '   PlayTocaAll(p)
 
-  
+        EndIf
       EndIf
 ' test de retardos  de inicio en ejecucion de datos entre playCancion y PlayTocaAll
 ' CALCULO DE RETARDO DEL INICIO DE PLAY CANCION RESPECTO PLAYTOCAALL
@@ -517,6 +514,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
       If eventnumber()= BTN_ROLL_GRABAR_MIDI And GrabarPenta=0  Then 
 'solo usado por ahora sin cancion cargada , si hay una cancion
 ' cargada solo hace falta GrabarPenta Roll grafico ya esta cargado
+         SetGadgetstate(BTN_ROLL_GRABAR_MIDI,BTN_PRESIONADO)
          SetGadgetstate(BTN_ROLL_EJECUTAR, BTN_LIBERADO)
          SetGadgetstate(BTN_ROLL_PARAR , BTN_LIBERADO)
          jgrbRoll=0
@@ -552,45 +550,60 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",MaxPos
       EndIf 
 '-------------------------------
       If eventnumber()= BTN_ROLL_PARAR And (GrabarPenta=SI Or Cplay=SI) Then
+         SetGadgetstate(BTN_ROLL_PARAR,BTN_PRESIONADO) 
          SetGadgetstate(BTN_ROLL_EJECUTAR, BTN_LIBERADO)
          SetGadgetstate(BTN_ROLL_GRABAR_MIDI , BTN_LIBERADO)
          GrabarPenta=0
 Print #1, "542 GrabarPenta=0"
          metronomo_si=0
          terminar_metronomo=1
-         COMEDIT=LECTURA  
+         COMEDIT=LECTURA
+         playb=NO
+         If CPlay=SI Then
+           PARAR_PLAY_MANUAL=SI
+           playloop=NO:playloop2=NO
+           Cplay=NO 
+         EndIf
+      For i3 As Integer  = 1 To Tope
+       portsal=CInt(pmTk(i3).portout) 
+       alloff(pmTk(i3).canalsalida,portsal) 
+       allSoundoff( pmTk(i3).canalsalida, portsal )
+      Next i3
+      Parar_De_Dibujar=NO
+  
 ''      If NombreCancion > "" Then ' detiene todo pista aisalda o cancion 
-            If play=SI Or playb=SI Or CPlay=SI Then
-               PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY
-               PARAR_PLAY_EJEC=SI    
-               playloop=NO:playloop2=NO
-               Sleep 20
-               'threadDetach (thread2)
-               'threadDetach (thread1)
-            EndIf 
+'         If playEj=SI  Then
+'            PARAR_PLAY_EJEC=SI   
+'            playEj=NO 
+''            Sleep 20
+'               'threadDetach (thread2)
+'               'threadDetach (thread1)
+'         EndIf 
       ' EndIf
       EndIf
    
 ' ///////////////// BOTON VERDE PLAY CANCION ROLL ////////  28-02-2024 GUIA
       If eventnumber()= BTN_ROLL_EJECUTAR And COMEDIT=LECTURA Then ' 13-02-2024 PROBAR BIEN
+         SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_PRESIONADO)
          SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
          SetGadgetstate(BTN_ROLL_GRABAR_MIDI , BTN_LIBERADO)
          terminar_metronomo=1
          If CPlay = NO And MaxPos > 2 Then
             CPlay=SI
             If NombreCancion > "" Then
-               If play=SI Or playb=SI Then
-                  PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY SI ESTA TOCANDO 
-                  PARAR_PLAY_EJEC=SI ' DETIENE LOS EJEC SI ESTAN TOCANDO
-                  playloop=NO:playloop2=NO
-                  'threaddetach (thread2)
-                  'threaddetach (thread1)
-                  Sleep 20
-               EndIf 
+              ' If play=SI Or playb=SI Or playEj=SI Then
+              '    PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY SI ESTA TOCANDO 
+              '    PARAR_PLAY_EJEC=SI ' DETIENE LOS EJEC SI ESTAN TOCANDO
+              '    playloop=NO:playloop2=NO
+              '    'threaddetach (thread2)
+              '    'threaddetach (thread1)
+              '    Sleep 20
+              ' EndIf 
                
                thread2 = ThreadCall  PlayCancion(Track())
                grabariniciotxt(NombreCancion, CANCION)
             Else
+               playb=SI
                thread1 = ThreadCall  PlayAll(Roll)
             EndIf
          EndIf   
@@ -974,7 +987,7 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
             Dim As String nombreg
             If MaxPos > 2 Then 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Or NombreCancion > "" Then
-                    GrabarRollaTrack(0)
+                    GrabarRollaTrack(0,0)
               Else
                 If  ROLLCARGADO=TRUE Then
                   'aca graba el roll con patch 
@@ -1022,7 +1035,7 @@ Print #1,"k, canalsalida  ";k, canalx
             Dim As String nombreg
             If MaxPos > 2 Then 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Or NombreCancion > "" Then
-                    GrabarRollaTrack(0)
+                    GrabarRollaTrack(0,0)
               Else
                 If  ROLLCARGADO  Then
 '                  'aca graba el roll con patch

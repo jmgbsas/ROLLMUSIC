@@ -1,3 +1,11 @@
+- 23-11-2025 "0.350 fix cancelaciones al reporducir manual (.rtk )+ ejec (.ejec)"
+  cargando en ambas listas, pistas mauales rtk y pistas ejec del lado derecho, o se congelaba
+  el grafico o el programa al dar play a las ejecuciones. Cada grupo esta en un directorio aparte
+  como se penso al principio. Las pruebas se hicieron con el directorio de  cancion
+  ROLLMUSIC\cancion\23NOV2025, donde hay pistas manuales en la raiz y ejecuciones dentro de EJECS
+  Faltan probar con tantas modificaciones como andan las grabaciones
+  midi, la conversion a Roll de una sola pista y todas a rtk de nuevo, supongo andaran bien
+  pero hay que verificar...proxima verison 351..
 - 19-11-2025 ENCABEZADO DE EJECS VERSION 1
   "0.349 ARCHIVOS EJECS V2, LEE V1 GRABA V2. PARAMETROS EN EJEC ECO,VOL,PAN,CORO"
   LEE Y GRABA A DISCO ARCHIVOS EJECS EN VERSION 2 Y V1. FALTA PROCESAR LA CONVERSION A .roll

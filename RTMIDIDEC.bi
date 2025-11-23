@@ -57,8 +57,8 @@ Dim Shared As double FactortiempoPatron=1
 ' una X a una velocidad de I=240 tiene un tiempo de 0,078125 seg
 ' en la 1er linea de figuras..
 ' pero porlalineamas chica 37 a 45 seria mi Tick mas chico [TickChco]
-Static Shared As Double TickPlay =0.01041666 ''seg 5 miliseg.. para I=240
-Static Shared As Double TickChico=0.01041666 ''seg 5 miliseg.. para I=240
+Static Shared As Double TickPlay =0.005 '0.01041666 ''seg 5 miliseg.. para I=240
+Static Shared As Double TickChico=0.005 '0.01041666 ''seg 5 miliseg.. para I=240
 Static shared As Double x3H = 0.0 , resta=0.0
 ' ambos Ticks deberin ser el  valor mas chico de la tabla y es tresillo de W 0.01041666
 
@@ -195,7 +195,7 @@ Dim Shared As integer DurXTick (0 To 185) => {0, _  ' 0 cambiado a 1 9-05-2025
 Const NO=0 ''ESTA CONSTANTE ESTA DUPLICADA Y EL COMPILADOR NO SE DA CUENTA JAJAJAJA
 ' ME DA ERROR EN EL USO DE LOS SIGUIENTES NO,,,, MAL EL COMPILADOR AMBOS DEC SON INCLUDE
 ' Y ROLLDEC ESTA ANTES QUE ESTE... CHANNN
-Dim Shared As Integer play= NO,playb = NO, portin, numero, numeroFrac,cambioescala=0
+Dim Shared As Integer  portin, numero, numeroFrac,cambioescala=0
 Dim Shared As Integer portout=0 
 Dim Shared As Double numfloat =0
 Static Shared As string listout(), listin ()

@@ -123,7 +123,7 @@ Print #1,"usarmarcoins ", usarmarcoins
             Dim As String nombreg
             ROLLCARGADO=FALSE 
            If NombreCancion > ""  Then
-              GrabarRollaTrack(0)
+              GrabarRollaTrack(0,0)
            EndIf
           MenuNew=MENU_INICIAL
           cierroedit= 0           
@@ -316,7 +316,7 @@ Print #1,"**********************************************************************
   ' eventM a EVENTRBdown nada de nada, no pasa nunca por aca solo obedece
   ' a un eventClose en EventC, el cual hay que pulsar dos veces para este caso
            
-           If play=SI Or playb=SI Or Cplay=SI Then 'rollLroop esta levantando en play
+           If play=SI Or playb=SI Or Cplay=SI Or playEj=SI Then 'rollLroop esta levantando en play
               PARAR_PLAY_MANUAL=SI   ' si hay algun play los manda  a detener
               PARAR_PLAY_EJEC=SI
               terminar=TERMINAR_POR_ESCAPE ' 1 va a usar SC_ESCAPE para terminar         
@@ -387,7 +387,7 @@ Print #1,"**********************************************************************
                 If (CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE) And ROLLCARGADO=FALSE Then
                    NADACARGADO=FALSE  
                    If NombreCancion > ""  And MAxPos > 2 Then
-                    GrabarRollaTrack(0)
+                    GrabarRollaTrack(0,0)
                    EndIf
                 Else
                   If MaxPos > 2  And ROLLCARGADO=TRUE  Then
@@ -451,7 +451,7 @@ Print #1,"**********************************************************************
 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
                  If NombreCancion > ""  And MAxPos >2 Then
-                    GrabarRollaTrack(0) ' ???? cancelara???
+                    GrabarRollaTrack(0,0) ' ???? cancelara???
                  EndIf
               Else
                 If MaxPos > 2  And ROLLCARGADO  Then
@@ -598,19 +598,27 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
 '-----------------------------------------------------------------------
            Case 1090 ' Reproducir cancion
 SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
-         If CPlay = NO And MaxPos > 2 Then
+      ''   p=@ntoca 
+         If CPlay = NO And playb = NO And MaxPos > 2  Then
             GrabarPenta=0:naco=0:naco2=0 ''dela version F jmgjmg
-            CPlay=SI
-            If NombreCancion > "" Then
-               If play=SI Or playb=SI Then
-                  PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY 
-                  playloop=NO:playloop2=NO
-                  play=NO : playb=NO
-                  Sleep 20
+            
+            If NombreCancion > "" And Cplay=NO Then
+              ' If play=SI Or playb=SI Or playEj = SI Then
+              '    PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY
+              '    PARAR_PLAY_EJEC=SI ' DETIENE EL PLAY 
+              '    playloop=NO:playloop2=NO
+              '    play=NO : playb=NO
+              '    Sleep 20 ' durante este sleep el programa lee o nota el cambio de PARAR_PLAY...???
+              ' EndIf 
+              grabariniciotxt(NombreCancion, CANCION)
+              thread1 = ThreadCall  PlayCancion(Track())
+               If maxgrb > 0 And playEj= NO Then
+                  p=@ntoca
+                  playEj= SI
+                  threadG  = ThreadCall  PlayTocaAll (p)
                EndIf 
 
-               thread1 = ThreadCall  playCancion(Track())
-              grabariniciotxt(NombreCancion, CANCION)
+
             EndIf
          EndIf   
           '    Dim As Any Ptr thplayC = ThreadCall  playCancion(track())

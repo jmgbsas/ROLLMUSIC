@@ -287,55 +287,53 @@ End Sub
 
 
 Sub CTRL1015 ()
-' preparamos para grabar la pista por cambio de patch
-           Dim As Integer  pis=0, K=0
-           For k=1 To 32 ' pistas ejec de grabaciondesde teclado
-             If CheckBox_GetCheck( cbxgrab(k))= 1 Then
-                pis=k  
-                Exit For
-             EndIf
-           Next k
-           If pis=0 Then
-              Exit Sub
-           EndIf
+' preparamos para grabar laS pistaS por cambios
+ Dim As Integer  pis=0, K=0
+     For k=1 To 32 ' pistas ejec de grabaciondesde teclado
+        If CheckBox_GetCheck( cbxgrab(k))= 1 Then
+           pis=k  
+ 
+           ReDim  toc.trk(1 To tocaparam(pis).maxpos)
 
-                  reDim  toc.trk(1 To tocaparam(pis).maxpos)
-
-                  Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
-                  Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
+          Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
+          Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
                 
-                   For j As Integer =1 To   tocaparam(pis).maxpos
-                          toc.trk(j).modo=Toca(pis).trk(j).modo
-                          toc.trk(j).nota=Toca(pis).trk(j).nota
-                          toc.trk(j).vel=Toca(pis).trk(j).vel
+          For j As Integer =1 To   tocaparam(pis).maxpos
+              toc.trk(j).modo=Toca(pis).trk(j).modo
+              toc.trk(j).nota=Toca(pis).trk(j).nota
+              toc.trk(j).vel=Toca(pis).trk(j).vel
                 '        Print #1, toc(j).modo;" ";toc(j).nota;" ";toc(j).vel
-                   Next j
- Dim tocap As ejecparam = tocaparam(pis)
- Dim tocap2 As ejecparam2 = tocaparam2(pis)
+          Next j
 
-                Print #1,"PARAMETROS EJEC nombre " ,pgmidi.tocap.nombre
-                Print #1,"PARAMETROS EJEC maxpos " ,pgmidi.tocap.maxpos
-                Print #1,"PARAMETROS EJEC orden "  ,pgmidi.tocap.orden
-                Print #1,"PARAMETROS EJEC delta "  ,pgmidi.tocap.delta
-                Print #1,"PARAMETROS EJEC portout ",pgmidi.tocap.portout
-                Print #1,"PARAMETROS EJEC patch "  ,pgmidi.tocap.patch
-                Print #1,"PARAMETROS EJEC canal "  ,pgmidi.tocap.canal
+      Dim tocap As ejecparam = tocaparam(pis)
+      Dim tocap2 As ejecparam2 = tocaparam2(pis)
+
+'                Print #1,"PARAMETROS EJEC nombre " ,pgmidi.tocap.nombre
+'                Print #1,"PARAMETROS EJEC maxpos " ,pgmidi.tocap.maxpos
+'                Print #1,"PARAMETROS EJEC orden "  ,pgmidi.tocap.orden
+'                Print #1,"PARAMETROS EJEC delta "  ,pgmidi.tocap.delta
+'                Print #1,"PARAMETROS EJEC portout ",pgmidi.tocap.portout
+'                Print #1,"PARAMETROS EJEC patch "  ,pgmidi.tocap.patch
+'                Print #1,"PARAMETROS EJEC canal "  ,pgmidi.tocap.canal
 ' ntkp global
- ntkp=pis 
+      ntkp=pis 
 
 ' aca es diferente el chequeo me da el nro de la pista, en este caso =eje
-pgmidi.toc=toc
+     pgmidi.toc=toc
 'pgmidi.tocatope = tocatope
-pgmidi.tocap = tocap
-pgmidi.tocap2 = tocap2
+     pgmidi.tocap = tocap
+     pgmidi.tocap2 = tocap2
 
 'threadGrabamidi=@pgmidi
 
- grabariniciotxt (NombreCancion,EJECUCION)
+ 
 GrabarMidiIn(pgmidi,pis)  ' POR 1015
-'  ThreadCreate (@GrabarMidiIn,CPtr(Any Ptr, threadGrabamidi))
+'''  ThreadCreate (@GrabarMidiIn,CPtr(Any Ptr, threadGrabamidi))
 
+        EndIf
+     Next k
 
+    grabariniciotxt (NombreCancion,EJECUCION)
 End Sub
 
 Sub cargariniciotxt(lugar As String, ejecutar As UByte)
@@ -366,10 +364,10 @@ If ejecutar=EJECUCION Then
      If LCase(estado) = "tiempopatronejec" then
         tiempoPatronEjec=arch
      EndIf
-     If LCase(estado) = "maxpos" then ''' decia "maxgrb"
+     If LCase(estado) = "maxpos" Or LCase(estado)="maxgrb"  Then ''' decia "maxgrb"
         maxgrb=arch
         maxcarga=maxgrb
-        
+        maxpos=arch
      EndIf 
  
    Loop
@@ -470,8 +468,9 @@ Print #1,"1 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
       Dim As String nombrea,myfil,nameCurDir
       ' print #1,"EN Cargar midi-in nombre ",DirEjecSinBarra
        ResetAllListBox(PISTASEJECUCIONES)
-
-       If  CANCIONCARGADA=FALSE Then ' And lugar = "" And DirEjecSinBarra= "" Then  '23-04-2024
+' vamos a poner directoriso distintos como pense en el principio para ejec y rtk con su inicio.txt
+' correspondiente como esta programado
+    '   If  CANCIONCARGADA=FALSE Then ' And lugar = "" And DirEjecSinBarra= "" Then  '23-04-2024
            nameCurDir = CurDir() 
         '   Dim PB As Integer
         '   PB=InStr(nameCurDir, ":\")
@@ -485,11 +484,11 @@ Print #1,"1 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
          lugar=ShellFolder("SELECCION DE CARPETA", nameCurDir, BIF_RETURNONLYFSDIRS Or BIF_USENEWUI)
          DirEjecSinBarra=lugar
      '    Print #1," 2 ctrl1016 lugar DirEjecSinBarra ",DirEjecSinBarra
-       Else
-         If CANCIONCARGADA=TRUE Then
-          lugar=NombreCancion
-         End If
-       EndIf
+     '  Else
+     '    If CANCIONCARGADA=TRUE Then
+     '     lugar=NombreCancion
+     '    End If
+     '  EndIf
        If lugar = "" And DirEjecSinBarra <> "" Then
           lugar=DirEjecSinBarra 'volver  a cargar ejecs sin  cancion por borrado de alguna pista 
        EndIf
@@ -575,7 +574,7 @@ Sub CTRL1040 () ' <========== seleccion de instrumento por orden Alfabetico
               If (CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE) And ROLLCARGADO=FALSE Then
                  NADACARGADO=FALSE  
                  If NombreCancion > ""  And MAxPos > 2 Then
-                    GrabarRollaTrack(0)
+                    GrabarRollaTrack(0,0)
                  EndIf
               Else
                 If MaxPos > 2  And ROLLCARGADO  Then
@@ -620,7 +619,7 @@ Sub CTRL1050 () ' <=========== seleccion de instrumento por orden Numerico
 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
                  If NombreCancion > ""  And MAxPos >2 Then
-                    GrabarRollaTrack(0)
+                    GrabarRollaTrack(0,0)
                  EndIf
               Else
                 If MaxPos > 2  And ROLLCARGADO  Then
@@ -1204,7 +1203,9 @@ Dim pis As Integer
 
 End Sub
 
-Sub CTRL1207(pis As integer ) 'NUEVA PARA TICKS convertir .ejec a .roll
+Sub CTRL1207(pis As integer ) 'OK PARA TICKS convierte .ejec a .roll seleccionada
+' UNO SOLO !!! PORQUE LOS PASA A ROLL GRAFICO EN MEMORIA DE AHI LUEGO HAY QUE GRABARLO A DISCO
+' COMO ROLL O RTK SEGU NSE DESEE
 ' copia 1ero a Track(0) la correspondiente a Roll 
 ' luego en memoria convierte a Roll y lo muestra en el grafico 
 ' pero no graba nada a disco,,,
@@ -1353,21 +1354,58 @@ Do
 Loop
 
 titulosTk(0)=nombreTrack
-pmTk(0).MaxPos = maxposTrack +6 '''tocaparam(pis).maxpos
+pmTk(0).MaxPos = maxposTrack +6 
 pmTk(0).desde = 4  'VER SI TOMAMOS LA Q ELIGE EL USUARIO
 pmTk(0).hasta = 8  ' " " " " " " 
 pmTk(0).posn=2
-pmTk(0).canalsalida=tocaparam(pis).canal
-pmTk(0).portout=tocaparam(pis).portout
-pmTk(0).patch=tocaparam(pis).patch
-pmTk(0).tipocompas =TipoCompas
-pmTk(0).tiempopatron = tiempopatron 
+pmTk(0).canalsalida=pmEj(pis).canalsalida
+pmTk(0).portout=pmEj(pis).portout
+pmTk(0).patch=pmEj(pis).patch
+pmTk(0).tipocompas =pmEj(pis).TipoCompas
+pmTk(0).tiempopatron = pmEj(pis).tiempopatron 
+
+'pmTk(0).desde = pmEj(pis).desde    
+'pmTk(0).hasta = pmEj(pis).hasta    
+'pmTk(0).NB = pmEj(pis).NB        
+'pmTk(0).NA = pmEj(pis).NA       
+'pmTk(0).MaxPos =maxposTrack +6    
+    
+'pmTk(0).notaold = pmEj(pis).notaold   
+pmTk(0).Ticks  = pmEj(pis).Ticks   
+pmTk(0).patch  = pmEj(pis).patch     
+pmTk(0).notaescala = pmEj(pis).notaescala 
+pmTk(0).tipoescala = pmEj(pis).tipoescala 
+pmTk(0).alteracion  = pmEj(pis).alteracion
+pmTk(0).fechasPistas = pmEj(pis).fechasPistas
+pmTk(0).canalsalida  = pmEj(pis).canalsalida
+pmTk(0).canalentrada = pmEj(pis).canalentrada
+pmTk(0).portout   = pmEj(pis).portout  
+pmTk(0).zona1   = pmEj(pis).zona1    
+pmTk(0).zona2   = pmEj(pis).zona2    
+pmTk(0).nroRep  = pmEj(pis).nroRep    
+pmTk(0).portin  = pmEj(pis).nroRep    
+pmTk(0).tipoCompas = pmEj(pis).tipoCompas  
+pmTk(0).ejec  = pmEj(pis).ejec      
+pmTk(0).vol   = pmEj(pis).vol     
+pmTk(0).tiempopatron = pmEj(pis).tiempopatron 
+pmTk(0).pan     = pmEj(pis).pan    
+pmTk(0).Eco     = pmEj(pis).Eco
+pmTk(0).Coro    = pmEj(pis).Coro    
+pmTk(0).ajuste  = pmEj(pis).ajuste
+pmTk(0).sonido  = pmEj(pis).sonido
+pmTk(0).vibrato = pmEj(pis).vibrato
+pmTk(0).canalx  = pmEj(pis).canalx
+pmTk(0).pitchbend = pmEj(pis).pitchbend  
+pmTk(0).orden     = pmEj(pis).orden
+
+
+
 
 Track(0).trk(1,1).nnn =tocaparam(pis).patch
 pmTk(0).patch=tocaparam(pis).patch ' 06-11-2025
 Track(0).trk(1,1).ejec = 1 ' marca indica que esta secuencia viene de una ejecucion
 pmTk(0).ejec=1 ' 06-11-2025
-TrackaRoll (Track(), 0 , Roll,"CTRL1207")
+TrackaRoll (Track(), 0 , Roll,"CTRL1207") '' "CTRL1207" FUNCION NO IMPLEMENTADA VER QUE ERA ESO 
 ROLLCARGADO=TRUE
 NADACARGADO=FALSE
 ' grabamos el Track a disco tambien
@@ -1399,8 +1437,8 @@ For k1=1 To tocatope
 ' debo ejecutar grabar Roll=>rtk de grafico para volcar ese roll a disco
        nombre=titulosTk(0)
        Print #1,"3 nombre ejec iluminado a convertir "; nombre 
-
-       GrabarRollaTrack(1)          
+       
+       GrabarRollaTrack(1,k1)          
   EndIf
 
 Next k1

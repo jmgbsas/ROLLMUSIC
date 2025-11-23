@@ -179,8 +179,8 @@ Declare Sub playthread()
 Declare Function GrabarRoll () As integer
 Declare Sub abrirSecuencia (nf As integer)
 Declare Sub GrabarTrack   (ntk As integer) 
-Declare Sub ActualizarRollyGrabarPistaTrk (funcion As string)
-Declare Sub GrabarRollaTrack (cambiaext As Integer)
+Declare Sub ActualizarRollyGrabarPistaTrk (funcion As String, nroEjec As integer)
+Declare Sub GrabarRollaTrack (cambiaext As Integer, nroejec As integer)
 Declare Sub CargarPistasEnCancion ()
 Declare sub GrabarCopiadePista()
 Declare Sub ImportarPistaExterna(nombre As string )
@@ -965,7 +965,8 @@ End Type
 
 
 Declare Sub Tracks (ByRef nroTrack As integer, ByRef nroCanal As UByte, Roll As inst)
-Dim Shared As Long PARAR_PLAY_MANUAL = NO,PARAR_PLAY_EJEC = NO,CONTROL3 = NO
+'Dim Shared As Long PARAR_PLAY_MANUAL = NO,PARAR_PLAY_EJEC = NO,CONTROL3 = NO
+Dim Shared As Long CONTROL3 = NO
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 CantTicks=CantMin * 60 *96 ''86400  ' 96*15*60 96 ticks una negra, 15 minutos, 60 segundos
 Dim Shared As inst Roll ' para visualizar y tocar

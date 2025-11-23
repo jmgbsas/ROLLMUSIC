@@ -3862,7 +3862,7 @@ EndIf
 ' ahora si es una cancion debere grabar a disco con el nrode track correspondiente
 ' al track modificado porque el ntk=0 para roll. ademas debere actualizar el track ntk
 ' en memoria,,,son dos operaciones,,,
-          GrabarRollaTrack(0) 
+          GrabarRollaTrack(0,0) 
     ''kiki     cairo_set_source_rgba c,1,1,1,1
          cairo_set_source_rgba c, 0, 1, 0, 1
            Sleep 500,1           
@@ -3912,11 +3912,11 @@ EndIf
 '   GrabarRollaTRack aca graba con [00] adelante, pues no es comando de cancion
 ' la pista de cancion van de 1 a 32 la pista 00 es el track asociado a Roll sin cancion 
         If esrtk >0 Then ' update de un track con o sin cancion
-           GrabarRollaTrack(0)
+           GrabarRollaTrack(0,0)
         EndIf  
         ' convierte roll a track comun le abtepone [00] y rtk al final
         If esroll > 0 Or esejec >0 Then ' con o sin cancion
-           GrabarRollaTrack(1) ' el 0 no lo toma es indiferente
+           GrabarRollaTrack(1,0) ' el 0 no lo toma es indiferente
         EndIf
         MenuNew=MENU_INICIAL  ' por formato de TRack anteponiendo[0]
         cierroedit= 0
@@ -5828,7 +5828,7 @@ Dim As Integer i,ntkold
 ' los que no se ven ya fueron refrescados , o sea debo
 ' grabar Track n a disco y al final grabar rolla track solo para
 'el visual
-            GrabarRollaTrack (0) ' nuevo deberia ser asi sin cambiar estencion 0
+            GrabarRollaTrack (0,0) ' nuevo deberia ser asi sin cambiar estencion 0
  
         '''   GrabarTrack ntk  tenia esto cual va 
            Sleep 20           
@@ -5836,7 +5836,7 @@ Dim As Integer i,ntkold
 
   Next i
 
-       ''  GrabarRollaTrack(0)
+       ''  GrabarRollaTrack(0,0)
   'ntk=ntkold ''??
 
 End Sub
@@ -5974,7 +5974,7 @@ Print #1, "selport 4 "
 ' PARAMETROS ES UNA PRUEBA HASTA DECIDIR QUE ESTA BIEN, ENTONCES EL USUARIO DEBERIA GRABAR
 '              If CANCIONCARGADA=TRUE  Or TRACKCARGADO=TRUE  Then
 '                 If NombreCancion > ""  And MAxPos > 1 Then
-'                    GrabarRollaTrack(0)
+'                    GrabarRollaTrack(0,0)
 '                 EndIf
 '              Else
 '                If MaxPos > 1  And ROLLCARGADO  Then
@@ -6230,7 +6230,7 @@ Print #1, "SELCANAL canalx "; canalx
                pmTk(0).canalsalida=CUByte(canalx)
                If NombreCancion > ""  Or TRACKCARGADO =TRUE Then
                    ' sirve para el track cargao actual en cancion
-                     GrabarRollaTrack(0)
+                     GrabarRollaTrack(0,0)
                Else
                   If ROLLCARGADO=TRUE  Then
                     LLAMA_GRABAR_ROLL()

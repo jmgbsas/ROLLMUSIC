@@ -31,7 +31,9 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.349 ARCHIVOS EJECS V2, LEE V1 GRABA V2. PARAMETROS EN EJEC ECO,VOL,PAN,CORO"
+nroversion="0.350 fix cancelaciones al reproducir manual (.rtk )+ ejec (.ejec), faltan mas casos"
+' 351 probar que funcionen las grabaciones midi y las conversiones a rtk o roll
+' reproducir todo desde Control menu Reproducir da problemas en revision se deshabilito-
 '  VER AHORA EL RENAME...Y GRABACION A DISCO,ok,GRABA Y LEVANTA EN VERSION 2 y 1 DE ARCHIVOS EJEC. 
 ' ARREGLAR Y LISTO ok..JUGAREMOS  CON LOS PARAMETROS PAN ECO ETC SOBRE EJEC DIRECTAMENTE ok!!
 ' 1310 de rolldec seguir nuevo metodo de reconocer versiones con la f echa en un double now
@@ -241,7 +243,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
       CargarPistasEnCancion ()
       cargariniciotxt(NombreCancion, CANCION)
  '   Print #1,"CARGAR PISTAS cargacancion = ",cargaCancion 
-     ''CANCIONCARGADA=TRUE
+''     CANCIONCARGADA=TRUE
      ROLLCARGADO=False
      '''lo hace tab-cargaCancion=0
      param.encancion=CON_CANCION
@@ -366,7 +368,7 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
             End SELECT
 '-----------------------------------------------------------------------
        Case EventClose  ''<==== SALIR TERMINA ROLL la X de win control
-           If play=SI Or playb=SI Or Cplay=SI Then 'rollLroop esta levantando en play
+           If play=SI Or playb=SI Or Cplay=SI Or playEj=SI Then 'rollLroop esta levantando en play
               PARAR_PLAY_MANUAL=SI   ' si hay algun play los manda  a detener
               PARAR_PLAY_EJEC=SI
               terminar=TERMINAR_POR_ESCAPE ' 1 va a usar SC_ESCAPE para terminar         

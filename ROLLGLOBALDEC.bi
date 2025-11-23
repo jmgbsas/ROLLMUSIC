@@ -61,7 +61,9 @@ Const HIDEMOUSE    = 0
 '-----
 Const BOTON_PISTA_ROLL=5
 Const HabilitaGrabar=0
+Const DesHabilitaGrabar=1
 Const BTN_LIBERADO=0
+Const BTN_PRESIONADO=1
 Const GrabarPatronaDisco=4
 Const GrabarPistaEjecucion=1
 Const PatronDeEjecucionCompleto=32
@@ -566,13 +568,17 @@ abrirRollCargaMidi=0
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay,deltaz,guardaposnOffOld
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntoca,ntkp,npi,calltoca,npo,canalDeGrabacion,ntkcarga,ntkTAB
-Common SHARED As Integer EstaBarriendoPenta
+Common SHARED As Integer EstaBarriendoPenta,playb,play,playEj
 Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA, VerMenu,MousexNotaElegida,PianoNotaElegida,nsEelegida
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, interva ,valorpan '  default 2 que es 1 separacion de notas
 Common Shared As Integer valoreco, valorcoro,valorvol
 VerMenu=1
+CPlay=NO
+playb=NO
+playEj=NO
+play=NO
 deltax=1
 deltaz=0 ' muestra ayuda al pie del grafico
 contid=0
@@ -591,6 +597,9 @@ common Shared As UByte Globalpan, Globaleco,Globalcoro, CerrarGraficodesdeCtrl,G
 CerrarGraficodesdeCtrl=0
 COMMON Shared As Integer  Tope,TopeEjec
 Tope=0
+TopeEjec=0
 Common Shared As String ROLLDIR
 Common Shared As UByte Vfuerte,Vsemifuerte,Vdebil
 Vfuerte=120:Vsemifuerte=100:Vdebil=80
+Common Shared As Long PARAR_PLAY_MANUAL ,PARAR_PLAY_EJEC 
+PARAR_PLAY_MANUAL = NO:PARAR_PLAY_EJEC = NO

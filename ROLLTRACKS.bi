@@ -20,7 +20,6 @@ Sub CargarMidiIn(fileMidiIn As String,   ByVal ntkp As Integer, byval version As
   '    pmEj(ntkp).MaxPos=N
  Print #1,"fileMidiIn recibido enCargarMidiIn ",fileMidiIn ' TIENE PATH
  Print #1,"NombreCancion  ",NombreCancion
-     
       Dim As Integer ubi1 ',ubi2 
       ubi1 = InStrrev(fileMidiIn,"\")
  '     ubi2 =InStrRev (DirEjecSinBarra,")")
@@ -896,7 +895,7 @@ posicion =1
   
 End Sub
 '
-Sub ActualizarRollyGrabarPistaTrk (funcion As string)
+Sub ActualizarRollyGrabarPistaTrk (funcion As String, nroejec As Integer)
 ' nombre es global ,,,por ahora...con un Roll único nombre puede ser global
 ' ya que es único y siempre es parte de Roll grafico...
 '  OJO GRABAR TIEMPOPATRON ACA EN TRACK A DISCO 30-03-2025 ok
@@ -1076,7 +1075,14 @@ nombre=titulosTk(ntk)
   If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Then
      nombre=path +nom +".rtk"
   Else
+    If nroejec= 0 Then
      nombre=path +"[00]"+nom +".rtk"
+    Else
+     If DirEjecSinBarra > "" Then
+          path=DirEjecSinBarra+"\"
+     EndIf 
+     nombre=path +"["+doscifras(nroejec)+"]"+nom +".rtk" 'path + 0 + rtk por default si no hay cancion
+    EndIf
   EndIf
 
 
@@ -1282,7 +1288,7 @@ Select Case ext
       'si es vacio tomo la ultima
     titulosTk(ntk)=nombre ' cambiamos el nombre de la pista 
 ' grabar en el directorio de cancion
-    GrabarRollaTrack(0) ' graba el roll del rtk a directorio cancion 
+    GrabarRollaTrack(0,0) ' graba el roll del rtk a directorio cancion 
       
  Case ".roll" ' corregido 20-04-2024
     titulosTk(0)=nombre  ''nombre de un roll externo fuera de cancion
@@ -1324,7 +1330,7 @@ Sleep 5
 ' grabar Roll en memoria a Track en disco esto es TrackaRoll igual que antes
 ' llamo y ntk esta en Tope
 
-GrabarRollaTrack(0)
+GrabarRollaTrack(0,0)
 
 cargariniciotxt(NombreCancion,CANCION)
 SetGadgetText(TEXT_TOPE, Str(maxpos))
@@ -1437,7 +1443,7 @@ Print #1,"///// actualizarRollyGrabarPista ntk ntkcarga debe nser iguales aca ",
 Print #1, "///las variables de ntkTAB siguen en las globales todavia!"
 FILEFLUSH(-1)
 ' funcion copiapista
-   ActualizarRollyGrabarPistaTrk ("copiapista")
+   ActualizarRollyGrabarPistaTrk ("copiapista", 0)
    cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
 terminar=NO_TERMINAR_BARRE_PANTALLA 
 Parar_De_Dibujar=NO
@@ -1451,7 +1457,7 @@ print #1,"----------------------------------------------------------------------
 
 End Sub
 ' ----------------------------------
-Sub GrabarRollaTrack ( cambiaext As Integer  ) ' SE USA PARA TODO 
+Sub GrabarRollaTrack ( cambiaext As Integer, nroejec As integer  ) ' SE USA PARA TODO 
 ' las 3 1eras funciones pueden hacerce en roll sin problemas..roll lo deduce
 ' de la entrada y las variables globales. la 4ta no, debe llamarse desde Control
 '1) Convierte y Graba un Roll cargado de disco, como Track [00] fuera de cancion. conversion
@@ -1610,7 +1616,7 @@ EndIf
 
 ' edsde aca es igual.. 
 ' funcion grabartrkcancion
-  ActualizarRollyGrabarPistaTrk ("grabartrkcancion") 
+  ActualizarRollyGrabarPistaTrk ("grabartrkcancion", nroejec) 
 
 print #1,"FIN GrabarRollaTrack ,cambiaext ",cambiaext
 print #1,"FIN GrabarRollaTrack ,maxpos,posn ",maxpos,posn
@@ -1884,8 +1890,8 @@ Globalvol=pmTk(ntk).vol
    EndIf
    'print #1,"TrackaRoll, NB, NA, CantTricks", NB,NA, CantTicks
 ' redim de ROLL de Visualizacion , para ello  
-Parar_De_Dibujar=SI
-Sleep 10 ' para que surja efecto la detencion ,,,   
+   ''  Parar_De_Dibujar=SI kokito
+     Sleep 10 ' para que surja efecto la detencion ,,,   
   'If  ntk= 0 Then
  ' Else
    Erase Roll.trk , compas
@@ -2068,7 +2074,7 @@ EndIf
 ' el redim esta arriba
 cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
 terminar=NO_TERMINAR_CON_DATOS_CARGADOS
-Parar_De_Dibujar=SI
+''Parar_De_Dibujar=SI kokito
 Print #1,"cargaCancion DEBE SER 1 ",cargaCancion
 Print #1,"NTK del copiado aca esta el lio, Y MAXPOS EN REDIM ",ntk, pmTk(ntk).MaxPos
 ReDim (Track(0).trk ) (1 To  pmTk(ntk).MaxPos +6, 1 To lim3) '////HOY
@@ -2251,7 +2257,10 @@ End Function
 '               P L A Y   C A N C I O N 
 '------------------------------------------
 Sub PlayCancion(Track() As sec)
-'psarlo a Ticks!!!
+Print #1,"' ----------------------------------------"
+Print #1,"'               P L A Y   C A N C I O N" 
+Print #1,"'------------------------------------------"
+CPlay = SI
 On Local Error GoTo PlayCancionError
 Dim  As Integer i1,NroEvento
 
@@ -2315,8 +2324,6 @@ EndIf
 '------------apertura de ports
 Dim As Long porterror,nousar
 ' idea para controlar cancion con repeticiones podria usar el track 00 solo para eso control
-PARAR_PLAY_MANUAL=NO
-PARAR_PLAY_EJEC=NO
 ' creoa todos los defaults siempre
  
 
@@ -2396,7 +2403,7 @@ Dim As UByte canal=0
 ' tope es la maxima capacidad de tracks usada , lso tracks son contiguos
 ' si se borra un track queda sin usar eso hay que verlo...JMG ..
 ' por ahora solo proceso los que tengan lim2 o si llegamos a tope 
-  jply=0:curpos=0
+  jply=1:curpos=1
   mousex=0
 ' print #1,                    "-----------------------------------------"
   comienzo=posicion
@@ -2423,7 +2430,7 @@ Dim As Double  tickUsuario=0.005 * 240/tiempoPatron ''''tickUsuario=0.01041666 *
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
 
-
+tickUsuario=0.005 * 240/tiempoPatron
 
   '115 a 0
   ' recorre una posicion vertical
@@ -2465,7 +2472,8 @@ Dim As float ajuste=1.0
              sonidoPista(pis)=1
           Else  
  '        Print #1,"+++++++pista off ",pis
-          alloff( pmTk(pis).canalsalida,CInt(pmTk(pis).portout) )        
+         alloff( pmTk(pis).canalsalida,CInt(pmTk(pis).portout) )
+         allSoundoff( pmTk(pis).canalsalida, CInt(pmTk(pis).portout) ) 
              sonidoPista(pis)=0
           EndIf
       EndIf
@@ -2490,13 +2498,15 @@ For jply=comienzo To final
 ' cambio de inst para la pista, podria poner mas de un instrumento por pista
 ' o por cada nota.. 
 ' VER DE PONER LOS INSTRUMENTOS EN TRACK
-   If PARAR_PLAY_EJEC = SI Or PARAR_PLAY_MANUAL = SI Then
+   If PARAR_PLAY_MANUAL = SI Then
       For i3 = 1 To tope
        portsal=CInt(pmTk(i3).portout) 
        alloff(pmTk(i3).canalsalida,portsal) 
+       allSoundoff( pmTk(i3).canalsalida, portsal ) 
       Next i3
-      PARAR_PLAY_EJEC=NO
+      Sleep 5
       PARAR_PLAY_MANUAL=NO
+      Parar_De_Dibujar=NO
       Exit For
    EndIf  
   
@@ -2725,8 +2735,6 @@ jply=0:curpos=0
  
 
 Cplay=NO ' Control de play cancion si fue desde control
-playb=NO
-play=NO
 
 
 '''  reponer mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
@@ -2755,7 +2763,8 @@ if GrabarPenta=0 and GrabarEjec=HabilitaGrabar and Parar_De_Dibujar=NO And check
       k1=pmTk(i).portout
    '   Print #1,"midiout ",k1, *nombreOut(k1)
       alloff( pmTk(i).canalsalida,k1 )  
-      'out_free   midiout(k1)
+      allSoundoff( pmTk(i).canalsalida,k1 )  
+
       ''Print #1,"desmarco ",*nombreOut(k1)
       listoutAbierto(k1)=0
       close_port midiout(k1)
@@ -2763,8 +2772,13 @@ if GrabarPenta=0 and GrabarEjec=HabilitaGrabar and Parar_De_Dibujar=NO And check
       listoutAbierto( k1) = 0
    Next i
 EndIf 
-
-
+  Parar_De_Dibujar=NO ' 05-03-2024
+  Cplay=NO
+  For i3 = 1 To tope
+       portsal=CInt(pmTk(i3).portout) 
+       alloff(pmTk(i3).canalsalida,portsal) 
+       allSoundoff( pmTk(i3).canalsalida, portsal ) 
+  Next i3
 
 Sleep 20,1
 

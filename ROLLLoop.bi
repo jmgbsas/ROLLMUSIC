@@ -1183,7 +1183,8 @@ Do  ' do nro 2
 'Print #1,"1062  DO2 ROOLLOOP DESDE GrabarPenta "; desde,GrabarPenta
 
 
-If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CANCIONCARGADA And play=NO  Or clickpista=1   Then
+If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CANCIONCARGADA   Or clickpista=1   Then 'And playb=NO
+
 'SACAMOS Or cargaCancion=CARGAR_NO_PUEDE_DIBUJAR LA CARGA TRACKA ROLL DE ACA NO LA NECESITAMOS
    If GrabarPenta=1 Then     'sale sin procesar
    Else   
@@ -1413,13 +1414,28 @@ If MultiKey (SC_P) Then
    If COMEDIT=LECTURA   Then
       PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
       PARAR_PLAY_EJEC=SI
+      Sleep 20 
       playloop=NO:playloop2=NO
-      play=NO:Cplay=no:playb=No
+      play=NO:Cplay=no:playb=No:playEj=NO
       s5=2 ' el loop necesita menos cpu se libera
       trasponer=0
+      For i3 As Integer  = 1 To Tope
+       portsal=CInt(pmTk(i3).portout) 
+       alloff(pmTk(i3).canalsalida,portsal)
+       allSoundoff( pmTk(i3).canalsalida, portsal ) 
+      Next i3
+      Sleep 1
+      For i3 As Integer  = 1 To TopeEjec
+       portsal=CInt(pmEj(i3).portout) 
+       alloff(pmEj(i3).canalsalida,portsal)
+       allSoundoff( pmEj(i3).canalsalida, portsal ) 
+      Next i3
+      Sleep 1
+      Parar_De_Dibujar=NO
       If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then 
       Else
       SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
+      SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_LIBERADO)
       EndIf
    EndIf
   Exit Do
@@ -2251,10 +2267,11 @@ EndIf
 
 ' ============== E S P A C I O ========
 If MultiKey(SC_SPACE)    Then 'barra espacio
-'   PARAR_PLAY_MANUAL=SI
-'   PARAR_PLAY_EJEC=SI
+   Sleep 20   
 '   playloop=NO:playloop2=NO
+
  If COMEDIT<>LECTURA Then
+   ''Print #1,"ENTRA POR COMEDIT<>LECTURA ???"
     espacio = 1
     DUR=0
     nota=notacur ''nsE 10-05-2021 00:06 probar de nuevo 
@@ -2264,34 +2281,41 @@ If MultiKey(SC_SPACE)    Then 'barra espacio
 
  Else
    
-   If playb = NO And play=NO And Cplay=NO And MaxPos > 1 Then ' 23-02-22 ningun play
+  If (playb = NO Or Cplay=NO )And (MaxPos> 2  Or Maxgrb > 2) Then ' 23-02-22 ningun play
+  '''If playb = NO And play=NO And Cplay=NO And MaxPos > 1 Then ' 23-02-22 ningun play
+
+    '''  Print #1,"ENTRA POR COMEDIT<>LECTURA ???"
       GrabarPenta=0
       naco=0:naco2=0
-       Print #1,"====> INSTANCIA ";INSTANCIA 
+      '' Print #1,"====> INSTANCIA ";INSTANCIA 
       If INSTANCIA = ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia <= ARG4_INSTRU  Then '04-10-2025 
       Else  
      ' SetGadgetstate(BTN_ROLL_GRABAR_MIDI,0) ' 10-04-2022 DE  VENTANA CTROL
        SetGadgetstate(15,0) ' 20-02-2025 
       EndIf
    '   print #1,"SPACE call play"
-Print #1,"CANCIONCARGADA = TRUE And Cplay=NO  ",CANCIONCARGADA, Cplay  
-         If CANCIONCARGADA = TRUE  And Cplay=NO Then
+'Print #1,"CANCIONCARGADA = TRUE And Cplay=NO  ",CANCIONCARGADA, Cplay  
+         If CANCIONCARGADA = TRUE  And CPlay=NO   Then
+'Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
              Print #1,"USANDO PLAYCANCION"
+             Parar_De_Dibujar=NO
              Cplay=SI : s5=NO 'Necesita mas tiempo de cpu
        '      Sleep 100
              thread1 = ThreadCall  PlayCancion(Track())
              grabariniciotxt(NombreCancion, CANCION)
              FileFlush (-1)
 
-         EndIf
-         If   Cplay=NO And  CANCIONCARGADA = FALSE Then
+         ElseIf   playb=NO And  CANCIONCARGADA = FALSE Then
               print #1,"llama a playall"
               Playb=SI:s5=NO 
        '       Sleep 100
               thread2 = ThreadCall  playAll(Roll)
          EndIf
-
-      
+          If maxgrb > 0 And playEj=NO Then
+           playEj=SI 
+Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"  
+          threadG = ThreadCall  PlayTocaAll(p)
+          EndIf
       menunew=MENU_INICIAL
       cierroedit= 0
    EndIf
@@ -3785,8 +3809,32 @@ If (ScreenEvent(@e)) Then
    If e.scancode = SC_P   Then ' 25 anda mejor q con multikey
       PARAR_PLAY_MANUAL=SI
       PARAR_PLAY_EJEC=SI
+      Sleep 20
       playloop=NO:playloop2=NO
       play=NO:Cplay=no:playb=No
+      playEj=NO 
+      Cplay=NO
+      playb=NO
+      play=NO 
+      For i3 As Integer  = 1 To Tope
+       portsal=CInt(pmTk(i3).portout) 
+       alloff(pmTk(i3).canalsalida,portsal) 
+       allSoundoff( pmTk(i3).canalsalida, portsal )
+      Next i3
+      Sleep 1
+      For i3 As Integer  = 1 To TopeEjec
+       portsal=CInt(pmEj(i3).portout) 
+       alloff(pmEj(i3).canalsalida,portsal)
+       allSoundoff( pmEj(i3).canalsalida, portsal ) 
+      Next i3
+      Sleep 1  
+      Parar_De_Dibujar=NO
+      If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then 
+      Else
+      SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
+      SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_LIBERADO)
+      EndIf
+
       s5=2 'necesita menos tiempo de procesamiento    
    EndIf
 '-------------------------------------------------------------------
@@ -4510,7 +4558,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
 '' CERRAMOS EL GRAFICO, PERO EL GRAFICO ES UNICO,,,,
 
 Dim As Integer i3
-     If play=SI Or playb=SI Or Cplay=SI Then
+     If play=SI Or playb=SI Or Cplay=SI Or playEj=SI Then
        'MessBox( "","Detenga el play primero ")
        'SetForegroundWindow(hwnd)
        '  Terminar=2
@@ -4528,7 +4576,7 @@ Dim As Integer i3
        End 0
      ''Exit Do 
   EndIf
-Print #1,"//////PASO POR ACA ESTA MIERDA DESPUES DE TERMINAR EL PLAY DE CANCION??"
+
 FILEFLUSH(-1)
 
   If MessageBox(hWnd,"¿CERRAR GRAFICO ? " ,param.titulo ,4 Or 64) =6  Then

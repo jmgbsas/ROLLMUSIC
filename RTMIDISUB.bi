@@ -672,6 +672,10 @@ End Function
 Sub playAll(Roll As inst) ' play version 3 CON TICKS
 '<<< 30-03-2025 anda ok para roll desde ejec o Roll desde entrada manual >>>>
 ' en manual las velocidades son una sola semi fuerte, hasta que compas pueda 
+Print #1,"' ----------------------------------------"
+Print #1,"'               P L A Y  A L L" 
+Print #1,"'------------------------------------------"
+
 ntk=0
 On Local Error GoTo fail
 '''VerMenu=0
@@ -844,7 +848,8 @@ For jply=comienzo To final
   If PARAR_PLAY_MANUAL = SI Then
     If InStr(*nombreOut(portout),"Microsoft") > 0 Then
     Else
-      alloff( pmTk(0).canalsalida,pmTk(0).portout )
+      alloff( pmTk(0).canalsalida,pmTk(0).portout ) 
+      allSoundoff(pmTk(0).canalsalida,pmTk(0).portout ) 
     EndIf  
       PARAR_PLAY_MANUAL=NO
       Print #1,"mefui de playall"
@@ -855,6 +860,7 @@ For jply=comienzo To final
     If InStr(*nombreOut(portout),"Microsoft") > 0 Then
     Else
        alloff( pmTk(0).canalsalida,pmTk(0).portout)
+       allSoundoff(pmTk(0).canalsalida,pmTk(0).portout ) 
     EndIf 
       Exit For
   EndIf
@@ -1037,7 +1043,8 @@ If GrabarPenta=0 And GrabarEjec=HabilitaGrabar And Parar_De_Dibujar=NO And check
 
    k1=pmTk(0).portout
    Print #1,"midiout ",k1, *nombreOut(k1)
-   alloff( pmTk(0).canalsalida,k1 )  
+   alloff( pmTk(0).canalsalida,k1 )
+   allSoundoff(pmTk(0).canalsalida,k1 )  
    'out_free   midiout(k1)
    Print #1,"desmarco ",*nombreOut(k1)
    listoutAbierto(k1)=0
@@ -1677,7 +1684,7 @@ If encancion > 0 Then
    ubi1=InStr(nombre,"[")
    ubi2=InStr(nombre,"]")
    If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
-       GrabarRollaTrack(0)
+       GrabarRollaTrack(0,0)
    EndIf
 EndIf       
 
@@ -1823,7 +1830,7 @@ If encancion > 0 Then
    ubi1=InStr(nombre,"[")
    ubi2=InStr(nombre,"]")
    If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
-       GrabarRollaTrack(0)
+       GrabarRollaTrack(0,0)
    EndIf
 EndIf       
 
@@ -3059,6 +3066,41 @@ On Local Error GoTo fail
 'TickPlay = TickChico por default si quiero cambiar la velocidad debo cambiar el TickChico
 'o sea se grabasiempre con elTick mas chico que es para veloc=240 y el valor del  tresillo
 ' 
+Print #1,"' ----------------------------------------"
+Print #1,"'               P L A Y   T O C A  A L L" 
+Print #1,"'------------------------------------------"
+'------------------abrir ports 
+Dim As Integer kp,ip
+Var porterror=Err
+For ip=1 To topeEjec
+  
+   kp=CInt(pmEj(ip).portout)
+    
+'   Print #1,"midiout ",k1, *nombreOut(k1)
+   If InStr(*nombreOut(kp),"Microsoft")>0 Then
+    Print #1,"No se usa Microsoft"
+    Exit sub
+   Else
+     If listoutAbierto( kp) = 0 Then
+        If listoutCreado( kp)=0 Then
+           midiout(kp) = rtmidi_out_create_default ( ) '' es como un new RtMidiOut()
+           listoutCreado( kp)=1 
+        EndIf
+        open_port midiout(kp),kp, nombreOut(kp)
+            porterror=Err 
+        listoutAbierto( kp) = 1
+        Print #1,"abro ",*nombreOut(kp)
+        porterrorsub(porterror)
+
+     Else
+        Print #1,"ya abierto ",*nombreOut(kp)
+        porterror=0
+     EndIf
+   EndIf
+
+Next ip
+Sleep 5
+'------------------------------
 Print #1,"PlayTocaAll 1"
 ntoca=*nt  ''' almacena tocatope la cant max de ejecuciones o archivos cargados
 Dim  As Long j=0,k=0,partes,cuenta=0,pis=0
@@ -3110,7 +3152,6 @@ Print #1,"topeDuranteGrabacion ", topeDuranteGrabacion, " PISTAS"
 '      ChangeProgram ( tocaparam(pis).patch , tocaparam(pis).canal, tocaparam(pis).portout)	'
 '
 'Next pis
-PARAR_PLAY_EJEC=NO
 '''TickPlay=TickChico*tiempoPatronEjec/240
 ' no hay caso no cambia nada el play deberia modificar los datos ???
 ' los tiempos son fijos la unica forma seria cambiar sus valores
@@ -3130,10 +3171,13 @@ Print #1,"playTocaAll jToca=maxgrb, kply=topeDuranteGrabacion ";maxgrb, topeDura
 For jToca=1 To maxgrb ' se calcula al cargr los archivos de ejec EJE X POSICION O TIEMPO
   If PARAR_PLAY_EJEC = SI Then
      For kply =1 To topeDuranteGrabacion
-         alloff( 1 ,pmEj( kply).portout  )
+        portsal=pmEj(kply).portout  
+        alloff( pmEj(kply).canalsalida,portsal )  
+        allSoundoff( pmEj(kply).canalsalida, portsal ) 
      Next  kply
       PARAR_PLAY_EJEC=NO
       Parar_De_Dibujar=NO
+      playEj=NO
       Exit For
   EndIf  
 ''Print #1,"topeDuranteGrabacion ",topeDuranteGrabacion
@@ -3214,6 +3258,8 @@ For jToca=1 To maxgrb ' se calcula al cargr los archivos de ejec EJE X POSICION 
 ''''Sleep 1,1 ' para que corranmas de un thread ¿??? 20-06-2022 porque lo puse?
 Next jToca
 ''jToca=0
+playEj=NO
+
 Parar_De_Dibujar=NO
 If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Then ''' Or instancia < 3 Then
 ' las instancias son formas de cargar roll
@@ -3251,8 +3297,21 @@ Sleep 1
 
   EndIf 
   Parar_De_Dibujar=NO
+  playEj= NO
   Sleep 20,1
-  ThreadDetach threadG
+'------------------- cerrando ports
+   For ip=1 To topeEjec
+      kp=pmEj(ip).portout
+   '   Print #1,"midiout ",k1, *nombreOut(k1)
+      alloff( pmEj(ip).canalsalida,kp )  
+      allSoundoff( pmEj(ip).canalsalida,kp )  
+
+      ''Print #1,"desmarco ",*nombreOut(k1)
+      listoutAbierto(kp)=0
+      close_port midiout(kp)
+      listoutAbierto( kp) = 0
+   Next ip
+'----------------
 Exit Sub 
 
 fail:
