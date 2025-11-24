@@ -285,7 +285,11 @@
             de manuales. Detener con boton Negro. o tecla P
             Si quiero escuchar solo las ejecuciones midi pulsar el BOTON Verde de Ejecucione Cancion.
             Detener con su boton negro o la tecla P.
-            
+            Para Rerpoducir desde La Ventana de Control usar en el menu Reproducir item 1.0
+            y detenerlo 1.1. esto permite ejecutar las pistas sin el grafico consumiendo mucho
+            menos CPU. Podemos Cargar la cancion de rtk desde el item 2.0 del Menu Archivo.
+            En cualquier momento si necesito el grafico lo levanto del menu Pistas MAnuales item
+            6.0. Y para cerrar el grafico pulso esquina superior derecha la cruz X.
               
        ------------------------------------------------------------------------------------------
        NOTA: PARA  CERRAR LA VENTANA DE ROLLGRAFICO SIN SALIR DEL PROGRAMA PULSAR CTRL+F4 O EL BOTON X

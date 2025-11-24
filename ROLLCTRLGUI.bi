@@ -366,7 +366,8 @@ Negras por minuto	 tempo
 '/    
 
   
-''MenuItem(1090,MenName6,"1.0 Reproducir desde la posicion o en el rango ajustado")
+MenuItem(1090,MenName6 ,"1.0 Reproducir desde la posicion o en el rango ajustado")
+MenuItem(10901,MenName6,"1.1 Detener Reproducion 1.0")
 MenuItem(1091,MenName6,"2.0 Fijar Repeticiones de un numero de Compases elegido como zona")
 MenuItem(1092,MenName6,"3.0 Abre y Reproduce Puerto MIDI-IN Ejecucion teclado por  MIDI-OUT.")
 MenuItem(1093,MenName6,"4.0 Cierra Puerto MIDI-IN Ejecucion.")

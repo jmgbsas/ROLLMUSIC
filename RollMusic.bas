@@ -31,7 +31,7 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.350 fix cancelaciones al reproducir manual (.rtk )+ ejec (.ejec), faltan mas casos"
+nroversion="0.3501 Reproducir 1.0 todo o 1.1 parar en Menu Control- Fig VoLUMEN"
 ' 351 probar que funcionen las grabaciones midi y las conversiones a rtk o roll
 ' reproducir todo desde Control menu Reproducir da problemas en revision se deshabilito-
 '  VER AHORA EL RENAME...Y GRABACION A DISCO,ok,GRABA Y LEVANTA EN VERSION 2 y 1 DE ARCHIVOS EJEC. 

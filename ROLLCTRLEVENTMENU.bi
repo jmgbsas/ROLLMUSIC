@@ -598,34 +598,99 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
 '-----------------------------------------------------------------------
            Case 1090 ' Reproducir cancion
 SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
-      ''   p=@ntoca 
-         If CPlay = NO And playb = NO And MaxPos > 2  Then
-            GrabarPenta=0:naco=0:naco2=0 ''dela version F jmgjmg
-            
-            If NombreCancion > "" And Cplay=NO Then
-              ' If play=SI Or playb=SI Or playEj = SI Then
-              '    PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY
-              '    PARAR_PLAY_EJEC=SI ' DETIENE EL PLAY 
-              '    playloop=NO:playloop2=NO
-              '    play=NO : playb=NO
-              '    Sleep 20 ' durante este sleep el programa lee o nota el cambio de PARAR_PLAY...???
-              ' EndIf 
-              grabariniciotxt(NombreCancion, CANCION)
-              thread1 = ThreadCall  PlayCancion(Track())
-               If maxgrb > 0 And playEj= NO Then
-                  p=@ntoca
-                  playEj= SI
-                  threadG  = ThreadCall  PlayTocaAll (p)
-               EndIf 
+  If (playb = NO Or Cplay=NO )And (MaxPos> 2  Or Maxgrb > 2) Then ' 23-02-22 ningun play
+  '''If playb = NO And play=NO And Cplay=NO And MaxPos > 1 Then ' 23-02-22 ningun play
 
+    '''  Print #1,"ENTRA POR COMEDIT<>LECTURA ???"
+      GrabarPenta=0
+      naco=0:naco2=0
+      '' Print #1,"====> INSTANCIA ";INSTANCIA 
+      If INSTANCIA = ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia <= ARG4_INSTRU  Then '04-10-2025 
+      Else  
+     ' SetGadgetstate(BTN_ROLL_GRABAR_MIDI,0) ' 10-04-2022 DE  VENTANA CTROL
+       SetGadgetstate(15,0) ' 20-02-2025 
+      EndIf
+   '   print #1,"SPACE call play"
+'Print #1,"CANCIONCARGADA = TRUE And Cplay=NO  ",CANCIONCARGADA, Cplay  
+         If CANCIONCARGADA = TRUE  And CPlay=NO   Then
+'Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
+             Print #1,"USANDO PLAYCANCION"
+             Parar_De_Dibujar=NO
+             Cplay=SI : s5=NO 'Necesita mas tiempo de cpu
+       '      Sleep 100
+             thread1 = ThreadCall  PlayCancion(Track())
+             grabariniciotxt(NombreCancion, CANCION)
+             FileFlush (-1)
 
-            EndIf
-         EndIf   
+         ElseIf   playb=NO And  CANCIONCARGADA = FALSE Then
+              print #1,"llama a playall"
+              Playb=SI:s5=NO 
+       '       Sleep 100
+              thread2 = ThreadCall  playAll(Roll)
+         EndIf
+          If maxgrb > 0 And playEj=NO Then
+           playEj=SI 
+Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"  
+          threadG = ThreadCall  PlayTocaAll(p)
+          EndIf
+      menunew=MENU_INICIAL
+      cierroedit= 0
+   EndIf
+
+'         If CPlay = NO And playb = NO And MaxPos > 2  Then
+'            GrabarPenta=0:naco=0:naco2=0 ''dela version F jmgjmg
+'            
+'            If NombreCancion > "" And Cplay=NO Then
+'              ' If play=SI Or playb=SI Or playEj = SI Then
+'              '    PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY
+'              '    PARAR_PLAY_EJEC=SI ' DETIENE EL PLAY 
+'              '    playloop=NO:playloop2=NO
+'              '    play=NO : playb=NO
+'              '    Sleep 20 ' durante este sleep el programa lee o nota el cambio de PARAR_PLAY...???
+'              ' EndIf 
+'              grabariniciotxt(NombreCancion, CANCION)
+'              thread1 = ThreadCall  PlayCancion(Track())
+'               If maxgrb > 0 And playEj= NO Then
+'                  p=@ntoca
+'                  playEj= SI
+'                  threadG  = ThreadCall  PlayTocaAll (p)
+'               EndIf 
+'
+'
+'           EndIf
+'       EndIf   
           '    Dim As Any Ptr thplayC = ThreadCall  playCancion(track())
           '    PARAR_PLAY_MANUAL = 1
              If abrirRollCargaMidi=2 Then
              SetForegroundWindow(hwnd)
              EndIf 
+'---------------------------------------------------------------------
+           Case 10901
+      PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
+      PARAR_PLAY_EJEC=SI
+      Sleep 20 
+      playloop=NO:playloop2=NO
+      play=NO:Cplay=no:playb=No:playEj=NO
+      s5=2 ' el loop necesita menos cpu se libera
+      trasponer=0
+      For i3 As Integer  = 1 To Tope
+       portsal=CInt(pmTk(i3).portout) 
+       alloff(pmTk(i3).canalsalida,portsal)
+       allSoundoff( pmTk(i3).canalsalida, portsal ) 
+      Next i3
+      Sleep 1
+      For i3 As Integer  = 1 To TopeEjec
+       portsal=CInt(pmEj(i3).portout) 
+       alloff(pmEj(i3).canalsalida,portsal)
+       allSoundoff( pmEj(i3).canalsalida, portsal ) 
+      Next i3
+      Sleep 1
+      Parar_De_Dibujar=NO
+      If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then 
+      Else
+      SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
+      SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_LIBERADO)
+      EndIf
 '-----------------------------------------------------------------------
            Case 1091 ' <=========== Repeticiones de un nro de compases
              If pasoZona1 > 0 And pasoZona2 > 0  Then
