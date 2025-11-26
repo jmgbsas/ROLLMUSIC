@@ -709,8 +709,8 @@ Type rangoOct Field=1
  As UByte   canalsalida
  As UByte   canalentrada
  As UByte   portout      ' dispositivo midi de salida 
- As UByte   zona1
- As UByte   zona2
+ As Integer   zona1
+ As integer   zona2
  As UByte   nroRep
  As UByte   portin 
  As UByte  tipoCompas
@@ -987,7 +987,7 @@ Dim Shared As String grado_inicial(1 To 24)
 'Dim Shared As Integer lim2=12, ctres=CantTicks
 Declare Sub calcCompas(Roll As inst)
 
-Dim Shared As Integer lim2=12,mel_undo_k=0,lim3=25,cnt_acor=0,ig=0
+Dim Shared As Integer mel_undo_k=0,cnt_acor=0,ig=0
 Dim Shared As Boolean Vaciodur=FALSE,ResetVariables=FALSE
 Type notas_agregadas Field=1
   As Integer pn ' pianoNota
@@ -1580,4 +1580,5 @@ Union Encabezado
     delta As Double
    End Type
 End Union
-declare Function Otroinputbox(message As String) As String   
+declare Function Otroinputbox(message As String) As String
+Declare Sub ReproducirTodasLaSPistas()   

@@ -831,6 +831,12 @@ Print #1,"TickUsuario "; tickUsuario
 ' ======================= FOR JPLY PLAYALL =======================
 ''Print #1,"cominzo final PARAR_PLAY_MANUAL "; comienzo , final, PARAR_PLAY_MANUAL
 Dim As float ajuste=1.0
+'******************************************************************************
+''//////////// E M P I E Z A EL LOOP DE PLAYALL UNA SOLA PISTA DE ROLL //////////
+'*************************************************************************************
+portsal=pmTk(0).portout  '''no vamos a cambiar en la secuencia el midiout ni canal o si??
+canal=pmTk(0).canalsalida
+
 For jply=comienzo To final
 ''Print "*******************************************************************"
 ''Print "AL TERMINAR EL PLAY APARECE EL MENU. CON SHIFT-M APARECERA DE NUEVO"
@@ -848,8 +854,8 @@ For jply=comienzo To final
   If PARAR_PLAY_MANUAL = SI Then
     If InStr(*nombreOut(portout),"Microsoft") > 0 Then
     Else
-      alloff( pmTk(0).canalsalida,pmTk(0).portout ) 
-      allSoundoff(pmTk(0).canalsalida,pmTk(0).portout ) 
+      alloff( canal,portsal ) 
+      allSoundoff(canal,portsal ) 
     EndIf  
       PARAR_PLAY_MANUAL=NO
       Print #1,"mefui de playall"
@@ -859,8 +865,8 @@ For jply=comienzo To final
   If jply=MaxPos Then
     If InStr(*nombreOut(portout),"Microsoft") > 0 Then
     Else
-       alloff( pmTk(0).canalsalida,pmTk(0).portout)
-       allSoundoff(pmTk(0).canalsalida,pmTk(0).portout ) 
+       alloff( canal,portsal)
+       allSoundoff(canal,portsal ) 
     EndIf 
       Exit For
   EndIf
@@ -922,8 +928,8 @@ If i1<= NA-13 Then
       ''Print #1,"PALL 0:VEO LO CORRECTO DE NOTAPIANO "; Notapiano
       dura=Roll.trk(jply, i1).dur ' es una N 185 la duracion son lso ticks hasael off 1
 ' llegamos al final de la Columna
-      portsal=pmTk(0).portout
-      canal=pmTk(0).canalsalida
+'      portsal=pmTk(0).portout  no vamos a cambiar en la secuencia el midiout ni canal o si??
+'      canal=pmTk(0).canalsalida
 
       If pmTk(0).ejec=1  Then ''''Roll.trk(1, NA).onoff=1  Then
        ' Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
@@ -969,6 +975,12 @@ If i1 > NA-13 Then
  If Roll.trk(jply,i1).nota = 211 Then
     Print #1,"211 leido jply",jply 
     final2=jply
+'---------- reset de las notas que no llegan a su off por un corte antes del off -- ok 
+' deberia hacer el corte tambien si hay ejecuciones 
+    alloff(canal,portsal) 
+    allSoundoff(canal, portsal ) 
+'-------------------------------------------------
+
     If cntrepe > 0 Then
       cntrepe -= 1
     Else
@@ -1043,8 +1055,8 @@ If GrabarPenta=0 And GrabarEjec=HabilitaGrabar And Parar_De_Dibujar=NO And check
 
    k1=pmTk(0).portout
    Print #1,"midiout ",k1, *nombreOut(k1)
-   alloff( pmTk(0).canalsalida,k1 )
-   allSoundoff(pmTk(0).canalsalida,k1 )  
+   alloff( canal,k1 )
+   allSoundoff(canal,k1 )  
    'out_free   midiout(k1)
    Print #1,"desmarco ",*nombreOut(k1)
    listoutAbierto(k1)=0
@@ -3060,6 +3072,16 @@ On Local Error GoTo fail
 ' usarlo y ponerlo como se debe,,,usar un redim de maxgrb el probel aes que maxgrb se pisaba
 ' en cargarmidiin ahora se arreglo veo si anda ,,,probar
 '////////////////////////////TOCAALL/////////////////////////
+'//// HARIAN FALTA REPETICIONES EN EJECUCIONES ? PODRIA SER , SE SUMA A LAS DE PISTAS DE
+'//// RTK CANCION? creo q las repeticiones quedaran en el grafico nada mas...despues de todo
+'//// el usuario puede pasar una ejecucion a pista rtk y ahi ponerle la repeticion,,
+'//// se podria implementar una repeticion.
+'//// las repeticiones son a nivel de cancion para todas las pistas y las ejecuciones
+'//// PODRIA HACER REPETICIONES PARA UNA SOLA PISTA EN UNA CANCION???? PODRIA SER BUENO
+'//// PARA UNA BATERIA PARA ELLO PODRIA EJECUTAR UN PLAYALL CON REPETICIONES ADEMAS DE
+'//// PLAYcANCION Y PLAYTOCAALL, ESTAS SERIA CANCIONES CADA UNA Y LA PLAYALL UNA PISTA
+'//// AISLADA....PODRIAMOS MARCAR EN LA CANCION QUE UNA PISTA NO SE TOCA CON PLAYCANCION
+'//// SINO AISLADAMENTE CON PLAYALL!!!
 ' perfeccionar los eventos deven seguir un patron de tiempo de ticks
 ' para c/tick ver si hay un evento si hay enviarlo...el problem ason lso retardos
 ' TOCA VARIAS PISTAS EJEC 
@@ -3167,8 +3189,25 @@ Print #1,"playTocaAll jToca=maxgrb, kply=topeDuranteGrabacion ";maxgrb, topeDura
 'los archivos de ejec tienen distintas longitudes al cargarlos se normaliza a la mayor
 ' volvimos aponer maxgrb en el redim ver como funciona porque teniamos un 384 mil
 ' deberiamos hacer el redim con un % mas 2 por ejemplo asi estamos con 2 veremos
-'
-For jToca=1 To maxgrb ' se calcula al cargr los archivos de ejec EJE X POSICION O TIEMPO
+' ADAPTAMOS PARA QUE TOQUE EN UNA ZONA DETERMINADA POR PASOZONA1 Y 2 DE UNA EJECUCION DE
+' PLAY CANCION SUPONEMOS QUE SE MARCAN LOS TICK DESDE HASTA 0.3502
+DIM As Integer COMIENZO , FINAL
+If pasoZona1 > 0 Then
+   comienzo = pasoZona1
+Else
+   comienzo = 1
+EndIf
+If pasoZona2 > 0 Then
+   final = pasoZona2
+Else
+   final = maxgrb
+EndIf
+
+
+For jToca=comienzo To final ' se calcula al cargr los archivos de ejec EJE X POSICION O TIEMPO
+  If jply > 0 Then
+     jToca=jply
+  EndIf 
   If PARAR_PLAY_EJEC = SI Then
      For kply =1 To topeDuranteGrabacion
         portsal=pmEj(kply).portout  

@@ -150,7 +150,8 @@ Const CTRL_N = 2
 Const ObtenerDuracion1erClickIzquierdo=3
 Const DesplegarMenuModifClickDerecho =1
 Const SeleccionarComandoClickIzquierdo = 2
-
+Const lim2=12
+Const lim3=25
 '----
 Dim Shared As ubyte GrabarPistaCancion=0
  
@@ -586,7 +587,7 @@ separaenuno=0
 interva=3 '  default 3 para ticks desplazamineto zoom horizontal 
  MaxPos=2:ntk=0:CPlay=NO: guardopos=0:ntktab=0 : ntoca=0
  posicion=0:posicionOld=0:posn=0
-valorpan=64  
+valorpan=64  'mf
 valoreco=0  
 valorcoro=0
 valorvol=90
@@ -600,6 +601,8 @@ Tope=0
 TopeEjec=0
 Common Shared As String ROLLDIR
 Common Shared As UByte Vfuerte,Vsemifuerte,Vdebil
-Vfuerte=120:Vsemifuerte=100:Vdebil=80
+Vfuerte=96     'ff
+Vsemifuerte=64 'mf
+Vdebil=42      ' p
 Common Shared As Long PARAR_PLAY_MANUAL ,PARAR_PLAY_EJEC 
 PARAR_PLAY_MANUAL = NO:PARAR_PLAY_EJEC = NO

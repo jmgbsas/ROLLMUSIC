@@ -423,8 +423,6 @@ If n <= pmTk(0).MaxPos Then
 '''  kiki    EndIf
   '   Print #1,"lugar ",16
       If n = pasozona1 Or n =pasoZona2 Then '26-06-2021
-   '  Print #1,"lugar ",17
-        ' ic=ic+1
          cairo_move_to(c,gap3 + (ic ) *anchofig +anchofig, Penta_y + 13.5 * inc_Penta )
          t="("+ Str(n) + ")"
          cairo_show_text(c,t)
@@ -436,6 +434,8 @@ If n <= pmTk(0).MaxPos Then
  
       code=Roll.trk (n, repeind).nota
       repe=Roll.trk (n, repeind).vol
+
+
       If code =210 Or code=211  Then
          cairo_move_to(c,gap3 + (ic ) *anchofig +anchofig, Penta_y + 13.5 * inc_Penta )
          Select Case code   
@@ -1195,32 +1195,32 @@ If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) 
    Erase mel_undo, undo_acorde, undo_kant_intervalos
    mel_undo_k=0: ig=0:cnt_acor=0
    ROLLCARGADO = FALSE
-   print #1,"--TAB "
+ '  print #1,"--TAB "
    nota=0
    dur=0
-   print #1,"TAB 1- NTK,MAXPOS, pmtk(ntk).maxpos  clickpista ", ntk,maxpos,pmTK(ntk).maxpos, clickpista
+ '  print #1,"TAB 1- NTK,MAXPOS, pmtk(ntk).maxpos  clickpista ", ntk,maxpos,pmTK(ntk).maxpos, clickpista
    If clickpista=1 Then
-     Print #1,"no incrementea ntk, EL NTK SALE DEL NOMBRE  DE LA PISTA"
+ '    Print #1,"no incrementea ntk, EL NTK SALE DEL NOMBRE  DE LA PISTA"
      clickpista=0
      ntkTAB=ntk ' UN NTK QUE VIENE DEL CLICK EN UNAPISTA DE PISTAROLL
      nombre=titulosTk(ntk)
-    Print #1,"TAB1.1 ntk, ntkTAB, nombre, POR CLICK PISTA ", ntk,ntkTAB, nombre 
+'    Print #1,"TAB1.1 ntk, ntkTAB, nombre, POR CLICK PISTA ", ntk,ntkTAB, nombre 
    Else
      ntk = ntk + 1
      ntkTAB=ntk
      nombre= titulosTk(ntk)
-     Print #1,"Incrementa ntk, nombre ", ntk ,nombre
+ '    Print #1,"Incrementa ntk, nombre ", ntk ,nombre
    EndIf
  
   If nombre > "" Then
-     print #1,"--------------------------"
-     print #1,"TAB 2-NTK nombre", ntk,nombre
-     print #1,"TAB 3-NTK MAXPOS pmtk(ntk).maxpos  ", maxpos,pmTK(ntk).maxpos
-     print #1,"--------------------------"
+ '    print #1,"--------------------------"
+ '    print #1,"TAB 2-NTK nombre", ntk,nombre
+ '    print #1,"TAB 3-NTK MAXPOS pmtk(ntk).maxpos  ", maxpos,pmTK(ntk).maxpos
+ '    print #1,"--------------------------"
    EndIf 
   If ntk > 32 Or ntk > tope Then
      ntk=0 
-     print #1,">TAB 2A- 1- NTK=0 empieza el circulo,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
+ '    print #1,">TAB 2A- 1- NTK=0 empieza el circulo,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
      Exit Do      
    EndIf
    
@@ -1244,8 +1244,8 @@ If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) 
      posicion=1 ' 14.-03-2022
      MaxPos=pmTk(ntk).MaxPos
      posn=pmTk(ntk).posn
-Print #1," TAB POSN, NTK ", posn,ntk
-  '   psn=pmTk(ntk).posn
+''Print #1," TAB POSN, NTK ", posn,ntk
+  
      desde=pmTk(ntk).desde
      hasta=pmTk(ntk).hasta
      NB=pmTk(ntk).NB
@@ -1254,12 +1254,8 @@ Print #1," TAB POSN, NTK ", posn,ntk
      notaold = CInt(pmTk(ntk).notaold)
 
 
-'If Track(ntk).trk(1,1).nnn > 0 Then
-'     patchsal=Track(ntk).trk(1,1).nnn
-'Else 
      patchsal=pmTk(ntk).patch
      instru=CInt(patchsal)   
-'EndIf
      Globalpan=pmTk(ntk).pan
      Globaleco=pmTk(ntk).eco
      Globalcoro=pmTk(ntk).coro
@@ -1271,20 +1267,19 @@ Print #1," TAB POSN, NTK ", posn,ntk
      armarescala cadenaes_inicial,tipoescala_num_ini,notaescala_num_ini,alteracion,1 '13-01-2022
 ' todavia no probado, escala principal para TAB en cada track testeat 13-01-2022     
 ' no he grabado las escalas auxiliares en lso Trackc todavia !! 13-01-2022 jjj     
-     print #1,"TAB 5- MAXPOS final TAB " ,maxpos
+''     print #1,"TAB 5- MAXPOS final TAB " ,maxpos
+
      
-      
 '
 
-   print #1, "TAB 6-NTK nombre", ntk,nombre  
-   print #1, "TAB 6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, MaxPos,pmTK(ntk).maxpos
+'   print #1, "TAB 6-NTK nombre", ntk,nombre  
+'   print #1, "TAB 6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, MaxPos,pmTK(ntk).maxpos
 ' copia track(NTK) a Roll VISUAL en memoria que no se usa en playcancion  
 ' el segundo parametro es canal no se usa...lo saco o lo dejo?
   Tracks (ntk , 1,Roll) ' track , nro,  Canal, copia track a Roll en memoria
 
-Print #1,"14-sleep ";Timer
-    'Sleep 100
-    Print #1,"TAB 7- instancia, maspos ",instancia, maxpos
+'Print #1,"14-sleep ";Timer
+'    Print #1,"TAB 7- instancia, maspos ",instancia, maxpos
    EndIf
 EndIf
 
@@ -2318,7 +2313,7 @@ Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"
           EndIf
       menunew=MENU_INICIAL
       cierroedit= 0
-   EndIf
+  EndIf
    
  EndIf  
  Exit Do
@@ -2367,7 +2362,7 @@ deltaip=0:incWheel=0:lockip=0:playloop=0:s6=0:s1=0:indicePosOld=0 :indicePosUlti
  resumen=0 ' quita separacion de notas
       copiar=0
       vdur=0:vnota=0
-
+ 
  EndIf
 ' ----------------------INGRESO NOTAS-------------------------
 

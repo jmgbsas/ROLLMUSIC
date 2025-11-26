@@ -464,6 +464,7 @@ Print #1,"**********************************************************************
               carga=1
   
         '      SetForegroundWindow(hwnd)
+'----------------------------------------------------------
            Case 1051 ' PANEO DE UN CANAL
              If abrirRollCargaMidi=2 Then
                 SetForegroundWindow(hwnd)
@@ -474,8 +475,8 @@ Print #1,"**********************************************************************
 Print #1,"///----SEL 1051 pan Globalpan ",Globalpan
              '''Paneo (GlobalPan,pmTk(ntk).canalsalida,pmTk(ntk).portout)
            Case 1052 ' REVERVERACION DE UN CANAL 
-              
-             threadeco=threadCall SelEco(Globaleco)
+             menuOldStr="[ECO]"     
+             threadeco=threadCall EntrarTeclado()
              If abrirRollCargaMidi=2 Then
              SetForegroundWindow(hwnd)
              EndIf  
@@ -490,6 +491,7 @@ Print #1,"///----SEL 1052 ECO GlobalECO ",Globaleco
             threadpan=threadCall EntrarTeclado()              
 
 Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
+
    
 '-----------------------------------------------------------------------
            Case 1060 ' <========== crea track y reemplaza al existente en la edicion
@@ -597,46 +599,8 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
 '-----------------------------------------------------------------------
 '-----------------------------------------------------------------------
            Case 1090 ' Reproducir cancion
-SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
-  If (playb = NO Or Cplay=NO )And (MaxPos> 2  Or Maxgrb > 2) Then ' 23-02-22 ningun play
-  '''If playb = NO And play=NO And Cplay=NO And MaxPos > 1 Then ' 23-02-22 ningun play
-
-    '''  Print #1,"ENTRA POR COMEDIT<>LECTURA ???"
-      GrabarPenta=0
-      naco=0:naco2=0
-      '' Print #1,"====> INSTANCIA ";INSTANCIA 
-      If INSTANCIA = ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia <= ARG4_INSTRU  Then '04-10-2025 
-      Else  
-     ' SetGadgetstate(BTN_ROLL_GRABAR_MIDI,0) ' 10-04-2022 DE  VENTANA CTROL
-       SetGadgetstate(15,0) ' 20-02-2025 
-      EndIf
-   '   print #1,"SPACE call play"
-'Print #1,"CANCIONCARGADA = TRUE And Cplay=NO  ",CANCIONCARGADA, Cplay  
-         If CANCIONCARGADA = TRUE  And CPlay=NO   Then
-'Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
-             Print #1,"USANDO PLAYCANCION"
-             Parar_De_Dibujar=NO
-             Cplay=SI : s5=NO 'Necesita mas tiempo de cpu
-       '      Sleep 100
-             thread1 = ThreadCall  PlayCancion(Track())
-             grabariniciotxt(NombreCancion, CANCION)
-             FileFlush (-1)
-
-         ElseIf   playb=NO And  CANCIONCARGADA = FALSE Then
-              print #1,"llama a playall"
-              Playb=SI:s5=NO 
-       '       Sleep 100
-              thread2 = ThreadCall  playAll(Roll)
-         EndIf
-          If maxgrb > 0 And playEj=NO Then
-           playEj=SI 
-Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"  
-          threadG = ThreadCall  PlayTocaAll(p)
-          EndIf
-      menunew=MENU_INICIAL
-      cierroedit= 0
-   EndIf
-
+    SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
+    ReproducirTodasLaSPistas()
 '         If CPlay = NO And playb = NO And MaxPos > 2  Then
 '            GrabarPenta=0:naco=0:naco2=0 ''dela version F jmgjmg
 '            
@@ -703,6 +667,29 @@ Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"
              If abrirRollCargaMidi=2 Then
              SetForegroundWindow(hwnd)
              EndIf 
+'-------------------------------------------------------------------------
+           Case 10911
+ 
+  Dim As Integer vertical=0 ,d1, kk  
+  vertical=12+(hasta-2)*13+hasta ' para 9 -> 112
+  Dim ind3 As Integer = lim2 +1
+
+  'Print #1,"ajustado repeind ",vertical  98
+If pasoZona1 > 0 And pasoZona2 > 0 Then
+
+   For d1 = pasoZona1 To pasoZona2
+     Roll.trk(d1,vertical).nota = 0 ' comienza repeticion en pasozona1
+     Roll.trk(d1,vertical).vol = 0  ' nro de repeticiones
+     For kk=1 To Tope
+       Track(kk).trk(d1, ind3).nota = 0
+       Track(kk).trk(d1,ind3).vol =0
+     Next kk
+   Next d1
+
+Else
+ MessBox ("Para Borrar Repeticiones", "Debe entrar una zona de campases, Ctrl-clik en comienzo y Ctrl-click final")
+EndIf
+
 '-----------------------------------------------------------------------
            Case 1092 ' abrir un midi-in ...con callback
 'Reproducir MIDI-IN (teclado) por  MIDI-OUT. Abre Puerto MIDI-IN
@@ -970,6 +957,37 @@ Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"
        ' buscamos cuales estan seleccionadas en boton check de escuchar pista la primera  
               CTRL1208( )
           grabariniciotxt(NombreCancion, EJECUCION)
+
+'------------------------------------------------------------------
+           Case 1209 ' PANEO DE UNA PISTA EJEC
+             If abrirRollCargaMidi=2 Then
+                SetForegroundWindow(hwnd)
+                Sleep 2 
+             EndIf
+            menuOldStr="[PANEJEC]" 
+            threadpan=threadCall EntrarTeclado()
+Print #1,"///----SEL 1209 pan Globalpan ",Globalpan
+             '''Paneo (GlobalPan,pmTk(ntk).canalsalida,pmTk(ntk).portout)
+           Case 1210 ' REVERVERACION DE UNA PISTA EJEC 
+             menuOldStr="[ECOEJEC]"     
+             threadeco=threadCall EntrarTeclado()
+             If abrirRollCargaMidi=2 Then
+             SetForegroundWindow(hwnd)
+             EndIf  
+Print #1,"///----SEL 1210 ECO GlobalECO ",Globaleco
+
+           Case 1211 ' CORO /CHORUS  
+             If abrirRollCargaMidi=2 Then
+                SetForegroundWindow(hwnd)
+                Sleep 2 
+             EndIf
+            menuOldStr="[COROEJEC]" 
+            threadpan=threadCall EntrarTeclado()              
+
+Print #1,"///----SEL 1211 CORO Globalcoro ",Globalcoro
+'------------------------------------------------------------------
+
+
            Case 2000
    
              MessBox ("", acercade)

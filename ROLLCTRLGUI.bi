@@ -247,7 +247,7 @@ ButtonGadget(BTN_ROLL_CORO,  60 ,750, 45, 20,"Coro")
   MenName5=MenuTitle(hMessages,"TIEMPO Y RITMO")
   MenName6=MenuTitle(hMessages,"REPRODUCIR")
   MenName7=MenuTitle(hMessages,"OPCIONES")
-  MenName8=MenuTitle(hMessages,"PUERTOS DE EJECUCION")
+  MenName8=MenuTitle(hMessages,"PUERTOS Y PISTAS DE EJECUCION")
   MenName10=MenuTitle(hMessages,"INFO")
 
 ''MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
@@ -307,10 +307,10 @@ MenuItem(1030,MenName3, "1.2 Na.Octavas de Instrumetnos Estandares")
 Menubar(MenName3)
 MenuItem(1040,MenName3, "2.0 Cambia Instrumento por orden Alfabetico")
 MenuItem(1050,MenName3, "2.1 Cambia Instrumento por orden Numérico" )
-MenuItem(1051,MenName3, "2.3 Cambia PAN de un Canal" )
-MenuItem(1052,MenName3, "2.4 Cambia REVERVERACCION  de un Canal" )
-MenuItem(1053,MenName3, "2.5 Cambia CHORUS  de un Canal" )
-
+Menubar(MenName3)
+MenuItem(1051,MenName3, "3.1 Cambia PAN de una Pista Manual" )
+MenuItem(1052,MenName3, "3.2 Cambia REVERVERACCION/ECO  de una Pista Manual " )
+MenuItem(1053,MenName3, "3.3 Cambia CHORUS/CORO  de una Pista Manual" )
 Menubar(MenName3)
 MenuItem(1060,MenName3, "6.0 Crear pista aislada, En Roll dependiente, con lo elegido y reemplaza la existente en la edicion")
 MenuItem(1061,MenName3, "7.0 Crear Pista nueva en la Cancion en Edicion, Con lo elegido")
@@ -366,10 +366,12 @@ Negras por minuto	 tempo
 '/    
 
   
-MenuItem(1090,MenName6 ,"1.0 Reproducir desde la posicion o en el rango ajustado")
+MenuItem(1090,MenName6 ,"1.0 Reproducir TODAS Las Pistas desde el principio o un intervalo seleccionado en el Roll Grafico")
 MenuItem(10901,MenName6,"1.1 Detener Reproducion 1.0")
-MenuItem(1091,MenName6,"2.0 Fijar Repeticiones de un numero de Compases elegido como zona")
-MenuItem(1092,MenName6,"3.0 Abre y Reproduce Puerto MIDI-IN Ejecucion teclado por  MIDI-OUT.")
+MenuItem(1091,MenName6,"2.0 Repeticiones marcadas en una sola pista en un INTERVALO en GRAFICO. cancion o pista ")
+MenuItem(10911,MenName6,"2.1 Borrar Repeticiones ")
+
+MenuItem(1092,MenName6,"3.0 Abre y Reproduce Puerto MIDI-IN Ejecucion teclado por MIDI-OUT, SIN GRABAR.")
 MenuItem(1093,MenName6,"4.0 Cierra Puerto MIDI-IN Ejecucion.")
 
 
@@ -398,9 +400,13 @@ MenuItem(1200,MenName8,"1.0 Seleccion Puerto MIDI-IN Ejecucion")
 Menubar(MenName8)
 MenuItem(1204,MenName8,"2.0 Seleccion de Puerto MIDI-OUT Ejecucion")
 MenuItem(1205,MenName8,"3.0 Abrir  Puertos MIDI-OUT Ejecucion")
-MenuItem(1206,MenName8,"4.0 Cerrar Puertos MIDI-OUT Ejecucion")
+MenuItem(1206,MenName8,"3.1 Cerrar Puertos MIDI-OUT Ejecucion")
 Menuitem(1207,MenName8,"5.0 Convertir una pista iluminada de ejecucion o archivo cargado de *.ejec a *.roll en memoria y lo cargue en Roll Grafico previamente abierto.")
-Menuitem(1208,MenName8,"6.0 Convertir todas las ejecuciones *.ejec seleccionadas para que toquen columna [S] a *.rtk y los grabe a disco")
+Menuitem(1208,MenName8,"5.1 Convertir todas las ejecuciones *.ejec seleccionadas para que toquen columna [S] a *.rtk y los grabe a disco")
+Menubar(MenName8)
+MenuItem(1209,MenName8, "6.1 Cambia PAN de una Pista EJEC" )
+MenuItem(1210,MenName8, "6.2 Cambia REVERVERACCION/ECO  de una Pista EJEC " )
+MenuItem(1211,MenName8, "6.3 Cambia CHORUS/CORO  de una Pista EJEC" )
 
 
 MenuItem(2000,MenName10,"1.0 Acerca de")

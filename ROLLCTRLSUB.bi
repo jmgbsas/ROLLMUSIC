@@ -1772,3 +1772,4 @@ Sub ejecutarComando (comando As String)
 
   EndIf    
 End Sub
+'---------------

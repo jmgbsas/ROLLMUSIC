@@ -4872,6 +4872,7 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
     FactortiempoPatron= CDbl(nombreArchivo) '08-01-2022 de doble a int
     Print #1,">>>>>>>>Factor TIEMPO PATRON NUEVO>>>>>>>", FactortiempoPatron
  Case "[NROREP]"
+'
   default=Str("2")
   nombreArchivo = InputBoxJmg("Repeticiones " ,"Cantidad entera ",default, ES_MULTILINE + ES_AUTOVSCROLL ,0 )
 ' en este momento inserto al repeticion 
@@ -4891,15 +4892,24 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
 ' 12+7*13
   Dim As Integer vertical=0 ' elvalor minimo 
   vertical=12+(hasta-2)*13+hasta ' para 9 -> 112
+  Dim ind3 As Integer = lim2 +1
   'Print #1,"ajustado repeind ",vertical  98
   Roll.trk(pasozona1,vertical).nota = 210 ' comienza repeticion en pasozona1
-' ajusto comienzo= pasozona1...
-' al llear pasozona2 en el mismo lugar pongo le nro de repeticiones
   Roll.trk(pasozona2,vertical).nota = 211' indica final de repeticion
   Roll.trk(pasozona2,vertical).vol = CUByte(nombreArchivo) ' nro de repeticiones
+ Dim kk As Integer
+For kk=1 To Tope
+  Track(kk).trk(pasozona1, ind3).nota = 210
+  Track(kk).trk(pasozona2, ind3).nota = 211
+  Track(kk).trk(pasozona2,ind3).vol =CUByte(nombreArchivo)
+
+Print #1,"210  ntk ",Track(kk).trk(pasozona1, ind3).nota, kk  
+Print #1,"211  ntk ",Track(kk).trk(pasozona2, ind3).nota, kk
+Print #1,"rep  ntk ",Track(kk).trk(pasozona2, ind3).vol, kk
+Next kk
 ' ajusto final=pasozona2 
 ' creo un contador que vaya disminuyendo su valor con cada repeticion  
-  pasozona1=0:pasozona2=0
+''''  pasozona1=0:pasozona2=0
 ' en crear penta coloco un [ ariba de laposiicon 
 
 ' luego al detectar 210 tomoel ascii de vertical+1 [ 
@@ -4912,8 +4922,8 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
 ' debo ponerlo en NA-13 o lim3 -lim2
 ' aca lo dejo solo como paso transitorio para luego colocarlo en la pista 
 ' tanto en Roll como en Track 
-'  pmTk(ntk).zona1  = CUByte(pasozona1)
-'  pmTk(ntk).zona2  = CUByte(pasozona2)
+'  pmTk(ntk).zona1  = pasozona1
+'  pmTk(ntk).zona2  = pasozona2
 '  pmTk(ntk).nroRep = CUByte(nroRep)                
 ' Roll.trk()= 
 ' HACEMOS LO MISMO PARA EL TRACK ntk en edicion ya sea nto= en caso de Roll puro o pista ntk
@@ -4921,27 +4931,25 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
 ' Track(ntk).trk=
  Case "[SEPARA]"
  Case "[PAN]","[PANEJEC]"
-'' NO SE PUEDE USAR UN TRACKBAR DESCONFIGURA LA SELECION DE PISTASROLL Y SE QUEDA
-'' CLAVADA EN UNA PISTA AZUL Y LA OTRA PASA A BLANCA UNA CHOTADA NO SE COMOMIERDA SE SOLUCIONA
+  '' NO SE PUEDE USAR UN TRACKBAR ni con llamada de un threadcall, DESCONFIGURA LA SELECION DE PISTASROLL Y SE QUEDA
+'' CLAVADA EN UNA PISTA AZUL Y LA OTRA PASA A BLANCA UNA CHOTADA NO SE COMO MIERDA SE SOLUCIONA
 '' PROBE DETODO HASTA LO INIMAGINABLE JAJAJ 09-11-2025
 '' MI ENTRA TECLADO ES LA POSTA PARA ENTRAR DESDE TECLADO Y CON ENTER 
 '' FALTARIA AGREGARLE CON MOUSE QUE FUNCIONE EL ACEPTAR listo funciona  con 2 enter y mouse ok
    If menuOldStr="[PANEJEC]" Then
+       If ntkp=0 Then ntkp=1  EndIf
        default=Str(pmEj(ntkp).pan)
    Else
        default=Str(pmTk(ntk).pan)
    EndIf
-
-   default=Str(pmTk(ntk).pan)  
+     
    intervaloTxt = InputBoxJmg("Ajuste Numerico de PAN 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
    valorpan= ValInt(intervaloTxt)  '19-03-2025
    If menuOldStr = "[PAN]" Then 
-     If ntk=0 Then Exit Select  EndIf
       pmTk(ntk).pan=CUByte(valorpan)
       pmTk(0).pan=CUByte(valorpan)
    EndIf
    If menuOldStr = "[PANEJEC]" Then
-     If ntkp=0 Then Exit Select  EndIf
       pmEj(ntkp).pan=CUByte(valorpan) 
       tocaparam2(ntkp).pan=CUByte(valorpan)
    EndIf
@@ -4951,6 +4959,7 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
   SetGadgetText(3,Str(valorpan))
  Case "[CORO]","[COROEJEC]"
    If menuOldStr="[COROEJEC]" Then
+       If ntkp=0 Then ntkp=1  EndIf
        default=Str(pmEj(ntkp).coro)
    Else
        default=Str(pmTk(ntk).coro)
@@ -4959,13 +4968,10 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
    intervaloTxt = InputBoxJmg("Ajuste Numerico de CORO/Chorus 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
    valorcoro= ValInt(intervaloTxt)  '19-03-2025
    If menuOldStr="[CORO]" Then
-     If ntk=0 Then Exit Select  EndIf
-     
      pmTk(ntk).coro=CUByte(valorcoro)
      pmTk(0).coro=CUByte(valorcoro)
    EndIf
    If menuOldStr="[COROEJEC]" Then
-     If ntkp=0 Then Exit Select EndIf  
      pmEj(ntkp).coro=CUByte(valorcoro)
      tocaparam2(ntkp).coro=CUByte(valorcoro) 
    EndIf
@@ -4977,6 +4983,7 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
   Case "[ECO]","[ECOEJEC]"
    
    If menuOldStr="[ECOEJEC]" Then
+       If ntkp=0 Then ntkp=1  EndIf
        default=Str(pmEj(ntkp).eco)
    Else
        default=Str(pmTk(ntk).eco)
@@ -4988,7 +4995,6 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
      pmTk(0).eco=CUByte(valoreco)
    EndIf
    If menuOldStr="[ECOEJEC]" Then 
-     If ntkp=0 Then Exit Select  EndIf
      pmEj(ntkp).eco=CUByte(valoreco)
      tocaparam2(ntkp).eco = CUByte(valoreco)
    EndIf
@@ -5011,6 +5017,7 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
    EndIf
 
    If menuOldStr="[VOLEJEC]" Then 
+      If ntkp=0 Then ntkp=1  EndIf
       If pmEj(ntkp).vol=0 Then 
         default=Str(90)
         tocaparam2(ntkp).vol=90 
@@ -5019,7 +5026,6 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
       EndIf
        intervaloTxt = InputBoxJmg("Ajuste Numerico de VOL 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
       valorvol= ValInt(intervaloTxt)  '19-03-2025
-      If ntkp=0 Then Exit Select  EndIf   
       pmEj(ntkp).vol=CUByte(valorvol)
       tocaparam2(ntkp).vol=CUByte(valorvol)
       Print #1,"NTKP EN VOLEJEC SEL, pmEj(ntkp).vol ", ntkp, pmEj(ntkp).vol
@@ -6388,7 +6394,7 @@ function sizeMIO() As Integer
    Return TRUE
 End Function
 
-Sub SELMIERDA()
+Sub SelScrollBar()
 'probamos deusar scrollbar ScrollBarGadget
 ' anda barbaro ELLA SOLA,..pero igual INTERFIERE CON LA SELECCION DE PISTAS 
 ' EN LA LISTA DE PISTAS ROLL UNA CANCION
@@ -7772,7 +7778,51 @@ End Sub
 '''-///////////// RUTINAS DE VENTANA PRINCIPAL ROLLCONTROL ////////
 ''' empezamos a estructurar un poco .....06- marzo 2024
 '' REVISAR DE NUEVO LAS CONDICIONES DE SALIDA DE SELECT O EXIT DO
+Sub ReproducirTodasLaSPistas()
+' NO SE PUEDE LLAMAR DESDE SC_SPACE, LA BARRA DE ESPACIO CANCELA AL REPRODUCIR EJECS, 
+' DE MODO QUE QUEDA CODIGO DUPLICADO, YA NO ME DA GANAS DE SABER PORQUE MIERDA..
+' LOS CODIGOS DUPLICADOS EN ESTE PROGRAMA SUELEN SER NECESARIO SINO CANCELA, CANCELA 
+' Y CANCELA,JEJE
+  If (playb = NO Or Cplay=NO )And (MaxPos> 2  Or Maxgrb > 2) Then ' 23-02-22 ningun play
+  '''If playb = NO And play=NO And Cplay=NO And MaxPos > 1 Then ' 23-02-22 ningun play
 
+    '''  Print #1,"ENTRA POR COMEDIT<>LECTURA ???"
+      GrabarPenta=0
+      naco=0:naco2=0
+      '' Print #1,"====> INSTANCIA ";INSTANCIA 
+      If INSTANCIA = ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia <= ARG4_INSTRU  Then '04-10-2025 
+      Else  
+     ' SetGadgetstate(BTN_ROLL_GRABAR_MIDI,0) ' 10-04-2022 DE  VENTANA CTROL
+       SetGadgetstate(15,0) ' 20-02-2025 
+      EndIf
+   '   print #1,"SPACE call play"
+'Print #1,"CANCIONCARGADA = TRUE And Cplay=NO  ",CANCIONCARGADA, Cplay  
+         If CANCIONCARGADA = TRUE  And CPlay=NO   Then
+'Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
+             Print #1,"USANDO PLAYCANCION"
+             Parar_De_Dibujar=NO
+             Cplay=SI : s5=NO 'Necesita mas tiempo de cpu
+       '      Sleep 100
+             thread1 = ThreadCall  PlayCancion(Track())
+             grabariniciotxt(NombreCancion, CANCION)
+             FileFlush (-1)
+
+         ElseIf   playb=NO And  CANCIONCARGADA = FALSE Then
+              print #1,"llama a playall"
+              Playb=SI:s5=NO 
+       '       Sleep 100
+              thread2 = ThreadCall  playAll(Roll)
+         EndIf
+          If maxgrb > 0 And playEj=NO Then
+           playEj=SI 
+Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"  
+          threadG = ThreadCall  PlayTocaAll(p)
+          EndIf
+      menunew=MENU_INICIAL
+      cierroedit= 0
+  EndIf
+
+End Sub
 '---------
 
 ' error

@@ -1827,9 +1827,9 @@ EndIf
 cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
 terminar=NO_TERMINAR_CON_DATOS_CARGADOS
 
-print #1,"-------------ARRANCA TRACKAROLL---------------------------------"
-print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulosTk(ntk)
-print #1,"(ntk).maxpos ", pmTk(ntk).MaxPos
+'print #1,"-------------ARRANCA TRACKAROLL---------------------------------"
+'print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulosTk(ntk)
+'print #1,"(ntk).maxpos ", pmTk(ntk).MaxPos
 nombre=titulosTk(ntk)
 
 
@@ -1858,7 +1858,7 @@ If pmTk(ntk).patch > 0 Then
    pmTk(0).patch=pmTk(ntk).patch
    instru=CInt(patchsal)
 EndIf
-   Print #1,"instru en TrackaRoll ",instru
+ '  Print #1,"instru en TrackaRoll ",instru
 If pmTk(ntk).ejec > 0 And pmTk(ntk).ejec=0 Then
    pmTk(0).ejec=pmTk(ntk).ejec   
 EndIf
@@ -1895,7 +1895,7 @@ Globalvol=pmTk(ntk).vol
   'If  ntk= 0 Then
  ' Else
    Erase Roll.trk , compas
-Print #1, "// trckaroll redim Roll MaxPos ",MaxPos
+'Print #1, "// trckaroll redim Roll MaxPos ",MaxPos
    ReDim (Roll.trk ) (1 To CantTicks, NB To NA ) ' 27-02 ÇÇÇ
   ''' ReDim compas(1 To MaxPos)
  ' End If  
@@ -1910,37 +1910,37 @@ Print #1, "// trckaroll redim Roll MaxPos ",MaxPos
    ' si cargo cancion no deberia cargar Roll si no al final el track 1
    ' o luego haciedno click
    '
-   If CANCIONCARGADA=TRUE Then ' 01 -03
-     Print #1,"CANCION CARGADA EN TRACKAROLL ntk,lim3",ntk,lim3
-   Else
-     Print #1,"CANCION NO CARGADA EN TRACKAROLL"
-   EndIf
-   If ROLLCARGADO=FALSE Then 
-     Print #1,"ROLL NO CARGADO EN TRACKAROLL, maxpos",pmTk(ntk).MaxPos
-   Else
-       Print #1,"ROLL CARGADO EN TRACKAROLL"
-   EndIf  
+'   If CANCIONCARGADA=TRUE Then ' 01 -03
+'     Print #1,"CANCION CARGADA EN TRACKAROLL ntk,lim3",ntk,lim3
+'   Else
+ '    Print #1,"CANCION NO CARGADA EN TRACKAROLL"
+'   EndIf
+ '  If ROLLCARGADO=FALSE Then 
+  '   Print #1,"ROLL NO CARGADO EN TRACKAROLL, maxpos",pmTk(ntk).MaxPos
+ '  Else
+  '     Print #1,"ROLL CARGADO EN TRACKAROLL"
+ '  EndIf  
    If CANCIONCARGADA=TRUE And ROLLCARGADO=FALSE Then ' cargarcancion NO SE USA VIVE muy poco solo durante lA carga  
-       print #1,"/////REDIM DE TRACK 0 MaxPos ",MaxPos 
+'       print #1,"/////REDIM DE TRACK 0 MaxPos ",MaxPos 
 ' NO SE HACE SIN CANCION O CON ROLLCARGADO"
        ' SE PREPARA TRACK 0 PARA RECIBIR DATOS DE TRACK X,PUES PARA IR A ROLL
        ' SE LLENA TRACK 0 SIEMRPE.,,,
          
        ReDim (Track(00).trk ) (1 To CantTicks, 1 To lim3)
-       Print #1,"paso el redim de track 0" 
+ '      Print #1,"paso el redim de track 0" 
    EndIf
    nota=0:dur=0
    inicioDeLEctura=0
    *po=pmTk(ntk).hasta -1
    
-print #1,"TrackaRoll desde, hasta ", desde , hasta
-print #1,"TrackaRoll NB, NA ,*po, MaxPos ", NB , NA, *po,MaxPos
-Print #1,"1106 en trackaRoll numero de track ntk ",ntk
-print #1, "ubound (Track(ntk).trk,2) ", ubound (Track(ntk).trk,2)
-print #1, "ACA VIENE EL ERROR ? "
-print #1, "lbound (Track(ntk).trk,2) ", LBound (Track(ntk).trk,2)
-print #1," va a ejecutar for de copia de TrackaRoll"
-Print #1," pmTk(ntk).MaxPos ",pmTk(ntk).MaxPos
+'print #1,"TrackaRoll desde, hasta ", desde , hasta
+'print #1,"TrackaRoll NB, NA ,*po, MaxPos ", NB , NA, *po,MaxPos
+'Print #1,"1106 en trackaRoll numero de track ntk ",ntk
+'print #1, "ubound (Track(ntk).trk,2) ", ubound (Track(ntk).trk,2)
+'print #1, "ACA VIENE EL ERROR ? "
+'print #1, "lbound (Track(ntk).trk,2) ", LBound (Track(ntk).trk,2)
+'print #1," va a ejecutar for de copia de TrackaRoll"
+'Print #1," pmTk(ntk).MaxPos ",pmTk(ntk).MaxPos
 Dim As Integer ultimaPianonota
 ' 1) carga de Roll desde track ntk
 vertical=12+(hasta-2)*13+hasta ' "[NROREP]" de EntrarTeclado
@@ -1989,7 +1989,7 @@ For i2 = 1 To pmTk(ntk).MaxPos
 
    
    If i2=pmTk(ntk).MaxPos  then 
-    Print #1," ///maxpos-1, nota  ", i2, ultimaPianonota
+ '   Print #1," ///maxpos-1, nota  ", i2, ultimaPianonota
       i3=ultimaPianonota
       Roll.trk(i2,i3).dur  = 182
        Roll.trk(i2,i3).nota =0 
@@ -2000,7 +2000,7 @@ For i2 = 1 To pmTk(ntk).MaxPos
        
    EndIf
 Next i2
- Print #1," ///maxpos ", pmTk(ntk).MaxPos 
+' Print #1," ///maxpos ", pmTk(ntk).MaxPos 
 
 Sleep 5
 ' [[[[[ JMG 15-01-2022 ACA DEBO COPIAR EL CAMPO DE CONTROL DE LIM3 EL 13 !!!! ]]]]] 
@@ -2009,7 +2009,7 @@ For i2=1 To pmTk(ntk).MaxPos-1
   If Track(ntk).trk(i2,13).dur = 200 Then
     For K=desde To hasta -1 
     vacio= 12 +(k -1) * 13
-    Print #1,"COPIA CONTROLES A ROLL DESDE TRACK INST",Track(ntk).trk(i2,13).nnn
+ '   Print #1,"COPIA CONTROLES A ROLL DESDE TRACK INST",Track(ntk).trk(i2,13).nnn
        Roll.trk(i2, vacio).inst = Track(ntk).trk(i2,13).nnn
        Roll.trk(i2, vacio).vol  = Track(ntk).trk(i2,13).vol
        Roll.trk(i2, vacio).nota = Track(ntk).trk(i2,13).nota ' 30
@@ -2026,9 +2026,9 @@ For i2=1 To pmTk(ntk).MaxPos-1
   For i1 = lim2 To lim3
       If Track(ntk).trk(i2,i1 ).pb =202  Then ' info acorde en una octava
       ' 
-       Print #1,"TrackARoll hay octava de acorde a copiar a roll",Track(ntk).trk(i2,i1 ).vol
+ '      Print #1,"TrackARoll hay octava de acorde a copiar a roll",Track(ntk).trk(i2,i1 ).vol
          verticalEnOctavaVacia= 12 + (hasta-2)*13 + Track(ntk).trk(i2,i1 ).vol - desde ' 90 + 6 - 4=92
-         Print #1,"verticalEnOctavaVacia ",verticalEnOctavaVacia
+ '        Print #1,"verticalEnOctavaVacia ",verticalEnOctavaVacia
          Roll.trk(i2,verticalEnOctavaVacia).vol   = Track(ntk).trk(i2,i1).vol ' octava
          Roll.trk(i2,verticalEnOctavaVacia ).nota = Track(ntk).trk(i2,i1).nota ' Rollnota
          Roll.trk(i2,verticalEnOctavaVacia ).dur  = Track(ntk).trk(i2,i1).dur  ' acordeNro
@@ -2037,10 +2037,10 @@ For i2=1 To pmTk(ntk).MaxPos-1
          Roll.trk(i2,vacio).pb  =  201
       EndIf
       If Track(ntk).trk(i2,21).nota = 210 Or Track(ntk).trk(i2,21).nota = 211 Then ' repeticiones
-         Print #1,"))))))) TRACKAROLL 210 O 211"
-         Print #1,"))))))) TRACKAROLL VERTICAL ",vertical
-         Print #1,"))) Track(ntk).trk(i2,i1).nota ",Track(ntk).trk(i2,21).nota
-         Print #1,"))) Track(ntk).trk(i2,i1+1).vol ",Track(ntk).trk(i2,21).vol
+  '       Print #1,"))))))) TRACKAROLL 210 O 211"
+  '       Print #1,"))))))) TRACKAROLL VERTICAL ",vertical
+  '       Print #1,"))) Track(ntk).trk(i2,i1).nota ",Track(ntk).trk(i2,21).nota
+  '       Print #1,"))) Track(ntk).trk(i2,i1+1).vol ",Track(ntk).trk(i2,21).vol
          Roll.trk(i2,vertical ).nota   = Track(ntk).trk(i2,21).nota
          Roll.trk(i2,vertical ).vol = Track(ntk).trk(i2,21).vol   
       EndIf
@@ -2075,13 +2075,13 @@ EndIf
 cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
 terminar=NO_TERMINAR_CON_DATOS_CARGADOS
 ''Parar_De_Dibujar=SI kokito
-Print #1,"cargaCancion DEBE SER 1 ",cargaCancion
-Print #1,"NTK del copiado aca esta el lio, Y MAXPOS EN REDIM ",ntk, pmTk(ntk).MaxPos
+'Print #1,"cargaCancion DEBE SER 1 ",cargaCancion
+'Print #1,"NTK del copiado aca esta el lio, Y MAXPOS EN REDIM ",ntk, pmTk(ntk).MaxPos
 ReDim (Track(0).trk ) (1 To  pmTk(ntk).MaxPos +6, 1 To lim3) '////HOY
 FILEFLUSH(-1)
 Sleep 100
 If cargaCancion=CARGAR_NO_PUEDE_DIBUJAR Or CANCIONCARGADA=TRUE Then ' MIENTRAS HAYA MAS DE UN TRACK O SEA UNA CANCION
-Print #1,"CARGA DE  TRACK(0)"  
+'Print #1,"CARGA DE  TRACK(0)"  
 copiaTrackaTrack(Track(), 0 , ntk )
 ' For i1=1 To pmTk(ntk).MaxPos 
 '  For i2 = 1 To lim3
@@ -2089,7 +2089,7 @@ copiaTrackaTrack(Track(), 0 , ntk )
 '  Next i2
 ' Next i1
 EndIf  
-Print #1,"FIN CARGA DE  TRACK(0)"
+'Print #1,"FIN CARGA DE  TRACK(0)"
 FILEFLUSH(-1)
 ''Sleep 5  
 
@@ -2103,31 +2103,31 @@ FILEFLUSH(-1)
 '    pb As UByte
 '   End Type
 'End Union
-Print #1,"DIM  MIT START "
+'Print #1,"DIM  MIT START "
 Dim mit As aUshort 'redefine de cobol
-Print #1,"DIM  MIT FIN "
+'Print #1,"DIM  MIT FIN "
 mit.st = CUShort(pmTk(ntk).tiempoPatron)
-Print #1,"MIT  TIEMPOPATRON"
+'Print #1,"MIT  TIEMPOPATRON"
 FILEFLUSH(-1)
 
 'con estos dos campos puedo reconstruir tiempoPatron
 Track(0).trk(1,1).pan = mit.tp1
 Track(0).trk(1,1).pb  = mit.tp2
-Print #1,"CARGO TIEMPOPATRON"
-FILEFLUSH(-1)
+'Print #1,"CARGO TIEMPOPATRON"
+'FILEFLUSH(-1)
 ' Roll va a tocar bien a tempo si sacamos el tempo de ahi
 ' fralta ver como lo ponemos en track, en el encabezado supongo
 '------------
 
 ''Print #1,"EJEC Roll.trk(1,NA).onoff ";Roll.trk(1,NA).onoff
-FILEFLUSH(-1)
+'FILEFLUSH(-1)
 
 ''Print #1, "TrackaRoll Fin ntk, patch " ; ntk, Roll.trk(1,NA).inst
 terminar=NO_TERMINAR_BARRE_PANTALLA 
 Parar_De_Dibujar=NO ' volvemos a dibujar en pantalla...18-04-2024
 cargacancion=NO_CARGAR_PUEDE_DIBUJAR ' " " 
 Sleep 5
-FILEFLUSH(-1)
+'FILEFLUSH(-1)
 'hemos copiado el track ntk en el Track(0) que corresponde al Track asociado a Roll.
 '--------------------------------Track(0) fin
 '''curpos=0
@@ -2153,10 +2153,10 @@ If funcion<> "saltoTAB" then
    nanchofig=anchofig
    ANCHO3div4 = ANCHO *3 / 4
 EndIf
-  print #1,"TrackaRoll Fin,,maxpos y (ntk).maxpos ", maxpos,pmTk(ntk).MaxPos
-print #1,"-----------------Fin TrackaRoll-----------------"
+'  print #1,"TrackaRoll Fin,,maxpos y (ntk).maxpos ", maxpos,pmTk(ntk).MaxPos
+'print #1,"-----------------Fin TrackaRoll-----------------"
 Sleep 100
-FileFlush (-1)
+'FileFlush (-1)
 
 Exit Sub 
 
@@ -2325,7 +2325,11 @@ EndIf
 Dim As Long porterror,nousar
 ' idea para controlar cancion con repeticiones podria usar el track 00 solo para eso control
 ' creoa todos los defaults siempre
- 
+' 1-----------de playall--------
+PARAR_PLAY_MANUAL=NO
+PARAR_PLAY_EJEC=NO    
+playloop=NO:playloop2=NO
+' 1------------de playall fin---------
 
 ' los nombres ya fueron cargados al inicio
 Print #1,"TOPE ", tope
@@ -2368,7 +2372,7 @@ tiempoDUR=(60/tiempoPatron) / FactortiempoPatron'60 seg/ cuantas negras enun min
 Dim As Integer i2,K, mayor,i0,xmouse,ymouse,finfin=0,finalloop=0,comienzoloop=0
 Dim As UByte i3=0, pis=0, pisnota=0
 
-Dim As Integer comienzo=1, final=MaxPos, vel=100,velpos =0,cntrepe=0,final2=0,comienzo2=0
+Dim As Integer comienzo=1, final=0, vel=100,velpos =0,cntrepe=0,final2=0,comienzo2=0
 
 ' canal 0 es el 1 van de 0 a 15
 ' pasoCol debe ser de 2 dimensiones 1 para c/pista, 115 el amxio de octavas
@@ -2388,6 +2392,7 @@ Next i0
 Print #1,"cancion tiempoPatron ";tiempoPatron
 final=mayor 
 MaxPosTope=mayor 
+
 Print #1,"MaxPosTope ===> ", MaxPosTope
 fileflush(-1)
 RecalCompas()
@@ -2398,7 +2403,7 @@ Dim As Double start
 Dim as Integer cnt=0, cntold=0,cpar=0,dura=0,duraOld=0,nj, durj,tiempoFiguraSig
 Dim As Integer liga=0,Notapiano=0,old_notapiano=0, iguales=0, distintos=0
 Dim leng As UInteger <8>
-Dim As Integer result,limsup
+Dim As Integer result,limsup,vertical=12+(hasta-2)*13+hasta 'vertical en Roll donde estan las repeticiones
 Dim As UByte canal=0 
 ' tope es la maxima capacidad de tracks usada , lso tracks son contiguos
 ' si se borra un track queda sin usar eso hay que verlo...JMG ..
@@ -2595,7 +2600,7 @@ kNroCol= Int(jply/NroCol)
 
  'Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
    If jply <= pmTk(pis).MaxPos Then ' tocamos una pista mientras que tenga datos 
-     For i1=1 To lim3   ' coo voy de 1 a lim2 necesito que la info del int este en 1
+     For i1=1 To lim3   'lim3 decia coo voy de 1 a lim2 necesito que la info del int este en 1
        If i1<= lim2  And (pis <= tope Or pis<=32) Then
          If (Track(pis).trk(jply,i1).nota >= NBpiano) And (Track(pis).trk(jply,i1).nota <= NA) And (Track(pis).trk(jply,i1).dur >=1) And (Track(pis).trk(jply,i1).dur <= 180) Or Track(pis).trk(jply, i1).dur <= 183 Or Track(pis).trk(jply, i1).dur <= 185 Then ' es semitono
             Notapiano = CInt(Track(pis).trk(jply,i1).nota)' solo en los onoff2 es notapiano o no?
@@ -2627,36 +2632,39 @@ kNroCol= Int(jply/NroCol)
          EndIf    
        EndIf
 
-     If i1=lim2  And (pis = tope Or pis=32) Then
-'----------------------------------
-
-
-     EndIf
 '--------
      If i1 > lim2  Then
        If Track(pis).trk(jply,i1).nota = 210 Then
   '  Print #1,"210 leido jply",jply
-       If finfin=0 Or playloop=SI Then
          playloop2=SI
          comienzo2=jply
-       EndIf
      EndIf
 
      If Track(pis).trk(jply,i1).nota = 211 Then
      '  Print #1,"211 leido jply",jply
-        If finfin=0 Or playloop=SI Then 
            final2=jply
-        EndIf
+'---------- reset de las notas que no llegan a su off por un corte antes del off -- ok 
+' deberia hacer el corte tambien si hay ejecuciones 
+         For i3 = 1 To tope
+            portsal=CInt(pmTk(i3).portout) 
+            alloff(pmTk(i3).canalsalida,portsal) 
+            allSoundoff( pmTk(i3).canalsalida, portsal ) 
+         Next i3
+         If TopeEjec > 0 Then
+            For i3 = 1 To topeEjec
+               portsal=CInt(pmEj(i3).portout) 
+               alloff(pmEj(i3).canalsalida,portsal) 
+               allSoundoff( pmEj(i3).canalsalida, portsal ) 
+            Next i3
+         EndIf
+'---------------------------------------------
         If cntrepe > 0 Then
            cntrepe -= 1
         Else
-          If finfin=0 Or playloop=1 Then
-             cntrepe=Track(pis).trk(jply,i1).vol ' nro repeticiones en vertical +1
-          EndIf
+           cntrepe=Track(pis).trk(jply,i1).vol ' nro repeticiones en vertical +1
         EndIf
         If cntrepe =0 Then
            final2=Mayor 
-           finfin=1
            If finalloop > 0 Then
               final2=finalloop
            EndIf
@@ -2664,6 +2672,8 @@ kNroCol= Int(jply/NroCol)
      EndIf
    EndIf
 
+ 
+'---- 
 
      Next i1
    EndIf

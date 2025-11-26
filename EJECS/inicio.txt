@@ -1,0 +1,6 @@
+ 1,no
+ 2,no
+ 3,no
+ 4,si
+ 240,tiempoPatronEjec
+ 10935,maxgrb

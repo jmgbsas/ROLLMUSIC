@@ -1,3 +1,8 @@
+- 25-11-2025 "0.3502 Play:Repetir N veces un intervalo de las secuencias de Todas las pistas 
+  seleccionadas(intervalo seleccionado en el Grafico) y poder borrarlo" 
+  listo agrega se graba a disco se recupera y se puden borar. El problema es cietas repeticiones
+  segun su ubicacion no se ejecutan.
+- 24-11-2025 Menu de Reproduccion en Control repuesto, reproduce todas las pistas cargadas
 - 23-11-2025 "0.350 fix cancelaciones al reporducir manual (.rtk )+ ejec (.ejec)"
   cargando en ambas listas, pistas mauales rtk y pistas ejec del lado derecho, o se congelaba
   el grafico o el programa al dar play a las ejecuciones. Cada grupo esta en un directorio aparte

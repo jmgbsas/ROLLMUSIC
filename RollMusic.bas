@@ -31,13 +31,17 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.3501 Reproducir 1.0 todo o 1.1 parar en Menu Control- Fig VoLUMEN"
+nroversion="0.3502 Play:Repetir N veces un intervalo de las secuencias de Todas las pistas seleccionadas(intervalo seleccionado en el Grafico) y poder borrarlo"
+' NUEVA IDEA EN PLAYTOCAALL ESTA ESCRITO , ES TOCAR UNA PISTA DE CANCION RTK SOLO CON PLAYALL
+' DE FORMA QUE TOQUE SOLA FUERA DEL LOOP DE CANCION, TAMBIEN PODRIA HACERSE EN EJECUCIONES!
+' falta borrar repeticiones!! OK LISTO
+' 0.3502 ya funciona !! verificar que se graba a disco y se levanta
 ' 351 probar que funcionen las grabaciones midi y las conversiones a rtk o roll
-' reproducir todo desde Control menu Reproducir da problemas en revision se deshabilito-
-'  VER AHORA EL RENAME...Y GRABACION A DISCO,ok,GRABA Y LEVANTA EN VERSION 2 y 1 DE ARCHIVOS EJEC. 
+' fixed reproducir todo desde Control menu Reproducir 
+'  fixed VER AHORA EL RENAME...Y GRABACION A DISCO,ok,GRABA Y LEVANTA EN VERSION 2 y 1 DE ARCHIVOS EJEC. 
 ' ARREGLAR Y LISTO ok..JUGAREMOS  CON LOS PARAMETROS PAN ECO ETC SOBRE EJEC DIRECTAMENTE ok!!
-' 1310 de rolldec seguir nuevo metodo de reconocer versiones con la f echa en un double now
-' acordarse de probar el track bar ahora con elcambio de eliminacion de mouseebitton
+' 1310 de rolldec seguir nuevo metodo de reconocer versiones con la fecha en un double now
+' acordarse de probar el track bar ahora con elcambio de eliminacion de mousebutton en modulo gadget ok funciona ok ahora!
 ' SEGUIR EN ROLLTRACKS LINEA 224
 ' ARREGLE PMEJ VOLUMEN DE EJECUCIONES Y DEPASO ENCONTRE QUE IF MOUSEBUTTON AND LEFTBUTTON
 ' NO FUNCIONA Y ESE DEBE SER EL PROBLEMA TAL VEZ DEL PROBLEMA DE PISTA ROLL QUE DEJABA

@@ -452,10 +452,7 @@
          EL *.MID CORRESPONDIENTE NOTA:
 
 
-     17) CAMBIAR PARA TICKS,(Importar midi plano txt, si fue generado por RollMusic o externo, en el primer caso
-         funciona mejor, para externo es muy inexacto en cuanto a ritmos las notas serian
-         correctas, pero no su repeticion ni duracion, a veces se escucha algo parecido coherente.
-         La conversion desde ticks a no ticks es compleja, se deja por ahora.)
+     17) CAMBIAR PARA TICKS,Importar midi plano txt pendiente para Ticks
      18) Mostrar o Ocultar las Notas Guia de Roll Grafico del lado izquierdo. Pulsar H tipo
          llave si o no pulsar K.   
 
@@ -549,19 +546,21 @@
             para eso se cargan las ejecuciones en 5.1 de archivo , se selecciona las pistas ejec a convertir y se da click en la opcion 
             6.0 del menu  Puestos Ejecucion . --> VERIFICAR CON VERSION 2 DE ENCABEZADO 0.349
       2) Puede reproducirse al mismo tiempo una cancion y una grabacion *.ejec.
-         ( no se revisó su funcionamiento en Ticks todavia...)
          Se cargan ambas cosas la cancion abriendo un directorio de cancion, y luego 
-         como antes se carga MIDI-IN Cargar pista ejecucion, Se selecciona el casillero 
+         como antes se carga MIDI-IN Cargar pista ejecucion en otro directorio, Se selecciona el casillero 
          de columnas de sonido S en ambas listas, todas las pistas de cancion que se desea
          se reproduscan y la pista o pistas de ejecuciones,,,
          Si  se pulsa el boton Verde de la lista de pistas de cancion, se escuchara solo 
-         la cancion, pero si se pulsa el Boton Verde de la lista de pistas de Ejecucion
-         se escuchara ambsa cosas la Cancion cargada y la o las pistas de Ejecucion
-         sincronizadas.. 
-         Si se reproduce solo la cancion el grafico acompañará a la reproduccion
-         Pero para una mejor performance si se reproduce la cancion junto
-         con una o mas ejecuciones, el roll grafico permanecera quieto no
-         se movera ni acompañara la cancion.
+         la cancion de rtk, si se pulsa el Boton Verde de la lista de pistas de Ejecucion
+         se escuchara solo las de jecuuciones desde teclado grabadas. Para ecuchar ambas sincronizadas 
+         usar el Menu de Control Reproducir o la tecla espacio si esta abierto el Roll Grafico. 
+         Si se reproduce todas las pistas el grafico acompañará a la reproduccion de los rtk
+         Pero para una mejor performance si se reproduce la cancion junto con una o mas ejecuciones.
+         Conviene cerrar el grafico. O levantar cancion desde opcion 2.0 de ARchivo
+         Lo cual carga una cancion de rtk sin el grafico. 
+         REPETICIONES DE PARTES DENTRO DE UNA CANCION O PISTA. SELECCCIONAR UN INTERVALO DE ZONA
+         luego ajustar el nro de repeticiones en el mismo menu de reproducir de la ventana de Control.
+         Al grabar las pistas se grabara las repeticiones, para borrar usar el submenu Borrar repetciones.
 
        3) Grabacion de Ejecuciones directamente sobre Roll GRAFICO, 
          ( no se revisó su funcionamiento en Ticks todavia...)
