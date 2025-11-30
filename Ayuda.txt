@@ -1,4 +1,4 @@
-    Ayuda Prelimiar Básica RollMusic   0.350 seria RollMusic con Ticks
+    Ayuda Prelimiar Básica RollMusic   0.3504 LOOP
     ====================================================================================
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
       Y FUNCIONAN BIEN PARA TICKS . version 0.349, falta mucho testeo-.. )
@@ -307,13 +307,24 @@
             primer columna de la lista de la izquierda, se ven 2 columnas pegadas. asegurarse
             que no quede seleccionada en la otra columna de sonido (si o no) [S]. El retardo
             medido entre cancion y el solo fue de 1mseg, mas que bien creo para audio.
-            NOTA: POR AHORA CADA VEZ QUE LEVANTO UNA CANCION SE HARA LSO CHECKS CORRESPONDIENTE
+            NOTA: POR AHORA CADA VEZ QUE LEVANTO UNA CANCION SE HARA LOS CHECKS CORRESPONDIENTE
             AL MENOS UNA PISTA DE LA CANCION SE DEBERA ESCUCHAR Y EL RESTO PUEDE EJECUTARSE 
-            COMO SOLOS Y PARA ESO CHEQUEAR LA PRIEMER COLUMNA ,,,NO SE GUARDA TODAVIA EL CHECK-
+            COMO SOLOS Y PARA ESO CHEQUEAR LA PRIMER COLUMNA ,,,NO SE GUARDA TODAVIA EL CHECK-
             PARA LAS PRUEBAS SE USO LA SUBCARPTEA DE CANCION ->GRABATODORTK 
             La cancion debe cargarse para que tenga el RollGrafico levantado la 3, o la 2
             de MENU archivo levantantando un grafico despues, EL PLAY COMBINADO SOLO FUNCIONA   
-            CON LA BARRA ESPACIADORA de un Grafico (SPACE)
+            CON LA BARRA ESPACIADORA de un Grafico (SPACE). 
+
+       6.3.1) [ LOOPS ] REPETICIONES EN UNA O VARIAS PISTAS DE <SOLO>  
+            Con repeticiones en una pista elegida como solo funciona bien con estas condiciones:
+            -En el Grafico si agrego repeticiones a una pista Tipo Solo debe estar posicionado en la pista
+            que sea tocada por la cancion, luego durante la ejecucion se puede usar TAB para ver otras
+            pistas. La pista con repeticiones quedara congelada mostrando lo que se esta repitieno ,hasta
+            que se termine las repetiiones. 
+            - Si no se inicia el play con la pista de cancion en ejecucion el efecto es que pierde el Patch
+              ..por ahora corre bien en estas condiciones.
+            ESTO PERMITE USAR UNA PISTA DE SOLO COMO SI TUVIERA LOOPS.
+            LA SUBCARPTEA DE CANCION ->GRABATODORTK TIENE EN PIANOLA.RTK UN LOOP O REPETICION
        ------------------------------------------------------------------------------------------
        NOTA: PARA  CERRAR LA VENTANA DE ROLLGRAFICO SIN SALIR DEL PROGRAMA PULSAR CTRL+F4 O EL BOTON X
       ARRIBA A LA DERECHA.  PARA CERRAR LA VENTANA GRAFICA Y EL PROGRAMA, CON TECLA ESCAPE APARECE DIALOGO

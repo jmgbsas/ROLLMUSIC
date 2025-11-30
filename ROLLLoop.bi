@@ -2325,9 +2325,13 @@ If MultiKey(SC_SPACE)    Then 'barra espacio
 ' ENTRE PLAYUNOSOLO, LA DIFERENCIA  PARECE SER 1.2 mseg!!
 ' ENTRA PLAYCANCION   13938.93062174213 como solouno empieza antes porque es mas liviana 
 '   se le suma 10 mseg a cancion en su entrada aunque se la  dispare antes,,
-' ENTRA UNOSOLO       13938.93141784987  1.2 mseg MAS TARDE!!!
+' ENTRA UNOSOLO       13938.93141784987  1.2 mseg MAS TARDE!!! (CON 1 MSEG DE RETARDO ENTRE THREAD)
        
-          duracion(Timer,0.001) ' milisegundo  
+          duracion(Timer,0.0005) ' medio milisegundo
+' CON 0.0001 CANCELA, CON 0.0005 ANDA BIEN..MENOS RIESGO PODRIA SER 0.001 EL MIISEGUNDO
+' PROBAREMOS CON MEDIO MILISEGUNDO POR UN TIEMPO.... KOKITO(PODRIAMOS PONERLO COMO CONFIGURACION ?)
+' LA NOTA MAS CHICA A 60 NEGRAS SON 10 MSEG...A 240  2.5 MSEG,  DE MODO QUE 0.0005 ES LO
+' OPTIMO..   
           ''Sleep 1    
           Loop While (STARTMIDI=0)
 ' NOTA:  THREADCALL CON VECTORES INDIZADOS NO FUNCIONA BIEN
