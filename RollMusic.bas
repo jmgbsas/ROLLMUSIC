@@ -20,7 +20,8 @@ On Error Goto errorhandler
  
  ' genial puedo recorrer un array con un pointer!!!!
 '-------
-' ESTA DANDO SEGMENTACIONFAULT AL GRABAR 2DA PISTA CON CANCION CARGADA
+' esto es muy viejo se debera probar de nuevo y sin ofalla borrar ->ESTA DANDO 
+' SEGMENTACION FAULT AL GRABAR 2DA PISTA CON CANCION CARGADA
 ' AUNQUE YA NO PERMITO BARRER PENTAMIENTRAS GRABA O SEA CONGRABAREJEC=1 
 ' SALTA EL BARRIDO DEPENTA Y MENU,,,,,PERO IGUAL REVIENTA AL REPRODUCIR 
 'EL RESULTADO Y NO GRABA ELARCHIVO ??REPETIR TEST 16-06-2022 17:00
@@ -31,12 +32,18 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.3502 Play:Repetir N veces un intervalo de las secuencias de Todas las pistas seleccionadas(intervalo seleccionado en el Grafico) y poder borrarlo"
+nroversion="0.3503 tocar solos LIBRES DEL CONTROL DE CANCION PERO QUE COMIENZA AL MISMO TIEMPO "
+' 0.3503 ES CREO EL PRINCIPIO DE PODER DESARROLLAR PATRONES QUE  NO DEBEN SEGUIR A LA
+' CANCION Y TENER SUS PROPIAS REPETICIONES INDEPENDIENTE DE LA CANCION POR EJEMPLO BATERIA
+' PULSOS DE BAJO ETC,,, 
+' GRABAR CANCION OK 
 ' NUEVA IDEA EN PLAYTOCAALL ESTA ESCRITO , ES TOCAR UNA PISTA DE CANCION RTK SOLO CON PLAYALL
 ' DE FORMA QUE TOQUE SOLA FUERA DEL LOOP DE CANCION, TAMBIEN PODRIA HACERSE EN EJECUCIONES!
 ' falta borrar repeticiones!! OK LISTO
 ' 0.3502 ya funciona !! verificar que se graba a disco y se levanta
-' 351 probar que funcionen las grabaciones midi y las conversiones a rtk o roll
+' PENDIENTE: -------------------
+' ==> 351 probar que funcionen las grabaciones midi y las conversiones a rtk o roll!!
+'------------------------------- 
 ' fixed reproducir todo desde Control menu Reproducir 
 '  fixed VER AHORA EL RENAME...Y GRABACION A DISCO,ok,GRABA Y LEVANTA EN VERSION 2 y 1 DE ARCHIVOS EJEC. 
 ' ARREGLAR Y LISTO ok..JUGAREMOS  CON LOS PARAMETROS PAN ECO ETC SOBRE EJEC DIRECTAMENTE ok!!
@@ -213,7 +220,7 @@ stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
 abrirRoll=NO_CARGAR
 'pistacreada=0
-Dim As Integer k=0, salida=0
+Dim As Integer k=0, salida=0,ix0,ix1,ix2
 
 ' //// DESHABILITAR LOS CLICK EN LISTA SI NO HAY CARGADO NADA
 If instancia =ARG0_EN_LINEA  Then  ' cuando es online y recien levanta 

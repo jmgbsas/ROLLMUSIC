@@ -63,8 +63,8 @@ Sub CTRL10031 ()
    Sleep 1000,1 
 End Sub
 
-Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
-               If EventNumber = 10061 Then
+Sub CTRL100610061 (hMessages As hmenu ,  CALLDESDE As STRING )
+               If EventNumber = 10061  Or CALLDESDE="10064" Then
    ' habiliatmos 2.1 y 2.2 
                    SetStateMenu(hmessages,10062,0)
                    SetStateMenu(hmessages,10063,0)
@@ -130,7 +130,11 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                   EndIf   
                  CerrarGraficodesdeCtrl=0
              EndIf
+             If CALLDESDE="10064" Then  
+                abrirRoll=CARGAR_MAS_PISTAS_O_CANCION
+             EndIf
              If NombreCancion = "" Then
+Print #1,"entro por no hay nombrecancion ok"
                 nombre=""
                 ntk=0
                ' pistacreada=0
@@ -146,7 +150,13 @@ Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
                   param.encancion=SIN_CANCION
                   ResetAllListBox(3)
                   Resetear () 
-                  CargarPistasEnCancion ()
+                  CargarPistasEnCancion () 'devuelve tope global 
+                    ' no se si ponerla aca vermos en futuro al eliminar globales 
+                    ' por ahora no. Globales hace la vida mas facil al principio...
+                    ' las usas en otro modulo con el mismo nombre, sino un declare SUB O FUNC
+                    ' en realidad es UNA GLOBAL, A MI QUE NO ME DIGAN Y AL PEDO LOS CALL
+                    ' A FUNCIONES DA RETARDO PEQUEÑO PERO RETARDO EN FIN...ACA OPTIMIZAMOS
+                  'VELOCIDAD ANTE ESTRUCTURACION BONITA JAJAJA 
                   CANCIONCARGADA = TRUE
                   cargariniciotxt(NombreCancion, CANCION)
                   RecalCompas() 
@@ -433,7 +443,7 @@ For i1=1 To tocatope
      Print #ini, i1;",";estado 
 Next i1 
 Print #ini, tiempoPatronEjec; ","; "tiempoPatronEjec"
-If MaxPosTope > maxgrb Then maxgrb=MaxPosTope
+If maxposTope > maxgrb Then maxgrb=maxposTope
 Print #ini, maxgrb;","; "maxgrb"
 End If
 
@@ -451,7 +461,7 @@ If ejecutar=CANCION Then
      Print #ini, i1;",";estado 
   Next i1 
   Print #ini, tiempoPatronEjec; ","; "tiempoPatronEjec"
-  Print #ini, MaxposTope;","; "Maxpos"
+  Print #ini, maxposTope;","; "Maxpos"
 
 End If
 
@@ -481,8 +491,10 @@ Print #1,"1 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
 
 ' esta es de window9 del ruso, los flags estan bien documentados
 '' PROBAR FileListBoxItem !!!
+     If lugar = "" Then
          lugar=ShellFolder("SELECCION DE CARPETA", nameCurDir, BIF_RETURNONLYFSDIRS Or BIF_USENEWUI)
          DirEjecSinBarra=lugar
+     EndIf
      '    Print #1," 2 ctrl1016 lugar DirEjecSinBarra ",DirEjecSinBarra
      '  Else
      '    If CANCIONCARGADA=TRUE Then

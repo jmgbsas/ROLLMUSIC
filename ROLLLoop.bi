@@ -1409,6 +1409,7 @@ If MultiKey (SC_P) Then
    If COMEDIT=LECTURA   Then
       PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
       PARAR_PLAY_EJEC=SI
+      Cplay=NO
       Sleep 20 
       playloop=NO:playloop2=NO
       play=NO:Cplay=no:playb=No:playEj=NO
@@ -1427,6 +1428,8 @@ If MultiKey (SC_P) Then
       Next i3
       Sleep 1
       Parar_De_Dibujar=NO
+' cada vez que hago detech cancela no usar nuncas adetach solo en la salida
+      STARTMIDI=0
       If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then 
       Else
       SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
@@ -2262,7 +2265,7 @@ EndIf
 
 ' ============== E S P A C I O ========
 If MultiKey(SC_SPACE)    Then 'barra espacio
-   Sleep 20   
+   ''Sleep 20   
 '   playloop=NO:playloop2=NO
 
  If COMEDIT<>LECTURA Then
@@ -2278,7 +2281,9 @@ If MultiKey(SC_SPACE)    Then 'barra espacio
    
   If (playb = NO Or Cplay=NO )And (MaxPos> 2  Or Maxgrb > 2) Then ' 23-02-22 ningun play
   '''If playb = NO And play=NO And Cplay=NO And MaxPos > 1 Then ' 23-02-22 ningun play
+ 
 
+'------------------------------------------------------------------
     '''  Print #1,"ENTRA POR COMEDIT<>LECTURA ???"
       GrabarPenta=0
       naco=0:naco2=0
@@ -2290,27 +2295,137 @@ If MultiKey(SC_SPACE)    Then 'barra espacio
       EndIf
    '   print #1,"SPACE call play"
 'Print #1,"CANCIONCARGADA = TRUE And Cplay=NO  ",CANCIONCARGADA, Cplay  
-         If CANCIONCARGADA = TRUE  And CPlay=NO   Then
+        If CANCIONCARGADA = TRUE  And CPlay=NO   Then
 'Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
-             Print #1,"USANDO PLAYCANCION"
+'----------------------------------------------------------------
+' CARGA DE LOS SOLOS 
+'---------------------------ESTA CARGA DEBE ESTAR ANTES DE TODO
+
+' TOCA UNA PISTA DE CANCION COMO PISTA DE SOLO NO HABRA RELACION ENTRE LAS MISMAS
+' VOMO CON INDICES GLOBALES, LA ELECCION DE QUE PISTA SE TOCARA COMO SOLO ES DINAMICO
+' Y SE ELIGE CON CON CHEQUEAR CBXPIS LA 1ER FILA DE CHECKS DE LA IZQUIERDA 
+
+
+
+
+'------------------------------
+
+  Print #1,"LLAMA A  PLAYCANCION"
              Parar_De_Dibujar=NO
              Cplay=SI : s5=NO 'Necesita mas tiempo de cpu
        '      Sleep 100
-             thread1 = ThreadCall  PlayCancion(Track())
              grabariniciotxt(NombreCancion, CANCION)
              FileFlush (-1)
+             thread1 = ThreadCall  PlayCancion(Track())
 
-         ElseIf   playb=NO And  CANCIONCARGADA = FALSE Then
+             CPlay=SI 
+''    If x1 > 0 Then
+          Do '' LA MEJOR SINCRONIZACION LA GLOBAL STARTMIDI Y CHAU PICHO 
+' CUANDO STARTMIDI TIENE VALOR SIGNIFICA QUE PLAYCANCION EMPIEZA A TOCAR Y DEJA QUE 
+' ENTRE PLAYUNOSOLO, LA DIFERENCIA  PARECE SER 1.2 mseg!!
+' ENTRA PLAYCANCION   13938.93062174213 como solouno empieza antes porque es mas liviana 
+'   se le suma 10 mseg a cancion en su entrada aunque se la  dispare antes,,
+' ENTRA UNOSOLO       13938.93141784987  1.2 mseg MAS TARDE!!!
+       
+          duracion(Timer,0.001) ' milisegundo  
+          ''Sleep 1    
+          Loop While (STARTMIDI=0)
+' NOTA:  THREADCALL CON VECTORES INDIZADOS NO FUNCIONA BIEN
+' SI USO threadV(I) = ThreadCall PlayUnoSolo(Track(I), I)
+' MANDA CUALQUIER COSA EN VEZ DE 3 RECIBE  8 EN VEZ DE 4 RECIBE 11  O CUALQUIER OTRO NUMERO
+' SOL OFUNCIONA BIEN HARDCODEANDO LOS ARGUMENTOS 
+
+          For y1 As Integer  =1 To 32
+
+              If CheckBox_GetCheck( cbxpis(y1))= 1   Then
+       Print #1,"/////////LLAMA A PLAYUNOSOLO y1 ", y1
+                 Select Case y1
+                  Case 1
+                  threadV(1) = ThreadCall PlayUnoSolo(Track(1), 1)
+                  Case 2
+                  threadV(2) = ThreadCall PlayUnoSolo(Track(2), 2)
+                  Case 3
+                  threadV(3) = ThreadCall PlayUnoSolo(Track(3), 3)
+                  Case 4
+                  threadV(4) = ThreadCall PlayUnoSolo(Track(4), 4)
+                  Case 5
+                  threadV(5) = ThreadCall PlayUnoSolo(Track(5), 5)
+                  Case 6
+                  threadV(6) = ThreadCall PlayUnoSolo(Track(6), 6)
+                  Case 7
+                  threadV(7) = ThreadCall PlayUnoSolo(Track(7), 7)
+                  Case 8
+                  threadV(8) = ThreadCall PlayUnoSolo(Track(8), 8)
+                  Case 9
+                  threadV(9) = ThreadCall PlayUnoSolo(Track(9), 9)
+                  Case 10
+                  threadV(10) = ThreadCall PlayUnoSolo(Track(10), 10)
+                  Case 11
+                  threadV(11) = ThreadCall PlayUnoSolo(Track(11), 11)
+                  Case 12
+                  threadV(12) = ThreadCall PlayUnoSolo(Track(12), 12)
+                  Case 13
+                  threadV(13) = ThreadCall PlayUnoSolo(Track(13), 13)
+                  Case 14
+                  threadV(14) = ThreadCall PlayUnoSolo(Track(14), 14)
+                  Case 15
+                  threadV(15) = ThreadCall PlayUnoSolo(Track(15), 15)
+                  Case 16
+                  threadV(16) = ThreadCall PlayUnoSolo(Track(16), 16)
+                  Case 17
+                  threadV(17) = ThreadCall PlayUnoSolo(Track(17), 17)
+                  Case 18
+                  threadV(18) = ThreadCall PlayUnoSolo(Track(18), 18)
+                  Case 19
+                  threadV(19) = ThreadCall PlayUnoSolo(Track(19), 19)
+                  Case 20
+                  threadV(20) = ThreadCall PlayUnoSolo(Track(20), 20)
+                  Case 21
+                  threadV(21) = ThreadCall PlayUnoSolo(Track(21), 21)
+                  Case 22
+                  threadV(22) = ThreadCall PlayUnoSolo(Track(22), 22)
+                  Case 23
+                  threadV(23) = ThreadCall PlayUnoSolo(Track(23), 23)
+                  Case 24
+                  threadV(24) = ThreadCall PlayUnoSolo(Track(24), 24)
+                  Case 25
+                  threadV(25) = ThreadCall PlayUnoSolo(Track(25), 25)
+                  Case 26
+                  threadV(26) = ThreadCall PlayUnoSolo(Track(26), 26)
+                  Case 27
+                  threadV(27) = ThreadCall PlayUnoSolo(Track(27), 27)
+                  Case 28
+                  threadV(28) = ThreadCall PlayUnoSolo(Track(28), 28)
+                  Case 29
+                  threadV(29) = ThreadCall PlayUnoSolo(Track(29), 29)
+                  Case 30
+                  threadV(30) = ThreadCall PlayUnoSolo(Track(30), 30)
+                  Case 31
+                  threadV(31) = ThreadCall PlayUnoSolo(Track(31), 31)
+                  Case 32
+                  threadV(32) = ThreadCall PlayUnoSolo(Track(32), 32)
+
+                 End Select
+              EndIf
+           Next y1
+FILEFLUSH(-1)
+        ElseIf   playb=NO And  CANCIONCARGADA = FALSE And X1=0 Then
+' ESTA OPCION NUCA PODRA EJECUTRSE EN PARALELO PORQUE IMPPLICA UN ROLL Y POR ENDE
+' LLENARA EL ROLL GRAFICO QUE LA CANCION DE RTK ESTA USANDO
               print #1,"llama a playall"
               Playb=SI:s5=NO 
        '       Sleep 100
               thread2 = ThreadCall  playAll(Roll)
          EndIf
-          If maxgrb > 0 And playEj=NO Then
+         If maxgrb > 0 And playEj=NO Then
+' PENDIENTE CALCULAR RETARDOS COMO CON SOLOS
            playEj=SI 
 Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"  
           threadG = ThreadCall  PlayTocaAll(p)
-          EndIf
+         EndIf
+
+  
+
       menunew=MENU_INICIAL
       cierroedit= 0
   EndIf
@@ -3801,7 +3916,7 @@ If (ScreenEvent(@e)) Then
 ' ********************************************************************************
   Case EVENT_KEY_PRESS    ' <======== KEY PRESS PULSO =====================================================
 ' ********************************************************************************       
-   If e.scancode = SC_P   Then ' 25 anda mejor q con multikey
+/'   If e.scancode = SC_P   Then ' 25 anda mejor q con multikey
       PARAR_PLAY_MANUAL=SI
       PARAR_PLAY_EJEC=SI
       Sleep 20
@@ -3832,6 +3947,7 @@ If (ScreenEvent(@e)) Then
 
       s5=2 'necesita menos tiempo de procesamiento    
    EndIf
+'/
 '-------------------------------------------------------------------
 ''   If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion'
 ''    deltaz=1
@@ -4586,7 +4702,7 @@ FILEFLUSH(-1)
         close_port midiout(k1)
         out_free(midiout(k1))
      End If 
-
+    '''''''''' ThreadDetach (threadloop) ' kokito
      FileFlush (-1)
      Screen 0 ''', , ,  GFX_SCREEN_EXIT '''&h80000000
      If Maxpos > 2 Then
@@ -4598,7 +4714,8 @@ FILEFLUSH(-1)
         abrirRoll=NO_CARGAR
         reiniciar=1
      EndIf
-   
+     
+
      Exit Sub
 
   Else

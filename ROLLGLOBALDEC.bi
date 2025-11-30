@@ -30,7 +30,7 @@ Declare Sub selInstORdenNum (ByRef instru As Integer)
 Declare Sub selTipoEscala (ByRef tipoescala As integer)
 Declare Sub selNotaEscala (ByRef notaescala As integer)
 ' RUTINAS VENTANAS DE CONTROL =>
-Declare Sub CTRL100610061 (hMessages As hmenu , Tope As integer)
+Declare Sub CTRL100610061 (hMessages As hmenu , DESDE As String)
 Declare Sub CTRL1061 (ByRef SALIDA As INTEGER) 
 Declare Sub CTRL1062 (hmessages As hmenu)
 Declare Sub CTRL1063()
@@ -555,7 +555,7 @@ Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA 
 Common Shared As string pathdir,nombre,DirEjecSinBarra
 common Shared As String NombreCancion,NombrePista
-Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado,MaxposTope ',pistacreada
+Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado,maxposTope ',pistacreada
 Common Shared As cairo_t  Ptr c, c2
 Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer
 Screenbuffer=0
@@ -569,13 +569,14 @@ abrirRollCargaMidi=0
 Common Shared As ubyte patchsal
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay,deltaz,guardaposnOffOld
 COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntoca,ntkp,npi,calltoca,npo,canalDeGrabacion,ntkcarga,ntkTAB
-Common SHARED As Integer EstaBarriendoPenta,playb,play,playEj
+Common SHARED As Integer EstaBarriendoPenta,playb,play,playEj,playSolo
 Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA, VerMenu,MousexNotaElegida,PianoNotaElegida,nsEelegida
 Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, interva ,valorpan '  default 2 que es 1 separacion de notas
 Common Shared As Integer valoreco, valorcoro,valorvol
 VerMenu=1
+playSolo=NO
 CPlay=NO
 playb=NO
 playEj=NO

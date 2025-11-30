@@ -954,7 +954,7 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
 ' y si instrum es > 0 es un cambio
             If  ROLLCARGADO  Then
             Else 
-              instrum=pmTk(0).patch  'CInt(Track(k).trk(1,1).nnn)
+              instrum=pmTk(ntk).patch  'CInt(Track(k).trk(1,1).nnn)
               If instrum=0 Then
                  pmTk(ntk).patch= CUByte(instrum)
                 pmTk(0).patch= CUByte(instrum)
@@ -1074,3 +1074,4 @@ Print #1,"k, canalsalida  ";k, canalx
  ' MENU DE COMANDOS
          threadCmd = ThreadCall  ejecutarComando (comando)
       EndIf
+'-------------------------------------------------------

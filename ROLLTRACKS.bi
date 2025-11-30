@@ -448,15 +448,15 @@ Sleep 100
      pmTk(ntk).MaxPos=CInt("&B"+x)
 
        If ntk >0 Then
-          MaxposTope=84600 '''pmTk(ntk).MaxPos 
+          maxposTope=84600 '''pmTk(ntk).MaxPos 
        EndIf
 Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
 ' AL CONVERTIR UN EJEC A ROLL Y LUEGO A NTK QUEDA EL NTK=1
 ' TOMA EL NRO DE EJEC Y SI SON SIMPLES SIN CANCION DEBE SER NTK=00 SIEMPRE
 ' ENTONCES AL CONVERTIR ROLL A TRACK SI ES UN EJEC AJUSTAR NTK=0 
      MaxPos=pmTk(ntk).MaxPos
-     If ntk >0 And MaxposTope < MaxPos Then
-        MaxposTope=84600 ''pmTk(ntk).MaxPos 
+     If ntk >0 And maxposTope < MaxPos Then
+        maxposTope=84600 ''pmTk(ntk).MaxPos 
      EndIf
    
    '  print #1,"pmTk(ntk).MaxPos ", pmtk(ntk).MaxPos
@@ -560,6 +560,15 @@ messbox("CARGA TRACK HASTA","esta en cero el  track "+Str(ntk))
      pmTk(ntk).portout= graba3.dur
 Print #1,"PORTOUT, NTK "; pmTk(ntk).portout, ntk 
      portout = CInt(graba3.dur)
+     pmTk(ntk).patch=graba3.patch
+Print #1,"EN CARGATRACK PATCH ",pmTk(ntk).patch
+     patchsal=pmTk(ntk).patch
+     instru=CInt(patchsal)
+     If patchsal=0 Then
+        patchsal=1
+        pmTk(ntk).patch=1 
+     EndIf
+
      pmTk(ntk).eco=graba3.eco
      Globaleco= graba3.eco
      pmTk(ntk).pan=graba3.pan
@@ -569,8 +578,7 @@ Print #1,"PORTOUT, NTK "; pmTk(ntk).portout, ntk
      Globalcoro= graba3.canal
 
      pmTk(ntk).ejec=graba3.ejec
-     patchsal=pmTk(ntk).patch
-     instru=CInt(patchsal)
+
      Print #1,"///CARGA TRACK PATCH ",instru
      If graba3.nanchofig > 0 Then
        nanchofig  = cdbl(graba3.nanchofig)/10
@@ -696,24 +704,6 @@ Print #1,"CLOSE ct CERRO TRK NRO ct ",ntk, ct
      curpos =>1
 
     
-    If Track(ntk).trk(1,1).nnn > 0 Then
-       pmTk(ntk).patch=Track(ntk).trk(1,1).nnn
-       patchsal=pmTk(ntk).patch
-    Else
-        If graba3.nota > 0 Then ' en un momento se uso para patch lo debere rsacar si lo uso para otra cosa
-          pmTk(ntk).patch=graba3.nota
-          patchsal=pmTk(ntk).patch
-        Else
-          If graba3.patch > 0 Then
-           pmTk(ntk).patch=graba3.patch
-           patchsal=pmTk(ntk).patch
-          EndIf  
-        EndIf
-     EndIf
-    If patchsal=0 Then
-       patchsal=1
-       pmTk(ntk).patch=1 
-    EndIf
 
      If pmTk(ntk).ejec = 0 And Track(ntk).trk(1,1).ejec=1 Then 
         pmTk(ntk).ejec=1
@@ -1827,9 +1817,9 @@ EndIf
 cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
 terminar=NO_TERMINAR_CON_DATOS_CARGADOS
 
-'print #1,"-------------ARRANCA TRACKAROLL---------------------------------"
-'print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulosTk(ntk)
-'print #1,"(ntk).maxpos ", pmTk(ntk).MaxPos
+print #1,"-------------ARRANCA TRACKAROLL---------------------------------"
+print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulosTk(ntk)
+print #1,"(ntk).maxpos ", pmTk(ntk).MaxPos
 nombre=titulosTk(ntk)
 
 
@@ -1858,7 +1848,7 @@ If pmTk(ntk).patch > 0 Then
    pmTk(0).patch=pmTk(ntk).patch
    instru=CInt(patchsal)
 EndIf
- '  Print #1,"instru en TrackaRoll ",instru
+   Print #1,"instru en TrackaRoll ",instru
 If pmTk(ntk).ejec > 0 And pmTk(ntk).ejec=0 Then
    pmTk(0).ejec=pmTk(ntk).ejec   
 EndIf
@@ -1895,7 +1885,7 @@ Globalvol=pmTk(ntk).vol
   'If  ntk= 0 Then
  ' Else
    Erase Roll.trk , compas
-'Print #1, "// trckaroll redim Roll MaxPos ",MaxPos
+Print #1, "// trckaroll redim Roll MaxPos ",MaxPos
    ReDim (Roll.trk ) (1 To CantTicks, NB To NA ) ' 27-02 ÇÇÇ
   ''' ReDim compas(1 To MaxPos)
  ' End If  
@@ -1910,37 +1900,37 @@ Globalvol=pmTk(ntk).vol
    ' si cargo cancion no deberia cargar Roll si no al final el track 1
    ' o luego haciedno click
    '
-'   If CANCIONCARGADA=TRUE Then ' 01 -03
-'     Print #1,"CANCION CARGADA EN TRACKAROLL ntk,lim3",ntk,lim3
-'   Else
- '    Print #1,"CANCION NO CARGADA EN TRACKAROLL"
-'   EndIf
- '  If ROLLCARGADO=FALSE Then 
-  '   Print #1,"ROLL NO CARGADO EN TRACKAROLL, maxpos",pmTk(ntk).MaxPos
- '  Else
-  '     Print #1,"ROLL CARGADO EN TRACKAROLL"
- '  EndIf  
+   If CANCIONCARGADA=TRUE Then ' 01 -03
+     Print #1,"CANCION CARGADA EN TRACKAROLL ntk,lim3",ntk,lim3
+   Else
+     Print #1,"CANCION NO CARGADA EN TRACKAROLL"
+   EndIf
+   If ROLLCARGADO=FALSE Then 
+     Print #1,"ROLL NO CARGADO EN TRACKAROLL, maxpos",pmTk(ntk).MaxPos
+   Else
+       Print #1,"ROLL CARGADO EN TRACKAROLL"
+   EndIf  
    If CANCIONCARGADA=TRUE And ROLLCARGADO=FALSE Then ' cargarcancion NO SE USA VIVE muy poco solo durante lA carga  
-'       print #1,"/////REDIM DE TRACK 0 MaxPos ",MaxPos 
+       print #1,"/////REDIM DE TRACK 0 MaxPos ",MaxPos 
 ' NO SE HACE SIN CANCION O CON ROLLCARGADO"
        ' SE PREPARA TRACK 0 PARA RECIBIR DATOS DE TRACK X,PUES PARA IR A ROLL
        ' SE LLENA TRACK 0 SIEMRPE.,,,
          
        ReDim (Track(00).trk ) (1 To CantTicks, 1 To lim3)
- '      Print #1,"paso el redim de track 0" 
+       Print #1,"paso el redim de track 0" 
    EndIf
    nota=0:dur=0
    inicioDeLEctura=0
    *po=pmTk(ntk).hasta -1
    
-'print #1,"TrackaRoll desde, hasta ", desde , hasta
-'print #1,"TrackaRoll NB, NA ,*po, MaxPos ", NB , NA, *po,MaxPos
-'Print #1,"1106 en trackaRoll numero de track ntk ",ntk
-'print #1, "ubound (Track(ntk).trk,2) ", ubound (Track(ntk).trk,2)
-'print #1, "ACA VIENE EL ERROR ? "
-'print #1, "lbound (Track(ntk).trk,2) ", LBound (Track(ntk).trk,2)
-'print #1," va a ejecutar for de copia de TrackaRoll"
-'Print #1," pmTk(ntk).MaxPos ",pmTk(ntk).MaxPos
+print #1,"TrackaRoll desde, hasta ", desde , hasta
+print #1,"TrackaRoll NB, NA ,*po, MaxPos ", NB , NA, *po,MaxPos
+Print #1,"1106 en trackaRoll numero de track ntk ",ntk
+print #1, "ubound (Track(ntk).trk,2) ", ubound (Track(ntk).trk,2)
+print #1, "ACA VIENE EL ERROR ? "
+print #1, "lbound (Track(ntk).trk,2) ", LBound (Track(ntk).trk,2)
+print #1," va a ejecutar for de copia de TrackaRoll"
+Print #1," pmTk(ntk).MaxPos ",pmTk(ntk).MaxPos
 Dim As Integer ultimaPianonota
 ' 1) carga de Roll desde track ntk
 vertical=12+(hasta-2)*13+hasta ' "[NROREP]" de EntrarTeclado
@@ -1989,7 +1979,7 @@ For i2 = 1 To pmTk(ntk).MaxPos
 
    
    If i2=pmTk(ntk).MaxPos  then 
- '   Print #1," ///maxpos-1, nota  ", i2, ultimaPianonota
+    Print #1," ///maxpos-1, nota  ", i2, ultimaPianonota
       i3=ultimaPianonota
       Roll.trk(i2,i3).dur  = 182
        Roll.trk(i2,i3).nota =0 
@@ -2000,7 +1990,7 @@ For i2 = 1 To pmTk(ntk).MaxPos
        
    EndIf
 Next i2
-' Print #1," ///maxpos ", pmTk(ntk).MaxPos 
+ Print #1," ///maxpos ", pmTk(ntk).MaxPos 
 
 Sleep 5
 ' [[[[[ JMG 15-01-2022 ACA DEBO COPIAR EL CAMPO DE CONTROL DE LIM3 EL 13 !!!! ]]]]] 
@@ -2009,7 +1999,7 @@ For i2=1 To pmTk(ntk).MaxPos-1
   If Track(ntk).trk(i2,13).dur = 200 Then
     For K=desde To hasta -1 
     vacio= 12 +(k -1) * 13
- '   Print #1,"COPIA CONTROLES A ROLL DESDE TRACK INST",Track(ntk).trk(i2,13).nnn
+    Print #1,"COPIA CONTROLES A ROLL DESDE TRACK INST",Track(ntk).trk(i2,13).nnn
        Roll.trk(i2, vacio).inst = Track(ntk).trk(i2,13).nnn
        Roll.trk(i2, vacio).vol  = Track(ntk).trk(i2,13).vol
        Roll.trk(i2, vacio).nota = Track(ntk).trk(i2,13).nota ' 30
@@ -2026,9 +2016,9 @@ For i2=1 To pmTk(ntk).MaxPos-1
   For i1 = lim2 To lim3
       If Track(ntk).trk(i2,i1 ).pb =202  Then ' info acorde en una octava
       ' 
- '      Print #1,"TrackARoll hay octava de acorde a copiar a roll",Track(ntk).trk(i2,i1 ).vol
+       Print #1,"TrackARoll hay octava de acorde a copiar a roll",Track(ntk).trk(i2,i1 ).vol
          verticalEnOctavaVacia= 12 + (hasta-2)*13 + Track(ntk).trk(i2,i1 ).vol - desde ' 90 + 6 - 4=92
- '        Print #1,"verticalEnOctavaVacia ",verticalEnOctavaVacia
+         Print #1,"verticalEnOctavaVacia ",verticalEnOctavaVacia
          Roll.trk(i2,verticalEnOctavaVacia).vol   = Track(ntk).trk(i2,i1).vol ' octava
          Roll.trk(i2,verticalEnOctavaVacia ).nota = Track(ntk).trk(i2,i1).nota ' Rollnota
          Roll.trk(i2,verticalEnOctavaVacia ).dur  = Track(ntk).trk(i2,i1).dur  ' acordeNro
@@ -2075,13 +2065,13 @@ EndIf
 cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
 terminar=NO_TERMINAR_CON_DATOS_CARGADOS
 ''Parar_De_Dibujar=SI kokito
-'Print #1,"cargaCancion DEBE SER 1 ",cargaCancion
-'Print #1,"NTK del copiado aca esta el lio, Y MAXPOS EN REDIM ",ntk, pmTk(ntk).MaxPos
+Print #1,"cargaCancion DEBE SER 1 ",cargaCancion
+Print #1,"NTK del copiado aca esta el lio, Y MAXPOS EN REDIM ",ntk, pmTk(ntk).MaxPos
 ReDim (Track(0).trk ) (1 To  pmTk(ntk).MaxPos +6, 1 To lim3) '////HOY
 FILEFLUSH(-1)
 Sleep 100
 If cargaCancion=CARGAR_NO_PUEDE_DIBUJAR Or CANCIONCARGADA=TRUE Then ' MIENTRAS HAYA MAS DE UN TRACK O SEA UNA CANCION
-'Print #1,"CARGA DE  TRACK(0)"  
+Print #1,"CARGA DE  TRACK(0)"  
 copiaTrackaTrack(Track(), 0 , ntk )
 ' For i1=1 To pmTk(ntk).MaxPos 
 '  For i2 = 1 To lim3
@@ -2089,7 +2079,7 @@ copiaTrackaTrack(Track(), 0 , ntk )
 '  Next i2
 ' Next i1
 EndIf  
-'Print #1,"FIN CARGA DE  TRACK(0)"
+Print #1,"FIN CARGA DE  TRACK(0)"
 FILEFLUSH(-1)
 ''Sleep 5  
 
@@ -2103,31 +2093,31 @@ FILEFLUSH(-1)
 '    pb As UByte
 '   End Type
 'End Union
-'Print #1,"DIM  MIT START "
+Print #1,"DIM  MIT START "
 Dim mit As aUshort 'redefine de cobol
-'Print #1,"DIM  MIT FIN "
+Print #1,"DIM  MIT FIN "
 mit.st = CUShort(pmTk(ntk).tiempoPatron)
-'Print #1,"MIT  TIEMPOPATRON"
+Print #1,"MIT  TIEMPOPATRON"
 FILEFLUSH(-1)
 
 'con estos dos campos puedo reconstruir tiempoPatron
 Track(0).trk(1,1).pan = mit.tp1
 Track(0).trk(1,1).pb  = mit.tp2
-'Print #1,"CARGO TIEMPOPATRON"
-'FILEFLUSH(-1)
+Print #1,"CARGO TIEMPOPATRON"
+FILEFLUSH(-1)
 ' Roll va a tocar bien a tempo si sacamos el tempo de ahi
 ' fralta ver como lo ponemos en track, en el encabezado supongo
 '------------
 
 ''Print #1,"EJEC Roll.trk(1,NA).onoff ";Roll.trk(1,NA).onoff
-'FILEFLUSH(-1)
+FILEFLUSH(-1)
 
 ''Print #1, "TrackaRoll Fin ntk, patch " ; ntk, Roll.trk(1,NA).inst
 terminar=NO_TERMINAR_BARRE_PANTALLA 
 Parar_De_Dibujar=NO ' volvemos a dibujar en pantalla...18-04-2024
 cargacancion=NO_CARGAR_PUEDE_DIBUJAR ' " " 
 Sleep 5
-'FILEFLUSH(-1)
+FILEFLUSH(-1)
 'hemos copiado el track ntk en el Track(0) que corresponde al Track asociado a Roll.
 '--------------------------------Track(0) fin
 '''curpos=0
@@ -2153,10 +2143,10 @@ If funcion<> "saltoTAB" then
    nanchofig=anchofig
    ANCHO3div4 = ANCHO *3 / 4
 EndIf
-'  print #1,"TrackaRoll Fin,,maxpos y (ntk).maxpos ", maxpos,pmTk(ntk).MaxPos
-'print #1,"-----------------Fin TrackaRoll-----------------"
+  print #1,"TrackaRoll Fin,,maxpos y (ntk).maxpos ", maxpos,pmTk(ntk).MaxPos
+print #1,"-----------------Fin TrackaRoll-----------------"
 Sleep 100
-'FileFlush (-1)
+FileFlush (-1)
 
 Exit Sub 
 
@@ -2266,7 +2256,7 @@ Dim  As Integer i1,NroEvento
 
 ReDim  MidiDatos (1 To tope) As miditxtsalida 
 ReDim  NroEventoPista(1 To tope )
-Sleep 10
+
 
 If MIDIFILEONOFF = HABILITAR  Then 
    MICROSEGUNDOS_POR_NEGRA = 60000000/tiempoPatron ' 60 MILL /BPM
@@ -2369,7 +2359,7 @@ Next i
 Dim As Double tiempoDUR
 tiempoDUR=(60/tiempoPatron) / FactortiempoPatron'60 seg/ cuantas negras enun minuto
 
-Dim As Integer i2,K, mayor,i0,xmouse,ymouse,finfin=0,finalloop=0,comienzoloop=0
+Dim As Integer i2,K, mayor,i0,xmouse,ymouse,finfin=0,finalloop=0,comienzoloop=0,Smayor
 Dim As UByte i3=0, pis=0, pisnota=0
 
 Dim As Integer comienzo=1, final=0, vel=100,velpos =0,cntrepe=0,final2=0,comienzo2=0
@@ -2379,7 +2369,7 @@ Dim As Integer comienzo=1, final=0, vel=100,velpos =0,cntrepe=0,final2=0,comienz
 ' ojo si cambioaamos por mas octavas debo cambiar, igual el nro de tracks 32 
 ''Dim pasoCol (0 To 384) As vec  ' entrada de durciones a medida que barro una columna
 '------------determinamos el MAxPos de toda la cancion o sea la pista de mayor longitud
-mayor=pmTk(1).MaxPos
+Smayor=pmTk(1).MaxPos
 For i0=1 To Tope 
 Print #1,"CANCION ntk MAXPOS "; pmTk(i0).MaxPos
 fileflush(-1)
@@ -2391,13 +2381,13 @@ Next i0
 
 Print #1,"cancion tiempoPatron ";tiempoPatron
 final=mayor 
-MaxPosTope=mayor 
+maxposTope=mayor 
 
-Print #1,"MaxPosTope ===> ", MaxPosTope
+Print #1,"maxposTope ===> ", maxposTope
 fileflush(-1)
 RecalCompas()
 Print #1,"UBound(compas, 1) ",UBound(compas, 1)
-Sleep 10
+
 '-------------
 Dim As Double start
 Dim as Integer cnt=0, cntold=0,cpar=0,dura=0,duraOld=0,nj, durj,tiempoFiguraSig
@@ -2427,9 +2417,6 @@ If comienzo = 0 Then  '01-03-2024 play sin roll
   comienzo= 1 
 End If
 
-STARTMIDI=Timer
-old_time_on=STARTMIDI
-Print #1,"old_time_on "; old_time_on
 Dim As Double  tickUsuario=0.005 * 240/tiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
@@ -2444,7 +2431,7 @@ tickUsuario=0.005 * 240/tiempoPatron
 ' debo hcer un for para cada pista, en cada psita ver si esta mute o play
 ' ajustar el instrumento de la pista cada vez que cambie la pista.
 
- Print #1," PCA CANCION MAXPOS AL COMENZAR ,final tope ",Maxpos,final,tope
+ Print #1," PLAYCANCION MAXPOS AL COMENZAR ,final tope ",Maxpos,final,tope
 Dim As float ajuste=1.0
 ''//////////////// PISTA //////////////
  For pis=1 To tope
@@ -2485,11 +2472,12 @@ Dim As float ajuste=1.0
 
  Next pis
 
-
-
 STARTMIDI=Timer
 old_time_on=STARTMIDI
-Print #1,"old_time_on "; old_time_on
+Print #1,"old_time_on PLAYCANCION "; old_time_on
+Sleep 11 ' para ESPERAR a  inicio de playunosolo
+Print #1,"ENTRA PLAYCANCION  "; Timer
+
 
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
@@ -2527,6 +2515,9 @@ kNroCol= Int(jply/NroCol)
 '''/// BARRE VERTICALMENTE LAS PISTAS PARA CADA POSICION HORIZONTAL medio rebuscado al dope creo..////
 ''// un metodo mejroe seria no barrer nada solo el archivo de eventos en fin 
   For pis =1 To tope ' loop de pistas rtk
+    If CheckBox_GetCheck( cbxpis(pis))= 1 Then
+         Continue For ' saltea no tocar pero la toca playall 
+    EndIf       
     If CheckBox_GetCheck( cbxnum(pis))= 1 Then
        ' tocar
          sonidoPista(pis)=1
@@ -2599,6 +2590,7 @@ kNroCol= Int(jply/NroCol)
 ' info del inst en 1 no en lim2   
 
  'Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
+
    If jply <= pmTk(pis).MaxPos Then ' tocamos una pista mientras que tenga datos 
      For i1=1 To lim3   'lim3 decia coo voy de 1 a lim2 necesito que la info del int este en 1
        If i1<= lim2  And (pis <= tope Or pis<=32) Then
@@ -2621,13 +2613,13 @@ kNroCol= Int(jply/NroCol)
          EndIf
 ' llegamos al final de la Columna
          If Track(pis).trk(jply,i1).onoff =2 Then
-            NroEventoPista(pis) = NroEventoPista(pis) + 1
-            NroEvento=NroEventoPista(pis)
+  '          NroEventoPista(pis) = NroEventoPista(pis) + 1 por ahora sacamos es pa volcar midi a disco
+  '          NroEvento=NroEventoPista(pis)
             noteon CUByte(Notapiano),vel,canal,portsal,pis,NroEvento
          EndIf
          If Track(pis).trk(jply,i1).onoff= 1 Then
-            NroEventoPista(pis)=NroEventoPista(pis) +1
-            NroEvento=NroEventoPista(pis)
+  '          NroEventoPista(pis)=NroEventoPista(pis) +1
+  '          NroEvento=NroEventoPista(pis)
             noteoff CUByte(Notapiano),canal,portsal,pis,NroEvento
          EndIf    
        EndIf
@@ -2784,6 +2776,7 @@ if GrabarPenta=0 and GrabarEjec=HabilitaGrabar and Parar_De_Dibujar=NO And check
 EndIf 
   Parar_De_Dibujar=NO ' 05-03-2024
   Cplay=NO
+STARTMIDI=0
   For i3 = 1 To tope
        portsal=CInt(pmTk(i3).portout) 
        alloff(pmTk(i3).canalsalida,portsal) 
@@ -2807,7 +2800,7 @@ If  Err > 0 Then
   Print #1, "ubound(Compas,1) ",ubound(Compas,1)
 Print #1, "Track(pis).trk(jply,i1).nota ", Track(pis).trk(jply,i1).nota
 Print #1, "Track(pis).trk(jply,i1).dur ", Track(pis).trk(jply,i1).dur
-Print #1, "MaxPosTope  MaxPos  jply  ",MaxPosTope, MaxPos, jply  
+Print #1, "maxposTope  MaxPos  jply  ",maxposTope, MaxPos, jply  
 
   FileFlush (-1)
 
@@ -2818,6 +2811,568 @@ EndIf
 
 End Sub 
 
+'-----------------------------------------
+Sub PlayUnoSolo(SolX As sec, Spis As Integer)
+''PORQUE PIERDE EL PATCH EN LA SEGUNDA EJECUCION ??????????????
+Print #1,"' ----------------------------------------",Spis
+Print #1,"'               P L A Y  U N O  S O L O"   ,Spis 
+Print #1,"'------------------------------------------",Spis
+''CPlay = SI
+'ABRE PRTS PERO NO LOS CIERA
+On Local Error GoTo PlaySoloError
+Dim  As Integer i1,NroEvento,Smayor
+Dim JSOLO As Integer '''LOCAL
+ReDim  MidiDatos (1 ) As miditxtsalida 
+ReDim  NroEventoPista(1  )
+Sleep 10
+
+If MIDIFILEONOFF = HABILITAR  Then 
+   MICROSEGUNDOS_POR_NEGRA = 60000000/tiempoPatron ' 60 MILL /BPM
+   '' SE AJUSTO A 2000 PARA ESCUCHAR LO MISMO A 60 DSRG POR NEGRA... 500 
+   '' NO ESTA CLARO EL  TEMPO EN BPM SON 60 EN TIEMPO 1000000 ,NI 500 NI 1000 NI 2000
+   '' FALTRA ENTENDER MAS 
+'' el formato 1 tiene la cabeza como track 1 el resto son los siguientes tracks
+'' aca saldra en formato 0 todo mezclado..luego se nescitaria
+'' sumar los canales diferentes ch=1, ch=2 la suma da el nro de tracks -1
+'' luego volcar en otro archivo separado la cabeza y luego los Mtrk para cada canal
+'' y asi obtendre el formato 1. o sea luego de generar secuenciaPlay.txt e3n formato 0
+'' debo reconstruir en otro txt el formato 1 y ese archivo se convertira a *.mid
+'' haremos una cosa secuenciaplay.txt sera el formato 1 necesito otro archivo intermedio
+ 
+   indicenotas=0
+   'Dim As String NombreTrack
+   midiplano=20
+   'NombreTrack= sacarpath(titulos(ntk)) 
+   i1=InStrRev(NombreCancion,"\")
+   dim  As String nc, tiempo 
+   nc=Mid(NombreCancion,i1+1)
+  Dim numc As Integer = CInt(pmTk(0).canalsalida) + 1
+' suponemos que en la cancion todos los tracks tienen el mismo tempo
+' luego el tempo  del Roll sera igual al resto usamoes el de roll
+' igual que el plaAll , TipoCompas y tempo son dos cosas distintas 
+
+      tiempo = tempoString(TipoCompas)
+ 
+   Print #midiplano, "MFile 1 "+Str(tope+1)+" " + Str (1000)
+   Print #midiplano, "MTrk"
+   Print #midiplano, "0 Meta SeqName "; Chr(34);nc;Chr(34)
+   Print #midiplano, "0 Meta Text "; chr(34);"Creado por RollMusic"; chr(34)
+   Print #midiplano, "0 Tempo " + Str (MICROSEGUNDOS_POR_NEGRA)
+   Print #midiplano, "0 TimeSig " + tiempo 
+   Print #midiplano, "0 KeySig 0 Major"
+   Print #midiplano, "0 Meta TrkEnd"
+   Print #midiplano, "TrkEnd"
+'   Print #midiplano, "0 Meta TrkName "; Chr(34); nc ;Chr(34)
+'''' patchs
+' For i1=1 To tope
+'   Print #midiplano, "0 PrCh  ch=";numc;" "; "p=";pmTk(i1).patch
+  ''veremos como se pone el portout si se puede pmTk(pis).portout)	
+' Next i1
+'i1=0
+'preparo vector de datos txt a grabar
+
+  Dim As Integer p1
+
+   MidiDatos(1).pista=1        
+
+
+EndIf
+
+
+'------------apertura de ports
+Dim As Long porterror,nousar
+' idea para controlar cancion con repeticiones podria usar el track 00 solo para eso control
+' creoa todos los defaults siempre
+' 1-----------de playall--------
+PARAR_PLAY_MANUAL=NO
+PARAR_PLAY_EJEC=NO    
+Dim As Integer Splayloop,Splayloop2
+Splayloop=NO:Splayloop2=NO
+' 1------------de playall fin---------
+
+' los nombres ya fueron cargados al inicio
+Print #1,"abriendo ports....play solos "
+sonidoPista(Spis)=1
+Dim As Integer k1,i
+ i=Spis 
+  
+   k1=CInt(pmTk(i).portout)
+    
+'   Print #1,"midiout ",k1, *nombreOut(k1)
+   If InStr(*nombreOut(k1),"Microsoft")>0 Then
+    Print #1,"No se usa Microsoft"
+    Exit sub
+   Else
+     If listoutAbierto( k1) = 0 Then
+        If listoutCreado( k1)=0 Then
+           midiout(k1) = rtmidi_out_create_default ( ) '' es como un new RtMidiOut()
+           listoutCreado( k1)=1 
+        EndIf
+        open_port midiout(k1),k1, nombreOut(k1)
+            porterror=Err 
+        listoutAbierto( k1) = 1
+        Print #1,"abro ",*nombreOut(k1)
+        porterrorsub(porterror)
+
+     Else
+        Print #1,"ya abierto ",*nombreOut(k1)
+        porterror=0
+     EndIf
+   EndIf
+
+  
+
+
+
+Dim As Double tiempoDUR
+tiempoDUR=(60/tiempoPatron) / FactortiempoPatron'60 seg/ cuantas negras enun minuto
+
+Dim As Integer i2,K, i0,xmouse,ymouse,Sfinfin=0,Sfinalloop=0,Scomienzoloop=0
+Dim As UByte i3=0, pisnota=0
+
+Dim As Integer Scomienzo=1, Sfinal=0, vel=100,velpos =0,Scntrepe=0,Sfinal2=0,Scomienzo2=0, Sntk
+
+' canal 0 es el 1 van de 0 a 15
+' pasoCol debe ser de 2 dimensiones 1 para c/pista, 115 el amxio de octavas
+' ojo si cambioaamos por mas octavas debo cambiar, igual el nro de tracks 32 
+''Dim pasoCol (0 To 384) As vec  ' entrada de durciones a medida que barro una columna
+'------------
+Dim As Integer cntpis=0,Stope=1 
+ 
+''' Maxpos es de la cancion ya calculado por playCancion aca no se usa no va mas halla dela lonfg de l apista
+Smayor=pmTk(Spis).MaxPos ' usamos solo la de la pista
+
+Print #1,"solo Spis MAXPOS "; Spis, Smayor  
+Print #1,"PlayUnoSolo pmTk(pis).patch,spis ",CInt(pmTk(Spis).patch), Spis
+Print #1,"solo tiempoPatron ";tiempoPatron
+Sfinal=Smayor
+
+
+
+'fileflush(-1)
+''''RecalCompas()
+'Print #1,"UBound(compas, 1) ",UBound(compas, 1)
+'Sleep 10
+'-------------
+Dim As Double start
+Dim as Integer cnt=0, cntold=0,cpar=0,dura=0,duraOld=0,nj, durj,tiempoFiguraSig
+Dim As Integer liga=0,Notapiano=0,old_notapiano=0, iguales=0, distintos=0
+Dim leng As UInteger <8>
+Dim As Integer result,limsup,vertical=12+(hasta-2)*13+hasta 'vertical en Roll donde estan las repeticiones
+Dim As UByte Scanal=0,Sportsal=0 
+' tope es la maxima capacidad de tracks usada , lso tracks son contiguos
+' si se borra un track queda sin usar eso hay que verlo...JMG ..
+' por ahora solo proceso los que tengan lim2 o si llegamos a tope 
+  JSOLO=1:'''Scurpos=1
+  mousex=0
+' print #1,                    "-----------------------------------------"
+  Scomienzo=1 ''''posicion
+  cntold=0
+  If pasoZona1 > 0 Then
+    Scomienzo=pasoZona1 
+    Scomienzoloop=Scomienzo
+  EndIf
+
+  If pasoZona2 > 0 Then
+    Sfinal=pasoZona2
+    Sfinalloop=Sfinal
+  EndIf
+
+If Scomienzo = 0 Then  '01-03-2024 play sin roll
+  Scomienzo= 1 
+End If
+
+'''STARTMIDI=Timer
+Dim As Double Sold_time_on
+Sold_time_on=STARTMIDI
+Print #1,"Sold_time_on "; Sold_time_on
+Dim As Double  tickUsuario=0.005 * 240/tiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
+' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
+' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
+Print #1,"TickUsuario "; tickUsuario
+
+tickUsuario=0.005 * 240/tiempoPatron
+
+  '115 a 0
+  ' recorre una posicion vertical
+  ' envio de instrumetno o CAMBIO de PROGRAMA PATCH 
+' Esto es play de pistas el limite de barrido es 1 a 12 siempre en c/pista  
+' debo hcer un for para cada pista, en cada psita ver si esta mute o play
+' ajustar el instrumento de la pista cada vez que cambie la pista.
+
+ Print #1," PlayUnoSolo MAXPOS AL COMENZAR ,final tope ",Smayor,Sfinal,Stope
+Dim As float ajuste=1.0
+''//////////////// PISTA //////////////
+
+' escribimos salidamidi
+    If MIDIFILEONOFF = HABILITAR  Then 
+       MidiDatos(Spis).datos(1)="MTrk"
+       Dim ii As Integer   
+       ii=InStrRev(titulosTk(Spis),"\")
+       dim  As String ncii, tiempo 
+       ncii=Mid(titulosTk(Spis),ii+1)
+       MidiDatos(Spis).datos(2)= "0 Meta TrkName "+ Chr(34) + ncii + Chr(34) 
+'''' patchs
+       MidiDatos(Spis).datos(3)= "0 PrCh  ch=" + Str(CInt(pmTk(Spis).canalsalida) + 1)+ " p="+Str(pmTk(Spis).patch)
+  ''veremos como se pone el portout si se puede pmTk(pis).portout)	
+       NroEventoPista(Spis)=3
+    EndIf
+  Print #1,"ON patch pis canal ",	pmTk(Spis).patch, Spis ,pmTk(Spis).canalsalida
+
+      Paneo (pmTk(Spis).pan, pmTk(Spis).canalsalida,pmTk(Spis).portout)
+      Eco   (pmTk(Spis).eco,  pmTk(Spis).canalsalida,pmTk(Spis).portout) 
+      Chorus(pmTk(Spis).coro,  pmTk(Spis).canalsalida,pmTk(Spis).portout)
+      ChangeProgram ( pmTk(Spis).patch, pmTk(Spis).canalsalida, pmTk(spis).portout)	
+Print #1,"Cambio Prog pis patch, portout, canal ", Spis, pmTk(Spis).patch, pmTk(spis).portout,pmTk(Spis).canalsalida
+    fileflush(-1)
+' reveeer esto de sonido ,,,,,
+      If instancia=ARG7_NOMBRECANCION Or instancia=ARG107_FICTICIO  Then 'batch grafico solo
+          sonidoPista(Spis)=1
+      Else 
+      
+          If  CheckBox_GetCheck( cbxpis(Spis))= 1 Then
+ '        Print #1,"+++++++pista on ",pis
+             sonidoPista(Spis)=1
+          Else  
+ '        Print #1,"+++++++pista off ",pis
+         alloff( pmTk(Spis).canalsalida,CInt(pmTk(Spis).portout) )
+         allSoundoff( pmTk(Spis).canalsalida, CInt(pmTk(Spis).portout) ) 
+             sonidoPista(Spis)=0
+          EndIf
+      EndIf
+
+
+
+''STARTMIDI=Timer
+Sold_time_on=STARTMIDI
+Print #1,"old_time_on "; Sold_time_on
+Print #1,"ENTRA UNOSOLO ",Timer
+' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
+' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
+Print #1,"TickUsuario, comienzo, final "; tickUsuario, Scomienzo, Sfinal
+''//////////////// L O O P E O  JSOLO HORIZONTAL ////////////////////////////////////////////////
+For JSOLO=Scomienzo To Sfinal
+'  print #1," ---------------000000000000000000000-----------------"
+'  print #1," [[[PCA 0:]]]---START--PASO:[";JSOLO;"] ----------------"
+'  print #1," ---------------000000000000000000000-----------------"
+  
+' cambio de inst para la pista, podria poner mas de un instrumento por pista
+' o por cada nota.. 
+' VER DE PONER LOS INSTRUMENTOS EN TRACK
+   If PARAR_PLAY_MANUAL = SI Then
+
+       Sportsal=CInt(pmTk(Spis).portout) 
+       alloff(pmTk(Spis).canalsalida,Sportsal) 
+       allSoundoff( pmTk(Spis).canalsalida, Sportsal ) 
+      Sleep 5
+      PARAR_PLAY_MANUAL=NO
+      Parar_De_Dibujar=NO
+      Exit For
+   EndIf  
+  
+'kNroCol= Int(JSOLO/NroCol)
+'   If (kNroCol > 0) And (JSOLO = NroCol * kNroCol) And (JSOLO < final)Then
+'     posicion=JSOLO
+'     curpos=0
+'   EndIf
+
+
+ '  Print #1," cancon JSOLO velpos "; JSOLO, velpos
+''' /////////////////////// L O O P DE P I S T A S /////////////////////////////////// 
+'''/// BARRE VERTICALMENTE LAS PISTAS PARA CADA POSICION HORIZONTAL medio rebuscado al dope creo..////
+''// un metodo mejroe seria no barrer nada solo el archivo de eventos en fin 
+
+    If CheckBox_GetCheck( cbxpis(Spis))= 1 Then
+       ' tocar
+         sonidoPista(Spis)=1
+    Else
+      If MIDIFILEONOFF = HABILITAR Then
+      Else
+    '   mandar off a todas las notas de la pista silenciada 
+        alloff( pmTk(Spis).canalsalida,CInt(pmTk(Spis).portout) )
+        sonidoPista(Spis)=0       
+        Continue For ' saltear no tocar
+      EndIf 
+    EndIf 
+    ajuste=pmTk(Spis).vol/127
+''    Print #1,"PISTA AJUSTE ",pis, ajuste
+    If SolX.trk(1,1).ejec = 1 Or pmTk(Spis).ejec = 1 Then ' VIENE DE UNA EJEC
+        
+    Else
+
+      If Compas(JSOLO).nro = -1 Then
+        velpos=vfuerte * ajuste
+      EndIf
+      If Compas(JSOLO).nro = -2 Then
+         velpos=vdebil * ajuste
+      EndIf
+      If Compas(JSOLO).nro = -3 Then
+         velpos=vsemifuerte * ajuste
+      EndIf
+      If Compas(JSOLO).nro = -4 Then
+         velpos=vdebil * ajuste
+      EndIf
+      If Compas(JSOLO).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
+         velpos=vdebil * ajuste
+      EndIf
+      If Compas(JSOLO).nro = 0 Then 
+        velpos=vsemifuerte * ajuste ' para midipolano divisones por partes veremso si se soluciona el sonido
+   ' en la rutina vol , depende de la dur ajusta vol=0 o vol = velpos... no hay problema con los silencios
+      EndIf
+    EndIf
+velpos=vsemifuerte
+ '  print #1,"--loop de pistas---pista NRO :";pis;" --------------------------------"
+ '  print #1,"  De esta pista MAXPOS ,final",pmTk(pis).MaxPos, final
+    limsup=UBound (SolX.trk,2)
+    If limsup < lim2 Then
+          Exit For 
+    EndIf  
+
+'If SolX.trk(1,1).inst > 0 Then
+'  Print #1,"CAMBIO PATCH PISTA ",pis,"instru ",Track(pis).trk(1,1).inst
+'  ChangeProgram ( Track(pis).trk(1,1).inst, pmTk(ntk).canalsalida,pmTk(ntk).portout)
+'EndIf  
+
+' ojo con silencios ligados !!!
+
+' limites para cada pista NB,NA,son limites para las Notapiano
+' si se grabo con un limite de octavas las Notapiano tambien estan limitadas  
+   NB = 0  + (pmTk(Spis).desde -1 ) * 13 
+   NA = 11 + (pmTk(Spis).hasta -1 ) * 13 
+'   print #1,"Play Cancion NB ,NA, pis",NB,NA,pis
+   
+   Dim As ubyte NBpiano= CUByte(NB) - CUByte(restar(NB))
+   Dim As ubyte NApiano= CUByte(NA) - CUByte(restar(NA))
+'   print #1,"limite inferior NBpiano ",NBpiano
+'   print #1,"limite Superior NApiano ",NApiano
+' en realida seria bueno no tner limites para los tracks, cada track
+' tiene polifonia de 12 o sea un acorde de 12 notas, ergo
+' la cancion podria tener 12*32tracks = 384 de polifonia, no se si rtmidi lo soporta
+' info del inst en 1 no en lim2   
+
+ 'Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
+   If JSOLO <= pmTk(Spis).MaxPos Then ' tocamos una pista mientras que tenga datos 
+     For i1=1 To lim3   'lim3 decia coo voy de 1 a lim2 necesito que la info del int este en 1
+       If i1<= lim2  And Spis<=32 Then
+         If (SolX.trk(JSOLO,i1).nota >= NBpiano)  And _
+            (SolX.trk(JSOLO,i1).nota <= NA)      And _
+            (SolX.trk(JSOLO,i1).dur >=1)         And _
+            (SolX.trk(JSOLO,i1).dur <= 180)       Or _ 
+            (SolX.trk(JSOLO, i1).dur <= 183)      Or _
+            (SolX.trk(JSOLO, i1).dur <= 185)    Then ' es semitono
+            Notapiano = CInt(SolX.trk(JSOLO,i1).nota)' solo en los onoff2 es notapiano o no?
+            Sportsal=pmTk(Spis).portout
+            Scanal=pmTk(Spis).canalsalida
+            If sonidoPista(Spis)=1 Then
+               If SolX.trk(1,1).ejec = 1 Or pmTk(Spis).ejec=1 Then
+                   If SolX.trk(JSOLO, i1).vol > 0 Then
+    '      Print #1,"playUnoSolo SolX.trk(JSOLO, i1).onoff ,vol ";SolX.trk(JSOLO, i1).onoff, SolX.trk(JSOLO, i1).vol
+                    vel=SolX.trk(JSOLO,i1).vol * ajuste
+                   Else
+                     vel=80
+                   EndIf
+               Else
+                  vel=VelPos
+               EndIf
+             '''  If vel=0 Then vel=64 EndIf  
+            Else
+               alloff( pmTk(Spis).canalsalida,CInt(pmTk(Spis).portout) )
+               vel=0
+            EndIf
+         EndIf
+' llegamos al final de la Columna
+         If SolX.trk(JSOLO,i1).onoff =2 Then
+        '    NroEventoPista(pis) = NroEventoPista(pis) + 1
+         '   NroEvento=NroEventoPista(pis)
+            noteon CUByte(Notapiano),vel,Scanal,Sportsal,Spis,NroEvento
+         EndIf
+         If SolX.trk(JSOLO,i1).onoff= 1 Then
+        '    NroEventoPista(pis)=NroEventoPista(pis) +1
+         '   NroEvento=NroEventoPista(pis)
+            noteoff CUByte(Notapiano),Scanal,Sportsal,Spis,NroEvento
+         EndIf    
+       EndIf
+
+'--------
+     If i1 > lim2  Then
+       If SolX.trk(JSOLO,i1).nota = 210 Then
+  '  Print #1,"210 leido JSOLO",JSOLO
+         Splayloop2=SI
+         Scomienzo2=JSOLO
+     EndIf
+
+     If SolX.trk(JSOLO,i1).nota = 211 Then
+     '  Print #1,"211 leido JSOLO",JSOLO
+           Sfinal2=JSOLO
+'---------- reset de las notas que no llegan a su off por un corte antes del off -- ok 
+' deberia hacer el corte tambien si hay ejecuciones 
+
+            Sportsal=CInt(pmTk(Spis).portout) 
+            alloff(pmTk(Spis).canalsalida,Sportsal) 
+            allSoundoff( pmTk(Spis).canalsalida, Sportsal ) 
+
+'---------------------------------------------
+        If Scntrepe > 0 Then
+           Scntrepe -= 1
+        Else
+           Scntrepe=SolX.trk(JSOLO,i1).vol ' nro repeticiones en vertical +1
+        EndIf
+        If Scntrepe =0 Then
+           Sfinal2=SMayor 
+           If Sfinalloop > 0 Then
+              Sfinal2=Sfinalloop
+           EndIf
+        EndIf 
+     EndIf
+   EndIf
+
+ 
+'---- 
+
+     Next i1
+   EndIf
+
+
+
+  duracion (Sold_time_on ,tickUsuario) ' si es cero no 1 no hay duracion es acorde
+  Sold_time_on=Sold_time_on + tickUsuario 'jmgtiempo
+
+
+'  print #1,"---FIN -----paso:"; JSOLO;" --------------------------------"
+'  Print #1,"---FIN---playloop PLAYLOOP2 ",playloop, playloop2
+  If Splayloop=SI And JSOLO= Sfinalloop  Then
+    JSOLO=Scomienzoloop -1
+
+  EndIf
+  If Splayloop2=SI And JSOLO= Sfinal2    Then
+    if Sfinfin=0  Or Splayloop=SI Then
+       JSOLO=Scomienzo2 -1
+    EndIf
+    If Sfinal2=Sfinalloop Then 
+       If Splayloop=SI Then
+         JSOLO=Scomienzoloop -1
+       Else
+         Sfinal=SMayor 
+         Sfinal2=SMayor 
+         JSOLO=Sfinal2 
+       EndIf
+    EndIf
+  EndIf
+  Sleep 1,1 ' para que corranmas de un thread
+
+Next JSOLO
+
+If MIDIFILEONOFF = HABILITAR Then 
+    Dim As Double TiempoAcumNew
+     Dim As Integer T1
+     TiempoAcumNew= Timer - STARTMIDI
+     T1 =  TiempoAcumNew *  1000 * tiempoPatron/60
+     'las terminaciones de cada pista 
+
+       NroEventoPista(Spis) = NroEventoPista(Spis) + 1
+       NroEvento=NroEventoPista(Spis) 
+       MidiDatos(Spis).datos(NroEvento)= Str(T1) + " Meta TrkEnd"
+       NroEventoPista(Spis) = NroEventoPista(Spis) + 1
+       NroEvento=NroEventoPista(Spis) 
+       MidiDatos(Spis).datos(NroEvento)="TrkEnd"
+
+     MIDIFILEONOFF = DESHABILITAR
+      'volcar misDatos a SecuenciaPlay.txt
+       Dim k4 As Integer
+          For k4=1 To NroEventoPista(Spis)
+              Print #midiplano,MidiDatos(Spis).datos(k4)
+          Next k4
+
+      
+       Close 20 ' cierra SecuemciaPlay.txt FIX ERROR 07-10-2025
+EndIf  
+'
+'---------no va posicion=comienzo
+'posishow=posicion + 20
+'posishow=posicion - 20
+'posicion=posicion -20
+ 
+JSOLO=0:'---curpos=0
+' 11-06-2021 se volvio a colocar 1 seg retardo para no escuchar un corte abrubto
+' al final, por ahroa no parpadea mas veremos.... 
+ 
+
+'' Cplay=NO ' Control de play cancion si fue desde control
+
+
+'''  reponer mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
+
+ SuenaTodo=0 ' habilita boton cotrol sonido de pistas
+ 
+Sleep 10,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion 
+/'
+close_port(midiout)
+out_free(midiout)
+'/ 
+If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Then 
+Else
+ SetGadgetstate(BTN_ROLL_EJECUTAR,0)
+EndIf
+
+Dim As Integer checkejec=0
+For  iz As Short =1 To 32
+      If CheckBox_GetCheck( cbxejec(iz))= 1  Or CheckBox_GetCheck( cbxgrab(iz))= 1 Then
+          checkejec=1
+      End If
+      Exit For
+Next iz
+'if GrabarPenta=0 and GrabarEjec=HabilitaGrabar and Parar_De_Dibujar=NO And checkejec=0 Then 
+
+      k1=pmTk(Spis).portout
+'   '   Print #1,"midiout ",k1, *nombreOut(k1)
+      alloff( pmTk(Spis).canalsalida,k1 )  
+      allSoundoff( pmTk(Spis).canalsalida,k1 )  
+'
+'      ''Print #1,"desmarco ",*nombreOut(k1)
+'      listoutAbierto(k1)=0
+'      close_port midiout(k1)
+'   '   out_free   midiout(k1)
+'      listoutAbierto( k1) = 0
+   
+'EndIf 
+  Parar_De_Dibujar=NO ' 05-03-2024
+'  Cplay=NO
+ 
+'       Sportsal=CInt(pmTk(Spis).portout) 
+'       alloff(pmTk(Spis).canalsalida,Sportsal) 
+'       allSoundoff( pmTk(Spis).canalsalida, Sportsal ) 
+  
+
+Sleep 20,1
+
+Exit Sub
+
+PlaySoloError:
+ Dim errmsg As String
+
+If  Err > 0 Then
+  If i1=26 Then i1=25 EndIf
+
+  errmsg = "FAIL PLAYUNOSOLO Error " & Err & _
+           " in function " & *Erfn & _
+           " on line " & Erl & " " & ProgError(Err)
+  Print #1, errmsg ,"JSOLO ", JSOLO, "i1 ";i1
+
+Print #1, "SolX.trk(JSOLO,i1).nota ", SolX.trk(JSOLO,i1).nota
+Print #1, "SolX.trk(JSOLO,i1).dur ", SolX.trk(JSOLO,i1).dur
+Print #1, " MaxPos  JSOLO  ", Smayor, JSOLO  
+
+  FileFlush (-1)
+
+'''''ThreadDetach(thread1)
+  'Parar_De_Dibujar=NO ' 05-03-2024
+ 
+EndIf
+
+End Sub 
+
+
+'-----------------------------------------
 Sub FraccionarDur (Track() As sec,Roll As inst, indicePos As Integer, dura As ubyte,nR As Integer, ntk As integer)
 ' npo= notapiano, posi =posicion
 ' DADA una Notapiano selecionada con cursor o click

@@ -1,0 +1,4 @@
+ 1,si
+ 2,no
+ 240,tiempoPatronEjec
+ 0,Maxpos

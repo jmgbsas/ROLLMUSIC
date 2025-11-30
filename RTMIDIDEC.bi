@@ -305,6 +305,6 @@ Type midicod Field=1
  As Integer partes 
 End Type
 
-Redim shared CargaIn ( 1 To 384000) As midicod
+Redim shared CargaIn ( 1 To 84000) As midicod
 '''Redim shared CargaInRoll ( 1 To 384000) As midicod
 

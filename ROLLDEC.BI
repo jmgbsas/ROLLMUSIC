@@ -793,6 +793,9 @@ Type sec
  As poli trk(Any, any)
 End Type
 
+' 8 pistas de solos
+
+  
 '-------------------------------
 ' grabaPos y GrabaLim estan completos no quedo nada libre deberia grabar una tercera
 ' o grabar en la ocatva libre de NA> NA-13, creo debo poner un block mas para
@@ -1231,11 +1234,12 @@ ProgError(15) = "quit request signal"
 ProgError(16) = "return without gosub"
 ProgError(17) = "end of file"
 
-Static Shared As HWND cbxnum(1 To 32), cbxejec(1 To 32),cbxgrab(1 To 32),rbparar,rbgrabar,cbxejecout(1 To 32)
+Static Shared As HWND cbxnum(1 To 32),cbxpis(1 To 32), cbxejec(1 To 32),cbxgrab(1 To 32),rbparar,rbgrabar,cbxejecout(1 To 32)
 Static Shared As Integer sonidoPista(1 To 32)
 static  Shared As Integer SuenaTodo =0, cntsuena=0
 Static Shared  As Integer jgrb=0, jgrbRoll
 Declare Sub PlayCancion(Track() As sec)
+Declare Sub PlayUnoSolo(SolX As sec, Spis As Integer)
 Declare Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst,funcion As string)
 Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
 Declare Sub ReCalCompas()
@@ -1246,7 +1250,7 @@ Declare Function lugarNota (lugar As integer) As Integer
 Declare Sub metronomo ()
 Declare Sub copiarPmtkaPmtk(r as Integer, e As integer)
 ''patchsal=Roll.trk(1,1).inst
-Dim Shared As Any Ptr threadG 
+Dim Shared As Integer threadG, threadV (1 To 32) 
 
 
 ReDim Shared As Integer tt(1 To 32)
@@ -1472,7 +1476,7 @@ Dim Shared As Double timex(1 To 32)
 Dim Shared As UByte dato1, dato2 , dato3, dato1old,dato4=0,filtro1,filtro2 
 Dim Shared  As Double stime1=0, stime2=0, sdura=0
 Dim Shared datot4 As double
-Dim Shared  As integer maxgrb=0,maxcarga=0 
+Dim Shared  As integer maxgrb=0,maxcarga=0, maxpis 
 ' usaremos xml par aleer y escribir musicxml 
 ' http://xmlsoft.org/examples/index.html
 Dim Shared As String acercade, camino,nroversion
@@ -1582,3 +1586,30 @@ Union Encabezado
 End Union
 declare Function Otroinputbox(message As String) As String
 Declare Sub ReproducirTodasLaSPistas()   
+'------------NUEVA IDEA EN UN TYPE PONER MUCHOS VECTORES DINAMICOS
+' CADA UNO PODRIA SER UN MELODIA REPETITIVA O NO
+' LUEGO SE LASPODRIA TOCAR EN SECUENCIA O NO
+'--------------------
+' PRUEBA DE SECUENCIAS ENLAZADAS PRINCIPIO PARA HACER PATRONES..ENLAZAREMOS
+' SECUENCIAS CON ESTA ESTRUCTURA
+'cada vez que quiero enlazar un nuevo patron lso enlazo con los ptr y lso puedo recorrer
+'hacia adelante o atras.pero para entrar directamente haremos un vector con
+' los ptr de cada patron ordenados segun vengan desde 1 a ...NN
+' SECUENCIA DE PATRONES CUYO ORDEN LO DA UN VECTOR NADA MAS,, BORRAR O INSERTAR U NELEMTO
+' En un vector es mas rapido y sencillo lso ptr siguen fijos , cuadno creo un secuencia
+' o la cargo en memoria tomo sus ptr y lsopongo en elvector tampoxo haria falta el type
+' lo que le falta a 
+Type Patron
+  As Integer  orden ' a medida que cargo un asecuenica en memoria es el ordende carga
+  As Any Ptr  comienzo ' ptr comienzo de la secuencia
+  As Any Ptr final     ' ptr final de la secuencia   
+End Type
+
+ReDim As Patron ordenLista (1 To 100) ' cargo hasta 200 patrones o mas si deseo cambiar el tamaño
+' si quiero borrar insertar un elemento simplemente lo marco con Patron.orden que
+' tendra 1,2,3,4,5,6,7,8, hacer eso en un vector es mucho mas facil y listo,,,algo
+' humano y  comprensible, total durante el orden que haga el usuario de sus patrones
+' es lento y en esa lentitud es muy rapida el orden de un simple vector tipo contador
+  
+
+

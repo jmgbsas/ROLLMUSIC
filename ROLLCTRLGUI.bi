@@ -75,6 +75,49 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
   cbxnum(31) = CheckBox_New( 60 , 640, 20, 20, "",, hwndc)
   cbxnum(32) = CheckBox_New( 60 , 660, 20, 20, "",, hwndc) 
 
+' CHECK PARA TOCAR UNA PISTA FUERA DEL CONTROL TOTAL DE CANCION
+' check para encender o apagar, sonido de salida de c/pista 
+' al cargar una cancion luego de cargar las pistas buscara si hay pistas solitarias
+' cargara su nombre en la lsita de cancion ser aotra rtk pondrra un check en cbxpis
+' pero se tocara independientemente con playall como pista aparte, podria ahcer
+' su propia lista de pistas solitarias que tengan loops..hago una 3er alista o las
+' pongo en la 1er lista? creo merece una lista nueva NO porque con TAB la querre seguir editando
+' y sera una pista mas de cancion pero que se toca aparte y la cancion playCancion en su barrido
+' la saltara como si no existiera !! es lo mejor creo por ahora  
+  cbxpis(1) =  CheckBox_New( 40 ,  40, 20, 20, "",, hwndc) 
+  cbxpis(2) =  CheckBox_New( 40 ,  60, 20, 20, "",, hwndc)
+  cbxpis(3) =  CheckBox_New( 40 ,  80, 20, 20, "",, hwndc)
+  cbxpis(4) =  CheckBox_New( 40 , 100, 20, 20, "",, hwndc)
+  cbxpis(5) =  CheckBox_New( 40 , 120, 20, 20, "",, hwndc)
+  cbxpis(6) =  CheckBox_New( 40 , 140, 20, 20, "",, hwndc) 
+  cbxpis(7) =  CheckBox_New( 40 , 160, 20, 20, "",, hwndc) 
+  cbxpis(8) =  CheckBox_New( 40 , 180, 20, 20, "",, hwndc)
+  cbxpis(9) =  CheckBox_New( 40 , 200, 20, 20, "",, hwndc)
+  cbxpis(10) = CheckBox_New( 40 , 220, 20, 20, "",, hwndc)
+  cbxpis(11) = CheckBox_New( 40 , 240, 20, 20, "",, hwndc)
+  cbxpis(12) = CheckBox_New( 40 , 260, 20, 20, "",, hwndc)
+  cbxpis(13) = CheckBox_New( 40 , 280, 20, 20, "",, hwndc) 
+  cbxpis(14) = CheckBox_New( 40 , 300, 20, 20, "",, hwndc) 
+  cbxpis(15) = CheckBox_New( 40 , 320, 20, 20, "",, hwndc)
+  cbxpis(16) = CheckBox_New( 40 , 340, 20, 20, "",, hwndc)
+  cbxpis(17) = CheckBox_New( 40 , 360, 20, 20, "",, hwndc)
+  cbxpis(18) = CheckBox_New( 40 , 380, 20, 20, "",, hwndc)
+  cbxpis(19) = CheckBox_New( 40 , 400, 20, 20, "",, hwndc) 
+  cbxpis(20) = CheckBox_New( 40 , 420, 20, 20, "",, hwndc) 
+  cbxpis(21) = CheckBox_New( 40 , 440, 20, 20, "",, hwndc)
+  cbxpis(22) = CheckBox_New( 40 , 460, 20, 20, "",, hwndc)
+  cbxpis(23) = CheckBox_New( 40 , 480, 20, 20, "",, hwndc)
+  cbxpis(24) = CheckBox_New( 40 , 500, 20, 20, "",, hwndc)
+  cbxpis(25) = CheckBox_New( 40 , 520, 20, 20, "",, hwndc) 
+  cbxpis(26) = CheckBox_New( 40 , 540, 20, 20, "",, hwndc) 
+  cbxpis(27) = CheckBox_New( 40 , 560, 20, 20, "",, hwndc)
+  cbxpis(28) = CheckBox_New( 40 , 580, 20, 20, "",, hwndc)
+  cbxpis(29) = CheckBox_New( 40 , 600, 20, 20, "",, hwndc)
+  cbxpis(30) = CheckBox_New( 40 , 620, 20, 20, "",, hwndc)
+  cbxpis(31) = CheckBox_New( 40 , 640, 20, 20, "",, hwndc)
+  cbxpis(32) = CheckBox_New( 40 , 660, 20, 20, "",, hwndc) 
+' lo puedo probar ya chequear pistas para que se toquen con playcancion o playall!
+ 
 ' fast? http://www.forosdelweb.com/f69/archivos-ayuda-chm-con-visual-basic-6-0-a-801611/
 
 
@@ -251,11 +294,12 @@ ButtonGadget(BTN_ROLL_CORO,  60 ,750, 45, 20,"Coro")
   MenName10=MenuTitle(hMessages,"INFO")
 
 ''MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
-MenuItem(1006,MenName1, "1.0 Cargar directorio de Cancion con Pistas separados con Ventana de Control y Roll Grafico")
+menuitem(10064,Menname1,"1.0 SIN ROLL GRAFICO=> CARGAR TODAS LAS PISTAS *.RTK *.EJEC Y OTRAS  Y EN UN SOLO PASO")
+MenuItem(10061,MenName1,"2.0 SIN Roll Grafico=> CARGAR SOLO PISTAS *.RTK de Cancion con Pistas separados con Ventana de Control  ")
+MenuItem(1006,MenName1, "3.0 CON Roll Grafico=> Cargar SOLO directorio de Cancion con Pistas separados con Ventana de Control ")
 Menubar(MenName1)
-MenuItem(10061,MenName1,"2.0 Abrir directorio de Cancion con Pistas separados con Ventana de Control  sin Roll Grafico")
-MenuItem(10062,MenName1,"2.1 Abrir Roll Grafico dependiente de Control DESPUES DE  (2.0) o se cerro el grafico. ")
-MenuItem(10063,MenName1,"2.2 Externo:Abrir un Roll Grafico independiente de Control, DESPEUS DE  (2.0) NO TENDRA NINGUN PARAMETRO")
+MenuItem(10062,MenName1,"3.1 Abrir SOLO Roll Grafico dependiente de Control DESPUES DE  (2.0) o se cerro el grafico. ")
+MenuItem(10063,MenName1,"3.2 Externo:Abrir un Roll Grafico independiente de Control, DESPEUS DE  (2.0) NO TENDRA NINGUN PARAMETRO")
 Menubar(MenName1)
 MenuItem(1007,MenName1, "3.0 Grabar Cancion")
 'MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
@@ -495,7 +539,7 @@ End Select
     SetStateMenu(hmessages,2500,1)
     SetStateMenu(hmessages,2501,1)
     ''SetStateMenu(hmessages,1050,1)
-SetStateMenu(hmessages,1007,1) ' por ahopra no funciona bien requiere mucho trabajpo
-SetStateMenu(hmessages,1007,1) ' por ahopra no funciona bien requiere mucho trabajpo
+''SetStateMenu(hmessages,1007,1) ' por ahopra no funciona bien requiere mucho trabajpo
+SetStateMenu(hmessages,1007,0) ' TEST
 
 End If

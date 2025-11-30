@@ -126,7 +126,7 @@ clickpista=0
  Dim As Integer i,j,k,negra=96, multi,kj,kp, cntcompas,cntnegra,com, compas4cuartos= 4*negra,MAXI
 
  If CANCIONCARGADA=TRUE Then
-    MAXI=MaxPosTope
+    MAXI=maxposTope
  Else
     MAXI=Maxpos 
  EndIf
@@ -5834,9 +5834,8 @@ Dim As Integer i,ntkold
 ' los que no se ven ya fueron refrescados , o sea debo
 ' grabar Track n a disco y al final grabar rolla track solo para
 'el visual
-            GrabarRollaTrack (0,0) ' nuevo deberia ser asi sin cambiar estencion 0
  
-        '''   GrabarTrack ntk  tenia esto cual va 
+            GrabarTrack ntk  ''tenia esto cual va 
            Sleep 20           
        EndIf
 
@@ -6946,7 +6945,10 @@ Dim  As Integer i3
               Next i3
               ThreadDetach(thread1)              
               ThreadDetach(thread2)
-
+              ThreadDetach(threadG)
+              For i3=1 To 32
+                 ThreadDetach(threadV(i3))
+              Next i3
            EndIf
 
 'Sleep 10

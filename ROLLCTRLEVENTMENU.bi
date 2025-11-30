@@ -12,7 +12,7 @@ Print #1," ROLLCTRLMENU EventNumber !!! ", EventNumber
             '' UseGadgetList(hwndC)
               StatusBarGadget(BARRA_DE_ESTADO,"1.0 ROLL GRAFICO NO DEBE ESTAR LEVANTADO, SI LO ESTÁ CIERRE PRIMERO EL GRAFICO BUSQUE LA CARPETA Y ACEPTE" )
 
-              CTRL100610061 (hMessages , Tope )
+              CTRL100610061 (hMessages ,  "" )
  
 StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIONES DE TECLADO CON MANUALES, SE CONGELARA LA SECUENCIA" )           
              If abrirRoll=NO_CARGAR And NombreCancion > ""  Then
@@ -39,6 +39,25 @@ StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIO
 ' era la 1063 antigua
             CTRL1063 ()  
 ' ----------------------------------------------------------------------
+' ==> CARGAR TODO SIN GRAFICO
+           Case 10064
+   StatusBarGadget(BARRA_DE_ESTADO,"1.0 ROLL GRAFICO NO DEBE ESTAR LEVANTADO, SI LO ESTÁ CIERRE PRIMERO EL GRAFICO BUSQUE LA CARPETA Y ACEPTE" )
+            Tope=0
+            NombreCancion = ""
+
+            CTRL100610061 (hMessages , "10064") ' llena la global Tope y NombreCancion
+            
+            Dim lugar As String
+           Print #1,"NOMBREcANCION QUE LLEGA, tOPE",NombreCancion, Tope 
+            If NombreCancion > "" Then
+            ' viene de cargar una cancion yvamos a cargar las ejecuciones
+               DirEjecSinBarra = NombreCancion
+               lugar = NombreCancion +"\EJECS" 
+               CTRL1016 (lugar)
+            Else
+              Exit Select
+            EndIf
+' ----------------------------------------------------------------
            Case 1007 '<============ grabar cancion bosquejo
 ' 26-02-2022 desarrollo debo probar el codigo echo hace mucho 
 ' no se si anda bien          

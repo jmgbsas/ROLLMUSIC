@@ -1,0 +1,425 @@
+FUNCIONA OK CANCION SIEMPRE DEBE EMPEZAR PRIMERO Y DEBE EJECUTARSE AL MENOS UNA PISTA
+STARMIDI DEBE VOLVER A CERO PARA QUE SE REINICIE EL CICLO. BUSCANDO LA PALABRA ENTRA SE
+PUEDE VER EL TIMER DE CANCION Y DE LOS QUE CORREMOS EN FORMA AISLADA EL RETARDO ES MINIMO
+
+start
+PID DE ESTE PROCESO          4220
+11-30-202501:00:48
+__FB_ARGV__   73092320
+__FB_ARGC__    1
+__FB_ARGC__    1
+arg  0 = 'C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\RollMusic.exe'
+arg  1 = ''
+instancia, ix                0             2
+C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\
+intervalo no dado usando default!
+NB, NA         39            102
+gap1           196
+nanchofig      1.4
+portsin  5
+portsout 9
+USB Midi Cable 0
+loopMIDI Port 1
+loopMIDI Port 1 2
+loopMIDI Port 2 3
+loopMIDI Port 3 4
+-----------------------------
+CoolSoft MIDIMapper 0
+Microsoft GS Wavetable Synth 1
+VirtualMIDISynth #1 2
+VirtualMIDISynth #2 3
+USB Midi Cable 4
+loopMIDI Port 5
+loopMIDI Port 1 6
+loopMIDI Port 2 7
+loopMIDI Port 3 8
+ ROLLCTRLMENU EventNumber !!!              1006
+entro por no hay nombrecancion ok
+cargarDirectorioCancion     C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK
+ abrirRoll  0
+SALE A CARGAR ROLL POR 1ERA VEZ ABRIRROLL=CARGAR_ROLL EXIT DO
+-------------------------------------------------------
+inicia CargaPistasEnCancion
+filename encancion > 0      [01]OBOE.rtk
+trabajo con este filename...              [01]OBOE.rtk
+ sacarNtk string que llega nombre pista [01]OBOE.rtk
+sacarNtk ntk  1
+nombre en CargarPistasEnCancion ,Numpista C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[01]OBOE.rtk   1
+----------------------------------------------
+1) CargarTrack nombre, ntk=               C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[01]OBOE.rtk   1
+1) UBIRTK QUE LLEGA          1
+ABRE TRK DE NOMBRE C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[01]OBOE.rtk
+MaxPos ntk     10949         1
+CantTicks  86400
+NombreCancion,nomobre, CantTicks C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK          C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[01]OBOE.rtk   86400
+ntk desde, hasta             1             4             8
+Carga Track notaescala_num_ini             1
+cargatrack pmTk(ntk).canalsalida, ntk     1              1
+PORTOUT, NTK 2               1
+EN CARGATRACK PATCH         69
+///CARGA TRACK PATCH         69
+2 instru en cargar track  69
+cargartrack maxpos, ntk  :   10949         1
+CLOSE ct CERRO TRK NRO ct    1             14
+ patch ntk canal            0              1            1
+CargarTrack  fin
+----------------------------------------------
+CARGATRACK ntk,VEO EJEC pmTk(ntk).ejec  1 1
+CARGATRACK ntk,VEO EJEC Track(ntk).trk(1,1).ejec  1     0
+trabajo con este filename...              [02]PIANOLA.rtk
+ sacarNtk string que llega nombre pista [02]PIANOLA.rtk
+sacarNtk ntk  2
+nombre en CargarPistasEnCancion ,Numpista C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[02]PIANOLA.rtk              2
+----------------------------------------------
+1) CargarTrack nombre, ntk=               C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[02]PIANOLA.rtk              2
+1) UBIRTK QUE LLEGA          1
+ABRE TRK DE NOMBRE C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[02]PIANOLA.rtk
+MaxPos ntk     3794          2
+CantTicks  86400
+NombreCancion,nomobre, CantTicks C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK          C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[02]PIANOLA.rtk              86400
+ntk desde, hasta             2             4             8
+Carga Track notaescala_num_ini             1
+cargatrack pmTk(ntk).canalsalida, ntk     0              2
+PORTOUT, NTK 2               2
+EN CARGATRACK PATCH         1
+///CARGA TRACK PATCH         1
+2 instru en cargar track  1
+cargartrack maxpos, ntk  :   3794          2
+CLOSE ct CERRO TRK NRO ct    2             14
+ patch ntk canal            1              2            0
+CargarTrack  fin
+----------------------------------------------
+CARGATRACK ntk,VEO EJEC pmTk(ntk).ejec  2 1
+CARGATRACK ntk,VEO EJEC Track(ntk).trk(1,1).ejec  2     0
+trabajo con este filename...              [03]TROMPETA.rtk
+ sacarNtk string que llega nombre pista [03]TROMPETA.rtk
+sacarNtk ntk  3
+nombre en CargarPistasEnCancion ,Numpista C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[03]TROMPETA.rtk             3
+----------------------------------------------
+1) CargarTrack nombre, ntk=               C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[03]TROMPETA.rtk             3
+1) UBIRTK QUE LLEGA          1
+ABRE TRK DE NOMBRE C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[03]TROMPETA.rtk
+MaxPos ntk     6126          3
+CantTicks  86400
+NombreCancion,nomobre, CantTicks C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK          C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[03]TROMPETA.rtk             86400
+ntk desde, hasta             3             4             8
+Carga Track notaescala_num_ini             1
+cargatrack pmTk(ntk).canalsalida, ntk     3              3
+PORTOUT, NTK 2               3
+EN CARGATRACK PATCH         57
+///CARGA TRACK PATCH         57
+2 instru en cargar track  57
+cargartrack maxpos, ntk  :   6126          3
+CLOSE ct CERRO TRK NRO ct    3             14
+ patch ntk canal            57             3            3
+CargarTrack  fin
+----------------------------------------------
+CARGATRACK ntk,VEO EJEC pmTk(ntk).ejec  3 1
+CARGATRACK ntk,VEO EJEC Track(ntk).trk(1,1).ejec  3     0
+trabajo con este filename...              [04]VIOLIN.rtk
+ sacarNtk string que llega nombre pista [04]VIOLIN.rtk
+sacarNtk ntk  4
+nombre en CargarPistasEnCancion ,Numpista C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[04]VIOLIN.rtk               4
+----------------------------------------------
+1) CargarTrack nombre, ntk=               C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[04]VIOLIN.rtk               4
+1) UBIRTK QUE LLEGA          1
+ABRE TRK DE NOMBRE C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[04]VIOLIN.rtk
+MaxPos ntk     7498          4
+CantTicks  86400
+NombreCancion,nomobre, CantTicks C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK          C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[04]VIOLIN.rtk               86400
+ntk desde, hasta             4             4             8
+Carga Track notaescala_num_ini             1
+cargatrack pmTk(ntk).canalsalida, ntk     2              4
+PORTOUT, NTK 2               4
+EN CARGATRACK PATCH         41
+///CARGA TRACK PATCH         41
+2 instru en cargar track  41
+cargartrack maxpos, ntk  :   7498          4
+CLOSE ct CERRO TRK NRO ct    4             14
+ patch ntk canal            0              4            2
+CargarTrack  fin
+----------------------------------------------
+CARGATRACK ntk,VEO EJEC pmTk(ntk).ejec  4 1
+CARGATRACK ntk,VEO EJEC Track(ntk).trk(1,1).ejec  4     0
+CARGO PISTAS MAXIMA CANTIDAD TOPE=         4
+FIN CargaPistasEnCancion no debe calcuar *po             7
+-------------------------------------------------------
+C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK
+entro a cancion en cargar inicio 
+ 1            si
+ 2            no
+ 3            no
+ 4            no
+ 240          tiempoPatronEjec
+ 10949        Maxpos
+En Recalcompas MAXI          10949
+fin RecalCompas ok 
+///1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0)       C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK 
+//////////////midionof  0
+C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\secuenciaPLAY.txt abierta!
+>>>> TRACKS: MaxPos <=2 Or pmTK(ntk).maxpos=0 Then       10949         10949
+>>>> TRACKS MAXPOS (NTK).MAXPOS            10949         10949
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        1            C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[01]OBOE.rtk
+(ntk).maxpos   10949
+instru en TrackaRoll         69
+// trckaroll redim Roll MaxPos             10949
+CANCION CARGADA EN TRACKAROLL ntk,lim3     1             25
+ROLL NO CARGADO EN TRACKAROLL, maxpos      10949
+/////REDIM DE TRACK 0 MaxPos               10949
+paso el redim de track 0
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             10949
+1106 en trackaRoll numero de track ntk     1
+ubound (Track(ntk).trk,2)    25
+ACA VIENE EL ERROR ? 
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar for de copia de TrackaRoll
+ pmTk(ntk).MaxPos            10949
+ ///maxpos-1, nota           10949         63
+ ///maxpos     10949
+cargaCancion DEBE SER 1      1
+NTK del copiado aca esta el lio, Y MAXPOS EN REDIM       1             10949
+CARGA DE  TRACK(0)
+FIN CARGA DE  TRACK(0)
+DIM  MIT START 
+DIM  MIT FIN 
+MIT  TIEMPOPATRON
+CARGO TIEMPOPATRON
+TrackaRoll Fin,,maxpos y (ntk).maxpos      10949         10949
+-----------------Fin TrackaRoll-----------------
+>>>> Tracks  ntk cargado, nombre           1            C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK\[01]OBOE.rtk
+LLAMA A  PLAYCANCION
+grabariniciotxt             C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK
+' ----------------------------------------
+'               P L A Y   C A N C I O N
+'------------------------------------------
+TOPE           4
+abriendo ports....play cancion 
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING, sin importancia
+ya abierto    VirtualMIDISynth #1 2
+ya abierto    VirtualMIDISynth #1 2
+ya abierto    VirtualMIDISynth #1 2
+CANCION ntk MAXPOS  10949
+CANCION ntk MAXPOS  3794
+CANCION ntk MAXPOS  6126
+CANCION ntk MAXPOS  7498
+CANCION ntk MAXPOS  1        10949
+cancion tiempoPatron  240
+maxposTope ===>              10949
+En Recalcompas MAXI          10949
+fin RecalCompas ok 
+UBound(compas, 1)            21898
+TickUsuario  0.005
+ PLAYCANCION MAXPOS AL COMENZAR ,final tope              10949         10949         4
+old_time_on PLAYCANCION  8552.709155844355
+/////////LLAMA A PLAYUNOSOLO y1            2
+/////////LLAMA A PLAYUNOSOLO y1            3
+/////////LLAMA A PLAYUNOSOLO y1            4
+' ----------------------------------------               3
+'               P L A Y  U N O  S O L O    3
+'------------------------------------------              3
+' ----------------------------------------               2
+'               P L A Y  U N O  S O L O    2
+'------------------------------------------              2
+' ----------------------------------------               4
+'               P L A Y  U N O  S O L O    4
+'------------------------------------------              4
+abriendo ports....play solos 
+abriendo ports....play solos 
+abriendo ports....play solos 
+ya abierto    VirtualMIDISynth #1 2
+ya abierto    solo Spis MAXPOS ya abierto               VirtualMIDISynth #1 2
+VirtualMIDISynth #1 2
+solo Spis MAXPOS  4          2 7498
+PlayUnoSolo pmTk(pis).patch,spis          solo Spis MAXPOS              41 3 3794
+          PlayUnoSolo pmTk(pis).patch,spis               4
+ 1solo tiempoPatron                        2
+ 240
+solo tiempoPatron  6126
+ 240
+Sold_time_on Sold_time_on PlayUnoSolo pmTk(pis).patch,spis             57 8552.709155844355 8552.709155844355
+TickUsuario 
+           TickUsuario  0.005
+ 3
+ PlayUnoSolo MAXPOS AL COMENZAR ,final tope              0.005 3794solo tiempoPatron  240
+Sold_time_on    
+ 3794          PlayUnoSolo MAXPOS AL COMENZAR ,final tope              1
+ 8552.709155844355
+ 7498          7498TickUsuario             1
+ 0.005
+ PlayUnoSolo MAXPOS AL COMENZAR ,final tope              6126          6126          1
+ON patch pis canal          ON patch pis canal          ON patch pis canal          57141                        3 2          0
+                         43
+              2
+ENTRA PLAYCANCION   8552.720403958994
+TickUsuario  0.005
+Cambio Prog pis patch, portout, canal      2            1             2             0
+Cambio Prog pis patch, portout, canal      4            41Cambio Prog pis patch, portout, canal    3                        572             2
+              2             3
+old_time_on  8552.709155844355
+ENTRA UNOSOLO                8552.720610885704
+TickUsuario, comienzo, final  0.005        1             3794
+old_time_on  8552.709155844355
+ENTRA UNOSOLO               old_time_on  8552.720745778814
+TickUsuario, comienzo, final  0.005        1             8552.709155844355 7498
+
+ENTRA UNOSOLO                8552.720758350717
+TickUsuario, comienzo, final  0.005        1             6126
+LLAMA A  PLAYCANCION
+grabariniciotxt             C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK
+' ----------------------------------------
+'               P L A Y   C A N C I O N
+'------------------------------------------
+TOPE           4
+abriendo ports....play cancion 
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING, sin importancia
+ya abierto    VirtualMIDISynth #1 2
+ya abierto    VirtualMIDISynth #1 2
+ya abierto    VirtualMIDISynth #1 2
+CANCION ntk MAXPOS  10949
+CANCION ntk MAXPOS  3794
+CANCION ntk MAXPOS  6126
+CANCION ntk MAXPOS  7498
+CANCION ntk MAXPOS  1        10949
+cancion tiempoPatron  240
+maxposTope ===>              10949
+En Recalcompas MAXI          10949
+fin RecalCompas ok 
+UBound(compas, 1)            21898
+TickUsuario  0.005
+ PLAYCANCION MAXPOS AL COMENZAR ,final tope              10949         10949         4
+old_time_on PLAYCANCION  8571.995079969189
+/////////LLAMA A PLAYUNOSOLO y1            2
+/////////LLAMA A PLAYUNOSOLO y1            3
+/////////LLAMA A PLAYUNOSOLO y1            4
+' ----------------------------------------               2
+'               P L A Y  U N O  S O L O    2
+'------------------------------------------              2
+' ----------------------------------------               3
+'               P L A Y  U N O  S O L O    3
+'------------------------------------------              3
+' ----------------------------------------               4
+'               P L A Y  U N O  S O L O    4
+'------------------------------------------              4
+ENTRA PLAYCANCION   8572.006430357949
+TickUsuario  0.005
+abriendo ports....play solos 
+abriendo ports....play solos 
+abriendo ports....play solos 
+ya abierto    ya abierto    VirtualMIDISynth #1 2
+VirtualMIDISynth #1 2
+solo Spis MAXPOS ya abierto               solo Spis MAXPOS VirtualMIDISynth #1 2
+ 3solo Spis MAXPOS           4 2 6126
+PlayUnoSolo pmTk(pis).patch,spis                               57      3
+ 7498
+solo tiempoPatron  3794
+PlayUnoSolo pmTk(pis).patch,spis          PlayUnoSolo pmTk(pis).patch,spis           1 240
+ 41           Sold_time_on   4
+ 2
+solo tiempoPatron  8571.995079969189 240
+solo tiempoPatron 
+Sold_time_on TickUsuario  240
+Sold_time_on  0.005 8571.995079969189 8571.995079969189
+
+
+TickUsuario  PlayUnoSolo MAXPOS AL COMENZAR ,final tope               TickUsuario  0.005 0.005 6126
+ PlayUnoSolo MAXPOS AL COMENZAR ,final tope              7498         
+ 7498 PlayUnoSolo MAXPOS AL COMENZAR ,final tope                       1
+ 3794ON patch pis canal                  41 6126         4                          2
+ 3794          1
+ 1
+ON patch pis canal          ON patch pis canal          571                          3 2                      0
+3
+Cambio Prog pis patch, portout, canal      4            41            2             2
+Cambio Prog pis patch, portout, canal      2            1             2             0
+Cambio Prog pis patch, portout, canal      3            57            2             3
+old_time_on  8571.995079969189
+ENTRA UNOSOLO                8572.007679053615
+TickUsuario, comienzo, final  0.005        1             7498
+old_time_on  8571.995079969189
+ENTRA UNOSOLO                8572.007698081357
+TickUsuario, comienzo, final  0.005        1             3794
+old_time_on  8571.995079969189
+ENTRA UNOSOLO                8572.007726622973
+TickUsuario, comienzo, final  0.005        1             6126
+LLAMA A  PLAYCANCION
+grabariniciotxt             C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABATODORTK
+' ----------------------------------------
+'               P L A Y   C A N C I O N
+'------------------------------------------
+TOPE           4
+abriendo ports....play cancion 
+abro          VirtualMIDISynth #1 2
+RTMIDI_ERROR_WARNING, sin importancia
+ya abierto    VirtualMIDISynth #1 2
+ya abierto    VirtualMIDISynth #1 2
+ya abierto    VirtualMIDISynth #1 2
+CANCION ntk MAXPOS  10949
+CANCION ntk MAXPOS  3794
+CANCION ntk MAXPOS  6126
+CANCION ntk MAXPOS  7498
+CANCION ntk MAXPOS  1        10949
+cancion tiempoPatron  240
+maxposTope ===>              10949
+En Recalcompas MAXI          10949
+fin RecalCompas ok 
+UBound(compas, 1)            21898
+TickUsuario  0.005
+ PLAYCANCION MAXPOS AL COMENZAR ,final tope              10949         10949         4
+old_time_on PLAYCANCION  8588.910152694243
+/////////LLAMA A PLAYUNOSOLO y1            2
+/////////LLAMA A PLAYUNOSOLO y1            3
+/////////LLAMA A PLAYUNOSOLO y1            4
+' ----------------------------------------               2
+'               P L A Y  U N O  S O L O    2
+'------------------------------------------              2
+' ----------------------------------------               3
+'               P L A Y  U N O  S O L O    3
+'------------------------------------------              3
+' ----------------------------------------               4
+'               P L A Y  U N O  S O L O    4
+'------------------------------------------              4
+abriendo ports....play solos 
+abriendo ports....play solos 
+ya abierto    VirtualMIDISynth #1 2
+ya abierto    solo Spis MAXPOS VirtualMIDISynth #1 2
+solo Spis MAXPOS  2          3794
+ 3PlayUnoSolo pmTk(pis).patch,spis                     1 6126
+              PlayUnoSolo pmTk(pis).patch,spis           2
+ 57solo tiempoPatron             240
+ 3
+Sold_time_on solo tiempoPatron  240
+Sold_time_on  8588.910152694243
+TickUsuario  0.005
+ PlayUnoSolo MAXPOS AL COMENZAR ,final tope              8588.910152694243
+ 3794TickUsuario             3794          1
+ 0.005ON patch pis canal    
+1 PlayUnoSolo MAXPOS AL COMENZAR ,final tope                          2 6126                      0
+ 6126          1
+ON patch pis canal          57             3            3
+Cambio Prog pis patch, portout, canal      2            1             2             0
+Cambio Prog pis patch, portout, canal      3            57            2             3
+old_time_on  8588.910152694243
+ENTRA UNOSOLO                8588.921334891344
+TickUsuario, comienzo, final  0.005        1             3794
+old_time_on  8588.910152694243
+ENTRA UNOSOLO                8588.921400469102
+TickUsuario, comienzo, final  0.005        1             6126
+ENTRA PLAYCANCION  abriendo ports....play solos 
+ 8588.921417458159
+TickUsuario ya abierto      VirtualMIDISynth #1 2
+ 0.005solo Spis MAXPOS 
+ 4             7498
+PlayUnoSolo pmTk(pis).patch,spis           41            4
+solo tiempoPatron  240
+Sold_time_on  8588.910152694243
+TickUsuario  0.005
+ PlayUnoSolo MAXPOS AL COMENZAR ,final tope              7498          7498          1
+ON patch pis canal          41             4            2
+Cambio Prog pis patch, portout, canal      4            41            2             2
+old_time_on  8588.910152694243
+ENTRA UNOSOLO                8588.921620307496
+TickUsuario, comienzo, final  0.005        1             7498

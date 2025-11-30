@@ -3203,6 +3203,7 @@ Else
    final = maxgrb
 EndIf
 
+Print #1,"ENTRO A PLAYTOCAALL O EJECS ",Timer
 
 For jToca=comienzo To final ' se calcula al cargr los archivos de ejec EJE X POSICION O TIEMPO
   If jply > 0 Then

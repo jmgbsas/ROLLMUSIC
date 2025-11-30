@@ -1,0 +1,100 @@
+start
+PID DE ESTE PROCESO          2892
+11-28-202511:49:45
+__FB_ARGV__   45371264
+__FB_ARGC__    2
+__FB_ARGC__    2
+arg  0 = 'C:\IT64\AREA\ROLLMUSIC_RUN\RollMusic.exe'
+arg  1 = 'C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABARCANCION_TEST\[02]PIANOLA.rtk'
+ubirtk         74
+ubiroll        0
+arg  2 = ''
+instancia, ix                1             3
+C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABARCANCION_TEST\
+NB, NA        -13           -2
+gap1           196
+nanchofig      2.7
+portsin  5
+portsout 9
+USB Midi Cable 0
+loopMIDI Port 1
+loopMIDI Port 1 2
+loopMIDI Port 2 3
+loopMIDI Port 3 4
+-----------------------------
+CoolSoft MIDIMapper 0
+Microsoft GS Wavetable Synth 1
+VirtualMIDISynth #1 2
+VirtualMIDISynth #2 3
+USB Midi Cable 4
+loopMIDI Port 5
+loopMIDI Port 1 6
+loopMIDI Port 2 7
+loopMIDI Port 3 8
+cALL rOLLLOOP III)
+3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0)                        C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABARCANCION_TEST\[02]PIANOLA.rtk
+///3 ubiroll ubirtk          0             74
+//////////////midionof  0
+C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABARCANCION_TEST\secuenciaPLAY.txt abierta!
+----------------------------------------------
+1) CargarTrack nombre, ntk=               C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABARCANCION_TEST\[02]PIANOLA.rtk        0
+1) UBIRTK QUE LLEGA          74
+ABRE TRK DE NOMBRE C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABARCANCION_TEST\[02]PIANOLA.rtk
+MaxPos ntk     3788          0
+CantTicks  86400
+NombreCancion,nomobre, CantTicks          C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABARCANCION_TEST\[02]PIANOLA.rtk        86400
+ntk desde, hasta             0             4             8
+Carga Track notaescala_num_ini             1
+cargatrack pmTk(ntk).canalsalida, ntk     0              0
+PORTOUT, NTK 2               0
+///CARGA TRACK PATCH         1
+2 instru en cargar track  1
+cargartrack maxpos, ntk  :   3788          0
+CLOSE ct CERRO TRK NRO ct    0             14
+ patch ntk canal            1              0            0
+CargarTrack  fin
+----------------------------------------------
+CARGATRACK ntk,VEO EJEC pmTk(ntk).ejec  0 1
+CARGATRACK ntk,VEO EJEC Track(ntk).trk(1,1).ejec  0     0
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        0            C:\IT64\AREA\ROLLMUSIC_03503_SOLOS\cancion\GRABARCANCION_TEST\[02]PIANOLA.rtk
+(ntk).maxpos   3788
+instru en TrackaRoll         1
+// trckaroll redim Roll MaxPos             3788
+CANCION NO CARGADA EN TRACKAROLL
+ROLL NO CARGADO EN TRACKAROLL, maxpos      3788
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             3788
+1106 en trackaRoll numero de track ntk     0
+ubound (Track(ntk).trk,2)    25
+ACA VIENE EL ERROR ? 
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar for de copia de TrackaRoll
+ pmTk(ntk).MaxPos            3788
+ ///maxpos-1, nota           3788          65
+ ///maxpos     3788
+cargaCancion DEBE SER 1      1
+NTK del copiado aca esta el lio, Y MAXPOS EN REDIM       0             3788
+CARGA DE  TRACK(0)
+FIN CARGA DE  TRACK(0)
+DIM  MIT START 
+DIM  MIT FIN 
+MIT  TIEMPOPATRON
+CARGO TIEMPOPATRON
+TrackaRoll Fin,,maxpos y (ntk).maxpos      3788          3788
+-----------------Fin TrackaRoll-----------------
+En Recalcompas MAXI          3788
+fin RecalCompas ok 
+llama a playall
+ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL
+' ----------------------------------------
+'               P L A Y  A L L
+'------------------------------------------
+abriendo port....play All
+RTMIDI_ERROR_WARNING, sin importancia
+comienzo playaLL ==========> tiempoPatron =              240           FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          0.25
+TickUsuario  0.005
+mefui de playall
+midiout        2            VirtualMIDISynth #1 2
+desmarco      VirtualMIDISynth #1 2
