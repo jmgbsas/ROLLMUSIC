@@ -2992,29 +2992,24 @@ If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
         Exit Do  
  EndIf
  
- If MultiKey(SC_HOME) Then
+  If MultiKey(SC_CONTROL) And MultiKey(SC_HOME) Then
+  'TODA LA SECUENCIA ENTRA EN UN PANTALLA
+ '  anchofig = MaxPos/ANCHO
+   anchofig =ANCHO/MaxPos
+   NroCol =  (MaxPos / anchofig ) + 4
+   ANCHO3div4 = ANCHO * 3/4 
+   gap1= anchofig*6  ''' porque tanto??
+   gap2= (914 * gap1) /1000 ' 74 default
+   gap3= (519 * gap1) /1000 ' 42 default
+ 
+   Exit Do
+
+ EndIf
+
+If MultiKey(SC_HOME) Then
      posicion=1
      posishow=posicion
      Exit Do
- EndIf
- If MultiKey(SC_CONTROL) And MultiKey(SC_HOME) Then
-  'TODA LA SECUENCIA ENTRA EN UN PANTALLA
- Dim nrofig As Integer
-
-  anchofig =(ANCHO- gap1 )/(MaxPos-posishow)
-' If font >=5 And font <= 34 Then
-'   anchofig= mispx(font-4,2)
-'Else
-'   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
-'EndIf
-
-   ''NroCol =  (ANCHO / anchofig ) + 4
-   gap1= anchofig* 6 ' porque era tanto 20
-   gap2= (914 * gap1) /1000 ' 74 default
-   gap3= (519 * gap1) /1000 ' 42 default
-
-   Exit Do
-
  EndIf
 
  If MultiKey(SC_J) And resumen=0 Then

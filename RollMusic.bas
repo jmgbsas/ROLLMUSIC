@@ -32,7 +32,9 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.3504 PRUEBA DE LOOPS, USAR UNA PISTA DE CANCION COMO SOLO Y REPETICIONES  "
+nroversion="0.3505 ctrl-home fixed hace que entre toda la secuencia en la pantalla"
+' 0.3505 ctrl-home fixed hace que entre toda la secuencia en la pantalla
+'"0.3504 PRUEBA DE LOOPS, USAR UNA PISTA DE CANCION COMO SOLO Y REPETICIONES  "
 ' 0.3503 ES CREO EL PRINCIPIO DE PODER DESARROLLAR PATRONES QUE  NO DEBEN SEGUIR A LA
 ' CANCION Y TENER SUS PROPIAS REPETICIONES INDEPENDIENTE DE LA CANCION POR EJEMPLO BATERIA
 ' PULSOS DE BAJO ETC,,, 
