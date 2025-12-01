@@ -1280,6 +1280,7 @@ If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) 
 
 'Print #1,"14-sleep ";Timer
 '    Print #1,"TAB 7- instancia, maspos ",instancia, maxpos
+RecalCompas()
    EndIf
 EndIf
 

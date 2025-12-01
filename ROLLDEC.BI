@@ -210,7 +210,7 @@ Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld, cursormove,notaoldmi
 Dim shared As integer Penta_y, indice, espacio
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
-Dim Shared As Integer octavas,  jc,ic, id,ShowNroCol=0,nro,trak=1,trackold=1,icmps ,cmpsnro'icompas
+Dim Shared As Integer octavas,  jc,ic, id,ShowNroCol=0,nro,trak=1,trackold=1
 Dim Shared As Integer ers, borrapos=0,comienza=0, acordeNro=0,resumen=0  
 Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0,TicksInsertados
 Common  Shared As String comando
