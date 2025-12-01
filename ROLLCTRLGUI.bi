@@ -284,7 +284,7 @@ ButtonGadget(BTN_ROLL_CORO,  60 ,750, 45, 20,"Coro")
   MenName2=MenuTitle(hMessages, "NUEVA CANCION")
   MenName3=MenuTitle(hMessages, "PISTAS MANUALES")
   
-  'MenName31=MenuTitle(hMessages,"Patrones")
+  MenName31=MenuTitle(hMessages,"Patrones")
 
   MenName4=MenuTitle(hMessages,"VER")
   MenName5=MenuTitle(hMessages,"TIEMPO Y RITMO")
@@ -365,11 +365,11 @@ MenuItem(1062,MenName3, "8.0 Crear Instancia de RollMusic Sin Control alguno Con
 
 'MenuItem(1065,MenName31, "Crear Patrones de Ejecuciones por Teclado",MF_POPUP )
 'MenName32=OpenSubmenu(MenName31, "Na/Crear Patrones de Ejecuciones por Teclado" )
-'MenuItem(1064,MenName32,"Nombre del Patron")
-'MenuItem(1065,MenName32,"Numero de Compases del Patron")
+MenuItem(1064,MenName32,"Na/Nombre del Patron")
+MenuItem(1065,MenName32,"Na/Numero de Compases del Patron")
 'MenuItem(1066,MenName32,"Crear Secuencia de  Patrones insertados")
-'MenuItem(1067,MenName31, "Na. Crear Patrones de Ediciones manuales")
-'MenuItem(1068,MenName32,"Habilitar Patrones",MF_UNCHECKED)
+MenuItem(1067,MenName31, "Na/Crear Patrones de Ediciones manuales")
+MenuItem(1068,MenName32,"Na/Habilitar Patrones",MF_UNCHECKED)
 
 
 MenuItem(1070,MenName4,"1.0 Escalas auxiliares ajustadas", MF_CHECKED)
@@ -436,7 +436,7 @@ MENUITEM(1108,MenName7,"7.0 Trabajar con sostenidos (Por omision Sostenidos #)",
 MENUITEM(1109,MenName7,"8.0 Trabajar con bemoles ",MF_UNCHECKED )
 Menubar(MenName7)
 MenuItem(1113,MenName7,"9.0 Usar metronomo para Tocar MIDI-IN",MF_CHECKED)
-MenuItem(1114,MenName7,"10.0 Usar sonido de pista para pulsos de inicio de grabacion",MF_UNCHECKED)
+MenuItem(1114,MenName7,"10.0 TOCAR 4 PULSOS DEL instrumento elegido en una pista de EJECUCIONES antes de grabar",MF_UNCHECKED)
 
 
 MenuItem(1200,MenName8,"1.0 Seleccion Puerto MIDI-IN Ejecucion")
@@ -522,7 +522,7 @@ Select Case nVerCifradoAcordes
 End Select
 ' al inicio por omision patrones deshabilitados
      SetStateMenu(hmessages,1064,1)
-     SetStateMenu(hmessages,1065,1)
+     SetStateMenu(hmessages,1065,0)
      SetStateMenu(hmessages,1066,1)
 ' AL INICIO DESHABILITADOS 2.1 Y .2.2 AUNQUE AL CLIQUEAR NO PASA NADA
   SetStateMenu(hmessages,10062,1)

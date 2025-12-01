@@ -314,7 +314,12 @@
             La cancion debe cargarse para que tenga el RollGrafico levantado la 3, o la 2
             de MENU archivo levantantando un grafico despues, EL PLAY COMBINADO SOLO FUNCIONA   
             CON LA BARRA ESPACIADORA de un Grafico (SPACE). 
-
+            NOTA: el concepto de <SOLO> en la lista de cancion se refiere a que se reproduce o toca
+            fuera del control de cancion multipista. El concepto de solo comun de otras aplicaciones
+            se logra rapidamente pulsando el boton supeior [S] la columna de sonido y pasa de todo
+            de chequeado a nada chequeado, si ponemos en nada chequeado y luego pulsamos una pista para
+            que tenga sonido en la misma columan [S] funcionara como el solo de las aplicaiones standards.
+            
        6.3.1) [ LOOPS ] REPETICIONES EN UNA O VARIAS PISTAS DE <SOLO>  
             Con repeticiones en una pista elegida como solo funciona bien con estas condiciones:
             -En el Grafico si agrego repeticiones a una pista Tipo Solo debe estar posicionado en la pista

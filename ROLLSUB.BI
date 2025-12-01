@@ -146,16 +146,16 @@ For j=1 To MAXI-2
   Select Case kj
     Case   1 To  96
    compas(j).nro = -1
-   compas(j).Posi=j
+   compas(j).Posi=0
     Case  97 To  192 
    compas(j).nro = -2
-   compas(j).Posi=j
+   compas(j).Posi=0
     Case 193  To 288 
    compas(j).nro = -3
-   compas(j).Posi=j
+   compas(j).Posi=0
     Case 289 To 383
    compas(j).nro = -4
-   compas(j).Posi=j
+   compas(j).Posi=0
     Case compas4cuartos '384
      cntcompas=cntcompas+1
   compas(j).Posi=j

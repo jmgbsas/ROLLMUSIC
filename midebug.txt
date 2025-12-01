@@ -1,7 +1,7 @@
 start
-PID DE ESTE PROCESO          6804
-11-23-202523:43:10
-__FB_ARGV__   44978208
+PID DE ESTE PROCESO          4404
+11-30-202523:58:38
+__FB_ARGV__   70536864
 __FB_ARGC__    1
 __FB_ARGC__    1
 arg  0 = 'C:\IT64\AREA\ROLLMUSIC\RollMusic.exe'
@@ -13,7 +13,7 @@ NB, NA         39            102
 gap1           196
 nanchofig      1.932645
 portsin  5
-portsout 8
+portsout 9
 USB Midi Cable 0
 loopMIDI Port 1
 loopMIDI Port 1 2
@@ -23,221 +23,13 @@ loopMIDI Port 3 4
 CoolSoft MIDIMapper 0
 Microsoft GS Wavetable Synth 1
 VirtualMIDISynth #1 2
-USB Midi Cable 3
-loopMIDI Port 4
-loopMIDI Port 1 5
-loopMIDI Port 2 6
-loopMIDI Port 3 7
- ROLLCTRLMENU EventNumber !!!              10061
-cargarDirectorioCancion     C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025
+VirtualMIDISynth #2 3
+USB Midi Cable 4
+loopMIDI Port 5
+loopMIDI Port 1 6
+loopMIDI Port 2 7
+loopMIDI Port 3 8
+ ROLLCTRLMENU EventNumber !!!              1006
+entro por no hay nombrecancion ok
+cargarDirectorioCancion     
  abrirRoll  0
-SALE A CARGAR ROLL POR 1ERA VEZ ABRIRROLL=CARGAR_ROLL EXIT DO
--------------------------------------------------------
-inicia CargaPistasEnCancion
-filename encancion > 0      [01]OBOE.rtk
-trabajo con este filename...              [01]OBOE.rtk
- sacarNtk string que llega nombre pista [01]OBOE.rtk
-sacarNtk ntk  1
-nombre en CargarPistasEnCancion ,Numpista C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\[01]OBOE.rtk    1
-----------------------------------------------
-1) CargarTrack nombre, ntk=               C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\[01]OBOE.rtk    1
-1) UBIRTK QUE LLEGA          1
-ABRE TRK DE NOMBRE C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\[01]OBOE.rtk
-MaxPos ntk     10945         1
-CantTicks  86400
-NombreCancion,nomobre, CantTicks C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025           C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\[01]OBOE.rtk    86400
-ntk desde, hasta             1             4             8
-Carga Track notaescala_num_ini             1
-cargatrack pmTk(ntk).canalsalida, ntk     1              1
-PORTOUT, NTK 2               1
-///CARGA TRACK PATCH         0
-2 instru en cargar track  0
-cargartrack maxpos, ntk  :   10945         1
-CLOSE ct CERRO TRK NRO ct    1             14
- patch ntk canal            0              1            1
-CargarTrack  fin
-----------------------------------------------
-CARGATRACK ntk,VEO EJEC pmTk(ntk).ejec  1 1
-CARGATRACK ntk,VEO EJEC Track(ntk).trk(1,1).ejec  1     0
-trabajo con este filename...              [02]PIANOLA.rtk
- sacarNtk string que llega nombre pista [02]PIANOLA.rtk
-sacarNtk ntk  2
-nombre en CargarPistasEnCancion ,Numpista C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\[02]PIANOLA.rtk               2
-----------------------------------------------
-1) CargarTrack nombre, ntk=               C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\[02]PIANOLA.rtk               2
-1) UBIRTK QUE LLEGA          1
-ABRE TRK DE NOMBRE C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\[02]PIANOLA.rtk
-MaxPos ntk     3786          2
-CantTicks  86400
-NombreCancion,nomobre, CantTicks C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025           C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\[02]PIANOLA.rtk               86400
-ntk desde, hasta             2             4             8
-Carga Track notaescala_num_ini             1
-cargatrack pmTk(ntk).canalsalida, ntk     0              2
-PORTOUT, NTK 2               2
-///CARGA TRACK PATCH         0
-2 instru en cargar track  0
-cargartrack maxpos, ntk  :   3786          2
-CLOSE ct CERRO TRK NRO ct    2             14
- patch ntk canal            1              2            0
-CargarTrack  fin
-----------------------------------------------
-CARGATRACK ntk,VEO EJEC pmTk(ntk).ejec  2 1
-CARGATRACK ntk,VEO EJEC Track(ntk).trk(1,1).ejec  2     0
-CARGO PISTAS MAXIMA CANTIDAD TOPE=         2
-FIN CargaPistasEnCancion no debe calcuar *po             7
--------------------------------------------------------
-C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025
-entro a cancion en cargar inicio 
- 1            si
- 2            si
- 240          tiempoPatronEjec
- 10945        maxgrb
-En Recalcompas MAXI          84600
-fin RecalCompas ok 
->>>> TRACKS: MaxPos <=2 Or pmTK(ntk).maxpos=0 Then       10945         10945
->>>> TRACKS MAXPOS (NTK).MAXPOS            10945         10945
--------------ARRANCA TRACKAROLL---------------------------------
-NTK Y nombre que llego a TrackaRoll        1            C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\[01]OBOE.rtk
-(ntk).maxpos   10945
-instru en TrackaRoll         69
-// trckaroll redim Roll MaxPos             10945
-CANCION CARGADA EN TRACKAROLL ntk,lim3     1             25
-ROLL NO CARGADO EN TRACKAROLL, maxpos      10945
-/////REDIM DE TRACK 0 MaxPos               10945
-paso el redim de track 0
-TrackaRoll desde, hasta      4             8
-TrackaRoll NB, NA ,*po, MaxPos             39            102           7             10945
-1106 en trackaRoll numero de track ntk     1
-ubound (Track(ntk).trk,2)    25
-ACA VIENE EL ERROR ? 
-lbound (Track(ntk).trk,2)    1
- va a ejecutar for de copia de TrackaRoll
- pmTk(ntk).MaxPos            10945
- ///maxpos-1, nota           10945         63
- ///maxpos     10945
-cargaCancion DEBE SER 1      1
-NTK del copiado aca esta el lio, Y MAXPOS EN REDIM       1             10945
-CARGA DE  TRACK(0)
-FIN CARGA DE  TRACK(0)
-DIM  MIT START 
-DIM  MIT FIN 
-MIT  TIEMPOPATRON
-CARGO TIEMPOPATRON
-TrackaRoll Fin,,maxpos y (ntk).maxpos      10945         10945
------------------Fin TrackaRoll-----------------
->>>> Tracks  ntk cargado, nombre           1            C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\[01]OBOE.rtk
- ROLLCTRLMENU EventNumber !!!              1016
-1 ctrl1016 lugar DirEjecSinBarra                        
-3 ctrl1016 lugar DirEjecSinBarra          C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\EJECS          C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\EJECS
-LUGAR RECIBIDO, ntkp maximo C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\EJECS           0
--------------------------------------------------------
-inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devuelve ntkp 
-DirEjecSinBarra encancion > 0             TROMPETA.ejec
-DirEjecSinBarra maxgrb      TROMPETA.ejec
-fileMidiIn  maxgrb          C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\EJECS\TROMPETA.ejec
-fecha1        23/11/2025
-tocaparamCabeza(nf).fecha    45984.71305555556
-cargando archivo ejec version 2
-tocaparam(nf).maxpos         6106
- ORDEN DE LECTURA EJEC nf    1
-PARA FILEMIDIIN             C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\EJECS\TROMPETA.ejec
-DirEjecSinBarra maxgrb      VIOLIN.ejec
-fileMidiIn  maxgrb          C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\EJECS\VIOLIN.ejec
-fecha1        20/11/2025
-tocaparamCabeza(nf).fecha    45981.471875
-cargando archivo ejec version 2
-tocaparam(nf).maxpos         7478
- ORDEN DE LECTURA EJEC nf    2
-PARA FILEMIDIIN             C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\EJECS\VIOLIN.ejec
-MAXIMA LONG DE PISTA maxgrb y cant de pistas  nf         7478          2
-trabajo con este filename...              TROMPETA.ejec
-CargarMidiIn  fileMidiIn    C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\EJECS\TROMPETA.ejec
-fileMidiIn recibido enCargarMidiIn        C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\EJECS\TROMPETA.ejec
-NombreCancion               C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025
-maxgrb en CARGAmidiin        7478
-' VERSION 2 NUEVA leo lo siguiente
-ESTAMOS EN VERION 2 !!!!
-QUE CORO DE MIERDA LEYO ?   127
-//tocaparam2(ntkp).vol cargado            15
-Open DirEjecSinBarra: tocaparam(ntkp).maxpos             6106
-////////redimendsiona a 2*maxgrb           14956
-tocaparam(ntkp).maxpos       6106
-pmEj(ntkp).MaxPos            6106
-nombre en CargarPistasEjec ,Ntkp          TROMPETA.ejec  1
-siguiente     VIOLIN.ejec
-trabajo con este filename...              VIOLIN.ejec
-CargarMidiIn  fileMidiIn    C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\EJECS\VIOLIN.ejec
-fileMidiIn recibido enCargarMidiIn        C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\EJECS\VIOLIN.ejec
-NombreCancion               C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025
-maxgrb en CARGAmidiin        7478
-' VERSION 2 NUEVA leo lo siguiente
-ESTAMOS EN VERION 2 !!!!
-QUE CORO DE MIERDA LEYO ?   80
-//tocaparam2(ntkp).vol cargado            20
-Open DirEjecSinBarra: tocaparam(ntkp).maxpos             7478
-////////redimendsiona a 2*maxgrb           14956
-tocaparam(ntkp).maxpos       7478
-pmEj(ntkp).MaxPos            7478
-nombre en CargarPistasEjec ,Ntkp          VIOLIN.ejec    2
-siguiente     
-CARGO PISTAS MAXIMA CANTIDAD TOPETOCA=     2
-UBOUND TOCA    14956
-FIN CargaPistasEjec
--------------------------------------------------------
-abrirPortoutEjec abriendo port.... 
-abrirPortoutEjec midiout     2            VirtualMIDISynth #1 2
-abro          VirtualMIDISynth #1 2
-RTMIDI_ERROR_WARNING, sin importancia
-Port usando en Play Ejec teclado           2
--------------------------------------
-abrirPortoutEjec abriendo port.... 
-abrirPortoutEjec midiout     2            VirtualMIDISynth #1 2
-PORT OUT YA ABIERTO          1            VirtualMIDISynth #1 2
-Port usando en Play Ejec teclado           2
--------------------------------------
-C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\EJECS
- 1            si
- 2            si
- 240          tiempoPatronEjec
- 10945        maxgrb
-4 ctrl1016 lugar DirEjecSinBarra          C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025\EJECS          
- ROLLCTRLMENU EventNumber !!!              1090
-USANDO PLAYCANCION
-grabariniciotxt             C:\IT64\AREA\ROLLMUSIC\cancion\23NOV2025
-' ----------------------------------------
-'               P L A Y   C A N C I O N
-'------------------------------------------
-ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL
-' ----------------------------------------
-'               P L A Y   T O C A  A L L
-'------------------------------------------
-ya abierto    VirtualMIDISynth #1 2
-ya abierto    VirtualMIDISynth #1 2
-PlayTocaAll 1
-PlayTocaAll 2
-PlayTocaAll 3
-nPLAY VERDE: maxgrb          10945
-playtoca maxgrb              10945
-playtoca tocatope            2
-PlayTocaAll 4
-topeDuranteGrabacion         2             PISTAS
-empieza el play de ejec, maxgrb, PARAR_PLAY_EJEC         10945         0
-playTocaAll jToca=maxgrb, kply=topeDuranteGrabacion  10945             2
-TOPE           2
-abriendo ports....play cancion 
-ya abierto    VirtualMIDISynth #1 2
-ya abierto    VirtualMIDISynth #1 2
-CANCION ntk MAXPOS  10945
-CANCION ntk MAXPOS  3786
-CANCION ntk MAXPOS  1        10945
-cancion tiempoPatron  240
-MaxPosTope ===>              10945
-En Recalcompas MAXI          10945
-fin RecalCompas ok 
-UBound(compas, 1)            21890
-old_time_on  33326.79871678519
-TickUsuario  0.005
- PCA CANCION MAXPOS AL COMENZAR ,final tope              10945         10945         2
-old_time_on  33326.79896788293
-TickUsuario  0.005
- ROLLCTRLMENU EventNumber !!!              2003

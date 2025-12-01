@@ -408,19 +408,19 @@ If n <= pmTk(0).MaxPos Then
      If n >0 And n < MaxPos  Then 
       '''Print #1,"lugar n ",n, MaxPos
       '' fileflush(-1)
-  '''' kiki   If Compas(n).Posi = n  Then
-        ' ic=ic+1 
+   
+       If Compas(n).Posi = n Then ' cada 4 negras 384 ticks
 ' aca tambien tendremos las repeticiones si estan las leemos y la usamos en el play
 ' seri aun loop como hasta ahora pero N veces no infinitas, o sea aca solo
 ' grabo las N veces y comienzo de loop y en el final grabare fin loop 
     ' print #1,"lugar ",15
- '''' kiki        cairo_move_to(c,gap1 + (ic ) *anchofig +anchofig , Penta_y)
- '''kiki         cairo_line_to(c,gap1 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta )
+        cairo_move_to(c,gap1 + (ic ) *anchofig +anchofig , Penta_y)
+        cairo_line_to(c,gap1 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta )
       '    print #1, "|";
- ''' kiki        cairo_move_to(c,gap2 + (ic ) *anchofig +anchofig, Penta_y + 12.5 * inc_Penta )
-'''  kiki        t=Str(Compas(n).nro)
-'''  kiki        cairo_show_text(c,t)
-'''  kiki    EndIf
+        cairo_move_to(c,gap2 + (ic ) *anchofig +anchofig, Penta_y + 12.5 * inc_Penta )
+        t=Str(Compas(n).nro)
+        cairo_show_text(c,t)
+      EndIf
   '   Print #1,"lugar ",16
       If n = pasozona1 Or n =pasoZona2 Then '26-06-2021
          cairo_move_to(c,gap3 + (ic ) *anchofig +anchofig, Penta_y + 13.5 * inc_Penta )
@@ -2343,6 +2343,9 @@ If MultiKey(SC_SPACE)    Then 'barra espacio
 
               If CheckBox_GetCheck( cbxpis(y1))= 1   Then
        Print #1,"/////////LLAMA A PLAYUNOSOLO y1 ", y1
+              If CheckBox_GetCheck( cbxnum(y1))= 1 Then
+                 CheckBox_SetCheck(cbxnum(y1),0)  
+              EndIf 
                  Select Case y1
                   Case 1
                   threadV(1) = ThreadCall PlayUnoSolo(Track(1), 1)

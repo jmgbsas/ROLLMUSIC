@@ -32,7 +32,7 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.3505 ctrl-home fixed hace que entre toda la secuencia en la pantalla"
+nroversion="0.3506 LINEAS DE COMPAS REPUESTAS PARA TICKS, CADA 4 NEGRAS POR AHORA 4/4"
 ' 0.3505 ctrl-home fixed hace que entre toda la secuencia en la pantalla
 '"0.3504 PRUEBA DE LOOPS, USAR UNA PISTA DE CANCION COMO SOLO Y REPETICIONES  "
 ' 0.3503 ES CREO EL PRINCIPIO DE PODER DESARROLLAR PATRONES QUE  NO DEBEN SEGUIR A LA
@@ -44,8 +44,13 @@ nroversion="0.3505 ctrl-home fixed hace que entre toda la secuencia en la pantal
 ' falta borrar repeticiones!! OK LISTO
 ' 0.3502 ya funciona !! verificar que se graba a disco y se levanta
 ' PENDIENTE: -------------------
-' ==> 351 probar que funcionen las grabaciones midi y las conversiones a rtk o roll!!
-'------------------------------- 
+' ||==> 351 probar que funcionen las grabaciones midi y las conversiones a rtk o roll!!
+'-------------------------------
+' IDEA CREAR LOOPS, SU LONGITUD SERA ZONA2 -ZONA1 LASREPETICIONES UN ARCHIVO RTK
+' PODREMOS PONERLE OTRA EXTENSION PERO ADENTRO UN LOOP O REPETICIONES DENTRO DE UN RTK, 
+' EXTENSION *.rep o *.loop ambas seran validas..las ejecuciones se haran en serie
+' calculando la duraicon de un loop como (zona2-zona1 )* duracion(1 tick).
+'--------------------------- 
 ' fixed reproducir todo desde Control menu Reproducir 
 '  fixed VER AHORA EL RENAME...Y GRABACION A DISCO,ok,GRABA Y LEVANTA EN VERSION 2 y 1 DE ARCHIVOS EJEC. 
 ' ARREGLAR Y LISTO ok..JUGAREMOS  CON LOS PARAMETROS PAN ECO ETC SOBRE EJEC DIRECTAMENTE ok!!

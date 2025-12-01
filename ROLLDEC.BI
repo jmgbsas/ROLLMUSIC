@@ -210,7 +210,7 @@ Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld, cursormove,notaoldmi
 Dim shared As integer Penta_y, indice, espacio
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
 Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,posishow=1
-Dim Shared As Integer octavas,  jc,ic, id,ShowNroCol=0,nro,trak=1,trackold=1
+Dim Shared As Integer octavas,  jc,ic, id,ShowNroCol=0,nro,trak=1,trackold=1,icmps ,cmpsnro'icompas
 Dim Shared As Integer ers, borrapos=0,comienza=0, acordeNro=0,resumen=0  
 Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0,TicksInsertados
 Common  Shared As String comando
@@ -721,11 +721,12 @@ Type rangoOct Field=1
  As UByte   Eco
  As UByte   Coro
  As Integer ajuste
- As UByte   sonido
+ As UByte   sonido '1 -si suena en el play, y lo reproduce cancion, ó 0 - si lo saltea.
  As UByte   vibrato
  As UByte   canalx
  As UByte   pitchbend
  As UByte   orden
+ As UByte   solo    ' 1 -si lo marcamos como solo para reproduccion independiente
 End Type
 ' faltaria agregar grabar el nombre del dispositivo ........
 Dim Shared As rangoOct pmTk (0 To 32)
@@ -832,7 +833,7 @@ Type rolldat Field=1 'con esto se define roll tendra pan,vol,nota,dur,pb,inst va
  x4    As UByte =0  'z.pan
  x5    As UByte =0  'z.pb
  tipoescala_num_ini As UByte 'z.inst
-   librezonoff As UByte ' z.onoff----------- 7
+ solo    As UByte ' z.onoff-------7---- si se reprroduce fuera de cancion, 
  desde   As UByte =0 'zlim.nota 
  hasta   As UByte =0 'zlim.dur
  notaescala_num_ini As UByte =0   ' zlim.vol 
@@ -1317,8 +1318,8 @@ Type ejeccabeza Field=1  ' 45 bytes
  As Double fecha '6 se carga con Now antes de grabar
  As String * 29  autor '29
  As UByte version  '1 se ira incrementando en 1 cada vez que se grabe
- As UByte mas1  'sobran 9 bytes para futuro
- As UByte mas2
+ As UByte solo  'si toca independiente o no
+ As UByte mas2 'sobran 8 bytes para futuro
  As UByte mas3
  As UByte mas4
  As UByte mas5
