@@ -1812,7 +1812,9 @@ EndIf
  ' Exit Do
  'EndIf
 
-
+If MultiKey(SC_Y) Then
+    ResizeWindow(hwnd,,ALTO*3/5,,ALTO/5) 'KOKITO
+EndIf
 
 If MultiKey (SC_F2)  And lockfont=0 Then
 ' escala = escala - 0.01
@@ -3988,7 +3990,7 @@ If (ScreenEvent(@e)) Then
      '    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
      '    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
      MoveWindow( hWnd , X0 , (Y0+h-ALTO)\2, ANCHO - mxold,ALTO, TRUE )
-
+''CON RESIZE DE WINDOWS9 ÑODRIA SER MAS FACIL....
     EndIf
     Exit Do
    EndIf

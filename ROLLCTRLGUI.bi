@@ -278,6 +278,9 @@ ButtonGadget(BTN_ROLL_CORO,  60 ,750, 45, 20,"Coro")
 
 'StatusBarGadget(1,"StatusBarGadget")
 
+
+'---------------------------------------------
+
   hMessages=Create_Menu()
 
   MenName1=MenuTitle(hMessages, "ARCHIVO")

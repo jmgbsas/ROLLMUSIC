@@ -32,7 +32,8 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.3506 FIX LINEAS DE COMPAS REPUESTAS PARA TICKS, CADA 4 NEGRAS POR AHORA 4/4"
+nroversion="0.3507 TECLA <y> PARA ACHICAR EL GRAFICO MOMENTANEAMENTE, FIX PATCH Y SILBIDOS"
+'
 ' 0.3505 ctrl-home fixed hace que entre toda la secuencia en la pantalla
 '"0.3504 PRUEBA DE LOOPS, USAR UNA PISTA DE CANCION COMO SOLO Y REPETICIONES  "
 ' 0.3503 ES CREO EL PRINCIPIO DE PODER DESARROLLAR PATRONES QUE  NO DEBEN SEGUIR A LA
@@ -523,5 +524,5 @@ Print #1,"Error Function: "; *Erfn()
 'Dim ers As Integer = 12 - nota +(estoyEnOctava ) * 13 
 Print #1, "12 -nota +(estoyEnOctava ) * 13) "; ers
 Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
- Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
+Print #1, "error number: " + Str( Err ) + " at line: " + Str( Erl )
 FileFlush (-1)

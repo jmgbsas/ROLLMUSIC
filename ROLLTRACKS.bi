@@ -2436,6 +2436,9 @@ Dim As float ajuste=1.0
 ''//////////////// PISTA //////////////
  For pis=1 To tope
 ' escribimos salidamidi
+    If CheckBox_GetCheck( cbxpis(pis))= 1 Then
+         Continue For ' saltea no tocar pero la toca playall 
+    EndIf
     If MIDIFILEONOFF = HABILITAR  Then 
        MidiDatos(pis).datos(1)="MTrk"
        Dim ii As Integer   
@@ -2591,7 +2594,10 @@ kNroCol= Int(jply/NroCol)
 
  'Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
 
-   If jply <= pmTk(pis).MaxPos Then ' tocamos una pista mientras que tenga datos 
+   If jply <= pmTk(pis).MaxPos Then ' tocamos una pista mientras que tenga datos
+     If CheckBox_GetCheck( cbxpis(pis))= 1 Then
+        Continue For ' saltea no tocar pero la toca playall 
+     EndIf 
      For i1=1 To lim3   'lim3 decia coo voy de 1 a lim2 necesito que la info del int este en 1
        If i1<= lim2  And (pis <= tope Or pis<=32) Then
          If (Track(pis).trk(jply,i1).nota >= NBpiano) And (Track(pis).trk(jply,i1).nota <= NA) And (Track(pis).trk(jply,i1).dur >=1) And (Track(pis).trk(jply,i1).dur <= 180) Or Track(pis).trk(jply, i1).dur <= 183 Or Track(pis).trk(jply, i1).dur <= 185 Then ' es semitono

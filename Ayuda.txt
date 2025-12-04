@@ -193,7 +193,7 @@
         y el segundo termina el dialogo. 
 
     III) USO: (ventana Roll Grafica)
-
+    
     0) Consideraciones generales:
        Ante todo para desarrollar se muestran variables al Pulsar [Edicion], o ALT-E, en ese estado y en cualquier
        otro si quiero volver al menu inicial Archivo,Edicion,Ver,Pista,Reproducir etc....
@@ -334,6 +334,8 @@
        NOTA: PARA  CERRAR LA VENTANA DE ROLLGRAFICO SIN SALIR DEL PROGRAMA PULSAR CTRL+F4 O EL BOTON X
       ARRIBA A LA DERECHA.  PARA CERRAR LA VENTANA GRAFICA Y EL PROGRAMA, CON TECLA ESCAPE APARECE DIALOGO
       PARA CONFIRMAR CIERRE TOTAL DEL PROGRAMA. (el 2do pulso si esta en play el 1ero detendra el play)
+      TECLA RAPIDA 'Y' PERMITE ACHICAR EL GRAFICO SI MOLESTA Y LUEGO PULSANO F8 O CLICK EN + ESQUINA SUPÈRIOR
+      DERECHA VUELVE AL TAMAÑO ANTERIOR
        ------------------------------------------------------------------------------------------
        Al abrir una seleccion de puerto port(MIDI-OUT), instrumentos o patch por orden ALfa o numerico, o canales  
        midi , apareceran [] vacios sin seleccionar y [x] seleccionado, antes de seleccionar uno nuevo, se debe 
@@ -794,7 +796,8 @@
         F7/F8, levanta bajar Telón o achicar agrandar la pantalla respectivamente.
         O tambien usar teclas - y + del teclado llamado Keypad.(o el - del taclado
         comun, el + no se usa en el teclado comun tiene otra funcion para entrar notas
-        ligadas )
+        ligadas ). ACHICAR MOMENTANEAMENTE EL GRAFICO TECLA 'Y', al pulsar F8 o click
+        en el + vuelve al tamaño anterior es mas comodo y rapido.
       - Mover ventana, en la cinta superior gris o azul del Roll Gráfico del lado derecho, 
         se daclick y se draga lentamente, no responde a dragados muy veloces. Funciona
         siemrpe del lado derecho de la cinta independiente del menu que se muestre.

@@ -854,4 +854,11 @@ Dim As mouse m
       End Select 
 	Wend
 End Function
+'-----------------est ono funciona
+'Note: How to include an icon in a FB executable program
+'There is a simple command line option to compile a FB program into an executable with an Icon:
+'- Create a *.rc file, for example appicon.rc, with this info:
+'FB_PROGRAM_ICON ICON "appicon.ico"
+'(where appicon.ico is the name of icon)
+'- Then when compiling program, add appicon.rc in the list of files to compile.
 
