@@ -2369,7 +2369,7 @@ Dim As Integer comienzo=1, final=0, vel=100,velpos =0,cntrepe=0,final2=0,comienz
 ' ojo si cambioaamos por mas octavas debo cambiar, igual el nro de tracks 32 
 ''Dim pasoCol (0 To 384) As vec  ' entrada de durciones a medida que barro una columna
 '------------determinamos el MAxPos de toda la cancion o sea la pista de mayor longitud
-Smayor=pmTk(1).MaxPos
+mayor=pmTk(1).MaxPos
 For i0=1 To Tope 
 Print #1,"CANCION ntk MAXPOS "; pmTk(i0).MaxPos
 fileflush(-1)
@@ -2385,7 +2385,8 @@ maxposTope=mayor
 
 Print #1,"maxposTope ===> ", maxposTope
 fileflush(-1)
-RecalCompas()
+Maxpos=mayor
+'''' RecalCompas() se llama al cargar la cancion no hace falta mas!!!
 Print #1,"UBound(compas, 1) ",UBound(compas, 1)
 
 '-------------
@@ -2485,7 +2486,9 @@ Print #1,"ENTRA PLAYCANCION  "; Timer
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
+''" ---------------000000000000000000000-----------------"
 ''//////////////// L O O P E O  JPLY HORIZONTAL ////////////////////////////////////////////////
+''" ---------------000000000000000000000-----------------"
 For jply=comienzo To final
 '  print #1," ---------------000000000000000000000-----------------"
 '  print #1," [[[PCA 0:]]]---START--PASO:[";jply;"] ----------------"
@@ -2596,7 +2599,7 @@ kNroCol= Int(jply/NroCol)
 
    If jply <= pmTk(pis).MaxPos Then ' tocamos una pista mientras que tenga datos
      If CheckBox_GetCheck( cbxpis(pis))= 1 Then
-        Continue For ' saltea no tocar pero la toca playall 
+       Continue For ' saltea no tocar pero la toca playUNOSOLO 
      EndIf 
      For i1=1 To lim3   'lim3 decia coo voy de 1 a lim2 necesito que la info del int este en 1
        If i1<= lim2  And (pis <= tope Or pis<=32) Then

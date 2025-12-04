@@ -406,9 +406,9 @@ If n <= pmTk(0).MaxPos Then
 ' jmg 11-05-2021 1839 end  
 '===== LINEAS DE COMPAS  ==================================
      If n >0 And n < MaxPos  Then 
-      '''Print #1,"lugar n ",n, MaxPos
-      '' fileflush(-1)
-   
+     ' Print #1,"lugar n ",n, MaxPos
+     '  fileflush(-1)
+' error con BTN_ROLL_EJECUTAR    
        If Compas(n).Posi = n Then ' cada 4 negras 384 ticks
 ' aca tambien tendremos las repeticiones si estan las leemos y la usamos en el play
 ' seri aun loop como hasta ahora pero N veces no infinitas, o sea aca solo
@@ -2319,6 +2319,7 @@ If MultiKey(SC_SPACE)    Then 'barra espacio
        '      Sleep 100
              grabariniciotxt(NombreCancion, CANCION)
              FileFlush (-1)
+             RecalCompas() ''??? todavia no sabe cual es al mayodeberiramover todo aca
              thread1 = ThreadCall  PlayCancion(Track())
 
              CPlay=SI 
@@ -2419,7 +2420,7 @@ If MultiKey(SC_SPACE)    Then 'barra espacio
               EndIf
            Next y1
 FILEFLUSH(-1)
-        ElseIf   playb=NO And  CANCIONCARGADA = FALSE And X1=0 Then
+        ElseIf   playb=NO And  CANCIONCARGADA = FALSE  Then
 ' ESTA OPCION NUCA PODRA EJECUTRSE EN PARALELO PORQUE IMPPLICA UN ROLL Y POR ENDE
 ' LLENARA EL ROLL GRAFICO QUE LA CANCION DE RTK ESTA USANDO
               print #1,"llama a playall"

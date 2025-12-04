@@ -32,7 +32,7 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.3507 TECLA <y> PARA ACHICAR EL GRAFICO MOMENTANEAMENTE, FIX PATCH Y SILBIDOS"
+nroversion="0.3508 FIX CANCELACIONES BOTON DE PLAY VERDE CANCION Y REPRODUCIR DESDE MENU VENTANA CONTROL "
 '
 ' 0.3505 ctrl-home fixed hace que entre toda la secuencia en la pantalla
 '"0.3504 PRUEBA DE LOOPS, USAR UNA PISTA DE CANCION COMO SOLO Y REPETICIONES  "

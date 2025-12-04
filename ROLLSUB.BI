@@ -125,7 +125,7 @@ Sub RecalCompas() ' Nuevo para ticks
 clickpista=0
  Dim As Integer i,j,k,negra=96, multi,kj,kp, cntcompas,cntnegra,com, compas4cuartos= 4*negra,MAXI
 
- If CANCIONCARGADA=TRUE Then
+ If CANCIONCARGADA=TRUE And maxposTope >0 Then
     MAXI=maxposTope
  Else
     MAXI=Maxpos 

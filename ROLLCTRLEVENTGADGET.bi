@@ -588,27 +588,35 @@ Print #1, "542 GrabarPenta=0"
          SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
          SetGadgetstate(BTN_ROLL_GRABAR_MIDI , BTN_LIBERADO)
          terminar_metronomo=1
-         If CPlay = NO And MaxPos > 2 Then
-            CPlay=SI
-            If NombreCancion > "" Then
-              ' If play=SI Or playb=SI Or playEj=SI Then
-              '    PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY SI ESTA TOCANDO 
-              '    PARAR_PLAY_EJEC=SI ' DETIENE LOS EJEC SI ESTAN TOCANDO
-              '    playloop=NO:playloop2=NO
-              '    'threaddetach (thread2)
-              '    'threaddetach (thread1)
-              '    Sleep 20
-              ' EndIf 
-               
-               thread2 = ThreadCall  PlayCancion(Track())
-               grabariniciotxt(NombreCancion, CANCION)
-            Else
-               playb=SI
-               thread1 = ThreadCall  PlayAll(Roll)
-            EndIf
-         EndIf   
+         If (playb = NO Or Cplay=NO )And (MaxPos> 2  Or Maxgrb > 2) Then
+             GrabarPenta=0
+             naco=0:naco2=0
+             If INSTANCIA = ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia <= ARG4_INSTRU  Then '04-10-2025 
+             Else  
+     ' SetGadgetstate(BTN_ROLL_GRABAR_MIDI,0) ' 10-04-2022 DE  VENTANA CTROL
+       SetGadgetstate(15,0) ' 20-02-2025 
+             EndIf
+             If CANCIONCARGADA = TRUE  And CPlay=NO   Then
+             Parar_De_Dibujar=NO
+             Cplay=SI : s5=NO 'Necesita mas tiempo de cpu
+       '      Sleep 100
+             grabariniciotxt(NombreCancion, CANCION)
+             FileFlush (-1)
+             thread1 = ThreadCall  PlayCancion(Track())
 
-      EndIf
+             CPlay=SI 
+
+             ElseIf   playb=NO And  CANCIONCARGADA = FALSE Then
+' ESTA OPCION NUCA PODRA EJECUTRSE EN PARALELO PORQUE IMPPLICA UN ROLL Y POR ENDE
+' LLENARA EL ROLL GRAFICO QUE LA CANCION DE RTK ESTA USANDO
+              print #1,"llama a playall"
+              Playb=SI:s5=NO 
+       '       Sleep 100
+              thread2 = ThreadCall  playAll(Roll)
+            EndIf
+
+        EndIf
+     EndIf
 ' ---------------- BOTONES PORTSAL VOL PATCH CANAL A LA DERECHA Y ABAJO ...
 '--------------------------------------------------------------------------------------------
 ' ////////////// PORT SAL EJEC ////////////////
