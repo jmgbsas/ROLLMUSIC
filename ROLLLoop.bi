@@ -2306,7 +2306,7 @@ If MultiKey(SC_SPACE)    Then 'barra espacio
 
 ' TOCA UNA PISTA DE CANCION COMO PISTA DE SOLO NO HABRA RELACION ENTRE LAS MISMAS
 ' VOMO CON INDICES GLOBALES, LA ELECCION DE QUE PISTA SE TOCARA COMO SOLO ES DINAMICO
-' Y SE ELIGE CON CON CHEQUEAR CBXPIS LA 1ER FILA DE CHECKS DE LA IZQUIERDA 
+' Y SE ELIGE CON CON CHEQUEAR cbxsolo LA 1ER FILA DE CHECKS DE LA IZQUIERDA 
 
 
 
@@ -2345,7 +2345,7 @@ If MultiKey(SC_SPACE)    Then 'barra espacio
 
           For y1 As Integer  =1 To 32
 
-              If CheckBox_GetCheck( cbxpis(y1))= 1   Then
+              If CheckBox_GetCheck( cbxsolo(y1))= 1   Then
        Print #1,"/////////LLAMA A PLAYUNOSOLO y1 ", y1
               If CheckBox_GetCheck( cbxnum(y1))= 1 Then
                  CheckBox_SetCheck(cbxnum(y1),0)  

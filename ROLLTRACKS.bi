@@ -386,7 +386,7 @@ cargacancion=NO_CARGAR_PUEDE_DIBUJAR 'PUEDE DIBUJAR PORQUE NO HAY REDIM  DE ROLL
      Dim As Integer ubi1,ubi2 
      Dim As String x,x1,x2,x3,x4,x5,nombrea
   '1) cargar pista desde disco y desde Roll puro   
-     If ubirtk = 0   Then ' no tengo nombre debo explorar
+     If ubirtk = 0   Then ' no tengo nombre debo explorar ACA SI BUSCA SOLO LOS RTK NO LOS *.SOLO
            myfilter  = "Track files (*.rtk)"+Chr(0)+"*.rtk"+Chr(0)
            nombrea = OpenFileRequester("","", myfilter, OFN_CREATEPROMPT)
 Sleep 100
@@ -405,8 +405,8 @@ Sleep 100
               ntk=CInt(Mid(nombrea,ubi1+1,ubi2-ubi1-1))
            EndIf      '
      Else
-  '2)  carga *.rtk de linea de comando doble clik o de cancion ¿de cancion ojo?  
-       If ubirtk > 0 Then 
+  '2)  carga *.rtk de linea de comando doble clik o de cancion   
+       If ubirtk > 0 Then ' ENTRAN TAMBIEN TODAVIA LOS *.SOLO
         '  print #1,"ubirtk > 0 carga de disco o cancion ",ubirtk
           nombrea=titulosTk(ntk) ' ya venia el nombre
           ubirtk=2 '31-0325
@@ -447,17 +447,17 @@ Sleep 100
      'toda carga de track se guarda en pmTk sea ntk=0 u otro valor   
      pmTk(ntk).MaxPos=CInt("&B"+x)
 
-       If ntk >0 Then
-          maxposTope=84600 '''pmTk(ntk).MaxPos 
-       EndIf
+    '   If ntk >0 Then
+    '      maxposTope=84600 '''pmTk(ntk).MaxPos le pone algo fijo ?? NO VA 5-12-2025
+    '   EndIf
 Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
 ' AL CONVERTIR UN EJEC A ROLL Y LUEGO A NTK QUEDA EL NTK=1
 ' TOMA EL NRO DE EJEC Y SI SON SIMPLES SIN CANCION DEBE SER NTK=00 SIEMPRE
 ' ENTONCES AL CONVERTIR ROLL A TRACK SI ES UN EJEC AJUSTAR NTK=0 
-     MaxPos=pmTk(ntk).MaxPos
-     If ntk >0 And maxposTope < MaxPos Then
-        maxposTope=84600 ''pmTk(ntk).MaxPos 
-     EndIf
+     ''MaxPos=pmTk(ntk).MaxPos 5-12-2025
+  '   If ntk >0 And maxposTope < MaxPos Then  MAL 5-12-2025
+  '      maxposTope=84600 ''pmTk(ntk).MaxPos 
+  '   EndIf
    
    '  print #1,"pmTk(ntk).MaxPos ", pmtk(ntk).MaxPos
      '|--> LLEVAR A TRACK A ROLL posicion = 1
@@ -466,12 +466,22 @@ Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
 ' ==> aca no lo esta cargadno a roll visual solo a un track ntk
      'pmTk(ntk).posn=pmTk(ntk).MaxPos - 2
     ' If pmTk(ntk).posn < 0 Then pmTk(ntk).posn=0 EndIf
-     pmTk(ntk).Ticks = 86400 '''1000 - pmTk(ntk).MaxPos 
+     pmTk(ntk).Ticks = pmTk(ntk).MaxPos ''86400 '''1000 - pmTk(ntk).MaxPos 5-12-2025 
    '  If pmTk(ntk).Ticks < 1000 Then 
    '     pmTk(ntk).Ticks = pmTk(ntk).MaxPos+1000
    '  EndIf   
+     Dim As Integer ubisolo=InStr(LCase(nombre),".solo")
      CantTicks=86400 '''pmTk(ntk).Ticks
+' NO TOMAMOS LOS SOLO PARA EL CALCULO DE LA MAXPOS
+     If CantTicks < pmTk(ntk).MaxPos And ubisolo=0 Then
+        CantTicks = pmTk(ntk).MaxPos
+     EndIf     
+     If CantTicks < pmTk(ntk-1).MaxPos And ntk >= 2 And ubisolo=0 Then
+        CantTicks = pmTk(ntk-1).MaxPos 'vamos comparando los maxpos
+     EndIf     
+
   Print #1,"CantTicks "; CantTicks
+  ''MaxPosTope=CantTicks  '4-12-2025
      'es un get trabajo debe ser exactamente MAxPos
    '       Print #1,"llego a 2 antes de redim "
   '   If  check = 1 Then 
@@ -501,6 +511,9 @@ Print #1,"NombreCancion,nomobre, CantTicks ";NombreCancion,nombre, CantTicks
      Else
         CheckBox_SetCheck(cbxnum(ntk),0) 
      EndIf
+   EndIf
+   If ubisolo > 0 Then
+      CheckBox_SetCheck(cbxsolo(ntk),1) ' kokon 
    EndIf
      ' crgamos limites Roll de octavas
      Get #ct, , grabaLim
@@ -2372,12 +2385,15 @@ Dim As Integer comienzo=1, final=0, vel=100,velpos =0,cntrepe=0,final2=0,comienz
 mayor=pmTk(1).MaxPos
 For i0=1 To Tope 
 Print #1,"CANCION ntk MAXPOS "; pmTk(i0).MaxPos
+  If InStr(LCase(TitulosTk(i0)),".solo") = 0 Then
+     Continue For
+  EndIf   
 fileflush(-1)
  If mayor < pmTk(i0).MaxPos Then 
     mayor=pmTk(i0).MaxPos
  EndIf   
 Next i0
- Print #1,"CANCION ntk MAXPOS "; ntk, mayor  
+ Print #1,"CANCION Tope MAXPOS "; Tope, mayor  
 
 Print #1,"cancion tiempoPatron ";tiempoPatron
 final=mayor 
@@ -2435,11 +2451,10 @@ tickUsuario=0.005 * 240/tiempoPatron
  Print #1," PLAYCANCION MAXPOS AL COMENZAR ,final tope ",Maxpos,final,tope
 Dim As float ajuste=1.0
 ''//////////////// PISTA //////////////
+Dim As Integer cntRtk,cntSolo,cnt_pistas_cancion_suenan
+' <=========CHEQUEOS PREVIOS DE LAS PISTAS ========>
  For pis=1 To tope
 ' escribimos salidamidi
-    If CheckBox_GetCheck( cbxpis(pis))= 1 Then
-         Continue For ' saltea no tocar pero la toca playall 
-    EndIf
     If MIDIFILEONOFF = HABILITAR  Then 
        MidiDatos(pis).datos(1)="MTrk"
        Dim ii As Integer   
@@ -2453,12 +2468,25 @@ Dim As float ajuste=1.0
        NroEventoPista(pis)=3
     EndIf
  '     Print #1,"ON patch ntk canal ",	Track(ntk).trk(1,1).nnn, ntk,pmTk(pis).canalsalida
-'Track(pis).trk(1,1).nnn
+ ' PARA TODOS RTK Y SOLO
       Paneo (pmTk(pis).pan, pmTk(pis).canalsalida,pmTk(pis).portout)
       Eco   (pmTk(pis).eco,  pmTk(pis).canalsalida,pmTk(pis).portout) 
       Chorus(pmTk(pis).coro,  pmTk(pis).canalsalida,pmTk(pis).portout)
       ChangeProgram ( pmTk(pis).patch, pmTk(pis).canalsalida, pmTk(pis).portout)	
 ' reveeer esto de sonido ,,,,,
+    If InStr(LCase(TitulosTk(pis)),".solo") > 1 Then
+       cntSolo=cntSolo +1
+       CheckBox_SetCheck( cbxsolo(pis), 1)
+    EndIf
+    If InStr(LCase(TitulosTk(pis)),".rtk") > 1 Then
+       cntRtk=cntRtk +1
+       If CheckBox_GetCheck( cbxnum(pis)) = 1 Then
+          cnt_pistas_cancion_suenan=cnt_pistas_cancion_suenan +1
+       EndIf 
+ 
+    EndIf
+
+
       If instancia=ARG7_NOMBRECANCION Or instancia=ARG107_FICTICIO  Then 'batch grafico solo
           sonidoPista(pis)=1
       Else 
@@ -2475,6 +2503,18 @@ Dim As float ajuste=1.0
       EndIf
 
  Next pis
+ If cnt_pistas_cancion_suenan = 0 And cntSolo > 0 Then
+' SIEMPRE DEBE EJECUTARSE UNA PISTA DE CANCION QUE ES LA GUIA, SI QUEREMOS ESCUCHAR UN SOLO 
+' DEBERIA ESTAR CHEQUEADO UNA  PISTA DE CANCION Y EL VOL=0. SINO MEJOR DESDE UN DOBLE CLICK
+' AL ARCHIVO SOLO 
+    For K As Integer = 1 To Tope
+     If CheckBox_GetCheck(cbxsolo(k))= 0 And InStr(LCase(TitulosTK(k)),".rtk") = 1  Then ' la primer pista que no este chequeda para solo 
+       ' se chequea para cancion
+        CheckBox_SetCheck(cbxnum (k),1)
+     EndIf 
+    Next k
+ EndIf
+'' <=========FIN CHEQUEOS PREVIOS DE LAS PISTAS ========>
 
 STARTMIDI=Timer
 old_time_on=STARTMIDI
@@ -2521,7 +2561,7 @@ kNroCol= Int(jply/NroCol)
 '''/// BARRE VERTICALMENTE LAS PISTAS PARA CADA POSICION HORIZONTAL medio rebuscado al dope creo..////
 ''// un metodo mejroe seria no barrer nada solo el archivo de eventos en fin 
   For pis =1 To tope ' loop de pistas rtk
-    If CheckBox_GetCheck( cbxpis(pis))= 1 Then
+    If CheckBox_GetCheck( cbxsolo(pis))= 1 Then
          Continue For ' saltea no tocar pero la toca playall 
     EndIf       
     If CheckBox_GetCheck( cbxnum(pis))= 1 Then
@@ -2598,7 +2638,7 @@ kNroCol= Int(jply/NroCol)
  'Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
 
    If jply <= pmTk(pis).MaxPos Then ' tocamos una pista mientras que tenga datos
-     If CheckBox_GetCheck( cbxpis(pis))= 1 Then
+     If CheckBox_GetCheck( cbxsolo(pis))= 1 Then
        Continue For ' saltea no tocar pero la toca playUNOSOLO 
      EndIf 
      For i1=1 To lim3   'lim3 decia coo voy de 1 a lim2 necesito que la info del int este en 1
@@ -3039,7 +3079,7 @@ Print #1,"Cambio Prog pis patch, portout, canal ", Spis, pmTk(Spis).patch, pmTk(
           sonidoPista(Spis)=1
       Else 
       
-          If  CheckBox_GetCheck( cbxpis(Spis))= 1 Then
+          If  CheckBox_GetCheck( cbxsolo(Spis))= 1 Then
  '        Print #1,"+++++++pista on ",pis
              sonidoPista(Spis)=1
           Else  
@@ -3091,7 +3131,7 @@ For JSOLO=Scomienzo To Sfinal
 '''/// BARRE VERTICALMENTE LAS PISTAS PARA CADA POSICION HORIZONTAL medio rebuscado al dope creo..////
 ''// un metodo mejroe seria no barrer nada solo el archivo de eventos en fin 
 
-    If CheckBox_GetCheck( cbxpis(Spis))= 1 Then
+    If CheckBox_GetCheck( cbxsolo(Spis))= 1 Then
        ' tocar
          sonidoPista(Spis)=1
     Else

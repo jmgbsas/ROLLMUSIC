@@ -1,12 +1,8 @@
-PRUEBA 
-PIANLOA Y VIOLIN SE TOCAN FUERA DE CANCION pistas 2 y 4
-SE DEBE CHEQUEAR 1ER COLUMNA EN AMBOS manualmente por ahora
-SE CORRIGIO PROBLEMA DE PATCH QUE LA CANCION
-DETECTABA QUE HABIA MAS PISTAS Y NO TENIA EL PATCH
-Y POR ENDE SE ESCUCHA COMO UN silbido.
-PIANOLA TIENE UNA REPETICION DE 20 VECES  EN EL COMIENZO
-SI SE EJECUTA COMO SOLO, HARA LA REPETICION SIN CAMBIAR AL 
-RESTO DE LAS PISTAS. PERO SI SE EJECUTA EN LA CANCION ARRASTRARA
-A TODAS LAS PISTAS EN ESE LOOP.
-ASI PROBAMOS QUE UNA PISTA CON LOOP PUEDE TOCARSE FUERA DE CANCION
-SIN MOLESTAR,,
+PRUEBA con archivos *.solo
+ahora los archivos rtk con repeticiones o loops o que se desee toque fuera
+de cancion se renombran a *.solo 
+el programa automaticamente siemrpe toca una pista de cancion como guioa de la
+ejecucion si no se selecciono ninguna pista de cancion. O sea nose puede
+tocar un solo sin una pista de cancion tocando , salvo ajustar el volumen a 0
+PIANOLA tiene repetiiocnes y se renombra a PIANOLA.solo
+

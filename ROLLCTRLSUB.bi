@@ -148,8 +148,9 @@ Print #1,"entro por no hay nombrecancion ok"
                If abrirRoll=CARGAR_MAS_PISTAS_O_CANCION Then ' ver rollloop roll esta cargado vengo a cargar cancion de nuevo
                ' por ejemplo tenia solo un roll abierto
                   param.encancion=SIN_CANCION
-                  ResetAllListBox(3)
+                  ResetAllListBox(PISTASROLL)
                   Resetear () 
+Print #1,"QUE PASA QUE NO SIGUE 1"
                   CargarPistasEnCancion () 'devuelve tope global 
                     ' no se si ponerla aca vermos en futuro al eliminar globales 
                     ' por ahora no. Globales hace la vida mas facil al principio...
@@ -1785,3 +1786,52 @@ Sub ejecutarComando (comando As String)
   EndIf    
 End Sub
 '---------------
+Sub ReproducirTodasLaSPistas()
+' NO SE PUEDE LLAMAR DESDE SC_SPACE, LA BARRA DE ESPACIO CANCELA AL REPRODUCIR EJECS, 
+' DE MODO QUE QUEDA CODIGO DUPLICADO, YA NO ME DA GANAS DE SABER PORQUE MIERDA..
+' LOS CODIGOS DUPLICADOS EN ESTE PROGRAMA SUELEN SER NECESARIO SINO CANCELA, CANCELA 
+' Y CANCELA,JEJE
+''AGREGARLE LOS SOLOS!!!
+  If (playb = NO Or Cplay=NO )And (MaxPos> 2  Or Maxgrb > 2) Then ' 23-02-22 ningun play
+  '''If playb = NO And play=NO And Cplay=NO And MaxPos > 1 Then ' 23-02-22 ningun play
+
+    '''  Print #1,"ENTRA POR COMEDIT<>LECTURA ???"
+      GrabarPenta=0
+      naco=0:naco2=0
+      '' Print #1,"====> INSTANCIA ";INSTANCIA 
+      If INSTANCIA = ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia <= ARG4_INSTRU  Then '04-10-2025 
+      Else  
+     ' SetGadgetstate(BTN_ROLL_GRABAR_MIDI,0) ' 10-04-2022 DE  VENTANA CTROL
+       SetGadgetstate(15,0) ' 20-02-2025 
+      EndIf
+   '   print #1,"SPACE call play"
+'Print #1,"CANCIONCARGADA = TRUE And Cplay=NO  ",CANCIONCARGADA, Cplay  
+         If CANCIONCARGADA = TRUE  And CPlay=NO   Then
+'Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
+             Print #1,"USANDO PLAYCANCION"
+             Parar_De_Dibujar=NO
+             Cplay=SI : s5=NO 'Necesita mas tiempo de cpu
+       '      Sleep 100
+             thread1 = ThreadCall  PlayCancion(Track())
+             grabariniciotxt(NombreCancion, CANCION)
+             FileFlush (-1)
+
+         ElseIf   playb=NO And  CANCIONCARGADA = FALSE Then
+              print #1,"llama a playall"
+              Playb=SI:s5=NO 
+       '       Sleep 100
+              thread2 = ThreadCall  playAll(Roll)
+         EndIf
+          If maxgrb > 0 And playEj=NO Then
+           playEj=SI 
+Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"  
+          threadG = ThreadCall  PlayTocaAll(p)
+          EndIf
+      menunew=MENU_INICIAL
+      cierroedit= 0
+  EndIf
+
+' test de todo 
+
+End Sub
+'---------

@@ -645,7 +645,7 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
           '    Dim As Any Ptr thplayC = ThreadCall  playCancion(track())
           '    PARAR_PLAY_MANUAL = 1
              If abrirRollCargaMidi=2 Then
-             SetForegroundWindow(hwnd)
+              SetForegroundWindow(hwnd)
              EndIf 
 '---------------------------------------------------------------------
            Case 10901
@@ -1065,6 +1065,4 @@ Print #1,"///----SEL 1211 CORO Globalcoro ",Globalcoro
           Case 2506 'Cerrar   Puertos MIDI-OUT PARA ROLL
            CTRL2506 ()
 
-         End Select
-
-      
+         End Select     

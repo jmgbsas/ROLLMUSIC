@@ -1235,7 +1235,7 @@ ProgError(15) = "quit request signal"
 ProgError(16) = "return without gosub"
 ProgError(17) = "end of file"
 
-Static Shared As HWND cbxnum(1 To 32),cbxpis(1 To 32), cbxejec(1 To 32),cbxgrab(1 To 32),rbparar,rbgrabar,cbxejecout(1 To 32)
+Static Shared As HWND cbxnum(1 To 32),cbxsolo(1 To 32), cbxejec(1 To 32),cbxgrab(1 To 32),rbparar,rbgrabar,cbxejecout(1 To 32)
 Static Shared As Integer sonidoPista(1 To 32)
 static  Shared As Integer SuenaTodo =0, cntsuena=0
 Static Shared  As Integer jgrb=0, jgrbRoll

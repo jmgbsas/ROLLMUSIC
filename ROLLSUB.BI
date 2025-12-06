@@ -5496,7 +5496,8 @@ End  Sub
 Sub CargarPistasEnCancion ()
 ' cada vez que cargo borro la info de fechas de pistas anterior
 ROLLCARGADO=FALSE
-
+Dim  As Integer mayorntk=1 'ESTE ERA EL ERROR DE CARGA AHPORA CON 2 EXTENSIONES SE RESETEABA CON CADA UNA
+Print #1,"QUE PASA QUE NO SIGUE 2"
 ntk=0
 If instancia=ARG0_EN_LINEA Then
   DisableGadget(PISTASROLL,0) ' HABILITAMOS LISTA DE PISTAS
@@ -5504,11 +5505,16 @@ EndIf
 ReDim As Double fechasPistas(1 To 32)
 Print #1,"-------------------------------------------------------"
 Print #1,"inicia CargaPistasEnCancion"
+' DOS LOOPS NO CONVIENE DESORDENA LAS PISTAS EN LA LISTAROLL
+' USAREMOS SOLO DIR *.* Y LUEGO IREMOS PROCESANDO
   Dim As String no1, no2
   Dim As Integer ubi1=0,ubi2=0 
      Dim As String filename, filenameold
-     ' el Dir me trae lso nombres sin el path de cancion
-     filename = Dir (NombreCancion+"\*.rtk")
+     ' el Dir me trae los nombres sin el path de cancion
+  
+     filename = Dir (NombreCancion+"\*.*")
+ 
+
      Print #1,"filename encancion > 0 ",filename
      If filename = "" Then ' no hay ningu archivo dentro del dir de cancion
         ntk=0
@@ -5516,40 +5522,51 @@ Print #1,"inicia CargaPistasEnCancion"
         CANCIONCARGADA=FALSE
         ' NO HAY NADA QUE CARGAR
         abrirRoll=CARGAR_MAS_PISTAS_O_CANCION ' habilita otro camino para cargar pistas
-        Exit Sub
+       ''' Exit Sub 5-12-2025
      Else
+        
        ' carga Todos los tracks de cancion en un Loop
-       Dim  As Integer mayor=1
+'-----------COMIENZ LOOP SOBRE EL DISCO ----------------------------
+       
        Do While Len(filename) > 0 ' If len(filename) is 0, exit the loop: no more filenames are left to be read.
+        filename=UCase(filename)
+        If  InStr(filename,".RTK") > 0 Or InStr(filename,".SOLO") > 0 Then  
+        Else
+            filename = Dir()
+            Continue Do   
+        EndIf  
+
         filenameold=filename
+
         Print #1, "trabajo con este filename...", filenameOld '[1]AAA.rtk por ejemplo
         Dim cadena As String
-        cadena= sacarExtension(filenameOld) ' [1]AAA
-       ''' If pistacreada=0 Then
+        cadena= sacarExtension(filenameOld) ' BUSCA EL PUNTO NO DEPENDE DE LA EXTENSION
+
           If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Then ' en batch no hay ventana control 
           Else   
-          AddListBoxItem(PISTASROLL, cadena)
+          AddListBoxItem(PISTASROLL, cadena) 'SIN EXTENSION
           End If  
-       ''' EndIf
-        ntk= sacarNtk(filenameold)  ' 1
-       Print #1,"sacarNtk ntk "; ntk
-        If mayor< ntk Then
-           mayor=ntk
-        EndIf
- 
+
+           ntk= sacarNtk(filenameold)  ' EL NTK SALE DEL NOMBRE DEL ARCHIVO
+           Print #1,"sacarNtk ntk "; ntk
+        If InStr(filename,".RTK") > 0 Then ' SOLO LOS RTK SON DE CANCION
+           If mayorntk< ntk Then 'DEBE PERAMNECER EN DIFERENTES LLAMADAS
+              mayorntk=ntk
+           EndIf
+        EndIf  
   ' va cargando los track internos, tomando el nro de track 
   ' del nombre del archivo solamente , ergo el usuario puede cambiar el orden
   ' o poner un trakck de otra cancion con un numero que no exista [x]
   '      
          ' cargamos un track simulamos como linea de cmd o cancion cargada
-        nombre=NombreCancion+"\"+filename
+        nombre=NombreCancion+"\"+filename 'RTK Y SOLO
         titulosTk(ntk)=nombre ' como agregue en titulos la opcion es 1
         ' como si viniera de lie ad ecomadno puedo usar cualquiera o 0
-        pistasTk (ntk)=filename
+        pistasTk (ntk)=filename 'RTK Y SOLO
         Print #1,"nombre en CargarPistasEnCancion ,Numpista",nombre, ntk
          'se carga track nada mas si dialogo simualmos un ubirtk>0 (1)
 ' chequeamos que todos los maxpos sean iguales sino se corrige
-        
+        'UBIRTK=1 , EL ULTIMO ARGUMENTO, => TOMA TODO LO QUE VENGA INCLUSO LAS EXTENSIONES SOLO 
         CargarTrack  (Track() , ntk, 1 ) ' se cargo a track x nada mas
 
  'durante la cargaTrack el programa va a Rolloop se encuentra con SC_TAB
@@ -5557,15 +5574,19 @@ Print #1,"inicia CargaPistasEnCancion"
  ' que se ajusta a 0 cargacancion dentro de la rutina veremos 
 '        
         Sleep 100
-        filename = Dir()
-                
+        filename = Dir() ' llama al proximo sin necesidad de argumentos
+' RECORDAR SOLO TRAE NOMBRE CON EXTENSION NO EL PATH                
        Loop
-       Tope=mayor  ' el nro tope de la lista
+'--------------FIN LOOP----------------
+       Tope=mayorntk  ' el nro tope de la lista
        Print #1,"CARGO PISTAS MAXIMA CANTIDAD TOPE=",tope
        CANCIONCARGADA=TRUE
        NADACARGADO=FALSE
        ntk=0   ' tab le suma 1 pero si creo pistas estria  mal 05-03-2022 ���
-    EndIf
+      
+     EndIf
+
+
 ntk=1
 cargaCancion=CARGAR_NO_PUEDE_DIBUJAR '12-02-2022 mientras carg las pista el 1 indica cargando pistas    
     Print #1,"FIN CargaPistasEnCancion no debe calcuar *po ",*po
@@ -7780,52 +7801,6 @@ End Sub
 '''-///////////// RUTINAS DE VENTANA PRINCIPAL ROLLCONTROL ////////
 ''' empezamos a estructurar un poco .....06- marzo 2024
 '' REVISAR DE NUEVO LAS CONDICIONES DE SALIDA DE SELECT O EXIT DO
-Sub ReproducirTodasLaSPistas()
-' NO SE PUEDE LLAMAR DESDE SC_SPACE, LA BARRA DE ESPACIO CANCELA AL REPRODUCIR EJECS, 
-' DE MODO QUE QUEDA CODIGO DUPLICADO, YA NO ME DA GANAS DE SABER PORQUE MIERDA..
-' LOS CODIGOS DUPLICADOS EN ESTE PROGRAMA SUELEN SER NECESARIO SINO CANCELA, CANCELA 
-' Y CANCELA,JEJE
-  If (playb = NO Or Cplay=NO )And (MaxPos> 2  Or Maxgrb > 2) Then ' 23-02-22 ningun play
-  '''If playb = NO And play=NO And Cplay=NO And MaxPos > 1 Then ' 23-02-22 ningun play
-
-    '''  Print #1,"ENTRA POR COMEDIT<>LECTURA ???"
-      GrabarPenta=0
-      naco=0:naco2=0
-      '' Print #1,"====> INSTANCIA ";INSTANCIA 
-      If INSTANCIA = ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia <= ARG4_INSTRU  Then '04-10-2025 
-      Else  
-     ' SetGadgetstate(BTN_ROLL_GRABAR_MIDI,0) ' 10-04-2022 DE  VENTANA CTROL
-       SetGadgetstate(15,0) ' 20-02-2025 
-      EndIf
-   '   print #1,"SPACE call play"
-'Print #1,"CANCIONCARGADA = TRUE And Cplay=NO  ",CANCIONCARGADA, Cplay  
-         If CANCIONCARGADA = TRUE  And CPlay=NO   Then
-'Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
-             Print #1,"USANDO PLAYCANCION"
-             Parar_De_Dibujar=NO
-             Cplay=SI : s5=NO 'Necesita mas tiempo de cpu
-       '      Sleep 100
-             thread1 = ThreadCall  PlayCancion(Track())
-             grabariniciotxt(NombreCancion, CANCION)
-             FileFlush (-1)
-
-         ElseIf   playb=NO And  CANCIONCARGADA = FALSE Then
-              print #1,"llama a playall"
-              Playb=SI:s5=NO 
-       '       Sleep 100
-              thread2 = ThreadCall  playAll(Roll)
-         EndIf
-          If maxgrb > 0 And playEj=NO Then
-           playEj=SI 
-Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"  
-          threadG = ThreadCall  PlayTocaAll(p)
-          EndIf
-      menunew=MENU_INICIAL
-      cierroedit= 0
-  EndIf
-
-End Sub
-'---------
 
 ' error
 errorSub:

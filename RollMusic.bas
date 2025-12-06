@@ -32,8 +32,11 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.3508 FIX CANCELACIONES BOTON DE PLAY VERDE CANCION Y REPRODUCIR DESDE MENU VENTANA CONTROL "
-'
+nroversion="0.35091 SE PUEDEN USAR TECLAS EN LA VENTANA DE CONTROL F1, SPACE, Y P YA ANDAN"
+'' AGREGAR TIPSO DE ARCHIVOS SOLO ESTA INCOMPELTO PERO ALGO DESARROLLADO
+' "0.35092 agregamos la extendion *.solo para que el programa sepa que es un solo"
+' 3508 sigue produciendose alguna cancelacion por ahora paramos de invesigar y seguimos
+' tal vez los cambios nuevos hagan reducir o eliminar al resto...veremos
 ' 0.3505 ctrl-home fixed hace que entre toda la secuencia en la pantalla
 '"0.3504 PRUEBA DE LOOPS, USAR UNA PISTA DE CANCION COMO SOLO Y REPETICIONES  "
 ' 0.3503 ES CREO EL PRINCIPIO DE PODER DESARROLLAR PATRONES QUE  NO DEBEN SEGUIR A LA
@@ -319,7 +322,7 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
 'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
  ''win = glfwCreateWindow(800,600,"Track OPENGL" )
 '' Dim ta As Any Ptr = threadcall correwin(win,ta)
- 
+ Dim As Integer unasola=0 
     Do
        'If  Parar_De_Dibujar=1 Then ' damos mas recursos si hay play de PlayTocaAll y mas si hay tambien playAll o PlayCancion
        '    Sleep 10
@@ -335,8 +338,54 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
 
 
            ''Print #1,"TitulosEj(ntoca), ntoca ",TitulosEj(ntoca),ntoca
+     
+     eventC=WaitEvent() 
+          
+      If eventC=EventKeyUp  Then
+         If  EventKEY = VK_F1 Then  
+           Shell ("start notepad " + pathinicio + "\ayuda.txt")
+          
+         EndIf
+         If  EventKEY = VK_SPACE  Then
+           ReproducirTodasLaSPistas()  
+         EndIf
+         If  EventKEY = VK_P  Then
+           If COMEDIT=LECTURA   Then
+             PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
+             PARAR_PLAY_EJEC=SI
+             Cplay=NO
+             Sleep 20 
+             playloop=NO:playloop2=NO
+             play=NO:Cplay=no:playb=No:playEj=NO
+             s5=2 ' el loop necesita menos cpu se libera
+             trasponer=0
+             For i3 As Integer  = 1 To Tope
+                portsal=CInt(pmTk(i3).portout) 
+                alloff(pmTk(i3).canalsalida,portsal)
+                allSoundoff( pmTk(i3).canalsalida, portsal ) 
+             Next i3
+             Sleep 1
+             For i3 As Integer  = 1 To TopeEjec
+               portsal=CInt(pmEj(i3).portout) 
+               alloff(pmEj(i3).canalsalida,portsal)
+               allSoundoff( pmEj(i3).canalsalida, portsal ) 
+             Next i3
+             Sleep 1
+             Parar_De_Dibujar=NO
+' cada vez que hago detech cancela no usar nuncas adetach solo en la salida
+             STARTMIDI=0
+            If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then 
+            Else
+              SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
+              SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_LIBERADO)
+            EndIf
+           EndIf
+             
+         EndIf
+           
+      EndIf 
 
-     eventC=WaitEvent()
+
 'WindowStartDraw(hwndC)
 '  fillrectdraw(40,40,&h888888)
 '  TextDraw(10,10,NombreCancion,-1,&hff0000)
@@ -372,19 +421,9 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
     '  'DisableGadget(PISTASROLL,1)
     '  EndIf
 '''           Exit Do ''ESTA DEMAS CREO
-
+      SetFocus (hwndC) ' LA PAPA...
       'SetForegroundWindow(hwnd)
 '////////// PULSAR TECLAS EN VENTANA MODO CONTROL NO GRAFICO DE ROLL /////
-       case EventKeyDOWN
-            Select Case  EventKEY 
-                Case VK_F1 
-                   Shell ("start notepad " + pathinicio + "\ayuda.txt")
-                Case VK_SPACE '' HARIA FALTA QUE TOQUE LA CANCION CON
-' SPACE SIN ESTAR EL ROLL CARGADO PRIMERO DEBO PODER CARGAR UN CAQNCION SIN ROLL 
-               ''''' REMEDAR EL BOTON VERDE ??? CHEQUEAR EL BOTON VERDE
-          ''''' NO SE SI ESTA TOCANDO TODA LA CANCION TL VEZ FALTA 
-'''' CARGAR EL SINTETIAZADOR 13-02-2024
-            End SELECT
 '-----------------------------------------------------------------------
        Case EventClose  ''<==== SALIR TERMINA ROLL la X de win control
            If play=SI Or playb=SI Or Cplay=SI Or playEj=SI Then 'rollLroop esta levantando en play
@@ -468,9 +507,8 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
          Next k
  
       EndIf 
-
+      
      End Select
-
      ''' NO ESTA EN VERION F Sleep 5 ' 
     Loop
 '-----------------------------------------------------------------------

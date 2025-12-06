@@ -1,4 +1,4 @@
-DisableGadget(PISTASROLL,0)
+DisableGadget(PISTASROLL,0) 'habilita la pistaroll
 
 ' include DE ROLLMUSIC.BAS, EVENTC, eventgadget
 ' tiene su scope
@@ -12,7 +12,7 @@ DisableGadget(PISTASROLL,0)
 Dim As Integer k=0
 Static As Integer millave
 
-   If eventnumber()=  PISTASROLL And GrabarPenta=0 And CANCIONCARGADA=TRUE Then 
+  If eventnumber()=  PISTASROLL And GrabarPenta=0 And CANCIONCARGADA=TRUE Then 
          
   ''        borrapos=0   ' no se usa
 ' ME GUSTO FUNCIONA ASI: DAR CLICK EN UNA PISTA LUEGO CON flecha arriba
@@ -139,8 +139,9 @@ Static As Integer millave
                  
            ' aca no debe leer a disco solo conmutar de track en track
 '------------------------------
-                
-
+' para que funciones lso eventos se debe carcar alguna cancion y
+' dar click en la pista roll luego pulsar F1 o cualquier otra Tecla
+' lo raro es que no funciones sin cargar cancion ¿?? 
      EndIf
                                   
          '       Print #1," CLICK EN LISTA FIN "
@@ -149,7 +150,7 @@ Static As Integer millave
   If eventnumber()=  PISTASROLL And GrabarPenta=1 Then
           PISTASROLLSELECCIONADA=1  
   EndIf
-
+ 
 '-----------------------------------------------------
 
   If eventnumber()=  PISTASEJECUCIONES Then

@@ -12,7 +12,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
 ' cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS cancion
 'cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_E,1016) 'CTRL+E ABRIR PISTAS ejecucion
 '' ------TIPS AYUDA EN LA BARRA DE ESTADO
-   StatusBarGadget(BARRA_DE_ESTADO,"Tips de ayuda" )
+   StatusBarGadget(BARRA_DE_ESTADO,"CADA TECLA EN ESTA VENTANA DE CONTROL SE PUEDE USAR UNA SOLA VEZ, PARA MAS VECES OPRIMIR Q" )
  
   'CenterWindow(hwndC)
 ''UpdateInfoXserver()
@@ -78,44 +78,44 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 ' CHECK PARA TOCAR UNA PISTA FUERA DEL CONTROL TOTAL DE CANCION
 ' check para encender o apagar, sonido de salida de c/pista 
 ' al cargar una cancion luego de cargar las pistas buscara si hay pistas solitarias
-' cargara su nombre en la lsita de cancion ser aotra rtk pondrra un check en cbxpis
+' cargara su nombre en la lsita de cancion ser aotra rtk pondrra un check en cbxsolo
 ' pero se tocara independientemente con playall como pista aparte, podria ahcer
 ' su propia lista de pistas solitarias que tengan loops..hago una 3er alista o las
 ' pongo en la 1er lista? creo merece una lista nueva NO porque con TAB la querre seguir editando
 ' y sera una pista mas de cancion pero que se toca aparte y la cancion playCancion en su barrido
 ' la saltara como si no existiera !! es lo mejor creo por ahora  
-  cbxpis(1) =  CheckBox_New( 40 ,  40, 20, 20, "",, hwndc) 
-  cbxpis(2) =  CheckBox_New( 40 ,  60, 20, 20, "",, hwndc)
-  cbxpis(3) =  CheckBox_New( 40 ,  80, 20, 20, "",, hwndc)
-  cbxpis(4) =  CheckBox_New( 40 , 100, 20, 20, "",, hwndc)
-  cbxpis(5) =  CheckBox_New( 40 , 120, 20, 20, "",, hwndc)
-  cbxpis(6) =  CheckBox_New( 40 , 140, 20, 20, "",, hwndc) 
-  cbxpis(7) =  CheckBox_New( 40 , 160, 20, 20, "",, hwndc) 
-  cbxpis(8) =  CheckBox_New( 40 , 180, 20, 20, "",, hwndc)
-  cbxpis(9) =  CheckBox_New( 40 , 200, 20, 20, "",, hwndc)
-  cbxpis(10) = CheckBox_New( 40 , 220, 20, 20, "",, hwndc)
-  cbxpis(11) = CheckBox_New( 40 , 240, 20, 20, "",, hwndc)
-  cbxpis(12) = CheckBox_New( 40 , 260, 20, 20, "",, hwndc)
-  cbxpis(13) = CheckBox_New( 40 , 280, 20, 20, "",, hwndc) 
-  cbxpis(14) = CheckBox_New( 40 , 300, 20, 20, "",, hwndc) 
-  cbxpis(15) = CheckBox_New( 40 , 320, 20, 20, "",, hwndc)
-  cbxpis(16) = CheckBox_New( 40 , 340, 20, 20, "",, hwndc)
-  cbxpis(17) = CheckBox_New( 40 , 360, 20, 20, "",, hwndc)
-  cbxpis(18) = CheckBox_New( 40 , 380, 20, 20, "",, hwndc)
-  cbxpis(19) = CheckBox_New( 40 , 400, 20, 20, "",, hwndc) 
-  cbxpis(20) = CheckBox_New( 40 , 420, 20, 20, "",, hwndc) 
-  cbxpis(21) = CheckBox_New( 40 , 440, 20, 20, "",, hwndc)
-  cbxpis(22) = CheckBox_New( 40 , 460, 20, 20, "",, hwndc)
-  cbxpis(23) = CheckBox_New( 40 , 480, 20, 20, "",, hwndc)
-  cbxpis(24) = CheckBox_New( 40 , 500, 20, 20, "",, hwndc)
-  cbxpis(25) = CheckBox_New( 40 , 520, 20, 20, "",, hwndc) 
-  cbxpis(26) = CheckBox_New( 40 , 540, 20, 20, "",, hwndc) 
-  cbxpis(27) = CheckBox_New( 40 , 560, 20, 20, "",, hwndc)
-  cbxpis(28) = CheckBox_New( 40 , 580, 20, 20, "",, hwndc)
-  cbxpis(29) = CheckBox_New( 40 , 600, 20, 20, "",, hwndc)
-  cbxpis(30) = CheckBox_New( 40 , 620, 20, 20, "",, hwndc)
-  cbxpis(31) = CheckBox_New( 40 , 640, 20, 20, "",, hwndc)
-  cbxpis(32) = CheckBox_New( 40 , 660, 20, 20, "",, hwndc) 
+  cbxsolo(1) =  CheckBox_New( 40 ,  40, 20, 20, "",, hwndc) 
+  cbxsolo(2) =  CheckBox_New( 40 ,  60, 20, 20, "",, hwndc)
+  cbxsolo(3) =  CheckBox_New( 40 ,  80, 20, 20, "",, hwndc)
+  cbxsolo(4) =  CheckBox_New( 40 , 100, 20, 20, "",, hwndc)
+  cbxsolo(5) =  CheckBox_New( 40 , 120, 20, 20, "",, hwndc)
+  cbxsolo(6) =  CheckBox_New( 40 , 140, 20, 20, "",, hwndc) 
+  cbxsolo(7) =  CheckBox_New( 40 , 160, 20, 20, "",, hwndc) 
+  cbxsolo(8) =  CheckBox_New( 40 , 180, 20, 20, "",, hwndc)
+  cbxsolo(9) =  CheckBox_New( 40 , 200, 20, 20, "",, hwndc)
+  cbxsolo(10) = CheckBox_New( 40 , 220, 20, 20, "",, hwndc)
+  cbxsolo(11) = CheckBox_New( 40 , 240, 20, 20, "",, hwndc)
+  cbxsolo(12) = CheckBox_New( 40 , 260, 20, 20, "",, hwndc)
+  cbxsolo(13) = CheckBox_New( 40 , 280, 20, 20, "",, hwndc) 
+  cbxsolo(14) = CheckBox_New( 40 , 300, 20, 20, "",, hwndc) 
+  cbxsolo(15) = CheckBox_New( 40 , 320, 20, 20, "",, hwndc)
+  cbxsolo(16) = CheckBox_New( 40 , 340, 20, 20, "",, hwndc)
+  cbxsolo(17) = CheckBox_New( 40 , 360, 20, 20, "",, hwndc)
+  cbxsolo(18) = CheckBox_New( 40 , 380, 20, 20, "",, hwndc)
+  cbxsolo(19) = CheckBox_New( 40 , 400, 20, 20, "",, hwndc) 
+  cbxsolo(20) = CheckBox_New( 40 , 420, 20, 20, "",, hwndc) 
+  cbxsolo(21) = CheckBox_New( 40 , 440, 20, 20, "",, hwndc)
+  cbxsolo(22) = CheckBox_New( 40 , 460, 20, 20, "",, hwndc)
+  cbxsolo(23) = CheckBox_New( 40 , 480, 20, 20, "",, hwndc)
+  cbxsolo(24) = CheckBox_New( 40 , 500, 20, 20, "",, hwndc)
+  cbxsolo(25) = CheckBox_New( 40 , 520, 20, 20, "",, hwndc) 
+  cbxsolo(26) = CheckBox_New( 40 , 540, 20, 20, "",, hwndc) 
+  cbxsolo(27) = CheckBox_New( 40 , 560, 20, 20, "",, hwndc)
+  cbxsolo(28) = CheckBox_New( 40 , 580, 20, 20, "",, hwndc)
+  cbxsolo(29) = CheckBox_New( 40 , 600, 20, 20, "",, hwndc)
+  cbxsolo(30) = CheckBox_New( 40 , 620, 20, 20, "",, hwndc)
+  cbxsolo(31) = CheckBox_New( 40 , 640, 20, 20, "",, hwndc)
+  cbxsolo(32) = CheckBox_New( 40 , 660, 20, 20, "",, hwndc) 
 ' lo puedo probar ya chequear pistas para que se toquen con playcancion o playall!
  
 ' fast? http://www.forosdelweb.com/f69/archivos-ayuda-chm-con-visual-basic-6-0-a-801611/
@@ -413,7 +413,7 @@ Negras por minuto	 tempo
 '/    
 
   
-MenuItem(1090,MenName6 ,"1.0 Reproducir TODAS Las Pistas desde el principio o un intervalo seleccionado en el Roll Grafico")
+MenuItem(1090,MenName6 ,"1.0 Reproducir TODAS Las Pistas EXCEPTO los solos desde el principio o un intervalo seleccionado en el Roll Grafico")
 MenuItem(10901,MenName6,"1.1 Detener Reproducion 1.0")
 MenuItem(1091,MenName6,"2.0 Repeticiones marcadas en una sola pista en un INTERVALO en GRAFICO. cancion o pista ")
 MenuItem(10911,MenName6,"2.1 Borrar Repeticiones ")
