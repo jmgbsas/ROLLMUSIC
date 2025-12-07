@@ -2651,10 +2651,20 @@ kNroCol= Int(jply/NroCol)
                If Track(ntk).trk(1,1).ejec = 1 Or pmTk(pis).ejec=1 Then
           'Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
                   vel=Track(pis).trk(jply,i1).vol * ajuste
-               Else
-                  vel=VelPos
                EndIf
-             '''  If vel=0 Then vel=64 EndIf  
+             ' la duracion me da si suena o no
+               Select CASE Roll.trk(jply, i1).dur
+                  Case 46 To  90  'silencios
+                      vel=0  
+                  Case 138 To 180  'silencios
+                     vel=0
+                  Case Else
+                     vel=Roll.trk(jply, i1).vol
+                     If vel=0 Then
+                       vel=velpos
+                     EndIf   
+                 End select 
+  
             Else
                alloff( pmTk(pis).canalsalida,CInt(pmTk(pis).portout) )
                vel=0
@@ -2786,7 +2796,7 @@ jply=0:curpos=0
  
 
 Cplay=NO ' Control de play cancion si fue desde control
-
+trabaspace=0
 
 '''  reponer mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 
@@ -3223,7 +3233,14 @@ velpos=vsemifuerte
                Else
                   vel=VelPos
                EndIf
-             '''  If vel=0 Then vel=64 EndIf  
+               ' la duracion me da si suena o no
+               Select CASE Roll.trk(jply, i1).dur
+                 Case 46 To  90  'silencios
+                      vel=0  
+                 Case 138 To 180  'silencios
+                     vel=0
+               End select 
+  
             Else
                alloff( pmTk(Spis).canalsalida,CInt(pmTk(Spis).portout) )
                vel=0

@@ -88,7 +88,7 @@ Static shared As Double x3H = 0.0 , resta=0.0
 '-----------------------------------------------------------------
 '  3  x tresillo desemigarrapaea (0.01041666)= 0.03125  garrapatea
 ' 1.5 x tresillo desemigarrapaea (0.01041666)= 0.015625 semi garrapatea
-    
+' OBSERVACION SENCILLA EL INDICE DEL VCTOR ME DICE SI ES UN SILENCIO O NO!!    
 Dim Shared As float relDur (0 To 185) => {0, _  
 4 ,2 , 1.0, 0.50,0.250,0.1250 ,0.06250,0.031250,0.0156250, _ ' 1 9 
 5 ,2.5,1.25,0.625,0.3125,0.15625,0.078125,0.0390625,0.01953125,_ ' 10 18

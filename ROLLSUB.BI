@@ -938,7 +938,67 @@ Next x
  BuscarNota=1 ' error
  trasponer=0
 End Function
+Function BuscarDur (ctrl As Integer, ByRef cur1 As Integer,ncur As Integer) As Integer ' en cursor cambiadur u otras el programa se posicionara en la nota mas cercana
+'SOLO SIRVE PARA APLICAR EN CURSOR COMEDIT=TRUE, HBRIA QUE HACER OTRA PARA LECTURA
+' Y FUERA DE CURSOR SI HACE FALTA POR AHORA NO
+' hace falta para acordes en lectura no le doy pie con bola todavia!!!! 19-07-2025
+' decidiremos cuanotos ticks de acercamiento en un principio 10
+' posn1=n+curpos  es x , notacur es y, barreemos un cuadrado ¡ 1 1 semitono y + - 10 curpos
+' BUSCA OFF 1 O 2 y 190
+Print #1,"ENTRA A BuscarLoQueSea CUR1 "; cur1; " ncur "; ncur
+If ctrl= 0 Then ' ctrl es cambiadur solo procesa con 1 para evitar otras modificaciones se ajusta en cursor()
+  Exit Function
+EndIf
+Dim As Integer x,x1, x2, y, y1, y2,posn1
 
+'Dim As String s1,s2,s3,s4,s5,s6,s7,s8,s10
+
+x1=cur1 - 20
+x2=cur1 + 20
+
+y1=ncur - 1
+y2=ncur + 1
+If y1 < 1 Then y1=1 EndIf
+If y2 > 12 Then y2=12 EndIf
+If x1 < 1 Then x1=1 EndIf
+If x2 > NroCol Then x2=NroCol EndIf
+
+'Print #1," x1 x2 "; x1, x2
+'Print #1," y1 y2 "; y1, y2
+For x= x1 To x2  'curpos
+ For y=y1 To y2  ' notacur
+    posn1 = posicion+ x 'este deberia ser siempre ¿?
+'Print #1,"POSN1 ";posn1
+'Print #1,"POSISHOW  ";posishow
+'Print #1,"POSIcion  ";posicion
+'Print #1,"curpos  ";curpos
+'Print #1,"----------------------------------------"
+'     Print #1," x posn1 "; x, posn1; " estoyEnOctava ";estoyEnOctava; " y ";y
+         
+      ''' Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1 Or _    
+    If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur > 0  Then
+' encontro ubicacion de nota ,o final sec o un 190 borrar
+'        Print #1,"encontro onoff posn1 "; Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff, posn1
+     cur1=posn1-posicion
+     ncur=y
+    
+
+ 'Print #1,"ENCONTRAMOS ON 2 EN CURPOS, NOTACUR "; cur1, ncur
+    BuscarDur=0 ' ok
+    Exit Function 
+    EndIf
+ Next y
+Next x
+ 'Print #1,"NO ENCONTRAMOS UNA MIERDA "
+
+ 'FileFlush(-1)
+ BuscarDur=1 ' error
+ trasponer=0
+  
+ 
+
+
+End Function
 ''========================= C U R S O R ============
 Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As inst)
 'trasponer=0 ' NO SEPORQUE MIERDA SE PONE EN 1
@@ -1039,12 +1099,13 @@ Dim  As Integer nroPartesNota,verticalEnOctavaVacia
 
  EndIf
 '-----------------------
-' BORRAR CON DELETE: (EN VEZ DE 0)
+' BORRAR CON DELETE una nota (on y off) borrar=1,, o con 0 una dur borrar=2  
 '------------------------
- If (COMEDIT=SOLO_MODIFICACION Or COMEDIT=MODIFICACION_INSERCION) And borrar= 1  Then 'ctrl-M selecion  de nota con flechas y posicion
+ If (COMEDIT=SOLO_MODIFICACION Or COMEDIT=MODIFICACION_INSERCION) And borrar > 0  Then 'ctrl-M selecion  de nota con flechas y posicion
 ' HABILITAR NOTA AL PONER EN CERO SE PUEDE USAR EN EDIT COMUN
 ' ch lo habilitamos para control-n tambien
 ' OJO NO BORRA EL ONOFF=1!!! PONERLO
+Dim As Integer durant,posoffdurant=0
 trasponer=0
   cairo_set_source_rgba c, 1, 0, 0.2, 1
   
@@ -1053,18 +1114,41 @@ trasponer=0
    notacur=notaOld 
   EndIf
 ' buscanota onoff=2 o fin secuencia 182 o borrar futuro al grabar 190
+  If borrar=1 Then  ''busca on y borra on y off
     If BuscarNota (borrar, curpos ,notacur ) = 1 Then
-       borrar=0
+       borrar=0 ' <-- permite borrar mas con DELETE
        Exit sub
     EndIf
-
 '  Print #1,"n + curpos, 12 - notacur + (*po-1) * 13 ", n+curpos, 12 - notacur + (*po-1) * 13
-  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).dur = 0
-  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).nota = 181
-  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).onoff = 0
-  borrar = 0
+ ' tomo el valor de dur Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).dur
+ ' lo borro 07-12-2025
+    durant=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).dur
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).dur = 0 '' el off2 el on
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).nota = 181
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).onoff = 0  ' on
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).vol = 0
+
+    posoffdurant=n + curpos + DurXTick(durant) -1
+    Roll.trk(posoffdurant, 12 - notacur + (*po-1) * 13).dur=0
+    Roll.trk(posoffdurant, 12 - notacur + (*po-1) * 13).onoff=0 ' off
+    Roll.trk(posoffdurant, 12 - notacur + (*po-1) * 13 ).nota = 181
+  EndIf
+  If borrar=2 Then '  caso 2 borrado puntual de una dur que no sea nota   
+     If BuscarDur (borrar, curpos ,notacur ) = 1 Then
+       borrar=0 ' <-- permite borrar mas con DELETE
+       Exit sub
+    EndIf
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).dur = 0 
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).nota = 181
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).onoff = 0  ' on
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13 ).vol = 0 
+
+  EndIf
+' con el valor de durant borro el off1
+
+  borrar = 0 
 '------------------------
-     Print #1," DESPUES DE BUSCONOTA curpos notacur "; curpos, notacur
+     Print #1," DESPUES DE BUSCONOTA o BUSCODUR curpos notacur "; curpos, notacur
      borrar=0
      cairo_move_to  (c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  )
      cairo_rectangle(c, gap1 + (curpos)*anchofig, Penta_y + (notacur-1) * inc_Penta  ,wc*6 ,inc_Penta) '13-07-2021 inc_penta/2 por inc_penta
@@ -1097,6 +1181,10 @@ trasponer=0
      cambiadur=0
      trasponer=0
      curposClickDErecho=0 ' ya noquiero que vuelva a la posicion donde se dio click derecho
+     If DUR=0 Then 
+' no se modifica nada debe ser DUR >0
+        Exit Sub
+     EndIf
 ' sino n odeja cambiar otras notas en un ucrpos nuevo OK!
    If COMEDIT=MODIFICACION_INSERCION   And octavaEdicion<>estoyEnOctava Then ' PARA ctrl-M SOLO CAMBIA UNA OCTAVA POR VEZ
        Exit Sub  'cursorVert = 1 es solo ctrl-m 
@@ -1109,7 +1197,7 @@ Print #1,"CAMBIADUR 1 ENTRA  "
 Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyEnOctava -1) * 13)).onoff
   If Roll.trk(n + curpos, (12-notacur +(estoyEnOctava -1) * 13)).onoff <>  2 Then
      Print #1,"ENTRO A LLAMAR A BUCONOTA "
-     cambiadur=1
+     cambiadur=1 ' ya estaba en 1 
      Print #1," ANTES BUCONOTA curpos notacur "; curpos, notacur
 
      If BuscarNota (cambiadur, curpos ,notacur )=1  Then
@@ -1197,18 +1285,18 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
 ' quedaria rellenar los espacios vacios con nota=181 y dur=0 creo
      cambiadur = 0
      DUR=0
- ElseIf DUR=0 Then ' borrado
-    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur =181
-    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota=0
-    cambiadur = 0
-    DUR=0
-    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
- ElseIf DUR=190  Then ' marcamos para borrar al grabar CTRL-9
-    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur =190
-    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota=190
-    cambiadur = 0
-    DUR=0
-    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
+ 'ElseIf DUR=0 Then ' aca que no haga nada DELETE el unico que borra 
+ '   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur =181
+ '   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota=0
+ '   cambiadur = 0
+ '   DUR=0
+ '   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
+ 'ElseIf DUR=190  Then ' marcamos para borrar al grabar CTRL-9  NO MAS 190!! EL BORRADO SE AHCE ON LINE
+ '   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur =190
+ '   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota=190
+ '   cambiadur = 0
+ '   DUR=0
+ '   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
 
  Else
 'desde aca las notas se colocan con notacur siemrpe tienen valorde 1 a 12
@@ -4365,7 +4453,7 @@ Sleep 100
       MenuNew=CONFIGURACION '9
      EndIf
 
-     t = "      Seleccione un canal"
+    ''' t = "      Seleccione un canal" 07-12-2025
   '------------
   Case 12  ' edit por teclado
     cairo_set_source_rgba c, 0, 1, 0, 1

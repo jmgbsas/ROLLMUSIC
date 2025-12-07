@@ -1383,6 +1383,7 @@ EndIf
 If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE ?
 'vuelve a COMEDIT=ENTRADA_NOTAS PUES ES UN SOLO PASO ATRAS
  cierroedit= 0
+ trabaspace=0
  If COMEDIT<>LECTURA Then
     COMEDIT=ENTRADA_NOTAS
  EndIf
@@ -1411,6 +1412,7 @@ If MultiKey (SC_P) Then
       PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
       PARAR_PLAY_EJEC=SI
       Cplay=NO
+      trabaspace=0
       Sleep 20 
       playloop=NO:playloop2=NO
       play=NO:Cplay=no:playb=No:playEj=NO
@@ -1813,7 +1815,7 @@ EndIf
  'EndIf
 
 If MultiKey(SC_Y) Then
-    ResizeWindow(hwnd,,ALTO*3/5,,ALTO/5) 'KOKITO
+    ResizeWindow(hwnd,,ALTO*3/5,,ALTO/5) 'OK
 EndIf
 
 If MultiKey (SC_F2)  And lockfont=0 Then
@@ -2267,10 +2269,10 @@ EndIf
 '--
 
 ' ============== E S P A C I O ========
-If MultiKey(SC_SPACE)    Then 'barra espacio
-   ''Sleep 20   
-'   playloop=NO:playloop2=NO
-
+If MultiKey(SC_SPACE) And trabaspace=0   Then 'barra espacio
+   trabaspace=1  
+   playloop=NO:playloop2=NO
+  Print #1," COMEDIT en space play ???",comedit
  If COMEDIT<>LECTURA Then
    ''Print #1,"ENTRA POR COMEDIT<>LECTURA ???"
     espacio = 1
@@ -2287,7 +2289,7 @@ If MultiKey(SC_SPACE)    Then 'barra espacio
  
 
 '------------------------------------------------------------------
-    '''  Print #1,"ENTRA POR COMEDIT<>LECTURA ???"
+      Print #1,"ENTRA POR COMEDIT<>LECTURA a play ???"
       GrabarPenta=0
       naco=0:naco2=0
       '' Print #1,"====> INSTANCIA ";INSTANCIA 
@@ -2842,7 +2844,9 @@ If COMEDIT<>LECTURA Then  'TERMINA EN 2628
   EndIf
   If MultiKey(SC_0) Then 
      nota=0
-     DUR = 0:Exit Do
+     DUR=0
+     borrar=2
+     Exit Do
   EndIf
 
 
@@ -2875,22 +2879,24 @@ If COMEDIT<>LECTURA Then  'TERMINA EN 2628
  EndIf 
  ' este delete esta fuera porque podra ser usado con cualquier comedit 
 ' y en la ventana de control o sea la del menu inicial  no el grafico.
- If multikey(SC_DELETE) Then ''cambia a silencio o nada le suma 16+16 ver eso!!!!!!!
-      If s7=0 Then
-         If borrar=1 Then
-            borrar=0
-            s7=1
-            Exit Do
-         EndIf  
-      EndIf
-      If s7=0 Then
-        If borrar=0 Then
-           borrar=1
-           s7=1 
-           Exit Do
-        EndIf 
-      EndIf
-     Sleep 50 
+ If multikey(SC_DELETE) And borrar =0 Then ''cambia a silencio o nada le suma 16+16 ver eso!!!!!!!
+' no es un switch el borrar cer olo debe poner cuando se cumplio latarea
+      borrar=1   
+ '     If s7=0 Then
+ '        If borrar=1 Then
+ '           borrar=0
+ '           s7=1
+ '           Exit Do
+ '        EndIf  
+ '     EndIf
+ '     If s7=0 Then
+ '       If borrar=0 Then
+ '          borrar=1
+ '          s7=1 
+ '          Exit Do
+ '       EndIf 
+ '     EndIf
+ '    Sleep 50 
  EndIf
 ' EL SALTO POR OMISION SERA EL  QUE ELIJA EL USUARIO CON LA DURACION DE 1 A 8 O 0
 ' PARA VOLVER A 1  
@@ -2967,6 +2973,8 @@ If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
  EndIf
  If MultiKey(SC_0) Then
     cifra = "0"
+''    borrar=1 'se coloca para deduccion logica del usuario 0 borraria EN CURPOS
+' pero mejor usar delete  
     Exit Do
  EndIf
 ' v23 agregado  inicio 
@@ -3171,7 +3179,7 @@ curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N 
      EndIf
 
      If HabilitarMIDIIN > 0  And GrabarPenta=1  Then 
-        If DUR <= 0.03  Then
+        If DUR <= 0.03  Then ''' DECIMAL??? ESTA MAL ES RELdur ... REVISAR KOKITO 
         'seria un acorde se esciben en la misma posicion 
         Else
           posn = posn + 1
@@ -3434,6 +3442,17 @@ If cuart=0 And pun = 0 And doblepun=0 And tres=1 And silen=1 And mas=1 Then
    Track(ntk).trk(posn,1).dur = DUR + 171
    incr=135
 EndIf   
+' volumen default según la duracion 07-12-2025
+      Select CASE Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
+          Case 46 To  90  'silencios
+            Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).vol=0  
+          Case 138 To 180  'silencios
+            Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).vol=0
+          Case Else
+            Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).vol=80
+      End select 
+
+'------------------------------------------------------------------------
 ' SI EL USUARIO CARGO UNA DUR ENTRE 1 Y 90 LA DURACION TERMINA AHI NO HAY
 ' LIGADURA ERGO SE puede COLOCAR EL OFF DIVIDO LA DURACION POR EL TICK
 ' Y OBTENGO EL NRO DE POSICIONES ADELANTE DONDE OCURRE EL OFF DE ESA NOTA
@@ -3705,7 +3724,10 @@ EndIf
   ' ocalculo elindice en cada t y meto la nota o saco en t las otas
   ' del vector Roll pra ello acaa la grabo enRoll
  EndIf ''comentar el endif para teclado
- '''   calcCompas(posn)
+    RecalCompas() ' 07-12-2025 
+ROLLCARGADO=TRUE ' 07-12-2025   no da play
+NADACARGADO=FALSE ' 07-12-2025   no da play
+nVerCifradoAcordes=3 ' 07-12-2025  no da play
  ' correccion de loop octava jmg09-06-2021 , por ahora hasta encontar 
  ' la causa real preparado el corrector,pero encontre una causa veremos
  'If estoyEnOctava <>octavaEdicion Then
@@ -6327,7 +6349,7 @@ If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion si
           modifmouse=0
           SeleccionarNuevaNota=TRUE
     ' acomoda los compases  <======= organiza Compases
-        '''  RecalCompas() ' organizaCompases()
+          RecalCompas() ' organizaCompases() repueto 07-12-2025
     ' fin compases
        EndIf
        If modifmouse=4 Then ' modificar

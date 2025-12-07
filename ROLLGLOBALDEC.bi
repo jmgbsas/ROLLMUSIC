@@ -597,9 +597,10 @@ valorvol=90
 trasponer=0
 common Shared As UByte Globalpan, Globaleco,Globalcoro, CerrarGraficodesdeCtrl,Globalvol
 CerrarGraficodesdeCtrl=0
-COMMON Shared As Integer  Tope,TopeEjec
+COMMON Shared As Integer  Tope,TopeEjec,trabaspace
 Tope=0
 TopeEjec=0
+trabaspace=0
 Common Shared As String ROLLDIR
 Common Shared As UByte Vfuerte,Vsemifuerte,Vdebil
 Vfuerte=96     'ff

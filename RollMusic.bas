@@ -32,8 +32,10 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.35091 SE PUEDEN USAR TECLAS EN LA VENTANA DE CONTROL F1, SPACE, Y P YA ANDAN"
-'' AGREGAR TIPSO DE ARCHIVOS SOLO ESTA INCOMPELTO PERO ALGO DESARROLLADO
+nroversion="0.35092 fix borrado de notas, los silencios tenian sonido, secuencia nueva sin sonido "
+'"0.35091 SE PUEDEN USAR TECLAS EN LA VENTANA DE CONTROL F1, SPACE, Y P YA ANDAN"
+'' AGREGAR TIPOS DE ARCHIVOS "SOLO" ESTA INCOMPELTO PERO ALGO DESARROLLADO
+'  TOCA LOS SILENCIOS ARREGLAR Y NO BORRA EL OFF DE UN ON DESPUES DE FIN DE ARCHIVO
 ' "0.35092 agregamos la extendion *.solo para que el programa sepa que es un solo"
 ' 3508 sigue produciendose alguna cancelacion por ahora paramos de invesigar y seguimos
 ' tal vez los cambios nuevos hagan reducir o eliminar al resto...veremos
@@ -138,7 +140,9 @@ acercade = "RollMusic "+ nroVersion +" Jose M Galeano, Buenos Aires Argentina 20
  "Editor de codigo FbEdit. Echo en Freebasic como hobby. FreeBASIC Compiler - Version 1.09.0 (2021-12-31), built for win64 (64bit) " + _
 " Copyright (C) 2004-2021 The FreeBASIC development team." +_ 
 " Consultas: mail:galeanoj2005@gmail.com. (Na, No aplicable, no implementado todavia"
- 
+
+
+ GrabarPenta=0 ' 07-12-2025 buscando porque no suena al crear 
 '------------///// GUI GUI GUI  GUI ///////////////
 
 #include Once "ROLLCTRLGUI.BI"
@@ -346,10 +350,12 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
            Shell ("start notepad " + pathinicio + "\ayuda.txt")
           
          EndIf
-         If  EventKEY = VK_SPACE  Then
+         If  EventKEY = VK_SPACE And trabaspace=0 Then
+             trabaspace=1
            ReproducirTodasLaSPistas()  
          EndIf
          If  EventKEY = VK_P  Then
+            trabaspace=0
            If COMEDIT=LECTURA   Then
              PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
              PARAR_PLAY_EJEC=SI

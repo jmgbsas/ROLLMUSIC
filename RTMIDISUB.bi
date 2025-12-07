@@ -934,13 +934,21 @@ If i1<= NA-13 Then
       If pmTk(0).ejec=1  Then ''''Roll.trk(1, NA).onoff=1  Then
        ' Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
         vel=Roll.trk(jply, i1).vol  * ajuste
-
-      Else
-        vel=velpos
-''        Print #1,"2 velpos vel ";velpos, vel
       EndIf
-
-       If Roll.trk(jply, i1).onoff =2 Then
+' la duracion me da si suena o no
+      Select CASE Roll.trk(jply, i1).dur
+          Case 46 To  90  'silencios
+              vel=0  
+          Case 138 To 180  'silencios
+              vel=0
+          Case Else
+              vel=Roll.trk(jply, i1).vol
+              If vel=0 Then
+                vel=velpos
+              EndIf   
+      End select 
+      
+       If Roll.trk(jply, i1).onoff =2 Then ''VER  KOKITO SILENCIOS!!!
             NroEventoPista(1)= NroEventoPista(1) +1
             NroEvento=NroEventoPista(1)
             ''Print #1,"noteon CUByte(Notapiano),vel,canal,portsal  ";CUByte(Notapiano),vel,canal,portsal
@@ -1084,7 +1092,7 @@ EndIf
 VerMenu=1
 Sleep 100,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion
 
-
+trabaspace=0
 
 ''ThreadDetach(thread2) ' 16-06-2022
 

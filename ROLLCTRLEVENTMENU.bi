@@ -649,6 +649,7 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
              EndIf 
 '---------------------------------------------------------------------
            Case 10901
+      trabaspace=0
       PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
       PARAR_PLAY_EJEC=SI
       Sleep 20 
