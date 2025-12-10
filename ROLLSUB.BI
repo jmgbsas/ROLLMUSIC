@@ -131,10 +131,8 @@ clickpista=0
     MAXI=Maxpos 
  EndIf
 Print #1,"En Recalcompas MAXI ",MAXI
-fileflush(-1)
-Sleep 50
- ReDim compas(1 To 2*MAXI)
-Sleep 50
+ReDim compas(1 To 2*MAXI)
+
 MaxPos=MAXI
 If CantTicks < MAXI Then
   CantTicks=MAXI
@@ -176,8 +174,8 @@ For j=1 To MAXI-2
 Next j
 
 Print #1,"fin RecalCompas ok "
-fileflush(-1)
-Sleep 5
+
+''Sleep 5
 
 Exit Sub 
 errorCalc:
@@ -938,7 +936,7 @@ Next x
  BuscarNota=1 ' error
  trasponer=0
 End Function
-Function BuscarDur (ctrl As Integer, ByRef cur1 As Integer,ncur As Integer) As Integer ' en cursor cambiadur u otras el programa se posicionara en la nota mas cercana
+Function BuscarOtros (ctrl As Integer, ByRef cur1 As Integer,ncur As Integer) As Integer ' en cursor cambiadur u otras el programa se posicionara en la nota mas cercana
 'SOLO SIRVE PARA APLICAR EN CURSOR COMEDIT=TRUE, HBRIA QUE HACER OTRA PARA LECTURA
 ' Y FUERA DE CURSOR SI HACE FALTA POR AHORA NO
 ' hace falta para acordes en lectura no le doy pie con bola todavia!!!! 19-07-2025
@@ -953,8 +951,8 @@ Dim As Integer x,x1, x2, y, y1, y2,posn1
 
 'Dim As String s1,s2,s3,s4,s5,s6,s7,s8,s10
 
-x1=cur1 - 20
-x2=cur1 + 20
+x1=cur1 - 4
+x2=cur1 + 4
 
 y1=ncur - 1
 y2=ncur + 1
@@ -965,6 +963,7 @@ If x2 > NroCol Then x2=NroCol EndIf
 
 'Print #1," x1 x2 "; x1, x2
 'Print #1," y1 y2 "; y1, y2
+Dim As Integer mayorpos
 For x= x1 To x2  'curpos
  For y=y1 To y2  ' notacur
     posn1 = posicion+ x 'este deberia ser siempre ¿?
@@ -975,24 +974,36 @@ For x= x1 To x2  'curpos
 'Print #1,"----------------------------------------"
 '     Print #1," x posn1 "; x, posn1; " estoyEnOctava ";estoyEnOctava; " y ";y
          
-      ''' Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1 Or _    
-    If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur > 0  Then
+      ''' Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1 Or _
+    Dim As Integer proximo=0 
+    If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur > 0 or _ 
+       Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1 Or _
+       Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 2 Or _
+       Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur = 182 Or _
+       Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur = 183 Or _
+       Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).vol > 0   Then 
 ' encontro ubicacion de nota ,o final sec o un 190 borrar
 '        Print #1,"encontro onoff posn1 "; Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff, posn1
      cur1=posn1-posicion
      ncur=y
-    
-
+     If mayorpos < cur1 Then ' no se si siempre servira esto debo pensar otro algortimo
+        mayorpos = cur1
+     EndIf
  'Print #1,"ENCONTRAMOS ON 2 EN CURPOS, NOTACUR "; cur1, ncur
-    BuscarDur=0 ' ok
-    Exit Function 
+  ''  BuscarOtros=0 ' ok
+    '''Exit Function 
     EndIf
  Next y
 Next x
+  If mayorpos > 0 Then ' enconro el mas proximo 
+     BuscarOtros=0
+     cur1=mayorpos 
+     Exit Function
+  EndIf   
  'Print #1,"NO ENCONTRAMOS UNA MIERDA "
 
  'FileFlush(-1)
- BuscarDur=1 ' error
+ BuscarOtros=1 ' error
  trasponer=0
   
  
@@ -1133,8 +1144,8 @@ trasponer=0
     Roll.trk(posoffdurant, 12 - notacur + (*po-1) * 13).onoff=0 ' off
     Roll.trk(posoffdurant, 12 - notacur + (*po-1) * 13 ).nota = 181
   EndIf
-  If borrar=2 Then '  caso 2 borrado puntual de una dur que no sea nota   
-     If BuscarDur (borrar, curpos ,notacur ) = 1 Then
+  If borrar=2 Then '  caso 2 borrado puntual de una dur off 182 183 que no sea nota   
+     If BuscarOtros (borrar, curpos ,notacur ) = 1 Then
        borrar=0 ' <-- permite borrar mas con DELETE
        Exit sub
     EndIf
@@ -1181,10 +1192,6 @@ trasponer=0
      cambiadur=0
      trasponer=0
      curposClickDErecho=0 ' ya noquiero que vuelva a la posicion donde se dio click derecho
-     If DUR=0 Then 
-' no se modifica nada debe ser DUR >0
-        Exit Sub
-     EndIf
 ' sino n odeja cambiar otras notas en un ucrpos nuevo OK!
    If COMEDIT=MODIFICACION_INSERCION   And octavaEdicion<>estoyEnOctava Then ' PARA ctrl-M SOLO CAMBIA UNA OCTAVA POR VEZ
        Exit Sub  'cursorVert = 1 es solo ctrl-m 
@@ -1285,18 +1292,18 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
 ' quedaria rellenar los espacios vacios con nota=181 y dur=0 creo
      cambiadur = 0
      DUR=0
- 'ElseIf DUR=0 Then ' aca que no haga nada DELETE el unico que borra 
- '   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur =181
- '   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota=0
- '   cambiadur = 0
- '   DUR=0
- '   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
- 'ElseIf DUR=190  Then ' marcamos para borrar al grabar CTRL-9  NO MAS 190!! EL BORRADO SE AHCE ON LINE
- '   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur =190
- '   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota=190
- '   cambiadur = 0
- '   DUR=0
- '   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
+ ElseIf DUR=0 Then ' borrado
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur =181
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota=0
+    cambiadur = 0
+    DUR=0
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
+ ElseIf DUR=190  Then ' marcamos para borrar al grabar CTRL-9
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur =190
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota=190
+    cambiadur = 0
+    DUR=0
+    Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff =0
 
  Else
 'desde aca las notas se colocan con notacur siemrpe tienen valorde 1 a 12
@@ -2995,7 +3002,7 @@ Sleep 100
      nota=0 '''notaOld
      inicioDeLectura=0' Int(Maxpos/NroCol)
      posn=Maxpos- 6  ' no  seria -6 ? decia -2 ahora ticks es -6 es donde termina el ultimo off
-     ' maspos es esa posn +6 =MaxPos
+     ' maspos es esa posn +1 =MaxPos
      
      
      
@@ -3075,7 +3082,7 @@ Print #1,"/////--Cargar Arch pan Globalpan,pmtk, ntk ",Globalpan,pmTk(ntk).pan,n
 '''    tiempoPatron=CInt(zLim(1,1).inst) no alcanzaba
 
      If tiempoPatron = 0 Then 
-        tiempoPatron = 240
+        tiempoPatron = 60
      EndIf
 ' NB Y NA SE DEDUCEN no hace fakta guardarlos
      NB= 0 + (desde-1) * 13
@@ -3362,7 +3369,7 @@ End Sub
 
 '
 Sub Nuevo(Roll As inst,borraNombre As Integer)
-CantTicks=86400 ' vuelvo al original default 15 min *60*96
+CantTicks=CantMin * 96 *tiempoPatron ' vuelvo al original default 15 min *60*96
 ' borro todo el undo
    mel_undo_k=0 :ig=0:cnt_acor=0
    Erase mel_undo, undo_acorde,undo_kant_intervalos
@@ -3686,7 +3693,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    t=  " [Opciones]":cairo_show_text(c, t)
 
 ' 0.8 ===> [Ayuda]
-   If MultiKey(sc_Control) And mousex > 590 And mousex< 638 And mousey < 50  Then
+   If  mousex > 590 And mousex< 638 And mousey < 50  Then
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
       Shell ("start notepad " + pathinicio + "\ayuda.txt")
@@ -3771,15 +3778,22 @@ EndIf
    menuNew=PARAMETROS_ROLL
   ' ============================================================= 
   ' BORRAR HACIA Derecha y Ajustar MaxPos a la posicion actual en Edit Lectura
-  '====================================================== 
+  '======================================================
+  'el ctrl+click es sobre -> [Edicion] 
   If mousex > 91 And mousex < 174  And mousey < 50 Then ' <= MaxPos ajuste a la posicion dada
     cairo_set_source_rgba c, 0, 1, 0, 1
-      If MultiKey(SC_ALT ) Then ''And  dobleclick Then
-            MaxPos=posishow +1
-            posn=posishow        
+      If MultiKey(SC_CONTROL ) And MultiKey(SC_ALT ) Or pasozona1 > 0 Then
+            If pasoZona1 > 0 Then
+               MaxPos=pasozona1 +1
+               posn=pasoZona1
+               pasoZona1=0 
+            Else 
+               MaxPos=posishow +1
+               posn=posishow    
+            EndIf    
             Dim As Integer r1,i
             For i=NB To NA 
-              For r1= posn+2 To CantTicks
+              For r1= posn+2 To CantTicks 'cantticks podria ser mayor a maxpos
                  Roll.trk(r1,i).nota=0
                  Roll.trk(r1,i).dur=0
                  Roll.trk(r1,i).vol=0
@@ -3787,6 +3801,31 @@ EndIf
                  Roll.trk(r1,i).inst=0 
               Next r1 
             Next i 
+' detectar el ultimo off1 el off de la ultimanota ubicar su vertical y enese x,y
+'  colocar un dur=182 final secuancia
+         Dim As Integer nroff1=0
+            For i=NB To NA 
+              For r1= posn+1 To 1 Step -1 'retrocedemos
+                 If Roll.trk(r1,i).onoff=1 Then ''el ultimo off
+                    Roll.trk(r1+6,i).dur=182
+                    notaold=notacur ''''Roll.trk(r1+6,i).nota
+Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
+                    pmTk(ntk).notaold=notaold
+                    nroff1=1
+                    MenuNew=MENU_INICIAL
+                    Exit For,for
+                 EndIf
+
+                 If Roll.trk(r1,i).onoff=2 And nroff1=0 Then ''el ultimo off
+                    Roll.trk(r1,i).onoff=0
+                    Roll.trk(r1,i).dur=0
+                    Roll.trk(r1,i).nota=181
+                    Roll.trk(r1,i).vol=0
+                 EndIf
+
+              Next r1 
+            Next i 
+
         
       EndIf
   Else
@@ -3865,10 +3904,10 @@ EndIf
             Sleep 2
          EndIf 
 
-         'print #1,"carga track veo nombre antes   ",nombre
+         Print #1,"carga track veo nombre antes   ",nombre
+
          CargarTrack (Track() , ntk, 0)
          s5=0 ' 11-06-2022
-         
          If nombre > "" Then  ' evita crash al cancelar el dialogo 
          '   print #1,"carga track veo nombre despues ",nombre
             ROLLCARGADO=TRUE ' NO PERMITOQUE TRACK(0) SE BORRE
@@ -3992,23 +4031,26 @@ EndIf
           EndIf
        EndIf
 ''''       grabaprueba()
-       Dim As Integer esroll, esrtk , esejec 
+       Dim As Integer esroll, esrtk , esejec,essolo 
        esroll=InStr(LCase(nombre),".roll")
+       essolo=InStr(LCase(nombre),".solo")  
        esrtk =InStr(LCase(nombre),".rtk") 
        esejec=InStr(LCase(nombre),".ejec") ' es unroll que viene de ejec solo en el nombre
 ' no es que termine en ejec, el nombre del rool contine ejec en el nombre       
 '   GrabarRollaTRack aca graba con [00] adelante, pues no es comando de cancion
 ' la pista de cancion van de 1 a 32 la pista 00 es el track asociado a Roll sin cancion 
-        If esrtk >0 Then ' update de un track con o sin cancion
+        If esrtk >0 Or essolo Then ' update de un track con o sin cancion
            GrabarRollaTrack(0,0)
         EndIf  
-        ' convierte roll a track comun le abtepone [00] y rtk al final
+        ' convierte roll a track comun le antepone [00] y rtk al final
         If esroll > 0 Or esejec >0 Then ' con o sin cancion
            GrabarRollaTrack(1,0) ' el 0 no lo toma es indiferente
         EndIf
         MenuNew=MENU_INICIAL  ' por formato de TRack anteponiendo[0]
         cierroedit= 0
         carga=1
+        t = " [ROLL=>TRK(0)]" : cairo_show_text(c,t) :t= ""
+        Exit Select 
     EndIf
    Else
     carga=0
@@ -4017,7 +4059,7 @@ EndIf
 
 
    t = " [ROLL=>TRK(0)]" : cairo_show_text(c,t) :t= ""
-
+   
   '===> 3.3[GRABAR COMO] SC_F11 COPIA 
    If MultiKey(sc_Control) And mousex > 720 And mousex < 850  And mousey < 50  And carga=0 Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
@@ -4548,7 +4590,7 @@ indaux=0
  ' durante lascuales se movio los valores viejso a aux pero quedaron
  ' losnuevos en Roll. que no debo opisar
  '1) COPIAMOS A AUX EL RESTO DE ROLL
-  CantTicks=86400 'default 15 minutos * 60 * 96
+  CantTicks=CantMin * 96 *tiempoPatron 'default 15 minutos * 60 * 96
   CantTicks=CantTicks+DurXTick(DUR)
   Print #1,"CantTicks=CantTicks+DurXTick(DUR) ", CantTicks  
   CambiarDim(1)  ' nuevo pipipipipi
@@ -4923,10 +4965,10 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
 'EndIf
 'If  EJECCARGADA = TRUE  Then
    If tiempoPatronEjec=0 Then
-      tiempoPatronEjec=240
-      tiempoPatron=240
-      default="240"
-      default2="240"
+      tiempoPatronEjec=60
+      tiempoPatron=60
+      default="60"
+      default2="60"
   EndIf
 ''EndIf
     
@@ -4935,18 +4977,28 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
        default2 = Str(tiempoPatronEjec)
        ticksdefault = InputBoxJmg("Ajuste Tempo Ejec" ,"Entre un Tempo ",default2, ES_MULTILINE + ES_AUTOVSCROLL,0  )
        tiempoPatronEjec= CInt(ticksdefault) '08-01-2022 de doble a int
-       pmEj(ntkp).tiempopatron = tiempoPatronEjec
+
+ 'ntkp debe ser elegido pero todo debe estar igual, SI NO ELEIGE UNA PISTA
+' O HAY UNA SOLA HAY QUE HACER EL LOOP PISTAS CONDISTINO TEMPO SERIA RARO
+' ACA NO SEPUEDE ES TODO DE UN SOLO TEMPO
+       If TopeEjec=0 Then TopeEjec=1 EndIf
+        For j1 As Integer =1 To TopeEjec    
+            pmEj(j1).tiempopatron = tiempoPatronEjec
+        Next j1 
    Else
        'If  ticksdefault<>"" Then
        '    default=ticksdefault
        'Else
         default=Str(tiempoPatron)  ' manual
        'EndIf 
-     ticksdefault = InputBoxJmg("Ajuste Tempo Manual" ,"Entre un Tempo ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+      ticksdefault = InputBoxJmg("Ajuste Tempo Manual" ,"Entre un Tempo ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
       tiempoPatron= ValInt(ticksdefault) '08-01-2022 de doble a int
-      pmTk(ntk).tiempopatron = tiempopatron
+     
+      For j1 As Integer=0 To Tope
+       pmTk(ntk).tiempopatron = tiempopatron
+      Next j1
    EndIf
-    Print #1,"tEMPO llego a TEMPO en entrar tecla",ticksdefault 
+      Print #1,"tEMPO llego a TEMPO en entrar tecla",ticksdefault 
    
 ' o sea el default de tiempoPAtron para manual es 60, pero para ejecuciones es 240
 
@@ -5204,7 +5256,7 @@ Sub velocidades(j As Integer)
       If acumulado > 6250000 And acumulado <= 7500000 Then 'hasta 3 negra
        compas(j).nro = -2 ' debil
       EndIf
-      Print #1, "velocidades 3/4 compas(j).nro "; compas(j).nro 
+      Print #1, "velocidades 3/4 compas(j,ntk).nro "; compas(j).nro 
       Exit Sub 
     EndIf
 
@@ -5355,7 +5407,7 @@ FileFlush (ga)
      Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
 'print #1, "inicio MaxPos "; MaxPos
- For i2 = 1 To MaxPos  'incluye a +6 es ultimo off +6
+ For i2 = 1 To MaxPos  'incluye a +1 es ultimo off +1
      For i1 = NB To NA
        If Roll.trk(i2,i1 ).nota=190 And Roll.trk(i2,i1 ).dur=190 Then
           borrocol= 1 'Atrapa al menso un caso
@@ -5641,6 +5693,7 @@ Print #1,"inicia CargaPistasEnCancion"
            If mayorntk< ntk Then 'DEBE PERAMNECER EN DIFERENTES LLAMADAS
               mayorntk=ntk
            EndIf
+
         EndIf  
   ' va cargando los track internos, tomando el nro de track 
   ' del nombre del archivo solamente , ergo el usuario puede cambiar el orden
@@ -5656,6 +5709,9 @@ Print #1,"inicia CargaPistasEnCancion"
 ' chequeamos que todos los maxpos sean iguales sino se corrige
         'UBIRTK=1 , EL ULTIMO ARGUMENTO, => TOMA TODO LO QUE VENGA INCLUSO LAS EXTENSIONES SOLO 
         CargarTrack  (Track() , ntk, 1 ) ' se cargo a track x nada mas
+        If maxpostope< pmTk(ntk).Maxpos Then 'DEBE PERAMNECER EN DIFERENTES LLAMADAS
+           maxpostope= pmTk(ntk).Maxpos
+        EndIf
 
  'durante la cargaTrack el programa va a Rolloop se encuentra con SC_TAB
  ' y si cargacancion esta en 1 trata de cargar y no lo debe ahcer de modo
@@ -5671,7 +5727,9 @@ Print #1,"inicia CargaPistasEnCancion"
        CANCIONCARGADA=TRUE
        NADACARGADO=FALSE
        ntk=0   ' tab le suma 1 pero si creo pistas estria  mal 05-03-2022 ï¿½ï¿½ï¿½
-      
+       ReDim compas(1 To maxpostope)  
+       RecalCompas()
+
      EndIf
 
 
@@ -7497,7 +7555,7 @@ Print #1,"indicePos, pnr) ";indicePos, pnr
 
        posn=acoposOff +1
        If posn > MaxPos Then 
-          MaxPos=posn +6 ' la figura tiene 5 posiciones si pongo 1 o 2  se pisa
+          MaxPos=posn +1 ' la figura tiene 5 posiciones si pongo 1 o 2  se pisa
           pmTk(ntk).MaxPos=MaxPos
        EndIf 
       If  acoposOffNew <> acoposOff And acoposOff > 0 Then

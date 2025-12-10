@@ -345,7 +345,7 @@ If desde = 0 And hasta = 0  And instancia=ARG0_EN_LINEA Then
  'pmTk(ntk).hasta=hasta
 EndIf
 ' calculo teorico a tiempopatron 60, 1 SEG 192 DIVISIONES 
- CantTicks=cantMin * 60 * 96 '  (15 MIN * 60 * 96) = 86400
+ CantTicks=cantMin * 96 *tiempoPatron'  (15 MIN * 60 * 96) = 299520
 ' 60 seg * 96 divisiones= 5760 divisiones en 1 min
 ' Y 3W LA MENOR FIGURA 3W DE LA 5ta LINEA de tresillos
 ' iniciamos vector de 15 minutos=660 segundos
@@ -371,7 +371,7 @@ EndIf
 ' para un determinado tiempo de track..
 ' como tomamos tempo=120 la TMFC sera 5,20833 mseg,
 ReDim Shared As paso compas (1 To MaxPos) 'cada item es la posicion en donde
-
+' un vector por cad apista asi TAB no tiene que calcular cada vez se lo calcula en la carga
 desdevector = desde
 hastavector = hasta
 estoyEnOctava =desde

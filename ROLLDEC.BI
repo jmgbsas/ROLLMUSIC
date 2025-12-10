@@ -683,7 +683,7 @@ Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 
 Dim Shared As String nombreArchivo, TCompas,menuOldStr, ticksdefault,nombrePatron, intervaloTxt
 Dim Shared As Integer nroCompasesPatron, nroTicksPatron
-nroCompasesPatron=0
+nroCompasesPatron=1
 nroTicksPatron=0
 nombreArchivo="" : ticksdefault="64"
 
@@ -972,7 +972,9 @@ Declare Sub Tracks (ByRef nroTrack As integer, ByRef nroCanal As UByte, Roll As 
 'Dim Shared As Long PARAR_PLAY_MANUAL = NO,PARAR_PLAY_EJEC = NO,CONTROL3 = NO
 Dim Shared As Long CONTROL3 = NO
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
-CantTicks=CantMin * 60 *96 ''86400  ' 96*15*60 96 ticks una negra, 15 minutos, 60 segundos
+CantMin=15
+CantTicks=CantMin * 96 * tiempoPatron ''si t=208 ->299520  ' 96*15*208
+' a t=208 cantticks=86400*208/60=299520
 Dim Shared As inst Roll ' para visualizar y tocar
  
 ReDim Shared Track  (0 To 32) As sec ' tracks para guardar,.. y tocar 

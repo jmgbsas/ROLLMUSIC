@@ -575,6 +575,10 @@ Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, interva ,valorpan '  default 2 que es 1 separacion de notas
 Common Shared As Integer valoreco, valorcoro,valorvol
+common Shared As integer tiempoPatron
+common Shared As integer tiempoPatronEjec
+tiempoPatron=60
+tiempoPatronEjec=60
 VerMenu=1
 playSolo=NO
 CPlay=NO

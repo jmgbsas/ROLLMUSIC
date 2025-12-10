@@ -1,3 +1,6 @@
+- 10-12-2025 fix issue no sepodia levantar un rtk aislado (ntk tomaba 0)
+  borrar desde Posision pasozona1 hasta el final de una secuancia
+  modificacion contecla 0 y sus opciones. Ayuda Teclas rapidas comienzo ctrl+f1 en grafico.
 - 05-12-2025 "0.35091 SE PUEDEN USAR TECLAS EN LA VENTANA DE CONTROL F1, SPACE, Y P YA ANDAN falta probar si afecta algo"
    EN DESArrollo: TIPOS DE ARCHIVOS *.SOLO ESTA INCOMPELTO. LOS RTK CON REPETICIONES
    TIPO LOOP CAMBIA SU EXTENSION A *.solo. FALTA GRABAR COMO *.SOLO Y VARIAS FUNCIONALIDADES

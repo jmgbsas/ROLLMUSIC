@@ -27,7 +27,8 @@
        pulsando Edit en elmenu,es un atajo rapido.
        NOTA: En windows 11 si no funciona el Play o cancela se recomienda usar un mapeador Midi 
              como CoolSoft_MIDIMapper_2.1.2.exe (falta deteccion de fallas)
-       
+       Esta Ayuda con F1 en Grafico y sin grafico. Teclas Rapidas comienzo solo en Grafico Ctrl+F1
+
     I) INTRODUCCION  COMO ROLLMUSIC REPRESENTA LAS NOTAS
        ==================================================
         FIGURAS USADAS EN ROLLMUSIC O P I L F E X H W : (para entrada manual paso a paso)
@@ -785,7 +786,8 @@
     --------------------------------------------------------------------------------------
         
     1.0) El Modo Lectura se inicia en color de fondo Negro y texto blanco (ultimo 
-      cambio).
+      cambio).(Algunas modificaciones se pueden hacer en Modo LEctura, trasposicion,
+        acortar una secuencia borrar un intervalo etc
       - Para recorrer las octavas se usa flecha arriba o abajo, Retroceso-Pagina, 
         Avance Pagina ó la rueda del mouse y luego se da click en cualquier parte
         la octava deseada.
@@ -822,7 +824,18 @@
         para eliminar la separacion pulsar Q. Para ajustar otra separacion, en el Menu VER como se mencionó, 
         tiene un subitem Separacion de notas , al pulsar aparece un dialogo para entrar un numero. de 1 en 
         adelante... etc. 
-
+      - Borrar desde la posicion actual (posn1) y hasta el final una secuencia
+          CTRL+ALT+ CLICK EN -> [Edicion] en el grafico.
+          BORRA HACIA Derecha y Ajustar MaxPos a la posicion actual en Edit Lectura
+          LA POSICION ACTUAL SERA SIEMPRE EL BORDE IZQUIERDO DEL INTERVALO MOSTRADO O SEA
+          EL COMIENZO DE LA PANTALLA PARA VER MAS CLARO PULSAR H PARA SACAR LAS NOTAS GUIA
+          PULSAR CTRL+ALT y luego inmediatamente click en [Edicion].
+          Y LUEGO DE CORTADA LA SECUENCIA PULSAR K PARA REPONER LAS NOTAS GUIA SI SE DESEA.
+          El fin de la secuencia '||' debe quedar despues del ultimo off '>' de la secuancia.
+          Verificar lo ultimo pues asi se podra agragar mas notas al final sin problemas.
+         BORRAR UNA SECUENCIA DESDE LA 1ER MARCA DE UN INTERVALO HASTA EL FINAL
+          Funciona igual solo que laposicion actual se marca con uan sola  marca de intervalo
+          o zoba CTRL+CLICK. Y luego todo igualCTRL+ALT y CLICK en [Edicion]
     1.1)   El espaciado entre lineas se puede cambiar:
        Pulsar y mantener la tecla control. Girando la rueda del mouse
        en la direccion  hacia afuera abre el espacio  entre lineas, hacia 
@@ -958,7 +971,9 @@
          un semitono y lo uso como raiz de Acorde MAyor estare construyendo el bVII de la nota B o sea 
          del VII grado de la escala de C Mayor. Y asi par acualqueir escala.
          Lo mismo sucede con el bVIIMaj7, se baja un semitono la nota y se crea un Maj7. ]
-    1.8) Crear Canción.
+ ------------------------------------------------------------------------------------------
+       Crear Canción En Ventana de Control.
+       ===================================
 
           En RollNusic Control usar 'Nueva Cancion' del menu (lo que diga Na es no aplicable todavia
         no está habilitado) , agregar el titulo o nombre de la cancion. Si no se agrega pondra un titulo 
@@ -973,7 +988,7 @@
         por ahora para cargar una nueva cancion cerrar la aplicacion y luego 
         cargar la nueva cancion.
         Ya funciona Fraccionar una nota o acorde en pista de una cancion.
-    1.9) Agregar tracks o Pistas a Cancion   
+    1.0) Agregar tracks o Pistas a Cancion   
 
          Hay 3 opciones  
          a) Con la cancion creada, ir al menu de Pistas, ajustar los parámetros deseados
@@ -1003,7 +1018,7 @@
          Nota: El ultimo test fue con el caso a), lso demas estaban propbados pero con las modificaciones
          echas par ael caso a) deben probarse de neuvo,,,
 
-    1.10) Luego de cargada el directorio de la cancion, si se da click con el mouse en la lista
+    1.01) Luego de cargada el directorio de la cancion, si se da click con el mouse en la lista
          de nombres de pistas en la ventana Control, se cargara esa pista en Roll y en su pista correpondiente.
          Siempre se carga Roll que es el grafico visual , ambas se usan para modificacion. 
          Si no hay cancion la pista cargada correpsondiente a Roll es la [00].
@@ -1015,7 +1030,7 @@
          copiando el track sucesivo en Roll y Track(N), al alcanzar la ultima pista con datos o la ultima 32 
          sigue en circulo con la 1.
 
-    1.11) Borrar Pistas de la Lista y de disco:
+    1.02) Borrar Pistas de la Lista y de disco:
           Estando en Control o la Lista de Control, seleccionar la pista pulsar delete,
           se borra de la lista y del disco copiandose lo borrado en un subdirectorio interno \Temp, luego 
           con flechas arriba o abajo o con mouse seleccionar otra pista aleatoriamente y borrar 
@@ -1025,14 +1040,14 @@
           direccion hacia arriba o sea, si selecciono la pista 5 se borraran con cada pulso 5,4,3,2,1. 
           Al llegar a la 1, si se sigue  pulsando  empezará a borrar la 6,7,8,9...
 
-    1.12) Copiar una pista de Cancion en otra pista nueva de cancion con sus datos
+    1.03) Copiar una pista de Cancion en otra pista nueva de cancion con sus datos
           En el menu de Control usar en el menu Archivo->"Copiar una pista a otra nueva en cancion"
           Copiará lso datos cambiara el numero de pista por uno mas grande N+1 [NN]
           El resto el nombre será igual. Por ahora no se puede renombrar online,ya se hará
           en proxima version, pero se puede renombrar la pista dede afuera y volver a cargar
           la cancion.
 
-     1.13)  En el mismo menu de 1.11 se puede actualizar una pista con "Grabar una pista de la cancion
+     1.04)  En el mismo menu de 1.11 se puede actualizar una pista con "Grabar una pista de la cancion
           con midificaciones, igual que se puede hacer en Roll.
          - NOTA: SI SE EDITA UNA PISTA DE UNA CANCION, SIN CARGAR LA CANCION, SE DEBE ELIMINAR AL PRINCIPIO
            DEL NOMBRE DEL ARCHIVO LOS CORCHETES Y EL NUMERO POR EJ: [4]NNNNNN.TRK -> NNNNNN.TRK 
@@ -1040,7 +1055,7 @@
            LE AGREGO INTELIGENCIA PARA ESE CASO,,,RENOMBRAR MODIFICAR Y LUEGO OLVER AL NOMBRE ORGIGINAL-
     
     --------------------------------------------------------------------------------------------
-    2.0) Modos de Edicion
+    2.0) Modos de Edicion [Edicion]
 
     2.1) MODO EDIT insercion NOTAS NUEVAS POR TECLADO (click en menu [EDICION] luego otror click en EDIT y cambiara
          a color verde. La octava seleccionada con un click izquierdo tambien)  Para salir de EDIT pulsar de nuevo EDIT 
@@ -1097,14 +1112,16 @@
      En el caso de usar solo teclado, el Cursor se mueve con flecha arriba abajo para ajustar al semitono deseado en esa posicion, o 
     derecha izquierda para cambiar de posicion. 
 
-    2.3) Modificar en Ctrl-M (en un espacio vacio si quiero agragar final de secuencia || pulsar Ctrl-0 como duracion)
+    2.3) Modificar en Ctrl-M (en un espacio vacio si quiero agragar final de secuencia || pulsar Ctrl-End como duracion)
     2.4) Copiar 1 nota. ok
     2.4.1) Copiar un grupo de Notas antes o despues del final de la secuencia. En modo lectura. (C+Click)
     2.4.2) Mover un grupo de notas (M +Click)
-    2.5) Borrar 1 Nota, Borrar 1 columna o un rango de columnas o zona
+    2.5) Borrar 1 Nota completa, Borrar 1 columna o un rango de columnas o zona
+    2.5.1) Borrar 1 Nota Dejando su espacio 
+    2.5.1) Borrar un on o un off sueltos.
     2.6) Insertar Notas, abriendo la secuencia, agregando espacio para esa nota.
    ------------------------------------------------------------------------------------------   
-    2.0) Modos de Edición.
+    2.0) Modos de Edición.[Edicion]
     2.1) MODO EDIT 
          - Pasar a Edicion clickendo [Edicion], aparecera la cinta Edit con parametros.
          - Dar click a Edit, Edit cambiara a verde, lugo click izquierdo de nuevo en la octava elegida y la zona de trabajo 
@@ -1284,8 +1301,8 @@
     2.5.1) Borrar 1 Nota Dejando su espacio  
           Ubicar el cursor con ctrl-M y flechas acercarse al comienzo de la nota, no es
           necesario estar justo sobre la nota, que se verifica si onoff=2 arriba en la cinta azul
-          El programa busca automaticamente el comienzo de una nota si el cursor esta cerca, luego pulsar 0
-          y  seguidamente pulsar X y se borrará.
+          El programa busca automaticamente el comienzo de una nota si el cursor esta cerca, luego 
+          pulsar DEL O SUPR y  seguidamente pulsar X y se borrará.
           Si me muevo a otra nota y pulso X de nuevo borrara esa nota tambien hasta que se pulse
           otro numero entre 1 a 8 para modificar la duracion, el 0 es para borrar nota..
 
@@ -1317,7 +1334,7 @@
 
     2.5.6) Para Borrar una nota pero SIN dejar su espacio usar-> Pulsar CTRL-9 luego X en cada nota a limpiar
            No se debe repetir el pulso de 9 para cada nota, por ahora repite si se da click sobre las
-           proximas notas y se pulsa X solamente.
+           proximas notas y se pulsa X solamente. --> REVISAR Y REPONER
            El metodo de borrado con CTRL-9 y X marca con 190,190 la nota y duracicon y esos lugares
            EN PANTALLA SE VEN COMO 0 (CERO). AL SALIR DE CTRL-M O CTRL-N y VOLVER AL MODO LECTURA
            SE BORRA LA COLUMA CON CTRL-DEL o ctrl-Supr. si se marca una sola nota y la columna tenia
@@ -1436,8 +1453,15 @@ Notas Tecnicas de desarrollo:
 -------------------------------------------------------------------------
 
 -------------------------------------------------------------------------
-NO VERIFICADO TODAVIA TECLAS RAPIDAS borrado revisar y completar
+ -> TECLAS RAPIDAS EN REVISIO.
+ ALT + CLICK EN [NUEVO]
+     BORRA HACIA Derecha y Ajustar MaxPos a la posicion actual en Edit Lectura
+ LA POSICION ACTUAL SERA SIEMPRE EL BORDE IZQUIERDO DEL INTERVALO MOSTRADO O SEA
+ EL COMIENZO DE LA PANTALLA PARA VER MAS CLARO PULSAR H PARA SACAR LAS NOTAS GUIA
+ PULSAR EN GRAFICO EL MENU [ARCHIVO], LUEGO DAR CLICK A [NUEVO] MIENTRAS SE PULSA ALT
+ Y LUEGO DE CORTADA LA SECUENCIA PULSAR K PARA REPONER LAS NOTAS GUIA SI SE DESEA.
 
+        
 (DUR,NOTA) 0,181 - permite ingreso de notas en acorde y evita que el ingreso de notas
 en modo edit simple use esas posiciones y tome siempre una nueva al final de la secuencia
 sino el program insertaria notas en cualquier lugar o semitono en el que nota=0.

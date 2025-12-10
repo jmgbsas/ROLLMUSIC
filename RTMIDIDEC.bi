@@ -43,8 +43,8 @@ Dim size As UInteger<64>
 Dim Shared As UInteger portsin=0, portsout =0 'constantes, 
 'no confundir con portin y portout que son variables
 
-Dim Shared As integer tiempoPatron=240 ' cuantas negras en un minuto default
-Dim Shared As integer tiempoPatronEjec=240
+''Dim Shared As integer tiempoPatron=240 ' cuantas negras en un minuto default
+
 Dim Shared As Double old_time_on=0,old_time_off=0,old_time_on_int=0,old_time_off_int=0
 Static Shared As Integer jply=0, indEscala=1
 Dim Shared As double FactortiempoPatron=1
@@ -59,6 +59,8 @@ Dim Shared As double FactortiempoPatron=1
 ' pero porlalineamas chica 37 a 45 seria mi Tick mas chico [TickChco]
 Static Shared As Double TickPlay =0.005 '0.01041666 ''seg 5 miliseg.. para I=240
 Static Shared As Double TickChico=0.005 '0.01041666 ''seg 5 miliseg.. para I=240
+TickPlay=60/(tiempoPatron*96)
+TickChico=TickPlay
 Static shared As Double x3H = 0.0 , resta=0.0
 ' ambos Ticks deberin ser el  valor mas chico de la tabla y es tresillo de W 0.01041666
 
@@ -161,6 +163,8 @@ Dim Shared As Double durcla (1 To 45, 1 To 2) => { _
 
 
 ' DurXTick me da segun la duracion la cantidad de ticks o columnas
+' MAS QUE DURXTICK ES CANTTICKS POR FIGURA
+' LA DURACION EN TIEMPO SERA TICKUSUARIO*DURXTICK
 ' que dura al principio habra un On y en la columna final un OFF
 ' eso solo para las dur no ligadas, hasta la 90.
 ' si empieza con una ligada(i+) el off estara en la dur no ligada (L)
@@ -191,7 +195,10 @@ Dim Shared As integer DurXTick (0 To 185) => {0, _  ' 0 cambiado a 1 9-05-2025
 ' 96 son 1 seg para negra=60 entonces el tick valdra 1/96=10.41666666 mseg es 3W
 ' el mas chico son 1 parte o sea 10,41 mseg!! son e ldoble de los 5 mseg que usaba!
 ' entonces una negra abarcara 96 columnas 
-' cols en 15 min = 15*60*96= 86400 columnas!
+' a t=60 cols en 15 min = 15*60*96= 86400 columnas!
+' a t=120 cols en 15 min = 15*60*96*2= 172800 columnas!
+' a t=240 cols en 15min = 86400*4= 345600 columnas o posiciones
+' a t=208 cols en 15min = 86400*208/60=299520 <=== este ser el tamqño del vector!!!
 Const NO=0 ''ESTA CONSTANTE ESTA DUPLICADA Y EL COMPILADOR NO SE DA CUENTA JAJAJAJA
 ' ME DA ERROR EN EL USO DE LOS SIGUIENTES NO,,,, MAL EL COMPILADOR AMBOS DEC SON INCLUDE
 ' Y ROLLDEC ESTA ANTES QUE ESTE... CHANNN

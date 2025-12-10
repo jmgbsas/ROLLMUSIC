@@ -821,7 +821,7 @@ EndIf
 STARTMIDI=Timer
 old_time_on=STARTMIDI
 ''Print #1,"old_time_on "; old_time_on
-Dim As Double  tickUsuario=0.005 * 240/tiempoPatron '''tickUsuario=0.01041666 * 240/tiempoPatron
+Dim As Double  tickUsuario=60/(tiempoPatron*96) '''tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
@@ -1916,7 +1916,7 @@ If posinueva >= Maxpos Then 'mover mas halla de maxpos..
   Next jpt
 '---------------------------------------------------------
 '2) VEO SI SE PASA DE TAMAÑO AL VECTOR
-  MaxPos=posinueva + cant +6 'faltaria el off1 a derecha deltainc
+  MaxPos=posinueva + cant +1 'faltaria el off1 a derecha deltainc
   inc=posinueva + cant   'EL LIMITE SUPERIOR DEDE DONDE SE COPIARA HACIA LA IZQUIERDA
  Print #1,"==>>> inc posinueva cant MaxPos "; inc;" ";posinueva;" "; cant;" "; MaxPos
  Print #1,"===>> inc - cant "; inc -cant
@@ -2099,10 +2099,10 @@ Print #1,"-------------------------------------------------------"
           Roll.trk(jpt,i1).onoff = 0 ' NO ES ACA
         Next i1
      Next jpt
-  ' luego debo agregar el fin de secuencia en posinueva + cant +6
+  ' luego debo agregar el fin de secuencia en posinueva + cant +1
   ' debo saber cual fue la ultima nota con off1 para ponerle al lafo el 182 fin secuencia
    ' limpio las 6 posiciones ultimas y le pongo el final de secuencia
-     D1=deltainc + primerdeltaon '''+6
+     D1=deltainc + primerdeltaon '''+1
      MaxPos = posinueva + cant + deltainc + 6
      jpt=Maxpos ''' + deltainc+6
        For  i1= NB To NA
@@ -2893,8 +2893,8 @@ Print #1,"QUE CORO DE MIERDA GRABO ? ", tocaparam2(i1).coro
     tocaparam2(i1).vol           =pmEj(i1).vol           
     tocaparam2(i1).TipoCompas    =pmEj(i1).TipoCompas
          If tiempoPatronEjec = 0  And pmEj(i1).tiempoPatron=0 Then 
-            tiempoPatronEjec = 240
-            pmEj(i1).tiempoPatron=240
+            tiempoPatronEjec = 60
+            pmEj(i1).tiempoPatron=60
          EndIf    
          If tiempoPatronEjec > 0  And pmEj(i1).tiempoPatron >0 Then 
             If tiempoPatronEjec <> pmEj(i1).tiempoPatron Then
@@ -3029,7 +3029,7 @@ Dim  As Integer pista , k
 
 Do
    PlaySound(".\recur\RIMSHOT.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
-     duracion(Timer, (60/tiempoPatron) / FactortiempoPatron) 'jmgtiempo
+     duracion(Timer, (60/(96*tiempoPatron)) / FactortiempoPatron) 'jmgtiempo
      If terminar_metronomo=1 Then
          Exit Do
      EndIf

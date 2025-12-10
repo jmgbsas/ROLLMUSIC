@@ -32,7 +32,11 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.35092 fix borrado de notas, los silencios tenian sonido, secuencia nueva sin sonido "
+nroversion="0.35094 fix issue, y borrar desde Posision pasozona1 hasta el final de una secuancia "
+' se fixeo por rtk, pero queria acelerar el TAB sacando Recalcompas y se complico vuelta atras 
+'35904 Compas(jply,ntk) da error en tab quiero copiar el compas del track x en track 0
+' y roll 0 principalmete y da error
+'"0.35093 borrar desde Posision Actual(borde izquierdo) hasta el final de una secuancia "
 '"0.35091 SE PUEDEN USAR TECLAS EN LA VENTANA DE CONTROL F1, SPACE, Y P YA ANDAN"
 '' AGREGAR TIPOS DE ARCHIVOS "SOLO" ESTA INCOMPELTO PERO ALGO DESARROLLADO
 '  TOCA LOS SILENCIOS ARREGLAR Y NO BORRA EL OFF DE UN ON DESPUES DE FIN DE ARCHIVO
@@ -346,10 +350,11 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
      eventC=WaitEvent() 
           
       If eventC=EventKeyUp  Then
-         If  EventKEY = VK_F1 Then  
+         If  EventKEY = VK_F1 Then 'e nventana control 
            Shell ("start notepad " + pathinicio + "\ayuda.txt")
-          
+           Exit Do
          EndIf
+
          If  EventKEY = VK_SPACE And trabaspace=0 Then
              trabaspace=1
            ReproducirTodasLaSPistas()  
@@ -461,14 +466,15 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
              If tocaparam(k).nombre="" And k= tocatope+1 Then 
               ntoca=k 'ntoca es la  pista ejec que se esta grabando global entera
               If tocaparam(ntoca).nombre ="" Then
-                     ReDim (Toca(ntoca).trk ) (1 To 384000)  ' 1000 compases
+                 CantTicks=CantMin*96*tiempoPatron
+                     ReDim (Toca(ntoca).trk ) (1 To CantTicks)  
                                   tocaparam(ntoca).delta=0
                                   tocaparam(ntoca).nombre =""
                                   tocaparam(ntoca).maxpos =0
                                   tocaparam(ntoca).orden=CUByte(ntoca)
                                   tocaparam(ntoca).patch=0
                                   tocaparam(ntoca).canal=0
-                     Redim  CargaIn (1 To 384000) ' 1000 compases
+                     Redim  CargaIn (1 To CantTicks) 
                      If nombrePatron > "" Then
                         tocaparam(ntoca).nombre=nombrePatron
                      Else

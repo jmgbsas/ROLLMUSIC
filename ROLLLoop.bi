@@ -1277,7 +1277,7 @@ If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) 
 ' copia track(NTK) a Roll VISUAL en memoria que no se usa en playcancion  
 ' el segundo parametro es canal no se usa...lo saco o lo dejo?
   Tracks (ntk , 1,Roll) ' track , nro,  Canal, copia track a Roll en memoria
-
+  '' da error igual aca no hace falta ->RecalCompas()
 'Print #1,"14-sleep ";Timer
 '    Print #1,"TAB 7- instancia, maspos ",instancia, maxpos
 RecalCompas()
@@ -2823,7 +2823,7 @@ If COMEDIT<>LECTURA Then  'TERMINA EN 2628
    DUR = 8:Exit Do
   EndIf
   
-'----------------------------------------
+'---*****************TECLAS MODIFICACION ********************************************-------------------------------------
 ' CURSOR MODIFICCION DE NOTAS ergo usamos nota=0 para evitar entrada normal 
 ' REVISAR REVISAR REVISAR JMG JMG JMG WWWWWWWWWWWWWWWWWWW  
   If MultiKey(SC_CONTROL) And MultiKey(SC_9) Then 'espacio en edit sin cursor
@@ -2836,17 +2836,26 @@ If COMEDIT<>LECTURA Then  'TERMINA EN 2628
      DUR = 181:Exit Do
      nota=0
   EndIf
-  If MultiKey(SC_CONTROL) And MultiKey(SC_0) Then ' fin seq en edit sin cursor
-     DUR = 182
+  If MultiKey(SC_CONTROL) And MultiKey(SC_0) Then ' BORRA NOTAS ON OFF, CON X
+     borrar=1  ''BORRA NOTA COMPLETA SIN X EN CTRL-M, EN CTRL-N BORRA NOTA SIN NOMBRE
+     nota=0
+     Exit Do
+  EndIf
+  If MultiKey(SC_CONTROL) And MultiKey(SC_END) Then ' fin seq en edit sin cursor
+     DUR=182 
 '     print #1,"DUR=182 !"
      nota=0
      Exit Do
   EndIf
-  If MultiKey(SC_0) Then 
-     nota=0
-     DUR=0
-     borrar=2
+
+  If MultiKey(SC_ALT) And MultiKey(SC_0) Then ''BORRA AISLADOS CON EXCEPCION
+     borrar=2 ' EN CTRL-M BORRA NOTA COMPLETA SI ME POSO EN ON, EN OFF LO BORRA SIN BORAR EL ON
+     nota=0   ' EN CTRL-N BORRA ON SOLO Y OFF SOLO , SIEMPRE SOLO UNACOSA 
      Exit Do
+  EndIf
+  If MultiKey(SC_0) Then ' BORRA NOTA COMPLETA CON X EN CTRL-M 
+     nota=0  ' EN CTRL-N BORRA CON NOMBRE DE NOTA
+     DUR = 0:Exit Do
   EndIf
 
 
@@ -2879,24 +2888,8 @@ If COMEDIT<>LECTURA Then  'TERMINA EN 2628
  EndIf 
  ' este delete esta fuera porque podra ser usado con cualquier comedit 
 ' y en la ventana de control o sea la del menu inicial  no el grafico.
- If multikey(SC_DELETE) And borrar =0 Then ''cambia a silencio o nada le suma 16+16 ver eso!!!!!!!
-' no es un switch el borrar cer olo debe poner cuando se cumplio latarea
-      borrar=1   
- '     If s7=0 Then
- '        If borrar=1 Then
- '           borrar=0
- '           s7=1
- '           Exit Do
- '        EndIf  
- '     EndIf
- '     If s7=0 Then
- '       If borrar=0 Then
- '          borrar=1
- '          s7=1 
- '          Exit Do
- '       EndIf 
- '     EndIf
- '    Sleep 50 
+ If multikey(SC_DELETE) And borrar=0 Then ''cambia a silencio o nada le suma 16+16 ver eso!!!!!!!
+          borrar=1 
  EndIf
 ' EL SALTO POR OMISION SERA EL  QUE ELIJA EL USUARIO CON LA DURACION DE 1 A 8 O 0
 ' PARA VOLVER A 1  
@@ -2908,10 +2901,16 @@ EndIf ' COMMEDIT TRUE CTRL-M
 
 
 ' ----HELP PRUEBA DE TEXT
+If MultiKey(SC_CONTROL) And MultiKey(SC_F1) Then
+   Shell ("start notepad " + pathinicio + "\recur\TECLAS_RAPIDAS.txt")
+   Exit Do
+EndIf
+
 If MultiKey(SC_F1) Then
 ' por ahora solo traeremos un texto, luego usaremos llamar
 ' a un archivo de help chm..
    Shell ("start notepad " + pathinicio + "\ayuda.txt")
+   Exit Do
  ' estopodemos hacer ayuda contextual
  '' Define character range
  '.DRAWASTRING CON FONT DEUSUARIO A VECES SEGUN COMO SE COMPILE HACE CERRAR LA APLICACION
@@ -2921,6 +2920,7 @@ EndIf
 If MultiKey(SC_R) Then ' recalculo de barras compas a veces no anda ¿? 
  '''ReDim compas(1 To MaxPos)
  RecalCompas() ' jmg 01-04-21 
+Exit Do
 EndIf
 
 If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
@@ -2973,8 +2973,7 @@ If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
  EndIf
  If MultiKey(SC_0) Then
     cifra = "0"
-''    borrar=1 'se coloca para deduccion logica del usuario 0 borraria EN CURPOS
-' pero mejor usar delete  
+    DUR=0
     Exit Do
  EndIf
 ' v23 agregado  inicio 
@@ -3209,7 +3208,7 @@ curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N 
        Sleep 1000,1  
       CantTicks=CantTicks + 10000 ' incremento el tamaño en 18000 posiciones =3 min
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
-      ReDim Preserve compas(1 To CantTicks)
+      ReDim Preserve compas(1 To CantTicks) 
       ReDim Preserve (RollAux.trk) (1 To CantTicks, NB To NA)
       ' ¿a que ntk apunta al 0 o al de cancion ?
       print #1,"REDIM EN NUCLEO DE TRACK NTK= ", ntk
@@ -4578,7 +4577,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
         For im=1 To 4  
             noteon(60,60,1,0,1,1)
             noteoff(60,1,0,1,1)
-            duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+            duracion(Timer, (60/(tiempoPatron*96)) / FactortiempoPatron)
         Next im
         threadmetronomo = ThreadCall metronomo()
          contcode =0 ' para detectar 1er nota de midiin porque no envia 144 la 1era vez solo 128!!
@@ -4730,7 +4729,7 @@ FILEFLUSH(-1)
         close_port midiout(k1)
         out_free(midiout(k1))
      End If 
-    '''''''''' ThreadDetach (threadloop) ' kokito
+
      FileFlush (-1)
      Screen 0 ''', , ,  GFX_SCREEN_EXIT '''&h80000000
      If Maxpos > 2 Then
@@ -4742,8 +4741,7 @@ FILEFLUSH(-1)
         abrirRoll=NO_CARGAR
         reiniciar=1
      EndIf
-     
-
+   
      Exit Sub
 
   Else

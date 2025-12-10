@@ -160,7 +160,6 @@ Print #1,"QUE PASA QUE NO SIGUE 1"
                   'VELOCIDAD ANTE ESTRUCTURACION BONITA JAJAJA 
                   CANCIONCARGADA = TRUE
                   cargariniciotxt(NombreCancion, CANCION)
-                  RecalCompas() 
                   clickpista=SI 'abre tab una sola vez seposiciona en psita 1
                   If tope=0 Then
                     NombreCancion = "" ' directorio fallido
@@ -1343,7 +1342,7 @@ Do
   Next j1
 
   If  i1=maxposTrack Then
-     For i1=maxposTrack To maxposTrack +6
+     For i1=maxposTrack To maxposTrack +1
         For j1=1 To lim2 ' decia lim2 porque,,
           If Track(0).trk(i1,j1).nota = 0 And Track(0).trk(i1,j1).dur <182    Then
            Track(0).trk(i1,j1).nota = 181
@@ -1355,7 +1354,7 @@ Do
         Next j1
      Next i1
 
-  i1=i1-1  ' +6 sino quedaria en +7
+  i1=i1-1  ' +1 sino quedaria en +7
       Track(0).trk(i1,1).onoff=0
       Track(0).trk(i1,1).nota=0 'es PianoNota
       Track(0).trk(i1,1).vol=0
@@ -1367,7 +1366,7 @@ Do
 Loop
 
 titulosTk(0)=nombreTrack
-pmTk(0).MaxPos = maxposTrack +6 
+pmTk(0).MaxPos = maxposTrack +1 
 pmTk(0).desde = 4  'VER SI TOMAMOS LA Q ELIGE EL USUARIO
 pmTk(0).hasta = 8  ' " " " " " " 
 pmTk(0).posn=2
@@ -1381,7 +1380,7 @@ pmTk(0).tiempopatron = pmEj(pis).tiempopatron
 'pmTk(0).hasta = pmEj(pis).hasta    
 'pmTk(0).NB = pmEj(pis).NB        
 'pmTk(0).NA = pmEj(pis).NA       
-'pmTk(0).MaxPos =maxposTrack +6    
+'pmTk(0).MaxPos =maxposTrack +1    
     
 'pmTk(0).notaold = pmEj(pis).notaold   
 pmTk(0).Ticks  = pmEj(pis).Ticks   

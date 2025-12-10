@@ -270,7 +270,7 @@ EndIf
              Else
                PlaySound(".\recur\INICIO.wav", 0, SND_FILENAME+SND_NODEFAULT + SND_ASYNC )
              EndIf
-               duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+               duracion(Timer, (60/(96*tiempoPatron)) / FactortiempoPatron)
            Next im
            threadmetronomo = ThreadCall metronomo()
         EndIf 
@@ -543,7 +543,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",maxgrb
              Else
                PlaySound(".\recur\INICIO.wav", 0, SND_FILENAME+SND_NODEFAULT + SND_ASYNC )
              EndIf
-               duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+               duracion(Timer, (60/(96*tiempoPatron)) / FactortiempoPatron)
            Next im
            threadmetronomo = ThreadCall metronomo()
         EndIf 

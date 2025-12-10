@@ -87,7 +87,7 @@ Print #1,"---ajusto a 127 tocaparam2(ntkp).vol !!"
          mit.tp2  = tocaparam2(ntkp).tiempoPatron2
          tiempoPatron=mit.ST
          If tiempoPatron = 0 Then 
-            tiempoPatron = 240
+            tiempoPatron = 60
          EndIf
          pmEj(ntkp).tiempoPatron=tiempoPatron    
          pmEj(ntkp).pitchbend     = tocaparam2(ntkp).pitchbend     
@@ -98,7 +98,7 @@ Print #1,"---ajusto a 127 tocaparam2(ntkp).vol !!"
          pmEj(ntkp).vol=127
       EndIf  
       If tiempoPatron = 0 Then 
-         tiempoPatron = 240
+         tiempoPatron = 60
       EndIf
  EndIf
       pmEj(ntkp).ejec =1 'SIEMPRE PORQUE ES EJECUCION VIVA
@@ -108,7 +108,7 @@ Print #1,"---ajusto a 127 tocaparam2(ntkp).vol !!"
   ''''    maxpos=tocaparam(ntkp).maxpos ' 28-11-2024 ,,ACA LAPISA ESTA MAL
       nombre=tocaparam(ntkp).nombre
       maxpos=0
-    ' maxgrp se calcula en CargarPistasEjec pero no la usa usa un valor fijo 384000
+    ' maxgrp se calcula en CargarPistasEjec  
 Print #1,"////////redimendsiona a 2*maxgrb ",2*maxgrb
 ' se redimensionas todos iguales a 2*maxgrb         
       ReDim (Toca(ntkp).trk ) (1 To 2*maxgrb) ''
@@ -385,11 +385,12 @@ cargacancion=NO_CARGAR_PUEDE_DIBUJAR 'PUEDE DIBUJAR PORQUE NO HAY REDIM  DE ROLL
    'Print #1,"termino dimension de grabas "  
      Dim As Integer ubi1,ubi2 
      Dim As String x,x1,x2,x3,x4,x5,nombrea
-  '1) cargar pista desde disco y desde Roll puro   
+  '1) cargar pista desde disco y desde Roll puro
+   
      If ubirtk = 0   Then ' no tengo nombre debo explorar ACA SI BUSCA SOLO LOS RTK NO LOS *.SOLO
            myfilter  = "Track files (*.rtk)"+Chr(0)+"*.rtk"+Chr(0)
            nombrea = OpenFileRequester("","", myfilter, OFN_CREATEPROMPT)
-Sleep 100
+           Sleep 100
 
            ubi1 = InStrrev(nombrea,"[")
            ubi2 =InStrRev (nombrea,"]")
@@ -421,12 +422,13 @@ Sleep 100
        Else
           nombre=nombrea   
        EndIf
- Print #1,"ABRE TRK DE NOMBRE ";nombre
+  
 
     Dim miroerr As Integer
-'    Print #1,"nombre track ",nombre
- '   print #1,"NTK Y nombre que llego a open en CargaTrack ",ntk ,nombre
+    Print #1,"nombre track ",nombre
+    print #1,"NTK Y nombre que llego a open en CargaTrack ",ntk ,nombre
     titulosTk(ntk)=nombre
+
     
     ct=14
     miroerr= ( Open (nombre  For Binary Access Read As #ct ))
@@ -434,7 +436,8 @@ Sleep 100
         print #1,"arch track  abrio con error 1307 CargarTrack miroerr, nombre",miroerr, nombre
        Exit sub
      EndIf
-        
+Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
+
      Get #ct, , grabaPos
      x1=Bin(grabaPos.nota,4)
      x2=Bin(grabaPos.dur,4)
@@ -447,10 +450,11 @@ Sleep 100
      'toda carga de track se guarda en pmTk sea ntk=0 u otro valor   
      pmTk(ntk).MaxPos=CInt("&B"+x)
 
+
     '   If ntk >0 Then
     '      maxposTope=84600 '''pmTk(ntk).MaxPos le pone algo fijo ?? NO VA 5-12-2025
     '   EndIf
-Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
+
 ' AL CONVERTIR UN EJEC A ROLL Y LUEGO A NTK QUEDA EL NTK=1
 ' TOMA EL NRO DE EJEC Y SI SON SIMPLES SIN CANCION DEBE SER NTK=00 SIEMPRE
 ' ENTONCES AL CONVERTIR ROLL A TRACK SI ES UN EJEC AJUSTAR NTK=0 
@@ -471,15 +475,17 @@ Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
    '     pmTk(ntk).Ticks = pmTk(ntk).MaxPos+1000
    '  EndIf   
      Dim As Integer ubisolo=InStr(LCase(nombre),".solo")
-     CantTicks=86400 '''pmTk(ntk).Ticks
+     CantTicks=CantMin * 96 *tiempoPatron '''pmTk(ntk).Ticks
 ' NO TOMAMOS LOS SOLO PARA EL CALCULO DE LA MAXPOS
      If CantTicks < pmTk(ntk).MaxPos And ubisolo=0 Then
         CantTicks = pmTk(ntk).MaxPos
      EndIf     
-     If CantTicks < pmTk(ntk-1).MaxPos And ntk >= 2 And ubisolo=0 Then
-        CantTicks = pmTk(ntk-1).MaxPos 'vamos comparando los maxpos
-     EndIf     
-
+     If ntk >=2 Then ' es una cancion y ahi tiene sentido
+ ' para un track solo ntk=0 ,,ntk-1 = -1 daria error  
+         If CantTicks < pmTk(ntk-1).MaxPos  And ubisolo=0 Then
+           CantTicks = pmTk(ntk-1).MaxPos 'vamos comparando los maxpos
+         EndIf     
+     EndIf 
   Print #1,"CantTicks "; CantTicks
   ''MaxPosTope=CantTicks  '4-12-2025
      'es un get trabajo debe ser exactamente MAxPos
@@ -512,10 +518,12 @@ Print #1,"NombreCancion,nomobre, CantTicks ";NombreCancion,nombre, CantTicks
         CheckBox_SetCheck(cbxnum(ntk),0) 
      EndIf
    EndIf
+
    If ubisolo > 0 Then
       CheckBox_SetCheck(cbxsolo(ntk),1) ' kokon 
    EndIf
      ' crgamos limites Roll de octavas
+
      Get #ct, , grabaLim
      pmTk(ntk).desde  = CInt(grabaLim.nota)
      pmTk(ntk).hasta  = CInt(grabaLim.dur) '01-03 cint
@@ -567,6 +575,7 @@ messbox("CARGA TRACK HASTA","esta en cero el  track "+Str(ntk))
  '    print #1,"CargarTrack  NB Na", pmTk(ntk).NB, pmTk(ntk).NA
      
      Get #ct, ,graba3  
+
      pmTk(ntk).canalsalida = graba3.nnn  ' as poli es trck
      Print #1,"cargatrack pmTk(ntk).canalsalida, ntk ",pmTk(ntk).canalsalida,ntk
      canalx=graba3.nnn    
@@ -592,11 +601,11 @@ Print #1,"EN CARGATRACK PATCH ",pmTk(ntk).patch
 
      pmTk(ntk).ejec=graba3.ejec
 
-     Print #1,"///CARGA TRACK PATCH ",instru
      If graba3.nanchofig > 0 Then
        nanchofig  = cdbl(graba3.nanchofig)/10
      EndIf 
      pmTk(ntk).vol = graba3.vol
+
     If portsout <= portout Then
  'portsout cantidad de port fisicos o dispositivos empieza por 1 2 3 etc"
   '  portout parte de 0 o sea 0 1 2 3 '
@@ -620,13 +629,14 @@ Print #1, "2 instru en cargar track ";instru
      Get #ct, ,graba9  
      Get #ct, ,graba10 
 
+
 Dim mit As aUshort
 mit.tp1 = graba4.pan
 mit.tp2  = graba4.pb
 tiempoPatron=mit.ST
 pmTk(ntk).tiempopatron=tiempoPatron
      If tiempoPatron = 0 Then 
-        tiempoPatron = 240
+        tiempoPatron = 60
      EndIf
 
 
@@ -684,7 +694,7 @@ pmTk(ntk).tiempopatron=tiempoPatron
      EndIf
      ' movemos los datos a Track
      ' -------------------------
-     'ReDim compas(1 To CantTicks) es solo para visualizar
+     'ReDim compas(1 To CantTicks,1 to Spis) es solo para visualizar
      'carga=1 ' para visualizar no es lo mismo calcCompas con cargar o procesando
      Dim As Integer i,j , mayor,ia,valdur,cont, semi
      cont=0
@@ -741,6 +751,8 @@ Print #1,"CLOSE ct CERRO TRK NRO ct ",ntk, ct
 ' ahora durante la carga de cancion y el uso de tAB esto debe ir cambiadno para
 ' cada track cambiado en el grafico 
 '----------
+''no debe haber RecalCompas(ntk) pues en una cancion hacefalta saber 1er oel maxpoTope
+'' en carga de un rtk solo si colocarlo cada vez que se carga un solo track
 Print #1," patch ntk canal ",	Track(ntk).trk(1,1).nnn, ntk,pmTk(ntk).canalsalida
       print #1,"CargarTrack  fin"  
       print #1,"----------------------------------------------" 
@@ -1060,12 +1072,13 @@ nombre=titulosTk(ntk)
 '' cambia de nombre de roll a track, si tengo una cancion en edcion
 ' y quiero un roll nuevo no conviene hacerlo aca si hay cancion no se usa
    Print #1,"nombre que llega a ActualizarRollyGrabarPistaTrk "; nombre
-  Dim As Integer ubi1=0,ubi2=0,ubi3=0,ubi4=0 
+  Dim As Integer ubi1=0,ubi2=0,ubi3=0,ubi4=0, ubi5=0 
        Dim As String no1,no2
        ubi1=InStr(nombre,"[")
        ubi2=InStr(nombre,"]")
        ubi3=InStr(nombre,".rtk")
        ubi4=InStr(nombre,".roll")
+       ubi5=InStr(nombre,".solo")
 
     barra=InStrRev(nombre,"\")
     punto=InStrRev(nombre,".")
@@ -1075,8 +1088,14 @@ nombre=titulosTk(ntk)
     
     print #1,"extension ",ext
     print #1,"nom nombre sin extension ni path ",nom
-  If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Then
+  If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Or ubi5 > 0 Then
+     If ubi3> 0 Then
      nombre=path +nom +".rtk"
+     EndIf
+     If ubi5> 0 Then
+     nombre=path +nom +".solo"
+     EndIf
+  
   Else
     If nroejec= 0 Then
      nombre=path +"[00]"+nom +".rtk"
@@ -1606,7 +1625,7 @@ Else
    Exit sub
 EndIf
 
-   If ext = ".rtk" Then 
+   If ext = ".rtk" Or ext= ".solo" Then 
      print #1,"  ntk ", ntk
      print #1,"GRABANDO UPDATE DE PISTA EN CANCION EN ",nombre
    ' veo valore sde track  
@@ -2080,9 +2099,9 @@ terminar=NO_TERMINAR_CON_DATOS_CARGADOS
 ''Parar_De_Dibujar=SI kokito
 Print #1,"cargaCancion DEBE SER 1 ",cargaCancion
 Print #1,"NTK del copiado aca esta el lio, Y MAXPOS EN REDIM ",ntk, pmTk(ntk).MaxPos
-ReDim (Track(0).trk ) (1 To  pmTk(ntk).MaxPos +6, 1 To lim3) '////HOY
-FILEFLUSH(-1)
-Sleep 100
+ReDim (Track(0).trk ) (1 To  pmTk(ntk).MaxPos +1, 1 To lim3) '////HOY
+
+
 If cargaCancion=CARGAR_NO_PUEDE_DIBUJAR Or CANCIONCARGADA=TRUE Then ' MIENTRAS HAYA MAS DE UN TRACK O SEA UNA CANCION
 Print #1,"CARGA DE  TRACK(0)"  
 copiaTrackaTrack(Track(), 0 , ntk )
@@ -2093,7 +2112,7 @@ copiaTrackaTrack(Track(), 0 , ntk )
 ' Next i1
 EndIf  
 Print #1,"FIN CARGA DE  TRACK(0)"
-FILEFLUSH(-1)
+
 ''Sleep 5  
 
 'patch
@@ -2106,31 +2125,31 @@ FILEFLUSH(-1)
 '    pb As UByte
 '   End Type
 'End Union
-Print #1,"DIM  MIT START "
+'Print #1,"DIM  MIT START "
 Dim mit As aUshort 'redefine de cobol
-Print #1,"DIM  MIT FIN "
+'Print #1,"DIM  MIT FIN "
 mit.st = CUShort(pmTk(ntk).tiempoPatron)
-Print #1,"MIT  TIEMPOPATRON"
-FILEFLUSH(-1)
+'Print #1,"MIT  TIEMPOPATRON"
+
 
 'con estos dos campos puedo reconstruir tiempoPatron
 Track(0).trk(1,1).pan = mit.tp1
 Track(0).trk(1,1).pb  = mit.tp2
-Print #1,"CARGO TIEMPOPATRON"
-FILEFLUSH(-1)
+'Print #1,"CARGO TIEMPOPATRON"
+'FILEFLUSH(-1)
 ' Roll va a tocar bien a tempo si sacamos el tempo de ahi
 ' fralta ver como lo ponemos en track, en el encabezado supongo
 '------------
 
 ''Print #1,"EJEC Roll.trk(1,NA).onoff ";Roll.trk(1,NA).onoff
-FILEFLUSH(-1)
+
 
 ''Print #1, "TrackaRoll Fin ntk, patch " ; ntk, Roll.trk(1,NA).inst
 terminar=NO_TERMINAR_BARRE_PANTALLA 
 Parar_De_Dibujar=NO ' volvemos a dibujar en pantalla...18-04-2024
 cargacancion=NO_CARGAR_PUEDE_DIBUJAR ' " " 
-Sleep 5
-FILEFLUSH(-1)
+
+
 'hemos copiado el track ntk en el Track(0) que corresponde al Track asociado a Roll.
 '--------------------------------Track(0) fin
 '''curpos=0
@@ -2159,13 +2178,11 @@ EndIf
   print #1,"TrackaRoll Fin,,maxpos y (ntk).maxpos ", maxpos,pmTk(ntk).MaxPos
 print #1,"-----------------Fin TrackaRoll-----------------"
 Sleep 100
-FileFlush (-1)
 
 Exit Sub 
 
 fail:
 
-FileFlush (-1)
 
  Dim errmsg As String
  Dim As Long er1 = Err()
@@ -2391,8 +2408,10 @@ Print #1,"CANCION ntk MAXPOS "; pmTk(i0).MaxPos
 fileflush(-1)
  If mayor < pmTk(i0).MaxPos Then 
     mayor=pmTk(i0).MaxPos
- EndIf   
+ EndIf  
+ 
 Next i0
+RecalCompas()
  Print #1,"CANCION Tope MAXPOS "; Tope, mayor  
 
 Print #1,"cancion tiempoPatron ";tiempoPatron
@@ -2402,7 +2421,7 @@ maxposTope=mayor
 Print #1,"maxposTope ===> ", maxposTope
 fileflush(-1)
 Maxpos=mayor
-'''' RecalCompas() se llama al cargar la cancion no hace falta mas!!!
+
 Print #1,"UBound(compas, 1) ",UBound(compas, 1)
 
 '-------------
@@ -2434,12 +2453,12 @@ If comienzo = 0 Then  '01-03-2024 play sin roll
   comienzo= 1 
 End If
 
-Dim As Double  tickUsuario=0.005 * 240/tiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
+Dim As Double  tickUsuario=60/(tiempoPatron*96) ''''tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
 
-tickUsuario=0.005 * 240/tiempoPatron
+tickUsuario=60/(tiempoPatron*96)
 
   '115 a 0
   ' recorre una posicion vertical
@@ -2649,17 +2668,18 @@ kNroCol= Int(jply/NroCol)
             canal=pmTk(pis).canalsalida
             If sonidoPista(pis)=1 Then
                If Track(ntk).trk(1,1).ejec = 1 Or pmTk(pis).ejec=1 Then
-          'Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
+         ' Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
                   vel=Track(pis).trk(jply,i1).vol * ajuste
                EndIf
              ' la duracion me da si suena o no
-               Select CASE Roll.trk(jply, i1).dur
+
+               Select CASE Track(pis).trk(jply,i1).dur
                   Case 46 To  90  'silencios
                       vel=0  
                   Case 138 To 180  'silencios
                      vel=0
                   Case Else
-                     vel=Roll.trk(jply, i1).vol
+                     vel=Track(pis).trk(jply,i1).vol
                      If vel=0 Then
                        vel=velpos
                      EndIf   
@@ -3045,12 +3065,12 @@ End If
 Dim As Double Sold_time_on
 Sold_time_on=STARTMIDI
 Print #1,"Sold_time_on "; Sold_time_on
-Dim As Double  tickUsuario=0.005 * 240/tiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
+Dim As Double  tickUsuario=60/(tiempoPatron*96) ''''tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
 
-tickUsuario=0.005 * 240/tiempoPatron
+tickUsuario=60/(tiempoPatron*96)
 
   '115 a 0
   ' recorre una posicion vertical
@@ -3234,7 +3254,7 @@ velpos=vsemifuerte
                   vel=VelPos
                EndIf
                ' la duracion me da si suena o no
-               Select CASE Roll.trk(jply, i1).dur
+               Select CASE SolX.trk(JSOLO, i1).dur
                  Case 46 To  90  'silencios
                       vel=0  
                  Case 138 To 180  'silencios
