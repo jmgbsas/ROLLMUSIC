@@ -1,3 +1,6 @@
+- 20-12-2025 0.35095 ritmo 2=2/4, 3=3/4, 4=4/4, 5=5/8 ,6=6/8, 7=7/8, 12=12/8, RecalCompas, ||, etc 
+  UNA NOTA+ NO DEBE TENER || AL FINAL PORQUE SIGUE...etc. ALT-END FIN DE NOTA
+  RITMO=TipoCompas, ritmo default=4
 - 10-12-2025 fix issue no sepodia levantar un rtk aislado (ntk tomaba 0)
   borrar desde Posision pasozona1 hasta el final de una secuancia
   modificacion contecla 0 y sus opciones. Ayuda Teclas rapidas comienzo ctrl+f1 en grafico.

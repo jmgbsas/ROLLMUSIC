@@ -198,7 +198,7 @@ Declare Sub LLAMA_GRABAR_ROLL()
  
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
 Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6,notaGuia=0
-Dim Shared As String RTA, alteracion '',alteracion_str
+Dim Shared As String RTA, alteracion 
 alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0,OCTAVAFIJA
 Dim Shared As integer pasoZona2=0,nroRep=0
@@ -606,14 +606,17 @@ Dim Shared As BOOLEAN ayuda, SeleccionarNuevaNota, ArmarMenuModif, VolverEntrada
 haycompas=0
 dobleclick=>FALSE
 
-Dim Shared TipoCompas As UByte
-Const As UByte Tcompas2_4 = 6
-Const As UByte Tcompas3_4 = 7
-Const As UByte Tcompas4_4 = 8
-Const As UByte Tcompas6_8 = 14
-Const As UByte Tcompas12_8 = 20
+'' paso a Globaldec Dim Shared TipoCompas As UByte
+Const As UByte Tcompas2_4 = 2
+Const As UByte Tcompas3_4 = 3
+Const As UByte Tcompas4_4 = 4
+Const As UByte Tcompas5_8 = 5
+Const As UByte Tcompas6_8 = 6
+Const As UByte Tcompas7_8 = 7
+Const As UByte Tcompas12_8 = 12
 
-TipoCompas=Tcompas4_4
+TipoCompas=Tcompas4_4:ritmo=4
+' los 3 son iguales ahora 20-12-2025 podremos eliminar TipoCompas ¿?
 
 Dim Shared d7 As Integer => 10000000 ' PROBAREMOS CON 12/8 O 6 NEGRAS,,,15 MILL
 Dim Shared d6N As Integer => 15000000 ' 6 negras o 12/8 o 6/4
@@ -685,7 +688,7 @@ Dim Shared As String nombreArchivo, TCompas,menuOldStr, ticksdefault,nombrePatro
 Dim Shared As Integer nroCompasesPatron, nroTicksPatron
 nroCompasesPatron=1
 nroTicksPatron=0
-nombreArchivo="" : ticksdefault="64"
+nombreArchivo="" : ticksdefault="96"
 
 TCompas ="4/4"
 'Dim Shared As Integer MaxPosTrack(0 To 32) ' cada track tendra su max pos
@@ -781,7 +784,7 @@ Type poli Field=1 ' para guardar la secuencia EN Tacks 15 bytes
  pan    As UByte =0 ' paneo
  pb     As UByte =0 ' pitch bend
  nnn    As UByte =0 ' se usa para escala canal etc 
- tick   As UByte =0 ' 64 tiene la redonda 
+ tick   As UByte =0 ' 384 tiene la redonda 
  acorde As UByte =0 ' 1 a 12 , son el se hara el sort    
 End Type
 ' posn As Integer =0' de roll todavia no lo uso para generar secuencia
@@ -1245,7 +1248,7 @@ Declare Sub PlayCancion(Track() As sec)
 Declare Sub PlayUnoSolo(SolX As sec, Spis As Integer)
 Declare Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst,funcion As string)
 Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
-Declare Sub ReCalCompas()
+Declare Sub ReCalCompas(ritmo As integer)
 Declare Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As ubyte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As integer)
 Declare Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)
 Declare Sub armarescala(ByRef cadena As String, tipoesc As Integer, notaesc As Integer, altera As String, orden As integer )
@@ -1613,6 +1616,6 @@ ReDim As Patron ordenLista (1 To 100) ' cargo hasta 200 patrones o mas si deseo 
 ' tendra 1,2,3,4,5,6,7,8, hacer eso en un vector es mucho mas facil y listo,,,algo
 ' humano y  comprensible, total durante el orden que haga el usuario de sus patrones
 ' es lento y en esa lentitud es muy rapida el orden de un simple vector tipo contador
-  
+Declare Function CRaTC (rit As UByte) As String   
 
 

@@ -652,6 +652,7 @@ Dim n As Integer
 End Function
 
 Function tempoString (t As UByte) As String  ' para imprimir en archivo midi txt
+''queson el 2do y 3er string ??? reveeer 20-12-2025
   Select Case  t  '''' TipoCompas As UByte
         Case  Tcompas2_4 
               tempoString = "2/4 24 8"
@@ -659,10 +660,14 @@ Function tempoString (t As UByte) As String  ' para imprimir en archivo midi txt
               tempoString = "3/4 24 8"
         Case  Tcompas4_4 
               tempoString = "4/4 24 8"   
-        Case  Tcompas12_8 
-              tempoString = "12/8 36 8"
+        Case Tcompas5_8 
+              tempoString = "5/8 36 8"
         Case Tcompas6_8 
               tempoString = "6/8 36 8" 
+        Case Tcompas7_8 
+              tempoString = "7/8 36 8" 
+        Case  Tcompas12_8 
+              tempoString = "12/8 36 8"
         Case Else 
               tempoString = "4/4 24 8" 
   End Select
@@ -696,8 +701,10 @@ If MIDIFILEONOFF = HABILITAR  Then
  
    If TipoCompas <> pmTk(0).tipocompas And TipoCompas > 0 Then
       tiempo = tempoString(TipoCompas)
-   Else 
+      pmTk(0).tipocompas=TipoCompas 
+   ElseIf TipoCompas=0 Then 
       tiempo = tempoString (pmTk(0).tipocompas)
+      TipoCompas=pmTk(0).tipocompas
    EndIf
    midiplano=20
    Dim numc As Integer = CInt(pmTk(0).canalsalida) + 1
@@ -1033,6 +1040,10 @@ EndIf
 Next jply
 ''while (PeekMessage(NULL, hwnd, WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE or PM_QS_INPUT))
 ''Wend
+'-> LA ULTIMA NOTA SERA APAGADA CASI DE INMEDIATO POR EL alloff Y SOUNDOFF QUE SIGUEN
+' POR ESO DEJAMOS SONAR LA NOTA LA 2*DURACION QUE TIENE dura
+'' reldur(dura) 'la dduracion  a t=60 usamos eso a t=60 
+duracion (Timer , 2* reldur(dura))
 
 posicion=comienzo
 '======================
@@ -3026,7 +3037,7 @@ End Sub
 
 Sub metronomo ()
 Dim  As Integer pista , k
-
+' no hay ningun acento solo taps de igual sonido
 Do
    PlaySound(".\recur\RIMSHOT.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
      duracion(Timer, (60/(96*tiempoPatron)) / FactortiempoPatron) 'jmgtiempo

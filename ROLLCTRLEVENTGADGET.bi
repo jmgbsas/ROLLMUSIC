@@ -7,7 +7,7 @@ DisableGadget(PISTASROLL,0) 'habilita la pistaroll
 
       ' el codigo anterior que traia de disco esta en notas
 ' TODOS DICEN RUSO Y USA QUE VK_LBUTTON ES 1 PERO CON 1 NO ANDA
-' SIN EMBARGO CON 3 ANDA A VECES..
+' SIN EMBARGO CON 3 ANDA A VECES.. 
 ''Print #1, "CTRL_EVENTGADGET DirEjecSinBarra ",DirEjecSinBarra
 Dim As Integer k=0
 Static As Integer millave
@@ -1065,7 +1065,7 @@ Print #1,"k, canalsalida  ";k, canalx
          Static As Integer cuantos
          If cuantos > 0 Then
             cargariniciotxt (DirEjecSinBarra, EJECUCION )
-            RecalCompas()   
+            RecalCompas(ritmo)   
             cuantos=0
          Else  
  

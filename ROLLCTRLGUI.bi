@@ -388,13 +388,12 @@ Menubar(MenName4)
   
 MenuItem(1080,MenName5,"1.0 TEMPO, Por omision=60, Ejecucion Tick por omision=5mseg equivale a 240")
 MenuItem(1081,MenName5,"2.0 Factor para Aumentar velocidad de ejecucion, No se graba en archivo 1,5 o 0,5 etc")
-
 'MenuItem(1083,MenName5,"Na. TEMPO insertar cambio de tempo")
 'MenuItem(1084,MenName5,"Na. TEMPO borrar cambio de tempo")
 'MenuItem(1085,MenName5,"Na. TEMPO ver marcas de cambio de tempo")
 'MenuItem(1086,MenName5,"Na. TEMPO ocultar marcas de tempo")
 'MenuItem(1087,MenName5,"Na. TEMPO incremento de tempo gradual alcanzado en N compases")
-
+menuitem (1088,Menname5,"Ritmo 1=2/4, 2=3/4, 3=4/4, 4=6/8 ,5=12/8, 6=5/8, 7=7/8, por omision=4/4")
 /' futuro agregar limite menor de c/rango con opcion de incrementarlo hasta el tope
   d esu rango 
 Negras por minuto	 tempo
@@ -414,7 +413,7 @@ Negras por minuto	 tempo
 
   
 MenuItem(1090,MenName6 ,"1.0 Reproducir TODAS Las Pistas EXCEPTO los solos desde el principio o un intervalo seleccionado en el Roll Grafico")
-MenuItem(10901,MenName6,"1.1 Detener Reproducion 1.0")
+MenuItem(10901,MenName6,"1.1 Detener Reproducion 1.0   P")
 MenuItem(1091,MenName6,"2.0 Repeticiones marcadas en una sola pista en un INTERVALO en GRAFICO. cancion o pista ")
 MenuItem(10911,MenName6,"2.1 Borrar Repeticiones ")
 
@@ -423,7 +422,7 @@ MenuItem(1093,MenName6,"4.0 Cierra Puerto MIDI-IN Ejecucion.")
 
 
 MenuItem(1100,MenName7,"1.0 Usar MARCO de Ventana Para el Gráfico",MF_UNCHECKED)
-MenuItem(1101,MenName7,"2.0  Usar MARCO de Ventana en instancias Gráficas",MF_UNCHECKED)
+MenuItem(1101,MenName7,"2.0 Usar MARCO de Ventana en instancias Gráficas",MF_UNCHECKED)
 'Menubar(MenName7)
 'MenuItem(1102,MenName7,"Fracciona Acorde [Con <> Duraciones], notas similares en una pista (no hay silencios)",MF_UNCHECKED  )
 'MenuItem(1103,MenName7,"Fracciona NOTA o Acorde [CDD], agregando silencios en una pista ",MF_UNCHECKED  )
@@ -460,7 +459,7 @@ MenuItem(2000,MenName10,"1.0 Acerca de")
 MenuItem(2001,MenName10,"2.0 Cuadro Ayuda TEMPO por nombres, Lento,adagio etc y control fino")
 MenuItem(2002,MenName10,"3.0 Cuadro de Figuras de duracion de notas")
 MenuItem(2003,MenName10,"4.0 Cuadro de valores de Volumen tipicos")
-
+MenuItem(2004,MenName10,"5.0 Cuadro de Teclas Rapidas, key stroke")
 'MenuItem(2502,MenName30,"Seleccion Puerto MIDI-IN ROLL")
 'MenuItem(2504,MenName30,"Seleccion Puerto MIDI-OUT ROLL")
 'MenuItem(2505,MenName30,"Abrir  Puerto  MIDI-OUT ROLL")

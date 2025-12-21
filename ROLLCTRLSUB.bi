@@ -105,7 +105,7 @@ Sub CTRL100610061 (hMessages As hmenu ,  CALLDESDE As STRING )
                   If Tope >0 Then ' tenia datos se supone q pudo abrir Roll y abrirRoll=0
                      CargarPistasEnCancion ()
                      cargariniciotxt(NombreCancion, CANCION)
-                     RecalCompas()
+                     RecalCompas(ritmo)
                      abrirRoll=EVITAR_LLAMAR_ROLLLOOP_DE_NUEVO
                      terminar=NO_TERMINAR_BARRE_PANTALLA
                      CANCIONCARGADA = TRUE
@@ -509,7 +509,8 @@ Print #1,"1 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
        EndIf         
               'NTKP ES UNA SALIDA DE LA SUB
 Print #1,"3 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
-       CargarPistasEjec lugar, TopeEjec
+Dim As Integer version
+       CargarPistasEjec lugar, TopeEjec,version
 '' EJECCARGADA quedo en true en la sub CargarPistasEjec  
        Dim j As integer
            For  j=1 To TopeEjec

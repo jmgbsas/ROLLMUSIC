@@ -616,6 +616,14 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
              SetForegroundWindow(hwnd)
              EndIf  
 '-----------------------------------------------------------------------
+           Case 1088 ' Ritmo 
+              nombreArchivo="0"
+              menuOldStr="[RITMO]"
+              thread3= ThreadCall EntrarTeclado()
+             If abrirRollCargaMidi=2 Then
+             SetForegroundWindow(hwnd)
+             EndIf  
+
 '-----------------------------------------------------------------------
            Case 1090 ' Reproducir cancion
     SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
@@ -837,6 +845,7 @@ EndIf
       '        Print #1,"armarescla desde 1106"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
+              tipoescala_inicial= escala(tipoescala_num_ini).nombre
 ' --------------------------
              If abrirRollCargaMidi=2 Then
              SetForegroundWindow(hwnd)
@@ -1022,6 +1031,10 @@ Print #1,"///----SEL 1211 CORO Globalcoro ",Globalcoro
            Case 2003 ' cuadros ayuda tempo, figuras duracion, volumen
            threadVol = ThreadCall  CuadroVol ()
            threadDetach threadVol 
+           Case 2004 ' cuadros ayuda tempo, figuras duracion, volumen
+          Shell ("start notepad " + pathinicio + "\recur\TECLAS_RAPIDAS.txt")
+           'threadKey = ThreadCall  CuadroKey ()
+           'threadDetach threadKey 
 
          '' SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------

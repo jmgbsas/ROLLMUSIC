@@ -42,10 +42,11 @@ NADACARGADO    = TRUE
 CANCIONCREADA  = FALSE
 EJECCARGADA    = FALSE
 
-Dim Shared As HWND velimg, Figimg, FigVol
+Dim Shared As HWND velimg, Figimg, FigVol, FigKey
 Const IMAGE_VEL= 30
 Const IMAGE_FIG1 = 31
 Const IMAGE_FIG2 = 32
+Const IMAGE_FIG3 = 33
 
 Const As BOOLEAN HABILITAR = TRUE
 Const As BOOLEAN DESHABILITAR = FALSE
@@ -137,6 +138,27 @@ Sub CuadroVol()
 
 End Sub
 '---------
+Sub CuadroKey()
+               FigKey=  OpenWindow("Teclas Rapidas, keystroke  ",800,100,600,600  )
+               ImageGadget(IMAGE_FIG3,10,10,1100,800,Load_image(".\recur\TECLAS_RAPIDAS.jpg"))
+               #Ifdef __FB_WIN64__
+                SetFocus (FigKey) 
+               SetForegroundWindow(FigkEY)
+               #Else
+                  gtk_widget_grab_focus(GadgetID(IMAGE_FIG3))
+               #EndIf
+          
+          
+           Do      
+              Var eKey= waitEvent
+              If eKey=EventClose Then
+                 Close_Window(FigKey)
+                 
+              EndIf
+           Loop
+   
+
+End Sub
 
 '------
 

@@ -118,47 +118,95 @@ FileFlush (-1)
 End Sub
 
 
-Sub RecalCompas() ' Nuevo para ticks
+Sub RecalCompas(rit As integer) ' Nuevo para ticks 
+' EN DESARROLLO 18-12-2025 11-25 JU
+'ritmo 1=2/4, 2=3/4, 3=4/4, 4=5/8 ,5=6/8, 6=7/8, 7=12/8
+' y 2/8, 3/8, 4/8, 8/8, 9/8, 10/8, 11/8 no hay?
  On Local Error GoTo errorCalc 
 ' velocidades para 4/4 reposicion par ticks
 ' lso tiempos de una comaps son 96, 192, 288, 384
 clickpista=0
- Dim As Integer i,j,k,negra=96, multi,kj,kp, cntcompas,cntnegra,com, compas4cuartos= 4*negra,MAXI
-
+ Dim As Integer i,j,k,negra=96,corchea=48, multi,kj,kp, cntcompas,cntnegra,com, compas4cuartos= 4*negra,MAXI
+ Dim As Integer compas3cuartos= 3*negra, compas2cuartos=2*negra,compas6octavos=3*corchea
+ Dim As Integer ticks ,desde,hasta, incremento , den 
  If CANCIONCARGADA=TRUE And maxposTope >0 Then
     MAXI=maxposTope
  Else
     MAXI=Maxpos 
  EndIf
-Print #1,"En Recalcompas MAXI ",MAXI
-ReDim compas(1 To 2*MAXI)
+ Select Case rit
+  Case 2 To 4
+    incremento=96
+    den=4
+  Case 5 To 7
+    incremento=48
+    den=8
+  Case 12
+    incremento=48
+    den=8
 
+ End Select 
+
+ ticks=rit*incremento
+
+''Print #1,"En Recalcompas MAXI ",MAXI
+ReDim compas(1 To 2*MAXI)
+'los pulsos fuertes y debiles hay que desarrollarlos para los otros ritmos!!!
+ 
 MaxPos=MAXI
 If CantTicks < MAXI Then
   CantTicks=MAXI
 EndIf
   compas(1).Posi=0
   compas(1).nro = 0
-For j=1 To MAXI-2
+' este for decide el pulso no es parejo habra que limar àra cada caso?
+'2/4 (f,d), 3/4 (f,d,d), 4/4 (f,d,sf,d), 6/8 (f,d,d,sf,d,d)?,12/8(f,d,d,d,d,d,sf,d,d,d,d,d)? 
+' el 1er tiempo siempre es fuerte es el acento
+' el 2do  "     siempre es debil
+Select Case rit
+   Case 2
+     ticks=192
+   Case 3
+     ticks=288 
+   Case 4  ' 4*96
+     ticks=384
+   Case 5  ' 5*48
+     ticks=  240
+   Case 6
+     ticks=  288
+   Case 7
+     ticks=  336
+   Case 12
+     ticks=  576
+End Select 
+For j=1 To MAXI-2  ' j recorre los ticks 1 a 1
   kj=kj+1
   Select Case kj
-    Case   1 To  96
-   compas(j).nro = -1
-   compas(j).Posi=0
-    Case  97 To  192 
-   compas(j).nro = -2
-   compas(j).Posi=0
-    Case 193  To 288 
-   compas(j).nro = -3
-   compas(j).Posi=0
-    Case 289 To 383
-   compas(j).nro = -4
-   compas(j).Posi=0
-    Case compas4cuartos '384
+    Case   1 To  incremento 
+     compas(j).nro = -1      ' FUERTE
+     compas(j).Posi=0
+    Case  incremento+1 To  incremento*2 -1
+     compas(j).nro = -2     ' DEBIL
+     compas(j).Posi=0
+    Case incremento*2+1  To incremento*3 -1
+     compas(j).nro = -3   ' DEBIL O SEMIFUERTE
+     compas(j).Posi=0
+    Case incremento*3+1 To incremento*4 -1
+     compas(j).nro = -4   'DEBIL
+     compas(j).Posi=0
+    Case incremento*4+1 To incremento*5 -1
+     compas(j).nro = -5
+     compas(j).Posi=0
+    Case incremento*5+1 To incremento*6 -1
+     compas(j).nro = -6
+     compas(j).Posi=0
+
+    Case ticks  ' VALORES COMPLETOS , LOS ANTERIORES -1 ASI NO INTERFIERNE CON EL COMPLETO
      cntcompas=cntcompas+1
-  compas(j).Posi=j
-  compas(j).nro = cntcompas
+     compas(j).Posi=j
+     compas(j).nro = cntcompas
       KJ=0
+    
   End Select
 
  ' kp=kp+1
@@ -1815,15 +1863,23 @@ Print #1,">>>> Tracks  ntk cargado, nombre ",ntk, nombre
 End Sub
 '------
 Function valorFigura(TipoCompas As UByte) As Integer
-
+'' uso futuro para convertir ejecuciones en figuras de roll aproximadas
+'' falta mucho mas a elaborar ..es el valor  del compas
+'' la duracion esta expresada en enteros grandes para evitar los decimales  
 Select Case TipoCompas
       Case Tcompas2_4
-        valorFigura= 5000000  
+        valorFigura= 5000000  ' dos negras 192
       Case Tcompas3_4, Tcompas6_8
-        valorFigura=7500000 
+        valorFigura= 7500000 ' 3 negras
       Case Tcompas4_4
-        valorFigura=10000000
-      Case Tcompas12_8
+        valorFigura=10000000 ' 2500000 la negra o 96 
+      Case Tcompas5_8
+        valorFigura=6250000 '1250000 la corchea
+      Case Tcompas6_8 ' igaual a 3/4
+        valorFigura=7500000
+      Case Tcompas7_8
+        valorFigura=8750000
+      Case Tcompas12_8 ' 6/4 6 negras
         valorFigura=15000000
 End Select
 
@@ -2232,7 +2288,7 @@ TrackaRoll (Track(),ntk,Roll,"cargarMidiPlano")
 cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
 Parar_De_Dibujar=NO
 Sleep 5
-ReCalCompas ()
+ReCalCompas (ritmo)
           '  print #1,"despues RecalCompas veo nombre ",nombre
             MenuNew=MENU_INICIAL
             cierroedit= 0
@@ -3063,7 +3119,9 @@ Dim mit As aUshort
      pmTk(0).portout=dat.portout
      pmTk(0).canalsalida = dat.canalsalida ' ubyte a ubyte
      pmTk(0).tipoCompas = dat.tipoCompas
-
+     ritmo=pmTk(0).tipoCompas
+     TipoCompas=ritmo
+     TCompas=CRaTC(ritmo)
      
 Print #1,"/////--Cargar Arch pan Globalpan,pmtk, ntk ",Globalpan,pmTk(ntk).pan,ntk
      canalx=CInt(dat.canalsalida)
@@ -3152,6 +3210,7 @@ MessageBox( null, "MIDI-OUT "+ Str(portout)+ " INEXISTENTE CAMBIELO", "Se cambia
 
 
      TipoCompas= dat.TipoCompas 
+     ritmo=TipoCompas 
      TCompas=Mid(tempoString(TipoCompas),1,4) ' string
     
      pmTk(0).tipoCompas = TipoCompas 
@@ -3318,7 +3377,7 @@ curpos =>1
    gap2= (914 * gap1) /1000 ' 74 default
    gap3= (519 * gap1) /1000 ' 42 default
 
-  RecalCompas()  
+  RecalCompas(ritmo)  
 '--------------------------------
 ' correccion LLAMAMOS ROLL A TRACK PARA NTK = 0, 14 -04-2024
 ' pero no era necesario, total al grabar nunca grabo el track
@@ -3913,7 +3972,7 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
             ROLLCARGADO=TRUE ' NO PERMITOQUE TRACK(0) SE BORRE
             TrackaRoll (Track() , ntk , Roll,"menuGraficoCargaTrack")
           '  print #1,"TrackaRollcarga rtk veo nombre ",nombre 
-            RecalCompas ()
+            RecalCompas (ritmo)
           '  print #1,"despues RecalCompas veo nombre ",nombre
             MenuNew=MENU_INICIAL
             cierroedit= 0
@@ -4285,88 +4344,95 @@ Sleep 100
    EndIf
    t = "  [REDIMENSIONAR]<-NO BORRA DATOS" + RTA
 '----------------------------------------------------------
-   Case TIPO_DE_COMPAS ' 7
-
-   If mousex > 38 And mousex < 90 And mousey < 50  Then  'OPCIONES
+   Case TIPO_DE_COMPAS ' 7 o Ritmo pero diferente numeracion, conservamos la vieja
+''ritmo 1=2/4, 2=3/4, 3=4/4, 4=5/8 ,5=6/8, 6=7/8, 7=12/8
+'' ver recalcompas(ritmo)
+   If MultiKey(sc_Control) And mousex > 38 And mousex < 90 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=10000000
      menuNew= TIPO_DE_COMPAS
      TCompas="4/4 "  ' para mostrar en pantalla  
      TipoCompas=Tcompas4_4  ' 8 para guardar en disco roll o rtk
-       pmTk(0).tipocompas = TipoCompas 
+       pmTk(0).tipocompas = TipoCompas
+     ritmo=Tcompas4_4  
+     '' no hace falta se hardcodeo ritmo = CTCaR(TipoCompas)
      d7=valorFigura(TipoCompas)
-     'If MaxpOS > 2 Then
-     '''  ReCalCompas()
-     'EndIf
-    'MenuNew=0
+
+     If pmTk(0).MaxpOS > 2 Then
+       ReCalCompas(ritmo)
+     EndIf
+     MenuNew=MENU_INICIAL
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  "       [4/4]":cairo_show_text(c, t)
-  If mousex > 100 And mousex < 150 And mousey < 50  Then  'OPCIONES
+  If MultiKey(sc_Control) And mousex > 100 And mousex < 150 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=15000000
      menuNew=TIPO_DE_COMPAS
      TCompas="12/8"
-     TipoCompas=Tcompas12_8  ' 20  
-     'If mAXpOS > 2 Then
-     'ReCalCompas()
-     'End If
-     'MenuNew=0
+     TipoCompas=Tcompas12_8  ' 20
+     ritmo=Tcompas12_8 ' el unico valor  que no se le suma 1 en RecalCompas
+     If pmTk(0).Maxpos > 2 Then
+       ReCalCompas(ritmo)
+     EndIf
+     MenuNew=MENU_INICIAL
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [12/8]":cairo_show_text(c, t)
-  If mousex > 160 And mousex < 210 And mousey < 50  Then  'OPCIONES
+  If MultiKey(sc_Control) And mousex > 160 And mousex < 210 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=5000000
      menuNew=TIPO_DE_COMPAS
      TCompas="2/4 "
-     TipoCompas=Tcompas2_4  ' 6 
-
-    ' If mAXpOS > 2 Then
-    ' ReCalCompas()
-    ' EndIf
-     'MenuNew=0
+     TipoCompas=Tcompas2_4  
+     ritmo=Tcompas2_4
+     If pmTk(0).Maxpos > 2 Then
+       ReCalCompas(ritmo)
+     EndIf
+     MenuNew=MENU_INICIAL
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [2/4]":cairo_show_text(c, t)
 
-  If mousex > 220 And mousex < 270 And mousey < 50  Then  'OPCIONES
+  If MultiKey(sc_Control) And mousex > 220 And mousex < 270 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=7500000
      menuNew=TIPO_DE_COMPAS
      TCompas="3/4 "
      TipoCompas=Tcompas3_4  ' 7
-     'If mAXpOS > 2 Then
-     'ReCalCompas()
-     'EndIf
-     'MenuNew=0
+      ritmo=Tcompas3_4
+     If pmTk(0).Maxpos > 2 Then
+       ReCalCompas(ritmo)
+     EndIf
+     MenuNew=MENU_INICIAL
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [3/4]":cairo_show_text(c, t)
 
- If mousex > 280 And mousex < 310 And mousey < 50  Then  'OPCIONES
+ If MultiKey(sc_Control) And mousex > 280 And mousex < 310 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=7500000
      menuNew=TIPO_DE_COMPAS
      TCompas="6/8 "
      TipoCompas=Tcompas6_8  ' 7
-  '   If mAXpOS > 2 Then
-  '   ReCalCompas()
-  '   EndIf
-     'MenuNew=0
+     ritmo=Tcompas6_8 
+     If pmTk(0).Maxpos > 2 Then
+       ReCalCompas(ritmo)
+     EndIf
+     MenuNew=MENU_INICIAL
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -4759,7 +4825,7 @@ off1nosemueve=0 ' se mueve
  EndIf
  insert=0
  indaux=0
- RecalCompas() ' 09-05-2021
+ RecalCompas(ritmo) ' 09-05-2021
  TicksInsertados=0
  StartInsert=0
  fininsert=0
@@ -4911,7 +4977,56 @@ Print #1,"FIN CAMBIARDIM "
 ' la redimension, sacandola del scope de cairo funciona 
 
 End Sub
+Function CRaTC (rit As UByte) As String  'CONVIERTE RITMO A TIPOCOMPAS, ES LO MISMO DISTINTA NUMERACION
+Select Case rit
+       Case  2 
+         CRaTC="2/4"  
+       Case  3 
+         CRaTC="3/4"      
+       Case  4 
+         CRaTC="4/4"
+       Case  5 
+         CRaTC="5/8"
+       Case  6 
+         CRaTC="6/8"
+       Case  7 
+         CRaTC="7/8"
+       Case  12 
+         CRaTC="12/8"
+End Select 
 
+End Function
+
+/'Function CTCaR (tc As ubyte) As UByte 'convierte Tipo compas a Ritmo, lo mismo pero con distinto valor
+'TipoCompas es el ritmo de antes, valores viejos 
+'Const As UByte Tcompas2_4 = 2
+'Const As UByte Tcompas3_4 = 3
+'Const As UByte Tcompas4_4 = 4
+'Const As UByte Tcompas5_8 = 5
+'Const As UByte Tcompas6_8 = 6
+'Const As UByte Tcompas7_8 = 7
+'Const As UByte Tcompas12_8 = 12
+
+Select Case tc
+       Case  Tcompas2_4
+       CTCaR=2
+       Case  Tcompas3_4
+       CTCaR=3
+       Case  Tcompas4_4
+       CTCaR=4
+       Case  Tcompas5_8
+       CTCaR=5
+       Case  Tcompas6_8
+       CTCaR=6
+       Case  Tcompas7_8
+       CTCaR=7
+       Case  Tcompas12_8
+       CTCaR=12
+   
+End Select 
+ 
+End Function  
+'/
 Sub EntrarTeclado ()
 
 
@@ -5174,14 +5289,43 @@ Next kk
    Print #1," VOLUMEN AJUSTADOO ->> "; valorvol
    Globalvol=CUByte(valorvol)
   SetGadgetText(3,Str(valorvol))
-
+   Case "[RITMO]" 
+' el ritmo deberia ser el mismo para todas las pistas de cancion y ejecs!
+' queda eso en el tintero, cuando grabo una ejec deberia seleccionar tipoCompas¿? si
+   Print #1,"Ritmo, ntk , TipoCompas ,ntkp ", ntk, TipoCompas,ntkp
+   fileflush(-1)
+      If pmTk(ntk).tipocompas > 0 then ''' pmEj(ntkp).tipocompas > 0 Then
+         ritmo = pmTk(ntk).tipocompas 'convierte tipocompas a ritmo funcion integer
+         TipoCompas=ritmo 
+      Else
+      '   If pmTk(ntk).tipocompas = 0  Then
+      '     ritmo = pmEj(ntkp).tipocompas ''kokito ver si uso TipoCompas en ejec
+      '   EndIf
+         If pmTk(ntk).tipocompas = 0 Then
+            pmTk(ntk).tipocompas = Tcompas4_4  
+       
+         EndIf
+      EndIf   
+      default=Str(ritmo)  
+      default = InputBoxJmg("Entre un Numero de Ritmo" ,"2=2/4, 3=3/4, 4=4/4, 5=5/8 ,6=6/8, 7=7/8, 12=12/8 ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+      ritmo=  CUByte(default)
+      TCompas= CRaTC(ritmo) ' string para mostrar en grafico 
+      pmTk(ntk).tipocompas= ritmo ' todo ubyte
+      TipoCompas=pmTk(ntk).tipocompas
+      'pmEj(ntk).tipocompas=pmTk(ntkp).tipocompas 
+      ''por omision ritmo=1, 4/4
+      RecalCompas(ritmo)
 End Select
 
 End Sub
 
 
 Sub velocidades(j As Integer)
- 'Print #1,"velocidades Tcompas j "; TCompas, j 
+ 'Print #1,"velocidades Tcompas j "; TCompas, j '''20-12-2025 
+' INTERESANTE KOKITO REVEER PAR ATICKS PODRIAAPLICARSE PARA VELOCIDADES
+' SEGUN EL TCPMPAS Y TICKS EL ACUMULADO SERIA EN EL COMPAS ¿? NO SUMA DE TICKS DESDE ELPRINCIPIO
+' SUMA DE TICKS DENTRO DEL COMPAS O SEA EL ACUMULADO SE RESETEA EN CADA  COMPAS ¿?
+
     If TCompas="4/4 " Then ' dividido y subdividido
       If acumulado <= 1250000 Then ' hasta a corchea
        compas(j).nro = -1 ' fuerte
@@ -5553,7 +5697,14 @@ Print #1,"///----grabar ECO GlobalECO,pmtk, ntk ",Globaleco,pmTk(ntk).eco,ntk
      pmTk(ntk).coro=Globalcoro 
   
 Print #1,"///----GrabaRoll pan Globalpan,pmtk, ntk ",Globalpan,pmTk(ntk).pan,ntk
+     If pmTk(ntk).tipocompas<> ritmo Then ' 20-12-2025
+        pmTk(ntk).tipocompas=ritmo
+        TipoCompas=ritmo
+     EndIf
      dat.TipoCompas = TipoCompas ' 26-04-2024
+     ' al cargar tipocompas va a pmTk y a TipoCompas
+     ' si se lo  cambia el ultimo valor estara en TipoCompas 
+     ' o tal vez en ambos si esta bien codificado-
      ' NB y NA se calcula a partir de desde y hasta no hace falta grabarlos  
      '  print #1,"MaxPos grabada en Trabajo ",MaxPos
      dat.canalx=canalx 'el canal global
@@ -5728,7 +5879,7 @@ Print #1,"inicia CargaPistasEnCancion"
        NADACARGADO=FALSE
        ntk=0   ' tab le suma 1 pero si creo pistas estria  mal 05-03-2022 ï¿½ï¿½ï¿½
        ReDim compas(1 To maxpostope)  
-       RecalCompas()
+       RecalCompas(ritmo)
 
      EndIf
 
@@ -5901,7 +6052,20 @@ Next i1
      grabaPos.vol  = y3
      grabaPos.pan  = y4
      grabaPos.pb   = y5
-     grabaPos.nnn = pmTk(ntk).tipoescala
+     If pmTk(ntk).tipoescala > 0 And tipoescala_num_ini = 0 Then
+       grabaPos.nnn = pmTk(ntk).tipoescala
+       tipoescala_num_ini=CInt (pmTk(ntk).tipoescala)
+     EndIf
+     If tipoescala_num_ini > 0 And tipoescala_num_ini <> CInt (pmTk(ntk).tipoescala) Then
+       grabaPos.nnn = CUByte(tipoescala_num_ini)
+       pmTk(ntk).tipoescala=grabaPos.nnn
+     EndIf
+     If tipoescala_num_ini = 0 Then
+        tipoescala_num_ini =1
+        grabaPos.nnn = CUByte(tipoescala_num_ini) ' 15-01-2022 - tipoescala en uso
+        pmTk(ntk).tipoescala=grabaPos.nnn
+     EndIf
+
 If  ntk >0 Then
      If CheckBox_GetCheck( cbxnum(ntk))= 1 Then ' sonido on/off 16-03-2022
          Print #1,"grabo grabaPos(1,1).dur2=1,, ntk", ntk
@@ -5917,10 +6081,31 @@ EndIf
      grabaLim.nota = CUByte(pmTk(ntk).desde) 
      grabaLim.dur  = CUByte(pmTk(ntk).hasta)
      grabaLim.pb   = CUByte(pmTk(ntk).notaold) 
-     grabaLim.vol  = CUByte(pmTk(ntk).notaescala) ''   CUByte(notaescala_num_ini) ' notadeescala 20-12-2021     
+If notaescala_num_ini >= 1 And pmTk(ntk).notaescala <> CUByte(notaescala_num_ini) Then
+     grabaLim.vol =CUByte(notaescala_num_ini)
+Else
+     grabaLim.vol  = pmTk(ntk).notaescala      
+EndIf
+
+Dim altaux As ubyte
+   Select Case alteracion
+         Case "sos" 
+          altaux = CUByte(3)
+         Case "bem"
+           altaux = CUByte(2)
+   End Select
+
+If altaux > 0 And (altaux <> pmTk(ntk).alteracion) Then
+    grabaLim.pan  = altaux
+EndIf
+If grabaLim.pan =0 Then 
+   grabaLim.pan = pmTk(ntk).alteracion
+EndIf
+If grabaLim.pan =0 Then 
+   grabaLim.pan = CUByte(3)
+EndIf
 
 
-     grabaLim.pan  = pmTk(ntk).alteracion
    ''''  grabaLim.nnn = CUByte(tiempoPatron)
     
      graba3.dur = pmTk(ntk).portout
@@ -5932,16 +6117,27 @@ EndIf
          graba3.sonido=0
      EndIf
    EndIf
-     graba3.ejec =pmTk(ntk).ejec
-     graba3.eco=pmTk(ntk).eco
-     graba3.patch=pmTk(ntk).patch
+     graba3.nnn=pmTk(ntk).canalsalida ' es un track as poli
+     graba3.dur=pmTk(ntk).portout 
+     graba3.eco =pmTk(ntk).eco
      graba3.pan =pmTk(ntk).pan
      graba3.canal =pmTk(ntk).coro
+     graba3.ejec=pmTk(ntk).ejec
+     graba3.patch=pmTk(ntk).patch
+     graba3.nanchofig=CUByte(nanchofig*10)
      graba3.vol = pmTk(ntk).vol
-     Print #1,"grabartrack graba3.vol, ntk ",graba3.vol , ntk
 
-     graba3.pb = TipoCompas ' 26-04-2024
-     graba3.nanchofig = CUByte(nanchofig*10)
+     Print #1,"grabartrack graba3.vol, ntk ",graba3.vol , ntk
+     If ritmo > 0 And ritmo <>pmTk(ntk).tipocompas Then '20-12-2025
+        graba3.pb= ritmo 
+        pmTk(ntk).tipocompas=ritmo
+        TipoCompas=ritmo
+     Else
+        graba3.pb= pmTk(ntk).tipocompas
+        ritmo=pmTk(ntk).tipocompas
+        TipoCompas=ritmo  
+     EndIf
+
        print #1,"MaxPos grabada en Trabajo ",MaxPos
 Dim mit As aUshort
 mit.ST = tiempoPatron
@@ -7677,7 +7873,7 @@ EndIf
      '' grado=0   
  
  If Vaciodur Then
-    ReCalCompas ()
+    ReCalCompas (ritmo)
     Vaciodur=FALSE
  EndIf
  Dim As Integer guardpos

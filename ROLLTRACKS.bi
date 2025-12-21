@@ -142,7 +142,10 @@ Print #1,"////////redimendsiona a 2*maxgrb ",2*maxgrb
 
 End Sub
 
-Sub CargarPistasEjec (lugar As String, ByRef ntkp As Integer)
+Sub CargarPistasEjec (lugar As String, ByRef ntkp As Integer, ByRef version As integer)
+' HAY QUE DESARROLLAR TOCAPARAM2 EL OTRO TIPO DE PARAMETROS MAS AMPLIO
+' DONDE ESTA EL tIPOcOMPAS POR AHORA SOLO MANEJA 4/4 EN EL TAP!!
+' IGUAL NO TIENE ACENTO ES LO MISMO
 ' devuelve ntkp topeejec!!
 ' lugar es el path de  la carpeta seleccionada 
 ' cada vez que cargo borro la info de fechas de pistas anterior
@@ -164,7 +167,7 @@ ROLLCARGADO=FALSE
 Print #1,"LUGAR RECIBIDO, ntkp maximo ";lugar ,ntkp
 TopeEjec=ntkp
 GrabarEjec =HabilitaGrabar: ntoca=0 : arrancaPlay=NO
-Dim As Integer version
+'''Dim As Integer version
 ''''         ntkp=1 '<================= inicia en 1 y va a devolver ntkp!!
 ' ahi estaba el error empieza en 1 no en cero veremos! 
 s5=2 '11-06-2022 control de pantalla
@@ -229,7 +232,7 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
              version=2     
              Get #f, ,tocaparam(nf)  ' EN VER2 HABRA UNA CABEZA Y LUEGO TOCAPARAM Y TOCAPARAM2
           Else
-             Close f
+             Close f 
              Sleep 50
              Open fileMidiIn For Binary Access Read As #f
              Print #1,"cargando archivo ejec version 1"
@@ -618,6 +621,7 @@ Print #1,"EN CARGATRACK PATCH ",pmTk(ntk).patch
 
 Print #1, "2 instru en cargar track ";instru
      TipoCompas = graba3.pb  ' 26-04-2024
+     ritmo=TipoCompas
      TCompas=Mid(tempoString(TipoCompas),1,4) 
  '    print #1,"cargaCancion ",cargacancion
 
@@ -929,7 +933,7 @@ EndIf
 If funcion ="grabartrkcancion" Then
   Print #1, " ntk definitivo grabar trk cancion ";ntk
   Print #1 , "nombre ", titulosTk(ntk)
-EndIf
+EndIf 
    Maxpos=pmTk(ntk).MaxPos
    NB => 0 + (desde-1) * 13   ' 06-03
    NA => 11 + (hasta-1) * 13  ' 
@@ -1015,6 +1019,9 @@ print #1,"MaxPos despues de acchicar",MaxPos
 ' convertir
 '//////////lo que sigue es GrabarTrack repetido ver de no repetir!!! kuku
 print #1,"Termina con achicar secuencia"
+''' EMPIEZA A GRBAR A DISCO TRACK QUE ES IGUAL AL OTRO VAMOS A LLAMARLO Y BORRAR
+'' ESTA REPETICION
+'**********************************************************************
  Dim grabaPos   As poli
  Dim grabaLim   As poli
  Dim graba3     As poli ' 04-02-2022 se agregan 48 bytes para info futura 
@@ -1147,10 +1154,21 @@ End If
      grabaPos.vol  = y3
      grabaPos.pan  = y4
      grabaPos.pb   = y5
+     If pmTk(ntk).tipoescala > 0 And tipoescala_num_ini = 0 Then
+       grabaPos.nnn = pmTk(ntk).tipoescala
+       tipoescala_num_ini=CInt (pmTk(ntk).tipoescala)
+     EndIf
+     If tipoescala_num_ini > 0 And tipoescala_num_ini <> CInt (pmTk(ntk).tipoescala) Then
+       grabaPos.nnn = CUByte(tipoescala_num_ini)
+       pmTk(ntk).tipoescala=grabaPos.nnn
+     EndIf
      If tipoescala_num_ini = 0 Then
         tipoescala_num_ini =1
+        grabaPos.nnn = CUByte(tipoescala_num_ini) ' 15-01-2022 - tipoescala en uso
+        pmTk(ntk).tipoescala=grabaPos.nnn
      EndIf
-     grabaPos.nnn = CUByte(tipoescala_num_ini) ' 15-01-2022 - tipoescala en uso
+
+
    If NombreCancion > "" And ntk > 0 Then
      If CheckBox_GetCheck( cbxnum(ntk))= 1 Then ' sonido on/off 16-03-2022
          graba3.sonido=1
@@ -1165,22 +1183,35 @@ End If
      grabaLim.dur  = CUByte(hasta)
      grabaLim.pb   = CUByte(notaold)
 
-     If notaescala_num_ini =0 Then
-        notaescala_num_ini =1
-     EndIf
-     grabaLim.vol  = CUByte(notaescala_num_ini) ' notadeescala 15-01-2022 
-     Select Case alteracion
-       Case "sos" 
-         grabaLim.pan  = CUByte(3)
-       Case "bem"
-         grabaLim.pan  = CUByte(2)
-       Case Else 
-         grabaLim.pan  = CUByte(3) 
-     End Select
+
+If notaescala_num_ini >= 1 And pmTk(ntk).notaescala <> CUByte(notaescala_num_ini) Then
+     grabaLim.vol =CUByte(notaescala_num_ini)
+Else
+     grabaLim.vol  = pmTk(ntk).notaescala      
+EndIf
+Dim altaux As ubyte
+   Select Case alteracion
+         Case "sos" 
+          altaux = CUByte(3)
+         Case "bem"
+           altaux = CUByte(2)
+   End Select
+
+If altaux > 0 And (altaux <> pmTk(ntk).alteracion) Then
+    grabaLim.pan  = altaux
+EndIf
+If grabaLim.pan =0 Then 
+   grabaLim.pan = pmTk(ntk).alteracion
+EndIf
+If grabaLim.pan =0 Then 
+   grabaLim.pan = CUByte(3)
+EndIf
+
+
 ' grabaLim.nnn no le da el tamaño solo llega a 256
  ''''    grabaLim.nnn = CUByte(tiempoPatron)
 ' cargado un Roll desde archivo canalx toma el valor del canal midi de salida del archivo
-
+'' =>GRABATRACK
      graba3.nnn=pmTk(ntk).canalsalida ' es un track as poli
      graba3.dur=pmTk(ntk).portout 
      graba3.eco =pmTk(ntk).eco
@@ -1191,6 +1222,17 @@ End If
      graba3.nanchofig=CUByte(nanchofig*10)
      graba3.canal=pmTk(ntk).coro
      graba3.vol = pmTk(ntk).vol
+     If ritmo > 0 And ritmo <>pmTk(ntk).tipocompas Then '20-12-2025
+        graba3.pb= ritmo 
+        pmTk(ntk).tipocompas=ritmo
+        TipoCompas=ritmo
+     Else
+        graba3.pb= pmTk(ntk).tipocompas
+        ritmo=pmTk(ntk).tipocompas
+        TipoCompas=ritmo  
+     EndIf
+
+
 Print #1,"graba3.patch ActualizarRollyGrabarPistaTrk ",graba3.patch
 ' en graba4 ponemos tiempoPatron en los mismos campos que en Roll asi
 ' aunque nada que ver es compatible poli tiene mas campos sisusar pero bueno
@@ -1281,7 +1323,7 @@ Dim midsal As  RtMidiOutPtr
 ' los roll o trk entonces existira el archivo inicio.txt
 cargariniciotxt(NombreCancion, CANCION)
 SetGadgetText(TEXT_TOPE, Str(maxpos))
-RecalCompas()
+RecalCompas(ritmo)
 
   '
 Select Case ext
@@ -1356,7 +1398,7 @@ GrabarRollaTrack(0,0)
 
 cargariniciotxt(NombreCancion,CANCION)
 SetGadgetText(TEXT_TOPE, Str(maxpos))
-RecalCompas()       
+RecalCompas(ritmo)       
 
     ' y a disco con su nuevo [xx]  
            
@@ -1652,6 +1694,7 @@ EndIf
 End Sub
 '---------
 Sub RollaTrack (Track() As sec, ntk As Integer,Roll As inst)
+' PROCESO EN MEMORIA !!! no graba a disco mucha info queda en pmTK solo se usa al grabar
 ': se usaba en AutoFracTodoDur y FraccionarDur
 '-------------------
 ' PROCESO EN MEMORIA , desde 15-01 hemos puesto subrutina comun con GrabarRollaTrack
@@ -2411,7 +2454,7 @@ fileflush(-1)
  EndIf  
  
 Next i0
-RecalCompas()
+RecalCompas(ritmo)
  Print #1,"CANCION Tope MAXPOS "; Tope, mayor  
 
 Print #1,"cancion tiempoPatron ";tiempoPatron
@@ -2581,6 +2624,7 @@ kNroCol= Int(jply/NroCol)
 ''// un metodo mejroe seria no barrer nada solo el archivo de eventos en fin 
   For pis =1 To tope ' loop de pistas rtk
     If CheckBox_GetCheck( cbxsolo(pis))= 1 Then
+         sonidoPista(pis)=0
          Continue For ' saltea no tocar pero la toca playall 
     EndIf       
     If CheckBox_GetCheck( cbxnum(pis))= 1 Then
@@ -3750,7 +3794,7 @@ EndIf
 ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
 RollaTrack Track(), ntk,Roll
 
-RecalCompas ()
+RecalCompas (ritmo)
    
 '-----------------------------------------   
  '     moverRoll 
@@ -3839,7 +3883,7 @@ EndIf
 ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
 RollaTrack Track(), ntk,Roll
 
-RecalCompas ()
+RecalCompas (ritmo)
 
 EndIf
  
@@ -4097,7 +4141,7 @@ cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
 ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
 RollaTrack Track(), ntk,Roll
 cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
-ReCalCompas ()
+ReCalCompas (ritmo)
 
 EndIf
 

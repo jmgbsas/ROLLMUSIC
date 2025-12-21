@@ -625,9 +625,12 @@ EndIf
 If GrabarPenta =0 Then
  If ( Penta_y <= mousey) And ((Penta_y + 12 * inc_Penta) >= mousey)  Then
   ' estoy en una octava
-  If MouseButtons And 1 Or MouseButtons And 2 Then
+''  If MouseButtons And 1 Or MouseButtons And 2 Then
+ ' If  MouseButtons And 2 Then
+   If mousex > ANCHO3div4 Then 
      estoyEnOctava = *po  '<========== DETERMINACION DE OCTAVA DE TRABAJO
-  EndIf
+  EndIf '' KIKIKI
+   
   EnOctava=1
   ' CURSOR
   If COMEDIT=SOLO_MODIFICACION or COMEDIT=MODIFICACION_INSERCION  Or play=SI Or playb=SI   Then ' ctrl-m y ctrl-n ch
@@ -1014,7 +1017,7 @@ EndIf
       TrackaRoll (Track(),0,Roll,"ubirtk>0") ' ntk=0
 'Print #1," desde 892 ";desde
   '    print #1,"TrackaRollcarga rtk veo nombre ", titulosTk(0)
-      RecalCompas ()
+      RecalCompas (ritmo)
       TRACKCARGADO=TRUE
       NADACARGADO=FALSE
       ubirtk=2
@@ -1045,7 +1048,7 @@ If instancia = ARG7_NOMBRECANCION  Then ' 04-03-2024 LOGRE LEVANTAR CANCION EN U
     cargariniciotxt(NombreCancion, CANCION)
     instancia=ARG107_FICTICIO  ' ficticio para que entre al if de TAB pero  que no entre en el resto ni aca
     param.encancion=CON_CANCION
-    RecalCompas()
+    RecalCompas(ritmo)
     clickpista=SI 'abre tab una sola vez seposiciona en psita 1  
  EndIf
 EndIf
@@ -1280,7 +1283,7 @@ If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) 
   '' da error igual aca no hace falta ->RecalCompas()
 'Print #1,"14-sleep ";Timer
 '    Print #1,"TAB 7- instancia, maspos ",instancia, maxpos
-RecalCompas()
+RecalCompas(ritmo)
    EndIf
 EndIf
 
@@ -1442,7 +1445,7 @@ If MultiKey (SC_P) Then
   Exit Do
 EndIf
 
-If  MultiKey (SC_N) Then  
+If  MultiKey (SC_N) Then  ' ver parametros arriba en el grafico
 
    If COMEDIT<>LECTURA  Then
     If parametros=1 Then
@@ -2321,7 +2324,7 @@ If MultiKey(SC_SPACE) And trabaspace=0   Then 'barra espacio
        '      Sleep 100
              grabariniciotxt(NombreCancion, CANCION)
              FileFlush (-1)
-             RecalCompas() ''??? todavia no sabe cual es al mayodeberiramover todo aca
+             RecalCompas(ritmo) ''??? todavia no sabe cual es al mayodeberiramover todo aca
              thread1 = ThreadCall  PlayCancion(Track())
 
              CPlay=SI 
@@ -2491,14 +2494,14 @@ deltaip=0:incWheel=0:lockip=0:playloop=0:s6=0:s1=0:indicePosOld=0 :indicePosUlti
       copiar=0
       vdur=0:vnota=0
  
- EndIf
+EndIf
 ' ----------------------INGRESO NOTAS-------------------------
 
 ' MAYUSCULAS PARA SOSTENIDOS
 ' Ahora en nota se guarda el semitono 1 a 12...,  DUR guarda la duracion
 If COMEDIT<>LECTURA Then ' ingreso de notas   
 
-If MultiKey(SC_CONTROL) And MultiKey(SC_A)  Then ' A#
+If MultiKey(SC_CONTROL) And MultiKey(SC_A)  Then ' A# Bb
  nota= 2
  If espacio > 0 Then
   espacio=2
@@ -2847,6 +2850,11 @@ If COMEDIT<>LECTURA Then  'TERMINA EN 2628
      nota=0
      Exit Do
   EndIf
+  If MultiKey(SC_ALT) And MultiKey(SC_END) Then ' fin seq en edit sin cursor
+     DUR=183 ' PONE UN FIN DE NOTA '>'
+     nota=0 
+     Exit Do
+  EndIf
 
   If MultiKey(SC_ALT) And MultiKey(SC_0) Then ''BORRA AISLADOS CON EXCEPCION
      borrar=2 ' EN CTRL-M BORRA NOTA COMPLETA SI ME POSO EN ON, EN OFF LO BORRA SIN BORAR EL ON
@@ -2919,7 +2927,8 @@ EndIf
 '
 If MultiKey(SC_R) Then ' recalculo de barras compas a veces no anda ¿? 
  '''ReDim compas(1 To MaxPos)
- RecalCompas() ' jmg 01-04-21 
+If RITMO=0 Then RITMO=4 EndIf
+ RecalCompas(ritmo) ' jmg 01-04-21 
 Exit Do
 EndIf
 
@@ -3243,18 +3252,9 @@ curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N 
    
    'cargo TRACK
    ' despues de la duracion Track(ntk).trk(posn+1,1).dur= 182
+''Print #1,"posnOff+6,(12-notaOld  +(estoyEnOctavaOld  ",posnOff,notaOld,estoyEnOctavaOld
 
-  '''' If notaOld > 0 And notaOld <> nota   Then
-   If notaOld > 0 And nota > 0    Then
-  ' ACA  BORRA  EL 182 SI AUN LA NOTA ACTUAL ENTRADA ES IGUAL A LA ANTERIOR PERO NO FUNCA  
-
-    Roll.trk(posnOff+6,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).dur = 0 '''' deberia ser 181 blanco como mierda uso esto?
-    Roll.trk(posnOff+6,(12-notaOld  +(estoyEnOctava    -1) * 13)).dur = 0 
-    Roll.trk(posnOff+6,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota = 181
-    Roll.trk(posnOff+6,(12-notaOld  +(estoyEnOctava    -1) * 13)).nota = 181
- 
-    '''ojo probar todo inserciones x  etc    endif
-   EndIf
+Sleep 50 
    ' cargamos Roll entonces Duracion no lo mostrara como "./."
    ' solo conrolara la posicion, quedndo solo ese simbolo paralaa entrada
    ' especifica del usuario....
@@ -3379,7 +3379,7 @@ If cuart=0 And pun = 0 And doblepun=0 And tres=1 And silen=1 And mas=0 Then
    incr=45
 EndIf
 
-' -- fin 2do bloque  
+' -- fin 2do bloque  NOTAS+ LIGADAS mas=1 no deben seguir con || final secuencia
  
 If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=0 And mas=1 Then 
     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 90
@@ -3501,10 +3501,10 @@ Dim As Integer DURAUX=Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
        If (posn > NroCol + InicioDeLectura) Then
         InicioDeLectura=InicioDeLectura + NroCol
        EndIf
-
+     If mas=0 Then '19-12-2025  
        Roll.trk(posnOff+6,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
        Track(ntk).trk(posnOff+6,1).dur= 182
-
+     EndIf
        MaxPos=posnoff +6 ' la figura tiene 5 posiciones si pongo 1 o 2  se pisa
        pmTk(ntk).posn=posn
        pmTk(ntk).MaxPos=MaxPos
@@ -3530,10 +3530,10 @@ Dim As Integer DURAUX=Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
        Track(ntk).trk(posnOff,1).nota = PianoNota
        Track(ntk).trk(posnOff,1).dur = 183
        Track(ntk).trk(posnOff,1).onoff = 1
-
+      If mas=0 Then ' 19-12-2025
        Roll.trk(posnOff+6,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
        Track(ntk).trk(posnOff+6,1).dur= 182
-
+      EndIf
        posn=posnOff+1  ' por omision se va al fina de la duracion el usuario puede retroceder
     ''   If (posn > NroCol + InicioDeLectura) Then
     ''    InicioDeLectura=InicioDeLectura + NroCol
@@ -3581,8 +3581,10 @@ Dim As Integer DURAUX=Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
        pmTk(ntk).posn=posn
        pmTk(ntk).MaxPos=MaxPos
        notaOld = nota
+      If mas=0 Then '19-12-2025
        Roll.trk(posnOff+6,(12-nota +(estoyEnOctava -1) * 13)).dur = 182 'FIN DE SECUENCIA +6 POSICIONES
        Track(ntk).trk(posnOff+6,1).dur= 182
+      EndIf
       ' continua en otra nota n+ o termina en otra nota sin ligar,,
        
     Else
@@ -3608,20 +3610,23 @@ Dim As Integer DURAUX=Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
        MaxPos=posnOff +6 
        pmTk(ntk).posn=posn
        pmTk(ntk).MaxPos=MaxPos
+      If mas=0 Then '19-12-2025
        Roll.trk(posnOff+6,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
        Track(ntk).trk(posnOff+6,1).dur= 182
+      EndIf 
       ' la sihiiente terminaa o seguira la nota,,,
        posnOffOld=posnoff
        notaOld = nota
     EndIf
      nroPartesNota=DurXTick(DURAUX)
   EndIf
-  
+  ''19-12-2025 fix no borraba fin secuencia o borraba fin de nota , ok 
   If nroPartesNota > 0 Then 'limpia entre el nacimiento y el muere de la duracion de la nota..eje kk 
      For kk As Integer = posnarranca+1 To posnarranca + nroPartesNota -1
-       If notaOld > 0 And notaOld <> nota   Then
+       If notaOld > 0  And Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).dur=182 Then ''viejo -> And notaOld <> nota   19-12-2025 test ok
         Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).dur = 0 
         Roll.trk(kk,(12-notaOld  +(estoyEnOctava    -1) * 13)).dur = 0 
+
 '   Print #1,"A) Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota ";Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota 
 '   Print #1,"A) Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota ";Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota 
         Roll.trk(kk,(12-notaOld  +(estoyEnOctavaOld -1) * 13)).nota = 181
@@ -3723,7 +3728,7 @@ EndIf
   ' ocalculo elindice en cada t y meto la nota o saco en t las otas
   ' del vector Roll pra ello acaa la grabo enRoll
  EndIf ''comentar el endif para teclado
-    RecalCompas() ' 07-12-2025 
+    RecalCompas(ritmo) ' 07-12-2025 
 ROLLCARGADO=TRUE ' 07-12-2025   no da play
 NADACARGADO=FALSE ' 07-12-2025   no da play
 nVerCifradoAcordes=3 ' 07-12-2025  no da play
@@ -4121,7 +4126,7 @@ EndIf
    EndIf
 '------------------------------------------------------------------
    If e.scancode = SC_END Then ' mueve insercion, podria usarse para ELIMINAR Probar
-    If backspace=1 Then ' BORRA HASTA EL FINAL
+    If backspace=1 Then 
       Dim As Integer i, y
       For y=posishow To MaxPos
         For i=NB To NA 
@@ -4138,7 +4143,7 @@ EndIf
       posn=posishow
       Roll.trk(MaxPos,nR).dur=182 '  jmg 
       Roll.trk(MaxPos,nR).nota=0
-      ReCalCompas()
+      ReCalCompas(ritmo)
       backspace=0
       DUR=0
       nota=0
@@ -4159,7 +4164,7 @@ EndIf
      ' ,insert comando habilitado = 1
      '  insert 3 fin reemplazos comienzo de move total
      insert=0:indaux=0
-     RecalCompas() '''''calcCompas(posn) '' mayorDurEnUnaPosicion (posn)
+     RecalCompas(ritmo) '''''calcCompas(posn) '' mayorDurEnUnaPosicion (posn)
     EndIf
    EndIf
 '-------------------------------------------------------------------------------------
@@ -4207,7 +4212,7 @@ If e.scancode = SC_RIGHT Then
       If DUR > 0 And DUR <= 180 Then 
          deltax=  DurXTick(DUR) ' 1 a 9 solamente
       Else
-         deltax = 1 'si dur=0 => delta = 1 se mueve de a un tick!
+         deltax = 1 'si dur=0 o 181 => delta = 1 se mueve de a un tick!
       EndIf
 
      If COMEDIT=LECTURA Then
@@ -6347,7 +6352,7 @@ If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion si
           modifmouse=0
           SeleccionarNuevaNota=TRUE
     ' acomoda los compases  <======= organiza Compases
-          RecalCompas() ' organizaCompases() repueto 07-12-2025
+          RecalCompas(ritmo) ' organizaCompases() repueto 07-12-2025
     ' fin compases
        EndIf
        If modifmouse=4 Then ' modificar
@@ -6588,15 +6593,18 @@ EndIf ' FIN <========COMEDIT<>LECTURA
 ' es para ingresar notas manualmente y ctrl-m , y tal  vez columna futuro
 ' NO SERA IGUAL EL COLOR DE EDIT PARA INGRESO MANUAL AL FINAL QUE MODIFICACION
 ' CON CTRL-M Y CON CTRL-N
-If GrabarPenta=0 Then
-''' If  mousex > ANCHO3div4 And COMEDIT<>LECTURA  Then ' 09-06-2021 para que nochoque con boton EDIT
+'If GrabarPenta=0 Then ' volvemos a cambiar  de octqava pulsando elfinal para evitarerrores de cambio deoctava
+ANCHO3div4=ANCHO*3/4 'KIKIKI NUEVA LINEA 
+estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 ' NUEVA LINEA
+   If  mousex > ANCHO3div4 And COMEDIT<>LECTURA  Then ' 09-06-2021 para que nochoque con boton EDIT
 ' ************************************************************
 ' Ubicar el cursor y elegir una octava  ambas cosas 22-05-2025
 ' ************************************************************
- If  MouseButtons  And 1 And COMEDIT<>LECTURA  Then ' 09-06-2021 para que nochoque con boton EDIT
-       octavaEdicion=estoyEnOctava
- EndIf
-EndIf
+     If  MouseButtons And 1 And COMEDIT<>LECTURA  Then ' 09-06-2021 para que nochoque con boton EDIT
+         octavaEdicion=estoyEnOctava
+     EndIf
+   EndIf
+'EndIf
 
 
 ' A PARTIR DE ACA FUNCIONA PARA AMBAS CONDICIONES? PERO LO ESTOY USANDO EN FALSE
@@ -6789,7 +6797,7 @@ print #1,"-----------------err ROLLLOOP-----------------"
   errmsg = "ROOLLLOOP FAIL Error " & Err & _
            " in function " & *Erfn & _
            " on line " & Erl & " " & ProgError(er1)
-  Print #1, errmsg
+  Print #1, errmsg & " " & posishow & " " & MaxPos & " " & NB &" " & NA
   FileFlush (-1)
   Close
   End Err

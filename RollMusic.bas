@@ -32,7 +32,8 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.35094 fix issue, y borrar desde Posision pasozona1 hasta el final de una secuancia "
+nroversion="0.35095 mas ritmos , RecalCompas, fin secuencia || nota >, etc "
+' UNA NOTA+ NO DEBE TENER || AL FINAL PORQUE SIGUE...|| en notas+ ligadas fix
 ' se fixeo por rtk, pero queria acelerar el TAB sacando Recalcompas y se complico vuelta atras 
 '35904 Compas(jply,ntk) da error en tab quiero copiar el compas del track x en track 0
 ' y roll 0 principalmete y da error
@@ -277,7 +278,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
      ROLLCARGADO=False
      '''lo hace tab-cargaCancion=0
      param.encancion=CON_CANCION
-     RecalCompas()
+     RecalCompas(ritmo)
    If pid1=0 And instancia =ARG0_EN_LINEA  Then
       pid1=pd1
    EndIf

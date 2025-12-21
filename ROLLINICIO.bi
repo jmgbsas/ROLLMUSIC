@@ -679,6 +679,7 @@ posicion = 1 ' comienzo del roll
 espacio = 0
 backspace = 0
 fijarEspacio=0
+ritmo = 4 '4/4  18-12-2025
 
 '--FFT FREE FONT-
 Var Shared ft => FreeType()
