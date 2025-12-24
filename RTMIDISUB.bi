@@ -1384,7 +1384,7 @@ temp=""
 
 End Sub
 ' SUBRUTINAS PARA TRASPONER ADICIONALES PARA TICKS
-Sub BuscoFinalNota   (Roll As inst, hastat As Integer, jpt As Integer, i1 As Integer, ByRef jpt3 As Integer, cant As Integer, dura As integer)
+Sub BuscoFinalNota   (Roll As inst, hastat As Integer, jpt As Integer, i1 As Integer, ByRef jpt3 As Integer, cant As Integer, dura As Integer, funcion As string)
 Print #1,"-------------------------------------------------------"
 
 Dim As Integer kx
@@ -1395,7 +1395,7 @@ Print #1,"Entra Busco OFF del ON recibido,, hastat ,jpt,  i1 ",hastat, jpt, i1
 
 Dim  As Integer durv, limite
  If dura > 0 Then
-   durv=DurXTick(dura) ' FIX 0.337
+   durv=DurXTick(dura) ' FIX 0.337 
    limite=jpt+ durv +1 ' FIX 0.337
  Else
    limite=MaxPos ' FIX 0.4337
@@ -1408,14 +1408,10 @@ Dim  As Integer durv, limite
   If  Roll.trk (kx,i1).onoff = 1 Then '''And Roll.trk (kx,i1).dur > 0 Then
     '  Print #1,"//encontro un OFF// jpt3 i1  ";kx,i1  
       jpt3=kx
-    If jpt3 <= hastat Then
-       jpt3=1 
-     ' Print #1,"Encontro OFF  dentro del rango jpt3 i1 ",jpt3,i1
-    Else
-     '  Print #1,"Encontro OFF fuera del rango jpt3 i1 ",jpt3,i1
-       Exit For 
+    If jpt3 <= hastat And funcion <> "mover" Then
+       jpt3=1 'esta en el rango 
     EndIf
-
+    Exit For    '23-12-2025
   EndIf
  Next kx 
 
@@ -1535,10 +1531,10 @@ Print #1,"-------------------------------------------------------"
          Print #1,"ENTRO A UN OFF2 ON BUSCO SU OFF1 FUERA DE ZONA A DERECHA"   
          jpt3=1 
          dura=Roll.trk(jpt,i1).dur
-         BuscoFinalNota    Roll, pasozona2, jpt , i1 ,  jpt3 , 0,dura
+         BuscoFinalNota    Roll, pasozona2, jpt , i1 ,  jpt3 , 0,dura,""
 
          If jpt3 > 1  Then 
-          'borro el off1
+          'borro el off1 fuera de la zona
            Roll.trk(jpt3,i1).nota = 181
            Roll.trk(jpt3,i1).dur  = 0
            Roll.trk(jpt3,i1).vol  = 0
@@ -1666,7 +1662,7 @@ For jpt = desdet To hastat  ' eje x posiciones horizontal
 ' para mover  un off 2 q esta en rango y su off 1 aunque este fuera de rango
              If  Roll.trk(jpt,i1).onoff = 2  Then
                  moverDatosenY (Roll, jpt,i1,cant)
-                 BuscoFinalNota(Roll, hastat, jpt, i1 , jpt3,cant,0 )
+                 BuscoFinalNota(Roll, hastat, jpt, i1 , jpt3,cant,0 ,"")
                If jpt3 > 0 And jpt3 > hastat Then ' muevo el off fuera de intevalo
 '                  Print #1,"Hay jpt3 > 0 EL ON  TIENE SU OFF fuera DEL INTERVALO SE MUEVE EL OFF dur, nota ";Roll.trk(jpt3,i1).dur; Roll.trk(jpt3,i1).nota
                   moverDatosenY (Roll, jpt3,i1,cant)
@@ -1786,7 +1782,7 @@ Print #1,"trasponerGrupo Y2 "; Y2
 For Xj = X1 To X2  
   For i1= Y1 To Y2 Step inc
      If cant > 0 Then  ' UP  
-        ind = i1 + cant 
+        ind = i1 + cant  ' ind es a donde muevo
         ind = ind + sumar(ind)
      EndIf
 
@@ -1810,7 +1806,7 @@ For Xj = X1 To X2
                Roll.trk(Xj,ind).inst =  Roll.trk(Xj,i1).inst
                Roll.trk(Xj,ind).onoff = Roll.trk(Xj,i1).onoff
 ' ----MOVER EL OFF1 EN BASE AL  OFF2 Y SU DURACION, mueve para la ultima nota corregir!!!
-               BuscoFinalNota(Roll, X2, Xj, i1 , jpt3,cant ,0 )
+               BuscoFinalNota(Roll, X2, Xj, i1 , jpt3,cant ,0, "mover" )
                If jpt3 > 0 Then ''And jpt3 > X2 Then ' muevo el off fuera de intevalo
  '                 Print #1,"Hay jpt3 > 0 EL ON  TIENE SU OFF fuera DEL INTERVALO SE MUEVE EL OFF dur, nota ";Roll.trk(jpt3,i1).dur; Roll.trk(jpt3,i1).nota
                   moverDatosenY (Roll, jpt3,i1,cant)
@@ -1871,7 +1867,7 @@ EndIf
 ''trasponer=0   
 End Sub
 
-  Sub moverZonaRoll(posinueva As Integer, Roll As inst,posivieja As Integer, ByRef D1 As Integer )
+Sub moverZonaRoll(posinueva As Integer, Roll As inst,posivieja As Integer, ByRef D1 As Integer )
 Print #1, " ENTRA MOVERZONAROLL 0.337 24-09-2025-00-19"
 '' DESARROLLO EN BRUTO.. HABRA QUE COMPACTAR HACIENDO MAS SUBRUTINES COMUNES A LOS 
 ' DOS CASOS ANTES O DESPUES DE MAXPOS SON SIMILARES PERO NO IGUALES
@@ -1990,7 +1986,7 @@ Print #1,"-------------------------------------------------------"
         ' NP=i1 - restar (i1) 
         ' Print #1," i1 NP ", i1, NP
          dura=Roll.trk(jpt,i1).dur
-         BuscoFinalNota    Roll, hastat, jpt , i1 ,  jpt3 , 0,dura
+         BuscoFinalNota    Roll, hastat, jpt , i1 ,  jpt3 , 0,dura,""
          Print #1,"final Nota jpt3, i1 ",jpt3, i1
 
          If jpt3 > 1 And jpt3 >= hastat Then 'atrapa el 1ero solamente
@@ -2278,7 +2274,7 @@ inc=posinueva + cant
 Print #1,"-------------------------------------------------------"
          Print #1,"ENTRO A UN OFF2 ON BUSCO SU OFF1 FUERA DE ZONA A DERECHA"   
          jpt3=1 
-         BuscoFinalNota    Roll, pasozona2, jpt , i1 ,  jpt3 , 0,0
+         BuscoFinalNota    Roll, pasozona2, jpt , i1 ,  jpt3 , 0,0,""
    '      Print #1,"final Nota jpt3, i1 ",jpt3, i1
 
          If jpt3 > 1 And jpt3 >= pasozona2 Then 'atrapa el 1ero solamente

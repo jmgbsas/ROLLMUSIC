@@ -1,8 +1,9 @@
-    Ayuda Prelimiar Básica RollMusic   version 0.35096
+    Ayuda Prelimiar Básica RollMusic   version 0.35097
     ====================================================================================
+     trasponer grupo de notas individuales o en rango mejor.
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
-      Y FUNCIONAN BIEN PARA TICKS . version 0.35096, falta mucho testeo-.. )
-
+       Y FUNCIONAN BIEN PARA TICKS . version 0.35096, falta mucho testeo-.. )
+      
      INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
        RollMusic.exe y todas los archivos *.dll. 
