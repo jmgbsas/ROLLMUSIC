@@ -125,6 +125,10 @@ Sub RecalCompas(rit As integer) ' Nuevo para ticks
  On Local Error GoTo errorCalc 
 ' velocidades para 4/4 reposicion par ticks
 ' lso tiempos de una comaps son 96, 192, 288, 384
+  TipoCompas=rit
+  TCompas=CRaTC(rit)
+
+
 clickpista=0
  Dim As Integer i,j,k,negra=96,corchea=48, multi,kj,kp, cntcompas,cntnegra,com, compas4cuartos= 4*negra,MAXI
  Dim As Integer compas3cuartos= 3*negra, compas2cuartos=2*negra,compas6octavos=3*corchea
@@ -933,7 +937,7 @@ Function BuscarNota (ctrl As Integer, ByRef cur1 As Integer,ncur As Integer) As 
 ' decidiremos cuanotos ticks de acercamiento en un principio 10
 ' posn1=n+curpos  es x , notacur es y, barreemos un cuadrado ¡ 1 1 semitono y + - 10 curpos
 ' BUSCA OFF 1 O 2 y 190
-Print #1,"ENTRA A BISCANOTA CUR1 "; cur1; " ncur "; ncur
+Print #1,"ENTRA A BUSCONOTA CUR1 "; cur1; " ncur "; ncur
 If ctrl= 0 Then ' ctrl es cambiadur solo procesa con 1 para evitar otras modificaciones se ajusta en cursor()
   Exit Function
 EndIf
@@ -2288,7 +2292,7 @@ TrackaRoll (Track(),ntk,Roll,"cargarMidiPlano")
 cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
 Parar_De_Dibujar=NO
 Sleep 5
-ReCalCompas (ritmo)
+ReCalCompas (ritmo) 
           '  print #1,"despues RecalCompas veo nombre ",nombre
             MenuNew=MENU_INICIAL
             cierroedit= 0
@@ -3377,7 +3381,7 @@ curpos =>1
    gap2= (914 * gap1) /1000 ' 74 default
    gap3= (519 * gap1) /1000 ' 42 default
 
-  RecalCompas(ritmo)  
+  RecalCompas(ritmo)   
 '--------------------------------
 ' correccion LLAMAMOS ROLL A TRACK PARA NTK = 0, 14 -04-2024
 ' pero no era necesario, total al grabar nunca grabo el track
@@ -3589,7 +3593,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
  cairo_set_source_rgba(c, 1, 1, 1, 1) ' blanco letras
 
  cairo_select_font_face (c, "Georgia", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD)
- cairo_set_font_size (c, fonti)
+ cairo_set_font_size (c, 18)
 
  '---encendido de edit
  Var t = ""
@@ -3618,9 +3622,9 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
  
  
  
- If menuNew <> menuNro Then
+ 
   menuNro=menuNew
- EndIf
+ 
  ' aca hay un comportamiento raro. por mas q menunro lo ajuste a 3
  ' para el caso 0, siempre queda en 0 , debï¿½ usar menunew una seguna variable
  ' y asi funciona ..(en ningun lado se ajusta a cero salvo al inicio fuera del
@@ -3644,18 +3648,20 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    
    muestra=Str(PianoNota) + " "+ muestra   + "ANCHO "+ Str(ANCHO)+ " Mx:" + Str(mousex) + " My:" + Str(mousey) +   " NroCol "+Str(NroCol) 
 'xxxx Str (BordeSupRoll)
-
-' //////////////////////////////////////////////////////////////////
-  If mousex > ANCHO/2 And mousey < 50 And mousex < ANCHO-50 Then
-      MenuNew=MENU_INICIAL
+   cairo_move_to (c0,ANCHO*3/4,0)
+   cairo_line_to (c0,ANCHO*3/4,50)
+' ////////////VUELTA en cada nivel A MENU_INICIAL ESTA ANTES Y DESPUES DEL SELECT PARA QUE SEA FLUIDO////////////
+  If  mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
+      MenuNew=MENU_INICIAL   '''MultiKey(sc_control) And
       cierroedit= 0
   EndIf
- 
+ cairo_set_font_size (c, 18)
  Select Case menuNro
 ' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-  Case MENU_INICIAL '0
+  Case MENU_INICIAL '1 
   ' 0.1 ==> [Archivo]
-   If mousex > 46 And mousex< 111 And mousey < 50   Then
+      MenuNro=MENU_INICIAL
+   If  mousex > 46 And mousex< 111 And mousey < 50   Then
     cairo_set_source_rgba c, 0, 1, 0, 1 ' verde
      ''font=18 ' el menu esta diseï¿½ado para este tamaï¿½o 
     If MouseButtons And 1 Then
@@ -3684,7 +3690,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 
 ' 0.3 ===> [Ver] pondremos aca ver una posicion dada de la secuecnia
 ' entrando el numero.
-   If MultiKey(sc_Control) And (mousex > 232 And mousex< 258 And mousey < 50) Then
+   If  (mousex > 232 And mousex< 258 And mousey < 50) Then
      cairo_set_source_rgba c, 0, 1, 0, 1
       If MouseButtons And 1 Then
          menuOldStr="[Ver]"
@@ -3706,11 +3712,11 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    t=  " [Pista]":cairo_show_text(c, t)
    ' ------------------------------------------
 ' 0.5 ===> [Reproducir]
-   If MultiKey(sc_Control) And (mousex > 355 And mousex< 451 And mousey < 50 And play=NO And playb=NO And Cplay=NO   ) Then
+   If  (mousex > 355 And mousex< 451 And mousey < 50 And play=NO And playb=NO And Cplay=NO   ) Then
     cairo_set_source_rgba c, 0, 1, 0, 1
-     While InKey<>"" :Wend
+     If MouseButtons And 1 Then
    '   print #1,"--->entra a reproducir thread1 "
-        menuNew =MENU_INICIAL
+        menuNro =MENU_INICIAL
         cierroedit= 0
         ' Print #1,"hizo click para llamar a playall, maxpos ",maxpos 
 ' 28-07-2021 probamos Mutex con ThreadCall , anduvo bien lo dejo veremos        
@@ -3727,7 +3733,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
         EndIf 
    '     print #1,"--->paso llamada a thread1 "
     ''    menuNew = 4 por hora sin elecciones
-
+     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
@@ -3741,21 +3747,23 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    t=  " [Reproducir]":cairo_show_text(c, t)
    ' --------------------------
  '0.7  ===> [Opciones]  '25-07-2021
-   If  MultiKey(SC_ALT) And mousex > 483 And mousex< 561 And mousey < 50  Then  'OPCIONES
-    cairo_set_source_rgba c, 0, 1, 0, 1
+   If  mousex > 483 And mousex< 561 And mousey < 50  Then  'OPCIONES
+        cairo_set_source_rgba c, 0, 1, 0, 1
         Sleep 20
+      If MouseButtons And 1 Then
         menuNew=OPCIONES_MENU '5
-        
+      EndIf  
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [Opciones]":cairo_show_text(c, t)
 
 ' 0.8 ===> [Ayuda]
-   If  mousex > 590 And mousex< 638 And mousey < 50  Then
+   If  mousex > 590 And mousex< 630 And mousey < 50  Then
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
       Shell ("start notepad " + pathinicio + "\ayuda.txt")
+      Menunew=MENU_INICIAL 
     End If
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -3764,8 +3772,8 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    t=  " [Ayuda] "+ muestra :cairo_show_text(c, t)
    cairo_stroke(c)
 
-  '' VUELVE menu grafico Rollmusic cinta AL INICIO....
-  If mousex > ANCHO/2 And mousey < 50 And mousex < ANCHO-50 Then
+  '' VUELVE menu grafico Rollmusic cinta AL INICIO....SE REPITE 
+  If mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
       MenuNew=MENU_INICIAL
       cierroedit= 0
   EndIf
@@ -3773,7 +3781,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
 
 
 ' *********************************************************************************
-  Case 1
+  Case 111111
   '1.1 ELIMINADO SU USO 
    
    t=  "      <MENU=(<=|=>)>/<VENTANA=(MOVER=DRAGAR CINTA)(POSICON NORMAL,SUBE/BAJA BORDE INFERIOR=F7-F8)> "
@@ -3838,7 +3846,7 @@ EndIf
   ' ============================================================= 
   ' BORRAR HACIA Derecha y Ajustar MaxPos a la posicion actual en Edit Lectura
   '======================================================
-  'el ctrl+click es sobre -> [Edicion] 
+  'el ctrl+click MARCA PASOZONA1 Y LUEGO CLICK sobre -> [Edicion] 
   If mousex > 91 And mousex < 174  And mousey < 50 Then ' <= MaxPos ajuste a la posicion dada
     cairo_set_source_rgba c, 0, 1, 0, 1
       If MultiKey(SC_CONTROL ) And MultiKey(SC_ALT ) Or pasozona1 > 0 Then
@@ -3891,7 +3899,7 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
     cairo_set_source_rgba c, 1, 1, 1, 1    
   EndIf  
    '' VUELVE menu grafico Rollmusic cinta AL INICIO....
-  If mousex > ANCHO/2 And mousey < 50 And mousex < ANCHO-50 Then
+  If  mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
       MenuNew=MENU_INICIAL
       cierroedit= 0
   EndIf
@@ -3899,20 +3907,18 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
 '*******************************************************************
   Case COMANDOS_ARCHIVO '3  ==========================> caso 3
    '   t = " [NUEVO] [ABRIR] [GRABAR] [GRABAR COMO] [EXPORTAR] [CERRAR] [SALIR] "
-
+    MenuNro=COMANDOS_ARCHIVO
    '===> 3.1 [NUEVO]
-   If mousex > 42 And mousex < 110  And mousey < 50  Then ' <= NUEVO
-    cairo_set_source_rgba c, 0, 1, 0, 1
-    
-        If MultiKey(SC_ALT) And MouseButtons=1 Then
-         'If dobleclick Then
-            Nuevo(Roll,1)
-            Sleep 50
-            MenuNew=MENU_INICIAL
-            cierroedit= 0
-         'EndIf
-         
-      EndIf 
+   If  MultiKey(SC_ALT) And mousex > 42 And mousex < 110  And mousey < 50  Then ' <= NUEVO
+       cairo_set_source_rgba c, 1, 0.5, 0, 1
+       If MouseButtons And 1    Then
+         cairo_set_source_rgba c,1,0,0,1
+         Nuevo(Roll,1)
+         cairo_set_source_rgba c, 0, 1, 0, 1
+         Sleep 50
+         MenuNew=COMANDOS_ARCHIVO
+         cierroedit= 0
+        EndIf 
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
@@ -3934,7 +3940,7 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
        s5=0 '11-06-2022
        cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
     '   print #1,"nombre cargado en Roll ",nombre
-       MenuNew=MENU_INICIAL
+       MenuNew=COMANDOS_ARCHIVO
        cierroedit= 0
        carga=1  ' <======= control de Carga
        ROLLCARGADO=TRUE ' aunque este en cancion puedo cargar un roll
@@ -3955,6 +3961,7 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
      Else
       ntk=0  
      EndIf 
+      MenuNew=COMANDOS_ARCHIVO
       cairo_set_source_rgba c, 0, 1, 0, 1
       If (MouseButtons And 1 And carga=0) Then
          If play=SI Or playb=SI Then
@@ -3974,7 +3981,7 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
           '  print #1,"TrackaRollcarga rtk veo nombre ",nombre 
             RecalCompas (ritmo)
           '  print #1,"despues RecalCompas veo nombre ",nombre
-            MenuNew=MENU_INICIAL
+           MenuNew=COMANDOS_ARCHIVO
             cierroedit= 0
             carga=1 ' <======= control de Carga 
             TRACKCARGADO=TRUE
@@ -4017,7 +4024,8 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
    
   '===> 3.3[GRABAR] 
 ' graba el roll a roll y el track a track..
-   If (MultiKey(sc_Control) And mousex > 450 And mousex < 530  And mousey < 50) And carga=0 Then ' <=
+   MenuNro=COMANDOS_ARCHIVO
+   If  (mousex > 450 And mousex < 530  And mousey < 50) And carga=0 Then ' <=
     cairo_set_source_rgba c, 1, 0.5, 0, 1
      If MouseButtons And 1    Then
       cairo_set_source_rgba c,1,0,0,1
@@ -4054,13 +4062,13 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
            Sleep 500,1           
        Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
            ''''GrabarRoll ()
-           LLAMA_GRABAR_ROLL()
+           LLAMA_GRABAR_ROLL()' intenta varias veces hasta el exito onro 5
         cairo_set_source_rgba c, 0, 1, 0, 1 
            Sleep 500,1 
        EndIf
          carga=1
          lockip=2 ' habilita mouse 28-08-2021
-        MenuNew=COMANDOS_ARCHIVO  '  sera aca ? jjjj decia menunew=0
+        MenuNew=COMANDOS_ARCHIVO  
        
     EndIf
    Else
@@ -4072,7 +4080,7 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
 '-----------------------------
   '===> 3.3.1 [ROLL=>RTK] SC_F11 COPIA 
  ' CONVIERTE DESDE UN ROLL CARGADO O DE DISCO DEBE ESTAR NOMBRE <> "" 
-   If MultiKey(sc_Control) And mousex > 570 And mousex < 700  And mousey < 50  And carga=0 Then ' <=
+   If  mousex > 570 And mousex < 700  And mousey < 50  And carga=0 Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
     Print #1,"ENTRO A ROLL A TRACK"
      If MouseButtons And 1 Then
@@ -4105,7 +4113,7 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
         If esroll > 0 Or esejec >0 Then ' con o sin cancion
            GrabarRollaTrack(1,0) ' el 0 no lo toma es indiferente
         EndIf
-        MenuNew=MENU_INICIAL  ' por formato de TRack anteponiendo[0]
+        MenuNew=COMANDOS_ARCHIVO  
         cierroedit= 0
         carga=1
         t = " [ROLL=>TRK(0)]" : cairo_show_text(c,t) :t= ""
@@ -4120,25 +4128,25 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
    t = " [ROLL=>TRK(0)]" : cairo_show_text(c,t) :t= ""
    
   '===> 3.3[GRABAR COMO] SC_F11 COPIA 
-   If MultiKey(sc_Control) And mousex > 720 And mousex < 850  And mousey < 50  And carga=0 Then ' <=
+   If  mousex > 720 And mousex < 850  And mousey < 50  And carga=0 Then ' <=
     cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 Then
-     '       print #1, "Grabando a disco Roll GRABAR "
+           print #1, "Grabando a disco un Roll a otor roll (copia) GRABAR como"
        '''''no usar dialogoText("Grabar Archivo")
-       Dim As String nombreg
+       Dim As String nombreg 'el nommbre siempre es nuevo
 nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0)+"*.roll;*.rtk"+Chr(0), OFN_CREATEPROMPT)
 Sleep 100
        If nombreg = "" Then
           Exit Sub
        Else
-         nombre=nombreg   
+         nombre=nombreg ' nombre  nuevo   
        EndIf
         
        ''GrabarRoll()
        LLAMA_GRABAR_ROLL()
        Sleep 1000,1   
           lockip=2 ' habilita mouse 28-08-2021
-       MenuNew=MENU_INICIAL
+       MenuNew=COMANDOS_ARCHIVO
        cierroedit= 0
        carga=1   
     EndIf
@@ -4155,8 +4163,8 @@ Sleep 100
  '   EndIf
  '  EndIf
    '' VUELVE menu grafico Rollmusic cinta AL INICIO....
-  If mousex > ANCHO/2 And mousey < 50 And mousex < ANCHO-50 Then
-      MenuNew=MENU_INICIAL
+  If  mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
+      MenuNro=MENU_INICIAL
       cierroedit= 0
   EndIf
   
@@ -4165,7 +4173,7 @@ Sleep 100
    cairo_set_source_rgba c,1,1,1,1
    t=  "      [Desde Inicio][Desde Esta Posicion] [Volumen / + / - /] No habilitado"
 '----
-   If mousex > ANCHO/2 And mousey < 50 And mousex < ANCHO-50 Then
+   If mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
        MenuNew=MENU_INICIAL
        cierroedit= 0
    EndIf
@@ -4173,7 +4181,7 @@ Sleep 100
 '------------------------------------------------------
   Case OPCIONES_MENU '5  OPCIONES MENU, [COMPAS] [OCTAVAS] [TEMPO] [CONFIGURACION]
 
-  If mousex > 38 And mousex < 120 And mousey < 50  Then  'COMPAS
+  If  mousex > 38 And mousex < 120 And mousey < 50  Then  'COMPAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      menuNew= TIPO_DE_COMPAS
@@ -4182,16 +4190,16 @@ Sleep 100
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  "       [COMPAS]":cairo_show_text(c, t)
-  If mousex > 130 And mousex < 235 And mousey < 50  Then  'OCTAVAS
+  If  mousex > 130 And mousex < 235 And mousey < 50  Then  'OCTAVAS
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
-     menuNew=OCTAVAS
+     menuNew=AJUSTE_OCTAVAS
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [OCTAVAS]":cairo_show_text(c, t)
-  If mousex > 260 And mousex < 329 And mousey < 50  Then  'OCTAVAS
+  If mousex > 260 And mousex < 329 And mousey < 50  Then  'TEMPO
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      menuOldStr="[TEMPO]"
@@ -4203,7 +4211,7 @@ Sleep 100
    EndIf
    t=  " [TEMPO]":cairo_show_text(c, t)
  '
-  If MultiKey(sc_Control) And mousex > 354 And mousex < 514 And mousey < 50  Then  'OCTAVAS
+  If  MultiKey(SC_CONTROL) And mousex > 354 And mousex < 514 And mousey < 50  Then  'CONFIGURACION
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      menuNew=CONFIGURACION ''9
@@ -4214,12 +4222,15 @@ Sleep 100
 
    t=  " [CONFIGURACION]": cairo_show_text(c, t)
  cairo_stroke(c)
- 
+  If mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
+       MenuNew=MENU_INICIAL
+       cierroedit= 0
+   EndIf
 '----------------------------------------------------------------------
   Case AJUSTE_OCTAVAS '6 OPCIONES => OCTAVAS
    
-' ===> 6.1 [OCTAVAS DESDE   - / + ] 
-   If mousex > 38 And mousex< 123 And mousey < 50  Then ' OCTAVAS LABEL
+' ===> 6.1 [OCTAVAS DESDE   - / + ]
+   If  mousex > 38 And mousex< 100 And mousey < 50  Then ' OCTAVAS LABEL
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1  Then
      octavas=0
@@ -4235,19 +4246,21 @@ Sleep 100
      "o agrandar "}
   Print #1, "ANTES DE MENUGRAFICO"
       menugrafico  c0, CantItems, text()
-
+      menuNew=AJUSTE_OCTAVAS
     EndIf
 
    EndIf
    t="    ":cairo_show_text(c,t)
 '  ----> DESDE
-   If mousex > 144 And mousex< 196 And mousey < 50 And MultiKey(sc_Control) Then ' DESDE LABEL
+   If  mousex > 144 And mousex< 196 And mousey < 50  Then ' DESDE LABEL
     cairo_set_source_rgba c, 0, 1, 0, 1
-    octavas=0
-    redimensionar=0
+    If MouseButtons And 1 Then 
+       octavas=0
+       redimensionar=0
+    EndIf
    EndIf
 ' ---->  -
-   If mousex >= 215 And mousex< 229 And mousey < 50   Then ' - LBEL
+   If  mousex >= 235 And mousex< 249 And mousey < 50   Then ' - LBEL
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And octavas=0 Then
      desde -= 1
@@ -4256,10 +4269,11 @@ Sleep 100
      EndIf
      octavas=1
     RTA = "SOLO REDIMENSION VISUAL "
+     menuNew=AJUSTE_OCTAVAS
     EndIf
    EndIf
 ' ----> +
-   If mousex >= 241 And mousex< 261 And mousey < 50   Then ' + LBEL
+   If  mousex >= 261 And mousex< 281 And mousey < 50   Then ' + LBEL
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 And octavas=0 Then
      desde = desde + 1
@@ -4268,6 +4282,7 @@ Sleep 100
      EndIf
      octavas =2
     RTA = "SOLO REDIMENSION VISUAL "
+    menuNew=AJUSTE_OCTAVAS
     EndIf
    EndIf
    t = "      [OCTAVAS DESDE   - / + ] " + Str(desde-1): cairo_show_text(c,t)
@@ -4283,7 +4298,7 @@ Sleep 100
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
 ' ----> -    
-    If mousex >= 374 And mousex< 394 And mousey < 50  Then '-
+    If  mousex >= 394 And mousex< 414 And mousey < 50  Then '-
      cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 And octavas = 0 Then
       hasta -= 1
@@ -4292,10 +4307,11 @@ Sleep 100
       EndIf
       octavas=1
       RTA = "SOLO REDIMENSION VISUAL "
+      menuNew=AJUSTE_OCTAVAS
      EndIf
     EndIf
 ' -----> +
-    If mousex >= 403 And mousex< 423 And mousey < 50   Then ' +
+    If  mousex >= 423 And mousex< 443 And mousey < 50   Then ' +
      cairo_set_source_rgba c, 0, 1, 0, 1
      If MouseButtons And 1 And octavas = 0 Then
       hasta += 1
@@ -4304,6 +4320,7 @@ Sleep 100
       EndIf
       octavas=2
       RTA = "SOLO REDIMENSION VISUAL "
+      menuNew=AJUSTE_OCTAVAS
      EndIf
     EndIf
    EndIf
@@ -4316,7 +4333,7 @@ Sleep 100
     cairo_set_source_rgba c, 0, 1, 0, 1
 ' cargar archivo anda bien redimensiona,ï¿½porque no puedo redimensionr
 ' aca aunque no modifique los limites?  
-    If dobleclick And redimensionar=0 Then
+    If MouseButtons And 1 And  redimensionar=0 Then
      cairo_set_source_rgba c, 1, 0, 0, 1
      NB => 0 + (desde-1) * 13   ' 39 para 4
      NA => 11 + (hasta-1) * 13  ' 102 para  8
@@ -4335,7 +4352,7 @@ Sleep 100
      redimensionar=1
      RTA="REDIMENSION VISUAL y FISICA OK"
    '  print #1, RTA
-      MenuNew=MENU_INICIAL
+      MenuNew=OPCIONES_MENU ''MENU_INICIAL
       cierroedit= 0
     EndIf
    Else
@@ -4343,11 +4360,16 @@ Sleep 100
    
    EndIf
    t = "  [REDIMENSIONAR]<-NO BORRA DATOS" + RTA
+ If mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
+       MenuNew=MENU_INICIAL
+       cierroedit= 0
+   EndIf
 '----------------------------------------------------------
    Case TIPO_DE_COMPAS ' 7 o Ritmo pero diferente numeracion, conservamos la vieja
 ''ritmo 1=2/4, 2=3/4, 3=4/4, 4=5/8 ,5=6/8, 6=7/8, 7=12/8
-'' ver recalcompas(ritmo)
-   If MultiKey(sc_Control) And mousex > 38 And mousex < 90 And mousey < 50  Then  'OPCIONES
+'' ver recalcompas(ritmo) If dobleclick
+   menuNew=TIPO_DE_COMPAS
+   If  mousex > 38 And mousex < 90 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=10000000
@@ -4360,15 +4382,16 @@ Sleep 100
      d7=valorFigura(TipoCompas)
 
      If pmTk(0).MaxpOS > 2 Then
-       ReCalCompas(ritmo)
+       RecalCompas(ritmo)
+       menuNew= TIPO_DE_COMPAS
      EndIf
-     MenuNew=MENU_INICIAL
+     
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  "       [4/4]":cairo_show_text(c, t)
-  If MultiKey(sc_Control) And mousex > 100 And mousex < 150 And mousey < 50  Then  'OPCIONES
+  If mousex > 100 And mousex < 150 And mousey < 50  Then 
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=15000000
@@ -4377,15 +4400,16 @@ Sleep 100
      TipoCompas=Tcompas12_8  ' 20
      ritmo=Tcompas12_8 ' el unico valor  que no se le suma 1 en RecalCompas
      If pmTk(0).Maxpos > 2 Then
-       ReCalCompas(ritmo)
+       ReCalCompas(ritmo) 
+       menuNew= TIPO_DE_COMPAS
      EndIf
-     MenuNew=MENU_INICIAL
+     
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [12/8]":cairo_show_text(c, t)
-  If MultiKey(sc_Control) And mousex > 160 And mousex < 210 And mousey < 50  Then  'OPCIONES
+  If mousex > 160 And mousex < 210 And mousey < 50  Then  
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=5000000
@@ -4394,16 +4418,17 @@ Sleep 100
      TipoCompas=Tcompas2_4  
      ritmo=Tcompas2_4
      If pmTk(0).Maxpos > 2 Then
-       ReCalCompas(ritmo)
+       ReCalCompas(ritmo) 
+       menuNew= TIPO_DE_COMPAS
      EndIf
-     MenuNew=MENU_INICIAL
+     
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
    EndIf
    t=  " [2/4]":cairo_show_text(c, t)
 
-  If MultiKey(sc_Control) And mousex > 220 And mousex < 270 And mousey < 50  Then  'OPCIONES
+  If mousex > 220 And mousex < 270 And mousey < 50  Then  'OPCIONES
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=7500000
@@ -4412,16 +4437,17 @@ Sleep 100
      TipoCompas=Tcompas3_4  ' 7
       ritmo=Tcompas3_4
      If pmTk(0).Maxpos > 2 Then
-       ReCalCompas(ritmo)
+       ReCalCompas(ritmo) 
      EndIf
-     MenuNew=MENU_INICIAL
+     menuNew= TIPO_DE_COMPAS
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
+    menuNew= TIPO_DE_COMPAS
    EndIf
    t=  " [3/4]":cairo_show_text(c, t)
 
- If MultiKey(sc_Control) And mousex > 280 And mousex < 310 And mousey < 50  Then  'OPCIONES
+ If mousex > 280 And mousex < 310 And mousey < 50  Then 
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
      d7=7500000
@@ -4430,18 +4456,22 @@ Sleep 100
      TipoCompas=Tcompas6_8  ' 7
      ritmo=Tcompas6_8 
      If pmTk(0).Maxpos > 2 Then
-       ReCalCompas(ritmo)
+       ReCalCompas(ritmo) 
      EndIf
-     MenuNew=MENU_INICIAL
+     menuNew= TIPO_DE_COMPAS
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
+     menuNew= TIPO_DE_COMPAS
    EndIf
    t=  " [6/8]":cairo_show_text(c, t)
 
- 
+ cairo_set_font_size (c, 18) 'fijo
  cairo_stroke(c)
-
+ If mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
+       MenuNew=OPCIONES_MENU '''MENU_INICIAL
+       cierroedit= 0
+   EndIf
 '-----------------------------------------------------
   Case PARAMETROS_SECUENCIA ''8
  Print #1,"entro a menu 8 desde ver"
@@ -4472,8 +4502,11 @@ Sleep 100
          Case "[PAN]","[CORO]","[ECO]"
           threadpan=threadCall EntrarTeclado() ''SelPan(Globalpan)
       End Select
-    menunew=MENU_INICIAL
-    cierroedit= 0
+
+   If mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
+       MenuNew=MENU_INICIAL
+       cierroedit= 0
+   EndIf
 '-----------------------------------------------------
    Case CONFIGURACION ''9
   ' [MIDI] [CANALES]
@@ -4503,6 +4536,10 @@ Sleep 100
     t = " [CANALES]":cairo_show_text(c,t)
 
    cairo_stroke(c)
+   If mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
+       MenuNew=MENU_INICIAL
+       cierroedit= 0
+   EndIf
 '------------------------------------------------------
  Case SEL_MIDI ''' 10
   '[MIDI-OUT] [MIDI-IN]
@@ -4530,7 +4567,6 @@ Sleep 100
        cierroport=1 
        Dim miport As Integer=2
        MenuNew=SEL_MIDI ''10
-       Menunro=SEL_MIDI
        ' create con argumentos
        '''threadsel = ThreadCreate(@selport(), CPtr(Any Ptr, miport)) '' 'GtkListBox()
        threadsel = ThreadCall selport(miport)  '' 'GtkListBox()
@@ -4541,6 +4577,10 @@ Sleep 100
           MenuNew=SEL_MIDI ''10
     EndIf
     t = " [MIDI-IN]":cairo_show_text(c,t):t=""
+   If mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
+       MenuNew=MENU_INICIAL
+       cierroedit= 0
+   EndIf
 '-------------------------------------------
   Case NRO_CANAL ''11
 
@@ -4554,16 +4594,19 @@ Sleep 100
         threadcanal = ThreadCall selcanal(ti) 
        'Print #1,"canal elegido luego del thread2 en menu ",canalx
       EndIf ' mousebuttons
-      MenuNew=CONFIGURACION '9
+      MenuNew=NRO_CANAL '9
 
      Else
       cairo_set_source_rgba c, 1, 1, 1, 1
-      MenuNew=CONFIGURACION '9
+      MenuNew=NRO_CANAL '9
      EndIf
-
+    If mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
+       MenuNew=MENU_INICIAL
+       cierroedit= 0
+   EndIf
     ''' t = "      Seleccione un canal" 07-12-2025
   '------------
-  Case 12  ' edit por teclado
+  Case EDIT_POR_TECLADO ''12  ' edit por teclado
     cairo_set_source_rgba c, 0, 1, 0, 1
     '''If MouseButtons And 1 Then
      COMEDIT=ENTRADA_NOTAS
@@ -4576,7 +4619,7 @@ Sleep 100
  ' Si nodoy Stroke los show text van apendendo al final como un print;
 
   '' VUELVE menu grafico Rollmusic cinta AL INICIO....
-  If mousex > ANCHO/2 And mousey < 50 And mousex < ANCHO-50 Then
+  If  mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
       MenuNew=MENU_INICIAL
       cierroedit= 0
   EndIf
@@ -4612,11 +4655,7 @@ Sleep 100
 '   cairo_show_text( c, text )
 '  EndIf
 ' EndIf
- cairo_set_font_size (c, font)
-   If mousex > ANCHO/2 And mousey < 50 And mousex < ANCHO-50 Then
-      MenuNew=MENU_INICIAL
-      cierroedit= 0
-  EndIf
+ cairo_set_font_size (c, font) 'vuelve al font de la zona de trabajo
 
  'DeAllocate xo: DeAllocate yo
 Exit Sub 
@@ -4825,7 +4864,7 @@ off1nosemueve=0 ' se mueve
  EndIf
  insert=0
  indaux=0
- RecalCompas(ritmo) ' 09-05-2021
+ RecalCompas(ritmo) ' 09-05-2021 
  TicksInsertados=0
  StartInsert=0
  fininsert=0
@@ -5079,12 +5118,12 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
 '   EndIf
 'EndIf
 'If  EJECCARGADA = TRUE  Then
-   If tiempoPatronEjec=0 Then
-      tiempoPatronEjec=60
-      tiempoPatron=60
-      default="60"
-      default2="60"
-  EndIf
+'   If tiempoPatronEjec=0 Then
+'      tiempoPatronEjec=60
+'      tiempoPatron=60
+'      default="60"
+'      default2="60"
+'  EndIf
 ''EndIf
     
 ' debo generar un default para manual 60 y oro para ejecs 240
@@ -5314,7 +5353,7 @@ Next kk
       TipoCompas=pmTk(ntk).tipocompas
       'pmEj(ntk).tipocompas=pmTk(ntkp).tipocompas 
       ''por omision ritmo=1, 4/4
-      RecalCompas(ritmo)
+      RecalCompas(ritmo) 
 End Select
 
 End Sub
@@ -5512,10 +5551,10 @@ Dim  As Integer npl, length
 ''' NUNCA ENTRA POR ACA , SOLO SI SE USA ESTA RUTINA SIN
 ''' ANALIZAR EL NOMBRE 
           nombre = nombre +".roll"  
-          Print #1,"NO, es un trk grabado como roll ",nombre ' sin sentido
+          Print #1,"es un trk grabado como roll  ",nombre ' sin sentido
           Exit Function    
        Else
-        If InStr(UCase(nombre),".ROLL") = 0 Then
+        If InStr(UCase(nombre),".ROLL") >= 0 Then
            'seria nombre="" pero se toma como backup odeberia preguntar por un nombre nuevo 
            nombre = nombre +".roll"  'un nombre sin extension no creo ocurra solo si es nuevo y no hay nombre 
         EndIf
@@ -5701,7 +5740,7 @@ Print #1,"///----GrabaRoll pan Globalpan,pmtk, ntk ",Globalpan,pmTk(ntk).pan,ntk
         pmTk(ntk).tipocompas=ritmo
         TipoCompas=ritmo
      EndIf
-     dat.TipoCompas = TipoCompas ' 26-04-2024
+     dat.TipoCompas = ritmo ' 26-04-2024
      ' al cargar tipocompas va a pmTk y a TipoCompas
      ' si se lo  cambia el ultimo valor estara en TipoCompas 
      ' o tal vez en ambos si esta bien codificado-

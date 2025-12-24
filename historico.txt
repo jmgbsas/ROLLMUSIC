@@ -1,3 +1,5 @@
+- 23-12-2025 0.35096 los menu graficos andan con menos CTRL o ALT se prioriza un click simple
+  hay excepcion como NUEVO que esta justo abajo de ARCHIVO. Oir notas mientras se entran manualmente
 - 20-12-2025 0.35095 ritmo 2=2/4, 3=3/4, 4=4/4, 5=5/8 ,6=6/8, 7=7/8, 12=12/8, RecalCompas, ||, etc 
   UNA NOTA+ NO DEBE TENER || AL FINAL PORQUE SIGUE...etc. ALT-END FIN DE NOTA
   RITMO=TipoCompas, ritmo default=4

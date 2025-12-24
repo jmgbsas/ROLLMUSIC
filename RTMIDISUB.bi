@@ -880,7 +880,9 @@ For jply=comienzo To final
 ' no se si eliminarlo esto Compas no se si almacena los -1 -2 etc
 ''Print #1,"Roll.trk(1,NA).onoff si es uno sin sonido!! ",Roll.trk(1,NA).onoff
 ''Print #1,"pmTk(ntk).ejec  sonido!! ",pmTk(ntk).ejec
-  ajuste = pmTk(0).vol/127
+  If pmTk(0).vol > 13 Then ' 10%
+     ajuste = pmTk(0).vol/127
+  EndIf
 ' o sea pmTk(0).vol es el ajuste se lo pasa como una fraccion del maximo rango 127
 If pmTk(0).ejec =1 Or Roll.trk(1,NA).onoff = 1 Then
 ' Print #1,"   UN ARCHIVO CON DATOS DE EJECUCION POR TECLADO CONVERTIDOS A ROLL"
@@ -3076,12 +3078,12 @@ Dim k1 As Integer
         Print #1,"abro ",*nombreOut(k1)
         porterrorsub(porterror)
    Else
-         Print #1,"PORT OUT YA ABIERTO ",listoutAbierto( k1),*nombreout(k1)
+        '' Print #1,"PORT OUT YA ABIERTO ",listoutAbierto( k1),*nombreout(k1)
    EndIf
  EndIf 
 
- Print #1,"Port usando en Play Ejec teclado ",portout
-Print #1,"-------------------------------------"
+ ''Print #1,"Port usando en Play Ejec teclado ",portout
+''Print #1,"-------------------------------------"
 
 End Sub
 '------------------

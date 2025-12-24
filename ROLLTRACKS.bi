@@ -509,7 +509,7 @@ Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
      pmTk(ntk).ejec=grabaPos.ejec
      
  
-  '   Print #1,"Carga Track tipoescala_num_ini ",tipoescala_num_ini
+    Print #1,"Carga Track tipoescala_num_ini ",tipoescala_num_ini
 
      ReDim Trabajo  (1 To CantTicks,1 To lim3) As poli
 Print #1,"NombreCancion,nomobre, CantTicks ";NombreCancion,nombre, CantTicks 
@@ -563,7 +563,7 @@ messbox("CARGA TRACK HASTA","esta en cero el  track "+Str(ntk))
         alteracion="sos"
      EndIf
      
- '    Print #1,"alteracion ",alteracion
+     Print #1,"alteracion ",alteracion
  '    print #1,"desde ",pmTk(ntk).desde
  '    print #1,"hasta ",pmTk(ntk).hasta
      ''' no le da tiempoPatron=CInt(grabaLim(1,1).nnn)
@@ -740,12 +740,12 @@ Print #1,"CLOSE ct CERRO TRK NRO ct ",ntk, ct
 
  
     cadenaes_inicial=""
- '   Print #1,"armarescala desde cargar Track"
+    Print #1,"armarescala desde cargar Track tipoescala_num_ini ",tipoescala_num_ini
 
     armarescala (cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini, alteracion,1 )
-'Print #1,"cargaTrack cadena_inicial ",cadenaes_inicial
+Print #1,"cargaTrack cadena_inicial ",cadenaes_inicial
     tipoescala_inicial=escala(tipoescala_num_ini).nombre ' 13-01-2022 faltaba ini
-'Print #1,"cargaTrack tipoescala_inicial ",tipoescala_inicial    
+Print #1,"cargaTrack tipoescala_inicial ",tipoescala_inicial    
 ' carga de escala en guia de escala
     guiaEscala(1).tipoescala=tipoescala_num_ini '13-01-2022 faltaba ini
     guiaEscala(1).notaescala=notaescala_num_ini
@@ -1154,27 +1154,27 @@ End If
      grabaPos.vol  = y3
      grabaPos.pan  = y4
      grabaPos.pb   = y5
-     If pmTk(ntk).tipoescala > 0 And tipoescala_num_ini = 0 Then
-       grabaPos.nnn = pmTk(ntk).tipoescala
-       tipoescala_num_ini=CInt (pmTk(ntk).tipoescala)
-     EndIf
      If tipoescala_num_ini > 0 And tipoescala_num_ini <> CInt (pmTk(ntk).tipoescala) Then
        grabaPos.nnn = CUByte(tipoescala_num_ini)
        pmTk(ntk).tipoescala=grabaPos.nnn
-     EndIf
-     If tipoescala_num_ini = 0 Then
-        tipoescala_num_ini =1
-        grabaPos.nnn = CUByte(tipoescala_num_ini) ' 15-01-2022 - tipoescala en uso
-        pmTk(ntk).tipoescala=grabaPos.nnn
-     EndIf
-
-
+     Else
+       If tipoescala_num_ini = 0 And pmTk(ntk).tipoescala =0 Then
+          tipoescala_num_ini =1
+          grabaPos.nnn = CUByte(tipoescala_num_ini) ' 15-01-2022 - tipoescala en uso
+          pmTk(ntk).tipoescala=grabaPos.nnn
+       Else
+          grabaPos.nnn = CUByte(tipoescala_num_ini)
+       EndIf
+     EndIf 
+   Print #1,"ROLLATRACK tipoescala_num_ini grabaPos.nnn ",tipoescala_num_ini,grabaPos.nnn
    If NombreCancion > "" And ntk > 0 Then
      If CheckBox_GetCheck( cbxnum(ntk))= 1 Then ' sonido on/off 16-03-2022
          graba3.sonido=1
      Else
          graba3.sonido=0
      EndIf
+   Else
+         graba3.sonido=1  
    EndIf
      '------------ los parametros de Roll o Track(0) estan en las globals tambien
      ' pues se llenan al cargar un Roll....
@@ -1184,20 +1184,21 @@ End If
      grabaLim.pb   = CUByte(notaold)
 
 
-If notaescala_num_ini >= 1 And pmTk(ntk).notaescala <> CUByte(notaescala_num_ini) Then
+If notaescala_num_ini >= 1 And pmTk(ntk).notaescala > 0 And pmTk(ntk).notaescala <> CUByte(notaescala_num_ini) Then
      grabaLim.vol =CUByte(notaescala_num_ini)
 Else
      grabaLim.vol  = pmTk(ntk).notaescala      
 EndIf
+Print #1,"ROLLATRACK grabaLim.vol NOTAESCALA ",grabaLim.vol
 Dim altaux As ubyte
-   Select Case alteracion
+   Select Case alteracion ' ES STRING
          Case "sos" 
           altaux = CUByte(3)
          Case "bem"
            altaux = CUByte(2)
    End Select
 
-If altaux > 0 And (altaux <> pmTk(ntk).alteracion) Then
+If altaux <> pmTk(ntk).alteracion Then
     grabaLim.pan  = altaux
 EndIf
 If grabaLim.pan =0 Then 
@@ -1207,7 +1208,7 @@ If grabaLim.pan =0 Then
    grabaLim.pan = CUByte(3)
 EndIf
 
-
+Print #1,"rollatrack grabaLim.pan alteracion ",grabaLim.pan 
 ' grabaLim.nnn no le da el tamaño solo llega a 256
  ''''    grabaLim.nnn = CUByte(tiempoPatron)
 ' cargado un Roll desde archivo canalx toma el valor del canal midi de salida del archivo
@@ -1323,7 +1324,7 @@ Dim midsal As  RtMidiOutPtr
 ' los roll o trk entonces existira el archivo inicio.txt
 cargariniciotxt(NombreCancion, CANCION)
 SetGadgetText(TEXT_TOPE, Str(maxpos))
-RecalCompas(ritmo)
+RecalCompas(ritmo) 
 
   '
 Select Case ext
@@ -1398,7 +1399,7 @@ GrabarRollaTrack(0,0)
 
 cargariniciotxt(NombreCancion,CANCION)
 SetGadgetText(TEXT_TOPE, Str(maxpos))
-RecalCompas(ritmo)       
+RecalCompas(ritmo)        
 
     ' y a disco con su nuevo [xx]  
            
@@ -1955,7 +1956,7 @@ Globalvol=pmTk(ntk).vol
    EndIf
    'print #1,"TrackaRoll, NB, NA, CantTricks", NB,NA, CantTicks
 ' redim de ROLL de Visualizacion , para ello  
-   ''  Parar_De_Dibujar=SI kokito
+   ''  Parar_De_Dibujar=SI 
      Sleep 10 ' para que surja efecto la detencion ,,,   
   'If  ntk= 0 Then
  ' Else
@@ -2139,7 +2140,7 @@ EndIf
 ' el redim esta arriba
 cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
 terminar=NO_TERMINAR_CON_DATOS_CARGADOS
-''Parar_De_Dibujar=SI kokito
+''Parar_De_Dibujar=SI 
 Print #1,"cargaCancion DEBE SER 1 ",cargaCancion
 Print #1,"NTK del copiado aca esta el lio, Y MAXPOS EN REDIM ",ntk, pmTk(ntk).MaxPos
 ReDim (Track(0).trk ) (1 To  pmTk(ntk).MaxPos +1, 1 To lim3) '////HOY
@@ -2454,7 +2455,7 @@ fileflush(-1)
  EndIf  
  
 Next i0
-RecalCompas(ritmo)
+RecalCompas(ritmo) 
  Print #1,"CANCION Tope MAXPOS "; Tope, mayor  
 
 Print #1,"cancion tiempoPatron ";tiempoPatron
@@ -3794,7 +3795,7 @@ EndIf
 ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
 RollaTrack Track(), ntk,Roll
 
-RecalCompas (ritmo)
+RecalCompas (ritmo) 
    
 '-----------------------------------------   
  '     moverRoll 
@@ -3883,7 +3884,7 @@ EndIf
 ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
 RollaTrack Track(), ntk,Roll
 
-RecalCompas (ritmo)
+RecalCompas (ritmo) 
 
 EndIf
  
@@ -4141,7 +4142,7 @@ cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
 ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
 RollaTrack Track(), ntk,Roll
 cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
-ReCalCompas (ritmo)
+ReCalCompas (ritmo) 
 
 EndIf
 

@@ -32,10 +32,24 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.35095 mas ritmos , RecalCompas, fin secuencia || nota >, etc "
+nroversion="0.35096 menu grafico CON MENOS USO DE CTRL O ALT, oir notas mientras se entran  "
+'' OK NUEVO ->EN LECTURA SE ESCUCHA UNA NOTA CON LSHIT + CLICK CON LOS PATCHS Y EFECTOS QUE TENGA
+'' TRASPONER GRUPO O RANGO TIENN FALLAS MAS EL GRUPO.. 
+''FALTA=> TRASPONER EN GRUPO ALT-O Y LUEGO MARCANDO Y ESCUCHANDO LSHIFT + CLICK 
+''     MARCA +12 ANDA CUANDO QUIERE NO ESTA BIEN..SE HABIA ABANDONADO ES UN SEMIGRUPO
+'' NO SE MARCA UNA SOLA NOTA DEBEN SER 2 COMO MINIMO Y A VECES MUEVE 1 O 2 O NADA,
+'' FALTA CON ZONA 1 Y 2 Y ALT-O TRASPONE UN GRUPO O UNA SOLA NOTA SI PODEMOS AJUSTAR
+'' BIEN EL INTERVALO PAR QUE QUEPE UNA SOLA NOTA, EN GENERAL PARA TICKS TODAVIA
+'' TIENE FALLAS ARRASTRA > DE OTRAS NOTAS SI LAS NOTAS SON IGUALES  
+''  
+''FALTA=>RECALCOMPAS ANDA MEJOR FALTA VER SI CUMPLE CON TIEMPOS FUERTES Y DEBILES 
+''BASICOS EN TODOS LOS RITMOS
+'' seguir revisando todos los menues de menu grafico y sus funciones dentro
+'' de RollLoop!!
+' FIXED all usar roll=>track el 1er compas nose oye si usamos recalcompas!
 ' UNA NOTA+ NO DEBE TENER || AL FINAL PORQUE SIGUE...|| en notas+ ligadas fix
 ' se fixeo por rtk, pero queria acelerar el TAB sacando Recalcompas y se complico vuelta atras 
-'35904 Compas(jply,ntk) da error en tab quiero copiar el compas del track x en track 0
+'FIX 35904 Compas(jply,ntk) da error en tab quiero copiar el compas del track x en track 0
 ' y roll 0 principalmete y da error
 '"0.35093 borrar desde Posision Actual(borde izquierdo) hasta el final de una secuancia "
 '"0.35091 SE PUEDEN USAR TECLAS EN LA VENTANA DE CONTROL F1, SPACE, Y P YA ANDAN"
@@ -252,7 +266,10 @@ End If
 'Print #1, "ANTES ROLLCTRLSUB.Bi"
 #Include "ROLLCTRLSUB.Bi"
 'Print #1, "DESPUES ROLLCTRLSUB.Bi"
-'----------------
+'----------------ABRIMOS UN PORTOUT DEFAULT
+abrirPortoutEjec(100)
+
+'-----------------
 Do
 
   COMEDIT=LECTURA

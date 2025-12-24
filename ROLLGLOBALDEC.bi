@@ -118,7 +118,7 @@ Const NO_AGREGAR =1
 Const AGREGAR =0
 
 '------menu grafico
-Const MENU_INICIAL = 0
+Const MENU_INICIAL = 1
 Const COMANDOS_ARCHIVO = 3
 Const PARAMETROS_ROLL = 2
 Const OPCIONES_MENU = 5
@@ -129,6 +129,7 @@ Const TIPO_DE_COMPAS = 7
 Const CONFIGURACION = 9
 Const SEL_MIDI = 10
 Const NRO_CANAL = 11
+Const EDIT_POR_TECLADO = 12
 '-----------------instancias
 Const ARG0_EN_LINEA = 0
 Const ARG1_1_TITULO = 1

@@ -1,8 +1,8 @@
-    Ayuda Prelimiar Básica RollMusic   0.3504 LOOP
+    Ayuda Prelimiar Básica RollMusic   version 0.35096
     ====================================================================================
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
-      Y FUNCIONAN BIEN PARA TICKS . version 0.349, falta mucho testeo-.. )
-      (seccion 6.3 nueva)
+      Y FUNCIONAN BIEN PARA TICKS . version 0.35096, falta mucho testeo-.. )
+
      INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
        RollMusic.exe y todas los archivos *.dll. 
@@ -146,12 +146,10 @@
           POR CUENTA DE LA CONFIGURACION DEL INSTRUMENTO EXTERNO. HSTA QUE SE EMPIECE A USAR SYSEX]
 
         a) PUERTOS MIDI A USAR. en el menu de Roll Music Grafico
-        Desde el Menu Principal -> ALT + posarse sobre ->Opciones->Ctrl+Click SOBRE ->Configuracion->click->MIDI->
+        Desde el Menu Principal -> click en ->Opciones-> CTRL-CLICK SOBRE ->Configuracion->click->MIDI->
         click->MIDI-OUT o MIDI-IN, en la lista de dispositivos de salida o de Entrada
         clickear la deseada y dar Ok.(solo midi Out es funcional)
-        (nota: MIDI y MIDI-OUT funcionan con un click simple. Pero Opciones con ALT y Configuracion 
-         con Ctrl-Click ), como estamos en un grafico puro se necesita que las teclas sean distintas si
-         el rotulo o label que cambia por una accion está en la misma posición.
+                
         Con el menu de MIDI-OUT se puede cambiar de dispositivo en la misma sesion
         sin necesidad de cambiar el dispositivo default por afuera del programa con alguna otra aplicacion.
         Cada pista puede tener un dispositivo o port MIDI distinto, se graba en roll o en rtk.  
@@ -198,13 +196,14 @@
     0) Consideraciones generales:
        Ante todo para desarrollar se muestran variables al Pulsar [Edicion], o ALT-E, en ese estado y en cualquier
        otro si quiero volver al menu inicial Archivo,Edicion,Ver,Pista,Reproducir etc....
-       dar un click  en la cinta celeste de arriba en su parte mas derecha entre la mitad y casi hasta el final
-       antes de  los botones. rojo, amarillo y verde..y mas rapido pulsar ALT-M.
-       Recordar que Opciones se abre pulsando ALT y ubicando el mouse  encima del label.
+       dar un click  en la cinta celeste de arriba en su parte mas derecha entre el 3/4 y casi hasta el final
+       una linea vertical indica el comienzo de la zona de click.. 
+       antes de  los botones. rojo, amarillo y verde..o mas rapido pulsar ALT-M.
+       Opciones se abre con un solo click ahora y ubicando el mouse  encima del label.
        En modo lectura para mover la secuencia se usan las flechas Der Izq, la cantidad de ticks de avance o retroceso.
        Se hara por diferentes formas
        pueden ser:  
-         - POR DURACION DE NOTA, pulsando una duracion de 1 a 9, (el 0 es un solo Tick) y los modificadores
+         - POR DURACION DE NOTA, pulsando una duracion de 1 a 9, (el 9 es un solo Tick) y los modificadores
        para puntillo 1 + 1/2 (.), tresillo 2/3 (t), 1 + 1/4 (no existe en musica) (May Izq,LShift), 
        doble puntillo 1 + 3/4 (May Der, RShift) y las ligaduras que permite unir dos duraciones cualesquiera (+)
        Se sulele usar hasta Semifusa...
@@ -261,12 +260,16 @@
           (se impedira equivocarse en otra version anulando el menu)
           Se ajusto las habilitaciones y deshabilitaciones de 2.0,2.1,2.2 por menu y codigo
           para evitar opciones no permitidas..
-       6) EJECUCION DE UNA SECUENCIA DE ENTRADA MANUAL *.ROLL: Pulsar la barra espaciadora, se escuchara todas las pistas cargadas
-          de cancion Roll salvo las que NO esten chequeadas en [S] en la lista o PistasRoll.
-          Estando una cancion cargada de *.Roll si quiero escuchar una sola pista en Roll Grafico en vez de
-          barra espacio usar un CTRL sobre Reproducir en el menu del Grafico. O traforma es dejar 
-          seleccionada esa sola pista en la lista de pistas de Roll a la izquierda de la Ventana de Control
-          y pulsar barra de espacio o dar click al boton Verde encima de la lista  de Pistas de Rolls   
+       6) EJECUCION DE UNA CANCION *.RTK/SECUENCIA DE ENTRADA MANUAL *.ROLL: Pulsar la barra espaciadora, 
+          se escuchara todas las pistas RTK cargadas de cancion Roll salvo las que NO esten chequeadas en [S] 
+          en la lista o PistasRoll.
+          Estando una cancion cargada de *.RTK si quiero escuchar una sola pista en Roll Grafico en vez de
+          barra espacio usar un Click sobre Reproducir en el menu del Grafico. Otra forma 
+          es dejar seleccionada esa sola pista en la lista de pistas de Roll a la izquierda de la Ventana de Control
+          y pulsar barra de espacio o dar click al boton Verde encima de la lista  de Pistas de Rolls.
+          Si estamos escuchando una sola pista, ye un tramo corto que termina con fin de secuencia, podemos escucharlos
+          varias veces sin ajustar repeticiones dejando pulsada la Tecla Control y l aflecha del mouse sobre reproduir 
+          sin dar click, y repetira el final de la secuencia mientras este pulsada Control.
        6.1) EJECUCION DE UNA SECUENCIA DE EJECUCION MIDI *.ejec: dar click sobre el boton Verde de la lista de 
             ejecuciones de la derecha de la Ventana de Control. Se escucharan solo las que esten seleccionadas
             en columna [S]
@@ -359,7 +362,7 @@
        DE PISTAS MANUALES Y QUE ESTE SELECCIONADA O CHEQUEADA CON UN TILDE , EL RESTO NO SE ESCUCHARA
        TANTO DESDE ESE BOOTN O COMO LA BARRA DE ESPACIO EN EL ROLL GRAFICO.
        TAMBIEN SE PUEDE ESCUCHAR DESDE EL MENU REPRODUCIR EL CUAL TAMBIEN LO HACES DESDE UNA POSICION
-       DADA O SOLO UN PEDAZO DE LA CANCION, (o cada pista en el roll grafico pulsando Ctrl + posarse
+       DADA O SOLO UN PEDAZO DE LA CANCION, (o cada pista en el roll grafico dando clic kizq de mouse 
        sobre Reproducir arriba en la cinta de menu)
        2) MENU CONTEXTUAL EN LISTA DE PISTAS DE CANCION
           FUNCIONA ASI: DAR CLICK IZQUIERDO EN UNA PISTA, LUEGO CON flecha arriba
@@ -371,30 +374,29 @@
 ********************************************************************************************************
     1) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
     2) El espaciado entre lineas se puede cambiar.
-    3) Trasponer todo: ALT-T habilita la trasposicion, Q la deshabilita.
+    3) Trasponer todo: CTRL-O habilita la trasposicion DE TODA LA SECUENCIA,con flezhs arriba abajo se mueve por 
+       semitonos Q la deshabilita.
+       Trasponer una zona:ctrl+click en dos lugares definiendo una zona, luego ALT-O y flechas arriba abajo.
+       Si la zona abarca un solo comienzo de nota, movera esa nota con su final aunque no este en la zona.
        TRASPONER (todo o una parte o una nota ) DESTRUIRA LA INFORMACION DEL CIFRADO DEL ACORDE, EN VEZ DE 
        TRASPONER UN ACORDE SE SUGIERE BORRARLO Y CONSTRUIIR UNO NUEVO SI LA NOTA BASE SALE DE LA OCTAVA ORIGINAL. 
        SI LA NOTA BASE DEL ACORDE SE MUEVE DENTRO DE LA OCTAVA, TRASPONER TAMBIEN TRASPONE EL CIFRADO, SIN
        DESTRUIRLA. SI SE CAMBIA LA ESCALA PRINCIPAL DE LA SECUENCIA HAY QUE BORRAR TODO PORQUE ESTAN CONSTRUIDOS
        SEGUN LA ESCALA ANTERIOR no hay reconstruccion de acordes por ahora, lo que conviene hacer es trasponer 
        cada acorde los semitonos necesarios para que la nota base se ajuste a la escala principal nueva. 
-        Nota de desarrollo: Ctrl-T se disparaba solo despues de cambiar el interlineado, pulsaba flecha abajo y 
-       empezaba a trasponer sin haber pulsado CTRL-T, ergo se cambio a ALT-T, ¿inconsistencia de la union de cairo
-       con freebasic? podria ser, o el uso de threads, no se, se cambió y listo.(dejo sentado los errores
-       porque investigar o pedir ayuda es muy engorroso hasta te tratan de ataque cibernetico jajaja...forros
 
-    4) Recalcular Compas pulsando <R>. Establece las barras divisorias entre compases.c
-    5) Grabar Archivo. (Ctrl-click). Se ha puesto un retardo de 1 segundos si tarda eso es porque se
-       ejecutó bien el comando y grabó ademas pasa a color verde por un instante, porque de otra forma a veces 
-       salia sin grabar..
-       Nota:No usar en el nombre de archivo una 'ñ' o caracteres latinos cairo
+    4) Recalcular Compas pulsando <R>. Establece las barras divisorias entre compases según el ritmo.
+    5) Grabar Archivo. Se ha puesto un retardo de 1 segundos si tarda eso es porque se
+       ejecutó bien el comando y grabó ademas pasa de color rojo inicio a verde a lterminar por un instante, 
+       porque de otra forma a veces salia sin grabar..
+       Nota:No usar en el nombre de archivo una 'ñ' o caracteres latinos como el acento, cairo
        no lo soporta y no mostrará el menu de Roll. (También es una forma de si se desea
        eliminar el menu en una reproducción, pero si se pulsa en el lugar correcto el menu
-       es funional solo que no se lo puede ver ,,) se usa un dialogo de apertura de archivo escribir el nombre
+       es funional solo que no se lo puede ver ,,) En el dialogo de apertura de archivo escribir el nombre
        y si no existe aparecera un dialogo pequeño para crearlo , aceptar.
     6) Cargar Archivo. click en [Archivo]-> luego en  [*.ROLL] o [+.RTK]. 
        Archivo NUEVO borra el Roll de memoria y comienza de cero. En el menu del grafico de Roll (no control)
-       click en [ARchivo] -> ALT-Click [NUEVO]
+       click en [ARchivo] -> ALT+Click en [NUEVO]
         
     7) ACHICAR/EXPANDIR EL GRAFICO DE LA  SECUENCIA CON F2/F3 SIN CAMBIAR EL FONT.
        ACHICAR /EXPANDIR EL TAMAÑO DEL FONT CON F9/F10 SIN CAMBIAR TAMAÑO HORIZONTAL.
@@ -411,9 +413,9 @@
           dar ok. En opciones tambien clik en Nota de la escala. elegir una nota en la ventana emergente y dar ok.
           En opciones elegir si se trabaja con sostenidos (por omision)  o con bemoles.
           Con todo eso al dar clik para ver la secuencia en su parte superior se verá la escala ingresada como tambien
-          el tempo. Grabar el archivo en Roll grafico click [Archivo]-> Ctrl-Click [Grabar], de esa forma
+          el tempo. Grabar el archivo en Roll grafico click [Archivo]-> Click [Grabar], de esa forma
           La escala de la Nota y tipo elegida se graba con la secuencia la cual volvera a cargarse en la proxima
-          carga del archivo roll o trk.(falta grabar el tempo en el archivo)
+          carga del archivo roll o trk.
 
     14) ESCALAS AUXILIARES EN ALGUNAS POSICIONES PARA QUE SEA UNA GUIA y en un futuro construir
         acordes segun esa escala.(en desarrollo, por ahora indica que notas usar para la melodia)
@@ -665,13 +667,11 @@
     NOTA: si en algun momento se traba el scroll arriba abajo con la rueda del mouse, destrabar la situacion  con 
           flecha arriba o abajo lo cual habilita la rueda del mouse e inversamente si se traban las flechas 
           intentar con mouse. (hay inconsistencias que deben verse...en algun momento futuro)
-          Si una opcion de menu en el grafico de Roll no funciona colocando el mouse encima del rotulo
-          necesitará un click o un ctrl-click ...o un Alt-clik se sigue modificando luego se hara una carta de los
-          keystrokes definitivos-.
+          => Nuevo: El Menu grafico de Roll funciona Todo con un solo click izquierdo de mouse. 
           En esta ultima version ejecutar o reproducir o play desde el menu de Control funiona igual que hacerlo 
-          desde la barra de espacio en el grafico. Para tocar solo un track dar Ctrl-click a Reproducir.
+          desde la barra de espacio en el grafico. Para tocar solo un track dar click a Reproducir.
           En una instancia sin control o una sesion con Control si no se carga una cancion , tanto 
-          barra de espacio como Ctrl+ clik en Reproducir tocaran la secuencia cargada indistintamente, ya que
+          barra de espacio como clik en Reproducir tocaran la secuencia cargada indistintamente, ya que
           como no hay cancion ejecuta lo que haya, el track en edicion.
 
 
@@ -824,13 +824,14 @@
         para eliminar la separacion pulsar Q. Para ajustar otra separacion, en el Menu VER como se mencionó, 
         tiene un subitem Separacion de notas , al pulsar aparece un dialogo para entrar un numero. de 1 en 
         adelante... etc. 
-      - Borrar desde la posicion actual (posn1) y hasta el final una secuencia
+      - Borrar desde la posicion actual (posn1) y hasta el final una secuencia (sin definir zona)
           CTRL+ALT+ CLICK EN -> [Edicion] en el grafico.
           BORRA HACIA Derecha y Ajustar MaxPos a la posicion actual en Edit Lectura
           LA POSICION ACTUAL SERA SIEMPRE EL BORDE IZQUIERDO DEL INTERVALO MOSTRADO O SEA
-          EL COMIENZO DE LA PANTALLA PARA VER MAS CLARO PULSAR H PARA SACAR LAS NOTAS GUIA
-          PULSAR CTRL+ALT y luego inmediatamente click en [Edicion].
-          Y LUEGO DE CORTADA LA SECUENCIA PULSAR K PARA REPONER LAS NOTAS GUIA SI SE DESEA.
+          EL COMIENZO DE LA PANTALLA, PARA VER MAS CLARO PULSAR H PARA SACAR LAS NOTAS GUIA
+          PULSAR CTRL+ALT y luego inmediatamente click en [Edicion]. Pulsar R para 
+          recalcular las divisiones de compas.
+          Y LUEGO DE CORTADA LA SECUENCIA PULSAR K PARA REPONER LAS NOTAS GUIA.
           El fin de la secuencia '||' debe quedar despues del ultimo off '>' de la secuancia.
           Verificar lo ultimo pues asi se podra agragar mas notas al final sin problemas.
          BORRAR UNA SECUENCIA DESDE LA 1ER MARCA DE UN INTERVALO HASTA EL FINAL
@@ -844,12 +845,13 @@
        usada anterior deja de funcionar, mover el scroll con las flechas eso habilita de nuevo
        la rueda del mouse.
 
-    1.2)  Trasponer todo CON TECLAS SOLAMENTE: ALT-T habilita la trasposicion, Q la deshabilita.
+    1.2)  Trasponer todo CON TECLAS SOLAMENTE: CTRL-O habilita la trasposicion, Q la deshabilita.
        una vez habilitada con Flecha-UP sube de a un semitono con cada pulso
        Con Flecha-Down baja un semitono can cada pulso.
        [  Seleccion de Zona para una accion:
        Ctrl-Click en la 1er posicion de la zona, otro Ctrl-click en la segunda
        posicion, terminar al selecion con Q (borra todas las acciones).
+       Con una zona seleccionada trasponer con ALT-O
        (NO DAR CLICK SOBRE UNA NOTA)  ]
     
        Trasponer una Zona: seleccionar la zona deseada y luego igual que 

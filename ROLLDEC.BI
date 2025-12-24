@@ -1042,7 +1042,7 @@ ibarre=desde
 Common Shared As FLOAT font
 Dim Shared As float  deltaipf=0, lockip=0 
 Dim Shared q As String * 1
-Dim Shared As UByte  ii,indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8, s9,s10
+Dim Shared As UByte  ii,indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8, s9,s10,s11
 Dim Shared As UByte numdurasmidi( 1 To 24)
 ''Dim Shared escala As float = 1.0
 Dim Shared translado As Integer = 1
