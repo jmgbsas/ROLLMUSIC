@@ -377,6 +377,9 @@
     2) El espaciado entre lineas se puede cambiar.
     3) Trasponer todo: CTRL-O habilita la trasposicion DE TODA LA SECUENCIA,con flezhs arriba abajo se mueve por 
        semitonos Q la deshabilita.
+       Trasponer un grupo de notas separadas no contiguas: ALT-O luego ENCADA nota no contigua o si
+       dar shift+click, se escuchara la nota luego de terminada la seleccion subir bajar con flechas
+       terminar con Q. 
        Trasponer una zona:ctrl+click en dos lugares definiendo una zona, luego ALT-O y flechas arriba abajo.
        Si la zona abarca un solo comienzo de nota, movera esa nota con su final aunque no este en la zona.
        TRASPONER (todo o una parte o una nota ) DESTRUIRA LA INFORMACION DEL CIFRADO DEL ACORDE, EN VEZ DE 
@@ -1076,11 +1079,15 @@
            y nombres de notas por taclado. (ver mas abajo detalle) Ej 3C y aparecera la nota (una negra C). Si sequiere sacar la
            guia de notas del lado izquierdo pulsar H y para volver a verlo pulsar K.
     2.1.2) Entrada secuencial por mouse . 
-            Como en 2.1.1 llegar a Edit verde. luego click derecho del mouse y aparece el menu
-           luego click izq para elegir  alguna duracion y la nota se dibujara, solo se usa el mouse. 
+            Como en 2.1.1 llegar a Edit verde.Pulsar uan duracion luego click izquierdo del mouse en cualquier lugar de la linea
+            de la nota deseada. Otra forma con menu contextual del mouse: click derecho del mouse sobre la linea de la nota deseada
+            y aparece el menu luego click izq para elegir alguna duracion y la nota se dibujara, solo se usa el mouse. 
            [NO PULSAR CTRL-M sino se pasara a modificacion color rojo] si hubo un error de entrada pasar a ctrl-m 
-            y se podra modificar una nota ingresada anterior mente.
-            
+            y se podra modificar una nota ingresada anterior mente. En cada nota se entra la duracion con este metodo.
+           se puede combinar luego de una entrada con contextual seguir dando click izquiedo de mouse solamente y la misma
+           duracion se seguira usando. las 3 formas puede ncombinarse segun el gusto. Si no responde en algun click volver a 
+           entrar una duracion de 1 a 8 o con el menu contextual.La nota se entrada en todos los casos se escuchara.
+
     2.2) MODIFICACION NOTA EXISTENTE O AGREGAR NUEVA
          MODO EDIT CURSOR Ctrl-M Modificar notas existentes O se ingresan notas nuevas en espacios vacios.
         En MODO EDIT verde pulsar CTRL+M .

@@ -1860,7 +1860,7 @@ EndIf
 ' SIZE ANCHO F5
 ' F5 SCANCODE 63 , F6 64
 ' CAIRO TIENE UNA FUNCION DE ESCALA QUE LA DESCARTE VOLVER A VER ESO
-If  MultiKey (SC_F5)   Then
+If  MultiKey (SC_F5)   Then 
  
  If COMEDIT=LECTURA Then
 '  escala = escala - 0.01
@@ -2274,17 +2274,26 @@ If MultiKey(SC_SPACE) And trabaspace=0   Then 'barra espacio
    trabaspace=1  
    playloop=NO:playloop2=NO
   Print #1," COMEDIT en space play ???",comedit
- If COMEDIT<>LECTURA Then
-   ''Print #1,"ENTRA POR COMEDIT<>LECTURA ???"
+ If COMEDIT<>LECTURA And MouseButtons And 1 Then
+   Print #1,"ENTRA POR COMEDIT<>LECTURA y mouse ???"
     espacio = 1
     DUR=0
     nota=notacur ''nsE 10-05-2021 00:06 probar de nuevo 
     If COMEDIT=MODIFICACION_INSERCION Then  ' ctrl-n
       agregarNota = NO_AGREGAR
     EndIf
+    Exit Do
+ End If 
+ If  (COMEDIT<>LECTURA ) Then
+    Print #1,"ajusta intervalo "
+     pasozona1 = posishow
+     pasozona2 = posishow + ANCHO
+     If pasoZona2 > Maxpos Then
+        pasoZona2= MAxpos
+     EndIf
 
- Else
-   
+ EndIf
+  Print #1,"playb  Cplay MaxPos CANCIONCARGADA ", playb,  Cplay, MaxPos,CANCIONCARGADA     
   If (playb = NO Or Cplay=NO )And (MaxPos> 2  Or Maxgrb > 2) Then ' 23-02-22 ningun play
   '''If playb = NO And play=NO And Cplay=NO And MaxPos > 1 Then ' 23-02-22 ningun play
  
@@ -2422,7 +2431,6 @@ If MultiKey(SC_SPACE) And trabaspace=0   Then 'barra espacio
                  End Select
               EndIf
            Next y1
-FILEFLUSH(-1)
         ElseIf   playb=NO And  CANCIONCARGADA = FALSE  Then
 ' ESTA OPCION NUCA PODRA EJECUTRSE EN PARALELO PORQUE IMPPLICA UN ROLL Y POR ENDE
 ' LLENARA EL ROLL GRAFICO QUE LA CANCION DE RTK ESTA USANDO
@@ -2441,8 +2449,9 @@ Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"
       cierroedit= 0
   EndIf
    
- EndIf  
+ '''EndIf '' fin comedit=lectura/ or /comedit <> lectura and clickmouse  
  Exit Do
+
 EndIf
 
 If MultiKey (SC_Q) Or ResetVariables Then ' con Q se deja de repetir espacios tmbien resetea todo ls banderas de notas
@@ -3010,7 +3019,7 @@ If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
         Exit Do  
  EndIf
  
-  If MultiKey(SC_CONTROL) And MultiKey(SC_HOME) Then
+ If MultiKey(SC_CONTROL) And MultiKey(SC_HOME) Then
   'TODA LA SECUENCIA ENTRA EN UN PANTALLA
  '  anchofig = MaxPos/ANCHO
    anchofig =ANCHO/MaxPos
@@ -3024,7 +3033,7 @@ If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
 
  EndIf
 
-If MultiKey(SC_HOME) Then
+ If MultiKey(SC_HOME) Then
      posicion=1
      posishow=posicion
      Exit Do
@@ -3059,7 +3068,10 @@ If MultiKey(SC_HOME) Then
           borrarZona()
           Exit Do
       EndIf
- EndIf 
+ EndIf
+EndIf ''' fin sc_END en lectura
+''sacado fuera para que se pueda usar en edicion ctrlm y n escuchar las notas
+'' lo mismo haremos con el playAll - ok funciona siempre ..24-12-2025
  If MultiKey(SC_LSHIFT) And MouseButtons And 1 And trasponer=0 Then
      curpos=(mousex -gap1)/anchofig
      notacur=nsE
@@ -3098,7 +3110,7 @@ If MultiKey(SC_HOME) Then
      EndIf
    EndIf
  EndIf
-EndIf ''' fin sc_END en lectura
+
 
  
 ' --------------------------[NUCLEO]---------------------------
@@ -6021,7 +6033,8 @@ ButtonGadget(2,530,30,50,40," OK ")
   If MultiKey(SC_CONTROL) And MouseButtons= 1  Then 
      SelGrupoNotaT=2:indXjreset=0 ''
      Dim As Integer pasox, pasoy, pasonR
-     pasox=(mousex- gap1 )/anchofig  + posishow
+'''no deberia ser nro ticks sin importar el anchode la figura¿?
+     pasox=(mousex- gap1 )/anchofig  + posishow '' porque / anchofig no deberia ser nro ticks sin importar el anchode la figura¿?
      If pasox <=0 Then
         pasox=1
      EndIf 
@@ -6038,7 +6051,7 @@ ButtonGadget(2,530,30,50,40," OK ")
      EndIf
 
      If pasoZona1 > 0 And pasoZona1 <> pasox Then ' posicion 2 de la zona
-        pasoZona2= pasox
+        pasoZona2 = pasox
         pasoNota=0
     '    print #1,"pasoZona2=",pasoZona2;" pasoNota=";pasoNota
         Exit Do

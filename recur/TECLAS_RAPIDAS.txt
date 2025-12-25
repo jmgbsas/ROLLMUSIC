@@ -1,12 +1,21 @@
   TECLAS RAPIDAS COMUNES O MOUSE:
+====================================
   ROLL GRAFICO
-escuchar una nota en lectura:
- ALT+CLICK IZQUIERDO
+escuchar una nota en todo tipo de edicion:
+ SHIFT+CLICK IZQUIERDO,( mayusculas +click izquierdo mouse) sobre la nota 
+--------------------------------------------------------
+BARRA ESPACIO O SPACE (se interrumpe con P)
+  PLAY EN LECTURA DESDE LA POSICION EN DONDE COMIENZ LA VISUALIZACION DE LA SECUENCIA
+  SI ES UNA CANCION SE TOCA TODA LA CANCION
+  EN EDICION CTRL-M Y N. SOLO PLAY DEL TRAMO EN EDICION.
 --------------------------------------------------------
 TRASPONER
-  CTRL-O TRASPONE TODA LA SECUENCIA
-  ALT-O  TRASPONE SOLO UNA ZONA O PEDAZO ELEGIDO DE LA SECUENCIA
-  esta ultima tiene defectos todavia..
+  -CTRL-O TRASPONE TODA LA SECUENCIA con flechas arriba abajo termina con Q
+  -ALT-O  TRASPONE SOLO UNA ZONA O PEDAZO ELEGIDO DE LA SECUENCIA
+    a) SE PUEDE ELEGIR NOTAS AISLADAS DANDO SHIFT+CLICK EN CADA UNA LA CUAL SONARA
+       Y LUEGO FLECHAS ARRIBA ABAJO LAS MUEVE. TERMINAR CON Q.
+    b) se elige una zona o intervalo con ctrl+click de mouse en dos lugares y luego con flechas se mueve
+       todo el intervalo arriba abajo en semitonos. Termina con Q.
 -----------------------------------------------------------
 ENTRADA NOTA MANUAL, OCTAVAS EN VERDE, TECLAS A PULSAR
  DURACION   -> 1 A 8
@@ -102,11 +111,6 @@ J TODA LA SECUENCIA SE ACHICA LO MAS POSIBLE (TIENE DEFECTOS DE LINEAS VERTICALE
 END - VA AL FINAL DE LA SECUENCIA
 -------------------
 DELETE CON UNA ZONA O INTERVALO MARCADO CON CTRL-CLICK, BORRA LAS NOTAS EN ESE INTERVALO
------------------------------
-ALT-O CON UNA ZONA O INTERVALO MARCADO CON CTRL-CLICK, TRASPONE ESA ZONA CON FLECHAS ARRIBA ABAJO 
-      CON SEMITONOS
-----------------------------
-CTRL-O TRASPONE TODA LA SECUENCIA CON FLECHAS ARRIBA ABAJO POR SEMITONOS
 ---------------------------------------------------------
 RUEDA DEL MOUSE. - DESPLAZA HACIA ARRIBA O ABAJO TODO EL GRAFICO MOSTRANDO LAS OTRAS OCTAVAS
 ------------------------------------------------

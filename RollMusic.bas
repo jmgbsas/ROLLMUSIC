@@ -32,7 +32,7 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.35097 trasponer grupo de notas individuales o en rango fixed  "
+nroversion="0.35098 escuchar notas individuales o play del tramo en edicion en ctrl-m o n  "
 '' OK NUEVO ->EN LECTURA SE ESCUCHA UNA NOTA CON LSHIT + CLICK CON LOS PATCHS Y EFECTOS QUE TENGA
 '' fix TRASPONER GRUPO O RANGO TIENN FALLAS MAS EL GRUPO.. 
 ''fix FALTA=> TRASPONER EN GRUPO ALT-O Y LUEGO MARCANDO Y ESCUCHANDO LSHIFT + CLICK 
