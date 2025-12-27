@@ -135,7 +135,8 @@ GadgetToolTip(BOTON_SELECCION_EJECUCION,"Seleccion de Pista para reproducir o ca
 
   SendMessage(GadgetID(PISTASEJECUCIONES),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
 ' BS_PUSHLIKE se hune el boton al seelccioanrlo
-' CHECK PARA ESCUCHAR SONIDO de las ejecuciones desde teclado grabadas
+' CHECK PARA ESCUCHAR SONIDO de las ejecuciones desde teclado grabadas y para
+' marcar pistas para modificar parametros sonido patch eco pan etc abrir ports etc
   cbxejec(1) =  CheckBox_New( 410 ,  40, 20, 20, "",, hwndC) 
   cbxejec(2) =  CheckBox_New( 410 ,  60, 20, 20, "",, hwndC)
   cbxejec(3) =  CheckBox_New( 410 ,  80, 20, 20, "",, hwndC)
@@ -535,8 +536,9 @@ End Select
 '' sin seleccionar portin y portout no se permite abrir midiin teclado
   
 '   Print #1,"deshabilita 1092 y 1093  al inicio >>>>>>>>>>>>>"
-    SetStateMenu(hmessages,1092,1)
-    SetStateMenu(hmessages,1093,1)
+' HABILITAMOS PARA TOCAR SIN GRABAR TAMBIEN COMO AL PRICIPIO LO HACIAMOS
+''    SetStateMenu(hmessages,1092,1)
+''    SetStateMenu(hmessages,1093,1)
 
     SetStateMenu(hmessages,2500,1)
     SetStateMenu(hmessages,2501,1)

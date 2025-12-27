@@ -1,6 +1,6 @@
-    Ayuda Prelimiar Básica RollMusic   version 0.35097
+    Ayuda Prelimiar Básica RollMusic   version 0.35099 
     ====================================================================================
-     trasponer grupo de notas individuales o en rango mejor.
+     0.35099 REPOSICION DE GRABACION DE EJECUCIONES QUE HABIA DEJADO DE FUNCIONAR
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . version 0.35096, falta mucho testeo-.. )
       
@@ -513,30 +513,44 @@
          (debido a los pequeños cambios en reproduccion de listas de pistas de ambos tipos, falta verificar
           que las grabaciones por teclado sigan funcionando bien...test en la proxima version)
           Para ello no hace falta levantar el Roll Grafico.
-          Pasos para Grabar 
+          PROCEDIMIENTO PARA GRABAR EJECUCIONES EN LIMPIO:
+         A) SELECCIONAR EN LISTA DE EJECUCIONES UNA PISTA A GRABAR, PUEDE 
+            QUE NO GRABEMOS Y SOLO QUERRAMOS TOCAR Y ESCUCHAR.
+            CHECK EN COLUMNA 'G', AUTOMATICAMENTE SE CHEQUEARA LA 'S'
+           'G' INDICA GRABAR, 'S' SELECCIONADA PARA ESCUCHAR  
+           LOS CONTROLES DEL PIE DE LA LISTA DE EJECUCIONES FUNCIONARA 
+           SOBRE LA PISTA SELECCIONADA E ILUMINADA POR UN CLICK. 
+         B) LOSPUERTOS MIDI-IN Y MIDI-OUT, EL PROGRAMA LOS ELIGE POR OMISION
+            VERIFICARLOS EN EL MENU "PUERTOS Y PISTAS EJECUCION"
+            1.0 Y 2.0, LUEGO ABRIR EL PUERTO DE SALIDA EN 3.0
+         C) EN LA LISTA DE EJECUCIONES (LA DE LA DERECHA)
+           ABAJO SELECCIONAR UN PATCH O INSTRUMENTO Y DAR OK.O CERRAR
+           LA VENTANA SI LO QUE SE MUESTRA ES EL INSTRUENTO DESEADO, POR 
+           OMISION UN PIANO.
+         D) SELECCIONAR EL CANAL, POR OMISION ESTA EL 1 ELEGIR OTRO SI  SE DESEA
+            Y DAR OK
+         E) SELECCIONAR VOLUMEN AUNQUE EL VOL POR OMISION 90 ESTE BIEN
+            SELECCIONARLO Y ACEPTAR PARA QUE LO TOME..
+         F) PARA ESCUCHAR LO QUE SE TOCA EN EL TECLADO EN EL MENU "REPRODUCIR"
+            PULSAR EL ITEM 3.0 "ABRE Y REPRODUCE PUERTO MIDI-IN..."
+         G) PULSAR BOTON ROJO PARA GRABAR Y PARA TERMINAR EL BOTON NEGRO.
+         H) PARA  VER LA CANTIDAD DE TICKS GRABADOS DAR CLICK AL NOMBRE DE PISTA
+         I) LUEGO PARA ESCUCHAR ASEGURARSE QUE LA COLUMNA 'S' ESTA CHEQUEDA
+            LA PISTA, LA 'G' SE PUEDE DES CHEQUEAR NO LA GRABAREMOS.
 
-         a) Dar check a la pista a grabar en la columna 'G' de la 2da lista de pistas. debajo del menu, el programa
-             solicitara un nombre de pista(sin extension ej (01)-TEMA ).   'Cambiar Tiempo....' 
-             PONER ENTRE PARENTESIS EL NRO DE PISTA (01) (02) ETC ..revisaremos esto... 
-         b) En menu Control  "Puertos de Ejecuciones", seleccionar Puerto MIDI-OUT y puerto MIDI-IN desde donde 
-            se grabara la entrada midi. Abrir el Puerto MIDI-OUT. (para el puerto MIDI-IN hay que marcar con el
-             mouse el nombre de la pista la cual se iluminara, ahora la seleccion es individual sobre el nombre )
-             (lo mismo con el MIDI-IN para grabacion sobre ROLL, iluminar el nombre de la pista, deberemos poner
-              un nombre cosa que debe hacerse hasta ahora se seleccionaba chequeando la casilla de la izquierda) 
-              (***) en modificacion!
-         c) mantener la seleccion en 'G' pulsar en los botones PortSal, canal y Patch en ese orden para finalmente
-             elegir un instrumento si el dispositivo usa Patchs. (siempre pulsar esos 3 botones en ese orden para cualquier
-             pista nueva) de esa forma se graba en el archivo nuevo de esa pista dichos parametros.
-             El canal de salida elige una vez que se halla grabado algo...
-         d) Ir al menu de Control, Elegir el submenu Reproducir y elegir "Reproducir MIDI-IN (teclado) por MIDI-OUT" 
-          La grabacion comenzara al llegar la 1er nota midi,,tocar normalmente, para detener la grabacion pulsar 
-          el boton Parar de Color Negro de esa misma lista y de Ese grupo de 3 botones  (negro rojo verde). 
-         e) Deschequear la columna 'G' y para escuchar lo grabado chequear la columna 'S' y pulsar el Boton Verde Play.
-         f)  Para seguir grabando otra pista escuchando la anterior:
-             Pulsar check en una pista nueva en columna 'G' (deseleccionar cualquier columna en 'S'), elegir PortSal, Patch 
-             o Canal segun corresponda. (si se usan los mismos ports MIDI-OUT y MIDI-IN no hace falta abrirlos de nuevo,
-             si se usan otros abra que seleccionarlos y abrirlos )
-          Se da o mantiene el check en la pista anteriormente grabada en columan 'S' para poder escucharla  (sonido).
+         AL DAR CLICK EN EL NOMBRE DE CADA PISTA VEMOS ARRIBA AL LADO DE LOS BOTONES
+         EL NUMERO DE TICKS DE CADA PISTA.
+         SI QUEREMOS TOCAR EL TECLADO SIN GRABAR Y ESCUCHARNOS, HABRA QUE 
+         DAR CLICK EN LA PISTA A TOCAR, DEBERIA CAMBIAR DE INSTRUMENTO SI NO LO 
+         HACE IR AL MENU "REPRODUCIR" Y DAR CLICK DE NUEVO EN 3.0 "ABRE Y REPRODUCE
+         PUERTO MIDI-IN.
+
+         J)  Para seguir grabando otra pista escuchando la anterior:
+             Pulsar check en una pista nueva en columna 'G' (deseleccionar cualquier PISTA en 'G'), elegir PortSal, Patch 
+             y Canal segun corresponda. (si se usan los mismos ports MIDI-OUT y MIDI-IN no hace falta abrirlos de nuevo,
+             si se usan otros abra que seleccionarlos y abrirlos ),recordar que cada ìsta debera tener un cnal diferente
+             si el dispositivo es el mismo.
+          Se mantiene el check en la pista anteriormente grabada en columan 'S' para poder escucharla  (sonido).
           Al escuchar empezar a tocar al unisono en el momento que se desee en la nueva pista seleccionada con 'G'. 
           Terminar pulsando Stop boton negro.
           Luego para escuchar ambas pistas deschequear la pista grabada en 'G', ninguna pista debe quedar con un 
@@ -551,16 +565,17 @@
           Se ha  sincronizado solo el comienzo de la ejecucion de una cancion manual junto con las ejecuciones. 
           Tambien se puede grabar una pista nueva de ejecucion teniendo un Roll o Track o cancion cargado (no eficiente por ahora),
           se  reproducira la parte manual (roll, track o cancion) ,mientras se graba la nueva pista junto a otras pistas 
-          si las hay, grabadas. (la perfomance baja hay que hacer mas pruebas)
+          si las hay, grabadas. (la perfomance puede bajaa hacen falta mas pruebas)
           Al Cargar Pistas MIDI-IN en el menude Archivo, se cargan todos los archivos *.ejec existentes en ese directorio
           y se abren los puertos de salida que usan esos archivos automaticamente,solo resta chequear con 'S' los
           que se quieran escuchar y darle Reproducir Boton Verde,,,     
-         g) Se puede usar Crear Cancion y abrir un Directorio de cancion para ubicar una ejecucion de teclado
+
+         k) Se puede usar Crear Cancion y abrir un Directorio de cancion para ubicar una ejecucion de teclado
             Para ello se procede igual que al crear o usar un directorio de Cancion y luego abrir Pistas Midi en el menu Archivo
             casi abajo de todo., De ese modo una cancion manual y una ejecucion desde teclado podran estar en un mismo
             directorio.
 
-         h) Cambiar PATCH de una pista de ejecucion por teclado MIDI-IN. con la pista seleccionada para reproducir como
+         l) Cambiar PATCH de una pista de ejecucion por teclado MIDI-IN. con la pista seleccionada para reproducir como
             antes pulsar abajo el boton PATCH, en la ventana que aparece, deseleccionar el que tenga una X dando click 
             para que quede en blanco, luego buscar el instrumento deseado y clickear en el, luego pulsar el boton OK. 
             Lo mismo para PortSAl y Canal, Cada cambio se graba en el archivo.
@@ -569,7 +584,7 @@
          grabar el nombre del dispositivo porque la numeracion de los dispositivos puede cambiar si se cambia el 
          dispositivo default en la PC.
 
-         i) Cargar archivo grabado con ejecuciones por teclado *.ejec , 
+         m) Cargar archivo grabado con ejecuciones por teclado *.ejec , 
            entrar en Menu Archivo por 5.1  "Cargar Pistas Midi-in"
            En ambos casos carga las pistas y abre automaticamente los port MIDI-OUT automaticamente
            Si se desea entrar a tocar por MIDI-IN simultaneamente, se debe abrir el port midi-in previamente
@@ -580,13 +595,13 @@
            como cerrar. (Nota, el formato del encabezado de los archivos cambió. El programa lee en formato 1 o 2
            y al grabar ya queda en version 2. Se notará como lo hacia antes que la segunda vez que se graba 
            cualquier archivo .ejec su tamaño se reduce bastante, elimina lo innecesario.) 
-         j)  agregamos un archivo parametro inicio.txt en directorio de ejecuciones que recuerde que pista estaba
+         n)  agregamos un archivo parametro inicio.txt en directorio de ejecuciones que recuerde que pista estaba
             sonando y cual muteada. 
-         k) Se puede renombrar una pista cargada de ejecuciones, para ello marcar el nombre  de la pista a
+         o) Se puede renombrar una pista cargada de ejecuciones, para ello marcar el nombre  de la pista a
             renombrar con click izquierdo de lmouse hasta que se ilumine y usar el menu archivo 5.2 
             (la cual graba automaticamente) y luego si hay mas modificaciones posteriores en lapista grabar 
             con 5.0, no es necesario durante un rename la grabacion se hace automatica en 5.2
-         l) Convertir  una pista ejec a Roll grafico. se usa la opcion 5.0 del meenu puertos ejecucion,
+         p) Convertir  una pista ejec a Roll grafico. se usa la opcion 5.0 del meenu puertos ejecucion,
             previamente se ilumina la pista  con click y se levanta un Roll Grafico. (si se lo cierra vuelve a crgar ya no pierde los datos)
             Convertir todas las pistas ejec  con un solo click a archivos rtk para una cancion con tracks.
             En el menu puertos ejecucion, el item 

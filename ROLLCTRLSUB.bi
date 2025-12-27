@@ -771,7 +771,7 @@ Sub CTRL1068(hmessages As hmenu)
                     SetStateMenu(hmessages,1064,1)
                     SetStateMenu(hmessages,1065,1)
                     SetStateMenu(hmessages,1066,1)
-                    SetGadgetText(TEXT_TOPE,"        ")
+                   ' SetGadgetText(TEXT_TOPE,"        ")
                      Case 0
                     HabilitarPatrones=3
                     SetStateMenu(hmessages,1068,3)
@@ -888,9 +888,9 @@ Sub CTRL1074() '' Parametros de Roll y Track(0) en memoria
 End Sub
 
 Sub CTRL1092()
-
+' cada vez que cambio el patch debo usar esta rutina de nuevo proque tiene el changueprogram
 ' abrir un midi-in ...con callback
-' tmbie ndeberia abrir el port out para que suene los que entra por midi-in!
+' tmbien deberia abrir el port out para que suene los que entra por midi-in!
 ' eso se hace en abrir midi out
 ' no depende del numero de pista de ejecucion,sino del portin solamente,,,
  '            abrirMIDIin=1
@@ -913,34 +913,24 @@ Sub CTRL1092()
 ' la columna G tiene incidencia en ambas listas la moveremos al centro 
 Dim As UByte portin1092, portout1092
        For  i As Short =1 To 32
-             If  CheckBox_GetCheck( cbxgrab(i))= 1  Then
+             If  CheckBox_GetCheck( cbxgrab(i))= 1  Or CheckBox_GetCheck( cbxejec(i))= 1 Then
                 portin1092  = tocaparam(i).portin ' PREVIAMENTE SELECCIONADO
                 portout1092= tocaparam(i).portout ' PREVIAMENTE SELECCIONADO
-                '''calltoca= i ' 04-06-2022 20-12-2024
                 ntoca=i
                 portsal=portout1092
- 
+                instru=CInt(tocaparam(i).patch)
+                patchsal=instru
+Print #1,"instrumento en abrir midi-in ", instru
+
              'instru, canal, portsal abre ahora distinto para cada pista
 ' el portin y portout podrian ser los mismos pero igual hay que seleccionarlos antes
 ' debo cambiar por toaparam ??? es lo mismo ambos se cargaen el la seleccion
 ' con el mismo valor pmEj(i).xxx=tocaparam(i).xxx
-              ChangeProgram ( tocaparam(i).patch  , tocaparam(i).canal, portout1092)
+              ChangeProgram ( tocaparam(i).patch  , tocaparam(i).canal, tocaparam(i).portout)
                 Exit For  ' termina con el 1er seleccionado solo se toma 1 sola accion
              EndIf
        Next i
-/' lo bore  de mycallback
-        For k As Short =1 To 32 
-           If CheckBox_GetCheck( cbxejec(k))= 1  Then
-              calltoca=k
-Print #1,"DENTRO DE MYCALLBACK k ",k
-Print #1,"tocaparam(k).patch ",tocaparam(k).patch
-Print #1,"tocaparam(k).canal ",tocaparam(k).canal
-Print #1,"tocaparam(k).portout ",tocaparam(k).portout
-              ChangeProgram ( tocaparam(k).patch , tocaparam(k).canal, tocaparam(k).portout)
-              Exit For
-           EndIf
-         Next k 
-'/
+
 Print #1,"listinAbierto( portin1092) ",listinAbierto( portin1092)
 Print #1,"listInCreado(portin1092) ",listInCreado(portin1092) 
        If  listinAbierto( portin1092) = 0 Then
@@ -1021,7 +1011,7 @@ Sub CTRL1200(hmessages As hmenu) ' PORTIN EJEC
 ' portin  'GLOBAL ULTIMO PUERTO IN SELECCIONADO, por omision el cero
 ' si solo hay ejecuciones .....
 ' 25-09-2024 no monitoreaba port de grabacion cbxgrab
-
+Print #1,"CTRL1200  ntkp",ntkp 
 Dim As Integer miport =2, pis=0,num=0,k
 If PISTASEJECSELECCIONADA=1 Then
   For k=1 To 32 
@@ -1043,8 +1033,8 @@ If PISTASEJECSELECCIONADA=1 Then
   pmEj(pis).portin=CUByte(portin) ' evitamos el cero
   tocaparam(pis).portin=pmEj(pis).portin 
   ntoca=pis '20-12-2024
-EndIf
 
+EndIf
 
 
 If PISTASROLLSELECCIONADA=1 Then
@@ -1082,14 +1072,11 @@ Sub CTRL1204(hmessages As hmenu) 'Seleccionar      Puertos MIDI-OUT PARA EJECUCI
 ' seleccion de portout , 1:portout. ntkp:salida
 ' ->  npo: numero port salida
 ' portsin es la cantidad de ports que hay de entrada
-          If PISTASEJECSELECCIONADA=0 Then
-             Exit Sub 
-          EndIf
 Dim pis As Integer 
  pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
                  ntkp =pis
 
-
+Print #1,"PISTA PIS NTKP",PIS,NTKP
 If ntkp=0 Then 
   Exit Sub
 EndIf
@@ -1126,10 +1113,7 @@ Dim As Integer k1=0,k2=0,pis=0
 ' FALTARIA MOSTRAR QUE OUT ESTAN ABIERTOS A DOS COLUMNAS DANDO QUE
 ' PISTAS LO USAN, SI NINGUNA PISTA USA UN PORT OUT PODRIAMOS CERRARLO
 ' AUTOMATICAMENTE?? PULSANDO UN BOTON VEIFICACION PORT OUT
-        If PISTASEJECSELECCIONADA=0 Then
-           Exit Sub 
-        EndIf
- PISTASEJECSELECCIONADA=0
+
  pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
  If pis =0 Then
   Exit Sub
@@ -1195,10 +1179,6 @@ Sub CTRL1206()
 ' las pistas otra cosa seria asignar otro midi-out a la pista sin cerrar
 ' por si lo usa otra pista
 
-     '   If PISTASEJECSELECCIONADA=0 Then
-     '      Exit Sub 
-     '   EndIf
-'PISTASEJECSELECCIONADA=0
 Dim pis As Integer
  pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
  If pis =0 Then
@@ -1513,11 +1493,8 @@ Dim As Integer miport =2
      Exit Sub
   EndIf 
 
-  If PISTASROLLSELECCIONADA=1 Then
-     PISTASROLLSELECCIONADA=0
-     ntk=GetItemListBox(PISTASROLLSELECCIONADA) +1 ' DEVUELVE A PARTIR DE CERO
-     Print #1,"2502 NTK "; ntk
-  EndIf
+  ntk=GetItemListBox(PISTASROLL) +1 ' DEVUELVE A PARTIR DE CERO
+  Print #1,"2502 NTK "; ntk
   If ntk=0 Then 
     Exit Sub
   EndIf
@@ -1558,10 +1535,7 @@ Dim As Integer miport =1
      Exit Sub
   EndIf 
 
-  If PISTASROLLSELECCIONADA=1 Then
-     PISTASROLLSELECCIONADA=0
-     ntk=GetItemListBox(PISTASROLLSELECCIONADA) +1 ' DEVUELVE A PARTIR DE CERO
-  EndIf
+  ntk=GetItemListBox(PISTASROLL) +1 ' DEVUELVE A PARTIR DE CERO
   If ntk=0 Then 
     Exit Sub
   EndIf
@@ -1603,10 +1577,7 @@ Dim As Integer k1,k2
      Exit Sub
   EndIf 
 
-  If PISTASROLLSELECCIONADA=1 Then
-     PISTASROLLSELECCIONADA=0
-     k2=GetItemListBox(PISTASROLLSELECCIONADA) +1 ' DEVUELVE A PARTIR DE CERO
-  EndIf
+  k2=GetItemListBox(PISTASROLL) +1 ' DEVUELVE A PARTIR DE CERO
   If ntk=0 Then 
     Exit Sub
   EndIf

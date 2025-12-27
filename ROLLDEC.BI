@@ -149,8 +149,6 @@ Const DesplegarMenuModifClickDerecho =1
 Const SeleccionarComandoClickIzquierdo = 2
 '----------------------------------------------------
 '/
-Dim Shared As Integer PISTASEJECSELECCIONADA=0
-Dim Shared As Integer PISTASROLLSELECCIONADA=0
 
 Dim HtmlHelpA As Function (hwndCaller As HWND,pszFile As LPCSTR,uCommand As UINT,dwData As DWORD_PTR) As HWND
 Dim HTMLHelp  As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer

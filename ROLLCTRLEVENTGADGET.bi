@@ -147,8 +147,9 @@ Static As Integer millave
          '       Print #1," CLICK EN LISTA FIN "
   EndIf
 
-  If eventnumber()=  PISTASROLL And GrabarPenta=1 Then
-          PISTASROLLSELECCIONADA=1  
+  If eventnumber()=  PISTASROLL Then '''PORQUE SOLO EN GRABAPENTA ??? And GrabarPenta=1 Then
+          PISTASROLLSELECCIONADA=1
+          PISTASEJECSELECCIONADA=0  
   EndIf
  
 '-----------------------------------------------------
@@ -156,29 +157,34 @@ Static As Integer millave
   If eventnumber()=  PISTASEJECUCIONES Then
 ''' ESTE MOUSEBUTTONS AND LEFTBUTTON NO FUNCIONA !!! LA PUTA MADRE 
 '''''          If MOUSEBUTTONS AND LEFTBUTTON  Then 
-                
+             PISTASEJECSELECCIONADA=1 
+             PISTASROLLSELECCIONADA=0  
              print #1,"CLICK lbutton EN LISTA EJECUCIONES ==========="
              Dim item As String
              Dim As Integer ubi1,ubi2
               
              item=GetListBoxText(PISTASEJECUCIONES,GetItemListBox(PISTASEJECUCIONES))
  If item > "" Then 
-             If Len (item) < 24 Then
-               item = item + String( 40-Len(item),32)
-             EndIf
-             Print #1,"ITEM pista ",item
-             item=Trim(item)
+           '  If Len (item) < 24 Then ' son 29 + 4 de un numero que lo sacare (32)
+           '    item = item + String( 40-Len(item),32)
+           '  EndIf
+           '  Print #1,"ITEM pista ",item
+           '  item=Trim(item)
 
      
               ntkp=GetItemListBox(PISTASEJECUCIONES)+1  '''sacarNtk(item) 
                nombre= titulosEj(ntkp)
-              Print #1,"//////ntkp seleccionado el la lista ",ntkp               
+          ''    If tocaparam(ntkp).maxpos > 0 Then
+                 SetGadgetText(TEXT_TOPE, Str(tocaparam(ntkp).maxpos))
+                 ChangeProgram ( tocaparam(ntkp).patch  , tocaparam(ntkp).canal, tocaparam(ntkp).portout)
+          ''    EndIf
+              Print #1,"//////ntkp seleccionado ",ntkp, nombre,tocaparam(ntkp).maxpos,tocaparam(ntkp).patch                
+             
      
 EndIf              
 ''''          EndIf
 ' ESTO NO VA ES DE MENU And eventNumber <> 1010 And EventNumber<> 1012
 
-'''             PISTASEJECSELECCIONADA=1
 '------------------------------
                 
 
@@ -227,12 +233,6 @@ EndIf
          k=0
          jgrb=0:Parar_De_Dibujar=NO 'impide el play  o lo resetea
 
-        '  If PISTASEJECSELECCIONADA=0 Then
-        '      Exit Select 
-        '  EndIf 
-
-        ' If PISTASEJECSELECCIONADA=1 Then
-        '    PISTASEJECSELECCIONADA=0
           For K=1 To 32
            If CheckBox_GetCheck( cbxgrab(k))= 1 Then 
               ntoca=k
@@ -270,7 +270,7 @@ EndIf
              Else
                PlaySound(".\recur\INICIO.wav", 0, SND_FILENAME+SND_NODEFAULT + SND_ASYNC )
              EndIf
-               duracion(Timer, (60/(96*tiempoPatron)) / FactortiempoPatron)
+               duracion(Timer, (60/(tiempoPatron)) / FactortiempoPatron)
            Next im
            threadmetronomo = ThreadCall metronomo()
         EndIf 
@@ -300,14 +300,17 @@ EndIf
          If GrabarEjec=GrabarPistaEjecucion Then
             If pmEj(ntoca).MaxPos > 0 And (GrabarEjec=GrabarPistaEjecucion  Or GrabarEjec=GrabarPatronaDisco ) Then
               Print #1,"//STOP:pmEj(ntoca).MaxPos, GrabarEjec ",pmEj(ntoca).MaxPos,GrabarEjec
-              tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos
-       '         Print #1,"stop MaxPos ",pmEj(ntoca).MaxPos
+              tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos 
+     '         Print #1,"stop MaxPos ",pmEj(ntoca).MaxPos
               GrabarEjec=HabilitaGrabar
               Parar_De_Dibujar=NO
               arrancaPlay=NO
 '' terminar cualquier metrono que este funcionando 
              terminar_metronomo=SI
 'detiene el play de cancion o roll
+' maxgrb lo usamos pues es una pista sola de ejecucion, maxcarga seria si tenemos varias
+' aca muestra la grabacion actual pero cada pista podria tener distinto maxgrb
+' lo vaom a modificar en cada click a la pista.
              Sleep 2
 ' -------cargamos toca
          k=0 
@@ -403,6 +406,7 @@ EndIf
             maxcarga=maxgrb 
          EndIf
          SetGadgetText(TEXT_TOPE, Str(maxcarga)) 
+         Sleep 5000 ' QUIERO VER SI LO LLENA  
 ' para una sola pista grabada el maxgrb es el maxpos de esa pista
          If  maxgrb > 0 And ntoca > 1 Then
            If  maxgrb <  tocap.maxpos Then ' para cada pista se define tocap de nuevo  
@@ -627,16 +631,8 @@ Print #1, "542 GrabarPenta=0"
 ' EN PROCESO...
       If  eventnumber()=BTN_EJEC_PORTSAL Then ' boton PortSal de track cbxnum o ejec cbxejec
           Dim As Integer miport =1, pis=0,num=0', cntpis
-          Print #1,"1 en BTN_EJEC_PORTSAL PISTASEJECSELECCIONADA ";PISTASEJECSELECCIONADA
-    '      If PISTASEJECSELECCIONADA=0 Then
-    '          Exit Select 
-    '      EndIf 
-          Print #1,"2 en BTN_EJEC_PORTSAL"
-    '     If PISTASEJECSELECCIONADA=1 Then
-    '        PISTASEJECSELECCIONADA=0
-            'Dim vec(32) As Integer preparando seleccion multiple
+          Print #1,"1 en BTN_EJEC_PORTSAL"
             pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
-            'cntpis=GetSelCountListBox(PISTASEJECUCIONES,@vec(0)) +1
             Print #1,"en BTN_EJEC_PORTSAL pis ";pis  
             If pis=0 Then ' o cntpis=0
               Exit Select
@@ -650,6 +646,11 @@ Print #1, "542 GrabarPenta=0"
 ' y luego la copiamos en las otras pistas seleccionadas, esto era mas facil
 ' con checkbox o es lo mismo no se siconviene
       ' Si la pista tiene un nombre y tiene datos de ejecucion
+              
+   Print #1,"tocaparam(pis).nombre ",tocaparam(pis).nombre
+   Print #1,"tocaparam(pis).maxpos ",tocaparam(pis).maxpos
+' PRIMERO HAY QUE GRABAR ALGO ENTONCES MAXPOS > 0 MMM Y SI QUIERO TOCAR
+' ESCUCHANDO Y UN PATCH DE CERO??          
              If  tocaparam(pis).nombre  >""  And  tocaparam(pis).maxpos > 0 Then
                  miport=1   ' 1= VA A seleccion port Salida
                  ntkp=pis
@@ -764,39 +765,35 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
 
           Dim As Integer instrum =0, pis=0,num=0
 
-      '    If PISTASEJECSELECCIONADA=0 Then
-      '       Exit Select 
-      '    EndIf 
-
-      '    If PISTASEJECSELECCIONADA=1 Then
-      '       PISTASEJECSELECCIONADA=0
             pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
   
             If pis=0 Then 
               Exit Select
             EndIf
-
+  Print #1,"pis > 0 ",pis
             patchsal=CInt(tocaparam(pis).patch)
-
+            instrum=patchsal            
+  Print #1,"patchsal ",patchsal          
            If  pis >=1 Then  
-          '   If tocaparam(pis).nombre > ""  Then ''''And  tocaparam(pis).maxpos > 0  Then 
+          '   If tocaparam(pis).nombre > ""  Then ''''And  tocaparam(pis).maxpos > 0  Then
+                   If instrum=0 Then instrum=1 EndIf ''por omision 
                    selInstORdenAlfa (instrum)
                     '''thread3 = ThreadCreate(@selInstORdenNum (), CPtr(Any Ptr, instrum))
                    Print #1," pista ejec  nro ",pis
                    tocaparam(pis).patch=CUByte (instrum)
                    pmEj(pis).patch=CUByte (instrum)
-                   ''patchsal=instrum
+                   patchsal=instrum
                    ChangeProgram ( tocaparam(pis).patch , tocaparam(pis).canal, tocaparam(pis).portout)
                    Print #1,"ejecucion patch elegido tocaparam(pis).patch ", tocaparam(pis).patch
 '--------------------------
 ' preparamos para grabar la pista por cambio de patch
               If tocaparam(pis).maxpos > 0 Then
     
-   Print #1, "VA A HACER EL REDIM TOC, pis,maxpos ";pis; " ";tocaparam(pis).maxpos
+   'Print #1, "VA A HACER EL REDIM TOC, pis,maxpos ";pis; " ";tocaparam(pis).maxpos
                   ReDim  toc.trk(1 To tocaparam(pis).maxpos)
-   Print #1, "VINO DE HACER EL REDIM TOC"
-                  Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
-                  Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
+   'Print #1, "VINO DE HACER EL REDIM TOC"
+   '               Print #1,"----------datos almacenados en toc()-------------pista midiin----> ",pis   
+   '               Print #1,"tocaparam(pis).maxpos),ntoca ",tocaparam(pis).maxpos, pis
 ' si cargo dos pistas y grabo una tercera y grabo mas de longitud
 ' de lo que cargue, entonces cancela habria que hacer un redim preserve
 ' de las pistas anteriores si su maxpos es menor                
@@ -822,7 +819,7 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
                 pgmidi.tocap = tocap
                 threadGrabamidi=@pgmidi
                 GrabarMidiIn(pgmidi,pis) ' POR PATCH
-             EndIf
+              EndIf
            EndIf 
       EndIf 
 
@@ -834,12 +831,9 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
 
         Dim As Integer canal =0, pis=0,num=0
 
-      '  If PISTASEJECSELECCIONADA=0 Then
-      '     Exit Select 
-      '  EndIf 
-
-      '  If PISTASEJECSELECCIONADA=1 Then
-      '     PISTASEJECSELECCIONADA=0
+        If PISTASEJECSELECCIONADA=0 Then
+           Exit Select 
+        EndIf 
            pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
 
              
@@ -900,13 +894,11 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
          Dim As Integer miport =1, pis=0,num=0
          cierroport=1 ' asi entra una sola vez,,,
 
-       '   If PISTASROLLSELECCIONADA=0 Then
-       '       Exit Select 
-       '   EndIf 
+          If PISTASROLLSELECCIONADA=0 Then
+              Exit Select 
+          EndIf 
 
-       '  If PISTASROLLSELECCIONADA=1 Then
-       '     PISTASROLLSELECCIONADA=0
-            pis=GetItemListBox(PISTASROLLSELECCIONADA) +1 ' DEVUELVE A PARTIR DE CERO
+            pis=GetItemListBox(PISTASROLL) +1 ' DEVUELVE A PARTIR DE CERO
             ntk=pis
 ' miport=1 estamos seleccionadno port de salida , de entrada es 2 midi in
          '   If  num > 0 Then  ' se chequeop una pista no importa cual
@@ -945,14 +937,12 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
 'Print #1,"EN BTN_ROLL_PATCH" 
          Dim  as Integer num = 0  , instrum =0,k=0
         If GrabarPenta=0 Then             
-        '  If PISTASROLLSELECCIONADA=0 Then
-        '      Exit Select 
-        '  EndIf 
+          If PISTASROLLSELECCIONADA=0 Then
+              Exit Select 
+          EndIf 
 
-        ' If PISTASROLLSELECCIONADA=1 Then
-        '    PISTASROLLSELECCIONADA=0
-            k=GetItemListBox(PISTASROLL) +1 ' DEVUELVE A PARTIR DE CERO
-  
+          k=GetItemListBox(PISTASROLL) +1 ' DEVUELVE A PARTIR DE CERO
+' NO CAMBIA PISTA 0 DE ROLL SOLO A PARTIR DE LA 1 DE UNA CANCION   
             If k=0 Then 
               Exit Select
             EndIf
@@ -1013,12 +1003,10 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
 
       If  eventnumber()=BTN_ROLL_CANAL Then
          Dim  as Integer num = 0  , instrum =0 ,k=0
-       '   If PISTASROLLSELECCIONADA=0 Then
-       '       Exit Select 
-       '   EndIf 
+          If PISTASROLLSELECCIONADA=0 Then
+              Exit Select 
+          EndIf 
 
-       '  If PISTASROLLSELECCIONADA=1 Then
-       '     PISTASROLLSELECCIONADA=0 
             k=GetItemListBox(PISTASROLL) +1 ' DEVUELVE A PARTIR DE CERO
   
             If K=0 Then 

@@ -2765,7 +2765,7 @@ Dim As Integer partes , traba=0
 ' tick mas chico es 0.005208325 (ver [TickChico] en RTMIDIDEC)
 ' ergo divido deltatime por ese valor y obtengo la cantiad de divisiones
 ' que ocupara ese retardo deltatime/TickChico
-
+Print #1,"GrabarEjec =GrabarPistaEjecucion ",GrabarEjec, GrabarPistaEjecucion
   If GrabarEjec =GrabarPistaEjecucion  Then ''graba en la pista seleccioanda
      partes=(deltatime/TickChico) ' o cantidad de Ticks 
      jgrb += 1
@@ -2820,7 +2820,7 @@ On Local Error GoTo fail
     Dim As String  nombreg,nombreconpath
 ' y ntkp de donde vien quien lo ajusta? ntkp debe venir informado!!!
      pathdir=GetPathPart( DirEjecSinBarra)
-
+Print #1,"pathdir GRABARMIDIIN",pathdir
      nombreg =pgmidi.tocap.nombre  ' 23-04-2024
      par.tocap=tocaparam(i1)
      par.tocap2=tocaparam2(i1)
@@ -2849,7 +2849,7 @@ On Local Error GoTo fail
          If kp1=0 Then
             cadenaf=nombreg+".ejec"
          EndIf
-         nombreconpath=NombreCancion+"\"+cadenaf
+         nombreconpath=".\"+cadenaf
          Print #1," va a grabar con path ",nombreconpath
       EndIf
 
@@ -3038,7 +3038,7 @@ Dim  As Integer pista , k
 ' no hay ningun acento solo taps de igual sonido
 Do
    PlaySound(".\recur\RIMSHOT.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
-     duracion(Timer, (60/(96*tiempoPatron)) / FactortiempoPatron) 'jmgtiempo
+     duracion(Timer, (60/(tiempoPatron)) / FactortiempoPatron) 'jmgtiempo
      If terminar_metronomo=1 Then
          Exit Do
      EndIf

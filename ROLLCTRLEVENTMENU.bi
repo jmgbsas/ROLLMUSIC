@@ -197,9 +197,6 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
            Case 1017 'renombrar pista ejecucion y borrado
            Print #1,"Case 1017 GRABA UNO SOLO O TODOS??? NO ES UN LOOP PORQUE HACE LOOP?"
 Print #1,"**********************************************************************"
-         '  If PISTASEJECSELECCIONADA=0 Then
-         '     Exit Select 'ASEGURAMOS UNA SELECCION SINO TOMARA SIEMPRE LA PISTA 1
-         '  EndIf 
            Dim As String nomPista   
 ' VAMOS A USAR GetItemListBox PARA NO NECESITAR DESCHEQUEAR LO CUAL
 ' ES ENGORROSO LO MISMO HAREMOS PARA PORT OUT IN ETC RECORRER LSO CHECK

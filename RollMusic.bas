@@ -32,7 +32,15 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.35098 escuchar notas individuales o play del tramo en edicion en ctrl-m o n  "
+nroversion="0.35099 REPOSICION DE GRABACION DE EJECUCIONES QUE HABIA DEJADO DE FUNCIONAR  "
+'' SEGUIR CON:
+' CORREGIDO: BTN_MIDI_PARAR  AL PARAR GRABACION EJECUCION NO MUESTRA LA MAXPOS SIN EMBARGO AL 
+' CARGAR LO QUE GRABO SE MUESTRA LA MAXGRB O MAXPOS Y ADEMAS SUENA EL PATCH CORRECTO
+' sino suena el piano o nada este problema ya lo tuve una vez se repite pero no tengo
+' registro...
+' PARA TOCAR Y ESCUCHAR UN PATCH NUEVO O  CAMBIARTLO CLICK EN LA PISTA SELECCIONADA 
+' VERIFICAR SELECCION PORTIN PORTOUT LUGO AJUSTAR CANAL Y PATCH... Y RECIEN AHI
+' ABRIR PORT MIDI IN... 
 '' OK NUEVO ->EN LECTURA SE ESCUCHA UNA NOTA CON LSHIT + CLICK CON LOS PATCHS Y EFECTOS QUE TENGA
 '' fix TRASPONER GRUPO O RANGO TIENN FALLAS MAS EL GRUPO.. 
 ''fix FALTA=> TRASPONER EN GRUPO ALT-O Y LUEGO MARCANDO Y ESCUCHANDO LSHIFT + CLICK 
@@ -484,6 +492,7 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
              If tocaparam(k).nombre="" And k= tocatope+1 Then 
               ntoca=k 'ntoca es la  pista ejec que se esta grabando global entera
               If tocaparam(ntoca).nombre ="" Then
+                 CheckBox_SetCheck( cbxejec(k),1) 'automaticamente chequea ejec 26-12-2025
                  CantTicks=CantMin*96*tiempoPatron
                      ReDim (Toca(ntoca).trk ) (1 To CantTicks)  
                                   tocaparam(ntoca).delta=0

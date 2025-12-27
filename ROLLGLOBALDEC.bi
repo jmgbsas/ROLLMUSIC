@@ -1,5 +1,6 @@
 ''ROLLCONTROLDEC CAMBIAMOS DE NOMBRE A ROLLGLOBALDEC
 ' ESTAN EN LOS DOS MODULOS 
+
 Declare Sub EntrarNombreCancion(ByRef NombreCancion As string)
 Declare Sub EntrarNombrePista(ByRef NombrePista As String, hwndC as Hwnd)
 Declare Sub EntrarTeclado ()
@@ -570,7 +571,7 @@ parametros=0
 abrirRollCargaMidi=0
 Common Shared As ubyte patchsal, ritmo
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay,deltaz,guardaposnOffOld
-COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntoca,ntkp,npi,calltoca,npo,canalDeGrabacion,ntkcarga,ntkTAB
+COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntoca,ntkp,npi,npo,canalDeGrabacion,ntkcarga,ntkTAB
 Common SHARED As Integer EstaBarriendoPenta,playb,play,playEj,playSolo
 Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA, VerMenu,MousexNotaElegida,PianoNotaElegida,nsEelegida
 Common Shared As Double STARTMIDI
@@ -615,3 +616,4 @@ Vdebil=42      ' p
 Common Shared As Long PARAR_PLAY_MANUAL ,PARAR_PLAY_EJEC 
 PARAR_PLAY_MANUAL = NO:PARAR_PLAY_EJEC = NO
 Common Shared TipoCompas As UByte
+Dim Shared As Integer PISTASEJECSELECCIONADA=0,PISTASROLLSELECCIONADA=0
