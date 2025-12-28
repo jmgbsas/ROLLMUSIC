@@ -292,7 +292,7 @@ Dim shared As UByte velmidi=0
 ' (y) las 3 duraciones como max ligadas para cada nota.
 Dim Shared filtro As UByte=0
 Dim Shared As UByte nacordeon (1 To 10),nacordeoff (1 To 10),naco=0,naco2=0,terminar_metronomo=0
-Dim Shared As Integer posiacorde=0
+Dim Shared As Integer posiacorde=0, tic=0
 Declare FUNCTION FiguraEquivalente(DURk As double) As ubyte
 Dim Shared As Integer contcode=0,metronomo_si,sonidopista_si
 

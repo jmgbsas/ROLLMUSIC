@@ -1071,4 +1071,14 @@ Print #1,"k, canalsalida  ";k, canalx
  ' MENU DE COMANDOS
          threadCmd = ThreadCall  ejecutarComando (comando)
       EndIf
+   
+      If eventnumber()= BTN_METRONOMO And tic=0 Then
+          terminar_metronomo=0
+          threadmetronomo = ThreadCall metronomo()
+          tic=1 
+      Else
+          terminar_metronomo=1
+          tic=0
+      EndIf
+
 '-------------------------------------------------------

@@ -32,9 +32,12 @@ On Error Goto errorhandler
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
 ' --------------------------------------------
-nroversion="0.35099 REPOSICION DE GRABACION DE EJECUCIONES QUE HABIA DEJADO DE FUNCIONAR  "
+nroversion="0.351 METRONOMO LIBRE PARA ENSAYAR "
+' 
+' ||==> ok listo-> probar que funcionen las grabaciones midi y 
+' ||  no probado-> las conversiones a rtk o roll!!
 '' SEGUIR CON:
-' CORREGIDO: BTN_MIDI_PARAR  AL PARAR GRABACION EJECUCION NO MUESTRA LA MAXPOS SIN EMBARGO AL 
+' ok CORREGIDO: BTN_MIDI_PARAR  AL PARAR GRABACION EJECUCION NO MUESTRA LA MAXPOS SIN EMBARGO AL 
 ' CARGAR LO QUE GRABO SE MUESTRA LA MAXGRB O MAXPOS Y ADEMAS SUENA EL PATCH CORRECTO
 ' sino suena el piano o nada este problema ya lo tuve una vez se repite pero no tengo
 ' registro...
@@ -76,8 +79,6 @@ nroversion="0.35099 REPOSICION DE GRABACION DE EJECUCIONES QUE HABIA DEJADO DE F
 ' DE FORMA QUE TOQUE SOLA FUERA DEL LOOP DE CANCION, TAMBIEN PODRIA HACERSE EN EJECUCIONES!
 ' falta borrar repeticiones!! OK LISTO
 ' 0.3502 ya funciona !! verificar que se graba a disco y se levanta
-' PENDIENTE: -------------------
-' ||==> 351 probar que funcionen las grabaciones midi y las conversiones a rtk o roll!!
 '-------------------------------
 ' IDEA CREAR LOOPS, SU LONGITUD SERA ZONA2 -ZONA1 LASREPETICIONES UN ARCHIVO RTK
 ' PODREMOS PONERLE OTRA EXTENSION PERO ADENTRO UN LOOP O REPETICIONES DENTRO DE UN RTK, 

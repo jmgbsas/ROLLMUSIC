@@ -3040,6 +3040,7 @@ Do
    PlaySound(".\recur\RIMSHOT.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
      duracion(Timer, (60/(tiempoPatron)) / FactortiempoPatron) 'jmgtiempo
      If terminar_metronomo=1 Then
+        terminar_metronomo=0
          Exit Do
      EndIf
       

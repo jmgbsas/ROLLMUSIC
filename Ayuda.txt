@@ -1,6 +1,6 @@
-    Ayuda Prelimiar Básica RollMusic   version 0.35099 
+    Ayuda Prelimiar Básica RollMusic   version 0.351 
     ====================================================================================
-     0.35099 REPOSICION DE GRABACION DE EJECUCIONES QUE HABIA DEJADO DE FUNCIONAR
+     0.351 METRONOMO LIBRE PARA ENSAYAR - ABAJO BOTON [M]
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . version 0.35096, falta mucho testeo-.. )
       
@@ -543,7 +543,15 @@
          SI QUEREMOS TOCAR EL TECLADO SIN GRABAR Y ESCUCHARNOS, HABRA QUE 
          DAR CLICK EN LA PISTA A TOCAR, DEBERIA CAMBIAR DE INSTRUMENTO SI NO LO 
          HACE IR AL MENU "REPRODUCIR" Y DAR CLICK DE NUEVO EN 3.0 "ABRE Y REPRODUCE
-         PUERTO MIDI-IN.
+         PUERTO MIDI-IN. 
+         EN EL MENU 'OPCION' ESTAN LAS OPcIONES 9.0 Y 10.O PARA METRONOMOS 
+         SINCRONIZADOS CON EL COMIENZO DE GRABACION O SEA CON LA 1ER TECLA PULSADA POR
+         EL USUARIO EN EL TECLADO MIDI. 9.0 METRONOMO CONTINUO POR OMISION, CHEQUEADO
+         POR OMISION SI SE PULSA DE NUEVO SE DESCHEQUEA Y SE APAGA.
+         10.0 PARA DAR 4 PULSOS INICIALES PARA QUE EMPIECE A TOCAR EL USARIO.
+         HAY UN METRONOMO LIBRE PARA ENSAYAR ABAJO ENTRE LAS LISTAS ROLL Y EJEC BOTON [M]
+         INICIA Y APAGA EL METRONOMO, LA VELOCIDAD SE AJUSTA EN MENU TIEMPO Y RITMO
+         ITEM 1.0 COMO PARA LOS OTROS SINCRONIZADOS TAMBIEN.
 
          J)  Para seguir grabando otra pista escuchando la anterior:
              Pulsar check en una pista nueva en columna 'G' (deseleccionar cualquier PISTA en 'G'), elegir PortSal, Patch 
@@ -625,7 +633,7 @@
          luego ajustar el nro de repeticiones en el mismo menu de reproducir de la ventana de Control.
          Al grabar las pistas se grabara las repeticiones, para borrar usar el submenu Borrar repetciones.
 
-       3) Grabacion de Ejecuciones directamente sobre Roll GRAFICO, 
+       3) Grabacion de Ejecuciones directamente sobre Roll GRAFICO, [HAY QUE REVIDAR Y ADAPTAR A TICKS]
          ( no se revisó su funcionamiento en Ticks todavia...)
           2DA version faltaria que detecte acordes,
            (ya lo hizo en algun algoritmo distinto a este), el actual funciona para melodias, se anulo

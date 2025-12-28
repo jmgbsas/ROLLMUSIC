@@ -209,7 +209,9 @@ GadgetToolTip(BTN_ROLL_EJECUTAR,"EJECUTAR cancion Tracks, o Grabacion midi Roll 
 ButtonImageGadget(BTN_ROLL_GRABAR_MIDI, 180,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
 GadgetToolTip(BTN_ROLL_GRABAR_MIDI,"GRABAR midi en Roll")
 
-
+ButtonGadget(BTN_METRONOMO,384,690,40,40,"M")
+GadgetToolTip(BTN_METRONOMO,"METRONOMO LIBRE ON/OFF")
+SetGadgetFont(BTN_METRONOMO,CINT(LoadFont("consolas bold",15)))
  'rbparar = RadioButton_New( 450 , 10, 40, 20, "P",BS_LEFTTEXT , hwndC) '65
  'rbgrabar =RadioButton_New( 500 , 10, 40, 20, "G",, hwndC) ' 80
 
