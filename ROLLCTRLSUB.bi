@@ -1,5 +1,5 @@
 
-Sub LLAMA_GRABAR_ROLL()
+Sub LLAMA_GRABAR_ROLL(RESPALDO As STRING)
                '      Print #1," nombre,  ANTES DE LLAMAR GRABARROLL " ;nombre
                      Dim  As Integer errorgrabr=3,intentos=0,length=0
 ' MODELITO DE MANEJO DE ERROR ESTUPIDO DE  ARCHIVO PELOTUDO JAJAJ 
@@ -10,7 +10,7 @@ Sub LLAMA_GRABAR_ROLL()
                        If intentos > 5  Or length > 0 Then ' 5 INTENTOS MAXIMO
                          Exit Do
                        Else
-                         errorgrabr= GrabarRoll ()
+                         errorgrabr= GrabarRoll (RESPALDO)
                       length = FileLen(nombre)
                      Print #1,"tamaño archivo ",length
  
@@ -41,7 +41,7 @@ Sub CTRL1003 ()
    EndIf
 nombre=nombreg
 '' GrabarRoll()
-   LLAMA_GRABAR_ROLL()
+   LLAMA_GRABAR_ROLL("")
   Sleep 1000,1 
 
 End Sub
@@ -59,7 +59,7 @@ Sub CTRL10031 ()
       EndIf
    EndIf
    ''''GrabarRoll()
- LLAMA_GRABAR_ROLL()
+ LLAMA_GRABAR_ROLL("")
    Sleep 1000,1 
 End Sub
 
@@ -594,7 +594,7 @@ Sub CTRL1040 () ' <========== seleccion de instrumento por orden Alfabetico
                   Print #1," nombre, nombreg ANTES DE LLAMAR GRABARROLL " ;nombre,nombreg  
                    
                  ''''GrabarRoll () ' graba roll en edicion, borro todo el undo¿?
-                 LLAMA_GRABAR_ROLL()
+                 LLAMA_GRABAR_ROLL("")
                  Sleep 1000,1 
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
                 EndIf  
@@ -948,6 +948,104 @@ Print #1,"abriendo portin y call back",*nombrein( portin1092 )
               jgrb=0
        End If
      HabilitarMIDIIN=1 ' tengo seleccionado portin
+
+End Sub
+
+Sub MIA ()
+   If MOV_FLAG=1 Then
+      SetTrackBarPos(5,Int(MovieGetCurrentPosition(mov8)/1000000))
+   EndIf
+
+End Sub
+
+Sub CTRL1094() ' REPRODUCIT MEDIA
+
+hwndMEDIA=OpenWindow("MEDIA",700,100,350,350,WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST) 
+ ''CenterWindow(hwndMEDIA)
+
+ 
+ButtonGadget(1,10,280,20,20,"X"):GadgetToolTip(1,"STOP")
+ButtonGadget(2,40,280,20,20,"|>"):GadgetToolTip(2,"PLAY")
+ButtonGadget(3,70,280,20,20,"||"):GadgetToolTip(3,"PAUSE")
+ButtonGadget(6,100,280,20,20,"<<"):GadgetToolTip(6,"Playback speed")
+ButtonGadget(7,130,280,20,20,">>"):GadgetToolTip(7,"Increase the playback speed")
+ButtonGadget(8,160,280,20,20,"+"):GadgetToolTip(8,"Open File")
+ImageGadget(4,6,0,320,240)
+TrackBarGadget(5,5,250,320,20,0,10,TBS_NOTICKS  )
+
+
+SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
+
+Do
+   event=WaitEvent()
+   If Event=EventClose Then
+         If mov8 > 0 Then  
+           FreeMovie(mov8)
+         EndIf
+          mov8=0
+         MOV_FLAG=0 
+         terminar_metronomo=1
+         close_window(hwndMEDIA)
+         Sleep 5  
+         Exit Do
+   EndIf
+   If event=EventGadget Then
+      Select case EventNumber
+         Case 1 
+           If mov8  Then 
+              stopmovie(mov8)
+              MOV_FLAG=3  'DEJA DE SONAR EL METRONOMO PERO SIGUE EL LOOP del metronomo
+           EndIf 
+         Case 2 
+          If mov8 >0 Then 
+                   Playmovie(mov8):SetRateMovie(mov8,1)
+                   MOV_FLAG=1 ' SUENA EL METRONOMO PERO SIGUE EL LOOP del metronomo
+          EndIf
+         Case 3 
+                  If mov8  Then 
+                   Pausemovie(mov8)
+                   MOV_FLAG=3 'DEJA DE SONAR EL METRONOMO PERO SIGUE EL LOOP del metronomo
+                  EndIf
+         case 5
+            If GetAsyncKeyState(1)<0 Then
+               if mov8 Then
+                  MovieSetPositions(mov8,cast(double,getTrackBarPos(5))*1000000,GetEndPosMovie(mov8) )
+               EndIf
+            EndIf
+         Case 6 
+            If mov8 Then SetRateMovie(mov8,GetRateMovie(mov8)-0.01)
+         Case 7 
+            If mov8 Then SetRateMovie(mov8,GetRateMovie(mov8)+0.01)
+         Case 8
+            #ifdef UNICODE
+               Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)|*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1|")          
+            #else 
+               Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)"+Chr(0)+"*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1"+Chr(0))           
+            #EndIf
+            If OFR<>"" Then
+               If mov8 Then
+                  FreeMovie(mov8)
+               EndIf
+               If movie Then
+                  FreeMovie(movie)
+               EndIf
+
+               mov8=loadmovie(GadgetID(4),OFR,0,0,WindowWidth(hwnd)-30,WindowHeight(hwnd)-110)
+               SetTrackBarMaxPos(5,Int(GetEndPosMovie(mov8)/1000000 ))
+               Playmovie(mov8):SetRateMovie(mov8,1)
+               MOV_FLAG=1
+            EndIf
+      End Select
+   EndIf
+   'Sleep 5
+Loop
+
+
+'''terminar_metronomo=1
+''          tic=0
+''SetGadgetstate(BTN_METRONOMO,BTN_LIBERADO)
+
+'threadDetach (threadmedia)
 
 End Sub
 

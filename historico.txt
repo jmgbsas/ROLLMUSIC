@@ -1,3 +1,21 @@
+-01-02-2026 LA COPIA N VECES O MOVER UNA VEZ FUNCIONA despues del final de la secuencia ORIGINAL.
+ QUEDA PENDIENTE LA COPIA DENTRO DE LA SECUENCIA SERIA UNA INSERCION, YA SE HACIA EN VERSION SIN TICKS.
+ QUEDA PARA MSA ADELANTE..POR AHROA SOLO COPIA EN EL FINAL. 0.35107
+-22-01-2026 AGREGAMOS PLAY DE UN WAV O MP3 todavia no sincronizado, EL METRONOMO NO DISPARA VARIOS METRONOMOS MAS
+  AUNQUE LO CLIQUEEEMOS, NI SE APAGA AL MOVER LA VENTANA DE REPRODUCCION DE MEDIA OK
+  corregido batch dejo de andar por los setgadget ok ya anda
+  La copia o movimiento en n vaces no lo hace bien copia 1 o 2 veces la zona de notas
+  seleccionada no funciona bien todavia.
+- 18-01-2026 MARCAMOS final de archivo MaxPos EN GRAFICO,ok
+  suena una vez o pocas veces lentamente las notas con lshift + click, 
+  anda mejor, ok y marca mejor para transporte de grupo...
+  TRASPONER GRUPO DE EJECUCIONES SE DESCARTA SE PONE AVISO AL PIE
+  TRASPONER GRUPO DE MANUALES TENIA PROBLEMAS TOMABA EL OFF1 MAS CERCANO Y NO EL DE DUR
+  I   I  >   >  AL TRASPONER LA SEGUNDA I TOMA EL OFF1  DE LA OTRA
+      I  >   SE ACHICA    CORREGIDO!
+ I          > SE AGRANDA CORREGIDO!
+  Al cerrar la ventana de control y se usó entrada midi para tocar teclado
+  cancelaba ,corregido.
 - 28-12-2025 METRONOMO LIBRE PARA ENSAYAR. BOTON [M] ABAJO.
 - 27-12-2025 0.35099 REPOSICION DE GRABACION DE EJECUCIONES QUE HABIA DEJADO DE FUNCIONAR
   LA LONGITUD DE CADA PISTA SE VE ARRIBA DANDOLE CLICK PROCEDIMIENTO PARA

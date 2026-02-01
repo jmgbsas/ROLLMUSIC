@@ -40,7 +40,9 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 ' Nota: algun dia si quiero midifile intentar usar una libreria de C pura 
 ' C:\IT64\AREAWORKAUX\MIDI-LIBRARY\midilib-master\midilib-master\freeBasic
 #include Once "rollutil.bi"
-
+#inclib "winmm"
+'Declare Function mciSendString(algo As string) As integer
+'''Declare Function WindowsMediaPlayer() As integer
 ' FILE DIALOG adicionales
 'Sub  abrirSecuencia(nf As integer) 
 
@@ -414,7 +416,11 @@ param.Roll=Roll
 param.ubiroll=ubiroll
 param.ubirtk=ubirtk
 
+'--------------TEST
+Print #1,"TEST param.ubiroll ", param.ubiroll 
+Print #1,"TEST titulosTk(0) ", titulosTk(0) 
 
+'-------------
 Dim  As Integer  ctres=1 ' 5 octavas por track
 Dim As Integer lim1 
 
@@ -863,3 +869,5 @@ End Function
 '(where appicon.ico is the name of icon)
 '- Then when compiling program, add appicon.rc in the list of files to compile.
 
+Dim Shared As Integer event,mov8,MOV_FLAG=0, movie
+Dim Shared As HWND  hwndMEDIA

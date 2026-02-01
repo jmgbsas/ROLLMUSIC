@@ -11,8 +11,8 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
    WS_OVERLAPPEDWINDOW Or WS_VISIBLE ,  WS_EX_ACCEPTFILES   )
 ' cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS cancion
 'cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_E,1016) 'CTRL+E ABRIR PISTAS ejecucion
-'' ------TIPS AYUDA EN LA BARRA DE ESTADO
-   StatusBarGadget(BARRA_DE_ESTADO,"CADA TECLA EN ESTA VENTANA DE CONTROL SE PUEDE USAR UNA SOLA VEZ, PARA MAS VECES OPRIMIR Q" )
+''' ------TIPS AYUDA EN LA BARRA DE ESTADO
+'   StatusBarGadget(BARRA_DE_ESTADO,"CADA TECLA EN ESTA VENTANA DE CONTROL SE PUEDE USAR UNA SOLA VEZ, PARA MAS VECES OPRIMIR Q" )
  
   'CenterWindow(hwndC)
 ''UpdateInfoXserver()
@@ -210,6 +210,8 @@ ButtonImageGadget(BTN_ROLL_GRABAR_MIDI, 180,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_
 GadgetToolTip(BTN_ROLL_GRABAR_MIDI,"GRABAR midi en Roll")
 
 ButtonGadget(BTN_METRONOMO,384,690,40,40,"M")
+'''ButtonGadget(BTN_METRONOMO,ANCHO-50,40,40,40,"M")
+
 GadgetToolTip(BTN_METRONOMO,"METRONOMO LIBRE ON/OFF")
 SetGadgetFont(BTN_METRONOMO,CINT(LoadFont("consolas bold",15)))
  'rbparar = RadioButton_New( 450 , 10, 40, 20, "P",BS_LEFTTEXT , hwndC) '65
@@ -422,7 +424,7 @@ MenuItem(10911,MenName6,"2.1 Borrar Repeticiones ")
 
 MenuItem(1092,MenName6,"3.0 Abre y Reproduce Puerto MIDI-IN Ejecucion teclado por MIDI-OUT, SIN GRABAR.")
 MenuItem(1093,MenName6,"4.0 Cierra Puerto MIDI-IN Ejecucion.")
-
+MenuItem(1094,MenName6,"5.0 Abre REproductor de Medios.")
 
 MenuItem(1100,MenName7,"1.0 Usar MARCO de Ventana Para el Gráfico",MF_UNCHECKED)
 MenuItem(1101,MenName7,"2.0 Usar MARCO de Ventana en instancias Gráficas",MF_UNCHECKED)

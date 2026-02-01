@@ -165,15 +165,15 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
    If notaGuia=0 Then '5 feb 2025 
      font= font - 2 ' achicamos notas guias
      cairo_set_font_size (c, font)
-''  t = NotasGuia(semitono) + Str(*octava) + "_[" 
-'' cairo_move_to(c, 0, Penta_y + semitono * inc_Penta- 6)
      If alteracion="bem" Then
-       t = NotasGuia2(semitono) + Str(*po -1) + "_["
+       t = NotasGuia2(semitono) + Str(*po -1) 
      Else 
-       t = NotasGuia(semitono) + Str(*po -1) + "_["
+       t = NotasGuia(semitono) + Str(*po -1) 
+     EndIf
+     If semitono=11 And *po=6 Then
+         t = t  +"<]" '' DO central
      EndIf
      cairo_move_to(c, 0, Penta_y + (semitono+1) * inc_Penta- 6)
-  
      cairo_show_text(c, t)
      font= font + 2  'vuelve al valor anterior...
      cairo_set_font_size (c, font)
@@ -189,6 +189,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
   
 ' ||||||||=============== FOR TICKS ========================>>>>>>>>>>>>>>>>
   For n = posishow To posishow + NroCol 
+
      If posishow + NroCol > CantTicks Then
         Exit For
      EndIf
@@ -303,6 +304,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
  ' *po llega a 3 y cancela porque baja a 3?
 '  ESCRITURA DE NOTAS: ------->
 If n <= pmTk(0).MaxPos Then
+
  If Roll.trk (n,11- semitono  + (*po -1) * 13 ).nota > 0  Or Roll.trk (n,11- semitono +  (*po -1) * 13 ).dur > 0 Or Roll.trk (n,11- semitono +  (*po -1) * 13 ).onoff > 0 Then
      ' print #1,"lugar ",11
 '  10-04-2022 verificar si esto sigue funcionando ÇÇÇÇ colocar esapcios
@@ -420,14 +422,13 @@ If n <= pmTk(0).MaxPos Then
         cairo_move_to(c,gap2 + (ic ) *anchofig +anchofig, Penta_y + 12.5 * inc_Penta )
         t=Str(Compas(n).nro)
         cairo_show_text(c,t)
-      EndIf
+       EndIf
   '   Print #1,"lugar ",16
       If n = pasozona1 Or n =pasoZona2 Then '26-06-2021
          cairo_move_to(c,gap3 + (ic ) *anchofig +anchofig, Penta_y + 13.5 * inc_Penta )
          t="("+ Str(n) + ")"
          cairo_show_text(c,t)
       EndIf
-      
      ' If code > NA Then
      ' Print #1,"mayor que NA,code ", NA,code
      ' EndIf
@@ -458,8 +459,19 @@ If n <= pmTk(0).MaxPos Then
 '''    Exit For ' sale para saltear las nota=0, dur=0 ¿?, estaba mal creo debo mostrar todo
  Else
    ic=ic+1
-   
+'------------
+   If n = MaxPos Then '18-01-2026 final de archivo MaxPos 
+      cairo_move_to(c,gap1 + (ic ) *anchofig +anchofig , Penta_y)
+      cairo_line_to(c,gap1 + (ic ) *anchofig +anchofig, Penta_y + 12 * inc_Penta )
+      cairo_move_to(c,gap3 + (ic ) *anchofig +anchofig, Penta_y + 13.5 * inc_Penta )
+      t=Str(MaxPos)
+      cairo_show_text(c,t)
+   EndIf
+
+'------------      
+
  EndIf
+
 EndIf
    'con ic * 40 es + 32 osea ic * 40 + 32
   
@@ -873,6 +885,8 @@ If MaxPos <=6 Then ' no borra Roll cuando cierro y abro el grafico pero tengo da
  ubiroll=param.ubiroll 
  ubirtk=param.ubirtk
  encancion=param.encancion
+ Print #1,"TEST ROLLLOOP param.ubiroll ",.param.ubiroll
+ Print #1,"titulosTk(0) ", titulosTk(0)
 EndIf
 
 If NombreCancion > "" Then
@@ -1101,6 +1115,7 @@ Else
           If s9 = 1 Then   s9=0 EndIf
           If s10 = 1 Then   s10=0 EndIf
           If s11 = 1 Then  Sleep 500:s11=0 EndIf
+          If suenaunavez=1 Then Sleep 500:suenaunavez=0 EndIf 
           inc_Penta = Int((ALTO -1) /40) - deltaip
 ' ----------------------------------------------------------------------------
           cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nomeafecta
@@ -1668,7 +1683,7 @@ If MultiKey(SC_DOWN) Then  ' el screenevent me pone trasponer en 1 la puta e.sca
  deltaz=1
 ' lareponemos
 ' volver a ajustar el semitono ultimo de roll restando 12
-If s7=0  Then
+If s7=0  And indXjreset > 0 Then
    s7=1
   Dim  As Integer i3=0
 
@@ -1679,23 +1694,24 @@ If s7=0  Then
   Next i3
   indXjresetOld=indXjreset
   indXjreset=0
+  Exit Do
 EndIf
      
      If trasponer=3 Or (trasponer=1 Or trasponer=2 )And SelGrupoNotaT=2 And indicePosOld=0 And  indicePosUltimaGrupo=0 Then
-        Print #1,"0 pulso down screenevent TRASPONER con multikey!"
+     '   Print #1,"0 pulso down screenevent TRASPONER con multikey!"
        If s6=0  Then
           s6=1
-         Print #1," DOWN USA trasponerRoll "   
+    '     Print #1," DOWN USA trasponerRoll "   
          trasponerRoll ( -1,Roll,encancion)
        EndIf   
       While InKey <> "": Wend
        Exit Do
      EndIf 
      If  (trasponer=1 Or trasponer=2) And SelGrupoNotaT=2 And indicePosOld >0  And  indicePosUltimaGrupo > 0 Then
-       Print #1,"1 pulso down screenevent TRASPONER"
+    '   Print #1,"1 pulso down screenevent TRASPONER"
        If s6=0  Then
          s6=1 
-       Print #1," DOWN USA trasponerGrupo " 
+    '   Print #1," DOWN USA trasponerGrupo " 
        trasponerGrupo ( -1, Roll,encancion, indicePosOld, indicePosUltimaGrupo )
        EndIf  
        Exit Do
@@ -1730,7 +1746,7 @@ EndIf
 
 If MultiKey (SC_UP) Then
  deltaz=1
- If s8=0  Then
+ If s8=0  And indXjreset > 0 Then
     s8=1
 
   Dim  As Integer i3=0
@@ -1741,7 +1757,8 @@ If MultiKey (SC_UP) Then
   Next i3
 indXjresetOld=indXjreset
 indXjreset=0
-EndIf
+ Exit Do
+ EndIf
 
 ''''Print #1,"trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo "; trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo
     If trasponer=3 or (trasponer=1 Or trasponer=2) And SelGrupoNotaT=2 And indicePosOld=0 And  indicePosUltimaGrupo=0 Then
@@ -1912,7 +1929,7 @@ If MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
    EndIf
 
    '''GrabarRoll()
-    LLAMA_GRABAR_ROLL()
+    LLAMA_GRABAR_ROLL("")
    Sleep 1000,1 
  Else
    Exit Do 
@@ -2800,7 +2817,7 @@ EndIf
 ' ----------------------FIN NOTAS-------------------------
 
 ' ----------INGRESO DE DURACIONES DE NOTAS -------------
-If COMEDIT<>LECTURA Then  'TERMINA EN 2628
+If COMEDIT<>LECTURA Then  'TERMINA EN 2929
 ' PORQUE LA CONDICION PARAMETROS_ROLL? PARA ESTAR EN COMMEDIT TRUE ES CONDICION ESTAR
 ' EN PARAMETROS_ROOL ES REDUNDATE CREO.....PUEDO ESTAR EL PARAMETROS_ROLL Y EN COMEDIT FALSE 
  If ( menuNew=PARAMETROS_ROLL Or menuNro=PARAMETROS_ROLL) Then  
@@ -3072,15 +3089,23 @@ If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
 EndIf ''' fin sc_END en lectura
 ''sacado fuera para que se pueda usar en edicion ctrlm y n escuchar las notas
 '' lo mismo haremos con el playAll - ok funciona siempre ..24-12-2025
- If MultiKey(SC_LSHIFT) And MouseButtons And 1 And trasponer=0 Then
-     curpos=(mousex -gap1)/anchofig
-     notacur=nsE
-     indicePos=curpos + posishow
+'' LO QUE SIGUE ESTA FUERA DE COMEDIT ES PARA TODO COMEDIT VEREMOS SI CONVIENE
+ If MultiKey(SC_LSHIFT) And MouseButtons And 1 And trasponer=0  And suenaunavez=0 Then
+    Print #1,"SC_LSHIFT) And MouseButtons And 1 And trasponer=0 "
+    Dim As Integer lcurpos,lnotacur
+     lcurpos=(mousex -gap1)/anchofig
+     lnotacur=nsE
+     indicePos=lcurpos + posishow
      nR=PianoNota + SumarnR(PianoNota)
-     resultado= BuscarNota (1,curpos, notacur)
-     indicePos=curpos + posishow
+     resultado= BuscarNota (1,lcurpos, lnotacur)
+     indicePos=lcurpos + posishow
      RollDur=CInt(Roll.trk(indicePos,nR ).dur)
+ Print #1,"RESULTADO  BuscarNota (1,lcurpos, lnotacur) ", resultado
+'PRIMERO SIEMPRE MARCAMOS LA NOTA ONOFF=2 Y SI QUEREMOS MARCAR UN FIN DE NOTA AL FINAL
+' DE LA ZONA HACERLO DESPUES DE MARCAR EL ONOFF=2 
+   
    If resultado=0 Then
+ 
     Dim k1 As UByte 
     k1=CInt(pmTk(0).portout)
     portout=k1
@@ -3103,6 +3128,7 @@ EndIf ''' fin sc_END en lectura
     ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, k1)
     Eco   (1,  pmTk(0).canalsalida,k1)
     Chorus(1,  pmTk(0).canalsalida,k1)
+        suenaunavez=1
         noteon(cubyte(PianoNota),80,pmTk(0).canalsalida,k1,1,1)
         duracion(Timer, relDur(RollDur) )
         Print #1,"RollDur ",RollDur
@@ -3257,7 +3283,7 @@ curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N 
 '--- AUMENTO DE CAPACIDAD DEL VECTOR EN 18000 POSICIONES  3 min 
     If CantTicks - MaxPos < 2000 Then
        print #1,"hace backup....." ' si no hay nombre usa fecha"
-       LLAMA_GRABAR_ROLL()
+       LLAMA_GRABAR_ROLL("")
        ''GrabarRoll() ''hacer un backup !!!
        Sleep 1000,1  
       CantTicks=CantTicks + 10000 ' incremento el tamaño en 18000 posiciones =3 min
@@ -6023,7 +6049,7 @@ ButtonGadget(2,530,30,50,40," OK ")
  ' lockip=0   ' 10-12-2021 wheel no se movia ***JMG OJO JODE INTERLINEADO VER MAS COMENTADO
 
 ' ========================================================  
-' SELECCION DE ZONA PARA TRASPONER NOTAS
+' SELECCION DE ZONA PARA TRASPONER NOTAS SI ESTA MUY CERCA DE UNA NOTA LA BUSCA Y SUENA
 ' SOLO SELECCIONO PASO DESDE HASTA y/o NOTA. 
 ' usaremos tambien (en desarrollo futuro) para borrar un intervalo ya sea de 
 ' la octava elegida o todas las octavas o desde una nota hasta otra ....¿?
@@ -6031,6 +6057,10 @@ ButtonGadget(2,530,30,50,40," OK ")
 ' esto funciona solo en modo lectura asi que lo movere ahi
 
   If MultiKey(SC_CONTROL) And MouseButtons= 1  Then 
+     If numero > 0 Then Exit Do EndIf 'EVITA ENTRAR A DEFINIR ZONA SI YA LA DEFINIO Y SI VOY A PULSAR EN POSINUEVA
+     If pasoZona1 > 0 And pasoZona2 > 0 Then Exit Do EndIf
+' asi evitamos que haga ctrl click cuando deberia dar C+click para copiar
+' si no el programa cancela...
      SelGrupoNotaT=2:indXjreset=0 ''
      Dim As Integer pasox, pasoy, pasonR
 '''no deberia ser nro ticks sin importar el anchode la figura¿?
@@ -6039,6 +6069,22 @@ ButtonGadget(2,530,30,50,40," OK ")
         pasox=1
      EndIf 
      pasoy=nsE
+' ------------- SI ESTA MUY CERCA DE LA NOTA SUENA Y LA TOMA COMO pasoZona
+Dim As Integer lcurpos,lnotacur,  resultado
+     lcurpos=(mousex -gap1)/anchofig
+     lnotacur=nsE
+     resultado= BuscarNota (1,lcurpos, lnotacur) ' +-20 ticks
+     If resultado =0 Then
+        pasox=lcurpos
+' no interesa un sonido exacto de la nota con patch ni duracion solo es una notificacion
+' que se selecciono una nota en su posicion exacta
+       Dim k1 As UByte 
+        k1=CInt(pmTk(0).portout)
+        noteon(cubyte(PianoNota),80,pmTk(0).canalsalida,k1,1,1)
+        duracion(Timer, 1.0 ) '  un seg
+        noteoff(cubyte(PianoNota),pmTk(0).canalsalida,k1,1,1)
+     EndIf 
+'-------------
      'print #1,"pasoy nsE=",pasoy
      If trasponer=1 Then '03-02-2022
        correcciondeNotas(Roll)
@@ -6147,37 +6193,48 @@ If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion si
 ' TRASPOSICION DE UNA SOLA NOTA MARCANDOLA CON NOTA= nota +12 ES NOTA +13 EMPIEZA EN 0
 '========================================================= 
 ' tratremos de ahcerlo solo arrastrando el mouse!
- If MultiKey(SC_LSHIFT ) And MouseButtons And 1 And trasponer=1  Then 'posiciona el cursor 
+ If MultiKey(SC_LSHIFT ) And MouseButtons And 1 And trasponer=1 And suenaunavez=0 Then 'posiciona el cursor 
     ' habilito trasposicion de una sola nota, ejecuta solo con Ctrl-T previo y
     ' las flechas up/down, habilitare dragado tambien 02-07-2021
 '    pasoNota=nsE
    ' Print #1,"MARCAR CON ALT Y nota +12 en UNA NOTA "
+    Dim As Integer lcurpos, lnotacur 
     indicePos=(mousex- gap1 )/anchofig + posishow
     mouseyOld=mousey
 
 '---------------------------para ticks nuevo codigo-----------------
    estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 
     Print #1,"idicePos,estoyEnOctava ",indicePos ,estoyEnOctava
-   curpos=(mousex -gap1)/anchofig '''19-07-2025
+   lcurpos=(mousex -gap1)/anchofig '''19-07-2025
   '' curpos=indicePos - posishow      
-   Print #1, "1 curpos o Col "; curpos 
-   notacur=nsE
+   Print #1, "1 lcurpos o Col "; lcurpos 
+   lnotacur=nsE
    ''nsEelegida=nsE
-   Print #1,"notacur "; notacur  
+   Print #1,"lnotacur "; lnotacur  
  
-   resultado= BuscarNota (1,curpos, notacur)
-  
+   resultado= BuscarNota (1,lcurpos, lnotacur)
+   'Print #1,"BuscarNota resultado,lcurpos,lnotacur ",resultado,lcurpos,lnotacur
+   'fileflush(-1)
+
+    
    If resultado = 1 Then
       Print #1,"BuscarNota sin resultados en mover una nota curpos notacur ",curpos,notacur
+      Exit Do
    Else
-      indicePos=curpos + posishow 
-      Print #1, "(I)indicePos, notacur, curpos,posishow ",indicePos, notacur,curpos, posishow
-      Print #1,"encontro onoff 2 " ,Roll.trk(indicePos, PianoNota+SumarnR(PianoNota)).onoff 
+      indicePos=lcurpos + posishow 
+     ' Print #1, "(I)indicePos, lnotacur, lcurpos,posishow ",indicePos, lnotacur,lcurpos, posishow
+     ' Print #1,"encontro onoff 2 " ,Roll.trk(indicePos, PianoNota+SumarnR(PianoNota)).onoff 
 '------------------------------------------------------------------    
    ' Print #1,"MARCAR CON ALT Y 13 UNA NOTA ,INDICEPOS",indicePos 
 '    grupo de notas seleccionadas poniendo un 13 en nota
      RollNotaOld=RollNota
      nR=PianoNota + SumarnR(PianoNota)
+    If Roll.trk(indicePos,nR ).dur = 185 Then ' trasponer grupo no funciona para ejecuciones
+     StatusBarGadget(BARRA_DE_ESTADO,"EN EJECUCIONES (N) USAR TRASPORTAR NOTAS SEPARADAS EN UN GRUPO DA ERRORES, USE POR ZONA" )
+     SetForegroundWindow(hwndC) 
+      Exit Do 
+    EndIf
+
      'Print #1,"nota off2 encontrada Roll.trk(indicePos,nR ).nota ";Roll.trk(indicePos,nR ).nota
      Roll.trk(indicePos,nR ).nota = Roll.trk(indicePos,nR ).nota + 12 ' marcamos para mover 13 a 24
      'Print #1,"nota off2 SUMADA 12  Roll.trk(indicePos,nR ).nota ";Roll.trk(indicePos,nR ).nota
@@ -6200,19 +6257,40 @@ If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion si
 
 '( note As ubyte, vel As UByte, canal As UByte, portsal As UByte,i1 As Integer)
 ' se escucha la nota a trasponer
-     abrirPortoutEjec(100)
+''     abrirPortoutEjec(100)
+   Dim k1 As UByte 
+    k1=CInt(pmTk(0).portout)
+    portout=k1
+    portsal=portout
+    
+     If InStr(*nombreOut(k1),"Microsoft")>0 Then
+     Else
+     If listoutAbierto( k1) = 0 Then
+        If listoutCreado( k1)=0 Then
+           midiout(k1) = rtmidi_out_create_default ( )
+           listoutCreado( k1)=1 
+        EndIf 
+        open_port midiout(k1),k1, nombreOut(k1)
+        listoutAbierto( k1) = 1
+        Print #1,"abro ",*nombreOut(k1)
+     Else
+      Print #1,"pORT SALIDA YA ABIERTO "
+     EndIf
+
 '     noteon(cubyte(PianoNota),60,1,0,1,1)
 '     duracion(Timer, relDur(RollDurOld) )
 '     noteoff(60,1,0,1,1)
 '----------
+    
     ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, portout)
     Eco   (1,  pmTk(0).canalsalida,portout)
     Chorus(1,  pmTk(0).canalsalida,portout)
+    suenaunavez=1
         noteon(cubyte(PianoNota),80,pmTk(0).canalsalida,portout,1,1)
         duracion(Timer, relDur(RollDurOld) )
         Print #1,"RollDurOld ",RollDurOld
         noteoff(cubyte(PianoNota),pmTk(0).canalsalida,portout,1,1)
-
+    EndIf
 
 '----------
      trasponer=2 ' no deja entrar  de nuevo
@@ -6707,6 +6785,7 @@ estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 ' NUEVA LINEA
  
  If MultiKey(SC_M) And MouseButtons  And 1 And moverZona=0 Then  'mover Zona 
 ' usamos la seleccion de Zona y luego movemos la zona a una posicion dada
+    nota=0
     indicePos=(mousex- gap1 )/anchofig + posishow
     Print #1,"000000>>>> indicePos es posinueva en click+ M ",indicePos 
     moverZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
@@ -6717,9 +6796,13 @@ estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 ' NUEVA LINEA
     Exit Do
  EndIf 
 
- If copiarZona=0 And MouseButtons  And 1 And MultiKey(SC_C)   Then  'copiar  Zona 
+ If copiarZona=0 And MouseButtons  And 1 And MultiKey(SC_C) And pasoZona1 > 0 And pasoZona2 >0   Then  'copiar  Zona 
 ' usamos la seleccion de Zona y luego movemos la zona a una posicion dada
-   ' print #1,"entra a copiar "
+' LAS SELECION LA PODEMOS HACER CON CTRL+CLICK INEXACTA O NO JUSTO SOBRE LAS NOTAS
+' JUSTO SOBRE LAS NOTAS CON LSHIFT+ CLICK
+' LA POSICION EN DONDE COPAIR PUEDE SUER JUSTO ENCIMA DEL FINAL DE SECUENCIA ||
+' Y FUNCIONA BIEN,,, SOLO NO MUETRA EL OFF1 DE LA ULTIMA NOTA COPIADA DEL INTERVALO
+    print #1,"entra a copiar DEBE HACERLO UNA SOLA VEZ"
     nota=0
     indicePos=(mousex- gap1 )/anchofig + posishow
     
@@ -6729,7 +6812,7 @@ estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 ' NUEVA LINEA
   '  Print #1,"VA A COPIAR DESDE POSICION POSishow ",posishow
   '  Print #1,"VA A COPIAR DESDE POSICION mousex ",mousex
     copiarZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
-    If numero=0 Then
+    If numero=0 Then ''SERIA UNA SOLA COPIA
   '  print #1,"entra a copiar numero 0"
      Dim D1 As Integer
        moverZonaRoll(indicePos,Roll,pasozona1,D1)
@@ -6741,29 +6824,36 @@ estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 ' NUEVA LINEA
 '--- AUMENTO DE CAPACIDAD DEL VECTOR EN POSICIONES NECESARIAS
  '  print #1,"DELTA ",delta
     Dim As Integer nuevaspos
-    nuevaspos= indicePos + delta * numero
- '   print #1,"NuevaPos,,", nuevaspos
-      
-    If CantTicks  < nuevaspos  Then
-       LLAMA_GRABAR_ROLL()
+    nuevaspos= indicePos + delta * numero 'puede ser mayor si hay off1 fuera de zona
+    print #1,"NuevaPos,,", nuevaspos
+    Print #1,"copiarZona ",copiarZona  
+    If MaxPos  < nuevaspos  Then
+       LLAMA_GRABAR_ROLL("RESPALDO")
+       Print #1,"copiarZona ",copiarZona
        '''GrabarRoll() ''hacer un backup !!!
        Sleep 1000,1   
   ''    CantTicks= nuevaspos + 18000 ' incremento el tamaño en 1000 posiciones =1 min
 '      print #1,"incremento final de CantTick ", CantTicks 
-      ReDim Preserve (Roll.trk ) (1 To nuevaspos + 18000,NB To NA)
-      ReDim Preserve compas(1 To nuevaspos + 18000)
-      ReDim Preserve (RollAux.trk) (1 To nuevaspos + 18000, NB To NA)
-      ReDim Preserve (Track(ntk).trk)(1 To nuevaspos + 18000,1 To lim3)
-'      print #1,"Redim exitoso"
+      ReDim Preserve (Roll.trk ) (1 To nuevaspos + 20,NB To NA)
+      ReDim Preserve compas(1 To nuevaspos + 20)
+      ReDim Preserve (RollAux.trk) (1 To nuevaspos + 20, NB To NA)
+      ReDim Preserve (Track(ntk).trk)(1 To nuevaspos + 20,1 To lim3)
+      print #1,"Redim exitoso"
+       
     EndIf
- 'print #1,"va a copiar FOR lz,numero de veces ",numero
+ Print #1,"va a copiar FOR lz,numero de veces ",numero
 '---
-    Dim D1 As Integer
+    Dim as Integer D1, veces=numero
+ 
        For lz = 1 To numero
+Print #1,lz;" )///EN FOR ANTES DE COPIAR copiarZona numero ",copiarZona,lz
+Print #1,lz;" ) indicePos, delta, Maxpos ",indicePos, delta, Maxpos
           moverZonaRoll(indicePos,Roll,pasozona1, D1)
-          indicePos=indicePos + delta + D1 '''kkkkkk
-          
+Print #1,lz;" )\\\EN FOR DESPUES DE COPIAR copiarZona numero ",copiarZona,lz
+          indicePos=MaxPos ''+ 6+ D1 '''kkkkkk
+          posn=MaxPos-6
        Next lz 
+       copiarZona=0:numero=0:pasoZona1=0:pasoZona2=0
     EndIf
     Exit Do
  EndIf

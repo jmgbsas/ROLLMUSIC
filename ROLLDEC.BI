@@ -174,7 +174,7 @@ Declare Sub CambiarDim(redi As integer)
 Declare Sub dialogoText(cadena As string)
 Declare Sub velocidades(j as integer)
 Declare Sub playthread()
-Declare Function GrabarRoll () As integer
+Declare Function GrabarRoll (NN As String) As integer
 Declare Sub abrirSecuencia (nf As integer)
 Declare Sub GrabarTrack   (ntk As integer) 
 Declare Sub ActualizarRollyGrabarPistaTrk (funcion As String, nroEjec As integer)
@@ -192,7 +192,7 @@ Declare Function SumarnR (notaPiano As Integer) As Integer
 Declare Function SumarnRk (notaPiano As ubyte) As ubyte
 Declare Sub salir()
 Declare Sub IgualaMidiPlano(externo As integer, ByRef CantEventos  As Integer)
-Declare Sub LLAMA_GRABAR_ROLL()
+Declare Sub LLAMA_GRABAR_ROLL(RESPALDO As String)
  
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
 Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6,notaGuia=0
@@ -201,7 +201,7 @@ alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0,OCTAVAFIJA
 Dim Shared As integer pasoZona2=0,nroRep=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, playloop2=0,SelGrupoNota =0,moverZona=0, copiarZona=0,SelGrupoNotaT =0
-Dim Shared as ubyte  DUR,nota,notacur
+Dim Shared as ubyte  DUR,nota,notacur,suenaunavez=0
 ReDim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t,t2
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld, cursormove,notaoldmidi
@@ -559,7 +559,7 @@ Dim  Shared figura (1 To 190) As ZString  * 4 => _
  "sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sX*+","sH*+","sW*+", _ '154 162
  "sO:+","sP:+","sI:+","sL:+","sF:+","sE:+","sX:+","sH:+","sW:+",_  '163 171 
  "s3O+","s3P+","s3I+","s3L+","s3F+","s3E+","s3X+","s3H+","s3W+", _ '172 180
- "   "," ||",">  "," - "," N ","   ","   ","   ","  "," 0 " } '181 185 , son 185, ahora 190 
+ "   "," ||",">  "," - ","N  ","   ","   ","   ","  "," 0 " } '181 185 , son 185, ahora 190 
 ' la 185 la pondremos como 1er etapa de pasar  de ejecucion a Roll
 ' indicara una nota pero no sabemos su duracion, 2da etapa le pondremos
 ' una duracion cuantificada,,,

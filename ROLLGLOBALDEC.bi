@@ -560,7 +560,7 @@ Common Shared As string pathdir,nombre,DirEjecSinBarra
 common Shared As String NombreCancion,NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado,maxposTope ',pistacreada
 Common Shared As cairo_t  Ptr c, c2
-Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer
+Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer,threadmedia,threadsound
 Screenbuffer=0
 Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal
 Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro,threadKey
@@ -571,7 +571,7 @@ parametros=0
 abrirRollCargaMidi=0
 Common Shared As ubyte patchsal, ritmo
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay,deltaz,guardaposnOffOld
-COMMON Shared As Integer MaxPos,ntk,CPlay, guardopos,ntoca,ntkp,npi,npo,canalDeGrabacion,ntkcarga,ntkTAB
+COMMON Shared As Integer MaxPos,MaxPosOrig,ntk,CPlay, guardopos,ntoca,ntkp,npi,npo,canalDeGrabacion,ntkcarga,ntkTAB
 Common SHARED As Integer EstaBarriendoPenta,playb,play,playEj,playSolo
 Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA, VerMenu,MousexNotaElegida,PianoNotaElegida,nsEelegida
 Common Shared As Double STARTMIDI

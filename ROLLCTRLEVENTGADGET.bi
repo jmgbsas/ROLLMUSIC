@@ -3,7 +3,7 @@ DisableGadget(PISTASROLL,0) 'habilita la pistaroll
 ' include DE ROLLMUSIC.BAS, EVENTC, eventgadget
 ' tiene su scope
 
-       SetForegroundWindow(hwndC) 'kiki
+      ''' SetForegroundWindow(hwndC) 'kiki
 
       ' el codigo anterior que traia de disco esta en notas
 ' TODOS DICEN RUSO Y USA QUE VK_LBUTTON ES 1 PERO CON 1 NO ANDA
@@ -990,7 +990,7 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
               Else
                 If  ROLLCARGADO=TRUE Then
                   'aca graba el roll con patch 
-                  LLAMA_GRABAR_ROLL()
+                  LLAMA_GRABAR_ROLL("")
                  Sleep 1000,1   
 
                 EndIf  
@@ -1036,7 +1036,7 @@ Print #1,"k, canalsalida  ";k, canalx
               Else
                 If  ROLLCARGADO  Then
 '                  'aca graba el roll con patch
-                 LLAMA_GRABAR_ROLL()
+                 LLAMA_GRABAR_ROLL("")
                  Sleep 1000,1 
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
                 EndIf  

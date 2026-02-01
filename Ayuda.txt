@@ -1,8 +1,10 @@
-    Ayuda Prelimiar Básica RollMusic   version 0.351 
+    Ayuda Prelimiar Básica RollMusic   version 0.35107 
     ====================================================================================
-     0.351 METRONOMO LIBRE PARA ENSAYAR - ABAJO BOTON [M]
+     0.35107 varios cambios, el principal copia N veces una zona, el  comienzo de la zona 
+     puede estar exactamente sobre una nota. Por ahora la copia es siembre a partir del final 
+     de la secuencia original. SOLO PARA SECUENCIAS MANUALES
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
-       Y FUNCIONAN BIEN PARA TICKS . version 0.35096, falta mucho testeo-.. )
+       Y FUNCIONAN BIEN PARA TICKS . version 0.35107, falta muchas pruebas.. )
       
      INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
@@ -687,6 +689,10 @@
            antes de cerrar los archivos se podrá guardad en Roll Grafico con {ROLL=>TRACK]
            EFECTOS EN ARCHIVOS EJEC: YA FUNCIONAN AJUSTAR, GRABAR A DISCO LEER DE DISCO,
            ( FALTA EXPORTAR Y REVISAR QUE ESTOS EFECTOS SE PUEDAN LLEVAR A UN ROLL Y A UN RTK 0.349
+      5)  En el menu de Control Reproducir item 5.0 se agrego un reproductor de media con el fin de escuchar
+          una cancion un instrumento grabado en wav o mp3, tambien reproduciria video, pero no es el
+          objetivo por ahora. en el futuro tratremos de sincronizar el comienzo de esta reproduccion
+          con la de una ejecucion y/o una cancion.
 
       V ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
           o ordenar la ejecucion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
@@ -878,6 +884,10 @@
        [  Seleccion de Zona para una accion:
        Ctrl-Click en la 1er posicion de la zona, otro Ctrl-click en la segunda
        posicion, terminar al selecion con Q (borra todas las acciones).
+       SI EL CTRL-CLICK ESTA -20 +20 CERCA DEL COMIENZO DE UNA NOTA SE UBICARA
+       SOBRE ELLA EXACTAMENTE NOTIFICANDOLO CON UN SONIDO. AL ELEGIR LA ZONA UBICAR 
+       TODOS LOS COMIENZOS DE NOTA, NO HACE FALTA ABARCAR EL FINAL DE LA ULTIMA NOTA,
+       QUE TAL VEZ AL HACERLO INCLUIRIA OTRO COMIENZO DE NOTA QUE NO QUEREMOS MODIFICAR.
        Con una zona seleccionada trasponer con ALT-O
        (NO DAR CLICK SOBRE UNA NOTA)  ]
     
@@ -894,17 +904,25 @@
        en el ultimo caso la nota a mover pasa al valor nE=13, al dar 'q' vuelve a su valor
        normal segun su ubicacion nE=1 a nE=12 semitono, 13 indica trasponer para el programa).   
 
+       NOTA [MOVER Y COPIAR FUNCIONA CON SECUENCIAS MANUALES, CON EJECUCIONES CANCELA EN REVISION]
+
        Mover una zona: igual que antes se selecciona las 2  posiciones de la zona a mover
        o puede ser que las 2 posiciones coincidan (movimiento de columna). Luego
-       pulsar M + Click en la posicion donde se requiera mover, puede estar antes de la zona o despues
-       antes del final de la secuencia o despues del final de la secuencia. (ya funciona para Ticks
-       el mover mas halla del finde secuenica)
+       pulsar M + Click en la posicion donde se requiera mover, 
+        [NO FUNCIONA->puede estar antes de la zona o despues antes del final de la secuencia] 
+      o [FUNCIONA]-> despues del final de la secuencia.
+       (ya funciona para Ticks el mover O COPIAR mas halla del fin de secuencia original)
        Nota si movemos una zona en blanco agregara una zona en blanco donde se requiera o borrara
        la zona superponiendo la zona en blanco sobre la region en donde se mueve,
+       Mover solo copia 1 sola vez logicamnete.
 
-       Copiar una zona 1 o mas veces: igual que en mover zona pero no borra la zona original, si entramos
-       una numero N (1,3,15,etc)), antes de C+click , copia N veces esa zona una al lado de la otra 
-       (copia en masa). Undo con ALT-U va borrando por columna de por vez  todas las octavas de la pista.
+       Copiar una zona: 1 o mas veces: igual que en mover zona pero no borra la zona original, si entramos
+       un numero N (1,3,15,etc)), antes de C+click , copia N veces esa zona una al lado de la otra 
+       (copia en masa). La posicion nueva a partir de donde se copiara si se quiere que toque apenas 
+       termina la secuencia original, debe estar por encima de la linea vertical del final de secuencia 
+       o sea  del simbolo || y mejor que sea la 2da linea de ||. 
+ 
+       no probado en TICKS->Undo con ALT-U va borrando por columna de por vez  todas las octavas de la pista.
 
     1.2.1 ) Trasponer una NOTA o un Grupo de Notas con teclas y Clicks de Mouse:
            a) Dar ALT-O como antes habilita la trasposicion

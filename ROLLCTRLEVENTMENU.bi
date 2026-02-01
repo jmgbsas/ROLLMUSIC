@@ -2,7 +2,7 @@
          If NombreCancion > "" And S5=0 Then 
             SetForegroundWindow(hwndC)
          EndIf
-Print #1," ROLLCTRLMENU EventNumber !!! ", EventNumber
+''Print #1," ROLLCTRLMENU EventNumber !!! ", EventNumber
          Select Case EventNumber
             'CON ROLL , SIN ROLL
            Case 1006, 10061   '<=========== CARGAR CANCION con roll, o sin Roll
@@ -166,7 +166,7 @@ Print #1,"usarmarcoins ", usarmarcoins
            TrackaRoll (Track(), ntk , Roll,"case104" ) ' no usa ubirtk
           
            '''GrabarRoll()
-           LLAMA_GRABAR_ROLL()
+           LLAMA_GRABAR_ROLL("")
            Sleep 1000,1 
            SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
@@ -407,7 +407,7 @@ Print #1,"**********************************************************************
                    EndIf
                 Else
                   If MaxPos > 2  And ROLLCARGADO=TRUE  Then
-                    LLAMA_GRABAR_ROLL()
+                    LLAMA_GRABAR_ROLL("")
                /'      Print #1," nombre,  ANTES DE LLAMAR GRABARROLL " ;nombre
                      Dim  As Integer errorgrabr=3,intentos=0,length=0
 ' MODELITO DE MANEJO DE ERROR ESTUPIDO DE  ARCHIVO PELOTUDO JAJAJ 
@@ -471,7 +471,7 @@ Print #1,"**********************************************************************
                  EndIf
               Else
                 If MaxPos > 2  And ROLLCARGADO  Then
-                   LLAMA_GRABAR_ROLL()
+                   LLAMA_GRABAR_ROLL("")
                 EndIf  
               EndIf  
 
@@ -737,7 +737,14 @@ EndIf
 
               EndIf
            Next i
-
+ '-----------------REPRODUTOR DE MEDIOS LO SINCRONIZAREMOS CON EL PLAY DE ROLL O CANCION O EJECUCION--
+            Case 1094 
+            ''agregar una funcion en rollutil.bas ? para llamar a rollmedia.exe?
+ ''' o tratmos de agregar codigo por aca??
+           threadmedia = threadCall  CTRL1094()
+           
+           'SetFocus (hwndMEDIA)
+           SetForegroundWindow(hwndMEDIA)
  '-----------------------------------------------------------------------
            Case 1100 '<======== usar o no, marco de ventana de Roll
 '0 - the menu is active, the checkbox is not selected
@@ -865,10 +872,10 @@ EndIf
               alteracion="sos" ' grabado en grabaLim(1,1).pan  = CUByte(3)
               SetStateMenu(hmessages,1108,3)  
               SetStateMenu(hmessages,1109,0)
-            ' si hay nombre de archivo grabar sino no
+            ' si hay nombre de archivo grabar sino no, HACE RESPALDO
                  
               '''GrabarRoll()
-              LLAMA_GRABAR_ROLL()
+              LLAMA_GRABAR_ROLL("")
        '       Print #1,"armarescla desde 1108"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)

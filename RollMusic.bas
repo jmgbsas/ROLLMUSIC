@@ -9,6 +9,7 @@
 '========================== 
 #include "ROllLoop.bi"
 '==========================
+
 On Error Goto errorhandler
  ' ahora debo traducir las notas a notas de Roll e incorporarlas al vector
  ' las notas  en Roll van de 0 a 11 para el indice son los semitonos, pero se cargan 
@@ -31,9 +32,44 @@ On Error Goto errorhandler
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
+
 ' --------------------------------------------
-nroversion="0.351 METRONOMO LIBRE PARA ENSAYAR "
-' 
+nroversion="0.35107 COPIA N  VECES O MUEVE A PARTIR DEL FINAL DE SECUENCIA SOLO PARA SECUENCIAS MANUALES"
+' PROXIMA VERSION COPIAR Y MOVER ZONA EN secuencia de EJECUCIONES AL FINAL DE LA SECUENCIA., 
+' RECUPERAR ESA FUNCIONALIDAD 
+' (otra version sera una insercion dentro de la secuencia original
+' 1) YA COPIA N VECES, perfecto la posicion nueva para mayor exactitud si se queire
+' que toque apenas termina la secuencia MANUAL original debe estar en la linea del 182
+' o  sea del final de la secuencia indicada por ||  
+' 2) posn=MaxPos-6 podriamos eliminarlo de los parametros.
+' 3) Hay que hilar maa fino lograr que pasozona1 sea la posicion exacta de
+' la 1er nota si se desea ,, pare ello si estamos muy cerca de la nota ,usar buscaNota... y lograr
+' 4) que la posicion nueva pueda ser el 182 mas 1 del fin de secuencia..
+' -> E NUN FUTURO 5) poder mover la copia A derecha O izquierda hasta lograr una posicion exacta
+' deseada..eso es parte de mover dentro de la longitud de la secuencia....
+'-------------------------------
+' corregido batch dejo de andar por los setgadget ok ya anda
+' AGREGAMOS PLAY DE UN WAV O MP3 FALTARIA SINCRONIZAR CON OTROS PLAY,
+' EL METRONOMO NO DISPARA MAS AUNQUE LO CLIQUEEEMOS 
+' NI SE APAGA AL MOVER LA VENTANA DE REPRODUCCION DE MEDIA OK
+'-------------------
+' COPIAR MAS HALLA DEL TAMAÑO DEL VECTOR: SEGUIR
+' EMPEZO A ANDAR  DE NUEVO REPITE LA COPIA VARIAS  VECES USAR CON AUDIO LA DE 3 SEP ROLL
+' DAR CLICK DESPUES DE FINAL DE MAXPOS MAS DE 1300 MAS O MENOS CHEQUEAR SEGUIR!
+'------
+' TRASPONER GRUPO DE JECUCIONES SE DESCARTA SE PONE AVISO AL PIE
+' TRASPONER GRUPO DE MANUALES TENIA PROBLEMAS TOMABA EL OFF1 MAS CERCANO Y NO EL DE DUR
+' I   I  >   >  AL TRASPONER LA SEGUNDA I TOMA EL OFF1  DE LA OTRA
+'     I  >   SE ACHICA    CORREGIDO!
+' I          > SE AGRANDA CORREGIDO!
+' ajuste que suene una vez o pocas veces lentamente las notas con lshift+click, anda mejor, ok
+' 18-01-2026 MARCAMOS final de archivo MaxPos EN GRAFICO,ok
+'-------------------------------
+' --COPIAR Y MOVER ANDAN MAL (no tocar las rutinas auxiliares de trasponer!!)
+' hacer nuevas para copia y mover sino trasponer se rompe preferible duplicar 
+' que andar hciendo algo que sirva para muchas cosas channn
+' indicacion de DO central se elimino final notas guia _[
+' OK ->TRASPONE FINAL SECUENCIA 182  EN CTRL-O
 ' ||==> ok listo-> probar que funcionen las grabaciones midi y 
 ' ||  no probado-> las conversiones a rtk o roll!!
 '' SEGUIR CON:
@@ -172,9 +208,10 @@ acercade = "RollMusic "+ nroVersion +" Jose M Galeano, Buenos Aires Argentina 20
 
  GrabarPenta=0 ' 07-12-2025 buscando porque no suena al crear 
 '------------///// GUI GUI GUI  GUI ///////////////
-
+'' LA GUI SE EJECUTA EN SU PROPIO LOOP APARTE DEL SISTEMA POR ESO LA BARRA DE ESTADO
+'' NO SE PUEDE LLENAR AHI PORQUE SIEMPRE PISA OTROS MENSAJES LA GUI SE REFRESCA
+'' SOLA Y MANDARIA SU MENSAJE
 #include Once "ROLLCTRLGUI.BI"
-
 
 ' SE HABILITAN SI USO 2.0 EN SU CASE
 
@@ -274,11 +311,20 @@ End If
 '---------------veremos si aca anda mejor despues de roolloop 
 'Print #1, "ANTES ROLLCTRLSUB.Bi"
 #Include "ROLLCTRLSUB.Bi"
-'Print #1, "DESPUES ROLLCTRLSUB.Bi"
 '----------------ABRIMOS UN PORTOUT DEFAULT
 abrirPortoutEjec(100)
 
+'' ------TIPS AYUDA EN LA BARRA DE ESTADO
+   If UBIRTK> 0 Or UBIROLL > 0 Then
+   Else
+   StatusBarGadget(BARRA_DE_ESTADO,"CADA TECLA EN ESTA VENTANA DE CONTROL SE PUEDE USAR UNA SOLA VEZ, PARA MAS VECES OPRIMIR Q" )
+   EndIf
+'' LA GUI SE EJECUTA EN SU PROPIO LOOP APARTE DEL SISTEMA POR ESO LA BARRA DE ESTADO
+'' NO SE PUEDE LLENAR AHI PORQUE SIEMPRE PISA OTROS MENSAJES LA GUI SE REFRESCA
+'' SOLA Y MANDARIA SU MENSAJE
+
 '-----------------
+
 Do
 
   COMEDIT=LECTURA
@@ -291,11 +337,12 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
 ' abrirRoll=NO_CARGAR_ROLL no hay orden de abrir Roll 0
 
   If abrirRoll=CARGAR And cargacancion=CARGAR_NO_PUEDE_DIBUJAR Then
+
      abrirRoll=NO_CARGAR
   '   Print #1," ENTRA A CARGAR PISTAS  cargaCancion = ",cargaCancion
      param.encancion=SIN_CANCION
      ResetAllListBox(3)
-     Resetear () 
+     Resetear () ' NO SESETEA EL 0 VA DE 1 A 32
 
       CargarPistasEnCancion ()
       cargariniciotxt(NombreCancion, CANCION)
@@ -317,6 +364,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
       Else
       EstaBarriendoPenta=1 
 Print #1, "///1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
+
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
       clickpista=SI 'abre tab una sola vez seposiciona en psita 1 
       EndIf 
@@ -353,7 +401,7 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
 'Print #1, "IX LLEGA A 337 ANTES LOOP PRINCIPAL " ,  instancia
      
   If instancia = ARG0_EN_LINEA   Then 
-    
+
 'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
  ''win = glfwCreateWindow(800,600,"Track OPENGL" )
 '' Dim ta As Any Ptr = threadcall correwin(win,ta)

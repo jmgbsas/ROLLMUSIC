@@ -931,13 +931,12 @@ i1men=notapMen
 End Sub
 
 Function BuscarNota (ctrl As Integer, ByRef cur1 As Integer,ncur As Integer) As Integer ' en cursor cambiadur u otras el programa se posicionara en la nota mas cercana
-'SOLO SIRVE PARA APLICAR EN CURSOR COMEDIT=TRUE, HBRIA QUE HACER OTRA PARA LECTURA
-' Y FUERA DE CURSOR SI HACE FALTA POR AHORA NO
 ' hace falta para acordes en lectura no le doy pie con bola todavia!!!! 19-07-2025
 ' decidiremos cuanotos ticks de acercamiento en un principio 10
 ' posn1=n+curpos  es x , notacur es y, barreemos un cuadrado ¡ 1 1 semitono y + - 10 curpos
 ' BUSCA OFF 1 O 2 y 190
-Print #1,"ENTRA A BUSCONOTA CUR1 "; cur1; " ncur "; ncur
+''Print #1,"ENTRA A BUSCONOTA CUR1 "; cur1; " ncur "; ncur
+  BuscarNota=1
 If ctrl= 0 Then ' ctrl es cambiadur solo procesa con 1 para evitar otras modificaciones se ajusta en cursor()
   Exit Function
 EndIf
@@ -968,25 +967,25 @@ For x= x1 To x2  'curpos
 '     Print #1," x posn1 "; x, posn1; " estoyEnOctava ";estoyEnOctava; " y ";y
          
       ''' Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1 Or _    
+' AGRAGAMOS FIN DE NOTA OFF1 NO SONARA PERO PODRA MARCAR PASOZONA2 EN ZONA
     If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 2  Or _
-        Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur = 190   Then
+       Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur = 190 Or _
+       Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1  Then
+
 ' encontro ubicacion de nota ,o final sec o un 190 borrar
 '        Print #1,"encontro onoff posn1 "; Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff, posn1
      cur1=posn1-posicion
      ncur=y
     
 
- 'Print #1,"ENCONTRAMOS ON 2 EN CURPOS, NOTACUR "; cur1, ncur
+ 'Print #1,"ENCONTRAMOS ON2 EN CURPOS, NOTACUR "; cur1, ncur
     BuscarNota=0 ' ok
     Exit Function 
     EndIf
  Next y
 Next x
- 'Print #1,"NO ENCONTRAMOS UNA MIERDA "
-
- 'FileFlush(-1)
- BuscarNota=1 ' error
- trasponer=0
+' Print #1,"NO ENCONTRAMOS UNA MIERDA "
+' FileFlush(-1)
 End Function
 Function BuscarOtros (ctrl As Integer, ByRef cur1 As Integer,ncur As Integer) As Integer ' en cursor cambiadur u otras el programa se posicionara en la nota mas cercana
 'SOLO SIRVE PARA APLICAR EN CURSOR COMEDIT=TRUE, HBRIA QUE HACER OTRA PARA LECTURA
@@ -1923,27 +1922,27 @@ Next i1
 End Sub
 
 Sub buscarsuon (k1 As Integer,  midi() As Nproc, nota As UByte, ByRef h2 As Integer, primeron As integer) 
-Print #31," entro a bo  midi(15).volum "; midi(15).volum
+'Print #31," entro a bo  midi(15).volum "; midi(15).volum
 Dim h1 As Integer
  For  h1= k1-1  To primeron  Step  -1
      If midi(h1).nota = nota And  midi(h1).non > 0 And midi(h1).match=1 Then
-        Print #31,"buscarsuon encontro match del on en off "
-      Print #31,"nini del off en curso " ;midi(k1).nini
-      Print #31,"nini del on  que machea  " ;midi(h1).nini
+'        Print #31,"buscarsuon encontro match del on en off "
+'      Print #31,"nini del off en curso " ;midi(k1).nini
+'      Print #31,"nini del on  que machea  " ;midi(h1).nini
       
         midi(h1).dur= midi(k1).nini - midi(h1).nini  'duracion de ON absoluto
 Print #31,"resta dur "; midi(h1).dur
         midi(h1).match=2 : midi(k1).match=2  'matchearon
         midi(k1).dur = midi(h1).dur
         Print #31,"encontro un dur h1 "; midi(h1).dur,h1
-Print #31, "bo midi(h1).j1 ";midi(h1).j1
-Print #31, "bo midi(h1).i1 "; midi(h1).i1
-Print #31, " bo midi(h1).volum "; midi(h1).volum 
+'Print #31, "bo midi(h1).j1 ";midi(h1).j1
+'Print #31, "bo midi(h1).i1 "; midi(h1).i1
+'Print #31, " bo midi(h1).volum "; midi(h1).volum 
         Exit For
      EndIf 
  Next h1
 h2=h1
-Print #31," sale a bo  midi(15).volum "; midi(15).volum
+'Print #31," sale a bo  midi(15).volum "; midi(15).volum
 End Sub
 
 Sub cargarMidiPlano (externo As Integer)
@@ -3845,11 +3844,12 @@ EndIf
    menuNew=PARAMETROS_ROLL
   ' ============================================================= 
   ' BORRAR HACIA Derecha y Ajustar MaxPos a la posicion actual en Edit Lectura
+  ' BORRA HASTA EL FINAL
   '======================================================
-  'el ctrl+click MARCA PASOZONA1 Y LUEGO CLICK sobre -> [Edicion] 
+  'el ctrl+click MARCA PASOZONA1 Y LUEGO CTRL+ALT+CLICK sobre -> [Edicion] 
   If mousex > 91 And mousex < 174  And mousey < 50 Then ' <= MaxPos ajuste a la posicion dada
     cairo_set_source_rgba c, 0, 1, 0, 1
-      If MultiKey(SC_CONTROL ) And MultiKey(SC_ALT ) Or pasozona1 > 0 Then
+      If MultiKey(SC_CONTROL ) And MultiKey(SC_ALT ) And pasozona1 > 0 Then
             If pasoZona1 > 0 Then
                MaxPos=pasozona1 +1
                posn=pasoZona1
@@ -4062,7 +4062,7 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
            Sleep 500,1           
        Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
            ''''GrabarRoll ()
-           LLAMA_GRABAR_ROLL()' intenta varias veces hasta el exito onro 5
+           LLAMA_GRABAR_ROLL("")' intenta varias veces hasta el exito onro 5
         cairo_set_source_rgba c, 0, 1, 0, 1 
            Sleep 500,1 
        EndIf
@@ -4139,11 +4139,13 @@ Sleep 100
        If nombreg = "" Then
           Exit Sub
        Else
-         nombre=nombreg ' nombre  nuevo   
+         Dim punto  As Integer
+         punto=InStr(nombreg,".")
+         nombre=Mid(nombreg,1,punto-1) ' nombre  nuevo o existente sin extension   
        EndIf
         
        ''GrabarRoll()
-       LLAMA_GRABAR_ROLL()
+       LLAMA_GRABAR_ROLL("")
        Sleep 1000,1   
           lockip=2 ' habilita mouse 28-08-2021
        MenuNew=COMANDOS_ARCHIVO
@@ -5531,7 +5533,7 @@ Sub grabaralteracion(ByRef pan As UByte)
 
 End Sub
 
-Function  GrabarRoll ()  As Integer
+Function  GrabarRoll (RESPALDO As String )  As Integer
 
 On Local Error GoTo sale
 ' GRABA ARCHIVOS CON EXTENSION Y FORMATO *.ROLL
@@ -5540,10 +5542,11 @@ On Local Error GoTo sale
 ' el que se esta editando o se carga un nuevo archivo
 ' para roll ntk es siemrpe cero
 ntk=0
-Print #1,"GRABAR ARCHIVO: nombre y nombreg al comienzo "; nombre
+Dim  As String nombrex, nombreorig
+Print #1,"GRABAR ARCHIVO: nombre y BACKUP al comienzo "; nombre, RESPALDO
 Dim  As Integer npl, length
-     If nombre = ""  Then ' backup antes de aumentar el tamano del vector
-        nombre = "Backup"+ Date + ".roll"
+     If nombre = ""  Or RESPALDO="RESPALDO" Then ' backup antes de aumentar el tamano del vector
+        nombrex = "Backup"+ Date + ".roll"
      Else
        npl= InStr(UCase(nombre),".RTK") 
        If npl > 0 Then
@@ -5560,14 +5563,21 @@ Dim  As Integer npl, length
         EndIf
        EndIf 
      EndIf   
-     Print #1,"NOMBRE A GRABAR COMO",nombre
- 
+
     ga=7 
+    If nombrex > "" Then 
+       nombreorig=nombre
+       nombre=nombrex
+    EndIf
+     Print #1,"NOMBRE A GRABAR COMO",nombre
     If  Open (nombre  For Binary Access write As #ga ) > 0 Then   
-    
-        Print #1,"No se puede escribir error "; nombre, GrabarRoll  
+        GrabarRoll=Err
+        Print #1,"No se puede escribir error "; nombre, Err  
         Close ga
         Sleep 1000,1
+        If nombreorig > "" Then
+           nombre=nombreorig
+        EndIf
         Exit Function
     Else
    Print #1,"Se puede escribir en "; nombre
@@ -5792,9 +5802,9 @@ FileFlush (7)
      While InKey <> "": Wend
      Sleep 1000,1
      
-If nombre = "Backup"+ Date + ".roll" Then
-   nombre=""
-EndIf
+'If nombre = "Backup"+ Date + ".roll" Then
+'   nombre=""
+'EndIf
 length = FileLen(nombre)
 If length = 0 Then
   GrabarRoll=4 ' mi error por tamaño 
@@ -6640,7 +6650,7 @@ Print #1, "SELCANAL canalx "; canalx
                      GrabarRollaTrack(0,0)
                Else
                   If ROLLCARGADO=TRUE  Then
-                    LLAMA_GRABAR_ROLL()
+                    LLAMA_GRABAR_ROLL("")
                    ''  GrabarRoll () ' graba roll en edicion, borro todo el undoï¿½?
                   ' no el undo dolo se debe borrar al ahcer nuevo creo
                    Sleep 1000,1 
@@ -7354,18 +7364,27 @@ Dim  As Integer i3
            EndIf
 
 'Sleep 10
-   If teclado=1 Then
-      cancel_callback(midiin(pmEj(ntkp).portin))
-     Dim k1 As Integer
+  If teclado=1 Then
+      Dim k1 As Integer
+      If ntkp > 0 Then
+         cancel_callback(midiin(pmEj(ntkp).portin))
        k1=pmEj(ntkp).portout
     '   Print #1,"midiout ",k1, *nombreOut(k1)
        alloff( pmEj(ntkp).canalsalida,k1 )  
+
+      Else
+         cancel_callback(midiin(0))
+       k1=0
+    '   Print #1,"midiout ",k1, *nombreOut(k1)
+       alloff( 0,0 )  
+
+      EndIf 
+     
        listoutAbierto(k1)=0
        close_port midiout(k1)
        teclado=0
 
    EndIf
-
     ffile=4
 
     If Open (ROLLDIR +"RollMusic.ini" For Output As #ffile) <> 0 Then
@@ -8179,6 +8198,8 @@ End If
 
 
 End Sub
+'---------
+'--------
 '''-///////////// RUTINAS DE VENTANA PRINCIPAL ROLLCONTROL ////////
 ''' empezamos a estructurar un poco .....06- marzo 2024
 '' REVISAR DE NUEVO LAS CONDICIONES DE SALIDA DE SELECT O EXIT DO
