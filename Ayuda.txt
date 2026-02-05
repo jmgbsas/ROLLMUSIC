@@ -1,8 +1,7 @@
-    Ayuda Prelimiar Básica RollMusic   version 0.35107 
+    Ayuda Prelimiar Básica RollMusic   version 0.35108 
     ====================================================================================
-     0.35107 varios cambios, el principal copia N veces una zona, el  comienzo de la zona 
-     puede estar exactamente sobre una nota. Por ahora la copia es siembre a partir del final 
-     de la secuencia original. SOLO PARA SECUENCIAS MANUALES
+     0.35108  COPIA TANTO SECUENCIAS DE EJECUCIONES COMO MANUALES, 1ERA VERSION HACE FALTA
+      MAS PRUEBAS. SE PUDE  DEFINIR UA ZONA EXACTA ENTRE UN COMIENZO DE NOTA HASTA EL FINAL DE OTRA NOTA
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . version 0.35107, falta muchas pruebas.. )
       
@@ -881,6 +880,7 @@
     1.2)  Trasponer todo CON TECLAS SOLAMENTE: CTRL-O habilita la trasposicion, Q la deshabilita.
        una vez habilitada con Flecha-UP sube de a un semitono con cada pulso
        Con Flecha-Down baja un semitono can cada pulso.
+       
        [  Seleccion de Zona para una accion:
        Ctrl-Click en la 1er posicion de la zona, otro Ctrl-click en la segunda
        posicion, terminar al selecion con Q (borra todas las acciones).
@@ -888,6 +888,8 @@
        SOBRE ELLA EXACTAMENTE NOTIFICANDOLO CON UN SONIDO. AL ELEGIR LA ZONA UBICAR 
        TODOS LOS COMIENZOS DE NOTA, NO HACE FALTA ABARCAR EL FINAL DE LA ULTIMA NOTA,
        QUE TAL VEZ AL HACERLO INCLUIRIA OTRO COMIENZO DE NOTA QUE NO QUEREMOS MODIFICAR.
+       SI SE INCLUYE EL FIN DE UNA NOTA COMO FINAL DE LA ZONA ESTA SELECCION TAMBIEN
+       SE ESCUCHARA 
        Con una zona seleccionada trasponer con ALT-O
        (NO DAR CLICK SOBRE UNA NOTA)  ]
     
@@ -904,13 +906,16 @@
        en el ultimo caso la nota a mover pasa al valor nE=13, al dar 'q' vuelve a su valor
        normal segun su ubicacion nE=1 a nE=12 semitono, 13 indica trasponer para el programa).   
 
-       NOTA [MOVER Y COPIAR FUNCIONA CON SECUENCIAS MANUALES, CON EJECUCIONES CANCELA EN REVISION]
+       MOVER Y COPIAR FUNCIONA CON SECUENCIAS MANUALES, Y EJECUCIONES, para toda la secuencia
+       CTRL-O o para un intervalo o zona ALT-O.
+        
 
        Mover una zona: igual que antes se selecciona las 2  posiciones de la zona a mover
        o puede ser que las 2 posiciones coincidan (movimiento de columna). Luego
        pulsar M + Click en la posicion donde se requiera mover, 
-        [NO FUNCIONA->puede estar antes de la zona o despues antes del final de la secuencia] 
-      o [FUNCIONA]-> despues del final de la secuencia.
+        [NO implementado-> antes de la zona o despues pero antes del final de la secuencia
+         o final de archivo MaxPos] 
+      o [FUNCIONA]-> despues del final de la secuencia o del tamaño del archivo MaxPos.
        (ya funciona para Ticks el mover O COPIAR mas halla del fin de secuencia original)
        Nota si movemos una zona en blanco agregara una zona en blanco donde se requiera o borrara
        la zona superponiendo la zona en blanco sobre la region en donde se mueve,
@@ -926,11 +931,12 @@
 
     1.2.1 ) Trasponer una NOTA o un Grupo de Notas con teclas y Clicks de Mouse:
            a) Dar ALT-O como antes habilita la trasposicion
-           b) Dar ALT + click sobre la nota a trasportar, si se desea mas notas seguir dando
-              ALT+Click sobre otras notas. Cada nota sonara confirmando la operacion correcta de seleccion
-           c) Finalmente dar click adonde se desea trasponer,sera un lugar vacio de notas no importa 
+           b) Dar LSHIFT+click (Mayuscula izquierda +click mouse) sobre la nota a trasportar, si se desea 
+              más notas seguir dando LSHIFT+Click sobre otras notas. Cada nota sonara confirmando la operacion 
+              correcta de seleccion
+           c) Finalmente dar CTRL-click adonde se desea trasponer,sera un lugar vacio de notas no importa 
               la posicion horizontal no debe ser exacta pero si cual semitono se elige o nota.
-           d) terminar pulsando Q para finalizar.
+           d) terminar pulsando Q para finalizar. [TIENE ERRORES VER TECLAS_RAPIDAS.TXT EN DIR SUB DIR RECUR]
 
        
     1.3) Recalcular Compas <R>: para ver rápido si las notas ingresadas forman un compás completo normalmente

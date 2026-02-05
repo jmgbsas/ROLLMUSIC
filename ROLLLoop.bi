@@ -424,7 +424,8 @@ If n <= pmTk(0).MaxPos Then
         cairo_show_text(c,t)
        EndIf
   '   Print #1,"lugar ",16
-      If n = pasozona1 Or n =pasoZona2 Then '26-06-2021
+  ' para trasponer por grupo on un ctrl+click en un lugar vertical no mostramos
+      If (n = pasozona1 Or n =pasoZona2 ) And SelGrupoNotaT<>2 Then '26-06-2021
          cairo_move_to(c,gap3 + (ic ) *anchofig +anchofig, Penta_y + 13.5 * inc_Penta )
          t="("+ Str(n) + ")"
          cairo_show_text(c,t)
@@ -1488,13 +1489,13 @@ EndIf
 If  MultiKey(SC_CONTROL) And  MultiKey(SC_MINUS) Then
 'ACHICAR LA PANTALLA HORIZONTALMENTE COMO LO HACEMOS
 'DEBO ACHICAR LA SEPARACION DE LOS ELEMENTOS
-anchofig=anchofig-1
+anchofig=anchofig-anchofig/10
 Exit Do
 EndIf
 If  MultiKey(SC_CONTROL) And  MultiKey(SC_KEYPADPLUS) Then
 'AGRANDAR LA PANTALLA HORIZONTALMENTE COMO LO HACEMOS
 'DEBO ACHICAR LA SEPARACION DE LOS ELEMENTOS
-anchofig=anchofig+1
+anchofig=anchofig+anchofig/10
 Exit Do
 EndIf
 
@@ -1697,8 +1698,10 @@ If s7=0  And indXjreset > 0 Then
   Exit Do
 EndIf
      
-     If trasponer=3 Or (trasponer=1 Or trasponer=2 )And SelGrupoNotaT=2 And indicePosOld=0 And  indicePosUltimaGrupo=0 Then
+     If trasponer=3  Or (trasponer=1 Or trasponer=2 )And SelGrupoNotaT=2 And indicePosOld=0 And  indicePosUltimaGrupo=0 Then
      '   Print #1,"0 pulso down screenevent TRASPONER con multikey!"
+       '' trasponer=3 completo ctrl-o
+' ahora debo separar trasponer por zona y por grupo  
        If s6=0  Then
           s6=1
     '     Print #1," DOWN USA trasponerRoll "   
@@ -1839,7 +1842,7 @@ EndIf
 If MultiKey (SC_F2)  And lockfont=0 Then
 ' escala = escala - 0.01
       
-   anchofig=anchofig - 0.1
+   anchofig=anchofig - anchofig/10
    gap1= anchofig * 6  ' porque tanto era 20
    gap1 = gap1 + 8 
    gap2= (914 * gap1) /1000 ' 74 default
@@ -1860,7 +1863,7 @@ If MultiKey (SC_F2)  And lockfont=0 Then
 EndIf
 
 If MultiKey (SC_F3)  And lockfont=0 Then
-   anchofig=anchofig + 0.1
+   anchofig=anchofig + anchofig/10
    gap1= anchofig * 6 ' era porque tanto 20 '81 default
    gap1=gap1 - 1
    gap2= (914 * gap1) /1000 ' 74 default
@@ -2497,6 +2500,7 @@ EndIf
 pun=0:silen=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
 SelGrupoNota=0:SelGrupoNotaT=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
 deltaip=0:incWheel=0:lockip=0:playloop=0:s6=0:s1=0:indicePosOld=0 :indicePosUltimaGrupo=0
+esEjecucion=0
 'anchofig=35
 'gap1= (anchofig* 2315)/1000  ' 81 default
 'gap2= (914 * gap1) /1000 ' 74 default
@@ -3106,34 +3110,25 @@ EndIf ''' fin sc_END en lectura
    
    If resultado=0 Then
  
-    Dim k1 As UByte 
+    Dim k1 As Integer
     k1=CInt(pmTk(0).portout)
-    portout=k1
-    portsal=portout
-    
-     If InStr(*nombreOut(k1),"Microsoft")>0 Then
-     Else
-     If listoutAbierto( k1) = 0 Then
-        If listoutCreado( k1)=0 Then
-           midiout(k1) = rtmidi_out_create_default ( )
-           listoutCreado( k1)=1 
-        EndIf 
-        open_port midiout(k1),k1, nombreOut(k1)
-        listoutAbierto( k1) = 1
-        Print #1,"abro ",*nombreOut(k1)
-     Else
-      Print #1,"pORT SALIDA YA ABIERTO "
-     EndIf
-    ''kokoko   
-    ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, k1)
-    Eco   (1,  pmTk(0).canalsalida,k1)
-    Chorus(1,  pmTk(0).canalsalida,k1)
+    portout=k1 
+    portsal=CUByte(portout)
+    resultado=CheckPortout(k1)
+    ''kokoko
+    If resultado =0 Then   
+       ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, k1)
+       Eco   (1,  pmTk(0).canalsalida,k1)
+       Chorus(1,  pmTk(0).canalsalida,k1)
         suenaunavez=1
         noteon(cubyte(PianoNota),80,pmTk(0).canalsalida,k1,1,1)
+        If RollDur=185 Then 
+           RollDur=3 
+        EndIf 
         duracion(Timer, relDur(RollDur) )
         Print #1,"RollDur ",RollDur
-        noteoff(cubyte(PianoNota),pmTk(0).canalsalida,k1,1,1)
-     EndIf
+       noteoff(cubyte(PianoNota),pmTk(0).canalsalida,k1,1,1)
+    EndIf  
    EndIf
  EndIf
 
@@ -3975,24 +3970,24 @@ If (ScreenEvent(@e)) Then
       s3=0
       Exit Do       
    EndIf
-   If mousey > 50 And SelGrupoNota=2 And( MouseButtons And 1) Then
-     'vemos si se clickeo un lugar vacio lo que indicara el fin del grupo y el
-     'lugar donde se transportara las notas
-    indicePos=(mousex- gap1 )/anchofig + posishow
-    mouseyOld=mousey
-    estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 
-    curpos=(mousex -gap1)/anchofig '''19-07-2025
-    notacur=nsE
-    resultado= BuscarNota (1,curpos, notacur)
-  
-   If resultado = 1 Then
-      Print #1,"ES UN LUGAR VACION FIN DE GRUPO  ",curpos,notacur
-      SelGrupoNota=3
-    EndIf
-
-
-    
-    EndIf
+''PERTENECIA A TRASPONER GRUPO no anda bien se elimina usar CTRL+click 
+'   If mousey > 50 And SelGrupoNota=2 And( MouseButtons And 1) Then
+'     'vemos si se clickeo un lugar vacio lo que indicara el fin del grupo y el
+'     'lugar donde se transportara las notas(funcion repetida en ctrl+click)
+'    indicePos=(mousex- gap1 )/anchofig + posishow
+'    mouseyOld=mousey
+'    estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 
+'    curpos=(mousex -gap1)/anchofig '''19-07-2025
+'    notacur=nsE
+'   ''' resultado= BuscarNota (1,curpos, notacur)
+'    
+'   If resultado = 1 Then
+'  '    Print #1,"ES UN LUGAR VACION FIN DE GRUPO  ",curpos,notacur
+'      SelGrupoNota=3
+'     ' trasponer sigue en 1 
+'   EndIf
+'   
+'   EndIf
  ' ********************************************************************************
  ' ============================== MOUSE WHEEL =========================== 
  ' ********************************************************************************
@@ -6056,12 +6051,20 @@ ButtonGadget(2,530,30,50,40," OK ")
 ' clave DEVF (desarrollo futuro)
 ' esto funciona solo en modo lectura asi que lo movere ahi
 
-  If MultiKey(SC_CONTROL) And MouseButtons= 1  Then 
+  If MultiKey(SC_CONTROL) And MouseButtons= 1  Then ''controlzona para buscar
+     If SelGrupoNota=2  Then 'ALT-O con grupo
+       correcciondeNotas(Roll) 
+       SelGrupoNota=3':indXjreset=0 'en vez de usar flechas un ctrl+click donde se desea
+       Exit Do
+     EndIf
      If numero > 0 Then Exit Do EndIf 'EVITA ENTRAR A DEFINIR ZONA SI YA LA DEFINIO Y SI VOY A PULSAR EN POSINUEVA
+' el numero es la cntidad de copias y eso va  despues de definir la zona una vez
+' definida numero es >0 y no se permite cambiar nada sino el proceso candela 
+' para eso esta Q para volver a emprezar desde cero.
      If pasoZona1 > 0 And pasoZona2 > 0 Then Exit Do EndIf
 ' asi evitamos que haga ctrl click cuando deberia dar C+click para copiar
 ' si no el programa cancela...
-     SelGrupoNotaT=2:indXjreset=0 ''
+' que el grupo se mueva
      Dim As Integer pasox, pasoy, pasonR
 '''no deberia ser nro ticks sin importar el anchode la figura¿?
      pasox=(mousex- gap1 )/anchofig  + posishow '' porque / anchofig no deberia ser nro ticks sin importar el anchode la figura¿?
@@ -6070,34 +6073,38 @@ ButtonGadget(2,530,30,50,40," OK ")
      EndIf 
      pasoy=nsE
 ' ------------- SI ESTA MUY CERCA DE LA NOTA SUENA Y LA TOMA COMO pasoZona
+'--- BuscarNota tambien detectara si es unasecuencia manual o de ejecucion con N
 Dim As Integer lcurpos,lnotacur,  resultado
      lcurpos=(mousex -gap1)/anchofig
      lnotacur=nsE
      resultado= BuscarNota (1,lcurpos, lnotacur) ' +-20 ticks
      If resultado =0 Then
-        pasox=lcurpos
+        pasox=lcurpos +posishow
 ' no interesa un sonido exacto de la nota con patch ni duracion solo es una notificacion
 ' que se selecciono una nota en su posicion exacta
-       Dim k1 As UByte 
+        Dim k1 As Integer 
         k1=CInt(pmTk(0).portout)
-        noteon(cubyte(PianoNota),80,pmTk(0).canalsalida,k1,1,1)
-        duracion(Timer, 1.0 ) '  un seg
-        noteoff(cubyte(PianoNota),pmTk(0).canalsalida,k1,1,1)
+        resultado=CheckPortout(k1)
+        If resultado=0 Then
+          noteon(cubyte(PianoNota),80,pmTk(0).canalsalida,k1,1,1)
+          duracion(Timer, 1.0 ) '  un seg
+          noteoff(cubyte(PianoNota),pmTk(0).canalsalida,k1,1,1)
+        EndIf
      EndIf 
 '-------------
      'print #1,"pasoy nsE=",pasoy
-     If trasponer=1 Then '03-02-2022
+     If trasponer=1 Then '03-02-2022 sin grupo
        correcciondeNotas(Roll)
      EndIf
      If pasoZona1 = 0 Then  ' selecion 1er posicion de la zona
-        pasoZona1=  pasox ' pos de la 1er ventana
+        pasoZona1=  pasox ' pos de la 1er ventana m lugar lejos de una nota
         pasoNota=0 
        ' print #1,"pasoZona1=",pasoZona1;" pasoNota=";pasoNota
         Exit Do
      EndIf
 
      If pasoZona1 > 0 And pasoZona1 <> pasox Then ' posicion 2 de la zona
-        pasoZona2 = pasox
+        pasoZona2 = pasox ' tratamos de no perder el off1 si justo el off1 es limite de zona
         pasoNota=0
     '    print #1,"pasoZona2=",pasoZona2;" pasoNota=";pasoNota
         Exit Do
@@ -6176,23 +6183,22 @@ Dim As Integer lcurpos,lnotacur,  resultado
    ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click
 
  EndIf 
- If  MultiKey(SC_ALT) And (SC_O)Then 'con rango o zona
+ If  MultiKey(SC_ALT) And (SC_O)Then 'con rango o zona // O TRASPONER GRUPO
       If trasponer=0  Then
          trasponer=1
-       EndIf  
+      EndIf  
  EndIf
 If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion sin rango con mouse
-
       If trasponer=0  Then
-         trasponer= 3
-       EndIf  
+         trasponer=3
+      EndIf  
    ' ojo con los Exit Do si por defautl entra al if y hace exit do 
    ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click'
  EndIf
  
 ' TRASPOSICION DE UNA SOLA NOTA MARCANDOLA CON NOTA= nota +12 ES NOTA +13 EMPIEZA EN 0
 '========================================================= 
-' tratremos de ahcerlo solo arrastrando el mouse!
+' tratremos de ahcerlo solo arrastrando el mouse! TRASPONERGRUPO
  If MultiKey(SC_LSHIFT ) And MouseButtons And 1 And trasponer=1 And suenaunavez=0 Then 'posiciona el cursor 
     ' habilito trasposicion de una sola nota, ejecuta solo con Ctrl-T previo y
     ' las flechas up/down, habilitare dragado tambien 02-07-2021
@@ -6211,8 +6217,9 @@ If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion si
    lnotacur=nsE
    ''nsEelegida=nsE
    Print #1,"lnotacur "; lnotacur  
- 
+
    resultado= BuscarNota (1,lcurpos, lnotacur)
+
    'Print #1,"BuscarNota resultado,lcurpos,lnotacur ",resultado,lcurpos,lnotacur
    'fileflush(-1)
 
@@ -6229,11 +6236,11 @@ If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion si
 '    grupo de notas seleccionadas poniendo un 13 en nota
      RollNotaOld=RollNota
      nR=PianoNota + SumarnR(PianoNota)
-    If Roll.trk(indicePos,nR ).dur = 185 Then ' trasponer grupo no funciona para ejecuciones
-     StatusBarGadget(BARRA_DE_ESTADO,"EN EJECUCIONES (N) USAR TRASPORTAR NOTAS SEPARADAS EN UN GRUPO DA ERRORES, USE POR ZONA" )
-     SetForegroundWindow(hwndC) 
-      Exit Do 
-    EndIf
+ '   If Roll.trk(indicePos,nR ).dur = 185 Then ' trasponer grupo no funciona para ejecuciones
+ '    StatusBarGadget(BARRA_DE_ESTADO,"EN EJECUCIONES (N) USAR TRASPORTAR NOTAS SEPARADAS EN UN GRUPO DA ERRORES, USE POR ZONA" )
+ '    SetForegroundWindow(hwndC) 
+ '     Exit Do 
+ '   EndIf
 
      'Print #1,"nota off2 encontrada Roll.trk(indicePos,nR ).nota ";Roll.trk(indicePos,nR ).nota
      Roll.trk(indicePos,nR ).nota = Roll.trk(indicePos,nR ).nota + 12 ' marcamos para mover 13 a 24
@@ -6253,47 +6260,31 @@ If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion si
 'posion nR y borrandola de la nr Old lo mismo con el off1 off2 y el resto!!
 
   ' Print #1,"MARCAR CON ALT Y 13   nR ", nR
-     SelGrupoNota =1
+    SelGrupoNota =1      
 
 '( note As ubyte, vel As UByte, canal As UByte, portsal As UByte,i1 As Integer)
 ' se escucha la nota a trasponer
 ''     abrirPortoutEjec(100)
-   Dim k1 As UByte 
+   Dim k1 As Integer 
     k1=CInt(pmTk(0).portout)
     portout=k1
-    portsal=portout
-    
-     If InStr(*nombreOut(k1),"Microsoft")>0 Then
-     Else
-     If listoutAbierto( k1) = 0 Then
-        If listoutCreado( k1)=0 Then
-           midiout(k1) = rtmidi_out_create_default ( )
-           listoutCreado( k1)=1 
-        EndIf 
-        open_port midiout(k1),k1, nombreOut(k1)
-        listoutAbierto( k1) = 1
-        Print #1,"abro ",*nombreOut(k1)
-     Else
-      Print #1,"pORT SALIDA YA ABIERTO "
-     EndIf
-
-'     noteon(cubyte(PianoNota),60,1,0,1,1)
-'     duracion(Timer, relDur(RollDurOld) )
-'     noteoff(60,1,0,1,1)
+    portsal=CUByte(portout)
+    resultado=CheckPortout(k1)
 '----------
-    
-    ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, portout)
-    Eco   (1,  pmTk(0).canalsalida,portout)
-    Chorus(1,  pmTk(0).canalsalida,portout)
-    suenaunavez=1
-        noteon(cubyte(PianoNota),80,pmTk(0).canalsalida,portout,1,1)
-        duracion(Timer, relDur(RollDurOld) )
-        Print #1,"RollDurOld ",RollDurOld
-        noteoff(cubyte(PianoNota),pmTk(0).canalsalida,portout,1,1)
-    EndIf
+       If resultado =0 Then
+          ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, portout)
+          Eco   (1,  pmTk(0).canalsalida,portout)
+          Chorus(1,  pmTk(0).canalsalida,portout)
+          suenaunavez=1
+          noteon(cubyte(PianoNota),80,pmTk(0).canalsalida,portout,1,1)
+          duracion(Timer, relDur(RollDurOld) )
+          Print #1,"RollDurOld ",RollDurOld
+          noteoff(cubyte(PianoNota),pmTk(0).canalsalida,portout,1,1)
+       EndIf
+
 
 '----------
-     trasponer=2 ' no deja entrar  de nuevo
+     trasponer=2 ' no deja entrar  de nuevo 
      Print #1,"////trasponer=2 -> SelGrupoNota ",SelGrupoNota  
    EndIf     
  EndIf 
@@ -6309,7 +6300,7 @@ If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion si
          SelGrupoNota=2 ' asi solo ejecuta una sola vez
          SelGrupoNotaT=2
      EndIf
-     trasponer=1
+     trasponer=1 ' HABILITA DE NUEVO PARA MARCAR OTRAS NOTAS DEL GRUPO
  EndIf
 ''  lurgo al detectar RELEASE del click izquierdo 
 ''   If mousey > 50 And SelGrupoNota=2 And( MouseButtons And 1) Then
@@ -6791,7 +6782,8 @@ estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 ' NUEVA LINEA
     moverZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
     If pasozona1 =0 Then pasozona1=1 EndIf
     Dim d1 As Integer
-    moverZonaRoll(indicePos,Roll,pasozona1, d1)
+    'variable  esEjecucion=0  y 1 quedo definida por si hay diferencias algun dia
+     moverZonaRoll(indicePos,Roll,pasozona1, d1)
    ''' curpos=posishow-1 ' 26-10-2021 jmg
     Exit Do
  EndIf 
@@ -6812,10 +6804,13 @@ estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 ' NUEVA LINEA
   '  Print #1,"VA A COPIAR DESDE POSICION POSishow ",posishow
   '  Print #1,"VA A COPIAR DESDE POSICION mousex ",mousex
     copiarZona=1 ' solo mueve 1 vez hasta el proximo pulsado de Q evita borrado
-    If numero=0 Then ''SERIA UNA SOLA COPIA
+    If numero=0  Then ''SERIA UNA SOLA COPIA
   '  print #1,"entra a copiar numero 0"
-     Dim D1 As Integer
-       moverZonaRoll(indicePos,Roll,pasozona1,D1)
+      Dim D1 As Integer
+' si me dan ganas hare de ambas una sola por ahora veo si andan bien
+' luego las integrare
+    'variable  esEjecucion=0  y 1 quedo definida por si hay diferencias algun dia
+     moverZonaRoll(indicePos,Roll,pasozona1, D1)
     Else
   '   print #1,"entra por Else numero > 0"
        Dim As short lz=0,delta
@@ -6848,9 +6843,13 @@ estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 ' NUEVA LINEA
        For lz = 1 To numero
 Print #1,lz;" )///EN FOR ANTES DE COPIAR copiarZona numero ",copiarZona,lz
 Print #1,lz;" ) indicePos, delta, Maxpos ",indicePos, delta, Maxpos
+' si me dan ganas hare de ambas una sola por ahora veo si andan bien
+' luego las integrare 
+    'variable  esEjecucion=0  y 1 quedo definida por si hay diferencias algun dia
           moverZonaRoll(indicePos,Roll,pasozona1, D1)
+  
 Print #1,lz;" )\\\EN FOR DESPUES DE COPIAR copiarZona numero ",copiarZona,lz
-          indicePos=MaxPos ''+ 6+ D1 '''kkkkkk
+          indicePos=MaxPos + 6
           posn=MaxPos-6
        Next lz 
        copiarZona=0:numero=0:pasoZona1=0:pasoZona2=0

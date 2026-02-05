@@ -943,9 +943,10 @@ EndIf
 Dim As Integer x,x1, x2, y, y1, y2,posn1
 
 'Dim As String s1,s2,s3,s4,s5,s6,s7,s8,s10
-
-x1=cur1 - 20
-x2=cur1 + 20
+Dim  As Integer barrido=20
+''Print #1,"****barrido ",barrido
+x1=cur1 - barrido
+x2=cur1 + barrido
 
 y1=ncur - 1
 y2=ncur + 1
@@ -967,7 +968,7 @@ For x= x1 To x2  'curpos
 '     Print #1," x posn1 "; x, posn1; " estoyEnOctava ";estoyEnOctava; " y ";y
          
       ''' Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1 Or _    
-' AGRAGAMOS FIN DE NOTA OFF1 NO SONARA PERO PODRA MARCAR PASOZONA2 EN ZONA
+' AGREGAMOS FIN DE NOTA OFF1 NO SONARA PERO PODRA MARCAR PASOZONA2 EN ZONA
     If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 2  Or _
        Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur = 190 Or _
        Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1  Then
@@ -976,7 +977,15 @@ For x= x1 To x2  'curpos
 '        Print #1,"encontro onoff posn1 "; Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff, posn1
      cur1=posn1-posicion
      ncur=y
-    
+'si estoy cerca de una 'N' onoff=2
+     If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur = 185 Then
+        esEjecucion=1
+     Else
+        esEjecucion=0
+     EndIf   
+   If pmTk(0).ejec=1 Then 
+      esEjecucion=1 ' coincide
+   EndIf
 
  'Print #1,"ENCONTRAMOS ON2 EN CURPOS, NOTACUR "; cur1, ncur
     BuscarNota=0 ' ok
@@ -984,6 +993,10 @@ For x= x1 To x2  'curpos
     EndIf
  Next y
 Next x
+' me fijo siempre si el encabezado tiene la info de ejec
+   If pmTk(0).ejec=1 Then 
+      esEjecucion=1 ' coincide
+   EndIf
 ' Print #1,"NO ENCONTRAMOS UNA MIERDA "
 ' FileFlush(-1)
 End Function

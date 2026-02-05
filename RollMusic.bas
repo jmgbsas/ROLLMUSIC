@@ -34,134 +34,13 @@ On Error Goto errorhandler
 '----------------------------------------------------
 
 ' --------------------------------------------
-nroversion="0.35107 COPIA N  VECES O MUEVE A PARTIR DEL FINAL DE SECUENCIA SOLO PARA SECUENCIAS MANUALES"
-' PROXIMA VERSION COPIAR Y MOVER ZONA EN secuencia de EJECUCIONES AL FINAL DE LA SECUENCIA., 
-' RECUPERAR ESA FUNCIONALIDAD 
+nroversion="0.35108 COPIA N VECES O MUEVE A PARTIR DEL FINAL DE SECUENCIA manual o ejecucion, Trasponer Grupo ya anda"
+' RECUPERAMOS TRASPONER TOTAL O PARCIAL PARA EJECUCIONES Y MANUALES OK
 ' (otra version sera una insercion dentro de la secuencia original
-' 1) YA COPIA N VECES, perfecto la posicion nueva para mayor exactitud si se queire
-' que toque apenas termina la secuencia MANUAL original debe estar en la linea del 182
-' o  sea del final de la secuencia indicada por ||  
 ' 2) posn=MaxPos-6 podriamos eliminarlo de los parametros.
-' 3) Hay que hilar maa fino lograr que pasozona1 sea la posicion exacta de
-' la 1er nota si se desea ,, pare ello si estamos muy cerca de la nota ,usar buscaNota... y lograr
-' 4) que la posicion nueva pueda ser el 182 mas 1 del fin de secuencia..
 ' -> E NUN FUTURO 5) poder mover la copia A derecha O izquierda hasta lograr una posicion exacta
 ' deseada..eso es parte de mover dentro de la longitud de la secuencia....
 '-------------------------------
-' corregido batch dejo de andar por los setgadget ok ya anda
-' AGREGAMOS PLAY DE UN WAV O MP3 FALTARIA SINCRONIZAR CON OTROS PLAY,
-' EL METRONOMO NO DISPARA MAS AUNQUE LO CLIQUEEEMOS 
-' NI SE APAGA AL MOVER LA VENTANA DE REPRODUCCION DE MEDIA OK
-'-------------------
-' COPIAR MAS HALLA DEL TAMAÑO DEL VECTOR: SEGUIR
-' EMPEZO A ANDAR  DE NUEVO REPITE LA COPIA VARIAS  VECES USAR CON AUDIO LA DE 3 SEP ROLL
-' DAR CLICK DESPUES DE FINAL DE MAXPOS MAS DE 1300 MAS O MENOS CHEQUEAR SEGUIR!
-'------
-' TRASPONER GRUPO DE JECUCIONES SE DESCARTA SE PONE AVISO AL PIE
-' TRASPONER GRUPO DE MANUALES TENIA PROBLEMAS TOMABA EL OFF1 MAS CERCANO Y NO EL DE DUR
-' I   I  >   >  AL TRASPONER LA SEGUNDA I TOMA EL OFF1  DE LA OTRA
-'     I  >   SE ACHICA    CORREGIDO!
-' I          > SE AGRANDA CORREGIDO!
-' ajuste que suene una vez o pocas veces lentamente las notas con lshift+click, anda mejor, ok
-' 18-01-2026 MARCAMOS final de archivo MaxPos EN GRAFICO,ok
-'-------------------------------
-' --COPIAR Y MOVER ANDAN MAL (no tocar las rutinas auxiliares de trasponer!!)
-' hacer nuevas para copia y mover sino trasponer se rompe preferible duplicar 
-' que andar hciendo algo que sirva para muchas cosas channn
-' indicacion de DO central se elimino final notas guia _[
-' OK ->TRASPONE FINAL SECUENCIA 182  EN CTRL-O
-' ||==> ok listo-> probar que funcionen las grabaciones midi y 
-' ||  no probado-> las conversiones a rtk o roll!!
-'' SEGUIR CON:
-' ok CORREGIDO: BTN_MIDI_PARAR  AL PARAR GRABACION EJECUCION NO MUESTRA LA MAXPOS SIN EMBARGO AL 
-' CARGAR LO QUE GRABO SE MUESTRA LA MAXGRB O MAXPOS Y ADEMAS SUENA EL PATCH CORRECTO
-' sino suena el piano o nada este problema ya lo tuve una vez se repite pero no tengo
-' registro...
-' PARA TOCAR Y ESCUCHAR UN PATCH NUEVO O  CAMBIARTLO CLICK EN LA PISTA SELECCIONADA 
-' VERIFICAR SELECCION PORTIN PORTOUT LUGO AJUSTAR CANAL Y PATCH... Y RECIEN AHI
-' ABRIR PORT MIDI IN... 
-'' OK NUEVO ->EN LECTURA SE ESCUCHA UNA NOTA CON LSHIT + CLICK CON LOS PATCHS Y EFECTOS QUE TENGA
-'' fix TRASPONER GRUPO O RANGO TIENN FALLAS MAS EL GRUPO.. 
-''fix FALTA=> TRASPONER EN GRUPO ALT-O Y LUEGO MARCANDO Y ESCUCHANDO LSHIFT + CLICK 
-'' fix     MARCA +12 ANDA CUANDO QUIERE NO ESTA BIEN..SE HABIA ABANDONADO ES UN SEMIGRUPO
-'' NO SE MARCA UNA SOLA NOTA DEBEN SER 2 COMO MINIMO Y A VECES MUEVE 1 O 2 O NADA,
-'' FALTA CON ZONA 1 Y 2 Y ALT-O TRASPONE UN GRUPO O UNA SOLA NOTA SI PODEMOS AJUSTAR
-'' BIEN EL INTERVALO PAR QUE QUEPE UNA SOLA NOTA, EN GENERAL PARA TICKS TODAVIA
-'' TIENE FALLAS ARRASTRA > DE OTRAS NOTAS SI LAS NOTAS SON IGUALES  
-''  
-''FALTA=>RECALCOMPAS ANDA MEJOR FALTA VER SI CUMPLE CON TIEMPOS FUERTES Y DEBILES 
-''BASICOS EN TODOS LOS RITMOS
-'' seguir revisando todos los menues de menu grafico y sus funciones dentro
-'' de RollLoop!!
-' FIXED all usar roll=>track el 1er compas nose oye si usamos recalcompas!
-' UNA NOTA+ NO DEBE TENER || AL FINAL PORQUE SIGUE...|| en notas+ ligadas fix
-' se fixeo por rtk, pero queria acelerar el TAB sacando Recalcompas y se complico vuelta atras 
-'FIX 35904 Compas(jply,ntk) da error en tab quiero copiar el compas del track x en track 0
-' y roll 0 principalmete y da error
-'"0.35093 borrar desde Posision Actual(borde izquierdo) hasta el final de una secuancia "
-'"0.35091 SE PUEDEN USAR TECLAS EN LA VENTANA DE CONTROL F1, SPACE, Y P YA ANDAN"
-'' AGREGAR TIPOS DE ARCHIVOS "SOLO" ESTA INCOMPELTO PERO ALGO DESARROLLADO
-'  TOCA LOS SILENCIOS ARREGLAR Y NO BORRA EL OFF DE UN ON DESPUES DE FIN DE ARCHIVO
-' "0.35092 agregamos la extendion *.solo para que el programa sepa que es un solo"
-' 3508 sigue produciendose alguna cancelacion por ahora paramos de invesigar y seguimos
-' tal vez los cambios nuevos hagan reducir o eliminar al resto...veremos
-' 0.3505 ctrl-home fixed hace que entre toda la secuencia en la pantalla
-'"0.3504 PRUEBA DE LOOPS, USAR UNA PISTA DE CANCION COMO SOLO Y REPETICIONES  "
-' 0.3503 ES CREO EL PRINCIPIO DE PODER DESARROLLAR PATRONES QUE  NO DEBEN SEGUIR A LA
-' CANCION Y TENER SUS PROPIAS REPETICIONES INDEPENDIENTE DE LA CANCION POR EJEMPLO BATERIA
-' PULSOS DE BAJO ETC,,, 
-' GRABAR CANCION OK 
-' NUEVA IDEA EN PLAYTOCAALL ESTA ESCRITO , ES TOCAR UNA PISTA DE CANCION RTK SOLO CON PLAYALL
-' DE FORMA QUE TOQUE SOLA FUERA DEL LOOP DE CANCION, TAMBIEN PODRIA HACERSE EN EJECUCIONES!
-' falta borrar repeticiones!! OK LISTO
-' 0.3502 ya funciona !! verificar que se graba a disco y se levanta
-'-------------------------------
-' IDEA CREAR LOOPS, SU LONGITUD SERA ZONA2 -ZONA1 LASREPETICIONES UN ARCHIVO RTK
-' PODREMOS PONERLE OTRA EXTENSION PERO ADENTRO UN LOOP O REPETICIONES DENTRO DE UN RTK, 
-' EXTENSION *.rep o *.loop ambas seran validas..las ejecuciones se haran en serie
-' calculando la duraicon de un loop como (zona2-zona1 )* duracion(1 tick).
-'--------------------------- 
-' fixed reproducir todo desde Control menu Reproducir 
-'  fixed VER AHORA EL RENAME...Y GRABACION A DISCO,ok,GRABA Y LEVANTA EN VERSION 2 y 1 DE ARCHIVOS EJEC. 
-' ARREGLAR Y LISTO ok..JUGAREMOS  CON LOS PARAMETROS PAN ECO ETC SOBRE EJEC DIRECTAMENTE ok!!
-' 1310 de rolldec seguir nuevo metodo de reconocer versiones con la fecha en un double now
-' acordarse de probar el track bar ahora con elcambio de eliminacion de mousebutton en modulo gadget ok funciona ok ahora!
-' SEGUIR EN ROLLTRACKS LINEA 224
-' ARREGLE PMEJ VOLUMEN DE EJECUCIONES Y DEPASO ENCONTRE QUE IF MOUSEBUTTON AND LEFTBUTTON
-' NO FUNCIONA Y ESE DEBE SER EL PROBLEMA TAL VEZ DEL PROBLEMA DE PISTA ROLL QUE DEJABA
-' DE FUNCIONAR EL CONTROL SOBRE TAB DE LA PISTA EN EL GRAFICO!!!
-' YA INDEPENDICE EL NRO DE PISTA DEL ORDEN ..NO NECESITO ORDEN EN LAS EJECUCIONES
-' LUEGO PUEDO ELIMINAR EL NUMERO (1) (2) ETC 
-' ------ VER LO MISMO DE LOS NUMEROS EN ROLL
-' crear o cargar nueva pista en cancion andaba mal, VERIFICAR CON LOS CAMBIOS NUEVOS
-' queda  por revisar
-' 1) AL GRABAR EN ROLL UNA PISTA RTK SOBREESCRIBE CON LOS DATOS o al cambiar algun parametro
-' haria grabacion automatica (creo que las grabaciones automaticas las eliminare)
-' DE OTRA AL USAR GRABAR,   CON ROLL=>TRACK parece que bien.. ARREGLAR GRABAR detectanto formato.
-' 2) NUEVO PROBLEMA OK 347 AHORA MIENTRAS HACE PLAY SI CHEQUEO O DESCHEQUEO PISTAS EN CONTROL
-' PARA APAGAR UNA PISTA Y ENCENDER OTRA EL PLAY SE CONGELA VER ESO QUEDA LAS NOTAS
-' EN ON ....era por diferentes pistas si todas son ejec anda bien,,
-' PUDE COMPATIBILIZAR UN POCO SIN CONGELAR AL PONER EL MISMO Tiempo patRON 0.005
-' EN EL PLAYCANCION.como en grabar ejec.ES LO QUE TIENE LA GRABACION POR TECLADO. COMPATIBILICE LOS CANTTICKS 
-' EL POSN A VECES VENIA EN CERO AJUSTE PARA QUE NO SEA CERO VERIFICAR QUE SEA
-' EN LA CARGA MAXPOS -6. 
-'3)-> AL dar PLAY ANDA LAS PISTAS MANUAL CON EJEC JUNTAS,PERO AL DAR TAB SE CONGELA EL PLAY
-'4)  otro problemas el volumen ,roll sigue bien porque se fija en si Roll(1).onof=1
-' entonces toma Roll(1).vol.Se arreglo tocando REalCompas.. Es momento de hacerarchivos nuevos
-' y cambianr en todos lados el control del vol entre ejecs y mauales y todo el resto
-' patch coro pan olvidar el metodo viejo de poner la info en los extremos del vector
-'5) ECO,PAN U CORO SE ELIMINO EL TRACKBAR FUNCIONAMAL IMPIDE SELECCIONAR PISTAS EN
-' LISTA DE ROLL, SE REEMPLAZO POR SELECCION NUMERICA
-'----------------------------------
-' ALT O  tyrasponer=1 por zona  ya esta ok. 
-' ctrl-O trasponer=3  traspone todo se habilito ok
-' todo implementado pero ha yuna falla al grabar a ROLL a TRACK no graba el patch
-' verificar!!!
-' solo cancela con PANTESTECO.roll nuevisima version con datroll
-'"0.344 control de PANEO salida izquierda derecha de sonido o intermedio, grabacion del paneo de entrada y ajuste del mismo "
-' chequear formatos 0 y 1 del archivo midi en el 1 hay un track sin notas y de referencia de tiempos
-' yo creo que estoy generando en formato 0 verificarlo
-' mas adelante intentaremos desarrollar la escritura de archivos midi sin pasar por planos...
 ' se desarrolla por fuera y luego  se insertara
 ' cursorVert = 0 +  cursorHori = 0 + COMEDIT=FALSE  LECTURA
 ' cursorVert = 0 +  cursorHori = 0 + COMEDIT=TRUE   ENTRADA DE NOTA MANUAL SIEMPRE AL FINAL DE LA SECUENCIA
@@ -272,7 +151,7 @@ If mxold > 0 Then
 
   AnchoInicial=ANCHO
   If anchofig=0 Then
-    anchofig=ANCHO/45 ' decia 700 SON 45 COL PERO SE USAN MENOS 41
+    anchofig=ANCHO/200 ' decia 700 SON 45 COL PERO SE USAN MENOS 41
   EndIf
   NroCol =  (ANCHO / anchofig ) + 4 ' 20 Tama o figuras, nota guia 6 columnas "B_8_[ "
   ANCHO3div4 = ANCHO *3 / 4

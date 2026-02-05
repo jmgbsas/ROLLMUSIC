@@ -199,7 +199,7 @@ Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6,notaGuia=0
 Dim Shared As String RTA, alteracion 
 alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0,OCTAVAFIJA
-Dim Shared As integer pasoZona2=0,nroRep=0
+Dim Shared As integer pasoZona2=0,nroRep=0,esEjecucion=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, playloop2=0,SelGrupoNota =0,moverZona=0, copiarZona=0,SelGrupoNotaT =0
 Dim Shared as ubyte  DUR,nota,notacur,suenaunavez=0
 ReDim Shared as ubyte  notasInsertadas (1 to 1500)
@@ -559,7 +559,7 @@ Dim  Shared figura (1 To 190) As ZString  * 4 => _
  "sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sX*+","sH*+","sW*+", _ '154 162
  "sO:+","sP:+","sI:+","sL:+","sF:+","sE:+","sX:+","sH:+","sW:+",_  '163 171 
  "s3O+","s3P+","s3I+","s3L+","s3F+","s3E+","s3X+","s3H+","s3W+", _ '172 180
- "   "," ||",">  "," - ","N  ","   ","   ","   ","  "," 0 " } '181 185 , son 185, ahora 190 
+ " ","||",">","-","N"," "," "," "," ","0" } '181 185 , son 185, ahora 190 
 ' la 185 la pondremos como 1er etapa de pasar  de ejecucion a Roll
 ' indicara una nota pero no sabemos su duracion, 2da etapa le pondremos
 ' una duracion cuantificada,,,
@@ -1092,7 +1092,7 @@ ANCHO = ANCHO *11/12
 ALTO = (ALTO -25)*11/12
 AnchoInicial=ANCHO
 AltoInicial=ALTO
-anchofig=ANCHO/45 ' decia 700 SON 45 COL PERO SE USAN MENOS 41 JMGJMG
+anchofig=ANCHO/200 ' decia 700 SON 45 COL PERO SE USAN MENOS 41 JMGJMG
 NroCol =  (ANCHO / anchofig ) + 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8_[ "
 Dim Shared ANCHO3div4 As Integer 
  ANCHO3div4 = ANCHO *3 / 4

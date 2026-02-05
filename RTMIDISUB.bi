@@ -94,8 +94,27 @@ Next i1
 
 
 End Sub
+'-------------------------
+Function CheckPortout(k1 As Integer) as Integer
+        If InStr(*nombreOut(k1),"Microsoft")>0 Then
+           CheckPortout=1
+        Else
+          If listoutAbierto( k1) = 0 Then
+            If listoutCreado( k1)=0 Then
+               midiout(k1) = rtmidi_out_create_default ( )
+               listoutCreado( k1)=1 
+            EndIf 
+            open_port midiout(k1),k1, nombreOut(k1)
+            listoutAbierto( k1) = 1
+            Print #1,"abro ",*nombreOut(k1)
+          Else
+            Print #1,"pORT SALIDA YA ABIERTO "
+          EndIf
+          CheckPortout=0
+        EndIf
 
-'
+End Function
+'------------------------
 Sub veoPasoCol( Col() As vec,cnt As Integer, cntold As Integer)
 Print #1,"Desarrollo pasoCol() sin todos los campos integer "
 Dim As Integer mayor,j
@@ -739,7 +758,8 @@ PARAR_PLAY_MANUAL=NO
 PARAR_PLAY_EJEC=NO    
 playloop=NO:playloop2=NO
 
-Dim As Integer i1,k1
+Dim As Integer i1
+Dim As UByte k1
 ' creoa todos los defaults siempre
  
 
@@ -748,8 +768,8 @@ If  GrabarPenta=0  Then ' con 1 ya esta abierto
 Print #1,"abriendo port....play All"
 
   
-   k1=CInt(pmTk(0).portout)
-   portout=k1
+   k1=pmTk(0).portout
+   portout=CInt(k1)
     
 '   Print #1,"midiout ",k1, *nombreOut(k1)
    If InStr(*nombreOut(k1),"Microsoft")>0 Then
@@ -1167,9 +1187,9 @@ Select Case notaroll
    Case 0 To 11
      restar=0
    Case 13 To 24
-     restar=1
+     restar=1 '12 a 23
    Case 26 To 37
-     restar= 2
+     restar= 2  '24 a 35
    Case 39 To 50
      restar= 3
    Case 52 To 63
@@ -1183,7 +1203,7 @@ Select Case notaroll
    Case 104 To 115
      restar=8         
    Case 117 To 128
-     restar=9         
+     restar=9   '108 a 119      
        
 End Select
 
@@ -1399,8 +1419,8 @@ Sub BuscoComienzoNota(Roll As inst, desdet As Integer, jpt As Integer, i1 As Int
 Print #1,"-------------------------------------------------------" 
 Print #1, " ENTRA BUSCOCOMIENZONOTA CANT ";cant
 Dim As Integer kx, ky
-'Print #1,"Entra Busco ON el off1 esta en jpt,  i1 ", jpt, i1
-'Print #1,"ENTRO UN OFF1 ? EN IN1 ";Roll.trk (jpt,i1).onoff
+Print #1,"Entra Busco ON el off1 esta en jpt,  i1 ", jpt, i1
+Print #1,"ENTRO UN OFF1 ? EN IN1 ";Roll.trk (jpt,i1).onoff
 
 Dim ind As Integer
 jpt2=0
@@ -1418,33 +1438,128 @@ NP=i1 - restar (i1)
       ind=i1 
       ind = ind + sumar(ind)
    EndIf
-'  Print #1, "i1 ind NP ", i1, ind, NP
-'  Print #1,"desdet "; desdet ; " hasta jpt ";jpt
+  Print #1, "i1 ind NP ", i1, ind, NP
+  Print #1,"desdet "; desdet ; " hasta jpt ";jpt
  For kx =jpt To desdet Step -1    ' desde el off1 hasta pasozona1 retrocedemos es lo mismo
    ''Print #1,"kx : ";kx;" onoff: "; Roll.trk (kx,ind).onoff; " ind: "; ind; " NP: ";NP
    If Roll.trk (kx,ind).onoff > 0  Then
-'      Print #1,"kx Roll.trk (kx,ind).onoff ";kx;" ";Roll.trk (kx,ind).onoff
-'      Print #1,"kx Roll.trk (kx,ind).dur   ";kx;" ";Roll.trk (kx,ind).dur
+      Print #1,"kx Roll.trk (kx,ind).onoff ";kx;" ";Roll.trk (kx,ind).onoff
+      Print #1,"kx Roll.trk (kx,ind).dur   ";kx;" ";Roll.trk (kx,ind).dur
    EndIf
 
   If  Roll.trk (kx,ind).onoff = 2 Then 
- '     Print #1,"//encontro un ON// jpt2 ind  ";kx,ind  
+      Print #1,"//encontro un ON// jpt2 ind  ";kx,ind  
       jpt2=kx
-  '    Print #1,"encontro on jpt2 ",jpt2
+      Print #1,"encontro on jpt2 ",jpt2
       Exit For
   EndIf
  Next kx 
 
-'Print #1,"sale BuscoComienzoNota Busco ON  jpt2 ind ",jpt2,ind
+Print #1,"sale BuscoComienzoNota Busco ON  jpt2 ind ",jpt2,ind
 If jpt2=0 Then
-' Print #1,"No encuentra el onof 2 que esta adentro???? !!!!"
+ Print #1,"No encuentra el onof 2 que esta adentro???? !!!!"
 Else 
-' Print #1,"//encontro un ON// jpt2 ind  ";kx,ind
+ Print #1,"//encontro un ON// jpt2 ind  ";kx,ind
 EndIf 
 End Sub
 
-Sub BuscoFinalNota   (Roll As inst, hastat As Integer, jpt As Integer, i1 As Integer, ByRef jpt3 As Integer,  dura As Integer) '', funcion As string)
+Sub BuscoComienzoNotaOLD(Roll As inst, desdet As Integer, jpt As Integer, i1 As Integer, ByRef jpt2 As Integer, cant As Integer  )
+'buscamos onoff=2 , dada la posicion de un onoff=1 dentro del rango
+'jpt, i1  es la posicion de entrada del onoff=1 son fijas 
+'jpt2 , i2 la salida si existe de onoff=2 ,si existe todo se traspone
+' jpt es el eje x horizontal, i1 el vertical
+' barremos el horizontal desde jpt hacia valores mas pequeños vamos a la izquierda
+' O PODEMOS IR DESDE IZQUIERDA HASTA EL OFF 1 ES IGUAL
+'----- NO ANDA NO ANDA NO ANDA NO ANDA NO ANDA NO ANDA NO ANDA NO ANDA NO ANDA NO ANDA NO ANDA
+' NO ANDA NO ANDA NO ANDA NO ANDA NO ANDA NO ANDA NO ANDA NO ANDA NO ANDA NO ANDA
+'  NO ANDA  NO DETECTA EL ONOFF=2!!!!! UNA MIERDA YA NO SE QUE PASA
+Print #1,"-------------------------------------------------------" 
+Print #1, " ENTRA BUSCOCOMIENZONOTA CANT ";cant
+Dim As Integer kx, ky
+Print #1,"Entra Busco ON el off1 esta en jpt,  i1 ", jpt, i1
+Print #1,"ENTRO UN OFF1 ? EN IN1 ";Roll.trk (jpt,i1).onoff
 
+Dim ind As Integer
+jpt2=0
+   If cant > 0 Then  ' UP  'este  cant no es el delta de zona es para trasponer flecha arriba abajo
+      ind = i1 + cant 
+      ind = ind + sumar(ind)
+   EndIf
+   If cant < 0 Then  ' DOWN  
+      ind = i1 + cant 
+      ind = ind - sumar(ind)
+   EndIf
+Dim As Integer NP
+NP=i1 - restar (i1)
+   If cant=0 Then
+      ind=i1 
+      ind = ind + sumar(ind)
+   EndIf
+  Print #1, "i1 ind NP ", i1, ind, NP
+  Print #1,"desdet "; desdet ; " hasta jpt ";jpt
+ For kx =jpt To desdet Step -1    ' desde el off1 hasta pasozona1 retrocedemos es lo mismo
+   ''Print #1,"kx : ";kx;" onoff: "; Roll.trk (kx,ind).onoff; " ind: "; ind; " NP: ";NP
+   If Roll.trk (kx,ind).onoff > 0  Then
+      Print #1,"kx Roll.trk (kx,ind).onoff ";kx;" ";Roll.trk (kx,ind).onoff
+      Print #1,"kx Roll.trk (kx,ind).dur   ";kx;" ";Roll.trk (kx,ind).dur
+   EndIf
+
+  If  Roll.trk (kx,ind).onoff = 2 Then 
+      Print #1,"//encontro un ON// jpt2 ind  ";kx,ind  
+      jpt2=kx
+      Print #1,"encontro on jpt2 ",jpt2
+      Exit For
+  EndIf
+ Next kx 
+
+Print #1,"sale BuscoComienzoNota Busco ON  jpt2 ind ",jpt2,ind
+If jpt2=0 Then
+ Print #1,"No encuentra el onof 2 que esta adentro???? !!!!"
+Else 
+ Print #1,"//encontro un ON// jpt2 ind  ";kx,ind
+EndIf 
+End Sub
+
+Sub BuscoFinalNota   (Roll As inst, hastat As Integer, jpt As Integer, i1 As Integer, ByRef jpt3 As Integer,  dura As Integer, funcion As string)
+
+ Print #1,"-------------------------------------------------------"
+
+Dim As Integer kx
+Print #1,"Entra Busco OFF del ON recibido,, hastat ,jpt,  i1 ",hastat, jpt, i1
+' el on si esta en el intervalo se mueve si o si 
+' solo debo detectar 1ero que el off esta fuera del intervalo y 2do ir mas halla
+' en contrar el off y trasponerlo junto al ON que se mueve si o si,
+
+Dim  As Integer durv, limite
+ If dura > 0 Then
+   durv=DurXTick(dura) ' FIX 0.337 
+   limite=jpt+ durv +1 ' FIX 0.337
+ Else
+   limite=MaxPos ' FIX 0.4337
+ EndIf
+' es ilogico con limite funciona quiere  decir que barre dos veces la misma nota ON
+' no entiendo si barre hasta MaxPos mueve mas off1 por fuera de la zona y mucho mas halla!!!  
+' asi funciona no le busques la logica jajjaaja 
+ For kx =jpt+1 To limite '''' Maxpos  '' + una redonda ?? 96*4
+
+  If  Roll.trk (kx,i1).onoff = 1 Then '''And Roll.trk (kx,i1).dur > 0 Then
+    '  Print #1,"//encontro un OFF// jpt3 i1  ";kx,i1  
+      jpt3=kx
+    If jpt3 <= hastat And funcion <> "mover" Then
+       jpt3=1 'esta en el rango 
+    EndIf
+    Exit For    '23-12-2025
+  EndIf
+ Next kx 
+
+
+
+End Sub
+
+Sub BuscoFinalNotaOLD   (Roll As inst, hastat As Integer, jpt As Integer, i1 As Integer, ByRef jpt3 As Integer,  dura As Integer) '', funcion As string)
+'' PUSE LAS CONDICIONES ANTERIORES Y NO SE CORRIGIO EL ALT-O TRASPONER
+' LA VERSION 0.35101 ANDA BIEN LA TRASPOSICION CON ALT_O
+' VER PORQUE ACA NO..!!
  Print #1,"-------------------------------------------------------"
 ''POR AHORA ES IGUAL A LA OTRA moverBuscoFinalnota habia una condicion
 '' diferente si no la encuentro en un tiempo las unificare de nuevo.,...
@@ -1463,8 +1578,9 @@ Dim  As Integer durv, limite
    limite=MaxPos ' FIX 0.4337
  EndIf
  If dura=185 Then
-   durv=768 'dos redondas 
-   limite=jpt+ durv  ' 20-01-2026
+    durv=768 'dos redondas trasponer anda mal 
+   limite=jpt+ durv  ' 20-01-2026  trasponer andaba  mal
+  ' limite=MaxPos ''' ESTO ESTABA CUANDO FUNCIONABA ALT_O
  EndIf
 
 ' es ilogico con limite funciona quiere  decir que barre dos veces la misma nota ON
@@ -1475,9 +1591,10 @@ Dim  As Integer durv, limite
   If  Roll.trk (kx,i1).onoff = 1 Then '''And Roll.trk (kx,i1).dur > 0 Then
     '  Print #1,"//encontro un OFF// jpt3 i1  ";kx,i1  
       jpt3=kx
- '   If jpt3 <= hastat And funcion <> "mover" Then
- '      jpt3=1 'esta en el rango 
- '   EndIf
+'' ESTO ESTABA CUANDO FUNCIONABA ALT_O
+    'If jpt3 <= hastat And funcion <> "mover" Then
+    '   jpt3=1 'esta en el rango 
+    'EndIf
     Exit For    '23-12-2025
   EndIf
  Next kx 
@@ -1485,6 +1602,7 @@ Dim  As Integer durv, limite
 
 
 End Sub
+
 
 Sub moverDatosenY (Roll As inst, jpt As Integer, i1 As Integer,cant As Integer)
 Dim ind As Integer
@@ -1517,6 +1635,7 @@ Roll.trk(jpt,ind).onoff = Roll.trk(jpt,i1).onoff
 
 End Sub
 '------------
+'------------
 Sub borrarZona()
  Dim As Integer jpt, i1
 ' falta no borrar los off1 que no tiene su on dentro de la zona y borar los off1 que esten fuer
@@ -1541,7 +1660,60 @@ Print #1,"-------------------------------------------------------"
          Print #1,"ENTRO A UN OFF2 ON BUSCO SU OFF1 FUERA DE ZONA A DERECHA"   
          jpt3=1 
          dura=Roll.trk(jpt,i1).dur
-         BuscoFinalNota    Roll, pasozona2, jpt , i1 ,  jpt3 ,dura
+         BuscoFinalNota    Roll, pasozona2, jpt , i1 ,  jpt3 ,dura,""
+
+         If jpt3 > 1  Then 
+          'borro el off1 fuera de la zona
+           Roll.trk(jpt3,i1).nota = 181
+           Roll.trk(jpt3,i1).dur  = 0
+           Roll.trk(jpt3,i1).vol  = 0
+           Roll.trk(jpt3,i1).pan  = 0
+           Roll.trk(jpt3,i1).pb   = 0
+           Roll.trk(jpt3,i1).inst = 0
+           Roll.trk(jpt3,i1).onoff = 0
+         EndIf
+       EndIf
+
+'-----------------------
+      Roll.trk(jpt,i1).nota = 181
+      Roll.trk(jpt,i1).dur  = 0
+      Roll.trk(jpt,i1).vol  = 0
+      Roll.trk(jpt,i1).pan  = 0
+      Roll.trk(jpt,i1).pb   = 0
+      Roll.trk(jpt,i1).inst = 0
+      Roll.trk(jpt,i1).onoff = 0
+   Next i1
+ Next jpt
+   
+pasozona1=0: pasozona2=0
+'Print #1,"CHAU llama a borrazona" 
+ End Sub
+
+Sub borrarZonaOLD()
+ Dim As Integer jpt, i1
+' falta no borrar los off1 que no tiene su on dentro de la zona y borar los off1 que esten fuer
+' y  su on dentro
+'Print #1,"entro a borrazona"
+Dim As Integer jpt2,jpt3, dura
+ For jpt=pasozona2 To pasozona1 Step -1
+   For i1=NB To NA
+'COPIADO DE trasponerRoll rutinas trasponer Busco.....
+'-------------
+      If Roll.trk(jpt,i1).onoff = 1  Then 
+         jpt2=1 
+         BuscoComienzoNota    Roll, pasozona1, jpt , i1 ,  jpt2 , 0
+         If jpt2 = 0  Then ' no borra off1 cuyo on esta fuera de zona
+              Continue For 
+         EndIf
+      EndIf
+
+       If Roll.trk(jpt,i1).onoff = 2 And jpt > pasozona1 And jpt < pasozona2  Then 
+        'busco si su off1 esta en el rango si no lo esta lo muevo tambien
+Print #1,"-------------------------------------------------------"
+         Print #1,"ENTRO A UN OFF2 ON BUSCO SU OFF1 FUERA DE ZONA A DERECHA"   
+         jpt3=1 
+         dura=Roll.trk(jpt,i1).dur
+         BuscoFinalNotaOLD    Roll, pasozona2, jpt , i1 ,  jpt3 ,dura
 
          If jpt3 > 1  Then 
           'borro el off1 fuera de la zona
@@ -1571,6 +1743,186 @@ pasozona1=0: pasozona2=0
  End Sub
 '---------
 Sub trasponerRoll( cant As Integer, Roll As inst, encancion As Integer)
+On Local Error GoTo failtraspo
+'AJSUTADO DE NUEVO 11-09-2021 CON EL NUEVO ALGORITMO DE OCTAVAS
+' adaptado para ticks 06-03-2025
+'-----------------------------------------------
+' PARA TICKS DEBO IDENTIFICAR ELONOFF=2 MOVERLO CON SU CORRESPONDIENTE ONOFF=1
+' SI HAY UN ONOFF=1 O SEA FIN DE NOTA, Y NO ESTA EL COMIENZO DE LA NOTA DENTRO DEL
+' GRUPO O ZONA, ESA NOTA NO SE MUEVE!!
+' EL INTERVALO DE ZONA COMENZARA EN UNA POSICION O TICKS=X Y FINALIZARA EN OTRA TICKS=Y
+' EL ALGORITMO SOLO NECESITA CORREGIR LOS FINALES DE NOTA,SERIA SI ENCUENTRO UN FINAL
+' ONOFF=1 Y ME MUEVO HACIA ATRAS BUSCANDO HORIZONTALMENTE UN ONOFF=2 DE COMIEZNO DE ESA NOTA
+' ENTONCES SE MUEVE EL FINAL.. SI NO LO ENCUENTRO ESE ONOFF=1 NO SE MUEVE,,
+' AL REVES SI TENGO UN ONOFF=2 COMIENZO DENTRO DEL RANGO SE MUEVE AUNQUE SU ONOFF=1 O 
+'FINAL ESTE FUERA DEL RANGO, PARA ESO DEBO BUSCAR EL ONOFF=1 DE ESA NOTA AUNQUE ESTE MAS 
+' HALLA DEL PASOZONA2 O FINAL DEL GRUPO Y MOVERLO,,,
+' CONSTRUIR UNA RUTINA QUE BUSQUE COMIENZO DE NOTA SI LE LLEGA UN ONOFF1 Y SI LE LLEGA
+' UN COMIENZO ONOFF2 QUE BUSQUE SU ONOFF1 Y VER SI ESTA DENTRO DEL GRUPO Y EN CASO QUE NO LO 
+' ESTE MOVERLO DE TODAS FORMAS AUNQUE ESTE MAS HALLA DEL RANGO.  
+'------------------------------------------------
+' 1) FUNCIONA BUSCAR EL ON A IZQUIERDA DADO UN OFF 1 O SEA OFF. <--- LISTO
+' 2) AHORA FALTA BUSCAR UN OFF 1 A DERECHA DADO UN OFF 2 O SEA ON, EN ESTE  CASO SI LO ENCUENTRO
+'    QUE SE FUE DEL INTERVALO A LA DERECHA SOLO DEBO AGRANDAR EL INTERVALO A LA DERECHA HASTA
+'    ALCANZAR ESE OFF, PERO PODRIAN ENTRAR OTRAS NOTAS. LUEGO SOLO DEBO MOVER ESE  OFF
+'    EXCLUSIVAMENTE,,!!
+''' pasoNota se ajusta en SELECCION DE ZONA PARA TRASPONER NOTAS, Ctrl click izq
+Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,octavaDeAcorde,verticalEnOctavaVacia  
+
+' NA ES EL MAYOR VALOR NUMERICO, 
+' NB EL MENOR VALOR NUMERICO
+' cant=(1) si pulso flecha UP
+  Print #1,"ARRANCA  TRASPONER ROLL !!!!!!!!!!!!!!",trasponer
+  If trasponer=0 Then
+     Exit Sub
+  EndIf
+  
+If cant < 0 Then ' DOWN
+ comienzo= NB
+ final = NA  -13 '30-01-2022 NA->NA -13
+ inc= 1
+EndIf
+If cant > 0 Then 'UP
+ comienzo= NA -13
+ final = NB  
+ inc=  -1
+EndIf
+Dim As Integer desdet, hastat
+If pasoZona1 > 0 Then 
+   desdet = pasoZona1
+Else
+   desdet=1   
+EndIf   
+If pasoZona2 > 0 Then 
+   hastat = pasoZona2
+Else
+   hastat= MaxPos   
+EndIf   
+Print #1, " desdet hastat comienzo final "; desdet, hastat, comienzo, final  
+Dim  As Integer jpt3, jpt2 , i2 'posicion del onoff=2 inicio nota
+Dim As Integer  k2, k2fin, oldjpt,oldind 
+For jpt = desdet To hastat  ' eje x posiciones horizontal
+  For i1= comienzo To final Step inc ' indice roll nR vertical
+     If cant > 0 Then  ' UP  
+        ind = i1 + cant 
+        ind = ind + sumar(ind)
+     EndIf
+     If cant < 0 Then  ' DOWN  
+        ind = i1 + cant 
+        ind = ind - sumar(ind)
+     EndIf
+' las notas son nro de semitono 1 a 12 (en creaPenta van de 0 a 11)
+    '''Print #1, "jpt,i1 "; jpt,i1
+
+    If ( (Roll.trk(jpt,i1).nota >= 0) And Roll.trk(jpt,i1).dur <= 185 ) _
+        Or (Roll.trk(jpt,i1).dur >=0 And Roll.trk(jpt,i1).dur <= 185 ) _
+      Or  Roll.trk(jpt,i1).onoff > 0   Then ' es semitono
+       If Roll.trk(jpt, i1).pb = 201 Then '' cuando traspongo muevo el cifrado ...¿?
+           octavaDeAcorde=1+ (i1-12)/13
+           verticalEnOctavaVacia= 12 + (hasta-2)*13 + octavaDeAcorde - desde  
+           If cant> 0 Then 
+             Roll.trk(jpt, verticalEnOctavaVacia).nota=Roll.trk(jpt, verticalEnOctavaVacia).nota - 1
+           Else
+             Roll.trk(jpt, verticalEnOctavaVacia).nota=Roll.trk(jpt, verticalEnOctavaVacia).nota + 1
+           EndIf
+           Continue For
+       EndIf  
+  
+       If ind >= NB And ind <= NA  -13 Then '' vertical
+          If  pasoNota=0  Then    ' no se clickeo sobre una nota especifica 
+            ' >> 183, N 185 (para ejec si no 1, 2,3,4,5,6,7,8,9)
+             'Print #1,"ENTRO POR PASONOTA=0 "
+' para mover un off 1 si su on esta en el intervalo, sino no se mueve
+             If  Roll.trk(jpt,i1).onoff = 1   Then
+              ' busco en el intervalo a izquierda si no alcanzo a  ver el on dentro del intervalo no se mueve el off
+                BuscoComienzoNota(Roll, desdet, jpt, i1 , jpt2,cant )
+                If jpt2 > 0 And jpt2 >= desdet Then
+                   moverDatosenY (Roll, jpt,i1,cant) ' esta en el intervalo se mueve el off 1
+                   jpt2=0
+                EndIf
+             EndIf
+' para mover  un off 2 q esta en rango y su off 1 aunque este fuera de rango
+             If  Roll.trk(jpt,i1).onoff = 2  Then
+                 moverDatosenY (Roll, jpt,i1,cant)
+                 BuscoFinalNota(Roll, hastat, jpt, i1 , jpt3,0 ,"")
+               If jpt3 > 0 And jpt3 > hastat Then ' muevo el off fuera de intevalo
+'                  Print #1,"Hay jpt3 > 0 EL ON  TIENE SU OFF fuera DEL INTERVALO SE MUEVE EL OFF dur, nota ";Roll.trk(jpt3,i1).dur; Roll.trk(jpt3,i1).nota
+                  moverDatosenY (Roll, jpt3,i1,cant)
+                  jpt3=0 
+               EndIf  
+             EndIf
+             If  Roll.trk(jpt,i1).dur =182 Then
+                 moverDatosenY (Roll, jpt,i1,cant)  ' 04-01-2026
+             EndIf 
+          Else ' se clickeo sobre una nota especifica en el caso de que sea una sola columna 
+'            Print #1,"3 ENTRO POR PASONOTA=ROLL.. "
+            If pasoNota = Roll.trk(jpt,i1).nota And (Roll.trk(jpt,ind).nota=0 Or Roll.trk(jpt,ind).nota=181 )  Then
+               moverDatosenY (Roll, jpt,i1,cant)
+                             
+            Else                
+'             Print #1,"4 ENTRO POR PASONOTA=ROLL ELSE "
+               If Roll.trk(jpt,ind).nota >=1 And Roll.trk(jpt,ind).nota <=12  Then
+                   If cant > 0 Then  ' UP  
+                   ind = ind+cant 
+                      ind = ind + sumar(ind)
+                   EndIf
+                   If cant < 0 Then  ' DOWN  
+                      ind = ind + cant 
+                      ind = ind - sumar(ind)
+                   EndIf
+
+                  If ind > NA -13Then
+                     ind=NA -13
+                  EndIf
+                  If ind < NB Then
+                     ind=NB
+                  EndIf
+               moverDatosenY (Roll, jpt,i1,cant)
+
+               EndIf
+            EndIf      
+          EndIf    
+       EndIf
+    EndIf
+  Next i1
+Next jpt
+
+''trasponer=0   
+' para trasponer tracks debo grabar lo cual copia a track los cambios
+' de ese modo al dar play se escucha los cambios sino solo quedan en Roll
+' y el play de cancion no lo registra , solo el play de roll lo registraria
+If encancion > 0 Then
+   Dim As Integer ubi1=0,ubi2=0 
+   Dim As String no1,no2
+   ubi1=InStr(nombre,"[")
+   ubi2=InStr(nombre,"]")
+   If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
+       GrabarRollaTrack(0,0)
+   EndIf
+EndIf       
+
+
+Exit Sub
+
+failtraspo:
+ Dim errmsg As String
+ Dim As Long er1 = Err()
+If  er1 > 0 Then
+Print #1,"-----------------err trasponerroll-----------------"
+  errmsg = "TRASPONERROOLL FAIL Error " & Err & _
+           " in function " & *Erfn & _
+           " on line " & Erl & " " & ProgError(er1)
+  Print #1, errmsg
+  Print #1, " jpt i1 jpt2 i2 ";  jpt, i1, jpt2, i2 
+  FileFlush (-1)
+  Close
+  
+End If
+
+
+End Sub
+
+Sub trasponerRollOLD( cant As Integer, Roll As inst, encancion As Integer)
 On Local Error GoTo failtraspo
 'AJSUTADO DE NUEVO 11-09-2021 CON EL NUEVO ALGORITMO DE OCTAVAS
 ' adaptado para ticks 06-03-2025
@@ -1673,7 +2025,7 @@ For jpt = desdet To hastat  ' eje x posiciones horizontal
              If  Roll.trk(jpt,i1).onoff = 2  Then
                  moverDatosenY (Roll, jpt,i1,cant)
                  dura=Roll.trk(jpt,i1).dur
-                 BuscoFinalNota(Roll, hastat, jpt, i1 , jpt3,dura )
+                 BuscoFinalNotaOLD(Roll, hastat, jpt, i1 , jpt3,dura )
                If jpt3 > 0 And jpt3 > hastat Then ' muevo el off fuera de intevalo
 '                  Print #1,"Hay jpt3 > 0 EL ON  TIENE SU OFF fuera DEL INTERVALO SE MUEVE EL OFF dur, nota ";Roll.trk(jpt3,i1).dur; Roll.trk(jpt3,i1).nota
                   moverDatosenY (Roll, jpt3,i1,cant)
@@ -1787,10 +2139,10 @@ EndIf
 
 If X1=0 Then   X1=1 EndIf   
 If X2=0 Then   X2= MaxPos EndIf   
-Print #1,"trasponerGrupo X1 "; X1
-Print #1,"trasponerGrupo X2 "; X2
-Print #1,"trasponerGrupo Y1 "; Y1
-Print #1,"trasponerGrupo Y2 "; Y2
+'Print #1,"trasponerGrupo X1 "; X1
+'Print #1,"trasponerGrupo X2 "; X2
+'Print #1,"trasponerGrupo Y1 "; Y1
+'Print #1,"trasponerGrupo Y2 "; Y2
 
 
 ' 30-01-2022 CORREGIDO en base a la verion ROLLMUSIC-0.1.0.0.0-U-TRACKS 
@@ -1805,7 +2157,7 @@ For Xj = X1 To X2
         ind = i1+cant 
         ind = ind - sumar(ind)
      EndIf
-      Print #1,"Xj , i1 "; Xj;" ",i1
+''      Print #1,"Xj , i1 "; Xj;" ",i1
       If (Roll.trk(Xj, i1).nota > 12 And Roll.trk(Xj, i1).nota < 25) And (Roll.trk(Xj, i1).dur <> 183)Then 
        If ind >= NB And ind <= NA -13 Then
            marca=Roll.trk(Xj,i1).nota 
@@ -1822,9 +2174,9 @@ For Xj = X1 To X2
                Roll.trk(Xj,ind).onoff = Roll.trk(Xj,i1).onoff
 ' ----MOVER EL OFF1 EN BASE AL  OFF2 Y SU DURACION, mueve para la ultima nota corregir!!!
                dura=Roll.trk(Xj,i1).dur
-               BuscoFinalNota(Roll, X2, Xj, i1 , jpt3,dura )
+               BuscoFinalNotaOLD(Roll, X2, Xj, i1 , jpt3,dura )
                If jpt3 > 0 Then ' muevo el off 
-                  Print #1,"Hay jpt3 > 0 EL ON  TIENE SU OFF" 
+  '                Print #1,"Hay jpt3 > 0 EL ON  TIENE SU OFF" 
                   moverDatosenY (Roll, jpt3,i1,cant)
                   jpt3=0 
                EndIf  
@@ -1882,6 +2234,7 @@ EndIf
 
 ''trasponer=0   
 End Sub
+
 
 '''///////// PARA COPIAR O MOVER HORIZONTALMENTE /////////////
 '///////////////////////////////////////////////////////////////
@@ -1957,18 +2310,20 @@ Dim  As Integer durv, limite
  If dura > 0 And dura <> 185 Then
    durv=DurXTick(dura) ' FIX 0.337 
    limite=UBION+ durv +1 ' FIX 0.337
- Else
-   limite=MaxPos ' FIX 0.4337
  EndIf
  If dura=185 Then
-   durv=768 'dos redondas 
-   limite=UBION + durv  ' 20-01-2026
+   limite=MaxPos ' 20-01-2026 2 redondas
  EndIf
 ' es ilogico con limite funciona quiere  decir que barre dos veces la misma nota ON
 ' no entiendo si barre hasta MaxPos mueve mas off1 por fuera de la zona y mucho mas halla!!!  
-' asi funciona no le busques la logica jajjaaja 
+' asi funciona no le busques la logica jajjaaja
+ If MaxPos > UBION +96 Then 
+   UBIOFF=UBION +96
+ Else
+   UBIOFF=MaxPos-6 
+ EndIf
 
- For kx = limite -50 To limite + 50  
+ For kx = UBION To MaxPos  
   If  Roll.trk (kx,i1).onoff = 1 Then '''And Roll.trk (kx,i1).dur > 0 Then
     '  Print #1,"//encontro un OFF// jpt3 i1  ";kx,i1  
       UBIOFF=kx
@@ -1978,23 +2333,10 @@ Dim  As Integer durv, limite
     Exit For    '23-12-2025
   EndIf
  Next kx 
-If kx=limite + 51 Then ' no encontro nada seguimos
- For kx = limite -51 To Maxpos  
-  If  Roll.trk (kx,i1).onoff = 1 Then '''And Roll.trk (kx,i1).dur > 0 Then
-    '  Print #1,"//encontro un OFF// jpt3 i1  ";kx,i1  
-      UBIOFF=kx
-   ' If jpt3 <= hastat And funcion <> "mover" Then
-   '    jpt3=1 'esta en el rango 
-   ' EndIf
-    Exit For    '23-12-2025
-  EndIf
- Next kx 
-
-EndIf
 
 
 End Sub
-
+'-------------------
 Sub moverZonaRoll(posinueva As Integer, Roll As inst,posivieja As Integer, ByRef D1 As Integer )
 'If D1 > 0 And D1 > MaxPos And numero > 0 Then 'copia n veces
 ' D1=0
@@ -2030,7 +2372,7 @@ EndIf
 
 ' tener en cuenta que pasozona1 es la misma que posinueva
 
-cant = pasoZona2 - pasoZona1 +1'delta original horizontal
+cant = pasoZona2 - pasoZona1 +2'delta original horizontal
 
 ' sitio donde se copia o mueve indicePos en main  
 MaxPosOrig=MaxPos' guarda la maxPos original del archivo no coincide con el 182 ojo
@@ -2050,21 +2392,34 @@ Dim As integer  FinSecOrig
 Dim As Integer  vertical=0 ,finalsec, jpt2=1, jpt3=1,NP, jptx,jpt3Old,largoRoll
 Dim As Integer cnton,cntoff,primeronzona, primerdeltaon,UBION,UBIOFF,dura,deltaOff1,finalnuevo,finalnuevoMayor,i1mayor
 '///////////// MAYOR A MAXPOS //////////////////////////////
-'A) DETERMINO la maxpos real de la secuencia donde esta el 182 || FIN SECUENCIA Y LA BORRO 
+'A) DETERMINO la maxpos real de la secuencia donde esta el 182 || FIN SECUENCIA Y LA BORRO
+FinSecOrig=0 
    For jpt=MaxPosOrig  To 1 Step -1  ''voy buscando el 182 a izquierda  
     For i1 = NB To NA
       If  Roll.trk(jpt,i1).dur  = 182 Or Roll.trk(jpt,i1).onoff = 1 Or Roll.trk(jpt,i1).onoff = 2 Then
           If Roll.trk(jpt,i1).dur  = 182 Then 
              Roll.trk(jpt,i1).dur =0
-             FinSecOrig=jpt
+             FinSecOrig=jpt-6 ' estaba sin el 6
+             MaxposOrig=jpt ' no estaba
              Exit For,For 
           EndIf
           If Roll.trk(jpt,i1).onoff = 1 Then
-             FinSecOrig=jpt + 6
+             FinSecOrig=jpt ' tenia + 6
+             MaxposOrig=FinSecOrig+6 'nue
+             MaxPos=MaxposOrig    'nue
+             pmTk(0).MaxPos=MaxPos  'nue 
+
              Exit For,For 
           EndIf 
           If Roll.trk(jpt,i1).onoff = 2 Then
-             FinSecOrig=jpt +6
+             FinSecOrig=jpt +96 ' decia 6
+             Roll.trk(jpt+96,i1).dur  = 183 ' agregamos el off1 inexistente
+             Roll.trk(jpt+96,i1).onoff  = 1 'nue
+             FinSecOrig=jpt+96  ' nue
+             MaxposOrig=FinSecOrig+6 'nue
+             MaxPos=MaxposOrig 'nue
+             pmTk(0).MaxPos=MaxPos  'nue  
+
              Exit For,For 
           EndIf 
        EndIf  
@@ -2072,13 +2427,13 @@ Dim As Integer cnton,cntoff,primeronzona, primerdeltaon,UBION,UBIOFF,dura,deltaO
   Next jpt
   '   Print #1,"FinSecOrig ";FinSecOrig
    '  Print #1,"MaxPosOrig old ";MaxPosOrig
-     MaxPosOrig=FinSecOrig
-
+     MaxPosOrig=FinSecOrig+6
+     MaxPos=MaxposOrig+1:Sleep 5
 If posinueva >= MaxposOrig Then 'mover mas halla de maxpos..
 '---------------------------------------------------------
 '2) VEO SI SE PASA DE TAMAÑO AL VECTOR
   MaxPos=posinueva + cant 'faltaria el off1 a derecha deltainc
-  inc=posinueva + cant   'EL LIMITE SUPERIOR DEDE DONDE SE COPIARA HACIA LA IZQUIERDA
+  
  'Print #1,"==>>> inc posinueva cant MaxPos "; inc;" ";posinueva;" "; cant;" "; MaxPos
  'Print #1,"===>> inc - cant "; inc -cant
  'Print #1,"ENTRA POR  derecha ahora posinueva "; posinueva
@@ -2133,8 +2488,7 @@ Dim As Integer largoredim=0,DOSREDONDAS=384*2
          If UBIOFF > 1 Then 
             If UBIOFF > hastat Then 'atrapa el 1ero solamente
               deltaOff1=UBIOFF-hastat
-              finalnuevo=posinueva + cant
-              finalnuevo=finalnuevo+deltaOff1
+              finalnuevo=posinueva + cant +deltaOff1
               If finalnuevo > finalnuevoMayor Then
                  finalnuevoMayor = finalnuevo
                  i1mayor= i1
@@ -2146,41 +2500,51 @@ Dim As Integer largoredim=0,DOSREDONDAS=384*2
 'Print #1, "3)) ///// DELTA UNO D1 deltaOff1 ",D1 
                  maxp=1
               EndIf
-           Roll.trk(finalnuevoMayor,i1Mayor).nota = Roll.trk(UBIOFF,i1).nota
-           Roll.trk(finalnuevoMayor,i1Mayor).dur  = Roll.trk(UBIOFF,i1).dur  ' aca deberia haber un 183
+              Roll.trk(finalnuevoMayor,i1Mayor).nota = Roll.trk(UBIOFF,i1).nota
+              Roll.trk(finalnuevoMayor,i1Mayor).dur  = Roll.trk(UBIOFF,i1).dur  ' aca deberia haber un 183
 'Print #1,"ESTO DEBERIA SER 183 FINAL OFF1 > -> ",Roll.trk(UBIOFF,i1).dur
-           Roll.trk(finalnuevoMayor,i1Mayor).vol  = Roll.trk(UBIOFF,i1).vol
-           Roll.trk(finalnuevoMayor,i1Mayor).pan  = Roll.trk(UBIOFF,i1).pan
-           Roll.trk(finalnuevoMayor,i1Mayor).pb   = Roll.trk(UBIOFF,i1).pb
-           Roll.trk(finalnuevoMayor,i1Mayor).inst = Roll.trk(UBIOFF,i1).inst
-           Roll.trk(finalnuevoMayor,i1Mayor).onoff = Roll.trk(UBIOFF,i1).onoff ''sigue en 1 no 3 
+              Roll.trk(finalnuevoMayor,i1Mayor).vol  = Roll.trk(UBIOFF,i1).vol
+              Roll.trk(finalnuevoMayor,i1Mayor).pan  = Roll.trk(UBIOFF,i1).pan
+              Roll.trk(finalnuevoMayor,i1Mayor).pb   = Roll.trk(UBIOFF,i1).pb
+              Roll.trk(finalnuevoMayor,i1Mayor).inst = Roll.trk(UBIOFF,i1).inst
+              Roll.trk(finalnuevoMayor,i1Mayor).onoff = Roll.trk(UBIOFF,i1).onoff ''sigue en 1 no 3 
         '   If TOPE=0 Then 'SOLO EL MAS A  DERECHA SE MARCA COMO FIN SEC 
         '      Roll.trk(finalnuevo+deltaOff1+6,i1).dur  = 182
         '      TOPE=1
         '   EndIf 
          cntoff=cntoff+1
          'Print #1, "CNTOFF ";  cntoff
+       If moverZona=1  Then
+          Roll.trk(UBIOFF,i1).nota= 181  
+          Roll.trk(UBIOFF,i1).dur =0 '
+          Roll.trk(UBIOFF,i1).vol =0   
+          Roll.trk(UBIOFF,i1).pan =0  
+          Roll.trk(UBIOFF,i1).pb  =0  
+          Roll.trk(UBIOFF,i1).inst=0  
+          Roll.trk(UBIOFF,i1).onoff=0
+       EndIf
 
 
             EndIf
+' borrado del off1 si muevo 
        ' OFF1 DENTRO DEL INTERVALO
-            If  UBIOFF <=hastat Then
+            If  UBIOFF >desdet  And UBIOFF <=hastat Then
                Roll.trk(UBIOff,i1).onoff = 3
                finalnuevo=posinueva + cant
-             ''''  deltaOff1=0
             EndIf
-
          EndIf
        EndIf
     NEXT UBION
   Next i1
+' SI UN OFF1 TIENE SU ON FUERA DEL INTERVALO NO SE MUEVE QUEDARA EN 1 EL ONOFF
+' TODAVIA NO SE LO TOCO 
 
 '---------
 ''Print #1," finalnuevo, i1, UBIOFF, desdet "; finalnuevo, i1, UBIOFF, desdet
 'finalnuevo se hace cero porque mierda 
  ''fileflush (1)
 
-'' COPIA GENERAL DENTRO DEL INTERVALO copia todo desde la derecha hacia izquierda
+'' COPIA GENERAL DENTRO DEL INTERVALO copia todo 
 '' USAMOS UBION PERO NO SIGNIFICA NADA MO VEMOS TODO ON Y OFF MARCADOS
   Dim incre As Integer
   For  i1= NB To NA ' vertical nb na
@@ -2205,12 +2569,29 @@ Dim As Integer largoredim=0,DOSREDONDAS=384*2
           Roll.trk(posinueva+incre,i1).onoff = 2 ' la copia lo normalizamos 
           If moverzona=0 Then
              Roll.trk(UBION,i1).onoff=2 ' lo dejamos como antes el original porque no se mueve
+          Else 
+            Roll.trk(UBION,i1).nota = 181
+            Roll.trk(UBION,i1).dur  = 0
+            Roll.trk(UBION,i1).vol  = 0
+            Roll.trk(UBION,i1).pan  = 0
+            Roll.trk(UBION,i1).pb   = 0
+            Roll.trk(UBION,i1).inst = 0
+            Roll.trk(UBION,i1).onoff = 0 
           EndIf
        EndIf
        If Roll.trk(posinueva+incre,i1).onoff = 3  Then
-          Roll.trk(posinueva+incre,i1).onoff = 1 ' noramalizamos 
+          Roll.trk(posinueva+incre,i1).onoff = 1 ' noramalizamos LA COPIA 
           If moverzona=0 Then
-           Roll.trk(UBION,i1).onoff=1
+           Roll.trk(UBION,i1).onoff=1 ' normalizamos la original
+          Else 'borramos la original
+            Roll.trk(UBION,i1).nota = 181
+            Roll.trk(UBION,i1).dur  = 0
+            Roll.trk(UBION,i1).vol  = 0
+            Roll.trk(UBION,i1).pan  = 0
+            Roll.trk(UBION,i1).pb   = 0
+            Roll.trk(UBION,i1).inst = 0
+            Roll.trk(UBION,i1).onoff = 0 
+
           EndIf
        EndIf 
  EndIf      
@@ -2218,18 +2599,18 @@ Dim As Integer largoredim=0,DOSREDONDAS=384*2
 
   ' BORRADO GENERAL       
    '  Print #1,"i1,ind Roll.trk(i1,ind).nota ",i1, ind, Roll.trk(ind,i1).nota
-       If moverZona=1 And UBION<=hastat Then ' borro original
-          Roll.trk(UBION,i1).nota = 181
-          Roll.trk(UBION,i1).dur  = 0
-          Roll.trk(UBION,i1).vol  = 0
-          Roll.trk(UBION,i1).pan  = 0
-          Roll.trk(UBION,i1).pb   = 0
-          Roll.trk(UBION,i1).inst = 0
-         'If Roll.trk(UBIOFF,i1).onoff = 3 Then
-         ' Print #1,"==>>> EN BORRADO ULTIMO OFF1 SEC UBIOFF,finalnuevo, MAXPOSREAL  ", UBIOFF, finalnuevo,MAXPOSREAL
-         'EndIf
-         Roll.trk(UBION,i1).onoff = 0 ' ES ACA DONDE SE BORRA EL ULTIMO OFF1 DE LA SECUENCIA
-       EndIf
+'       If moverZona=1 And UBION >= desdet And UBION<=hastat Then ' borro original
+'          If Roll.trk(posinueva+incre,i1).onoff = 1 Then
+'          Else 
+'            Roll.trk(UBION,i1).nota = 181
+'            Roll.trk(UBION,i1).dur  = 0
+'            Roll.trk(UBION,i1).vol  = 0
+'            Roll.trk(UBION,i1).pan  = 0
+'            Roll.trk(UBION,i1).pb   = 0
+'            Roll.trk(UBION,i1).inst = 0
+'            Roll.trk(UBION,i1).onoff = 0 ' ES ACA DONDE SE BORRA EL ULTIMO OFF1 DE LA SECUENCIA
+'          EndIf
+'       EndIf
 
     Next UBION
   Next i1
@@ -2261,8 +2642,15 @@ Dim As Integer largoredim=0,DOSREDONDAS=384*2
   ' debo saber cual fue la ultima nota con off1 para ponerle al lafo el 182 fin secuencia
    ' limpio las 6 posiciones ultimas y le pongo el final de secuencia
      ''D1=deltaOff1 + primerdeltaon '''+1
-     MaxPos = finalnuevoMayor +6
-     UBIOFF=Maxpos  ''' + deltaOff1+6
+    ''' MaxPos = finalnuevoMayor +6  orig
+    '' UBIOFF=Maxpos  ''' + deltaOff1+6 orig
+     If finalnuevoMayor > 0 Then 'no estaba
+        MaxPos = finalnuevoMayor +6 'no estaba
+     Else
+        MaxPos=posinueva + cant +6'finsecuencia en realidad no estaba 
+     EndIf 
+     UBIOFF=Maxpos ''''+6*numero ' esto solo si no hay 182
+' aca suponeque el 182 esta en posinueva viene del FOR UBIOFF ! muy debil la cosa
        For  i1= NB To NA
           Roll.trk(UBIOFF,i1).nota = 181
           Roll.trk(UBIOFF,i1).dur  = 0
@@ -2284,6 +2672,7 @@ Dim As Integer largoredim=0,DOSREDONDAS=384*2
            
   pmTk(0).MaxPos=MaxPos +6
   Print #1,"--> TERMINO copia o mover mas halla de fin secuencia ", posinueva
+' el 182 original se bora al principio!
 ' aca el maxpos deberia achicarse....
  '''''''ya lo sume todo al inicio  MaxPos=finalnuevo +1
 ' *************************************************************************
@@ -2296,8 +2685,9 @@ EndIf
 'Print #1, "---->>> hastat desdet "; hastat,desdet
 'voy a marcar sumandolde 2 a cada on off luego los muevo restandole 1
 ' BARRO DESDE EL FINAL AL COMIENZO DE LA ZONA 
-
+ResetVariables=TRUE
 End Sub 
+'------------------------
 
 Sub correcciondeNotas(Roll As inst)
 
@@ -2319,7 +2709,7 @@ EndIf
 'print #1,"CORRECION DE NOTAS ***********"
 For jpt = desdet To hastat  
   For i1= NB To NA -13 ' 26-01-2022  
-   
+ ' los semitoneos van de 0 a 11, las notas de 1 a 12, el 13 es el q esta fuera o cae fuera  
      If ( (Roll.trk(jpt,i1).nota >= 0) And (Roll.trk(jpt,i1).nota <= 13 ) )  Then ' es semitono
            'print #1,"Roll.trk(i1,jpt).nota ",Roll.trk(i1,jpt).nota
            'print #1, "i1",i1

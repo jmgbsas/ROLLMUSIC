@@ -11,19 +11,54 @@ BARRA ESPACIO O SPACE (se interrumpe con P)
 --------------------------------------------------------
 TRASPONER
   -CTRL-O TRASPONER TODA LA SECUENCIA con flechas arriba abajo termina con Q
+
   -ALT-O  TRASPONER SOLO UNA ZONA O PEDAZO ELEGIDO DE LA SECUENCIA
-    a) SE PUEDE ELEGIR NOTAS AISLADAS DANDO SHIFT+CLICK EN CADA UNA LA CUAL SONARA
-       Y LUEGO FLECHAS ARRIBA ABAJO LAS MUEVE. TERMINAR CON Q.
-    b) se elige una zona o intervalo con ctrl+click de mouse en dos lugares y luego con flechas se mueve
-       todo el intervalo arriba abajo en semitonos. Termina con Q.
-Nota: si se traspone el final de la secuencia el cierre de la zona se hara con un
-      ctrl+click sobre el final de la secuencia || de ese modo el final se movera
-      tambien, sino quedara fija.
+    a) TRASPONER POR GRUPO,SE PUEDE ELEGIR NOTAS AISLADAS DANDO SHIFT+CLICK EN CADA UNA LA CUAL 
+       SONARA,Y LUEGO CTRL-click en donde se movera la 1er nota elegida del grupo. TERMINAR CON Q.
+    b) Trasponer Por zona o intervalo 1ero  ctrl+click de mouse en dos lugares, ALT-O y luego con flechas se mueve
+       todo el intervalo arriba abajo en semitonos. Termina con Q.En el caso de ejecuciones podria
+       perder el final OFF de la ultima nota. Si es necesario se puede colocar con ALT-END ver mas abajo.
+   Nota: En zona si la ultima nota de la zona es el final de la secuencia se debe trasponer dicho final
+        para ello dar ctrl+click un poco mas a la derecha del final de la secuencia || de ese modo el final se movera
+        tambien, sino quedara fija.
+
+Resumen y orden de las acciones:
+  trasponer Zona [No fallo en las pruebas]
+   1) elegir zona ctrl-click, ctrl-clik (el 1er click puede ser sobre una nota (I,P,L etc) la cual sonara, 
+      el 2do click puede  ser sobre el final de una nota (>) la cual cierra la zona.
+      Pueden ser sobre cualquier lugar sin notas ni comienzo ni final , o cualquier combinacion, solo
+      las notas con comienzo en la zona se moveran, junto a sus finales esten o no en la zona.
+   2) ALT-O
+   3) FLECHAS arriba abajo
+   4) Q resetea
+  trasponer Toda la secuencia [No fallo en las pruebas]
+   1) CTRL-O
+   2) FLECHAS arriba abajo
+   3) Q, reset
+
+  trasponer Grupo  (En revision futura..continuara..si tengo ganas)
+   [Si al Final se da Ctrl+click para ubica la 1er nota en el nuevo lugar
+      falla, no mueve la ultima nota, o solo mueve la del medio] 
+   [Si al Final se usan las flechas arriba abajo trasponiendo paso a paso
+     falla con flecha arriba una nota del medio deja de subir.
+     pero con flecha abajo funciona bien]
+   
+   1) ALT-O
+   2) LSHIFT+ CLICK EN CADA NOTA, LA CUAL DEBE SONAR BIEN LIMPIA
+      NO CORTADA, si se escucha cortada darle otro Lshift+click
+   3) CTRL+CLICK DONDE SE DESEA TRASPONER LA 1ER NOTA ELEGIDA DEL
+      GRUPO, LAS OTRAS LA SEGUIRAN
+   4) Q, reset
+   Si falla dar Q reset y empezar de nuevo alt-o etc. 
+    (faltan mas pruebas, puede haber un problema  de resteo no completo)
+    Si se usó otras formas de trasponer antes de trasponer por
+    grupo puede fallar, si es la 1er trasposicion luego de cargar
+    el archivo suele andar.
+   En trasponer Grupo si la ultima nota es final de secuencia
+   debera borrarse el final de secuencia y luego insertarlo en
+   esa ultima nota.  
 -------------------------------------------------------------
 EN LECTURA
-   MOVER UNA ZONA NO ANDA BIEN PARA TICKS TODAVIA M+CLICK
-   -----------------------------------------------------------------
-   COPIAR UNA ZONA,NO ANDA BIEN PARA TICKS TODAVIA C+CLICK
 -----------------------------------------------------------
 ENTRADA NOTA MANUAL, OCTAVAS EN VERDE, TECLAS A PULSAR
  DURACION   -> 1 A 8
@@ -82,12 +117,20 @@ F2,F3 - CAMBIA PROPORCIONES DE LOS ELEMENTOS DEL GRAFICO INCLUYE FONT ENTRE OTRO
         F2 ACORTA LA SECUENCIA, F3 LA ALARGA
 F9,F10 - TAMAÑO DE FONT SOLAMENTE. F9 ACHICA EL FONT, F10 AGRANDA EL FONT
 -----------------
-EN LECTURA
+EN LECTURA COPIAR(1 O N VECES) O MOVER 1 SOLA VEZ.
 CTRL-CLICK DOS CLICK EN DIFERENTES PUNTOS DE LA SECUENCIA, MARCA UNA ZONA DE TRABAJO
-           A MODIFICAR.SI EL CLICK ESTA -20 +20 CERCA DEL COMIENZO DE UNA NOTA SE UBICARA
-           SOBRE ELLA EXACTAMENTE NOTIFICANDOLO CON UN SONIDO. AL ELEGIR LA ZONA UBICAR 
-           TODOS LOS COMIENZOS DE NOTA, NO HACE FALTA ABARCAR EL FINAL DE LA ULTIMA NOTA,
-           QUE TAL VEZ AL HACERLO INCLUIRIA OTRA NOTA QUE NO QUEREMOS COPIAR O MOVER.
+           A MODIFICAR.SI EL CLICK ESTA  CERCA DEL COMIENZO DE UNA NOTA O UN FINAL 
+  DE NOTA(<- ESTA SOLO EN EL FINAL DE LA ZONA) SE UBICARA SOBRE ELLA EXACTAMENTE NOTIFICANDOLO 
+  CON UN SONIDO. AL ELEGIR LA ZONA UBICAR TODOS LOS COMIENZOS DE NOTA QUE SE QUIEREN COPIAR O MOVER,
+  NO HACE FALTA ABARCAR EL FINAL(>) DE LA ULTIMA NOTA, QUE TAL VEZ AL HACERLO INCLUIRIA OTRO COMIENZO DE 
+  NOTA QUE NO QUEREMOS COPIAR O MOVER.  La posicion nueva a partir de donde se copiara si se quiere 
+  que toque apenas termina la secuencia original, debe estar por encima de la linea vertical del final
+  de secuencia o sea  del simbolo || y mejor que sea la 2da linea de ||.
+  PARA COPIAR LUEGO PULSAR LA LETRA  C + CLICK IZQ DEL MOUSE, DESPUES DEL FINAL DE LA SECUENCIA O DESPUES 
+  DEL MAXPOS A VECES INDICADA CON  UNA BARRA VERTICAL. SI SE DESEA N VECES LA COPIA 1ERO PULSAR UN NUMERO 
+  N DE 1 O MAS CIFRAS, LUEGO PULSAR C +CLICK IZQUIERDO SOBRE EL LUGAR A COPIAR. 
+  LO MISMO PARA MOVER PERO SOLO COPIA UNA VEZ BORRANDO EL ORIGINAL.
+   
 ----------------------------
 EN LECTURA
 MARCAR CON CTRL-CLICK EN DONDE SE QUIERE DIVIDIR
@@ -150,8 +193,8 @@ NOTA DE LA SECUENCIOA EJ: I   >||  SIENDO (>) FINAL NOTA Y || FINAL SECUENCIA
   ALT-END INSERTAR FINAL DE NOTA '>' MANUALMENTE EN CASO DE QUE SE BORRE, PARA ELLO 
   CALCULAR LOS TICKS ,96 NEGRA, 48, CORCHEA, 24 SEMICORCHEA ETC. SINO
   SIMPLEMETE FIJARSE DONDE ESTA EL COMIENZO BUSCAR EL ONOFF=2 Y AHI 
-  REEMPLAZAR LA NOTA POR OTRA IGUAL , EL PROG REEMPLAZARA POR ESA NOTA
-  COLOCANDO EL FINAL CORRESPONDIENTE.
+  REEMPLAZAR LA NOTA POR OTRA IGUAL, LUEGO PULSAR X en CTRL-M o EL NOMBREDE LA NOTA EN CTRL-N-
+  EL PROG REEMPLAZARA POR ESA NOTA COLOCANDO EL FINAL CORRESPONDIENTE.
 ------------------------------------------------------------------
 MAY IZQUIERDA + M ver  menu del GRAFICO durante play por ejeplo para cambiar patch
 -----------------------------------------------------------------------
