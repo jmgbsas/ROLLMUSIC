@@ -1776,6 +1776,7 @@ Dim As Integer jpt=1, ind=1,i1=1, comienzo , final, inc,octavaDeAcorde,verticalE
   If trasponer=0 Then
      Exit Sub
   EndIf
+
   
 If cant < 0 Then ' DOWN
  comienzo= NB

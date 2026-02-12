@@ -1,7 +1,6 @@
     Ayuda Prelimiar Básica RollMusic   version 0.35108 
     ====================================================================================
-     0.35108  COPIA TANTO SECUENCIAS DE EJECUCIONES COMO MANUALES, 1ERA VERSION HACE FALTA
-      MAS PRUEBAS. SE PUDE  DEFINIR UA ZONA EXACTA ENTRE UN COMIENZO DE NOTA HASTA EL FINAL DE OTRA NOTA
+     0.35109 trasponer el fin de secuencia automaticamente si la zona esta al final de la secuencia
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . version 0.35107, falta muchas pruebas.. )
       
@@ -29,7 +28,8 @@
        pulsando Edit en elmenu,es un atajo rapido.
        NOTA: En windows 11 si no funciona el Play o cancela se recomienda usar un mapeador Midi 
              como CoolSoft_MIDIMapper_2.1.2.exe (falta deteccion de fallas)
-       Esta Ayuda con F1 en Grafico y sin grafico. Teclas Rapidas comienzo solo en Grafico Ctrl+F1
+       Esta Ayuda sale F1 en Grafico y sin grafico. Teclas Rapidas Sin grafico INFO->5.0 en menu Control, con
+       Grafico Ctrl+F1.
 
     I) INTRODUCCION  COMO ROLLMUSIC REPRESENTA LAS NOTAS
        ==================================================
@@ -42,9 +42,10 @@
        a la 5ta linea 1/3 de tresillo de O, 3O y se extiende a la derecha 8 columnas mas hasta w.
        El 2do grupo, es el mismo grupo anterior pero la representacion de sus silencios, con 
        una s minuscales antepuesto a la figura. ej sO, sI, sL, etc.
-       El 3er grupo son las notas ligadas para ello se usa un simbolo adicional a la derecha,
-       el +, e indica que la figura se liga a la siguiente.
-       El 4to grupo es el mismo anterior, pero con ligadura + .
+       El 3er grupo son las notas ligadas del 1er grup que suenan, para ello se usa un simbolo adicional 
+       a la derecha, el +, e indica que la figura se liga a la siguiente.
+       El 4to grupo es el mismo que el 2do loa silencios , pero con ligadura + .
+
        Cada grupo son 5 lineas; la figura estandar como O P I L F E X H W
        REDONDA O (4I), BLANCA P (2I), I NEGRA (2L), L CORCHEA(2F),F SEMICORCHEA(2E),
        E FUSA(2X), X SEMI FUSA(2H), H GARRAPATEA O CUARTI FUSA(2W)
@@ -376,19 +377,26 @@
 ********************************************************************************************************
     1) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
     2) El espaciado entre lineas se puede cambiar.
-    3) Trasponer todo: CTRL-O habilita la trasposicion DE TODA LA SECUENCIA,con flezhs arriba abajo se mueve por 
-       semitonos Q la deshabilita.
-       Trasponer un grupo de notas separadas no contiguas: ALT-O luego ENCADA nota no contigua o si
-       dar shift+click, se escuchara la nota luego de terminada la seleccion subir bajar con flechas
-       terminar con Q. 
-       Trasponer una zona:ctrl+click en dos lugares definiendo una zona, luego ALT-O y flechas arriba abajo.
-       Si la zona abarca un solo comienzo de nota, movera esa nota con su final aunque no este en la zona.
+    3) Trasponer todo: CTRL-O habilita la trasposicion DE TODA LA SECUENCIA,con flechas arriba abajo se mueve por 
+       semitonos Q la deshabilita.Tambien traspone una Zona elegida con CTRL-CLICK
+       o una sola nota si la zona es pequeña para incluir una sola nota sin incluir
+       ninguna otra nota.
+
+       Trasponer UNA ZONA con CTRL-O : luego de CTRL-O pulsar ctrl+click en dos lugares definiendo una zona, 
+       y luego mover con flechas arriba abajo.Terminar con Q.
+       Si la zona al final del boirde derecho abarca un solo comienzo de nota, movera esa nota con su final 
+       aunque el final no este en la zona.
        TRASPONER (todo o una parte o una nota ) DESTRUIRA LA INFORMACION DEL CIFRADO DEL ACORDE, EN VEZ DE 
-       TRASPONER UN ACORDE SE SUGIERE BORRARLO Y CONSTRUIIR UNO NUEVO SI LA NOTA BASE SALE DE LA OCTAVA ORIGINAL. 
+       TRASPONER UN ACORDE SE SUGIERE BORRARLO Y CONSTRUIR UNO NUEVO SI LA NOTA BASE SALE DE LA OCTAVA ORIGINAL. 
        SI LA NOTA BASE DEL ACORDE SE MUEVE DENTRO DE LA OCTAVA, TRASPONER TAMBIEN TRASPONE EL CIFRADO, SIN
        DESTRUIRLA. SI SE CAMBIA LA ESCALA PRINCIPAL DE LA SECUENCIA HAY QUE BORRAR TODO PORQUE ESTAN CONSTRUIDOS
        SEGUN LA ESCALA ANTERIOR no hay reconstruccion de acordes por ahora, lo que conviene hacer es trasponer 
        cada acorde los semitonos necesarios para que la nota base se ajuste a la escala principal nueva. 
+
+       Trasponer un grupo de notas separadas no contiguas: ALT-O y luego EN CADA nota no contigua 
+       pulsar shift+click, se escuchara la nota luego de terminada la seleccion dar CTRL-CLIK en donde
+       se movera la 1er nota del grupo,terminar con Q.(no funciona bien en grupo con una sola nota anda) 
+       Ver detalles de comandos en teclas-rapitas en menu INFO. 
 
     4) Recalcular Compas pulsando <R>. Establece las barras divisorias entre compases según el ritmo.
     5) Grabar Archivo. Se ha puesto un retardo de 1 segundos si tarda eso es porque se

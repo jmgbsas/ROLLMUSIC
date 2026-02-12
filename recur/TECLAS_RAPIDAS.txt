@@ -1,17 +1,19 @@
   TECLAS RAPIDAS COMUNES O MOUSE:
 ====================================
-  ROLL GRAFICO
-escuchar una nota en todo tipo de edicion:
+  ROLL GRAFICO GENERALIDADES
+ Escuchar una nota en todo tipo de edicion:
  SHIFT+CLICK IZQUIERDO,( mayusculas +click izquierdo mouse) sobre la nota 
+ PANTALLA GRAFICA -> 'Y' PERMITE ACHICAR EL GRAFICO SI MOLESTA MOMENTANEAMENTE Y LUEGO PULSANO F8 O CLICK 
+ EN + ESQUINA SUPÈRIOR DERECHA VUELVE AL TAMAÑO ANTERIOR
 --------------------------------------------------------
-BARRA ESPACIO O SPACE (se interrumpe con P)
-  PLAY EN LECTURA DESDE LA POSICION EN DONDE COMIENZA LA VISUALIZACION DE LA SECUENCIA
+PLAY CON BARRA ESPACIO O SPACE (se interrumpe con P)
+  EN LECTURA DESDE LA POSICION EN DONDE COMIENZA LA VISUALIZACION DE LA SECUENCIA
   SI ES UNA CANCION SE TOCA TODA LA CANCION
   EN EDICION CTRL-M Y N. SOLO PLAY DEL TRAMO EN EDICION.
 --------------------------------------------------------
 TRASPONER
   -CTRL-O TRASPONER TODA LA SECUENCIA con flechas arriba abajo termina con Q
-
+   TRASPONE TAMBIEN UN PEDAZO DE SECUENCIA EN UNA ZONA DADA o UNA ZOLA NOTA
   -ALT-O  TRASPONER SOLO UNA ZONA O PEDAZO ELEGIDO DE LA SECUENCIA
     a) TRASPONER POR GRUPO,SE PUEDE ELEGIR NOTAS AISLADAS DANDO SHIFT+CLICK EN CADA UNA LA CUAL 
        SONARA,Y LUEGO CTRL-click en donde se movera la 1er nota elegida del grupo. TERMINAR CON Q.
@@ -22,20 +24,40 @@ TRASPONER
         para ello dar ctrl+click un poco mas a la derecha del final de la secuencia || de ese modo el final se movera
         tambien, sino quedara fija.
 
-Resumen y orden de las acciones:
-  trasponer Zona [No fallo en las pruebas]
-   1) elegir zona ctrl-click, ctrl-clik (el 1er click puede ser sobre una nota (I,P,L etc) la cual sonara, 
-      el 2do click puede  ser sobre el final de una nota (>) la cual cierra la zona.
-      Pueden ser sobre cualquier lugar sin notas ni comienzo ni final , o cualquier combinacion, solo
-      las notas con comienzo en la zona se moveran, junto a sus finales esten o no en la zona.
-   2) ALT-O
-   3) FLECHAS arriba abajo
-   4) Q resetea
-  trasponer Toda la secuencia [No fallo en las pruebas]
-   1) CTRL-O
-   2) FLECHAS arriba abajo
-   3) Q, reset
-
+  Resumen Traspone y orden de las acciones:
+  ----------------------------------------------------------------------------
+  CON CTRL-O
+  trasponer Toda la secuencia O una zona O una Nota sola[No fallo en las pruebas]
+   a) Toda la secuencia
+     1) CTRL-O
+     2) FLECHAS arriba abajo
+     3) Q, reset
+   b) Una zona de la secuencia.
+     1) CTRL-O
+     2) ajustar zona ctrl-click en comienzo y final de la zona
+     3) FLECHAS arriba abajo
+     4) Q, reset
+   c) Una sola Nota  
+     1) CTRL-O
+     2) ajustar ctrl-click comienzo sobre  nota y final sobre  UN LUGAR ANTES DEL FINAL 
+        DE ESA NOTA y en lo posible que no incluya la zona ninguna otro comienzo de nota
+        elegir el segundo click muy cerca del primero o a la mitad de duracion de la nota,
+        I----2doclick---->||
+        pero si esa ultima nota, dura hasta el final de la secuencia, 
+        incluir el mas halla del final ||, sino el programa lo hará automaticamente.
+        I----2doclick---->||  aca el programa incluye a || automaticamente corrigiendo
+        pues sino el || no se movera y luego habra problemas de ingresar nuevas notas.
+        I---------------->||--2doclick. mas a la dercha de ||, aca el usuario lo hizo
+        mueve el ||.
+        Si hubo algun error y quiero mover las notas sin mover ||
+        dar el segundo click sobre el || 
+        Resumiendo si el 2do click es sobre || dicha figura no se moverá
+        siempre se moverá si el 2do click esta antes de fin de nota > o despues 
+        de fin secuencia ||.
+     3) FLECHAS arriba abajo
+     4) Q, reset
+  --------------------------------------------------------------------
+  CON ALT-O
   trasponer Grupo  (En revision futura..continuara..si tengo ganas)
    [Si al Final se da Ctrl+click para ubica la 1er nota en el nuevo lugar
       falla, no mueve la ultima nota, o solo mueve la del medio] 
@@ -49,6 +71,7 @@ Resumen y orden de las acciones:
    3) CTRL+CLICK DONDE SE DESEA TRASPONER LA 1ER NOTA ELEGIDA DEL
       GRUPO, LAS OTRAS LA SEGUIRAN
    4) Q, reset
+   Con una sola nota funciona con mas suele perder una nota o mas del grupo
    Si falla dar Q reset y empezar de nuevo alt-o etc. 
     (faltan mas pruebas, puede haber un problema  de resteo no completo)
     Si se usó otras formas de trasponer antes de trasponer por

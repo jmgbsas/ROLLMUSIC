@@ -1116,7 +1116,7 @@ Else
           If s9 = 1 Then   s9=0 EndIf
           If s10 = 1 Then   s10=0 EndIf
           If s11 = 1 Then  Sleep 500:s11=0 EndIf
-          If suenaunavez=1 Then Sleep 500:suenaunavez=0 EndIf 
+          If suenaunavez=1 Then Sleep 400:suenaunavez=0 EndIf 
           inc_Penta = Int((ALTO -1) /40) - deltaip
 ' ----------------------------------------------------------------------------
           cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nomeafecta
@@ -2500,7 +2500,7 @@ EndIf
 pun=0:silen=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
 SelGrupoNota=0:SelGrupoNotaT=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
 deltaip=0:incWheel=0:lockip=0:playloop=0:s6=0:s1=0:indicePosOld=0 :indicePosUltimaGrupo=0
-esEjecucion=0
+esEjecucion=0:indicePos=0
 'anchofig=35
 'gap1= (anchofig* 2315)/1000  ' 81 default
 'gap2= (914 * gap1) /1000 ' 74 default
@@ -6105,6 +6105,33 @@ Dim As Integer lcurpos,lnotacur,  resultado
 
      If pasoZona1 > 0 And pasoZona1 <> pasox Then ' posicion 2 de la zona
         pasoZona2 = pasox ' tratamos de no perder el off1 si justo el off1 es limite de zona
+' determinar si la ultima nota de la secuencia entra en la zona y si es asi trasponer hasta maxpos
+' incluyendo el fin 182 ||, para ello vamos de derecha a izquierda buscando un off1 y un 182
+     Dim As Integer i1finsec,i1,jpt, jptfinsec, fin, i1182,jpt182
+     For jpt=Maxpos To pasoZona2 Step -1
+         For i1=NB To NA-13 
+         If Roll.trk(jpt,i1).dur=182 Then
+            i1182=i1
+            jpt182=jpt    
+         EndIf
+         
+         If Roll.trk(jpt,i1).onoff=1 Then
+            i1finsec=i1
+            jptfinsec=jpt    
+         EndIf
+         Next i1 
+     Next jpt 
+'necesito cuanto dura la ultima nota pufff
+If jpt182 > 0 And jpt182 > pasoZona2  And  jptfinsec + 20 > jpt182 And jptfinsec > pasozona2 Then
+ ' estamos en el  caso,  jptfinsec + 6 daria la posicin del 182, con 20 la debe superar
+  ' cambiar pasozona2 para que incluya el 182
+   pasoZona2=jpt182+font/2 ' el largo en pizxels de la figura || debemos saberla y tomar la mitad
+'podria ser font/2    
+EndIf 
+' si no hay 182 no tien sentido el programa deberia corregir ya gregar el 182 tal vez en la carga
+' del archivo 11-02-2026 VER 
+   
+
         pasoNota=0
     '    print #1,"pasoZona2=",pasoZona2;" pasoNota=";pasoNota
         Exit Do
@@ -6113,8 +6140,8 @@ Dim As Integer lcurpos,lnotacur,  resultado
         pasoNota=nsE
      '   print #1,"pasoNota=",pasoNota
         Exit Do
-     Else
-        pasoNota=0   
+    ' Else  12-02-2026 creo que no va kokito
+    '    pasoNota=0  12-02-2026  
      EndIf
 
      If pasoZona1 > 0  And pasoZona1 = pasox Then ' la zona es solo  1 sola columna

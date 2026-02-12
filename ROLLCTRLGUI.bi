@@ -1,7 +1,7 @@
 'ROLLCTRLGUI... GUI DE VENTANA DE CONTROL
 
 Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8,MenName10
-Static Shared As HMENU MenName31,MenName32,MenName18,MenName19,MenName30 
+Static Shared As HMENU MenName31,MenName32,MenName18,MenName19,MenName20,MenName30 
 
 If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON control
   menuabierto=1 ' evita apertura de mas de un menu
@@ -302,23 +302,25 @@ ButtonGadget(BTN_ROLL_CORO,  60 ,750, 45, 20,"Coro")
   MenName10=MenuTitle(hMessages,"INFO")
 
 ''MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
-menuitem(10064,Menname1,"1.0 SIN ROLL GRAFICO=> CARGAR TODAS LAS PISTAS *.RTK *.EJEC Y OTRAS  Y EN UN SOLO PASO")
-MenuItem(10061,MenName1,"2.0 SIN Roll Grafico=> CARGAR SOLO PISTAS *.RTK de Cancion con Pistas separados con Ventana de Control  ")
-MenuItem(1006,MenName1, "3.0 CON Roll Grafico=> Cargar SOLO directorio de Cancion con Pistas separados con Ventana de Control ")
-Menubar(MenName1)
-MenuItem(10062,MenName1,"3.1 Abrir SOLO Roll Grafico dependiente de Control DESPUES DE  (2.0) o se cerro el grafico. ")
-MenuItem(10063,MenName1,"3.2 Externo:Abrir un Roll Grafico independiente de Control, DESPEUS DE  (2.0) NO TENDRA NINGUN PARAMETRO")
-Menubar(MenName1)
+MenName19=OpenSubmenu(MenName1,"1.0)CARGAR CANCION")
+ menuitem(10064,Menname19,"1.0 SIN ROLL GRAFICO=> CARGAR TODAS LAS PISTAS *.RTK *.EJEC Y OTRAS  Y EN UN SOLO PASO")
+ MenuItem(10061,MenName19,"2.0 SIN Roll Grafico=> CARGAR SOLO PISTAS *.RTK de Cancion con Pistas separados con Ventana de Control  ")
+ MenuItem(1006,MenName19, "3.0 CON Roll Grafico=> Cargar SOLO directorio de Cancion con Pistas separados con Ventana de Control ")
+ Menubar(MenName1)
+ MenuItem(10062,MenName19,"3.1 Abrir SOLO Roll Grafico dependiente de Control DESPUES DE  (2.0) o se cerro el grafico. ")
+ MenuItem(10063,MenName19,"3.2 Externo:Abrir un Roll Grafico independiente de Control, DESPUES DE  (2.0) NO TENDRA NINGUN PARAMETRO")
+ Menubar(MenName1)
 MenuItem(1007,MenName1, "3.0 Grabar Cancion")
 'MenuItem(1008,MenName1, "Na.Grabar Cancion Como")
 'MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
 Menubar(MenName1)
-MenuItem(1010,MenName1, "4.0 Cargar una Pista (rtk) externa en Cancion")
-MenuItem(1011,MenName1, "4.1 Grabar una Pista de la Cancion con modificaciones, carga pista si no hubiera cargada")
-MenuItem(1012,MenName1, "4.2 Copia una pista a otra  nueva en cancion")
+MenName20=OpenSubmenu(MenName1,"4.0) MANEJO DE PISTAS")
+MenuItem(1010,MenName20, "4.0 Cargar una Pista (rtk) externa en Cancion")
+MenuItem(1011,MenName20, "4.1 Grabar una Pista de la Cancion con modificaciones, carga pista si no hubiera cargada")
+MenuItem(1012,MenName20, "4.2 Copia una pista a otra  nueva en cancion")
 'MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
-MenuItem(1014,MenName1, "4.3 Grabar una Pista rtk a roll TrackaRoll")
-MenuItem(10075,MenName1,"4.4 Cargar Pista (rtk o roll) en Roll aislado ")
+MenuItem(1014,MenName20, "4.3 Grabar una Pista rtk a roll TrackaRoll")
+MenuItem(10075,MenName20,"4.4 Cargar Pista (rtk o roll) en Roll aislado ")
 
 Menubar(MenName1)
 

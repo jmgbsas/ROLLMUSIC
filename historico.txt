@@ -1,3 +1,4 @@
+-12-02.2026 0.35109 mover el fin secuencia automaticamente si la zona esta al final de la secuencia
 -02-02-2026 COPIA TANTO SECUENCIAS DE EJECUCIONES COMO MANUALES 1ERA VERSION HACE FALTA
    MAS PRUEBAS. SE PUEDE  DEFINIR UNA ZONA EXACTA ENTRE UN COMIENZO DE NOTA HASTA EL FINAL DE OTRA NOTA
    TRASPONERGRUPO NO ANDA BIEN, en teclas_rapidaS.txt se explica los detalles de uso. con flecha haca abajo

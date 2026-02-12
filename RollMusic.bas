@@ -35,6 +35,7 @@ On Error Goto errorhandler
 
 ' --------------------------------------------
 nroversion="0.35108 COPIA N VECES O MUEVE A PARTIR DEL FINAL DE SECUENCIA manual o ejecucion, Trasponer Grupo ya anda"
+' ORGANIZAMOS MENU ARCHIVO UN POCO
 ' RECUPERAMOS TRASPONER TOTAL O PARCIAL PARA EJECUCIONES Y MANUALES OK
 ' (otra version sera una insercion dentro de la secuencia original
 ' 2) posn=MaxPos-6 podriamos eliminarlo de los parametros.
