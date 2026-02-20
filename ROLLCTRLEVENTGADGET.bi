@@ -1,4 +1,6 @@
 DisableGadget(PISTASROLL,0) 'habilita la pistaroll
+DisableGadget(PISTASEJECUCIONES,0) 'habilita la pistasejecuciones
+DisableGadget(BOTON_SELECCION_EJECUCION,0) 'habilita BOTON_SELECCION_EJECUCION
 
 ' include DE ROLLMUSIC.BAS, EVENTC, eventgadget
 ' tiene su scope
@@ -153,6 +155,7 @@ Static As Integer millave
   EndIf
  
 '-----------------------------------------------------
+DisableGadget(PISTASROLL,1) 'deshabilita la pistaroll
 
   If eventnumber()=  PISTASEJECUCIONES Then
 ''' ESTE MOUSEBUTTONS AND LEFTBUTTON NO FUNCIONA !!! LA PUTA MADRE 
@@ -189,7 +192,6 @@ EndIf
                 
 
   EndIf
-
        
 '  CUAL PISTA DE ROLL SE ESCUCHA SEGUN LO SELECCIONADO
 ' este es otro metodo para seleccionar todas las pistas cargadas
@@ -198,6 +200,7 @@ EndIf
 ' no lo necesita... es todo o nada pero no recuerda que se escuchaba o no
 ' siemrpe que haya una cancion cargada .. es un boton de todo o nada
 ' solo si cancion esta cargada...BOTON "S"
+DisableGadget(PISTASEJECUCIONES,1) 'deshabilita la pistasejecuciones
        If eventnumber()=BOTON_PISTA_ROLL And CANCIONCARGADA=TRUE Then
         disablegadget(PISTASROLL,0)
          Dim i As integer
@@ -230,7 +233,7 @@ EndIf
      If eventnumber()= BTN_MIDI_GRABAR And GrabarEjec=HabilitaGrabar Then ' BOTON GRABAR ROJO
       ' EVENTO 10
          Print #1,"Entro a btn_midi_grabar EJEC "
-         k=0
+         k=0:ntoca=0
          jgrb=0:Parar_De_Dibujar=NO 'impide el play  o lo resetea
 
           For K=1 To 32
@@ -240,7 +243,7 @@ EndIf
               Exit For
            EndIf
           Next k     
-            If k=0 Then 
+            If ntoca=0 Then 
               Exit Select
             EndIf
         ' EndIf  
@@ -294,9 +297,10 @@ EndIf
 '//////////////// BOTON NEGRO STOP EJEC  , GRABA A DISCO //////////////////
 
 ' 
-      If eventnumber()= BTN_MIDI_PARAR    Then ' BOTON STOP NEGRO DE MIDI-IN
+      If eventnumber()= BTN_MIDI_PARAR  And ntoca > 0   Then ' BOTON STOP NEGRO DE MIDI-IN
          SetGadgetstate(BTN_MIDI_GRABAR,BTN_LIBERADO)
          Print #1,"ntoca en BTN_MIDI_PARAR "; ntoca
+          
          If GrabarEjec=GrabarPistaEjecucion Then
             If pmEj(ntoca).MaxPos > 0 And (GrabarEjec=GrabarPistaEjecucion  Or GrabarEjec=GrabarPatronaDisco ) Then
               Print #1,"//STOP:pmEj(ntoca).MaxPos, GrabarEjec ",pmEj(ntoca).MaxPos,GrabarEjec
@@ -514,9 +518,9 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",maxgrb
 '---- OJO ACA ESTAMOS GRABANDO PARANDO Y EJECUTANDO GRABACIONES
 ' DEL USUARIO PERO SOBRE ROLL SIN NECESIDAD DE ENTRADA MANULA!!!
 '----------------------------------------------------------------------------------------------
-'//////////////// BOTON ROJO GRABAR EN ROLL //////////////////
-
-      If eventnumber()= BTN_ROLL_GRABAR_MIDI And GrabarPenta=0  Then 
+'//////////////// BOTON ROJO GRABAR EN ROLL NO HABILITADO EN TICKS POR AHORA //////////////////
+' APLICABLE=FALSE 
+      If eventnumber()= BTN_ROLL_GRABAR_MIDI And GrabarPenta=0 And APLICABLE Then 
 'solo usado por ahora sin cancion cargada , si hay una cancion
 ' cargada solo hace falta GrabarPenta Roll grafico ya esta cargado
          SetGadgetstate(BTN_ROLL_GRABAR_MIDI,BTN_PRESIONADO)
@@ -654,7 +658,7 @@ Print #1, "542 GrabarPenta=0"
              If  tocaparam(pis).nombre  >""  And  tocaparam(pis).maxpos > 0 Then
                  miport=1   ' 1= VA A seleccion port Salida
                  ntkp=pis
-               Dim As Integer k1 = pmEj(pis).portout
+               Dim As UByte k1 = pmEj(pis).portout
                Print #1,"antes del cambio k1, listOutAbierto(k1) ", k1, listOutAbierto(k1)
                Print #1,"tocaparam(pis).portout previo al cambio",tocaparam(pis).portout
      ''''     thread3 = ThreadCreate(@selportEjec(), CPtr(Any Ptr, miport))
@@ -1065,6 +1069,7 @@ Print #1,"k, canalsalida  ";k, canalx
            Next pista
          EndIf
       EndIf 
+DisableGadget(BOTON_SELECCION_EJECUCION,1) 'deshabilita BOTON_SELECCION_EJECUCION
    
       If eventnumber()= OK   Then
          comando=GetGadgetText(LINEA_COMANDO)

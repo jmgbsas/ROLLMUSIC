@@ -34,7 +34,9 @@ On Error Goto errorhandler
 '----------------------------------------------------
 
 ' --------------------------------------------
-nroversion="0.35108 COPIA N VECES O MUEVE A PARTIR DEL FINAL DE SECUENCIA manual o ejecucion, Trasponer Grupo ya anda"
+nroversion="0.35110 botones Cancion, Ejecucion, BTN M , MEDIA mp3 wav"
+'botones Cancion, Ejecucion evitar cancelaciones, BTN M evitar que pare al dar click en pistas
+', solo cargar MEDIA mp4 wav en reproductor de media  
 ' ORGANIZAMOS MENU ARCHIVO UN POCO
 ' RECUPERAMOS TRASPONER TOTAL O PARCIAL PARA EJECUCIONES Y MANUALES OK
 ' (otra version sera una insercion dentro de la secuencia original

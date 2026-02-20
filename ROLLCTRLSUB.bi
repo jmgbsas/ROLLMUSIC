@@ -959,19 +959,24 @@ Sub MIA ()
 End Sub
 
 Sub CTRL1094() ' REPRODUCIT MEDIA
+Dim As Integer largo, orig,ticks,altov
+largo=ANCHO*3/4
+orig=largo
+ticks=100
 
-hwndMEDIA=OpenWindow("MEDIA",700,100,350,350,WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST) 
+hwndMEDIA=OpenWindow("AUDIO MP3, WAV",ANCHO/4,350,largo,ALTO/7,WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST)
+altov=sizey*3/5 
  ''CenterWindow(hwndMEDIA)
 
- 
-ButtonGadget(1,10,280,20,20,"X"):GadgetToolTip(1,"STOP")
-ButtonGadget(2,40,280,20,20,"|>"):GadgetToolTip(2,"PLAY")
-ButtonGadget(3,70,280,20,20,"||"):GadgetToolTip(3,"PAUSE")
-ButtonGadget(6,100,280,20,20,"<<"):GadgetToolTip(6,"Playback speed")
-ButtonGadget(7,130,280,20,20,">>"):GadgetToolTip(7,"Increase the playback speed")
-ButtonGadget(8,160,280,20,20,"+"):GadgetToolTip(8,"Open File")
+ButtonGadget(1,10,altov,20,20,"X"):GadgetToolTip(1,"STOP")
+ButtonGadget(2,40,altov,20,20,"|>"):GadgetToolTip(2,"PLAY")
+ButtonGadget(3,70,altov,20,20,"||"):GadgetToolTip(3,"PAUSE")
+ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Playback speed")
+ButtonGadget(7,130,altov,20,20,">>"):GadgetToolTip(7,"Increase the playback speed")
+ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Open File")
 ImageGadget(4,6,0,320,240)
-TrackBarGadget(5,5,250,320,20,0,10,TBS_NOTICKS  )
+
+TrackBarGadget(5,5,altov/4,largo-20,30,0, ticks, TBS_NOTICKS  )
 
 
 SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
@@ -991,11 +996,13 @@ Do
    EndIf
    If event=EventGadget Then
       Select case EventNumber
-         Case 1 
+         Case 1
+
            If mov8  Then 
               stopmovie(mov8)
               MOV_FLAG=3  'DEJA DE SONAR EL METRONOMO PERO SIGUE EL LOOP del metronomo
            EndIf 
+
          Case 2 
           If mov8 >0 Then 
                    Playmovie(mov8):SetRateMovie(mov8,1)
@@ -1018,9 +1025,12 @@ Do
             If mov8 Then SetRateMovie(mov8,GetRateMovie(mov8)+0.01)
          Case 8
             #ifdef UNICODE
-               Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)|*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1|")          
+         ''      Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)|*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1|")
+       Var OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav )|*.mp3; *.wav|")
+          
             #else 
-               Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)"+Chr(0)+"*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1"+Chr(0))           
+'''''Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)"+Chr(0)+"*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1"+Chr(0))
+        Var OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav)"+Chr(0)+"*.mp3; *.wav"+Chr(0))           
             #EndIf
             If OFR<>"" Then
                If mov8 Then
@@ -1037,7 +1047,11 @@ Do
             EndIf
       End Select
    EndIf
-   'Sleep 5
+ '' If event= EventSize Then
+ ''  Var resH=WindowWidth(hwndMEDIA)-20
+ ''   ResizeGadget(5,,resh)
+ ''  EndIf
+   Sleep 5
 Loop
 
 
@@ -1204,7 +1218,7 @@ Sub CTRL1205 () 'Abrir      Puerto MIDI-OUT EJECUCIONES
 ' PARA ELLO SE USAN LOS BOTONES DE ABAJO POR SI SE QEIREN AGREGAR,,
 ' AR ALLUEGO GRABARLOS COMO NUEVOS EN EL ARCHIVO DE EJECUCIONES
 Print #1,"abriendo port....si no se selecciona previamnete toma cero"
-Dim As Integer k1=0,k2=0,pis=0
+Dim As Integer k1=0,k2=0,pis=0,resultado
 ' CBXEJEC Y CBXGRAB PERTENECEN A LA MISMA LISTA DE LA DERECHA EJECUCIONES
 ' EJECUTAR O GRABAR ya  sea para play o teclado midi in el port out
 ' de la pista debe abrirse
@@ -1224,27 +1238,12 @@ If k1 <> k2 Then ' algo anda mal
   Print #1, "inconsistencias k1<>k2 en port out no se cierra nada"
   Exit Sub
 EndIf
-        Print #1,"midiout ",k1, *nombreOut(k1)
-        If InStr(*nombreOut(k1),"Microsoft")>0 Then
-           Print #1,"No se usa Microsoft"
-        Else
-           If listoutAbierto( k1) = 0 Then
-              If listoutCreado( k1) = 0 Then
-                 midiout(k1) = rtmidi_out_create_default ( )
-                 listoutCreado( k1) =1
-              EndIf
-              open_port midiout(k1),k1, nombreOut(k1)
-              Dim As integer    porterror=Err
-               listoutAbierto( k1) = 1
-              Print #1,"1205 abro MIDI-OUT ",*nombreOut(k1)
-              porterrorsub(porterror)
-               
-          Else
-              Print #1,"1 PORT YA ABIERTO",*nombreOut(k1)
-          EndIf
-        EndIf 
-        Print #1,"Port usando en Play teclado ",portout
+  Print #1,"midiout ",k1, *nombreOut(k1)
+  resultado=CheckPortout(k1)
+  If resultado=0 Then
+        Print #1,"Port usando en Play teclado ",k1
         Print #1,"-------------------------------------"
+  Else
 ' el portsal de rtmidi empieza desde cero luego le resto 1
 'ntoca es la  pista ejec que se esta grabando global entera
 ' en este caso recorremos el vector o sea ntoca=i
@@ -1263,8 +1262,7 @@ EndIf
      '   ChangeProgram ( tocaparam(i).patch, tocaparam(i).canal, tocaparam(i).portout-1)
      '  EndIf 
  
- If k1=0 Then
-   Print #1,"NO SE ABRE NINGUN PORT",*nombreOut(k1)
+    Print #1,"NO SE ABRE EL PORT",*nombreOut(k1)
  EndIf
 
 End Sub
@@ -1670,7 +1668,7 @@ End Sub
 Sub CTRL2505 () 'Abrir      Puertos MIDI-OUT roll
 '------------ABRIR PORT DE SALIDA ---<<<<< ROLL de la lista 
 Print #1,"abriendo port....si no se selecciona previamnete toma cero"
-Dim As Integer k1,k2
+Dim As Integer k1,k2,resultado
   If PISTASROLLSELECCIONADA=0 Then
      Exit Sub
   EndIf 
@@ -1682,35 +1680,16 @@ Dim As Integer k1,k2
 
   k1=CInt(pmTk(k2).portout)
   Print #1,"midiout ",k1, *nombreOut(k1)
-  If InStr(*nombreOut(k1),"Microsoft")>0 Then
-     Print #1,"No se usa Microsoft"
-  Else
-    If listoutAbierto( k1) = 0 Then
-       If listoutCreado( k1) = 0 Then
-          midiout(k1) = rtmidi_out_create_default ( )
-          listoutCreado( k1) =1
-       EndIf
-       open_port midiout(k1),k1, nombreOut(k1)
-       Dim As integer    porterror=Err
-       listoutAbierto( k1) = 1
-       Print #1,"2505 abro MIDI-OUT ",*nombreOut(k1)
-       porterrorsub(porterror)
-               
-    Else
-       Print #1,"1 PORT YA ABIERTO",*nombreOut(k1)
-    EndIf
-  EndIf 
-  Print #1,"Port usando en Play teclado ",portout
-  Print #1,"-------------------------------------"
-    
-    
- 
- If k1=0 Then
-   Print #1,"NO SE ABRE NINGUN PORT",*nombreOut(k1)
- Else 
+  resultado=CheckPortout(k1)
+  If resultado=0 Then
+   Print #1,"Port usando en Play teclado ",portout
+   Print #1,"-------------------------------------"
    HabilitarMIDIINROLL = HabilitarMIDIINROLL + 1 ' ACA DEBERIA SER 4
 'LAS 2 SELECCIONES IN OUT Y LAS 2 APERTURAS IN OUT
- EndIf
+  Else 
+   Print #1,"NO SE ABRE NINGUN PORT",*nombreOut(k1)
+  EndIf 
+
 End Sub
 '-----------------------------------------
 Sub CTRL2506() 'Cerrar    Puertos MIDI-OUT de roll

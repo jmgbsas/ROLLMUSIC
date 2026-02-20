@@ -1,8 +1,8 @@
     Ayuda Prelimiar Básica RollMusic   version 0.35108 
     ====================================================================================
-     0.35109 trasponer el fin de secuencia automaticamente si la zona esta al final de la secuencia
+     0.35110 botones Cancion, Ejecucion, BTN M , MEDIA mp3 wav ,,etc
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
-       Y FUNCIONAN BIEN PARA TICKS . version 0.35107, falta muchas pruebas.. )
+       Y FUNCIONAN BIEN PARA TICKS . faltan cambios y mejoras )
       
      INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 

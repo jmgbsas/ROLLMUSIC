@@ -198,7 +198,7 @@ GadgetToolTip(BTN_MIDI_EJECUTAR,"EJECUTAR Grabacion midi")
 '---------------------------------------------------
 ' pistas manuales  PARA CARGAR CANCION DESDE DIRECTORIO PISTAS ECHAS CON ROLL
 GroupGadget( GRUPO_BTNS_MANUAL,95,0,113,40,"") 'play cancion
-GadgetToolTip(GRUPO_BTNS_MANUAL,"DETENER Cancion, Ejecutar Cancion, Grabar midi en Roll ")
+GadgetToolTip(GRUPO_BTNS_MANUAL,"DETENER Cancion, Ejecutar Cancion, No Funcional Todavia en Ticks:Grabar midi en Roll ")
 
 ButtonImageGadget(BTN_ROLL_PARAR, 100,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
 GadgetToolTip(BTN_ROLL_PARAR,"DETENER ejecucion cancion o Grabacion midi sobre Roll")
@@ -207,10 +207,11 @@ ButtonImageGadget(BTN_ROLL_EJECUTAR, 140,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BIT
 GadgetToolTip(BTN_ROLL_EJECUTAR,"EJECUTAR cancion Tracks, o Grabacion midi Roll ")
 
 ButtonImageGadget(BTN_ROLL_GRABAR_MIDI, 180,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
-GadgetToolTip(BTN_ROLL_GRABAR_MIDI,"GRABAR midi en Roll")
+GadgetToolTip(BTN_ROLL_GRABAR_MIDI,"No Funcional Todavia en Ticks:GRABAR midi en Roll")
 
 ButtonGadget(BTN_METRONOMO,384,690,40,40,"M")
-'''ButtonGadget(BTN_METRONOMO,ANCHO-50,40,40,40,"M")
+
+
 
 GadgetToolTip(BTN_METRONOMO,"METRONOMO LIBRE ON/OFF")
 SetGadgetFont(BTN_METRONOMO,CINT(LoadFont("consolas bold",15)))
