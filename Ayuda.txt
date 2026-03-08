@@ -1,8 +1,8 @@
-    Ayuda Prelimiar Básica RollMusic   version 0.35108 
+    Ayuda Prelimiar Básica RollMusic   version 0.357 
     ====================================================================================
-     0.35110 botones Cancion, Ejecucion, BTN M , MEDIA mp3 wav ,,etc
+     0.357 FIX GRABA PISTAS MIDI-IN MODIFICADAS , GEN AYUDA
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
-       Y FUNCIONAN BIEN PARA TICKS . faltan cambios y mejoras )
+       Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
       
      INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
@@ -337,6 +337,13 @@
               ..por ahora corre bien en estas condiciones.
             ESTO PERMITE USAR UNA PISTA DE SOLO COMO SI TUVIERA LOOPS.
             LA SUBCARPTEA DE CANCION ->GRABATODORTK TIENE EN PIANOLA.RTK UN LOOP O REPETICION
+       6.3.2 EXPERIMENTAL GEN-- generar melodias de 4 compases con 3 figuras I,L,F en una tonica dada
+             C,C#,D#,E..ETC en escala mayor..algoritmo muy basico
+             abrir un rol grafico En Pistas Manuales opcion 6.0, luego arriba donde dice "entre un comando
+             pulsano inicio", pulse inicio y escriba GEN en el dialogo (may o min),,luego el roll grafico
+             toma el foco o ir a roll grfico si no lo hace ..estando en roll grafico pulsar ALT.
+             APARECE EUN DIALOGO PREGUNTANDO LA TONICA , pulse inicio para ir al principio de la secuencia
+             y aparecera entre 4 o 5 compases de notas aleatorias   en escala mayor  de la tonica elegida.
        ------------------------------------------------------------------------------------------
        NOTA: PARA  CERRAR LA VENTANA DE ROLLGRAFICO SIN SALIR DEL PROGRAMA PULSAR CTRL+F4 O EL BOTON X
       ARRIBA A LA DERECHA.  PARA CERRAR LA VENTANA GRAFICA Y EL PROGRAMA, CON TECLA ESCAPE APARECE DIALOGO

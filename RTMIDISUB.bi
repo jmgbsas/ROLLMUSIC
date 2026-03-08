@@ -3108,33 +3108,29 @@ Print #1,"pathdir GRABARMIDIIN",pathdir
      par.tocap=tocaparam(i1)
      par.tocap2=tocaparam2(i1)
  Print #1,"///=> GrabarMidiIn NombreCancion, nombre sin path, PISTA ",NombreCancion, nombreg,   i1
+       Dim kp1 As Integer
+       kp1=InStr(nombreg,".ejec")
+       If kp1=0 Then
+          nombreg=nombreg+".ejec"
+       EndIf
      
       driver=InStr(pathdir,":\")
       Dim  As Integer barra1, barra2  
-      If  NombreCancion > "" And driver=0 Then
+      If  NombreCancion > "" And driver>0 Then
            barra1=InStrRev(NombreCancion,"\")
            barra2=InStr(nombreg,"\")
            Print #1, "barra1 barra2 ", barra1, barra2
+'aca podriamos copiar el original en temp antes de pisarlo
+          nombreconpath=NombreCancion+nombreg
           If Len(NombreCancion)=barra1  Then
             CreateDir(NombreCancion+"Temp") ' ok
-             If barra2 =0 Then
-                nombreconpath=NombreCancion+nombreg
-             EndIf
           EndIf
           If Len(NombreCancion)>barra1 And barra2=1 Then
            CreateDir(NombreCancion+"\Temp") ' ok
-             nombreconpath=NombreCancion+nombreg
-          EndIf          
-      Else
-          Dim kp1 As Integer
-          Dim As String cadenaf= LCase(nombreg) 
-          kp1=InStr(nombreg,".ejec")
-         If kp1=0 Then
-            cadenaf=nombreg+".ejec"
-         EndIf
-         nombreconpath=".\"+cadenaf
-         Print #1," va a grabar con path ",nombreconpath
+          EndIf
       EndIf
+       copiarATemp ( nombreconpath, nombreg)
+       Print #1," va a grabar con path ",nombreconpath
 
 Print #1,"nombre de archivo  grabando de ejec",nombreg
  ' carga de parametros:

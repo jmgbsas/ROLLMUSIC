@@ -333,12 +333,18 @@ End Function
 
 '
 Sub copiarATemp ( titulo As String, pista As String)
-Dim As String destino 
-destino=NombreCancion+"\Temp\"+pista
+Dim As String destino
+Dim As integer barra1
+barra1=InStrRev(NombreCancion,"\")
+If barra1 > 0 Then
+   destino=NombreCancion+"Temp\"+pista
+Else
+   destino=NombreCancion+"\Temp\"+pista
+EndIf
 Print #1,"en copia titulo", titulo
 Print #1,"en copia pista", pista
 
-copyFileA (StrPtr(titulo),StrPtr(destino),TRUE)
+copyFileA (StrPtr(titulo),StrPtr(destino),FALSE) ' CON FALSE SOBRESCRIBE
 print #1,titulo, destino   
 End Sub
 '

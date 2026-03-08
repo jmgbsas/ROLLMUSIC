@@ -3131,7 +3131,7 @@ EndIf ''' fin sc_END en lectura
 '' en una octava deseada para la version 2 de gen y recien ahi disparar el comando 
 '' con una sola tecla ALT.
  If MultiKey (SC_ALT) And comando  >"" Then
-    Select Case comando ' muchos comandos posibles...
+    Select Case UCase(comando) ' muchos comandos posibles...
        Case "GEN"
         CTRL1063 ()
         comando=""

@@ -34,9 +34,8 @@ On Error Goto errorhandler
 '----------------------------------------------------
 
 ' --------------------------------------------
-nroversion="0.356 GEN  Experimental y varias correcciones (quedan MAS...)"
-' FALTA GRABAR PISTAS MIDI-IN CARGADAS DE ARCHIVO Y LUEGO MODIFICADAS UN COMANDO
-' COMO GRABAR CANCION QUE SEA GRABAR "PISTAS MIDI MODIFICADAS"
+nroversion="0.357 FIX GRABA PISTAS MIDI-IN MODIFICADAS , GEN AYUDA"
+' FIXED GRABAR PISTAS MIDI-IN CARGADAS DE ARCHIVO Y LUEGO MODIFICADAS 5.0 DE ARCHIVO, GUARDA EN TEMP LAS ANTERIORES
 ' -0.355 FIXED AJUSTE DE VOLUMEN DE PISTAS MANUALES EJEC 
 ' -0.354 fixed al insertar un fin de archivo en CTRL-m no modificaba el maxpos
 ' -0.353 fixed,AL REPRODUCIR UNA CANCION MANUAL CON EJEC MIDI ESTA ULTIMA NO SE ESCUCHA NADA

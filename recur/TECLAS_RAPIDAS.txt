@@ -227,6 +227,14 @@ MAY IZQUIERDA + FLECHA DERECHA SALTA DE COMIENZO DE NOTA A OTRO COMIENZO (LOS ON
 ----------------------------------------------------------------------------------------------------------
 MAY IZQUIERDA + FLECHA IZQUIERDA SALTA DE COMIENZO DE NOTA A OTRO COMIENZO (LOS ONOFF=2) HACIA LA IZQUIERDA
 -------------------------------------------------------------------------------------------
+GENERAR MELODIA MUY BASICA EXPERIMENTAL GEN
+   generar melodias de 4 compases con 3 figuras I,L,F en una tonica dada
+   C,C#,D#,E..ETC en escala mayor..algoritmo muy basico
+   abrir un rolL grafico En Pistas Manuales opcion 6.0, luego arriba donde dice "entre un comando
+   pulsano inicio", pulse inicio y escriba GEN en el dialogo (may o min),,luego el roll grafico
+   toma el foco o ir a roll grfico si no lo hace ..estando en roll grafico pulsar ALT.
+   APARECE EUN DIALOGO PREGUNTANDO LA TONICA , pulse inicio para ir al principio de la secuencia
+   y aparecera entre 4 o 5 compases de notas aleatorias   en escala mayor  de la tonica elegida.
 
            
           

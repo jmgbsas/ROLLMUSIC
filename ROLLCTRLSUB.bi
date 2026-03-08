@@ -298,6 +298,7 @@ End Sub
 
 Sub CTRL1015 ()
 ' preparamos para grabar laS pistaS por cambios
+' graba solo le falta el path
  Dim As Integer  pis=0, K=0
      For k=1 To 32 ' pistas ejec de grabaciondesde teclado
         If CheckBox_GetCheck( cbxgrab(k))= 1 Then
