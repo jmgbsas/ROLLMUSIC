@@ -2326,25 +2326,20 @@ If MultiKey(SC_SPACE) And trabaspace=0   Then 'barra espacio
       If INSTANCIA = ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia <= ARG4_INSTRU  Then '04-10-2025 
       Else  
      ' SetGadgetstate(BTN_ROLL_GRABAR_MIDI,0) ' 10-04-2022 DE  VENTANA CTROL
-       SetGadgetstate(15,0) ' 20-02-2025 
+       SetGadgetstate(15,0) ' 20-02-2025 que pasa no reemplaza bien el numero ? raro
       EndIf
    '   print #1,"SPACE call play"
-'Print #1,"CANCIONCARGADA = TRUE And Cplay=NO  ",CANCIONCARGADA, Cplay  
-        If CANCIONCARGADA = TRUE  And CPlay=NO   Then
-'Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
+Print #1,"CANCIONCARGADA = TRUE And Cplay=NO  ",CANCIONCARGADA, Cplay  
+      If CANCIONCARGADA = TRUE  And CPlay=NO   Then
+Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
 '----------------------------------------------------------------
 ' CARGA DE LOS SOLOS 
-'---------------------------ESTA CARGA DEBE ESTAR ANTES DE TODO
-
+'-------ESTA CARGA DEBE ESTAR ANTES DE TODO pero la carga el usuario a voluntad
 ' TOCA UNA PISTA DE CANCION COMO PISTA DE SOLO NO HABRA RELACION ENTRE LAS MISMAS
-' VOMO CON INDICES GLOBALES, LA ELECCION DE QUE PISTA SE TOCARA COMO SOLO ES DINAMICO
+' cOMO CON INDICES GLOBALES, LA ELECCION DE QUE PISTA SE TOCARA COMO SOLO ES DINAMICO
 ' Y SE ELIGE CON CON CHEQUEAR cbxsolo LA 1ER FILA DE CHECKS DE LA IZQUIERDA 
-
-
-
-
+' este codigo tocara cancion con o sin solos,, 
 '------------------------------
-
   Print #1,"LLAMA A  PLAYCANCION"
              Parar_De_Dibujar=NO
              Cplay=SI : s5=NO 'Necesita mas tiempo de cpu
@@ -2376,13 +2371,12 @@ If MultiKey(SC_SPACE) And trabaspace=0   Then 'barra espacio
 ' SOL OFUNCIONA BIEN HARDCODEANDO LOS ARGUMENTOS 
 
           For y1 As Integer  =1 To 32
-
-              If CheckBox_GetCheck( cbxsolo(y1))= 1   Then
-       Print #1,"/////////LLAMA A PLAYUNOSOLO y1 ", y1
+            If CheckBox_GetCheck( cbxsolo(y1))= 1   Then
+              Print #1,"/////////LLAMA A PLAYUNOSOLO y1 ", y1
               If CheckBox_GetCheck( cbxnum(y1))= 1 Then
-                 CheckBox_SetCheck(cbxnum(y1),0)  
-              EndIf 
-                 Select Case y1
+                 CheckBox_SetCheck(cbxnum(y1),0)  ' corregimos si chequeo un solo no puede estar chequeado como pista normal
+              EndIf
+              Select Case y1
                   Case 1
                   threadV(1) = ThreadCall PlayUnoSolo(Track(1), 1)
                   Case 2
@@ -2447,11 +2441,10 @@ If MultiKey(SC_SPACE) And trabaspace=0   Then 'barra espacio
                   threadV(31) = ThreadCall PlayUnoSolo(Track(31), 31)
                   Case 32
                   threadV(32) = ThreadCall PlayUnoSolo(Track(32), 32)
-
-                 End Select
-              EndIf
-           Next y1
-        ElseIf   playb=NO And  CANCIONCARGADA = FALSE  Then
+              End Select
+            EndIf
+          Next y1
+        ElseIf   playb=NO And  CANCIONCARGADA = FALSE  Then   ' else de play cancion
 ' ESTA OPCION NUCA PODRA EJECUTRSE EN PARALELO PORQUE IMPPLICA UN ROLL Y POR ENDE
 ' LLENARA EL ROLL GRAFICO QUE LA CANCION DE RTK ESTA USANDO
               print #1,"llama a playall"
@@ -2459,10 +2452,12 @@ If MultiKey(SC_SPACE) And trabaspace=0   Then 'barra espacio
        '       Sleep 100
               thread2 = ThreadCall  playAll(Roll)
          EndIf
-         If maxgrb > 0 And playEj=NO Then
+         If maxgrb > 0 And playEj=NO Then ' para tocar ejecuciones 
 ' PENDIENTE CALCULAR RETARDOS COMO CON SOLOS
            playEj=SI 
 Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"  
+           Dim p As Integer Ptr
+           p=@tocatope ' corregido faltaba 05-03-2026
           threadG = ThreadCall  PlayTocaAll(p)
          EndIf
       menunew=MENU_INICIAL
@@ -2870,7 +2865,7 @@ If COMEDIT<>LECTURA Then  'TERMINA EN 2929
      Exit Do
   EndIf
   If MultiKey(SC_CONTROL) And MultiKey(SC_END) Then ' fin seq en edit sin cursor
-     DUR=182 
+     DUR=182
 '     print #1,"DUR=182 !"
      nota=0
      Exit Do
@@ -3131,9 +3126,17 @@ EndIf ''' fin sc_END en lectura
     EndIf  
    EndIf
  EndIf
-
-
- 
+''FORMA DE MANEJAR COMANDOS CON ALT + COMANDO ENTRADO EN LINEA DE COMANDOS
+'' esta forma diferida permite cambiar a roll grafico y posicionar el mouse por ejemplo
+'' en una octava deseada para la version 2 de gen y recien ahi disparar el comando 
+'' con una sola tecla ALT.
+ If MultiKey (SC_ALT) And comando  >"" Then
+    Select Case comando ' muchos comandos posibles...
+       Case "GEN"
+        CTRL1063 ()
+        comando=""
+    End Select
+ EndIf
 ' --------------------------[NUCLEO]---------------------------
 
 ' <<<<<<<<<<<<  detector notas >>>>>>>>>>>>>>>>>>>>
@@ -3198,11 +3201,15 @@ curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N 
 '    " nota: ";nota; " figura: ";figura(DUR)
 ' Print #1,"entro nota ",  nota;"=";  NotasGuia (nota-1) 'nota 1 a 12 o 0 11 inversa?
 ' ACA PODRIA SER EL PROBLEMA PPPPPPPPP
- If nota >=1 And nota <=12  And DUR=0 Then 'falla no se acepta la entrada 28 feb 25
+ If nota >=1 And nota <=12  And DUR=0 And menuOldStr <> "[GEN]" Then 'falla no se acepta la entrada 28 feb 25
     nota=0
      Exit Do
  EndIf
-  
+'22-02-2026 GEN 
+ If menuOldStr ="[GEN]" Then ' GENERA UNA SECUENCIA ALEATORIA 
+    menuOldStr =""
+    COMEDIT=LECTURA 
+ EndIf  
  Print #1,"empieza posn, posnOff ";posn; " ";posnOff
   If posn=0 Then ''+posnOff ''InicioDeLectura
      posn=2
@@ -3236,6 +3243,7 @@ curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N 
 '    Print #1,"Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota ",Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota
 '    Print #1,"Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur ",Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
 ' deberia agregar aca nota=181???
+    Print #1,"posn,(12-nota +(estoyEnOctava -1) * 13) ", posn,(12-nota +(estoyEnOctava -1) * 13)
 
     If estoyEnOctava=90 Then ' entre dos octavas en 654 de RollLoop GrabarPenta=0 se ajusta a 90
        Exit Do,Do
@@ -3243,7 +3251,7 @@ curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N 
       If Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0 Or Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 182   Then
          posicion=posn
      '182 el fin de archivo lo puedo pisar para seguir la secuencia O EL 183 fin del evento ojo!!!
-      '   print #1, "ingreso a NUCLEO POSICION=POSN", posicion
+         print #1, "ingreso a NUCLEO POSICION=POSN", posicion
         Exit Do
       EndIf
     EndIf

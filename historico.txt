@@ -1,3 +1,17 @@
+-07-03-2026 0.356 REPRODUCE A LA VEZ PISTAS *.RTK Y *.EJEC
+  OBTENIDAS DE LA CONVERSION DE PISTAS *.EJEC A PISTA DE CANCION *.RTK
+  SE OBTUVO REPRODUCCION SIMULTANEA DE AMBAS PARTES
+  SE CORRIGIO VOLUMEN, PATCH DE EJECUCION AL TOCAR JUNTO A CANCION DE *.RTK
+  SE CORRIGIO EL CAMBIO DE TEMPO, AHORA ES UNICA PARA EJEC Y RTK O *.ROLL
+-01-03-2026 0.3513 GEN generador de secuencias Experimental
+ * GENERARA SECUENCIAS ALGORITMO SENCILLO. 
+ * CORRECCION NUEVO() POSICION=1, NOTACUR=1, SINO CANCELA EL GEN
+ * fix en 3.0 puerto MIDI-IN sobre Midi OUT, sigue funcionando con play de un track, se puede apagar 
+   y encender desde el menu y obedecera.
+ * botones Cancion, Ejecucion evitar cancelaciones, BTN M evitar que pare al dar click en pistas
+ * solo cargar MEDIA mp4 wav en reproductor de media  
+ * ORGANIZAMOS MENU ARCHIVO UN POCO
+ * RECUPERAMOS TRASPONER TOTAL O PARCIAL PARA EJECUCIONES Y MANUALES OK
 -20-02-2026 0.35110 botones Cancion, Ejecucion, BTN M , MEDIA mp3 wav. etc
 -12-02.2026 0.35109 mover el fin secuencia automaticamente si la zona esta al final de la secuencia
 -02-02-2026 COPIA TANTO SECUENCIAS DE EJECUCIONES COMO MANUALES 1ERA VERSION HACE FALTA

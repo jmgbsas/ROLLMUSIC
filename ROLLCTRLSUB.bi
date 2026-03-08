@@ -172,7 +172,7 @@ Print #1,"QUE PASA QUE NO SIGUE 1"
 
 End Sub
 
-Sub CTRL1062 (hmessages As hmenu)
+Sub CTRL10062 (hmessages As hmenu)
 Print #1, "entro por CTRL1062 NOMBRECANCION TITULOSTK(0) ", NombreCancion, titulosTk(0)
              If NombreCancion > ""  Then
                 EstaBarriendoPenta=1
@@ -189,9 +189,9 @@ Print #1, "entro por CTRL1062 NOMBRECANCION TITULOSTK(0) ", NombreCancion, titul
 
 End Sub 
 
-Sub CTRL1063() 
+Sub CTRL10063() 
 ' esta rutina no se usa mas, ahora se entra por menu archivo
-  Print #1, "entro por CTRL1063 NOMBRECANCION TITULOSTK(0) ", NombreCancion, titulosTk(0)
+  Print #1, "entro por CTRL10063 NOMBRECANCION TITULOSTK(0) ", NombreCancion, titulosTk(0)
             If NombreCancion > "" Then
                usarmarcoins=4  
                Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + _ 
@@ -464,9 +464,9 @@ If ejecutar=CANCION Then
   Print #ini, maxposTope;","; "Maxpos"
 
 End If
-
-Close #ini
 FileFlush (ini)
+Close #ini
+
 End Sub 
 
 '--------------------------
@@ -760,6 +760,20 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
  
 End Sub
 ' --- FALTAN MAS
+Sub CTRL1063 ()
+ 'NOTA INICIAL PEDIR ELEGIR UNA C,D,E,F,G,A,B NADA DE # NI BEMOLES
+' genera solo una vez bien y solo levantando rollgrafico y luego darle al menu 9.0
+' generar , si se borra con NUEVO y se desea generar otra cancela todo!
+' si al levantar Roll se ejecuta NUEVO en grafico y luego GENERAR tmbien
+' cancela algo esta mal en NUEVO--
+
+menuOldStr ="[GEN]"
+
+ COMEDIT=ENTRADA_NOTAS  
+  EntrarTeclado ()
+
+  
+End Sub
 '''-///////////// FIN  RUTINAS DE VENTANA PRINCIPAL ROLLCONTROL ////////
 Sub CTRL1068(hmessages As hmenu)
 
@@ -950,6 +964,21 @@ Print #1,"abriendo portin y call back",*nombrein( portin1092 )
      HabilitarMIDIIN=1 ' tengo seleccionado portin
 
 End Sub
+Function WindowState(hwnd As hwnd) As integer
+ Dim wp As   WINDOWPLACEMENT 
+    wp.length = sizeof(WINDOWPLACEMENT) '' IMPORTANTE: Inicializar longitud
+    '' Obtener la ubicación y estado
+    if (GetWindowPlacement(hwnd, @wp)) Then
+        ''// Verificar si showCmd indica maximizado
+         Return wp.showCmd    
+'        if (wp.showCmd = SW_SHOWMAXIMIZED) Then
+'            Print #1, "wp.showCmd max ",wp.showCmd
+'            return TRUE
+'        EndIf
+
+    EndIf
+ 
+End function
 
 Sub MIA ()
    If MOV_FLAG=1 Then
@@ -957,32 +986,91 @@ Sub MIA ()
    EndIf
 
 End Sub
-
-Sub CTRL1094() ' REPRODUCIT MEDIA
+Sub CTRL1094(PPP As ZString PTR) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
+Dim As String ENTRADA
+  ENTRADA=*PPP
+ ' ESTA RUTINA FUNCIONA MEJOR EN RESOLUCION X 168O  O 1920
+' SICRONIZACION LA IDEA ES AHORA TENGO UNA WAV O MP3 QUE LO EJECUTO
+' LUEGO EL USUARIO TOCA ALGO PARA ACOMPAÑAR AL AUDIO... Y LO GRABA
+' TENGO UN AUDIO Y UNA GRABACION, O DISPARO EL AUDIO AL DIPARAR LA EJECUCION GRABADA
+' O DISPARO LA EJECUCION AL DAR EJECUTAR AL AUDIO. PRIMERO HAREMOS QUE LA EJECUCION
+' GRABADA DISPARE AL AUDIO YA CARGADO. O PODRIAMOS CARGAR EL AUDIO AL EJECUTAR LA
+' PISTA DE EJECUCION GRABADA COMO DATO EL PATH DE LAUDIO Y SU NOMBRE LO PASAMOS COMO
+' ARGUMENTO AL REPRODUCTOR (ENTRADA) ESTE EMPIEZA A EJECUTAR Y TAMBIEN LA PISTA DE EJECUCION.
+'---------- LA IDEA ESTA BUENA PERO LABURARLO SERA LA CUESTION...
+' 1) CONSTRUIR QUE UNA ACCTION DAR PLAY A UNA EJECUCION MANDE A EJECUTAR UN WAV O MP3
 Dim As Integer largo, orig,ticks,altov
 largo=ANCHO*3/4
 orig=largo
 ticks=100
+''  WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX
+Dim As Integer ANCHOWIN, PANTALLAX=GetSystemMetrics(SM_CXSCREEN)
+Print #1, "ANCHO PANTALLA ", PANTALLAX
+Print #1, "ENTRADA ", ENTRADA
 
-hwndMEDIA=OpenWindow("AUDIO MP3, WAV",ANCHO/4,350,largo,ALTO/7,WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST)
-altov=sizey*3/5 
+Select Case PANTALLAX
+   Case 1680
+    ANCHOWIN=ANCHO*6/7
+   Case 1920
+    ANCHOWIN=ANCHO*6/8
+   Case Else 
+    ANCHOWIN=ANCHO*6/7
+End Select 
+hwndMEDIA=OpenWindow("AUDIO MP3, WAV",0,ALTO*5/6,ANCHOWIN,ALTO/6, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
+'ESTA ES SIZABLE'hwndMEDIA=OpenWindow("AUDIO MP3, WAV",0,ALTO*5/6,ANCHO,ALTO/6,WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST)
+altov=sizey*4/6 
  ''CenterWindow(hwndMEDIA)
 
-ButtonGadget(1,10,altov,20,20,"X"):GadgetToolTip(1,"STOP")
-ButtonGadget(2,40,altov,20,20,"|>"):GadgetToolTip(2,"PLAY")
-ButtonGadget(3,70,altov,20,20,"||"):GadgetToolTip(3,"PAUSE")
-ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Playback speed")
-ButtonGadget(7,130,altov,20,20,">>"):GadgetToolTip(7,"Increase the playback speed")
-ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Open File")
-ImageGadget(4,6,0,320,240)
-
-TrackBarGadget(5,5,altov/4,largo-20,30,0, ticks, TBS_NOTICKS  )
+ButtonGadget(1,10,altov,20,20,"X"):GadgetToolTip(1,"PARAR")
+ButtonGadget(2,40,altov,20,20,"|>"):GadgetToolTip(2,"EJECUTAR")
+ButtonGadget(3,70,altov,20,20,"||"):GadgetToolTip(3,"PAUSA")
+ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Disminuye velocidad")
+ButtonGadget(7,130,altov,20,20,">>"):GadgetToolTip(7,"Incrementa velocidad")
+ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav o mp3, en resolucion horizontal 1680 o 1920 se ve mejor la escala")
 
 
-SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
+hwndTG=TrackBarGadget(5,5,sizey*1/6,sizex-20,30,0, ticks, TBS_NOTICKS  )
 
+WindowStartDraw(hwndMEDIA)
+fillrectdraw(12,sizey*3/6,&hffffff)
+
+Dim As Integer med=(largo-20)/20, i1,i2,i3 'cantidad de letras si el tamaño del font es 10
+ Dim regla As String  
+ Dim As String parte, num 
+        parte = "_|"
+Dim As Integer LIMPIA=1
+
+ For i1 = 1 To 100 
+  i2=Len(Str(i1))
+  If i2=1 Then
+    num="0"+ Str(i1)
+  Else
+    num= Str(i1)
+  EndIf
+  If  i1 Mod 5 = 0 Then
+
+  regla=regla+ num 
+  Else
+  regla=regla + parte
+  EndIf
+ Next i1
+ TextDraw(12,sizey*3/6,regla,&hffffff)
+StopDraw
+
+ SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
+Dim wmParam As WPARAM
+If ENTRADA > "" Then
+   Print #1,"////ENTRADA ",ENTRADA
+     mov8=loadmovie(GadgetID(4),ENTRADA,0,0,WindowWidth(hwndMedia)-30,WindowHeight(hwndMedia)-110)
+     SetTrackBarMaxPos(5,Int(GetEndPosMovie(mov8)/1000000 ))
+     Playmovie(mov8):SetRateMovie(mov8,1)
+     MOV_FLAG=1
+     LIMPIA=1  
+     ENTRADA="" 
+EndIf
 Do
-   event=WaitEvent()
+
+    event=WaitEvent()
    If Event=EventClose Then
          If mov8 > 0 Then  
            FreeMovie(mov8)
@@ -996,61 +1084,90 @@ Do
    EndIf
    If event=EventGadget Then
       Select case EventNumber
-         Case 1
-
+         Case 1 'STOP  
+            LIMPIA=0
            If mov8  Then 
               stopmovie(mov8)
               MOV_FLAG=3  'DEJA DE SONAR EL METRONOMO PERO SIGUE EL LOOP del metronomo
            EndIf 
 
-         Case 2 
+         Case 2  ' PLAY
+          LIMPIA=1
           If mov8 >0 Then 
-                   Playmovie(mov8):SetRateMovie(mov8,1)
+                   Playmovie(mov8)''':SetRateMovie(mov8,1)
                    MOV_FLAG=1 ' SUENA EL METRONOMO PERO SIGUE EL LOOP del metronomo
+                   
           EndIf
-         Case 3 
+         Case 3  ' PAUSE
+             LIMPIA=0
                   If mov8  Then 
                    Pausemovie(mov8)
                    MOV_FLAG=3 'DEJA DE SONAR EL METRONOMO PERO SIGUE EL LOOP del metronomo
+                  
                   EndIf
-         case 5
-            If GetAsyncKeyState(1)<0 Then
+         case 5 ' TRACKBAR
+            LIMPIA=1
+            If GetAsyncKeyState(1)< 0 Then
                if mov8 Then
                   MovieSetPositions(mov8,cast(double,getTrackBarPos(5))*1000000,GetEndPosMovie(mov8) )
                EndIf
             EndIf
-         Case 6 
-            If mov8 Then SetRateMovie(mov8,GetRateMovie(mov8)-0.01)
-         Case 7 
-            If mov8 Then SetRateMovie(mov8,GetRateMovie(mov8)+0.01)
+         Case 6 '' play speed menor
+            If mov8 Then SetRateMovie(mov8,GetRateMovie(mov8)-0.01) EndIf
+              
+         Case 7  '' play speed mayor
+            If mov8 Then SetRateMovie(mov8,GetRateMovie(mov8)+0.01) EndIf
+             
          Case 8
             #ifdef UNICODE
-         ''      Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)|*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1|")
-       Var OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav )|*.mp3; *.wav|")
-          
+'' Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)|*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1|")
+         VAR OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav )|*.mp3; *.wav|")
             #else 
-'''''Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)"+Chr(0)+"*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1"+Chr(0))
-        Var OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav)"+Chr(0)+"*.mp3; *.wav"+Chr(0))           
+'' Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)"+Chr(0)+"*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1"+Chr(0))
+         Var OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav)"+Chr(0)+"*.mp3; *.wav"+Chr(0))           
             #EndIf
-            If OFR<>"" Then
+
+   Print #1,"FORMATO DE OFR VEMOS ", OFR ''C:\mios\amrm.mp3 VIENE COMPLETO PATH Y NOMBRE
+           
+            If OFR<>""  Then
                If mov8 Then
                   FreeMovie(mov8)
                EndIf
-               If movie Then
-                  FreeMovie(movie)
-               EndIf
 
-               mov8=loadmovie(GadgetID(4),OFR,0,0,WindowWidth(hwnd)-30,WindowHeight(hwnd)-110)
+               mov8=loadmovie(GadgetID(4),OFR,0,0,WindowWidth(hwndMedia)-30,WindowHeight(hwndMedia)-110)
                SetTrackBarMaxPos(5,Int(GetEndPosMovie(mov8)/1000000 ))
                Playmovie(mov8):SetRateMovie(mov8,1)
                MOV_FLAG=1
+               LIMPIA=1  
             EndIf
+
       End Select
    EndIf
- '' If event= EventSize Then
- ''  Var resH=WindowWidth(hwndMEDIA)-20
- ''   ResizeGadget(5,,resh)
- ''  EndIf
+  if WindowState(hWndMEDIA)=SW_SHOWMINIMIZED Then 'SW_SHOWMINIMIZED = 2
+    limpia=2
+  EndIf
+  if WindowState(hwndMEDIA)=SW_SHOWNORMAL  And limpia=2 Then ' SW_SHOWNORMAL =1
+      limpia=0  
+  EndIf
+'' SE PUEDE RECUPERAR LOS CONTROLES AL MNIMIZAR Y MAZIMIZAR DANDO CLICK EN LAPARTE INFERIOR DE LA VENTANA
+  If WM_ENTERSIZEMOVE And LIMPIA=0 Then ''' o WN_MOVE O WM_MOVING INGUNO OBEDECE BIEN DEL TODO
+     LIMPIA=1
+ButtonGadget(1,10,altov,20,20,"X"):GadgetToolTip(1,"PARAR")
+ButtonGadget(2,40,altov,20,20,"|>"):GadgetToolTip(2,"EJECUTAR")
+ButtonGadget(3,70,altov,20,20,"||"):GadgetToolTip(3,"PAUSA")
+ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Disminuye velocidad")
+ButtonGadget(7,130,altov,20,20,">>"):GadgetToolTip(7,"Incrementa velocidad")
+ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav o mp3, en resolucion horizontal 1680 o 1920 se ve mejor la escala")
+
+
+WindowStartDraw(hwndMEDIA)
+fillrectdraw(12,sizey*3/6,&hffffff)
+ TextDraw(12,sizey*3/6,regla,&hffffff)
+StopDraw
+
+    
+
+   EndIf
    Sleep 5
 Loop
 
@@ -1293,6 +1410,10 @@ Dim pis As Integer
 End Sub
 
 Sub CTRL1207(pis As integer ) 'OK PARA TICKS convierte .ejec a .roll seleccionada
+' LA GRABACION NO GRABA EL FIN DEÑ SONIDO  ONOFF=1  Y ACA SOLO AGREGA EL FINAL DEL ARCHIVO Y SI ES GRANDE
+'  EL OFF1 DEL CIEERRE POR 182 TARDA MUCHO
+' SOLUCIONES 1) SI LA NOTA DURA MAS  DE UNAREDONDA 1 SE APAGA
+' 2) AL GRABAR TRATAR DE DETECTAR ESTE DEFECTO..
 ' UNO SOLO !!! PORQUE LOS PASA A ROLL GRAFICO EN MEMORIA DE AHI LUEGO HAY QUE GRABARLO A DISCO
 ' COMO ROLL O RTK SEGU NSE DESEE
 ' copia 1ero a Track(0) la correspondiente a Roll 
@@ -1314,9 +1435,9 @@ EndIf
  
 
 Dim As String  nombreTrack
-Dim As Integer c144,c128
+Dim As Integer c144,c128, ultimoOn,ultimoOff
 Dim As Integer i1,i2,i3,j1,on1, off1,cuentatick,maxposTrack, n1,n1old
-
+''' KOKITO  esto hay que cambiar debe tomar el tick del archivo o del usuario
 Dim As Double  Tick5mseg = 0.005208325 'seg 5 miliseg.. para I=240
 Dim As UByte   dato1,dato2, dato3
 Dim As Double  mitimer=0,deltatime=0
@@ -1361,6 +1482,8 @@ Do
 '           flujo(i1).indiceX=i1
 
        Case 144 ' on
+         c144=c144+1
+         ultimoon=n1 
          If n1=n1old Then 
             i2=i2+1
          Else
@@ -1377,6 +1500,8 @@ Do
 '           flujo(i1).indiceY =i2
        n1old=n1
          Case 128 'off
+           ultimooff=n1
+           c128=c128+1
            If n1=n1old Then 
               i2=i2+1
            Else
@@ -1435,8 +1560,17 @@ Do
       Track(0).trk(i1,1).onoff=0
       Track(0).trk(i1,1).nota=0 'es PianoNota
       Track(0).trk(i1,1).vol=0
-      Track(0).trk(i1,1).dur=182
 
+      If c144 <> c128 Then ' falta off1 seguramente
+         If ultimoOff - ultimoOn < 0 Then ' falta un off1
+          ' agrega el 182 despues del ultimo on mas una redonda 96*4
+            i3=ultimoOn + 4*96
+            Track(0).trk(i3,1).dur=182 ' esto funcionaria aunque no haya off1 
+  '  este algoritmo sirve tambien para play!
+         EndIf
+      Else    
+           Track(0).trk(i1,1).dur=182
+      EndIf 
      Exit Do
   EndIf
 
@@ -1828,10 +1962,13 @@ End Function
 
 Sub ejecutarComando (comando As String)
   Print #1, "TEXTO ENTRADO POR LINEA DE COMANDOS "; comando
+  comando=UCase(Trim(comando))
+
   If  InStr(comando,"AJUS") > 0 Or InStr(comando,"AJUST") > 0 Or InStr(comando,"AJUSTAR")> 0 Then
    Print #1, "QUIERE AJUSTAR "; comando
 
   EndIf    
+
 End Sub
 '---------------
 Sub ReproducirTodasLaSPistas()

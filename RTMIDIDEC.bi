@@ -59,7 +59,7 @@ Dim Shared As double FactortiempoPatron=1
 ' pero porlalineamas chica 37 a 45 seria mi Tick mas chico [TickChco]
 Static Shared As Double TickPlay =0.005 '0.01041666 ''seg 5 miliseg.. para I=240
 Static Shared As Double TickChico=0.005 '0.01041666 ''seg 5 miliseg.. para I=240
-TickPlay=60/(tiempoPatron*96)
+TickPlay=(60/(tiempoPatron*96))/FactortiempoPatron 
 TickChico=TickPlay
 Static shared As Double x3H = 0.0 , resta=0.0
 ' ambos Ticks deberin ser el  valor mas chico de la tabla y es tresillo de W 0.01041666

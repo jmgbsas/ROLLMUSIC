@@ -32,12 +32,12 @@ StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIO
 ' DEBO GRABAR A DISCO Y ENVIAR ORFEN DE RECARGA DE ESA PISTA EN LA CANCION
    Print #1," CASE 10062 abrirRoll=NO_CARGAR_ROLL And NombreCancion > ", abrirRoll, NombreCancion
 
-           CTRL1062 (hmessages )
+           CTRL10062 (hmessages )
 
            Case 10063 ' CARGAR CANCION EN UN ROLL SIN VENTANA DE CONTROL
 ' HAY QUE PASA EL NOMBRE DEL DIRECTORIO NADA MAS,,,Y EL PATH
 ' era la 1063 antigua
-            CTRL1063 ()  
+            CTRL10063 ()  
 ' ----------------------------------------------------------------------
 ' ==> CARGAR TODO SIN GRAFICO
            Case 10064
@@ -98,7 +98,7 @@ Print #1,"usarmarcoins ", usarmarcoins
              SetStateMenu(hmessages,10081,1)
            Case 10081
                usarmarcoins=4
-                CTRL1063 
+                CTRL10063 
              SetStateMenu(hmessages,1009,0)
              SetStateMenu(hmessages,1008,1)
              SetStateMenu(hmessages,10081,1)
@@ -122,7 +122,9 @@ Print #1,"usarmarcoins ", usarmarcoins
                 SetStateMenu(hmessages,10081,0)
                 SetStateMenu(hmessages,1009,1)
 
-
+           Case 10092 '<========= Grabar midi directo Sin pasar por TExto ni reproduccion
+' 20-02-2026 preparacion,,,
+ 
            Case 1010 '<================ Cargar Pista externa a cancion
 
    '        Print #1,"entro a 1010 Cargar Pista externa a cancion"
@@ -407,7 +409,9 @@ Print #1,"**********************************************************************
                    EndIf
                 Else
                   If MaxPos > 2  And ROLLCARGADO=TRUE  Then
-                    LLAMA_GRABAR_ROLL("")
+                    If BACKUP=SI Then
+                      LLAMA_GRABAR_ROLL("")
+                    EndIf
                /'      Print #1," nombre,  ANTES DE LLAMAR GRABARROLL " ;nombre
                      Dim  As Integer errorgrabr=3,intentos=0,length=0
 ' MODELITO DE MANEJO DE ERROR ESTUPIDO DE  ARCHIVO PELOTUDO JAJAJ 
@@ -557,7 +561,10 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
 '-----------------------------------------------------------------------
 ' aca debo tomar de la seleccion del usuario con ctrl+p por ejemplo sobre
 ' una pista y tomar los parametros de la cancion cargada de esa pista
-' y enviarla a un grafico para que la vea o toda la cancion !!! 
+' y enviarla a un grafico para que la vea o toda la cancion !!!
+'-----------------------------------------------------------------------
+          Case 1063 'generador de secuencias para dictado musical notas contiguas
+           CTRL1063 () ' SE GENERA SOBRE ROLL GRAFICO 
 '-----------------------------------------------------------------------
 ' //////////////////////  P_A_T_R_O_N_E_S   ////////////////
 '-----------------------------------------------------------------------
@@ -741,7 +748,11 @@ EndIf
             Case 1094 
             ''agregar una funcion en rollutil.bas ? para llamar a rollmedia.exe?
  ''' o tratmos de agregar codigo por aca??
-           threadmedia = threadCall  CTRL1094()
+ 
+          Dim ppp As ZString  Ptr
+        '   Dim As String ENTRADA="C:\mios\amrm.mp3" 
+        '   ppp=StrPtr(ENTRADA) 
+           threadmedia = threadCall  CTRL1094(ppp)
            
            'SetFocus (hwndMEDIA)
            SetForegroundWindow(hwndMEDIA)
@@ -943,6 +954,13 @@ EndIf
              If abrirRollCargaMidi=2 Then
               SetForegroundWindow(hwnd)
              EndIf
+           Case 1115
+           terminar_metronomo=1
+           ThreadDetach(threadmetronomo)
+           Case 1116
+                BACKUP=SI
+           Case 1117
+                BACKUP=NO
            Case 1200 'Seleccionar  Puertos MIDI-IN SOLO PARA PORTS DE EJECUCION POR AHORA
 ' seleccion de portin , 2:portin. ntkp:salida
 ' ->  npi: numero port entrada DIFERENCIA PARA ABAJO

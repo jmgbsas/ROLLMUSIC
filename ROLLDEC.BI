@@ -211,13 +211,14 @@ Dim Shared As Integer x2,y2,x1, y1, x0, y0,InicioDeLectura,kNroCol, agregarNota,
 Dim Shared As Integer octavas,  jc,ic, id,ShowNroCol=0,nro,trak=1,trackold=1
 Dim Shared As Integer ers, borrapos=0,comienza=0, acordeNro=0,resumen=0  
 Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0,TicksInsertados
-Common  Shared As String comando
+'' Common  Shared As String comando
  
 
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
 Dim Shared NotasEscala (1 To 12) As String *2 => _
 {"C ","C#","D ","D#","E ","F ","F#","G ","G#","A ","A#","B "}
+' escala mayor 1,3,5,6,8,10,12
 Dim Shared NotasEscalaArmado (1 To 24) As String *2 => _
 {"C ","C#","D ","D#","E ","F ","F#","G ","G#","A ","A#","B ","C ","C#","D ","D#","E ","F ","F#","G ","G#","A ","A#","B "}
 
@@ -736,6 +737,8 @@ Dim Shared As String titulosTk(0 To 32)
 Dim Shared As String pistasTk (0 To 32) ' titulos temporarios en el proceso de borradod e pistas en la lista
 Dim Shared As String titulosEj(1 To 32)
 Dim Shared As String pistasEj (1 To 32)
+Dim Shared As Integer trackGen (1 To 36)
+Dim Shared As Integer trackGenDUR (1 To 36)
   
 Dim Shared As Integer ContadorError=0   
 ' Si revasa el ultimo,8 16,24,32,40,48,56,64, divido por 8
@@ -845,7 +848,7 @@ Type rolldat Field=1 'con esto se define roll tendra pan,vol,nota,dur,pb,inst va
  patch    As  UByte =0 'z3.nota
  portout As   UByte =0  'z3.dur
  nanchofig  As UByte  =0   'z3.vol nanchofig*10 cuando lo uso lo dividopo 10
- vol As UByte = 90 '''' librez3pan    As UByte =0  'z3.pan
+ vol As UByte = 90 '''' librez3pan    As UByte =0  'z3.pan 90 default
  TipoCompas  As UByte =0 'z3.pb
  canalsalida As UByte =0 'z3.inst
    librez3onoff     As UByte =0 'z3.onoff --- 21
@@ -977,7 +980,7 @@ CantMin=15
 CantTicks=CantMin * 96 * tiempoPatron ''si t=208 ->299520  ' 96*15*208
 ' a t=208 cantticks=86400*208/60=299520
 Dim Shared As inst Roll ' para visualizar y tocar
- 
+''' REDIM INICIAL TRACK 
 ReDim Shared Track  (0 To 32) As sec ' tracks para guardar,.. y tocar 
 
 Dim Shared ix As Integer=0
@@ -1464,6 +1467,7 @@ Dim Shared  As vivo toc
 Dim  Shared  tocaparamCabeza ( 0 To 32) As ejeccabeza
 Dim  Shared  tocaparam ( 0 To 32) As ejecparam 
 Dim Shared   tocaparam2 (0 To 32) As ejecparam2
+Dim Shared   dat   As rolldat  ' lo hacemos como ejecparam shared
 '''Dim  Shared  tocaparamNuevo ( 0 To 32) As ejecparamNuevo
  
 

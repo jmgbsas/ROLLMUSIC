@@ -3032,7 +3032,7 @@ Dim As Integer partes , traba=0
 
      Select Case  dato1 
          Case 144 ' on
-' DIFERENCIA HABIA UN CHANGGEPROGRAM EN 148  
+' DIFERENCIA HABIA UN CHANGGEPROGRAM EN 148 
             noteon dato2,dato3,tocaparam(ntoca).canal, tocaparam(ntoca).portout, 1,1
 
 '     Print   dato1;" ";  dato2;" "; dato3
@@ -3326,12 +3326,12 @@ SetFocus (hwndMEDIA)
 SetForegroundWindow(hwndMEDIA)
 
   If mov8 > 0  And  MOV_FLAG =1 Then 
-    noteon(66,127,0,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
-    noteoff(66, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
+    noteon(80,20,0,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
+    noteoff(80, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
   Else
     If MOV_FLAG = 0 Then
-     noteon(66,127,0,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
-     noteoff(66, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
+     noteon(80,20,0,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
+     noteoff(80, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
     EndIf
   EndIf
   
@@ -3435,9 +3435,9 @@ On Local Error GoTo fail
 'TickPlay = TickChico por default si quiero cambiar la velocidad debo cambiar el TickChico
 'o sea se grabasiempre con elTick mas chico que es para veloc=240 y el valor del  tresillo
 ' 
-Print #1,"' ----------------------------------------"
-Print #1,"'               P L A Y   T O C A  A L L" 
-Print #1,"'------------------------------------------"
+Print #1,"' -------------------------------------------------------------------------------"
+Print #1,"'      P L A Y   T O C A  A L L - P L A Y  D E  E J E C U C I O N E S  M I D I  I N" 
+Print #1,"' ------------------------------------------------------------------------------"
 '------------------abrir ports 
 Dim As Integer kp,ip
 Var porterror=Err
@@ -3485,7 +3485,12 @@ Print #1,"PlayTocaAll 2"
 
 'ChangeProgram ( 1, ntoca, 0)
 ' todas las pistas empiezan en el mismo Timer
-timex(01)=Timer
+If play=SI Or playb=SI Or Cplay=SI  Then
+  Print #1," USANDO STARTMDI EN EJECUCION PARA timex(01)"
+  timex(01)=STARTMIDI  
+Else
+  timex(01)=Timer
+EndIf
 
 For j=2 To 32 
  timex(j)=  timex(01)  
@@ -3507,7 +3512,7 @@ If GrabarEjec=GrabarpistaEjecucion Then
    Print #1,"tocatope -1 "; topeDuranteGrabacion 
   EndIf
 Else
-   topeDuranteGrabacion=tocatope
+   topeDuranteGrabacion=tocatope '' CUANDO NO SE GRANA, LOS 2 TOPES SON IGUALES A tocatope
 
 EndIf   
 Dim As Integer prox=2 
@@ -3522,6 +3527,14 @@ Print #1,"topeDuranteGrabacion ", topeDuranteGrabacion, " PISTAS"
 '
 'Next pis
 '''TickPlay=TickChico*tiempoPatronEjec/240
+'' hafcemos tickplay igual a tickusuario de playcancion la misma formula a ver que pasa
+Dim As Double  tickPlay=(60/(tiempoPatron*96))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
+' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
+' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
+Print #1,"TickPlay "; tickPlay
+' para grabacion MIDI HEMOS USADO UN TICK DE 0.01, LA DE PLAY CANCION ES 0.01 O SEA ELDOBLE
+' LUEGO PARA ACELERAR DIVIDIREMOS POR 2
+  'tickPlay=tickPlay*2 ' ASI LLEGAMOS A 0.005 EL TICKCHICO DE ANTES EN ROLLDEC
 ' no hay caso no cambia nada el play deberia modificar los datos ???
 ' los tiempos son fijos la unica forma seria cambiar sus valores
 ' lo que debo hcer es restar una cantidad de ticks fijos a cada
@@ -3662,9 +3675,12 @@ Sleep 1
     Else
      Continue For ' saltear no tocar 
     EndIf 
+    If playb > 0 Or Cplay > 0 Then
+    Else
     portsal=tocaparam(kply).portout 
      alloff( tocaparam(kply).canal,portsal )  
-     allSoundoff( tocaparam(kply).canal, portsal ) 
+     allSoundoff( tocaparam(kply).canal, portsal )
+    EndIf 
   Next kply
   If   GrabarEjec =PatronDeEjecucionCompleto Then
          Dim rta As String
@@ -3687,6 +3703,8 @@ Sleep 1
   playEj= NO
   Sleep 20,1
 '------------------- cerrando ports
+If playb > 0 Or Cplay > 0 Then
+Else
    For ip=1 To topeEjec
       kp=pmEj(ip).portout
    '   Print #1,"midiout ",k1, *nombreOut(k1)
@@ -3698,6 +3716,7 @@ Sleep 1
       close_port midiout(kp)
       listoutAbierto( kp) = 0
    Next ip
+EndIf
 '----------------
 Exit Sub 
 

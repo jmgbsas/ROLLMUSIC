@@ -34,8 +34,18 @@ On Error Goto errorhandler
 '----------------------------------------------------
 
 ' --------------------------------------------
-nroversion="0.35110 botones Cancion, Ejecucion, BTN M , MEDIA mp3 wav"
-'botones Cancion, Ejecucion evitar cancelaciones, BTN M evitar que pare al dar click en pistas
+nroversion="0.356 GEN  Experimental y varias correcciones (quedan MAS...)"
+' FALTA GRABAR PISTAS MIDI-IN CARGADAS DE ARCHIVO Y LUEGO MODIFICADAS UN COMANDO
+' COMO GRABAR CANCION QUE SEA GRABAR "PISTAS MIDI MODIFICADAS"
+' -0.355 FIXED AJUSTE DE VOLUMEN DE PISTAS MANUALES EJEC 
+' -0.354 fixed al insertar un fin de archivo en CTRL-m no modificaba el maxpos
+' -0.353 fixed,AL REPRODUCIR UNA CANCION MANUAL CON EJEC MIDI ESTA ULTIMA NO SE ESCUCHA NADA
+' SALTA DA EL PAJARITO ETC 
+' - 0.352 FIXED PISTAROLL Y EJECUCION QUEDABAN DESHABILITADAS AL MANIOBRAR LAS PISTAS
+' 0.3513 GEN GENERARA SECUENCIAS ALGORITMO SENCILLO , CORRECCION NUEVO() POSICION=1, NOTACUR=1, SINO CANCELA EL GEN
+' 3.0 puerto MIDI-IN sobre Midi OUT, sigue funcionando con play de un track, se puede apagar 
+' y encender desde el menu y obedecera.
+''-FISED botones Cancion, Ejecucion evitar cancelaciones, BTN M evitar que pare al dar click en pistas
 ', solo cargar MEDIA mp4 wav en reproductor de media  
 ' ORGANIZAMOS MENU ARCHIVO UN POCO
 ' RECUPERAMOS TRASPONER TOTAL O PARCIAL PARA EJECUCIONES Y MANUALES OK
@@ -529,7 +539,7 @@ ErrorLine = Erl
 
 Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
 Print #1,"Error Function: "; *Erfn()
-'Dim ers As Integer = 12 - nota +(estoyEnOctava ) * 13 
+ers  = 12 - nota +(estoyEnOctava ) * 13 
 Print #1, "12 -nota +(estoyEnOctava ) * 13) "; ers
 Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
 Print #1, "error number: " + Str( Err ) + " at line: " + Str( Erl )

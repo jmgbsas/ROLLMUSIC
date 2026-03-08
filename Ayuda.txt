@@ -699,8 +699,20 @@
       5)  En el menu de Control Reproducir item 5.0 se agrego un reproductor de media con el fin de escuchar
           una cancion un instrumento grabado en wav o mp3, tambien reproduciria video, pero no es el
           objetivo por ahora. en el futuro tratremos de sincronizar el comienzo de esta reproduccion
-          con la de una ejecucion y/o una cancion.
-
+          con la de una ejecucion y/o una cancion. El reproductor es elemental básico si en alguna maniobra de mover
+          la ventanita que lo contiene o minimizarlo, para que aparescan bien todos los controles y sean funcionales,
+          maximizar el control dando un click en la parte inferior de la ventanita que ofrece windows para maximizarlo
+          de esa forma se reinia bien los controles, la escala se mantiene util si se usa la resolucion de pantalla
+          1680 o 1920. O sea cualquier dificultad reiniciar la visualizacion del reproductor minimizarlo y luego 
+          restablecerlo de la forma indicada. Si se da PARAR y desaparece el indicador de barrido, al dar ejecutar
+          aparecera de nuevo pintando el control a medida que avanza el barrido, o dar MIN Max como se dijo y aparecera
+          todo el barrido completo de la barra de la pista. 
+          Por ahora sirve para ejecutar un wav o mp3 y tocar un teclado para ensayar..habilitando el midi input desde 
+          un teclado externo, el cual se podra grabar como ya sabemos creando una pista nueva de ejecucion.
+          Nota: para grabar a disco la salida de audio de la PC se puede usar Audacity
+                Programa gratuito de código abierto. Configurando el host de audio a "Windows WASAPI" y seleccionando 
+                los altavoces como dispositivo de grabación, se captura el sonido interno con alta calidad.
+ 
       V ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
           o ordenar la ejecucion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
           o ejecutar con otras instancias de RollMusic con o sin Control...(hay muchisimo por hacer...)
@@ -997,7 +1009,7 @@
          aparece un menu contextual (el cual ya es funcional, no totalmente, triadas cuaternarias etc, 1era o 2da inversion etc)
          aL pie de laventana de control avisa si es funcional lo elegido.
          El primer menu es para ajustar si la nota elegida es la fundamental , 3ra, 4ta,5ta, 6ta, 7ma,9na.
-         Si no se elige nada a los 10 segundos se cierra el menu. Se sale con el bobot de cierre como cualquier vantana.
+         Si no se elige nada a los 10 segundos se cierra el menu. Se sale con el boton de cierre como cualquier vantana.
          Ya funciona 3 Notas y 4 Notas ->Mayor o Menor//fundamental, 1era inversion y segunda inversion 
          dar Ctrl+click derecho sobre la nota navegar como se indica al comienzo llegar a No inversion y ahi dar 
          click izquierdo, soltar click , soltar ctrl apenas salga el menu o al final es indiferente. 

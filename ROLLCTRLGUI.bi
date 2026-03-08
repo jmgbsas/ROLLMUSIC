@@ -39,7 +39,7 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
  ' TextGadget(4,250,10,240,20,, SS_SIMPLE  )
  ' 04-02-2023
 
-  SetGadgetColor(PISTASROLL,CInt("&HC0C0C0"),0,1)
+  'SetGadgetColor(PISTASROLL,CInt("&HC0C0C0"),0,1)
   SetGadgetColor(BOTON_PISTA_ROLL,cint("&HC0C0C0"),0,1)
 ' check para encender o apagar, sonido de salida de c/pista  
   cbxnum(1) =  CheckBox_New( 60 ,  40, 20, 20, "",, hwndc) 
@@ -125,15 +125,16 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 
 '---------------------------LISTA DE EJECUCIONES------------
   hwndListEjec= ListBoxGadget(PISTASEJECUCIONES, 430,40,290,685,LBS_EXTENDEDSEL Or LBS_DISABLENOSCROLL  Or WS_VSCROLL Or WS_HSCROLL Or LBS_WANTKEYBOARDINPUT Or LBS_NOINTEGRALHEIGHT Or LBS_NOTIFY  )
+SendMessage(GadgetID(PISTASEJECUCIONES),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
 SetGadgetFont(PISTASEJECUCIONES,CINT(LoadFont("consolas bold",13)))
 GadgetToolTip(PISTASEJECUCIONES,"Pistas de cancion grabadas desde un teclado midi")
-SetGadgetColor(PISTASEJECUCIONES,cint("&HC0C0C0"),0,1)
+'SetGadgetColor(PISTASEJECUCIONES ,cint("&HC0C0C0"),0,1)
   ButtonGadget(BOTON_SELECCION_EJECUCION ,410,20,20,20,"S")
 SetGadgetColor(BOTON_SELECCION_EJECUCION ,cint("&HC0C0C0"),0,1)
 GadgetToolTip(BOTON_SELECCION_EJECUCION,"Seleccion de Pista para reproducir o cambiar parametros")
   
 
-  SendMessage(GadgetID(PISTASEJECUCIONES),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
+  
 ' BS_PUSHLIKE se hune el boton al seelccioanrlo
 ' CHECK PARA ESCUCHAR SONIDO de las ejecuciones desde teclado grabadas y para
 ' marcar pistas para modificar parametros sonido patch eco pan etc abrir ports etc
@@ -193,8 +194,8 @@ ButtonImageGadget(BTN_MIDI_EJECUTAR,530,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITM
 GadgetToolTip(BTN_MIDI_EJECUTAR,"EJECUTAR Grabacion midi")
 ''''''''''''''''''''''''''''''''''TEXTOS
  TextGadget(TEXT_TOPE,570,12,95,20,"         ")
- StringGadget(LINEA_COMANDO,670,12,300,20,"LINEA DE COMANDO FUTURA, NO FUNCIONAL",ES_UPPERCASE,ES_LEFT )
- ButtonGadget(OK,990,12,40,20,"OK")
+ StringGadget(LINEA_COMANDO,670,12,300,20,"ENTRE UN COMANDO PULSANDO INICIO ",ES_UPPERCASE,ES_LEFT )
+ ButtonGadget(OK,990,12,60,20,"INICIO")
 '---------------------------------------------------
 ' pistas manuales  PARA CARGAR CANCION DESDE DIRECTORIO PISTAS ECHAS CON ROLL
 GroupGadget( GRUPO_BTNS_MANUAL,95,0,113,40,"") 'play cancion
@@ -329,9 +330,8 @@ MenName18=OpenSubmenu(MenName1, "4.5 Cargar Pista/Cancion para Exportar a midi d
 MenuItem(1008,MenName18, "Cargar Pista en Roll independiente" )
 MenuItem(10081,MenName18,"Usar Cancion cargada en 2.0 " )
 
-    
-
 MenuItem(1009,MenName1,  "4.5.1 Exportar a MIDI Pista/cancion de 4.5 ")
+MenuItem(10091,MenName1,  "4.6 Grabar Midi Directo sin Generar Texto, Experimental ")
 
 
 Menubar(MenName1)
@@ -371,7 +371,8 @@ MenuItem(1060,MenName3, "6.0 Crear pista aislada, En Roll dependiente, con lo el
 MenuItem(1061,MenName3, "7.0 Crear Pista nueva en la Cancion en Edicion, Con lo elegido")
 Menubar(MenName3)
 MenuItem(1062,MenName3, "8.0 Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
-' ahora se llama 10063 en menu artchivo 
+MenuItem(1063,MenName3, "9.0 Generar melodias de 4 compasases algoritmo sencillo no parametrizado")
+ 
 
 
 'MenuItem(1065,MenName31, "Crear Patrones de Ejecuciones por Teclado",MF_POPUP )
@@ -447,6 +448,10 @@ MENUITEM(1109,MenName7,"8.0 Trabajar con bemoles ",MF_UNCHECKED )
 Menubar(MenName7)
 MenuItem(1113,MenName7,"9.0 Usar metronomo para Tocar MIDI-IN",MF_CHECKED)
 MenuItem(1114,MenName7,"10.0 TOCAR 4 PULSOS DEL instrumento elegido en una pista de EJECUCIONES antes de grabar",MF_UNCHECKED)
+MenuItem(1115,MenName7,"11.0 Detener metronomo ")
+MenuItem(1116,MenName7,"12.0 BACKUP SI ")
+MenuItem(1117,MenName7,"13.0 BACKUP NO ")
+
 
 
 MenuItem(1200,MenName8,"1.0 Seleccion Puerto MIDI-IN Ejecucion")

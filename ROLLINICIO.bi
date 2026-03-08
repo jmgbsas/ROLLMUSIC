@@ -796,8 +796,7 @@ Function InputBoxJmg(ByRef Caption As STRING, ByRef Message As STRING, ByRef Def
 ' a windows9 y avisamos si quieren usarlo  
 Dim As Integer mix, miy
 Dim As mouse m
- 
-	Dim InputBoxJmg_ As InputBoxJmg_
+ 	Dim InputBoxJmg_ As InputBoxJmg_
 	InputBoxJmg_.dm(0).dmSize = sizeof(DEVMODE)
 	EnumDisplaySettings( 0, ENUM_CURRENT_SETTINGS, @InputBoxJmg_.dm(0))
 	#ifdef UNICODE
@@ -870,4 +869,5 @@ End Function
 '- Then when compiling program, add appicon.rc in the list of files to compile.
 
 Dim Shared As Integer event,mov8,MOV_FLAG=0, movie
-Dim Shared As HWND  hwndMEDIA
+Dim Shared As integer lugarPos
+Dim Shared As HWND  hwndMEDIA,hwndTG

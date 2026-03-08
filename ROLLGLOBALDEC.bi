@@ -35,7 +35,8 @@ Declare Sub selNotaEscala (ByRef notaescala As integer)
 Declare Sub CTRL100610061 (hMessages As hmenu , DESDE As String)
 Declare Sub CTRL1061 (ByRef SALIDA As INTEGER) 
 Declare Sub CTRL1062 (hmessages As hmenu)
-Declare Sub CTRL1063()
+Declare Sub CTRL1063
+Declare Sub CTRL10063()
 Declare Sub CTRL1007()
 Declare Sub CTRL1010(ByRef salida As INTEGER)
 Declare Sub CTRL1012(ByRef SALIDA As INTEGER)
@@ -570,6 +571,7 @@ Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDI
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi
 parametros=0
 abrirRollCargaMidi=0
+Common Shared As String comando
 Common Shared As ubyte patchsal, ritmo
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay,deltaz,guardaposnOffOld
 COMMON Shared As Integer MaxPos,MaxPosOrig,ntk,CPlay, guardopos,ntoca,ntkp,npi,npo,canalDeGrabacion,ntkcarga,ntkTAB
@@ -580,7 +582,8 @@ Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, interva ,valorpan '  default 2 que es 1 separacion de notas
 Common Shared As Integer valoreco, valorcoro,valorvol
 common Shared As integer tiempoPatron
-common Shared As integer tiempoPatronEjec
+common Shared As integer tiempoPatronEjec,BACKUP
+BACKUP=NO
 tiempoPatron=60
 tiempoPatronEjec=60
 VerMenu=1
@@ -611,9 +614,9 @@ TopeEjec=0
 trabaspace=0
 Common Shared As String ROLLDIR
 Common Shared As UByte Vfuerte,Vsemifuerte,Vdebil
-Vfuerte=96     'ff
-Vsemifuerte=64 'mf
-Vdebil=42      ' p
+Vfuerte=120     'ff
+Vsemifuerte=100 'mf
+Vdebil=80      ' p
 Common Shared As Long PARAR_PLAY_MANUAL ,PARAR_PLAY_EJEC 
 PARAR_PLAY_MANUAL = NO:PARAR_PLAY_EJEC = NO
 Common Shared TipoCompas As UByte

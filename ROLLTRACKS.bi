@@ -608,7 +608,7 @@ Print #1,"EN CARGATRACK PATCH ",pmTk(ntk).patch
        nanchofig  = cdbl(graba3.nanchofig)/10
      EndIf 
      pmTk(ntk).vol = graba3.vol
-
+ Print #1,"VOLUMEN CARGADO DESDE ARCHIVO PARA EL TRACK ",pmTk(ntk).vol
     If portsout <= portout Then
  'portsout cantidad de port fisicos o dispositivos empieza por 1 2 3 etc"
   '  portout parte de 0 o sea 0 1 2 3 '
@@ -1925,7 +1925,7 @@ If pmTk(ntk).patch > 0 Then
    instru=CInt(patchsal)
 EndIf
    Print #1,"instru en TrackaRoll ",instru
-If pmTk(ntk).ejec > 0 And pmTk(ntk).ejec=0 Then
+If pmTk(ntk).ejec > 0 And pmTk(0).ejec=0 Then ' pmTk(0).ejec=1 pasa sin ser tocado
    pmTk(0).ejec=pmTk(ntk).ejec   
 EndIf
 ' como Roll edita se deben llenar las Globales
@@ -2321,6 +2321,7 @@ End Function
 '               P L A Y   C A N C I O N 
 '------------------------------------------
 Sub PlayCancion(Track() As sec)
+' los patch de los solo se maneja en playSOlo, corregido por pistas sin patch sonaba el pajarito ja
 Print #1,"' ----------------------------------------"
 Print #1,"'               P L A Y   C A N C I O N" 
 Print #1,"'------------------------------------------"
@@ -2430,9 +2431,6 @@ For i=1 To tope
 
 Next i
 
-Dim As Double tiempoDUR
-tiempoDUR=(60/tiempoPatron) / FactortiempoPatron'60 seg/ cuantas negras enun minuto
-
 Dim As Integer i2,K, mayor,i0,xmouse,ymouse,finfin=0,finalloop=0,comienzoloop=0,Smayor
 Dim As UByte i3=0, pis=0, pisnota=0
 
@@ -2471,7 +2469,7 @@ Print #1,"UBound(compas, 1) ",UBound(compas, 1)
 '-------------
 Dim As Double start
 Dim as Integer cnt=0, cntold=0,cpar=0,dura=0,duraOld=0,nj, durj,tiempoFiguraSig
-Dim As Integer liga=0,Notapiano=0,old_notapiano=0, iguales=0, distintos=0
+Dim As Integer liga=0, iguales=0, distintos=0,notapiano=0,old_notapiano=0
 Dim leng As UInteger <8>
 Dim As Integer result,limsup,vertical=12+(hasta-2)*13+hasta 'vertical en Roll donde estan las repeticiones
 Dim As UByte canal=0 
@@ -2497,12 +2495,11 @@ If comienzo = 0 Then  '01-03-2024 play sin roll
   comienzo= 1 
 End If
 
-Dim As Double  tickUsuario=60/(tiempoPatron*96) ''''tickUsuario=0.01041666 * 240/tiempoPatron
+Dim As Double  tickUsuario=(60/(tiempoPatron*96))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
 
-tickUsuario=60/(tiempoPatron*96)
 
   '115 a 0
   ' recorre una posicion vertical
@@ -2516,7 +2513,10 @@ Dim As float ajuste=1.0
 ''//////////////// PISTA //////////////
 Dim As Integer cntRtk,cntSolo,cnt_pistas_cancion_suenan
 ' <=========CHEQUEOS PREVIOS DE LAS PISTAS ========>
+Print #1, "Tope encancion " ,Tope
+
  For pis=1 To tope
+  Print #1, "\\=>veo chequeos pis, CheckBox_GetCheck( cbxnum(pis)) ", pis, CheckBox_GetCheck( cbxnum(pis))  
 ' escribimos salidamidi
     If MIDIFILEONOFF = HABILITAR  Then 
        MidiDatos(pis).datos(1)="MTrk"
@@ -2530,16 +2530,23 @@ Dim As Integer cntRtk,cntSolo,cnt_pistas_cancion_suenan
   ''veremos como se pone el portout si se puede pmTk(pis).portout)	
        NroEventoPista(pis)=3
     EndIf
- '     Print #1,"ON patch ntk canal ",	Track(ntk).trk(1,1).nnn, ntk,pmTk(pis).canalsalida
- ' PARA TODOS RTK Y SOLO
-      Paneo (pmTk(pis).pan, pmTk(pis).canalsalida,pmTk(pis).portout)
-      Eco   (pmTk(pis).eco,  pmTk(pis).canalsalida,pmTk(pis).portout) 
-      Chorus(pmTk(pis).coro,  pmTk(pis).canalsalida,pmTk(pis).portout)
-      ChangeProgram ( pmTk(pis).patch, pmTk(pis).canalsalida, pmTk(pis).portout)	
+    If CheckBox_GetCheck( cbxnum(pis))= 0  Then
+       Print #1,"pista rechazada sin chequeo ",pis
+       Continue For  
+    EndIf
+    Print #1,"ON patch, pis, canal ", pmTk(pis).patch, pis, pmTk(pis).canalsalida 	
+ ' PARA  RTK ,  SOLOS se manejan el play SOlo
+    Print #1,"ajuste de efectos para cbxnum pista nro ",pis
+    ChangeProgram ( pmTk(pis).patch, pmTk(pis).canalsalida, pmTk(pis).portout)
+    Paneo (pmTk(pis).pan, pmTk(pis).canalsalida,pmTk(pis).portout)
+    Eco   (pmTk(pis).eco,  pmTk(pis).canalsalida,pmTk(pis).portout) 
+    Chorus(pmTk(pis).coro,  pmTk(pis).canalsalida,pmTk(pis).portout)
+	
+ 
 ' reveeer esto de sonido ,,,,,
     If InStr(LCase(TitulosTk(pis)),".solo") > 1 Then
        cntSolo=cntSolo +1
-       CheckBox_SetCheck( cbxsolo(pis), 1)
+   ''''  CheckBox_SetCheck( cbxsolo(pis), 1) ' lo solos puede que el usuario no quiera tocarlo 
     EndIf
     If InStr(LCase(TitulosTk(pis)),".rtk") > 1 Then
        cntRtk=cntRtk +1
@@ -2550,30 +2557,35 @@ Dim As Integer cntRtk,cntSolo,cnt_pistas_cancion_suenan
     EndIf
 
 
-      If instancia=ARG7_NOMBRECANCION Or instancia=ARG107_FICTICIO  Then 'batch grafico solo
-          sonidoPista(pis)=1
-      Else 
-      
-          If CheckBox_GetCheck( cbxnum(pis))= 1 Then
+    If instancia=ARG7_NOMBRECANCION Or instancia=ARG107_FICTICIO  Then 'batch grafico solo
+        sonidoPista(pis)=1
+    Else 
+       If CheckBox_GetCheck( cbxnum(pis))= 1 Then
  '        Print #1,"+++++++pista on ",pis
              sonidoPista(pis)=1
-          Else  
+       Else  
  '        Print #1,"+++++++pista off ",pis
          alloff( pmTk(pis).canalsalida,CInt(pmTk(pis).portout) )
          allSoundoff( pmTk(pis).canalsalida, CInt(pmTk(pis).portout) ) 
-             sonidoPista(pis)=0
-          EndIf
-      EndIf
+         sonidoPista(pis)=0
+        EndIf
+    EndIf
 
  Next pis
- If cnt_pistas_cancion_suenan = 0 And cntSolo > 0 Then
+ If cnt_pistas_cancion_suenan = 0 And cntSolo > 0 And CheckBox_GetCheck( cbxsolo(pis))= 1 Then
 ' SIEMPRE DEBE EJECUTARSE UNA PISTA DE CANCION QUE ES LA GUIA, SI QUEREMOS ESCUCHAR UN SOLO 
 ' DEBERIA ESTAR CHEQUEADO UNA  PISTA DE CANCION Y EL VOL=0. SINO MEJOR DESDE UN DOBLE CLICK
 ' AL ARCHIVO SOLO 
-    For K As Integer = 1 To Tope
+    For K As Integer = 1 To Tope ''' k=pis en este for, fixed
      If CheckBox_GetCheck(cbxsolo(k))= 0 And InStr(LCase(TitulosTK(k)),".rtk") = 1  Then ' la primer pista que no este chequeda para solo 
        ' se chequea para cancion
         CheckBox_SetCheck(cbxnum (k),1)
+       Print #1,"ajuste efectos para encender un pista de cancion para que sea guia  ",pis
+      Paneo (pmTk(k).pan, pmTk(k).canalsalida,pmTk(k).portout)
+      Eco   (pmTk(k).eco,  pmTk(k).canalsalida,pmTk(k).portout) 
+      Chorus(pmTk(k).coro,  pmTk(k).canalsalida,pmTk(k).portout)
+      ChangeProgram ( pmTk(k).patch, pmTk(k).canalsalida, pmTk(k).portout)	
+      Exit For ' con una sola pista guia anda bien el solo 
      EndIf 
     Next k
  EndIf
@@ -2626,8 +2638,9 @@ kNroCol= Int(jply/NroCol)
   For pis =1 To tope ' loop de pistas rtk
     If CheckBox_GetCheck( cbxsolo(pis))= 1 Then
          sonidoPista(pis)=0
-         Continue For ' saltea no tocar pero la toca playall 
-    EndIf       
+         Continue For ' saltea no tocar pero la toca playsolo 
+    EndIf      
+ 
     If CheckBox_GetCheck( cbxnum(pis))= 1 Then
        ' tocar
          sonidoPista(pis)=1
@@ -2642,7 +2655,7 @@ kNroCol= Int(jply/NroCol)
     EndIf 
     ajuste=pmTk(pis).vol/127
 ''''Print #1,"PISTA AJUSTE ",pis, ajuste
-    If Track(pis).trk(1,1).ejec = 1 Or pmTk(pis).ejec = 1 Then ' VIENE DE UNA EJEC
+    If Track(pis).trk(1,1).ejec = 1 Or pmTk(pis).ejec = 1 Then ' VIENE DE UNA EJEC ,,NO VAMAS ESTO SE CAMBIA VOL EN TODOS LADOS
         
     Else
 
@@ -2702,9 +2715,6 @@ kNroCol= Int(jply/NroCol)
  'Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
 
    If jply <= pmTk(pis).MaxPos Then ' tocamos una pista mientras que tenga datos
-     If CheckBox_GetCheck( cbxsolo(pis))= 1 Then
-       Continue For ' saltea no tocar pero la toca playUNOSOLO 
-     EndIf 
      For i1=1 To lim3   'lim3 decia coo voy de 1 a lim2 necesito que la info del int este en 1
        If i1<= lim2  And (pis <= tope Or pis<=32) Then
          If (Track(pis).trk(jply,i1).nota >= NBpiano) And (Track(pis).trk(jply,i1).nota <= NA) And (Track(pis).trk(jply,i1).dur >=1) And (Track(pis).trk(jply,i1).dur <= 180) Or Track(pis).trk(jply, i1).dur <= 183 Or Track(pis).trk(jply, i1).dur <= 185 Then ' es semitono
@@ -2724,7 +2734,7 @@ kNroCol= Int(jply/NroCol)
                   Case 138 To 180  'silencios
                      vel=0
                   Case Else
-                     vel=Track(pis).trk(jply,i1).vol
+                     vel=Track(pis).trk(jply,i1).vol * ajuste
                      If vel=0 Then
                        vel=velpos
                      EndIf   
@@ -2885,6 +2895,7 @@ For  iz As Short =1 To 32
       Exit For
 Next iz
 if GrabarPenta=0 and GrabarEjec=HabilitaGrabar and Parar_De_Dibujar=NO And checkejec=0 Then 
+  Print #1," ciera todo ports 1 em playcancion , si GrabarPenta=0 and GrabarEjec=HabilitaGrabar and Parar_De_Dibujar=NO And checkejec=0 "
    For i=1 To tope
       k1=pmTk(i).portout
    '   Print #1,"midiout ",k1, *nombreOut(k1)
@@ -2900,14 +2911,18 @@ if GrabarPenta=0 and GrabarEjec=HabilitaGrabar and Parar_De_Dibujar=NO And check
 EndIf 
   Parar_De_Dibujar=NO ' 05-03-2024
   Cplay=NO
-STARTMIDI=0
+If playEj > 0 Then
+Else
+  STARTMIDI=0
+
   For i3 = 1 To tope
        portsal=CInt(pmTk(i3).portout) 
        alloff(pmTk(i3).canalsalida,portsal) 
        allSoundoff( pmTk(i3).canalsalida, portsal ) 
   Next i3
-
+EndIf
 Sleep 20,1
+
 
 Exit Sub
 
@@ -3021,32 +3036,12 @@ Dim As Integer k1,i
  i=Spis 
   
    k1=CInt(pmTk(i).portout)
-    
-'   Print #1,"midiout ",k1, *nombreOut(k1)
-   If InStr(*nombreOut(k1),"Microsoft")>0 Then
-    Print #1,"No se usa Microsoft"
-    Exit sub
-   Else
-     If listoutAbierto( k1) = 0 Then
-        If listoutCreado( k1)=0 Then
-           midiout(k1) = rtmidi_out_create_default ( ) '' es como un new RtMidiOut()
-           listoutCreado( k1)=1 
-        EndIf
-        open_port midiout(k1),k1, nombreOut(k1)
-            porterror=Err 
-        listoutAbierto( k1) = 1
-        Print #1,"abro ",*nombreOut(k1)
-        porterrorsub(porterror)
 
-     Else
-        Print #1,"ya abierto ",*nombreOut(k1)
-        porterror=0
-     EndIf
-   EndIf
-
-  
-
-
+  resultado=CheckPortout(k1)
+  If resultado > 0 Then
+     Print #1,"PLAYUNOSOLO No se puede Abrir portout en midiout ",k1, *nombreOut(k1)
+     Exit SUB
+  EndIf
 
 Dim As Double tiempoDUR
 tiempoDUR=(60/tiempoPatron) / FactortiempoPatron'60 seg/ cuantas negras enun minuto
@@ -3080,7 +3075,8 @@ Sfinal=Smayor
 '-------------
 Dim As Double start
 Dim as Integer cnt=0, cntold=0,cpar=0,dura=0,duraOld=0,nj, durj,tiempoFiguraSig
-Dim As Integer liga=0,Notapiano=0,old_notapiano=0, iguales=0, distintos=0
+Dim As Integer liga=0, iguales=0, distintos=0,notapiano=0,old_notapiano=0
+
 Dim leng As UInteger <8>
 Dim As Integer result,limsup,vertical=12+(hasta-2)*13+hasta 'vertical en Roll donde estan las repeticiones
 Dim As UByte Scanal=0,Sportsal=0 
@@ -3110,7 +3106,7 @@ End If
 Dim As Double Sold_time_on
 Sold_time_on=STARTMIDI
 Print #1,"Sold_time_on "; Sold_time_on
-Dim As Double  tickUsuario=60/(tiempoPatron*96) ''''tickUsuario=0.01041666 * 240/tiempoPatron
+Dim As Double  tickUsuario=(60/(tiempoPatron*96))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
@@ -3168,7 +3164,7 @@ Print #1,"Cambio Prog pis patch, portout, canal ", Spis, pmTk(Spis).patch, pmTk(
 
 
 ''STARTMIDI=Timer
-Sold_time_on=STARTMIDI
+Sold_time_on=STARTMIDI  'dos vces? estaria mal
 Print #1,"old_time_on "; Sold_time_on
 Print #1,"ENTRA UNOSOLO ",Timer
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666

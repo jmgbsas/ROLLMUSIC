@@ -155,7 +155,7 @@ Static As Integer millave
   EndIf
  
 '-----------------------------------------------------
-DisableGadget(PISTASROLL,1) 'deshabilita la pistaroll
+'''DisableGadget(PISTASROLL,1) 'deshabilita la pistaroll PUPU
 
   If eventnumber()=  PISTASEJECUCIONES Then
 ''' ESTE MOUSEBUTTONS AND LEFTBUTTON NO FUNCIONA !!! LA PUTA MADRE 
@@ -200,7 +200,7 @@ EndIf
 ' no lo necesita... es todo o nada pero no recuerda que se escuchaba o no
 ' siemrpe que haya una cancion cargada .. es un boton de todo o nada
 ' solo si cancion esta cargada...BOTON "S"
-DisableGadget(PISTASEJECUCIONES,1) 'deshabilita la pistasejecuciones
+''DisableGadget(PISTASEJECUCIONES,1) 'deshabilita la pistasejecuciones
        If eventnumber()=BOTON_PISTA_ROLL And CANCIONCARGADA=TRUE Then
         disablegadget(PISTASROLL,0)
          Dim i As integer
@@ -300,7 +300,7 @@ DisableGadget(PISTASEJECUCIONES,1) 'deshabilita la pistasejecuciones
       If eventnumber()= BTN_MIDI_PARAR  And ntoca > 0   Then ' BOTON STOP NEGRO DE MIDI-IN
          SetGadgetstate(BTN_MIDI_GRABAR,BTN_LIBERADO)
          Print #1,"ntoca en BTN_MIDI_PARAR "; ntoca
-          
+      
          If GrabarEjec=GrabarPistaEjecucion Then
             If pmEj(ntoca).MaxPos > 0 And (GrabarEjec=GrabarPistaEjecucion  Or GrabarEjec=GrabarPatronaDisco ) Then
               Print #1,"//STOP:pmEj(ntoca).MaxPos, GrabarEjec ",pmEj(ntoca).MaxPos,GrabarEjec
@@ -345,6 +345,7 @@ DisableGadget(PISTASEJECUCIONES,1) 'deshabilita la pistasejecuciones
 
             Select Case  CargaIn( i1).modo
                Case 144,128
+              
             Toca(ntoca).trk(k).modo = CargaIn( i1).modo
             Toca(ntoca).trk(k).nota = CargaIn( i1).nota
             Toca(ntoca).trk(k).vel  = CargaIn( i1).vel
@@ -495,14 +496,6 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",maxgrb
        
         threadG = ThreadCall  PlayTocaAll (p)
         grabariniciotxt(NombreCancion, EJECUCION) 
-
-        'threadG  = ThreadCreate (@PlayTocaAll, p)
-        'ThreadWait (threadG) '22-04-2024  como andaba si hacia detach? ja
-'        Parar_De_Dibujar=0   
-        'threadDetach(threadG)
-        '  Print #1,"llama a  PlayTocaAll(p)"
-
-         '   PlayTocaAll(p)
 
         EndIf
       EndIf
@@ -1069,12 +1062,22 @@ Print #1,"k, canalsalida  ";k, canalx
            Next pista
          EndIf
       EndIf 
-DisableGadget(BOTON_SELECCION_EJECUCION,1) 'deshabilita BOTON_SELECCION_EJECUCION
+      DisableGadget(BOTON_SELECCION_EJECUCION,1) 'deshabilita BOTON_SELECCION_EJECUCION
    
-      If eventnumber()= OK   Then
+''------> BOTON OK DE LINEA DE COMADNO ARRIBA EN VENTANA
+      If eventnumber()= OK   Then 'boton ok de linea de comando
          comando=GetGadgetText(LINEA_COMANDO)
- ' MENU DE COMANDOS
-         threadCmd = ThreadCall  ejecutarComando (comando)
+         Dim  As Integer flag2=1
+         If flag2 > 0 And comando= "ENTRE UN COMANDO PULSANDO INICIO " Then
+            comando=""
+         EndIf
+
+         comando = InputBoxJmg("Entre un Comando ","",comando, ES_MULTILINE + ES_AUTOVSCROLL , flag2,hwndC  )
+         comando=UCase(Trim(comando)) 
+         SetGadgetText(LINEA_COMANDO,comando) ' lo muestra
+ ' MENU DE COMANDOS por ahora no usare el thread usaremos multikey con comando
+
+         ''threadCmd = ThreadCall  ejecutarComando (comando)
       EndIf
    
       If eventnumber()= BTN_METRONOMO And tic=0 Then

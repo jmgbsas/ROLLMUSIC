@@ -1284,6 +1284,9 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
      cairo_move_to  (c, gap1 + (curpos)*anchofig , Penta_y  )
      cairo_line_to  (c, gap1 + (curpos)*anchofig , Penta_y + (notacur-1) * inc_Penta  +inc_Penta )
      RollDur=Roll.trk(n + curpos,12 - notacur + (*po-1) * 13 ).dur
+     If RollDur=182 Then
+        MaxPos = n +6  
+     EndIf
      RollNota=Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota
 '' para ver el estado del onoff en la posicion elegida notacur
      onoff=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff)
@@ -3035,7 +3038,7 @@ Sleep 100
 'cada dat tiene 7 bytes son 70 bytes, vamos a generar un type
 ' encabezado de 70 bytes para que sea compatible con los archivos actuales
 ' rolldat 
-     Dim dat As rolldat
+  ''' shared ahora   Dim dat As rolldat
 
 '     Dim zLim As dat
 '     Dim z3   As dat  
@@ -3094,7 +3097,9 @@ Sleep 100
         nanchofig  = cdbl(dat.nanchofig)/10
         EndIf   
      EndIf     
-     pmTk(ntk).vol = dat.vol
+     pmTk(ntk).vol = dat.vol ' NINGUN DEFAUL EL USUARIO PUDO HABERDEJADO EL VOLUMEN EN CERO
+' SI QUIERE VOL LO DEBE AJUSTAR Y GRABAR
+
      notaescala_num_ini =CInt(dat.notaescala_num_ini) ' global notadeescala 20-12-2021
      If notaescala_num_ini = 0 Then
         notaescala_num_ini =1
@@ -3444,6 +3449,7 @@ End Sub
 
 '
 Sub Nuevo(Roll As inst,borraNombre As Integer)
+' 22-02-2026 CORREGIDO
 CantTicks=CantMin * 96 *tiempoPatron ' vuelvo al original default 15 min *60*96
 ' borro todo el undo
    mel_undo_k=0 :ig=0:cnt_acor=0
@@ -3480,11 +3486,11 @@ nota=0
 '          EndIf
 
           MaxPos = 2 'NroCol
-          posicion=0
-          curpos=0 
-          notacur=0 ' 10-04-2022
-          nroCompas=0
-          InicioDeLectura=0
+          posicion=1 'ESTABA EN 0 LO PASE A 1  POR [GEN]
+          curpos=0  
+          notacur=1 ' ESTABA EN CERO 10-04-2022, 22-02-2026 LO PASO A 1 POR [GEN]
+          nroCompas=0 
+          InicioDeLectura=0 
           tres=0:pun=0:silen=0:mas=0:doblepun=0:cuart=0
           tres=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
           SelGrupoNota=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
@@ -5142,31 +5148,31 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
 ''EndIf
     
 ' debo generar un default para manual 60 y oro para ejecs 240
-   If  EJECCARGADA = TRUE And ROLLCARGADO=FALSE Then ' cargar lo que hhay aen el archivo
-       default2 = Str(tiempoPatronEjec)
-       ticksdefault = InputBoxJmg("Ajuste Tempo Ejec" ,"Entre un Tempo ",default2, ES_MULTILINE + ES_AUTOVSCROLL,0  )
-       tiempoPatronEjec= CInt(ticksdefault) '08-01-2022 de doble a int
+  ''' If  EJECCARGADA = TRUE And ROLLCARGADO=FALSE Then ' cargar lo que hhay aen el archivo
+       default2 = Str(tiempoPatron) '60
+       ticksdefault = InputBoxJmg("Ajuste Tempo " ,"Entre un Tempo ",default2, ES_MULTILINE + ES_AUTOVSCROLL,0  )
+       tiempoPatron= CInt(ticksdefault) '08-01-2022 de doble a int
 
  'ntkp debe ser elegido pero todo debe estar igual, SI NO ELEIGE UNA PISTA
 ' O HAY UNA SOLA HAY QUE HACER EL LOOP PISTAS CONDISTINO TEMPO SERIA RARO
 ' ACA NO SEPUEDE ES TODO DE UN SOLO TEMPO
        If TopeEjec=0 Then TopeEjec=1 EndIf
         For j1 As Integer =1 To TopeEjec    
-            pmEj(j1).tiempopatron = tiempoPatronEjec
+            pmEj(j1).tiempopatron = tiempoPatron '''hay un solo patron para todo Ejec
         Next j1 
-   Else
-       'If  ticksdefault<>"" Then
-       '    default=ticksdefault
-       'Else
-        default=Str(tiempoPatron)  ' manual
-       'EndIf 
-      ticksdefault = InputBoxJmg("Ajuste Tempo Manual" ,"Entre un Tempo ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
-      tiempoPatron= ValInt(ticksdefault) '08-01-2022 de doble a int
+ ''''  Else
+ '      'If  ticksdefault<>"" Then
+ '      '    default=ticksdefault
+ '      'Else
+ '       default=Str(tiempoPatron)  ' manual 60
+ '      'EndIf 
+ '     ticksdefault = InputBoxJmg("Ajuste Tempo Manual" ,"Entre un Tempo ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+ '     tiempoPatron= ValInt(ticksdefault) '08-01-2022 de STRING a int
      
       For j1 As Integer=0 To Tope
        pmTk(ntk).tiempopatron = tiempopatron
       Next j1
-   EndIf
+'''   EndIf
       Print #1,"tEMPO llego a TEMPO en entrar tecla",ticksdefault 
    
 ' o sea el default de tiempoPAtron para manual es 60, pero para ejecuciones es 240
@@ -5289,7 +5295,7 @@ Next kk
    Globalcoro=CUByte(valorcoro)
   SetGadgetText(3,Str(valorcoro))
 
-  Case "[ECO]","[ECOEJEC]"
+ Case "[ECO]","[ECOEJEC]"
    
    If menuOldStr="[ECOEJEC]" Then
        If ntkp=0 Then ntkp=1  EndIf
@@ -5311,28 +5317,30 @@ Next kk
    Print #1,"ECO SELECCIONADO ->> "; valoreco
    Globaleco=CUByte(valoreco)
   SetGadgetText(3,Str(valoreco))
-    Case "[VOL]","[VOLEJEC]"
+ Case "[VOL]","[VOLEJEC]"
    If menuOldStr="[VOL]" Then 
-      If pmTk(ntk).vol=0 Then 
-        default=Str(90)
-      Else 
+Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
+'      If pmTk(ntk).vol=0 Then 
+'        default=Str(90)
+'      Else 
         default=Str(pmTk(ntk).vol) 
-      EndIf
+'''      EndIf
       intervaloTxt = InputBoxJmg("Ajuste Numerico de VOL 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
       valorvol= ValInt(intervaloTxt)  '19-03-2025
       pmTk(ntk).vol=CUByte(valorvol)
       pmTk(0).vol=CUByte(valorvol)
-
+      dat.vol = pmTk(ntk).vol
+      
    EndIf
 
    If menuOldStr="[VOLEJEC]" Then 
       If ntkp=0 Then ntkp=1  EndIf
-      If pmEj(ntkp).vol=0 Then 
-        default=Str(90)
-        tocaparam2(ntkp).vol=90 
-      Else 
+  '    If pmEj(ntkp).vol=0 Then 
+  '      default=Str(90)
+  '      tocaparam2(ntkp).vol=90 
+  '    Else 
         default=Str(pmEj(ntkp).vol) 
-      EndIf
+  '    EndIf
        intervaloTxt = InputBoxJmg("Ajuste Numerico de VOL 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
       valorvol= ValInt(intervaloTxt)  '19-03-2025
       pmEj(ntkp).vol=CUByte(valorvol)
@@ -5343,7 +5351,8 @@ Next kk
    Print #1," VOLUMEN AJUSTADOO ->> "; valorvol
    Globalvol=CUByte(valorvol)
   SetGadgetText(3,Str(valorvol))
-   Case "[RITMO]" 
+ Case "[RITMO]"
+  
 ' el ritmo deberia ser el mismo para todas las pistas de cancion y ejecs!
 ' queda eso en el tintero, cuando grabo una ejec deberia seleccionar tipoCompas¿? si
    Print #1,"Ritmo, ntk , TipoCompas ,ntkp ", ntk, TipoCompas,ntkp
@@ -5368,7 +5377,269 @@ Next kk
       TipoCompas=pmTk(ntk).tipocompas
       'pmEj(ntk).tipocompas=pmTk(ntkp).tipocompas 
       ''por omision ritmo=1, 4/4
-      RecalCompas(ritmo) 
+      RecalCompas(ritmo)
+
+  Case "[GEN]" '' muy bien funciona!!!
+' generamos para escala mayor
+Dim As Integer escalamayor(1 To 7)={1,3,5,6,8,10,12}
+'limitaremos a un grado mejor entrada de usuario
+' FALTARIA LIMITAR A QUE EN UN TIEMPO HAYA DIVISIONES BINARIAS SIN CONTINUIDAD
+' O SEA FFFF, LL, L SL, FSFFF, FFFSF ETC ESTE TIEM PONO CONTINUA EN EL SIGUIERNTE
+' O SEA SI VIENE UNA L DEBE SEGUIR OTRA L, SI VIENE UNA FLAS 3 QUE SIGUEN DEBEN S ER F
+' L =4, F=5
+Dim As String grado
+Dim As integer nGrado,i1,i3,i4,semitonoBase
+
+      default=Str("C")  
+      default = InputBoxJmg("Si no es C Entre una Tonica distinta de C " ,"D, E, F, G ,A, B ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+      default = UCase (Trim(default))
+'busco el indice 1 a 12 de la nota
+For i1=1 To 12
+  If InStr (NotasEscala(i1), default) > 0 Then
+     semitonoBase= 13-i1
+     exit for
+  EndIf
+Next i1
+Print #1,"semitonoBase ",semitonoBase
+' con la octava default=6 elegida obtengo la Notapiano real
+'' nR=12-semitonoBase +(estoyEnOctava -1) * 13 ' es nR
+'' nR=12-semitonoBase +(estoyEnOctava -1) * 13 ' es nR
+
+'''estoyEnOctava=6 'la elegiremos con un hotkey
+ nR=(12-semitonoBase +(estoyEnOctava -1) * 13) ' es nR inicio del usuario C
+
+ PianoNota= nR - restar (nR)
+Print #1, "nR base,Pianonota  ",nR,PianoNota
+'ej para C=12 y octava =6 -> nR=65 -> PianoNota= 65 - restar(65)= 60 es el C central
+' el nro octava sale de los parametros de Roll Grafico en octava 6 esta C central para Roll
+' en el piano podria ser octava 3,4 o 5
+' entonces elijo octava y semitono y saco PianoNota
+' luego vario PianoNota al azar  +1 o -1 por grado conjunto o por intervalos al azar
+' en mas una octava y menos una octava y de ahoraconstruyo una secuencia al azar
+
+Dim As Integer esL=0, esF=0
+Randomize 3 
+Dim As Integer i=0
+'' DURACION DUR ====>
+  Do While i<=32
+    i=i+1  
+    If i=33 Then Exit Do endif  
+      trackGenDUR(i)=Int(3 * Rnd() +3) ' I,L,F ...3,4,5
+ '''     trackGenDUR(i)=Int(4 * Rnd() +2) ' P,I,L,F ...2,3,4,5
+     ''' trackGenDUR(i)=Int(3 * Rnd() +2) ' P,I,L
+'SI HAY 4F NO PERMITIR OTRA SIGUIENTE
+    If trackGenDUR(i)=5 And esF< 5 Then
+       If trackGenDUR(i-1)<>5 And  esF > 0 Then
+          esF=0
+       EndIf
+       esF=esF+1  
+    EndIf
+
+    If esF=5 Then
+       i=i-1
+       esF=0
+       Continue Do  
+    EndIf
+' si hay 4L no permitir otro mas,,en fin el algroritmo puede ser muy variado
+    If trackGenDUR(i)=4 And esL<5 Then
+       esl=esl+1 
+       i=i+1
+       If i=33 Then Exit Do EndIf
+       trackGenDUR(i)=4
+    Else
+       esL=0
+    EndIf
+
+    Print #1, trackGenDUR(i)
+Loop  
+
+
+Randomize ,3  
+
+
+'' Print a sequence of random numbers -1,0,1 grado conjunto version 1
+'' Print a sequence of random numbers  de los 12 ...trackGen(i)=Int(12 * Rnd()) + 1
+Dim As Integer version=2 ' selecion interna para cambiar de algotritmo experimental
+' el mejor algoritmo es la 2 toca con limitacion de intervalos y dentro de una escala mayor
+' cuya fundamental se entra ,tener en cuenta que puede barrer solo 2 octavas en este algoritmo
+  
+  ReDim (Roll.trk ) (1 To 8000,NB To NA) 
+   For i3 =1 To 8000
+      For i4=NB To NA
+     Roll.trk(i3,i4).nota=181
+     Roll.trk(i3,i4).dur = 0  
+     Roll.trk(i3,i4).onoff = 0
+
+      Next I4
+   Next i3
+''-----------------------------------------------------------
+'' EL AZAR RECORRE LAS NOTAS DEL PIANO ....Y LAS PASA A ROLL..:
+''-------------------------------------------------------------------
+If version = 2 Then ' version nueva con Notapiano inicial ELEGIDA POR USUARIO
+ ''nR= i1 ' nR=i1 es el indice del vector  Roll 
+ ' cuanta al reves desde ocatva mas aguda a la mas grave,,,
+ ' no lo cambiare o podri aahcer lo veremos convertimos a PianoNota
+ ''PianoNota= nR - restar (nR)
+ 
+ ' track tendra directamente el valor del piano para tocar con rtmidi
+trackGen(1)=PianoNota '''
+'' GENERACION DE VECTOR DE NOTAPIANOS REALES trackGen(i)
+Dim As Integer inuevo,nota1,nota2
+i=1
+Do
+i=i+1 
+inuevo=i
+    ''trackGen(i)=Int(3 * Rnd()) - 1     '' grado contiguo 
+'''    trackGen(i)=Int(12 * Rnd()) + 1      '' libre entre 1 a 12
+       trackGen(i)=  int (25 * RND +48)  ' 2 octavas entre 48 y 72
+     nR=trackGen(i) + SumarnR(trackGen(i)) '' de notapiano a nR
+     nota = 11 -nR +  SumarnR (nR - restar(nR) )  * 13 + 1
+''' C=12, D=10, E=8 ...ETC en una octava es lo que se carga en ().nota de roll
+''' por eso debemos pasar de notapiano a semitono nsE o nota
+    If nota =12 Or  nota=10 Or nota=8 Or nota=7 Or nota=5 Or nota=3  Or nota=1 Then
+       If nota1 > 0 Then ' comparamos una nota con la siguiente para controlar el salto o intervalo
+         nota2=trackGen(i)
+          resta= Abs (nota2-nota1)
+          If resta <=4 Then ''limita al mayor intervalo o salto
+             nota1=0:nota2=0
+          Else
+            i=inuevo -1
+            nota2=0              
+          EndIf
+
+       EndIf
+       If nota1 > 0 And nota2>0 Then
+       Else 
+        nota1=trackGen(i)
+       EndIf    
+       Print #1, trackGen(i)
+    Else
+       i=inuevo -1 ' retrocedemos por rechazo de la nota de azar fuera del algoritmo
+    EndIf
+Loop Until i=31
+
+trackGen(32)=PianoNota  ' LA DEL C O LA NOTA QUE SEA TONICA
+ posn=1
+  
+ octavaEdicion = estoyEnOctava
+
+   i3=0 
+     posn=0 
+     i3=i3+1
+     nombre="GEN2OCT.roll"
+
+   Do 
+     posn=posn+1
+     nR=trackGen(i3) + SumarnR(trackGen(i3)) '' de notapiano a nR
+     nota = 11 -nR +  SumarnR (nR - restar(nR) )  * 13 + 1
+Print #1,"nR , nota ",nR, nota
+FILEFLUSH(-1)
+     DUR=trackGenDUR(i3)
+     Roll.trk(posn, nR).dur = DUR  
+     Roll.trk(posn, nR).onoff = 2
+     Roll.trk(posn, nR).nota = nota
+     posn=posn +DurXTick (DUR)
+     Roll.trk(posn,nR).dur = 183
+     Roll.trk(posn,nR).onoff = 1
+     Roll.trk(posn,nR).nota = 0 '183
+     MaxPos=MaxPos+DurXTick (DUR)
+     i3=i3+1
+ '' Print #1,"nota generada , estoyenoctava,NB,NA,posn ",nota, estoyEnOctava, NB,NA,posn
+ ''fileFlush(-1)
+
+     Loop Until i3=31 Or posn >= 6000
+' el final 32 la tonica 
+     posn=posn+1
+     nR=trackGen(32) + SumarnR(trackGen(32)) '' de notapiano a nR
+     nota = 11 -nR +  SumarnR (nR - restar(nR) )  * 13 + 1
+Print #1,"nR , nota ",nR, nota
+FILEFLUSH(-1)
+     DUR=trackGenDUR(32)
+     Roll.trk(posn, nR).dur = DUR  
+     Roll.trk(posn, nR).onoff = 2
+     Roll.trk(posn, nR).nota = nota
+     posn=posn +DurXTick (DUR)
+     Roll.trk(posn,nR).dur = 183
+     Roll.trk(posn,nR).onoff = 1
+     Roll.trk(posn,nR).nota = 0 '183
+     MaxPos=MaxPos+DurXTick (DUR)
+
+'-----------------fin tonica
+     posn=posn +6
+     Roll.trk(posn,nR).dur = 182
+     Roll.trk(posn,nR).onoff = 0
+     Roll.trk(posn,nR).nota = 0
+     MaxPos=MaxPos+6
+     DUR=0
+     posicion=posn
+
+
+
+EndIf  ' fin version 2 CON NOTAPÌANO
+
+
+''==================================================
+
+
+If version =1 Then
+For i As Integer = 1 To 32
+    ''trackGen(i)=Int(3 * Rnd()) - 1     '' grado contiguo 
+    trackGen(i)=Int(12 * Rnd()) + 1      '' libre entre 1 a 12
+    Print #1, trackGen(i)
+Next i 
+
+    
+   ''nota=1
+   estoyEnOctava=5
+   posn=1:DUR=4
+   
+   octavaEdicion = estoyEnOctava
+ Dim As UByte nota2, DUR2  
+   i3=0 
+     posn=0 
+     ''Roll.trk(jply, i1).nota
+     i3=i3+1
+     '''nota=1 
+     nombre="GEN.roll"
+
+
+ 
+ nota=5 ' inicio tonica
+ nota2=nota
+     Do 
+     posn=posn+1
+     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR  ' negra ??
+     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).onoff = 2
+     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = nota
+     posn=posn +DurXTick (DUR)
+     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 183
+     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).onoff = 1
+     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0 '183
+     MaxPos=MaxPos+DurXTick (DUR)
+     i3=i3+1
+     nota=nota2+trackGen(i3)
+ If nota > 12 Then 
+    nota= nota Mod 12
+   '' estoyEnOctava=estoyEnOctava-1
+ EndIf
+ If nota < 1 Then 
+    nota=nota +12
+   '' estoyEnOctava=estoyEnOctava-1
+ EndIf
+ Print #1,"nota generada , estoyenoctava,NB,NA,posn ",nota, estoyEnOctava, NB,NA,posn
+ fileFlush(-1)
+     nota2=nota
+     DUR=trackGenDUR(i3)
+     Loop Until i3=32 Or posn >= 6000
+     posn=posn +6
+     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
+     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).onoff = 0
+     Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = 0
+     MaxPos=MaxPos+6
+     DUR=0
+     posicion=posn
+EndIf  ''fin version 1
+
 End Select
 
 End Sub
@@ -5547,7 +5818,7 @@ Sub grabaralteracion(ByRef pan As UByte)
 End Sub
 
 Function  GrabarRoll (RESPALDO As String )  As Integer
-
+' dat ahora es shared como ejecparam 
 On Local Error GoTo sale
 ' GRABA ARCHIVOS CON EXTENSION Y FORMATO *.ROLL
 ' el borrado de undo solo se deberia ahcer si se crea un archivo nuevo y se borra
@@ -5597,7 +5868,7 @@ Dim  As Integer npl, length
   ''''  Open "test-AAAAA.TXT" For Output    As #2
 FileFlush (ga)
      Dim Trabajo (1 To Maxpos, NB To NA) As datsec
-     Dim dat   As rolldat  ''es el z de cargar archivo
+''KOKOTE  ahora shared   Dim dat   As rolldat  ''es el z de cargar archivo
 ' en bloque graba3 vamos a colocar nro de canal 1 a 16
 '                                   port midi de salida
 '                                   port midi de entrada
