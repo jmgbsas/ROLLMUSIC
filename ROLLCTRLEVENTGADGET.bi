@@ -118,7 +118,7 @@ Static As Integer millave
                      borrar=2
                      DeleteListBoxItem(3,GetItemListBox(3))
         '            print #1,"LISTABOX EventKeyDown borrar ntk",ntk
-         '           print #1,"LISTBOX  titulosTk(ntk)= ",titulosTk(ntk)
+                    print #1,"LISTBOX  titulosTk(ntk)= ",titulosTk(ntk)
                     copiarATemp (titulosTk(ntk),pistasTk(ntk))
                     BorrarPista (titulosTk(ntk))
                     titulosTk(ntk)=""

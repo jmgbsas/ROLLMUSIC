@@ -335,8 +335,9 @@ MenuItem(10091,MenName1,  "4.6 Grabar Midi Directo sin Generar Texto, Experiment
 
 
 Menubar(MenName1)
-MenuItem(1015,MenName1, "5.0 GRABAR PISTAS SELECCIONADAS EN  (G) DE EJECUCION MIDI-IN")
-MenuItem(1016,MenName1, "5.1 CARGAR PISTAS EJECUCION MIDI-IN")
+MenuItem(1015,MenName1, "5.0 GRABAR PISTAS (ejec ) SELECCIONADAS EN  (G) DE EJECUCION MIDI-IN")
+MenuItem(1016,MenName1, "5.1 CARGAR TODAS LAS PISTAS (ejec) EN UN DIR")
+MenuItem(10165,MenName1,"5.1.5 CARGAR UNA SOLA PISTAS (ejec) ")
 MenuItem(1017,MenName1, "5.2 RENOMBRAR PISTA EJECUCION SELECCIONADA EN (S)")
 
 MenuItem(10181,MenName1,"5.3 Cargar txt plano midi generado por RollMusic")

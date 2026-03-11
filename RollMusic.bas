@@ -22,10 +22,10 @@ On Error Goto errorhandler
  ' genial puedo recorrer un array con un pointer!!!!
 '-------
 ' esto es muy viejo se debera probar de nuevo y sin ofalla borrar ->ESTA DANDO 
-' SEGMENTACION FAULT AL GRABAR 2DA PISTA CON CANCION CARGADA
-' AUNQUE YA NO PERMITO BARRER PENTAMIENTRAS GRABA O SEA CONGRABAREJEC=1 
-' SALTA EL BARRIDO DEPENTA Y MENU,,,,,PERO IGUAL REVIENTA AL REPRODUCIR 
-'EL RESULTADO Y NO GRABA ELARCHIVO ??REPETIR TEST 16-06-2022 17:00
+' SEGMENTACION FAULT AL GRABAR 2DA PISTA CON CANCION CARGADA (EJECUCIONES)
+' AUNQUE YA NO PERMITO BARRER PENTA MIENTRAS GRABA O SEA CON GRABAREJEC=1 
+' SALTA EL BARRIDO DE PENTA Y MENU,,,,,PERO IGUAL REVIENTA AL REPRODUCIR 
+'EL RESULTADO Y NO GRABA EL ARCHIVO ??REPETIR TEST 16-06-2022 17:00
 ' 1 CARGAR PISTA 1 
 ' 2 CARGAR ROLL
 ' 3 CREAR PISTA NUEVA, DEJAR SOLO SELECCION EN ESTA PISTA AJUSTAR PORSAL CANAL 
@@ -34,7 +34,11 @@ On Error Goto errorhandler
 '----------------------------------------------------
 
 ' --------------------------------------------
-nroversion="0.357 FIX GRABA PISTAS MIDI-IN MODIFICADAS , GEN AYUDA"
+nroversion="0.358 CARGAR UNA SOLA PISTA EJEC (EN UN DIR CON MUCHAS) "
+' 0.358 CARGAR UNA SOLA PISTA EJEC (EN UN DIR CON MUCHAS) .PODRIAMOS MOVER ESA EJEC
+'   A OTRO DIRECTORIO O CREER UN DIR DENTRO DE ESE DIR Y DEJAR ESA SOLA EJECUCION Y USAR
+'   EL PROCEDIMIETNO DE CARGAR EL DIRECTORIO..pero bueno vamos a cargar como roll
+'   uno solo tambien,,,
 ' FIXED GRABAR PISTAS MIDI-IN CARGADAS DE ARCHIVO Y LUEGO MODIFICADAS 5.0 DE ARCHIVO, GUARDA EN TEMP LAS ANTERIORES
 ' -0.355 FIXED AJUSTE DE VOLUMEN DE PISTAS MANUALES EJEC 
 ' -0.354 fixed al insertar un fin de archivo en CTRL-m no modificaba el maxpos
@@ -66,11 +70,11 @@ nroversion="0.357 FIX GRABA PISTAS MIDI-IN MODIFICADAS , GEN AYUDA"
 ' Si inserto la duracion 0 no debo buscar el comienzo de nota? podriamos simular en dos pasos
 ' insertar una nota cualquiera y luego modificarla con 0 vemos,,,
 ' trabajos futuros mediatos:
-' 1) reveer borrar nota insertar nota...¿borrar dejando un hueco o achicando la secuencia?
+' 1) reveer borrar nota insertar nota...ï¿½borrar dejando un hueco o achicando la secuencia?
 '   modo CURSOR: borrar con 9 y X lo hace bien ya lo corregi..agregue buscar la
 '   nota cuando este cerca para facilitar el posicionamiento.Si me
 ' muevo a otro inico de nota y le doy x borra tambien conservando el 9 creo que deberia
-' poner nota=0 para sacar el 9 ...¿? conviene o no? lo dejamos asi por ahora. 
+' poner nota=0 para sacar el 9 ...ï¿½? conviene o no? lo dejamos asi por ahora. 
 '  Borrado de columna con 9 y X? no hay creo , eso es de zonas   
 ' 2) ver si funcionan la seleccion de zonas o partes
 ' de la secuencia para copiar insertar etc,,,,para trasponer ya lo hace bien
@@ -81,7 +85,7 @@ nroversion="0.357 FIX GRABA PISTAS MIDI-IN MODIFICADAS , GEN AYUDA"
 '    con el mouse o borrandola con delete...algo se hace con zona pero seria
 '    mas elegante con mouse 
 ' ---------------------------------------------------------------------
-' esta version no será compatible con las anteriores de rollmusic sin ticks se agrego por ahora
+' esta version no serï¿½ compatible con las anteriores de rollmusic sin ticks se agrego por ahora
 ' un campo nuevo al type dat el onoff ubyte, con 2 indicara on, y con 1 el off
 ' ----------------
 ' para saber si   ROLLGRAFICO ESTA LEVANTADO O NO, USAMOS Screenbuffer !!!!!

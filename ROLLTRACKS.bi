@@ -358,9 +358,132 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
       Parar_De_Dibujar=NO ' habilitar play
       
 End Sub
+'----------------------------------
+Sub CargarUnaEjec (lugar As String, ByRef ntkp As Integer, ByRef version As integer)
+' lugar es CurDir dir actual no termina en barra.
+' ntkp se incrementa en 1 si se carga el archivo bien,
+ROLLCARGADO=FALSE
+Print #1,"LUGAR y ntkp RECIBIDOS, CurDir, ntkp o TopeEjec ";lugar ,ntkp
+
+GrabarEjec =HabilitaGrabar: ntoca=0 : arrancaPlay=NO
+''''         ntkp=1 '<================= inicia en 1 y va a devolver ntkp!!
+' ahi estaba el error empieza en 1 no en cero veremos! 
+s5=2 '11-06-2022 control de pantalla
+
+print #1,"-------------------------------------------------------"
+print #1,"inicia CargaUnaEjec ejecuta 1 sola vez no hay loop devuelve ntkp sumandole 1"
+  Dim As Integer ubi1=0,ubi2=0 
+  Dim As String filenameold
+ ' el Dir me trae los nombres sin el path de cancion, EL PATH POSTA COMPLETO ES NOMBRECANCION
+ ' no necesariamente el PATH es CurDir sin bara al final
+  Dim  fileMidiIn As String
+  fileMidiIn = OpenFileRequester("Cargar Un Ejec",lugar,"archivos ejec  (*.ejec)"+Chr(0)+"*.ejec"+Chr(0))
+ 
+  Dim  As Integer nf=0
+' OBTIENE EL MAXGRB PARA REDIMENSIONAR LOS VECTORES A CARGAR  
+  Print #1,"fileMidiIn  maxgrb ",fileMidiIn, maxgrb
+  nf =ntkp+ 1
+  ntoca=nf
+ Var  f=13
+  If Open (fileMidiIn For Binary Access Read As #f ) <> 0 Then 
+     Print #1,"No se puede leer fileMidiIn CargarPistasEjec "; fileMidiIn
+     Exit Sub
+  End If
+  Get #f, ,tocaparamCabeza(nf) ' DETERMIONA SI ES VERSION VIEJA O NUEVA
+  Dim fecha1 As String 
+ fecha1 =Format (tocaparamCabeza(nf).fecha ,"ddddd")
+ Print #1, "fecha1 ",fecha1
+ Print #1, "tocaparamCabeza(nf).fecha",tocaparamCabeza(nf).fecha
+ 'cantidad de dias desde 30 dic 1899,1900 a 2025 son 125 años
+ ' 125 * 365 = 45625
+  If IsDate(fecha1) <> 0 And  tocaparamCabeza(nf).fecha > 45000 Then
+     Print #1,"cargando archivo ejec version 2"  '' corre ok
+    ' VERSION 2 NUEVA leo lo siguiente
+     version=2     
+     Get #f, ,tocaparam(nf)  ' EN VER2 HABRA UNA CABEZA Y LUEGO TOCAPARAM Y TOCAPARAM2
+  Else
+     Close f 
+     Sleep 50
+     Open fileMidiIn For Binary Access Read As #f
+     Print #1,"cargando archivo ejec version 1"
+     version=1   
+     Get #f, ,tocaparam(nf)
+  EndIf
+' CON EJEC2 tocaparam0 tendra otros datos a definir y recien empieza
+' lso datos de antes mas nuevos en tocaparam y tocaparam2 e l 2 aca no hace falta solo quereemos maxpos
+' para obtener el maxgrb de todas las pistas   
+'---------------------------
+' solo interesa la 1er parte del ejecparam porque tine el maxpos
+  Print #1,"tocaparam(nf).maxpos ",tocaparam(nf).maxpos
+  If tocaparam(nf).maxpos > maxgrb Then
+     maxgrb = tocaparam(nf).maxpos
+  EndIf
+  Close f
+  Print #1," ORDEN DE LECTURA EJEC nf ", nf
+  Print #1,"PARA FILEMIDIIN  ",FILEMIDIIN
+  tocaparam(nf).orden=nf
+
+'------------------------------------------------------------------------------------------------
+   pmEj(nf).portout= tocaparam(nf).portout
+   pmEj(nf).portin = tocaparam(nf).portin
+   pmEj(nf).patch  = tocaparam(nf).patch
+   pmEj(nf).canalsalida =tocaparam(nf).canal
+   pmEj(nf).MaxPos      =tocaparam(nf).maxpos
+   pmEj(nf).canalentrada=tocaparam(nf).canalent
+   pmEj(nf).orden      =tocaparam(nf).orden
+   Dim k1 As Integer
+   k1=InStr(FileMidiIn,".")
+   Dim As String nomSinExt
+   nomSinExt= Mid(FileMidiIn,1,k1-1)         
+   tocaparam(nf).nombre=nomSinExt  ' SOLO EL NOMBRE DEL ARCHIVO MAXIMA LONGITUD 29, almacena
+   titulosEj(nf)=fileMidiIn ' temporario completo con extension y path
+   pistasEj(nf) =fileMidiIn
+  
+   Sleep  100
+   tocatope=nf
+   TopeEjec=nf   
+   ntoca=tocatope
+
+   Print #1,"LONG DE PISTA maxgrb  ",maxgrb
+   maxcarga=maxgrb 
+   SetGadgetText(TEXT_TOPE, Str(maxcarga))
+'termino con  todoslos archivos si llamo de nuevo con argumento
+' empieza de nuevo  
+'*********************************************************************     
+'-2)----------------CARGA LOS DATOS DE CADA PISTA
+'*******************************************************************
+ Dim np As Long=TopeEjec
+ Print #1, "trabajo con este filename...", filenameOld '[1]AAA.EJEC por ejemplo
+ Print #1,"CargarMidiIn  fileMidiIn ",fileMidiIn
+
+ CargarMidiIn (fileMidiIn,  np,version)  
+                
+ Dim cadena As String
+ cadena = tocaparam(np).nombre ' este ntkp sale del nombre del archivo el nro ej: (03) 
+' pero la carga usa np que deberia coincidir....o no si borro una pista sinrenombrar 01,03,04 ... borre la (02) 
+ AddListBoxItem(PISTASEJECUCIONES, cadena,np-1)
+ Sleep 1                         
+        '''''ntkp=CInt(np) no hace falta
+ Print #1,"tocaparam(ntkp).maxpos ",tocaparam(np).maxpos
+ pmEj(np).MaxPos=tocaparam(np).maxpos
+ Print #1,"pmEj(ntkp).MaxPos ",pmEj(np).MaxPos
+ print #1,"nombre en CargarPistasEjec ,Ntkp ",DirEjecSinBarra, np
+ print #1,"CARGO una PISTA Nueva MAXIMA CANTIDAD TOPETOCA=",tocatope
+ Print #1,"UBOUND TOCA ",UBound(Toca(np).trk)
+ EJECCARGADA=TRUE
 
 
 
+''''cargaCancion=CARGAR_NO_PUEDE_DIBUJAR '12-02-2022 mientras carg las pista el 1 indica cargando pistas    
+    print #1,"FIN CargaUnaEjec"
+    print #1,"-------------------------------------------------------"
+'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0
+'mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0 
+      Parar_De_Dibujar=NO ' habilitar play
+      
+End Sub
+
+'------------------------------------
 Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer) '', ByRef check As UByte)
 On Error GoTo saledeaca
 ' solo carga track no lo pasa a Vector de Visualizacion. ntk debe venir informado

@@ -195,6 +195,13 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
            CTRL1016 (lugar)
            DirEjecSinBarra = lugar
          Exit Select 
+'---------------------------------------
+           Case 10165 ' CARGAR UN SOLO ARCHIVO DE EJEC
+           Dim lugar As string 
+           
+           CTRL10165 (lugar)
+           DirEjecSinBarra = lugar
+  
 '-----------------------------------------------------------------------
            Case 1017 'renombrar pista ejecucion y borrado
            Print #1,"Case 1017 GRABA UNO SOLO O TODOS??? NO ES UN LOOP PORQUE HACE LOOP?"

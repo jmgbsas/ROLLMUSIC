@@ -1,6 +1,6 @@
-    Ayuda Prelimiar Básica RollMusic   version 0.357 
+    Ayuda Prelimiar Básica RollMusic   version 0.358 
     ====================================================================================
-     0.357 FIX GRABA PISTAS MIDI-IN MODIFICADAS , GEN AYUDA
+     0.358 CARGAR UNA SOLA PISTA EJEC (EN UN DIR CON MUCHAS)
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
       
@@ -279,6 +279,10 @@
             "1.0 Cargar directorio de Cancion con Pistas separados con Ventana de Control y Roll Grafico")
             "2.0 Abrir directorio de Cancion con Pistas separados con Ventana de Control  sin Roll Grafico")
 
+       6.1.1) Cargar un solo archivo de ejecucion *.ejec. Usar en el Menu de Archivo el item 5.1.5
+              se puede seguir cargando de uno en uno, para cargar todas las ejecuciones en un directorio
+              usar el item 5.1
+ 
        6.2) Cargar CANCION y Cargar Ejecuciones Sumadas (todos los archivos ejec y rtk estaran en carpetas
             diferntes puede nser solo subcarpetas distintas)
             - Cargar primero la cancion con o sin grafico (si se uso sin grafico luego debe abrilo ).

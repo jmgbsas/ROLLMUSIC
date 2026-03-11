@@ -481,14 +481,8 @@ Print #1,"1 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
        ResetAllListBox(PISTASEJECUCIONES)
 ' vamos a poner directoriso distintos como pense en el principio para ejec y rtk con su inicio.txt
 ' correspondiente como esta programado
-    '   If  CANCIONCARGADA=FALSE Then ' And lugar = "" And DirEjecSinBarra= "" Then  '23-04-2024
+
            nameCurDir = CurDir() 
-        '   Dim PB As Integer
-        '   PB=InStr(nameCurDir, ":\")
-        '   Dim drive As String
-        '   drive=Mid(nameCurDir,1,PB+1)
-' estas 2 funciones siguietes hacen lo mismo
-''lugar= BrowseForFolder( hwndC, "SELECCION DE CARPETA", BIF_RETURNONLYFSDIRS Or BIF_USENEWUI, drive )
 
 ' esta es de window9 del ruso, los flags estan bien documentados
 '' PROBAR FileListBoxItem !!!
@@ -496,18 +490,12 @@ Print #1,"1 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
          lugar=ShellFolder("SELECCION DE CARPETA", nameCurDir, BIF_RETURNONLYFSDIRS Or BIF_USENEWUI)
          DirEjecSinBarra=lugar
      EndIf
-     '    Print #1," 2 ctrl1016 lugar DirEjecSinBarra ",DirEjecSinBarra
-     '  Else
-     '    If CANCIONCARGADA=TRUE Then
-     '     lugar=NombreCancion
-     '    End If
-     '  EndIf
-       If lugar = "" And DirEjecSinBarra <> "" Then
-          lugar=DirEjecSinBarra 'volver  a cargar ejecs sin  cancion por borrado de alguna pista 
-       EndIf
-       If lugar = "" Then
-          Exit Sub
-       EndIf         
+     If lugar = "" And DirEjecSinBarra <> "" Then
+        lugar=DirEjecSinBarra 'volver  a cargar ejecs sin  cancion por borrado de alguna pista 
+     EndIf
+     If lugar = "" Then
+        Exit Sub
+     EndIf         
               'NTKP ES UNA SALIDA DE LA SUB
 Print #1,"3 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
 Dim As Integer version
@@ -531,27 +519,6 @@ Dim As Integer version
                 pmEj(j).canalentrada=tocaparam(j).canalent
 
                 abrirPortoutEjec(j)
-' en una carga abri los ports de salida pero todavia no los de entrada
-' ergo el mycalback deberia tomar el patch si lo ajusto aca
-'volver
-'          ChangeProgram ( tocaparam(j).patch , tocaparam(j).canal, tocaparam(j).portout)
-'       Print #1,"1016 tocaparam(j).patch ",tocaparam(j).patch
-'       Print #1,"1016 tocaparam(j).canal ",tocaparam(j).canal
-'       Print #1,"1016 tocaparam(j).portout ",tocaparam(j).portout
-'
-'-----------------06-06-2022-- abre portin siempre toca piano no toma el patch!!! no se como 
-'      portin= CInt(tocaparam(j).portin)
-'      If  listinAbierto( portin) = 0 Then
-'              calltoca=j 'para el portout en mycallback
-'              open_port (midiin(portin ), portin, *nombrein( portin ) )
-'              set_callback midiin(portin ), @mycallback, p
-       ' por ahrao iognoramos otros tipsod de mensaje
-'  ignoreTypes(false, false, false);
- '             rtmidi_in_ignore_types  (midiin(portin ), 1, 2, 4)
- '             teclado=1 
- '             listinAbierto( portin) = 1
- '             jgrb=0
- '      End If
 '-----------------06-06-2022 fin
              EndIf   
           Next j 
@@ -563,7 +530,48 @@ Dim As Integer version
 Print #1,"4 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
  
 End Sub
+'--------------------------------
+Sub CTRL10165 (ByRef lugar As String) 'CARGAR UNA SOLA PISTA DE EJECUCION
+Print #1,"1 ctrl1016 lugar DirEjecSinBarra ", lugar , DirEjecSinBarra
+ 
+      Dim As String nombrea,myfil
+      lugar = CurDir() 
+     If lugar = "" Then
+        Exit Sub
+     EndIf         
+       'NTKP ES UNA SALIDA DE LA SUB la global
+Print #1,"3 ctrl10165 lugar " , lugar
+   
+Dim As Integer version
+       CargarUnaEjec lugar, TopeEjec, version
+'' EJECCARGADA quedo en true en la sub CargarPistasEjec  
+       Dim j As integer
+       j=TopeEjec
+       If tocaparam(j).nombre > "" Then
+'nombre debe estar sin extension,
+' elnumero de la pista ejec esta ensu archivo (ya no creo)
+'veremos si funciona cualqueira sea el orden en el disco alcargar se ordenara por
+' ese numero Toca().orden,si funciona tal vez loaplicariamos a roll (mucho trabajo porahora queda asi) 
+ 
+           ntoca=j
+           pmEj(j).portout=tocaparam(j).portout
+           pmEj(j).MaxPos=tocaparam(j).maxpos
+           pmEj(j).portin=tocaparam(j).portin
+           pmEj(j).patch=tocaparam(j).patch
+           pmEj(j).canalsalida=tocaparam(j).canal
+           pmEj(j).canalentrada=tocaparam(j).canalent
 
+           abrirPortoutEjec(j)
+       EndIf   
+ 
+      ntoca=TopeEjec
+      tocatope=TopeEjec ' TopeEjec aca es el tope maxi, no la variable dinamica
+      GrabarEjec=0
+   
+ 
+End Sub
+
+'-------------------------------
 Sub CTRL1040 () ' <========== seleccion de instrumento por orden Alfabetico
 
                selInstORdenAlfa (instru)
