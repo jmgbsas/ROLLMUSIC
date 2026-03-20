@@ -360,7 +360,28 @@ Sub  verayuda (  arch As string)
 ' correspondiente
 
 End Sub 
- 
+'--------------------------------------FUNCIONES AUXILIARES PARA MIDI 
+
+' ----------------------------------------------------------
+' ******************************************************
+'' GRAN LABURO GRAN GRABAR A MIDI DIRECTAMENTE
+' ******************************************************* 
+Sub GrabarPistaEjecAmidi() ' PODRIA SER LA MAS FACIL YA QUE TIENE LA MELODIA Y TIEMPOS ORIGINALES ¿?
+
+End Sub
+
+Sub GrabarCancionEjecAmidi()
+
+End Sub
+
+Sub GrabarCancionRollAmidi() 'icluiria los Solos
+
+End Sub
+
+Sub GrabarTodoAmidi()
+
+End Sub
+
 
 '
 ' error

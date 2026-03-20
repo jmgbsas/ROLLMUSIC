@@ -1,6 +1,6 @@
     Ayuda Prelimiar Básica RollMusic   version 0.358 
     ====================================================================================
-     0.358 CARGAR UNA SOLA PISTA EJEC (EN UN DIR CON MUCHAS)
+     0.359 GRABA ROLL DIRECTO A MIDI TIPO 0 VERSION 1, SIN EFECTOS Y INSTRUMENTO POR OMISION
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
       
@@ -518,8 +518,9 @@
 
          A PARTIR DEL *.ROLL SE CREA UN PLANOS TXT Y DESDE EL, 
          EL *.MID CORRESPONDIENTE NOTA:
-
-
+     16.1) GRABA ROLL DIRECTO A MIDI TIPO 0 VERSION 1, SIN EFECTOS Y INSTRUMENTO POR OMISION 
+           CARGAR ROLL AJUSTAR EL TEMPO EN VENTANA DE CONTROL, Y EN MENU ARCHIVO ITEM 4.6
+           GRABAR A *.MID DIRECTO A ARCHIVO.
      17) CAMBIAR PARA TICKS,Importar midi plano txt pendiente para Ticks
      18) Mostrar o Ocultar las Notas Guia de Roll Grafico del lado izquierdo. Pulsar H tipo
          llave si o no pulsar K.   

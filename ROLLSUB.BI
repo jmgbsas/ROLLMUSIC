@@ -124,13 +124,13 @@ Sub RecalCompas(rit As integer) ' Nuevo para ticks
 ' y 2/8, 3/8, 4/8, 8/8, 9/8, 10/8, 11/8 no hay?
  On Local Error GoTo errorCalc 
 ' velocidades para 4/4 reposicion par ticks
-' lso tiempos de una comaps son 96, 192, 288, 384
+
   TipoCompas=rit
   TCompas=CRaTC(rit)
 
 
 clickpista=0
- Dim As Integer i,j,k,negra=96,corchea=48, multi,kj,kp, cntcompas,cntnegra,com, compas4cuartos= 4*negra,MAXI
+ Dim As Integer i,j,k,negra=PPQN,corchea=PPQN/2, multi,kj,kp, cntcompas,cntnegra,com, compas4cuartos= 4*negra,MAXI
  Dim As Integer compas3cuartos= 3*negra, compas2cuartos=2*negra,compas6octavos=3*corchea
  Dim As Integer ticks ,desde,hasta, incremento , den 
  If CANCIONCARGADA=TRUE And maxposTope >0 Then
@@ -140,13 +140,13 @@ clickpista=0
  EndIf
  Select Case rit
   Case 2 To 4
-    incremento=96
+    incremento=PPQN
     den=4
   Case 5 To 7
-    incremento=48
+    incremento=PPQN/2
     den=8
   Case 12
-    incremento=48
+    incremento=PPQN/2
     den=8
 
  End Select 
@@ -3450,7 +3450,7 @@ End Sub
 '
 Sub Nuevo(Roll As inst,borraNombre As Integer)
 ' 22-02-2026 CORREGIDO
-CantTicks=CantMin * 96 *tiempoPatron ' vuelvo al original default 15 min *60*96
+CantTicks=CantMin * PPQN *tiempoPatron ' vuelvo al original default 15 min *60*PPQN
 ' borro todo el undo
    mel_undo_k=0 :ig=0:cnt_acor=0
    Erase mel_undo, undo_acorde,undo_kant_intervalos
@@ -4396,7 +4396,7 @@ Sleep 100
      d7=10000000
      menuNew= TIPO_DE_COMPAS
      TCompas="4/4 "  ' para mostrar en pantalla  
-     TipoCompas=Tcompas4_4  ' 8 para guardar en disco roll o rtk
+     TipoCompas=Tcompas4_4  ' 8 para guardar en disco roll o rtk es el numerador
        pmTk(0).tipocompas = TipoCompas
      ritmo=Tcompas4_4  
      '' no hace falta se hardcodeo ritmo = CTCaR(TipoCompas)
@@ -4716,7 +4716,7 @@ indaux=0
  ' durante lascuales se movio los valores viejso a aux pero quedaron
  ' losnuevos en Roll. que no debo opisar
  '1) COPIAMOS A AUX EL RESTO DE ROLL
-  CantTicks=CantMin * 96 *tiempoPatron 'default 15 minutos * 60 * 96
+  CantTicks=CantMin * PPQN *tiempoPatron 'default 15 minutos * 60 * PPQN
   CantTicks=CantTicks+DurXTick(DUR)
   Print #1,"CantTicks=CantTicks+DurXTick(DUR) ", CantTicks  
   CambiarDim(1)  ' nuevo pipipipipi
@@ -4839,7 +4839,7 @@ off1nosemueve=0 ' se mueve
 'copia al auxiliar
   For k = 1 To indaux ' todo el auxiliar SUMA ROLL REEMPLAZADO + NOREEMPLAZADO
    ''print #1, "k auxiliar "; k
-   For s=NB To NA  ' todos los semitonos 96
+   For s=NB To NA  ' todos los semitonos 
     Roll.trk(t,s) = RollAux.trk(k,s)
    Next s
    t=t+1

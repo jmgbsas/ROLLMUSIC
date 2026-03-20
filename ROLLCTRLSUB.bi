@@ -1572,8 +1572,8 @@ Do
 
       If c144 <> c128 Then ' falta off1 seguramente
          If ultimoOff - ultimoOn < 0 Then ' falta un off1
-          ' agrega el 182 despues del ultimo on mas una redonda 96*4
-            i3=ultimoOn + 4*96
+          ' agrega el 182 despues del ultimo on mas una redonda PPQN*4
+            i3=ultimoOn + 4*PPQN
             Track(0).trk(i3,1).dur=182 ' esto funcionaria aunque no haya off1 
   '  este algoritmo sirve tambien para play!
          EndIf
@@ -2028,4 +2028,517 @@ Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"
 ' test de todo 
 
 End Sub
-'---------
+'-------------------
+Sub PutByte(f As Integer, valor As UByte)
+    Put #f, , valor
+End Sub
+' Imita write_int32
+Sub WriteInt32(f As Integer, val_ As UInteger) ' Cambiado val por val_
+    PutByte(f, (val_ Shr 24) And &HFF)
+    PutByte(f, (val_ Shr 16) And &HFF)
+    PutByte(f, (val_ Shr 8)  And &HFF)
+    PutByte(f,  val_         And &HFF)
+End Sub
+' Imita write_int16
+Sub WriteInt16(f As Integer, val_ As UShort) ' Cambiado val por val_ writeBigEndianUShort
+'' es un writeBigEndianUShort
+    PutByte(f, (val_ Shr 8) And &HFF)
+    PutByte(f,  val_       And &HFF)
+End Sub
+
+' Imita write_vlq
+Sub WriteVLQ(f As Integer, val_ As UInteger) ' Cambiado val por val_
+''**Variable Length Quantities (VLQ)**. - Crucial for MIDI Delta Times
+    Dim buffer(0 To 3) As UByte
+    Dim count As Integer = 0
+    Dim b As UByte
+    Dim i As Integer
+
+    If val_ = 0 Then
+        PutByte(f, 0)
+        Exit Sub
+    End If
+
+    ' Extraer grupos de 7 bits
+    While val_ > 0
+        b = val_ And &H7F
+        val_ = val_ Shr 7
+        buffer(count) = b
+        count += 1
+    Wend
+
+    ' Escribir en orden inverso
+    For i = count - 1 To 0 Step -1
+        If i > 0 Then
+            PutByte(f, buffer(i) Or &H80)
+        Else
+            PutByte(f, buffer(i))
+        End If
+    Next
+End Sub
+' otra referencia 
+'http://www.petesqbsite.com/sections/express/issue18/midifilespart1.html
+'--------------
+Sub GrabarPistaRollAmidi() ' 1 ) ES LA QUE MAS ME INTERESA 
+' --- PROGRAMA PRINCIPAL ---
+' A) PRUEBA DE FUNCIONAMIENTO EN EL MENU DE ROLL
+' funciona para una sola pista siempre con instrumento piano como version de prueba
+' MIDI TIPO 0 , NO TIENE EFECTOS NI INSTRUMENTO NI NADA 1ERA VERSION
+Dim f As Integer
+f = FreeFile()
+'1) grabamos la pista de Roll presente en Roll Grafico. haremos otra para cuando esta
+' en la lista de cancion.-
+'1.1) determinar el nombre del roll suele estar en variable nombre o en titulosTk(0)
+If nombre = "" Or titulosTk(0) ="" Then
+ Exit Sub
+ ' avisar del error
+EndIf
+' nombre tiene el path y extension .roll cambiamoa a .mid
+Dim As String nombremidi = UCase(nombre)
+Dim As Integer kp 
+kp = InStrRev (nombremidi,".ROLL")
+nombremidi=Mid (nombremidi , 1,kp-1) +".MID"
+Dim temp_byte As UByte 
+Print #1,"NOMBREMIDI ", nombremidi
+Open  nombremidi For Binary As #f
+
+'If f = 0 Then
+'    Print #1,"Error abriendo archivo ",nombremidi
+'    End
+'End If
+
+' --- 1. HEADER CHUNK --- 0x4d546864  4 bytes M T H D
+PutByte(f, 77) ' M 4d
+PutByte(f, 84) ' T 54
+PutByte(f, 104)' h 68
+PutByte(f, 100)' d 64
+
+WriteInt32(f, 6)       '// 4 bytes 32 bit, [00|00|00|06]Header Length siempre 6 dice que siguen tres campos de 2 bytes
+WriteInt16(f, 0)       '// 2 bytes, [00|00]Format 0 ,,, o [00|01]Formato 1 (Corregido WriteInt16 vs Int32 en la version anterior)
+WriteInt16(f, 1)       '// 2 bytes, 16 bit ,nro tracks [00|01] 1 track
+Dim PQ As UShort=CUShort(PPQN)
+WriteInt16(f, PQ)     '// 2 bytes, 16 bit,Time Division  pulsos por negra (PPQN) Pulse Per Quearter Note
+
+'--- fin chunk header
+''120 PPQN is a common value wikipedia
+' 128 me pareceria mejor que 96 ,,480 es demasiado...lo dejamos en 96 por ahora
+'bit 15 | bits 14 thru 8	           |  bits 7 thru 0  <=== los 16 bits o 2 bytes
+'0 	  | ticks per quarter-note (96) |
+'1 	  | negative SMPTE format 	     |ticks per frame
+'https://midimusic.github.io/tech/midispec.html
+'All MIDI Files should specify tempo and time signature. If they don't, the time signature 
+'is assumed to be 4/4, and the tempo 120 beats per minute.
+'https://musicareas.com/software/midi1.php
+'- Todo lenguaje de programación requiere de sus comandos (instrucciones) y de datos asociados a los mismos. Los MIDI-Bytes pueden ser de dos tipos:
+'    Byte de Estado              1xxx xxxx (Instrucción)
+'    Byte de Información     0xxx xxxx (Dato)
+' el bit mas significativo 'MSB' (el de más a la izquierda), fija la diferencia entre ambos
+'- Como quedan siete bits disponibles, se deduce que con ellos se pueden asignar hasta 128 valores diferentes: 0 a 127 (número mágico en MIDI).
+'  Desde: 000 0000 = 0  (00h), hasta: 111 111 = 127 (7Fh)
+'-> Un Byte de Estado, acompañado de su/s correspondiente/s Byte/s de Información forman un Mensaje MIDI.
+' Podemos distinguir 3 tipos de Mensajes:
+'   Mensajes de Canal -> Mensajes de Voz, Mensajes de Modo
+'   Mensajes de Sistema -> Sistema Común,Sistema de Tiempo Real
+'   Mensajes Auxiliares -> Sistema Exclusivo (SysEx),Otros
+' --- 2. TRACK CHUNK ---
+Dim track_start_pos As Long
+Dim len_pos As Long
+
+track_start_pos = Loc(f)
+PutByte(f, 77) 'M
+PutByte(f, 84) 'T 
+PutByte(f, 114) 'r
+PutByte(f, 107) 'k
+
+' primer track puede tener oo no no tas musicales
+
+'FF 58 04 nn dd cc bb Time Signature (nn numerador, dd denominador' 
+' dd en potencia de 2, 2 es 2^2=4 ->denominador 4, 4/4 es 04 02
+'FF 58 04 nn dd cc bb Time Signature  ' 255=ff, 
+' CALCULO DE nn y dd
+Dim As UByte nn, dd, cc, bb
+nn=pmTk(0).tipocompas  ' las constantes Tcompas2_4 coinciden con el numedaor y es el tipocompas o ritmo
+Select Case nn
+     Case 2, 3,4
+      dd=2  ' 2^2 = 4
+     Case 5 ,6, 7, 12
+      dd=3 ' 2^3=8
+  Case Else ''4/4 
+     nn=4
+     dd=2 
+End Select     
+' escribo el tempo  falta el cc y el bb ?? sale de Function tempoString ya lo tenia analizado
+Select Case nn
+    Case 2,3,4
+     cc=24
+     bb=8 
+    Case 5,6,7,12
+     cc=36
+     bb=8
+    Case Else
+     cc=24
+     bb=8 
+  
+End Select
+
+
+
+   MICROSEGUNDOS_POR_NEGRA = 60000000/tiempoPatron ' 60 MILL /BPM GLOBAL 1 MILLON USEG
+
+   '' SE AJUSTO A 2000 PARA ESCUCHAR LO MISMO A 60 DSRG POR NEGRA... 500 
+   '' NO ESTA CLARO EL  TEMPO EN BPM SON 60 EN TIEMPO 1000000 ,NI 500 NI 1000 NI 2000
+   '' FALTRA ENTENDER MAS 
+   indicenotas=0
+   Dim As String NombreTrack, tiempo
+ 
+
+   If TipoCompas <> pmTk(0).tipocompas And TipoCompas > 0 Then
+      tiempo = tempoString(TipoCompas)
+      pmTk(0).tipocompas=TipoCompas 
+   ElseIf TipoCompas=0 Then 
+      tiempo = tempoString (pmTk(0).tipocompas)
+      TipoCompas=pmTk(0).tipocompas
+   EndIf
+   
+   Dim numc As Integer = CInt(pmTk(0).canalsalida) + 1
+   NombreTrack= sacarpath(titulosTk(ntk))
+   Print #1,"NombreTrack ",NombreTrack 
+
+'------------------------------
+
+fileFlush(-1)
+len_pos = Loc(f) +1  ''mi modi 'posicion 1 de los 4 bytes que siguen donde dira la longitud de los datos 
+
+WriteInt32(f, 0) ' Placeholder  ACA ESCRIBE LA LONGITUD 
+
+'falta varias cosas en el encabezado
+
+' microsegundos por negra 0xFF 0x51 0x03 tt
+' LOS DELTATIME SE ESCRIBEN EN TICKS para este metodo
+WriteVLQ(f, 0)
+temp_byte = &HFF: PutByte(f, temp_byte)
+temp_byte = &H51: PutByte(f, temp_byte)
+temp_byte = &H3: PutByte(f, temp_byte)
+Dim As String s=Hex(MICROSEGUNDOS_POR_NEGRA,6)
+Print #1,"MICROSEGUNDOS_POR_NEGRA ",s
+
+temp_byte =  VAL ("&H" + Mid(s,1,2)): PutByte(f, temp_byte)
+temp_byte =  VAL ("&H" + Mid(s,3,2)): PutByte(f, temp_byte)
+temp_byte =  VAL ("&H" + Mid(s,5,2)): PutByte(f, temp_byte)
+
+ GrabaEventosMidiDirecto(f)
+
+' End of Track
+WriteVLQ(f, 0)
+temp_byte = &HFF: PutByte(f, temp_byte)
+temp_byte = &H2F: PutByte(f, temp_byte)
+temp_byte = 0:    PutByte(f, temp_byte)
+
+' --- 4. ACTUALIZAR LONGITUD (CORREGIDO) ---
+
+' 1. Capturar posición ACTUAL (el final del archivo)
+Dim end_pos As Long = Loc(f) +1
+
+' 2. Calcular longitud REAL
+' La longitud es: (Posicion Final) - (Posicion Inicio Datos)
+' Posicion Inicio Datos = len_pos + 4
+Dim data_len As UInteger = end_pos - (len_pos +4) 
+
+' 3. Retroceder al lugar donde escribir la longitud
+
+Seek #f, len_pos
+' 4. Escribir la longitud correcta
+WriteInt32(f, data_len)
+
+Close #f
+
+Print "MIDI generado : TEST_ROLL.mid"
+Print "Longitud de datos del track: "; data_len; " bytes"
+Print "Si el numero es positivo (ej. 132 o similar), el archivo esta bien."
+
+
+End Sub
+'--------
+Sub GrabaEventosMidiDirecto (f As integer)
+'' ANDUVO !!! FALTA PONER LOS DATOS ENCABEZADO ELTEMPO, LOS DELTA ENTRE NOTAS!!!
+'' PERO ANDA ,,,,
+/'
+El encabezado de un archivo MIDI, conocido como
+MThd (MIDI Track Header), contiene metadatos esenciales de 14 bytes totales (incluyendo la cabecera MThd de 4 bytes y longitud de 4 bytes) que definen la estructura del archivo. Sus campos principales son el tipo de formato, número de pistas y la resolución temporal, todos en formato Big Endian. 
+Campos principales del Header MIDI (MThd):
+
+    ID de Identificación (4 bytes): Siempre contiene la cadena ASCII MThd (
+    ).
+    Longitud del Encabezado (4 bytes): Indica el tamaño de los datos siguientes. Casi siempre es 6 bytes (
+    ) para MIDI 1.0.
+    Tipo de Formato (2 bytes):
+        0: Una sola pista (toda la música en una pista).
+        1: Múltiples pistas síncronas (más común).
+        2: Múltiples pistas independientes.
+    Número de Pistas (2 bytes): Indica la cantidad total de fragmentos de pista (MTrk) en el archivo.
+    División / Resolución (2 bytes): Define la unidad de tiempo (ticks) por negra.
+        Positivo: Indica divisiones por negra (ej. 480 ticks/negra).
+        Negativo: Indica formatos SMPTE (tiempo absoluto). 
+
+Todos los datos se almacenan en el orden MSB primero (Most Significant Byte first).
+'/ 
+'COPIAMOS PLAYALL Y ADAPTAMOS
+
+'<<< 30-03-2025 anda ok para roll desde ejec o Roll desde entrada manual >>>>
+' en manual las velocidades son una sola semi fuerte, hasta que compas pueda 
+
+Print #1,"' ----------------------------------------------------"
+Print #1,"'        GRABANDO EVENTOS MIDI DE PISTA ROLL EN EDITOR " 
+Print #1,"'-----------------------------------------------------"
+
+''  el vector es Roll
+
+Dim i As Integer
+Dim temp_byte As UByte
+
+' For i = 0 To 7
+'    ' Note On
+'    WriteVLQ(f, 0)
+'    temp_byte = &H90: PutByte(f, temp_byte)
+'    PutByte(f, notes(i))
+'    temp_byte = 64:   PutByte(f, temp_byte)
+
+    ' Note Off
+'    WriteVLQ(f, 128)
+'    temp_byte = &H80: PutByte(f, temp_byte)
+'    PutByte(f, notes(i))
+'    temp_byte = 0:    PutByte(f, temp_byte)
+'Next
+
+
+'--------------------------------
+ntk=0
+On Local Error GoTo fail
+ReDim  NroEventoPista(1 ) As Integer
+NroEventoPista(1)=3 'play cancion empieza en 4
+Dim NroEvento As integer
+     
+' EL  ENCABEZADO SE ESCRIBE EN EL LLAMADOR ACA SOLO LOS TRACKS 
+
+
+Dim As Integer i1
+Dim As UByte k1
+
+ 
+indEscala=1 ' inicializamos la guiade escalas a la 1era 
+
+Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
+''tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '60 seg/ cuantas negras enun minuto
+'Dim As Integer i1 
+Dim As Integer i2,i3,i4,i5,jmidi,jmidiold=0,RepeIni,RepeFin,finalloop=0,comienzoloop=0
+Dim As Integer comienzo=1, final=pmTk(0).MaxPos,velpos =0,cntrepe,final2=0,comienzo2=0
+Dim As UByte canal=0,vel=90 
+' canal 0 es el 1 van d 0 a 15
+
+Dim As Double start
+Dim As Integer cpar=0,nj, durj,tiempoFiguraSig
+Dim As UByte dura=0,duraold=0
+Dim As Integer liga=0,notapiano=0,old_notapiano=0, iguales=0, distintos=0
+Dim leng As UInteger <8>
+Dim result As Integer
+
+' pasarlos a eventos MIDI  estos efectos Y EL SETEO DE INSTRUMENTO GM     
+'    Paneo (pmTk(0).pan, pmTk(0).canalsalida,pmTk(0).portout)
+'    Eco   (pmTk(0).eco,  pmTk(0).canalsalida,pmTk(0).portout)
+'    Chorus(pmTk(0).coro,  pmTk(0).canalsalida,pmTk(0).portout)
+'    ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, pmTk(0).portout)
+    patchsal =pmTk(0).patch 
+    
+Print #1,"comienzo midi ====> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
+Print #1,"Eventos    ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
+jmidi=0
+''comienzo=posicion 
+comienzo=1 
+
+
+If pasoZona1 > 0 Then
+ comienzo=pasoZona1
+ comienzoloop=comienzo
+EndIf
+
+If pasoZona2 > 0 Then
+ final=pasoZona2
+ finalloop=final
+EndIf
+
+STARTMIDI=Timer
+old_time_on=STARTMIDI
+''Print #1,"old_time_on "; old_time_on
+Dim As Double  tickUsuario=60/(tiempoPatron*PPQN) '''tickUsuario=0.01041666 * 240/tiempoPatron
+Print #1,"TickUsuario "; tickUsuario
+
+Dim As float ajuste=1.0
+portsal=pmTk(0).portout  '''no vamos a cambiar en la secuencia el midiout ni canal o si??
+canal=pmTk(0).canalsalida
+ Dim As UInteger  tickevento=0,tickevento1=0,tickevento2=0, tickdif=0
+
+For jmidi=comienzo To final
+  
+  If pmTk(0).vol > 13 Then ' 10%
+     ajuste = pmTk(0).vol/127
+  EndIf
+' o sea pmTk(0).vol es el ajuste se lo pasa como una fraccion del maximo rango 127
+If pmTk(0).ejec =1 Or Roll.trk(1,NA).onoff = 1 Then
+' Print #1,"   UN ARCHIVO CON DATOS DE EJECUCION POR TECLADO CONVERTIDOS A ROLL"
+Else
+'Print #1,"ARCHIVO DATOS EDICION MANUAL "
+ 
+  If Compas(jmidi).nro = -1 Then
+    velpos=vfuerte * ajuste
+  EndIf
+  If Compas(jmidi).nro = -2 Then
+    velpos=vdebil  * ajuste
+  EndIf
+  If Compas(jmidi).nro = -3 Then
+    velpos=vsemifuerte * ajuste
+  EndIf
+  If Compas(jmidi).nro = -4 Then
+    velpos=vdebil * ajuste
+  EndIf
+  If Compas(jmidi).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
+    velpos=vdebil * ajuste
+  EndIf
+
+  If Compas(jmidi).nro = 0 Then 
+    velpos=vsemifuerte  ' para midipolano dividiones por partes veremso si se soluciona el sonido
+' en la rutina vol , depende de la dur ajusta vol=0 o vol = velpos... no hay problema con los silencios
+  EndIf
+EndIf
+' ============= For NB To NA ===============
+  For i1=NB To NA 
+  If i1<= NA-13 Then
+    If (Roll.trk(jmidi, i1).nota >= 1) And Roll.trk(jmidi, i1).nota <= 12  And Roll.trk(jmidi, i1).dur >=1 And Roll.trk(jmidi, i1).dur <= 180 Or Roll.trk(jmidi, i1).dur <= 183 Or Roll.trk(jmidi, i1).dur <= 185 Then 
+      Notapiano= i1
+      Notapiano= Notapiano - restar (Notapiano)
+      dura=Roll.trk(jmidi, i1).dur 
+
+      If pmTk(0).ejec=1  Then 
+        vel=Roll.trk(jmidi, i1).vol  * ajuste
+      EndIf
+' la duracion me da si suena o no
+      Select CASE Roll.trk(jmidi, i1).dur
+          Case 46 To  90  'silencios
+              vel=0  
+          Case 138 To 180  'silencios
+              vel=0
+          Case Else
+              vel=Roll.trk(jmidi, i1).vol
+              If vel=0 Then
+                vel=CByte(velpos)
+              EndIf   
+      End select 
+      
+       If Roll.trk(jmidi, i1).onoff =2 Then 
+            NroEventoPista(1)= NroEventoPista(1) +1
+            NroEvento=NroEventoPista(1)
+          If jmidiold > 0 Then
+             tickdif=jmidi-jmidiold
+          EndIf
+          jmidiold=jmidi 
+          WriteVLQ(f, tickdif)
+          temp_byte = 144: PutByte(f, temp_byte) '144
+          PutByte(f, CByte(Notapiano) )
+          temp_byte = vel:   PutByte(f, temp_byte)
+       EndIf
+       If Roll.trk(jmidi, i1).onoff= 1 Then
+            NroEventoPista(1)= NroEventoPista(1) +1
+            NroEvento=NroEventoPista(1)
+          If jmidiold > 0 Then
+             tickdif=jmidi-jmidiold
+          EndIf
+          jmidiold=jmidi 
+
+         WriteVLQ(f, tickdif)
+         temp_byte = 128: PutByte(f, temp_byte)
+         PutByte(f, CByte(Notapiano))
+         temp_byte = 0:    PutByte(f, temp_byte) '' aca pone velocidad 0!!
+        
+       EndIf    
+
+
+   EndIf   
+
+EndIf  
+
+If i1 > NA-13 Then
+ If Roll.trk(jmidi,i1).nota = 210 Then
+    Print #1,"210 leido jmidi",jmidi
+    playloop2=SI
+    comienzo2=jmidi
+ EndIf
+
+ If Roll.trk(jmidi,i1).nota = 211 Then
+    Print #1,"211 leido jmidi",jmidi 
+    final2=jmidi
+
+    If cntrepe > 0 Then
+      cntrepe -= 1
+    Else
+      cntrepe=Roll.trk(jmidi,i1).vol ' nro repeticiones en vertical +1
+    EndIf
+    If cntrepe =0 Then
+       'comienzo=final+1
+       final2=MaxPos
+       If finalloop> 0 Then
+           final2=finalloop
+       EndIf
+    EndIf 
+ EndIf
+EndIf
+
+ 
+  Next i1
+
+ If playloop=SI And jmidi= finalloop Then
+    jmidi=comienzoloop -1
+ EndIf
+ If playloop2=SI And jmidi= final2 Then
+    jmidi=comienzo2 -1
+    If final2=finalloop Then 
+       If playloop=SI Then
+         jmidi=comienzoloop -1
+       Else
+         final=MaxPos
+         final2=Maxpos 
+         jmidi=final2 
+       EndIf
+    EndIf
+ EndIf
+
+ tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
+ Sleep 1,1 ' para que corranmas de un thread
+Next jmidi
+ ''WriteVLQ(f, 2*DurXTick(dura)) 
+posicion=comienzo
+'======================
+' IF hay loop de repeticion se detecta en la posicion final Then
+' posicion = comienzorepe , con esto vuelvo a repetir un pedazo
+' o sea el final es el que me indica desde donde debo repetir solo ahce falta 
+' insertar el final en Roll con 2 parametros dede donde repetir cuantas veces y este es el final
+' =========================l listo algoritmo mañana implemenamos
+'  
+jmidi=0:curpos=0
+
+
+Exit Sub
+
+fail:
+ Dim errmsg As String
+
+If  Err > 0 Then
+  errmsg = "FAIL ESCRIBE A MIDI Error " & Err & _
+           " in function " & *Erfn & _
+           " on line " & Erl & " " & ProgError(Err)
+  Print #1, errmsg ,"jmidi ", jmidi, "i1 ";i1
+EndIf
+FileFlush (-1)
+
+' ================================FIN MIDI EVENTOSL <<=================
+End Sub
+
+

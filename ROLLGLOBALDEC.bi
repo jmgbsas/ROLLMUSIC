@@ -33,29 +33,46 @@ Declare Sub selTipoEscala (ByRef tipoescala As integer)
 Declare Sub selNotaEscala (ByRef notaescala As integer)
 ' RUTINAS VENTANAS DE CONTROL =>
 Declare Sub CTRL100610061 (hMessages As hmenu , DESDE As String)
-Declare Sub CTRL1061 (ByRef SALIDA As INTEGER) 
-Declare Sub CTRL1062 (hmessages As hmenu)
-Declare Sub CTRL1063
-Declare Sub CTRL10063()
+Declare Sub CTRL10062 (hmessages As hmenu)
+Declare Sub CTRL10063 ()
 Declare Sub CTRL1007()
+Declare Sub CTRL10075()
+Declare Sub GrabarPistaRollAmidi() ' CTRL10091
 Declare Sub CTRL1010(ByRef salida As INTEGER)
 Declare Sub CTRL1012(ByRef SALIDA As INTEGER)
 Declare Sub CTRL1015 ()
 Declare Sub CTRL1016 (ByRef lugar As string)
+Declare Sub CTRL10165 (ByRef lugar As String)
 Declare Sub CTRL1040 ()
 Declare Sub CTRL1050 ()
 Declare Sub CTRL1060 (ByRef SALIDA As INTEGER)
+Declare Sub CTRL1061 (ByRef SALIDA As INTEGER) 
+Declare Sub CTRL1062 (hmessages As hmenu)
+Declare Sub CTRL1063
 Declare Sub CTRL1068(hmessages As hmenu)
+Declare Sub CTRL1070(hmessages As hmenu)
 Declare Sub CTRL1071(hmessages As hmenu)
 Declare Sub CTRL1090 ()
 Declare Sub CTRL1092()
+Declare Sub CTRL1094(PPP As ZString PTR)
 Declare Sub CTRL1111()
 Declare Sub CTRL1112()
-Declare Sub CTRL1200(hmessages As hmenu) 
+Declare Sub CTRL1200(hmessages As hmenu)
 Declare Sub CTRL1204(hmessages As hmenu)
+Declare Sub CTRL1205()
 Declare Sub CTRL1206()
+Declare Sub CTRL1207(pis As Integer)
+Declare Sub CTRL1208()
+Declare Sub CTRL2500()
+Declare Sub CTRL2502 (hmessages As hmenu)
+Declare Sub CTRL2504()
+Declare Sub CTRL2505()
+Declare Sub CTRL2506()
 Declare Sub CTRL_EVENTGADGET ()
-
+''-------------- para midi
+Declare Sub WriteInt32(f As Integer, val_ As UInteger)
+Declare Sub WriteInt16(f As Integer, val_ As UShort)
+'-----------------
 Const LEFTBUTTON   = 1
 Const MIDDLEBUTTON = 4   ' UNUSED IN THIS DEMO
 Const RIGHTBUTTON  = 2   ' UNUSED IN THIS DEMO
@@ -552,7 +569,8 @@ Dim Shared  IndiceInstAlfa(1 to 127) as integer   => _
                 116, _
                 14  }
 
-
+Common Shared As  Integer PPQN
+PPQN=96 
 Common Shared As float nanchofig
 COMMON Shared As Long eventc, eventM , eventK
 Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec
@@ -571,7 +589,7 @@ Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDI
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi
 parametros=0
 abrirRollCargaMidi=0
-Common Shared As String comando
+Common Shared As String comando,titulosTk()
 Common Shared As ubyte patchsal, ritmo
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay,deltaz,guardaposnOffOld
 COMMON Shared As Integer MaxPos,MaxPosOrig,ntk,CPlay, guardopos,ntoca,ntkp,npi,npo,canalDeGrabacion,ntkcarga,ntkTAB
@@ -603,7 +621,7 @@ valorpan=64  'mf
 valoreco=0  
 valorcoro=0
 valorvol=90
-  
+redim  titulosTk(0 To 32)  
 
 trasponer=0
 common Shared As UByte Globalpan, Globaleco,Globalcoro, CerrarGraficodesdeCtrl,Globalvol
@@ -621,3 +639,47 @@ Common Shared As Long PARAR_PLAY_MANUAL ,PARAR_PLAY_EJEC
 PARAR_PLAY_MANUAL = NO:PARAR_PLAY_EJEC = NO
 Common Shared TipoCompas As UByte
 Dim Shared As Integer PISTASEJECSELECCIONADA=0,PISTASROLLSELECCIONADA=0
+Type rangoOct Field=1
+ As Integer desde = 0
+ As Integer hasta =0
+ As Integer NB =0
+ As Integer NA =0
+ As Integer MaxPos =0
+ As Integer posn =2 
+ As UByte   notaold=0 
+ As Integer Ticks =0
+ As UByte   patch
+ As UByte   notaescala
+ As UByte   tipoescala
+ As UByte   alteracion  ' sos 3, bem 2
+ As Double  fechasPistas
+ As UByte   canalsalida
+ As UByte   canalentrada
+ As UByte   portout      ' dispositivo midi de salida 
+ As Integer   zona1
+ As integer   zona2
+ As UByte   nroRep
+ As UByte   portin 
+ As UByte  tipoCompas
+ As UByte   ejec
+ As UByte    vol
+ As Integer  tiempopatron ' 240 60 etc
+ As UByte   pan
+ As UByte   Eco
+ As UByte   Coro
+ As Integer ajuste
+ As UByte   sonido '1 -si suena en el play, y lo reproduce cancion, ó 0 - si lo saltea.
+ As UByte   vibrato
+ As UByte   canalx
+ As UByte   pitchbend
+ As UByte   orden
+ As UByte   solo    ' 1 -si lo marcamos como solo para reproduccion independiente
+End Type
+
+Dim Shared  As rangoOct pmTk (), pmEj ()
+ReDim  pmTk (0 To 32)
+ReDim  pmEj (1 To 32)
+Common Shared portsal As UByte
+Declare Sub GrabaEventosMidiDirecto(f As integer)
+
+ 

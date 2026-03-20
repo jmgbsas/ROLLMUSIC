@@ -156,7 +156,18 @@ Print #1, "-----------------------------------"
 Next j
 
 End Sub
-'
+' 
+'MENSAJES DE VOZ
+' Mensaje                                 Byte de Estado   Bytes de Datos
+'                                                          VAL 1        VAL 2 
+'Nota Desactivada       Note Off           8nh              #Nota       Velo Off
+'Nota Activada          Note On            9nh              #Nota       Velo On
+'Presión Polifónica     Poly Pressure      Anh              #Nota       Valor
+'Cambio por Controlador Control Change     Bnh              #Control    Valor
+'Cambio de Programa     Program Change     Cnh              #Prg.       ---
+'Postpulsación de Canal Channel Aftertouch Dnh              Valor       ---
+'Inflexión de Tono      Pitch Bender       Enh              MSB         LSB
+' n = Canal MIDI (en hex.: 0 - F)
 Sub omnion( note As UByte, canal As UByte, portsal As UByte) 
 ' canal 1
 ' 123 da note off para todas las notas solo hy qu eenvirlo a 
@@ -215,18 +226,20 @@ Sub noteoff(  note As UByte, canal As UByte,portsal As UByte,i1 As Integer,NroEv
 'todoslos canales
 ' voy a tener que enviar el nro de canal que se usa en cada pista al tocarla...
 ' PARAMETRO i1 lo deberia sacar 11-10-2024 jmgjmg
+' 8nh
 	Dim modo As UByte
 	Dim leng As UInteger <8>
 	Dim result As Integer
-  If canal = 0 Then  ' 0xB0 = 11x16 = 176
-		 modo = 128 ' 0xB0 + 0 = 176 +0 = 176 
+  If canal = 0 Then  'canal 0 es canal 1
+		 modo = 128 '  80 en hexa  8nh
 	Else
 	  modo = 128 + canal
   EndIf   	
  message(1) = modo 
  message(2) = note ' 123 all note off, 124 omni mode off, 125, omni mode on, 126 mono mode on, 127 poly mode on
  message(3) = 0  
-
+'note off es 8nh , n canal midi(0-f) o sea 80 en hexa es modo 128 canal 1
+' canal 3 82 , 130  es igual a 128 +2  129 + canal !!!
 
 /'	
   If canal = 0 Then  ' 0xB0 = 11x16 = 176
@@ -330,6 +343,7 @@ Sub ChangeProgram ( instru As UByte,  canal As UByte,portsal As UByte)
 	  modo = 192 + canal 
 	EndIf
 	' funciona!!!! se manda al inicio PERO SOLO me funcioan con todas las octavas ver por que
+''' p= @message(1) EN RTMIDIDEC.BI  UBYTE PTR
  message(1) = modo  'SEGUN EL CANAL EL MODO INDICA CHANGUE PATCH
  message(2) = instru ' EL PATCH ENVIADO COMO VALUE O DATA BYTE
 ' EL MESSAGE 3 NO SE USA EL PORTOUT NO DEPENDE DE ELLO  
@@ -368,7 +382,7 @@ End Sub
 Sub noteon	( note As UByte, vel As UByte, canal As UByte, portsal As UByte,i1 As Integer, NroEvento As Integer )
 	' canal 1 
 ' NOTE ON, 1001 XXXX, 9 X H, Nº de tecla o nota, Velocidad
-' 90 = 9*16=144 	
+' 90 = 9*16=144 	binario 1001 0000
 	Dim modo As UByte
 	Dim leng As UInteger <8>
 	Dim result As Integer ' canal 0 to 15 canal 0 es el 1
@@ -692,6 +706,7 @@ Function tempoString (t As UByte) As String  ' para imprimir en archivo midi txt
   End Select
 
 End Function 
+
 '-------------playAll-----08-02-2025-------
 Sub playAll(Roll As inst) ' play version 3 CON TICKS
 '<<< 30-03-2025 anda ok para roll desde ejec o Roll desde entrada manual >>>>
@@ -711,6 +726,7 @@ ReDim  NroEventoPista(1 )
 NroEventoPista(1)=3 'play cancion empieza en 4
 Dim NroEvento As integer
 If MIDIFILEONOFF = HABILITAR  Then 
+'60 mill/60 = 1 millon us = 1 seg
    MICROSEGUNDOS_POR_NEGRA = 60000000/tiempoPatron ' 60 MILL /BPM
    '' SE AJUSTO A 2000 PARA ESCUCHAR LO MISMO A 60 DSRG POR NEGRA... 500 
    '' NO ESTA CLARO EL  TEMPO EN BPM SON 60 EN TIEMPO 1000000 ,NI 500 NI 1000 NI 2000
@@ -848,7 +864,7 @@ EndIf
 STARTMIDI=Timer
 old_time_on=STARTMIDI
 ''Print #1,"old_time_on "; old_time_on
-Dim As Double  tickUsuario=60/(tiempoPatron*96) '''tickUsuario=0.01041666 * 240/tiempoPatron
+Dim As Double  tickUsuario=60/(tiempoPatron*PPQN) '''tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
@@ -1285,7 +1301,7 @@ res= ind Mod 13
 
 End Function 
 
-Sub duracion (old_time As Double, tiempoFigura As Double)
+Sub duracion (old_time As Double, tiempoFigura As Double) '' ensegundos
 ' retardo puro sin on ni off dejo de andar porque ???
 'print #1,"En Duracion COMIENZA RETARDO En  time :"; old_time
 'print #1, "tiempoFigura " , tiempoFigura ' o timestamp
@@ -2318,8 +2334,8 @@ Dim  As Integer durv, limite
 ' es ilogico con limite funciona quiere  decir que barre dos veces la misma nota ON
 ' no entiendo si barre hasta MaxPos mueve mas off1 por fuera de la zona y mucho mas halla!!!  
 ' asi funciona no le busques la logica jajjaaja
- If MaxPos > UBION +96 Then 
-   UBIOFF=UBION +96
+ If MaxPos > UBION +PPQN Then 
+   UBIOFF=UBION +PPQN
  Else
    UBIOFF=MaxPos-6 
  EndIf
@@ -2413,10 +2429,10 @@ FinSecOrig=0
              Exit For,For 
           EndIf 
           If Roll.trk(jpt,i1).onoff = 2 Then
-             FinSecOrig=jpt +96 ' decia 6
-             Roll.trk(jpt+96,i1).dur  = 183 ' agregamos el off1 inexistente
-             Roll.trk(jpt+96,i1).onoff  = 1 'nue
-             FinSecOrig=jpt+96  ' nue
+             FinSecOrig=jpt +PPQN ' decia 6
+             Roll.trk(jpt+PPQN,i1).dur  = 183 ' agregamos el off1 inexistente
+             Roll.trk(jpt+PPQN,i1).onoff  = 1 'nue
+             FinSecOrig=jpt+PPQN  ' nue
              MaxposOrig=FinSecOrig+6 'nue
              MaxPos=MaxposOrig 'nue
              pmTk(0).MaxPos=MaxPos  'nue  
@@ -3524,7 +3540,7 @@ Print #1,"topeDuranteGrabacion ", topeDuranteGrabacion, " PISTAS"
 'Next pis
 '''TickPlay=TickChico*tiempoPatronEjec/240
 '' hafcemos tickplay igual a tickusuario de playcancion la misma formula a ver que pasa
-Dim As Double  tickPlay=(60/(tiempoPatron*96))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
+Dim As Double  tickPlay=(60/(tiempoPatron*PPQN))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickPlay "; tickPlay

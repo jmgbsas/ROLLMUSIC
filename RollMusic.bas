@@ -34,7 +34,7 @@ On Error Goto errorhandler
 '----------------------------------------------------
 
 ' --------------------------------------------
-nroversion="0.358 CARGAR UNA SOLA PISTA EJEC (EN UN DIR CON MUCHAS) "
+nroversion="0.359 GRABA ROLL DIRECTO A MIDI TIPO 0 VERSION 1, SIN EFECTOS Y INSTRUMENTO POR OMISION "
 ' 0.358 CARGAR UNA SOLA PISTA EJEC (EN UN DIR CON MUCHAS) .PODRIAMOS MOVER ESA EJEC
 '   A OTRO DIRECTORIO O CREER UN DIR DENTRO DE ESE DIR Y DEJAR ESA SOLA EJECUCION Y USAR
 '   EL PROCEDIMIETNO DE CARGAR EL DIRECTORIO..pero bueno vamos a cargar como roll
@@ -437,7 +437,7 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
               ntoca=k 'ntoca es la  pista ejec que se esta grabando global entera
               If tocaparam(ntoca).nombre ="" Then
                  CheckBox_SetCheck( cbxejec(k),1) 'automaticamente chequea ejec 26-12-2025
-                 CantTicks=CantMin*96*tiempoPatron
+                 CantTicks=CantMin*PPQN*tiempoPatron
                      ReDim (Toca(ntoca).trk ) (1 To CantTicks)  
                                   tocaparam(ntoca).delta=0
                                   tocaparam(ntoca).nombre =""

@@ -122,9 +122,9 @@ Print #1,"usarmarcoins ", usarmarcoins
                 SetStateMenu(hmessages,10081,0)
                 SetStateMenu(hmessages,1009,1)
 
-           Case 10092 '<========= Grabar midi directo Sin pasar por TExto ni reproduccion
-' 20-02-2026 preparacion,,,
- 
+           Case 10091 '<========= Grabar midi directo Sin pasar por TExto ni reproduccion
+' 11-03-2026 preparacion,,,TEST DE ARMADO DEL MENU PARA UNA GRABACION CUALQUIERA
+             GrabarPistaRollAmidi()
            Case 1010 '<================ Cargar Pista externa a cancion
 
    '        Print #1,"entro a 1010 Cargar Pista externa a cancion"

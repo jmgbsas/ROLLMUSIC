@@ -601,7 +601,7 @@ Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
    '     pmTk(ntk).Ticks = pmTk(ntk).MaxPos+1000
    '  EndIf   
      Dim As Integer ubisolo=InStr(LCase(nombre),".solo")
-     CantTicks=CantMin * 96 *tiempoPatron '''pmTk(ntk).Ticks
+     CantTicks=CantMin * PPQN *tiempoPatron '''pmTk(ntk).Ticks
 ' NO TOMAMOS LOS SOLO PARA EL CALCULO DE LA MAXPOS
      If CantTicks < pmTk(ntk).MaxPos And ubisolo=0 Then
         CantTicks = pmTk(ntk).MaxPos
@@ -2618,7 +2618,7 @@ If comienzo = 0 Then  '01-03-2024 play sin roll
   comienzo= 1 
 End If
 
-Dim As Double  tickUsuario=(60/(tiempoPatron*96))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
+Dim As Double  tickUsuario=(60/(tiempoPatron*PPQN))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
@@ -3229,12 +3229,12 @@ End If
 Dim As Double Sold_time_on
 Sold_time_on=STARTMIDI
 Print #1,"Sold_time_on "; Sold_time_on
-Dim As Double  tickUsuario=(60/(tiempoPatron*96))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
+Dim As Double  tickUsuario=(60/(tiempoPatron*PPQN))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
 
-tickUsuario=60/(tiempoPatron*96)
+tickUsuario=60/(tiempoPatron*PPQN)
 
   '115 a 0
   ' recorre una posicion vertical

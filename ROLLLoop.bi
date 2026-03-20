@@ -4669,7 +4669,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
         For im=1 To 4  
             noteon(60,60,1,0,1,1)
             noteoff(60,1,0,1,1)
-            duracion(Timer, (60/(tiempoPatron*96)) / FactortiempoPatron)
+            duracion(Timer, (60/(tiempoPatron*PPQN)) / FactortiempoPatron)
         Next im
         threadmetronomo = ThreadCall metronomo()
          contcode =0 ' para detectar 1er nota de midiin porque no envia 144 la 1era vez solo 128!!

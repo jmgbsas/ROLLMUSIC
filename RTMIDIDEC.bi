@@ -21,7 +21,7 @@ Declare Function sumar( ByVal ind As integer) As Integer
 'Declare Sub trasponerGrupo(cant As integer)
 'Declare Sub moverZonaRoll(cant As Integer)
 'Declare Sub correcciondeNotas()
-Declare Sub CTRL1205 ()
+
 Declare Sub abrirPortoutEjec(j As Integer)
 
 common Shared message() As UByte 'cambiado a shred message output ' puede ser de hasta 1024 bytes
@@ -59,7 +59,7 @@ Dim Shared As double FactortiempoPatron=1
 ' pero porlalineamas chica 37 a 45 seria mi Tick mas chico [TickChco]
 Static Shared As Double TickPlay =0.005 '0.01041666 ''seg 5 miliseg.. para I=240
 Static Shared As Double TickChico=0.005 '0.01041666 ''seg 5 miliseg.. para I=240
-TickPlay=(60/(tiempoPatron*96))/FactortiempoPatron 
+TickPlay=(60/(tiempoPatron*PPQN))/FactortiempoPatron 
 TickChico=TickPlay
 Static shared As Double x3H = 0.0 , resta=0.0
 ' ambos Ticks deberin ser el  valor mas chico de la tabla y es tresillo de W 0.01041666
@@ -77,12 +77,12 @@ Static shared As Double x3H = 0.0 , resta=0.0
 'Redonda, Blanca, Negra, Corchea, Semicorchea, Fusa, Semifusa.
 ' O SEA EL VALOR MAS CHICO USADO ES EL TRESILLO  DE X SEMIFUSA(0.06250) O SEA 0.041666
 ' Y CUANTOS DE ESOS EN UN A NEGRA? RESPECTO DE LA NEGRA UNA X ES 1/16, DOS DE ELLAS DIVIDIDO 3
-' ES EL TRESILLO DE X O SEA 2/(16*3)= 1/48 DE LA NEGRA = 0.041666. ESTO PARA MRGRA=1 SEG
+' ES EL TRESILLO DE X O SEA 2/(16*3)= 1/48 DE LA NEGRA = 0.041666. ESTO PARA NEGRA=1 SEG
 ' O SEA TEMPO = 60. PARA UN TEMPO DE 240 TODO SERA 4 VECES MAS CHICO 0.041666/4= 0.01041666
 ' POR ESO TOMAMOS DOS VALORES MAS DE TEMPO MAS CHICOS PARA PODER TOCAR UNA SEMIFUSA A 240 DE TEMPO!!
 ' en ctrl-m frbo hascer una regla que parta de la nota en que estoy y tenga separaciones de 6
 '--------------------------------------------------------------------------
-' 96  x tresillo desemigarrapaea (0.01041666)= 1     negra
+' 96  x tresillo desemigarrapaea (0.01041666)= 1 seg  negra
 ' 48  x tresillo desemigarrapaea (0.01041666)= 0.5   corchea
 ' 24  x tresillo desemigarrapaea (0.01041666)= 0.25  semicorchea
 ' 12  x tresillo desemigarrapaea (0.01041666)= 0.125  fusa
@@ -91,7 +91,7 @@ Static shared As Double x3H = 0.0 , resta=0.0
 '  3  x tresillo desemigarrapaea (0.01041666)= 0.03125  garrapatea
 ' 1.5 x tresillo desemigarrapaea (0.01041666)= 0.015625 semi garrapatea
 ' OBSERVACION SENCILLA EL INDICE DEL VCTOR ME DICE SI ES UN SILENCIO O NO!!    
-Dim Shared As float relDur (0 To 185) => {0, _  
+Dim Shared As float relDur (0 To 185) => {0, _    ' representan duraciones en segundos  
 4 ,2 , 1.0, 0.50,0.250,0.1250 ,0.06250,0.031250,0.0156250, _ ' 1 9 
 5 ,2.5,1.25,0.625,0.3125,0.15625,0.078125,0.0390625,0.01953125,_ ' 10 18
 6 ,3 , 1.5, 0.75,0.375,0.1875 ,0.09375,0.046875,0.0234375, _ ' 19 27
@@ -170,6 +170,23 @@ Dim Shared As Double durcla (1 To 45, 1 To 2) => { _
 ' si empieza con una ligada(i+) el off estara en la dur no ligada (L)
  'redondeando...3w vale 1 -- 96 * 0,01041666 seg = 1 seg
 ' y 3w son 0,01041666 seg si negra = 1 seg en  tempo 60
+' en tempo 60 una negra tiene 96 ticks, corchea 48, semi corchea 24, fusa 12, semifusa 6
+' tal vez para mejor resolucion deberia tomar 192 ticks por negra o 128 es un buen numero
+' con 96 ,, negra 96 , corchea 48. semicorecha 24, fusa 12, semifusa 6 , garrapatea 3
+' con 128 ,,negra 128, corchea 64, semi corchea 32, fusa 16, semifusa 8, garrapatea 4.
+' con 160 ,,negra 160, corchea 80, semi corchea 40, fusa 20, semifusa 10, garrapatea 5.
+' con 192,, negra 192, corchea 96, semi corchea 48, fusa 24, semifusa 12, garrapatea 6
+' con 480 ,,negra 240, corchea 120, semi corchea 60, fusa 30, semifusa 15, garrapatea 7.5 <- no va
+' con 448 ,,negra 224, corchea 112, semi corchea 56, fusa 28, semifusa 14, garrapatea 7.
+' con 256 ,,negra 256, corchea 128, semi corchea 64, fusa 32, semifusa 16, garrapatea 8.
+' 1 seg es 1 mill useg..=> la cantidad de useg en cada tick para negra seria
+' con 96 es 1 mill/96 -> 10416 useg por tick y la semifusa es 10416/16 = 651 useg, bastante 
+' a medida que aumentamos los ticks para la negra baja los useg para cada tick
+' con 128 es 1 mill/128 = 7812 useg por tick y la semifusa es 7812/16= 488 useg
+' la duracion de los ticks va bajando a medida que aumento el nro de ticks por negra y
+' necesitaria muchas mas espacios en el eje X de Roll.. lo dejo como esta 96..
+''' CAMBIAR DE 96 A 120 ? VAN A CRECER MUCHO LOS TAMAÑOS DE LOS ARCHIVOS SI CAMBIO A 120 O 480
+'' DEBERIA USAR OTRO METODO DE ALMACENAMIENTO EN VECTOR Y EN DICO MUCHO LIO 
 Dim Shared As integer DurXTick (0 To 185) => {0, _  ' 0 cambiado a 1 9-05-2025
  384, 192, 96 , 48, 24, 12, 6,  3,  2, _      ' 1  9
  480, 240, 120, 60, 30, 15, 7,  4,  2, _     ' 10 18

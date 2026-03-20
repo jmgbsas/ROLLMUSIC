@@ -331,8 +331,8 @@ MenuItem(1008,MenName18, "Cargar Pista en Roll independiente" )
 MenuItem(10081,MenName18,"Usar Cancion cargada en 2.0 " )
 
 MenuItem(1009,MenName1,  "4.5.1 Exportar a MIDI Pista/cancion de 4.5 ")
-MenuItem(10091,MenName1,  "4.6 Grabar Midi Directo sin Generar Texto, Experimental ")
-
+Menubar(MenName1)
+MenuItem(10091,MenName1,  "4.6 GRABA ROLL DIRECTO A MIDI TIPO 0 VERSION 1, SIN EFECTOS Y INSTRUMENTO POR OMISION  ")
 
 Menubar(MenName1)
 MenuItem(1015,MenName1, "5.0 GRABAR PISTAS (ejec ) SELECCIONADAS EN  (G) DE EJECUCION MIDI-IN")

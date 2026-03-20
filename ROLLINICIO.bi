@@ -347,7 +347,7 @@ If desde = 0 And hasta = 0  And instancia=ARG0_EN_LINEA Then
  'pmTk(ntk).hasta=hasta
 EndIf
 ' calculo teorico a tiempopatron 60, 1 SEG 192 DIVISIONES 
- CantTicks=cantMin * 96 *tiempoPatron'  (15 MIN * 60 * 96) = 299520
+ CantTicks=cantMin * PPQN *tiempoPatron'  (15 MIN * 60 * PPQN) = 299520
 ' 60 seg * 96 divisiones= 5760 divisiones en 1 min
 ' Y 3W LA MENOR FIGURA 3W DE LA 5ta LINEA de tresillos
 ' iniciamos vector de 15 minutos=660 segundos

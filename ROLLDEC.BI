@@ -606,6 +606,7 @@ haycompas=0
 dobleclick=>FALSE
 
 '' paso a Globaldec Dim Shared TipoCompas As UByte
+' coincide numerador de la fraccion de tempo 
 Const As UByte Tcompas2_4 = 2
 Const As UByte Tcompas3_4 = 3
 Const As UByte Tcompas4_4 = 4
@@ -694,7 +695,7 @@ TCompas ="4/4"
 'Dim Shared As Integer posnTrack(0 To 32) ' cada track tendra su posn
 Dim Shared As Integer fueradefoco=0 ,onoff=0
 
-Type rangoOct Field=1
+/'Type rangoOct Field=1
  As Integer desde = 0
  As Integer hasta =0
  As Integer NB =0
@@ -730,10 +731,11 @@ Type rangoOct Field=1
  As UByte   orden
  As UByte   solo    ' 1 -si lo marcamos como solo para reproduccion independiente
 End Type
+'/
 ' faltaria agregar grabar el nombre del dispositivo ........
-Dim Shared As rangoOct pmTk (0 To 32)
-Dim Shared As rangoOct pmEj (1 To 32)
-Dim Shared As String titulosTk(0 To 32)
+'Dim Shared As rangoOct pmTk (0 To 32)
+'Dim Shared As rangoOct pmEj (1 To 32)
+'''''Dim Shared As String titulosTk(0 To 32)
 Dim Shared As String pistasTk (0 To 32) ' titulos temporarios en el proceso de borradod e pistas en la lista
 Dim Shared As String titulosEj(1 To 32)
 Dim Shared As String pistasEj (1 To 32)
@@ -977,7 +979,7 @@ Declare Sub Tracks (ByRef nroTrack As integer, ByRef nroCanal As UByte, Roll As 
 Dim Shared As Long CONTROL3 = NO
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 CantMin=15
-CantTicks=CantMin * 96 * tiempoPatron ''si t=208 ->299520  ' 96*15*208
+CantTicks=CantMin * PPQN * tiempoPatron ''si t=208 ->299520  ' 96*15*208
 ' a t=208 cantticks=86400*208/60=299520
 Dim Shared As inst Roll ' para visualizar y tocar
 ''' REDIM INICIAL TRACK 
@@ -1267,7 +1269,7 @@ Dim Shared  midiout (0 To 15) As  RtMidiOutPtr ' abrir hasta 16 dispositivos DE 
 ' parece que empieza desde cero 0 to 31 decia...el doble seria 0 to 63
 Dim Shared As Integer teclado=0 ' salida de ejecucion teclado 
 
-Common Shared midisal As RtMidiOutPtr, portsal As ubyte
+Common Shared midisal As RtMidiOutPtr ''', portsal As ubyte
 
 Dim Shared as boolean vieneDeListport=FALSE
 
