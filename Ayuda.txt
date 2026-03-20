@@ -1,6 +1,6 @@
-    Ayuda Prelimiar Básica RollMusic   version 0.358 
+    Ayuda Prelimiar Básica RollMusic  
     ====================================================================================
-     0.3591 FIX INTERVALO ZONA EL SEGUNDO NO SE MARCABA
+     0.3592 UNA ZONA SE PUEDE EXPORTAR A MIDI DEFINIENDO 1ERO DICHA ZONA
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
       
@@ -522,7 +522,8 @@
          EL *.MID CORRESPONDIENTE NOTA:
      16.1) GRABA ROLL DIRECTO A MIDI TIPO 0 VERSION 1, SIN EFECTOS Y INSTRUMENTO POR OMISION 
            CARGAR ROLL AJUSTAR EL TEMPO EN VENTANA DE CONTROL, Y EN MENU ARCHIVO ITEM 4.6
-           GRABAR A *.MID DIRECTO A ARCHIVO.
+           GRABAR A *.MID DIRECTO A ARCHIVO. Si se marca una zona o ointervalo de la 
+           secuencia, solo esa zona se escribira a *mid.
      17) CAMBIAR PARA TICKS,Importar midi plano txt pendiente para Ticks
      18) Mostrar o Ocultar las Notas Guia de Roll Grafico del lado izquierdo. Pulsar H tipo
          llave si o no pulsar K.   
