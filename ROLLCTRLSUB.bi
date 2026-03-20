@@ -2185,9 +2185,6 @@ End Select
 
    MICROSEGUNDOS_POR_NEGRA = 60000000/tiempoPatron ' 60 MILL /BPM GLOBAL 1 MILLON USEG
 
-   '' SE AJUSTO A 2000 PARA ESCUCHAR LO MISMO A 60 DSRG POR NEGRA... 500 
-   '' NO ESTA CLARO EL  TEMPO EN BPM SON 60 EN TIEMPO 1000000 ,NI 500 NI 1000 NI 2000
-   '' FALTRA ENTENDER MAS 
    indicenotas=0
    Dim As String NombreTrack, tiempo
  
@@ -2252,16 +2249,14 @@ WriteInt32(f, data_len)
 
 Close #f
 
-Print "MIDI generado : TEST_ROLL.mid"
-Print "Longitud de datos del track: "; data_len; " bytes"
-Print "Si el numero es positivo (ej. 132 o similar), el archivo esta bien."
+'Print "MIDI generado : TEST_ROLL.mid"
+'Print "Longitud de datos del track: "; data_len; " bytes"
+'Print "Si el numero es positivo (ej. 132 o similar), el archivo esta bien."
 
 
 End Sub
 '--------
 Sub GrabaEventosMidiDirecto (f As integer)
-'' ANDUVO !!! FALTA PONER LOS DATOS ENCABEZADO ELTEMPO, LOS DELTA ENTRE NOTAS!!!
-'' PERO ANDA ,,,,
 /'
 El encabezado de un archivo MIDI, conocido como
 MThd (MIDI Track Header), contiene metadatos esenciales de 14 bytes totales (incluyendo la cabecera MThd de 4 bytes y longitud de 4 bytes) que definen la estructura del archivo. Sus campos principales son el tipo de formato, número de pistas y la resolución temporal, todos en formato Big Endian. 
@@ -2298,13 +2293,13 @@ Dim temp_byte As UByte
 
 ' For i = 0 To 7
 '    ' Note On
-'    WriteVLQ(f, 0)
+'    WriteVLQ(f, 0) DELTA
 '    temp_byte = &H90: PutByte(f, temp_byte)
 '    PutByte(f, notes(i))
 '    temp_byte = 64:   PutByte(f, temp_byte)
 
     ' Note Off
-'    WriteVLQ(f, 128)
+'    WriteVLQ(f, 128) DELTA
 '    temp_byte = &H80: PutByte(f, temp_byte)
 '    PutByte(f, notes(i))
 '    temp_byte = 0:    PutByte(f, temp_byte)

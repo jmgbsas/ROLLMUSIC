@@ -1,6 +1,6 @@
     Ayuda Prelimiar Básica RollMusic   version 0.358 
     ====================================================================================
-     0.359 GRABA ROLL DIRECTO A MIDI TIPO 0 VERSION 1, SIN EFECTOS Y INSTRUMENTO POR OMISION
+     0.3591 FIX INTERVALO ZONA EL SEGUNDO NO SE MARCABA
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
       
@@ -395,6 +395,8 @@
 
        Trasponer UNA ZONA con CTRL-O : luego de CTRL-O pulsar ctrl+click en dos lugares definiendo una zona, 
        y luego mover con flechas arriba abajo.Terminar con Q.
+       [NOTA: Los ctrl-click deben ser breves no mas de 200 mseg, si duran mas sosteniendo el mouse presionado
+       mas de 200 mseg la zona sera solo una linea, los 2  clicks quedaran definidos en la primer posicion.]
        Si la zona al final del boirde derecho abarca un solo comienzo de nota, movera esa nota con su final 
        aunque el final no este en la zona.
        TRASPONER (todo o una parte o una nota ) DESTRUIRA LA INFORMACION DEL CIFRADO DEL ACORDE, EN VEZ DE 
@@ -651,7 +653,9 @@
          Conviene cerrar el grafico. O levantar cancion desde opcion 2.0 de ARchivo
          Lo cual carga una cancion de rtk sin el grafico. 
          REPETICIONES DE PARTES DENTRO DE UNA CANCION O PISTA. SELECCCIONAR UN INTERVALO DE ZONA
-         luego ajustar el nro de repeticiones en el mismo menu de reproducir de la ventana de Control.
+         [NOTA: Los ctrl-click deben ser breves no mas de 200 mseg, si duran mas sosteniendo el mouse presionado
+          mas de 200 mseg la zona sera solo una linea, los 2  clicks quedaran definidos en la primer posicion.]
+          luego ajustar el nro de repeticiones en el mismo menu de reproducir de la ventana de Control.
          Al grabar las pistas se grabara las repeticiones, para borrar usar el submenu Borrar repetciones.
 
        3) Grabacion de Ejecuciones directamente sobre Roll GRAFICO, [HAY QUE REVIDAR Y ADAPTAR A TICKS]
@@ -916,6 +920,9 @@
        [  Seleccion de Zona para una accion:
        Ctrl-Click en la 1er posicion de la zona, otro Ctrl-click en la segunda
        posicion, terminar al selecion con Q (borra todas las acciones).
+        [NOTA: Los ctrl-click deben ser breves no mas de 200 mseg, si duran mas sosteniendo el mouse presionado
+         mas de 200 mseg la zona sera solo una linea, los 2  clicks quedaran definidos en la primer posicion.
+         y sera necesario empezar de nuevo reseteano con tecla Q]
        SI EL CTRL-CLICK ESTA -20 +20 CERCA DEL COMIENZO DE UNA NOTA SE UBICARA
        SOBRE ELLA EXACTAMENTE NOTIFICANDOLO CON UN SONIDO. AL ELEGIR LA ZONA UBICAR 
        TODOS LOS COMIENZOS DE NOTA, NO HACE FALTA ABARCAR EL FINAL DE LA ULTIMA NOTA,
@@ -943,8 +950,10 @@
         
 
        Mover una zona: igual que antes se selecciona las 2  posiciones de la zona a mover
-       o puede ser que las 2 posiciones coincidan (movimiento de columna). Luego
-       pulsar M + Click en la posicion donde se requiera mover, 
+       o puede ser que las 2 posiciones coincidan (movimiento de columna). 
+       [NOTA: Los ctrl-click deben ser breves no mas de 200 mseg, si duran mas sosteniendo el mouse presionado
+       mas de 200 mseg la zona sera solo una linea, los 2  clicks quedaran definidos en la primer posicion.]
+        Luego pulsar M + Click en la posicion donde se requiera mover, 
         [NO implementado-> antes de la zona o despues pero antes del final de la secuencia
          o final de archivo MaxPos] 
       o [FUNCIONA]-> despues del final de la secuencia o del tamaño del archivo MaxPos.
@@ -1381,6 +1390,9 @@
            si  se desea copiar mas de una vez entrar el numero de copias pulsando los numeros, puede ser 
            de 2 o mas cifras, luego pulsar C en el teclado e inmediatamente dar click en donde se desea el
            comienzo de la copia.
+        [NOTA: Los ctrl-click deben ser breves no mas de 200 mseg, si duran mas sosteniendo el mouse presionado
+       mas de 200 mseg la zona sera solo una linea, los 2  clicks quedaran definidos en la primer posicion.]
+
     2.4.2) Mover un grupo de notas igual que 2.4.1 per oen vez de usar C + click se debe usar M + Click.
            Nota si se desea mover toda la secuencia mas halla del final de la misma, directamnete
            dar M + Click en un lugar mas halla del fina de la secuencia y se la movera completa
@@ -1470,6 +1482,8 @@
          la ejecucion comenzara desde esa pocicion hasta el final, el borde izquierdo seria
          el comienzo por defecto. Si quiero una zona de play se usa la zona de copiar o mover
          y luego el play ejecutara una sola vez.
+       [NOTA: Los ctrl-click deben ser breves no mas de 200 mseg, si duran mas sosteniendo el mouse presionado
+       mas de 200 mseg la zona sera solo una linea, los 2  clicks quedaran definidos en la primer posicion.]
          
         LOOP infinito: usa las mismas marcas echas para la Zona en trasponer o se Ctrl Click en dos 
         posiciones,  no se usa el 3er click, luego para que haga loop infinito pulsamos ALT-L
@@ -1539,83 +1553,13 @@ Notas Tecnicas de desarrollo:
     grabara a Track[0] sobreescribiendo en disco, los tracks 1 a 32 son exclusivos de Cancion.
     Si uso GRABAR , lo hara siempre en formato Roll con el nombre que se desee. Y si deseo 
     una copia se usará GRABAR COMO. 
--------------------------------------------------------------------------
-
--------------------------------------------------------------------------
- -> TECLAS RAPIDAS EN REVISIO.
- ALT + CLICK EN [NUEVO]
-     BORRA HACIA Derecha y Ajustar MaxPos a la posicion actual en Edit Lectura
- LA POSICION ACTUAL SERA SIEMPRE EL BORDE IZQUIERDO DEL INTERVALO MOSTRADO O SEA
- EL COMIENZO DE LA PANTALLA PARA VER MAS CLARO PULSAR H PARA SACAR LAS NOTAS GUIA
- PULSAR EN GRAFICO EL MENU [ARCHIVO], LUEGO DAR CLICK A [NUEVO] MIENTRAS SE PULSA ALT
- Y LUEGO DE CORTADA LA SECUENCIA PULSAR K PARA REPONER LAS NOTAS GUIA SI SE DESEA.
-
-        
-(DUR,NOTA) 0,181 - permite ingreso de notas en acorde y evita que el ingreso de notas
-en modo edit simple use esas posiciones y tome siempre una nueva al final de la secuencia
-sino el program insertaria notas en cualquier lugar o semitono en el que nota=0.
-
- CTRL-M 9 + X = 0,181   (pulsar ctrl-m luego el numero 9 y finalmente X modifica a 0,181
-se puede observar arriba en la cinta en colr verde ->  Rolldur:0 Rollnota:181
- CTRL-N SPACE 
- CTRL-0 fin de secuecnia, ||
-------------
-- marcar borrado de columna, al grabar y luego cargar desaparecen esas columnas
-(DUR,NOTA) 190,190 MARCAR: DUR,NOTA se obtiene pulsando en cualquier semitono de la columna
-vacio o con nota:
-en   CTRL-M,  pulsar 0 y luego X
-            ó espacio  y luego X  
-
-----------------------
-- borra la nota pero la habilita a ser escrita en EDIT simple o sea ingreso de NOTA nueva,
-(DUR,NOTA)  0,0 se obtiene con
-en  CTRL-M pulsar solo DEL, 
-si está antes del fin de secuecnia podria usarse accidentalmente o a proposito en EDIT simple 
-lo que hará que retroceda el cursor a esa posicion y agregue la nota nueva ahi en vez del 
-final de la secuencia
----------------
-
-futuro: (creo me demandará muchos meses  , no estoy a full y ademas voy aprendiendo,
- es hobby y estudio basico de freebasic, luego incorporare otro lenguaje, pero que sea compilado
- NIM que ya probé pero le faltaba libreria de win y mingw, algo similar en D, HASKEL lento,
- Rust demasiado estructurado y las librerias mucho tiempo de descarga, compilacion, infierno de versiones
- y librerias oscuras nunca podes ver que tienen adentro ja como funcionan o un help, C o C++ mas bajo nivel
- Python mucho lio con las sangrias y para hacer un ejecutable es interpretado, lua interpretado ahora hay
- algo compilado el lua jit o el Nelua-lang en desarrollo, Java byteCode, odio las VM virtual machine.
- Microsoft monstruito de CLR NET etc IDE gigante, asi que por ahroa viva freebasic ja )
--grabar zonas como patrones, luego usarlos para dragarlos a una posicion y soltarlos para insertar.-    
--rasguidos automaticos o construidos por usuario.
--armado de intervalos desde una nota dada para arriba o abajo.
-- armado de triadas tomando como fundamental una nota dada para arriba ceg o abajo cge
-- triadas 1era y 2da inversion desde una nota dada.
-- cuaternarios
-  Nota: todos los intervalos seran de una misma duracion, luego de creado se podra modificar
-  cada uno de ellos a una duracion diferente deseada. Tambien se podra cambiar si se desea
-  que sea un rasguido.(futuro)
-- Acordes con estructura de guitarra de 6 cuerdas usados normalmente.(con o sin rasguido
-  automatico o manual o patron de usuario).
-- Muy en el futuro algun dia... harmonizacion básica.,,
-- perfeccionamiento de algoritmo de play, play e ,as de un track. grabar en formato midi,
-  cargar un midi. Version 0.4586 comienzo de salida a archivo midi en desarrollo.
-- ORGANIZAR ESTA AYUDA Y HACERLA MAS AMENA DISCULPAS...TODO ESTA POR HACERSE Y 
-  PROBARSE ,,,,LLEGARE A ALGO MEJOR ?? NO SE ,,,CADA DIA ES MAS COMPLICADO
-  Y YO CON MENOS TIEMPO,...HARIAN FALTA COLABORADORES DE FB,¿?,, no creo les guste
-  el espagueti de mi código jaja. 
-- Usar bancos? no tengo instrumentos con bankos para probar.. 
-  tal vez con instrumentos virtuales puede ser, enviar banco, pero se ajusta en el instrumento virtual
-  podria almacenarlo y enviarlo.
-- Exportar a midi en Ticks....tal vez sera mucho mas facil con Ticks y a lo mejor podria usar
-  una libreria para grabar y cargar ya que estan en formato para ticks.
 
 ------------------------------------------------------------------------------------------
   NOTA PARA COMPILAR ROLLMUSIC: Para compilar estan las librerias necesarias en el 
-  subdirectorio \RollMusic, que no son necesarias para su ejecucion, esas
-  estan junto al ejecutable. Tambien se encuentra el archivo del proyecto
-  de Fbedit. Aunque FB viene con sus compiladores, en el PATH uso MSYS64 y su gcc
-  gcc (Rev5, Built by MSYS2 project) 10.3.0
-  Copyright (C) 2020 Free Software Foundation, Inc.
-  This is free software; see the source for copying conditions.  There is NO
-  warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  subdirectorio \RollMusic, que no son necesarias para su ejecucion, para la ejecucion
+  estan junto al ejecutable en el directorio raiz. 
+  Tambien se encuentra el archivo del proyecto de Fbedit. 
+  Se usa (Rev5, Built by MSYS2 project).
 
 
 

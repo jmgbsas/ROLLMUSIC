@@ -6059,17 +6059,23 @@ ButtonGadget(2,530,30,50,40," OK ")
 ' clave DEVF (desarrollo futuro)
 ' esto funciona solo en modo lectura asi que lo movere ahi
 
-  If MultiKey(SC_CONTROL) And MouseButtons= 1  Then ''controlzona para buscar
+  If MultiKey(SC_CONTROL) And MouseButtons= 1 And (pasoZona1 = 0 or pasoZona2 =0) Then '' FIX 20-03-2026
      If SelGrupoNota=2  Then 'ALT-O con grupo
        correcciondeNotas(Roll) 
        SelGrupoNota=3':indXjreset=0 'en vez de usar flechas un ctrl+click donde se desea
        Exit Do
      EndIf
-     If numero > 0 Then Exit Do EndIf 'EVITA ENTRAR A DEFINIR ZONA SI YA LA DEFINIO Y SI VOY A PULSAR EN POSINUEVA
+     If numero > 0 Then
+      '' Print #1,"SALE POR NUMERO > 0 ",NUMERO 
+        Exit Do 
+     EndIf 'EVITA ENTRAR A DEFINIR ZONA SI YA LA DEFINIO Y SI VOY A PULSAR EN POSINUEVA
 ' el numero es la cntidad de copias y eso va  despues de definir la zona una vez
 ' definida numero es >0 y no se permite cambiar nada sino el proceso candela 
 ' para eso esta Q para volver a emprezar desde cero.
-     If pasoZona1 > 0 And pasoZona2 > 0 Then Exit Do EndIf
+     If pasoZona1 > 0 And pasoZona2 > 0 Then
+        '' Print #1," 1 SALE LOS 2 PASOZONA SON > 0 ",pasoZona1, pasoZona2 
+       Exit Do 
+     EndIf
 ' asi evitamos que haga ctrl click cuando deberia dar C+click para copiar
 ' si no el programa cancela...
 ' que el grupo se mueva
@@ -6107,46 +6113,44 @@ Dim As Integer lcurpos,lnotacur,  resultado
      If pasoZona1 = 0 Then  ' selecion 1er posicion de la zona
         pasoZona1=  pasox ' pos de la 1er ventana m lugar lejos de una nota
         pasoNota=0 
-       ' print #1,"pasoZona1=",pasoZona1;" pasoNota=";pasoNota
-        Exit Do
+       '' print #1,"A SALIMOS pasoZona1= ";pasoZona1;" pasoNota=";pasoNota
+        Sleep 200 :Exit Do
      EndIf
 
      If pasoZona1 > 0 And pasoZona1 <> pasox Then ' posicion 2 de la zona
         pasoZona2 = pasox ' tratamos de no perder el off1 si justo el off1 es limite de zona
 ' determinar si la ultima nota de la secuencia entra en la zona y si es asi trasponer hasta maxpos
 ' incluyendo el fin 182 ||, para ello vamos de derecha a izquierda buscando un off1 y un 182
-     Dim As Integer i1finsec,i1,jpt, jptfinsec, fin, i1182,jpt182
-     For jpt=Maxpos To pasoZona2 Step -1
-         For i1=NB To NA-13 
-         If Roll.trk(jpt,i1).dur=182 Then
-            i1182=i1
-            jpt182=jpt    
-         EndIf
+        Dim As Integer i1finsec,i1,jpt, jptfinsec, fin, i1182,jpt182
+        For jpt=Maxpos To pasoZona2 Step -1
+          For i1=NB To NA-13 
+           If Roll.trk(jpt,i1).dur=182 Then
+              i1182=i1
+              jpt182=jpt    
+           EndIf
          
-         If Roll.trk(jpt,i1).onoff=1 Then
-            i1finsec=i1
-            jptfinsec=jpt    
-         EndIf
-         Next i1 
-     Next jpt 
+           If Roll.trk(jpt,i1).onoff=1 Then
+              i1finsec=i1
+              jptfinsec=jpt    
+           EndIf
+          Next i1 
+        Next jpt 
 'necesito cuanto dura la ultima nota pufff
-If jpt182 > 0 And jpt182 > pasoZona2  And  jptfinsec + 20 > jpt182 And jptfinsec > pasozona2 Then
+        If jpt182 > 0 And jpt182 > pasoZona2  And  jptfinsec + 20 > jpt182 And jptfinsec > pasozona2 Then
  ' estamos en el  caso,  jptfinsec + 6 daria la posicin del 182, con 20 la debe superar
   ' cambiar pasozona2 para que incluya el 182
-   pasoZona2=jpt182+font/2 ' el largo en pizxels de la figura || debemos saberla y tomar la mitad
+          pasoZona2=jpt182+font/2 ' el largo en pizxels de la figura || debemos saberla y tomar la mitad
 'podria ser font/2    
-EndIf 
+        EndIf 
 ' si no hay 182 no tien sentido el programa deberia corregir ya gregar el 182 tal vez en la carga
 ' del archivo 11-02-2026 VER 
-   
-
         pasoNota=0
-    '    print #1,"pasoZona2=",pasoZona2;" pasoNota=";pasoNota
+        print #1,"B SALIMOS pasoZona2=",pasoZona2;" pasoNota=";pasoNota
         Exit Do
      EndIf
      If pasoZona1=pasoZona2 And pasoNota<>pasoy Then 
         pasoNota=nsE
-     '   print #1,"pasoNota=",pasoNota
+       '' print #1,"C SALIMOS pasoNota=",pasoNota
         Exit Do
     ' Else  12-02-2026 creo que no va kokito
     '    pasoNota=0  12-02-2026  
@@ -6155,9 +6159,10 @@ EndIf
      If pasoZona1 > 0  And pasoZona1 = pasox Then ' la zona es solo  1 sola columna
         pasoZona2= pasox
         pasoNota=0 ' 28-06-2021 mueve acorde si existe , sino meuve nota 
-     '   print #1,"pasoZona1 iguales pasoZona2=",pasoZona2;" pasoNota=";pasoNota
+       '' print #1,"D SALIMOS pasoZona1 iguales pasoZona2= "; pasoZona2;" pasoNota=";pasoNota
+        Exit Do
      EndIf
-
+   
   EndIf 
 
 

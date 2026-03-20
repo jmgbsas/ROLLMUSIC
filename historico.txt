@@ -1,3 +1,6 @@
+-20-03-2026 0.3591 FIX INTERVALO ZONA EL SEGUNDO NO SE MARCABA. Al elegir una zona
+ de la secuencia no se definia el segundo lugar siempre quedaba definida los 2 valores
+ iguales, 
 -19-03-2026 0.359 GRABA ROLL DIRECTO A MIDI TIPO 0 VERSION 1, SIN EFECTOS Y INSTRUMENTO POR OMISION
  (menu archivo item 4.6) 
 -11-03-2026 0.358 CARGAR UNA SOLA PISTA EJEC (EN UN DIR CON MUCHAS), puede servir
