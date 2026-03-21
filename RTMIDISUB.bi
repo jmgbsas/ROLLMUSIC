@@ -434,7 +434,7 @@ Sub Paneo (PAN As UByte,  canal As UByte,portsal As UByte)
 	Dim leng As UInteger <8>
 	Dim result As Integer ' canal 0 to 15 canal 0 es el 1
 	If canal = 0 Then  ' 
-		 modo = 176 '  
+		 modo = 176 '  B0
 	Else
 	  modo = 176 + canal 
 	EndIf
@@ -486,7 +486,7 @@ Sub Paneo (PAN As UByte,  canal As UByte,portsal As UByte)
 'On Local Error GoTo  errorcp
 '  result = send_message (midiout(portsal) , p, leng)
 
- message(1) = modo  'SEGUN EL CANAL EL MODO INDICA CHANGUE PAN
+ message(1) = modo  'SEGUN EL CANAL EL MODO INDICA CHANGUE PAN B0 176
  message(2) = 10  ' 10 es el paneo 
  message(3) = PAN ' cantidad de paneo
   
@@ -531,7 +531,7 @@ Sub Eco (rever As UByte,  canal As UByte,portsal As UByte)
 	  modo = 176 + canal 
 	EndIf
 	
- message(1) = modo  'SEGUN EL CANAL EL MODO INDICA CONTROL CHANGUE 
+ message(1) = modo  'SEGUN EL CANAL EL MODO INDICA CONTROL CHANGUE  176 siempre para control changue
  message(2) = 91   'indica CONTROL DE reververacion O ECO ALGUNOS DICEN 
  message(3) = rever  ' cantidad de reververacion
  leng=3

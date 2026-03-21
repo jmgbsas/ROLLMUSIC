@@ -917,7 +917,7 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
           threadcoro=threadCall EntrarTeclado()
           ''Print #1,"sel pan Globalpan, ntk ",Globalpan,ntk  
       EndIf
-      If  eventnumber()=BTN_ROLL_VOL Then ' VOL futuro
+      If  eventnumber()=BTN_ROLL_VOL Then ' VOL 
           menuOldStr="[VOL]"
           threadvol=threadCall EntrarTeclado()
 

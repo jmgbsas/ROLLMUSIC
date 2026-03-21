@@ -1,3 +1,4 @@
+-21-03-2026 0.360 GRABA ROLL *.MID TIPO 0 CON MAS EFECTOS PAN, ECO, CORO, VOLUMEN.. 
 -20-03-2026 0.3591 y 2  FIX INTERVALO ZONA EL SEGUNDO NO SE MARCABA. Al elegir una zona
  de la secuencia no se definia el segundo lugar siempre quedaba definida los 2 valores
  iguales, una zona se puede cortar yagrabarla a *.mid

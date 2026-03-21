@@ -7319,7 +7319,7 @@ Posy=y0 +100
                pmTk(ntk).patch=CUByte(instru)
                pmTk(0).patch=CUByte(instru)
                 print #1,"seleccion instrumento alfa instru = ",instru     
-               patchsal=instru
+               patchsal=CUByte(instru)
                   Close_Window(haw)
                   Exit Do
               

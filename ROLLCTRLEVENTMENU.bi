@@ -124,7 +124,7 @@ Print #1,"usarmarcoins ", usarmarcoins
 
            Case 10091 '<========= Grabar midi directo Sin pasar por TExto ni reproduccion
 ' 11-03-2026 preparacion,,,TEST DE ARMADO DEL MENU PARA UNA GRABACION CUALQUIERA
-             GrabarPistaRollAmidi()
+             GrabarRollAmidiTipo0()
            Case 1010 '<================ Cargar Pista externa a cancion
 
    '        Print #1,"entro a 1010 Cargar Pista externa a cancion"

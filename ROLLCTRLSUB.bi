@@ -2079,7 +2079,8 @@ End Sub
 ' otra referencia 
 'http://www.petesqbsite.com/sections/express/issue18/midifilespart1.html
 '--------------
-Sub GrabarPistaRollAmidi() ' 1 ) ES LA QUE MAS ME INTERESA 
+Sub GrabarRollAmidiTipo0() ' 1 ) ES LA QUE MAS ME INTERESA Graba solo un Track
+' TERMINADO completo basico volumen, patch, eco , coro,tempo, time signature, PPQN
 ' --- PROGRAMA PRINCIPAL ---
 ' A) PRUEBA DE FUNCIONAMIENTO EN EL MENU DE ROLL
 ' funciona para una sola pista siempre con instrumento piano como version de prueba
@@ -2119,7 +2120,8 @@ WriteInt16(f, 1)       '// 2 bytes, 16 bit ,nro tracks [00|01] 1 track
 Dim PQ As UShort=CUShort(PPQN)
 WriteInt16(f, PQ)     '// 2 bytes, 16 bit,Time Division  pulsos por negra (PPQN) Pulse Per Quearter Note
 
-'--- fin chunk header
+'--- FIN CHUNK HEADER MHTD 
+'***********************************************
 ''120 PPQN is a common value wikipedia
 ' 128 me pareceria mejor que 96 ,,480 es demasiado...lo dejamos en 96 por ahora
 'bit 15 | bits 14 thru 8	           |  bits 7 thru 0  <=== los 16 bits o 2 bytes
@@ -2143,19 +2145,84 @@ WriteInt16(f, PQ)     '// 2 bytes, 16 bit,Time Division  pulsos por negra (PPQN)
 ' --- 2. TRACK CHUNK ---
 Dim track_start_pos As Long
 Dim len_pos As Long
-
+'' EL TRACK NUMERO UNO Y UNICO CON TODO PARAMETROS Y NOTAS
 track_start_pos = Loc(f)
 PutByte(f, 77) 'M
 PutByte(f, 84) 'T 
 PutByte(f, 114) 'r
 PutByte(f, 107) 'k
 
-' primer track puede tener oo no no tas musicales
+' primer track puede tener o no notas musicales EN EL MIDI  TIPO 1 PERO ESTE ESE EL TIPO 0
 
+fileFlush(-1)
+len_pos = Loc(f) +1  ''mi modi 'posicion 1 de los 4 bytes que siguen donde dira la longitud de los datos 
+
+WriteInt32(f, 0) ' Placeholder  ACA ESCRIBE LA LONGITUD 
+
+'------------------------------0000000000----------------------------
+' FF 01 len text Text Event puede ir el nombre del track nombremidi ok
+Dim As Integer lenmidi , ic,ilb
+Dim As String nombresinpath
+ilb=InStrRev(nombremidi,"\")
+nombresinpath=Mid(nombremidi,ilb+1)
+lenmidi=Len(nombresinpath)
+WriteVLQ(f, 0)
+temp_byte = &HFF: PutByte(f, temp_byte)
+temp_byte = &H03: PutByte(f, temp_byte)
+temp_byte = lenmidi: PutByte(f, temp_byte)
+For ic=1 To lenmidi
+  temp_byte = Asc(Mid(nombresinpath,ic,1)) : PutByte(f, temp_byte)
+Next ic
+' ----------PATCH INSTRUMENTO en archivo *.mid se ve bien C145 para oboe pero no lo lee el reproductor
+WriteVLQ(f, 0)
+temp_byte = &HC0: PutByte(f, temp_byte)
+' pmTk(0).patch tiene la ultima seleccio naunqeu no se grabe debe andar
+temp_byte = pmTk(0).patch: PutByte(f, temp_byte)
+Print #1, "midi grabacion pmTk(0).patch ",pmTk(0).patch
+Print #1, "nombre instrumento " ,  NombreInst(pmTk(0).patch)
+'------------------------------------------------------
+' el portout nunca se graba en los archivos midi
+'--------------------------------------------------------
+'   Paneo (pmTk(0).pan, pmTk(0).canalsalida,pmTk(0).portout)  modo B0 para canal 0, paneo=10
+WriteVLQ(f, 0)
+temp_byte = &HB0: PutByte(f, temp_byte)
+temp_byte = 10 :  PutByte(f, temp_byte)
+temp_byte = pmTk(0).pan: PutByte(f, temp_byte)
+'---------------------------------------------------------
+'   Eco   (pmTk(0).eco,  pmTk(0).canalsalida,pmTk(0).portout) B0 , 91
+WriteVLQ(f, 0)
+temp_byte = &HB0: PutByte(f, temp_byte)
+temp_byte = 91 :  PutByte(f, temp_byte)
+temp_byte = pmTk(0).eco: PutByte(f, temp_byte)
+'-------------------------------------------------------
+'   Chorus(pmTk(0).coro,  pmTk(0).canalsalida,pmTk(0).portout)
+WriteVLQ(f, 0)
+temp_byte = &HB0: PutByte(f, temp_byte)
+temp_byte = 93 :  PutByte(f, temp_byte)
+temp_byte = pmTk(0).Coro: PutByte(f, temp_byte)
+'-----------------------------------------------------
+' VOLUMEN Roll
+WriteVLQ(f, 0)
+temp_byte = &HB0: PutByte(f, temp_byte)
+temp_byte = 7 :  PutByte(f, temp_byte)
+temp_byte = pmTk(0).vol: PutByte(f, temp_byte)
+
+'---------------------------------------------
+''FF 20 01 cc MIDI Channel Prefix, The MIDI channel (0-15) CANAL SALIDA GENERAL
+' FLATARIA PONERLO EN CADA NOTA COMO ANTES ? NO CREO...POR AHORA NO
+
+WriteVLQ(f, 0)
+temp_byte = &HFF: PutByte(f, temp_byte)
+temp_byte = &H20: PutByte(f, temp_byte)
+temp_byte = &H01: PutByte(f, temp_byte)
+temp_byte = pmTk(0).canalsalida: PutByte(f, temp_byte)
+
+'------------------------------------------------------------
 'FF 58 04 nn dd cc bb Time Signature (nn numerador, dd denominador' 
 ' dd en potencia de 2, 2 es 2^2=4 ->denominador 4, 4/4 es 04 02
 'FF 58 04 nn dd cc bb Time Signature  ' 255=ff, 
 ' CALCULO DE nn y dd
+
 Dim As UByte nn, dd, cc, bb
 nn=pmTk(0).tipocompas  ' las constantes Tcompas2_4 coinciden con el numedaor y es el tipocompas o ritmo
 Select Case nn
@@ -2180,35 +2247,21 @@ Select Case nn
      bb=8 
   
 End Select
+'Time Signature 2/4,3/4.4/4/, 6,8 etc
+WriteVLQ(f, 0)
+temp_byte = &HFF: PutByte(f, temp_byte)
+temp_byte = &H58: PutByte(f, temp_byte)
+temp_byte = &H4: PutByte(f, temp_byte)
+temp_byte = nn : PutByte(f, temp_byte)
+temp_byte = dd : PutByte(f, temp_byte)
+temp_byte = cc : PutByte(f, temp_byte)
+temp_byte = bb : PutByte(f, temp_byte)
 
-
-
-   MICROSEGUNDOS_POR_NEGRA = 60000000/tiempoPatron ' 60 MILL /BPM GLOBAL 1 MILLON USEG
-
-   indicenotas=0
-   Dim As String NombreTrack, tiempo
- 
-
-   If TipoCompas <> pmTk(0).tipocompas And TipoCompas > 0 Then
-      tiempo = tempoString(TipoCompas)
-      pmTk(0).tipocompas=TipoCompas 
-   ElseIf TipoCompas=0 Then 
-      tiempo = tempoString (pmTk(0).tipocompas)
-      TipoCompas=pmTk(0).tipocompas
-   EndIf
-   
-   Dim numc As Integer = CInt(pmTk(0).canalsalida) + 1
-   NombreTrack= sacarpath(titulosTk(ntk))
-   Print #1,"NombreTrack ",NombreTrack 
-
-'------------------------------
-
-fileFlush(-1)
-len_pos = Loc(f) +1  ''mi modi 'posicion 1 de los 4 bytes que siguen donde dira la longitud de los datos 
-
-WriteInt32(f, 0) ' Placeholder  ACA ESCRIBE LA LONGITUD 
+'--------------------------------------------------
 
 'falta varias cosas en el encabezado
+' TEMPO
+   MICROSEGUNDOS_POR_NEGRA = 60000000/tiempoPatron ' 60 MILL /BPM GLOBAL 1 MILLON USEG
 
 ' microsegundos por negra 0xFF 0x51 0x03 tt
 ' LOS DELTATIME SE ESCRIBEN EN TICKS para este metodo

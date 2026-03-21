@@ -1,6 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
     ====================================================================================
-     0.3592 UNA ZONA SE PUEDE EXPORTAR A MIDI DEFINIENDO 1ERO DICHA ZONA
+     0.360 GRABA ROLL *.MID TIPO 0 CON MAS EFECTOS PAN, ECO, CORO, VOLUMEN.. 
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
       
@@ -524,6 +524,7 @@
            CARGAR ROLL AJUSTAR EL TEMPO EN VENTANA DE CONTROL, Y EN MENU ARCHIVO ITEM 4.6
            GRABAR A *.MID DIRECTO A ARCHIVO. Si se marca una zona o ointervalo de la 
            secuencia, solo esa zona se escribira a *mid.
+           GRABA ROLL *.MID TIPO 0 CON EFECTOS PAN, ECO, CORO, VOLUMEN.. 
      17) CAMBIAR PARA TICKS,Importar midi plano txt pendiente para Ticks
      18) Mostrar o Ocultar las Notas Guia de Roll Grafico del lado izquierdo. Pulsar H tipo
          llave si o no pulsar K.   
