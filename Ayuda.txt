@@ -1,6 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
     ====================================================================================
-     0.360 GRABA ROLL *.MID TIPO 0 CON MAS EFECTOS PAN, ECO, CORO, VOLUMEN.. 
+     0.361 MENU REPRODUCIR->5.0 AGREGAMOS *.MID
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
       
@@ -715,7 +715,7 @@
            EFECTOS EN ARCHIVOS EJEC: YA FUNCIONAN AJUSTAR, GRABAR A DISCO LEER DE DISCO,
            ( FALTA EXPORTAR Y REVISAR QUE ESTOS EFECTOS SE PUEDAN LLEVAR A UN ROLL Y A UN RTK 0.349
       5)  En el menu de Control Reproducir item 5.0 se agrego un reproductor de media con el fin de escuchar
-          una cancion un instrumento grabado en wav o mp3, tambien reproduciria video, pero no es el
+          una cancion un instrumento grabado en wav  mp3 O *.MID , tambien reproduciria video, pero no es el
           objetivo por ahora. en el futuro tratremos de sincronizar el comienzo de esta reproduccion
           con la de una ejecucion y/o una cancion. El reproductor es elemental básico si en alguna maniobra de mover
           la ventanita que lo contiene o minimizarlo, para que aparescan bien todos los controles y sean funcionales,
@@ -724,8 +724,9 @@
           1680 o 1920. O sea cualquier dificultad reiniciar la visualizacion del reproductor minimizarlo y luego 
           restablecerlo de la forma indicada. Si se da PARAR y desaparece el indicador de barrido, al dar ejecutar
           aparecera de nuevo pintando el control a medida que avanza el barrido, o dar MIN Max como se dijo y aparecera
-          todo el barrido completo de la barra de la pista. 
-          Por ahora sirve para ejecutar un wav o mp3 y tocar un teclado para ensayar..habilitando el midi input desde 
+          todo el barrido completo de la barra de la pista. Se puede reproducir los archivos *.mid generados en RollMusic
+          sin necesidad de reproductores externos y tal vez acompañarse con el teclado
+          Sirve para ejecutar un wav mp3 o mid, podemos tocar un teclado para ensayar..habilitando el midi input desde 
           un teclado externo, el cual se podra grabar como ya sabemos creando una pista nueva de ejecucion.
           Nota: para grabar a disco la salida de audio de la PC se puede usar Audacity
                 Programa gratuito de código abierto. Configurando el host de audio a "Windows WASAPI" y seleccionando 

@@ -34,7 +34,7 @@ On Error Goto errorhandler
 '----------------------------------------------------
 
 ' --------------------------------------------
-nroversion="0.360 GRABA ROLL *.MID TIPO 0 CON MAS EFECTOS PAN, ECO, CORO, VOLUMEN.. "
+nroversion="0.361 MENU REPRODUCIR->5.0 AGREGAMOS *.MID"
 ' 0.358 CARGAR UNA SOLA PISTA EJEC (EN UN DIR CON MUCHAS) .PODRIAMOS MOVER ESA EJEC
 '   A OTRO DIRECTORIO O CREER UN DIR DENTRO DE ESE DIR Y DEJAR ESA SOLA EJECUCION Y USAR
 '   EL PROCEDIMIETNO DE CARGAR EL DIRECTORIO..pero bueno vamos a cargar como roll

@@ -300,14 +300,14 @@ ButtonGadget(BTN_ROLL_CORO,  60 ,750, 45, 20,"Coro")
   MenName5=MenuTitle(hMessages,"TIEMPO Y RITMO")
   MenName6=MenuTitle(hMessages,"REPRODUCIR")
   MenName7=MenuTitle(hMessages,"OPCIONES")
-  MenName8=MenuTitle(hMessages,"PUERTOS Y PISTAS DE EJECUCION")
+  MenName8=MenuTitle(hMessages,"PISTAS DE EJECUCION")
   MenName10=MenuTitle(hMessages,"INFO")
 
 ''MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
-MenName19=OpenSubmenu(MenName1,"1.0)CARGAR CANCION")
+MenName19=OpenSubmenu(MenName1,"1.0 FORMAS DE CARGAR CANCION")
  menuitem(10064,Menname19,"1.0 SIN ROLL GRAFICO=> CARGAR TODAS LAS PISTAS *.RTK *.EJEC Y OTRAS  Y EN UN SOLO PASO")
  MenuItem(10061,MenName19,"2.0 SIN Roll Grafico=> CARGAR SOLO PISTAS *.RTK de Cancion con Pistas separados con Ventana de Control  ")
- MenuItem(1006,MenName19, "3.0 CON Roll Grafico=> Cargar SOLO directorio de Cancion con Pistas separados con Ventana de Control ")
+ MenuItem(1006,MenName19, "3.0 CON Roll Grafico=> CARGAR SOLO directorio de Cancion con Pistas separados con Ventana de Control ")
  Menubar(MenName1)
  MenuItem(10062,MenName19,"3.1 Abrir SOLO Roll Grafico dependiente de Control DESPUES DE  (2.0) o se cerro el grafico. ")
  MenuItem(10063,MenName19,"3.2 Externo:Abrir un Roll Grafico independiente de Control, DESPUES DE  (2.0) NO TENDRA NINGUN PARAMETRO")
@@ -327,12 +327,12 @@ MenuItem(10075,MenName20,"4.4 Cargar Pista (rtk o roll) en Roll aislado ")
 Menubar(MenName1)
 
 MenName18=OpenSubmenu(MenName1, "4.5 Cargar Pista/Cancion para Exportar a midi durante Reproduccion")
-MenuItem(1008,MenName18, "Cargar Pista en Roll independiente" )
-MenuItem(10081,MenName18,"Usar Cancion cargada en 2.0 " )
+MenuItem(1008,MenName18, "1-Cargar Pista en Roll Dependiente" )
+MenuItem(10081,MenName18,"2-Usar Cancion cargada en 2.0 " )
 
 MenuItem(1009,MenName1,  "4.5.1 Exportar a MIDI Pista/cancion de 4.5 ")
 Menubar(MenName1)
-MenuItem(10091,MenName1,  "4.6 GRABA ROLL DIRECTO A MIDI TIPO 0 VERSION 1, SIN EFECTOS Y INSTRUMENTO POR OMISION  ")
+MenuItem(10091,MenName1,  "4.6 GRABA PISTA ROLL DIRECTO A MIDI TIPO 0")
 
 Menubar(MenName1)
 MenuItem(1015,MenName1, "5.0 GRABAR PISTAS (ejec ) SELECCIONADAS EN  (G) DE EJECUCION MIDI-IN")
@@ -403,7 +403,7 @@ MenuItem(1081,MenName5,"2.0 Factor para Aumentar velocidad de ejecucion, No se g
 'MenuItem(1085,MenName5,"Na. TEMPO ver marcas de cambio de tempo")
 'MenuItem(1086,MenName5,"Na. TEMPO ocultar marcas de tempo")
 'MenuItem(1087,MenName5,"Na. TEMPO incremento de tempo gradual alcanzado en N compases")
-menuitem (1088,Menname5,"Ritmo 1=2/4, 2=3/4, 3=4/4, 4=6/8 ,5=12/8, 6=5/8, 7=7/8, por omision=4/4")
+menuitem (1088,Menname5,"3.0 Ritmo 1=2/4, 2=3/4, 3=4/4, 4=6/8 ,5=12/8, 6=5/8, 7=7/8, por omision=4/4")
 /' futuro agregar limite menor de c/rango con opcion de incrementarlo hasta el tope
   d esu rango 
 Negras por minuto	 tempo
@@ -429,7 +429,7 @@ MenuItem(10911,MenName6,"2.1 Borrar Repeticiones ")
 
 MenuItem(1092,MenName6,"3.0 Abre y Reproduce Puerto MIDI-IN Ejecucion teclado por MIDI-OUT, SIN GRABAR.")
 MenuItem(1093,MenName6,"4.0 Cierra Puerto MIDI-IN Ejecucion.")
-MenuItem(1094,MenName6,"5.0 Abre REproductor de Medios.")
+MenuItem(1094,MenName6,"5.0 Abre Reproductor de Medios. *.mid, *.wav,*.mp3,")
 
 MenuItem(1100,MenName7,"1.0 Usar MARCO de Ventana Para el Gráfico",MF_UNCHECKED)
 MenuItem(1101,MenName7,"2.0 Usar MARCO de Ventana en instancias Gráficas",MF_UNCHECKED)

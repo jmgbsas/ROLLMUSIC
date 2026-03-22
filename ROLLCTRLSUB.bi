@@ -1013,7 +1013,7 @@ largo=ANCHO*3/4
 orig=largo
 ticks=100
 ''  WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX
-Dim As Integer ANCHOWIN, PANTALLAX=GetSystemMetrics(SM_CXSCREEN)
+Dim As Integer ANCHOWIN, PANTALLAX=GetSystemMetrics(SM_CXSCREEN),volume
 Print #1, "ANCHO PANTALLA ", PANTALLAX
 Print #1, "ENTRADA ", ENTRADA
 
@@ -1025,7 +1025,7 @@ Select Case PANTALLAX
    Case Else 
     ANCHOWIN=ANCHO*6/7
 End Select 
-hwndMEDIA=OpenWindow("AUDIO MP3, WAV",0,ALTO*5/6,ANCHOWIN,ALTO/6, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
+hwndMEDIA=OpenWindow("MP3, WAV, MID",0,ALTO*5/6,ANCHOWIN,ALTO/6, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
 'ESTA ES SIZABLE'hwndMEDIA=OpenWindow("AUDIO MP3, WAV",0,ALTO*5/6,ANCHO,ALTO/6,WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST)
 altov=sizey*4/6 
  ''CenterWindow(hwndMEDIA)
@@ -1066,7 +1066,7 @@ Dim As Integer LIMPIA=1
  TextDraw(12,sizey*3/6,regla,&hffffff)
 StopDraw
 
- SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
+SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
 Dim wmParam As WPARAM
 If ENTRADA > "" Then
    Print #1,"////ENTRADA ",ENTRADA
@@ -1130,12 +1130,41 @@ Do
          Case 8
             #ifdef UNICODE
 '' Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)|*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1|")
-         VAR OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav )|*.mp3; *.wav|")
+         VAR OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav, *.mid)|*.mp3; *.wav; *.mid|")
             #else 
 '' Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)"+Chr(0)+"*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1"+Chr(0))
-         Var OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav)"+Chr(0)+"*.mp3; *.wav"+Chr(0))           
+         Var OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav, *.mid)"+Chr(0)+"*.mp3; *.wav; *.mid"+Chr(0))           
             #EndIf
+   close_window(hwndMEDIA)
+   hwndMEDIA=OpenWindow(OFR,0,ALTO*5/6,ANCHOWIN,ALTO/6, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
+ButtonGadget(1,10,altov,20,20,"X"):GadgetToolTip(1,"PARAR")
+ButtonGadget(2,40,altov,20,20,"|>"):GadgetToolTip(2,"EJECUTAR")
+ButtonGadget(3,70,altov,20,20,"||"):GadgetToolTip(3,"PAUSA")
+ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Disminuye velocidad")
+ButtonGadget(7,130,altov,20,20,">>"):GadgetToolTip(7,"Incrementa velocidad")
+ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav o mp3, en resolucion horizontal 1680 o 1920 se ve mejor la escala")
 
+hwndTG=TrackBarGadget(5,5,sizey*1/6,sizex-20,30,0, ticks, TBS_NOTICKS  )
+WindowStartDraw(hwndMEDIA)
+fillrectdraw(12,sizey*3/6,&hffffff)
+
+ For i1 = 1 To 100 
+  i2=Len(Str(i1))
+  If i2=1 Then
+    num="0"+ Str(i1)
+  Else
+    num= Str(i1)
+  EndIf
+  If  i1 Mod 5 = 0 Then
+
+  regla=regla+ num 
+  Else
+  regla=regla + parte
+  EndIf
+ Next i1
+ TextDraw(12,sizey*3/6,regla,&hffffff)
+StopDraw
+SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
    Print #1,"FORMATO DE OFR VEMOS ", OFR ''C:\mios\amrm.mp3 VIENE COMPLETO PATH Y NOMBRE
            
             If OFR<>""  Then
@@ -1149,7 +1178,8 @@ Do
                MOV_FLAG=1
                LIMPIA=1  
             EndIf
-
+            Volume=MovieAudioGetVolume(mov8)
+            Print #1,"Volumen ", Volume 
       End Select
    EndIf
   if WindowState(hWndMEDIA)=SW_SHOWMINIMIZED Then 'SW_SHOWMINIMIZED = 2
@@ -1167,7 +1197,6 @@ ButtonGadget(3,70,altov,20,20,"||"):GadgetToolTip(3,"PAUSA")
 ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Disminuye velocidad")
 ButtonGadget(7,130,altov,20,20,">>"):GadgetToolTip(7,"Incrementa velocidad")
 ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav o mp3, en resolucion horizontal 1680 o 1920 se ve mejor la escala")
-
 
 WindowStartDraw(hwndMEDIA)
 fillrectdraw(12,sizey*3/6,&hffffff)
