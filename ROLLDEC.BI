@@ -65,90 +65,6 @@ end Operator
 #Define  HH_DISPLAY_INDEX 0002
 #Define  HH_DISPLAY_SEARCH 0003
 #Define  HH_CLOSE_ALL  0018
-/'
-Const BOTON_PISTA_ROLL=5
-Const HabilitaGrabar=0
-Const BTN_LIBERADO=0
-Const GrabarPatronaDisco=4
-Const GrabarPistaEjecucion=1
-Const PatronDeEjecucionCompleto=32
-Const PISTASROLL = 3
-Const PISTASEJECUCIONES   =4
-Const BOTON_SELECCION_EJECUCION =6
-Const CHECK_GRABAR_EJECUCION    = 7
-Const GRUPO_BTNS_MIDI           =8
-Const BTN_MIDI_PARAR        = 9
-Const BTN_MIDI_GRABAR     = 10
-Const BTN_MIDI_EJECUTAR   = 14
-Const GRUPO_BTNS_MANUAL =13
-Const BTN_ROLL_PARAR    = 11
-Const BTN_ROLL_EJECUTAR = 12
-Const BTN_ROLL_GRABAR_MIDI = 15
-Const BTN_EJEC_PORTSAL =16
-Const BTN_EJEC_VOL        = 17
-Const BTN_EJEC_PAN        =18
-Const BTN_EJEC_PATCH    = 19
-Const BTN_EJEC_CANAL    = 20
-Const GRUPO_BTNS_OKCAN    =21
-Const BTN_ROLL_PORTSAL =22
-Const BTN_ROLL_VOL        = 23
-Const BTN_ROLL_PAN        =24
-Const BTN_ROLL_PATCH    = 25
-Const BTN_ROLL_CANAL    = 26
-Const BARRA_DE_ESTADO = 33
-Const TEXT_TOPE =34
-Const LINEA_COMANDO=35
-Const OK = 36
-
-Const HABILITAR = TRUE
-Const DESHABILITAR = FALSE 
-Const SI=1
-Const NO=0
-Const CARGAR = 1
-Const NO_CARGAR =0 
-Const CARGAR_MAS_PISTAS_O_CANCION = 2
-Const REABRIR_ROLL_CON_DATOS_CARGADOS=4
-Const NO_CARGAR_PUEDE_DIBUJAR =0 
-Const CARGAR_NO_PUEDE_DIBUJAR =1
-Const EVITAR_LLAMAR_ROLLLOOP_DE_NUEVO = 3 
-Const CON_CANCION = 1
-Const SIN_CANCION = 0
-'------menu grafico
-Const MENU_INICIAL = 0
-Const COMANDOS_ARCHIVO = 3
-Const PARAMETROS_ROLL = 2
-Const OPCIONES_MENU = 5
-Const AJUSTE_OCTAVAS = 6
-Const PARAMETROS_SECUENCIA = 8
-Const AJUSTE_OCTAVAS = 6
-Const TIPO_DE_COMPAS = 7
-Const CONFIGURACION = 9
-Const SEL_MIDI = 10
-Const NRO_CANAL = 11
-'-----------------instancias
-Const ARG0_EN_LINEA = 0
-Const ARG1_1_TITULO = 1
-Const ARG1_2_DESDE = 1 
-Const ARG2_HASTA = 2
-Const ARG3_TITU = 3
-Const ARG4_INSTRU = 4
-Const ARG5_PID1 = 5
-Const ARG6_USARMARCO = 6
-Const ARG7_NOMBRECANCION = 7
-Const ARG107_FICTICIO = 107
-'----------------------------------
-Const TERMINAR_POR_ESCAPE =1
-Const NO_TERMINAR_BARRE_PANTALLA = 0
-Const TERMINAR_POR_LOOP_PRINCIPAL = 2
-Const NO_TERMINAR_CON_DATOS_CARGADOS  = 3 
-'--------------------------------------
-Const CTRL_M = 1 ' PUEDE HABER UN 1 0 o 0 1  o 2 0 ?
-Const CTRL_N = 2
-Const ObtenerDuracion1erClickIzquierdo=3
-Const DesplegarMenuModifClickDerecho =1
-Const SeleccionarComandoClickIzquierdo = 2
-'----------------------------------------------------
-'/
 
 Dim HtmlHelpA As Function (hwndCaller As HWND,pszFile As LPCSTR,uCommand As UINT,dwData As DWORD_PTR) As HWND
 Dim HTMLHelp  As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
@@ -195,7 +111,7 @@ Declare Sub IgualaMidiPlano(externo As integer, ByRef CantEventos  As Integer)
 Declare Sub LLAMA_GRABAR_ROLL(RESPALDO As String)
  
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
-Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6,notaGuia=0
+Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6,notaGuia=0,PerGuia=0
 Dim Shared As String RTA, alteracion 
 alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0,OCTAVAFIJA
@@ -230,6 +146,57 @@ Dim Shared NotasEscala2 (1 To 12) As String *2 => _
 
 Dim Shared NotasEscalaArmado2 (1 To 24) As String *2 => _
 {"C ","Db","D ","Eb","E ","F ","Gb","G ","Ab","A ","Bb","B ","C ","Db","D ","Eb","E ","F ","Gb","G ","Ab","A ","Bb","B "}
+
+Dim Shared GuiaPer (35 To 81) As String * 20  => _
+{ "Acoustic Bass Drum",_   
+"Bass Drum 1 ",_        
+"Side Stick", _       
+"Acoustic Snare", _      
+"Hand Clap",  _          
+"Electric Snare", _      
+"Grave Low Floor Tom", _ 
+"Close Hi-Hat", _
+"Aguda High Floor Tom", _
+"Pedal Hi-Hat", _        
+"Low Tom", _             
+"Open Hi-Hat", _         
+"Low-Mid Tom", _         
+"Hi-Mid Tom", _          
+"Crash Cymbal 1", _      
+"High Tom", _            
+"Ride Cymbal 1", _       
+"Chinese Cymbal",  _     
+"Ride Bell", _           
+"Tambourine",  _         
+"Splash Cymbal", _       
+"CowBell", _             
+"Crash Cymbal 2", _      
+"VibraSlap", _           
+"Ride Cymbal 2", _
+"Hi Bongo", _      
+"Low Bongo", _     
+"Mute Hi Conga", _ 
+"Open Hi Conga",  _
+"Low Conga", _     
+"High Timbale", _  
+"Low Timbale", _   
+"High Agogo", _    
+"Low Agogo", _     
+"Cabasa", _        
+"Maracas", _       
+"Short Whistle", _ 
+"Long Whistle", _  
+"Short Guiro", _   
+"Long Guiro", _    
+"Claves", _        
+"Hi Wood Block", _ 
+"Low Wood Block", _
+"Mute Cuica", _    
+"Open Cuica", _    
+"Mute Triangle", _
+"Open Triangle"} 
+       
+
 Type claseac
   clase As String * 7
   nro As Integer
@@ -633,7 +600,7 @@ menuAccion=0:insert=0:agregarNota=0:octavas=0
 ' Const RIGHTBUTTON = 2 
 ' Const SHOWMOUSE = 1
 ' Const HIDEMOUSE = 0 
-Dim Shared As Integer MousePress = 0, MouseMove=0 '02-07-2021 no sirven
+Dim Shared As Integer MousePress = 0, MouseMove=0 , MouseMoveX=0, MouseMoveY=0
 Type mouse
  As Integer res
  As Integer x
@@ -772,7 +739,7 @@ Dim Shared As Double t1k,t2k,DURK,DURK1,DURk2, DURKOLD,DURK144, DURK128,DURK144o
 Dim Shared As Double notaMidiDurk,notaMidiDurkOld,penta2=0
 'Dim Shared As Integer abrirMIDIin=0
 ' nC indica 144, nF indica 128
-
+/'
 Type poli Field=1 ' para guardar la secuencia EN Tacks 15 bytes
  dur    As UByte =0   ' duracion 
  sonido   As UByte =0   ' SONIDO ON/OFF ? se usa?
@@ -799,7 +766,7 @@ End Type
 Type sec
  As poli trk(Any, any)
 End Type
-
+'/
 ' 8 pistas de solos
 
   
@@ -821,6 +788,7 @@ End Type
 ' a pan y pb y poder reconstruir ..es un redefine de cobol!
   
 ' campos de roll datos secuencia 
+/'
 Type datsec Field=1
  nota  As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
  dur   As UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
@@ -972,7 +940,7 @@ Type pasa Field=1
   As Integer encancion=0
   As Integer midionof=0
 End Type
-
+'/
 
 Declare Sub Tracks (ByRef nroTrack As integer, ByRef nroCanal As UByte, Roll As inst)
 'Dim Shared As Long PARAR_PLAY_MANUAL = NO,PARAR_PLAY_EJEC = NO,CONTROL3 = NO
@@ -1062,7 +1030,7 @@ Const As Integer MODIFICACION_COLUMNA=5
 COMEDIT=LECTURA
 
 Dim Shared po As Integer Ptr
-Dim Shared e As EVENT
+Dim Shared  As EVENT e,f 
 Dim Shared rmerr As Integer
 
 Dim Shared cm As cairo_t  Ptr
@@ -1622,4 +1590,10 @@ ReDim As Patron ordenLista (1 To 100) ' cargo hasta 200 patrones o mas si deseo 
 ' es lento y en esa lentitud es muy rapida el orden de un simple vector tipo contador
 Declare Function CRaTC (rit As UByte) As String   
 
+Type ubica
+  vol As UByte
+  haynota As UByte
+End Type
 
+Dim Shared  As ubica ubicaNotas (1 To MaxPos, NB To NA)
+Dim Shared  As Integer  trazovolumen, tnold, ty1old, ty1,tn

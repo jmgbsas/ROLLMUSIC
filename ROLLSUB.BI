@@ -1069,11 +1069,252 @@ Next x
  'FileFlush(-1)
  BuscarOtros=1 ' error
  trasponer=0
-  
- 
-
 
 End Function
+Sub VolumenGra  ( Roll As inst) ' una bosta
+' otra version mas facil talvez 
+' recorrer la secuencia de roll tomado tomando los puntos x,y de cada nota en un vector
+' luego al hacer la curva el valor de volumen se ajustara en toda nota que coincida con
+' el eje x. el asunto es obtener el volumen segun el grafico estmos en la misma piedra
+' pero el metodo puede ser mucho mas rapido.
+
+Print #1," VolumenGrafico comedit ";comedit
+If COMEDIT=LECTURA Then
+Print #1," entra VolumenGrafico comedit ";comedit
+'1) determino la octava de uso
+Dim As UByte Volmin=0, Volmax=127
+Dim As Integer lugar=0, sitio, ejeYMax, ejeYMin, iy
+Dim As Integer x1, x2, y1, y2,x1old, x2old, y1old, y2old ,inicio=0
+Dim As Integer my1
+cairo_set_source_rgba(c, 1, 1, 1, 1)
+Dim As Integer indiceXroll, indiceYroll, difxyRoll,y1_menos_ejeMin,  curold, notacurx, intervaloy
+Dim As UByte volnuevo
+ReDim  ubicaNotas (1 To MaxPos, NB To NA)
+inicio=0
+Do
+
+
+ If MultiKey(SC_ENTER) Then
+    Print #1," VolumenGrafico salimos y deberia dibujar "
+    
+    Exit Do
+ EndIf
+' trabajo dibujo sobre cairo en la octava elegida
+  
+ If Mousebuttons And 1 And inicio=0 Then
+    inicio=1
+ EndIf
+ If inicio=1  And trazovolumen=0 Then
+  
+    Dim As Integer k4=1
+    For k2 As Integer = 1 To Maxpos 
+      For k1 As Integer =NB To NA
+        If Roll.trk (k2,k1).onoff= 2 Then  ' nota
+             ubicaNotas (k2, k1).haynota = 1 ' marco toda la columna
+             ubicaNotas (k2, k1).vol = Roll.trk (k2,k1).vol 
+        EndIf 
+      Next k1
+    Next k2
+    trazovolumen=1
+    Print #1, "cargo el vector" 
+   Print #1," VolumenGrafico salimos y deberia dibujar "
+    Exit Do
+ EndIf 
+  
+
+ Sleep 2
+ 
+Loop 
+          
+
+ 
+EndIf
+
+End Sub
+'-----------------
+ Sub VERVOLUMEN (Roll As inst)
+   Print #1,"nombre maxpos ",nombre ,maxpos
+   For pasox As Integer = 1 To maxpos
+     For notay As Integer =NB To NA-13 
+      If ROLL.Trk(pasox, notay  ).onoff=2 Then
+         Print #1, pasox, notay,ROLL.Trk(pasox, notay  ).vol; "<-----"
+           
+      EndIf
+     Next notay
+   Next pasox 
+  
+
+ End Sub
+'-----------------------------------------
+Sub VolumenGrafico  (c As cairo_t Ptr, Roll As inst) 
+''' funciona ahora debemos cargar los valores relativos entre max y min en pmTk(0).vol
+' una vez cargado y liberado con ENTER mostarlo en roll a partir  de pmTk(0).vol
+''con esa misma Line azul si sedesea se apaga con ALT-V O  SEA AL TERMINAR SE VERA  LINEAS
+'' RECTAS ENTRE NOTAS CON VOL>0 SI NO LAS QUIERO VER alt-v 
+Print #1," VolumenGrafico comedit ";comedit
+If COMEDIT=LECTURA Then
+Print #1," entra VolumenGrafico comedit ";comedit
+'1) determino la octava de uso
+Dim As UByte Volmin=0, Volmax=127
+Dim As Integer lugar=0, sitio, ejeYMax, ejeYMin, iy
+''Penta_y = BordeSupRoll + 14 * ( inc_Penta ) *( nro -1) 'nro esta en el for de barrepenta
+' Penta_y es shared no hace falta calcularla
+' Penta_y es la 1er linea de cada octava
+
+
+' entre ambos valores la posicion vertical la da mousey
+' o sea si mousex=ejeYMax  sera el mayor valor de volumen 127
+' y     si mousex=ejeYMin  sera el menor valor de volumen 0
+' debo llenar un v ector numerico similar a Roll con los valores de la curva o linea trazada
+' voy monitoreando mousex y mmosey esos valores los transformo en posicion x
+' y en curpos, a medida que me muevo dibujando en mousex mousey voy almacenando los valores de volumen
+' en cada volumen de las notas 
+'2) dibujar sobre la octava y almacenarlo mientras dibujo hago sonar cada nota con el volumen sugerido
+' por la curva si me gusta pulso intro, si quiero empezar de nuevo dibujo de nuevo
+' si quiero resetear tomar el valor pmTk(0).vol y ajustarlo a todas las notas o ponerlas en cero
+' el play solo usara ese volumen general. o sea si Roll.trk().vol=0 entonces uso el de pmtk
+' aca es necesario un loop del cual salimos solo sisepulsa ENTER
+Dim As Integer x1, x2, y1, y2,x1old, x2old, y1old, y2old ,inicio=0
+Dim As Integer my1
+cairo_set_source_rgba(c, 1, 1, 1, 1)
+'''Parar_De_Dibujar=SI
+ ''         ScreenUnLock()
+Dim As Integer indiceXroll, indiceYroll, difxyRoll,y1_menos_ejeMin,  curold, notacurx, intervaloy
+Dim As UByte volnuevo
+terminar=NO_TERMINAR_CON_DATOS_CARGADOS 
+Parar_De_Dibujar=SI
+                BordeSupRoll = Int((ALTO ) /18) 
+                inc_Penta = Int((ALTO - BordeSupRoll) /(40))
+                BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio muestro octava 4 la central C3
+
+Select Case desde
+    Case 1
+      BordeSupRoll = BordeSupRoll + 64 * inc_Penta
+    Case 2
+      BordeSupRoll = BordeSupRoll + 54 * inc_Penta    
+    Case 3
+      BordeSupRoll = BordeSupRoll + 44 * inc_Penta
+    Case 4
+      BordeSupRoll = BordeSupRoll + 30 * inc_Penta
+    Case 5
+      BordeSupRoll = BordeSupRoll + 15 * inc_Penta
+    Case 6
+    Case 7
+      BordeSupRoll = BordeSupRoll - 15 * inc_Penta    
+    Case 8
+      BordeSupRoll = BordeSupRoll - 30 * inc_Penta
+    Case 9
+      BordeSupRoll = BordeSupRoll - 44 * inc_Penta ' 16-09-2021
+     
+End Select
+   cairo_set_line_width(c, 0.5)
+   menuNew=PARAMETROS_ROLL
+   menuNro=PARAMETROS_ROLL
+   inc_Penta = Int((ALTO -1) /40) - deltaip
+   cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT)
+' simulamos una ejec 
+pmTk(0).ejec =1 ' porque le ponemos volumen como si fuera real
+Do
+
+  threadPenta = ThreadCall barrePenta (c, Roll )
+  ThreadWait threadPenta
+
+  GetMouse mouseX, mouseY, , MouseButtons
+   menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
+   cairo_stroke(c)
+   botones(hWnd, cm, ANCHO,ALTO) ' este despues sinocrash
+   cairo_stroke(cm) ' cm despues de c sino crash
+
+ If MultiKey(SC_ENTER) Then
+    Print #1," VolumenGrafico salimos  "
+    terminar=NO_TERMINAR_BARRE_PANTALLA 
+    Parar_De_Dibujar=NO
+    trazovolumen=0 
+    Exit Do
+ EndIf
+' trabajo dibujo sobre cairo en la octava elegida
+  
+ If Mousebuttons And 1 And inicio=0 Then
+    inicio=1
+'Penta_y 1er linea de cada octava
+Penta_y = BordeSupRoll + 14 * ( inc_Penta ) *( nro -1)  
+ejeYMax=Penta_y ' en realidad sera el menor Y aumente de arriba a abajo
+ejeYMin=Penta_y + 12 * inc_Penta ' sera el mayor 
+intervaloY= ejeYMin - ejeYMax 
+Print #1, "ejeYMax "; ejeYMax
+Print #1, "ejeYMin "; ejeYMin
+Print #1, "intervaloY "; intervaloY    
+ my1 = 11- nsE + (*po-1) * 13
+    GetMouse mouseX, mouseY, , MouseButtons
+    x1=mousex:y1=mousey
+    Print #1, "inicio=1 x1 y1 ", x1, y1
+    x1old=x1 : y1old=y1     
+    curold = Int((x1 - gap1)/anchofig)
+    notacur=nsE
+ Else
+
+  
+  'pubi=0
+
+    x1=mousex : y1=mousey 
+      
+    nsE = 11 -y1 +  (nro -1 ) * 13 + 1
+    curpos = Int((x1 - gap1)/anchofig)
+
+ ''''Roll.trk(n + curpos,12 - notacur + (*po-1) * 13 ).dur
+   If  inicio=1 And (x1 <> x1old Or y1 <> y1old )Then
+     Line (curold, y1old)-(curpos, y1), RGB(0, 128, 255), bf ''olor azul funciona!!
+
+       indiceXroll=posicion + curpos
+       indiceYroll=y1 
+          y1_menos_ejeMin = ejeYMin - y1
+       ''   Print #1,"y1_menos_ejeMin ",y1_menos_ejeMin ' esta resta no puede ser mayor que el intervalo!!
+              
+        ''  If indiceYroll <= ejeYMin And indiceYroll >=ejeyMax Then
+             volnuevo = CUByte(y1_menos_ejeMin * 127/ intervaloY)
+             If volnuevo > 127 Then volnuevo=127 EndIf
+         ''    Print #1,"x1 volnuevo "; x1, volnuevo 
+        ''  EndIf
+ 
+' poner la velocidad original  del ejec si viene de una ejec
+' si es manual la velocidad se calcula como esta aca resta ver como identificar que
+' viene deuna ejec debo poner una marca
+ 
+   '      Print #1," X1 Y1 ";X1, Y1
+'          For iy=ejeYMin To ejeYMax
+' una cosa es el mousey y otra el notacur notacur tiene un rango de valor en un delta y!
+    '  Roll.trk(posicion + cur,12 - notacur + (*po-1) * 13 ).vol= volnuevo
+   ''If y1 <= NB And y1 >=NA Then
+     For notacurx=NB To NA-13 ''             0 To 11
+      If ROLL.Trk(posicion+curpos, notacurx  ).onoff=2 Then
+         ROLL.Trk(posicion+curpos, notacurx  ).vol = volnuevo
+         Print #1,"////////volnuevo cargado "; volnuevo
+         Exit For  
+      EndIf
+   ''EndIf 
+     Next notacurx 
+          
+'          Next iy  
+   EndIf       
+          x1old=x1
+          curold=curpos
+          y1old=y1
+
+   
+ EndIf
+ Sleep 2
+ 
+Loop 
+          
+
+
+
+
+ 
+EndIf
+
+End Sub
+
 ''========================= C U R S O R ============
 Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As inst)
 'trasponer=0 ' NO SEPORQUE MIERDA SE PONE EN 1
@@ -3834,14 +4075,15 @@ If copi >0 Then
    veocopi=copi
 EndIf   
 
-If parametros=0  Then
+If parametros=0  Then ' PARA LECTURA
    t = "      EDIT" + " " +  " Maxp:" + _
    Str(Maxpos) +" Psi:" + Str(posicion)+ " Psn:"+Str(posn)+ _
    " Fnt:" +Str(font) + " Oct:" + Str(estoyEnOctava) + _ 
    " PN:"+ Str(PianoNota) + " nsE:"+Str(nsE) + " Curpos:" +Str(curpos) + _
    " RollDur :"+ Str(RollDur) + " Rollnota:" + Str(RollNota) + _ 
    " Copia:" + Str(veocopi) +" Col:" +Str(indicePos) + " DUR:"+ Str(Dur) + _ 
-   " Nota:"+ Str(nota) + " ONOFF:" + Str(onoff) + " ACOR:" + Str(acordeNro)
+   " Nota:"+ Str(nota) + " ONOFF:" + Str(onoff) + " ACOR:" + Str(acordeNro) + _
+   " Mx:" + Str(mousex) + " My:" + Str(mousey)
 EndIf
 If parametros=1 Then
    t = "      EDIT" + " " + " Curpos:" +Str(curpos) + _
@@ -3850,6 +4092,13 @@ If parametros=1 Then
    " Mx:" + Str(mousex) + " My:" + Str(mousey) 
 
 EndIf
+If parametros=2 Then
+   Dim As Integer my1 = 11- nsE + (*po-1) * 13
+   t = "      EDIT" + " " + " Penta_y:" +Str(Penta_y) + _
+   " My1nsE :" + Str(my1) + " Mx:" + Str(mousex) + " My:" + Str(mousey) 
+
+EndIf
+
 '''" Mx:" + Str(mousex) + " My:" + Str(mousey) 
   ' + "Desde:" + Str(y1) + "Hasta:" +Str(y2)
    /' " InicioDELectura: " + Str(InicioDelectura) + " BordeSupRoll: " + Str(BordeSupRoll) +
@@ -7707,6 +7956,7 @@ Dim  As Integer i3
 Dim As String linea
  
  If Open (ROLLDIR+"procesos.txt" For Input As 2) <> 0 Then
+   Err =0  ' PRA QUE NO CANCELE VEREMOS NO IMPORTA QUE NO LEA
    Print #1,"procesos.txt error al leer  "
    Close 2
    Exit Sub

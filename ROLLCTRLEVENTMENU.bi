@@ -1066,6 +1066,11 @@ Print #1,"///----SEL 1211 CORO Globalcoro ",Globalcoro
            'threadDetach threadKey 
 
          '' SetForegroundWindow(hwnd)
+           Case 2005 ' cuadro percusion
+           threadPer = ThreadCall  CuadroPer ()
+           threadDetach threadPer 
+
+
 '-----------------------------------------------------------------------
 
            Case 2500 ' abrir un midi-in ...con callback

@@ -335,7 +335,7 @@ Sleep 100
 
 If desde = 0 And hasta = 0  And instancia=ARG0_EN_LINEA Then
  Print #1,"intervalo no dado usando default!"
- desde => 4  ' -> 3  
+ desde => 3  ' -> 2  
  hasta => 8  ' -> 6 le debo restar la octava oculta +1
  
 ' internamente no usamos cero , empezamos desde 1 pero en roll se ve tal cual es

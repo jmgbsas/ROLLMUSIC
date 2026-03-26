@@ -373,7 +373,6 @@ MenuItem(1061,MenName3, "7.0 Crear Pista nueva en la Cancion en Edicion, Con lo 
 Menubar(MenName3)
 MenuItem(1062,MenName3, "8.0 Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
 MenuItem(1063,MenName3, "9.0 Generar melodias de 4 compasases algoritmo sencillo no parametrizado")
- 
 
 
 'MenuItem(1065,MenName31, "Crear Patrones de Ejecuciones por Teclado",MF_POPUP )
@@ -474,6 +473,7 @@ MenuItem(2001,MenName10,"2.0 Cuadro Ayuda TEMPO por nombres, Lento,adagio etc y 
 MenuItem(2002,MenName10,"3.0 Cuadro de Figuras de duracion de notas")
 MenuItem(2003,MenName10,"4.0 Cuadro de valores de Volumen tipicos")
 MenuItem(2004,MenName10,"5.0 Cuadro de Teclas Rapidas, key stroke")
+MenuItem(2005,MenName10,"6.0 Cuadro de NOTAS Para canal 10 Percusion ")
 'MenuItem(2502,MenName30,"Seleccion Puerto MIDI-IN ROLL")
 'MenuItem(2504,MenName30,"Seleccion Puerto MIDI-OUT ROLL")
 'MenuItem(2505,MenName30,"Abrir  Puerto  MIDI-OUT ROLL")

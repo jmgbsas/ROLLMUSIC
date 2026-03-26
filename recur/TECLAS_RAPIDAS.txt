@@ -119,17 +119,28 @@ ENTRADA NOTA MANUAL, OCTAVAS EN VERDE, TECLAS A PULSAR
 ----------------------------------------------------------
 F1 AYUDA
 CTRL-F1 ESTE ARCHIVO TECLAS RAPIDAS (SOLO EN ROLL GRAFICO)
+------------------------------------
+N - EN ENTRADA DE NOTAS (VERDE) CONMUTA EN MOSTRAR PARAMETROS 0 Y 1 EN LA CINTA AZUL
 ------------------
 R - RECALCULA PARA TODA LA SECUENCIA DONDE MARCAR LOS COMPASES CON UNA LINEA
     VERTICAL (EN 4/4 SON 384 TICKS EN ROLLMUSIC, LA NEGRA TIENE 96 TICKS)etc
---------------------------
+-------------------------------------------------------------------
 Q - RESETEA INTERVALO O ZONA SELECCIONADA EN UNA SECUENCIA, PONE A LAS VARIABLES 
     DE CONTROL AL ESTADO DE INICIO EN EL GRAFICO.
-----------------------------
+-------------------------------------------------------------------------
 H - BORRA LAS NOTAS GUIA AL PRINIPIO DE PANTALLA DEL GRAFICO [C C# D D# E G G#...]
-------------------------
+---------------------------------------------------------------------------------
 K - REPONE LASNOTAS GUIA DEL GRAFICO
+-----------------------------------------------------------------
+CTRL-H - BORRA  NOMBRES DE INSTRUMENTOS DE PERCUSION 
+------------------------------------------------------------------
+CTRL-K - REPONE NOMBRES DE PERCUSION GUIA DEL GRAFICO
+
 --------------------------
+LSHIFT+V EN LECTURA Y MENU INICIO MUESTRA LOS PARAMETROS ARRIBA EN CINTA AZUL ()
+     PARA VOLVER ALT-M O POSICIONARSE EN ZONA DRRECHA DE LA CINTA AZUL DESPUES DE LA MARCA
+     VERTICAL
+-------------------------------
 ESC - EN GRAFICO PREGUNTA SI TERMIMA EL PROGRAMA.
 ----------------------------
 TAB - EN GRAFICO CON CANCION CARGADA CAMBIA DE TRACK CON CADA PULSO DE ESE MODO

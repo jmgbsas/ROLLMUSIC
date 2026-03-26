@@ -1,6 +1,8 @@
     Ayuda Prelimiar Básica RollMusic  
-    ====================================================================================
-     0.361 MENU REPRODUCIR->5.0 AGREGAMOS *.MID
+    =================================================================================================
+    0.362 Volumen ingreso manual del off en 40,0, o vol/2 segun el caso y guardar el vol de una ejecucion 
+    desde teclado dato3, nombres instrumentos percucion en pantalla CTRL-H CTRLK cuando se usa el canal 10
+    tambien se puede ver otras pistas que notas estan sonando cuando suena algun instrumento de percusion
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
       
@@ -526,8 +528,11 @@
            secuencia, solo esa zona se escribira a *mid.
            GRABA ROLL *.MID TIPO 0 CON EFECTOS PAN, ECO, CORO, VOLUMEN.. 
      17) CAMBIAR PARA TICKS,Importar midi plano txt pendiente para Ticks
-     18) Mostrar o Ocultar las Notas Guia de Roll Grafico del lado izquierdo. Pulsar H tipo
+     18) Mostrar o Ocultar (H,K)las Notas Guia de Roll Grafico del lado izquierdo. Pulsar H tipo
          llave si o no pulsar K.   
+     19) Mostrar o Ocultar (CTRL-H, CTRL-K) los nombres de los instrumentos para las notas correspondientes
+         cuando se usa canal 10 de percusion en una pista. Tambien se puede ver otras pistas que notas
+         estan sonando cuando suena algun instrumento de percusion. 
 
     IV ) USO VENTANA CONTROL, ENTRE VARIAS COSAS  GRABA EJECUCIONES POR TECLADO MIDI,
        

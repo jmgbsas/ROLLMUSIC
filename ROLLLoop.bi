@@ -23,7 +23,7 @@ Dim As String t2="",t3="",t4=""
 verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 
  Dim As UByte code,repe
- Dim As Integer n,notac, aconro, grado,repeind
+ Dim As Integer n,notac, aconro, grado,repeind,vg, lugarper=ANCHO*7/8
  repeind=12+(hasta-2)*13+hasta 
 
 'Print #1,"creaPenta ajustado repeind ",repeind  98 para 4 a 8
@@ -57,7 +57,8 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 'EndIf
 ' --preubas de encabezado donde pondremos mas informaicon y tal vez menues botoes etc
 ' nro numero octava
- Penta_y = BordeSupRoll + 14 * ( inc_Penta ) *( nro -1) 'nro esta en el for de barrepenta
+  Penta_y = BordeSupRoll + 14 * ( inc_Penta ) *( nro -1) 'nro esta en el for de barrepenta
+ 
 '--------------------------
  t=" ESCALA: "+ UCase(tipoescala_inicial) + " [" +cadenaes_inicial +"] "
   cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - inc_Penta)
@@ -94,7 +95,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 '  cairo_show_text(c, t)
 '  t= ""
 '--------------------------
-''ES LA 1ER LINEA DE CADA OCTAVA
+''===========/////////////////////ES LA 1ER LINEA DE CADA OCTAVA... y la ultima?
  cairo_move_to(c, 0, Penta_y )
  cairo_line_to(c, ANCHO - 1, Penta_y )
  
@@ -177,7 +178,24 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
      cairo_show_text(c, t)
      font= font + 2  'vuelve al valor anterior...
      cairo_set_font_size (c, font)
-
+     
+   EndIf
+   If PerGuia=1 Then
+    t=""
+    vg=(semitono + 35 + 12 * (*po-3) ) 
+    font= font - 2 ' achicamos notas guias
+     cairo_set_font_size (c, font)
+     If *po >= 3 And *po <= 8  And vg <= 81 And vg >=35 Then
+       t = GuiaPer (vg)
+     EndIf 
+     If semitono=0 Then  
+        cairo_move_to(c, lugarper, Penta_y - (semitono-1) * inc_Penta- 6)
+     Else
+        cairo_move_to(c, lugarper, Penta_y - (semitono+1) * inc_Penta- 6)
+     EndIf
+     cairo_show_text(c, t)
+     font= font + 2  'vuelve al valor anterior...
+     cairo_set_font_size (c, font)       
    EndIf
    t= ""
    ic=0 'indice para  dibujar las duraciones y notas en pantalla automatico
@@ -352,10 +370,11 @@ If n <= pmTk(0).MaxPos Then
       cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono+1 ) * inc_Penta - 4)
   
   '  print #1,"lugar ",12
-     indf= CInt(Roll.trk (n, 11- semitono + (*po-1) * 13).dur)
-
+     indf= CInt(Roll.trk (n, 11- semitono + (*po-1) * 13).dur) 'semitono = 0 To 11
+' mostraremos 11- nsE + (*po-1) * 13) en parametros 2 es el y
   '  print #1,"lugar ",13
-    
+''''-------------------------------------------------------------------
+''''-------------------------------------------------------------------    
     If (indf >= 1 And indf <= 185) Or indf=190  Then ' OLD REPUESTO12-03-2025 185=N roll sin duraciones
     Else
         indf=181
@@ -656,7 +675,7 @@ If GrabarPenta =0 Then
   
   cairo_set_source_rgba c, 0, 0, 0, 1
   
-  'cairo_set_line_width(c, 3)
+  
  EndIf
  
 else
@@ -1415,12 +1434,12 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE 
  cierroedit= 0
 EndIf
 
-If MultiKey(SC_LSHIFT) And MultiKey(SC_V)   Then ' ver parametros roll durente play
+If MultiKey(SC_LSHIFT) And MultiKey(SC_V)   Then ' ver parametros SIEMPRE ,,,roll durente play
 'ver parametros durante play
-  If play=SI Or playb=SI Or Cplay=SI Then
+ ' If play=SI Or playb=SI Or Cplay=SI Then
      VerMenu=SI
      menuNew= PARAMETROS_ROLL
-  EndIf 
+'  EndIf 
   Exit Do
 EndIf
 
@@ -1459,13 +1478,20 @@ If MultiKey (SC_P) Then
   Exit Do
 EndIf
 
-If  MultiKey (SC_N) Then  ' ver parametros arriba en el grafico
+If  MultiKey (SC_N) Then  ' ver parametros arriba en el grafico CONMUTAR ENTRE 0 Y 1
 
-   If COMEDIT<>LECTURA  Then
-    If parametros=1 Then
+    If parametros=2 Then
        If s9=0  Then
           s9=1
           parametros=0
+       EndIf
+       Exit Do
+    EndIf
+
+    If parametros=1 Then
+       If s9=0  Then
+          s9=1
+          parametros=2
        EndIf
        Exit Do
     EndIf
@@ -1477,7 +1503,7 @@ If  MultiKey (SC_N) Then  ' ver parametros arriba en el grafico
        Exit Do 
     EndIf 
 
-   EndIf 
+ 
 
 EndIf
 
@@ -1584,7 +1610,7 @@ If S8=0 Then
      EndIf
 
    For x1= xdesde +1 To MaxPos
-      For y1 = NB To NA-13
+      For y1 = NB To NA-13 
          If Roll.trk(x1, y1).onoff = 2 Or Roll.trk(x1, y1).onoff = 1 Or Roll.trk(x1, y1).dur = 190 Then
             xllegada=x1
             onoff=2   ' parametro a mostrar
@@ -1901,15 +1927,29 @@ If  MultiKey (SC_F6)  Then
  Exit Do
 EndIf
 
- If MultiKey(SC_H) And notaGuia=0 Then
-' apaga las notas Guia al costado izquierdo de Roll Grafico
-' para encender pulsar Q
-      notaGuia=1
+If MultiKey(SC_CONTROL) And MultiKey(SC_H)  Then
+' muestra   los instrumentos de percucion
+      PerGuia=1
+      Sleep 200
       Exit Do
  EndIf
- If MultiKey(SC_K)  Then
-     notaguia=0 'vuelve las notas guia
+ If MultiKey(SC_CONTROL) And MultiKey(SC_K)   Then
+     PerGuia=0 'vuelve las notas guia
+      Sleep 200
+     Exit Do
  EndIf
+
+ If MultiKey(SC_H) And notaGuia=1   Then
+      notaGuia=0
+      Sleep 200
+      Exit Do
+ EndIf
+ If MultiKey(SC_K)  And  notaGuia=0  Then
+     notaguia=1 ' muestra nombre PERCUSION 
+      Sleep 200
+     Exit Do 
+ EndIf
+ 
 ' PRUEBAS DE GRABACION DEL VECTOR ROLL es sencillo porque grabo todo
 ' o cargo todo,,
 ' https://www.freebasic.net/forum/viewtopic.php?f=2&t=26636&p=246435&hilit=array+load+save#p246435
@@ -3122,7 +3162,7 @@ EndIf ''' fin sc_END en lectura
         EndIf 
         duracion(Timer, relDur(RollDur) )
         Print #1,"RollDur ",RollDur
-       noteoff(cubyte(PianoNota),pmTk(0).canalsalida,k1,1,1)
+       noteoff(cubyte(PianoNota),40,pmTk(0).canalsalida,k1,1,1)
     EndIf  
    EndIf
  EndIf
@@ -3136,6 +3176,12 @@ EndIf ''' fin sc_END en lectura
         CTRL1063 ()
         comando=""
     End Select
+ EndIf
+ If MultiKey (SC_CONTROL) And MultiKey(SC_V) And trazovolumen=0 Then
+'' no funciona como se espera, por ahora se suspende modificar volumen en forma grafica
+''     trazovolumen=1
+ ''  '  VERVOLUMEN (Roll)
+ '''    VolumenGrafico  (c, Roll)
  EndIf
 ' --------------------------[NUCLEO]---------------------------
 
@@ -3528,10 +3574,12 @@ EndIf
     ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, pmTk(0).portout)
     Eco   (1,  pmTk(0).canalsalida,pmTk(0).portout)
     Chorus(1,  pmTk(0).canalsalida,pmTk(0).portout)
+        pmTk(0).vol=80
         noteon(cubyte(PianoNota),80,pmTk(0).canalsalida,pmTk(0).portout,1,1)
         duracion(Timer, relDur(Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur) )
-        
-        noteoff(cubyte(PianoNota),pmTk(0).canalsalida,portout,1,1)
+' PONEMOS VELOCIDAD DE CAIDA EN OFF 40 25-03-2026
+        pmTk(0).vol=40        
+        noteoff(cubyte(PianoNota),40,pmTk(0).canalsalida,portout,1,1)
 
 
 '----------
@@ -3964,7 +4012,6 @@ If (ScreenEvent(@e)) Then
 ' ********************************************************************************
 		Case	EVENT_MOUSE_MOVE
 		     MouseMove=1
-	
  ' ********************************************************************************
  ' ====================EVENT_MOUSE_BUTTON_RELEASE =========================== 
  ' ********************************************************************************
@@ -4334,7 +4381,7 @@ EndIf
   Case EVENT_KEY_REPEAT
    If e.scancode = 72  And trasponer= 0 Then ' <======= SC_UP
       deltaz=1
-    If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS  And trasponer=0 Then
+    If (COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS ) And trasponer=0 Then
      If s2=0 Then
       s2=1
     '     print #1,"pulso UP screenevent 2 inc_Penta"
@@ -4668,7 +4715,7 @@ EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI
         Dim As Integer im=0
         For im=1 To 4  
             noteon(60,60,1,0,1,1)
-            noteoff(60,1,0,1,1)
+            noteoff(60,0,1,0,1,1)
             duracion(Timer, (60/(tiempoPatron*PPQN)) / FactortiempoPatron)
         Next im
         threadmetronomo = ThreadCall metronomo()
@@ -6102,7 +6149,7 @@ Dim As Integer lcurpos,lnotacur,  resultado
         If resultado=0 Then
           noteon(cubyte(PianoNota),80,pmTk(0).canalsalida,k1,1,1)
           duracion(Timer, 1.0 ) '  un seg
-          noteoff(cubyte(PianoNota),pmTk(0).canalsalida,k1,1,1)
+          noteoff(cubyte(PianoNota),40,pmTk(0).canalsalida,k1,1,1)
         EndIf
      EndIf 
 '-------------
@@ -6319,7 +6366,7 @@ If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion si
           noteon(cubyte(PianoNota),80,pmTk(0).canalsalida,portout,1,1)
           duracion(Timer, relDur(RollDurOld) )
           Print #1,"RollDurOld ",RollDurOld
-          noteoff(cubyte(PianoNota),pmTk(0).canalsalida,portout,1,1)
+          noteoff(cubyte(PianoNota),40,pmTk(0).canalsalida,portout,1,1)
        EndIf
 
 

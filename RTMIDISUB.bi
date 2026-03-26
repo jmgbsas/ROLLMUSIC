@@ -220,7 +220,7 @@ End Sub
 
 
 ' 
-Sub noteoff(  note As UByte, canal As UByte,portsal As UByte,i1 As Integer,NroEvento As Integer ) 
+Sub noteoff(  note As UByte, vel As UByte,canal As UByte,portsal As UByte,i1 As Integer,NroEvento As Integer ) 
 ' canal 1
 ' 123 da note off para todas las notas solo hy qu eenvirlo a 
 'todoslos canales
@@ -234,10 +234,14 @@ Sub noteoff(  note As UByte, canal As UByte,portsal As UByte,i1 As Integer,NroEv
 		 modo = 128 '  80 en hexa  8nh
 	Else
 	  modo = 128 + canal
-  EndIf   	
+  EndIf 
+	If velmidi > 0 Then
+     vel=velmidi
+  EndIf
+  	
  message(1) = modo 
  message(2) = note ' 123 all note off, 124 omni mode off, 125, omni mode on, 126 mono mode on, 127 poly mode on
- message(3) = 0  
+ message(3) = vel  
 'note off es 8nh , n canal midi(0-f) o sea 80 en hexa es modo 128 canal 1
 ' canal 3 82 , 130  es igual a 128 +2  129 + canal !!!
 
@@ -926,13 +930,13 @@ Else
 'Print #1,"ARCHIVO DATOS EDICION MANUAL "
  
   If Compas(jply).nro = -1 Then
-    velpos=vfuerte * ajuste
+    velpos=vfuerte * ajuste  '120
   EndIf
   If Compas(jply).nro = -2 Then
-    velpos=vdebil  * ajuste
+    velpos=vdebil  * ajuste   '80
   EndIf
   If Compas(jply).nro = -3 Then
-    velpos=vsemifuerte * ajuste
+    velpos=vsemifuerte * ajuste '100
   EndIf
   If Compas(jply).nro = -4 Then
     velpos=vdebil * ajuste
@@ -1004,7 +1008,7 @@ If i1<= NA-13 Then
             NroEvento=NroEventoPista(1)
 
 '''Print #1,"noteoff CUByte(Notapiano),canal,portsal,1 "; CUByte(Notapiano),canal,portsal
-           noteoff CUByte(Notapiano),canal,portsal,1,NroEvento
+           noteoff CUByte(Notapiano),vel/2,canal,portsal,1,NroEvento
       EndIf    
 
 
@@ -2796,7 +2800,7 @@ partes=delta/TickChico
             
            
          Case 128 'off
-            noteoff dato2,pmTk(0).canalsalida,pmTk(0).portout,1,1 'message(2)'
+            noteoff dato2,dato3,pmTk(0).canalsalida,pmTk(0).portout,1,1 'message(2)'
  
      End Select
 
@@ -3045,7 +3049,7 @@ Dim As Integer partes , traba=0
              ChangeProgram ( tocaparam(canalDeGrabacion).patch, tocaparam(canalDeGrabacion).canal,tocaparam(canalDeGrabacion).portout )
       '    EndIf
 
-
+' podemos agregar mas codigos como pitchbend Ennn o 14nnn
      Select Case  dato1 
          Case 144 ' on
 ' DIFERENCIA HABIA UN CHANGGEPROGRAM EN 148 
@@ -3054,9 +3058,10 @@ Dim As Integer partes , traba=0
 '     Print   dato1;" ";  dato2;" "; dato3
            
          Case 128 'off
-            noteoff dato2,tocaparam(ntoca).canal,tocaparam(ntoca).portout,1,1 'message(2)'
+            noteoff dato2,dato3,tocaparam(ntoca).canal,tocaparam(ntoca).portout,1,1 'message(2)'
 ' DIFERENCIA 
 '     Print   dato1;" ";  dato2;" "; dato3
+         Case 224 ' pitch bend
 
      End Select
 
@@ -3339,11 +3344,11 @@ SetForegroundWindow(hwndMEDIA)
 
   If mov8 > 0  And  MOV_FLAG =1 Then 
     noteon(80,20,0,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
-    noteoff(80, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
+    noteoff(80,0, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
   Else
     If MOV_FLAG = 0 Then
      noteon(80,20,0,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
-     noteoff(80, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
+     noteoff(80,0, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
     EndIf
   EndIf
   
@@ -3662,7 +3667,7 @@ For jToca=comienzo To final ' se calcula al cargr los archivos de ejec EJE X POS
             noteon dato2,dato3,tocaparam(kply).canal, tocaparam(kply).portout, 1,1 'message(3) ' noter vel canal
            'Print #1,"ON ",dato2,dato3,pmEj(kply).canalsalida, pmEj(kply).portout
          Case 128 'off
-            noteoff dato2,tocaparam(kply).canal ,tocaparam(kply).portout,1,1 'message(2)'
+            noteoff dato2,dato3,tocaparam(kply).canal ,tocaparam(kply).portout,1,1 'message(2)'
            'Print #1,"OFF ",dato2,pmEj(kply).canalsalida ,pmEj(kply).portout  
      End Select
  

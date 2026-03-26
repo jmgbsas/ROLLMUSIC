@@ -32,9 +32,52 @@ On Error Goto errorhandler
 ' Y PATCH,ABRIR MIDI IN, TOCAR ALGO PARA VER SI ANDA MIDI.IN
 ' 4 GRABAR - REPRODUCIR  <- AHI DA SEGMENTAICON FAULT
 '----------------------------------------------------
-
+' buena pagina para codigos de control 5-Control Numbers https://www.tolaemon.com/docs/midi4.htm
+' agregaremos seleccion de bancos para mas sonidos 
+' 0x00 Control: Bank Select ( byte alto ) ( valor de 0 a 127 como 7 bits altos ): este número de 
+'control se utiliza como 7 bits altos del control de selección de banco ( el byte bajo es el 
+'control número 0x20 ). Por lo general los sintetizadores MIDI permiten seleccionar entre un total
+' de 128 instrumentos, que es el máximo que se puede codificar con el byte de datos del comando 
+'Program Change . No obstante podemos conmutar el banco de 128 instrumentos por otro banco con otros 
+'128 instrumentos utilizando los comandos Bank Select ( alto y bajo ) . De este modo , combinando 
+'los dos controles de Bank Select ( controles numero 0x00 y 0x20 ) podremos conmutar entre 
+'128 * 128 bancos, que junto con el comando Program Change nos permitirán seleccionar entre un total 
+'de 128*128*128 = 2097152 instrumentos. Como la mayoría de dispositivos no tienen más de 128 bancos 
+'de instrumentos, suele bastar con utilizar solo el control 0, el de Bank Select ( alto ) para 
+'conmutar de banco, dejando siempre a 0 el del control 0x20, es decir el de Bank Select ( bajo ) .
+' Cuando un equipo recibe el comando de cambio del control Bank Select conmuta el banco pero no ha 
+'de modificar el instrumento hasta que reciba el comando Program Change de modo que si queremos 
+'realizar un cambio de instrumento que se encuentra en otro banco primero deberemos enviar el comando 
+'para modificar el control Bank Select, y luego el comando Program Change, y no al reves. 
+' https://www.tolaemon.com/docs/midi1.htm
+'-------------------------------
+' falta el mapa de percusion El canal 10 está reservado a la percusión, 
+' y cada número de nota corresponde a un sonido. aca seria al reves quiero un sonido
+' el prog debe darme el nro de nota o sea en ve de notas CDEFGAB hay que poner nombres de
+' sonidos de percusion  https://www.eumus.edu.uy/eme/ensenanza/electivas/python/2020/GM.html 
+'https://academia-lab.com/enciclopedia/general-midi-nivel-2/
+' standard https://markus.com.ar/articulostecnicos/LosInstrumentosMIDI.html
+' da numeros http://midi.teragonaudio.com/tutr/bank.htm
+'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.361 MENU REPRODUCIR->5.0 AGREGAMOS *.MID"
+nroversion="0.362 Volumen manual del off en 40,0, o vol/2 segun el caso,  guardar el vol de una ejecucion desde teclado dato3, nombres instrumentos percucion"
+' SE AGREGO CUADRO DE PERCUSION EN INFO, UNA OCTAVA MAS DEFALT 3 A 8 EN VEZ DE 4 A 8 POR UN SOLO SONIDO
+' DE PERCISUON EN TECLA 35..
+' el siguiente sera bank select hay mas instrumentos basicos
+' LOS OFF TAMBIEN DEBEN TENER VELOCIDAD O VOLUMEN INDICANDO LA VELOCIDAD DE LA  CAIDA DEL SOMIDO
+' COMO EN EL ON LA VELOCIDAD INDICA LA RAPIDEZ CON QUE SE PULSARIA LO QUE DA MAS VOLUMEN
+' EN OFF UN ABRUPTO 0 CORTA EL SONIDO RAPIDO CON UN VALOR TARDA UN POCO AL REVES DEL ON
+' ES DECAIMIENTO, EN ON ES ELEVACION O ATAQUE  
+'0.362 VARIACIONES DE VOLUMEN DIBUJANDO SOBRE EL GRAFICO --SE SUSPENDE, EL GRAFICO ES
+' COMPLEJO SE LOGRO MODIFICAR VOLUMEN PERO HACE FALTA TENER EN CUNTA MAS COSAS Y LA RELACION
+' ENTRE EJES X E Y CON EL LUGAR DE LAS LINEAS DONDE SE DIPUJA EL ROLL ES AMBIGUA NO EXACTA
+' HABRIA QUE HACER TODO SOBRE OTRO GRAFICO..
+'0.362 TRATAREMOS DE COLOCAR VOLUMEN VARIABLE SOBRE LAS NOTAS DE UN ROLL DIBUJANDO
+' UNA LINEA SOBRE UNA OCTAVA ELEGIDA COMO REFERNCIA DE LIMITES SUPERIOR INFERIOR
+' MARCANTO 1 A 127 ESA ALTURA CUANDO PASE SOBRE UN TICK Y HALLA NOTAS SE LE MODIFICARA
+' EL VOLUMEN CON DICHO VALOR. PARA RESETEAR PONDREMOS UNA TECLA RAPIDA CTRL-V O ALT-V DE TODO
+' Y ESAS MISMAS TECLAS PERO CON UNA ZONA SOLO MODIFICARA ESE INTERVALO. SE PUEDE ENMUDECER
+' UNA ZONA CON ESTE METODO.[NO FUNCIONA COMO SE ESPERA TIENE DEFECTOS SE SUSPENDE]
 ' 0.358 CARGAR UNA SOLA PISTA EJEC (EN UN DIR CON MUCHAS) .PODRIAMOS MOVER ESA EJEC
 '   A OTRO DIRECTORIO O CREER UN DIR DENTRO DE ESE DIR Y DEJAR ESA SOLA EJECUCION Y USAR
 '   EL PROCEDIMIETNO DE CARGAR EL DIRECTORIO..pero bueno vamos a cargar como roll

@@ -2877,7 +2877,7 @@ kNroCol= Int(jply/NroCol)
          If Track(pis).trk(jply,i1).onoff= 1 Then
   '          NroEventoPista(pis)=NroEventoPista(pis) +1
   '          NroEvento=NroEventoPista(pis)
-            noteoff CUByte(Notapiano),canal,portsal,pis,NroEvento
+            noteoff CUByte(Notapiano),vel/2,canal,portsal,pis,NroEvento
          EndIf    
        EndIf
 
@@ -3080,7 +3080,7 @@ Print #1,"' ----------------------------------------",Spis
 Print #1,"'               P L A Y  U N O  S O L O"   ,Spis 
 Print #1,"'------------------------------------------",Spis
 ''CPlay = SI
-'ABRE PRTS PERO NO LOS CIERA
+'ABRE PUERTOS PERO ES NECESARIO QUE NO LOS CIERRE
 On Local Error GoTo PlaySoloError
 Dim  As Integer i1,NroEvento,Smayor
 Dim JSOLO As Integer '''LOCAL
@@ -3439,7 +3439,7 @@ velpos=vsemifuerte
          If SolX.trk(JSOLO,i1).onoff= 1 Then
         '    NroEventoPista(pis)=NroEventoPista(pis) +1
          '   NroEvento=NroEventoPista(pis)
-            noteoff CUByte(Notapiano),Scanal,Sportsal,Spis,NroEvento
+            noteoff CUByte(Notapiano),vel/2,Scanal,Sportsal,Spis,NroEvento
          EndIf    
        EndIf
 

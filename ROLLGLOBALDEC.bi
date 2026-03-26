@@ -13,6 +13,7 @@ Declare Sub CuadroVel ()
 Declare Sub CuadroDur ()
 Declare Sub CuadroVol ()
 Declare Sub CuadroKey ()
+Declare Sub CuadroPer ()
 
 Dim Shared As Integer cuentauxiliares=0
 'Declare Sub reproducir()
@@ -582,7 +583,7 @@ Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado,maxposTo
 Common Shared As cairo_t  Ptr c, c2
 Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer,threadmedia,threadsound
 Screenbuffer=0
-Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal
+Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal,threadPer
 Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro,threadKey
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
@@ -679,7 +680,187 @@ End Type
 Dim Shared  As rangoOct pmTk (), pmEj ()
 ReDim  pmTk (0 To 32)
 ReDim  pmEj (1 To 32)
+Type poli Field=1 ' para guardar la secuencia EN Tacks 15 bytes
+ dur    As UByte =0   ' duracion 
+ sonido   As UByte =0   ' SONIDO ON/OFF ? se usa?
+ canal  As UByte =0   '  
+ onoff  As UByte =0   ' nota on=2, nota off=1  
+ ejec   As UByte =0   ' marca viene de un ejec=1, no viene de ejec=0 
+ eco    As UByte =0   ' era dur6  
+ patch   As UByte =0   '  
+ nanchofig As UByte =0   '  
+ nota   As UByte =0 ' en un futuro contendra nota, octava, canal etc 
+ vol    As UByte =0 ' volumen
+ pan    As UByte =0 ' paneo
+ pb     As UByte =0 ' pitch bend
+ nnn    As UByte =0 ' se usa para escala canal etc 
+ tick   As UByte =0 ' 384 tiene la redonda 
+ acorde As UByte =0 ' 1 a 12 , son el se hara el sort    
+End Type
+' posn As Integer =0' de roll todavia no lo uso para generar secuencia
+' comentarios Para Futuro:
+' tick y posn seria para tener una relacion entre ticks los 128, y la posicin 
+' de roll, o sea  en que posicion o columna esta la nota en Roll
+' acorde, no se si seria necesario quiere indicar si hay o no un acorde
+' una forma de disminuir el algoritmo de lectura posterior....a verlo....
+Type sec
+ As poli trk(Any, any)
+End Type
+Type datsec Field=1
+ nota  As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
+ dur   As UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
+ vol   As UByte =0 ' volumen hasta 127 es volumen desde ahi es escala 128 a 255 =127 escalas
+ pan   As UByte =0 ' alteracion  bemoL o sostenido
+ pb    As UByte =0 ' acorde 201 202
+ inst  As UByte =0 ' instrumento para cada nota podra ser distinto 1 to 128
+ onoff As UByte =0 ' 2 on , 1 off
+End Type
+
+' datos roll encabezado 70 BYTES, solo campos ubyte
+Type rolldat Field=1 'con esto se define roll tendra pan,vol,nota,dur,pb,inst variables
+ x1    As UByte =0  'z.nota
+ x2    As UByte =0  'z.dur
+ x3    As UByte =0  'z.vol
+ x4    As UByte =0  'z.pan
+ x5    As UByte =0  'z.pb
+ tipoescala_num_ini As UByte 'z.inst
+ solo    As UByte ' z.onoff-------7---- si se reprroduce fuera de cancion, 
+ desde   As UByte =0 'zlim.nota 
+ hasta   As UByte =0 'zlim.dur
+ notaescala_num_ini As UByte =0   ' zlim.vol 
+ alteracion As UByte =0   'zlim.pan
+ notaold  As UByte =0 ' zlim.pb   
+ canalx   As UByte =0 'zlim.inst 
+ ejec    As UByte =0 'zlim.onoff ---- 14 xxxxx nuevo
+ patch    As  UByte =0 'z3.nota
+ portout As   UByte =0  'z3.dur
+ nanchofig  As UByte  =0   'z3.vol nanchofig*10 cuando lo uso lo dividopo 10
+ vol As UByte = 90 '''' librez3pan    As UByte =0  'z3.pan 90 default
+ TipoCompas  As UByte =0 'z3.pb
+ canalsalida As UByte =0 'z3.inst
+   librez3onoff     As UByte =0 'z3.onoff --- 21
+   librez4nota As UByte =0  'z4.nota
+   librez4dur As UByte =0  'z4.dur
+   librez4vol As UByte =0  'z4.vol
+ tiempoPatron1 As UByte=0 'z4.pan
+ tiempoPatron2 As UByte=0 'z4.pb
+   librez4inst As UByte =0 'z4.inst
+   librez4onoff As UByte =0 'z4.onoff ---28
+ eco    As UByte =0       'z5.eco  
+ pan    As UByte =0       'z5.pan
+ coro   As UByte =0 'z5.canalsalida repetido
+   libreportout     As UByte =0 'z5.portout repetido
+   librepatch       As UByte =0 'z5.patch repetido
+ pitchbend   As UByte =0 'z5.pitchbend
+ vibrato   As UByte =0   'z5.vibrato ---35
+'---vienen 35 ubyte
+ mas1 As UByte =0
+ mas2 As UByte =0
+ mas3 As UByte =0
+ mas4 As UByte =0
+ mas5 As UByte =0
+ mas6 As UByte =0
+ mas7 As UByte =0
+ mas8 As UByte =0
+ mas9 As UByte =0
+ mas10 As UByte =0
+ mas11 As UByte =0
+ mas12 As UByte =0
+ mas13 As UByte =0
+ mas14 As UByte =0
+ mas15 As UByte =0
+ mas16 As UByte =0
+ mas17 As UByte =0
+ mas18 As UByte =0
+ mas19 As UByte =0
+ mas20 As UByte =0
+ mas21 As UByte =0
+ mas22 As UByte =0
+ mas23 As UByte =0
+ mas24 As UByte =0
+ mas25 As UByte =0
+ mas26 As UByte =0
+ mas27 As UByte =0
+ mas28 As UByte =0
+ mas29 As UByte =0
+ mas30 As UByte =0
+ mas31 As UByte =0
+ mas32 As UByte =0
+ mas33 As UByte =0
+ mas34 As UByte =0
+ mas35 As UByte =0 
+End Type ' tambien se usa para el encabezado
+' el encabezado deberia ser distintos todos
+''202 ' codigo de exsitencia de cifrado en el cabezado
+' por cada 201 en el INTERESPACIO hay un 202 de una octava de roll , en track solo
+' existe el 202 en el encabezado
+' con esta info reconstruyo el acorde que luego muestro solo en la octava
+' la octava la se por donde esta el 201 no hace falta guardarla, peRo para pasarla a track si
+' hace falta!! 27-01-2022 -. YA INCORPORADO A TRACK
+' Lo maximo que uso son 8 posiciones para las octavas de 0 a 7 o 1 a 8 , como tengo 13
+' posiciones verticales en la ultima octava, me quedan 5 posiciones libres (13-8) y tambien
+' como la estructura dat tiene 6 (8 ahora) campos me quedan 7 campos en las 8 primeras ,acorde solo
+' usa una la pb (201 202)=56
+' y todas las 8 en las 5 siguietnes = 40 , +56 = 96 sitios donde poner informaicon para una posicion dada
+' las repeticiones las colocaremos en la 1era de la posicion libre o sea en este caso 
+' la posicion 98 como si fuera una octava 9 ficticia...las repeticiones no dependen de la
+' octava todas las pistas se repiten al unisono. solo hace falta inforamcion
+' arriba en al octava que no se usa. REVEEER ESTO NO SE ENTIENDE QUE PASA CON EL CAMBIO,,
+' ---------
+
+
+ ' Nota de escala son 12 ..bemol o sostenido son 2, 1 a 12 sostenidos, 13 a 24 bemoles
+ ' entonces en 24 numeros tengo la info de nota
+ ' octavas son 8 desde 15 a 20 son las octavas, 
+' canal son 16 de 21 a 36 ... etc etc pero no se hizo de esa forma... 
+ ''t   As Ulong   '  ticks por ahroa no 
+
+' dentro del vol pondre mos las escalas
+' chords http://www.looknohands.com/chordhouse/piano/ ahi hay 168 escalas..!!
+' en vol tengo desde 129 a 255 para numerar escalas. si faltan puedo usar pan o pb
+' la idea es poner en que escala esta cada nota o compas y asi poder tener cambios de escala
+' y construir los acordes que se quieran construir en esa escala de esea nota o del compas o 
+' la escala del ultimo cambio...por default la escala sera C mayor..la 129
+' Nombre de Nota de la escala C,C#,..B son 12 129 a 140, ocupara una posicion
+' de tick la mas chica usada es 6 asi que un retardo de 1 o 2 no afectara
+' o veo de saltar esos datos no tomandolo como tick sino de control 
+'''--------------------------------- nota vieja ----- ver si sirve 
+ ' Nota de escala son 12 ..bemol o sostenido son 2
+ ' entonces en 14 numeros tengo la info
+ ' 129 -> c,130->c#,131->d...140->B--, 141-sos,142,bemol
+ ''t   As Ulong   '  ticks por ahroa no 
+
+' dentro del vol pondremso las escalas
+' chords http://www.looknohands.com/chordhouse/piano/ ahi hay 168 escalas..!!
+' en vol tengo desde 129 a 255 para numerar escalas. si faltan puedo usar pan o pb
+' l aidea es poner en que escala esta cada nota o compas y asi poder tener cambios de escla
+' y construir los acordes que se quieran construir es esa escala de esea nota o del compas o 
+' la escala del ultimo cambio...por default la escala sera C mayor.. 
+' ---------------------------------fin nota vieja --------------- 
+Type inst
+ As datsec trk(Any, Any)
+End Type
+
+Type paso Field=1
+ Posi As Integer =0
+ nro  As Integer =0
+End Type
+
+Type pasa Field=1 
+  As cairo_t Ptr c
+  As inst Roll
+  As String  titulo = ""
+  As Integer ancho =0
+  As Integer alto=0
+  As Integer ubiroll=0
+  As Integer ubirtk=0
+  As Integer encancion=0
+  As Integer midionof=0
+End Type
+
 Common Shared portsal As UByte
 Declare Sub GrabaEventosMidiDirecto(f As integer)
 
- 
+Declare Sub VolumenGrafico (c As cairo_t Ptr, Roll As inst)
+Declare Sub barrePenta (c As cairo_t Ptr, Roll As inst)
+Declare Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst, ByRef ubiroll As Integer, ByRef ubirtk As Integer )

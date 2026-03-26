@@ -42,11 +42,12 @@ NADACARGADO    = TRUE
 CANCIONCREADA  = FALSE
 EJECCARGADA    = FALSE
 
-Dim Shared As HWND velimg, Figimg, FigVol, FigKey
+Dim Shared As HWND velimg, Figimg, FigVol, FigKey,FigPer
 Const IMAGE_VEL= 30
 Const IMAGE_FIG1 = 31
 Const IMAGE_FIG2 = 32
 Const IMAGE_FIG3 = 33
+Const IMAGE_FIGPER = 34 ' percusion
 
 Const As BOOLEAN HABILITAR = TRUE
 Const As BOOLEAN DESHABILITAR = FALSE
@@ -139,11 +140,11 @@ Sub CuadroVol()
 End Sub
 '---------
 Sub CuadroKey()
-               FigKey=  OpenWindow("Teclas Rapidas, keystroke  ",800,100,600,600  )
+               FigKey =  OpenWindow("Teclas Rapidas, keystroke  ",800,100,600,600  )
                ImageGadget(IMAGE_FIG3,10,10,1100,800,Load_image(".\recur\TECLAS_RAPIDAS.jpg"))
                #Ifdef __FB_WIN64__
                 SetFocus (FigKey) 
-               SetForegroundWindow(FigkEY)
+               SetForegroundWindow(FigKey)
                #Else
                   gtk_widget_grab_focus(GadgetID(IMAGE_FIG3))
                #EndIf
@@ -159,6 +160,27 @@ Sub CuadroKey()
    
 
 End Sub
+Sub CuadroPer()
+               FigPer=  OpenWindow("Teclas Rapidas, keystroke  ",600,100,900,600  )
+               ImageGadget(IMAGE_FIGPER,10,10,1100,800,Load_image(".\recur\PERCUSION.jpg"))
+               #Ifdef __FB_WIN64__
+                SetFocus (FigPer) 
+               SetForegroundWindow(FigPer)
+               #Else
+                  gtk_widget_grab_focus(GadgetID(IMAGE_FIGPER))
+               #EndIf
+          
+          
+           Do      
+              Var ePer= waitEvent
+              If ePer=EventClose Then
+                 Close_Window(FigPer)
+                 
+              EndIf
+           Loop
+   
+
+End Sub
 
 '------
 
@@ -167,7 +189,7 @@ Sub selInstORdenNum (ByRef instru As integer) ' NO TIENE EN CUENTA EL TIPO NI GR
 '   Exit Sub
 'EndIf
 Dim As hwnd haw,hwl
-Dim As Integer aa=0 ,paso=0,x=0, Posx,Posy ,x0,y0,i2 
+Dim As Integer aa=0 ,x=0, Posx,Posy ,x0,y0,i2 
 Dim As String cad
 ScreenControl GET_WINDOW_POS, x0, y0
 Posx=x0 +50
@@ -360,28 +382,6 @@ Sub  verayuda (  arch As string)
 ' correspondiente
 
 End Sub 
-'--------------------------------------FUNCIONES AUXILIARES PARA MIDI 
-
-' ----------------------------------------------------------
-' ******************************************************
-'' GRAN LABURO GRAN GRABAR A MIDI DIRECTAMENTE
-' ******************************************************* 
-Sub GrabarPistaEjecAmidi() ' PODRIA SER LA MAS FACIL YA QUE TIENE LA MELODIA Y TIEMPOS ORIGINALES ¿?
-
-End Sub
-
-Sub GrabarCancionEjecAmidi()
-
-End Sub
-
-Sub GrabarCancionRollAmidi() 'icluiria los Solos
-
-End Sub
-
-Sub GrabarTodoAmidi()
-
-End Sub
-
 
 '
 ' error

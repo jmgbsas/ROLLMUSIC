@@ -1,3 +1,6 @@
+-26-03-2026 0.362 Volumen ingreso manual del off en 40,0, o vol/2 segun el caso y guardar el vol en ejecucion 
+ desde teclado dato3, nombres instrumentos percucion en pantalla CTRL-H CTRLK cuadno se usa el canal 10
+ tambien se puede ver otras pistas que notas estan sonando cuando suena algun instrumento de percusion
 -22-03-2026 0.361 MENU REPRODUCIR->5.0 AGREGAMOS *.MID
 -21-03-2026 0.360 GRABA ROLL *.MID TIPO 0 CON MAS EFECTOS PAN, ECO, CORO, VOLUMEN.. 
 -20-03-2026 0.3591 y 2  FIX INTERVALO ZONA EL SEGUNDO NO SE MARCABA. Al elegir una zona

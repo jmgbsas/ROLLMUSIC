@@ -273,7 +273,7 @@ Declare Sub noteSimple	( pasoCol() As vec, cntold As integer, vel As UByte,canal
 'Declare Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As Double)
 'Declare Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As double)
 Declare Function vol (dura As UByte, vel As UByte) As ubyte
-Declare sub noteoff( note As UByte, canal As UByte,portsal As UByte,i1 As Integer,NroEventoPista As Integer )
+Declare sub noteoff( note As UByte, vel As UByte,canal As UByte,portsal As UByte,i1 As Integer,NroEventoPista As Integer )
 Declare Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
 Dim Shared As Integer ligaglobal=0 ', ligaglobalc (1 To 32)
 'Relacion de nR indice de Roll, con nsE semitono, para evitar calculos.
