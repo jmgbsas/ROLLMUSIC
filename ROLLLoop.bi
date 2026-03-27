@@ -3,6 +3,47 @@
 On  Error GoTo errorloopbas
 ''(c As cairo_t Ptr, ByRef nro As Integer, ByRef octava As Integer Ptr, InicioDeLectura As Integer)
 
+Sub VerTrack  ( Track() As sec ,numtk As Integer)
+' madar a pantalla un track particular sonbre el roll
+' seleccionar un numtk de un dialogo, luego
+  Dim As Integer i1,i2,i3,ultimaPianonota
+    
+  ReDim (RollAux.trk ) (1 To CantTicks, NB To NA ) ' 27-02 ÇÇÇ 
+  
+For i2 = 1 To pmTk(numtk).MaxPos 
+   For i1=1 To lim2 ' porque lim2 y no lim3??? porque solo las notas 
+      If Track(numtk).trk (i2,i1).nota > 0 and Track(numtk).trk(i2,i1 ).nota <=NA-13   Then '14-03-2022 na-13
+         PianoNota=Track(numtk).trk(i2,i1 ).nota
+         PianoNota= PianoNota + SumarnR (PianoNota) ' para 60 es 65
+         i3= PianoNota  ' JMG 4.3  65
+         RollAux.trk(i2,i3).nota = CUByte(12 -( i3 - (Int(i3/13))*13) )
+         RollAux.trk(i2,i3).dur  = Track(numtk).trk(i2,i1).dur
+         RollAux.trk(i2,i3).vol  = Track(numtk).trk(i2,i1).vol 'acava la vel origina de ejec
+         RollAux.trk(i2,i3).pan  = Track(numtk).trk(i2,i1).pan
+         RollAux.trk(i2,i3).pb   = Track(numtk).trk(i2,i1).pb
+         RollAux.trk(i2,i3).inst = Track(numtk).trk(i2,i1).nnn
+         RollAux.trk(i2,i3).onoff = Track(numtk).trk(i2,i1).onoff
+   If Track(numtk).trk (i2,i1).nota > 0 And Track(numtk).trk (i2,i1).onoff =2 Then 
+      ultimaPianonota=i3 
+   EndIf            
+      EndIf
+   Next i1
+
+   
+   If i2=pmTk(numtk).MaxPos  then 
+    Print #1," ///maxpos-1, nota  ", i2, ultimaPianonota
+      i3=ultimaPianonota
+      RollAux.trk(i2,i3).dur  = 182
+       RollAux.trk(i2,i3).nota =0 
+       RollAux.trk(i2,i3).vol  = 0
+       RollAux.trk(i2,i3).pan  = 0
+       RollAux.trk(i2,i3).pb   = 0
+       RollAux.trk(i2,i3).inst = 0
+       
+   EndIf
+Next i2
+
+End Sub     
 Sub creaPenta (c As cairo_t Ptr, Roll as inst )
 
 
@@ -203,7 +244,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
 ' no depende de las fle4chas es el barrido automatico de CreaPenta para mostrar
 ' lo que hay en este pedazo de secuencia, otra cosa es cursor que es voluntario
 ' para que el usuario se ubique en esos datos en el vector
-   n=0:indf=0:indfa=0:indfb=0
+   n=0:indf=0:indfa=0:indfb=0:indfaux=0
   
 ' ||||||||=============== FOR TICKS ========================>>>>>>>>>>>>>>>>
   For n = posishow To posishow + NroCol 
@@ -321,7 +362,8 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
   
  ' *po llega a 3 y cancela porque baja a 3?
 '  ESCRITURA DE NOTAS: ------->
-If n <= pmTk(0).MaxPos Then
+
+If n <=  pmTk(0).MaxPos Then
 
  If Roll.trk (n,11- semitono  + (*po -1) * 13 ).nota > 0  Or Roll.trk (n,11- semitono +  (*po -1) * 13 ).dur > 0 Or Roll.trk (n,11- semitono +  (*po -1) * 13 ).onoff > 0 Then
      ' print #1,"lugar ",11
@@ -373,12 +415,21 @@ If n <= pmTk(0).MaxPos Then
      indf= CInt(Roll.trk (n, 11- semitono + (*po-1) * 13).dur) 'semitono = 0 To 11
 ' mostraremos 11- nsE + (*po-1) * 13) en parametros 2 es el y
   '  print #1,"lugar ",13
+    If superposicion=SI And n <= pmTk(3).MaxPos Then
+      indfaux= CInt(RollAux.trk (n, 11- semitono + (*po-1) * 13).dur)
+    EndIf  
+
 ''''-------------------------------------------------------------------
 ''''-------------------------------------------------------------------    
     If (indf >= 1 And indf <= 185) Or indf=190  Then ' OLD REPUESTO12-03-2025 185=N roll sin duraciones
     Else
         indf=181
     EndIf ' t no puede quedar en un scope dsitinto se hace shared    
+    If (indfaux >= 1 And indfaux <= 185) Or indfaux=190  Then ' OLD REPUESTO12-03-2025 185=N roll sin duraciones
+    Else
+        indfaux=181
+    EndIf ' t no puede quedar en un scope dsitinto se hace shared    
+
     ''If Roll.trk (n, 11- semitono + (*po-1) * 13).dur=183 Then '26-feb2025
      ' Print #1,"UN 183 DETECTADO EN CREAPENTA, n ";n 
      '''  cairo_move_to(c, gap1 + ic * anchofig , Penta_y + (semitono+1 ) * inc_Penta - 4) 
@@ -400,6 +451,13 @@ If n <= pmTk(0).MaxPos Then
        Else
         t= figura(indf)
        EndIf
+If superposicion=SI And n <= pmTk(3).MaxPos Then
+       If indfaux = 181 Then
+        taux= "    "
+       Else
+        taux= figura(indfaux)
+       EndIf
+EndIf
      EndIf
  ' ////////dar color al font en una determinada posicion durante el play
     If n<=jply + 2 And n<=jply - 2 And Parar_De_Dibujar=NO Then 
@@ -408,6 +466,14 @@ If n <= pmTk(0).MaxPos Then
     If indf <> 181 Then ' esto acelera un monton 181 es vacio espacio no hay nada para mostrar
       cairo_show_text(c, t)
     EndIf
+If superposicion=SI And n <= pmTk(3).MaxPos Then
+    If indfaux <> 181 Then ' esto acelera un monton 181 es vacio espacio no hay nada para mostrar
+      cairo_set_source_rgba(c,1,0,1,1) 'me4dio violeta
+      cairo_show_text(c, taux)
+    EndIf
+    
+EndIf
+
 ' se elimina el cursos con las notas coloreadas durante el play es suficiente
  ' ' jmg 11-05-2021 1839 start
     If  n<=jply + 2 And n<=jply - 2 And ( play =SI Or playb=SI Or Cplay=SI ) And Parar_De_Dibujar=NO Then ' Parar_De_Dibujar 17-06-2022
@@ -863,9 +929,9 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
 '' no no es esto...lo que hace cancelar...
   Dim i As Integer
   
-  For i = desde To hasta ' 4 a 8 por omision
+  For i = desde To hasta ' 3 a 8 por omision
     nro = i 
-  ' si ahce falta ejecutar mas de un Penta podremos usar threads
+  ' si hAce falta ejecutar mas de un Penta podremos usar threads
   ' asi funciona mejor o no? igual debe esperar a que termine el thread
  ' NOOOO ScreenSync  no usar nunca sync desfasa el barrido de cairo y salta
  ' las lineas
@@ -1223,7 +1289,7 @@ Do  ' do nro 2
 
 
 If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CANCIONCARGADA   Or clickpista=1   Then 'And playb=NO
-
+'''superposicion=0 '' limpia la superposicion si la hay 
 'SACAMOS Or cargaCancion=CARGAR_NO_PUEDE_DIBUJAR LA CARGA TRACKA ROLL DE ACA NO LA NECESITAMOS
    If GrabarPenta=1 Then     'sale sin procesar
    Else   
@@ -1441,6 +1507,17 @@ If MultiKey(SC_LSHIFT) And MultiKey(SC_V)   Then ' ver parametros SIEMPRE ,,,rol
      menuNew= PARAMETROS_ROLL
 '  EndIf 
   Exit Do
+EndIf
+
+If MultiKey(SC_CONTROL) And MultiKey(SC_T) And superposicion=0 Then
+' en la GUI no se puede poner no funciona hace un error se vuelve loco que lo pario jajaja
+    
+  menuOldStr="[NUMTRAK]" 
+  thread3= ThreadCall EntrarTeclado()
+  ThreadWait thread3 
+  superposicion=SI
+  VerTrack(Track(), numtk)
+
 EndIf
 
 If MultiKey (SC_P) Then  
@@ -2535,7 +2612,7 @@ EndIf
 pun=0:silen=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
 SelGrupoNota=0:SelGrupoNotaT=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
 deltaip=0:incWheel=0:lockip=0:playloop=0:s6=0:s1=0:indicePosOld=0 :indicePosUltimaGrupo=0
-esEjecucion=0:indicePos=0
+esEjecucion=0:indicePos=0:superposicion=NO
 'anchofig=35
 'gap1= (anchofig* 2315)/1000  ' 81 default
 'gap2= (914 * gap1) /1000 ' 74 default
@@ -3177,12 +3254,12 @@ EndIf ''' fin sc_END en lectura
         comando=""
     End Select
  EndIf
- If MultiKey (SC_CONTROL) And MultiKey(SC_V) And trazovolumen=0 Then
+' If MultiKey (SC_CONTROL) And MultiKey(SC_V) And trazovolumen=0 Then
 '' no funciona como se espera, por ahora se suspende modificar volumen en forma grafica
 ''     trazovolumen=1
  ''  '  VERVOLUMEN (Roll)
  '''    VolumenGrafico  (c, Roll)
- EndIf
+' EndIf
 ' --------------------------[NUCLEO]---------------------------
 
 ' <<<<<<<<<<<<  detector notas >>>>>>>>>>>>>>>>>>>>

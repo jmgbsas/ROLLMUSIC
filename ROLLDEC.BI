@@ -119,7 +119,7 @@ Dim Shared As integer pasoZona2=0,nroRep=0,esEjecucion=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, playloop2=0,SelGrupoNota =0,moverZona=0, copiarZona=0,SelGrupoNotaT =0
 Dim Shared as ubyte  DUR,nota,notacur,suenaunavez=0
 ReDim Shared as ubyte  notasInsertadas (1 to 1500)
-Dim Shared As String t,t2
+Dim Shared As String t,t2, taux
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld, cursormove,notaoldmidi
 Dim shared As integer Penta_y, indice, espacio
 Dim shared as integer estoyEnOctava=1, estoyEnOctavaOld=1,backspace,fijarEspacio, offset,borrar,cambiadur
@@ -950,6 +950,7 @@ CantMin=15
 CantTicks=CantMin * PPQN * tiempoPatron ''si t=208 ->299520  ' 96*15*208
 ' a t=208 cantticks=86400*208/60=299520
 Dim Shared As inst Roll ' para visualizar y tocar
+Dim Shared As inst RollAux ' para ver un track superpuesto al Roll deberiamos escribir ambos Roll veremos si se puede
 ''' REDIM INICIAL TRACK 
 ReDim Shared Track  (0 To 32) As sec ' tracks para guardar,.. y tocar 
 
@@ -1004,7 +1005,6 @@ Dim Shared As notas_agregadas  undo_acorde(1 To 500, 0 To 11) ' undo para 1 acor
 '=============================================================
 ' ctres SERA DINAMICO A MEDIDA QUE SE ENTRA MAS NOTAS SE IRA EXTENDIENDO LAS POSICIONES
 '============== IMPLEMENTARLO AL FINAL 
-Dim Shared As inst RollAux
 common Shared As Integer  ANCHO,ALTO,ANCHOSYSTEM, ALTOSYSTEM
 Dim Shared As Integer   deltaip=0,scan_alt=0,scan_d=0,mueveHorizontalmayor50=0
 Dim Shared As Double   BordeSupRoll, inc_Penta,arranqueDo1=0
@@ -1013,7 +1013,7 @@ ibarre=desde
 Common Shared As FLOAT font
 Dim Shared As float  deltaipf=0, lockip=0 
 Dim Shared q As String * 1
-Dim Shared As UByte  ii,indf,indfa,s1, s2, s3, s4, s5,s6, s7 ,s8, s9,s10,s11
+Dim Shared As UByte  ii,indf,indfa,indfaux,s1, s2, s3, s4, s5,s6, s7 ,s8, s9,s10,s11
 Dim Shared As UByte numdurasmidi( 1 To 24)
 ''Dim Shared escala As float = 1.0
 Dim Shared translado As Integer = 1

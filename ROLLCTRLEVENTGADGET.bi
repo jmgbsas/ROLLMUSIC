@@ -732,24 +732,27 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
             EndIf
           menuOldStr="[VOLEJEC]"
           threadvol=threadCall EntrarTeclado()
-
+          ThreadWait threadvol
       EndIf 
 '--------------
       If  eventnumber()=BTN_EJEC_PAN Then 'PAN futuro
           menuOldStr="[PANEJEC]"
           threadpan=threadCall EntrarTeclado()
+          ThreadWait threadpan  
           Print #1,"sel pan Globalpan, ntkp ",Globalpan,ntkp  
 
       EndIf 
       If  eventnumber()=BTN_EJEC_ECO Then 'PAN futuro
           menuOldStr="[ECOEJEC]"
           threadpan=threadCall EntrarTeclado()
+          ThreadWait threadpan
           Print #1,"sel pan Globaleco, ntkp ",Globaleco,ntkp  
 
       EndIf 
       If  eventnumber()=BTN_EJEC_CORO Then 'PAN futuro
           menuOldStr="[COROEJEC]"
           threadpan=threadCall EntrarTeclado()
+          ThreadWait threadpan
           Print #1,"sel pan Globalcoro, ntk ",Globalcoro,ntkp  
 
       EndIf 
@@ -905,21 +908,25 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
       If  eventnumber()=BTN_ROLL_PAN Then 'PAN  REPRODUCCION HACIA LOS LADOS DERECHA IZQUIERDA,,,
           menuOldStr="[PAN]"
           threadpan=threadCall EntrarTeclado()
+          ThreadWait threadvol
           Print #1,"sel pan Globalpan, ntk ",Globalpan,ntk  
       EndIf
       If  eventnumber()=BTN_ROLL_ECO Then 'ECO ,,
           menuOldStr="[ECO]"
           threadeco=threadCall EntrarTeclado()
+          ThreadWait threadeco
           ''Print #1,"sel pan Globalpan, ntk ",Globalpan,ntk  
       EndIf
       If  eventnumber()=BTN_ROLL_CORO Then 'CORO ,,
           menuOldStr="[CORO]"
           threadcoro=threadCall EntrarTeclado()
+          ThreadWait threadcoro
           ''Print #1,"sel pan Globalpan, ntk ",Globalpan,ntk  
       EndIf
       If  eventnumber()=BTN_ROLL_VOL Then ' VOL 
           menuOldStr="[VOL]"
           threadvol=threadCall EntrarTeclado()
+          ThreadWait threadvol
 
       EndIf 
 

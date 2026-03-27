@@ -387,7 +387,7 @@ MenuItem(1068,MenName32,"Na/Habilitar Patrones",MF_UNCHECKED)
 MenuItem(1070,MenName4,"1.0 Escalas auxiliares ajustadas", MF_CHECKED)
 MenuItem(1071,MenName4,"2.0 Cifrado de Acordes", MF_CHECKED)
 MenuItem(1072,MenName4,"3.0 Separacion de Notas en pantalla de 1 en adelante  ")
-
+''cancela MenuItem(1073,MenName4,"4.0 Superponer en Track actual de una CANCION las notas de otro Track con otro color ")
 Menubar(MenName4)
 'MenuItem(1072,MenName4,"Na/Parametros de un archivo Roll  ")
 'MenuItem(1073,MenName4,"Na/Parametros de un archivo Track ")

@@ -365,6 +365,7 @@ Print #1,"**********************************************************************
              menuOldStr="[TEMPO]"
              nombreArchivo="0"
                thread3= ThreadCall EntrarTeclado()
+              ThreadWait thread3
       '        SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1025 ' <======== Crear un directorio de Cancion con Pistas separadas
@@ -499,11 +500,13 @@ Print #1,"**********************************************************************
              EndIf
             menuOldStr="[PAN]" 
             threadpan=threadCall EntrarTeclado()
+            ThreadWait threadpan
 Print #1,"///----SEL 1051 pan Globalpan ",Globalpan
              '''Paneo (GlobalPan,pmTk(ntk).canalsalida,pmTk(ntk).portout)
            Case 1052 ' REVERVERACION DE UN CANAL 
              menuOldStr="[ECO]"     
              threadeco=threadCall EntrarTeclado()
+              ThreadWait threadeco
              If abrirRollCargaMidi=2 Then
              SetForegroundWindow(hwnd)
              EndIf  
@@ -515,7 +518,8 @@ Print #1,"///----SEL 1052 ECO GlobalECO ",Globaleco
                 Sleep 2 
              EndIf
             menuOldStr="[CORO]" 
-            threadpan=threadCall EntrarTeclado()              
+            threadpan=threadCall EntrarTeclado()
+            ThreadWait threadpan              
 
 Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
 
@@ -605,16 +609,26 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
 
           SetForegroundWindow(hwnd)
            Case 1072
+              nombreArchivo="0"
               menuOldStr="[SEPARA]"
               thread3= ThreadCall EntrarTeclado()
+              ThreadWait thread3
+' CANCELA EN GUI     Case 1073 ' superponer un Track sobre el track actual en una cancion
+' esto permite ver la armonia entre dos tracks (podremos poner mas con otros colores-> violaceo (implementado), celeste, verde, amarillo )
+'             menuOldStr="[NUMTRAK]" 
+'             thread3= ThreadCall EntrarTeclado()
+'             ThreadWait thread3
+'             superposicion=SI  
+'             VerTrack(Track(), numtk)
 
            Case 1074 ''<== Parametros de Roll y Track(0) en memoria
-
+  
 '-----------------------------------------------------------------------
            Case 1080 ' tempo
               nombreArchivo="0"
               menuOldStr="[TEMPO]"
               thread3= ThreadCall EntrarTeclado()
+              ThreadWait thread3
              If abrirRollCargaMidi=2 Then
              SetForegroundWindow(hwnd)
              EndIf   
@@ -623,6 +637,7 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
               nombreArchivo="0"
               menuOldStr="[FACTOR]"
               thread3= ThreadCall EntrarTeclado()
+              ThreadWait thread3
              If abrirRollCargaMidi=2 Then
              SetForegroundWindow(hwnd)
              EndIf  
@@ -631,6 +646,7 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
               nombreArchivo="0"
               menuOldStr="[RITMO]"
               thread3= ThreadCall EntrarTeclado()
+              ThreadWait thread3
              If abrirRollCargaMidi=2 Then
              SetForegroundWindow(hwnd)
              EndIf  
@@ -700,6 +716,7 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
                 menuOldStr="[NROREP]"
                 nombreArchivo="0"
                 thread3= ThreadCall EntrarTeclado()
+                ThreadWait thread3
              Else
                MessBox ("Repeticiones", "Debe entrar una zona de campases, Ctrl-clik en comienzo y Ctrl-click final")
              EndIf
@@ -1024,11 +1041,13 @@ EndIf
              EndIf
             menuOldStr="[PANEJEC]" 
             threadpan=threadCall EntrarTeclado()
+            ThreadWait threadpan
 Print #1,"///----SEL 1209 pan Globalpan ",Globalpan
              '''Paneo (GlobalPan,pmTk(ntk).canalsalida,pmTk(ntk).portout)
            Case 1210 ' REVERVERACION DE UNA PISTA EJEC 
              menuOldStr="[ECOEJEC]"     
              threadeco=threadCall EntrarTeclado()
+              ThreadWait threadeco
              If abrirRollCargaMidi=2 Then
              SetForegroundWindow(hwnd)
              EndIf  
@@ -1040,7 +1059,8 @@ Print #1,"///----SEL 1210 ECO GlobalECO ",Globaleco
                 Sleep 2 
              EndIf
             menuOldStr="[COROEJEC]" 
-            threadpan=threadCall EntrarTeclado()              
+            threadpan=threadCall EntrarTeclado()
+            ThreadWait threadpan              
 
 Print #1,"///----SEL 1211 CORO Globalcoro ",Globalcoro
 '------------------------------------------------------------------

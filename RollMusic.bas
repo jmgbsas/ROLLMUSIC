@@ -60,7 +60,11 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.362 Volumen manual del off en 40,0, o vol/2 segun el caso,  guardar el vol de una ejecucion desde teclado dato3, nombres instrumentos percucion"
+nroversion="0.363 SUPERPONER EN FORMA VISUAL 2 TRACKS PARA VER SU HARMONIA "
+' SE  PUEDE HACER DE DOS FORMAS BARRER DOS TRACKS SOBRE ROLL UNO SERA EL EDITADO EL 
+'OTRO EL VISUAL
+' IDEA NUEVA MOSTRAR SUPERPUESTOS DOS PISTAS CON NOTASA EN DIFERENTE COLOR PARA VERLAS SIMULTANEMENTE
+' QUE CLASE DE ARMONIA HACEN,,LA INVITADA ESTARA EN VERDE O AMARILLO Y LA OTRA EN BLANCA..
 ' SE AGREGO CUADRO DE PERCUSION EN INFO, UNA OCTAVA MAS DEFALT 3 A 8 EN VEZ DE 4 A 8 POR UN SOLO SONIDO
 ' DE PERCISUON EN TECLA 35..
 ' el siguiente sera bank select hay mas instrumentos basicos

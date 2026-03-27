@@ -593,7 +593,7 @@ abrirRollCargaMidi=0
 Common Shared As String comando,titulosTk()
 Common Shared As ubyte patchsal, ritmo
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay,deltaz,guardaposnOffOld
-COMMON Shared As Integer MaxPos,MaxPosOrig,ntk,CPlay, guardopos,ntoca,ntkp,npi,npo,canalDeGrabacion,ntkcarga,ntkTAB
+COMMON Shared As Integer MaxPos,MaxPosOrig,ntk,CPlay, guardopos,ntoca,ntkp,npi,npo,canalDeGrabacion,ntkcarga,ntkTAB,numTk,maxisuper
 Common SHARED As Integer EstaBarriendoPenta,playb,play,playEj,playSolo
 Common Shared As Integer instancia,MICROSEGUNDOS_POR_NEGRA, VerMenu,MousexNotaElegida,PianoNotaElegida,nsEelegida
 Common Shared As Double STARTMIDI
@@ -864,3 +864,5 @@ Declare Sub GrabaEventosMidiDirecto(f As integer)
 Declare Sub VolumenGrafico (c As cairo_t Ptr, Roll As inst)
 Declare Sub barrePenta (c As cairo_t Ptr, Roll As inst)
 Declare Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst, ByRef ubiroll As Integer, ByRef ubirtk As Integer )
+
+Common shared As Integer numtrack,superposicion

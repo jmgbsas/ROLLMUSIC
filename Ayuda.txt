@@ -1,6 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-    0.362 Volumen ingreso manual del off en 40,0, o vol/2 segun el caso y guardar el vol de una ejecucion 
+    0.363 SUPERPONER EN FORMA VISUAL 2 TRACKS PARA VER SU HARMONIA
     desde teclado dato3, nombres instrumentos percucion en pantalla CTRL-H CTRLK cuando se usa el canal 10
     tambien se puede ver otras pistas que notas estan sonando cuando suena algun instrumento de percusion
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
@@ -533,6 +533,10 @@
      19) Mostrar o Ocultar (CTRL-H, CTRL-K) los nombres de los instrumentos para las notas correspondientes
          cuando se usa canal 10 de percusion en una pista. Tambien se puede ver otras pistas que notas
          estan sonando cuando suena algun instrumento de percusion. 
+     20) CTRL-T - PIDE UN NUMERO DE TRACK EN UNA CANCION PARA SUPERPONER SOLO VISUALMENTE
+       EN OTRO COLOR (EL DE PLAY) PARA COMPARAR Y VER ARMONIA ENTRE 2 TRACKS
+       (podriamos poner varios tracks superpuestos con distintos colores..VEREMOS)  
+       RESETEAMOS CON TECLA Q
 
     IV ) USO VENTANA CONTROL, ENTRE VARIAS COSAS  GRABA EJECUCIONES POR TECLADO MIDI,
        

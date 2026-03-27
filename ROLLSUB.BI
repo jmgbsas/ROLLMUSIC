@@ -5627,6 +5627,12 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
       'pmEj(ntk).tipocompas=pmTk(ntkp).tipocompas 
       ''por omision ritmo=1, 4/4
       RecalCompas(ritmo)
+  Case "[NUMTRAK]"
+    default=Str(1)
+    ''Print #1,"llego a NUMTRAK en entrar tecla",NombreArchivo 
+    default= InputBoxJmg("Track superpuesto " ,"Entre un Numero de Track ",default, ES_MULTILINE + ES_AUTOVSCROLL,0  )
+    numTk= CInt(default) 
+    
 
   Case "[GEN]" '' muy bien funciona!!!
 ' generamos para escala mayor
