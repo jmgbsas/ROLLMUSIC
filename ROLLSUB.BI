@@ -3325,9 +3325,12 @@ Sleep 100
      If posn < 0 Then posn=0 EndIf
      ' crgamos limites Roll de octavas
 'carga en la pista ntk, si ntk es cero coincide y se puede cargar solo en cero
-     desde  = CInt(dat.desde) 'Variable global
+'desde hasta sera nfijos por ahora 3  8
+   ''  desde  = CInt(dat.desde) 'Variable global
+     desde=3
      Print #1,"desde ",desde
-     hasta  = CInt(dat.hasta) ' global
+   ''  hasta  = CInt(dat.hasta) ' global
+     hasta=8 
      Print #1,"hasta ",hasta
      notaold= CInt(dat.notaold) 'global
 
@@ -5248,11 +5251,11 @@ End Function
 
 
 Sub CambiarDim(redi As Integer)
-     NB => 0 + (desde-1) * 13   ' 39 para 4
+     NB => 0 + (desde-1) * 13   ' 39 para 4 26 para 3
      NA => 11 + (hasta-1) * 13  ' 102 para  8
      pmTk(0).NB= NB
      pmTk(0).NA= NA     
-
+' Track no necesita redimensionar por octava 
 ' hacemos un redim preserve por default
      *po=hasta-1
      Print #1,"CambiarDim desde ";desde;" hasta ";hasta;" *po ";*po;" NB ";NB;" NA ";NA
@@ -5260,12 +5263,12 @@ Sub CambiarDim(redi As Integer)
      '''CantTicks=CantTicks +  DurXTick(DUR) -1
 If redi=1 Then 
      ReDim  Preserve (Roll.trk ) ( 1 To CantTicks, NB To NA)
-     ReDim  Preserve (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
+    ''' ReDim  Preserve (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
      ReDim  Preserve compas(1 To CantTicks)
 
 Else
      ReDim  (Roll.trk ) ( 1 To CantTicks, NB To NA)
-     ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
+    ' ''ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
      ReDim  compas(1 To CantTicks)
 
      Print #1,"FIN CAMBIARDIM  else" 
@@ -6479,7 +6482,8 @@ cargaCancion=CARGAR_NO_PUEDE_DIBUJAR '12-02-2022 mientras carg las pista el 1 in
 clickpista=SI 'abre tab una sola vez y se posiciona en pista 1
 'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  05-mar-2024 veremos
 'mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0 
-      
+      SetGadgetText(TEXT_TOPE, Str(maxpostope))
+grabariniciotxt(NombreCancion, CANCION)
 End Sub
 
 ' ---------------------------------
@@ -7169,7 +7173,7 @@ Print #1, "SELCANAL canalx "; canalx
 
           If event=eventgadget Then
             If eventnumber()=2 And InStr(cad,"x") >0 Then
-            '  canalx = GetItemListView() ' sirve para el roll actual en edicion
+              canalx = GetItemListView() ' sirve para el roll actual en edicion
            ' get itme va de 0 a 15 no ahce falta convertir 
 ' esto sirve para cambia rdinamicamente el canal midi mientras tocamos, perp tambien
 ' si grabamos el archjivo se grabara y pisara la info de midi canal en el archio
@@ -7411,8 +7415,9 @@ End Sub
 '-------
 Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer) 
 Dim As hwnd haw,hwl
-Dim As Integer aa ,pasoc=0,x  
+Dim As Integer aa ,pasoc=0,x  ,i1
 Dim listoctava(1 To 9) As string ={"0","1","2","3","4","5","6","7","8"}
+Dim cad As String
 
 For x= 1 To 2 
 '' => desde acaecho con tool del ruso no anda muy bien
@@ -7456,7 +7461,18 @@ Dim As Integer i
          Do
 
          Var eventC= waitEvent
-
+          If eventC=EventLBDown Then ' 26-02-2022
+            If EventNumberListView=1 Then
+               i1 = GetItemListView() +1
+               cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)           
+               If InStr(cad,"x")>0 Then
+                 cad="[ ] " +listoctava(i1) +"-"+Str(i1)  
+               Else  
+                 cad="[x] " +listoctava(i1) +"-"+Str(i1)
+               EndIf
+               ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
+           EndIf
+        EndIf
           If eventC=eventgadget Then
             If eventnumber()=2 Then
 '              menunew=0

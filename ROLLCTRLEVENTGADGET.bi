@@ -893,12 +893,10 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
      If  eventnumber()=BTN_ROLL_PORTSAL  And cierroport= 0 Then
          Dim As Integer miport =1, pis=0,num=0
          cierroport=1 ' asi entra una sola vez,,,
-
-          If PISTASROLLSELECCIONADA=0 Then
-              Exit Select 
-          EndIf 
-
+          If PISTASROLLSELECCIONADA=1 Then
             pis=GetItemListBox(PISTASROLL) +1 ' DEVUELVE A PARTIR DE CERO
+          EndIf     
+
             ntk=pis
 ' miport=1 estamos seleccionadno port de salida , de entrada es 2 midi in
          '   If  num > 0 Then  ' se chequeop una pista no importa cual
@@ -926,7 +924,7 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
       If  eventnumber()=BTN_ROLL_VOL Then ' VOL 
           menuOldStr="[VOL]"
           threadvol=threadCall EntrarTeclado()
-          ThreadWait threadvol
+          ''ThreadWait threadvol
 
       EndIf 
 
@@ -1007,12 +1005,9 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
 
       If  eventnumber()=BTN_ROLL_CANAL Then
          Dim  as Integer num = 0  , instrum =0 ,k=0
-          If PISTASROLLSELECCIONADA=0 Then
-              Exit Select 
-          EndIf 
-
+          If PISTASROLLSELECCIONADA=1 Then
             k=GetItemListBox(PISTASROLL) +1 ' DEVUELVE A PARTIR DE CERO
-  
+          EndIf     
             If K=0 Then 
               ntk=0
             EndIf

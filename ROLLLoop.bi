@@ -468,7 +468,7 @@ EndIf
     EndIf
 If superposicion=SI And n <= pmTk(3).MaxPos Then
     If indfaux <> 181 Then ' esto acelera un monton 181 es vacio espacio no hay nada para mostrar
-      cairo_set_source_rgba(c,1,0,1,1) 'me4dio violeta
+      cairo_set_source_rgba(c,0,1,1,1) 'me4dio violeta
       cairo_show_text(c, taux)
     EndIf
     

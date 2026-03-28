@@ -1,11 +1,11 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-    0.363 SUPERPONER EN FORMA VISUAL 2 TRACKS PARA VER SU HARMONIA
-    desde teclado dato3, nombres instrumentos percucion en pantalla CTRL-H CTRLK cuando se usa el canal 10
-    tambien se puede ver otras pistas que notas estan sonando cuando suena algun instrumento de percusion
+    0.364 VARIOS FIXES CANAL, LOOP SIN PISTAS SELECCIONADAS TERMINACION ANTICIPADA
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
-      
+      Falta probar con canciones largas..se probara cuando se puede cargar un archivo midi
+      tipo 1...o hacer algo largo asi no mas ..con as modificaciones ultimas habria que
+      probar varias cosas de nuevo para ver si tuvo impacto..
      INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
        RollMusic.exe y todas los archivos *.dll. 

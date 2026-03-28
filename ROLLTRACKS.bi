@@ -649,22 +649,23 @@ Print #1,"NombreCancion,nomobre, CantTicks ";NombreCancion,nombre, CantTicks
       CheckBox_SetCheck(cbxsolo(ntk),1) ' kokon 
    EndIf
      ' crgamos limites Roll de octavas
-
+' ponemos octavas fijas por ahora 
      Get #ct, , grabaLim
-     pmTk(ntk).desde  = CInt(grabaLim.nota)
-     pmTk(ntk).hasta  = CInt(grabaLim.dur) '01-03 cint
-     desde=pmTk(ntk).desde
-     hasta=pmTk(ntk).hasta
-     If desde=0 Then 
-       desde=4
+   '  pmTk(ntk).desde  = CInt(grabaLim.nota)
+   '  pmTk(ntk).hasta  = CInt(grabaLim.dur) '01-03 cint
+   '  desde=pmTk(ntk).desde
+   '  hasta=pmTk(ntk).hasta
+      desde=3:hasta=8 
+'     If desde=0 Then 
+'       desde=3 ''4
 pmTk(ntk).desde=desde 'kuku
-       messbox("CARGA TRACK DESDE","esta en cero el  track "+Str(ntk))   
-     EndIf
-     If hasta=0 Then 
-        hasta=8
+    '''   messbox("CARGA TRACK DESDE","esta en cero el  track "+Str(ntk))   
+'     EndIf
+'     If hasta=0 Then 
+'        hasta=8
 pmTk(ntk).hasta=hasta 'kuku
-messbox("CARGA TRACK HASTA","esta en cero el  track "+Str(ntk)) 
-     EndIf
+'''messbox("CARGA TRACK HASTA","esta en cero el  track "+Str(ntk)) 
+'     EndIf
 
      Print #1,"ntk desde, hasta",ntk, desde, hasta
      pmTk(ntk).notaold= CInt(grabaLim.pb)
@@ -737,7 +738,7 @@ Print #1,"EN CARGATRACK PATCH ",pmTk(ntk).patch
   '  portout parte de 0 o sea 0 1 2 3 '
   ' un portout 2 significa 2 dispositivos 1 2 
   ' luego si portsout = 2  then portout maximo es 1
-    MessageBox( null, "MIDI-OUT "+ Str(portout)+ " INEXISTENTE CAMBIELO", "Se cambia a 1", MB_OK )
+    MessageBox( null, "MIDI-OUT "+ Str(portout)+ " INEXISTENTE CAMBIELO GRABE CON ROLL=> TRACK ", "Se cambia a 1", MB_OK )
     portout = 0
     pmTk(ntk).portout=0
    EndIf
@@ -1436,7 +1437,7 @@ Dim midsal As  RtMidiOutPtr
     print #1,"numero de pista tope =",tope
 
    tope = tope + 1
-
+   maxposTope=Tope
    If tope <= 32 Then
       ntk=tope
    Else    
@@ -1564,6 +1565,7 @@ EntrarNombrePista (pistanueva, hwndC)
    tope=tope+1
    If tope <= 32 Then
       ntkcarga=tope ' LA NUEVA
+      maxposTope=tope
    Else    
       Exit Sub   
    EndIf
@@ -1860,7 +1862,7 @@ Next i1
 pmTk(ntk).MaxPos=MaxPos
 'copio a track ntk,los parametros en Roll 0
 ' recive, entrega
-copiarPmtkaPmtk(ntk,0)
+copiarPmtkaPmtk(ntk,0)  ''DESDE ROLL 0 RECIBE TRACK NTK
 
  '  Print #1,"hasta 1054 TracjaRoll ",hasta 
 If pmTk(0).patch > 0 Then
@@ -2450,7 +2452,7 @@ Print #1,"'               P L A Y   C A N C I O N"
 Print #1,"'------------------------------------------"
 CPlay = SI
 On Local Error GoTo PlayCancionError
-Dim  As Integer i1,NroEvento
+Dim  As Integer i1,NroEvento, setocasolo, setocapista
 
 ReDim  MidiDatos (1 To tope) As miditxtsalida 
 ReDim  NroEventoPista(1 To tope )
@@ -2518,9 +2520,9 @@ PARAR_PLAY_MANUAL=NO
 PARAR_PLAY_EJEC=NO    
 playloop=NO:playloop2=NO
 ' 1------------de playall fin---------
-
+ 'maxposTope de inicio.txt
 ' los nombres ya fueron cargados al inicio
-Print #1,"TOPE ", tope
+Print #1,"TOPE, maposTope ", tope,maxposTope
 Print #1,"abriendo ports....play cancion "
 
 Dim As Integer k1,i
@@ -2564,7 +2566,7 @@ Dim As Integer comienzo=1, final=0, vel=100,velpos =0,cntrepe=0,final2=0,comienz
 ' ojo si cambioaamos por mas octavas debo cambiar, igual el nro de tracks 32 
 ''Dim pasoCol (0 To 384) As vec  ' entrada de durciones a medida que barro una columna
 '------------determinamos el MAxPos de toda la cancion o sea la pista de mayor longitud
-mayor=pmTk(1).MaxPos
+mayor=maxposTope        'pmTk(1).MaxPos
 For i0=1 To Tope 
 Print #1,"CANCION ntk MAXPOS "; pmTk(i0).MaxPos
   If InStr(LCase(TitulosTk(i0)),".solo") = 0 Then
@@ -2638,7 +2640,7 @@ Dim As Integer cntRtk,cntSolo,cnt_pistas_cancion_suenan
 ' <=========CHEQUEOS PREVIOS DE LAS PISTAS ========>
 Print #1, "Tope encancion " ,Tope
 
- For pis=1 To tope
+ For pis=1 To tope '' EFECTOS
   Print #1, "\\=>veo chequeos pis, CheckBox_GetCheck( cbxnum(pis)) ", pis, CheckBox_GetCheck( cbxnum(pis))  
 ' escribimos salidamidi
     If MIDIFILEONOFF = HABILITAR  Then 
@@ -2735,7 +2737,7 @@ For jply=comienzo To final
 ' cambio de inst para la pista, podria poner mas de un instrumento por pista
 ' o por cada nota.. 
 ' VER DE PONER LOS INSTRUMENTOS EN TRACK
-   If PARAR_PLAY_MANUAL = SI Then
+   If PARAR_PLAY_MANUAL = SI Then  ' no es esto
       For i3 = 1 To tope
        portsal=CInt(pmTk(i3).portout) 
        alloff(pmTk(i3).canalsalida,portsal) 
@@ -2761,21 +2763,28 @@ kNroCol= Int(jply/NroCol)
   For pis =1 To tope ' loop de pistas rtk
     If CheckBox_GetCheck( cbxsolo(pis))= 1 Then
          sonidoPista(pis)=0
+         setocasolo=setocasolo+1
          Continue For ' saltea no tocar pero la toca playsolo 
     EndIf      
  
     If CheckBox_GetCheck( cbxnum(pis))= 1 Then
        ' tocar
          sonidoPista(pis)=1
+        setocapista=setocapista+1
     Else
       If MIDIFILEONOFF = HABILITAR Then
       Else
     '   mandar off a todas las notas de la pista silenciada 
         alloff( pmTk(pis).canalsalida,CInt(pmTk(pis).portout) )
-        sonidoPista(pis)=0       
+        sonidoPista(pis)=0
         Continue For ' saltear no tocar
       EndIf 
     EndIf 
+    if setocapista=0 then
+       PARAR_PLAY_MANUAL = SI ' no hay nada que tocar 
+  MessageBox( null, "TOCAR CANCION "+ Str(Tope)+ " NINGUNA PISTA SELECIONADA PARA TOCAR", "Seleccione alguna ", MB_OK )
+    endif        
+
     ajuste=pmTk(pis).vol/127
 ''''Print #1,"PISTA AJUSTE ",pis, ajuste
     If Track(pis).trk(1,1).ejec = 1 Or pmTk(pis).ejec = 1 Then ' VIENE DE UNA EJEC ,,NO VAMAS ESTO SE CAMBIA VOL EN TODOS LADOS
@@ -2806,10 +2815,10 @@ kNroCol= Int(jply/NroCol)
  '  print #1,"--loop de pistas---pista NRO :";pis;" --------------------------------"
  '  print #1,"  De esta pista MAXPOS ,final",pmTk(pis).MaxPos, final
     limsup=UBound (Track(pis).trk,2)
-    If limsup < lim2 Then
+    If limsup < lim2 Then ' no es esto
           Exit For 
     EndIf  
-    If pis > tope Then
+    If pis > tope Then ' no es esto
        Exit For
     EndIf
 
@@ -2836,8 +2845,9 @@ kNroCol= Int(jply/NroCol)
 ' info del inst en 1 no en lim2   
 
  'Print #1,"FOR -- RECORRIDO DE NOTAS DE PISTA", pis
-
+'''If jply <= final  Then ' tocamos una pista mientras que tenga datos
    If jply <= pmTk(pis).MaxPos Then ' tocamos una pista mientras que tenga datos
+
      For i1=1 To lim3   'lim3 decia coo voy de 1 a lim2 necesito que la info del int este en 1
        If i1<= lim2  And (pis <= tope Or pis<=32) Then
          If (Track(pis).trk(jply,i1).nota >= NBpiano) And (Track(pis).trk(jply,i1).nota <= NA) And (Track(pis).trk(jply,i1).dur >=1) And (Track(pis).trk(jply,i1).dur <= 180) Or Track(pis).trk(jply, i1).dur <= 183 Or Track(pis).trk(jply, i1).dur <= 185 Then ' es semitono
@@ -2956,7 +2966,7 @@ kNroCol= Int(jply/NroCol)
   Sleep 1,1 ' para que corranmas de un thread
 
 Next jply
-
+'/////////////////////////////F I N  L O O P //////////////////
 If MIDIFILEONOFF = HABILITAR Then 
     Dim As Double TiempoAcumNew
      Dim As Integer T1

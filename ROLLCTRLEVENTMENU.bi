@@ -376,10 +376,18 @@ Print #1,"**********************************************************************
     '      SetForegroundWindow(hwnd)        
 '-----------------------------------------------------------------------
            Case 1028 ' <========== seleccion octavas menores a 1 9 
-               seloctava (desde, hasta)
+               thread3 = threadcall seloctava (desde, hasta)
+               ThreadWait thread3 
                *po = hasta -1
                 posn=1
-                Nuevo (Roll,1 )
+           ''     ReDim As dat Preserve roll(1 To maxpos, NB To NA)
+                NB => 0 + (desde-1) * 13   
+                NA => 11 + (hasta-1) * 13 
+               For p1 As UByte = 0 To Tope
+                  pmTk(p1).desde=desde
+                  pmTk(p1).hasta=hasta
+               Next p1  
+               CambiarDim(1)
                 param.ubiroll=ubiroll
                 param.ubirtk=ubirtk
 

@@ -377,7 +377,7 @@ If ejecutar=EJECUCION Then
      EndIf
      If LCase(estado) = "maxpos" Or LCase(estado)="maxgrb"  Then ''' decia "maxgrb"
         maxgrb=arch
-        maxcarga=maxgrb
+        maxcarga=arch
         maxpos=arch
      EndIf 
  
@@ -445,7 +445,7 @@ For i1=1 To tocatope
 Next i1 
 Print #ini, tiempoPatronEjec; ","; "tiempoPatronEjec"
 If maxposTope > maxgrb Then maxgrb=maxposTope
-Print #ini, maxgrb;","; "maxgrb"
+Print #ini, maxgrb;","; "maxgrb"  ' maxgrb es para ejecuciones, maxpos para rtk
 End If
 
 If ejecutar=CANCION Then

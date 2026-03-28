@@ -1920,6 +1920,9 @@ If encancion > 0 Then
    If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
        GrabarRollaTrack(0,0)
    EndIf
+'COPIAR EN MEMORIA LA TRASPOSICION AL TRACK CORRRSPONDIENTE
+
+   RollaTrack (Track(), ntk,Roll) ''27-03-2026
 EndIf       
 
 

@@ -303,7 +303,7 @@ End Sub
 Sub cargarDirectorioCancion (ByRef NombreCancion As string)
 ''Dim pathdir As string
     SetForegroundWindow(hwndc)
-NombreCancion = ShellFolder( "Seleccionar Carpeta de Cancion", CurDir())
+NombreCancion = ShellFolder( "Seleccionar Carpeta de Cancion", CurDir(),BIF_NEWDIALOGSTYLE   )
 
 SetWindowText(hwndC, "RollMusic Cancion: " + NombreCancion)
 
