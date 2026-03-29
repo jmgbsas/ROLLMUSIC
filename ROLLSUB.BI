@@ -6454,7 +6454,7 @@ Print #1,"inicia CargaPistasEnCancion"
         If maxpostope< pmTk(ntk).Maxpos Then 'DEBE PERAMNECER EN DIFERENTES LLAMADAS
            maxpostope= pmTk(ntk).Maxpos
         EndIf
-
+        clickpista=SI
  'durante la cargaTrack el programa va a Rolloop se encuentra con SC_TAB
  ' y si cargacancion esta en 1 trata de cargar y no lo debe ahcer de modo
  ' que se ajusta a 0 cargacancion dentro de la rutina veremos 
@@ -6480,10 +6480,12 @@ cargaCancion=CARGAR_NO_PUEDE_DIBUJAR '12-02-2022 mientras carg las pista el 1 in
     Print #1,"FIN CargaPistasEnCancion no debe calcuar *po ",*po
     Print #1,"-------------------------------------------------------"
 clickpista=SI 'abre tab una sola vez y se posiciona en pista 1
+
 'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  05-mar-2024 veremos
 'mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0 
       SetGadgetText(TEXT_TOPE, Str(maxpostope))
 grabariniciotxt(NombreCancion, CANCION)
+
 End Sub
 
 ' ---------------------------------

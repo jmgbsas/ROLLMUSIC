@@ -2082,7 +2082,7 @@ Globalvol=pmTk(ntk).vol
    'print #1,"TrackaRoll, NB, NA, CantTricks", NB,NA, CantTicks
 ' redim de ROLL de Visualizacion , para ello  
    ''  Parar_De_Dibujar=SI 
-     Sleep 10 ' para que surja efecto la detencion ,,,   
+ ''    Sleep 10 ' para que surja efecto la detencion ,,,   
   'If  ntk= 0 Then
  ' Else
    Erase Roll.trk , compas
@@ -2124,14 +2124,14 @@ Print #1, "// trckaroll redim Roll MaxPos ",MaxPos
    inicioDeLEctura=0
    *po=pmTk(ntk).hasta -1
    
-print #1,"TrackaRoll desde, hasta ", desde , hasta
-print #1,"TrackaRoll NB, NA ,*po, MaxPos ", NB , NA, *po,MaxPos
-Print #1,"1106 en trackaRoll numero de track ntk ",ntk
-print #1, "ubound (Track(ntk).trk,2) ", ubound (Track(ntk).trk,2)
-print #1, "ACA VIENE EL ERROR ? "
-print #1, "lbound (Track(ntk).trk,2) ", LBound (Track(ntk).trk,2)
-print #1," va a ejecutar for de copia de TrackaRoll"
-Print #1," pmTk(ntk).MaxPos ",pmTk(ntk).MaxPos
+''print #1,"TrackaRoll desde, hasta ", desde , hasta
+''print #1,"TrackaRoll NB, NA ,*po, MaxPos ", NB , NA, *po,MaxPos
+''Print #1,"1106 en trackaRoll numero de track ntk ",ntk
+''print #1, "ubound (Track(ntk).trk,2) ", ubound (Track(ntk).trk,2)
+''print #1, "ACA VIENE EL ERROR ? "
+''print #1, "lbound (Track(ntk).trk,2) ", LBound (Track(ntk).trk,2)
+''print #1," va a ejecutar for de copia de TrackaRoll"
+''Print #1," pmTk(ntk).MaxPos ",pmTk(ntk).MaxPos
 Dim As Integer ultimaPianonota
 ' 1) carga de Roll desde track ntk
 vertical=12+(hasta-2)*13+hasta ' "[NROREP]" de EntrarTeclado
@@ -2193,7 +2193,7 @@ For i2 = 1 To pmTk(ntk).MaxPos
 Next i2
  Print #1," ///maxpos ", pmTk(ntk).MaxPos 
 
-Sleep 5
+''''Sleep 5
 ' [[[[[ JMG 15-01-2022 ACA DEBO COPIAR EL CAMPO DE CONTROL DE LIM3 EL 13 !!!! ]]]]] 
 Dim  As Integer k,vacio
 For i2=1 To pmTk(ntk).MaxPos-1
@@ -2210,7 +2210,7 @@ For i2=1 To pmTk(ntk).MaxPos-1
   EndIf  
 Next i2
 '
-Sleep 5
+''''Sleep 5
 
 'copiar info de acordes de track a Roll ,.,,,
 For i2=1 To pmTk(ntk).MaxPos-1
@@ -2238,7 +2238,7 @@ For i2=1 To pmTk(ntk).MaxPos-1
 
   Next i1    
 Next i2
-Sleep 5
+''''Sleep 5
 ' ajuste de notas no usadas con 0, si uso 181 no se puede cargar notas
 ' el 181 es durante la carga para evitar retrocesos en la carga de notas
 ' y poder entrar acordes
@@ -2346,7 +2346,7 @@ If funcion<> "saltoTAB" then
 EndIf
   print #1,"TrackaRoll Fin,,maxpos y (ntk).maxpos ", maxpos,pmTk(ntk).MaxPos
 print #1,"-----------------Fin TrackaRoll-----------------"
-Sleep 100
+''''Sleep 100
 
 Exit Sub 
 

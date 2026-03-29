@@ -583,7 +583,7 @@ Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado,maxposTo
 Common Shared As cairo_t  Ptr c, c2
 Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer,threadmedia,threadsound
 Screenbuffer=0
-Common Shared as any ptr thread1, thread2,threadPenta,thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal,threadPer
+Common Shared as any ptr thread1, thread2,threadPenta,threadcreaPenta, thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal,threadPer
 Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro,threadKey
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
@@ -601,10 +601,11 @@ Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, interva ,valorpan '  default 2 que es 1 separacion de notas
 Common Shared As Integer valoreco, valorcoro,valorvol
 common Shared As integer tiempoPatron
-common Shared As integer tiempoPatronEjec,BACKUP
+common Shared As integer tiempoPatronEjec,BACKUP, pulsotab
 BACKUP=NO
 tiempoPatron=60
 tiempoPatronEjec=60
+pulsotab=0
 VerMenu=1
 playSolo=NO
 CPlay=NO
@@ -865,4 +866,6 @@ Declare Sub VolumenGrafico (c As cairo_t Ptr, Roll As inst)
 Declare Sub barrePenta (c As cairo_t Ptr, Roll As inst)
 Declare Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst, ByRef ubiroll As Integer, ByRef ubirtk As Integer )
 
-Common shared As Integer numtrack,superposicion
+Common shared As Integer numtrack,superposicion, nnn
+nnn=0
+Declare Sub TABTAB()

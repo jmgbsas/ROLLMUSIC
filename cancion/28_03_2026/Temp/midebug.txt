@@ -1,0 +1,112 @@
+start
+PID DE ESTE PROCESO          204
+03-28-202601:15:22
+__FB_ARGV__   71126848
+__FB_ARGC__    2
+__FB_ARGC__    2
+arg  0 = 'C:\IT64\AREA\ROLLMUSIC_RUN\RollMusic.exe'
+arg  1 = 'C:\IT64\AREA\ROLLMUSIC_0363\cancion\PANECO\Temp\[01]PIANOLA - copia.rtk'
+ubirtk         68
+ubiroll        0
+arg  2 = ''
+instancia, ix                1             3
+C:\IT64\AREA\ROLLMUSIC_0363\cancion\PANECO\Temp\
+NB, NA        -13           -2
+TEST param.ubiroll           0
+TEST titulosTk(0)           C:\IT64\AREA\ROLLMUSIC_0363\cancion\PANECO\Temp\[01]PIANOLA - copia.rtk
+gap1           46
+nanchofig      0
+portsin  5
+portsout 9
+USB Midi Cable 0
+loopMIDI Port 1
+loopMIDI Port 1 2
+loopMIDI Port 2 3
+loopMIDI Port 3 4
+-----------------------------
+CoolSoft MIDIMapper 0
+Microsoft GS Wavetable Synth 1
+VirtualMIDISynth #1 2
+VirtualMIDISynth #2 3
+USB Midi Cable 4
+loopMIDI Port 5
+loopMIDI Port 1 6
+loopMIDI Port 2 7
+loopMIDI Port 3 8
+abrirPortoutEjec abriendo port.... 
+abrirPortoutEjec midiout     0            CoolSoft MIDIMapper 0
+abro          CoolSoft MIDIMapper 0
+RTMIDI_ERROR_WARNING, sin importancia
+cALL rOLLLOOP III)
+3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0)                        C:\IT64\AREA\ROLLMUSIC_0363\cancion\PANECO\Temp\[01]PIANOLA - copia.rtk
+///3 ubiroll ubirtk          0             68
+TEST ROLLLOOP param.ubiroll                0
+titulosTk(0)  C:\IT64\AREA\ROLLMUSIC_0363\cancion\PANECO\Temp\[01]PIANOLA - copia.rtk
+//////////////midionof  0
+C:\IT64\AREA\ROLLMUSIC_0363\cancion\PANECO\Temp\secuenciaPLAY.txt abierta!
+----------------------------------------------
+1) CargarTrack nombre, ntk=               C:\IT64\AREA\ROLLMUSIC_0363\cancion\PANECO\Temp\[01]PIANOLA - copia.rtk              0
+1) UBIRTK QUE LLEGA          68
+nombre track  C:\IT64\AREA\ROLLMUSIC_0363\cancion\PANECO\Temp\[01]PIANOLA - copia.rtk
+NTK Y nombre que llego a open en CargaTrack              0            C:\IT64\AREA\ROLLMUSIC_0363\cancion\PANECO\Temp\[01]PIANOLA - copia.rtk
+MaxPos ntk     0             0
+CantTicks  86400
+Carga Track tipoescala_num_ini             1
+NombreCancion,nomobre, CantTicks          C:\IT64\AREA\ROLLMUSIC_0363\cancion\PANECO\Temp\[01]PIANOLA - copia.rtk              86400
+ntk desde, hasta             0             4             8
+Carga Track notaescala_num_ini             1
+alteracion    sos
+cargatrack pmTk(ntk).canalsalida, ntk     0              0
+PORTOUT, NTK 0               0
+EN CARGATRACK PATCH         1
+VOLUMEN CARGADO DESDE ARCHIVO PARA EL TRACK             0
+2 instru en cargar track  1
+cargartrack maxpos, ntk  :   3784          0
+CLOSE ct CERRO TRK NRO ct    0             14
+armarescala desde cargar Track tipoescala_num_ini        1
+cargaTrack cadena_inicial   C  D  E  F  G  A  B  
+cargaTrack tipoescala_inicial             mayor
+ patch ntk canal            0              0            0
+CargarTrack  fin
+----------------------------------------------
+CARGATRACK ntk,VEO EJEC pmTk(ntk).ejec  0 1
+CARGATRACK ntk,VEO EJEC Track(ntk).trk(1,1).ejec  0     0
+-------------ARRANCA TRACKAROLL---------------------------------
+NTK Y nombre que llego a TrackaRoll        0            C:\IT64\AREA\ROLLMUSIC_0363\cancion\PANECO\Temp\[01]PIANOLA - copia.rtk
+(ntk).maxpos   3784
+instru en TrackaRoll         1
+// trckaroll redim Roll MaxPos             3784
+CANCION NO CARGADA EN TRACKAROLL
+ROLL NO CARGADO EN TRACKAROLL, maxpos      3784
+TrackaRoll desde, hasta      4             8
+TrackaRoll NB, NA ,*po, MaxPos             39            102           7             3784
+1106 en trackaRoll numero de track ntk     0
+ubound (Track(ntk).trk,2)    25
+ACA VIENE EL ERROR ? 
+lbound (Track(ntk).trk,2)    1
+ va a ejecutar for de copia de TrackaRoll
+ pmTk(ntk).MaxPos            3784
+ ///maxpos-1, nota           3784          65
+ ///maxpos     3784
+cargaCancion DEBE SER 1      1
+NTK del copiado aca esta el lio, Y MAXPOS EN REDIM       0             3784
+CARGA DE  TRACK(0)
+FIN CARGA DE  TRACK(0)
+TrackaRoll Fin,,maxpos y (ntk).maxpos      3784          3784
+-----------------Fin TrackaRoll-----------------
+fin RecalCompas ok 
+ COMEDIT en space play ???   1
+playb  Cplay MaxPos CANCIONCARGADA         0             0             3784         false
+ENTRA POR COMEDIT<>LECTURA a play ???
+CANCIONCARGADA = TRUE And Cplay=NO        false          0
+llama a playall
+' ----------------------------------------
+'               P L A Y  A L L
+'------------------------------------------
+abriendo port....play All
+pORT SALIDA YA ABIERTO EN PLAYALL
+comienzo playaLL ==========> tiempoPatron =              240           FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          0.25
+TickUsuario  0.002604166666666667
+midiout       0             CoolSoft MIDIMapper 0
+desmarco      CoolSoft MIDIMapper 0

@@ -411,7 +411,7 @@ EndIf
             maxcarga=maxgrb 
          EndIf
          SetGadgetText(TEXT_TOPE, Str(maxcarga)) 
-         Sleep 5000 ' QUIERO VER SI LO LLENA  
+      '''   Sleep 5000 ' QUIERO VER SI LO LLENA  
 ' para una sola pista grabada el maxgrb es el maxpos de esa pista
          If  maxgrb > 0 And ntoca > 1 Then
            If  maxgrb <  tocap.maxpos Then ' para cada pista se define tocap de nuevo  

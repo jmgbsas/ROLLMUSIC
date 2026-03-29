@@ -936,9 +936,9 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
  ' NOOOO ScreenSync  no usar nunca sync desfasa el barrido de cairo y salta
  ' las lineas
     '' ScreenSync ' a ver si aca es mejor....
-     creaPenta (c, Roll )
-      
-
+     threadcreaPenta = ThreadCall creaPenta (c, Roll )
+    SetThreadPriority(threadcreaPenta , 32 )
+     ThreadWait threadcreaPenta 
     If *po = 99 then ''''saco esto no se porque 03-11-2025 Or *po=3 Then
        *po = hasta -1 ' 8 por ejemplo => *po=7
        
@@ -1156,14 +1156,14 @@ EndIf
 
 Dim  As UByte   huboerror  
 Dim  As integer contid=0 ' 1 to 24 maximo son 12 on y 12 off en acorde
-Dim  As Integer nroPartesNota,nnn=0
+Dim  As Integer nroPartesNota'',nnn=0
 ' -----------------
 
 edity1 = 1 ' botton Edit bordeSup
 edity2 = 50 ' botton Edit bordeInf
 
 ''''stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
-Do ' nro 1 1060
+Do ' nro 1 1166
 ''arranquedo1=Timer
 
 '' Create a cairo drawing context, using the FB screen as surface.
@@ -1204,7 +1204,7 @@ Else
           If suenaunavez=1 Then Sleep 400:suenaunavez=0 EndIf 
           inc_Penta = Int((ALTO -1) /40) - deltaip
 ' ----------------------------------------------------------------------------
-          cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nomeafecta
+      '''    cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nomeafecta
 '---------------------------------------------------------------
 '---------<======= ESCALAS AUXILIARES INSERCION ================>
 ' --------------------------------------------------------------
@@ -1286,107 +1286,28 @@ Do  ' do nro 2
 '  playAll  play=0 y lo mismo en PlayAll no usar PlayCancion si esta
 ' ejecutando PlayAll de unsa sola pista...
 'Print #1,"1062  DO2 ROOLLOOP DESDE GrabarPenta "; desde,GrabarPenta
+''#define THREAD_PRIORITY_LOWEST         // -2  
+''#define THREAD_PRIORITY_BELOW_NORMAL   // -1
+''#define THREAD_PRIORITY_NORMAL         // 0
+''#define THREAD_PRIORITY_HIGHEST        // + 2
+''#define THREAD_PRIORITY_ABOVE_NORMAL   // + 1
+''#define THREAD_PRIORITY_TIME_CRITICAL  // 15 or 31
+''#define THREAD_PRIORITY_IDLE           // 1 or 16
 
+''''If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CANCIONCARGADA   Or clickpista=1   Then 'And playb=NO
+If pulsotab=1 And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CANCIONCARGADA   Or clickpista=1   Then 
+   thread3= threadcall TABTAB() '''GetCurrentThread()
+' - 1: lowest
+'  - between 2 and 15: below normal 
+'  - 16:  normal
+'  - between 17 and 30: above normal
+'  - 31: highest
+'  - 32: time critical
+pulsotab=0
+ SetThreadPriority(thread3 , 32 ) ''THREAD_PRIORITY_HIGHEST ) 
 
-If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CANCIONCARGADA   Or clickpista=1   Then 'And playb=NO
-'''superposicion=0 '' limpia la superposicion si la hay 
-'SACAMOS Or cargaCancion=CARGAR_NO_PUEDE_DIBUJAR LA CARGA TRACKA ROLL DE ACA NO LA NECESITAMOS
-   If GrabarPenta=1 Then     'sale sin procesar
-   Else   
-''SC_TAB USA NTK GLOBAL PERO AL CARGAR O COPIAR UNNU EVO TRACK SE NECESITA OTRO NOMBRE
-' PARA APUNTAR A NTK ntkcarga por ejemplo
-   cargaCancion=NO_CARGAR_PUEDE_DIBUJAR ' para que no entre mas luego de cargada la cancion
-   s5=0  '11-06-2022
-   Erase mel_undo, undo_acorde, undo_kant_intervalos
-   mel_undo_k=0: ig=0:cnt_acor=0
-   ROLLCARGADO = FALSE
- '  print #1,"--TAB "
-   nota=0
-   dur=0
- '  print #1,"TAB 1- NTK,MAXPOS, pmtk(ntk).maxpos  clickpista ", ntk,maxpos,pmTK(ntk).maxpos, clickpista
-   If clickpista=1 Then
- '    Print #1,"no incrementea ntk, EL NTK SALE DEL NOMBRE  DE LA PISTA"
-     clickpista=0
-     ntkTAB=ntk ' UN NTK QUE VIENE DEL CLICK EN UNAPISTA DE PISTAROLL
-     nombre=titulosTk(ntk)
-'    Print #1,"TAB1.1 ntk, ntkTAB, nombre, POR CLICK PISTA ", ntk,ntkTAB, nombre 
-   Else
-     ntk = ntk + 1
-     ntkTAB=ntk
-     nombre= titulosTk(ntk)
- '    Print #1,"Incrementa ntk, nombre ", ntk ,nombre
-   EndIf
- 
-  If nombre > "" Then
- '    print #1,"--------------------------"
- '    print #1,"TAB 2-NTK nombre", ntk,nombre
- '    print #1,"TAB 3-NTK MAXPOS pmtk(ntk).maxpos  ", maxpos,pmTK(ntk).maxpos
- '    print #1,"--------------------------"
-   EndIf 
-  If ntk > 32 Or ntk > tope Then
-     ntk=0 
- '    print #1,">TAB 2A- 1- NTK=0 empieza el circulo,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
-     Exit Do      
-   EndIf
-   
-   
-' evita leer track vacios   
-   If nombre=""  Then ' evita revisar track vacios
-     Do While nombre=""
-        ntk=ntk+1
-        If ntk>32 Or ntk > tope Then
-           ntk=1
-           nombre= titulosTk(ntk)
- ' print #1,"TAB 4 - NTK, pmtk(ntk).maxpos  ", ntk,pmTK(ntk).maxpos    
-           Exit Do
-        EndIf
- 
-        nombre= titulosTk(ntk)
-     Loop
-     ntkTAB=ntk  
-  EndIf
-
-     posicion=1 ' 14.-03-2022
-     MaxPos=pmTk(ntk).MaxPos
-     posn=pmTk(ntk).posn
-''Print #1," TAB POSN, NTK ", posn,ntk
-  
-     desde=pmTk(ntk).desde
-     hasta=pmTk(ntk).hasta
-     NB=pmTk(ntk).NB
-     NA=pmTk(ntk).NA
-     portout=pmTk(ntk).portout 'solo debe servir para play de pista
-     notaold = CInt(pmTk(ntk).notaold)
-
-
-     patchsal=pmTk(ntk).patch
-     instru=CInt(patchsal)   
-     Globalpan=pmTk(ntk).pan
-     Globaleco=pmTk(ntk).eco
-     Globalcoro=pmTk(ntk).coro
-
-' ajusto escala principal durante la conmutacion para cada track visualizado con TAB     
-     notaescala_num_ini=CInt(pmTk(ntk).notaescala) '13-01-2022
-     tipoescala_num_ini= CInt(pmTk(ntk).tipoescala) '13-01-2022
-     cadenaes_inicial="" '13-01-2022
-     armarescala cadenaes_inicial,tipoescala_num_ini,notaescala_num_ini,alteracion,1 '13-01-2022
-' todavia no probado, escala principal para TAB en cada track testeat 13-01-2022     
-' no he grabado las escalas auxiliares en lso Trackc todavia !! 13-01-2022 jjj     
-''     print #1,"TAB 5- MAXPOS final TAB " ,maxpos
-
-     
-'
-
-'   print #1, "TAB 6-NTK nombre", ntk,nombre  
-'   print #1, "TAB 6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, MaxPos,pmTK(ntk).maxpos
-' copia track(NTK) a Roll VISUAL en memoria que no se usa en playcancion  
-' el segundo parametro es canal no se usa...lo saco o lo dejo?
-  Tracks (ntk , 1,Roll) ' track , nro,  Canal, copia track a Roll en memoria
-  '' da error igual aca no hace falta ->RecalCompas()
-'Print #1,"14-sleep ";Timer
-'    Print #1,"TAB 7- instancia, maspos ",instancia, maxpos
-   RecalCompas(ritmo) 
-   EndIf
+   ThreadWait thread3
+   Exit Do
 EndIf
 
 If MultiKey(SC_CONTROL) And MultiKey(SC_M)  Then ' modificar con X o insertar con Insert y I
@@ -4158,7 +4079,21 @@ If (ScreenEvent(@e)) Then
    EndIf
 ' ********************************************************************************
   Case EVENT_KEY_PRESS    ' <======== KEY PRESS PULSO =====================================================
-' ********************************************************************************       
+' ********************************************************************************
+If e.scancode = SC_TAB  And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CANCIONCARGADA   Or clickpista=1   Then
+   pulsotab=1
+''   thread3= threadcall TABTAB() '''GetCurrentThread()
+' - 1: lowest
+'  - between 2 and 15: below normal 
+'  - 16:  normal
+'  - between 17 and 30: above normal
+'  - 31: highest
+'  - 32: time critical
+''SetThreadPriority(thread3 , 30 ) ''THREAD_PRIORITY_HIGHEST ) 
+''   ThreadWait thread3
+   Exit Do
+
+End If        
 /'   If e.scancode = SC_P   Then ' 25 anda mejor q con multikey
       PARAR_PLAY_MANUAL=SI
       PARAR_PLAY_EJEC=SI
@@ -4456,6 +4391,7 @@ EndIf
 '=============PULSAR MUCHO TIEMPO ======= REPEAT ==================================================
 ' **********************************************************************************
   Case EVENT_KEY_REPEAT
+
    If e.scancode = 72  And trasponer= 0 Then ' <======= SC_UP
       deltaz=1
     If (COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS ) And trasponer=0 Then
@@ -4702,8 +4638,6 @@ EndIf
 '---------------------------------------
 
 
-
-	
        
  End Select
 EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI 
@@ -7093,14 +7027,20 @@ Exit Do ' este exit do hace que ande el menu!!!
  
 Loop 'do nro 2 1168
 nnn=nnn+1
-If nnn=20 And MAXPOS < 800 Then ' que loopee mas en el lop mas interno solo salga menos al loop externo
+If nnn=100  Then ' que loopee mas en el lop mas interno solo salga menos al loop externo
    nnn=0
   Exit Do
 EndIf
-If nnn=100 And MAXPOS > 800 Then ' que loopee mas en el lop mas interno solo salga menos al loop externo
-   nnn=0
-  Exit Do
-EndIf
+' DECIA 20 PUSE 10
+'If nnn=20 And MAXPOS < 800 Then ' que loopee mas en el lop mas interno solo salga menos al loop externo
+'   nnn=0
+'  Exit Do
+'EndIf
+' DECIA 100
+'If nnn=40 And MAXPOS > 800 Then ' que loopee mas en el lop mas interno solo salga menos al loop externo
+'   nnn=0
+'  Exit Do
+'EndIf
 
 If fueradefoco=SI  And (play = NO) and (playb=NO) And (Cplay=NO) Then
 
@@ -7116,9 +7056,11 @@ While InKey <> "": Wend
 'Reset (0)
 
 
-Loop 'do 1060 nro 1
+Loop 'do 1166 nro 1
 
 Exit Sub 
+
+
 
 fail:
  Dim errmsg As String
@@ -7138,6 +7080,111 @@ End If
 
 
 End sub
+'-------------------------------------------------------------------
+Sub TABTAB ()
+
+'''superposicion=0 '' limpia la superposicion si la hay 
+'SACAMOS Or cargaCancion=CARGAR_NO_PUEDE_DIBUJAR LA CARGA TRACKA ROLL DE ACA NO LA NECESITAMOS
+   If GrabarPenta=1 Then     'sale sin procesar
+   Else   
+''SC_TAB USA NTK GLOBAL PERO AL CARGAR O COPIAR UNNU EVO TRACK SE NECESITA OTRO NOMBRE
+' PARA APUNTAR A NTK ntkcarga por ejemplo
+   cargaCancion=NO_CARGAR_PUEDE_DIBUJAR ' para que no entre mas luego de cargada la cancion
+   s5=0  '11-06-2022
+   Erase mel_undo, undo_acorde, undo_kant_intervalos
+   mel_undo_k=0: ig=0:cnt_acor=0
+   ROLLCARGADO = FALSE
+ '  print #1,"--TAB "
+   nota=0
+   dur=0
+ '  print #1,"TAB 1- NTK,MAXPOS, pmtk(ntk).maxpos  clickpista ", ntk,maxpos,pmTK(ntk).maxpos, clickpista
+   If clickpista=1 Then
+ '    Print #1,"no incrementea ntk, EL NTK SALE DEL NOMBRE  DE LA PISTA"
+     clickpista=0
+     ntkTAB=ntk ' UN NTK QUE VIENE DEL CLICK EN UNAPISTA DE PISTAROLL
+     nombre=titulosTk(ntk)
+'    Print #1,"TAB1.1 ntk, ntkTAB, nombre, POR CLICK PISTA ", ntk,ntkTAB, nombre 
+   Else
+     ntk = ntk + 1
+     ntkTAB=ntk
+     nombre= titulosTk(ntk)
+ '    Print #1,"Incrementa ntk, nombre ", ntk ,nombre
+   EndIf
+ 
+  If nombre > "" Then
+ '    print #1,"--------------------------"
+ '    print #1,"TAB 2-NTK nombre", ntk,nombre
+ '    print #1,"TAB 3-NTK MAXPOS pmtk(ntk).maxpos  ", maxpos,pmTK(ntk).maxpos
+ '    print #1,"--------------------------"
+   EndIf 
+  If ntk >= 32 Or ntk >= tope Then
+     ntk=0 
+ '    print #1,">TAB 2A- 1- NTK=0 empieza el circulo,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
+     Exit SUB      
+   EndIf
+   
+   
+' evita leer track vacios   
+   If nombre=""  Then ' evita revisar track vacios
+     Do While nombre=""
+        ntk=ntk+1
+        If ntk>=32 Or ntk >= tope Then
+           ntk=1
+           nombre= titulosTk(ntk)
+ ' print #1,"TAB 4 - NTK, pmtk(ntk).maxpos  ", ntk,pmTK(ntk).maxpos    
+           Exit Do
+        EndIf
+ 
+        nombre= titulosTk(ntk)
+     Loop
+     ntkTAB=ntk  
+  EndIf
+
+     posicion=1 ' 14.-03-2022
+     MaxPos=pmTk(ntk).MaxPos
+     posn=pmTk(ntk).posn
+''Print #1," TAB POSN, NTK ", posn,ntk
+  
+     desde=pmTk(ntk).desde
+     hasta=pmTk(ntk).hasta
+     NB=pmTk(ntk).NB
+     NA=pmTk(ntk).NA
+     portout=pmTk(ntk).portout 'solo debe servir para play de pista
+     notaold = CInt(pmTk(ntk).notaold)
+
+
+     patchsal=pmTk(ntk).patch
+     instru=CInt(patchsal)   
+     Globalpan=pmTk(ntk).pan
+     Globaleco=pmTk(ntk).eco
+     Globalcoro=pmTk(ntk).coro
+
+' ajusto escala principal durante la conmutacion para cada track visualizado con TAB     
+     notaescala_num_ini=CInt(pmTk(ntk).notaescala) '13-01-2022
+     tipoescala_num_ini= CInt(pmTk(ntk).tipoescala) '13-01-2022
+     cadenaes_inicial="" '13-01-2022
+     armarescala cadenaes_inicial,tipoescala_num_ini,notaescala_num_ini,alteracion,1 '13-01-2022
+' todavia no probado, escala principal para TAB en cada track testeat 13-01-2022     
+' no he grabado las escalas auxiliares en lso Trackc todavia !! 13-01-2022 jjj     
+''     print #1,"TAB 5- MAXPOS final TAB " ,maxpos
+
+     
+'
+
+'   print #1, "TAB 6-NTK nombre", ntk,nombre  
+'   print #1, "TAB 6-NTK ntk,MAXPOS, pmtk(ntk).maxpos  ", ntk, MaxPos,pmTK(ntk).maxpos
+' copia track(NTK) a Roll VISUAL en memoria que no se usa en playcancion  
+' el segundo parametro es canal no se usa...lo saco o lo dejo?
+  Tracks (ntk , 1,Roll) ' track , nro,  Canal, copia track a Roll en memoria
+  '' da error igual aca no hace falta ->RecalCompas()
+'Print #1,"14-sleep ";Timer
+'    Print #1,"TAB 7- instancia, maspos ",instancia, maxpos
+   RecalCompas(ritmo) 'ERROR VISUAL SI SE SACA  
+   EndIf
+
+
+End Sub
+
 '-------------------------------------------------------------------
 Sub  RefacturarPista() 'automatico
 FileFlush (-1)

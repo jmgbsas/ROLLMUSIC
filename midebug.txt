@@ -1,7 +1,7 @@
 start
-PID DE ESTE PROCESO          5304
-03-21-202623:57:50
-__FB_ARGV__   70537536
+PID DE ESTE PROCESO          5620
+03-29-202601:43:29
+__FB_ARGV__   70930272
 __FB_ARGC__    1
 __FB_ARGC__    1
 arg  0 = 'C:\IT64\AREA\ROLLMUSIC\RollMusic.exe'
@@ -9,11 +9,11 @@ arg  1 = ''
 instancia, ix                0             2
 C:\IT64\AREA\ROLLMUSIC\
 intervalo no dado usando default!
-NB, NA         39            102
+NB, NA         26            102
 TEST param.ubiroll           0
 TEST titulosTk(0)           
 gap1           46
-nanchofig      1.442251
+nanchofig      0.1405494
 portsin  5
 portsout 9
 USB Midi Cable 0
@@ -35,6 +35,6 @@ abrirPortoutEjec abriendo port....
 abrirPortoutEjec midiout     0            CoolSoft MIDIMapper 0
 abro          CoolSoft MIDIMapper 0
 RTMIDI_ERROR_WARNING, sin importancia
-ANCHO PANTALLA               1680
-ENTRADA       
-FORMATO DE OFR VEMOS        
+entro por no hay nombrecancion ok
+cargarDirectorioCancion     
+ abrirRoll  0
