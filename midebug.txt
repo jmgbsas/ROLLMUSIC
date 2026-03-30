@@ -1,7 +1,7 @@
 start
-PID DE ESTE PROCESO          5620
-03-29-202601:43:29
-__FB_ARGV__   70930272
+PID DE ESTE PROCESO          4836
+03-29-202622:32:19
+__FB_ARGV__   21122336
 __FB_ARGC__    1
 __FB_ARGC__    1
 arg  0 = 'C:\IT64\AREA\ROLLMUSIC\RollMusic.exe'
@@ -35,6 +35,4 @@ abrirPortoutEjec abriendo port....
 abrirPortoutEjec midiout     0            CoolSoft MIDIMapper 0
 abro          CoolSoft MIDIMapper 0
 RTMIDI_ERROR_WARNING, sin importancia
-entro por no hay nombrecancion ok
-cargarDirectorioCancion     
- abrirRoll  0
+CLICK lbutton EN LISTA EJECUCIONES ===========
