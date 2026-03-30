@@ -562,6 +562,10 @@ EndIf
    'con ic * 40 es + 32 osea ic * 40 + 32
   
   Next n
+  Sleep 5 ' sumamos mas frenos se pone lento bajamos a 5 y da 12% max en play
+  ' sin nada toma  en play 22% 10 % mas! lamitad 2.5 no sepuede valores decimales
+  ' entonces 2
+  ''Sleep 2 ' con play 15% cpu y no pierde velocidad, f2,f3 lento
 
 
 
@@ -621,7 +625,7 @@ EndIf
 
  
  Next semitono
- 'Next semitono
+ Sleep 25 ' otro freno 
 
  
 ' ----------------------------------------------------------- 
@@ -941,7 +945,11 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
      ThreadWait threadcreaPenta 
     If *po = 99 then ''''saco esto no se porque 03-11-2025 Or *po=3 Then
        *po = hasta -1 ' 8 por ejemplo => *po=7
-       
+       Sleep 25
+'Call Sleep with 25ms or less to release time-slice when waiting for user input
+' or looping inside a thread. This will prevent the program from 
+''unnecessarily hogging the CPU.
+
        Exit For
     EndIf
      
@@ -1706,6 +1714,10 @@ EndIf
 If MultiKey(SC_DOWN) Then  ' el screenevent me pone trasponer en 1 la puta e.scancode = 80 Then  ' <===== SC_DOWN pulso
 ''Print #1,"trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo "; trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo
  deltaz=1
+Print #1,"MultiKey (SC_DOWN) , trasponer = ",trasponer
+If trasponer=0 Then
+   indXjreset=0
+EndIf
 ' lareponemos
 ' volver a ajustar el semitono ultimo de roll restando 12
 If s7=0  And indXjreset > 0 Then
@@ -1773,6 +1785,11 @@ EndIf
 
 If MultiKey (SC_UP) Then
  deltaz=1
+Print #1,"MultiKey (SC_UP) , trasponer = ",trasponer
+If trasponer=0 Then
+   indXjreset=0
+EndIf
+
  If s8=0  And indXjreset > 0 Then
     s8=1
 
@@ -1863,43 +1880,36 @@ If MultiKey(SC_Y) Then
     ResizeWindow(hwnd,,ALTO*3/5,,ALTO/5) 'OK
 EndIf
 
-If MultiKey (SC_F2)  And lockfont=0 Then
-' escala = escala - 0.01
-      
-   anchofig=anchofig - anchofig/10
-   gap1= anchofig * 6  ' porque tanto era 20
-   gap1 = gap1 + 8 
-   gap2= (914 * gap1) /1000 ' 74 default
-   gap3= (519 * gap1) /1000 ' 42 default
+'If MultiKey (SC_F2)  And lockfont=0 Then
+'      
+'   anchofig=anchofig - anchofig/10
+'   gap1= anchofig * 6  ' porque tanto era 20
+'   gap1 = gap1 + 1 
+'   gap2= (914 * gap1) /1000 ' 74 default
+'   gap3= (519 * gap1) /1000 ' 42 default'
+'
+'
+'  NroCol =  (MaxPos / anchofig ) + 4
+' 
+'   lockfont=1
+'   nanchofig=anchofig
+'   ANCHO3div4 = ANCHO *3 / 4
+'  Exit Do
+'EndIf
 
-   NroCol =  (ANCHO / anchofig ) + 4
-
- 
-   If  anchofig < 1 Then
-       anchofig = 1
-   EndIf    
-   nanchofig=anchofig
-  
-   
-   ANCHO3div4 = ANCHO *3 / 4
-   lockfont=1
-  Exit Do
-EndIf
-
-If MultiKey (SC_F3)  And lockfont=0 Then
-   anchofig=anchofig + anchofig/10
-   gap1= anchofig * 6 ' era porque tanto 20 '81 default
-   gap1=gap1 - 1
-   gap2= (914 * gap1) /1000 ' 74 default
-   gap3= (519 * gap1) /1000 ' 42 default
-   
-   NroCol =  (ANCHO / anchofig ) + 4
-
-   lockfont=1
-   nanchofig=anchofig
-   ANCHO3div4 = ANCHO *3 / 4
- Exit Do
-EndIf
+'If MultiKey (SC_F3)  And lockfont=0 Then
+'   anchofig=anchofig + anchofig/10
+'   gap1= anchofig * 6 ' era porque tanto 20 '81 default
+'   gap1=gap1 - 1
+'   gap2= (914 * gap1) /1000 ' 74 default
+'   gap3= (519 * gap1) /1000 ' 42 default
+'   
+'   NroCol =  (MaxPos / anchofig ) + 4
+'   lockfont=1
+'   nanchofig=anchofig
+'   ANCHO3div4 = ANCHO *3 / 4
+' Exit Do
+'EndIf
 '----------
 ' SIZE ANCHO F5
 ' F5 SCANCODE 63 , F6 64
@@ -3958,8 +3968,8 @@ EndIf
 '-----------------------------SCREEN EVENT-------START -----------
 ' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 ' para detectar mouse sin usar sdl.. parece que screen event es mas preciso que multikey
-' multikey es mas veloz pero cuesta ser preciso.....
-
+' multikey  es mas veloz pero cuesta ser preciso.....
+' EL KEY PRESS POR PULSOS DE SCREENEVENT ES MAS VELOZ
 If (ScreenEvent(@e)) Then
 
  Select Case As Const e.type
@@ -4008,7 +4018,7 @@ If (ScreenEvent(@e)) Then
 ' ********************************************************************************
 '============================EVENT_MOUSE_MOVE=====================================
 ' ********************************************************************************
-		Case	EVENT_MOUSE_MOVE
+  Case EVENT_MOUSE_MOVE
 		     MouseMove=1
  ' ********************************************************************************
  ' ====================EVENT_MOUSE_BUTTON_RELEASE =========================== 
@@ -4046,6 +4056,8 @@ If (ScreenEvent(@e)) Then
  ' ********************************************************************************
   Case EVENT_MOUSE_WHEEL      ' <<<=== MOUSE WHEEL
    ' new position & e.z
+     trasponer=0 
+     
      If comedit <> LECTURA Or play=SI Or playb=SI Or Cplay=SI Then 
         deltaz=1 ' no mostrar ayuda al pie del grafico roll
      EndIf 
@@ -4211,6 +4223,7 @@ End If
 '   EndIf 
 '------------------------------------------------------
 If e.scancode = SC_PAGEDOWN Then  ' PAGEDOWN 81 'FUNCIONARIA EN TODOS LOS COMEDIT
+  trasponer=0
   deltaz=1
   BordeSupRoll = BordeSupRoll - inc_Penta * 11
   If BordeSupRoll <= - AltoInicial * 2.8 Then
@@ -4220,6 +4233,7 @@ If e.scancode = SC_PAGEDOWN Then  ' PAGEDOWN 81 'FUNCIONARIA EN TODOS LOS COMEDI
 EndIf
 '---------------------------------------------------
 If e.scancode= SC_PAGEUP Then  'PAGEUP 
+  trasponer=0
   deltaz=1
   BordeSupRoll = BordeSupRoll + inc_Penta * 11
 
@@ -4387,6 +4401,39 @@ If e.scancode = SC_RIGHT Then
    menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
     Exit Do
 EndIf  
+
+If e.scancode= SC_F2  And lockfont=0 Then
+' escala = escala - 0.01
+      
+   anchofig=anchofig - anchofig/10
+   gap1= anchofig * 6  ' porque tanto era 20
+   gap1 = gap1 + 1 
+   gap2= (914 * gap1) /1000 ' 74 default
+   gap3= (519 * gap1) /1000 ' 42 default
+
+   '''NroCol =  (ANCHO / anchofig ) + 4
+   NroCol =  (MaxPos / anchofig ) + 4
+ 
+   lockfont=1
+   nanchofig=anchofig
+   ANCHO3div4 = ANCHO *3 / 4
+  Exit Do
+EndIf
+If e.scancode= SC_F3  And lockfont=0 Then
+   anchofig=anchofig + anchofig/10
+   gap1= anchofig * 6 ' era porque tanto 20 '81 default
+   gap1=gap1 - 1
+   gap2= (914 * gap1) /1000 ' 74 default
+   gap3= (519 * gap1) /1000 ' 42 default
+   
+''   NroCol =  (ANCHO / anchofig ) + 4
+   NroCol =  (MaxPos / anchofig ) + 4
+   lockfont=1
+   nanchofig=anchofig
+   ANCHO3div4 = ANCHO *3 / 4
+ Exit Do
+EndIf
+
 ' ********************************************************************************
 '=============PULSAR MUCHO TIEMPO ======= REPEAT ==================================================
 ' **********************************************************************************
@@ -4627,17 +4674,11 @@ EndIf
 ' EndIf
 'EndIf
   Case EVENT_KEY_RELEASE 
-' 24-06-2021 espaciado de lineas (3)  
-       lockip=0
-''       mueveHorizontalmayor50=0
-''       menuNew=0
 ' -----------
   ' arriba de todo ponemos deteccion de teclas sin exit do para que siga.. 
        scan_alt=1
        deltaz=0
 '---------------------------------------
-
-
        
  End Select
 EndIf ' <= ScreenEvent(@e) END EVENTOS DE E Y MULTIKEY VAROS ESTAN AHI 
@@ -6260,15 +6301,17 @@ Dim As Integer lcurpos,lnotacur,  resultado
 
  EndIf
  '' 26-01-2022 espaciado de lineas (1) movido desde 2190 afecta a acordes
- If MultiKey(SC_CONTROL) And lockip=0   Then ''''  REVISAR !!!!! 30-01-2022
+ '''pulsar solo W MOUSE WHEEL SE HABILITA
+ If MultiKey(SC_W) And lockip=0   Then ' HABILITA INTERLINEADO 29-03-2026
+    trasponer=0
     deltaip=0
     incWheel=0
     lockip=1
-    'Exit Do    
+    Exit Do    
  EndIf 
  ' 26-01-2022 espaciado de lineas (2) movido desde 2713 afecta a acordes
-
  If MultiKey(SC_CONTROL) And lockip=1 And cargacancion=NO_CARGAR_PUEDE_DIBUJAR  Then
+    trasponer=0
     If incWheel < 0 Then
        deltaipf=deltaipf + 1
     EndIf
@@ -6279,14 +6322,15 @@ Dim As Integer lcurpos,lnotacur,  resultado
       incWheel=0
    ' ojo con los Exit Do si por defautl entra al if y hace exit do 
    ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click
-
+     Exit Do '' se mete en el siguiente ALT y ajusta trasponer  en 1
  EndIf 
  If  MultiKey(SC_ALT) And (SC_O)Then 'con rango o zona // O TRASPONER GRUPO
       If trasponer=0  Then
          trasponer=1
       EndIf  
  EndIf
-If  MultiKey(SC_CONTROL) And (SC_O)Then ' 01-11-2025 habilitamos trasposicion sin rango con mouse
+
+If  MultiKey(SC_CONTROL) And (SC_O)  Then ' 01-11-2025 habilitamos trasposicion sin rango con mouse
       If trasponer=0  Then
          trasponer=3
       EndIf  
@@ -7027,9 +7071,9 @@ Exit Do ' este exit do hace que ande el menu!!!
  
 Loop 'do nro 2 1168
 nnn=nnn+1
-If nnn=100  Then ' que loopee mas en el lop mas interno solo salga menos al loop externo
-   nnn=0
-  Exit Do
+If nnn=20  Then 'SI VALE 0 SE INTERRUMPE TODO no hay exit do, CADA nnn VUELVE A LA ACCION 
+   nnn=0 ' ai nnn es muy grande sale poco y no trabaja
+  Exit Do ''nnnn deb eser chico para q ocupe menos cpu pero deje trbajar
 EndIf
 ' DECIA 20 PUSE 10
 'If nnn=20 And MAXPOS < 800 Then ' que loopee mas en el lop mas interno solo salga menos al loop externo
@@ -7046,12 +7090,12 @@ If fueradefoco=SI  And (play = NO) and (playb=NO) And (Cplay=NO) Then
 
    Sleep 5 ' ESTO HACE QUE LA CINTA CORRA SUAVE
 EndIf
-While InKey <> "": Wend
+'''''''While InKey <> "": Wend se come los ketstrikes aca no conviene
 'podria reemplazarse por REset(0) ???
 'Reset (0)
 
 Loop 'do  1167 lo sacamos 
-While InKey <> "": Wend
+'''''While InKey <> "": Wend e come los ketstrikes aca no conviene
 'podria reemplazarse por REset(0) ???
 'Reset (0)
 

@@ -1,6 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-    0.364 VARIOS FIXES CANAL, LOOP SIN PISTAS SELECCIONADAS TERMINACION ANTICIPADA
+    0.366 tiempos de loops, teclas de interlineado vs trasponer
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
       Falta probar con canciones largas..se probara cuando se puede cargar un archivo midi
@@ -744,16 +744,7 @@
       V ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
           o ordenar la ejecucion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
           o ejecutar con otras instancias de RollMusic con o sin Control...(hay muchisimo por hacer...)
-    NOTA: si en algun momento se traba el scroll arriba abajo con la rueda del mouse, destrabar la situacion  con 
-          flecha arriba o abajo lo cual habilita la rueda del mouse e inversamente si se traban las flechas 
-          intentar con mouse. (hay inconsistencias que deben verse...en algun momento futuro)
-          => Nuevo: El Menu grafico de Roll funciona Todo con un solo click izquierdo de mouse. 
-          En esta ultima version ejecutar o reproducir o play desde el menu de Control funiona igual que hacerlo 
-          desde la barra de espacio en el grafico. Para tocar solo un track dar click a Reproducir.
-          En una instancia sin control o una sesion con Control si no se carga una cancion , tanto 
-          barra de espacio como clik en Reproducir tocaran la secuencia cargada indistintamente, ya que
-          como no hay cancion ejecuta lo que haya, el track en edicion.
-
+ 
 
      VI) Se integró la GUI de control que corre en simultaneo con el gráfico dinámico del Roll
         estilo pentagrama-roll una combinacion. En su origen el Roll se hacia con perforaciones en un papel
@@ -918,12 +909,10 @@
           Funciona igual solo que laposicion actual se marca con uan sola  marca de intervalo
           o zoba CTRL+CLICK. Y luego todo igualCTRL+ALT y CLICK en [Edicion]
     1.1)   El espaciado entre lineas se puede cambiar:
-       Pulsar y mantener la tecla control. Girando la rueda del mouse
-       en la direccion  hacia afuera abre el espacio  entre lineas, hacia 
-       adentro lo achica, similar al tamaño de un texto
-       en un editor de texto. Para terminar liberar la tecla Ctrl. Si por alguna funcion
-       usada anterior deja de funcionar, mover el scroll con las flechas eso habilita de nuevo
-       la rueda del mouse.
+       Pulsar TECLA W, habilita interlineado, luego pulsar CTRL mantener la tecla presionada, mientras
+       se gira la rueda del mouse  en la direccion  hacia afuera abre el espacio  entre lineas, hacia 
+       adentro lo achica, similar al tamaño de un texto en un editor de texto. 
+       Para deshabilitar interlineado pulsar Q. 
 
     1.2)  Trasponer todo CON TECLAS SOLAMENTE: CTRL-O habilita la trasposicion, Q la deshabilita.
        una vez habilitada con Flecha-UP sube de a un semitono con cada pulso

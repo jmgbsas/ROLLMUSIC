@@ -6341,7 +6341,7 @@ FileFlush (7)
      Close ga
     End If  ' del open ga archivo
 FileFlush (7)
-     While InKey <> "": Wend
+     GetKey 
      Sleep 1000,1
      
 'If nombre = "Backup"+ Date + ".roll" Then
@@ -6754,7 +6754,7 @@ Print #1,"PASO GRABA4 tiempo patron elimino fileflush vermos"
      Put #gt, ,Trabajo() ' ACA DEBERIA QUEDAR EL CAMPO ACORDE !!
      Close gt
    FileFlush (gt)
-     While InKey <> "": Wend
+     GetKey 
      Sleep 150
 Print #1,"---------------------------------------------------------------------------------"
 Print #1,"  Fin GrabarTrack "

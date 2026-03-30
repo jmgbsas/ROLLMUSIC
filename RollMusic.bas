@@ -60,7 +60,9 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.365 fix TAB, ajustes prioridad de threads"
+nroversion="0.366 tiempos de loops, teclas de interlineado vs trasponer, F2/F3"
+' FIX HABILITAR INTERLINEADO HABILITABA A TRASPONER, SE CAMBIO POR TECLA W. 
+' FIX TIEMPO DE LOOPS OPTIMIZACION
 ' FIX TAB DE TOPE A 1 NO IBA DIRECTO, ALGO DE REDUCCION DE TIEMPO DE RESPUESTA SCREENEVENTE ENVEZ DE MULTIKEY
 ' FIX AJUSTE DE PRIORIDAD MAS ALTA PARA ALGUNOS THREAD HYA QUE SEGUIR PROBANDO.
 ' REDUCCION DE TIEMPO DE BARRE PENTA prioridad

@@ -16,7 +16,12 @@ Los ctrl-click deben ser breves no mas de 200 mseg, si duran mas sosteniendo el 
 mas de 200 mseg la zona sera solo una linea, los 2  clicks quedaran definidos en la primer posicion.
 Sera necesario reseteat con Q y luego definir de nuevo el intervalo con pulsos breves del mouse
 la tecla CTRL puede estar mas tiempo presionada.
---------------------------------------------------------
+------------------------------------------------------
+INTERLINEADO. LINEAS MAS SEPARADAS O JUNTAS ENTRE NOTAS DE ROLL GRAFICO
+W      HABILITA LA RUEDA DEL MOUSE
+CTRL + MOVER RUEDA DE MOUSE PARA UN LADO O EL OTRO..AGRANDA O ACHICA INTERLINEADO
+Q      PARA TERMINAR
+------------------------------------------------------
 TRASPONER
   -CTRL-O TRASPONER TODA LA SECUENCIA con flechas arriba abajo termina con Q
    TRASPONE TAMBIEN UN PEDAZO DE SECUENCIA EN UNA ZONA DADA o UNA ZOLA NOTA

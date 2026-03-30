@@ -1383,7 +1383,7 @@ graba4.pb = mit.tp2
      Put #grt, ,TrkTemp()
      cLOSE grt
 FileFlush (grt)
-     While InKey <> "": Wend
+     GetKey 
      Sleep 150
 Print #1,"fin ActualizarRollyGrabarPistaTrk"
 Print #1, "VER SI GRABO A DISCO "
