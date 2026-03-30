@@ -1,3 +1,6 @@
+-29-03-2026 0.366 Fix Tab tiempos de loops, teclas de interlineado vs trasponer, F2/F3
+ -Fix Tab numeracion avanza pero no los datos, 
+ -fix coloreado atrasa un poco durante el play
 -29-03-2026 0.366 tiempos de loops, teclas de interlineado vs trasponer, F2/F3
 -29-03-2026 "0.365 fix TAB, ajustes prioridad de threads"
 ' FIX TAB DE TOPE A 1 NO IBA DIRECTO, ALGO DE REDUCCION DE TIEMPO DE RESPUESTA SCREENEVENT

@@ -60,7 +60,9 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.366 tiempos de loops, teclas de interlineado vs trasponer, F2/F3"
+nroversion="0.366 Fix Tab tiempos de loops, teclas de interlineado vs trasponer, F2/F3"
+' -Fix Tab numeracion avanza pero no los datos, 
+' fix coloreado atrasa un poco durante el play
 ' FIX HABILITAR INTERLINEADO HABILITABA A TRASPONER, SE CAMBIO POR TECLA W. 
 ' FIX TIEMPO DE LOOPS OPTIMIZACION
 ' FIX TAB DE TOPE A 1 NO IBA DIRECTO, ALGO DE REDUCCION DE TIEMPO DE RESPUESTA SCREENEVENTE ENVEZ DE MULTIKEY

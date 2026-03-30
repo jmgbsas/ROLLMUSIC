@@ -4098,7 +4098,7 @@ EndIf
 If parametros=2 Then
    Dim As Integer my1 = 11- nsE + (*po-1) * 13
    t = "      EDIT" + " " + " Penta_y:" +Str(Penta_y) + _
-   " My1nsE :" + Str(my1) + " Mx:" + Str(mousex) + " My:" + Str(mousey) 
+   " My1nsE :" + Str(my1) + " Mx:" + Str(mousex) + " My:" + Str(mousey)+" NTK:"+ Str(ntk) 
 
 EndIf
 

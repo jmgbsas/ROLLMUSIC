@@ -54,8 +54,9 @@ Static As Integer millave
              ' pero si quiero volver a disco solo debo resetear ubirtk=0
              ''' ntk=sacarNtk(item) ' este ntk no sirve para boorar
            ntk=GetItemListBox(PISTASROLL)+1  '''sacarNtk(item) 
+           Print #1,"LISTA PIANO ROLL CLICK EN PISTA DA NUMERO ",ntk 
  ' aca no copia track a Roll
-           '   Print #1,"ntk de item ", ntk
+              Print #1,"ntk de item ", ntk
               nombre= titulosTk(ntk)
       '   Print #1,"ntk, nombre ",ntk, nombre
    EndIf          

@@ -562,7 +562,7 @@ EndIf
    'con ic * 40 es + 32 osea ic * 40 + 32
   
   Next n
-  Sleep 5 ' sumamos mas frenos se pone lento bajamos a 5 y da 12% max en play
+''  Sleep 2 ' sumamos mas frenos se pone lento bajamos a 5 y da 12% max en play
   ' sin nada toma  en play 22% 10 % mas! lamitad 2.5 no sepuede valores decimales
   ' entonces 2
   ''Sleep 2 ' con play 15% cpu y no pierde velocidad, f2,f3 lento
@@ -945,7 +945,7 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
      ThreadWait threadcreaPenta 
     If *po = 99 then ''''saco esto no se porque 03-11-2025 Or *po=3 Then
        *po = hasta -1 ' 8 por ejemplo => *po=7
-       Sleep 25
+       Sleep 5
 'Call Sleep with 25ms or less to release time-slice when waiting for user input
 ' or looping inside a thread. This will prevent the program from 
 ''unnecessarily hogging the CPU.
@@ -7138,21 +7138,22 @@ Sub TABTAB ()
    Erase mel_undo, undo_acorde, undo_kant_intervalos
    mel_undo_k=0: ig=0:cnt_acor=0
    ROLLCARGADO = FALSE
- '  print #1,"--TAB "
+   print #1,"--TAB "
    nota=0
    dur=0
- '  print #1,"TAB 1- NTK,MAXPOS, pmtk(ntk).maxpos  clickpista ", ntk,maxpos,pmTK(ntk).maxpos, clickpista
-   If clickpista=1 Then
- '    Print #1,"no incrementea ntk, EL NTK SALE DEL NOMBRE  DE LA PISTA"
+   print #1,"TAB1- NTK,MAXPOS, pmtk(ntk).maxpos  clickpista ", ntk,maxpos,pmTK(ntk).maxpos, clickpista
+   If clickpista=1 Then ''cancion
+     Print #1,"no incrementea ntk, EL NTK SALE DEL NOMBRE  DE LA PISTA"
      clickpista=0
      ntkTAB=ntk ' UN NTK QUE VIENE DEL CLICK EN UNAPISTA DE PISTAROLL
      nombre=titulosTk(ntk)
-'    Print #1,"TAB1.1 ntk, ntkTAB, nombre, POR CLICK PISTA ", ntk,ntkTAB, nombre 
+    Print #1,"TAB2- ntk, ntkTAB, nombre, POR CLICK PISTA ", ntk,ntkTAB, nombre 
    Else
-     ntk = ntk + 1
+     If ntk=Tope Then ntk=0 End If
+     ntk = ntk + 1 ' si recien se cargo ntk=0 se incrementa 
      ntkTAB=ntk
      nombre= titulosTk(ntk)
- '    Print #1,"Incrementa ntk, nombre ", ntk ,nombre
+     Print #1,"TAB3- Incrementa ntk, nombre ", ntk ,nombre
    EndIf
  
   If nombre > "" Then
@@ -7161,9 +7162,9 @@ Sub TABTAB ()
  '    print #1,"TAB 3-NTK MAXPOS pmtk(ntk).maxpos  ", maxpos,pmTK(ntk).maxpos
  '    print #1,"--------------------------"
    EndIf 
-  If ntk >= 32 Or ntk >= tope Then
-     ntk=0 
- '    print #1,">TAB 2A- 1- NTK=0 empieza el circulo,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
+  If ntk > 32 Or ntk > tope Then
+     ntk=0 ' el proximo tab  dara ntk=1 es como recien cargada 
+     print #1,"TAB4- NTK=0 empieza el circulo,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
      Exit SUB      
    EndIf
    
@@ -7172,10 +7173,10 @@ Sub TABTAB ()
    If nombre=""  Then ' evita revisar track vacios
      Do While nombre=""
         ntk=ntk+1
-        If ntk>=32 Or ntk >= tope Then
+        If ntk>32 Or ntk > tope Then
            ntk=1
            nombre= titulosTk(ntk)
- ' print #1,"TAB 4 - NTK, pmtk(ntk).maxpos  ", ntk,pmTK(ntk).maxpos    
+  print #1,"TAB5 - NTK, pmtk(ntk).maxpos  ", ntk,pmTK(ntk).maxpos    
            Exit Do
         EndIf
  
@@ -7187,7 +7188,7 @@ Sub TABTAB ()
      posicion=1 ' 14.-03-2022
      MaxPos=pmTk(ntk).MaxPos
      posn=pmTk(ntk).posn
-''Print #1," TAB POSN, NTK ", posn,ntk
+     Print #1," TAB6 - POSN, NTK ", posn,ntk
   
      desde=pmTk(ntk).desde
      hasta=pmTk(ntk).hasta
