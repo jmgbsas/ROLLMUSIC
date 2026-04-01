@@ -54,6 +54,20 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 'End  sub 
 
 '--------
+'=======================
+'--------------
+#include "string.bi"
+#include once "cairo/cairo.bi"
+#Include "midiinfo.bi"
+'==============================
+'#Include "NOTAS.bi"
+'==============================
+#include "ROLLGLOBALDEC.bi"
+'=============================
+#include "ROLLDEC.BI"
+#include "RTMIDIDEC.bi"
+'=============================
+
 '--------
 Sub  porterrorsub(porterror As integer)
           Select Case porterror
@@ -125,10 +139,11 @@ Dim Shared As String myfilter
 myfilter  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
 'myfilter += "Ini files"+Chr(0)   +"*.ini;*.txt;*.cfg"+Chr(0)
 myfilter += "Rtk  Files"+Chr(0)   +"*.rtk"+Chr(0)
+myfilter += "Ejec Files"+Chr(0)   +"*.ejec"+Chr(0)
 Dim Shared As Long pd1, fa1,ffini,ca,ffile,ct,ga,grt ,ngm,fk
 
 fk=5
-Open CurDir+"\AAAAA-test.TXT" For Output As #fk
+Open ROLLDIR+"AAAAA-test.TXT" For Output As #fk
 Dim Shared As Integer abierto=0
 Common Shared  mensaje As Integer 
 '''  end file dialog  
@@ -137,8 +152,9 @@ Common Shared  mensaje As Integer
 #include once "gtk/gtk.bi"
 
 ' This is our data identification string to store data in list item
-Dim  Shared   As String  pathinicio 
-pathinicio = CurDir  
+Dim  As Integer lp=InStrRev(Command(0),"\")
+ROLLDIR =Mid(Command(0),1,lp) ' tiene la barra
+''pathinicio = CurDir  
 Const list_item_data_key ="list_item_data"
 ' fin GTK
 ' -- INICIO openGL GLFW 3.1.1 
@@ -157,7 +173,7 @@ Dim As GLFWwindow ptr  win
 
 pd1 = GetCurrentProcessId()  
 
-Open CurDir+"\midebug.txt" For Output As #1
+Open ROLLDIR+"midebug.txt" For Output As #1
 '' Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As 1
 Print #1,"start"
 Print #1,"PID DE ESTE PROCESO ",pd1
@@ -184,16 +200,16 @@ Print #1,Date;Time
 ''
 '=======================
 '--------------
-#include "string.bi"
-#include once "cairo/cairo.bi"
-#Include "midiinfo.bi"
+'#include "string.bi"
+'#include once "cairo/cairo.bi"
+'#Include "midiinfo.bi"
 '==============================
 '#Include "NOTAS.bi"
 '==============================
-#include "ROLLGLOBALDEC.bi"
+'#include "ROLLGLOBALDEC.bi"
 '=============================
-#include "ROLLDEC.BI"
-#include "RTMIDIDEC.bi"
+'#include "ROLLDEC.BI"
+'#include "RTMIDIDEC.bi"
 '=============================
 
 ' iup start
@@ -230,7 +246,17 @@ For ix = 0 To __FB_ARGC__
  If ix=1 And Command(ix) > "" Then ' deberia entregarme el archjivo el SO pero no lo hace
   
  ubirtk = InStr (LCase(Command(ix)),".rtk")
- ubiroll=  InStr(LCase(Command(ix)),".roll")
+ ubiroll= InStr(LCase(Command(ix)),".roll")
+ ubiejec= InStr(LCase(Command(ix)),".ejec")
+ If ubiejec > 0 Then  ''30-03-2026 reproducir un *.ejec desde el explorador
+    ubiejec=1 ''cargar  
+    titulosEj(1)=Command(1)
+    Instancia=ARG0_EN_LINEA 
+ Print #1,"Instancia= ",Instancia
+ Print #1,"TITULO(1)  ",titulosEj(1)
+       Exit For   
+  EndIf 
+
 ' esto es por comando interno no fisico con click
 ''' ubicancion=InStr(LCase(Command(ix)),"@dir")
 
@@ -317,7 +343,7 @@ Print #1, "instancia, ix  ", instancia, ix
 ''Open "midebug.txt" For Output As #1
 'Print #1,"start"
 'Print #1,"PID DE ESTE PROCESO ",pd1
-ROLLDIR=CurDir+"\"
+'''ROLLDIR=CurDir+"\"
 Print #1,ROLLDIR
 fa1=2
 Open ROLLDIR+"procesos.txt" For Append As fa1

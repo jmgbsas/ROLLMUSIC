@@ -1,3 +1,4 @@
+-31-03-2026 0.367 Ejecutar *.ejec desde el explorador darle click o doble click Y REPRODUCE AUTOMATICO 
 -29-03-2026 0.366 Fix Tab tiempos de loops, teclas de interlineado vs trasponer, F2/F3
  -Fix Tab numeracion avanza pero no los datos, 
  -fix coloreado atrasa un poco durante el play

@@ -298,10 +298,16 @@ EndIf
 '//////////////// BOTON NEGRO STOP EJEC  , GRABA A DISCO //////////////////
 
 ' 
-      If eventnumber()= BTN_MIDI_PARAR  And ntoca > 0   Then ' BOTON STOP NEGRO DE MIDI-IN
+      If eventnumber()= BTN_MIDI_PARAR  And ntoca > 0  Or ubiejec=2 Then ' BOTON STOP NEGRO DE MIDI-IN
          SetGadgetstate(BTN_MIDI_GRABAR,BTN_LIBERADO)
+         SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_LIBERADO)
+         SetGadgetstate(BTN_MIDI_PARAR,BTN_PRESIONADO)
+
          Print #1,"ntoca en BTN_MIDI_PARAR "; ntoca
-      
+        ' If ubiejec=2 Then
+        '    ubiejec=0  
+        '    Exit Select       
+        ' EndIf   
          If GrabarEjec=GrabarPistaEjecucion Then
             If pmEj(ntoca).MaxPos > 0 And (GrabarEjec=GrabarPistaEjecucion  Or GrabarEjec=GrabarPatronaDisco ) Then
               Print #1,"//STOP:pmEj(ntoca).MaxPos, GrabarEjec ",pmEj(ntoca).MaxPos,GrabarEjec
@@ -463,12 +469,14 @@ EndIf
 ' sincronizaremos el arranque solamente. Esto se puede usar para escuchar o 
 ' al grabar una pista nueva de ejecuciones por uncontrolador midi.,(teclado midi por ej)
  
-      If eventnumber()= BTN_MIDI_EJECUTAR And Parar_De_Dibujar=NO Or  GrabarEjec =PatronDeEjecucionCompleto Then ' BOTON PLAY VERDE DE MIDI-IN
+      If eventnumber()= BTN_MIDI_EJECUTAR And Parar_De_Dibujar=NO Or  GrabarEjec =PatronDeEjecucionCompleto  Then ' BOTON PLAY VERDE DE MIDI-IN
          SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_PRESIONADO)
          SetGadgetstate(BTN_MIDI_PARAR,BTN_LIBERADO)
-            Parar_De_Dibujar=NO
-'            PARAR_PLAY_EJEC=NO
-'            PARAR_PLAY_MANUAL=NO
+         SetGadgetstate(BTN_MIDI_GRABAR,BTN_LIBERADO)
+             playEj=SI
+             Parar_De_Dibujar=NO
+            PARAR_PLAY_EJEC=NO
+            PARAR_PLAY_MANUAL=NO
             Dim p As Integer Ptr
             p=@ntoca 'ntoca se ajusta en CargarPstasEjec tambien
             
@@ -478,27 +486,9 @@ EndIf
 ' ACA DEBERIA USAR MUTEX!!! ���???
 '''Dim As Any Ptr sync =MutexCreate
 Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",maxgrb
-        If  maxgrb > 2 And playEj=NO Then  ''''' And GrabarEjec=1 And Parar_De_Dibujar=1 Then
-             playEj=SI  
-'            If CANCIONCARGADA = TRUE And playb=0 Then
-'               Print #1,"USANDO PLAYCANCION"
-'               playb=1
-'               grabariniciotxt(NombreCancion, CANCION)
-'               thread1 = ThreadCall  playCancion(Track())
-'            Else
-'               If  MaxPos > 2 And  Play=NO Then
-'          '        print #1,"llama a playall"
-'                   Play=SI
-' Print #1,"Va Play All ????,maxpos  ", MaxPos
-'                   thread2 = ThreadCall  playAll(Roll)
-'               EndIf 
-'            EndIf
-'        EndIf   
-       
         threadG = ThreadCall  PlayTocaAll (p)
         grabariniciotxt(NombreCancion, EJECUCION) 
 
-        EndIf
       EndIf
 ' test de retardos  de inicio en ejecucion de datos entre playCancion y PlayTocaAll
 ' CALCULO DE RETARDO DEL INICIO DE PLAY CANCION RESPECTO PLAYTOCAALL
@@ -574,15 +564,6 @@ Print #1, "542 GrabarPenta=0"
       Next i3
       Parar_De_Dibujar=NO
   
-''      If NombreCancion > "" Then ' detiene todo pista aisalda o cancion 
-'         If playEj=SI  Then
-'            PARAR_PLAY_EJEC=SI   
-'            playEj=NO 
-''            Sleep 20
-'               'threadDetach (thread2)
-'               'threadDetach (thread1)
-'         EndIf 
-      ' EndIf
       EndIf
    
 ' ///////////////// BOTON VERDE PLAY CANCION ROLL ////////  28-02-2024 GUIA
@@ -734,6 +715,15 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
           menuOldStr="[VOLEJEC]"
           threadvol=threadCall EntrarTeclado()
           ThreadWait threadvol
+Print #1,"CONTROLGADGET [VOLEJEC] versionEjec ", versionEjec
+          menuOldStr="" 
+          If versionEjec = 1 Then
+'statusBarGadget NO PUEDE IR EN UN THREAD CANCELA !!!
+' AL MENOS EN ESTE PROGRAMITA  
+   StatusBarGadget(BARRA_DE_ESTADO,"ARCHIVOS DE VERSION 1 DE EJEC NO TIENEN UN AJUSTE DEL VOL GRABADO EN EL ARCHIVO *.EJEC , SI TIENE LOS VOLUMENES ORIGINALES DE EJECUCION" )
+          Else
+          SetGadgetText(3,Str(valorvol)) 
+          EndIf
       EndIf 
 '--------------
       If  eventnumber()=BTN_EJEC_PAN Then 'PAN futuro

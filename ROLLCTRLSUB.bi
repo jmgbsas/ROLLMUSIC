@@ -500,6 +500,7 @@ Print #1,"1 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
 Print #1,"3 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
 Dim As Integer version
        CargarPistasEjec lugar, TopeEjec,version
+       versionEJEC=version
 '' EJECCARGADA quedo en true en la sub CargarPistasEjec  
        Dim j As integer
            For  j=1 To TopeEjec
@@ -531,19 +532,27 @@ Print #1,"4 ctrl1016 lugar DirEjecSinBarra ",lugar, DirEjecSinBarra
  
 End Sub
 '--------------------------------
-Sub CTRL10165 (ByRef lugar As String) 'CARGAR UNA SOLA PISTA DE EJECUCION
-Print #1,"1 ctrl1016 lugar DirEjecSinBarra ", lugar , DirEjecSinBarra
- 
+Sub CTRL10165 (ByRef lugar As String, funcion As String) 'CARGAR UNA SOLA PISTA DE EJECUCION
+ If ubiejec > 0  Then
+   Dim i1 As Integer
+   i1=InStrRev(Command(0), "\")
+   DirEjecSinBarra=Mid(Command(0),1,i1-1)
+ EndIf
+
+Print #1,"1 ctrl10165 lugar DirEjecSinBarra ", lugar , DirEjecSinBarra
+If funcion ="ONLINE" Then  
       Dim As String nombrea,myfil
       lugar = CurDir() 
      If lugar = "" Then
         Exit Sub
      EndIf         
+EndIf
        'NTKP ES UNA SALIDA DE LA SUB la global
 Print #1,"3 ctrl10165 lugar " , lugar
    
 Dim As Integer version
        CargarUnaEjec lugar, TopeEjec, version
+       versionEJEC=version
 '' EJECCARGADA quedo en true en la sub CargarPistasEjec  
        Dim j As integer
        j=TopeEjec

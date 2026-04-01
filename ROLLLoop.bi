@@ -31,7 +31,7 @@ For i2 = 1 To pmTk(numtk).MaxPos
 
    
    If i2=pmTk(numtk).MaxPos  then 
-    Print #1," ///maxpos-1, nota  ", i2, ultimaPianonota
+'    Print #1," ///maxpos-1, nota  ", i2, ultimaPianonota
       i3=ultimaPianonota
       RollAux.trk(i2,i3).dur  = 182
        RollAux.trk(i2,i3).nota =0 
@@ -1785,7 +1785,7 @@ EndIf
 
 If MultiKey (SC_UP) Then
  deltaz=1
-Print #1,"MultiKey (SC_UP) , trasponer = ",trasponer
+''Print #1,"MultiKey (SC_UP) , trasponer = ",trasponer
 If trasponer=0 Then
    indXjreset=0
 EndIf
@@ -1808,7 +1808,7 @@ indXjreset=0
     If trasponer=3 or (trasponer=1 Or trasponer=2) And SelGrupoNotaT=2 And indicePosOld=0 And  indicePosUltimaGrupo=0 Then
       If s6=0  Then
          s6=1
-        Print #1," UP USA trasponerRoll "
+      ''  Print #1," UP USA trasponerRoll "
         trasponerRoll ( 1,Roll,encancion)
       EndIf
 While InKey <> "": Wend
@@ -1817,7 +1817,7 @@ While InKey <> "": Wend
     If  (trasponer = 1 Or trasponer=2) And SelGrupoNotaT=2 And indicePosOld> 0 And  indicePosUltimaGrupo >0 Then
        If s6=0  Then
           s6=1 
-          Print #1," UP USA trasponerGrupo "  
+      ''    Print #1," UP USA trasponerGrupo "  
           trasponerGrupo (  1, Roll,encancion, indicePosOld, indicePosUltimaGrupo )
        EndIf  
 While InKey <> "": Wend
@@ -2229,7 +2229,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_F4)  Or CerrarGraficodesdeCtrl =1 Then
 '' SIN TERMINAR EL PROGRAMA  LO QUE HACE POSIBLE ESTO, es screen 0 en realidad
 '' NO DESTRUIR NADA Y SEPUEDE VOLVER A USAR
 '' CERRAMOS EL GRAFICO, PERO EL GRAFICO ES UNICO,,,,
-Print #1,"//////CTRL-F4 PASO POR ACA ESTA MIERDA DESPUES DE TERMINAR EL PLAY DE CANCION??"
+''Print #1,"//////CTRL-F4 PASO POR ACA  DESPUES DE TERMINAR EL PLAY DE CANCION??"
      If play=SI Or playb=SI Or Cplay=SI Then 'detenemos los play
       ' MessBox("","(2)Detenga el play primero ")
       ' SetForegroundWindow(hwnd)
@@ -2266,7 +2266,7 @@ FileFlush (-1)
  ''https://www.freebasic.net/forum/viewtopic.php?t=26963
    If ubirtk =2 Or ubiroll = 2 Then
        salir()
-       Kill "procesos.txt"
+       Kill ROLLDIR+"procesos.txt"
        Close
        End 0 ''31-03-25 si entro por linea de comando es 2 
    EndIf
@@ -2311,13 +2311,13 @@ EndIf
      EndIf
   If terminar=TERMINAR_POR_ESCAPE Then
         salir()
-       Kill "procesos.txt"
+       Kill ROLLDIR+"procesos.txt"
        Close
        End 0
   Else   
     If  MessageBox(hWnd,"¿TERMINA PROGRAMA ROLLMUSIC ? " ,param.titulo ,4 Or 64) =6 Then
        salir()
-       Kill "procesos.txt"
+       Kill ROLLDIR+"procesos.txt"
        Close
        End 0
     Else
@@ -2978,14 +2978,14 @@ EndIf ' COMMEDIT TRUE CTRL-M
 
 ' ----HELP PRUEBA DE TEXT
 If MultiKey(SC_CONTROL) And MultiKey(SC_F1) Then
-   Shell ("start notepad " + pathinicio + "\recur\TECLAS_RAPIDAS.txt")
+   Shell ("start notepad " + ROLLDIR + "recur\TECLAS_RAPIDAS.txt")
    Exit Do
 EndIf
 
 If MultiKey(SC_F1) Then
 ' por ahora solo traeremos un texto, luego usaremos llamar
 ' a un archivo de help chm..
-   Shell ("start notepad " + pathinicio + "\ayuda.txt")
+   Shell ("start notepad " + ROLLDIR + "ayuda.txt")
    Exit Do
  ' estopodemos hacer ayuda contextual
  '' Define character range
@@ -4900,7 +4900,7 @@ Dim As Integer i3
   If ubirtk > 0 or ubiroll > 0 Then ' valen 2
   Print #1," termina Roll tambien pues es un grafico independiente"
        salir()
-       Kill "procesos.txt"
+       Kill ROLLDIR+"procesos.txt"
        Close
        End 0
      ''Exit Do 
@@ -6378,6 +6378,7 @@ If  MultiKey(SC_CONTROL) And (SC_O)  Then ' 01-11-2025 habilitamos trasposicion 
 '    grupo de notas seleccionadas poniendo un 13 en nota
      RollNotaOld=RollNota
      nR=PianoNota + SumarnR(PianoNota)
+''statusBarGadget NO PUEDE IR EN UN THREAD CANCELA !!!
  '   If Roll.trk(indicePos,nR ).dur = 185 Then ' trasponer grupo no funciona para ejecuciones
  '    StatusBarGadget(BARRA_DE_ESTADO,"EN EJECUCIONES (N) USAR TRASPORTAR NOTAS SEPARADAS EN UN GRUPO DA ERRORES, USE POR ZONA" )
  '    SetForegroundWindow(hwndC) 

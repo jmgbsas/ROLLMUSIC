@@ -262,6 +262,12 @@ GENERAR MELODIA MUY BASICA EXPERIMENTAL GEN
    toma el foco o ir a roll grfico si no lo hace ..estando en roll grafico pulsar ALT.
    APARECE EUN DIALOGO PREGUNTANDO LA TONICA , pulse inicio para ir al principio de la secuencia
    y aparecera entre 4 o 5 compases de notas aleatorias   en escala mayor  de la tonica elegida.
-
+--------------------------------------------------------------------
+USAR ROLLMUSIC COMO REPRODUCTOR EN EL EXPLORADOR
+DAR CLICK O DOBLE CLICK SEGUN EL CASO A UN ARCHIVO *.roll *.rtk o *.ejec
+en lso 2 primeros se levanta un grafico y se le puede dar play
+en el ultimo caso *.ejec levanta Rollmusic completo sin grafico, carga el archivo
+y lo ejecuta automaticamente. (hay que ajustar en el explorador reproducir esas extensiones
+con rollmusic.exe)
            
           

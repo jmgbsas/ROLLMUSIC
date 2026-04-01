@@ -60,7 +60,11 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.366 Fix Tab tiempos de loops, teclas de interlineado vs trasponer, F2/F3"
+nroversion="0.367 BATCH *.ejec desde el explorador darle click o doble click Y REPRODUCE AUTOMATICO "
+' FALTARIA HACER LO MISMO PARA *.ROLL Y RTK LOS LEVANTA PERO HAY QUE DARLE PLAY
+' FIX PLAY EJEC NO CANCELA SI PULSO SALIR
+' ECO Y VOL DE EJECUCIONES LOS BOTONCITOS ABAJO CANCELAN ahora ajuste vol segun que version verificar no anda bien
+' ejec batch toca 2 veces y separa solo una y no sepuede parar mas!!!
 ' -Fix Tab numeracion avanza pero no los datos, 
 ' fix coloreado atrasa un poco durante el play
 ' FIX HABILITAR INTERLINEADO HABILITABA A TRASPONER, SE CAMBIO POR TECLA W. 
@@ -339,7 +343,7 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
           
       If eventC=EventKeyUp  Then
          If  EventKEY = VK_F1 Then 'e nventana control 
-           Shell ("start notepad " + pathinicio + "\ayuda.txt")
+           Shell ("start notepad " + ROLLDIR + "ayuda.txt")
            Exit Do
          EndIf
 
@@ -445,7 +449,38 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
 '  de window9
       If terminar=TERMINAR_POR_LOOP_PRINCIPAL Then
          Exit Do
-      EndIf     
+      EndIf  
+      If  ubiejec = 1 Then  
+'''30-03-2026 LEVANTAR UN *. EJEC DEDE EL EXPLORADOR
+        Print #1,"5 Instancia ",Instancia
+        Dim lugar As string 
+        lugar=Command(1)
+        titulosEj(1) =lugar
+        Print #1,"lugar ",lugar
+         CTRL10165 (lugar,"BATCH")
+            DirEjecSinBarra = lugar
+            Print #1,"entro por ubiejec > 0 ",lugar
+            ubiejec =2 ' vamos a dar play automatico
+            SetForegroundWindow hwndC
+            PISTASEJECSELECCIONADA=1 
+            CheckBox_SetCheck( cbxejec(1),1)
+            TopeEjec=1:ntoca=1
+            playEj=SI
+            threadG = ThreadCall  PlayTocaAll (p)
+         SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_PRESIONADO)
+         SetGadgetstate(BTN_MIDI_PARAR,BTN_LIBERADO)
+         Parar_De_Dibujar=NO
+          ' If ubiejec=2 Then
+           '    SetForegroundWindow hwndC
+           '    PISTASEJECSELECCIONADA=1 
+              ' CheckBox_SetCheck( cbxejec(1),1)
+           '    ubiejec = 0
+               ''playEj=NO
+              '''  Exit Select
+          ' EndIf 
+
+       EndIf  
+   
       If tocatope < 32   Then           
          For k=1 To tocatope+1
          ' al inicio lim sup del for = 1   
@@ -535,7 +570,7 @@ Print #1, "///3 ubiroll ubirtk ", ubiroll,ubirtk
 '-----------------------------------------------------------------------
       If terminar=TERMINAR_POR_LOOP_PRINCIPAL Then  ' 2
        salir()
-       Kill "procesos.txt"
+       Kill ROLLDIR+"procesos.txt"
        Close
        End 0
      EndIf 

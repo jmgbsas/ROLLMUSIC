@@ -1,6 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-    0.366 tiempos de loops, teclas de interlineado vs trasponer
+ 0.367 BATCH *.ejec desde el explorador darle click o doble click Y REPRODUCE AUTOMATICO 
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
       Falta probar con canciones largas..se probara cuando se puede cargar un archivo midi
@@ -470,11 +470,12 @@
       alinear las posicion de cada pista entre ellas...Se probara y hara una cancion como prueba 
       mas adelante que suene bien con dsitintos instrumentos.....
 
-    15) Procesos Batch en Explorador de Archivo o en linea de comandos.
+    15) Procesos Batch en Explorador de Archivo o en linea de comandos.(*.roll,*.rtk, *.ejec)
         Una instancia sin control puede ejecutarse tambien si asociamos la sextensiones *.roll y *.rtk
         con Rollmusi.exe. En ese caso al dar doble clik o enter sobre el nombre de una secuencia en el
         explorador, se levantará una sesion de RollMusic sin el Menu de Control. 
-        Queda editado el arcivo *.roll o el *.rtk.  En este modo se puede ver la escala previamente 
+        Queda editado el arcivo *.roll o el *.rtk. Se agrega en esta version ejecutar *.ejec, levanta el Control
+        y reproduce. En este modo se puede ver la escala previamente 
         ajustada desde Control y Grabada al archivo desde Roll.
         Como tambien si se usa sostenidos o bemoles..
         Nota: en el caso de bemoles la entrada de notas es igual que antes, Si antes May+C era C#

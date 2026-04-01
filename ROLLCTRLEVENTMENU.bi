@@ -198,8 +198,12 @@ Print 1,"GRABA MIDI IN EN CASE 1015  "
 '---------------------------------------
            Case 10165 ' CARGAR UN SOLO ARCHIVO DE EJEC
            Dim lugar As string 
-           
-           CTRL10165 (lugar)
+           If ubiejec > 0 Then
+              CTRL10165 (lugar, "BATCH")
+              ubiejec=0 
+           Else
+              CTRL10165 (lugar, "ONLINE")
+           EndIf 
            DirEjecSinBarra = lugar
   
 '-----------------------------------------------------------------------
@@ -1089,7 +1093,7 @@ Print #1,"///----SEL 1211 CORO Globalcoro ",Globalcoro
            threadVol = ThreadCall  CuadroVol ()
            threadDetach threadVol 
            Case 2004 ' cuadros ayuda tempo, figuras duracion, volumen
-          Shell ("start notepad " + pathinicio + "\recur\TECLAS_RAPIDAS.txt")
+          Shell ("start notepad " + ROLLDIR + "recur\TECLAS_RAPIDAS.txt")
            'threadKey = ThreadCall  CuadroKey ()
            'threadDetach threadKey 
 

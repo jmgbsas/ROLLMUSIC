@@ -9,6 +9,7 @@ End Sub
 '------------
 
 Sub CargarMidiIn(fileMidiIn As String,   ByVal ntkp As Integer, byval version As Integer)
+versionEJEC=version
 '[ carga un archivo en cada llamada ]
 ' carga un archivo por cada llamada, ntkp el nro de trak o pista de ejecucion
 ' la entrada DirEjecSinBarra recibido enCargarMidiIn CONTIENE EL PATCH NO SERIA 
@@ -143,6 +144,7 @@ Print #1,"////////redimendsiona a 2*maxgrb ",2*maxgrb
 End Sub
 
 Sub CargarPistasEjec (lugar As String, ByRef ntkp As Integer, ByRef version As integer)
+versionEJEC=version
 ' HAY QUE DESARROLLAR TOCAPARAM2 EL OTRO TIPO DE PARAMETROS MAS AMPLIO
 ' DONDE ESTA EL tIPOcOMPAS POR AHORA SOLO MANEJA 4/4 EN EL TAP!!
 ' IGUAL NO TIENE ACENTO ES LO MISMO
@@ -229,14 +231,14 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
           If IsDate(fecha1) <> 0 And  tocaparamCabeza(nf).fecha > 45000 Then
              Print #1,"cargando archivo ejec version 2"  '' corre ok
              ' VERSION 2 NUEVA leo lo siguiente
-             version=2     
+             versionEJEC=2     
              Get #f, ,tocaparam(nf)  ' EN VER2 HABRA UNA CABEZA Y LUEGO TOCAPARAM Y TOCAPARAM2
           Else
              Close f 
              Sleep 50
              Open fileMidiIn For Binary Access Read As #f
              Print #1,"cargando archivo ejec version 1"
-             version=1   
+             versionEJEC=1   
              Get #f, ,tocaparam(nf)
           EndIf
 ' CON EJEC2 tocaparam0 tendra otros datos a definir y recien empieza
@@ -271,8 +273,9 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
          pistasEj(nf) =fileMidiIn
   
            Sleep  100
+           If ubiejec =0 Then
            DirEjecSinBarra = Dir() 'trae el siguiente nombre de archivo en el directorio
-
+           EndIf
            If  lugar > "" Then 
              fileMidiIn=lugar+"\"+DirEjecSinBarra
            Else 
@@ -316,7 +319,7 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
         Print #1,"CargarMidiIn  fileMidiIn ",fileMidiIn
 
         
-        CargarMidiIn (fileMidiIn,  np,version)  
+        CargarMidiIn (fileMidiIn,  np,versionEJEC)  
                 
         Dim cadena As String
         ''''cadena= sacarExtension(filenameOld) ' [1]AAA
@@ -332,7 +335,9 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
 
         print #1,"nombre en CargarPistasEjec ,Ntkp ",DirEjecSinBarra, np
         Sleep 100
-        DirEjecSinBarra = Dir()
+        If ubiejec=0 Then
+           DirEjecSinBarra = Dir()
+        EndIf
        If  lugar > "" Then 
           fileMidiIn=lugar+"\"+DirEjecSinBarra
        Else 
@@ -362,6 +367,7 @@ End Sub
 Sub CargarUnaEjec (lugar As String, ByRef ntkp As Integer, ByRef version As integer)
 ' lugar es CurDir dir actual no termina en barra.
 ' ntkp se incrementa en 1 si se carga el archivo bien,
+versionEJEC=version
 ROLLCARGADO=FALSE
 Print #1,"LUGAR y ntkp RECIBIDOS, CurDir, ntkp o TopeEjec ";lugar ,ntkp
 
@@ -377,8 +383,11 @@ print #1,"inicia CargaUnaEjec ejecuta 1 sola vez no hay loop devuelve ntkp suman
  ' el Dir me trae los nombres sin el path de cancion, EL PATH POSTA COMPLETO ES NOMBRECANCION
  ' no necesariamente el PATH es CurDir sin bara al final
   Dim  fileMidiIn As String
-  fileMidiIn = OpenFileRequester("Cargar Un Ejec",lugar,"archivos ejec  (*.ejec)"+Chr(0)+"*.ejec"+Chr(0))
- 
+  If ubiejec > 0 Then
+     fileMidiIn=Command(1)
+  Else
+   fileMidiIn = OpenFileRequester("Cargar Un Ejec",lugar,"archivos ejec  (*.ejec)"+Chr(0)+"*.ejec"+Chr(0))
+  EndIf
   Dim  As Integer nf=0
 ' OBTIENE EL MAXGRB PARA REDIMENSIONAR LOS VECTORES A CARGAR  
   Print #1,"fileMidiIn  maxgrb ",fileMidiIn, maxgrb
@@ -409,6 +418,7 @@ print #1,"inicia CargaUnaEjec ejecuta 1 sola vez no hay loop devuelve ntkp suman
      version=1   
      Get #f, ,tocaparam(nf)
   EndIf
+  versionEjec=version
 ' CON EJEC2 tocaparam0 tendra otros datos a definir y recien empieza
 ' lso datos de antes mas nuevos en tocaparam y tocaparam2 e l 2 aca no hace falta solo quereemos maxpos
 ' para obtener el maxgrb de todas las pistas   
@@ -417,6 +427,7 @@ print #1,"inicia CargaUnaEjec ejecuta 1 sola vez no hay loop devuelve ntkp suman
   Print #1,"tocaparam(nf).maxpos ",tocaparam(nf).maxpos
   If tocaparam(nf).maxpos > maxgrb Then
      maxgrb = tocaparam(nf).maxpos
+     Print #1,"maxgrb observar para un solo ejec debe dar el maxpos"
   EndIf
   Close f
   Print #1," ORDEN DE LECTURA EJEC nf ", nf

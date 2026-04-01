@@ -43,7 +43,7 @@ Declare Sub CTRL1010(ByRef salida As INTEGER)
 Declare Sub CTRL1012(ByRef SALIDA As INTEGER)
 Declare Sub CTRL1015 ()
 Declare Sub CTRL1016 (ByRef lugar As string)
-Declare Sub CTRL10165 (ByRef lugar As String)
+Declare Sub CTRL10165 (ByRef lugar As String,funcion As string)
 Declare Sub CTRL1040 ()
 Declare Sub CTRL1050 ()
 Declare Sub CTRL1060 (ByRef SALIDA As INTEGER)
@@ -153,7 +153,7 @@ Const EDIT_POR_TECLADO = 12
 '-----------------instancias
 Const ARG0_EN_LINEA = 0
 Const ARG1_1_TITULO = 1
-Const ARG1_2_DESDE = 1 
+Const ARG1_2_DESDE = 1
 Const ARG2_HASTA = 2
 Const ARG3_TITU = 3
 Const ARG4_INSTRU = 4
@@ -587,7 +587,7 @@ Common Shared as any ptr thread1, thread2,threadPenta,threadcreaPenta, thread3,p
 Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro,threadKey
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
-Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi
+Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi,ubiejec
 parametros=0
 abrirRollCargaMidi=0
 Common Shared As String comando,titulosTk()
@@ -866,6 +866,7 @@ Declare Sub VolumenGrafico (c As cairo_t Ptr, Roll As inst)
 Declare Sub barrePenta (c As cairo_t Ptr, Roll As inst)
 Declare Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst, ByRef ubiroll As Integer, ByRef ubirtk As Integer )
 
-Common shared As Integer numtrack,superposicion, nnn
+Common shared As Integer numtrack,superposicion, nnn,versionEJEC
 nnn=0
+'VERSION DE EJEC CON MAS CAPACIDAD Y V OLUMEN VERSION=2
 Declare Sub TABTAB()

@@ -13,10 +13,10 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
 'cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_E,1016) 'CTRL+E ABRIR PISTAS ejecucion
 ''' ------TIPS AYUDA EN LA BARRA DE ESTADO
 '   StatusBarGadget(BARRA_DE_ESTADO,"CADA TECLA EN ESTA VENTANA DE CONTROL SE PUEDE USAR UNA SOLA VEZ, PARA MAS VECES OPRIMIR Q" )
- 
+'statusBarGadget NO PUEDE IR EN UN THREAD CANCELA !!! ESTE NO ES UN THREAD SE SACA POR CONVENIENCIA 
   'CenterWindow(hwndC)
 ''UpdateInfoXserver()
-Var bitmap = Load_image("fondo.bmp")
+Var bitmap = Load_image(ROLLDIR+"fondo.bmp")
 BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 ''LBS_EXTENDEDSEL seleccion extendida por ahora no va
 ''LBS_NOINTEGRALHEIGHT
@@ -176,9 +176,9 @@ GadgetToolTip(BOTON_SELECCION_EJECUCION,"Seleccion de Pista para reproducir o ca
   GadgetToolTip(CHECK_GRABAR_EJECUCION,"Seleccion de Pista a grabar desde un teclado midi o loopmidi, pide un nombre")
  ' ButtonGadget(8,450,0,100,30,"PARAR",BS_RADIOBUTTON )
  ' ButtonGadget(9,580,0,120,30,"GRABAR",BS_RADIOBUTTON  )
-Var IMGP=Load_image(".\recur\Parar.bmp")
-Var IMGG=Load_image(".\recur\Grabar.bmp")
-Var IMGE=Load_image(".\recur\Ejec.bmp")
+Var IMGP=Load_image(ROLLDIR+"recur\Parar.bmp")
+Var IMGG=Load_image(ROLLDIR+"recur\Grabar.bmp")
+Var IMGE=Load_image(ROLLDIR+"recur\Ejec.bmp")
 SetGadgetColor(CHECK_GRABAR_EJECUCION,cint("&HC0C0C0"),0,1)
 
 ' pistas de ejec MIDI-IN

@@ -4024,7 +4024,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
    If  mousex > 590 And mousex< 630 And mousey < 50  Then
     cairo_set_source_rgba c, 0, 1, 0, 1
     If MouseButtons And 1 Then
-      Shell ("start notepad " + pathinicio + "\ayuda.txt")
+      Shell ("start notepad " + ROLLDIR + "ayuda.txt")
       Menunew=MENU_INICIAL 
     End If
    Else
@@ -5546,7 +5546,7 @@ Next kk
    Print #1,"CORO SELECCIONADO ->> "; valorcoro
    Globalcoro=CUByte(valorcoro)
   SetGadgetText(3,Str(valorcoro))
-
+  
  Case "[ECO]","[ECOEJEC]"
    
    If menuOldStr="[ECOEJEC]" Then
@@ -5569,6 +5569,7 @@ Next kk
    Print #1,"ECO SELECCIONADO ->> "; valoreco
    Globaleco=CUByte(valoreco)
   SetGadgetText(3,Str(valoreco))
+   
  Case "[VOL]","[VOLEJEC]"
    If menuOldStr="[VOL]" Then 
 Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
@@ -5582,10 +5583,10 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
       pmTk(ntk).vol=CUByte(valorvol)
       pmTk(0).vol=CUByte(valorvol)
       dat.vol = pmTk(ntk).vol
-      
+      Exit Select
    EndIf
 
-   If menuOldStr="[VOLEJEC]" Then 
+   If menuOldStr="[VOLEJEC]" And versionEJEC=2  Then ' version 1 de ejec no tiene volumen
       If ntkp=0 Then ntkp=1  EndIf
   '    If pmEj(ntkp).vol=0 Then 
   '      default=Str(90)
@@ -5598,11 +5599,10 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
       pmEj(ntkp).vol=CUByte(valorvol)
       tocaparam2(ntkp).vol=CUByte(valorvol)
       Print #1,"NTKP EN VOLEJEC SEL, pmEj(ntkp).vol ", ntkp, pmEj(ntkp).vol
-   EndIf
-
    Print #1," VOLUMEN AJUSTADOO ->> "; valorvol
    Globalvol=CUByte(valorvol)
-  SetGadgetText(3,Str(valorvol))
+   EndIf
+   menuOldStr=""   
  Case "[RITMO]"
   
 ' el ritmo deberia ser el mismo para todas las pistas de cancion y ejecs!
@@ -5630,13 +5630,14 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
       'pmEj(ntk).tipocompas=pmTk(ntkp).tipocompas 
       ''por omision ritmo=1, 4/4
       RecalCompas(ritmo)
+      
   Case "[NUMTRAK]"
     default=Str(1)
     ''Print #1,"llego a NUMTRAK en entrar tecla",NombreArchivo 
     default= InputBoxJmg("Track superpuesto " ,"Entre un Numero de Track ",default, ES_MULTILINE + ES_AUTOVSCROLL,0  )
     numTk= CInt(default) 
     
-
+   
   Case "[GEN]" '' muy bien funciona!!!
 ' generamos para escala mayor
 Dim As Integer escalamayor(1 To 7)={1,3,5,6,8,10,12}
@@ -5899,7 +5900,7 @@ Next i
 EndIf  ''fin version 1
 
 End Select
-
+menuOldStr=""
 End Sub
 
 
@@ -7919,6 +7920,17 @@ Dim  As Integer i3
                  ThreadDetach(threadV(i3))
               Next i3
            EndIf
+   For i3=1 To topeEjec
+      portsal=pmEj(i3).portout
+   '   Print #1,"midiout ",k1, *nombreOut(k1)
+      alloff( pmEj(i3).canalsalida,portsal )  
+      allSoundoff( pmEj(i3).canalsalida,portsal )  
+
+      ''Print #1,"desmarco ",*nombreOut(k1)
+      listoutAbierto(portsal)=0
+      close_port midiout(portsal)
+      listoutAbierto( portsal) = 0
+   Next i3
 
 'Sleep 10
   If teclado=1 Then
