@@ -537,11 +537,11 @@ cargacancion=NO_CARGAR_PUEDE_DIBUJAR 'PUEDE DIBUJAR PORQUE NO HAY REDIM  DE ROLL
            If ubi2=0 Then
               ubi2 = InStrrev(nombrea,")")
            EndIf
-'''           If NombreCancion = "" Then ' este caso no se dara cargar  track es solo para cancion con traks 
- '''             ntk=0
-'''           Else 
+           If NombreCancion = "" Then 
+              ntk=0
+           Else 
               ntk=CInt(Mid(nombrea,ubi1+1,ubi2-ubi1-1))
-'''           EndIf      '
+           EndIf      '
      Else
   '2)  carga *.rtk de linea de comando doble clik o de cancion   
        If ubirtk > 0 Then ' ENTRAN TAMBIEN TODAVIA LOS *.SOLO

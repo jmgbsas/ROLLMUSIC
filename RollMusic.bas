@@ -60,7 +60,8 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.367 BATCH *.ejec desde el explorador darle click o doble click Y REPRODUCE AUTOMATICO "
+nroversion="0.368 FIX OCTAVAS RTK Y ROLL, INICIO SE AJSUTA DE 3 A 8"
+' AL CLEVANTAR UN ROLL GRABADO EN 4 A 8 OCTAVAS A 3 A 8 OCTAVAS DEFORMA LA MELODIA
 ' FALTARIA HACER LO MISMO PARA *.ROLL Y RTK LOS LEVANTA PERO HAY QUE DARLE PLAY
 ' FIX PLAY EJEC NO CANCELA SI PULSO SALIR
 ' ECO Y VOL DE EJECUCIONES LOS BOTONCITOS ABAJO CANCELAN ahora ajuste vol segun que version verificar no anda bien
@@ -232,7 +233,8 @@ abrirPortoutEjec(100)
 '' ------TIPS AYUDA EN LA BARRA DE ESTADO
    If UBIRTK> 0 Or UBIROLL > 0 Then
    Else
-   StatusBarGadget(BARRA_DE_ESTADO,"CADA TECLA EN ESTA VENTANA DE CONTROL SE PUEDE USAR UNA SOLA VEZ, PARA MAS VECES OPRIMIR Q" )
+' esto no se porque lo puse ...channn
+   'StatusBarGadget(BARRA_DE_ESTADO,"CADA TECLA EN ESTA VENTANA DE CONTROL SE PUEDE USAR UNA SOLA VEZ, PARA MAS VECES OPRIMIR Q" )
    EndIf
 '' LA GUI SE EJECUTA EN SU PROPIO LOOP APARTE DEL SISTEMA POR ESO LA BARRA DE ESTADO
 '' NO SE PUEDE LLENAR AHI PORQUE SIEMPRE PISA OTROS MENSAJES LA GUI SE REFRESCA

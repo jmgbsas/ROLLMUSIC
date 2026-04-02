@@ -3217,7 +3217,9 @@ End Sub
 Sub CargaArchivo(Roll As inst, ByRef ubiroll As Integer)
 ' PRINCIPALMENTE CARGA ROLL Y LO PASA SIEMPRE A TRACK (0)
 ' los datos se carga ntambien a pmTk(0) el cual es comun a Roll y Track(0)
-
+' debemos tener las versiones viejas de roll y las nuevas por el cambio de datsec
+' a rolldat. Si es version vieja el 1er ubyte sera distinto de 222 , si es 222 es la
+' nuev version.
 On Local Error GoTo saledeaca 
 ntk=0 ' Cargar en 3 vectores Roll pmTk(0) y Track(0). 
 ' la carga de tracks aislada o la carga de una cancion con sus tracks
@@ -3277,8 +3279,8 @@ Sleep 100
          ubiroll=2
       EndIf
 'cada dat tiene 7 bytes son 70 bytes, vamos a generar un type
-' encabezado de 70 bytes para que sea compatible con los archivos actuales
-' rolldat 
+' encabezado de 70 bytes para que sea compatible con los archivos actuales datsec
+'  
   ''' shared ahora   Dim dat As rolldat
 
 '     Dim zLim As dat
@@ -3295,6 +3297,7 @@ Sleep 100
 
      'Print #1,"posicion lectura en ca ", Seek(ca)  
 '     Seek ca,1
+' debemos compatibilizar roll de version 1 y 2 como track falta eso!
      Get #ca, , dat
      x1=Bin(dat.x1,4) 
      x2=Bin(dat.x2,4) 
@@ -3326,11 +3329,11 @@ Sleep 100
      ' crgamos limites Roll de octavas
 'carga en la pista ntk, si ntk es cero coincide y se puede cargar solo en cero
 'desde hasta sera nfijos por ahora 3  8
-   ''  desde  = CInt(dat.desde) 'Variable global
-     desde=3
+     desde  = CInt(dat.desde) 'Variable global
+   ''  desde=3
      Print #1,"desde ",desde
-   ''  hasta  = CInt(dat.hasta) ' global
-     hasta=8 
+     hasta  = CInt(dat.hasta) ' global
+   ''  hasta=8 
      Print #1,"hasta ",hasta
      notaold= CInt(dat.notaold) 'global
 
@@ -7492,7 +7495,7 @@ Dim As Integer i
                  pmTk(0).hasta=CUByte(Octahasta)
  
               EndIf   
-
+              Sleep 500
               Close_Window(haw)
               pasoc=1
               Exit Do 

@@ -380,6 +380,15 @@ Print #1,"**********************************************************************
     '      SetForegroundWindow(hwnd)        
 '-----------------------------------------------------------------------
            Case 1028 ' <========== seleccion octavas menores a 1 9 
+               If pmTk(ntk).desde=0 Then
+               Else
+                  pmTk(ntk).desde=desde 
+               EndIf       
+               If pmTk(ntk).hasta=0 Then
+               Else
+                  pmTk(ntk).hasta=hasta 
+               EndIf       
+
                thread3 = threadcall seloctava (desde, hasta)
                ThreadWait thread3 
                *po = hasta -1

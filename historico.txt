@@ -1,3 +1,7 @@
+-02-04-2026 0.368  FIX OCTAVAS RTK Y ROLL, INICIO SE AJSUTA DE 3 A 8
+  NOTA: LAS OCTAVAS SE INICIAN DE 3 A 8 FIJAS. Un archivo *.rtk que tenga rango menor
+    como 4 a 8 se cargaran bien con 3 a 8. Pero los archivos *.roll se cargaran con su rango
+    original grabado en el archivo, sino las notas caeran en cualqueir lugar.
 -31-03-2026 0.367 Ejecutar *.ejec desde el explorador darle click o doble click Y REPRODUCE AUTOMATICO 
 -29-03-2026 0.366 Fix Tab tiempos de loops, teclas de interlineado vs trasponer, F2/F3
  -Fix Tab numeracion avanza pero no los datos, 
