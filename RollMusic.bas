@@ -60,7 +60,7 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.368 FIX OCTAVAS RTK Y ROLL, INICIO SE AJSUTA DE 3 A 8"
+nroversion="0.369 OCTAVAS ROLL SE PUEDEN CAMBIAR CONSERVANDO BIEN LOS DATOS"
 ' AL CLEVANTAR UN ROLL GRABADO EN 4 A 8 OCTAVAS A 3 A 8 OCTAVAS DEFORMA LA MELODIA
 ' FALTARIA HACER LO MISMO PARA *.ROLL Y RTK LOS LEVANTA PERO HAY QUE DARLE PLAY
 ' FIX PLAY EJEC NO CANCELA SI PULSO SALIR

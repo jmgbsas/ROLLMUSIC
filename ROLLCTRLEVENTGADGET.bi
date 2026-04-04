@@ -613,9 +613,9 @@ Print #1, "542 GrabarPenta=0"
           Print #1,"1 en BTN_EJEC_PORTSAL"
             pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
             Print #1,"en BTN_EJEC_PORTSAL pis ";pis  
-            If pis=0 Then ' o cntpis=0
-              Exit Select
-            EndIf
+ ''           If pis=0 Then ' o cntpis=0
+ ''             Exit Select
+ ''           EndIf
 'si es seleccion multiple cntpis sera el nro de pistas seleccionadas
 ' TOMAMOS DEL VECTOR LA 1ER PISTA Y hacemos pis=vec(1), procesamos todo
 ' para esa pista y luego ajustamos ese portout al resto  de las pistas
@@ -709,9 +709,7 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
             pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
             'cntpis=GetSelCountListBox(PISTASEJECUCIONES,@vec(0)) +1
             Print #1,"en BTN_EJEC_VOL pis ";pis  
-            If pis=0 Then ' o cntpis=0
-              Exit Select
-            EndIf
+        If pis >=1 Then
           menuOldStr="[VOLEJEC]"
           threadvol=threadCall EntrarTeclado()
           ThreadWait threadvol
@@ -721,9 +719,10 @@ Print #1,"CONTROLGADGET [VOLEJEC] versionEjec ", versionEjec
 'statusBarGadget NO PUEDE IR EN UN THREAD CANCELA !!!
 ' AL MENOS EN ESTE PROGRAMITA  
    StatusBarGadget(BARRA_DE_ESTADO,"ARCHIVOS DE VERSION 1 DE EJEC NO TIENEN UN AJUSTE DEL VOL GRABADO EN EL ARCHIVO *.EJEC , SI TIENE LOS VOLUMENES ORIGINALES DE EJECUCION" )
-          Else
-          SetGadgetText(3,Str(valorvol)) 
+'          Else
+'          SetGadgetText(3,Str(valorvol)) 
           EndIf
+        EndIf
       EndIf 
 '--------------
       If  eventnumber()=BTN_EJEC_PAN Then 'PAN futuro

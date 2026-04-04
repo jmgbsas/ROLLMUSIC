@@ -163,7 +163,7 @@ If CantTicks < MAXI Then
 EndIf
   compas(1).Posi=0
   compas(1).nro = 0
-' este for decide el pulso no es parejo habra que limar àra cada caso?
+' este for decide el pulso no es parejo habra que limar ï¿½ra cada caso?
 '2/4 (f,d), 3/4 (f,d,d), 4/4 (f,d,sf,d), 6/8 (f,d,d,sf,d,d)?,12/8(f,d,d,d,d,d,sf,d,d,d,d,d)? 
 ' el 1er tiempo siempre es fuerte es el acento
 ' el 2do  "     siempre es debil
@@ -933,7 +933,7 @@ End Sub
 Function BuscarNota (ctrl As Integer, ByRef cur1 As Integer,ncur As Integer) As Integer ' en cursor cambiadur u otras el programa se posicionara en la nota mas cercana
 ' hace falta para acordes en lectura no le doy pie con bola todavia!!!! 19-07-2025
 ' decidiremos cuanotos ticks de acercamiento en un principio 10
-' posn1=n+curpos  es x , notacur es y, barreemos un cuadrado ¡ 1 1 semitono y + - 10 curpos
+' posn1=n+curpos  es x , notacur es y, barreemos un cuadrado ï¿½ 1 1 semitono y + - 10 curpos
 ' BUSCA OFF 1 O 2 y 190
 ''Print #1,"ENTRA A BUSCONOTA CUR1 "; cur1; " ncur "; ncur
   BuscarNota=1
@@ -959,7 +959,7 @@ If x2 > NroCol Then x2=NroCol EndIf
 'Print #1," y1 y2 "; y1, y2
 For x= x1 To x2  'curpos
  For y=y1 To y2  ' notacur
-    posn1 = posicion+ x 'este deberia ser siempre ¿?
+    posn1 = posicion+ x 'este deberia ser siempre ï¿½?
 'Print #1,"POSN1 ";posn1
 'Print #1,"POSISHOW  ";posishow
 'Print #1,"POSIcion  ";posicion
@@ -1005,7 +1005,7 @@ Function BuscarOtros (ctrl As Integer, ByRef cur1 As Integer,ncur As Integer) As
 ' Y FUERA DE CURSOR SI HACE FALTA POR AHORA NO
 ' hace falta para acordes en lectura no le doy pie con bola todavia!!!! 19-07-2025
 ' decidiremos cuanotos ticks de acercamiento en un principio 10
-' posn1=n+curpos  es x , notacur es y, barreemos un cuadrado ¡ 1 1 semitono y + - 10 curpos
+' posn1=n+curpos  es x , notacur es y, barreemos un cuadrado ï¿½ 1 1 semitono y + - 10 curpos
 ' BUSCA OFF 1 O 2 y 190
 Print #1,"ENTRA A BuscarLoQueSea CUR1 "; cur1; " ncur "; ncur
 If ctrl= 0 Then ' ctrl es cambiadur solo procesa con 1 para evitar otras modificaciones se ajusta en cursor()
@@ -1030,7 +1030,7 @@ If x2 > NroCol Then x2=NroCol EndIf
 Dim As Integer mayorpos
 For x= x1 To x2  'curpos
  For y=y1 To y2  ' notacur
-    posn1 = posicion+ x 'este deberia ser siempre ¿?
+    posn1 = posicion+ x 'este deberia ser siempre ï¿½?
 'Print #1,"POSN1 ";posn1
 'Print #1,"POSISHOW  ";posishow
 'Print #1,"POSIcion  ";posicion
@@ -1477,7 +1477,7 @@ trasponer=0
      acordeNro=CInt(Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).pb)
      '''verticalEnOctavaVacia= 12 + (hasta-2)*13 + estoyEnOctava - desde
      '''acordeNro=CInt(Roll.trk(n,verticalEnOctavaVacia ).dur) 'acordenro
-     notaold=notacur  ' hará falta ??? puede traer problemas,,,en cambiadur 
+     notaold=notacur  ' harï¿½ falta ??? puede traer problemas,,,en cambiadur 
 
      cairo_move_to  (c,gap1 + (curpos)*anchofig ,  Penta_y + (notaOld-1) * inc_Penta  )
      cairo_rectangle(c,gap1 + (curpos)*anchofig, Penta_y + (notaOld-1) * inc_Penta  , wc,inc_Penta)
@@ -1966,7 +1966,7 @@ nota=notacur + (*po-1) * 13
  ' ====> MODIFICAR con ctrl-n
 ' If (cursorHori=2 Or cursorVert = 2) And agregarNota=1  And nota> 0 Then
 ' ''COMPLETAR PARA TICKS !!! 29-04-2025
-''' nunca consideró notas ligadas, opcion Ctrl-M es mas completa
+''' nunca considerï¿½ notas ligadas, opcion Ctrl-M es mas completa
 '' solo agrega  notas sin ligar y tal vez en cualquier octava probrmos usando  (*po-1) en vez de (EstoyEnOctava -1)
 '  Dim posn1 As Integer
 '  posn1=n + curpos
@@ -2113,7 +2113,7 @@ If nombre=""  Then ' evita revisar track vacios EN UNA CANCION
   nombre= titulosTk(ntk)
 Else   
 '/
-' funcion saltoTAB indica que no calcule los tamaños ancho de figura 
+' funcion saltoTAB indica que no calcule los tamaï¿½os ancho de figura 
 TrackaRoll (Track(), ntk,Roll,"saltoTAB" ) ' no usa ubirtk
 Print #1,">>>> Tracks  ntk cargado, nombre ",ntk, nombre
 
@@ -2764,7 +2764,7 @@ On Local Error Goto fail
 ' TIENE EVENTOS ON Y OFF PUES ALGUNOS ARCHIVOS MIDI
 ' PONEN SIEMPRE ON 
 'SOLUCION PARA INTERPRETAR SIN NINGUNA REFACTURACION !!!
-' o la hacemos con codigo en este mismo proceso ó, grabamos otro archivo
+' o la hacemos con codigo en este mismo proceso ï¿½, grabamos otro archivo
 ' con estos eventos agregados,,, yluego procesamos como antes..
 ' asi seria mas sencillo de hacer,,,
 
@@ -3002,7 +3002,7 @@ Else
      valv=ValInt(Mid(linea, esv+3,3))
      Print #dbgigualado,"valv ";valv
 
-   '4)  'vino un on y todavia faltan off, se agregan, ¿cuantos off vinieron antes?
+   '4)  'vino un on y todavia faltan off, se agregan, ï¿½cuantos off vinieron antes?
      '2) solo nos interesa detectar el comienzo y final de un acorde
      ' para ello contamos los on, y guardamos la linea, lo mismo para los off
       If eson > 0 Then 
@@ -3500,7 +3500,7 @@ MessageBox( null, "MIDI-OUT "+ Str(portout)+ " INEXISTENTE CAMBIELO", "Se cambia
      Dim Trabajo (1 To MaxPos, NB To NA) As datsec     ''' es un Roll
  
      Get #ca, , Trabajo() ' aca levanta tambien el instrumento que se grabo
- 
+     ' SE SUPONE QUE LEVANTA DATOS COMPLETOS DE ROLL INCLUIDO LOS VOL DE CADA NOTA DE UNA EJEC
      ' CARGA VECTOR ROLL movemos los datos a Roll Y a track 0
      ' --------------------------------------------
      ' Roll y Track tendran 500 posiciones mas que trabajo el archivo de disco
@@ -3522,7 +3522,7 @@ Dim As Integer copiado=0
 ' 06-09-2021 carga track en ntk=0 
       
                                                         ' 12 a 13   
-       If Trabajo (j,i).nota >= 1 And Trabajo (j,i).nota <=13 And  Trabajo (j,i).dur >=1 And Trabajo (j,i).dur <= 202  Then
+If Trabajo (j,i).nota >= 1 And Trabajo (j,i).nota <=13 And  Trabajo (j,i).dur >=1 And Trabajo (j,i).dur <= 202  Or Trabajo (j,i).onoff >0 Then
          ip+=1
          If ip >13 Then 
   '            print #1,"error  ip > 12,ip, Tr,j,i ",ip, Trabajo (j,i).dur,j,i
@@ -3537,7 +3537,9 @@ Dim As Integer copiado=0
          Track(ntk).trk(j,ip).vol  => Trabajo (j,i).vol
          Track(ntk).trk(j,ip).pan  => Trabajo (j,i).pan       
          Track(ntk).trk(j,ip).pb   => Trabajo (j,i).pb
+         Track(ntk).trk(j,ip).onoff => Trabajo (j,i).onoff
          Track(ntk).trk(j,ip).nnn => Trabajo (j,NA).inst 'inst en todos lados???
+
          'Print #fs,"notapiano,ntk", Track(ntk).trk(j,ip).nota,ntk,Track(ntk).trk(j,ip).dur
        EndIf
 ' copia datos de escala, esta repetido en cada octava pero bueno....con una sola
@@ -3551,6 +3553,7 @@ Dim As Integer copiado=0
          Track(ntk).trk(j,13).nota = Trabajo(j,i ).nota ' = 30
          Track(ntk).trk(j,13).dur  = Trabajo(j,i ).dur  ' = 200
          Track(ntk).trk(j,13).pan = Trabajo(j,i ).pan
+         Track(ntk).trk(j,ip).onoff => Trabajo (j,i).onoff
    '      Print #1,"RollaTrack copia var de control inst ",Track(ntk).trk(j,13).inst
    '      Print #1,"RollaTrack copia var de control vol ",Track(ntk).trk(j,13).vol
          copiado=1 
@@ -3566,7 +3569,8 @@ Dim As Integer copiado=0
          Track(ntk).trk(j,i3).vol  = Trabajo(j,verticalEnOctavaVacia).vol ' octava
          Track(ntk).trk(j,i3).nota = Trabajo(j,verticalEnOctavaVacia ).nota ' Rollnota
          Track(ntk).trk(j,i3).dur  = Trabajo(j,verticalEnOctavaVacia ).dur  ' acordeNro
-         Track(ntk).trk(j,i3).pb  = Trabajo(j,verticalEnOctavaVacia ).pb  ' hay acorde 202          
+         Track(ntk).trk(j,i3).pb  = Trabajo(j,verticalEnOctavaVacia ).pb  ' hay acorde 202
+         Track(ntk).trk(j,ip).onoff => Trabajo (j,i).onoff          
       EndIf
 
       If Trabajo(j,vertical ).nota = 210 Or Trabajo(j,vertical ).nota = 211 Then ' repeticiones [:  n:]
@@ -4761,6 +4765,7 @@ Sleep 100
             menunew=MENU_INICIAL
             cierroedit= 0
             thread3= ThreadCall EntrarTeclado()
+            ThreadWait thread3
              pubi=1
           EndIf
  '          
@@ -4773,10 +4778,12 @@ Sleep 100
              menunew=MENU_INICIAL
              cierroedit= 0  
              thread3= ThreadCall EntrarTeclado()
+             ThreadWait thread3
             pubi=1   
           EndIf
          Case "[PAN]","[CORO]","[ECO]"
           threadpan=threadCall EntrarTeclado() ''SelPan(Globalpan)
+          ThreadWait threadpan 
       End Select
 
    If mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
@@ -4951,7 +4958,7 @@ End Sub
 '--------------------------
 Sub moveresto ()
 ' parametro nota no se usa podriamos borrarlo.
-' entra con insert=3....y pasa pòr  4
+' entra con insert=3....y pasa pï¿½r  4
  Dim As Integer indpos,s,t,k,i, fininsert, moverDesde,moverDesdeOld
 'StartInsert posicion + curpos'indice posicion partimos de ultima posicion global reemplazada
  ' indpos es la ultima cantidad de ticks hasta el comienzo de la ultima nota insertada
@@ -4977,7 +4984,7 @@ indaux=0
   CambiarDim(1)  ' nuevo pipipipipi
 ' tickInsertados no indica el inicio correcto desde donde mover
 ' debo buscar el primer onoff=2 que no sea de las notas insertadas ydesde ahi sera el inicio
-' ese onoff=2 deberá estar durante la duracion de la nota insertada o despues
+' ese onoff=2 deberï¿½ estar durante la duracion de la nota insertada o despues
 '        I        >>         se mueve a derechas despues del fin de L 
 '    L     >>                nota insertada no se mueve
 'I      >>                   no se mueve
@@ -4987,7 +4994,7 @@ indaux=0
 'I      >>                 queda igual
 '---------- o sea solo si es un ON (onoff=2) de la nota se mueve
 ' los onoff=1 de la insertada y cualquier otro que este antes de  que termine la duracion
-' de la nota insertada no se moverán.
+' de la nota insertada no se moverï¿½n.
 StartInsert=posicion+ curpos
 indpos=StartInsert
 fininsert=StartInsert + DurXTick(DUR) -1
@@ -5264,24 +5271,48 @@ Sub CambiarDim(redi As Integer)
      Print #1,"CambiarDim desde ";desde;" hasta ";hasta;" *po ";*po;" NB ";NB;" NA ";NA
      Print #1,"CantTicks ";CantTicks
      '''CantTicks=CantTicks +  DurXTick(DUR) -1
+Dim ejex As Integer
+
+
+
 If redi=1 Then 
-     ReDim  Preserve (Roll.trk ) ( 1 To CantTicks, NB To NA)
-    ''' ReDim  Preserve (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
-     ReDim  Preserve compas(1 To CantTicks)
+' REDIMENSION EN MEMORIA CON DATOS
+terminar=NO_TERMINAR_CON_DATOS_CARGADOS: Parar_De_Dibujar=SI
+''ejex= UBound (Roll.trk,1)
+''CantTicks=ejex
+'''ReDim  (Roll.trk ) ( 1 To ejex, NB To NA)
+'''Sleep 10
+' COPIAMOS DESDE TRACK TRACK Y COMPAS PERMANECEN IGUALES 
+TrackaRoll (Track(),  0 , Roll, "CAMBIADIM" )
+Sleep 20
+ReDim (RollAux.trk) ( 1 To CantTicks,NB To NA )
+Sleep 5
+RecalCompas (ritmo)
+terminar=NO_TERMINAR_BARRE_PANTALLA: Parar_De_Dibujar=NO  
+'''     ReDim  Preserve (Roll.trk ) ( 1 To ejex, NB To NA)
+''     ReDim  Preserve (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
+''     ReDim  Preserve compas(1 To CantTicks)
 
 Else
-     ReDim  (Roll.trk ) ( 1 To CantTicks, NB To NA)
-    ' ''ReDim  (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
-     ReDim  compas(1 To CantTicks)
-
+' carga de archivo desde disco, tenemos el maxpos
+     ReDim  (Roll.trk ) ( 1 To Maxpos, NB To NA)
+     ReDim  (Track(ntk).trk ) (1 To MaxPos, 1 To lim3)
+     ReDim  compas(1 To MaxPos)
+     ReDim (RollAux.trk) ( 1 To MaxPos,NB To NA )
      Print #1,"FIN CAMBIARDIM  else" 
-EndIf   
-ReDim (RollAux.trk) ( 1 To CantTicks,NB To NA )
+EndIf
+   
+
+
+
  desdevector=desde
  hastavector=hasta
  
 Print #1,"FIN CAMBIARDIM "
 
+' los datos semueven pero queda nmal hay que buscar un algoritmo para que
+' quede todo como antes siel eje y se amplia los datos deben estr e4nel mismo numero
+'de eje y de antes o sea si etoy en 4 a 8 los numeros de eje y serian
 
 
      ''ReDim (Roll.trk ) ( NB To NA,1 To CantTicks) ' temporario     
@@ -5292,6 +5323,7 @@ Print #1,"FIN CAMBIARDIM "
 ' la redimension, sacandola del scope de cairo funciona 
 
 End Sub
+'
 Function CRaTC (rit As UByte) As String  'CONVIERTE RITMO A TIPOCOMPAS, ES LO MISMO DISTINTA NUMERACION
 Select Case rit
        Case  2 
@@ -5508,8 +5540,14 @@ Next kk
 '' FALTARIA AGREGARLE CON MOUSE QUE FUNCIONE EL ACEPTAR listo funciona  con 2 enter y mouse ok
    If menuOldStr="[PANEJEC]" Then
        If ntkp=0 Then ntkp=1  EndIf
+       If pmEj(ntkp).pan =0 Then
+          pmEj(ntkp).pan=64
+       EndIf    
        default=Str(pmEj(ntkp).pan)
    Else
+      If pmTk(ntk).pan =0 Then
+         pmTk(ntk).pan=64
+      EndIf
        default=Str(pmTk(ntk).pan)
    EndIf
      
@@ -5526,7 +5564,7 @@ Next kk
 
    Print #1,"PAN SELECCIONADO ->> "; valorpan
    Globalpan=CUByte(valorpan)
-  SetGadgetText(3,Str(valorpan))
+
  Case "[CORO]","[COROEJEC]"
    If menuOldStr="[COROEJEC]" Then
        If ntkp=0 Then ntkp=1  EndIf
@@ -5548,7 +5586,7 @@ Next kk
 
    Print #1,"CORO SELECCIONADO ->> "; valorcoro
    Globalcoro=CUByte(valorcoro)
-  SetGadgetText(3,Str(valorcoro))
+
   
  Case "[ECO]","[ECOEJEC]"
    
@@ -5571,7 +5609,7 @@ Next kk
 
    Print #1,"ECO SELECCIONADO ->> "; valoreco
    Globaleco=CUByte(valoreco)
-  SetGadgetText(3,Str(valoreco))
+  
    
  Case "[VOL]","[VOLEJEC]"
    If menuOldStr="[VOL]" Then 
@@ -5609,7 +5647,7 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
  Case "[RITMO]"
   
 ' el ritmo deberia ser el mismo para todas las pistas de cancion y ejecs!
-' queda eso en el tintero, cuando grabo una ejec deberia seleccionar tipoCompas¿? si
+' queda eso en el tintero, cuando grabo una ejec deberia seleccionar tipoCompasï¿½? si
    Print #1,"Ritmo, ntk , TipoCompas ,ntkp ", ntk, TipoCompas,ntkp
    fileflush(-1)
       If pmTk(ntk).tipocompas > 0 then ''' pmEj(ntkp).tipocompas > 0 Then
@@ -5837,7 +5875,7 @@ FILEFLUSH(-1)
 
 
 
-EndIf  ' fin version 2 CON NOTAPÌANO
+EndIf  ' fin version 2 CON NOTAPï¿½ANO
 
 
 ''==================================================
@@ -5910,8 +5948,8 @@ End Sub
 Sub velocidades(j As Integer)
  'Print #1,"velocidades Tcompas j "; TCompas, j '''20-12-2025 
 ' INTERESANTE KOKITO REVEER PAR ATICKS PODRIAAPLICARSE PARA VELOCIDADES
-' SEGUN EL TCPMPAS Y TICKS EL ACUMULADO SERIA EN EL COMPAS ¿? NO SUMA DE TICKS DESDE ELPRINCIPIO
-' SUMA DE TICKS DENTRO DEL COMPAS O SEA EL ACUMULADO SE RESETEA EN CADA  COMPAS ¿?
+' SEGUN EL TCPMPAS Y TICKS EL ACUMULADO SERIA EN EL COMPAS ï¿½? NO SUMA DE TICKS DESDE ELPRINCIPIO
+' SUMA DE TICKS DENTRO DEL COMPAS O SEA EL ACUMULADO SE RESETEA EN CADA  COMPAS ï¿½?
 
     If TCompas="4/4 " Then ' dividido y subdividido
       If acumulado <= 1250000 Then ' hasta a corchea
@@ -6353,7 +6391,7 @@ FileFlush (7)
 'EndIf
 length = FileLen(nombre)
 If length = 0 Then
-  GrabarRoll=4 ' mi error por tamaño 
+  GrabarRoll=4 ' mi error por tamaï¿½o 
 EndIf
 Exit Function 
 
@@ -7421,21 +7459,23 @@ End Sub
 '-------
 Sub  seloctava  ( ByRef octadesde As Integer, ByRef octahasta As integer) 
 Dim As hwnd haw,hwl
-Dim As Integer aa ,pasoc=0,x  ,i1
+Dim As Integer aa ,pasoc=0,x  ,i1, DELTA=0, vienedesde=0, vienehasta=0,seldesde=0, selhasta=0
 Dim listoctava(1 To 9) As string ={"0","1","2","3","4","5","6","7","8"}
 Dim cad As String
 
 For x= 1 To 2 
+     
 '' => desde acaecho con tool del ruso no anda muy bien
-     haw=OpenWindow("OCTAVAS",100,50,400,400, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
+     haw=OpenWindow("OCTAVAS, NO USAR CON DATOS",100+DELTA,50,400,400, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
      hwl=  ListViewGadget(1,10,10,300,400,,,,32,LVS_SINGLESEL  )
     ' listports()
-     GadgetToolTip(1,"Dos Columnas la derecha es la numeracion de RollMusic, la izquierda la que se suele usar." )
+     GadgetToolTip(1,"Dos Columnas,la derecha es la numeracion de RollMusic, la izquierda la que se suele usar. O USAR CON DATOS" )
   If pasoc=0 Then
        AddListViewColumn(1, "Elegir Octava Desde ",0,0,250)
        For aa =1 To 9 
           If  desde = aa  Then
            AddListViewItem(1, "[x] "+listoctava(aa)+"-"+Str(aa),0,aa,0)
+           vienedesde=aa 
           Else  
            AddListViewItem(1, "[ ] " +listoctava(aa)+"-"+Str(aa),0,aa,0)
           EndIf  
@@ -7447,6 +7487,7 @@ For x= 1 To 2
        For aa =1 To 9
            If  hasta = aa  Then
              AddListViewItem(1, "[x] "+listoctava(aa)+"-"+Str(aa),0,aa,0)
+             vienehasta=aa
            Else  
              AddListViewItem(1, "[ ] " +listoctava(aa)+"-"+Str(aa),0,aa,0)
            EndIf  
@@ -7455,7 +7496,7 @@ For x= 1 To 2
 
 
        ButtonGadget(2,330,30,50,40," OK ")
-       GadgetToolTip(2,"Al dar OK el Rango de Octavas elegido sera el usado por el Grafico")
+       GadgetToolTip(2,"Al dar OK el Rango de Octavas elegido sera el usado por el Grafico, si tiene datos RollMusic deformara su ubicaion")
          #Ifdef __FB_WIN64__
            SetFocus (hwl) 
            SetForegroundWindow(haw)
@@ -7475,28 +7516,38 @@ Dim As Integer i
                  cad="[ ] " +listoctava(i1) +"-"+Str(i1)  
                Else  
                  cad="[x] " +listoctava(i1) +"-"+Str(i1)
+                 If pasoc=0 Then
+                    seldesde=i1
+                 EndIf
+                 If pasoc=1 Then
+                    selhasta=i1
+                 EndIf
+
                EndIf
                ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
            EndIf
         EndIf
-          If eventC=eventgadget Then
-            If eventnumber()=2 Then
+          If eventC=eventgadget  Then
+            If eventnumber()=2  Then
 '              menunew=0
-              If pasoc=0 Then
+                
+              If pasoc=0 And seldesde > 0 Then
                  Octadesde = GetItemListView()
                  Octadesde=Octadesde+1
+                 If octadesde=0 Then octadesde=vienedesde endif
                  pmTk(ntk).desde=CUByte(Octadesde)
                  pmTk(0).desde=CUByte(Octadesde)
               EndIf   
-              If pasoc=1 Then
+              If pasoc=1 And selhasta > 0 Then
                  Octahasta = GetItemListView()
                  Octahasta=octahasta+1 
+                 If octahasta=0 Then octahasta=vienehasta EndIf
                  pmTk(ntk).hasta=CUByte(Octahasta)
                  pmTk(0).hasta=CUByte(Octahasta)
  
               EndIf   
-              Sleep 500
               Close_Window(haw)
+              Sleep 100
               pasoc=1
               Exit Do 
             End If
@@ -7506,7 +7557,8 @@ Dim As Integer i
              Exit Do 
           EndIf
           
-         Loop 
+         Loop
+DELTA=300 
 Next x
 '' fin ruso
 If octadesde=0 Then
@@ -7519,6 +7571,7 @@ print #1,"OCtadesde ",octadesde
 print #1,"OCtahasta ",octahasta
 
 End Sub
+
 '--------------------------
 '---------------------------
 Sub selInstORdenAlfa(ByRef instru As Integer)
@@ -8031,7 +8084,7 @@ Close_Window(hwnd)
  
  'NO ESTA DEFINIDO en  FBGFX.INI ,&h80000000
 ' UNA MIERDA COMO ESTA ESCRITO LE FALTA CONSTANTES , KEYS ETC HAY QUE HACER UNA PROPIA
-' EN EL HELP EXISTE.. ME ENTERE DESPUES DE 3 AÑOS ,,,JAJAJAJA
+' EN EL HELP EXISTE.. ME ENTERE DESPUES DE 3 Aï¿½OS ,,,JAJAJAJA
 ' SI SE USA &H80000000  QUE ADEMAS DE CERRAR LA VENTANA GRAFICA CERRARIA LA CONSOLA
 ' SI LO HUBIERA,,,,ESO HACE CANCELAR SI PRIMERO HAGO PLAY DE UNA CANCION Y LUEGO CIERRO
 ' LA VENTANA,,,PER CON SOLO SCREEN 0 CIERA SOLO EL GRAFICO Y NO CANCELA DESPUES DE
@@ -8361,11 +8414,11 @@ Print #1,"indicePos, pnr) ";indicePos, pnr
         pnr=PianoNotaElegida+SumarnR(PianoNotaElegida)    
 
         undo_kant_intervalos(cnt_acor)=0  ' tonica no hay intervalo es ella sola          
-        undo_acorde(cnt_acor,0).posn=indicePos ' shared global la old actual ¿¿?
+        undo_acorde(cnt_acor,0).posn=indicePos ' shared global la old actual ï¿½ï¿½?
         undo_acorde(cnt_acor,0).pn=pnr ' se almacena elindice fisico del vector Roll
         undo_acorde(cnt_acor,0).dur=Roll.trk(indicePos, pnr).dur 'old PUEDE SER 0 O 181
         undo_acorde(cnt_acor,0).nota=Roll.trk(indicePos, pnr).nota 'old 
-        undo_acorde(cnt_acor,0).onoff=Roll.trk(indicePos, pnr).onoff ''' PUEDE SER 2 Ó 0 NADA
+        undo_acorde(cnt_acor,0).onoff=Roll.trk(indicePos, pnr).onoff ''' PUEDE SER 2 ï¿½ 0 NADA
 ' posicion  anterior del off 1
         If Roll.trk(indicePos, pnr).dur > 0 And Roll.trk(indicePos, pnr).dur <> 181 Then
            acoposOff=indicePos + DurXTick  ( Roll.trk(indicePos, pnr).dur ) -1

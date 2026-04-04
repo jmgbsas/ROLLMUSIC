@@ -2046,29 +2046,40 @@ nota=0:dur=0
 ' ESTA COPIA DE PARAMETROS DESDE TRACK A ROLL LA REEMPLAZAREMOS POR COPIARPMTKA PMTK
 ' CHEQUEAMOS SI ES ASI.....
 'copia a variables de Roll desde track
-copiarPmtkaPmtk(0,ntk)
-desde  = pmTk(ntk).desde
-hasta  = pmTk(ntk).hasta
- '  Print #1,"hasta 1054 TracjaRoll ",hasta 
-MaxPos = pmTk(ntk).MaxPos
-posn  = pmTk(ntk).posn
-notaOld= CInt(pmTk(ntk).notaold)
-canalx= CInt(pmTk(ntk).canalsalida)
-portout=CInt(pmTk(ntk).portout)
-If pmTk(ntk).patch > 0 Then
-   patchsal=pmTk(ntk).patch
-   pmTk(0).patch=pmTk(ntk).patch
-   instru=CInt(patchsal)
-EndIf
-   Print #1,"instru en TrackaRoll ",instru
-If pmTk(ntk).ejec > 0 And pmTk(0).ejec=0 Then ' pmTk(0).ejec=1 pasa sin ser tocado
-   pmTk(0).ejec=pmTk(ntk).ejec   
-EndIf
+Dim As Integer GUARDOEJEC, GUARDOONOFF
+If  funcion="CAMBIADIM" Then
+' porque pierde los ajustes del dispositivo e insrumentos veremos
+
+   If pmTk(0).ejec =1 Then 
+      GUARDOEJEC=1
+   EndIf
+   If Roll.trk(1,NA).onoff = 1 Then
+      GUARDOONOFF =1 
+   EndIf
+Else
+  copiarPmtkaPmtk(0,ntk)
+  desde  = pmTk(ntk).desde
+  hasta  = pmTk(ntk).hasta
+  '  Print #1,"hasta 1054 TracjaRoll ",hasta 
+  MaxPos = pmTk(ntk).MaxPos
+  posn  = pmTk(ntk).posn
+  notaOld= CInt(pmTk(ntk).notaold)
+  canalx= CInt(pmTk(ntk).canalsalida)
+  portout=CInt(pmTk(ntk).portout)
+  If pmTk(ntk).patch > 0 Then
+     patchsal=pmTk(ntk).patch
+     pmTk(0).patch=pmTk(ntk).patch
+     instru=CInt(patchsal)
+  EndIf
+    Print #1,"instru en TrackaRoll ",instru
+  If pmTk(ntk).ejec > 0 And pmTk(0).ejec=0 Then ' pmTk(0).ejec=1 pasa sin ser tocado
+     pmTk(0).ejec=pmTk(ntk).ejec   
+  EndIf
 ' como Roll edita se deben llenar las Globales
-Globaleco=pmTk(ntk).eco
-Globalpan=pmTk(ntk).pan
-Globalcoro=pmTk(ntk).coro
-Globalvol=pmTk(ntk).vol
+  Globaleco=pmTk(ntk).eco
+  Globalpan=pmTk(ntk).pan
+  Globalcoro=pmTk(ntk).coro
+  Globalvol=pmTk(ntk).vol
 ' a partir de esta carga todo parametro ira a pmTk.. y toda la logica no
 ' debe usar mas los campos que no sean pmTk...
    tiempoPatron =   pmTk(ntk).tiempopatron
@@ -2090,15 +2101,24 @@ Globalvol=pmTk(ntk).vol
         CantTicks = maxgrb * 2 ' pongo mas por siquiere grabar mas datos
      EndIf
    EndIf
-   'print #1,"TrackaRoll, NB, NA, CantTricks", NB,NA, CantTicks
-' redim de ROLL de Visualizacion , para ello  
-   ''  Parar_De_Dibujar=SI 
- ''    Sleep 10 ' para que surja efecto la detencion ,,,   
-  'If  ntk= 0 Then
- ' Else
+EndIf
    Erase Roll.trk , compas
 Print #1, "// trckaroll redim Roll MaxPos ",MaxPos
    ReDim (Roll.trk ) (1 To CantTicks, NB To NA ) ' 27-02 ÇÇÇ
+ 
+If  GUARDOEJEC=1 Then
+    pmTk(0).ejec =1
+Else
+    pmTk(0).ejec =0
+EndIf 
+
+If  GUARDOONOFF = 1 Then
+ Roll.trk(1,NA).onoff = 1
+Else
+ Roll.trk(1,NA).onoff = 0
+EndIf
+
+' en recalcompas se hace redim de compas
   ''' ReDim compas(1 To MaxPos)
  ' End If  
    'Print #1,"paso el redim de roll"
@@ -2153,7 +2173,7 @@ vertical=12+(hasta-2)*13+hasta ' "[NROREP]" de EntrarTeclado
 ' aca solo copia las notas! y los off=2 que estan junto a nota y el onoff=1 donde lo copia o lo regenra??
 For i2 = 1 To pmTk(ntk).MaxPos 
    For i1=1 To lim2 ' porque lim2 y no lim3??? porque solo las notas 
-      If Track(ntk).trk (i2,i1).nota > 0 and Track(ntk).trk(i2,i1 ).nota <=NA-13   Then '14-03-2022 na-13
+      If Track(ntk).trk (i2,i1).nota > 0 and Track(ntk).trk(i2,i1 ).nota <=NA-13  Or  Track(ntk).trk (i2,i1).onoff > 0 Then '14-03-2022 na-13
       ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
          PianoNota=Track(ntk).trk(i2,i1 ).nota
 ''lo llevo al indice del vector
@@ -2189,7 +2209,8 @@ For i2 = 1 To pmTk(ntk).MaxPos
       EndIf
    Next i1
 
-   
+ If funcion ="CAMBIADIM" Then
+  Else  
    If i2=pmTk(ntk).MaxPos  then 
     Print #1," ///maxpos-1, nota  ", i2, ultimaPianonota
       i3=ultimaPianonota
@@ -2201,6 +2222,7 @@ For i2 = 1 To pmTk(ntk).MaxPos
        Roll.trk(i2,i3).inst = 0
        
    EndIf
+ EndIf
 Next i2
  Print #1," ///maxpos ", pmTk(ntk).MaxPos 
 
@@ -2217,6 +2239,7 @@ For i2=1 To pmTk(ntk).MaxPos-1
        Roll.trk(i2, vacio).nota = Track(ntk).trk(i2,13).nota ' 30
        Roll.trk(i2, vacio).dur  = Track(ntk).trk(i2,13).dur ' 200
        Roll.trk(i2, vacio).pan  = Track(ntk).trk(i2,13).pan ' alteracion
+       Roll.trk(i2, vacio).onoff  = Track(ntk).trk(i2,13).onoff 
     Next K
   EndIf  
 Next i2
@@ -2234,6 +2257,7 @@ For i2=1 To pmTk(ntk).MaxPos-1
          Roll.trk(i2,verticalEnOctavaVacia).vol   = Track(ntk).trk(i2,i1).vol ' octava
          Roll.trk(i2,verticalEnOctavaVacia ).nota = Track(ntk).trk(i2,i1).nota ' Rollnota
          Roll.trk(i2,verticalEnOctavaVacia ).dur  = Track(ntk).trk(i2,i1).dur  ' acordeNro
+         Roll.trk(i2,verticalEnOctavaVacia ).onoff  = Track(ntk).trk(i2,i1).onoff          
          Roll.trk(i2,verticalEnOctavaVacia ).pb  = 202
          vacio= 12 +(Track(ntk).trk(i2,i1).vol -1) * 13
          Roll.trk(i2,vacio).pb  =  201

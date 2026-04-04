@@ -370,6 +370,7 @@ Print #1,"**********************************************************************
              nombreArchivo="0"
                thread3= ThreadCall EntrarTeclado()
               ThreadWait thread3
+               
       '        SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1025 ' <======== Crear un directorio de Cancion con Pistas separadas
@@ -379,7 +380,8 @@ Print #1,"**********************************************************************
                EndIf    
     '      SetForegroundWindow(hwnd)        
 '-----------------------------------------------------------------------
-           Case 1028 ' <========== seleccion octavas menores a 1 9 
+           Case 1028 ' <========== seleccion octavas menores a 1 9
+StatusBarGadget(BARRA_DE_ESTADO,"AUNQUE LA OCTAVA QUE APARECE SEA LA INDICADA VUELVA A SELECCIONARLA" )
                If pmTk(ntk).desde=0 Then
                Else
                   pmTk(ntk).desde=desde 
@@ -391,21 +393,22 @@ Print #1,"**********************************************************************
 
                thread3 = threadcall seloctava (desde, hasta)
                ThreadWait thread3 
-               *po = hasta -1
-                posn=1
-           ''     ReDim As dat Preserve roll(1 To maxpos, NB To NA)
-                NB => 0 + (desde-1) * 13   
-                NA => 11 + (hasta-1) * 13 
                For p1 As UByte = 0 To Tope
                   pmTk(p1).desde=desde
                   pmTk(p1).hasta=hasta
                Next p1  
+
+               *po = hasta -1
+                posn=1
+                NB => 0 + (desde-1) * 13   
+                NA => 11 + (hasta-1) * 13
+                
                CambiarDim(1)
                 param.ubiroll=ubiroll
                 param.ubirtk=ubirtk
-
                 posn=1
-     '     SetForegroundWindow(hwnd)
+
+     '     SetForegroundWindow(hwnd) 
 '-----------------------------------------------------------------------
            Case 1031 ' <========  SELECCION DE CANAL DE LA PISTA (10 DRUMS)
 '-----------------------------------------------------------------------               
@@ -515,38 +518,60 @@ Print #1,"**********************************************************************
         '      SetForegroundWindow(hwnd)
 '----------------------------------------------------------
            Case 1051 ' PANEO DE UN CANAL
-             If abrirRollCargaMidi=2 Then
-                SetForegroundWindow(hwnd)
-                Sleep 2 
-             EndIf
+                If CANCIONCARGADA =TRUE  Then
+                Else
+                  'midisal = midiout(portout)
+                  ntk=0
+                EndIf
+                portsal=pmTk(ntk).portout
+            ' If abrirRollCargaMidi=2 Then
+            '    SetForegroundWindow(hwnd)
+            '    Sleep 2 
+            ' EndIf
             menuOldStr="[PAN]" 
             threadpan=threadCall EntrarTeclado()
             ThreadWait threadpan
+
 Print #1,"///----SEL 1051 pan Globalpan ",Globalpan
              '''Paneo (GlobalPan,pmTk(ntk).canalsalida,pmTk(ntk).portout)
            Case 1052 ' REVERVERACION DE UN CANAL 
+                If CANCIONCARGADA =TRUE  Then
+                Else
+                  'midisal = midiout(portout)
+                  ntk=0
+                EndIf
+
              menuOldStr="[ECO]"     
              threadeco=threadCall EntrarTeclado()
               ThreadWait threadeco
-             If abrirRollCargaMidi=2 Then
-             SetForegroundWindow(hwnd)
-             EndIf  
+              
+            '' If abrirRollCargaMidi=2 Then
+            '' SetForegroundWindow(hwnd)
+            '' EndIf  
 Print #1,"///----SEL 1052 ECO GlobalECO ",Globaleco
 
            Case 1053 ' CORO /CHORUS  
-             If abrirRollCargaMidi=2 Then
-                SetForegroundWindow(hwnd)
-                Sleep 2 
-             EndIf
-            menuOldStr="[CORO]" 
-            threadpan=threadCall EntrarTeclado()
-            ThreadWait threadpan              
+                If CANCIONCARGADA =TRUE  Then
+                Else
+                  'midisal = midiout(portout)
+                  ntk=0
+                EndIf
 
+             ''If abrirRollCargaMidi=2 Then
+             ''   SetForegroundWindow(hwnd)
+             ''   Sleep 2 
+             ''EndIf
+            menuOldStr="[CORO]" 
+            threadcoro=threadCall EntrarTeclado()
+            ThreadWait threadcoro              
+             
 Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
 
-   
+                
 '-----------------------------------------------------------------------
            Case 1060 ' <========== crea track y reemplaza al existente en la edicion
+             CerrarGraficodesdeCtrl=0
+             Sleep 20
              If NombreCancion > ""  Or (abrirRoll=REABRIR_ROLL_CON_DATOS_CARGADOS And Terminar=NO_TERMINAR_CON_DATOS_CARGADOS )Then
                 Terminar=NO_TERMINAR_BARRE_PANTALLA ' 0 para que empiece a barrer la pantalla
                 Print #1,"1 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
@@ -1060,29 +1085,23 @@ EndIf
                 SetForegroundWindow(hwnd)
                 Sleep 2 
              EndIf
-            menuOldStr="[PANEJEC]" 
-            threadpan=threadCall EntrarTeclado()
-            ThreadWait threadpan
+            menuOldStr="[PANEJEC]"
+             threadpan=threadCall EntrarTeclado()
+             ThreadWait threadpan
+  
 Print #1,"///----SEL 1209 pan Globalpan ",Globalpan
              '''Paneo (GlobalPan,pmTk(ntk).canalsalida,pmTk(ntk).portout)
            Case 1210 ' REVERVERACION DE UNA PISTA EJEC 
-             menuOldStr="[ECOEJEC]"     
+             menuOldStr="[ECOEJEC]" 
              threadeco=threadCall EntrarTeclado()
               ThreadWait threadeco
-             If abrirRollCargaMidi=2 Then
-             SetForegroundWindow(hwnd)
-             EndIf  
 Print #1,"///----SEL 1210 ECO GlobalECO ",Globaleco
 
            Case 1211 ' CORO /CHORUS  
-             If abrirRollCargaMidi=2 Then
-                SetForegroundWindow(hwnd)
-                Sleep 2 
-             EndIf
             menuOldStr="[COROEJEC]" 
-            threadpan=threadCall EntrarTeclado()
-            ThreadWait threadpan              
-
+              threadpan=threadCall EntrarTeclado()
+              ThreadWait threadpan              
+ 
 Print #1,"///----SEL 1211 CORO Globalcoro ",Globalcoro
 '------------------------------------------------------------------
 
@@ -1090,7 +1109,7 @@ Print #1,"///----SEL 1211 CORO Globalcoro ",Globalcoro
            Case 2000
    
              MessBox ("", acercade)
-            SetForegroundWindow(hwnd)
+
 '-----------------------------------------------------------------------
            Case 2001 ' cuadros ayuda tempo, figuras duracion, volumen
              threadVel = ThreadCall CuadroVel ()
@@ -1121,7 +1140,7 @@ Print #1,"///----SEL 1211 CORO Globalcoro ",Globalcoro
 'Reproducir MIDI-IN (teclado) por  MIDI-OUT. Abre Puerto MIDI-IN
              GrabarPenta=0
              CTRL2500 ()
-          SetForegroundWindow(hwnd)
+
 '----------------------------------------------------
            Case 2501
 'Detener Reproduccion MIDI-IN (teclado) por  MIDI-OUT. (test de Input)
