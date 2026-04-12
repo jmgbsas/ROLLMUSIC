@@ -253,7 +253,7 @@ nombreg = OpenFileRequester("","","Roll files (*.roll, *.rtk)"+Chr(0)+"*.roll;*.
                salida=1 
                Exit Sub
             Else
-               nombre=nombreg ' tiene el path de navegacion   
+               nombre=nombreg ' tiene el path de navegacion con o sin numeros[]  
             EndIf
             If NombreCancion > ""  Then 
                ImportarPistaExterna(nombre) ' estoy en cancion importando  una pista rtk
@@ -605,7 +605,7 @@ Sub CTRL1040 () ' <========== seleccion de instrumento por orden Alfabetico
               If (CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE) And ROLLCARGADO=FALSE Then
                  NADACARGADO=FALSE  
                  If NombreCancion > ""  And MAxPos > 2 Then
-                    GrabarRollaTrack(0,0)
+                    GrabarRollaTrack(0,0,"grabartrkcancion")
                  EndIf
               Else
                 If MaxPos > 2  And ROLLCARGADO  Then
@@ -1708,7 +1708,7 @@ For k1=1 To tocatope
        nombre=titulosTk(0)
        Print #1,"3 nombre ejec iluminado a convertir "; nombre 
        
-       GrabarRollaTrack(1,k1)          
+       GrabarRollaTrack(1,k1,"grabartrkcancion")          
   EndIf
 
 Next k1

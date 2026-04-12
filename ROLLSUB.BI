@@ -880,7 +880,7 @@ End If
 Dim As Integer i1,j1=0, DurMen,DurMay
 
   For i1 = NB To NA -13 ' 01-02-2022
-FileFlush (-1)
+'FileFlush (-1)
     If Roll.trk(ejex,i1).nota >=1 And Roll.trk(ejex,i1).nota <=12 Then 
      If Roll.trk(ejex,i1).dur >=1 And Roll.trk(ejex,i1).dur <= 180 Then
         Print #1,"=> VEO DATOS i1,nota,dur ", i1, Roll.trk(ejex,i1).nota,Roll.trk(ejex,i1).dur
@@ -4334,7 +4334,7 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
 ' ahora si es una cancion debere grabar a disco con el nrode track correspondiente
 ' al track modificado porque el ntk=0 para roll. ademas debere actualizar el track ntk
 ' en memoria,,,son dos operaciones,,,
-          GrabarRollaTrack(0,0) 
+          GrabarRollaTrack(0,0,"") 
     ''kiki     cairo_set_source_rgba c,1,1,1,1
          cairo_set_source_rgba c, 0, 1, 0, 1
            Sleep 500,1           
@@ -4385,11 +4385,11 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
 '   GrabarRollaTRack aca graba con [00] adelante, pues no es comando de cancion
 ' la pista de cancion van de 1 a 32 la pista 00 es el track asociado a Roll sin cancion 
         If esrtk >0 Or essolo Then ' update de un track con o sin cancion
-           GrabarRollaTrack(0,0)
+           GrabarRollaTrack(0,0,FUNCMENU)
         EndIf  
         ' convierte roll a track comun le antepone [00] y rtk al final
         If esroll > 0 Or esejec >0 Then ' con o sin cancion
-           GrabarRollaTrack(1,0) ' el 0 no lo toma es indiferente
+           GrabarRollaTrack(1,0,FUNCMENU) ' el 0 no lo toma es indiferente
         EndIf
         MenuNew=COMANDOS_ARCHIVO  
         cierroedit= 0
@@ -5649,7 +5649,7 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
 ' el ritmo deberia ser el mismo para todas las pistas de cancion y ejecs!
 ' queda eso en el tintero, cuando grabo una ejec deberia seleccionar tipoCompas�? si
    Print #1,"Ritmo, ntk , TipoCompas ,ntkp ", ntk, TipoCompas,ntkp
-   fileflush(-1)
+   
       If pmTk(ntk).tipocompas > 0 then ''' pmEj(ntkp).tipocompas > 0 Then
          ritmo = pmTk(ntk).tipocompas 'convierte tipocompas a ritmo funcion integer
          TipoCompas=ritmo 
@@ -5832,8 +5832,8 @@ trackGen(32)=PianoNota  ' LA DEL C O LA NOTA QUE SEA TONICA
      posn=posn+1
      nR=trackGen(i3) + SumarnR(trackGen(i3)) '' de notapiano a nR
      nota = 11 -nR +  SumarnR (nR - restar(nR) )  * 13 + 1
-Print #1,"nR , nota ",nR, nota
-FILEFLUSH(-1)
+'Print #1,"nR , nota ",nR, nota
+
      DUR=trackGenDUR(i3)
      Roll.trk(posn, nR).dur = DUR  
      Roll.trk(posn, nR).onoff = 2
@@ -5853,7 +5853,7 @@ FILEFLUSH(-1)
      nR=trackGen(32) + SumarnR(trackGen(32)) '' de notapiano a nR
      nota = 11 -nR +  SumarnR (nR - restar(nR) )  * 13 + 1
 Print #1,"nR , nota ",nR, nota
-FILEFLUSH(-1)
+'FILEFLUSH(-1)
      DUR=trackGenDUR(32)
      Roll.trk(posn, nR).dur = DUR  
      Roll.trk(posn, nR).onoff = 2
@@ -5927,7 +5927,7 @@ Next i
    '' estoyEnOctava=estoyEnOctava-1
  EndIf
  Print #1,"nota generada , estoyenoctava,NB,NA,posn ",nota, estoyEnOctava, NB,NA,posn
- fileFlush(-1)
+' fileFlush(-1)
      nota2=nota
      DUR=trackGenDUR(i3)
      Loop Until i3=32 Or posn >= 6000
@@ -6166,7 +6166,7 @@ Dim  As Integer npl, length
     Else
    Print #1,"Se puede escribir en "; nombre
   ''''  Open "test-AAAAA.TXT" For Output    As #2
-FileFlush (ga)
+'FileFlush (ga)
      Dim Trabajo (1 To Maxpos, NB To NA) As datsec
 ''KOKOTE  ahora shared   Dim dat   As rolldat  ''es el z de cargar archivo
 ' en bloque graba3 vamos a colocar nro de canal 1 a 16
@@ -6374,7 +6374,7 @@ mit.st = tiempoPatron
 
 
 Print #1,"grabando las partes del archivo "; nombre
-FileFlush (7)
+'FileFlush (7)
 ''' graba4   ' aca esta tiempoPatron
      Put #ga, ,dat
                
@@ -6382,7 +6382,7 @@ FileFlush (7)
      
      Close ga
     End If  ' del open ga archivo
-FileFlush (7)
+'FileFlush (7)
       
      Sleep 1000,1
      
@@ -6795,7 +6795,7 @@ Print #1,"PASO GRABA4 tiempo patron elimino fileflush vermos"
      
      Put #gt, ,Trabajo() ' ACA DEBERIA QUEDAR EL CAMPO ACORDE !!
      Close gt
-   FileFlush (gt)
+'   FileFlush (gt)
       
      Sleep 150
 Print #1,"---------------------------------------------------------------------------------"
@@ -7234,7 +7234,7 @@ Print #1, "SELCANAL canalx "; canalx
                pmTk(0).canalsalida=CUByte(canalx)
                If NombreCancion > ""  Or TRACKCARGADO =TRUE Then
                    ' sirve para el track cargao actual en cancion
-                     GrabarRollaTrack(0,0)
+                     GrabarRollaTrack(0,0,"")
                Else
                   If ROLLCARGADO=TRUE  Then
                     LLAMA_GRABAR_ROLL("")

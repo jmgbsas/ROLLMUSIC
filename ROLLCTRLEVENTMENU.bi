@@ -128,7 +128,7 @@ Print #1,"usarmarcoins ", usarmarcoins
            Case 1010 '<================ Cargar Pista externa a cancion
 
    '        Print #1,"entro a 1010 Cargar Pista externa a cancion"
-
+           FUNCMENU="AGREGARTK" 
            CTRL1010 (salida )
            If salida =1 Then 
               salida=0
@@ -144,7 +144,7 @@ Print #1,"usarmarcoins ", usarmarcoins
             Dim As String nombreg
             ROLLCARGADO=FALSE 
            If NombreCancion > ""  Then
-              GrabarRollaTrack(0,0)
+              GrabarRollaTrack(0,0,"grabartrkcancion")
            EndIf
           MenuNew=MENU_INICIAL
           cierroedit= 0           
@@ -437,7 +437,7 @@ StatusBarGadget(BARRA_DE_ESTADO,"AUNQUE LA OCTAVA QUE APARECE SEA LA INDICADA VU
                 If (CANCIONCARGADA =TRUE Or TRACKCARGADO =TRUE) And ROLLCARGADO=FALSE Then
                    NADACARGADO=FALSE  
                    If NombreCancion > ""  And MAxPos > 2 Then
-                    GrabarRollaTrack(0,0)
+                    GrabarRollaTrack(0,0,"grabartrkcancion")
                    EndIf
                 Else
                   If MaxPos > 2  And ROLLCARGADO=TRUE  Then
@@ -503,7 +503,7 @@ StatusBarGadget(BARRA_DE_ESTADO,"AUNQUE LA OCTAVA QUE APARECE SEA LA INDICADA VU
 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Then
                  If NombreCancion > ""  And MAxPos >2 Then
-                    GrabarRollaTrack(0,0) ' ???? cancelara???
+                    GrabarRollaTrack(0,0,"grabartrkcancion") ' ???? cancelara???
                  EndIf
               Else
                 If MaxPos > 2  And ROLLCARGADO  Then

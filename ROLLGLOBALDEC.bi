@@ -870,3 +870,4 @@ Common shared As Integer numtrack,superposicion, nnn,versionEJEC
 nnn=0
 'VERSION DE EJEC CON MAS CAPACIDAD Y V OLUMEN VERSION=2
 Declare Sub TABTAB()
+Dim Shared FUNCMENU As STRING

@@ -978,7 +978,7 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
             Dim As String nombreg
             If MaxPos > 2 Then 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Or NombreCancion > "" Then
-                    GrabarRollaTrack(0,0)
+                    GrabarRollaTrack(0,0,"grabartrkcancion")
               Else
                 If  ROLLCARGADO=TRUE Then
                   'aca graba el roll con patch 
@@ -1021,7 +1021,7 @@ Print #1,"k, canalsalida  ";k, canalx
             Dim As String nombreg
             If MaxPos > 2 Then 
               If CANCIONCARGADA =TRUE  Or TRACKCARGADO =TRUE Or NombreCancion > "" Then
-                    GrabarRollaTrack(0,0)
+                    GrabarRollaTrack(0,0,"grabartrkcancion")
               Else
                 If  ROLLCARGADO  Then
 '                  'aca graba el roll con patch

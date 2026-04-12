@@ -1,6 +1,9 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-     0.369 OCTAVAS ROLL SE PUEDEN CAMBIAR CONSERVANDO BIEN LOS DATOS
+     0.370 FIX PATCH BOTON INFERIOR ROLL EN CANCION CANCELABA, FIX TRACK A ROLL EN GRAFICO 
+           FIX AGREGAR UN RTK A CANCION 
+           FIX AL LEVANTAR UN ROLL GRABADO EN 4 A 8 OCTAVAS A 3 A 8 OCTAVAS DEFORMABA LA MELODIA
+
      EL ROLL GRAFICO VISUAL PUEDE CAMBIARSE LAS OCTAVAS SIN PROBLEMA
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -814,13 +817,11 @@
         Para terminar Usar en el mismo menu "Detener MDI-IN por MIDI-OUT" ..Solo reproduce el sonido
         del port por omisión y el sonido por omisión,,(No elegir otro port de salida por ahroa cancela es un test)
 
-      - CARGAR UN ARCHIVO roll o rtk externo dentro de una Cancion, 
-        ahora funciona mejor ver 0.4616, para esto usar la opcion 4.0 cargar roll o rtk ...,echo esto se 
-        verifica o ajusta el patch y/o el canal dejando solo chequeado la pista incorporada nueva como
-        seleccionad para escucharse. Luego del cambio conviene grabar la cancion con la opcion 3.0 del
-        menu Aachivo. Volver a cargar la cancion,(todavia hay crash o cancelaciones si no se vuelve a cargar
-        la cancion, o cerrar todo y volver a empezar..)
-
+      - CARGAR UN ARCHIVO rtk externo dentro de una Cancion, (FIX 0.370) 
+        Usar la opcion 4.0 de archivo MANEJO DE PISTAS y el subitem 4.0 cargar una pista rtk en cancion. 
+        Se puede grabar la canion con opcion 3 del menu archivo. o al salir y volver a cargar
+        el inicio tenrdra en cuenta al nuevo trck agregado.
+ 
       - Para exportar una pista de una cancion a un archivo Roll para editarlo en una instancia libre
         se puede hace con la opcion del menu archivo 4.3 Grabar una pista rtk a roll
         para ello conviene en Roll Grafico situarse en la pista deseada con el tabulador, y en la ventana 

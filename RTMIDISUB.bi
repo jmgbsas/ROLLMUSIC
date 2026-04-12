@@ -1918,7 +1918,7 @@ If encancion > 0 Then
    ubi1=InStr(nombre,"[")
    ubi2=InStr(nombre,"]")
    If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
-       GrabarRollaTrack(0,0)
+       GrabarRollaTrack(0,0,"grabartrkcancion")
    EndIf
 'COPIAR EN MEMORIA LA TRASPOSICION AL TRACK CORRRSPONDIENTE
 
@@ -2102,7 +2102,7 @@ If encancion > 0 Then
    ubi1=InStr(nombre,"[")
    ubi2=InStr(nombre,"]")
    If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
-       GrabarRollaTrack(0,0)
+       GrabarRollaTrack(0,0,"grabartrkcancion")
    EndIf
 EndIf       
 
@@ -2251,7 +2251,7 @@ If encancion > 0 Then
    ubi1=InStr(nombre,"[")
    ubi2=InStr(nombre,"]")
    If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
-       GrabarRollaTrack(0,0)
+       GrabarRollaTrack(0,0,"grabartrkcancion")
    EndIf
 EndIf       
 
