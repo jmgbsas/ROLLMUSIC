@@ -90,7 +90,7 @@ Declare Sub CambiarDim(redi As integer)
 Declare Sub dialogoText(cadena As string)
 Declare Sub velocidades(j as integer)
 Declare Sub playthread()
-Declare Function GrabarRoll (NN As String) As integer
+Declare Function GrabarRoll (funcion As String) As integer
 Declare Sub abrirSecuencia (nf As integer)
 Declare Sub GrabarTrack   (ntk As integer) 
 Declare Sub ActualizarRollyGrabarPistaTrk (funcion As String, nroEjec As Integer)
@@ -117,7 +117,7 @@ alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0,OCTAVAFIJA
 Dim Shared As integer pasoZona2=0,nroRep=0,esEjecucion=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, playloop2=0,SelGrupoNota =0,moverZona=0, copiarZona=0,SelGrupoNotaT =0
-Dim Shared as ubyte  DUR,nota,notacur,suenaunavez=0
+Dim Shared as ubyte  DUR,nota,notacur,suenaunavez=0,canRecal=0
 ReDim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t,t2, taux
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld, cursormove,notaoldmidi

@@ -10,6 +10,7 @@ End Sub
 
 Sub CargarMidiIn(fileMidiIn As String,   ByVal ntkp As Integer, byval version As Integer)
 versionEJEC=version
+Print #1,"CargarMidiIn versionEJEC ",versionEJEC 
 '[ carga un archivo en cada llamada ]
 ' carga un archivo por cada llamada, ntkp el nro de trak o pista de ejecucion
 ' la entrada DirEjecSinBarra recibido enCargarMidiIn CONTIENE EL PATCH NO SERIA 
@@ -17,21 +18,10 @@ versionEJEC=version
 
       Dim As Integer  j 
       ' nombre tiene el path y extension esta completo
-     
-  '    pmEj(ntkp).MaxPos=N
  Print #1,"fileMidiIn recibido enCargarMidiIn ",fileMidiIn ' TIENE PATH
  Print #1,"NombreCancion  ",NombreCancion
       Dim As Integer ubi1 ',ubi2 
       ubi1 = InStrrev(fileMidiIn,"\")
- '     ubi2 =InStrRev (DirEjecSinBarra,")")
- '     ntkp=CInt(Mid(DirEjecSinBarra,ubi1+1,ubi2-ubi1-1)) ' el orden o nro de la pista sale del nombre
-' pero tambien esta grabado en tocaparam en el archivo
-' si hay numero en la string aunque no halla parentesis al comienxo y  el numero este
-' al fina lo cualquier parte tomara el numero igual.,,cint descarta las letras,,,
-  '    If ubi1=0 Or ubi2=0 And ntkp=0 Then
-  '       ntkp=1 'corregimos despues
-  '    EndIf  
-'''NombreCancion CONTENDRA EL PATH CON LA BARRA AL FINAL
       If  NombreCancion="" And ubi1 > 0 Then
           NombreCancion=Mid(fileMidiIn,1,ubi1)
       EndIf
@@ -145,6 +135,7 @@ End Sub
 
 Sub CargarPistasEjec (lugar As String, ByRef ntkp As Integer, ByRef version As integer)
 versionEJEC=version
+Print #1,"1) CargarPistasEjec versionEJEC ",versionEJEC
 ' HAY QUE DESARROLLAR TOCAPARAM2 EL OTRO TIPO DE PARAMETROS MAS AMPLIO
 ' DONDE ESTA EL tIPOcOMPAS POR AHORA SOLO MANEJA 4/4 EN EL TAP!!
 ' IGUAL NO TIENE ACENTO ES LO MISMO
@@ -229,16 +220,18 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
  'cantidad de dias desde 30 dic 1899,1900 a 2025 son 125 años
  ' 125 * 365 = 45625
           If IsDate(fecha1) <> 0 And  tocaparamCabeza(nf).fecha > 45000 Then
-             Print #1,"cargando archivo ejec version 2"  '' corre ok
+             Print #1,"CargarPistasEjec cargando archivo ejec version 2"  '' corre ok
              ' VERSION 2 NUEVA leo lo siguiente
-             versionEJEC=2     
+             versionEJEC=2 
+             pmEj(nf).versionEJEC=2    
              Get #f, ,tocaparam(nf)  ' EN VER2 HABRA UNA CABEZA Y LUEGO TOCAPARAM Y TOCAPARAM2
           Else
              Close f 
              Sleep 50
              Open fileMidiIn For Binary Access Read As #f
-             Print #1,"cargando archivo ejec version 1"
-             versionEJEC=1   
+             Print #1,"CargarPistasEjec cargando archivo ejec version 1"
+             versionEJEC=1 
+             pmEj(nf).versionEJEC=1   
              Get #f, ,tocaparam(nf)
           EndIf
 ' CON EJEC2 tocaparam0 tendra otros datos a definir y recien empieza
@@ -246,7 +239,7 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
 ' para obtener el maxgrb de todas las pistas   
 '---------------------------
 ' solo interesa la 1er parte del ejecparam porque tine el maxpos
-           Print #1,"tocaparam(nf).maxpos ",tocaparam(nf).maxpos
+           Print #1,"CargarPistasEjec tocaparam(nf).maxpos ",tocaparam(nf).maxpos
 
            If tocaparam(nf).maxpos > maxgrb Then
               maxgrb = tocaparam(nf).maxpos
@@ -289,7 +282,7 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
       TopeEjec=nf   
       ntoca=tocatope
 
-      Print #1,"MAXIMA LONG DE PISTA maxgrb y cant de pistas  nf ",maxgrb,nf
+      Print #1,"CargarPistasEjec MAXIMA LONG DE PISTA maxgrb y cant de pistas  nf ",maxgrb,nf
       maxcarga=maxgrb 
       SetGadgetText(TEXT_TOPE, Str(maxcarga))
 'termino con  todoslos archivos si llamo de nuevo con argumento
@@ -318,7 +311,7 @@ print #1,"inicia CargaPistasEjec ejecuta 1 sola vez los loops son internos devue
         fileMidiIn=lugar+"\"+filenameOld
         Print #1,"CargarMidiIn  fileMidiIn ",fileMidiIn
 
-        
+        Print #1," 2 ) CargarPistasEjec versionEJEC ",versionEJEC
         CargarMidiIn (fileMidiIn,  np,versionEJEC)  
                 
         Dim cadena As String
@@ -529,19 +522,6 @@ cargacancion=NO_CARGAR_PUEDE_DIBUJAR 'PUEDE DIBUJAR PORQUE NO HAY REDIM  DE ROLL
            nombrea = OpenFileRequester("","", myfilter, OFN_CREATEPROMPT)
            Sleep 100
 
-           ubi1 = InStrrev(nombrea,"[")
-           ubi2 =InStrRev (nombrea,"]")
-           If ubi1=0 Then
-              ubi1 = InStrrev(nombrea,"(")
-           EndIf
-           If ubi2=0 Then
-              ubi2 = InStrrev(nombrea,")")
-           EndIf
-'''           If NombreCancion = "" Then ' este caso no se dara cargar  track es solo para cancion con traks 
- '''             ntk=0
-'''           Else 
-              ntk=CInt(Mid(nombrea,ubi1+1,ubi2-ubi1-1))
-'''           EndIf      '
      Else
   '2)  carga *.rtk de linea de comando doble clik o de cancion   
        If ubirtk > 0 Then ' ENTRAN TAMBIEN TODAVIA LOS *.SOLO
@@ -1252,8 +1232,6 @@ nombre=titulosTk(ntk)
    Print #1,"nombre que llega a ActualizarRollyGrabarPistaTrk "; nombre
   Dim As Integer ubi1=0,ubi2=0,ubi3=0,ubi4=0, ubi5=0 
        Dim As String no1,no2
-       ubi1=InStr(nombre,"[")
-       ubi2=InStr(nombre,"]")
        ubi3=InStr(nombre,".rtk")
        ubi4=InStr(nombre,".roll")
        ubi5=InStr(nombre,".solo")
@@ -1266,7 +1244,7 @@ nombre=titulosTk(ntk)
     
     print #1,"extension ",ext
     print #1,"nom nombre sin extension ni path ",nom
-  If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Or ubi5 > 0 Then
+  If  ubi3 > 0 Or ubi5 > 0 Then
      If ubi3> 0 Then
      nombre=path +nom +".rtk"
      EndIf
@@ -1276,12 +1254,12 @@ nombre=titulosTk(ntk)
   
   Else
     If nroejec= 0 Then
-     nombre=path +"[00]"+nom +".rtk"
+     nombre=path +nom +".rtk"
     Else
      If DirEjecSinBarra > "" Then
           path=DirEjecSinBarra+"\"
      EndIf 
-     nombre=path +"["+doscifras(nroejec)+"]"+nom +".rtk" 'path + 0 + rtk por default si no hay cancion
+     nombre=path +nom +".rtk" 'path + 0 + rtk por default si no hay cancion
     EndIf
   EndIf
 
@@ -1520,8 +1498,8 @@ Select Case ext
 ''ImportarPistaExterna NO EXISTE PERO EVITA QUE TOME LA OTRA FUNCION
   ' cambiamos el nombre segun la ext
      
-    nombre= NombreCancion + "\[" + doscifras(ntk) + "]" + nom +".rtk"
-    Dim cadena As String = "[" + doscifras(ntk) + "]" + nom
+    nombre= NombreCancion + "\"+ nom +".rtk"
+    Dim cadena As String = nom
     AddListBoxItem(PISTASROLL, cadena)
     Sleep 1                         
     print #1,"GRABANDO PISTA EN CANCION EN ",nombre
@@ -1538,8 +1516,8 @@ Select Case ext
    ' todos los valores quedaron en ntk=0 
 s5=0 '11-06-2022
    ''ntk=Tope
-   nombre= NombreCancion + "\[" + doscifras(Tope) + "]" + nom +".rtk"
-   Dim cadena As String = "[" + doscifras(Tope) + "]" + nom
+   nombre= NombreCancion + "\"+ nom +".rtk"
+   Dim cadena As String =  nom
     AddListBoxItem(PISTASROLL, cadena)
     Sleep 1                          
    print #1,"GRABANDO PISTA EN CANCION EN ",nombre
@@ -1652,8 +1630,8 @@ FILEFLUSH(-1)
         print #1,"preparo nombre pista nueva ntkCARGA ", ntkcarga
 FILEFLUSH(-1)
      
-        nombre= NombreCancion + "\[" + doscifras(ntkcarga) + "]" + pistanueva +".rtk"
-        Dim cadena As String = "[" + doscifras(ntkcarga) + "]" + pistanueva
+        nombre= NombreCancion + "\" + pistanueva +".rtk"
+        Dim cadena As String = pistanueva
         AddListBoxItem(PISTASROLL, cadena)
         Sleep 1                          
         print #1,"==>> GRABANDO PISTA EN CANCION EN ntkCARGA nombre ",ntkcarga, nombre
@@ -1702,7 +1680,7 @@ End Sub
 Sub GrabarRollaTrack ( cambiaext As Integer, nroejec As integer , funcion As string ) ' SE USA PARA TODO 
 ' las 3 1eras funciones pueden hacerce en roll sin problemas..roll lo deduce
 ' de la entrada y las variables globales. la 4ta no, debe llamarse desde Control
-'1) Convierte y Graba un Roll cargado de disco, como Track [00] fuera de cancion. conversion
+'1) Convierte y Graba un Roll cargado de disco, como Track  fuera de cancion. conversion
 ' exclusivo de Roll no de Control (1,0,FALSE), es conversion no copia 
 ' cambiaext=1 porque pasa de .roll a .rtk  
 '2) convierte un Roll a trk y graba en cancion, igual que antes pero 
@@ -1730,7 +1708,7 @@ print #1,"inicia GrabarRollaTrack, cambiaext ",cambiaext
     
     print #1,"extension ",ext
     print #1,"nom nombre sin extension ni path ",nom
- '1) Convierte y Graba un Roll cargado de disco, como Track[00] fuera de cancion. conversion
+ '1) Convierte y Graba un Roll cargado de disco, como Track fuera de cancion. conversion
  ' por eso cambia extension a rtk
 If  nombre > "" Then
    ' graba roll a rtk en cancion 0 o 1 
@@ -1744,9 +1722,9 @@ If  nombre > "" Then
       
       If ext=".ejec" Then
          Dim As Integer abrecor, cierracor
-         cierracor=InStr(nom,")")
-         Mid(nom,1,1)="["
-         Mid(nom,cierracor,1)="]" 
+         'cierracor=InStr(nom,")")
+         'Mid(nom,1,1)="["
+         'Mid(nom,cierracor,1)="]" 
          path=DirEjecSinBarra+"\"
          nombre=path + nom +".rtk" 'path + 0 + rtk por default si no hay cancion
       ' cancion,,
@@ -1754,12 +1732,12 @@ If  nombre > "" Then
          If ext=".rtk" Then
             nombre=path +nom +".rtk" 'path + 0 + rtk por default si no hay cancion
          Else 
-            nombre=path +"[00]"+nom +".rtk" 'path + 0 + rtk por default si no hay cancion
+            nombre=path +nom +".rtk" 'path + 0 + rtk por default si no hay cancion
          EndIf
       EndIf
-      print #1,"armado de nombre roll a trk[00]",nombre
+      print #1,"armado de nombre roll a trk ",nombre
    
-        ' guardo los valores de Roll cargado en el track nuevo [00]
+        ' guardo los valores de Roll cargado en el track nuevo 
    ' hay una cancion cargada pero cargue (cargue o estoy por cargar? )un roll de disco en Roll Grafico
    ' estando posicionado en la pista ntk.. 
       If CANCIONCARGADA=TRUE  And ROLLCARGADO=TRUE Or ROLLCARGADO=TRUE Then
@@ -2254,7 +2232,7 @@ For i2 = 1 To pmTk(ntk).MaxPos
       EndIf
    Next i1
 
- If funcion ="CAMBIADIM" Then
+ If funcion ="CAMBIADIM" Or FUNCION="CASE1014" Then
   Else  
    If i2=pmTk(ntk).MaxPos  then 
     Print #1," ///maxpos-1, nota  ", i2, ultimaPianonota

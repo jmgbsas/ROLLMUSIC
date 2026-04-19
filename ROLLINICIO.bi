@@ -153,7 +153,7 @@ Common Shared  mensaje As Integer
 
 ' This is our data identification string to store data in list item
 Dim  As Integer lp=InStrRev(Command(0),"\")
-ROLLDIR =Mid(Command(0),1,lp) ' tiene la barra
+ROLLDIR =Mid(Command(0),1,lp) ' tiene la barra ES DONDE ESTA ROLLMUSIC.EXE
 ''pathinicio = CurDir  
 Const list_item_data_key ="list_item_data"
 ' fin GTK

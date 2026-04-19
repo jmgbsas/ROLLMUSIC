@@ -113,32 +113,42 @@ Static As Integer millave
 '' esta andando con defectos verlos borrado en la lista LBS_WANTKEYBOARDINPUT
      If WM_VKEYTOITEM Then '
        '           print #1,"---------->>> APRETO TEcla ",NTK,NombreCancion
-                If EventKEY = VK_DELETE Then 
+          If EventKEY = VK_DELETE Then 
        '          print #1,"---------->>> APRETO DELETE ",NTK,NombreCancion
-                  If NombreCancion > "" And ntk > 0  Then
-                     borrar=2
-                     DeleteListBoxItem(3,GetItemListBox(3))
-        '            print #1,"LISTABOX EventKeyDown borrar ntk",ntk
-                    print #1,"LISTBOX  titulosTk(ntk)= ",titulosTk(ntk)
-                    copiarATemp (titulosTk(ntk),pistasTk(ntk))
-                    BorrarPista (titulosTk(ntk))
-                    titulosTk(ntk)=""
-                    pistasTk(ntk)=""
-                    pmTk(ntk).desde=0
-                    pmTk(ntk).hasta=0
-                    pmTk(ntk).NB=0
-                    pmTk(ntk).NA=0                  
-                    pmTk(ntk).MaxPos=0
-                    pmTk(ntk).posn=0
-                    pmTk(ntk).notaold=0                  
-                    pmTk(ntk).Ticks=0
-                    pmTk(ntk).portout=portout
-                    Sleep 1
-                    'SetItemListBox(3,ind+1) no funca
-                    'SetGadgetState(3,1) no funca 
-                    borrar=0
-                  EndIf
-                EndIf 
+             If NombreCancion > "" And ntk > 0  Then
+               borrar=2
+               DeleteListBoxItem(PISTASROLL,GetItemListBox(PISTASROLL))
+  '            print #1,"LISTABOX EventKeyDown borrar ntk",ntk
+              print #1,"LISTBOX  titulosTk(ntk)= ",titulosTk(ntk)
+              copiarATemp (titulosTk(ntk),pistasTk(ntk))
+              BorrarPista (titulosTk(ntk))
+              titulosTk(ntk)=""
+              pistasTk(ntk)=""
+              pmTk(ntk).desde=0
+              pmTk(ntk).hasta=0
+              pmTk(ntk).NB=0
+              pmTk(ntk).NA=0                  
+              pmTk(ntk).MaxPos=0
+              pmTk(ntk).posn=0
+              pmTk(ntk).notaold=0                  
+              pmTk(ntk).Ticks=0
+              pmTk(ntk).portout=portout
+              Sleep 1
+              Dim As integer i1,i2
+              For f1 As Integer=ntk To Tope-1
+                  ReDim (Track(f1).trk ) (1 To MaxPosTope,1 To lim3)
+                  titulosTk(f1)=titulosTk(f1+1)
+                  Sleep 10 
+                  copiaTrackaTrack (Track(),f1,f1+1)
+                  copiarPmtkaPmtk(f1 , f1+1)
+              Next f1
+              titulosTk(Tope)=""
+              Tope=Tope-1 
+              CheckBox_SetCheck(cbxnum(Tope),0)
+              clickpista=1
+             borrar=0
+             EndIf
+          EndIf 
                  
            ' aca no debe leer a disco solo conmutar de track en track
 '------------------------------
@@ -708,14 +718,17 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
             Dim As Integer pis
             pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
             'cntpis=GetSelCountListBox(PISTASEJECUCIONES,@vec(0)) +1
-            Print #1,"en BTN_EJEC_VOL pis ";pis  
+            Print #1,"en BTN_EJEC_VOL pis ";pis
+            Print #1,"en BTN_EJEC_VOL versionEjec ";versionEjec  
         If pis >=1 Then
           menuOldStr="[VOLEJEC]"
-          threadvol=threadCall EntrarTeclado()
+         ntkp=pis
+'Print #1,"1111) CONTROLGADGET [VOLEJEC] versionEjec ", pmEj(ntkp).versionEJEC
+           threadvol=threadCall EntrarTeclado()
           ThreadWait threadvol
-Print #1,"CONTROLGADGET [VOLEJEC] versionEjec ", versionEjec
+'Print #1,"2222) CONTROLGADGET [VOLEJEC] versionEjec ", pmEj(ntkp).versionEJEC
           menuOldStr="" 
-          If versionEjec = 1 Then
+          If pmEj(ntkp).versionEjec = 1 Then
 'statusBarGadget NO PUEDE IR EN UN THREAD CANCELA !!!
 ' AL MENOS EN ESTE PROGRAMITA  
    StatusBarGadget(BARRA_DE_ESTADO,"ARCHIVOS DE VERSION 1 DE EJEC NO TIENEN UN AJUSTE DEL VOL GRABADO EN EL ARCHIVO *.EJEC , SI TIENE LOS VOLUMENES ORIGINALES DE EJECUCION" )
@@ -1075,10 +1088,19 @@ Print #1,"k, canalsalida  ";k, canalx
       If eventnumber()= BTN_METRONOMO And tic=0 Then
           terminar_metronomo=0
           threadmetronomo = ThreadCall metronomo()
+          SetGadgetText (TEXT_GADGET,Str(tiempoPatron))  
           tic=1 
       Else
           terminar_metronomo=1
           tic=0
       EndIf
+      If eventnumber()= BTN_MAS Then
+         tiempoPatron=tiempoPatron+1
+         SetGadgetText (TEXT_GADGET,Str(tiempoPatron))   
+      EndIf 
+      If eventnumber()= BTN_MENOS Then
+         tiempoPatron=tiempoPatron-1
+         SetGadgetText (TEXT_GADGET,Str(tiempoPatron))   
+      EndIf 
 
 '-------------------------------------------------------

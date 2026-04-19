@@ -1913,11 +1913,11 @@ Next jpt
 ' de ese modo al dar play se escucha los cambios sino solo quedan en Roll
 ' y el play de cancion no lo registra , solo el play de roll lo registraria
 If encancion > 0 Then
-   Dim As Integer ubi1=0,ubi2=0 
+   Dim As Integer ubi1=0 
    Dim As String no1,no2
-   ubi1=InStr(nombre,"[")
-   ubi2=InStr(nombre,"]")
-   If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
+   ubi1=InStr(LCase(nombre),".rtk")
+
+   If ubi1 >0  Then ' es un track que se edito se graba como track
        GrabarRollaTrack(0,0,"grabartrkcancion")
    EndIf
 'COPIAR EN MEMORIA LA TRASPOSICION AL TRACK CORRRSPONDIENTE
@@ -2097,11 +2097,10 @@ Next jpt
 ' de ese modo al dar play se escucha los cambios sino solo quedan en Roll
 ' y el play de cancion no lo registra , solo el play de roll lo registraria
 If encancion > 0 Then
-   Dim As Integer ubi1=0,ubi2=0 
+   Dim As Integer ubi1=0 
    Dim As String no1,no2
-   ubi1=InStr(nombre,"[")
-   ubi2=InStr(nombre,"]")
-   If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
+   ubi1=InStr(LCase(nombre),".rtk")
+   If ubi1 >0 Then ' es un track que se edito se graba como track
        GrabarRollaTrack(0,0,"grabartrkcancion")
    EndIf
 EndIf       
@@ -2248,9 +2247,8 @@ If encancion > 0 Then
  ' print #1,"en trasponer grupo graba track traspuesto"
    Dim As Integer ubi1=0,ubi2=0 
    Dim As String no1,no2
-   ubi1=InStr(nombre,"[")
-   ubi2=InStr(nombre,"]")
-   If ubi1 >0 And ubi2 > 0 Then ' es un track que se edito se graba como track
+   ubi1=InStr(LCase(nombre),".rtk")
+   If ubi1 >0  Then ' es un track que se edito se graba como track
        GrabarRollaTrack(0,0,"grabartrkcancion")
    EndIf
 EndIf       

@@ -71,12 +71,96 @@ StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIO
            Case 10075 '<======== CARGAR UNA PISTA A ROLL PARA EXPORAR A MIDI
 ' DE ESTE MODO PODEMOS ENVIAR EL NOMBRE DE LA PISTA AL ROLL AISLADO
 ' Y CONVERTIR A MID CON EL NOMBRE REAL Y N OEL FANTASIA ARCHIVO.MID
-
+'--------------------------------------------
           CTRL10075 ( ) 
-          
-        Shell (" start RollMusic.exe "+ nombre)
-          SetForegroundWindow(hwnd)
+  
+    Print #1,"ROLLDIR ",ROLLDIR
+    Print #1,"nombre  ",nombre
+    Shell (" start " + ROLLDIR + "RollMusic.exe "+ nombre)
+       SetForegroundWindow(hwnd)
+'--------------------------------------------------------
+           Case 10076
+' renombrar una pista de Cancion o borrarla, sera un track y el roll en edicion copia de ese track
+           Dim As Integer nroPista
+           Dim As String  nroPistaTxt, nomPista 
+           nroPista=GetItemListBox(PISTASROLL) +1 ' DEVUELVE A PARTIR DE CERO ntoPista a borrar
 
+           Print #1,"Case 10076  nroPista a borrar o renombrar ";nroPista       
+           nomPista  = InputBox("Nombre de Pista " ,"Entre un nuevo Nombre si es nada se borra ",nomPista , , 0 )
+           nomPista = Trim(nomPista)
+
+'aca falta que si nompista es "" borrar la pista y mover todo hacia arriba
+' si la pista estaba en el medio,,,FALTA
+          If Len (nomPista) > 0 Then
+             Print #1,"Case 10076 calcula len  "; Len (nomPista)
+
+            SetListBoxItemText(PISTASROLL,nompista,nroPista-1) ' i1-1
+            Dim As String nombreviejo
+            nombreviejo=titulosTk(nroPista)
+            Print #1,"nombreviejo "; nombreviejo   
+            titulosTk(nroPista)=nompista
+
+            Dim OldName As String
+            Dim NewName As String
+            Dim result As Integer 
+      
+            OldName = nombreviejo
+      
+            If InStr(LCase(nompista),".rtk")=0 Then
+              NewName = nompista + ".rtk"
+            Else
+              NewName = nompista
+            EndIf
+            Print #1,"Case 10076 OldName ",OldName
+            Dim barra As integer
+            barra=InStrRev (OldName,"\")
+            DirEjecSinBarra=Mid(OldName, 1,barra) ' termina en bara
+            Print #1,"Case 10076 NewName ",NewName
+            
+ Print #1,"RENAME", OldName, DirEjecSinBarra + NewName 
+ result = Name( OldName, DirEjecSinBarra+ NewName )
+
+            Sleep 100
+            If 0 <> result Then 
+              Print #1, "error renaming " & oldname & " to " & newname, result 
+            Else
+             
+            
+            End If
+          EndIf
+          If Len (nompista) = 0 Then
+           Print #1,"'borrar pista y comprimir lista de cancion si quedo un hueco.."
+           DeleteListBoxItem(PISTASROLL, nroPista-1) 'comprime automatico la lista
+           Print #1,"comprimir listas Cancion"
+                    copiarATemp (titulosTk(nroPista),pistasTk(nroPista))
+                    BorrarPista (titulosTk(nroPista))
+                    titulosTk(nroPista)=""
+                    pistasTk(nroPista)=""
+                    pmTk(nroPista).desde=0
+                    pmTk(nroPista).hasta=0
+                    pmTk(nroPista).NB=0
+                    pmTk(nroPista).NA=0                  
+                    pmTk(nroPista).MaxPos=0
+                    pmTk(nroPista).posn=0
+                    pmTk(nroPista).notaold=0                  
+                    pmTk(nroPista).Ticks=0
+                    pmTk(nroPista).portout=portout
+
+' aca falta borrar de memoria..en la lista se borra facile
+           Dim As integer i1,i2
+           For f1 As Integer=nropista To Tope-1
+               ReDim (Track(f1).trk ) (1 To MaxPosTope,1 To lim3)
+               titulosTk(f1)=titulosTk(f1+1)
+               Sleep 10 
+               copiaTrackaTrack (Track(),f1,f1+1)
+               copiarPmtkaPmtk(f1 , f1+1)
+           Next f1
+           titulosTk(Tope)=""
+           Tope=Tope-1 
+           CheckBox_SetCheck(cbxnum(Tope),0)
+           clickpista=1
+          EndIf  
+            
            Case 1008 '<======= 3.1 Exportar Pista a midi 
  
                '' CTRL10075 ()
@@ -165,10 +249,11 @@ Print #1,"usarmarcoins ", usarmarcoins
              End If 
 '-----------------------------------------------------------------------
            Case 1014  ' <============= TRACK A ROLL
-           TrackaRoll (Track(), ntk , Roll,"case104" ) ' no usa ubirtk
-          
-           '''GrabarRoll()
-           LLAMA_GRABAR_ROLL("")
+' SIMPLEMENTE LLAMA DOS VECES LA FUNCION DE GRABAR L1 1ERA CAMBIA LA EXTENSION DE
+' RT A ROLL Y LA 2DA BIFURCA POR .ROLL Y GRABAR EL ROLL() QUE ESTARA CARGADO
+' CON EL RACK SELECCIONADO ANTES DE GRABAR O SEA PARA GRABAR UN TRACK DE CANCION LA
+' SELECCIONO PARA QUE SE VEA EN ROLL GRAFICO Y LO  GRABO SENCILLITO
+           LLAMA_GRABAR_ROLL("CASE1014")
            Sleep 1000,1 
            SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
@@ -266,16 +351,7 @@ Print #1,"**********************************************************************
             If 0 <> result Then 
               Print #1, "error renaming " & oldname & " to " & newname, result 
             Else
-             
-            '  Var RTA= Kill (DirEjecSinBarra+"\"+"("+doscifras(nroPista)+")"+OldName)
-            '  If RTA > 0 Then
-            '      Print #1, "error BORRANDO ";DirEjecSinBarra+"\"+OldName    
-            '  Else
-            '      Print #1,"BORRO OLDNAME ";DirEjecSinBarra+"\"+OldName
-              
-                 GrabarMidiIn(pgmidi,nroPista)
-            '  EndIf
-             
+               GrabarMidiIn(pgmidi,nroPista)
             End If
           EndIf
           If Len (nompista) = 0 Then
@@ -675,6 +751,7 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
               menuOldStr="[TEMPO]"
               thread3= ThreadCall EntrarTeclado()
               ThreadWait thread3
+               
              If abrirRollCargaMidi=2 Then
              SetForegroundWindow(hwnd)
              EndIf   

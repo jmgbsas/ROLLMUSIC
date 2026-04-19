@@ -1,8 +1,10 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-     0.370 FIX PATCH BOTON INFERIOR ROLL EN CANCION CANCELABA, FIX TRACK A ROLL EN GRAFICO 
-           FIX AGREGAR UN RTK A CANCION 
-           FIX AL LEVANTAR UN ROLL GRABADO EN 4 A 8 OCTAVAS A 3 A 8 OCTAVAS DEFORMABA LA MELODIA
+    0.374 Fix Delete de Pista Cancion, Lineas de compas on/off
+    0.373 METRONOMO AJUSTES CON BOTONES +/-
+    0.372 ELIMINACION DE NUMEROS DE PISTAS EN CANCION, TAB AVANZA Y RETROCEDE CON BACKSPACE, FIX VOL DE EJECS
+    0.371 FIX MENU Archivo 4.0 /itemS 4.4, 4.3, Renombra pista Cancion 4.5 "
+
 
      EL ROLL GRAFICO VISUAL PUEDE CAMBIARSE LAS OCTAVAS SIN PROBLEMA
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
@@ -284,7 +286,8 @@
             en columna [S]
             "1.0 Cargar directorio de Cancion con Pistas separados con Ventana de Control y Roll Grafico")
             "2.0 Abrir directorio de Cancion con Pistas separados con Ventana de Control  sin Roll Grafico")
-
+            NOTA: Una vez cargada la cancion si queremos ver lineas de compas segun el ritmo ajustado
+            pulsar la tecla R. Si luego las quiero borrar pulsar ALT+R. 
        6.1.1) Cargar un solo archivo de ejecucion *.ejec. Usar en el Menu de Archivo el item 5.1.5
               se puede seguir cargando de uno en uno, para cargar todas las ejecuciones en un directorio
               usar el item 5.1
@@ -590,7 +593,8 @@
          10.0 PARA DAR 4 PULSOS INICIALES PARA QUE EMPIECE A TOCAR EL USARIO.
          HAY UN METRONOMO LIBRE PARA ENSAYAR ABAJO ENTRE LAS LISTAS ROLL Y EJEC BOTON [M]
          INICIA Y APAGA EL METRONOMO, LA VELOCIDAD SE AJUSTA EN MENU TIEMPO Y RITMO
-         ITEM 1.0 COMO PARA LOS OTROS SINCRONIZADOS TAMBIEN.
+         ITEM 1.0 COMO PARA LOS OTROS SINCRONIZADOS TAMBIEN, O SE AGREGARON BORONES +/-
+         PARA INCREMENTAR O  DECREMENTAR EN 1 EL TIEMPO O TEMPO PATRON.
 
          J)  Para seguir grabando otra pista escuchando la anterior:
              Pulsar check en una pista nueva en columna 'G' (deseleccionar cualquier PISTA en 'G'), elegir PortSal, Patch 
@@ -608,7 +612,7 @@
           mas un comienzo similar a las pistas de cancion con tracks manuales,,,(01)..(09),en vez de [01]..[09] 
           Nota: El orden de las pistas grabadas en archivo, se puede cambiar cambiando los nombres de archivos, sonara
           de igual forma. Los retardos entre pistas se transforman en ticks agregados de modo que el retardo ya no se usa mas
-          en la reproduccion.
+          en la reproduccion. Las pistas solo tendran numero se gun su orden de carga, en pantalla, en disco NO.
           Se ha  sincronizado solo el comienzo de la ejecucion de una cancion manual junto con las ejecuciones. 
           Tambien se puede grabar una pista nueva de ejecucion teniendo un Roll o Track o cancion cargado (no eficiente por ahora),
           se  reproducira la parte manual (roll, track o cancion) ,mientras se graba la nueva pista junto a otras pistas 
@@ -773,7 +777,7 @@
         se borra el cargado anteriormente y se reemplaza por uno nuevo vacio.
         NOTA: LAS OCTAVAS SE INICIAN DE 3 A 8 FIJAS. Un archivo *.rtk que tenga rango menor
         como 4 a 8 se cargaran bien con 3 a 8. Los archivos *.roll se cargaran bien con su rango
-        original grabado en el archivo, o modificado a partir de verson 0.369.
+        original grabado en el archivo, o modificado a partir de verson 0.369. 
         [COMO CAMBIAR OCTAVAS DESDE MENU DE CONTROL]:
          En el menu "Pistas Manuales" pulsar 1.0 Cambia Octavas...Aparecen dos dialogos consecutivos
         el primero fija la octava menos Desde, el 2do dialogo la octava mas alta Hasta.

@@ -124,7 +124,7 @@ Sub RecalCompas(rit As integer) ' Nuevo para ticks
 ' y 2/8, 3/8, 4/8, 8/8, 9/8, 10/8, 11/8 no hay?
  On Local Error GoTo errorCalc 
 ' velocidades para 4/4 reposicion par ticks
-
+' SI NO HAY RITMO NO SE MUSTRA LAS BARRAS EL USUARIO LAS PONE PULSANDO R
   TipoCompas=rit
   TCompas=CRaTC(rit)
 
@@ -154,7 +154,10 @@ clickpista=0
  ticks=rit*incremento
 
 ''Print #1,"En Recalcompas MAXI ",MAXI
-ReDim compas(1 To 2*MAXI)
+ReDim compas(1 To 2*MAXI) ' se supono que borra su contenido pero no funciona!!!
+If rit=0 Then 
+  Exit Sub
+EndIf
 'los pulsos fuertes y debiles hay que desarrollarlos para los otros ritmos!!!
  
 MaxPos=MAXI
@@ -3838,7 +3841,7 @@ End Sub
 
 '-------------------------------MENU----------
 Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst, ByRef ubiroll As Integer, ByRef ubirtk As Integer )
-
+ Static As Integer ntkmenuOld
  On Local Error Goto fail
 
  Dim As float fonti
@@ -3900,17 +3903,20 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
  ' loop.....
  t=" "
    Dim As String muestra = " " ' nombre tambien se usa en cancion
-   If NombreCancion > "" And titulosTk(ntk) > "" And ROLLCARGADO=FALSE Then
-      nombre = titulosTk(ntk)
-     ' Print #1,"en menu nombre ",nombre
-   EndIf
+   If ntkmenuOld <> ntk Then 
+     If NombreCancion > "" And titulosTk(ntk) > "" And ROLLCARGADO=FALSE Then
+        nombre = titulosTk(ntk)
+        Print #1,"en menu nombre ",nombre
+        ntkmenuOld=ntk
+     EndIf
+   EndIf  
    Dim ps As Integer
    If NombreCancion > "" Then
-      ps=InStr(nombre,"[")
-      muestra=Mid (nombre,ps) + " "
+      ps=InStrRev(nombre,"\")
+      muestra="["+doscifras(ntk)+"]"+Mid (nombre,ps+1) + " "
    Else
      ps=InStrRev (nombre,"\") 
-     muestra =Mid(nombre,ps) +" "
+     muestra =Mid(nombre,ps+1) +" "
      camino= Mid (nombre,1,ps-1) + " "
      SetWindowText(hwndC, "RollMusic Path archivo: " + camino)
    EndIf
@@ -4321,12 +4327,10 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
 
        Dim As Integer ubi1=0,ubi2=0,ubi3=0,ubi4=0 
        Dim As String no1,no2
-       ubi1=InStr(nombre,"[")
-       ubi2=InStr(nombre,"]")
        ubi3=InStr(nombre,".rtk")
        ubi4=InStr(nombre,".roll")
 
-       If ubi1 >0 And ubi2 > 0 And ubi3 > 0 Then 'graba un track como track
+       If  ubi3 > 0 Then 'graba un track como track
        ' pero como las modificaciones estan en ROLL debo usar GrabarrollaTrack
   Print #1,"2190 menu pierde ntk ??? ",ntk
 'SI CARGUE UN RTK DESDE ARCHIVO SIEMPRE USO ROLL A  TRACK PORQUE
@@ -4382,12 +4386,12 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
        esrtk =InStr(LCase(nombre),".rtk") 
        esejec=InStr(LCase(nombre),".ejec") ' es unroll que viene de ejec solo en el nombre
 ' no es que termine en ejec, el nombre del rool contine ejec en el nombre       
-'   GrabarRollaTRack aca graba con [00] adelante, pues no es comando de cancion
+'   GrabarRollaTRack aca graba , pues no es comando de cancion
 ' la pista de cancion van de 1 a 32 la pista 00 es el track asociado a Roll sin cancion 
         If esrtk >0 Or essolo Then ' update de un track con o sin cancion
            GrabarRollaTrack(0,0,FUNCMENU)
         EndIf  
-        ' convierte roll a track comun le antepone [00] y rtk al final
+        ' convierte roll a track comun   rtk al final
         If esroll > 0 Or esejec >0 Then ' con o sin cancion
            GrabarRollaTrack(1,0,FUNCMENU) ' el 0 no lo toma es indiferente
         EndIf
@@ -5439,7 +5443,7 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
        default2 = Str(tiempoPatron) '60
        ticksdefault = InputBoxJmg("Ajuste Tempo " ,"Entre un Tempo ",default2, ES_MULTILINE + ES_AUTOVSCROLL,0  )
        tiempoPatron= CInt(ticksdefault) '08-01-2022 de doble a int
-
+       
  'ntkp debe ser elegido pero todo debe estar igual, SI NO ELEIGE UNA PISTA
 ' O HAY UNA SOLA HAY QUE HACER EL LOOP PISTAS CONDISTINO TEMPO SERIA RARO
 ' ACA NO SEPUEDE ES TODO DE UN SOLO TEMPO
@@ -5627,21 +5631,21 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
       Exit Select
    EndIf
 
-   If menuOldStr="[VOLEJEC]" And versionEJEC=2  Then ' version 1 de ejec no tiene volumen
+   If menuOldStr="[VOLEJEC]" And pmEj(ntkp).versionEJEC=2  Then ' version 1 de ejec no tiene volumen
       If ntkp=0 Then ntkp=1  EndIf
-  '    If pmEj(ntkp).vol=0 Then 
-  '      default=Str(90)
-  '      tocaparam2(ntkp).vol=90 
-  '    Else 
-        default=Str(pmEj(ntkp).vol) 
-  '    EndIf
-       intervaloTxt = InputBoxJmg("Ajuste Numerico de VOL 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+      default=Str(pmEj(ntkp).vol)
+      If pmEj(ntkp).vol=0 Then 
+        default=Str(90)
+      EndIf
+      intervaloTxt = InputBoxJmg("Ajuste Numerico de VOL 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
       valorvol= ValInt(intervaloTxt)  '19-03-2025
       pmEj(ntkp).vol=CUByte(valorvol)
-      tocaparam2(ntkp).vol=CUByte(valorvol)
+      tocaparam2(ntkp).vol=CUByte(valorvol) ' versionEJEC=2
       Print #1,"NTKP EN VOLEJEC SEL, pmEj(ntkp).vol ", ntkp, pmEj(ntkp).vol
-   Print #1," VOLUMEN AJUSTADOO ->> "; valorvol
-   Globalvol=CUByte(valorvol)
+      Print #1," VOLUMEN AJUSTADOO ->> "; valorvol
+      Globalvol=CUByte(valorvol)
+   Else 
+       messBox ("volumen version 1 ", "No se ajusta Vol global solo suena el de la grabacion")
    EndIf
    menuOldStr=""   
  Case "[RITMO]"
@@ -6117,8 +6121,10 @@ Sub grabaralteracion(ByRef pan As UByte)
 
 End Sub
 
-Function  GrabarRoll (RESPALDO As String )  As Integer
-' dat ahora es shared como ejecparam 
+Function  GrabarRoll (funcion As String  )  As Integer
+' dat ahora es shared como ejecparam
+' PARA EL CASO DE  "CASE1014" ESTA RUTINA CORRE 2 VECES LA 1ERA SOLO CAMBIA LA EXTENSION A ROLL
+' LA  SEGUNDA  GRABA ROLL EN EL NTK SELECCIONADO DE LA CANCION. 
 On Local Error GoTo sale
 ' GRABA ARCHIVOS CON EXTENSION Y FORMATO *.ROLL
 ' el borrado de undo solo se deberia ahcer si se crea un archivo nuevo y se borra
@@ -6127,9 +6133,9 @@ On Local Error GoTo sale
 ' para roll ntk es siemrpe cero
 ntk=0
 Dim  As String nombrex, nombreorig
-Print #1,"GRABAR ARCHIVO: nombre y BACKUP al comienzo "; nombre, RESPALDO
+Print #1,"GRABAR ARCHIVO: nombre y BACKUP al comienzo "; nombre, funcion
 Dim  As Integer npl, length
-     If nombre = ""  Or RESPALDO="RESPALDO" Then ' backup antes de aumentar el tamano del vector
+     If nombre = ""  Or funcion="RESPALDO" Then ' backup antes de aumentar el tamano del vector
         nombrex = "Backup"+ Date + ".roll"
      Else
        npl= InStr(UCase(nombre),".RTK") 
@@ -6139,17 +6145,22 @@ Dim  As Integer npl, length
 ''' ANALIZAR EL NOMBRE 
           nombre = nombre +".roll"  
           Print #1,"es un trk grabado como roll  ",nombre ' sin sentido
-          Exit Function    
+          Exit Function    ' cambio el nombre sale ya lentrar de nuevo tiene extension roll
        Else
         If InStr(UCase(nombre),".ROLL") >= 0 Then
-           'seria nombre="" pero se toma como backup odeberia preguntar por un nombre nuevo 
-           nombre = nombre +".roll"  'un nombre sin extension no creo ocurra solo si es nuevo y no hay nombre 
+           'seria nombre="" pero se toma como backup odeberia preguntar por un nombre nuevo
+           If  funcion <> "CASE1014" Then  
+             nombre = nombre +".roll"  'un nombre sin extension no creo ocurra solo si es nuevo y no hay nombre
+           EndIf  
         EndIf
        EndIf 
      EndIf   
 
     ga=7 
-    If nombrex > "" Then 
+'    Print #1,"nombrex ",nombrex
+'    Print #1,"nombre ",nombre  ' ya tiene dos roll.roll
+'    Print #1,"funcion ", funcion 
+    If nombrex > ""  Then 
        nombreorig=nombre
        nombre=nombrex
     EndIf
@@ -6418,6 +6429,8 @@ Sub  abrirSecuencia(nf As Integer)
 End  Sub 
 '
 Sub CargarPistasEnCancion ()
+cargaCancion=CARGAR_NO_PUEDE_DIBUJAR 
+ntk=0
 ' cada vez que cargo borro la info de fechas de pistas anterior
 ROLLCARGADO=FALSE
 Dim  As Integer mayorntk=1 'ESTE ERA EL ERROR DE CARGA AHPORA CON 2 EXTENSIONES SE RESETEABA CON CADA UNA
@@ -6446,7 +6459,7 @@ Print #1,"inicia CargaPistasEnCancion"
         CANCIONCARGADA=FALSE
         ' NO HAY NADA QUE CARGAR
         abrirRoll=CARGAR_MAS_PISTAS_O_CANCION ' habilita otro camino para cargar pistas
-       ''' Exit Sub 5-12-2025
+        Exit Sub ''5-12-2025 HQBILITE 19-04-2026 BEBE IRSE NADA MAS QUE HACER 
      Else
         
        ' carga Todos los tracks de cancion en un Loop
@@ -6461,19 +6474,17 @@ Print #1,"inicia CargaPistasEnCancion"
         EndIf  
 
         filenameold=filename
-
-        Print #1, "trabajo con este filename...", filenameOld '[1]AAA.rtk por ejemplo
+        ntk=ntk +1
+        Print #1, "trabajo con este filename...", filenameOld 
         Dim cadena As String
         cadena= sacarExtension(filenameOld) ' BUSCA EL PUNTO NO DEPENDE DE LA EXTENSION
-
+        cadena="["+doscifras(ntk)+"]"+cadena
           If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Then ' en batch no hay ventana control 
           Else   
           AddListBoxItem(PISTASROLL, cadena) 'SIN EXTENSION
           End If  
-
-           ntk= sacarNtk(filenameold)  ' EL NTK SALE DEL NOMBRE DEL ARCHIVO
-           Print #1,"sacarNtk ntk "; ntk
-        If InStr(filename,".RTK") > 0 Then ' SOLO LOS RTK SON DE CANCION
+ 
+        If InStr(LCase(filename),".rtk") > 0 Then ' SOLO LOS RTK SON DE CANCION
            If mayorntk< ntk Then 'DEBE PERAMNECER EN DIFERENTES LLAMADAS
               mayorntk=ntk
            EndIf
@@ -6496,8 +6507,8 @@ Print #1,"inicia CargaPistasEnCancion"
         If maxpostope< pmTk(ntk).Maxpos Then 'DEBE PERAMNECER EN DIFERENTES LLAMADAS
            maxpostope= pmTk(ntk).Maxpos
         EndIf
-        clickpista=SI
- 'durante la cargaTrack el programa va a Rolloop se encuentra con SC_TAB
+        
+ 'durante la cargaTrack el programa va a Rolloop se encuentra con TAB
  ' y si cargacancion esta en 1 trata de cargar y no lo debe ahcer de modo
  ' que se ajusta a 0 cargacancion dentro de la rutina veremos 
 '        
@@ -6510,24 +6521,25 @@ Print #1,"inicia CargaPistasEnCancion"
        Print #1,"CARGO PISTAS MAXIMA CANTIDAD TOPE=",tope
        CANCIONCARGADA=TRUE
        NADACARGADO=FALSE
-       ntk=0   ' tab le suma 1 pero si creo pistas estria  mal 05-03-2022 ���
+       ''clickpista=SI
        ReDim compas(1 To maxpostope)  
-       RecalCompas(ritmo)
+''       RecalCompas(ritmo)
 
      EndIf
 
 
 ntk=1
-cargaCancion=CARGAR_NO_PUEDE_DIBUJAR '12-02-2022 mientras carg las pista el 1 indica cargando pistas    
+''cargaCancion=CARGAR_NO_PUEDE_DIBUJAR '12-02-2022 mientras carg las pista el 1 indica cargando pistas    
     Print #1,"FIN CargaPistasEnCancion no debe calcuar *po ",*po
     Print #1,"-------------------------------------------------------"
-clickpista=SI 'abre tab una sola vez y se posiciona en pista 1
+cargaCancion=NO_CARGAR_PUEDE_DIBUJAR 
+
 
 'mouse_event MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0  05-mar-2024 veremos
 'mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0 
       SetGadgetText(TEXT_TOPE, Str(maxpostope))
 grabariniciotxt(NombreCancion, CANCION)
-
+Sleep 50
 End Sub
 
 ' ---------------------------------
@@ -6820,11 +6832,9 @@ Dim As Integer i,ntkold
   For i=0 To tope
         ntk=i 
        nombre=titulosTk(i)
-       ubi1=InStr(nombre,"[")
-       ubi2=InStr(nombre,"]")
        ubi3=InStr(nombre,".rtk")
 ''       ubi4=InStr(nombre,".roll")
-       If ubi1 >0 And ubi2 > 0 Or ubi3 > 0 Then 'graba un track como track
+       If  ubi3 > 0 Then 'graba un track como track
        ' pero como las modificaciones estan en ROLL debo usar GrabarrollaTrack
   Print #1,"Grabar Cancion   rtk actual   ",ntk
 'SI CARGUE UN RTK DESDE ARCHIVO SIEMPRE USO ROLL A  TRACK PORQUE

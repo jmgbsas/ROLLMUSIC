@@ -210,12 +210,23 @@ GadgetToolTip(BTN_ROLL_EJECUTAR,"EJECUTAR cancion Tracks, o Grabacion midi Roll 
 ButtonImageGadget(BTN_ROLL_GRABAR_MIDI, 180,12,25,25,IMGG, FB_BS_PUSHLIKE or BS_BITMAP  )
 GadgetToolTip(BTN_ROLL_GRABAR_MIDI,"No Funcional Todavia en Ticks:GRABAR midi en Roll")
 
-ButtonGadget(BTN_METRONOMO,384,690,40,40,"M")
+ButtonGadget(BTN_METRONOMO,370,690,40,40,"M")
+ButtonGadget(BTN_MAS,410,690,20,20,"+")
+SetGadgetFont(BTN_MAS,CINT(LoadFont("consolas bold",15)))
+ButtonGadget(BTN_MENOS,410,710,20,20,"-")
+SetGadgetFont(BTN_MENOS,CINT(LoadFont("consolas bold",15)))
 
+TEXTGADGET(TEXT_GADGET,370,730,40,20,"" )
+SetGadgetText (TEXT_GADGET,Str(tiempoPatron))
+SetGadgetFont(TEXT_GADGET,CINT(LoadFont("consolas bold",12)))
 
+'-------------------------------------------
+
+'-------------------------------------------
 
 GadgetToolTip(BTN_METRONOMO,"METRONOMO LIBRE ON/OFF")
 SetGadgetFont(BTN_METRONOMO,CINT(LoadFont("consolas bold",15)))
+
  'rbparar = RadioButton_New( 450 , 10, 40, 20, "P",BS_LEFTTEXT , hwndC) '65
  'rbgrabar =RadioButton_New( 500 , 10, 40, 20, "G",, hwndC) ' 80
 
@@ -317,13 +328,13 @@ MenuItem(1007,MenName1, "3.0 Grabar Cancion")
 'MenuItem(1009,MenName1, "Na.Exportar Cancion a midi")
 Menubar(MenName1)
 MenName20=OpenSubmenu(MenName1,"4.0) MANEJO DE PISTAS")
-MenuItem(1010,MenName20, "4.0 Cargar una Pista (rtk) externa en Cancion")
+MenuItem(1010,MenName20, "4.0 Cargar una Pista (rtk) externa en Cancion") 'OK
 MenuItem(1011,MenName20, "4.1 Grabar una Pista de la Cancion con modificaciones, carga pista si no hubiera cargada")
-MenuItem(1012,MenName20, "4.2 Copia una pista a otra  nueva en cancion")
+MenuItem(1012,MenName20, "4.2 Copia una pista a otra  nueva en cancion") 'OK
 'MenuItem(1013,MenName1, "Na.Exportar Pista a midi")
-MenuItem(1014,MenName20, "4.3 Grabar una Pista rtk a roll TrackaRoll")
-MenuItem(10075,MenName20,"4.4 Cargar Pista (rtk o roll) en Roll aislado ")
-
+MenuItem(1014,MenName20, "4.3 Grabar una Pista rtk a roll TrackaRoll") 'OK
+MenuItem(10075,MenName20,"4.4 Cargar Pista (rtk o roll) en Roll aislado ") 'OK
+MenuItem(10076,MenName20,"4.5 RENOMBRAR una Pista en cancion") 
 Menubar(MenName1)
 
 MenName18=OpenSubmenu(MenName1, "4.5 Cargar Pista/Cancion para Exportar a midi durante Reproduccion")

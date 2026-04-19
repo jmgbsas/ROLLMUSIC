@@ -78,7 +78,7 @@ Dim Shared As Integer ContadorError=0
 On  Error GoTo errorControl
 Sub CuadroVel()
          velimg=OpenWindow("Cuadro de Tempos Clasicos ",400,100,800,400)
-         ImageGadget(IMAGE_VEL,10,10,1100,600,Load_image(".\recur\velocidades.jpg"),0,SS_BITMAP )
+         ImageGadget(IMAGE_VEL,10,10,1100,600,Load_image(ROLLDIR+"recur\velocidades.jpg"),0,SS_BITMAP )
          #Ifdef __FB_WIN64__
           SetFocus (velimg) 
          SetForegroundWindow(velimg)
@@ -99,7 +99,7 @@ Sub CuadroVel()
 End Sub
 Sub CuadroDur()
                Figimg=  OpenWindow("Duraciones de Figuras y sus Teclas",200,50,1300,900  )
-               ImageGadget(IMAGE_FIG1,10,10,1100,800,Load_image(".\recur\FIGURAS.jpg"))
+               ImageGadget(IMAGE_FIG1,10,10,1100,800,Load_image(ROLLDIR+"recur\FIGURAS.jpg"))
                #Ifdef __FB_WIN64__
                 SetFocus (Figimg) 
                SetForegroundWindow(Figimg)
@@ -119,7 +119,7 @@ Sub CuadroDur()
 End Sub 
 Sub CuadroVol()
                FigVol=  OpenWindow("Volumen tipicos en partituras ",800,100,400,600  )
-               ImageGadget(IMAGE_FIG2,10,10,1100,800,Load_image(".\recur\VOLUMEN.jpg"))
+               ImageGadget(IMAGE_FIG2,10,10,1100,800,Load_image(ROLLDIR+"recur\VOLUMEN.jpg"))
                #Ifdef __FB_WIN64__
                 SetFocus (FigVol) 
                SetForegroundWindow(FigVol)
@@ -141,7 +141,7 @@ End Sub
 '---------
 Sub CuadroKey()
                FigKey =  OpenWindow("Teclas Rapidas, keystroke  ",800,100,600,600  )
-               ImageGadget(IMAGE_FIG3,10,10,1100,800,Load_image(".\recur\TECLAS_RAPIDAS.jpg"))
+               ImageGadget(IMAGE_FIG3,10,10,1100,800,Load_image(ROLLDIR+"recur\TECLAS_RAPIDAS.jpg"))
                #Ifdef __FB_WIN64__
                 SetFocus (FigKey) 
                SetForegroundWindow(FigKey)
@@ -162,7 +162,7 @@ Sub CuadroKey()
 End Sub
 Sub CuadroPer()
                FigPer=  OpenWindow("Teclas Rapidas, keystroke  ",600,100,900,600  )
-               ImageGadget(IMAGE_FIGPER,10,10,1100,800,Load_image(".\recur\PERCUSION.jpg"))
+               ImageGadget(IMAGE_FIGPER,10,10,1100,800,Load_image(ROLLDIR+"recur\PERCUSION.jpg"))
                #Ifdef __FB_WIN64__
                 SetFocus (FigPer) 
                SetForegroundWindow(FigPer)
@@ -330,22 +330,6 @@ NombrePista=limpio
 
 End Sub
 '
-Function sacarNtk (item As String) As Integer
-Print #1," sacarNtk string que llega nombre pista ";item
-Dim As Integer ubi1=0,ubi2=0
- ubi1 = InStr(item,"[")
- ubi2 = InStr (item,"]")
-If ubi1=0 Then
- ubi1 = InStr(item,"(")
-EndIf
-If ubi2=0 Then
- ubi2 = InStr(item,")")
-EndIf
-
- sacarntk=CInt(Mid(item,ubi1+1,ubi2-ubi1-1))
- 
-End Function
-'
 Function sacarExtension(file As string) As String
  Dim ubi1 As Integer
  ubi1=InStrRev (file,".")
@@ -356,9 +340,10 @@ End Function
 '
 Sub copiarATemp ( titulo As String, pista As String)
 Dim As String destino
-Dim As integer barra1
+Dim As integer barra1, tam
+tam=Len(NombreCancion)
 barra1=InStrRev(NombreCancion,"\")
-If barra1 > 0 Then
+If barra1 > 0 And tam=barra1 Then
    destino=NombreCancion+"Temp\"+pista
 Else
    destino=NombreCancion+"\Temp\"+pista

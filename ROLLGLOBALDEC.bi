@@ -19,9 +19,8 @@ Dim Shared As Integer cuentauxiliares=0
 'Declare Sub reproducir()
 Declare Sub CrearDirCancion (ByRef NombreCancion As string)
 Declare Sub cargarDirectorioCancion (ByRef NombreCancion As string)
-Declare Function sacarNtk (cadena As String) As Integer
+''Declare Function sacarNtk (cadena As String) As Integer
 Declare Function sacarExtension(file As string) As String
-Declare Function doscifras (NTK As Integer) As String
 Declare Sub copiarATemp ( titulo As String, pista As String)
 Declare Sub GrabarCancion()
 Declare Sub BorrarPista (titulo As String)
@@ -120,6 +119,9 @@ Const BTN_EJEC_ECO = 38
 Const BTN_ROLL_CORO =39
 Const BTN_EJEC_CORO = 40
 Const BTN_METRONOMO = 41
+Const TEXT_GADGET = 42
+Const BTN_MAS = 43
+Const BTN_MENOS = 44
 
 Const HABILITAR = TRUE
 Const DESHABILITAR = FALSE 
@@ -676,6 +678,7 @@ Type rangoOct Field=1
  As UByte   pitchbend
  As UByte   orden
  As UByte   solo    ' 1 -si lo marcamos como solo para reproduccion independiente
+ As UByte   versionEjec
 End Type
 
 Dim Shared  As rangoOct pmTk (), pmEj ()

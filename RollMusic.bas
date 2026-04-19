@@ -60,7 +60,12 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.370 FIX PATCH BOTON INFERIOR ROLL EN CANCION CANCELABA, FIX TRACK A ROLL EN GRAFICO "
+nroversion="0.374 Fix Delete de Pista Cancion, Lineas de compas on/off"
+' hace delete de pista de cancion bien por los dos lados por menu o dando
+' delete sobre la pista. solo que creapenta a veces daeror fijarse porque!!!
+' 0.373 METRONOMO AJUSTES CON BOTONES +/-
+' SEGUIR PROBANDO LOS CAMBIOS DE 372 AL SACAR NUMEROS DE PISTAS 
+' FIX F2/F3 ACHICABA LA PANTALLA UTIL A MAXPOS.
 ' FIX AGREGAR UN RTK A CANCION 
 ' FIX AL CLEVANTAR UN ROLL GRABADO EN 4 A 8 OCTAVAS A 3 A 8 OCTAVAS DEFORMA LA MELODIA
 ' FALTARIA HACER LO MISMO PARA *.ROLL Y RTK LOS LEVANTA PERO HAY QUE DARLE PLAY
@@ -263,7 +268,9 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
      Resetear () ' NO SESETEA EL 0 VA DE 1 A 32
 
       CargarPistasEnCancion ()
+      clickpista=SI
       cargariniciotxt(NombreCancion, CANCION)
+      RecalCompas(ritmo)
  '   Print #1,"CARGAR PISTAS cargacancion = ",cargaCancion 
 ''     CANCIONCARGADA=TRUE
      ROLLCARGADO=FALSE
@@ -512,7 +519,7 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
                       ' agregamos el orden
                      EndIf
                      ntkp=ntoca 
-                     AddListBoxItem(PISTASEJECUCIONES, "("+ doscifras(ntoca)+")"+tocaparam(ntoca).nombre,ntoca-1)
+                     AddListBoxItem(PISTASEJECUCIONES, tocaparam(ntoca).nombre,ntoca-1)
                      tocatope=ntoca 
                      If nombrePatron > "" And nroCompasesPatron > 0 Then
                         pmEj(ntoca).MaxPos=nroCompasesPatron  * 384 '' jjjjj
@@ -534,9 +541,9 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
                               NombreCancion=Mid(NombreCancion,1, ls-1)
                          EndIf
                          Print #1,"CHECK GRAB NOMBRECANCION ",NombreCancion
-                         TitulosEj(ntoca)=NombreCancion+"\("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
+                         TitulosEj(ntoca)=NombreCancion+"\" + tocaparam(ntoca).nombre+".ejec"
                   else
-                         TitulosEj(ntoca)="("+doscifras(ntoca)+")"+ tocaparam(ntoca).nombre+".ejec"
+                         TitulosEj(ntoca)= tocaparam(ntoca).nombre+".ejec"
                   EndIf
               EndIf
 

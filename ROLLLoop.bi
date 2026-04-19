@@ -1153,11 +1153,12 @@ If instancia = ARG7_NOMBRECANCION  Then ' 04-03-2024 LOGRE LEVANTAR CANCION EN U
 '' carga de cancion porlinea de comandos
     cargacancion=CARGAR_NO_PUEDE_DIBUJAR 
     CargarPistasEnCancion ()
+    clickpista=SI  
     cargariniciotxt(NombreCancion, CANCION)
     instancia=ARG107_FICTICIO  ' ficticio para que entre al if de TAB pero  que no entre en el resto ni aca
     param.encancion=CON_CANCION
     RecalCompas(ritmo) 
-    clickpista=SI 'abre tab una sola vez seposiciona en psita 1  
+  
  EndIf
 EndIf
  
@@ -1209,7 +1210,8 @@ Else
           If s9 = 1 Then   s9=0 EndIf
           If s10 = 1 Then   s10=0 EndIf
           If s11 = 1 Then  Sleep 500:s11=0 EndIf
-          If suenaunavez=1 Then Sleep 400:suenaunavez=0 EndIf 
+          If suenaunavez=1 Then Sleep 400:suenaunavez=0 EndIf
+          If canRecal=1 Then Sleep 400:canRecal=0 EndIf  
           inc_Penta = Int((ALTO -1) /40) - deltaip
 ' ----------------------------------------------------------------------------
       '''    cairo_set_antialias (c, CAIRO_ANTIALIAS_DEFAULT) 'hace mas lental cosa pero nomeafecta
@@ -1303,7 +1305,7 @@ Do  ' do nro 2
 ''#define THREAD_PRIORITY_IDLE           // 1 or 16
 
 ''''If MultiKey(SC_TAB) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CANCIONCARGADA   Or clickpista=1   Then 'And playb=NO
-If pulsotab=1 And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CANCIONCARGADA   Or clickpista=1   Then 
+If (pulsotab=1 Or pulsotab =-1) And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CANCIONCARGADA   Or clickpista=1   Then 
    thread3= threadcall TABTAB() '''GetCurrentThread()
 ' - 1: lowest
 '  - between 2 and 15: below normal 
@@ -1311,10 +1313,10 @@ If pulsotab=1 And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CA
 '  - between 17 and 30: above normal
 '  - 31: highest
 '  - 32: time critical
-pulsotab=0
- SetThreadPriority(thread3 , 32 ) ''THREAD_PRIORITY_HIGHEST ) 
-
+   clickpista=0
+   SetThreadPriority(thread3 , 32 ) ''THREAD_PRIORITY_HIGHEST ) 
    ThreadWait thread3
+   pulsotab=0 
    Exit Do
 EndIf
 
@@ -2853,14 +2855,6 @@ EndIf
 
 EndIf  ' COMEDIT<>LECTURA para ingreso de notas 
 
-
-If MultiKey(SC_BACKSPACE) Then ' sin uso por ahora. 
-''podria ser otra forma de colocar 190,190 en lectura ¿? y
-' ir borrando columnas dejandolas vacias con solo 190,190 al ser eliminada al grabar.
-' y cargar. 
- backspace=1
-
-EndIf
 ' ----------------------FIN NOTAS-------------------------
 
 ' ----------INGRESO DE DURACIONES DE NOTAS -------------
@@ -2993,10 +2987,19 @@ If MultiKey(SC_F1) Then
  ' ELIMINADO NOUSAR ESE METODO, USAREMOS CAIRO...(para todo veo ....)
 EndIf
 '
-If MultiKey(SC_R) Then ' recalculo de barras compas a veces no anda ¿? 
+If MultiKey(SC_R) And canRecal=0 Then ' recalculo de barras compas a veces no anda ¿? 
  '''ReDim compas(1 To MaxPos)
 If ritmo=0 Then ritmo=4 EndIf
- RecalCompas(ritmo) ' jmg 01-04-21  
+ RecalCompas(ritmo) ' jmg 01-04-21
+canRecal=1  
+Exit Do
+EndIf
+
+If MultiKey(SC_ALT) And MultiKey(SC_R) And canRecal=1 Then ' recalculo de barras compas a veces no anda ¿? 
+
+ ritmo=0 
+ RecalCompas(0) ' jmg 01-04-21  
+ 
 Exit Do
 EndIf
 
@@ -4105,7 +4108,10 @@ If e.scancode = SC_TAB  And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTIC
 ''   ThreadWait thread3
    Exit Do
 
-End If        
+End If
+If e.scancode=SC_BACKSPACE Then
+   pulsotab= -1
+EndIf        
 /'   If e.scancode = SC_P   Then ' 25 anda mejor q con multikey
       PARAR_PLAY_MANUAL=SI
       PARAR_PLAY_EJEC=SI
@@ -4411,8 +4417,8 @@ If e.scancode= SC_F2  And lockfont=0 Then
    gap2= (914 * gap1) /1000 ' 74 default
    gap3= (519 * gap1) /1000 ' 42 default
 
-   '''NroCol =  (ANCHO / anchofig ) + 4
-   NroCol =  (MaxPos / anchofig ) + 4
+   NroCol =  (ANCHO / anchofig ) + 4
+   
  
    lockfont=1
    nanchofig=anchofig
@@ -4426,8 +4432,8 @@ If e.scancode= SC_F3  And lockfont=0 Then
    gap2= (914 * gap1) /1000 ' 74 default
    gap3= (519 * gap1) /1000 ' 42 default
    
-''   NroCol =  (ANCHO / anchofig ) + 4
-   NroCol =  (MaxPos / anchofig ) + 4
+   NroCol =  (ANCHO / anchofig ) + 4
+
    lockfont=1
    nanchofig=anchofig
    ANCHO3div4 = ANCHO *3 / 4
@@ -4438,6 +4444,9 @@ EndIf
 '=============PULSAR MUCHO TIEMPO ======= REPEAT ==================================================
 ' **********************************************************************************
   Case EVENT_KEY_REPEAT
+If e.scancode=SC_BACKSPACE Then
+   pulsotab= -1
+EndIf        
 
    If e.scancode = 72  And trasponer= 0 Then ' <======= SC_UP
       deltaz=1
@@ -7142,19 +7151,23 @@ Sub TABTAB ()
    print #1,"--TAB "
    nota=0
    dur=0
+   If ntk=0 Then ntk=1
+   maxpos=pmtk(ntk).maxpos
    print #1,"TAB1- NTK,MAXPOS, pmtk(ntk).maxpos  clickpista ", ntk,maxpos,pmTK(ntk).maxpos, clickpista
    If clickpista=1 Then ''cancion
-     Print #1,"no incrementea ntk, EL NTK SALE DEL NOMBRE  DE LA PISTA"
+     Print #1,"no incrementea ntk"
      clickpista=0
      ntkTAB=ntk ' UN NTK QUE VIENE DEL CLICK EN UNAPISTA DE PISTAROLL
      nombre=titulosTk(ntk)
     Print #1,"TAB2- ntk, ntkTAB, nombre, POR CLICK PISTA ", ntk,ntkTAB, nombre 
    Else
-     If ntk=Tope Then ntk=0 End If
-     ntk = ntk + 1 ' si recien se cargo ntk=0 se incrementa 
+     If ntk=Tope And pulsotab=1 Then ntk=0 End If
+     ntk = ntk + pulsotab ' si recien se cargo ntk=0 se incrementa 
+     If ntk < 1 And pulsotab=-1 Then ntk=Tope End If
      ntkTAB=ntk
      nombre= titulosTk(ntk)
      Print #1,"TAB3- Incrementa ntk, nombre ", ntk ,nombre
+
    EndIf
  
   If nombre > "" Then
@@ -7164,8 +7177,13 @@ Sub TABTAB ()
  '    print #1,"--------------------------"
    EndIf 
   If ntk > 32 Or ntk > tope Then
-     ntk=0 ' el proximo tab  dara ntk=1 es como recien cargada 
+     ntk=1 ' el proximo tab  dara ntk=1 es como recien cargada 
      print #1,"TAB4- NTK=0 empieza el circulo,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
+     Exit SUB      
+   EndIf
+  If ntk < 1   Then
+     ntk=Tope ' el proximo tab  dara ntk=1 es como recien cargada 
+     print #1,"TAB4- NTK=0 empieza el circulo negativo ,MAXPOS, pmtk(ntk).maxpos  ", ntk,maxpos,pmTK(ntk).maxpos
      Exit SUB      
    EndIf
    
@@ -7173,9 +7191,15 @@ Sub TABTAB ()
 ' evita leer track vacios   
    If nombre=""  Then ' evita revisar track vacios
      Do While nombre=""
-        ntk=ntk+1
-        If ntk>32 Or ntk > tope Then
+        ntk=ntk+pulsotab
+        If ntk > 32 Or ntk > tope Then
            ntk=1
+           nombre= titulosTk(ntk)
+  print #1,"TAB5 - NTK, pmtk(ntk).maxpos  ", ntk,pmTK(ntk).maxpos    
+           Exit Do
+        EndIf
+        If ntk < 1  Then
+           ntk=Tope
            nombre= titulosTk(ntk)
   print #1,"TAB5 - NTK, pmtk(ntk).maxpos  ", ntk,pmTK(ntk).maxpos    
            Exit Do
@@ -7183,7 +7207,7 @@ Sub TABTAB ()
  
         nombre= titulosTk(ntk)
      Loop
-     ntkTAB=ntk  
+     ntkTAB=ntk  ' cuadnpo se borra un track se bora este? 
   EndIf
 
      posicion=1 ' 14.-03-2022

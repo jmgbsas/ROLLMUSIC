@@ -1,5 +1,5 @@
 
-Sub LLAMA_GRABAR_ROLL(RESPALDO As STRING)
+Sub LLAMA_GRABAR_ROLL(RESPALDO As String)
                '      Print #1," nombre,  ANTES DE LLAMAR GRABARROLL " ;nombre
                      Dim  As Integer errorgrabr=3,intentos=0,length=0
 ' MODELITO DE MANEJO DE ERROR ESTUPIDO DE  ARCHIVO PELOTUDO JAJAJ 
@@ -104,6 +104,7 @@ Sub CTRL100610061 (hMessages As hmenu ,  CALLDESDE As STRING )
                   ntk=0
                   If Tope >0 Then ' tenia datos se supone q pudo abrir Roll y abrirRoll=0
                      CargarPistasEnCancion ()
+                     clickpista=SI
                      cargariniciotxt(NombreCancion, CANCION)
                      RecalCompas(ritmo)
                      abrirRoll=EVITAR_LLAMAR_ROLLLOOP_DE_NUEVO
@@ -159,6 +160,7 @@ Print #1,"QUE PASA QUE NO SIGUE 1"
                     ' A FUNCIONES DA RETARDO PEQUEÑO PERO RETARDO EN FIN...ACA OPTIMIZAMOS
                   'VELOCIDAD ANTE ESTRUCTURACION BONITA JAJAJA 
                   CANCIONCARGADA = TRUE
+                  RecalCompas(ritmo)
                   cargariniciotxt(NombreCancion, CANCION)
                   clickpista=SI 'abre tab una sola vez seposiciona en psita 1
                   If tope=0 Then
@@ -720,13 +722,7 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
                
                   EntrarNombrePista(NombrePista,hwndC )
                EndIf
-               'If NombrePista ="" Then
-               ' NombrePista = "["+doscifras(ntk)+"]"+ RTrim(Mid(NombreInst(instru), 1,21))
-               'Else
-                NombrePista = "["+doscifras(ntk)+"]" + NombrePista 
                 
-               'EndIf
-    '           print #1, "NombrePista en 1061",NombrePista
                AddListBoxItem(PISTASROLL, NombrePista)
                
               ' crear pista en disco 
@@ -1965,7 +1961,7 @@ GrabarMidiIn(pgmidi,pis)  ' POR 1015 comprimir listas
 
 Next pis
 Dim comando As String
-comando="del " + DirEjecSinBarra + "\"+ "(" + doscifras(ntoca) + ")"+tocaparam(ntoca).nombre
+comando="del " + DirEjecSinBarra + "\"+tocaparam(ntoca).nombre
 Print #1,"comando borrar archivo ";comando
 Shell comando
 Sleep 100
