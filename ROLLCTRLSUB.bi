@@ -1,7 +1,7 @@
 
-Sub LLAMA_GRABAR_ROLL(RESPALDO As String)
+Sub LLAMA_GRABAR_ROLL(RESPALDO As String, ByRef intentos As integer)
                '      Print #1," nombre,  ANTES DE LLAMAR GRABARROLL " ;nombre
-                     Dim  As Integer errorgrabr=3,intentos=0,length=0
+                     Dim  As Integer errorgrabr=3,length=0
 ' MODELITO DE MANEJO DE ERROR ESTUPIDO DE  ARCHIVO PELOTUDO JAJAJ 
 'en general requiere dos intentos para grabar, sino deja el archivo vacio un plomo de mierda
 ' el errorgrabar no sirve de nada porque puede venir en 0 pero el archivo vacio
@@ -41,9 +41,11 @@ Sub CTRL1003 ()
    EndIf
 nombre=nombreg
 '' GrabarRoll()
-   LLAMA_GRABAR_ROLL("")
+   If intentos=0 Then
+      LLAMA_GRABAR_ROLL("",intentos)
+   EndIf
   Sleep 1000,1 
-
+   intentos=0
 End Sub
 
 Sub CTRL10031 ()
@@ -59,8 +61,11 @@ Sub CTRL10031 ()
       EndIf
    EndIf
    ''''GrabarRoll()
- LLAMA_GRABAR_ROLL("")
-   Sleep 1000,1 
+If intentos=0 Then
+ LLAMA_GRABAR_ROLL("",intentos)
+EndIf
+    Sleep 1000,1
+ intentos=0
 End Sub
 
 Sub CTRL100610061 (hMessages As hmenu ,  CALLDESDE As STRING )
@@ -614,8 +619,11 @@ Sub CTRL1040 () ' <========== seleccion de instrumento por orden Alfabetico
                   Print #1," nombre, nombreg ANTES DE LLAMAR GRABARROLL " ;nombre,nombreg  
                    
                  ''''GrabarRoll () ' graba roll en edicion, borro todo el undo¿?
-                 LLAMA_GRABAR_ROLL("")
+                 If intentos=0 Then
+                 LLAMA_GRABAR_ROLL("",intentos)
+                 EndIf  
                  Sleep 1000,1 
+                 intentos=0  
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
                 EndIf  
               EndIf  

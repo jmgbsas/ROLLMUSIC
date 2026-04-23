@@ -1002,11 +1002,20 @@ If i1<= NA-13 Then
             NroEvento=NroEventoPista(1)
             ''Print #1,"noteon CUByte(Notapiano),vel,canal,portsal  ";CUByte(Notapiano),vel,canal,portsal
             noteon CUByte(Notapiano),vel,canal,portsal,1,NroEvento
+''''''''CONTROL METRONOMO SOLO debe DISPARAR UNA VEZ si ya disparo antes por otra osa no lo hara
+    If metronomoPistas_si=3 And disparo=0 Then
+        terminar_metronomo=0
+        retrasoMetronomo=retrasoMetronomoRoll
+        disparo=1 
+        threadmetronomo = ThreadCall metronomo()
+    EndIf
+
+''''''''
+
        EndIf
        If Roll.trk(jply, i1).onoff= 1 Then
             NroEventoPista(1)= NroEventoPista(1) +1
             NroEvento=NroEventoPista(1)
-
 '''Print #1,"noteoff CUByte(Notapiano),canal,portsal,1 "; CUByte(Notapiano),canal,portsal
            noteoff CUByte(Notapiano),vel/2,canal,portsal,1,NroEvento
       EndIf    
@@ -1086,7 +1095,6 @@ Next jply
 ' POR ESO DEJAMOS SONAR LA NOTA LA 2*DURACION QUE TIENE dura
 '' reldur(dura) 'la dduracion  a t=60 usamos eso a t=60 
 duracion (Timer , 2* reldur(dura))
-
 posicion=comienzo
 '======================
 ' IF hay loop de repeticion se detecta en la posicion final Then
@@ -1143,7 +1151,10 @@ If MIDIFILEONOFF = HABILITAR Then
 
 EndIf
 VerMenu=1
-Sleep 100,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion
+terminar_metronomo=1
+disparo=0
+
+''Sleep 10,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion
 
 trabaspace=0
 
@@ -3332,6 +3343,24 @@ Next i
  Next I
 
 End Sub
+'-------
+Function convA5cifras( velMetronomoIzq As integer) As String
+ ' 100 es 32757,  x*32767/100
+Dim As Integer ajuste , n1
+Dim As String cifras
+  ajuste = (velMetronomoIzq * 32767)/100
+  cifras=Str(ajuste)
+  n1=Len (cifras)
+  Do While n1< 5
+   If n1< 5 Then
+     cifras="0"+cifras
+     n1=Len (cifras)
+   EndIf
+  Loop
+ convA5cifras=cifras
+Print #1,"cifras ",cifras
+
+End Function
 '---------------
 Sub soundcall
 ''PlaySound(".\recur\RIMSHOT.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
@@ -3339,17 +3368,31 @@ Sub soundcall
 ' el metronomo deja de oirse porque da error abre el mismo port y se congela
 ' usamos midi para el metronomo y listo se fini
 ' con otro playmovie pasa lo mismo
-' chau playsound ,,,una bosta... 
+' 
 SetFocus (hwndMEDIA)
 SetForegroundWindow(hwndMEDIA)
-
   If mov8 > 0  And  MOV_FLAG =1 Then 
     noteon(80,20,0,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
     noteoff(80,0, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
   Else
     If MOV_FLAG = 0 Then
-     noteon(80,20,0,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
-     noteoff(80,0, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
+     If CPlay=NO Or Playb=NO Then
+       Sleep retrasoMetronomo ''DEPENDE DE LA PC???
+     EndIf
+     'noteon(80,30,0,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
+     'noteoff(80,20, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
+
+''     OTRA FORMA mas piola, el maximo volumen por canal es 32767 50%??
+
+''Dim As String VolTotal=VolIzq + VolDer
+''    Print #1,"VolTotal asi anda mas o menos no es correcto pero...funca ja ",VolTotal
+Dim As uinteger volhder =  velMetronomoDer*32767/100
+Dim As uinteger volhizq =  velMetronomoIzq*32767/100
+
+ waveoutSetVolume(0, CInt("&H" + Hex(volhDer) + Hex(volhIzq)))
+  '  waveOutSetVolume(0, ValInt(VolTotal))   ''&H7FFF7FFF)
+        
+    PlaySound(".\recur\RimShot.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
     EndIf
   EndIf
   
@@ -3360,11 +3403,13 @@ Dim  As Integer pista , k
 ' si usamos PlaySound o Playmovie la  cosa anda igual al reproducir un mp3 o wav
 ' el metronomo deja de andar .....cuac
 ''Dim As Integer Movie
-
+Sleep retrasoMetronomo ' 330 en mi PC se sincronizan metronomo  e inicio de la primer nota
+' pero en otras compus??? probare en otra y sino debere poner un ajuste
+' para que el usuario ajuste este valor
 Do
    threadsound = threadCall soundcall
 '' usamos midi y listo 
-
+   
    '''ThreadWait threadsound
 '' el sonido rimshot no se puede usar si levanto una wav en media
 '' usar otro loadmovie pude cancelar el programa y si uso playsound
@@ -3372,6 +3417,7 @@ Do
 '' que usamos noteon noteoff y a la mierda con rimshot
 ''Movie=LoadMovie(0,".\recur\RIMSHOT.wav",100,100,320,240)
 ''PlayMovie(Movie)
+     
      duracion(Timer, (60/(tiempoPatron)) / FactortiempoPatron) 'jmgtiempo
      If terminar_metronomo=1 Then
         terminar_metronomo=0
@@ -3381,12 +3427,12 @@ Do
       
 
 Loop  
- '''PlaySound(NULL, NULL, 0)
+ PlaySound(NULL, NULL, 0)
  If Movie Then
    FreeMovie(Movie)
  EndIf
- threadDetach (threadsound )
- threadDetach (threadmetronomo)
+'' threadDetach (threadsound )
+'' threadDetach (threadmetronomo)
 ''--------------otro metodo con windows player ???
 ''Add a reference to C:\Windows\System32\wmp.dll
 'player1.URL = *pp

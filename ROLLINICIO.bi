@@ -622,7 +622,8 @@ gap3= (519 * gap1) /1000 ' 42 default
 print #1,"gap1 ",gap1
 '---------
  
-Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig,sVerCifradoAcordes
+Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig,_ 
+ sVerCifradoAcordes, sretrasoMetronomoCan,sretrasoMetronomoRoll
 Dim openfalla As integer
 ffini=3
  If  Open (ROLLDIR + "RollMusic.ini" For Input As #ffini) <> 0 Then
@@ -640,7 +641,8 @@ Line Input #ffini, sdeltaip
 Line Input #ffini, sVerEscalasAuxiliares
 Line Input #ffini, sanchofig
 Line Input #ffini, sVerCifradoAcordes
-
+Line Input #ffini, sretrasoMetronomoCan
+Line Input #ffini, sretrasoMetronomoRoll
 'Print #1,"sfont, smxold, smyold,sANCHO,sALTO..  ",sfont, smxold, smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
 
 CLOSE ffini
@@ -657,6 +659,9 @@ ndeltaip=ValInt(sdeltaip)
 nVerEscalasAuxiliares=ValInt(sVerEscalasAuxiliares)
 nanchofig =CSng(sanchofig)
 nVerCifradoAcordes=ValInt(sVerCifradoAcordes)
+nretrasoMetronomoCan=ValInt(sretrasoMetronomoCan)
+nretrasoMetronomoRoll=ValInt(sretrasoMetronomoRoll)
+
 If nfont > 20 Or nfont < 10 Then
    nfont = 18
 EndIf
@@ -677,6 +682,14 @@ EndIf
 If ndeltaip <> 0 Then
    inc_Penta=ndeltaip
 EndIf
+If  nretrasoMetronomoCan <> 0 Then
+    retrasoMetronomoCan= nretrasoMetronomoCan
+      
+EndIf
+If  nretrasoMetronomoRoll <> 0 Then
+    retrasoMetronomoRoll= nretrasoMetronomoRoll
+EndIf
+
 If nanchofig <> 0 Then
    anchofig=nanchofig
 

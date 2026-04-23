@@ -751,7 +751,9 @@ Print #1, "2 instru en cargar track ";instru
 Dim mit As aUshort
 mit.tp1 = graba4.pan
 mit.tp2  = graba4.pb
-tiempoPatron=mit.ST
+tiempoPatron=CInt(mit.ST)
+Print #1,"CARGARtRACK TIEMPO PATRON ",tiempoPAtron
+SetGadgetText (TEXT_GADGET,Str(tiempoPatron)) 
 pmTk(ntk).tiempopatron=tiempoPatron
      If tiempoPatron = 0 Then 
         tiempoPatron = 60
@@ -2787,11 +2789,13 @@ Print #1,"TickUsuario "; tickUsuario
 ''" ---------------000000000000000000000-----------------"
 ''//////////////// L O O P E O  JPLY HORIZONTAL ////////////////////////////////////////////////
 ''" ---------------000000000000000000000-----------------"
-For jply=comienzo To final
+
+
+ For jply=comienzo To final
 '  print #1," ---------------000000000000000000000-----------------"
 '  print #1," [[[PCA 0:]]]---START--PASO:[";jply;"] ----------------"
 '  print #1," ---------------000000000000000000000-----------------"
-  
+
 ' cambio de inst para la pista, podria poner mas de un instrumento por pista
 ' o por cada nota.. 
 ' VER DE PONER LOS INSTRUMENTOS EN TRACK
@@ -2812,7 +2816,6 @@ kNroCol= Int(jply/NroCol)
      posicion=jply
      curpos=0
    EndIf
-
 
  '  Print #1," cancon jply velpos "; jply, velpos
 ''' /////////////////////// L O O P DE P I S T A S /////////////////////////////////// 
@@ -2930,7 +2933,7 @@ kNroCol= Int(jply/NroCol)
                        vel=velpos
                      EndIf   
                  End select 
-  
+ 
             Else
                alloff( pmTk(pis).canalsalida,CInt(pmTk(pis).portout) )
                vel=0
@@ -2938,9 +2941,21 @@ kNroCol= Int(jply/NroCol)
          EndIf
 ' llegamos al final de la Columna
          If Track(pis).trk(jply,i1).onoff =2 Then
+
   '          NroEventoPista(pis) = NroEventoPista(pis) + 1 por ahora sacamos es pa volcar midi a disco
   '          NroEvento=NroEventoPista(pis)
+
             noteon CUByte(Notapiano),vel,canal,portsal,pis,NroEvento
+''''''''CONTROL METRONOMO SOLO debe DISPARAR UNA VEZ
+    If metronomoPistas_si=3 And disparo=0 Then
+        retrasoMetronomo=retrasoMetronomoCan
+        terminar_metronomo=0
+        disparo=1 
+        threadmetronomo = ThreadCall metronomo()
+    EndIf
+
+''''''''
+
          EndIf
          If Track(pis).trk(jply,i1).onoff= 1 Then
   '          NroEventoPista(pis)=NroEventoPista(pis) +1
@@ -3023,7 +3038,10 @@ kNroCol= Int(jply/NroCol)
   EndIf
   Sleep 1,1 ' para que corranmas de un thread
 
-Next jply
+ Next jply
+ 
+disparo=0
+terminar_metronomo=1 ' termina metrono si estaba andando
 '/////////////////////////////F I N  L O O P //////////////////
 If MIDIFILEONOFF = HABILITAR Then 
     Dim As Double TiempoAcumNew

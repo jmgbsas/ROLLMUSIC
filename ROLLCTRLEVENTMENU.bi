@@ -13,7 +13,7 @@
               StatusBarGadget(BARRA_DE_ESTADO,"1.0 ROLL GRAFICO NO DEBE ESTAR LEVANTADO, SI LO ESTÁ CIERRE PRIMERO EL GRAFICO BUSQUE LA CARPETA Y ACEPTE" )
 
               CTRL100610061 (hMessages ,  "" )
- 
+              SetGadgetText (TEXT_GADGET,Str(tiempoPatron))
 StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIONES DE TECLADO CON MANUALES, SE CONGELARA LA SECUENCIA" )           
              If abrirRoll=NO_CARGAR And NombreCancion > ""  Then
                 abrirRoll=CARGAR
@@ -33,11 +33,12 @@ StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIO
    Print #1," CASE 10062 abrirRoll=NO_CARGAR_ROLL And NombreCancion > ", abrirRoll, NombreCancion
 
            CTRL10062 (hmessages )
-
+           SetGadgetText (TEXT_GADGET,Str(tiempoPatron)) 
            Case 10063 ' CARGAR CANCION EN UN ROLL SIN VENTANA DE CONTROL
 ' HAY QUE PASA EL NOMBRE DEL DIRECTORIO NADA MAS,,,Y EL PATH
 ' era la 1063 antigua
-            CTRL10063 ()  
+            CTRL10063 ()
+SetGadgetText (TEXT_GADGET,Str(tiempoPatron))  
 ' ----------------------------------------------------------------------
 ' ==> CARGAR TODO SIN GRAFICO
            Case 10064
@@ -46,7 +47,7 @@ StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIO
             NombreCancion = ""
 
             CTRL100610061 (hMessages , "10064") ' llena la global Tope y NombreCancion
-            
+            SetGadgetText (TEXT_GADGET,Str(tiempoPatron))
             Dim lugar As String
            Print #1,"NOMBREcANCION QUE LLEGA, tOPE",NombreCancion, Tope 
             If NombreCancion > "" Then
@@ -54,6 +55,7 @@ StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIO
                DirEjecSinBarra = NombreCancion
                lugar = NombreCancion +"\EJECS" 
                CTRL1016 (lugar)
+SetGadgetText (TEXT_GADGET,Str(tiempoPatron))
             Else
               Exit Select
             EndIf
@@ -66,7 +68,7 @@ StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIO
 ' voy a incorporar cargar un midi asi tengo una cancion para probar,,
 
            CTRL1007 ()
-
+           
           SetForegroundWindow(hwnd)
            Case 10075 '<======== CARGAR UNA PISTA A ROLL PARA EXPORAR A MIDI
 ' DE ESTE MODO PODEMOS ENVIAR EL NOMBRE DE LA PISTA AL ROLL AISLADO
@@ -253,8 +255,11 @@ Print #1,"usarmarcoins ", usarmarcoins
 ' RT A ROLL Y LA 2DA BIFURCA POR .ROLL Y GRABAR EL ROLL() QUE ESTARA CARGADO
 ' CON EL RACK SELECCIONADO ANTES DE GRABAR O SEA PARA GRABAR UN TRACK DE CANCION LA
 ' SELECCIONO PARA QUE SE VEA EN ROLL GRAFICO Y LO  GRABO SENCILLITO
-           LLAMA_GRABAR_ROLL("CASE1014")
+           If intentos=0 Then 
+             LLAMA_GRABAR_ROLL("CASE1014",intentos)
+           EndIf 
            Sleep 1000,1 
+           intentos=0
            SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1015 '<========== Grabar MIDI-In aca sera para grabar 
@@ -518,7 +523,10 @@ StatusBarGadget(BARRA_DE_ESTADO,"AUNQUE LA OCTAVA QUE APARECE SEA LA INDICADA VU
                 Else
                   If MaxPos > 2  And ROLLCARGADO=TRUE  Then
                     If BACKUP=SI Then
-                      LLAMA_GRABAR_ROLL("")
+                      If intentos=0 Then
+                      LLAMA_GRABAR_ROLL("",intentos)
+                      EndIf
+                      Sleep 1000 
                     EndIf
                /'      Print #1," nombre,  ANTES DE LLAMAR GRABARROLL " ;nombre
                      Dim  As Integer errorgrabr=3,intentos=0,length=0
@@ -583,7 +591,11 @@ StatusBarGadget(BARRA_DE_ESTADO,"AUNQUE LA OCTAVA QUE APARECE SEA LA INDICADA VU
                  EndIf
               Else
                 If MaxPos > 2  And ROLLCARGADO  Then
-                   LLAMA_GRABAR_ROLL("")
+                   If intentos=0 Then
+                   LLAMA_GRABAR_ROLL("",intentos)
+                   EndIf
+                   Sleep 1000
+                   intentos=0
                 EndIf  
               EndIf  
 
@@ -659,6 +671,8 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
                    Exit Do
              Else
                 If NombreCancion = ""  Then
+                  TextGadget(TEXT_METRONOMO_RETARDO,108, 750,100,20,"Retraso M "+Str(retrasoMetronomoRoll))
+                  retrasoMetronomo=retrasoMetronomoRoll
                   CTRL1060 salida
                   If salida = 1 Then 
                     salida=0
@@ -698,17 +712,32 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
 '-----------------------------------------------------------------------
           Case 1063 'generador de secuencias para dictado musical notas contiguas
            CTRL1063 () ' SE GENERA SOBRE ROLL GRAFICO 
+
+           Case 10631 '<=== Metronomo para Cancion o Pista
+             metronomo_si=0 ' evitamos que suenen los 2 metronomos ejec y pistas rtk/roll 
+             metronomoPistas_si=GetStateMenu(hmessages,10631)
+              Select Case metronomoPistas_si 
+                     Case  3
+                    metronomoPistas_si=0 
+                    SetStateMenu(hmessages,10631,0)
+                     Case 0
+                    metronomoPistas_si=3
+                    SetStateMenu(hmessages,10631,3)
+
+              End Select
+             If abrirRollCargaMidi=2 Then
+              SetForegroundWindow(hwnd)
+             EndIf            
 '-----------------------------------------------------------------------
 ' //////////////////////  P_A_T_R_O_N_E_S   ////////////////
 '-----------------------------------------------------------------------
-
-           Case 1064 ' <========= Nombre del PatrOn
+           Case 1065 ' <========= Nombre del PatrOn
          Dim As String patronPorOmision
          patronPorOmision=nombrePatron 
          nombrePatron = InputBoxJmg("Nombre del Patron Nuevo" ,"Entre un Nombre ",patronPorOmision, ES_MULTILINE + ES_AUTOVSCROLL,0  )
          
 '-----------------------------------------------------------------------
-           Case 1065 ' <========== numero de compases del patron
+           Case 1066 ' <========== numero de compases del patron
          Dim As String nroCompasesPatronOmision
          nroCompasesPatronOmision=Str(nroCompasesPatron) 
          nroCompasesPatron = CInt(InputBoxJmg("Numero de Compases del Patron" ,"Entre un Numero ",nroCompasesPatronOmision, ES_MULTILINE + ES_AUTOVSCROLL,0  ))
@@ -751,7 +780,7 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
               menuOldStr="[TEMPO]"
               thread3= ThreadCall EntrarTeclado()
               ThreadWait thread3
-               
+              SetGadgetText (TEXT_GADGET,Str(tiempoPatron)) 
              If abrirRollCargaMidi=2 Then
              SetForegroundWindow(hwnd)
              EndIf   
@@ -1033,7 +1062,11 @@ EndIf
             ' si hay nombre de archivo grabar sino no, HACE RESPALDO
                  
               '''GrabarRoll()
-              LLAMA_GRABAR_ROLL("")
+              If intentos=0 Then 
+              LLAMA_GRABAR_ROLL("",intentos)
+              EndIf
+              Sleep 1000
+              intentos=0    
        '       Print #1,"armarescla desde 1108"
               cadenaes_inicial=""
               armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)

@@ -994,10 +994,12 @@ GrabarMidiIn(pgmidi,pis)  'POR CANAL
                     GrabarRollaTrack(0,0,"grabartrkcancion")
               Else
                 If  ROLLCARGADO=TRUE Then
-                  'aca graba el roll con patch 
-                  LLAMA_GRABAR_ROLL("")
+                  'aca graba el roll con patch
+                  If intentos=0 Then 
+                  LLAMA_GRABAR_ROLL("",intentos)
+                  EndIf
                  Sleep 1000,1   
-
+                  intentos=0
                 EndIf  
               EndIf  
               carga=1 ' control de carga, anula calcompas durante la carga ,,etc
@@ -1038,8 +1040,11 @@ Print #1,"k, canalsalida  ";k, canalx
               Else
                 If  ROLLCARGADO  Then
 '                  'aca graba el roll con patch
-                 LLAMA_GRABAR_ROLL("")
+                 If intentos=0 Then
+                 LLAMA_GRABAR_ROLL("",intentos)
+                 EndIf 
                  Sleep 1000,1 
+                 intentos=0  
                  ' no el undo dolo se debe borrar al ahcer nuevo creo
                 EndIf  
               EndIf  
@@ -1102,5 +1107,77 @@ Print #1,"k, canalsalida  ";k, canalx
          tiempoPatron=tiempoPatron-1
          SetGadgetText (TEXT_GADGET,Str(tiempoPatron))   
       EndIf 
+
+      If eventnumber()= BTN_MAS_RETARDO_M Then
+         If CANCIONCARGADA=TRUE Then
+            retrasoMetronomoCan=retrasoMetronomoCan+1
+            retrasoMetronomo=retrasoMetronomoCan
+         EndIf
+         If ROLLCARGADO=TRUE Then
+            retrasoMetronomoRoll=retrasoMetronomoRoll+1
+            retrasoMetronomo=retrasoMetronomoRoll
+         EndIf
+         SetGadgetText(TEXT_METRONOMO_RETARDO,"Retraso M "+Str(retrasoMetronomo))
+      EndIf 
+
+      If eventnumber()= BTN_MENOS_RETARDO_M Then
+        If CANCIONCARGADA=TRUE Then
+           retrasoMetronomoCan=retrasoMetronomoCan-1
+           retrasoMetronomo=retrasoMetronomoCan
+        EndIf
+        If ROLLCARGADO=TRUE Then
+           retrasoMetronomoRoll=retrasoMetronomoRoll-1
+           retrasoMetronomo=retrasoMetronomoRoll
+        EndIf
+          SetGadgetText(TEXT_METRONOMO_RETARDO,"Retraso M "+Str(retrasoMetronomo))
+      EndIf 
+'---------------------------------------------------------------
+      If eventnumber()= BTN_MAS_METRO_VOL_IZQ Then
+            tic=1
+terminar_metronomo=0 
+            velMetronomoIzq=velMetronomoIzq+5
+            If velMetronomoIzq > 100 Then
+               velMetronomoIzq=100
+            EndIf
+            VolIzq=convA5cifras(velMetronomoIzq)
+            VolIzq100=Str(velMetronomoIzq)
+         TextGadget(TEXT_METRO_VOL_IZQ,280, 750,90,20,"VolM Izq "+ VolIzq100)
+      EndIf 
+      If eventnumber()= BTN_MENOS_METRO_VOL_IZQ Then
+            tic=1
+terminar_metronomo=0
+            velMetronomoIzq=velMetronomoIzq-5
+            If velMetronomoIzq < 0 Then
+               velMetronomoIzq=0
+            EndIf
+            VolIzq=convA5cifras(velMetronomoIzq)
+            VolIzq100=Str(velMetronomoIzq) 
+         TextGadget(TEXT_METRO_VOL_IZQ,280, 750,90,20,"VolM Izq "+ VolIzq100)
+      EndIf 
+'------------------------------------
+      If eventnumber()= BTN_MAS_METRO_VOL_DER Then
+           tic=1
+terminar_metronomo=0
+            velMetronomoDer=velMetronomoDer+5
+            If velMetronomoDer > 100 Then
+               velMetronomoDer=100
+            EndIf
+            VolDer=convA5cifras(velMetronomoDer)
+            VolDer100=Str(velMetronomoDer)
+         TextGadget(TEXT_METRO_VOL_DER,280, 770,90,20,"VolM Der "+ VolDer100)
+      EndIf 
+      If eventnumber()= BTN_MENOS_METRO_VOL_DER Then
+            tic=1
+terminar_metronomo=0
+            velMetronomoDer=velMetronomoDer-5
+            If velMetronomoDer < 0 Then
+               velMetronomoDer=0
+            EndIf
+            VolDer=convA5cifras(velMetronomoDer)
+            VolDer100=Str(velMetronomoDer)
+         TextGadget(TEXT_METRO_VOL_DER,280, 770,90,20,"VolM Der "+ VolDer100)
+      EndIf 
+
+
 
 '-------------------------------------------------------

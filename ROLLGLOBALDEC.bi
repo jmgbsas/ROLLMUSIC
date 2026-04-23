@@ -122,6 +122,15 @@ Const BTN_METRONOMO = 41
 Const TEXT_GADGET = 42
 Const BTN_MAS = 43
 Const BTN_MENOS = 44
+Const TEXT_METRONOMO_RETARDO = 45
+Const BTN_MAS_RETARDO_M = 46
+Const BTN_MENOS_RETARDO_M = 47
+Const TEXT_METRO_VOL_IZQ = 48
+Const TEXT_METRO_VOL_DER = 49
+Const BTN_MAS_METRO_VOL_IZQ=50
+Const BTN_MENOS_METRO_VOL_IZQ=51
+Const BTN_MAS_METRO_VOL_DER=52
+Const BTN_MENOS_METRO_VOL_DER=53
 
 Const HABILITAR = TRUE
 Const DESHABILITAR = FALSE 
@@ -587,7 +596,7 @@ Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer,thr
 Screenbuffer=0
 Common Shared as any ptr thread1, thread2,threadPenta,threadcreaPenta, thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal,threadPer
 Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro,threadKey
-Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes
+Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes, nretrasoMetronomoCan,nretrasoMetronomoRoll
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi,ubiejec
 parametros=0
@@ -869,8 +878,20 @@ Declare Sub VolumenGrafico (c As cairo_t Ptr, Roll As inst)
 Declare Sub barrePenta (c As cairo_t Ptr, Roll As inst)
 Declare Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst, ByRef ubiroll As Integer, ByRef ubirtk As Integer )
 
-Common shared As Integer numtrack,superposicion, nnn,versionEJEC
+Common shared As Integer numtrack,superposicion, nnn,versionEJEC ,retrasoMetronomo,retrasoMetronomoCan,retrasoMetronomoRoll,intentos,velMetronomoIzq,velMetronomoDer
+Common Shared As String VolIzq, VolDer, VolIzq100, VolDer100
+VolIzq="32767"
+VolDer="32767"
+VolIzq100="100"
+VolDer100="100"
+velMetronomoIzq=100
+velMetronomoDer=100
+
 nnn=0
+retrasoMetronomoCan=165 '''era 330 ahoraanda con 165 no entiendo
+retrasoMetronomoRoll=165
+intentos=0
+
 'VERSION DE EJEC CON MAS CAPACIDAD Y V OLUMEN VERSION=2
 Declare Sub TABTAB()
 Dim Shared FUNCMENU As STRING

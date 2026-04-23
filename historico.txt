@@ -1,3 +1,13 @@
+- 23-04-2026 0.378 AJUSTE VOLUMEN METRONOMO (vol canal izq o der o ambos INCLUYE VARIOS FIX 
+' PROBLEMA AL ESCUCHAR UAN  SOLA PISTA SIN CANCION Y EL METRONOMO LLEGA UN MOM
+' EN QUE EL DIBUJO DE PENTA SE PIERDE TITILA Y SE VA APRETAMDO P.
+' FIX AJUSTE LOS VOL METRONOMOS APUNTABAN A OTRO LADO 1064 EN VEZ DE 10631 SERIA ESO
+' 0.377 LISTO habilitar para rtk o roll aislado
+' 0.376 fix grabacion de Roll
+-20-04-2026 "0.375 metronomo dentro del play Cancion, Coordinacion y ajuste  "
+' OK listo retrasoMetronomo=330 debemos dejar que se ajuste en la ventana de control
+' ok si el usuario ajusta a otro valor de 330 guardarlo en Rollmusic.ini y cargarlo
+ sepuede elegir usar metronomo o no para CAcnion desde menu
 -19-04-2026 0.374 Fix Delete de Pista Cancion, Lineas de compas on/off
  Esta version no escribe a disco..
 -18-04-2026 0.373 METRONOMO AJUSTES CON BOTONES +/-

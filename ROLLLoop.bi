@@ -261,7 +261,7 @@ verticalEnOctavaVacia=12 + (hasta-2)*13 + estoyEnOctava - desde
         indfb=0
 ''indnota=0
      Else
-   If n <= pmTk(0).MaxPos Then
+   If n <= pmTk(0).MaxPos Then ''' ESTO PARA PISTA UNICA TAL VEZ And n <= pmTk(ntk).MaxPos Then   ' ntk por 0 22-04-2026
     indfb = CInt(Roll.trk (n, 12 + (*po-1) * 13).dur) ' 103 --dur
     indfa = CInt(Roll.trk (n, 12 + (*po-1) * 13).pb) ' 26-01-2022 103 pb
    EndIf
@@ -941,7 +941,7 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
  ' las lineas
     '' ScreenSync ' a ver si aca es mejor....
      threadcreaPenta = ThreadCall creaPenta (c, Roll )
-    SetThreadPriority(threadcreaPenta , 32 )
+    SetThreadPriority(threadcreaPenta , 20 )
      ThreadWait threadcreaPenta 
     If *po = 99 then ''''saco esto no se porque 03-11-2025 Or *po=3 Then
        *po = hasta -1 ' 8 por ejemplo => *po=7
@@ -1314,7 +1314,7 @@ If (pulsotab=1 Or pulsotab =-1) And (instancia=ARG0_EN_LINEA Or instancia= ARG10
 '  - 31: highest
 '  - 32: time critical
    clickpista=0
-   SetThreadPriority(thread3 , 32 ) ''THREAD_PRIORITY_HIGHEST ) 
+   SetThreadPriority(thread3 , 20 ) ''THREAD_PRIORITY_HIGHEST ) decia 32 critical 
    ThreadWait thread3
    pulsotab=0 
    Exit Do
@@ -1452,6 +1452,8 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_T) And superposicion=0 Then
 EndIf
 
 If MultiKey (SC_P) Then  
+terminar_metronomo=1
+disparo=0
    If COMEDIT=LECTURA   Then
       PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
       PARAR_PLAY_EJEC=SI
@@ -1982,8 +1984,11 @@ If MultiKey (SC_F11) Then '  <========= Grabar  Roll Disco  F11
    EndIf
 
    '''GrabarRoll()
-    LLAMA_GRABAR_ROLL("")
-   Sleep 1000,1 
+    If intentos=0 Then
+    LLAMA_GRABAR_ROLL("",intentos)
+    EndIf
+   Sleep 1000,1
+    intentos=0 
  Else
    Exit Do 
  EndIf  
@@ -2294,6 +2299,7 @@ If play=SI Or playb=SI Or Cplay=SI Then
         PARAR_PLAY_MANUAL=SI 
         PARAR_PLAY_EJEC=SI
         playloop=NO:playloop2=NO
+        terminar_metronomo=0
         Sleep 100
         Exit Do
   EndIf
@@ -2390,16 +2396,29 @@ Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
 ' Y SE ELIGE CON CON CHEQUEAR cbxsolo LA 1ER FILA DE CHECKS DE LA IZQUIERDA 
 ' este codigo tocara cancion con o sin solos,, 
 '------------------------------
+
+        terminar_metronomo=1
+          grabariniciotxt(NombreCancion, CANCION)
+         RecalCompas(ritmo) ''???  todavia no sabe cual es al mayodeberiramover todo aca
+
+''    EndIf 
   Print #1,"LLAMA A  PLAYCANCION"
              Parar_De_Dibujar=NO
-             Cplay=SI : s5=NO 'Necesita mas tiempo de cpu
-       '      Sleep 100
-             grabariniciotxt(NombreCancion, CANCION)
-             FileFlush (-1)
-             RecalCompas(ritmo) ''???  todavia no sabe cual es al mayodeberiramover todo aca
-             thread1 = ThreadCall  PlayCancion(Track())
+             s5=NO 'Necesita mas tiempo de cpu
 
-             CPlay=SI 
+    If CPlay=NO Then
+        Dim As Integer im=0
+        If metronomoPistas_si=3 Then 
+           retrasoMetronomo=retrasoMetronomoCan
+          For im=1 To 4  ' porquese escucha una solavez???
+            threadsound = threadCall soundcall 
+            duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+          Next im
+        EndIf
+        thread1 = ThreadCall  PlayCancion(Track())
+        CPlay=SI
+    EndIf
+ 
 ''    If x1 > 0 Then
           Do '' LA MEJOR SINCRONIZACION LA GLOBAL STARTMIDI Y CHAU PICHO 
 ' CUANDO STARTMIDI TIENE VALOR SIGNIFICA QUE PLAYCANCION EMPIEZA A TOCAR Y DEJA QUE 
@@ -2497,12 +2516,21 @@ Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
         ElseIf   playb=NO And  CANCIONCARGADA = FALSE  Then   ' else de play cancion
 ' ESTA OPCION NUCA PODRA EJECUTRSE EN PARALELO PORQUE IMPPLICA UN ROLL Y POR ENDE
 ' LLENARA EL ROLL GRAFICO QUE LA CANCION DE RTK ESTA USANDO
-              print #1,"llama a playall"
-              Playb=SI:s5=NO 
-       '       Sleep 100
-              thread2 = ThreadCall  playAll(Roll)
-         EndIf
-         If maxgrb > 0 And playEj=NO Then ' para tocar ejecuciones 
+           print #1,"llama a playall"
+           s5=NO 
+           Dim As Integer im=0
+           If metronomoPistas_si=3 Then 
+             retrasoMetronomo=retrasoMetronomoRoll 
+             For im=1 To 4  
+               threadsound = threadCall soundcall 
+               duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+             Next im
+           EndIf
+           thread2 = ThreadCall  playAll(Roll)
+           Playb=SI
+             
+        EndIf
+        If maxgrb > 0 And playEj=NO Then ' para tocar ejecuciones 
 ' PENDIENTE CALCULAR RETARDOS COMO CON SOLOS
            playEj=SI 
 Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"  
@@ -3343,9 +3371,12 @@ curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N 
 '--- AUMENTO DE CAPACIDAD DEL VECTOR EN 18000 POSICIONES  3 min 
     If CantTicks - MaxPos < 2000 Then
        print #1,"hace backup....." ' si no hay nombre usa fecha"
-       LLAMA_GRABAR_ROLL("")
+       If intentos=0 Then 
+       LLAMA_GRABAR_ROLL("",intentos)
+       EndIf 
        ''GrabarRoll() ''hacer un backup !!!
        Sleep 1000,1  
+       intentos=0
       CantTicks=CantTicks + 10000 ' incremento el tamaño en 18000 posiciones =3 min
       ReDim Preserve (Roll.trk ) (1 To CantTicks,NB To NA)
       ReDim Preserve compas(1 To CantTicks) 
@@ -4181,6 +4212,7 @@ EndIf
      '    ScreenControl(fb.GET_WINDOW_HANDLE,IhWnd)
      '    Dim As hWnd hwnd = Cast(hwnd,IhWnd)
      MoveWindow( hWnd , X0 , (Y0+h-ALTO)\2, ANCHO - mxold,ALTO, TRUE )
+'' probar de usar SetWindowPos!!
 ''CON RESIZE DE WINDOWS9 ÑODRIA SER MAS FACIL....
     EndIf
     Exit Do
@@ -6975,10 +7007,13 @@ estoyEnOctava  =1 + (PianoNota -12 + nsE)/13 ' NUEVA LINEA
     print #1,"NuevaPos,,", nuevaspos
     Print #1,"copiarZona ",copiarZona  
     If MaxPos  < nuevaspos  Then
-       LLAMA_GRABAR_ROLL("RESPALDO")
+       If intentos=0 Then 
+       LLAMA_GRABAR_ROLL("RESPALDO",intentos)
+       EndIf
        Print #1,"copiarZona ",copiarZona
        '''GrabarRoll() ''hacer un backup !!!
        Sleep 1000,1   
+       intentos=0
   ''    CantTicks= nuevaspos + 18000 ' incremento el tamaño en 1000 posiciones =1 min
 '      print #1,"incremento final de CantTick ", CantTicks 
       ReDim Preserve (Roll.trk ) (1 To nuevaspos + 20,NB To NA)

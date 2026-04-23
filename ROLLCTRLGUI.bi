@@ -213,9 +213,10 @@ GadgetToolTip(BTN_ROLL_GRABAR_MIDI,"No Funcional Todavia en Ticks:GRABAR midi en
 ButtonGadget(BTN_METRONOMO,370,690,40,40,"M")
 ButtonGadget(BTN_MAS,410,690,20,20,"+")
 SetGadgetFont(BTN_MAS,CINT(LoadFont("consolas bold",15)))
+GadgetToolTip(BTN_MAS,"Aumenta Velocidad metronomo")
 ButtonGadget(BTN_MENOS,410,710,20,20,"-")
 SetGadgetFont(BTN_MENOS,CINT(LoadFont("consolas bold",15)))
-
+GadgetToolTip(BTN_MENOS,"Disminute Velocidad metronomo")
 TEXTGADGET(TEXT_GADGET,370,730,40,20,"" )
 SetGadgetText (TEXT_GADGET,Str(tiempoPatron))
 SetGadgetFont(TEXT_GADGET,CINT(LoadFont("consolas bold",12)))
@@ -293,8 +294,40 @@ ButtonGadget(BTN_ROLL_CANAL, 270,730, 50, 20,"Canal")
 ButtonGadget(BTN_ROLL_ECO,   330,730, 35, 20,"Eco")
 ButtonGadget(BTN_ROLL_CORO,  60 ,750, 45, 20,"Coro")
 
-
+TextGadget(TEXT_METRONOMO_RETARDO,108, 750,100,20,"Retraso M "+Str(retrasoMetronomo))
+GadgetToolTip(TEXT_METRONOMO_RETARDO,"Retraso del Inicio del Metronomo al ejecutar Cancion en mseg, Por Omision 330 mseg")
+ButtonGadget(BTN_MAS_RETARDO_M,210,750,20,20,"+")
+SetGadgetFont(BTN_MAS_RETARDO_M,CINT(LoadFont("consolas bold",15)))
+GadgetToolTip(BTN_MAS_RETARDO_M,"Aumenta Retraso de inicio metronomo")
+ButtonGadget(BTN_MENOS_RETARDO_M,230,750,20,20,"-")
+GadgetToolTip(BTN_MENOS_RETARDO_M,"Disminuye Retraso de inicio metronomo")
+SetGadgetFont(BTN_MENOS_RETARDO_M,CINT(LoadFont("consolas bold",15)))
+'' volumen metrono mo der izquierdo 4 controles +/- izq, +/- der
+' hay que convertir de VolIzq=32767 a VolIzq100=100 y susajsutes
+'http://www.jasinskionline.com/WindowsApi/ref/w/waveoutsetvolume.html
+'retval = waveOutGetNumDevs()  ' get number of such devices de salida
+TextGadget(TEXT_METRO_VOL_IZQ,280, 750,90,20,"VolM Izq "+ VolIzq100)
+GadgetToolTip(TEXT_METRO_VOL_IZQ,"Ajuste Volumen Metronomo Izquierdo Max=100") '32767
+SetGadgetFont(TEXT_METRO_VOL_IZQ,CINT(LoadFont("consolas bold",10)))
+TextGadget(TEXT_METRO_VOL_DER,280, 770,90,20,"VolM Der "+ VolDer100)
+GadgetToolTip(TEXT_METRO_VOL_DER,"Ajuste Volumen Metronomo Derecho Max=100") '32767
+SetGadgetFont(TEXT_METRO_VOL_DER,CINT(LoadFont("consolas bold",10)))
 'StatusBarGadget(1,"StatusBarGadget")
+''seguir con los botones +/-
+ButtonGadget(BTN_MAS_METRO_VOL_IZQ,370,750,20,20,"+")
+SetGadgetFont(BTN_MAS_METRO_VOL_IZQ,CINT(LoadFont("consolas bold",15)))
+GadgetToolTip(BTN_MAS_METRO_VOL_IZQ,"Aumenta Volumen metronomo Izq")
+ButtonGadget(BTN_MENOS_METRO_VOL_IZQ,391,750,20,20,"-")
+GadgetToolTip(BTN_MENOS_METRO_VOL_IZQ,"Disminuye Volumen metronomo Izq")
+SetGadgetFont(BTN_MENOS_METRO_VOL_IZQ,CINT(LoadFont("consolas bold",15)))
+
+ButtonGadget(BTN_MAS_METRO_VOL_DER,370,771,20,20,"+")
+SetGadgetFont(BTN_MAS_METRO_VOL_DER,CINT(LoadFont("consolas bold",15)))
+GadgetToolTip(BTN_MAS_METRO_VOL_DER,"Aumenta Volumen metronomo Izq")
+ButtonGadget(BTN_MENOS_METRO_VOL_DER,391,771,20,20,"-")
+GadgetToolTip(BTN_MENOS_METRO_VOL_DER,"Disminuye Volumen metronomo Izq")
+SetGadgetFont(BTN_MENOS_METRO_VOL_DER,CINT(LoadFont("consolas bold",15)))
+
 
 
 '---------------------------------------------
@@ -367,32 +400,32 @@ MenuItem(1025,MenName2, "5.0 Crear un directorio de Cancion con Pistas separadas
 MenuItem(1027,MenName2, "6.0 Na.Modificar Nombre de Pistas de Cancion")
 
 
-MenuItem(1028,MenName3, "1.0 Cambia Octavas, si rango es mayor al anterior, se borran datos  (0,1,2,3,4,5,6,7,8)")
-MenuItem(1029,MenName3, "1.1 Na.Seleccion rango de 3 octava repetidas 2 veces ")
-MenuItem(1030,MenName3, "1.2 Na.Octavas de Instrumetnos Estandares")
+MenuItem(1028,MenName3, " 1.0 Cambia Octavas, si rango es mayor al anterior, se borran datos  (0,1,2,3,4,5,6,7,8)")
+MenuItem(1029,MenName3, " 1.1 Na.Seleccion rango de 3 octava repetidas 2 veces ")
+MenuItem(1030,MenName3, " 1.2 Na.Octavas de Instrumetnos Estandares")
 'MenuItem(1031,MenName3, "Na.Seleccion Canal (futuro se repetira por comodidad...)")
 Menubar(MenName3)
-MenuItem(1040,MenName3, "2.0 Cambia Instrumento por orden Alfabetico")
-MenuItem(1050,MenName3, "2.1 Cambia Instrumento por orden Numérico" )
+MenuItem(1040,MenName3, " 2.0 Cambia Instrumento por orden Alfabetico")
+MenuItem(1050,MenName3, " 2.1 Cambia Instrumento por orden Numérico" )
 Menubar(MenName3)
-MenuItem(1051,MenName3, "3.1 Cambia PAN de una Pista Manual" )
-MenuItem(1052,MenName3, "3.2 Cambia REVERVERACCION/ECO  de una Pista Manual " )
-MenuItem(1053,MenName3, "3.3 Cambia CHORUS/CORO  de una Pista Manual" )
+MenuItem(1051,MenName3, " 3.1 Cambia PAN de una Pista Manual" )
+MenuItem(1052,MenName3, " 3.2 Cambia REVERVERACCION/ECO  de una Pista Manual " )
+MenuItem(1053,MenName3, " 3.3 Cambia CHORUS/CORO  de una Pista Manual" )
 Menubar(MenName3)
-MenuItem(1060,MenName3, "6.0 Crear pista aislada, En Roll dependiente, con lo elegido y reemplaza la existente en la edicion")
-MenuItem(1061,MenName3, "7.0 Crear Pista nueva en la Cancion en Edicion, Con lo elegido")
+MenuItem(1060,MenName3, " 6.0 Crear pista aislada, En Roll dependiente, con lo elegido y reemplaza la existente en la edicion")
+MenuItem(1061,MenName3, " 7.0 Crear Pista nueva en la Cancion en Edicion, Con lo elegido")
 Menubar(MenName3)
-MenuItem(1062,MenName3, "8.0 Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
-MenuItem(1063,MenName3, "9.0 Generar melodias de 4 compasases algoritmo sencillo no parametrizado")
+MenuItem(1062,MenName3, " 8.0 Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
+MenuItem(1063,MenName3, " 9.0 Generar melodias de 4 compasases algoritmo sencillo no parametrizado")
+MenuItem(10631,MenName3, "10.0 Iniciar Metronomo Al Reproducir Cancion o Pista con 4 tics de cuenta", MF_UNCHECKED)
 
-
-'MenuItem(1065,MenName31, "Crear Patrones de Ejecuciones por Teclado",MF_POPUP )
+MenuItem(1064,MenName31, "Crear Patrones de Ejecuciones por Teclado",MF_POPUP )
 'MenName32=OpenSubmenu(MenName31, "Na/Crear Patrones de Ejecuciones por Teclado" )
-MenuItem(1064,MenName32,"Na/Nombre del Patron")
-MenuItem(1065,MenName32,"Na/Numero de Compases del Patron")
+' MenuItem(1065,MenName32,"Na/Nombre del Patron")
+' MenuItem(1066,MenName32,"Na/Numero de Compases del Patron")
 'MenuItem(1066,MenName32,"Crear Secuencia de  Patrones insertados")
-MenuItem(1067,MenName31, "Na/Crear Patrones de Ediciones manuales")
-MenuItem(1068,MenName32,"Na/Habilitar Patrones",MF_UNCHECKED)
+'  MenuItem(1067,MenName31, "Na/Crear Patrones de Ediciones manuales")
+'  MenuItem(1068,MenName32,"Na/Habilitar Patrones",MF_UNCHECKED)
 
 
 MenuItem(1070,MenName4,"1.0 Escalas auxiliares ajustadas", MF_CHECKED)
@@ -458,7 +491,7 @@ MENUITEM(1108,MenName7,"7.0 Trabajar con sostenidos (Por omision Sostenidos #)",
 MENUITEM(1109,MenName7,"8.0 Trabajar con bemoles ",MF_UNCHECKED )
 Menubar(MenName7)
 MenuItem(1113,MenName7,"9.0 Usar metronomo para Tocar MIDI-IN",MF_CHECKED)
-MenuItem(1114,MenName7,"10.0 TOCAR 4 PULSOS DEL instrumento elegido en una pista de EJECUCIONES antes de grabar",MF_UNCHECKED)
+MenuItem(1114,MenName7,"10.0 TOCAR 4 PULSOS DEL instrumento elegido en una pista de EJECUCIONES antes de grabar",MF_CHECKED)
 MenuItem(1115,MenName7,"11.0 Detener metronomo ")
 MenuItem(1116,MenName7,"12.0 BACKUP SI ")
 MenuItem(1117,MenName7,"13.0 BACKUP NO ")
@@ -514,6 +547,8 @@ MenuItem(2005,MenName10,"6.0 Cuadro de NOTAS Para canal 10 Percusion ")
    usarAcordesIguales=1
    TipoFrac="autodur"
 metronomo_si=3 'no funciona
+
+
 sonidopista_si=0 ' sonido por midi out si
 usarmarcoins=0
 usarmarco=0 'con marco  
@@ -548,7 +583,7 @@ Select Case nVerCifradoAcordes
        SetStateMenu(hMessages,1071,3)
 End Select
 ' al inicio por omision patrones deshabilitados
-     SetStateMenu(hmessages,1064,1)
+     SetStateMenu(hmessages,1064,0)
      SetStateMenu(hmessages,1065,0)
      SetStateMenu(hmessages,1066,1)
 ' AL INICIO DESHABILITADOS 2.1 Y .2.2 AUNQUE AL CLIQUEAR NO PASA NADA

@@ -60,7 +60,20 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.374 Fix Delete de Pista Cancion, Lineas de compas on/off"
+nroversion="0.378 AJUSTE VOLUMEN METRONOMO (vol canal izq o der o ambos ) "
+' PROBLEMA AL ESCUCHAR UAN  SOLA PISTA SIN CANCION Y EL METRONOMO LLEGA UN MOM
+' EN QUE EL DIBUJO DE PENTA SE PIERDE TITILA Y SE VA APRETAMDO P.
+' FIX AJUSTE LOS VOL METRONOMOS APUNTABAN A OTRO LADO 1064 EN VEZ DE 10631 SERIA ESO
+' en desarrollo 0.378 AJUSTE VOLUMEN METRONOMO (vol canal izq o der o ambos )
+  '''seguir con los botones +/- y pasar de 1-32267 a 1-100 par ael osuario
+  '' saltos de 32767/100=327 ...327 sera la unidad de los saltos de volumen 
+' 0.377 LISTO habilitar para rtk o roll aislado
+' 0.376 fix grabacion de Roll
+' "0.375 metronomo dentro del play Cancion, Coordinacion y ajuste  "
+' OK listo retrasoMetronomoCan=330 debemos dejar que se ajuste en la ventana de control
+' ok si lusuario ajusta a otro valor de 330 guardarlo en Rollmusic.ini y cargarlo
+'  330 para mi pc 
+' cancela mucho por varias formas al usar metronomo para escuchar cancion
 ' hace delete de pista de cancion bien por los dos lados por menu o dando
 ' delete sobre la pista. solo que creapenta a veces daeror fijarse porque!!!
 ' 0.373 METRONOMO AJUSTES CON BOTONES +/-
@@ -185,8 +198,6 @@ Dim  As Integer  gi = 0
 'Print #1,"ANTES ANCHO , ALTO ", ANCHO, ALTO
 If mxold > 0 Then
 
-'MoveWindow( hWnd , 1, 1 , ANCHO - mxold, ALTO - myold, TRUE )
-'Print #1,"rollmusic.bas 742: ANCHO,nancho ",ANCHO, nancho
   If ANCHO = nancho Then
       ANCHO= nancho -mxold 
   EndIf

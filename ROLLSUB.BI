@@ -3223,6 +3223,8 @@ Sub CargaArchivo(Roll As inst, ByRef ubiroll As Integer)
 ' debemos tener las versiones viejas de roll y las nuevas por el cambio de datsec
 ' a rolldat. Si es version vieja el 1er ubyte sera distinto de 222 , si es 222 es la
 ' nuev version.
+retrasoMetronomo=retrasoMetronomoRoll
+TextGadget(TEXT_METRONOMO_RETARDO,108, 750,100,20,"Retraso M "+Str(retrasoMetronomo))
 On Local Error GoTo saledeaca 
 ntk=0 ' Cargar en 3 vectores Roll pmTk(0) y Track(0). 
 ' la carga de tracks aislada o la carga de una cancion con sus tracks
@@ -4002,9 +4004,21 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
                SetGadgetstate(15,0) ' 10-04-2022
                EndIf  
         ' Print #1,"llama a playall"
-         thread2 = ThreadCall  playAll(Roll)
-         ''''playAll(Roll)
-         play=SI         
+          If Play=NO Then
+             Dim As Integer im=0
+             If metronomoPistas_si=3 Then
+                retrasoMetronomo=retrasoMetronomoRoll 
+               For im=1 To 4  ' porquese escucha una solavez???
+                threadsound = threadCall soundcall 
+                duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+               Next im
+            EndIf
+            thread2 = ThreadCall  playAll(Roll)
+            Play=SI
+         EndIf
+      
+       
+                
         EndIf 
    '     print #1,"--->paso llamada a thread1 "
     ''    menuNew = 4 por hora sin elecciones
@@ -4344,9 +4358,12 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
            Sleep 500,1           
        Else ' graba roll como roll, si se desea eso solo sacar [xx] del nombre
            ''''GrabarRoll ()
-           LLAMA_GRABAR_ROLL("")' intenta varias veces hasta el exito onro 5
+           If intentos=0 Then   
+           LLAMA_GRABAR_ROLL("",intentos)' intenta varias veces hasta el exito onro 5
+           EndIf  
         cairo_set_source_rgba c, 0, 1, 0, 1 
-           Sleep 500,1 
+           Sleep 500,1
+           intentos=0  
        EndIf
          carga=1
          lockip=2 ' habilita mouse 28-08-2021
@@ -4427,8 +4444,12 @@ Sleep 100
        EndIf
         
        ''GrabarRoll()
-       LLAMA_GRABAR_ROLL("")
+       If intentos=0 Then
+       LLAMA_GRABAR_ROLL("",intentos)
+        cairo_set_source_rgba c, 0, 1, 0, 1
+       EndIf   
        Sleep 1000,1   
+       intentos=0    
           lockip=2 ' habilita mouse 28-08-2021
        MenuNew=COMANDOS_ARCHIVO
        cierroedit= 0
@@ -5443,6 +5464,7 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
        default2 = Str(tiempoPatron) '60
        ticksdefault = InputBoxJmg("Ajuste Tempo " ,"Entre un Tempo ",default2, ES_MULTILINE + ES_AUTOVSCROLL,0  )
        tiempoPatron= CInt(ticksdefault) '08-01-2022 de doble a int
+       Print #1,"dialogo tiempoPAtron entrado ", tiempopatron
        
  'ntkp debe ser elegido pero todo debe estar igual, SI NO ELEIGE UNA PISTA
 ' O HAY UNA SOLA HAY QUE HACER EL LOOP PISTAS CONDISTINO TEMPO SERIA RARO
@@ -6149,9 +6171,9 @@ Dim  As Integer npl, length
        Else
         If InStr(UCase(nombre),".ROLL") >= 0 Then
            'seria nombre="" pero se toma como backup odeberia preguntar por un nombre nuevo
-           If  funcion <> "CASE1014" Then  
-             nombre = nombre +".roll"  'un nombre sin extension no creo ocurra solo si es nuevo y no hay nombre
-           EndIf  
+           ''If  funcion <> "CASE1014" Then  
+           ''  nombre = nombre +".roll"  'un nombre sin extension no creo ocurra solo si es nuevo y no hay nombre
+           ''EndIf  
         EndIf
        EndIf 
      EndIf   
@@ -6192,59 +6214,17 @@ Dim  As Integer npl, length
 ' que hice para control-M o pondremos en forma fija al final de pantalla y sobre cada 
 ' linea el nombre del instrumento siemrpe estara en el extremo derecho y moviendo 
 ' las flechas podre ingresar notas mas a al izquierda de drums,,,                                        
-     Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
+'     Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
 'print #1, "inicio MaxPos "; MaxPos
- For i2 = 1 To MaxPos  'incluye a +1 es ultimo off +1
-     For i1 = NB To NA
-       If Roll.trk(i2,i1 ).nota=190 And Roll.trk(i2,i1 ).dur=190 Then
-          borrocol= 1 'Atrapa al menso un caso
-       EndIf
-       If Roll.trk(i2,i1 ).dur=182 Then ' 26-06-2021 copiar final archivo
-          final= 1 'Atrapa el final
-       EndIf
-' extendemos a semitono ficticio 13 donde esta acorde a ver si lo recupera
-       If Roll.trk(i2,i1 ).nota >=1 And Roll.trk(i2,i1 ).nota<=13 Then
-          haynota=1 ' atrapa al menso 1 caso
-       EndIf
-       
-       If i1= NA And haynota=1 Then ' si hay una sola nota en la columna no borro
-         res=0 ' no borrar
-       Else
-          If borrocol = 1 Then
-             res=1  
-          EndIf  
-       EndIf            
-    Next i1
-    i1=0  
-    If borrocol = 0 Or res=0 Or final=1 Then 'copio columna no borro
-       k=k+1
-      For i1 = NB To NA
-          Trabajo(k, i1)=Roll.trk(i2,i1 )
+ For i2 As Integer = 1 To MaxPos  'incluye a +1 es ultimo off +1
+      For i1 As Integer = NB To NA
+          Trabajo(i2, i1)=Roll.trk(i2,i1 )
       Next i1
-    Else
-      Maxpos=MaxPos-1  
-    EndIf
-      
-    borrocol=0:res=0:haynota=0:final=0
  Next i2
 ' MaxPos = k JMG 16-05-2021 TODAVIA NO SE COMO SE ACHICA LA SECUENCIA 
 ' AL GRABAR NO SOLO CON MAXPOS PARECE,,,ANDA BIEN PERO SI CONSERVO MAXPOS
 ' DEL MISMO VALOR EN VEZ DE K     
-
-
-posn=k       
-
-Dim As Integer r1
-For i1=NB To NA 
-  For r1= posn+1 To MaxPos
-    Trabajo(r1, i1).nota=0 ' ok debo habiliatar desde ahi todas las columnas se juntaron
-    Trabajo(r1, i1).dur=0  ' la secuecnia quedo mas corta
-  Next r1 
-Next i1  
-
-MaxPos=k+1
-
 
 Print #1, "final MaxPos "; MaxPos
 'print #1,"---------------------------------------- K= "; K
@@ -6458,6 +6438,7 @@ Print #1,"inicia CargaPistasEnCancion"
         Print #1,"dice que no hay archivos "
         CANCIONCARGADA=FALSE
         ' NO HAY NADA QUE CARGAR
+        cargaCancion=NO_CARGAR_PUEDE_DIBUJAR 
         abrirRoll=CARGAR_MAS_PISTAS_O_CANCION ' habilita otro camino para cargar pistas
         Exit Sub ''5-12-2025 HQBILITE 19-04-2026 BEBE IRSE NADA MAS QUE HACER 
      Else
@@ -6523,7 +6504,7 @@ Print #1,"inicia CargaPistasEnCancion"
        NADACARGADO=FALSE
        ''clickpista=SI
        ReDim compas(1 To maxpostope)  
-''       RecalCompas(ritmo)
+       RecalCompas(ritmo)
 
      EndIf
 
@@ -6539,6 +6520,7 @@ cargaCancion=NO_CARGAR_PUEDE_DIBUJAR
 'mouse_event MOUSEEVENTF_LEFTUP, 0, 0, 0, 0 
       SetGadgetText(TEXT_TOPE, Str(maxpostope))
 grabariniciotxt(NombreCancion, CANCION)
+metronomoPistas_si=0 'POR OMISION no TOCA METRONOMO AL DAR PLAY A CANCION
 Sleep 50
 End Sub
 
@@ -6788,9 +6770,10 @@ EndIf
 
        print #1,"MaxPos grabada en Trabajo ",MaxPos
 Dim mit As aUshort
-mit.ST = tiempoPatron
+mit.ST = CUShort(tiempoPatron)
 graba4.pan= mit.tp1
 graba4.pb = mit.tp2
+Print #1,"GRABAR TRACK mit.ST tiempo patron ", mit.ST
 Print #1,"PASO GRABA4 tiempo patron elimino fileflush vermos"
   ''   FileFlush (gt)
 
@@ -6821,7 +6804,7 @@ Sub GrabarCancion() ' PENDIENTE GRABAR TODA LA CANCION EN UN SOLO COMANDO
  ' en el momento de borrar se copia a backup y se borra del directorio de cancion
  ' eso si se borro alguna pista. (en vez de borrar mandamos a una carpeta de backup)
  '2) cada pista se graba con GrabarRollaTrack
-
+Print #1,"GrabarCancion() "
 ' punto 2) 
 Dim As Integer i,ntkold
        ntkold=ntk 
@@ -6832,7 +6815,8 @@ Dim As Integer i,ntkold
   For i=0 To tope
         ntk=i 
        nombre=titulosTk(i)
-       ubi3=InStr(nombre,".rtk")
+       ubi3=InStr(LCase(nombre),".rtk")
+Print #1," GrabarCancion() ubi3 ",ubi3
 ''       ubi4=InStr(nombre,".roll")
        If  ubi3 > 0 Then 'graba un track como track
        ' pero como las modificaciones estan en ROLL debo usar GrabarrollaTrack
@@ -7247,10 +7231,13 @@ Print #1, "SELCANAL canalx "; canalx
                      GrabarRollaTrack(0,0,"")
                Else
                   If ROLLCARGADO=TRUE  Then
-                    LLAMA_GRABAR_ROLL("")
+                    If intentos=0 Then 
+                    LLAMA_GRABAR_ROLL("",intentos)
+                    EndIf  
                    ''  GrabarRoll () ' graba roll en edicion, borro todo el undo�?
                   ' no el undo dolo se debe borrar al ahcer nuevo creo
                    Sleep 1000,1 
+                   intentos=0  
                   EndIf  
                EndIf  
             End If  
@@ -8046,9 +8033,11 @@ Dim  As Integer i3
          Print #ffile,nANCHO, " ANCHO"
          Print #ffile,nALTO, " ALTO"
          Print #ffile,ndeltaip, " inc_Penta"
-         Print #ffile,nVerEscalasAuxiliares, "nVerEscalasAuxiliares"
-         Print #ffile,nanchofig, "nanchofig"
-         Print #ffile,nVerCifradoAcordes, "nVerCifradoAcordes"
+         Print #ffile,nVerEscalasAuxiliares, "VerEscalasAuxiliares"
+         Print #ffile,nanchofig, "anchofig"
+         Print #ffile,nVerCifradoAcordes, "VerCifradoAcordes"
+         Print #ffile,retrasoMetronomoCan,"retrasoMetronomoCan"
+         Print #ffile,retrasoMetronomoRoll,"retrasoMetronomoRoll"
         FileFlush (ffile)         
          Close ffile
          Sleep 100
