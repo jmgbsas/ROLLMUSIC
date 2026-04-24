@@ -1,12 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-   0.378 AJUSTE VOLUMEN METRONOMO (vol canal izq o der o ambos INCLUYE VARIOS FIX 
-     PROBLEMA AL ESCUCHAR UAN  SOLA PISTA SIN CANCION Y EL METRONOMO LLEGA UN MOM
-     EN QUE EL DIBUJO DE PENTA SE PIERDE TITILA Y SE VA APRETAMDO P.
-     FIX AJUSTE LOS VOL METRONOMOS APUNTABAN A OTRO LADO 1064 EN VEZ DE 10631 SERIA ESO
-   0.377 LISTO habilitar para rtk o roll aislado
-   0.376 fix grabacion de Roll
-
+   0.378 fix AJUSTE VOLUMEN METRONOMO (vol canal izq o der o ambos )
 
      EL ROLL GRAFICO VISUAL PUEDE CAMBIARSE LAS OCTAVAS SIN PROBLEMA
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO

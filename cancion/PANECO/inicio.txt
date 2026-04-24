@@ -1,8 +1,8 @@
  1,no
- 2,si
- 3,si
- 4,no
+ 2,no
+ 3,no
+ 4,si
  5,no
- 6,si
+ 6,no
  60,tiempoPatronEjec
  10945,Maxpos

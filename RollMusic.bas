@@ -60,7 +60,7 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.378 AJUSTE VOLUMEN METRONOMO (vol canal izq o der o ambos ) "
+nroversion="FIX 0.378 AJUSTE VOLUMEN METRONOMO (vol canal izq o der o ambos ) "
 ' PROBLEMA AL ESCUCHAR UAN  SOLA PISTA SIN CANCION Y EL METRONOMO LLEGA UN MOM
 ' EN QUE EL DIBUJO DE PENTA SE PIERDE TITILA Y SE VA APRETAMDO P.
 ' FIX AJUSTE LOS VOL METRONOMOS APUNTABAN A OTRO LADO 1064 EN VEZ DE 10631 SERIA ESO

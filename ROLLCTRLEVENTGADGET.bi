@@ -1170,7 +1170,7 @@ terminar_metronomo=0
             tic=1
 terminar_metronomo=0
             velMetronomoDer=velMetronomoDer-5
-            If velMetronomoDer < 0 Then
+            If velMetronomoDer < 0 Then ' si se baja menos de 10 se conmutan los volumenes y se pone fuerte este y el otro despacio glup bueno queda asi me cansó
                velMetronomoDer=0
             EndIf
             VolDer=convA5cifras(velMetronomoDer)

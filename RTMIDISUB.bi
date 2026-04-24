@@ -3386,12 +3386,11 @@ SetForegroundWindow(hwndMEDIA)
 
 ''Dim As String VolTotal=VolIzq + VolDer
 ''    Print #1,"VolTotal asi anda mas o menos no es correcto pero...funca ja ",VolTotal
-Dim As uinteger volhder =  velMetronomoDer*32767/100
-Dim As uinteger volhizq =  velMetronomoIzq*32767/100
+Dim As uinteger volhder =  velMetronomoDer*65535/100
+Dim As uinteger volhizq =  velMetronomoIzq*65535/100
 
- waveoutSetVolume(0, CInt("&H" + Hex(volhDer) + Hex(volhIzq)))
-  '  waveOutSetVolume(0, ValInt(VolTotal))   ''&H7FFF7FFF)
-        
+Dim As ULong volumenTotal = (CULng(volhDer) Shl 16) Or volhIzq
+    waveoutSetVolume(0,volumenTotal)
     PlaySound(".\recur\RimShot.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
     EndIf
   EndIf
