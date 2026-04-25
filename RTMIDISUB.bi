@@ -1004,6 +1004,7 @@ If i1<= NA-13 Then
             noteon CUByte(Notapiano),vel,canal,portsal,1,NroEvento
 ''''''''CONTROL METRONOMO SOLO debe DISPARAR UNA VEZ si ya disparo antes por otra osa no lo hara
     If metronomoPistas_si=3 And disparo=0 Then
+        Print #1,"LLAMA A METRONOMO EN PLAYALL!!! "
         terminar_metronomo=0
         retrasoMetronomo=retrasoMetronomoRoll
         disparo=1 
@@ -1108,8 +1109,8 @@ jply=0:curpos=0
 ' al final, por ahroa no parpadea mas veremos.... 
 play=NO 
 playb=NO
-
-
+disparo=0
+terminar_metronomo=1
 '''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 
 Dim As Integer checkejec
@@ -3368,9 +3369,11 @@ Sub soundcall
 ' el metronomo deja de oirse porque da error abre el mismo port y se congela
 ' usamos midi para el metronomo y listo se fini
 ' con otro playmovie pasa lo mismo
-' 
-SetFocus (hwndMEDIA)
-SetForegroundWindow(hwndMEDIA)
+'
+If MOV_FLAG = 1 Then 
+   SetFocus (hwndMEDIA)
+   SetForegroundWindow(hwndMEDIA)
+EndIf
   If mov8 > 0  And  MOV_FLAG =1 Then 
     noteon(80,20,0,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
     noteoff(80,0, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
@@ -3391,10 +3394,10 @@ Dim As uinteger volhizq =  velMetronomoIzq*65535/100
 
 Dim As ULong volumenTotal = (CULng(volhDer) Shl 16) Or volhIzq
     waveoutSetVolume(0,volumenTotal)
-    PlaySound(".\recur\RimShot.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
+    PlaySound(ROLLDIR+"recur\RimShot.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
     EndIf
   EndIf
-  
+  ' ROLLDIR FIX 24-04
 End Sub 
 Sub metronomo ()
 Dim  As Integer pista , k
@@ -3405,6 +3408,7 @@ Dim  As Integer pista , k
 Sleep retrasoMetronomo ' 330 en mi PC se sincronizan metronomo  e inicio de la primer nota
 ' pero en otras compus??? probare en otra y sino debere poner un ajuste
 ' para que el usuario ajuste este valor
+Print #1,"========ENTRO A METRONOMO """
 Do
    threadsound = threadCall soundcall
 '' usamos midi y listo 
