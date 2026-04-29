@@ -838,15 +838,31 @@ Dim As Integer liga=0,notapiano=0,old_notapiano=0, iguales=0, distintos=0
 Dim leng As UInteger <8>
 Dim result As Integer
 playloop2=NO
+''27-04-2026 trampa para detener el barrido y el play a la vez pero no borrar la pantall
+'' y se quede esperando te cague...jaja
+If metronomoPistas_si=3   Then '27-04-2026
+terminar=NO_TERMINAR_CON_DATOS_CARGADOS : Parar_De_Dibujar=SI
+  For x3 As Integer=1 To 4
+'' note , vel , canal , portsal ,i1, NroEvento
+'' el canal al pasar por el codigo es (canal -1) , el 10 es el 9  
+   noteon(77,120,9,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
+    If x3=1 then
+    terminar=NO_TERMINAR_BARRE_PANTALLA : Parar_De_Dibujar=NO
+    EndIf
 
+   duracion(Timer, (60/(tiempoPatron)) / FactortiempoPatron) 
+   noteoff(77,25, 9,0,1,1) 'si no le doy volumen al off no se escucha una mierda
+' ( note, vel,canal,portsal,i1,NroEvento )
+  Next x3
+EndIf
 
-    
     Paneo (pmTk(0).pan, pmTk(0).canalsalida,pmTk(0).portout)
     Eco   (pmTk(0).eco,  pmTk(0).canalsalida,pmTk(0).portout)
     Chorus(pmTk(0).coro,  pmTk(0).canalsalida,pmTk(0).portout)
     ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, pmTk(0).portout)
     patchsal =pmTk(0).patch 
-    
+Sleep 1    ''<=== sin este sleep desaparece el cursos de pantalla estaba antes de efectos
+'' pero lo puse ahora despues para procesar efectos antes de empezar,,,,
 Print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
 Print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
 jply=0:curpos=0
@@ -957,6 +973,18 @@ EndIf
 'Si el usuario ajusta el volumen del parametro de la pista
 'se calcula un factor de ajuste, debo guardas el ajuste en pmtk y en el archivo
 ' luego levantarlo pasarlo a pmtk
+'
+''''''''INICIO DE METRONOMO AL COMIENZO DE LA SECUENCIA HAYA O NO NOTAS
+    If metronomoPistas_si=3 And disparo=0 Then
+   ''     Print #1,"LLAMA A METRONOMO EN PLAYALL!!! "
+        terminar_metronomo=0
+       ''' retrasoMetronomo=retrasoMetronomoRoll
+        disparo=1 
+        threadmetronomo = ThreadCall metronomo()
+    EndIf
+
+''''''''
+
 ' ============= For NB To NA ===============
   For i1=NB To NA 
 ' poner la velocidad original  del ejec si viene de una ejec
@@ -1002,15 +1030,15 @@ If i1<= NA-13 Then
             NroEvento=NroEventoPista(1)
             ''Print #1,"noteon CUByte(Notapiano),vel,canal,portsal  ";CUByte(Notapiano),vel,canal,portsal
             noteon CUByte(Notapiano),vel,canal,portsal,1,NroEvento
-''''''''CONTROL METRONOMO SOLO debe DISPARAR UNA VEZ si ya disparo antes por otra osa no lo hara
-    If metronomoPistas_si=3 And disparo=0 Then
-        Print #1,"LLAMA A METRONOMO EN PLAYALL!!! "
-        terminar_metronomo=0
-        retrasoMetronomo=retrasoMetronomoRoll
-        disparo=1 
-        threadmetronomo = ThreadCall metronomo()
-    EndIf
-
+'''''''''CONTROL METRONOMO SOLO debe DISPARAR UNA VEZ si ya disparo antes por otra osa no lo hara
+'    If metronomoPistas_si=3 And disparo=0 Then
+'        Print #1,"LLAMA A METRONOMO EN PLAYALL!!! "
+'        terminar_metronomo=0
+'        retrasoMetronomo=retrasoMetronomoRoll
+'        disparo=1 
+'        threadmetronomo = ThreadCall metronomo()
+'    EndIf
+'
 ''''''''
 
        EndIf
@@ -1111,6 +1139,7 @@ play=NO
 playb=NO
 disparo=0
 terminar_metronomo=1
+
 '''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
 
 Dim As Integer checkejec
@@ -3359,7 +3388,7 @@ Dim As String cifras
    EndIf
   Loop
  convA5cifras=cifras
-Print #1,"cifras ",cifras
+''Print #1,"cifras ",cifras
 
 End Function
 '---------------
@@ -3379,7 +3408,7 @@ EndIf
     noteoff(80,0, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
   Else
     If MOV_FLAG = 0 Then
-     If CPlay=NO Or Playb=NO Then
+     If CPlay=NO Or Playb=NO Then ' no hay mas retrasos 27-04-2026
        Sleep retrasoMetronomo ''DEPENDE DE LA PC???
      EndIf
      'noteon(80,30,0,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
@@ -3405,31 +3434,41 @@ Dim  As Integer pista , k
 ' si usamos PlaySound o Playmovie la  cosa anda igual al reproducir un mp3 o wav
 ' el metronomo deja de andar .....cuac
 ''Dim As Integer Movie
-Sleep retrasoMetronomo ' 330 en mi PC se sincronizan metronomo  e inicio de la primer nota
+'''Sleep retrasoMetronomo ' 330 en mi PC se sincronizan metronomo  e inicio de la primer nota
 ' pero en otras compus??? probare en otra y sino debere poner un ajuste
 ' para que el usuario ajuste este valor
-Print #1,"========ENTRO A METRONOMO """
-Do
-   threadsound = threadCall soundcall
-'' usamos midi y listo 
-   
-   '''ThreadWait threadsound
-'' el sonido rimshot no se puede usar si levanto una wav en media
-'' usar otro loadmovie pude cancelar el programa y si uso playsound
-'' luego de cerrar la media no anda mas el playsound de modo
-'' que usamos noteon noteoff y a la mierda con rimshot
-''Movie=LoadMovie(0,".\recur\RIMSHOT.wav",100,100,320,240)
-''PlayMovie(Movie)
-     
-     duracion(Timer, (60/(tiempoPatron)) / FactortiempoPatron) 'jmgtiempo
-     If terminar_metronomo=1 Then
-        terminar_metronomo=0
-        tic=0
-         Exit Do
-     EndIf
-      
+'Print #1,"========ENTRO A METRONOMO """
 
-Loop  
+If CANCIONCARGADA=FALSE And ROLLCARGADO=FALSE Then
+  Do ' metronomo libre comun incluye los ejec
+  
+    threadsound = threadCall soundcall
+     
+    duracion(Timer, (60/(tiempoPatron)) / FactortiempoPatron) 'jmgtiempo
+    PlaySound(NULL, NULL, 0)
+    If terminar_metronomo=1 Then
+       terminar_metronomo=0
+       tic=0
+       Exit Do
+    EndIf
+
+  Loop
+Else 
+  Dim jmetro As Integer
+  For jmetro=1 To MaxPosTope 
+    If  jmetro=jply Then   
+        threadsound = threadCall soundcall
+        duracion(Timer, (60/(tiempoPatron)) / FactortiempoPatron) 'jmgtiempo
+        PlaySound(NULL, NULL, 0)
+        If terminar_metronomo=1 Then
+           terminar_metronomo=0
+           tic=0
+           Exit For
+        EndIf
+    EndIf      
+  Next jmetro
+EndIf
+  
  PlaySound(NULL, NULL, 0)
  If Movie Then
    FreeMovie(Movie)

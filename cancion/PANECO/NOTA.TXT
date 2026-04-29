@@ -1,0 +1,15 @@
+PARA PODER TABULAR Y PASAR DE UNA PISTA A OTRA MIENTRAS 
+ESTA EJECUTANDO NO SE PUEDE USAR POR AHORA UN TRACK ECHO MANUALMENTE
+COMO DISCTA01.rtk
+PARA PODER PROBAR EL INICIO DEL METRONOMO ES BUENO USAR UNA SECUENCIA MANUAL
+COMO DICTA01.RTK PORQUE SABEMOS QUE LA 1ER NOTA ESTÁ EN EL INICIO
+NO ASI UNA SECUENCIA  QUE SE GRABO DESDE TECLADO Y SI NO SE USO METRONOMO
+O SI SE USO EMPIEZA CON UN SILENCIO.
+SE COPIA EN SUBCARPETATEMPO EL TRACK DICTA01.rtk para poder dar TAB durante el play
+
+queda por ver el TAB con solo tracks manuales , la mezcla sabemos que no
+funciona al dar play NO usar TAB en una mezcla se congela todo play y pantalla
+para descongelar pulsar P stop y luego play de nuevo. y empezara desde el pricipio
+
+
+

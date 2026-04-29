@@ -546,8 +546,7 @@ MenuItem(2005,MenName10,"6.0 Cuadro de NOTAS Para canal 10 Percusion ")
 ' default de FRACCIOANR autodur 
    usarAcordesIguales=1
    TipoFrac="autodur"
-metronomo_si=3 'no funciona
-
+metronomo_si=3 
 
 sonidopista_si=0 ' sonido por midi out si
 usarmarcoins=0

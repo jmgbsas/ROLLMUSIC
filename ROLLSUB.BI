@@ -3224,7 +3224,9 @@ Sub CargaArchivo(Roll As inst, ByRef ubiroll As Integer)
 ' a rolldat. Si es version vieja el 1er ubyte sera distinto de 222 , si es 222 es la
 ' nuev version.
 retrasoMetronomo=retrasoMetronomoRoll
+If ubiroll = 0 Then 
 TextGadget(TEXT_METRONOMO_RETARDO,108, 750,100,20,"Retraso M "+Str(retrasoMetronomo))
+EndIf
 On Local Error GoTo saledeaca 
 ntk=0 ' Cargar en 3 vectores Roll pmTk(0) y Track(0). 
 ' la carga de tracks aislada o la carga de una cancion con sus tracks
@@ -6370,7 +6372,7 @@ Print #1,"grabando las partes del archivo "; nombre
      Put #ga, ,dat
                
      Put #ga, ,Trabajo()
-     
+     Sleep 200
      Close ga
     End If  ' del open ga archivo
 'FileFlush (7)
@@ -6594,52 +6596,20 @@ Sub GrabarTrack (ntk As Integer)  'Error seguro aca nota=181 posicion1
      Dim As Integer i1, i2, borrocol=0, haynota=0,res=0,k=0,final=0
 'eliminar columnas marcadas al grabar disco, 0 + X
 'print #1, "inicio MaxPos "; MaxPos
- For i2 = 1 To MaxPos
-     For i1 = 1 To lim2
-       If Track(ntk).trk(i2,i1 ).nota=190 And Track(ntk).trk(i2,i1 ).dur=190 Then
-          borrocol= 1 'Atrapa al menso un caso
-       EndIf
-       If Track(ntk).trk(i2,i1 ).dur=182 Then ' 26-06-2021 copiar final archivo
-          final= 1 'Atrapa el final
-       EndIf
-
-       If Track(ntk).trk(i2,i1 ).nota >=NB And Track(ntk).trk(i2,i1 ).nota<=NA-13 Then
-          haynota=1 ' atrapa al menso 1 caso
-       EndIf
-       
-       If i1= lim2 And haynota=1 Then ' sihay unasola notaen la columna no borro
-         res=0 ' no borrar
-       Else
-          If borrocol = 1 Then
-             res=1  
-          EndIf  
-       EndIf            
-    Next i1
-    i1=0  
-    If borrocol = 0 Or res=0 Or final=1 Then 'copio columna no borro
-       k=k+1
-      For i1 = 1 To lim3 ' aca copio controles tambien en lim3
-          Trabajo(k, i1)=Track(ntk).trk(i2,i1 ) ' ACA IRIA LA COPIA DE ACORDE y control
-      Next i1
-    EndIf
+For i2 = 1 To MaxPos
+   For i1 = 1 To lim3 ' aca copio controles tambien en lim3
+       Trabajo(i2, i1)=Track(ntk).trk(i2,i1 ) ' ACA IRIA LA COPIA DE ACORDE y control
+   Next i1
       
-    borrocol=0:res=0:haynota=0:final=0
- Next i2
-' MaxPos = k JMG 16-05-2021 TODAVIA NO SE COMO SE ACHICA LA SECUENCIA 
-' AL GRABAR NO SOLO CON MAXPOS PARECE,,,ANDA BIEN PERO SI CONSERVO MAXPOS
-' DEL MISMO VALOR EN VEZ DE K     
+Next i2    
 
-
-posn=k        
-
-Dim As Integer r1
-For i1=1 To lim3 '  
-  For r1= posn+1 To MaxPos
-    Trabajo(r1, i1).nota=0 ' ok debo habiliatar desde ahi todas las columnas se juntaron
-    Trabajo(r1, i1).dur=0  ' la secuecnia quedo mas corta
-  Next r1 
-Next i1  
-
+'Dim As Integer r1
+'For i1=1 To lim3 '  
+'  For r1= posn+1 To MaxPos
+'    Trabajo(r1, i1).nota=0 ' ok debo habiliatar desde ahi todas las columnas se juntaron
+'    Trabajo(r1, i1).dur=0  ' la secuecnia quedo mas corta
+'  Next r1 
+'Next i1  
 
 
 
@@ -6789,10 +6759,10 @@ Print #1,"PASO GRABA4 tiempo patron elimino fileflush vermos"
      Put #gt, ,graba10 
      
      Put #gt, ,Trabajo() ' ACA DEBERIA QUEDAR EL CAMPO ACORDE !!
+     Sleep 200
      Close gt
 '   FileFlush (gt)
-      
-     Sleep 150
+     Sleep 1000,1
 Print #1,"---------------------------------------------------------------------------------"
 Print #1,"  Fin GrabarTrack "
 End Sub
@@ -6829,7 +6799,8 @@ Print #1," GrabarCancion() ubi3 ",ubi3
 'el visual
  
             GrabarTrack ntk  ''tenia esto cual va 
-           Sleep 20           
+           Sleep 200 ' PARA DISCOS NO SSDF LA RESPUESTA ES 100 msseg valor menor cancela
+' podriamos detectr el hardware sera mas adelante...le ponemos mas 200           
        EndIf
 
   Next i

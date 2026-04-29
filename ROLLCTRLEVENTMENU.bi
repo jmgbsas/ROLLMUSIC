@@ -37,8 +37,7 @@ StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIO
            Case 10063 ' CARGAR CANCION EN UN ROLL SIN VENTANA DE CONTROL
 ' HAY QUE PASA EL NOMBRE DEL DIRECTORIO NADA MAS,,,Y EL PATH
 ' era la 1063 antigua
-            CTRL10063 ()
-SetGadgetText (TEXT_GADGET,Str(tiempoPatron))  
+            CTRL10063 ()  
 ' ----------------------------------------------------------------------
 ' ==> CARGAR TODO SIN GRAFICO
            Case 10064
@@ -68,8 +67,7 @@ SetGadgetText (TEXT_GADGET,Str(tiempoPatron))
 ' voy a incorporar cargar un midi asi tengo una cancion para probar,,
 
            CTRL1007 ()
-           
-          SetForegroundWindow(hwnd)
+          
            Case 10075 '<======== CARGAR UNA PISTA A ROLL PARA EXPORAR A MIDI
 ' DE ESTE MODO PODEMOS ENVIAR EL NOMBRE DE LA PISTA AL ROLL AISLADO
 ' Y CONVERTIR A MID CON EL NOMBRE REAL Y N OEL FANTASIA ARCHIVO.MID
@@ -251,8 +249,8 @@ Print #1,"usarmarcoins ", usarmarcoins
              End If 
 '-----------------------------------------------------------------------
            Case 1014  ' <============= TRACK A ROLL
-' SIMPLEMENTE LLAMA DOS VECES LA FUNCION DE GRABAR L1 1ERA CAMBIA LA EXTENSION DE
-' RT A ROLL Y LA 2DA BIFURCA POR .ROLL Y GRABAR EL ROLL() QUE ESTARA CARGADO
+' SIMPLEMENTE LLAMA DOS VECES LA FUNCION DE GRABAR LA 1ERA CAMBIA LA EXTENSION DE
+' RTK A ROLL Y LA 2DA BIFURCA POR .ROLL Y GRABAR EL ROLL() QUE ESTARA CARGADO
 ' CON EL RACK SELECCIONADO ANTES DE GRABAR O SEA PARA GRABAR UN TRACK DE CANCION LA
 ' SELECCIONO PARA QUE SE VEA EN ROLL GRAFICO Y LO  GRABO SENCILLITO
            If intentos=0 Then 
@@ -260,7 +258,7 @@ Print #1,"usarmarcoins ", usarmarcoins
            EndIf 
            Sleep 1000,1 
            intentos=0
-           SetForegroundWindow(hwnd)
+         
 '-----------------------------------------------------------------------
            Case 1015 '<========== Grabar MIDI-In aca sera para grabar 
  ' EN ejecuciones, CON CANCION CARGADA NO GRABA NADA(reveer esto), la grabacion se hace en STOP SIN CANCION
@@ -667,7 +665,7 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
                 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))   
                 Print #1,"2 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
                 Sleep 100
-                 SetForegroundWindow(hwnd)
+               ''  SetForegroundWindow(hwnd)
                    Exit Do
              Else
                 If NombreCancion = ""  Then
@@ -676,7 +674,7 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
                   CTRL1060 salida
                   If salida = 1 Then 
                     salida=0
-                    SetForegroundWindow(hwnd)
+              '''      SetForegroundWindow(hwnd)
                     Exit Do
                   End If
                EndIf

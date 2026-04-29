@@ -1090,7 +1090,8 @@ Print #1,"k, canalsalida  ";k, canalx
          ''threadCmd = ThreadCall  ejecutarComando (comando)
       EndIf
    
-      If eventnumber()= BTN_METRONOMO And tic=0 Then
+      If eventnumber()= BTN_METRONOMO And tic=0  Then
+          Print #1,"RESPONDE EL BOTON DE MIERDA"
           terminar_metronomo=0
           threadmetronomo = ThreadCall metronomo()
           SetGadgetText (TEXT_GADGET,Str(tiempoPatron))  
@@ -1109,11 +1110,11 @@ Print #1,"k, canalsalida  ";k, canalx
       EndIf 
 
       If eventnumber()= BTN_MAS_RETARDO_M Then
-         If CANCIONCARGADA=TRUE Then
+         If CANCIONCARGADA=TRUE  Then
             retrasoMetronomoCan=retrasoMetronomoCan+1
             retrasoMetronomo=retrasoMetronomoCan
          EndIf
-         If ROLLCARGADO=TRUE Then
+         If ROLLCARGADO=TRUE Or TRACKCARGADO=TRUE Then
             retrasoMetronomoRoll=retrasoMetronomoRoll+1
             retrasoMetronomo=retrasoMetronomoRoll
          EndIf
@@ -1125,7 +1126,7 @@ Print #1,"k, canalsalida  ";k, canalx
            retrasoMetronomoCan=retrasoMetronomoCan-1
            retrasoMetronomo=retrasoMetronomoCan
         EndIf
-        If ROLLCARGADO=TRUE Then
+        If ROLLCARGADO=TRUE Or TRACKCARGADO=TRUE Then
            retrasoMetronomoRoll=retrasoMetronomoRoll-1
            retrasoMetronomo=retrasoMetronomoRoll
         EndIf

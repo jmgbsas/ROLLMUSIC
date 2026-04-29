@@ -1,3 +1,17 @@
+- 27-04-2026 0.379 la cuenta antes del metronomo no se solapaba bien con el metronomo
+   de la cancion se logro un paso suave y en ritmo por ahora. debido a imposibilidades tecnicas
+   yde conocimiento, no pude poner soundcall de metronomo antes como cuenta dentro de un loop 
+   de play hace que se acelere la secuencia en su primer compas..por eso se uso sonido de percusion
+   en canal  10 nota 77 para la cuenta antes del metronomo. Se jugó con detener barrido de pantalla 
+   en el 1er paso de la cuenta, esto evita la aceleracion, la pantalla no se queda en negro 
+   y el parpadeo ocurre menos (pinta la octava 6  nada mas, se jugo con las prioridades de los 
+   thread puede ser que es tan rapido algun thread que solo deja dibujar la octava 6). 
+   Se aumento las esperas en grabacion de los tracks de cancion sino afectaba y cancelaba el programa. 
+   Los retrassos en el inicio del metronomo se justo en 330 mseg en mi PC tanto para Cancion
+   como para un track aislado o Roll. Conviene ajustarlo para la PC que tengan. Para ello
+   generar un track manual con negras unos 3 o 4 compasas yv erificar que suenen al unisono
+   el metronomo con las negras de la secuencia.
+   Se uso \ROLLMUSIC_RUN\cancion\PANECO para las pruebas
 - 24-04-2026 0.378 FIX METRONOMO NO SONADA EN OTROS DIRECTORIOS QUE NO SEA RAIZ 
 - 23-04-2026 0.378 fix VOLUMEN METRONOMO DERECHO IZQUIERDO DE 0 A 100 CON SALTOS DE 5
   TENIA SALTOS ESPORADICOS DE DERECHA  A IZQUIERDA, MAL LA SUMA EN STRING SE REEMPLAZA POR 

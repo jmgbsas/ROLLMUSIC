@@ -72,7 +72,7 @@ dim Shared As String  ProgError(0 To 17)
 Dim Shared As Integer ContadorError=0
 'Dim As Long event=0
 
-#Include "RTMIDIDEC.BI"
+''#Include "RTMIDIDEC.BI" 25-04-2026 LO SAQUE Y COMPILA 
 
 
 On  Error GoTo errorControl

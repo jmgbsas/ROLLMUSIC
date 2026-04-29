@@ -941,7 +941,7 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
  ' las lineas
     '' ScreenSync ' a ver si aca es mejor....
      threadcreaPenta = ThreadCall creaPenta (c, Roll )
-    SetThreadPriority(threadcreaPenta , 20 )
+    SetThreadPriority(threadcreaPenta , 7 ) 'decia 1 lowest, 2 below normal
      ThreadWait threadcreaPenta 
     If *po = 99 then ''''saco esto no se porque 03-11-2025 Or *po=3 Then
        *po = hasta -1 ' 8 por ejemplo => *po=7
@@ -1153,12 +1153,11 @@ If instancia = ARG7_NOMBRECANCION  Then ' 04-03-2024 LOGRE LEVANTAR CANCION EN U
 '' carga de cancion porlinea de comandos
     cargacancion=CARGAR_NO_PUEDE_DIBUJAR 
     CargarPistasEnCancion ()
-    clickpista=SI  
     cargariniciotxt(NombreCancion, CANCION)
     instancia=ARG107_FICTICIO  ' ficticio para que entre al if de TAB pero  que no entre en el resto ni aca
     param.encancion=CON_CANCION
     RecalCompas(ritmo) 
-  
+    clickpista=SI 'abre tab una sola vez seposiciona en psita 1  
  EndIf
 EndIf
  
@@ -1196,9 +1195,12 @@ Else
 
 '--------------
    '''' If  terminar=0 And GrabarEjec=0 Then  '16-06-2022
-        
-        
+      If terminar=NO_TERMINAR_BARRE_PANTALLA Or Parar_De_Dibujar=NO Then
       ScreenLock()
+      Else 
+      ScreenUnLock() 
+
+      EndIf
           cairo_set_source_rgba c, 0, 0, 0, 1
           cairo_paint(c)
           cairo_set_line_width(c, 1)
@@ -1271,13 +1273,13 @@ Else
              botones(hWnd, cm, ANCHO,ALTO) ' este despues sinocrash
              cairo_stroke(cm) ' cm despues de c sino crash
            EndIf
-
+          
         EndIf
     
       
 
       ScreenUnLock() 
-   
+
     
 
 
@@ -1296,6 +1298,7 @@ Do  ' do nro 2
 '  playAll  play=0 y lo mismo en PlayAll no usar PlayCancion si esta
 ' ejecutando PlayAll de unsa sola pista...
 'Print #1,"1062  DO2 ROOLLOOP DESDE GrabarPenta "; desde,GrabarPenta
+'' esta table es distinta a la otra cual vale??
 ''#define THREAD_PRIORITY_LOWEST         // -2  
 ''#define THREAD_PRIORITY_BELOW_NORMAL   // -1
 ''#define THREAD_PRIORITY_NORMAL         // 0
@@ -1314,7 +1317,7 @@ If (pulsotab=1 Or pulsotab =-1) And (instancia=ARG0_EN_LINEA Or instancia= ARG10
 '  - 31: highest
 '  - 32: time critical
    clickpista=0
-   SetThreadPriority(thread3 , 20 ) ''THREAD_PRIORITY_HIGHEST ) decia 32 critical 
+   SetThreadPriority(thread3 , 30 ) 'decia 1 'THREAD_PRIORITY_HIGHEST ) decia 32 critical 
    ThreadWait thread3
    pulsotab=0 
    Exit Do
@@ -1429,6 +1432,7 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_P)   Then 'PARAR cursor MEJOR CON MOUSE 
  lockip=2
  cierroedit= 0
  cierroedit= 0
+terminar=NO_TERMINAR_BARRE_PANTALLA : Parar_De_Dibujar=NO
 EndIf
 
 If MultiKey(SC_LSHIFT) And MultiKey(SC_V)   Then ' ver parametros SIEMPRE ,,,roll durente play
@@ -2407,14 +2411,15 @@ Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
              s5=NO 'Necesita mas tiempo de cpu
 
     If CPlay=NO Then
-        Dim As Integer im=0
-        If metronomoPistas_si=3 Then 
-           retrasoMetronomo=retrasoMetronomoCan
-          For im=1 To 4  ' porquese escucha una solavez???
-            threadsound = threadCall soundcall 
-            duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
-          Next im
-        EndIf
+'' la cuenta queda dentro del play y no hace falta retrasoMetronomo! 27-04-2026
+''        Dim As Integer im=0
+''        If metronomoPistas_si=3 Then 
+''           retrasoMetronomo=retrasoMetronomoCan
+''          For im=1 To 4  ' porquese escucha una solavez???
+''            threadsound = threadCall soundcall 
+''            duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+''          Next im
+''        EndIf
         thread1 = ThreadCall  PlayCancion(Track())
         CPlay=SI
     EndIf
@@ -2518,14 +2523,15 @@ Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
 ' LLENARA EL ROLL GRAFICO QUE LA CANCION DE RTK ESTA USANDO
            print #1,"llama a playall"
            s5=NO 
-           Dim As Integer im=0
-           If metronomoPistas_si=3 Then 
-             retrasoMetronomo=retrasoMetronomoRoll 
-             For im=1 To 4  
-               threadsound = threadCall soundcall 
-               duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
-             Next im
-           EndIf
+'' la cuenta queda dentro del play y no hace falta retrasoMetronomo! 27-04-2026
+''           Dim As Integer im=0
+''           If metronomoPistas_si=3 Then 
+''           ''  retrasoMetronomo=retrasoMetronomoRoll 
+ ''            For im=1 To 4  
+ ''              threadsound = threadCall soundcall 
+ ''              duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
+ ''            Next im
+ ''          EndIf
            thread2 = ThreadCall  playAll(Roll)
            Playb=SI
              
@@ -2591,7 +2597,7 @@ esEjecucion=0:indicePos=0:superposicion=NO
  resumen=0 ' quita separacion de notas
       copiar=0
       vdur=0:vnota=0
- 
+ terminar=NO_TERMINAR_BARRE_PANTALLA : Parar_De_Dibujar=NO
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
 
@@ -4129,6 +4135,7 @@ If (ScreenEvent(@e)) Then
 If e.scancode = SC_TAB  And (instancia=ARG0_EN_LINEA Or instancia= ARG107_FICTICIO) And CANCIONCARGADA   Or clickpista=1   Then
    pulsotab=1
 ''   thread3= threadcall TABTAB() '''GetCurrentThread()
+'' esta table es distinta a la otra cual vale??
 ' - 1: lowest
 '  - between 2 and 15: below normal 
 '  - 16:  normal
@@ -7116,16 +7123,21 @@ Exit Do ' este exit do hace que ande el menu!!!
  
 Loop 'do nro 2 1168
 nnn=nnn+1
-If nnn=20  Then 'SI VALE 0 SE INTERRUMPE TODO no hay exit do, CADA nnn VUELVE A LA ACCION 
+' aumentando a 40 se fue el parpadeo del grafico y solo dibujaba la octava 6
+' hay que seguir probando...120 PARA GAS GUI
+If nnn=40  Then 'SI VALE 0 SE INTERRUMPE TODO no hay exit do, CADA nnn VUELVE A LA ACCION 
    nnn=0 ' ai nnn es muy grande sale poco y no trabaja
   Exit Do ''nnnn deb eser chico para q ocupe menos cpu pero deje trbajar
 EndIf
 ' DECIA 20 PUSE 10
+' con 20 parpadea y solo dibuja la octava 6 y se borraba a veces los controles de
+' dexto de volumen de metronomo...todo por esto? veremos mas pruebas
 'If nnn=20 And MAXPOS < 800 Then ' que loopee mas en el lop mas interno solo salga menos al loop externo
 '   nnn=0
 '  Exit Do
 'EndIf
 ' DECIA 100
+' esta era la correcta que usaba antes 40 lo de maxpos no se,,,,
 'If nnn=40 And MAXPOS > 800 Then ' que loopee mas en el lop mas interno solo salga menos al loop externo
 '   nnn=0
 '  Exit Do
@@ -7179,6 +7191,7 @@ Sub TABTAB ()
 ''SC_TAB USA NTK GLOBAL PERO AL CARGAR O COPIAR UNNU EVO TRACK SE NECESITA OTRO NOMBRE
 ' PARA APUNTAR A NTK ntkcarga por ejemplo
    cargaCancion=NO_CARGAR_PUEDE_DIBUJAR ' para que no entre mas luego de cargada la cancion
+
    s5=0  '11-06-2022
    Erase mel_undo, undo_acorde, undo_kant_intervalos
    mel_undo_k=0: ig=0:cnt_acor=0

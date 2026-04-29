@@ -60,13 +60,15 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="ROLLDIR FIX 24-04 0.378 AJUSTE VOLUMEN METRONOMO (vol canal izq o der o ambos ) "
+nroversion="fix 0.380 la cuenta inicial antes de metronomo se solapa mejor, parpadeo cancelacion al grabar cancion"
+' 0.379 BATCH DE ROLL O RTK ANDA OK SOLO NO HAY QUE PONER TEXTGADGET CON BATCH
+' SE CONDICIONA POR UBIRROLL >0
+' NNN=120 Y PRIORITY SE BAJA A 1 CON MUCHA PRIORIDAD BORRA ENSEGUIDA LA PANTALLA Y SOLO
+' SE ALCANZA A VER LA OCTAVA 6 CREO QUE ES ESO VEREMOS MAS PRUEBAS
 ' PROBLEMA AL ESCUCHAR UAN  SOLA PISTA SIN CANCION Y EL METRONOMO LLEGA UN MOM
 ' EN QUE EL DIBUJO DE PENTA SE PIERDE TITILA Y SE VA APRETAMDO P.
-' FIX AJUSTE LOS VOL METRONOMOS APUNTABAN A OTRO LADO 1064 EN VEZ DE 10631 SERIA ESO
+' FIX 378 AJUSTE LOS VOL METRONOMOS APUNTABAN A OTRO LADO 1064 EN VEZ DE 10631 SERIA ESO
 ' en desarrollo 0.378 AJUSTE VOLUMEN METRONOMO (vol canal izq o der o ambos )
-  '''seguir con los botones +/- y pasar de 1-32267 a 1-100 par ael osuario
-  '' saltos de 32767/100=327 ...327 sera la unidad de los saltos de volumen 
 ' 0.377 LISTO habilitar para rtk o roll aislado
 ' 0.376 fix grabacion de Roll
 ' "0.375 metronomo dentro del play Cancion, Coordinacion y ajuste  "
@@ -303,7 +305,7 @@ clickpista=SI
 Print #1, "///1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
 
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-      SetThreadPriority(threadloop , 20 )
+      SetThreadPriority(threadloop , 1 ) ' decia 1
       clickpista=SI 'abre tab una sola vez seposiciona en psita 1 
       EndIf 
     ''''''''RollLoop ( param)  ' SOLO PARA DEBUG

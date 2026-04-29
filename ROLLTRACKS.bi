@@ -753,7 +753,9 @@ mit.tp1 = graba4.pan
 mit.tp2  = graba4.pb
 tiempoPatron=CInt(mit.ST)
 Print #1,"CARGARtRACK TIEMPO PATRON ",tiempoPAtron
-SetGadgetText (TEXT_GADGET,Str(tiempoPatron)) 
+If UBIROLL=0 And UBIRTK=0 Then
+SetGadgetText (TEXT_GADGET,Str(tiempoPatron))
+EndIf 
 pmTk(ntk).tiempopatron=tiempoPatron
      If tiempoPatron = 0 Then 
         tiempoPatron = 60
@@ -2047,9 +2049,10 @@ Dim As Integer i1,i2,i3,Maxposicion,octavaDAcorde,verticalEnOctavaVacia,vertical
 If CANCIONCARGADA=FALSE And  NADACARGADO=TRUE Then
    ntk=0
 EndIf
-cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
-terminar=NO_TERMINAR_CON_DATOS_CARGADOS
-
+'cargaCancion=CARGAR_NO_PUEDE_DIBUJAR 'koko volver a ajustar 25-04-2026 pantalla ok
+'terminar=NO_TERMINAR_CON_DATOS_CARGADOS
+   terminar=NO_TERMINAR_BARRE_PANTALLA: Parar_De_Dibujar=NO 'koko volver a poner
+' pantalla ok al dar TAB con cancion y metronomo pero se detiene el playcancion porque¿?
 print #1,"-------------ARRANCA TRACKAROLL---------------------------------"
 print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulosTk(ntk)
 print #1,"(ntk).maxpos ", pmTk(ntk).MaxPos
@@ -2123,14 +2126,15 @@ Else
      EndIf
    EndIf
 EndIf
-   Erase Roll.trk , compas
+   Erase Roll.trk , compas 
 Print #1, "// trckaroll redim Roll MaxPos ",MaxPos
 '----------NO DIBUJAR ACA (terminar=NO_TERMINAR_BARRE_PANTALLA Or Parar_De_Dibujar=NO)
-   terminar=NO_TERMINAR_CON_DATOS_CARGADOS
-   Parar_De_Dibujar=SI    
-   cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
-   ReDim (Roll.trk ) (1 To CantTicks, NB To NA ) ' 27-02 ÇÇÇ
- 
+'   terminar=NO_TERMINAR_CON_DATOS_CARGADOS  koko 25-04-2026 pantalla ok
+'   Parar_De_Dibujar=SI                      koko 25-04-2026
+'   cargaCancion=CARGAR_NO_PUEDE_DIBUJAR     koko 25-04-2026
+  ReDim (Roll.trk ) (1 To CantTicks, NB To NA ) ' 27-02 ÇÇÇ DESCOMENTAR
+  ReDim  As paso compas (1 To CantTicks)
+  ''' va despues de la carga RecalCompas(ritmo)
 If  GUARDOEJEC=1 Then
     pmTk(0).ejec =1
 Else
@@ -2173,7 +2177,7 @@ EndIf
        ' SE PREPARA TRACK 0 PARA RECIBIR DATOS DE TRACK X,PUES PARA IR A ROLL
        ' SE LLENA TRACK 0 SIEMRPE.,,,
          
-       ReDim (Track(00).trk ) (1 To CantTicks, 1 To lim3)
+       ReDim (Track(00).trk ) (1 To CantTicks, 1 To lim3) '''DESCOMENTAR
        Print #1,"paso el redim de track 0" 
    EndIf
    nota=0:dur=0
@@ -2378,7 +2382,7 @@ terminar=NO_TERMINAR_BARRE_PANTALLA
 Parar_De_Dibujar=NO ' volvemos a dibujar en pantalla...18-04-2024
 cargacancion=NO_CARGAR_PUEDE_DIBUJAR ' " " 
 
-
+RecalCompas(ritmo) '''26-04-2026
 'hemos copiado el track ntk en el Track(0) que corresponde al Track asociado a Roll.
 '--------------------------------Track(0) fin
 '''curpos=0
@@ -2579,6 +2583,7 @@ Dim As Long porterror,nousar
 PARAR_PLAY_MANUAL=NO
 PARAR_PLAY_EJEC=NO    
 playloop=NO:playloop2=NO
+
 ' 1------------de playall fin---------
  'maxposTope de inicio.txt
 ' los nombres ya fueron cargados al inicio
@@ -2616,7 +2621,7 @@ For i=1 To tope
 
 Next i
 
-Dim As Integer i2,K, mayor,i0,xmouse,ymouse,finfin=0,finalloop=0,comienzoloop=0,Smayor
+Dim As Integer i2,K, Smayor,i0,xmouse,ymouse,finfin=0,finalloop=0,comienzoloop=0
 Dim As UByte i3=0, pis=0, pisnota=0
 
 Dim As Integer comienzo=1, final=0, vel=100,velpos =0,cntrepe=0,final2=0,comienzo2=0
@@ -2626,28 +2631,28 @@ Dim As Integer comienzo=1, final=0, vel=100,velpos =0,cntrepe=0,final2=0,comienz
 ' ojo si cambioaamos por mas octavas debo cambiar, igual el nro de tracks 32 
 ''Dim pasoCol (0 To 384) As vec  ' entrada de durciones a medida que barro una columna
 '------------determinamos el MAxPos de toda la cancion o sea la pista de mayor longitud
-mayor=maxposTope        'pmTk(1).MaxPos
+Smayor=maxposTope        'pmTk(1).MaxPos
 For i0=1 To Tope 
 Print #1,"CANCION ntk MAXPOS "; pmTk(i0).MaxPos
   If InStr(LCase(TitulosTk(i0)),".solo") = 0 Then
      Continue For
   EndIf   
 fileflush(-1)
- If mayor < pmTk(i0).MaxPos Then 
-    mayor=pmTk(i0).MaxPos
+ If Smayor < pmTk(i0).MaxPos Then 
+    Smayor=pmTk(i0).MaxPos
  EndIf  
  
 Next i0
 RecalCompas(ritmo) 
- Print #1,"CANCION Tope MAXPOS "; Tope, mayor  
+ Print #1,"CANCION Tope MAXPOS "; Tope, Smayor  
 
 Print #1,"cancion tiempoPatron ";tiempoPatron
-final=mayor 
-maxposTope=mayor 
+final=Smayor 
+maxposTope=Smayor 
 
 Print #1,"maxposTope ===> ", maxposTope
 fileflush(-1)
-Maxpos=mayor
+Maxpos=Smayor
 
 Print #1,"UBound(compas, 1) ",UBound(compas, 1)
 
@@ -2697,11 +2702,29 @@ Print #1,"TickUsuario "; tickUsuario
 Dim As float ajuste=1.0
 ''//////////////// PISTA //////////////
 Dim As Integer cntRtk,cntSolo,cnt_pistas_cancion_suenan
-' <=========CHEQUEOS PREVIOS DE LAS PISTAS ========>
-Print #1, "Tope encancion " ,Tope
 
+Print #1, "Tope encancion " ,Tope
+''27-04-2026 trampa para detener el barrido y el play a la vez pero no borrar la pantall
+'' y se quede esperando te cague...jaja
+If metronomoPistas_si=3  And disparo=0 Then '27-04-2026
+terminar=NO_TERMINAR_CON_DATOS_CARGADOS : Parar_De_Dibujar=SI
+  For x3 As Integer=1 To 4
+'' note , vel , canal , portsal ,i1, NroEvento
+'' el canal al pasar por el codigo es (canal -1) , el 10 es el 9  
+   noteon(77,120,9,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
+    If x3=1 then
+    terminar=NO_TERMINAR_BARRE_PANTALLA : Parar_De_Dibujar=NO
+    EndIf
+
+   duracion(Timer, (60/(tiempoPatron)) / FactortiempoPatron) 
+   noteoff(77,25, 9,0,1,1) 'si no le doy volumen al off no se escucha una mierda
+' ( note, vel,canal,portsal,i1,NroEvento )
+  Next x3
+EndIf
+
+' <=========CHEQUEOS PREVIOS DE LAS PISTAS ========>
  For pis=1 To tope '' EFECTOS
-  Print #1, "\\=>veo chequeos pis, CheckBox_GetCheck( cbxnum(pis)) ", pis, CheckBox_GetCheck( cbxnum(pis))  
+''  Print #1, "\\=>veo chequeos pis, CheckBox_GetCheck( cbxnum(pis)) ", pis, CheckBox_GetCheck( cbxnum(pis))  
 ' escribimos salidamidi
     If MIDIFILEONOFF = HABILITAR  Then 
        MidiDatos(pis).datos(1)="MTrk"
@@ -2719,7 +2742,7 @@ Print #1, "Tope encancion " ,Tope
        Print #1,"pista rechazada sin chequeo ",pis
        Continue For  
     EndIf
-    Print #1,"ON patch, pis, canal ", pmTk(pis).patch, pis, pmTk(pis).canalsalida 	
+ ''   Print #1,"ON patch, pis, canal ", pmTk(pis).patch, pis, pmTk(pis).canalsalida 	
  ' PARA  RTK ,  SOLOS se manejan el play SOlo
     Print #1,"ajuste de efectos para cbxnum pista nro ",pis
     ChangeProgram ( pmTk(pis).patch, pmTk(pis).canalsalida, pmTk(pis).portout)
@@ -2757,6 +2780,8 @@ Print #1, "Tope encancion " ,Tope
     EndIf
 
  Next pis
+ Sleep 1 ''<==== para que no desaparesca el cursor de pntalla | 
+
  If cnt_pistas_cancion_suenan = 0 And cntSolo > 0 And CheckBox_GetCheck( cbxsolo(pis))= 1 Then
 ' SIEMPRE DEBE EJECUTARSE UNA PISTA DE CANCION QUE ES LA GUIA, SI QUEREMOS ESCUCHAR UN SOLO 
 ' DEBERIA ESTAR CHEQUEADO UNA  PISTA DE CANCION Y EL VOL=0. SINO MEJOR DESDE UN DOBLE CLICK
@@ -2789,6 +2814,8 @@ Print #1,"TickUsuario "; tickUsuario
 ''" ---------------000000000000000000000-----------------"
 ''//////////////// L O O P E O  JPLY HORIZONTAL ////////////////////////////////////////////////
 ''" ---------------000000000000000000000-----------------"
+'' mandamos 4 pulsos ANDA PERO SE ANULA LA SALIDA DE AUDIO DE LA MELODIAO LAMELODIA SE ADELANTA
+'' O PARPADEA EL GRAFICO SOUNDACLL NO SE PUEDE USAR DENTRO DE ESTA SUBRUTINA!
 
 
  For jply=comienzo To final
@@ -2816,6 +2843,18 @@ kNroCol= Int(jply/NroCol)
      posicion=jply
      curpos=0
    EndIf
+''''''''CONTROL METRONOMO SOLO debe DISPARAR UNA VEZ
+'' otra forma a implementar es con jlpy el indice contar1 mandar soundcall luego  96 para negra
+'' enviar otro soundcall ya asi el jply es el metronomo !!! ek problema actual es que no puedo llamar 
+''antes o si? probando
+    If metronomoPistas_si=3 And disparo=0 Then
+        '''retrasoMetronomo=retrasoMetronomoCan
+        terminar_metronomo=0
+        disparo=1 
+        threadmetronomo = ThreadCall metronomo()
+    EndIf
+
+''''''''
 
  '  Print #1," cancon jply velpos "; jply, velpos
 ''' /////////////////////// L O O P DE P I S T A S /////////////////////////////////// 
@@ -2852,7 +2891,7 @@ kNroCol= Int(jply/NroCol)
         
     Else
 
-      If Compas(jply).nro = -1 Then
+      If Compas(jply).nro = -1 Then '''FALLA CON EXCEPCION
         velpos=vfuerte * ajuste
       EndIf
       If Compas(jply).nro = -2 Then
@@ -2946,15 +2985,6 @@ kNroCol= Int(jply/NroCol)
   '          NroEvento=NroEventoPista(pis)
 
             noteon CUByte(Notapiano),vel,canal,portsal,pis,NroEvento
-''''''''CONTROL METRONOMO SOLO debe DISPARAR UNA VEZ
-    If metronomoPistas_si=3 And disparo=0 Then
-        retrasoMetronomo=retrasoMetronomoCan
-        terminar_metronomo=0
-        disparo=1 
-        threadmetronomo = ThreadCall metronomo()
-    EndIf
-
-''''''''
 
          EndIf
          If Track(pis).trk(jply,i1).onoff= 1 Then
@@ -2996,7 +3026,7 @@ kNroCol= Int(jply/NroCol)
            cntrepe=Track(pis).trk(jply,i1).vol ' nro repeticiones en vertical +1
         EndIf
         If cntrepe =0 Then
-           final2=Mayor 
+           final2=SMayor 
            If finalloop > 0 Then
               final2=finalloop
            EndIf
@@ -3030,8 +3060,8 @@ kNroCol= Int(jply/NroCol)
        If playloop=SI Then
          jply=comienzoloop -1
        Else
-         final=Mayor 
-         final2=Mayor 
+         final=SMayor 
+         final2=SMayor 
          jply=final2 
        EndIf
     EndIf
