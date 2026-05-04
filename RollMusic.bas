@@ -60,7 +60,8 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="fix 0.380 la cuenta inicial antes de metronomo se solapa mejor, parpadeo cancelacion al grabar cancion"
+nroversion="0.381 FIX no sonaba metronomo sin cancion, parpadeo, 2 modos de abrir archivos en explorador"
+' 0.380 la cuenta inicial antes de metronomo se solapa mejor, parpadeo cancelacion al grabar cancion
 ' 0.379 BATCH DE ROLL O RTK ANDA OK SOLO NO HAY QUE PONER TEXTGADGET CON BATCH
 ' SE CONDICIONA POR UBIRROLL >0
 ' NNN=120 Y PRIORITY SE BAJA A 1 CON MUCHA PRIORIDAD BORRA ENSEGUIDA LA PANTALLA Y SOLO
@@ -133,7 +134,7 @@ nroversion="fix 0.380 la cuenta inicial antes de metronomo se solapa mejor, parp
 ' para saber si   ROLLGRAFICO ESTA LEVANTADO O NO, USAMOS Screenbuffer !!!!!
 ' FUTURO APLICARLO CUANDO SEA NECESARIO 09-05-2025
 '------------------- 
-acercade = "RollMusic "+ nroVersion +" Jose M Galeano, Buenos Aires Argentina 2021-2025,. Ejecuta secuencias " + _
+acercade = "RollMusic "+ nroVersion +" Jose M Galeano, Buenos Aires Argentina 2021-2026,. Ejecuta secuencias " + _
  "entrada por pasos usando algoritmos con ticks de tiempos. " + _
  "Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
  "manual o por ejecucion. OS:Windows 64bits, " + _
@@ -260,7 +261,7 @@ abrirPortoutEjec(100)
 '' SOLA Y MANDARIA SU MENSAJE
 
 '-----------------
-
+SetStateMenu(hmessages,1118,BatchGraficoOCtrl)
 Do
 
   COMEDIT=LECTURA
@@ -473,7 +474,8 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
       If terminar=TERMINAR_POR_LOOP_PRINCIPAL Then
          Exit Do
       EndIf  
-      If  ubiejec = 1 Then  
+      If  ubiejec = 1 Then
+          ubiejec =2  
 '''30-03-2026 LEVANTAR UN *. EJEC DEDE EL EXPLORADOR
         Print #1,"5 Instancia ",Instancia
         Dim lugar As string 
@@ -483,7 +485,7 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
          CTRL10165 (lugar,"BATCH")
             DirEjecSinBarra = lugar
             Print #1,"entro por ubiejec > 0 ",lugar
-            ubiejec =2 ' vamos a dar play automatico
+             ' vamos a dar play automatico
             SetForegroundWindow hwndC
             PISTASEJECSELECCIONADA=1 
             CheckBox_SetCheck( cbxejec(1),1)
@@ -493,17 +495,45 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
          SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_PRESIONADO)
          SetGadgetstate(BTN_MIDI_PARAR,BTN_LIBERADO)
          Parar_De_Dibujar=NO
-          ' If ubiejec=2 Then
-           '    SetForegroundWindow hwndC
-           '    PISTASEJECSELECCIONADA=1 
-              ' CheckBox_SetCheck( cbxejec(1),1)
-           '    ubiejec = 0
-               ''playEj=NO
-              '''  Exit Select
-          ' EndIf 
+         ntoca =1
+       EndIf  
+'-------------------------------------------------
+      If  ubionline = 1 And ubiejec=0 Then
+          ubionline =0
+         SetForegroundWindow hwndC
+'''30-03-2026 LEVANTAR UN *.ROLL O RTK DESDE EL EXPLORADOR
+        Print #1,"5 Instancia ",Instancia
+        nombre=Command(1)
+        titulosTk(0) =nombre
+        Print #1,"nombre ",nombre
+
+        If BatchGraficoOCtrl=4 Then ''un roll
+           CargaArchivo(Roll, 3) ' lo pone en 2 ver ubiroll
+           ubiroll=0:ubirtk=0
+           Sleep 100
+           thread2 = ThreadCall  playAll (Roll)
+           playB=SI
+           BatchGraficoOCtrl=3 ' condicion inicial
+        EndIf
+        If BatchGraficoOCtrl=5 Then '' un rtk
+           CargarTrack(Track(),0, 3)
+           ROLLCARGADO=TRUE   
+           TrackaRoll(Track(),0,Roll,"")
+           ubirtk=0: ubiroll=0 
+           Sleep 100
+           thread2 = ThreadCall  playAll (Roll)
+           ubirtk=0: ubiroll=0 
+           playB=SI
+           BatchGraficoOCtrl=3  'condicion inicial
+        EndIf
+
+         SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_PRESIONADO)
+         SetGadgetstate(BTN_ROLL_PARAR,BTN_LIBERADO)
+         Parar_De_Dibujar=NO
 
        EndIf  
-   
+
+'---------------------------------------------------   
       If tocatope < 32   Then           
          For k=1 To tocatope+1
          ' al inicio lim sup del for = 1   

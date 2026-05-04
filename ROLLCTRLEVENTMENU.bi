@@ -1097,11 +1097,12 @@ EndIf
             SetForegroundWindow(hwnd)
             EndIf              
 '-----------------------------------------------------------------------
-           Case 1112 '<========= cambiode a escala Alternativa de la Principal
-              CTRL1112()
+           Case 1112 '<========= cambio de a escala Alternativa de la Principal
+             CTRL1112()
              If abrirRollCargaMidi=2 Then
-            SetForegroundWindow(hwnd)  
-            EndIf  
+               SetForegroundWindow(hwnd)  
+             EndIf
+'-----------------------------------------  
            Case 1113 ' usar metronomo
 
              metronomo_si=GetStateMenu(hmessages,1113)
@@ -1135,10 +1136,30 @@ EndIf
            Case 1115
            terminar_metronomo=1
            ThreadDetach(threadmetronomo)
+'-----------------
            Case 1116
                 BACKUP=SI
+'-----------------
            Case 1117
                 BACKUP=NO
+'-------------
+           Case 1118
+Print #1, "AL LLEGAR A Case 1118 ",BatchGraficoOCtrl
+             BatchGraficoOCtrl=GetStateMenu(hmessages,1118)
+Print #1, "1118 AL OBTENER EL ESTADO Case 1118 ",BatchGraficoOCtrl
+              Select Case BatchGraficoOCtrl 
+                     Case  3 
+                    BatchGraficoOCtrl=GRAFICO '0  
+Print #1,"1118 SELECCION DE GRAFICO 0"
+                    SetStateMenu(hmessages,1118,GRAFICO)
+                     Case 0
+                    BatchGraficoOCtrl=CONTROL '3
+Print #1,"1118 SELECCION DE CONTROL 3"
+                    SetStateMenu(hmessages,1118,CONTROL)
+
+              End Select
+Print #1, "1118 AL CAMBIAR EL ESTADO POR  SELECT Case 1118 ",BatchGraficoOCtrl
+
            Case 1200 'Seleccionar  Puertos MIDI-IN SOLO PARA PORTS DE EJECUCION POR AHORA
 ' seleccion de portin , 2:portin. ntkp:salida
 ' ->  npi: numero port entrada DIFERENCIA PARA ABAJO

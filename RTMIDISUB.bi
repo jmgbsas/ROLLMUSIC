@@ -899,7 +899,7 @@ Dim As float ajuste=1.0
 '*************************************************************************************
 portsal=pmTk(0).portout  '''no vamos a cambiar en la secuencia el midiout ni canal o si??
 canal=pmTk(0).canalsalida
-
+disparo=0
 For jply=comienzo To final
 ''Print "*******************************************************************"
 ''Print "AL TERMINAR EL PLAY APARECE EL MENU. CON SHIFT-M APARECERA DE NUEVO"
@@ -976,9 +976,9 @@ EndIf
 '
 ''''''''INICIO DE METRONOMO AL COMIENZO DE LA SECUENCIA HAYA O NO NOTAS
     If metronomoPistas_si=3 And disparo=0 Then
-   ''     Print #1,"LLAMA A METRONOMO EN PLAYALL!!! "
+        Print #1,"LLAMA A METRONOMO EN PLAYALL!!! "
         terminar_metronomo=0
-       ''' retrasoMetronomo=retrasoMetronomoRoll
+        retrasoMetronomo=retrasoMetronomoRoll
         disparo=1 
         threadmetronomo = ThreadCall metronomo()
     EndIf
@@ -3440,6 +3440,8 @@ Dim  As Integer pista , k
 'Print #1,"========ENTRO A METRONOMO """
 
 If CANCIONCARGADA=FALSE And ROLLCARGADO=FALSE Then
+Print #1,"ENTRA POR ACA SIN NINGUN PLAY "
+ 
   Do ' metronomo libre comun incluye los ejec
   
     threadsound = threadCall soundcall
@@ -3453,13 +3455,22 @@ If CANCIONCARGADA=FALSE And ROLLCARGADO=FALSE Then
     EndIf
 
   Loop
-Else 
+Else
+Dim MAXM As Integer
+If CANCIONCARGADA=TRUE Then
+  MAXM=MaxPosTope
+EndIf
+If ROLLCARGADO=TRUE Then
+ MAXM=pmTk(0).MaxPos
+EndIf 
+Print #1,"ENTRA POR ACA EN PLAY ROLL MaxPos ",MAXM '' no es cancion
+
+Print #1,"ROLLDIR+ recur\RimShot.wav" , ROLLDIR+"recur\RimShot.wav"
   Dim jmetro As Integer
-  For jmetro=1 To MaxPosTope 
+  For jmetro=1 To MAXM 
     If  jmetro=jply Then   
         threadsound = threadCall soundcall
         duracion(Timer, (60/(tiempoPatron)) / FactortiempoPatron) 'jmgtiempo
-        PlaySound(NULL, NULL, 0)
         If terminar_metronomo=1 Then
            terminar_metronomo=0
            tic=0
@@ -3577,7 +3588,9 @@ Next ip
 Sleep 5
 '------------------------------
 Print #1,"PlayTocaAll 1"
-ntoca=*nt  ''' almacena tocatope la cant max de ejecuciones o archivos cargados
+If ubiejec=0 Then
+  ntoca=*nt  ''' almacena tocatope la cant max de ejecuciones o archivos cargados
+EndIf
 Dim  As Long j=0,k=0,partes,cuenta=0,pis=0
 Dim As UByte dato1,dato2, dato3 
 ReDim MidiDatos(1) As miditxtsalida

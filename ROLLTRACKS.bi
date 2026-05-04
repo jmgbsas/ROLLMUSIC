@@ -2721,7 +2721,7 @@ terminar=NO_TERMINAR_CON_DATOS_CARGADOS : Parar_De_Dibujar=SI
 ' ( note, vel,canal,portsal,i1,NroEvento )
   Next x3
 EndIf
-
+terminar=NO_TERMINAR_BARRE_PANTALLA : Parar_De_Dibujar=NO
 ' <=========CHEQUEOS PREVIOS DE LAS PISTAS ========>
  For pis=1 To tope '' EFECTOS
 ''  Print #1, "\\=>veo chequeos pis, CheckBox_GetCheck( cbxnum(pis)) ", pis, CheckBox_GetCheck( cbxnum(pis))  
@@ -2835,6 +2835,7 @@ Print #1,"TickUsuario "; tickUsuario
       Sleep 5
       PARAR_PLAY_MANUAL=NO
       Parar_De_Dibujar=NO
+      terminar_metronomo=SI
       Exit For
    EndIf  
   
@@ -3071,6 +3072,7 @@ kNroCol= Int(jply/NroCol)
  Next jply
  
 disparo=0
+
 terminar_metronomo=1 ' termina metrono si estaba andando
 '/////////////////////////////F I N  L O O P //////////////////
 If MIDIFILEONOFF = HABILITAR Then 

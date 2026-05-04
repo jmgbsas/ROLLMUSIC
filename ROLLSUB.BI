@@ -3224,7 +3224,7 @@ Sub CargaArchivo(Roll As inst, ByRef ubiroll As Integer)
 ' a rolldat. Si es version vieja el 1er ubyte sera distinto de 222 , si es 222 es la
 ' nuev version.
 retrasoMetronomo=retrasoMetronomoRoll
-If ubiroll = 0 Then 
+If ubiroll = 0 Or ubiroll=3  Then 
 TextGadget(TEXT_METRONOMO_RETARDO,108, 750,100,20,"Retraso M "+Str(retrasoMetronomo))
 EndIf
 On Local Error GoTo saledeaca 
@@ -4008,8 +4008,8 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
         ' Print #1,"llama a playall"
           If Play=NO Then
              Dim As Integer im=0
+             retrasoMetronomo=retrasoMetronomoRoll
              If metronomoPistas_si=3 Then
-                retrasoMetronomo=retrasoMetronomoRoll 
                For im=1 To 4  ' porquese escucha una solavez???
                 threadsound = threadCall soundcall 
                 duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
@@ -5340,7 +5340,7 @@ Print #1,"FIN CAMBIARDIM "
 ' los datos semueven pero queda nmal hay que buscar un algoritmo para que
 ' quede todo como antes siel eje y se amplia los datos deben estr e4nel mismo numero
 'de eje y de antes o sea si etoy en 4 a 8 los numeros de eje y serian
-
+terminar=NO_TERMINAR_BARRE_PANTALLA : Parar_De_Dibujar=NO
 
      ''ReDim (Roll.trk ) ( NB To NA,1 To CantTicks) ' temporario     
 'no se puede reemplaar en el main del programa por cuestion de scope
@@ -5655,7 +5655,7 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
       Exit Select
    EndIf
 
-   If menuOldStr="[VOLEJEC]" And pmEj(ntkp).versionEJEC=2  Then ' version 1 de ejec no tiene volumen
+   If menuOldStr="[VOLEJEC]" Then 
       If ntkp=0 Then ntkp=1  EndIf
       default=Str(pmEj(ntkp).vol)
       If pmEj(ntkp).vol=0 Then 
@@ -5668,8 +5668,6 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
       Print #1,"NTKP EN VOLEJEC SEL, pmEj(ntkp).vol ", ntkp, pmEj(ntkp).vol
       Print #1," VOLUMEN AJUSTADOO ->> "; valorvol
       Globalvol=CUByte(valorvol)
-   Else 
-       messBox ("volumen version 1 ", "No se ajusta Vol global solo suena el de la grabacion")
    EndIf
    menuOldStr=""   
  Case "[RITMO]"
@@ -7998,6 +7996,10 @@ Dim  As Integer i3
             ndeltaip=inc_Penta
          EndIf
          nanchofig=anchofig
+     Print #1,"1) BatchGraficoOCtrl ",BatchGraficoOCtrl
+     If BatchGraficoOCtrl=6 Then ' LEVANTE ROLLMUSIC.EXE COMO PROGRAMA PERO EL BatchGraficoOCtrl=3 DEBE CONSERVARSE 
+       BatchGraficoOCtrl=3 ' RECUPERO LO QUE ESTABE EN ROLLMUSIC.INI ORIGINALMENTE
+     EndIf
          Print #ffile,font , " font"
          Print #ffile,nmxold, " mxold "
          Print #ffile,nmyold, " myold"
@@ -8009,11 +8011,12 @@ Dim  As Integer i3
          Print #ffile,nVerCifradoAcordes, "VerCifradoAcordes"
          Print #ffile,retrasoMetronomoCan,"retrasoMetronomoCan"
          Print #ffile,retrasoMetronomoRoll,"retrasoMetronomoRoll"
+         Print #ffile,BatchGraficoOCtrl,"BatchGraficoOCtrl"
         FileFlush (ffile)         
          Close ffile
          Sleep 100
     EndIf
-
+Print #1,"BatchGraficoOCtrl GRABADO EN ROLLMUSIC.INI ",BatchGraficoOCtrl
  Dim As Integer nroproc, ppp=0
 Dim As String linea
  

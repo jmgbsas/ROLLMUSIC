@@ -231,6 +231,108 @@ Const NEWLINE = !"\n"
 ' Si deseo un secuecnia de CantMin minutos
 tempo=121  ' negra=120
 CantMin=15
+'--------------LECTURA ROLLMUSIC.INI ADELANTADO
+ 
+Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig,_ 
+ sVerCifradoAcordes, sretrasoMetronomoCan,sretrasoMetronomoRoll,sBatchGraficoOCtrl
+
+ffini=3
+ If  Open (ROLLDIR + "RollMusic.ini" For Input As #ffini) <> 0 Then
+ ' si no existe la creo
+     Open ROLLDIR + "RollMusic.ini" For Append As #ffini
+      
+ End If
+
+Line Input #ffini, sfont
+Line Input #ffini, smxold
+Line Input #ffini, smyold
+Line Input #ffini, sancho
+Line Input #ffini, salto
+Line Input #ffini, sdeltaip
+Line Input #ffini, sVerEscalasAuxiliares
+Line Input #ffini, sanchofig
+Line Input #ffini, sVerCifradoAcordes
+Line Input #ffini, sretrasoMetronomoCan
+Line Input #ffini, sretrasoMetronomoRoll
+Line Input #ffini, sBatchGraficoOCtrl
+'Print #1,"sfont, smxold, smyold,sANCHO,sALTO..  ",sfont, smxold, smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
+
+CLOSE ffini
+
+Sleep 100
+
+
+nfont=ValInt(sfont)
+nmxold=ValInt(smxold)
+nmyold=ValInt(smyold)
+nancho=ValInt(sancho)
+nalto=ValInt(salto)
+ndeltaip=ValInt(sdeltaip)
+nVerEscalasAuxiliares=ValInt(sVerEscalasAuxiliares)
+nanchofig =CSng(sanchofig)
+nVerCifradoAcordes=ValInt(sVerCifradoAcordes)
+nretrasoMetronomoCan=ValInt(sretrasoMetronomoCan)
+nretrasoMetronomoRoll=ValInt(sretrasoMetronomoRoll)
+BatchGraficoOCtrl=ValInt (sBatchGraficoOCtrl)
+
+Print #1,"EN LA CARGA DE ROLLMUSIC BatchGraficoOCtrl ",BatchGraficoOCtrl 
+'   BatchGraficoOCtrl=CTRL     3
+'   BatchGraficoOCtrl=GRAFICO  0 
+
+If nfont > 20 Or nfont < 10 Then
+   nfont = 18
+EndIf
+If nanchofig > 5 Then
+   nanchofig = 1.5
+EndIf  
+Print #1,"nanchofig " ,nanchofig
+If nfont > 0 Then
+  font=nfont
+EndIf
+If nmxold <> 0 Then
+   mxold=nmxold
+EndIf
+If nmyold <> 0 Then
+   myold=nmyold
+EndIf
+
+If ndeltaip <> 0 Then
+   inc_Penta=ndeltaip
+EndIf
+If  nretrasoMetronomoCan <> 0 Then
+    retrasoMetronomoCan= nretrasoMetronomoCan
+      
+EndIf
+If  nretrasoMetronomoRoll <> 0 Then
+    retrasoMetronomoRoll= nretrasoMetronomoRoll
+EndIf
+
+If nanchofig <> 0 Then
+   anchofig=nanchofig
+
+'If font >=5 And font <= 34 Then
+'   anchofig= mispx(font-4,2)
+'Else
+'   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
+'EndIf
+
+   
+'   gap1= anchofig* 6 ''2315/1000
+'   NroCol =  (ANCHO / anchofig ) + 6
+'   gap2= (914 * gap1) /1000 ' 74 default
+'   gap3= (519 * gap1) /1000 ' 42 default
+
+
+   gap1= anchofig*6  ''' porque tanto??
+   gap2= (914 * gap1) /1000 ' 74 default
+   gap3= (519 * gap1) /1000 ' 42 default
+   NroCol =  (ANCHO / anchofig ) + 4
+   ANCHO3div4 = ANCHO * 3/4 
+EndIf
+'Print #1,"NROCOL AL INICIO, ANCHO, anchofig ",NroCol, ANCHO, anchofig
+
+
+'------------------------------------------------
 'NotaBaja=1 : NotaAlta=128
 
 Print #1, "__FB_ARGV__ ",__FB_ARGV__
@@ -240,6 +342,13 @@ Print #1, "__FB_ARGC__ ",__FB_ARGC__
 
 Print #1,"__FB_ARGC__ ", __FB_ARGC__
 Dim As Integer com_usarmarco =0
+If Command(1) ="" Then
+   If BatchGraficoOCtrl = 3 Then
+      BatchGraficoOCtrl = 6  'sigue en 6 porque no cambia de estado en GUI??
+   Else
+      BatchGraficoOCtrl=0
+   EndIf
+EndIf
 For ix = 0 To __FB_ARGC__
   Print #1, "arg "; ix; " = '"; Command(ix); "'"''
 
@@ -252,14 +361,32 @@ For ix = 0 To __FB_ARGC__
     ubiejec=1 ''cargar  
     titulosEj(1)=Command(1)
     Instancia=ARG0_EN_LINEA 
- Print #1,"Instancia= ",Instancia
- Print #1,"TITULO(1)  ",titulosEj(1)
+   Print #1,"Instancia= ",Instancia
+   Print #1,"TITULO(1)  ",titulosEj(1)
+      ubionline=0
        Exit For   
-  EndIf 
-
+ EndIf 
+ If (ubirtk >0 Or ubiroll> 0 ) And BatchGraficoOCtrl =3 Then
+    If ubiroll > 0 Then
+       BatchGraficoOCtrl = 4 ' es un roll
+    EndIf
+    If ubirtk > 0 Then
+       BatchGraficoOCtrl = 5 ' es un rtk
+    EndIf
+ 
+   ubirtk=0: ubiroll=0
+   ubionline=1
+   ntk=0
+   titulosTk(0)=Command(ix)
+   instancia = ARG0_EN_LINEA
+ EndIf
+ 
 ' esto es por comando interno no fisico con click
 ''' ubicancion=InStr(LCase(Command(ix)),"@dir")
-
+' este caso de dar click en explorador a un archivo rtk o roll tambien podria 
+' levantar la ventana inicial sin grafico y reproducir! dos opciones serian
+'(tambien podriamos ver si se puede dar click a una carpeta y decirle que la reprodusca con
+' RollMusic.exe )
  If ubirtk > 0 or ubiroll>0  Then
    ntk=0 
    titulosTk(0)=Command(ix)
@@ -273,6 +400,7 @@ For ix = 0 To __FB_ARGC__
  Print #1,"ubiroll ",ubiroll
     'sigue en roolloop principio
  EndIf
+'-----------
  If ix=2 And Command(ix) > "" Then
   hasta= CInt (Command(ix))
  ' pmTk(ntk).hasta=hasta
@@ -621,99 +749,7 @@ gap3= (519 * gap1) /1000 ' 42 default
 
 print #1,"gap1 ",gap1
 '---------
- 
-Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig,_ 
- sVerCifradoAcordes, sretrasoMetronomoCan,sretrasoMetronomoRoll
-Dim openfalla As integer
-ffini=3
- If  Open (ROLLDIR + "RollMusic.ini" For Input As #ffini) <> 0 Then
- ' si no existe la creo
-     Open ROLLDIR + "RollMusic.ini" For Append As #ffini
-      
- End If
-
-Line Input #ffini, sfont
-Line Input #ffini, smxold
-Line Input #ffini, smyold
-Line Input #ffini, sancho
-Line Input #ffini, salto
-Line Input #ffini, sdeltaip
-Line Input #ffini, sVerEscalasAuxiliares
-Line Input #ffini, sanchofig
-Line Input #ffini, sVerCifradoAcordes
-Line Input #ffini, sretrasoMetronomoCan
-Line Input #ffini, sretrasoMetronomoRoll
-'Print #1,"sfont, smxold, smyold,sANCHO,sALTO..  ",sfont, smxold, smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
-
-CLOSE ffini
-
-Sleep 100
-
-
-nfont=ValInt(sfont)
-nmxold=ValInt(smxold)
-nmyold=ValInt(smyold)
-nancho=ValInt(sancho)
-nalto=ValInt(salto)
-ndeltaip=ValInt(sdeltaip)
-nVerEscalasAuxiliares=ValInt(sVerEscalasAuxiliares)
-nanchofig =CSng(sanchofig)
-nVerCifradoAcordes=ValInt(sVerCifradoAcordes)
-nretrasoMetronomoCan=ValInt(sretrasoMetronomoCan)
-nretrasoMetronomoRoll=ValInt(sretrasoMetronomoRoll)
-
-If nfont > 20 Or nfont < 10 Then
-   nfont = 18
-EndIf
-If nanchofig > 5 Then
-   nanchofig = 1.5
-EndIf  
-Print #1,"nanchofig " ,nanchofig
-If nfont > 0 Then
-  font=nfont
-EndIf
-If nmxold <> 0 Then
-   mxold=nmxold
-EndIf
-If nmyold <> 0 Then
-   myold=nmyold
-EndIf
-
-If ndeltaip <> 0 Then
-   inc_Penta=ndeltaip
-EndIf
-If  nretrasoMetronomoCan <> 0 Then
-    retrasoMetronomoCan= nretrasoMetronomoCan
-      
-EndIf
-If  nretrasoMetronomoRoll <> 0 Then
-    retrasoMetronomoRoll= nretrasoMetronomoRoll
-EndIf
-
-If nanchofig <> 0 Then
-   anchofig=nanchofig
-
-'If font >=5 And font <= 34 Then
-'   anchofig= mispx(font-4,2)
-'Else
-'   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
-'EndIf
-
-   
-'   gap1= anchofig* 6 ''2315/1000
-'   NroCol =  (ANCHO / anchofig ) + 6
-'   gap2= (914 * gap1) /1000 ' 74 default
-'   gap3= (519 * gap1) /1000 ' 42 default
-
-
-   gap1= anchofig*6  ''' porque tanto??
-   gap2= (914 * gap1) /1000 ' 74 default
-   gap3= (519 * gap1) /1000 ' 42 default
-   NroCol =  (ANCHO / anchofig ) + 4
-   ANCHO3div4 = ANCHO * 3/4 
-EndIf
-'Print #1,"NROCOL AL INICIO, ANCHO, anchofig ",NroCol, ANCHO, anchofig
-
+ ' aca estab la lectura de rollmusic.ini muy tarde
 '---------
 If mxold=0 And myold=0 Then
 GetMouse mxold,myold, , MouseButtons

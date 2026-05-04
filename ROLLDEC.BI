@@ -70,26 +70,22 @@ Dim HtmlHelpA As Function (hwndCaller As HWND,pszFile As LPCSTR,uCommand As UINT
 Dim HTMLHelp  As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
 Dim HH_POPUP  As Function ( hWndCaller As hwnd,  pszFile As String,  ByVal uCommand As Integer,  dwData As DWORD_PTR) As Integer
 
-'Declare Sub menu (c0 AS cairo_t Ptr,c AS cairo_t Ptr,n As Integer,menuNro As Integer)
+
 declare Sub botones(hWnd As HWND,cm As cairo_t Ptr,x As Integer,y As integer)
-'Declare Sub menuAcc (c AS cairo_t Ptr)
+
 Declare Sub moveresto ()
 Declare Sub movedato ()
-'Declare sub calcCompas(ByRef j As Integer)
+
 Declare Sub mayorDurEnUnaPosicion (ByRef posn as integer)
 Declare Sub organizaCompases()
 Declare Function KeyPress(Key As Integer) As Integer
-' 128 track,16 canales o sea cada canal con 8 voces
-'Declare Sub cursor(c AS cairo_t Ptr, ByRef n As Integer, ByRef nro As Integer)
-'Declare Function print_text(ByVal x As Integer, ByVal y As Integer, ByRef text As String, _
-'        ByVal font As FT_Face, ByVal size As Integer, ByVal col As UInteger ) As Integer
 Declare Sub separarDur(ByRef j As Integer,ByRef DUR As ubyte,  partes() As Integer,  ByRef cantPartes As Integer, ByRef falta As Integer )
 Declare Sub menugrafico(c0 AS cairo_t Ptr, Cantitems As Integer, items() As String )
 Declare Sub CambiarDim(redi As integer)
-' para IUP textbox 
+
 Declare Sub dialogoText(cadena As string)
 Declare Sub velocidades(j as integer)
-Declare Sub playthread()
+Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As Integer)
 Declare Function GrabarRoll (funcion As String) As integer
 Declare Sub abrirSecuencia (nf As integer)
 Declare Sub GrabarTrack   (ntk As integer) 
@@ -1218,7 +1214,7 @@ Static Shared  As Integer jgrb=0, jgrbRoll
 Declare Sub PlayCancion(Track() As sec)
 Declare Sub PlayUnoSolo(SolX As sec, Spis As Integer)
 Declare Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst,funcion As string)
-Declare Sub CargaArchivo(Roll As inst, ByRef ubiroll As integer)
+
 Declare Sub ReCalCompas(ritmo As integer)
 Declare Sub menoryMayorEnColumna (Roll As inst, ejex As integer, Byref menor As ubyte, ByRef mayor As UByte,ByRef i1men As Integer, ByRef i1may As integer)
 Declare Sub RollaTrack(Track() As sec, ntk As Integer,Roll As inst)

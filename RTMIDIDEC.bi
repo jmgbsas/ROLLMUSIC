@@ -8,8 +8,8 @@
 
 
 Declare Function restar (notaRoll As Integer) As Integer
-Declare Sub PlayRoll () 
-'declare Sub playAll() 
+ 
+Declare Sub playAll(Roll As inst)
 Declare Sub duracion (old_time As double,tiempoFigura As double)
 Declare Sub pedaloff(portsal As ubyte)
 Declare Sub allSoundoff(canal As UByte,portsal As ubyte)

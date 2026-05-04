@@ -185,7 +185,10 @@ Const DesplegarMenuModifClickDerecho =1
 Const SeleccionarComandoClickIzquierdo = 2
 Const lim2=12
 Const lim3=25
-'----
+'---- QUE USAR PARA CARGAR EN EXPLORADOR UN ROLL O RTK
+Const GRAFICO=0
+Const CONTROL=3
+'-----------
 Dim Shared As ubyte GrabarPistaCancion=0
  
 Dim Shared As Integer  usarmarco=0 , usarmarcoOld=0,reiniciar=0,usarAcordesIguales=0
@@ -592,15 +595,18 @@ Common Shared As string pathdir,nombre,DirEjecSinBarra
 common Shared As String NombreCancion,NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado,maxposTope ',pistacreada
 Common Shared As cairo_t  Ptr c, c2
-Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer,threadmedia,threadsound
+Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer,threadmedia,threadsound, threadplaysound
 Screenbuffer=0
 Common Shared as any ptr thread1, thread2,threadPenta,threadcreaPenta, thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal,threadPer
 Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro,threadKey
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes, nretrasoMetronomoCan,nretrasoMetronomoRoll
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
-Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi,ubiejec
+Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi,ubiejec,ubionline
 parametros=0
 abrirRollCargaMidi=0
+ubionline=0
+ubiroll=0
+ubirtk=0
 Common Shared As String comando,titulosTk()
 Common Shared As ubyte patchsal, ritmo
 Common Shared As Integer  posicion,posicionOld,posn,terminar,posnOffOld,posnOff, deltax,deltay,deltaz,guardaposnOffOld
@@ -878,18 +884,19 @@ Declare Sub VolumenGrafico (c As cairo_t Ptr, Roll As inst)
 Declare Sub barrePenta (c As cairo_t Ptr, Roll As inst)
 Declare Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst, ByRef ubiroll As Integer, ByRef ubirtk As Integer )
 
-Common shared As Integer numtrack,superposicion, nnn,versionEJEC ,retrasoMetronomo,retrasoMetronomoCan,retrasoMetronomoRoll,intentos,velMetronomoIzq,velMetronomoDer
+Common shared As Integer numtrack,superposicion, nnn,versionEJEC ,retrasoMetronomo,retrasoMetronomoCan,retrasoMetronomoRoll,_ 
+intentos,velMetronomoIzq,velMetronomoDer, BatchGraficoOCtrl
 Common Shared As String VolIzq, VolDer, VolIzq100, VolDer100
-VolIzq="32767"
-VolDer="32767"
-VolIzq100="100"
-VolDer100="100"
-velMetronomoIzq=100
-velMetronomoDer=100
+VolIzq="65535"
+VolDer="65535"
+VolIzq100="40"
+VolDer100="40"
+velMetronomoIzq=30
+velMetronomoDer=30
 
 nnn=0
-retrasoMetronomoCan=165 '''era 330 ahoraanda con 165 no entiendo
-retrasoMetronomoRoll=165
+retrasoMetronomoCan=330 '''era 330 ahoraanda con 165 no entiendo
+retrasoMetronomoRoll=330 '' ROLL Y RTK
 intentos=0
 
 'VERSION DE EJEC CON MAS CAPACIDAD Y V OLUMEN VERSION=2

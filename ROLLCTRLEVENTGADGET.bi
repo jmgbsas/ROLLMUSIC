@@ -308,7 +308,7 @@ EndIf
 '//////////////// BOTON NEGRO STOP EJEC  , GRABA A DISCO //////////////////
 
 ' 
-      If eventnumber()= BTN_MIDI_PARAR  And ntoca > 0  Or ubiejec=2 Then ' BOTON STOP NEGRO DE MIDI-IN
+      If eventnumber()= BTN_MIDI_PARAR  And ntoca > 0   Then ' BOTON STOP NEGRO DE MIDI-IN
          SetGadgetstate(BTN_MIDI_GRABAR,BTN_LIBERADO)
          SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_LIBERADO)
          SetGadgetstate(BTN_MIDI_PARAR,BTN_PRESIONADO)
@@ -318,7 +318,7 @@ EndIf
         '    ubiejec=0  
         '    Exit Select       
         ' EndIf   
-         If GrabarEjec=GrabarPistaEjecucion Then
+         If GrabarEjec=GrabarPistaEjecucion And PlayEj=NO Then
             If pmEj(ntoca).MaxPos > 0 And (GrabarEjec=GrabarPistaEjecucion  Or GrabarEjec=GrabarPatronaDisco ) Then
               Print #1,"//STOP:pmEj(ntoca).MaxPos, GrabarEjec ",pmEj(ntoca).MaxPos,GrabarEjec
               tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos 
@@ -457,7 +457,11 @@ EndIf
                PARAR_PLAY_EJEC=SI ' DETIENE EL PLAY DE CANCION O ROLL
                playEj=NO  
                playloop=NO:playloop2=NO:Cplay=NO
-               SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
+               SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO) ' si hay cancion
+         SetGadgetstate(BTN_MIDI_GRABAR,BTN_LIBERADO)
+         SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_LIBERADO)
+         SetGadgetstate(BTN_MIDI_PARAR,BTN_PRESIONADO)
+
                For i3 As Integer  = 1 To TopeEjec
                  portsal=CInt(pmEj(i3).portout) 
                  alloff(pmEj(i3).canalsalida,portsal) 
@@ -552,7 +556,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",maxgrb
          GrabarPenta=1 ' redundante ,,, 
       EndIf 
 '-------------------------------
-      If eventnumber()= BTN_ROLL_PARAR And (GrabarPenta=SI Or Cplay=SI) Then
+      If eventnumber()= BTN_ROLL_PARAR And (GrabarPenta=SI Or Cplay=SI Or Playb=SI Or Play=SI ) Then
          SetGadgetstate(BTN_ROLL_PARAR,BTN_PRESIONADO) 
          SetGadgetstate(BTN_ROLL_EJECUTAR, BTN_LIBERADO)
          SetGadgetstate(BTN_ROLL_GRABAR_MIDI , BTN_LIBERADO)
@@ -561,11 +565,14 @@ Print #1, "542 GrabarPenta=0"
          metronomo_si=0
          terminar_metronomo=1
          COMEDIT=LECTURA
-         playb=NO
-         If CPlay=SI Then
+         If CPlay=SI Or Playb=SI Or Play=SI Then
+            CPlay=NO: Playb=NO: Play=NO
            PARAR_PLAY_MANUAL=SI
            playloop=NO:playloop2=NO
-           Cplay=NO 
+           Cplay=NO :Playb=NO:Play=NO
+           ubionline=0 ' y estamos online reseteamos sino vuelve a ejecutar
+           BatchGraficoOCtrl=CONTROL ' esto ya vino corregido en control 
+       ''para grabar  a disco enrollmusic.ini lo repetimos por las dudas   
          EndIf
       For i3 As Integer  = 1 To Tope
        portsal=CInt(pmTk(i3).portout) 
@@ -577,7 +584,7 @@ Print #1, "542 GrabarPenta=0"
       EndIf
    
 ' ///////////////// BOTON VERDE PLAY CANCION ROLL ////////  28-02-2024 GUIA
-      If eventnumber()= BTN_ROLL_EJECUTAR And COMEDIT=LECTURA Then ' 13-02-2024 PROBAR BIEN
+      If eventnumber()= BTN_ROLL_EJECUTAR And COMEDIT=LECTURA Then  
          SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_PRESIONADO)
          SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
          SetGadgetstate(BTN_ROLL_GRABAR_MIDI , BTN_LIBERADO)
@@ -728,13 +735,7 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
           ThreadWait threadvol
 'Print #1,"2222) CONTROLGADGET [VOLEJEC] versionEjec ", pmEj(ntkp).versionEJEC
           menuOldStr="" 
-          If pmEj(ntkp).versionEjec = 1 Then
 'statusBarGadget NO PUEDE IR EN UN THREAD CANCELA !!!
-' AL MENOS EN ESTE PROGRAMITA  
-   StatusBarGadget(BARRA_DE_ESTADO,"ARCHIVOS DE VERSION 1 DE EJEC NO TIENEN UN AJUSTE DEL VOL GRABADO EN EL ARCHIVO *.EJEC , SI TIENE LOS VOLUMENES ORIGINALES DE EJECUCION" )
-'          Else
-'          SetGadgetText(3,Str(valorvol)) 
-          EndIf
         EndIf
       EndIf 
 '--------------

@@ -941,7 +941,8 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
  ' las lineas
     '' ScreenSync ' a ver si aca es mejor....
      threadcreaPenta = ThreadCall creaPenta (c, Roll )
-    SetThreadPriority(threadcreaPenta , 7 ) 'decia 1 lowest, 2 below normal
+    SetThreadPriority(threadcreaPenta , 30 ) ' SI NO LO ACELERO PARPADEA NODIBUJA TODO PORQUE QUEDA LENTO
+' O EN TODO CASO DEBERIA SER  MAS LENTO EL ROOLLOOP O EL LOCK UNCLOCK
      ThreadWait threadcreaPenta 
     If *po = 99 then ''''saco esto no se porque 03-11-2025 Or *po=3 Then
        *po = hasta -1 ' 8 por ejemplo => *po=7
@@ -1097,6 +1098,7 @@ End Select
 'EndIf
 
 If ubiroll > 0 Then  ' CARGA DE ARCHIVOS POR LINEA DE COMANDO DE ROLLMUSIC
+' le podemos dar play automaticamente,,,
  '  Print #1,"cargo archivo desde rollLoop"
    nombre = titulosTk(0)
 '   Print #1,"nombre",nombre
@@ -1109,7 +1111,9 @@ If ubiroll > 0 Then  ' CARGA DE ARCHIVOS POR LINEA DE COMANDO DE ROLLMUSIC
    cierroedit= 0
   param.ubiroll=ubiroll ' vale 2
   portout=CInt(pmTk(0).portout)
-   
+  thread2 = ThreadCall  playAll(Roll)
+  Playb=SI
+
 ' abrir ports si no estan abiertos 
    GrabarPenta=0 ' para que en PlayAll abra los ports
 
@@ -1141,6 +1145,9 @@ EndIf
 ' abrir ports si no estan abiertos 
    GrabarPenta=0 ' para que en PlayAll abra los ports
    portout=CInt(pmTk(0).portout)
+  thread2 = ThreadCall  playAll(Roll)
+  Playb=SI
+
  EndIf
 
 
@@ -1457,8 +1464,12 @@ EndIf
 
 If MultiKey (SC_P) Then  
 terminar_metronomo=1
+terminar_metronomo=SI
+terminar_metronomo=SI
+terminar_metronomo=SI
 disparo=0
    If COMEDIT=LECTURA   Then
+      terminar_metronomo=SI '' agregamos mas porque no obedece con el de arriba  
       PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
       PARAR_PLAY_EJEC=SI
       Cplay=NO
@@ -1489,6 +1500,9 @@ disparo=0
       SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_LIBERADO)
       EndIf
    EndIf
+terminar_metronomo=SI ' a ver si se digna terminar hdp!! 
+terminar_metronomo=SI
+terminar_metronomo=SI
   Exit Do
 EndIf
 
@@ -2374,12 +2388,12 @@ If MultiKey(SC_SPACE) And trabaspace=0   Then 'barra espacio
 
  EndIf
   Print #1,"playb  Cplay MaxPos CANCIONCARGADA ", playb,  Cplay, MaxPos,CANCIONCARGADA     
-  If (playb = NO Or Cplay=NO )And (MaxPos> 2  Or Maxgrb > 2) Then ' 23-02-22 ningun play
+  If (playb = NO  Or Cplay=NO )And (MaxPos> 2  Or Maxgrb > 2) Then ' 23-02-22 ningun play
   '''If playb = NO And play=NO And Cplay=NO And MaxPos > 1 Then ' 23-02-22 ningun play
  
 
 '------------------------------------------------------------------
-      Print #1,"ENTRA POR COMEDIT<>LECTURA a play ???"
+      Print #1,"ENTRA POR COMEDIT=LECTURA a play "
       GrabarPenta=0
       naco=0:naco2=0
       '' Print #1,"====> INSTANCIA ";INSTANCIA 
@@ -2389,7 +2403,7 @@ If MultiKey(SC_SPACE) And trabaspace=0   Then 'barra espacio
        SetGadgetstate(15,0) ' 20-02-2025 que pasa no reemplaza bien el numero ? raro
       EndIf
    '   print #1,"SPACE call play"
-Print #1,"CANCIONCARGADA = TRUE And Cplay=NO  ",CANCIONCARGADA, Cplay  
+Print #1,"CANCIONCARGADA  And Cplay  ",CANCIONCARGADA, Cplay  
       If CANCIONCARGADA = TRUE  And CPlay=NO   Then
 Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
 '----------------------------------------------------------------
@@ -2518,7 +2532,7 @@ Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
               End Select
             EndIf
           Next y1
-        ElseIf   playb=NO And  CANCIONCARGADA = FALSE  Then   ' else de play cancion
+      ElseIf   playb=NO And  CANCIONCARGADA = FALSE  Then   ' else de play cancion
 ' ESTA OPCION NUCA PODRA EJECUTRSE EN PARALELO PORQUE IMPPLICA UN ROLL Y POR ENDE
 ' LLENARA EL ROLL GRAFICO QUE LA CANCION DE RTK ESTA USANDO
            print #1,"llama a playall"
@@ -2532,10 +2546,11 @@ Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
  ''              duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
  ''            Next im
  ''          EndIf
+           terminar_metronomo=1
            thread2 = ThreadCall  playAll(Roll)
            Playb=SI
              
-        EndIf
+      EndIf
         If maxgrb > 0 And playEj=NO Then ' para tocar ejecuciones 
 ' PENDIENTE CALCULAR RETARDOS COMO CON SOLOS
            playEj=SI 

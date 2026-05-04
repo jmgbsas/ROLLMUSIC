@@ -10,19 +10,8 @@ PLAY CON BARRA ESPACIO O SPACE (se interrumpe con P)
   EN LECTURA DESDE LA POSICION EN DONDE COMIENZA LA VISUALIZACION DE LA SECUENCIA
   SI ES UNA CANCION SE TOCA TODA LA CANCION
   EN EDICION CTRL-M Y N. SOLO PLAY DEL TRAMO EN EDICION.
-  >METRONOMO LIBRE: HABILITARLO EN MENU PISTAS MANUALES ITEM 10.0, PULSAR EN BOTON M, CONMUTA
-  ENTRE ANDAR Y PARAR.VELOCIDAD +/- AL LADO.
-  VOLUMEN METRONOMO LADO IZQUIERDO Y DERECHO DE 5  EN Z MAS ABAJO. PULSAR +/- PARA CADA LADO
-  DURANTE EL PLAY SE PUEDE AJUSTAR EL VOLUMEN PERO NO LA VELOCIDAD, SE PUEDE PERO SE PIERDE
-  EL SINCRONISMO ENTRE EL PLAY Y EL METRONOMO. POR ESO EL PLAY HABILITA EL COMIENZO DEL
-  METRONOMO CUANDO EL MISMO ESTA HABILITADO. EL RETARDO ENTRE SICRONISMO DE RITMO DE PLAY Y
-  METRONOMO DEBE AJUSTARSE, EN MI PC HAY UN RETARDO DE 330 MSEG QUE SE GUARDA EN ROLLMUSIC.INI
-  AMBOS ESTAN IGUALES (cancion y track) PERO SE DEJA LA OPCION DE QUE SEAN DISTINTOS, ADEMAS PUEDE PASAR 
-  QUE SEGUN LA CANTIDAD DE PISTAS O NOTAS SE DEBA AJUSTAR ESE RETARDO. LA FORMA DE SINCROIZAR ES MUY
-  ELEMENTAL el primer Tick de la secuencia dispara la cuenta y luego el metronomo, 
-  seguido inmediatamente por la cancion o track.
 --------------------------------------------------------
-SELECCIONAR UNA ZONA O INTERVALO DE LA SECUENCIA CON 2 CTRL-CLICK EN DIFERENTES LUGARES:
+SELECCIONAR UNA ZONA O INTERVALO DE LA SECUENCIA CON 2 CTRL-CLICK EN DIFERENTES LUGARES
 Los ctrl-click deben ser breves no mas de 200 mseg, si duran mas sosteniendo el mouse presionado
 mas de 200 mseg la zona sera solo una linea, los 2  clicks quedaran definidos en la primer posicion.
 Sera necesario reseteat con Q y luego definir de nuevo el intervalo con pulsos breves del mouse
@@ -278,11 +267,26 @@ GENERAR MELODIA MUY BASICA EXPERIMENTAL GEN
    APARECE EUN DIALOGO PREGUNTANDO LA TONICA , pulse inicio para ir al principio de la secuencia
    y aparecera entre 4 o 5 compases de notas aleatorias   en escala mayor  de la tonica elegida.
 --------------------------------------------------------------------
-USAR ROLLMUSIC COMO REPRODUCTOR EN EL EXPLORADOR
-DAR CLICK O DOBLE CLICK SEGUN EL CASO A UN ARCHIVO *.roll *.rtk o *.ejec
-en lso 2 primeros se levanta un grafico y se le puede dar play
+USAR ROLLMUSIC COMO REPRODUCTOR EN EL EXPLORADOR, DOS OPCIONES
+--------------------------------------------------------------------
+1) EN EL ARCHIVO ROLLMUSIC.INI HABRA UNA LINEA COMO LA SIGUIENTE
+   0            BatchGraficoOCtrl
+   ESO INDICA QUE EL COMPORTAMIENTO ES COMO SIGUE:
+   DAR CLICK O DOBLE CLICK SEGUN EL CASO A UN ARCHIVO *.roll *.rtk o *.ejec
+en los 2 primeros se levanta un grafico ejecuta automaticamente.
 en el ultimo caso *.ejec levanta Rollmusic completo sin grafico, carga el archivo
 y lo ejecuta automaticamente. (hay que ajustar en el explorador reproducir esas extensiones
 con rollmusic.exe)
+2) SI LA LINEA DICE 
+ 3            BatchGraficoOCtrl
+TODO SE EJECUTARA EN VENTANA DE CONTROL ONLINE SIN NINGUN GRAFICO, (ROLL Y RTK), EJEC
+SEGUIR COMO ANTES PUES NO TIENE GRAFICO.
+No hace falta editar el archivo RollMusic.ini, se maneja desde el Menu OPciones item 14.0
+si no esta seleccionado es Grafico para roll y rtk , si lo selecciono sera ventanita
+chica de Control para las mismas, los ejec no se cambia y estará en ventana Control
+completa.
+
+
+
            
           

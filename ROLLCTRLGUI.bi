@@ -6,9 +6,16 @@ Static Shared As HMENU MenName31,MenName32,MenName18,MenName19,MenName20,MenName
 If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON control
   menuabierto=1 ' evita apertura de mas de un menu
   instancia=ARG0_EN_LINEA
-  
-  hwndC = OpenWindow("RollMusic Ctrl V "+ nroversion,10,10,ANCHOSYSTEM*0.91 ,ALTOSYSTEM*0.91, _
-   WS_OVERLAPPEDWINDOW Or WS_VISIBLE ,  WS_EX_ACCEPTFILES   )
+  If (BatchGraficoOCtrl=3 Or BatchGraficoOCtrl=4 Or BatchGraficoOCtrl=5 ) And ubiejec=0 Then
+  ' MUESTO UN ONLINE REDUCIDO PARA SOLO TOCAR
+    hwndC = OpenWindow("RollMusic Ctrl V "+ nroversion,10,10,ANCHO/8,ALTO/12, _
+    WS_OVERLAPPED Or WS_VISIBLE Or WS_CAPTION OR WS_SYSMENU OR WS_MINIMIZEBOX _ 
+    Or WS_CLIPCHILDREN)
+
+  Else
+    hwndC = OpenWindow("RollMusic Ctrl V "+ nroversion,10,10,ANCHOSYSTEM*0.91 ,ALTOSYSTEM*0.91, _
+        WS_OVERLAPPEDWINDOW Or WS_VISIBLE ,  WS_EX_ACCEPTFILES   )
+  EndIf
 ' cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS cancion
 'cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_E,1016) 'CTRL+E ABRIR PISTAS ejecucion
 ''' ------TIPS AYUDA EN LA BARRA DE ESTADO
@@ -222,7 +229,9 @@ SetGadgetText (TEXT_GADGET,Str(tiempoPatron))
 SetGadgetFont(TEXT_GADGET,CINT(LoadFont("consolas bold",12)))
 
 '-------------------------------------------
-
+If (BatchGraficoOCtrl=3 Or BatchGraficoOCtrl=4 Or BatchGraficoOCtrl=5 )And ubiejec=0 Then
+   GoTo FINALGUI 
+EndIf
 '-------------------------------------------
 
 GadgetToolTip(BTN_METRONOMO,"METRONOMO LIBRE ON/OFF")
@@ -473,7 +482,7 @@ MenuItem(10911,MenName6,"2.1 Borrar Repeticiones ")
 MenuItem(1092,MenName6,"3.0 Abre y Reproduce Puerto MIDI-IN Ejecucion teclado por MIDI-OUT, SIN GRABAR.")
 MenuItem(1093,MenName6,"4.0 Cierra Puerto MIDI-IN Ejecucion.")
 MenuItem(1094,MenName6,"5.0 Abre Reproductor de Medios. *.mid, *.wav,*.mp3,")
-
+'--OPCIONES MENU 7
 MenuItem(1100,MenName7,"1.0 Usar MARCO de Ventana Para el Gráfico",MF_UNCHECKED)
 MenuItem(1101,MenName7,"2.0 Usar MARCO de Ventana en instancias Gráficas",MF_UNCHECKED)
 'Menubar(MenName7)
@@ -495,6 +504,9 @@ MenuItem(1114,MenName7,"10.0 TOCAR 4 PULSOS DEL instrumento elegido en una pista
 MenuItem(1115,MenName7,"11.0 Detener metronomo ")
 MenuItem(1116,MenName7,"12.0 BACKUP SI ")
 MenuItem(1117,MenName7,"13.0 BACKUP NO ")
+MenuItem(1118,MenName7,"14.0 ABRIR EN EXPLORADOR Archivos *.roll ó *.rtk con CONTROL (Por Omision CONGRAFICO), O CTRL ",MF_UNCHECKED)
+''chequedo abrira con GRAFICO y lo tocara.
+
 
 
 
@@ -525,6 +537,11 @@ MenuItem(2005,MenName10,"6.0 Cuadro de NOTAS Para canal 10 Percusion ")
 'Menubar(MenName30)
 'MenuItem(2500,MenName30,"Abre   Puerto MIDI-IN Sobre Roll")
 'MenuItem(2501,MenName30,"Cierra Puerto MIDI-IN Sobre Roll")
+If BatchGraficoOCtrl=6 Then
+Print #1,"pasamos a 3 con el 6 CONTROL ", CONTROL
+BatchGraficoOCtrl=3
+   SetStateMenu(hmessages,1118,CONTROL)
+EndIf
 
 
 '  MenuBackColor NO FUNCIONA SOLO AL PRINCIPIO
@@ -605,3 +622,4 @@ End Select
 SetStateMenu(hmessages,1007,0) ' TEST
 
 End If
+FINALGUI:
