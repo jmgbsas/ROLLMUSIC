@@ -1092,7 +1092,7 @@ Print #1,"k, canalsalida  ";k, canalx
       EndIf
    
       If eventnumber()= BTN_METRONOMO And tic=0  Then
-          Print #1,"RESPONDE EL BOTON DE MIERDA"
+          Print #1,"RESPONDE EL BOTON  M"
           terminar_metronomo=0
           threadmetronomo = ThreadCall metronomo()
           SetGadgetText (TEXT_GADGET,Str(tiempoPatron))  

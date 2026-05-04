@@ -1,3 +1,5 @@
+- 04-05-2026 0.382 Tiempo Y Ritmo item 4.0 Entrenamiento con Metronomo y palmadas;FIX Grafico 
+   Independiente Pistas Manuales 8.0
 - 03-05-2026 0.381 FIX no sonaba metronomo en pistas aisladas, parpadeaba de nuevo se aumento 
     prioridades de barrido, 2 modos de abrir archivos en explorador en Opciones 14.0
 - 27-04-2026 0.378 la cuenta antes del metronomo no se solapaba bien con el metronomo

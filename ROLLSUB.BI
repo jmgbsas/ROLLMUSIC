@@ -5698,14 +5698,27 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
       ''por omision ritmo=1, 4/4
       RecalCompas(ritmo)
       
-  Case "[NUMTRAK]"
+ Case "[NUMTRAK]"
     default=Str(1)
     ''Print #1,"llego a NUMTRAK en entrar tecla",NombreArchivo 
     default= InputBoxJmg("Track superpuesto " ,"Entre un Numero de Track ",default, ES_MULTILINE + ES_AUTOVSCROLL,0  )
     numTk= CInt(default) 
     
+ Case "[CPCS]"
+      default2 = Str(CPCS)
+       CPCS= CInt(InputBoxJmg("Ajuste CPCS " ,"Entre un Nro de Pulsos a oir ",default2, ES_MULTILINE + ES_AUTOVSCROLL,0  ))
+       GUARDOCPCS=CPCS
+       Print #1,"CPCS ", CPCS
+
+ Case "[CPSS]"
+
+      default2 = Str(CPSS)
+       CPSS= CInt(InputBoxJmg("Ajuste CPCS " ,"Entre un Nro de Pulsos a oir ",default2, ES_MULTILINE + ES_AUTOVSCROLL,0  ))
+       CPSS=CPSS+1 ' PARA QUE HALLA REALMENTE CPSS PULSOS SIN SONIDO
+       GUARDOCPSS=CPSS
+       Print #1,"CPSS ", CPSS
    
-  Case "[GEN]" '' muy bien funciona!!!
+ Case "[GEN]" '' muy bien funciona!!!
 ' generamos para escala mayor
 Dim As Integer escalamayor(1 To 7)={1,3,5,6,8,10,12}
 'limitaremos a un grado mejor entrada de usuario

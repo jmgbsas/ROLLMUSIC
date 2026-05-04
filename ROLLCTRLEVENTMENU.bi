@@ -697,11 +697,16 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
        '   SetForegroundWindow(hwnd)            
 '-----------------------------------------------------------------------
            Case 1062 ' <======== crear instancia independiente sin control
- ' ponerle diferente color y/o tamaño para poder distinguirlo adma sde l nombre
+ ' ponerle diferente color y/o tamaño para poder distinguirlo ademas de l nombre
  ' estudiar si puedo hacer IPC entre Menus de GUI pero son loop tambien no creo.
              '''Print #fa1,pd1  
-     
-             Shell (" start RollMusic.exe "+ Str(desde)+" "+ Str(hasta) + " Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1) + " "+ Str(usarmarcoins))
+  ' debo levantar como antes un Rollmusic grafico solamente,   
+      Print #1,"CALL ROLLLOOP 1062 INSTANCIA INDEPENDIENTE pid1 ",pid1
+ Shell (" start RollMusic.exe "+" "+Str(desde)+" "+ Str(hasta) + " "+ "Track_"+Str(desde)+"_"+Str(hasta) + " "+Str(instru) + " " +Str(pid1) ) 
+'''si uso -> ''+ " "+ Str(usarmarcoins)) levanta el online !!
+''Print #1, "/// ubiroll ubirtk ", ubiroll,ubirtk
+
+
       '    SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
 ' aca debo tomar de la seleccion del usuario con ctrl+p por ejemplo sobre
@@ -800,7 +805,21 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
              If abrirRollCargaMidi=2 Then
              SetForegroundWindow(hwnd)
              EndIf  
+'-----------------------------------------------------------------------
+           Case 10881 ' Ajuste de cantidad de pulsos con sonido
+              menuOldStr="[CPCS]"
+              thread3= ThreadCall EntrarTeclado()
+              ThreadWait thread3
 
+'-----------------------------------------------------------------------
+           Case 10882 ' Ajuste de cantidad de pulsos sin sonido
+              menuOldStr="[CPSS]"
+              thread3= ThreadCall EntrarTeclado()
+              ThreadWait thread3
+
+'-----------------------------------------------------------------------
+           Case 10883 ' Reset de cantidad de pulsos 
+             CPCS=0:CPSS=0:GUARDOCPCS=0:GUARDOCPSS=0
 '-----------------------------------------------------------------------
            Case 1090 ' Reproducir cancion
     SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)

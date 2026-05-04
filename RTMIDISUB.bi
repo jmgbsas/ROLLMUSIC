@@ -3443,9 +3443,21 @@ If CANCIONCARGADA=FALSE And ROLLCARGADO=FALSE Then
 Print #1,"ENTRA POR ACA SIN NINGUN PLAY "
  
   Do ' metronomo libre comun incluye los ejec
-  
-    threadsound = threadCall soundcall
-     
+    If  CPCS=0 And CPSS=0 Then
+       threadsound = threadCall soundcall
+    Else 
+       If CPCS >0 Then
+          threadsound = threadCall soundcall
+          CPCS=CPCS-1
+       EndIf
+       If CPSS > 0 And CPCS=0 Then 
+          CPSS=CPSS-1
+       EndIf
+       If CPCS=0 And CPSS=0 Then  
+          CPCS=GUARDOCPCS
+          CPSS=GUARDOCPSS   
+       EndIf
+    EndIf
     duracion(Timer, (60/(tiempoPatron)) / FactortiempoPatron) 'jmgtiempo
     PlaySound(NULL, NULL, 0)
     If terminar_metronomo=1 Then

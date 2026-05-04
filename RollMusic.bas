@@ -60,7 +60,7 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.381 FIX no sonaba metronomo sin cancion, parpadeo, 2 modos de abrir archivos en explorador"
+nroversion="0.382 Tiempo Y Ritmo item 4.0 Entrenamiento con Metronomo y palmadas;FIX Grafico Independiente Pistas Manuales 8.0"
 ' 0.380 la cuenta inicial antes de metronomo se solapa mejor, parpadeo cancelacion al grabar cancion
 ' 0.379 BATCH DE ROLL O RTK ANDA OK SOLO NO HAY QUE PONER TEXTGADGET CON BATCH
 ' SE CONDICIONA POR UBIRROLL >0

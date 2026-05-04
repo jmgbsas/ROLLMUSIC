@@ -1,7 +1,7 @@
 'ROLLCTRLGUI... GUI DE VENTANA DE CONTROL
 
 Static Shared As HMENU hMessages,MenName1,MenName2,MenName3,MenName4,MenName5,MenName6,MenName7,MenName8,MenName10
-Static Shared As HMENU MenName31,MenName32,MenName18,MenName19,MenName20,MenName30 
+Static Shared As HMENU MenName31,MenName32,MenName18,MenName19,MenName20,MenName21,MenName30 
 
 If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rollmusic CON control
   menuabierto=1 ' evita apertura de mas de un menu
@@ -456,6 +456,11 @@ MenuItem(1081,MenName5,"2.0 Factor para Aumentar velocidad de ejecucion, No se g
 'MenuItem(1086,MenName5,"Na. TEMPO ocultar marcas de tempo")
 'MenuItem(1087,MenName5,"Na. TEMPO incremento de tempo gradual alcanzado en N compases")
 menuitem (1088,Menname5,"3.0 Ritmo 1=2/4, 2=3/4, 3=4/4, 4=6/8 ,5=12/8, 6=5/8, 7=7/8, por omision=4/4")
+Menubar(MenName5)
+MenName21=OpenSubmenu(MenName5,"4.0 Entrenamiento con Metronomo y palmadas, durante los silencios siga el ritmo")
+menuitem (10881,Menname21," Cantidad de pulsos Con Sonido")
+menuitem (10882,Menname21," Cantidad de pulsos Sin Sonido")
+menuitem (10883,Menname21," Reset de Cantidad de pulsos")
 /' futuro agregar limite menor de c/rango con opcion de incrementarlo hasta el tope
   d esu rango 
 Negras por minuto	 tempo
@@ -504,7 +509,7 @@ MenuItem(1114,MenName7,"10.0 TOCAR 4 PULSOS DEL instrumento elegido en una pista
 MenuItem(1115,MenName7,"11.0 Detener metronomo ")
 MenuItem(1116,MenName7,"12.0 BACKUP SI ")
 MenuItem(1117,MenName7,"13.0 BACKUP NO ")
-MenuItem(1118,MenName7,"14.0 ABRIR EN EXPLORADOR Archivos *.roll ó *.rtk con CONTROL (Por Omision CONGRAFICO), O CTRL ",MF_UNCHECKED)
+MenuItem(1118,MenName7,"14.0 ABRIR EN EXPLORADOR Archivos *.roll ó *.rtk con ventanita de CONTROL (Por Omision CON GRAFICO) ",MF_UNCHECKED)
 ''chequedo abrira con GRAFICO y lo tocara.
 
 

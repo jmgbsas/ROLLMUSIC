@@ -648,7 +648,7 @@ Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
  6666666,3333333,1666666, 833333, 416666,208333,104166, 52083,26042,0,0 }  '172 182
 
 Dim Shared As String nombreArchivo, TCompas,menuOldStr, ticksdefault,nombrePatron, intervaloTxt
-Dim Shared As Integer nroCompasesPatron, nroTicksPatron
+Dim Shared As Integer nroCompasesPatron, nroTicksPatron, CPSS,CPCS,GUARDOCPSS,GUARDOCPCS
 nroCompasesPatron=1
 nroTicksPatron=0
 nombreArchivo="" : ticksdefault="96"

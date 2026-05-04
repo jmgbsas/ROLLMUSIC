@@ -1,14 +1,14 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-   0.381 FIX no sonaba metronomo en pistas aisladas, parpadeaba de nuevo se aumento prioridades
-         2 modos de abrir archivos en explorador en Opciones
-
-     EL ROLL GRAFICO VISUAL PUEDE CAMBIARSE LAS OCTAVAS SIN PROBLEMA
+      0.382 Tiempo Y Ritmo item 4.0 Entrenamiento con Metronomo y palmadas;FIX Grafico Independiente en 
+            Pistas Manuales item 8.0"
+-------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
       Falta probar con canciones largas..se probara cuando se puede cargar un archivo midi
-      tipo 1...o hacer algo largo asi no mas ..con as modificaciones ultimas habria que
+      tipo 1...o hacer algo largo asi no mas ..con las modificaciones ultimas habria que
       probar varias cosas de nuevo para ver si tuvo impacto..
+------------------------------------------------------------------------------------------
      INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
        RollMusic.exe y todas los archivos *.dll. 
@@ -251,8 +251,8 @@
            onoff=2 en los parametros de arriba.
 
        Hay 5 formas de abrir un Roll Grafico, 
-       en "crear Pistas manuales" hay dos opciones fuera  de una canción:
-       1) "Crea pista aislada con lo elegido y reemplaza la existente en la edicion", 
+       en Menu "CREAR PISTAS MANUALES" hay dos opciones fuera  de una canción:
+       1) ITEM 6.0 "Crea pista aislada con lo elegido y reemplaza la existente en la edicion", 
         edicion de Roll Grafico esta ventana tiene conexion con la ventana inicial de Control y su 
         menu principal permite cambiar patch en un instrumento que lo tenga y se ajusta otros parametros 
         en el mismo menu.
@@ -261,14 +261,14 @@
         con los parametros deseados, o cambiar los parametros de la pista roll o trk que ya este cargada 
         en Roll Grafico. 
         La otra opcion o segunda es 
-       2) "Crea instancia de RollMusic Sin Control alguno con lo elegido"
+       2) ITEM 8.0 "Crea instancia de RollMusic Sin Control alguno con lo elegido"
         Este Roll Grafico puede abrirse todos los que se desean cada uno sera independiente de
         la ventana de Control inicial sin poder cambiar patch(por ahora)  ni hacer canciones
         solo edita una pista .roll o .trk por vez. Podria tener varias pistas en edicion
         en forma aislada cada una instancia diferente y se puede cerrar sin cerar la de 
         control ni las demas. Son auxiliares o para editar una sola pista totalmente aislada si
-        se tiene una cancion cargada en el otro modo,.(Solo tendra los para metros de cancion si se levanta 
-        de disco de otro modo solo opiara el roll actual de cancion pero ningun parametro)
+        se tiene una cancion cargada en el otro modo,.(Solo tendra los parametros de cancion si se levanta 
+        de disco de otro modo solo Cargara el rtk o roll DE DISCO )
        3) La tercer opcion es crear una pista en la cancion pero para eso la cancion ya debe estar cargada
         y el Roll Grafico ya estará abierto de modo que no es una apertura directa de Roll gráfico
         sino una creacion de nueva pista en una canción, 
@@ -410,7 +410,7 @@
           EL MENU CONTEXTIUAL, PARA VOLVER AL INICIO DAR CLICK EN OTRA PISTA 
           Y TODO COMIENZA DE NUEVO...(se colocara funciones especificas par las pistas)  
 ********************************************************************************************************
-    1) Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
+    1) En Modo Lectura y modificacion en masa se puede cambiar la longitud de la secuencia.
     2) El espaciado entre lineas se puede cambiar.
     3) Trasponer todo: CTRL-O habilita la trasposicion DE TODA LA SECUENCIA,con flechas arriba abajo se mueve por 
        semitonos Q la deshabilita.Tambien traspone una Zona elegida con CTRL-CLICK
@@ -694,7 +694,7 @@
           luego ajustar el nro de repeticiones en el mismo menu de reproducir de la ventana de Control.
          Al grabar las pistas se grabara las repeticiones, para borrar usar el submenu Borrar repetciones.
 
-       3) Grabacion de Ejecuciones directamente sobre Roll GRAFICO, [HAY QUE REVIDAR Y ADAPTAR A TICKS]
+       3) Grabacion de Ejecuciones directamente sobre Roll GRAFICO, [HAY QUE REVISAR Y ADAPTAR A TICKS]
          ( no se revisó su funcionamiento en Ticks todavia...)
           2DA version faltaria que detecte acordes,
            (ya lo hizo en algun algoritmo distinto a este), el actual funciona para melodias, se anulo
@@ -885,7 +885,7 @@
         
 
     --------------------------------------------------------------------------------------
-        
+        MODO LECTURA GRAFICO
     1.0) El Modo Lectura se inicia en color de fondo Negro y texto blanco (ultimo 
       cambio).(Algunas modificaciones se pueden hacer en Modo LEctura, trasposicion,
         acortar una secuencia borrar un intervalo etc
