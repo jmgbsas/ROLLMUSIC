@@ -96,7 +96,7 @@ Next i1
 End Sub
 '-------------------------
 Function CheckPortout(k1 As Integer) as Integer
-        If InStr(*nombreOut(k1),"Microsoft")>0 Then
+        If InStr(*nombreOut(k1),"Microsoft")>0 And  PORT_MICROSOFT=0 Then
            CheckPortout=1
         Else
           If listoutAbierto( k1) = 0 Then
@@ -792,7 +792,7 @@ Print #1,"abriendo port....play All"
    portout=CInt(k1)
     
 '   Print #1,"midiout ",k1, *nombreOut(k1)
-   If InStr(*nombreOut(k1),"Microsoft")>0 Then
+   If InStr(*nombreOut(k1),"Microsoft")>0 And  PORT_MICROSOFT=0 Then
 '     Print #1,"No se usa Microsoft"
    Else
      If listoutAbierto( k1) = 0 Then
@@ -915,7 +915,7 @@ For jply=comienzo To final
 
   
   If PARAR_PLAY_MANUAL = SI Then
-    If InStr(*nombreOut(portout),"Microsoft") > 0 Then
+    If InStr(*nombreOut(portout),"Microsoft") > 0 And  PORT_MICROSOFT=0 Then
     Else
       alloff( canal,portsal ) 
       allSoundoff(canal,portsal ) 
@@ -926,7 +926,7 @@ For jply=comienzo To final
   EndIf  
 ' puede pasar que el maxpos sea menro al final de la secuencia porque se agrego espacio
   If jply=MaxPos Then
-    If InStr(*nombreOut(portout),"Microsoft") > 0 Then
+    If InStr(*nombreOut(portout),"Microsoft") > 0 And  PORT_MICROSOFT=0 Then
     Else
        alloff( canal,portsal)
        allSoundoff(canal,portsal ) 
@@ -1404,7 +1404,7 @@ EndIf
 For i = 0 To portsout -1 
   If listoutAbierto (i) =0 Then
     nombre = nombreOut(i)
-    If InStr(*nombre,"Microsoft") > 0 Then ' microsoft no funa bien
+    If InStr(*nombre,"Microsoft") > 0 And  PORT_MICROSOFT=0 Then ' microsoft no funa bien
       listout(i) = "Crash No usar Microsoft" 
       Print #1,"listout(i) ",listout(i)
 
@@ -1416,7 +1416,7 @@ For i = 0 To portsout -1
   If listoutAbierto (i) =1 Then
 '    lg=Len(*port_name(, i))
     nombre = nombreOut(i)
-    If InStr(*nombre,"Microsoft") > 0 Then
+    If InStr(*nombre,"Microsoft") > 0 And  PORT_MICROSOFT=0 Then
       listout(i) = "Crash No usar Microsoft" 
       Print #1,"listout(i) ",listout(i)
 
@@ -1433,7 +1433,7 @@ If  UBound (nombreIn,1) > 0 Then
     For i = 0 To portsin -1 
       If listInAbierto (i) =0 Then
         nombre = nombreIn(i)
-        If InStr(*nombre,"Microsoft") > 0 Then ' microsoft no funa bien
+        If InStr(*nombre,"Microsoft") > 0 And  PORT_MICROSOFT=0 Then ' microsoft no funa bien
           listin(i) = "Crash No usar Microsoft" 
           Print #1,"listin(i) micro ",listin(i)
     
@@ -1444,7 +1444,7 @@ If  UBound (nombreIn,1) > 0 Then
       EndIf  
       If listInAbierto (i) =1 Then
         nombre = nombreIn(i)
-        If InStr(*nombre,"Microsoft") > 0 Then
+        If InStr(*nombre,"Microsoft") > 0 And  PORT_MICROSOFT=0 Then
           listin(i) = "Crash No usar Microsoft" 
     Print #1,"listin(i) micro  2",listin(i)
         Else
@@ -3519,7 +3519,7 @@ Dim k1 As Integer
      k1=CInt(pmEj(j).portout )
    EndIf 
    Print #1,"abrirPortoutEjec midiout ",k1, *nombreOut(k1)
-   If InStr(*nombreOut(k1),"Microsoft")>0 Then
+   If InStr(*nombreOut(k1),"Microsoft")>0 And  PORT_MICROSOFT=0 Then
      Print #1,"No se usa Microsoft"
    Else
      If listoutAbierto( k1) = 0 Then
@@ -3575,7 +3575,7 @@ For ip=1 To topeEjec
    kp=CInt(pmEj(ip).portout)
     
 '   Print #1,"midiout ",k1, *nombreOut(k1)
-   If InStr(*nombreOut(kp),"Microsoft")>0 Then
+   If InStr(*nombreOut(kp),"Microsoft")>0 And  PORT_MICROSOFT=0 Then
     Print #1,"No se usa Microsoft"
     Exit sub
    Else

@@ -8025,6 +8025,8 @@ Dim  As Integer i3
          Print #ffile,retrasoMetronomoCan,"retrasoMetronomoCan"
          Print #ffile,retrasoMetronomoRoll,"retrasoMetronomoRoll"
          Print #ffile,BatchGraficoOCtrl,"BatchGraficoOCtrl"
+         Print #ffile,PORT_MICROSOFT,"PORT_MICROSOFT"
+
         FileFlush (ffile)         
          Close ffile
          Sleep 100

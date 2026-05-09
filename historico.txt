@@ -1,3 +1,13 @@
+- 09-05-2026 0.383 Habilitar PORT de Microsoft como opcion, ajuste label vol metronomo
+   se a habilitado la opcion de usar el PORT de Microsoft ahora que el
+   programa esta mas estable, igual el volumen que brinda es medio bajo comparada
+   con otros ports. PAra ello dar click en menu opciones item 15.0, en el archivo
+   de texto editable aparecera una nueva linea 
+   0            PORT_MICROSOFT        <- indica port deshabilitado para su uso
+   3            PORT_MICROSOFT        <- indica port habilitado para usar
+   Luego al cerrar el programa e iniciarlo de nuevo escribira esta opcion para el
+   proximo arranque, pero ya se puede usar al seleccionar PORTSAL aparecera la opcion
+   de marcar Microsoft sin la leyenda "crash...."
 - 04-05-2026 0.382 Tiempo Y Ritmo item 4.0 Entrenamiento con Metronomo y palmadas;FIX Grafico 
    Independiente Pistas Manuales 8.0
 - 03-05-2026 0.381 FIX no sonaba metronomo en pistas aisladas, parpadeaba de nuevo se aumento 

@@ -1143,7 +1143,7 @@ terminar_metronomo=0
             EndIf
             VolIzq=convA5cifras(velMetronomoIzq)
             VolIzq100=Str(velMetronomoIzq)
-         TextGadget(TEXT_METRO_VOL_IZQ,280, 750,90,20,"VolM Izq "+ VolIzq100)
+         TextGadget(TEXT_METRO_VOL_IZQ,270, 750,95,20,"VolM Izq "+ VolIzq100)
       EndIf 
       If eventnumber()= BTN_MENOS_METRO_VOL_IZQ Then
             tic=1
@@ -1154,7 +1154,7 @@ terminar_metronomo=0
             EndIf
             VolIzq=convA5cifras(velMetronomoIzq)
             VolIzq100=Str(velMetronomoIzq) 
-         TextGadget(TEXT_METRO_VOL_IZQ,280, 750,90,20,"VolM Izq "+ VolIzq100)
+         TextGadget(TEXT_METRO_VOL_IZQ,270, 750,95,20,"VolM Izq "+ VolIzq100)
       EndIf 
 '------------------------------------
       If eventnumber()= BTN_MAS_METRO_VOL_DER Then
@@ -1166,7 +1166,7 @@ terminar_metronomo=0
             EndIf
             VolDer=convA5cifras(velMetronomoDer)
             VolDer100=Str(velMetronomoDer)
-         TextGadget(TEXT_METRO_VOL_DER,280, 770,90,20,"VolM Der "+ VolDer100)
+         TextGadget(TEXT_METRO_VOL_DER,270, 770,95,20,"VolM Der "+ VolDer100)
       EndIf 
       If eventnumber()= BTN_MENOS_METRO_VOL_DER Then
             tic=1
@@ -1177,7 +1177,7 @@ terminar_metronomo=0
             EndIf
             VolDer=convA5cifras(velMetronomoDer)
             VolDer100=Str(velMetronomoDer)
-         TextGadget(TEXT_METRO_VOL_DER,280, 770,90,20,"VolM Der "+ VolDer100)
+         TextGadget(TEXT_METRO_VOL_DER,270, 770,95,20,"VolM Der "+ VolDer100)
       EndIf 
 
 

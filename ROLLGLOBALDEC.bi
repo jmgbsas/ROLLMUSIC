@@ -188,6 +188,8 @@ Const lim3=25
 '---- QUE USAR PARA CARGAR EN EXPLORADOR UN ROLL O RTK
 Const GRAFICO=0
 Const CONTROL=3
+Const HABILITAR_PS_MICROSOFT=1
+Const APAGAR_PS_MICROSOFT=0
 '-----------
 Dim Shared As ubyte GrabarPistaCancion=0
  
@@ -885,7 +887,7 @@ Declare Sub barrePenta (c As cairo_t Ptr, Roll As inst)
 Declare Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst, ByRef ubiroll As Integer, ByRef ubirtk As Integer )
 
 Common shared As Integer numtrack,superposicion, nnn,versionEJEC ,retrasoMetronomo,retrasoMetronomoCan,retrasoMetronomoRoll,_ 
-intentos,velMetronomoIzq,velMetronomoDer, BatchGraficoOCtrl
+intentos,velMetronomoIzq,velMetronomoDer, BatchGraficoOCtrl, PORT_MICROSOFT
 Common Shared As String VolIzq, VolDer, VolIzq100, VolDer100
 VolIzq="65535"
 VolDer="65535"
@@ -893,7 +895,7 @@ VolIzq100="40"
 VolDer100="40"
 velMetronomoIzq=30
 velMetronomoDer=30
-
+PORT_MICROSOFT=0  ' NO HABILITADO
 nnn=0
 retrasoMetronomoCan=330 '''era 330 ahoraanda con 165 no entiendo
 retrasoMetronomoRoll=330 '' ROLL Y RTK

@@ -60,41 +60,8 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.382 Tiempo Y Ritmo item 4.0 Entrenamiento con Metronomo y palmadas;FIX Grafico Independiente Pistas Manuales 8.0"
-' 0.380 la cuenta inicial antes de metronomo se solapa mejor, parpadeo cancelacion al grabar cancion
-' 0.379 BATCH DE ROLL O RTK ANDA OK SOLO NO HAY QUE PONER TEXTGADGET CON BATCH
-' SE CONDICIONA POR UBIRROLL >0
-' NNN=120 Y PRIORITY SE BAJA A 1 CON MUCHA PRIORIDAD BORRA ENSEGUIDA LA PANTALLA Y SOLO
-' SE ALCANZA A VER LA OCTAVA 6 CREO QUE ES ESO VEREMOS MAS PRUEBAS
-' PROBLEMA AL ESCUCHAR UAN  SOLA PISTA SIN CANCION Y EL METRONOMO LLEGA UN MOM
-' EN QUE EL DIBUJO DE PENTA SE PIERDE TITILA Y SE VA APRETAMDO P.
-' FIX 378 AJUSTE LOS VOL METRONOMOS APUNTABAN A OTRO LADO 1064 EN VEZ DE 10631 SERIA ESO
-' en desarrollo 0.378 AJUSTE VOLUMEN METRONOMO (vol canal izq o der o ambos )
-' 0.377 LISTO habilitar para rtk o roll aislado
-' 0.376 fix grabacion de Roll
-' "0.375 metronomo dentro del play Cancion, Coordinacion y ajuste  "
-' OK listo retrasoMetronomoCan=330 debemos dejar que se ajuste en la ventana de control
-' ok si lusuario ajusta a otro valor de 330 guardarlo en Rollmusic.ini y cargarlo
-'  330 para mi pc 
-' cancela mucho por varias formas al usar metronomo para escuchar cancion
-' hace delete de pista de cancion bien por los dos lados por menu o dando
-' delete sobre la pista. solo que creapenta a veces daeror fijarse porque!!!
-' 0.373 METRONOMO AJUSTES CON BOTONES +/-
-' SEGUIR PROBANDO LOS CAMBIOS DE 372 AL SACAR NUMEROS DE PISTAS 
-' FIX F2/F3 ACHICABA LA PANTALLA UTIL A MAXPOS.
-' FIX AGREGAR UN RTK A CANCION 
-' FIX AL CLEVANTAR UN ROLL GRABADO EN 4 A 8 OCTAVAS A 3 A 8 OCTAVAS DEFORMA LA MELODIA
-' FALTARIA HACER LO MISMO PARA *.ROLL Y RTK LOS LEVANTA PERO HAY QUE DARLE PLAY
-' FIX PLAY EJEC NO CANCELA SI PULSO SALIR
-' ECO Y VOL DE EJECUCIONES LOS BOTONCITOS ABAJO CANCELAN ahora ajuste vol segun que version verificar no anda bien
-' ejec batch toca 2 veces y separa solo una y no sepuede parar mas!!!
-' -Fix Tab numeracion avanza pero no los datos, 
-' fix coloreado atrasa un poco durante el play
-' FIX HABILITAR INTERLINEADO HABILITABA A TRASPONER, SE CAMBIO POR TECLA W. 
-' FIX TIEMPO DE LOOPS OPTIMIZACION
-' FIX TAB DE TOPE A 1 NO IBA DIRECTO, ALGO DE REDUCCION DE TIEMPO DE RESPUESTA SCREENEVENTE ENVEZ DE MULTIKEY
-' FIX AJUSTE DE PRIORIDAD MAS ALTA PARA ALGUNOS THREAD HYA QUE SEGUIR PROBANDO.
-' REDUCCION DE TIEMPO DE BARRE PENTA prioridad
+nroversion="0.383 Habilitar PORT de Microsoft como opcion, ajuste label vol metronomo"
+' 384 en preparacion editar cada track en el mismo grafico de cancion..
 ' (otra version sera una insercion dentro de la secuencia original
 ' 2) posn=MaxPos-6 podriamos eliminarlo de los parametros.
 ' -> E NUN FUTURO 5) poder mover la copia A derecha O izquierda hasta lograr una posicion exacta

@@ -234,7 +234,7 @@ CantMin=15
 '--------------LECTURA ROLLMUSIC.INI ADELANTADO
  
 Dim As String sfont,smxold,smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig,_ 
- sVerCifradoAcordes, sretrasoMetronomoCan,sretrasoMetronomoRoll,sBatchGraficoOCtrl
+ sVerCifradoAcordes, sretrasoMetronomoCan,sretrasoMetronomoRoll,sBatchGraficoOCtrl,sPORT_MICROSOFT
 
 ffini=3
  If  Open (ROLLDIR + "RollMusic.ini" For Input As #ffini) <> 0 Then
@@ -255,6 +255,7 @@ Line Input #ffini, sVerCifradoAcordes
 Line Input #ffini, sretrasoMetronomoCan
 Line Input #ffini, sretrasoMetronomoRoll
 Line Input #ffini, sBatchGraficoOCtrl
+Line Input #ffini, sPORT_MICROSOFT
 'Print #1,"sfont, smxold, smyold,sANCHO,sALTO..  ",sfont, smxold, smyold,sancho,salto,sdeltaip,sVerEscalasAuxiliares,sanchofig
 
 CLOSE ffini
@@ -274,7 +275,7 @@ nVerCifradoAcordes=ValInt(sVerCifradoAcordes)
 nretrasoMetronomoCan=ValInt(sretrasoMetronomoCan)
 nretrasoMetronomoRoll=ValInt(sretrasoMetronomoRoll)
 BatchGraficoOCtrl=ValInt (sBatchGraficoOCtrl)
-
+PORT_MICROSOFT=ValInt(sPORT_MICROSOFT) ' 0 deshabilitado
 Print #1,"EN LA CARGA DE ROLLMUSIC BatchGraficoOCtrl ",BatchGraficoOCtrl 
 '   BatchGraficoOCtrl=CTRL     3
 '   BatchGraficoOCtrl=GRAFICO  0 

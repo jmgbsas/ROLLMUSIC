@@ -315,10 +315,10 @@ SetGadgetFont(BTN_MENOS_RETARDO_M,CINT(LoadFont("consolas bold",15)))
 ' hay que convertir de VolIzq=32767 a VolIzq100=100 y susajsutes
 'http://www.jasinskionline.com/WindowsApi/ref/w/waveoutsetvolume.html
 'retval = waveOutGetNumDevs()  ' get number of such devices de salida
-TextGadget(TEXT_METRO_VOL_IZQ,280, 750,90,20,"VolM Izq "+ VolIzq100)
+TextGadget(TEXT_METRO_VOL_IZQ,270, 750,95,20,"VolM Izq "+ VolIzq100)
 GadgetToolTip(TEXT_METRO_VOL_IZQ,"Ajuste Volumen Metronomo Izquierdo Max=100") '32767
 SetGadgetFont(TEXT_METRO_VOL_IZQ,CINT(LoadFont("consolas bold",10)))
-TextGadget(TEXT_METRO_VOL_DER,280, 770,90,20,"VolM Der "+ VolDer100)
+TextGadget(TEXT_METRO_VOL_DER,270, 770,95,20,"VolM Der "+ VolDer100)
 GadgetToolTip(TEXT_METRO_VOL_DER,"Ajuste Volumen Metronomo Derecho Max=100") '32767
 SetGadgetFont(TEXT_METRO_VOL_DER,CINT(LoadFont("consolas bold",10)))
 'StatusBarGadget(1,"StatusBarGadget")
@@ -510,6 +510,8 @@ MenuItem(1115,MenName7,"11.0 Detener metronomo ")
 MenuItem(1116,MenName7,"12.0 BACKUP SI ")
 MenuItem(1117,MenName7,"13.0 BACKUP NO ")
 MenuItem(1118,MenName7,"14.0 ABRIR EN EXPLORADOR Archivos *.roll ó *.rtk con ventanita de CONTROL (Por Omision CON GRAFICO) ",MF_UNCHECKED)
+MenuItem(1119,MenName7,"15.0 HABILITAR PORT SALIDA MICROSOFT NORECOMENDABLE PERO SI NO HAY OTRA COSA ",MF_UNCHECKED)
+
 ''chequedo abrira con GRAFICO y lo tocara.
 
 
@@ -548,6 +550,7 @@ BatchGraficoOCtrl=3
    SetStateMenu(hmessages,1118,CONTROL)
 EndIf
 
+SetStateMenu(hmessages,1119,PORT_MICROSOFT)
 
 '  MenuBackColor NO FUNCIONA SOLO AL PRINCIPIO
 ' CASA  MENU QUEDA LIMITADO POR BARRAS DE COLOR EN ESTE CASO GRIS

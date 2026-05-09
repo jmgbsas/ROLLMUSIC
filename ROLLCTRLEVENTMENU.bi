@@ -1169,16 +1169,31 @@ Print #1, "1118 AL OBTENER EL ESTADO Case 1118 ",BatchGraficoOCtrl
               Select Case BatchGraficoOCtrl 
                      Case  3 
                     BatchGraficoOCtrl=GRAFICO '0  
-Print #1,"1118 SELECCION DE GRAFICO 0"
+'Print #1,"1118 SELECCION DE GRAFICO 0"
                     SetStateMenu(hmessages,1118,GRAFICO)
                      Case 0
                     BatchGraficoOCtrl=CONTROL '3
-Print #1,"1118 SELECCION DE CONTROL 3"
+'Print #1,"1118 SELECCION DE CONTROL 3"
                     SetStateMenu(hmessages,1118,CONTROL)
 
               End Select
-Print #1, "1118 AL CAMBIAR EL ESTADO POR  SELECT Case 1118 ",BatchGraficoOCtrl
-
+'Print #1, "1118 AL CAMBIAR EL ESTADO POR  SELECT Case 1118 ",BatchGraficoOCtrl
+'---------------------------------------------------------------
+           Case 1119 ' HABILITAR POR SALIDA MICROSOFT HABILITAR_PS_MICROSOFT
+''Const HABILITAR_PS_MICROSOFT=1
+''Const APAGAR_PS_MICROSOFT=0
+''PORT_MICROSOFT=0  ' NO HABILITADO     
+              PORT_MICROSOFT=GetStateMenu(hmessages,1119)       
+              Select Case PORT_MICROSOFT 
+                     Case  3 
+                    PORT_MICROSOFT=0  
+                    SetStateMenu(hmessages,1119,0)
+                     Case 0
+                    PORT_MICROSOFT=3
+                    SetStateMenu(hmessages,1119,3)
+              End Select
+     
+'--------------------------------------------------------------
            Case 1200 'Seleccionar  Puertos MIDI-IN SOLO PARA PORTS DE EJECUCION POR AHORA
 ' seleccion de portin , 2:portin. ntkp:salida
 ' ->  npi: numero port entrada DIFERENCIA PARA ABAJO

@@ -1,7 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-      0.382 Tiempo Y Ritmo item 4.0 Entrenamiento con Metronomo y palmadas;FIX Grafico Independiente en 
-            Pistas Manuales item 8.0"
+      0.383 Habilitar PORT de Microsoft como opcion, ajuste label vol metronomo
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -216,6 +215,17 @@
           si no esta seleccionado es Grafico para roll y rtk, si lo selecciono sera ventanita
           chica de Control para las mismas, los ejec no se cambia y estará en ventana Control
           completa siempre.
+       f) Usar el Port de Microsoft, habilitarlo /deshabilitarlo
+         En 0.383 se a habilitado la opcion de usar el PORT de Microsoft ahora que el
+         programa esta mas estable, igual el volumen que brinda es medio bajo comparada
+         con otros ports(en mi experienca). 
+         Para ello dar click en menu opciones item 15.0, en el archivo RollMusic.ini
+         de texto editable aparecera una nueva linea 
+         0            PORT_MICROSOFT        <- indica port deshabilitado para su uso
+         3            PORT_MICROSOFT        <- indica port habilitado para usar
+         Luego al cerrar el programa e iniciarlo de nuevo escribira esta opcion para el
+         proximo arranque, pero ya se puede usar al seleccionar PORTSAL aparecera la opcion
+         de marcar Microsoft sin la leyenda "crash...."
 
     III) USO: (ventana Roll Grafica)
     
@@ -1537,8 +1547,17 @@
          UNA SOLA PISTA cargada sin cancion: tambien puede cambiarse el midi canal
          de un mismo port, o cambiar el port con su canal correpsondiente,,
          Es una 1era version Rtmidi Reporta un warning y los ports probados 
-         funcionan igual, pero al usar el port de Microsoft laaplicacion se cae
+         funcionan igual, pero al usar el port de Microsoft la aplicacion se cae
          parece que no soporta o no le gusta el warnig.
+         En 0.383 se a habilitado la opcion de usar el PORT de Microsoft ahora que el
+         programa esta mas estable, igual el volumen que brinda es medio bajo comparada
+         con otros ports. PAra ello dar click en menu opciones item 15.0, en el archivo
+         de texto editable aparecera una nueva linea 
+         0            PORT_MICROSOFT        <- indica port deshabilitado para su uso
+         3            PORT_MICROSOFT        <- indica port habilitado para usar
+         Luego al cerrar el programa e iniciarlo de nuevo escribira esta opcion para el
+         proximo arranque, pero ya se puede usar al seleccionar PORTSAL aparecera la opcion
+         de marcar Microsoft sin la leyenda "crash...."
          Un program aaislado de todo puede ejecutar varios ports al mismo tiempo
          abriendolos son ningun error o warnig...pero todos los ports se abren desde 
          el inicio,,,veremos que solucion futura elijo para qu eno de ningun warning.

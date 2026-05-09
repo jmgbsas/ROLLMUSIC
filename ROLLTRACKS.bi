@@ -2596,7 +2596,7 @@ For i=1 To tope
    k1=CInt(pmTk(i).portout)
     
 '   Print #1,"midiout ",k1, *nombreOut(k1)
-   If InStr(*nombreOut(k1),"Microsoft")>0 Then
+   If InStr(*nombreOut(k1),"Microsoft")>0 And  PORT_MICROSOFT=0 Then
     Print #1,"No se usa Microsoft"
     Exit sub
    Else
