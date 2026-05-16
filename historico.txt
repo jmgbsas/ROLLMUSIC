@@ -1,3 +1,12 @@
+-16-05-20206 0.384 
+  - fixed  AL AGREGAR UNA NOTA NUEVA A UNA SECUENCIA O PISTA CANCELABA 
+  - fixed Toca la nota ingresada en ENTRADA MANUAL
+  - NUEVO,ENTRAR NOTAS ADENTRO DE UNA SECUENCIA con pasoZona1
+  - fixed SE REPUSO LOOP INFINITO ALT-L PLAYLOOP=NO ELIMINADO DE LAS EJECUCIONES
+  - fixed PASOZONA1 Y 2 SE LIMITARON A GAP1 Y MAXPOS PARA EVITAR CANCELAIONES
+  - fixed SE PERDIA EL NOMBRE DE LA PISTA NUEVA AL GRABAR COMO RTK..
+  - NUEVO ALT+DELETE ELIMINA UNA ZONA DE LA SECUENCIA SIN DEJAR ESPACIO COMO LO HACE DELETE SOLO.
+  - AYUDA Y TECLAS RAPIDAS MAS INFO
 - 09-05-2026 0.383 Habilitar PORT de Microsoft como opcion, ajuste label vol metronomo
    se a habilitado la opcion de usar el PORT de Microsoft ahora que el
    programa esta mas estable, igual el volumen que brinda es medio bajo comparada

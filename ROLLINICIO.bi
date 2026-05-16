@@ -738,7 +738,7 @@ BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio muestro octava 4 la cen
 '   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
 'EndIf
 
- 
+''gap1 es entero!! 
    gap1= anchofig* 6 ''2315/1000
    NroCol =  (ANCHO / anchofig ) + 4
 '   gap2= (914 * gap1) /1000 ' 74 default

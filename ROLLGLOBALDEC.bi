@@ -191,6 +191,7 @@ Const CONTROL=3
 Const HABILITAR_PS_MICROSOFT=1
 Const APAGAR_PS_MICROSOFT=0
 '-----------
+
 Dim Shared As ubyte GrabarPistaCancion=0
  
 Dim Shared As Integer  usarmarco=0 , usarmarcoOld=0,reiniciar=0,usarAcordesIguales=0
@@ -619,7 +620,7 @@ Common Shared As Double STARTMIDI
 Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, interva ,valorpan '  default 2 que es 1 separacion de notas
 Common Shared As Integer valoreco, valorcoro,valorvol
-common Shared As integer tiempoPatron
+common Shared As integer tiempoPatron,NuevaCancion
 common Shared As integer tiempoPatronEjec,BACKUP, pulsotab
 BACKUP=NO
 tiempoPatron=60
@@ -642,6 +643,7 @@ valorpan=64  'mf
 valoreco=0  
 valorcoro=0
 valorvol=90
+NuevaCancion=NO
 redim  titulosTk(0 To 32)  
 
 trasponer=0
@@ -665,10 +667,10 @@ Type rangoOct Field=1
  As Integer hasta =0
  As Integer NB =0
  As Integer NA =0
- As Integer MaxPos =0
+ As Integer MaxPos =0 ' HASTA DONDE HAY DATOS MENOR A LOS TICKS
  As Integer posn =2 
  As UByte   notaold=0 
- As Integer Ticks =0
+ As Integer Ticks =0 ' LA MAXIMA CAPACIDAD DE LA CINTA O DE LA CANCION EN DONDE ESTA
  As UByte   patch
  As UByte   notaescala
  As UByte   tipoescala
@@ -677,14 +679,14 @@ Type rangoOct Field=1
  As UByte   canalsalida
  As UByte   canalentrada
  As UByte   portout      ' dispositivo midi de salida 
- As Integer   zona1
- As integer   zona2
+ As Integer zona1
+ As integer zona2
  As UByte   nroRep
  As UByte   portin 
- As UByte  tipoCompas
+ As UByte   tipoCompas
  As UByte   ejec
- As UByte    vol
- As Integer  tiempopatron ' 240 60 etc
+ As UByte   vol
+ As Integer tiempopatron ' 240 60 etc
  As UByte   pan
  As UByte   Eco
  As UByte   Coro
@@ -703,19 +705,19 @@ ReDim  pmTk (0 To 32)
 ReDim  pmEj (1 To 32)
 Type poli Field=1 ' para guardar la secuencia EN Tacks 15 bytes
  dur    As UByte =0   ' duracion 
- sonido   As UByte =0   ' SONIDO ON/OFF ? se usa?
+ sonido As UByte =0   ' SONIDO ON/OFF ? se usa?
  canal  As UByte =0   '  
  onoff  As UByte =0   ' nota on=2, nota off=1  
  ejec   As UByte =0   ' marca viene de un ejec=1, no viene de ejec=0 
  eco    As UByte =0   ' era dur6  
- patch   As UByte =0   '  
+ patch  As UByte =0   '  
  nanchofig As UByte =0   '  
  nota   As UByte =0 ' en un futuro contendra nota, octava, canal etc 
  vol    As UByte =0 ' volumen
  pan    As UByte =0 ' paneo
  pb     As UByte =0 ' pitch bend
  nnn    As UByte =0 ' se usa para escala canal etc 
- tick   As UByte =0 ' 384 tiene la redonda 
+ tick   As UByte =0 ' 384 tiene la redonda NO SIRVE
  acorde As UByte =0 ' 1 a 12 , son el se hara el sort    
 End Type
 ' posn As Integer =0' de roll todavia no lo uso para generar secuencia

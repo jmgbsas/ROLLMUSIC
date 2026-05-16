@@ -683,8 +683,11 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
 
 '-----------------------------------------------------------------------
            Case 1061 ' <====== crear pista en cancion con lo elegido
-
+             Print #1,"Case 1061, instancia ",instancia
                CTRL1061 (SALIDA)
+             Print #1,"Case 1061, SALIDA  ",SALIDA
+                  CANCIONCARGADA=TRUE
+                  NADACARGADO=FALSE
                If SALIDA = 1 Then
                   salida=0
                   Exit Select  

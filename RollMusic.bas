@@ -60,8 +60,30 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.383 Habilitar PORT de Microsoft como opcion, ajuste label vol metronomo"
+nroversion="0.384 ALT+DELETE, ALT+L, INTERVALO LIMITE FIN SECUENCIA, NOMBRE RTK NUEVO, AYUDA etc "
+' 
+' - fixed  AL AGREGAR UNA NOTA NUEVA A UNA SECUENCIA O PISTA CANCELA 
+' - fixed Toca la nota ingresada en ENTRADA MANUAL
+' - NUEVO:ENTRAR NOTAS ADENTRO DE UNA SECUENCIA con pasoZona1, la posicion de pasoZona1 incrementa
+'   en la duracion de la nota, si se quiere volver usar Backspace o Retroceso.       
+' - fixed SE REPUSO LOOP INFINITO ALT-L PLAYLOOP=NO ELIMINADO DE LAS EJECUCIONES
+' - fixed PASOZONA1 Y 2 SE LIMITARON A GAP1 Y MAXPOS PARA EVITAR CANCELAIONES
+' - fixed SE PERDIA EL NOMBRE DE LA PISTA NUEVA AL GRABAR COMO RTK..
+' - NUEVO:ALT+DELETE ELIMINA UNA ZONA DE LA SECUENCIA SIN DEJAR ESPACIO COMO LO HACE DELETE SOLO.
+' EDITAR TRACKS DE CANCION queda pendiente
+' agegamos la grabacion en grabartrak del maxposTope que  sera de la cancion a la cual
+' pertenece luego agregar la carga de maspostope en cargartrack
+' asi tendremos fin de datos del track y fin de cancion.
+' al editar un track  de una cancion marcar donde empezar a grabar con pasozona1
+' y ahi el programa debe tomar el maxpos nuevo = pasozona1 y se supone que podriamos
+' entrar notas en edit al final de esa marca en EDIT VERDE entrada de notas.
+' luego de terminar de grabar el nuevo valor de maxpos grabarlo en el track
+' si no supera el maxpostope todo sigue igual. si lo supera ese nuevo valor
+' se grabara en todos los tracks.
+' CREO QUE CONVIENE AL LEVANTAR UNA CANCION HACER REDIM PRESERVE DE TODOS LOS TRACKS
+' AL MAXPOSTOPE PAR IGUALARLOS!!! SEGUIR 
 ' 384 en preparacion editar cada track en el mismo grafico de cancion..
+' se cambio color de fondo del menu a celeste 
 ' (otra version sera una insercion dentro de la secuencia original
 ' 2) posn=MaxPos-6 podriamos eliminarlo de los parametros.
 ' -> E NUN FUTURO 5) poder mover la copia A derecha O izquierda hasta lograr una posicion exacta
@@ -215,7 +237,8 @@ End If
 'Print #1, "ANTES ROLLCTRLSUB.Bi"
 #Include "ROLLCTRLSUB.Bi"
 '----------------ABRIMOS UN PORTOUT DEFAULT
-abrirPortoutEjec(100)
+abrirPortoutEjec(100) ''no abre para playAll
+
 
 '' ------TIPS AYUDA EN LA BARRA DE ESTADO
    If UBIRTK> 0 Or UBIROLL > 0 Then

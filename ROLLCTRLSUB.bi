@@ -410,7 +410,8 @@ If ejecutar=CANCION Then
      EndIf
      If LCase(estado) = "maxpos" then
         maxposTope=arch
-        Maxpos=maxposTope
+        ''Maxpos=maxposTope 13-05-2026 en el archivo son distintos deboigualarlos 
+'' durante la edicion o en la carga
      EndIf 
  
    Loop
@@ -707,19 +708,16 @@ BordeSupRoll = BordeSupRoll -  66* inc_Penta ' de inicio
 End Sub 
 
 Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo elegido
-
+               NuevaCancion=SI
                ntk = CountItemListBox(PISTASROLL)+ 1
-               Tope=ntk
+               Tope=ntk  '' (*A)
                Print #1,"//creando Pista nueva ",ntk
                If ntk > 32 Then
                   print #1,"exit select ntk> 32"
                    SALIDA=1 ''Exit Select
                    Exit SUB
                EndIf 
-
-               If instru=0 Then 
-                  instru=1
-               EndIf
+               instru=Tope
    '            print #1,"instru en 1061 , toma el ultimo ",instru
                
            NombrePista=RTrim(Mid(NombreInst(instru), 1,21))
@@ -731,17 +729,18 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
                   EntrarNombrePista(NombrePista,hwndC )
                EndIf
                 
-               AddListBoxItem(PISTASROLL, NombrePista)
+               AddListBoxItem(PISTASROLL, "["+STR(ntk) +"]"+NombrePista) 'SOLO EN VENTANA EN DISCO NO HAY UNUMEROS
                
               ' crear pista en disco 
                'MaxPos=2
                nombre= NombreCancion+"\"+NombrePista+".rtk"
-    '           print #1,"nombre en 1061",nombre
+               print #1,"nombre en 1061",nombre
                
-    '           Print #1,"CantTicks ",CantTicks
-               Tope=Tope+1
+               Print #1,"CantTicks ",CantTicks
+               '''Tope=Tope+1 ' NO HAY NECESIDAD DE INCREMENTAR EN (*A) SE INCREMENTA SOLO
                ''' para cuando las pistas esten juntas en un archivo ->ZGrabarTrack(ntk)
-               If ntk=Tope And Tope > 2 Then
+               Tope=ntk
+               If ntk=1 Then '''Tope And Tope > 2 Then ' el usuario podria estar dando click a otras pistas ya entradas 
                   ReDim (Roll.trk ) (1 To CantTicks,NB To NA)
                   ReDim (Track(ntk).trk ) (1 To CantTicks,1 To lim3)
                Else
@@ -756,10 +755,13 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
                pmTk(ntk).hasta=hasta
                pmTk(ntk).NB=NB
                pmTk(ntk).NA=NA                  
-               pmTk(ntk).MaxPos=2
+               pmTk(ntk).MaxPos=2 '''=POSN
                pmTk(ntk).posn=2
                pmTk(ntk).notaold=0                  
-               pmTk(ntk).Ticks=MaxPos
+               pmTk(ntk).Ticks=2
+               pmTk(ntk).vol=100
+               pmTk(ntk).patch=ntk 
+               pmTk(ntk).canalsalida=ntk -1
                ' usamos encancion=1 para grabar dentro de la cancion
                posicion=1
                posn=2
@@ -767,17 +769,17 @@ Sub CTRL1061 (ByRef SALIDA As INTEGER) ' <====== crear pista en cancion con lo e
                GrabarTrack(ntk)
                abrirRoll=NO_CARGAR
                If ntk=1 Then 
-                  abrirRoll=CARGAR
+                ''  abrirRoll=CARGAR ' en 383 estaba
                   cargacancion=NO_CARGAR_PUEDE_DIBUJAR
                   CANCIONCARGADA=TRUE
                   NADACARGADO=FALSE
                EndIf
-               If ntk>=2 Then
-                 cargacancion=CARGAR_NO_PUEDE_DIBUJAR
-                 abrirRoll=NO_CARGAR
-                 CANCIONCARGADA=FALSE
-                 NADACARGADO=TRUE
-               EndIf
+              ' If ntk>=2 Then ' en 383 estaba
+              '   cargacancion=CARGAR_NO_PUEDE_DIBUJAR
+              '   abrirRoll=NO_CARGAR
+              '   CANCIONCARGADA=FALSE
+              '   NADACARGADO=TRUE
+              ' EndIf
 
  
 End Sub
@@ -1271,7 +1273,11 @@ Sub CTRL1112() '<========= cambiode a escala MUSICAL Alternativa de la Principal
      EndIf 
    Print #1,"1112 Alternativa TIPOESCALA NOTAESCALA ",tipoescala_num, notaescala_num
   EndIf
-
+' podriamos hacer que si seusa una escala los sostenidos se inserten automaticamente  o sea
+' si llemos de un pentagrama en una escal de E tenemois F#,C#,G#,D#
+' y cuando pulsamos F,C,G,D el programa podria ajustarlos a sostenidos automaticamente
+' conviene o no ??? 13-05-2026 pero no la escala dibujada arrib le indica al usuario 
+' cuales son los sostenidos
 
 End Sub
 

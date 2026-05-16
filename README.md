@@ -2,7 +2,7 @@ Este programa está publicado bajo la licencia GPL.
 (ver carpeta Licences/RollMusic)
 Una  ejercitacion para ver Cairo.(Estado:Alpha Debug escribe archivos.)
 Un secuenciador que usa letras en vez de rectangulitos...
-Ya funciona puede editarse una sola pista o crear una cancion de hasta 32 pistas.
+Puede editarse una sola pista o crear una cancion de hasta 32 pistas.
 Ajustar el instrumento de cada pista o patch, usar uno o mas puertos de salida MIDI-OUT.
 Usa las 8 octavas musicales desde C0 a B8 con sostenidos y en vez de figuras musicales 
 o rectangulitos, colocar letras que simbolizan duraciones de notas con la opcion de cambiar 
@@ -10,7 +10,7 @@ insertar etc. Duraciones "O","P","I","L","F","E","X","H" , W, Redonda, blanca,ne
 semicorchea,fusa y semifusa..Busque las letras mas parecidas a las figuras
 musicales L corchea tiene un palito, F semicorchea tiene 2, E tiene 3 como fusa,
  X 4 semifusa, H 5...
-los silencios se arman poniendo una s minuscula adelante.
+los silencios se arman poniendo una s minuscula adelante. Las ligaduras poniendo un + al final.
 se entran por teclado del 1 al 8 o por mouse click derecho en Edit Cursor. 
 Es un codigo  algo organizado usa muchas globals.
 Al inicio se puede hacer scroll con flechas arriba abajo,,
@@ -69,11 +69,12 @@ no probe como anda con 32 hasta 8 bien...dependerá de la cpu, pero con 4 nucleos
 nada de CPU la reproduccion sin el grafico, con el grafico llega al 20%) c/u con 12 notas de acorde,
 lo que no existirá nunca.
 Ya se puede cargar un archivo (.Roll) y luego grabarlo en formato track (.trk) y volverlo a cargar
-viendolo en pantalla (se convierte al grabar de Roll a Trk y al cargar de Trk a Roll )
+viendolo en pantalla (se convierte al grabar de Roll a Trk y al cargar de Trk a Roll ), o si es 
+nuevo al poner un nombre se debe poner la extension si es .roll o .rtk los grabara en esos formatos.
 Debido a eso la columna vertical de la pantalla visual solo tendra 12 notas en cualquier acorde 
 como maximo el resto vacio,en el archivo Trk, el de Visualizacion tiene 116 como máximo, puede tener menos,
 en cada track o pista se puede definir un rango de octavas de esa pista solamente.
 Todo se prepara para que el Nro de posiciones pueda ser dinamico tambien,a medida que se usa
 se implementó que vaya incrementando el numero de posiciones, con lo cual el limite sera
 la memoria de la Ram .
-Pulsando F1 aparece un Notepad con Ayuda Basica. 
+Pulsando F1 aparece un Notepad con Ayuda Basica. En el menu info hay mas ayuda.

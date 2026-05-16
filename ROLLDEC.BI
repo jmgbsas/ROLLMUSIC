@@ -111,7 +111,7 @@ Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6,notaGuia=0,PerGuia=0
 Dim Shared As String RTA, alteracion 
 alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0,OCTAVAFIJA
-Dim Shared As integer pasoZona2=0,nroRep=0,esEjecucion=0
+Dim Shared As integer pasoZona2=0,nroRep=0,esEjecucion=0,pasoZona1Old=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, playloop2=0,SelGrupoNota =0,moverZona=0, copiarZona=0,SelGrupoNotaT =0
 Dim Shared as ubyte  DUR,nota,notacur,suenaunavez=0,canRecal=0
 ReDim Shared as ubyte  notasInsertadas (1 to 1500)

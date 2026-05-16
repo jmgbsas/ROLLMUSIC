@@ -1600,6 +1600,7 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
 
   '   print #1,"FINDE SECUENCIA !!" debo calcular el maxpos
      Maxpos=n+curpos ' en el caso que partimos de una secuencia vacia sin datos
+     pmTk(ntk).MaxPos=MaxPos
 ' quedaria rellenar los espacios vacios con nota=181 y dur=0 creo
      cambiadur = 0
      DUR=0
@@ -2093,8 +2094,8 @@ Sub Tracks ( ByRef ntk As Integer, ByRef nroCanal As UByte,Roll As inst)
 clickpista=0
 Print #1, ">>>> TRACKS: MaxPos <=2 Or pmTK(ntk).maxpos=0 Then " , Maxpos, pmTK(ntk).maxpos 
 If MaxPos <=2 Or pmTK(ntk).maxpos=0 Then
-  Print #1, "Salimos de Tracks sin ahcer nada "
-  Exit Sub
+  Print #1, "Salimos de Tracks sin ahcer nada " ''383 
+  Exit Sub '' 383 no habria que salir???
 EndIf
 
 nota=0:dur=0
@@ -3501,10 +3502,11 @@ MessageBox( null, "MIDI-OUT "+ Str(portout)+ " INEXISTENTE CAMBIELO", "Se cambia
 '     Get #ca, ,z8  
 '     Get #ca, ,z9  
 '     Get #ca, ,z10 
-
+     ReDim Roll.trk (1 To CantTicks, NB To NA) 
+     ReDim (Track(00).trk ) (1 To CantTicks,1 To lim3)
      ReDim compas(1 To CantTicks)
-     Print #1,"En CargarArchivo NB NA ", NB,NA
-     Dim Trabajo (1 To MaxPos, NB To NA) As datsec     ''' es un Roll
+     Print #1,"En CargarArchivo NB NA, CantTicks", NB,NA,CantTicks
+     Dim Trabajo (1 To MaxPos+6, NB To NA) As datsec     ''' es un Roll
  
      Get #ca, , Trabajo() ' aca levanta tambien el instrumento que se grabo
      ' SE SUPONE QUE LEVANTA DATOS COMPLETOS DE ROLL INCLUIDO LOS VOL DE CADA NOTA DE UNA EJEC
@@ -3960,6 +3962,9 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
     If MouseButtons And 1 Then  ' funciona mejor ? veremos...
      menuNew=PARAMETROS_ROLL
      cierroedit= 0 ' habilita EDIT de nuevo
+     pasoZona1Old=0   ' variable usada par insertar notas dentro de secuencia en ENTRADA NOTAS
+     pasoZona1=0   ' variable usada par insertar notas dentro de secuencia en ENTRADA NOTAS
+     DUR=0
     EndIf
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
@@ -4338,6 +4343,7 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
              Exit Sub
           Else
              nombre=nombreg   
+             titulosTk(ntk)=nombre ''14-05-2026
           EndIf
        EndIf
 
@@ -4924,7 +4930,11 @@ Sleep 100
      cierroedit= 0 ' habilita EDIT de nuevo
    ' print #1, "INVESTIGO COMEDIT ENTRO X CLICK EN SUB S3, menuNro: ",S3, menuNro
  '  t=  " [Edicion]":cairo_show_text(c, t)
-     
+'    If CANCIONCARGADA=TRUE Then ''13-05-2026 tratamos de remedar una edicion aislada sin cancion
+'       MaxPos=pmTk(ntk).MaxPos ''13-05-2026
+'       posn=MaxPos-6  ''13-05-2026
+'    EndIf    
+
  End Select
  ' Si nodoy Stroke los show text van apendendo al final como un print;
 
@@ -5502,7 +5512,7 @@ nombreArchivo=InputBoxJmg("IR A COMPAS" ,"Entre una posicion", default, ES_MULTI
     FactortiempoPatron= CDbl(nombreArchivo) '08-01-2022 de doble a int
     Print #1,">>>>>>>>Factor TIEMPO PATRON NUEVO>>>>>>>", FactortiempoPatron
  Case "[NROREP]"
-'
+' REPETICIONES DE LOOP
   default=Str("2")
   nombreArchivo = InputBoxJmg("Repeticiones " ,"Cantidad entera ",default, ES_MULTILINE + ES_AUTOVSCROLL ,0 )
 ' en este momento inserto al repeticion 
@@ -5659,7 +5669,7 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
       If ntkp=0 Then ntkp=1  EndIf
       default=Str(pmEj(ntkp).vol)
       If pmEj(ntkp).vol=0 Then 
-        default=Str(90)
+        default=Str(120)
       EndIf
       intervaloTxt = InputBoxJmg("Ajuste Numerico de VOL 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
       valorvol= ValInt(intervaloTxt)  '19-03-2025
@@ -6186,7 +6196,9 @@ Dim  As Integer npl, length
            'seria nombre="" pero se toma como backup odeberia preguntar por un nombre nuevo
            ''If  funcion <> "CASE1014" Then  
            ''  nombre = nombre +".roll"  'un nombre sin extension no creo ocurra solo si es nuevo y no hay nombre
-           ''EndIf  
+           ''EndIf 
+        Else ' tengo nombre de un roll nuevo pero no le puse extension
+          nombre = nombre +".roll"  
         EndIf
        EndIf 
      EndIf   
@@ -6592,15 +6604,15 @@ Sub GrabarTrack (ntk As Integer)  'Error seguro aca nota=181 posicion1
 
    'r  Erase Trabajo ' todo a cero para un array fijo no dinamico
      Dim grabaPos   As poli ' 15 ubytes en cada poli 
-     Dim grabaLim   As poli
-     Dim graba3     As poli ' 04-02-2022 se agregan 48 bytes para info futura 
+     Dim grabaLim   As poli  
+     Dim graba3     As poli ' 04-02-2022 se agregan  bytes para info futura 
      Dim graba4     As poli 
      Dim graba5     As poli 
      Dim graba6     As poli 
      Dim graba7     As poli 
      Dim graba8     As poli 
      Dim graba9     As poli 
-     Dim graba10    As poli 
+     Dim graba10    As poli   
 
    ' Total 150 ubytes en 10 poli 
    
@@ -6757,7 +6769,35 @@ graba4.pb = mit.tp2
 Print #1,"GRABAR TRACK mit.ST tiempo patron ", mit.ST
 Print #1,"PASO GRABA4 tiempo patron elimino fileflush vermos"
   ''   FileFlush (gt)
+'---------GRABAMOS maxpostope QUE PUEDE  SER DE LA CANCION A LA QUE PERTENECE 
+' maxpos sera donde termina la ultima nota,,, maxposTope donde termina la cancion
+' el track se redimensionara al tamaño de la cancion pero su fin de datos estara en maxpos
+If maxposTope > 0 And maxposTope > MaxPos Then
+     x= Bin(maxposTope,20)
+     '    print #1,"Posicion ",Posicion
+     'Print "string representando ", x
+     a1=Mid(x,1,4)
+     a2=Mid(x,5,4)
+     a3=Mid(x,9,4)
+     a4=Mid(x,13,4)
+     a5=Mid(x,17,4)
+     '    print #1,"a1 a2 a3 a4 ",a1, a2 ,a3, a4
 
+     y1= CUByte("&B"+a1)
+     y2= CUByte("&B"+a2)
+     y3= CUByte("&B"+a3)
+     y4= CUByte("&B"+a4)
+     y5= CUByte("&B"+a5)
+     '    print #1, "y1,y2,y3,y4", y1,y2,y3,y4
+     ' grabamos maxpos en 4 ubyte
+     graba5.nota = y1
+     graba5.dur  = y2
+     graba5.vol  = y3
+     graba5.pan  = y4
+     graba5.pb   = y5
+
+EndIf
+'-----------------------------------------------------------------------------------------------
      Put #gt, ,grabaPos
      Put #gt, ,grabaLim
      Put #gt, ,graba3  

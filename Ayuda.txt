@@ -1,6 +1,14 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-      0.383 Habilitar PORT de Microsoft como opcion, ajuste label vol metronomo
+    0.384:
+  - fixed  AL AGREGAR UNA NOTA NUEVA A UNA SECUENCIA O PISTA CANCELABA 
+  - NUEVO,ENTRAR NOTAS ADENTRO DE UNA SECUENCIA con pasoZona1, la posicion de pasoZona1 incrementa
+    en la duracion de la nota, si se quiere volver usar Backspace o Retroceso.       
+  - fixed SE REPUSO LOOP INFINITO ALT-L PLAYLOOP=NO ELIMINADO DE LAS EJECUCIONES
+  - fixed PASOZONA1 Y 2 SE LIMITARON A GAP1 Y MAXPOS PARA EVITAR CANCELAIONES
+  - fixed SE PERDIA EL NOMBRE DE LA PISTA NUEVA AL GRABAR COMO RTK..
+  - NUEVO ALT+DELETE ELIMINA UNA ZONA DE LA SECUENCIA SIN DEJAR ESPACIO COMO LO HACE DELETE SOLO.
+  - AYUDA Y TECLAS RAPIDAS MAS INFO
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -303,9 +311,9 @@
           barra espacio usar un Click sobre Reproducir en el menu del Grafico. Otra forma 
           es dejar seleccionada esa sola pista en la lista de pistas de Roll a la izquierda de la Ventana de Control
           y pulsar barra de espacio o dar click al boton Verde encima de la lista  de Pistas de Rolls.
-          Si estamos escuchando una sola pista, ye un tramo corto que termina con fin de secuencia, podemos escucharlos
-          varias veces sin ajustar repeticiones dejando pulsada la Tecla Control y l aflecha del mouse sobre reproduir 
-          sin dar click, y repetira el final de la secuencia mientras este pulsada Control.
+          Si estamos escuchando una sola pista, y HAY un tramo corto que termina con fin de secuencia, podemos escucharlos
+          varias veces sin ajustar repeticiones dejando pulsada la Tecla Control y la flecha del mouse sobre reproduir 
+          dando click continuo, y repetira el final de la secuencia mientras este pulsada Control.
        6.1) EJECUCION DE UNA SECUENCIA DE EJECUCION MIDI *.ejec: dar click sobre el boton Verde de la lista de 
             ejecuciones de la derecha de la Ventana de Control. Se escucharan solo las que esten seleccionadas
             en columna [S]
@@ -365,7 +373,15 @@
             de chequeado a nada chequeado, si ponemos en nada chequeado y luego pulsamos una pista para
             que tenga sonido en la misma columan [S] funcionara como el solo de las aplicaiones standards.
             
-       6.3.1) [ LOOPS ] REPETICIONES EN UNA O VARIAS PISTAS DE <SOLO>  
+       6.3.1) [ LOOPS ] REPETICIONES EN UNA O VARIAS PISTAS DE <SOLO> 
+            Repeticion o Loop en un Roll o Rtk cargado sin cancion, procedimiento:
+            Crear un intervalo o zona de la  secuencia a repetir N veces, con 2 CTRL+click en dos lugares
+            distintos que abarque el intervalo de secuencia de interes a repetir, Luego ir al menu 
+            de (Reproducir) en la ventana de Control. pulsar el item 2.0 "Repeticiones marcadas..."
+            aparecera un dialogo que pide el Numero de repeticiones deseadas por omision son 2
+            eso creara marcas en la secuencia interna y externa con lineas verticales y [: indicando comienzo
+            de loop y :] final de loop. Se grabaran en el archico al grabarlo. Si se desea borrar las
+            repeticiones usar el item 2.1 "Borrar repeticiones "
             Con repeticiones en una pista elegida como solo funciona bien con estas condiciones:
             -En el Grafico si agrego repeticiones a una pista Tipo Solo debe estar posicionado en la pista
             que sea tocada por la cancion, luego durante la ejecucion se puede usar TAB para ver otras
@@ -948,6 +964,10 @@
          BORRAR UNA SECUENCIA DESDE LA 1ER MARCA DE UN INTERVALO HASTA EL FINAL
           Funciona igual solo que laposicion actual se marca con uan sola  marca de intervalo
           o zoba CTRL+CLICK. Y luego todo igualCTRL+ALT y CLICK en [Edicion]
+      - Borrar un intervalo o zona de la secuencia sin dejar espacio. marcamos el intervalo o zona 
+        de la secuencia con dos  Ctrl-Click del mouse izquierdo, se mostraran dos lineas verticales
+        marcando la zona a borrar achicando la secuencia pulsar ALT y enseguida DELETE, ALT+DELETE
+        se borraran las noteas en ese intervalo y la secuencia se achicara. 
     1.1)   El espaciado entre lineas se puede cambiar:
        Pulsar TECLA W, habilita interlineado, luego pulsar CTRL mantener la tecla presionada, mientras
        se gira la rueda del mouse  en la direccion  hacia afuera abre el espacio  entre lineas, hacia 
@@ -1106,6 +1126,7 @@
          un semitono y lo uso como raiz de Acorde MAyor estare construyendo el bVII de la nota B o sea 
          del VII grado de la escala de C Mayor. Y asi par acualqueir escala.
          Lo mismo sucede con el bVIIMaj7, se baja un semitono la nota y se crea un Maj7. ]
+
  ------------------------------------------------------------------------------------------
        Crear Canción En Ventana de Control.
        ===================================
@@ -1190,8 +1211,15 @@
            LE AGREGO INTELIGENCIA PARA ESE CASO,,,RENOMBRAR MODIFICAR Y LUEGO OLVER AL NOMBRE ORGIGINAL-
     
     --------------------------------------------------------------------------------------------
-    2.0) Modos de Edicion [Edicion]
 
+    2.0) Modos de Edicion [Edicion] (en el Grafico)
+         => NOTA IMPORTANTE: <=
+         UNA SECUENCIA UNICA CREADA EN ROLL GRAFICO MANUALMENTE INSERTANDO NOTA A NOTA O ACORDES SE PUEDE 
+         GRABAR EN FORMATO *.roll o en formato *.rtk. Para ello luego de creada la secuencia al grabar usar
+         [ARCHIVO]->[GRABAR] ...como es Nueva  pedira un nombre, en el nombre colocar
+          NOMBRE.roll  o NOMBRE.rtk... LA EXTENSION LA PONEMOS NOSOTROS PARA INDICAR QUE ESTAMOS CREANDO
+          UN ARCHIVO roll O UN ARCHIVO rtk. Si estamos creando un rtk para una cancion al colocar la extension
+          rtk, no sera necesario convertir de ROLL a Track.
     2.1) MODO EDIT insercion NOTAS NUEVAS POR TECLADO (click en menu [EDICION] luego otror click en EDIT y cambiara
          a color verde. La octava seleccionada con un click izquierdo tambien)  Para salir de EDIT pulsar de nuevo EDIT 
          volvera a blanco la letra EDIT, si se da click de nuevo en EDIT no volvera a edicion verde. Para volver al menu 
@@ -1216,7 +1244,13 @@
            se puede combinar luego de una entrada con contextual seguir dando click izquiedo de mouse solamente y la misma
            duracion se seguira usando. las 3 formas puede ncombinarse segun el gusto. Si no responde en algun click volver a 
            entrar una duracion de 1 a 8 o con el menu contextual.La nota se entrada en todos los casos se escuchara.
-
+    2.1.3) Agregar Nota antes del final de la secuencia estando en Edicion sin ir a Ctrl-M o Ctrl-N
+           Para ello dar Ctrl-Click en la posiiocn donde se va agragar la nota,
+           Se marcara una linea vertical pasoZona1 (una sola marca de zona)
+           Proceder como siemrpe para entrar nota, al entrarla la marca pasoZona1 se movera al
+           final de la nota nueva ingresada, para agregar alguna otra nota secuencial. Si se
+           quiere volver pulsar BackSpace o Retroceso y estaremos en la posicion inicial
+           de pasoZona1 para sobreescribir o entrar otra nota tipo acorde.
     2.2) MODIFICACION NOTA EXISTENTE O AGREGAR NUEVA
          MODO EDIT CURSOR Ctrl-M Modificar notas existentes O se ingresan notas nuevas en espacios vacios.
         En MODO EDIT verde pulsar CTRL+M .
@@ -1535,7 +1569,7 @@
         Tenemos solo una opcion por ahora y es dar play de la cancion en las mismas condiciones 
         de antes, o sea ejecutara desde la posicion que se vea en 1er lugar en el borde izquierdo.
          Tamien toma la zona de play y el Loop como antes,
-           NOTA: CANCION YA HACE PLAY CON DISITNTOS DISPOSITIVOS A LA VEZ
+           NOTA: CANCION YA HACE PLAY CON DISTINTOS DISPOSITIVOS A LA VEZ
          Cada pista puede manejar un canal diferente de un mismo dispositivo O PORT
          O TAMBIEN: CADA pista puede manejar un dispositivo diferente o port.
          Ej: una pista apunta a LoopBe en un canal midi 7
@@ -1581,7 +1615,7 @@
       EJECUCION, O TODAS MANUALES, JUNTARLAS TRAE INCOMPATIBILIDADES NO RESUELTAS. NO USAR TAB DURANTE
       UN PLAY DE CANCION CON MEZCLA DE SECUENCAS DE EJECUCIONES Y SECUENCIAS DE EDICIONES MANUALRES.
       AL GRABAR UNA MODIFICACION DE UNA PISTA USAR [ROLL=>TRACK].  
-      ([GRABAR] puede detectar si es un roll o un rtk , no lo esta grabando bien,,se corregira.)
+      ([GRABAR] puede detectar si es un roll o un rtk )
     - AL CARGAR UNA CANCION se muestra el TRACK o PISTA 1 . 
       
     -------------------------0-0-0------------------------------------
@@ -1609,7 +1643,8 @@ Notas Tecnicas de desarrollo:
   subdirectorio \RollMusic, que no son necesarias para su ejecucion, para la ejecucion
   estan junto al ejecutable en el directorio raiz. 
   Tambien se encuentra el archivo del proyecto de Fbedit. 
-  Se usa (Rev5, Built by MSYS2 project).
+  Se uso al principio (Rev5, Built by MSYS2 project), se congelaron librerias entre revision 5 y 9.
+  Pero ya no se compila con Msys2 uso el GCC de Frebasic o GAS diretamente.
 
 
 

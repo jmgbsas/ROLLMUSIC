@@ -1,5 +1,18 @@
-  TECLAS RAPIDAS COMUNES O MOUSE:
-====================================
+  TECLAS RAPIDAS COMUNES O MOUSE O ACCIONES DE MENU SIMPLES:
+===========================================================
+=> NOTA IMPORTANTE: <=
+   UNA SECUENCIA UNICA CREADA EN ROLL GRAFICO MANUALMENTE INSERTANDO NOTA A NOTA O ACORDES SE PUEDE 
+   GRABAR EN FORMATO *.roll o en formato *.rtk. Para ello luego de creada la secuencia al grabar usar
+   CLICK EN [ARCHIVO]->CLICK EN [GRABAR] (PASARA DE ROJO A VERDE CUANDO HAYA TERMINADO DE GRABAR)
+   ..como es Nueva  pedira un nombre, inventar un Nombre,,,
+   NOMBRE.roll  o NOMBRE.rtk... LA EXTENSION LA PONEMOS NOSOTROS PARA INDICAR QUE ESTAMOS CREANDO
+   UN ARCHIVO roll O UN ARCHIVO rtk. Si estamos creando un rtk para una cancion al colocar la extension
+   rtk, no sera necesario convertir de ROLL a Track.
+-----------------------------------------------------------
+COMO ES UNA VERSION ALFA SE RECOMIENDA GRABAR LA SECUENCIA ANTES DE DAR ALGUN COMANDO
+O ACCION IMPORTANTE DE MENU POR SI OCURRE ALGUNA ANOMALIA Y EL PROGRAMA FALLE,,,
+A MEDIDA QUE SE USA EL PROGRAMA  SE VERA QUE COSAS PODRIAN FALLAR Y CUALES NO..
+------------------------------------------------------------
   ROLL GRAFICO GENERALIDADES
  Escuchar una nota en todo tipo de edicion:
  SHIFT+CLICK IZQUIERDO,( mayusculas +click izquierdo mouse) sobre la nota 
@@ -16,7 +29,14 @@ Los ctrl-click deben ser breves no mas de 200 mseg, si duran mas sosteniendo el 
 mas de 200 mseg la zona sera solo una linea, los 2  clicks quedaran definidos en la primer posicion.
 Sera necesario reseteat con Q y luego definir de nuevo el intervalo con pulsos breves del mouse
 la tecla CTRL puede estar mas tiempo presionada.
-------------------------------------------------------
+-------------------------------------------------------
+CREAR LOOPS, Repeticiones. Definir una Zona o Intervalo como en elp punto anterior
+luego en el menu de control en Reproducir elegir 2.0 preguntara por el numero de repeticiones
+por omision 2. Al grabar el archivo conservara los datos de repeticion, Si se desea borrarlos
+usar la opcion 2.1 del menu Reproducir
+-------------------------------------------------------
+CREAR un Loop infinito 
+-------------------------------------------------------
 INTERLINEADO. LINEAS MAS SEPARADAS O JUNTAS ENTRE NOTAS DE ROLL GRAFICO
 W      HABILITA LA RUEDA DEL MOUSE
 CTRL + MOVER RUEDA DE MOUSE PARA UN LADO O EL OTRO..AGRANDA O ACHICA INTERLINEADO
@@ -49,8 +69,7 @@ TRASPONER
      3) FLECHAS arriba abajo
      4) Q, reset
    c) Una sola Nota  
-     1) CTRL-O
-     2) ajustar ctrl-click comienzo sobre  nota y final sobre  UN LUGAR ANTES DEL FINAL 
+     1) ajustar ctrl-click comienzo sobre  nota y final sobre  UN LUGAR ANTES DEL FINAL 
         DE ESA NOTA y en lo posible que no incluya la zona ninguna otro comienzo de nota
         elegir el segundo click muy cerca del primero o a la mitad de duracion de la nota,
         I----2doclick---->||
@@ -65,7 +84,8 @@ TRASPONER
         Resumiendo si el 2do click es sobre || dicha figura no se moverá
         siempre se moverá si el 2do click esta antes de fin de nota > o despues 
         de fin secuencia ||.
-     3) FLECHAS arriba abajo
+     2) CTRL-O
+     3) FLECHAS arriba abajo HASTA OBTER EL TRANSPORTE DESEADO.
      4) Q, reset
   --------------------------------------------------------------------
   CON ALT-O
@@ -102,12 +122,18 @@ ENTRADA NOTA MANUAL, OCTAVAS EN VERDE, TECLAS A PULSAR
    DURACION   -> 1 A 8
    EN CUALQUIER LUGAR DE UNA LINEA DE LAS NOTAS DAR CLICK ENTRARA UNA NOTA AL FINAL 
    DE SECUENCIA
+ NORMALMENTE LA ENTRADA MANUAL ES AL FINAL DE LA SECUENCIA. SI SE DESEA INGRESAR UNA
+ NOTA NUEVA ADENTRO DE LA SECUENCIA SEPUEDE USAR LA 1ER MARCA PASOZONA1 DANDO
+ CTRO+CLICK MOUSE IZQUIERDO, DIBUJARA UNA LINEA VERTICAL CON EL NUMERO DE TICK
+ LUEGO COMO ANTES INGRESAR NOTA,LUEGO PASOZONA1 SE MOVERA EL FINAL DE LA NOTA INGRESADA
+ PARA SEGUIR ENTRANDO NOTAS SECUENCIALES, SI SE DESEA VOLVER A PASOZONA1 PULSAR BACKSPACE
+ O RETROCESO Y SE PODRA INGRESAR NOTAS TIPO ACORDE.
 ----------------------------------------------------------
   EN EDICION -> MODIFICACION
   CTRL-M 
-     PULSO     0 LUEGO X BORRA NOTA COMPLETA ON Y OFF
-     PULSO CRL-0 BORRA NOTA COMPELTA ON Y OFF SIN PULSAR X
-     PULSO ALT-0 LUEGO X BORRA NOTA COMPLETA
+     PULSO     0 LUEGO X BORRA NOTA COMPLETA ON Y OFF  
+     PULSO CRL-0 BORRA NOTA COMPELTA ON Y OFF PULSAR X 
+     PULSO ALT-0 BORRA NOTA COMPLETA SIN PULSAR X 
   ------------------
   CTRL-N
      PULSO 0 SOBRE UNA NOTA, O SOBRE CUALQUIER PARTE DE LA COLUMNA 
@@ -115,9 +141,9 @@ ENTRADA NOTA MANUAL, OCTAVAS EN VERDE, TECLAS A PULSAR
      PULSO CTRL-0 SOBRE UNA NOTA BORRA LA NOTA COMPLETA. SIN PULSAR 
        NOMBRE DE NOTA
      PULSO ALT-0 SOBRE LA NOTA O LA COLUMNA DE LA NOTA,LUEGO NOMBRE, 
-       BORRA NOTA COMPLETA.
+       BORRA NOTA COMPLETA. 
 ----------------------------------------
-  ALT-0  BORRA UN ELEMENTO AISLADO, O SEA 1 COMIENZO DE NOTA (I o P etc)
+  ALT-0  BORRA UN ELEMENTO AISLADO, O SEA UN COMIENZO DE NOTA (I o P etc)
   o un final de nota (>) o final secuencia ||.
   Si se quiere recuperar un nota con comienzo sin final o viceversa o
   se borra todo y se agrega otra nota o 
@@ -136,7 +162,7 @@ Q - RESETEA INTERVALO O ZONA SELECCIONADA EN UNA SECUENCIA, PONE A LAS VARIABLES
 -------------------------------------------------------------------------
 H - BORRA LAS NOTAS GUIA AL PRINIPIO DE PANTALLA DEL GRAFICO [C C# D D# E G G#...]
 ---------------------------------------------------------------------------------
-K - REPONE LASNOTAS GUIA DEL GRAFICO
+K - REPONE LAS NOTAS GUIA DEL GRAFICO
 -----------------------------------------------------------------
 CTRL-H - REPONE  NOMBRES DE INSTRUMENTOS DE PERCUSION 
 ------------------------------------------------------------------
@@ -165,12 +191,16 @@ HOME - EN GRAFICO VA AL PRINCIPIO DE SECUENCIA
 FIN O END - EN GRAFICO VA AL FINAL DE SECUENCIA
 ----------------------
 1,2,3,4,5,6,7,8 - EN GRAFICO DURACIONES DE LAS NOTAS, REDONDA, BLANCA,NEGRA,
-      CORCHEA, SEMICORCHEA,FUSA, SEMIFUSA, GARRAPATEA.
----------------------
+      CORCHEA, SEMICORCHEA,FUSA, SEMIFUSA, GARRAPATEA.TAMBIEN SE USA PARA LOS
+   SALTOS AL MOVERSE CON FLECHAS IZQ DERECHA, NOS PERMITE IR MAS LENTO O RAPIDO
+   3 SALTARA UNA NEGRA, 4 UNA CORCHEA ,,,,9 DE A 1 TICK..EN MODIFICACION CTRL-M
+   Y CTRL-N EL SALTO ES 0 POR OMISION DESPUES DE EJECUTAR UN COMANDO, LUEGO SE
+   PUEDE CAMBIAR.
+----------------------------------------------------------
 F2,F3 - CAMBIA PROPORCIONES DE LOS ELEMENTOS DEL GRAFICO INCLUYE FONT ENTRE OTROS
         F2 ACORTA LA SECUENCIA, F3 LA ALARGA
 F9,F10 - TAMAÑO DE FONT SOLAMENTE. F9 ACHICA EL FONT, F10 AGRANDA EL FONT
------------------
+-----------------------------------------------------------
 EN LECTURA COPIAR(1 O N VECES) O MOVER 1 SOLA VEZ.
 CTRL-CLICK DOS CLICK EN DIFERENTES PUNTOS DE LA SECUENCIA, MARCA UNA ZONA DE TRABAJO
            A MODIFICAR.SI EL CLICK ESTA  CERCA DEL COMIENZO DE UNA NOTA O UN FINAL 
@@ -187,12 +217,12 @@ CTRL-CLICK DOS CLICK EN DIFERENTES PUNTOS DE LA SECUENCIA, MARCA UNA ZONA DE TRA
    
 ----------------------------
 EN LECTURA
-MARCAR CON CTRL-CLICK EN DONDE SE QUIERE DIVIDIR
-Y LUEGO CON CTRL+ALT+CLICK SOBRE [Edicion] BORRA LA SECUENCIA A PARTIR DE LA MARCA 
+MARCAR CON CTRL-CLICK EN DONDE SE QUIERE DIVIDIR(1er marca)
+Y LUEGO CON CTRL+ALT+CLICK SOBRE [Edicion] BORRA LA SECUENCIA A PARTIR DE LA 1er marca MARCA 
 HASTA EL FINAL DE LA SECUENCIA
 el ctrl+click MARCA UN COMIENZO DE ZONA Y LUEGO ALT + CLICK sobre -> 
 -----------------------------------------------------------------
-ALT-CLICK SOBRE MENU [NUEVO] DE GRAFICO, BORRA LA SECUENCIA ACTUA SIN GRABARLA
+ALT-CLICK SOBRE MENU [NUEVO] DE GRAFICO, BORRA LA SECUENCIA ACTUAL SIN GRABARLA
           Y CREA UN ARCHIVO VACIO.
 -----------------------------------------
 EN GENERAL SOBRE EL MENU GRAFICO HAY 4 FORMAS DE QUE RESPONDA:
@@ -215,10 +245,14 @@ CTRL-HOME ANDA MEJOR Y HACE LO MISMO
 ---------------------------------------------------------------
 J TODA LA SECUENCIA SE ACHICA LO MAS POSIBLE (TIENE DEFECTOS DE LINEAS VERTICALES 
   PERO NO DE NOTAS)
-----------------------------
+--------------------------------------------------------------
 END - VA AL FINAL DE LA SECUENCIA
 -------------------
-DELETE CON UNA ZONA O INTERVALO MARCADO CON CTRL-CLICK, BORRA LAS NOTAS EN ESE INTERVALO
+DELETE - CON UNA ZONA O INTERVALO MARCADO CON 2 CTRL-CLICK, BORRA LAS NOTAS EN ESE INTERVALO
+       Y DEJA EL ESPACIO EN BLANCO,.
+       SI QUEREMOS BORRAR Y ACHICAR LA SECUENCIA USAR ALT+DELETE
+----------------------------------------------------------------
+AL+DELETE ELIMINA UN INTERVALO DE LA SECUENCIA    
 ---------------------------------------------------------
 RUEDA DEL MOUSE. - DESPLAZA HACIA ARRIBA O ABAJO TODO EL GRAFICO MOSTRANDO LAS OTRAS OCTAVAS
 ------------------------------------------------
@@ -232,11 +266,12 @@ FLECHA DERECHA IZQUIERDA -MUEVE AL GRAFICO HACIA DERECHA O IZQUIERDA.
 ----------------------------------------------------------
 AV. PAG, RE. PAG - SUBE O BAJA EN TRAMOS MAS GRANDES QUE LAS FLECHAS
 ---------------------------------------------------
-ALT+ FLECHA DERECHA O IZQUIERDA HACE SALTOS MAS GRANDES EN LECTURA
+ALT+ FLECHA DERECHA O IZQUIERDA HACE SALTOS MAS GRANDES EN LECTURA..
             EN EDICION DESPLAZA Y ENFOCA LA ZONA CONGELADA A OTRO LUGAR PERMITIENDO
             MOVER LA ZONA DURANTE LA MODIFICACION QUE PERMANECE CONGELADA DURANTE LA
-            MODIFICACION Y AVANCE CON FLECHAS O CLICK DEL MOUSE.
----------------------------------
+            MODIFICACION Y AVANCE CON FLECHAS O CLICK DEL MOUSE. LOS SALTOS SON VALORES
+    DE FIGURAS 1 A 8 O DE UN TICK CON 9.
+------------------------------------------------------------
 EN EDICION CTRL-M O CTRLN
   CTRL-END FINAL DE SECUENCIA EN CTRL-M ADEMAS SE PULSA X
             EN CTRL-N EL NOMBRE DE LA NOTA EN DONDE SE DESEA
@@ -250,7 +285,7 @@ NOTA DE LA SECUENCIOA EJ: I   >||  SIENDO (>) FINAL NOTA Y || FINAL SECUENCIA
   REEMPLAZAR LA NOTA POR OTRA IGUAL, LUEGO PULSAR X en CTRL-M o EL NOMBREDE LA NOTA EN CTRL-N-
   EL PROG REEMPLAZARA POR ESA NOTA COLOCANDO EL FINAL CORRESPONDIENTE.
 ------------------------------------------------------------------
-MAY IZQUIERDA + M ver  menu del GRAFICO durante play por ejeplo para cambiar patch
+MAY IZQUIERDA + M ver  menu del GRAFICO durante play por ejemplo para cambiar patch
 -----------------------------------------------------------------------
 MAY IZQUIERDA + V ver parametros roll durante play
 --------------------------------------------------------------------
@@ -285,7 +320,15 @@ No hace falta editar el archivo RollMusic.ini, se maneja desde el Menu OPciones 
 si no esta seleccionado es Grafico para roll y rtk , si lo selecciono sera ventanita
 chica de Control para las mismas, los ejec no se cambia y estará en ventana Control
 completa.
-
+-----------------------------------------
+TOCAR DESDE UN ECLADO MIDI,,
+-------------------------------------------
+SIMPLEMETE EN MENU REPRODUCIR ITEM 3.0 DARLE CLICK
+TOMARA LA SALIDA Y ENTRADA DEFAULT DE LA PC. SINO FUNCIONA CON LOS VALORES DEFAULT 
+O POR OMISION,SE DEBERA SELECCIONARLOS DESDE EL MENU PISTAS EJECUCION 
+ITEMS 1.0 Y 2.0, LA 2.0 FUNCIONA SIN HACER NADA . LA 1.O HAY QUE
+CREAR UNA PISTA DE EJECUCION SELECCIONANDO EN "G" PEDIRA UN NOMBRE DE PISTA SELECCIONAR
+DICHO NOMBRE Y AJUSTAR 1.0 LUEGO SE PUEDE TOCAR SIN NECESIDAD DE GRABAR
 
 
            

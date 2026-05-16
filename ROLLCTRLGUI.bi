@@ -346,9 +346,7 @@ SetGadgetFont(BTN_MENOS_METRO_VOL_DER,CINT(LoadFont("consolas bold",15)))
   MenName1=MenuTitle(hMessages, "ARCHIVO")
   MenName2=MenuTitle(hMessages, "NUEVA CANCION")
   MenName3=MenuTitle(hMessages, "PISTAS MANUALES")
-  
   MenName31=MenuTitle(hMessages,"Patrones")
-
   MenName4=MenuTitle(hMessages,"VER")
   MenName5=MenuTitle(hMessages,"TIEMPO Y RITMO")
   MenName6=MenuTitle(hMessages,"REPRODUCIR")
@@ -358,6 +356,7 @@ SetGadgetFont(BTN_MENOS_METRO_VOL_DER,CINT(LoadFont("consolas bold",15)))
 
 ''MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
 MenName19=OpenSubmenu(MenName1,"1.0 FORMAS DE CARGAR CANCION")
+
  menuitem(10064,Menname19,"1.0 SIN ROLL GRAFICO=> CARGAR TODAS LAS PISTAS *.RTK *.EJEC Y OTRAS  Y EN UN SOLO PASO")
  MenuItem(10061,MenName19,"2.0 SIN Roll Grafico=> CARGAR SOLO PISTAS *.RTK de Cancion con Pistas separados con Ventana de Control  ")
  MenuItem(1006,MenName19, "3.0 CON Roll Grafico=> CARGAR SOLO directorio de Cancion con Pistas separados con Ventana de Control ")
@@ -404,7 +403,7 @@ MenuItem(1021,MenName2, "2.0 Tiempo I=60 por omision")
 MenuItem(1022,MenName2, "3.0 Na.Ritmo 4/4 por omision")
 MenuItem(1023,MenName2, "4.0 Na.Duracion Estimada Min.(Por Omision 3 estimada)")
 'MenuItem(1024,MenName2, "Na.Crear Cancion en un solo archivo")
-MenuItem(1025,MenName2, "5.0 Crear un directorio de Cancion con Pistas separadas")
+MenuItem(1025,MenName2, "5.0 Crear con 1.0 un directorio de Cancion con Pistas separadas")
 'MenuItem(1026,MenName2, "Na.Ver Lista Tracks de la Cancion (Nombre y numero)")
 MenuItem(1027,MenName2, "6.0 Na.Modificar Nombre de Pistas de Cancion")
 
@@ -478,7 +477,7 @@ Negras por minuto	 tempo
 176-208	Prestissimo
 '/    
 
-  
+ ''MENU REPRODUCIR 
 MenuItem(1090,MenName6 ,"1.0 Reproducir TODAS Las Pistas EXCEPTO los solos desde el principio o un intervalo seleccionado en el Roll Grafico")
 MenuItem(10901,MenName6,"1.1 Detener Reproducion 1.0   P")
 MenuItem(1091,MenName6,"2.0 Repeticiones marcadas en una sola pista en un INTERVALO en GRAFICO. cancion o pista ")
@@ -510,7 +509,7 @@ MenuItem(1115,MenName7,"11.0 Detener metronomo ")
 MenuItem(1116,MenName7,"12.0 BACKUP SI ")
 MenuItem(1117,MenName7,"13.0 BACKUP NO ")
 MenuItem(1118,MenName7,"14.0 ABRIR EN EXPLORADOR Archivos *.roll ó *.rtk con ventanita de CONTROL (Por Omision CON GRAFICO) ",MF_UNCHECKED)
-MenuItem(1119,MenName7,"15.0 HABILITAR PORT SALIDA MICROSOFT NORECOMENDABLE PERO SI NO HAY OTRA COSA ",MF_UNCHECKED)
+MenuItem(1119,MenName7,"15.0 HABILITAR PORT SALIDA MICROSOFT NO RECOMENDABLE, PERO SI NO HAY OTRA COSA ",MF_UNCHECKED)
 
 ''chequedo abrira con GRAFICO y lo tocara.
 
@@ -557,13 +556,12 @@ SetStateMenu(hmessages,1119,PORT_MICROSOFT)
 ' Y LAS LINEAS DE SEPARACION QUEDAN GRIS MAS GRUESAS
 ' LA PRIMERA VEZ QUE EJECUTADEJA TODO AZUL PERO DESPUES SE VA
 ' USA BGR, PARA CONVERTIR UN RGB SIMPLEMENTE 
-' CAMBIAMOS DE POSICION LA 1ER Y 3ER CIFRA HEX DEL RGB
- MenuBackColor(hMessages,CInt("&hC0C0C0"),1) ' GRIS DIFERENCIA
+' CAMBIAMOS DE POSICION LA 1ER Y 3ER CIFRA HEX DEL RGB, debe ponerse en hexa
+   MenuBackColor(hMessages,&hC0C0C0,1) ' GRIS DIFERENCIA
+'' MenuBackColor(hMessages,&h00AAAA,1) ''
+'' MenuBackColor(hMessages,&hEDC178,1) ''RGB CELESTE 
+ 
 ' --MenuBackColor(hMessages,CInt("&hA56E3A"),1)
-' EL COLOR SALE TODO AL REVES SI PONES AZUL SALE MARRON
-' Y SI PONES MARRON COMO ES EL CASO SALE AZUL JAJAJA
-' PARECE QUE NO ES RGB SINO BGR
-' O SEA USA BGR NO RGB ,BGR EXISTE
 ''OJO EL MENU "ROLLCTRLGUI.BI" ES REENTRANTE TODO ESTO SE EJECUTA
 '' COMO SI ESTUVIERA EN UN LOOP
 ' ERGO TODAS ESTAS CONDICIONES INICIALES SE REPITEN

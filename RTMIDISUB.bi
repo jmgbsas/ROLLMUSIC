@@ -710,7 +710,37 @@ Function tempoString (t As UByte) As String  ' para imprimir en archivo midi txt
   End Select
 
 End Function 
+Sub AbrirPort()
+Print #1,"abriendo port midi de salida por omision o default
 
+ Dim As UByte k1 
+ Dim As Integer porterror
+   k1=pmTk(0).portout
+   portout=CInt(k1)
+    
+'   Print #1,"midiout ",k1, *nombreOut(k1)
+   If InStr(*nombreOut(k1),"Microsoft")>0 And  PORT_MICROSOFT=0 Then
+     Print #1,"No se usa Microsoft"
+   Else
+     If listoutAbierto( k1) = 0 Then
+        If listoutCreado( k1)=0 Then
+           midiout(k1) = rtmidi_out_create_default ( )
+           listoutCreado( k1)=1 
+        EndIf 
+        open_port midiout(k1),k1, nombreOut(k1)
+            porterror=Err 
+        listoutAbierto( k1) = 1
+ '       Print #1,"abro ",*nombreOut(k1)
+        porterrorsub(porterror)
+     Else
+      Print #1,"PORT SALIDA POR DEFECTO YA ABIERTO "
+     EndIf
+ EndIf 
+
+'Print #1,"-------------------------------------"
+'''''''midisal=midiout(0) ' el z
+
+End Sub
 '-------------playAll-----08-02-2025-------
 Sub playAll(Roll As inst) ' play version 3 CON TICKS
 '<<< 30-03-2025 anda ok para roll desde ejec o Roll desde entrada manual >>>>
@@ -776,7 +806,8 @@ Dim As Integer porterror,nousar
 porterror=Err
 PARAR_PLAY_MANUAL=NO
 PARAR_PLAY_EJEC=NO    
-playloop=NO:playloop2=NO
+'''playloop=NO: PARALOOP INFINITO VIENE DE ALT + L
+playloop2=NO
 
 Dim As Integer i1
 Dim As UByte k1
@@ -894,12 +925,15 @@ Print #1,"TickUsuario "; tickUsuario
 ' ======================= FOR JPLY PLAYALL =======================
 ''Print #1,"cominzo final PARAR_PLAY_MANUAL "; comienzo , final, PARAR_PLAY_MANUAL
 Dim As float ajuste=1.0
-'******************************************************************************
-''//////////// E M P I E Z A EL LOOP DE PLAYALL UNA SOLA PISTA DE ROLL //////////
-'*************************************************************************************
 portsal=pmTk(0).portout  '''no vamos a cambiar en la secuencia el midiout ni canal o si??
 canal=pmTk(0).canalsalida
 disparo=0
+
+'******************************************************************************
+''//////////// E M P I E Z A EL LOOP DE PLAYALL UNA SOLA PISTA DE ROLL //////////
+'*************************************************************************************
+
+
 For jply=comienzo To final
 ''Print "*******************************************************************"
 ''Print "AL TERMINAR EL PLAY APARECE EL MENU. CON SHIFT-M APARECERA DE NUEVO"
@@ -1697,7 +1731,7 @@ Roll.trk(jpt,ind).onoff = Roll.trk(jpt,i1).onoff
 End Sub
 '------------
 '------------
-Sub borrarZona()
+Sub borrarZona(todo As String )
  Dim As Integer jpt, i1
 ' falta no borrar los off1 que no tiene su on dentro de la zona y borar los off1 que esten fuer
 ' y  su on dentro
@@ -1745,7 +1779,22 @@ Print #1,"-------------------------------------------------------"
       Roll.trk(jpt,i1).onoff = 0
    Next i1
  Next jpt
-   
+ '-------------achicar secuencia 
+If todo="TODO" Then ' copiar toda la secuencia desde pazozona 2 y hasta el final en pasozona1 hasta el final
+   jpt3=pasoZona1 
+   For jpt=pasozona2 To pmTk(ntk).MaxPos 
+      For i1=NB To NA
+       Roll.trk(jpt3,i1).nota = Roll.trk(jpt,i1).nota 
+       Roll.trk(jpt3,i1).dur  = Roll.trk(jpt,i1).dur
+       Roll.trk(jpt3,i1).vol  = Roll.trk(jpt,i1).vol
+       Roll.trk(jpt3,i1).pan  = Roll.trk(jpt,i1).pan
+       Roll.trk(jpt3,i1).pb   = Roll.trk(jpt,i1).pb
+       Roll.trk(jpt3,i1).inst = Roll.trk(jpt,i1).inst
+       Roll.trk(jpt3,i1).onoff = Roll.trk(jpt,i1).onoff
+      Next i1
+     jpt3=jpt3+1      
+   Next jpt
+EndIf  
 pasozona1=0: pasozona2=0
 'Print #1,"CHAU llama a borrazona" 
  End Sub
@@ -2819,7 +2868,7 @@ Dim As UByte Ptr memoria = vec1
 Dim As Integer partes
 dato1=*memoria: memoria += 1
 dato2=*memoria: memoria += 1  
-dato3=*memoria 
+dato3=*memoria   ' VELOCIDAD
 Print #1,"delta d1 d2 d3 ", delta; " ";dato1;" ";dato2;" ";dato3
 Dim As Double sumadelta=0
 
@@ -3051,7 +3100,7 @@ Function mycallback ( ByVal deltatime As Double, ByVal vec As UByte Ptr, ByVal l
 Dim As UByte Ptr memoria = vec
 dato1=*memoria: memoria += 1
 dato2=*memoria: memoria += 1  
-dato3=*memoria 
+dato3=*memoria  ''VELOCIDAD
 DURk =deltatime
 
 Dim As Double sumadelta=0

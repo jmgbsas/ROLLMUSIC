@@ -552,7 +552,7 @@ cargacancion=NO_CARGAR_PUEDE_DIBUJAR 'PUEDE DIBUJAR PORQUE NO HAY REDIM  DE ROLL
         print #1,"arch track  abrio con error 1307 CargarTrack miroerr, nombre",miroerr, nombre
        Exit sub
      EndIf
-Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
+Print #1,"este de donde viene? del ini? MaxPos ntk ",pmTk(ntk).MaxPos,ntk
 
      Get #ct, , grabaPos
      x1=Bin(grabaPos.nota,4)
@@ -565,7 +565,7 @@ Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
    '     print #1,"reconstruccion x pos bin ", x
      'toda carga de track se guarda en pmTk sea ntk=0 u otro valor   
      pmTk(ntk).MaxPos=CInt("&B"+x)
-
+Print #1,"pmTk(ntk).MaxPos cargado ntk ",pmTk(ntk).MaxPos,ntk
 
     '   If ntk >0 Then
     '      maxposTope=84600 '''pmTk(ntk).MaxPos le pone algo fijo ?? NO VA 5-12-2025
@@ -591,10 +591,10 @@ Print #1,"MaxPos ntk ",pmTk(ntk).MaxPos,ntk
    '     pmTk(ntk).Ticks = pmTk(ntk).MaxPos+1000
    '  EndIf   
      Dim As Integer ubisolo=InStr(LCase(nombre),".solo")
-     CantTicks=CantMin * PPQN *tiempoPatron '''pmTk(ntk).Ticks
+     CantTicks=CantMin * PPQN *tiempoPatron '''pmTk(ntk).Ticks 15 min
 ' NO TOMAMOS LOS SOLO PARA EL CALCULO DE LA MAXPOS
      If CantTicks < pmTk(ntk).MaxPos And ubisolo=0 Then
-        CantTicks = pmTk(ntk).MaxPos
+        CantTicks = pmTk(ntk).MaxPos '''<- al final se queda con el maxpos
      EndIf     
      If ntk >=2 Then ' es una cancion y ahi tiene sentido
  ' para un track solo ntk=0 ,,ntk-1 = -1 daria error  
@@ -1033,8 +1033,8 @@ posicion =1
 If funcion="AGREGARTK" Then
    If MaxPosTope < MaxPos Then
      MaxPosTope =MaxPos
-   Else
-    MaxPos=MaxPosTope
+  '' Else  13-05-2026
+  ''  MaxPos=MaxPosTope
    EndIf
    RecalCompas(ritmo)
 EndIf
@@ -1469,7 +1469,7 @@ Dim midsal As  RtMidiOutPtr
     print #1,"numero de pista tope =",tope
 
    tope = tope + 1
-   maxposTope=Tope
+
    If tope <= 32 Then
       ntk=tope
    Else    
@@ -1599,7 +1599,6 @@ EntrarNombrePista (pistanueva, hwndC)
    tope=tope+1
    If tope <= 32 Then
       ntkcarga=tope ' LA NUEVA
-      maxposTope=tope
    Else    
       Exit Sub   
    EndIf
@@ -2032,6 +2031,10 @@ End Sub
 
 ' ---------------------
 Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst, funcion As String)
+'-----------------------------------------------------------
+'TANTO EL TRACK RECIBIDO COMO EL ROLL ESTAN DIMENSIONADOS EN CANTTICKS
+'------------------------------------------------------------- 
+
 On Local Error Goto fail
 clickpista=0
 ' EN TRACKS SE GRABA PIANONOTA TANTO EN EL ON=ONOFF2 COMO EN EL OFF=ONOFF1
@@ -2085,7 +2088,7 @@ Else
   desde  = pmTk(ntk).desde
   hasta  = pmTk(ntk).hasta
   '  Print #1,"hasta 1054 TracjaRoll ",hasta 
-  MaxPos = pmTk(ntk).MaxPos
+  MaxPos = pmTk(ntk).MaxPos ' ok sigue bien individual
   posn  = pmTk(ntk).posn
   notaOld= CInt(pmTk(ntk).notaold)
   canalx= CInt(pmTk(ntk).canalsalida)
@@ -2132,7 +2135,7 @@ Print #1, "// trckaroll redim Roll MaxPos ",MaxPos
 '   terminar=NO_TERMINAR_CON_DATOS_CARGADOS  koko 25-04-2026 pantalla ok
 '   Parar_De_Dibujar=SI                      koko 25-04-2026
 '   cargaCancion=CARGAR_NO_PUEDE_DIBUJAR     koko 25-04-2026
-  ReDim (Roll.trk ) (1 To CantTicks, NB To NA ) ' 27-02 ÇÇÇ DESCOMENTAR
+  ReDim (Roll.trk ) (1 To CantTicks, NB To NA ) ' 27-02 cantTicks son de 15 minutos de ticks
   ReDim  As paso compas (1 To CantTicks)
   ''' va despues de la carga RecalCompas(ritmo)
 If  GUARDOEJEC=1 Then
@@ -2200,7 +2203,9 @@ vertical=12+(hasta-2)*13+hasta ' "[NROREP]" de EntrarTeclado
 '**********************************************************************************
 ' en las notas estaran los on y off, ¿que pasa con  el final 182 en la sub se trata de ponerlo mas abajo parece?
 ' aca solo copia las notas! y los off=2 que estan junto a nota y el onoff=1 donde lo copia o lo regenra??
-For i2 = 1 To pmTk(ntk).MaxPos 
+' aunque la pista este vacia tiene longitud de CanTicks no es corta se puede barrer
+' y en una pista vacia copiaremos vacion a Roll Visual veremos como sale,,,
+For i2 = 1 To pmTk(ntk).MaxPos  
    For i1=1 To lim2 ' porque lim2 y no lim3??? porque solo las notas 
       If Track(ntk).trk (i2,i1).nota > 0 and Track(ntk).trk(i2,i1 ).nota <=NA-13  Or  Track(ntk).trk (i2,i1).onoff > 0 Then '14-03-2022 na-13
       ' copio a track 1 temporario. el usuairo debera renombrarlo por ahora
@@ -2582,7 +2587,8 @@ Dim As Long porterror,nousar
 ' 1-----------de playall--------
 PARAR_PLAY_MANUAL=NO
 PARAR_PLAY_EJEC=NO    
-playloop=NO:playloop2=NO
+ 
+playloop2=NO
 
 ' 1------------de playall fin---------
  'maxposTope de inicio.txt
@@ -2685,7 +2691,7 @@ If comienzo = 0 Then  '01-03-2024 play sin roll
   comienzo= 1 
 End If
 
-Dim As Double  tickUsuario=(60/(tiempoPatron*PPQN))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
+Dim As float  tickUsuario=(60/(tiempoPatron*PPQN))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
 ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 Print #1,"TickUsuario "; tickUsuario
@@ -3267,7 +3273,8 @@ Dim As Long porterror,nousar
 PARAR_PLAY_MANUAL=NO
 PARAR_PLAY_EJEC=NO    
 Dim As Integer Splayloop,Splayloop2
-Splayloop=NO:Splayloop2=NO
+'Splayloop NUNCA SE PONE EN NO ES PARA LOOP INFINITO DE ZONA CON ALT+L
+Splayloop2=NO
 ' 1------------de playall fin---------
 
 ' los nombres ya fueron cargados al inicio
