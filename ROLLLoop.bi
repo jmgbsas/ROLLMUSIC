@@ -941,7 +941,8 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
  ' las lineas
     '' ScreenSync ' a ver si aca es mejor....
      threadcreaPenta = ThreadCall creaPenta (c, Roll )
-    SetThreadPriority(threadcreaPenta , 30 ) ' SI NO LO ACELERO PARPADEA NODIBUJA TODO PORQUE QUEDA LENTO
+    SetThreadPriority(threadcreaPenta , 20 ) ' SI NO LO ACELERO PARPADEA NODIBUJA TODO PORQUE QUEDA LENTO
+''17-05-2026 DECIA 30
 ' O EN TODO CASO DEBERIA SER  MAS LENTO EL ROOLLOOP O EL LOCK UNCLOCK
      ThreadWait threadcreaPenta 
     If *po = 99 then ''''saco esto no se porque 03-11-2025 Or *po=3 Then
@@ -1325,9 +1326,9 @@ Print #1,"PULSOTAB ES 1 LLAMA A TABTAB"
 '  - 31: highest
 '  - 32: time critical
    clickpista=0
-   SetThreadPriority(thread3 , 30 ) 'decia 1 'THREAD_PRIORITY_HIGHEST ) decia 32 critical 
+   SetThreadPriority(thread3 , 20 ) 'decia 1 'THREAD_PRIORITY_HIGHEST ) decia 32 critical 
    ThreadWait thread3
-   pulsotab=0 
+   pulsotab=0
    Exit Do
 EndIf
 
@@ -2339,7 +2340,7 @@ EndIf
         PARAR_PLAY_MANUAL=SI 
         PARAR_PLAY_EJEC=SI
         playloop=NO:playloop2=NO
-        StatusBarGadget(BARRA_DE_ESTADO,"Si no ve la ventana de dialogo busquela y pulse Aceptar" )
+        mensajeEstado="Si no ve la ventana de dialogo busquela y pulse Aceptar" 
         EndIf     
         TERMINAR=NO_TERMINAR_CON_DATOS_CARGADOS '3 
          Exit Do  ' REINICIO DETENIENDO LOS PLAY Y AL PULSAR OTRO ESCAPE ENTRA EL DIALOGO
@@ -2396,13 +2397,13 @@ If MultiKey(SC_SPACE) And trabaspace=0   Then 'barra espacio
      EndIf
 
  EndIf
-  Print #1,"playb  Cplay MaxPos CANCIONCARGADA ", playb,  Cplay, MaxPos,CANCIONCARGADA     
+ ' Print #1,"playb  Cplay MaxPos CANCIONCARGADA ", playb,  Cplay, MaxPos,CANCIONCARGADA     
   If (playb = NO  Or Cplay=NO )And (MaxPos> 2  Or Maxgrb > 2) Then ' 23-02-22 ningun play
   '''If playb = NO And play=NO And Cplay=NO And MaxPos > 1 Then ' 23-02-22 ningun play
  
 
 '------------------------------------------------------------------
-      Print #1,"ENTRA POR COMEDIT=LECTURA a play "
+ '     Print #1,"ENTRA POR COMEDIT=LECTURA a play "
       GrabarPenta=0
       naco=0:naco2=0
       '' Print #1,"====> INSTANCIA ";INSTANCIA 
@@ -2412,9 +2413,9 @@ If MultiKey(SC_SPACE) And trabaspace=0   Then 'barra espacio
      ''''  SetGadgetstate(15,0) ' 20-02-2025 que pasa no reemplaza bien el numero ? raro
       EndIf
    '   print #1,"SPACE call play"
-Print #1,"CANCIONCARGADA  And Cplay  ",CANCIONCARGADA, Cplay  
+'Print #1,"CANCIONCARGADA  And Cplay  ",CANCIONCARGADA, Cplay  
       If CANCIONCARGADA = TRUE  And CPlay=NO   Then
-Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
+'Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
 '----------------------------------------------------------------
 ' CARGA DE LOS SOLOS 
 '-------ESTA CARGA DEBE ESTAR ANTES DE TODO pero la carga el usuario a voluntad
@@ -2434,6 +2435,8 @@ Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
              s5=NO 'Necesita mas tiempo de cpu
 
     If CPlay=NO Then
+'' NUNCA USAR StatusBarGadget AL LLAMAR A PLAYCANCION, LAVENTANA DE CONTROL SE CONGELA MAL!!!
+''==> NUNCA USAR -> StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIONES DE TECLADO CON MANUALES, SE CONGELARA LA SECUENCIA" )
 '' la cuenta queda dentro del play y no hace falta retrasoMetronomo! 27-04-2026
 ''        Dim As Integer im=0
 ''        If metronomoPistas_si=3 Then 
@@ -2445,6 +2448,7 @@ Print #1,"ENTRO POR PULSO ESPACIO PLAYCANCION",Cplay
 ''        EndIf
         thread1 = ThreadCall  PlayCancion(Track())
         CPlay=SI
+'' ACA TAMPOCO UNA MIERDA --->> StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIONES DE TECLADO CON MANUALES, SE CONGELARA LA SECUENCIA" )
     EndIf
  
 ''    If x1 > 0 Then
@@ -6045,7 +6049,7 @@ acordeNro=19
      acordeNro=36  
      armarAcorde res , -3, 3, 6 ' A , C, Eb, Gb ' Dis 3era inversion
       
-StatusBarGadget(BARRA_DE_ESTADO,"Solo caso Tonica" )
+     mensajeEstado="Solo caso Tonica" 
 '---------------------Mayor 6ta ' CEGA , C-A INTERVALO DE 6TA 
 'https://javi29clases.blogspot.com/2012/07/acordes-mayores-con-sexta-6-en-piano.html
 'Posición Fundamental: Formados por Tónica, su 3ra Mayor, su 5ta justa y su 6ta
@@ -6055,59 +6059,59 @@ StatusBarGadget(BARRA_DE_ESTADO,"Solo caso Tonica" )
          Case 1037 ' 
      acordeNro=37
       armarAcorde res ,4,7,9   ' C,E,G,A ....C6
-StatusBarGadget(BARRA_DE_ESTADO,"Solo caso Tonica" )
+      mensajeEstado="Solo caso Tonica" 
          Case 1038 ' 1ERA INVERSION  
      acordeNro=38
       armarAcorde res ,-3,-5,-8   ' E,G,A,C ...C6/E E-C INTERVALO DE 6TA   
-StatusBarGadget(BARRA_DE_ESTADO,"Solo caso Tonica" )
+     mensajeEstado="Solo caso Tonica"
          Case 1039 ' 2DA INV 
       acordeNro=39
       armarAcorde res ,-3,-5,4   ' G,A,C,E ...C6/G G-E INT 6TA
-StatusBarGadget(BARRA_DE_ESTADO,"Solo caso Tonica" )
+     mensajeEstado="Solo caso Tonica"
          Case 1040 '3ERA INV
 'https://javi29clases.blogspot.com/2012/07/acordes-mayores-con-sexta-6-en-guitarra.html          
       acordeNro=40 
       armarAcorde res ,-3,4,7   ' A,C,E,G ...C6/A =Am7, Am7/C=C6  
-StatusBarGadget(BARRA_DE_ESTADO,"Solo caso Tonica" )
+     mensajeEstado="Solo caso Tonica"
 '--------------------------------
 ' -----------------------Sus2 triada
          Case 1041   'Sus2,"No inv")  ' triada
       acordeNro=41
       armarAcorde(res ,2, 7, 0) ' CSus2 C D G
-         StatusBarGadget(BARRA_DE_ESTADO,"Solo caso Tonica" )
+     mensajeEstado="Solo caso Tonica"
          Case 1042  ' Sus2,"1era inv o 6")  ' triada  D G C
       acordeNro=42
       armarAcorde(res ,-10, -5, 0) 'Csus2/D
-StatusBarGadget(BARRA_DE_ESTADO,"Solo caso Tonica" )
+      mensajeEstado="Solo caso Tonica"
          Case 1043 'Sus2,"2da inv")  ' triada G C D
       acordeNro=43
       armarAcorde(res , 2, -5, 0) 'Csus2/G
-StatusBarGadget(BARRA_DE_ESTADO,"Solo caso Tonica" )
+      mensajeEstado="Solo caso Tonica"
 '--------------fin sus2 triada
 ' Acodes No Diatonicos https://guitarmonia.es/los-acordes-bvii-y-bviimaj7/
 ' bVII bemol septimo grado triada 1ERA INVERSION
          Case 1044 '' B, D ,F -> Bb, D, F -> D, F, Bb  (GRADO, 5TA, 3ERA) Bb semitono mas alto
       acordeNro=44
       armarAcorde(res ,-8, -5, 0)                                    '  F  5 semi tono abajo 
-StatusBarGadget(BARRA_DE_ESTADO,"Solo caso Tonica" )
+      mensajeEstado="Solo caso Tonica" 
          Case 1045  
       acordeNro=45
       armarAcorde(res ,-5, -8, -1) ' 1era inversion  Bb y A juntos...¿? o -13
-StatusBarGadget(BARRA_DE_ESTADO,"Solo caso Tonica" )           
+      mensajeEstado="Solo caso Tonica"            
          Case 1046 
-StatusBarGadget(BARRA_DE_ESTADO,"No Implementado" )
+mensajeEstado="No Implementado" 
          Case 1047  
-StatusBarGadget(BARRA_DE_ESTADO,"No Implementado" )
+mensajeEstado="No Implementado" 
          Case 1048  
- StatusBarGadget(BARRA_DE_ESTADO,"No Implementado" )           
+ mensajeEstado="No Implementado"            
          Case 1049  
- StatusBarGadget(BARRA_DE_ESTADO,"No Implementado" )           
+ mensajeEstado="No Implementado"            
          Case 1050  
- StatusBarGadget(BARRA_DE_ESTADO,"No Implementado" )           
+ mensajeEstado="No Implementado"            
          Case 1051  
-            StatusBarGadget(BARRA_DE_ESTADO,"No Implementado" )
+            mensajeEstado="No Implementado" 
          Case 1052  
-            StatusBarGadget(BARRA_DE_ESTADO,"No Implementado" )
+            mensajeEstado="No Implementado" 
          Case 1100 ' es Salir
          Delete_Menu (hpopup1)            
          Close_Window(hpopup1)
@@ -7461,13 +7465,20 @@ Print #1,"INICIO DE  TABTAB"
      nombre=titulosTk(ntk)
     Print #1,"TAB2- ntk, ntkTAB, nombre, POR CLICK PISTA ", ntk,ntkTAB, nombre 
    Else
-     If ntk=Tope And pulsotab=1 Then ntk=0 End If
-     ntk = ntk + pulsotab ' si recien se cargo ntk=0 se incrementa 
-     If ntk < 1 And pulsotab=-1 Then ntk=Tope End If
-     ntkTAB=ntk
-     nombre= titulosTk(ntk)
-     Print #1,"TAB3- Incrementa ntk, nombre ", ntk ,nombre
-
+     If pulsotab=1 Then
+        If ntk=Tope  Then 
+           ntk=0
+        EndIf   
+     EndIf 
+     If pulsotab=-1 Then
+        If ntk = 1 Then 
+           ntk=Tope +1
+        EndIf
+     EndIf
+      ntk = ntk + pulsotab    
+      ntkTAB=ntk
+      nombre= titulosTk(ntk)
+      Print #1,"TAB3- Incrementa ntk, nombre ", ntk ,nombre
    EndIf
  
   If nombre > "" Then

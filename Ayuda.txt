@@ -39,7 +39,9 @@
        Si quiero ver los parametros de Roll mientras se ejecuta la secuencia pulsar Shift+V, tambien
        pulsando Edit en elmenu,es un atajo rapido.
        NOTA: En windows 11 si no funciona el Play o cancela se recomienda usar un mapeador Midi 
-             como CoolSoft_MIDIMapper_2.1.2.exe (falta deteccion de fallas)
+             como uno gratis CoolSoft_MIDIMapper_2.1.2.exe  o mas nuevo u otro (falta deteccion de fallas).
+             Obervacion: si se graba a disco un archivo roll, rtk o mid con un mapeador Midi y si luego durante
+       la reproduccion se usa otro mapeador midi de window puede que no se escuche nada. 
        Esta Ayuda sale F1 en Grafico y sin grafico. Teclas Rapidas Sin grafico INFO->5.0 en menu Control, con
        Grafico Ctrl+F1.
 
@@ -541,7 +543,7 @@
 
 
 
-    16 ) EXPORTAR UNA PISTA O CANCION A MIDI FORMATO 1: 
+    16 ) EXPORTAR UNA PISTA O CANCION A MIDI FORMATO 1: (A TRAVES DE TEXTO)
          LOS NOMBRES DE LAS PISTAS NO DEBEN PASAR DE 25 CARACTERES
          Pista: 
          En menu archivo en 4.5 elecir "cargar pista en un roll independiente"
@@ -571,11 +573,16 @@
 
          A PARTIR DEL *.ROLL SE CREA UN PLANOS TXT Y DESDE EL, 
          EL *.MID CORRESPONDIENTE NOTA:
-     16.1) GRABA ROLL DIRECTO A MIDI TIPO 0 VERSION 1, SIN EFECTOS Y INSTRUMENTO POR OMISION 
-           CARGAR ROLL AJUSTAR EL TEMPO EN VENTANA DE CONTROL, Y EN MENU ARCHIVO ITEM 4.6
-           GRABAR A *.MID DIRECTO A ARCHIVO. Si se marca una zona o ointervalo de la 
-           secuencia, solo esa zona se escribira a *mid.
-           GRABA ROLL *.MID TIPO 0 CON EFECTOS PAN, ECO, CORO, VOLUMEN.. 
+     16.1) GRABA ROLL DIRECTO A MIDI TIPO 0 VERSION 1, con patch y efectos 
+         CARGAR ROLL AJUSTAR EL TEMPO EN VENTANA DE CONTROL, Y EN MENU ARCHIVO ITEM 4.6
+         GRABAR A *.MID DIRECTO A ARCHIVO. Si se marca una zona o intervalo de la 
+         secuencia, solo esa zona se escribira a *mid.
+         GRABA ROLL *.MID TIPO 0 CON EFECTOS PAN, ECO, CORO, VOLUMEN.. 
+         GRABA LAS REPETICIONES O LOOPS QUE TENGA LA SECUENCIA. GRABA CANAL 10 PERCUSION TAMBIEN. 
+         TODO ESTO SE PUEDE HACER EN UNA PISTA QUE ESTE CARGADA DENTRO DE UNA CANCION VERIFICAR
+         QUE EN LA VENTANA DE CONTROL ESTE ILUMINADA LA MISMA PISTA QUE SE DESEA EXPORTAR A *.MID
+         (NO EXPORTA TODA LA CANCION TODAVIA SOLO PISTAS SEPARADAS CON SU CANAL E INSTRUMENTO GM)
+
      17) CAMBIAR PARA TICKS,Importar midi plano txt pendiente para Ticks
      18) Mostrar o Ocultar (H,K)las Notas Guia de Roll Grafico del lado izquierdo. Pulsar H tipo
          llave si o no pulsar K.   
@@ -788,6 +795,10 @@
           sin necesidad de reproductores externos y tal vez acompañarse con el teclado
           Sirve para ejecutar un wav mp3 o mid, podemos tocar un teclado para ensayar..habilitando el midi input desde 
           un teclado externo, el cual se podra grabar como ya sabemos creando una pista nueva de ejecucion.
+          Se puede ademas del mouse adelantar o retroceder la pista con flechas derecha izquierda durante la ejecucion.
+          Al cambiar la velocidad hay una indicacion de velocidad normal en valor 1 mayor velocidad sera mayor a 1
+          1.01 , 1.02,1,1 ,1,2 etc para dar menor velocidad suele atenuarse el boton de bajar velocidad , pulsar pausa
+          y e habilitara para pulsar la bajada de velocidad.   
           Nota: para grabar a disco la salida de audio de la PC se puede usar Audacity
                 Programa gratuito de código abierto. Configurando el host de audio a "Windows WASAPI" y seleccionando 
                 los altavoces como dispositivo de grabación, se captura el sonido interno con alta calidad.

@@ -950,6 +950,7 @@ Sub CTRL1092()
 ' una cosa es abrir un IN y otra ajustar un IN a una pista
 ' la columna G tiene incidencia en ambas listas la moveremos al centro 
 Dim As UByte portin1092, portout1092
+
        For  i As Short =1 To 32
              If  CheckBox_GetCheck( cbxgrab(i))= 1  Or CheckBox_GetCheck( cbxejec(i))= 1 Then
                 portin1092  = tocaparam(i).portin ' PREVIAMENTE SELECCIONADO
@@ -1013,7 +1014,9 @@ End Sub
 Sub CTRL1094(PPP As ZString PTR) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
 Dim As String ENTRADA
   ENTRADA=*PPP
- ' ESTA RUTINA FUNCIONA MEJOR EN RESOLUCION X 168O  O 1920
+' SE AGREGO CONTROL VISUAL DE VELOCIDAD Y ADELANTO Y RETROCESO CON FLECHAS ADEMAS DE CLICK DE MOUSE
+' QUE TIENE POR DEFECTO
+' ESTA RUTINA FUNCIONA MEJOR EN RESOLUCION X 168O  O 1920
 ' SICRONIZACION LA IDEA ES AHORA TENGO UNA WAV O MP3 QUE LO EJECUTO
 ' LUEGO EL USUARIO TOCA ALGO PARA ACOMPAÑAR AL AUDIO... Y LO GRABA
 ' TENGO UN AUDIO Y UNA GRABACION, O DISPARO EL AUDIO AL DIPARAR LA EJECUCION GRABADA
@@ -1024,13 +1027,16 @@ Dim As String ENTRADA
 '---------- LA IDEA ESTA BUENA PERO LABURARLO SERA LA CUESTION...
 ' 1) CONSTRUIR QUE UNA ACCTION DAR PLAY A UNA EJECUCION MANDE A EJECUTAR UN WAV O MP3
 Dim As Integer largo, orig,ticks,altov
+Dim As float velocidad=1.0
+Dim As String vels=Str(velocidad)
+
 largo=ANCHO*3/4
 orig=largo
 ticks=100
 ''  WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX
 Dim As Integer ANCHOWIN, PANTALLAX=GetSystemMetrics(SM_CXSCREEN),volume
-Print #1, "ANCHO PANTALLA ", PANTALLAX
-Print #1, "ENTRADA ", ENTRADA
+''Print #1, "ANCHO PANTALLA ", PANTALLAX
+''Print #1, "ENTRADA ", ENTRADA
 
 Select Case PANTALLAX
    Case 1680
@@ -1043,7 +1049,6 @@ End Select
 hwndMEDIA=OpenWindow("MP3, WAV, MID",0,ALTO*5/6,ANCHOWIN,ALTO/6, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
 'ESTA ES SIZABLE'hwndMEDIA=OpenWindow("AUDIO MP3, WAV",0,ALTO*5/6,ANCHO,ALTO/6,WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST)
 altov=sizey*4/6 
- ''CenterWindow(hwndMEDIA)
 
 ButtonGadget(1,10,altov,20,20,"X"):GadgetToolTip(1,"PARAR")
 ButtonGadget(2,40,altov,20,20,"|>"):GadgetToolTip(2,"EJECUTAR")
@@ -1051,7 +1056,7 @@ ButtonGadget(3,70,altov,20,20,"||"):GadgetToolTip(3,"PAUSA")
 ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Disminuye velocidad")
 ButtonGadget(7,130,altov,20,20,">>"):GadgetToolTip(7,"Incrementa velocidad")
 ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav o mp3, en resolucion horizontal 1680 o 1920 se ve mejor la escala")
-
+textgadget(9,200,altov,60,20,"1.0"):GadgetToolTip(9,"VELOCIDAD DE EJECUCION") 
 
 hwndTG=TrackBarGadget(5,5,sizey*1/6,sizex-20,30,0, ticks, TBS_NOTICKS  )
 
@@ -1092,9 +1097,22 @@ If ENTRADA > "" Then
      LIMPIA=1  
      ENTRADA="" 
 EndIf
+Dim posicion As FLOAT
 Do
 
     event=WaitEvent()
+
+    If GetAsyncKeyState(VK_RIGHT) Then ' CON MULTIJEY ANDA MAL USARE GetAsyncKeyState EN OTROS LADOS 
+         if mov8 Then
+            MovieSetPositions(mov8,cast(double,getTrackBarPos(5)+1)*1000000+1,GetEndPosMovie(mov8) )
+         EndIf
+      EndIf
+    If GetAsyncKeyState(VK_LEFT) Then
+         if mov8 Then
+            MovieSetPositions(mov8,cast(double,getTrackBarPos(5)-1)*1000000-1,GetEndPosMovie(mov8) )
+         EndIf
+    EndIf
+
    If Event=EventClose Then
          If mov8 > 0 Then  
            FreeMovie(mov8)
@@ -1138,10 +1156,14 @@ Do
             EndIf
          Case 6 '' play speed menor
             If mov8 Then SetRateMovie(mov8,GetRateMovie(mov8)-0.01) EndIf
-              
+            velocidad=velocidad-0.01
+            vels = Str(velocidad)
+            SetGadgetText(9,vels)  
          Case 7  '' play speed mayor
             If mov8 Then SetRateMovie(mov8,GetRateMovie(mov8)+0.01) EndIf
-             
+            velocidad=velocidad+0.01
+            vels = Str(velocidad)
+            SetGadgetText(9,vels) 
          Case 8
             #ifdef UNICODE
 '' Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)|*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1|")
@@ -1158,6 +1180,7 @@ ButtonGadget(3,70,altov,20,20,"||"):GadgetToolTip(3,"PAUSA")
 ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Disminuye velocidad")
 ButtonGadget(7,130,altov,20,20,">>"):GadgetToolTip(7,"Incrementa velocidad")
 ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav o mp3, en resolucion horizontal 1680 o 1920 se ve mejor la escala")
+textgadget(9,200,altov,60,20,Vels):GadgetToolTip(9,"VELOCIDAD DE EJECUCION")
 
 hwndTG=TrackBarGadget(5,5,sizey*1/6,sizex-20,30,0, ticks, TBS_NOTICKS  )
 WindowStartDraw(hwndMEDIA)
@@ -1180,7 +1203,7 @@ fillrectdraw(12,sizey*3/6,&hffffff)
  TextDraw(12,sizey*3/6,regla,&hffffff)
 StopDraw
 SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
-   Print #1,"FORMATO DE OFR VEMOS ", OFR ''C:\mios\amrm.mp3 VIENE COMPLETO PATH Y NOMBRE
+  '' Print #1,"FORMATO DE OFR VEMOS ", OFR ''C:\mios\amrm.mp3 VIENE COMPLETO PATH Y NOMBRE
            
             If OFR<>""  Then
                If mov8 Then
@@ -1193,8 +1216,18 @@ SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
                MOV_FLAG=1
                LIMPIA=1  
             EndIf
+         If InStr(UCase (OFR),".MID") > 0 Then
+            Print #1,"OFR ",OFR
+         Else  
             Volume=MovieAudioGetVolume(mov8)
-            Print #1,"Volumen ", Volume 
+'----------
+            If Volume < -10000 Or Volume >0 Then 'if it is less than -10000 or more than 0 there will be an error! 
+              MovieAudioSetVolume(Movie,Volume-1000)
+              Sleep(200)
+            EndIf
+         EndIf   
+'------------
+        ''    Print #1,"Volumen ", Volume 
       End Select
    EndIf
   if WindowState(hWndMEDIA)=SW_SHOWMINIMIZED Then 'SW_SHOWMINIMIZED = 2
@@ -1212,6 +1245,7 @@ ButtonGadget(3,70,altov,20,20,"||"):GadgetToolTip(3,"PAUSA")
 ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Disminuye velocidad")
 ButtonGadget(7,130,altov,20,20,">>"):GadgetToolTip(7,"Incrementa velocidad")
 ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav o mp3, en resolucion horizontal 1680 o 1920 se ve mejor la escala")
+textgadget(9,200,altov,60,20,Vels):GadgetToolTip(9,"VELOCIDAD DE EJECUCION")
 
 WindowStartDraw(hwndMEDIA)
 fillrectdraw(12,sizey*3/6,&hffffff)
@@ -2099,8 +2133,8 @@ Sub WriteVLQ(f As Integer, val_ As UInteger) ' Cambiado val por val_
 ''**Variable Length Quantities (VLQ)**. - Crucial for MIDI Delta Times
     Dim buffer(0 To 3) As UByte
     Dim count As Integer = 0
-    Dim b As UByte
-    Dim i As Integer
+    Dim  As UByte   b=0
+    Dim  As Integer i=0
 
     If val_ = 0 Then
         PutByte(f, 0)
@@ -2109,8 +2143,10 @@ Sub WriteVLQ(f As Integer, val_ As UInteger) ' Cambiado val por val_
 
     ' Extraer grupos de 7 bits
     While val_ > 0
+  ''     Print #1,"val _ "; val_
         b = val_ And &H7F
         val_ = val_ Shr 7
+  ''      Print #1,"count , b "; count, b
         buffer(count) = b
         count += 1
     Wend
@@ -2126,8 +2162,11 @@ Sub WriteVLQ(f As Integer, val_ As UInteger) ' Cambiado val por val_
 End Sub
 ' otra referencia 
 'http://www.petesqbsite.com/sections/express/issue18/midifilespart1.html
-'--------------
-Sub GrabarRollAmidiTipo0() ' 1 ) ES LA QUE MAS ME INTERESA Graba solo un Track
+'------------------------------------------------------------------------
+'------------------------------------------------------------------------
+Sub GrabarRollAmidiTipo0() 
+' EL PATCH NO QUEDA BIEN ....
+' 1 ) ES LA QUE MAS ME INTERESA Graba solo un Track
 ' TERMINADO completo basico volumen, patch, eco , coro,tempo, time signature, PPQN
 ' --- PROGRAMA PRINCIPAL ---
 ' A) PRUEBA DE FUNCIONAMIENTO EN EL MENU DE ROLL
@@ -2137,20 +2176,26 @@ Dim f As Integer
 f = FreeFile()
 '1) grabamos la pista de Roll presente en Roll Grafico. haremos otra para cuando esta
 ' en la lista de cancion.-
-'1.1) determinar el nombre del roll suele estar en variable nombre o en titulosTk(0)
-If nombre = "" Or titulosTk(0) ="" Then
+'1.1) determinar el nombre del roll suele estar en variable nombre o en titulosTk(ntk)
+
+If nombre = "" Or titulosTk(ntk) ="" Then
  Exit Sub
  ' avisar del error
 EndIf
 ' nombre tiene el path y extension .roll cambiamoa a .mid
 Dim As String nombremidi = UCase(nombre)
-Dim As Integer kp 
+Dim As Integer kp, kp2 
 kp = InStrRev (nombremidi,".ROLL")
+kp2 = InStrRev (nombremidi,".RTK")
+If kp =0 And kp2 > 0 Then
+ kp=kp2
+EndIf
 nombremidi=Mid (nombremidi , 1,kp-1) +".MID"
+
 Dim temp_byte As UByte 
 Print #1,"NOMBREMIDI ", nombremidi
 Open  nombremidi For Binary As #f
-
+Seek f, 1  'veremos si sobreescribe hasta ahora no sobreescriba el hdp
 'If f = 0 Then
 '    Print #1,"Error abriendo archivo ",nombremidi
 '    End
@@ -2223,48 +2268,74 @@ For ic=1 To lenmidi
 Next ic
 ' ----------PATCH INSTRUMENTO en archivo *.mid se ve bien C145 para oboe pero no lo lee el reproductor
 WriteVLQ(f, 0)
-temp_byte = &HC0: PutByte(f, temp_byte)
-' pmTk(0).patch tiene la ultima seleccio naunqeu no se grabe debe andar
-temp_byte = pmTk(0).patch: PutByte(f, temp_byte)
-Print #1, "midi grabacion pmTk(0).patch ",pmTk(0).patch
-Print #1, "nombre instrumento " ,  NombreInst(pmTk(0).patch)
+
+' pmTk(0).patch tiene la ultima seleccion aunqeu no se grabe debe andar
+'' pmTk(0).canalsalida = 9 Then ' es el 10 de precusion 10
+''temp_byte = &HC9: PutByte(f, temp_byte)
+'' hc0=144 como el note on  ,, quedando para todo canal del 0 al 15    
+''ESTAMANDANDO TODO A CANAL 1 !! 
+' El banco de percusión estándar es el Programa 0
+ temp_byte = &HC0 + pmTk(ntk).canalsalida: PutByte(f, temp_byte)
+Print #1,"Program change y canal ";temp_byte
+If pmTk(ntk).canalsalida=9 Then
+ temp_byte = 0: PutByte(f, temp_byte)
+Print #1,"Patch percucion ";temp_byte
+Else
+ temp_byte = pmTk(ntk).patch: PutByte(f, temp_byte)
+Print #1,"Patch  normal ";temp_byte
+
+EndIf
+''Print #1, "midi grabacion pmTk(0).patch ",pmTk(0).patch
+''Print #1, "nombre instrumento  PERCUSION"
+
+''Print #1, "midi grabacion pmTk(0).patch ",pmTk(0).patch
+''Print #1, "nombre instrumento " ,  NombreInst(pmTk(0).patch)
+
+''EndIf
+' 0XB1 0X07 0X64 = CAMBIO DE CONTROL EN CANAL 1 VOLUMEN 100
 '------------------------------------------------------
 ' el portout nunca se graba en los archivos midi
 '--------------------------------------------------------
 '   Paneo (pmTk(0).pan, pmTk(0).canalsalida,pmTk(0).portout)  modo B0 para canal 0, paneo=10
 WriteVLQ(f, 0)
-temp_byte = &HB0: PutByte(f, temp_byte)
+temp_byte = &HB0+pmTk(ntk).canalsalida: PutByte(f, temp_byte)
 temp_byte = 10 :  PutByte(f, temp_byte)
-temp_byte = pmTk(0).pan: PutByte(f, temp_byte)
+temp_byte = pmTk(ntk).pan: PutByte(f, temp_byte)
 '---------------------------------------------------------
 '   Eco   (pmTk(0).eco,  pmTk(0).canalsalida,pmTk(0).portout) B0 , 91
 WriteVLQ(f, 0)
-temp_byte = &HB0: PutByte(f, temp_byte)
+temp_byte = &HB0+pmTk(ntk).canalsalida: PutByte(f, temp_byte)
 temp_byte = 91 :  PutByte(f, temp_byte)
-temp_byte = pmTk(0).eco: PutByte(f, temp_byte)
+temp_byte = pmTk(ntk).eco: PutByte(f, temp_byte)
 '-------------------------------------------------------
 '   Chorus(pmTk(0).coro,  pmTk(0).canalsalida,pmTk(0).portout)
 WriteVLQ(f, 0)
-temp_byte = &HB0: PutByte(f, temp_byte)
+temp_byte = &HB0+pmTk(ntk).canalsalida: PutByte(f, temp_byte)
 temp_byte = 93 :  PutByte(f, temp_byte)
-temp_byte = pmTk(0).Coro: PutByte(f, temp_byte)
+temp_byte = pmTk(ntk).Coro: PutByte(f, temp_byte)
 '-----------------------------------------------------
 ' VOLUMEN Roll
 WriteVLQ(f, 0)
-temp_byte = &HB0: PutByte(f, temp_byte)
+temp_byte = &HB0 + pmTk(ntk).canalsalida: PutByte(f, temp_byte)  '''B0 O B1 SEGUN AUTOR CAMBIAN?
 temp_byte = 7 :  PutByte(f, temp_byte)
-temp_byte = pmTk(0).vol: PutByte(f, temp_byte)
+temp_byte = pmTk(ntk).vol: PutByte(f, temp_byte)
 
 '---------------------------------------------
 ''FF 20 01 cc MIDI Channel Prefix, The MIDI channel (0-15) CANAL SALIDA GENERAL
-' FLATARIA PONERLO EN CADA NOTA COMO ANTES ? NO CREO...POR AHORA NO
-
+' FLATARIA PONERLO EN CADA NOTA COMO ANTES ? SI...
+''- FF 20 01 cc MIDI Channel Prefix
+'' The MIDI channel (0-15) contained in this event may be used to associate a MIDI channel 
+'' with all events which follow, including System exclusive and meta-events. 
+'' => This channel is "effective" until the next normal MIDI event (which contains a channel) or 
+'' the next MIDI Channel Prefix meta-event. If MIDI channels refer to "tracks", this message 
+'' may be put into a format 0 file, keeping their non-MIDI data associated with a track. 
+'' This capability is also present in Yamaha's ESEQ file format. 
 WriteVLQ(f, 0)
 temp_byte = &HFF: PutByte(f, temp_byte)
 temp_byte = &H20: PutByte(f, temp_byte)
 temp_byte = &H01: PutByte(f, temp_byte)
-temp_byte = pmTk(0).canalsalida: PutByte(f, temp_byte)
-
+temp_byte = pmTk(ntk).canalsalida+1: PutByte(f, temp_byte)
+Print #1,"CANALSALIDA GRABADO A MIDI ",temp_byte
 '------------------------------------------------------------
 'FF 58 04 nn dd cc bb Time Signature (nn numerador, dd denominador' 
 ' dd en potencia de 2, 2 es 2^2=4 ->denominador 4, 4/4 es 04 02
@@ -2272,7 +2343,7 @@ temp_byte = pmTk(0).canalsalida: PutByte(f, temp_byte)
 ' CALCULO DE nn y dd
 
 Dim As UByte nn, dd, cc, bb
-nn=pmTk(0).tipocompas  ' las constantes Tcompas2_4 coinciden con el numedaor y es el tipocompas o ritmo
+nn=pmTk(ntk).tipocompas  ' las constantes Tcompas2_4 coinciden con el numedaor y es el tipocompas o ritmo
 Select Case nn
      Case 2, 3,4
       dd=2  ' 2^2 = 4
@@ -2354,10 +2425,14 @@ Close #f
 'Print "Longitud de datos del track: "; data_len; " bytes"
 'Print "Si el numero es positivo (ej. 132 o similar), el archivo esta bien."
 
+mensajeEstado="PISTA A MIDI TERMINADA."
+PlaySound(ROLLDIR+"recur\Ring05.wav", 0, SND_FILENAME+SND_NODEFAULT + SND_ASYNC )
+
 
 End Sub
 '--------
 Sub GrabaEventosMidiDirecto (f As integer)
+''https://www-weigu-lu.translate.goog/music/midi_files/index.html?_x_tr_sl=en&_x_tr_tl=es&_x_tr_hl=es&_x_tr_pto=sge#link_0
 /'
 El encabezado de un archivo MIDI, conocido como
 MThd (MIDI Track Header), contiene metadatos esenciales de 14 bytes totales (incluyendo la cabecera MThd de 4 bytes y longitud de 4 bytes) que definen la estructura del archivo. Sus campos principales son el tipo de formato, número de pistas y la resolución temporal, todos en formato Big Endian. 
@@ -2392,21 +2467,6 @@ Print #1,"'-----------------------------------------------------"
 Dim i As Integer
 Dim temp_byte As UByte
 
-' For i = 0 To 7
-'    ' Note On
-'    WriteVLQ(f, 0) DELTA
-'    temp_byte = &H90: PutByte(f, temp_byte)
-'    PutByte(f, notes(i))
-'    temp_byte = 64:   PutByte(f, temp_byte)
-
-    ' Note Off
-'    WriteVLQ(f, 128) DELTA
-'    temp_byte = &H80: PutByte(f, temp_byte)
-'    PutByte(f, notes(i))
-'    temp_byte = 0:    PutByte(f, temp_byte)
-'Next
-
-
 '--------------------------------
 ntk=0
 On Local Error GoTo fail
@@ -2423,9 +2483,6 @@ Dim As UByte k1
  
 indEscala=1 ' inicializamos la guiade escalas a la 1era 
 
-Dim As Double tiempoDUR, tiempoFigura=0,tiempoFiguraOld=0,old_time_old=0
-''tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '60 seg/ cuantas negras enun minuto
-'Dim As Integer i1 
 Dim As Integer i2,i3,i4,i5,jmidi,jmidiold=0,RepeIni,RepeFin,finalloop=0,comienzoloop=0
 Dim As Integer comienzo=1, final=pmTk(0).MaxPos,velpos =0,cntrepe,final2=0,comienzo2=0
 Dim As UByte canal=0,vel=90 
@@ -2444,13 +2501,13 @@ Dim result As Integer
 '    Chorus(pmTk(0).coro,  pmTk(0).canalsalida,pmTk(0).portout)
 '    ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, pmTk(0).portout)
     patchsal =pmTk(0).patch 
-    
-Print #1,"comienzo midi ====> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
-Print #1,"Eventos    ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
+  
+
 jmidi=0
 ''comienzo=posicion 
 comienzo=1 
-
+final=pmTk(0).MaxPos
+finalloop=final
 
 If pasoZona1 > 0 Then
  comienzo=pasoZona1
@@ -2462,16 +2519,11 @@ If pasoZona2 > 0 Then
  finalloop=final
 EndIf
 
-STARTMIDI=Timer
-old_time_on=STARTMIDI
-''Print #1,"old_time_on "; old_time_on
-Dim As Double  tickUsuario=60/(tiempoPatron*PPQN) '''tickUsuario=0.01041666 * 240/tiempoPatron
-Print #1,"TickUsuario "; tickUsuario
 
 Dim As float ajuste=1.0
 portsal=pmTk(0).portout  '''no vamos a cambiar en la secuencia el midiout ni canal o si??
 canal=pmTk(0).canalsalida
- Dim As UInteger  tickevento=0,tickevento1=0,tickevento2=0, tickdif=0
+ Dim As UInteger  tickdif=0
 
 For jmidi=comienzo To final
   
@@ -2501,7 +2553,7 @@ Else
   EndIf
 
   If Compas(jmidi).nro = 0 Then 
-    velpos=vsemifuerte  ' para midipolano dividiones por partes veremso si se soluciona el sonido
+    velpos=vsemifuerte  ' para midiplano dividiones por partes veremso si se soluciona el sonido
 ' en la rutina vol , depende de la dur ajusta vol=0 o vol = velpos... no hay problema con los silencios
   EndIf
 EndIf
@@ -2533,56 +2585,69 @@ EndIf
             NroEventoPista(1)= NroEventoPista(1) +1
             NroEvento=NroEventoPista(1)
           If jmidiold > 0 Then
+             If cntrepe > 0 And jmidiold > jmidi Then ''18-05-2026
+                jmidiold=comienzo2
+             EndIf 
              tickdif=jmidi-jmidiold
           EndIf
           jmidiold=jmidi 
           WriteVLQ(f, tickdif)
-          temp_byte = 144: PutByte(f, temp_byte) '144
+          temp_byte = 144 + pmTk(ntk).canalsalida: PutByte(f, temp_byte) 
           PutByte(f, CByte(Notapiano) )
+          fileflush(-1) 
           temp_byte = vel:   PutByte(f, temp_byte)
        EndIf
        If Roll.trk(jmidi, i1).onoff= 1 Then
             NroEventoPista(1)= NroEventoPista(1) +1
             NroEvento=NroEventoPista(1)
-          If jmidiold > 0 Then
+          If jmidiold > 0   Then
+             If cntrepe > 0 And jmidiold > jmidi Then ''18-05-2026
+                jmidiold=comienzo2
+             EndIf 
              tickdif=jmidi-jmidiold
           EndIf
           jmidiold=jmidi 
 
          WriteVLQ(f, tickdif)
-         temp_byte = 128: PutByte(f, temp_byte)
+           temp_byte = 128 + pmTk(ntk).canalsalida: PutByte(f, temp_byte)
+
          PutByte(f, CByte(Notapiano))
-         temp_byte = 0:    PutByte(f, temp_byte) '' aca pone velocidad 0!!
-        
+         temp_byte = 0:   PutByte(f, temp_byte) '' aca pone velocidad 0!!
+''ver como poner la velocidad de off real en caso de ejecucion
+''      Print #1,"128 off Notapiano ";Notapiano;" ";  temp_byte ; " vel ", 0
+         fileflush(-1)  
        EndIf    
 
 
-   EndIf   
+    EndIf   
 
-EndIf  
+  EndIf  
 
 If i1 > NA-13 Then
  If Roll.trk(jmidi,i1).nota = 210 Then
-    Print #1,"210 leido jmidi",jmidi
+ '   Print #1,"210 leido jmidi",jmidi
+    fileflush(-1)
     playloop2=SI
     comienzo2=jmidi
  EndIf
 
  If Roll.trk(jmidi,i1).nota = 211 Then
-    Print #1,"211 leido jmidi",jmidi 
+'    Print #1,"211 leido jmidi",jmidi
     final2=jmidi
-
+' Print #1, "cntrepe ";cntrepe
+fileflush(-1)
     If cntrepe > 0 Then
       cntrepe -= 1
     Else
       cntrepe=Roll.trk(jmidi,i1).vol ' nro repeticiones en vertical +1
     EndIf
     If cntrepe =0 Then
-       'comienzo=final+1
        final2=MaxPos
        If finalloop> 0 Then
            final2=finalloop
        EndIf
+  '     Print #1,"final2 ";final2
+       fileflush(-1) 
     EndIf 
  EndIf
 EndIf
@@ -2606,10 +2671,8 @@ EndIf
     EndIf
  EndIf
 
- tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
- Sleep 1,1 ' para que corranmas de un thread
-Next jmidi
- ''WriteVLQ(f, 2*DurXTick(dura)) 
+ Next jmidi
+  
 posicion=comienzo
 '======================
 ' IF hay loop de repeticion se detecta en la posicion final Then

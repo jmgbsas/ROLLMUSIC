@@ -282,7 +282,7 @@ EndIf
                noteon(60,100,tocaparam(k).canal,tocaparam(k).portout,1,1) '' NOTA VEL ,CANAL, PORTSAL
                noteoff(60,40, tocaparam(k).canal,tocaparam(k).portout,1,1)
              Else
-               PlaySound(".\recur\INICIO.wav", 0, SND_FILENAME+SND_NODEFAULT + SND_ASYNC )
+               PlaySound(ROLLDIR+"recur\INICIO.wav", 0, SND_FILENAME+SND_NODEFAULT + SND_ASYNC )
              EndIf
                duracion(Timer, (60/(tiempoPatron)) / FactortiempoPatron)
            Next im
@@ -531,13 +531,13 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",maxgrb
           Print #1,"cALL rOLLLOOP II) por grabar midi "
           
           threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-          SetForegroundWindow(hwnd)
+      ''    SetForegroundWindow(hwnd)
        ''RollLoop ( param)
            abrirRoll=NO_CARGAR 'EVITA CARGA ROLL DE MENU PRONCIPAL
         EndIf  
 ' SI EL USUARIO ABRE ROLL MANUALMENTE ..Y LEDA UN CLICK A EDICION Y LUEGO A EDIT
            COMEDIT=ENTRADA_NOTAS
-           SetForegroundWindow(hwnd) 
+        ''   SetForegroundWindow(hwnd) 
         If  metronomo_si=3 Then
           Print #1,"Va a TOCAR 4 PULSOS DEL instrumento elegido y luego el metronomo"
            terminar_metronomo=0
@@ -547,7 +547,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",maxgrb
                noteon(60,100,tocaparam(k).canal,tocaparam(k).portout,1,1) '' NOTA VEL ,CANAL, PORTSAL
                noteoff(60,40,tocaparam(k).canal,tocaparam(k).portout,1,1)
              Else
-               PlaySound(".\recur\INICIO.wav", 0, SND_FILENAME+SND_NODEFAULT + SND_ASYNC )
+               PlaySound(ROLLDIR+"recur\INICIO.wav", 0, SND_FILENAME+SND_NODEFAULT + SND_ASYNC )
              EndIf
                duracion(Timer, (60/(PPQN*tiempoPatron)) / FactortiempoPatron)
            Next im
@@ -588,6 +588,7 @@ Print #1, "542 GrabarPenta=0"
          SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_PRESIONADO)
          SetGadgetstate(BTN_ROLL_PARAR, BTN_LIBERADO)
          SetGadgetstate(BTN_ROLL_GRABAR_MIDI , BTN_LIBERADO)
+         mensajeEstado="NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIONES DE TECLADO CON MANUALES, SE CONGELARA LA SECUENCIA" 
          terminar_metronomo=1
          If (playb = NO Or Cplay=NO )And (MaxPos> 2  Or Maxgrb > 2) Then
              GrabarPenta=0

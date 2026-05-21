@@ -321,7 +321,7 @@ si no esta seleccionado es Grafico para roll y rtk , si lo selecciono sera venta
 chica de Control para las mismas, los ejec no se cambia y estará en ventana Control
 completa.
 -----------------------------------------
-TOCAR DESDE UN ECLADO MIDI,,
+TOCAR DESDE UN TECLADO MIDI,,
 -------------------------------------------
 SIMPLEMETE EN MENU REPRODUCIR ITEM 3.0 DARLE CLICK
 TOMARA LA SALIDA Y ENTRADA DEFAULT DE LA PC. SINO FUNCIONA CON LOS VALORES DEFAULT 
@@ -329,7 +329,11 @@ O POR OMISION,SE DEBERA SELECCIONARLOS DESDE EL MENU PISTAS EJECUCION
 ITEMS 1.0 Y 2.0, LA 2.0 FUNCIONA SIN HACER NADA . LA 1.O HAY QUE
 CREAR UNA PISTA DE EJECUCION SELECCIONANDO EN "G" PEDIRA UN NOMBRE DE PISTA SELECCIONAR
 DICHO NOMBRE Y AJUSTAR 1.0 LUEGO SE PUEDE TOCAR SIN NECESIDAD DE GRABAR
-
+---------------------------------------------
+TOCAR UN ARCHIVO WAV, MP3 O MID 
+-----------------------------------------
+USAR EN MENU REPRODUCIR EL ITEM 5.0 EN AYUDA.TXT SE DAN OBSERVACIONES SOBRE
+ESTA FUNCION CON LAS CUALES EVITAR ALGUNOS FALLOS DE VISUALIZACION.
 
            
           

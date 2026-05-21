@@ -10,11 +10,11 @@
              ' ok anda bien, una vez cagados se permuta en memoria con TAB
              ' o haciedno click en la lista
             '' UseGadgetList(hwndC)
-              StatusBarGadget(BARRA_DE_ESTADO,"1.0 ROLL GRAFICO NO DEBE ESTAR LEVANTADO, SI LO ESTÁ CIERRE PRIMERO EL GRAFICO BUSQUE LA CARPETA Y ACEPTE" )
+              mensajeEstado="1.0 ROLL GRAFICO NO DEBE ESTAR LEVANTADO, SI LO ESTÁ CIERRE PRIMERO EL GRAFICO BUSQUE LA CARPETA Y ACEPTE" 
 
               CTRL100610061 (hMessages ,  "" )
               SetGadgetText (TEXT_GADGET,Str(tiempoPatron))
-StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIONES DE TECLADO CON MANUALES, SE CONGELARA LA SECUENCIA" )           
+              mensajeEstado="NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIONES DE TECLADO CON MANUALES, SE CONGELARA LA SECUENCIA"            
              If abrirRoll=NO_CARGAR And NombreCancion > ""  Then
                 abrirRoll=CARGAR
                 cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
@@ -41,7 +41,7 @@ StatusBarGadget(BARRA_DE_ESTADO,"NO USAR TAB DURANTE PLAY CON MEZCLA DE EJECUCIO
 ' ----------------------------------------------------------------------
 ' ==> CARGAR TODO SIN GRAFICO
            Case 10064
-   StatusBarGadget(BARRA_DE_ESTADO,"1.0 ROLL GRAFICO NO DEBE ESTAR LEVANTADO, SI LO ESTÁ CIERRE PRIMERO EL GRAFICO BUSQUE LA CARPETA Y ACEPTE" )
+            mensajeEstado="1.0 ROLL GRAFICO NO DEBE ESTAR LEVANTADO, SI LO ESTÁ CIERRE PRIMERO EL GRAFICO BUSQUE LA CARPETA Y ACEPTE" 
             Tope=0
             NombreCancion = ""
 
@@ -67,7 +67,8 @@ SetGadgetText (TEXT_GADGET,Str(tiempoPatron))
 ' voy a incorporar cargar un midi asi tengo una cancion para probar,,
 
            CTRL1007 ()
-          
+           
+          SetForegroundWindow(hwnd)
            Case 10075 '<======== CARGAR UNA PISTA A ROLL PARA EXPORAR A MIDI
 ' DE ESTE MODO PODEMOS ENVIAR EL NOMBRE DE LA PISTA AL ROLL AISLADO
 ' Y CONVERTIR A MID CON EL NOMBRE REAL Y N OEL FANTASIA ARCHIVO.MID
@@ -208,7 +209,9 @@ Print #1,"usarmarcoins ", usarmarcoins
 
            Case 10091 '<========= Grabar midi directo Sin pasar por TExto ni reproduccion
 ' 11-03-2026 preparacion,,,TEST DE ARMADO DEL MENU PARA UNA GRABACION CUALQUIERA
-             GrabarRollAmidiTipo0()
+             mensajeEstado="PROCESANDO PISTA A MIDI..."
+             threadmidi0= ThreadCall GrabarRollAmidiTipo0()
+             
            Case 1010 '<================ Cargar Pista externa a cancion
 
    '        Print #1,"entro a 1010 Cargar Pista externa a cancion"
@@ -258,7 +261,7 @@ Print #1,"usarmarcoins ", usarmarcoins
            EndIf 
            Sleep 1000,1 
            intentos=0
-         
+           SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
            Case 1015 '<========== Grabar MIDI-In aca sera para grabar 
  ' EN ejecuciones, CON CANCION CARGADA NO GRABA NADA(reveer esto), la grabacion se hace en STOP SIN CANCION
@@ -442,7 +445,7 @@ Print #1,"**********************************************************************
                NombreCancion = ""
                pathdir=""
                EntrarNombreCancion(NombreCancion)
-      '    SetForegroundWindow(hwnd)
+      
 '-----------------------------------------------------------------------
            Case 1021 ' <=========== Entar Tempo 
              menuOldStr="[TEMPO]"
@@ -450,17 +453,17 @@ Print #1,"**********************************************************************
                thread3= ThreadCall EntrarTeclado()
               ThreadWait thread3
                
-      '        SetForegroundWindow(hwnd)
+      
 '-----------------------------------------------------------------------
            Case 1025 ' <======== Crear un directorio de Cancion con Pistas separadas
                CrearDirCancion (NombreCancion)
                If NombreCancion > "" Then
                   param.encancion=CON_CANCION
                EndIf    
-    '      SetForegroundWindow(hwnd)        
+            
 '-----------------------------------------------------------------------
            Case 1028 ' <========== seleccion octavas menores a 1 9
-StatusBarGadget(BARRA_DE_ESTADO,"AUNQUE LA OCTAVA QUE APARECE SEA LA INDICADA VUELVA A SELECCIONARLA" )
+          mensajeEstado="AUNQUE LA OCTAVA QUE APARECE SEA LA INDICADA VUELVA A SELECCIONARLA" 
                If pmTk(ntk).desde=0 Then
                Else
                   pmTk(ntk).desde=desde 
@@ -487,7 +490,7 @@ StatusBarGadget(BARRA_DE_ESTADO,"AUNQUE LA OCTAVA QUE APARECE SEA LA INDICADA VU
                 param.ubirtk=ubirtk
                 posn=1
 
-     '     SetForegroundWindow(hwnd) 
+      
 '-----------------------------------------------------------------------
            Case 1031 ' <========  SELECCION DE CANAL DE LA PISTA (10 DRUMS)
 '-----------------------------------------------------------------------               
@@ -559,7 +562,7 @@ StatusBarGadget(BARRA_DE_ESTADO,"AUNQUE LA OCTAVA QUE APARECE SEA LA INDICADA VU
               cierroedit= 0           
               carga=1
 
-        '     SetForegroundWindow(hwnd)    
+            
 '-----------------------------------------------------------------------
            Case 1050 ' <=========== seleccion de instrumento por orden Numerico
            ' NO FUNCIONA
@@ -601,7 +604,7 @@ StatusBarGadget(BARRA_DE_ESTADO,"AUNQUE LA OCTAVA QUE APARECE SEA LA INDICADA VU
               cierroedit= 0           
               carga=1
   
-        '      SetForegroundWindow(hwnd)
+        
 '----------------------------------------------------------
            Case 1051 ' PANEO DE UN CANAL
                 If CANCIONCARGADA =TRUE  Then
@@ -665,7 +668,7 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
                 threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))   
                 Print #1,"2 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
                 Sleep 100
-               ''  SetForegroundWindow(hwnd)
+                 SetForegroundWindow(hwnd)
                    Exit Do
              Else
                 If NombreCancion = ""  Then
@@ -674,7 +677,7 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
                   CTRL1060 salida
                   If salida = 1 Then 
                     salida=0
-              '''      SetForegroundWindow(hwnd)
+                    SetForegroundWindow(hwnd)
                     Exit Do
                   End If
                EndIf
@@ -697,7 +700,7 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
                
 ' FALTA CREAR LA PISTA !!! jmg ERO PUEDO USAR UNA PISTA YA CREADA EN 1011
 ' la graba igual desde roll parece pero debe ser en orden
-       '   SetForegroundWindow(hwnd)            
+           
 '-----------------------------------------------------------------------
            Case 1062 ' <======== crear instancia independiente sin control
  ' ponerle diferente color y/o tamaño para poder distinguirlo ademas de l nombre
@@ -710,7 +713,6 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
 ''Print #1, "/// ubiroll ubirtk ", ubiroll,ubirtk
 
 
-      '    SetForegroundWindow(hwnd)
 '-----------------------------------------------------------------------
 ' aca debo tomar de la seleccion del usuario con ctrl+p por ejemplo sobre
 ' una pista y tomar los parametros de la cancion cargada de esa pista
@@ -903,9 +905,9 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
   Dim ind3 As Integer = lim2 +1
 
   'Print #1,"ajustado repeind ",vertical  98
-If pasoZona1 > 0 And pasoZona2 > 0 Then
-
-   For d1 = pasoZona1 To pasoZona2
+''If pasoZona1 > 0 And pasoZona2 > 0 Then
+''BORRA TOAS LAS REPETICIONES
+   For d1 = 1  To pmTk(ntk).MaxPos ''' pasoZona1 To pasoZona2
      Roll.trk(d1,vertical).nota = 0 ' comienza repeticion en pasozona1
      Roll.trk(d1,vertical).vol = 0  ' nro de repeticiones
      For kk=1 To Tope
@@ -914,9 +916,9 @@ If pasoZona1 > 0 And pasoZona2 > 0 Then
      Next kk
    Next d1
 
-Else
- MessBox ("Para Borrar Repeticiones", "Debe entrar una zona de campases, Ctrl-clik en comienzo y Ctrl-click final")
-EndIf
+''Else
+'' MessBox ("Para Borrar Repeticiones", "Debe entrar una zona de campases, Ctrl-clik en comienzo y Ctrl-click final")
+''EndIf
 
 '-----------------------------------------------------------------------
            Case 1092 ' abrir un midi-in ...con callback
@@ -1122,8 +1124,8 @@ EndIf
            Case 1112 '<========= cambio de a escala Alternativa de la Principal
              CTRL1112()
              If abrirRollCargaMidi=2 Then
-               SetForegroundWindow(hwnd)  
-             EndIf
+            SetForegroundWindow(hwnd)  
+            EndIf  
 '-----------------------------------------  
            Case 1113 ' usar metronomo
 

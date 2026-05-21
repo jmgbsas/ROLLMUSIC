@@ -2842,6 +2842,7 @@ Print #1,"TickUsuario "; tickUsuario
       PARAR_PLAY_MANUAL=NO
       Parar_De_Dibujar=NO
       terminar_metronomo=SI
+      CPlay=NO
       Exit For
    EndIf  
   
@@ -2889,6 +2890,7 @@ kNroCol= Int(jply/NroCol)
     EndIf 
     if setocapista=0 then
        PARAR_PLAY_MANUAL = SI ' no hay nada que tocar 
+       CPlay=NO
   MessageBox( null, "TOCAR CANCION "+ Str(Tope)+ " NINGUNA PISTA SELECIONADA PARA TOCAR", "Seleccione alguna ", MB_OK )
     endif        
 

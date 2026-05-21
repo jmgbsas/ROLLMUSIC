@@ -1,4 +1,11 @@
--16-05-20206 0.384 
+  -21-05-2026 0.385 graba: midi de c/pista en CANCION o individual y con varios loops de repeticiones, 
+    percuciones 
+    *graba bien archivo mid con percusion canal 10 Y EL RESTO DE CANALES CON SU PATCH
+    *graba a midi con repeticiones de toda la secuencia completa,  
+     Y CON repeticiones internas TAMBIEN, es igual en vez de cero se pondra la pasozona1 o sea la posicion
+     del 210 cera el cero de antes
+    *el reproductor de medios (mp3, midi, wav) se puede mover con flechas de teclado ademas de mouse
+  -16-05-2026 0.384 
   - fixed  AL AGREGAR UNA NOTA NUEVA A UNA SECUENCIA O PISTA CANCELABA 
   - fixed Toca la nota ingresada en ENTRADA MANUAL
   - NUEVO,ENTRAR NOTAS ADENTRO DE UNA SECUENCIA con pasoZona1

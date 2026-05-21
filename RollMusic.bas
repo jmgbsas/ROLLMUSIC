@@ -60,8 +60,14 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.384 ALT+DELETE, ALT+L, INTERVALO LIMITE FIN SECUENCIA, NOMBRE RTK NUEVO, AYUDA etc "
-' 
+nroversion="0.385 graba: midi de c/pista en CANCION o individual y con varios loops de repeticiones, percuciones "
+' - graba bien archivo mid con percusion canal 10 Y EL RESTO DE CANALES CON SU PATCH
+' - graba a midi con repeticiones de toda la secuencia completa,  
+'   Y CON repeticiones internas TAMBIEN, es igual en vez de cero se pondra la pasozona1 o sea la posicion
+'   del 210 cera el cero de antes
+' el reproductor de medios (mp3, midi, wav) se puede mover con flechas de teclado ademas de mouse
+'------------------
+'384 
 ' - fixed  AL AGREGAR UNA NOTA NUEVA A UNA SECUENCIA O PISTA CANCELA 
 ' - fixed Toca la nota ingresada en ENTRADA MANUAL
 ' - NUEVO:ENTRAR NOTAS ADENTRO DE UNA SECUENCIA con pasoZona1, la posicion de pasoZona1 incrementa
@@ -296,7 +302,7 @@ clickpista=SI
 Print #1, "///1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
 
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-      SetThreadPriority(threadloop , 1 ) ' decia 1
+      SetThreadPriority(threadloop , 20 ) ' decia 1
       clickpista=SI 'abre tab una sola vez seposiciona en psita 1 
       EndIf 
     ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
@@ -461,6 +467,15 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
 ' si uso LBDown no funciona bien debo clickear dos veces no se aviva
 ' en este lugar podrian ir todos los eventos sobre la ventana que no son
 '  de window9
+      If mensajeEstadoOld<>mensajeEstado  Then
+         StatusBarGadget(BARRA_DE_ESTADO, mensajeEstado)
+         mensajeEstadoOld=mensajeEstado
+         If  mensajeEstado="PISTA A MIDI TERMINADA."   Then
+           Sleep 2000
+           PlaySound(NULL, NULL, 0 )
+         EndIf
+      EndIf
+
       If terminar=TERMINAR_POR_LOOP_PRINCIPAL Then
          Exit Do
       EndIf  

@@ -391,7 +391,7 @@ Sub noteon	( note As UByte, vel As UByte, canal As UByte, portsal As UByte,i1 As
 	Dim leng As UInteger <8>
 	Dim result As Integer ' canal 0 to 15 canal 0 es el 1
 	If canal = 0 Then
-		 modo = 144 ' 0x90 + 0 = 9x16+0=144 +0 = 144 
+		 modo = 144 ' 0x90 + 0 = 9x16+0=144 +0 = 144... HC0=90
 	Else
 	  modo = 144 + canal 
 	EndIf

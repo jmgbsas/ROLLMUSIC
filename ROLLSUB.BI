@@ -7973,7 +7973,7 @@ Dim  As Integer i3
  ' no usar nunca deallocate falla montonde cosas ni si quiera se puede cerrar
  ' un archivo ni borrarlo una cagada la recomendacion del foro!!!!          
             FT_Done_Face( ftface ) ' 04-05-2024 ESTO DIO ERROR UNA VEZ PERO SE EQUIVOCO EL DEBUGUER
-           If play=SI Or playb=SI Then
+           If play=SI Or playb=SI Or CPLAY=SI Then
               '''alloff (canal)
               
               For i3 = 1 To tope
@@ -8008,7 +8008,8 @@ Dim  As Integer i3
    Next i3
 
 'Sleep 10
-  If teclado=1 Then
+' 17-05-2026 TECLADO SE ABRE SIEMRPE Y DEBE CERRARCE AL SALIR SIEMPRE
+ '' If teclado=1 Then TECLADO 
       Dim k1 As Integer
       If ntkp > 0 Then
          cancel_callback(midiin(pmEj(ntkp).portin))
@@ -8028,7 +8029,7 @@ Dim  As Integer i3
        close_port midiout(k1)
        teclado=0
 
-   EndIf
+''  EndIf
     ffile=4
 
     If Open (ROLLDIR +"RollMusic.ini" For Output As #ffile) <> 0 Then
