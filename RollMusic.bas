@@ -60,7 +60,7 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.385 graba: midi de c/pista en CANCION o individual y con varios loops de repeticiones, percuciones "
+nroversion="0.385: Fix reproductor de medios, Funcionamiento menos fallos." 
 ' - graba bien archivo mid con percusion canal 10 Y EL RESTO DE CANALES CON SU PATCH
 ' - graba a midi con repeticiones de toda la secuencia completa,  
 '   Y CON repeticiones internas TAMBIEN, es igual en vez de cero se pondra la pasozona1 o sea la posicion

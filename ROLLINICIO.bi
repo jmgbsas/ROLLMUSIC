@@ -944,6 +944,6 @@ End Function
 '(where appicon.ico is the name of icon)
 '- Then when compiling program, add appicon.rc in the list of files to compile.
 
-Dim Shared As Integer event,mov8,MOV_FLAG=0, movie
+Dim Shared As Integer event,mov8,MOV_FLAG=0, movie,MOV_FLAG_M
 Dim Shared As integer lugarPos
 Dim Shared As HWND  hwndMEDIA,hwndTG

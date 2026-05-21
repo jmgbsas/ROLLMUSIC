@@ -1,14 +1,7 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-    0.384:
-  - fixed  AL AGREGAR UNA NOTA NUEVA A UNA SECUENCIA O PISTA CANCELABA 
-  - NUEVO,ENTRAR NOTAS ADENTRO DE UNA SECUENCIA con pasoZona1, la posicion de pasoZona1 incrementa
-    en la duracion de la nota, si se quiere volver usar Backspace o Retroceso.       
-  - fixed SE REPUSO LOOP INFINITO ALT-L PLAYLOOP=NO ELIMINADO DE LAS EJECUCIONES
-  - fixed PASOZONA1 Y 2 SE LIMITARON A GAP1 Y MAXPOS PARA EVITAR CANCELAIONES
-  - fixed SE PERDIA EL NOMBRE DE LA PISTA NUEVA AL GRABAR COMO RTK..
-  - NUEVO ALT+DELETE ELIMINA UNA ZONA DE LA SECUENCIA SIN DEJAR ESPACIO COMO LO HACE DELETE SOLO.
-  - AYUDA Y TECLAS RAPIDAS MAS INFO
+    0.385: Fix reproductor de medios Reproducir item 5.0. Ya no desaparecen los controles ni deshabilitan
+           ni tampoco la cinta del Track.
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -784,21 +777,19 @@
       5)  En el menu de Control Reproducir item 5.0 se agrego un reproductor de media con el fin de escuchar
           una cancion un instrumento grabado en wav  mp3 O *.MID , tambien reproduciria video, pero no es el
           objetivo por ahora. en el futuro tratremos de sincronizar el comienzo de esta reproduccion
-          con la de una ejecucion y/o una cancion. El reproductor es elemental básico si en alguna maniobra de mover
-          la ventanita que lo contiene o minimizarlo, para que aparescan bien todos los controles y sean funcionales,
+          con la de una ejecucion y/o una cancion. El reproductor es elemental básico, si en alguna maniobra de mover
+          la ventanita que lo contiene o minimizarlo se boran los controles, para que aparescan bien de nuevo y sean funcionales,
           maximizar el control dando un click en la parte inferior de la ventanita que ofrece windows para maximizarlo
-          de esa forma se reinia bien los controles, la escala se mantiene util si se usa la resolucion de pantalla
-          1680 o 1920. O sea cualquier dificultad reiniciar la visualizacion del reproductor minimizarlo y luego 
-          restablecerlo de la forma indicada. Si se da PARAR y desaparece el indicador de barrido, al dar ejecutar
-          aparecera de nuevo pintando el control a medida que avanza el barrido, o dar MIN Max como se dijo y aparecera
-          todo el barrido completo de la barra de la pista. Se puede reproducir los archivos *.mid generados en RollMusic
+          .La escala se mantiene util si se usa la resolucion de pantalla 1680 o 1920 o mayor. O sea cualquier dificultad 
+          reiniciar la visualizacion del reproductor minimizarlo y luego restablecerlo de la forma indicada en 0.385 ya se fueron
+          esos problemas. 
+          Se puede reproducir los archivos *.mid generados en RollMusic
           sin necesidad de reproductores externos y tal vez acompañarse con el teclado
           Sirve para ejecutar un wav mp3 o mid, podemos tocar un teclado para ensayar..habilitando el midi input desde 
           un teclado externo, el cual se podra grabar como ya sabemos creando una pista nueva de ejecucion.
           Se puede ademas del mouse adelantar o retroceder la pista con flechas derecha izquierda durante la ejecucion.
           Al cambiar la velocidad hay una indicacion de velocidad normal en valor 1 mayor velocidad sera mayor a 1
-          1.01 , 1.02,1,1 ,1,2 etc para dar menor velocidad suele atenuarse el boton de bajar velocidad , pulsar pausa
-          y e habilitara para pulsar la bajada de velocidad.   
+          1.01 , 1.02,1,1 ,1,2 etc .   
           Nota: para grabar a disco la salida de audio de la PC se puede usar Audacity
                 Programa gratuito de código abierto. Configurando el host de audio a "Windows WASAPI" y seleccionando 
                 los altavoces como dispositivo de grabación, se captura el sonido interno con alta calidad.

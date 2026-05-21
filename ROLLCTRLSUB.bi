@@ -1037,7 +1037,7 @@ ticks=100
 Dim As Integer ANCHOWIN, PANTALLAX=GetSystemMetrics(SM_CXSCREEN),volume
 ''Print #1, "ANCHO PANTALLA ", PANTALLAX
 ''Print #1, "ENTRADA ", ENTRADA
-
+Dim As Integer HABILITA6=0
 Select Case PANTALLAX
    Case 1680
     ANCHOWIN=ANCHO*6/7
@@ -1059,6 +1059,7 @@ ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav o mp3, en resoluci
 textgadget(9,200,altov,60,20,"1.0"):GadgetToolTip(9,"VELOCIDAD DE EJECUCION") 
 
 hwndTG=TrackBarGadget(5,5,sizey*1/6,sizex-20,30,0, ticks, TBS_NOTICKS  )
+GadgetToolTip(5,"Avance Retroceso con Flechas Der/Izq or Click Mouse Sobre La Cinta")
 
 WindowStartDraw(hwndMEDIA)
 fillrectdraw(12,sizey*3/6,&hffffff)
@@ -1104,12 +1105,16 @@ Do
 
     If GetAsyncKeyState(VK_RIGHT) Then ' CON MULTIJEY ANDA MAL USARE GetAsyncKeyState EN OTROS LADOS 
          if mov8 Then
+            MOV_FLAG=1
             MovieSetPositions(mov8,cast(double,getTrackBarPos(5)+1)*1000000+1,GetEndPosMovie(mov8) )
+            Playmovie(mov8)
          EndIf
       EndIf
     If GetAsyncKeyState(VK_LEFT) Then
          if mov8 Then
+            MOV_FLAG=1
             MovieSetPositions(mov8,cast(double,getTrackBarPos(5)-1)*1000000-1,GetEndPosMovie(mov8) )
+            Playmovie(mov8)
          EndIf
     EndIf
 
@@ -1126,8 +1131,8 @@ Do
    EndIf
    If event=EventGadget Then
       Select case EventNumber
-         Case 1 'STOP  
-            LIMPIA=0
+         Case 1 'STOP  empieza desde el principio de nuevo
+            LIMPIA=1
            If mov8  Then 
               stopmovie(mov8)
               MOV_FLAG=3  'DEJA DE SONAR EL METRONOMO PERO SIGUE EL LOOP del metronomo
@@ -1138,14 +1143,12 @@ Do
           If mov8 >0 Then 
                    Playmovie(mov8)''':SetRateMovie(mov8,1)
                    MOV_FLAG=1 ' SUENA EL METRONOMO PERO SIGUE EL LOOP del metronomo
-                   
           EndIf
          Case 3  ' PAUSE
-             LIMPIA=0
+             LIMPIA=1
                   If mov8  Then 
                    Pausemovie(mov8)
                    MOV_FLAG=3 'DEJA DE SONAR EL METRONOMO PERO SIGUE EL LOOP del metronomo
-                  
                   EndIf
          case 5 ' TRACKBAR
             LIMPIA=1
@@ -1159,11 +1162,17 @@ Do
             velocidad=velocidad-0.01
             vels = Str(velocidad)
             SetGadgetText(9,vels)  
+            HABILITA6=0   
          Case 7  '' play speed mayor
             If mov8 Then SetRateMovie(mov8,GetRateMovie(mov8)+0.01) EndIf
             velocidad=velocidad+0.01
             vels = Str(velocidad)
-            SetGadgetText(9,vels) 
+            SetGadgetText(9,vels)
+    'HABILITAMOS 6 NO SE PORQUE MIERDA SE DESHABILITA
+            If HABILITA6=0 Then
+               ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Disminuye velocidad")
+               HABILITA6=1
+            EndIf 
          Case 8
             #ifdef UNICODE
 '' Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)|*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1|")
@@ -1183,6 +1192,7 @@ ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav o mp3, en resoluci
 textgadget(9,200,altov,60,20,Vels):GadgetToolTip(9,"VELOCIDAD DE EJECUCION")
 
 hwndTG=TrackBarGadget(5,5,sizey*1/6,sizex-20,30,0, ticks, TBS_NOTICKS  )
+GadgetToolTip(5,"Avance Retroceso con Flechas Der/Izq or Click Mouse Sobre La Cinta")
 WindowStartDraw(hwndMEDIA)
 fillrectdraw(12,sizey*3/6,&hffffff)
 
@@ -1212,7 +1222,9 @@ SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
 
                mov8=loadmovie(GadgetID(4),OFR,0,0,WindowWidth(hwndMedia)-30,WindowHeight(hwndMedia)-110)
                SetTrackBarMaxPos(5,Int(GetEndPosMovie(mov8)/1000000 ))
-               Playmovie(mov8):SetRateMovie(mov8,1)
+               ''Playmovie(mov8):
+               SetRateMovie(mov8,1)
+               stopmovie(mov8)
                MOV_FLAG=1
                LIMPIA=1  
             EndIf
@@ -1246,7 +1258,7 @@ ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Disminuye velocidad")
 ButtonGadget(7,130,altov,20,20,">>"):GadgetToolTip(7,"Incrementa velocidad")
 ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav o mp3, en resolucion horizontal 1680 o 1920 se ve mejor la escala")
 textgadget(9,200,altov,60,20,Vels):GadgetToolTip(9,"VELOCIDAD DE EJECUCION")
-
+GadgetToolTip(5,"Avance Retroceso con Flechas Der/Izq or Click Mouse Sobre La Cinta")
 WindowStartDraw(hwndMEDIA)
 fillrectdraw(12,sizey*3/6,&hffffff)
  TextDraw(12,sizey*3/6,regla,&hffffff)
