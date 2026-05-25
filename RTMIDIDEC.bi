@@ -25,7 +25,9 @@ Declare Function sumar( ByVal ind As integer) As Integer
 Declare Sub abrirPortoutEjec(j As Integer)
 
 common Shared message() As UByte 'cambiado a shred message output ' puede ser de hasta 1024 bytes
+Common Shared messageCallback() As ubyte
 Dim message(1 To 21) As UByte 'agregado
+Dim messageCallback (1 To 21) As UByte 
 Dim Shared msgin  (1 To 8192) As UByte ' message in futuro secuencia veremos si ahce falta 
 ' maximo seria para un acorde de 5 por ejemplo
 ' 5 notas + velocidad y canal = 7 bytes...para note on
@@ -34,9 +36,12 @@ Dim Shared msgin  (1 To 8192) As UByte ' message in futuro secuencia veremos si 
 ' 20 mas canal = 21 bytes...maximo 
 ' podriamos agregar presion promedio aftertouch etc pero serin mensajes independientes 
 'Dim errorString As ZString Ptr
-Common Shared p as UBYTE Ptr 'cambiado a shared
-
-p= @message(1) 
+Common Shared pmsg as Integer Ptr 'cambiado a shared
+Common Shared pmsgCallBack as integer Ptr 'cambiado a shared
+pmsg= @message(1)
+pmsgCallBack =@messageCallback(1)
+Common Shared ptoca As UByte ptr
+''p= @message(1) 
 Common Shared pp As Integer Ptr 'para callback futuros datos usuario
 Dim size As UInteger<64> 
 'Dim sizeptr As UInteger<64> Ptr = @size
@@ -308,7 +313,7 @@ Dim shared As UByte velmidi=0
 ' duras (x,y) , (x) las notas que pueden almacenarse de un acorde 12 (on+off)
 ' (y) las 3 duraciones como max ligadas para cada nota.
 Dim Shared filtro As UByte=0
-Dim Shared As UByte nacordeon (1 To 10),nacordeoff (1 To 10),naco=0,naco2=0,terminar_metronomo=0
+Dim Shared As UByte nacordeon (1 To 10),nacordeoff (1 To 10),naco=0,naco2=0
 Dim Shared As Integer posiacorde=0, tic=0,disparo=0
 Declare FUNCTION FiguraEquivalente(DURk As double) As ubyte
 Dim Shared As Integer contcode=0,metronomo_si,sonidopista_si, metronomoPistas_si

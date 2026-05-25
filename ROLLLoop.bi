@@ -1469,11 +1469,9 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_T) And superposicion=0 Then
 EndIf
 
 If MultiKey (SC_P) Then  
-terminar_metronomo=1
-terminar_metronomo=SI
-terminar_metronomo=SI
 terminar_metronomo=SI
 disparo=0
+Sleep 20 ' para que tome el terminar_metronomo ¿?
    If COMEDIT=LECTURA   Then
       terminar_metronomo=SI '' agregamos mas porque no obedece con el de arriba  
       PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
@@ -1505,13 +1503,14 @@ disparo=0
 ' cada vez que hago detech cancela no usar nuncas adetach solo en la salida
       STARTMIDI=0
       If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then 
-      Else
-      ''''SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
-      ''''SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_LIBERADO)
+      Else ''esta levantada la ventana hwndC > 0, al inicio hwndC = 0 pero si hay ventana es >0
+' tratmos queno funcione es batch sin ventana de control
+        If CANCIONCARGADA = TRUE  And ubiroll=0 And ubirtk=0 And hwndC > 0 Then
+           SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
+           SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_LIBERADO)
+        EndIf  
       EndIf
    EndIf
-terminar_metronomo=SI ' a ver si se digna terminar hdp!! 
-terminar_metronomo=SI
 terminar_metronomo=SI
   Exit Do
 EndIf

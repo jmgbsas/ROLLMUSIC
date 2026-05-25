@@ -950,7 +950,7 @@ Sub CTRL1092()
 ' una cosa es abrir un IN y otra ajustar un IN a una pista
 ' la columna G tiene incidencia en ambas listas la moveremos al centro 
 Dim As UByte portin1092, portout1092
-
+GrabarEjec=0 '' teclado a todo volumen a 127 solo para tocar y oirse sin grabar
        For  i As Short =1 To 32
              If  CheckBox_GetCheck( cbxgrab(i))= 1  Or CheckBox_GetCheck( cbxejec(i))= 1 Then
                 portin1092  = tocaparam(i).portin ' PREVIAMENTE SELECCIONADO
@@ -978,13 +978,15 @@ Print #1,"listInCreado(portin1092) ",listInCreado(portin1092)
                  listInCreado(portin1092)  =1
              EndIf
 Print #1,"abriendo portin y call back",*nombrein( portin1092 )
+              messageCallback(3)=127
               open_port (midiin(portin1092 ), portin1092, *nombrein( portin1092 ) )
-              set_callback midiin(portin1092 ), @mycallback, p
+              set_callback midiin(portin1092 ), @mycallback, pmsgCallBack
        ' por ahrao iognoramos otros tipsod de mensaje
 ''              rtmidi_in_ignore_types  (midiin(portin1092 ), 1, 2, 4)
               teclado=1 
               listinAbierto( portin1092) = 1
               jgrb=0
+
        End If
      HabilitarMIDIIN=1 ' tengo seleccionado portin
 
@@ -1006,7 +1008,7 @@ Function WindowState(hwnd As hwnd) As integer
 End function
 
 Sub MIA ()
-   If MOV_FLAG=1 Then
+   If MOV_FLAG=1 And mov8 > 0 Then
       SetTrackBarPos(5,Int(MovieGetCurrentPosition(mov8)/1000000))
    EndIf
 
@@ -1014,6 +1016,8 @@ End Sub
 Sub CTRL1094(PPP As ZString PTR) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
 Dim As String ENTRADA
   ENTRADA=*PPP
+  mov8=0 
+' agregamos loop
 ' SE AGREGO CONTROL VISUAL DE VELOCIDAD Y ADELANTO Y RETROCESO CON FLECHAS ADEMAS DE CLICK DE MOUSE
 ' QUE TIENE POR DEFECTO
 ' ESTA RUTINA FUNCIONA MEJOR EN RESOLUCION X 168O  O 1920
@@ -1026,9 +1030,10 @@ Dim As String ENTRADA
 ' ARGUMENTO AL REPRODUCTOR (ENTRADA) ESTE EMPIEZA A EJECUTAR Y TAMBIEN LA PISTA DE EJECUCION.
 '---------- LA IDEA ESTA BUENA PERO LABURARLO SERA LA CUESTION...
 ' 1) CONSTRUIR QUE UNA ACCTION DAR PLAY A UNA EJECUCION MANDE A EJECUTAR UN WAV O MP3
-Dim As Integer largo, orig,ticks,altov
+Dim As Integer largo, orig,ticks,altov, REPE=0
 Dim As float velocidad=1.0
-Dim As String vels=Str(velocidad)
+Dim As String vels=Str(velocidad),B="@",M="M NO",VelAudio="000"
+Dim As BOOLEAN CICLO=FALSE
 
 largo=ANCHO*3/4
 orig=largo
@@ -1046,7 +1051,9 @@ Select Case PANTALLAX
    Case Else 
     ANCHOWIN=ANCHO*6/7
 End Select 
-hwndMEDIA=OpenWindow("MP3, WAV, MID",0,ALTO*5/6,ANCHOWIN,ALTO/6, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
+Dim As Integer oldX, oldy
+oldY=ALTO*4/6
+hwndMEDIA=OpenWindow("MP3, WAV, MID",oldX,oldY,ANCHOWIN,ALTO/6, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
 'ESTA ES SIZABLE'hwndMEDIA=OpenWindow("AUDIO MP3, WAV",0,ALTO*5/6,ANCHO,ALTO/6,WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST)
 altov=sizey*4/6 
 
@@ -1055,8 +1062,24 @@ ButtonGadget(2,40,altov,20,20,"|>"):GadgetToolTip(2,"EJECUTAR")
 ButtonGadget(3,70,altov,20,20,"||"):GadgetToolTip(3,"PAUSA")
 ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Disminuye velocidad")
 ButtonGadget(7,130,altov,20,20,">>"):GadgetToolTip(7,"Incrementa velocidad")
-ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav o mp3, en resolucion horizontal 1680 o 1920 se ve mejor la escala")
-textgadget(9,200,altov,60,20,"1.0"):GadgetToolTip(9,"VELOCIDAD DE EJECUCION") 
+ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav mp3 o mid, en resolucion horizontal 1680 o 1920 se ve mejor la escala")
+textgadget(9,200,altov,60,20,"1.0"):GadgetToolTip(9,"VELOCIDAD DE EJECUCION")
+ButtonGadget(10,300,altov,40,20,B):GadgetToolTip(10,"CICLO REPETITIVO") 
+ButtonGadget(11,360,altov,40,20,M):GadgetToolTip(11,"METRONOMO SI/NO")
+ButtonGadget(12,420,altov,40,20,"+VeM"):GadgetToolTip(12,"+VELOCIDAD METRONOMO")
+ButtonGadget(13,460,altov,40,20,"-VeM"):GadgetToolTip(13,"-VELOCIDAD METRONOMO")
+
+ButtonGadget(14,540,altov,40,20,"+VoI"):GadgetToolTip(14,"+VOLUMEN IZQ METRONOMO")
+ButtonGadget(15,580,altov,40,20,"-VoI"):GadgetToolTip(15,"-VOLUMEN IZQ METRONOMO")
+ButtonGadget(16,640,altov,40,20,"+VoD"):GadgetToolTip(16,"+VOLUMEN DER METRONOMO")
+ButtonGadget(17,680,altov,40,20,"-VoD"):GadgetToolTip(17,"-VOLUMEN DER METRONOMO")
+
+ButtonGadget(18,740,altov,80,20,"+VolAudio"):GadgetToolTip(18,"+VOLUMEN AUDIO")
+textgadget  (TEXT_VOLUMEN_AUDIO,830,altov,40,20, VelAudio):GadgetToolTip(TEXT_VOLUMEN_AUDIO,"VOLUMEN DE AUDIO")
+ButtonGadget(19,880,altov,80,20,"-VolAudio"):GadgetToolTip(19,"-VOLUMEN AUDIO")
+ButtonGadget(20,970,altov,80,20,"+Retraso"):GadgetToolTip(20,"+RETRASO METRONOMO")
+ButtonGadget(21,1050,altov,80,20,"-Retraso"):GadgetToolTip(21,"-RETRASO METRONOMO")
+
 
 hwndTG=TrackBarGadget(5,5,sizey*1/6,sizex-20,30,0, ticks, TBS_NOTICKS  )
 GadgetToolTip(5,"Avance Retroceso con Flechas Der/Izq or Click Mouse Sobre La Cinta")
@@ -1098,20 +1121,26 @@ If ENTRADA > "" Then
      LIMPIA=1  
      ENTRADA="" 
 EndIf
-Dim posicion As FLOAT
+ Dim posicion As FLOAT
+ Dim r As RECT ' Variable to receive window rectangle
+ Dim retval As Long ' Variable for return value
+ retval = GetWindowRect(hWndmedia, @r)
+ oldX=r.Left
+ oldY=r.Top
+retrasoMetronomo=retrasoMetronomoRoll
 Do
-
+oldY=ALTO*4/6
     event=WaitEvent()
 
     If GetAsyncKeyState(VK_RIGHT) Then ' CON MULTIJEY ANDA MAL USARE GetAsyncKeyState EN OTROS LADOS 
-         if mov8 Then
+         if mov8 > 0 Then
             MOV_FLAG=1
             MovieSetPositions(mov8,cast(double,getTrackBarPos(5)+1)*1000000+1,GetEndPosMovie(mov8) )
             Playmovie(mov8)
          EndIf
       EndIf
     If GetAsyncKeyState(VK_LEFT) Then
-         if mov8 Then
+         if mov8 > 0 Then
             MOV_FLAG=1
             MovieSetPositions(mov8,cast(double,getTrackBarPos(5)-1)*1000000-1,GetEndPosMovie(mov8) )
             Playmovie(mov8)
@@ -1133,38 +1162,42 @@ Do
       Select case EventNumber
          Case 1 'STOP  empieza desde el principio de nuevo
             LIMPIA=1
-           If mov8  Then 
+            B="@"
+            CICLO=FALSE  
+           If mov8 > 0 Then 
               stopmovie(mov8)
-              MOV_FLAG=3  'DEJA DE SONAR EL METRONOMO PERO SIGUE EL LOOP del metronomo
+              MOV_FLAG=3 'sin sonido de metronomo el loop del metronomo sigue 
            EndIf 
 
          Case 2  ' PLAY
           LIMPIA=1
-          If mov8 >0 Then 
-                   Playmovie(mov8)''':SetRateMovie(mov8,1)
-                   MOV_FLAG=1 ' SUENA EL METRONOMO PERO SIGUE EL LOOP del metronomo
-          EndIf
+          Sleep 5    
+          If mov8 > 0 Then
+            oldY=ALTO*4/6
+            Playmovie(mov8)
+            MOV_FLAG=1 
+          EndIf  
          Case 3  ' PAUSE
              LIMPIA=1
-                  If mov8  Then 
-                   Pausemovie(mov8)
-                   MOV_FLAG=3 'DEJA DE SONAR EL METRONOMO PERO SIGUE EL LOOP del metronomo
-                  EndIf
+              If mov8 > 0 Then
+                 Pausemovie(mov8)
+                 MOV_FLAG=3 'sin sonido de metronomo el loop del metronomo sigue
+              EndIf
          case 5 ' TRACKBAR
             LIMPIA=1
             If GetAsyncKeyState(1)< 0 Then
-               if mov8 Then
+               if mov8 > 0 Then
                   MovieSetPositions(mov8,cast(double,getTrackBarPos(5))*1000000,GetEndPosMovie(mov8) )
                EndIf
             EndIf
          Case 6 '' play speed menor
-            If mov8 Then SetRateMovie(mov8,GetRateMovie(mov8)-0.01) EndIf
+            If mov8 > 0 Then SetRateMovie(mov8,GetRateMovie(mov8)-0.01) EndIf
             velocidad=velocidad-0.01
             vels = Str(velocidad)
             SetGadgetText(9,vels)  
             HABILITA6=0   
          Case 7  '' play speed mayor
-            If mov8 Then SetRateMovie(mov8,GetRateMovie(mov8)+0.01) EndIf
+            If mov8 > 0 Then SetRateMovie(mov8,GetRateMovie(mov8)+0.01) EndIf
             velocidad=velocidad+0.01
             vels = Str(velocidad)
             SetGadgetText(9,vels)
@@ -1181,15 +1214,31 @@ Do
 '' Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)"+Chr(0)+"*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1"+Chr(0))
          Var OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav, *.mid)"+Chr(0)+"*.mp3; *.wav; *.mid"+Chr(0))           
             #EndIf
-   close_window(hwndMEDIA)
-   hwndMEDIA=OpenWindow(OFR,0,ALTO*5/6,ANCHOWIN,ALTO/6, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
+  '' close_window(hwndMEDIA)  aca no ahce falta poner todo de vuelta!
+  '' hwndMEDIA=OpenWindow(OFR,0,ALTO*5/6,ANCHOWIN,ALTO/6, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
 ButtonGadget(1,10,altov,20,20,"X"):GadgetToolTip(1,"PARAR")
 ButtonGadget(2,40,altov,20,20,"|>"):GadgetToolTip(2,"EJECUTAR")
 ButtonGadget(3,70,altov,20,20,"||"):GadgetToolTip(3,"PAUSA")
 ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Disminuye velocidad")
 ButtonGadget(7,130,altov,20,20,">>"):GadgetToolTip(7,"Incrementa velocidad")
-ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav o mp3, en resolucion horizontal 1680 o 1920 se ve mejor la escala")
-textgadget(9,200,altov,60,20,Vels):GadgetToolTip(9,"VELOCIDAD DE EJECUCION")
+ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav mp3 o mid, en resolucion horizontal 1680 o 1920 se ve mejor la escala")
+textgadget  (9,200,altov,60,20,Vels):GadgetToolTip(9,"VELOCIDAD DE EJECUCION")
+ButtonGadget(10,300,altov,40,20,B):GadgetToolTip(10,"CICLO  REPETITIVO")
+ButtonGadget(11,360,altov,40,20,M):GadgetToolTip(11,"METRONOMO SI/NO")
+ButtonGadget(12,420,altov,40,20,"+VM"):GadgetToolTip(12,"+VELOCIDAD METRONOMO")
+ButtonGadget(13,460,altov,40,20,"-VM"):GadgetToolTip(13,"-VELOCIDAD METRONOMO")
+
+ButtonGadget(14,540,altov,40,20,"+VoI"):GadgetToolTip(14,"+VOLUMEN IZQ METRONOMO")
+ButtonGadget(15,580,altov,40,20,"-VoI"):GadgetToolTip(15,"-VOLUMEN IZQ METRONOMO")
+ButtonGadget(16,640,altov,40,20,"+VoD"):GadgetToolTip(16,"+VOLUMEN DER METRONOMO")
+ButtonGadget(17,680,altov,40,20,"-VoD"):GadgetToolTip(17,"-VOLUMEN DER METRONOMO")
+ButtonGadget(18,740,altov,80,20,"+VolAudio"):GadgetToolTip(18,"+VOLUMEN AUDIO")
+textgadget  (TEXT_VOLUMEN_AUDIO,830,altov,40,20, VelAudio):GadgetToolTip(TEXT_VOLUMEN_AUDIO,"VOLUMEN DE AUDIO")
+ButtonGadget(19,880,altov,80,20,"-VolAudio"):GadgetToolTip(19,"-VOLUMEN AUDIO")
+ButtonGadget(20,970,altov,80,20,"+Retraso"):GadgetToolTip(20,"+RETRASO METRONOMO")
+ButtonGadget(21,1050,altov,80,20,"-Retraso"):GadgetToolTip(21,"-RETRASO METRONOMO")
+
+
 
 hwndTG=TrackBarGadget(5,5,sizey*1/6,sizex-20,30,0, ticks, TBS_NOTICKS  )
 GadgetToolTip(5,"Avance Retroceso con Flechas Der/Izq or Click Mouse Sobre La Cinta")
@@ -1216,30 +1265,154 @@ SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
   '' Print #1,"FORMATO DE OFR VEMOS ", OFR ''C:\mios\amrm.mp3 VIENE COMPLETO PATH Y NOMBRE
            
             If OFR<>""  Then
-               If mov8 Then
+               If mov8 > 0 Then
                   FreeMovie(mov8)
                EndIf
-
+'falta una funcion que haga que todo el archivo se despliege en la longitud
+' del track
                mov8=loadmovie(GadgetID(4),OFR,0,0,WindowWidth(hwndMedia)-30,WindowHeight(hwndMedia)-110)
+              '''' mov8=loadmovie(GadgetID(4),OFR,0,0,sizex,sizey-110)
+               ''SetTrackBarMaxPos(5,Int(GetEndPosMovie(mov8)/1000000 ))
                SetTrackBarMaxPos(5,Int(GetEndPosMovie(mov8)/1000000 ))
-               ''Playmovie(mov8):
-               SetRateMovie(mov8,1)
-               stopmovie(mov8)
-               MOV_FLAG=1
+               Print #1,"GetEndPosMovie(mov8) ",GetEndPosMovie(mov8)  
+               Playmovie(mov8):SetRateMovie(mov8,1)
+               MOV_FLAG=1 ' con sonido de metronomo el loop del metronomo sigue 
                LIMPIA=1  
+              If medio_metronomo_on=TRUE Then
+                   Print #1,"LLAMA A METRONOMO EN REPRODUCTOR MEDIOS "
+                   terminar_metronomo=0
+                   retrasoMetronomo=retrasoMetronomoMedio
+                   disparo=1 
+                   threadmetronomo = ThreadCall metronomo()
+              EndIf
+
             EndIf
          If InStr(UCase (OFR),".MID") > 0 Then
             Print #1,"OFR ",OFR
          Else  
             Volume=MovieAudioGetVolume(mov8)
-'----------
-            If Volume < -10000 Or Volume >0 Then 'if it is less than -10000 or more than 0 there will be an error! 
-              MovieAudioSetVolume(Movie,Volume-1000)
-              Sleep(200)
-            EndIf
+            Print #1,"Volume en carga ",Volume
+            VelAudio= str((Volume+5000)/50 )
+            If Volume < -5000 Or Volume >0 Then 'if it is less than -10000 or more than 0 there will be an error!
+               Volume=Volume-50
+               VelAudio= str((Volume+5000)/50 )
+               MovieAudioSetVolume(Movie,Volume)
+            EndIf   
+            SetGadgetText(TEXT_VOLUMEN_AUDIO, VelAudio)   
+            Sleep(200)
          EndIf   
 '------------
-        ''    Print #1,"Volumen ", Volume 
+        Case 10 ''PODRIA USAR  SND_LOOP | SND_ASYNC
+           CICLO=SWITCH (CICLO) 
+           Print #1,"CICLO V O F ? "; CICLO
+           If CICLO=TRUE Then  
+              B="<->"
+              ButtonGadget(10,300,altov,40,20,"<->"):GadgetToolTip(3,"CICLO REPETITIVO")
+           Else
+              B="@"
+              ButtonGadget(10,300,altov,40,20,"@"):GadgetToolTip(3,"CICLO REPETITIVO")
+           EndIf
+        Case 11  ' sincronia con metronomo 
+           medio_metronomo_on=SWITCH(medio_metronomo_on)
+           Print #1,"medio_metronomo_on "; medio_metronomo_on
+           CPCS=0: CPSS=0 
+           If medio_metronomo_on=TRUE Then
+              M="M SI" 
+              MOV_FLAG=1 'CON SONIDO
+              ButtonGadget(11,360,altov,40,20,"M SI"):GadgetToolTip(11,"METRONOMO SI/NO")
+              Print #1,"LLAMA A METRONOMO  "
+              terminar_metronomo=0
+              retrasoMetronomo=retrasoMetronomoMedio
+              threadmetronomo = ThreadCall metronomo()
+           Else
+              M="M NO"
+              terminar_metronomo=1 ''TERMINA EL LOOP DEL METRONOMO
+              MOV_FLAG=3 'Y SIN SONIDO 
+              ButtonGadget(11,360,altov,40,20,"M NO"):GadgetToolTip(11,"METRONOMO SI/NO")
+           EndIf
+          Case 12
+           tiempoPatron=tiempoPatron+1
+           SetGadgetText (TEXT_GADGET,Str(tiempoPatron)) 
+          Case 13
+           tiempoPatron=tiempoPatron-1
+           SetGadgetText (TEXT_GADGET,Str(tiempoPatron))
+          Case 14
+           velMetronomoIzq=velMetronomoIzq+5
+            If velMetronomoIzq > 100 Then
+               velMetronomoIzq=100
+            EndIf
+            VolIzq100=Str(velMetronomoIzq)
+            SetGadgetText(TEXT_METRO_VOL_IZQ, "VolM Izq "+ VolIzq100)
+            volhizq =  velMetronomoIzq*65535/100
+            volumenTotal = (CULng(volhDer) Shl 16) Or volhIzq
+                     
+          Case 15
+            velMetronomoIzq=velMetronomoIzq-5
+            If velMetronomoIzq < 0 Then
+               velMetronomoIzq=0
+            EndIf
+            ''VolIzq=convA5cifras(velMetronomoIzq)
+            VolIzq100=Str(velMetronomoIzq) 
+         SetGadgetText(TEXT_METRO_VOL_IZQ,"VolM Izq "+ VolIzq100)
+         volhizq =  velMetronomoIzq*65535/100
+         volumenTotal = (CULng(volhDer) Shl 16) Or volhIzq
+
+          Case 16
+            velMetronomoDer=velMetronomoDer+5
+            If velMetronomoDer > 100 Then
+               velMetronomoDer=100
+            EndIf
+            VolDer100=Str(velMetronomoDer)
+         SetGadgetText(TEXT_METRO_VOL_DER,"VolM Der "+ VolDer100)
+          volhder =  velMetronomoDer*65535/100
+          volumenTotal = (CULng(volhDer) Shl 16) Or volhIzq
+
+          Case 17 
+            velMetronomoDer=velMetronomoDer-5
+            If velMetronomoDer < 0 Then ' si se baja menos de 10 se conmutan los volumenes y se pone fuerte este y el otro despacio glup bueno queda asi me cansó
+               velMetronomoDer=0
+            EndIf
+            VolDer100=Str(velMetronomoDer)
+         SetGadgetText(TEXT_METRO_VOL_DER,"VolM Der "+ VolDer100)
+          volhder =  velMetronomoDer*65535/100
+          volumenTotal = (CULng(volhDer) Shl 16) Or volhIzq
+
+          Case 18 ' SUBE VOLUMEN
+            If mov8 > 0 Then
+               Volume=MovieAudioGetVolume(mov8)
+               Volume=Volume+50
+               If Volume >0 Then 'if it is less than -10000 or more than 0 there will be an error! 
+                  Volume=Volume-50
+               EndIf
+               Print #1,"case 18 volume + ",Volume
+               MovieAudioSetVolume(Mov8,Volume)
+            
+               VelAudio= str((Volume+5000)/50 )
+               Sleep(200)
+               SetGadgetText(TEXT_VOLUMEN_AUDIO, VelAudio)
+            EndIf
+          Case 19 ' BAJA EL VOLUMEN
+            If mov8 > 0 Then
+               Volume=MovieAudioGetVolume(mov8)
+               Volume=Volume-50
+               If Volume < -5000  Then 'if it is less than -10000 or more than 0 there will be an error!
+                 Volume=Volume+50 
+               EndIf
+               Print #1,"case 20 volume - ",Volume
+               MovieAudioSetVolume(Mov8,Volume)
+               VelAudio= str((Volume+5000)/50 )
+               Sleep(200)
+               SetGadgetText(TEXT_VOLUMEN_AUDIO, VelAudio)
+            EndIf
+           Case 20
+            retrasoMetronomoRoll=retrasoMetronomoRoll+1
+            retrasoMetronomo=retrasoMetronomoRoll
+            SetGadgetText(TEXT_METRONOMO_RETARDO,"Retraso M "+Str(retrasoMetronomo))
+           Case 21
+            retrasoMetronomoRoll=retrasoMetronomoRoll-1
+            retrasoMetronomo=retrasoMetronomoRoll
+            SetGadgetText(TEXT_METRONOMO_RETARDO,"Retraso M "+Str(retrasoMetronomo))
+ 
       End Select
    EndIf
   if WindowState(hWndMEDIA)=SW_SHOWMINIMIZED Then 'SW_SHOWMINIMIZED = 2
@@ -1248,34 +1421,78 @@ SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
   if WindowState(hwndMEDIA)=SW_SHOWNORMAL  And limpia=2 Then ' SW_SHOWNORMAL =1
       limpia=0  
   EndIf
+
+' 
+retval = GetWindowRect(hWndmedia, @r) ' Get the rectangle for Form1
+If oldY<>r.Top Or oldX<>r.Left Then
+ oldX=r.Left
+ oldY=r.Top
+   If medio_metronomo_on=TRUE Then
+   '   M="M SI" 
+   '   MOV_FLAG=1 'CON SONIDO
+   '   ButtonGadget(11,360,altov,40,20,"M SI"):GadgetToolTip(11,"METRONOMO SI/NO")
+   '    Print #1,"LLAMA A METRONOMO por mover ventana "
+   '   terminar_metronomo=0
+   '   retrasoMetronomo=retrasoMetronomoMedio
+   '   threadmetronomo = ThreadCall metronomo()
+  EndIf
+EndIf
+ 
+
 '' SE PUEDE RECUPERAR LOS CONTROLES AL MNIMIZAR Y MAZIMIZAR DANDO CLICK EN LAPARTE INFERIOR DE LA VENTANA
   If WM_ENTERSIZEMOVE And LIMPIA=0 Then ''' o WN_MOVE O WM_MOVING INGUNO OBEDECE BIEN DEL TODO
      LIMPIA=1
-ButtonGadget(1,10,altov,20,20,"X"):GadgetToolTip(1,"PARAR")
-ButtonGadget(2,40,altov,20,20,"|>"):GadgetToolTip(2,"EJECUTAR")
-ButtonGadget(3,70,altov,20,20,"||"):GadgetToolTip(3,"PAUSA")
-ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Disminuye velocidad")
-ButtonGadget(7,130,altov,20,20,">>"):GadgetToolTip(7,"Incrementa velocidad")
-ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav o mp3, en resolucion horizontal 1680 o 1920 se ve mejor la escala")
-textgadget(9,200,altov,60,20,Vels):GadgetToolTip(9,"VELOCIDAD DE EJECUCION")
-GadgetToolTip(5,"Avance Retroceso con Flechas Der/Izq or Click Mouse Sobre La Cinta")
-WindowStartDraw(hwndMEDIA)
-fillrectdraw(12,sizey*3/6,&hffffff)
- TextDraw(12,sizey*3/6,regla,&hffffff)
-StopDraw
+    ButtonGadget(1,10,altov,20,20,"X"):GadgetToolTip(1,"PARAR")
+    ButtonGadget(2,40,altov,20,20,"|>"):GadgetToolTip(2,"EJECUTAR")
+    ButtonGadget(3,70,altov,20,20,"||"):GadgetToolTip(3,"PAUSA")
+    ButtonGadget(6,100,altov,20,20,"<<"):GadgetToolTip(6,"Disminuye velocidad")
+    ButtonGadget(7,130,altov,20,20,">>"):GadgetToolTip(7,"Incrementa velocidad")
+    ButtonGadget(8,160,altov,20,20,"+"):GadgetToolTip(8,"Abre wav mp3 o mid, en resolucion horizontal 1680 o 1920 se ve mejor la escala")
+    textgadget(9,200,altov,60,20,Vels):GadgetToolTip(9,"VELOCIDAD DE EJECUCION")
+    ButtonGadget(10,300,altov,40,20,B):GadgetToolTip(10,"CICLO REPETITIVO")
+    ButtonGadget(11,360,altov,40,20,M):GadgetToolTip(11,"METRONOMO SI/NO")
+    ButtonGadget(12,420,altov,40,20,"+VM"):GadgetToolTip(12,"+VELOCIDAD METRONOMO")
+    ButtonGadget(13,460,altov,40,20,"-VM"):GadgetToolTip(13,"-VELOCIDAD METRONOMO")
+ButtonGadget(14,540,altov,40,20,"+VoI"):GadgetToolTip(14,"+VOLUMEN IZQ METRONOMO")
+ButtonGadget(15,580,altov,40,20,"-VoI"):GadgetToolTip(15,"-VOLUMEN IZQ METRONOMO")
+ButtonGadget(16,640,altov,40,20,"+VoD"):GadgetToolTip(16,"+VOLUMEN DER METRONOMO")
+ButtonGadget(17,680,altov,40,20,"-VoD"):GadgetToolTip(17,"-VOLUMEN DER METRONOMO")
+ButtonGadget(18,740,altov,80,20,"+VolAudio"):GadgetToolTip(18,"+VOLUMEN AUDIO")
+textgadget  (TEXT_VOLUMEN_AUDIO,830,altov,40,20, VelAudio):GadgetToolTip(TEXT_VOLUMEN_AUDIO,"VOLUMEN DE AUDIO")
+ButtonGadget(19,880,altov,80,20,"-VolAudio"):GadgetToolTip(19,"-VOLUMEN AUDIO")
+ButtonGadget(20,970,altov,80,20,"+Retraso"):GadgetToolTip(20,"+RETRASO METRONOMO")
+ButtonGadget(21,1050,altov,80,20,"-Retraso"):GadgetToolTip(21,"-RETRASO METRONOMO")
 
-    
-
+    GadgetToolTip(5,"Avance Retroceso con Flechas Der/Izq or Click Mouse Sobre La Cinta")
+    WindowStartDraw(hwndMEDIA)
+    fillrectdraw(12,sizey*3/6,&hffffff)
+    TextDraw(12,sizey*3/6,regla,&hffffff)
+    StopDraw
+    MOV_FLAG=1
+  EndIf
+  If mov8 > 0 Then
+      If GetEndPosMovie(Mov8)=MovieGetCurrentPosition(Mov8) Then
+        Print #1,"LLEGO AL FINAL Y AHORA QUE MIERDA HACE " 
+        If CICLO=TRUE Then
+           Print #1,"LLEGO AL FINAL ENTRO POR CICLO TRUE "  
+           LIMPIA=1
+           ButtonGadget(10,300,altov,40,20,"<->"):GadgetToolTip(3,"CICLO REPETITIVO")
+           stopmovie(mov8)
+           Playmovie(mov8)''':SetRateMovie(mov8,1)
+           MOV_FLAG=1 ' SUENA EL METRONOMO PERO SIGUE EL LOOP del metronomo
+        Else
+           Print #1,"LLEGO AL FINAL ENTRO POR CICLO FALSE "
+           LIMPIA=1
+           ButtonGadget(10,300,altov,40,20,"@"):GadgetToolTip(3,"CICLO REPETITIVO")
+           stopmovie(mov8)
+           MOV_FLAG=3  'DEJA DE SONAR EL METRONOMO PERO SIGUE EL LOOP del metronomo
+        EndIf
+      EndIf
    EndIf
    Sleep 5
 Loop
 
 
-'''terminar_metronomo=1
-''          tic=0
-''SetGadgetstate(BTN_METRONOMO,BTN_LIBERADO)
-
-'threadDetach (threadmedia)
 
 End Sub
 
@@ -2113,7 +2330,7 @@ Sub ReproducirTodasLaSPistas()
           If maxgrb > 0 And playEj=NO Then
            playEj=SI 
 Print #1,"ENTRO POR PULSO ESPACIO PLAYEJ PLAYTOCAALL"  
-          threadG = ThreadCall  PlayTocaAll(p)
+          threadG = ThreadCall  PlayTocaAll(ptoca)
           EndIf
       menunew=MENU_INICIAL
       cierroedit= 0
@@ -2306,7 +2523,8 @@ EndIf
 ''EndIf
 ' 0XB1 0X07 0X64 = CAMBIO DE CONTROL EN CANAL 1 VOLUMEN 100
 '------------------------------------------------------
-' el portout nunca se graba en los archivos midi
+' el portout nunca se graba en los archivos midi, pero proque 
+''si se graba con un portout no anda con otro?? 
 '--------------------------------------------------------
 '   Paneo (pmTk(0).pan, pmTk(0).canalsalida,pmTk(0).portout)  modo B0 para canal 0, paneo=10
 WriteVLQ(f, 0)

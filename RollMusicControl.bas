@@ -371,6 +371,16 @@ Sub  verayuda (  arch As string)
 
 End Sub 
 
+Function SWITCH( BLN As BOOLEAN ) As BOOLEAN
+Select Case BLN
+   Case TRUE
+     SWITCH=FALSE
+   Case FALSE
+     SWITCH=TRUE
+End Select 
+
+End Function
+
 '
 ' error
 errorControl:

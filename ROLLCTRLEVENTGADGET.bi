@@ -1116,7 +1116,7 @@ Print #1,"k, canalsalida  ";k, canalx
             retrasoMetronomoCan=retrasoMetronomoCan+1
             retrasoMetronomo=retrasoMetronomoCan
          EndIf
-         If ROLLCARGADO=TRUE Or TRACKCARGADO=TRUE Then
+         If ROLLCARGADO=TRUE Or TRACKCARGADO=TRUE Or medio_metronomo_on=TRUE Then
             retrasoMetronomoRoll=retrasoMetronomoRoll+1
             retrasoMetronomo=retrasoMetronomoRoll
          EndIf
@@ -1128,7 +1128,7 @@ Print #1,"k, canalsalida  ";k, canalx
            retrasoMetronomoCan=retrasoMetronomoCan-1
            retrasoMetronomo=retrasoMetronomoCan
         EndIf
-        If ROLLCARGADO=TRUE Or TRACKCARGADO=TRUE Then
+        If ROLLCARGADO=TRUE Or TRACKCARGADO=TRUE Or medio_metronomo_on=TRUE Then
            retrasoMetronomoRoll=retrasoMetronomoRoll-1
            retrasoMetronomo=retrasoMetronomoRoll
         EndIf
@@ -1136,49 +1136,58 @@ Print #1,"k, canalsalida  ";k, canalx
       EndIf 
 '---------------------------------------------------------------
       If eventnumber()= BTN_MAS_METRO_VOL_IZQ Then
-            tic=1
-terminar_metronomo=0 
+           ' tic=1
+            'terminar_metronomo=0 
             velMetronomoIzq=velMetronomoIzq+5
             If velMetronomoIzq > 100 Then
                velMetronomoIzq=100
             EndIf
-            VolIzq=convA5cifras(velMetronomoIzq)
+            '''VolIzq=convA5cifras(velMetronomoIzq)
             VolIzq100=Str(velMetronomoIzq)
-         TextGadget(TEXT_METRO_VOL_IZQ,270, 750,95,20,"VolM Izq "+ VolIzq100)
+         SetGadgetText(TEXT_METRO_VOL_IZQ,"VolM Izq "+ VolIzq100)
+         volhizq =  velMetronomoIzq*65535/100
+         volumenTotal = (CULng(volhDer) Shl 16) Or volhIzq
       EndIf 
       If eventnumber()= BTN_MENOS_METRO_VOL_IZQ Then
-            tic=1
-terminar_metronomo=0
+           ' tic=1
+           ' terminar_metronomo=0
             velMetronomoIzq=velMetronomoIzq-5
             If velMetronomoIzq < 0 Then
                velMetronomoIzq=0
             EndIf
-            VolIzq=convA5cifras(velMetronomoIzq)
+            ''VolIzq=convA5cifras(velMetronomoIzq)
             VolIzq100=Str(velMetronomoIzq) 
-         TextGadget(TEXT_METRO_VOL_IZQ,270, 750,95,20,"VolM Izq "+ VolIzq100)
+         SetGadgetText(TEXT_METRO_VOL_IZQ,"VolM Izq "+ VolIzq100)
+         volhizq =  velMetronomoIzq*65535/100
+         volumenTotal = (CULng(volhDer) Shl 16) Or volhIzq
       EndIf 
 '------------------------------------
       If eventnumber()= BTN_MAS_METRO_VOL_DER Then
-           tic=1
-terminar_metronomo=0
+         '  tic=1
+          ' terminar_metronomo=0
             velMetronomoDer=velMetronomoDer+5
             If velMetronomoDer > 100 Then
                velMetronomoDer=100
             EndIf
-            VolDer=convA5cifras(velMetronomoDer)
+            ''VolDer=convA5cifras(velMetronomoDer)
             VolDer100=Str(velMetronomoDer)
-         TextGadget(TEXT_METRO_VOL_DER,270, 770,95,20,"VolM Der "+ VolDer100)
+         SetGadgetText(TEXT_METRO_VOL_DER,"VolM Der "+ VolDer100)
+          volhder =  velMetronomoDer*65535/100
+          volumenTotal = (CULng(volhDer) Shl 16) Or volhIzq
+
       EndIf 
       If eventnumber()= BTN_MENOS_METRO_VOL_DER Then
-            tic=1
-terminar_metronomo=0
+          '  tic=1
+          '  terminar_metronomo=0
             velMetronomoDer=velMetronomoDer-5
             If velMetronomoDer < 0 Then ' si se baja menos de 10 se conmutan los volumenes y se pone fuerte este y el otro despacio glup bueno queda asi me cansó
                velMetronomoDer=0
             EndIf
-            VolDer=convA5cifras(velMetronomoDer)
             VolDer100=Str(velMetronomoDer)
-         TextGadget(TEXT_METRO_VOL_DER,270, 770,95,20,"VolM Der "+ VolDer100)
+         SetGadgetText(TEXT_METRO_VOL_DER,"VolM Der "+ VolDer100)
+          volhder =  velMetronomoDer*65535/100
+          volumenTotal = (CULng(volhDer) Shl 16) Or volhIzq
+
       EndIf 
 
 

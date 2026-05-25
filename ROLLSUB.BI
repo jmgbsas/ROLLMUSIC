@@ -5714,13 +5714,13 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
     default= InputBoxJmg("Track superpuesto " ,"Entre un Numero de Track ",default, ES_MULTILINE + ES_AUTOVSCROLL,0  )
     numTk= CInt(default) 
     
- Case "[CPCS]"
+ Case "[CPCS]" 'cantidad de pulsos con sonido
       default2 = Str(CPCS)
        CPCS= CInt(InputBoxJmg("Ajuste CPCS " ,"Entre un Nro de Pulsos a oir ",default2, ES_MULTILINE + ES_AUTOVSCROLL,0  ))
        GUARDOCPCS=CPCS
        Print #1,"CPCS ", CPCS
 
- Case "[CPSS]"
+ Case "[CPSS]" 'cantidad de pulsos sin sonido
 
       default2 = Str(CPSS)
        CPSS= CInt(InputBoxJmg("Ajuste CPCS " ,"Entre un Nro de Pulsos a oir ",default2, ES_MULTILINE + ES_AUTOVSCROLL,0  ))

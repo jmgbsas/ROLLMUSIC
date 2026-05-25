@@ -228,14 +228,15 @@ TEXTGADGET(TEXT_GADGET,370,730,40,20,"" )
 SetGadgetText (TEXT_GADGET,Str(tiempoPatron))
 SetGadgetFont(TEXT_GADGET,CINT(LoadFont("consolas bold",12)))
 
-'-------------------------------------------
-If (BatchGraficoOCtrl=3 Or BatchGraficoOCtrl=4 Or BatchGraficoOCtrl=5 )And ubiejec=0 Then
-   GoTo FINALGUI 
-EndIf
-'-------------------------------------------
-
 GadgetToolTip(BTN_METRONOMO,"METRONOMO LIBRE ON/OFF")
 SetGadgetFont(BTN_METRONOMO,CINT(LoadFont("consolas bold",15)))
+
+'----mala idea------------------------------------
+''If (BatchGraficoOCtrl=3 Or BatchGraficoOCtrl=4 Or BatchGraficoOCtrl=5 )And ubiejec=0 Then
+''   GoTo FINALGUI 
+''EndIf
+'-------------------------------------------
+
 
  'rbparar = RadioButton_New( 450 , 10, 40, 20, "P",BS_LEFTTEXT , hwndC) '65
  'rbgrabar =RadioButton_New( 500 , 10, 40, 20, "G",, hwndC) ' 80
@@ -628,4 +629,4 @@ End Select
 SetStateMenu(hmessages,1007,0) ' TEST
 
 End If
-FINALGUI:
+''FINALGUI:

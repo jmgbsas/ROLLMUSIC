@@ -188,7 +188,7 @@ Sub omnion( note As UByte, canal As UByte, portsal As UByte)
  message(3) = 0  
 	
  leng=3
-result = send_message (midiout(portsal), p, leng)
+result = send_message (midiout(portsal), pmsg, leng)
 Print #1,"EN NOTE OFF nota, RESULT", note, result
 
 End Sub
@@ -213,7 +213,7 @@ Sub polyon( note As UByte, canal As UByte, portsal As UByte)
  message(3) = 0  
 	
  leng=3
-result = send_message (midiout(portsal), p, leng)
+result = send_message (midiout(portsal), pmsg, leng)
 Print #1,"EN NOTE OFF nota, RESULT", note, result
 
 End Sub
@@ -272,7 +272,7 @@ EndIf
 
 
  leng=3
-result = send_message (midiout(portsal), p, leng)
+result = send_message (midiout(portsal), pmsg, leng)
 'print #1,"EN NOTE OFF nota, portsal ", note, portsal
 
 End Sub
@@ -289,7 +289,7 @@ Sub pedaloff( portsal As UByte)
  message(2) = 0
  message(3) = 0
  leng=3
-result = send_message (midiout(portsal), p, leng)
+result = send_message (midiout(portsal), pmsg, leng)
 
 End Sub
 Sub allSoundoff(canal As UByte, portsal As UByte ) 
@@ -312,7 +312,7 @@ Sub allSoundoff(canal As UByte, portsal As UByte )
  message(2) = 120
  message(3) = 0  
  leng=3
-result = send_message (midiout(portsal), p, leng)
+result = send_message (midiout(portsal), pmsg, leng)
 
 End Sub
 
@@ -333,7 +333,7 @@ Sub alloff(canal As UByte, portsal As UByte )
  message(2) = 0     'VALUE BYTE NO USADO 0
  message(3) = canal
  leng=3
-result = send_message (midiout(portsal), p, leng)
+result = send_message (midiout(portsal), pmsg, leng)
 
 End Sub
 Sub ChangeProgram ( instru As UByte,  canal As UByte,portsal As UByte)
@@ -354,7 +354,7 @@ Sub ChangeProgram ( instru As UByte,  canal As UByte,portsal As UByte)
  leng=2
 'Print #1,"send_message midiout(portsal) , p, leng ",midiout(portsal) , p, leng
 'On Local Error GoTo  errorcp
-  result = send_message (midiout(portsal) , p, leng) 
+  result = send_message (midiout(portsal) , pmsg, leng) 
 'errorcp:
 'Dim n As Integer = Err
 '  Print #1,"error send_message change program",n
@@ -403,7 +403,7 @@ Sub noteon	( note As UByte, vel As UByte, canal As UByte, portsal As UByte,i1 As
  message(3) = vel
  leng=3
 
-result = send_message (midiout(portsal), p, leng)
+result = send_message (midiout(portsal), pmsg, leng)
 ''Print #1,"EN NOTE ON nota, portsal ", note, portsal
 
 If MIDIFILEONOFF = HABILITAR Then  ' habilito escritura a midi 
@@ -500,7 +500,7 @@ Sub Paneo (PAN As UByte,  canal As UByte,portsal As UByte)
  leng=3
 'Print #1,"send_message midiout(portsal) , p, leng ",midiout(portsal) , p, leng
 'On Local Error GoTo  errorcp
-  result = send_message (midiout(portsal) , p, leng) 
+  result = send_message (midiout(portsal) , pmsg, leng) 
 'errorcp:
 'Dim n As Integer = Err
 '  Print #1,"error send_message change program",n
@@ -539,7 +539,7 @@ Sub Eco (rever As UByte,  canal As UByte,portsal As UByte)
  message(2) = 91   'indica CONTROL DE reververacion O ECO ALGUNOS DICEN 
  message(3) = rever  ' cantidad de reververacion
  leng=3
-  result = send_message (midiout(portsal) , p, leng) 
+  result = send_message (midiout(portsal) , pmsg, leng) 
 
 End Sub
 Sub Chorus (Coro As UByte,  canal As UByte,portsal As UByte)
@@ -557,7 +557,7 @@ Sub Chorus (Coro As UByte,  canal As UByte,portsal As UByte)
  message(2) = 93  'indica CONTROL DE chorus 
  message(3) = coro  ' cantidad de CHORUS
  leng=3
-  result = send_message (midiout(portsal) , p, leng) 
+  result = send_message (midiout(portsal) , pmsg, leng) 
 
 End Sub
 
@@ -3101,6 +3101,13 @@ Dim As UByte Ptr memoria = vec
 dato1=*memoria: memoria += 1
 dato2=*memoria: memoria += 1  
 dato3=*memoria  ''VELOCIDAD
+If GrabarEjec=0 Then ' para tocar a todo volumen sin grabar
+   dato3=127
+''Print #1,"velocidad fija para tocar y oirse en este maldito teclado ",dato3
+''Else
+''  Print #1,"velocidad que llega dato3 ",dato3
+EndIf
+
 DURk =deltatime
 
 Dim As Double sumadelta=0
@@ -3160,7 +3167,7 @@ Dim As Integer partes , traba=0
 ' tick mas chico es 0.005208325 (ver [TickChico] en RTMIDIDEC)
 ' ergo divido deltatime por ese valor y obtengo la cantiad de divisiones
 ' que ocupara ese retardo deltatime/TickChico
-Print #1,"GrabarEjec =GrabarPistaEjecucion ",GrabarEjec, GrabarPistaEjecucion
+'''Print #1,"GrabarEjec =GrabarPistaEjecucion ",GrabarEjec, GrabarPistaEjecucion
   If GrabarEjec =GrabarPistaEjecucion  Then ''graba en la pista seleccioanda
      partes=(deltatime/TickChico) ' o cantidad de Ticks 
      jgrb += 1
@@ -3199,7 +3206,8 @@ Print #1,"GrabarEjec =GrabarPistaEjecucion ",GrabarEjec, GrabarPistaEjecucion
             tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos  
           EndIf
      EndIf
-
+''  Else
+''      Print #1,"no se graba nada ............."
   EndIf
 End Function
 
@@ -3442,40 +3450,26 @@ Dim As String cifras
 End Function
 '---------------
 Sub soundcall
+' INTENTAMOS USAR SOLO RIMSHOT PARA TODO MIDI WAV MP3 CANCION ROLL TRACK
+
 ''PlaySound(".\recur\RIMSHOT.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
 ' si reprodusco un mp3 viedo o way en elrreproductor de media
 ' el metronomo deja de oirse porque da error abre el mismo port y se congela
 ' usamos midi para el metronomo y listo se fini
 ' con otro playmovie pasa lo mismo
-'
-If MOV_FLAG = 1 Then 
+
+If MOV_FLAG=1 Then 
    SetFocus (hwndMEDIA)
    SetForegroundWindow(hwndMEDIA)
 EndIf
-  If mov8 > 0  And  MOV_FLAG =1 Then 
-    noteon(80,20,0,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
-    noteoff(80,0, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
-  Else
-    If MOV_FLAG = 0 Then
-     If CPlay=NO Or Playb=NO Then ' no hay mas retrasos 27-04-2026
-       Sleep retrasoMetronomo ''DEPENDE DE LA PC???
-     EndIf
-     'noteon(80,30,0,0,1,1) '' NOTA VEL ,CANAL, PORTSAL
-     'noteoff(80,20, 5,0,1,1) 'si no le doy volumen al off no se escucha una mierda
-
-''     OTRA FORMA mas piola, el maximo volumen por canal es 32767 50%??
-
-''Dim As String VolTotal=VolIzq + VolDer
-''    Print #1,"VolTotal asi anda mas o menos no es correcto pero...funca ja ",VolTotal
-Dim As uinteger volhder =  velMetronomoDer*65535/100
-Dim As uinteger volhizq =  velMetronomoIzq*65535/100
-
-Dim As ULong volumenTotal = (CULng(volhDer) Shl 16) Or volhIzq
+If MOV_FLAG=1 Or CPlay=SI Or Playb=SI Or medio_metronomo_on=TRUE Then ' no hay mas retrasos 27-04-2026
+    volumenTotal = (CULng(volhDer) Shl 16) Or volhIzq
+    Sleep retrasoMetronomo ''DEPENDE DE LA PC???
     waveoutSetVolume(0,volumenTotal)
     PlaySound(ROLLDIR+"recur\RimShot.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
-    EndIf
-  EndIf
-  ' ROLLDIR FIX 24-04
+
+EndIf
+
 End Sub 
 Sub metronomo ()
 Dim  As Integer pista , k
@@ -3488,19 +3482,19 @@ Dim  As Integer pista , k
 ' para que el usuario ajuste este valor
 'Print #1,"========ENTRO A METRONOMO """
 
-If CANCIONCARGADA=FALSE And ROLLCARGADO=FALSE Then
+If CANCIONCARGADA=FALSE And ROLLCARGADO=FALSE  Or terminar_metronomo=0 Then
 Print #1,"ENTRA POR ACA SIN NINGUN PLAY "
  
   Do ' metronomo libre comun incluye los ejec
     If  CPCS=0 And CPSS=0 Then
        threadsound = threadCall soundcall
     Else 
-       If CPCS >0 Then
+       If CPCS >0 Then  'cantidad de pulsos con sonido
           threadsound = threadCall soundcall
           CPCS=CPCS-1
        EndIf
-       If CPSS > 0 And CPCS=0 Then 
-          CPSS=CPSS-1
+       If CPSS > 0 And CPCS=0 Then  
+          CPSS=CPSS-1  'cantidad de pulsos sin sonido
        EndIf
        If CPCS=0 And CPSS=0 Then  
           CPCS=GUARDOCPCS
@@ -3542,11 +3536,6 @@ Print #1,"ROLLDIR+ recur\RimShot.wav" , ROLLDIR+"recur\RimShot.wav"
 EndIf
   
  PlaySound(NULL, NULL, 0)
- If Movie Then
-   FreeMovie(Movie)
- EndIf
-'' threadDetach (threadsound )
-'' threadDetach (threadmetronomo)
 ''--------------otro metodo con windows player ???
 ''Add a reference to C:\Windows\System32\wmp.dll
 'player1.URL = *pp

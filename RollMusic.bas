@@ -60,7 +60,11 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.385: Fix reproductor de medios, Funcionamiento menos fallos." 
+nroversion="0.387 MAS BOTONES DE CONTROL DEL REPRODUCTOR DE MEDIOS"
+' 0.387: BOTON METRONOMO VOLUMEN RETRASO METRONOMO SI NO VOLUMEN AUDIO ETC TODO EN LA VENTANA
+'   DEL REPRODUCTOR DE MEDIOS 
+' 0.386: BOTON CICLO O LOOP EN REPRODUCTOR DE MEDIOS.
+' 0.385 
 ' - graba bien archivo mid con percusion canal 10 Y EL RESTO DE CANALES CON SU PATCH
 ' - graba a midi con repeticiones de toda la secuencia completa,  
 '   Y CON repeticiones internas TAMBIEN, es igual en vez de cero se pondra la pasozona1 o sea la posicion
@@ -258,6 +262,7 @@ abrirPortoutEjec(100) ''no abre para playAll
 
 '-----------------
 SetStateMenu(hmessages,1118,BatchGraficoOCtrl)
+Print #1,"antes del LOOP main ====hwndC ", hwndC
 Do
 
   COMEDIT=LECTURA
@@ -284,7 +289,7 @@ param.titulo ="RollMusic Ctrl V "+ nroversion
  '   Print #1,"CARGAR PISTAS cargacancion = ",cargaCancion 
 ''     CANCIONCARGADA=TRUE
      ROLLCARGADO=FALSE
-clickpista=SI
+     clickpista=SI
      '''lo hace tab-cargaCancion=0
      param.encancion=CON_CANCION
      RecalCompas(ritmo)
@@ -299,11 +304,13 @@ clickpista=SI
           CargarSinRoll () ''' play sin roll 
       Else
       EstaBarriendoPenta=1 
+Print #1,"0=====hwndC ", HwndC
 Print #1, "///1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
-
+      
       threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
       SetThreadPriority(threadloop , 20 ) ' decia 1
       clickpista=SI 'abre tab una sola vez seposiciona en psita 1 
+Print #1,"0 1=====hwndC ", HwndC
       EndIf 
     ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
    Else     ''''''''RollLoop ( param) '<--con esto anda
@@ -325,11 +332,12 @@ Print #1, "///1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", No
            cargaCancion=CARGAR_NO_PUEDE_DIBUJAR 
            CargarSinRoll () '''28-02-2024 play sin roll
        Else
+Print #1,"1=====hwndC ", HwndC
 Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
        EstaBarriendoPenta=1
        threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
        EndIf
-
+Print #2,"=====hwndC ", HwndC
        ''RollLoop ( param)
        abrirRoll=NO_CARGAR
     EndIf
@@ -421,7 +429,7 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
           #Include "ROLLCTRLEVENTMENU.BI"
 '-----------------------------------------------------------------------
        Case eventgadget
-        DisableGadget(3,0)
+     ''   DisableGadget(PISTASROLL,0) deshabilitaba PISTASROLL esto areglaba un problema pero....
      '   SetForegroundWindow(hwndC)
       ' el codigo anterior que traia de disco esta en notas
 ' TODOS DICEN RUSO Y USA QUE VK_LBUTTON ES 1 PERO CON 1 NO ANDA
@@ -496,7 +504,7 @@ Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", No
             CheckBox_SetCheck( cbxejec(1),1)
             TopeEjec=1:ntoca=1
             playEj=SI
-            threadG = ThreadCall  PlayTocaAll (p)
+            threadG = ThreadCall  PlayTocaAll (ptoca)
          SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_PRESIONADO)
          SetGadgetstate(BTN_MIDI_PARAR,BTN_LIBERADO)
          Parar_De_Dibujar=NO

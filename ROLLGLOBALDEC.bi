@@ -131,6 +131,7 @@ Const BTN_MAS_METRO_VOL_IZQ=50
 Const BTN_MENOS_METRO_VOL_IZQ=51
 Const BTN_MAS_METRO_VOL_DER=52
 Const BTN_MENOS_METRO_VOL_DER=53
+Const TEXT_VOLUMEN_AUDIO=54
 
 Const HABILITAR = TRUE
 Const DESHABILITAR = FALSE 
@@ -889,22 +890,31 @@ Declare Sub barrePenta (c As cairo_t Ptr, Roll As inst)
 Declare Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst, ByRef ubiroll As Integer, ByRef ubirtk As Integer )
 
 Common shared As Integer numtrack,superposicion, nnn,versionEJEC ,retrasoMetronomo,retrasoMetronomoCan,retrasoMetronomoRoll,_ 
-intentos,velMetronomoIzq,velMetronomoDer, BatchGraficoOCtrl, PORT_MICROSOFT
-Common Shared As String VolIzq, VolDer, VolIzq100, VolDer100
-VolIzq="65535"
-VolDer="65535"
-VolIzq100="40"
-VolDer100="40"
-velMetronomoIzq=30
-velMetronomoDer=30
+intentos,velMetronomoIzq,velMetronomoDer, BatchGraficoOCtrl, PORT_MICROSOFT,retrasoMetronomoMedio
+Common Shared As String VolIzq100, VolDer100
+Common Shared As UInteger volhder,volhizq,terminar_metronomo
+Common Shared As ULong volumenTotal
+terminar_metronomo=0
+VolIzq100="70"
+VolDer100="70"
+velMetronomoIzq=70
+velMetronomoDer=70
+volhizq =  velMetronomoIzq*65535/100
+volhder =  velMetronomoDer*65535/100
+
 PORT_MICROSOFT=0  ' NO HABILITADO
 nnn=0
 retrasoMetronomoCan=330 '''era 330 ahoraanda con 165 no entiendo
 retrasoMetronomoRoll=330 '' ROLL Y RTK
+retrasoMetronomoMedio=300
 intentos=0
 
-'VERSION DE EJEC CON MAS CAPACIDAD Y V OLUMEN VERSION=2
+'VERSION DE EJEC CON MAS CAPACIDAD Y VOLUMEN VERSION=2
 Declare Sub TABTAB()
 Dim Shared As String mensajeEstado , FUNCMENU,mensajeEstadoOld
 mensajeEstado=""
 mensajeEstadoOld=""
+Declare Function  SWITCH(BLN As BOOLEAN ) As BOOLEAN 
+Common Shared As BOOLEAN medio_metronomo_on
+medio_metronomo_on=FALSE
+

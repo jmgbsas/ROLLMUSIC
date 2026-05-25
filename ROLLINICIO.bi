@@ -62,7 +62,9 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 '==============================
 '#Include "NOTAS.bi"
 '==============================
+
 #include "ROLLGLOBALDEC.bi"
+'' cuando se define el hwndC =0 o  sea si es > 0 hay ventana  
 '=============================
 #include "ROLLDEC.BI"
 #include "RTMIDIDEC.bi"
