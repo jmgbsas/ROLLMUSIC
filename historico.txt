@@ -1,3 +1,4 @@
+  -27-5-2026 FIX 0.387 CANCELABA AL PARAR EL PLAY 'P'
   -25-5-2026 0.387 MAS BOTONES DE CONTROL DEL REPRODUCTOR DE MEDIOS
   -21-5-2026 0.385: Fix reproductor de medios, Reproducir item 5.0. Funcionamiento mas suave no desaparecen 
      los controles ni deshabilitan ni tampoco la cinta del Track ni el boton  de disminucion de velocidad.

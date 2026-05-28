@@ -60,7 +60,7 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.387 MAS BOTONES DE CONTROL DEL REPRODUCTOR DE MEDIOS"
+nroversion="FIX 0.387 CANCELABA CON <P> STOP PLAY"
 ' 0.387: BOTON METRONOMO VOLUMEN RETRASO METRONOMO SI NO VOLUMEN AUDIO ETC TODO EN LA VENTANA
 '   DEL REPRODUCTOR DE MEDIOS 
 ' 0.386: BOTON CICLO O LOOP EN REPRODUCTOR DE MEDIOS.

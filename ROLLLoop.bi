@@ -1468,24 +1468,27 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_T) And superposicion=0 Then
 
 EndIf
 
-If MultiKey (SC_P) Then  
+If MultiKey (SC_P) Then
+metronomo_si=0  
 terminar_metronomo=SI
 disparo=0
-Sleep 20 ' para que tome el terminar_metronomo ¿?
+Sleep 1 ' para que tome el terminar_metronomo ¿?
    If COMEDIT=LECTURA   Then
-      terminar_metronomo=SI '' agregamos mas porque no obedece con el de arriba  
+      If CPlay=SI Or Playb=SI Or Play=SI Then
       PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
       PARAR_PLAY_EJEC=SI
-      Cplay=NO
+      Cplay=NO::Playb=NO:Play=NO:playEj=NO
+      ubionline=0
       trabaspace=0
-      Sleep 20 
+      Sleep 2 
       playloop=NO:playloop2=NO
-      play=NO:Cplay=no:playb=No:playEj=NO
       s5=2 ' el loop necesita menos cpu se libera
       trasponer=0
+     '' Print #1,"TOPE "; TOPE
+      Parar_De_Dibujar=NO
       If Tope > 0 Then
         For i3 As Integer  = 1 To Tope
-         portsal=CInt(pmTk(i3).portout) 
+         portsal=CInt(pmTk(i3).portout)
          alloff(pmTk(i3).canalsalida,portsal)
          allSoundoff( pmTk(i3).canalsalida, portsal ) 
         Next i3
@@ -1498,18 +1501,18 @@ Sleep 20 ' para que tome el terminar_metronomo ¿?
          allSoundoff( pmEj(i3).canalsalida, portsal ) 
         Next i3
       EndIf 
-      Sleep 1
-      Parar_De_Dibujar=NO
+      Sleep 2
 ' cada vez que hago detech cancela no usar nuncas adetach solo en la salida
       STARTMIDI=0
       If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then 
       Else ''esta levantada la ventana hwndC > 0, al inicio hwndC = 0 pero si hay ventana es >0
 ' tratmos queno funcione es batch sin ventana de control
-        If CANCIONCARGADA = TRUE  And ubiroll=0 And ubirtk=0 And hwndC > 0 Then
+        If CANCIONCARGADA = TRUE  And ubiroll=0 And ubirtk=0 And hwnd=0 Then
            SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
            SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_LIBERADO)
         EndIf  
       EndIf
+     EndIf
    EndIf
 terminar_metronomo=SI
   Exit Do

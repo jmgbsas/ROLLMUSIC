@@ -1035,7 +1035,7 @@ Dim Shared As Integer stride, IhWnd,Mhwnd,Style,desktopwidth,desktopheight,creap
 
 Dim Shared comienzo As Integer = 0
 'ScreenControl  SET_DRIVER_NAME,"GDI"
-Dim Shared As hWnd hwnd,hwndMenu 
+'Dim Shared As hWnd hwnd,hwndMenu 
 
 'hwnd = Cast(hwnd,IhWnd)
 'hwndmENU = Cast(hwnd,MhWnd)

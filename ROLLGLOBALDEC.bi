@@ -622,6 +622,7 @@ Common Shared As BOOLEAN MIDIFILEONOFF
 Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, interva ,valorpan '  default 2 que es 1 separacion de notas
 Common Shared As Integer valoreco, valorcoro,valorvol
 common Shared As integer tiempoPatron,NuevaCancion
+COMMON Shared As hWnd hwnd,hwndMenu
 common Shared As integer tiempoPatronEjec,BACKUP, pulsotab
 BACKUP=NO
 tiempoPatron=60

@@ -24,10 +24,9 @@ Declare Function sumar( ByVal ind As integer) As Integer
 
 Declare Sub abrirPortoutEjec(j As Integer)
 
-common Shared message() As UByte 'cambiado a shred message output ' puede ser de hasta 1024 bytes
-Common Shared messageCallback() As ubyte
-Dim message(1 To 21) As UByte 'agregado
-Dim messageCallback (1 To 21) As UByte 
+
+Dim Shared messageCallback(1 To 21) As ubyte
+Dim Shared message(1 To 21) As UByte 'agregado
 Dim Shared msgin  (1 To 8192) As UByte ' message in futuro secuencia veremos si ahce falta 
 ' maximo seria para un acorde de 5 por ejemplo
 ' 5 notas + velocidad y canal = 7 bytes...para note on

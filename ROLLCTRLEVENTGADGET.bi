@@ -561,7 +561,7 @@ Print #1,"MaxPos en play verde ejec deberia ser cero si no hay grafico ",maxgrb
          SetGadgetstate(BTN_ROLL_EJECUTAR, BTN_LIBERADO)
          SetGadgetstate(BTN_ROLL_GRABAR_MIDI , BTN_LIBERADO)
          GrabarPenta=0
-Print #1, "542 GrabarPenta=0"
+''Print #1, "542 GrabarPenta=0"
          metronomo_si=0
          terminar_metronomo=1
          COMEDIT=LECTURA
