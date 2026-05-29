@@ -1,6 +1,7 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-    FIX 0.387 CANCELABA AL PARAR EL PLAY 'P'
+    FIX 0.388 Reproductor de medios se jecuta en otro hilo no interfiere mas con un grafico
+    de Cancion ni su ejecucion.
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )

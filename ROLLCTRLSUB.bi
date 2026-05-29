@@ -1013,6 +1013,10 @@ Sub MIA ()
    EndIf
 
 End Sub
+Sub playmedio()
+Playmovie(mov8)
+ 
+End Sub
 Sub CTRL1094(PPP As ZString PTR) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
 Dim As String ENTRADA
   ENTRADA=*PPP
@@ -1034,7 +1038,7 @@ Dim As Integer largo, orig,ticks,altov, REPE=0
 Dim As float velocidad=1.0
 Dim As String vels=Str(velocidad),B="@",M="M NO",VelAudio="000"
 Dim As BOOLEAN CICLO=FALSE
-
+Dim As HWND quehwnd
 largo=ANCHO*3/4
 orig=largo
 ticks=100
@@ -1116,7 +1120,8 @@ If ENTRADA > "" Then
    Print #1,"////ENTRADA ",ENTRADA
      mov8=loadmovie(GadgetID(4),ENTRADA,0,0,WindowWidth(hwndMedia)-30,WindowHeight(hwndMedia)-110)
      SetTrackBarMaxPos(5,Int(GetEndPosMovie(mov8)/1000000 ))
-     Playmovie(mov8):SetRateMovie(mov8,1)
+     threadmovie = threadCall playmedio()
+     SetRateMovie(mov8,1)
      MOV_FLAG=1
      LIMPIA=1  
      ENTRADA="" 
@@ -1130,24 +1135,24 @@ EndIf
 retrasoMetronomo=retrasoMetronomoRoll
 Do
 oldY=ALTO*4/6
-    event=WaitEvent()
-
-    If GetAsyncKeyState(VK_RIGHT) Then ' CON MULTIJEY ANDA MAL USARE GetAsyncKeyState EN OTROS LADOS 
+  event=WaitEvent()
+  quehwnd=GetForegroundWindow
+  If quehwnd = hwndMEDIA Then 
+      If GetAsyncKeyState(VK_RIGHT) Then ' CON MULTIJEY ANDA MAL USARE GetAsyncKeyState EN OTROS LADOS 
          if mov8 > 0 Then
             MOV_FLAG=1
             MovieSetPositions(mov8,cast(double,getTrackBarPos(5)+1)*1000000+1,GetEndPosMovie(mov8) )
-            Playmovie(mov8)
+            threadmovie = threadCall playmedio()
          EndIf
       EndIf
-    If GetAsyncKeyState(VK_LEFT) Then
+      If GetAsyncKeyState(VK_LEFT) Then
          if mov8 > 0 Then
             MOV_FLAG=1
             MovieSetPositions(mov8,cast(double,getTrackBarPos(5)-1)*1000000-1,GetEndPosMovie(mov8) )
-            Playmovie(mov8)
+            threadmovie = threadCall playmedio()
          EndIf
-    EndIf
-
-   If Event=EventClose Then
+      EndIf
+      If Event=EventClose Then
          If mov8 > 0 Then  
            FreeMovie(mov8)
          EndIf
@@ -1157,6 +1162,7 @@ oldY=ALTO*4/6
          close_window(hwndMEDIA)
          Sleep 5  
          Exit Do
+      EndIf
    EndIf
    If event=EventGadget Then
       Select case EventNumber
@@ -1174,7 +1180,7 @@ oldY=ALTO*4/6
           Sleep 5    
           If mov8 > 0 Then
             oldY=ALTO*4/6
-            Playmovie(mov8)
+            threadmovie = threadCall playmedio()
             MOV_FLAG=1 
           EndIf  
          Case 3  ' PAUSE
@@ -1275,7 +1281,7 @@ SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
                ''SetTrackBarMaxPos(5,Int(GetEndPosMovie(mov8)/1000000 ))
                SetTrackBarMaxPos(5,Int(GetEndPosMovie(mov8)/1000000 ))
                Print #1,"GetEndPosMovie(mov8) ",GetEndPosMovie(mov8)  
-               Playmovie(mov8):SetRateMovie(mov8,1)
+               threadmovie = threadCall playmedio() :SetRateMovie(mov8,1)
                MOV_FLAG=1 ' con sonido de metronomo el loop del metronomo sigue 
                LIMPIA=1  
               If medio_metronomo_on=TRUE Then
@@ -1478,7 +1484,7 @@ ButtonGadget(21,1050,altov,80,20,"-Retraso"):GadgetToolTip(21,"-RETRASO METRONOM
            LIMPIA=1
            ButtonGadget(10,300,altov,40,20,"<->"):GadgetToolTip(3,"CICLO REPETITIVO")
            stopmovie(mov8)
-           Playmovie(mov8)''':SetRateMovie(mov8,1)
+           threadmovie = threadCall playmedio()''':SetRateMovie(mov8,1)
            MOV_FLAG=1 ' SUENA EL METRONOMO PERO SIGUE EL LOOP del metronomo
         Else
            Print #1,"LLEGO AL FINAL ENTRO POR CICLO FALSE "
@@ -1948,6 +1954,7 @@ Track(0).trk(1,1).nnn =tocaparam(pis).patch
 pmTk(0).patch=tocaparam(pis).patch ' 06-11-2025
 Track(0).trk(1,1).ejec = 1 ' marca indica que esta secuencia viene de una ejecucion
 pmTk(0).ejec=1 ' 06-11-2025
+'''=>> ACA PODRIAMOS GRABAR EL TRACK DIRECTO A DISCO SIN PASAR POR ROLL
 TrackaRoll (Track(), 0 , Roll,"CTRL1207") '' "CTRL1207" FUNCION NO IMPLEMENTADA VER QUE ERA ESO 
 ROLLCARGADO=TRUE
 NADACARGADO=FALSE
@@ -1970,6 +1977,8 @@ End If
 End Sub
 '----------------------------------------
 Sub CTRL1208() 'NUEVA PARA TICKS convertir .ejec a .rtk
+' ESTA RUTINA SE PODRIA REESCRIBIR PAR ACONVERTIR DE EJEC A RTK DIRECTO SIN PASAR
+''POR ROLL
 Dim k1 As Integer
 For k1=1 To tocatope  
 
@@ -2392,6 +2401,19 @@ End Sub
 ' otra referencia 
 'http://www.petesqbsite.com/sections/express/issue18/midifilespart1.html
 '------------------------------------------------------------------------
+Sub CargarMidiTipo0()  ' cargar a Roll o directo a rtk
+' rtk seria lo mas facil creo
+' por ahora si tengo un midi de varis pistas, lo cargo en Reaper
+' y grabo una sola pista a *.mid luego lo levanto en rollmusic
+' y la grabo a rtk..Otra forma seria ver si puedo grabar desde Reaper pista a pista
+' con un cable o conexion de LoopMidi a Rollmusic ejecutar la pista en Reaper
+' con salida a LoopMidi. Esa ultima la tomo como entrada en rollmusic
+'' y la grabo como ejecucion.
+'' asi podria pasar pista a pista todo a ejec y de ahi con un solo comando
+'' lo pasaria a cancion,,!! Trabajoso por eso debo tratar de leer directo de disco
+
+
+End Sub
 '------------------------------------------------------------------------
 Sub GrabarRollAmidiTipo0() 
 ' EL PATCH NO QUEDA BIEN ....
