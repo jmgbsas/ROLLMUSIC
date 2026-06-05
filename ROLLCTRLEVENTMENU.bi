@@ -211,7 +211,12 @@ Print #1,"usarmarcoins ", usarmarcoins
 ' 11-03-2026 preparacion,,,TEST DE ARMADO DEL MENU PARA UNA GRABACION CUALQUIERA
              mensajeEstado="PROCESANDO PISTA A MIDI..."
              threadmidi0= ThreadCall GrabarRollAmidiTipo0()
-             
+'-----------------
+           Case 10092 '<========= CARGAR ARCHIOV MIDI Y PASARLO A ROLL O RTK O EJEC VEREMOS CUAL
+             mensajeEstado="CARGANDO PISTA MIDI..."
+             threadCargamidi= ThreadCall CargarMidi()
+         '' YA FUNCIONA EL VOLVADO A ARCHIVO AHORA LO DEBO MANEJAR EN MEMORIA
+'' Y CARGARLO EN RTK O ROLL O EJEC      
            Case 1010 '<================ Cargar Pista externa a cancion
 
    '        Print #1,"entro a 1010 Cargar Pista externa a cancion"

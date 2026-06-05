@@ -1748,7 +1748,7 @@ EndIf
 If MultiKey(SC_DOWN) Then  ' el screenevent me pone trasponer en 1 la puta e.scancode = 80 Then  ' <===== SC_DOWN pulso
 ''Print #1,"trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo "; trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo
  deltaz=1
-Print #1,"MultiKey (SC_DOWN) , trasponer = ",trasponer
+''' Print #1,"MultiKey (SC_DOWN) , trasponer = ",trasponer
 If trasponer=0 Then
    indXjreset=0
 EndIf
@@ -1767,7 +1767,7 @@ If s7=0  And indXjreset > 0 Then
   indXjreset=0
   Exit Do
 EndIf
-     
+' TRASPONER 3 SIGNIFICA SOLO QUE SE DIO CTRL-O      
      If trasponer=3  Or (trasponer=1 Or trasponer=2 )And SelGrupoNotaT=2 And indicePosOld=0 And  indicePosUltimaGrupo=0 Then
      '   Print #1,"0 pulso down screenevent TRASPONER con multikey!"
        '' trasponer=3 completo ctrl-o
@@ -1839,6 +1839,7 @@ indXjreset=0
  EndIf
 
 ''''Print #1,"trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo "; trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo
+' CON TRASPONER=3 SIGNIFICA SE DIO CTRL-O 
     If trasponer=3 or (trasponer=1 Or trasponer=2) And SelGrupoNotaT=2 And indicePosOld=0 And  indicePosUltimaGrupo=0 Then
       If s6=0  Then
          s6=1
@@ -2378,7 +2379,6 @@ EndIf
 ' ============== E S P A C I O ========
 If MultiKey(SC_SPACE) And trabaspace=0   Then 'barra espacio
    trabaspace=1  
-   playloop=NO:playloop2=NO
   Print #1," COMEDIT en space play ???",comedit
  If COMEDIT<>LECTURA And MouseButtons And 1 Then
    Print #1,"ENTRA POR COMEDIT<>LECTURA y mouse ???"
@@ -2609,7 +2609,7 @@ EndIf
 pun=0:silen=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
 SelGrupoNota=0:SelGrupoNotaT=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
 deltaip=0:incWheel=0:lockip=0:playloop=0:s6=0:s1=0:indicePosOld=0 :indicePosUltimaGrupo=0
-esEjecucion=0:indicePos=0:superposicion=NO
+esEjecucion=0:indicePos=0:superposicion=NO:pasoZona1Old=0
 'anchofig=35
 'gap1= (anchofig* 2315)/1000  ' 81 default
 'gap2= (914 * gap1) /1000 ' 74 default
@@ -2628,6 +2628,7 @@ esEjecucion=0:indicePos=0:superposicion=NO
       copiar=0
       vdur=0:vnota=0
  terminar=NO_TERMINAR_BARRE_PANTALLA : Parar_De_Dibujar=NO
+ MOV_FLAG=0:CPlay=NO:Playb=NO:medio_metronomo_on=FALSE
 EndIf
 ' ----------------------INGRESO NOTAS-------------------------
 
@@ -6517,6 +6518,8 @@ Dim As Integer lcurpos,lnotacur,  resultado
  EndIf
 
 If  MultiKey(SC_CONTROL) And (SC_O)  Then ' 01-11-2025 habilitamos trasposicion sin rango con mouse
+' SON DOS CASOS SIN ZONA LUEGO DE CTRL-O MUEVE TODA LA SECUENICA CON FLECHAS UP Y DOWN
+' CON CTRL-O Y LUEGO UNA ZONA , MUEVE SOLO ESA ZONA
       If trasponer=0  Then
          trasponer=3
       EndIf  
@@ -6647,6 +6650,10 @@ If  MultiKey(SC_CONTROL) And (SC_O)  Then ' 01-11-2025 habilitamos trasposicion 
 ''ACA PONDREMOS PASOZONA1 Y 2 DEBERIA FUNCIONAR PARA TODO COMMEDIT ' 15-05-2026 
 ''------------------------------------------------------------------------
   If MultiKey(SC_CONTROL) And MouseButtons= 1 And (pasoZona1 = 0 or pasoZona2 =0) Then '' FIX 20-03-2026
+' deducir que hace pasoNota, creo que si el intervalo es cero o sea pasoZona1=pasoZona2
+' sepuede mover una nota o un acorde creo en trasponer...si pasonota=0 no hay una nota exacta o sea
+' es un acorde ....chan no me acuerdo como funcionaba seguir....
+
      If SelGrupoNota=2  Then 'ALT-O con grupo
        correcciondeNotas(Roll) 
        SelGrupoNota=3':indXjreset=0 'en vez de usar flechas un ctrl+click donde se desea
@@ -6666,7 +6673,7 @@ If  MultiKey(SC_CONTROL) And (SC_O)  Then ' 01-11-2025 habilitamos trasposicion 
 ' asi evitamos que haga ctrl click cuando deberia dar C+click para copiar
 ' si no el programa cancela...
 ' que el grupo se mueva
-     Dim As Integer pasox, pasoy, pasonR
+     Dim As Integer pasox, pasoy, pasonR, checkport
 '''no deberia ser nro ticks sin importar el anchode la figura¿?
      pasox=(mousex- gap1 )/anchofig  + posishow '' porque / anchofig no deberia ser nro ticks sin importar el anchode la figura¿?
      If pasox <=0 Then
@@ -6677,23 +6684,31 @@ If  MultiKey(SC_CONTROL) And (SC_O)  Then ' 01-11-2025 habilitamos trasposicion 
 '--- BuscarNota tambien detectara si es unasecuencia manual o de ejecucion con N
 Dim As Integer lcurpos,lnotacur,  resultado
      lcurpos=(mousex -gap1)/anchofig
-     lnotacur=nsE
+     lnotacur=nsE  '' pasoy
      If COMEDIT= LECTURA Then ' 15-05-2026 SOLO PARA LECTURA EN EDIICON HARIA CANCELAR
         resultado=0 
         resultado= BuscarNota (1,lcurpos, lnotacur) ' +-20 ticks
+' el resultado puede ser 0 para onoff=1 para final de nota tambien 
      EndIf
-     If resultado =0 Then
+     If resultado =0  Then  'ENCONTRO LA NOTA o su final importa para pasoZona1
         pasox=lcurpos +posishow
+        pasoNota=pasox
+ 
 ' no interesa un sonido exacto de la nota con patch ni duracion solo es una notificacion
 ' que se selecciono una nota en su posicion exacta
         Dim k1 As Integer 
         k1=CInt(pmTk(0).portout)
-        resultado=CheckPortout(k1)
-        If resultado=0 Then
+        checkport=CheckPortout(k1)
+        If checkport=0 Then
           noteon(cubyte(PianoNota),80,pmTk(0).canalsalida,k1,1,1)
           duracion(Timer, 1.0 ) '  un seg
           noteoff(cubyte(PianoNota),40,pmTk(0).canalsalida,k1,1,1)
         EndIf
+     Else
+       If resultado > 0 Then  ' no se encontro nota pero se registra pasoZona1 sin nota
+        pasoNota=0 ' NO SE CLICKEO SOBRE UNA NOTA O NO LA ENCONTRO
+        pasox=lcurpos +posishow
+       EndIf  
      EndIf 
 '-------------
      'print #1,"pasoy nsE=",pasoy
@@ -6702,17 +6717,20 @@ Dim As Integer lcurpos,lnotacur,  resultado
      EndIf
      If pasoZona1 = 0 Then  ' selecion 1er posicion de la zona
         pasoZona1=  pasox ' pos de la 1er ventana m lugar lejos de una nota
-        If pasoZona1 < gap1 Then ''14-05-2026
-           pasoZona1= gap1
+        Print #1,"1--pasoZona1 ",pasoZona1
+        If pasoZona1 < 1 Then ''14-05-2026
+           pasoZona1= 1
+        Print #1,"2--pasoZona1 ",pasoZona1
         EndIf
         pasoZona1Old=pasoZona1
-        pasoNota=0 
-       '' print #1,"A SALIMOS pasoZona1= ";pasoZona1;" pasoNota=";pasoNota
+        print #1,"3 SALIMOS pasoZona1= ";pasoZona1;" pasoNota=";pasoNota
         Sleep 200 :Exit Do
      EndIf
 
-     If pasoZona1 > 0 And pasoZona1 <> pasox Then ' posicion 2 de la zona
+     If pasoZona1 > 0 And pasox > pasoZona1  Then ' posicion 2 de la zona INTERVALO > 0
         pasoZona2 = pasox ' tratamos de no perder el off1 si justo el off1 es limite de zona
+        Print #1, " pasoZona2 = pasox ";pasoZona2
+        ''ESTA NO ESTABA ANTES DIF. pasoNota=pasoy 'hay INTERVALO > 0 => MUEVE LA ZONA    
 ' determinar si la ultima nota de la secuencia entra en la zona y si es asi trasponer hasta maxpos
 ' incluyendo el fin 182 ||, para ello vamos de derecha a izquierda buscando un off1 y un 182
         If pasoZona2 > pmTk(ntk).MaxPos Then ''14-05-2026
@@ -6741,7 +6759,7 @@ Dim As Integer lcurpos,lnotacur,  resultado
         EndIf 
 ' si no hay 182 no tien sentido el programa deberia corregir ya gregar el 182 tal vez en la carga
 ' del archivo 11-02-2026 VER 
-        pasoNota=0
+        pasoNota=0 ''ESTA LA BORRE EN NUEVA VERSION
         print #1,"B SALIMOS pasoZona2=",pasoZona2;" pasoNota=";pasoNota
         Exit Do
      EndIf
@@ -6749,16 +6767,16 @@ Dim As Integer lcurpos,lnotacur,  resultado
         pasoNota=nsE
        '' print #1,"C SALIMOS pasoNota=",pasoNota
         Exit Do
+     EndIf
+'' SOLO MOVERIA UN ACORDE CON INTERVALO=0 O ZONA=0 O PASOZONA1=PASOZONA2
+    ' If pasoZona1=pasoZona2 And pasoNota<>pasoy Then ''NO TIENE SENTIDO 
+    '    pasoNota=nsE ''mueve solo nota???
+    '    print #1,"C SALIMOS pasoNota=",pasoNota
+    '    Exit Do
     ' Else  12-02-2026 creo que no va kokito
     '    pasoNota=0  12-02-2026  
-     EndIf
+    ' EndIf
 
-     If pasoZona1 > 0  And pasoZona1 = pasox Then ' la zona es solo  1 sola columna
-        pasoZona2= pasox
-        pasoNota=0 ' 28-06-2021 mueve acorde si existe , sino meuve nota 
-       '' print #1,"D SALIMOS pasoZona1 iguales pasoZona2= "; pasoZona2;" pasoNota=";pasoNota
-        Exit Do
-     EndIf
    
   EndIf 
 

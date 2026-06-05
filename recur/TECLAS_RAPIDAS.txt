@@ -30,12 +30,14 @@ mas de 200 mseg la zona sera solo una linea, los 2  clicks quedaran definidos en
 Sera necesario reseteat con Q y luego definir de nuevo el intervalo con pulsos breves del mouse
 la tecla CTRL puede estar mas tiempo presionada.
 -------------------------------------------------------
-CREAR LOOPS, Repeticiones. Definir una Zona o Intervalo como en elp punto anterior
+CREAR LOOPS, Repeticiones. Definir una Zona o Intervalo como en el punto anterior
 luego en el menu de control en Reproducir elegir 2.0 preguntara por el numero de repeticiones
 por omision 2. Al grabar el archivo conservara los datos de repeticion, Si se desea borrarlos
-usar la opcion 2.1 del menu Reproducir
+usar la opcion 2.1 del menu Reproducir y grabar el archivo-.
 -------------------------------------------------------
-CREAR un Loop infinito 
+CREAR un Loop infinito para prueba, crear una ZONA con dos click rapidos y luego ALT-L. Se
+ reproducira indefinidamente la Zona en un play. Al dar Q se borra la zona y el loop 
+ desaparece todo.(no se guarda a archivo es solo de prueba de secuecnia para oirla)
 -------------------------------------------------------
 INTERLINEADO. LINEAS MAS SEPARADAS O JUNTAS ENTRE NOTAS DE ROLL GRAFICO
 W      HABILITA LA RUEDA DEL MOUSE
@@ -57,13 +59,16 @@ TRASPONER
 
   Resumen Traspone y orden de las acciones:
   ----------------------------------------------------------------------------
+  NOTA: el final de la ZONA no siempre se ilumina o marca con linea vertical y numero
+     mas en el caso de una sola NOTA, aunque no se vea el final de la zona marcada 
+     ejecutar el comando igual.
   CON CTRL-O
   trasponer Toda la secuencia O una zona O una Nota sola[No fallo en las pruebas]
-   a) Toda la secuencia
+   a) Toda la secuencia (lo unico que anda bien las otras opciones se degradaron)
      1) CTRL-O
      2) FLECHAS arriba abajo
      3) Q, reset
-   b) Una zona de la secuencia.
+   b) Una zona de la secuencia.O una sola nota (ya no anda bien)
      1) CTRL-O
      2) ajustar zona ctrl-click en comienzo y final de la zona
      3) FLECHAS arriba abajo
@@ -88,7 +93,7 @@ TRASPONER
      3) FLECHAS arriba abajo HASTA OBTER EL TRANSPORTE DESEADO.
      4) Q, reset
   --------------------------------------------------------------------
-  CON ALT-O
+  CON ALT-O (no anda bien...)
   trasponer Grupo  (En revision futura..continuara..si tengo ganas)
    [Si al Final se da Ctrl+click para ubica la 1er nota en el nuevo lugar
       falla, no mueve la ultima nota, o solo mueve la del medio] 

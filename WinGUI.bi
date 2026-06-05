@@ -14,7 +14,7 @@
 'freebasic.net  
 '--------------------------------------------------------------------------
 ' JMG 13-03-2022 MODIFICADO PARA QUE NO CHOQUE CON LO QUE YA USA EL PROGRAMA
-' me gustando tanto como windows9.bi 
+' windows9.bi 
 '--------------------------------------------------------------------------
 #Include Once "windows.bi"
 

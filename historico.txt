@@ -1,3 +1,28 @@
+  -04-6-2026 0.390 Fix: pasozona1/2 Copiar y loop infinito, Cuentas, metronomo principal y de Repro, 
+    trasponer ligados en zona => caso prueba CASO_TEST_390.roll
+'----------------------------------------------------------------------------------
+' FIX: QUEDABA SOLO ESTE CASO: 
+'   problemas VIEJOS DE trasponer PUEDE  NO SER POR FIX en COPIA, ES UN PROB NO DETECTADO ANTES 
+'   TRASPONE falla en zonas donde hay muChas notas ligadas
+'   ( ANTES DE COPIA YA estaba esta falla)
+'    tanto en trasposicion completa o por zona..EJEMPLO
+'   ORIGINAL:     P+    I+ P     > EN UN 3/4 SE MUEVE P+ Y EL ULTIMO OFF=1  >
+'   AL TRASPONER: P+             > SE TRASPONE POR EJE PARA ARRIBA 
+'   AL TRASPONER:       I+ P      -> QUEDA  I+ P EN EL MEDIO QUEDA SIN MOVER EN LA ORIGINAL
+'   HAY QUE DECIRLE QUE AL MOVER EL 1ER ON Y QUE SEA LIGADO P+, MUEVA EL ON QUE SIGUE
+'   Y SI ESTE ES LIGADO TAMBIEN LO MUEVA Y AL QUE SIGA INCLUSO AL ULTIMO QUE NO TENGA LIGAZON
+'   ESTE PROCESO PUEDE HACERSE AL DETECTAR UN ON CON + LIGADURA..VERIFICAR QUE ENTRE
+'   EL 1ER ON MOVIDO P+ Y EL ULTIMO OFF1 MOVIDO >..HALLA OTROS ON, MOVER A TODOS TENGAN O NO
+'   TENGAN LIGADURA Y LISTO! desarrollar codigo en ---> 352026 
+'----------------------------------------------------------------------------------
+' FIX EN 390: EN TRASPONER ZONA  DESAPARECIAN NOTAS DEL CENTRO TAL VEZ POR CAMBIOS EN COPIA, 
+''    ESTO NO fallaba en zonas donde no habia ligaduras seguidas lo hacia perfecto
+'--------------------------------------------------- 
+' FIX: METRONOMO M PRINCIPAL Y DEL REPRO DE MEDIOS PODIAN ANDAR JUNTOS CORREGIDO
+' Fix: recuperado Loop infinito zona + ALT + L
+' Fix : Se ajusto en numero de cuenta previo del metronomo al tipo de Compas(ritmo en el programa) seleccionado
+' Fix : Se ajusto pasoZona1   pasoZona2 pasoNota para copia andaba mal..
+
   -28-5-2026 0.388 Reproductor se jecuta en otro hilo no interfiere mas con un grafico
     de Cancion ni su ejecucion.
   -27-5-2026 FIX 0.387 CANCELABA AL PARAR EL PLAY 'P'

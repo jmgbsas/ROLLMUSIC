@@ -785,7 +785,7 @@ End Type
   
 ' campos de roll datos secuencia 
 /'
-Type datsec Field=1
+Type datsec Field=1    ''7 bytes 
  nota  As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
  dur   As UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
  vol   As UByte =0 ' volumen hasta 127 es volumen desde ahi es escala 128 a 255 =127 escalas
@@ -1593,3 +1593,6 @@ End Type
 
 Dim Shared  As ubica ubicaNotas (1 To MaxPos, NB To NA)
 Dim Shared  As Integer  trazovolumen, tnold, ty1old, ty1,tn
+
+#Include "fmidi.bi"
+Dim  Shared As FBMIDI wmidi

@@ -60,7 +60,37 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="FIX 0.388 reproductor de medios se ejecuta en otro hilo no interfiere con el grafico"
+nroversion="0.390 LEER_MIDI en Desarrollo, Fix: pasozona1/2 Copiar y loop infinito, Cuentas, metronomo principal y de Repro  "
+' tareas al 4 DE jUNIO
+' QUEDA SEGUIR DESARROLLO CARGA MIDI A ROLL O RTK O EJEC VEREMOS CUAL ELIJO
+'----------------------------------------------------------------------------------
+' FIX: QUEDABA SOLO ESTE CASO: 
+'   problemas VIEJOS DE trasponer PUEDE  NO SER POR FIX en COPIA, ES UN PROB NO DETECTADO ANTES 
+'   TRASPONE falla en zonas donde hay muChas notas ligadas
+'   ( ANTES DE COPIA YA estaba esta falla)
+'    tanto en trasposicion completa o por zona..EJEMPLO
+'   ORIGINAL:     P+    I+ P     > EN UN 3/4 SE MUEVE P+ Y EL ULTIMO OFF=1  >
+'   AL TRASPONER: P+             > SE TRASPONE POR EJE PARA ARRIBA 
+'   AL TRASPONER:       I+ P      -> QUEDA  I+ P EN EL MEDIO QUEDA SIN MOVER EN LA ORIGINAL
+'   HAY QUE DECIRLE QUE AL MOVER EL 1ER ON Y QUE SEA LIGADO P+, MUEVA EL ON QUE SIGUE
+'   Y SI ESTE ES LIGADO TAMBIEN LO MUEVA Y AL QUE SIGA INCLUSO AL ULTIMO QUE NO TENGA LIGAZON
+'   ESTE PROCESO PUEDE HACERSE AL DETECTAR UN ON CON + LIGADURA..VERIFICAR QUE ENTRE
+'   EL 1ER ON MOVIDO P+ Y EL ULTIMO OFF1 MOVIDO >..HALLA OTROS ON, MOVER A TODOS TENGAN O NO
+'   TENGAN LIGADURA Y LISTO! desarrollar codigo en ---> 352026 
+'----------------------------------------------------------------------------------
+' FIX EN 390: EN TRASPONER ZONA  DESAPARECIAN NOTAS DEL CENTRO TAL VEZ POR CAMBIOS EN COPIA, 
+''FIX ESTO NO fallaba en zonas donde no habia ligaduras seguidas lo hacia perfecto
+''FIX TAREA COMPARAR ESTA VERSION NUEVA CON FIX COPIA Y LA 388!
+'--------------------------------------------------- 
+' FIX: METRONOMO M PRINCIPAL Y DEL REPRO DE MEDIOS PODIAN ANDAR JUNTOS CORREGIDO
+' Fix: recuperado Loop infinito zona + ALT + L
+' Fix : Se ajusto en numero de cuenta previo del metronomo al tipo de Compas(ritmo en el programa) seleccionado
+' Fix : Se ajusto pasoZona1   pasoZona2 pasoNota para copia andaba mal..
+' Probar: probar si afecto a trasponer!! 
+' Desa: CON FBMIDI.bi YA LEO MIDI CON ESA LIBRERIA SOLO DEBO CARGAR ROLL/RTK/EJEC 
+' (USAR CondCreate PARA QUE LAS EJECUCIONES DE REPRODUCCION DE EJECS CANCION Y MEDIOS EMPIEZEN
+' A EJECUTR AAL MISMO TIEMPO CON ELLO OBTENDRE LA SYNCRONIZACION!))
+'--------fin 31 mayo----------------------
 ' 0.387: BOTON METRONOMO VOLUMEN RETRASO METRONOMO SI NO VOLUMEN AUDIO ETC TODO EN LA VENTANA
 '   DEL REPRODUCTOR DE MEDIOS 
 ' 0.386: BOTON CICLO O LOOP EN REPRODUCTOR DE MEDIOS.
@@ -263,6 +293,9 @@ abrirPortoutEjec(100) ''no abre para playAll
 '-----------------
 SetStateMenu(hmessages,1118,BatchGraficoOCtrl)
 Print #1,"antes del LOOP main ====hwndC ", hwndC
+tic=0 
+CPCS=0: CPSS=0
+MOV_FLAG=0:CPlay=NO:Playb=NO:medio_metronomo_on=FALSE 
 Do
 
   COMEDIT=LECTURA

@@ -79,7 +79,7 @@ Const RIGHTBUTTON  = 2   ' UNUSED IN THIS DEMO
 Const SHOWMOUSE    = 1
 Const HIDEMOUSE    = 0
 '-----
-Const BOTON_PISTA_ROLL=5
+Const BOTON_SELECCION_PISTA_ROLL=5
 Const HabilitaGrabar=0
 Const DesHabilitaGrabar=1
 Const BTN_LIBERADO=0
@@ -602,7 +602,7 @@ Common Shared As cairo_t  Ptr c, c2
 Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer,threadmedia,threadsound, threadplaysound,threadmovie
 Screenbuffer=0
 Common Shared as any ptr thread1, thread2,threadPenta,threadcreaPenta, thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal,threadPer
-Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro,threadKey,threadmidi0
+Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro,threadKey,threadmidi0,threadCargamidi
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes, nretrasoMetronomoCan,nretrasoMetronomoRoll
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi,ubiejec,ubionline
@@ -749,21 +749,21 @@ Type rolldat Field=1 'con esto se define roll tendra pan,vol,nota,dur,pb,inst va
  x4    As UByte =0  'z.pan
  x5    As UByte =0  'z.pb
  tipoescala_num_ini As UByte 'z.inst
- solo    As UByte ' z.onoff-------7---- si se reprroduce fuera de cancion, 
- desde   As UByte =0 'zlim.nota 
- hasta   As UByte =0 'zlim.dur
+ solo        As UByte ' z.onoff-------7---- si se reprroduce fuera de cancion, 
+ desde       As UByte =0 'zlim.nota 
+ hasta       As UByte =0 'zlim.dur
  notaescala_num_ini As UByte =0   ' zlim.vol 
- alteracion As UByte =0   'zlim.pan
- notaold  As UByte =0 ' zlim.pb   
- canalx   As UByte =0 'zlim.inst 
- ejec    As UByte =0 'zlim.onoff ---- 14 xxxxx nuevo
- patch    As  UByte =0 'z3.nota
- portout As   UByte =0  'z3.dur
- nanchofig  As UByte  =0   'z3.vol nanchofig*10 cuando lo uso lo dividopo 10
- vol As UByte = 90 '''' librez3pan    As UByte =0  'z3.pan 90 default
+ alteracion  As UByte =0   'zlim.pan
+ notaold     As UByte =0 ' zlim.pb   
+ canalx      As UByte =0 'zlim.inst 
+ ejec        As UByte =0 'zlim.onoff ---- 14 xxxxx nuevo
+ patch       As UByte =0 'z3.nota
+ portout     As UByte =0  'z3.dur
+ nanchofig   As UByte  =0   'z3.vol nanchofig*10 cuando lo uso lo dividopo 10
+ vol         As UByte = 90 '''' librez3pan    As UByte =0  'z3.pan 90 default
  TipoCompas  As UByte =0 'z3.pb
  canalsalida As UByte =0 'z3.inst
-   librez3onoff     As UByte =0 'z3.onoff --- 21
+ version     As UByte =222 'librez3onoff z3.onoff --- 21 ubyte 21 LO USAREMOS PARA INDICAR VERSION 2 DE ROLL=222
    librez4nota As UByte =0  'z4.nota
    librez4dur As UByte =0  'z4.dur
    librez4vol As UByte =0  'z4.vol

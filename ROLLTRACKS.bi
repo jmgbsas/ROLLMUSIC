@@ -2714,7 +2714,7 @@ Print #1, "Tope encancion " ,Tope
 '' y se quede esperando te cague...jaja
 If metronomoPistas_si=3  And disparo=0 Then '27-04-2026
 terminar=NO_TERMINAR_CON_DATOS_CARGADOS : Parar_De_Dibujar=SI
-  For x3 As Integer=1 To 4
+  For x3 As Integer=1 To ritmo
 '' note , vel , canal , portsal ,i1, NroEvento
 '' el canal al pasar por el codigo es (canal -1) , el 10 es el 9  
    noteon(77,120,9,0,1,1) '' NOTA VEL ,CANAL, PORTSAL

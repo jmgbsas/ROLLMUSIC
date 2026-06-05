@@ -1021,6 +1021,7 @@ Sub CTRL1094(PPP As ZString PTR) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
 Dim As String ENTRADA
   ENTRADA=*PPP
   mov8=0 
+  tic=1
 ' agregamos loop
 ' SE AGREGO CONTROL VISUAL DE VELOCIDAD Y ADELANTO Y RETROCESO CON FLECHAS ADEMAS DE CLICK DE MOUSE
 ' QUE TIENE POR DEFECTO
@@ -1057,7 +1058,7 @@ Select Case PANTALLAX
 End Select 
 Dim As Integer oldX, oldy
 oldY=ALTO*4/6
-hwndMEDIA=OpenWindow("MP3, WAV, MID",oldX,oldY,ANCHOWIN,ALTO/6, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
+hwndMEDIA=OpenWindow("MP3, WAV, MID, M4A",oldX,oldY,ANCHOWIN,ALTO/6, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
 'ESTA ES SIZABLE'hwndMEDIA=OpenWindow("AUDIO MP3, WAV",0,ALTO*5/6,ANCHO,ALTO/6,WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST)
 altov=sizey*4/6 
 
@@ -1158,7 +1159,9 @@ oldY=ALTO*4/6
          EndIf
           mov8=0
          MOV_FLAG=0 
+         tic=0
          terminar_metronomo=1
+         medio_metronomo_on=FALSE
          close_window(hwndMEDIA)
          Sleep 5  
          Exit Do
@@ -1215,10 +1218,10 @@ oldY=ALTO*4/6
          Case 8
             #ifdef UNICODE
 '' Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)|*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1|")
-         VAR OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav, *.mid)|*.mp3; *.wav; *.mid|")
+         VAR OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav, *.mid,*.m4a)|*.mp3; *.wav; *.mid,*.m4a|")
             #else 
 '' Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)"+Chr(0)+"*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1"+Chr(0))
-         Var OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav, *.mid)"+Chr(0)+"*.mp3; *.wav; *.mid"+Chr(0))           
+         Var OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav, *.mid,*.m4a)"+Chr(0)+"*.mp3; *.wav; *.mid;*.m4a"+Chr(0))           
             #EndIf
   '' close_window(hwndMEDIA)  aca no ahce falta poner todo de vuelta!
   '' hwndMEDIA=OpenWindow(OFR,0,ALTO*5/6,ANCHOWIN,ALTO/6, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
@@ -1325,6 +1328,7 @@ SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
            If medio_metronomo_on=TRUE Then
               M="M SI" 
               MOV_FLAG=1 'CON SONIDO
+              tic=1  'EVITA FUNCIONES METRONOMO EXTERIOR M
               ButtonGadget(11,360,altov,40,20,"M SI"):GadgetToolTip(11,"METRONOMO SI/NO")
               Print #1,"LLAMA A METRONOMO  "
               terminar_metronomo=0
@@ -1334,6 +1338,7 @@ SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
               M="M NO"
               terminar_metronomo=1 ''TERMINA EL LOOP DEL METRONOMO
               MOV_FLAG=3 'Y SIN SONIDO 
+              tic=1
               ButtonGadget(11,360,altov,40,20,"M NO"):GadgetToolTip(11,"METRONOMO SI/NO")
            EndIf
           Case 12
@@ -2401,7 +2406,28 @@ End Sub
 ' otra referencia 
 'http://www.petesqbsite.com/sections/express/issue18/midifilespart1.html
 '------------------------------------------------------------------------
-Sub CargarMidiTipo0()  ' cargar a Roll o directo a rtk
+ '---------- get info about MIDI event ----------
+' 
+Function getMidiInfo(thisEvent As tEvent Ptr, showMidiFormat As Integer) As String
+Dim As String r,s
+  If thisEvent->pNext<>0 Then
+    s=wmidi.getEvPara(thisEvent)
+    If showMidiFormat=1 Then
+      r=" Ticks:"+wmidi.intLeft(thisEvent->evTicks,6)_
+       +" "+wmidi.eventInfo(thisEvent->evCode).paraName+" "+s
+    ElseIf showMidiFormat=2 Then
+      r=" @:"+Hex(thisEvent->evAddr,6)_
+       +" Tk:"+wmidi.intLeft(thisEvent->evTicks,7)_
+       +" qN:"+wmidi.intLeft(Int(10*thisEvent->evTicks/wmidi.globalDivision)/10,6)_
+       +" Code:"+Hex(thisEvent->evCode,4)_
+       +" Para:"+s _
+       +" ("+wmidi.eventInfo(thisEvent->evCode).paraName+")"
+    EndIf
+  EndIf
+  Return r
+End Function
+'---------------------------
+Sub CargarMidi()  ' cargar a Roll o directo a rtk o ejec
 ' rtk seria lo mas facil creo
 ' por ahora si tengo un midi de varis pistas, lo cargo en Reaper
 ' y grabo una sola pista a *.mid luego lo levanto en rollmusic
@@ -2411,7 +2437,41 @@ Sub CargarMidiTipo0()  ' cargar a Roll o directo a rtk
 '' y la grabo como ejecucion.
 '' asi podria pasar pista a pista todo a ejec y de ahi con un solo comando
 '' lo pasaria a cancion,,!! Trabajoso por eso debo tratar de leer directo de disco
+'' usamos rutina de fmidi.bi
+Dim nombrea As String
+nombrea = OpenFileRequester("","","Archivo Midi (*.mid)"+Chr(0))
 
+wmidi.loadFile(nombrea)
+
+If wmidi.readMidi()>1 Then
+  Print #1,
+  Print #1,"========================================="
+  Print #1," MIDI File Info"
+  Print #1,"========================================="
+  Print #1,
+  Print #1,
+  Print #1,"MIDI File        = "+nombrea
+  Print #1,"MIDI Format Type = "+Str(wmidi.globalFormatType)
+  Print #1,"Number Of Tracks = "+Str(wmidi.globalNumOfTracks)
+  Print #1,"Time Division    = "+Str(wmidi.globalDivision)+" Ticks per Beat"
+  Print #1,
+  Print #1,
+  Print #1,"========================================="
+  Print #1," MIDI Events"
+  Print #1,"========================================="
+  Print #1,
+  For t As Integer=1 To wmidi.trackPtr-1
+    Print #1,
+    Print #1,"Track "+Str(t)
+    wmidi.thisEvent=wmidi.track(t)
+    while wmidi.thisEvent->pNext<>0
+      wmidi.thisEvent = wmidi.thisEvent->pNext
+      Print #1, getMidiInfo(wmidi.thisEvent, 2)
+    Wend
+    Print #1,
+  Next t
+  
+EndIf
 
 End Sub
 '------------------------------------------------------------------------

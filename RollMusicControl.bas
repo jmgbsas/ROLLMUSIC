@@ -17,7 +17,7 @@ Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #Include Once "gtk/gtk.bi"
 '#Include "midiinfo.bi"
 
-#Include "ROLLGLOBALDEC.bi"
+#Include Once "ROLLGLOBALDEC.bi"
 '#include "vbcompat.bi"
 #Include Once "freetype2/freetype.bi"
 #Include once  "file.bi"

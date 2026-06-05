@@ -1,7 +1,7 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-    FIX 0.388 Reproductor de medios se jecuta en otro hilo no interfiere mas con un grafico
-    de Cancion ni su ejecucion.
+     0.390 Fix: pasozona1/2 Copiar y loop infinito, Cuentas, metronomo principal y de Repro, 
+     trasponer ligados en zona => caso de prueba CASO_TEST_390.roll
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )

@@ -212,7 +212,7 @@ EndIf
 ' siemrpe que haya una cancion cargada .. es un boton de todo o nada
 ' solo si cancion esta cargada...BOTON "S"
 ''DisableGadget(PISTASEJECUCIONES,1) 'deshabilita la pistasejecuciones
-       If eventnumber()=BOTON_PISTA_ROLL And CANCIONCARGADA=TRUE Then
+       If eventnumber()=BOTON_SELECCION_PISTA_ROLL And CANCIONCARGADA=TRUE Then
         disablegadget(PISTASROLL,0)
          Dim i As integer
          If cntsuena =0 Then
@@ -722,7 +722,7 @@ Print #1,"despues de GrabarMidiIn pgmidi maxpos ",tocap.maxpos
         '' EndIf
       EndIf
 '--------------  
-      If  eventnumber()=BTN_EJEC_VOL Then ' VOL futuro
+      If  eventnumber()=BTN_EJEC_VOL Then '
             Dim As Integer pis
             pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
             'cntpis=GetSelCountListBox(PISTASEJECUCIONES,@vec(0)) +1
@@ -1075,7 +1075,7 @@ Print #1,"k, canalsalida  ";k, canalx
          EndIf
       EndIf 
       DisableGadget(BOTON_SELECCION_EJECUCION,1) 'deshabilita BOTON_SELECCION_EJECUCION
-   
+   ' porque lo deshabilito y habilito escribir porque
 ''------> BOTON OK DE LINEA DE COMADNO ARRIBA EN VENTANA
       If eventnumber()= OK   Then 'boton ok de linea de comando
          comando=GetGadgetText(LINEA_COMANDO)
@@ -1095,12 +1095,16 @@ Print #1,"k, canalsalida  ";k, canalx
       If eventnumber()= BTN_METRONOMO And tic=0  Then
           Print #1,"RESPONDE EL BOTON  M"
           terminar_metronomo=0
-          threadmetronomo = ThreadCall metronomo()
-          SetGadgetText (TEXT_GADGET,Str(tiempoPatron))  
-          tic=1 
+          If medio_metronomo_on=FALSE Then
+             threadmetronomo = ThreadCall metronomo()
+             SetGadgetText (TEXT_GADGET,Str(tiempoPatron))
+             tic=1
+          EndIf   
       Else
-          terminar_metronomo=1
-          tic=0
+         If medio_metronomo_on=FALSE Then
+            terminar_metronomo=1
+            tic=0
+         EndIf  
       EndIf
       If eventnumber()= BTN_MAS Then
          tiempoPatron=tiempoPatron+1

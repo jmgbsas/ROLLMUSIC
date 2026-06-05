@@ -40,14 +40,14 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
   SetGadgetFont(PISTASROLL,CINT(LoadFont("consolas bold",13))) 
 
 ' botton todo o nada , sonido o mudo para todas las pistas
-  ButtonGadget(BOTON_PISTA_ROLL, 60,20,20,20,"S")
+  ButtonGadget(BOTON_SELECCION_PISTA_ROLL, 60,20,20,20,"S")
   SendMessage(GadgetID(PISTASROLL),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
-  GadgetToolTip(BOTON_PISTA_ROLL,"Seleccion de Pista Roll de una camcion, para reproduccion o cambio parametros")
+  GadgetToolTip(BOTON_SELECCION_PISTA_ROLL,"Seleccion de Pista Roll de una camcion, para reproduccion o cambio parametros")
  ' TextGadget(4,250,10,240,20,, SS_SIMPLE  )
  ' 04-02-2023
 
-  'SetGadgetColor(PISTASROLL,CInt("&HC0C0C0"),0,1)
-  SetGadgetColor(BOTON_PISTA_ROLL,cint("&HC0C0C0"),0,1)
+  SetGadgetColor(PISTASROLL,CInt("&HC0C0C0"),0,1) ''porque la comente? recordar,,,,afectavaba a los items?
+  SetGadgetColor(BOTON_SELECCION_PISTA_ROLL,cint("&HC0C0C0"),0,1)
 ' check para encender o apagar, sonido de salida de c/pista  
   cbxnum(1) =  CheckBox_New( 60 ,  40, 20, 20, "",, hwndc) 
   cbxnum(2) =  CheckBox_New( 60 ,  60, 20, 20, "",, hwndc)
@@ -135,7 +135,7 @@ BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 SendMessage(GadgetID(PISTASEJECUCIONES),LB_SETHORIZONTALEXTENT,450,0) ' width scroll = 430 pixels
 SetGadgetFont(PISTASEJECUCIONES,CINT(LoadFont("consolas bold",13)))
 GadgetToolTip(PISTASEJECUCIONES,"Pistas de cancion grabadas desde un teclado midi")
-'SetGadgetColor(PISTASEJECUCIONES ,cint("&HC0C0C0"),0,1)
+SetGadgetColor(PISTASEJECUCIONES ,cint("&HC0C0C0"),0,1) ''porque lo comente ?? 30-5-2026
   ButtonGadget(BOTON_SELECCION_EJECUCION ,410,20,20,20,"S")
 SetGadgetColor(BOTON_SELECCION_EJECUCION ,cint("&HC0C0C0"),0,1)
 GadgetToolTip(BOTON_SELECCION_EJECUCION,"Seleccion de Pista para reproducir o cambiar parametros")
@@ -180,13 +180,14 @@ GadgetToolTip(BOTON_SELECCION_EJECUCION,"Seleccion de Pista para reproducir o ca
 '---------------------------------------------------------
 ' CHECK PARA GRABAR O SEA ARMA LA PISTA PARA RECIBIR DATOS MIDI-IN
   ButtonGadget(CHECK_GRABAR_EJECUCION,380,20,20,20,"G")
+SetGadgetColor(CHECK_GRABAR_EJECUCION,cint("&HC0C0C0"),0,1)
   GadgetToolTip(CHECK_GRABAR_EJECUCION,"Seleccion de Pista a grabar desde un teclado midi o loopmidi, pide un nombre")
  ' ButtonGadget(8,450,0,100,30,"PARAR",BS_RADIOBUTTON )
  ' ButtonGadget(9,580,0,120,30,"GRABAR",BS_RADIOBUTTON  )
 Var IMGP=Load_image(ROLLDIR+"recur\Parar.bmp")
 Var IMGG=Load_image(ROLLDIR+"recur\Grabar.bmp")
 Var IMGE=Load_image(ROLLDIR+"recur\Ejec.bmp")
-SetGadgetColor(CHECK_GRABAR_EJECUCION,cint("&HC0C0C0"),0,1)
+
 
 ' pistas de ejec MIDI-IN
 GroupGadget(GRUPO_BTNS_MIDI,445,0,113,40,"")
@@ -278,7 +279,16 @@ SetGadgetFont(BTN_METRONOMO,CINT(LoadFont("consolas bold",15)))
   cbxgrab(30) = CheckBox_New( 380 , 620, 20, 20, "",, hwndc)
   cbxgrab(31) = CheckBox_New( 380 , 640, 20, 20, "",, hwndc)
   cbxgrab(32) = CheckBox_New( 380 , 660, 20, 20, "",, hwndc) 
-
+  ''For T1 As Integer =1 To 32
+  ''  SetBkColor(GetWindowDC(cbxgrab(t1)), RGB(0, 0, 0))
+  ''Next T1
+''Dim As HDC hdc = (HDC)(wParam) 
+Dim As  RECT rc
+ GetClientRect(cbxgrab(1), @rc) 
+Dim As   HBRUSH brush = CreateSolidBrush(RGB(0, 255, 0))
+  FillRect(cbxgrab(1), @rc, brush) 
+''        DeleteObject(brush); // Free the created brush: see note below!
+''        return TRUE;
 '---------------------------------------------------------------------
 ' port de salida ,Volumen y Paneo para ejecuciones y tracks manuales...
 ' solo se da click en 'S' de sonido de la pista y luego uno de estos3 botones..
@@ -349,7 +359,7 @@ SetGadgetFont(BTN_MENOS_METRO_VOL_DER,CINT(LoadFont("consolas bold",15)))
   MenName3=MenuTitle(hMessages, "PISTAS MANUALES")
   MenName31=MenuTitle(hMessages,"Patrones")
   MenName4=MenuTitle(hMessages,"VER")
-  MenName5=MenuTitle(hMessages,"TIEMPO Y RITMO")
+  MenName5=MenuTitle(hMessages,"TIEMPO Y COMPAS")
   MenName6=MenuTitle(hMessages,"REPRODUCIR")
   MenName7=MenuTitle(hMessages,"OPCIONES")
   MenName8=MenuTitle(hMessages,"PISTAS DE EJECUCION")
@@ -386,6 +396,9 @@ MenuItem(10081,MenName18,"2-Usar Cancion cargada en 2.0 " )
 MenuItem(1009,MenName1,  "4.5.1 Exportar a MIDI Pista/cancion de 4.5 ")
 Menubar(MenName1)
 MenuItem(10091,MenName1, "4.6 GRABA PISTA ROLL DIRECTO A MIDI TIPO 0")
+''MenuItem(10092,MenName1, "4.7 >X< EN DESARROLLO *CARGA ARCHIVO MIDI A ROLL O RTK")
+''MenuItem(10093,MenName1, "4.8 >X< EN DESARROLLO *CONVERTIR UN ROLL O RTK MANUAL A EJEC")
+
 
 Menubar(MenName1)
 MenuItem(1015,MenName1, "5.0 GRABAR PISTAS (ejec ) SELECCIONADAS EN  (G) DE EJECUCION MIDI-IN")
@@ -408,7 +421,7 @@ MenuItem(1025,MenName2, "5.0 Crear con 1.0 un directorio de Cancion con Pistas s
 'MenuItem(1026,MenName2, "Na.Ver Lista Tracks de la Cancion (Nombre y numero)")
 MenuItem(1027,MenName2, "6.0 Na.Modificar Nombre de Pistas de Cancion")
 
-
+''===================== PISTAS  MANUALES ===============
 MenuItem(1028,MenName3, " 1.0 Cambia Octavas, si rango es mayor al anterior, se borran datos  (0,1,2,3,4,5,6,7,8)")
 MenuItem(1029,MenName3, " 1.1 Na.Seleccion rango de 3 octava repetidas 2 veces ")
 MenuItem(1030,MenName3, " 1.2 Na.Octavas de Instrumetnos Estandares")
@@ -447,7 +460,7 @@ Menubar(MenName4)
 'MenuItem(1074,MenName4,"Na/Parametros de Roll y Track(0) en memoria")
 'MenuItem(1075,MenName4,"Na/Parametros de Track(n) en memoria ")
 
-  
+' =================== TIEMPO Y RITMO ============  
 MenuItem(1080,MenName5,"1.0 TEMPO, Por omision=60, Ejecucion Tick por omision=5mseg equivale a 240")
 MenuItem(1081,MenName5,"2.0 Factor para Aumentar velocidad de ejecucion, No se graba en archivo 1,5 o 0,5 etc")
 'MenuItem(1083,MenName5,"Na. TEMPO insertar cambio de tempo")
@@ -455,7 +468,7 @@ MenuItem(1081,MenName5,"2.0 Factor para Aumentar velocidad de ejecucion, No se g
 'MenuItem(1085,MenName5,"Na. TEMPO ver marcas de cambio de tempo")
 'MenuItem(1086,MenName5,"Na. TEMPO ocultar marcas de tempo")
 'MenuItem(1087,MenName5,"Na. TEMPO incremento de tempo gradual alcanzado en N compases")
-menuitem (1088,Menname5,"3.0 Ritmo 1=2/4, 2=3/4, 3=4/4, 4=6/8 ,5=12/8, 6=5/8, 7=7/8, por omision=4/4")
+menuitem (1088,Menname5,"3.0 COMPAS: 2=2/4, 3=3/4, 4=4/4, 5=5/8 ,6=6/8, 7=7/8,12=12/8, por omision=4/4")
 Menubar(MenName5)
 MenName21=OpenSubmenu(MenName5,"4.0 Entrenamiento con Metronomo y palmadas, durante los silencios siga el ritmo")
 menuitem (10881,Menname21," Cantidad de pulsos Con Sonido")

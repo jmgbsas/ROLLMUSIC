@@ -3288,25 +3288,31 @@ Sleep 100
       EndIf
 'cada dat tiene 7 bytes son 70 bytes, vamos a generar un type
 ' encabezado de 70 bytes para que sea compatible con los archivos actuales datsec
-'  
+' en los datsec se d efin en 7 bytes y luego 10 de esos 7 el nuevo tendra los
+' 70 continuos en dat directamente
   ''' shared ahora   Dim dat As rolldat
-
-'     Dim zLim As dat
-'     Dim z3   As dat  
-'     Dim z4   As dat 
+'     Dim z    As dat  '' total habia 70 bytes de encabezado c/u de 7 bytes
+'     Dim zLim As dat  'en el formato viejo dat era datsec de 6 bytes
+'     Dim z3   As dat ' el ultimo byte 21 sera version 222 indicara nuevo encabezado 
+'     Dim z4   As dat  
 '     Dim z5   As dat 
 '     Dim z6   As dat 
 '     Dim z7   As dat 
 '     Dim z8   As dat 
 '     Dim z9   As dat 
 '     Dim z10  As dat 
-     
+' entonces z3.onoff sera 0 archivos viejos de roll,y 222 par nuevos     
      
 
      'Print #1,"posicion lectura en ca ", Seek(ca)  
 '     Seek ca,1
 ' debemos compatibilizar roll de version 1 y 2 como track falta eso!
-     Get #ca, , dat
+     Get #ca, , dat ''1) CARGA DAT EL NUEVO EXTENSO DE 70 BYTES
+''If dat.version <> 222 Then para poner en el futuro ? peroningun archivo tiene el 222 todavia
+'' lego tarde esto...queda como esta
+''   MessBox ("", "version vieja de roll usar una version de junio 2024")
+''   Exit Sub
+''EndIf 
      x1=Bin(dat.x1,4) 
      x2=Bin(dat.x2,4) 
      x3=Bin(dat.x3,4) 
@@ -3506,7 +3512,7 @@ MessageBox( null, "MIDI-OUT "+ Str(portout)+ " INEXISTENTE CAMBIELO", "Se cambia
      ReDim (Track(00).trk ) (1 To CantTicks,1 To lim3)
      ReDim compas(1 To CantTicks)
      Print #1,"En CargarArchivo NB NA, CantTicks", NB,NA,CantTicks
-     Dim Trabajo (1 To MaxPos+6, NB To NA) As datsec     ''' es un Roll
+     Dim Trabajo (1 To MaxPos+6, NB To NA) As datsec     ''' es un Roll viejo
  
      Get #ca, , Trabajo() ' aca levanta tambien el instrumento que se grabo
      ' SE SUPONE QUE LEVANTA DATOS COMPLETOS DE ROLL INCLUIDO LOS VOL DE CADA NOTA DE UNA EJEC
@@ -4015,7 +4021,7 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
              Dim As Integer im=0
              retrasoMetronomo=retrasoMetronomoRoll
              If metronomoPistas_si=3 Then
-               For im=1 To 4  ' porquese escucha una solavez???
+               For im=1 To ritmo  ' porquese escucha una solavez???
                 threadsound = threadCall soundcall 
                 duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
                Next im
@@ -4342,6 +4348,11 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
           If nombreg = "" Then
              Exit Sub
           Else
+             Dim As Integer punto
+             punto=InStr(nombreg,".")
+             If punto=0 Then
+                nombreg=nombreg+".roll"
+             EndIf
              nombre=nombreg   
              titulosTk(ntk)=nombre ''14-05-2026
           EndIf
@@ -4448,7 +4459,10 @@ Sleep 100
        Else
          Dim punto  As Integer
          punto=InStr(nombreg,".")
-         nombre=Mid(nombreg,1,punto-1) ' nombre  nuevo o existente sin extension   
+         If punto=0 Then
+           nombreg=nombreg+".roll"
+         EndIf
+         nombre=nombreg   
        EndIf
         
        ''GrabarRoll()
