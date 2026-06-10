@@ -931,7 +931,7 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
 ' no depende del numero de pista de ejecucion,sino del portin solamente,,,
 ' es para tocar en un teclado midi y poder escuchar o grabar
 'Reproducir MIDI-IN (teclado) por  MIDI-OUT. Abre Puerto MIDI-IN
-             messageCallBack(3)=127
+             ''ANTES BLOQUEA messageCallBack(3)=127
              CTRL1092 ()
 
 '----------------------------------------------------
@@ -955,8 +955,8 @@ Print #1,"///----SEL 1053 CORO Globalcoro ",Globalcoro
  
           Dim ppp As ZString  Ptr
         '   Dim As String ENTRADA="C:\mios\amrm.mp3" 
-        '   ppp=StrPtr(ENTRADA) 
-           threadmedia = threadCall  CTRL1094(ppp)
+           ''ppp=StrPtr(TitulosEj(1)) 
+           threadmedia = threadCall  CTRL1094(TitulosEj(1))
            SetThreadPriority(threadmedia , 10 )
            'SetFocus (hwndMEDIA)
            SetForegroundWindow(hwndMEDIA)

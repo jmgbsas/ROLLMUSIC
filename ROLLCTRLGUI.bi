@@ -396,8 +396,8 @@ MenuItem(10081,MenName18,"2-Usar Cancion cargada en 2.0 " )
 MenuItem(1009,MenName1,  "4.5.1 Exportar a MIDI Pista/cancion de 4.5 ")
 Menubar(MenName1)
 MenuItem(10091,MenName1, "4.6 GRABA PISTA ROLL DIRECTO A MIDI TIPO 0")
-''MenuItem(10092,MenName1, "4.7 >X< EN DESARROLLO *CARGA ARCHIVO MIDI A ROLL O RTK")
-''MenuItem(10093,MenName1, "4.8 >X< EN DESARROLLO *CONVERTIR UN ROLL O RTK MANUAL A EJEC")
+'MenuItem(10092,MenName1, "4.7 EN DESARROLLO *CARGA ARCHIVO MIDI A RTK")
+'MenuItem(10093,MenName1, "4.8 >X< EN DESARROLLO *CONVERTIR UN ROLL O RTK MANUAL A EJEC")
 
 
 Menubar(MenName1)
@@ -491,7 +491,7 @@ Negras por minuto	 tempo
 176-208	Prestissimo
 '/    
 
- ''MENU REPRODUCIR 
+ ''====================MENU REPRODUCIR====================== 
 MenuItem(1090,MenName6 ,"1.0 Reproducir TODAS Las Pistas EXCEPTO los solos desde el principio o un intervalo seleccionado en el Roll Grafico")
 MenuItem(10901,MenName6,"1.1 Detener Reproducion 1.0   P")
 MenuItem(1091,MenName6,"2.0 Repeticiones marcadas en una sola pista en un INTERVALO en GRAFICO. cancion o pista ")
@@ -499,8 +499,8 @@ MenuItem(10911,MenName6,"2.1 Borrar Repeticiones ")
 
 MenuItem(1092,MenName6,"3.0 Abre y Reproduce Puerto MIDI-IN Ejecucion teclado por MIDI-OUT, SIN GRABAR.")
 MenuItem(1093,MenName6,"4.0 Cierra Puerto MIDI-IN Ejecucion.")
-MenuItem(1094,MenName6,"5.0 Abre Reproductor de Medios. *.mid, *.wav,*.mp3,")
-'--OPCIONES MENU 7
+MenuItem(1094,MenName6,"5.0 Abre Reproductor de Medios. *.mid, *.wav,*.mp3, m4a")
+'===================== OPCIONES MENU 7 ===========================
 MenuItem(1100,MenName7,"1.0 Usar MARCO de Ventana Para el Gráfico",MF_UNCHECKED)
 MenuItem(1101,MenName7,"2.0 Usar MARCO de Ventana en instancias Gráficas",MF_UNCHECKED)
 'Menubar(MenName7)

@@ -3225,7 +3225,7 @@ Sub CargaArchivo(Roll As inst, ByRef ubiroll As Integer)
 ' a rolldat. Si es version vieja el 1er ubyte sera distinto de 222 , si es 222 es la
 ' nuev version.
 retrasoMetronomo=retrasoMetronomoRoll
-If ubiroll = 0 Or ubiroll=3  Then 
+If (ubiroll = 0 Or ubiroll=3 ) And hwndC > 0 Then ''FIX CANCELACION 06-06-2026
 TextGadget(TEXT_METRONOMO_RETARDO,108, 750,100,20,"Retraso M "+Str(retrasoMetronomo))
 EndIf
 On Local Error GoTo saledeaca 
@@ -8089,6 +8089,12 @@ Dim  As Integer i3
 Print #1,"BatchGraficoOCtrl GRABADO EN ROLLMUSIC.INI ",BatchGraficoOCtrl
  Dim As Integer nroproc, ppp=0
 Dim As String linea
+ If mov8 > 0 Then 
+   stopmovie(mov8)
+  MOV_FLAG=3 'sin sonido de metronomo el loop del metronomo sigue 
+  mov8=0 
+  tic=1
+EndIf
  
  If Open (ROLLDIR+"procesos.txt" For Input As 2) <> 0 Then
    Err =0  ' PRA QUE NO CANCELE VEREMOS NO IMPORTA QUE NO LEA

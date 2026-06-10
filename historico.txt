@@ -1,4 +1,10 @@
-  -04-6-2026 0.390 Fix: pasozona1/2 Copiar y loop infinito, Cuentas, metronomo principal y de Repro, 
+ -10-06-2026 0.390b FIX Bloqueo Metronomo, m4a, fix Archivo 4.5.1 etc
+' fix si va abrir un medio y se cancela la accion..cancelaba el programa
+' FIX messageCallback(127) BLOQUEABA EL PLAY DESDE TECLADO ELIMINADO DE TODOS LADOS
+' ARCHIVOS m4a, mp3, mid abiertos en explorador, debe estar instalado el codec de todos
+' FIX 4.5.1 CANCELACION 06-06-2026 AL CARGAR ARCHIVO PARA EXPORTAR METODO VIEJO 4.5 DE MENU ARCHIVO
+
+ -04-6-2026 0.390 Fix: pasozona1/2 Copiar y loop infinito, Cuentas, metronomo principal y de Repro, 
     trasponer ligados en zona => caso prueba CASO_TEST_390.roll
 '----------------------------------------------------------------------------------
 ' FIX: QUEDABA SOLO ESTE CASO: 

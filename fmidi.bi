@@ -154,10 +154,10 @@ End Type
 '
 'MICROSECONDS_PER_MINUTE = 60000000
 'BPM = MICROSECONDS_PER_MINUTE / MPQN
-'MPQN = MICROSECONDS_PER_MINUTE / BPM
+'MPQN = MICROSECONDS_PER_MINUTE / BPM  ''= 60000000 / 120 = 500000  MICRO POR QUARTER NOTE MPQN
 '
 #macro setGlobalTempo()
-  globalTempo=60000000/120
+  globalTempo=60000000/120 ''' 500000=MIDI QUARTER NOTE
 #endmacro
 
 '---------- Calculate MIDI song tempo ----------
@@ -165,12 +165,15 @@ End Type
 'globalDivision = n Ticks / qnote (for example 192)
 '
 'Tempo changes (MIDI event)
-'Set Tempo = n µs/MIDI quarter-note (for example 500000)
+'Set Tempo = n µs/MIDI quarter-note (for example 500000) 60000000/500000=120
 '
 'Count Ticks (dTime) of the MIDI events
 'actual qNote position = actualTick / globalDivision
 'actual time = actual qNote position * Tempo / 1E6
-
+''
+''   actual qNote position = 5568 / 192
+''   actual time = (5568/192) * 120 / 1000000 =
+' 
 
 Type FBMIDI
 

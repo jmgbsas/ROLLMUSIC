@@ -978,7 +978,7 @@ Print #1,"listInCreado(portin1092) ",listInCreado(portin1092)
                  listInCreado(portin1092)  =1
              EndIf
 Print #1,"abriendo portin y call back",*nombrein( portin1092 )
-              messageCallback(3)=127
+             '' messageCallback(3)=127
               open_port (midiin(portin1092 ), portin1092, *nombrein( portin1092 ) )
               set_callback midiin(portin1092 ), @mycallback, pmsgCallBack
        ' por ahrao iognoramos otros tipsod de mensaje
@@ -991,6 +991,7 @@ Print #1,"abriendo portin y call back",*nombrein( portin1092 )
      HabilitarMIDIIN=1 ' tengo seleccionado portin
 
 End Sub
+'------------------------------------------
 Function WindowState(hwnd As hwnd) As integer
  Dim wp As   WINDOWPLACEMENT 
     wp.length = sizeof(WINDOWPLACEMENT) '' IMPORTANTE: Inicializar longitud
@@ -1017,9 +1018,12 @@ Sub playmedio()
 Playmovie(mov8)
  
 End Sub
-Sub CTRL1094(PPP As ZString PTR) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
-Dim As String ENTRADA
-  ENTRADA=*PPP
+Sub CTRL1094(titulo As ZString ptr) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
+Dim ENTRADA As String
+Print #1, "*titulo en ctrl1094 ", *titulo
+ENTRADA=*titulo
+Print #1,"entrada recibida en 1094 "; ENTRADA
+fileflush(-1)
   mov8=0 
   tic=1
 ' agregamos loop
@@ -1087,7 +1091,7 @@ ButtonGadget(21,1050,altov,80,20,"-Retraso"):GadgetToolTip(21,"-RETRASO METRONOM
 
 
 hwndTG=TrackBarGadget(5,5,sizey*1/6,sizex-20,30,0, ticks, TBS_NOTICKS  )
-GadgetToolTip(5,"Avance Retroceso con Flechas Der/Izq or Click Mouse Sobre La Cinta")
+GadgetToolTip(5,"Pausar una sola vez y Avanzar o Retroceder con Flechas Der/Izq or Dragar el Mouse Sobre La Cinta")
 
 WindowStartDraw(hwndMEDIA)
 fillrectdraw(12,sizey*3/6,&hffffff)
@@ -1118,7 +1122,8 @@ StopDraw
 SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
 Dim wmParam As WPARAM
 If ENTRADA > "" Then
-   Print #1,"////ENTRADA ",ENTRADA
+     Print #1,"////ENTRADA ",ENTRADA
+     fileflush(-1)
      mov8=loadmovie(GadgetID(4),ENTRADA,0,0,WindowWidth(hwndMedia)-30,WindowHeight(hwndMedia)-110)
      SetTrackBarMaxPos(5,Int(GetEndPosMovie(mov8)/1000000 ))
      threadmovie = threadCall playmedio()
@@ -1134,23 +1139,33 @@ EndIf
  oldX=r.Left
  oldY=r.Top
 retrasoMetronomo=retrasoMetronomoRoll
+Dim As UByte usoflechas=0
 Do
 oldY=ALTO*4/6
   event=WaitEvent()
   quehwnd=GetForegroundWindow
   If quehwnd = hwndMEDIA Then 
+      If  usoflechas=1 Then
+          threadmovie = threadCall playmedio()
+          usoflechas=0
+      EndIf
+
       If GetAsyncKeyState(VK_RIGHT) Then ' CON MULTIJEY ANDA MAL USARE GetAsyncKeyState EN OTROS LADOS 
          if mov8 > 0 Then
             MOV_FLAG=1
-            MovieSetPositions(mov8,cast(double,getTrackBarPos(5)+1)*1000000+1,GetEndPosMovie(mov8) )
-            threadmovie = threadCall playmedio()
+            Pausemovie(mov8)
+            MovieSetPositions(mov8,cast(double,getTrackBarPos(5)+2)*1000000+10,GetEndPosMovie(mov8) )
+            usoflechas=1
+           ' threadmovie = threadCall playmedio()
          EndIf
       EndIf
       If GetAsyncKeyState(VK_LEFT) Then
          if mov8 > 0 Then
             MOV_FLAG=1
-            MovieSetPositions(mov8,cast(double,getTrackBarPos(5)-1)*1000000-1,GetEndPosMovie(mov8) )
-            threadmovie = threadCall playmedio()
+            Pausemovie(mov8)
+            MovieSetPositions(mov8,cast(double,getTrackBarPos(5)-2)*1000000-10,GetEndPosMovie(mov8) )
+            usoflechas=1
+           ' threadmovie = threadCall playmedio()
          EndIf
       EndIf
       If Event=EventClose Then
@@ -1295,21 +1310,22 @@ SetTimer(hwndMEDIA,1,10,Cast(TIMERPROC,@MIA()))
                    threadmetronomo = ThreadCall metronomo()
               EndIf
 
-            EndIf
-         If InStr(UCase (OFR),".MID") > 0 Then
-            Print #1,"OFR ",OFR
-         Else  
-            Volume=MovieAudioGetVolume(mov8)
-            Print #1,"Volume en carga ",Volume
-            VelAudio= str((Volume+5000)/50 )
-            If Volume < -5000 Or Volume >0 Then 'if it is less than -10000 or more than 0 there will be an error!
-               Volume=Volume-50
-               VelAudio= str((Volume+5000)/50 )
-               MovieAudioSetVolume(Movie,Volume)
-            EndIf   
-            SetGadgetText(TEXT_VOLUMEN_AUDIO, VelAudio)   
-            Sleep(200)
-         EndIf   
+         
+              If InStr(UCase (OFR),".MID") > 0 Then
+                Print #1,"OFR ",OFR
+              Else  
+                Volume=MovieAudioGetVolume(mov8)
+                Print #1,"Volume en carga ",Volume
+                VelAudio= str((Volume+5000)/50 )
+                If Volume < -5000 Or Volume >0 Then 'if it is less than -10000 or more than 0 there will be an error!
+                   Volume=Volume-50
+                   VelAudio= str((Volume+5000)/50 )
+                   MovieAudioSetVolume(Movie,Volume)
+                EndIf   
+                SetGadgetText(TEXT_VOLUMEN_AUDIO, VelAudio)   
+               Sleep(200)
+              EndIf 
+         EndIf  
 '------------
         Case 10 ''PODRIA USAR  SND_LOOP | SND_ASYNC
            CICLO=SWITCH (CICLO) 
@@ -2439,7 +2455,7 @@ Sub CargarMidi()  ' cargar a Roll o directo a rtk o ejec
 '' lo pasaria a cancion,,!! Trabajoso por eso debo tratar de leer directo de disco
 '' usamos rutina de fmidi.bi
 Dim nombrea As String
-nombrea = OpenFileRequester("","","Archivo Midi (*.mid)"+Chr(0))
+nombrea = OpenFileRequester("","","Midi files (*.mid)"+Chr(0) , OFN_CREATEPROMPT)
 
 wmidi.loadFile(nombrea)
 
@@ -2466,13 +2482,19 @@ If wmidi.readMidi()>1 Then
     wmidi.thisEvent=wmidi.track(t)
     while wmidi.thisEvent->pNext<>0
       wmidi.thisEvent = wmidi.thisEvent->pNext
-      Print #1, getMidiInfo(wmidi.thisEvent, 2)
+      Print #1, getMidiInfo(wmidi.thisEvent,wmidi.globalFormatType) '''' 2)
     Wend
     Print #1,
   Next t
   
 EndIf
+''------------------------------------------------------------
+'''''CARGAR A RTK
 
+
+
+
+'
 End Sub
 '------------------------------------------------------------------------
 Sub GrabarRollAmidiTipo0() 

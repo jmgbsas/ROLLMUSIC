@@ -138,10 +138,15 @@ On Error Goto errorhandler
 
 Dim Shared file As OpenFileName
 Dim Shared As String myfilter
-myfilter  = "Roll Files"+Chr(0)  +"*.roll"+Chr(0)
-'myfilter += "Ini files"+Chr(0)   +"*.ini;*.txt;*.cfg"+Chr(0)
-myfilter += "Rtk  Files"+Chr(0)   +"*.rtk"+Chr(0)
-myfilter += "Ejec Files"+Chr(0)   +"*.ejec"+Chr(0)
+myfilter  = "Roll Files"+Chr(0) +"*.roll"+Chr(0)
+myfilter += "Rtk  Files"+Chr(0) +"*.rtk" +Chr(0)
+myfilter += "Ejec Files"+Chr(0) +"*.ejec"+Chr(0)
+myfilter += "m4a  Files"+Chr(0) +"*.m4a" +Chr(0)
+myfilter += "mp3  Files"+Chr(0) +"*.mp3" +Chr(0)
+myfilter += "mid  Files"+Chr(0) +"*.mid" +Chr(0)
+
+
+
 Dim Shared As Long pd1, fa1,ffini,ca,ffile,ct,ga,grt ,ngm,fk
 
 fk=5
@@ -360,6 +365,11 @@ For ix = 0 To __FB_ARGC__
  ubirtk = InStr (LCase(Command(ix)),".rtk")
  ubiroll= InStr(LCase(Command(ix)),".roll")
  ubiejec= InStr(LCase(Command(ix)),".ejec")
+ ubim4a = InStr (LCase(Command(ix)),".m4a")
+ ubimp3 = InStr (LCase(Command(ix)),".mp3")
+ ubimid = InStr (LCase(Command(ix)),".mid")
+
+
  If ubiejec > 0 Then  ''30-03-2026 reproducir un *.ejec desde el explorador
     ubiejec=1 ''cargar  
     titulosEj(1)=Command(1)
@@ -369,6 +379,18 @@ For ix = 0 To __FB_ARGC__
       ubionline=0
        Exit For   
  EndIf 
+
+ If ubim4a > 0 Or ubimp3 > 0 Or ubimid >0 Then  ''30-03-2026 reproducir un *.ejec desde el explorador
+    ubimedia=1 ''cargar  
+    ubionline = 0
+    titulosEj(1)=Command(1)
+    Instancia=ARG0_EN_LINEA 
+   Print #1,"Instancia= ",Instancia
+   Print #1,"Reproducir TITULOEJ(1)  ",titulosEj(1)
+      ubionline=0
+       Exit For   
+ EndIf 
+
  If (ubirtk >0 Or ubiroll> 0 ) And BatchGraficoOCtrl =3 Then
     If ubiroll > 0 Then
        BatchGraficoOCtrl = 4 ' es un roll

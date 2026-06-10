@@ -1,7 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-     0.390 Fix: pasozona1/2 Copiar y loop infinito, Cuentas, metronomo principal y de Repro, 
-     trasponer ligados en zona => caso de prueba CASO_TEST_390.roll
+      0.390b FIX Bloqueo Metronomo, m4a, fix Archivo 4.5.1 etc
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )

@@ -606,6 +606,7 @@ Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes, nretrasoMetronomoCan,nretrasoMetronomoRoll
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi,ubiejec,ubionline
+Common Shared As integer ubim4a, ubimp3,ubimid, uviwav, ubimedia ''muchos mas ubi para audio
 parametros=0
 abrirRollCargaMidi=0
 ubionline=0

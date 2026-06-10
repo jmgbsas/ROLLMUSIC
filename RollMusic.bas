@@ -60,7 +60,11 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.390 LEER_MIDI en Desarrollo, Fix: pasozona1/2 Copiar y loop infinito, Cuentas, metronomo principal y de Repro  "
+nroversion="0.390b FIX Bloqueo Metronomo, m4a, fix Archivo 4.5.1, etc "
+' fix si se va a abrir un medio y se cancela..cancelaba el programa
+' FIX messageCallback(127) BLOQUEABA EL PLAY DESDE TECLADO ELIMINADO DE TODOS LADOS
+' ARCHIVOS m4a, mp3, mid abiertos en explorador, debe estar instalado el codec de todos
+' FIX 4.5.1 CANCELACION 06-06-2026 AL CARGAR ARCHIVO PARA EXPORTAR METODO VIEJO 4.5 DE MENU ARCHIVO
 ' tareas al 4 DE jUNIO
 ' QUEDA SEGUIR DESARROLLO CARGA MIDI A ROLL O RTK O EJEC VEREMOS CUAL ELIJO
 '----------------------------------------------------------------------------------
@@ -519,7 +523,8 @@ Print #2,"=====hwndC ", HwndC
 
       If terminar=TERMINAR_POR_LOOP_PRINCIPAL Then
          Exit Do
-      EndIf  
+      EndIf
+'---------------REPRODUCCIONES DESDE EXPLORADOR  
       If  ubiejec = 1 Then
           ubiejec =2  
 '''30-03-2026 LEVANTAR UN *. EJEC DEDE EL EXPLORADOR
@@ -543,6 +548,25 @@ Print #2,"=====hwndC ", HwndC
          Parar_De_Dibujar=NO
          ntoca =1
        EndIf  
+'------------------------------------------------
+      If  ubimedia = 1 Then
+          ubimedia =0  
+'''06-06-2026 LEVANTAR RCHIVOS AUDIO DESDE EL EXPLORADOR
+        Print #1,"6 Instancia ",Instancia
+         Dim entrada As string 
+         entrada=TitulosEj(1)
+         Print #1,"entrada de media ",entrada
+         'Dim ppp As Integer  Ptr
+         'ppp=StrPtr(entrada) 
+         'Print #1," *PPP ",*PPP
+         fileflush(-1)
+        threadmedia = threadCall  CTRL1094(TitulosEj(1))
+        SetThreadPriority(threadmedia , 10 )
+        SetForegroundWindow(hwndMEDIA)
+ 
+       EndIf  
+'-------------------------------------------------
+
 '-------------------------------------------------
       If  ubionline = 1 And ubiejec=0 Then
           ubionline =0
@@ -578,7 +602,6 @@ Print #2,"=====hwndC ", HwndC
          Parar_De_Dibujar=NO
 
        EndIf  
-
 '---------------------------------------------------   
       If tocatope < 32   Then           
          For k=1 To tocatope+1
