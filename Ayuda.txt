@@ -1,6 +1,7 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-      0.390b FIX Bloqueo Metronomo, m4a, fix Archivo 4.5.1 etc
+     0.391 KEY FAST ENTRADA RAPIDA DE NOTAS SIN ESPERAR QUE SALGAN POR PANTALLA, PARA 
+           LAS NOTAS NATURALES SIN SOSTENIDO Y DE IGUAL DURACION, BAJO PRUEBA.... 
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -730,7 +731,7 @@
                  Si se chequea la S no pedira nombre de archivo de ejecuciones la ejecuciom
                  luego se grabara a un archivo *.roll usando el menu de Roll Grafico.   
                  Si se chequea una G eso es mas par grabar ejecuciones sin Roll Grafico, pero
-                 igual grabara a Roll, en este cas opodremos grabar a archivo de ejecuciones
+                 igual grabara a Roll, en este caso podremos grabar a archivo de ejecuciones
                  y a roll.
              3a) En puertos de Ejecuciones seleccionar puerto MIDI-IN y MIDI-OT del teclado midi, 
            sin esas selecciones al inicio en menu Reproducir, "Reproducir MIDI-IN (teclado) POR MIDI-OUT" 
@@ -1242,6 +1243,13 @@
            puede tardar mantener presionado 1 o 2 segundos, dar un click lento o rapido según la PC. Entrar duraciones
            y nombres de notas por taclado. (ver mas abajo detalle) Ej 3C y aparecera la nota (una negra C). Si sequiere sacar la
            guia de notas del lado izquierdo pulsar H y para volver a verlo pulsar K.
+           Se la duracion de la nota es la misma para una secuencoa de notas que se va entrar solo pulsar al principio
+           la duracion 1,2,3,4,5,6,7,8,9...luego si son notas sin sostenido sepueden pulsar todas sin esperar verlas en
+           pantalla bien rapido como en escritura. Las notas con sostenido debera esperarse que aparescan en pantalla.
+           Si se desea cambiar la duracion durante la carga se debera pulsar dicha duracion antes de seguir entrando notas.
+           NORA: si tengo una secuencia con sostenidos podria ser mas facil entrar todo en escala de C natural sin
+           sostenidos y luego al terminar trasponer toda la secuencoa pulsando CTRL-O moder flecha arriba abajo y puldar Q
+           para terminar.
     2.1.2) Entrada secuencial por mouse . 
             Como en 2.1.1 llegar a Edit verde.Pulsar uan duracion luego click izquierdo del mouse en cualquier lugar de la linea
             de la nota deseada. Otra forma con menu contextual del mouse: click derecho del mouse sobre la linea de la nota deseada

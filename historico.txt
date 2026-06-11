@@ -1,9 +1,8 @@
- -10-06-2026 0.390b FIX Bloqueo Metronomo, m4a, fix Archivo 4.5.1 etc
-' fix si va abrir un medio y se cancela la accion..cancelaba el programa
-' FIX messageCallback(127) BLOQUEABA EL PLAY DESDE TECLADO ELIMINADO DE TODOS LADOS
-' ARCHIVOS m4a, mp3, mid abiertos en explorador, debe estar instalado el codec de todos
-' FIX 4.5.1 CANCELACION 06-06-2026 AL CARGAR ARCHIVO PARA EXPORTAR METODO VIEJO 4.5 DE MENU ARCHIVO
-
+ -11-06-2026 0.391 KEY FAST ENTRADA RAPIDA DE NOTAS SIN ESPERAR, BAJO PRUEBA.... 
+   PARA LAS NOTAS NATURALES O SEA ESCALA DE C, SIN SOSTENIDOS, INGRESA LAS NOTAS
+   CON UNA MISMA DURACION UNA TRAS OTRA SIN DETENERSE COMO ESCRITURA NI ESPERAR QUE
+   SE ESCRIBAN EN PANTALLA, LAS INTERRUPCONES SOLO SERAN POR CAMBIO DE DURACION, 
+   LAS NOTAS SOSTENIDO SIGUEN COMO ANTES, SE ENTRAN UNA A UNA ESPERANDO QUE SE CARGUE EN PANTALLA.
  -04-6-2026 0.390 Fix: pasozona1/2 Copiar y loop infinito, Cuentas, metronomo principal y de Repro, 
     trasponer ligados en zona => caso prueba CASO_TEST_390.roll
 '----------------------------------------------------------------------------------

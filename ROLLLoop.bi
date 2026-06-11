@@ -1179,27 +1179,27 @@ edity1 = 1 ' botton Edit bordeSup
 edity2 = 50 ' botton Edit bordeInf
 
 ''''stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
-Do ' nro 1 1166
+Do ' nro 1 1182
 ''arranquedo1=Timer
 
 '' Create a cairo drawing context, using the FB screen as surface.
 '' l originalestba mal sizeof(integer ) es mu chico debe ser 4
 '' esto solo ejecutar si hay cambio de tamaño!!
 
-stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
+  stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
 ' ------para reducir el consumo de recursos por ahora al tocarpistas MIDI
 ' o grabar pistas midi con una cancion o track o roll cargado no escribimos nada en pantalla grafica
 ' queda congelado en los 1eros compasaes mostrados al terminar esos procesos mencionados
 ' se se libera la escrituta al grafico...vermeos si sirve para seguirgrabando pistas y reproduciendo 
 ' en mejores condiciones,,,
-If  cargaCancion=CARGAR_NO_PUEDE_DIBUJAR  Or Parar_De_Dibujar=SI Or  GrabarEjec=GrabarPistaEjecucion Then
+  If  cargaCancion=CARGAR_NO_PUEDE_DIBUJAR  Or Parar_De_Dibujar=SI Or  GrabarEjec=GrabarPistaEjecucion Then
 ' esta cargando cancion 
    'Locate 5,10
    'Print "CARGANDO ...PISTA Nro ", ntk
    'Sleep 100
- s5=2 ' el loop principal necesita menos cpu  
-Else   
+      s5=2 ' el loop principal necesita menos cpu  
+  Else   
 
 '--------------
    '''' If  terminar=0 And GrabarEjec=0 Then  '16-06-2022
@@ -1268,8 +1268,8 @@ Else
 ' evitamos escribir a grafico si ya estamso saliendo ,,,
     
   
-      EndIf
-        If (terminar=NO_TERMINAR_BARRE_PANTALLA Or Parar_De_Dibujar=NO)  Then 
+  EndIf
+  If (terminar=NO_TERMINAR_BARRE_PANTALLA Or Parar_De_Dibujar=NO)  Then 
 '''''       Print #1,"DESDE HASTA ", desde , hasta 
            threadPenta = ThreadCall barrePenta (c, Roll )
            ThreadWait threadPenta
@@ -1282,7 +1282,7 @@ Else
              cairo_stroke(cm) ' cm despues de c sino crash
            EndIf
           
-        EndIf
+  EndIf
     
       
 
@@ -1291,9 +1291,8 @@ Else
     
 
 
-'' ---------------  LOOP 2 ---------------
-Do '  lo sacamos 
-Do  ' do nro 2
+'' ---------------  LOOP 2 -----ESTE LOOP SE EJECUTA UNA SOLA VEZ PERO SI LO SACO NO ANDA JAJAJAJA
+  Do  ' do nro 2
 'Print #1,"1051 do 2, ROOLLOOP DESDE "; desde
 
 '---------
@@ -1801,7 +1800,7 @@ EndIf
       If BordeSupRoll <= - AltoInicial * 2.8  Then
          BordeSupRoll =  - AltoInicial * 2.8
       EndIf
-While InKey <> "": Wend
+''While InKey <> "": Wend 11-06-2026
       Exit Do
     EndIf
     If COMEDIT=MODIFICACION_INSERCION  Or COMEDIT=MODIFICACION_COLUMNA And trasponer= 0 Then 'ctrl-m o ctrl-o, ctrl-n no
@@ -1868,7 +1867,7 @@ While InKey <> "": Wend
      If BordeSupRoll >= AltoInicial * 0.5  Then
       BordeSupRoll =  AltoInicial * 0.5
      EndIf
-While InKey <> "": Wend     
+''While InKey <> "": Wend 11-06-2026    
      Exit Do
     EndIf
     If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=MODIFICACION_COLUMNA And trasponer= 0 Then ' no se usa con ctrl-n,pero si en ctrl-m 1 y ctrl-o 3 futuro columna
@@ -1878,7 +1877,7 @@ While InKey <> "": Wend
      EndIf
      cambiadur=0  
       Sleep 50
-While InKey <> "": Wend
+''While InKey <> "": Wend ''11-05-2026
      Exit Do
     EndIf
 
@@ -2090,7 +2089,7 @@ verticalEnOctavaVacia= 12 + (hasta-2)*13 + n0 - desde ' 90 + 6 - 4=92
    scan_alt=1
    Exit Do
 Else
-   While InKey <> "": Wend
+   ''While InKey <> "": Wend 11-06-2026
    scan_alt=0
 
 EndIf   
@@ -2130,7 +2129,7 @@ Dim As Integer ik=0,ij=0,im
    scan_alt=1
    Exit Do
 Else
-   While InKey <> "": Wend
+  '' While InKey <> "": Wend 11-06-2025
    scan_alt=0
    
 EndIf 
@@ -2325,7 +2324,7 @@ EndIf
 
 '--------------------------------------
 If MultiKey(SC_ESCAPE) Or  Terminar=TERMINAR_POR_ESCAPE Then
-If play=SI Or playb=SI Or Cplay=SI Then
+   If play=SI Or playb=SI Or Cplay=SI Then
    If PARAR_PLAY_MANUAL=NO Or  PARAR_PLAY_EJEC=NO THEN
         PARAR_PLAY_MANUAL=SI 
         PARAR_PLAY_EJEC=SI
@@ -2334,7 +2333,7 @@ If play=SI Or playb=SI Or Cplay=SI Then
         Sleep 100
         Exit Do
   EndIf
-EndIf
+   EndIf
     Sleep 5
 
      If terminar=NO_TERMINAR_BARRE_PANTALLA And (play=SI Or playb=SI Or Cplay=SI)   Then 'detenemos los play
@@ -2656,6 +2655,8 @@ If MultiKey(SC_CONTROL) And MultiKey(SC_A)  Then ' A# Bb
  Exit Do
 EndIf
 
+
+
 If MultiKey(SC_CONTROL) And MultiKey(SC_C)   Then ' C#
  nota = 11
  If espacio > 0 Then
@@ -2699,6 +2700,41 @@ If  MultiKey(SC_CONTROL) And MultiKey(SC_G)  Then ' G#
  EndIf
  Exit Do
 EndIf
+
+If  MultiKey(SC_CONTROL) And MultiKey(SC_A)  Then ' A#
+ nota= 2
+ If espacio > 0 Then
+  espacio=2
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+ Exit Do
+EndIf
+If  MultiKey(SC_CONTROL) And MultiKey(SC_B)  Then ' B#  C
+ nota= 12
+ If espacio > 0 Then
+  espacio=12
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+ Exit Do
+EndIf
+
+If  MultiKey(SC_CONTROL) And MultiKey(SC_E)  Then ' #E  F
+ nota= 7
+ If espacio > 0 Then
+  espacio=7
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+ Exit Do
+EndIf
+
+
+/'  11-06-2026 REEMPLAZADO POR INKEY 
 
 If MultiKey (SC_A) Then
  nota= 3
@@ -2773,6 +2809,74 @@ If MultiKey (SC_G) Then
  EndIf
  Exit Do
 EndIf
+
+'/
+
+  Select Case UCase(inKey)
+    Case "C"
+       nota=12
+ If espacio > 0  Then
+  espacio=12
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+
+    Case "D"
+       nota=10
+ If espacio > 0  Then
+  espacio=10
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+
+    Case "E"
+       nota=8
+ If espacio > 0  Then
+  espacio=8
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+
+    Case "F"
+       nota=7
+ If espacio > 0  Then
+  espacio=7
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+
+    Case "G"
+       nota=5
+ If espacio > 0  Then
+  espacio=5
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+
+    Case "A"
+       nota=3
+ If espacio > 0  Then
+  espacio=3
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+
+    Case "B"
+       nota=1
+  If espacio > 0  Then
+   espacio=1
+  EndIf
+  If COMEDIT=SOLO_MODIFICACION Then
+   agregarNota = NO_AGREGAR
+  EndIf
+
+  End Select
 
 
 '----teclado
@@ -2958,13 +3062,12 @@ If COMEDIT<>LECTURA Then  'TERMINA EN 2929
 ' REVISAR REVISAR REVISAR JMG JMG JMG WWWWWWWWWWWWWWWWWWW  
   If MultiKey(SC_CONTROL) And MultiKey(SC_9) Then 'espacio en edit sin cursor
      ''DUR = 190 ELIMINAMOS EL 190
-     Exit Do
-     nota=0
+     nota=0:Exit Do
   EndIf
 
   If MultiKey(SC_9) Then 'espacio en edit sin cursor
-     DUR = 181:Exit Do
-     nota=0
+     DUR = 181
+     nota=0:Exit Do
   EndIf
   If MultiKey(SC_CONTROL) And MultiKey(SC_0) Then ' BORRA NOTAS ON OFF, CON X
      borrar=1  ''BORRA NOTA COMPLETA SIN X EN CTRL-M, EN CTRL-N BORRA NOTA SIN NOMBRE
@@ -3326,6 +3429,8 @@ If Tiempodelta > 0 And GrabarPenta = 1 Then
    DUR=TiempoDelta
 EndIf
 
+Do '''LOOP DE LECTURA DE BUFFER 11-06-2026
+
 If COMEDIT=ENTRADA_NOTAS  And nota > 0 And agregarNota=AGREGAR  And carga=0 And nota <=182   Then ' 182 entra el fin de archivo
 curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N se debe resetear 
 ' agregue cambiadur para que entre las modificaciones de cursor en ticks
@@ -3495,7 +3600,7 @@ curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N 
    ' despues de la duracion Track(ntk).trk(posn+1,1).dur= 182
  '''Print #1,"posnOff+6,(12-notaOld  +(estoyEnOctavaOld  ",posnOff,notaOld,estoyEnOctavaOld
  
-Sleep 50 
+'''Sleep 50 11-06-2026
    ' cargamos Roll entonces Duracion no lo mostrara como "./."
    ' solo conrolara la posicion, quedndo solo ese simbolo paralaa entrada
    ' especifica del usuario....
@@ -4048,6 +4153,77 @@ nVerCifradoAcordes=3 ' 07-12-2025  no da play
  ''''Exit Do ' 09-01-22 probando no debe sali rdebe seguir chequeando
   RecalCompas(ritmo) ''383
 EndIf  ''' FIN ENTRADA NOTAS 
+
+ Select Case UCase(inKey)
+    Case "C"
+       nota=12
+ If espacio > 0  Then
+  espacio=12
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+
+    Case "D"
+       nota=10
+ If espacio > 0  Then
+  espacio=10
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+
+    Case "E"
+       nota=8
+ If espacio > 0  Then
+  espacio=8
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+
+    Case "F"
+       nota=7
+ If espacio > 0  Then
+  espacio=7
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+
+    Case "G"
+       nota=5
+ If espacio > 0  Then
+  espacio=5
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+
+    Case "A"
+       nota=3
+ If espacio > 0  Then
+  espacio=3
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+
+    Case "B"
+       nota=1
+ If espacio > 0  Then
+  espacio=1
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+
+    Case Else
+      nota=0
+      Exit Do
+  End Select
+
+Loop  ''' FIN LOOP LECTURA DE BUFFER ENTRADA DE NOTAS SOLO NOTAS SIN SOSTENIDO
 
 If GrabarPenta=1 And HabilitarMIDIIN > 0 Then 
    DUR=0
@@ -7389,51 +7565,26 @@ EndIf
 
 ' ------------IPC sensado de comando fifo..
 
-
-
-
-Exit Do ' este exit do hace que ande el menu!!!
-' o sea nunca loopea solo una vez!!
+    Exit Do ' este exit do SE EJECUTA SIEMPRE hace que ande el menu!!!
+' o sea  loopea una sola vez o tantas como exit do halla???!!
 
 
  
-Loop 'do nro 2 1168
-nnn=nnn+1
-' aumentando a 40 se fue el parpadeo del grafico y solo dibujaba la octava 6
-' hay que seguir probando...120 PARA GAS GUI
-If nnn=40  Then 'SI VALE 0 SE INTERRUMPE TODO no hay exit do, CADA nnn VUELVE A LA ACCION 
-   nnn=0 ' ai nnn es muy grande sale poco y no trabaja
-  Exit Do ''nnnn deb eser chico para q ocupe menos cpu pero deje trbajar
-EndIf
-' DECIA 20 PUSE 10
-' con 20 parpadea y solo dibuja la octava 6 y se borraba a veces los controles de
-' dexto de volumen de metronomo...todo por esto? veremos mas pruebas
-'If nnn=20 And MAXPOS < 800 Then ' que loopee mas en el lop mas interno solo salga menos al loop externo
-'   nnn=0
-'  Exit Do
-'EndIf
-' DECIA 100
-' esta era la correcta que usaba antes 40 lo de maxpos no se,,,,
-'If nnn=40 And MAXPOS > 800 Then ' que loopee mas en el lop mas interno solo salga menos al loop externo
-'   nnn=0
-'  Exit Do
-'EndIf
+  Loop 'do nro 2 1295, INCREIBLE SE EJECUTA UNA SOLA VEZ PERO SI LO SACO NO ANDA JA
+  ''' HAY UN EXIT DO,DO PORA AHI ARRIBA DE BARRIDO PODRIA SER ESO
+''
+'' -------------- FIN LOOP2 ------------
 
-If fueradefoco=SI  And (play = NO) and (playb=NO) And (Cplay=NO) Then
+  If fueradefoco=SI  And (play = NO) and (playb=NO) And (Cplay=NO) Then
+    Sleep 5 ' ESTO HACE QUE LA CINTA CORRA SUAVE
+  EndIf
 
-   Sleep 5 ' ESTO HACE QUE LA CINTA CORRA SUAVE
-EndIf
-'''''''While InKey <> "": Wend se come los ketstrikes aca no conviene
-'podria reemplazarse por REset(0) ???
-'Reset (0)
-
-Loop 'do  1167 lo sacamos 
+Loop 'do  nro 1 1182
 '''''While InKey <> "": Wend e come los ketstrikes aca no conviene
 'podria reemplazarse por REset(0) ???
 'Reset (0)
 
 
-Loop 'do 1166 nro 1
 
 Exit Sub 
 

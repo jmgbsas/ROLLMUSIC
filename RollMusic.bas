@@ -60,11 +60,11 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.390b FIX Bloqueo Metronomo, m4a, fix Archivo 4.5.1, etc "
+nroversion="0.391 KEY FAST ENTRADA RAPIDA DE NOTAS SIN ESPERAR, BAJO PRUEBA.... "
 ' fix si se va a abrir un medio y se cancela..cancelaba el programa
 ' FIX messageCallback(127) BLOQUEABA EL PLAY DESDE TECLADO ELIMINADO DE TODOS LADOS
 ' ARCHIVOS m4a, mp3, mid abiertos en explorador, debe estar instalado el codec de todos
-' FIX 4.5.1 CANCELACION 06-06-2026 AL CARGAR ARCHIVO PARA EXPORTAR METODO VIEJO 4.5 DE MENU ARCHIVO
+' FIX CANCELACION 06-06-2026 AL CARGAR ARCHIVO PARA EXPORTAR METODO VIEJO 4.5 DE MENU ARCHIVO
 ' tareas al 4 DE jUNIO
 ' QUEDA SEGUIR DESARROLLO CARGA MIDI A ROLL O RTK O EJEC VEREMOS CUAL ELIJO
 '----------------------------------------------------------------------------------

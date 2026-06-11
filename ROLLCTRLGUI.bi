@@ -396,8 +396,8 @@ MenuItem(10081,MenName18,"2-Usar Cancion cargada en 2.0 " )
 MenuItem(1009,MenName1,  "4.5.1 Exportar a MIDI Pista/cancion de 4.5 ")
 Menubar(MenName1)
 MenuItem(10091,MenName1, "4.6 GRABA PISTA ROLL DIRECTO A MIDI TIPO 0")
-'MenuItem(10092,MenName1, "4.7 EN DESARROLLO *CARGA ARCHIVO MIDI A RTK")
-'MenuItem(10093,MenName1, "4.8 >X< EN DESARROLLO *CONVERTIR UN ROLL O RTK MANUAL A EJEC")
+MenuItem(10092,MenName1, "4.7 EN DESARROLLO *CARGA ARCHIVO MIDI A RTK")
+MenuItem(10093,MenName1, "4.8 >X< EN DESARROLLO *CONVERTIR UN ROLL O RTK MANUAL A EJEC")
 
 
 Menubar(MenName1)
