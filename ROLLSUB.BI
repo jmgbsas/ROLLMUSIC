@@ -4022,7 +4022,8 @@ Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, R
              retrasoMetronomo=retrasoMetronomoRoll
              If metronomoPistas_si=3 Then
                For im=1 To ritmo  ' porquese escucha una solavez???
-                threadsound = threadCall soundcall 
+                threadsound = threadCall soundcall
+                SetThreadPriority(threadsound , -1 ) 
                 duracion(Timer, (60/tiempoPatron) / FactortiempoPatron)
                Next im
             EndIf
@@ -4255,6 +4256,15 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
        cierroedit= 0
        carga=1  ' <======= control de Carga
        ROLLCARGADO=TRUE ' aunque este en cancion puedo cargar un roll
+'----------------------
+      If instancia=ARG0_EN_LINEA Then
+           DisableGadget(PISTASROLL,0) ' HABILITAMOS LISTA DE PISTAS
+           Dim cadena As String
+           cadena= sacarExtension(nombre) ' BUSCA EL PUNTO NO DEPENDE DE LA EXTENSION
+           cadena= sacarpath(nombre)
+          AddListBoxItem(PISTASROLL, cadena) 'SIN EXTENSION
+      EndIf    
+'------------------------
     EndIf
    Else
    ' print #1,"else de *ROLL CARGA, mousex ", carga, mousex, mousey
@@ -5741,7 +5751,13 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
        CPSS=CPSS+1 ' PARA QUE HALLA REALMENTE CPSS PULSOS SIN SONIDO
        GUARDOCPSS=CPSS
        Print #1,"CPSS ", CPSS
-   
+ Case "[SEGUNDOS]"
+Print #1,"entra Segundos ", SEGUNDOS
+      default2 = Str(SEGUNDOS)
+       SEGUNDOS= CInt(InputBoxJmg("SEGUNDOS " ,"Entre una duracion en SEGUNDOS ",default2, ES_MULTILINE + ES_AUTOVSCROLL,0  ))
+       Print #1,"sale Segundos ", SEGUNDOS
+
+  
  Case "[GEN]" '' muy bien funciona!!!
 ' generamos para escala mayor
 Dim As Integer escalamayor(1 To 7)={1,3,5,6,8,10,12}
@@ -8874,6 +8890,85 @@ End If
 
 End Sub
 '---------
+Sub BorrarUltimaNotaEntrada()
+Dim As Integer ix,iy,dur182,onoff1,onoff2, fin,durborrada
+backspaceNotas=0
+fin= MaxPos+100
+
+
+Print #1,"ENTRO A BorrarUltimaNotaEntrada() FIN backspace "; fin,backspaceNotas
+For ix=fin To 1 Step -1       ' >  I     >||
+  For iy= NB To NA
+     If Roll.trk(ix,iy).dur=182 And dur182=0 Then  
+        Roll.trk(ix,iy).dur=0
+       Track(ntk).trk(ix,1).dur = 0
+        dur182=1
+ Print #1,"1) borro 182 "  ' > I    >
+     EndIf  
+
+     If Roll.trk(ix,iy).onoff=1 And dur182=1 And onoff1=0 Then '>   I    >
+        Roll.trk(ix,iy).onoff=0
+        Roll.trk(ix,iy).dur=0  '' eliminamos 183 >
+        Roll.trk(ix,iy).nota=0
+       Track(ntk).trk(ix,1).dur = 0
+       Track(ntk).trk(ix,1).onoff = 0
+       Track(ntk).trk(ix,1).nota=0
+''       MaxPos=ix+6 '''MaxPos-DurXTick(durborrada)
+''       pmTk(ntk).MaxPos=MaxPos
+'        posn=ix+1
+'       pmTk(ntk).posn=posn
+'       posicion=posn-DurXTick(durborrada)
+      
+Print #1,"2) borro 183 y ultimo off1"       ' >     I
+        onoff1=1
+     EndIf  
+     If Roll.trk(ix,iy).onoff=2 And onoff1=1 And onoff2=0 Then  ''>   I   
+        Roll.trk(ix,iy).onoff=0
+        durborrada=Roll.trk(ix,iy).dur
+        Roll.trk(ix,iy).dur=0
+        notaOld = nota
+        Roll.trk(ix,iy).nota=0
+       Track(ntk).trk(ix,1).dur = 0
+       Track(ntk).trk(ix,1).onoff = 0
+       Track(ntk).trk(ix,1).nota=0      
+      ''' MaxPos=ix+6 '''MaxPos-DurXTick(durborrada)
+      ''' pmTk(ntk).MaxPos=MaxPos
+      '' posn=ix+1
+      ''' pmTk(ntk).posn=posn
+      ''' posicion=posn-DurXTick(durborrada)
+
+       onoff2=1
+Print #1,"3) borramos el ultimo on "  ' > 
+     EndIf
+    If Roll.trk(ix,iy).onoff=1 And onoff2=1 Then
+       Roll.trk(ix+6,iy).dur=182
+       MaxPos=MaxPos-DurXTick(durborrada)
+       Maxpos=ix+6    
+       pmTk(ntk).MaxPos=MaxPos
+       posn=ix+1
+       pmTk(ntk).posn=posn
+       posicion=posn-DurXTick(durborrada)
+       curpos=ix-posishow
+       notacur=Roll.trk(ix,iy).nota 
+       Track(ntk).trk(ix+6,1).dur = 182
+       posnoff=ix
+       posnOffOld=posnoff
+       
+Print #1,"4) ponemos nuevo 182, listo"
+       Exit For,For     
+    EndIf  
+    
+  Next iy
+Next ix
+
+Dim As String h=InKey
+Do While h > ""
+h=InKey
+Loop
+Print #1,"sale con backspaceNotas ";backspaceNotas
+
+End Sub
+
 '--------
 '''-///////////// RUTINAS DE VENTANA PRINCIPAL ROLLCONTROL ////////
 ''' empezamos a estructurar un poco .....06- marzo 2024

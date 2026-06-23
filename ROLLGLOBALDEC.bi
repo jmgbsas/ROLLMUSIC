@@ -1,5 +1,5 @@
 ''ROLLCONTROLDEC CAMBIAMOS DE NOMBRE A ROLLGLOBALDEC
-' ESTAN EN LOS DOS MODULOS 
+' ESTAN EN LOS DOS MODULOS
 
 Declare Sub EntrarNombreCancion(ByRef NombreCancion As string)
 Declare Sub EntrarNombrePista(ByRef NombrePista As String, hwndC as Hwnd)
@@ -14,6 +14,7 @@ Declare Sub CuadroDur ()
 Declare Sub CuadroVol ()
 Declare Sub CuadroKey ()
 Declare Sub CuadroPer ()
+Declare Sub CuadroVoces()
 
 Dim Shared As Integer cuentauxiliares=0
 'Declare Sub reproducir()
@@ -46,7 +47,7 @@ Declare Sub CTRL10165 (ByRef lugar As String,funcion As string)
 Declare Sub CTRL1040 ()
 Declare Sub CTRL1050 ()
 Declare Sub CTRL1060 (ByRef SALIDA As INTEGER)
-Declare Sub CTRL1061 (ByRef SALIDA As INTEGER) 
+Declare Sub CTRL1061 (ByRef SALIDA As INTEGER)
 Declare Sub CTRL1062 (hmessages As hmenu)
 Declare Sub CTRL1063
 Declare Sub CTRL1068(hmessages As hmenu)
@@ -132,18 +133,20 @@ Const BTN_MENOS_METRO_VOL_IZQ=51
 Const BTN_MAS_METRO_VOL_DER=52
 Const BTN_MENOS_METRO_VOL_DER=53
 Const TEXT_VOLUMEN_AUDIO=54
+Const BTN_ROLL_CARGAR    = 55
+Const BTN_MIDI_CARGAR    = 56
 
 Const HABILITAR = TRUE
-Const DESHABILITAR = FALSE 
+Const DESHABILITAR = FALSE
 Const SI=1
 Const NO=0
 Const CARGAR = 1
-Const NO_CARGAR =0 
+Const NO_CARGAR =0
 Const CARGAR_MAS_PISTAS_O_CANCION = 2
 Const REABRIR_ROLL_CON_DATOS_CARGADOS=4
-Const NO_CARGAR_PUEDE_DIBUJAR =0 
+Const NO_CARGAR_PUEDE_DIBUJAR =0
 Const CARGAR_NO_PUEDE_DIBUJAR =1
-Const EVITAR_LLAMAR_ROLLLOOP_DE_NUEVO = 3 
+Const EVITAR_LLAMAR_ROLLLOOP_DE_NUEVO = 3
 Const CON_CANCION = 1
 Const SIN_CANCION = 0
 Const NO_AGREGAR =1
@@ -177,7 +180,7 @@ Const ARG107_FICTICIO = 107
 Const TERMINAR_POR_ESCAPE =1
 Const NO_TERMINAR_BARRE_PANTALLA = 0
 Const TERMINAR_POR_LOOP_PRINCIPAL = 2
-Const NO_TERMINAR_CON_DATOS_CARGADOS  = 3 
+Const NO_TERMINAR_CON_DATOS_CARGADOS  = 3
 '--------------------------------------
 Const CTRL_M = 1 ' PUEDE HABER UN 1 0 o 0 1  o 2 0 ?
 Const CTRL_N = 2
@@ -194,415 +197,415 @@ Const APAGAR_PS_MICROSOFT=0
 '-----------
 
 Dim Shared As ubyte GrabarPistaCancion=0
- 
+
 Dim Shared As Integer  usarmarco=0 , usarmarcoOld=0,reiniciar=0,usarAcordesIguales=0
 Dim Shared As Integer  usarmarcoins= 0 , usarmarcoOldins=0
-#Include "dir.bi"  
- 
+#Include "dir.bi"
 
-Dim Shared  NombreInst(1 to 127) As string * 24 => _ 
-             { "ACOUSTIC_GRAND_PIANO   1" , _
-               "BRIGHT_ACOUSTIC_PIANO  2" , _
-               "ELECTRIC_GRAND_PIANO   3" , _
-               "HONKY_TONK_PIANO       4" , _
-               "ELECTRIC_PIANO_1       5" , _
-               "ELECTRIC_PIANO_2       6" , _
-               "HARPSICHORD            7" , _
-               "CLAVI                  8" , _
-               "CELESTA                9" , _
-               "GLOCKENSPIEL          10" , _
-               "MUSIC_BOX             11" , _
-               "VIBRAPHONE            12" , _
-               "MARIMBA               13" , _
-               "XYLOPHONE             14" , _
-               "TUBULAR_BELLS         15" , _
-               "DULCIMER              16" , _
-               "DRAWBAR_ORGAN         17" , _
-               "PERCUSSIVE_ORGAN      18" , _
-               "ROCK_ORGAN            19" , _
-               "CHURCH_ORGAN          20" , _
-               "REED_ORGAN            21" , _
-               "ACCORDION             22" , _
-               "HARMONICA             23" , _
-               "TANGO_ACCORDION       24" , _
-               "ACOUSTIC_GUITAR_NYLON 25" , _
-               "ACOUSTIC_GUITAR_STEEL 26" , _
-               "ELECTRIC_GUITAR_JAZZ  27" , _
-               "ELECTRIC_GUITAR_CLEAN 28" , _
-               "ELECTRIC_GUITAR_MUTED 29" , _
-               "OVERDRIVEN_GUITAR     30" , _
-               "DISTORTION_GUITAR     31" , _
-               "GUITAR_HARMONICS      32" , _
-               "ACOUSTIC_BASS         33" , _
-               "ELECTRIC_BASS_FINGER  34" , _
-               "ELECTRIC_BASS_PICK    35" , _
-               "FRETLESS_BASS         36" , _
-               "SLAP_BASS_1           37" , _
-               "SLAP_BASS_2           38" , _
-               "SYNTH_BASS_1          39" , _
-               "SYNTH_BASS_2          40" , _
-               "VIOLIN                41" , _
-               "VIOLA                 42" , _
-               "CELLO                 43" , _
-               "CONTRABASS            44" , _
-               "TREMOLO_STRINGS       45" , _
-               "PIZZICATO_STRINGS     46" , _
-               "ORCHESTRAL_HARP       47" , _
-               "TIMPANI               48" , _
-               "STRING_ENSEMBLE_1     49" , _
-               "STRING_ENSEMBLE_2     50" , _
-               "SYNTHSTRINGS_1        51" , _
-               "SYNTHSTRINGS_2        52" , _
-               "CHOIR_AAHS            53" , _
-               "VOICE_OOHS            54" , _
-               "SYNTH_VOICE           55" , _
-               "ORCHESTRA_HIT         56" , _
-               "TRUMPET               57" , _
-               "TROMBONE              58" , _
-               "TUBA                  59" , _
-               "MUTED_TRUMPET         60" , _
-               "FRENCH_HORN           61" , _
-               "BRASS_SECTION         62" , _
-               "SYNTHBRASS_1          63" , _
-               "SYNTHBRASS_2          64" , _
-               "SOPRANO_SAX           65" , _
-               "ALTO_SAX              66" , _
-               "TENOR_SAX             67" , _
-               "BARITONE_SAX          68" , _
-               "OBOE                  69" , _
-               "ENGLISH_HORN          70" , _
-               "BASSOON               71" , _
-               "CLARINET              72" , _
-               "PICCOLO               73" , _
-               "FLUTE                 74" , _
-               "RECORDER              75" , _
-               "PAN_FLUTE             76" , _
-               "BLOWN_BOTTLE          77" , _
-               "SHAKUHACHI            78" , _
-               "WHISTLE               79" , _
-               "OCARINA               80" , _
-               "LEAD_1_SQUARE         81" , _
-               "LEAD_2_SAWTOOTH       82" , _
-               "LEAD_3_CALLIOPE       83" , _
-               "LEAD_4_CHIFF          84" , _
-               "LEAD_5_CHARANG        85" , _
-               "LEAD_6_VOICE          86" , _
-               "LEAD_7_FIFTHS         87" , _
-               "LEAD_8_BASS_AND_LEAD  88" , _
-               "PAD_1_NEW_AGE         89" , _
-               "PAD_2_WARM            90" , _
-               "PAD_3_POLYSYNTH       91" , _
-               "PAD_4_CHOIR           92" , _
-               "PAD_5_BOWED           93" , _
-               "PAD_6_METALLIC        94" , _
-               "PAD_7_HALO            95" , _
-               "PAD_8_SWEEP           96" , _
-               "FX_1_RAIN             97" , _
-               "FX_2_SOUNDTRACK       98" , _
-               "FX_3_CRYSTAL          99" , _
-               "FX_4_ATMOSPHERE      100" , _
-               "FX_5_BRIGHTNESS      101" , _
-               "FX_6_GOBLINS         102" , _
-               "FX_7_ECHOES          103" , _
-               "FX_8_SCIFI           104" , _
-               "SITAR                105" , _
-               "BANJO                106" , _
-               "SHAMISEN             107" , _
-               "KOTO                 108" , _
-               "KALIMBA              109" , _
-               "BAG_PIPE             110" , _
-               "FIDDLE               111" , _
-               "SHANAI               112" , _
-               "TINKLE_BELL          113" , _
-               "AGOGO                114" , _
-               "STEEL_DRUMS          115" , _
-               "WOODBLOCK            116" , _
-               "TAIKO_DRUM           117" , _
-               "MELODIC_TOM          118" , _
-               "REVERSE_CYMBAL       119" , _
-               "GUITAR_FRET_NOISE    120" , _
-               "BREATH_NOISE         121" , _
-               "SEASHORE             122" , _
-               "BIRD_TWEET           123" , _
-               "TELEPHONE_RING       124" , _
-               "HELICOPTER           125" , _
-               "APPLAUSE             126" , _
-               "GUNSHOT              127" } ''' ES EL 127 EN COOLSOFT
 
-        '       "SYNTH DRUM           119" , _ '''ESTE NO EXISTE EN VIRTUAL SYHTH TIENE 127 EN VEZ DE 128 INSTRUMENTOS UFF
+Dim Shared  NombreInst(1 to 127) As string * 24 => _
+{ "ACOUSTIC_GRAND_PIANO   1" , _
+"BRIGHT_ACOUSTIC_PIANO  2" , _
+"ELECTRIC_GRAND_PIANO   3" , _
+"HONKY_TONK_PIANO       4" , _
+"ELECTRIC_PIANO_1       5" , _
+"ELECTRIC_PIANO_2       6" , _
+"HARPSICHORD            7" , _
+"CLAVI                  8" , _
+"CELESTA                9" , _
+"GLOCKENSPIEL          10" , _
+"MUSIC_BOX             11" , _
+"VIBRAPHONE            12" , _
+"MARIMBA               13" , _
+"XYLOPHONE             14" , _
+"TUBULAR_BELLS         15" , _
+"DULCIMER              16" , _
+"DRAWBAR_ORGAN         17" , _
+"PERCUSSIVE_ORGAN      18" , _
+"ROCK_ORGAN            19" , _
+"CHURCH_ORGAN          20" , _
+"REED_ORGAN            21" , _
+"ACCORDION             22" , _
+"HARMONICA             23" , _
+"TANGO_ACCORDION       24" , _
+"ACOUSTIC_GUITAR_NYLON 25" , _
+"ACOUSTIC_GUITAR_STEEL 26" , _
+"ELECTRIC_GUITAR_JAZZ  27" , _
+"ELECTRIC_GUITAR_CLEAN 28" , _
+"ELECTRIC_GUITAR_MUTED 29" , _
+"OVERDRIVEN_GUITAR     30" , _
+"DISTORTION_GUITAR     31" , _
+"GUITAR_HARMONICS      32" , _
+"ACOUSTIC_BASS         33" , _
+"ELECTRIC_BASS_FINGER  34" , _
+"ELECTRIC_BASS_PICK    35" , _
+"FRETLESS_BASS         36" , _
+"SLAP_BASS_1           37" , _
+"SLAP_BASS_2           38" , _
+"SYNTH_BASS_1          39" , _
+"SYNTH_BASS_2          40" , _
+"VIOLIN                41" , _
+"VIOLA                 42" , _
+"CELLO                 43" , _
+"CONTRABASS            44" , _
+"TREMOLO_STRINGS       45" , _
+"PIZZICATO_STRINGS     46" , _
+"ORCHESTRAL_HARP       47" , _
+"TIMPANI               48" , _
+"STRING_ENSEMBLE_1     49" , _
+"STRING_ENSEMBLE_2     50" , _
+"SYNTHSTRINGS_1        51" , _
+"SYNTHSTRINGS_2        52" , _
+"CHOIR_AAHS            53" , _
+"VOICE_OOHS            54" , _
+"SYNTH_VOICE           55" , _
+"ORCHESTRA_HIT         56" , _
+"TRUMPET               57" , _
+"TROMBONE              58" , _
+"TUBA                  59" , _
+"MUTED_TRUMPET         60" , _
+"FRENCH_HORN           61" , _
+"BRASS_SECTION         62" , _
+"SYNTHBRASS_1          63" , _
+"SYNTHBRASS_2          64" , _
+"SOPRANO_SAX           65" , _
+"ALTO_SAX              66" , _
+"TENOR_SAX             67" , _
+"BARITONE_SAX          68" , _
+"OBOE                  69" , _
+"ENGLISH_HORN          70" , _
+"BASSOON               71" , _
+"CLARINET              72" , _
+"PICCOLO               73" , _
+"FLUTE                 74" , _
+"RECORDER              75" , _
+"PAN_FLUTE             76" , _
+"BLOWN_BOTTLE          77" , _
+"SHAKUHACHI            78" , _
+"WHISTLE               79" , _
+"OCARINA               80" , _
+"LEAD_1_SQUARE         81" , _
+"LEAD_2_SAWTOOTH       82" , _
+"LEAD_3_CALLIOPE       83" , _
+"LEAD_4_CHIFF          84" , _
+"LEAD_5_CHARANG        85" , _
+"LEAD_6_VOICE          86" , _
+"LEAD_7_FIFTHS         87" , _
+"LEAD_8_BASS_AND_LEAD  88" , _
+"PAD_1_NEW_AGE         89" , _
+"PAD_2_WARM            90" , _
+"PAD_3_POLYSYNTH       91" , _
+"PAD_4_CHOIR           92" , _
+"PAD_5_BOWED           93" , _
+"PAD_6_METALLIC        94" , _
+"PAD_7_HALO            95" , _
+"PAD_8_SWEEP           96" , _
+"FX_1_RAIN             97" , _
+"FX_2_SOUNDTRACK       98" , _
+"FX_3_CRYSTAL          99" , _
+"FX_4_ATMOSPHERE      100" , _
+"FX_5_BRIGHTNESS      101" , _
+"FX_6_GOBLINS         102" , _
+"FX_7_ECHOES          103" , _
+"FX_8_SCIFI           104" , _
+"SITAR                105" , _
+"BANJO                106" , _
+"SHAMISEN             107" , _
+"KOTO                 108" , _
+"KALIMBA              109" , _
+"BAG_PIPE             110" , _
+"FIDDLE               111" , _
+"SHANAI               112" , _
+"TINKLE_BELL          113" , _
+"AGOGO                114" , _
+"STEEL_DRUMS          115" , _
+"WOODBLOCK            116" , _
+"TAIKO_DRUM           117" , _
+"MELODIC_TOM          118" , _
+"REVERSE_CYMBAL       119" , _
+"GUITAR_FRET_NOISE    120" , _
+"BREATH_NOISE         121" , _
+"SEASHORE             122" , _
+"BIRD_TWEET           123" , _
+"TELEPHONE_RING       124" , _
+"HELICOPTER           125" , _
+"APPLAUSE             126" , _
+"GUNSHOT              127" } ''' ES EL 127 EN COOLSOFT
+
+'       "SYNTH DRUM           119" , _ '''ESTE NO EXISTE EN VIRTUAL SYHTH TIENE 127 EN VEZ DE 128 INSTRUMENTOS UFF
 Dim Shared  NombreInstAlfa(1 to 127) as string * 24  => _
-             { "ACCORDION             22" , _
-               "ACOUSTIC_BASS         33" , _
-               "ACOUSTIC_GRAND_PIANO   1" , _
-               "ACOUSTIC_GUITAR_NYLON 25" , _
-               "ACOUSTIC_GUITAR_STEEL 26" , _
-               "AGOGO                114" , _
-               "ALTO_SAX              66" , _
-               "APPLAUSE             126" , _
-               "BAG_PIPE             110" , _
-               "BANJO                106" , _
-               "BARITONE_SAX          68" , _
-               "BASSOON               71" , _
-               "BIRD_TWEET           123" , _
-               "BLOWN_BOTTLE          77" , _
-               "BRASS_SECTION         62" , _
-               "BREATH_NOISE         121" , _
-               "BRIGHT_ACOUSTIC_PIANO  2" , _
-               "CELESTA                9" , _
-               "CELLO                 43" , _
-               "CHOIR_AAHS            53" , _
-               "CHURCH_ORGAN          20" , _
-               "CLARINET              72" , _
-               "CLAVI                  8" , _
-               "CONTRABASS            44" , _
-               "DISTORTION_GUITAR     31" , _
-               "DRAWBAR_ORGAN         17" , _
-               "DULCIMER              16" , _
-               "ELECTRIC_BASS_FINGER  34" , _
-               "ELECTRIC_BASS_PICK    35" , _
-               "ELECTRIC_GRAND_PIANO   3" , _
-               "ELECTRIC_GUITAR_CLEAN 28" , _
-               "ELECTRIC_GUITAR_JAZZ  27" , _
-               "ELECTRIC_GUITAR_MUTED 29" , _
-               "ELECTRIC_PIANO_1       5" , _
-               "ELECTRIC_PIANO_2       6" , _
-               "ENGLISH_HORN          70" , _
-               "FIDDLE               111" , _
-               "FLUTE                 74" ,  _
-               "FRENCH_HORN           61" ,  _
-               "FRETLESS_BASS         36" ,  _
-               "FX_1_RAIN             97" ,  _
-               "FX_2_SOUNDTRACK       98" ,  _
-               "FX_3_CRYSTAL          99" ,  _
-               "FX_4_ATMOSPHERE      100" ,  _
-               "FX_5_BRIGHTNESS      101" ,  _
-               "FX_6_GOBLINS         102" , _
-               "FX_7_ECHOES          103" , _
-               "FX_8_SCIFI           104" , _
-               "GLOCKENSPIEL          10" , _
-               "GUITAR_FRET_NOISE    120" , _
-               "GUITAR_HARMONICS      32" , _
-               "GUNSHOT              127" , _ 
-               "HARMONICA             23" , _
-               "HARPSICHORD            7" , _
-               "HELICOPTER           125" , _
-               "HONKY_TONK_PIANO       4" , _
-               "KALIMBA              109" ,  _
-               "KOTO                 108" ,  _
-               "LEAD_1_SQUARE         81" ,  _
-               "LEAD_2_SAWTOOTH       82" , _
-               "LEAD_3_CALLIOPE       83" , _
-               "LEAD_4_CHIFF          84" , _
-               "LEAD_5_CHARANG        85" , _
-               "LEAD_6_VOICE          86" , _
-               "LEAD_7_FIFTHS         87" , _
-               "LEAD_8_BASS_AND_LEAD  88" , _
-               "MARIMBA               13" , _
-               "MELODIC_TOM          118" ,  _
-               "MUSIC_BOX             11" , _
-               "MUTED_TRUMPET         60" , _
-               "OBOE                  69" , _
-               "OCARINA               80" , _
-               "ORCHESTRAL_HARP       47" , _
-               "ORCHESTRA_HIT         56" , _
-               "OVERDRIVEN_GUITAR     30" , _
-               "PAD_1_NEW_AGE         89" , _
-               "PAD_2_WARM            90" , _
-               "PAD_3_POLYSYNTH       91" , _
-               "PAD_4_CHOIR           92" , _
-               "PAD_5_BOWED           93" , _
-               "PAD_6_METALLIC        94" , _
-               "PAD_7_HALO            95" , _
-               "PAD_8_SWEEP           96" , _
-               "PAN_FLUTE             76" , _
-               "PERCUSSIVE_ORGAN      18" , _
-               "PICCOLO               73" , _
-               "PIZZICATO_STRINGS     46" , _
-               "RECORDER              75" , _
-               "REED_ORGAN            21" , _
-               "REVERSE_CYMBAL       119" ,  _
-               "ROCK_ORGAN            19" , _
-               "SEASHORE             122" ,  _
-               "SHAKUHACHI            78" , _
-               "SHAMISEN             107" ,  _
-               "SHANAI               112" ,  _
-               "SITAR                105" ,  _
-               "SLAP_BASS_1           37" , _
-               "SLAP_BASS_2           38" , _
-               "SOPRANO_SAX           65" , _
-               "STEEL_DRUMS          115" ,  _
-               "STRING_ENSEMBLE_1     49" , _
-               "STRING_ENSEMBLE_2     50" , _
-               "SYNTHBRASS_1          63" , _
-               "SYNTHBRASS_2          64" , _
-               "SYNTHSTRINGS_1        51" , _
-               "SYNTHSTRINGS_2        52" , _
-               "SYNTH_BASS_1          39" , _
-               "SYNTH_BASS_2          40" , _
-               "SYNTH_VOICE           55" , _
-               "TAIKO_DRUM           117" ,  _
-               "TANGO_ACCORDION       24" , _
-               "TELEPHONE_RING       124" ,  _
-               "TENOR_SAX             67" , _
-               "TIMPANI               48" , _
-               "TINKLE_BELL          113" ,  _
-               "TREMOLO_STRINGS       45" , _
-               "TROMBONE              58" , _
-               "TRUMPET               57" , _
-               "TUBA                  59" , _
-               "TUBULAR_BELLS         15" , _
-               "VIBRAPHONE            12" , _
-               "VIOLA                 42" , _
-               "VIOLIN                41" , _
-               "VOICE_OOHS            54" , _
-               "WHISTLE               79" , _
-               "WOODBLOCK            116" ,  _
-               "XYLOPHONE             14" }
+{ "ACCORDION             22" , _
+"ACOUSTIC_BASS         33" , _
+"ACOUSTIC_GRAND_PIANO   1" , _
+"ACOUSTIC_GUITAR_NYLON 25" , _
+"ACOUSTIC_GUITAR_STEEL 26" , _
+"AGOGO                114" , _
+"ALTO_SAX              66" , _
+"APPLAUSE             126" , _
+"BAG_PIPE             110" , _
+"BANJO                106" , _
+"BARITONE_SAX          68" , _
+"BASSOON               71" , _
+"BIRD_TWEET           123" , _
+"BLOWN_BOTTLE          77" , _
+"BRASS_SECTION         62" , _
+"BREATH_NOISE         121" , _
+"BRIGHT_ACOUSTIC_PIANO  2" , _
+"CELESTA                9" , _
+"CELLO                 43" , _
+"CHOIR_AAHS            53" , _
+"CHURCH_ORGAN          20" , _
+"CLARINET              72" , _
+"CLAVI                  8" , _
+"CONTRABASS            44" , _
+"DISTORTION_GUITAR     31" , _
+"DRAWBAR_ORGAN         17" , _
+"DULCIMER              16" , _
+"ELECTRIC_BASS_FINGER  34" , _
+"ELECTRIC_BASS_PICK    35" , _
+"ELECTRIC_GRAND_PIANO   3" , _
+"ELECTRIC_GUITAR_CLEAN 28" , _
+"ELECTRIC_GUITAR_JAZZ  27" , _
+"ELECTRIC_GUITAR_MUTED 29" , _
+"ELECTRIC_PIANO_1       5" , _
+"ELECTRIC_PIANO_2       6" , _
+"ENGLISH_HORN          70" , _
+"FIDDLE               111" , _
+"FLUTE                 74" ,  _
+"FRENCH_HORN           61" ,  _
+"FRETLESS_BASS         36" ,  _
+"FX_1_RAIN             97" ,  _
+"FX_2_SOUNDTRACK       98" ,  _
+"FX_3_CRYSTAL          99" ,  _
+"FX_4_ATMOSPHERE      100" ,  _
+"FX_5_BRIGHTNESS      101" ,  _
+"FX_6_GOBLINS         102" , _
+"FX_7_ECHOES          103" , _
+"FX_8_SCIFI           104" , _
+"GLOCKENSPIEL          10" , _
+"GUITAR_FRET_NOISE    120" , _
+"GUITAR_HARMONICS      32" , _
+"GUNSHOT              127" , _
+"HARMONICA             23" , _
+"HARPSICHORD            7" , _
+"HELICOPTER           125" , _
+"HONKY_TONK_PIANO       4" , _
+"KALIMBA              109" ,  _
+"KOTO                 108" ,  _
+"LEAD_1_SQUARE         81" ,  _
+"LEAD_2_SAWTOOTH       82" , _
+"LEAD_3_CALLIOPE       83" , _
+"LEAD_4_CHIFF          84" , _
+"LEAD_5_CHARANG        85" , _
+"LEAD_6_VOICE          86" , _
+"LEAD_7_FIFTHS         87" , _
+"LEAD_8_BASS_AND_LEAD  88" , _
+"MARIMBA               13" , _
+"MELODIC_TOM          118" ,  _
+"MUSIC_BOX             11" , _
+"MUTED_TRUMPET         60" , _
+"OBOE                  69" , _
+"OCARINA               80" , _
+"ORCHESTRAL_HARP       47" , _
+"ORCHESTRA_HIT         56" , _
+"OVERDRIVEN_GUITAR     30" , _
+"PAD_1_NEW_AGE         89" , _
+"PAD_2_WARM            90" , _
+"PAD_3_POLYSYNTH       91" , _
+"PAD_4_CHOIR           92" , _
+"PAD_5_BOWED           93" , _
+"PAD_6_METALLIC        94" , _
+"PAD_7_HALO            95" , _
+"PAD_8_SWEEP           96" , _
+"PAN_FLUTE             76" , _
+"PERCUSSIVE_ORGAN      18" , _
+"PICCOLO               73" , _
+"PIZZICATO_STRINGS     46" , _
+"RECORDER              75" , _
+"REED_ORGAN            21" , _
+"REVERSE_CYMBAL       119" ,  _
+"ROCK_ORGAN            19" , _
+"SEASHORE             122" ,  _
+"SHAKUHACHI            78" , _
+"SHAMISEN             107" ,  _
+"SHANAI               112" ,  _
+"SITAR                105" ,  _
+"SLAP_BASS_1           37" , _
+"SLAP_BASS_2           38" , _
+"SOPRANO_SAX           65" , _
+"STEEL_DRUMS          115" ,  _
+"STRING_ENSEMBLE_1     49" , _
+"STRING_ENSEMBLE_2     50" , _
+"SYNTHBRASS_1          63" , _
+"SYNTHBRASS_2          64" , _
+"SYNTHSTRINGS_1        51" , _
+"SYNTHSTRINGS_2        52" , _
+"SYNTH_BASS_1          39" , _
+"SYNTH_BASS_2          40" , _
+"SYNTH_VOICE           55" , _
+"TAIKO_DRUM           117" ,  _
+"TANGO_ACCORDION       24" , _
+"TELEPHONE_RING       124" ,  _
+"TENOR_SAX             67" , _
+"TIMPANI               48" , _
+"TINKLE_BELL          113" ,  _
+"TREMOLO_STRINGS       45" , _
+"TROMBONE              58" , _
+"TRUMPET               57" , _
+"TUBA                  59" , _
+"TUBULAR_BELLS         15" , _
+"VIBRAPHONE            12" , _
+"VIOLA                 42" , _
+"VIOLIN                41" , _
+"VOICE_OOHS            54" , _
+"WHISTLE               79" , _
+"WOODBLOCK            116" ,  _
+"XYLOPHONE             14" }
 
 Dim Shared  IndiceInstAlfa(1 to 127) as integer   => _
-             { 22, _
-               33, _
-                1, _
-               25, _
-               26, _
-               114, _
-               66,  _
-               126, _
-               110, _
-               106, _
-                68, _
-                71, _
-                123, _
-                77, _
-                62, _
-                121, _
-                2 , _
-                9 , _
-                43 , _
-                53 , _
-                20 , _
-                72 , _
-                8 , _
-                44, _
-                31, _
-                17, _
-                16, _
-                34, _
-                35, _
-                3, _
-                28, _
-                27, _
-                29, _
-                5, _
-                6, _
-                70, _
-                111,_
-                74, _
-                61, _
-                36, _
-                97, _
-                98, _
-                99, _
-                100, _
-                101 , _
-                102, _
-                103, _
-                104, _
-                10, _
-                120, _
-                32, _
-                127, _ 
-                23, _
-                7, _
-                125, _
-                4, _
-                109, _
-                108, _
-                81 , _
-                82, _
-                83, _
-                84, _
-                85, _
-                86, _
-                87, _
-                88, _
-                13, _
-                118, _
-                11, _
-                60, _
-                69, _
-                80, _
-                47, _
-                56, _
-                30, _
-                89, _
-                90, _
-                91, _
-                92, _
-                93, _
-                94, _
-                95, _
-                96, _
-                76, _
-                18, _
-                73, _
-                46, _
-                75, _
-                21, _
-                119, _
-                19, _
-                122, _
-                78, _
-                107, _
-                112, _
-                105, _
-                37, _
-                38, _
-                65, _
-                115, _
-                49, _
-                50, _
-                63, _
-                64, _
-                51, _
-                52, _
-                39, _
-                40, _
-                55, _
-                117, _
-                24, _
-                124, _
-                67, _
-                48, _
-                113, _
-                45, _
-                58, _
-                57, _
-                59, _
-                15, _
-                12, _
-                42, _
-                41, _
-                54, _
-                79, _
-                116, _
-                14  }
+{ 22, _
+33, _
+1, _
+25, _
+26, _
+114, _
+66,  _
+126, _
+110, _
+106, _
+68, _
+71, _
+123, _
+77, _
+62, _
+121, _
+2 , _
+9 , _
+43 , _
+53 , _
+20 , _
+72 , _
+8 , _
+44, _
+31, _
+17, _
+16, _
+34, _
+35, _
+3, _
+28, _
+27, _
+29, _
+5, _
+6, _
+70, _
+111,_
+74, _
+61, _
+36, _
+97, _
+98, _
+99, _
+100, _
+101 , _
+102, _
+103, _
+104, _
+10, _
+120, _
+32, _
+127, _
+23, _
+7, _
+125, _
+4, _
+109, _
+108, _
+81 , _
+82, _
+83, _
+84, _
+85, _
+86, _
+87, _
+88, _
+13, _
+118, _
+11, _
+60, _
+69, _
+80, _
+47, _
+56, _
+30, _
+89, _
+90, _
+91, _
+92, _
+93, _
+94, _
+95, _
+96, _
+76, _
+18, _
+73, _
+46, _
+75, _
+21, _
+119, _
+19, _
+122, _
+78, _
+107, _
+112, _
+105, _
+37, _
+38, _
+65, _
+115, _
+49, _
+50, _
+63, _
+64, _
+51, _
+52, _
+39, _
+40, _
+55, _
+117, _
+24, _
+124, _
+67, _
+48, _
+113, _
+45, _
+58, _
+57, _
+59, _
+15, _
+12, _
+42, _
+41, _
+54, _
+79, _
+116, _
+14  }
 
 Common Shared As  Integer PPQN
-PPQN=96 
+PPQN=96
 Common Shared As float nanchofig
 COMMON Shared As Long eventc, eventM , eventK
 Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA, APLICABLE
-APLICABLE=FALSE 
+APLICABLE=FALSE
 Common Shared As string pathdir,nombre,DirEjecSinBarra
 common Shared As String NombreCancion,NombrePista
 Common Shared As Integer cargaCancion, pid1,clickpista,ultimo_chequeado,maxposTope ',pistacreada
 Common Shared As cairo_t  Ptr c, c2
-Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer,threadmedia,threadsound, threadplaysound,threadmovie
+Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer,threadmedia,threadsound, threadplaysound,threadmovie,threadSndPuro
 Screenbuffer=0
-Common Shared as any ptr thread1, thread2,threadPenta,threadcreaPenta, thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal,threadPer
-Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro,threadKey,threadmidi0,threadCargamidi
+Common Shared as any ptr thread1, thread2,threadPenta,threadcreaPenta, thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal,threadPer,threadVoz
+Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro,threadKey,threadmidi0,threadCargamidi,threadTono
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes, nretrasoMetronomoCan,nretrasoMetronomoRoll
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi,ubiejec,ubionline
@@ -624,7 +627,8 @@ Common Shared As Integer gp, midiplano,midionof,contid,separaenuno, interva ,val
 Common Shared As Integer valoreco, valorcoro,valorvol
 common Shared As integer tiempoPatron,NuevaCancion
 COMMON Shared As hWnd hwnd,hwndMenu
-common Shared As integer tiempoPatronEjec,BACKUP, pulsotab
+common Shared As integer tiempoPatronEjec,BACKUP, pulsotab, backspaceNotas,CAMBIORETARDO
+CAMBIORETARDO=1
 BACKUP=NO
 tiempoPatron=60
 tiempoPatronEjec=60
@@ -639,15 +643,16 @@ deltax=1
 deltaz=0 ' muestra ayuda al pie del grafico
 contid=0
 separaenuno=0
-interva=3 '  default 3 para ticks desplazamineto zoom horizontal 
- MaxPos=2:ntk=0:CPlay=NO: guardopos=0:ntktab=0 : ntoca=0
- posicion=0:posicionOld=0:posn=0
+interva=3 '  default 3 para ticks desplazamineto zoom horizontal
+MaxPos=2:ntk=0:CPlay=NO: guardopos=0:ntktab=0 : ntoca=0
+posicion=0:posicionOld=0:posn=0
 valorpan=64  'mf
-valoreco=0  
+valoreco=0
 valorcoro=0
 valorvol=90
 NuevaCancion=NO
-redim  titulosTk(0 To 32)  
+backspaceNotas=0
+redim  titulosTk(0 To 32)
 
 trasponer=0
 common Shared As UByte Globalpan, Globaleco,Globalcoro, CerrarGraficodesdeCtrl,Globalvol
@@ -661,160 +666,160 @@ Common Shared As UByte Vfuerte,Vsemifuerte,Vdebil
 Vfuerte=120     'ff
 Vsemifuerte=100 'mf
 Vdebil=80      ' p
-Common Shared As Long PARAR_PLAY_MANUAL ,PARAR_PLAY_EJEC 
+Common Shared As Long PARAR_PLAY_MANUAL ,PARAR_PLAY_EJEC
 PARAR_PLAY_MANUAL = NO:PARAR_PLAY_EJEC = NO
 Common Shared TipoCompas As UByte
 Dim Shared As Integer PISTASEJECSELECCIONADA=0,PISTASROLLSELECCIONADA=0
 Type rangoOct Field=1
- As Integer desde = 0
- As Integer hasta =0
- As Integer NB =0
- As Integer NA =0
- As Integer MaxPos =0 ' HASTA DONDE HAY DATOS MENOR A LOS TICKS
- As Integer posn =2 
- As UByte   notaold=0 
- As Integer Ticks =0 ' LA MAXIMA CAPACIDAD DE LA CINTA O DE LA CANCION EN DONDE ESTA
- As UByte   patch
- As UByte   notaescala
- As UByte   tipoescala
- As UByte   alteracion  ' sos 3, bem 2
- As Double  fechasPistas
- As UByte   canalsalida
- As UByte   canalentrada
- As UByte   portout      ' dispositivo midi de salida 
- As Integer zona1
- As integer zona2
- As UByte   nroRep
- As UByte   portin 
- As UByte   tipoCompas
- As UByte   ejec
- As UByte   vol
- As Integer tiempopatron ' 240 60 etc
- As UByte   pan
- As UByte   Eco
- As UByte   Coro
- As Integer ajuste
- As UByte   sonido '1 -si suena en el play, y lo reproduce cancion, ó 0 - si lo saltea.
- As UByte   vibrato
- As UByte   canalx
- As UByte   pitchbend
- As UByte   orden
- As UByte   solo    ' 1 -si lo marcamos como solo para reproduccion independiente
- As UByte   versionEjec
+	As Integer desde = 0
+	As Integer hasta =0
+	As Integer NB =0
+	As Integer NA =0
+	As Integer MaxPos =0 ' HASTA DONDE HAY DATOS MENOR A LOS TICKS
+	As Integer posn =2
+	As UByte   notaold=0
+	As Integer Ticks =0 ' LA MAXIMA CAPACIDAD DE LA CINTA O DE LA CANCION EN DONDE ESTA
+	As UByte   patch
+	As UByte   notaescala
+	As UByte   tipoescala
+	As UByte   alteracion  ' sos 3, bem 2
+	As Double  fechasPistas
+	As UByte   canalsalida
+	As UByte   canalentrada
+	As UByte   portout      ' dispositivo midi de salida
+	As Integer zona1
+	As integer zona2
+	As UByte   nroRep
+	As UByte   portin
+	As UByte   tipoCompas
+	As UByte   ejec
+	As UByte   vol
+	As Integer tiempopatron ' 240 60 etc
+	As UByte   pan
+	As UByte   Eco
+	As UByte   Coro
+	As Integer ajuste
+	As UByte   sonido '1 -si suena en el play, y lo reproduce cancion, ó 0 - si lo saltea.
+	As UByte   vibrato
+	As UByte   canalx
+	As UByte   pitchbend
+	As UByte   orden
+	As UByte   solo    ' 1 -si lo marcamos como solo para reproduccion independiente
+	As UByte   versionEjec
 End Type
 
 Dim Shared  As rangoOct pmTk (), pmEj ()
 ReDim  pmTk (0 To 32)
 ReDim  pmEj (1 To 32)
 Type poli Field=1 ' para guardar la secuencia EN Tacks 15 bytes
- dur    As UByte =0   ' duracion 
- sonido As UByte =0   ' SONIDO ON/OFF ? se usa?
- canal  As UByte =0   '  
- onoff  As UByte =0   ' nota on=2, nota off=1  
- ejec   As UByte =0   ' marca viene de un ejec=1, no viene de ejec=0 
- eco    As UByte =0   ' era dur6  
- patch  As UByte =0   '  
- nanchofig As UByte =0   '  
- nota   As UByte =0 ' en un futuro contendra nota, octava, canal etc 
- vol    As UByte =0 ' volumen
- pan    As UByte =0 ' paneo
- pb     As UByte =0 ' pitch bend
- nnn    As UByte =0 ' se usa para escala canal etc 
- tick   As UByte =0 ' 384 tiene la redonda NO SIRVE
- acorde As UByte =0 ' 1 a 12 , son el se hara el sort    
+	dur    As UByte =0   ' duracion
+	sonido As UByte =0   ' SONIDO ON/OFF ? se usa?
+	canal  As UByte =0   '
+	onoff  As UByte =0   ' nota on=2, nota off=1
+	ejec   As UByte =0   ' marca viene de un ejec=1, no viene de ejec=0
+	eco    As UByte =0   ' era dur6
+	patch  As UByte =0   '
+	nanchofig As UByte =0   '
+	nota   As UByte =0 ' en un futuro contendra nota, octava, canal etc
+	vol    As UByte =0 ' volumen
+	pan    As UByte =0 ' paneo
+	pb     As UByte =0 ' pitch bend
+	nnn    As UByte =0 ' se usa para escala canal etc
+	tick   As UByte =0 ' 384 tiene la redonda NO SIRVE
+	acorde As UByte =0 ' 1 a 12 , son el se hara el sort
 End Type
 ' posn As Integer =0' de roll todavia no lo uso para generar secuencia
 ' comentarios Para Futuro:
-' tick y posn seria para tener una relacion entre ticks los 128, y la posicin 
+' tick y posn seria para tener una relacion entre ticks los 128, y la posicin
 ' de roll, o sea  en que posicion o columna esta la nota en Roll
 ' acorde, no se si seria necesario quiere indicar si hay o no un acorde
 ' una forma de disminuir el algoritmo de lectura posterior....a verlo....
 Type sec
- As poli trk(Any, any)
+	As poli trk(Any, any)
 End Type
 Type datsec Field=1
- nota  As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc 
- dur   As UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
- vol   As UByte =0 ' volumen hasta 127 es volumen desde ahi es escala 128 a 255 =127 escalas
- pan   As UByte =0 ' alteracion  bemoL o sostenido
- pb    As UByte =0 ' acorde 201 202
- inst  As UByte =0 ' instrumento para cada nota podra ser distinto 1 to 128
- onoff As UByte =0 ' 2 on , 1 off
+	nota  As UByte =0 ' 1 a 12, en un futuro contendra nota, octava, canal etc
+	dur   As UByte =0 ' duracion 1 a 180, tambien tendra rasguidos distintos programables por usuario o fijos
+	vol   As UByte =0 ' volumen hasta 127 es volumen desde ahi es escala 128 a 255 =127 escalas
+	pan   As UByte =0 ' alteracion  bemoL o sostenido
+	pb    As UByte =0 ' acorde 201 202
+	inst  As UByte =0 ' instrumento para cada nota podra ser distinto 1 to 128
+	onoff As UByte =0 ' 2 on , 1 off
 End Type
 
 ' datos roll encabezado 70 BYTES, solo campos ubyte
 Type rolldat Field=1 'con esto se define roll tendra pan,vol,nota,dur,pb,inst variables
- x1    As UByte =0  'z.nota
- x2    As UByte =0  'z.dur
- x3    As UByte =0  'z.vol
- x4    As UByte =0  'z.pan
- x5    As UByte =0  'z.pb
- tipoescala_num_ini As UByte 'z.inst
- solo        As UByte ' z.onoff-------7---- si se reprroduce fuera de cancion, 
- desde       As UByte =0 'zlim.nota 
- hasta       As UByte =0 'zlim.dur
- notaescala_num_ini As UByte =0   ' zlim.vol 
- alteracion  As UByte =0   'zlim.pan
- notaold     As UByte =0 ' zlim.pb   
- canalx      As UByte =0 'zlim.inst 
- ejec        As UByte =0 'zlim.onoff ---- 14 xxxxx nuevo
- patch       As UByte =0 'z3.nota
- portout     As UByte =0  'z3.dur
- nanchofig   As UByte  =0   'z3.vol nanchofig*10 cuando lo uso lo dividopo 10
- vol         As UByte = 90 '''' librez3pan    As UByte =0  'z3.pan 90 default
- TipoCompas  As UByte =0 'z3.pb
- canalsalida As UByte =0 'z3.inst
- version     As UByte =222 'librez3onoff z3.onoff --- 21 ubyte 21 LO USAREMOS PARA INDICAR VERSION 2 DE ROLL=222
-   librez4nota As UByte =0  'z4.nota
-   librez4dur As UByte =0  'z4.dur
-   librez4vol As UByte =0  'z4.vol
- tiempoPatron1 As UByte=0 'z4.pan
- tiempoPatron2 As UByte=0 'z4.pb
-   librez4inst As UByte =0 'z4.inst
-   librez4onoff As UByte =0 'z4.onoff ---28
- eco    As UByte =0       'z5.eco  
- pan    As UByte =0       'z5.pan
- coro   As UByte =0 'z5.canalsalida repetido
-   libreportout     As UByte =0 'z5.portout repetido
-   librepatch       As UByte =0 'z5.patch repetido
- pitchbend   As UByte =0 'z5.pitchbend
- vibrato   As UByte =0   'z5.vibrato ---35
-'---vienen 35 ubyte
- mas1 As UByte =0
- mas2 As UByte =0
- mas3 As UByte =0
- mas4 As UByte =0
- mas5 As UByte =0
- mas6 As UByte =0
- mas7 As UByte =0
- mas8 As UByte =0
- mas9 As UByte =0
- mas10 As UByte =0
- mas11 As UByte =0
- mas12 As UByte =0
- mas13 As UByte =0
- mas14 As UByte =0
- mas15 As UByte =0
- mas16 As UByte =0
- mas17 As UByte =0
- mas18 As UByte =0
- mas19 As UByte =0
- mas20 As UByte =0
- mas21 As UByte =0
- mas22 As UByte =0
- mas23 As UByte =0
- mas24 As UByte =0
- mas25 As UByte =0
- mas26 As UByte =0
- mas27 As UByte =0
- mas28 As UByte =0
- mas29 As UByte =0
- mas30 As UByte =0
- mas31 As UByte =0
- mas32 As UByte =0
- mas33 As UByte =0
- mas34 As UByte =0
- mas35 As UByte =0 
+	x1    As UByte =0  'z.nota
+	x2    As UByte =0  'z.dur
+	x3    As UByte =0  'z.vol
+	x4    As UByte =0  'z.pan
+	x5    As UByte =0  'z.pb
+	tipoescala_num_ini As UByte 'z.inst
+	solo        As UByte ' z.onoff-------7---- si se reprroduce fuera de cancion,
+	desde       As UByte =0 'zlim.nota
+	hasta       As UByte =0 'zlim.dur
+	notaescala_num_ini As UByte =0   ' zlim.vol
+	alteracion  As UByte =0   'zlim.pan
+	notaold     As UByte =0 ' zlim.pb
+	canalx      As UByte =0 'zlim.inst
+	ejec        As UByte =0 'zlim.onoff ---- 14 xxxxx nuevo
+	patch       As UByte =0 'z3.nota
+	portout     As UByte =0  'z3.dur
+	nanchofig   As UByte  =0   'z3.vol nanchofig*10 cuando lo uso lo dividopo 10
+	vol         As UByte = 90 '''' librez3pan    As UByte =0  'z3.pan 90 default
+	TipoCompas  As UByte =0 'z3.pb
+	canalsalida As UByte =0 'z3.inst
+	version     As UByte =222 'librez3onoff z3.onoff --- 21 ubyte 21 LO USAREMOS PARA INDICAR VERSION 2 DE ROLL=222
+	librez4nota As UByte =0  'z4.nota
+	librez4dur As UByte =0  'z4.dur
+	librez4vol As UByte =0  'z4.vol
+	tiempoPatron1 As UByte=0 'z4.pan
+	tiempoPatron2 As UByte=0 'z4.pb
+	librez4inst As UByte =0 'z4.inst
+	librez4onoff As UByte =0 'z4.onoff ---28
+	eco    As UByte =0       'z5.eco
+	pan    As UByte =0       'z5.pan
+	coro   As UByte =0 'z5.canalsalida repetido
+	libreportout     As UByte =0 'z5.portout repetido
+	librepatch       As UByte =0 'z5.patch repetido
+	pitchbend   As UByte =0 'z5.pitchbend
+	vibrato   As UByte =0   'z5.vibrato ---35
+	'---vienen 35 ubyte
+	mas1 As UByte =0
+	mas2 As UByte =0
+	mas3 As UByte =0
+	mas4 As UByte =0
+	mas5 As UByte =0
+	mas6 As UByte =0
+	mas7 As UByte =0
+	mas8 As UByte =0
+	mas9 As UByte =0
+	mas10 As UByte =0
+	mas11 As UByte =0
+	mas12 As UByte =0
+	mas13 As UByte =0
+	mas14 As UByte =0
+	mas15 As UByte =0
+	mas16 As UByte =0
+	mas17 As UByte =0
+	mas18 As UByte =0
+	mas19 As UByte =0
+	mas20 As UByte =0
+	mas21 As UByte =0
+	mas22 As UByte =0
+	mas23 As UByte =0
+	mas24 As UByte =0
+	mas25 As UByte =0
+	mas26 As UByte =0
+	mas27 As UByte =0
+	mas28 As UByte =0
+	mas29 As UByte =0
+	mas30 As UByte =0
+	mas31 As UByte =0
+	mas32 As UByte =0
+	mas33 As UByte =0
+	mas34 As UByte =0
+	mas35 As UByte =0
 End Type ' tambien se usa para el encabezado
 ' el encabezado deberia ser distintos todos
 ''202 ' codigo de exsitencia de cifrado en el cabezado
@@ -828,60 +833,60 @@ End Type ' tambien se usa para el encabezado
 ' como la estructura dat tiene 6 (8 ahora) campos me quedan 7 campos en las 8 primeras ,acorde solo
 ' usa una la pb (201 202)=56
 ' y todas las 8 en las 5 siguietnes = 40 , +56 = 96 sitios donde poner informaicon para una posicion dada
-' las repeticiones las colocaremos en la 1era de la posicion libre o sea en este caso 
+' las repeticiones las colocaremos en la 1era de la posicion libre o sea en este caso
 ' la posicion 98 como si fuera una octava 9 ficticia...las repeticiones no dependen de la
 ' octava todas las pistas se repiten al unisono. solo hace falta inforamcion
 ' arriba en al octava que no se usa. REVEEER ESTO NO SE ENTIENDE QUE PASA CON EL CAMBIO,,
 ' ---------
 
 
- ' Nota de escala son 12 ..bemol o sostenido son 2, 1 a 12 sostenidos, 13 a 24 bemoles
- ' entonces en 24 numeros tengo la info de nota
- ' octavas son 8 desde 15 a 20 son las octavas, 
-' canal son 16 de 21 a 36 ... etc etc pero no se hizo de esa forma... 
- ''t   As Ulong   '  ticks por ahroa no 
+' Nota de escala son 12 ..bemol o sostenido son 2, 1 a 12 sostenidos, 13 a 24 bemoles
+' entonces en 24 numeros tengo la info de nota
+' octavas son 8 desde 15 a 20 son las octavas,
+' canal son 16 de 21 a 36 ... etc etc pero no se hizo de esa forma...
+''t   As Ulong   '  ticks por ahroa no
 
 ' dentro del vol pondre mos las escalas
 ' chords http://www.looknohands.com/chordhouse/piano/ ahi hay 168 escalas..!!
 ' en vol tengo desde 129 a 255 para numerar escalas. si faltan puedo usar pan o pb
 ' la idea es poner en que escala esta cada nota o compas y asi poder tener cambios de escala
-' y construir los acordes que se quieran construir en esa escala de esea nota o del compas o 
+' y construir los acordes que se quieran construir en esa escala de esea nota o del compas o
 ' la escala del ultimo cambio...por default la escala sera C mayor..la 129
 ' Nombre de Nota de la escala C,C#,..B son 12 129 a 140, ocupara una posicion
 ' de tick la mas chica usada es 6 asi que un retardo de 1 o 2 no afectara
-' o veo de saltar esos datos no tomandolo como tick sino de control 
-'''--------------------------------- nota vieja ----- ver si sirve 
- ' Nota de escala son 12 ..bemol o sostenido son 2
- ' entonces en 14 numeros tengo la info
- ' 129 -> c,130->c#,131->d...140->B--, 141-sos,142,bemol
- ''t   As Ulong   '  ticks por ahroa no 
+' o veo de saltar esos datos no tomandolo como tick sino de control
+'''--------------------------------- nota vieja ----- ver si sirve
+' Nota de escala son 12 ..bemol o sostenido son 2
+' entonces en 14 numeros tengo la info
+' 129 -> c,130->c#,131->d...140->B--, 141-sos,142,bemol
+''t   As Ulong   '  ticks por ahroa no
 
 ' dentro del vol pondremso las escalas
 ' chords http://www.looknohands.com/chordhouse/piano/ ahi hay 168 escalas..!!
 ' en vol tengo desde 129 a 255 para numerar escalas. si faltan puedo usar pan o pb
 ' l aidea es poner en que escala esta cada nota o compas y asi poder tener cambios de escla
-' y construir los acordes que se quieran construir es esa escala de esea nota o del compas o 
-' la escala del ultimo cambio...por default la escala sera C mayor.. 
-' ---------------------------------fin nota vieja --------------- 
+' y construir los acordes que se quieran construir es esa escala de esea nota o del compas o
+' la escala del ultimo cambio...por default la escala sera C mayor..
+' ---------------------------------fin nota vieja ---------------
 Type inst
- As datsec trk(Any, Any)
+	As datsec trk(Any, Any)
 End Type
 
 Type paso Field=1
- Posi As Integer =0
- nro  As Integer =0
+	Posi As Integer =0
+	nro  As Integer =0
 End Type
 
-Type pasa Field=1 
-  As cairo_t Ptr c
-  As inst Roll
-  As String  titulo = ""
-  As Integer ancho =0
-  As Integer alto=0
-  As Integer ubiroll=0
-  As Integer ubirtk=0
-  As Integer encancion=0
-  As Integer midionof=0
+Type pasa Field=1
+	As cairo_t Ptr c
+	As inst Roll
+	As String  titulo = ""
+	As Integer ancho =0
+	As Integer alto=0
+	As Integer ubiroll=0
+	As Integer ubirtk=0
+	As Integer encancion=0
+	As Integer midionof=0
 End Type
 
 Common Shared portsal As UByte
@@ -891,18 +896,20 @@ Declare Sub VolumenGrafico (c As cairo_t Ptr, Roll As inst)
 Declare Sub barrePenta (c As cairo_t Ptr, Roll As inst)
 Declare Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst, ByRef ubiroll As Integer, ByRef ubirtk As Integer )
 
-Common shared As Integer numtrack,superposicion, nnn,versionEJEC ,retrasoMetronomo,retrasoMetronomoCan,retrasoMetronomoRoll,_ 
+Common shared As Integer numtrack,superposicion, nnn,versionEJEC ,retrasoMetronomo,retrasoMetronomoCan,retrasoMetronomoRoll,_
 intentos,velMetronomoIzq,velMetronomoDer, BatchGraficoOCtrl, PORT_MICROSOFT,retrasoMetronomoMedio
 Common Shared As String VolIzq100, VolDer100
-Common Shared As UInteger volhder,volhizq,terminar_metronomo
+Common Shared As UInteger volhDer,volhIzq,terminar_metronomo
 Common Shared As ULong volumenTotal
+Common Shared As Integer volalto
+volalto=FALSE
 terminar_metronomo=0
 VolIzq100="70"
 VolDer100="70"
 velMetronomoIzq=70
 velMetronomoDer=70
-volhizq =  velMetronomoIzq*65535/100
-volhder =  velMetronomoDer*65535/100
+volhIzq =  velMetronomoIzq*65535/100
+volhDer =  velMetronomoDer*65535/100
 
 PORT_MICROSOFT=0  ' NO HABILITADO
 nnn=0
@@ -916,7 +923,15 @@ Declare Sub TABTAB()
 Dim Shared As String mensajeEstado , FUNCMENU,mensajeEstadoOld
 mensajeEstado=""
 mensajeEstadoOld=""
-Declare Function  SWITCH(BLN As BOOLEAN ) As BOOLEAN 
+Declare Function  SWITCH(BLN As BOOLEAN ) As BOOLEAN
 Common Shared As BOOLEAN medio_metronomo_on
 medio_metronomo_on=FALSE
+Dim Shared As String kasci
 
+Const PI As Double = 3.1415926535897932
+Const SAMPLE_RATE As Integer = 44100 ' Calidad CD
+Const BITS As Integer = 16          ' 16-bit (Estándar)
+Const CANALES As Integer = 1        ' 1 = Mono, 2 = Estereo
+Dim Shared PlaySoundbuffer As Integer Ptr
+Dim Shared As Integer SEGUNDOS=60
+Dim Shared As String cadenapulsos

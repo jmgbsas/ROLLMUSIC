@@ -7,10 +7,10 @@
 ''
 ''
 #ifndef __mod_rtmidi_c_bi__
-#define __mod_rtmidi_c_bi__
-
-#include once "rtmidi_c.bi"
-
+	#define __mod_rtmidi_c_bi__
+	
+	#include once "rtmidi_c.bi"
+	
 #endif
 
 
