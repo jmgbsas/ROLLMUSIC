@@ -195,6 +195,7 @@ Const CONTROL=3
 Const HABILITAR_PS_MICROSOFT=1
 Const APAGAR_PS_MICROSOFT=0
 '-----------
+Const IMAGE_FIGVOZ = 35
 
 Dim Shared As ubyte GrabarPistaCancion=0
 

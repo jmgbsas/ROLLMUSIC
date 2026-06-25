@@ -61,7 +61,7 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.392 BOTON CELESTE CARGA ROLL EN VENTANA DE CONTROL, ENTRENAR VOZ,"
+nroversion="0.393 FIX ENTRENAR VOZ, 1.0 Escuchar y Cantar.. "
 ' Ejercicios de ritmo se puede anotar en un notepad los distintos ejercicios notas con silencio 0
 ' con sonido 1,2,3 de normal semi fuerte y fuerte. 
 ' el ejecutable tiene su primer icon,,,RM JMG.

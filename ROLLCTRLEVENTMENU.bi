@@ -1338,8 +1338,9 @@ Case 1211 ' CORO /CHORUS
 	Print #1,"///----SEL 1211 CORO Globalcoro ",Globalcoro
 	'------------------------------------------------------------------
 Case 1230 ' ENTRENAMIENTO OIDO Y VOZ
-	
+	 
 	threadSndPuro-=ThreadCall CTRL1230 ()
+	
 	'-------------------------------------------------------------------
 Case 2000
 	
@@ -1364,7 +1365,7 @@ Case 2004 ' cuadros ayuda tempo, figuras duracion, volumen
 Case 2005 ' cuadro percusion
 	threadPer = ThreadCall  CuadroPer ()
 	threadDetach threadPer
-	
+
 	
 	'-----------------------------------------------------------------------
 	

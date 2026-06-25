@@ -48,7 +48,7 @@ Const IMAGE_FIG1 = 31
 Const IMAGE_FIG2 = 32
 Const IMAGE_FIG3 = 33
 Const IMAGE_FIGPER = 34 ' percusion
-Const IMAGE_FIGVOZ = 35
+
 
 Const As Boolean HABILITAR = True
 Const As Boolean DESHABILITAR = False
@@ -184,15 +184,20 @@ Sub CuadroPer()
 End Sub
 '---------
 Sub CuadroVoces()
-	FigVoz=  OpenWindow("OCTAVAS, VOCES  ",170,100,620,500  )
-	Print #1,"EN CUADRO VOCES ABRE IMGEN "
-	ImageGadget(IMAGE_FIGVOZ,10,10,1100,800,Load_image(ROLLDIR+"recur\RANGOS_VOCALES.jpg"))
-	#Ifdef __FB_WIN64__
-		SetFocus (FigVoz)
-		SetForegroundWindow(FigVoz)
-	#Else
-		gtk_widget_grab_focus(GadgetID(IMAGE_FIGVOZ))
-	#EndIf
+'	FigVoz=  OpenWindow("OCTAVAS, VOCES  ",800,100,800,500 )
+'	Print #1,"EN CUADRO VOCES ABRE IMGEN "
+'	ImageGadget(IMAGE_FIGVOZ,10,10,800,800,Load_image(ROLLDIR+"recur\RANGOS_VOCALES.jpg"))
+
+
+
+
+  '''ad (ROLLDIR+"recur\RANGOS_VOCALES.bmp")
+''	#Ifdef __FB_WIN64__
+''		SetFocus (FigVoz)'
+''		SetForegroundWindow(FigVoz)
+''	#Else
+''		gtk_widget_grab_focus(GadgetID(IMAGE_FIGVOZ))
+''	#EndIf
 	
 	
 	Do
@@ -201,6 +206,7 @@ Sub CuadroVoces()
 			Close_Window(FigVoz)
 			
 		End If
+      'Sleep 100
 	Loop
 	
 End Sub

@@ -1,7 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-     0.391 KEY FAST ENTRADA RAPIDA DE NOTAS SIN ESPERAR QUE SALGAN POR PANTALLA, PARA 
-           LAS NOTAS NATURALES SIN SOSTENIDO Y DE IGUAL DURACION, BAJO PRUEBA.... 
+    0.393 FIX ENTRENAR VOZ, 1.0 Escuchar y Cantar..(sin cambios de ayuda)
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )

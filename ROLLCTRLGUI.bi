@@ -582,6 +582,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
 	MenuItem(2003,MenName10,"4.0 Cuadro de valores de Volumen tipicos")
 	MenuItem(2004,MenName10,"5.0 Cuadro de Teclas Rapidas, key stroke")
 	MenuItem(2005,MenName10,"6.0 Cuadro de NOTAS Para canal 10 Percusion ")
+  
 	'MenuItem(2502,MenName30,"Seleccion Puerto MIDI-IN ROLL")
 	'MenuItem(2504,MenName30,"Seleccion Puerto MIDI-OUT ROLL")
 	'MenuItem(2505,MenName30,"Abrir  Puerto  MIDI-OUT ROLL")

@@ -1,17 +1,18 @@
+ -25-06-2026 0.393 FIX ENTRENAR VOZ, 1.0 Escuchar y Cantar..
  -23-06-2026 nroversion="0.392 BOTON CELESTE CARGA ROLL EN VENTANA DE CONTROL, ENTRENAR VOZ,"
-' Como estudio canto agrego Ejercicios de ritmo se puede anotar en un notepad los distintos ejercicios 
-' notas con silencio 0 con sonido 1,2,3 de normal semi fuerte y fuerte. 
-' el ejecutable tiene su primer icon,,,RM JMG.
-' NUEVO: SONIDOS PUROS DE NOTAS PARA AFINAR LA VOZ CON UNISONO
-' NUEVO OK: CARGO ROLL SIN CANCION EN MENU DE ARCHIVO Y LO PONGO EN LA LISTA DE PISTAS. sI LO CARGO DESDE
-' GRAFICO DEPENDIENTE TAMBIEN VA A LA LISTA PERO SI TENGO UN GRAFICO SIN CTRL NO LO CARGA EN LISTA
-' COMO ES LOGICO NO HAY VENTANA DE CTRL. TAMPOCO SE CARGA SI USAMOS EL BOTON CELESTE POR AHORA..
+ Como estudio canto agrego Ejercicios de ritmo se puede anotar en un notepad los distintos ejercicios 
+ notas con silencio 0 con sonido 1,2,3 de normal semi fuerte y fuerte. 
+ el ejecutable tiene su primer icon,,,RM JMG.
+ NUEVO: SONIDOS PUROS DE NOTAS PARA AFINAR LA VOZ CONUNISONO
+ NUEVO OK: CARGO ROLL SIN CANCION EN MENU DE ARCHIVO Y LO PONGO EN LA LISTA DE PISTAS. sI LO CARGO DESDE
+ GRAFICO DEPENDIENTE TAMBIEN VA A LA LISTA PERO SI TENGO UN GRAFICO SIN CTRL NO LO CARGA EN LISTA
+ COMO ES LOGICO NO HAY VENTANA DE CTRL. TAMPOCO SE CARGA SI USAMOS EL BOTON CELESTE POR AHORA..
 '-------------------------------------------------------------------
-' fix si se va a abrir un medio y se cancela..cancelaba el programa
-' FIX messageCallback(127) BLOQUEABA EL PLAY DESDE TECLADO ELIMINADO DE TODOS LADOS
-' ARCHIVOS m4a, mp3, mid abiertos en explorador, debe estar instalado el codec de todos
-' FIX CANCELACION AL CARGAR ARCHIVO PARA EXPORTAR METODO VIEJO 4.5 DE MENU ARCHIVO
-' tareas al 4 DE jUNIO
+ fix si se va a abrir un medio y se cancela..cancelaba el programa
+ FIX messageCallback(127) BLOQUEABA EL PLAY DESDE TECLADO ELIMINADO DE TODOS LADOS
+ ARCHIVOS m4a, mp3, mid abiertos en explorador, debe estar instalado el codec de todos
+ FIX CANCELACION AL CARGAR ARCHIVO PARA EXPORTAR METODO VIEJO 4.5 DE MENU ARCHIVO
+ tareas al 4 DE jUNIO
 ------------------------------------------------------------------
  -11-06-2026 0.391 KEY FAST ENTRADA RAPIDA DE NOTAS SIN ESPERAR, BAJO PRUEBA.... 
    PARA LAS NOTAS NATURALES O SEA ESCALA DE C, SIN SOSTENIDOS, INGRESA LAS NOTAS
@@ -21,19 +22,19 @@
  -04-6-2026 0.390 Fix: pasozona1/2 Copiar y loop infinito, Cuentas, metronomo principal y de Repro, 
     trasponer ligados en zona => caso prueba CASO_TEST_390.roll
 '----------------------------------------------------------------------------------
-' FIX: QUEDABA SOLO ESTE CASO: 
-'   problemas VIEJOS DE trasponer PUEDE  NO SER POR FIX en COPIA, ES UN PROB NO DETECTADO ANTES 
-'   TRASPONE falla en zonas donde hay muChas notas ligadas
-'   ( ANTES DE COPIA YA estaba esta falla)
-'    tanto en trasposicion completa o por zona..EJEMPLO
-'   ORIGINAL:     P+    I+ P     > EN UN 3/4 SE MUEVE P+ Y EL ULTIMO OFF=1  >
-'   AL TRASPONER: P+             > SE TRASPONE POR EJE PARA ARRIBA 
-'   AL TRASPONER:       I+ P      -> QUEDA  I+ P EN EL MEDIO QUEDA SIN MOVER EN LA ORIGINAL
-'   HAY QUE DECIRLE QUE AL MOVER EL 1ER ON Y QUE SEA LIGADO P+, MUEVA EL ON QUE SIGUE
-'   Y SI ESTE ES LIGADO TAMBIEN LO MUEVA Y AL QUE SIGA INCLUSO AL ULTIMO QUE NO TENGA LIGAZON
-'   ESTE PROCESO PUEDE HACERSE AL DETECTAR UN ON CON + LIGADURA..VERIFICAR QUE ENTRE
-'   EL 1ER ON MOVIDO P+ Y EL ULTIMO OFF1 MOVIDO >..HALLA OTROS ON, MOVER A TODOS TENGAN O NO
-'   TENGAN LIGADURA Y LISTO! desarrollar codigo en ---> 352026 
+ FIX: QUEDABA SOLO ESTE CASO: 
+   problemas VIEJOS DE trasponer PUEDE  NO SER POR FIX en COPIA, ES UN PROB NO DETECTADO ANTES 
+   TRASPONE falla en zonas donde hay muChas notas ligadas
+   ( ANTES DE COPIA YA estaba esta falla)
+    tanto en trasposicion completa o por zona..EJEMPLO
+   ORIGINAL:     P+    I+ P     > EN UN 3/4 SE MUEVE P+ Y EL ULTIMO OFF=1  >
+   AL TRASPONER: P+             > SE TRASPONE POR EJE PARA ARRIBA 
+   AL TRASPONER:       I+ P      -> QUEDA  I+ P EN EL MEDIO QUEDA SIN MOVER EN LA ORIGINAL
+   HAY QUE DECIRLE QUE AL MOVER EL 1ER ON Y QUE SEA LIGADO P+, MUEVA EL ON QUE SIGUE
+   Y SI ESTE ES LIGADO TAMBIEN LO MUEVA Y AL QUE SIGA INCLUSO AL ULTIMO QUE NO TENGA LIGAZON
+   ESTE PROCESO PUEDE HACERSE AL DETECTAR UN ON CON + LIGADURA..VERIFICAR QUE ENTRE
+   EL 1ER ON MOVIDO P+ Y EL ULTIMO OFF1 MOVIDO >..HALLA OTROS ON, MOVER A TODOS TENGAN O NO
+   TENGAN LIGADURA Y LISTO! desarrollar codigo en ---> 352026 
 '----------------------------------------------------------------------------------
 ' FIX EN 390: EN TRASPONER ZONA  DESAPARECIAN NOTAS DEL CENTRO TAL VEZ POR CAMBIOS EN COPIA, 
 ''    ESTO NO fallaba en zonas donde no habia ligaduras seguidas lo hacia perfecto

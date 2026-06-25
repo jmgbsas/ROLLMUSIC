@@ -2067,7 +2067,7 @@ Sub CTRL1230() '' entrenar oido y afinar la voz, la meta es lograr un unisono
 	
 	Dim As Integer ANCHOWIN, PANTALLAX=GetSystemMetrics(SM_CXSCREEN),volume
 	Dim As Integer HABILITA6=0
-	ANCHOWIN=ANCHO*2/5
+	ANCHOWIN=ANCHO*4/5
 	'NOTAS MIDI	OCTAVA DO CENTRAL ES EL 60 ENTR LA 3ER Y 4T LINEA DE UN PENTTAGRAMA
 	'       -1	0	1	2	3	4	5	6	7	 8	   9
 	'Do	C	0	12	24	36	48	60	72	84	96	 108	120
@@ -2084,9 +2084,10 @@ Sub CTRL1230() '' entrenar oido y afinar la voz, la meta es lograr un unisono
 	'Si	B	11	23	35	47	59	71	83	95	107 119
 	
 	'La4=69
-	Dim As Integer oldX=ANCHO/2, oldy=ALTO/4
+	Dim As Integer oldX=ANCHO/5, oldy=ALTO/4
 	Dim As Double frec
 	hwndSndPuros=OpenWindow("NOTAS PURAS SINUSOIDALES",oldX,oldY,ANCHOWIN,ALTO/2, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
+ImageGadget(IMAGE_FIGVOZ,ANCHO*2/5,1,800,800,Load_image(ROLLDIR+"recur\RANGOS_VOCALES.jpg"))
 	'ESTA ES SIZABLE'hwndMEDIA=OpenWindow("AUDIO MP3, WAV",0,ALTO*5/6,ANCHO,ALTO/6,WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST)
 	
 	'altov=30 1,100,30
@@ -2132,14 +2133,18 @@ Sub CTRL1230() '' entrenar oido y afinar la voz, la meta es lograr un unisono
 	ButtonGadget(34, 430,90,30,30,"A#")
 	ButtonGadget(35, 460,110,30,30,"B")
 	'/
-	
-	TextGadget  (2,100,10,540,40,"PULSAR UNA NOTA CANTAR UNA VOCAL HASTA LOGRAR UNISONO ")
-	ButtonGadget(1,200,45,180,40,"CUADRO RANGO VOCES")
-	
-	ButtonGadget(3,40,85,210,40," DETENER SONIDO "+ Format(frec,"0.00"))
-	
-	ButtonGadget(4,260,85,250,40," DURACION SEGUNDOS "+ Format(SEGUNDOS,"000") )
-	
+	Dim As String * 5 frecuencia="000.0"
+	TextGadget  (2,10,10,520,40,"PULSAR UNA NOTA CANTAR UNA VOCAL HASTA LOGRAR UNISONO")
+	'''ButtonGadget(1,200,45,180,40,"CUADRO RANGO VOCES")
+	'''TextGadget  (89,280,380,50,40, frecuencia)
+   ButtonGadget(3,   40,40,210,40,"DETENER SONIDO " + frecuencia )
+   TextGadget  (91,10,85,250,20,"ENTRE LA DURACION EN SEGUNDOS")
+   StringGadget(90, 280,85,50,20,"60")
+   ButtonGadget(4,  260,40,250,40," CARGAR SEGUNDOS "+ Format(SEGUNDOS,"000") )
+   ''CreateWindowEx(3, "BUTTON", "DETENER SONIDO " + frecuencia, _
+	''Style Or WS_VISIBLE Or WS_CHILD , 40, 85, 210, 40,	hwndSndPuros, 0, 0, 0 )
+
+		
 	ButtonGadget(36, 130,140,30,30,"C2")
 	ButtonGadget(37, 160,130,30,30,"C#")
 	ButtonGadget(38, 190,140,30,30,"D")
@@ -2204,36 +2209,41 @@ Sub CTRL1230() '' entrenar oido y afinar la voz, la meta es lograr un unisono
 		oldY=ALTO*4/6
 		event=WaitEvent()
 		If Event=EventClose Then
+				If PlaySoundbuffer > 0 Then
+					PlaySound( NULL, NULL, SND_PURGE )
+					DeAllocate(PlaySoundBuffer)
+					PlaySoundBuffer=0
+				End If
 			close_window(hwndSndPuros)
-			Sleep 5
+			Sleep 100
 			Exit Do
 		End If
 		If event=EventGadget Then
 			Select case EventNumber
-			Case 1
-				Print #1,"LLAMA A CUADRO VOCES"
-				threadVoz = ThreadCall  CuadroVoces ()
-				threadDetach threadVoz
 			Case    36 To 88 '
-				frec=valorfrec(EventNumber)
-				ButtonGadget(3,40,85,210,40," DETENER SONIDO "+ Format(frec,"0.00"))
+  
+           SetFocus(hwndSndPuros)
+            frec=valorfrec(EventNumber)
 				threadTono= ThreadCall EmitirTono(valorfrec(EventNumber),SEGUNDOS)
+            frecuencia= Format(frec,"00.0")
+            ButtonGadget(3,   40,40,210,40,"DETENER SONIDO " + frecuencia )
 			CASE 3 'DETENER SONIDO
 				If PlaySoundbuffer > 0 Then
 					PlaySound( NULL, NULL, SND_PURGE )
 					DeAllocate(PlaySoundBuffer)
 					PlaySoundBuffer=0
 				End If
+            ButtonGadget(3,   40,40,210,40,"DETENER SONIDO " + frecuencia )
 			Case 4
-				menuOldStr="[SEGUNDOS]"
-				EntrarTeclado()
-				Sleep 1
-				Print #1,"segundos nuevos "; segundos
-				ButtonGadget(4,260,85,250,40," DURACION SEGUNDOS "+ Format(SEGUNDOS,"000") )
+        Dim v1 As string =   GetGadgetText(90) 
+        SEGUNDOS=CInt(v1)
+		
+      ButtonGadget(4,260,40,250,40," CARGAR SEGUNDOS "+ Format(SEGUNDOS,"000") )
 			End Select
 		End If
 		
 		Sleep 10
+
 	Loop
 	
 End Sub

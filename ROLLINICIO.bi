@@ -890,6 +890,77 @@ Type InputBoxJmg_ 'basado en InputBox de windows9, para que detecte CR 13
 	As HFONT font,font1
 	As Integer size
 End Type
+'..................
+Function Input2BoxJmg(ByVal x As Integer, ByVal y As Integer,ByVal w As Integer,ByVal h  As Integer, ByRef Caption As STRING, ByRef Message As STRING, ByRef DefaultString As USTRING, ByVal flag As Integer, ByVal flag2 As Integer, hParentWin as Hwnd = 0) As STRING
+	' Autor:JMG modificacion windows9 inputBox ...experimental si anda bien al vez de incropore
+	' a windows9 y avisamos si quieren usarlo
+	Dim As Integer mix, miy
+	Dim As mouse m
+	Dim Input2BoxJmg_ As InputBoxJmg_
+	Input2BoxJmg_.dm(0).dmSize = sizeof(DEVMODE)
+	EnumDisplaySettings( 0, ENUM_CURRENT_SETTINGS, @Input2BoxJmg_.dm(0))
+	#ifdef UNICODE
+		Input2BoxJmg_.hWnd  = CreateWindowEx(0, "#32770", *Caption, WS_TILED Or WS_VISIBLE, Input2Box_.dm(0).dmPelsWidth/2-155, Input2Box_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
+		Input2BoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", *DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, Input2Box_.hwnd,0,0,0)
+		Input2BoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, x, y, w, h, Input2Box_.hwnd,0,0,0)
+		Input2BoxJmg_.hWnd3 = CreateWindowEx(0, "Static", *Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, Input2Box_.hwnd,0,0,0)
+	#else
+		Input2BoxJmg_.hWnd  = CreateWindowEx(0, "#32770", Caption, WS_TILED Or WS_VISIBLE, Input2BoxJmg_.dm(0).dmPelsWidth/2-155, Input2BoxJmg_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
+		Input2BoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, Input2BoxJmg_.hwnd,0,0,0)
+		Input2BoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, x, y, w, h, Input2BoxJmg_.hwnd,0,0,0)
+		Input2BoxJmg_.hWnd3 = CreateWindowEx(0, "Static", Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, Input2BoxJmg_.hwnd,0,0,0)
+	#EndIf
+	
+	Input2BoxJmg_.size  = -MulDiv(10, GetDeviceCaps(CreateDC("DISPLAY",0,0,0), LOGPIXELSY), 72)
+	Input2BoxJmg_.font  = CreateFont(Input2BoxJmg_.size,0,0,0,0,1,0,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH Or FF_DONTCARE,"Times New Roman")
+	SendMessage(Input2BoxJmg_.hWnd3,WM_SETFONT,Cast(WPARAM,Input2BoxJmg_.font),0)
+	Input2BoxJmg_.font1 = CreateFont(Input2BoxJmg_.size,0,0,0,0,0,0,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH Or FF_DONTCARE,"Times New Roman")
+	SendMessage(Input2BoxJmg_.hWnd2,WM_SETFONT,Cast(WPARAM,Input2BoxJmg_.font1),0)
+	SendMessage(Input2BoxJmg_.hWnd1,WM_SETFONT,Cast(WPARAM,Input2BoxJmg_.font1),0)
+	
+	While GetMessage(@Input2BoxJmg_.msg, 0, 0, 0 )
+		TranslateMessage(@Input2BoxJmg_.msg )
+		DispatchMessage(@Input2BoxJmg_.msg )
+		' el windows pone el 13 CR al principio de la cadena sin que se lo pidan,por eso esta en posicion 1
+		' y al final una pelotudes en fin, claro para multiline va pero no para una linea pero
+		' solo asi funciona el CR 13 usando multiline, hay que dar dos return
+		SetFocus (Input2BoxJmg_.hWnd1)
+		Select Case Input2BoxJmg_.msg.hwnd
+		Case Input2BoxJmg_.hWnd1 ' CAJA ENTRADA CLIENTE
+			Select Case Input2BoxJmg_.msg.message
+			Case WM_KEYDOWN
+				SendMessage(Input2BoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@Input2BoxJmg_.mess))
+				
+				Dim as UString sRet = Input2BoxJmg_.mess
+				Function = sRet
+				
+				Dim As String * 1 F1,F2
+				Dim As Integer LL=Len(sRET)
+				F1=Mid (sRET,1) 'el primero
+				F2=Mid (sRET,LL-1) ' el ultimo ascii
+				
+				If Asc(F2) =13 Then
+					Dim As Integer d13=instr(Input2BoxJmg_.mess,F2)
+					Mid(Input2BoxJmg_.mess,d13)=""
+					DestroyWindow(Input2BoxJmg_.hWnd)
+					Input2BoxJmg_.flag=0
+					Exit Function
+				End If
+			End Select
+		Case Input2BoxJmg_.hWnd2 ' boton ok
+			Select Case Input2BoxJmg_.msg.message
+			Case WM_LBUTTONDOWN
+				SendMessage(Input2BoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@Input2BoxJmg_.mess))
+				dim as UString sRet = Input2BoxJmg_.mess
+				Function = sRet
+				DestroyWindow(Input2BoxJmg_.hWnd)
+				Input2BoxJmg_.flag=0
+				Exit Function
+			End Select
+		End Select
+	Wend
+End Function
+
 '---------------
 Function InputBoxJmg(ByRef Caption As STRING, ByRef Message As STRING, ByRef DefaultString As USTRING, ByVal flag As Integer, ByVal flag2 As Integer, hParentWin as Hwnd = 0) As STRING
 	' Autor:JMG modificacion windows9 inputBox ...experimental si anda bien al vez de incropore

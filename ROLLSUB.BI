@@ -5751,12 +5751,6 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
        CPSS=CPSS+1 ' PARA QUE HALLA REALMENTE CPSS PULSOS SIN SONIDO
        GUARDOCPSS=CPSS
        Print #1,"CPSS ", CPSS
- Case "[SEGUNDOS]"
-Print #1,"entra Segundos ", SEGUNDOS
-      default2 = Str(SEGUNDOS)
-       SEGUNDOS= CInt(InputBoxJmg("SEGUNDOS " ,"Entre una duracion en SEGUNDOS ",default2, ES_MULTILINE + ES_AUTOVSCROLL,0  ))
-       Print #1,"sale Segundos ", SEGUNDOS
-
   
  Case "[GEN]" '' muy bien funciona!!!
 ' generamos para escala mayor
