@@ -3716,6 +3716,10 @@ End Sub
 '
 Sub Nuevo(Roll As inst,borraNombre As Integer)
 ' 22-02-2026 CORREGIDO
+If MaxPos = 2 Then 'ya se ejecuto Nuevo 
+   Exit Sub
+EndIf
+
 CantTicks=CantMin * PPQN *tiempoPatron ' vuelvo al original default 15 min *60*PPQN
 ' borro todo el undo
    mel_undo_k=0 :ig=0:cnt_acor=0

@@ -1,6 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-    0.393 FIX ENTRENAR VOZ, 1.0 Escuchar y Cantar..(sin cambios de ayuda)
+    0.394 pulsos 1,2,3 normal ,semifuerte y fuerte otros pequeños ajustes
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -8,6 +8,10 @@
       tipo 1...o hacer algo largo asi no mas ..con las modificaciones ultimas habria que
       probar varias cosas de nuevo para ver si tuvo impacto..
 ------------------------------------------------------------------------------------------
+     OBSERVACION GENERAL: En RollMusic no hay Octavas negativas como suelen usar algunos
+     Las octavas van de 1 en adelante, de este modo C4 Central que aparecen en muchos lados
+     en RollMusic es la octava 5, marcada en el grafico con C5<]  
+
      INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
        RollMusic.exe y todas los archivos *.dll. 
@@ -798,7 +802,9 @@
           Nota: para grabar a disco la salida de audio de la PC se puede usar Audacity
                 Programa gratuito de código abierto. Configurando el host de audio a "Windows WASAPI" y seleccionando 
                 los altavoces como dispositivo de grabación, se captura el sonido interno con alta calidad.
- 
+
+      6) Menu ENTRENAR oido y voz para cantar el menu es muy intuitivo...
+
       V ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
           o ordenar la ejecucion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
           o ejecutar con otras instancias de RollMusic con o sin Control...(hay muchisimo por hacer...)

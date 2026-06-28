@@ -941,7 +941,7 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
 		' las lineas
 		'' ScreenSync ' a ver si aca es mejor....
 		threadcreaPenta = ThreadCall creaPenta (c, Roll )
-		SetThreadPriority(threadcreaPenta , 20 ) ' SI NO LO ACELERO PARPADEA NODIBUJA TODO PORQUE QUEDA LENTO
+		SetThreadPriority(threadcreaPenta , 16) ''20 ) ' SI NO LO ACELERO PARPADEA NODIBUJA TODO PORQUE QUEDA LENTO
 		''17-05-2026 DECIA 30
 		' O EN TODO CASO DEBERIA SER  MAS LENTO EL ROOLLOOP O EL LOCK UNCLOCK
 		ThreadWait threadcreaPenta

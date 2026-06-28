@@ -1387,11 +1387,17 @@ Sub duracion (old_time As Double, tiempoFigura As Double) '' ensegundos
 	'print #1,"En Duracion COMIENZA RETARDO En  time :"; old_time
 	'print #1, "tiempoFigura " , tiempoFigura ' o timestamp
 	'Static As Double start
-	Static As LARGE_INTEGER delay
-	delay.QuadPart = -1
-	Do
-		NtDelayExecution(FALSE,@delay)
-	Loop Until Timer - old_time >= tiempoFigura
+	''''''Static As LARGE_INTEGER delay
+	'''''delay.QuadPart = -1
+Do
+   t1=Timer
+	Do ''retardo de 0.5 mseg
+		''NtDelayExecution(FALSE,@delay) windows 11 no lo soporta?? O ES LA 25H2 EL TEMPO SIEMPRE EN 60!!
+'NO SE QUE ES ELIMINO EL NTDELAY POR AHORA,  TAMPOCO RESULTO USO MITIMER DE ANTES 
+        ''sleep 1 CON SLEEP 1 ANDA BIEN ES 1 MSEG
+      t3=Timer
+   Loop While t3-t1 < 0.0005 'medio milisegundo  
+Loop Until Timer - old_time >= tiempoFigura
 	
 End Sub
 'print #1,"Fin duracion"

@@ -1,3 +1,7 @@
+ -28-06-2026 0.394 pulsos 1,2,3 normal, semifuerte y fuerte, se cambio
+  NtDelayExecution en duracion por otra anterior a ver si funciona en windows 11
+  pero No..RollMusic anda en windows 7 y 10, en 11 no anda el tempo.
+  Otros pequeños ajustes.
  -25-06-2026 0.393 FIX ENTRENAR VOZ, 1.0 Escuchar y Cantar..
  -23-06-2026 nroversion="0.392 BOTON CELESTE CARGA ROLL EN VENTANA DE CONTROL, ENTRENAR VOZ,"
  Como estudio canto agrego Ejercicios de ritmo se puede anotar en un notepad los distintos ejercicios 

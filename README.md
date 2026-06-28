@@ -1,5 +1,7 @@
 Este programa está publicado bajo la licencia GPL.
 (ver carpeta Licences/RollMusic)
+Funciona bien en WINDOWS 7 Y 10, en WINDOWS 11 no anda el tempo queda fijo EN 60, no se lo
+puede cambiar...no se la causa todavia..
 Una  ejercitacion para ver Cairo.(Estado:Alpha Debug escribe archivos.)
 Un secuenciador que usa letras en vez de rectangulitos...
 Puede editarse una sola pista o crear una cancion de hasta 32 pistas.

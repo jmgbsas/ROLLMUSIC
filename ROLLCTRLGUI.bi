@@ -573,7 +573,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
 	MenName21=OpenSubmenu(MenName9,"2.0 Entrenamiento con Metronomo y palmadas, durante los silencios siga el ritmo")
 	menuitem (10881,Menname21," Cantidad de pulsos Con Sonido")
 	menuitem (10882,Menname21," Cantidad de pulsos Sin Sonido" )
-	menuitem (10884,Menname9,"3.0 Entrar una cadena de pulsos seguidos con 1 0 y 'P' o 'p' para los fuertes, en un archivo de texto")
+	menuitem (10884,Menname9,"3.0 Entrar una cadena pulsos donde 3 sera fuerte, 2 semi fuerte,1 normal y 0 silencio, en un archivo de texto")
 	menuitem (10883,Menname9,"4.0 <RESET> de Cantidad de pulsos y/0 cadena pulsos")
 	
 	MenuItem(2000,MenName10,"1.0 Acerca de")

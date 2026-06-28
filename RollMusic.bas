@@ -62,6 +62,7 @@ On Error Goto errorhandler
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
 nroversion="0.393 FIX ENTRENAR VOZ, 1.0 Escuchar y Cantar.. "
+' VER ALGO RARO EN WINDOWS 11 ANDA LENTO EL TEMPO 3 VECES MAS LENTO!!! RARISIMO O SEGUN LO QUE HICE
 ' Ejercicios de ritmo se puede anotar en un notepad los distintos ejercicios notas con silencio 0
 ' con sonido 1,2,3 de normal semi fuerte y fuerte. 
 ' el ejecutable tiene su primer icon,,,RM JMG.
@@ -181,7 +182,7 @@ nroversion="0.393 FIX ENTRENAR VOZ, 1.0 Escuchar y Cantar.. "
 acercade = "RollMusic "+ nroVersion +" Jose M Galeano, Buenos Aires Argentina 2021-2026,. Ejecuta secuencias " + _
 "entrada por pasos usando algoritmos con ticks de tiempos. " + _
 "Los algoritmos pueden fallar en condiciones no estudiadas o no detectadas durante la entrada de datos " + _
-"manual o por ejecucion. OS:Windows 64bits, " + _
+"manual o por ejecucion. OS:Windows 10 64bits, (windows 11 no anda bien,el tempo queda fijo no se puede ajustar)" + _
 "Usa Cairo como libreria de graficos, Windows9 ,WinGUI y Gtk como GUI; Rtmidi como libreria midi, " + _
 "Editor de codigo FbEdit. Echo en Freebasic como hobby. FreeBASIC Compiler - Version 1.09.0 (2021-12-31), built for win64 (64bit) " + _
 " Copyright (C) 2004-2021 The FreeBASIC development team." +_
@@ -294,6 +295,16 @@ End If
 '----------------ABRIMOS UN PORTOUT DEFAULT
 abrirPortoutEjec(100) ''no abre para playAll
 
+''Shell("systeminfo | find /I ""Microsoft Windows 10"" > veo.txt")
+'Dim  As String a1="Microsoft Windows 10" , a2= " > veo.txt"
+'winexec("systeminfo | find /I ""Microsoft Windows 10"" > veo.txt" ,00)
+
+'Sleep 3000
+'Open "./veo.txt" For Input As #12
+'Dim linea As String
+'Line Input #12, linea
+'Print #1,"ssitema opertativo "; linea 
+'Close #12
 
 '' ------TIPS AYUDA EN LA BARRA DE ESTADO
 If UBIRTK> 0 Or UBIROLL > 0 Then

@@ -1179,9 +1179,7 @@ If eventnumber()= BTN_MAS_RETARDO_M Then
 		retrasoMetronomoRoll=retrasoMetronomoRoll+1
 		retrasoMetronomo=retrasoMetronomoRoll
 	End If
-
-   TextGadget(TEXT_METRONOMO_RETARDO,108, 750,100,20,"Retraso M "+Str(retrasoMetronomo))
-	''SetGadgetText(TEXT_METRONOMO_RETARDO,"Retraso M "+Str(retrasoMetronomo))
+	SetGadgetText(TEXT_METRONOMO_RETARDO,"Retraso M "+Str(retrasoMetronomo))
 End If
 
 If eventnumber()= BTN_MENOS_RETARDO_M Then
@@ -1193,9 +1191,7 @@ If eventnumber()= BTN_MENOS_RETARDO_M Then
 		retrasoMetronomoRoll=retrasoMetronomoRoll-1
 		retrasoMetronomo=retrasoMetronomoRoll
 	End If
-
-   TextGadget(TEXT_METRONOMO_RETARDO,108, 750,100,20,"Retraso M "+Str(retrasoMetronomo))
-	''SetGadgetText(TEXT_METRONOMO_RETARDO,"Retraso M "+Str(retrasoMetronomo))
+	SetGadgetText(TEXT_METRONOMO_RETARDO,"Retraso M "+Str(retrasoMetronomo))
 End If
 '---------------------------------------------------------------
 If eventnumber()= BTN_MAS_METRO_VOL_IZQ Then

@@ -2086,7 +2086,7 @@ Sub CTRL1230() '' entrenar oido y afinar la voz, la meta es lograr un unisono
 	'La4=69
 	Dim As Integer oldX=ANCHO/5, oldy=ALTO/4
 	Dim As Double frec
-	hwndSndPuros=OpenWindow("NOTAS PURAS SINUSOIDALES",oldX,oldY,ANCHOWIN,ALTO/2, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
+	hwndSndPuros=OpenWindow("NOTAS PURAS SINUSOIDALES, En Roll Grafico el C4 central de aca es el C5<]",oldX,oldY,ANCHOWIN,ALTO/2, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
 ImageGadget(IMAGE_FIGVOZ,ANCHO*2/5,1,800,800,Load_image(ROLLDIR+"recur\RANGOS_VOCALES.jpg"))
 	'ESTA ES SIZABLE'hwndMEDIA=OpenWindow("AUDIO MP3, WAV",0,ALTO*5/6,ANCHO,ALTO/6,WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST)
 	

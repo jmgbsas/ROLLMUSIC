@@ -1340,7 +1340,12 @@ Case 1211 ' CORO /CHORUS
 Case 1230 ' ENTRENAMIENTO OIDO Y VOZ
 	 
 	threadSndPuro-=ThreadCall CTRL1230 ()
-	
+'ESTA LLAMADA BORRA LOS COLORES DE LAS PISTAS NO SE PORQUE PERO BUENO A PINTAR DE NUEVO
+	SetGadgetColor(PISTASROLL,CInt("&HC0C0C0"),0,1) 
+	SetGadgetColor(BOTON_SELECCION_PISTA_ROLL,cint("&HC0C0C0"),0,1)
+   SetGadgetColor(CHECK_GRABAR_EJECUCION,cint("&HC0C0C0"),0,1)
+   SetGadgetColor(PISTASEJECUCIONES ,cint("&HC0C0C0"),0,1) 
+   MenuBackColor(hMessages,&hC0C0C0,1) ''AGREGUE TODO POR LAS DUDAS
 	'-------------------------------------------------------------------
 Case 2000
 	

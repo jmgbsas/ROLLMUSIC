@@ -914,9 +914,9 @@ volhDer =  velMetronomoDer*65535/100
 
 PORT_MICROSOFT=0  ' NO HABILITADO
 nnn=0
-retrasoMetronomoCan=330 '''era 330 ahoraanda con 165 no entiendo
-retrasoMetronomoRoll=330 '' ROLL Y RTK
-retrasoMetronomoMedio=300
+retrasoMetronomoCan=250 '
+retrasoMetronomoRoll=250 '' ROLL Y RTK
+retrasoMetronomoMedio=250
 intentos=0
 
 'VERSION DE EJEC CON MAS CAPACIDAD Y VOLUMEN VERSION=2
@@ -936,3 +936,4 @@ Const CANALES As Integer = 1        ' 1 = Mono, 2 = Estereo
 Dim Shared PlaySoundbuffer As Integer Ptr
 Dim Shared As Integer SEGUNDOS=60
 Dim Shared As String cadenapulsos
+Dim Shared As Double  t1, t3
