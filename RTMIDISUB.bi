@@ -1000,6 +1000,7 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 				velpos=vsemifuerte  ' para midipolano dividiones por partes veremso si se soluciona el sonido
 				' en la rutina vol , depende de la dur ajusta vol=0 o vol = velpos... no hay problema con los silencios
 			End If
+         
 		End If
 		'  print #1," ---------------000000000000000000000-----------------"
 		'  print #1," (((PALL 0:)))---TICK NRO:[";jply;"] ----------------"

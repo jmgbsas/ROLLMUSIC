@@ -974,7 +974,7 @@ For x= x1 To x2  'curpos
 ' AGREGAMOS FIN DE NOTA OFF1 NO SONARA PERO PODRA MARCAR PASOZONA2 EN ZONA
     If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 2  Or _
        Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur = 190 Or _
-       Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1  Then
+      (Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1 And borrar=1 ) Then
 
 ' encontro ubicacion de nota ,o final sec o un 190 borrar
 '        Print #1,"encontro onoff posn1 "; Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff, posn1
@@ -1505,6 +1505,7 @@ trasponer=0
        Exit Sub  'cursorVert = 1 es solo ctrl-m 
    EndIf
    If  COMEDIT=SOLO_MODIFICACION And nota = 0 Then ' PARA ctrl-N cambia en todas las octavas libremente
+       Print #1, "/////////NO EJECUTA CTRL-N POR NOTA=0 " 
        Exit Sub  ' SALE DE  ctrl-n, CTRL-M LA NOTA SALE DE NSE EL CLICK DEL CURSOR O FLECHAS
    EndIf
 
@@ -1528,6 +1529,7 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
      cairo_move_to  (c, gap1 + (curpos)*anchofig , Penta_y  )
      cairo_line_to  (c, gap1 + (curpos)*anchofig , Penta_y + (notacur-1) * inc_Penta  +inc_Penta )
      RollDur=Roll.trk(n + curpos,12 - notacur + (*po-1) * 13 ).dur
+
      If RollDur=182 Then
         MaxPos = n +6  
      EndIf
@@ -1717,7 +1719,7 @@ Print #1,"0000 ENTRA EN ESTA  ONOFF "; Roll.trk(n + curpos, (12-notacur +(estoyE
    incr=135
   EndIf   
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur  ' 5.7.2  
-
+  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).vol=80  ' igual que cuando entro nota nueva 
  EndIf
 Dim As UBYTE DURX = Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur
  
@@ -1741,10 +1743,10 @@ trasponer=0
            Track(ntk).trk(posnOff,1).nota = PianoNota 'notacur
            Track(ntk).trk(posnOff,1).onoff = 1 '
            Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).onoff=1 'termina
-           Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).nota=183 'notacur 'termina
+           Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).nota=183 'termina decia 183 28-06-2026
 
-           Roll.trk(posnOff+1,(12-notacur +(estoyEnOctava -1) * 13)).dur = 181
-           Track(ntk).trk(posnOff+1,1).dur= 181
+           Roll.trk(posnOff+1,(12-notacur +(estoyEnOctava -1) * 13)).dur = 183 '' corregido a 183 28-06-2026 decia 181 ??!!!
+           Track(ntk).trk(posnOff+1,1).dur= 183 ''corregido a 183 28-06-2026
 
 
            posnOffOld=0 
@@ -1772,7 +1774,7 @@ trasponer=0
           Roll.trk(posn1,(12-notacur +(estoyEnOctava -1) * 13)).onoff=2
           Roll.trk(posn1,(12-notacur +(estoyEnOctava -1) * 13)).nota=notacur
           Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).onoff=1
-          Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).nota=183 ''notacur
+          Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).nota=183 '' decia 183 los onoff deben tener nota
           Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).dur=183
       '    Print #1," puso nota 183 en posnOff ";posnOff  '97
           Track(ntk).trk(posn1,1).nota = notacur
@@ -1811,7 +1813,9 @@ trasponer=0
        Roll.trk(posn1,(12-notacur +(estoyEnOctava -1) * 13)).onoff=0
        Roll.trk(posn1,(12-notacur +(estoyEnOctava -1) * 13)).nota=notacur
        Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).onoff=1
-       Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).nota=183 ''notacur
+       Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).nota=183 ''' Y .dur=183? 28-06-2026
+       Roll.trk(posnOff,(12-notacur +(estoyEnOctava -1) * 13)).dur=183 ' '28-06-2026 agregado--- ?
+
        Track(ntk).trk(posn1,1).nota = notacur
        Track(ntk).trk(posn1,1).onoff = 0
        Track(ntk).trk(posnOff,1).nota = PianoNota ''notacur
@@ -1889,7 +1893,18 @@ trasponer=0
 ''' fin agregado ticks
   cambiadur = 0: nota=0
   cuart=0:pun=0:doblepun=0:tres=0:silen=0:mas=0
-
+  If COMEDIT=SOLO_MODIFICACION Then ' EN CTRL-N NO HACEMOS LA DELTAX=1 SINO BORRA LAS MOPDIFICACIONES!!
+  Else
+    DUR=181 ''SI ESTAMOS USANDO X PARA CAMBIAR UNA DURACION AL TERMINAR DEBO VOLVER A SALTOS DE 1
+  EndIf
+'' TICK SINO ES MOLESTO VEREMOS 28-06-2026 CON DUR=0 O >=181 DURTICK=1 DELTAX
+'' LAS FLECHAS RIGHT Y LEFT USAN ESTO
+''        If DUR > 0 And DUR <= 180 Then
+''           deltax=  DurXTick(DUR) ' 1 a 9 solamente
+''        Else
+''            deltax = 1 'si dur=0 o 181 => delta = 1 se mueve de a un tick!
+''        End If
+'' O SEA SI PULSO EN MODIFICACION EL 9 PONDRA DUR=181 Y CON ELLO SEL DELTAX=1
   Exit Sub
  EndIf ' fin ctrl-m  modificacion Y CTRL-N AGREGAR NOTA CON NOMBRE DE NOTA
  
@@ -1948,6 +1963,7 @@ nota=notacur + (*po-1) * 13
   'luego reemplazo
    print #1, "inserta DUR, en ROLL n,nota,posicion ",DUR,n,(notacur + (*po) * 13),n
   Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = DUR ' reemplazo con lo nuevo
+  Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).vol=80 '' nuevo 28-06-2026
   'vdur=Roll.trk(notacur + (*po) * 13, n+curpos).dur
   ' SI LA NOTA  NO EXITIA LA agrega...osea sirve para acordes tambien
   'print #1, "carga notacur en ROLL n,nota calculada ", n,(notacur + (*po) * 13)
@@ -2023,6 +2039,7 @@ If COMEDIT=MODIFICACION_INSERCION And vdur>0 And copiar=3 Then ' ctrl-N
 'Print #1,"INSERTA COPIA "
       Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).nota = notacur 
       Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).dur = vdur
+      Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).vol=80 ' nuevo 28-06-2026
       Roll.trk(n + curpos, 12 - notacur + (*po-1) * 13).onoff = 2
       Roll.trk(posnOff, 12 - notacur + (*po-1) * 13).onoff = 1
       Roll.trk(posnOff, 12 - notacur + (*po-1) * 13).DUR = 183  

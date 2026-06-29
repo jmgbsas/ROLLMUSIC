@@ -736,7 +736,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
 			EnOctava=1
 			' CURSOR
 			If COMEDIT=SOLO_MODIFICACION or COMEDIT=MODIFICACION_INSERCION  Or play=SI Or playb=SI   Then ' ctrl-m y ctrl-n ch
-				cursor(c,posishow,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos
+				 cursor(c,posishow,nro,Roll) ' posicion por n 26-10-2021 se arreglo curpos
 			End If
 			
 			
@@ -1179,7 +1179,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 	edity2 = 50 ' botton Edit bordeInf
 	
 	''''stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
-	Do ' nro 1 1182
+	Do ' nro 1 1182 TERMINA EN 7538 O FINMAIN1 
 		''arranquedo1=Timer
 		
 		'' Create a cairo drawing context, using the FB screen as surface.
@@ -1276,7 +1276,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 			pubi=0
 			If VerMenu=1 Then
 				GetMouse mouseX, mouseY, , MouseButtons
-				menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
+            menu(c,cm, posicion,menuNro, Roll,ubiroll,ubirtk)
 				cairo_stroke(c)
 				botones(hWnd, cm, ANCHO,ALTO) ' este despues sinocrash
 				cairo_stroke(cm) ' cm despues de c sino crash
@@ -1292,7 +1292,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 		
 		
 		'' ---------------  LOOP 2 -----ESTE LOOP SE EJECUTA UNA SOLA VEZ PERO SI LO SACO NO ANDA JAJAJAJA
-		Do  ' do nro 2
+		Do  ' do nro 2 O FIN LOOP2
 			'Print #1,"1051 do 2, ROOLLOOP DESDE "; desde
 			
 			'---------
@@ -1341,7 +1341,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 				agregarNota=AGREGAR
 				menuMouse = 0 ' INICIA EL MENU CONTEXTUAL PARA IMPRIMIR LOS LABELS DEL MENU
 				nota=0
-				DUR=0
+				DUR=181
 				trasponer=0
 				curpos= Int((mousex - gap1)/anchofig)
 				notacur=nsE
@@ -1426,6 +1426,10 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 				curpos= Int((mousex - gap1)/anchofig)
 				parametros=0
 				lockip=1
+
+           ''' NO ES ESTO cambiadur = 1 ' CTRL-N DEJODE FUNCIONAR VEMOS SI SE ARREGLA CON ESTO   
+
+
 			End If
 			
 			
@@ -2745,7 +2749,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 				
 				
 				
-				Select Case UCase(inKey)
+				Select Case UCase(inKey) '' EN CTRL-N NO FUNCIONA EL INKEY!!
 				Case "C"
 					nota=12
 					If espacio > 0  Then
@@ -2978,16 +2982,16 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 				' PORQUE LA CONDICION PARAMETROS_ROLL? PARA ESTAR EN COMMEDIT TRUE ES CONDICION ESTAR
 				' EN PARAMETROS_ROOL ES REDUNDATE CREO.....PUEDO ESTAR EL PARAMETROS_ROLL Y EN COMEDIT FALSE
 				If ( menuNew=PARAMETROS_ROLL Or menuNro=PARAMETROS_ROLL) Then
-					If MultiKey(SC_1) Then
-						DUR = 1 :Exit Do
+					If MultiKey(SC_1) Then '' REDONDA
+						DUR = 1 :Exit Do   
 					End If
-					If MultiKey(SC_2) Then
+					If MultiKey(SC_2) Then  '' BLANCA
 						DUR = 2:Exit Do
 					End If
-					If MultiKey(SC_3) Then
+					If MultiKey(SC_3) Then  '' NEGRA
 						DUR = 3:Exit Do
 					End If
-					If MultiKey(SC_4) Then
+					If MultiKey(SC_4) Then  '' CORCHEA
 						DUR = 4:Exit Do
 					End If
 					If MultiKey(SC_5) Then
@@ -3119,7 +3123,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 			End If
 			
 			If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
-				'
+				' ESTO NO VA EN COMEDIT INGRESO_NOTAS!!!
 				
 				If MultiKey(SC_1) Then
 					cifra = "1"
@@ -4165,8 +4169,9 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 						agregarNota = NO_AGREGAR
 					End If
 					
-				Case Else
-					nota=0
+ 				Case Else
+					''''nota=0 IMPIDE FUNCIONE CTRL-N  PROBAR CTRL-M <--OK NO AFECTO
+'' FALTA QUE CON EL NOMBREDE NOTA CTRL-N INSERTE O MODIFIQUE
 					Exit Do
 				End Select
 				
@@ -7530,7 +7535,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 			Sleep 5 ' ESTO HACE QUE LA CINTA CORRA SUAVE
 		End If
 		
-	Loop 'do  nro 1 1182
+	Loop 'do  nro 1 1182    FINMAIN1
 	'''''While InKey <> "": Wend e come los ketstrikes aca no conviene
 	'podria reemplazarse por REset(0) ???
 	'Reset (0)

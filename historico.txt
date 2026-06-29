@@ -1,3 +1,7 @@
+ -29-06-2026 0.395 FIX CTRL-M Y CTRL-N SALTOS DE UN TICK Y BORRABA FINALES
+  DE NOTA AL INSERTAR ALGO NUEVO INMEDIATAMENTE DESPUES DE OTRA NOTA EN CTRL-M.
+  CTRL-N NO MODIFICABA NADA ..TODO FUE EFECTO DE INGRESO DE NOTAS FAST. 
+  FALTA VERIFICAR SI ESTO NO AFECTO OTRAS COSAS PERO SE CORRIGIO LO BASICO.
  -28-06-2026 0.394 pulsos 1,2,3 normal, semifuerte y fuerte, se cambio
   NtDelayExecution en duracion por otra anterior a ver si funciona en windows 11
   pero No..RollMusic anda en windows 7 y 10, en 11 no anda el tempo.

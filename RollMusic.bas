@@ -61,7 +61,10 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.393 FIX ENTRENAR VOZ, 1.0 Escuchar y Cantar.. "
+nroversion="0.395 fix agregar notas en CTRL-M, volumen y no borrar finales si son seguidas"
+' ctrl-n YA ANDA SOL OMODIFICA PERO NO INSERTA NOTAS NUEVAS!
+' VERIFICAR TODO LOS DEMAS EL CAMBIO DE NOTAS RAPIDAS Y ELIMINACION DE LOOP CAMBIO VARIAS COSAS!!!
+' SEGUR PROBANDO GRABARPENTA EJECUCIONES COPIAR TRASPONER ETC ETC!!!
 ' VER ALGO RARO EN WINDOWS 11 ANDA LENTO EL TEMPO 3 VECES MAS LENTO!!! RARISIMO O SEGUN LO QUE HICE
 ' Ejercicios de ritmo se puede anotar en un notepad los distintos ejercicios notas con silencio 0
 ' con sonido 1,2,3 de normal semi fuerte y fuerte. 
