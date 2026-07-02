@@ -6785,7 +6785,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 					' deducir que hace pasoNota, creo que si el intervalo es cero o sea pasoZona1=pasoZona2
 					' sepuede mover una nota o un acorde creo en trasponer...si pasonota=0 no hay una nota exacta o sea
 					' es un acorde ....chan no me acuerdo como funcionaba seguir....
-					menuNew=MENU_INICIAL
+					
 					If SelGrupoNota=2  Then 'ALT-O con grupo
 						correcciondeNotas(Roll)
 						SelGrupoNota=3':indXjreset=0 'en vez de usar flechas un ctrl+click donde se desea
@@ -6849,7 +6849,6 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 					End If
 					If pasoZona1 = 0 Then  ' selecion 1er posicion de la zona
 						pasoZona1=  pasox ' pos de la 1er ventana m lugar lejos de una nota
-                  pasozona1y=pasoy
 						Print #1,"1--pasoZona1 ",pasoZona1
 						If pasoZona1 < 1 Then ''14-05-2026
 							pasoZona1= 1
@@ -6862,7 +6861,6 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 					
 					If pasoZona1 > 0 And pasox > pasoZona1  Then ' posicion 2 de la zona INTERVALO > 0
 						pasoZona2 = pasox ' tratamos de no perder el off1 si justo el off1 es limite de zona
-                  pasozona2y= pasoy
 						Print #1, " pasoZona2 = pasox ";pasoZona2
 						''ESTA NO ESTABA ANTES DIF. pasoNota=pasoy 'hay INTERVALO > 0 => MUEVE LA ZONA
 						' determinar si la ultima nota de la secuencia entra en la zona y si es asi trasponer hasta maxpos

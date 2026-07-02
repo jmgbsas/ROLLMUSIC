@@ -1868,12 +1868,12 @@ Sub RollaTrack (Track() As sec, ntk As Integer,Roll As inst)
 	Dim As Integer j,i3,i2,i1
 	'------------------------------------------
 	' basada en ActualizarRollyGrabarPistaTrk pero en un solo paso, dejare una aola ? veremos
-	ReDim (Track(ntk).trk ) (1 To MaxPos+2000,1 To lim3) ''01-07-2026 incremento para borrarzona
+	ReDim (Track(ntk).trk ) (1 To MaxPos,1 To lim3)
 	Erase mel_undo, undo_acorde,undo_kant_intervalos
 	mel_undo_k=0: ig=0:cnt_acor=0
 	' `PODRIA USAR UN TEMP Y LUEGO COPIAR COMO SE HACE EN ACTUALIZARROLLATRACKYGRABAR
 	' Y ASI UNIFICARIAMOS
-	ReDim RollTemp (1 To Maxpos+2000, NB To NA) As datsec
+	ReDim RollTemp (1 To Maxpos, NB To NA) As datsec
 	'1) 1ER COPIA PENALIDAD OJO DE ROLL A ROLLtEMP
 	For i2 = 1 To MaxPos
 		For i1 = NB To NA
@@ -1881,7 +1881,7 @@ Sub RollaTrack (Track() As sec, ntk As Integer,Roll As inst)
 		Next i1
 	Next i2
 	
-	ReDim TrkTemp (1 To MaxPos+2000,1 To lim3) As poli 'definimos un Track temporario 01-07-2026 incremento maxpos 
+	ReDim TrkTemp (1 To MaxPos,1 To lim3) As poli 'definimos un Track temporario
 	' no usamos RollaTrack porque son distintas estructuras RollaTrack usa sec
 	' vector de tracks a solo usamos un track as poli, de modo que dejaremos
 	' un codigo casi duplicado condensado seri amas engorroso creo

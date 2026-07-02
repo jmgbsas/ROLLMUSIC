@@ -4253,17 +4253,11 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
        cairo_set_source_rgba c, 1, 0.5, 0, 1
        If MouseButtons And 1    Then
          cairo_set_source_rgba c,1,0,0,1
-''BORRAMOS EL UNICO ROLL CARGADO EN EL GRAFICO , SOLO SE PUEDE CARGAR UNO Y SE BORRA ESE.
-      If instancia=ARG0_EN_LINEA Then
-           DisableGadget(PISTASROLL,0) 
-          DELETEListBoxItem(PISTASROLL, 0) 
-      EndIf    
          Nuevo(Roll,1)
          cairo_set_source_rgba c, 0, 1, 0, 1
          Sleep 50
          MenuNew=COMANDOS_ARCHIVO
          cierroedit= 0
-
         EndIf 
    Else
     cairo_set_source_rgba c, 1, 1, 1, 1
