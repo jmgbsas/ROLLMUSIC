@@ -1,6 +1,9 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-    0.396 FIX ROLLATRACK, BORRARZONA, CARGARARCHIVO..
+  0.397 una sola instanca para la ventana de Control, refresh de iconos.
+  (el icono no se actualiza sin eso). Las ventanas de batch Graficas siguen
+  pudienose levantar varias solo si en RollMusic.ini se indica batch grafico
+  en 0 no 3.
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -212,11 +215,13 @@
              en los 2 primeros se levanta un grafico ejecuta automaticamente.
              en el ultimo caso *.ejec levanta Rollmusic completo sin grafico, carga el archivo
              y lo ejecuta automaticamente. (hay que ajustar en el explorador reproducir esas 
-             extensiones con rollmusic.exe)
+             extensiones con rollmusic.exe). Con esta opcion y solo para roll y rtk se podran
+             ejecutar varias instancias del grafico.
           2) SI LA LINEA DICE 
              3            BatchGraficoOCtrl
              TODO SE EJECUTARA EN VENTANA DE CONTROL ONLINE SIN NINGUN GRAFICO, (*.roll y *.rtk), 
-             *.ejec SEGUIRA COMO ANTES PUES NO TIENE GRAFICO.
+             *.ejec SEGUIRA COMO ANTES PUES NO TIENE GRAFICO.En esta opcion solo se ejecutara una
+             unica instancia de la Ventana de Control.
           No hace falta editar el archivo RollMusic.ini, se maneja desde el Menu OPciones item 14.0
           si no esta seleccionado es Grafico para roll y rtk, si lo selecciono sera ventanita
           chica de Control para las mismas, los ejec no se cambia y estará en ventana Control

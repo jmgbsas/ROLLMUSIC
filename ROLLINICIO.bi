@@ -369,8 +369,11 @@ For ix = 0 To __FB_ARGC__
 		ubimp3 = InStr (LCase(Command(ix)),".mp3")
 		ubimid = InStr (LCase(Command(ix)),".mid")
 		
-		
+'' agregamos SetRunOnlyExe() Ejecutamos una sola instancia de la ventana de control
+'' para casi todos los casos menos cuando levantamos Roll o rtk graficos sin ventana de control.
+'' 04-07-2026		
 		If ubiejec > 0 Then  ''30-03-2026 reproducir un *.ejec desde el explorador
+         SetRunOnlyExe()
 			ubiejec=1 ''cargar
 			titulosEj(1)=Command(1)
 			Instancia=ARG0_EN_LINEA
@@ -381,6 +384,7 @@ For ix = 0 To __FB_ARGC__
 		End If
 		
 		If ubim4a > 0 Or ubimp3 > 0 Or ubimid >0 Then  ''30-03-2026 reproducir un *.ejec desde el explorador
+         SetRunOnlyExe()
 			ubimedia=1 ''cargar
 			ubionline = 0
 			titulosEj(1)=Command(1)
@@ -391,7 +395,8 @@ For ix = 0 To __FB_ARGC__
 			Exit For
 		End If
 		
-		If (ubirtk >0 Or ubiroll> 0 ) And BatchGraficoOCtrl =3 Then
+		If (ubirtk >0 Or ubiroll> 0 ) And BatchGraficoOCtrl =3 Then ''tiene ventana de control
+         SetRunOnlyExe()
 			If ubiroll > 0 Then
 				BatchGraficoOCtrl = 4 ' es un roll
 			End If

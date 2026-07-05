@@ -10,7 +10,7 @@ Dim As Integer MenuFlag=0, LoopFlag=0
 '==========================
 #include "ROllLoop.bi"
 '==========================
-
+winexec ("ie4uinit.exe -show",00) 'refresca el cache de iconos
 On Error Goto errorhandler
 ' ahora debo traducir las notas a notas de Roll e incorporarlas al vector
 ' las notas  en Roll van de 0 a 11 para el indice son los semitonos, pero se cargan
@@ -61,7 +61,7 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.396 fix ROLLATRACK, BORRARZONA, cargarARchivo, BuscarNota "
+nroversion="0.397 una sola instancia para la ventana de Control, refresh de iconos "
 ' ctrl-n YA ANDA SOL OMODIFICA PERO NO INSERTA NOTAS NUEVAS!
 ' VERIFICAR TODO LOS DEMAS EL CAMBIO DE NOTAS RAPIDAS Y ELIMINACION DE LOOP CAMBIO VARIAS COSAS!!!
 ' SEGUR PROBANDO GRABARPENTA EJECUCIONES COPIAR TRASPONER ETC ETC!!!
