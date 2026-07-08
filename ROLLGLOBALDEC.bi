@@ -1,5 +1,8 @@
 ''ROLLCONTROLDEC CAMBIAMOS DE NOMBRE A ROLLGLOBALDEC
 ' ESTAN EN LOS DOS MODULOS
+dim Shared As String ROLLDIR
+Dim  As Integer lp=InStrRev(Command(0),"\")
+ROLLDIR =Mid(Command(0),1,lp) ' tiene la barra ES DONDE ESTA ROLLMUSIC.EXE
 
 Declare Sub EntrarNombreCancion(ByRef NombreCancion As string)
 Declare Sub EntrarNombrePista(ByRef NombrePista As String, hwndC as Hwnd)
@@ -596,7 +599,7 @@ Common Shared As  Integer PPQN
 PPQN=96
 Common Shared As float nanchofig
 COMMON Shared As Long eventc, eventM , eventK
-Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec
+Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec,ParenthWnd
 Common Shared As BOOLEAN ROLLCARGADO, TRACKCARGADO, CANCIONCARGADA , NADACARGADO, CANCIONCREADA,EJECCARGADA, APLICABLE
 APLICABLE=FALSE
 Common Shared As string pathdir,nombre,DirEjecSinBarra
@@ -607,7 +610,7 @@ Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer,thr
 Screenbuffer=0
 Common Shared as any ptr thread1, thread2,threadPenta,threadcreaPenta, thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal,threadPer,threadVoz
 Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro,threadKey,threadmidi0,threadCargamidi,threadTono
-Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes, nretrasoMetronomoCan,nretrasoMetronomoRoll
+Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes, nretrasoMetronomoCan,nretrasoMetronomoRoll,threadwin
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi,ubiejec,ubionline
 Common Shared As integer ubim4a, ubimp3,ubimid, uviwav, ubimedia ''muchos mas ubi para audio
@@ -662,7 +665,7 @@ COMMON Shared As Integer  Tope,TopeEjec,trabaspace
 Tope=0
 TopeEjec=0
 trabaspace=0
-Common Shared As String ROLLDIR
+''Common Shared As String ROLLDIR
 Common Shared As UByte Vfuerte,Vsemifuerte,Vdebil
 Vfuerte=120     'ff
 Vsemifuerte=100 'mf
@@ -898,7 +901,7 @@ Declare Sub barrePenta (c As cairo_t Ptr, Roll As inst)
 Declare Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As Integer, Roll As inst, ByRef ubiroll As Integer, ByRef ubirtk As Integer )
 
 Common shared As Integer numtrack,superposicion, nnn,versionEJEC ,retrasoMetronomo,retrasoMetronomoCan,retrasoMetronomoRoll,_
-intentos,velMetronomoIzq,velMetronomoDer, BatchGraficoOCtrl, PORT_MICROSOFT,retrasoMetronomoMedio
+intentos,velMetronomoIzq,velMetronomoDer, BatchGraficoOCtrl, PORT_MICROSOFT,retrasoMetronomoMedio, audiometronomo
 Common Shared As String VolIzq100, VolDer100
 Common Shared As UInteger volhDer,volhIzq,terminar_metronomo
 Common Shared As ULong volumenTotal
@@ -937,3 +940,6 @@ Dim Shared PlaySoundbuffer As Integer Ptr
 Dim Shared As Integer SEGUNDOS=60
 Dim Shared As String cadenapulsos
 Dim Shared As Double  t1, t3
+Static Shared As Integer llave=0
+Dim Shared As HBITMAP bitmap 
+bitmap = Load_image(ROLLDIR+"recur\Fondo.bmp")

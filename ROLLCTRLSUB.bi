@@ -925,41 +925,59 @@ Sub CTRL1074() '' Parametros de Roll y Track(0) en memoria
 	
 End Sub
 
+Sub execwin (ByRef Ejercicio As string)
+winexec  ("notepad.exe "+ ejercicio,SW_SHOWNORMAL)
+End Sub
+
 Sub CTRL10884( ByRef cadenapulsos As String)
 	
-	MESSAGEBOX (hWndC, "ENTRE UNA CADENA P011P100P000P EN UN ARCHIVO NUEVO O EXISTENTE DE CUALQUIER LONGITUD EL 1,2,3 INDICARA SONIDO EL 0 SIN SONIDO","CARGA DE PULSOS 1,2,3,0, fuertes 3, semi fuerte 2, 1 normal, 0 silencio ",MB_OK)
+	MESSAGEBOX (hWndC, "ENTRE UNA CADENA 3011310030003 EN UN ARCHIVO NUEVO O EXISTENTE DE CUALQUIER LONGITUD EL 1,2,3 INDICARA SONIDO EL 0 SIN SONIDO","CARGA DE PULSOS 1,2,3,0, fuertes 3, semi fuerte 2, 1 normal, 0 silencio,  ",MB_OK)
 	Dim As String Ejercicio= OpenFileRequester("CREAR O CARGAR ARCHIVO CON UNA CADENA LUEGO GRABELA",ROLLDIR,"Texto (*.txt )"+Chr(0)+"*.txt"+Chr(0), OFN_CREATEPROMPT)
 	Sleep 500
 	Dim As Integer fi = FreeFile
 	''''Dim As String cadenapulsos
-	If Ejercicio > "" Then
-		Dim result As uInteger
-		
+	''If Ejercicio > "" Then
+				
 		''result=shell  ("notepad.exe "+ ejercicio) 'interrumpe la ejecucion espera que termine
 		' espera la entrada del usuario ,,,es inevitable muestre la consola por ahora
-      result= winexec  ("notepad.exe "+ ejercicio,SW_SHOWNORMAL)
-	Else
-		Exit sub
-	End If
-	Sleep 100
+      threadwin=THREADCALL execwin (Ejercicio) 
+      ThreadWait threadwin 
+Print #1,"ARCHIVO ";Ejercicio
+
+ParenthWnd =0
+   
+ ParenthWnd = FindWindow("Notepad",null) 
+ Print #1,"ParenthWnd  ...";ParenthWnd 
+ SetForegroundWindow(ParenthWnd)
+   FILEFLUSH(-1)
+	Sleep 200
 	
-	Print #1,"result shell "; result
-	If result =0    Then
-		Print #1,"abre  "; ejercicio
-		
-		Open ejercicio For Input As FI
-		If Lof(FI) > 0 Then
+''06-07-2026 SI ES ARCHIVO NUEVO TAMBIEN FUNCIONA SIN CERRAR EL PROGRAMA	
+
+Do      		
+	If Open ( ejercicio For Input As FI ) =0 Then
+Print #1,"ABRE HABER SI  HAY ALGO  "; ejercicio
+		If Lof(FI) > 0 Then ' SI GRABO ALGO
+Print #1,"LEE  "; ejercicio
 			Input #fi, cadenapulsos
-         Sleep 100 
 			Close FI
-			Print #1, cadenapulsos
-			Sleep 200
+         If  cadenapulsos > "" Then
+            Print #1, "2-cadenapulsos "; cadenapulsos
+            Exit DO
+         EndIf 
+      Else
+         Close FI
+         Sleep 1000  
 		End If
+  Else
+     ''NO PASA NADA
+  EndIf
+  Sleep 4000
+Loop
 ''    winexec  ("notepad.exe "+ ejercicio,SW_SHOWNORMAL) '' no espera que termine sigue
 ''Print #1,"result winexec "; result
  ' winexec da 33 como exito en vez de 0 para otra vuelta debo resetear sino no entra
 ' eliminamos no guardamos el result de win exec
-	End If
 	 
 	
 End Sub

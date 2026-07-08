@@ -4392,27 +4392,32 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 							pasoZona1=pasoZona1Old
 						End If
 					End If
-					/'   If e.scancode = SC_P   Then ' 25 anda mejor q con multikey
-					PARAR_PLAY_MANUAL=SI
-					PARAR_PLAY_EJEC=SI
-					Sleep 20
-					playloop=NO:playloop2=NO
-					play=NO:Cplay=no:playb=No
-					playEj=NO
-					Cplay=NO
-					playb=NO
-					play=NO
-					For i3 As Integer  = 1 To Tope
-					portsal=CInt(pmTk(i3).portout)
-					alloff(pmTk(i3).canalsalida,portsal)
-					allSoundoff( pmTk(i3).canalsalida, portsal )
-					Next i3
-					Sleep 1
-					For i3 As Integer  = 1 To TopeEjec
-					portsal=CInt(pmEj(i3).portout)
-					alloff(pmEj(i3).canalsalida,portsal)
-					allSoundoff( pmEj(i3).canalsalida, portsal )
-					Next i3
+					If e.scancode = SC_P   Then ' 
+                  metronomo_si=0
+				      terminar_metronomo=SI
+				      disparo=0
+				      Sleep 1 ' para que tome el terminar_metronomo ¿?
+'-------------
+                  PARAR_PLAY_MANUAL=SI
+					   PARAR_PLAY_EJEC=SI
+					   Sleep 20
+					   playloop=NO:playloop2=NO
+					   play=NO:Cplay=no:playb=No
+					   playEj=NO
+					   Cplay=NO
+					   playb=NO
+					   play=NO
+					   For i3 As Integer  = 1 To Tope
+					      portsal=CInt(pmTk(i3).portout)
+					      alloff(pmTk(i3).canalsalida,portsal)
+					      allSoundoff( pmTk(i3).canalsalida, portsal )
+					   Next i3
+					   Sleep 1
+					   For i3 As Integer  = 1 To TopeEjec
+					    portsal=CInt(pmEj(i3).portout)
+					    alloff(pmEj(i3).canalsalida,portsal)
+					    allSoundoff( pmEj(i3).canalsalida, portsal )
+					   Next i3
 					Sleep 1
 					Parar_De_Dibujar=NO
 					If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then
@@ -4420,7 +4425,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 					SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
 					SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_LIBERADO)
 					End If
-					
+					STARTMIDI=0
 					s5=2 'necesita menos tiempo de procesamiento
 					End If
 					'/

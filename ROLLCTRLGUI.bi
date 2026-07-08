@@ -38,11 +38,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
 	' cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_A,1006) 'CTRL+A ABRIR PISTAS cancion
 	'cancela  AddKeyboardShortcut(hwndC,FCONTROL,VK_E,1016) 'CTRL+E ABRIR PISTAS ejecucion
 	''' ------TIPS AYUDA EN LA BARRA DE ESTADO
-	'   StatusBarGadget(BARRA_DE_ESTADO,"CADA TECLA EN ESTA VENTANA DE CONTROL SE PUEDE USAR UNA SOLA VEZ, PARA MAS VECES OPRIMIR Q" )
-	'statusBarGadget NO PUEDE IR EN UN THREAD CANCELA !!! ESTE NO ES UN THREAD SE SACA POR CONVENIENCIA
-	'CenterWindow(hwndC)
-	''UpdateInfoXserver()
-	Var bitmap = Load_image(ROLLDIR+"fondo.bmp")
+
 	BRUSH = WindowBackgroundImage(hwndC,bitmap,1)
 	''LBS_EXTENDEDSEL seleccion extendida por ahora no va
 	''LBS_NOINTEGRALHEIGHT
@@ -247,6 +243,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
 	GadgetToolTip(BTN_ROLL_CARGAR,"Cargar un Archivo Roll (Sin cancion cargada)")
 	
 	ButtonGadget(BTN_METRONOMO,370,690,40,40,"M")
+
 	ButtonGadget(BTN_MAS,410,690,20,20,"+")
 	SetGadgetFont(BTN_MAS,CINT(LoadFont("consolas bold",15)))
 	GadgetToolTip(BTN_MAS,"Aumenta Velocidad metronomo")
@@ -550,7 +547,8 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
 	MenuItem(1117,MenName7,"13.0 BACKUP NO ")
 	MenuItem(1118,MenName7,"14.0 ABRIR EN EXPLORADOR Archivos *.roll ó *.rtk con ventanita de CONTROL (Por Omision CON GRAFICO) ",MF_UNCHECKED)
 	MenuItem(1119,MenName7,"15.0 HABILITAR PORT SALIDA MICROSOFT NO RECOMENDABLE, PERO SI NO HAY OTRA COSA ",MF_UNCHECKED)
-	
+	menuitem(1110,MenName7,"16.0 HABILITAR METRONOMO SIN AUDIO SOLO VISIBLE",MF_UNCHECKED) 
+
 	''chequedo abrira con GRAFICO y lo tocara.
 	
 	

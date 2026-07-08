@@ -1173,12 +1173,21 @@ Case 1109 ' <======== alteraciones sotenidos o bemoles
 		SetForegroundWindow(hwnd)
 	End If
 	'-----------------------------------------------------------------------
-Case 1110
+Case 1110 '' HABILITAR METRONOMO SIN AUDIO SOLO VISIBLE
+	''Const HABILITAR_PS_MICROSOFT=1
+	''Const APAGAR_PS_MICROSOFT=0
+	''PORT_MICROSOFT=0  ' NO HABILITADO
+	audiometronomo=GetStateMenu(hmessages,1110)
+	Select Case audiometronomo
+	Case  3
+		audiometronomo=0
+		SetStateMenu(hmessages,1110,0)
+	Case 0
+		audiometronomo=3
+		SetStateMenu(hmessages,1110,3)
+	End Select
 	
-	MessBox ("", acercade)
-	If abrirRollCargaMidi=2 Then
-		SetForegroundWindow(hwnd)
-	End If
+
 	'-----------------------------------------------------------------------
 Case 1111 '<========== cambiode escala
 	CTRL1111 ()

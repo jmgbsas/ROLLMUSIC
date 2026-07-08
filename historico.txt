@@ -1,3 +1,8 @@
+ -08-07-2026 0.398 Fix una sola instancia para RollMusic.exe, la ventana de Control, 
+  online o batch en forma reducida, etc
+  metronomo sin sonido opcional con indicacion visual,(amarillo/turquesa)
+  FIX ENTRADA DE PULSOS EN ARCHIVO AHORAO SIN QUE SE CIERRE EL PROGRAMA, NOTEPAD AL FRENTE
+  PARA ENRENAR SIN INTERRUPCIONES,,,
  -05-07-2026 0.397 una sola instanca para la ventana de Control, refresh de iconos.
   (el icono no se actualiza sin eso). LAs ventanas de batch Graficas siguen
   pudienose levantar varias solo si en RollMusic.ini se indica batch grafico

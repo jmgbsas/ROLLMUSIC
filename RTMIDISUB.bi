@@ -3641,9 +3641,24 @@ Sub soundcall
 		Sleep retrasoMetronomo ''DEPENDE DE LA PC???
 		waveoutSetVolume(0,volumenTotal)
       ''Print #1,"LLAMA A PLAYSOUND "
-
-		PlaySound(ROLLDIR+"recur\RimShot.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
-		     '' Print #1,"DESPUED DE LLAMA A PLAYSOUND "
+      
+      If audiometronomo=0 Or cadenapulsos > "" Then  
+		   PlaySound(ROLLDIR+"recur\RimShot.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
+      Else
+        If Instancia=ARG0_EN_LINEA Then ''ventana control
+          If llave=0 Then  ''switch flip flop
+            WindowStartDraw(hwndC,410,770,25,25,1) 
+            ImageDraw(Load_image(ROLLDIR+"recur\AMARILLO.bmp"),0,0)
+            StopDraw
+           llave=1
+          Else  
+            WindowStartDraw(hwndC,410,770,25,25,1) 
+            ImageDraw(Load_image(ROLLDIR+"recur\TURQUESA.bmp"),0,0)
+            StopDraw
+            llave=0
+          EndIf 
+        EndIf 
+      EndIf
 	End If
 	
 End Sub
@@ -3669,7 +3684,7 @@ Sub metronomo ()
 			If  CPCS=0 And CPSS=0 And cadenapulsos="" Then
            ' Print #1, "LLAMA A SOUNDCALL"
             medio_metronomo_on=FALSE
-				threadsound = threadCall soundcall
+            threadsound = threadCall soundcall
             SetThreadPriority(threadsound , -1 )
             
 			Else

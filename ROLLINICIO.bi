@@ -62,6 +62,8 @@
 '==============================
 '#Include "NOTAS.bi"
 '==============================
+#include "foro/window9.bi"
+
 
 #include "ROLLGLOBALDEC.bi"
 '' cuando se define el hwndC =0 o  sea si es > 0 hay ventana
@@ -159,8 +161,8 @@ Common Shared  mensaje As Integer
 #include once "gtk/gtk.bi"
 
 ' This is our data identification string to store data in list item
-Dim  As Integer lp=InStrRev(Command(0),"\")
-ROLLDIR =Mid(Command(0),1,lp) ' tiene la barra ES DONDE ESTA ROLLMUSIC.EXE
+''Dim  As Integer lp=InStrRev(Command(0),"\")
+''ROLLDIR =Mid(Command(0),1,lp) ' tiene la barra ES DONDE ESTA ROLLMUSIC.EXE
 ''pathinicio = CurDir
 Const list_item_data_key ="list_item_data"
 ' fin GTK
@@ -223,7 +225,7 @@ Print #1,Date;Time
 ' SOLO PARA WINDOWS LEE MIDI FILES PERO FALTA FUNCIONES PARA GRABAR!!!
 '---> #Include once "foro/fmidi.bi"
 #include once "fbthread.bi"
-#include "foro/window9.bi"
+'''#include "foro/window9.bi"
 
 '#Include "crt/win32/unistd.bi"
 #inclib "ntdll"
@@ -368,15 +370,17 @@ For ix = 0 To __FB_ARGC__
 		ubim4a = InStr (LCase(Command(ix)),".m4a")
 		ubimp3 = InStr (LCase(Command(ix)),".mp3")
 		ubimid = InStr (LCase(Command(ix)),".mid")
-		
-'' agregamos SetRunOnlyExe() Ejecutamos una sola instancia de la ventana de control
-'' para casi todos los casos menos cuando levantamos Roll o rtk graficos sin ventana de control.
-'' 04-07-2026		
+''	BatchGraficoOCtrl =0 EN EXPLORER  SE EJECUTA ROLL Y RTK SIN VENTANA DE CONTROL Y CON GRAFICO ..AUTOMATICO EMPIEZA A TOCAR
+'' LOS EJEC MID MP3 SE EJECUTAN CON VENTANA DE CONTROL COMPLETA...Y AUTOMATICO EMPIEZA A TOCAR
+
+''	BatchGraficoOCtrl =3 EN EXPLORER  SE EJECUTA LA VENTANA DE CONTROL MUY REDUCIDA DEJANDO LOS 
+'' BOTONES DE CARGA STOP Y REPRODUCIR PARA ROLL Y RTK M4A MP3. LOS EJEC CON VENTANA COMPLETA COMO ANTES
+
 		If ubiejec > 0 Then  ''30-03-2026 reproducir un *.ejec desde el explorador
-         SetRunOnlyExe()
 			ubiejec=1 ''cargar
 			titulosEj(1)=Command(1)
 			Instancia=ARG0_EN_LINEA
+         SetRunOnlyExe()
 			Print #1,"Instancia= ",Instancia
 			Print #1,"TITULO(1)  ",titulosEj(1)
 			ubionline=0
@@ -384,19 +388,18 @@ For ix = 0 To __FB_ARGC__
 		End If
 		
 		If ubim4a > 0 Or ubimp3 > 0 Or ubimid >0 Then  ''30-03-2026 reproducir un *.ejec desde el explorador
-         SetRunOnlyExe()
 			ubimedia=1 ''cargar
 			ubionline = 0
 			titulosEj(1)=Command(1)
 			Instancia=ARG0_EN_LINEA
+         SetRunOnlyExe()
 			Print #1,"Instancia= ",Instancia
 			Print #1,"Reproducir TITULOEJ(1)  ",titulosEj(1)
 			ubionline=0
 			Exit For
 		End If
 		
-		If (ubirtk >0 Or ubiroll> 0 ) And BatchGraficoOCtrl =3 Then ''tiene ventana de control
-         SetRunOnlyExe()
+		If (ubirtk >0 Or ubiroll> 0 ) And BatchGraficoOCtrl =3 Then '' CON VENTANA ctrl
 			If ubiroll > 0 Then
 				BatchGraficoOCtrl = 4 ' es un roll
 			End If
@@ -409,6 +412,8 @@ For ix = 0 To __FB_ARGC__
 			ntk=0
 			titulosTk(0)=Command(ix)
 			instancia = ARG0_EN_LINEA
+         SetRunOnlyExe()
+         Exit For  
 		End If
 		
 		' esto es por comando interno no fisico con click
@@ -417,7 +422,7 @@ For ix = 0 To __FB_ARGC__
 		' levantar la ventana inicial sin grafico y reproducir! dos opciones serian
 		'(tambien podriamos ver si se puede dar click a una carpeta y decirle que la reprodusca con
 		' RollMusic.exe )
-		If ubirtk > 0 or ubiroll>0  Then
+		If ubirtk > 0 or ubiroll>0  Then  ''BATCH SIN VENTANA
 			ntk=0
 			titulosTk(0)=Command(ix)
 			Instancia=ARG1_1_TITULO ' no se condice con el caso real da 2 ???
@@ -429,6 +434,15 @@ For ix = 0 To __FB_ARGC__
 		Print #1,"ubirtk ",ubirtk
 		Print #1,"ubiroll ",ubiroll
 		'sigue en roolloop principio
+   Else
+    If ix=1 And Command(1)="" Then
+     Print #1,"ubirtk=0 And ubiroll=0 And ubiejec=0 And ubim4a=0 And ubimp3=0 And ubimid=0 ";ubirtk, ubiroll, ubiejec, ubim4a, ubimp3, ubimid 
+	  If ubirtk=0 And ubiroll=0 And ubiejec=0 And ubim4a=0 And ubimp3=0 And ubimid=0 Then
+       SetRunOnlyExe()
+       Print #1,"ajusto una sola instancia "
+       Exit For 
+     EndIf 	
+    EndIf
 	End If
 	'-----------
 	If ix=2 And Command(ix) > "" Then

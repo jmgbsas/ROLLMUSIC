@@ -1,9 +1,9 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-  0.397 una sola instanca para la ventana de Control, refresh de iconos.
-  (el icono no se actualiza sin eso). Las ventanas de batch Graficas siguen
-  pudienose levantar varias solo si en RollMusic.ini se indica batch grafico
-  en 0 no 3.
+  0.398 Fix una sola instancia para la ventana de Control, opcion metronomo visual sin sonido "
+' metronomo sin sonido opcional con indicacion visual,(amarillo/turquesa)
+' FIX ENTRADA DE PULSOS EN ARCHIVO NUEVO SIN QUE SE CIERRE EL PROGRAMA, NOTEPAD AL FRENTE
+' PARA ENRENAR SIN INTERRUPCIONES,,,
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -223,9 +223,17 @@
              *.ejec SEGUIRA COMO ANTES PUES NO TIENE GRAFICO.En esta opcion solo se ejecutara una
              unica instancia de la Ventana de Control.
           No hace falta editar el archivo RollMusic.ini, se maneja desde el Menu OPciones item 14.0
-          si no esta seleccionado es Grafico para roll y rtk, si lo selecciono sera ventanita
-          chica de Control para las mismas, los ejec no se cambia y estará en ventana Control
+          si no esta seleccionado es Grafico para roll y rtk VALOR 0, si lo selecciono sera ventanita
+          chica de Control para las mismas VALOR 3 , los ejec no se cambia y estará en ventana Control
           completa siempre.
+          RESUMEN:
+          BatchGraficoOCtrl =0 EN EXPLORER  SE EJECUTA ROLL Y RTK SIN VENTANA DE CONTROL Y CON GRAFICO ..
+          AUTOMATICO EMPIEZA A TOCAR..LOS EJEC MID MP3 SE EJECUTAN CON VENTANA DE CONTROL COMPLETA...
+          Y AUTOMATICO EMPIEZA A TOCAR
+          BatchGraficoOCtrl =3 EN EXPLORER  SE EJECUTA LA VENTANA DE CONTROL MUY REDUCIDA DEJANDO LOS 
+          BOTONES DE CARGA STOP Y REPRODUCIR PARA ROLL, RTK, M4A Y MP3. LOS EJEC CON VENTANA COMPLETA 
+          COMO ANTES EN TODOS LOS CASOS EMPIEZA A TOCAR.
+
        f) Usar el Port de Microsoft, habilitarlo /deshabilitarlo
          En 0.383 se a habilitado la opcion de usar el PORT de Microsoft ahora que el
          programa esta mas estable, igual el volumen que brinda es medio bajo comparada

@@ -61,7 +61,12 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.397 una sola instancia para la ventana de Control, refresh de iconos "
+nroversion="0.398 Fix una sola instancia para la ventana de Control, opcion metronomo visual sin sonido "
+' metronomo sin sonido opcional con indicacion visual,(amarillo/turquesa)
+' FIX ENTRADA DE PULSOS EN ARCHIVO NUEVO SIN QUE SE CIERRE EL PROGRAMA, NOTEPAD AL FRENTE
+' PARA ENRENAR SIN INTERRUPCIONES,,,
+' QUEDA EN EL TINTERO HACER FIX DE SOLO INSTANCIA ESO NO FUNCA Y LOS EJEC NO LOS CARGA COMO
+' ANDA EN EL EXPLORER!!
 ' ctrl-n YA ANDA SOL OMODIFICA PERO NO INSERTA NOTAS NUEVAS!
 ' VERIFICAR TODO LOS DEMAS EL CAMBIO DE NOTAS RAPIDAS Y ELIMINACION DE LOOP CAMBIO VARIAS COSAS!!!
 ' SEGUR PROBANDO GRABARPENTA EJECUCIONES COPIAR TRASPONER ETC ETC!!!

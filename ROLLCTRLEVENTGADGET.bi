@@ -1155,10 +1155,18 @@ If eventnumber()= BTN_METRONOMO And tic=0   Then
 		SetGadgetText (TEXT_GADGET,Str(tiempoPatron))
 		tic=1
 	End If
+ 
+   If  ParenthWnd > 0 Then ''se levanto un notepad para entrenar
+       SetForegroundWindow(ParenthWnd)
+   EndIf
 Else
 	If medio_metronomo_on=FALSE Then
 		terminar_metronomo=1
 		tic=0
+      WindowStartDraw(hwndC,410,770,25,25,1) 
+      ImageDraw(Load_image(ROLLDIR+"recur\fondometronomo.bmp"),0,0)
+      StopDraw
+
 	End If
 End If
 If eventnumber()= BTN_MAS Then
