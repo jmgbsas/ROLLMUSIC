@@ -1,9 +1,7 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-  0.398 Fix una sola instancia para la ventana de Control, opcion metronomo visual sin sonido "
-' metronomo sin sonido opcional con indicacion visual,(amarillo/turquesa)
-' FIX ENTRADA DE PULSOS EN ARCHIVO NUEVO SIN QUE SE CIERRE EL PROGRAMA, NOTEPAD AL FRENTE
-' PARA ENRENAR SIN INTERRUPCIONES,,,
+    0.399 duracion NTdelay windows 11 lo frena, eliminacion, tempo ya anda en win 11 
+    hay menos crash producidos por el freno de hilos. 
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )

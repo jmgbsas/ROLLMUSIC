@@ -2075,7 +2075,42 @@ Sub CTRL1208() 'NUEVA PARA TICKS convertir .ejec a .rtk
 	
 	Print #1, "4 SALIO DE CTRL1208 "
 End Sub
-'----------------------------------
+
+Sub  CTRL1209( K1 As Integer)
+'1) HAY QUE LLENAR TOCAPARAM TOCAPARAM2 Y TOCA CON LOS DATOS DE RTK O ROLL ESTOS SERIAN COMO
+''EL VECTOR CargaIn  QUE HABIA LLENADO MYCALLBACK DESDE UNA EJECUCION MIDI
+' O SEA SIMULAMOS UNA CARGA DE TOK COMO SI VINIESE DE CargaIn
+CONVERTIR_A_EJEC =TRUE
+
+End Sub
+ 
+'---------------------------------------------------------------------
+Sub  CTRL1210() ''CONVERTIR .RTK o roll A .EJEC
+' debo mover rtk a tocaparam o directo a ejec
+ Dim As Integer k1,lim=Tope   ' tope seria con una cancion cargada peri si no lo hay tope vale 0
+ If lim=0 Then lim=1 EndIf
+	For k1=1 To lim  ' el tope de rolls que existen cargados
+		
+		if   CheckBox_getCheck (cbxnum(k1)) = 1 Or lim=1 Then
+			Print #1,"1 LLAMA A CTRL1209 " 
+			CTRL1209(k1) ' aca tengo a ejec de ese Rtk o roll  cargado armar tocaparam
+			Print #1,"2 SALIO DE CTRL1209"
+			' debo ejecutar grabar Ejec  a disco
+			nombre=titulosTk(0) '' ntk siempre es cero porque convierto lo que esta en grafico
+' y en el, estoy viendo Roll y su copia Track(0) internamnete, en la lista estan trak 1 a 32 que
+' se van copiando a track(0) al dar TAB y navegar por los tracks
+			Print #1,"3 nombre ejec roll o rtk iluminado a convertir "; nombre
+		
+          '--> GrabarMidiIn  ' para esto debo armar tocaparam...
+		End If
+		
+	Next k1
+	
+	Print #1, "4 SALIO DE CTRL1208 "
+
+
+End Sub 
+'---------------------------------------------------------------------
 Sub CTRL1230() '' entrenar oido y afinar la voz, la meta es lograr un unisono
 	' con sonidos puros sinusoidales sin armonicos que puedan confundir
 	' pondre los 88 sonidos de un piano con sus letras C C# D D#...ETC PAR CADA OCTAVA

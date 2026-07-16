@@ -1257,5 +1257,25 @@ If eventnumber()= BTN_MENOS_METRO_VOL_DER Then
 	
 End If
 
+If eventnumber()= BTN_MAS_VOL_EJEC Then
+   datoEjec=datoEjec+5
+   If datoEjec > 127 Then
+      datoEjec=127
+   EndIf
+	VolEJEC127=Str(CInt(datoEjec))
+
+	SetGadgetText(TEXT_VOL_EJEC,"Vol EJEC "+ VolEJEC127)
+	
+End If
+
+If eventnumber()= BTN_MENOS_VOL_EJEC Then
+   datoEjec=datoEjec-5
+   If datoEjec < 0 Then
+      datoEjec=0
+   EndIf
+	VolEJEC127=Str(CInt(datoEjec))
+	SetGadgetText(TEXT_VOL_EJEC,"Vol EJEC "+ VolEJEC127)
+	
+End If
 
 '-------------------------------------------------------

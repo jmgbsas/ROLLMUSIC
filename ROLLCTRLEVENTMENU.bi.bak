@@ -280,7 +280,7 @@ Dim K1 As Integer
 tocatope=tocatope+1
 'tocaparam(k).nombre longitud 29 no  contiene el path
 ' nompista no tiene el path en ejec, y en roll, rtk y Titulos si lo tiene 
-'--> reponer y corregir ====>> tocaparam(k).nombre=Titulos(ntk).nombre
+tocaparam(k).nombre=Titulos(ntk).nombre
    CTRL1209(K1)
 
 

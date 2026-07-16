@@ -138,6 +138,9 @@ Const BTN_MENOS_METRO_VOL_DER=53
 Const TEXT_VOLUMEN_AUDIO=54
 Const BTN_ROLL_CARGAR    = 55
 Const BTN_MIDI_CARGAR    = 56
+Const TEXT_VOL_EJEC = 57
+Const BTN_MAS_VOL_EJEC=58
+Const BTN_MENOS_VOL_EJEC=59
 
 Const HABILITAR = TRUE
 Const DESHABILITAR = FALSE
@@ -902,7 +905,7 @@ Declare Sub menu (c0 As cairo_t Ptr, c As cairo_t Ptr,n As Integer,menuNro As In
 
 Common shared As Integer numtrack,superposicion, nnn,versionEJEC ,retrasoMetronomo,retrasoMetronomoCan,retrasoMetronomoRoll,_
 intentos,velMetronomoIzq,velMetronomoDer, BatchGraficoOCtrl, PORT_MICROSOFT,retrasoMetronomoMedio, audiometronomo
-Common Shared As String VolIzq100, VolDer100
+Common Shared As String VolIzq100, VolDer100, VolEJEC127
 Common Shared As UInteger volhDer,volhIzq,terminar_metronomo
 Common Shared As ULong volumenTotal
 Common Shared As Integer volalto
@@ -910,6 +913,7 @@ volalto=FALSE
 terminar_metronomo=0
 VolIzq100="70"
 VolDer100="70"
+VolEJEC127="70"
 velMetronomoIzq=70
 velMetronomoDer=70
 volhIzq =  velMetronomoIzq*65535/100

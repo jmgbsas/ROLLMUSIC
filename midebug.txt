@@ -1,0 +1,90 @@
+start
+PID DE ESTE PROCESO          724
+07-16-202616:23:46
+EN LA CARGA DE ROLLMUSIC BatchGraficoOCtrl               3
+nanchofig      0.6072319
+__FB_ARGV__   72841152
+__FB_ARGC__    1
+__FB_ARGC__    1
+arg  0 = 'C:\IT64\AREA\ROLLMUSIC_DEV\RollMusic.exe'
+arg  1 = ''
+ubirtk=0 And ubiroll=0 And ubiejec=0 And ubim4a=0 And ubimp3=0 And ubimid=0  0       0             0             0             0             0
+ajusto una sola instancia 
+instancia, ix                0             1
+C:\IT64\AREA\ROLLMUSIC_DEV\
+intervalo no dado usando default!
+NB, NA         26            102
+TEST param.ubiroll           0
+TEST titulosTk(0)           
+gap1           4
+portsin  5
+portsout 9
+USB Midi Cable 0
+loopMIDI Port 1
+loopMIDI Port 1 2
+loopMIDI Port 2 3
+loopMIDI Port 3 4
+-----------------------------
+CoolSoft MIDIMapper 0
+Microsoft GS Wavetable Synth 1
+VirtualMIDISynth #1 2
+VirtualMIDISynth #2 3
+USB Midi Cable 4
+loopMIDI Port 5
+loopMIDI Port 1 6
+loopMIDI Port 2 7
+loopMIDI Port 3 8
+pasamos a 3 con el 6 CONTROL               3
+abrirPortoutEjec abriendo port.... 
+abrirPortoutEjec midiout     0            CoolSoft MIDIMapper 0
+abro          CoolSoft MIDIMapper 0
+RTMIDI_ERROR_WARNING, sin importancia
+antes del LOOP main ====hwndC             395298
+1060 abrirRoll=NO_CARGAR_ROLL entro
+sale de 1060 abrirrol,reiniciar, cargacancion            1             1             0
+CALL ROLLLOOP II) 
+1=====hwndC   395298
+///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0)                     
+TEST ROLLLOOP param.ubiroll                0
+titulosTk(0)  
+//////////////midionof  0
+C:\IT64\AREA\ROLLMUSIC_DEV\secuenciaPLAY.txt abierta!
+CArgarArchivo               C:\CANTO\EMPA-FOBA-AVELLANEDA\2026\EVALUACION\LENGUAJEMUSICAL\GRUPO_C_3.ROLL
+tipoescala_num_ini           1
+reconstruccion x pos bin    00000000100101100111
+reconstruccion x pos int     2407
+desde          3
+hasta          8
+notaold        1
+notaescala_num_ini           1
+alteracion    sos
+/////--Cargar Arch pan Globalpan,pmtk, ntk              0             0              0
+armarescala desde cargarArchivo
+pmTk(0).MaxPos = MaxPos  2407
+CambiarDim desde  3 hasta  8 *po  7 NB  26 NA  102
+CantTicks  86400
+FIN CAMBIARDIM  else
+FIN CAMBIARDIM 
+canalx cargado desde archivo               0
+portout cargado desde archivo              0
+En CargarArchivo NB NA, CantTicks          26            102           86400
+Bien CERRADO EL ARCHIVO CARGADO C:\CANTO\EMPA-FOBA-AVELLANEDA\2026\EVALUACION\LENGUAJEMUSICAL\GRUPO_C_3.ROLL
+fin RecalCompas ok 
+dialogo tiempoPAtron entrado               160
+tEMPO llego a TEMPO en entrar tecla       160
+ COMEDIT en space play ???   1
+llama a playall
+' ----------------------------------------
+'               P L A Y  A L L
+'------------------------------------------
+abriendo port....play All
+pORT SALIDA YA ABIERTO EN PLAYALL
+-------------------------------------
+comienzo playaLL ==========> tiempoPatron =              160           FactortiempoPatron          1
+playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =          0.375
+TickUsuario  0.00390625
+mefui de playall
+midiout       0             CoolSoft MIDIMapper 0
+desmarco      CoolSoft MIDIMapper 0
+1) BatchGraficoOCtrl         3
+BatchGraficoOCtrl GRABADO EN ROLLMUSIC.INI               3

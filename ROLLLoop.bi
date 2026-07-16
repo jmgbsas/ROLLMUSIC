@@ -7537,7 +7537,8 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 		''' HAY UN EXIT DO,DO PORA AHI ARRIBA DE BARRIDO PODRIA SER ESO
 		''
 		'' -------------- FIN LOOP2 ------------
-		
+		while inkey <>"" :wend
+
 		If fueradefoco=SI  And (play = NO) and (playb=NO) And (Cplay=NO) Then
 			Sleep 5 ' ESTO HACE QUE LA CINTA CORRA SUAVE
 		End If

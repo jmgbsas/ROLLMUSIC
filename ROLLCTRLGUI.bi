@@ -351,29 +351,41 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
 	' hay que convertir de VolIzq=32767 a VolIzq100=100 y susajsutes
 	'http://www.jasinskionline.com/WindowsApi/ref/w/waveoutsetvolume.html
 	'retval = waveOutGetNumDevs()  ' get number of such devices de salida
-	TextGadget(TEXT_METRO_VOL_IZQ,270, 750,95,20,"VolM Izq "+ VolIzq100)
+	TextGadget   (TEXT_METRO_VOL_IZQ,270, 750,95,20,"VolM Izq "+ VolIzq100)
 	GadgetToolTip(TEXT_METRO_VOL_IZQ,"Ajuste Volumen Metronomo Izquierdo Max=100") '32767
 	SetGadgetFont(TEXT_METRO_VOL_IZQ,CINT(LoadFont("consolas bold",10)))
-	TextGadget(TEXT_METRO_VOL_DER,270, 770,95,20,"VolM Der "+ VolDer100)
+	TextGadget   (TEXT_METRO_VOL_DER,270, 770,95,20,"VolM Der "+ VolDer100)
 	GadgetToolTip(TEXT_METRO_VOL_DER,"Ajuste Volumen Metronomo Derecho Max=100") '32767
 	SetGadgetFont(TEXT_METRO_VOL_DER,CINT(LoadFont("consolas bold",10)))
+
+
 	'StatusBarGadget(1,"StatusBarGadget")
 	''seguir con los botones +/-
-	ButtonGadget(BTN_MAS_METRO_VOL_IZQ,370,750,20,20,"+")
+	ButtonGadget (BTN_MAS_METRO_VOL_IZQ,370,750,20,20,"+")
 	SetGadgetFont(BTN_MAS_METRO_VOL_IZQ,CINT(LoadFont("consolas bold",15)))
 	GadgetToolTip(BTN_MAS_METRO_VOL_IZQ,"Aumenta Volumen metronomo Izq")
-	ButtonGadget(BTN_MENOS_METRO_VOL_IZQ,391,750,20,20,"-")
+	ButtonGadget (BTN_MENOS_METRO_VOL_IZQ,391,750,20,20,"-")
 	GadgetToolTip(BTN_MENOS_METRO_VOL_IZQ,"Disminuye Volumen metronomo Izq")
 	SetGadgetFont(BTN_MENOS_METRO_VOL_IZQ,CINT(LoadFont("consolas bold",15)))
 	
-	ButtonGadget(BTN_MAS_METRO_VOL_DER,370,771,20,20,"+")
+	ButtonGadget (BTN_MAS_METRO_VOL_DER,370,771,20,20,"+")
 	SetGadgetFont(BTN_MAS_METRO_VOL_DER,CINT(LoadFont("consolas bold",15)))
-	GadgetToolTip(BTN_MAS_METRO_VOL_DER,"Aumenta Volumen metronomo Izq")
-	ButtonGadget(BTN_MENOS_METRO_VOL_DER,391,771,20,20,"-")
-	GadgetToolTip(BTN_MENOS_METRO_VOL_DER,"Disminuye Volumen metronomo Izq")
+	GadgetToolTip(BTN_MAS_METRO_VOL_DER,"Aumenta Volumen metronomo Der")
+	ButtonGadget (BTN_MENOS_METRO_VOL_DER,391,771,20,20,"-")
+	GadgetToolTip(BTN_MENOS_METRO_VOL_DER,"Disminuye Volumen metronomo Der")
 	SetGadgetFont(BTN_MENOS_METRO_VOL_DER,CINT(LoadFont("consolas bold",15)))
 	
-	
+
+	TextGadget   (TEXT_VOL_EJEC,270, 790,95,20,"Vol EJEC "+ VolEJEC127)
+	GadgetToolTip(TEXT_VOL_EJEC,"Ajuste Volumen Ejecucion Sin Grabar Max=127") '32767
+	SetGadgetFont(TEXT_VOL_EJEC,CINT(LoadFont("consolas bold",10)))
+
+   ButtonGadget (BTN_MAS_VOL_EJEC,370,792,20,20,"+")
+	SetGadgetFont(BTN_MAS_VOL_EJEC,CINT(LoadFont("consolas bold",15)))
+	GadgetToolTip(BTN_MAS_VOL_EJEC,"Aumenta Volumen Ejecucion Sin grabar")
+	ButtonGadget (BTN_MENOS_VOL_EJEC,391,792,20,20,"-")
+	GadgetToolTip(BTN_MENOS_VOL_EJEC,"Disminuye Volumen Ejecucion Sin grabar")
+	SetGadgetFont(BTN_MENOS_VOL_EJEC,CINT(LoadFont("consolas bold",15)))	
 	
 	'---------------------------------------------
 	
@@ -424,7 +436,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
 	Menubar(MenName1)
 	MenuItem(10091,MenName1, "4.6 GRABA PISTA ROLL DIRECTO A MIDI TIPO 0")
 	MenuItem(10092,MenName1, "4.7 EN DESARROLLO *CARGA ARCHIVO MIDI A RTK")
-	MenuItem(10093,MenName1, "4.8 >X< EN DESARROLLO *CONVERTIR UN ROLL O RTK MANUAL A EJEC")
+	MenuItem(10093,MenName1, "4.8 >X< EN DESARROLLO CONVERTIR UN *.RTK CARGADO  A *.EJEC")
 	
 	
 	Menubar(MenName1)
@@ -520,7 +532,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
 	MenuItem(1091,MenName6,"2.0 Repeticiones marcadas en una sola pista en un INTERVALO en GRAFICO. cancion o pista ")
 	MenuItem(10911,MenName6,"2.1 Borrar Repeticiones ")
 	
-	MenuItem(1092,MenName6,"3.0 Abre y Reproduce Puerto MIDI-IN Ejecucion teclado por MIDI-OUT, SIN GRABAR.")
+	MenuItem(1092,MenName6,"3.0 Abre y Reproduce Puerto MIDI-IN Ejecucion teclado por MIDI-OUT, SIN GRABAR. {vol EJEJ}")
 	MenuItem(1093,MenName6,"4.0 Cierra Puerto MIDI-IN Ejecucion.")
 	MenuItem(1094,MenName6,"5.0 Abre Reproductor de Medios. *.mid, *.wav,*.mp3, m4a")
 	'===================== OPCIONES MENU 7 ===========================

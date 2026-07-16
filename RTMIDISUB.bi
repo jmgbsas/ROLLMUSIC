@@ -916,7 +916,7 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 	STARTMIDI=Timer
 	old_time_on=STARTMIDI
 	''Print #1,"old_time_on "; old_time_on
-	Dim As Double  tickUsuario=60/(tiempoPatron*PPQN) '''tickUsuario=0.01041666 * 240/tiempoPatron
+	Dim As Double  tickUsuario=60/(tiempoPatron*PPQN*FactortiempoPatron) '''tickUsuario=0.01041666 * 240/tiempoPatron
 	' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
 	' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
 	Print #1,"TickUsuario "; tickUsuario
@@ -950,22 +950,22 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 		
 		
 		If PARAR_PLAY_MANUAL = SI Then
-			If InStr(*nombreOut(portout),"Microsoft") > 0 And  PORT_MICROSOFT=0 Then
-			Else
+			'If InStr(*nombreOut(portout),"Microsoft") > 0 And  PORT_MICROSOFT=0 Then
+			'Else
 				alloff( canal,portsal )
 				allSoundoff(canal,portsal )
-			End If
+			'End If
 			PARAR_PLAY_MANUAL=NO
 			Print #1,"mefui de playall"
 			Exit For
 		End If
 		' puede pasar que el maxpos sea menro al final de la secuencia porque se agrego espacio
 		If jply=MaxPos Then
-			If InStr(*nombreOut(portout),"Microsoft") > 0 And  PORT_MICROSOFT=0 Then
-			Else
+		'	If InStr(*nombreOut(portout),"Microsoft") > 0 And  PORT_MICROSOFT=0 Then
+		'	Else
 				alloff( canal,portsal)
 				allSoundoff(canal,portsal )
-			End If
+		'	End If
 			Exit For
 		End If
 		' no se si eliminarlo esto Compas no se si almacena los -1 -2 etc
@@ -1152,15 +1152,15 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 			End If
 		End If
 		
-		tiempoDUR=(60/tiempoPatron) / FactortiempoPatron '13-07-2021 cambiamos velocidad durante el play!!!
-		Sleep 1,1 ' para que corranmas de un thread
+		
+		tickUsuario=60/(tiempoPatron*PPQN*FactortiempoPatron)
 	Next jply
 	''while (PeekMessage(NULL, hwnd, WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE or PM_QS_INPUT))
 	''Wend
 	'-> LA ULTIMA NOTA SERA APAGADA CASI DE INMEDIATO POR EL alloff Y SOUNDOFF QUE SIGUEN
 	' POR ESO DEJAMOS SONAR LA NOTA LA 2*DURACION QUE TIENE dura
 	'' reldur(dura) 'la dduracion  a t=60 usamos eso a t=60
-	duracion (Timer , 2* reldur(dura))
+	duracion (Timer , 2 ) ''* relDur(dura))
 	posicion=comienzo
 	'======================
 	' IF hay loop de repeticion se detecta en la posicion final Then
@@ -1387,32 +1387,15 @@ Sub duracion (old_time As Double, tiempoFigura As Double) '' ensegundos
 	' retardo puro sin on ni off dejo de andar porque ???
 	'print #1,"En Duracion COMIENZA RETARDO En  time :"; old_time
 	'print #1, "tiempoFigura " , tiempoFigura ' o timestamp
-	'Static As Double start
-	''''''Static As LARGE_INTEGER delay
-	'''''delay.QuadPart = -1
 Do
    t1=Timer
 	Do ''retardo de 50 useg
-		''NtDelayExecution(FALSE,@delay) windows 11 no lo soporta?? O ES LA 25H2 EL TEMPO SIEMPRE EN 60!!
-'NO SE QUE ES ELIMINO EL NTDELAY POR AHORA,  TAMPOCO RESULTO USO MITIMER DE ANTES 
-        ''sleep 1 CON SLEEP 1 ANDA BIEN ES 1 MSEG
+    Asm PAUSE
    Loop While Timer-t1 < 0.000050 '50 us   
 Loop Until Timer - old_time >= tiempoFigura
 	
 End Sub
 'print #1,"Fin duracion"
-
-Sub duracionokOLD (old_time As Double, tiempoFigura As Double)
-	' retardo puro sin on ni off dejo de andar porque ???
-	'print #1,"COMIENZA RETARDO En  time :"; old_time
-	'print #1, "tiempoFigura " , tiempoFigura
-	Dim As Double  endtime
-	
-	Do
-		Sleep 1
-	Loop Until Timer - old_time >= tiempoFigura
-	
-End Sub
 
 
 Sub listports( )
@@ -3010,8 +2993,8 @@ End Sub
 '
 '
 Function RollCallback ( ByVal delta As Double, ByVal vec1 As UByte Ptr, ByVal leng As UInteger<64>, ByVal otro As Any Ptr ) As RtMidiCCallback
-	'LOS PORTS Y CANLAES ESTAN EN PMTK PORQUE USA ROLL
-	' LAS PARTES Y D ATOS SE GRABAN EN TOCAPARAM(1) QUE SERAN CONVERTIDOS
+	'LOS PORTS Y CANALES ESTAN EN PMTK PORQUE USA ROLL
+	' LAS PARTES Y DATOS SE GRABAN EN TOCAPARAM(1) QUE SERAN CONVERTIDOS
 	' A ROLL EN EL NUEVO ALGORITMO...18-11-2024
 	Dim As UByte Ptr memoria = vec1
 	Dim As Integer partes
@@ -3250,8 +3233,8 @@ Function mycallback ( ByVal deltatime As Double, ByVal vec As UByte Ptr, ByVal l
 	dato1=*memoria: memoria += 1
 	dato2=*memoria: memoria += 1
 	dato3=*memoria  ''VELOCIDAD
-	If GrabarEjec=0 Then ' para tocar a todo volumen sin grabar
-		dato3=127
+	If GrabarEjec=0 Then ' para tocar a volumen deseado VolEjec sin grabar
+		dato3=CUByte(datoEjec)
 		''Print #1,"velocidad fija para tocar y oirse en este maldito teclado ",dato3
 		''Else
 		''  Print #1,"velocidad que llega dato3 ",dato3
@@ -3322,7 +3305,7 @@ Function mycallback ( ByVal deltatime As Double, ByVal vec As UByte Ptr, ByVal l
 		jgrb += 1
 		If jgrb=1 And nroCompasesPatron> 0  Then
 			' RECUPERO LOS TICKS QUE CONTENDRA EL PATRON, LO BLANQUEO PARA LUEGO
-			' ONROLAR SU LLENADO
+			' CONTROLAR SU LLENADO
 			nroTicksPatron =pmEj(ntoca).MaxPos 'hay patron
 			pmEj(ntoca).MaxPos=0
 			tocaparam(ntoca).maxpos=0
@@ -3349,7 +3332,7 @@ Function mycallback ( ByVal deltatime As Double, ByVal vec As UByte Ptr, ByVal l
 				pmEj(ntoca).MaxPos=pmEj(ntoca).MaxPos +partes
 				tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos
 			Else
-				Print #1,"PARTES 0000" ' ENTRA UNA SOLA VEZ, casi no se usa??
+				Print #1,"PARTES < 0.005 " ' ENTRA UNA SOLA VEZ, NO CONSIDERA DURACIONES MENOTES A 5 MSEG
 				CargaIn(jgrb).partes=0
 				pmEj(ntoca).MaxPos=pmEj(ntoca).MaxPos +1
 				tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos
@@ -3364,7 +3347,7 @@ End Function
 Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi,i1 As Integer) ' I1 PISTA
 	'' ya Graba en version 2
 	''' i1 nro de pista pis
-	'' deberemos leer en verion1 y dos distinguiendo  con fecha=now
+	'' deberemos leer en verison 1 y dos distinguiendo  con fecha=now
 	On Local Error GoTo fail
 	' tengo que grabar el tempo
 	' tocap As vivo, ntkp As Integer,tocaparam  As ejecparam  Ptr)

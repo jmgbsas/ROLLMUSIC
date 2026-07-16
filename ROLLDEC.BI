@@ -1443,7 +1443,7 @@ Dim Shared As Integer result =0
 'Dim Shared As ejecparam tocap 
 
 'ReDim Shared pToca (1 To 32) As pEjec ' parametros
-Dim Shared As Integer tocatope=0,arrancaPlay=0
+Dim Shared As Integer tocatope=0,arrancaPlay=0, datoEjec=70
 Dim Shared As Double StartPlayejec=0
 'ReDim Shared As Double   espera (1 To 32)
 Dim Shared As Integer kply,jToca=0
@@ -1597,3 +1597,4 @@ Dim Shared  As Integer  trazovolumen, tnold, ty1old, ty1,tn
 
 #Include "fmidi.bi"
 Dim  Shared As FBMIDI wmidi
+Dim Shared As BOOLEAN CONVERTIR_A_EJEC=FALSE

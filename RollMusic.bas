@@ -61,7 +61,8 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.398 Fix una sola instancia para la ventana de Control, opcion metronomo visual sin sonido "
+nroversion="0.399 duracion NTdelay rompe windows 11 eliminacion, tempo ya anda en win 11 hay menos crash "
+' SEGUIR CON Sub  CTRL1209() LLEENADO DE LOS VEC TOCA CON RTK O  ROLL QUE HACEN DE CargaIn
 ' metronomo sin sonido opcional con indicacion visual,(amarillo/turquesa)
 ' FIX ENTRADA DE PULSOS EN ARCHIVO NUEVO SIN QUE SE CIERRE EL PROGRAMA, NOTEPAD AL FRENTE
 ' PARA ENRENAR SIN INTERRUPCIONES,,,
@@ -636,7 +637,7 @@ Do
 				If tocatope < 32   Then
 					For k=1 To tocatope+1
 						' al inicio lim sup del for = 1
-						If CheckBox_GetCheck( cbxgrab(k))= 1 Then
+						If CheckBox_GetCheck( cbxgrab(k))= 1  Or CONVERTIR_A_EJEC =TRUE Then
 							ultimo_chequeado= k
 							If tocaparam(k).nombre="" And k= tocatope+1 Then
 								ntoca=k 'ntoca es la  pista ejec que se esta grabando global entera
@@ -663,7 +664,7 @@ Do
 									ntkp=ntoca
 									AddListBoxItem(PISTASEJECUCIONES, tocaparam(ntoca).nombre,ntoca-1)
 									tocatope=ntoca
-									If nombrePatron > "" And nroCompasesPatron > 0 Then
+									If nombrePatron > "" And nroCompasesPatron > 0 Then ''para usar en patrones futuro!
 										pmEj(ntoca).MaxPos=nroCompasesPatron  * 384 '' jjjjj
 										' en la 5ta linea de duracions  0.0208/4 =TickChico a I=240
 										' " O "," P "," I "," L "," F "," E "," X "," H "," W ",   <-- la 8 es H

@@ -1764,11 +1764,13 @@ End Sub
 '------------
 '------------
 Sub borrarZona(todo As String )
+'' y track(0) 01-07-2026
 	Dim As Integer jpt, i1
 	' falta no borrar los off1 que no tiene su on dentro de la zona y borar los off1 que esten fuer
 	' y  su on dentro
 	'Print #1,"entro a borrazona"
 	Dim As Integer jpt2,jpt3, dura
+If todo<> "TODO" Then
 	For jpt=pasozona2 To pasozona1 Step -1
 		For i1=NB To NA
 			'COPIADO DE trasponerRoll rutinas trasponer Busco.....
@@ -1811,10 +1813,15 @@ Sub borrarZona(todo As String )
 			Roll.trk(jpt,i1).onoff = 0
 		Next i1
 	Next jpt
+' todo elresto queda igual maxpos posn etc se hizo un agujero en la secuencia nada mas
+EndIf
 	'-------------achicar secuencia
-	If todo="TODO" Then ' copiar toda la secuencia desde pazozona 2 y hasta el final en pasozona1 hasta el final
-		jpt3=pasoZona1
-		For jpt=pasozona2 To pmTk(ntk).MaxPos
+  If todo="TODO" Then ' copiar toda la secuencia desde pazozona 2 y hasta el final en pasozona1 hasta el final
+	  jpt3=pasoZona1
+   If pasozona2 < pmTk(ntk).MaxPos Then 
+  ''contraemos la secuencia copiando lo q hay despues de pasozona2 hasta el final 
+   ''y lo movemos a partir de pasozona1
+ 		For jpt=pasozona2 To pmTk(ntk).MaxPos
 			For i1=NB To NA
 				Roll.trk(jpt3,i1).nota = Roll.trk(jpt,i1).nota
 				Roll.trk(jpt3,i1).dur  = Roll.trk(jpt,i1).dur
@@ -1822,13 +1829,54 @@ Sub borrarZona(todo As String )
 				Roll.trk(jpt3,i1).pan  = Roll.trk(jpt,i1).pan
 				Roll.trk(jpt3,i1).pb   = Roll.trk(jpt,i1).pb
 				Roll.trk(jpt3,i1).inst = Roll.trk(jpt,i1).inst
-				Roll.trk(jpt3,i1).onoff = Roll.trk(jpt,i1).onoff
+				Roll.trk(jpt3,i1).onoff = Roll.trk(jpt,i1).onoff 
+     
+        Roll.trk(jpt,i1).nota=0 
+        Roll.trk(jpt,i1).dur =0
+        Roll.trk(jpt,i1).vol =0 
+        Roll.trk(jpt,i1).pan =0 
+        Roll.trk(jpt,i1).pb  =0 
+        Roll.trk(jpt,i1).inst  =0
+        Roll.trk(jpt,i1).onoff =0
 			Next i1
 			jpt3=jpt3+1
 		Next jpt
-	End If
+   EndIf
+   If pasozona2 = pmTk(ntk).MaxPos Then '' borramos sin mover nada
+	  For jpt=pasozona1 To pmTk(ntk).MaxPos
+       For i1=NB To NA 
+         Roll.trk(jpt,i1).nota=0
+         If jpt=pasozona1 And i1=pasoZona1y  Then
+            Roll.trk(jpt,i1).dur =182
+         Else
+            Roll.trk(jpt,i1).dur =0
+         EndIf
+         Roll.trk(jpt,i1).vol =0 
+         Roll.trk(jpt,i1).pan =0 
+         Roll.trk(jpt,i1).pb  =0 
+         Roll.trk(jpt,i1).inst  =0
+         Roll.trk(jpt,i1).onoff =0
+       Next i1
+     Next jpt
+   EndIf 
+   posn=pasozona1  '01-07-2026
+   MaxPos=posn+6
+   posicion=posn
+   pmTk(ntk).MaxPos=MaxPos '01-07-2026
 	pasozona1=0: pasozona2=0
-	'Print #1,"CHAU llama a borrazona"
+	'Print #1,"CHAU llamo a borrazona"
+   Print #1,"posn, posishow  de mierda al cortar secuencia ",posn, posishow 
+   If posn > posishow Then 
+      curpos=posn-posishow
+   Else
+      curpos=posishow
+   EndIf
+  EndIf
+Print #1,"curpos ",curpos
+
+
+
+
 End Sub
 
 Sub borrarZonaOLD()
@@ -2962,8 +3010,8 @@ End Sub
 '
 '
 Function RollCallback ( ByVal delta As Double, ByVal vec1 As UByte Ptr, ByVal leng As UInteger<64>, ByVal otro As Any Ptr ) As RtMidiCCallback
-	'LOS PORTS Y CANLAES ESTAN EN PMTK PORQUE USA ROLL
-	' LAS PARTES Y D ATOS SE GRABAN EN TOCAPARAM(1) QUE SERAN CONVERTIDOS
+	'LOS PORTS Y CANALES ESTAN EN PMTK PORQUE USA ROLL
+	' LAS PARTES Y DATOS SE GRABAN EN TOCAPARAM(1) QUE SERAN CONVERTIDOS
 	' A ROLL EN EL NUEVO ALGORITMO...18-11-2024
 	Dim As UByte Ptr memoria = vec1
 	Dim As Integer partes
@@ -3202,8 +3250,8 @@ Function mycallback ( ByVal deltatime As Double, ByVal vec As UByte Ptr, ByVal l
 	dato1=*memoria: memoria += 1
 	dato2=*memoria: memoria += 1
 	dato3=*memoria  ''VELOCIDAD
-	If GrabarEjec=0 Then ' para tocar a todo volumen sin grabar
-		dato3=127
+	If GrabarEjec=0 Then ' para tocar a volumen deseado VolEjec sin grabar
+		dato3=CUByte(datoEjec)
 		''Print #1,"velocidad fija para tocar y oirse en este maldito teclado ",dato3
 		''Else
 		''  Print #1,"velocidad que llega dato3 ",dato3
@@ -3274,7 +3322,7 @@ Function mycallback ( ByVal deltatime As Double, ByVal vec As UByte Ptr, ByVal l
 		jgrb += 1
 		If jgrb=1 And nroCompasesPatron> 0  Then
 			' RECUPERO LOS TICKS QUE CONTENDRA EL PATRON, LO BLANQUEO PARA LUEGO
-			' ONROLAR SU LLENADO
+			' CONTROLAR SU LLENADO
 			nroTicksPatron =pmEj(ntoca).MaxPos 'hay patron
 			pmEj(ntoca).MaxPos=0
 			tocaparam(ntoca).maxpos=0
@@ -3301,7 +3349,7 @@ Function mycallback ( ByVal deltatime As Double, ByVal vec As UByte Ptr, ByVal l
 				pmEj(ntoca).MaxPos=pmEj(ntoca).MaxPos +partes
 				tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos
 			Else
-				Print #1,"PARTES 0000" ' ENTRA UNA SOLA VEZ, casi no se usa??
+				Print #1,"PARTES < 0.005 " ' ENTRA UNA SOLA VEZ, NO CONSIDERA DURACIONES MENOTES A 5 MSEG
 				CargaIn(jgrb).partes=0
 				pmEj(ntoca).MaxPos=pmEj(ntoca).MaxPos +1
 				tocaparam(ntoca).maxpos=pmEj(ntoca).MaxPos
@@ -3316,7 +3364,7 @@ End Function
 Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi,i1 As Integer) ' I1 PISTA
 	'' ya Graba en version 2
 	''' i1 nro de pista pis
-	'' deberemos leer en verion1 y dos distinguiendo  con fecha=now
+	'' deberemos leer en verison 1 y dos distinguiendo  con fecha=now
 	On Local Error GoTo fail
 	' tengo que grabar el tempo
 	' tocap As vivo, ntkp As Integer,tocaparam  As ejecparam  Ptr)
@@ -3593,9 +3641,24 @@ Sub soundcall
 		Sleep retrasoMetronomo ''DEPENDE DE LA PC???
 		waveoutSetVolume(0,volumenTotal)
       ''Print #1,"LLAMA A PLAYSOUND "
-
-		PlaySound(ROLLDIR+"recur\RimShot.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
-		     '' Print #1,"DESPUED DE LLAMA A PLAYSOUND "
+      
+      If audiometronomo=0 Or cadenapulsos > "" Then  
+		   PlaySound(ROLLDIR+"recur\RimShot.wav", 0, SND_FILENAME+SND_NODEFAULT +SND_ASYNC)
+      Else
+        If Instancia=ARG0_EN_LINEA Then ''ventana control
+          If llave=0 Then  ''switch flip flop
+            WindowStartDraw(hwndC,410,770,25,25,1) 
+            ImageDraw(Load_image(ROLLDIR+"recur\AMARILLO.bmp"),0,0)
+            StopDraw
+           llave=1
+          Else  
+            WindowStartDraw(hwndC,410,770,25,25,1) 
+            ImageDraw(Load_image(ROLLDIR+"recur\TURQUESA.bmp"),0,0)
+            StopDraw
+            llave=0
+          EndIf 
+        EndIf 
+      EndIf
 	End If
 	
 End Sub
@@ -3621,7 +3684,7 @@ Sub metronomo ()
 			If  CPCS=0 And CPSS=0 And cadenapulsos="" Then
            ' Print #1, "LLAMA A SOUNDCALL"
             medio_metronomo_on=FALSE
-				threadsound = threadCall soundcall
+            threadsound = threadCall soundcall
             SetThreadPriority(threadsound , -1 )
             
 			Else
