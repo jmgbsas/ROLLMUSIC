@@ -1,11 +1,7 @@
 Este programa está publicado bajo la licencia GPL.
 (ver carpeta Licences/RollMusic)
-  Funciona bien en WINDOWS 7 a 10 para 64bits, en WINDOWS 11 no anda, el tempo queda fijo EN 60, 
-no se lo puede cambiar...hay que migrar o adaptar..tambien se cierra sin previo aviso, problema de 
-buffers de teclado entre hilos. Windows 11 según encontré, perdió la sincronizacion dentro de un 
-mismo hilo en beneficio de ahorrar energia...zas! Es compilado Freebasic pasa por asembler y C
-y se puedeusar librerias de winapi o muchas otras de C, o C++ en forma limitada de modo que
-es veloz. Si hay partes lentas es mi mala tecnica de programacion sorry...
+  Funciona bien en WINDOWS 7 a 10 para 64bits, Windows 11 tambien esta bajo prueba. 
+ Si hay partes lentas es mi mala tecnica de programacion sorry...se sugiere pulsar las teclas rapidas por mas tiempo para que responda el comando.
   Una  ejercitacion para ver Cairo.(Estado:Alpha  ...)
 Un secuenciador que usa letras en vez de rectangulitos...
 Puede editarse una sola pista o crear una cancion de hasta 32 pistas.
