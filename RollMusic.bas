@@ -61,7 +61,7 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.399 duracion NTdelay rompe windows 11 eliminacion, tempo ya anda en win 11 hay menos crash "
+nroversion="0.400 Mutex, sincroizacion de pantalla para evitar parpadeo, en prueba"
 ' SEGUIR CON Sub  CTRL1209() LLEENADO DE LOS VEC TOCA CON RTK O  ROLL QUE HACEN DE CargaIn
 ' metronomo sin sonido opcional con indicacion visual,(amarillo/turquesa)
 ' FIX ENTRADA DE PULSOS EN ARCHIVO NUEVO SIN QUE SE CIERRE EL PROGRAMA, NOTEPAD AL FRENTE

@@ -1,3 +1,5 @@
+ -17-07-2026 0.400 0.400 Mutex, sincroizacion de pantalla para evitar parpadeo, en prueba
+   uso de mutex, veremos si esto no impide otras funcionalidades
  -16-07-2026 0.399 duracion NTdelay windows 11 lo frena, eliminacion, tempo ya anda en win 11 
     hay menos crash producidos por el freno de hilos. 
  -08-07-2026 0.398 Fix una sola instancia para RollMusic.exe, la ventana de Control, 

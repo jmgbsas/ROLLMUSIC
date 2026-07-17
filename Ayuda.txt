@@ -1,7 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-    0.399 duracion NTdelay windows 11 lo frena, eliminacion, tempo ya anda en win 11 
-    hay menos crash producidos por el freno de hilos. 
+     0.400 Mutex, sincroizacion de pantalla para evitar parpadeo, en prueba
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )

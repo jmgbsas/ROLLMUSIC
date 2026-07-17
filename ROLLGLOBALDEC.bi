@@ -947,3 +947,6 @@ Dim Shared As Double  t1, t3
 Static Shared As Integer llave=0
 Dim Shared As HBITMAP bitmap 
 bitmap = Load_image(ROLLDIR+"recur\Fondo.bmp")
+
+Dim Shared As Any Ptr MutexSincro '''  MUTEX
+MutexSincro = MutexCreate()

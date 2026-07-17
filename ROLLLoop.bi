@@ -1178,6 +1178,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 	edity1 = 1 ' botton Edit bordeSup
 	edity2 = 50 ' botton Edit bordeInf
 	
+   MutexSincro = MutexCreate() ''MUTEX anda bien pero falla el volumen ,,, 
 	''''stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 	Do ' nro 1 1182 TERMINA EN 7538 O FINMAIN1 
 		''arranquedo1=Timer
@@ -7548,7 +7549,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 	'podria reemplazarse por REset(0) ???
 	'Reset (0)
 	
-	
+	MutexUnlock(MutexSincro)  ' Liberamos hilos
 	
 	Exit Sub
 	
