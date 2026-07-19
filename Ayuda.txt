@@ -1,6 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-     0.400 Mutex, sincroizacion de pantalla para evitar parpadeo, en prueba
+     0.401 FIX Mutex, paneo no se grababa  
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )

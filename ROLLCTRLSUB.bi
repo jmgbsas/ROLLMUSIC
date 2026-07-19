@@ -1813,7 +1813,11 @@ Sub CTRL1206()
 	
 End Sub
 
-Sub CTRL1207(pis As integer ) 'OK PARA TICKS convierte .ejec a .roll seleccionada
+Sub CTRL1207(pis As Integer )
+''LO DEJA CARGADO EN ROLL GRAFICO PREVIAMENTE ABIERTO Y EL USUARIO SE  ENCARGA DE GRABAR LA PISTA
+'' A RTK O ROLL COMO PREFIERA...
+''--------------------------------------------------------------------------------------- 
+   'OK PARA TICKS convierte .ejec a .roll pasando por rtk seleccionada
 	' LA GRABACION NO GRABA EL FIN DEÑ SONIDO  ONOFF=1  Y ACA SOLO AGREGA EL FINAL DEL ARCHIVO Y SI ES GRANDE
 	'  EL OFF1 DEL CIEERRE POR 182 TARDA MUCHO
 	' SOLUCIONES 1) SI LA NOTA DURA MAS  DE UNAREDONDA 1 SE APAGA
@@ -2033,9 +2037,13 @@ Sub CTRL1207(pis As integer ) 'OK PARA TICKS convierte .ejec a .roll seleccionad
 	Track(0).trk(1,1).ejec = 1 ' marca indica que esta secuencia viene de una ejecucion
 	pmTk(0).ejec=1 ' 06-11-2025
 	'''=>> ACA PODRIAMOS GRABAR EL TRACK DIRECTO A DISCO SIN PASAR POR ROLL
-	TrackaRoll (Track(), 0 , Roll,"CTRL1207") '' "CTRL1207" FUNCION NO IMPLEMENTADA VER QUE ERA ESO
-	ROLLCARGADO=TRUE
-	NADACARGADO=FALSE
+''este  track a Roll es para el caso que se esta convirtiendo una sola ejec puntual
+'' y es necesaria que una ve convertido se lo vea en Roll grafico.
+	  TrackaRoll (Track(), 0 , Roll,"CTRL1207") '' "CTRL1207" FUNCION NO IMPLEMENTADA VER QUE ERA ESO
+	  ROLLCARGADO=TRUE
+	  NADACARGADO=FALSE
+''LO DEJA CARGADO EN ROLL GRAFICO PREVIAMENTE ABIERTO Y EL USUARIO SE  ENCARGA DE GRABAR LA PISTA
+'' A RTK O ROLL COMO PREFIERA...
 	' grabamos el Track a disco tambien
 	
 	nombre=nombreTrack  ' TERMINARA EN EJEC 26-03-2025
@@ -2045,6 +2053,7 @@ Sub CTRL1207(pis As integer ) 'OK PARA TICKS convierte .ejec a .roll seleccionad
 	
 	fail:
 	Dim errmsg As String
+FILEFLUSH(-1)
 	If  Err > 0 Then
 		errmsg = "FAIL Error CTRL1207 " & Err & _
 		" in function " & *Erfn & _
@@ -2054,21 +2063,26 @@ Sub CTRL1207(pis As integer ) 'OK PARA TICKS convierte .ejec a .roll seleccionad
 	
 End Sub
 '----------------------------------------
-Sub CTRL1208() 'NUEVA PARA TICKS convertir .ejec a .rtk
+Sub CTRL1208() 
+''PASA UNA POR UNA CADA EJEC YA LA GRABA A RTK SIN PASAR POR ROLLGRAFICO 
+''-------------------------------------------------------------------------------------
+
+'NUEVA PARA TICKS convertir .ejec a .rtk
 	' ESTA RUTINA SE PODRIA REESCRIBIR PAR ACONVERTIR DE EJEC A RTK DIRECTO SIN PASAR
 	''POR ROLL
 	Dim k1 As Integer
 	For k1=1 To tocatope
-		
+'estoy pasando por Roll sin necesidad 		
 		if   CheckBox_getCheck (cbxejec(k1)) = 1 Then
 			Print #1,"1 LLAMA A CTRL1207 "
-			CTRL1207(k1) ' aca tengo a Roll de  esa ejec cargado
+' aca se obtiene rtk y se lo pasa a roll solo para verlo en pantlla
+			CTRL1207(k1) ' aca tengo a RTK de  esa ejec cargado
 			Print #1,"2 SALIO DE CTRL1207"
 			' debo ejecutar grabar Roll=>rtk de grafico para volcar ese roll a disco
 			nombre=titulosTk(0)
 			Print #1,"3 nombre ejec iluminado a convertir "; nombre
-			
-			GrabarRollaTrack(1,k1,"grabartrkcancion")
+'''y luego se lo vuelve a pasar a Track ...no hace falta aldope en fin lo debo ajustar
+         GrabarRollaTrack(1,k1,"grabartrkcancion")
 		End If
 		
 	Next k1
@@ -2079,8 +2093,15 @@ End Sub
 Sub  CTRL1209( K1 As Integer)
 '1) HAY QUE LLENAR TOCAPARAM TOCAPARAM2 Y TOCA CON LOS DATOS DE RTK O ROLL ESTOS SERIAN COMO
 ''EL VECTOR CargaIn  QUE HABIA LLENADO MYCALLBACK DESDE UNA EJECUCION MIDI
-' O SEA SIMULAMOS UNA CARGA DE TOK COMO SI VINIESE DE CargaIn
+' O SEA SIMULAMOS UNA CARGA DE TOCA COMO SI VINIESE DE CargaIn
+' hay que llenar tocaparm tocaparm2 y toca con los datos de rtk o roll , como si
+' roll o rtk fuese el cector CargaIn. Primero podriamos ca<rgar CargaIn con Rtk
+' pero Ejec se graba desde tocaparam no hace falta pasar por CargaIn salvo que sea mas facil
+
 CONVERTIR_A_EJEC =TRUE
+
+
+
 
 End Sub
  

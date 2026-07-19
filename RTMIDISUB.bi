@@ -1114,7 +1114,7 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 					'-------------------------------------------------
 					
 					If cntrepe > 0 Then
-						cntrepe -= 1
+						cntrepe -= 1 
 					Else
 						cntrepe=Roll.trk(jply,i1).vol ' nro repeticiones en vertical +1
 					End If
@@ -1390,7 +1390,7 @@ Sub duracion (old_time As Double, tiempoFigura As Double) '' ensegundos
 Do
    t1=Timer
 	Do ''retardo de 50 useg
-    Asm PAUSE
+    ASM PAUSE
    Loop While Timer-t1 < 0.000050 '50 us   
 Loop Until Timer - old_time >= tiempoFigura
 	

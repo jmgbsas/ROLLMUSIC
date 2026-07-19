@@ -942,7 +942,7 @@ End If
 '' mas adelante....cuando termine todo pistas ejec
 ''para pistas de cancion manual futuro ???pero si ya hay para pistas manual??
 '//////////////// SEL PORT DE ROLL O MANUALES O CANCION
-If  eventnumber()=BTN_ROLL_PORTSAL  And cierroport= 0 Then
+If  eventnumber()=BTN_ROLL_PORTSAL  And cierroport= 0 Then ' este no se recupera de archivo
 	Dim As Integer miport =1, pis=0,num=0
 	cierroport=1 ' asi entra una sola vez,,,
 	If PISTASROLLSELECCIONADA=1 Then
@@ -964,13 +964,13 @@ End If
 If  eventnumber()=BTN_ROLL_ECO Then 'ECO ,,
 	menuOldStr="[ECO]"
 	threadeco=threadCall EntrarTeclado()
-	ThreadWait threadeco
+	''ThreadWait threadeco
 	''Print #1,"sel pan Globalpan, ntk ",Globalpan,ntk
 End If
 If  eventnumber()=BTN_ROLL_CORO Then 'CORO ,,
 	menuOldStr="[CORO]"
 	threadcoro=threadCall EntrarTeclado()
-	ThreadWait threadcoro
+	''ThreadWait threadcoro
 	''Print #1,"sel pan Globalpan, ntk ",Globalpan,ntk
 End If
 If  eventnumber()=BTN_ROLL_VOL Then ' VOL

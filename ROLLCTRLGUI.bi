@@ -572,7 +572,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
 	MenuItem(1204,MenName8,"2.0 Seleccion de Puerto MIDI-OUT Ejecucion")
 	MenuItem(1205,MenName8,"3.0 Abrir  Puertos MIDI-OUT Ejecucion")
 	MenuItem(1206,MenName8,"3.1 Cerrar Puertos MIDI-OUT Ejecucion")
-	Menuitem(1207,MenName8,"5.0 Convertir una pista iluminada de ejecucion o archivo cargado de *.ejec a *.roll en memoria y lo cargue en Roll Grafico previamente abierto.")
+	Menuitem(1207,MenName8,"5.0 Convertir una pista iluminada de ejecucion o archivo cargado de *.ejec a *.roll en memoria y lo cargue en un Roll Grafico que No debe estar abierto .")
 	Menuitem(1208,MenName8,"5.1 Convertir todas las ejecuciones *.ejec seleccionadas para que toquen columna [S] a *.rtk y los grabe a disco")
 	Menubar(MenName8)
 	MenuItem(1209,MenName8, "6.1 Cambia PAN de una Pista EJEC" )

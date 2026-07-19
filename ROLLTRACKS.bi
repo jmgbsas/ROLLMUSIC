@@ -2421,7 +2421,7 @@ Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst, funcion As S
 	
 	fail:
 	
-	
+	FILEFLUSH(-1)
 	Dim errmsg As String
 	Dim As Long er1 = Err()
 	If  er1 > 0 Then

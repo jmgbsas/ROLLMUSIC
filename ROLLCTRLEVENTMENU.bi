@@ -255,14 +255,14 @@ Case 10091 '<========= Grabar midi directo Sin pasar por TExto ni reproduccion
 	mensajeEstado="PROCESANDO PISTA A MIDI..."
 	threadmidi0= ThreadCall GrabarRollAmidiTipo0()
 	'-----------------
-Case 10092 '<========= CARGAR ARCHIOV MIDI Y PASARLO A ROLL O RTK O EJEC VEREMOS CUAL
+Case 10092 '<========= CARGAR ARCHIO MIDI Y PASARLO A ROLL O RTK O EJEC VEREMOS CUAL
 	mensajeEstado="CARGANDO PISTA MIDI..."
 	threadCargamidi= ThreadCall CargarMidi()
 	'' YA FUNCIONA EL VOLVADO A ARCHIVO AHORA LO DEBO MANEJAR EN MEMORIA
 	'' Y CARGARLO EN RTK O ROLL O EJEC
 '--------------------------------------------------------
 Case 10093  '' 4.8 >X< EN DESARROLLO *CONVERTIR UN ROLL O RTK MANUAL A EJEC")
-' A rtk mas directo creo ES AL REVES QUE DE EJEC A RTK
+' A rtk es mas directo creo ES AL REVES QUE DE EJEC A RTK
 '1) HAY QUE LLENAR TOCAPARAM TOCAPARAM2 Y TOCA CON LOS DATOS DE RTK O ROLL
 '' DESDE //////////////// BOTON NEGRO STOP EJEC  , GRABA A DISCO //////////////////
 ''EN EL  STOP CARGA EN ESOS VECTORES LO  QUE DEJO EN CARGAIN EL MYCALLBACK
@@ -274,7 +274,7 @@ Case 10093  '' 4.8 >X< EN DESARROLLO *CONVERTIR UN ROLL O RTK MANUAL A EJEC")
 ''  For k=1 To tocatope+1
  
 ''de ese modo al querer convertir lo primero sera pedir un nombre si
-''no lo tiene o usar el del Roll o Rtk cargado! ysi esta en una cancion tambien
+''no lo tiene o usar el del Roll o Rtk cargado! y si esta en una cancion tambien
 
 Dim K1 As Integer
 tocatope=tocatope+1
@@ -1339,11 +1339,15 @@ Case 1206 'Cerrar    Puertos MIDI-OUT de ejecucion play por el usuario
 	
 Case 1207 ' CONVERTIR EJECS SELECCIONADA EN TRK en desarrollo para ticks
 	Dim As Integer pis=0
+''''CerrarGraficodesdeCtrl =1
 	CTRL1207(pis)
+''''CerrarGraficodesdeCtrl=0 
 	grabariniciotxt(NombreCancion, EJECUCION)
 Case 1208
 	' buscamos cuales estan seleccionadas en boton check de escuchar pista la primera
+''''CerrarGraficodesdeCtrl =1
 	CTRL1208( )
+''''CerrarGraficodesdeCtrl=0 
 	grabariniciotxt(NombreCancion, EJECUCION)
 	
 	'------------------------------------------------------------------

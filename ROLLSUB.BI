@@ -3397,12 +3397,17 @@ Sleep 100
      EndIf 
      Print #1,"alteracion ",alteracion 'Global
     pmTk(ntk).eco = dat.eco
+    pmTk(0).eco = dat.eco
+
     Globaleco=dat.eco  
     pmTk(ntk).ejec =  dat.ejec 
 
     pmTk(ntk).pan = dat.pan
+    pmTk(0).pan = dat.pan
+
     Globalpan=dat.pan
     pmTk(ntk).coro = dat.coro
+    pmTk(0).coro = dat.coro
     Globalcoro=dat.coro
           
 Dim mit As aUshort
@@ -4856,7 +4861,7 @@ Sleep 100
             menunew=MENU_INICIAL
             cierroedit= 0
             thread3= ThreadCall EntrarTeclado()
-            ThreadWait thread3
+            '''ThreadWait thread3
              pubi=1
           EndIf
  '          
@@ -4869,12 +4874,12 @@ Sleep 100
              menunew=MENU_INICIAL
              cierroedit= 0  
              thread3= ThreadCall EntrarTeclado()
-             ThreadWait thread3
+             '''ThreadWait thread3
             pubi=1   
           EndIf
          Case "[PAN]","[CORO]","[ECO]"
           threadpan=threadCall EntrarTeclado() ''SelPan(Globalpan)
-          ThreadWait threadpan 
+          '''ThreadWait threadpan 
       End Select
 
    If mousex > ANCHO*3/4 And mousey < 50 And mousex < ANCHO-50 Then
@@ -5692,7 +5697,7 @@ Next kk
    Else
        default=Str(pmTk(ntk).eco)
    EndIf
-   intervaloTxt = InputBoxJmg("Ajuste Numerico de ECO 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+   intervaloTxt = InputBoxJmg("Ajuste Numerico de ECO  " ,"ENTRE UN VALOR DE 1, A 127 ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
    valoreco= ValInt(intervaloTxt)  '19-03-2025
    If menuOldStr="[ECO]" Then
      pmTk(ntk).eco=CUByte(valoreco)
@@ -6393,15 +6398,16 @@ Print #1,"grabando alteracion en el archivo ",alteracion
      ' ver la carga tambien SEGUIR!!!!, TAMPOCO ESTABAN NA Y NB
      dat.patch= pmTk(ntk).patch ' 14-04-2024 o sea inst
      dat.portout = pmTk(ntk).portout ''EL DISPOSITIVO
+Print #1, "+++ AL GRABAR ROLL EL PORTOUT "; dat.portout
      dat.eco = Globaleco
      pmTk(ntk).eco=Globaleco   
 Print #1,"///----grabar ECO GlobalECO,pmtk, ntk ",Globaleco,pmTk(ntk).eco,ntk
      dat.ejec = pmTk(ntk).ejec ' xxxx nuevo  
 ''===> libres graba3.pan
-     dat.pan =Globalpan
-     pmTk(ntk).pan=Globalpan 
-     dat.coro=Globalcoro
-     pmTk(ntk).coro=Globalcoro 
+     dat.pan =pmTk(ntk).pan '''Globalpan
+     pmTk(ntk).pan=pmTk(ntk).pan '''Globalpan 
+     dat.coro=pmTk(ntk).coro ''Globalcoro
+     pmTk(ntk).coro=pmTk(ntk).coro '''Globalcoro 
   
 Print #1,"///----GrabaRoll pan Globalpan,pmtk, ntk ",Globalpan,pmTk(ntk).pan,ntk
      If pmTk(ntk).tipocompas<> ritmo Then ' 20-12-2025
@@ -6631,7 +6637,7 @@ Sub GrabarTrack (ntk As Integer)  'Error seguro aca nota=181 posicion1
  Print #1,"---------------------------------------------------------------------------------"
  Dim ntknom As String 
  ntknom=titulosTk(ntk)
- Print #1,"  inicia GrabarTrack NUMERO= ",ntk
+ Print #1,"  inicia GrabarTrack NUMERO= , nombre  ",ntk, ntknom
  gt=8
  Maxpos=pmTk(ntk).MaxPos
     If  Open (ntknom  For Binary Access write As #gt ) <> 0 Then

@@ -65,7 +65,7 @@ Declare Sub CTRL1200(hmessages As hmenu)
 Declare Sub CTRL1204(hmessages As hmenu)
 Declare Sub CTRL1205()
 Declare Sub CTRL1206()
-Declare Sub CTRL1207(pis As Integer)
+Declare Sub CTRL1207(pis As Integer) ' UNASOLA pista o TODAS
 Declare Sub CTRL1208()
 Declare Sub CTRL2500()
 Declare Sub CTRL2502 (hmessages As hmenu)

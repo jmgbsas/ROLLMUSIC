@@ -968,7 +968,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 	' 15-02-2026
 	MenuNew=MENU_INICIAL
 	
-	
+	CerrarGraficodesdeCtrl =0
 	Dim As Integer ubiroll,ubirtk,encancion
 	' PORACA CANCELA '''' JMGDEBUG
 	abrirRollCargaMidi=2 ' no permite cargar Roll ya esta cargado
@@ -1177,12 +1177,10 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 	
 	edity1 = 1 ' botton Edit bordeSup
 	edity2 = 50 ' botton Edit bordeInf
-	
-   MutexSincro = MutexCreate() ''MUTEX anda bien pero falla el volumen ,,, 
+   '''   MutexLock MutexSincro
 	''''stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 	Do ' nro 1 1182 TERMINA EN 7538 O FINMAIN1 
 		''arranquedo1=Timer
-		
 		'' Create a cairo drawing context, using the FB screen as surface.
 		'' l originalestba mal sizeof(integer ) es mu chico debe ser 4
 		'' esto solo ejecutar si hay cambio de tamaño!!
@@ -1272,8 +1270,10 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 		End If
 		If (terminar=NO_TERMINAR_BARRE_PANTALLA Or Parar_De_Dibujar=NO)  Then
 			'''''       Print #1,"DESDE HASTA ", desde , hasta
+         MutexLock MutexSincro
 			threadPenta = ThreadCall barrePenta (c, Roll )
 			ThreadWait threadPenta
+         
 			pubi=0
 			If VerMenu=1 Then
 				GetMouse mouseX, mouseY, , MouseButtons
@@ -1282,14 +1282,14 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 				botones(hWnd, cm, ANCHO,ALTO) ' este despues sinocrash
 				cairo_stroke(cm) ' cm despues de c sino crash
 			End If
-			
+			MutexUnLock MutexSincro
 		End If
 		
 		
 		
 		ScreenUnLock()
 		
-		
+
 		
 		
 		'' ---------------  LOOP 2 -----ESTE LOOP SE EJECUTA UNA SOLA VEZ PERO SI LO SACO NO ANDA JAJAJAJA
@@ -2211,7 +2211,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 				Exit Do
 			End If
 			
-			If  CerrarGraficodesdeCtrl =1 Then
+			If  CerrarGraficodesdeCtrl =1 Then ''esta funciona antes e impide la pregunta al usuario 
 				eventM=eventrbdown ' por si selecciono algo en lista pistas y quedo el loop de menu popup
 				' va a usar sc_p para para r el play y vuelve
 				
@@ -7548,9 +7548,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 	'''''While InKey <> "": Wend e come los ketstrikes aca no conviene
 	'podria reemplazarse por REset(0) ???
 	'Reset (0)
-	
-	MutexUnlock(MutexSincro)  ' Liberamos hilos
-	
+
 	Exit Sub
 	
 	
