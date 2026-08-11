@@ -114,7 +114,7 @@ alteracion="sos"
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0,OCTAVAFIJA
 Dim Shared As integer pasoZona2=0,nroRep=0,esEjecucion=0,pasoZona1Old=0,pasoZona1y=0,pasoZona2y=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, playloop2=0,SelGrupoNota =0,moverZona=0, copiarZona=0,SelGrupoNotaT =0
-Dim Shared as ubyte  DUR,nota,notacur,suenaunavez=0,canRecal=0
+Dim Shared as ubyte  DUR,nota,notacur,suenaunavez=0,canRecal=0,notacurOld
 ReDim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t,t2, taux
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld, cursormove,notaoldmidi
@@ -650,7 +650,7 @@ Dim Shared As Integer pesoDur (0 To 182)  => {0, _ 'era 108
 
 Dim Shared As String nombreArchivo, TCompas,menuOldStr, ticksdefault,nombrePatron, intervaloTxt
 Dim Shared As Integer nroCompasesPatron, nroTicksPatron, CPSS,CPCS,GUARDOCPSS,GUARDOCPCS
-nroCompasesPatron=1
+nroCompasesPatron=-1
 nroTicksPatron=0
 nombreArchivo="" : ticksdefault="96"
 
@@ -944,7 +944,7 @@ Declare Sub Tracks (ByRef nroTrack As integer, ByRef nroCanal As UByte, Roll As 
 Dim Shared As Long CONTROL3 = NO
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
 CantMin=15
-CantTicks=CantMin * PPQN * tiempoPatron ''si t=208 ->299520  ' 96*15*208
+CantTicks=CantMin * PPQN * tiempoPatron ''si t=208 ->299520  ' 96*15*208 ,,172800 PARA TIEMPOPATRON 120
 ' a t=208 cantticks=86400*208/60=299520
 Dim Shared As inst Roll ' para visualizar y tocar
 Dim Shared As inst RollAux ' para ver un track superpuesto al Roll deberiamos escribir ambos Roll veremos si se puede
@@ -1004,7 +1004,7 @@ Dim Shared As notas_agregadas  undo_acorde(1 To 500, 0 To 11) ' undo para 1 acor
 '============== IMPLEMENTARLO AL FINAL 
 common Shared As Integer  ANCHO,ALTO,ANCHOSYSTEM, ALTOSYSTEM
 Dim Shared As Integer   deltaip=0,scan_alt=0,scan_d=0,mueveHorizontalmayor50=0
-Dim Shared As Double   BordeSupRoll, inc_Penta,arranqueDo1=0
+Dim Shared As Double   BordeSupRoll, inc_Penta,arranqueDo1=0,BordeSupRollOld
 Dim Shared As Integer  AnchoInicial,AltoInicial,ibarre
 ibarre=desde   
 Common Shared As FLOAT font
@@ -1067,36 +1067,36 @@ NroCol =  (ANCHO / anchofig ) + 4 ' 20 Tamaño figuras, nota guia 6 columnas "B_8
 Dim Shared ANCHO3div4 As Integer 
  ANCHO3div4 = ANCHO *3 / 4
 'vector relacion entre point y pixels
-'6pt   	8 px 	0.5em 	50%
-'7pt 	   9 px 	0.55em 	55%
-'7.5pt 	10px 	0.625em 	62.5%
-'8pt   	11px 	0.7em 	70%
-'9pt 	   12px 	0.75em 	75%
-'10pt 	13px 	0.8em 	80%
-'10.5pt 	14px 	0.875em 	87.5%
-'11pt 	15px 	0.95em 	95%
-'12pt 	16px 	1em 	100%
-'13pt 	17px 	1.05em 	105%
-'13.5pt 	18px 	1.125em 	112.5%
-'14pt 	19px 	1.2em 	120%
-'14.5pt 	20px 	1.25em 	125%
-'15pt 	21px 	1.3em 	130%
-'16pt 	22px 	1.4em 	140%
-'17pt 	23px 	1.45em 	145%
-'18pt 	24px 	1.5em 	150%
-'20pt 	26px 	1.6em 	160%
-'22pt 	29px 	1.8em 	180%
-'24pt 	32px 	2em 	200%
-'26pt 	35px 	2.2em 	220%
-'27pt 	36px 	2.25em 	225%
-'28pt 	37px 	2.3em 	230%
-'29pt 	38px 	2.35em 	235%
-'30pt 	40px 	2.45em 	245%
-'32pt 	42px 	2.55em 	255%
-'34pt 	45px 	2.75em 	275%
-'36pt 	48px  3em 	   300% 	
-'px	1/96 of 1 inch (96px = 1 inch)	font-size: 12px
-'pt	1/72 of 1 inch (72pt = 1 inch)	font-size: 12pt;
+'6pt        8 px      0.5em      50%
+'7pt         9 px      0.55em      55%
+'7.5pt      10px      0.625em      62.5%
+'8pt        11px      0.7em      70%
+'9pt         12px      0.75em      75%
+'10pt      13px      0.8em      80%
+'10.5pt      14px      0.875em      87.5%
+'11pt      15px      0.95em      95%
+'12pt      16px      1em      100%
+'13pt      17px      1.05em      105%
+'13.5pt      18px      1.125em      112.5%
+'14pt      19px      1.2em      120%
+'14.5pt      20px      1.25em      125%
+'15pt      21px      1.3em      130%
+'16pt      22px      1.4em      140%
+'17pt      23px      1.45em      145%
+'18pt      24px      1.5em      150%
+'20pt      26px      1.6em      160%
+'22pt      29px      1.8em      180%
+'24pt      32px      2em      200%
+'26pt      35px      2.2em      220%
+'27pt      36px      2.25em      225%
+'28pt      37px      2.3em      230%
+'29pt      38px      2.35em      235%
+'30pt      40px      2.45em      245%
+'32pt      42px      2.55em      255%
+'34pt      45px      2.75em      275%
+'36pt      48px  3em         300%      
+'px     1/96 of 1 inch (96px = 1 inch)     font-size: 12px
+'pt     1/72 of 1 inch (72pt = 1 inch)     font-size: 12pt;
 ' mis valores
 ' font 8  son 5  pixels
 ' font 9  son 5.5 px
@@ -1211,7 +1211,7 @@ ProgError(17) = "end of file"
 Static Shared As HWND cbxnum(1 To 32),cbxsolo(1 To 32), cbxejec(1 To 32),cbxgrab(1 To 32),rbparar,rbgrabar,cbxejecout(1 To 32)
 Static Shared As Integer sonidoPista(1 To 32)
 static  Shared As Integer SuenaTodo =0, cntsuena=0
-Static Shared  As Integer jgrb=0, jgrbRoll
+Static Shared  As Integer jgrb=0, jgrbOld, jgrbRoll
 Declare Sub PlayCancion(Track() As sec)
 Declare Sub PlayUnoSolo(SolX As sec, Spis As Integer)
 Declare Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst,funcion As string)
@@ -1301,6 +1301,7 @@ Type ejeccabeza Field=1  ' 45 bytes
  As UByte mas8
  As UByte mas9
 End Type
+'' todos los archivos previos seran incompatibles delta sera cantidad de ticks
 Type  ejecparam Field=1  'son 45 bytes ORIGINAL 
   As Double        delta  ' entre pistas de ejec 6 byes
   As String  * 29  nombre 'de cada Toca         29 bytes
@@ -1332,7 +1333,7 @@ Type  ejecparam2 Field=1  'son 25 bytes mas para llegar a los 70
   As UByte   tiempoPatron2 
   As UByte  pitchbend
 ''' 12 bytes mas 
- mas1 As UByte =0
+ tipoDelta As UByte =0   '' tipo de delta 0 el delta antiguo en tiempo, 1 delta nuevo en ticks
  mas2 As UByte =0
  mas3 As UByte =0
  mas4 As UByte =0
@@ -1428,9 +1429,12 @@ End Type
 ' deberia ahcer dim no redim y usar erase
 ' VECTOR EJECUCION REAL 
 Dim Shared Toca (1 To 32) as vivo  ' vector ejecucion real
+'''Dim Shared GuardaToca (1 To 32) as vivo  ' vector modificacion ejecucion real
+
 Dim Shared  As vivo toc
 ' tocaparam son los parametros de la ejecucion y se graban al principio
 ' de un archivo ejec, luegog se graban los datods de las pistas de ejec midi
+'' la ocurrencia 0 para que la hice??
 Dim  Shared  tocaparamCabeza ( 0 To 32) As ejeccabeza
 Dim  Shared  tocaparam ( 0 To 32) As ejecparam 
 Dim Shared   tocaparam2 (0 To 32) As ejecparam2
@@ -1443,12 +1447,12 @@ Dim Shared As Integer result =0
 'Dim Shared As ejecparam tocap 
 
 'ReDim Shared pToca (1 To 32) As pEjec ' parametros
-Dim Shared As Integer tocatope=0,arrancaPlay=0, datoEjec=70
+Dim Shared As Integer tocatope=1,arrancaPlay=0, datoEjec=70
 Dim Shared As Double StartPlayejec=0
 'ReDim Shared As Double   espera (1 To 32)
 Dim Shared As Integer kply,jToca=0
 Dim Shared As Double timex(1 To 32)
-Dim Shared As UByte dato1, dato2 , dato3, dato1old,dato4=0,filtro1,filtro2 
+Dim Shared As UByte dato1, dato2 , dato3, dato1old,dato4=0,filtro1,filtro2 , startcall=0
 Dim Shared  As Double stime1=0, stime2=0, sdura=0
 Dim Shared datot4 As double
 Dim Shared  As integer maxgrb=0,maxcarga=0, maxpis 

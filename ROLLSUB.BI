@@ -4406,6 +4406,13 @@ Print #1, "//////notaold BORRADO Y FINAL SEC",notaold
              titulosTk(ntk)=nombre ''14-05-2026
           EndIf
        EndIf
+'' PARA CUENDO VENIMOS DE CONVERTIR UN EJEC A ROLL EN MEMORIA NO TENEMOS EXTENSION
+             Dim As Integer punto
+             punto=InStr(nombre,".")
+             If punto=0 Then
+                nombre=nombre+".roll"
+             EndIf
+''---------------------------
 
        Dim As Integer ubi1=0,ubi2=0,ubi3=0,ubi4=0 
        Dim As String no1,no2
@@ -5732,7 +5739,7 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
       If ntkp=0 Then ntkp=1  EndIf
       default=Str(pmEj(ntkp).vol)
       If pmEj(ntkp).vol=0 Then 
-        default=Str(120)
+        default=Str(90)
       EndIf
       intervaloTxt = InputBoxJmg("Ajuste Numerico de VOL 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
       valorvol= ValInt(intervaloTxt)  '19-03-2025
@@ -6491,7 +6498,7 @@ End Function
 Sub  abrirSecuencia(nf As Integer) 
 
   If  Open (ROLLDIR +"secuenciaPLAY.txt" For Output Shared As nf ) <> 0 Then
-    		Print #1, ROLLDIR +"secuenciaPLAY.txt no abre!"
+              Print #1, ROLLDIR +"secuenciaPLAY.txt no abre!"
   Else
       Print #1, ROLLDIR+"secuenciaPLAY.txt abierta!"
   EndIf
@@ -7479,7 +7486,7 @@ Sub SelScrollBar()
 'probamos deusar scrollbar ScrollBarGadget
 ' anda barbaro ELLA SOLA,..pero igual INTERFIERE CON LA SELECCION DE PISTAS 
 ' EN LA LISTA DE PISTAS ROLL UNA CANCION
-' NO SIRVE PARA UNA MIERDA JAJAJAJA O SEGURO NO LA SEUSAR EN MI CONTEXTO
+' NO SIRVE PARA UNA MIERDA JAJAJAJA O SEGURO NO LA SE USAR EN MI CONTEXTO
 ' YO ESTOY CONTROLANDO AL GRAFICO DE ROLLL AL DAR CLICK A UNA PISTA Y SE COMPORTA
 ' COMO EL TAB CAMBIO DE PISTA EN EL GRAFICO ,,PERO SI USO CUALQUIER GADGET ESPECIAL
 ' PARA AJUSTAR EL VALOR DEL PARAMETRO SE CAGA LA SELECCION DE PISTA UN FIASCO,,
@@ -7501,6 +7508,7 @@ SetTimer(hw,1,20,Cast(Any Ptr,@sizeMIO))
 
 Do
    ev=WaitEvent
+   Sleep 15 ' seria esto que faltaba....¿?
 Loop Until ev=EventClose
 
 
@@ -7657,7 +7665,7 @@ End Sub
 
 '--------------------------
 '---------------------------
-Sub selInstORdenAlfa(ByRef instru As Integer)
+Sub selInstORdenAlfa(ByRef instru As Integer, tipo As String , pista As integer)
 'If ntk =0 Then
 '   Exit Sub
 'EndIf
@@ -7729,8 +7737,14 @@ Posy=y0 +100
                cad=Mid(NombreInstAlfa(i1),i2)
                Print #1,"cadena ",cad
                instru = CUByte(ValInt(cad))
-               pmTk(ntk).patch=CUByte(instru)
-               pmTk(0).patch=CUByte(instru)
+               If tipo="ROLL" Then
+                 pmTk(pista).patch=CUByte(instru)
+                 pmTk(0).patch=CUByte(instru)
+               EndIf
+               If tipo="EJEC" Then
+               pmEj(pista).patch=CUByte(instru)
+               tocaparam(pista).patch =CUByte(instru)
+               EndIf
                 print #1,"seleccion instrumento alfa instru = ",instru     
                patchsal=CUByte(instru)
                   Close_Window(haw)
@@ -8788,58 +8802,58 @@ Print #31,"numfloat ", numfloat
 dato1=128 ' tomamos los cierres off, si una nota on tiene vol=0 ahi pasariamos a silencios
 ' pero no solo con los off aca es diferente ...revisar el mecanismo de play teclado midi..
     If  numfloat  > 0.03  Then
-					For i2=1 To 44
-					 If numfloat >= durcla(i2,1) And numfloat < durcla(i2+1,1) And i2< 45 Then
-					    Print #31, "1) esta entre ",durcla(i2,1), " y ",durcla(i2+1,1), numfloat
-					    numfloat=numfloat-durcla(i2,1)  ' le resta la menor del intervalo
+                         For i2=1 To 44
+                          If numfloat >= durcla(i2,1) And numfloat < durcla(i2+1,1) And i2< 45 Then
+                             Print #31, "1) esta entre ",durcla(i2,1), " y ",durcla(i2+1,1), numfloat
+                             numfloat=numfloat-durcla(i2,1)  ' le resta la menor del intervalo
              Select Case dato1
       '         Case 144  'on
-		'			     duras(1)=durcla(i2,2)+45 ' estos son ilencios no va
+          '                    duras(1)=durcla(i2,2)+45 ' estos son ilencios no va
                Case 128 'off
-					     duramidi(1)=durcla(i2,2) 
+                              duramidi(1)=durcla(i2,2) 
               Print #31, "duras(1) " ;duramidi(1)
             End Select 
-					     numdurasmidi(1)=1
-					    Exit For
-					 EndIf
-			
-			   Next i2
-			  '   Print #1,"---------duraciones 1---------------" 
+                              numdurasmidi(1)=1
+                             Exit For
+                          EndIf
+               
+                  Next i2
+                 '   Print #1,"---------duraciones 1---------------" 
    EndIf
    If  numfloat  > 0.08  Then ' para que entren tresillos chicos pero no todos
- 					For i2=1 To 44
-						   If numfloat >= durcla(i2,1) And numfloat < durcla(i2+1,1) And i2< 45 Then
-						     Print #31,"2) esta entre ",durcla(i2,1), " y ",durcla(i2+1,1),numfloat
-						     numfloat=numfloat-durcla(i2,1)
+                          For i2=1 To 44
+                                 If numfloat >= durcla(i2,1) And numfloat < durcla(i2+1,1) And i2< 45 Then
+                                   Print #31,"2) esta entre ",durcla(i2,1), " y ",durcla(i2+1,1),numfloat
+                                   numfloat=numfloat-durcla(i2,1)
              Select Case dato1
           '     Case 144
-					 '    duras(2)=durcla(i2,2)+45
+                          '    duras(2)=durcla(i2,2)+45
                Case 128
-					     duramidi(2)=durcla(i2,2)
+                              duramidi(2)=durcla(i2,2)
   Print #31,"duras(2) " ; duramidi(2)
             End Select 
-  	             numdurasmidi(1)=2
+                    numdurasmidi(1)=2
 
-						     Exit For
-						   End If
-						Next i2
+                                   Exit For
+                                 End If
+                              Next i2
    
-					'	Print #1,"-----------duraciones 2-----------------"
-						For i2=1 To 44
-						   If numfloat >= durcla(i2,1) And numfloat < durcla(i2+1,1) And i2< 45 Then
-			 			 '    Print #1,"3) esta entre ",durcla(i2,1), " y ",durcla(i2+1,1),numfloat
-						      numfloat=numfloat-durcla(i2,1)
+                         '     Print #1,"-----------duraciones 2-----------------"
+                              For i2=1 To 44
+                                 If numfloat >= durcla(i2,1) And numfloat < durcla(i2+1,1) And i2< 45 Then
+                                '    Print #1,"3) esta entre ",durcla(i2,1), " y ",durcla(i2+1,1),numfloat
+                                    numfloat=numfloat-durcla(i2,1)
              Select Case dato1
       '         Case 144
-				'	     duras(3)=durcla(i2,2)+45
+                    '          duras(3)=durcla(i2,2)+45
                Case 128
-					     duramidi(3)=durcla(i2,2)
+                              duramidi(3)=durcla(i2,2)
             End Select 
 
-			           numdurasmidi(1)=3
-						     Exit For
-						   EndIf
-						Next i2
+                          numdurasmidi(1)=3
+                                   Exit For
+                                 EndIf
+                              Next i2
          numfloat=0
    EndIf
   '   Select Case dato1 
@@ -8850,28 +8864,28 @@ dato1=128 ' tomamos los cierres off, si una nota on tiene vol=0 ahi pasariamos a
 
   '   End Select
         '     If numdurasmidi =2 Then
-  	     	'	       duras(1) = duras(1)+90
-         '    EndIf		
+                 '            duras(1) = duras(1)+90
+         '    EndIf          
         '     If numdurasmidi =3 Then
-  	     	'	       duras(1) = duras(1)+90
-  	     	'	       duras(2) = duras(2) +90
-        '     EndIf		
+                 '            duras(1) = duras(1)+90
+                 '            duras(2) = duras(2) +90
+        '     EndIf          
 
 
 
-						If duramidi(1) >0 Then
+                              If duramidi(1) >0 Then
 Print #31, duramidi(1)
-			         Print #31, figura(duramidi(1)),
-						EndIf
-						If duramidi(2) >0 Then
+                        Print #31, figura(duramidi(1)),
+                              EndIf
+                              If duramidi(2) >0 Then
 Print #31, duramidi(2)
-						   Print #31, figura(duramidi(2)),
-						EndIf
-						If duramidi(3) >0 Then
+                                 Print #31, figura(duramidi(2)),
+                              EndIf
+                              If duramidi(3) >0 Then
 Print #31, duramidi(3)
-						   Print #31, figura(duramidi(3))
-						EndIf
-						
+                                 Print #31, figura(duramidi(3))
+                              EndIf
+                              
     
   EndIf
 '-----

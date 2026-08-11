@@ -11,9 +11,9 @@
 ' -------------------------------------------------
 #define __FB_WIN64__
 #if defined (__FB_WIN64__)
-	#libpath "C:\msys64\mingw64\lib"
+     #LibPath "C:\msys64\mingw64\lib"
 #else
-	#libpath "/usr/lib"
+     #LibPath "/usr/lib"
 #endif
 #define EXTCHAR Chr(255)
 
@@ -34,7 +34,7 @@
 #include "fbgfxjmg.bi" ' se carga antes de windows.bi para evitar duplicates..o conflictos
 '#Include Once "win/mmsystem.bi" '' FUNCIONES MIDIde windows!!!! perousaremos RtmidiC por hora
 #if __FB_LANG__ = "fb"
-	Using FB '' Scan code constants are stored in the FB namespace in lang FB
+     Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #endif
 
 ' Nota: algun dia si quiero midifile intentar usar una libreria de C pura
@@ -47,7 +47,7 @@
 'Sub  abrirSecuencia(nf As integer)
 
 '  If  Open ("./secuenciaPLAY.txt" For Output Shared As nf ) <> 0 Then
-'    		Print #1, "secuenciaPLAY.txt no abre!"
+'              Print #1, "secuenciaPLAY.txt no abre!"
 '  Else
 '      Print #1, "secuenciaPLAY.txt abierta!"
 '  EndIf
@@ -74,64 +74,64 @@
 
 '--------
 Sub  porterrorsub(porterror As integer)
-	Select Case porterror
-	Case RTMIDI_ERROR_WARNING
-		Print #1, "RTMIDI_ERROR_WARNING, sin importancia"
-		'strerror(n as integer) as zstring ptr
-		'Print #1, "sterror"; *strerror (porterror)
-		
-	Case RTMIDI_ERROR_DEBUG_WARNING
-		Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
-		Close 0
-		End
-		
-	Case RTMIDI_ERROR_UNSPECIFIED
-		Print #1,"RTMIDI_ERROR_UNSPECIFIED"
-		Close  0
-		End
-		
-	Case RTMIDI_ERROR_NO_DEVICES_FOUND
-		Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
-		Close 0
-		End
-		
-	Case RTMIDI_ERROR_INVALID_DEVICE
-		Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
-		Close 0
-		End
-		
-	Case RTMIDI_ERROR_MEMORY_ERROR
-		Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
-		Close  0
-		End
-		
-	Case RTMIDI_ERROR_INVALID_PARAMETER
-		Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
-		Close 0
-		End
-		
-	Case RTMIDI_ERROR_INVALID_USE
-		Print #1,"RTMIDI_ERROR_INVALID_USE"
-		Close  0
-		End
-		
-	Case RTMIDI_ERROR_DRIVER_ERROR
-		Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
-		Close 0
-		End
-		
-	Case RTMIDI_ERROR_SYSTEM_ERROR
-		Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
-		Close 0
-		End
-		
-	Case RTMIDI_ERROR_THREAD_ERROR
-		Print #1,"RTMIDI_ERROR_THREAD_ERROR"
-		Close 0
-		End
-	End Select
-	
-	
+     Select Case porterror
+     Case RTMIDI_ERROR_WARNING
+          Print #1, "RTMIDI_ERROR_WARNING, sin importancia"
+          'strerror(n as integer) as zstring ptr
+          'Print #1, "sterror"; *strerror (porterror)
+          
+     Case RTMIDI_ERROR_DEBUG_WARNING
+          Print #1, "RTMIDI_ERROR_DEBUG_WARNING"
+          Close 0
+          End
+          
+     Case RTMIDI_ERROR_UNSPECIFIED
+          Print #1,"RTMIDI_ERROR_UNSPECIFIED"
+          Close  0
+          End
+          
+     Case RTMIDI_ERROR_NO_DEVICES_FOUND
+          Print #1,"RTMIDI_ERROR_NO_DEVICES_FOUND"
+          Close 0
+          End
+          
+     Case RTMIDI_ERROR_INVALID_DEVICE
+          Print #1,"RTMIDI_ERROR_INVALID_DEVICE"
+          Close 0
+          End
+          
+     Case RTMIDI_ERROR_MEMORY_ERROR
+          Print #1,"RTMIDI_ERROR_MEMORY_ERROR"
+          Close  0
+          End
+          
+     Case RTMIDI_ERROR_INVALID_PARAMETER
+          Print #1,"RTMIDI_ERROR_INVALID_PARAMETER"
+          Close 0
+          End
+          
+     Case RTMIDI_ERROR_INVALID_USE
+          Print #1,"RTMIDI_ERROR_INVALID_USE"
+          Close  0
+          End
+          
+     Case RTMIDI_ERROR_DRIVER_ERROR
+          Print #1,"RTMIDI_ERROR_DRIVER_ERROR!"
+          Close 0
+          End
+          
+     Case RTMIDI_ERROR_SYSTEM_ERROR
+          Print #1,"RTMIDI_ERROR_SYSTEM_ERROR"
+          Close 0
+          End
+          
+     Case RTMIDI_ERROR_THREAD_ERROR
+          Print #1,"RTMIDI_ERROR_THREAD_ERROR"
+          Close 0
+          End
+     End Select
+     
+     
 End Sub
 
 '------------------
@@ -247,9 +247,9 @@ sVerCifradoAcordes, sretrasoMetronomoCan,sretrasoMetronomoRoll,sBatchGraficoOCtr
 
 ffini=3
 If  Open (ROLLDIR + "RollMusic.ini" For Input As #ffini) <> 0 Then
-	' si no existe la creo
-	Open ROLLDIR + "RollMusic.ini" For Append As #ffini
-	
+     ' si no existe la creo
+     Open ROLLDIR + "RollMusic.ini" For Append As #ffini
+     
 End If
 
 Line Input #ffini, sfont
@@ -290,54 +290,54 @@ Print #1,"EN LA CARGA DE ROLLMUSIC BatchGraficoOCtrl ",BatchGraficoOCtrl
 '   BatchGraficoOCtrl=GRAFICO  0
 
 If nfont > 20 Or nfont < 10 Then
-	nfont = 18
+     nfont = 18
 End If
 If nanchofig > 5 Then
-	nanchofig = 1.5
+     nanchofig = 1.5
 End If
 Print #1,"nanchofig " ,nanchofig
 If nfont > 0 Then
-	font=nfont
+     font=nfont
 End If
 If nmxold <> 0 Then
-	mxold=nmxold
+     mxold=nmxold
 End If
 If nmyold <> 0 Then
-	myold=nmyold
+     myold=nmyold
 End If
 
 If ndeltaip <> 0 Then
-	inc_Penta=ndeltaip
+     inc_Penta=ndeltaip
 End If
 If  nretrasoMetronomoCan <> 0 Then
-	retrasoMetronomoCan= nretrasoMetronomoCan
-	
+     retrasoMetronomoCan= nretrasoMetronomoCan
+     
 End If
 If  nretrasoMetronomoRoll <> 0 Then
-	retrasoMetronomoRoll= nretrasoMetronomoRoll
+     retrasoMetronomoRoll= nretrasoMetronomoRoll
 End If
 
 If nanchofig <> 0 Then
-	anchofig=nanchofig
-	
-	'If font >=5 And font <= 34 Then
-	'   anchofig= mispx(font-4,2)
-	'Else
-	'   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
-	'EndIf
-	
-	
-	'   gap1= anchofig* 6 ''2315/1000
-	'   NroCol =  (ANCHO / anchofig ) + 6
-	'   gap2= (914 * gap1) /1000 ' 74 default
-	'   gap3= (519 * gap1) /1000 ' 42 default
-	
-	
-	gap1= anchofig*6  ''' porque tanto??
-	gap2= (914 * gap1) /1000 ' 74 default
-	gap3= (519 * gap1) /1000 ' 42 default
-	NroCol =  (ANCHO / anchofig ) + 4
-	ANCHO3div4 = ANCHO * 3/4
+     anchofig=nanchofig
+     
+     'If font >=5 And font <= 34 Then
+     '   anchofig= mispx(font-4,2)
+     'Else
+     '   anchofig =(ANCHO- gap1 )/ (MaxPos-posishow)
+     'EndIf
+     
+     
+     '   gap1= anchofig* 6 ''2315/1000
+     '   NroCol =  (ANCHO / anchofig ) + 6
+     '   gap2= (914 * gap1) /1000 ' 74 default
+     '   gap3= (519 * gap1) /1000 ' 42 default
+     
+     
+     gap1= anchofig*6  ''' porque tanto??
+     gap2= (914 * gap1) /1000 ' 74 default
+     gap3= (519 * gap1) /1000 ' 42 default
+     NroCol =  (ANCHO / anchofig ) + 4
+     ANCHO3div4 = ANCHO * 3/4
 End If
 'Print #1,"NROCOL AL INICIO, ANCHO, anchofig ",NroCol, ANCHO, anchofig
 
@@ -353,155 +353,155 @@ Print #1, "__FB_ARGC__ ",__FB_ARGC__
 Print #1,"__FB_ARGC__ ", __FB_ARGC__
 Dim As Integer com_usarmarco =0
 If Command(1) ="" Then
-	If BatchGraficoOCtrl = 3 Then
-		BatchGraficoOCtrl = 6  'sigue en 6 porque no cambia de estado en GUI??
-	Else
-		BatchGraficoOCtrl=0
-	End If
+     If BatchGraficoOCtrl = 3 Then
+          BatchGraficoOCtrl = 6  'sigue en 6 porque no cambia de estado en GUI??
+     Else
+          BatchGraficoOCtrl=0
+     End If
 End If
 For ix = 0 To __FB_ARGC__
-	Print #1, "arg "; ix; " = '"; Command(ix); "'"''
-	
-	If ix=1 And Command(ix) > "" Then ' deberia entregarme el archjivo el SO pero no lo hace
-		
-		ubirtk = InStr (LCase(Command(ix)),".rtk")
-		ubiroll= InStr(LCase(Command(ix)),".roll")
-		ubiejec= InStr(LCase(Command(ix)),".ejec")
-		ubim4a = InStr (LCase(Command(ix)),".m4a")
-		ubimp3 = InStr (LCase(Command(ix)),".mp3")
-		ubimid = InStr (LCase(Command(ix)),".mid")
-''	BatchGraficoOCtrl =0 EN EXPLORER  SE EJECUTA ROLL Y RTK SIN VENTANA DE CONTROL Y CON GRAFICO ..AUTOMATICO EMPIEZA A TOCAR
+     Print #1, "arg "; ix; " = '"; Command(ix); "'"''
+     
+     If ix=1 And Command(ix) > "" Then ' deberia entregarme el archjivo el SO pero no lo hace
+          
+          ubirtk = InStr (LCase(Command(ix)),".rtk")
+          ubiroll= InStr(LCase(Command(ix)),".roll")
+          ubiejec= InStr(LCase(Command(ix)),".ejec")
+          ubim4a = InStr (LCase(Command(ix)),".m4a")
+          ubimp3 = InStr (LCase(Command(ix)),".mp3")
+          ubimid = InStr (LCase(Command(ix)),".mid")
+''     BatchGraficoOCtrl =0 EN EXPLORER  SE EJECUTA ROLL Y RTK SIN VENTANA DE CONTROL Y CON GRAFICO ..AUTOMATICO EMPIEZA A TOCAR
 '' LOS EJEC MID MP3 SE EJECUTAN CON VENTANA DE CONTROL COMPLETA...Y AUTOMATICO EMPIEZA A TOCAR
 
-''	BatchGraficoOCtrl =3 EN EXPLORER  SE EJECUTA LA VENTANA DE CONTROL MUY REDUCIDA DEJANDO LOS 
+''     BatchGraficoOCtrl =3 EN EXPLORER  SE EJECUTA LA VENTANA DE CONTROL MUY REDUCIDA DEJANDO LOS 
 '' BOTONES DE CARGA STOP Y REPRODUCIR PARA ROLL Y RTK M4A MP3. LOS EJEC CON VENTANA COMPLETA COMO ANTES
 
-		If ubiejec > 0 Then  ''30-03-2026 reproducir un *.ejec desde el explorador
-			ubiejec=1 ''cargar
-			titulosEj(1)=Command(1)
-			Instancia=ARG0_EN_LINEA
+          If ubiejec > 0 Then  ''30-03-2026 reproducir un *.ejec desde el explorador
+               ubiejec=1 ''cargar
+               titulosEj(1)=Command(1)
+               Instancia=ARG0_EN_LINEA
          SetRunOnlyExe()
-			Print #1,"Instancia= ",Instancia
-			Print #1,"TITULO(1)  ",titulosEj(1)
-			ubionline=0
-			Exit For
-		End If
-		
-		If ubim4a > 0 Or ubimp3 > 0 Or ubimid >0 Then  ''30-03-2026 reproducir un *.ejec desde el explorador
-			ubimedia=1 ''cargar
-			ubionline = 0
-			titulosEj(1)=Command(1)
-			Instancia=ARG0_EN_LINEA
+               Print #1,"Instancia= ",Instancia
+               Print #1,"TITULO(1)  ",titulosEj(1)
+               ubionline=0
+               Exit For
+          End If
+          
+          If ubim4a > 0 Or ubimp3 > 0 Or ubimid >0 Then  ''30-03-2026 reproducir un *.ejec desde el explorador
+               ubimedia=1 ''cargar
+               ubionline = 0
+               titulosEj(1)=Command(1)
+               Instancia=ARG0_EN_LINEA
          SetRunOnlyExe()
-			Print #1,"Instancia= ",Instancia
-			Print #1,"Reproducir TITULOEJ(1)  ",titulosEj(1)
-			ubionline=0
-			Exit For
-		End If
-		
-		If (ubirtk >0 Or ubiroll> 0 ) And BatchGraficoOCtrl =3 Then '' CON VENTANA ctrl
-			If ubiroll > 0 Then
-				BatchGraficoOCtrl = 4 ' es un roll
-			End If
-			If ubirtk > 0 Then
-				BatchGraficoOCtrl = 5 ' es un rtk
-			End If
-			
-			ubirtk=0: ubiroll=0
-			ubionline=1
-			ntk=0
-			titulosTk(0)=Command(ix)
-			instancia = ARG0_EN_LINEA
+               Print #1,"Instancia= ",Instancia
+               Print #1,"Reproducir TITULOEJ(1)  ",titulosEj(1)
+               ubionline=0
+               Exit For
+          End If
+          
+          If (ubirtk >0 Or ubiroll> 0 ) And BatchGraficoOCtrl =3 Then '' CON VENTANA ctrl
+               If ubiroll > 0 Then
+                    BatchGraficoOCtrl = 4 ' es un roll
+               End If
+               If ubirtk > 0 Then
+                    BatchGraficoOCtrl = 5 ' es un rtk
+               End If
+               
+               ubirtk=0: ubiroll=0
+               ubionline=1
+               ntk=0
+               titulosTk(0)=Command(ix)
+               instancia = ARG0_EN_LINEA
          SetRunOnlyExe()
          Exit For  
-		End If
-		
-		' esto es por comando interno no fisico con click
-		''' ubicancion=InStr(LCase(Command(ix)),"@dir")
-		' este caso de dar click en explorador a un archivo rtk o roll tambien podria
-		' levantar la ventana inicial sin grafico y reproducir! dos opciones serian
-		'(tambien podriamos ver si se puede dar click a una carpeta y decirle que la reprodusca con
-		' RollMusic.exe )
-		If ubirtk > 0 or ubiroll>0  Then  ''BATCH SIN VENTANA
-			ntk=0
-			titulosTk(0)=Command(ix)
-			Instancia=ARG1_1_TITULO ' no se condice con el caso real da 2 ???
-		Else
-			desde= CInt(Command(ix))
-			'    pmTk(ntk).desde=desde
-			Instancia=ARG1_2_DESDE
-		End If
-		Print #1,"ubirtk ",ubirtk
-		Print #1,"ubiroll ",ubiroll
-		'sigue en roolloop principio
+          End If
+          
+          ' esto es por comando interno no fisico con click
+          ''' ubicancion=InStr(LCase(Command(ix)),"@dir")
+          ' este caso de dar click en explorador a un archivo rtk o roll tambien podria
+          ' levantar la ventana inicial sin grafico y reproducir! dos opciones serian
+          '(tambien podriamos ver si se puede dar click a una carpeta y decirle que la reprodusca con
+          ' RollMusic.exe )
+          If ubirtk > 0 or ubiroll>0  Then  ''BATCH SIN VENTANA
+               ntk=0
+               titulosTk(0)=Command(ix)
+               Instancia=ARG1_1_TITULO ' no se condice con el caso real da 2 ???
+          Else
+               desde= CInt(Command(ix))
+               '    pmTk(ntk).desde=desde
+               Instancia=ARG1_2_DESDE
+          End If
+          Print #1,"ubirtk ",ubirtk
+          Print #1,"ubiroll ",ubiroll
+          'sigue en roolloop principio
    Else
     If ix=1 And Command(1)="" Then
      Print #1,"ubirtk=0 And ubiroll=0 And ubiejec=0 And ubim4a=0 And ubimp3=0 And ubimid=0 ";ubirtk, ubiroll, ubiejec, ubim4a, ubimp3, ubimid 
-	  If ubirtk=0 And ubiroll=0 And ubiejec=0 And ubim4a=0 And ubimp3=0 And ubimid=0 Then
+       If ubirtk=0 And ubiroll=0 And ubiejec=0 And ubim4a=0 And ubimp3=0 And ubimid=0 Then
        SetRunOnlyExe()
        Print #1,"ajusto una sola instancia "
        Exit For 
-     EndIf 	
+     EndIf      
     EndIf
-	End If
-	'-----------
-	If ix=2 And Command(ix) > "" Then
-		hasta= CInt (Command(ix))
-		' pmTk(ntk).hasta=hasta
-		Instancia=ARG2_HASTA
-	End If
-	
-	If ix=3 And Command(ix) > "" Then
-		titu=  (Command(ix))
-		Instancia=ARG3_TITU
-	End If
-	
-	If ix=4 And Command(ix) > "" Then
-		instru=  CUByte (Command(ix))
-		Instancia=ARG4_INSTRU
-	End If
-	
-	If ix=5 And Command(ix) > "" Then
-		pid1=  CInt (Command(ix))
-		Instancia=ARG5_PID1
-	End If
-	
-	If ix=6  And Command(ix) > "" Then
-		com_usarmarco=  CInt (Command(ix))
-		Instancia=com_usarmarco ''''ARG6_USARMARCO 04-10-2025
-		Print #1,"///////recibi en com "; com_usarmarco
-	End If
-	' en 7 diria @dir en la linea de comando
-	' puedo poner basura en todos los otros
-	If ix=7 And Command(ix) > "" Then ' ok probado pasa bien el NombreCancion con el path
-		NombreCancion =  Command(ix)
-		Instancia=ARG7_NOMBRECANCION
-	End If
-	
+     End If
+     '-----------
+     If ix=2 And Command(ix) > "" Then
+          hasta= CInt (Command(ix))
+          ' pmTk(ntk).hasta=hasta
+          Instancia=ARG2_HASTA
+     End If
+     
+     If ix=3 And Command(ix) > "" Then
+          titu=  (Command(ix))
+          Instancia=ARG3_TITU
+     End If
+     
+     If ix=4 And Command(ix) > "" Then
+          instru=  CUByte (Command(ix))
+          Instancia=ARG4_INSTRU
+     End If
+     
+     If ix=5 And Command(ix) > "" Then
+          pid1=  CInt (Command(ix))
+          Instancia=ARG5_PID1
+     End If
+     
+     If ix=6  And Command(ix) > "" Then
+          com_usarmarco=  CInt (Command(ix))
+          Instancia=com_usarmarco ''''ARG6_USARMARCO 04-10-2025
+          Print #1,"///////recibi en com "; com_usarmarco
+     End If
+     ' en 7 diria @dir en la linea de comando
+     ' puedo poner basura en todos los otros
+     If ix=7 And Command(ix) > "" Then ' ok probado pasa bien el NombreCancion con el path
+          NombreCancion =  Command(ix)
+          Instancia=ARG7_NOMBRECANCION
+     End If
+     
 Next ix
 If com_usarmarco = 6 Then
-	usarmarco=com_usarmarco
-	usarmarcoOld=usarmarco
+     usarmarco=com_usarmarco
+     usarmarcoOld=usarmarco
 End If
 If com_usarmarco = 4 Then
-	usarmarcoins=com_usarmarco '04-10-2025
-	Print #1,"//// inicio recibido por logica usarmarcoins "; usarmarcoins
+     usarmarcoins=com_usarmarco '04-10-2025
+     Print #1,"//// inicio recibido por logica usarmarcoins "; usarmarcoins
 End If
 
 ' uso para volcar midi a text o desde un roll o trk usamos cancion
 ' para pasar solo una pista
 If NombreCancion > "" Then
-	ubirtk = InStr (LCase(Command(7)),".rtk")
-	ubiroll=  InStr(LCase(Command(7)),".roll")
-	
-	If ubirtk > 0 or ubiroll>0  Then
-		ntk=0
-		titulosTk(0)=Command(1) ' DECIA IX  ERROR? 15-04-2025
-		Instancia=ARG1_1_TITULO ' PUEDE SER desde TAMBIEN
-	End If
-	Print #1,"ubirtk ",ubirtk
-	Print #1,"ubiroll ",ubiroll
-	
+     ubirtk = InStr (LCase(Command(7)),".rtk")
+     ubiroll=  InStr(LCase(Command(7)),".roll")
+     
+     If ubirtk > 0 or ubiroll>0  Then
+          ntk=0
+          titulosTk(0)=Command(1) ' DECIA IX  ERROR? 15-04-2025
+          Instancia=ARG1_1_TITULO ' PUEDE SER desde TAMBIEN
+     End If
+     Print #1,"ubirtk ",ubirtk
+     Print #1,"ubiroll ",ubiroll
+     
 End If
 
 Print #1, "instancia, ix  ", instancia, ix
@@ -520,11 +520,11 @@ Print #1,ROLLDIR
 fa1=2
 Open ROLLDIR+"procesos.txt" For Append As fa1
 If pid1=0   Then ' EMPEZO EL ONLINE SU PID NO HACE FALTA GRABARLO
-	pid1=pd1
+     pid1=pd1
 Else
-	If pid1 <>0 Then ' INDICA QUE UN PID1 ARGUMENTO VINO DE UN BATCH O CALL
-		Print #fa1,pd1 ' GRABA EL PD1 ACTUAL QUE ES LA EJECUCION DEL BATCH
-	End If
+     If pid1 <>0 Then ' INDICA QUE UN PID1 ARGUMENTO VINO DE UN BATCH O CALL
+          Print #fa1,pd1 ' GRABA EL PD1 ACTUAL QUE ES LA EJECUCION DEL BATCH
+     End If
 End If
 Close fa1
 
@@ -532,17 +532,17 @@ Sleep 100
 
 
 If desde = 0 And hasta = 0  And instancia=ARG0_EN_LINEA Then
-	Print #1,"intervalo no dado usando default!"
-	desde => 3  ' -> 2
-	hasta => 8  ' -> 6 le debo restar la octava oculta +1
-	
-	' internamente no usamos cero , empezamos desde 1 pero en roll se ve tal cual es
-	' va desde 0 a 7 ergo de 4 a 8 el default es la eleccion en roll 3 a 7 pero al 7 es de
-	' ontrol o sea es de 3 a 6 y la de control no aparece en el grafico...
-	' l a3 es al 4t octava y la 6 es al 7ma..pues empieza desde 0 en la visualizacion.
-	' asi coincidimos con lo que se usa en piano la ocatava se numera desde 0..
-	'pmTk(ntk).desde=desde
-	'pmTk(ntk).hasta=hasta
+     Print #1,"intervalo no dado usando default!"
+     desde => 3  ' -> 2
+     hasta => 8  ' -> 6 le debo restar la octava oculta +1
+     
+     ' internamente no usamos cero , empezamos desde 1 pero en roll se ve tal cual es
+     ' va desde 0 a 7 ergo de 4 a 8 el default es la eleccion en roll 3 a 7 pero al 7 es de
+     ' ontrol o sea es de 3 a 6 y la de control no aparece en el grafico...
+     ' l a3 es al 4t octava y la 6 es al 7ma..pues empieza desde 0 en la visualizacion.
+     ' asi coincidimos con lo que se usa en piano la ocatava se numera desde 0..
+     'pmTk(ntk).desde=desde
+     'pmTk(ntk).hasta=hasta
 End If
 ' calculo teorico a tiempopatron 60, 1 SEG 192 DIVISIONES
 CantTicks=cantMin * PPQN *tiempoPatron'  (15 MIN * 60 * PPQN) = 299520
@@ -600,8 +600,8 @@ ReDim (Roll.trk ) (1 To CantTicks,NB To NA) ' Roll de trabajo en Pantalla
 'Print #1,"instru ",instru
 ' ojo debe se NB al reducir octabas NB cambia
 If instru > 0 Then ''
-	pmTk(0).patch=CUByte(instru)
-	patchsal=instru
+     pmTk(0).patch=CUByte(instru)
+     patchsal=instru
 End If
 'Print #1,"Roll.trk(1,NA).inst ",Roll.trk(1,NA).inst
 'Print #1,"NB ",NB
@@ -757,7 +757,7 @@ po = @octaroll
 *po = hasta -1 ' test 09-09-2021
 s1=0:s2=0:s3=0:s4=0:s5=2:s6=0:s7=0:s8=0:s9=0:s10=0
 If font=0 Then
-	font=18
+     font=18
 End If
 indaux=0:carga=0
 ' -----------------------------------------------------------------------
@@ -796,7 +796,7 @@ print #1,"gap1 ",gap1
 ' aca estab la lectura de rollmusic.ini muy tarde
 '---------
 If mxold=0 And myold=0 Then
-	GetMouse mxold,myold, , MouseButtons
+     GetMouse mxold,myold, , MouseButtons
 End If
 
 posicion = 1 ' comienzo del roll
@@ -866,11 +866,11 @@ Dim Shared nombreOut(0 To portsout) As ZString Ptr
 Dim Shared nombreIn (0 To portsin)  As ZString Ptr
 
 Type plano
-	sumatiempo As Integer  'tiempo acumulado de los eventos midis
-	canal      As UByte
-	estado     As UByte  ' nota on of
-	nota       As UByte  ' notapiano
-	vel        As UByte  ' velocidad
+     sumatiempo As Integer  'tiempo acumulado de los eventos midis
+     canal      As UByte
+     estado     As UByte  ' nota on of
+     nota       As UByte  ' notapiano
+     vel        As UByte  ' velocidad
 End Type
 
 ReDim Shared As plano miditxt()
@@ -883,13 +883,13 @@ Dim Shared As Integer Indicenotas=0
 'Next i
 
 For i1 = 0 To portsin -1
-	nombrein(i1) = port_name(midiin(0), i1)
-	Print #1, *nombrein(i1)
+     nombrein(i1) = port_name(midiin(0), i1)
+     Print #1, *nombrein(i1)
 Next i1
 Print #1,"-----------------------------"
 For i1 = 0 To portsout -1
-	nombreOut(i1) = port_name(midiout(0), i1)
-	Print #1, *nombreout(i1)
+     nombreOut(i1) = port_name(midiout(0), i1)
+     Print #1, *nombreout(i1)
 Next i1
 
 '---------------------
@@ -897,158 +897,158 @@ Next i1
 ' y tengo mi InputBoxJmg
 
 Type InputBoxJmg_ 'basado en InputBox de windows9, para que detecte CR 13
-	As MSG msg
-	As HWND hWnd,hwnd1,hwnd2,hwnd3
-	#ifdef UNICODE
-		As WString*1024 mess
-	#else
-		As String*1024 mess
-	#EndIf
-	As BOOL flag
-	as DEVMODE dm(0)
-	As HFONT font,font1
-	As Integer size
+     As MSG msg
+     As HWND hWnd,hwnd1,hwnd2,hwnd3
+     #Ifdef UNICODE
+          As WString*1024 mess
+     #Else
+          As String*1024 mess
+     #EndIf
+     As BOOL flag
+     As DEVMODE dm(0)
+     As HFONT font,font1
+     As Integer size
 End Type
 '..................
 Function Input2BoxJmg(ByVal x As Integer, ByVal y As Integer,ByVal w As Integer,ByVal h  As Integer, ByRef Caption As STRING, ByRef Message As STRING, ByRef DefaultString As USTRING, ByVal flag As Integer, ByVal flag2 As Integer, hParentWin as Hwnd = 0) As STRING
-	' Autor:JMG modificacion windows9 inputBox ...experimental si anda bien al vez de incropore
-	' a windows9 y avisamos si quieren usarlo
-	Dim As Integer mix, miy
-	Dim As mouse m
-	Dim Input2BoxJmg_ As InputBoxJmg_
-	Input2BoxJmg_.dm(0).dmSize = sizeof(DEVMODE)
-	EnumDisplaySettings( 0, ENUM_CURRENT_SETTINGS, @Input2BoxJmg_.dm(0))
-	#ifdef UNICODE
-		Input2BoxJmg_.hWnd  = CreateWindowEx(0, "#32770", *Caption, WS_TILED Or WS_VISIBLE, Input2Box_.dm(0).dmPelsWidth/2-155, Input2Box_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
-		Input2BoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", *DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, Input2Box_.hwnd,0,0,0)
-		Input2BoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, x, y, w, h, Input2Box_.hwnd,0,0,0)
-		Input2BoxJmg_.hWnd3 = CreateWindowEx(0, "Static", *Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, Input2Box_.hwnd,0,0,0)
-	#else
-		Input2BoxJmg_.hWnd  = CreateWindowEx(0, "#32770", Caption, WS_TILED Or WS_VISIBLE, Input2BoxJmg_.dm(0).dmPelsWidth/2-155, Input2BoxJmg_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
-		Input2BoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, Input2BoxJmg_.hwnd,0,0,0)
-		Input2BoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, x, y, w, h, Input2BoxJmg_.hwnd,0,0,0)
-		Input2BoxJmg_.hWnd3 = CreateWindowEx(0, "Static", Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, Input2BoxJmg_.hwnd,0,0,0)
-	#EndIf
-	
-	Input2BoxJmg_.size  = -MulDiv(10, GetDeviceCaps(CreateDC("DISPLAY",0,0,0), LOGPIXELSY), 72)
-	Input2BoxJmg_.font  = CreateFont(Input2BoxJmg_.size,0,0,0,0,1,0,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH Or FF_DONTCARE,"Times New Roman")
-	SendMessage(Input2BoxJmg_.hWnd3,WM_SETFONT,Cast(WPARAM,Input2BoxJmg_.font),0)
-	Input2BoxJmg_.font1 = CreateFont(Input2BoxJmg_.size,0,0,0,0,0,0,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH Or FF_DONTCARE,"Times New Roman")
-	SendMessage(Input2BoxJmg_.hWnd2,WM_SETFONT,Cast(WPARAM,Input2BoxJmg_.font1),0)
-	SendMessage(Input2BoxJmg_.hWnd1,WM_SETFONT,Cast(WPARAM,Input2BoxJmg_.font1),0)
-	
-	While GetMessage(@Input2BoxJmg_.msg, 0, 0, 0 )
-		TranslateMessage(@Input2BoxJmg_.msg )
-		DispatchMessage(@Input2BoxJmg_.msg )
-		' el windows pone el 13 CR al principio de la cadena sin que se lo pidan,por eso esta en posicion 1
-		' y al final una pelotudes en fin, claro para multiline va pero no para una linea pero
-		' solo asi funciona el CR 13 usando multiline, hay que dar dos return
-		SetFocus (Input2BoxJmg_.hWnd1)
-		Select Case Input2BoxJmg_.msg.hwnd
-		Case Input2BoxJmg_.hWnd1 ' CAJA ENTRADA CLIENTE
-			Select Case Input2BoxJmg_.msg.message
-			Case WM_KEYDOWN
-				SendMessage(Input2BoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@Input2BoxJmg_.mess))
-				
-				Dim as UString sRet = Input2BoxJmg_.mess
-				Function = sRet
-				
-				Dim As String * 1 F1,F2
-				Dim As Integer LL=Len(sRET)
-				F1=Mid (sRET,1) 'el primero
-				F2=Mid (sRET,LL-1) ' el ultimo ascii
-				
-				If Asc(F2) =13 Then
-					Dim As Integer d13=instr(Input2BoxJmg_.mess,F2)
-					Mid(Input2BoxJmg_.mess,d13)=""
-					DestroyWindow(Input2BoxJmg_.hWnd)
-					Input2BoxJmg_.flag=0
-					Exit Function
-				End If
-			End Select
-		Case Input2BoxJmg_.hWnd2 ' boton ok
-			Select Case Input2BoxJmg_.msg.message
-			Case WM_LBUTTONDOWN
-				SendMessage(Input2BoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@Input2BoxJmg_.mess))
-				dim as UString sRet = Input2BoxJmg_.mess
-				Function = sRet
-				DestroyWindow(Input2BoxJmg_.hWnd)
-				Input2BoxJmg_.flag=0
-				Exit Function
-			End Select
-		End Select
-	Wend
+     ' Autor:JMG modificacion windows9 inputBox ...experimental si anda bien al vez de incropore
+     ' a windows9 y avisamos si quieren usarlo
+     Dim As Integer mix, miy
+     Dim As mouse m
+     Dim Input2BoxJmg_ As InputBoxJmg_
+     Input2BoxJmg_.dm(0).dmSize = sizeof(DEVMODE)
+     EnumDisplaySettings( 0, ENUM_CURRENT_SETTINGS, @Input2BoxJmg_.dm(0))
+     #Ifdef UNICODE
+          Input2BoxJmg_.hWnd  = CreateWindowEx(0, "#32770", *Caption, WS_TILED Or WS_VISIBLE, Input2Box_.dm(0).dmPelsWidth/2-155, Input2Box_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
+          Input2BoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", *DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, Input2Box_.hwnd,0,0,0)
+          Input2BoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, x, y, w, h, Input2Box_.hwnd,0,0,0)
+          Input2BoxJmg_.hWnd3 = CreateWindowEx(0, "Static", *Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, Input2Box_.hwnd,0,0,0)
+     #Else
+          Input2BoxJmg_.hWnd  = CreateWindowEx(0, "#32770", Caption, WS_TILED Or WS_VISIBLE, Input2BoxJmg_.dm(0).dmPelsWidth/2-155, Input2BoxJmg_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
+          Input2BoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, Input2BoxJmg_.hwnd,0,0,0)
+          Input2BoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, x, y, w, h, Input2BoxJmg_.hwnd,0,0,0)
+          Input2BoxJmg_.hWnd3 = CreateWindowEx(0, "Static", Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, Input2BoxJmg_.hwnd,0,0,0)
+     #EndIf
+     
+     Input2BoxJmg_.size  = -MulDiv(10, GetDeviceCaps(CreateDC("DISPLAY",0,0,0), LOGPIXELSY), 72)
+     Input2BoxJmg_.font  = CreateFont(Input2BoxJmg_.size,0,0,0,0,1,0,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH Or FF_DONTCARE,"Times New Roman")
+     SendMessage(Input2BoxJmg_.hWnd3,WM_SETFONT,Cast(WPARAM,Input2BoxJmg_.font),0)
+     Input2BoxJmg_.font1 = CreateFont(Input2BoxJmg_.size,0,0,0,0,0,0,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH Or FF_DONTCARE,"Times New Roman")
+     SendMessage(Input2BoxJmg_.hWnd2,WM_SETFONT,Cast(WPARAM,Input2BoxJmg_.font1),0)
+     SendMessage(Input2BoxJmg_.hWnd1,WM_SETFONT,Cast(WPARAM,Input2BoxJmg_.font1),0)
+     
+     While GetMessage(@Input2BoxJmg_.msg, 0, 0, 0 )
+          TranslateMessage(@Input2BoxJmg_.msg )
+          DispatchMessage(@Input2BoxJmg_.msg )
+          ' el windows pone el 13 CR al principio de la cadena sin que se lo pidan,por eso esta en posicion 1
+          ' y al final una pelotudes en fin, claro para multiline va pero no para una linea pero
+          ' solo asi funciona el CR 13 usando multiline, hay que dar dos return
+          SetFocus (Input2BoxJmg_.hWnd1)
+          Select Case Input2BoxJmg_.msg.hwnd
+          Case Input2BoxJmg_.hWnd1 ' CAJA ENTRADA CLIENTE
+               Select Case Input2BoxJmg_.msg.message
+               Case WM_KEYDOWN
+                    SendMessage(Input2BoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@Input2BoxJmg_.mess))
+                    
+                    Dim as UString sRet = Input2BoxJmg_.mess
+                    Function = sRet
+                    
+                    Dim As String * 1 F1,F2
+                    Dim As Integer LL=Len(sRET)
+                    F1=Mid (sRET,1) 'el primero
+                    F2=Mid (sRET,LL-1) ' el ultimo ascii
+                    
+                    If Asc(F2) =13 Then
+                         Dim As Integer d13=instr(Input2BoxJmg_.mess,F2)
+                         Mid(Input2BoxJmg_.mess,d13)=""
+                         DestroyWindow(Input2BoxJmg_.hWnd)
+                         Input2BoxJmg_.flag=0
+                         Exit Function
+                    End If
+               End Select
+          Case Input2BoxJmg_.hWnd2 ' boton ok
+               Select Case Input2BoxJmg_.msg.message
+               Case WM_LBUTTONDOWN
+                    SendMessage(Input2BoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@Input2BoxJmg_.mess))
+                    Dim as UString sRet = Input2BoxJmg_.mess
+                    Function = sRet
+                    DestroyWindow(Input2BoxJmg_.hWnd)
+                    Input2BoxJmg_.flag=0
+                    Exit Function
+               End Select
+          End Select
+     Wend
 End Function
 
 '---------------
 Function InputBoxJmg(ByRef Caption As STRING, ByRef Message As STRING, ByRef DefaultString As USTRING, ByVal flag As Integer, ByVal flag2 As Integer, hParentWin as Hwnd = 0) As STRING
-	' Autor:JMG modificacion windows9 inputBox ...experimental si anda bien al vez de incropore
-	' a windows9 y avisamos si quieren usarlo
-	Dim As Integer mix, miy
-	Dim As mouse m
-	Dim InputBoxJmg_ As InputBoxJmg_
-	InputBoxJmg_.dm(0).dmSize = sizeof(DEVMODE)
-	EnumDisplaySettings( 0, ENUM_CURRENT_SETTINGS, @InputBoxJmg_.dm(0))
-	#ifdef UNICODE
-		InputBoxJmg_.hWnd  = CreateWindowEx(0, "#32770", *Caption, WS_TILED Or WS_VISIBLE, InputBox_.dm(0).dmPelsWidth/2-155, InputBox_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
-		InputBoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", *DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, InputBox_.hwnd,0,0,0)
-		InputBoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, 106, 100, 90, 25, InputBox_.hwnd,0,0,0)
-		InputBoxJmg_.hWnd3 = CreateWindowEx(0, "Static", *Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, InputBox_.hwnd,0,0,0)
-	#else
-		InputBoxJmg_.hWnd  = CreateWindowEx(0, "#32770", Caption, WS_TILED Or WS_VISIBLE, InputBoxJmg_.dm(0).dmPelsWidth/2-155, InputBoxJmg_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
-		InputBoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, InputBoxJmg_.hwnd,0,0,0)
-		InputBoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, 106, 100, 90, 25, InputBoxJmg_.hwnd,0,0,0)
-		InputBoxJmg_.hWnd3 = CreateWindowEx(0, "Static", Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, InputBoxJmg_.hwnd,0,0,0)
-	#EndIf
-	
-	InputBoxJmg_.size  = -MulDiv(10, GetDeviceCaps(CreateDC("DISPLAY",0,0,0), LOGPIXELSY), 72)
-	InputBoxJmg_.font  = CreateFont(InputBoxJmg_.size,0,0,0,0,1,0,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH Or FF_DONTCARE,"Times New Roman")
-	SendMessage(InputBoxJmg_.hWnd3,WM_SETFONT,Cast(WPARAM,InputBoxJmg_.font),0)
-	InputBoxJmg_.font1 = CreateFont(InputBoxJmg_.size,0,0,0,0,0,0,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH Or FF_DONTCARE,"Times New Roman")
-	SendMessage(InputBoxJmg_.hWnd2,WM_SETFONT,Cast(WPARAM,InputBoxJmg_.font1),0)
-	SendMessage(InputBoxJmg_.hWnd1,WM_SETFONT,Cast(WPARAM,InputBoxJmg_.font1),0)
-	
-	While GetMessage(@InputBoxJmg_.msg, 0, 0, 0 )
-		TranslateMessage(@InputBoxJmg_.msg )
-		DispatchMessage(@InputBoxJmg_.msg )
-		' el windows pone el 13 CR al principio de la cadena sin que se lo pidan,por eso esta en posicion 1
-		' y al final una pelotudes en fin, claro para multiline va pero no para una linea pero
-		' solo asi funciona el CR 13 usando multiline, hay que dar dos return
-		SetFocus (InputBoxJmg_.hWnd1)
-		Select Case InputBoxJmg_.msg.hwnd
-		Case InputBoxJmg_.hWnd1 ' CAJA ENTRADA CLIENTE
-			Select Case InputBoxJmg_.msg.message
-			Case WM_KEYDOWN
-				SendMessage(InputBoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@InputBoxJmg_.mess))
-				
-				Dim as UString sRet = InputBoxJmg_.mess
-				Function = sRet
-				
-				Dim As String * 1 F1,F2
-				Dim As Integer LL=Len(sRET)
-				F1=Mid (sRET,1) 'el primero
-				F2=Mid (sRET,LL-1) ' el ultimo ascii
-				
-				If Asc(F2) =13 Then
-					Dim As Integer d13=instr(InputBoxJmg_.mess,F2)
-					Mid(InputBoxJmg_.mess,d13)=""
-					DestroyWindow(InputBoxJmg_.hWnd)
-					InputBoxJmg_.flag=0
-					Exit Function
-				End If
-			End Select
-		Case InputBoxJmg_.hWnd2 ' boton ok
-			Select Case InputBoxJmg_.msg.message
-			Case WM_LBUTTONDOWN
-				SendMessage(InputBoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@InputBoxJmg_.mess))
-				dim as UString sRet = InputBoxJmg_.mess
-				Function = sRet
-				DestroyWindow(InputBoxJmg_.hWnd)
-				InputBoxJmg_.flag=0
-				Exit Function
-			End Select
-		End Select
-	Wend
+     ' Autor:JMG modificacion windows9 inputBox ...experimental si anda bien al vez de incropore
+     ' a windows9 y avisamos si quieren usarlo
+     Dim As Integer mix, miy
+     Dim As mouse m
+     Dim InputBoxJmg_ As InputBoxJmg_
+     InputBoxJmg_.dm(0).dmSize = sizeof(DEVMODE)
+     EnumDisplaySettings( 0, ENUM_CURRENT_SETTINGS, @InputBoxJmg_.dm(0))
+     #Ifdef UNICODE
+          InputBoxJmg_.hWnd  = CreateWindowEx(0, "#32770", *Caption, WS_TILED Or WS_VISIBLE, InputBox_.dm(0).dmPelsWidth/2-155, InputBox_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
+          InputBoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", *DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, InputBox_.hwnd,0,0,0)
+          InputBoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, 106, 100, 90, 25, InputBox_.hwnd,0,0,0)
+          InputBoxJmg_.hWnd3 = CreateWindowEx(0, "Static", *Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, InputBox_.hwnd,0,0,0)
+     #Else
+          InputBoxJmg_.hWnd  = CreateWindowEx(0, "#32770", Caption, WS_TILED Or WS_VISIBLE, InputBoxJmg_.dm(0).dmPelsWidth/2-155, InputBoxJmg_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
+          InputBoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, InputBoxJmg_.hwnd,0,0,0)
+          InputBoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, 106, 100, 90, 25, InputBoxJmg_.hwnd,0,0,0)
+          InputBoxJmg_.hWnd3 = CreateWindowEx(0, "Static", Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, InputBoxJmg_.hwnd,0,0,0)
+     #EndIf
+     
+     InputBoxJmg_.size  = -MulDiv(10, GetDeviceCaps(CreateDC("DISPLAY",0,0,0), LOGPIXELSY), 72)
+     InputBoxJmg_.font  = CreateFont(InputBoxJmg_.size,0,0,0,0,1,0,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH Or FF_DONTCARE,"Times New Roman")
+     SendMessage(InputBoxJmg_.hWnd3,WM_SETFONT,Cast(WPARAM,InputBoxJmg_.font),0)
+     InputBoxJmg_.font1 = CreateFont(InputBoxJmg_.size,0,0,0,0,0,0,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,DEFAULT_QUALITY,DEFAULT_PITCH Or FF_DONTCARE,"Times New Roman")
+     SendMessage(InputBoxJmg_.hWnd2,WM_SETFONT,Cast(WPARAM,InputBoxJmg_.font1),0)
+     SendMessage(InputBoxJmg_.hWnd1,WM_SETFONT,Cast(WPARAM,InputBoxJmg_.font1),0)
+     
+     While GetMessage(@InputBoxJmg_.msg, 0, 0, 0 )
+          TranslateMessage(@InputBoxJmg_.msg )
+          DispatchMessage(@InputBoxJmg_.msg )
+          ' el windows pone el 13 CR al principio de la cadena sin que se lo pidan,por eso esta en posicion 1
+          ' y al final una pelotudes en fin, claro para multiline va pero no para una linea pero
+          ' solo asi funciona el CR 13 usando multiline, hay que dar dos return
+          SetFocus (InputBoxJmg_.hWnd1)
+          Select Case InputBoxJmg_.msg.hwnd
+          Case InputBoxJmg_.hWnd1 ' CAJA ENTRADA CLIENTE
+               Select Case InputBoxJmg_.msg.message
+               Case WM_KEYDOWN
+                    SendMessage(InputBoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@InputBoxJmg_.mess))
+                    
+                    Dim as UString sRet = InputBoxJmg_.mess
+                    Function = sRet
+                    
+                    Dim As String * 1 F1,F2
+                    Dim As Integer LL=Len(sRET)
+                    F1=Mid (sRET,1) 'el primero
+                    F2=Mid (sRET,LL-1) ' el ultimo ascii
+                    
+                    If Asc(F2) =13 Then
+                         Dim As Integer d13=instr(InputBoxJmg_.mess,F2)
+                         Mid(InputBoxJmg_.mess,d13)=""
+                         DestroyWindow(InputBoxJmg_.hWnd)
+                         InputBoxJmg_.flag=0
+                         Exit Function
+                    End If
+               End Select
+          Case InputBoxJmg_.hWnd2 ' boton ok
+               Select Case InputBoxJmg_.msg.message
+               Case WM_LBUTTONDOWN
+                    SendMessage(InputBoxJmg_.hWnd1,WM_GETTEXT,1024,Cast(LPARAM ,@InputBoxJmg_.mess))
+                    Dim as UString sRet = InputBoxJmg_.mess
+                    Function = sRet
+                    DestroyWindow(InputBoxJmg_.hWnd)
+                    InputBoxJmg_.flag=0
+                    Exit Function
+               End Select
+          End Select
+     Wend
 End Function
 '-----------------est ono funciona
 'Note: How to include an icon in a FB executable program

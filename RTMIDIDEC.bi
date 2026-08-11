@@ -52,18 +52,21 @@ Dim Shared As UInteger portsin=0, portsout =0 'constantes,
 Dim Shared As Double old_time_on=0,old_time_off=0,old_time_on_int=0,old_time_off_int=0
 Static Shared As Integer jply=0, indEscala=1
 Dim Shared As double FactortiempoPatron=1
-'elpatron esla negra ej I=60 ergo todo sera relativo A la negra q dura 1 seg
+'e lpatron es la negra ej I=60 ergo todo sera relativo A la negra q dura 1 seg
 ' 09-06-2021 agregue 0 en relDur para evitar cancelaciones pero ojo puede
-' tapar otros errores qu el tiempo se calcule com ocero y siga y
-'se pierda el tiemp anterior supongamso enun espacio en blanco agregado
-' en una ligadura pero eso lo prohibimos por ahroa como uso y listo
-' si I=240 -> I=60 *4 -> time H=0,031250 / 4 =0,0078125
-' una X a una velocidad de I=240 tiene un tiempo de 0,078125 seg
+' tapar otros errores quE el tiempo se calcule como cero y siga y
+'se pierda el tiemp anterior supongamos en un espacio en blanco agregado
+' en una ligadura pero eso lo prohibimos por ahora como uso y listo
+' si I=120 -> I=60 *2 -> time H=0,031250 / 2 =0,015625
+' una X a una velocidad de I=120 tiene un tiempo de 0,015625 seg
 ' en la 1er linea de figuras..
 ' pero porlalineamas chica 37 a 45 seria mi Tick mas chico [TickChco]
-Static Shared As Double TickPlay =0.005 '0.01041666 ''seg 5 miliseg.. para I=240
-Static Shared As Double TickChico=0.005 '0.01041666 ''seg 5 miliseg.. para I=240
-TickPlay=(60/(tiempoPatron*PPQN))/FactortiempoPatron
+' el tempo masrapido clasico es 208 pero usare 240 es lo maximo real sin componentes
+' electronicos y un cantante...
+Static Shared As Double TickPlay  =0.010416 '  seg para 60  relDur(45) tresillo de semigarrapatea ,. para I=240 sera /4=0,002604
+Static Shared As Double TickChico=0.010416 '  seg para 60 relDur(45) tresillo  de semigarrapatea,.  para I=240 sera /4=0,002604
+'' o sea el tresillo mas chjico sera de 20 mseg a 60bpm, y a 240bpm seran 5,20 milisegundos
+TickPlay=(60/(tiempoPatron*PPQN))/FactortiempoPatron ''0,01041666666666666666666666666667
 TickChico=TickPlay
 Static shared As Double x3H = 0.0 , resta=0.0
 ' ambos Ticks deberin ser el  valor mas chico de la tabla y es tresillo de W 0.01041666
@@ -238,43 +241,43 @@ Dim Shared As String  digito, digitoFrac
 ' PLAY ALL NEW
 Declare Function QCompare Cdecl (Byval e1 As Any Ptr, Byval e2 As Any Ptr) As Integer
 Type Re   ' de relaciones
-	ordRelDur As Integer ' orden de reldur ascendente
-	relDur As Double ' durcion relativa a la negra
-	Dur As Integer   ' nuemrcion de figura
-	SonyLiga As Integer
+     ordRelDur As Integer ' orden de reldur ascendente
+     relDur As Double ' durcion relativa a la negra
+     Dur As Integer   ' nuemrcion de figura
+     SonyLiga As Integer
 End Type
 'en vec debo agregar la nota piano
 Type vec
-	tiempoFigura    As Integer
-	tiempoFiguraOld As Integer
-	audio           As Integer ' 0 silencio, 1 o >0 suena
-	audioOld        As Integer ' 0 silencio no audio > 0 suena old o anterior..
-	DUR             As Integer 'DUR
-	notapiano       As Integer ' del piano real
-	notapianoOld    As Integer
-	liga            As Integer
-	ligaold         As Integer
-	i1              As Integer
-	i1old           As Integer
-	old_time        As Integer
-	old_timeold     As Integer
-	inst            As Integer
-	canal           As Integer
-	port            As Integer
-	pista           As Integer
-	vol             As Integer
-	onoff           As Integer  '2 on, 1 off
+     tiempoFigura    As Integer
+     tiempoFiguraOld As Integer
+     audio           As Integer ' 0 silencio, 1 o >0 suena
+     audioOld        As Integer ' 0 silencio no audio > 0 suena old o anterior..
+     DUR             As Integer 'DUR
+     notapiano       As Integer ' del piano real
+     notapianoOld    As Integer
+     liga            As Integer
+     ligaold         As Integer
+     i1              As Integer
+     i1old           As Integer
+     old_time        As Integer
+     old_timeold     As Integer
+     inst            As Integer
+     canal           As Integer
+     port            As Integer
+     pista           As Integer
+     vol             As Integer
+     onoff           As Integer  '2 on, 1 off
 End Type
 Static Shared pasoCol (0 To 384) As vec
 
 
-Declare Sub noteon	( note As UByte, vel As UByte,canal As UByte,portsal As UByte,i1 As Integer,NroEventoPista As Integer )
-Declare Sub noteSimple	( pasoCol() As vec, cntold As Integer, vel As UByte,canal As UByte,tiempoDur As Double,velpos As Integer)
+Declare Sub noteon     ( note As UByte, vel As UByte,canal As UByte,portsal As UByte,i1 As Integer,NroEventoPista As Integer )
+Declare Sub noteSimple     ( pasoCol() As vec, cntold As Integer, vel As UByte,canal As UByte,tiempoDur As Double,velpos As Integer)
 'Declare Sub AcordeIguales ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte,canal As UByte,tiempoDur As double)
-'Declare Sub AcordeOffIguales	( pasoCol() As vec, cnt As UByte,cntold As UByte, canal As UByte)
+'Declare Sub AcordeOffIguales     ( pasoCol() As vec, cnt As UByte,cntold As UByte, canal As UByte)
 'Declare Sub AcordeDistintos ( pasoCol() As vec,cnt As UByte,cntold As UByte, vel As UByte, canal As UByte,tiempoDur As double)
-'Declare Sub AcordeOffDistintos	( pasoCol() As vec , cnt As UByte,cntold As UByte, canal As UByte,tiempoDur As Double)
-'Declare Sub AcordeOnDistintos	( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As Double)
+'Declare Sub AcordeOffDistintos     ( pasoCol() As vec , cnt As UByte,cntold As UByte, canal As UByte,tiempoDur As Double)
+'Declare Sub AcordeOnDistintos     ( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As Double)
 'Declare Sub AcordeOnIguales ( pasoCol() As vec , cnt As UByte, cntold As UByte, vel As UByte,canal As UByte,tiempoDUR As double)
 Declare Function vol (dura As UByte, vel As UByte) As ubyte
 Declare sub noteoff( note As UByte, vel As UByte,canal As UByte,portsal As UByte,i1 As Integer,NroEventoPista As Integer )
@@ -289,21 +292,21 @@ Dim Shared As integer relnRnE(0 To 132) => { _  ' notapiano real vs nota ..semit
 
 Static Shared indiceaudio (0 To 384) As Integer
 Type PGE  ' parametros guia escala
-	tipoescala As Integer
-	notaescala As Integer
-	alteracion As Integer ' 3=sos, 2 bem
-	posicion   As Integer
+     tipoescala As Integer
+     notaescala As Integer
+     alteracion As Integer ' 3=sos, 2 bem
+     posicion   As Integer
 End Type
 
 Dim Shared guiaEscala  (1 To 100) As PGE ' suponemos  100 cambios de escala en una pista
 ' en la posicion 1 se cargará la escala leida de la pista al inicio
 ' la escal debe guarar los 3 parametros Tipo escala , notaescala y alteracion en un principio basico
 Type partesdura
-	As UByte nota
-	As UByte dura
-	As UByte onoff ' on 1, off 0
-	As UByte velmidi
-	As UByte nRk
+     As UByte nota
+     As UByte dura
+     As UByte onoff ' on 1, off 0
+     As UByte velmidi
+     As UByte nRk
 End Type
 
 Dim Shared  duras(1 To 24, 1 To 3) As partesdura
@@ -318,19 +321,19 @@ Declare Function FiguraEquivalente(DURk As Double) As UByte
 Dim Shared As Integer contcode=0,metronomo_si,sonidopista_si, metronomoPistas_si
 
 Type notacallback
-	As UByte nota
-	As UByte dato1
-	As UByte vel
-	As Double durk
-	As Integer partes
+     As UByte nota
+     As UByte dato1
+     As UByte vel
+     As Double durk
+     As Integer partes
 End Type
 Dim Shared  As notacallback notamidi ( 1 To 24)
 Dim Shared  As Double  durafig(1 To 24)
 Type midicod Field=1
-	As UByte modo ' dato1
-	As UByte nota
-	As UByte  vel
-	As Integer partes
+     As UByte modo ' dato1
+     As UByte nota
+     As UByte  vel
+     As Integer partes
 End Type
 
 ReDim Shared CargaIn ( 1 To 84000) As midicod

@@ -1,6 +1,15 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-     0.401 FIX Mutex, paneo no se grababa  
+ (modificaciones en pistas *.ejec) (pruebas basicas echas no fueron exaustivas )
+    -0.407 podemos grabar silencios al principio y/o agregar mas notas en la 1er pista o cualqueir otra
+    -0.406 fix renombrar pistas fisicas, pero no dentro del archivo
+    -0.405 grabar una pista 1 sola y luego insertar dentro de la misma, lo hace bien, se puede insertar
+     nuevas notas en una pista ya grabada.
+    -0.404 volumenes corregidos daba cero por definicion de ajuste como float debe ser single...
+    -0.403 cuando borraba todas las pistas siempre dejaba una...ya no fixed   
+    -0.402 podemos borrar todas los pistas .ejec y cargar luego nuevas o las mismas    
+    -0.401 borrar 1 pista ejec y luego poder tocar, lo hacia mal,cargar 3 pistas p1 p2 p3 y 
+     tratar de borrar la 2 ya anda bien     
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -332,7 +341,10 @@
        6.1.1) Cargar un solo archivo de ejecucion *.ejec. Usar en el Menu de Archivo el item 5.1.5
               se puede seguir cargando de uno en uno, para cargar todas las ejecuciones en un directorio
               usar el item 5.1
- 
+       6.1.2) opcion 5.2 borra una pista de ejecucion seleccionada en 'S' al renombrarla en blanco las
+              demas pistas se reorganizan y funcionan bien se corrigio.
+       6.1.3) 5.2.1 borra todas las pistas de ejecucion cargadas sin importar si estan seleccionadas o no.
+              Para despues empezar de nuevo, cargar o grabar.
        6.2) Cargar CANCION y Cargar Ejecuciones Sumadas (todos los archivos ejec y rtk estaran en carpetas
             diferntes puede nser solo subcarpetas distintas)
             - Cargar primero la cancion con o sin grafico (si se uso sin grafico luego debe abrilo ).
@@ -602,7 +614,7 @@
 
     IV ) USO VENTANA CONTROL, ENTRE VARIAS COSAS  GRABA EJECUCIONES POR TECLADO MIDI,
        
-    1 ) MIDI-IN GRABACION: 
+    1 ) MIDI-IN GRABACION: (GRABA UNA PISTA MAS DE UNA VEZ ENCIMA SIN BORRAR LO ANTERIOR)
          YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN grabadas mediante la ejecucion EN UN O CONTROLADOR 
          MIDI EXTERNO  o TECLADO externo  real concectado su salida MIDI-OUT  al MIDI-IN de la PC.
          Las pistas se arman tal cual se grabaron sincronizadas respecto de la pista 1.
@@ -615,10 +627,19 @@
             CHECK EN COLUMNA 'G', AUTOMATICAMENTE SE CHEQUEARA LA 'S'
            'G' INDICA GRABAR, 'S' SELECCIONADA PARA ESCUCHAR  
            LOS CONTROLES DEL PIE DE LA LISTA DE EJECUCIONES FUNCIONARA 
-           SOBRE LA PISTA SELECCIONADA E ILUMINADA POR UN CLICK. 
-         B) LOSPUERTOS MIDI-IN Y MIDI-OUT, EL PROGRAMA LOS ELIGE POR OMISION
-            VERIFICARLOS EN EL MENU "PUERTOS Y PISTAS EJECUCION"
-            1.0 Y 2.0, LUEGO ABRIR EL PUERTO DE SALIDA EN 3.0
+           SOBRE LA PISTA SELECCIONADA E ILUMINADA POR UN CLICK.AUTOMATICAMENTE
+           AJUSTA UN VOLUMEN Y UN PAN EL INSTRUMENTO ES UN PIANO, SE PEUDE CAMBIAR AHI.
+         B) LOS PUERTOS MIDI-IN Y MIDI-OUT, EL PROGRAMA LOS ELIGE POR OMISION
+            VERIFICARLOS EN EL MENU "PUERTOS Y PISTAS EJECUCION", PREVIAMENTE SE DEBE
+            DAR CLICK A LA PISTA A GRABAR LA CUAL SE ILUMINARA Y LUEGO  EN EL MENU
+            USAR LOS ITEMS 1.0 Y 2.0, LUEGO ABRIR EL PUERTO DE SALIDA EN 3.0
+            (CON MICROSOFT CANCEL LA APERTURA YADEBE ESTAR ABIERTO TAL VEZ)
+            SI SE DEJA LA ELECCION AUTOMATICA POR OMISION SOLO HACE FALTA ABRIR
+            SELECCIONAR LA PISTA EN G Y PULSAR EN EL MENUDE REPRODUCCION EL ITEM 3.0
+            "ABRE Y REPRODUCE MIDI-IN...."
+--------------------------------------------------------------
+       (EN LO SIGUIENTE:aunque este seleccionado lo que queremos seleccionarlo
+           de nuevo para que ese valor por omision se grabe en la pista)
          C) EN LA LISTA DE EJECUCIONES (LA DE LA DERECHA)
            ABAJO SELECCIONAR UN PATCH O INSTRUMENTO Y DAR OK.O CERRAR
            LA VENTANA SI LO QUE SE MUESTRA ES EL INSTRUENTO DESEADO, POR 
@@ -626,13 +647,15 @@
          D) SELECCIONAR EL CANAL, POR OMISION ESTA EL 1 ELEGIR OTRO SI  SE DESEA
             Y DAR OK
          E) SELECCIONAR VOLUMEN AUNQUE EL VOL POR OMISION 90 ESTE BIEN
-            SELECCIONARLO Y ACEPTAR PARA QUE LO TOME..
+            SELECCIONARLO Y ACEPTAR PARA QUE LO TOME..YA NO ES NECESARIO EN NUEVA VERSION
+            SELECCIONARLO Y ACEPATAR.
          F) PARA ESCUCHAR LO QUE SE TOCA EN EL TECLADO EN EL MENU "REPRODUCIR"
             PULSAR EL ITEM 3.0 "ABRE Y REPRODUCE PUERTO MIDI-IN..."
          G) PULSAR BOTON ROJO PARA GRABAR Y PARA TERMINAR EL BOTON NEGRO.
          H) PARA  VER LA CANTIDAD DE TICKS GRABADOS DAR CLICK AL NOMBRE DE PISTA
          I) LUEGO PARA ESCUCHAR ASEGURARSE QUE LA COLUMNA 'S' ESTA CHEQUEDA
-            LA PISTA, LA 'G' SE PUEDE DES CHEQUEAR NO LA GRABAREMOS.
+            LA PISTA, LA 'G' SE DESCHEQUEA AUTOMATICO NECESARIO PARAGRABAR ENCIMA
+            AGREGANDO MAS NOTAS A LA MISMA PISTA.
 
          AL DAR CLICK EN EL NOMBRE DE CADA PISTA VEMOS ARRIBA AL LADO DE LOS BOTONES
          EL NUMERO DE TICKS DE CADA PISTA.

@@ -22,7 +22,7 @@
 #Include "win/commctrl.bi"
 InitCommonControls()
 
-Const Dialog_Box = "#32770"	'System class dialog box
+Const Dialog_Box = "#32770"     'System class dialog box
 
 
 '-------------------------------------------------------------------------------
@@ -30,46 +30,46 @@ Const Dialog_Box = "#32770"	'System class dialog box
 '-------------------------------------------------------------------------------
 
 Function Window_New(ByRef x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, _
-	ByVal Title As String, _
-	ByVal Style As ULong = WS_OVERLAPPEDWINDOW Or WS_VISIBLE) As HWND
-	'Create a new window. Parameter:
-	'- x, y = top left corner
-	'- w = width
-	'- h = height
-	'- Title = Title
-	'- Style = See below
-	
-	'Style:
-	'WS_OVERLAPPEDWINDOW Or WS_VISIBLE creates an initial visible overlapped window
-	'with the WS_OVERLAPPED, WS_CAPTION, WS_SYSMENU, WS_THICKFRAME, WS_MINIMIZEBOX,
-	'and WS_MAXIMIZEBOX styles. The size of the window can be changed by by click-dragging
-	'from one of the window corners.
-	'Other styles may be used, e.g. WS_OVERLAPPED Or WS_SYSMENU Or WS_VISIBLE in order
-	'to create a non-resizable window (see Function InputBox).
-	
-	Return CreateWindowEx(0, Dialog_Box, Title, Style, x, y, w, h, 0, 0, 0, 0)
-	
+     ByVal Title As String, _
+     ByVal Style As ULong = WS_OVERLAPPEDWINDOW Or WS_VISIBLE) As HWND
+     'Create a new window. Parameter:
+     '- x, y = top left corner
+     '- w = width
+     '- h = height
+     '- Title = Title
+     '- Style = See below
+     
+     'Style:
+     'WS_OVERLAPPEDWINDOW Or WS_VISIBLE creates an initial visible overlapped window
+     'with the WS_OVERLAPPED, WS_CAPTION, WS_SYSMENU, WS_THICKFRAME, WS_MINIMIZEBOX,
+     'and WS_MAXIMIZEBOX styles. The size of the window can be changed by by click-dragging
+     'from one of the window corners.
+     'Other styles may be used, e.g. WS_OVERLAPPED Or WS_SYSMENU Or WS_VISIBLE in order
+     'to create a non-resizable window (see Function InputBox).
+     
+     Return CreateWindowEx(0, Dialog_Box, Title, Style, x, y, w, h, 0, 0, 0, 0)
+     
 End Function
 
 
 Sub Window_GetSize(ByVal hwnd As HWND, ByRef x_left As Long, ByRef y_top As Long, _
-	ByRef x_right As Long, ByRef y_bottom As Long)
-	'Retrieves the coordinates of a window's client area. Parameters:
-	'- hwnd = Handle of the window
-	'- x-left = x-coordinate of the upper-left corner
-	'- y_top = y-coordinate of the upper-left corner
-	'- x_right = x-coordinate of the lower-right corner
-	'- y_bottom = y-coordinate of the lower-right corner
-	
-	Dim As RECT rect
-	
-	'Store window size in rect:
-	GetClientRect(hwnd, @rect)
-	x_left = rect.left
-	y_top = rect.top
-	x_right = rect.right
-	y_bottom = rect.bottom
-	
+     ByRef x_right As Long, ByRef y_bottom As Long)
+     'Retrieves the coordinates of a window's client area. Parameters:
+     '- hwnd = Handle of the window
+     '- x-left = x-coordinate of the upper-left corner
+     '- y_top = y-coordinate of the upper-left corner
+     '- x_right = x-coordinate of the lower-right corner
+     '- y_bottom = y-coordinate of the lower-right corner
+     
+     Dim As RECT rect
+     
+     'Store window size in rect:
+     GetClientRect(hwnd, @rect)
+     x_left = rect.left
+     y_top = rect.top
+     x_right = rect.right
+     y_bottom = rect.bottom
+     
 End Sub
 
 /'
@@ -105,18 +105,18 @@ End Sub
 '/
 
 Function Window_Event_Close(ByVal hWnd As HWND, ByRef msg As MSG) As Long
-	'Returns 1 when the close button (X) of the window has been clicked. Parameters:
-	'- hWnd = handle of the window
-	'- msg = Message (see Sub WaitEvent)
-	
-	If msg.hwnd = hWnd And msg.message = 161 Then
-		If msg.wParam = 20 Then
-			Return 1
-		Else
-			Return 0
-		End If
-	End If
-	
+     'Returns 1 when the close button (X) of the window has been clicked. Parameters:
+     '- hWnd = handle of the window
+     '- msg = Message (see Sub WaitEvent)
+     
+     If msg.hwnd = hWnd And msg.message = 161 Then
+          If msg.wParam = 20 Then
+               Return 1
+          Else
+               Return 0
+          End If
+     End If
+     
 End Function
 
 
@@ -125,53 +125,53 @@ End Function
 '-------------------------------------------------------------------------------
 
 Function Control_Createfont(ByVal Font As String, _
-	ByVal h As Long = 16, ByVal w As Long = 8, _
-	ByVal wt As Long = 0, ByVal it As Long = False, _
-	ByVal ul As Long = False, ByVal so As Long = False) As HFONT
-	
-	'Create a font. Parameters:
-	'-Font = e.g. "Courier New", "Arial", "New Times Roman"
-	'-h = Logical height of the font
-	'-w = Logical average width of font
-	'-wt = Font weight (e.g. FW_THIN, FW_NORMAL, FW_BOLD)
-	'-it = Italic: True = yes
-	'-ul = Underline: True = yes
-	'-so = Strikout: True = yes
-	
-	Return CreateFont(h, w, 0, 0, wt, it, ul, so, ANSI_CHARSET, FALSE, FALSE, _
-	DEFAULT_QUALITY, DEFAULT_PITCH or FF_ROMAN, Font)
+     ByVal h As Long = 16, ByVal w As Long = 8, _
+     ByVal wt As Long = 0, ByVal it As Long = False, _
+     ByVal ul As Long = False, ByVal so As Long = False) As HFONT
+     
+     'Create a font. Parameters:
+     '-Font = e.g. "Courier New", "Arial", "New Times Roman"
+     '-h = Logical height of the font
+     '-w = Logical average width of font
+     '-wt = Font weight (e.g. FW_THIN, FW_NORMAL, FW_BOLD)
+     '-it = Italic: True = yes
+     '-ul = Underline: True = yes
+     '-so = Strikout: True = yes
+     
+     Return CreateFont(h, w, 0, 0, wt, it, ul, so, ANSI_CHARSET, FALSE, FALSE, _
+     DEFAULT_QUALITY, DEFAULT_PITCH or FF_ROMAN, Font)
 End Function
 
 
 Sub Control_Setfont(ByVal hWndControl As HWND, ByVal hFont As HFONT)
-	
-	'Set a font for a control. Parameters:
-	'- hWndControl = handle of the control
-	'- hFont = handle of the font
-	
-	SendMessage(hWndControl, WM_SETFONT, Cast(WPARAM, hFont), True)
-	
+     
+     'Set a font for a control. Parameters:
+     '- hWndControl = handle of the control
+     '- hFont = handle of the font
+     
+     SendMessage(hWndControl, WM_SETFONT, Cast(WPARAM, hFont), True)
+     
 End Sub
 
 
 Sub Control_Deletefont(ByVal hFont As HFONT)
-	
-	'Delete a font (handle hFont is not longer valid)
-	
-	DeleteObject(hFont)
-	
+     
+     'Delete a font (handle hFont is not longer valid)
+     
+     DeleteObject(hFont)
+     
 End Sub
 
 
 Sub Control_Resize(ByVal hWndControl As HWND, ByVal x As Long, ByVal y As Long, _
-	ByVal w As Long, ByVal h As Long)
-	'Resize a control. Parameters:
-	'- x, y = top left corner
-	'- w = width
-	'- h = height
-	
-	MoveWindow(hWndControl, x, y, w, h, True)
-	
+     ByVal w As Long, ByVal h As Long)
+     'Resize a control. Parameters:
+     '- x, y = top left corner
+     '- w = width
+     '- h = height
+     
+     MoveWindow(hWndControl, x, y, w, h, True)
+     
 End Sub
 
 
@@ -180,19 +180,19 @@ End Sub
 '-------------------------------------------------------------------------------
 
 Function Button_New(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, _
-	ByVal Label As String, ByVal Style As ULong = WS_TABSTOP, _
-	ByVal hwnd As HWND) As HWND
-	'Create a new button. Parameters:
-	'- x, y = top left corner
-	'- w = width
-	'- h = height
-	'- Label = label
-	'- Style: See description in Sub WaitEvent
-	'- hwnd = handle of the window
-	
-	Return CreateWindowEx(0, "BUTTON", Label, Style Or WS_VISIBLE Or WS_CHILD, _
-	x, y, w, h, hwnd, 0, 0, 0 )
-	
+     ByVal Label As String, ByVal Style As ULong = WS_TABSTOP, _
+     ByVal hwnd As HWND) As HWND
+     'Create a new button. Parameters:
+     '- x, y = top left corner
+     '- w = width
+     '- h = height
+     '- Label = label
+     '- Style: See description in Sub WaitEvent
+     '- hwnd = handle of the window
+     
+     Return CreateWindowEx(0, "BUTTON", Label, Style Or WS_VISIBLE Or WS_CHILD, _
+     x, y, w, h, hwnd, 0, 0, 0 )
+     
 End Function
 
 
@@ -201,46 +201,46 @@ End Function
 '-------------------------------------------------------------------------------
 
 Function CheckBox_New(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, _
-	ByVal Label As String, ByVal Style As Ulong = WS_TABSTOP, _
-	ByVal hwnd As HWND) As HWND
-	'Create a new checkbox (autocheckbox, the state switches automatically by clicking).
-	'Parameters:
-	'- x, y = top left corner
-	'- w = width '- h = height
-	'- label = label
-	'- Style: See description in Sub WaitEvent
-	'- hwnd = handle of the window
-	
-	Return CreateWindowEx(0, "BUTTON", Label, _
-	Style Or WS_VISIBLE Or WS_CHILD Or BS_AUTOCHECKBOX, _
-	x, y, w, h,	hWnd, 0, 0, 0 )
-	
+     ByVal Label As String, ByVal Style As Ulong = WS_TABSTOP, _
+     ByVal hwnd As HWND) As HWND
+     'Create a new checkbox (autocheckbox, the state switches automatically by clicking).
+     'Parameters:
+     '- x, y = top left corner
+     '- w = width '- h = height
+     '- label = label
+     '- Style: See description in Sub WaitEvent
+     '- hwnd = handle of the window
+     
+     Return CreateWindowEx(0, "BUTTON", Label, _
+     Style Or WS_VISIBLE Or WS_CHILD Or BS_AUTOCHECKBOX, _
+     x, y, w, h,     hWnd, 0, 0, 0 )
+     
 End Function
 
 
 Sub CheckBox_SetCheck(ByVal hWndCheck As HWND, ByVal CheckState As Long)
-	'Set check status of the checkbox. Parameters:
-	'- hWndCheck = Handle of the checkbox
-	'- CheckState: <> 0 = checked, 0 = unchecked
-	
-	If CheckState Then
-		SendMessage(hWndCheck, BM_SETCHECK, BST_CHECKED, 0)
-	Else
-		SendMessage(hWndCheck, BM_SETCHECK, BST_UNCHECKED, 0)
-	End If
-	
+     'Set check status of the checkbox. Parameters:
+     '- hWndCheck = Handle of the checkbox
+     '- CheckState: <> 0 = checked, 0 = unchecked
+     
+     If CheckState Then
+          SendMessage(hWndCheck, BM_SETCHECK, BST_CHECKED, 0)
+     Else
+          SendMessage(hWndCheck, BM_SETCHECK, BST_UNCHECKED, 0)
+     End If
+     
 End Sub
 
 
 Function CheckBox_GetCheck(ByVal hWndCheck As HWND ) As Long
-	'Request the status of the checkbox. 0 = unchecked, 1 = checked. Parameters:
-	'- hWndCheck = handle of the checkbox
-	
-	If SendMessage(hWndCheck, BM_GETCHECK, 0, 0) = BST_CHECKED Then
-		Return 1
-	Else
-		Return 0
-	End If
+     'Request the status of the checkbox. 0 = unchecked, 1 = checked. Parameters:
+     '- hWndCheck = handle of the checkbox
+     
+     If SendMessage(hWndCheck, BM_GETCHECK, 0, 0) = BST_CHECKED Then
+          Return 1
+     Else
+          Return 0
+     End If
 End Function
 
 
@@ -249,50 +249,50 @@ End Function
 '-------------------------------------------------------------------------------
 
 Function RadioButton_New(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, _
-	ByVal Label As String, ByVal Style As Long = WS_TABSTOP, _
-	ByVal hwnd As HWND) As HWND
-	'New radio button (if a radio button is clicked, its state will be
-	'automatically set to "checked" and the states of the others in the group
-	'will be set to "unchecked". Parameters:
-	'- x, y = top left corner
-	'- w = width
-	'- h = height
-	'- label = label
-	'- Style: See description in Sub WaitEvent. WS_GROUP must be used for the
-	'  first radio button of a group
-	'- hwnd = handle of the window
-	
-	Return CreateWindowEx(0, "BUTTON", Label, _
-	Style Or WS_VISIBLE Or WS_CHILD Or BS_AUTORADIOBUTTON, _
-	x, y, w, h,	hWnd, 0, 0, 0 )
-	
+     ByVal Label As String, ByVal Style As Long = WS_TABSTOP, _
+     ByVal hwnd As HWND) As HWND
+     'New radio button (if a radio button is clicked, its state will be
+     'automatically set to "checked" and the states of the others in the group
+     'will be set to "unchecked". Parameters:
+     '- x, y = top left corner
+     '- w = width
+     '- h = height
+     '- label = label
+     '- Style: See description in Sub WaitEvent. WS_GROUP must be used for the
+     '  first radio button of a group
+     '- hwnd = handle of the window
+     
+     Return CreateWindowEx(0, "BUTTON", Label, _
+     Style Or WS_VISIBLE Or WS_CHILD Or BS_AUTORADIOBUTTON, _
+     x, y, w, h,     hWnd, 0, 0, 0 )
+     
 End Function
 
 
 Sub RadioButton_SetCheck(ByVal hWndRadio As HWND, ByVal CheckState As Long)
-	'Set the state of a radio button. Parameters:
-	'- hWndRadio = handle of the radio buttons
-	'- CheckState: <> 0 = checked, 0 = unchecked
-	
-	If CheckState Then
-		SendMessage(hWndRadio, BM_SETCHECK, BST_CHECKED, 0)
-	Else
-		SendMessage(hWndRadio, BM_SETCHECK, BST_UNCHECKED, 0)
-	End If
-	
+     'Set the state of a radio button. Parameters:
+     '- hWndRadio = handle of the radio buttons
+     '- CheckState: <> 0 = checked, 0 = unchecked
+     
+     If CheckState Then
+          SendMessage(hWndRadio, BM_SETCHECK, BST_CHECKED, 0)
+     Else
+          SendMessage(hWndRadio, BM_SETCHECK, BST_UNCHECKED, 0)
+     End If
+     
 End Sub
 
 
 Function RadioButton_GetCheck(ByVal hWndRadio As HWND ) As Long
-	'Request the state of the radio buttons. 0 = unchecked, 1 = checked. Parameters:
-	'- hWndRadio = handle of the radio buttons
-	
-	If SendMessage(hWndRadio, BM_GETCHECK, 0, 0) = BST_CHECKED    Then
-		Return 1
-	Else
-		Return 0
-	End If
-	
+     'Request the state of the radio buttons. 0 = unchecked, 1 = checked. Parameters:
+     '- hWndRadio = handle of the radio buttons
+     
+     If SendMessage(hWndRadio, BM_GETCHECK, 0, 0) = BST_CHECKED    Then
+          Return 1
+     Else
+          Return 0
+     End If
+     
 End Function
 
 '-------------------------------------------------------------------------------
@@ -300,18 +300,18 @@ End Function
 '-------------------------------------------------------------------------------
 
 Function GroupBox_New(ByVal x As Long, ByVal y As Long, ByVal w As Long, _
-	ByVal h As Long, ByVal Label As String, ByVal hwnd As HWND) As HWND
-	'Create a new group box. Parameters:
-	'- x, y = top left corner
-	'- w = width
-	'- h = height
-	'- Label = label
-	'- hwnd = handle of the window
-	
-	Return CreateWindowEx(0, "BUTTON", Label, _
-	WS_VISIBLE Or WS_CHILD Or BS_GROUPBOX, _
-	x, y, w, h, hwnd, 0, 0, 0 )
-	
+     ByVal h As Long, ByVal Label As String, ByVal hwnd As HWND) As HWND
+     'Create a new group box. Parameters:
+     '- x, y = top left corner
+     '- w = width
+     '- h = height
+     '- Label = label
+     '- hwnd = handle of the window
+     
+     Return CreateWindowEx(0, "BUTTON", Label, _
+     WS_VISIBLE Or WS_CHILD Or BS_GROUPBOX, _
+     x, y, w, h, hwnd, 0, 0, 0 )
+     
 End Function
 
 
@@ -320,29 +320,29 @@ End Function
 '-------------------------------------------------------------------------------
 
 Function Label_New(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, _
-	ByVal text As String, ByVal Style As ULong = 0, ByVal hwnd As HWND) As HWND
-	'Create a new Label (= static text). Parameters:
-	'- x, y = top left corner
-	'- w = width
-	'- h = height
-	'- text = Text
-	'- Style = WS_BORDER, SS_LEFT, SS_CENTER, SS_RIGHT
-	'  (different styles can be connected by "Or")
-	'- hwnd = handle of the window
-	
-	Return CreateWindowEx(0, "STATIC", Text, Style Or WS_VISIBLE Or WS_CHILD, x, y, w, h, _
-	hWnd, 0, 0, 0 )
-	
+     ByVal text As String, ByVal Style As ULong = 0, ByVal hwnd As HWND) As HWND
+     'Create a new Label (= static text). Parameters:
+     '- x, y = top left corner
+     '- w = width
+     '- h = height
+     '- text = Text
+     '- Style = WS_BORDER, SS_LEFT, SS_CENTER, SS_RIGHT
+     '  (different styles can be connected by "Or")
+     '- hwnd = handle of the window
+     
+     Return CreateWindowEx(0, "STATIC", Text, Style Or WS_VISIBLE Or WS_CHILD, x, y, w, h, _
+     hWnd, 0, 0, 0 )
+     
 End Function
 
 
 Sub Label_SetText(ByVal hWndLabel As HWND, ByVal Text As String)
-	'Set text of a label. Parameters:
-	'- hWndLabel = Handle of the label
-	'- Text = text
-	
-	SetWindowText(hWndLabel, Text)
-	
+     'Set text of a label. Parameters:
+     '- hWndLabel = Handle of the label
+     '- Text = text
+     
+     SetWindowText(hWndLabel, Text)
+     
 End Sub
 
 
@@ -351,58 +351,58 @@ End Sub
 '-------------------------------------------------------------------------------
 
 Function EditBox_New(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, _
-	ByVal Text As String, ByVal Style As ULong = WS_TABSTOP, ByVal hwnd As HWND) _
-	As HWND
-	
-	'Create a new Editbox (single line). Parameters:
-	'- x, y = top left corner
-	'- w = width
-	'- h = height
-	'- text = Text
-	'- Style: See description in Sub WaitEvent and below
-	'- hwnd = handle of the window
-	
-	'Style:
-	'- ES_LEFT, ES_CENTER or ES_RIGHT
-	'- ES_LOWERCASE or ES_UPPERCASE
-	'- ES_NUMBER
-	'- ES_PASSWORD
-	'- ES_READONLY
-	'(different styles can be connected by "Or")
-	
-	Return CreateWindowEx(0, "EDIT", Text, _
-	Style Or WS_BORDER Or WS_VISIBLE Or WS_CHILD OR ES_AUTOHSCROLL, _
-	x, y, w, h, hWnd, 0, 0, 0 )
-	
+     ByVal Text As String, ByVal Style As ULong = WS_TABSTOP, ByVal hwnd As HWND) _
+     As HWND
+     
+     'Create a new Editbox (single line). Parameters:
+     '- x, y = top left corner
+     '- w = width
+     '- h = height
+     '- text = Text
+     '- Style: See description in Sub WaitEvent and below
+     '- hwnd = handle of the window
+     
+     'Style:
+     '- ES_LEFT, ES_CENTER or ES_RIGHT
+     '- ES_LOWERCASE or ES_UPPERCASE
+     '- ES_NUMBER
+     '- ES_PASSWORD
+     '- ES_READONLY
+     '(different styles can be connected by "Or")
+     
+     Return CreateWindowEx(0, "EDIT", Text, _
+     Style Or WS_BORDER Or WS_VISIBLE Or WS_CHILD OR ES_AUTOHSCROLL, _
+     x, y, w, h, hWnd, 0, 0, 0 )
+     
 End Function
 
 
 Function Editor_New(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, _
-	ByVal Text As String, ByVal Style As ULong = WS_TABSTOP, ByVal hwnd As HWND) _
-	As HWND
-	'Create a new Text Editor (multiline EditBox). Parameters:
-	'- x, y = top left corner
-	'- h = width
-	'- h = height
-	'- Text = Text
-	'- Style: See Sub WaitEvent, ES_READONLY
-	'- hwnd = handle of the window
-	
-	Return CreateWindowEx(0, "EDIT", Text, _
-	Style Or WS_BORDER Or WS_VISIBLE Or WS_CHILD Or WS_HSCROLL _
-	Or WS_VSCROLL Or ES_MULTILINE  Or ES_WANTRETURN, _
-	x, y, w, h, hwnd, 0, 0, 0 )
-	
+     ByVal Text As String, ByVal Style As ULong = WS_TABSTOP, ByVal hwnd As HWND) _
+     As HWND
+     'Create a new Text Editor (multiline EditBox). Parameters:
+     '- x, y = top left corner
+     '- h = width
+     '- h = height
+     '- Text = Text
+     '- Style: See Sub WaitEvent, ES_READONLY
+     '- hwnd = handle of the window
+     
+     Return CreateWindowEx(0, "EDIT", Text, _
+     Style Or WS_BORDER Or WS_VISIBLE Or WS_CHILD Or WS_HSCROLL _
+     Or WS_VSCROLL Or ES_MULTILINE  Or ES_WANTRETURN, _
+     x, y, w, h, hwnd, 0, 0, 0 )
+     
 End Function
 
 
 Sub EditBox_SetText(ByVal hWndEdit As HWND, ByVal Text As String)
-	'Set text into an editbox or an editor. Parameters:
-	'- hWndEdit = handle of the edit box
-	'- Text = text
-	
-	SetWindowText(hWndEdit, Text)
-	
+     'Set text into an editbox or an editor. Parameters:
+     '- hWndEdit = handle of the edit box
+     '- Text = text
+     
+     SetWindowText(hWndEdit, Text)
+     
 End Sub
 
 /'
@@ -423,82 +423,82 @@ End Function
 '/
 
 Sub EditBox_Clear(ByVal hWndEdit As HWND)
-	'Delets the current selection in an editbox or an editor. It does not
-	'place the deleted text in the clipboard. Parameter:
-	'- hWndEdit = handle of the editbox
-	
-	SendMessage(hWndEdit, WM_CLEAR, 0, 0)
-	
+     'Delets the current selection in an editbox or an editor. It does not
+     'place the deleted text in the clipboard. Parameter:
+     '- hWndEdit = handle of the editbox
+     
+     SendMessage(hWndEdit, WM_CLEAR, 0, 0)
+     
 End Sub
 
 
 Sub EditBox_Cut(ByVal hWndEdit As HWND)
-	'Cuts the current selection in an editbox or editor  and places it in the
-	'clipboard. Parameter:
-	'- hWndEdit = Handle of the editbox
-	SendMessage(hWndEdit, WM_CUT, 0, 0)
-	
+     'Cuts the current selection in an editbox or editor  and places it in the
+     'clipboard. Parameter:
+     '- hWndEdit = Handle of the editbox
+     SendMessage(hWndEdit, WM_CUT, 0, 0)
+     
 End Sub
 
 
 Sub EditBox_Copy(ByVal hWndEdit As HWND)
-	'Copy the current selection in an editbox or editor and places it in the
-	'clipboard. Parameters:
-	'- hWndEdit = Handle of the editbox
-	
-	SendMessage(hWndEdit, WM_COPY, 0, 0)
-	
+     'Copy the current selection in an editbox or editor and places it in the
+     'clipboard. Parameters:
+     '- hWndEdit = Handle of the editbox
+     
+     SendMessage(hWndEdit, WM_COPY, 0, 0)
+     
 End Sub
 
 
 Sub EditBox_Paste(ByVal hWndEdit As HWND)
-	'Pastes the current clipboard contents. Parameter:
-	'- hWndEdit = Handle of the editbox
-	
-	SendMessage(hWndEdit, WM_PASTE, 0, 0)
-	
+     'Pastes the current clipboard contents. Parameter:
+     '- hWndEdit = Handle of the editbox
+     
+     SendMessage(hWndEdit, WM_PASTE, 0, 0)
+     
 End Sub
 
 
 Sub EditBox_Undo(ByVal hWndEdit As HWND)
-	'Undo the last operation. When this message is sent to an editbox or an editor,
-	'the previously deleted text is restored or the previously added text is deleted.
-	'Parameter:
-	'- hWndEdit = handle of the editbox
-	
-	SendMessage(hWndEdit, WM_UNDO, 0, 0)
-	
+     'Undo the last operation. When this message is sent to an editbox or an editor,
+     'the previously deleted text is restored or the previously added text is deleted.
+     'Parameter:
+     '- hWndEdit = handle of the editbox
+     
+     SendMessage(hWndEdit, WM_UNDO, 0, 0)
+     
 End Sub
 
 
 Function EditBox_GetLineCount(ByVal hWndEdit As HWND) As Long
-	'Returns the number of lines in an editor. If no text exists then the return value is 1.
-	'Parameters:
-	'- hWndEdit: Handle of the editor
-	
-	Return SendMessage(hWndEdit, EM_GETLINECOUNT, 0, 0)
-	
+     'Returns the number of lines in an editor. If no text exists then the return value is 1.
+     'Parameters:
+     '- hWndEdit: Handle of the editor
+     
+     Return SendMessage(hWndEdit, EM_GETLINECOUNT, 0, 0)
+     
 End Function
 
 
 Function EditBox_GetLine(ByVal hWndEdit As HWND, ByVal LineNumber As Integer) As String
-	'Gets a line of text from an editor. Parameters:
-	'- hWndEdit: Handle of editor
-	'- LineNumber: The zero-based index of the line to retrieve.
-	
-	Dim BufferSize As Long
-	Dim Buffer As String
-	
-	'Get the length of the text:
-	BufferSize = SendMessage(hWndEdit, EM_LINELENGTH, LineNumber, 0)
-	If BufferSize = 0 Then Return ""
-	
-	'Load the text into the buffer:
-	Buffer = Space(BufferSize + 1)
-	SendMessage hWndEdit, EM_GETLINE, LineNumber, Cast(LPARAM, Strptr(Buffer))
-	
-	Return RTrim(Buffer, Chr(0))
-	
+     'Gets a line of text from an editor. Parameters:
+     '- hWndEdit: Handle of editor
+     '- LineNumber: The zero-based index of the line to retrieve.
+     
+     Dim BufferSize As Long
+     Dim Buffer As String
+     
+     'Get the length of the text:
+     BufferSize = SendMessage(hWndEdit, EM_LINELENGTH, LineNumber, 0)
+     If BufferSize = 0 Then Return ""
+     
+     'Load the text into the buffer:
+     Buffer = Space(BufferSize + 1)
+     SendMessage hWndEdit, EM_GETLINE, LineNumber, Cast(LPARAM, Strptr(Buffer))
+     
+     Return RTrim(Buffer, Chr(0))
+     
 End Function
 
 
@@ -507,18 +507,18 @@ End Function
 '-------------------------------------------------------------------------------
 
 Function ListBox_New(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, _
-	ByVal Style As Ulong = WS_TABSTOP, ByVal hwnd As HWND) As HWND
-	'Create a new listbox. Parameters:
-	'- x, y = top left corner
-	'- w = width
-	'- h = height
-	'- Style: See decription in Sub WaitEvent
-	'- hwnd = handle of the window
-	
-	Return CreateWindowEx(0, "LISTBOX", "", Style Or WS_BORDER Or WS_VISIBLE Or WS_CHILD Or _
-	WS_HSCROLL Or WS_VSCROLL, x, y, w, h, hWnd, _
-	0, 0, 0 )
-	
+     ByVal Style As Ulong = WS_TABSTOP, ByVal hwnd As HWND) As HWND
+     'Create a new listbox. Parameters:
+     '- x, y = top left corner
+     '- w = width
+     '- h = height
+     '- Style: See decription in Sub WaitEvent
+     '- hwnd = handle of the window
+     
+     Return CreateWindowEx(0, "LISTBOX", "", Style Or WS_BORDER Or WS_VISIBLE Or WS_CHILD Or _
+     WS_HSCROLL Or WS_VSCROLL, x, y, w, h, hWnd, _
+     0, 0, 0 )
+     
 End Function
 
 /'
@@ -557,18 +557,18 @@ End Sub
 
 '/
 Sub ListBox_ReplaceString(ByVal hWndList As HWND, ByVal Index As Long, ByVal Text As String, _
-	ByVal NewData As Long = 0)
-	'Replace a string by another. Parameters:
-	'- hWndList = Handle of the listbox
-	'- Index = Index of the string to be replaced
-	'- Text = new Text
-	'- New Data = 32-bit value associated with the list box item
-	
-	If text = "" Then Exit Sub End If
-	SendMessage(hWndList, LB_DELETESTRING, Index, 0)
-	Index = SendMessage(hWndList, LB_INSERTSTRING, Index, Cast(LPARAM, Strptr(Text)))
-	SendMessage(hWndList, LB_SETITEMDATA, Index, NewData)
-	
+     ByVal NewData As Long = 0)
+     'Replace a string by another. Parameters:
+     '- hWndList = Handle of the listbox
+     '- Index = Index of the string to be replaced
+     '- Text = new Text
+     '- New Data = 32-bit value associated with the list box item
+     
+     If text = "" Then Exit Sub End If
+     SendMessage(hWndList, LB_DELETESTRING, Index, 0)
+     Index = SendMessage(hWndList, LB_INSERTSTRING, Index, Cast(LPARAM, Strptr(Text)))
+     SendMessage(hWndList, LB_SETITEMDATA, Index, NewData)
+     
 End Sub
 
 /'
@@ -638,19 +638,19 @@ End Function
 '-------------------------------------------------------------------------------
 
 Function ComboBox_New(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, _
-	ByVal Style As Ulong = WS_TABSTOP, ByVal hwnd As HWND) As HWND
-	'New Combo box. Parameters:
-	'- x, y = top left corner
-	'- w = width
-	'- h = height
-	'- Label = label
-	'- Style: See description in Sub WaitEvent
-	'- hwnd = handle of the window
-	'Note: Combo box without vertical scrollbar, items can be scrolled with keys up/down!
-	
-	Return CreateWindow("COMBOBOX", "", Style Or WS_BORDER Or WS_VISIBLE Or WS_CHILD Or _
-	CBS_DROPDOWNLIST, x, y, w, h, hWnd, 0, 0, 0 )
-	
+     ByVal Style As Ulong = WS_TABSTOP, ByVal hwnd As HWND) As HWND
+     'New Combo box. Parameters:
+     '- x, y = top left corner
+     '- w = width
+     '- h = height
+     '- Label = label
+     '- Style: See description in Sub WaitEvent
+     '- hwnd = handle of the window
+     'Note: Combo box without vertical scrollbar, items can be scrolled with keys up/down!
+     
+     Return CreateWindow("COMBOBOX", "", Style Or WS_BORDER Or WS_VISIBLE Or WS_CHILD Or _
+     CBS_DROPDOWNLIST, x, y, w, h, hWnd, 0, 0, 0 )
+     
 End Function
 
 /'
@@ -691,18 +691,18 @@ End Sub
 '-------------------------------------------------------------------------------
 
 Sub ComboBox_ReplaceString(ByVal hWndCombo As HWND, ByVal Index As Long, ByVal Text As String, _
-	ByVal NewData As Long = 0)
-	'Replace a string by another. Parameters:
-	'- hWndCombo = Handle of the ComboBox
-	'- Index = Index of the string to be replaced
-	'- Text = new Text
-	'- New Data = 32-bit value associated with the combo box item
-	
-	If text = "" Then Exit Sub  End If
-	SendMessage(hWndCombo, CB_DELETESTRING, Index, 0)
-	Index = SendMessage(hWndCombo, CB_INSERTSTRING, Index, Cast(LPARAM, Strptr(Text)))
-	SendMessage(hWndCombo, CB_SETITEMDATA, Index, NewData)
-	
+     ByVal NewData As Long = 0)
+     'Replace a string by another. Parameters:
+     '- hWndCombo = Handle of the ComboBox
+     '- Index = Index of the string to be replaced
+     '- Text = new Text
+     '- New Data = 32-bit value associated with the combo box item
+     
+     If text = "" Then Exit Sub  End If
+     SendMessage(hWndCombo, CB_DELETESTRING, Index, 0)
+     Index = SendMessage(hWndCombo, CB_INSERTSTRING, Index, Cast(LPARAM, Strptr(Text)))
+     SendMessage(hWndCombo, CB_SETITEMDATA, Index, NewData)
+     
 End Sub
 
 '-------------------------------------------------------------------------------
@@ -774,52 +774,52 @@ End Function
 '-------------------------------------------------------------------------------
 
 Function TrackBar_New(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, _
-	ByVal Style As ULong = WS_TABSTOP Or TBS_HORZ, ByVal hwnd As HWND) As HWND
-	'Create a new trackbar. Parameter:
-	'- x, y = top left corner
-	'- w = width
-	'- h = height
-	'- Style: See below
-	'- hwnd = handle of the window
-	
-	'Styles:
-	'WS_TABSTOP: See description in Sub WaitEvent
-	'TBS_HORZ or TBS_VERT: horizontal or vertical trackbar
-	
-	Return CreateWindowEx( 0, TRACKBAR_CLASS, "", _
-	Style Or WS_VISIBLE Or WS_CHILD Or TBS_ENABLESELRANGE, _
-	x, y, w, h, hWnd, 0, 0, 0 )
-	
+     ByVal Style As ULong = WS_TABSTOP Or TBS_HORZ, ByVal hwnd As HWND) As HWND
+     'Create a new trackbar. Parameter:
+     '- x, y = top left corner
+     '- w = width
+     '- h = height
+     '- Style: See below
+     '- hwnd = handle of the window
+     
+     'Styles:
+     'WS_TABSTOP: See description in Sub WaitEvent
+     'TBS_HORZ or TBS_VERT: horizontal or vertical trackbar
+     
+     Return CreateWindowEx( 0, TRACKBAR_CLASS, "", _
+     Style Or WS_VISIBLE Or WS_CHILD Or TBS_ENABLESELRANGE, _
+     x, y, w, h, hWnd, 0, 0, 0 )
+     
 End Function
 
 
 Sub TrackBar_SetRange(ByVal hWndTrack As HWND, ByVal RangeMin As Long, ByVal RangeMax As Long)
-	'Set range of the track bar. Parameters:
-	'- hWnd = handle of the track bar
-	'- RangeMin, RangeMax = Range
-	
-	SendMessage(hWndTrack, TBM_SETRANGEMIN, 0, RangeMin)
-	SendMessage(hWndTrack, TBM_SETRANGEMAX, 0, RangeMax)
-	
+     'Set range of the track bar. Parameters:
+     '- hWnd = handle of the track bar
+     '- RangeMin, RangeMax = Range
+     
+     SendMessage(hWndTrack, TBM_SETRANGEMIN, 0, RangeMin)
+     SendMessage(hWndTrack, TBM_SETRANGEMAX, 0, RangeMax)
+     
 End Sub
 
 
 Function TrackBar_GetPos(ByVal hWndTrack As HWND) As Long
-	'Returns the position of the track bar. Parameter:
-	'- hWndTrack = handle of the track bar
-	
-	Return SendMessage(hWndTrack, TBM_GETPOS, 0, 0 )
-	
+     'Returns the position of the track bar. Parameter:
+     '- hWndTrack = handle of the track bar
+     
+     Return SendMessage(hWndTrack, TBM_GETPOS, 0, 0 )
+     
 End Function
 
 
 Sub TrackBar_SetPos(ByVal hWndTrack As HWND, ByVal NewPos As Long)
-	'Set the position of the trackbar. Parameters:
-	'- hWndTrack = handle of the track bar
-	'- NewPos = new position
-	
-	SendMessage(hWndTrack, TBM_SETPOS, TRUE, NewPos)
-	
+     'Set the position of the trackbar. Parameters:
+     '- hWndTrack = handle of the track bar
+     '- NewPos = new position
+     
+     SendMessage(hWndTrack, TBM_SETPOS, TRUE, NewPos)
+     
 End Sub
 
 
@@ -829,34 +829,34 @@ End Sub
 
 
 Function ProgressBar_New(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, _
-	ByVal hWnd As HWND) As HWND
-	'Create new Progressbar. Parameter:
-	'- x, y = top left corner
-	'- w = width
-	'- h = height
-	'- hwnd = handle of the window
-	
-	Return CreateWindowEx(0, PROGRESS_CLASS, "", WS_VISIBLE Or WS_CHILD, _
-	x, y, w, h, hWnd, 0, 0, 0)
-	
+     ByVal hWnd As HWND) As HWND
+     'Create new Progressbar. Parameter:
+     '- x, y = top left corner
+     '- w = width
+     '- h = height
+     '- hwnd = handle of the window
+     
+     Return CreateWindowEx(0, PROGRESS_CLASS, "", WS_VISIBLE Or WS_CHILD, _
+     x, y, w, h, hWnd, 0, 0, 0)
+     
 End Function
 
 
 Sub ProgressBar_SetRange(ByVal hWndProg As HWND, ByVal RangeMin As Long, ByVal RangeMax As Long)
-	'Set range of a progress bars. Parameters:
-	'- hWndProgessbar = handle of the progress bar
-	'- RangeMin, RangeMax = Range
-	
-	SendMessage(hWndProg, PBM_SETRANGE, 0, MAKELPARAM(RangeMin, RangeMax))
-	
+     'Set range of a progress bars. Parameters:
+     '- hWndProgessbar = handle of the progress bar
+     '- RangeMin, RangeMax = Range
+     
+     SendMessage(hWndProg, PBM_SETRANGE, 0, MAKELPARAM(RangeMin, RangeMax))
+     
 End Sub
 
 
 Sub ProgressBar_SetPos(ByVal hWndProg As HWND, ByVal NewPos As Long)
-	'Set the position of a progress bar. Parameter:
-	'- hWndProgessbar = handle of the progress bar
-	'- NewPos = new position
-	
-	SendMessage(hWndProg, PBM_SETPOS, NewPos, 0)
-	
+     'Set the position of a progress bar. Parameter:
+     '- hWndProgessbar = handle of the progress bar
+     '- NewPos = new position
+     
+     SendMessage(hWndProg, PBM_SETPOS, NewPos, 0)
+     
 End Sub

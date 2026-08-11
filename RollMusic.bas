@@ -12,6 +12,50 @@ Dim As Integer MenuFlag=0, LoopFlag=0
 '==========================
 winexec ("ie4uinit.exe -show",00) 'refresca el cache de iconos
 On Error Goto errorhandler
+'------------------------------------------------------------------
+' este metodo es muy burdo no compacta los eventos, representa una linea de tiempo
+' en ticks, habra mucho espacio vacio, es burdo pero evito muchos calculos
+' para el grafico. Deberia poner un reloj y mirar a cada rato si hay un evento a esa hora o intervalo
+' o al reves leer un evento del vector y solo dispararlo cuando el reloj corra y me diga
+' que se llego a ese intervalo, los intervalos serian desde el inicio punto 000. Seria
+' lo mas facil de implementar. leo el 1er evento. del vector en memoria..
+'' el reloj comienza en 000,  cuando el reloj llega a la duracion del 1er evento lo ejecuta
+'' e inmediatamente lee el que sigue y el reloj sigue avanzando y compara con este nuevo
+' evento. A todo esto podria hacer un PlayRtk para ejecutar un roll pero la conexion al
+'' grafico seria mas complcada, el grafico deberia cambiarlo y basarme en rtk pero
+'' aumentarian los calculos para moverme en el grafico,,,,en fin lo dejamos asi..
+'' cada nota requiere 2 eventos on y off , EL OFF esta en el ultimo tick de la duracion
+'' forma parte de la duraicon de la nota, no requiere mas espacio. eso es un Roll.
+'' Un rtk representa igual al tiempo en ticks, pero en vertical solo tiene lugar para 13 notas
+'' en acorde, de modo que esta comprimido en vertical. En un futuro podriamos ver si con
+'' calculos dibujamos el grafico a partir de los rtk y eliminamos el vector Roll
+'' el siguiente paso seria comprimir el tiempo poniendo en cada evento un timestamp.
+'' actualmente la duracion de cada nota es un valor fijado en el evento y ya sabemos los ticks
+'' que durara , por lo tanto no haria falta desarrollar los ticks. en el vector, el vector de roll se comprimiria
+'' en eje tiempo. Pero en elvector insertar eventos que se ubiquen entre dos eventos existentes 
+'' requeriria mover todos los datos como una insercion. CAPACIDAD maxima de RollMusic
+''
+' 15min son   60 negras * 15min * 96 ticks =  86400 ticks a I=60 ,  en 1 hora son 345600 ticks
+' 15min son 120 negras * 15min * 96 ticks = 172800 ticks a I=240, en 0.5 hora son 345600 ticks
+' 15min son 240 negras * 15min * 96 ticks = 345600 ticks a I=240
+'' o sea el calculo de CantTicks se puede hacer por 15 min son los valores, o tomar una CantTicks
+' fija y asi el tiempo disponible seria lso valores finales, 1 hora, 0.5 hora o 15 min
+'vector maximo 345600 posiciones para 15 min de duracion, no es para operas jaja
+' Es ineficiente pero funciona y espacio en disco y memoria hoy dia sobra,,,
+' calculo a 120 de una cancion de 5 minutos..seria 172800/3=57600 ticls ,el roll seria de
+' 57600*102 (trclas)=5875200 casi 6 megas por pista , con 8 pistas cerca de los 50megas en roll
+' en rtk seria 6*13/102= 0,76 megas por pista rtk,,, 10 pistas seria 7,5 megas en disco para una 
+'cancion de 5 min a negra=120. No esta mal ...tambien podria grabarlas a disco comprimidas
+'' y al leerlas descomprimirlas en memoria,, con tar o zip yse reduciria bastante porque hay muchos 0
+'' Ej OBOE.rtk en dico son 3.92 MB, al comprimir OBOE.ZIP SON SOLO 5 K. O sea los rtk o roll
+''podria grabarlos zipeados y descomprimirlos antes de leerlos. O cargarlos en memoria el zip
+'' y descomprimir en memorial,, libzip
+
+     'la idea es que el usuario grabe hasta I=240 maximo 345600 ticks
+     ' cada nota requiere 2 eventos on y off , EL OFF esta en el ultimo tick de la duracion
+     ' forma parte de la duraicon de la nota 
+  
+'------------------------------------------------------------------
 ' ahora debo traducir las notas a notas de Roll e incorporarlas al vector
 ' las notas  en Roll van de 0 a 11 para el indice son los semitonos, pero se cargan
 ' los valores 1 a 12. En Roll C=12 ...B=1 ergo si la escala dice 12=B debe ser 1
@@ -61,7 +105,22 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.401 FIX Mutex, paneo no se grababa  "
+nroversion="0.407 podemos grabar silencios al principio y/o agregar mas notas a la 1er pista o cualqueir otra"
+'    -0.406 fix renombrar pistas fisicas, pero no dentro del archivo
+'    -0.405 grabar una pista 1 sola y luego insertar dentro de la misma, lo hace bien, se puede insertar
+'     nuevas notas en una pista ya grabada.
+'    -0.404 volumenes corregidos daba cero por definicion de ajuste como float debe ser single...
+'    -0.403 cuando borraba todas las pistas siempre dejaba una...ya no fixed   
+'    -0.402 podemos borrar todas los pistas .ejec y cargar luego nuevas o las mismas    
+'    -0.401 borrar 1 pista ejec y luego poder tocar, lo hacia mal,cargar 3 pistas p1 p2 p3 y 
+'     tratar de borrar la 2 ya anda bien
+'----------------------------------------------------------------------------- 
+' grabar pista 1 con silencio inicial y pista 2 tocar al medio de la 1 y seguir mas alla de la 1, funciona
+'-------------------------------------------------------------------------
+' 0.402 SE PUEDE GRABAR MAS NOTAS A UN PISTA CON NOTAS ENCIMA 
+' 0.403 podemos grabar silencios al principio de la 1er pista o cualqueir otra 
+' el dilema es silencios o adonde deberia dar lo mismo en la 2da pista !!!
+'--------------------------------------------------------------------------------------------- 
 ' SEGUIR CON Sub  CTRL1209() LLEENADO DE LOS VEC TOCA CON RTK O  ROLL QUE HACEN DE CargaIn
 ' metronomo sin sonido opcional con indicacion visual,(amarillo/turquesa)
 ' FIX ENTRADA DE PULSOS EN ARCHIVO NUEVO SIN QUE SE CIERRE EL PROGRAMA, NOTEPAD AL FRENTE
@@ -254,30 +313,30 @@ Dim  As Integer  gi = 0
 
 'Print #1,"ANTES ANCHO , ALTO ", ANCHO, ALTO
 If mxold > 0 Then
-	
-	If ANCHO = nancho Then
-		ANCHO= nancho -mxold
-	End If
-	'Print #1,"rollmusic.bas 745: ANCHO resultante  ",ANCHO
-	
-	AnchoInicial=ANCHO
-	If anchofig=0 Then
-		anchofig=ANCHO/200 ' decia 700 SON 45 COL PERO SE USAN MENOS 41
-	End If
-	NroCol =  (ANCHO / anchofig ) + 4 ' 20 Tama o figuras, nota guia 6 columnas "B_8_[ "
-	ANCHO3div4 = ANCHO *3 / 4
-	gap1= anchofig* 6 ' porque era tanto 20 ' 81 default
-	gap2= (914 * gap1) /1000 ' 74 default
-	gap3= (519 * gap1) /1000 ' 42 default
-	mxold=0
+     
+     If ANCHO = nancho Then
+          ANCHO= nancho -mxold
+     End If
+     'Print #1,"rollmusic.bas 745: ANCHO resultante  ",ANCHO
+     
+     AnchoInicial=ANCHO
+     If anchofig=0 Then
+          anchofig=ANCHO/200 ' decia 700 SON 45 COL PERO SE USAN MENOS 41
+     End If
+     NroCol =  (ANCHO / anchofig ) + 4 ' 20 Tama o figuras, nota guia 6 columnas "B_8_[ "
+     ANCHO3div4 = ANCHO *3 / 4
+     gap1= anchofig* 6 ' porque era tanto 20 ' 81 default
+     gap2= (914 * gap1) /1000 ' 74 default
+     gap3= (519 * gap1) /1000 ' 42 default
+     mxold=0
 End If
 If myold > 0 Then
-	If ALTO = nalto Then
-		ALTO= nalto -myold
-	End If
-	
-	AltoInicial=ALTO
-	myold=0
+     If ALTO = nalto Then
+          ALTO= nalto -myold
+     End If
+     
+     AltoInicial=ALTO
+     myold=0
 End If
 stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, ANCHO)
 
@@ -294,9 +353,9 @@ Dim As Integer k=0, salida=0,ix0,ix1,ix2
 
 ' //// DESHABILITAR LOS CLICK EN LISTA SI NO HAY CARGADO NADA
 If instancia =ARG0_EN_LINEA  Then  ' cuando es online y recien levanta
-	'DisableGadget(PISTASROLL,1) 25-10-2024 SWE HABILITA PARA QUE SE  VEA
-	' EL MENSAJE DE AYUDA EN EL CUERPO DE LA LISTA PERO CREO PRODUCIA UN PROBLEMA
-	' CON EL CONTEXTO MANUAL
+     'DisableGadget(PISTASROLL,1) 25-10-2024 SWE HABILITA PARA QUE SE  VEA
+     ' EL MENSAJE DE AYUDA EN EL CUERPO DE LA LISTA PERO CREO PRODUCIA UN PROBLEMA
+     ' CON EL CONTEXTO MANUAL
 End If
 '---------------veremos si aca anda mejor despues de roolloop
 'Print #1, "ANTES ROLLCTRLSUB.Bi"
@@ -318,8 +377,8 @@ abrirPortoutEjec(100) ''no abre para playAll
 '' ------TIPS AYUDA EN LA BARRA DE ESTADO
 If UBIRTK> 0 Or UBIROLL > 0 Then
 Else
-	' esto no se porque lo puse ...channn
-	'StatusBarGadget(BARRA_DE_ESTADO,"CADA TECLA EN ESTA VENTANA DE CONTROL SE PUEDE USAR UNA SOLA VEZ, PARA MAS VECES OPRIMIR Q" )
+     ' esto no se porque lo puse ...channn
+     'StatusBarGadget(BARRA_DE_ESTADO,"CADA TECLA EN ESTA VENTANA DE CONTROL SE PUEDE USAR UNA SOLA VEZ, PARA MAS VECES OPRIMIR Q" )
 End If
 '' LA GUI SE EJECUTA EN SU PROPIO LOOP APARTE DEL SISTEMA POR ESO LA BARRA DE ESTADO
 '' NO SE PUEDE LLENAR AHI PORQUE SIEMPRE PISA OTROS MENSAJES LA GUI SE REFRESCA
@@ -332,401 +391,419 @@ tic=0
 CPCS=0: CPSS=0
 MOV_FLAG=0:CPlay=NO:Playb=NO:medio_metronomo_on=FALSE
 Do
-	
-	COMEDIT=LECTURA
-	param.titulo ="RollMusic Ctrl V "+ nroversion
-	'Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
-	'Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
-	'Print #1,"iniio lbound roll.trk ", LBound(param.Roll.trk,2)
-	'Print #1, "abrirRoll=1 And cargacancion=CARGAR_NO_PUEDE_DIBUJAR ",abrirRoll,cargacancion
-	' abriRoll=1 orden de llamar a Roll grafico
-	' abrirRoll=NO_CARGAR_ROLL no hay orden de abrir Roll 0
-	
-	If abrirRoll=CARGAR And cargacancion=CARGAR_NO_PUEDE_DIBUJAR Then
-		
-		abrirRoll=NO_CARGAR
-		'   Print #1," ENTRA A CARGAR PISTAS  cargaCancion = ",cargaCancion
-		param.encancion=SIN_CANCION
-		ResetAllListBox(3)
-		Resetear () ' NO SESETEA EL 0 VA DE 1 A 32
-		
-		CargarPistasEnCancion ()
-		clickpista=SI
-		cargariniciotxt(NombreCancion, CANCION)
-		RecalCompas(ritmo)
-		'   Print #1,"CARGAR PISTAS cargacancion = ",cargaCancion
-		''     CANCIONCARGADA=TRUE
-		ROLLCARGADO=FALSE
-		clickpista=SI
-		'''lo hace tab-cargaCancion=0
-		param.encancion=CON_CANCION
-		RecalCompas(ritmo)
-		If pid1=0 And instancia =ARG0_EN_LINEA  Then
-			pid1=pd1
-		End If
-		' Print #1,"cALL rOLLLOOP I) cargaCancion ES 1 SI O SI ",cargaCancion
-		If CANCIONCARGADA=True  Then
-			ntk=0 '16-03-2022
-			If  EventNumber = 10061 Then
-				cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
-				CargarSinRoll () ''' play sin roll
-			Else
-				EstaBarriendoPenta=1
-				Print #1,"0=====hwndC ", HwndC
-				Print #1, "///1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
-				
-				threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-				SetThreadPriority(threadloop , 20 ) ' decia 1
-				clickpista=SI 'abre tab una sola vez seposiciona en psita 1
-				Print #1,"0 1=====hwndC ", HwndC
-			End If
-			''''''''RollLoop ( param)  ' SOLO PARA DEBUG
-		Else     ''''''''RollLoop ( param) '<--con esto anda
-			cargacancion=NO_CARGAR_PUEDE_DIBUJAR
-		End If
-		'Print #1,"ENTRA A CARGAR PISTAS cargaCancion ES 1 SI O SI ",cargaCancion
-		''''cargacancion=0 esto me ponia en cero antes que lo use el thread!!!!
-		''' RollLoop(param)
-		''Sleep 200 ' NO HACE FALTA AHORA sin este retardo no le da teimpo al thread de cargar a Roll
-		abrirRoll=NO_CARGAR
-	Else
-		If abrirRoll=CARGAR And cargacancion=NO_CARGAR_PUEDE_DIBUJAR Then
-			CANCIONCARGADA=FALSE
-			NADACARGADO=TRUE
-			''cargaCancion=0
-			param.encancion=SIN_CANCION
-			Print #1,"CALL ROLLLOOP II) "
-			If  EventNumber=10061 Then
-				cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
-				CargarSinRoll () '''28-02-2024 play sin roll
-			Else
-				Print #1,"1=====hwndC ", HwndC
-				Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
-				EstaBarriendoPenta=1
-				threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-			End If
-			Print #2,"=====hwndC ", HwndC
-			''RollLoop ( param)
-			abrirRoll=NO_CARGAR
-		End If
-	End If
-	
-	'Print #1, "IX LLEGA A 337 ANTES LOOP PRINCIPAL " ,  instancia
-	
-	If instancia = ARG0_EN_LINEA   Then
-		
-		'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
-		''win = glfwCreateWindow(800,600,"Track OPENGL" )
-		'' Dim ta As Any Ptr = threadcall correwin(win,ta)
-		Dim As Integer unasola=0
-		Do
-			'If  Parar_De_Dibujar=1 Then ' damos mas recursos si hay play de PlayTocaAll y mas si hay tambien playAll o PlayCancion
-			'    Sleep 10
-			' EndIf
-			' *********************************************************************
-			' AVISO TRATAR DE USAR SetWindowCallback PARA LIBERAR EL LOOP DE  CARGA
-			' funtion de windows9.bi, pero es para eventos... no serviria creo
-			' SI iria donde se detecta el evento CheckBox_GetCheck( cbxgrab(k))
-			' ********************************************************************
-			' esto solo se debe ejecutar 1) si se cargo ejec, 2) si se creo una ejec
-			'''      If tocatope < 32  And CANCIONCARGADA=TRUE  Then
-			' PARA CONVERTIR A MID SI HAY UN PLANO NUEVO
-			
-			
-			''Print #1,"TitulosEj(ntoca), ntoca ",TitulosEj(ntoca),ntoca
-			
-			eventC=WaitEvent()
-			
-			If eventC=EventKeyUp  Then
-				If  EventKEY = VK_F1 Then 'e nventana control
-					Shell ("start notepad " + ROLLDIR + "ayuda.txt")
-					Exit Do
-				End If
-				
-				If  EventKEY = VK_SPACE And trabaspace=0 Then
-					trabaspace=1
-					ReproducirTodasLaSPistas()
-				End If
-				If  EventKEY = VK_P  Then
-					trabaspace=0
-					If COMEDIT=LECTURA   Then
-						PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
-						PARAR_PLAY_EJEC=SI
-						Cplay=NO
-						Sleep 20
-						playloop=NO:playloop2=NO
-						play=NO:Cplay=no:playb=No:playEj=NO
-						s5=2 ' el loop necesita menos cpu se libera
-						trasponer=0
-						For i3 As Integer  = 1 To Tope
-							portsal=CInt(pmTk(i3).portout)
-							alloff(pmTk(i3).canalsalida,portsal)
-							allSoundoff( pmTk(i3).canalsalida, portsal )
-						Next i3
-						Sleep 1
-						For i3 As Integer  = 1 To TopeEjec
-							portsal=CInt(pmEj(i3).portout)
-							alloff(pmEj(i3).canalsalida,portsal)
-							allSoundoff( pmEj(i3).canalsalida, portsal )
-						Next i3
-						Sleep 1
-						Parar_De_Dibujar=NO
-						' cada vez que hago detech cancela no usar nuncas adetach solo en la salida
-						STARTMIDI=0
-						If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then
-						Else
-							SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
-							SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_LIBERADO)
-						End If
-					End If
-					
-				End If
-				
-			End If
-			
-			
-			'WindowStartDraw(hwndC)
-			'  fillrectdraw(40,40,&h888888)
-			'  TextDraw(10,10,NombreCancion,-1,&hff0000)
-			'StopDraw
-			
-			
-			Select Case eventC
-			Case EventMenu
-				'''' //////////////////////////  EVENT EVENT EVENT /////////
-				#Include "ROLLCTRLEVENTMENU.BI"
-				'-----------------------------------------------------------------------
-			Case eventgadget
-				''   DisableGadget(PISTASROLL,0) deshabilitaba PISTASROLL esto areglaba un problema pero....
-				'   SetForegroundWindow(hwndC)
-				' el codigo anterior que traia de disco esta en notas
-				' TODOS DICEN RUSO Y USA QUE VK_LBUTTON ES 1 PERO CON 1 NO ANDA
-				' SIN EMBARGO CON 3 ANDA A VECES.. podremos usar otro hilo ??
-				' y de esa forma se terminara el loop de popup..? probemos no anda logico
-				' porque el loop principal debe detenerse esperando al usiario...
-				' tampoco anda la reproduccion en ventana ni los gadget de tilde check ni sonido s
-				' volvemos atras,,,este movimiento es mas duro de trabajar
-				' 07 marzo 2024 ya anda ok el menu contextua landa al deshabilitarse
-				' el gadget de lista con click derecho luego de este se habilita de nuevo
-				' If ix < 3 Then
-				'  'DisableGadget(PISTASROLL,0)
-				'  EndIf
-				'Print #1,"antes  ctrl_eventgadget  DirEjecSinBarra ", DirEjecSinBarra
-				'  CTRL_EVENTGADGET()
-				#Include "ROLLCTRLEVENTGADGET.bi"
-				'Print #1,"despues de ctrl_eventgadget  DirEjecSinBarra ", DirEjecSinBarra
-				'--------------------------------------------------------
-				'  If ix < 3 Then
-				'  'DisableGadget(PISTASROLL,1)
-				'  EndIf
-				'''           Exit Do ''ESTA DEMAS CREO
-				SetFocus (hwndC) ' LA PAPA...
-				'SetForegroundWindow(hwnd)
-				'////////// PULSAR TECLAS EN VENTANA MODO CONTROL NO GRAFICO DE ROLL /////
-				'-----------------------------------------------------------------------
-			Case EventClose  ''<==== SALIR TERMINA ROLL la X de win control
-				If play=SI Or playb=SI Or Cplay=SI Or playEj=SI Then 'rollLroop esta levantando en play
-					PARAR_PLAY_MANUAL=SI   ' si hay algun play los manda  a detener
-					PARAR_PLAY_EJEC=SI
-					terminar=TERMINAR_POR_ESCAPE ' 1 va a usar SC_ESCAPE para terminar
-					Exit Do
-				Else  ' rollLoop se cerro el grafico no tengo el sc_escape, se supone que no hay play pero podria haberlo
-					PARAR_PLAY_MANUAL=SI   ' si hay algun play los manda  a detener
-					PARAR_PLAY_EJEC=SI
-					terminar=TERMINAR_POR_LOOP_PRINCIPAL ' aca veo como salgo
-					Exit Do
-				End If
-				
-			Case Else
-				' aca muevo lo de check detectara el evento desconocido
-				' de check del grab de ejecucion que no es un gadget de window9
-				' si uso LBDown no funciona bien debo clickear dos veces no se aviva
-				' en este lugar podrian ir todos los eventos sobre la ventana que no son
-				'  de window9
-				If mensajeEstadoOld<>mensajeEstado  Then
-					StatusBarGadget(BARRA_DE_ESTADO, mensajeEstado)
-					mensajeEstadoOld=mensajeEstado
-					If  mensajeEstado="PISTA A MIDI TERMINADA."   Then
-						Sleep 2000
-						PlaySound(NULL, NULL, 0 )
-					End If
-				End If
-				
-				If terminar=TERMINAR_POR_LOOP_PRINCIPAL Then
-					Exit Do
-				End If
-				'---------------REPRODUCCIONES DESDE EXPLORADOR
-				If  ubiejec = 1 Then
-					ubiejec =2
-					'''30-03-2026 LEVANTAR UN *. EJEC DEDE EL EXPLORADOR
-					Print #1,"5 Instancia ",Instancia
-					Dim lugar As string
-					lugar=Command(1)
-					titulosEj(1) =lugar
-					Print #1,"lugar ",lugar
-					CTRL10165 (lugar,"BATCH")
-					DirEjecSinBarra = lugar
-					Print #1,"entro por ubiejec > 0 ",lugar
-					' vamos a dar play automatico
-					SetForegroundWindow hwndC
-					PISTASEJECSELECCIONADA=1
-					CheckBox_SetCheck( cbxejec(1),1)
-					TopeEjec=1:ntoca=1
-					playEj=SI
-					threadG = ThreadCall  PlayTocaAll (ptoca)
-					SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_PRESIONADO)
-					SetGadgetstate(BTN_MIDI_PARAR,BTN_LIBERADO)
-					Parar_De_Dibujar=NO
-					ntoca =1
-				End If
-				'------------------------------------------------
-				If  ubimedia = 1 Then
-					ubimedia =0
-					'''06-06-2026 LEVANTAR RCHIVOS AUDIO DESDE EL EXPLORADOR
-					Print #1,"6 Instancia ",Instancia
-					Dim entrada As string
-					entrada=TitulosEj(1)
-					Print #1,"entrada de media ",entrada
-					'Dim ppp As Integer  Ptr
-					'ppp=StrPtr(entrada)
-					'Print #1," *PPP ",*PPP
-					fileflush(-1)
-					threadmedia = threadCall  CTRL1094(TitulosEj(1))
-					SetThreadPriority(threadmedia , 10 )
-					SetForegroundWindow(hwndMEDIA)
-					
-				End If
-				'-------------------------------------------------
-				
-				'-------------------------------------------------
-				If  ubionline = 1 And ubiejec=0 Then
-					ubionline =0
-					SetForegroundWindow hwndC
-					'''30-03-2026 LEVANTAR UN *.ROLL O RTK DESDE EL EXPLORADOR
-					Print #1,"5 Instancia ",Instancia
-					nombre=Command(1)
-					titulosTk(0) =nombre
-					Print #1,"nombre ",nombre
-					
-					If BatchGraficoOCtrl=4 Then ''un roll
-						CargaArchivo(Roll, 3) ' lo pone en 2 ver ubiroll
-						ubiroll=0:ubirtk=0
-						Sleep 100
-						thread2 = ThreadCall  playAll (Roll)
-						playB=SI
-						BatchGraficoOCtrl=3 ' condicion inicial
-					End If
-					If BatchGraficoOCtrl=5 Then '' un rtk
-						CargarTrack(Track(),0, 3)
-						ROLLCARGADO=TRUE
-						TrackaRoll(Track(),0,Roll,"")
-						ubirtk=0: ubiroll=0
-						Sleep 100
-						thread2 = ThreadCall  playAll (Roll)
-						ubirtk=0: ubiroll=0
-						playB=SI
-						BatchGraficoOCtrl=3  'condicion inicial
-					End If
-					
-					SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_PRESIONADO)
-					SetGadgetstate(BTN_ROLL_PARAR,BTN_LIBERADO)
-					Parar_De_Dibujar=NO
-					
-				End If
-				'---------------------------------------------------
-				If tocatope < 32   Then
-					For k=1 To tocatope+1
-						' al inicio lim sup del for = 1
-						If CheckBox_GetCheck( cbxgrab(k))= 1  Or CONVERTIR_A_EJEC =TRUE Then
-							ultimo_chequeado= k
-							If tocaparam(k).nombre="" And k= tocatope+1 Then
-								ntoca=k 'ntoca es la  pista ejec que se esta grabando global entera
-								If tocaparam(ntoca).nombre ="" Then
-									CheckBox_SetCheck( cbxejec(k),1) 'automaticamente chequea ejec 26-12-2025
-									CantTicks=CantMin*PPQN*tiempoPatron
-									ReDim (Toca(ntoca).trk ) (1 To CantTicks)
-									tocaparam(ntoca).delta=0
-									tocaparam(ntoca).nombre =""
-									tocaparam(ntoca).maxpos =0
-									tocaparam(ntoca).orden=CUByte(ntoca)
-									tocaparam(ntoca).patch=0
-									tocaparam(ntoca).canal=0
-									Redim  CargaIn (1 To CantTicks)
-									If nombrePatron > "" Then
-										tocaparam(ntoca).nombre=nombrePatron
-									Else
-										Dim nompista As String
-										EntrarNombrePista (nompista, hwndC)
-										tocaparam(ntoca).nombre = Mid (nompista ,1,29)
-										'cargamos nombre solo sin numerar cuando se muestra
-										' agregamos el orden
-									End If
-									ntkp=ntoca
-									AddListBoxItem(PISTASEJECUCIONES, tocaparam(ntoca).nombre,ntoca-1)
-									tocatope=ntoca
-									If nombrePatron > "" And nroCompasesPatron > 0 Then ''para usar en patrones futuro!
-										pmEj(ntoca).MaxPos=nroCompasesPatron  * 384 '' jjjjj
-										' en la 5ta linea de duracions  0.0208/4 =TickChico a I=240
-										' " O "," P "," I "," L "," F "," E "," X "," H "," W ",   <-- la 8 es H
-										'2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,[0.0208333] ,0.01041666, _ '37 45
-										'"3O ","3P ","3I ","3L ","3F ","3E ","3X ","3H ","3W ", _ ' 37 45
-										' es un tresillo de H -> 3H entonces cuantos tresillos de H hay en un compas?
-										' 128 * 3= 384 TicksChico
-										' el TickChico vale en tiempo 0.0208 a I=60, pero a I=240 vale 1/4 o sea 0.005 seg, o 5 mseg aprox
-									Else
-										pmEj(ntoca).MaxPos=0
-									End If
-									If   NombreCancion >"" Then
-										' sacamos la "\" del final si la tiene
-										NombreCancion=Trim(NombreCancion)
-										Dim  ls As Short=Len(NombreCancion)
-										If  Mid(NombreCancion, ls, 1)= "\" Then
-											NombreCancion=Mid(NombreCancion,1, ls-1)
-										End If
-										Print #1,"CHECK GRAB NOMBRECANCION ",NombreCancion
-										TitulosEj(ntoca)=NombreCancion+"\" + tocaparam(ntoca).nombre+".ejec"
-									else
-										TitulosEj(ntoca)= tocaparam(ntoca).nombre+".ejec"
-									End If
-								End If
-								
-								Exit For
-							End If
-						End If
-					Next k
-					
-				End If
-				
-			End Select
-			''' NO ESTA EN VERION F Sleep 5 '
-		Loop
-		'-----------------------------------------------------------------------
-	Else
-		param.titulo ="RollMusic Editor" ' esto no sale si no hay marco
-		Print #1,"cALL rOLLLOOP III)"
-		Print #1, "3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
-		param.ubiroll=ubiroll
-		param.ubirtk=ubirtk
-		If usarmarcoins > 0 Then
-			param.midionof=usarmarcoins '  para volcado de midi si o no ,si con 4
-		Else
-			param.midionof=usarmarco
-		End If
-		
-		Print #1, "///3 ubiroll ubirtk ", ubiroll,ubirtk
-		threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-		ThreadWait threadloop
-		threadDetach(threadloop)
-		Sleep 20
-		Close 0
-	End If
-	'-----------------------------------------------------------------------
-	If terminar=TERMINAR_POR_LOOP_PRINCIPAL Then  ' 2
-		salir()
-		Kill ROLLDIR+"procesos.txt"
-		Close
-		End 0
-	End If
+     
+     COMEDIT=LECTURA
+     param.titulo ="RollMusic Ctrl V "+ nroversion
+     'Print #1,"param.ancho ",param.ancho;" param.alto ";param.alto
+     'Print #1,"inicio ubound roll.trk ", UBound(param.Roll.trk,2)
+     'Print #1,"iniio lbound roll.trk ", LBound(param.Roll.trk,2)
+     'Print #1, "abrirRoll=1 And cargacancion=CARGAR_NO_PUEDE_DIBUJAR ",abrirRoll,cargacancion
+     ' abriRoll=1 orden de llamar a Roll grafico
+     ' abrirRoll=NO_CARGAR_ROLL no hay orden de abrir Roll 0
+     
+     If abrirRoll=CARGAR And cargacancion=CARGAR_NO_PUEDE_DIBUJAR Then
+          
+          abrirRoll=NO_CARGAR
+          '   Print #1," ENTRA A CARGAR PISTAS  cargaCancion = ",cargaCancion
+          param.encancion=SIN_CANCION
+          ResetAllListBox(3)
+          Resetear () ' NO SESETEA EL 0 VA DE 1 A 32
+          
+          CargarPistasEnCancion ()
+          clickpista=SI
+          cargariniciotxt(NombreCancion, CANCION)
+          RecalCompas(ritmo)
+          '   Print #1,"CARGAR PISTAS cargacancion = ",cargaCancion
+          ''     CANCIONCARGADA=TRUE
+          ROLLCARGADO=FALSE
+          clickpista=SI
+          '''lo hace tab-cargaCancion=0
+          param.encancion=CON_CANCION
+          RecalCompas(ritmo)
+          If pid1=0 And instancia =ARG0_EN_LINEA  Then
+               pid1=pd1
+          End If
+          ' Print #1,"cALL rOLLLOOP I) cargaCancion ES 1 SI O SI ",cargaCancion
+          If CANCIONCARGADA=True  Then
+               ntk=0 '16-03-2022
+               If  EventNumber = 10061 Then
+                    cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
+                    CargarSinRoll () ''' play sin roll
+               Else
+                    EstaBarriendoPenta=1
+                    Print #1,"0=====hwndC ", HwndC
+                    Print #1, "///1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
+                    
+                    threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+                    SetThreadPriority(threadloop , 20 ) ' decia 1
+                    clickpista=SI 'abre tab una sola vez seposiciona en psita 1
+                    Print #1,"0 1=====hwndC ", HwndC
+               End If
+               ''''''''RollLoop ( param)  ' SOLO PARA DEBUG
+          Else     ''''''''RollLoop ( param) '<--con esto anda
+               cargacancion=NO_CARGAR_PUEDE_DIBUJAR
+          End If
+          'Print #1,"ENTRA A CARGAR PISTAS cargaCancion ES 1 SI O SI ",cargaCancion
+          ''''cargacancion=0 esto me ponia en cero antes que lo use el thread!!!!
+          ''' RollLoop(param)
+          ''Sleep 200 ' NO HACE FALTA AHORA sin este retardo no le da teimpo al thread de cargar a Roll
+          abrirRoll=NO_CARGAR
+     Else
+          If abrirRoll=CARGAR And cargacancion=NO_CARGAR_PUEDE_DIBUJAR Then
+               CANCIONCARGADA=FALSE
+               NADACARGADO=TRUE
+               ''cargaCancion=0
+               param.encancion=SIN_CANCION
+               Print #1,"CALL ROLLLOOP II) "
+               If  EventNumber=10061 Then
+                    cargaCancion=CARGAR_NO_PUEDE_DIBUJAR
+                    CargarSinRoll () '''28-02-2024 play sin roll
+               Else
+                    Print #1,"1=====hwndC ", HwndC
+                    Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
+                    EstaBarriendoPenta=1
+                    threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+               End If
+               Print #2,"=====hwndC ", HwndC
+               ''RollLoop ( param)
+               abrirRoll=NO_CARGAR
+          End If
+     End If
+     
+     'Print #1, "IX LLEGA A 337 ANTES LOOP PRINCIPAL " ,  instancia
+     
+     If instancia = ARG0_EN_LINEA   Then
+          
+          'PREPARADO PARA EL FUTURO OTRA PANTALLA GRAFICA OPENGL
+          ''win = glfwCreateWindow(800,600,"Track OPENGL" )
+          '' Dim ta As Any Ptr = threadcall correwin(win,ta)
+          Dim As Integer unasola=0
+          Do
+               'If  Parar_De_Dibujar=1 Then ' damos mas recursos si hay play de PlayTocaAll y mas si hay tambien playAll o PlayCancion
+               '    Sleep 10
+               ' EndIf
+               ' *********************************************************************
+               ' AVISO TRATAR DE USAR SetWindowCallback PARA LIBERAR EL LOOP DE  CARGA
+               ' funtion de windows9.bi, pero es para eventos... no serviria creo
+               ' SI iria donde se detecta el evento CheckBox_GetCheck( cbxgrab(k))
+               ' ********************************************************************
+               ' esto solo se debe ejecutar 1) si se cargo ejec, 2) si se creo una ejec
+               '''      If tocatope < 32  And CANCIONCARGADA=TRUE  Then
+               ' PARA CONVERTIR A MID SI HAY UN PLANO NUEVO
+               
+               
+               ''Print #1,"TitulosEj(ntoca), ntoca ",TitulosEj(ntoca),ntoca
+               
+               eventC=WaitEvent()
+               
+               If eventC=EventKeyUp  Then
+                    If  EventKEY = VK_F1 Then 'e nventana control
+                         Shell ("start notepad " + ROLLDIR + "ayuda.txt")
+                         Exit Do
+                    End If
+                    
+                    If  EventKEY = VK_SPACE And trabaspace=0 Then
+                         trabaspace=1
+                         ReproducirTodasLaSPistas()
+                    End If
+                    If  EventKEY = VK_P  Then
+                         trabaspace=0
+                         If COMEDIT=LECTURA   Then
+                              PARAR_PLAY_MANUAL=SI ' DETIENE EL PLAY VEREMOS
+                              PARAR_PLAY_EJEC=SI
+                              Cplay=NO
+                              Sleep 20
+                              playloop=NO:playloop2=NO
+                              play=NO:Cplay=no:playb=No:playEj=NO
+                              s5=2 ' el loop necesita menos cpu se libera
+                              trasponer=0
+                              For i3 As Integer  = 1 To Tope
+                                   portsal=CInt(pmTk(i3).portout)
+                                   alloff(pmTk(i3).canalsalida,portsal)
+                                   allSoundoff( pmTk(i3).canalsalida, portsal )
+                              Next i3
+                              Sleep 1
+                              For i3 As Integer  = 1 To TopeEjec
+                                   portsal=CInt(pmEj(i3).portout)
+                                   alloff(pmEj(i3).canalsalida,portsal)
+                                   allSoundoff( pmEj(i3).canalsalida, portsal )
+                              Next i3
+                              Sleep 1
+                              Parar_De_Dibujar=NO
+                              ' cada vez que hago detech cancela no usar nuncas adetach solo en la salida
+                              STARTMIDI=0
+                              If instancia=ARG7_NOMBRECANCION Or instancia= ARG107_FICTICIO Or instancia < ARG3_TITU Then
+                              Else
+                                   SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_LIBERADO)
+                                   SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_LIBERADO)
+                              End If
+                         End If
+                         
+                    End If
+                    
+               End If
+               'WindowStartDraw(hwndC)
+               '  fillrectdraw(40,40,&h888888)
+               '  TextDraw(10,10,NombreCancion,-1,&hff0000)
+               'StopDraw
+               
+               
+               Select Case eventC
+               Case EventMenu
+
+                       '''' //////////////////////////  EVENT EVENT EVENT /////////
+                    #Include "ROLLCTRLEVENTMENU.BI"
+                    '-----------------------------------------------------------------------
+               Case eventgadget
+                    ''   DisableGadget(PISTASROLL,0) deshabilitaba PISTASROLL esto areglaba un problema pero....
+                    '   SetForegroundWindow(hwndC)
+                    ' el codigo anterior que traia de disco esta en notas
+                    ' TODOS DICEN RUSO Y USA QUE VK_LBUTTON ES 1 PERO CON 1 NO ANDA
+                    ' SIN EMBARGO CON 3 ANDA A VECES.. podremos usar otro hilo ??
+                    ' y de esa forma se terminara el loop de popup..? probemos no anda logico
+                    ' porque el loop principal debe detenerse esperando al usiario...
+                    ' tampoco anda la reproduccion en ventana ni los gadget de tilde check ni sonido s
+                    ' volvemos atras,,,este movimiento es mas duro de trabajar
+                    ' 07 marzo 2024 ya anda ok el menu contextua landa al deshabilitarse
+                    ' el gadget de lista con click derecho luego de este se habilita de nuevo
+                    ' If ix < 3 Then
+                    '  'DisableGadget(PISTASROLL,0)
+                    '  EndIf
+                    'Print #1,"antes  ctrl_eventgadget  DirEjecSinBarra ", DirEjecSinBarra
+                    '  CTRL_EVENTGADGET()
+                    #Include "ROLLCTRLEVENTGADGET.bi"
+                    'Print #1,"despues de ctrl_eventgadget  DirEjecSinBarra ", DirEjecSinBarra
+                    '--------------------------------------------------------
+                    '  If ix < 3 Then
+                    '  'DisableGadget(PISTASROLL,1)
+                    '  EndIf
+                    '''           Exit Do ''ESTA DEMAS CREO
+                    SetFocus (hwndC) ' LA PAPA...
+                    'SetForegroundWindow(hwnd)
+                    '////////// PULSAR TECLAS EN VENTANA MODO CONTROL NO GRAFICO DE ROLL /////
+                    '-----------------------------------------------------------------------
+               Case EventClose  ''<==== SALIR TERMINA ROLL la X de win control
+                    If play=SI Or playb=SI Or Cplay=SI Or playEj=SI Then 'rollLroop esta levantando en play
+                         PARAR_PLAY_MANUAL=SI   ' si hay algun play los manda  a detener
+                         PARAR_PLAY_EJEC=SI
+                         terminar=TERMINAR_POR_ESCAPE ' 1 va a usar SC_ESCAPE para terminar
+                         Exit Do
+                    Else  ' rollLoop se cerro el grafico no tengo el sc_escape, se supone que no hay play pero podria haberlo
+                         PARAR_PLAY_MANUAL=SI   ' si hay algun play los manda  a detener
+                         PARAR_PLAY_EJEC=SI
+                         terminar=TERMINAR_POR_LOOP_PRINCIPAL ' aca veo como salgo
+                         Exit Do
+                    End If
+                    
+               Case Else
+                    ' aca muevo lo de check detectara el evento desconocido
+                    ' de check del grab de ejecucion que no es un gadget de window9
+                    ' si uso LBDown no funciona bien debo clickear dos veces no se aviva
+                    ' en este lugar podrian ir todos los eventos sobre la ventana que no son
+                    '  de window9
+                    If mensajeEstadoOld<>mensajeEstado  Then
+                         StatusBarGadget(BARRA_DE_ESTADO, mensajeEstado)
+                         mensajeEstadoOld=mensajeEstado
+                         If  mensajeEstado="PISTA A MIDI TERMINADA."   Then
+                              Sleep 2000
+                              PlaySound(NULL, NULL, 0 )
+                         End If
+                    End If
+                    
+                    If terminar=TERMINAR_POR_LOOP_PRINCIPAL Then
+                         Exit Do
+                    End If
+                    '---------------REPRODUCCIONES DESDE EXPLORADOR
+                    If  ubiejec = 1 Then
+                         ubiejec =2
+                         '''30-03-2026 LEVANTAR UN *. EJEC DEDE EL EXPLORADOR
+                         Print #1,"5 Instancia ",Instancia
+                         Dim lugar As string
+                         lugar=Command(1)
+                         titulosEj(1) =lugar
+                         Print #1,"lugar ",lugar
+                         CTRL10165 (lugar,"BATCH")
+                         DirEjecSinBarra = lugar
+                         Print #1,"entro por ubiejec > 0 ",lugar
+                         ' vamos a dar play automatico
+                         SetForegroundWindow hwndC
+                         PISTASEJECSELECCIONADA=1
+                         CheckBox_SetCheck( cbxejec(1),1)
+                         TopeEjec=1:ntoca=1
+                         playEj=SI
+                         threadG = ThreadCall  PlayTocaAll (ptoca)
+                         SetGadgetstate(BTN_MIDI_EJECUTAR,BTN_PRESIONADO)
+                         SetGadgetstate(BTN_MIDI_PARAR,BTN_LIBERADO)
+                         Parar_De_Dibujar=NO
+                         ntoca =1
+                    End If
+                    '------------------------------------------------
+                    If  ubimedia = 1 Then
+                         ubimedia =0
+                         '''06-06-2026 LEVANTAR RCHIVOS AUDIO DESDE EL EXPLORADOR
+                         Print #1,"6 Instancia ",Instancia
+                         Dim entrada As string
+                         entrada=TitulosEj(1)
+                         Print #1,"entrada de media ",entrada
+                         'Dim ppp As Integer  Ptr
+                         'ppp=StrPtr(entrada)
+                         'Print #1," *PPP ",*PPP
+                         fileflush(-1)
+                         threadmedia = threadCall  CTRL1094(TitulosEj(1))
+                         SetThreadPriority(threadmedia , 10 )
+                         SetForegroundWindow(hwndMEDIA)
+                         
+                    End If
+                    '-------------------------------------------------
+                    
+                    '-------------------------------------------------
+                    If  ubionline = 1 And ubiejec=0 Then
+                         ubionline =0
+                         SetForegroundWindow hwndC
+                         '''30-03-2026 LEVANTAR UN *.ROLL O RTK DESDE EL EXPLORADOR
+                         Print #1,"5 Instancia ",Instancia
+                         nombre=Command(1)
+                         titulosTk(0) =nombre
+                         Print #1,"nombre ",nombre
+                         
+                         If BatchGraficoOCtrl=4 Then ''un roll
+                              CargaArchivo(Roll, 3) ' lo pone en 2 ver ubiroll
+                              ubiroll=0:ubirtk=0
+                              Sleep 100
+                              thread2 = ThreadCall  playAll (Roll)
+                              playB=SI
+                              BatchGraficoOCtrl=3 ' condicion inicial
+                         End If
+                         If BatchGraficoOCtrl=5 Then '' un rtk
+                              CargarTrack(Track(),0, 3)
+                              ROLLCARGADO=TRUE
+                              TrackaRoll(Track(),0,Roll,"")
+                              ubirtk=0: ubiroll=0
+                              Sleep 100
+                              thread2 = ThreadCall  playAll (Roll)
+                              ubirtk=0: ubiroll=0
+                              playB=SI
+                              BatchGraficoOCtrl=3  'condicion inicial
+                         End If
+                         
+                         SetGadgetstate(BTN_ROLL_EJECUTAR,BTN_PRESIONADO)
+                         SetGadgetstate(BTN_ROLL_PARAR,BTN_LIBERADO)
+                         Parar_De_Dibujar=NO
+                         
+                    End If
+                    '---------------------------------------------------
+' este codigo solo CREA Nuevas Pistas pero no i,ìde volver a grabarlas en el final o superponer
+' tocatope es cero a lprincipio 0 < 32 si, tocatopa+1=1 aunque tocatope valga 0 funciona.,,
+                    If tocatope < 32   Then
+                         For k=1 To tocatope+1
+                              ' al inicio lim sup del for = 1
+                              If (CheckBox_GetCheck( cbxgrab(k))= 1  Or CONVERTIR_A_EJEC =TRUE ) Then
+                                   ultimo_chequeado= k
+                                   If tocaparam(k).nombre="" Then ''''And k= tocatope+1 Then 'solo crea nuevas pistas
+                                        ntoca=k 'ntoca es la  pista ejec que se esta grabando global entera
+                                        '''If tocaparam(k).nombre ="" Then
+                                             CheckBox_SetCheck( cbxejec(k),1) 'automaticamente chequea ejec 26-12-2025
+Print #1,"CantMin PPQN tiempoPatron "; CantMin, PPQN, tiempoPatron
+                                             CantTicks=CantMin*PPQN*tiempoPatron
+                                               Print #1,"CANTTICKS EN CHECKS ";CantTicks
+                                               nroTicksAntesDeGrabar =tocaparam(k).maxpos
+                                              If nroTicksAntesDeGrabar =0  Then 
+Print #1,"redim preserve de TOca"
+                                                ReDim Preserve (Toca(k).trk ) (1 To CantTicks)
+                                              Else
+Print #1,"redim borra  de TOca"
+                                                ReDim  (Toca(k).trk ) (1 To CantTicks)
+
+                                                For  k6 As Integer =1 To   CantTicks '' serian los silencios ¿? no hace faltamas
+''ahora son ceros ???
+                                                      Toca(k).trk(k6).modo=0 '' TODO ES CERO AHORA NO MAS 1   
+                                                Next k6
+                                              EndIf
+                                             tocaparam(k).delta=0
+                                             tocaparam(k).nombre =""
+                                             tocaparam(k).maxpos =0
+                                             tocaparam(k).orden=CUByte(ntoca)
+                                             tocaparam(k).patch=0
+                                             tocaparam(k).canal=k-1
+                                              pmEj(k).canalsalida =k-1
+
+Print #1," K,tocaparam(k).canal=k-1 ", k , tocaparam(k).canal
+                                             ReDim  CargaIn (1 To CantTicks) 'redim solo para track ejec nuevo
+                                             If nombrePatron > "" Then
+                                                  tocaparam(k).nombre=nombrePatron
+                                             Else
+                                                  Dim nompista As String
+                                                  EntrarNombrePista (nompista, hwndC)
+                                                  tocaparam(k).nombre = Mid (nompista ,1,29)
+                                                  'cargamos nombre solo sin numerar cuando se muestra
+                                                  ' agregamos el orden
+                                             End If
+                                             ntkp=k
+                                             AddListBoxItem(PISTASEJECUCIONES, tocaparam(ntoca).nombre,ntoca-1)
+                                             tocatope=k
+                                             If nombrePatron > "" And nroCompasesPatron > 0 Then ''para usar en patrones futuro!
+                                                  pmEj(k).MaxPos=nroCompasesPatron  * 384 '' jjjjj
+                                                  ' en la 5ta linea de duracions  0.0208/4 =TickChico a I=240
+                                                  ' " O "," P "," I "," L "," F "," E "," X "," H "," W ",   <-- la 8 es H
+                                                  '2.666666,1.333333,0.666666,0.333333,0.166666,0.083333,0.041666,[0.0208333] ,0.01041666, _ '37 45
+                                                  '"3O ","3P ","3I ","3L ","3F ","3E ","3X ","3H ","3W ", _ ' 37 45
+                                                  ' es un tresillo de H -> 3H entonces cuantos tresillos de H hay en un compas?
+                                                  ' 128 * 3= 384 TicksChico
+                                                  ' el TickChico vale en tiempo 0.0208 a I=60, pero a I=240 vale 1/4 o sea 0.005 seg, o 5 mseg aprox
+                                             Else
+                                                  pmEj(k).MaxPos=0
+                                             End If
+                                             If   NombreCancion >"" Then
+                                                  ' sacamos la "\" del final si la tiene
+                                                  NombreCancion=Trim(NombreCancion)
+                                                  Dim  ls As Short=Len(NombreCancion)
+                                                  If  Mid(NombreCancion, ls, 1)= "\" Then
+                                                       NombreCancion=Mid(NombreCancion,1, ls-1)
+                                                  End If
+                                                  Print #1,"CHECK GRAB NOMBRECANCION ",NombreCancion
+                                                  TitulosEj(k)=NombreCancion+"\" + tocaparam(k).nombre+".ejec"
+                                             Else
+                                                  TitulosEj(k)= tocaparam(k).nombre+".ejec"
+                                             End If
+                                        ''End If
+                                        
+                                        Exit For
+                                   End If
+                              End If
+                         Next k
+                         
+                    End If
+                    
+               End Select
+               ''' NO ESTA EN VERION F Sleep 5 '
+          Loop
+          '-----------------------------------------------------------------------
+     Else
+          param.titulo ="RollMusic Editor" ' esto no sale si no hay marco
+          Print #1,"cALL rOLLLOOP III)"
+          Print #1, "3 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
+          param.ubiroll=ubiroll
+          param.ubirtk=ubirtk
+          If usarmarcoins > 0 Then
+               param.midionof=usarmarcoins '  para volcado de midi si o no ,si con 4
+          Else
+               param.midionof=usarmarco
+          End If
+          
+          Print #1, "///3 ubiroll ubirtk ", ubiroll,ubirtk
+          threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+          ThreadWait threadloop
+          threadDetach(threadloop)
+          Sleep 20
+          Close 0
+     End If
+     '-----------------------------------------------------------------------
+     If terminar=TERMINAR_POR_LOOP_PRINCIPAL Then  ' 2
+          salir()
+          Kill ROLLDIR+"procesos.txt"
+          Close
+          End 0
+     End If
 Loop
 ''-----------------------------------------------------------------------
 ''DisableGadget(PISTASROLL,1) ' para que desactive y salga de ahi
@@ -747,9 +824,13 @@ ErrorNumber = Err
 ErrorLine = Erl
 
 Print #1,"ERROR = ";ProgError(ErrorNumber); " on line ";ErrorLine
+Print #1, "JGRB JGRBOLD ",jgrb, jgrbold
+Print #1, "nroTicksAntesDeGrabar , CantTicks ", nroTicksAntesDeGrabar, CantTicks
 Print #1,"Error Function: "; *Erfn()
 ers  = 12 - nota +(estoyEnOctava ) * 13
 Print #1, "12 -nota +(estoyEnOctava ) * 13) "; ers
 Print #1, "ubound 2 de Roll.trk ", UBound(Roll.trk, 2)
+Print #1, "ubound 1 de CargaIn ", UBound(CargaIn, 1)
+Print #1, "K, ubound 2 Toca(ntoca).trk(k) ", K, UBound (Toca(ntoca).trk ,1 )
 Print #1, "error number: " + Str( Err ) + " at line: " + Str( Erl )
 FileFlush (-1)

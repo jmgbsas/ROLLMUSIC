@@ -2,14 +2,14 @@
 '  o sacar algunos de include en elmain
 #define __FB_WIN64__
 #if defined (__FB_WIN64__)
-	#libpath "C:\msys64\mingw64\lib"
+     #LibPath "C:\msys64\mingw64\lib"
 #else
-	#libpath "/usr/lib"
+     #LibPath "/usr/lib"
 #endif
 #define EXTCHAR Chr(255)
 #include "fbgfx.bi"
 #if __FB_LANG__ = "fb"
-	Using FB '' Scan code constants are stored in the FB namespace in lang FB
+     Using FB '' Scan code constants are stored in the FB namespace in lang FB
 #endif
 ' para GTK Gtk:list()
 #include once "crt.bi"
@@ -28,11 +28,11 @@
 
 Declare Function InputBoxJmg(ByRef Caption As USTRING, ByRef Message As USTRING, ByRef DefaultString As USTRING, ByVal flag As Integer, ByVal flag2 As Integer, hParentWin As HWND = 0) As USTRING
 Type plano
-	sumatiempo As Integer  'tiempo acumulado de los eventos midis
-	canal      As UByte
-	estado     As UByte  ' nota on of
-	nota       As UByte  ' notapiano
-	vel        As UByte  ' velocidad
+     sumatiempo As Integer  'tiempo acumulado de los eventos midis
+     canal      As UByte
+     estado     As UByte  ' nota on of
+     nota       As UByte  ' notapiano
+     vel        As UByte  ' velocidad
 End Type
 
 ROLLCARGADO    = False
@@ -78,335 +78,335 @@ Dim Shared As Integer ContadorError=0
 
 On  Error GoTo errorControl
 Sub CuadroVel()
-	velimg=OpenWindow("Cuadro de Tempos Clasicos ",400,100,800,400)
-	ImageGadget(IMAGE_VEL,10,10,1100,600,Load_image(ROLLDIR+"recur\velocidades.jpg"),0,SS_BITMAP )
-	#Ifdef __FB_WIN64__
-		SetFocus (velimg)
-		SetForegroundWindow(velimg)
-	#Else
-		gtk_widget_grab_focus(GadgetID(IMAGE_VEL))
-	#EndIf
-	
-	
-	Do
-		Var eventVel= waitEvent()
-		If eventVel=EventClose Then
-			Close_Window(velimg)
-			Exit Do
-		End If
-	Loop
-	
-	
+     velimg=OpenWindow("Cuadro de Tempos Clasicos ",400,100,800,400)
+     ImageGadget(IMAGE_VEL,10,10,1100,600,Load_image(ROLLDIR+"recur\velocidades.jpg"),0,SS_BITMAP )
+     #Ifdef __FB_WIN64__
+          SetFocus (velimg)
+          SetForegroundWindow(velimg)
+     #Else
+          gtk_widget_grab_focus(GadgetID(IMAGE_VEL))
+     #EndIf
+     
+     
+     Do
+          Var eventVel= waitEvent()
+          If eventVel=EventClose Then
+               Close_Window(velimg)
+               Exit Do
+          End If
+     Loop
+     
+     
 End Sub
 Sub CuadroDur()
-	Figimg=  OpenWindow("Duraciones de Figuras y sus Teclas",200,50,1300,900  )
-	ImageGadget(IMAGE_FIG1,10,10,1100,800,Load_image(ROLLDIR+"recur\FIGURAS.jpg"))
-	#Ifdef __FB_WIN64__
-		SetFocus (Figimg)
-		SetForegroundWindow(Figimg)
-	#Else
-		gtk_widget_grab_focus(GadgetID(IMAGE_FIG1))
-	#EndIf
-	
-	Do
-		Var eventDur= waitEvent
-		If eventDur=EventClose Then
-			Close_Window(Figimg)
-			Exit Do
-		End If
-		
-	Loop
-	
+     Figimg=  OpenWindow("Duraciones de Figuras y sus Teclas",200,50,1300,900  )
+     ImageGadget(IMAGE_FIG1,10,10,1100,800,Load_image(ROLLDIR+"recur\FIGURAS.jpg"))
+     #Ifdef __FB_WIN64__
+          SetFocus (Figimg)
+          SetForegroundWindow(Figimg)
+     #Else
+          gtk_widget_grab_focus(GadgetID(IMAGE_FIG1))
+     #EndIf
+     
+     Do
+          Var eventDur= waitEvent
+          If eventDur=EventClose Then
+               Close_Window(Figimg)
+               Exit Do
+          End If
+          
+     Loop
+     
 End Sub
 Sub CuadroVol()
-	FigVol=  OpenWindow("Volumen tipicos en partituras ",800,100,400,600  )
-	ImageGadget(IMAGE_FIG2,10,10,1100,800,Load_image(ROLLDIR+"recur\VOLUMEN.jpg"))
-	#Ifdef __FB_WIN64__
-		SetFocus (FigVol)
-		SetForegroundWindow(FigVol)
-	#Else
-		gtk_widget_grab_focus(GadgetID(IMAGE_FIG2))
-	#EndIf
-	
-	
-	Do
-		Var eventVol= waitEvent
-		If eventVol=EventClose Then
-			Close_Window(FigVol)
-			
-		End If
-	Loop
-	
-	
+     FigVol=  OpenWindow("Volumen tipicos en partituras ",800,100,400,600  )
+     ImageGadget(IMAGE_FIG2,10,10,1100,800,Load_image(ROLLDIR+"recur\VOLUMEN.jpg"))
+     #Ifdef __FB_WIN64__
+          SetFocus (FigVol)
+          SetForegroundWindow(FigVol)
+     #Else
+          gtk_widget_grab_focus(GadgetID(IMAGE_FIG2))
+     #EndIf
+     
+     
+     Do
+          Var eventVol= waitEvent
+          If eventVol=EventClose Then
+               Close_Window(FigVol)
+               
+          End If
+     Loop
+     
+     
 End Sub
 '---------
 Sub CuadroKey()
-	FigKey =  OpenWindow("Teclas Rapidas, keystroke  ",800,100,600,600  )
-	ImageGadget(IMAGE_FIG3,10,10,1100,800,Load_image(ROLLDIR+"recur\TECLAS_RAPIDAS.jpg"))
-	#Ifdef __FB_WIN64__
-		SetFocus (FigKey)
-		SetForegroundWindow(FigKey)
-	#Else
-		gtk_widget_grab_focus(GadgetID(IMAGE_FIG3))
-	#EndIf
-	
-	
-	Do
-		Var eKey= waitEvent
-		If eKey=EventClose Then
-			Close_Window(FigKey)
-			
-		End If
-	Loop
-	
-	
+     FigKey =  OpenWindow("Teclas Rapidas, keystroke  ",800,100,600,600  )
+     ImageGadget(IMAGE_FIG3,10,10,1100,800,Load_image(ROLLDIR+"recur\TECLAS_RAPIDAS.jpg"))
+     #Ifdef __FB_WIN64__
+          SetFocus (FigKey)
+          SetForegroundWindow(FigKey)
+     #Else
+          gtk_widget_grab_focus(GadgetID(IMAGE_FIG3))
+     #EndIf
+     
+     
+     Do
+          Var eKey= waitEvent
+          If eKey=EventClose Then
+               Close_Window(FigKey)
+               
+          End If
+     Loop
+     
+     
 End Sub
 Sub CuadroPer()
-	FigPer=  OpenWindow("NOTAS MIDI DE, PERCUSION  ",600,100,900,600  )
-	ImageGadget(IMAGE_FIGPER,10,10,1100,800,Load_image(ROLLDIR+"recur\PERCUSION.jpg"))
-	#Ifdef __FB_WIN64__
-		SetFocus (FigPer)
-		SetForegroundWindow(FigPer)
-	#Else
-		gtk_widget_grab_focus(GadgetID(IMAGE_FIGPER))
-	#EndIf
-	
-	
-	Do
-		Var ePer= waitEvent
-		If ePer=EventClose Then
-			Close_Window(FigPer)
-			
-		End If
-	Loop
-	
-	
+     FigPer=  OpenWindow("NOTAS MIDI DE, PERCUSION  ",600,100,900,600  )
+     ImageGadget(IMAGE_FIGPER,10,10,1100,800,Load_image(ROLLDIR+"recur\PERCUSION.jpg"))
+     #Ifdef __FB_WIN64__
+          SetFocus (FigPer)
+          SetForegroundWindow(FigPer)
+     #Else
+          gtk_widget_grab_focus(GadgetID(IMAGE_FIGPER))
+     #EndIf
+     
+     
+     Do
+          Var ePer= waitEvent
+          If ePer=EventClose Then
+               Close_Window(FigPer)
+               
+          End If
+     Loop
+     
+     
 End Sub
 '---------
 Sub CuadroVoces()
-'	FigVoz=  OpenWindow("OCTAVAS, VOCES  ",800,100,800,500 )
-'	Print #1,"EN CUADRO VOCES ABRE IMGEN "
-'	ImageGadget(IMAGE_FIGVOZ,10,10,800,800,Load_image(ROLLDIR+"recur\RANGOS_VOCALES.jpg"))
+'     FigVoz=  OpenWindow("OCTAVAS, VOCES  ",800,100,800,500 )
+'     Print #1,"EN CUADRO VOCES ABRE IMGEN "
+'     ImageGadget(IMAGE_FIGVOZ,10,10,800,800,Load_image(ROLLDIR+"recur\RANGOS_VOCALES.jpg"))
 
 
 
 
   '''ad (ROLLDIR+"recur\RANGOS_VOCALES.bmp")
-''	#Ifdef __FB_WIN64__
-''		SetFocus (FigVoz)'
-''		SetForegroundWindow(FigVoz)
-''	#Else
-''		gtk_widget_grab_focus(GadgetID(IMAGE_FIGVOZ))
-''	#EndIf
-	
-	
-	Do
-		Var eVoz= waitEvent
-		If eVoz=EventClose Then
-			Close_Window(FigVoz)
-			
-		End If
+''     #Ifdef __FB_WIN64__
+''          SetFocus (FigVoz)'
+''          SetForegroundWindow(FigVoz)
+''     #Else
+''          gtk_widget_grab_focus(GadgetID(IMAGE_FIGVOZ))
+''     #EndIf
+     
+     
+     Do
+          Var eVoz= waitEvent
+          If eVoz=EventClose Then
+               Close_Window(FigVoz)
+               
+          End If
       'Sleep 100
-	Loop
-	
+     Loop
+     
 End Sub
 '------
 
 Sub selInstORdenNum (ByRef instru As integer) ' NO TIENE EN CUENTA EL TIPO NI GRABA A DISCO
-	'If ntk =0 Then
-	'   Exit Sub
-	'EndIf
-	Dim As hwnd haw,hwl
-	Dim As Integer aa=0 ,x=0, Posx,Posy ,x0,y0,i2
-	Dim As String cad
-	ScreenControl GET_WINDOW_POS, x0, y0
-	Posx=x0 +50
-	Posy=y0 +100
-	
-	
-	'' => desde acaecho con tool del ruso no anda muy bien
-	haw=OpenWindow("PATCH ORDEN NUMERICO CLICK EN UN ITEM  Y EN CAMBIA",500,Posy,700,600, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
-	'Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
-	' commctrl.bi modificado
-	Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
-	hwl=  ListViewGadget(1,10,10,500,500,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL )
-	
-	AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
-	
-	If patchsal > 0 Then ' ya habia un instrumento es un cambio
-		instru=CInt(patchsal) '
-	End If
-	For aa =1 To 127
-		If instru = aa Then
-			AddListViewItem(1, "[x] "+NombreInst(aa),0,aa,0)
-		Else
-			AddListViewItem(1, "[ ] " +NombreInst(aa),0,aa,0)
-		End If
-		
-		'''Track(ntk).trk(1,1).inst=CUByte(instru)
-		
-	Next
-	
-	
-	
-	ButtonGadget(2,530,30,100,40,"CAMBIA")
-	
-	#Ifdef __FB_WIN64__
-		SetFocus (hwl)
-		SetForegroundWindow(haw)
-	#Else
-		gtk_widget_grab_focus(GadgetID(1))
-	#EndIf
-	Do
-		
-		Var eventNum= waitEvent
-		If eventNum=EventLBDown Then ' 26-02-2022
-			If EventNumberListView=1 Then
-				instru = GetItemListView() +1
-				cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)
-				If InStr(cad,"x")>0 Then
-					cad="[ ] " +NombreInst(instru)
-				Else
-					cad="[x] " +NombreInst(instru)
-				End If
-				ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
-			End If
-		End If
-		
-		If eventNum=eventgadget Then
-			
-			If eventnumber()=2 And InStr(cad,"x") > 0 Then
-				''Instru = GetItemListView()
-				Print #1,"inst seleccionado numerico ",instru
-				Close_Window(haw)
-				Exit Do
-			End If
-		End If
-		If eventNum= EventClose Then
-			Close_Window(haw)
-			Exit Do
-		End If
-		
-	Loop
-	
-	
-	'' fin ruso
-	'Return IUP_DEFAULT
-	print #1,"Str(instru) ", Str(instru)
-	
+     'If ntk =0 Then
+     '   Exit Sub
+     'EndIf
+     Dim As hwnd haw,hwl
+     Dim As Integer aa=0 ,x=0, Posx,Posy ,x0,y0,i2
+     Dim As String cad
+     ScreenControl GET_WINDOW_POS, x0, y0
+     Posx=x0 +50
+     Posy=y0 +100
+     
+     
+     '' => desde acaecho con tool del ruso no anda muy bien
+     haw=OpenWindow("PATCH ORDEN NUMERICO CLICK EN UN ITEM  Y EN CAMBIA",500,Posy,700,600, WS_OVERLAPPEDWINDOW Or WS_VISIBLE, WS_EX_TOPMOST )
+     'Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
+     ' commctrl.bi modificado
+     Var LVS_EX_AUTOSIZECOLUMNS = &h10000000
+     hwl=  ListViewGadget(1,10,10,500,500,LVS_EX_AUTOSIZECOLUMNS,,,32,LVS_SINGLESEL )
+     
+     AddListViewColumn(1, "Elegir De 1 a 128 ",0,0,250)
+     
+     If patchsal > 0 Then ' ya habia un instrumento es un cambio
+          instru=CInt(patchsal) '
+     End If
+     For aa =1 To 127
+          If instru = aa Then
+               AddListViewItem(1, "[x] "+NombreInst(aa),0,aa,0)
+          Else
+               AddListViewItem(1, "[ ] " +NombreInst(aa),0,aa,0)
+          End If
+          
+          '''Track(ntk).trk(1,1).inst=CUByte(instru)
+          
+     Next
+     
+     
+     
+     ButtonGadget(2,530,30,100,40,"CAMBIA")
+     
+     #Ifdef __FB_WIN64__
+          SetFocus (hwl)
+          SetForegroundWindow(haw)
+     #Else
+          gtk_widget_grab_focus(GadgetID(1))
+     #EndIf
+     Do
+          
+          Var eventNum= waitEvent
+          If eventNum=EventLBDown Then ' 26-02-2022
+               If EventNumberListView=1 Then
+                    instru = GetItemListView() +1
+                    cad=GetTextItemListView(1,GetItemListView,GetSubItemListView)
+                    If InStr(cad,"x")>0 Then
+                         cad="[ ] " +NombreInst(instru)
+                    Else
+                         cad="[x] " +NombreInst(instru)
+                    End If
+                    ReplaceTextItemListView(1,GetItemListView,GetSubItemListView, cad)
+               End If
+          End If
+          
+          If eventNum=eventgadget Then
+               
+               If eventnumber()=2 And InStr(cad,"x") > 0 Then
+                    ''Instru = GetItemListView()
+                    Print #1,"inst seleccionado numerico ",instru
+                    Close_Window(haw)
+                    Exit Do
+               End If
+          End If
+          If eventNum= EventClose Then
+               Close_Window(haw)
+               Exit Do
+          End If
+          
+     Loop
+     
+     
+     '' fin ruso
+     'Return IUP_DEFAULT
+     Print #1,"Str(instru) ", Str(instru)
+     
 End Sub
 ' ---------
 
 '------------
 Sub EntrarNombreCancion(ByRef NombreCancion As string)
-	NombreCancion=Date
-	NombreCancion = InputBoxJmg("InputBox","",NombreCancion, ES_MULTILINE + ES_AUTOVSCROLL, 0)
-	If NombreCancion ="" Then
-		SetWindowText(hwndC, "RollMusic Control")
-	Else
-		SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + NombreCancion)
-	End If
-	'AL GRABAR tracks AGREGAREMOS ".cnr" COMO EXTENSION cancion roll pero no para
-	' dir de cancion,
+     NombreCancion=Date
+     NombreCancion = InputBoxJmg("InputBox","",NombreCancion, ES_MULTILINE + ES_AUTOVSCROLL, 0)
+     If NombreCancion ="" Then
+          SetWindowText(hwndC, "RollMusic Control")
+     Else
+          SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + NombreCancion)
+     End If
+     'AL GRABAR tracks AGREGAREMOS ".cnr" COMO EXTENSION cancion roll pero no para
+     ' dir de cancion,
 End Sub
 ' -------
 Sub CrearDirCancion (Byref NombreCancion As string)
-	
-	If NombreCancion = "" Then
-		NombreCancion= Date
-	End If
-	pathdir = ShellFolder( "Select Folder", CurDir())
-	pathdir=pathdir+"\"+NombreCancion
-	print #1, "DIRECTORIO CANCION EN ",pathdir
-	CreateDir(pathdir)
-	SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + pathdir)
-	NombreCancion=pathdir
-	print #1,"NombreCancion en CrearDirCancion ",NombreCancion
-	CANCIONCREADA=TRUE
-	NADACARGADO=FALSE
-	CreateDir(pathdir+"\Temp") ' ok
-	
+     
+     If NombreCancion = "" Then
+          NombreCancion= Date
+     End If
+     pathdir = ShellFolder( "Select Folder", CurDir())
+     pathdir=pathdir+"\"+NombreCancion
+     Print #1, "DIRECTORIO CANCION EN ",pathdir
+     CreateDir(pathdir)
+     SetWindowText(hwndC, "RollMusic Control Editando Cancion: " + pathdir)
+     NombreCancion=pathdir
+     Print #1,"NombreCancion en CrearDirCancion ",NombreCancion
+     CANCIONCREADA=TRUE
+     NADACARGADO=FALSE
+     CreateDir(pathdir+"\Temp") ' ok
+     
 End Sub
 '
 Sub cargarDirectorioCancion (ByRef NombreCancion As string)
-	''Dim pathdir As string
-	SetForegroundWindow(hwndc)
-	NombreCancion = ShellFolder( "Seleccionar Carpeta de Cancion", CurDir(),BIF_NEWDIALOGSTYLE   )
-	retrasoMetronomo=retrasoMetronomoCan
-	Print #1,"retrasoMetronomoCan ",retrasoMetronomo
-	TextGadget(TEXT_METRONOMO_RETARDO,108, 750,100,20,"Retraso M "+Str(retrasoMetronomo))
-	Sleep 1
-	SetWindowText(hwndC, "RollMusic Cancion: " + NombreCancion)
-	
-	
-	print #1,"cargarDirectorioCancion ", NombreCancion
-	' aca NombreCancion contiene el path tambien....
-	'Sleep 100
+     ''Dim pathdir As string
+     SetForegroundWindow(hwndc)
+     NombreCancion = ShellFolder( "Seleccionar Carpeta de Cancion", CurDir(),BIF_NEWDIALOGSTYLE   )
+     retrasoMetronomo=retrasoMetronomoCan
+     Print #1,"retrasoMetronomoCan ",retrasoMetronomo
+     TextGadget(TEXT_METRONOMO_RETARDO,108, 750,100,20,"Retraso M "+Str(retrasoMetronomo))
+     Sleep 1
+     SetWindowText(hwndC, "RollMusic Cancion: " + NombreCancion)
+     
+     
+     Print #1,"cargarDirectorioCancion ", NombreCancion
+     ' aca NombreCancion contiene el path tambien....
+     'Sleep 100
 End Sub
 '
 
 Sub EntrarNombrePista(ByRef NombrePista As String,hwndC as Hwnd )
-	
-	
-	NombrePista = InputBoxJmg("Nombre de Pista","",NombrePista, ES_MULTILINE + ES_AUTOVSCROLL , 0,hwndC  )
-	Dim As String limpio, a1
-	Dim I As Integer
-	For I=1 To Len(NombrePista)
-		a1=Mid(NombrePista,i,1)
-		If a1<> Chr(13) And a1<> Chr(10) Then
-			limpio=limpio+a1
-		End If
-	Next I
-	NombrePista=limpio
-	
+     
+     
+     NombrePista = InputBoxJmg("Nombre de Pista","",NombrePista, ES_MULTILINE + ES_AUTOVSCROLL +ES_UPPERCASE , 0,hwndC  )
+     Dim As String limpio, a1
+     Dim I As Integer
+     For I=1 To Len(NombrePista)
+          a1=Mid(NombrePista,i,1)
+          If a1<> Chr(13) And a1<> Chr(10) Then
+               limpio=limpio+a1
+          End If
+     Next I
+     NombrePista=UCase(limpio)
+     
 End Sub
 '
 Function sacarExtension(file As string) As String
-	Dim ubi1 As Integer
-	ubi1=InStrRev (file,".")
-	sacarExtension=Mid(file,1,ubi1-1)
-	
+     Dim ubi1 As Integer
+     ubi1=InStrRev (file,".")
+     sacarExtension=Mid(file,1,ubi1-1)
+     
 End Function
 
 '
 Sub copiarATemp ( titulo As String, pista As String)
-	Dim As String destino
-	Dim As integer barra1, tam
-	tam=Len(NombreCancion)
-	barra1=InStrRev(NombreCancion,"\")
-	If barra1 > 0 And tam=barra1 Then
-		destino=NombreCancion+"Temp\"+pista
-	Else
-		destino=NombreCancion+"\Temp\"+pista
-	End If
-	Print #1,"en copia titulo", titulo
-	Print #1,"en copia pista", pista
-	
-	copyFileA (StrPtr(titulo),StrPtr(destino),FALSE) ' CON FALSE SOBRESCRIBE
-	print #1,titulo, destino
+     Dim As String destino
+     Dim As integer barra1, tam
+     tam=Len(NombreCancion)
+     barra1=InStrRev(NombreCancion,"\")
+     If barra1 > 0 And tam=barra1 Then
+          destino=NombreCancion+"Temp\"+pista
+     Else
+          destino=NombreCancion+"\Temp\"+pista
+     End If
+     Print #1,"en copia titulo", titulo
+     Print #1,"en copia pista", pista
+     
+     copyFileA (StrPtr(titulo),StrPtr(destino),FALSE) ' CON FALSE SOBRESCRIBE
+     Print #1,titulo, destino
 End Sub
 '
 Sub BorrarPista (titulo As String)
-	'Print #1, "me piden borrar ", titulo
-	deleteFileA (StrPtr(titulo))
-	
+     'Print #1, "me piden borrar ", titulo
+     deleteFileA (StrPtr(titulo))
+     
 End Sub
 '
 Sub  verayuda (  arch As string)
-	' no hace falta por ahora pero en elfuturo haremos ayuda puntual
-	' y esta sera la sub recibira donde se requiere ayuda y se devolvera la ayuda
-	' correspondiente
-	
+     ' no hace falta por ahora pero en elfuturo haremos ayuda puntual
+     ' y esta sera la sub recibira donde se requiere ayuda y se devolvera la ayuda
+     ' correspondiente
+     
 End Sub
 
 Function SWITCH( BLN As BOOLEAN ) As BOOLEAN
-	Select Case BLN
-	Case TRUE
-		SWITCH=FALSE
-	Case FALSE
-		SWITCH=TRUE
-	End Select
-	
+     Select Case BLN
+     Case TRUE
+          SWITCH=FALSE
+     Case FALSE
+          SWITCH=TRUE
+     End Select
+      
 End Function
 
 '
@@ -436,15 +436,15 @@ ErrorNumber1 = Err
 ErrorLine1 = Erl
 
 If ErrorNumber1 > 1 And ContadorError < 101 Then
-	Print #1,"------------------------------------"
-	ContadorError=ContadorError+1
-	Print #1,"ErrorControl ContadorError ",ContadorError
-	Print #1,"ErrorNumber1 ",ErrorNumber1
-	Print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
-	Print #1,"Error Function: "; *Erfn()
-	Print #1, "mensaje, Ermn ", *Ermn, Ermn
-	Print #1,"------------------------------------"
-	
+     Print #1,"------------------------------------"
+     ContadorError=ContadorError+1
+     Print #1,"ErrorControl ContadorError ",ContadorError
+     Print #1,"ErrorNumber1 ",ErrorNumber1
+     Print #1,"progerror ", ProgError(ErrorNumber1); " on line ";ErrorLine1
+     Print #1,"Error Function: "; *Erfn()
+     Print #1, "mensaje, Ermn ", *Ermn, Ermn
+     Print #1,"------------------------------------"
+     
 End If
 Print "error number: " + Str( Err ) + " at line: " + Str( Erl )
 
