@@ -105,7 +105,7 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.408 Reproductor de medios agrega archivo en titulo ventana control y recuerda el ultimo directorio"
+nroversion="0.409 Conversion de pistas ejec a roll y rtk adaptacion a nuva modificacion"
 '    -0.406 fix renombrar pistas fisicas, pero no dentro del archivo
 '    -0.405 grabar una pista 1 sola y luego insertar dentro de la misma, lo hace bien, se puede insertar
 '     nuevas notas en una pista ya grabada.

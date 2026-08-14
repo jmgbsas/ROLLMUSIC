@@ -1971,7 +1971,7 @@ Sub CTRL1207(pis As Integer )
           dato3=Toca(pis).trk(i1).vel
           
           Select Case  dato1
-          Case 1
+          Case 1, 0
                n1=n1+1
                '     deltatime=deltatime +Tick5mseg ' milisegundos PARA USAR DurXtick
                '     cuentatick=cuentatick+1  'es i1 para moverme en la pantalla esa cantidad de ticks

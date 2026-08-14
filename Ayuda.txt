@@ -1,6 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-    0.408 pequeñas corecciones en historico.txt
+    0.409 Conversion de pistas ejec a roll y rtk adaptacion a nueva modificacion
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
