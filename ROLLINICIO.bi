@@ -370,6 +370,8 @@ For ix = 0 To __FB_ARGC__
           ubim4a = InStr (LCase(Command(ix)),".m4a")
           ubimp3 = InStr (LCase(Command(ix)),".mp3")
           ubimid = InStr (LCase(Command(ix)),".mid")
+          ubiwav = InStr (LCase(Command(ix)),".wav")
+
 ''     BatchGraficoOCtrl =0 EN EXPLORER  SE EJECUTA ROLL Y RTK SIN VENTANA DE CONTROL Y CON GRAFICO ..AUTOMATICO EMPIEZA A TOCAR
 '' LOS EJEC MID MP3 SE EJECUTAN CON VENTANA DE CONTROL COMPLETA...Y AUTOMATICO EMPIEZA A TOCAR
 
@@ -387,7 +389,7 @@ For ix = 0 To __FB_ARGC__
                Exit For
           End If
           
-          If ubim4a > 0 Or ubimp3 > 0 Or ubimid >0 Then  ''30-03-2026 reproducir un *.ejec desde el explorador
+          If ubim4a > 0 Or ubimp3 > 0 Or ubimid >0 Or ubiwav > 0 Then  ''30-03-2026 reproducir un *.ejec desde el explorador
                ubimedia=1 ''cargar
                ubionline = 0
                titulosEj(1)=Command(1)
@@ -437,7 +439,7 @@ For ix = 0 To __FB_ARGC__
    Else
     If ix=1 And Command(1)="" Then
      Print #1,"ubirtk=0 And ubiroll=0 And ubiejec=0 And ubim4a=0 And ubimp3=0 And ubimid=0 ";ubirtk, ubiroll, ubiejec, ubim4a, ubimp3, ubimid 
-       If ubirtk=0 And ubiroll=0 And ubiejec=0 And ubim4a=0 And ubimp3=0 And ubimid=0 Then
+       If ubirtk=0 And ubiroll=0 And ubiejec=0 And ubim4a=0 And ubimp3=0 And ubimid=0 And ubiwav=0 Then
        SetRunOnlyExe()
        Print #1,"ajusto una sola instancia "
        Exit For 

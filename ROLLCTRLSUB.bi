@@ -148,7 +148,9 @@ Sub CTRL100610061 (hMessages As hmenu ,  CALLDESDE As STRING )
           NADACARGADO=TRUE
           ' toma solo el nombre y path de la cancion no carga las pistas todavia
           cargarDirectorioCancion(NombreCancion)
-          
+           If NombreCancion="" Then  
+              Exit Sub 
+            EndIf
           param.encancion=CON_CANCION
           Print #1," abrirRoll ";abrirRoll
           If abrirRoll=CARGAR_MAS_PISTAS_O_CANCION Then ' ver rollloop roll esta cargado vengo a cargar cancion de nuevo
@@ -1165,9 +1167,12 @@ Sub playmedio()
 End Sub
 
 Sub CTRL1094(titulo As ZString ptr) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
-     Dim ENTRADA As String
+     Dim  As String ENTRADA, MEDIADIR
      Print #1, "*titulo en ctrl1094 ", *titulo
      ENTRADA=*titulo
+     Dim As Integer xh=InStrRev ( ENTRADA,"\")
+     MEDIADIR=MID(ENTRADA,1,xh)
+     SetWindowText(hwndC, ENTRADA)
      Print #1,"entrada recibida en 1094 "; ENTRADA
      mov8=0
      tic=1
@@ -1378,11 +1383,13 @@ Sub CTRL1094(titulo As ZString ptr) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
                Case 8
                     #Ifdef UNICODE
                          '' Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)|*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1|")
-                         Var OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav, *.mid,*.m4a)|*.mp3; *.wav; *.mid,*.m4a|")
+                         Var OFR = OpenFileRequester("",MEDIADIR,"Media files (*.mp3, *.wav, *.mid,*.m4a)|*.mp3; *.wav; *.mid,*.m4a|")
                     #Else
                          '' Var OFR = OpenFileRequester("","C:\","Media files (*.avi, *.mp3, *.wmv, *.wav, *.mp4, *.mp2, *.mp1)"+Chr(0)+"*.avi; *.mp3; *.wmv; *.wav; *.mp4; *.mp2; *.mp1"+Chr(0))
-                         Var OFR = OpenFileRequester("","C:\","Media files (*.mp3, *.wav, *.mid,*.m4a)"+Chr(0)+"*.mp3; *.wav; *.mid;*.m4a"+Chr(0))
+                         Var OFR = OpenFileRequester("",MEDIADIR,"Media files (*.mp3, *.wav, *.mid,*.m4a)"+Chr(0)+"*.mp3; *.wav; *.mid;*.m4a"+Chr(0))
                     #EndIf
+                   ENTRADA = OFR
+                  SetWindowText(hwndC, ENTRADA)
                     '' close_window(hwndMEDIA)  aca no ahce falta poner todo de vuelta!
                     '' hwndMEDIA=OpenWindow(OFR,0,ALTO*5/6,ANCHOWIN,ALTO/6, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
                     ButtonGadget(1,10,altov,20,20,"X"):GadgetToolTip(1,"PARAR")

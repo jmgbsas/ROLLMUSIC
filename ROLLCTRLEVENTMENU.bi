@@ -1088,7 +1088,7 @@ Case 1094
      '   Dim As String ENTRADA="C:\mios\amrm.mp3"
      ''ppp=StrPtr(TitulosEj(1))
      threadmedia = threadCall  CTRL1094(TitulosEj(1))
-     SetThreadPriority(threadmedia , 10 )
+     SetThreadPriority(threadmedia , 10 ) 'VV
      'SetFocus (hwndMEDIA)
      SetForegroundWindow(hwndMEDIA)
      '-----------------------------------------------------------------------

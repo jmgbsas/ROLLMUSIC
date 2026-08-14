@@ -332,6 +332,9 @@ Sub cargarDirectorioCancion (ByRef NombreCancion As string)
      ''Dim pathdir As string
      SetForegroundWindow(hwndc)
      NombreCancion = ShellFolder( "Seleccionar Carpeta de Cancion", CurDir(),BIF_NEWDIALOGSTYLE   )
+    If NombreCancion="" Then
+       Exit Sub
+    EndIf
      retrasoMetronomo=retrasoMetronomoCan
      Print #1,"retrasoMetronomoCan ",retrasoMetronomo
      TextGadget(TEXT_METRONOMO_RETARDO,108, 750,100,20,"Retraso M "+Str(retrasoMetronomo))

@@ -1,3 +1,8 @@
+ -13-08-2026 0.408 fix por error de reversion de ajuste de tiempo en windows 11 del play
+    de pistas manuales. evitar caidas en apertura de canciones y abortar la accion,
+    apertura de *.wav en el  reproductor de medios. Algunajsute para reducir
+    el uso de cpu al tocar una cancion, en observacion,Mensaje de path del archivo 
+    de medios en reproduccion.
  -11-08-2026 (modificaciones en pistas *.ejec) (pruebas basicas echas no fueron exaustivas )
     -0.407 podemos grabar silencios al principio y/o agregar mas notas en la 1er pista o cualqueir otra
     -0.406 fix renombrar pistas fisicas, pero no dentro del archivo

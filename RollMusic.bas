@@ -105,7 +105,7 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.407 podemos grabar silencios al principio y/o agregar mas notas a la 1er pista o cualqueir otra"
+nroversion="0.408 Reproductor de medios agrega archivo en titulo ventana control y recuerda el ultimo directorio"
 '    -0.406 fix renombrar pistas fisicas, pero no dentro del archivo
 '    -0.405 grabar una pista 1 sola y luego insertar dentro de la misma, lo hace bien, se puede insertar
 '     nuevas notas en una pista ya grabada.
@@ -435,7 +435,7 @@ Do
                     Print #1, "///1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
                     
                     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-                    SetThreadPriority(threadloop , 20 ) ' decia 1
+                    SetThreadPriority(threadloop , 20 ) ' decia 1 VV
                     clickpista=SI 'abre tab una sola vez seposiciona en psita 1
                     Print #1,"0 1=====hwndC ", HwndC
                End If
@@ -650,7 +650,7 @@ Do
                          'Print #1," *PPP ",*PPP
                          fileflush(-1)
                          threadmedia = threadCall  CTRL1094(TitulosEj(1))
-                         SetThreadPriority(threadmedia , 10 )
+                         SetThreadPriority(threadmedia , 10 ) 'VV
                          SetForegroundWindow(hwndMEDIA)
                          
                     End If

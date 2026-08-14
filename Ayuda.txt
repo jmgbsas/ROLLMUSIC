@@ -1,15 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
- (modificaciones en pistas *.ejec) (pruebas basicas echas no fueron exaustivas )
-    -0.407 podemos grabar silencios al principio y/o agregar mas notas en la 1er pista o cualqueir otra
-    -0.406 fix renombrar pistas fisicas, pero no dentro del archivo
-    -0.405 grabar una pista 1 sola y luego insertar dentro de la misma, lo hace bien, se puede insertar
-     nuevas notas en una pista ya grabada.
-    -0.404 volumenes corregidos daba cero por definicion de ajuste como float debe ser single...
-    -0.403 cuando borraba todas las pistas siempre dejaba una...ya no fixed   
-    -0.402 podemos borrar todas los pistas .ejec y cargar luego nuevas o las mismas    
-    -0.401 borrar 1 pista ejec y luego poder tocar, lo hacia mal,cargar 3 pistas p1 p2 p3 y 
-     tratar de borrar la 2 ya anda bien     
+    0.408 pequeñas corecciones en historico.txt
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )

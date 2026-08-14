@@ -2811,7 +2811,7 @@ Sub PlayCancion(Track() As sec)
           End If
           
      Next pis
-     Sleep 1 ''<==== para que no desaparesca el cursor de pntalla |
+     Sleep 1
      
      If cnt_pistas_cancion_suenan = 0 And cntSolo > 0 And CheckBox_GetCheck( cbxsolo(pis))= 1 Then
           ' SIEMPRE DEBE EJECUTARSE UNA PISTA DE CANCION QUE ES LA GUIA, SI QUEREMOS ESCUCHAR UN SOLO
@@ -2835,7 +2835,7 @@ Sub PlayCancion(Track() As sec)
      STARTMIDI=Timer
      old_time_on=STARTMIDI
      Print #1,"old_time_on PLAYCANCION "; old_time_on
-     Sleep 11 ' para ESPERAR a  inicio de playunosolo
+     Sleep 11 ' para ESPERAR a  inicio de playunosolo ???
      Print #1,"ENTRA PLAYCANCION  "; Timer
      
      
@@ -2885,7 +2885,7 @@ Sub PlayCancion(Track() As sec)
                terminar_metronomo=0
                disparo=1
                threadmetronomo = ThreadCall metronomo()
-         SetThreadPriority(threadmetronomo , -1 )
+         SetThreadPriority(threadmetronomo , -1 ) 'VV
           End If
           
           ''''''''
@@ -3019,13 +3019,13 @@ Sub PlayCancion(Track() As sec)
                                    '          NroEventoPista(pis) = NroEventoPista(pis) + 1 por ahora sacamos es pa volcar midi a disco
                                    '          NroEvento=NroEventoPista(pis)
                                    
-                                   noteon CUByte(Notapiano),vel,canal,portsal,pis,NroEvento
+                                 noteon (CUByte(Notapiano),vel,canal,portsal,pis,NroEvento)
                                    
                               End If
                               If Track(pis).trk(jply,i1).onoff= 1 Then
                                    '          NroEventoPista(pis)=NroEventoPista(pis) +1
                                    '          NroEvento=NroEventoPista(pis)
-                                   noteoff CUByte(Notapiano),vel/2,canal,portsal,pis,NroEvento
+                                 noteoff (CUByte(Notapiano),vel/2,canal,portsal,pis,NroEvento)
                               End If
                          End If
                          
@@ -3101,7 +3101,7 @@ Sub PlayCancion(Track() As sec)
                     End If
                End If
           End If
-          Sleep 1,1 ' para que corranmas de un thread
+          Sleep 1 ' para que corranmas de un thread ??
           
      Next jply
      
@@ -3196,7 +3196,7 @@ Sub PlayCancion(Track() As sec)
                allSoundoff( pmTk(i3).canalsalida, portsal )
           Next i3
      End If
-     Sleep 20,1
+     Sleep 20
      
      
      Exit Sub

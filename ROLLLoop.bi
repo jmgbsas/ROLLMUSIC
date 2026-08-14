@@ -460,7 +460,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
                               End If
                          End If
                          ' ////////dar color al font en una determinada posicion durante el play
-                         If n<=jply + 2 And n<=jply - 2 And Parar_De_Dibujar=NO Then
+                         If n<=jply + 6 And n<=jply - 6 And Parar_De_Dibujar=NO Then
                               cairo_set_source_rgba(c,1,0,1,1) 'me4dio violeta
                          End If
                          If indf <> 181 Then ' esto acelera un monton 181 es vacio espacio no hay nada para mostrar
@@ -476,7 +476,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
                          
                          ' se elimina el cursos con las notas coloreadas durante el play es suficiente
                          ' ' jmg 11-05-2021 1839 start
-                         If  n<=jply + 2 And n<=jply - 2 And ( play =SI Or playb=SI Or Cplay=SI ) And Parar_De_Dibujar=NO Then ' Parar_De_Dibujar 17-06-2022
+                         If  n<=jply + 6 And n<=jply - 6 And ( play =SI Or playb=SI Or Cplay=SI ) And Parar_De_Dibujar=NO Then ' Parar_De_Dibujar 17-06-2022
                               
                               ShowNroCol= Int(n/posishow)
                               If ShowNroCol = 0 Then
@@ -625,7 +625,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
           
           
      Next semitono
-     Sleep 25 ' otro freno
+     Sleep 41 ' DECIA 25 otro freno
      
      
      ' -----------------------------------------------------------
@@ -955,7 +955,7 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
                'Call Sleep with 25ms or less to release time-slice when waiting for user input
                ' or looping inside a thread. This will prevent the program from
                ''unnecessarily hogging the CPU.
-               
+
                Exit For
           End If
           
@@ -1294,7 +1294,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                  
           ScreenUnLock()
             
-             Sleep 21   ''' a 48 FPS ,,,,41ms -> 24 FPS, 16ms -> 60 FPS , 21ms-> 48 FPS  22-07-2026
+            ''' Sleep 41   ''' a 48 FPS ,,,,41ms -> 24 FPS, 16ms -> 60 FPS , 21ms-> 48 FPS  22-07-2026
           
           
           

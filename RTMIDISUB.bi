@@ -892,7 +892,7 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
      Chorus(pmTk(0).coro,  pmTk(0).canalsalida,pmTk(0).portout)
      ChangeProgram ( pmTk(0).patch, pmTk(0).canalsalida, pmTk(0).portout)
      patchsal =pmTk(0).patch
-     Sleep 1    ''<=== sin este sleep desaparece el cursos de pantalla estaba antes de efectos
+     
      '' pero lo puse ahora despues para procesar efectos antes de empezar,,,,
      Print #1,"comienzo playaLL ==========> tiempoPatron =",tiempoPatron," FactortiempoPatron",FactortiempoPatron
      Print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
@@ -1018,231 +1018,231 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
                retrasoMetronomo=retrasoMetronomoRoll
                disparo=1
                threadmetronomo = ThreadCall metronomo()
-         SetThreadPriority(threadmetronomo , -1 )
-          End If
-          
-          ''''''''
-          
-          ' ============= For NB To NA ===============
-          For i1=NB To NA
-               ' poner la velocidad original  del ejec si viene de una ejec
-               ' si es manual la velocidad se calcula como esta aca resta ver como identificar que
-               ' viene deuna ejec debo poner una marca
-               If i1<= NA-13 Then
-                    ' el off ya anda 01-03-2025!!! agregamos al final del if el 183 para que pase
-                    
-                    If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12  And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Or Roll.trk(jply, i1).dur <= 183 Or Roll.trk(jply, i1).dur <= 185 Then
-                         ' por mas que achique en octavas, Notapiano se calcula respecto del nro
-                         ' completo de octavas del piano ergo 115 es fijo siempre mientras
-                         
-                         Notapiano= i1
-                         '**** Notapiano= 115 - i1 <<<<< con este calculo de notapiano no hace falta grabar nota en el OFF
-                         '**** tampoco haria falta en el on pero  si es necesario para la visualizacion >>>>>
-                         ' en menu podemos hacer lo mismo RollNota con off podemos sacar la nota de Notapiano
-                         Notapiano= Notapiano - restar (Notapiano)
-                         ''Print #1,"PALL 0:VEO LO CORRECTO DE NOTAPIANO "; Notapiano
-                         dura=Roll.trk(jply, i1).dur ' es una N 185 la duracion son lso ticks hasael off 1
-                         ' llegamos al final de la Columna
-                         '      portsal=pmTk(0).portout  no vamos a cambiar en la secuencia el midiout ni canal o si??
-                         '      canal=pmTk(0).canalsalida
-                         
-                         If pmTk(0).ejec=1  Then ''''Roll.trk(1, NA).onoff=1  Then
-                              ' Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
-                              vel=CUByte(CInt(Roll.trk(jply, i1).vol)  * ajuste)
-                         End If
-                         ' la duracion me da si suena o no
-                         Select CASE Roll.trk(jply, i1).dur
-                         Case 46 To  90  'silencios
-                              vel=0
-                         Case 138 To 180  'silencios
-                              vel=0
-                         Case Else
-                              vel=Roll.trk(jply, i1).vol
-                              If vel=0 Then
-                                   vel=CUByte(velpos)
-                              End If
-                         End select
-                         
-                         If Roll.trk(jply, i1).onoff =2 Then ''VER  KOKITO SILENCIOS!!!
-                              NroEventoPista(1)= NroEventoPista(1) +1
-                              NroEvento=NroEventoPista(1)
-                              ''Print #1,"noteon CUByte(Notapiano),vel,canal,portsal  ";CUByte(Notapiano),vel,canal,portsal
-                              noteon CUByte(Notapiano),vel,canal,portsal,1,NroEvento
-                              '''''''''CONTROL METRONOMO SOLO debe DISPARAR UNA VEZ si ya disparo antes por otra osa no lo hara
-                              '    If metronomoPistas_si=3 And disparo=0 Then
-                              '        Print #1,"LLAMA A METRONOMO EN PLAYALL!!! "
-                              '        terminar_metronomo=0
-                              '        retrasoMetronomo=retrasoMetronomoRoll
-                              '        disparo=1
-                              '        threadmetronomo = ThreadCall metronomo()
-                              '    EndIf
-                              '
-                              ''''''''
-                              
-                         End If
-                         If Roll.trk(jply, i1).onoff= 1 Then
-                              NroEventoPista(1)= NroEventoPista(1) +1
-                              NroEvento=NroEventoPista(1)
-                              '''Print #1,"noteoff CUByte(Notapiano),canal,portsal,1 "; CUByte(Notapiano),canal,portsal
-                              noteoff CUByte(Notapiano),vel/2,canal,portsal,1,NroEvento
-                         End If
-                         
-                         
-                         '  Print #1, "PLAYALL AcordeOnIguales velpos ", velpos
-                    End If
-                    ' YA BARRIO TODA LA COLUMNA AHORA ENVIA LOS NOTEON Y NOTEOFF
-                    ' PERO LOS PODRIA HABER ENVIADO A MEDIDA QUE RECORRO NO NECESITO UN VECTOR DE
-                    ' ACUMULAICON AHORA,,, creo!! habra necesidad de procesar algo antes de enviar
-                    ' losnoteon y noteoff? talvez por ahora lo dejoa asi mas adelante veo de si
-                    ' eliminar el control de simple y acorde....!!! 28-03-2025
-                    
-               End If
-               
-               If i1 > NA-13 Then
-                    If Roll.trk(jply,i1).nota = 210 Then
-                         Print #1,"210 leido jply",jply
-                         playloop2=SI
-                         comienzo2=jply
-                    End If
-                    
-                    If Roll.trk(jply,i1).nota = 211 Then
-                         Print #1,"211 leido jply",jply
-                         final2=jply
-                         '---------- reset de las notas que no llegan a su off por un corte antes del off -- ok
-                         ' deberia hacer el corte tambien si hay ejecuciones
-                         alloff(canal,portsal)
-                         allSoundoff(canal, portsal )
-                         '-------------------------------------------------
-                         
-                         If cntrepe > 0 Then
-                              cntrepe -= 1 
-                         Else
-                              cntrepe=Roll.trk(jply,i1).vol ' nro repeticiones en vertical +1
-                         End If
-                         If cntrepe =0 Then
-                              'comienzo=final+1
-                              final2=MaxPos
-                              If finalloop> 0 Then
-                                   final2=finalloop
-                              End If
-                         End If
-                    End If
-               End If
-               
-               
-          Next i1
-          '''  ya no hace falta mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
-          ' print #1,"---FIN -----paso:"; jply;" --------------------------------"
-          duracion (old_time_on ,tickUsuario) ' si es cero no 1 no hay duracion es acorde
-          old_time_on=old_time_on + tickUsuario 'jmgtiempo
-          
-          
-          If playloop=SI And jply= finalloop Then
-               jply=comienzoloop -1
-          End If
-          If playloop2=SI And jply= final2 Then
-               jply=comienzo2 -1
-               If final2=finalloop Then
-                    If playloop=SI Then
-                         jply=comienzoloop -1
-                    Else
-                         final=MaxPos
-                         final2=Maxpos
-                         jply=final2
-                    End If
-               End If
-          End If
-          
-          
-          tickUsuario=60/(tiempoPatron*PPQN*FactortiempoPatron) 
-            Sleep 5 ''' para tempo 240 tresillo de semifusa 5ms
-     Next jply
-     ''while (PeekMessage(NULL, hwnd, WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE or PM_QS_INPUT))
-     ''Wend
-     '-> LA ULTIMA NOTA SERA APAGADA CASI DE INMEDIATO POR EL alloff Y SOUNDOFF QUE SIGUEN
-     ' POR ESO DEJAMOS SONAR LA NOTA LA 2*DURACION QUE TIENE dura
-     '' reldur(dura) 'la dduracion  a t=60 usamos eso a t=60
-     duracion (Timer , 2 ) ''* relDur(dura))
-     posicion=comienzo
-     '======================
-     ' IF hay loop de repeticion se detecta en la posicion final Then
-     ' posicion = comienzorepe , con esto vuelvo a repetir un pedazo
-     ' o sea el final es el que me indica desde donde debo repetir solo ahce falta
-     ' insertar el final en Roll con 2 parametros dede donde repetir cuantas veces y este es el final
-     ' =========================l listo algoritmo mañana implemenamos
-     '
-     jply=0:curpos=0
-     ' 11-06-2021 se volvio a colocar 1 seg retardo para no escuchar un corte abrubto
-     ' al final, por ahroa no parpadea mas veremos....
-     play=NO
-     playb=NO
-     disparo=0
-     terminar_metronomo=1
-     
-     '''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
-     
-     Dim As Integer checkejec
-     For  iz As Short =1 To 32
-          If CheckBox_GetCheck( cbxejec(iz))= 1  Or CheckBox_GetCheck( cbxgrab(iz))= 1 Then
-               checkejec=1
-          End If
-          Exit For
-     Next iz
-     'If GrabarPenta=0 And GrabarEjec=HabilitaGrabar And Parar_De_Dibujar=NO And checkejec=0 Then
-     '     ' nada de off estamos en grabarpenta por teclado o Grabar o tocar ejecuciones
-     '     '''????? YESTO PORQUE ?? 19-07-2026  
-     '     k1=pmTk(0).portout
-     '     Print #1,"midiout ",k1, *nombreOut(k1)
-     '     alloff( canal,k1 )
-     '     allSoundoff(canal,k1 )
-     '     'out_free   midiout(k1)
-     '     Print #1,"desmarco ",*nombreOut(k1)
-     '     listoutAbierto(k1)=0
-     '     close_port midiout(k1)
-     '     ''out_free   midiout(k1)
-     '     
-     'End If
-     If MIDIFILEONOFF = HABILITAR Then
-          Dim k1 As Integer
-          For k1=4 To NroEventoPista(1)
-               Print #midiplano,MidiDatos(1).datos(k1)
-          Next k1
-          Dim As Double TiempoAcumNew
-          Dim As Integer T1
-          
-          TiempoAcumNew= Timer - STARTMIDI
-          T1 =  TiempoAcumNew *  1000 * tiempoPatron/60
-          ''GrabaMidiPlano()
-          Print #midiplano, T1 ;" Meta TrkEnd"
-          Print #midiplano, "TrkEnd"
-          MIDIFILEONOFF = DESHABILITAR
-          Close 20
-          
-     End If
-     VerMenu=1
-     terminar_metronomo=1
-     disparo=0
-     
-     ''Sleep 10,1 ' si se coloca 1000 parpadea la pantlla hasta se cierra la aplicacion
-     
-     trabaspace=0
-     
-     ''ThreadDetach(thread2) ' 16-06-2022
-     
-     Exit Sub
-     
-     fail:
-     Dim errmsg As String
-     
-     If  Err > 0 Then
-          errmsg = "FAIL PlayAll Error " & Err & _
-          " in function " & *Erfn & _
-          " on line " & Erl & " " & ProgError(Err)
-          Print #1, errmsg ,"jply ", jply, "i1 ";i1
-     End If
-     FileFlush (-1)
-     
-     ' ================================FIN PLAYALL <<=================
+         SetThreadPriority(threadmetronomo , -1 ) 'VV
+		End If
+		
+		''''''''
+		
+		' ============= For NB To NA ===============
+		For i1=NB To NA
+			' poner la velocidad original  del ejec si viene de una ejec
+			' si es manual la velocidad se calcula como esta aca resta ver como identificar que
+			' viene deuna ejec debo poner una marca
+			If i1<= NA-13 Then
+				' el off ya anda 01-03-2025!!! agregamos al final del if el 183 para que pase
+				
+				If (Roll.trk(jply, i1).nota >= 1) And Roll.trk(jply, i1).nota <= 12  And Roll.trk(jply, i1).dur >=1 And Roll.trk(jply, i1).dur <= 180 Or Roll.trk(jply, i1).dur <= 183 Or Roll.trk(jply, i1).dur <= 185 Then
+					' por mas que achique en octavas, Notapiano se calcula respecto del nro
+					' completo de octavas del piano ergo 115 es fijo siempre mientras
+					
+					Notapiano= i1
+					'**** Notapiano= 115 - i1 <<<<< con este calculo de notapiano no hace falta grabar nota en el OFF
+					'**** tampoco haria falta en el on pero  si es necesario para la visualizacion >>>>>
+					' en menu podemos hacer lo mismo RollNota con off podemos sacar la nota de Notapiano
+					Notapiano= Notapiano - restar (Notapiano)
+					''Print #1,"PALL 0:VEO LO CORRECTO DE NOTAPIANO "; Notapiano
+					dura=Roll.trk(jply, i1).dur ' es una N 185 la duracion son lso ticks hasael off 1
+					' llegamos al final de la Columna
+					'      portsal=pmTk(0).portout  no vamos a cambiar en la secuencia el midiout ni canal o si??
+					'      canal=pmTk(0).canalsalida
+					
+					If pmTk(0).ejec=1  Then ''''Roll.trk(1, NA).onoff=1  Then
+						' Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
+						vel=Roll.trk(jply, i1).vol  * ajuste
+					End If
+					' la duracion me da si suena o no
+					Select CASE Roll.trk(jply, i1).dur
+					Case 46 To  90  'silencios
+						vel=0
+					Case 138 To 180  'silencios
+						vel=0
+					Case Else
+						vel=Roll.trk(jply, i1).vol
+						If vel=0 Then
+							vel=velpos
+						End If
+					End select
+					
+					If Roll.trk(jply, i1).onoff =2 Then ''VER  KOKITO SILENCIOS!!!
+						NroEventoPista(1)= NroEventoPista(1) +1
+						NroEvento=NroEventoPista(1)
+						''Print #1,"noteon CUByte(Notapiano),vel,canal,portsal  ";CUByte(Notapiano),vel,canal,portsal
+						noteon CUByte(Notapiano),vel,canal,portsal,1,NroEvento
+						'''''''''CONTROL METRONOMO SOLO debe DISPARAR UNA VEZ si ya disparo antes por otra osa no lo hara
+						'    If metronomoPistas_si=3 And disparo=0 Then
+						'        Print #1,"LLAMA A METRONOMO EN PLAYALL!!! "
+						'        terminar_metronomo=0
+						'        retrasoMetronomo=retrasoMetronomoRoll
+						'        disparo=1
+						'        threadmetronomo = ThreadCall metronomo()
+						'    EndIf
+						'
+						''''''''
+						
+					End If
+					If Roll.trk(jply, i1).onoff= 1 Then
+						NroEventoPista(1)= NroEventoPista(1) +1
+						NroEvento=NroEventoPista(1)
+						'''Print #1,"noteoff CUByte(Notapiano),canal,portsal,1 "; CUByte(Notapiano),canal,portsal
+						noteoff CUByte(Notapiano),vel/2,canal,portsal,1,NroEvento
+					End If
+					
+					
+					'  Print #1, "PLAYALL AcordeOnIguales velpos ", velpos
+				End If
+				' YA BARRIO TODA LA COLUMNA AHORA ENVIA LOS NOTEON Y NOTEOFF
+				' PERO LOS PODRIA HABER ENVIADO A MEDIDA QUE RECORRO NO NECESITO UN VECTOR DE
+				' ACUMULAICON AHORA,,, creo!! habra necesidad de procesar algo antes de enviar
+				' losnoteon y noteoff? talvez por ahora lo dejoa asi mas adelante veo de si
+				' eliminar el control de simple y acorde....!!! 28-03-2025
+				
+			End If
+			
+			If i1 > NA-13 Then
+				If Roll.trk(jply,i1).nota = 210 Then
+					Print #1,"210 leido jply",jply
+					playloop2=SI
+					comienzo2=jply
+				End If
+				
+				If Roll.trk(jply,i1).nota = 211 Then
+					Print #1,"211 leido jply",jply
+					final2=jply
+					'---------- reset de las notas que no llegan a su off por un corte antes del off -- ok
+					' deberia hacer el corte tambien si hay ejecuciones
+					alloff(canal,portsal)
+					allSoundoff(canal, portsal )
+					'-------------------------------------------------
+					
+					If cntrepe > 0 Then
+						cntrepe -= 1 
+					Else
+						cntrepe=Roll.trk(jply,i1).vol ' nro repeticiones en vertical +1
+					End If
+					If cntrepe =0 Then
+						'comienzo=final+1
+						final2=MaxPos
+						If finalloop> 0 Then
+							final2=finalloop
+						End If
+					End If
+				End If
+			End If
+			
+			
+		Next i1
+		'''  ya no hace falta mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
+		' print #1,"---FIN -----paso:"; jply;" --------------------------------"
+		duracion (old_time_on ,tickUsuario) ' si es cero no 1 no hay duracion es acorde
+		old_time_on=old_time_on + tickUsuario 'jmgtiempo
+		
+		
+		If playloop=SI And jply= finalloop Then
+			jply=comienzoloop -1
+		End If
+		If playloop2=SI And jply= final2 Then
+			jply=comienzo2 -1
+			If final2=finalloop Then
+				If playloop=SI Then
+					jply=comienzoloop -1
+				Else
+					final=MaxPos
+					final2=Maxpos
+					jply=final2
+				End If
+			End If
+		End If
+		
+		
+		tickUsuario=60/(tiempoPatron*PPQN*FactortiempoPatron) 
+
+	Next jply
+	''while (PeekMessage(NULL, hwnd, WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE or PM_QS_INPUT))
+	''Wend
+	'-> LA ULTIMA NOTA SERA APAGADA CASI DE INMEDIATO POR EL alloff Y SOUNDOFF QUE SIGUEN
+	' POR ESO DEJAMOS SONAR LA NOTA LA 2*DURACION QUE TIENE dura
+	'' reldur(dura) 'la dduracion  a t=60 usamos eso a t=60
+	duracion (Timer , 2 ) ''* relDur(dura))
+	posicion=comienzo
+	'======================
+	' IF hay loop de repeticion se detecta en la posicion final Then
+	' posicion = comienzorepe , con esto vuelvo a repetir un pedazo
+	' o sea el final es el que me indica desde donde debo repetir solo ahce falta
+	' insertar el final en Roll con 2 parametros dede donde repetir cuantas veces y este es el final
+	' =========================l listo algoritmo mañana implemenamos
+	'
+	jply=0:curpos=0
+	' 11-06-2021 se volvio a colocar 1 seg retardo para no escuchar un corte abrubto
+	' al final, por ahroa no parpadea mas veremos....
+	play=NO
+	playb=NO
+	disparo=0
+	terminar_metronomo=1
+	
+	'''mouse_event MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0
+	
+	Dim As Integer checkejec
+	For  iz As Short =1 To 32
+		If CheckBox_GetCheck( cbxejec(iz))= 1  Or CheckBox_GetCheck( cbxgrab(iz))= 1 Then
+			checkejec=1
+		End If
+		Exit For
+	Next iz
+	'If GrabarPenta=0 And GrabarEjec=HabilitaGrabar And Parar_De_Dibujar=NO And checkejec=0 Then
+	'	' nada de off estamos en grabarpenta por teclado o Grabar o tocar ejecuciones
+	'	'''????? YESTO PORQUE ?? 19-07-2026  
+	'	k1=pmTk(0).portout
+	'	Print #1,"midiout ",k1, *nombreOut(k1)
+	'	alloff( canal,k1 )
+	'	allSoundoff(canal,k1 )
+	'	'out_free   midiout(k1)
+	'	Print #1,"desmarco ",*nombreOut(k1)
+	'	listoutAbierto(k1)=0
+	'	close_port midiout(k1)
+	'	''out_free   midiout(k1)
+	'	
+	'End If
+	If MIDIFILEONOFF = HABILITAR Then
+		Dim k1 As Integer
+		For k1=4 To NroEventoPista(1)
+			Print #midiplano,MidiDatos(1).datos(k1)
+		Next k1
+		Dim As Double TiempoAcumNew
+		Dim As Integer T1
+		
+		TiempoAcumNew= Timer - STARTMIDI
+		T1 =  TiempoAcumNew *  1000 * tiempoPatron/60
+		''GrabaMidiPlano()
+		Print #midiplano, T1 ;" Meta TrkEnd"
+		Print #midiplano, "TrkEnd"
+		MIDIFILEONOFF = DESHABILITAR
+		Close 20
+		
+	End If
+	VerMenu=1
+	terminar_metronomo=1
+	disparo=0
+	
+
+	
+	trabaspace=0
+	
+	''ThreadDetach(thread2) ' 16-06-2022
+	
+	Exit Sub
+	
+	fail:
+	Dim errmsg As String
+	
+	If  Err > 0 Then
+		errmsg = "FAIL PlayAll Error " & Err & _
+		" in function " & *Erfn & _
+		" on line " & Erl & " " & ProgError(Err)
+		Print #1, errmsg ,"jply ", jply, "i1 ";i1
+	End If
+	FileFlush (-1)
+	
+	' ================================FIN PLAYALL <<=================
 End Sub
 
 ' ---------------
@@ -3694,13 +3694,13 @@ Sub metronomo ()
            ' Print #1, "LLAMA A SOUNDCALL"
             medio_metronomo_on=FALSE
             threadsound = threadCall soundcall
-            SetThreadPriority(threadsound , -1 )
+            SetThreadPriority(threadsound , -1 ) 'VV
             
                Else
            tic=1
                     If CPCS >0 Then  'cantidad de pulsos con sonido
                          threadsound = threadCall soundcall
-               SetThreadPriority(threadsound , -1 )
+               SetThreadPriority(threadsound , -1 ) 'VV
                          CPCS=CPCS-1
                     End If
                     If CPSS > 0 And CPCS=0 Then
@@ -3718,17 +3718,17 @@ Sub metronomo ()
                     If car="1" Then
                          volalto=1 'volumen nornal
                          threadsound = threadCall soundcall
-               SetThreadPriority(threadsound , -1 )
+               SetThreadPriority(threadsound , -1 ) 'VV
                     End If
                     If car="2"  Then ' volumen semi fuerte
                          volalto=2
                          threadsound = threadCall soundcall
-               SetThreadPriority(threadsound , -1 )
+               SetThreadPriority(threadsound , -1 ) 'VV
                     End If
                     If car="3"  Then ' volumen  fuerte
                          volalto=3
                          threadsound = threadCall soundcall
-               SetThreadPriority(threadsound , -1 )
+               SetThreadPriority(threadsound , -1 ) 'VV
                     End If
 
                     If car="0" Then
@@ -3796,7 +3796,7 @@ Print #1,"ELSE-------------- "
                     If jmetro=jply Or  MEDIO_METRONOMO_ON=TRUE  Then ' PARA PLAY CON METRONOMO DE GRAFICO
 Print #1,"DEBE TOCAR EÑ METRONOMO DURANTE PLAY GRAFICO  O REPRODUCTOR MEDIOS ",MAXM
                        threadsound = threadCall soundcall
-                       SetThreadPriority(threadsound , -1 )
+                       SetThreadPriority(threadsound , -1 ) 'VV
                         duracion(Timer, (60/(tiempoPatron)) / FactortiempoPatron) 'jmgtiempo
                         If terminar_metronomo=1  Then
                             terminar_metronomo=0
