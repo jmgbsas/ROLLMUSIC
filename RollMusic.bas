@@ -105,8 +105,15 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.409 Conversion de pistas ejec a roll y rtk adaptacion a nuva modificacion"
-'    -0.406 fix renombrar pistas fisicas, pero no dentro del archivo
+nroversion="0.413 Notas Guias movibles, performance teclado y pantalle mas ajustes"
+'' 0.412 Fix cuando se desea mover dos notas ligada que tienen un solo > no se movia la 2da nota o se movian fuera de la zona lso cierres >
+'' 0.411 cambio acentos test para 5/8 (3+2)(2+3), SEPARACION de velocidades por ejecucion de teclado(N) o manuales(O,P,I,L.F..)
+'' faltan ahcer test de todos los otros acentos el RecalCompas funciona bien en 5/8, en este hacer mas las 
+'' listo->dos clases de 5/8 3:2 y 2:3 en realidad se pueden dividir en un 3/8 y 2/8 similar a 3/4 y 2/4 o l reves e y luego 3
+'' 2/4 es unacompresion de 4/4, el d opulso es semifuerte no es debil
+'' falta ver el 7/8 y sus variaciones 3,2,2/2,3,2/2,2,3/ y la mia con anacruza adelante  sl,1/1,2,2,2/
+'0.410 ajustes Tpo Compas,Fix Teclas R recalcompas y ALt-R borra lineas de compas fix renombrar pistas fisicas, pero no dentro del archivo 
+''SEGUIR COPM ROLLSUB LINEA 190 LAS MARCAS DE ACENTO!
 '    -0.405 grabar una pista 1 sola y luego insertar dentro de la misma, lo hace bien, se puede insertar
 '     nuevas notas en una pista ya grabada.
 '    -0.404 volumenes corregidos daba cero por definicion de ajuste como float debe ser single...
@@ -435,7 +442,7 @@ Do
                     Print #1, "///1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
                     
                     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-                    SetThreadPriority(threadloop , 20 ) ' decia 1 VV
+                    SetThreadPriority(threadloop , THREAD_PRIORITY_HIGHEST) 'nuevo 
                     clickpista=SI 'abre tab una sola vez seposiciona en psita 1
                     Print #1,"0 1=====hwndC ", HwndC
                End If
@@ -463,6 +470,7 @@ Do
                     Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
                     EstaBarriendoPenta=1
                     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+                   SetThreadPriority(threadloop , THREAD_PRIORITY_HIGHEST) 'nuevo
                End If
                Print #2,"=====hwndC ", HwndC
                ''RollLoop ( param)
@@ -792,6 +800,7 @@ Print #1," K,tocaparam(k).canal=k-1 ", k , tocaparam(k).canal
           
           Print #1, "///3 ubiroll ubirtk ", ubiroll,ubirtk
           threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+         SetThreadPriority(threadloop , THREAD_PRIORITY_HIGHEST) 'nuevo
           ThreadWait threadloop
           threadDetach(threadloop)
           Sleep 20

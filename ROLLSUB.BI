@@ -117,10 +117,9 @@ Print #1,"armardurFrac  numeroFrac Resultante ", numeroFrac
 FileFlush (-1)
 End Sub
 
-
 Sub RecalCompas(rit As integer) ' Nuevo para ticks 
 ' EN DESARROLLO 18-12-2025 11-25 JU
-'ritmo 1=2/4, 2=3/4, 3=4/4, 4=5/8 ,5=6/8, 6=7/8, 7=12/8
+'ritmo 2=2/4, 3=3/4, 4=4/4, 5=5/8 ,6=6/8, 7=7/8, 9=9/8,12=12/8
 ' y 2/8, 3/8, 4/8, 8/8, 9/8, 10/8, 11/8 no hay?
  On Local Error GoTo errorCalc 
 ' velocidades para 4/4 reposicion par ticks
@@ -142,34 +141,41 @@ clickpista=0
   Case 2 To 4
     incremento=PPQN
     den=4
-  Case 5 To 7
+  Case 52,53, 6, 72,73,75, 9, 12
     incremento=PPQN/2
-    den=8
-  Case 12
-    incremento=PPQN/2
+Print #1,"  rit INCREMENTO "; incremento 
     den=8
 
  End Select 
-
+Print #1,"  rit INCREMENTO ";rit, incremento
  ticks=rit*incremento
-
+Print #1,"  TICKS "; TICKS 
 ''Print #1,"En Recalcompas MAXI ",MAXI
 ReDim compas(1 To 2*MAXI) ' se supono que borra su contenido pero no funciona!!!
 If rit=0 Then 
   Exit Sub
 EndIf
 'los pulsos fuertes y debiles hay que desarrollarlos para los otros ritmos!!!
- 
+Dim in1 As Integer 
 MaxPos=MAXI
 If CantTicks < MAXI Then
   CantTicks=MAXI
 EndIf
   compas(1).Posi=0
   compas(1).nro = 0
-' este for decide el pulso no es parejo habra que limar �ra cada caso?
-'2/4 (f,d), 3/4 (f,d,d), 4/4 (f,d,sf,d), 6/8 (f,d,d,sf,d,d)?,12/8(f,d,d,d,d,d,sf,d,d,d,d,d)? 
+' este for decide el pulso no es parejo habra que limar ?ra cada caso?
+'2/4 (f,sf), 3/4 (f,d,d), 4/4 (f,d,sf,d), 6/8 (f,d,d,sf,d,d)?, 12/8(f,d,d,d,d,d,sf,d,d,d,d,d)?
+'' 7,8 72 (f,d, sf,d, sf,d,d) es (2,2,3) en 1,3,5. en  1, incremento*2, incremento*4 
+'' 7,8 73 (f,d,d, sf,d, sf,d) es (3,2,2) en 1,4,6   en 1, incremento*3, incremento*5
+'' 7,8 75 (f,d, sf,d,d, sf,d) es (2,3,2) en 1,3, 6  en 1, incremento*2, incremento*5
 ' el 1er tiempo siempre es fuerte es el acento
 ' el 2do  "     siempre es debil
+'*********************************
+'' RESULTADO: VALORES 1 NEGRA EN CADA PULSO 
+'' 4/4 PURO 4 NEGRAS OK
+'' 3/4 PURO 3 NEGRAS OK
+'' 2/4 PURO 2 NEGRAS OK
+'********************************
 Select Case rit
    Case 2
      ticks=192
@@ -177,55 +183,167 @@ Select Case rit
      ticks=288 
    Case 4  ' 4*96
      ticks=384
-   Case 5  ' 5*48
+   Case 52,53  ' 5*48 '' rit 53 y 52
      ticks=  240
-   Case 6
+Print #1,"5  INCREMENTO TICKS "; ticks
+   Case 6  ''6*48
      ticks=  288
-   Case 7
+   Case 7 '' 7/7 como el 5/8 irregular complejo 123 12 12 / 12 12 123/ 12 123 12/ 
+''           fuertes                                     F     f  f      f    f   f       f   f     f  	 
      ticks=  336
+   Case 9
+     ticks=  432
    Case 12
      ticks=  576
 End Select 
+Dim As Integer hayon=0 
+kj=0
+
 For j=1 To MAXI-2  ' j recorre los ticks 1 a 1
   kj=kj+1
-  Select Case kj
-    Case   1 To  incremento 
-     compas(j).nro = -1      ' FUERTE
+' veo si hay un on 
+  For  in1=NB To NA
+       If Roll.trk(j,in1).onoff = 2 Then ''  hay un On
+          hayon=1
+          Exit For
+       EndIf
+  Next in1
+If  hayon=1   Or pmTk(0).ejec = 1 Then 
+ '''Print #1,"ENTRA A SELECT HAY ON "
+  Select Case kj  '' barre  ticks del compas en forma repetitica 1-96 , 1-96....o 1-48, 1-48  
+    Case   1 To  6             ''(1)
+     compas(j).nro = -1      ' FUERTE para todos los ticks 
      compas(j).Posi=0
-    Case  incremento+1 To  incremento*2 -1
-     compas(j).nro = -2     ' DEBIL
+Print #1,"1]  fuerte  "
+
+    Case  incremento +1 To  incremento + 6 ''(2)
+    If ticks=192 Then  '' 2/4 es un comprimido de 4/4, 1 y 2 de 2/4 serian 1 y 3 de 4/4
+     compas(j).nro = -3     ' semifuerte  
      compas(j).Posi=0
-    Case incremento*2+1  To incremento*3 -1
-     compas(j).nro = -3   ' DEBIL O SEMIFUERTE
+Print #1,"1]  semifuerte  el unico el 2/4"
+   Else  'OK 7/8, 6/8,9/8, 12/8, 3/4, 4/4, 5/8 
+     compas(j).nro = -2     ' debil   
      compas(j).Posi=0
-    Case incremento*3+1 To incremento*4 -1
-     compas(j).nro = -4   'DEBIL
+Print #1,"1]  debil  "
+   EndIf
+Print #1,"2]  debil  ticks  ";ticks; " compas(j).nro  ";compas(j).nro 
+
+    Case incremento*2 +1  To incremento*2  +6  ''(3)
+        If ticks=384 Then ' 4/4 
+          compas(j).nro = -3   '  SEMIFUERTE 4/4
+          compas(j).Posi=0
+        EndIf
+        If ticks=288 then  ' 3/4
+          compas(j).nro = -2   '  DEBIL 3/4
+          compas(j).Posi=0
+        EndIf
+        If ticks =240 Or ticks = 336 Then  ' 5/8 7/8  ' 3er corchea de 7 semifuerte
+'           For in1= NB To NA '' reviso la columna por si hay un inicio de nota onoff=2
+ '              If Roll.trk(j, in1).onoff=2 Then ' 5/8 12,123 es fuerte los dos 1
+               If  rit=52  Or rit=72  Or rit=75 Then '' 7/8-> (2+2+3)(2+3+2)
+                  compas(j).nro = -3      ' 240 semi FUERTE  523 5/8 2do agrupamiento 12,(1)23 
+                  compas(j).Posi=0        ' 7/8 12,12,123/12,123,12/123,12,12
+Print #1,"3] (2+3) 5
+               EndIf
+
+               If ticks=336 And rit=73 Or rit=53 Then 
+                  compas(j).nro = -2      ' 532 DEBIL 5/8 1er agrupamiento 12(3),12 
+                  compas(j).Posi=0
+Print #1," 3] (3+2) 5 , (3+2+2)  ' 3era debil dentro del 3
+               EndIf
+
+        EndIf  
+Print #1,"2  debil o SF  ticks  ";ticks; " compas(j).nro  ";compas(j).nro
+'' el 3er lugar en 5/8 puede ser fuerte 12,123 o debil 123,12 depende del agrupamiento zas 
+'' depende de la duracion de la nota o figura 
+    Case incremento*3  +1 To incremento*3 +6  ''(4)  145 a 150
+       If ticks=384  Or  ticks=240 And rit=53 Then ''4/4  
+          compas(j).nro = -3   'semifuerte
+          compas(j).Posi=0
+Print #1,"4] (3+2) 5
+      EndIf
+
+       If ticks=288 Or ticks=432 Then '' 6/8 9/8  
+          compas(j).nro = -3   'SEMIFUERTEl
+          compas(j).Posi=0
+      EndIf
+      If ticks =240 And rit=52  Then  ' 5/8 7/8 
+                compas(j).nro = -2      ' DEBIL  5/8 2do agrupamiento 12,(1)23 
+                compas(j).Posi=0        ' 7/8 12,12,123/12,123,12/123,12,12
+      Print #1,"4] (2+3) 5  
+      EndIf
+      If ticks=336 And rit=73 Then
+                compas(j).nro = -3      ' semifuerte  73  3,2,2
+                compas(j).Posi=0        ' 7/8  123,(1)2,12
+      Print #1,"4] (2+3) 5  
+
+      EndIf
+
+Print #1,"j ";j; " 3  o ticks 4/4  ";ticks; " compas(j).nro  ";compas(j).nro       
+
+    Case incremento*4 +1 To incremento*4  +6   ''' (5)   5/8 6/8 9/8 12/8
+        If ticks=240  Or ticks=288 Or ticks=432 Or ticks=576 Then    
+           compas(j).nro = -2
+           compas(j).Posi=0
+           Print #1,"5  ticks  ";ticks; " compas(j).nro  ";compas(j).nro
+        EndIf
+        If ticks=336 And rit=72 Then 'fin del 72
+           compas(j).nro = -3
+           compas(j).Posi=0
+        EndIf 
+    Case incremento*5 +1 To incremento*5 +6 '' (6) debil para 6/8 9/8 12/8 
+     compas(j).nro = -2
      compas(j).Posi=0
-    Case incremento*4+1 To incremento*5 -1
-     compas(j).nro = -5
-     compas(j).Posi=0
-    Case incremento*5+1 To incremento*6 -1
-     compas(j).nro = -6
+     If ticks=336 And rit=73 Then ''sf
+                compas(j).nro = -3      ' semifuerte  
+                compas(j).Posi=0        ' 7/8  123,12,(1)2
+      Print #1,"4] (2+3) 5  
+
+     EndIf
+    Case incremento*6 +1 To incremento*6  +6  '' (7) semi fuerte para 12/8 debil 9/8  ?
+        If ticks = 432 Then  '' 9/8
+           compas(j).nro = -2  '  debil
+           compas(j).Posi=0
+       EndIf
+        If ticks = 576 Then  ' 12/8
+           compas(j).nro = -3 'semi fuerte ? como en el 4/4 3er ti3mpo , aca es I*
+           compas(j).Posi=0
+       EndIf
+
+    Case incremento*7  +1 To incremento*7 +6 '' (8) debil para 9/8 12/8
+     If  ticks=  432 Then   ' 9/8 
+         compas(j).nro = -2   'semifuerte
+         compas(j).Posi=0
+     EndIf 
+     If  ticks=  576 Then   ' 12/8 
+         compas(j).nro = -3   'semifuerte
+         compas(j).Posi=0
+     EndIf 
+
+    Case incremento*8  +1 To incremento*8  +6 '' (9) debil para 9/8 12/8 
+     compas(j).nro = -2
      compas(j).Posi=0
 
-    Case ticks  ' VALORES COMPLETOS , LOS ANTERIORES -1 ASI NO INTERFIERNE CON EL COMPLETO
-     cntcompas=cntcompas+1
-     compas(j).Posi=j
-     compas(j).nro = cntcompas
-      KJ=0
+    Case incremento*9  +1 To incremento*9 +6  '' (10) fuerte  para  12/8 
+     compas(j).nro = -2
+     compas(j).Posi=0
+
+    Case incremento*12 +1  To incremento*12 +6 '' (11) fuerte  para  12/8 
+     compas(j).nro = -2
+     compas(j).Posi=0
+
     
   End Select
 
- ' kp=kp+1
- ' Select Case kp
- '   Case negra
- '    cntnegra=cntnegra+1
- ' compas(j).Posi=j
- ' compas(j).nro = cntnegra
- '     kp=0
- ' End Select
+EndIf
+    If  KJ=  ticks  Then  ' VALORES COMPLETOS , LOS ANTERIORES -1 ASI NO INTERFIERNE CON EL COMPLETO
+      cntcompas=cntcompas+1
+      compas(j).Posi=j
+      compas(j).nro = cntcompas
+      kj=0
+    EndIf
 
-
+ hayon=0
 Next j
 
 Print #1,"fin RecalCompas ok "
@@ -973,6 +1091,7 @@ For x= x1 To x2  'curpos
       ''' Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1 Or _    
 ' AGREGAMOS FIN DE NOTA OFF1 NO SONARA PERO PODRA MARCAR PASOZONA2 EN ZONA
     If Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 2 Or _
+    ( Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).nota>=1 And Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).nota<=12 ) Or _
        Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur = 190 Or _
        Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).dur = 182 Or _   ' para detectar final  secuencoa
       (Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff = 1 And borrar=1 ) Then
@@ -3359,8 +3478,10 @@ Sleep 100
      inicioDeLectura=0' Int(Maxpos/NroCol)
      posn=Maxpos- 6  ' no  seria -6 ? decia -2 ahora ticks es -6 es donde termina el ultimo off
      ' maspos es esa posn +1 =MaxPos
-     
-     
+     CantMin=dat.CantMin ' una cancion de 10 mimutos si se desea mas el usuaroi lo elegira 
+     If CantMin=0 Then 
+        CantMin=10
+     EndIf
      
      If posn < 0 Then posn=0 EndIf
      ' crgamos limites Roll de octavas
@@ -3430,6 +3551,11 @@ Dim mit As aUshort
      pmTk(0).canalsalida = dat.canalsalida ' ubyte a ubyte
      pmTk(0).tipoCompas = dat.tipoCompas
      ritmo=pmTk(0).tipoCompas
+Print #1,"////// ritmo de mierda leido ";ritmo 
+    If ritmo=8 Or ritmo=0 Then  '' algunos archivos quedaro n con 8 que no existe DEFAULT 4 
+       ritmo=4
+       pmTk(0).tipoCompas=4 
+     EndIf ' ponemos el default
      TipoCompas=ritmo
      TCompas=CRaTC(ritmo)
      
@@ -3480,6 +3606,7 @@ Print #1,"pmTk(0).MaxPos = MaxPos ";  MaxPos
      ' los 2 vectores deben tener el mismo tama�o ergo si CantTicks
      ' lo agrando trabajo tambien ? mmm no trabajo debe tener el tama�o del disco!
      ' cargamos trabajo datos
+     CantTicks = CantMin*PPQN*tiempoPatron   
      If CantTicks - MaxPos < 2000 Then
         CantTicks = CantTicks + 2000 ' jmg 24-09-2021
      EndIf  
@@ -3520,7 +3647,13 @@ MessageBox( null, "MIDI-OUT "+ Str(portout)+ " INEXISTENTE CAMBIELO", "Se cambia
 
 
      TipoCompas= dat.TipoCompas 
-     ritmo=TipoCompas 
+     ritmo=TipoCompas
+
+     If ritmo=8 Or ritmo=0 Then 
+        ritmo=4
+        TipoCompas=4
+        dat.TipoCompas=4
+     EndIf    
      TCompas=Mid(tempoString(TipoCompas),1,4) ' string
     
      pmTk(0).tipoCompas = TipoCompas 
@@ -5439,12 +5572,20 @@ Select Case rit
          CRaTC="3/4"      
        Case  4 
          CRaTC="4/4"
-       Case  5 
-         CRaTC="5/8"
+       Case  52 
+         CRaTC="(2+3)/8"
+       Case  53 
+         CRaTC="(3+2)/8"
        Case  6 
          CRaTC="6/8"
-       Case  7 
-         CRaTC="7/8"
+       Case  72 
+         CRaTC="(2+2+3)/8"
+       Case  73 
+         CRaTC="(3+2+2)/8"
+       Case  75 
+         CRaTC="(2+3+2)/8"
+       Case  9 
+         CRaTC="9/8"
        Case  12 
          CRaTC="12/8"
 End Select 
@@ -5488,6 +5629,17 @@ Dim As String default, default2
  Dim  As Integer ni
  
 Select Case  menuOldStr 
+ Case "[MINUTOS]"
+default=Str(CantMin)
+default = InputBoxJmg("Minutos deseados " ,"Entre Minutos de la pista  ",default, ES_MULTILINE + ES_AUTOVSCROLL,0  )
+CantMin = CInt(default) '08-01-2022 de doble a int
+'CANTTICKS A TEMPO patron dado, minimo 60, maximo 240
+CantTicks=CantMin * PPQN *tiempoPatron ''230000 ' 10* 96*240, =345600 '15*96*240
+'CANTTICKS A TEMPO patron dado, 150 promedio,=14400'  10*96*150,,=172800 15*96*120
+''SI UN ROLL O TRK O LO QUE SEA ESTA CARGADOD DEBERIAMOS HACER REDIM PRESERVE!!!
+
+mensajeEstado="CantTicks=CantMin * PPQN *tiempoPatron " & Str(CantTicks) & " negra=96 ticks  tiempoPatron= " & Str(tiempoPatron) & " Cant minutos = " & Str(CantMin)
+
  Case  "[Ver]" 
             For ni=1 To MaxPos
                If Compas(ni).Posi = posicion Then
@@ -5769,8 +5921,9 @@ Print #1," >>>>>>>>>ntk y volumen de pista de cancion ",ntk,pmTk(ntk).vol
          EndIf
       EndIf   
       default=Str(ritmo)  
-      default = InputBoxJmg("Entre un Numero de Ritmo" ,"2=2/4, 3=3/4, 4=4/4, 5=5/8 ,6=6/8, 7=7/8, 12=12/8 ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+      default = InputBox("Entre un Numero de Ritmo" ,"2=2/4, 3=3/4, 4=4/4, 53=(3+2)/8, 52=(2+3)/8 ,6=6/8, 72=(2+2+3)/8, 73=(3+2+2)/8, 75=(2+3+2)/8, 9=9/8,12=12/8 ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
       ritmo=  CUByte(default)
+
       TCompas= CRaTC(ritmo) ' string para mostrar en grafico 
       pmTk(ntk).tipocompas= ritmo ' todo ubyte
       TipoCompas=pmTk(ntk).tipocompas
@@ -6314,7 +6467,9 @@ Dim  As Integer npl, length
 'print #1, "inicio MaxPos "; MaxPos
  For i2 As Integer = 1 To MaxPos  'incluye a +1 es ultimo off +1
       For i1 As Integer = NB To NA
-          Trabajo(i2, i1)=Roll.trk(i2,i1 )
+          Trabajo(i2, i1)=Roll.trk(i2,i1 ) '' ACA TRABAJO ES MAS CHICO QUE ROLL
+' PORQUE SE DEFINE CON MAXPOS PERO ROLL SE DEFINIO CON CANTTICKS
+' MUCHO ESPACIO EN BLANCO NO IMPORTA EL ALGORITMO ES DERROCHON JAJA
       Next i1
  Next i2
 ' MaxPos = k JMG 16-05-2021 TODAVIA NO SE COMO SE ACHICA LA SECUENCIA 
@@ -6458,7 +6613,7 @@ mit.st = tiempoPatron
 ' inst 
 ' onoff 
 ' por compatibilidad hacia atras dejo asi no muevo a grabaLim
-
+dat.CantMin=CantMin
 
 Print #1,"grabando las partes del archivo "; nombre
 'FileFlush (7)
@@ -6799,7 +6954,7 @@ If grabaLim.pan =0 Then
    grabaLim.pan = CUByte(3)
 EndIf
 
-
+grabaLim.sonido = CUByte(CantMin)
    ''''  grabaLim.nnn = CUByte(tiempoPatron)
     
      graba3.dur = pmTk(ntk).portout

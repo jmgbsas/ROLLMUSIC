@@ -675,9 +675,9 @@ TopeEjec=0
 trabaspace=0
 ''Common Shared As String ROLLDIR
 Common Shared As Integer Vfuerte,Vsemifuerte,Vdebil
-Vfuerte=120     'ff
-Vsemifuerte=100 'mf
-Vdebil=80      ' p
+Vfuerte=120     'ff    o 100
+Vsemifuerte=96 'mf  o  80
+Vdebil=60      ' p     o  50
 Common Shared As Long PARAR_PLAY_MANUAL ,PARAR_PLAY_EJEC
 PARAR_PLAY_MANUAL = NO:PARAR_PLAY_EJEC = NO
 Common Shared TipoCompas As UByte
@@ -783,7 +783,7 @@ Type rolldat Field=1 'con esto se define roll tendra pan,vol,nota,dur,pb,inst va
      TipoCompas  As UByte =0 'z3.pb
      canalsalida As UByte =0 'z3.inst
      version     As UByte =222 'librez3onoff z3.onoff --- 21 ubyte 21 LO USAREMOS PARA INDICAR VERSION 2 DE ROLL=222
-     librez4nota As UByte =0  'z4.nota
+     CantMin  As UByte =0  'z4.nota ' para calcular CantTicks
      librez4dur As UByte =0  'z4.dur
      librez4vol As UByte =0  'z4.vol
      tiempoPatron1 As UByte=0 'z4.pan
@@ -958,3 +958,9 @@ Dim Shared As Any Ptr MutexSincro '''  MUTEX
 MutexSincro = MutexCreate()
 Dim Shared As Double tiempoUltimoFrame
 Dim Shared As BOOLEAN GRABARMAS=FALSE 
+ReDim Shared As paso compas (1 To MaxPos) 'cada item es la posicion en donde
+Dim Shared As Integer ACENTO=NO ''SIN ACENTOS MANUALES , AUTOMTICOS 
+'simplificando los acentos 7/8
+Dim Shared As byte acento72(1 To 7)={-1,-2,-3, -2,-3,-2,-2} ' 2,2,3
+Dim Shared As byte acento73(1 To 7)={-1,-2,-2, -3,-2,-3,-2} ' 3,2,2
+Dim Shared As byte acento75(1 To 7)={-1,-2,-3, -2,-2,-3,-2} '2,3,2

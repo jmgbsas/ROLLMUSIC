@@ -702,6 +702,8 @@ Function tempoString (t As UByte) As String  ' para imprimir en archivo midi txt
           tempoString = "6/8 36 8"
      Case Tcompas7_8
           tempoString = "7/8 36 8"
+     Case Tcompas9_8
+          tempoString = "9/8 36 8"
      Case  Tcompas12_8
           tempoString = "12/8 36 8"
      Case Else
@@ -973,34 +975,37 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
           ''Print #1,"pmTk(ntk).ejec  sonido!! ",pmTk(ntk).ejec
           If pmTk(0).vol > 13 Then ' 10%
                ajuste = pmTk(0).vol/127
+               '''Print #1,"veo ajuste,pmTk(0).vol  "; ajuste, pmTk(0).vol
+          Else
+               ajuste=1
           End If
 
           ' o sea pmTk(0).vol es el ajuste se lo pasa como una fraccion del maximo rango 127
           If pmTk(0).ejec =1 Or Roll.trk(1,NA).onoff = 1 Then
                ' Print #1,"   UN ARCHIVO CON DATOS DE EJECUCION POR TECLADO CONVERTIDOS A ROLL"
           Else
-               'Print #1,"ARCHIVO DATOS EDICION MANUAL "
+               ''Print #1,"ARCHIVO DATOS EDICION MANUAL "
               
                If Compas(jply).nro = -1 Then
                     velpos=Vfuerte * ajuste  '120
                End If
                If Compas(jply).nro = -2 Then
-                    velpos=Vdebil  * ajuste   '80
+                    velpos=Vdebil  * ajuste   '60
                End If
                If Compas(jply).nro = -3 Then
-                    velpos=vsemifuerte * ajuste '100
+                    velpos=Vsemifuerte * ajuste ' 96
                End If
                If Compas(jply).nro = -4 Then
                     velpos=vdebil * ajuste
                End If
-               If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
-                    velpos=vdebil * ajuste
-               End If
+              ' If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
+                '''    velpos=vdebil * ajuste
+              ' End If
                
-               If Compas(jply).nro = 0 Then
-                    velpos=vsemifuerte  ' para midipolano dividiones por partes veremso si se soluciona el sonido
-                    ' en la rutina vol , depende de la dur ajusta vol=0 o vol = velpos... no hay problema con los silencios
-               End If
+               'If Compas(jply).nro = 0 Then
+               '    'vsemifuerte  ' para midipolano dividiones por partes veremso si se soluciona el sonido
+               '     ' en la rutina vol , depende de la dur ajusta vol=0 o vol = velpos... no hay problema con los silencios
+               'End If
          
           End If
           '  print #1," ---------------000000000000000000000-----------------"
@@ -1013,7 +1018,7 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
           '
           ''''''''INICIO DE METRONOMO AL COMIENZO DE LA SECUENCIA HAYA O NO NOTAS
           If metronomoPistas_si=3 And disparo=0 Then
-               Print #1,"LLAMA A METRONOMO EN PLAYALL!!! "
+               'Print #1,"LLAMA A METRONOMO EN PLAYALL!!! "
                terminar_metronomo=0
                retrasoMetronomo=retrasoMetronomoRoll
                disparo=1
@@ -1046,9 +1051,10 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 					'      portsal=pmTk(0).portout  no vamos a cambiar en la secuencia el midiout ni canal o si??
 					'      canal=pmTk(0).canalsalida
 					
-					If pmTk(0).ejec=1  Then ''''Roll.trk(1, NA).onoff=1  Then
+					If Roll.trk(jply, i1).dur =185  Then  ''' tiene N como nota es teclado vivo
 						' Print #1,"playAll Roll.trk(jply, i1).onoff ,vol ";Roll.trk(jply, i1).onoff, Roll.trk(jply, i1).vol
-						vel=Roll.trk(jply, i1).vol  * ajuste
+                            vel=Roll.trk(jply, i1).vol  * ajuste
+                         '      Print #1," LO TOMA COMO EJECUCION "
 					End If
 					' la duracion me da si suena o no
 					Select CASE Roll.trk(jply, i1).dur
@@ -1057,10 +1063,17 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 					Case 138 To 180  'silencios
 						vel=0
 					Case Else
-						vel=Roll.trk(jply, i1).vol
-						If vel=0 Then
-							vel=velpos
-						End If
+                            If Roll.trk(jply, i1).dur <> 185   Then 
+                              If Roll.trk(jply, i1).onoff =2  Or Roll.trk(jply, i1).onoff =1 Then 
+	                            '' vel=Roll.trk(jply, i1).vol
+                                  ' If vel=0 Then
+							  vel=velpos
+                                   ''  Print #1,"VELOCIDAD POR LOGICA ";VEL
+                                  ' Else                                 
+                                  '   Print #1,"VELOCIDAD ROLL ";VEL
+                                  ' End If
+                              EndIf
+                           EndIf
 					End select
 					
 					If Roll.trk(jply, i1).onoff =2 Then ''VER  KOKITO SILENCIOS!!!
@@ -1068,6 +1081,7 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 						NroEvento=NroEventoPista(1)
 						''Print #1,"noteon CUByte(Notapiano),vel,canal,portsal  ";CUByte(Notapiano),vel,canal,portsal
 						noteon CUByte(Notapiano),vel,canal,portsal,1,NroEvento
+                      Print #1, " ON posicion ";jply;"  vel  ";vel; " dur "; Roll.trk(jply, i1).dur; "comp.nro ";compas(jply).nro
 						'''''''''CONTROL METRONOMO SOLO debe DISPARAR UNA VEZ si ya disparo antes por otra osa no lo hara
 						'    If metronomoPistas_si=3 And disparo=0 Then
 						'        Print #1,"LLAMA A METRONOMO EN PLAYALL!!! "
@@ -1085,6 +1099,7 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 						NroEvento=NroEventoPista(1)
 						'''Print #1,"noteoff CUByte(Notapiano),canal,portsal,1 "; CUByte(Notapiano),canal,portsal
 						noteoff CUByte(Notapiano),vel/2,canal,portsal,1,NroEvento
+                      '''Print #1, " Off posicion ";jply;"  vel  ";vel/2
 					End If
 					
 					
@@ -1537,8 +1552,8 @@ Sub BuscoComienzoNota(Roll As inst, desdet As Integer, jpt As Integer, i1 As Int
                Print #1,"kx Roll.trk (kx,ind).onoff ";kx;" ";Roll.trk (kx,ind).onoff
                Print #1,"kx Roll.trk (kx,ind).dur   ";kx;" ";Roll.trk (kx,ind).dur
           End If
-          
-          If  Roll.trk (kx,ind).onoff = 2 Then
+                     '                                            para notas ligadas la segunda no tiene onoff=2 o podria ponerle onoff 3  
+          If  Roll.trk (kx,ind).onoff = 2 Or (Roll.trk (kx,ind).nota >=1 And  Roll.trk (kx,ind).nota <=12 )Then
                Print #1,"//encontro un ON// jpt2 ind  ";kx,ind
                jpt2=kx
                Print #1,"encontro on jpt2 ",jpt2
@@ -1643,7 +1658,11 @@ Sub BuscoFinalNota   (Roll As inst, hastat as Integer, jpt As Integer, i1 As Int
           durv=DurXTick(dura) ' FIX 0.337
           limite=jpt+ durv +1 ' FIX 0.337
      Else
+        If pasoZona2=0 Then '' fix 0.412 24-08-2026 no debe pasar de la zona si hay zona jeje   
           limite=MaxPos ' FIX 0.4337
+        Else
+          limite=pasoZona2    
+        EndIf   
      End If
      ' es ilogico con limite funciona quiere  decir que barre dos veces la misma nota ON
      ' no entiendo si barre hasta MaxPos mueve mas off1 por fuera de la zona y mucho mas halla!!!
@@ -1932,7 +1951,7 @@ Sub BuscoOtrosOn(Roll As inst, jpt As Integer, ByRef jpt4on As integer, i1 As in
      ' asi lo  cree cuando son ligados
      jpt4on=0
      For i3 As Integer =jpt To jpt3off
-          If Roll.trk(i3,i1).onoff = 0  And  Roll.trk(i3,i1).dur > 0 And Roll.trk(i3,i1).dur <= 180 Then
+          If Roll.trk(i3,i1).onoff = 0  And  (Roll.trk(i3,i1).nota >=1 And Roll.trk(i3,i1).nota >=12 ) Then '''' mas exavto nuevo 23-08 Roll.trk(i3,i1).dur > 0 And Roll.trk(i3,i1).dur <= 180 Then
                jpt4on=i3
                Exit Sub
           End If
@@ -2000,7 +2019,7 @@ Sub trasponerRoll( cant As Integer, Roll As inst, encancion As Integer)
      Else
           hastat= MaxPos
      End If
-     ''Print #1, " desdet hastat comienzo final "; desdet, hastat, comienzo, final
+     Print #1, " trasponer => desdet hastat comienzo final "; desdet, hastat, comienzo, final
      Dim  As Integer jpt4on,jpt5, jpt3off, jpt2on , i2 'posicion del onoff=2 inicio nota
      Dim As Integer  k2, k2fin, oldjpt,oldind
      ''-----------------COMIENZO FOR-----------------
@@ -2045,7 +2064,7 @@ Sub trasponerRoll( cant As Integer, Roll As inst, encancion As Integer)
                                    End If
                               End If
                               ' para mover  un off 2 q esta en rango y su off 1 aunque este fuera de rango
-                              If  Roll.trk(jpt,i1).onoff = 2  Then ''ESTO SE EJECUTA PRIMERO PORQUE ENCUENTRA LOS ON
+                              If  Roll.trk(jpt,i1).onoff = 2  Or  (Roll.trk(jpt,i1).nota >=1 And Roll.trk(jpt,i1).nota <=12 ) Then ''ESTO SE EJECUTA PRIMERO PORQUE ENCUENTRA LOS ON
                                    Dim As boolean veo=FALSE
                                    ''' DE IZQUIERDA A DERECHA
                                    veo = esNotaLigada (Roll.trk(jpt,i1).dur)

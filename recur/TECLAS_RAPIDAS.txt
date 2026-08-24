@@ -70,7 +70,12 @@ TRASPONER
      3) Q, reset
    b) Una zona de la secuencia.O una sola nota (ya no anda bien)
      1) CTRL-O
-     2) ajustar zona ctrl-click en comienzo y final de la zona
+     2) ajustar zona ctrl-click en comienzo y final de la zona, 
+        2do click no debe estar al comienzo de la 2d anota si hay ligada sino despues 
+        del cierre Ej:
+        O+          I   >   <-Click
+        la zona es desde el principio de la O+ hasta despues del > del final de sonido
+        O sea el 2DO CLICK debe estar despues del >  .. I   > click .
      3) FLECHAS arriba abajo
      4) Q, reset
    c) Una sola Nota  
@@ -164,10 +169,14 @@ ALT-R - BORRA LINEAS DE COMPAS
 Q - RESETEA INTERVALO O ZONA SELECCIONADA EN UNA SECUENCIA, PONE A LAS VARIABLES 
     DE CONTROL AL ESTADO DE INICIO EN EL GRAFICO.
 -------------------------------------------------------------------------
-H - BORRA LAS NOTAS GUIA AL PRINIPIO DE PANTALLA DEL GRAFICO [C C# D D# E G G#...]
+H - BORRA LAS NOTAS GUIA DE PANTALLA DEL GRAFICO [C C# D D# E G G#...]
 ---------------------------------------------------------------------------------
 K - REPONE LAS NOTAS GUIA DEL GRAFICO
------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+MAYUSCULA-H MUEVE NOTAS GUIA A LA DERECHA EN SALTOS DE 12 TICKS AL TERMINAR VUELVE AL PRINCIPIO
+---------------------------------------------------------------------------------------
+MAYUSCULAS-G MUEVE NOTAS GUIA A LA IZQUIERDA EN SALTOS DE 12 TICKS, REAPARECE AL FINAL
+-----------------------------------------------------------------------------------
 CTRL-H - REPONE  NOMBRES DE INSTRUMENTOS DE PERCUSION 
 ------------------------------------------------------------------
 CTRL-K - BORRA NOMBRES DE PERCUSION GUIA DEL GRAFICO

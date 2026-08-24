@@ -616,18 +616,6 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer) 
      '     pmTk(ntk).Ticks = pmTk(ntk).MaxPos+1000
      '  EndIf
      Dim As Integer ubisolo=InStr(LCase(nombre),".solo")
-     CantTicks=CantMin * PPQN *tiempoPatron '''pmTk(ntk).Ticks 15 min
-     ' NO TOMAMOS LOS SOLO PARA EL CALCULO DE LA MAXPOS
-     If CantTicks < pmTk(ntk).MaxPos And ubisolo=0 Then
-          CantTicks = pmTk(ntk).MaxPos '''<- al final se queda con el maxpos
-     End If
-     If ntk >=2 Then ' es una cancion y ahi tiene sentido
-          ' para un track solo ntk=0 ,,ntk-1 = -1 daria error
-          If CantTicks < pmTk(ntk-1).MaxPos  And ubisolo=0 Then
-               CantTicks = pmTk(ntk-1).MaxPos 'vamos comparando los maxpos
-          End If
-     End If
-     Print #1,"CantTicks "; CantTicks
      ''MaxPosTope=CantTicks  '4-12-2025
      'es un get trabajo debe ser exactamente MAxPos
      '       Print #1,"llego a 2 antes de redim "
@@ -649,7 +637,7 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer) 
      
      Print #1,"Carga Track tipoescala_num_ini ",tipoescala_num_ini
      
-     ReDim Trabajo  (1 To CantTicks,1 To lim3) As poli
+
      Print #1,"NombreCancion,nomobre, CantTicks ";NombreCancion,nombre, CantTicks
      If NombreCancion > "" Then
           If grabaPos.sonido = 1 Then ' sonido on/off 16-03-2022
@@ -670,6 +658,11 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer) 
      '  pmTk(ntk).hasta  = CInt(grabaLim.dur) '01-03 cint
      '  desde=pmTk(ntk).desde
      '  hasta=pmTk(ntk).hasta
+    CantMin=CInt(grabaLim.sonido)
+     If CantMin=0 Then
+        CantMin=10
+     EndIf
+
      desde=3:hasta=8
      '     If desde=0 Then
      '       desde=3 ''4
@@ -760,6 +753,7 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer) 
      
      Print #1, "2 instru en cargar track ";instru
      TipoCompas = graba3.pb  ' 26-04-2024
+     If TipoCompas =0 Then TipoCompas =4 EndIf ''' default por omision
      ritmo=TipoCompas
      TCompas=Mid(tempoString(TipoCompas),1,4)
      '    print #1,"cargaCancion ",cargacancion
@@ -785,8 +779,19 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer) 
      If tiempoPatron = 0 Then
           tiempoPatron = 60
      End If
-     
-     
+      CantTicks=CantMin * PPQN *tiempoPatron '''pmTk(ntk).Ticks 15 min
+     ' NO TOMAMOS LOS SOLO PARA EL CALCULO DE LA MAXPOS
+     If CantTicks < pmTk(ntk).MaxPos And ubisolo=0 Then
+          CantTicks = pmTk(ntk).MaxPos '''<- al final se queda con el maxpos
+     End If
+     If ntk >=2 Then ' es una cancion y ahi tiene sentido
+          ' para un track solo ntk=0 ,,ntk-1 = -1 daria error
+          If CantTicks < pmTk(ntk-1).MaxPos  And ubisolo=0 Then
+               CantTicks = pmTk(ntk-1).MaxPos 'vamos comparando los maxpos
+          End If
+     End If
+     Print #1,"CantTicks "; CantTicks
+    
      ' 1) con cancion cargada puedo cargar cualqueir pista de cancion existente
      ' en Roll Visual, modificarlo y al pasar de RollaTrack AL grabarlo SE PONDRA
      ' en cancion automaticamente con un numero nuevo de pista, eso seria una copia
@@ -826,7 +831,7 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer) 
           canalx=pmTk(ntk).canalsalida
           portout=pmTk(ntk).portout
      End If
-     
+     ReDim Trabajo  (1 To CantTicks,1 To lim3) As poli
      
      ' configuro el track receptor
      ReDim (Track(ntk).trk) (1 To CantTicks, 1 To lim3)

@@ -572,7 +572,7 @@ CantTicks=cantMin * PPQN *tiempoPatron'  (15 MIN * 60 * PPQN) = 299520
 ' para 240 2,6041 mseg...pero la cantidad de Ticks es fija siempre  igual
 ' para un determinado tiempo de track..
 ' como tomamos tempo=120 la TMFC sera 5,20833 mseg,
-ReDim Shared As paso compas (1 To MaxPos) 'cada item es la posicion en donde
+
 ' un vector por cad apista asi TAB no tiene que calcular cada vez se lo calcula en la carga
 desdevector = desde
 hastavector = hasta

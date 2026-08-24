@@ -186,6 +186,7 @@ Sub CTRL10062 (hmessages As hmenu)
      If NombreCancion > ""  Then
           EstaBarriendoPenta=1
           threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+SetThreadPriority(threadloop , THREAD_PRIORITY_HIGHEST) 'nuevo
           Print #1,"CARGO ROLL PARA cancion sin roll"
           ' ES TAN RAPIDO QUE PARECE EJECUTA DOS VECES EL 10062
           ' AL DEBUGUEAR NO LOA HACE ERGO PONEMOS UN RETARDO 0,1 SEG

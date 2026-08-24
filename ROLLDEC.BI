@@ -126,7 +126,7 @@ Dim Shared As Integer ers, borrapos=0,comienza=0, acordeNro=0,resumen=0
 Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,copi=0,TicksInsertados
 '' Common  Shared As String comando
  
-
+Dim Shared As Short posicionNotasGuia=0  
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
 Dim Shared NotasEscala (1 To 12) As String *2 => _
@@ -577,6 +577,7 @@ Const As UByte Tcompas4_4 = 4
 Const As UByte Tcompas5_8 = 5
 Const As UByte Tcompas6_8 = 6
 Const As UByte Tcompas7_8 = 7
+Const As UByte Tcompas9_8 = 9
 Const As UByte Tcompas12_8 = 12
 
 TipoCompas=Tcompas4_4:ritmo=4
@@ -943,7 +944,7 @@ Declare Sub Tracks (ByRef nroTrack As integer, ByRef nroCanal As UByte, Roll As 
 'Dim Shared As Long PARAR_PLAY_MANUAL = NO,PARAR_PLAY_EJEC = NO,CONTROL3 = NO
 Dim Shared As Long CONTROL3 = NO
 common Shared As Integer NB , NA, CantTicks, tempo, CantMin,CantCompas
-CantMin=15
+CantMin=10
 CantTicks=CantMin * PPQN * tiempoPatron ''si t=208 ->299520  ' 96*15*208 ,,172800 PARA TIEMPOPATRON 120
 ' a t=208 cantticks=86400*208/60=299520
 Dim Shared As inst Roll ' para visualizar y tocar

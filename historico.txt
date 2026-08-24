@@ -1,3 +1,15 @@
+ -24-08-2026 0.413 Notas Guias movibles, performance teclado y pantalle mas ajustes
+    0.412 Fix cuando se desea mover dos notas ligada que tienen un solo > no se movia la 2da nota o se 
+    movian fuera de la zona lso cierres >
+    0.411 cambio acentos test para 5/8 (3+2)(2+3), SEPARACION de velocidades por ejecucion de teclado(N) 
+    o manuales(O,P,I,L.F..)
+    Acento de 7/8 (123,12,12) faltan las otras combinaciones  
+    faltan hacer test de todos los otros acentos el RecalCompas funciona bien en 5/8, en este hacer mas las 
+    listo->dos clases de 5/8 3:2 y 2:3 en realidad se pueden dividir en un 3/8 y 2/8 similar a 3/4 y 2/4 
+    o al reves 2 y luego 3
+    2/4 es una compresion de 4/4, el 2do pulso es semifuerte no es debil
+    falta ver el 7/8 y sus variaciones 3,2,2/2,3,2/2,2,3/ y la mia con anacruza adelante  sl,1/1,2,2,2/
+    0.410 ajustes Tpo Compas,Fix Teclas R recalcompas y ALt-R borra lineas de compas fix renombrar pistas fisicas, pero no dentro del archivo 
  -14-08-2026 0.409 Conversion de pistas ejec a roll y rtk adaptacion a nueva modificacion
  -13-08-2026 0.408 fix por error de reversion de ajuste de tiempo en windows 11 del play
     de pistas manuales. evitar caidas en apertura de canciones y abortar la accion,

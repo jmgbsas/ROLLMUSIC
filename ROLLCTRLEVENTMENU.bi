@@ -37,6 +37,7 @@ Case 1005 ' cargar un roll desde Control con grafico
                
                threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
                Print #1,"2 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
+               SetThreadPriority(threadloop , THREAD_PRIORITY_HIGHEST) 'nuevo 
                Sleep 100
                SetForegroundWindow(hwnd)
                Exit Do
@@ -565,8 +566,12 @@ Case 1021 ' <=========== Entar Tempo
      menuOldStr="[TEMPO]"
      nombreArchivo="0"
      thread3= ThreadCall EntrarTeclado()
-     ThreadWait thread3
-     
+
+Case 1023
+     menuOldStr="[MINUTOS]"
+     nombreArchivo="0"
+     thread3= ThreadCall EntrarTeclado()
+         
      
      '-----------------------------------------------------------------------
 Case 1025 ' <======== Crear un directorio de Cancion con Pistas separadas
@@ -782,6 +787,7 @@ FILEFLUSH(-1)
           Print #1,"1 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
           
           threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
+      SetThreadPriority(threadloop , THREAD_PRIORITY_HIGHEST) 'nuevo 
           Print #1,"2 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
           Sleep 100
           SetForegroundWindow(hwnd)
@@ -1343,6 +1349,19 @@ Case 1119 ' HABILITAR POR SALIDA MICROSOFT HABILITAR_PS_MICROSOFT
           PORT_MICROSOFT=3
           SetStateMenu(hmessages,1119,3)
      End Select
+
+Case 1120 ' HABILITAR ACENTOS MANUALES PUESTOS POR EL USUARIO
+'' SE DIBUJARA UNA V PARA INDICAR ACENTO SI ES FUERTE VF, VD DEBIL VS SEMIFUERTE
+'' EN NUMEROS FUERTE -1, DEBIL -2 Y  SEMIFUERTE -3 COMO EN LA RUTINA PARA SER CONSISTENTE
+''  SE INGRESARA AL PIE DE LA COLUMNA DONDE ESTA LA NOTA O ACORDE ENTRE 
+'' OCTAVA Y OCTAVA DONDE TAMBIEN ESTAN LAS ESCALES AUXILIARES...F! ,D, S! O CON V
+'' PODRIA SER UN SUBMENU DE ACORDE!!! QUE DIGA ACENTOS F,D,S 
+If  ACENTO=NO Then
+    ACENTO=SI
+ElseIf ACENTO=SI Then
+         ACENTO=NO
+EndIf
+ 
      
      '--------------------------------------------------------------
 Case 1200 'Seleccionar  Puertos MIDI-IN SOLO PARA PORTS DE EJECUCION POR AHORA

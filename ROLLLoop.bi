@@ -203,7 +203,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
                
                cairo_set_source_rgba(c, 1, 1, 1, 1)
           End If
-          
+' 24-08-2026 hacemos movible la guia de notas derecha izquierda pulsango flechas y H          
           If notaGuia=0 Then '5 feb 2025
                font= font - 2 ' achicamos notas guias
                cairo_set_font_size (c, font)
@@ -215,13 +215,13 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
                If semitono=11 And *po=6 Then
                     t = t  +"<]" '' DO central
                End If
-               cairo_move_to(c, 0, Penta_y + (semitono+1) * inc_Penta- 6)
+               cairo_move_to(c, posicionNotasGuia, Penta_y + (semitono+1) * inc_Penta- 6)
                cairo_show_text(c, t)
                font= font + 2  'vuelve al valor anterior...
                cairo_set_font_size (c, font)
                
           End If
-          If PerGuia=1 Then
+          If PerGuia=1 Then '' percusion 
                t=""
                vg=(semitono + 35 + 12 * (*po-3) )
                font= font - 2 ' achicamos notas guias
@@ -1280,6 +1280,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                       MutexLock MutexSincro
                  threadPenta = ThreadCall barrePenta (c, Roll )
                  ThreadWait threadPenta
+                 SetThreadPriority(threadPenta,THREAD_PRIORITY_ABOVE_NORMAL)
          
                  pubi=0
                  If VerMenu=1 Then
@@ -1992,7 +1993,23 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     Sleep 200
                     Exit Do
                End If
+               If MultiKey(SC_RSHIFT) And MultiKey(SC_H)  Then
+                    posicionNotasGuia=posicionNotasGuia+12
+                    If posicionNotasGuia >ANCHO Then
+                       posicionNotasGuia=0
+                    EndIf
+                    Exit Do
+               End If
+
+               If MultiKey(SC_LSHIFT) And MultiKey(SC_G)  Then
+                   posicionNotasGuia=posicionNotasGuia-12
+                   If posicionNotasGuia< 0 Then
+                      posicionNotasGuia=ANCHO - anchofig
+                   EndIf
+                   Exit Do
+               End If
                
+
                If MultiKey(SC_H) And notaGuia=1   Then
                     notaGuia=0
                     Sleep 200
@@ -3114,21 +3131,19 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     ' ELIMINADO NOUSAR ESE METODO, USAREMOS CAIRO...(para todo veo ....)
                End If
                '
-               If MultiKey(SC_R) And canRecal=0 Then ' recalculo de barras compas a veces no anda ¿?
-                    '''ReDim compas(1 To MaxPos)
-                    If ritmo=0 Then ritmo=4 EndIf
+               If MultiKey(SC_ALT) And MultiKey(SC_R)  Then ' eliminar barrar ritmo 0
+                    For i9 As Integer=1 To pmTk(ntk).maxpos
+                        compas(i9).Posi=0
+                        compas(i9).nro = 0
+                    Next i9 
+                    Exit Do
+               End If
+
+               If MultiKey(SC_R)  Then ' recalculo de barras compas a veces no anda ¿?
                     RecalCompas(ritmo) ' jmg 01-04-21
-                    canRecal=1
                     Exit Do
                End If
                
-               If MultiKey(SC_ALT) And MultiKey(SC_R) And canRecal=1 Then ' recalculo de barras compas a veces no anda ¿?
-                    
-                    ritmo=0
-                    RecalCompas(0) ' jmg 01-04-21
-                    
-                    Exit Do
-               End If
                
                If COMEDIT=LECTURA Then ' construir cifras para copiar Nveces por ejemplo
                     ' ESTO NO VA EN COMEDIT INGRESO_NOTAS!!!
@@ -3274,6 +3289,21 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                               Exit Do
                          End If
                     End If
+                    If ACENTO =  SI And MultiKey(SC_F)  And pasoZona1 > 0 Then
+                        'INSERTAR EN LA COLUMNA ACENTO FUERTE  VF
+' LUEGO DE CARGAR EL ACENTO EN EL GRAFICO Y EN LA SECUENCIA 
+' RESETEAR A ACENTO=SI                      
+                       ACENTO=-1  
+                    EndIf
+                    If ACENTO =  SI And MultiKey(SC_S) And pasoZona1 > 0 Then
+                        'INSERTAR EN LA COLUMNA ACENTO SEMI FUERTE VS
+                       ACENTO=-3   
+                    EndIf
+                    If ACENTO =  SI And MultiKey(SC_D)  And pasoZona1 > 0 Then
+                        'INSERTAR EN LA COLUMNA ACENTO DEBIL   VD
+                       ACENTO=-2
+                    EndIf
+
                EndIf ''' fin comedit=lectura y cifras
                
                ''sacado fuera para que se pueda usar en edicion ctrlm y n escuchar las notas
@@ -6835,7 +6865,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          End If
                          pasoy=nsE
                          ' ------------- SI ESTA MUY CERCA DE LA NOTA SUENA Y LA TOMA COMO pasoZona
-                         '--- BuscarNota tambien detectara si es unasecuencia manual o de ejecucion con N
+                         '--- BuscarNota tambien detectara si es una secuencia manual o de ejecucion con N
                          Dim As Integer lcurpos,lnotacur,  resultado
                          lcurpos=(mousex -gap1)/anchofig
                          lnotacur=nsE  '' pasoy
@@ -6877,6 +6907,26 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                                    pasoZona1= 1
                                    Print #1,"2--pasoZona1 ",pasoZona1
                               End If
+                              If ACENTO < 0 Then '' SE ESTA AJSUTANDO UN ACENTO MAUAL
+                                 Select Case ACENTO
+                                     Case -1
+                                         ACENTO  = Vfuerte
+                                     Case -2
+                                         ACENTO  = Vsemifuerte
+                                     Case -3
+                                        ACENTO  = Vdebil
+                                 End Select
+                                 For in1 As Integer =NA To NB
+                                     If  Roll.trk(pasoZona1, in1).dur > 0 Then 
+                                        Roll.trk(pasoZona1, in1).vol = ACENTO
+                                     EndIf
+                                 Next in1
+' debo colocar el acento en todos los instrumentos o solo el actual???                                  
+                                 compas(pasoZona1).Posi=ACENTO 
+                                 compas(pasoZona1).nro =0
+                                 ACENTO=SI
+                                  
+                             EndIf
                               pasoZona1Old=pasoZona1
                               Print #1,"3 SALIMOS pasoZona1= ";pasoZona1;" pasoNota=";pasoNota
                               Sleep 200 :Exit Do

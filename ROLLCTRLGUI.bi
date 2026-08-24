@@ -458,12 +458,12 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      
      MenuItem(1020,MenName2, "1.0 Nombre o Título (fecha por omision), la cancion es un directorio")
      MenuItem(1021,MenName2, "2.0 Tiempo I=60 por omision")
-     MenuItem(1022,MenName2, "3.0 Na.Ritmo 4/4 por omision")
-     MenuItem(1023,MenName2, "4.0 Na.Duracion Estimada Min.(Por Omision 3 estimada)")
+     MenuItem(1022,MenName2, "- Ritmo 4/4 por omision Ver Menu Tiempo y Ritmo")
+     MenuItem(1023,MenName2, "3.0 Duracion Estimada Min.(Por Omision 15 estimada)")
      'MenuItem(1024,MenName2, "Na.Crear Cancion en un solo archivo")
-     MenuItem(1025,MenName2, "5.0 Crear con 1.0 un directorio de Cancion con Pistas separadas")
+     MenuItem(1025,MenName2, "4.0 Crear con 1.0 un directorio de Cancion con Pistas separadas")
      'MenuItem(1026,MenName2, "Na.Ver Lista Tracks de la Cancion (Nombre y numero)")
-     MenuItem(1027,MenName2, "6.0 Na.Modificar Nombre de Pistas de Cancion")
+     MenuItem(1027,MenName2, "5.0 Na.Modificar Nombre de Pistas de Cancion")
      ''-----------------------------------------------------------------
      ''===================== PISTAS  MANUALES ===============
      ''-------------------------------------------------------------
@@ -513,7 +513,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      'MenuItem(1085,MenName5,"Na. TEMPO ver marcas de cambio de tempo")
      'MenuItem(1086,MenName5,"Na. TEMPO ocultar marcas de tempo")
      'MenuItem(1087,MenName5,"Na. TEMPO incremento de tempo gradual alcanzado en N compases")
-     menuitem (1088,Menname5,"3.0 COMPAS: 2=2/4, 3=3/4, 4=4/4, 5=5/8 ,6=6/8, 7=7/8,12=12/8, por omision=4/4")
+     menuitem (1088,Menname5,"3.0 COMPAS: 2=2/4, 3=3/4, 4=4/4, 52=(2+3)/8 ,53=(3+2)/8, 6=6/8, 7=7/8,9=9/8,12=12/8, por omision=4/4")
      /' futuro agregar limite menor de c/rango con opcion de incrementarlo hasta el tope
      d esu rango
      Negras por minuto      tempo
@@ -565,6 +565,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      MenuItem(1118,MenName7,"14.0 ABRIR EN EXPLORADOR Archivos *.roll ó *.rtk con ventanita de CONTROL (Por Omision CON GRAFICO) ",MF_UNCHECKED)
      MenuItem(1119,MenName7,"15.0 HABILITAR PORT SALIDA MICROSOFT NO RECOMENDABLE, PERO SI NO HAY OTRA COSA ",MF_UNCHECKED)
      menuitem(1110,MenName7,"16.0 HABILITAR METRONOMO SIN AUDIO SOLO VISIBLE",MF_UNCHECKED) 
+     menuitem(1120,MenName7,"17.0 HABILITAR ACENTOS MANUALES (SI NO SE SELECIONA SE INTENTRA UN ACENTO DE TIEMPOS BASICO )",MF_UNCHECKED)  
 
      ''chequedo abrira con GRAFICO y lo tocara.
      

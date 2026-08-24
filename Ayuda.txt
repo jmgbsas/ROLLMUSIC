@@ -1,6 +1,9 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-    0.409 Conversion de pistas ejec a roll y rtk adaptacion a nueva modificacion
+   0.413 Notas Guias movibles, performance teclado y pantalle mas ajustes"
+   0.412 Fix cuando se desea mover dos notas ligada que tienen un solo > no se movia la 2da nota o se movian fuera de la zona lso cierres >
+   0.411 cambio acentos test para 5/8 (3+2)(2+3), SEPARACION de velocidades por ejecucion de teclado(N) o manuales(O,P,I,L.F..)
+   0.410 ajustes Tpo Compas,Fix Teclas R recalcompas y ALt-R borra lineas de compas fix renombrar pistas fisicas, pero no dentro del archivo 
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -509,7 +512,7 @@
           Si se marca en una posicion la 1er marca de zona en la secuencia, y usamos la opcion 
           "Insertar escala libre en la Posicion actual (Pasozona1)"
           luego nos pide  setear tipo escala y nota escala, se cambiará la escala en esa posición, la cual regirá 
-          desde ahá para construir  acordes en esa nueva escala. 
+          desde ahí para construir  acordes en esa nueva escala. 
           Si hay una escala general se usará desde la posicion 1 hasta la nueva entrada con marca y desde ahi la otra
           en desarrollo... En la escala de una posicion dada se muestra la nota de la escala, el nombre de la escala 
           y las notas que la componen ej  E Mayor F# G# A B C# D# por ejemplo debajo de cada cambio :
@@ -522,17 +525,14 @@
        principal de la pista.
 
     Nota: todas estas acciones funcionan tambien en modo instancia Separada sin Menu de Control.
-      ubicacion (If cambioescala=1 And pasoZona1 > 0 Then) Rolloop 
-      AMBAS funciones andan al cargar las pistas en Cancion. se agrego un caso en la cancion 10-24-2021.
-      Por cierto, las canciones estan mal construidas no respetan las duraciones iguales en cada posicion
-      en cada pista para que suene bien se debe usar FraccionarDur o FraccionarAuto por omision de modo de
-      alinear las posicion de cada pista entre ellas...Se probara y hara una cancion como prueba 
-      mas adelante que suene bien con dsitintos instrumentos.....
 
     15) Procesos Batch en Explorador de Archivo o en linea de comandos.(*.roll,*.rtk, *.ejec)
-        Una instancia sin control puede ejecutarse tambien si asociamos la sextensiones *.roll y *.rtk
+        Una instancia sin control puede ejecutarse tambien si asociamos las extensiones *.roll y *.rtk
         con Rollmusi.exe. En ese caso al dar doble clik o enter sobre el nombre de una secuencia en el
-        explorador, se levantará una sesion de RollMusic sin el Menu de Control. 
+        explorador, se levantará una sesion de RollMusic sin el Menu de Control(si en RollMusic.ini esta ajustado
+        los 2 valores de columnas en [0     BatchGraficoOCtrl] o en el menu Opciones el item 14.o no está 
+        seleccionado, o sea sin ventana de Control, si selecciono con Control no se vera el grafico solo 
+        la ventana de control con la pista cargada lista para escuchar o la reproducira automaticamente) 
         Queda editado el arcivo *.roll o el *.rtk. Se agrega en esta version ejecutar *.ejec, levanta el Control
         y reproduce. En este modo se puede ver la escala previamente 
         ajustada desde Control y Grabada al archivo desde Roll.
@@ -598,6 +598,9 @@
      19) Mostrar o Ocultar (CTRL-H, CTRL-K) los nombres de los instrumentos para las notas correspondientes
          cuando se usa canal 10 de percusion en una pista. Tambien se puede ver otras pistas que notas
          estan sonando cuando suena algun instrumento de percusion. 
+         MAYUSCULA-H MUEVE NOTAS GUIA A LA DERECHA EN SALTOS DE 12 TICKS AL TERMINAR VUELVE AL PRINCIPIO
+         MAYUSCULAS-G MUEVE NOTAS GUIA A LA IZQUIERDA EN SALTOS DE 12 TICKS, REAPARECE AL FINAL
+           
      20) CTRL-T - PIDE UN NUMERO DE TRACK EN UNA CANCION PARA SUPERPONER SOLO VISUALMENTE
        EN OTRO COLOR (EL DE PLAY) PARA COMPARAR Y VER ARMONIA ENTRE 2 TRACKS
        (podriamos poner varios tracks superpuestos con distintos colores..VEREMOS)  
