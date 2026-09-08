@@ -964,3 +964,5 @@ Dim Shared As Integer ACENTO=NO ''SIN ACENTOS MANUALES , AUTOMTICOS
 Dim Shared As byte acento72(1 To 7)={-1,-2,-3, -2,-3,-2,-2} ' 2,2,3
 Dim Shared As byte acento73(1 To 7)={-1,-2,-2, -3,-2,-3,-2} ' 3,2,2
 Dim Shared As byte acento75(1 To 7)={-1,-2,-3, -2,-2,-3,-2} '2,3,2
+
+Dim Shared As String MENSAJE_TEMPORARIO

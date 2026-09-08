@@ -111,7 +111,7 @@ Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1
 Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6,notaGuia=0,PerGuia=0
 Dim Shared As String RTA, alteracion 
 alteracion="sos"
-Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0,OCTAVAFIJA
+Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0,OCTAVAFIJA, pasoY1, pasoY2
 Dim Shared As integer pasoZona2=0,nroRep=0,esEjecucion=0,pasoZona1Old=0,pasoZona1y=0,pasoZona2y=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, playloop2=0,SelGrupoNota =0,moverZona=0, copiarZona=0,SelGrupoNotaT =0
 Dim Shared as ubyte  DUR,nota,notacur,suenaunavez=0,canRecal=0,notacurOld
@@ -1016,8 +1016,8 @@ Dim Shared As UByte numdurasmidi( 1 To 24)
 ''Dim Shared escala As float = 1.0
 Dim Shared translado As Integer = 1
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
-Dim shared As Integer   posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop
-Dim Shared As Integer octaroll,cierroedit= 0,cierroport=0,COMEDIT
+Dim shared As Integer   posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop,ENTRARNOTASLIBREMENTE=0,BORRARNOTALIBREMENTE=0
+Dim Shared As Integer octaroll,cierroedit= 0,cierroport=0,COMEDIT, MOVERNOTALIBRE=0,MOVERNOTALIBREYBORRAR=0
 Dim Shared As BOOLEAN  resize
 Const As Integer LECTURA=1 ' 0 0
 Const As Integer ENTRADA_NOTAS=2 ' 0 0 
@@ -1028,7 +1028,7 @@ Const As Integer MODIFICACION_COLUMNA=5
 COMEDIT=LECTURA
 
 Dim Shared po As Integer Ptr
-Dim Shared  As EVENT e,f 
+Dim Shared  As EVENT e,f ,movn 
 Dim Shared rmerr As Integer
 
 Dim Shared cm As cairo_t  Ptr

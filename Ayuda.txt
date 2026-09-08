@@ -1,9 +1,15 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-   0.413 Notas Guias movibles, performance teclado y pantalle mas ajustes"
-   0.412 Fix cuando se desea mover dos notas ligada que tienen un solo > no se movia la 2da nota o se movian fuera de la zona lso cierres >
-   0.411 cambio acentos test para 5/8 (3+2)(2+3), SEPARACION de velocidades por ejecucion de teclado(N) o manuales(O,P,I,L.F..)
-   0.410 ajustes Tpo Compas,Fix Teclas R recalcompas y ALt-R borra lineas de compas fix renombrar pistas fisicas, pero no dentro del archivo 
+    0.419 OPERACIONES SOBRE NOTAS INDIVIDUALES EN LECTURA CON F5, O  MAS CTRL O DELETE  "
+    =================================================================================================
+    y otras:
+    0.418 habilite midiin sin chequear ninguna pista de ejec, menu reproducir item 3.0
+    0.417 fix interlineado se reseteaba a 0..
+    0.416 FIX crash al ir a elegir una escala y no se elige ninguna  tipoescala_num =0 se ajusta a 1"
+    0.415 trasponer alt-o para una sola nota ya anda,,, y para grupo tambien a veces 
+          ahora anda mejor pero sigue andan cuando quiere ajuste muchas cosas debuguear mas
+          hay que dar shift clic en comienzo y final de nota a mover solo una nota mueve a veces
+          con alt-o
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -607,7 +613,10 @@
        RESETEAMOS CON TECLA Q
 
     IV ) USO VENTANA CONTROL, ENTRE VARIAS COSAS  GRABA EJECUCIONES POR TECLADO MIDI,
-       
+         NOTA: ANTES DE GRABAR O SI NO SE QUIERE GRABAR SOLO TOCAR EL TECLADO MIDI-IN Y ESCUCHAR
+               UN PIANO PULSAR EL ITEM 3.0 DEL MENU REPRODUCIR Y LISTO , SIN SELECCIONAR NINGUNA 
+               PISTA PAR GRABAR O ESCUCHAR(HABILIOTA LA PISTA 1, CANAL 1 ,PIANO Y PORT DE SALIDA 1)
+         ---------------------------------------------------------------------------------------------
     1 ) MIDI-IN GRABACION: (GRABA UNA PISTA MAS DE UNA VEZ ENCIMA SIN BORRAR LO ANTERIOR)
          YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN grabadas mediante la ejecucion EN UN O CONTROLADOR 
          MIDI EXTERNO  o TECLADO externo  real concectado su salida MIDI-OUT  al MIDI-IN de la PC.
@@ -627,9 +636,9 @@
             VERIFICARLOS EN EL MENU "PUERTOS Y PISTAS EJECUCION", PREVIAMENTE SE DEBE
             DAR CLICK A LA PISTA A GRABAR LA CUAL SE ILUMINARA Y LUEGO  EN EL MENU
             USAR LOS ITEMS 1.0 Y 2.0, LUEGO ABRIR EL PUERTO DE SALIDA EN 3.0
-            (CON MICROSOFT CANCEL LA APERTURA YADEBE ESTAR ABIERTO TAL VEZ)
+            (CON MICROSOFT CANCEL LA APERTURA YA DEBE ESTAR ABIERTO TAL VEZ)
             SI SE DEJA LA ELECCION AUTOMATICA POR OMISION SOLO HACE FALTA ABRIR
-            SELECCIONAR LA PISTA EN G Y PULSAR EN EL MENUDE REPRODUCCION EL ITEM 3.0
+            SELECCIONAR LA PISTA EN G Y PULSAR EN EL MENU DE REPRODUCCION EL ITEM 3.0
             "ABRE Y REPRODUCE MIDI-IN...."
 --------------------------------------------------------------
        (EN LO SIGUIENTE:aunque este seleccionado lo que queremos seleccionarlo
@@ -1063,6 +1072,9 @@
        la zona superponiendo la zona en blanco sobre la region en donde se mueve,
        Mover solo copia 1 sola vez logicamnete.
 
+       Mover Toda la secuencia a la derecha haciendo lugar a una nota o mas
+       No hace falta marcar zona pues se mueve toda la secuencia,
+          
        Copiar una zona: 1 o mas veces: igual que en mover zona pero no borra la zona original, si entramos
        un numero N (1,3,15,etc)), antes de C+click , copia N veces esa zona una al lado de la otra 
        (copia en masa). La posicion nueva a partir de donde se copiara si se quiere que toque apenas 
@@ -1166,6 +1178,25 @@
          un semitono y lo uso como raiz de Acorde MAyor estare construyendo el bVII de la nota B o sea 
          del VII grado de la escala de C Mayor. Y asi par acualqueir escala.
          Lo mismo sucede con el bVIIMaj7, se baja un semitono la nota y se crea un Maj7. ]
+
+    1.8) OPERACIONES SOBRE NOTAS INDIVIDUALES EN LECTURA    
+
+         COPIAR UNA NOTA EN LECTURA DE UNA SECUENCIA Y COLOCARLA EN UN ESPACIO VACIO DE 
+         LA MISMA SECUENCIA (ANTES DEL MAXIMO || ) PARA ESO:
+         1) PULSAR F5, LUEGO CLICK IZQUIERDO SOBRE LA NOTA HASTA ESCUCHAR SU SONIDO fuerte
+         2) MOVERSE A CUALQUIER LADO DE LA SECUENCIA Y APRETAR CLICK DERECHO, COPIARA
+            LA NOTA EN ESA POSICION.(LA NOTA ORIGINAL NO SE BORRARA)
+
+         PARA BORRAR LA ORIGINAL PULSAR 
+         1) CTRL-F5 COPIA Y BORRA. LUEGO EL 2) IGUAL
+         NOTA: ESTAS 2 ACCIONES NO SE REPITEN SON DE UNA POR VEZ PARA REPETIR PULSAR Q (RESET)
+         Y DE NUEVO F5 O CTRL-F5 SEGUN SE DESEE..
+         -------------------------------------------------------------------
+         BORRAR NOTAS EN LECTURA TODAS LAS QUE QUIERA
+         1) DELETE + F5
+         2) DAR CLICK SOBRE LA NOTA SE ESCUCHARA LA NOTA Y BORARA
+            SEGUIR CON MAS NOTAS QUE SE DESEEN BORRAR
+         3) PULSAR Q PARA TERMINAR   
 
  ------------------------------------------------------------------------------------------
        Crear Canción En Ventana de Control.

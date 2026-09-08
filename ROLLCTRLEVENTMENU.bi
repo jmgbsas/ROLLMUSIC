@@ -37,7 +37,7 @@ Case 1005 ' cargar un roll desde Control con grafico
                
                threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
                Print #1,"2 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
-               SetThreadPriority(threadloop , THREAD_PRIORITY_HIGHEST) 'nuevo 
+               SetThreadPriority(threadloop , THREAD_PRIORITY_ABOVE_NORMAL) 'nuevo 
                Sleep 100
                SetForegroundWindow(hwnd)
                Exit Do
@@ -259,7 +259,7 @@ Case 10091 '<========= Grabar midi directo Sin pasar por TExto ni reproduccion
 Case 10092 '<========= CARGAR ARCHIO MIDI Y PASARLO A ROLL O RTK O EJEC VEREMOS CUAL
      mensajeEstado="CARGANDO PISTA MIDI..."
      threadCargamidi= ThreadCall CargarMidi()
-     '' YA FUNCIONA EL VOLVADO A ARCHIVO AHORA LO DEBO MANEJAR EN MEMORIA
+     '' YA FUNCIONA EL VOLCADO A ARCHIVO AHORA LO DEBO MANEJAR EN MEMORIA
      '' Y CARGARLO EN RTK O ROLL O EJEC
 '--------------------------------------------------------
 Case 10093  '' 4.8 >X< EN DESARROLLO *CONVERTIR UN ROLL O RTK MANUAL A EJEC")
@@ -787,7 +787,7 @@ FILEFLUSH(-1)
           Print #1,"1 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
           
           threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-      SetThreadPriority(threadloop , THREAD_PRIORITY_HIGHEST) 'nuevo 
+      SetThreadPriority(threadloop , THREAD_PRIORITY_ABOVE_NORMAL) 'nuevo 
           Print #1,"2 CARGO ROLL PARA cancion o track porque se cerro el grafio antes"
           Sleep 100
           SetForegroundWindow(hwnd)
@@ -1182,7 +1182,8 @@ Case 1105
 Case 1106 ' <======== escala de la secuencia, similar a la de instrumentos
      pasozona1=0
      selTipoEscala (tipoescala_num_ini)
-     
+  
+''    StatusBarGadget(BARRA_DE_ESTADO, mensajeEstado)
      ' GRABADO EN grabaPos(1,1).inst = CUByte(tipoescala) ' 20-12-2021 - tipoescala en uso
      ' CUADNO QUEIRO UN CAMBIO PUEDO DEJAR UN ACOLUMNA VACIA Y PONER TODO ESTA INFO
      ' PERO DEBO INDICAR AL PROGRAM QUE SALTEE ESTA COLUMNA CREO CON TENER NOTA=181 Y DUR181
@@ -1202,6 +1203,7 @@ Case 1106 ' <======== escala de la secuencia, similar a la de instrumentos
      cadenaes_inicial=""
      armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
      tipoescala_inicial= escala(tipoescala_num_ini).nombre
+  mensajeEstado="LAS NOTAS DE LA ESCALA NO DEBERIAN REPETIRSE, PARA ESO  DEBERIA USAR EL ENARMONICO, NO IMPLEMENTADO"
      ' --------------------------
      If abrirRollCargaMidi=2 Then
           SetForegroundWindow(hwnd)

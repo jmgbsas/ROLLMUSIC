@@ -1796,7 +1796,7 @@ If todo<> "TODO" Then
                     BuscoFinalNota    Roll, pasozona2, jpt , i1 ,  jpt3 ,dura,""
                     
                     If jpt3 > 1  Then
-                         'borro el off1 fuera de la zona
+                         'borro el off1 fuera de la zona,, ACA USO PARA BORRAR DUR=0!!!
                          Roll.trk(jpt3,i1).nota = 181
                          Roll.trk(jpt3,i1).dur  = 0
                          Roll.trk(jpt3,i1).vol  = 0
@@ -1997,7 +1997,9 @@ Sub trasponerRoll( cant As Integer, Roll As inst, encancion As Integer)
           Exit Sub
      End If
      
-     
+     If DUR=1  Then
+        nR= 12 - nsE + (estoyEnOctava -1 ) * 13 ''INDICE DEL VECTOR
+     EndIf  
      If cant < 0 Then ' DOWN
           comienzo= NB
           final = NA  -13 '30-01-2022 NA->NA -13
@@ -2167,7 +2169,6 @@ Sub trasponerRoll( cant As Integer, Roll As inst, encancion As Integer)
           
           RollaTrack (Track(), ntk,Roll) ''27-03-2026
      End If
-     
      
      Exit Sub
      
@@ -2405,10 +2406,10 @@ Sub trasponerGrupo( cant As Integer, Roll As inst, encancion As Integer,X1 As In
      
      If X1=0 Then   X1=1 EndIf
      If X2=0 Then   X2= MaxPos EndIf
-     'Print #1,"trasponerGrupo X1 "; X1
-     'Print #1,"trasponerGrupo X2 "; X2
-     'Print #1,"trasponerGrupo Y1 "; Y1
-     'Print #1,"trasponerGrupo Y2 "; Y2
+     Print #1,"trasponerGrupo X1 "; X1
+     Print #1,"trasponerGrupo X2 "; X2
+     Print #1,"trasponerGrupo Y1 "; Y1
+     Print #1,"trasponerGrupo Y2 "; Y2
      
      
      ' 30-01-2022 CORREGIDO en base a la verion ROLLMUSIC-0.1.0.0.0-U-TRACKS
@@ -2423,7 +2424,7 @@ Sub trasponerGrupo( cant As Integer, Roll As inst, encancion As Integer,X1 As In
                     ind = i1+cant
                     ind = ind - sumar(ind)
                End If
-               ''      Print #1,"Xj , i1 "; Xj;" ",i1
+                    '''''''' Print #1,"Xj , i1 "; Xj;" ",i1
                If (Roll.trk(Xj, i1).nota > 12 And Roll.trk(Xj, i1).nota < 25) And (Roll.trk(Xj, i1).dur <> 183)Then
                     If ind >= NB And ind <= NA -13 Then
                          marca=Roll.trk(Xj,i1).nota
@@ -2600,6 +2601,34 @@ Sub moverBuscoFinalNota   (Roll As inst, hastat As Integer, UBION As Integer, i1
      Next kx
      
      
+End Sub
+Sub moverSecuenciaUnaDuracionPulsada ()
+'desplazr toda la secuencia hacia la derecha o izquierda
+Dim  As Boolean teclaAhoraDer, teclaAntesDer,teclaAhoraIzq, teclaAntesIzq,teclaAhoraEsc, teclaAntesEsc 
+
+ Do 
+  teclaAhoraDer=MultiKey (SC_RIGHT)
+  If teclaAhoraDer = True And teclaAntesDer = False Then
+       Print "¡Comando ejecutado una sola vez Der!"    
+  End If
+  teclaAntesDer = teclaAhoraDer 
+
+ TeclaAhoraIzq = MultiKey (SC_LEFT) 
+  
+  If teclaAhoraIzq = True And teclaAntesIzq = False Then
+       Print "¡Comando ejecutado una sola vez Izq!"    
+  End If
+  teclaAntesIzq = teclaAhoraIzq
+'--------salida 
+ TeclaAhoraEsc = (MultiKey (SC_ESCAPE) <> 0 )
+  
+  If teclaAhoraEsc = True And teclaAntesEsc = False Then
+       Print "¡Comando ejecutado una sola vez Izq!"    
+  End If
+  teclaAntesEsc = teclaAhoraEsc
+
+
+ Loop Until TeclaAhoraEsc=TRUE
 End Sub
 '-------------------
 Sub moverZonaRoll(posinueva As Integer, Roll As inst,posivieja As Integer, ByRef D1 As Integer )

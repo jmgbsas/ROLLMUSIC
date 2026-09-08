@@ -629,6 +629,8 @@ Dim As Integer lim1
 lim1=1 ' lim3 vale 25 se reserva el ultimo para valores de control, no alcanza
 ''' lim2=12,lim3=25
 ' 26-01-2022 la zona de control debe ser 1 octava mas o sea lim3=25
+'==>> toda la melodia en track esta en posicion vertical 1 las otras son de acorde
+' es realmente una linea secuencial
 ReDim (Track(00).trk ) (1 To CantTicks,1 To lim3) ' lo usa instancia sin cancion
 ReDim (Track(01).trk ) (1 To CantTicks,1 To lim3) ' lo usa sin instancia
 ReDim (Track(02).trk ) (1 To Ctres,1 To lim1)

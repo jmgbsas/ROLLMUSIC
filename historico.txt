@@ -1,3 +1,12 @@
+ -07-09-2026 0.419 OPERACIONES SOBRE NOTAS INDIVIDUALES EN LECTURA CON F5, O  MAS CTRL O DELETE  "
+    y otras:
+    0.418 habilite midiin sin chequear ninguna pista de ejec, menu reproducir item 3.0
+    0.417 fix interlineado se reseteaba a 0..
+    0.416 FIX crash al ir a elegir una escala y no se elige ninguna  tipoescala_num =0 se ajusta a 1"
+    0.415 trasponer alt-o para una sola nota ya anda,,, y para grupo tambien a veces 
+          ahora anda mejor pero sigue andan cuando quiere ajuste muchas cosas debuguear mas
+          hay que dar shift clic en comienzo y final de nota a mover solo una nota mueve a veces
+          con alt-o
  -24-08-2026 0.413 Notas Guias movibles, performance teclado y pantalle mas ajustes
     0.412 Fix cuando se desea mover dos notas ligada que tienen un solo > no se movia la 2da nota o se 
     movian fuera de la zona lso cierres >

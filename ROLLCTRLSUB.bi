@@ -1,3 +1,5 @@
+'''-///////////// RUTINAS DE VENTANA PRINCIPAL ROLLCONTROL //////// mo ver a control
+''' empezamos a estructurar un poco .....06- marzo 2024
 
 Sub LLAMA_GRABAR_ROLL(RESPALDO As String, ByRef intentos As integer)
      '      Print #1," nombre,  ANTES DE LLAMAR GRABARROLL " ;nombre
@@ -186,7 +188,7 @@ Sub CTRL10062 (hmessages As hmenu)
      If NombreCancion > ""  Then
           EstaBarriendoPenta=1
           threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-SetThreadPriority(threadloop , THREAD_PRIORITY_HIGHEST) 'nuevo
+SetThreadPriority(threadloop , THREAD_PRIORITY_ABOVE_NORMAL) 'nuevo
           Print #1,"CARGO ROLL PARA cancion sin roll"
           ' ES TAN RAPIDO QUE PARECE EJECUTA DOS VECES EL 10062
           ' AL DEBUGUEAR NO LOA HACE ERGO PONEMOS UN RETARDO 0,1 SEG
@@ -1101,9 +1103,29 @@ Sub CTRL1092()
                Exit For  ' termina con el 1er seleccionado solo se toma 1 sola accion
           End If
      Next i
-If ntoca = 0 Then
-   Exit Sub
-EndIf
+     If ntoca = 0 Then ' abro el 1 por default
+        portin1092  = tocaparam(1).portin ' PREVIAMENTE SELECCIONADO
+        portout1092= tocaparam(1).portout ' PREVIAMENTE SELECCIONADO
+        ntoca=1
+        portsal=portout1092
+        instru=CInt(tocaparam(1).patch)
+        patchsal=instru
+        Print #1,"instrumento en abrir midi-in ", instru
+               
+               'instru, canal, portsal abre ahora distinto para cada pista
+               ' el portin y portout podrian ser los mismos pero igual hay que seleccionarlos antes
+               ' debo cambiar por toaparam ??? es lo mismo ambos se cargaen el la seleccion
+               ' con el mismo valor pmEj(i).xxx=tocaparam(i).xxx
+               ChangeProgram ( tocaparam(1).patch  , tocaparam(1).canal, tocaparam(1).portout)
+        pmEj(1).vol=100
+        tocaparam2(1).vol=100 ' versionEJEC=2
+        Globalvol=100
+        pmEj(1).pan=64
+        tocaparam2(1).pan=64 ' versionEJEC=2
+        Globalpan=64
+
+        
+     EndIf
 '------------------------
      Print #1,"listinAbierto( portin1092) ",listinAbierto( portin1092)
      Print #1,"listInCreado(portin1092) ",listInCreado(portin1092)

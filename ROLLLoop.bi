@@ -371,8 +371,8 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
                          If COMEDIT<>LECTURA Then
                               If COMEDIT=ENTRADA_NOTAS Then   ' edicion manual
                                    If espacio = (semitono +1) Then
-                                        Roll.trk (n, 11-semitono + (hasta -nro) * 13 ).dur = 181
-                                        Roll.trk (n, 11-semitono + (hasta -nro) * 13 ).nota = 0
+                                        Roll.trk (n, 11-semitono + (hasta -nro) * 13 ).dur = 0
+                                        Roll.trk (n, 11-semitono + (hasta -nro) * 13 ).nota = 181
                                         Roll.trk (n, 11-semitono + (hasta -nro) * 13 ).onoff = 0
                                         ''Print #1,"esta metiendo espacios?"
                                         If fijarEspacio=0 Then
@@ -385,8 +385,8 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
                               ' en ctrl-m borra todo de una!! implementarlo...
                               If COMEDIT=SOLO_MODIFICACION  Or COMEDIT=MODIFICACION_INSERCION Then  ' ctrl m
                                    If (espacio =semitono +1  ) And ((n - inicioDeLectura)=curpos)  Then 'semitono +1
-                                        Roll.trk (n,11-semitono + (*po-1) * 13 ).dur = 181
-                                        Roll.trk (n,11-semitono + (*po-1) * 13 ).nota = 0
+                                        Roll.trk (n,11-semitono + (*po-1) * 13 ).dur = 0
+                                        Roll.trk (n,11-semitono + (*po-1) * 13 ).nota = 181
                                         Roll.trk (n,11-semitono + (*po-1) * 13 ).onoff = 0
                                         If fijarEspacio=0 Then
                                              espacio=0
@@ -397,8 +397,8 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
                               ' BORRADO LIBRE NO MARCA SOLO BLANCO habilita para usar nota=0  ,,,???
                               If (COMEDIT=SOLO_MODIFICACION Or COMEDIT=MODIFICACION_INSERCION)  And Borrar=1 Then
                                    If ((n - inicioDeLectura)=curpos)  Then
-                                        Roll.trk (n,11-semitono + (*po) * 13 ).dur = 181
-                                        Roll.trk (n,11-semitono + (*po) * 13 ).nota = 0
+                                        Roll.trk (n,11-semitono + (*po) * 13 ).dur = 0
+                                        Roll.trk (n,11-semitono + (*po) * 13 ).nota = 181
                                         Roll.trk (n,11- semitono + (*po) * 13 ).onoff = 0
                                         If fijarEspacio=0 Then
                                              Borrar=0
@@ -625,7 +625,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
           
           
      Next semitono
-     Sleep 41 ' DECIA 25 otro freno
+     ''''Sleep 41 ' DECIA 25 otro freno
      
      
      ' -----------------------------------------------------------
@@ -764,8 +764,8 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
      '---------
      If GrabarPenta=0 Then
           If ((Penta_y + 12 * inc_Penta) <= mousey) And ((Penta_y + 14 * inc_Penta) >= mousey)  Then
-               EnOctava = 0
-               estoyEnOctava=90 ' esto dio error corregido
+               EnOctava = 0  ' n oestoy en ningun octava es el intervalo entre octavas
+               estoyEnOctava=90 ' esto dio error corregido, todas las funciones no deben usar este valor
           End If
      End If
      
@@ -1468,7 +1468,9 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     '  EndIf
                     Exit Do
                End If
-               
+               If MultiKey (SC_ALT) And MultiKey (SC_V) Then ''MOVER toda la secuencia hacia adelante o atras con las flechas
+                   moverSecuenciaUnaDuracionPulsada ()      
+               EndIf 
                If MultiKey(SC_CONTROL) And MultiKey(SC_T) And superposicion=0 Then
                     ' en la GUI no se puede poner no funciona hace un error se vuelve loco que lo pario jajaja
                     
@@ -1606,24 +1608,20 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                
                'EndIf
                
-               If MultiKey(SC_ALT)   Then '' mover pantalla a derecha en cualquier modo edicion aun CTRL-M
-                    If MultiKey (SC_RIGHT) Then
+               If MultiKey(SC_ALT) And MultiKey (SC_RIGHT) Then     '' mover pantalla a derecha en cualquier modo edicion aun CTRL-M
                          posicion=posicion + NroCol/100
                          If posicion > MaxPos Then
                               posicion = MaxPos
                          End If
                          posishow=posicion
-                    End If
                End If
                
-               If MultiKey(SC_ALT)   Then '' mover pantalla a derecha en cualquier modo edicion aun CTRL-M
-                    If MultiKey (SC_LEFT) Then
+               If MultiKey(SC_ALT) And MultiKey (SC_LEFT)   Then '' mover pantalla a derecha en cualquier modo edicion aun CTRL-M
                          posicion=posicion - NroCol/100
                          If posicion < 1 Then
                               posicion = 1
                          End If
                          posishow=posicion
-                    End If
                End If
                
                
@@ -1757,7 +1755,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                
                
                ' 03-02-2022 screen event me pone con su 80 trasponer=1 hace una asignacion !!!
-               If MultiKey(SC_DOWN) Then  ' el screenevent me pone trasponer en 1 la puta e.scancode = 80 Then  ' <===== SC_DOWN pulso
+               If MultiKey(SC_DOWN)  Then  ' el screenevent me pone trasponer en 1 la puta e.scancode = 80 Then  ' <===== SC_DOWN pulso
                     ''Print #1,"trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo "; trasponer, SelGrupoNotaT, indicePosOld, indicePosUltimaGrupo
                     deltaz=1
                     ''' Print #1,"MultiKey (SC_DOWN) , trasponer = ",trasponer
@@ -1779,21 +1777,21 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          indXjreset=0
                          Exit Do
                     End If
-                    ' TRASPONER 3 SIGNIFICA SOLO QUE SE DIO CTRL-O
-                    If trasponer=3  Or (trasponer=1 Or trasponer=2 )And SelGrupoNotaT=2 And indicePosOld=0 And  indicePosUltimaGrupo=0 Then
+                    ' TRASPONER 3 SIGNIFICA SOLO QUE SE DIO CTRL-O (incluye trasponer una nota sola)
+                    If trasponer=3 Or (trasponer=1 Or trasponer=2 )And SelGrupoNotaT=2 And indicePosOld=0 And  indicePosUltimaGrupo=0 Then
                          '   Print #1,"0 pulso down screenevent TRASPONER con multikey!"
                          '' trasponer=3 completo ctrl-o
                          ' ahora debo separar trasponer por zona y por grupo
                          If s6=0  Then
                               s6=1
-                              '     Print #1," DOWN USA trasponerRoll "
+                                 Print #1," multikey down USANDO trasponerRoll ( -1,Roll,encancion) "
                               trasponerRoll ( -1,Roll,encancion)
                          End If
                          While InKey <> "": Wend
                          Exit Do
                     End If
                     If  (trasponer=1 Or trasponer=2) And SelGrupoNotaT=2 And indicePosOld >0  And  indicePosUltimaGrupo > 0 Then
-                         '   Print #1,"1 pulso down screenevent TRASPONER"
+                          Print #1," multikey down  TRASPONER USA trasponerGrupo ( -1, Roll,encancion, indicePosOld, indicePosUltimaGrupo )"
                          If s6=0  Then
                               s6=1
                               '   Print #1," DOWN USA trasponerGrupo "
@@ -1801,6 +1799,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          End If
                          Exit Do
                     End If
+
                     '    If SelGrupoNota=2 Then
                     '       SelGrupoNota=4
                     '    EndIf
@@ -1829,9 +1828,9 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     
                End If
                
-               If MultiKey (SC_UP) Then
+               If MultiKey (SC_UP)  Then
                     deltaz=1
-                    ''Print #1,"MultiKey (SC_UP) , trasponer = ",trasponer
+                    '''Print #1,"MultiKey (SC_UP) , trasponer = ",trasponer
                     If trasponer=0 Then
                          indXjreset=0
                     End If
@@ -1855,17 +1854,19 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     If trasponer=3 or (trasponer=1 Or trasponer=2) And SelGrupoNotaT=2 And indicePosOld=0 And  indicePosUltimaGrupo=0 Then
                          If s6=0  Then
                               s6=1
-                              ''  Print #1," UP USA trasponerRoll "
+                                Print #1," multikey UP USA trasponerRoll "
                               trasponerRoll ( 1,Roll,encancion)
                          End If
+                         SelGrupoNotaT=0
                          While InKey <> "": Wend
                          Exit Do
                     End If
                     If  (trasponer = 1 Or trasponer=2) And SelGrupoNotaT=2 And indicePosOld> 0 And  indicePosUltimaGrupo >0 Then
                          If s6=0  Then
                               s6=1
-                              ''    Print #1," UP USA trasponerGrupo "
+                                 Print #1," multikey UP USA trasponerGrupo "
                               trasponerGrupo (  1, Roll,encancion, indicePosOld, indicePosUltimaGrupo )
+                              SelGrupoNotaT=2
                          End If
                          While InKey <> "": Wend
                          Exit Do
@@ -1960,18 +1961,100 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                '----------
                ' SIZE ANCHO F5
                ' F5 SCANCODE 63 , F6 64
-               ' CAIRO TIENE UNA FUNCION DE ESCALA QUE LA DESCARTE VOLVER A VER ESO
-               If  MultiKey (SC_F5)   Then
-                    
-                    If COMEDIT=LECTURA Then
-                         '  escala = escala - 0.01
-                         '  translado = translado - 100
-                    End If
-                    
-                    Exit Do
+               ' CAIRO TIENE UNA FUNCION DE ESCALA QUE LA DESCARTE VOLVER A VER ESO NO ME VOY A COMPLICAR
+''////////////////////////////////////////////////////////////////////////////////////////
+'''F5 LA USARE PARA VER SI PUEDO MOVER UNA NOTA LIBREMENTE A CUALQUIER LADO
+''/////////////////////////////////////////////////////////////////////////
+               If MultiKey (SC_DELETE) And MultiKey(SC_F5) Then
+                  borrar=0 ' PARA QUE NO EJECUTE EL OTRO COMANDO BORRAR=0 AND DELETE
+                  BORRARNOTALIBREMENTE=1
+                  MouseButtons=0
+               EndIf
+
+               If  MultiKey(SC_CONTROL) And MultiKey (SC_F5)   Then
+                    MOVERNOTALIBREYBORRAR=1
+                     MouseButtons=0
                     
                End If
-               
+               If  MultiKey(SC_ALT) And MultiKey (SC_F5)   Then
+                    ENTRARNOTASLIBREMENTE=1
+                     MouseButtons=0
+                    
+               End If
+
+               If  MultiKey (SC_F5)   Then
+                    MOVERNOTALIBRE=1
+                     MouseButtons=0
+                    
+               End If
+               If MOVERNOTALIBRE=1  Or MOVERNOTALIBREYBORRAR=1  Or ENTRARNOTASLIBREMENTE=1 Or BORRARNOTALIBREMENTE=1 Then
+                  Static As Integer lcurpos , lnotacur, lonoff,lvol,lpan,lpb,ldur , dur1
+                  Static As Integer guardax, guarday
+  
+                    If dur1=0 And  MouseButtons = 1 Then   
+                       TocarNotaSeleccionada (lcurpos, lnotacur, dur1 )
+                       indicePos= lcurpos + posishow
+                       If estoyEnOctava < 90 And dur1 > 0   Then   '' guardar valores de la nota presionada
+                          lonoff = Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).onoff
+                    Print #1,"lonoff capturado "; lonoff
+                          If dur1=0 Then
+                             curpos=0: lnotacur=0: lonoff=0:lvol=0:lpan=0:lpb=0:ldur=0: dur1=0
+                          EndIf 
+                          lvol   =Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).vol
+                          lpan  =Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).pan
+                          lpb   = Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).pb
+                          ldur  = dur1 
+                          If MOVERNOTALIBREYBORRAR=1 Or BORRARNOTALIBREMENTE=1 Then ''BORRAMOS
+                             Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).onoff = 0
+                             Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).vol    = 0
+                             Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).pan   = 0
+                             Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).pb     = 0
+                             Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).dur    = 0
+                             Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).nota   = 181
+                             Dim As Integer indicePosoff=indicePos+ DurXTick(dur1) -1
+                             Roll.Trk(indicePosoff, (12-lnotacur +(estoyEnOctava -1) * 13)).dur    = 0
+                             If BORRARNOTALIBREMENTE=1 Then dur1=0 endif 
+                          EndIf   
+  '''Print #1, "guardando onoff vol pan pb dur "; lonoff, lvol,lpan,lpb,ldur 
+                          guardax=indicePos:  guarday=lnotacur
+                          Exit Do 
+                       EndIf
+                    EndIf 
+
+'''EMPEZO A ANDAR FALTA MAS PRUEBAS !!!!!!
+ 
+                    If (dur1 > 0 Or DUR > 0) And  MouseButtons = 2  Then
+'''Print #1, "reponiendo  nsE, lonoff,  dur1 "; nsE, lonoff, dur1
+                       If DUR > 0 Then 
+                          dur1=DUR
+                          lonoff=2
+                          lvol=90
+                          lpan=64
+                       EndIf 
+                       lcurpos= (mousex -gap1)/anchofig
+                   ''''  lnotacur= -1 + (mousey -Penta_y)/inc_Penta
+                       lnotacur=nsE
+                   ''''  lnotacur=11 -nR +  SumarnR (nR - restar(nR) ) * 13 + 1
+                       indicePos=lcurpos+posishow
+                         Print #1, "lnotacur ";lnotacur 
+                         Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).onoff = lonoff
+                         Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).vol    = lvol
+                         Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).pan   = lpan
+                         Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).pb     = lpb
+                         Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).dur    = dur1
+                        
+                         Dim As Integer indicePosoff=indicePos+ DurXTick(dur1) -1
+                         Roll.Trk(indicePosoff, (12-lnotacur +(estoyEnOctava -1) * 13)).onoff = 1
+                         Roll.Trk(indicePosoff, (12-lnotacur +(estoyEnOctava -1) * 13)).vol    = lvol/2
+                         Roll.Trk(indicePosoff, (12-lnotacur +(estoyEnOctava -1) * 13)).dur    = 183
+                         Roll.Trk(indicePosoff, (12-lnotacur +(estoyEnOctava -1) * 13)).nota   = 183
+                         MOVERNOTALIBRE=0
+                         MOVERNOTALIBREYBORRAR=0 
+                         ENTRARNOTASLIBREMENTE=0 
+                         dur1=0:DUR=0  
+                    EndIf 
+               EndIf   
+
                If  MultiKey (SC_F6)  Then
                     If COMEDIT=LECTURA Then
                          
@@ -2132,12 +2215,16 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          '   Roll.trk( cmel_undo(ik).posn, mel_undo(ik).columna.pn).dur =mel_undo(ik).columna.dur
                          '   Roll.trk( mel_undo(ik).posn, mel_undo(ik).columna.pn).nota =mel_undo(ik).columna.nota
                          ' volver a ceros el resto de notas
-                         ' tola la melodia en track esta en posicion vertical 1 las otras son de acorde
+                         ' toda la melodia en track esta en posicion vertical 1 las otras son de acorde
                          ' LO QUE HACE ES EN CADA POSN BORRA TODA LA COLUMNA, TAMBIEN SERVIRIA
                          ' COMO UNDO GENERAL YA QUE AL BARRER TODA LA COLUMNA BARRE ACORDES TAMBIEN
-                         ' O SEA SIEMPRE QUE LSO ACORDES INGRESADOS FORMENPARTE DE LA MELODIA ENTRADA
+                         ' O SEA SIEMPRE QUE LSO ACORDES INGRESADOS FORMEN PARTE DE LA MELODIA ENTRADA
                          ' BORRARA TODO.
-                         For ij=NB To NA -13' evitamos borrado decontroles de acorde 01-02-2022
+         ' ademas podemos borrar acordes sin borrar melodia si borramos todo menot la linea1 y al reves!!
+'' las notas que hagan acorde con la melodia usan otras lineas la nota la da la notapiano no la posicion vertical
+'' de track,,hay que ver como se superponen las notas en la linea1 cuando es un tipo arpegio y ver como play
+'' cancion la toca..
+                         For ij=NB To NA -13' evitamos borrado de controles de acorde 01-02-2022
                               Roll.trk(mel_undo(ik).posn, ij).nota =0
                               Roll.trk(mel_undo(ik).posn, ij).dur  =0
                               Roll.trk(mel_undo(ik).posn, ij).vol  =0
@@ -2398,10 +2485,10 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                ' AYUDA =============ESPACIOS MANEJO ===================================
                ' repetir espacios con barra+ALTGRAF..luego la nota correspondiente
                '================================================================
-               If MultiKey(SC_ALTGR) Then ' FIJA ESPACIOS REPETIDOS HASTA NUEVA PULSO
-                    fijarEspacio = 99
-                    ' fijar para muchso espacios
-               End If
+              ' If MultiKey(SC_ALTGR) Then ' FIJA ESPACIOS REPETIDOS HASTA NUEVA PULSO
+              '      fijarEspacio = 99
+              '      ' fijar para muchso espacios
+              ' End If
                '--
                
                ' ============== E S P A C I O ========
@@ -2636,8 +2723,10 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     End If
                     pun=0:silen=0:tres=0:mas=0:vdur=0:vnota=0:trasponer=0:pasoZona1=0:pasoZona2=0:pasoNota=0
                     SelGrupoNota=0:SelGrupoNotaT=0:moverZona=0:copiarZona=0:cifra="":digito="":numero=0:copi=0
-                    deltaip=0:incWheel=0:lockip=0:playloop=0:s6=0:s1=0:indicePosOld=0 :indicePosUltimaGrupo=0
-                    esEjecucion=0:indicePos=0:superposicion=NO:pasoZona1Old=0
+                    '''deltaip=0:
+                    incWheel=0:lockip=0:playloop=0:s6=0:s1=0:indicePosOld=0 :indicePosUltimaGrupo=0
+                    esEjecucion=0:indicePos=0:superposicion=NO:pasoZona1Old=0:MOVERNOTALIBRE=0:MOVERNOTALIBREYBORRAR=0
+                    ENTRARNOTASLIBREMENTE=0:BORRARNOTALIBREMENTE=0
                     'anchofig=35
                     'gap1= (anchofig* 2315)/1000  ' 81 default
                     'gap2= (914 * gap1) /1000 ' 74 default
@@ -2650,6 +2739,10 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     menuMouse = 0
                     nota=0
                     DUR=0
+                    nR=0
+                    nROld=0
+                    suenaunavez=0
+                      
                     '''''' alloff( 1 ) no ahce falta aca para eso esta P
                     ' terminar version reducida de la secuencia
                     resumen=0 ' quita separacion de notas
@@ -2657,6 +2750,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     vdur=0:vnota=0
                     terminar=NO_TERMINAR_BARRE_PANTALLA : Parar_De_Dibujar=NO
                     MOV_FLAG=0:CPlay=NO:Playb=NO:medio_metronomo_on=FALSE
+                    MENSAJE_TEMPORARIO = ""
                End If
                ' ----------------------INGRESO NOTAS-------------------------
                
@@ -3056,7 +3150,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                               nota=0
                               Exit Do
                          End If
-                         If MultiKey(SC_ALT) And MultiKey(SC_END) Then ' fin seq en edit sin cursor
+                         If MultiKey(SC_ALT) And MultiKey(SC_END) Then ' fin DE NOTA
                               DUR=183 ' PONE UN FIN DE NOTA '>'
                               nota=0
                               Exit Do
@@ -3102,7 +3196,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     End If
                     ' este delete esta fuera porque podra ser usado con cualquier comedit
                     ' y en la ventana de control o sea la del menu inicial  no el grafico.
-                    If multikey(SC_DELETE) And borrar=0 Then ''cambia a silencio o nada le suma 16+16 ver eso!!!!!!!
+                    If  borrar=0 And MultiKey(SC_DELETE)  Then ''cambia a silencio o nada le suma 16+16 ver eso!!!!!!!
                          borrar=1
                     End If
                     ' EL SALTO POR OMISION SERA EL  QUE ELIJA EL USUARIO CON LA DURACION DE 1 A 8 O 0
@@ -3269,12 +3363,14 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     If MultiKey(SC_CONTROL) And MultiKey(SC_DELETE) Then
                          ' BORRAR COLUMNA UTOMATICO LUEGO DE BORRAR NOTAS CON ctrl-9 Y X
                          ' no anda bien 12-12-2021 se cambia a marcar por zona columna o columnas
+                         borrar=0 '' PARA QUE NO EJECUTE EL OTRO COMANDO   
                          borrarColumnasMarcadas()
                          Exit Do
                     End If
                     
                     If MultiKey(SC_ALT) And MultiKey(SC_DELETE) Then ''cambia a silencio o nada le suma 16+16 ver eso!!!!!!!
                          ' borra zona per odeja espacio en blanco 14-05-2026
+                         borrar=0 ' PARA QUE NO EJECUTE EL OTRO COMANDO BORRAR=0 AND DELETE
                          If pasozona1 > 0 And pasozona2 > 0 Then
                               
                               borrarZona("TODO")
@@ -3284,6 +3380,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     
                     If multikey(SC_DELETE) Then ''cambia a silencio o nada le suma 16+16 ver eso!!!!!!!
                          ' borra zona per odeja espacio en blanco
+                         borrar=0 ' PARA QUE NO EJECUTE EL OTRO COMANDO BORRAR=0 AND DELETE
                          If pasozona1 > 0 And pasozona2 > 0 Then
                               borrarZona("")
                               Exit Do
@@ -3313,6 +3410,9 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     Print #1,"SC_LSHIFT) And MouseButtons And 1 And trasponer=0 "
                     Dim As Integer lcurpos,lnotacur
                     lcurpos=(mousex -gap1)/anchofig
+                    If lcurpos <=0 Then 
+                       lcurpos=1
+                    EndIf 
                     lnotacur=nsE
                     indicePos=lcurpos + posishow
                     nR=PianoNota + SumarnR(PianoNota)
@@ -3350,13 +3450,13 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                '' esta forma diferida permite cambiar a roll grafico y posicionar el mouse por ejemplo
                '' en una octava deseada para la version 2 de gen y recien ahi disparar el comando
                '' con una sola tecla ALT.
-               If MultiKey (SC_ALT) And comando  >"" Then
-                    Select Case UCase(comando) ' muchos comandos posibles...
-                    Case "GEN"
-                         CTRL1063 ()
-                         comando=""
-                    End Select
-               End If
+ '              If MultiKey (SC_ALT) And comando  >"" Then
+ '                   Select Case UCase(comando) ' muchos comandos posibles...
+ '                   Case "GEN"
+ '                        CTRL1063 ()
+ '                        comando=""
+ '                   End Select
+ '              End If
                ' If MultiKey (SC_CONTROL) And MultiKey(SC_V) And trazovolumen=0 Then
                '' no funciona como se espera, por ahora se suspende modificar volumen en forma grafica
                ''     trazovolumen=1
@@ -3469,7 +3569,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                                    ''    Print #1,"posn que va por pasozona1 "; posn
                               End If
                               
-                              
+                              ''' no seria mejor estoyEnOctava < 90 ???? ver 30-08-2026 kokito
                               If nota > 0 And estoyEnOctava < 99 And estoyEnOctava >=1  Or (GrabarPenta=1 And DUR >0 ) Then
                                    
                                    ' ====>  Control PAgindo Horizontal <=======
@@ -3620,7 +3720,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                                                        ''  print #1,"^^^^ cambia 0 en i";i; "octava "; noct
                                                        If pasoZona1=0 Then ' 15-05-2026
                                                             Roll.trk(posn,(i +(noct -1) * 13)).nota = 181
-                                                            Roll.trk(posn,(i +(noct -1) * 13)).dur  = 0
+                                                            Roll.trk(posn,(i +(noct -1) * 13)).dur  =  0 
                                                             Roll.trk(posn,(i +(noct -1) * 13)).onoff  = 0
                                                        End If
                                                   End If
@@ -3632,7 +3732,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                                         Next i
                                    Next noct
                                    
-                                   ' para track permitir acordes no tiene sentido!!
+                                   ' para track permitir acordes no tiene sentido!! ME PA QUE SI
                                    For i=1 To lim2
                                         If Track(ntk).trk(posn,i).nota = 0 And Track(ntk).trk(posn,i).dur <182    Then
                                              ''  print #1,"^^^^ cambia 0 en i";i; "octava "; noct
@@ -3929,7 +4029,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                                              Roll.trk(posnOffOld,(12-nota +(estoyEnOctava -1) * 13)).onoff=0 ' se borra el off 1 anterior
                                              Roll.trk(posn,      (12-nota +(estoyEnOctava -1) * 13)).onoff=0 ' se borra el off 2 actual
                                              Roll.trk(posnOffOld,(12-nota +(estoyEnOctava -1) * 13)).nota = 181 'borro el 183 anterior >>
-                                             Roll.trk(posnOffOld,(12-nota +(estoyEnOctava -1) * 13)).dur = 0 'borro el 183 >>
+                                             Roll.trk(posnOffOld,(12-nota +(estoyEnOctava -1) * 13)).dur = 0 'borro el 183 >> 
                                              Roll.trk(posnOffOld+6,(12-nota +(estoyEnOctava -1) * 13)).dur = 0 'borro el 182 anterior fin secuencia
                                              Roll.trk(posnOffOld+6,(12-nota +(estoyEnOctava -1) * 13)).nota = 181 'borro el 182 anterior fin secuencia
                                              
@@ -3943,7 +4043,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                                              posnarranca=posn
                                              Roll.trk(posnOff,(12-nota +(estoyEnOctava -1) * 13)).onoff=1
                                              Roll.trk(posnOff,(12-nota +(estoyEnOctava -1) * 13)).nota=183
-                                             Roll.trk(posnOff,(12-nota +(estoyEnOctava -1) * 13)).dur=183
+                                             Roll.trk(posnOff,(12-nota +(estoyEnOctava -1) * 13)).dur=183 '' o 0 ?
                                              Track(ntk).trk(posnOff,1).onoff = 1
                                              Track(ntk).trk(posnOff,1).nota = PianoNota
                                              Track(ntk).trk(posnOff,1).dur = 183
@@ -4349,24 +4449,25 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                               s3=0
                               Exit Do
                          End If
-                         ''PERTENECIA A TRASPONER GRUPO no anda bien se elimina usar CTRL+click
-                         '   If mousey > 50 And SelGrupoNota=2 And( MouseButtons And 1) Then
-                         '     'vemos si se clickeo un lugar vacio lo que indicara el fin del grupo y el
-                         '     'lugar donde se transportara las notas(funcion repetida en ctrl+click)
-                         '    indicePos=(mousex- gap1 )/anchofig + posishow
-                         '    mouseyOld=mousey
-                         '    estoyEnOctava  =1 + (PianoNota -12 + nsE)/13
-                         '    curpos=(mousex -gap1)/anchofig '''19-07-2025
-                         '    notacur=nsE
-                         '   ''' resultado= BuscarNota (1,curpos, notacur)
-                         '
-                         '   If resultado = 1 Then
-                         '  '    Print #1,"ES UN LUGAR VACION FIN DE GRUPO  ",curpos,notacur
-                         '      SelGrupoNota=3
+                         ''PERTENECIA A TRASPONER GRUPO anda MEJOR SOLO PARA SUBIR NO BAJAR se elimina usar CTRL+click
+                         If mousey > 50 And SelGrupoNota=2 And( MouseButtons And 1) Then
+                              'vemos si se clickeo un lugar vacio lo que indicara el fin del grupo y el
+                              'lugar donde se transportara las notas(funcion repetida en ctrl+click)
+                             indicePos=(mousex- gap1 )/anchofig + posishow
+                             mouseyOld=mousey
+                             estoyEnOctava  =1 + (PianoNota -12 + nsE)/13
+                             curpos=(mousex -gap1)/anchofig '''19-07-2025
+                             
+                             resultado= BuscarNota (1,curpos, nSE)
+                             notacur=CUByte(nSE)  
+                         
+                            If resultado = 1 Then
+                               Print #1,"ES UN LUGAR VACION FIN DE GRUPO  ",curpos,notacur
+                               SelGrupoNota=3
                          '     ' trasponer sigue en 1
-                         '   EndIf
+                            EndIf
                          '
-                         '   EndIf
+                         EndIf
                          ' ********************************************************************************
                          ' ============================== MOUSE WHEEL ===========================
                          ' ********************************************************************************
@@ -4468,20 +4569,20 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          End If
                          '/
                          '-------------------------------------------------------------------
-                         ''   If e.scancode = 72  Then '<<<==== SC_UP sube por pulsos mas presicion'
-                         ''    deltaz=1
-                         ''    If (COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS)  And trasponer=0 Then ' incluye ctrl-n que puede cambiar en todas las octavas
-                         ''        If s2=0 Then
-                         ''          s2=1
-                         ''         'print #1,"pulso UP r 1 inc_penta"
-                         ''          BordeSupRoll = BordeSupRoll +   inc_Penta
-                         ''        EndIf
-                         ''        If BordeSupRoll >= AltoInicial * 0.5  Then
-                         ''          BordeSupRoll =  AltoInicial * 0.5
-                         ''        EndIf
-                         ''        Exit Do'
-                         ''
-                         ''    EndIf
+                         'If e.scancode = 72 And trasponer=0  Then '<<<==== SC_UP sube por pulsos mas presicion'
+                         '    deltaz=1
+                         '    If (COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS)  And trasponer=0 Then ' incluye ctrl-n que puede cambiar en todas las octavas
+                         '       If s2=0 Then
+                         '          s2=1
+                         '         'print #1,"pulso UP r 1 inc_penta"
+                         '          BordeSupRoll = BordeSupRoll +   inc_Penta
+                         '       EndIf
+                         '       If BordeSupRoll >= AltoInicial * 0.5  Then
+                         '          BordeSupRoll =  AltoInicial * 0.5
+                         '       EndIf
+                         '        Exit Do'
+                         '
+                         '   EndIf
                          ''''    If cursorVert=1 Or cursorVert=2 Then
                          ''''     notacur=notacur-1
                          ''''     If notacur < 1 Then
@@ -4489,7 +4590,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          ''''     EndIf
                          ''''     Exit Do
                          ''''    EndIf
-                         '   EndIf
+                         'EndIf
                          '------------------------------------------------
                          If e.scancode = &h41 Then ' <======= SC_F7
                               If COMEDIT=LECTURA Then
@@ -4553,7 +4654,6 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          '   EndIf
                          '------------------------------------------------------
                          If e.scancode = SC_PAGEDOWN Then  ' PAGEDOWN 81 'FUNCIONARIA EN TODOS LOS COMEDIT
-                              trasponer=0
                               deltaz=1
                               BordeSupRoll = BordeSupRoll - inc_Penta * 11
                               If BordeSupRoll <= - AltoInicial * 2.8 Then
@@ -4563,7 +4663,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          End If
                          '---------------------------------------------------
                          If e.scancode= SC_PAGEUP Then  'PAGEUP
-                              trasponer=0
+
                               deltaz=1
                               BordeSupRoll = BordeSupRoll + inc_Penta * 11
                               
@@ -4769,6 +4869,38 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                               ANCHO3div4 = ANCHO *3 / 4
                               Exit Do
                          End If
+                         '----------------------------------------------------------
+                         'If e.scancode = 80 And trasponer= 0 Then  ' < sc_down pulso
+                         '     deltaz=1
+                         '     ''If cursorVert=1 Then
+                         '     ''   notacur = notacur + 1
+                         '     ''   If notacur > 12 Then
+                         '     ''     notacur=1
+                         '     ''   EndIf
+                         '     ''EndIf
+                         '     If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS   Then
+                         '          If s1=0 Then
+                         '               s1=1
+                         '               Print #1,"pulso down screeevent"
+                         '               BordeSupRoll = BordeSupRoll - 2 * inc_Penta
+                         '          End If
+                         '          If BordeSupRoll <= - AltoInicial * 2.8  Then
+                         '               BordeSupRoll =  - AltoInicial * 2.8
+                         '          End If
+                         '     End If
+                         '  If COMEDIT=MODIFICACION_INSERCION  Or COMEDIT=MODIFICACION_COLUMNA And trasponer= 0 Then 'ctrl-m o ctrl-o, ctrl-n no
+                         '     notacur = notacur + 1
+                         '     If notacur > 12 Then
+                         '       notacur=1
+                         '     End If
+                         '     cambiadur=0
+                         '     Sleep 50
+                         '     Exit Do
+                         '  End If
+                         '     
+                         '     Exit Do
+                         'End If
+
                          
                          ' ********************************************************************************
                          '=============PULSAR MUCHO TIEMPO ======= REPEAT ==================================================
@@ -4783,49 +4915,58 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                               
                          End If
                          
-                         If e.scancode = 72  And trasponer= 0 Then ' <======= SC_UP
-                              deltaz=1
-                              If (COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS ) And trasponer=0 Then
-                                   If s2=0 Then
-                                        s2=1
-                                        '     print #1,"pulso UP screenevent 2 inc_Penta"
-                                        BordeSupRoll = BordeSupRoll +   2 * inc_Penta
-                                   End If
-                                   If BordeSupRoll >= AltoInicial * 0.5  Then
-                                        BordeSupRoll =  AltoInicial * 0.5
-                                   End If
-                                   Exit Do
-                              End If
-                              If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=MODIFICACION_COLUMNA  Then
-                                   notacur=notacur-1  ' funcionara con ctrl-m y ctrl-o pero no para ctrl-N
-                                   If notacur < 1 Then
-                                        notacur=12
-                                   End If
-                                   Exit Do
-                              End If
-                         End If
+                         'If e.scancode = 72  And trasponer= 0 Then ' <======= SC_UP
+                         '     deltaz=1
+                         '     If (COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS ) And trasponer=0 Then
+                         '          If s2=0 Then
+                         '               s2=1
+                         '               '     print #1,"pulso UP screenevent 2 inc_Penta"
+                         '               BordeSupRoll = BordeSupRoll +   2 * inc_Penta
+                         '          End If
+                         '          If BordeSupRoll >= AltoInicial * 0.5  Then
+                         '               BordeSupRoll =  AltoInicial * 0.5
+                         '          End If
+                         '          Exit Do
+                         '     End If
+                         '     If COMEDIT=MODIFICACION_INSERCION Or COMEDIT=MODIFICACION_COLUMNA  Then
+                         '          notacur=notacur-1  ' funcionara con ctrl-m y ctrl-o pero no para ctrl-N
+                         '          If notacur < 1 Then
+                        '                notacur=12
+                        '           End If
+                        '           Exit Do
+                        '      End If
+                        ' End If
                          '----------------------------------------------------------
-                         If e.scancode = 80 And trasponer= 0 Then  ' <===== SC_DOWN repeat
-                              deltaz=1
-                              'If cursorVert=1 Then
-                              '   notacur = notacur + 1
-                              '   If notacur > 12 Then
-                              '     notacur=1
-                              '   EndIf
-                              'EndIf
-                              If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS   Then
-                                   If s1=0 Then
-                                        s1=1
-                                        Print #1,"pulso down screeevent"
-                                        BordeSupRoll = BordeSupRoll - 2 * inc_Penta
-                                   End If
-                                   If BordeSupRoll <= - AltoInicial * 2.8  Then
-                                        BordeSupRoll =  - AltoInicial * 2.8
-                                   End If
-                              End If
-                              
-                              Exit Do
-                         End If
+                        ' If e.scancode = 80 And trasponer= 0 Then  ' <===== SC_DOWN repeat
+                        '      deltaz=1
+                        '      ''If cursorVert=1 Then
+                        '      ''   notacur = notacur + 1
+                        '      ''   If notacur > 12 Then
+                        '      ''     notacur=1
+                        '      ''   EndIf
+                        '      ''EndIf
+                        '      If COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS   Then
+                        '           If s1=0 Then
+                        '                s1=1
+                        '                Print #1,"pulso down screeevent"
+                        '                BordeSupRoll = BordeSupRoll - 2 * inc_Penta
+                        '           End If
+                        '           If BordeSupRoll <= - AltoInicial * 2.8  Then
+                        '                BordeSupRoll =  - AltoInicial * 2.8
+                        '           End If
+                        '      End If
+                        '   If COMEDIT=MODIFICACION_INSERCION  Or COMEDIT=MODIFICACION_COLUMNA And trasponer= 0 Then 'ctrl-m o ctrl-o, ctrl-n no
+                        '      notacur = notacur + 1
+                        '      If notacur > 12 Then
+                        '        notacur=1
+                        '      End If
+                        '      cambiadur=0
+                        '      Sleep 50
+                        '      Exit Do
+                        '   End If
+                        '      
+                        '      Exit Do
+                        ' End If
                          '----------------------------------------------------------
                          If e.scancode = 75 Then ' <=====  SC_LEFT repeat
                               deltaz=1
@@ -5422,7 +5563,8 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                               nsEelegida=nsE
                               Print #1,"notacur "; notacur
                               
-                              resultado= BuscarNota (1,curpos, notacur)
+                              resultado= BuscarNota (1,curpos, nsEelegida)
+                              notacur=CUByte(nSEelegida)
                               If resultado = 1 Then
                                    Print #1,"BuscarNota sin resultados curpos notacur ",curpos,notacur
                               Else
@@ -6675,7 +6817,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          '''pulsar solo W MOUSE WHEEL SE HABILITA
                          If MultiKey(SC_W) And lockip=0   Then ' HABILITA INTERLINEADO 29-03-2026
                               trasponer=0
-                              deltaip=0
+                              '''deltaip=0
                               incWheel=0
                               lockip=1
                               Exit Do
@@ -6695,18 +6837,21 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                               ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click
                               Exit Do '' se mete en el siguiente ALT y ajusta trasponer  en 1
                          End If
-                         If  MultiKey(SC_ALT) And (SC_O)Then 'con rango o zona // O TRASPONER GRUPO
-                              If trasponer=0  Then
-                                   trasponer=1
-                              End If
+' trateremso que funciones para una sola nota al menos
+                         If  MultiKey(SC_ALT) And (SC_O)Then 'TRASPONER NOTAS AISLADAS  1 O MAS RASPONER GRUPO
+                               trasponer=1
+                                 If instancia=ARG0_EN_LINEA Then
+                                    mensajeEstado=" ALT-O "
+                                 EndIf
+                                 MENSAJE_TEMPORARIO = "{ TRASPONER CON ALT-O MARCANDO NOTAS}"
+                                 menuNew =MENU_INICIAL
                          End If
                          
                          If  MultiKey(SC_CONTROL) And (SC_O)  Then ' 01-11-2025 habilitamos trasposicion sin rango con mouse
                               ' SON DOS CASOS SIN ZONA LUEGO DE CTRL-O MUEVE TODA LA SECUENICA CON FLECHAS UP Y DOWN
                               ' CON CTRL-O Y LUEGO UNA ZONA , MUEVE SOLO ESA ZONA
-                              If trasponer=0  Then
-                                   trasponer=3
-                              End If
+                              trasponer=3
+                              menuNew=MENU_INICIAL 
                               ' ojo con los Exit Do si por defautl entra al if y hace exit do
                               ' nunca ejecuta GetMouse y no anda el mouseButtons and 1 o sea el click'
                          End If
@@ -6714,19 +6859,29 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          ' TRASPOSICION DE UNA SOLA NOTA MARCANDOLA CON NOTA= nota +12 ES NOTA +13 EMPIEZA EN 0
                          '=========================================================
                          ' tratremos de ahcerlo solo arrastrando el mouse! TRASPONERGRUPO
+                         ' viene luego de apretar ALT-O 
                          If MultiKey(SC_LSHIFT ) And MouseButtons And 1 And trasponer=1 And suenaunavez=0 Then 'posiciona el cursor
                               ' habilito trasposicion de una sola nota, ejecuta solo con Ctrl-T previo y
                               ' las flechas up/down, habilitare dragado tambien 02-07-2021
                               '    pasoNota=nsE
                               ' Print #1,"MARCAR CON ALT Y nota +12 en UNA NOTA "
+                             
                               Dim As Integer lcurpos, lnotacur
-                              indicePos=(mousex- gap1 )/anchofig + posishow
+                              lcurpos=(mousex- gap1 )/anchofig
+                              If lcurpos <= 0 Then
+                                 lcurpos=1
+                              EndIf
+                              indicePos=lcurpos + posishow
+  
                               mouseyOld=mousey
                               
                               '---------------------------para ticks nuevo codigo-----------------
                               estoyEnOctava  =1 + (PianoNota -12 + nsE)/13
                               Print #1,"idicePos,estoyEnOctava ",indicePos ,estoyEnOctava
                               lcurpos=(mousex -gap1)/anchofig '''19-07-2025
+                              If lcurpos <= 0 Then
+                                 lcurpos=1
+                              EndIf  
                               '' curpos=indicePos - posishow
                               Print #1, "1 lcurpos o Col "; lcurpos
                               lnotacur=nsE
@@ -6750,7 +6905,8 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                                    ' Print #1,"MARCAR CON ALT Y 13 UNA NOTA ,INDICEPOS",indicePos
                                    '    grupo de notas seleccionadas poniendo un 13 en nota
                                    RollNotaOld=RollNota
-                                   nR=PianoNota + SumarnR(PianoNota)
+                                   nR=PianoNota + SumarnR(PianoNota) 'PianoNota el program siemprelo esta calculando por donde este el cursor
+
                                    ''statusBarGadget NO PUEDE IR EN UN THREAD CANCELA !!!
                                    '   If Roll.trk(indicePos,nR ).dur = 185 Then ' trasponer grupo no funciona para ejecuciones
                                    '    StatusBarGadget(BARRA_DE_ESTADO,"EN EJECUCIONES (N) USAR TRASPORTAR NOTAS SEPARADAS EN UN GRUPO DA ERRORES, USE POR ZONA" )
@@ -6770,12 +6926,11 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                                    RollDurOld=CInt(Roll.trk(indicePos,nR ).dur)
                                    onoff=CInt(Roll.trk(indicePos,nR ).onoff)
                                    acordeNro=CInt(Roll.trk(indicePos,nR).pb)
-                                   
                                    ''' tener en cuenta que nR=(12-nsE) + (estoyEnOctava -1 ) * 13
                                    'entonces con el mouse podria mover la nota grafica poniEndo la dur en la nueva
                                    'posion nR y borrandola de la nr Old lo mismo con el off1 off2 y el resto!!
                                    
-                                   ' Print #1,"MARCAR CON ALT Y 13   nR ", nR
+                                    Print #1,"MARCAR CON ALT Y + 12   nR ", nR
                                    SelGrupoNota =1
                                    
                                    '( note As ubyte, vel As UByte, canal As UByte, portsal As UByte,i1 As Integer)
@@ -6793,7 +6948,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                                         Chorus(1,  pmTk(0).canalsalida,portout)
                                         suenaunavez=1
                                         noteon(cubyte(PianoNota),80,pmTk(0).canalsalida,portout,1,1)
-                                        duracion(Timer, relDur(RollDurOld) )
+                                        duracion(Timer, 0.5 ) '' valor fijo un corchea
                                         Print #1,"RollDurOld ",RollDurOld
                                         noteoff(cubyte(PianoNota),40,pmTk(0).canalsalida,portout,1,1)
                                    End If
@@ -6805,8 +6960,9 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                               End If
                          End If
                          
-                         If (SelGrupoNota=1 ) And  nR <> nROld Or  SelGrupoNota=3  Then
-                              Print #1, "nROld, nR, nROld-nR "; nROld, nR,nROld-nR
+
+                         If (SelGrupoNota=1 )  Or  SelGrupoNota=3  And  (nR <> nROld Or  indicePos <> indicePosOld ) then
+                              Print #1, "nROld, nR, nROld-nR,indepos ,indeposOld  "; nROld, nR,nROld-nR,indicepos, indiceposOld 
                               If  SelGrupoNota=3 Then
                                    '' es X1= IndicePosOld=X1
                                    '' es X2 = indicePos
@@ -6817,6 +6973,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                                    SelGrupoNotaT=2
                               End If
                               trasponer=1 ' HABILITA DE NUEVO PARA MARCAR OTRAS NOTAS DEL GRUPO
+                              suenaunavez=0
                          End If
                          ''  lurgo al detectar RELEASE del click izquierdo
                          ''   If mousey > 50 And SelGrupoNota=2 And( MouseButtons And 1) Then
@@ -6833,12 +6990,13 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     '_____________________________________________________
                     ''ACA PONDREMOS PASOZONA1 Y 2 DEBERIA FUNCIONAR PARA TODO COMMEDIT ' 15-05-2026
                     ''------------------------------------------------------------------------
-                    If MultiKey(SC_CONTROL) And MouseButtons= 1 And (pasoZona1 = 0 or pasoZona2 =0) Then '' FIX 20-03-2026
+                    If MultiKey(SC_CONTROL) And MouseButtons= 1 And (pasoZona1 = 0 or pasoZona2 =0)  Then '' FIX 20-03-2026
                          ' deducir que hace pasoNota, creo que si el intervalo es cero o sea pasoZona1=pasoZona2
                          ' sepuede mover una nota o un acorde creo en trasponer...si pasonota=0 no hay una nota exacta o sea
                          ' es un acorde ....chan no me acuerdo como funcionaba seguir....
                          menuNew=MENU_INICIAL
                          If SelGrupoNota=2  Then 'ALT-O con grupo
+                              Print #1,"  SelGrupoNota=2  alt-o "
                               correcciondeNotas(Roll)
                               SelGrupoNota=3':indXjreset=0 'en vez de usar flechas un ctrl+click donde se desea
                               Exit Do
@@ -6868,6 +7026,9 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          '--- BuscarNota tambien detectara si es una secuencia manual o de ejecucion con N
                          Dim As Integer lcurpos,lnotacur,  resultado
                          lcurpos=(mousex -gap1)/anchofig
+                         If lcurpos <=0 Then
+                            lcurpos=1
+                         EndIf
                          lnotacur=nsE  '' pasoy
                          If COMEDIT= LECTURA Then ' 15-05-2026 SOLO PARA LECTURA EN EDIICON HARIA CANCELAR
                               resultado=0
@@ -6901,7 +7062,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          End If
                          If pasoZona1 = 0 Then  ' selecion 1er posicion de la zona
                               pasoZona1=  pasox ' pos de la 1er ventana m lugar lejos de una nota
-                  pasozona1y=pasoy
+                         pasozona1y=pasoy
                               Print #1,"1--pasoZona1 ",pasoZona1
                               If pasoZona1 < 1 Then ''14-05-2026
                                    pasoZona1= 1
@@ -6934,7 +7095,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          
                          If pasoZona1 > 0 And pasox > pasoZona1  Then ' posicion 2 de la zona INTERVALO > 0
                               pasoZona2 = pasox ' tratamos de no perder el off1 si justo el off1 es limite de zona
-                  pasozona2y= pasoy
+                         pasozona2y= pasoy
                               Print #1, " pasoZona2 = pasox ";pasoZona2
                               ''ESTA NO ESTABA ANTES DIF. pasoNota=pasoy 'hay INTERVALO > 0 => MUEVE LA ZONA
                               ' determinar si la ultima nota de la secuencia entra en la zona y si es asi trasponer hasta maxpos
@@ -6982,11 +7143,32 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          ' Else  12-02-2026 creo que no va kokito
                          '    pasoNota=0  12-02-2026
                          ' EndIf
-                         
+                         If DUR=1  Then ''MOVMOS SOLO LA LINEA HORICONTAL NB=NA=nse o  notacur
+                            ''usaremos lnotacur para pasoY1 y pasoY2
+                            pasoY1=lnotacur
+                            pasoY2=lnotacur
+                         Else '' agregar mas lineas se hara despues si es necesario por ahora mover solo un linea
+                            pasoY1=0
+                            pasoY2=0
+                         EndIf
                          
                     End If
-                    
-                    
+               If comando  >"" And MultiKey (SC_ALT)  Then '' LO MOVIMOS INTERFIERE OARECE CON ALT-O
+                    Select Case UCase(comando) ' muchos comandos posibles...
+                    Case "GEN"
+                         CTRL1063 ()
+                         comando=""
+                    End Select
+               End If
+
+'' DETECTAR EL ALTO VERTICAL A MOVER DE MODO QUE QUEDA UN CUADRADO O CAJA A MOVER SI PASOZONAS ESTAN AJUSTADAS
+'' POR VERSE POR AHORA TOMREMOS A DUR INDICADOR DE LA CANTIDAD DE LINE E NESPECIALSI DUR=1 SE MUEVE SOLO ESA LINEA
+                    'If MultiKey(SC_ALT) And MouseButtons= 1 And (pasoY1 = 0 or pasoY2 =0) Then
+                    '   menuNew=MENU_INICIAL
+                    '   If pasoY1 > 0 And pasoY2 > 0 Then
+                    '          Exit Do
+                    '     End If'
+                    'EndIf
                     
                     ''----------------------------------------------------------------------
                     '         <==== MENU BORRAR INSERTAR MODIFICAR ================>
@@ -7629,6 +7811,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
           " in function " & *Erfn & _
           " on line " & Erl & " " & ProgError(er1)
           Print #1, errmsg & " " & posishow & " " & MaxPos & " " & NB &" " & NA
+          Print #1, "estoyEnOctava ";estoyEnOctava  
           FileFlush (-1)
           Close
           End Err
