@@ -1,15 +1,17 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-    0.419 OPERACIONES SOBRE NOTAS INDIVIDUALES EN LECTURA CON F5, O  MAS CTRL O DELETE  "
+  0.426 FIX UNA NOTA LIGADA A UNA ANTERIOR SOLIA SONAR PUES SE AJUSTABA 2 EN ONOFF"
     =================================================================================================
-    y otras:
-    0.418 habilite midiin sin chequear ninguna pista de ejec, menu reproducir item 3.0
-    0.417 fix interlineado se reseteaba a 0..
-    0.416 FIX crash al ir a elegir una escala y no se elige ninguna  tipoescala_num =0 se ajusta a 1"
-    0.415 trasponer alt-o para una sola nota ya anda,,, y para grupo tambien a veces 
-          ahora anda mejor pero sigue andan cuando quiere ajuste muchas cosas debuguear mas
-          hay que dar shift clic en comienzo y final de nota a mover solo una nota mueve a veces
-          con alt-o
+  Y OTRAS
+  0.425 CAMBIAR MANUALMENTE ONOFF DE UNA NOTA,[F6+8+CLICK IZQ] NECESARIO CUANDO UNA NOTA DEBE SONAR(2)
+        Ó NO (0).. MEJORA AL PULSAR TECLAS AVPAG REPAG, SE CONGELABA O TRABABA.
+  0.424 CAMBIAR VOLUMEN DE UNA NOTA CON F6+CLICK IZQUIERDO 
+  0.423 FIXED SI UNA NOTA ESTABA SOBRE SEMITONO 12 NO SONABA AL SELECCIONARLA PARA MODIFICAR ALGO EN LECTURA 
+  0.422 INPUT2BOXJMG Y INPUTBOXJMG SE AGREGO WS_EX_TOPMOST PARA QUE QUEDE ADELANTE
+        ALGUNOS RETOQUES EN LA VELOCIDAD DE RESPUESTA DE TECLADO Y PLAY. (HACEN FALTA MEJORAS EN RTA AL TECLADO)
+  0.421 ALT-F5 PUEDE INSERTAR NOTAS MAS HALLA DE MAXPOS(USARLA CON PRECAUCION) LA POSISION ELEGIDA AGRANDA 
+        EL MAXPOS*3/2, SOLO SECUENCIAS EXISTENTES NO ARCHIVOS VACIOS, CON LOS VACIOS DESCOMPAGINA TODO
+  0.420 BARRA ESPACIADORA PLAY PAUSE EN reproductor de medios
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -558,7 +560,8 @@
 
 
 
-    16 ) EXPORTAR UNA PISTA O CANCION A MIDI FORMATO 1: (A TRAVES DE TEXTO)
+    16 ) ENLECTURA PERO DESDE VENTANA DE CONTROL
+         EXPORTAR UNA PISTA O CANCION A MIDI FORMATO 1: (A TRAVES DE TEXTO)
          LOS NOMBRES DE LAS PISTAS NO DEBEN PASAR DE 25 CARACTERES
          Pista: 
          En menu archivo en 4.5 elecir "cargar pista en un roll independiente"
@@ -588,6 +591,7 @@
 
          A PARTIR DEL *.ROLL SE CREA UN PLANOS TXT Y DESDE EL, 
          EL *.MID CORRESPONDIENTE NOTA:
+     
      16.1) GRABA ROLL DIRECTO A MIDI TIPO 0 VERSION 1, con patch y efectos 
          CARGAR ROLL AJUSTAR EL TEMPO EN VENTANA DE CONTROL, Y EN MENU ARCHIVO ITEM 4.6
          GRABAR A *.MID DIRECTO A ARCHIVO. Si se marca una zona o intervalo de la 
@@ -611,6 +615,7 @@
        EN OTRO COLOR (EL DE PLAY) PARA COMPARAR Y VER ARMONIA ENTRE 2 TRACKS
        (podriamos poner varios tracks superpuestos con distintos colores..VEREMOS)  
        RESETEAMOS CON TECLA Q
+
 
     IV ) USO VENTANA CONTROL, ENTRE VARIAS COSAS  GRABA EJECUCIONES POR TECLADO MIDI,
          NOTA: ANTES DE GRABAR O SI NO SE QUIERE GRABAR SOLO TOCAR EL TECLADO MIDI-IN Y ESCUCHAR
@@ -1197,7 +1202,18 @@
          2) DAR CLICK SOBRE LA NOTA SE ESCUCHARA LA NOTA Y BORARA
             SEGUIR CON MAS NOTAS QUE SE DESEEN BORRAR
          3) PULSAR Q PARA TERMINAR   
-
+         ------------------- 
+         ALT-F5 INSERTAR NOTAS EN UNA SECUENCIA EXISTENTE MAS HALLA DE LA MAXIMA POSICION O FINAL.
+         (USARLA CON PRECAUCION) LA POSISION ELEGIDA AGRANDA EL MAXPOS*3/2, SOLO SECUENCIAS EXISTENTES 
+         NO USAR CON SECUENCIAS VACIAS.
+         --------------------------------
+         CAMBIAR VOLUMEN DE UNA NOTA MANUALMENTE PULSAR F6+CLICK IZQUIERDO, LA NOTA SONARA (LO QUE CONFIRMA EL LUGAR
+         CORRECTO PARA MODIFICAR ) Y SE ABRE UN DIALOGO, PARA AJSUTAR EL VOLUMEN DE ESA NOTA
+         -----------------------------------
+         CAMBIAR MANUALMENTE ONOFF DE UNA NOTA, [F6+8+CLICK IZQ], NECESARIO CUANDO UNA NOTA DEBE SONAR(ONOFF=2) 
+         O NO (ONOFF=0) (SE PODRIA USAR PARA FIN DE NOTA ONOFF=1 PERO HAY QUE AJSUTAR EL DIMBOLO > TODAVIA NO ECHO)
+         ESO (EN CTRLM O CTRL-N AL INSERTAR O MODIFICAR UNA NOTA SE AGREGA AUTOMATICAMENTE SU FINAL DE NOTA ONOFF=1)  
+         
  ------------------------------------------------------------------------------------------
        Crear Canción En Ventana de Control.
        ===================================

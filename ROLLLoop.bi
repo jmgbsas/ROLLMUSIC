@@ -565,7 +565,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
           ''  Sleep 2 ' sumamos mas frenos se pone lento bajamos a 5 y da 12% max en play
           ' sin nada toma  en play 22% 10 % mas! lamitad 2.5 no sepuede valores decimales
           ' entonces 2
-          ''Sleep 2 ' con play 15% cpu y no pierde velocidad, f2,f3 lento
+          'Sleep 2 ' con play 15% cpu y no pierde velocidad, f2,f3 lento
           
           
           
@@ -625,7 +625,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
           
           
      Next semitono
-     ''''Sleep 41 ' DECIA 25 otro freno
+     'Sleep 15 ''' otro freno
      
      
      ' -----------------------------------------------------------
@@ -945,21 +945,21 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
                  
              'endif
               '  tiempoUltimoFrame=Timer
-          'SetThreadPriority(threadcreaPenta , 20) ''20 ) ' SI NO LO ACELERO PARPADEA NODIBUJA TODO PORQUE QUEDA LENTO
+          SetThreadPriority(threadcreaPenta , THREAD_PRIORITY_HIGHEST) ''20 ) ' SI NO LO ACELERO PARPADEA NODIBUJA TODO PORQUE QUEDA LENTO
           ''17-05-2026 DECIA 30
           ' O EN TODO CASO DEBERIA SER  MAS LENTO EL ROOLLOOP O EL LOCK UNCLOCK
           ThreadWait threadcreaPenta
           If *po = 99 then ''''saco esto no se porque 03-11-2025 Or *po=3 Then
                *po = hasta -1 ' 8 por ejemplo => *po=7
-               ''Sleep 5 '16-05-2026
-               'Call Sleep with 25ms or less to release time-slice when waiting for user input
-               ' or looping inside a thread. This will prevent the program from
-               ''unnecessarily hogging the CPU.
-
+'               ''Sleep 5 '16-05-2026
+'               'Call Sleep with 25ms or less to release time-slice when waiting for user input
+'               ' or looping inside a thread. This will prevent the program from
+'               ''unnecessarily hogging the CPU.
+'
                Exit For
           End If
-          
-     Next
+         Sleep 3 
+     Next i
      
      
 End Sub
@@ -968,8 +968,16 @@ End Sub
 
 
 sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
+'' LO QUE GUARDAMOS EN TRACK nota es PianoNota directo para tocar 
+'' en ROLL se carga el semitono de 1 a 12 en ).nota 
+'' en Roll grafico calculamos la pianonota en funcion del nR el indice del vector
+'' y esa pianonota se usa para tocar pero el valor de nota de Roll no
+'' sirve para tocar directamente se deduce.. en Track si es directo no se deduce
+'' no se gurda lso semitonos 
+''PianoNota=nR -restar(nR)  nR el indice del vector
+
      On Local Error Goto fail
-     ' 15-02-2026
+     ' 15-02-2026           
      MenuNew=MENU_INICIAL
      FILEFLUSH(-1)
      CerrarGraficodesdeCtrl =0
@@ -1223,6 +1231,10 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                If s9 = 1 Then   s9=0 EndIf
                If s10 = 1 Then   s10=0 EndIf
                If s11 = 1 Then  Sleep 500:s11=0 EndIf
+               If s12 = 1 Then  s12=0 EndIf
+               If s13 = 1 Then  s13=0 EndIf
+               If s14 = 1 Then  s14=0 EndIf
+
                If suenaunavez=1 Then Sleep 400:suenaunavez=0 EndIf
                If canRecal=1 Then Sleep 400:canRecal=0 EndIf
                inc_Penta = Int((ALTO -1) /40) - deltaip
@@ -1277,11 +1289,34 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
    
            If (terminar=NO_TERMINAR_BARRE_PANTALLA Or Parar_De_Dibujar=NO)  Then
                '''''       Print #1,"DESDE HASTA ", desde , hasta
-                      MutexLock MutexSincro
+                  ''    MutexLock MutexSincro
+                Dim i As Integer
+          '      If i=0 Then   
+          '         i = desde
+          '      Else 
+          '         i = i +1
+          '      EndIf
+          '      nro = i    
+          '      If i= hasta +1 Then  ' 3 a 8 por omision
+          '         i=desde
+          '      EndIf  
+          '     For i= desde To hasta
+          '       nro = i
                  threadPenta = ThreadCall barrePenta (c, Roll )
                  ThreadWait threadPenta
-                 SetThreadPriority(threadPenta,THREAD_PRIORITY_ABOVE_NORMAL)
-         
+     
+                 SetThreadPriority(threadPenta,THREAD_PRIORITY_HIGHEST)
+          '       If *po = 99 then ''''saco esto no se porque 03-11-2025 Or *po=3 Then
+          '          *po = hasta -1 ' 8 por ejemplo => *po=7
+               ''Sleep 5 '16-05-2026
+               'Call Sleep with 25ms or less to release time-slice when waiting for user input
+               ' or looping inside a thread. This will prevent the program from
+               ''unnecessarily hogging the CPU.
+
+          '          Exit for
+          '       End If
+                  
+          '    Next i 
                  pubi=0
                  If VerMenu=1 Then
                     GetMouse mouseX, mouseY, , MouseButtons
@@ -1290,8 +1325,8 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     botones(hWnd, cm, ANCHO,ALTO) ' este despues sinocrash
                     cairo_stroke(cm) ' cm despues de c sino crash
                 End If
-                MutexUnLock MutexSincro
-              endif
+                '''MutexUnLock MutexSincro
+           EndIf
                  
           ScreenUnLock()
             
@@ -1873,8 +1908,8 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     End If
                     
                     If (COMEDIT=LECTURA Or COMEDIT=ENTRADA_NOTAS)  And trasponer=0 Then
-                         If s2=0 Then
-                              s2=1
+                         If s12=0 Then
+                              s12=1
                               'print #1,"pulso UP r 1 inc_penta"
                               BordeSupRoll = BordeSupRoll +   inc_Penta
                          End If
@@ -1965,41 +2000,50 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
 ''////////////////////////////////////////////////////////////////////////////////////////
 '''F5 LA USARE PARA VER SI PUEDO MOVER UNA NOTA LIBREMENTE A CUALQUIER LADO
 ''/////////////////////////////////////////////////////////////////////////
-               If MultiKey (SC_DELETE) And MultiKey(SC_F5) Then
+               ''estoyEnOctava  =1 + (PianoNota -12 + nsE)/13
+
+               If MultiKey (SC_DELETE) And MultiKey(SC_F5) Then ''borra todo Nota compelta,fin de secuencia o fin de nota aislada
                   borrar=0 ' PARA QUE NO EJECUTE EL OTRO COMANDO BORRAR=0 AND DELETE
-                  BORRARNOTALIBREMENTE=1
-                  MouseButtons=0
+                  BORRARNOTALIBREMENTE=1 'ok hay que pulsar bir delete+f5
+                  MouseButtons=0 'ok luego cada nota elegida con click izq sonara y se borrara
                EndIf
 
                If  MultiKey(SC_CONTROL) And MultiKey (SC_F5)   Then
-                    MOVERNOTALIBREYBORRAR=1
-                     MouseButtons=0
+                    MOVERNOTALIBREYBORRAR=1 '' ok COPIAR Y BORRAR ORIGINAL
+                     MouseButtons=0 '' dar ctrl+f5 y luego click izq sobre nota
                     
                End If
                If  MultiKey(SC_ALT) And MultiKey (SC_F5)   Then
-                    ENTRARNOTASLIBREMENTE=1
-                     MouseButtons=0
-                    
+                    ENTRARNOTASLIBREMENTE=1 ' ok pulsar duracion luego alt-f5 y luego click izquierdo
+                     MouseButtons=0         ' puede pulsarse la duracion despues de alt-f5
+                     '''dur1=99
                End If
 
-               If  MultiKey (SC_F5)   Then
-                    MOVERNOTALIBRE=1
-                     MouseButtons=0
+               If  MultiKey (SC_F5)   Then ' ok COPIAR SIN BORRAR ORIGINAL
+                    MOVERNOTALIBRE=1       ' f5 y luego clic kizq sobre nota dejar sonar toda la duracion
+                     MouseButtons=0        ' ubicarse en nueva posicon y dar click derecho 
                     
                End If
                If MOVERNOTALIBRE=1  Or MOVERNOTALIBREYBORRAR=1  Or ENTRARNOTASLIBREMENTE=1 Or BORRARNOTALIBREMENTE=1 Then
-                  Static As Integer lcurpos , lnotacur, lonoff,lvol,lpan,lpb,ldur , dur1
-                  Static As Integer guardax, guarday
+                  Static As Integer lcurpos , lnotacur, lonoff,lvol,lpan,lpb,ldur 
+                  Static As Integer guardax, guarday,dur1
   
-                    If dur1=0 And  MouseButtons = 1 Then   
+                    If dur1=0 And MouseButtons = 1 and estoyEnOctava < 90 Then
+                       nR= PianoNota + SumarnR(nR)
+                       lnotacur=nsE     
                        TocarNotaSeleccionada (lcurpos, lnotacur, dur1 )
+'' lnotacur es el nR hay que pasarlo a semitono para las formulas de abajo
+                       
+                        Print #1,"=> lnotacur ";lnotacur
                        indicePos= lcurpos + posishow
+            '''  Print #1,"lcurpos posishow indicePos ";lcurpos, posishow, indicePos
+                       fileflush(-1) 
                        If estoyEnOctava < 90 And dur1 > 0   Then   '' guardar valores de la nota presionada
                           lonoff = Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).onoff
-                    Print #1,"lonoff capturado "; lonoff
-                          If dur1=0 Then
-                             curpos=0: lnotacur=0: lonoff=0:lvol=0:lpan=0:lpb=0:ldur=0: dur1=0
-                          EndIf 
+              ''      Print #1,"lonoff capturado, nsE "; lonoff, nsE
+                          'If dur1=0 Then
+                          '   curpos=0: lnotacur=0: lonoff=0:lvol=0:lpan=0:lpb=0:ldur=0: dur1=0
+                          'EndIf 
                           lvol   =Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).vol
                           lpan  =Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).pan
                           lpb   = Roll.Trk(indicePos, (12-lnotacur +(estoyEnOctava -1) * 13)).pb
@@ -2015,25 +2059,32 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                              Roll.Trk(indicePosoff, (12-lnotacur +(estoyEnOctava -1) * 13)).dur    = 0
                              If BORRARNOTALIBREMENTE=1 Then dur1=0 endif 
                           EndIf   
-  '''Print #1, "guardando onoff vol pan pb dur "; lonoff, lvol,lpan,lpb,ldur 
                           guardax=indicePos:  guarday=lnotacur
                           Exit Do 
                        EndIf
                     EndIf 
 
-'''EMPEZO A ANDAR FALTA MAS PRUEBAS !!!!!!
- 
-                    If (dur1 > 0 Or DUR > 0) And  MouseButtons = 2  Then
-'''Print #1, "reponiendo  nsE, lonoff,  dur1 "; nsE, lonoff, dur1
+
+                    If (dur1 > 0 Or DUR > 0) And  MouseButtons = 2  And estoyEnOctava < 90  Then
+
+                       If BORRARNOTALIBREMENTE=1 Then
+                          Exit Do
+                       EndIf  
                        If DUR > 0 Then 
                           dur1=DUR
                           lonoff=2
-                          lvol=90
+                          lvol=100
                           lpan=64
                        EndIf 
                        lcurpos= (mousex -gap1)/anchofig
+                       If lcurpos + posishow > MaxPos Then
+                          Dim resta As Integer
+                          resta= lcurpos + posishow -MaxPos
+                          Maxpos=MaxPos+ resta*3/2 ' agrandamos la secuencia
+                          pmTk(0).MaxPos=Maxpos 
+                       EndIf  
                    ''''  lnotacur= -1 + (mousey -Penta_y)/inc_Penta
-                       lnotacur=nsE
+                    Dim As UByte lnotacur= nsE '''aca es semitono 
                    ''''  lnotacur=11 -nR +  SumarnR (nR - restar(nR) ) * 13 + 1
                        indicePos=lcurpos+posishow
                          Print #1, "lnotacur ";lnotacur 
@@ -2054,15 +2105,64 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          dur1=0:DUR=0  
                     EndIf 
                EndIf   
+               If  MultiKey(SC_8) And MultiKey (SC_F6) Then ''MODIFICAR ONOFF 
+                   If  MouseButtons=1 And estoyEnOctava < 90 Then  
+                     Dim As Integer notacurF6=nsE, curposF6, durF6
+                     Dim As String intervaloTxt, default
+                     Dim As UByte onoffF6
 
-               If  MultiKey (SC_F6)  Then
-                    If COMEDIT=LECTURA Then
-                         
-                         'escala = escala + 0.01
-                         ' translado = translado + 100
-                    End If
-                    
-                    Exit Do
+                     curposF6= (mousex -gap1)/anchofig
+                     If estoyEnOctava < 90 Then    
+                       TocarNotaSeleccionada (curposF6, notacurF6, durF6 )
+                       If resultado=0 Then 
+                          indicePos=curposF6+posishow
+                          Print #1, "notacurF6 ";notacurF6 
+                     '' entrar ONOFF
+                         onoffF6= Roll.Trk(indicePos, (12-notacurF6 +(estoyEnOctava -1) * 13)).onoff
+                         default=Str(onoffF6) 
+                         intervaloTxt = InputBoxJmg("Ajuste Numerico de ONOFF o " ,"ENTRE UN VALOR DE 1(OFF) O 2(ON) ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+                         onoffF6=CUByte(ValInt(intervaloTxt))
+                         Roll.Trk(indicePos, (12-notacurF6 +(estoyEnOctava -1) * 13)).onoff=onoffF6
+                    ''''  Roll.Trk(indicePosoff, (12-notacurF6 +(estoyEnOctava -1) * 13)).vol = volF6/2
+                         S13=0:S14=0 '' PAGUP Y DOWN NO SE PORQUE SE CONGELAN DESPUES DE F6 
+                         While InKey<>"":wend  
+                         Exit Do
+                       EndIf
+                     EndIf
+                   EndIf 
+
+
+               EndIf
+
+
+               If  MultiKey (SC_F6) Then '''Or CAMBIAVOL=1 Then '' CAMBIAR VOLUMEN DE UNA NOTA
+                    ''If COMEDIT=LECTURA Then  por ahora no lo limito a lectura
+                   
+                   If  MouseButtons=1 And estoyEnOctava < 90 Then  
+                     Dim As Integer notacurF6=nsE, curposF6, durF6
+                     Dim As String intervaloTxt, default
+                     Dim As UByte volF6
+
+                     curposF6= (mousex -gap1)/anchofig
+                     If estoyEnOctava < 90 Then    
+                       TocarNotaSeleccionada (curposF6, notacurF6, durF6 )
+                       If resultado=0 Then 
+                          '''CAMBIAVOL=1
+                          indicePos=curposF6+posishow
+                          Print #1, "notacurF6 ";notacurF6 
+                     '' entrar volumen
+                         volF6= Roll.Trk(indicePos, (12-notacurF6 +(estoyEnOctava -1) * 13)).vol
+                         default=Str(volF6) 
+                         intervaloTxt = InputBoxJmg("Ajuste Numerico de VOL 64 al medio " ,"ENTRE UN VALOR DE 1 IZQ, A 127 DER ",default, ES_MULTILINE + ES_AUTOVSCROLL,0   )
+                         volF6=CUByte(ValInt(intervaloTxt))
+                         Roll.Trk(indicePos, (12-notacurF6 +(estoyEnOctava -1) * 13)).vol=volF6
+                    ''''  Roll.Trk(indicePosoff, (12-notacurF6 +(estoyEnOctava -1) * 13)).vol = volF6/2
+                         S13=0:S14=0 '' PAGUP Y DOWN NO SE PORQUE SE CONGELAN DESPUES DE F6 
+                         While InKey<>"":wend  
+                         Exit Do
+                       EndIf
+                     EndIf
+                   EndIf 
                End If
                
                If MultiKey(SC_CONTROL) And MultiKey(SC_H)  Then
@@ -2678,6 +2778,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                               ''          EndIf
                               terminar_metronomo=1
                               thread2 = ThreadCall  playAll(Roll)
+             SetThreadPriority(thread2 , THREAD_PRIORITY_HIGHEST)
                               Playb=SI
                               
                          End If
@@ -2726,7 +2827,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     '''deltaip=0:
                     incWheel=0:lockip=0:playloop=0:s6=0:s1=0:indicePosOld=0 :indicePosUltimaGrupo=0
                     esEjecucion=0:indicePos=0:superposicion=NO:pasoZona1Old=0:MOVERNOTALIBRE=0:MOVERNOTALIBREYBORRAR=0
-                    ENTRARNOTASLIBREMENTE=0:BORRARNOTALIBREMENTE=0
+                    ENTRARNOTASLIBREMENTE=0:BORRARNOTALIBREMENTE=0:CAMBIAVOL=0
                     'anchofig=35
                     'gap1= (anchofig* 2315)/1000  ' 81 default
                     'gap2= (914 * gap1) /1000 ' 74 default
@@ -3506,7 +3607,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          ' la siguiente nota es semitono para rollmusic, sale de notapiano midi
                          If ij=1 Then
                               nota=relnRnE (duras(ija,ij).nota) ' de 0 132 a 1 a 12 notapiano a semitono
-                              'Print #1,"NUCLEO nota ",nota
+                              'Print #1,"NUCLEO nota ",nota '' esto esta mal revisar
                               estoyEnOctava = (duras(ija,ij).nota +nota +1)/13 ' la 1er nota es notapiano
                          End If
                          'controlEdit=0
@@ -3570,7 +3671,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                               End If
                               
                               ''' no seria mejor estoyEnOctava < 90 ???? ver 30-08-2026 kokito
-                              If nota > 0 And estoyEnOctava < 99 And estoyEnOctava >=1  Or (GrabarPenta=1 And DUR >0 ) Then
+                              If nota > 0 And estoyEnOctava < 90 And estoyEnOctava >=1  Or (GrabarPenta=1 And DUR >0 ) Then
                                    
                                    ' ====>  Control PAgindo Horizontal <=======
                                    '      kNroCol= Int(posicion/60)
@@ -3931,7 +4032,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                                    '' luego no hace falta cargar la nota ..estoy poniendo 183 la verdad podria poner la nota,,
                                    '' En track si deberia poner la nota para el off1! vermos
                                    Dim As Integer DURAUX=Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
-                                   If DURAUX <= 90 Then 'caso 1) no ligado, I, L, W etc, viene algo que termina
+                                   If DURAUX <= 90  Then 'caso 1) no ligado, I, L, W etc, viene algo que termina
                                         Print #1,"1) DUR <= 90 "
                                         If posnOffOld > 0 Then ' OK!! caso 4) previo llego un caso 2) ligado y luego ahora un 1) no ligado
                                              ''Print #1,"OK! 1A) DUR <= 90 posnOffOld > 0 "
@@ -3946,7 +4047,9 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                                              
                                              Track(ntk).trk(posnOffOld,1).onoff = 0 'sigue la duracion
                                              Track(ntk).trk(posn,1).nota = PianoNota
-                                             Track(ntk).trk(posn,1).onoff = 2
+'--------------OJO PROBAR  O+   I  > EL I NO DEBE SOOOOOONAR PERO LO ESTA ESCRBIENDO  CON ONOFF=2
+'--------------LO CORREGI PERO EN TRACK PARECE SOLO ESTABA MAL, EN CURSOR TRACK ESTABA BIEN
+                                             Track(ntk).trk(posn,1).onoff = 0 ''' DECIA 2 <==== DEBERIA SER 0 !!! 14-09-2026
                                              posnOff=posn + DurXTick(DURAUX) -1'nuevo off porque dura mas
                                              Roll.trk(posnOff,(12-nota +(estoyEnOctava -1) * 13)).onoff=1
                                              Roll.trk(posnOff,(12-nota +(estoyEnOctava -1) * 13)).nota=183
@@ -4655,7 +4758,10 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          '------------------------------------------------------
                          If e.scancode = SC_PAGEDOWN Then  ' PAGEDOWN 81 'FUNCIONARIA EN TODOS LOS COMEDIT
                               deltaz=1
-                              BordeSupRoll = BordeSupRoll - inc_Penta * 11
+                              If s13=0 Then
+                                 s13=1 
+                                BordeSupRoll = BordeSupRoll - inc_Penta * 11
+                              EndIf
                               If BordeSupRoll <= - AltoInicial * 2.8 Then
                                    BordeSupRoll =  - AltoInicial * 2.8
                               End If
@@ -4665,8 +4771,10 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          If e.scancode= SC_PAGEUP Then  'PAGEUP
 
                               deltaz=1
+                              If s14=0 Then
+                                 s14=1
                               BordeSupRoll = BordeSupRoll + inc_Penta * 11
-                              
+                              EndIf
                               If BordeSupRoll >= AltoInicial * 0.5  Then
                                    BordeSupRoll =  AltoInicial * 0.5
                               End If
@@ -5515,7 +5623,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          
                          ' para ingreser automatico acordes a partir de una TONICA futuro--01-12-2021
                          ' ---------- INGRESO ACORDES SIN EDICION CON MENU DE MOUSE
-                         If MultiKey(SC_CONTROL) And MouseButtons And 2 Then 'yyy
+                         If MultiKey(SC_CONTROL) And MouseButtons And 2 And estoyEnOctava < 90 Then 'yyy
                               '////////////////////// MENU ACORDES ////////////////////////////////
                               
                               Print #1,"entro al menu acordes"

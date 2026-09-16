@@ -1045,6 +1045,8 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 					'**** tampoco haria falta en el on pero  si es necesario para la visualizacion >>>>>
 					' en menu podemos hacer lo mismo RollNota con off podemos sacar la nota de Notapiano
 					Notapiano= Notapiano - restar (Notapiano)
+''lo que hago es NotaPiano=nR - restar(nR) es la PianoNota
+'' ej si nR del vector es 65 la PianoNota para tocar es 60
 					''Print #1,"PALL 0:VEO LO CORRECTO DE NOTAPIANO "; Notapiano
 					dura=Roll.trk(jply, i1).dur ' es una N 185 la duracion son lso ticks hasael off 1
 					' llegamos al final de la Columna
@@ -1065,13 +1067,13 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 					Case Else
                             If Roll.trk(jply, i1).dur <> 185   Then 
                               If Roll.trk(jply, i1).onoff =2  Or Roll.trk(jply, i1).onoff =1 Then 
-	                            '' vel=Roll.trk(jply, i1).vol
-                                  ' If vel=0 Then
-							  vel=velpos
+	                             vel=Roll.trk(jply, i1).vol
+                                   If vel=0 Then 'fix reposicion 12-09-2026
+							                 vel=velpos
                                    ''  Print #1,"VELOCIDAD POR LOGICA ";VEL
                                   ' Else                                 
                                   '   Print #1,"VELOCIDAD ROLL ";VEL
-                                  ' End If
+                                   End If
                               EndIf
                            EndIf
 					End select
@@ -1171,7 +1173,7 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 		
 		tickUsuario=60/(tiempoPatron*PPQN*FactortiempoPatron) 
 
-	Next jply
+	  Next jply
 	''while (PeekMessage(NULL, hwnd, WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE or PM_QS_INPUT))
 	''Wend
 	'-> LA ULTIMA NOTA SERA APAGADA CASI DE INMEDIATO POR EL alloff Y SOUNDOFF QUE SIGUEN

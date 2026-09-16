@@ -1011,13 +1011,13 @@ ibarre=desde
 Common Shared As FLOAT font
 Dim Shared As float  deltaipf=0, lockip=0 
 Dim Shared q As String * 1
-Dim Shared As UByte  ii,indf,indfa,indfaux,s1, s2, s3, s4, s5,s6, s7 ,s8, s9,s10,s11
+Dim Shared As UByte  ii,indf,indfa,indfaux,s1, s2, s3, s4, s5,s6, s7 ,s8, s9,s10,s11,s12,S13,S14
 Dim Shared As UByte numdurasmidi( 1 To 24)
 ''Dim Shared escala As float = 1.0
 Dim Shared translado As Integer = 1
 ' CAIRO NO SOPORTA LA ñ!!! ESO ERA TODO!!!!
 Dim shared As Integer   posmouse, posmouseOld,incWheel, edity1,edity2,octavaloop,ENTRARNOTASLIBREMENTE=0,BORRARNOTALIBREMENTE=0
-Dim Shared As Integer octaroll,cierroedit= 0,cierroport=0,COMEDIT, MOVERNOTALIBRE=0,MOVERNOTALIBREYBORRAR=0
+Dim Shared As Integer octaroll,cierroedit= 0,cierroport=0,COMEDIT, MOVERNOTALIBRE=0,MOVERNOTALIBREYBORRAR=0,CAMBIAVOL=0
 Dim Shared As BOOLEAN  resize
 Const As Integer LECTURA=1 ' 0 0
 Const As Integer ENTRADA_NOTAS=2 ' 0 0 

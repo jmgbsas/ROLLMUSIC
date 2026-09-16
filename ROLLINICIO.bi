@@ -924,12 +924,12 @@ Function Input2BoxJmg(ByVal x As Integer, ByVal y As Integer,ByVal w As Integer,
      EnumDisplaySettings( 0, ENUM_CURRENT_SETTINGS, @Input2BoxJmg_.dm(0))
      #Ifdef UNICODE
           Input2BoxJmg_.hWnd  = CreateWindowEx(0, "#32770", *Caption, WS_TILED Or WS_VISIBLE, Input2Box_.dm(0).dmPelsWidth/2-155, Input2Box_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
-          Input2BoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", *DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, Input2Box_.hwnd,0,0,0)
+          Input2BoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", *DefaultString, WS_CHILD Or WS_VISIBLE Or WS_EX_TOPMOST Or flag, 10, 33, 275, 50, Input2Box_.hwnd,0,0,0)
           Input2BoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, x, y, w, h, Input2Box_.hwnd,0,0,0)
           Input2BoxJmg_.hWnd3 = CreateWindowEx(0, "Static", *Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, Input2Box_.hwnd,0,0,0)
      #Else
           Input2BoxJmg_.hWnd  = CreateWindowEx(0, "#32770", Caption, WS_TILED Or WS_VISIBLE, Input2BoxJmg_.dm(0).dmPelsWidth/2-155, Input2BoxJmg_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
-          Input2BoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, Input2BoxJmg_.hwnd,0,0,0)
+          Input2BoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", DefaultString, WS_CHILD Or WS_VISIBLE Or WS_EX_TOPMOST Or flag, 10, 33, 275, 50, Input2BoxJmg_.hwnd,0,0,0)
           Input2BoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, x, y, w, h, Input2BoxJmg_.hwnd,0,0,0)
           Input2BoxJmg_.hWnd3 = CreateWindowEx(0, "Static", Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, Input2BoxJmg_.hwnd,0,0,0)
      #EndIf
@@ -995,12 +995,12 @@ Function InputBoxJmg(ByRef Caption As STRING, ByRef Message As STRING, ByRef Def
      EnumDisplaySettings( 0, ENUM_CURRENT_SETTINGS, @InputBoxJmg_.dm(0))
      #Ifdef UNICODE
           InputBoxJmg_.hWnd  = CreateWindowEx(0, "#32770", *Caption, WS_TILED Or WS_VISIBLE, InputBox_.dm(0).dmPelsWidth/2-155, InputBox_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
-          InputBoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", *DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, InputBox_.hwnd,0,0,0)
+          InputBoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", *DefaultString, WS_CHILD Or WS_VISIBLE Or WS_EX_TOPMOST Or flag, 10, 33, 275, 50, InputBox_.hwnd,0,0,0)
           InputBoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, 106, 100, 90, 25, InputBox_.hwnd,0,0,0)
           InputBoxJmg_.hWnd3 = CreateWindowEx(0, "Static", *Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, InputBox_.hwnd,0,0,0)
      #Else
           InputBoxJmg_.hWnd  = CreateWindowEx(0, "#32770", Caption, WS_TILED Or WS_VISIBLE, InputBoxJmg_.dm(0).dmPelsWidth/2-155, InputBoxJmg_.dm(0).dmPelsHeight/2-70, 310, 170, 0, 0, 0, 0 )
-          InputBoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", DefaultString, WS_CHILD Or WS_VISIBLE Or flag, 10, 33, 275, 50, InputBoxJmg_.hwnd,0,0,0)
+          InputBoxJmg_.hWnd1 = CreateWindowEx(WS_EX_CLIENTEDGE, "Edit", DefaultString, WS_CHILD Or WS_VISIBLE Or WS_EX_TOPMOST Or flag, 10, 33, 275, 50, InputBoxJmg_.hwnd,0,0,0)
           InputBoxJmg_.hWnd2 = CreateWindowEx(0, "Button", "OK", WS_CHILD Or WS_VISIBLE, 106, 100, 90, 25, InputBoxJmg_.hwnd,0,0,0)
           InputBoxJmg_.hWnd3 = CreateWindowEx(0, "Static", Message, WS_CHILD Or WS_VISIBLE, 10, 10, 275, 20, InputBoxJmg_.hwnd,0,0,0)
      #EndIf

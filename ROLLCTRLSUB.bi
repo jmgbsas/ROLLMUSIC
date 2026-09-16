@@ -1341,6 +1341,23 @@ Sub CTRL1094(titulo As ZString ptr) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
                          ' threadmovie = threadCall playmedio()
                     End If
                End If
+               If GetAsyncKeyState(VK_SPACE) Then
+                  While InKey <> "": Wend
+                   
+                  LIMPIA=1
+                  If mov8 > 0  Then 
+                    If  MOV_FLAG=1 Then
+                        Pausemovie(mov8)
+                        MOV_FLAG=3 'sin sonido de metronomo el loop del metronomo sigue
+                        Sleep 500
+                    ElseIf  MOV_FLAG=3 Then
+                        oldY=ALTO*4/6
+                        threadmovie = threadCall playmedio()
+                        MOV_FLAG=1
+                        Sleep 500
+                    End If
+                  End If
+               EndIf  
                If Event=EventClose Then
                     If mov8 > 0 Then
                          FreeMovie(mov8)

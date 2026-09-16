@@ -105,7 +105,21 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion=" 0.419 OPERACIONES SOBRE NOTAS INDIVIDUALES EN LECTURA CON F5, O  MAS CTRL O DELETE  "
+nroversion="0.426 FIX UNA NOTA LIGADA A UNA ANTERIOR SOLIA SONAR PUES SE AJUSTABA 2 EN ONOFF"
+''0.425 CAMBIAR MANUALMENTE ONOFF DE UNA NOTA, [F6+8+CLICK IZQ], NECESARIO CUANDO UNA NOTA DEBE SONAR(2) O NO (0)
+''      MEJORA AL PULSAR TECLAS AVPAG REPAG.
+''0.424 CAMBIAR VOLUMEN DE UNA NOTA CON F6+CLICK IZQUIERDO "
+''0.423 FIXED SI UNA NOTA ESTABA SOBRE SEMITONO 12 NO SONABA AL SELECCIONARLA! 
+''0.422 INPUT2BOXJMG Y INPUTBOXJMG SE AGREGO WS_EX_TOPMOST PARA QUE QUEDE ADELANTE
+''      ALGUNOS RETOQUES EN LA VELOCIDAD DE RESPUESTA DE TECLADO Y PLAY. HACEN FALTA
+''      MEJORAS EN RTA AL TECLADO(¿?)
+''0.421 ALT-F5 PUEDE INSERTAR NOTAS MAS HALLA DE MAXPOS(USARLA CON PRECAUCION) LA POSISION ELEGIDA AGRANDA EL MAXPOS*3/2, SOLO SECUENCIAS EXISTENTES NO ARCHIVOS VACIOS"
+''0.420 BARRA ESPACIADORA PLAY PAUSE EN reproductor de medios
+''-----------------------------------------------------------------------
+'' idea puedo dibujar las duraciones en la parte supeiror del grafico pulsando
+'' alguna tecla o menu, y elegir de ahi con el mouse y con F5 copiar y entocnes
+'' entrar notas en una secuencia ya construida conviene esto?
+'' 0.419 OPERACIONES SOBRE NOTAS INDIVIDUALES EN LECTURA CON F5, O  MAS CTRL O DELETE  "
 '' 0.418 habilite midiin sin chequear ninguna pista de ejec, menu reproducir item 3.0
 '' 0.417 fix interlineado se reseteaba a 0..
 '' 0.416 FIX crash al ir a elegir una escala y no se elige ninguna  tipoescala_num =0 se ajusta a 1"

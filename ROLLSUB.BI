@@ -733,9 +733,10 @@ Function BuscarNota (ctrl As Integer, ByRef cur1 As Integer,ByRef ncur As intege
 ' decidiremos cuanotos ticks de acercamiento en un principio 10
 ' posn1=n+curpos  es x , notacur es y, barreemos un cuadrado � 1 1 semitono y + - 10 curpos
 ' BUSCA OFF 1 O 2 y 190
-''Print #1,"ENTRA A BUSCONOTA CUR1 "; cur1; " ncur "; ncur
+Print #1,"ENTRA A BUSCONOTA CUR1 "; cur1; " ncur "; ncur
   If estoyEnOctava= 90 Then
      BuscarNota=-1
+Print #1,"sale de =90 BUSCONOTA CUR1 "; cur1; " ncur "; ncur
      Exit Function
   EndIf 
   BuscarNota=1
@@ -751,13 +752,16 @@ Dim  As Integer barrido=20
 x1=cur1 - barrido
 x2=cur1 + barrido
 
-y1=ncur '''- 1
-If y1 < 0 Or y1 > 11 Then
+y1=ncur '''- 1 nsE fijo no haria falta transmitirlo
+y2=1
+If y1 < 1 Or y1 > 12 Then
    Exit Function
 EndIf
 If x1 < 1 Then x1=1 EndIf
 If x2 > NroCol Then x2=NroCol EndIf
-
+Print #1," BUSCONOTA for y1 "; y1; " y2 "; y2
+' solo bare x ...y no lo barre porque es exacta el usuario no va a fallar de renglon 
+''es nsE
 For x= x1 To x2  'curpos
     posn1 = posicion+ x 'este deberia ser siempre �?
 'Print #1,"POSN1 ";posn1
@@ -782,7 +786,7 @@ For x= x1 To x2  'curpos
 ' encontro ubicacion de nota ,o final sec o un 190 borrar
 '        Print #1,"encontro onoff posn1 "; Roll.trk(posn1,(12-y +(estoyEnOctava -1) * 13)).onoff, posn1
        cur1=posn1-posicion
-       ncur=y1
+       ncur=y1 ''11-09-2026 
 'si estoy cerca de una 'N' onoff=2
        If Roll.trk(posn1,(12-y1 +(estoyEnOctava -1) * 13)).dur = 185 Then
           esEjecucion=1
@@ -795,8 +799,8 @@ For x= x1 To x2  'curpos
 
  'Print #1,"ENCONTRAMOS ON2 EN CURPOS, NOTACUR "; cur1, ncur
        BuscarNota=0 ' ok
-       ''   Print #1," dur en buscarnota ";Roll.trk(posn1,(12-y1 +(estoyEnOctava -1) * 13)).dur
-       ''   Print #1," nota en buscarnota ";Roll.trk(posn1,(12-y1 +(estoyEnOctava -1) * 13)).nota
+       Print #1," dur en buscarnota ";Roll.trk(posn1,(12-y1 +(estoyEnOctava -1) * 13)).dur
+       Print #1," nota en buscarnota ";Roll.trk(posn1,(12-y1 +(estoyEnOctava -1) * 13)).nota
          Exit Function
      EndIf
 Next x
@@ -1129,7 +1133,7 @@ End Sub
 ''========================= C U R S O R ============
 Sub cursor(c As cairo_t Ptr,ByRef n As Integer, ByRef nro As Integer, Roll As inst)
 'trasponer=0 ' NO SEPORQUE MIERDA SE PONE EN 1
-' n deberia ser posishow 
+' n deberia ser posishow ,,,ES PASISHOW EN TODOS LOS LADOS QUE SE USA
  'print #1,"1-cursor "
   If estoyEnOctava= 90 Then
      Exit Sub
@@ -8887,34 +8891,48 @@ Print #1,"sale con backspaceNotas ";backspaceNotas
 End Sub
 
 '--------RUTINA DE GRAFICOS
-Sub TocarNotaSeleccionada (ByRef lcurposx As integer, ByRef lnotacurx As Integer,  ByRef   dur1 As integer)
-Static As Integer lcurpos , lnotacur,lcurposOld , lnotacurOld
+Sub TocarNotaSeleccionada (ByRef lcurposx As integer, ByRef lnotacur As Integer,  ByRef   dur1 As integer)
+Static As Integer lcurpos , lcurposOld 
+'' LO QUE GUARDAMOS EN TRAK es PianoNota 
+'' en ROLL se carga el semitono de 1 a 12 en ).nota 
+'' en Roll grafico calculamos la piano nota en funcion del nR el indice del vector
+'' yesa piano nota se usa para tocar pero el valor de nota de Roll no
+'' sirve para tocar directamente se deduce en Track si es directo no se deduce
+'' no se gurda lso semitonos 
 
                     lcurpos=(mousex -gap1)/anchofig
 If lcurpos < gap1 Then 
   Exit Sub
 EndIf 
  ''Print #1, "en TocarNotaSeleccionada"
-                    lnotacur=nsE
+                    
                    'Print #1,"lnotacur=nsE ";lnotacur
-                   resultado= BuscarNota (1,lcurpos, lnotacur)
-                   'Print #1,"lnotacur de buscarnota ";lnotacur
-                    nR=(12-lnotacur +(estoyEnOctava -1) * 13) 
+                   
+                   resultado= BuscarNota (1,lcurpos,lnotacur)
+                  ' Print #1, "RESULTADO BuscarNota "; resultado
+                  ' Print #1,"lcurpos de buscarnota ";lcurpos
+                  ' Print #1,"lnotacur de buscarnota ";lnotacur ''' es nsE
+					''PianoNota= nR - restar(nR) ''empiza desde 0 hay que revisar esto
                     indicePos=lcurpos + posishow
-                    ''nR=PianoNota + SumarnR(PianoNota)
-           '''   Print #1,"nR "; nR
+                    ''nR=PianoNota + SumarnR(PianoNota)  ej 65= 60 +5
+''''' como PianoNota= nR - restar (nR) '' o SumarnR es lo mismo
+''''' PianoNota= i1 - restar (i1) ' la llamo Notapiano par tocar en playall en funcion del indice del vector nR=i1
+
+''' lnotacur es nR ..e lindice dedl vector
+'''Print #1, "PianoNota Global "; PianoNota
+'''              PianoNota= lnotacur - restar(lnotacur) la podria deducir pero ya al calcula el programa siempre
+'''Print #1, "PianoNota  Calculada "; PianoNota
+''              Print #1,"lcurpos, indicePos, nR ,lnotacur,PianoNota "; lcurpos, indicePos, nR ,lnotacur, PianoNota
+                    fileflush(-1): Sleep 100
+                    nR=(12-lnotacur +(estoyEnOctava -1) * 13)
                     RollDur=CInt(Roll.trk(indicePos,nR ).dur)
-          ''    Print #1,"RollDur "; RollDur   
-                    ''RollDur=CInt(Roll.trk(indicePos,lnotacur ).dur)
-                    dur1=RollDur
+              'Print #1,"RollDur "; RollDur   
+
+               '     dur1=RollDur
                     
-                    ''Print #1, "lcurpos ";lcurpos; " lnotacur ";lnotacur
-                    ''Print #1,"RESULTADO  BuscarNota (1,lcurpos, lnotacur) ", resultado
-                    'PRIMERO SIEMPRE MARCAMOS LA NOTA ONOFF=2 Y SI QUEREMOS MARCAR UN FIN DE NOTA AL FINAL
-                    ' DE LA ZONA HACERLO DESPUES DE MARCAR EL ONOFF=2
                     
-                    If resultado=0 And (lcurposOLd <> lcurpos or lnotacurOld <> lnotacur )Then
-                        Print #1,"ENCONTRO LA NOTA SIN ONOFF=2, RollDur ", RollDur 
+                    If resultado=0 And (lcurposOLd <> lcurpos or nROld <> nR )Then
+                      ''  Print #1,"ENCONTRO LA NOTA con o SIN ONOFF=2, RollDur ", RollDur 
                          Dim k1 As Integer
                          k1=CInt(pmTk(0).portout)
                          portout=k1
@@ -8927,17 +8945,17 @@ EndIf
                               Chorus(1,  pmTk(0).canalsalida,k1)
                               ''''suenaunavez=1
                               noteon(cubyte(PianoNota),80,pmTk(0).canalsalida,k1,1,1)
-                              If RollDur=185 Then
-                                   RollDur=3
-                              End If
+                            '  If RollDur=185 Then
+                                   RollDur=5 ''SIEMPRE 
+                             ' End If
                               duracion(Timer, relDur(RollDur) )
-                          ''    Print #1,"RollDur ",RollDur
+                   ''           Print #1,"RollDur ",RollDur
                               noteoff(cubyte(PianoNota),40,pmTk(0).canalsalida,k1,1,1)
                          End If
                     End If
-
-lcurposx=lcurpos : lnotacurx=lnotacur
-lcurposOld=lcurposx : lnotacurOld=lnotacurx
+''fileflush(-1)
+lcurposx=lcurpos 
+lcurposOld=lcurposx : nROld=nR
 End Sub
 
 Sub MoverMouse(ByRef accion As  UByte) 
