@@ -106,6 +106,7 @@ On Error Goto errorhandler
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
 nroversion="427 duracion se adapta a win 10 u 11, ntdelay anda ma len 11"
+'' adapte para windows 7 me olvide para la proxima
 ''0.426 FIX UNA NOTA LIGADA A UNA ANTERIOR SOLIA SONAR Y 6 MODIFICACIONES MAS EN HISTORIA.TXT"
 ''0.425 CAMBIAR MANUALMENTE ONOFF DE UNA NOTA, [F6+8+CLICK IZQ], NECESARIO CUANDO UNA NOTA DEBE SONAR(2) O NO (0)
 ''      MEJORA AL PULSAR TECLAS AVPAG REPAG.

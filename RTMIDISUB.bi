@@ -1411,7 +1411,7 @@ Sub duracion (old_time As Double, tiempoFigura As Double)
 'print #1, "tiempoFigura " , tiempoFigura ' o timestamp
 'Static As Double start
 
-If VERSION=10 Then
+If VERSION=10 Or VERSION=7  Then
 Static As LARGE_INTEGER delay 
 delay.QuadPart = -1 
   Do
