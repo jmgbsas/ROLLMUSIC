@@ -53,6 +53,38 @@
 '  EndIf
 'End  sub
 
+Dim Shared As Integer VERSION
+
+Function ObtenerVersionWindows() As Integer
+    Dim As HKEY clave
+    Dim As DWORD tipo, tam = 32
+    Dim As ZString * 32 buffer
+    Dim As Long compilacion
+    
+    ' Abrimos la ruta del registro donde Windows guarda la compilación real
+    If RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\Microsoft\Windows NT\CurrentVersion", 0, KEY_READ, @clave) = 0 Then
+        ' Leemos el valor "CurrentBuild"
+        If RegQueryValueEx(clave, "CurrentBuild", NULL, @tipo, Cast(LPBYTE, @buffer), @tam) = 0 Then
+            compilacion = Val(buffer)
+            RegCloseKey(clave)
+            
+            ' Si la compilación es 22000 o superior, es Windows 11
+            If compilacion >= 22000 Then
+                Return 11
+            ElseIf compilacion >= 10240 Then
+                Return 10
+            Else
+                Return 7
+            End If
+        End If
+        RegCloseKey(clave)
+    End If
+    Return -1 
+End Function
+
+
+
+
 '--------
 '=======================
 '--------------
@@ -71,6 +103,7 @@
 #include "ROLLDEC.BI"
 #include "RTMIDIDEC.bi"
 '=============================
+
 
 '--------
 Sub  porterrorsub(porterror As integer)
@@ -180,12 +213,17 @@ Dim As GLFWwindow ptr  win
 '/
 '===============================
 
+
 pd1 = GetCurrentProcessId()
 
 Open ROLLDIR+"midebug.txt" For Output As #1
 '' Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As 1
 Print #1,"start"
 Print #1,"PID DE ESTE PROCESO ",pd1
+
+VERSION= ObtenerVersionWindows()
+
+Print #1,"VERSION DE WINDOWS "; VERSION
 
 
 

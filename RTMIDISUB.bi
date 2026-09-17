@@ -1083,7 +1083,7 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 						NroEvento=NroEventoPista(1)
 						''Print #1,"noteon CUByte(Notapiano),vel,canal,portsal  ";CUByte(Notapiano),vel,canal,portsal
 						noteon CUByte(Notapiano),vel,canal,portsal,1,NroEvento
-                      Print #1, " ON posicion ";jply;"  vel  ";vel; " dur "; Roll.trk(jply, i1).dur; "comp.nro ";compas(jply).nro
+                  ''    Print #1, " ON posicion ";jply;"  vel  ";vel; " dur "; Roll.trk(jply, i1).dur; "comp.nro ";compas(jply).nro
 						'''''''''CONTROL METRONOMO SOLO debe DISPARAR UNA VEZ si ya disparo antes por otra osa no lo hara
 						'    If metronomoPistas_si=3 And disparo=0 Then
 						'        Print #1,"LLAMA A METRONOMO EN PLAYALL!!! "
@@ -1150,7 +1150,9 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 		Next i1
 		'''  ya no hace falta mouse_event MOUSEEVENTF_MOVE, 1, 0, 0, 0
 		' print #1,"---FIN -----paso:"; jply;" --------------------------------"
-		duracion (old_time_on ,tickUsuario) ' si es cero no 1 no hay duracion es acorde
+		threadduracion = ThreadCall duracion (old_time_on ,tickUsuario) ' si es cero no 1 no hay duracion es acorde
+      ThreadWait(threadduracion)
+ 
 		old_time_on=old_time_on + tickUsuario 'jmgtiempo
 		
 		
@@ -1171,7 +1173,7 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 		End If
 		
 		
-		tickUsuario=60/(tiempoPatron*PPQN*FactortiempoPatron) 
+		tickUsuario=60/(tiempoPatron*PPQN*FactortiempoPatron)
 
 	  Next jply
 	''while (PeekMessage(NULL, hwnd, WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE or PM_QS_INPUT))
@@ -1402,10 +1404,37 @@ Function sumar( ByVal ind As Integer) As Integer
      
 End Function
 
-Sub duracion (old_time As Double, tiempoFigura As Double) '' ensegundos
+
+Sub duracion (old_time As Double, tiempoFigura As Double)
+' retardo puro sin on ni off dejo de andar porque ???
+'print #1,"En Duracion COMIENZA RETARDO En  time :"; old_time
+'print #1, "tiempoFigura " , tiempoFigura ' o timestamp
+'Static As Double start
+
+If VERSION=10 Then
+Static As LARGE_INTEGER delay 
+delay.QuadPart = -1 
+  Do
+    NtDelayExecution(FALSE,@delay)
+  Loop Until Timer - old_time >= tiempoFigura
+EndIf
+If VERSION=11 Then
+ Do
+   t1=Timer
+     Do ''retardo de 50 useg
+    ASM PAUSE
+   Loop While Timer-t1 < 0.000050 '50 us   
+ Loop Until Timer - old_time >= tiempoFigura
+
+EndIf
+
+End Sub
+
+Sub duraciontimer (old_time As Double, tiempoFigura As Double) '' ensegundos
      ' retardo puro sin on ni off dejo de andar porque ???
      'print #1,"En Duracion COMIENZA RETARDO En  time :"; old_time
      'print #1, "tiempoFigura " , tiempoFigura ' o timestamp
+'''consume mucha cpu y el error de windows 11 era el sleep en playall
 Do
    t1=Timer
      Do ''retardo de 50 useg

@@ -461,6 +461,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
                          End If
                          ' ////////dar color al font en una determinada posicion durante el play
                          If n<=jply + 6 And n<=jply - 6 And Parar_De_Dibujar=NO Then
+
                               cairo_set_source_rgba(c,1,0,1,1) 'me4dio violeta
                          End If
                          If indf <> 181 Then ' esto acelera un monton 181 es vacio espacio no hay nada para mostrar
@@ -625,7 +626,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
           
           
      Next semitono
-     'Sleep 15 ''' otro freno
+     Sleep 1
      
      
      ' -----------------------------------------------------------
@@ -958,9 +959,9 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
 '
                Exit For
           End If
-         Sleep 3 
+        ' Sleep 3 
      Next i
-     
+     Sleep 35
      
 End Sub
 

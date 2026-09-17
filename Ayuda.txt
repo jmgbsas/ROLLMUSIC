@@ -1,8 +1,9 @@
     Ayuda Prelimiar Básica RollMusic  
     =================================================================================================
-  0.426 FIX UNA NOTA LIGADA A UNA ANTERIOR SOLIA SONAR PUES SE AJUSTABA 2 EN ONOFF"
+  0.427 duracion se adapta a win 10 u 11, ntdelay anda ma len 11
+     Y OTRAS
     =================================================================================================
-  Y OTRAS
+  0.426 FIX UNA NOTA LIGADA A UNA ANTERIOR SOLIA SONAR PUES SE AJUSTABA 2 EN ONOFF"
   0.425 CAMBIAR MANUALMENTE ONOFF DE UNA NOTA,[F6+8+CLICK IZQ] NECESARIO CUANDO UNA NOTA DEBE SONAR(2)
         Ó NO (0).. MEJORA AL PULSAR TECLAS AVPAG REPAG, SE CONGELABA O TRABABA.
   0.424 CAMBIAR VOLUMEN DE UNA NOTA CON F6+CLICK IZQUIERDO 
