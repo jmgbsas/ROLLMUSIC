@@ -17,6 +17,7 @@ Declare Sub CuadroDur ()
 Declare Sub CuadroVol ()
 Declare Sub CuadroKey ()
 Declare Sub CuadroPer ()
+Declare Sub CuadroPenta ()
 Declare Sub CuadroVoces()
 
 Dim Shared As Integer cuentauxiliares=0
@@ -614,7 +615,7 @@ Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer,thr
 Screenbuffer=0
 Common Shared as any ptr thread1, thread2,threadPenta,threadcreaPenta, thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal,threadPer,threadVoz,threadduracion
 Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro,threadKey,threadmidi0,threadCargamidi,threadTono
-Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes, nretrasoMetronomoCan,nretrasoMetronomoRoll,threadwin
+Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes, nretrasoMetronomoCan,nretrasoMetronomoRoll,threadwin, threadPen
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi,ubiejec,ubionline
 Common Shared As integer ubim4a, ubimp3,ubimid, ubiwav, ubimedia ''muchos mas ubi para audio

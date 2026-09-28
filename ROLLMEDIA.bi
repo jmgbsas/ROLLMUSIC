@@ -2,7 +2,7 @@
 Function valorfrec (nronota As Integer) As double
      ' EXPANDIR UN GRAFICO DE TECLADO SENSIBLE A MOUSE DE 88 LUGARES EN CADA UNO
      ' SONAR LA FRECUENCIA PURA DE LA NOTA CORREPONDIENTE
-     ' f3 = 440 * (1.059463..)3 = 523.3 Hz   LA4=440 DEL MEDIO RAZIA CUADRADA DE 2
+     ' f3 = 440 * (1.059463..)3 = 523.3 Hz   LA4=440 DEL MEDIO RAIZ CUADRADA DE 2
      ' POTENCIA SEMITONOES POR ARRIBA + O POR ABAJO -
      ' C5 = the C an octave above middle C. This is 3 half steps above A4 and so the frequency is
      ' f3 = 440 * (1.059463..)3 = 523.3 Hz

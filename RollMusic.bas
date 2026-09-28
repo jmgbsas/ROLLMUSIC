@@ -105,8 +105,11 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="427 duracion se adapta a win 10 u 11, ntdelay anda ma len 11"
-'' adapte para windows 7 me olvide para la proxima
+nroversion= "0.430 cambia bien las octavas cualquiera sea el cambio ."
+''0.429 NO CANCELA MAS SI ESTA LEVANTADO EL REPRO DE MEDIOS Y SE CIERRA LA VENTANA DE CONTROL
+''0.428 cuadro relacion teclado pentagrama y octavas rollmusic
+'------------------------------------------------------------------
+''0.427 duracion se adapta a win 10 u 11, ntdelay anda mal en 11
 ''0.426 FIX UNA NOTA LIGADA A UNA ANTERIOR SOLIA SONAR Y 6 MODIFICACIONES MAS EN HISTORIA.TXT"
 ''0.425 CAMBIAR MANUALMENTE ONOFF DE UNA NOTA, [F6+8+CLICK IZQ], NECESARIO CUANDO UNA NOTA DEBE SONAR(2) O NO (0)
 ''      MEJORA AL PULSAR TECLAS AVPAG REPAG.

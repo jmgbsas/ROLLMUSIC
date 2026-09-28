@@ -23,6 +23,17 @@ PLAY CON BARRA ESPACIO O SPACE (se interrumpe con P)
   EN LECTURA DESDE LA POSICION EN DONDE COMIENZA LA VISUALIZACION DE LA SECUENCIA
   SI ES UNA CANCION SE TOCA TODA LA CANCION
   EN EDICION CTRL-M Y N. SOLO PLAY DEL TRAMO EN EDICION.
+--------------------------------------------------------------
+CTRL-INICIO : SI NO SE VEN LAS NOTAS EN LA PANTALLA ESTE COMBINACION AJUSTA LA LONGITUD Y
+LOS PARAMETEROS VISUALES PARA QUE LA SECUENCIA ENTRE EN LA PANTALLA.
+---------------------------------------------------------------
+INICIO O HOME: VA AL PRINCIPIO DE LA SECUENCIA.
+-------------------------------------------------
+FIN O END: VA AL FINAL DE LA SECUENCIA.
+---------------------------------------------
+R: RECALCULA Y MUESTRA LAS LINEAS DE LOS COMPASAES SEGUN SEA 4/4 3/4 ETC
+------------------------------------------------------------
+ALT-R: ELIMINA LAS LINEAS DE COMPAS
 --------------------------------------------------------
 SELECCIONAR UNA ZONA O INTERVALO DE LA SECUENCIA CON 2 CTRL-CLICK EN DIFERENTES LUGARES
 Los ctrl-click deben ser breves no mas de 200 mseg, si duran mas sosteniendo el mouse presionado

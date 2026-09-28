@@ -364,7 +364,6 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
                '  ESCRITURA DE NOTAS: ------->
                
                If n <=  pmTk(0).MaxPos Then
-                    
                     If Roll.trk (n,11- semitono  + (*po -1) * 13 ).nota > 0  Or Roll.trk (n,11- semitono +  (*po -1) * 13 ).dur > 0 Or Roll.trk (n,11- semitono +  (*po -1) * 13 ).onoff > 0 Then
                          ' print #1,"lugar ",11
                          '  10-04-2022 verificar si esto sigue funcionando ÇÇÇÇ colocar esapcios
@@ -919,6 +918,9 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
           Print #1, "11- semitono ", 11-semitono
           Print #1," (*po -1) * 13 "; (*po -1) * 13
           Print #1, "11- semitono  + (*po -1) * 13 "; 11- semitono  + (*po -1) * 13
+Print #1,"maxpos ";pmTk(0).MaxPos; " n "; n  
+Print #1, "NB NA "; NB, NA
+fileflush(-1)
           
           
      End If
@@ -961,7 +963,7 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
           End If
         ' Sleep 3 
      Next i
-     Sleep 35
+     Sleep 5
      
 End Sub
 

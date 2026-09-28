@@ -2084,7 +2084,7 @@ Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst, funcion As S
      End If
      'cargaCancion=CARGAR_NO_PUEDE_DIBUJAR 'koko volver a ajustar 25-04-2026 pantalla ok
      'terminar=NO_TERMINAR_CON_DATOS_CARGADOS
-     terminar=NO_TERMINAR_BARRE_PANTALLA: Parar_De_Dibujar=NO 'koko volver a poner
+'''''''===>>'''25-09-2026 comentado     terminar=NO_TERMINAR_BARRE_PANTALLA: Parar_De_Dibujar=NO 'koko volver a poner
      ' pantalla ok al dar TAB con cancion y metronomo pero se detiene el playcancion porque¿?
      Print #1,"-------------ARRANCA TRACKAROLL---------------------------------"
      Print #1,"NTK Y nombre que llego a TrackaRoll ",ntk ,titulosTk(ntk)
@@ -2113,7 +2113,8 @@ Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst, funcion As S
           If Roll.trk(1,NA).onoff = 1 Then
                GUARDOONOFF =1
           End If
-     Else
+     Else  ''25-09-2026 agregamos para que dibuje....que estaba arriba es para TAB
+         terminar=NO_TERMINAR_BARRE_PANTALLA: Parar_De_Dibujar=NO 'koko volver a poner
           copiarPmtkaPmtk(0,ntk)
           desde  = pmTk(ntk).desde
           hasta  = pmTk(ntk).hasta
@@ -2159,7 +2160,9 @@ Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst, funcion As S
                End If
           End If
      End If
-     Erase Roll.trk , compas
+    If funcion<>"CAMBIADIM" Then 
+      Erase Roll.trk , compas
+    
      Print #1, "// trckaroll redim Roll MaxPos ",MaxPos
      '----------NO DIBUJAR ACA (terminar=NO_TERMINAR_BARRE_PANTALLA Or Parar_De_Dibujar=NO)
      '   terminar=NO_TERMINAR_CON_DATOS_CARGADOS  koko 25-04-2026 pantalla ok
@@ -2167,6 +2170,7 @@ Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst, funcion As S
      '   cargaCancion=CARGAR_NO_PUEDE_DIBUJAR     koko 25-04-2026
      ReDim (Roll.trk ) (1 To CantTicks, NB To NA ) ' 27-02 cantTicks son de 15 minutos de ticks
      ReDim  As paso compas (1 To CantTicks)
+    EndIf 
      ''' va despues de la carga RecalCompas(ritmo)
      If  GUARDOEJEC=1 Then
           pmTk(0).ejec =1
@@ -2367,10 +2371,12 @@ Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst, funcion As S
      ''Parar_De_Dibujar=SI
      Print #1,"cargaCancion DEBE SER 1 ",cargaCancion
      Print #1,"NTK del copiado aca esta el lio, Y MAXPOS EN REDIM ",ntk, pmTk(ntk).MaxPos
-     ReDim (Track(0).trk ) (1 To  pmTk(ntk).MaxPos +1, 1 To lim3) '////HOY
+     If FUNCION="CAMBIADIM" Then
+     Else
+       ReDim (Track(0).trk ) (1 To  pmTk(ntk).MaxPos +1, 1 To lim3) '////HOY
      
      
-     If cargaCancion=CARGAR_NO_PUEDE_DIBUJAR Or CANCIONCARGADA=TRUE Then ' MIENTRAS HAYA MAS DE UN TRACK O SEA UNA CANCION
+       If cargaCancion=CARGAR_NO_PUEDE_DIBUJAR Or CANCIONCARGADA=TRUE Then ' MIENTRAS HAYA MAS DE UN TRACK O SEA UNA CANCION
           Print #1,"CARGA DE  TRACK(0)"
           copiaTrackaTrack(Track(), 0 , ntk )
           ' For i1=1 To pmTk(ntk).MaxPos
@@ -2378,7 +2384,8 @@ Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst, funcion As S
           '  Track(0).trk(i1,i2) = Track(ntk).trk(i1,i2)
           '  Next i2
           ' Next i1
-     End If
+       End If
+     EndIf
      Print #1,"FIN CARGA DE  TRACK(0)"
      
      ''Sleep 5

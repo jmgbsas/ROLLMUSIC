@@ -42,12 +42,13 @@ NADACARGADO    = True
 CANCIONCREADA  = False
 EJECCARGADA    = False
 
-Dim Shared As HWND velimg, Figimg, FigVol, FigKey,FigPer, FigVoz
+Dim Shared As HWND velimg, Figimg, FigVol, FigKey,FigPer, FigVoz, FigPenta
 Const IMAGE_VEL= 30
 Const IMAGE_FIG1 = 31
 Const IMAGE_FIG2 = 32
 Const IMAGE_FIG3 = 33
 Const IMAGE_FIGPER = 34 ' percusion
+Const IMAGE_FIGPENTA = 35 ' percusion
 
 
 Const As Boolean HABILITAR = True
@@ -182,6 +183,30 @@ Sub CuadroPer()
      
      
 End Sub
+'-------------------
+Sub CuadroPenta()
+     FigPenta=  OpenWindow("RELACION PENTAGRAMA TECLADO OCTAVAS ",200,100,1200,750  )
+     ImageGadget(IMAGE_FIGPENTA,10,10,1200,750,Load_image(ROLLDIR+"recur\RELACION_PENTRAGRAMA_OCTAVAS.jpg"))
+     #Ifdef __FB_WIN64__
+          SetFocus (FigPenta)
+          SetForegroundWindow(FigPenta)
+     #Else
+          gtk_widget_grab_focus(GadgetID(IMAGE_FIGPENTA))
+     #EndIf
+     
+     
+     Do
+          Var ePenta= waitEvent
+          If ePenta=EventClose Then
+               Close_Window(FigPenta)
+               
+          End If
+     Loop
+     
+     
+End Sub
+
+
 '---------
 Sub CuadroVoces()
 '     FigVoz=  OpenWindow("OCTAVAS, VOCES  ",800,100,800,500 )

@@ -150,7 +150,7 @@ Print #1,"  rit INCREMENTO "; incremento
 Print #1,"  rit INCREMENTO ";rit, incremento
  ticks=rit*incremento
 Print #1,"  TICKS "; TICKS 
-''Print #1,"En Recalcompas MAXI ",MAXI
+Print #1,"En Recalcompas MAXI ",MAXI
 ReDim compas(1 To 2*MAXI) ' se supono que borra su contenido pero no funciona!!!
 If rit=0 Then 
   Exit Sub
@@ -199,6 +199,8 @@ End Select
 Dim As Integer hayon=0 
 kj=0
 
+Print #1,"ubounf Roll 2)"; UBound(Roll.trk,2)
+Print #1,"ubounf Roll 1)"; UBound(Roll.trk,1)
 For j=1 To MAXI-2  ' j recorre los ticks 1 a 1
   kj=kj+1
 ' veo si hay un on 
@@ -5226,11 +5228,13 @@ terminar=NO_TERMINAR_CON_DATOS_CARGADOS: Parar_De_Dibujar=SI
 '''ReDim  (Roll.trk ) ( 1 To ejex, NB To NA)
 '''Sleep 10
 ' COPIAMOS DESDE TRACK TRACK Y COMPAS PERMANECEN IGUALES 
-TrackaRoll (Track(),  0 , Roll, "CAMBIADIM" )
-Sleep 20
+ReDim (Roll.trk) ( 1 To CantTicks,NB To NA ) ''fix 26-09-2026
 ReDim (RollAux.trk) ( 1 To CantTicks,NB To NA )
-Sleep 5
-RecalCompas (ritmo)
+Sleep 10
+TrackaRoll(Track(),  0 , Roll, "CAMBIADIM" ) ' fix 26-09-2026
+Sleep 20
+
+RecalCompas (ritmo)  
 terminar=NO_TERMINAR_BARRE_PANTALLA: Parar_De_Dibujar=NO  
 '''     ReDim  Preserve (Roll.trk ) ( 1 To ejex, NB To NA)
 ''     ReDim  Preserve (Track(ntk).trk ) (1 To CantTicks, 1 To lim3)
@@ -8013,10 +8017,12 @@ Print #1,"BatchGraficoOCtrl GRABADO EN ROLLMUSIC.INI ",BatchGraficoOCtrl
 Dim As String linea
  If mov8 > 0 Then 
    stopmovie(mov8)
-  MOV_FLAG=3 'sin sonido de metronomo el loop del metronomo sigue 
+   Sleep 10
+  MOV_FLAG=99 '27-09-2026 NO CANCELA MAS SI ESTA LEVANTADO EL REPRO DE MEDIOS
+  Sleep 10
   mov8=0 
   tic=1
-EndIf
+ EndIf
  
  If Open (ROLLDIR+"procesos.txt" For Input As 2) <> 0 Then
    Err =0  ' PRA QUE NO CANCELE VEREMOS NO IMPORTA QUE NO LEA

@@ -1358,7 +1358,7 @@ Sub CTRL1094(titulo As ZString ptr) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
                     End If
                   End If
                EndIf  
-               If Event=EventClose Then
+               If Event=EventClose Or MOV_FLAG=99 Then
                     If mov8 > 0 Then
                          FreeMovie(mov8)
                     End If
@@ -2281,19 +2281,19 @@ Sub CTRL1230() '' entrenar oido y afinar la voz, la meta es lograr un unisono
      Dim As Integer HABILITA6=0
      ANCHOWIN=ANCHO*4/5
      'NOTAS MIDI     OCTAVA DO CENTRAL ES EL 60 ENTR LA 3ER Y 4T LINEA DE UN PENTTAGRAMA
-     '       -1     0     1     2     3     4     5     6     7      8        9
-     'Do     C     0     12     24     36     48     60     72     84     96      108     120
-     'Do#     C#     1     13     25     37     49     61     73     85     97      109     121
-     'Re     D     2     14     26     38     50     62     74     86     98      110     122
-     'Re#     D#     3     15     27     39     51     63     75     87     99      111     123
-     'Mi     E     4     16     28     40     52     64     76     88     100 112     124
-     'Fa     F     5     17     29     41     53     65     77     89     101 113     125
-     'Fa#     F#     6     18     30     42     54     66     78     90     102 114     126
-     'Sol     G     7     19     31     43     55     67     79     91     103 115     127
-     'Sol#     G#     8     20     32     44     56     68     80     92     104 116
-     'La     A     9     21     33     45     57     69     81     93     105 117
-     'La#     A#     10     22     34     46     58     70     82     94     106 118
-     'Si     B     11     23     35     47     59     71     83     95     107 119
+     '       -1    0     1      2      3      4      5      6      7      8    9     10 
+     'Do     C     0     12     24     36     48     60     72     84     96   108   120
+     'Do#    C#    1     13     25     37     49     61     73     85     97   109   121
+     'Re     D     2     14     26     38     50     62     74     86     98   110   122
+     'Re#    D#    3     15     27     39     51     63     75     87     99   111   123
+     'Mi     E     4     16     28     40     52     64     76     88     100  112   124
+     'Fa     F     5     17     29     41     53     65     77     89     101  113   125
+     'Fa#    F#    6     18     30     42     54     66     78     90     102  114   126
+     'Sol    G     7     19     31     43     55     67     79     91     103  115   127
+     'Sol#   G#    8     20     32     44     56     68     80     92     104  116
+     'La     A     9     21     33     45     57     69     81     93     105  117
+     'La#    A#    10    22     34     46     58     70     82     94     106  118
+     'Si     B     11    23     35     47     59     71     83     95     107  119
      
      'La4=69
      Dim As Integer oldX=ANCHO/5, oldy=ALTO/4
@@ -2435,7 +2435,7 @@ ImageGadget(IMAGE_FIGVOZ,ANCHO*2/5,1,800,800,Load_image(ROLLDIR+"recur\RANGOS_VO
                Case    36 To 88 '
   
            SetFocus(hwndSndPuros)
-            frec=valorfrec(EventNumber)
+            frec=valorfrec(EventNumber) ' ve osi puedo hacer  acorde
                     threadTono= ThreadCall EmitirTono(valorfrec(EventNumber),SEGUNDOS)
             frecuencia= Format(frec,"00.0")
             ButtonGadget(3,   40,40,210,40,"DETENER SONIDO " + frecuencia )

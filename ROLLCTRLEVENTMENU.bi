@@ -583,6 +583,8 @@ Case 1025 ' <======== Crear un directorio de Cancion con Pistas separadas
      '-----------------------------------------------------------------------
 Case 1028 ' <========== seleccion octavas menores a 1 9
      mensajeEstado="AUNQUE LA OCTAVA QUE APARECE SEA LA INDICADA VUELVA A SELECCIONARLA"
+StatusBarGadget(BARRA_DE_ESTADO, mensajeEstado)
+'''Print #1,"1) ctrl 1028 desde hasta, NB,NA "; desde, hasta, NB, NA
      If pmTk(ntk).desde=0 Then
      Else
           pmTk(ntk).desde=desde
@@ -591,9 +593,11 @@ Case 1028 ' <========== seleccion octavas menores a 1 9
      Else
           pmTk(ntk).hasta=hasta
      End If
-     
+ terminar=NO_TERMINAR_CON_DATOS_CARGADOS: Parar_De_Dibujar=SI
+    
      thread3 = threadcall seloctava (desde, hasta)
-     '''ThreadWait thread3
+'''Print #1,"2 ) ctrl 1028 desde hasta, NB,NA "; desde, hasta, NB, NA
+     ThreadWait thread3
      For p1 As UByte = 0 To Tope
           pmTk(p1).desde=desde
           pmTk(p1).hasta=hasta
@@ -603,11 +607,15 @@ Case 1028 ' <========== seleccion octavas menores a 1 9
      posn=1
      NB => 0 + (desde-1) * 13
      NA => 11 + (hasta-1) * 13
-     
+
+
+'''Print #1,"3 ) ctrl 1028 desde hasta, NB,NA "; desde, hasta, NB, NA
+     ''fileflush(-1)       
      CambiarDim(1)
      param.ubiroll=ubiroll
      param.ubirtk=ubirtk
      posn=1
+terminar=NO_TERMINAR_BARRE_PANTALLA : Parar_De_Dibujar=NO
      
      
      '-----------------------------------------------------------------------
@@ -1476,6 +1484,10 @@ Case 2004 ' cuadros ayuda tempo, figuras duracion, volumen
 Case 2005 ' cuadro percusion
      threadPer = ThreadCall  CuadroPer ()
      threadDetach threadPer
+Case 2006 ' Relacion Visual TEclado Octavas Rollmusic y pentagrama
+     threadPen = ThreadCall  CuadroPenta ()
+     threadDetach threadPen
+
 
      
      '-----------------------------------------------------------------------
