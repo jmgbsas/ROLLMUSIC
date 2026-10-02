@@ -105,7 +105,9 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion= "0.430 cambia bien las octavas cualquiera sea el cambio ."
+nroversion="0.432 Con ALT-V + una duracion no muy grande + flechas Der o Izq se mueve toda la secuencia, terminamos con Q, usar Home y Fin para controlar " 
+''0.431 UNDO NOTAS MELODIAS/ACORDE ALT-U, Y UNDO DE SIMBOLOS DE ACORDE ALT-BACKSPACE ANDA CON TICKS(la 1er nota no se borra)"
+''0.430 cambia bien las octavas cualquiera sea el cambio ."
 ''0.429 NO CANCELA MAS SI ESTA LEVANTADO EL REPRO DE MEDIOS Y SE CIERRA LA VENTANA DE CONTROL
 ''0.428 cuadro relacion teclado pentagrama y octavas rollmusic
 '------------------------------------------------------------------
@@ -427,6 +429,10 @@ Print #1,"antes del LOOP main ====hwndC ", hwndC
 tic=0
 CPCS=0: CPSS=0
 MOV_FLAG=0:CPlay=NO:Playb=NO:medio_metronomo_on=FALSE
+
+mel_undo_k=0 :ig=0:cnt_acor=0
+Erase mel_undo, undo_acorde,undo_kant_intervalos
+
 Do
      
      COMEDIT=LECTURA

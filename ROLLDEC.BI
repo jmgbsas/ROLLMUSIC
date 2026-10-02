@@ -979,7 +979,8 @@ End Type
 
 Type melodia_undo Field=1
   As Integer trk  ' NRO DE TRACK POR DEFAULT 0
-  As Integer posn
+  As Integer posn ' de nota y onoff=2
+  As Integer onoff1 ' fin de nota
   'As notas_agregadas columna
 End Type
 Dim Shared As melodia_undo mel_undo(1 To 5000)
@@ -1012,6 +1013,7 @@ Common Shared As FLOAT font
 Dim Shared As float  deltaipf=0, lockip=0 
 Dim Shared q As String * 1
 Dim Shared As UByte  ii,indf,indfa,indfaux,s1, s2, s3, s4, s5,s6, s7 ,s8, s9,s10,s11,s12,S13,S14
+Dim Shared As Integer S15
 Dim Shared As UByte numdurasmidi( 1 To 24)
 ''Dim Shared escala As float = 1.0
 Dim Shared translado As Integer = 1

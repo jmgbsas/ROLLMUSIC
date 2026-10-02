@@ -2633,28 +2633,92 @@ Sub moverBuscoFinalNota   (Roll As inst, hastat As Integer, UBION As Integer, i1
      
      
 End Sub
-Sub moverSecuenciaUnaDuracionPulsada ()
+Sub  MoverSecUnaDur(direccion As Integer)
+Print #1,"MoverSecUnaDur dureccion "; direccion
+Dim As Integer y1,x1,ticks 
+ticks=DurXTick(DUR)
+If ticks=0 Then ticks=12
+
+If direccion= 1 Then  ''derecha
+  For x1 = PmTk(ntk).MaxPos+6 To 1 Step -1
+     For y1=NB To NA
+       Roll.Trk(x1+ticks,y1).nota  =Roll.Trk(x1,y1).nota
+       Roll.Trk(x1+ticks,y1).dur   =Roll.Trk(x1,y1).dur
+       Roll.Trk(x1+ticks,y1).vol   =Roll.Trk(x1,y1).vol
+       Roll.Trk(x1+ticks,y1).pan   =Roll.Trk(x1,y1).pan
+       Roll.Trk(x1+ticks,y1).pb    =Roll.Trk(x1,y1).pb
+       Roll.Trk(x1+ticks,y1).inst  =Roll.Trk(x1,y1).inst
+       Roll.Trk(x1+ticks,y1).onoff =Roll.Trk(x1,y1).onoff
+
+            Roll.trk(X1,y1).nota = 181
+            Roll.trk(X1,y1).dur  = 0
+            Roll.trk(X1,y1).vol  = 0
+            Roll.trk(X1,y1).pan  = 0
+            Roll.trk(X1,y1).pb   = 0
+            Roll.trk(X1,y1).inst = 0
+            Roll.trk(X1,y1).onoff = 0
+    Next y1 
+  Next x1
+pmTk(ntk).MaxPos=pmTk(ntk).MaxPos + ticks
+MaxPos=pmTk(ntk).MaxPos
+
+EndIf
+  
+If direccion= 0 Then  ' izquierda
+  For x1 = 1 To PmTk(ntk).MaxPos+6
+    For y1=NB To NA 
+       Roll.Trk(x1,y1).nota=Roll.Trk(x1+ticks,y1).nota
+       Roll.Trk(x1,y1).dur =Roll.Trk(x1+ticks,y1).dur
+       Roll.Trk(x1,y1).vol =Roll.Trk(x1+ticks,y1).vol
+       Roll.Trk(x1,y1).pan =Roll.Trk(x1+ticks,y1).pan
+       Roll.Trk(x1,y1).pb  =Roll.Trk(x1+ticks,y1).pb
+       Roll.Trk(x1,y1).inst=Roll.Trk(x1+ticks,y1).inst
+       Roll.Trk(x1,y1).onoff=Roll.Trk(x1+ticks,y1).onoff
+
+            Roll.trk(X1+ticks,y1).nota = 181
+            Roll.trk(X1+ticks,y1).dur  = 0
+            Roll.trk(X1+ticks,y1).vol  = 0
+            Roll.trk(X1+ticks,y1).pan  = 0
+            Roll.trk(X1+ticks,y1).pb   = 0
+            Roll.trk(X1+ticks,y1).inst = 0
+            Roll.trk(X1+ticks,y1).onoff = 0
+    Next y1 
+  Next x1
+
+EndIf
+
+End Sub
+Sub moverSecuenciaUnaDuracionPulsada (ByRef smov As integer)
 'desplazr toda la secuencia hacia la derecha o izquierda
 Dim  As Boolean teclaAhoraDer, teclaAntesDer,teclaAhoraIzq, teclaAntesIzq,teclaAhoraEsc, teclaAntesEsc 
 
  Do 
   teclaAhoraDer=MultiKey (SC_RIGHT)
   If teclaAhoraDer = True And teclaAntesDer = False Then
-       Print "¡Comando ejecutado una sola vez Der!"    
+       Print #1, "¡Comando ejecutado una sola vez Der!"
+       MoverSecUnaDur(1) ' una dur a derecha 
+       Exit Do   
   End If
   teclaAntesDer = teclaAhoraDer 
 
  TeclaAhoraIzq = MultiKey (SC_LEFT) 
   
   If teclaAhoraIzq = True And teclaAntesIzq = False Then
-       Print "¡Comando ejecutado una sola vez Izq!"    
+       Print #1, "¡Comando ejecutado una sola vez Izq!"
+       MoverSecUnaDur(0)  'una dur a izq
+       Exit Do  
   End If
   teclaAntesIzq = teclaAhoraIzq
 '--------salida 
- TeclaAhoraEsc = (MultiKey (SC_ESCAPE) <> 0 )
+ TeclaAhoraEsc = (MultiKey (SC_Q) <> 0 )
   
   If teclaAhoraEsc = True And teclaAntesEsc = False Then
-       Print "¡Comando ejecutado una sola vez Izq!"    
+       Print #1, "¡Comando ejecutado una sola vez Izq!"
+       smov=0
+       Exit Do
+  Else
+       smov=1 
+       Exit Do   
   End If
   teclaAntesEsc = teclaAhoraEsc
 

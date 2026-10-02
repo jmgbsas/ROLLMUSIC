@@ -3583,7 +3583,6 @@ Sub Nuevo(Roll As inst,borraNombre As Integer)
 If MaxPos = 2 Then 'ya se ejecuto Nuevo 
    Exit Sub
 EndIf
-
 CantTicks=CantMin * PPQN *tiempoPatron ' vuelvo al original default 15 min *60*PPQN
 ' borro todo el undo
    mel_undo_k=0 :ig=0:cnt_acor=0
@@ -4010,7 +4009,8 @@ EndIf
 If parametros=2 Then
    Dim As Integer my1 = 11- nsE + (*po-1) * 13
    t = "      EDIT" + " " + " Penta_y:" +Str(Penta_y) + _
-   " My1nsE :" + Str(my1) + " Mx:" + Str(mousex) + " My:" + Str(mousey)+" NTK:"+ Str(ntk) 
+   " My1nsE :" + Str(my1) + " Mx:" + Str(mousex) + " My:" + Str(mousey)+" NTK:"+ Str(ntk) +_
+   "MaxPos :" +Str(MaxPos) + "MaxPos(ntk) :" +Str(pmTk(ntk).MaxPos) 
 
 EndIf
 

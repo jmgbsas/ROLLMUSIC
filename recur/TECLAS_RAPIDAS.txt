@@ -1,5 +1,7 @@
   TECLAS RAPIDAS COMUNES O MOUSE O ACCIONES DE MENU SIMPLES:
 ===========================================================
+(este Texto se puede modificar a mano a gusto del consumidor, hasta algun dia se haga
+ algo mejor, basta que el nombre sea el mismo..)
 => NOTA IMPORTANTE: <=
    UNA SECUENCIA UNICA CREADA EN ROLL GRAFICO MANUALMENTE INSERTANDO NOTA A NOTA O ACORDES SE PUEDE 
    GRABAR EN FORMATO *.roll o en formato *.rtk. Para ello luego de creada la secuencia al grabar usar
@@ -11,8 +13,12 @@
 -----------------------------------------------------------
 COMO ES UNA VERSION ALFA SE RECOMIENDA GRABAR LA SECUENCIA ANTES DE DAR ALGUN COMANDO
 O ACCION IMPORTANTE DE MENU POR SI OCURRE ALGUNA ANOMALIA Y EL PROGRAMA FALLE,,,
-A MEDIDA QUE SE USA EL PROGRAMA  SE VERA QUE COSAS PODRIAN FALLAR Y CUALES NO..
+A MEDIDA QUE SE USA EL PROGRAMA SE VERA QUE COSAS PODRIAN FALLAR Y CUALES NO..
 ------------------------------------------------------------
+***************************************************************
+EN LECTURA
+***************************************************************
+
   ROLL GRAFICO GENERALIDADES
  Escuchar una nota en todo tipo de edicion:
  SHIFT+CLICK IZQUIERDO,( mayusculas +click izquierdo mouse) sobre la nota 
@@ -136,10 +142,9 @@ TRASPONER
    En trasponer Grupo si la ultima nota es final de secuencia
    debera borrarse el final de secuencia y luego insertarlo en
    esa ultima nota.  
--------------------------------------------------------------
-EN LECTURA
------------------------------------------------------------
+----------------------------------------------------------------
 ENTRADA NOTA MANUAL, OCTAVAS EN VERDE, TECLAS A PULSAR
+--------------------------------------------------------------
  DURACION   -> 1 A 8
  NOMBRE NOTA-> C D E F G A B , O SOSTENIDOS CON CTRL+ C SERIA C#
  SOSTENIDOS O BEMOLES SEGUN CONFIGURACION, ENTRA NOTA AL FINAL SECUENCIA
@@ -149,12 +154,46 @@ ENTRADA NOTA MANUAL, OCTAVAS EN VERDE, TECLAS A PULSAR
    DE SECUENCIA
  NORMALMENTE LA ENTRADA MANUAL ES AL FINAL DE LA SECUENCIA. SI SE DESEA INGRESAR UNA
  NOTA NUEVA ADENTRO DE LA SECUENCIA SEPUEDE USAR LA 1ER MARCA PASOZONA1 DANDO
- CTRO+CLICK MOUSE IZQUIERDO, DIBUJARA UNA LINEA VERTICAL CON EL NUMERO DE TICK
- LUEGO COMO ANTES INGRESAR NOTA,LUEGO PASOZONA1 SE MOVERA EL FINAL DE LA NOTA INGRESADA
+ CTRL+CLICK MOUSE IZQUIERDO, DIBUJARA UNA LINEA VERTICAL CON EL NUMERO DE TICK
+ LUEGO COMO ANTES INGRESAR NOTA,LUEGO PASOZONA1 SE MOVERA AL FINAL DE LA NOTA INGRESADA
  PARA SEGUIR ENTRANDO NOTAS SECUENCIALES, SI SE DESEA VOLVER A PASOZONA1 PULSAR BACKSPACE
  O RETROCESO Y SE PODRA INGRESAR NOTAS TIPO ACORDE.
-----------------------------------------------------------
+--------
+MENU DE ACORDES EN LECTURA
+ para ingreso automatico de acordes a partir de una TONICA 
+ CON MENU DE MOUSE
+ CONTROL+CLICK  DERECHO del mouse
+ APARECE UN MENU CONTEXTUAL (explicado en ayuda)
+--------------------------------------------------------------
+ UNDO MELODIA RECIEN ENTRADA Y/O SIMBOLOS DE ACORDE QUE APARECEN EN PARTE SUPERIOR DE CADA OCTAVA
+
+ -Undo MELODIA con ALT-U va borrando por columna de por vez  todas las octavas de la pista. Ya esta
+    andando con TIcks, no borra el final de secuencia ni la 1er nota por ahora deja espacio vacio
+    comodeberia hacerlo borrando una zona.Pero undo hace nota por nota.
+    En los acordes alt-U borra todas las notas pero no sus simbolos.
+    =>Por cada nota dar un pulso breve ALT-U, si se mantiene apretado mucho tiempo borra
+    rapidamente todas las notas entradas en la ultima edicion.
+
+ -Undo SIMBOLOS ACORDES ALT-Backspace borra uno por vez los simbolos de cada acorde en la parte 
+  superior de cada octava.Igual que ALT-U dar pulsos breves.
+---------------------------------------------------------------------------------------
+ MOVER TODA LA SECUENCIA A DERECHA O IZQUIERDA UNA CANTIDAD DADA POR UNA DURACiON de nota 1 A 8
+ PULSADA antes o despues de ALT-V y antes de pulsar flechas DER IZQ 
+ 
+ ALT-V + una duracion no muy grande + flechas Der o Izq se mueve toda la secuencia, 
+ terminamos con Q, usar Home y Fin para controlar.
+ Se movera la secuecnia y los compases en la misma cantidad si quiero ver el principio o
+ final de la secuencia usar HOME (inicio) o END (fin)
+ Al finalizar con Q presionar la tecla R para recalcular los compases. Pueden aparecer mas 
+ si se movio a derecha y tambien se incrementara la posicion maxima. MaxPos
+ Si se pulsa varias veces una flecha o se mantiene apretada ira moviendo varias veces
+ la secuencia. Ojo al mover a la izquierda notas que pasen el principio se pierden
+ pero puede ser deseado. No lo limite pero para controlarlo pulsen HOME para ver si la 
+ una secuencia que se mueve a izqueirda alcanzo el principio de la secuencia.
+*******************************************************************
   EN EDICION -> MODIFICACION
+*******************************************************************
+
   CTRL-M 
      PULSO CRL-0 BORRA NOTA COMPELTA ON Y OFF SIN PULSAR X 
      PULSO ALT-0 BORRA NOTA COMPLETA SIN PULSAR X 
@@ -171,12 +210,14 @@ ENTRADA NOTA MANUAL, OCTAVAS EN VERDE, TECLAS A PULSAR
   o un final de nota (>) o final secuencia ||.
   Si se quiere recuperar un nota con comienzo sin final o viceversa o
   se borra todo y se agrega otra nota o 
-----------------------------------------------------------
+*********************************************************
+ GENERALIDADES LECTURA
+*************************************************************
 F1 AYUDA
 CTRL-F1 ESTE ARCHIVO TECLAS RAPIDAS (SOLO EN ROLL GRAFICO)
-------------------------------------
+---------------------------------------------------
 N - EN ENTRADA DE NOTAS (VERDE) CONMUTA EN MOSTRAR PARAMETROS 0 Y 1 EN LA CINTA AZUL
-------------------
+-------------------------------------------
 R - RECALCULA PARA TODA LA SECUENCIA DONDE MARCAR LOS COMPASES CON UNA LINEA
     VERTICAL (EN 4/4 SON 384 TICKS EN ROLLMUSIC, LA NEGRA TIENE 96 TICKS)etc
 ALT-R - BORRA LINEAS DE COMPAS
@@ -261,7 +302,7 @@ BORRAR NOTAS EN LECTURA TODAS LAS QUE QUIERA
   3) PULSAR Q PARA TERMINAR   
 AGREGAR NOTA SIN COPIAR 
   1) PULSAR UNA DURACION,
-  2) ALT-F5 DAR CLIC KIZQUIERDO DONDE SE QUIERA COLOCAR LA NOTA
+  2) ALT-F5 DAR CLICK IZQUIERDO DONDE SE QUIERA COLOCAR LA NOTA
   NOTA: SI LA SECUENCIA ES NUEVA(VACIA), NO SE PUEDE POR AHORA INGRESAR NOTAS, LO HACE PERO CON ERRORES
   DESTRUYE LA ESTRUCTURA..(SE VERA SI SE LO IMPLEMENTA POR COMODIDAD PERO PARA ELLO ESTA
   LA OPCION EDIT CON ENTRADA DE NOTAS CON LA VENTAJA QUE RESPETA O SIMULA UNA SECUENCIA, UNA MELODIA
@@ -390,18 +431,23 @@ USAR ROLLMUSIC COMO REPRODUCTOR EN EL EXPLORADOR, DOS OPCIONES
    0            BatchGraficoOCtrl
    ESO INDICA QUE EL COMPORTAMIENTO ES COMO SIGUE:
    DAR CLICK O DOBLE CLICK SEGUN EL CASO A UN ARCHIVO *.roll *.rtk o *.ejec
-en los 2 primeros se levanta un grafico ejecuta automaticamente.
-en el ultimo caso *.ejec levanta Rollmusic completo sin grafico, carga el archivo
-y lo ejecuta automaticamente. (hay que ajustar en el explorador reproducir esas extensiones
-con rollmusic.exe)
+   en los 2 primeros se levanta un grafico ejecuta automaticamente.
+   en el ultimo caso *.ejec levanta Rollmusic completo sin grafico, carga el archivo
+   y lo ejecuta automaticamente. (hay que ajustar en el explorador reproducir esas extensiones
+   con rollmusic.exe)
+
 2) SI LA LINEA DICE 
  3            BatchGraficoOCtrl
-TODO SE EJECUTARA EN VENTANA DE CONTROL ONLINE SIN NINGUN GRAFICO, (ROLL Y RTK), EJEC
-SEGUIR COMO ANTES PUES NO TIENE GRAFICO.
-No hace falta editar el archivo RollMusic.ini, se maneja desde el Menu OPciones item 14.0
-si no esta seleccionado es Grafico para roll y rtk , si lo selecciono sera ventanita
-chica de Control para las mismas, los ejec no se cambia y estará en ventana Control
-completa.
+ TODO SE EJECUTARA EN VENTANA DE CONTROL ONLINE SIN NINGUN GRAFICO, (ROLL Y RTK), EJEC
+ SEGUIR COMO ANTES PUES NO TIENE GRAFICO.
+ No hace falta editar el archivo RollMusic.ini, se maneja desde el Menu OPciones item 14.0
+ si no esta seleccionado es Grafico para roll y rtk , si lo selecciono sera ventanita
+ chica de Control para las mismas, los ejec no se cambia y estará en ventana Control
+ completa.
+ En esta opcion los 3 botones de control(negro verda celeste) parar ejecutar y cargar 
+ funcionan para *.roll, *rtk (en rtk por omision carga roll se puede forzar a cargar rtk
+ manualmente, automatico no implementado) Para *.ejec abre toda una ventana de control completa
+ (no se recomienda trabajar aca solo para escuchar)
 -----------------------------------------
 TOCAR DESDE UN TECLADO MIDI,,
 -------------------------------------------
@@ -416,6 +462,6 @@ TOCAR UN ARCHIVO WAV, MP3, M4A O MID
 -----------------------------------------
 USAR EN MENU REPRODUCIR EL ITEM 5.0 EN AYUDA.TXT SE DAN OBSERVACIONES SOBRE
 ESTA FUNCION. 
-
+-----------------------------------------------------------
            
           

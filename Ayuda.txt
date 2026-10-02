@@ -1,18 +1,11 @@
     Ayuda Prelimiar Básica RollMusic  
+
     =================================================================================================
-  0.427 duracion se adapta a win 7, 8,10 u 11, ntdelay anda ma len 11
-     Y OTRAS
+    0.432 Con ALT-V + una duracion no muy grande + flechas Der o Izq se mueve toda la secuencia, 
+    A derecha o Izquierda. terminamos con Q, usar Home y Fin para controlar 
+    0.431 UNDO NOTAS de MELODIAS/ACORDE ALT-U, Y UNDO DE SIMBOLOS DE ACORDE ALT-BACKSPACE ANDA CON 
+    TICKS(la 1er nota no se borra)
     =================================================================================================
-  0.426 FIX UNA NOTA LIGADA A UNA ANTERIOR SOLIA SONAR PUES SE AJUSTABA 2 EN ONOFF"
-  0.425 CAMBIAR MANUALMENTE ONOFF DE UNA NOTA,[F6+8+CLICK IZQ] NECESARIO CUANDO UNA NOTA DEBE SONAR(2)
-        Ó NO (0).. MEJORA AL PULSAR TECLAS AVPAG REPAG, SE CONGELABA O TRABABA.
-  0.424 CAMBIAR VOLUMEN DE UNA NOTA CON F6+CLICK IZQUIERDO 
-  0.423 FIXED SI UNA NOTA ESTABA SOBRE SEMITONO 12 NO SONABA AL SELECCIONARLA PARA MODIFICAR ALGO EN LECTURA 
-  0.422 INPUT2BOXJMG Y INPUTBOXJMG SE AGREGO WS_EX_TOPMOST PARA QUE QUEDE ADELANTE
-        ALGUNOS RETOQUES EN LA VELOCIDAD DE RESPUESTA DE TECLADO Y PLAY. (HACEN FALTA MEJORAS EN RTA AL TECLADO)
-  0.421 ALT-F5 PUEDE INSERTAR NOTAS MAS HALLA DE MAXPOS(USARLA CON PRECAUCION) LA POSISION ELEGIDA AGRANDA 
-        EL MAXPOS*3/2, SOLO SECUENCIAS EXISTENTES NO ARCHIVOS VACIOS, CON LOS VACIOS DESCOMPAGINA TODO
-  0.420 BARRA ESPACIADORA PLAY PAUSE EN reproductor de medios
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -1087,8 +1080,12 @@
        termina la secuencia original, debe estar por encima de la linea vertical del final de secuencia 
        o sea  del simbolo || y mejor que sea la 2da linea de ||. 
  
-       no probado en TICKS->Undo con ALT-U va borrando por columna de por vez  todas las octavas de la pista.
+      -Undo con ALT-U va borrando por columna de por vez  todas las octavas de la pista. Ya esta
+       andando con TIcks, no borra el final de secuencia ni la 1er nota por ahora deja espacio vacio
+       comodeberia hacerlo borrando una zona.Pero undo hace nota por nota.
 
+      -Undo ALT-Backspace borra uno por vez los simbolos de cada acorde en la parte superior de cada octava.
+ 
     1.2.1 ) Trasponer una NOTA o un Grupo de Notas con teclas y Clicks de Mouse:
            a) Dar ALT-O como antes habilita la trasposicion
            b) Dar LSHIFT+click (Mayuscula izquierda +click mouse) sobre la nota a trasportar, si se desea 
@@ -1137,14 +1134,17 @@
        parametros convenientes en el futuro. Colores, escalas deseadas etc etc.
 
     1.7 ) INGRESO DE ACORDES EN MODO LECTURA.
-         Entrar un acorde a partir de una Nota de la secuencia o si no hay nada tambien, usando
-         la nota en donde se da el click, o si no hay nada usando la duracion pulsada (1,2,3,4,5,6,7,8).
+         Entrar un acorde a partir de una Nota de la secuencia o si no hay nada tambien
+         (pero debe hacerse en un lugar vacio de una secuencia existente no nula o sea la secuencia
+         longitud debe tener una longitud mayor a 2 ticks oya contener una pequeña secuecnia),
+         va a usar la nota en donde se da el click, o si no hay nada usando la duracion pulsada (1,2,3,4,5,6,7,8).
+         y la posicion vertical que indicara la nota y octava.  
          Si existe la nota y se desea cambiar su duracion , pulsando una duracion antes de usar el comando 
          se reemplazará la duración existente y se armará un acorde con esa nueva duración. 
-         NOTA:la nota seleccioanda formara parte del acorde si es una 1er inversion de C E G, seria E G C
-         pero como la nota no la quiero mover si es el C entonces E y G deben estar abajo del C en esta clase
-         de 1er inversion LA NOTA NUNCA SE MUEVE en una 1er inversion estara al tope , en una segunda inversion
-         G C E quedara en el medio..
+          NOTA:la nota seleccioanda formara parte del acorde si es una 1er inversion de C E G, seria E G C
+          pero como la nota no la quiero mover si es el C entonces E y G deben estar abajo del C en esta clase
+          de 1er inversion LA NOTA NUNCA SE MUEVE en una 1er inversion estara al tope , en una segunda inversion
+          G C E quedara en el medio..
          Para ello damos Ctrl-Click derecho,  sobre la nota a convertir en acorde..y 
          aparece un menu contextual (el cual ya es funcional, no totalmente, triadas cuaternarias etc, 1era o 2da inversion etc)
          aL pie de laventana de control avisa si es funcional lo elegido.
@@ -1163,10 +1163,10 @@
          Se muestra el Cifrado arriba de cada octava al dar click sobre ella. Si memuevo a otra octava se apaga.
          En la ventana de Control en el menu Ver exciste la opcion de mostrar o no mostrar el Cifrado  
          Luego de insertado el acorde automatico inmediatamente se escucha el mismo 
-         NOTA:si no se entra duracion y  se da click derecho sobre una nota toma su valor de duracion y 
-              muestra el menu par elegir el acorde..Luego esa duraicon no se borra y podra usarse para nuevos acordes
-              en donde no haya notas para dar click derecho. Si se ingresa una duracion nueva tomara esa hasta el
-              proximo ingreso de duracion, la duracion cargada previamente tendra proridad sobre  otra nota nueva seleccionada
+            NOTA:si no se entra duracion y  se da click derecho sobre una nota toma su valor de duracion y 
+            muestra el menu par elegir el acorde..Luego esa duraicon no se borra y podra usarse para nuevos acordes
+            en donde no haya notas para dar click derecho. Si se ingresa una duracion nueva tomara esa hasta el
+            proximo ingreso de duracion, la duracion cargada previamente tendra proridad sobre  otra nota nueva seleccionada
 
          [ no se corrigio para TICKS todavia lo que sigue ]
          [y si se desea borrarlo y 

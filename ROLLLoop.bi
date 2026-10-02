@@ -129,6 +129,11 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
      t= " Compas=" +TCompas
      cairo_show_text(c, t)
      t= ""
+     cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - 6* inc_Penta)
+     t= " MaxPos=" +Str(pmTk(ntk).MaxPos)
+     cairo_show_text(c, t)
+     t= ""
+
      '-------------------------------------
      
      ' t=" BordeSupRoll="+ Str(BordeSupRoll)
@@ -1237,7 +1242,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                If s12 = 1 Then  s12=0 EndIf
                If s13 = 1 Then  s13=0 EndIf
                If s14 = 1 Then  s14=0 EndIf
-
+               ''''If s15 = 1 Then  Sleep 500:s15=0 EndIf
                If suenaunavez=1 Then Sleep 400:suenaunavez=0 EndIf
                If canRecal=1 Then Sleep 400:canRecal=0 EndIf
                inc_Penta = Int((ALTO -1) /40) - deltaip
@@ -1414,7 +1419,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                'EndIf
                
                
-               If MultiKey(SC_ALT) And MultiKey(SC_M)  Then ' menu Roll inicial
+               If MultiKey(SC_M) And MultiKey(SC_ALT) Then ' menu Roll inicial
                     menunew=MENU_INICIAL
                     COMEDIT=LECTURA
                     agregarNota=AGREGAR
@@ -1506,8 +1511,14 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     '  EndIf
                     Exit Do
                End If
-               If MultiKey (SC_ALT) And MultiKey (SC_V) Then ''MOVER toda la secuencia hacia adelante o atras con las flechas
-                   moverSecuenciaUnaDuracionPulsada ()      
+               If MultiKey (SC_ALT) And MultiKey (SC_V) And s15=0 Then ''MOVER toda la secuencia hacia adelante o atras con las flechas
+                   Print #1,"habilita moverSecuenciaUnaDuracionPulsada () "
+                   moverSecuenciaUnaDuracionPulsada (S15)      
+                   s15=1  
+               Else
+                   If s15=1 Then
+                     moverSecuenciaUnaDuracionPulsada (S15)
+                   EndIf  
                EndIf 
                If MultiKey(SC_CONTROL) And MultiKey(SC_T) And superposicion=0 Then
                     ' en la GUI no se puede poner no funciona hace un error se vuelve loco que lo pario jajaja
@@ -1571,7 +1582,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                End If
                
                If  MultiKey (SC_N) Then  ' ver parametros arriba en el grafico CONMUTAR ENTRE 0 Y 1
-                    
+                    Sleep 200
                     If parametros=2 Then
                          If s9=0  Then
                               s9=1
@@ -2258,9 +2269,10 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     ' esto funciona en Roll hay qu ever que pasa con los tracks....pendiente jjj
                     Dim As Integer ik=0,ij=0,im,pn=1,noti
                     
-                    ' undo de acordes hasta 500 acordes de 12 notas c/u
-                    ig=cnt_acor
-                    If ig<>0 And undo_kant_intervalos(ig) > 0 And ig <= cnt_acor Then
+                    ' undo de acordes hasta 5000 acordes de 12 notas c/u
+                    ig=cnt_acor ''ERROR EN 2263 CORREGIDO, ALT BACKSPACE SIN ACORDE
+                    If ig<>0 Then ''FIXED SINO REVIENTA EN EL VECTOR DE ABAJO
+                       If undo_kant_intervalos(ig) > 0 And ig <= cnt_acor Then
                          '  Print #1,"ig= ",ig
                          '  Print #1," undo_kant_intervalos(ig) ", undo_kant_intervalos(ig)
                          '  Print #1,"cnt_acor",cnt_acor
@@ -2298,8 +2310,9 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                          End If
                          scan_alt=1
                          
-                         Sleep 100
-                    End If
+                         Sleep 200
+                       End If
+                    EndIf 
                     While InKey <> "": Wend
                     scan_alt=1
                     Exit Do
@@ -2334,14 +2347,16 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                               Roll.trk(mel_undo(ik).posn, ij).pan  =0
                               Roll.trk(mel_undo(ik).posn, ij).pb  =0
                               Roll.trk(mel_undo(ik).posn, ij).inst =0
-                              Roll.Trk(mel_undo(ik).posn, ij).onoff=0
-                              
+                              Roll.trk(mel_undo(ik).posn, ij).onoff =0 ' onoff=2 la nota
+                     '' y para onoff 1 su final
+                              Roll.Trk(mel_undo(ik).onoff1, ij).onoff=0
+                              Roll.Trk(mel_undo(ik).onoff1, ij).dur=0                              
                          Next ij
                          
                          MaxPos=MaxPos-1
                          mel_undo_k=mel_undo_k -1
                          
-                         Sleep 100
+                         Sleep 200 ''SINO BORRA MUY RAPIDO ASI PODEMOS BORRAR DE A UNA NOTA
                     End If
                     
                     While InKey <> "": Wend
@@ -2855,6 +2870,8 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                     terminar=NO_TERMINAR_BARRE_PANTALLA : Parar_De_Dibujar=NO
                     MOV_FLAG=0:CPlay=NO:Playb=NO:medio_metronomo_on=FALSE
                     MENSAJE_TEMPORARIO = ""
+                    SeleccionarNuevaNota=FALSE
+
                End If
                ' ----------------------INGRESO NOTAS-------------------------
                
@@ -4276,6 +4293,8 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                                    
                                    mel_undo(mel_undo_k).trk = ntk
                                    mel_undo(mel_undo_k).posn = posn
+                                   mel_undo(mel_undo_k).onoff1 = posnOff
+              
                                    'mel_undo(mel_undo_k).columna.pn = nR
                                    'mel_undo(mel_undo_k).columna.dur = DUR
                                    'mel_undo(mel_undo_k).columna.nota = nota
@@ -6949,7 +6968,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                               Exit Do '' se mete en el siguiente ALT y ajusta trasponer  en 1
                          End If
 ' trateremso que funciones para una sola nota al menos
-                         If  MultiKey(SC_ALT) And (SC_O)Then 'TRASPONER NOTAS AISLADAS  1 O MAS RASPONER GRUPO
+                         If  MultiKey(SC_O) And MultiKey(SC_ALT) Then 'TRASPONER NOTAS AISLADAS  1 O MAS RASPONER GRUPO
                                trasponer=1
                                  If instancia=ARG0_EN_LINEA Then
                                     mensajeEstado=" ALT-O "
@@ -6958,7 +6977,7 @@ sub  RollLoop (ByRef param As pasa) ' (c As cairo_t Ptr, Roll As inst)
                                  menuNew =MENU_INICIAL
                          End If
                          
-                         If  MultiKey(SC_CONTROL) And (SC_O)  Then ' 01-11-2025 habilitamos trasposicion sin rango con mouse
+                         If  MultiKey(SC_CONTROL) And MultiKey(SC_O)  Then ' 01-11-2025 habilitamos trasposicion sin rango con mouse
                               ' SON DOS CASOS SIN ZONA LUEGO DE CTRL-O MUEVE TODA LA SECUENICA CON FLECHAS UP Y DOWN
                               ' CON CTRL-O Y LUEGO UNA ZONA , MUEVE SOLO ESA ZONA
                               trasponer=3

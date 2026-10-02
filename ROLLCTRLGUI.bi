@@ -483,9 +483,11 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      MenuItem(1061,MenName3, " 7.0 Crear Pista nueva en la Cancion en Edicion, Con lo elegido")
      Menubar(MenName3)
      MenuItem(1062,MenName3, " 8.0 Crear Instancia de RollMusic Sin Control alguno Con lo elegido")
-     MenuItem(1063,MenName3, " 9.0 Generar melodias de 4 compasases algoritmo sencillo no parametrizado")
+     MenuItem(1063,MenName3, " 9.0 Generar melodias de 4 compasases algoritmo sencillo no parametrizado, Tambien se dispara en linea de comando")
      MenuItem(10631,MenName3, "10.0 Iniciar Metronomo Al Reproducir Cancion o Pista con 4 tics de cuenta", MF_UNCHECKED)
-     
+     MenuItem(10632,MenName3, "*** Mover Secuencia Der /Izq,1) Pulsar ALT-V, 2)  duracion de nota, 3) MoverDer IZq <=Solo informativo es manual en Grafico")     
+     MenuItem(10632,MenName3, "*** Terminar cualquier accion. Pulsar la Tecla Q <=Solo informativo es manual en Grafico")     
+
      MenuItem(1064,MenName31, "Crear Patrones de Ejecuciones por Teclado",MF_POPUP )
      'MenName32=OpenSubmenu(MenName31, "Na/Crear Patrones de Ejecuciones por Teclado" )
      ' MenuItem(1065,MenName32,"Na/Nombre del Patron")

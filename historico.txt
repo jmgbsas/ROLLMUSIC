@@ -1,3 +1,9 @@
+ -02-10-2026 0.432 Con ALT-V + una duracion no muy grande + flechas Der o Izq se mueve toda la 
+   secuencia DER/IZQ, terminamos con Q, usar Home y Fin para controlar " 
+   0.431 UNDO NOTAS MELODIAS/ACORDE ALT-U, Y UNDO DE SIMBOLOS DE ACORDE ALT-BACKSPACE ANDA CON 
+   TICKS(la 1er nota no se borra)
+ -01-10-2026 0.431 cuando se usa el menu contextual en estado de entrada de notas, no se podia cancelar
+        su uso. Ahora presionando Q de reset desaparece tambien dicho menu no molestando mas.
  -27-09-2026 0.430 cambia bien las octavas cualquiera sea el cambio ."
   0.429 NO CANCELA MAS SI ESTA LEVANTADO EL REPRO DE MEDIOS Y SE CIERRA LA VENTANA DE CONTROL
   0.428 cuadro relacion teclado pentagrama y octavas rollmusic
