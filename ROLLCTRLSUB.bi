@@ -1148,6 +1148,7 @@ Sub CTRL1092()
      HabilitarMIDIIN=1 ' tengo seleccionado portin
      
 End Sub
+'---------------------------------------------------------------
 Sub  SilenciosAntesDeTocar ( )
 Print #1,"ENTRA SILENCIOS  "
 kSilencio=1 
@@ -2268,7 +2269,76 @@ Sub  CTRL1210() ''CONVERTIR .RTK o roll A .EJEC
      Print #1, "4 SALIO DE CTRL1208 "
 
 
+End Sub
+Sub cancelCallback()
+
+  For  i As Short =1 To 32
+     cancel_callback(midiin(pmTk(i).portin )) ' porque lso port fisicos empiezan desde cero
+     listinAbierto( pmTk(i).portin) = 0
+     close_port (midiin(pmTk(i).portin))
+  Next i
 End Sub 
+'--------------------
+Sub CTRL1216() ' basado en 1092
+'cancelar todo los callbacks si los hubiera
+     If teclado=1 Then 
+        cancelCallback()''' REVISAR SI APLICA
+        teclado=0
+     EndIf 
+     Sleep 10
+     Dim As UByte portin1216, portout1216
+     GrabarMidiExterno=GrabarMidiMultipista      
+
+        portin1216  = tocaparam(1).portin ' PREVIAMENTE SELECCIONADO
+        portout1216 = tocaparam(1).portout ' PREVIAMENTE SELECCIONADO
+        ntoca=1
+        portsal=portout1216
+        instru=CInt(tocaparam(1).patch)
+        patchsal=instru
+        Print #1,"instrumento en abrir midi-in ", instru
+               
+               'instru, canal, portsal abre ahora distinto para cada pista
+               ' el portin y portout podrian ser los mismos pero igual hay que seleccionarlos antes
+               ' debo cambiar por toaparam ??? es lo mismo ambos se cargaen el la seleccion
+               ' con el mismo valor pmEj(i).xxx=tocaparam(i).xxx
+        ChangeProgram ( tocaparam(1).patch  , tocaparam(1).canal, tocaparam(1).portout)
+        pmEj(1).vol=100
+        tocaparam2(1).vol=100 ' versionEJEC=2
+        Globalvol=100
+        pmEj(1).pan=64
+        tocaparam2(1).pan=64 ' versionEJEC=2
+        Globalpan=64
+
+        
+'------------------------
+     Print #1,"listinAbierto( portin1216) ",listinAbierto( portin1216)
+     Print #1,"listInCreado(portin1216) ",listInCreado(portin1216)
+     If  listinAbierto( portin1216) = 0 Then
+          If listInCreado(portin1216)  = 0 Then
+               midiin(portin1216) = rtmidi_in_create_default()
+               listInCreado(portin1216)  =1
+          End If
+          Print #1,"abriendo portin y call back",*nombrein( portin1216 )
+          '' messageCallback(3)=127
+          open_port (midiin(portin1216 ), portin1216, *nombrein( portin1216 ) )
+'''ver si debo usar otro pmsgCallBack o definir uno nuevo, creo puedo usar
+'' el mismo ya que voy a cerrar  todos los otros callbacks que haya
+'' es donde deja los mensajes...si podemos usar el emismo
+          set_callback midiin(portin1216 ), @extcallback, pmsgCallBack
+          ' por ahrao iognoramos otros tipsod de mensaje
+          ''              rtmidi_in_ignore_types  (midiin(portin1092 ), 1, 2, 4)
+          teclado=1
+          listinAbierto( portin1216) = 1
+         ''' jgrb=0 '''<<< ESTO CAUSABA EL BORRADO Y TUVE  QUE PONER EL REDIM DE CARGAIN PERO ESTA MEJOR
+          
+     End If
+'''ewto era para los play  para grabar el archivo de midi a texto no va
+''     HabilitarMIDIIN=1 ' tengo seleccionado portin
+
+
+
+End Sub
+
 '---------------------------------------------------------------------
 Sub CTRL1230() '' entrenar oido y afinar la voz, la meta es lograr un unisono
      ' con sonidos puros sinusoidales sin armonicos que puedan confundir
@@ -2350,7 +2420,7 @@ ImageGadget(IMAGE_FIGVOZ,ANCHO*2/5,1,800,800,Load_image(ROLLDIR+"recur\RANGOS_VO
      '''ButtonGadget(1,200,45,180,40,"CUADRO RANGO VOCES")
      '''TextGadget  (89,280,380,50,40, frecuencia)
    ButtonGadget(3,   40,40,210,40,"DETENER SONIDO " + frecuencia )
-   TextGadget  (91,10,85,250,20,"ENTRE LA DURACION EN SEGUNDOS")
+   TextGadget  (91,  10,85,250,20,"ENTRE LA DURACION EN SEGUNDOS")
    StringGadget(90, 280,85,50,20,"60")
    ButtonGadget(4,  260,40,250,40," CARGAR SEGUNDOS "+ Format(SEGUNDOS,"000") )
    ''CreateWindowEx(3, "BUTTON", "DETENER SONIDO " + frecuencia, _
@@ -2458,6 +2528,193 @@ ImageGadget(IMAGE_FIGVOZ,ANCHO*2/5,1,800,800,Load_image(ROLLDIR+"recur\RANGOS_VO
 
      Loop
      
+End Sub
+
+Sub TocarIntervalo (nota As Integer, intervalo As integer)
+  
+  noteon CUByte(nota),80,0,0,1,1
+  noteon CUByte(intervalo),80,0,0,1,1
+  duracion (Timer , 1 ) ' 1 segundo
+  noteoff CUByte(nota),40,0,0,1,1
+  noteoff CUByte(intervalo),40,0,0,1,1
+
+End Sub
+
+Function rnd_range (first As Double, last As Double) As Double
+    Function = Rnd * (last - first) + first
+End Function
+'-----------------------------------------------
+Sub CTRL1231() ''' verificar verificado.. TERMINADO LO BASICO
+' GENERA. MUETRA, REPITA ULTIMA , REPITA HSATA 12 ANTERIOERS Y VUELVE A PISAR
+' pulsar boton arranque intervalos Comenzar 
+' al azar elegir una nota pianonota tomarla como base
+' construir elegir un intervalo al azar, clasificar cual es, guardarlo,  tocarlo
+' pulsar boton para mostrar que intervalo era mostras las dos notas y su clasificacion
+' pulsar boton arranque intervalos Comenzar
+' volver a construir otro intervalo cuya nota base no sea la misma de antes
+' y el intervalo sea diferente
+' seguir asi sin repetir nota base ni intervalo
+' pulsar boton de fin..
+' 3 botones Comenzar , Mostrar , Finalizar
+' un 4 boton que muestre las notas del intervalo base + intervlao (C---D) y la octava
+' listo
+     Dim As Integer largo, orig,ticks,altov, REPE=0,ANBTN=300,ANBTN2=400
+     largo=ANCHO*3/4
+     orig=largo
+     
+     Dim As Integer ANCHOWIN, PANTALLAX=GetSystemMetrics(SM_CXSCREEN),volume
+     Dim As Integer HABILITA6=0
+     ANCHOWIN=ANCHO*5/9
+
+     Dim As Integer oldX=ANCHO/5, oldy=ALTO/4
+     Dim As Double frec
+     hwndSndPuros=OpenWindow("INTERVALOS AL AZAR ",oldX,oldY,ANCHOWIN,ALTO/2+30, WS_OVERLAPPED Or WS_SYSMENU  Or WS_MINIMIZEBOX Or WS_VISIBLE  , WS_EX_TOPMOST)
+ 
+Dim As Integer notabase=0,  intervalo, cntgap=0
+Dim As String intervalousado
+Dim As Integer vec_inter(12,2) ' 12 intervalos de dos notas
+Dim As Integer octava1  
+Dim As Integer cifrada1
+Dim As Integer octava2  
+Dim As Integer cifrada2
+   
+ButtonGadget  (105, 30,30,ANBTN2,400,,BS_GROUPBOX)
+  ButtonGadget(3,  40,40,130,40,"COMENZAR " +Str (cntgap), BS_AUTORADIOBUTTON  )
+SetGadgetFont(3,CINT(LoadFont("consolas bold",13)))
+  ButtonGadget(4,  190,40,210,40," MOSTRAR INTERVALO " +Str (cntgap), BS_AUTORADIOBUTTON  )
+SetGadgetFont(4,CINT(LoadFont("consolas bold",13)))
+
+   ButtonGadget ( 90,100, 95, ANBTN,20,"REPETIR EL ULTIMO "+Str (cntgap), BS_AUTORADIOBUTTON )
+
+   SetGadgetstate(90,BTN_LIBERADO)
+    
+ 
+   ButtonGadget  ( 91,100,120, ANBTN,20,"REPETIR INTERVALO 01", BS_AUTORADIOBUTTON  )
+   ButtonGadget  ( 92,100,145, ANBTN,20,"REPETIR INTERVALO 02", BS_AUTORADIOBUTTON  )
+   ButtonGadget  ( 93,100,170, ANBTN,20,"REPETIR INTERVALO 03", BS_AUTORADIOBUTTON  )
+   ButtonGadget  ( 94,100,195, ANBTN,20,"REPETIR INTERVALO 04", BS_AUTORADIOBUTTON  )
+   ButtonGadget  ( 95,100,220, ANBTN,20,"REPETIR INTERVALO 05", BS_AUTORADIOBUTTON  )
+   ButtonGadget  ( 96,100,245, ANBTN,20,"REPETIR INTERVALO 06", BS_AUTORADIOBUTTON  )
+   ButtonGadget  ( 97,100,270, ANBTN,20,"REPETIR INTERVALO 07", BS_AUTORADIOBUTTON  )
+   ButtonGadget  ( 98,100,295, ANBTN,20,"REPETIR INTERVALO 08", BS_AUTORADIOBUTTON  )
+   ButtonGadget  ( 99,100,320, ANBTN,20,"REPETIR INTERVALO 09", BS_AUTORADIOBUTTON  )
+   ButtonGadget  (100,100,345, ANBTN,20,"REPETIR INTERVALO 10", BS_AUTORADIOBUTTON  )
+   ButtonGadget  (101,100,370, ANBTN,20,"REPETIR INTERVALO 11", BS_AUTORADIOBUTTON  )
+   ButtonGadget  (102,100,395, ANBTN,20,"REPETIR INTERVALO 12", BS_AUTORADIOBUTTON  )
+
+   For i As Short=90 To 102
+SetGadgetFont(i,CINT(LoadFont("consolas bold",13)))
+   Next i
+
+
+   TEXTGadget  (103,135+ ANBTN,95, ANBTN2,40, "          " )
+   TEXTGadget  (104,135+ ANBTN,120, ANBTN2,40, "          " )
+   TEXTGadget  (106,135+ ANBTN,140, ANBTN2,40, "          " )
+
+   SetGadgetFont(103,CINT(LoadFont("consolas bold",14)))
+   SetGadgetFont(104,CINT(LoadFont("consolas bold",14)))
+   SetGadgetFont(106,CINT(LoadFont("consolas bold",14)))
+
+' hay 12 entrenotas. Pero entre notas de una escala mayor son 7  
+ 'tomadno solo las teclas blancas en escala mayor de C
+
+Dim As Integer CANDADO=0
+Dim As Double tiempo1, tiempo2
+tiempo1=Timer
+Do
+   event=WaitEvent()
+          If Timer -tiempo1 > 0.500  Then
+             candado=0
+          EndIf
+          If Event=EventClose Then
+              close_window(hwndSndPuros)
+              Exit Do
+          EndIf
+
+          If EventLBDOWN   Then
+            
+            Select case EventNumber
+              Case  3 ' CREAR INTERVALO
+                If  candado=0 then
+' NOTA BASE AL AZAR ENTRE notas 48 Y 72 OCTAVAS CENTRALES CLAVE SOL Y FA
+                  SetGadgetText(103, "          " )
+                  SetGadgetText(104, "          " )
+                  SetGadgetText(106, "          " )
+
+
+                   Randomize
+                  notabase = Int(rnd_range(48, 72))
+                  cntgap=cntgap+1
+                 SetGadgetText(3, "COMENZAR " +Str (cntgap))
+''SACAMOS LOS UNISONOS... ¿?..SI
+           intervalo=1 
+                 Do While intervalo=1      
+                 intervalo= Int(Rnd * 12) + 1
+                 Loop 
+                 intervalousado=intusado(intervalo)
+                 vec_inter(cntgap, 1)=notabase
+                 vec_inter(cntgap, 2)=notabase + intervalo -1
+                 TocarIntervalo (vec_inter(cntgap, 1),vec_inter(cntgap, 2))
+                 If cntgap=12 Then
+                    cntgap=0
+                 EndIf
+                 tiempo1=Timer
+              EndIf
+ 
+'''Print #1,"notabase ";notabase
+               Case  4 ' MOSTRAR INTERVALO
+      
+''OCTAVA -> PARTE ENTERA (NOTABASE/12) -1
+''NOTA CIFRADA ->  PARTE DECIMAL * 12 +1
+               SetGadgetText(4, "MOSTRAR INTERVALO " +Str (cntgap))
+               octava1 = Int (notabase/12) -1 
+               cifrada1= (notabase/12 - Int (notabase/12) )*12 +1
+               octava2 = Int ((notabase+intervalo-1)/12) -1 
+               cifrada2= ((notabase+intervalo-1)/12 - Int ((notabase+intervalo-1)/12) )*12 +1
+
+               SetGadgetText(103, "Nro Teclas "+ Str(notabase)+ " " +Str (notabase+intervalo-1) )
+               SetGadgetText(104, "Salto Semitonos = " + Str (intervalo-1) )
+               SetGadgetText(106, "OCT "+Str(octava1)+ " " + NotasEscala (cifrada1) + " - OCT " + str(octava2) +" "+ NotasEscala (cifrada2) + " " + intervalousado)
+
+               tiempo1=Timer
+               Case 90 
+           
+           if candado=0 Then
+SetGadgetText(90, "REPETIR EL ULTIMO " +Str (cntgap))
+             TocarIntervalo (vec_inter(cntgap, 1),vec_inter(cntgap, 2))
+             candado=1
+             tiempo1=Timer
+           EndIf   
+
+               Case 91 To 102
+        Dim As Integer cualtoca=EventNumber-90
+        If  candado=0 And vec_inter(cualtoca, 1) > 0 Then
+        
+        TocarIntervalo (vec_inter(cualtoca, 1),vec_inter(cualtoca, 2))
+        Dim As Integer notabasex,intervalox
+        notabasex=vec_inter(cualtoca, 1)
+        intervalox=vec_inter(cualtoca, 2) -vec_inter(cualtoca, 1) +1
+
+        octava1 = Int (notabasex/12) -1 
+        cifrada1= (notabasex/12 - Int (notabasex/12) )*12 +1
+        octava2 = Int ((notabasex+intervalox-1)/12) -1 
+        cifrada2= ((notabasex+intervalox-1)/12 - Int ((notabasex+intervalox-1)/12) )*12 +1
+
+        SetGadgetText(103, "Nro Teclas "+ Str(notabaseX)+ " " +Str (vec_inter(cualtoca, 2))  )
+        SetGadgetText(104, "Salto Semitonos = " + Str (intervalox-1) )
+        SetGadgetText(106, "OCT "+Str(octava1)+ " " + NotasEscala (cifrada1) + " - OCT " + str(octava2) +" "+ NotasEscala (cifrada2) + " " + intusado(intervalox))
+
+
+
+          candado=1
+          tiempo1=Timer
+        EndIf     
+       End Select
+     EndIf  
+         
+             
+Loop   
+
 End Sub
 '-----------------------------------------------
 Sub CTRL2500()

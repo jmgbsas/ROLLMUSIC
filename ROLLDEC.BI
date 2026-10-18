@@ -144,6 +144,8 @@ Dim Shared NotasEscala2 (1 To 12) As String *2 => _
 Dim Shared NotasEscalaArmado2 (1 To 24) As String *2 => _
 {"C ","Db","D ","Eb","E ","F ","Gb","G ","Ab","A ","Bb","B ","C ","Db","D ","Eb","E ","F ","Gb","G ","Ab","A ","Bb","B "}
 
+Dim Shared intusado (1 To 12) As String *3 => _
+{"Uni","2me","2Ma","3me","3Ma","4Ju","4+","5ta","5+","6ta","7me","7Ma "}
 Dim Shared GuiaPer (35 To 81) As String * 20  => _
 { "Acoustic Bass Drum",_   
 "Bass Drum 1 ",_        
@@ -1455,7 +1457,7 @@ Dim Shared As Double StartPlayejec=0
 'ReDim Shared As Double   espera (1 To 32)
 Dim Shared As Integer kply,jToca=0
 Dim Shared As Double timex(1 To 32)
-Dim Shared As UByte dato1, dato2 , dato3, dato1old,dato4=0,filtro1,filtro2 , startcall=0
+Dim Shared As UByte dato1, dato2 , dato3, dato1old,dato4=0,filtro1,filtro2 , startcall=0, canalext=0
 Dim Shared  As Double stime1=0, stime2=0, sdura=0
 Dim Shared datot4 As double
 Dim Shared  As integer maxgrb=0,maxcarga=0, maxpis 
@@ -1463,7 +1465,7 @@ Dim Shared  As integer maxgrb=0,maxcarga=0, maxpis
 ' http://xmlsoft.org/examples/index.html
 Dim Shared As String acercade, camino,nroversion
 
-Dim Shared As UBYTE GrabarEjec=0, GrabarPenta=0  
+Dim Shared As UBYTE GrabarEjec=0, GrabarPenta=0, GrabarMidiExterno=0  
 Dim Shared As Double Tiempodelta=0, Tiemposilencio=0
 
 Type paramGrabamidi

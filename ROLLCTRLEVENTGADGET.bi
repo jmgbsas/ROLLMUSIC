@@ -649,6 +649,7 @@ Print #1," pmEj(ntoca).maxpos cantTicks "; pmEj(ntoca).maxpos, cantTicks
           
      End If
      deltatime=0  '''reset del deltatimeBack que devuelve el mycallback
+     deltatime=0  '''reset del deltatimeBack que devuelve el mycallback
      For  i As Short =1 To 32
           If CheckBox_GetCheck( cbxgrab(i))= 1   Then
                cancel_callback(midiin(tocaparam(i).portin )) ' porque lso port fisicos empiezan desde cero
@@ -1480,4 +1481,44 @@ startcall=1
 GrabarEjec=HabilitaGrabar
  terminar_metronomo=SI
 CTRL10901()
+EndIf
+
+
+If eventnumber()= BTN_MIDI_GRABAR_MULTIPISTA And GrabarEjec=GrabarMidiMultipista Then ' BOTON GRABAR ROJO
+       SetGadgetstate(BTN_MIDI_GRABAR_MULTIPISTA,BTN_PRESIONADO)
+       SetGadgetstate(BTN_MIDI_PARAR_MULTIPISTA,BTN_LIBERADO)
+' CADA GRABACION SE INICIA CON UN VECTOR VACIO PARA LA CARGA EN MYCALLBACK
+      
+''preguntr al usuario cuantas pistas vienen ?
+  Dim As Integer npistas
+  CantTicks = CantTicks * npistas
+  ReDim  CargaIn (1 To CantTicks)  ' asi tendre todas las pistas juntas
+'''despues las separo en cada trackejec
+  jgrb=0 ' INDICADOR DE LA CANTIDAD DE NOTAS INGRESADAS EN MYCALLBACK
+     'ntoca se usa en my callback es la  pista ejec que se esta grabando
+     ' 15min son   60 negras * 15min * 96 ticks =  86400 ticks a I=60
+     ' 15min son 120 negras * 15min * 96 ticks = 172800 ticks a I=240
+     ' 15min son 240 negras * 15min * 96 ticks = 345600 ticks a I=240
+'vector maximo 345600 posiciones para 15 min de duracion, no es para operas jaja
+     'la idea es que el usuario grabe hasta I=240 maximo 345600 ticks
+     ' cada nota requiere 2 eventos on y off , EL OFF esta en el ultimo tick de la duracion
+     ' forma parte de la duraicon de la nota 
+     'If ntoca > 0 then NO DEBERIA HA CER FALTA
+     '     ChangeProgram ( tocaparam(ntoca).patch, tocaparam(ntoca).canal,tocaparam(ntoca).portout )
+     'End If
+     
+     SetGadgetstate(BTN_MIDI_GRABAR_MULTIPISTA,BTN_LIBERADO)
+      
+     arrancaPlay=NO
+     'Print #1,"Nro pista ejec en grabacion ntoca "; ntoca
+     'Print #1,"metronomo de 4 pulsos para comenzar a grabar EJEC"
+
+GrabarEjec=GrabarMidiMultipista
+
+EndIf
+
+If eventnumber()= BTN_MIDI_PARAR_MULTIPISTA And GrabarEjec=GrabarMidiMultipista Then ' BOTON GRABAR ROJO
+       SetGadgetstate(BTN_MIDI_GRABAR_MULTIPISTA,BTN_LIBERADO)
+       SetGadgetstate(BTN_MIDI_PARAR_MULTIPISTA,BTN_PRESIONADO)
+
 EndIf

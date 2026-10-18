@@ -1,3 +1,6 @@
+ -15-10-2026 0.434 ENTRENAR INTERVALOS	OK  sin INTERVALO unisono.
+     NO TERMINADO--0.433 EN DESARROLLO Grabar Midi Multipista de instrumento externo U otro programa
+     mediante loopMDI en varios canales (en desarrollo)"
  -02-10-2026 0.432 Con ALT-V + una duracion no muy grande + flechas Der o Izq se mueve toda la 
    secuencia DER/IZQ, terminamos con Q, usar Home y Fin para controlar " 
    0.431 UNDO NOTAS MELODIAS/ACORDE ALT-U, Y UNDO DE SIMBOLOS DE ACORDE ALT-BACKSPACE ANDA CON 

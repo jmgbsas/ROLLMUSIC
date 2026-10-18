@@ -1,10 +1,9 @@
     Ayuda Prelimiar Básica RollMusic  
 
     =================================================================================================
-    0.432 Con ALT-V + una duracion no muy grande + flechas Der o Izq se mueve toda la secuencia, 
-    A derecha o Izquierda. terminamos con Q, usar Home y Fin para controlar 
-    0.431 UNDO NOTAS de MELODIAS/ACORDE ALT-U, Y UNDO DE SIMBOLOS DE ACORDE ALT-BACKSPACE ANDA CON 
-    TICKS(la 1er nota no se borra)
+    "0.434 ENTRENAR INTERVALOS	OK  sin INTERVALO unisono"
+    '"0.433 EN DESARROLLO Grabar Midi Multipista de instrumento externo o otro programa mediante 
+      loopMDI en varios canales (en desarrollo)"
     =================================================================================================
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
@@ -839,6 +838,9 @@
                 los altavoces como dispositivo de grabación, se captura el sonido interno con alta calidad.
 
       6) Menu ENTRENAR oido y voz para cantar el menu es muy intuitivo...
+         ENTRENAR intervalos.Hasta memoriza los 12 ultimos intervalos, despues del 12 empieza por 1
+         de nuevo pero sin borar el resto. Comenzar toca unnuevo intervalo el cual debe adivinar 
+         el usuario, para aprender usar mostrar el ultimo intervalo o repetir el intervalo Nro.
 
       V ) Futuro: enviar o recibir una nota o comando sysex de sincronismo para empezar a tocar como esclavo
           o ordenar la ejecucion como maestro. De ese modo RollMusic podra tocar junto a otras aplicaciones
@@ -1214,6 +1216,16 @@
          CAMBIAR MANUALMENTE ONOFF DE UNA NOTA, [F6+8+CLICK IZQ], NECESARIO CUANDO UNA NOTA DEBE SONAR(ONOFF=2) 
          O NO (ONOFF=0) (SE PODRIA USAR PARA FIN DE NOTA ONOFF=1 PERO HAY QUE AJSUTAR EL DIMBOLO > TODAVIA NO ECHO)
          ESO (EN CTRLM O CTRL-N AL INSERTAR O MODIFICAR UNA NOTA SE AGREGA AUTOMATICAMENTE SU FINAL DE NOTA ONOFF=1)  
+         ------------------------------------------------------------------------------
+         MOVER LA SECUENCIA EN LECTURA HACIA LA DERECHA O IZQUIERDA UNA CANTIDAD DADA POR UNA
+         DURACION DE NOTA PULSADA 1,2,3,4,5,6,7,8
+         PULSAR AL-V LUEGO UNA DURACION Y MOVER LA  SECUENCIA CON FLECHAS DERECHA IZQUIERDA.
+         PARA TERMINAR PULSAR Q.
+         ----------------------------------------------------------------------------------
+         ESTANDO EN UNA EDICION DE UNA SECUECNIA NUEVA AL PASAR A LECTURA SE PUEDE HACER AHORA
+         UNDO EN TICKS. 
+         ALT-U HACE UNDO UNA NOTA 
+              
          
  ------------------------------------------------------------------------------------------
        Crear Canción En Ventana de Control.

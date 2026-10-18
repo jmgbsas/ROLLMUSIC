@@ -1450,7 +1450,21 @@ Case 1211 ' CORO /CHORUS
      '''ThreadWait threadpan
      
      Print #1,"///----SEL 1211 CORO Globalcoro ",Globalcoro
-     '------------------------------------------------------------------
+Case 1216 ' GRABAR VARIAS PISTAS MIDI-IN UNA PISTA POR CANAL DE ENTRADA
+' abrir un midi-in ...con callback
+' es para grabar midi-in de un teclado externo reproduciendo una o mas pistas 
+' o una aplicacion conectada por cable interno como loopMidi 
+''ANTES BLOQUEA messageCallBack(3)=127 ??? se aplica a esto??
+' cada nota y parametro de control tiene su canal ademas de sus valores comunes
+' en ese caso enviamos cada canal a una pista diferente.
+' preguntar al usuario cuantos canales hay? o directamente tener un vector armado
+' de 32 canales y enviar cada canal a un miembro diferente del vector
+' al finalizar los que tengan datos crearan tantas pistas como sean.
+' poner como nombre de la pista en numero de canal CANAL01,CANAL02 ETC
+' asi el usuario sabra cual es y ajustara el instrumento y le pondra otro nombre
+
+   CTRL1216 ()
+'------------------------------------------------------------------
 Case 1230 ' ENTRENAMIENTO OIDO Y VOZ
       
      threadSndPuro-=ThreadCall CTRL1230 ()
@@ -1460,6 +1474,10 @@ Case 1230 ' ENTRENAMIENTO OIDO Y VOZ
    SetGadgetColor(CHECK_GRABAR_EJECUCION,cint("&HC0C0C0"),0,1)
    SetGadgetColor(PISTASEJECUCIONES ,cint("&HC0C0C0"),0,1) 
    MenuBackColor(hMessages,&hC0C0C0,1) ''AGREGUE TODO POR LAS DUDAS
+     '-------------------------------------------------------------------
+Case 1231 '' intervalos
+     threadIntervalo=ThreadCall CTRL1231 ()
+
      '-------------------------------------------------------------------
 Case 2000
      

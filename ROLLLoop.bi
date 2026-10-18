@@ -102,7 +102,7 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
      
      '--------------------------
      t=" ESCALA: "+ UCase(tipoescala_inicial) + " [" +cadenaes_inicial +"] "
-     cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - inc_Penta)
+     cairo_move_to(c, 0, BordeSupRoll - 6 * inc_Penta ) ' (hasta-6)*20* inc_Penta - inc_Penta)
      cairo_show_text(c, t)
      t= ""
      
@@ -113,23 +113,23 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
      ' PARA SABER SOBRE QUE CONTROL ESTOY HACE RUN CURSOSR PARA ESTA PARTE DE ARRIBA QUE PUEDA NAVEGAR
      ' ENTRE CONTROLES MODIFICABLES Y ESTAANDO UBICADO USAR RUEDITA O FLECHAS PARA CAMBIAR...
      
-     cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - 2* inc_Penta)
+     cairo_move_to(c, 0, BordeSupRoll - 5 * inc_Penta ) 
      t=" CANAL MIDI: "+Str(canalx+1) ' para mostrar le sumo 1 pero se usa asi como viene 0 a 15
      cairo_show_text(c, t)
      t= ""
-     cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - 3* inc_Penta)
+     cairo_move_to(c, 0, BordeSupRoll - 4 * inc_Penta ) 
      t=" I="+Str(tiempoPatron)
      cairo_show_text(c, t)
      t= ""
-     cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - 4* inc_Penta)
+     cairo_move_to(c, 0, BordeSupRoll - 3 * inc_Penta ) 
      t= " Factor: "+ Str(FactortiempoPatron)
      cairo_show_text(c, t)
      t= ""
-     cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - 5* inc_Penta)
+     cairo_move_to(c, 0, BordeSupRoll - 2 * inc_Penta ) 
      t= " Compas=" +TCompas
      cairo_show_text(c, t)
      t= ""
-     cairo_move_to(c, 0, BordeSupRoll - (hasta-9)*20* inc_Penta - 6* inc_Penta)
+     cairo_move_to(c, 0, BordeSupRoll - 1 * inc_Penta ) 
      t= " MaxPos=" +Str(pmTk(ntk).MaxPos)
      cairo_show_text(c, t)
      t= ""
@@ -943,28 +943,23 @@ Sub barrePenta (c As cairo_t Ptr, Roll as inst  )
      
      For i = desde To hasta ' 3 a 8 por omision
           nro = i
-          ' si hAce falta ejecutar mas de un Penta podremos usar threads
-          ' asi funciona mejor o no? igual debe esperar a que termine el thread
-          ' NOOOO ScreenSync  no usar nunca sync desfasa el barrido de cairo y salta
-          ' las lineas
-          '' ScreenSync ' a ver si aca es mejor....
-             'If (Timer -  tiempoUltimoFrame) >= 0.016  Then
-              threadcreaPenta = ThreadCall creaPenta (c, Roll )
-                 
+''    Dim t1 As Double
+''    t1 = Timer
+         threadcreaPenta = ThreadCall   creaPenta (c, Roll )
+         SetThreadPriority(threadcreaPenta , THREAD_PRIORITY_HIGHEST) ''20 ) ' SI NO LO ACELERO PARPADEA NODIBUJA TODO PORQUE QUEDA LENTO
+         ThreadWait threadcreaPenta
+
+''     Print #1,  "Trabajo real: "; (Timer - t1) * 1000; " ms" '''25 MSEG
+''' SIN THREAD NI PRIORIDAD TARDA 40 MSEG * 8 PCTAVAS = 320 MSEG
+''' 25 mseg * 8 = 200 mseg ganamos 120 mseg!! con 4 nucleos
+''' lo maximo que seaceleraria es con 8 nucleos si barra 8 octavas
+''' por 0mision barro desde 4 a 8 4 octavas  25 * 4 = 100 mseg            
              'endif
-              '  tiempoUltimoFrame=Timer
-          SetThreadPriority(threadcreaPenta , THREAD_PRIORITY_HIGHEST) ''20 ) ' SI NO LO ACELERO PARPADEA NODIBUJA TODO PORQUE QUEDA LENTO
-          ''17-05-2026 DECIA 30
-          ' O EN TODO CASO DEBERIA SER  MAS LENTO EL ROOLLOOP O EL LOCK UNCLOCK
-          ThreadWait threadcreaPenta
+
           If *po = 99 then ''''saco esto no se porque 03-11-2025 Or *po=3 Then
                *po = hasta -1 ' 8 por ejemplo => *po=7
-'               ''Sleep 5 '16-05-2026
-'               'Call Sleep with 25ms or less to release time-slice when waiting for user input
-'               ' or looping inside a thread. This will prevent the program from
-'               ''unnecessarily hogging the CPU.
-'
                Exit For
+
           End If
         ' Sleep 3 
      Next i

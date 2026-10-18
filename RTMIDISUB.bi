@@ -3374,7 +3374,9 @@ End Function
 Function mycallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, ByVal leng As UInteger<64>, ByVal otro As Any Ptr ) As RtMidiCCallback
      ' en otro podre poner un ptr a Toca...
      ''Print #1,"entra a mycallback "
-     
+ ''' Dim As UByte canalext  
+'' canalext=dato1 - 144   
+'' canalext=dato1-128  
      Dim As UByte Ptr memoria = vec
      dato1=*memoria: memoria += 1
      dato2=*memoria: memoria += 1
@@ -3401,6 +3403,7 @@ Function mycallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, ByV
      
      Dim i As Integer
      Dim As Integer partes , traba=0
+     
      'If nroTicksOld > 0 Then
      '   pmEj(ntoca).MaxPos=nroTicksOld
      '   tocaparam(ntoca).maxpos=nroTicksOld
@@ -3432,20 +3435,30 @@ Function mycallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, ByV
      '    EndIf
      ' podemos agregar mas codigos como pitchbend Ennn o 14nnn
      Select Case  dato1
-     Case 144 ' on
+     Case 144 To 159 ' on
           ' DIFERENCIA HABIA UN CHANGGEPROGRAM EN 148
          
            If startcall =0 Then startcall=1 EndIf
-         
+         If dato1 >144 Then
+            canalext = dato1-144
+          noteon dato2,dato3,canalext, tocaparam(ntoca).portout, 1,1
+         Else
           noteon dato2,dato3,tocaparam(ntoca).canal, tocaparam(ntoca).portout, 1,1
-          
+         EndIf 
                Print #1, "ON  "; dato1;" ";  dato2;" "; dato3
-          
-     Case 128 'off
-          noteoff dato2,dato3,tocaparam(ntoca).canal,tocaparam(ntoca).portout,1,1 'message(2)'
+      ''         Print #1, "tocaparam(ntoca).canal ";tocaparam(ntoca).canal 
+     Case 128 To 143 'off
+          If dato1 > 128 Then
+            canalext = dato1-128
+           noteoff dato2,dato3,canalext,tocaparam(ntoca).portout,1,1 'message(2)'
+          Else
+            noteoff dato2,dato3,tocaparam(ntoca).canal,tocaparam(ntoca).portout,1,1 'message(2)'
+          EndIf
           ' DIFERENCIA
-               Print #1,  "OFF  ";dato1;" ";  dato2;" "; dato3
-     Case 224 ' pitch bend
+          Print #1,  "OFF  ";dato1;" ";  dato2;" "; dato3
+       ' Print #1, "tocaparam(ntoca).canal ";tocaparam(ntoca).canal
+     Case 224 To 231 ' pitch bend Pitch Wheel Change
+         Print #1,"224 a 231 whell "; dato1
      
      End Select
      
@@ -3494,8 +3507,133 @@ Function mycallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, ByV
           ''  Else
           ''      Print #1,"no se graba nada ............."
      End If
-End Function
+'''///////////MULTIPISTA EL CANAL SEPARA PISTAS
+''**************************************************************
+     If GrabarMidiExterno=GrabarMidiMultipista Then
+          partes=(deltatimeBack/TickChico) ' o cantidad de Ticks ENTRE EVENTOS
+          jgrb += 1 ''JGRB CUENTA EVENTOS ON OFF ETC 
+' CON DATO1 DETERMINAMOS antes EL  CANALext
+          ntoca=canalext   
+          CargaIn( jgrb).modo=dato1
+          CargaIn( jgrb).nota=dato2
+          CargaIn( jgrb).vel=dato3
+          
+               
+               ' aca vamos a marcar los compases para controlar el numero de ellos las repeticiones
+               ' las grabaciones encima o reemplazando datos y la creacion  de patrones,
+          If deltatimeBACK > 0.005  Then '   5mseg  
+              CargaIn( jgrb).partes=partes ' o nro Ticks ENTRE EVENTOS, convierto deltatime en tickschico
+              tocaparam(ntoca).maxpos=tocaparam(ntoca).maxpos + partes
+              pmEj(ntoca).MaxPos=tocaparam(ntoca).maxpos
+                     
+          Else
+              Print #1,"PARTES < 0.005 " ' ENTRA UNA SOLA VEZ, NO CONSIDERA DURACIONES MENOTES A 5 MSEG
+              CargaIn(jgrb).partes=0
+              tocaparam(ntoca).maxpos=tocaparam(ntoca).maxpos + 1
+              pmEj(ntoca).MaxPos=tocaparam(ntoca).maxpos                    
+          End If
 
+     EndIf 
+End Function
+'---------------
+Function extcallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, ByVal leng As UInteger<64>, ByVal otro As Any Ptr ) As RtMidiCCallback
+''ESTA SUBRUTINA ESTA AL PEDO BORRRLA EL CANAL YA ESTA EN  DATO1 !!!
+''grbar midi-in en varios canales
+'' verificar que mycallback no este abierto siloesta cerrarlo
+'' verificar que rollcallback no este abierto si lo esta cerrarlo
+'' YA LO HACE CTRL1216 AL PRINCIPIO
+'''FF 20 01 cc MIDI Channel Prefix  CON EL CANAL REPARTIRE LOS DATOS
+'' UBYTE VA DE 0 A 255  OSEA 0 A FF. EL FF ENTRA EN EL DATO1
+'' EL 20 ENTRA EN DATO2, Y EL 1 EN DATO3,, Y DONDE VA EL CANAL ? EN DATO4?
+     Dim As UByte Ptr memoria = vec
+     dato1=*memoria: memoria += 1
+     dato2=*memoria: memoria += 1
+     dato3=*memoria:  ''VELOCIDAD
+
+     If deltatime=0 Then 
+        deltatimeBACK=0
+        deltatime=99
+     EndIf  
+'''     DURk =deltatimeBACK
+     
+     Dim As Double sumadelta=0
+     
+     Dim i As Integer
+     Dim As Integer partes , traba=0
+     Dim As UByte canalext 
+     ' podemos agregar mas codigos como pitchbend Ennn o 14nnn
+     ' AGREGAMOS EL CANAL QUE  HARA DE FILTRO
+     Select Case  dato1
+     Case 144 To 159 ' on 1001 0000 ---hex 90 + canal
+          ' DIFERENCIA HABIA UN CHANGGEPROGRAM EN 148
+         '' canalext=dato1 - 144     
+       If startcall =0 Then startcall=1 EndIf
+     ' puedo sacar el canal de lsegunod byte
+               
+       '''  noteon dato2,dato3,canalext, tocaparam(ntoca).portout, 1,1
+          
+               Print #1, "ON  "; dato1;" ";  dato2;" "; dato3
+          
+     Case 128 To 143 'off 1000 0000 --- hex 80
+        '' canalext=dato1-128   
+       '''   noteoff dato2,dato3,canalext,tocaparam(ntoca).portout,1,1 'message(2)'
+          ' DIFERENCIA
+               Print #1,  "OFF  ";dato1;" ";  dato2;" "; dato3
+     Case 224 ' pitch bend
+     Case 192 ' program change 
+          
+
+     End Select
+     
+     ''con canalext elijo en que track o pista coloco los datos asi
+     '' clasifico los datos por canal...
+     ' tick mas chico es 0,005208325 (ver [TickChico] en RTMIDIDEC)
+     ' ergo divido deltatime por ese valor y obtengo la cantiad de divisiones
+     ' que ocupara ese retardo deltatime/TickChico
+     '''Print #1,"GrabarEjec =GrabarPistaEjecucion ",GrabarEjec, GrabarPistaEjecucion
+     If GrabarEjec =GrabarPistaEjecucion  Then ''graba en la pista seleccioanda
+          partes=(deltatimeBack/TickChico) ' o cantidad de Ticks ENTRE EVENTOS
+          jgrb += 1 ''JGRB CUENTA EVENTOS ON OFF ETC 
+          If jgrb=1 And nroCompasesPatron> 0  Then
+               ' RECUPERO LOS TICKS QUE CONTENDRA EL PATRON, LO BLANQUEO PARA LUEGO
+               ' CONTROLAR SU LLENADO
+               nroTicksPatron =pmEj(ntoca).MaxPos 'hay patron
+               pmEj(ntoca).MaxPos=0
+               tocaparam(ntoca).maxpos=0
+          End If
+          'If CargaIn( jgrb).modo > 0 Then ''ESTAMOS GRABANDO ENCIMA PaRA NO PISAR Y HACER EFECTO DE ACORDE SUMAMOS 1
+      '   jgrb=jgrb+1 ' 19-07-2026
+      'EndIf
+          CargaIn( jgrb).modo=dato1 '' aca va la info de canal tambien!!
+          CargaIn( jgrb).nota=dato2
+          CargaIn( jgrb).vel=dato3
+'''   no debo tocar nada del codigo dato1 ya tiene el canal!!!
+          If pmEj(ntoca).MaxPos >= nroTicksPatron And nroTicksPatron > 0   Then
+               ' termino la grabacion del patron no se graba mas en CargaIn
+               Print #1, "ENTRO POR PATRON"
+               GrabarEjec =PatronDeEjecucionCompleto
+          Else
+               
+               ' aca vamos a marcar los compases para controlar el numero de ellos las repeticiones
+               ' las grabaciones encima o reemplazando datos y la creacion  de patrones,
+               If deltatimeBACK > 0.005  Then '   5mseg  
+                    CargaIn( jgrb).partes=partes ' o nro Ticks ENTRE EVENTOS, convierto deltatime en tickschico
+                    tocaparam(ntoca).maxpos=tocaparam(ntoca).maxpos + partes
+                    pmEj(ntoca).MaxPos=tocaparam(ntoca).maxpos
+                     
+               Else
+                    Print #1,"PARTES < 0.005 " ' ENTRA UNA SOLA VEZ, NO CONSIDERA DURACIONES MENOTES A 5 MSEG
+                    CargaIn(jgrb).partes=0
+                   tocaparam(ntoca).maxpos=tocaparam(ntoca).maxpos + 1
+                   pmEj(ntoca).MaxPos=tocaparam(ntoca).maxpos                    
+               End If
+          End If
+          ''  Else
+          ''      Print #1,"no se graba nada ............."
+     End If
+
+
+End function
 '--------------------------------------
 Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi,i1 As Integer) ' I1 PISTA
      '' ya Graba en version 2

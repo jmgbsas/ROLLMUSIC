@@ -31,9 +31,11 @@ Dim Shared msgin  (1 To 8192) As UByte ' message in futuro secuencia veremos si 
 ' maximo seria para un acorde de 5 por ejemplo
 ' 5 notas + velocidad y canal = 7 bytes...para note on
 ' si tomamos 10 dedos de las 2 manos serian 10 notas+ vel + canal = 12
-' si agregamos velocidad distinta para cada nota serian
-' 20 mas canal = 21 bytes...maximo
-' podriamos agregar presion promedio aftertouch etc pero serin mensajes independientes
+' podriamos agregar Pb pitch bend pan y otros? (ver en el manual que parametros podemos poner)
+' si agregamos velocidad distinta para cada nota serian mal la distinta velocidad siempre ocupa un lugar
+' 10 mas canal = 12 bytes...maximo
+' podriamos agregar presion  aftertouch pitch bend pan etc pero serin mensajes independientes
+'16 bytes maximo,,,y ta esta defiido de 21 sobra.
 'Dim errorString As ZString Ptr
 Common Shared pmsg As Integer Ptr 'cambiado a shared
 Common Shared pmsgCallBack As Integer Ptr 'cambiado a shared
@@ -327,7 +329,7 @@ Type notacallback
      As Double durk
      As Integer partes
 End Type
-Dim Shared  As notacallback notamidi ( 1 To 24)
+Dim Shared  As notacallback notamidi ( 1 To 24) ' uao wn ROllCallback
 Dim Shared  As Double  durafig(1 To 24)
 Type midicod Field=1
      As UByte modo ' dato1

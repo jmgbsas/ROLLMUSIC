@@ -105,7 +105,10 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.432 Con ALT-V + una duracion no muy grande + flechas Der o Izq se mueve toda la secuencia, terminamos con Q, usar Home y Fin para controlar " 
+nroversion="0.434 ENTRENAR INTERVALOS	OK  sin unisono" 
+'"0.433 EN DESA Grabar Midi Multipista de instrumento externo o otro programa mediante loopMDI en varios canales (en desarrollo)"
+'------------------------------------------------------------------------
+''0.432 Con ALT-V + una duracion no muy grande + flechas Der o Izq se mueve toda la secuencia, terminamos con Q, usar Home y Fin para controlar " 
 ''0.431 UNDO NOTAS MELODIAS/ACORDE ALT-U, Y UNDO DE SIMBOLOS DE ACORDE ALT-BACKSPACE ANDA CON TICKS(la 1er nota no se borra)"
 ''0.430 cambia bien las octavas cualquiera sea el cambio ."
 ''0.429 NO CANCELA MAS SI ESTA LEVANTADO EL REPRO DE MEDIOS Y SE CIERRA LA VENTANA DE CONTROL

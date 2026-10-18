@@ -204,7 +204,8 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      Var IMGG=Load_image(ROLLDIR+"recur\Grabar.bmp")
      Var IMGE=Load_image(ROLLDIR+"recur\Ejec.bmp")
      Var IMGC=Load_image(ROLLDIR+"recur\Cargar.bmp")
-     
+     Var IMGGM=Load_image(ROLLDIR+"recur\GrabarMultiPista.bmp")
+     Var IMGPM=Load_image(ROLLDIR+"recur\PararMultiPista.bmp")     
      ' pistas de ejec MIDI-IN
      GroupGadget(GRUPO_BTNS_MIDI,445,0,153,40,"")
      
@@ -225,6 +226,12 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      TextGadget(TEXT_TOPE,620,12,95,20,"         ")
      StringGadget(LINEA_COMANDO,720,12,300,20,"ENTRE UN COMANDO PULSANDO INICIO ",ES_UPPERCASE,ES_LEFT )
      ButtonGadget(OK,1040,12,60,20,"INICIO")
+     '----------GRABAR Y PARAR MIDI IN MULTIPISTAS
+     GroupGadget(GRUPO_BTNS_MIDI_MULTI,720,27,74,40,"")
+     ButtonImageGadget(BTN_MIDI_GRABAR_MULTIPISTA,725,40,25,25,IMGGM, FB_BS_PUSHLIKE or BS_BITMAP )
+     GadgetToolTip(BTN_MIDI_GRABAR_MULTIPISTA,"GRABAR MULTIPISTA MIDI IN")
+     ButtonImageGadget(BTN_MIDI_PARAR_MULTIPISTA, 765,40,25,25,IMGPM, FB_BS_PUSHLIKE or BS_BITMAP )
+     GadgetToolTip(BTN_MIDI_PARAR_MULTIPISTA,"DETENER GRABACION MIDI IN MULTIPISTA")
      '---------------------------------------------------
      ' pistas manuales  PARA CARGAR CANCION DESDE DIRECTORIO PISTAS ECHAS CON ROLL
      GroupGadget( GRUPO_BTNS_MANUAL,95,0,153,40,"") 'play cancion
@@ -406,7 +413,9 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      MenName8=MenuTitle (hMessages,"PISTAS DE EJECUCION")
      MenName9=MenuTitle (hMessages,"ENTRENAR")
      MenName10=MenuTitle(hMessages,"INFO")
-     
+     '-----------------------------------------------------------
+     '====================== MENU ARCHIVOS =======================
+     '------------------------------------------------------------
      ''MenuItem(1005,MenName1, "Na.Cargar archivo de Cancion")
      MenName19=OpenSubmenu(MenName1,"1.0 FORMAS DE CARGAR CANCION")
      
@@ -454,8 +463,9 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      MenuItem(1018 ,MenName1,"5.4 Cargar txt plano midi externo, MUY INEXACTO")
      Menubar(MenName1)
      MenuItem(1019,MenName1, "    SALIR")
-     
-     
+     '--------------------------------------------------------------------
+     '======================= NUEVA CANCION ==============================
+     '--------------------------------------------------------------------
      MenuItem(1020,MenName2, "1.0 Nombre o Título (fecha por omision), la cancion es un directorio")
      MenuItem(1021,MenName2, "2.0 Tiempo I=60 por omision")
      MenuItem(1022,MenName2, "- Ritmo 4/4 por omision Ver Menu Tiempo y Ritmo")
@@ -573,7 +583,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      
      
      
-     
+    '==================== MENU EJECUCIONES O MIDI ================== 
      MenuItem(1200,MenName8,"1.0 Seleccion Puerto MIDI-IN Ejecucion")
      
      Menubar(MenName8)
@@ -586,6 +596,9 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      MenuItem(1209,MenName8, "6.1 Cambia PAN de una Pista EJEC" )
      MenuItem(1210,MenName8, "6.2 Cambia REVERVERACCION/ECO  de una Pista EJEC " )
      MenuItem(1211,MenName8, "6.3 Cambia CHORUS/CORO  de una Pista EJEC" )
+     MenuItem(1216,MenName8, "7.0 Grabar MIDI-IN externo Por varios Canales, Creando Una Pista Por Canal(No habilitado en Desarrollo)" )
+
+
      '==============ENTRENAR ================================
      MenuItem(1230,MenName9, "1.0 Escuchar y Cantar Notas puras al Unisono, para entrenar el oido y la Voz")
      MenName21=OpenSubmenu(MenName9,"2.0 Entrenamiento con Metronomo y palmadas, durante los silencios siga el ritmo")
@@ -593,6 +606,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      menuitem (10882,Menname21," Cantidad de pulsos Sin Sonido" )
      menuitem (10884,Menname9,"3.0 Entrar una cadena pulsos donde 3 sera fuerte, 2 semi fuerte,1 normal y 0 silencio, en un archivo de texto")
      menuitem (10883,Menname9,"4.0 <RESET> de Cantidad de pulsos y/0 cadena pulsos")
+     menuitem (1231 ,Menname9,"5.0 INTERVALOS ")
      
      MenuItem(2000,MenName10,"1.0 Acerca de")
      MenuItem(2001,MenName10,"2.0 Cuadro Ayuda TEMPO por nombres, Lento,adagio etc y control fino")
@@ -693,6 +707,6 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      ''SetStateMenu(hmessages,1050,1)
      ''SetStateMenu(hmessages,1007,1) ' por ahopra no funciona bien requiere mucho trabajpo
      SetStateMenu(hmessages,1007,0) ' TEST
-     
+     SetStateMenu(hmessages,1216,1) 
 End If
 FINALGUI:

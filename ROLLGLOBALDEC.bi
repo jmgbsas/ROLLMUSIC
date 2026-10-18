@@ -91,12 +91,15 @@ Const BTN_LIBERADO=0
 Const BTN_PRESIONADO=1
 Const GrabarPatronaDisco=4
 Const GrabarPistaEjecucion=2
+Const GrabarMidiMultipista=61
+
 Const PatronDeEjecucionCompleto=32
 Const PISTASROLL = 3
 Const PISTASEJECUCIONES   =4
 Const BOTON_SELECCION_EJECUCION =6
 Const CHECK_GRABAR_EJECUCION    = 7
 Const GRUPO_BTNS_MIDI           =8
+Const GRUPO_BTNS_MIDI_MULTI   = 64
 Const BTN_MIDI_PARAR        = 9
 Const BTN_MIDI_GRABAR     = 10
 Const BTN_MIDI_EJECUTAR   = 14
@@ -143,7 +146,8 @@ Const TEXT_VOL_EJEC = 57
 Const BTN_MAS_VOL_EJEC=58
 Const BTN_MENOS_VOL_EJEC=59
 Const BTN_PANIC=60
-
+Const BTN_MIDI_GRABAR_MULTIPISTA=62
+Const BTN_MIDI_PARAR_MULTIPISTA=63
 Const HABILITAR = TRUE
 Const DESHABILITAR = FALSE
 Const SI=1
@@ -614,7 +618,7 @@ Common Shared As cairo_t  Ptr c, c2
 Common Shared As Any Ptr surface,surf2, threadCicloEntradaMidi, Screenbuffer,threadmedia,threadsound, threadplaysound,threadmovie,threadSndPuro,threadSilencio,threadon,threadoff
 Screenbuffer=0
 Common Shared as any ptr thread1, thread2,threadPenta,threadcreaPenta, thread3,pubi,threadloop,p1,threadMenu, threadmetronomo,threadsel,threadcanal,threadPer,threadVoz,threadduracion
-Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro,threadKey,threadmidi0,threadCargamidi,threadTono
+Common Shared As Any Ptr thread4, threadGrabamidi,threadCmd,threadVel,threadDur,threadvol,threadpan,threadeco,threadcoro,threadKey,threadmidi0,threadCargamidi,threadTono,threadIntervalo
 Common Shared As Integer nfont,nmxold,nmyold,nancho,nalto,ndeltaip,nVerEscalasAuxiliares,nVerCifradoAcordes, nretrasoMetronomoCan,nretrasoMetronomoRoll,threadwin, threadPen
 Common Shared As Integer mxold,myold, w,h,grado, HabilitarPatrones,HabilitarMIDIIN,HabilitarMIDIINROLL
 Common Shared As integer ubirtk, ubiroll,trasponer,canalx,parametros,abrirRollCargaMidi,ubiejec,ubionline
@@ -725,6 +729,7 @@ End Type
 Dim Shared  As rangoOct pmTk (), pmEj ()
 ReDim  pmTk (0 To 32)
 ReDim  pmEj (1 To 32)
+' vamos a agregar 
 Type poli Field=1 ' para guardar la secuencia EN Tacks 15 bytes
      dur    As UByte =0   ' duracion
      sonido As UByte =0   ' SONIDO ON/OFF ? se usa?

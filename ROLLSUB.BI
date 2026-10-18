@@ -5729,7 +5729,7 @@ Dim As Integer i=0
        esL=0
     EndIf
 
-    Print #1, trackGenDUR(i)
+   '' Print #1, trackGenDUR(i)
 Loop  
 
 

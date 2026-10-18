@@ -8,10 +8,10 @@ Function valorfrec (nronota As Integer) As double
      ' f3 = 440 * (1.059463..)3 = 523.3 Hz
      
      'Middle C is 9 half steps below A4 and the frequency is:
-     'f -9 = 440 * (1.059463..)-9 = 261.6 Hz
-     Dim As Double RC2=2^(1/12)
+     'fC  = 440 * (1.059463..)^(-9) = 261.6 Hz =0,5946040341178481 * 440
+     Dim As Double RC2=2^(1/12)  ''RC2=1.05946309
      Print #1,"RC2 ";RC2
-     RC2=RC2 ^ (nronota-69)
+     RC2=RC2 ^ (nronota-69)  '' 69 es la nota de LA4 por sostenidos
      Print #1,"RC2 ";RC2
      valorfrec = 440*RC2
      Print #1,"VALORFREC ";440*RC2
