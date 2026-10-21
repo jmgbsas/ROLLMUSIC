@@ -105,7 +105,10 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.434 ENTRENAR INTERVALOS	OK  sin unisono" 
+nroversion="0.436 ENTRENAR INTERVALOS FIXES"
+''SEGUIR CON 433 DESA MULTIMIDI
+''0.435 REPRO MEDIA EN EXPLORER SIN BOTONES
+''0.434 ENTRENAR INTERVALOS	OK  sin unisono" 
 '"0.433 EN DESA Grabar Midi Multipista de instrumento externo o otro programa mediante loopMDI en varios canales (en desarrollo)"
 '------------------------------------------------------------------------
 ''0.432 Con ALT-V + una duracion no muy grande + flechas Der o Izq se mueve toda la secuencia, terminamos con Q, usar Home y Fin para controlar " 

@@ -1457,11 +1457,13 @@ Case 1216 ' GRABAR VARIAS PISTAS MIDI-IN UNA PISTA POR CANAL DE ENTRADA
 ''ANTES BLOQUEA messageCallBack(3)=127 ??? se aplica a esto??
 ' cada nota y parametro de control tiene su canal ademas de sus valores comunes
 ' en ese caso enviamos cada canal a una pista diferente.
-' preguntar al usuario cuantos canales hay? o directamente tener un vector armado
-' de 32 canales y enviar cada canal a un miembro diferente del vector
-' al finalizar los que tengan datos crearan tantas pistas como sean.
+' preguntar al usuario cuantos canales hay? 
 ' poner como nombre de la pista en numero de canal CANAL01,CANAL02 ETC
 ' asi el usuario sabra cual es y ajustara el instrumento y le pondra otro nombre
+' creo que un solo vector como hasta ahora es suficiente porque cada nota tiene
+' su canal y port de salida ergo simplemente en el mismo callback u otro
+' barajamos por canal las notas y listo. Para no tocar lo que ya existe creamos otro
+' callback,,,especializado den barajar por canal 
 
    CTRL1216 ()
 '------------------------------------------------------------------

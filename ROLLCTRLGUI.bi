@@ -8,30 +8,34 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      instancia=ARG0_EN_LINEA
      If (BatchGraficoOCtrl=3 Or BatchGraficoOCtrl=4 Or BatchGraficoOCtrl=5 ) And ubiejec=0 Then
           ' MUESTO UN ONLINE REDUCIDO PARA SOLO TOCAR
+''Print #1, "ENTRA POR EL MOV8 ?"
           hwndC = OpenWindow("RollMusic Ctrl V "+ nroversion,10,10,ANCHO/6,ALTO/12, _
           WS_OVERLAPPED Or WS_VISIBLE Or WS_CAPTION OR WS_SYSMENU OR WS_MINIMIZEBOX _
           Or WS_CLIPCHILDREN)
           '-----------------------------------------------------------
-          Var IMGP=Load_image(ROLLDIR+"recur\Parar.bmp")
-          Var IMGE=Load_image(ROLLDIR+"recur\Ejec.bmp")
-          Var IMGC=Load_image(ROLLDIR+"recur\Cargar.bmp")
-          GroupGadget( GRUPO_BTNS_MANUAL,55,0,113,40,"") 'play cancion
-          GadgetToolTip(GRUPO_BTNS_MANUAL,"Cargar, Detener , Ejecutar  ")
+        '' ESTOS CONTROLES NO PUEDEN HACE FUNCIONAR EL LOOP DEL REPRODUCTOR DE MEDIA
+        If ubimedia = 0 Then  
+           Var IMGP=Load_image(ROLLDIR+"recur\Parar.bmp")
+           Var IMGE=Load_image(ROLLDIR+"recur\Ejec.bmp")
+           Var IMGC=Load_image(ROLLDIR+"recur\Cargar.bmp")
+           GroupGadget( GRUPO_BTNS_MANUAL,55,0,113,40,"") 'play cancion
+           GadgetToolTip(GRUPO_BTNS_MANUAL,"Cargar, Detener , Ejecutar  ")
           
-          ButtonImageGadget(BTN_ROLL_CARGAR, 60,12,25,25,IMGC, FB_BS_PUSHLIKE or BS_BITMAP  )
-          GadgetToolTip(BTN_ROLL_CARGAR,"Cargar un Archivo Roll (Sin cancion cargada)")
+           ButtonImageGadget(BTN_ROLL_CARGAR, 60,12,25,25,IMGC, FB_BS_PUSHLIKE or BS_BITMAP  )
+           GadgetToolTip(BTN_ROLL_CARGAR,"Cargar un Archivo Roll (Sin cancion cargada)")
           
-          
-          ButtonImageGadget(BTN_ROLL_PARAR, 100,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
-          GadgetToolTip(BTN_ROLL_PARAR,"DETENER ejecucion Roll ")
-          
-          ButtonImageGadget(BTN_ROLL_EJECUTAR, 140,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
-          GadgetToolTip(BTN_ROLL_EJECUTAR,"EJECUTAR Roll ")
-          
+           
+           ButtonImageGadget(BTN_ROLL_PARAR, 100,12,25,25,IMGP, FB_BS_PUSHLIKE or BS_BITMAP  )
+           GadgetToolTip(BTN_ROLL_PARAR,"DETENER ejecucion Roll ")
+           
+           ButtonImageGadget(BTN_ROLL_EJECUTAR, 140,12,25,25,IMGE, FB_BS_PUSHLIKE or BS_BITMAP  )
+           GadgetToolTip(BTN_ROLL_EJECUTAR,"EJECUTAR Roll ")
+        EndIf
           GoTo FINALGUI
           '-------------------------------------------------------------
           
      Else
+            Print #1, "SE FUE POR EL ELSE =?"
           hwndC = OpenWindow("RollMusic Ctrl V "+ nroversion,10,10,ANCHOSYSTEM*0.91 ,ALTOSYSTEM*0.91, _
           WS_OVERLAPPEDWINDOW Or WS_VISIBLE ,  WS_EX_ACCEPTFILES   )
      End If
@@ -229,9 +233,9 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      '----------GRABAR Y PARAR MIDI IN MULTIPISTAS
      GroupGadget(GRUPO_BTNS_MIDI_MULTI,720,27,74,40,"")
      ButtonImageGadget(BTN_MIDI_GRABAR_MULTIPISTA,725,40,25,25,IMGGM, FB_BS_PUSHLIKE or BS_BITMAP )
-     GadgetToolTip(BTN_MIDI_GRABAR_MULTIPISTA,"GRABAR MULTIPISTA MIDI IN")
+     GadgetToolTip(BTN_MIDI_GRABAR_MULTIPISTA," GRABAR MULTIPISTA MIDI IN. EN DESARROLLO")
      ButtonImageGadget(BTN_MIDI_PARAR_MULTIPISTA, 765,40,25,25,IMGPM, FB_BS_PUSHLIKE or BS_BITMAP )
-     GadgetToolTip(BTN_MIDI_PARAR_MULTIPISTA,"DETENER GRABACION MIDI IN MULTIPISTA")
+     GadgetToolTip(BTN_MIDI_PARAR_MULTIPISTA,"DETENER GRABACION MIDI IN MULTIPISTA .EN DESARROLLO")
      '---------------------------------------------------
      ' pistas manuales  PARA CARGAR CANCION DESDE DIRECTORIO PISTAS ECHAS CON ROLL
      GroupGadget( GRUPO_BTNS_MANUAL,95,0,153,40,"") 'play cancion

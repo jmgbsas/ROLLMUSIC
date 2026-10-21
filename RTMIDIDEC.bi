@@ -333,11 +333,24 @@ Dim Shared  As notacallback notamidi ( 1 To 24) ' uao wn ROllCallback
 Dim Shared  As Double  durafig(1 To 24)
 Type midicod Field=1
      As UByte modo ' dato1
-     As UByte nota
-     As UByte  vel
+     As UByte nota ' dato2
+     As UByte  vel ' dato3
      As Integer partes
 End Type
 
-ReDim Shared CargaIn ( 1 To 84000) As midicod
+ReDim Shared CargaIn ( 1 To 84000) As midicod '  
+ReDim Shared MultiCargaIn ( 1 To 576000) As midicod
+'si 1 negra=I tarda 1 seg tiempo =60 segundos para 60 negras
+'tiempo 300, por ejemplo de negras seria, tengo 300 negras en 1 minuto
+' si  quiero 30 min -> 300*30= 9000 negras en 30 minutos.
+'' para ir a semicorcheas x4 => 36000  en 30 minutos
+'' para un solo canal. Si quiero 16 canales seria 36000*16=576000 ticks 
+''una secuecnia no pude ser todo fusa o semifusa o semicorchea
+'' debe haber un promedio entre cantidad de negras corcheas semicorcheas fusas
+'' semi fusas y tresillos. el minimo de ticks es para negras -> 9000
+'' para semicorcheas 576000, fusas el doble 1152000 y semifusas 2304000
+'' voy a usar 576000 que seria 16 canales de 30 min llenos de semicorcheas
+'' com ohabra muchas negras o corches eso dara el espacio para fusas y semifusas 
+' una opera puede llegar a 15 o 20 minutos, como tope pondremos 30 minutos
 '''Redim shared CargaInRoll ( 1 To 384000) As midicod
 

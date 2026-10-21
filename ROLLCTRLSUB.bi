@@ -1375,7 +1375,7 @@ Sub CTRL1094(titulo As ZString ptr) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
           End If
           If event=EventGadget Then
                Select case EventNumber
-               Case 1 'STOP  empieza desde el principio de nuevo
+               Case 1   'STOP  empieza desde el principio de nuevo
                     LIMPIA=1
                     B="@"
                     CICLO=FALSE
@@ -1712,7 +1712,7 @@ Sub CTRL1094(titulo As ZString ptr) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
                     End If
                End If
           End If
-          Sleep 5
+          Sleep 15
      Loop
      
      
@@ -2293,21 +2293,7 @@ Sub CTRL1216() ' basado en 1092
         portout1216 = tocaparam(1).portout ' PREVIAMENTE SELECCIONADO
         ntoca=1
         portsal=portout1216
-        instru=CInt(tocaparam(1).patch)
-        patchsal=instru
-        Print #1,"instrumento en abrir midi-in ", instru
-               
-               'instru, canal, portsal abre ahora distinto para cada pista
-               ' el portin y portout podrian ser los mismos pero igual hay que seleccionarlos antes
-               ' debo cambiar por toaparam ??? es lo mismo ambos se cargaen el la seleccion
-               ' con el mismo valor pmEj(i).xxx=tocaparam(i).xxx
-        ChangeProgram ( tocaparam(1).patch  , tocaparam(1).canal, tocaparam(1).portout)
-        pmEj(1).vol=100
-        tocaparam2(1).vol=100 ' versionEJEC=2
-        Globalvol=100
-        pmEj(1).pan=64
-        tocaparam2(1).pan=64 ' versionEJEC=2
-        Globalpan=64
+        instru=CInt(tocaparam(1).patch)'' 0 a 32 canales
 
         
 '------------------------
@@ -2325,15 +2311,14 @@ Sub CTRL1216() ' basado en 1092
 '' el mismo ya que voy a cerrar  todos los otros callbacks que haya
 '' es donde deja los mensajes...si podemos usar el emismo
           set_callback midiin(portin1216 ), @extcallback, pmsgCallBack
-          ' por ahrao iognoramos otros tipsod de mensaje
+          ' por ahora iognoramos otros tipsod de mensaje
           ''              rtmidi_in_ignore_types  (midiin(portin1092 ), 1, 2, 4)
-          teclado=1
+          teclado=2 ' el 1 seria para indicar callback de grabacion de performance usuario
+' el 2 es para el caso de grabacion por midi desde otro software o performance
+''  de varias personas tocando al mismo tiempo.....¿?
           listinAbierto( portin1216) = 1
-         ''' jgrb=0 '''<<< ESTO CAUSABA EL BORRADO Y TUVE  QUE PONER EL REDIM DE CARGAIN PERO ESTA MEJOR
           
      End If
-'''ewto era para los play  para grabar el archivo de midi a texto no va
-''     HabilitarMIDIIN=1 ' tengo seleccionado portin
 
 
 
@@ -2623,7 +2608,10 @@ Dim As Double tiempo1, tiempo2
 tiempo1=Timer
 Do
    event=WaitEvent()
-          If Timer -tiempo1 > 0.500  Then
+          If Timer -tiempo1 < 0.400  Then
+             candado=1
+             event=0
+          Else
              candado=0
           EndIf
           If Event=EventClose Then
@@ -2644,6 +2632,7 @@ Do
 
                    Randomize
                   notabase = Int(rnd_range(48, 72))
+                  If cntgap =99 Then cntgap=0 EndIf 
                   cntgap=cntgap+1
                  SetGadgetText(3, "COMENZAR " +Str (cntgap))
 ''SACAMOS LOS UNISONOS... ¿?..SI
@@ -2656,7 +2645,7 @@ Do
                  vec_inter(cntgap, 2)=notabase + intervalo -1
                  TocarIntervalo (vec_inter(cntgap, 1),vec_inter(cntgap, 2))
                  If cntgap=12 Then
-                    cntgap=0
+                    cntgap=99
                  EndIf
                  tiempo1=Timer
               EndIf
@@ -2666,24 +2655,32 @@ Do
       
 ''OCTAVA -> PARTE ENTERA (NOTABASE/12) -1
 ''NOTA CIFRADA ->  PARTE DECIMAL * 12 +1
-               SetGadgetText(4, "MOSTRAR INTERVALO " +Str (cntgap))
-               octava1 = Int (notabase/12) -1 
-               cifrada1= (notabase/12 - Int (notabase/12) )*12 +1
-               octava2 = Int ((notabase+intervalo-1)/12) -1 
-               cifrada2= ((notabase+intervalo-1)/12 - Int ((notabase+intervalo-1)/12) )*12 +1
+               If cntgap=99  Then cntgap=12 EndIf
+               If cntgap >0 Then 
+                 SetGadgetText(4, "MOSTRAR INTERVALO " +Str (cntgap))
+                 octava1 = Int (notabase/12) -1 
+                 cifrada1= (notabase/12 - Int (notabase/12) )*12 +1
+                 octava2 = Int ((notabase+intervalo-1)/12) -1 
+                 cifrada2= ((notabase+intervalo-1)/12 - Int ((notabase+intervalo-1)/12) )*12 +1
 
-               SetGadgetText(103, "Nro Teclas "+ Str(notabase)+ " " +Str (notabase+intervalo-1) )
-               SetGadgetText(104, "Salto Semitonos = " + Str (intervalo-1) )
-               SetGadgetText(106, "OCT "+Str(octava1)+ " " + NotasEscala (cifrada1) + " - OCT " + str(octava2) +" "+ NotasEscala (cifrada2) + " " + intervalousado)
-
+                 SetGadgetText(103, "Nro Teclas "+ Str(notabase)+ " " +Str (notabase+intervalo-1) )
+                 SetGadgetText(104, "Salto Semitonos = " + Str (intervalo-1) )
+                 SetGadgetText(106, "OCT "+Str(octava1)+ " " + NotasEscala (cifrada1) + " - OCT " + str(octava2) +" "+ NotasEscala (cifrada2) + " " + intervalousado)
+               EndIf
+               If cntgap=12 Then cntgap=99 EndIf
                tiempo1=Timer
+
                Case 90 
            
            if candado=0 Then
-SetGadgetText(90, "REPETIR EL ULTIMO " +Str (cntgap))
-             TocarIntervalo (vec_inter(cntgap, 1),vec_inter(cntgap, 2))
-             candado=1
-             tiempo1=Timer
+              If cntgap=99 Then cntgap=12 EndIf
+              SetGadgetText(90, "REPETIR EL ULTIMO " +Str (cntgap))
+              If cntgap >0 Then
+                TocarIntervalo (vec_inter(cntgap, 1),vec_inter(cntgap, 2))
+              EndIf
+              candado=1
+              tiempo1=Timer
+              If cntgap=12 Then cntgap=99 EndIf
            EndIf   
 
                Case 91 To 102

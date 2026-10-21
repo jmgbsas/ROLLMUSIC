@@ -1216,7 +1216,7 @@ ProgError(17) = "end of file"
 Static Shared As HWND cbxnum(1 To 32),cbxsolo(1 To 32), cbxejec(1 To 32),cbxgrab(1 To 32),rbparar,rbgrabar,cbxejecout(1 To 32)
 Static Shared As Integer sonidoPista(1 To 32)
 static  Shared As Integer SuenaTodo =0, cntsuena=0
-Static Shared  As Integer jgrb=0, jgrbOld, jgrbRoll
+Static Shared  As Integer jgrb=0, jgrbOld, jgrbRoll, Mjgrb
 Declare Sub PlayCancion(Track() As sec)
 Declare Sub PlayUnoSolo(SolX As sec, Spis As Integer)
 Declare Sub TrackaRoll (Track() As sec, ByVal ntk As Integer, Roll As inst,funcion As string)
