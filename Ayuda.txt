@@ -1,10 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
-
-    =================================================================================================
-    "0.434 ENTRENAR INTERVALOS	OK  sin INTERVALO unisono"
-    '"0.433 EN DESARROLLO Grabar Midi Multipista de instrumento externo o otro programa mediante 
-      loopMDI en varios canales (en desarrollo)"
-    =================================================================================================
+ 0.444 se evita en CTRL-M que una nota con la misma altura que otra anterior muy cercana pise el final de nota 
+    Y otras que se nombran en historico.txt
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -37,15 +33,26 @@
        espacio visual y menor trabajo de dibujo del cpu pulsar Mayuscula izquierda + M
        al pulsar  de nuevo volvera a verse el menu. Con ALT+M se vera siempre el menu.
        Si quiero ver los parametros de Roll mientras se ejecuta la secuencia pulsar Shift+V, tambien
-       pulsando Edit en elmenu,es un atajo rapido.
-       NOTA: En windows 11 si no funciona el Play o cancela se recomienda usar un mapeador Midi 
+       pulsando Edit en elmenu,es un atajo rapido. Pulsando N varias veces va mostrando distintos
+       parametros (3 vistas)
+       NOTA: En windows 11 si no funciona el Play o cancela se podria  usar un mapeador Midi 
              como uno gratis CoolSoft_MIDIMapper_2.1.2.exe  o mas nuevo u otro (falta deteccion de fallas).
+        Despues de optimizat mas a Rollmusic, estaba quedando lento porque CoolSoft
+       se dispara en alta prioridad y ralentiza a RollMusic aunque RollMusic tenia alta prioridad en varias partes.
+       windows pierde el audio cada tanto, Lo probe sin CoolSoft y con MidiMapper de Microsoft anda bien 
+       no se tara y mas rápido, al final a la larga CoolSoft complica la performance de RollMusic, 
+       desinstalar CollSoft puede  dar dolor de cabeza..MidiMapper.dll despues de la desinstalacion suele 
+       quedar en System32 y   SysWow64, hay que borrarlas y reiniciar 1 o 2 veces y windows, Window reconfigura 
+      a MidiMapper de Microsoft.   Hay que probar RollMusic con otros  syntetizadores. A RollMusic se le quito todas 
+      las prioridades en  todas sus partes corre con prioridad normal y con midi mapper de windows anda bien,
+
              Obervacion: si se graba a disco un archivo roll, rtk o mid con un mapeador Midi y si luego durante
        la reproduccion se usa otro mapeador midi de window puede que no se escuche nada. 
-       Esta Ayuda sale F1 en Grafico y sin grafico. Teclas Rapidas Sin grafico INFO->5.0 en menu Control, con
-       Grafico Ctrl+F1.
 
-    I) INTRODUCCION  COMO ROLLMUSIC REPRESENTA LAS NOTAS
+       Esta Ayuda sale con F1 en Grafico y sin grafico. 
+       Teclas Rapidas Sin grafico INFO->5.0 en menu Control, con
+       Grafico Ctrl+F1.     
+       I) INTRODUCCION  COMO ROLLMUSIC REPRESENTA LAS NOTAS
        ==================================================
         FIGURAS USADAS EN ROLLMUSIC O P I L F E X H W : (para entrada manual paso a paso)
        ==================================================
@@ -95,7 +102,25 @@
        Version anterior de RollMusic =>[ El program ejecuta por columna manda toda una columna entera de todos los tracks
        a ejecutar y luego se construyen los retardos de cada uno segun la ligadura
        y los silencios que hubiera. Tambien vemos que un tresillo de corcheas es una negra
-       3L+3L+3L= I
+       3L+3L+3L= I (En esctitura de pentapraga es una negra con puntillo que  serian 3 corcheas)
+       O sea cuando aparece en un pentagrama I* eso es I solamente para Rollmusic.
+       Lo importante es que 3 corcheas de un tresillo son dos corcheas. o sea una negra.
+       Pero el lenguaje musical a 3 corcheas de tresillo las suma y dice dos corcheas de tresillo es una negra de tresilo
+      y 3 corcheas es una negra con puntillo de tresillo ...Por lo tanto I*  de tresillo es distinto a I* sin tresillo.
+      Y eso es una confusion barbara para el que no sabe esa convencion. Para Rollmusic lo que importa sol los ticks
+      un 3L son 32 ticks y por 3 da 96 el 1er tiempo que en ticks es una negra pelagato nada de puntillo para Rollmusic.
+     o sea 3L + 3L + 3L = 96 = I  la negra habitual nada de puntillo.
+     Dos negras dan 192 ticks o sea la cantidad de ticks de un compas 2/4 para Rollmusic donde la unidad es la negra
+    de 96 ticks. En partirutras son dos negras con puntillo porque suman 6 corcheas pero esas corcheas no son las corcheas
+     normales son mas chicas. Las corcheas del tresillo como se menciono en un pentagrama, al juntar 3 de ellas equivales 
+     a dos negras comunes. Podriamos decir que entresillos ->  I*+I*  = I I comunes y tanto I* como  I son 96 ticks.
+    Luego cuando aparescan en una partitura un compas asi-> | I*  I* | para rollmusic se escribe asi |I I |
+    y una blanca con puntillo | P* |abarcaria todo un compas en lenguaje musical de pentagrana, pero para Rollmusic
+   es simplemente una blanca | P |    = 192 ticks nuevamente todo el compas.
+   Si tengo | L I | en un 2/4 subdivision ternaria eso seia en Rollmusic | 3L 3L+·3L | = | 3L 3I|  porque 3I es el doble de 3L
+   en Rollmusic. En lenguaje musical usan una negra como union de 2 corcheas de tresillo. O sea cuando quiero una 
+   negra de tresillo eso equivale a dos coreches de tresillo y eso es un tresillo de negra en Rollmusic = 3I
+     
        Es como buscar el valor mas chico comun a ambos tracks. En este caso el 3L 
        Cada vez que agreguemos un track con figuras mas chicas habra que hacer ese 
        proceso.] (RollMusic Anterior)
@@ -147,7 +172,8 @@
       sO:+ sP:+ sI:+ sL:+ sF:+ sE:+ sX:+ sH:+ sW:+ => s May Der +
       s3O+ s3P+ s3I+ s3L+ s3F+ s3E+ s3X+ s3H+ s3W+ => s T +
                                            ||   => final con  
-
+    Cuando entramos notas en Edicion manual ( lineas verdes), si nos equivocamos en la ultima podemos borrarla con
+   un pulso de BackSpace o Retroceso. Solo una por ahora.
     II) Opciones Configuracion EN EL MENU GRAFICO DE  ROLLMUSIC:
         [ LA CONFIGURACION DE PUERTOS SE GUARDA EN EL ARCHIVO AL CARGARLO SE LEVANTA ESTA INFO Y SE
           ABREN LOS PUERTOS AUTOMATICAMENTE AL DAR PLAY, EN EL PRIMER PLAY SE CARGA EL DRIVER AL SO
@@ -161,6 +187,13 @@
           EN SUS CANALES CORRESPONDIENTES. POR AHORA NO SE MANEJA BANKOS..SOLO PATCH ESTANDARD, PERO
           PODEMOS ENVIAR MIDI A CUALQUIER PUERTO O DRIVER O INSTRUMENTO Y LOS AJUSTES NECESARIOS CORRERAN
           POR CUENTA DE LA CONFIGURACION DEL INSTRUMENTO EXTERNO. HSTA QUE SE EMPIECE A USAR SYSEX]
+          
+         Observacion desde la version 0.444: Las Notas Guia al costado de la pantalla  C, C#,D, D#, E, F, G ,G#, 
+        Podria confundir  al editar . Por este motico las alteraciones no se muestran por omision. eliminando los nombre 
+        C#, D# etc      En el Menu Opciones, por omision esta la Guia mostrada sin alteraciones, como si fuera la escala de Do o C.
+        Otras 2 opciones ahí mismo en menu OPciones muestran las notas Guia completas con sostenidos o bemoles. Se supone
+        que el usuario conoce donde estan los # y los bemoles que son enharmonicos.
+        
 
         a) PUERTOS MIDI A USAR. en el menu de Roll Music Grafico
         Desde el Menu Principal -> click en ->Opciones-> CTRL-CLICK SOBRE ->Configuracion->click->MIDI->
@@ -264,11 +297,11 @@
        doble puntillo 1 + 3/4 (May Der, RShift) y las ligaduras que permite unir dos duraciones cualesquiera (+)
        Se sulele usar hasta Semifusa...
        Redonda  Blanca  Negra  Corchea  SemiCorchea  Fusa Semifusa  Garrapatea SemiGarrapatea
-       384,     192,    96 ,   48,      24,          12,  6,        3,         2  Nota Simple
-       480,     240,    120,   60,      30,          15,  7,        4,         2  Nota + 1/4 de nota
-       576,     288,    144,   72,      36,          18,  9,        4,         2  Nota + 1/2 de Nota (puntillo)
-       672,     336,    168,   84,      42,          21,  10,       5,         3  Nota + 3/4 ed Nota (doble puntillo)
-       256,     128,    64 ,   32,      16,          8 ,  4 ,       2 ,        1  Nota que pertenece a un tresillo
+       384,         192,       96 ,     48,           24,                 12,     6,              3,               2  Nota Simple
+       480,         240,     120,      60,           30,                 15,     7,              4,               2  Nota + 1/4 de nota
+       576,         288,     144,      72,           36,                 18,     9,              4,               2  Nota + 1/2 de Nota (puntillo)
+       672,         336,     168,      84,           42,                 21,   10,              5,               3  Nota + 3/4 ed Nota (doble puntillo)
+       256,         128,       64 ,     32,           16,                   8 ,    4 ,              2 ,              1  Nota que pertenece a un tresillo
 
        Asi vemos por ejemplo La negra son 96 ticks, la negra con puntillo 144 ticks, el tresillo de negra 64
        La redonda son 4 negras 384, etc
@@ -279,6 +312,10 @@
            onoff=2 en los parametros de arriba.
          - Mayuscula Izquierda mas flecha izquierda, va saltando hacia izquierda por los  comienzos  de las notas
            onoff=2 en los parametros de arriba.
+
+       NOTA: Los parametros de arriba se ven al pulsar [EDIT] solo una vez (debe permanecer en color blanco)
+       Pulsando N varias veces va mostrando distintos  parametros (3 vistas). Durante el play pulsar antes 
+       LSHIT o May IZq + V y se veran los parametros, luego con N veo mas parametros.
 
        Hay 5 formas de abrir un Roll Grafico, 
        en Menu "CREAR PISTAS MANUALES" hay dos opciones fuera  de una canción:
@@ -487,7 +524,8 @@
        y si no existe aparecera un dialogo pequeño para crearlo , aceptar.
     6) Cargar Archivo. click en [Archivo]-> luego en  [*.ROLL] o [+.RTK]. 
        Archivo NUEVO borra el Roll de memoria y comienza de cero. En el menu del grafico de Roll (no control)
-       click en [ARchivo] -> ALT+Click en [NUEVO]
+       click en [ARchivo] -> ALT+Click en [NUEVO] (al grabar a disco un archivo NUEVO no pedia entrar un nombre
+        a partir de esta edicion pide un nombre nuevo)
         
     7) ACHICAR/EXPANDIR EL GRAFICO DE LA  SECUENCIA CON F2/F3 SIN CAMBIAR EL FONT.
        ACHICAR /EXPANDIR EL TAMAÑO DEL FONT CON F9/F10 SIN CAMBIAR TAMAÑO HORIZONTAL.
@@ -614,6 +652,14 @@
          NOTA: ANTES DE GRABAR O SI NO SE QUIERE GRABAR SOLO TOCAR EL TECLADO MIDI-IN Y ESCUCHAR
                UN PIANO PULSAR EL ITEM 3.0 DEL MENU REPRODUCIR Y LISTO , SIN SELECCIONAR NINGUNA 
                PISTA PAR GRABAR O ESCUCHAR(HABILIOTA LA PISTA 1, CANAL 1 ,PIANO Y PORT DE SALIDA 1)
+           En esta version funciona cerrar el puerto MIDI-IN en el mismo menu 4.0.
+           En esta version se incluye una manera de tocar Pitchbend desde un teclado externo midi el cual no tenga
+           la ruedita de pitch bend que imita al deslizamiento en guitarra de un dedo desde un traste a otro haciendo 
+           un glisando continuo entre notas. Para ello pulsar F12 y soltar. Luego pulsar un tecla de inicio de pitchbend
+           mientras esta tecla sigue pulsada, no levantar el dedo, pulsar la segunda tecla o nota en el teclado midi.
+           El programa hara un glisando o pitchbend que dependera su velocidad con la velocidad que se pulso la 1er Nota.
+           F11 no se usa para apagar el efecto F12, La anulacion de Pitchbend se hace automatico al finalizar el 
+          efecto. Para uno nuevo se debe pulsar F12 de nuevo.
          ---------------------------------------------------------------------------------------------
     1 ) MIDI-IN GRABACION: (GRABA UNA PISTA MAS DE UNA VEZ ENCIMA SIN BORRAR LO ANTERIOR)
          YA SE PUEDE GRABAR LAS PISTAS DE MIDI-IN grabadas mediante la ejecucion EN UN O CONTROLADOR 
@@ -812,9 +858,12 @@
            EFECTOS EN ARCHIVOS EJEC: YA FUNCIONAN AJUSTAR, GRABAR A DISCO LEER DE DISCO,
            ( FALTA EXPORTAR Y REVISAR QUE ESTOS EFECTOS SE PUEDAN LLEVAR A UN ROLL Y A UN RTK 0.349
       5)  En el menu de Control Reproducir item 5.0 se agrego un reproductor de media con el fin de escuchar
-          una cancion un instrumento grabado en wav  mp3 O *.MID , tambien reproduciria video, pero no es el
-          objetivo por ahora. en el futuro tratremos de sincronizar el comienzo de esta reproduccion
-          con la de una ejecucion y/o una cancion. El boton @ es para hacer Ciclos Loop o repeticion infinita.
+          una cancion un instrumento grabado en wav  mp3 o *.MID , Los archivos *.mid se reproducen con si esta presente
+          CoolSoft, o supongo otro sintetizador virtual que lo haga y este operativo. Con microsoft como midimapper no
+          funciona supongo porque no recibe archivos y le extrae los eventos midi..
+        ( tambien reproduciria video, pero no es elobjetivo por ahora. en el futuro tratremos de sincronizar el comienzo 
+          de esta reproduccion   con la de una ejecucion y/o una cancion.)
+          El boton @ es para hacer Ciclos Loop o repeticion infinita.
           cuando esta en CICLO muestra <->. Hay mas controles Velocidad de metronomo (No sepeude controlar desde
           la ventana de control con elReproductor levantado), volumen der izq del metronomo, Volumen audio, Retraso
           o adelanto del metronomo respecto de la pista en ejccucion.  El metronmo se dispara con el boton
@@ -1305,10 +1354,8 @@
 
      1.04)  En el mismo menu de 1.11 se puede actualizar una pista con "Grabar una pista de la cancion
           con midificaciones, igual que se puede hacer en Roll.
-         - NOTA: SI SE EDITA UNA PISTA DE UNA CANCION, SIN CARGAR LA CANCION, SE DEBE ELIMINAR AL PRINCIPIO
-           DEL NOMBRE DEL ARCHIVO LOS CORCHETES Y EL NUMERO POR EJ: [4]NNNNNN.TRK -> NNNNNN.TRK 
-           SINO EL PROGRAMA LO TRATA COMO PARTE DE UNA CANCION Y EL TRATAMIENTO ES DIFERENTE, NO SE
-           LE AGREGO INTELIGENCIA PARA ESE CASO,,,RENOMBRAR MODIFICAR Y LUEGO OLVER AL NOMBRE ORGIGINAL-
+         ESTO QUEDO OBSOLETO AHORA LOS ARCHIVOS DE UNA CANCION NO ESTAN NUMERADOS en los
+         nombres de archivos, se los numera al mostrarlos como numero de pista.
     
     --------------------------------------------------------------------------------------------
 
@@ -1351,10 +1398,10 @@
            se puede combinar luego de una entrada con contextual seguir dando click izquiedo de mouse solamente y la misma
            duracion se seguira usando. las 3 formas puede ncombinarse segun el gusto. Si no responde en algun click volver a 
            entrar una duracion de 1 a 8 o con el menu contextual.La nota se entrada en todos los casos se escuchara.
-    2.1.3) Agregar Nota antes del final de la secuencia estando en Edicion sin ir a Ctrl-M o Ctrl-N
-           Para ello dar Ctrl-Click en la posiiocn donde se va agragar la nota,
+    2.1.3) Agregar Nota antes del final de la secuencia estando en Edicion Manual, sin ir a Ctrl-M o Ctrl-N
+           Para ello dar Ctrl-Click en la posicion donde se va agregar la nota,
            Se marcara una linea vertical pasoZona1 (una sola marca de zona)
-           Proceder como siemrpe para entrar nota, al entrarla la marca pasoZona1 se movera al
+           Proceder como siempre para entrar nota, al entrarla la marca pasoZona1 se movera al
            final de la nota nueva ingresada, para agregar alguna otra nota secuencial. Si se
            quiere volver pulsar BackSpace o Retroceso y estaremos en la posicion inicial
            de pasoZona1 para sobreescribir o entrar otra nota tipo acorde.
@@ -1650,7 +1697,8 @@
 
          1) Play o Ejecutar: Ultima versión en un acorde cada nota se ejecuta con su correspondiente 
             duracion si hay diferentes duraciones en un mismo acorde. PARA Roll con Ticks.
-            PLAY EN EL EDITOR LECTURA
+            PLAY EN EL EDITOR LECTURA. (PLAY FUNCIONA EN MODIFICACION TAMBIEN PERO SOLO DE LA ZONA
+            EN EDICION, SE DETIENE TAMBIEN CON TECLA P)
             Para dar play se puede usar la barra espaciadora o Ctrl click en [Reproducir], 
          para detener el play pulsar P.  En el 1er caso la barra espaciadora ejecuta la 
          cancion que este cargada o sea toca todos los tracks cargados sino hay cancion cargada

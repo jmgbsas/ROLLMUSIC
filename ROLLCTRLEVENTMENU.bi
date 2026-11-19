@@ -1071,7 +1071,7 @@ Case 1091 ' <=========== Repeticiones de un nro de compases
      If abrirRollCargaMidi=2 Then
           SetForegroundWindow(hwnd)
      End If
-Case 1092 ' abrir un midi-in ...con callback
+Case 1092 ' abrir un midi-in ...con callback y un portout por omision
      'Reproducir MIDI-IN (teclado) por  MIDI-OUT. Abre Puerto MIDI-IN
      ' no depende del numero de pista de ejecucion,sino del portin solamente,,,
      ' es para tocar en un teclado midi y poder escuchar o grabar
@@ -1093,6 +1093,15 @@ Case 1093
                
           End If
      Next i
+''cerramos el 1 del usuario sino se cerro
+If listinAbierto( tocaparam(1).portin) > 0 Then
+     cancel_callback(midiin(tocaparam(1).portin )) ' porque lso port fisicos empiezan desde cero
+     listinAbierto( tocaparam(1).portin) = 0
+     close_port (midiin(tocaparam(1).portin))
+     teclado=0
+EndIf
+
+
      '-----------------REPRODUTOR DE MEDIOS LO SINCRONIZAREMOS CON EL PLAY DE ROLL O CANCION O EJECUCION--
 Case 1094
      ''agregar una funcion en rollutil.bas ? para llamar a rollmedia.exe?
@@ -1102,7 +1111,7 @@ Case 1094
      '   Dim As String ENTRADA="C:\mios\amrm.mp3"
      ''ppp=StrPtr(TitulosEj(1))
      threadmedia = threadCall  CTRL1094(TitulosEj(1))
-     SetThreadPriority(threadmedia , 10 ) 'VV
+     ''SetThreadPriority(threadmedia , 10 ) 'VV
      'SetFocus (hwndMEDIA)
      SetForegroundWindow(hwndMEDIA)
      '-----------------------------------------------------------------------
@@ -1229,11 +1238,19 @@ Case 1107 ' <======== usamos sostenidos o bemoles ???
           SetForegroundWindow(hwnd)
      End If
      '-----------------------------------------------------------------------
-Case 1108 '<======= alteraciones sotenidos o bemoles
+Case 11088 ' SIN ALTERACIONES
+     alteracion=""  
+     SetStateMenu(hmessages,1108,0)
+     SetStateMenu(hmessages,1109,0)
+     SetStateMenu(hmessages,11088,3)
+
+Case 1108 '<======= alteraciones sotenidos 
      pasozona1=0
      alteracion="sos" ' grabado en grabaLim(1,1).pan  = CUByte(3)
      SetStateMenu(hmessages,1108,3)
      SetStateMenu(hmessages,1109,0)
+     SetStateMenu(hmessages,11088,0)
+
      ' si hay nombre de archivo grabar sino no, HACE RESPALDO
      
      '''GrabarRoll()
@@ -1249,11 +1266,12 @@ Case 1108 '<======= alteraciones sotenidos o bemoles
           SetForegroundWindow(hwnd)
      End If
      ' --------------------------
-Case 1109 ' <======== alteraciones sotenidos o bemoles
+Case 1109 ' <======== alteraciones  bemoles
      pasozona1=0
      alteracion="bem" ' grabado en grabaLim(1,1).pan  = CUByte(2)
      SetStateMenu(hmessages,1108,0)
      SetStateMenu(hmessages,1109,3)
+     SetStateMenu(hmessages,11088,0)
      '       Print #1,"armarescla desde 1109"
      cadenaes_inicial=""
      armarescala(cadenaes_inicial,tipoescala_num_ini, notaescala_num_ini,alteracion,1)
@@ -1481,6 +1499,11 @@ Case 1231 '' intervalos
      threadIntervalo=ThreadCall CTRL1231 ()
 
      '-------------------------------------------------------------------
+Case 1240 '' RITMOS CON FIGURAS
+     threadIntervalo=ThreadCall CTRL1240 ()
+
+     '-------------------------------------------------------------------
+
 Case 2000
      
      MessBox ("", acercade)

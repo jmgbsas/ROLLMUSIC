@@ -561,6 +561,27 @@ Sub Chorus (Coro As UByte,  canal As UByte,portsal As UByte)
      
 End Sub
 
+Sub pitchbend (bend As UShort, canal As UByte,portsal As UByte)
+    Dim lsb As UByte = bend Mod 128
+    Dim msb As UByte = bend \ 128 ' División entera
+
+     Dim modo As UByte
+     Dim leng As UInteger <8>
+     Dim result As Integer ' canal 0 to 15 canal 0 es el 1
+     If canal = 0 Then  '
+          modo = 224   ' E0 ,,,14 
+     Else
+          modo = 224 + canal
+     End If
+     
+     message(1) = modo  
+     message(2) = lsb  
+     message(3) = msb  
+     leng=3
+     result = send_message (midiout(portsal) , pmsg, leng)
+     
+End Sub
+
 '-------------------------------------------
 Sub limpiarLigaduras(cnt As UByte,pasoCol() As vec)
      Dim i1 As UByte
@@ -746,6 +767,18 @@ End Sub
 Sub playAll(Roll As inst) ' play version 3 CON TICKS
      '<<< 30-03-2025 anda ok para roll desde ejec o Roll desde entrada manual >>>>
      ' en manual las velocidades son una sola semi fuerte, hasta que compas pueda
+valorpan=64
+For ntk=0 To 32
+      pmTk(ntk).pan=CUByte(valorpan)
+Next ntk
+      pmTk(0).pan=CUByte(valorpan)
+For ntkp=1 To 32
+      pmEj(ntkp).pan=CUByte(valorpan) 
+      tocaparam2(ntkp).pan=CUByte(valorpan)
+Next ntkp
+ntk=0
+ntkp=1
+
      Print #1,"' ----------------------------------------"
      Print #1,"'               P L A Y  A L L"
      Print #1,"'------------------------------------------"
@@ -917,7 +950,9 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
      STARTMIDI=Timer
      old_time_on=STARTMIDI
      ''Print #1,"old_time_on "; old_time_on
-     Dim As Double  tickUsuario=60/(tiempoPatron*PPQN*FactortiempoPatron)   '''tickUsuario=0.01041666 * 240/tiempoPatron *2
+
+     tickUsuario=60/(tiempoPatron*PPQN*FactortiempoPatron) 
+  '''tickUsuario=0.01041666 * 240/tiempoPatron *2
 ''*2 para usar hasta el tresillo de fusa
      ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
      ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
@@ -986,18 +1021,19 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
           Else
                ''Print #1,"ARCHIVO DATOS EDICION MANUAL "
               
-               If Compas(jply).nro = -1 Then
+               If Compas(jply).vel = -1 Then
                     velpos=Vfuerte * ajuste  '120
                End If
-               If Compas(jply).nro = -2 Then
+               If Compas(jply).vel = -2 Then
                     velpos=Vdebil  * ajuste   '60
                End If
-               If Compas(jply).nro = -3 Then
+               If Compas(jply).vel = -3 Then
                     velpos=Vsemifuerte * ajuste ' 96
                End If
-               If Compas(jply).nro = -4 Then
+               If Compas(jply).vel = -4 Then
                     velpos=vdebil * ajuste
                End If
+              '' Print #1,"velpos ";velpos
               ' If Compas(jply).nro > 0 Then ' marca del numero de compas 1 2 3 4 es el ultimo tiempo del compas
                 '''    velpos=vdebil * ajuste
               ' End If
@@ -1068,11 +1104,11 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
                             If Roll.trk(jply, i1).dur <> 185   Then 
                               If Roll.trk(jply, i1).onoff =2  Or Roll.trk(jply, i1).onoff =1 Then 
 	                             vel=Roll.trk(jply, i1).vol
-                                   If vel=0 Then 'fix reposicion 12-09-2026
+                                   If vel=0 Or vel=80 And velpos > 0 Then 'fix reposicion 12-09-2026
 							                 vel=velpos
-                                   ''  Print #1,"VELOCIDAD POR LOGICA ";VEL
-                                  ' Else                                 
-                                  '   Print #1,"VELOCIDAD ROLL ";VEL
+                                     ''Print #1,"VELOCIDAD POR LOGICA ";VEL
+                                   ''Else                                 
+                                    '' Print #1,"VELOCIDAD ROLL ";VEL
                                    End If
                               EndIf
                            EndIf
@@ -1181,7 +1217,7 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 	'-> LA ULTIMA NOTA SERA APAGADA CASI DE INMEDIATO POR EL alloff Y SOUNDOFF QUE SIGUEN
 	' POR ESO DEJAMOS SONAR LA NOTA LA 2*DURACION QUE TIENE dura
 	'' reldur(dura) 'la dduracion  a t=60 usamos eso a t=60
-	duracion (Timer , 2 ) ''* relDur(dura))
+	duracion (Timer , 1 ) ''* relDur(dura))
 	posicion=comienzo
 	'======================
 	' IF hay loop de repeticion se detecta en la posicion final Then
@@ -1259,7 +1295,7 @@ Sub playAll(Roll As inst) ' play version 3 CON TICKS
 		" on line " & Erl & " " & ProgError(Err)
 		Print #1, errmsg ,"jply ", jply, "i1 ";i1
 	End If
-	FileFlush (-1)
+	'FileFlush (-1)
 	
 	' ================================FIN PLAYALL <<=================
 End Sub
@@ -2633,14 +2669,20 @@ Sub moverBuscoFinalNota   (Roll As inst, hastat As Integer, UBION As Integer, i1
      
      
 End Sub
-Sub  MoverSecUnaDur(direccion As Integer)
+Sub  MoverSecUnaDur(direccion As Integer )
+'09-11-2026 AGREGAMOS QUE EL MOVIMIENTO SEA SOLO DENTRO DE UNA ZONA DADA
+' POR EJEMPLO TENEMOS UN VACIO EN LA SECUENCIA Y QUEREMOS LLENAR ESE VACIO MOVIENDO
+' LA 2DA PARTE DE LA SECUENCIA HACIA IZQUIERDA ..
 Print #1,"MoverSecUnaDur dureccion "; direccion
-Dim As Integer y1,x1,ticks 
+Dim As Integer y1,x1,ticks ,y2, hayfin
 ticks=DurXTick(DUR)
+Print #1,"MOVIVENDO TICKS ";ticks
 If ticks=0 Then ticks=12
-
+''a ticks le resto algo para que tome desde la ziaquierda del comienzo de los datos a mover
+''ticks=ticks 
+Print #1,"MOIVENDO TICKS ajustado ";ticks
 If direccion= 1 Then  ''derecha
-  For x1 = PmTk(ntk).MaxPos+6 To 1 Step -1
+  For x1 = PmTk(ntk).MaxPos+6 To posicion Step -1
      For y1=NB To NA
        Roll.Trk(x1+ticks,y1).nota  =Roll.Trk(x1,y1).nota
        Roll.Trk(x1+ticks,y1).dur   =Roll.Trk(x1,y1).dur
@@ -2663,17 +2705,28 @@ pmTk(ntk).MaxPos=pmTk(ntk).MaxPos + ticks
 MaxPos=pmTk(ntk).MaxPos
 
 EndIf
-  
-If direccion= 0 Then  ' izquierda
-  For x1 = 1 To PmTk(ntk).MaxPos+6
-    For y1=NB To NA 
-       Roll.Trk(x1,y1).nota=Roll.Trk(x1+ticks,y1).nota
-       Roll.Trk(x1,y1).dur =Roll.Trk(x1+ticks,y1).dur
-       Roll.Trk(x1,y1).vol =Roll.Trk(x1+ticks,y1).vol
-       Roll.Trk(x1,y1).pan =Roll.Trk(x1+ticks,y1).pan
-       Roll.Trk(x1,y1).pb  =Roll.Trk(x1+ticks,y1).pb
-       Roll.Trk(x1,y1).inst=Roll.Trk(x1+ticks,y1).inst
-       Roll.Trk(x1,y1).onoff=Roll.Trk(x1+ticks,y1).onoff
+''///////////// TAMBIEN SACA UN VACIO EN MEDIO DE UNA SECUENCIA EN FORMA EXACTA   
+If direccion= 0 Then  ' izquierda EXACTITUD AUTOMATIZADA PARA QUE NO PISE EL > DE LO QUE HAY
+ Do ''par ano pisarel ultimo off=1 del pedazo de sec anterior
+   For y2=NB To NA
+     If Roll.Trk(posicion,y2).onoff =1 Then
+        hayfin=1 
+        Exit For
+     EndIf    
+   Next y2  
+     
+''entonces mientras este en medio de una nota sigue el loop
+   If hayfin=1 Then 
+     posicion=posicion+1
+     For x1 = 	posicion To PmTk(ntk).MaxPos+6
+       For y1=NB To NA 
+        Roll.Trk(x1,y1).nota=Roll.Trk(x1+ticks,y1).nota
+        Roll.Trk(x1,y1).dur =Roll.Trk(x1+ticks,y1).dur
+        Roll.Trk(x1,y1).vol =Roll.Trk(x1+ticks,y1).vol
+        Roll.Trk(x1,y1).pan =Roll.Trk(x1+ticks,y1).pan
+        Roll.Trk(x1,y1).pb  =Roll.Trk(x1+ticks,y1).pb
+        Roll.Trk(x1,y1).inst=Roll.Trk(x1+ticks,y1).inst
+        Roll.Trk(x1,y1).onoff=Roll.Trk(x1+ticks,y1).onoff
 
             Roll.trk(X1+ticks,y1).nota = 181
             Roll.trk(X1+ticks,y1).dur  = 0
@@ -2682,16 +2735,23 @@ If direccion= 0 Then  ' izquierda
             Roll.trk(X1+ticks,y1).pb   = 0
             Roll.trk(X1+ticks,y1).inst = 0
             Roll.trk(X1+ticks,y1).onoff = 0
-    Next y1 
-  Next x1
-
+       Next y1 
+     Next x1
+     Exit  Do
+   End if
+   If hayfin=0 Then
+     posicion=posicion+1
+   EndIf  
+ Loop  
 EndIf
 
 End Sub
 Sub moverSecuenciaUnaDuracionPulsada (ByRef smov As integer)
 'desplazr toda la secuencia hacia la derecha o izquierda
 Dim  As Boolean teclaAhoraDer, teclaAntesDer,teclaAhoraIzq, teclaAntesIzq,teclaAhoraEsc, teclaAntesEsc 
-
+'' esta forma de capturar las teclas la usareos en todo el programa en otra version, as iejecutamos
+''una sola vez cada comando ell RollLoop , el asunto sera separar o no los pulsos hacia las teclas
+'' de RollLoop y de la ventana de Control....
  Do 
   teclaAhoraDer=MultiKey (SC_RIGHT)
   If teclaAhoraDer = True And teclaAntesDer = False Then
@@ -3370,23 +3430,41 @@ Function RollCallback ( ByVal delta As Double, ByVal vec1 As UByte Ptr, ByVal le
      
 End Function
 '-------------
+Sub configurar_rango_pitchbend (semitonos As UByte, canal As UByte, portsal As UByte)
+    Dim modo As UByte = 176 + canal ' 176 es el comando CC para canal 1
+    Dim result As Integer
+    Dim leng As UInteger = 3
+    
+    ' 1. Seleccionar RPN MSB (CC 101, Valor 0)
+    message(1) = modo : message(2) = 101 : message(3) = 0
+    result = send_message(midiout(portsal), pmsg, leng)
+    
+    ' 2. Seleccionar RPN LSB (CC 100, Valor 0)
+    message(1) = modo : message(2) = 100 : message(3) = 0
+    result = send_message(midiout(portsal), pmsg, leng)
+    
+    ' 3. Data Entry MSB -> Aquí fijamos los semitonos (CC 6, Valor 'semitonos')
+    message(1) = modo : message(2) = 6 : message(3) = semitonos
+    result = send_message(midiout(portsal), pmsg, leng)
+    
+    ' 4. Data Entry LSB -> Ajuste fino en 0 (CC 38, Valor 0)
+    message(1) = modo : message(2) = 38 : message(3) = 0
+    result = send_message(midiout(portsal), pmsg, leng)
+End Sub
 
+'---------------
 Function mycallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, ByVal leng As UInteger<64>, ByVal otro As Any Ptr ) As RtMidiCCallback
      ' en otro podre poner un ptr a Toca...
      ''Print #1,"entra a mycallback "
  ''' Dim As UByte canalext  
 '' canalext=dato1 - 144   
 '' canalext=dato1-128  
+
      Dim As UByte Ptr memoria = vec
      dato1=*memoria: memoria += 1
      dato2=*memoria: memoria += 1
-     dato3=*memoria  ''VELOCIDAD
-     If GrabarEjec=0 Then ' para tocar a volumen deseado VolEjec sin grabar
-          dato3=CUByte(datoEjec)
-          ''Print #1,"velocidad fija para tocar y oirse en este maldito teclado ",dato3
-          ''Else
-          ''  Print #1,"velocidad que llega dato3 ",dato3
-     End If
+     dato3=*memoria  ''VELOCIDAD o bend ?
+     dato1old=dato1
      If deltatime=0 Then 
         deltatimeBACK=0
         deltatime=99
@@ -3404,11 +3482,6 @@ Function mycallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, ByV
      Dim i As Integer
      Dim As Integer partes , traba=0
      
-     'If nroTicksOld > 0 Then
-     '   pmEj(ntoca).MaxPos=nroTicksOld
-     '   tocaparam(ntoca).maxpos=nroTicksOld
-     'EndIf
-     ' jgrb global por ahora
      
      /'
      For i =1 To leng
@@ -3419,33 +3492,126 @@ Function mycallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, ByV
      Print deltatime
      End If
      '/
-     '--------------play de lo que entre
-     
-     ' velocidad I=240 -> t=60/240=1/4=0,25 la negra, para llegar a W / por 2 6 veces= 0,00390625
-     ' cuantos ticks en tiempoPatron=60?
-     't de negra= 60/velocidad
-     ' cant  ticks= t negra/ t ticks= (60/velocidad)/0.005
-     ' para v=60 = 1/0.005=200 ticks para una negra -> un compas tendra 400 ticks
-     ' para v=240= (60/240) /0.005= 50 ticks para una negra -> un compas 200 ticks
-     'para v=240. ->I=50ticks, L=25,F=12.5, E=6.25, X=3.125
-     ' sino puedo decir que grabo siempre a la misma velocidad y cambio en la reproduccion..
-     
-     '    If GrabarEjec=GrabarPistaEjecucion Then
-     ' ChangeProgram ( tocaparam(canalDeGrabacion).patch, tocaparam(canalDeGrabacion).canal,tocaparam(canalDeGrabacion).portout )
-     '    EndIf
-     ' podemos agregar mas codigos como pitchbend Ennn o 14nnn
+
+
+
      Select Case  dato1
      Case 144 To 159 ' on
           ' DIFERENCIA HABIA UN CHANGGEPROGRAM EN 148
+     If HABILITAR_PITCHBEND=SI Then
+        tbend1=Timer
+        Print #1," haybend nota A, velocidad ";dato2,dato3 
+        dato2old = dato2 ''nota1 A 
+        dato3old = dato3 
+     EndIf     
+     canalext = IIf(dato1 > 144, dato1 - 144, tocaparam(ntoca).canal)
+     Print #1," canalext "; canalext    
+     If GrabarEjec=0  And HABILITAR_PITCHBEND=NO Then ' para tocar a volumen deseado VolEjec sin grabar
+          dato3=CUByte(datoEjec)
+          ''Print #1,"velocidad fija para tocar y oirse en este maldito teclado ",dato3
+          ''Else
+          ''  Print #1,"velocidad que llega dato3 ",dato3
+     End If
          
-           If startcall =0 Then startcall=1 EndIf
-         If dato1 >144 Then
-            canalext = dato1-144
-          noteon dato2,dato3,canalext, tocaparam(ntoca).portout, 1,1
+     If startcall =0 Then startcall=1 EndIf
+     If dato3=0 Then ' hay teclados que el off lo hacen con noteon  con VELOCIDAD O volumen=0 
+        noteoff dato2,dato3,canalext,tocaparam(ntoca).portout,1,1 'message(2)'
+        If dato1old = dato1 Then dato1old = 0 EndIf
+     Else 
+        ''DATOS PARA PITCHBEND ''dato2 ahora seria la segunda nota despues de en_curso es la nota 
+         If dato2old <> 0 And dato2old <> dato2 And HABILITAR_PITCHBEND=EN_CURSO Then
+            Print #1,"bend en curso dato2old A <> dato2 B ....";dato2old, dato2
+            tbend2=Timer
+            Dim As Integer semitonos = dato2- dato2old
+            Print #1,"semitonos ";semitonos 
+''Programar el RANGO UNIVERSAL (RPN) vía mensajes CC (176 + canal)
+'' Enviamos CC 101=0, CC 100=0, CC 6=distancia absoluta
+            Dim As UByte cmd_cc = 176 + canalext
+            Dim As Double duracion_bend = tbend2 - tbend1 ''''0.05 + (127 - dato3) * 0.006
+            deltatimeBack = duracion_bend
+            configurar_rango_pitchbend (CUByte(Abs(semitonos)) ,canalext, tocaparam(ntoca).portout)
+           ''noteon dato2old,dato3old,canalext, tocaparam(ntoca).portout, 1,1
+' Evitamos que valores muy extremos arruinen la experiencia
+Dim As Double vel_filtrada = 127-dato3old 
+
+           Print #1,"vel_filtrada ";vel_filtrada
+           Dim As UShort bend_fisico = (CShort(vel_filtrada) * 128) ' 16383/128,, dato3 es velocidad
+           Dim As UShort sendbend
+           ''If semitonos > 0 Then 
+           ''   bend_fisico= bend_fisico +8192
+           ''EndIf
+           Print #1,"bend_fisico "; bend_fisico
+           Print #1,"duracion_bend ";duracion_bend             
+           Dim As Double t_inicio = Timer
+           Dim As Double t_transcurrido = 0
+           ''para grabarlo debo hallar una forma de grabar los parametros del bend
+           ' nota comienzo es la anterior y final la siguiente
+           ' los semitonos entre estas dos , el tiempo es la velocidad de la 1er nota
+           ' o sea toda esta logica debe estar en el playTocaAll para tocar el pitchbend
+           ' y tengo todos los datos nota A, B Velocidad de A ya grabados
+           'cuando viene un 224 disparo una copia de esta logica y ejecuto el pitchbend
+           If GrabarEjec =GrabarPistaEjecucion Then
+              jgrb=jgrb+1                             
+              CargaIn( jgrb).modo=224 '' notas de intervalo
+              CargaIn( jgrb).nota=dato2old ''nota A
+              CargaIn( jgrb).vel=dato2  '' Nota B
+           EndIf 
+           Do While t_transcurrido < duracion_bend ' solo para escuchar la ejecucion en vivo
+                    t_transcurrido = Timer - t_inicio
+                    ' Factor va de 0.0 a 1.0 a lo largo del tiempo definido
+                    Dim As Double factor = t_transcurrido / duracion_bend
+                                        
+                    ' Si la distancia es positiva subimos (de 8192 a 16383)
+                    ' Si es negativa bajamos (de 8192 a 0)
+                    If semitonos > 0 Then
+                        sendbend = 8192 + (bend_fisico * factor)
+                    Else
+                        sendbend = 8192 - (bend_fisico * factor)
+                    End If
+                    Print #1,"sendbend ";sendbend
+                    If sendbend > 16833  Or sendbend >  65000 Then
+                       Exit Do
+                    EndIf    
+                    ' Enviamos el bend usando la función de 14 bits corregida antes
+                   pitchbend(sendbend, canalext, tocaparam(ntoca).portout)
+'' aca grabamoca cada pitchbend en el archico otra forma economica seria solo grabar las notas que ya lo hice
+'' y el tiempo o duracion del bend,,,cual elijo? creo reconstruir s eria mas econmico         
+                   Sleep 5 ' Pequeña pausa para no saturar el procesador
+            Loop
+     '' noteon de la nota B segunda la dato2 actual la old era la nota A primera
+          ''  Print #1,"enviamos nota B ";dato2   
+            noteon dato2,dato3,canalext, tocaparam(ntoca).portout, 1,1
+'volvemos al valor sin bend de reposo 8192
+            pitchbend 8192, tocaparam(ntoca).canal, tocaparam(ntoca).portout
+'---------grabamos parametros para reconstruir en el playback o para  despues grabar a disco
+            If GrabarEjec =GrabarPistaEjecucion then   
+               Dim lsb As UByte = sendbend Mod 128
+               Dim msb As UByte = sendbend \ 128 ' División entera
+             jgrb=jgrb+1
+             CargaIn( jgrb).modo=224
+             CargaIn( jgrb).nota=lsb
+             CargaIn( jgrb).vel=msb
+             partes=(deltatimeBack/TickChico)
+             CargaIn( jgrb).partes=partes ' o nro Ticks ENTRE EVENTOS, convierto deltatime en tickschico
+             tocaparam(ntoca).maxpos=tocaparam(ntoca).maxpos + partes
+             pmEj(ntoca).MaxPos=tocaparam(ntoca).maxpos 
+
+             jgrb=jgrb+1 ' reseteo al medio de la  rueda 8192 o 64 de la velocidad de la  tecla                             
+             CargaIn( jgrb).modo=224
+             CargaIn( jgrb).nota=dato2 ' nota B
+             CargaIn( jgrb).vel=0 ' nota B indicara fin 224 dato
+           EndIf
+           HABILITAR_PITCHBEND=NO 
          Else
-          noteon dato2,dato3,tocaparam(ntoca).canal, tocaparam(ntoca).portout, 1,1
-         EndIf 
-               Print #1, "ON  "; dato1;" ";  dato2;" "; dato3
+          '' primer nota A del pitchbend o nota normal sin bend
+          '' Print #1,"enviamos nota A ";dato2	
+           noteon dato2,dato3,canalext, tocaparam(ntoca).portout, 1,1
+           If HABILITAR_PITCHBEND=SI Then
+              HABILITAR_PITCHBEND=EN_CURSO
+           EndIf
+         EndIf
+     EndIf  
+'''    Print #1, "ON  "; dato1;" ";  dato2;" "; dato3
       ''         Print #1, "tocaparam(ntoca).canal ";tocaparam(ntoca).canal 
      Case 128 To 143 'off
           If dato1 > 128 Then
@@ -3455,11 +3621,18 @@ Function mycallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, ByV
             noteoff dato2,dato3,tocaparam(ntoca).canal,tocaparam(ntoca).portout,1,1 'message(2)'
           EndIf
           ' DIFERENCIA
-          Print #1,  "OFF  ";dato1;" ";  dato2;" "; dato3
+   ''       Print #1,  "OFF  ";dato1;" ";  dato2;" "; dato3
        ' Print #1, "tocaparam(ntoca).canal ";tocaparam(ntoca).canal
-     Case 224 To 231 ' pitch bend Pitch Wheel Change
-         Print #1,"224 a 231 whell "; dato1
-     
+     Case 224 To 239 ' pitchbend Pitch Wheel Change ejecucion con rueda real completar
+         Print #1,"224 a 239 whell "; dato1
+'' viene un pitchbend del teclado 
+         Dim bendx As UShort=dato3*128+dato2 ' en este caso si viene de un teclado dato2 y dato3 arman el numero de 14 bits 
+         If dato1 >224 Then
+            canalext = dato1-224
+           pitchbend bendx,canalext, tocaparam(ntoca).portout
+         Else
+          pitchbend bendx,tocaparam(ntoca).canal, tocaparam(ntoca).portout
+         EndIf 
      End Select
      
      
@@ -3467,7 +3640,7 @@ Function mycallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, ByV
      ' ergo divido deltatime por ese valor y obtengo la cantiad de divisiones
      ' que ocupara ese retardo deltatime/TickChico
      '''Print #1,"GrabarEjec =GrabarPistaEjecucion ",GrabarEjec, GrabarPistaEjecucion
-     If GrabarEjec =GrabarPistaEjecucion  Then ''graba en la pista seleccioanda
+     If GrabarEjec =GrabarPistaEjecucion  And dato1< 224 Then ''graba en la pista seleccioanda
           partes=(deltatimeBack/TickChico) ' o cantidad de Ticks ENTRE EVENTOS
           jgrb += 1 ''JGRB CUENTA EVENTOS ON OFF ETC 
           If jgrb=1 And nroCompasesPatron> 0  Then
@@ -3477,12 +3650,9 @@ Function mycallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, ByV
                pmEj(ntoca).MaxPos=0
                tocaparam(ntoca).maxpos=0
           End If
-          'If CargaIn( jgrb).modo > 0 Then ''ESTAMOS GRABANDO ENCIMA PaRA NO PISAR Y HACER EFECTO DE ACORDE SUMAMOS 1
-      '   jgrb=jgrb+1 ' 19-07-2026
-      'EndIf
-          CargaIn( jgrb).modo=dato1
+          CargaIn( jgrb).modo=dato1 '''creo deberia mover esto cuando partes > 0 
           CargaIn( jgrb).nota=dato2
-          CargaIn( jgrb).vel=dato3
+          CargaIn( jgrb).vel =dato3
           
           If pmEj(ntoca).MaxPos >= nroTicksPatron And nroTicksPatron > 0   Then
                ' termino la grabacion del patron no se graba mas en CargaIn
@@ -3507,36 +3677,13 @@ Function mycallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, ByV
           ''  Else
           ''      Print #1,"no se graba nada ............."
      End If
-'''///////////MULTIPISTA EL CANAL SEPARA PISTAS
-''**************************************************************
-     If GrabarMidiExterno=GrabarMidiMultipista Then
-          partes=(deltatimeBack/TickChico) ' o cantidad de Ticks ENTRE EVENTOS
-          jgrb += 1 ''JGRB CUENTA EVENTOS ON OFF ETC 
-' CON DATO1 DETERMINAMOS antes EL  CANALext
-          ntoca=canalext   
-          CargaIn( jgrb).modo=dato1
-          CargaIn( jgrb).nota=dato2
-          CargaIn( jgrb).vel=dato3
-          
-               
-               ' aca vamos a marcar los compases para controlar el numero de ellos las repeticiones
-               ' las grabaciones encima o reemplazando datos y la creacion  de patrones,
-          If deltatimeBACK > 0.005  Then '   5mseg  
-              CargaIn( jgrb).partes=partes ' o nro Ticks ENTRE EVENTOS, convierto deltatime en tickschico
-              tocaparam(ntoca).maxpos=tocaparam(ntoca).maxpos + partes
-              pmEj(ntoca).MaxPos=tocaparam(ntoca).maxpos
-                     
-          Else
-              Print #1,"PARTES < 0.005 " ' ENTRA UNA SOLA VEZ, NO CONSIDERA DURACIONES MENOTES A 5 MSEG
-              CargaIn(jgrb).partes=0
-              tocaparam(ntoca).maxpos=tocaparam(ntoca).maxpos + 1
-              pmEj(ntoca).MaxPos=tocaparam(ntoca).maxpos                    
-          End If
-
-     EndIf 
+  Return 0
 End Function
 '---------------
 Function extcallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, ByVal leng As UInteger<64>, ByVal otro As Any Ptr ) As RtMidiCCallback
+'''///////////MULTIPISTA EL CANAL SEPARA PISTAS
+''**************************************************************
+' muy poca diferencia pero separamos porque se podria tocar en otra pista mientras se graba multipista
 '' EL CANAL YA ESTA EN  DATO1 !!!
 ''grbar midi-in en varios canales
 '' verificar que mycallback no este abierto siloesta cerrarlo
@@ -3546,6 +3693,8 @@ Function extcallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, By
 '' UBYTE VA DE 0 A 255  O SEA 0 A FF. EL FF ENTRA EN EL DATO1
 '' EL 20 ENTRA EN DATO2, Y EL 1 EN DATO3,, 
 '' e lcanadl esta en dato1 
+tiempoAbsolutoTotal += deltaTimeBACK
+Dim As Double  deltaTimeRealDelCanal=0
      Dim As UByte Ptr memoria = vec
      dato1=*memoria: memoria += 1
      dato2=*memoria: memoria += 1
@@ -3555,7 +3704,6 @@ Function extcallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, By
         deltatimeBACK=0
         deltatime=99
      EndIf  
-'''     DURk =deltatimeBACK
      
      Dim As Double sumadelta=0
      
@@ -3567,7 +3715,10 @@ Function extcallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, By
      Select Case  dato1
      Case 144 To 159 ' on 1001 0000 ---hex 90 + canal
           ' DIFERENCIA HABIA UN CHANGGEPROGRAM EN 148
-          canalext=dato1 - 144 ' el 0 es canal=1     
+          canalext=dato1 - 144 ' el 0 es canal=1
+     deltaTimeRealDelCanal = tiempoAbsolutoTotal - ultimoTiempoRegistradoPorCanal(canalext)
+     ultimoTiempoRegistradoPorCanal(canalext) = tiempoAbsolutoTotal
+          ntoca=canalext     
        If startcall =0 Then startcall=1 EndIf
                
        '''  noteon dato2,dato3,canalext, tocaparam(ntoca).portout, 1,1
@@ -3575,7 +3726,8 @@ Function extcallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, By
                Print #1, "ON  "; dato1;" ";  dato2;" "; dato3
           
      Case 128 To 143 'off 1000 0000 --- hex 80
-         canalext=dato1-128   
+         canalext=dato1-128
+         ntoca=canalext   
        '''   noteoff dato2,dato3,canalext,tocaparam(ntoca).portout,1,1 'message(2)'
           ' DIFERENCIA
                Print #1,  "OFF  ";dato1;" ";  dato2;" "; dato3
@@ -3591,33 +3743,36 @@ Function extcallback ( ByVal deltatimeBACK As Double, ByVal vec As UByte Ptr, By
      ' ergo divido deltatime por ese valor y obtengo la cantiad de divisiones
      ' que ocupara ese retardo deltatime/TickChico
      '''Print #1,"GrabarEjec =GrabarPistaEjecucion ",GrabarEjec, GrabarPistaEjecucion
-     If GrabarEjec =GrabarPistaEjecucion  Then ''graba en la pista seleccioanda
-          partes=(deltatimeBack/TickChico) ' o cantidad de Ticks ENTRE EVENTOS
+     If GrabarMidiExterno=GrabarMidiMultipista  Then ''graba en la pista seleccioanda
+          partes=(deltaTimeRealDelCanal/TickChico) ' o cantidad de Ticks ENTRE EVENTOS
           Mjgrb += 1 ''JGRB CUENTA EVENTOS ON OFF ETC 
          'If CargaIn( jgrb).modo > 0 Then ''ESTAMOS GRABANDO ENCIMA PaRA NO PISAR Y HACER EFECTO DE ACORDE SUMAMOS 1
       '   jgrb=jgrb+1 ' 19-07-2026
       'EndIf
-          MultiCargaIn( Mjgrb).modo=dato1 '' aca va la info de canal tambien!!
-          MultiCargaIn( Mjgrb).nota=dato2
-          MultiCargaIn( Mjgrb).vel=dato3
+''el drama es que el deltatimeBack es para todos los canales ahora!
+          MultiCargaIn( Mjgrb,canalext).modo=dato1 '' aca va la info de canal tambien!!
+          MultiCargaIn( Mjgrb,canalext).nota=dato2
+          MultiCargaIn( Mjgrb,canalext).vel=dato3
 '''   no debo tocar nada del codigo dato1 ya tiene el canal!!!
                
                ' aca vamos a marcar los compases para controlar el numero de ellos las repeticiones
                ' las grabaciones encima o reemplazando datos y la creacion  de patrones,
+' aca se graba todo por mas chico que sea el deltatime porque siendo vario canales puede haber mucho
+' acorde entre canales 
           If deltatimeBACK > 0.005  Then '   5mseg  
-             MultiCargaIn( Mjgrb).partes=partes ' o nro Ticks ENTRE EVENTOS, convierto deltatime en tickschico
+             MultiCargaIn( Mjgrb,canalext).partes=partes ' o nro Ticks ENTRE EVENTOS, convierto deltatime en tickschico
              tocaparam(canalext).maxpos=tocaparam(canalext).maxpos + partes
              pmEj(canalext).MaxPos=tocaparam(canalext).maxpos
                      
           Else
-             Print #1,"PARTES < 0.005 " ' ENTRA UNA SOLA VEZ, NO CONSIDERA DURACIONES MENOTES A 5 MSEG
-             MultiCargaIn(Mjgrb).partes=0
+       ''      Print #1,"PARTES < 0.005 " ' ENTRA UNA SOLA VEZ, NO CONSIDERA DURACIONES MENOTES A 5 MSEG
+             MultiCargaIn(Mjgrb,canalext).partes=0
              tocaparam(ntoca).maxpos=tocaparam(ntoca).maxpos + 1
              pmEj(ntoca).MaxPos=tocaparam(ntoca).maxpos                    
           End If
      End If
 
-
+   Return 0
 End function
 '--------------------------------------
 Sub GrabarMidiIn ( ByRef  par As  paramGrabamidi,i1 As Integer) ' I1 PISTA
@@ -3960,7 +4115,7 @@ Sub metronomo ()
            ' Print #1, "LLAMA A SOUNDCALL"
             medio_metronomo_on=FALSE
             threadsound = threadCall soundcall
-            SetThreadPriority(threadsound , -1 ) 'VV
+            SetThreadPriority(threadsound , -2 ) 'VV
             
                Else
            tic=1
@@ -3984,17 +4139,17 @@ Sub metronomo ()
                     If car="1" Then
                          volalto=1 'volumen nornal
                          threadsound = threadCall soundcall
-               SetThreadPriority(threadsound , -1 ) 'VV
+               SetThreadPriority(threadsound , -2 ) 'VV
                     End If
                     If car="2"  Then ' volumen semi fuerte
                          volalto=2
                          threadsound = threadCall soundcall
-               SetThreadPriority(threadsound , -1 ) 'VV
+               SetThreadPriority(threadsound , -2 ) 'VV
                     End If
                     If car="3"  Then ' volumen  fuerte
                          volalto=3
                          threadsound = threadCall soundcall
-               SetThreadPriority(threadsound , -1 ) 'VV
+               SetThreadPriority(threadsound , -2 ) 'VV
                     End If
 
                     If car="0" Then
@@ -4060,7 +4215,7 @@ Print #1,"DEBE TOCAR EL METRONOMO DURANTE GRABACION DE EJEC ",MAXM
 Print #1,"ELSE-------------- "
                For jmetro=1 To MAXM
                     If jmetro=jply Or  MEDIO_METRONOMO_ON=TRUE  Then ' PARA PLAY CON METRONOMO DE GRAFICO
-Print #1,"DEBE TOCAR EÑ METRONOMO DURANTE PLAY GRAFICO  O REPRODUCTOR MEDIOS ",MAXM
+''Print #1,"DEBE TOCAR EÑ METRONOMO DURANTE PLAY GRAFICO  O REPRODUCTOR MEDIOS ",MAXM
                        threadsound = threadCall soundcall
                        SetThreadPriority(threadsound , -1 ) 'VV
                         duracion(Timer, (60/(tiempoPatron)) / FactortiempoPatron) 'jmgtiempo
@@ -4109,7 +4264,7 @@ Sub abrirPortoutEjec(j As Integer)
                Print #1,"abro ",*nombreOut(k1)
                porterrorsub(porterror)
           Else
-               '' Print #1,"PORT OUT YA ABIERTO ",listoutAbierto( k1),*nombreout(k1)
+               Print #1,"PORT OUT YA ABIERTO ",listoutAbierto( k1),*nombreout(k1)
           End If
      End If
      
@@ -4120,6 +4275,18 @@ End Sub
 '------------------
 Sub PlayTocaAll(nt As Integer Ptr )
      On Local Error GoTo fail
+valorpan=64
+For ntk=0 To 32
+      pmTk(ntk).pan=CUByte(valorpan)
+Next ntk
+      pmTk(0).pan=CUByte(valorpan)
+For ntkp=1 To 32
+      pmEj(ntkp).pan=CUByte(valorpan) 
+      tocaparam2(ntkp).pan=CUByte(valorpan)
+Next ntkp
+ntk=0
+ntkp=1
+
      ' las pistas fueron cargadas en un vector redim de 384000 no uso el maxgrb habria que
      ' usarlo y ponerlo como se debe,,,usar un redim de maxgrb el probel aes que maxgrb se pisaba
      ' en cargarmidiin ahora se arreglo veo si anda ,,,probar
@@ -4145,6 +4312,7 @@ Sub PlayTocaAll(nt As Integer Ptr )
      Print #1,"' ------------------------------------------------------------------------------"
      '------------------abrir ports
      Dim As Integer kp,ip
+     Dim As UShort bendx
      Var porterror=Err
      For ip=1 To topeEjec
           
@@ -4237,6 +4405,8 @@ Sub PlayTocaAll(nt As Integer Ptr )
      '''TickPlay=TickChico*tiempoPatronEjec/240
      '' hafcemos tickplay igual a tickusuario de playcancion la misma formula a ver que pasa
      Dim As Double  tickPlay=(60/(tiempoPatron*PPQN))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
+
+     tickUsuario=tickPlay  
      ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
      ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
      'Print #1,"TickPlay "; tickPlay
@@ -4368,6 +4538,9 @@ Sub PlayTocaAll(nt As Integer Ptr )
                Case 128 'off
                     noteoff dato2,dato3,tocaparam(kply).canal ,tocaparam(kply).portout,1,1 'message(2)'
                     ''Print #1,"OFF ",dato2,pmEj(kply).canalsalida ,pmEj(kply).portout
+               Case 224 To 239
+                    bendx=dato3*128+dato2
+                    pitchbend bendx,tocaparam(kply).canal,tocaparam(kply).portout 
                End Select
                
           Next kply

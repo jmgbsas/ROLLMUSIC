@@ -570,8 +570,10 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      MenuItem(1111,MenName7,"5.0 Insertar escala libre en la Posicion actual (Pasozona1)")
      MenuItem(1112,MenName7,"6.0 Insertar escala Alternativa de la Principal en la Posicion actual (Pasozona1)")
      Menubar(MenName7)
-     MENUITEM(1108,MenName7,"7.0 Trabajar con sostenidos (Por omision Sostenidos #)",MF_CHECKED )
+     MENUITEM(11088,MenName7,"   Trabajar SIN ALTERACIONES",MF_CHECKED )
+     MENUITEM(1108,MenName7,"7.0 Trabajar con sostenidos (Por omision Sostenidos #)",MF_UNCHECKED )
      MENUITEM(1109,MenName7,"8.0 Trabajar con bemoles ",MF_UNCHECKED )
+
      Menubar(MenName7)
      MenuItem(1113,MenName7,"9.0 Usar metronomo para Tocar MIDI-IN",MF_CHECKED)
      MenuItem(1114,MenName7,"10.0 TOCAR 4 PULSOS DEL instrumento elegido en una pista de EJECUCIONES antes de grabar",MF_CHECKED)
@@ -611,6 +613,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      menuitem (10884,Menname9,"3.0 Entrar una cadena pulsos donde 3 sera fuerte, 2 semi fuerte,1 normal y 0 silencio, en un archivo de texto")
      menuitem (10883,Menname9,"4.0 <RESET> de Cantidad de pulsos y/0 cadena pulsos")
      menuitem (1231 ,Menname9,"5.0 INTERVALOS ")
+     menuitem (1240 ,Menname9,"6.0 RITMOS CON FIGURAS O,P,I,L,F,E,X,H Y SUS SILENCIOS ANTEPONIENDO S, LAS COMAS SEPARAN LOS SUBRAYYADOS UNEN (_)")
      
      MenuItem(2000,MenName10,"1.0 Acerca de")
      MenuItem(2001,MenName10,"2.0 Cuadro Ayuda TEMPO por nombres, Lento,adagio etc y control fino")
@@ -689,6 +692,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      Case 3
           SetStateMenu(hMessages,1071,3)
      End Select
+
      ' al inicio por omision patrones deshabilitados
      SetStateMenu(hmessages,1064,0)
      SetStateMenu(hmessages,1065,0)

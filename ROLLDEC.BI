@@ -110,11 +110,11 @@ Declare Sub BorrarUltimaNotaEntrada()
 Dim shared As Integer cnota, cdur, cvel, cinst,cnEOld,CnE, veoPent=1 
 Dim Shared As Integer ev1,ev2,ev3,ev4,ev5,ev6,notaGuia=0,PerGuia=0
 Dim Shared As String RTA, alteracion 
-alteracion="sos"
+alteracion=""
 Dim Shared As Integer acumulado=0, controlEdit =0,octavaEdicion=0, pasoZona1=0, pasoNota=0,OCTAVAFIJA, pasoY1, pasoY2
 Dim Shared As integer pasoZona2=0,nroRep=0,esEjecucion=0,pasoZona1Old=0,pasoZona1y=0,pasoZona2y=0
 Dim Shared As Integer vnotaOld=0, vdur=0 ,vnota =0, playloop=0, playloop2=0,SelGrupoNota =0,moverZona=0, copiarZona=0,SelGrupoNotaT =0
-Dim Shared as ubyte  DUR,nota,notacur,suenaunavez=0,canRecal=0,notacurOld
+Dim Shared as ubyte  DUR,nota,notacur,suenaunavez=0,canRecal=0,notacurOld, NOBUSCAR=0
 ReDim Shared as ubyte  notasInsertadas (1 to 1500)
 Dim Shared As String t,t2, taux
 Dim Shared As Integer mouseX,mouseY, MouseButtons, notaOld, cursormove,notaoldmidi
@@ -129,6 +129,9 @@ Dim Shared As Integer menuAccion,insert,notins,haycompas,nroCompas=0,copiar=0,co
 Dim Shared As Short posicionNotasGuia=0  
 Dim Shared NotasGuia (0 To 11) As String * 2 => _
 {"B_","A#","A_","G#","G_","F#","F_","E_","D#","D_","C#","C_"}
+Dim Shared NotasGuiaSinAlteraciones (0 To 11) As String * 2 => _
+{"B_","  ","A_","  ","G_","  ","F_","E_","  ","D_","  ","C_"}
+
 Dim Shared NotasEscala (1 To 12) As String *2 => _
 {"C ","C#","D ","D#","E ","F ","F#","G ","G#","A ","A#","B "}
 ' escala mayor 1,3,5,6,8,10,12
@@ -1457,8 +1460,9 @@ Dim Shared As Double StartPlayejec=0
 'ReDim Shared As Double   espera (1 To 32)
 Dim Shared As Integer kply,jToca=0
 Dim Shared As Double timex(1 To 32)
-Dim Shared As UByte dato1, dato2 , dato3, dato1old,dato4=0,filtro1,filtro2 , startcall=0, canalext=0
-Dim Shared  As Double stime1=0, stime2=0, sdura=0
+Dim Shared As UByte dato1,dato2,dato3,dato1old,dato2old,dato3old,dato4=0,filtro1,filtro2 , startcall=0, canalext=0
+Dim Shared As Double tiempoAbsolutoTotal = 0,ultimoTiempoRegistradoPorCanal (0 To 15) 
+Dim Shared  As Double stime1=0, stime2=0, sdura=0,tbend1,tbend2, haybend=0
 Dim Shared datot4 As double
 Dim Shared  As integer maxgrb=0,maxcarga=0, maxpis 
 ' usaremos xml par aleer y escribir musicxml 

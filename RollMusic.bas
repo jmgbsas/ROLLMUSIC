@@ -105,7 +105,33 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.436 ENTRENAR INTERVALOS FIXES"
+nroversion="0.444 se evita CTRL-M que una nota con la misma altura que otra anterior muy cercana pise el final de nota y quede como ligadas"
+'' 0.444 TAMBIEN SE ELIMINO LAS PRIORIDADES ALTAS EN LAS FUNCIONES, PONIA INESTABLE SI UN SYNTETIZADOR DE ALTA PRIORIDAD
+''' SE EJECUTABA EN PARALELO..
+'' (-> NO SE CUENTA..0.445 parar play con un click de mouse funciona pero para por cualquier motivo se desecha por ahora")
+'' 0.444 fix EN 1B - codigo en 12-11-2026 evitar que con la misma altura una nota pise el
+''  final de nota de la anterior en CTRL-M, error muy esporadico pero asi tal vez desaparesca...
+'' 0.443 fix al grabar un nuevo roll si habia editado otro antes grababa sin pedir nombre, nombre vacio
+'' 0.442 play funciona en todo tipo de edicion o lectura, se detiene con P 
+'' 0.441 cERRAR UN port in  ABIERTO no andaba " 
+'' 0.439 borrar desde la ultima nota en ENTRADA de notas con backspace borra 1 nota seguir para que borre mas "
+'' (IMPLEMENTAR EL BORRADO DE ACORDES!)
+'' revisar acordes SI QUIERO UN G Y TENGO UN D Y LE DIGO ES LA 5TA DEL ACORDE no lo hace
+'' SOLO FUNCIONA PARA UNA NOTA BASE Y D NO SERIA LA BASE SI USO G, CON D PODRIAMOS USAR
+'' D MENOR. PARA ESE CASO DEBO COLOCARME EN UN SOL E INSERTAR UN ACORDE DE G SIN INVERSION
+'' SE AJUSTO AUTOMATICAMENTE ALT-V CON FLECHA IZQ PARA ELIMINAR UN VACIO OK
+'' SE CAMBIO LA ALTERACIONE POR OMISION A NINGUNA, DE MODO QUE NO APAREEN NI SOSTENIDOS
+'' NI BEMOLES PARA NO CONFUNDIR LA VISTA..SE PUEDE OPTAR POR COLOCARLA Y GRABARLA
+'' 0.420 ya anda de nuevo, DEJO DE FUCIONAR NO BORRABA NOTAS CON F5+DELETE COMENTE dur1=RollDur ...
+'' AJUSTE DE COLORES DE EDICION, AJUSTE EN CTRL-END Y ALT-END QUE NO BUSQUE NOTA
+'' ACLARACIONES COMO ESCRIBIR NOTAS EN ESPACIO BORRADO DE DERECHA A IZQUIERDA 
+'' 0.438 LINEAS VERTICALES AMARILLAS PARA ZONA
+'' 0.437 pitchbend por software! midi-in teclado lo recibe y ejecuta NO LO GRABA TODAVIA"
+''   3513 rtmidisub seguir como grabar y reproducir, la idea es grabar parametros ya echo
+''   y reconstriur con la misma logica en mycallback para reproducir
+''   grabar a midi sera otra ....
+'' -------------------hasta aca ultima version en github-------------
+''0.436 ENTRENAR INTERVALOS FIXES"
 ''SEGUIR CON 433 DESA MULTIMIDI
 ''0.435 REPRO MEDIA EN EXPLORER SIN BOTONES
 ''0.434 ENTRENAR INTERVALOS	OK  sin unisono" 
@@ -438,6 +464,17 @@ MOV_FLAG=0:CPlay=NO:Playb=NO:medio_metronomo_on=FALSE
 
 mel_undo_k=0 :ig=0:cnt_acor=0
 Erase mel_undo, undo_acorde,undo_kant_intervalos
+valorpan=64
+For ntk=0 To 32
+      pmTk(ntk).pan=CUByte(valorpan)
+Next ntk
+      pmTk(0).pan=CUByte(valorpan)
+For ntkp=1 To 32
+      pmEj(ntkp).pan=CUByte(valorpan) 
+      tocaparam2(ntkp).pan=CUByte(valorpan)
+Next ntkp
+ntk=0
+ntkp=1
 
 Do
      
@@ -484,7 +521,7 @@ Do
                     Print #1, "///1 entro por ThreadCreate rollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
                     
                     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-                    SetThreadPriority(threadloop , THREAD_PRIORITY_ABOVE_NORMAL) 'nuevo 
+                    ''SetThreadPriority(threadloop , THREAD_PRIORITY_ABOVE_NORMAL) 'nuevo 
                     clickpista=SI 'abre tab una sola vez seposiciona en psita 1
                     Print #1,"0 1=====hwndC ", HwndC
                End If
@@ -512,7 +549,7 @@ Do
                     Print #1, "///2 entro por ThreadCreate RollLoop NOMBRECANCION TITuLOSTK(0) ", NombreCancion, titulosTk(0)
                     EstaBarriendoPenta=1
                     threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-                   SetThreadPriority(threadloop , THREAD_PRIORITY_ABOVE_NORMAL) 'nuevo
+                   'SetThreadPriority(threadloop , THREAD_PRIORITY_ ABOVE_NORMAL) 'nuevo
                End If
                Print #2,"=====hwndC ", HwndC
                ''RollLoop ( param)
@@ -590,7 +627,16 @@ Do
                          End If
                          
                     End If
-                    
+                       ' PRUEBA DE PITCH BEND 
+                   If Eventkey= VK_F12  Then
+                      Print #1, "LLAMANDO ESCRIBIR DESDE CONTROL PITCHBEND"
+                      HABILITAR_PITCHBEND=SI              
+                   EndIf
+                   If Eventkey= VK_F11  Then
+                      Print #1, "LLAMANDO NO ESCRIBIR DESDE CONTROL PITCHBEND"
+                      HABILITAR_PITCHBEND=NO              
+                   EndIf
+
                End If
                'WindowStartDraw(hwndC)
                '  fillrectdraw(40,40,&h888888)
@@ -842,7 +888,7 @@ Print #1," K,tocaparam(k).canal=k-1 ", k , tocaparam(k).canal
           
           Print #1, "///3 ubiroll ubirtk ", ubiroll,ubirtk
           threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-         SetThreadPriority(threadloop , THREAD_PRIORITY_ABOVE_NORMAL) 'nuevo
+         ''SetThreadPriority(threadloop , THREAD_PRIORITY_ABOVE_NORMAL) 'nuevo
           ThreadWait threadloop
           threadDetach(threadloop)
           Sleep 20

@@ -510,11 +510,11 @@ CheckBox_SetCheck( cbxgrab(ntoca),0)
                     '  Print #1,"CargaIn(i1).modo ",CargaIn(i1).modo
                       '''i1 = i1 +1
                     Select Case  CargaIn( i1).modo ''I1 TIENE OTRO VALOR EN LA 2DA GRABADA=JGRB
-                    Case 144,128
-                         Print #1, " ntoca , K ,I1 ", ntoca , K ,I1 ,"k deberia contener a kSilecio"
-                          FILEFLUSH(-1)
+                    Case 144,128,224 ''solo grabamos canal 1
+                       '  Print #1, " ntoca , K ,I1 ", ntoca , K ,I1 ,"k deberia contener a kSilecio"
+                       '   FILEFLUSH(-1)
               
-                If  Toca(ntoca).trk(k).modo =144   Or  Toca(ntoca).trk(k).modo =128  Then
+                If  Toca(ntoca).trk(k).modo =144   Or  Toca(ntoca).trk(k).modo =128  Or Toca(ntoca).trk(k).modo =224 Then
                        k=k+1   'evitar que cualquer nota que exista grabada  anterior se borre 
                 EndIf      
                 ' EL 144   NO TIENE PARTES SI ES EL 1ERO, su PARTES VIENE EN EL 2DO EL 128 U OTRO 144
@@ -774,11 +774,14 @@ If eventnumber()= BTN_ROLL_GRABAR_MIDI And GrabarPenta=0 And APLICABLE Then
      GrabarPenta=1 ' redundante ,,,
 End If
 '-------------------------------
+
 If eventnumber()= BTN_ROLL_PARAR And (GrabarPenta=SI Or Cplay=SI Or Playb=SI Or Play=SI ) Then
      SetGadgetstate(BTN_ROLL_PARAR,BTN_PRESIONADO)
      SetGadgetstate(BTN_ROLL_EJECUTAR, BTN_LIBERADO)
      SetGadgetstate(BTN_ROLL_GRABAR_MIDI , BTN_LIBERADO)
      SetGadgetstate(BTN_ROLL_CARGAR,BTN_LIBERADO)
+     
+
      GrabarPenta=0
      ''Print #1, "542 GrabarPenta=0"
      metronomo_si=0

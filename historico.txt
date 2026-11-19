@@ -1,3 +1,31 @@
+ 0.444 se evita en CTRL-M que una nota con la misma altura que otra anterior muy cercana pise el final de nota 
+   y quede como ligadas,  fix EN 1B - codigo en 12-11-2026 ,error esporadico pero error.
+    TAMBIEN SE ELIMINO LAS PRIORIDADES ALTAS EN LAS FUNCIONES, PONIA LENTA LA RESPUESTA DE ROLLMUSIC 
+    SI UN SYNTETIZADOR DE ALTA PRIORIDAD   SE EJECUTABA EN PARALELO..
+   ( parar play con un click de mouse funciona pero por cualquier motivo para por demas el play,,se desecha por ahora)
+ 0.443 fix al grabar un nuevo roll si habia editado otro antes grababa sin pedir nombre, nombre vacio
+ 0.442 play funciona en todo tipo de edicion o lectura, se detiene con P 
+ 0.441 CERRAR UN port-in  ABIERTO no andaba  
+ 0.439 borrar desde la ultima nota en ENTRADA de notas con backspace borra 1 nota POR AHORA LA ULTIMA,
+    seguir para que borre mas..  (IMPLEMENTAR EL BORRADO DE ACORDES!)
+    revisar acordes SI QUIERO UN G Y TENGO UN D Y LE DIGO ES LA 5TA DEL ACORDE no lo hace
+    SOLO FUNCIONA PARA UNA NOTA BASE Y D NO SERIA LA BASE DEBERIA SER G, CON D PODRIAMOS USAR
+    D MENOR. PARA ESE CASO DEBO COLOCARME EN UN SOL E INSERTAR UN ACORDE DE G SIN INVERSION
+    SE AJUSTO AUTOMATICAMENTE ALT-V CON FLECHA IZQ PARA ELIMINAR UN VACIO OK
+   SE CAMBIO LAS NOTAS GUIA SE SACO LAS ALTERACION POR OMISION A NINGUNA, DE MODO QUE NO APARESCAN 
+   NI SOSTENIDOS  NI BEMOLES PARA NO CONFUNDIR LA VISTA..SE PUEDE OPTAR POR COLOCARLA Y GRABARLA
+   0.420 ya anda de nuevo, DEJO DE FUCIONAR NO BORRABA NOTAS CON F5+DELETE COMENTE dur1=RollDur ...
+   AJUSTE DE COLORES DE EDICION, AJUSTE EN CTRL-END Y ALT-END QUE NO BUSQUE NOTA
+ - ACLARACIONES DE USO: ESCRIBIR NOTAS EN ESPACIO BORRADO, CONVIENE HACERLO  DE DERECHA A IZQUIERDA 
+ 0.438 LINEAS VERTICALES AMARILLAS PARA ZONA
+ 0.437 pitchbend por software! midi-in teclado lo recibe y ejecuta NO LO GRABA TODAVIA
+    (si un teclado MIDI no tiene la rueda para pitchbend se hizo por software, pulsar F12,  luego UN tecla DEL TECLADO MIDI
+     y enseguida SIN LEVANTAR LA PRIMER TECLA PULSAR UNA SEGUNDA la ultima, la velocidad del desplazamineto
+     dependera de la velociad con la que se pulso la 1er tecla)
+    3513 rtmidisub seguir como grabar y reproducir, la idea es grabar parametros ya echo
+    y reconstriur con la misma logica en mycallback para reproducir
+   grabar a midi sera otra ....
+//////////////////////////////////////////////////////////////////////
  -15-10-2026 0.434 ENTRENAR INTERVALOS	OK  sin INTERVALO unisono.
      NO TERMINADO--0.433 EN DESARROLLO Grabar Midi Multipista de instrumento externo U otro programa
      mediante loopMDI en varios canales (en desarrollo)"

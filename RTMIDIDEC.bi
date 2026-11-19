@@ -53,7 +53,6 @@ Dim Shared As UInteger portsin=0, portsout =0 'constantes,
 
 Dim Shared As Double old_time_on=0,old_time_off=0,old_time_on_int=0,old_time_off_int=0
 Static Shared As Integer jply=0, indEscala=1
-Dim Shared As double FactortiempoPatron=1
 'e lpatron es la negra ej I=60 ergo todo sera relativo A la negra q dura 1 seg
 ' 09-06-2021 agregue 0 en relDur para evitar cancelaciones pero ojo puede
 ' tapar otros errores quE el tiempo se calcule como cero y siga y
@@ -71,6 +70,7 @@ Static Shared As Double TickChico=0.010416 '  seg para 60 relDur(45) tresillo  d
 TickPlay=(60/(tiempoPatron*PPQN))/FactortiempoPatron ''0,01041666666666666666666666666667
 TickChico=TickPlay
 Static shared As Double x3H = 0.0 , resta=0.0
+
 ' ambos Ticks deberin ser el  valor mas chico de la tabla y es tresillo de W 0.01041666
 
 ' " O "," P "," I "," L "," F "," E "," X "," H "," W ",   <-- la 8 es H
@@ -339,7 +339,10 @@ Type midicod Field=1
 End Type
 
 ReDim Shared CargaIn ( 1 To 84000) As midicod '  
-ReDim Shared MultiCargaIn ( 1 To 576000) As midicod
+''ReDim Shared MultiCargaIn ( 1 To 576000) As midicod
+
+ReDim Shared MultiCargaIn ( 1 To 84000, 0 To 15)  As midicod
+
 'si 1 negra=I tarda 1 seg tiempo =60 segundos para 60 negras
 'tiempo 300, por ejemplo de negras seria, tengo 300 negras en 1 minuto
 ' si  quiero 30 min -> 300*30= 9000 negras en 30 minutos.

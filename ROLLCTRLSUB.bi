@@ -188,7 +188,7 @@ Sub CTRL10062 (hmessages As hmenu)
      If NombreCancion > ""  Then
           EstaBarriendoPenta=1
           threadloop= ThreadCreate (@RollLoop,CPtr(Any Ptr, p1))
-SetThreadPriority(threadloop , THREAD_PRIORITY_ABOVE_NORMAL) 'nuevo
+''SetThreadPriority(threadloop , THREAD_PRIORITY_ABOVE_NORMAL) 'nuevo
           Print #1,"CARGO ROLL PARA cancion sin roll"
           ' ES TAN RAPIDO QUE PARECE EJECUTA DOS VECES EL 10062
           ' AL DEBUGUEAR NO LOA HACE ERGO PONEMOS UN RETARDO 0,1 SEG
@@ -966,6 +966,8 @@ End Sub
 
 Sub execwin (ByRef Ejercicio As string)
 winexec  ("notepad.exe "+ ejercicio,SW_SHOWNORMAL)
+ 
+ '''ShellExecute(NULL, "edit", ejercicio, NULL, NULL, SEE_MASK_NOASYNC)
 End Sub
 
 Sub CTRL10884( ByRef cadenapulsos As String)
@@ -985,11 +987,20 @@ Print #1,"ARCHIVO ";Ejercicio
 
 ParenthWnd =0
    
- ParenthWnd = FindWindow("Notepad",null) 
- Print #1,"ParenthWnd  ...";ParenthWnd 
- SetForegroundWindow(ParenthWnd)
-   FILEFLUSH(-1)
-     Sleep 200
+
+ Do  
+   ParenthWnd = FindWindow("Notepad",null) 
+ ''Print #1,"ParenthWnd  ...";ParenthWnd 
+   SetForegroundWindow(ParenthWnd)
+   If ParenthWnd = 0 Then
+      Exit Do
+   EndIf 
+   Sleep 1000
+ Loop     
+
+
+
+
      
 ''06-07-2026 SI ES ARCHIVO NUEVO TAMBIEN FUNCIONA SIN CERRAR EL PROGRAMA     
 
@@ -1086,7 +1097,7 @@ Sub CTRL1092()
                portsal=portout1092
                instru=CInt(tocaparam(i).patch)
                patchsal=instru
-               Print #1,"instrumento en abrir midi-in ", instru
+               Print #1,"1) instrumento en abrir midi-in ", instru
                
                'instru, canal, portsal abre ahora distinto para cada pista
                ' el portin y portout podrian ser los mismos pero igual hay que seleccionarlos antes
@@ -1103,14 +1114,16 @@ Sub CTRL1092()
                Exit For  ' termina con el 1er seleccionado solo se toma 1 sola accion
           End If
      Next i
-     If ntoca = 0 Then ' abro el 1 por default
+     If ntoca = 0 Or tocaparam(1).nombre="" Then ' abro el 1 por default
+        'selportEjec (1,1)
+        'CTRL1205  ' abre portout
         portin1092  = tocaparam(1).portin ' PREVIAMENTE SELECCIONADO
         portout1092= tocaparam(1).portout ' PREVIAMENTE SELECCIONADO
         ntoca=1
         portsal=portout1092
         instru=CInt(tocaparam(1).patch)
         patchsal=instru
-        Print #1,"instrumento en abrir midi-in ", instru
+        Print #1,"2) instrumento en abrir midi-in ", instru
                
                'instru, canal, portsal abre ahora distinto para cada pista
                ' el portin y portout podrian ser los mismos pero igual hay que seleccionarlos antes
@@ -1134,7 +1147,7 @@ Sub CTRL1092()
                midiin(portin1092) = rtmidi_in_create_default()
                listInCreado(portin1092)  =1
           End If
-          Print #1,"abriendo portin y call back",*nombrein( portin1092 )
+          Print #1,"AAAA ..abriendo portin y call back",*nombrein( portin1092 )
           '' messageCallback(3)=127
           open_port (midiin(portin1092 ), portin1092, *nombrein( portin1092 ) )
           set_callback midiin(portin1092 ), @mycallback, pmsgCallBack
@@ -1491,7 +1504,7 @@ Sub CTRL1094(titulo As ZString ptr) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
                          '''' mov8=loadmovie(GadgetID(4),OFR,0,0,sizex,sizey-110)
                          ''SetTrackBarMaxPos(5,Int(GetEndPosMovie(mov8)/1000000 ))
                          SetTrackBarMaxPos(5,Int(GetEndPosMovie(mov8)/1000000 ))
-                         Print #1,"GetEndPosMovie(mov8) ",GetEndPosMovie(mov8)
+                         ''Print #1,"GetEndPosMovie(mov8) ",GetEndPosMovie(mov8)
                          threadmovie = threadCall playmedio() :SetRateMovie(mov8,1)
                          MOV_FLAG=1 ' con sonido de metronomo el loop del metronomo sigue
                          LIMPIA=1
@@ -1621,7 +1634,7 @@ Sub CTRL1094(titulo As ZString ptr) 'CAMBIAMOS CON EL VIEJO QUE ANDA LA PAUSA
                          If Volume < -5000  Then 'if it is less than -10000 or more than 0 there will be an error!
                               Volume=Volume+50
                          End If
-                         Print #1,"case 20 volume - ",Volume
+                         ''Print #1,"case 20 volume - ",Volume
                          MovieAudioSetVolume(Mov8,Volume)
                          VelAudio= str((Volume+5000)/50 )
                          Sleep(200)
@@ -1849,7 +1862,7 @@ Sub CTRL1204(hmessages As hmenu) 'Seleccionar      Puertos MIDI-OUT PARA EJECUCI
      ntkp =pis
      
      Print #1,"PISTA PIS NTKP",PIS,NTKP
-     If ntkp=0 Then
+     If ntkp=0 And  tocaparam(pis).nombre="" Then
           Exit Sub
      End If
      
@@ -1887,14 +1900,14 @@ Sub CTRL1205 () 'Abrir      Puerto MIDI-OUT EJECUCIONES
      ' AUTOMATICAMENTE?? PULSANDO UN BOTON VEIFICACION PORT OUT
      
      pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
-     If pis =0 Then
+     If pis =0 And tocaparam(pis).nombre= "" Then
           Exit Sub
      End If
      ''  ntkp =pis
      
      k1=CInt(tocaparam(pis).portout)
      k2=CInt(pmEj(pis).portout)
-     If k1 <> k2 Then ' algo anda mal
+     If k1 <> k2 And tocaparam(pis).nombre <> "" Then ' algo anda mal
           Print #1, "inconsistencias k1<>k2 en port out no se cierra nada"
           Exit Sub
      End If
@@ -1922,7 +1935,7 @@ Sub CTRL1205 () 'Abrir      Puerto MIDI-OUT EJECUCIONES
           '   ChangeProgram ( tocaparam(i).patch, tocaparam(i).canal, tocaparam(i).portout-1)
           '  EndIf
           
-          Print #1,"NO SE ABRE EL PORT",*nombreOut(k1)
+          Print #1,"USANDO PORT DE MICROSOFT ",*nombreOut(k1)
      End If
      
 End Sub
@@ -1937,7 +1950,7 @@ Sub CTRL1206()
      
      Dim pis As Integer
      pis=GetItemListBox(PISTASEJECUCIONES) +1 ' DEVUELVE A PARTIR DE CERO
-     If pis =0 Then
+     If pis =0 And tocaparam(pis).nombre= "" Then
           Exit Sub
      End If
      
@@ -2713,6 +2726,68 @@ Do
 Loop   
 
 End Sub
+'---------------------------------------------
+Sub CTRL1240( )
+'''FALTA PROCESAR L ACADENA DE FIGURAS HACER UN LOOP EN LACADENA
+''Y TOCAR CON NOTEON NOTEOFF UNA CNOTA CUALQUIERA UN C o A
+'' con las duraicones de la cadena y hacer silencio cuando sea
+'' usar duracion y listo!!! 
+Dim cadenafiguras As String
+     
+     MESSAGEBOX (hWndC, "ENTRE UNA CADENA I,P,I,F,I_L,SI, ETC EN UN ARCHIVO NUEVO O EXISTENTE DE CUALQUIER LONGITUD EL 1,2,3 INDICARA SONIDO EL 0 SIN SONIDO","CARGA DE FIGURAS O,P,I,L,F,E,X,H o I_L,P_I UNIDAS O SILENCIOS SI,SP.SI_SL ETC  ",MB_OK)
+     Dim As String Ejercicio= OpenFileRequester("CREAR O CARGAR ARCHIVO CON UNA CADENA LUEGO GRABELA",ROLLDIR,"Texto (*.txt )"+Chr(0)+"*.txt"+Chr(0), OFN_CREATEPROMPT)
+     Sleep 500
+     Dim As Integer fi = FreeFile
+     ''''Dim As String cadenapulsos
+     ''If Ejercicio > "" Then
+                    
+          ''result=shell  ("notepad.exe "+ ejercicio) 'interrumpe la ejecucion espera que termine
+          ' espera la entrada del usuario ,,,es inevitable muestre la consola por ahora
+      threadwin=THREADCALL execwin (Ejercicio) 
+  ThreadWait threadwin
+
+Print #1,"ARCHIVO ";Ejercicio
+ParenthWnd =0 ''ES UN HWND
+'' compruebo si el notepad se cerro  o no asi espero al usuario jeje
+'' y depaso sostengo al mismo al top obligando a que escriba algo o cierre
+ Do  
+   ParenthWnd = FindWindow("Notepad",null) 
+ ''Print #1,"ParenthWnd  ...";ParenthWnd 
+   SetForegroundWindow(ParenthWnd)
+   If ParenthWnd = 0 Then
+      Exit Do
+   EndIf 
+   Sleep 1000
+ Loop     
+
+
+     
+''06-07-2026 SI ES ARCHIVO NUEVO TAMBIEN FUNCIONA SIN CERRAR EL PROGRAMA     
+
+Do                
+     If Open ( ejercicio For Input As FI ) =0 Then
+Print #1,"ABRE HABER SI  HAY ALGO  "; ejercicio
+          If Lof(FI) > 0 Then ' SI GRABO ALGO
+Print #1,"LEE  "; ejercicio
+               Input #fi, cadenafiguras
+               Close FI
+         If  cadenafiguras > "" Then
+            Print #1, "3-cadenafiguras "; cadenafiguras
+            Exit DO
+         EndIf 
+      Else
+         Close FI
+         Sleep 1000  
+          End If
+  Else
+     ''NO PASA NADA
+  EndIf
+  Sleep 4000
+Loop
+      
+     
+End Sub
+
 '-----------------------------------------------
 Sub CTRL2500()
      ' abrir un midi-in ...con callback para Roll

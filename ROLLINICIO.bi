@@ -218,7 +218,7 @@ pd1 = GetCurrentProcessId()
 
 Open ROLLDIR+"midebug.txt" For Output As #1
 '' Open "midebug"+ "["+Str(pd1)+"]" + ".txt" For Output As 1
-Print #1,"start"
+Print #1,"start VERSION 0.434"
 Print #1,"PID DE ESTE PROCESO ",pd1
 
 VERSION= ObtenerVersionWindows()
@@ -853,6 +853,14 @@ Var Shared ft => FreeType()
 '' Load a font with FreeType
 Common Shared As FT_Face ftface
 FT_New_Face( ft, "Bebaskai.otf", 0, @ftface )
+
+''Common Shared As FT_Face ftbravura
+''FT_New_Face( ft, "Bravura.otf", 0, @ftbravura )
+
+''Common Shared As FT_Face ftbravuraText
+''FT_New_Face( ft, "BravuraText.otf", 0, @ftbravuraText )
+
+
 common shared as any ptr BRUSH
 ' ========== CONTROL DEL NRO DE OCTAVAS MOSTRADO SE PODRA PONER PARA EL USUARIO
 ' VER SI SE PUEDE USAR ARRAYS POR PORCIONES
@@ -1100,6 +1108,6 @@ End Function
 '(where appicon.ico is the name of icon)
 '- Then when compiling program, add appicon.rc in the list of files to compile.
 
-Dim Shared As Integer event,mov8,MOV_FLAG=0, movie,MOV_FLAG_M
+Dim Shared As Integer event, movie,MOV_FLAG_M
 Dim Shared As integer lugarPos
 Dim Shared As HWND  hwndMEDIA,hwndTG,hwndSndPuros

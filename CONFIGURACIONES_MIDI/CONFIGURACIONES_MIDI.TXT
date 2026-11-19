@@ -1,0 +1,39 @@
+BUSCAR EN LA WEB COOLSOFT MIDIMAPPER
+INSTALARLO (QUEDA EN ARCHIVOS DE PROGRMA SI ES  WIN 64)
+
+BUSCAR EL SYNTHETIZADOR COOLSOFT INSTALARLO Y 
+CARGAR UN SOUND FONT COMO FLUIDR3_GM.SF2
+
+PARA EJECUTAR UN ROLL EN GRAFICO Y UN ARCHIVO *.MID EN EL
+REPRODUCTOR DE MEDIOS DE ROLLMUSIC A LA VEZ
+CONFIGURACIONES
+
+EN EL  MIDIMAPPER.EXE DE COOLSOFT  ELEGIR 
+  DEFAULT MIDI DEVICE  VIRTUALMIDI SYNTH #1
+----------------------
+EN EL ICONO DEL VIRTUAL SYNTH CLICK DERECHO CONFIGURACION
+   EN SOLAPA MIDIMAPPER
+    DISPOSITIVO DE SALIDA POR OMISION (ARRIBA EL PRIMERO)
+        VIRTUALMIDISYNTH 1
+   POR OMISION PARA EL MEDIAPLAYER (ABAJO)
+         MICROSOFT GD WAVETALE SYNTH
+LAS FIGURAS ADJUNTAS LO MUESTRAN
+-------------------------
+verificar RollMusic.ini
+debe haber una linea con
+ 0            PORT_MICROSOFT
+-----------
+si nose escucha puede ser necesario cerrar la sesion de usuario
+y volver a iniciarla 
+ o detenr los aervicios
+Audio de Windows 
+y luego
+Compilador de extremo de Audio de Windows
+unavez detenidos ambos con iniciar el 1ero
+Audio de Windows , se levantan ambos
+(En Windows 10)
+
+
+
+
+

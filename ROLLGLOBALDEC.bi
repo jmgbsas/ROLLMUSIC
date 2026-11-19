@@ -152,6 +152,7 @@ Const HABILITAR = TRUE
 Const DESHABILITAR = FALSE
 Const SI=1
 Const NO=0
+Const EN_CURSO=2
 Const CARGAR = 1
 Const NO_CARGAR =0
 Const CARGAR_MAS_PISTAS_O_CANCION = 2
@@ -894,6 +895,8 @@ End Type
 Type paso Field=1
      Posi As Integer =0
      nro  As Integer =0
+     pulso As Integer=0
+     vel   As Integer=0
 End Type
 
 Type pasa Field=1
@@ -954,7 +957,7 @@ Const BITS As Integer = 16          ' 16-bit (Estándar)
 Const CANALES As Integer = 1        ' 1 = Mono, 2 = Estereo
 Dim Shared PlaySoundbuffer As Integer Ptr
 Dim Shared As Integer SEGUNDOS=60, kSilencio=1
-Dim Shared As String cadenapulsos
+Dim Shared As String cadenapulsos,cadenafiguras
 Dim Shared As Double  t1, t3,deltatime=0
 Static Shared As Integer llave=0
 Dim Shared As HBITMAP bitmap 
@@ -972,3 +975,10 @@ Dim Shared As byte acento73(1 To 7)={-1,-2,-2, -3,-2,-3,-2} ' 3,2,2
 Dim Shared As byte acento75(1 To 7)={-1,-2,-3, -2,-2,-3,-2} '2,3,2
 
 Dim Shared As String MENSAJE_TEMPORARIO
+Dim Shared As Integer mov8,MOV_FLAG=0
+Dim Shared As Integer HABILITAR_PITCHBEND=0
+Common Shared As double FactortiempoPatron
+Common Shared As Double  tickUsuario
+FactortiempoPatron=1 
+tickUsuario=60/(tiempoPatron*PPQN*FactortiempoPatron)
+Dim Shared As Integer nroPartesNotaOld=0 ,YdelultimoOn=0,XdelultimoOn=0

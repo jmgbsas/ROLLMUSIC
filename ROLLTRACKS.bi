@@ -691,8 +691,8 @@ Sub CargarTrack(Track() As sec, ByRef ntk As Integer , ByRef ubirtk As Integer) 
      If grabaLim.pan = 2 Then
           alteracion="bem"
      End If
-     If grabaLim.pan = 0 Then
-          alteracion="sos"
+     If grabaLim.pan = 1 Then
+          alteracion=""
      End If
      
      Print #1,"alteracion ",alteracion
@@ -1379,6 +1379,9 @@ Sub ActualizarRollyGrabarPistaTrk (funcion As String, nroejec As Integer)
           altaux = CUByte(3)
      Case "bem"
           altaux = CUByte(2)
+     Case ""
+          altaux = CUByte(1)
+
      End Select
      
      If altaux <> pmTk(ntk).alteracion Then
@@ -2552,6 +2555,18 @@ End Function
 '               P L A Y   C A N C I O N
 '------------------------------------------
 Sub PlayCancion(Track() As sec)
+valorpan=64
+For ntk=0 To 32
+      pmTk(ntk).pan=CUByte(valorpan)
+Next ntk
+      pmTk(0).pan=CUByte(valorpan)
+For ntkp=1 To 32
+      pmEj(ntkp).pan=CUByte(valorpan) 
+      tocaparam2(ntkp).pan=CUByte(valorpan)
+Next ntkp
+ntk=0
+ntkp=1
+
      ' los patch de los solo se maneja en playSOlo, corregido por pistas sin patch sonaba el pajarito ja
      Print #1,"' ----------------------------------------"
      Print #1,"'               P L A Y   C A N C I O N"
@@ -2728,7 +2743,7 @@ Sub PlayCancion(Track() As sec)
           comienzo= 1
      End If
      
-     Dim As float  tickUsuario=(60/(tiempoPatron*PPQN))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
+     tickUsuario=(60/(tiempoPatron*PPQN))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
      ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
      ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
      Print #1,"TickUsuario "; tickUsuario
@@ -2853,7 +2868,7 @@ Sub PlayCancion(Track() As sec)
      
      ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
      ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
-     Print #1,"TickUsuario "; tickUsuario
+     Print #1,"TickUsuario "; TickUsuario
      ''" ---------------000000000000000000000-----------------"
      ''//////////////// L O O P E O  JPLY HORIZONTAL ////////////////////////////////////////////////
      ''" ---------------000000000000000000000-----------------"
@@ -3394,7 +3409,7 @@ Sub PlayUnoSolo(SolX As sec, Spis As Integer)
      Dim As Double Sold_time_on
      Sold_time_on=STARTMIDI
      Print #1,"Sold_time_on "; Sold_time_on
-     Dim As Double  tickUsuario=(60/(tiempoPatron*PPQN))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
+     tickUsuario=(60/(tiempoPatron*PPQN))/FactortiempoPatron ''''tickUsuario=0.01041666 * 240/tiempoPatron
      ' SI TEMPOPATRON O VELOCIDAD ES 240 LA SEMIFUSA VALE ESO 0.01041666
      ' SI TIEMPOPATRON VALE 60 LA SEMIFUSA VALE X 4= 0,0416666
      Print #1,"TickUsuario "; tickUsuario
