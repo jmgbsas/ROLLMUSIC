@@ -984,8 +984,8 @@ End Type
 
 Type melodia_undo Field=1
   As Integer trk  ' NRO DE TRACK POR DEFAULT 0
-  As Integer posn ' de nota y onoff=2
-  As Integer onoff1 ' fin de nota
+  As Integer posn ' de nota y onoff=2  comienzo
+  As Integer onoff1 ' fin de nota   final o sea mas la duracion es otra posicion
   'As notas_agregadas columna
 End Type
 Dim Shared As melodia_undo mel_undo(1 To 5000)

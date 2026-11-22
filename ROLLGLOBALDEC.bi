@@ -606,7 +606,7 @@ Dim Shared  IndiceInstAlfa(1 to 127) as integer   => _
 14  }
 
 Common Shared As  Integer PPQN
-PPQN=96
+PPQN=96 ''' PPQN=480 VOY HACER VARIABLE AL PPQN SEGUN GUSTO DEL USUARIO
 Common Shared As float nanchofig
 COMMON Shared As Long eventc, eventM , eventK
 Common Shared As hwnd hwndC, hwndListBox, hwndListEjec, hwndPatronEjec,ParenthWnd

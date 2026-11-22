@@ -105,7 +105,8 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.444 se evita CTRL-M que una nota con la misma altura que otra anterior muy cercana pise el final de nota y quede como ligadas"
+nroversion="0.445 Correccion Tresillos!, indicacion de las lineas sup (( e inf )) de un pentagrama"
+'' 0.444 se evita CTRL-M que una nota con la misma altura que otra anterior muy cercana pise el final de nota y quede como ligadas"
 '' 0.444 TAMBIEN SE ELIMINO LAS PRIORIDADES ALTAS EN LAS FUNCIONES, PONIA INESTABLE SI UN SYNTETIZADOR DE ALTA PRIORIDAD
 ''' SE EJECUTABA EN PARALELO..
 '' (-> NO SE CUENTA..0.445 parar play con un click de mouse funciona pero para por cualquier motivo se desecha por ahora")
@@ -799,6 +800,8 @@ Do
                                         ntoca=k 'ntoca es la  pista ejec que se esta grabando global entera
                                         '''If tocaparam(k).nombre ="" Then
                                              CheckBox_SetCheck( cbxejec(k),1) 'automaticamente chequea ejec 26-12-2025
+
+
 Print #1,"CantMin PPQN tiempoPatron "; CantMin, PPQN, tiempoPatron
                                              CantTicks=CantMin*PPQN*tiempoPatron
                                                Print #1,"CANTTICKS EN CHECKS ";CantTicks

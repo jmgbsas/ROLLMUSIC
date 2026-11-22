@@ -224,8 +224,15 @@ Sub creaPenta (c As cairo_t Ptr, Roll as inst )
                     t = NotasGuia(semitono) + Str(*po -1)
                  End If
                EndIf   
+               If semitono=6 And *po=6 Then
+                    t = t  +"((" '' linea superior de pentagrama
+               End If
+
                If semitono=11 And *po=6 Then
                     t = t  +"<]" '' DO central
+               End If
+               If semitono=7 And *po=5 Then
+                    t = t  +"))" '' linea baja de pentagrama
                End If
 
                cairo_move_to(c, posicionNotasGuia, Penta_y + (semitono+1) * inc_Penta- 6)
@@ -2440,6 +2447,11 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
 '' las notas que hagan acorde con la melodia usan otras lineas la nota la da la notapiano no la posicion vertical
 '' de track,,hay que ver como se superponen las notas en la linea1 cuando es un tipo arpegio y ver como play
 '' cancion la toca..
+'' este algoritmo considera que en una melodia las notas nunca estarn en la misma posicion sino seria
+'' un acorde por lo tanto si tengo una posicion posn si borro toda la columna se que borro una nota y ninguna
+'' otra...sino seria un acorde y si este fuera el caso borraria el acorde completo de un plumazo
+'' porque borra toda la columna en una posicion dada, si un acorde esta levbemente corrido sera borrado
+'' como melodia..dado esta forma de borrar, en la carga de un arhcivo se puede cargar todo el mel_uno
                          For ij=NB To NA -13' evitamos borrado de controles de acorde 01-02-2022
                               Roll.trk(mel_undo(ik).posn, ij).nota =0
                               Roll.trk(mel_undo(ik).posn, ij).dur  =0
@@ -3096,7 +3108,8 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
                     End If
                     
                     
-                    
+''''
+/'                    
                     Select Case UCase(inKey) '' EN CTRL-N NO FUNCIONA EL INKEY!!
                     Case "C"
                          nota=12
@@ -3176,7 +3189,83 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
                          '   EndIf
                          
                     End Select
-                    
+
+'/                    
+''''
+If MultiKey (SC_A) Then
+ nota= 3
+ If espacio > 0 Then
+  espacio=3
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+ Exit Do
+EndIf
+
+If MultiKey (SC_B) Then
+ nota = 1
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+ Exit Do
+EndIf
+
+If MultiKey (SC_C) Then
+ nota = 12
+ If espacio > 0  Then
+  espacio=12
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+ Exit Do
+EndIf
+
+If MultiKey (SC_D) Then
+ nota= 10
+ If espacio > 0 Then
+  espacio=10
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+ Exit Do 
+EndIf
+
+If MultiKey (SC_E) Then
+ nota = 8
+ If espacio > 0 Then
+  espacio=8
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+ Exit Do
+EndIf
+
+If MultiKey (SC_F) Then
+ nota= 7
+ If espacio >  0 Then
+  espacio=7
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION Then
+  agregarNota = NO_AGREGAR
+ EndIf
+ Exit Do
+EndIf
+
+If MultiKey (SC_G) Then
+ nota= 5
+ If espacio >  0 Then
+  espacio=5
+ EndIf
+ If COMEDIT=SOLO_MODIFICACION  Then
+  agregarNota=NO_AGREGAR
+ EndIf
+ Exit Do
+EndIf
+
                     
                     '----teclado
                     ' nueva escritura de teclado midi sobre roll, en esta nueva forma no es on line uno por uno,
@@ -3753,7 +3842,6 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
                     DUR=TiempoDelta
                End If
                
-               Do '''LOOP DE LECTURA DE BUFFER 11-06-2026
                     
                     If COMEDIT=ENTRADA_NOTAS  And nota > 0 And agregarNota=AGREGAR  And carga=0 And nota <=182   Then ' 182 entra el fin de archivo
                          curposClickDErecho=0 'vamos a cambiar una nota y si es por cambiadur=1 y CTRL-N se debe resetear
@@ -3842,7 +3930,8 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
                                         End If
                                         If HabilitarMIDIIN =0 And  GrabarPenta=0  Then
                                              posn = posn + 1
-                                             ' Print #1,"LOOP DO posn = posn + 1 ";posn
+                                             Print #1,"1) LOOP DO posn = posn + 1 ";posn
+                                             Exit Do '''''22-11-2026 SE BORRO EL EXIT DO NO SE  COMO       
                                              '  pmTk(ntk).posn =posn ' 383 un posn para cada pista 08-05-2026
                                              '  pmTk(ntk).MaxPos =posn +6' 15-05-2026
                                              '  MaxPos =posn +6' 15-05-2026
@@ -3853,6 +3942,7 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
                                                   'seria un acorde se esciben en la misma posicion
                                              Else
                                                   posn = posn + 1
+                                                  ''Exit Do '''''DEBE TENER  IGUAL???? 22-11-2026  
                                                   '' pmTk(ntk).posn =posn ' un posn para cada pista 08-05-2026 383
                                                   '' pmTk(ntk).MaxPos =posn +6' 15-05-2026
                                                   '' MaxPos =posn +6' 15-05-2026
@@ -3902,6 +3992,7 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
                                    If Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).onoff = 1 Then
                                       posn=posn+1 '' se desea evitar pisar finales de nota > no ligadas 
                                    EndIf
+Print #1, "posicion del on siguiente posn, nota, posnoff "; posn, nota, posnoff
                                    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).nota = nota 'carga visualizacion
                                    Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).onoff = 2 'on de la nota
                                    
@@ -4024,6 +4115,7 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
                                         Track(ntk).trk(posn,1).dur = DUR + 36
                                         incr=0
                                    End If
+'''el comienzo de la siguiente nota lo da el final de la nota anterior +1 o 2
                                    ' -----fin 1er bloque ------------------------
                                    
                                    If cuart=0 And pun = 0 And doblepun=0 And tres=0 And silen=1 And mas=0 Then
@@ -4118,6 +4210,23 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
                                         Track(ntk).trk(posn,1).dur = DUR + 171
                                         incr=135
                                    End If
+'---22-11-2026--------otro de tresillo todo tresillo con * o puntillo es la figura base sin tresillo
+                                   If cuart=0 And pun = 1 And doblepun=0 And tres=1 And silen=0 And mas=0 Then
+                                        Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR 
+                                        Track(ntk).trk(posn,1).dur = DUR 
+                                        incr=0 
+                                   End If
+                                   If cuart=0 And pun = 1 And doblepun=0 And tres=1 And silen=1 And mas=0 Then
+                                        Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 45 
+                                        Track(ntk).trk(posn,1).dur = DUR + 45
+                                        incr=45
+                                   End If
+                                   If cuart=0 And pun = 1 And doblepun=0 And tres=1 And silen=1 And mas=1 Then
+                                        Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur = DUR + 135 
+                                        Track(ntk).trk(posn,1).dur = DUR + 135
+                                        incr=135
+                                   End If
+'---------------------------------------------------
 
                                    ' volumen default según la duracion 07-12-2025
                                    Select CASE Roll.trk(posn,(12-nota +(estoyEnOctava -1) * 13)).dur
@@ -4197,7 +4306,7 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
                                              Track(ntk).trk(posnOff,1).nota = PianoNota '''14-10-025
                                              Track(ntk).trk(posnOff,1).dur = 183
                                              Track(ntk).trk(posnOff,1).onoff = 1
-                                             posn=posnOff +1
+                                             posn=posnOff ''''+1
                                              
                                              
                                              ''  Print #1,"posn  "; posn
@@ -4247,7 +4356,7 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
                                                   Roll.trk(posnOff+6,(12-nota +(estoyEnOctava -1) * 13)).dur = 182
                                                   Track(ntk).trk(posnOff+6,1).dur= 182
                                              End If
-                                             posn=posnOff+1  ' por omision se va al fina de la duracion el usuario puede retroceder
+                                             posn=posnOff '''+1  ' por omision se va al fina de la duracion el usuario puede retroceder
                                              ''   If (posn > NroCol + InicioDeLectura) Then
                                              ''    InicioDeLectura=InicioDeLectura + NroCol
                                              ''   EndIf
@@ -4290,7 +4399,7 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
                                              Track(ntk).trk(posnOff,1).nota = PianoNota
                                              Track(ntk).trk(posnOff,1).dur = 183
                                              
-                                             posn=posnOff +1
+                                             posn=posnOff '''+1
                                              posnOffOld=posnOff
                                              If (posn > NroCol + InicioDeLectura) Then
                                                   InicioDeLectura=InicioDeLectura + NroCol
@@ -4325,7 +4434,7 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
                                              Track(ntk).trk(posnOff,1).dur = 183
                                              
                                              Track(ntk).trk(posnOff,1).onoff = 1
-                                             posn=posnOff +1
+                                             posn=posnOff '''+1
                                              If (posn > NroCol + InicioDeLectura) Then
                                                   InicioDeLectura=InicioDeLectura + NroCol
                                              End If
@@ -4412,7 +4521,7 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
                                    mel_undo_k = mel_undo_k + 1
                                    
                                    mel_undo(mel_undo_k).trk = ntk
-                                   mel_undo(mel_undo_k).posn = posn
+                                   mel_undo(mel_undo_k).posn = posn  ''nota y onoff2
                                    mel_undo(mel_undo_k).onoff1 = posnOff
               
                                    'mel_undo(mel_undo_k).columna.pn = nR
@@ -4488,77 +4597,7 @@ Print #1, "SE AJUSTA BORRARNOTALIBREMENTE=1 "
                          RecalCompas(ritmo) ''383
                     EndIf  ''' FIN ENTRADA NOTAS
                     
-                    Select Case UCase(inKey)
-                    Case "C"
-                         nota=12
-                         If espacio > 0  Then
-                              espacio=12
-                         End If
-                         If COMEDIT=SOLO_MODIFICACION Then
-                              agregarNota = NO_AGREGAR
-                         End If
-                         
-                    Case "D"
-                         nota=10
-                         If espacio > 0  Then
-                              espacio=10
-                         End If
-                         If COMEDIT=SOLO_MODIFICACION Then
-                              agregarNota = NO_AGREGAR
-                         End If
-                         
-                    Case "E"
-                         nota=8
-                         If espacio > 0  Then
-                              espacio=8
-                         End If
-                         If COMEDIT=SOLO_MODIFICACION Then
-                              agregarNota = NO_AGREGAR
-                         End If
-                         
-                    Case "F"
-                         nota=7
-                         If espacio > 0  Then
-                              espacio=7
-                         End If
-                         If COMEDIT=SOLO_MODIFICACION Then
-                              agregarNota = NO_AGREGAR
-                         End If
-                         
-                    Case "G"
-                         nota=5
-                         If espacio > 0  Then
-                              espacio=5
-                         End If
-                         If COMEDIT=SOLO_MODIFICACION Then
-                              agregarNota = NO_AGREGAR
-                         End If
-                         
-                    Case "A"
-                         nota=3
-                         If espacio > 0  Then
-                              espacio=3
-                         End If
-                         If COMEDIT=SOLO_MODIFICACION Then
-                              agregarNota = NO_AGREGAR
-                         End If
-                         
-                    Case "B"
-                         nota=1
-                         If espacio > 0  Then
-                              espacio=1
-                         End If
-                         If COMEDIT=SOLO_MODIFICACION Then
-                              agregarNota = NO_AGREGAR
-                         End If
-                         
-                     Case Else
-                         ''''nota=0 IMPIDE FUNCIONE CTRL-N  PROBAR CTRL-M <--OK NO AFECTO
-'' FALTA QUE CON EL NOMBREDE NOTA CTRL-N INSERTE O MODIFIQUE
-                         Exit Do
-                    End Select
                     
-               Loop  ''' FIN LOOP LECTURA DE BUFFER ENTRADA DE NOTAS SOLO NOTAS SIN SOSTENIDO
                
                If GrabarPenta=1 And HabilitarMIDIIN > 0 Then
                     DUR=0

@@ -1,3 +1,10 @@
+ 0.445 Correccion Tresillos!, indicacion de las lineas sup (( e inf )) de un pentagrama
+            Desde la version 391 se arrastra un error de posicion de las notas debido al loop puesto para acelerar
+    la entrada de notas. y un borrado accidental de EXIT DO en 22-11-2026.
+   Se vuelve al 390 en el metodo de entrada de notas y a su vez se corrigio mas la posicion de cada ON
+   de inicio de nota onoff=2 (como la posicion del onoff se le suma 1 a la ultima posn del onoff1 no se le suma 1
+   es redundante. Asi en un 4/4 entran 12 tresillos de corchea que es lo correcto cada negra son 96 ticks
+   yeltresillo de corchea 32 => es 96/3 la era parte de la negra . Y en un 4/4   son 394 ticks.
  0.444 se evita en CTRL-M que una nota con la misma altura que otra anterior muy cercana pise el final de nota 
    y quede como ligadas,  fix EN 1B - codigo en 12-11-2026 ,error esporadico pero error.
     TAMBIEN SE ELIMINO LAS PRIORIDADES ALTAS EN LAS FUNCIONES, PONIA LENTA LA RESPUESTA DE ROLLMUSIC 

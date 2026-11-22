@@ -1,5 +1,5 @@
     Ayuda Prelimiar Básica RollMusic  
- 0.444 se evita en CTRL-M que una nota con la misma altura que otra anterior muy cercana pise el final de nota 
+   0.445 Correccion Tresillos!, indicacion de las lineas sup (( e inf )) de un pentagrama
     Y otras que se nombran en historico.txt
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
@@ -10,7 +10,13 @@
 ------------------------------------------------------------------------------------------
      OBSERVACION GENERAL: En RollMusic no hay Octavas negativas como suelen usar algunos
      Las octavas van de 1 en adelante, de este modo C4 Central que aparecen en muchos lados
-     en RollMusic es la octava 5, marcada en el grafico con C5<]  
+     en RollMusic es la octava 5, marcada en el grafico con C5<] . Un pentagrama de 5 lineas 
+     tienen la linea inferior a un E4 emRollMusic  y la superior un F5. para destacarlas se agregaron parentesis
+     F_5((    -----------linea superior de un pentagrama  indicada con ((
+                 ----------------
+                 ----------------
+                 ----------------
+     E_4))    -----------linea inferior de un pentagrama   indicada con ))
 
      INSTALACION:
        Crear un directorio de cualquier nombre y colocar en él 
