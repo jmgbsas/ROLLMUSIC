@@ -1,6 +1,6 @@
     Ayuda Prelimiar Básica RollMusic  
-   0.445 Correccion Tresillos!, indicacion de las lineas sup (( e inf )) de un pentagrama
-    Y otras que se nombran en historico.txt
+     fix menor 0.446 se corrige como pulsar doble puntillo  Ej; I: usamos Bloqueo de Maysuculas, Mayuscula Derecha 
+     da lo mismo que Mayuscula Izquierda
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -156,26 +156,26 @@
         O   P   I   L   F   E   X   H   W   =>  Luego nada
         O4  P4  I4  L4  F4  E4  X4  H4  W4  =>   May Izq (+1/4, 4)
         O*  P*  I*  L*  F*  E*  X*  H*  W*  =>  tecla punto . (+1/2, * puntillo)
-        O:  P:  I:  L:  F:  E:  X:  H:  W:  =>  May Der (+MITAD 
+        O:  P:  I:  L:  F:  E:  X:  H:  W:  =>  bloqueo de mayuscula CAPSLOCK (+MITAD 
                                                        + MITAD DE LA MITAD ANTERIOR, : doble puntillo)
        3O  3P  3I  3L  3F  3E  3X  3H  3W    =>  T o t
 
        sO  sP  sI  sL  sF  sE  sX  sH  sW    =>  S o s
        sO4 sP4 sI4 sL4 sF4 sE4 sX4 sH4 sW4   =>  S y luego May Izq .
        sO* sP* sI* sL* sF* sE* sX* sH* sW*   => S y .
-       sO: sP: sI: sL: sF: sE: sX: sH: sW:   =>  s luego May Derecha
+       sO: sP: sI: sL: sF: sE: sX: sH: sW:   =>  s luego bloqueo de mayuscula CAPSLOCK
       s3O s3P s3I s3L s3F s3E s3X s3H s3W   => s T 
 
        O+  P+  I+  L+  F+  E+  X+  H+  W+  =>  +  
        O4+ P4+ I4+ L4+ F4+ E4+ X4+ H4+ W4+ => May Izq + 
        O*+ P*+ I*+ L*+ F*+ E*+ X*+ H*+ W*+ => . luego +
-       O:+ P:+ I:+ L:+ F:+ E:+ X:+ H:+ W:+ => May Der +
+       O:+ P:+ I:+ L:+ F:+ E:+ X:+ H:+ W:+ => bloqueo de mayuscula CAPSLOCK  +
       3O+ 3P+ 3I+ 3L+ 3F+ 3E+ 3X+ 3H+ 3W+  => T + 
 
       sO+ sP+ sI+ sL+ sF+ sE+ sX+ sH+ sW+  => s +
       sO4+ sP4+ sI4+ sL4+ sF4+ sE4+ sX4+ sH4+ sW4+ => S May Izq + 
       sO*+ sP*+ sI*+ sL*+ sF*+ sE*+ sX*+ sH*+ sW*+ => s . +
-      sO:+ sP:+ sI:+ sL:+ sF:+ sE:+ sX:+ sH:+ sW:+ => s May Der +
+      sO:+ sP:+ sI:+ sL:+ sF:+ sE:+ sX:+ sH:+ sW:+ => s bloqueo de mayuscula CAPSLOCK +
       s3O+ s3P+ s3I+ s3L+ s3F+ s3E+ s3X+ s3H+ s3W+ => s T +
                                            ||   => final con  
     Cuando entramos notas en Edicion manual ( lineas verdes), si nos equivocamos en la ultima podemos borrarla con

@@ -253,7 +253,7 @@
 			SC_MULTIPLY = 55 ' keypad * H37
 			SC_ALT = 56
 			SC_SPACE = 57 ' h39
-			SC_CAPSLOCK = 58 ' h3A
+			SC_CAPSLOCK = 58 ' h3A es : para multikey 
 			SC_F1 = 59   ' h3B
 			SC_F2 = 60   ' h3C
 			SC_F3 = 61   ' h3D

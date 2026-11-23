@@ -105,7 +105,8 @@ On Error Goto errorhandler
 ' da numeros http://midi.teragonaudio.com/tutr/bank.htm
 'http://midi.teragonaudio.com/progs/software.htm
 ' --------------------------------------------
-nroversion="0.445 Correccion Tresillos!, indicacion de las lineas sup (( e inf )) de un pentagrama"
+nroversion="0.446 se corrige como pulsar doble puntillo  Ej; I: usamos Bloqueo de Maysuculas, Mayuscula Derecha da lo mismo que MAyuscula Izquierda"
+'' 0.445 Correccion Tresillos!, indicacion de las lineas sup (( e inf )) de un pentagrama"
 '' 0.444 se evita CTRL-M que una nota con la misma altura que otra anterior muy cercana pise el final de nota y quede como ligadas"
 '' 0.444 TAMBIEN SE ELIMINO LAS PRIORIDADES ALTAS EN LAS FUNCIONES, PONIA INESTABLE SI UN SYNTETIZADOR DE ALTA PRIORIDAD
 ''' SE EJECUTABA EN PARALELO..

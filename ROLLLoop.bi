@@ -8031,16 +8031,12 @@ Print #1, "posicion del on siguiente posn, nota, posnoff "; posn, nota, posnoff
                          End Select
                          ''    MousePress=0
                     End If
-                    If MultiKey(SC_LSHIFT)  Then ' :
+                    If MultiKey(SC_LSHIFT)  Then ' I4
                          cuart=1
                          Exit Do
                     End If
-                    'If MultiKey(SC_RSHIFT)  Then ' : da lo mismo que LSHIFT
-                    '    doblepun = 1  ' doble puntillo
-                    '    Exit Do
-                    'EndIf
-                    If MultiKey(SC_COMMA)  Then
-                         doblepun = 1  ' doble puntillo
+                    If MultiKey (SC_CAPSLOCK) Then ''RSHIFT no funciona 
+                         doblepun = 1  ' doble puntillo I: 
                          Exit Do
                     End If
                     
