@@ -1,3 +1,9 @@
+ 0.447 fix ejecucion por teclado MIDI-IN, se abria un port default hacia consumir mucha cpu al Syntetizador, 
+        Prio.exe se actualizo, programita que al pulsarlo llama y Ejecuta a RollMusic con prioridad por 
+        encima de lo Normal. Con una o varias pistas de *.ejec cargadas o ninguna, para tocar un teclado midi
+        usamos el item 3.0 del Menu Reproducir; el patch si no hay ninguna pista cargada, se podra elegir desde 
+        el boton inferior PATCH, sino tocara el patch por omision un piano..Con pistas cargadas se debe chequear
+        la columna G de grabar para poder seleccionar una pista para tocar con su mismo Patch o timbre.
  0.446 fix menor 0.446 se corrige como pulsar doble puntillo  Ej; I:, usamos Bloqueo de Maysuculas, Mayuscula Derecha 
      da lo mismo que Mayuscula Izquierda, no sepodia introducir doble puntillo 
  0.445 Correccion Tresillos!, indicacion de las lineas sup (( e inf )) de un pentagrama

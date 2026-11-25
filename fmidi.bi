@@ -292,7 +292,7 @@ Sub FBMIDI.loadFile(fName As String)
 			Get #filenum, , midiDat(filesize)
 			filesize += 1
 			If filesize>maxCounter Then
-				Print "File too long error."
+				Print #1, "File too long error."
 				End
 			End If
 		Wend
@@ -855,13 +855,13 @@ Sub FBMIDI.readHeaderChunk()
 	globalNumOfTracks=hdChunk.numOfTracks
 	globalDivision=hdChunk.timeDivision
 	If (globalDivision And &H8000) <> 0 Then
-		Print
-		Print ("time division="+Str(globalDivision And &H7FFF)+" frames per second")
-		Print ("ERROR - Format not supported")
+		Print #1,
+		Print #1,("time division="+Str(globalDivision And &H7FFF)+" frames per second")
+		Print #1,("ERROR - Format not supported")
 	End If
 	If (hdChunk.chunkID <> "MThd") OrElse (hdChunk.formatType>2) Then
-		Print
-		Print ("ERROR - invalid Header Chunk")
+		Print #1,
+		Print #1,("ERROR - invalid Header Chunk")
 		'End
 	End If
 End Sub

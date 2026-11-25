@@ -1,6 +1,11 @@
     Ayuda Prelimiar Básica RollMusic  
-     fix menor 0.446 se corrige como pulsar doble puntillo  Ej; I: usamos Bloqueo de Maysuculas, Mayuscula Derecha 
-     da lo mismo que Mayuscula Izquierda
+ 0.447 fix ejecucion por teclado MIDI-IN, se abria un port default hacia consumir mucha cpu al Syntetizador, 
+        Prio.exe se actualizo, programita que al pulsarlo llama y Ejecuta a RollMusic con prioridad por 
+        encima de lo Normal. Con una o varias pistas de *.ejec cargadas o ninguna, para tocar un teclado midi
+        usamos el item 3.0 del Menu Reproducir; el patch si no hay ninguna pista cargada, se podra elegir desde 
+        el boton inferior PATCH, sino tocara el patch por omision un piano..Con pistas cargadas se debe chequear
+        la columna G de grabar para poder seleccionar una pista para tocar con su mismo Patch o timbre.
+
 -------------------------------------------------------------------------------------------------
      (TODO ESTA BAJO REVISON PARA LA NUEVA VERSION DE ROLLMUSIC CON TICKS, SE ADAPTAN DE A POCO
        Y FUNCIONAN BIEN PARA TICKS . faltan cambios, mejoras Y FIXES )
@@ -43,17 +48,21 @@
        parametros (3 vistas)
        NOTA: En windows 11 si no funciona el Play o cancela se podria  usar un mapeador Midi 
              como uno gratis CoolSoft_MIDIMapper_2.1.2.exe  o mas nuevo u otro (falta deteccion de fallas).
-        Despues de optimizat mas a Rollmusic, estaba quedando lento porque CoolSoft
-       se dispara en alta prioridad y ralentiza a RollMusic aunque RollMusic tenia alta prioridad en varias partes.
-       windows pierde el audio cada tanto, Lo probe sin CoolSoft y con MidiMapper de Microsoft anda bien 
-       no se tara y mas rápido, al final a la larga CoolSoft complica la performance de RollMusic, 
-       desinstalar CollSoft puede  dar dolor de cabeza..MidiMapper.dll despues de la desinstalacion suele 
-       quedar en System32 y   SysWow64, hay que borrarlas y reiniciar 1 o 2 veces y windows, Window reconfigura 
-      a MidiMapper de Microsoft.   Hay que probar RollMusic con otros  syntetizadores. A RollMusic se le quito todas 
-      las prioridades en  todas sus partes corre con prioridad normal y con midi mapper de windows anda bien,
+       A RollMusic se le quito todas  las prioridades en  todas sus partes corre con prioridad normal y con 
+       midi mapper de windows anda bien, porque CoolSoft ejecuta en alta prioridad y pueden pelearse con los
+       recursos, en esta version se elimino la apertura del port al inicio y eso baja bastante el consumo de 
+       CoolSoft. Si se desea subir la prioridad de Rollmusic se lo puede ejecutar con el programita PRIO.exe
+       el cual lo ejecuta con prioridad por encima de lo normal si se desea mas se puede modificar PRIO.bas
+       y compilarlo.
+        Si se desea escuchar un roll o rtk y un mid la instalacion debe  tener el MIDIMAPPER  DE COOLSOFT, 
+      y colocar  al PORTMICROSOFT en 0 en Rollmusic.ini (par que no lo use RollMusic )
+      de ese modo la ejecucion del *.mid se hara por Microsoft, y los Roll por Coolsoft usaran
+      MIDIMaper diferentes y por diferentes porque playMovie de window9.bi toma de forma exclusiva un port midi.
+     ( sepodria usar otras librerias pero por ahora asi funciona)
 
              Obervacion: si se graba a disco un archivo roll, rtk o mid con un mapeador Midi y si luego durante
-       la reproduccion se usa otro mapeador midi de window puede que no se escuche nada. 
+       la reproduccion se usa otro mapeador midi de window puede que no se escuche nada. dEberia reasignarselo
+       y cuando funciones grabar el archivo con la nueva configuracion. (las configuracion son parte del archivo)
 
        Esta Ayuda sale con F1 en Grafico y sin grafico. 
        Teclas Rapidas Sin grafico INFO->5.0 en menu Control, con
@@ -383,12 +392,18 @@
               demas pistas se reorganizan y funcionan bien se corrigio.
        6.1.3) 5.2.1 borra todas las pistas de ejecucion cargadas sin importar si estan seleccionadas o no.
               Para despues empezar de nuevo, cargar o grabar.
-       6.2) Cargar CANCION y Cargar Ejecuciones Sumadas (todos los archivos ejec y rtk estaran en carpetas
+       6.2) Cargar CANCION y/o Cargar Ejecuciones Sumadas (todos los archivos ejec y rtk estaran en carpetas
             diferntes puede nser solo subcarpetas distintas)
             - Cargar primero la cancion con o sin grafico (si se uso sin grafico luego debe abrilo ).
               1.0 o 2.0 del menu de Caontrol.
             - Cargar la secuencias midi ejecutadas desde teclado, menu archivo 5.1
               "5.1 CARGAR PISTAS EJECUCION MIDI-IN")
+
+           [NOTA: TOCAR EN VIVO EL TECLADO MIDI POR MIDI-IN
+               Si se desea tocar el teclado en una de las pistas de ejecucion DE UNA CANCION SOLO DE *.ejec cargada,
+               mientras este en play o no,  Checkear o Seleccioar en la columna de Grabacion esa pista , el teclado midi de input 
+              sonara con el patch o timbre de esa pista. Por supuesto para poder tocar hay que abrir un port de entrada
+              en  Reproducir item 3.0 ]
 
             Luego en el Grafico de Roll pulsar la barra espaciadora, se escucharan la cancion junto a las ejecuciones.
             detener pulsando la tecla 'P'
@@ -399,7 +414,7 @@
             Para Rerpoducir desde La Ventana de Control usar en el menu Reproducir item 1.0
             y detenerlo 1.1. esto permite ejecutar las pistas sin el grafico consumiendo mucho
             menos CPU. Podemos Cargar la cancion de rtk desde el item 2.0 del Menu Archivo.
-            En cualquier momento si necesito el grafico lo levanto del menu Pistas MAnuales item
+            En cualquier momento si necesito el grafico lo levanto del menu Pistas Manuales item
             6.0. Y para cerrar el grafico pulso esquina superior derecha la cruz X.
 
        6.3) EXPERIMENTAL <SOLOS>. UNA PISTA O VARIAS CUALESQUIERA DE LA CANCION SE SELECCIONA PARA QUE SE EJECUTE 

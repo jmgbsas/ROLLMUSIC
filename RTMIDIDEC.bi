@@ -217,7 +217,9 @@ Dim Shared As integer DurXTick (0 To 185) => {0, _  ' 0 cambiado a 1 9-05-2025
 576, 288, 144, 72, 36, 18, 9,  4,  2, _     ' 154 162
 672, 336, 168, 84, 42, 21, 10, 5,  3, _     ' 163 171
 256, 128, 64 , 32, 16, 8 , 4 , 2 , 1, 0,0,0,0,0 }   ' 172 185
-
+''HARA FALTA VARIOS GRUPOS DE 36, PARA CUATRILLOS, QUINTILLOS, SEISILLOS
+'' Y SEPTILLOS NOTA, NOTA+, SNOTA, SNOTA+, O SEA 36*4=144 POSICIONES MAS
+'' 180+144=  324 POSICIONES           
 ' 96 son 1 seg para negra=60 entonces el tick valdra 1/96=10.41666666 mseg es 3W
 ' el mas chico son 1 parte o sea 10,41 mseg!! son e ldoble de los 5 mseg que usaba!
 ' entonces una negra abarcara 96 columnas

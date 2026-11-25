@@ -1090,7 +1090,9 @@ Sub CTRL1092()
      Dim As UByte portin1092, portout1092
      GrabarEjec=0 '' teclado a todo volumen a 127 solo para tocar y oirse sin grabar
      For  i As Short =1 To 32
-          If  CheckBox_GetCheck( cbxgrab(i))= 1  Or CheckBox_GetCheck( cbxejec(i))= 1 Then
+''siempre tomamo sgrab aunque escuchemos la cancion y querramos tocar en una pista
+'' esa pista se identificara con cbxgrab
+          If  CheckBox_GetCheck( cbxgrab(i))= 1  Then ''''Or CheckBox_GetCheck( cbxejec(i))= 1 Then
                portin1092  = tocaparam(i).portin ' PREVIAMENTE SELECCIONADO
                portout1092= tocaparam(i).portout ' PREVIAMENTE SELECCIONADO
                ntoca=i
@@ -1115,6 +1117,13 @@ Sub CTRL1092()
           End If
      Next i
      If ntoca = 0 Or tocaparam(1).nombre="" Then ' abro el 1 por default
+          Print #1, "1] case 1092 portin, ntkp  ", portin, ntkp
+          selportEjec (1,1) 
+          Print #1, "2] case 1200 portin, ntkp  ", portin, ntkp
+          
+          pmEj(1).portin=CUByte(portin) ' evitamos el cero
+          tocaparam(1).portin=pmEj(1).portin
+'------------------
         'selportEjec (1,1)
         'CTRL1205  ' abre portout
         portin1092  = tocaparam(1).portin ' PREVIAMENTE SELECCIONADO
@@ -1796,6 +1805,7 @@ Sub CTRL1200(hmessages As hmenu) ' PORTIN EJEC
      ' portin  'GLOBAL ULTIMO PUERTO IN SELECCIONADO, por omision el cero
      ' si solo hay ejecuciones .....
      ' 25-09-2024 no monitoreaba port de grabacion cbxgrab
+''faltaba el caso de tocar sin ninguna pista el teclado
      Print #1,"CTRL1200  ntkp",ntkp
      Dim As Integer miport =2, pis=0,num=0,k
      If PISTASEJECSELECCIONADA=1 Then
@@ -1818,6 +1828,7 @@ Sub CTRL1200(hmessages As hmenu) ' PORTIN EJEC
           pmEj(pis).portin=CUByte(portin) ' evitamos el cero
           tocaparam(pis).portin=pmEj(pis).portin
           ntoca=pis '20-12-2024
+
           
      End If
      

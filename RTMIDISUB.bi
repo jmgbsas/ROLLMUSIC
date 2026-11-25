@@ -933,7 +933,6 @@ ntkp=1
      Print #1,"playAll         ==========> tiempoDur= 60/tiempoPatron*FactortiempoPatron =", tiempoDur
      jply=0:curpos=0
      
-     ' print #1,                    "-----------------------------------------"
      comienzo=posicion
      
      
@@ -4240,31 +4239,25 @@ Print #1,"ELSE-------------- "
 End Sub
 '--------------------
 Sub abrirPortoutEjec(j As Integer)
+
      '------------hace falta abrir la salida
      Print #1,"abrirPortoutEjec abriendo port.... "
-     Dim k1 As Integer
-     
-     If j=100 Then ' para tocar una sola nota y saltarl los portout
-          k1=0
-     Else
-          k1=CInt(pmEj(j).portout )
-     End If
-     Print #1,"abrirPortoutEjec midiout ",k1, *nombreOut(k1)
-     If InStr(*nombreOut(k1),"Microsoft")>0 And  PORT_MICROSOFT=0 Then
+     Print #1,"abrirPortoutEjec midiout ",j, *nombreOut(j)
+     If InStr(*nombreOut(j),"Microsoft")>0 And  PORT_MICROSOFT=0 Then
           Print #1,"No se usa Microsoft"
      Else
-          If listoutAbierto( k1) = 0 Then
-               If listoutCreado( k1)=0 Then
-                    midiout(k1) = rtmidi_out_create_default ( )
-                    listoutCreado( k1)=1
+          If listoutAbierto( j) = 0 Then
+               If listoutCreado( j)=0 Then
+                    midiout(j) = rtmidi_out_create_default ( )
+                    listoutCreado( j)=1
                End If
-               open_port midiout(k1),k1, nombreOut(k1)
+               open_port midiout(j),j, nombreOut(j)
                Dim As Integer    porterror=Err
-               listoutAbierto( k1) = 1
-               Print #1,"abro ",*nombreOut(k1)
+               listoutAbierto( j) = 1
+               Print #1,"abro ",*nombreOut(j)
                porterrorsub(porterror)
           Else
-               Print #1,"PORT OUT YA ABIERTO ",listoutAbierto( k1),*nombreout(k1)
+               Print #1,"PORT OUT YA ABIERTO ",listoutAbierto( j),*nombreout(j)
           End If
      End If
      

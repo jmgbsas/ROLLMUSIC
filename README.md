@@ -1,4 +1,4 @@
-Este programa está publicado bajo la licencia GPL.
+Este programa está publicado bajo la licencia GPL. Version 0.447
 (ver carpeta Licences/RollMusic)
   Funciona bien en WINDOWS 7 a 10 para 64bits, Windows 11 tambien esta bajo prueba. 
  Si hay partes lentas es mi mala tecnica de programacion sorry...se sugiere pulsar las teclas rapidas por mas tiempo para que responda el comando.
@@ -18,12 +18,14 @@ Es un codigo  algo organizado usa muchas globals.
 En el grafico se puede hacer scroll con flechas arriba abajo,,
 cambiar tamaño de font con F9-F10 y F2-F3 la proporcion.Levantar el borde inferior dela ventana como un telon
 y asi achicar la pantalla con F7, volver a agrandar con F8, achicando o agrandando separaciones 
-entre lineas etc. 
+entre lineas etc.Con Y se comprime el grafico para no molestar a unas pocas lineas , con F8 o F7 se abre
+de nuevo. 
   Clickeando <> cambia a rojo para redimensionar la pantalla, mejor apuntar el mouse en la 
 zona central y dragar algo para achicar o agrandar. Volver a clickear <> para
 freezar el tamaño. Para volver al tamaño normal pulsar F7 u F8. Para mover la ventana de
-lugar se clickea (insitir haste que lo tome) y draga en la cinta morada de arriba como en las
-ventanas de windows. Se puede cargar un roll o cancion sin grafico yaabrirlo despues. 
+lugar se clickea (insitir haste que lo tome) y draga en la cinta azulada de arriba como en las
+ventanas de windows. En opciones se puede levantar el grafico con venta normal de windows.
+  Se puede cargar un roll o cancion sin grafico y abrirlo despues. 
   Para editar hacer click en la palabra EDIT de lgrafico, la misma cambiara a color verde.
 Elegir una octava para ello hacer scroll, y dejar el cursor del mouse en cualquier parte 
 de esa octava dar un click en el extremo final para asegurar esa octava .
@@ -45,7 +47,7 @@ luego la Tecla I, asi iremos insertando sobreescribiendo lo existente.
 Sin mover el cursor al finalizar pulsar la telca Fin, y todo lo antiguo se desplazara  a derecha 
 y se mostrara la nueva insercion incluida,,
 Los acordes se ingresan sobre Escribiendo en una zona cualquiera en el modo Cursor y con la 
-tecla X. Por ahora para insertar un acorde se hace con insercion de una nota con la tecla Insert,
+tecla X. Para insertar un acorde una forma se hace con insercion de una nota con la tecla Insert,
 luego la tecla I, y terminamos con la tecla fin o End y luego con la opcion X de modificar se 
 agrega el resto del acorde insertado.Tambien se puede hacer por mouse en Edit Cursor, 
 Ctrl mouse derecho, aparece menu Blanquear, Insertar, Fin insertar
@@ -73,20 +75,23 @@ por ahora solo instrumentos General Midi.
 Graba en 2 formatos Roll y Tracks. Roll es el vector de visualizacion y Track el comprimido, lo que se
 observa es que en un track o instrumento, el acorde no tendrá mas de 12 notas cuanto mucho, o sea
 es un vector de ticks en eje X, y 12 notas en vertical Y(algun otro para controles). No es lineal largo
-en eje X, asi el track sigue la estructura visual pero comprimida y en cada ticks la misma informacion
-esta en visual y comprimida. Roll hay solo uno seria el Track cero. Luego hasta 32 track ademas del cero
+en eje X, asi el track sigue la estructura visual, pero comprimida en Y, en cada ticks la misma informacion
+esta en visual y comprimida. Roll hay solo uno, seria el Track cero. Todos los ticks estan grabados en los
+archivos no hay compresion en eje X pro ahora ,en un futuro  se hara par aarchivos mas chicos y uso de menor
+memoria, pero hoy es lo que sobra....
+ Luego hasta 32 track ademas del cero
 cada track comprimido se copia al visual Roll y Track(0), cuando pasamos de uno a otro con TAB en una cancion.
-No probe como anda con 32 hasta queda pendiente con 8 bien...dependerá de la cpu, pero con 4 nucleos no usa
-nada de CPU la reproduccion sin el grafico, con el grafico llega al 20%) cada track con 12 notas de acorde,
-que no existirá nunca creo (un piano con 12 teclas sonando al mismo tiempo? ...no). Para la sincronizacion
-usé variables globales algo sencillo podrá haber minimos retardos que serán parecidos a los retardos humanos
-de modo que seria de paso una reproduccion mas humana que algo super exacto.
+No probe como anda con 32 trackas, queda pendiente con 8 bien...dependerá de la cpu, pero con 4 nucleos no usa
+nada de CPU la reproduccion sin el grafico, con el grafico llega al 25%) cada track con 12 notas de acorde,
+que no existirá nunca creo (un piano con 12 teclas sonando al mismo tiempo? ...no creo  y si se necesita se 
+crea otro track ). Para la sincronizacion usé variables globales algo sencillo podrá haber minimos retardos que serán parecidos a los retardos humanos de modo que seria de paso una reproduccion mas humana que algo super exacto.
 
-Se puede cargar un archivo (.Roll) y luego grabarlo en formato track (.trk) y volverlo a cargar
+Se puede cargar un archivo (.Roll) y luego grabarlo en formato track (.rtk) y volverlo a cargar
 viendolo en pantalla (se convierte al grabar de Roll a Trk y al cargar de Trk a Roll ), o si es 
 nuevo al poner un nombre se debe poner la extension si es .roll o .rtk los grabara en esos formatos.
 Pulsando F1 aparece un Notepad con Ayuda Basica. En el menu info hay mas ayuda.
 Hubo una conversion del programa de no usar ticks a usarlo por eso la ayuda puede tener partes
 de cuando no tenia ticks, se ira adaptando de a poco..Agregue alguna ayudita para los que estudian
 lenguaje musical y canto como es mi caso,, a medida que lo vaya usando y encuentre monton de errores los
-ire corrigiendo, eso espero...saludos
+ire corrigiendo..Tengo casi nada de feedback de modo que los errores los detectare mioentras lo use.
+y segun mi nececidad pondre mas cosas 

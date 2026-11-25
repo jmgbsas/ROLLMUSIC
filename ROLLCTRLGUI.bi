@@ -452,7 +452,7 @@ If instancia < ARG3_TITU And ubirtk=0 And ubiroll=0 And menuabierto=0 Then ' rol
      MenuItem(1009,MenName1,  "4.5.1 Exportar a MIDI Pista/cancion de 4.5 ")
      Menubar(MenName1)
      MenuItem(10091,MenName1, "4.6 GRABA UNA PISTA ROLL DIRECTO A MIDI TIPO 0")
-     MenuItem(10092,MenName1, "4.7 >Na< A DESARROLLAR *CARGA ARCHIVO MIDI A RTK")
+     MenuItem(10092,MenName1, "4.7 DESARROLLANDO CARGA ARCHIVO MIDI A RTK")
      MenuItem(10093,MenName1, "4.8 >Na< A DESARROLLAR CONVERTIR UN *.RTK CARGADO  A *.EJEC")
      
      

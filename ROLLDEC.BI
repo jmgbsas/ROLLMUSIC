@@ -529,7 +529,17 @@ Dim  Shared figura (1 To 190) As ZString  * 4 => _
  "sO*+","sP*+","sI*+","sL*+","sF*+","sE*+","sX*+","sH*+","sW*+", _ '154 162
  "sO:+","sP:+","sI:+","sL:+","sF:+","sE:+","sX:+","sH:+","sW:+",_  '163 171 
  "s3O+","s3P+","s3I+","s3L+","s3F+","s3E+","s3X+","s3H+","s3W+", _ '172 180
- " ","||",">","-","N"," "," "," "," ","0" } '181 185 , son 185, ahora 190 
+ " ","||",">","-","N"," "," "," "," "," " } '181 185 , son 185, ahora 190
+'' "4O ","4P ","4I ","4L ","4F ","4E ","4X ","4H","4W"
+'' "5O ","5P ","5I ","5L ","5F ","5E ","5X ","5H","5W"
+'' "6O ","6P ","6I ","6L ","6F ","6E ","6X ","6H","6W"
+'' "7O ","7P ","7I ","7L ","7F ","7E ","7X ","7H","7W"
+'' SEGUIR
+
+''el 0 de 190 lo eliminamos era para indicar borrado en dos etapas.
+'186 quintillo con 5, perotengo un quintillo para cada duracion
+' 5O, 5P, 5I, 5L, 5F,5E,5X , 7 EN TOTAL PERO LOS QUINTILLOS DE O,P E I
+' NO CREO QUE SE USEN...LOS COMUNES SON DE CORCHEA NO SE SI SEMICORCHEA     
 ' la 185 la pondremos como 1er etapa de pasar  de ejecucion a Roll
 ' indicara una nota pero no sabemos su duracion, 2da etapa le pondremos
 ' una duracion cuantificada,,,
